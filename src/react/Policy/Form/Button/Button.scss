@@ -1,0 +1,63 @@
+@import '../../../../scss/import';
+
+$ease: get($tween, 'hover');
+
+:root {
+  --button-blur-background: #{get($tint, 'brand-maggioli')};
+  --button-blur-color: #{get($tone, '9')};
+  --button-hover-background: #{tts('brand-maggioli', '1', '7')};
+  --button-hover-color: #{get($tone, '9')};
+}
+
+.button {
+  align-items: center;
+  background-color: var(--button-blur-background);
+  border: 1px solid var(--button-blur-background);
+  border-radius: get($radius, 'normal');
+  color: var(--button-blur-color);
+  cursor: pointer;
+  display: inline-flex;
+  font-family: inherit;
+  height: get($form, 'input-height');
+  justify-content: center;
+  outline: 0;
+  padding: 0 s(0.5);
+  text-decoration: none;
+  transition: background-color $ease, border $ease, color $ease, filter $ease;
+  user-select: none;
+
+  &:focus,
+  &:hover {
+    background-color: var(--button-hover-background);
+    border-color: var(--button-hover-background);
+    color: var(--button-hover-color);
+  }
+
+  &:active {
+    background-color: var(--button-hover-background);
+    border-color: var(--button-hover-background);
+    color: var(--button-hover-color);
+  }
+
+  &__text {
+    text-transform: lowercase;
+
+    &::first-letter {
+      text-transform: uppercase;
+    }
+  }
+
+  &__icon {
+    &:first-child {
+      margin-right: s(0.25);
+
+      &:last-child {
+        margin: 0;
+      }
+    }
+
+    &:last-child {
+      margin-left: s(0.25);
+    }
+  }
+}
