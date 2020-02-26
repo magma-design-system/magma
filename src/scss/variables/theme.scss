@@ -10,11 +10,10 @@
 $gutter: get($sizes, 'gutter');
 $form: get($sizes, 'form');
 
-$brand: get($colors, 'brand');
-$tone: get($colors, 'tone');
+$saturation: get($colors, 'saturation');
 $status: get($colors, 'status');
-$palette-tints: get(get($colors, 'palette'), 'colors');
-$palette-tones: get(get($colors, 'palette'), 'tones');
+$tint: get($colors, 'tint');
+$tone: get($colors, 'tone');
 $radius: get($cosmetics, 'radius');
 $shadow: get($cosmetics, 'shadow');
 $tween: get($cosmetics, 'tween');

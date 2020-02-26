@@ -77,7 +77,7 @@ hr {
 // sass-lint:disable no-empty-rulesets
 ::selection {
   // sass-lint:disable no-color-literals
-  background-color: rgba(get($tints, 'brand-maggioli'), 0.2);
+  background-color: rgba(get($tint, 'brand-maggioli'), 0.2);
 }
 
 code {

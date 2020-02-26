@@ -15,5 +15,5 @@
 }
 
 @function tts ($tint-name, $tone-amount, $saturation-amount) {
-  @return hsl(hue(get($tints, $tint-name)), get($saturation, $saturation-amount), lightness(get($tones, $tone-amount)));
+  @return hsl(hue(get($tint, $tint-name)), get($saturation, $saturation-amount), lightness(get($tone, $tone-amount)));
 }
