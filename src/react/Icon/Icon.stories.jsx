@@ -17,7 +17,6 @@ ExampleIcon.propTypes = {
   name: PropTypes.string.isRequired,
 }
 
-
 const iconDictionary = Object.entries(material).map(([key, value]) =>
   <ExampleIcon key={key} name={key}/>,
 )
