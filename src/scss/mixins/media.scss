@@ -1,0 +1,8 @@
+@mixin media ($viewport) {
+  // es:
+  // @include media('mobile') { ... }
+
+  @media #{get($media, $viewport)} {
+    @content;
+  }
+}

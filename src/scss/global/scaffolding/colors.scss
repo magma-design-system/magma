@@ -1,0 +1,13 @@
+@mixin add-palette-selector($property, $tint-name, $tint-color, $tone-name, $tone-color) {
+  .#{$property}-#{$tint-name}-#{$tone-name} {
+    // sass-lint:disable no-important
+    #{$property}: sh($tone-color, $tint-color) !important;
+  }
+}
+
+@each $tint-name, $tint-color in $palette-tints {
+  @each $tone-name, $tone-color in $palette-tones {
+    @include add-palette-selector('background-color', $tint-name, $tint-color, $tone-name, $tone-color);
+    @include add-palette-selector('color', $tint-name, $tint-color, $tone-name, $tone-color);
+  }
+}

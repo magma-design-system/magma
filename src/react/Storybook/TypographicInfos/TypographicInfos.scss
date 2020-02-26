@@ -1,0 +1,39 @@
+@import '../../../scss/import';
+
+.typographic-infos {
+
+  display: flex;
+  flex-direction: column;
+  min-height: calc(100vh - #{s(2)});
+
+  &__header {
+    flex-grow: 1;
+  }
+
+  &__details {
+    flex-shrink: 0;
+  }
+
+  &__family {
+    display: inline-block;
+    margin-bottom: s(1);
+  }
+
+  &__rules {
+    grid-template-columns: repeat(1, 1fr);
+    width: 100%;
+
+    @include media ('tablet') {
+      grid-auto-rows: 1fr;
+      grid-template-columns: repeat(2, 1fr);
+    }
+
+    @include media ('desktop') {
+      grid-template-columns: repeat(3, 1fr);
+    }
+
+    @include media ('large') {
+      grid-template-columns: repeat(4, 1fr);
+    }
+  }
+}

@@ -1,0 +1,176 @@
+@import '../../../scss/import';
+
+$ease: get($tween, 'hover');
+$small-height: 26px;
+
+.button {
+  align-items: center;
+  background-color: get($brand, 'primary');
+  border: 1px solid get($brand, 'primary');
+  border-radius: get($radius, 'normal');
+  color: get($tone, 'white');
+  cursor: pointer;
+  display: inline-flex;
+  font-family: inherit;
+  height: get($form, 'input-height');
+  justify-content: center;
+  outline: 0;
+  padding: 0 s(0.5);
+  text-decoration: none;
+  transition: background-color $ease, border $ease, color $ease, filter $ease;
+  user-select: none;
+
+  &:focus,
+  &:hover {
+    filter: brightness(1.25);
+  }
+
+  &:active {
+    filter: brightness(1.5);
+  }
+
+  &--small {
+    height: $small-height;
+
+    .button {
+      &__text {
+        // @include apply-styles-set($font-sans-styles, 'small');
+        margin-top: 2px;
+      }
+
+      &__icon {
+        font-size: 18px;
+      }
+    }
+  }
+
+  &--cancel {
+    background-color: transparent;
+    border-color: get($tone, 'abbey');
+    color: get($tone, 'abbey');
+  }
+
+  &--warning {
+    background-color: get($status, 'warning');
+    border-color: get($status, 'warning');
+
+    &:focus,
+    &:hover {
+      filter: brightness(1.1);
+    }
+
+    &:active {
+      filter: brightness(1.25);
+    }
+  }
+
+  &--danger {
+    background-color: get($status, 'error');
+    border-color: get($status, 'error');
+
+    &:focus,
+    &:hover {
+      filter: brightness(1.1);
+    }
+
+    &:active {
+      filter: brightness(1.2);
+    }
+  }
+
+  &--option {
+    background-color: get($tone, 'abbey');
+    border-color: get($tone, 'abbey');
+
+    &:focus,
+    &:hover {
+      filter: brightness(0.8);
+    }
+
+    &:active {
+      filter: brightness(1);
+    }
+  }
+
+  &--confirm {
+    background-color: get($status, 'success');
+    border-color: get($status, 'success');
+
+    &:focus,
+    &:hover {
+      filter: brightness(1.1);
+    }
+
+    &:active {
+      filter: brightness(1.2);
+    }
+  }
+
+  &--collapse {
+    align-items: center;
+    flex-direction: column;
+
+    @include media ('tablet') {
+      flex-direction: row;
+    }
+
+    @include media ('mobile') {
+      height: auto;
+      padding-bottom: s(0.25);
+      padding-top: s(0.25);
+
+      .button {
+        &__icon {
+          &:first-child {
+            margin-bottom: s(0.25);
+            margin-right: 0;
+
+            &:last-child {
+              margin: 0;
+            }
+          }
+
+          &:last-child {
+            margin-left: 0;
+            margin-top: s(0.25);
+          }
+        }
+
+        &__text {
+          max-width: 100px;
+          overflow: hidden;
+          text-overflow: ellipsis;
+          white-space: nowrap;
+        }
+      }
+    }
+  }
+
+  &__text {
+    line-height: 1;
+
+    &::first-letter {
+      text-transform: uppercase;
+    }
+  }
+
+  &--disabled {
+    background-color: get($status, 'disabled');
+    border-color: get($status, 'disabled');
+    pointer-events: none;
+  }
+
+  &__icon {
+    &:first-child {
+      margin-right: s(0.25);
+
+      &:last-child {
+        margin: 0;
+      }
+    }
+
+    &:last-child {
+      margin-left: s(0.25);
+    }
+  }
+}

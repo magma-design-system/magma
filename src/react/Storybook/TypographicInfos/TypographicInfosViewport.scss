@@ -1,0 +1,74 @@
+@import '../../../scss/import';
+
+@mixin current {
+  .typographic-infos-viewport {
+    &__icon {
+      filter: grayscale(0);
+      opacity: 1;
+    }
+
+    &__props {
+      $tint: #000;
+      background-color: sh(get($tone, 'haze'), $tint);
+      opacity: 1;
+    }
+  }
+}
+
+@mixin viewport ($viewport) {
+  &--#{$viewport} {
+    @if $viewport == 'default' {
+      @include current;
+    } @else {
+      @include media ($viewport) {
+        @include current;
+      }
+    }
+  }
+}
+
+.typographic-infos-viewport {
+
+  display: flex;
+  flex-direction: column;
+
+  @include viewport('default');
+
+  @each $viewport, $rule in $media {
+    @include viewport($viewport);
+  }
+
+  &__header {
+    align-items: center;
+    border-bottom: 2px solid get($tone, 'boulder');
+    display: flex;
+    margin-bottom: s(0.25);
+    padding-bottom: s(0.25);
+  }
+
+  &__name {
+    flex-grow: 1;
+
+    &::first-letter {
+      text-transform: uppercase;
+    }
+  }
+
+  &__icon {
+    filter: grayscale(1);
+    flex-shrink: 0;
+    opacity: 0.25;
+  }
+
+  &__props {
+    background-color: transparent;
+    display: flex;
+    flex-direction: column;
+    flex-grow: 1;
+    margin-top: s(0.5);
+    opacity: 0.5;
+    padding-left: s(0.5);
+    padding-right: s(0.5);
+    width: 100%;
+  }
+}

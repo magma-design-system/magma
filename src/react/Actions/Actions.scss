@@ -1,0 +1,102 @@
+@import '../../scss/import';
+
+$footer-height: -54px;
+
+.actions {
+  background-color: get($tone, 'boulder');
+  bottom: 0;
+  color: get($tone, 'white');
+  left: 0;
+  padding: s(1);
+  position: fixed;
+  right: 0;
+  transform: translate(0, 100%);
+  transition: transform get($tween, 'slide');
+
+  &--active {
+    transform: translate(0, $footer-height);
+
+    @include media ('desktop') {
+      transform: translate(0, 0);
+    }
+  }
+
+  @include media('tablet') {
+    padding: s(1) s(2);
+  }
+
+  &--expanded {
+    .actions {
+      &__list {
+        margin-top: 0%;
+        opacity: 1;
+      }
+
+      &__header {
+        margin-bottom: s(0.5);
+
+        @include media ('tablet') {
+          margin-bottom: s(1);
+        }
+      }
+    }
+  }
+
+  &__title {
+    display: none;
+
+    &::first-letter {
+      text-transform: uppercase;
+    }
+
+    @include media ('desktop') {
+      display: block;
+    }
+  }
+
+  &__switch {
+    @include media ('desktop') {
+      // sass-lint:disable no-important
+      display: none !important;
+    }
+  }
+
+  &__header {
+    align-items: center;
+    display: flex;
+    justify-content: space-between;
+    transition: margin-bottom get($tween, 'hover');
+
+    @include media ('tablet') {
+      border-bottom: 2px solid get($tone, 'mercury');
+      padding-bottom: s(0.75);
+    }
+  }
+
+  &__container {
+    overflow: hidden;
+    transition: opacity get($tween, 'hover');
+  }
+
+  &__list {
+    display: grid;
+    grid-gap: s(0.5);
+    grid-template-columns: repeat(2, 1fr);
+    margin-top: -45%;
+    transition: margin-top get($tween, 'hover');
+
+    @include media ('tablet') {
+      grid-template-columns: repeat(3, 1fr);
+    }
+
+    @include media('desktop') {
+      grid-auto-flow: column;
+      grid-gap: s(1);
+      grid-template-columns: repeat(4, 1fr);
+    }
+
+    @include media ('desktop') {
+      grid-template-columns: repeat(5, 1fr);
+    }
+  }
+}

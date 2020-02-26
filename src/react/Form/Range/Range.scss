@@ -1,0 +1,103 @@
+@import '../../../scss/import';
+
+$dot-size: s(1);
+$padding-size: s(0.25);
+
+$track: (
+  'focused': get($brand, 'primary'),
+  'hover': get($tone, 'abbey'),
+  'radius': 100px,
+  'unfocused': get($tone, 'dust'),
+);
+
+%track {
+  background-color: get($track, 'unfocused');
+  border: 0;
+  border-radius: get($track, 'radius');
+  padding: $padding-size;
+  transition: background-color get($tween, 'hover');
+  width: 100%;
+
+  &:hover {
+    background-color: get($track, 'hover');
+  }
+
+  &:focus {
+    background-color: get($track, 'focused');
+  }
+}
+
+$thumb: (
+  'focused': get($tone, 'white'),
+  'hover': get($tone, 'white'),
+  'size': s(1),
+  'unfocused': get($tone, 'haze'),
+);
+
+%thumb {
+  background-color: get($thumb, 'unfocused');
+  border: 0;
+  border-radius: 200px;
+  box-shadow: 0 0 0 0 get($track, 'unfocused');
+  cursor: pointer;
+  height: get($thumb, 'size');
+  transition: background-color get($tween, 'hover'), box-shadow get($tween, 'hover'), transform get($tween, 'hover');
+  width: get($thumb, 'size');
+
+  &:hover {
+    background-color: get($thumb, 'hover');
+    box-shadow: 0 0 0 s(0.5) get($track, 'hover');
+  }
+
+  &:focus {
+    background-color: get($thumb, 'focused');
+    box-shadow: 0 0 0 s(0.5) get($track, 'focused');
+  }
+}
+
+.range {
+  // sass-lint:disable no-vendor-prefixes
+  background-color: transparent;
+  width: 100%;
+
+  &:focus {
+    outline: none;
+  }
+
+  @supports (-moz-appearance: none) {
+    & {
+      -moz-appearance: none;
+    }
+
+    &::-moz-range-thumb {
+      @extend %thumb;
+      -moz-appearance: none;
+    }
+
+    &::-moz-focus-outer {
+      border: 0;
+    }
+
+    &::-moz-range-track {
+      @extend %track;
+      -moz-appearance: none;
+      height: $dot-size;
+    }
+  }
+
+  @supports (-webkit-appearance: none) {
+    & {
+      -webkit-appearance: none;
+    }
+
+    &::-webkit-slider-thumb {
+      @extend %thumb;
+      -webkit-appearance: none;
+    }
+
+    &::-webkit-slider-runnable-track {
+      @extend %track;
+      -webkit-appearance: none;
+    }
+  }
+}

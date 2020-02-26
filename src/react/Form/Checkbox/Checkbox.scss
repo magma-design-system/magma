@@ -1,0 +1,75 @@
+@import '../../../scss/import';
+
+$opacity: 0.25;
+$default: get($tone, 'dust');
+$checked: get($tone, 'abbey');
+
+.checkbox {
+
+  align-items: end;
+  display: inline-flex;
+  margin-right: s(1);
+
+  &:last-child {
+    margin-right: 0;
+  }
+
+  &:hover {
+    .checkbox {
+      &__icon {
+        color: $checked;
+        filter: grayscale(0);
+      }
+    }
+  }
+
+  &__field {
+    display: none;
+
+    & + .checkbox__icon {
+      display: inline-block;
+    }
+
+    & + .checkbox__icon + .checkbox__icon {
+      display: none;
+    }
+
+    &:checked {
+      & + .checkbox__icon {
+        display: none;
+      }
+
+      & + .checkbox__icon + .checkbox__icon {
+        color: $checked;
+        display: inline-flex;
+        filter: grayscale(0);
+      }
+    }
+  }
+
+  &__text {
+    cursor: pointer;
+  }
+
+  &--custom {
+    .checkbox__field {
+      & + .checkbox__icon {
+        opacity: $opacity;
+      }
+
+      & + .checkbox__icon + .checkbox__icon {
+        filter: grayscale(0);
+        opacity: 1;
+      }
+    }
+  }
+
+  &__icon {
+    color: $default;
+    cursor: pointer;
+    filter: grayscale(1);
+    margin-right: s(0.25);
+    transition: color get($tween, 'hover'), filter get($tween, 'hover');
+    user-select: none;
+  }
+}

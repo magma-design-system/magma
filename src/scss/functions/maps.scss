@@ -1,0 +1,11 @@
+@function get($map, $search-key) {
+  // es:
+  // background-color: get($backgrounds, 'alto');
+  @each $key, $value in $map {
+    @if ('#{$key}' == '#{$search-key}') {
+      @return $value;
+    }
+  }
+  @return null;
+  @error 'No attribute key \'#{$key}\' found inside map #{$map}\nPlease checkout your code to fine where is the problem.';
+}

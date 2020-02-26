@@ -1,0 +1,75 @@
+@import '../../../scss/import';
+
+$opacity: 0.25;
+$default: get($tone, 'dust');
+$checked: get($tone, 'abbey');
+
+.radio {
+
+  align-items: end;
+  display: inline-flex;
+  margin-right: s(1);
+
+  &:last-child {
+    margin-right: 0;
+  }
+
+  &:hover {
+    .radio {
+      &__icon {
+        color: $checked;
+        filter: grayscale(0);
+      }
+    }
+  }
+
+  &__field {
+    display: none;
+
+    & + .radio__icon {
+      display: inline-block;
+    }
+
+    & + .radio__icon + .radio__icon {
+      display: none;
+    }
+
+    &:checked {
+      & + .radio__icon {
+        display: none;
+      }
+
+      & + .radio__icon + .radio__icon {
+        color: $checked;
+        display: inline-flex;
+        filter: grayscale(0);
+      }
+    }
+  }
+
+  &--custom {
+    .radio__field {
+      & + .radio__icon {
+        opacity: $opacity;
+      }
+
+      & + .radio__icon + .radio__icon {
+        filter: grayscale(0);
+        opacity: 1;
+      }
+    }
+  }
+
+  &__text {
+    cursor: pointer;
+  }
+
+  &__icon {
+    color: $default;
+    cursor: pointer;
+    filter: grayscale(1);
+    margin-right: s(0.25);
+    transition: color get($tween, 'hover'), filter get($tween, 'hover');
+    user-select: none;
+  }
+}

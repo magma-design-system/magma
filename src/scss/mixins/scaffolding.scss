@@ -1,0 +1,37 @@
+@mixin add-property-set ($property-name, $map, $group-name: false) {
+  @each $attribute, $value in $map {
+    @if $group-name {
+      .#{$property-name}-#{$group-name}-#{$attribute} {
+        #{$property-name}: $value;
+      }
+    } @else {
+      .#{$property-name}-#{$attribute} {
+        #{$property-name}: $value;
+      }
+    }
+  }
+}
+
+@mixin apply-styles-set ($map, $set) {
+  @each $viewport, $properties in map-get($map, $set) {
+    @if $viewport == 'default' {
+      @each $property, $value in $properties {
+        #{$property}: $value;
+      }
+    } @else {
+      @include media ($viewport) {
+        @each $property, $value in $properties {
+          #{$property}: $value;
+        }
+      }
+    }
+  }
+}
+
+@mixin add-styles-set ($map, $name) {
+  @each $set, $viewports in $map {
+    .#{$name}--#{$set} {
+      @include apply-styles-set ($map, $set);
+    }
+  }
+}

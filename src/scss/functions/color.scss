@@ -1,0 +1,19 @@
+@function sh($base-color, $hue-color, $saturation: false) {
+  $h: hue($hue-color);
+  $s: saturation($hue-color);
+  $l: lightness($base-color);
+
+  @if $saturation != false {
+    @if $saturation >= 0 {
+      @return saturate(hsl($h, $s, $l), $saturation);
+    } @else {
+      @return desaturate(hsl($h, $s, $l), abs($saturation));
+    }
+  } @else {
+    @return hsl($h, $s, $l);
+  }
+}
+
+@function tts ($tint-name, $tone-amount, $saturation-amount) {
+  @return hsl(hue(get($tints, $tint-name)), get($saturation, $saturation-amount), lightness(get($tones, $tone-amount)));
+}

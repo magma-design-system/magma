@@ -1,0 +1,86 @@
+{
+  "name": "maggioli-design-system",
+  "version": "0.0.1",
+  "description": "Initial draft of Maggioli design system",
+  "scripts": {
+    "deploy": "storybook-to-ghpages",
+    "design-tokens": "run-for-every-file --src src/design-tokens/ --dest src/scss/variables/ --file '**/*.json' --not-file '**/*.scss' --run 'json-to-scss {{src-file}} {{dest}}{{file-name-ext}}'",
+    "lint": "npm run lint:js && npm run lint:sass",
+    "lint:js": "eslint src/react/**/*.{js,jsx} --fix",
+    "lint:sass": "sass-lint -c .sass-lint.yml 'src/scss/**/*.scss' -v -i 'src/scss/variables/**/*.scss'",
+    "storybook": "npm run design-tokens && start-storybook --port 51230"
+  },
+  "husky": {
+    "hooks": {
+      "pre-commit": "npm run lint",
+      "pre-push": ""
+    }
+  },
+  "main": "index.js",
+  "author": {
+    "name": "Vittorio Vittori",
+    "email": "vittorio.vittori@maggioli.it",
+    "url": "http://vit.to"
+  },
+  "contributors": [
+    {
+      "name": "Fabion Dautaj",
+      "email": "fabion.dautaj@maggioli.it"
+    }
+  ],
+  "license": "ISC",
+  "devDependencies": {
+    "@babel/core": "^7.5.5",
+    "@babel/plugin-proposal-export-default-from": "^7.5.2",
+    "@babel/plugin-proposal-export-namespace-from": "^7.5.2",
+    "@babel/preset-env": "^7.5.5",
+    "@babel/preset-react": "^7.0.0",
+    "@storybook/addon-actions": "^5.1.9",
+    "@storybook/addon-info": "^5.3.12",
+    "@storybook/addon-links": "^5.1.9",
+    "@storybook/addons": "^5.1.9",
+    "@storybook/cli": "^5.1.9",
+    "@storybook/react": "^5.1.9",
+    "@storybook/storybook-deployer": "^2.8.1",
+    "@symfony/webpack-encore": "^0.27.0",
+    "autoprefixer": "^9.6.1",
+    "babel-jest": "^24.8.0",
+    "babel-loader": "^8.0.6",
+    "babel-plugin-rewire": "^1.2.0",
+    "babel-polyfill": "^6.26.0",
+    "concat-files": "^0.1.1",
+    "enzyme": "^3.10.0",
+    "enzyme-adapter-react-16": "^1.14.0",
+    "eslint": "^6.1.0",
+    "eslint-config-standard": "^13.0.1",
+    "eslint-plugin-import": "^2.18.2",
+    "eslint-plugin-node": "^9.1.0",
+    "eslint-plugin-promise": "^4.2.1",
+    "eslint-plugin-react": "^7.14.2",
+    "eslint-plugin-standard": "^4.0.0",
+    "hex-rgb": "^4.1.0",
+    "husky": "^3.0.1",
+    "jest": "^24.8.0",
+    "json-to-scss": "^1.3.1",
+    "node-normalize-scss": "^8.0.0",
+    "node-sass": "^4.12.0",
+    "postcss-loader": "^3.0.0",
+    "run-for-every-file": "^1.1.0",
+    "sass-extract": "^2.1.0",
+    "sass-lint": "^1.13.1",
+    "sass-loader": "^7.1.0",
+    "standard": "^13.0.2",
+    "url-search-params-polyfill": "^7.0.0"
+  },
+  "dependencies": {
+    "material-design-icons": "^3.0.1",
+    "react": "^16.8.6",
+    "react-autosuggest": "^9.4.3",
+    "react-dom": "^16.8.6",
+    "react-gsap": "^1.2.0",
+    "react-hook-form": "^3.18.8",
+    "react-router-dom": "^5.0.1",
+    "react-timeago": "^4.4.0",
+    "typeface-roboto": "0.0.75"
+  }
+}

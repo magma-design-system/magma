@@ -1,0 +1,39 @@
+@mixin get-font-viewports ($viewports, $set, $family) {
+  @each $viewport, $properties in map-get($viewports, $set) {
+    @each $property, $value in $properties {
+      $name: #{$family}-#{$set}-#{$viewport}-#{$property};
+      $camel-name: camelize($name);
+      #{$camel-name}: $value;
+    }
+  }
+}
+
+@mixin export-font-style ($map, $family, $prefix: '') {
+  @each $set, $viewports in $map {
+    $name: #{$family}-#{$set};
+    $selector: #{$family} #{$family}--#{$set};
+
+    @if $prefix != '' {
+      $selector: #{$prefix}-#{$family} #{$prefix}-#{$family}--#{$set};
+    }
+    $camel-name: camelize($name);
+    #{$camel-name}Selector: $selector;
+    @include get-font-viewports ($map, $set, $family);
+  }
+}
+
+@mixin export-media-queries ($media) {
+  $list: '';
+  @each $viewport, $rule in $media {
+    @if ($list == '') {
+      $list: #{$viewport};
+    } @else {
+      // sass-lint:disable space-after-comma
+      $list: #{$viewport},#{$list};
+    }
+    $camel-name: camelize($viewport);
+    // sass-lint:disable no-misspelled-properties
+    #{$camel-name}: #{$rule};
+  }
+  // list: #{$list};
+}

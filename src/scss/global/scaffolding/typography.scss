@@ -1,0 +1,9 @@
+@mixin add-text ($style) {
+  .text-#{$style} {
+    font-family: get($font-family, $style);
+  }
+  @include add-styles-set($font-sans-styles, 'text-#{$style}');
+}
+
+
+@include add-text('sans');

@@ -1,0 +1,106 @@
+@import '../../../scss/import';
+
+$outline: 0 0 0 4px rgba(get($brand, 'primary'), 0.075);
+$outline-error: 0 0 0 4px rgba(get($status, 'error'), 0.075);
+$size: get($form, 'input-height');
+
+.input {
+  display: block;
+  margin-bottom: s(-1);
+  position: relative;
+  transition: margin-bottom get($tween, 'hover');
+  width: 100%;
+
+  &--has-icon {
+    .input {
+      &__field {
+        padding-right: $size;
+      }
+    }
+  }
+
+  &--has-errors {
+    margin-bottom: 0;
+
+    .input {
+      &__errors {
+        display: block;
+        transform: translate(0, 0);
+      }
+
+      &__field {
+        border-color: mix(get($tone, 'silver'), get($status, 'error'), 75%);
+        border-radius: get($radius, 'small') get($radius, 'small') 0 0;
+
+        &:focus {
+          border-color: get($status, 'error');
+          box-shadow: $outline-error;
+        }
+      }
+    }
+  }
+
+  &__label {
+    color: get($tone, 'boulder');
+    margin-bottom: s(0.5);
+  }
+
+  &__field {
+    border: 1px solid get($tone, 'silver');
+    border-radius: get($radius, 'small');
+    box-shadow: none;
+    color: get($tone, 'abbey');
+    height: $size;
+    padding: 0 s(0.5);
+    position: relative;
+    transition: border-color get($tween, 'hover'), border-radius get($tween, 'hover'), box-shadow get($tween, 'hover');
+    width: 100%;
+    z-index: 1;
+
+    &:focus {
+      border-color: get($brand, 'primary');
+      box-shadow: $outline;
+      outline: 0;
+
+      &::placeholder {
+        color: get($tone, 'mercury');
+      }
+    }
+
+    &::placeholder {
+      color: get($tone, 'silver');
+      transition: color get($tween, 'hover');
+    }
+  }
+
+  &__icon-area {
+    align-items: center;
+    display: flex;
+    height: $size;
+    justify-content: center;
+    position: absolute;
+    right: 0;
+    width: $size;
+    z-index: 2;
+  }
+
+  &__errors {
+    $radius: get($radius, 'normal');
+    background-color: hs(get($tone, 'haze'), get($status, 'error'));
+    border-radius: 0 0 $radius $radius;
+    margin: 0;
+    padding: s(0.5);
+    transform: translate(0, -100%);
+    transition: transform get($tween, 'hover');
+  }
+
+  &__error {
+    display: flex;
+    list-style-type: none;
+    padding: 0;
+  }
+
+  &__error-icon {
+    margin-right: s(0.5);
+  }
+}

@@ -1,0 +1,7 @@
+{
+  "gutter": "20px",
+  "form": {
+    "input-height": "40px",
+    "textarea-height": "120px"
+  }
+}
