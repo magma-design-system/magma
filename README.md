@@ -1,8 +1,5 @@
 
-# Tintoretto
-## Maggioli design system draft
-
----
+# Tintoretto: Maggioli design system draft
 
 ### React library
 
@@ -21,7 +18,7 @@ $ nvm use
 This should install the right version of node, based on the version specs inside the file `.nvmrc`. If this doesn't work, run:
 
 ```
-$ nvm install v10.16.0
+$ nvm install v12.16.1
 ```
 
 This will install manually the right node version.
