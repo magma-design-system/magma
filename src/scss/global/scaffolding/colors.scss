@@ -5,8 +5,8 @@
   }
 }
 
-@each $tint-name, $tint-color in $palette-tints {
-  @each $tone-name, $tone-color in $palette-tones {
+@each $tint-name, $tint-color in $tint {
+  @each $tone-name, $tone-color in $tone {
     @include add-palette-selector('background-color', $tint-name, $tint-color, $tone-name, $tone-color);
     @include add-palette-selector('color', $tint-name, $tint-color, $tone-name, $tone-color);
   }
