@@ -4,3 +4,4 @@ npm-debug.log
 src/scss/variables/*.scss
 !src/scss/variables/theme.scss
 /out*
+.react

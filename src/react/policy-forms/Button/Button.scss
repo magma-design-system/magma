@@ -1,0 +1,52 @@
+@import '../../../scss/import';
+
+$ease: get($tween, 'hover');
+
+.button {
+  align-items: center;
+  background-color: get($tint, 'brand-maggioli');
+  border: 1px solid get($tint, 'brand-maggioli');
+  border-radius: get($radius, 'normal');
+  color: get($tone, 'white');
+  cursor: pointer;
+  display: inline-flex;
+  font-family: inherit;
+  height: get($form, 'input-height');
+  justify-content: center;
+  outline: 0;
+  padding: 0 s(0.5);
+  text-decoration: none;
+  transition: background-color $ease, border $ease, color $ease, filter $ease;
+  user-select: none;
+
+  &:focus,
+  &:hover {
+    filter: brightness(1.25);
+  }
+
+  &:active {
+    filter: brightness(1.5);
+  }
+
+  &__text {
+    line-height: 1;
+
+    &::first-letter {
+      text-transform: uppercase;
+    }
+  }
+
+  &__icon {
+    &:first-child {
+      margin-right: s(0.25);
+
+      &:last-child {
+        margin: 0;
+      }
+    }
+
+    &:last-child {
+      margin-left: s(0.25);
+    }
+  }
+}

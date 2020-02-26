@@ -20,7 +20,7 @@ const dictionary = Object.entries(actions).map(([key, value]) =>
   <ExampleButton key={key} action={key} onClick={action('clicked')}/>
 )
 
-storiesOf('Form/Button', module)
+storiesOf('Policy App/Form/Button', module)
   .addDecorator(story => <Page>{story()}</Page>)
   .add('Default', () =>
     <Button onClick={action('clicked')}>Hello world!</Button>

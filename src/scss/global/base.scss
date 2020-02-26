@@ -4,7 +4,7 @@ body {
   // sass-lint:disable no-vendor-prefixes
   -webkit-tap-highlight-color: transparent;
   @include apply-styles-set($font-sans-styles, $default-font-style);
-  background-color: get($tones, '8');
+  background-color: get($tone, '8');
   color: get($tones, '2');
   font-family: get($font-family, 'sans');
   width: 100%;
