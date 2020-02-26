@@ -3,7 +3,7 @@ import PropTypes from 'prop-types'
 import { storiesOf } from '@storybook/react'
 import { action } from '@storybook/addon-actions'
 
-import Page from '../../Page/Page'
+import Page from '../../Storybook/Page/Page'
 import Button from './Button'
 import actions from './ButtonDictionary'
 

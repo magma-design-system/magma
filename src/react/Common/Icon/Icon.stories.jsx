@@ -3,7 +3,7 @@ import { storiesOf } from '@storybook/react'
 import PropTypes from 'prop-types'
 
 import Icon from './Icon'
-import Page from '../Page/Page'
+import Page from '../../Storybook/Page/Page'
 import material from './dictionary.json'
 
 const ExampleIcon = props => <div className="flex-row">
