@@ -5,6 +5,8 @@ $ease: get($tween, 'hover');
 :root {
   --button-blur-background: #{get($tint, 'brand-maggioli')};
   --button-blur-color: #{get($tone, '9')};
+  --button-disabled-background: #{get($tone, '6')};
+  --button-disabled-color: #{get($tone, '9')};
   --button-hover-background: #{tts('brand-maggioli', '1', '7')};
   --button-hover-color: #{get($tone, '9')};
 }
@@ -59,5 +61,12 @@ $ease: get($tween, 'hover');
     &:last-child {
       margin-left: s(0.25);
     }
+  }
+
+  &--disabled {
+    background-color: var(--button-disabled-background);
+    border-color: var(--button-disabled-background);
+    color: var(--button-disabled-color);
+    pointer-events: none;
   }
 }

@@ -3,7 +3,7 @@ import PropTypes from 'prop-types'
 import './Grid.scss'
 
 const Grid = props =>
-  <div className="grid">
+  <div className={`grid ${props.children != 0 ? 'grid--columns-' + props.children : ''}`}>
     {props.children}
   </div>
 
