@@ -1,8 +1,8 @@
 import React from 'react'
 import faker from 'faker'
-faker.locale = 'it'
 
 import InputPhone from './InputPhone'
+faker.locale = 'it'
 
 export default {
   title: 'Phone',

@@ -1,8 +1,8 @@
 import React from 'react'
 import faker from 'faker'
-faker.locale = 'it'
 
 import InputEmail from './InputEmail'
+faker.locale = 'it'
 
 export default {
   title: 'Policy App/Form/Email',
