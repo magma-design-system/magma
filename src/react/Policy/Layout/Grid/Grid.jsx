@@ -3,16 +3,16 @@ import PropTypes from 'prop-types'
 import './Grid.scss'
 
 const Grid = props =>
-  <div className={`grid ${props.children != 0 ? 'grid--columns-' + props.children : ''}`}>
+  <div className={`grid ${props.columns.toString() !== '0' ? 'grid--' + props.columns.toString() + '-columns' : ''}`}>
     {props.children}
   </div>
 
 Grid.propTypes = {
-  columns: PropTypes.number,
+  columns: PropTypes.string,
 }
 
 Grid.defaultProps = {
-  columns: 0,
+  columns: '0',
 }
 
 export default Grid

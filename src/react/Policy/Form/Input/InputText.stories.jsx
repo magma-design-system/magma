@@ -1,0 +1,15 @@
+import React from 'react'
+import faker from 'faker'
+
+import InputText from './InputText'
+
+export default {
+  title: 'Policy App/Form/Text',
+  component: InputText,
+}
+
+export const basicUsage = () =>
+  <InputText label="This is a text field" placeholder={faker.company.catchPhrase()}/>
+
+export const customIcon = () =>
+  <InputText placeholder={faker.phone.phoneNumber()}/>

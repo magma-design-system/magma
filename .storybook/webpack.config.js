@@ -32,6 +32,13 @@ module.exports = async ({ config, mode }) => {
         loader: 'file-loader?name=img/[name].[ext]',
     })
 
+    /*
+    config.resolve.alias = {
+      '@Common': path.resolve(__dirname, '../src/Common/'),
+      '@Storybook': path.resolve(__dirname, '../src/Storybook/')
+    }
+    */
+
     // Return the altered config
     return config
 }

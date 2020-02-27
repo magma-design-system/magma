@@ -32,7 +32,7 @@ export default create({
   inputTextColor: '#ddd',
   inputBorderRadius: 0,
 
-  brandTitle: 'Maggioli',
+  brandTitle: 'Maggiolino',
   brandUrl: 'https://www.maggioli.it',
   brandImage: 'https://www.maggioli.it/wp-content/uploads/2015/12/gruppo-maggioli.png',
 })

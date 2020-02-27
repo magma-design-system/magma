@@ -1,6 +1,45 @@
-@import '../../../scss/import';
+@import '../../../../scss/import';
 
-/*
-basic grid behavior is handled by global component
-/scss/global/components/grid.scss
-*/
+$columns: 4;
+$sizes: (
+  'small': s(1),
+  'large': s(2)
+);
+
+:export {
+  columns: $columns;
+  sizes: #{$sizes};
+}
+
+@mixin gutter-modifier ($size-item) {
+  &--#{nth($size-item, 1)} {
+    grid-gap: nth($size-item, 2);
+  }
+}
+
+@mixin columns-modifier ($column-index) {
+  &--#{$column-index}-columns {
+    @if ($column-index > 2) {
+      @include media ('tablet') {
+        grid-template-columns: repeat(#{round($column-index/2)}, 1fr);
+      }
+    }
+    @include media ('desktop') {
+      grid-template-columns: repeat($column-index, 1fr);
+    }
+  }
+}
+
+.grid {
+  @each $size-item in $sizes {
+    @include gutter-modifier ($size-item);
+  }
+
+  @for $index from 2 to $columns + 1 {
+    @include columns-modifier ($index);
+  }
+
+  @include media ('mobile') {
+    grid-template-columns: 1fr;
+  }
+}
