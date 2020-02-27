@@ -1,5 +1,6 @@
 import React from 'react'
 import faker from 'faker'
+faker.locale = 'it'
 
 import InputEmail from './InputEmail'
 

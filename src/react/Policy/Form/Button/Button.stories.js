@@ -1,8 +1,8 @@
 import React from 'react'
 import faker from 'faker'
+faker.locale = 'it'
 
 import Button from './Button'
-faker.locale = 'it'
 
 export default {
   title: 'Policy App/Form/Button',
