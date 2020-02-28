@@ -19,7 +19,7 @@ const Checkbox = props =>
         <Icon className={`checkbox__icon ${props.iconClassName}`} name="formCheckboxChecked"/>
       </Fragment>
     }
-    <div className="checkbox__text">
+    <div className="checkbox__text text-sans text-sans--caption">
       {props.children}
     </div>
   </label>

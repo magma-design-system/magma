@@ -23,7 +23,7 @@ $ease: get($tween, 'hover');
   height: get($form, 'input-height');
   justify-content: center;
   outline: 0;
-  padding: 0 s(0.5);
+  padding: 0 s(1);
   text-decoration: none;
   transition: background-color $ease, border $ease, color $ease, filter $ease;
   user-select: none;

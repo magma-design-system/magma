@@ -1,0 +1,23 @@
+import React from 'react'
+import PropTypes from 'prop-types'
+import Typography from '../Typography'
+
+const H5 = props =>
+  <Typography
+    className={`text-sans--h5 ${props.className}`}
+    htmlTag={props.htmlTag}
+  >
+    {props.children}
+  </Typography>
+
+H5.propTypes = {
+  className: PropTypes.string,
+  htmlTag: PropTypes.string,
+}
+
+H5.defaultProps = {
+  className: '',
+  htmlTag: 'h5',
+}
+
+export default H5

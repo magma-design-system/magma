@@ -9,7 +9,7 @@ const Button = props =>
     onClick={() => props.onClick()}
     disabled={props.disabled ? 'disabled' : ''}>
     {props.icon && <Icon className='button__icon' name={props.icon}/>}
-    <div className='button__text'>{props.children}</div>
+    <div className='button__text text-sans text-sans--button'>{props.children}</div>
   </button>
 
 Button.propTypes = {

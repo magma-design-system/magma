@@ -34,6 +34,7 @@ module.exports = async ({ config, mode }) => {
 
     config.resolve.alias = {
       '@Design': path.resolve(__dirname, '../src/react/Design/'),
+      '@Typography': path.resolve(__dirname, '../src/react/Design/Typography/'),
       '@Layout': path.resolve(__dirname, '../src/react/Layout/'),
     }
 
