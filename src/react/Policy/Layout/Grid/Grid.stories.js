@@ -5,24 +5,12 @@ import Grid from './Grid'
 faker.locale = 'it'
 
 export default {
-  title: 'Layout/Grid',
+  title: 'Policy App/Layout/Grid',
   component: Grid,
 }
 
 export const basicUsage = () =>
   <Grid>
-    <p className="text-sans text-sans--paragraph">{faker.lorem.paragraph()}</p>
-    <p className="text-sans text-sans--paragraph">{faker.lorem.paragraph()}</p>
-  </Grid>
-
-export const gutterSmall = () =>
-  <Grid gutter="small">
-    <p className="text-sans text-sans--paragraph">{faker.lorem.paragraph()}</p>
-    <p className="text-sans text-sans--paragraph">{faker.lorem.paragraph()}</p>
-  </Grid>
-
-export const gutterXSmall = () =>
-  <Grid gutter="xsmall">
     <p className="text-sans text-sans--paragraph">{faker.lorem.paragraph()}</p>
     <p className="text-sans text-sans--paragraph">{faker.lorem.paragraph()}</p>
   </Grid>
