@@ -14,7 +14,8 @@ button {
   font-family: get($font-family, 'sans');
 }
 
-input {
+input,
+textarea {
   appearance: none;
   @include apply-styles-set($font-sans-styles, $default-font-style);
 
@@ -51,7 +52,8 @@ hr,
 input,
 main,
 section,
-span {
+span,
+textarea {
   box-sizing: border-box;
 }
 

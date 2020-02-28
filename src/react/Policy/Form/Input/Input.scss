@@ -28,6 +28,7 @@ $color-brand: get($tint, 'brand-maggioli');
 
 .input {
   display: block;
+  line-height: 0;
   margin-bottom: s(-1);
   position: relative;
   transition: margin-bottom $ease;

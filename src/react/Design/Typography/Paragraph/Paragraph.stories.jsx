@@ -18,7 +18,7 @@ storiesOf('Typography/Paragraph', module)
       properties={families.sans.styles.paragraph}
     >
       <Paragraph>{text}</Paragraph>
-    </TypographicInfos>
+    </TypographicInfos>,
   )
   .add('Custom tag', () => <Paragraph htmlTag='div'>{text}</Paragraph>)
   .add('Avoid wrapper', () => <span className={selector}>Use <code>{selector}</code> CSS class to apply style without use container wrapper</span>)

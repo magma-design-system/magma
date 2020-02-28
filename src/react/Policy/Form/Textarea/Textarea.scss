@@ -3,6 +3,7 @@
 $outline: 0 0 0 4px rgba(get($tint, 'brand-maggioli'), 0.075);
 $outline-error: 0 0 0 4px rgba(get($tint, 'status-error'), 0.075);
 $size: get($form, 'input-height');
+$height: get($form, 'textarea-height');
 $ease: get($tween, 'hover');
 
 $color-brand: get($tint, 'brand-maggioli');
@@ -26,15 +27,16 @@ $color-brand: get($tint, 'brand-maggioli');
   --input-radius: #{get($radius, 'small')};
 }
 
-.input {
+.textarea {
   display: block;
+  line-height: 0;
   margin-bottom: s(-1);
   position: relative;
   transition: margin-bottom $ease;
   width: 100%;
 
   &--has-icon {
-    .input {
+    .textarea {
       &__field {
         padding-right: $size;
       }
@@ -44,7 +46,7 @@ $color-brand: get($tint, 'brand-maggioli');
   &--has-errors {
     margin-bottom: 0;
 
-    .input {
+    .textarea {
       &__errors {
         display: block;
         transform: translate(0, 0);
@@ -68,15 +70,19 @@ $color-brand: get($tint, 'brand-maggioli');
   }
 
   &__field {
-    border: 1px solid var(--input-field-default-blur-border-color);
     border-radius: var(--input-radius);
+    border: 1px solid var(--input-field-default-blur-border-color);
     box-shadow: var(--input-field-default-blur-shadow);
     color: var(--input-field-default-blur-color);
-    height: $size;
-    padding: 0 s(0.5);
+    height: $height;
+    max-height: $height * 2;
+    min-height: $height;
+    padding: s(0.5);
     position: relative;
+    resize: vertical;
     transition: border-color $ease, border-radius $ease, box-shadow $ease;
     width: 100%;
+
     z-index: 1;
 
     &:focus {
