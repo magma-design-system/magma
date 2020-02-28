@@ -10,11 +10,11 @@ $color-brand: get($tint, 'brand-maggioli');
 :root {
   --input-field-default-blur-border-color: transparent;
   --input-field-default-blur-color: #{get($tone, '2')};
-  --input-field-default-blur-shadow: #{get($shadow, 'tiny')};
+  --input-field-default-blur-shadow: #{get($shadow, 'tiny'), get($shadow, 'outline')};
   --input-field-default-blur-icon: #{get($tone, '2')};
   --input-field-default-focus-border-color: #{$color-brand};
   --input-field-default-focus-color: #{get($tone, '1')};
-  --input-field-default-focus-shadow: #{get($shadow, 'tiny')};
+  --input-field-default-focus-shadow: #{get($shadow, 'tiny'), get($shadow, 'outline')};
   --input-field-default-placeholder-blur-color: #{get($tone, '4')};
   --input-field-default-placeholder-focus-color: #{get($tone, '6')};
 

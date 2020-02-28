@@ -4,13 +4,13 @@ import brandImage from './maggioli.png';
 export default create({
 
   base: 'light',
-  colorPrimary: '#004881',
-  colorSecondary: '#a0ff4c',
+  colorPrimary: '#1b59a3',
+  colorSecondary: '#888',
 
   // UI
   appBg: '#efefef',
   appContentBg: '#fff',
-  appBorderColor: '#fff',
+  appBorderColor: '#aaa',
   appBorderRadius: 0,
 
   // Typography
@@ -19,12 +19,12 @@ export default create({
 
   // Text colors
   textColor: '#333',
-  textInverseColor: '#efefef',
+  textInverseColor: '#ddd',
 
   // Toolbar default and active colors
   barTextColor: '#efefef',
   barSelectedColor: '#fff',
-  barBg: '#004881',
+  barBg: '#1b59a3',
 
   // Form colors
   inputBg: '#fff',

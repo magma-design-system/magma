@@ -5,6 +5,7 @@
     "large": "8px"
   },
   "shadow": {
+    "outline": "0 0 0 1px rgba(0, 0, 0, 0.05)",
     "tiny": "0 2px 4px rgba(0, 0, 0, 0.1)",
     "small": "0 5px 20px rgba(0, 0, 0, 0.1)",
     "normal": "(0 20px 80px rgba(0, 0, 0, 0.1), 0 0 0 2px rgba(0, 0, 0, 0.05))",
