@@ -1,8 +1,8 @@
 import React, { Fragment } from 'react'
 import faker from 'faker'
-faker.locale = 'it'
 
 import Radio from './Radio'
+faker.locale = 'it'
 
 export default {
   title: 'Policy App/Form/Radio',
