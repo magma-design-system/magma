@@ -1,11 +1,11 @@
-import { create } from '@storybook/theming'
+import { create } from '@storybook/theming';
 import brandImage from './maggioli.png';
 
 export default create({
 
   base: 'light',
-  colorPrimary: '#b40038',
-  colorSecondary: '#004881',
+  colorPrimary: '#004881',
+  colorSecondary: '#a0ff4c',
 
   // UI
   appBg: '#efefef',
@@ -22,9 +22,9 @@ export default create({
   textInverseColor: '#efefef',
 
   // Toolbar default and active colors
-  barTextColor: '#0fc',
-  barSelectedColor: '#888',
-  barBg: '#222',
+  barTextColor: '#efefef',
+  barSelectedColor: '#fff',
+  barBg: '#004881',
 
   // Form colors
   inputBg: '#fff',
