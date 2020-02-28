@@ -9,6 +9,7 @@ import InputEmail from './Form/Input/InputEmail'
 import InputPhone from './Form/Input/InputPhone'
 import InputText from './Form/Input/InputText'
 import Checkbox from './Form/Checkbox/Checkbox'
+import Textarea from './Form/Textarea/Textarea'
 faker.locale = 'it'
 
 export default {
@@ -42,6 +43,26 @@ export const noLabels = () =>
     </Grid>
     <InputPhone placeholder="Telefono"/>
     <InputEmail placeholder="E-mail"/>
+    <Checkbox>{faker.lorem.sentence()}</Checkbox>
+    <Checkbox>{faker.lorem.sentence()}</Checkbox>
+    <Checkbox>{faker.lorem.sentence()}</Checkbox>
+    <Button>{faker.hacker.verb()}</Button>
+  </Grid>
+
+export const horizontalGrid = () =>
+  <Grid>
+    <H3>{faker.lorem.sentence()}</H3>
+    <Paragraph>{faker.lorem.paragraph()}</Paragraph>
+    <Grid columns="2">
+      <Grid>
+        <InputText placeholder="Nome"/>
+        <InputText placeholder="Cognome"/>
+        <InputEmail placeholder="E-mail"/>
+      </Grid>
+      <Grid>
+        <Textarea placeholder="Messaggio"></Textarea>
+      </Grid>
+    </Grid>
     <Checkbox>{faker.lorem.sentence()}</Checkbox>
     <Checkbox>{faker.lorem.sentence()}</Checkbox>
     <Checkbox>{faker.lorem.sentence()}</Checkbox>
