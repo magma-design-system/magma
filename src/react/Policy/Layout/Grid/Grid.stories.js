@@ -6,7 +6,8 @@ import Grid from './Grid'
 faker.locale = 'it'
 
 export default {
-  title: 'Grid',
+  title: 'Layout/Grid',
+  component: Grid,
 }
 
 export const basicUsage = () =>
