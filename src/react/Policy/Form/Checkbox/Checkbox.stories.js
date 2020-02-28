@@ -42,5 +42,5 @@ const SyncCheckboxes = props => {
   )
 }
 
-export const syncMoreCheckboxes = () =>
+export const syncMultipleCheckboxes = () =>
   <SyncCheckboxes/>

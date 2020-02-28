@@ -9,7 +9,6 @@ const Radio = props =>
       className="radio__field"
       defaultChecked={props.isChecked}
       name={props.name}
-      onChange={e => props.onChange(e.target.value)}
       type="radio"
       value={props.value}
     />
@@ -37,7 +36,6 @@ Radio.defaultProps = {
   iconClassName: '',
   isChecked: false,
   name: 'unassigned',
-  onChange: value => { return value },
   paletteColor: '',
   value: '0',
 }

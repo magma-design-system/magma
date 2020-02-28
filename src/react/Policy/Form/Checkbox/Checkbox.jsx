@@ -38,7 +38,6 @@ Checkbox.defaultProps = {
   icon: '',
   iconClassName: '',
   isChecked: false,
-  onChange: value => { return value },
   sync: false,
 }
 

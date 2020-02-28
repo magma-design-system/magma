@@ -41,7 +41,7 @@ export const customIcon = () =>
 
 export const customColor = () =>
   <Fragment>
-    <Radio name="radioGroupName" value="1" icon="warning">
+    <Radio name="radioGroupName" value="1" icon="warning" iconClassName="color-red-2">
       {faker.lorem.sentences()}
     </Radio>
     <Radio name="radioGroupName" value="2" icon="error" iconClassName="color-red-2">
