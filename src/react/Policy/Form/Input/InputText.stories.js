@@ -13,4 +13,4 @@ export const basicUsage = () =>
   <InputText label="This is a text field" placeholder={faker.company.catchPhrase()}/>
 
 export const customIcon = () =>
-  <InputText placeholder={faker.phone.phoneNumber()}/>
+  <InputText placeholder={faker.phone.phoneNumber()} icon="operator"/>

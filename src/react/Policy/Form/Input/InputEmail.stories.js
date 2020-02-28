@@ -10,4 +10,4 @@ export default {
 }
 
 export const basicUsage = () =>
-  <InputEmail placeholder={faker.internet.exampleEmail()}/>
+  <InputEmail label={faker.lorem.sentence()} placeholder={faker.internet.exampleEmail()}/>

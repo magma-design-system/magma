@@ -4,7 +4,7 @@ import './Input.scss'
 import Input from './Input'
 
 const InputText = props =>
-  <Input icon={props.icon}>
+  <Input {...props}>
     <input
       autoComplete={props.autoComplete}
       className="input__field text-sans text-sans--input"

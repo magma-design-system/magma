@@ -1,8 +1,8 @@
 import React, { Fragment, useState } from 'react'
 import faker from 'faker'
-faker.locale = 'it'
 
 import Checkbox from './Checkbox'
+faker.locale = 'it'
 
 export default {
   title: 'Policy App/Form/Checkbox',

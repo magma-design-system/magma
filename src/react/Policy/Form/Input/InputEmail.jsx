@@ -12,7 +12,7 @@ const InputEmail = props =>
       name={props.name}
       onBlur={e => { console.log(e) }}
       placeholder={props.placeholder}
-      type="text"
+      type="email"
     />
   </Input>
 

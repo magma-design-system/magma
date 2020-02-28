@@ -1,8 +1,8 @@
 @import '../../../../scss/import';
 
 $opacity: 0.25;
-$default: get($tone, 'dust');
-$checked: get($tone, 'abbey');
+$default: get($tone, '4');
+$checked: get($tint, 'brand-maggioli');
 
 .checkbox {
 

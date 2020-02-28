@@ -5,15 +5,25 @@ $outline-error: 0 0 0 4px rgba(get($tint, 'status-error'), 0.075);
 $size: get($form, 'input-height');
 $ease: get($tween, 'hover');
 
+$color-brand: get($tint, 'brand-maggioli');
+
 :root {
   --input-field-default-blur-border-color: transparent;
-  --input-field-default-blur-color: #{get($tone, '5')};
-  --input-field-default-blur-placeholder-color: #{get($tone, '7')};
-  --input-field-default-focus-border-color: #{get($tint, 'brand-maggioli')};
-  --input-field-default-focus-placeholder-color: #{get($tone, '5')};
+  --input-field-default-blur-color: #{get($tone, '2')};
+  --input-field-default-blur-shadow: #{get($shadow, 'tiny')};
+  --input-field-default-blur-icon: #{get($tone, '2')};
+  --input-field-default-focus-border-color: #{$color-brand};
+  --input-field-default-focus-color: #{get($tone, '1')};
+  --input-field-default-focus-shadow: #{get($shadow, 'tiny')};
+  --input-field-default-placeholder-blur-color: #{get($tone, '4')};
+  --input-field-default-placeholder-focus-color: #{get($tone, '6')};
+
   --input-field-error-blur-border-color: #{mix(get($tone, '5'), get($tint, 'status-error'), 75%)};
   --input-field-error-focus-border-color: #{get($tint, 'status-error')};
-  --input-label-default-color: #{get($tone, '7')};
+
+  --input-label-default-color: #{get($tone, '2')};
+  --input-radius-error: #{get($radius, 'normal')};
+  --input-radius: #{get($radius, 'small')};
 }
 
 .input {
@@ -42,7 +52,7 @@ $ease: get($tween, 'hover');
 
       &__field {
         border-color: var(--input-field-error-blur-border-color);
-        border-radius: get($radius, 'small') get($radius, 'small') 0 0;
+        border-radius: var(--input-radius) var(--input-radius) 0 0;
 
         &:focus {
           border-color: var(--input-field-error-focus-border-color);
@@ -59,8 +69,8 @@ $ease: get($tween, 'hover');
 
   &__field {
     border: 1px solid var(--input-field-default-blur-border-color);
-    border-radius: get($radius, 'small');
-    box-shadow: get($shadow, 'tiny');
+    border-radius: var(--input-radius);
+    box-shadow: var(--input-field-default-blur-shadow);
     color: var(--input-field-default-blur-color);
     height: $size;
     padding: 0 s(0.5);
@@ -71,16 +81,16 @@ $ease: get($tween, 'hover');
 
     &:focus {
       border-color: var(--input-field-default-focus-border-color);
-      box-shadow: $outline;
+      box-shadow: var(--input-field-default-focus-shadow);
       outline: 0;
 
       &::placeholder {
-        color: var(--input-field-default-focus-placeholder-color);
+        color: var(--input-field-default-placeholder-focus-color);
       }
     }
 
     &::placeholder {
-      color: var(--input-field-default-blur-placeholder-color);
+      color: var(--input-field-default-placeholder-blur-color);
       transition: color $ease;
     }
   }
@@ -96,9 +106,13 @@ $ease: get($tween, 'hover');
     z-index: 2;
   }
 
+  &__icon {
+    color: var(--input-field-default-blur-icon);
+  }
+
   &__errors {
     background-color: tts('status-error', '8', '5');
-    border-radius: 0 0 get($radius, 'normal') get($radius, 'normal');
+    border-radius: 0 0 var(--input-radius-error) var(--input-radius-error);
     margin: 0;
     padding: s(0.5);
     transform: translate(0, -100%);

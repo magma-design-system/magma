@@ -8,7 +8,7 @@
     "lint": "npm run lint:js && npm run lint:sass",
     "lint:js": "eslint src/react/**/*.{js,jsx} --fix",
     "lint:sass": "sass-lint -c .sass-lint.yml 'src/scss/**/*.scss' -v -i 'src/scss/variables/**/*.scss'",
-    "storybook": "npm run design-tokens && start-storybook --port 51230"
+    "storybook": "npm run design-tokens && start-storybook --port 2046"
   },
   "husky": {
     "hooks": {
