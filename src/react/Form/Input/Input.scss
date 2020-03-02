@@ -129,7 +129,7 @@ $size: get($form, 'input-height');
 
 .input--dark {
   .input {
-    $text-color: get($tone, '2');
+    $text-color: red;//get($tone, '2');
 
     &__label {
       --color: #{$text-color};
