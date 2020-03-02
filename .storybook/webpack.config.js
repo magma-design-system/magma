@@ -36,6 +36,7 @@ module.exports = async ({ config, mode }) => {
       '@Design': path.resolve(__dirname, '../src/react/Design/'),
       '@Form': path.resolve(__dirname, '../src/react/Form/'),
       '@Layout': path.resolve(__dirname, '../src/react/Layout/'),
+      '@Storybook': path.resolve(__dirname, '../src/react/Storybook/'),
       '@Typography': path.resolve(__dirname, '../src/react/Design/Typography/'),
     }
 

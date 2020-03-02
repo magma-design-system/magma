@@ -127,32 +127,34 @@ $size: get($form, 'input-height');
   }
 }
 
-.input {
-  $text-color: get($tone, '2');
+.input--dark {
+  .input {
+    $text-color: get($tone, '2');
 
-  &__label {
-    --color: #{$text-color};
-  }
+    &__label {
+      --color: #{$text-color};
+    }
 
-  &__field {
-    --box-shadow: #{get($shadow, 'tiny'), get($shadow, 'outline')};
-    --color: #{$text-color};
-
-    &:focus {
-      --border-color: #{$brand-color};
+    &__field {
       --box-shadow: #{get($shadow, 'tiny'), get($shadow, 'outline')};
+      --color: #{$text-color};
+
+      &:focus {
+        --border-color: #{$brand-color};
+        --box-shadow: #{get($shadow, 'tiny'), get($shadow, 'outline')};
+
+        &::placeholder {
+          --color: #{get($tone, '6')};
+        }
+      }
 
       &::placeholder {
-        --color: #{get($tone, '6')};
+        --color: #{get($tone, '4')};
       }
     }
 
-    &::placeholder {
-      --color: #{get($tone, '4')};
+    &__icon {
+      --color: #{$text-color};
     }
-  }
-
-  &__icon {
-    --color: #{$text-color};
   }
 }
