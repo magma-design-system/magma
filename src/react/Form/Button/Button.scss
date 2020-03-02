@@ -1,0 +1,86 @@
+@import '../../../scss/import';
+
+$ease: get($tween, 'hover');
+$border-radius: get($radius, 'small');
+
+.button {
+
+  --background: #{get($tint, 'brand-maggioli')};
+  --color: #{get($tone, '9')};
+
+  align-items: center;
+  background-color: var(--background);
+  border: 1px solid var(--background);
+  border-radius: $border-radius;
+  color: var(--color);
+  cursor: pointer;
+  display: inline-flex;
+  font-family: inherit;
+  height: get($form, 'input-height');
+  justify-content: center;
+  outline: 0;
+  padding: 0 s(1);
+  text-decoration: none;
+  transition: background-color $ease, border $ease, color $ease, filter $ease;
+  user-select: none;
+
+  &:active,
+  &:focus,
+  &:hover {
+    --background: #{tts('brand-maggioli', '1', '7')};
+    --color: #{get($tone, '9')};
+
+    background-color: var(--background);
+    border-color: var(--background);
+    color: var(--color);
+  }
+
+  &__text {
+    text-transform: lowercase;
+
+    &::first-letter {
+      text-transform: uppercase;
+    }
+  }
+
+  &__icon {
+    &:first-child {
+      margin-right: s(0.25);
+
+      &:last-child {
+        margin: 0;
+      }
+    }
+
+    &:last-child {
+      margin-left: s(0.25);
+    }
+  }
+
+  &--disabled {
+    --background: #{get($tone, '6')};
+    --color: #{get($tone, '9')};
+
+    background-color: var(--background);
+    border-color: var(--background);
+    color: var(--color);
+    pointer-events: none;
+  }
+}
+
+.button {
+  --background: #{get($tint, 'brand-maggioli')};
+  --color: #{get($tone, '9')};
+
+  &:active,
+  &:focus,
+  &:hover {
+    --background: #{tts('brand-maggioli', '1', '7')};
+    --color: #{get($tone, '9')};
+  }
+
+  &--disabled {
+    --background: #{get($tone, '6')};
+    --color: #{get($tone, '9')};
+  }
+}

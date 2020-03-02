@@ -1,0 +1,158 @@
+@import '../../../scss/import';
+
+$brand-color: get($tint, 'brand-maggioli');
+$ease: get($tween, 'hover');
+$error-blur-border-color: mix(get($tone, '5'), get($tint, 'status-error'), 75%);
+$error-focus-border-color: get($tint, 'status-error');
+$error-focus-outline: 0 0 0 4px rgba(get($tint, 'status-error'), 0.075);
+$input-radius-error: get($radius, 'small');
+$input-radius: get($radius, 'small');
+$label-color: get($tone, '2');
+$size: get($form, 'input-height');
+
+.input {
+
+  display: block;
+  line-height: 0;
+  margin-bottom: s(-1);
+  position: relative;
+  transition: margin-bottom $ease;
+  width: 100%;
+
+  &--has-icon {
+    .input {
+      &__field {
+        padding-right: $size;
+      }
+    }
+  }
+
+  &--has-errors {
+    margin-bottom: 0;
+
+    .input {
+      &__errors {
+        display: block;
+        transform: translate(0, 0);
+      }
+
+      &__field {
+        border-color: $error-blur-border-color;
+        border-radius: $input-radius $input-radius 0 0;
+
+        &:focus {
+          border-color: $error-focus-border-color;
+          box-shadow: $error-focus-outline;
+        }
+      }
+    }
+  }
+
+  &__label {
+    --color: #{get($tone, '2')};
+
+    color: var(--color);
+    margin-bottom: s(0.5);
+  }
+
+  &__field {
+    --box-shadow: #{get($shadow, 'tiny'), get($shadow, 'outline')};
+    --color: #{get($tone, '2')};
+
+    border: 1px solid transparent;
+    border-radius: $input-radius;
+    box-shadow: var(--box-shadow);
+    color: var(--color);
+    height: $size;
+    padding: 0 s(0.5);
+    position: relative;
+    transition: border-color $ease, border-radius $ease, box-shadow $ease;
+    width: 100%;
+    z-index: 1;
+
+    &:focus {
+      --border-color: #{$brand-color};
+      --box-shadow: #{get($shadow, 'tiny'), get($shadow, 'outline')};
+
+      border-color: var(--border-color);
+      box-shadow: var(--box-shadow);
+      outline: 0;
+
+      &::placeholder {
+        --color: #{get($tone, '6')};
+        color: var(--color);
+      }
+    }
+
+    &::placeholder {
+      --color: #{get($tone, '4')};
+      color: var(--color);
+      transition: color $ease;
+    }
+  }
+
+  &__icon-area {
+    align-items: center;
+    display: flex;
+    height: $size;
+    justify-content: center;
+    position: absolute;
+    right: 0;
+    width: $size;
+    z-index: 2;
+  }
+
+  &__icon {
+    --color: #{get($tone, '2')};
+    color: var(--color);
+  }
+
+  &__errors {
+    background-color: tts('status-error', '8', '5');
+    border-radius: 0 0 $input-radius-error $input-radius-error;
+    margin: 0;
+    padding: s(0.5);
+    transform: translate(0, -100%);
+    transition: transform $ease;
+  }
+
+  &__error {
+    display: flex;
+    list-style-type: none;
+    padding: 0;
+  }
+
+  &__error-icon {
+    margin-right: s(0.5);
+  }
+}
+
+.input {
+  $text-color: get($tone, '2');
+
+  &__label {
+    --color: #{$text-color};
+  }
+
+  &__field {
+    --box-shadow: #{get($shadow, 'tiny'), get($shadow, 'outline')};
+    --color: #{$text-color};
+
+    &:focus {
+      --border-color: #{$brand-color};
+      --box-shadow: #{get($shadow, 'tiny'), get($shadow, 'outline')};
+
+      &::placeholder {
+        --color: #{get($tone, '6')};
+      }
+    }
+
+    &::placeholder {
+      --color: #{get($tone, '4')};
+    }
+  }
+
+  &__icon {
+    --color: #{$text-color};
+  }
+}

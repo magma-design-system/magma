@@ -5,7 +5,7 @@ import Textarea from './Textarea'
 faker.locale = 'it'
 
 export default {
-  title: 'Policy App/Form/Textarea',
+  title: 'Form/Textarea',
   component: Textarea,
 }
 

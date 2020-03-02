@@ -4,7 +4,7 @@ import faker from 'faker'
 import H3 from '@Typography/H3/H3'
 import Paragraph from '@Typography/Paragraph/Paragraph'
 import Button from '@Form/Button/Button'
-import Grid from './Layout/Grid/Grid'
+import Grid from '../Policy/Layout/Grid/Grid'
 import InputEmail from '@Form/Input/InputEmail'
 import InputPhone from '@Form/Input/InputPhone'
 import InputText from '@Form/Input/InputText'
@@ -13,11 +13,11 @@ import Textarea from '@Form/Textarea/Textarea'
 faker.locale = 'it'
 
 export default {
-  title: 'Policy App/Layout',
+  title: 'Design/Themes/Form',
   component: Grid,
 }
 
-export const basicUsage = () =>
+export const defaultTheme = () =>
   <Grid>
     <H3>{faker.lorem.sentence()}</H3>
     <Paragraph>{faker.lorem.paragraph()}</Paragraph>
@@ -34,7 +34,7 @@ export const basicUsage = () =>
     <Button>{faker.hacker.verb()}</Button>
   </Grid>
 
-export const noLabels = () =>
+export const dark = () =>
   <Grid>
     <H3>{faker.lorem.sentence()}</H3>
     <Paragraph>{faker.lorem.paragraph()}</Paragraph>
@@ -51,7 +51,7 @@ export const noLabels = () =>
     <Button>{faker.hacker.verb()}</Button>
   </Grid>
 
-export const horizontalGrid = () =>
+export const maggioli = () =>
   <Grid>
     <H3>{faker.lorem.sentence()}</H3>
     <Paragraph>{faker.lorem.paragraph()}</Paragraph>

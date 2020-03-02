@@ -34,8 +34,9 @@ module.exports = async ({ config, mode }) => {
 
     config.resolve.alias = {
       '@Design': path.resolve(__dirname, '../src/react/Design/'),
-      '@Typography': path.resolve(__dirname, '../src/react/Design/Typography/'),
+      '@Form': path.resolve(__dirname, '../src/react/Form/'),
       '@Layout': path.resolve(__dirname, '../src/react/Layout/'),
+      '@Typography': path.resolve(__dirname, '../src/react/Design/Typography/'),
     }
 
     // Return the altered config

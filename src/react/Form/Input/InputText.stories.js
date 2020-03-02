@@ -5,7 +5,7 @@ import InputText from './InputText'
 faker.locale = 'it'
 
 export default {
-  title: 'Policy App/Form/Text',
+  title: 'Form/Text',
   component: InputText,
 }
 

@@ -5,7 +5,7 @@ import Checkbox from './Checkbox'
 faker.locale = 'it'
 
 export default {
-  title: 'Policy App/Form/Checkbox',
+  title: 'Form/Checkbox',
   component: Checkbox,
 }
 

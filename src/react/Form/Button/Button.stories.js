@@ -5,7 +5,7 @@ import Button from './Button'
 faker.locale = 'it'
 
 export default {
-  title: 'Policy App/Form/Button',
+  title: 'Form/Button',
   component: Button,
 }
 

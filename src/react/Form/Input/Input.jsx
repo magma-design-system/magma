@@ -1,7 +1,7 @@
 import React from 'react'
 import PropTypes from 'prop-types'
 import './Input.scss'
-import Icon from '../../../Design/Icon/Icon'
+import Icon from '@Design/Icon/Icon'
 
 const Input = props =>
   <label className={`input ${props.icon ? 'input--has-icon' : ''} ${Object.keys(props.errors).length > 0 ? 'input--has-errors' : ''}  ${props.className}`}>

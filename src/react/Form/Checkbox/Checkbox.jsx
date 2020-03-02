@@ -1,7 +1,7 @@
 import React, { Fragment } from 'react'
 import PropTypes from 'prop-types'
 import './Checkbox.scss'
-import Icon from '../../../Design/Icon/Icon'
+import Icon from '@Design/Icon/Icon'
 
 const Checkbox = props =>
   <label className={`checkbox ${props.className} ${props.icon ? 'checkbox--custom' : ''}`.trim()}>

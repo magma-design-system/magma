@@ -5,7 +5,7 @@ import Radio from './Radio'
 faker.locale = 'it'
 
 export default {
-  title: 'Policy App/Form/Radio',
+  title: 'Form/Radio',
   component: Radio,
 }
 

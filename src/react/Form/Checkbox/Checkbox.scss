@@ -1,0 +1,125 @@
+@import '../../../scss/import';
+
+.checkbox {
+
+  $opacity: 0.25;
+  $color-checked: get($tint, 'brand-maggioli');
+  $color-default: get($tone, '4');
+
+  align-items: end;
+  display: inline-flex;
+  margin-right: s(1);
+
+  &:last-child {
+    margin-right: 0;
+  }
+
+  &:hover {
+    .checkbox {
+      &__icon {
+        --color: #{$color-checked};
+
+        color: var(--color);
+        filter: grayscale(0);
+      }
+    }
+  }
+
+  &__field {
+    display: none;
+
+    & + .checkbox__icon {
+      display: inline-block;
+    }
+
+    & + .checkbox__icon + .checkbox__icon {
+      display: none;
+    }
+
+    &:checked {
+      & + .checkbox__icon {
+        display: none;
+      }
+
+      & + .checkbox__icon + .checkbox__icon {
+        --color: #{$color-checked};
+
+        color: var(--color);
+        display: inline-flex;
+        filter: grayscale(0);
+      }
+    }
+  }
+
+  &__text {
+    cursor: pointer;
+  }
+
+  &--custom {
+
+    .checkbox__icon {
+      filter: grayscale(1);
+    }
+
+    .checkbox__field {
+
+      & + .checkbox__icon {
+        --opacity: #{$opacity};
+
+        opacity: var(--opacity);
+      }
+
+      & + .checkbox__icon + .checkbox__icon {
+        filter: grayscale(0);
+        opacity: 1;
+      }
+    }
+  }
+
+  &__icon {
+    --color: #{$color-default};
+
+    color: var(--color);
+    cursor: pointer;
+    filter: grayscale(0);
+    margin-right: s(0.25);
+    transition: color get($tween, 'hover'), filter get($tween, 'hover');
+    user-select: none;
+  }
+}
+
+
+.checkbox {
+  $opacity: 0.25;
+  $color-checked: get($tint, 'brand-maggioli');
+  $color-default: get($tone, '4');
+
+  &:hover {
+    .checkbox {
+      &__icon {
+        --color: #{$color-checked};
+      }
+    }
+  }
+
+  &__field {
+    &:checked {
+      & + .checkbox__icon + .checkbox__icon {
+        --color: #{$color-checked};
+      }
+    }
+  }
+
+  &--custom {
+    .checkbox__field {
+      & + .checkbox__icon {
+        --opacity: #{$opacity};
+      }
+    }
+  }
+
+  &__icon {
+    --color: #{$color-default};
+  }
+}
+

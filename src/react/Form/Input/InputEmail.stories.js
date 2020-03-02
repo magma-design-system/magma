@@ -5,7 +5,7 @@ import InputEmail from './InputEmail'
 faker.locale = 'it'
 
 export default {
-  title: 'Policy App/Form/Email',
+  title: 'Form/Email',
   component: InputEmail,
 }
 

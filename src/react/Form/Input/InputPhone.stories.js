@@ -5,7 +5,7 @@ import InputPhone from './InputPhone'
 faker.locale = 'it'
 
 export default {
-  title: 'Policy App/Form/Phone',
+  title: 'Form/Phone',
   component: InputPhone,
 }
 

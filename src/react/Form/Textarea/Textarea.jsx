@@ -1,7 +1,7 @@
 import React from 'react'
 import PropTypes from 'prop-types'
 import './Textarea.scss'
-import Icon from '../../../Design/Icon/Icon'
+import Icon from '@Design/Icon/Icon'
 
 const Textarea = props =>
   <label className={`textarea ${props.icon ? 'textarea--has-icon' : ''} ${Object.keys(props.errors).length > 0 ? 'textarea--has-errors' : ''}  ${props.className}`}>
