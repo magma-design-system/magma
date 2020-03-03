@@ -24,8 +24,9 @@ textarea {
   }
 }
 
-b {
-  font-weight: 800;
+b,
+strong {
+  @include apply-styles-set($font-sans-styles, 'bold');
 }
 
 a {

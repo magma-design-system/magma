@@ -76,6 +76,11 @@
           "line-height": "30px"
         }
       },
+      "bold" : {
+        "default": {
+          "font-weight": "600"
+        }
+      },
       "caption" : {
         "default": {
           "font-size": "13px",
