@@ -1,0 +1,40 @@
+import React from 'react'
+import faker from 'faker'
+
+import Table, { TableHeader, TableHeaderCell, TableBody, TableRow, TableCell } from './Table'
+faker.locale = 'it'
+
+export default {
+  title: 'Layout/Table',
+  component: Table,
+}
+
+export const basicUsage = () =>
+  <Table>
+    <TableHeader>
+      <TableHeaderCell>{faker.database.column()}</TableHeaderCell>
+      <TableHeaderCell>{faker.database.column()}</TableHeaderCell>
+      <TableHeaderCell>{faker.database.column()}</TableHeaderCell>
+      <TableHeaderCell>{faker.database.column()}</TableHeaderCell>
+    </TableHeader>
+    <TableBody>
+      <TableRow>
+        <TableCell>{faker.name.findName()}</TableCell>
+        <TableCell>{faker.internet.email()}</TableCell>
+        <TableCell>{faker.phone.phoneNumber()}</TableCell>
+        <TableCell>{faker.company.companyName()}</TableCell>
+      </TableRow>
+      <TableRow>
+        <TableCell>{faker.name.findName()}</TableCell>
+        <TableCell>{faker.internet.email()}</TableCell>
+        <TableCell>{faker.phone.phoneNumber()}</TableCell>
+        <TableCell>{faker.company.companyName()}</TableCell>
+      </TableRow>
+      <TableRow>
+        <TableCell>{faker.name.findName()}</TableCell>
+        <TableCell>{faker.internet.email()}</TableCell>
+        <TableCell>{faker.phone.phoneNumber()}</TableCell>
+        <TableCell>{faker.company.companyName()}</TableCell>
+      </TableRow>
+    </TableBody>
+  </Table>
