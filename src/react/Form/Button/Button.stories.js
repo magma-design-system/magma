@@ -3,7 +3,8 @@ import faker from 'faker'
 
 import Button from './Button'
 import Button2 from './Button2'
-import { ThemeContextProvider } from '../../Theme/ThemeProvider'
+import { ThemeContextProvider } from '@Design/Theme/ThemeProvider'
+
 
 faker.locale = 'it'
 
@@ -25,4 +26,3 @@ export const themed = () =>
   <ThemeContextProvider>
     <Button2>{faker.hacker.verb()}</Button2>
   </ThemeContextProvider>
-
