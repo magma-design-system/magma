@@ -37,24 +37,3 @@ export const defaultTheme = () =>
       <Button>{faker.hacker.verb()}</Button>
     </Grid>
   </Page>
-
-export const dark = () =>
-  <Page>
-    <Grid>
-      <Theme name="light">
-        <H3>{faker.lorem.sentence()}</H3>
-        <Paragraph>{faker.lorem.paragraph()}</Paragraph>
-        <Grid columns="2">
-          <InputText label="Nome" placeholder={faker.name.firstName()}/>
-          <InputText label="Cognome" placeholder={faker.name.lastName()}/>
-        </Grid>
-        <InputPhone label="Telefono" placeholder={faker.phone.phoneNumber()}/>
-        <InputEmail label="E-mail" placeholder={faker.internet.email()}/>
-        <Textarea label="Messaggio" placeholder="Scrivi il mesaggio qui..."></Textarea>
-        <Checkbox>{faker.lorem.sentence()}</Checkbox>
-        <Checkbox>{faker.lorem.sentence()}</Checkbox>
-        <Checkbox>{faker.lorem.sentence()}</Checkbox>
-        <Button>{faker.hacker.verb()}</Button>
-      </Theme>
-    </Grid>
-  </Page>

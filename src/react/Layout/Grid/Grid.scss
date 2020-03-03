@@ -4,7 +4,8 @@ $columns: 4;
 $sizes: (
   'xsmall': s(0.5),
   'small': s(1),
-  'large': s(2)
+  'normal': s(1.5),
+  'large': s(2),
 );
 
 :export {
@@ -32,6 +33,9 @@ $sizes: (
 }
 
 .grid {
+  display: grid;
+  grid-gap: get($sizes, 'normal');
+
   @each $size-item in $sizes {
     @include gutter-modifier ($size-item);
   }

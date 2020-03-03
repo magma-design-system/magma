@@ -9,22 +9,31 @@ export default {
   component: Grid,
 }
 
-export const basicUsage = () =>
+let paragraph1 = faker.lorem.paragraph()
+let paragraph2 = faker.lorem.paragraph()
+
+export const gutterLarge = () =>
+  <Grid gutter="large">
+    <p className="text-sans text-sans--paragraph">{paragraph1}</p>
+    <p className="text-sans text-sans--paragraph">{paragraph2}</p>
+  </Grid>
+
+export const gutterNormal = () =>
   <Grid>
-    <p className="text-sans text-sans--paragraph">{faker.lorem.paragraph()}</p>
-    <p className="text-sans text-sans--paragraph">{faker.lorem.paragraph()}</p>
+    <p className="text-sans text-sans--paragraph">{paragraph1}</p>
+    <p className="text-sans text-sans--paragraph">{paragraph2}</p>
   </Grid>
 
 export const gutterSmall = () =>
   <Grid gutter="small">
-    <p className="text-sans text-sans--paragraph">{faker.lorem.paragraph()}</p>
-    <p className="text-sans text-sans--paragraph">{faker.lorem.paragraph()}</p>
+    <p className="text-sans text-sans--paragraph">{paragraph1}</p>
+    <p className="text-sans text-sans--paragraph">{paragraph2}</p>
   </Grid>
 
 export const gutterXSmall = () =>
   <Grid gutter="xsmall">
-    <p className="text-sans text-sans--paragraph">{faker.lorem.paragraph()}</p>
-    <p className="text-sans text-sans--paragraph">{faker.lorem.paragraph()}</p>
+    <p className="text-sans text-sans--paragraph">{paragraph1}</p>
+    <p className="text-sans text-sans--paragraph">{paragraph2}</p>
   </Grid>
 
 export const with2Columns = () =>

@@ -1,7 +1,8 @@
-import React, { Fragment } from 'react'
+import React from 'react'
 import faker from 'faker'
 
 import Radio from './Radio'
+import Grid from '@Layout/Grid/Grid'
 faker.locale = 'it'
 
 export default {
@@ -10,41 +11,41 @@ export default {
 }
 
 export const basicUsage = () =>
-  <Fragment>
+  <Grid gutter="small">
     <Radio name="radioGroupName" value="1">
       {faker.lorem.sentences()}
     </Radio>
     <Radio name="radioGroupName" value="2">
       {faker.lorem.sentences()}
     </Radio>
-  </Fragment>
+  </Grid>
 
 export const checkedByDefault = () =>
-  <Fragment>
+  <Grid gutter="small">
     <Radio name="radioGroupName" value="1">
       {faker.lorem.sentences()}
     </Radio>
     <Radio name="radioGroupName" value="2" isChecked={true}>
       {faker.lorem.sentences()}
     </Radio>
-  </Fragment>
+  </Grid>
 
 export const customIcon = () =>
-  <Fragment>
+  <Grid gutter="small">
     <Radio name="radioGroupName" value="1" icon="warning">
       {faker.lorem.sentences()}
     </Radio>
     <Radio name="radioGroupName" value="2" icon="error">
       {faker.lorem.sentences()}
     </Radio>
-  </Fragment>
+  </Grid>
 
 export const customColor = () =>
-  <Fragment>
+  <Grid gutter="small">
     <Radio name="radioGroupName" value="1" icon="warning" iconClassName="color-red-2">
       {faker.lorem.sentences()}
     </Radio>
     <Radio name="radioGroupName" value="2" icon="error" iconClassName="color-red-2">
       {faker.lorem.sentences()}
     </Radio>
-  </Fragment>
+  </Grid>

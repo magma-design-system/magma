@@ -2,6 +2,7 @@ import React, { Fragment, useState } from 'react'
 import faker from 'faker'
 
 import Checkbox from './Checkbox'
+import Grid from '@Layout/Grid/Grid'
 faker.locale = 'it'
 
 export default {
@@ -35,10 +36,10 @@ const checkboxText2 = faker.lorem.sentence()
 const SyncCheckboxes = props => {
   const [isCheckboxActive, activateCheckbox] = useState(false)
   return (
-    <Fragment>
+    <Grid gutter="small">
       <Checkbox sync={true} isChecked={isCheckboxActive} onChange={isChecked => { activateCheckbox(isChecked) }}>{checkboxText1}</Checkbox>
       <Checkbox sync={true} isChecked={isCheckboxActive} onChange={isChecked => { activateCheckbox(isChecked) }}>{checkboxText2}</Checkbox>
-    </Fragment>
+    </Grid>
   )
 }
 
