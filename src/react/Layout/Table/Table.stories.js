@@ -20,19 +20,19 @@ export const basicUsage = () =>
     <TableBody>
       <TableRow>
         <TableCell><b>{faker.name.findName()}</b></TableCell>
-        <TableCell>{faker.internet.email()}</TableCell>
+        <TableCell><code>{faker.internet.email()}</code></TableCell>
         <TableCell>{faker.phone.phoneNumber()}</TableCell>
         <TableCell>{faker.company.companyName()}</TableCell>
       </TableRow>
       <TableRow>
         <TableCell><b>{faker.name.findName()}</b></TableCell>
-        <TableCell>{faker.internet.email()}</TableCell>
+        <TableCell><code>{faker.internet.email()}</code></TableCell>
         <TableCell>{faker.phone.phoneNumber()}</TableCell>
         <TableCell>{faker.company.companyName()}</TableCell>
       </TableRow>
       <TableRow>
         <TableCell><b>{faker.name.findName()}</b></TableCell>
-        <TableCell>{faker.internet.email()}</TableCell>
+        <TableCell><code>{faker.internet.email()}</code></TableCell>
         <TableCell>{faker.phone.phoneNumber()}</TableCell>
         <TableCell>{faker.company.companyName()}</TableCell>
       </TableRow>

@@ -4,6 +4,7 @@ import faker from 'faker'
 
 import icons from './dictionary.json'
 import Icon from './Icon'
+import Table, { TableHeader, TableHeaderCell, TableBody, TableRow, TableCell } from '@Layout/Table/Table'
 faker.locale = 'it'
 
 export default {
@@ -12,14 +13,10 @@ export default {
 }
 
 const IconRow = props =>
-  <tr>
-    <td>
-      <Icon {...props} />
-    </td>
-    <td>
-      <code>{props.name}</code>
-    </td>
-  </tr>
+  <TableRow>
+    <TableCell align="center"><Icon {...props} /></TableCell>
+    <TableCell><code>{props.name}</code></TableCell>
+  </TableRow>
 
 IconRow.propTypes = {
   name: PropTypes.string,
@@ -34,21 +31,15 @@ const iconDictionary = Object.entries(icons).map(([key, value]) =>
 )
 
 export const dictionary = () =>
-  <table>
-    <thead>
-      <tr>
-        <th>
-          Icon
-        </th>
-        <th>
-          Name
-        </th>
-      </tr>
-    </thead>
-    <tbody>
+  <Table>
+    <TableHeader>
+      <TableHeaderCell>Icon</TableHeaderCell>
+      <TableHeaderCell>Name</TableHeaderCell>
+    </TableHeader>
+    <TableBody>
       {iconDictionary}
-    </tbody>
-  </table>
+    </TableBody>
+  </Table>
 
 export const basicUsage = () =>
   <Icon name='user'/>

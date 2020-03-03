@@ -4,8 +4,18 @@ import './Table.scss'
 
 const TableCell = props =>
   <td className="table__cell">
-    {props.children}
+    <div className="table__content">
+      {props.children}
+    </div>
   </td>
+
+TableCell.propTypes = {
+  align: PropTypes.string,
+}
+
+TableCell.defaultProps = {
+  align: '',
+}
 
 const TableHeaderCell = props =>
   <th className="table__cell table__cell--header text-sans text-sans--h6">

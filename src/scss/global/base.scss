@@ -81,8 +81,8 @@ hr {
 }
 
 code {
-  $tint: #000;
-  background-color: transparent;
+  $tint: get($tint, 'brand-maggioli');
+  background-color: get($tone, '8');
   border-radius: get($radius, 'small');
   color: sh(get($tone, '5'), $tint);
   padding: s(0.125) s(0.25);

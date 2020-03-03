@@ -95,4 +95,8 @@ $cell-alt-hover-color: rgba(get($tone, '1'), 0.05);
       text-align: left;
     }
   }
+
+  &__content {
+    display: flex;
+  }
 }
