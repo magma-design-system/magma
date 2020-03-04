@@ -33,7 +33,9 @@ $ npm install
 
 ---
 
-## Project development
+## Design System
+
+#### Setup
 
 Once node packages are installed, run storybook to see the current status of the design system and continue your development.
 
@@ -41,7 +43,11 @@ Once node packages are installed, run storybook to see the current status of the
 $ npm run storybook
 ```
 
-### Design tokens
+#### Documentation
+
+Checkout [MDX][mdx] documentation and [node addon][addon-docs] for stories.
+
+#### Design tokens
 
 The SCSS vars of the component library are based on design tokens located in `design-tokens` folder. These vars must be built first or the storybook build will break for some missing SCSS files. To avoid this or just update vars, run:
 
@@ -55,7 +61,8 @@ $ npm run design-tokens
 
 If you are using [Visual Studio Code][vsc], please consider to install [glen-84.sass-lint][vsc-sass-lint] and standard for runtime code linting based on project rules.
 
-
+[addon-docs]: https://www.npmjs.com/package/@storybook/addon-docs
+[mdx]: https://github.com/storybookjs/storybook/blob/next/addons/docs/docs/mdx.md
 [nvm]: https://github.com/nvm-sh/nvm
 [react]: https://reactjs.org/
 [storybook-local]: http://localhost:51230/
