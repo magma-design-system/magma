@@ -1,8 +1,6 @@
 import React from 'react'
 import faker from 'faker'
 
-import Page from '@Storybook/Page/Page'
-
 import H3 from '@Typography/H3/H3'
 import Paragraph from '@Typography/Paragraph/Paragraph'
 import Button from '@Form/Button/Button'
@@ -20,20 +18,18 @@ export default {
 }
 
 export const defaultTheme = () =>
-  <Page>
-    <Grid>
-      <H3>{faker.lorem.sentence()}</H3>
-      <Paragraph>{faker.lorem.paragraph()}</Paragraph>
-      <Grid columns="2">
-        <InputText label="Nome" placeholder={faker.name.firstName()}/>
-        <InputText label="Cognome" placeholder={faker.name.lastName()}/>
-      </Grid>
-      <InputPhone label="Telefono" placeholder={faker.phone.phoneNumber()}/>
-      <InputEmail label="E-mail" placeholder={faker.internet.email()}/>
-      <Textarea label="Messaggio" placeholder="Scrivi il mesaggio qui..."></Textarea>
-      <Checkbox>{faker.lorem.sentence()}</Checkbox>
-      <Checkbox>{faker.lorem.sentence()}</Checkbox>
-      <Checkbox>{faker.lorem.sentence()}</Checkbox>
-      <Button>{faker.hacker.verb()}</Button>
+  <Grid>
+    <H3>{faker.lorem.sentence()}</H3>
+    <Paragraph>{faker.lorem.paragraph()}</Paragraph>
+    <Grid columns="2">
+      <InputText label="Nome" placeholder={faker.name.firstName()}/>
+      <InputText label="Cognome" placeholder={faker.name.lastName()}/>
     </Grid>
-  </Page>
+    <InputPhone label="Telefono" placeholder={faker.phone.phoneNumber()}/>
+    <InputEmail label="E-mail" placeholder={faker.internet.email()}/>
+    <Textarea label="Messaggio" placeholder="Scrivi il mesaggio qui..."></Textarea>
+    <Checkbox>{faker.lorem.sentence()}</Checkbox>
+    <Checkbox>{faker.lorem.sentence()}</Checkbox>
+    <Checkbox>{faker.lorem.sentence()}</Checkbox>
+    <Button>{faker.hacker.verb()}</Button>
+  </Grid>

@@ -2,12 +2,12 @@
 
 $brand-color: get($tint, 'brand-maggioli');
 $ease: get($tween, 'hover');
-$error-blur-border-color: mix(get($tone, '5'), get($tint, 'status-error'), 75%);
+$error-blur-border-color: mix(get($tone, 'tone-5'), get($tint, 'status-error'), 75%);
 $error-focus-border-color: get($tint, 'status-error');
 $error-focus-outline: 0 0 0 4px rgba(get($tint, 'status-error'), 0.075);
 $input-radius-error: get($radius, 'small');
 $input-radius: get($radius, 'small');
-$label-color: get($tone, '2');
+$label-color: get($tone, 'tone-2');
 $icon-size: get($form, 'input-height');
 $size: get($form, 'textarea-height');
 
@@ -50,7 +50,7 @@ $size: get($form, 'textarea-height');
   }
 
   &__label {
-    --color: #{get($tone, '2')};
+    --color: #{get($tone, 'tone-2')};
 
     color: var(--color);
     margin-bottom: s(0.5);
@@ -58,7 +58,7 @@ $size: get($form, 'textarea-height');
 
   &__field {
     --box-shadow: #{get($shadow, 'tiny'), get($shadow, 'outline')};
-    --color: #{get($tone, '2')};
+    --color: #{get($tone, 'tone-2')};
 
     border: 1px solid transparent;
     border-radius: $input-radius;
@@ -83,13 +83,13 @@ $size: get($form, 'textarea-height');
       outline: 0;
 
       &::placeholder {
-        --color: #{get($tone, '6')};
+        --color: #{get($tone, 'tone-6')};
         color: var(--color);
       }
     }
 
     &::placeholder {
-      --color: #{get($tone, '4')};
+      --color: #{get($tone, 'tone-4')};
       color: var(--color);
       transition: color $ease;
     }
@@ -107,12 +107,12 @@ $size: get($form, 'textarea-height');
   }
 
   &__icon {
-    --color: #{get($tone, '2')};
+    --color: #{get($tone, 'tone-2')};
     color: var(--color);
   }
 
   &__errors {
-    background-color: tts('status-error', '8', '5');
+    background-color: tts('status-error', 'tone-8', 'saturation-5');
     border-radius: 0 0 $input-radius-error $input-radius-error;
     margin: 0;
     padding: s(0.5);
@@ -132,7 +132,7 @@ $size: get($form, 'textarea-height');
 }
 
 .textarea {
-  $text-color: get($tone, '2');
+  $text-color: get($tone, 'tone-2');
 
   &__label {
     --color: #{$text-color};
@@ -147,12 +147,12 @@ $size: get($form, 'textarea-height');
       --box-shadow: #{get($shadow, 'tiny'), get($shadow, 'outline')};
 
       &::placeholder {
-        --color: #{get($tone, '6')};
+        --color: #{get($tone, 'tone-6')};
       }
     }
 
     &::placeholder {
-      --color: #{get($tone, '4')};
+      --color: #{get($tone, 'tone-4')};
     }
   }
 

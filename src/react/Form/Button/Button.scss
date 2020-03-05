@@ -6,7 +6,7 @@ $border-radius: get($radius, 'small');
 .button {
 
   --background: #{get($tint, 'brand-maggioli')};
-  --color: #{get($tone, '9')};
+  --color: #{get($tone, 'tone-9')};
 
   align-items: center;
   background-color: var(--background);
@@ -27,8 +27,8 @@ $border-radius: get($radius, 'small');
   &:active,
   &:focus,
   &:hover {
-    --background: #{tts('brand-maggioli', '1', '7')};
-    --color: #{get($tone, '9')};
+    --background: #{tts('brand-maggioli', 'tone-1', 'saturation-7')};
+    --color: #{get($tone, 'tone-9')};
 
     background-color: var(--background);
     border-color: var(--background);
@@ -58,8 +58,8 @@ $border-radius: get($radius, 'small');
   }
 
   &--disabled {
-    --background: #{get($tone, '6')};
-    --color: #{get($tone, '9')};
+    --background: #{get($tone, 'tone-6')};
+    --color: #{get($tone, 'tone-9')};
 
     background-color: var(--background);
     border-color: var(--background);
@@ -70,17 +70,17 @@ $border-radius: get($radius, 'small');
 
 .button {
   --background: #{get($tint, 'brand-maggioli')};
-  --color: #{get($tone, '9')};
+  --color: #{get($tone, 'tone-9')};
 
   &:active,
   &:focus,
   &:hover {
-    --background: #{tts('brand-maggioli', '1', '7')};
-    --color: #{get($tone, '9')};
+    --background: #{tts('brand-maggioli', 'tone-1', 'saturation-7')};
+    --color: #{get($tone, 'tone-9')};
   }
 
   &--disabled {
-    --background: #{get($tone, '6')};
-    --color: #{get($tone, '9')};
+    --background: #{get($tone, 'tone-6')};
+    --color: #{get($tone, 'tone-9')};
   }
 }

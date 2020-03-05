@@ -2,7 +2,7 @@
 @import '../../../scss/import';
 
 $opacity: 0.5;
-$default: get($tone, '4');
+$default: get($tone, 'tone-4');
 $checked: get($tint, 'brand-maggioli');
 
 .radio {
@@ -82,7 +82,7 @@ $checked: get($tint, 'brand-maggioli');
 
   $opacity: 0.25;
   $color-checked: get($tint, 'brand-maggioli');
-  $color-default: get($tone, '4');
+  $color-default: get($tone, 'tone-4');
 
   align-items: end;
   display: inline-flex;
@@ -170,7 +170,7 @@ $checked: get($tint, 'brand-maggioli');
 .radio {
   $opacity: 0.25;
   $color-checked: get($tint, 'brand-maggioli');
-  $color-default: get($tone, '4');
+  $color-default: get($tone, 'tone-4');
 
   &:hover {
     .radio {

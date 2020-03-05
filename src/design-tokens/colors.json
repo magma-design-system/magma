@@ -1,34 +1,40 @@
 {
   "tint": {
     "brand-maggioli": "#1b59a3",
-    "status-error": "rgb(230, 32, 68)",
-    "status-info": "#229dfd",
-    "status-success": "rgb(133, 195, 61)",
-    "status-warning": "rgb(230, 169, 53)"
+    "status-error": "#ed6663",
+    "status-info": "#8ac6d1",
+    "status-success": "#21bf73",
+    "status-warning": "#ffc372"
   },
   "tone": {
-    "0": "#000000",
-    "1": "#373a36",
-    "2": "#5f625d",
-    "3": "#777b75",
-    "4": "#90938c",
-    "5": "#a9aca4",
-    "6": "#c2c4bb",
-    "7": "#e2e2d3",
-    "8": "#f5f5ea",
-    "9": "#ffffff"
+    "tone-0": "#0b0a0b",
+    "tone-1": "#262429",
+    "tone-2": "#403e46",
+    "tone-3": "#595a63",
+    "tone-4": "#676871",
+    "tone-5": "#75767f",
+    "tone-6": "#83848c",
+    "tone-7": "#91929a",
+    "tone-8": "#9fa0a8",
+    "tone-9": "#aeaeb5",
+    "tone-10": "#bcbdc3",
+    "tone-11": "#cbcbd0",
+    "tone-12": "#d9dadd",
+    "tone-13": "#e8e8ea",
+    "tone-14": "#f7f7f8",
+    "tone-15": "#ffffff"
   },
   "saturation": {
-    "0": "0%",
-    "1": "10%",
-    "2": "20%",
-    "3": "30%",
-    "4": "40%",
-    "5": "50%",
-    "6": "60%",
-    "7": "70%",
-    "8": "80%",
-    "9": "90%",
-    "10": "100%"
+    "saturation-0": "0%",
+    "saturation-1": "10%",
+    "saturation-2": "20%",
+    "saturation-3": "30%",
+    "saturation-4": "40%",
+    "saturation-5": "50%",
+    "saturation-6": "60%",
+    "saturation-7": "70%",
+    "saturation-8": "80%",
+    "saturation-9": "90%",
+    "saturation-10": "100%"
   }
 }

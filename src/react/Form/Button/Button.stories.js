@@ -5,7 +5,6 @@ import Button from './Button'
 import Button2 from './Button2'
 import { ThemeContextProvider } from '@Design/Theme/ThemeProvider'
 
-
 faker.locale = 'it'
 
 export default {

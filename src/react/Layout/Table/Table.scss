@@ -8,16 +8,16 @@
   }
 }
 
-$cell-color: get($tone, '9');
-$cell-alt-color: rgba(get($tone, '1'), 0.075);
-$cell-alt-hover-color: rgba(get($tone, '1'), 0.05);
+$cell-color: get($tone, 'tone-9');
+$cell-alt-color: rgba(get($tone, 'tone-1'), 0.075);
+$cell-alt-hover-color: rgba(get($tone, 'tone-1'), 0.05);
 
 .table {
   // sass-lint:disable no-vendor-prefixes
   -webkit-overflow-scrolling: touch;
 
-  border-bottom: 2px dashed get($tone, '7');
-  border-top: 2px dashed get($tone, '7');
+  border-bottom: 2px dashed get($tone, 'tone-7');
+  border-top: 2px dashed get($tone, 'tone-7');
   display: flex;
   margin-left: s(-1);
   margin-right: s(-1);

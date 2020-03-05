@@ -4,7 +4,7 @@
 
   $opacity: 0.25;
   $color-checked: get($tint, 'brand-maggioli');
-  $color-default: get($tone, '4');
+  $color-default: get($tone, 'tone-4');
 
   align-items: end;
   display: inline-flex;
@@ -92,7 +92,7 @@
 .checkbox {
   $opacity: 0.25;
   $color-checked: get($tint, 'brand-maggioli');
-  $color-default: get($tone, '4');
+  $color-default: get($tone, 'tone-4');
 
   &:hover {
     .checkbox {

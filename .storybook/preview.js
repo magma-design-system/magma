@@ -1,6 +1,8 @@
 import React from 'react';
 import { addDecorator } from '@storybook/react';
-import Page from '@Storybook/Page/Page'
+import Page from '@System/Page/Page'
+// import faker from 'faker'
+// faker.locale = 'it'
 
 import '../node_modules/material-design-icons/iconfont/material-icons.css'
 import '../node_modules/typeface-roboto/index.css'

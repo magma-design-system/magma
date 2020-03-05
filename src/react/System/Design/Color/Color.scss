@@ -1,0 +1,35 @@
+@import '~SASS/import';
+
+$size: 75px;
+
+.sys-color {
+  align-items: center;
+  cursor: default;
+  display: flex;
+  padding: s(0.5);
+
+  &__dot {
+    border-radius: $size;
+    flex-shrink: 0;
+    height: $size;
+    width: $size;
+  }
+
+  &__infos {
+    margin-left: s(1);
+  }
+
+  &__name {
+    text-transform: capitalize;
+  }
+
+  &__code {
+    border: 0;
+    outline: 0;
+    width: 100%;
+  }
+
+  &__hex {
+    user-select: none;
+  }
+}

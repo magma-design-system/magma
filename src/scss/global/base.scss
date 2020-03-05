@@ -4,8 +4,8 @@ body {
   // sass-lint:disable no-vendor-prefixes
   -webkit-tap-highlight-color: transparent;
   @include apply-styles-set($font-sans-styles, $default-font-style);
-  background-color: get($tone, '9');
-  color: get($tone, '2');
+  background-color: get($tone, 'tone-15');
+  color: get($tone, 'tone-3');
   font-family: get($font-family, 'sans');
   width: 100%;
 }
@@ -66,24 +66,16 @@ p {
 
 hr {
   $size: 4px;
-  background-color: get($tone, '5');
-  border: 0;
+  background-color: get($tone, 'tone-10');
+  border: 0 !important;
   border-radius: $size;
   height: $size;
-  margin: s(1) 0;
+  margin: s(3) 0;
   width: 100%;
 }
 
-// sass-lint:disable no-empty-rulesets
 ::selection {
   // sass-lint:disable no-color-literals
   background-color: rgba(get($tint, 'brand-maggioli'), 0.2);
-}
-
-code {
-  $tint: get($tint, 'brand-maggioli');
-  background-color: get($tone, '8');
-  border-radius: get($radius, 'small');
-  color: sh(get($tone, '5'), $tint);
-  padding: s(0.125) s(0.25);
+  color: get($tint, 'brand-maggioli');
 }

@@ -33,11 +33,13 @@ module.exports = async ({ config, mode }) => {
     })
 
     config.resolve.alias = {
+      '$Tokens': path.resolve(__dirname, '../src/design-tokens/'),
       '@Design': path.resolve(__dirname, '../src/react/Design/'),
       '@Form': path.resolve(__dirname, '../src/react/Form/'),
       '@Layout': path.resolve(__dirname, '../src/react/Layout/'),
-      '@Storybook': path.resolve(__dirname, '../src/react/Storybook/'),
+      '@System': path.resolve(__dirname, '../src/react/System/'),
       '@Typography': path.resolve(__dirname, '../src/react/Design/Typography/'),
+      '~SASS': path.resolve(__dirname, '../src/scss/'),
     }
 
     // Return the altered config

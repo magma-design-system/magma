@@ -1,0 +1,38 @@
+import { Meta, Story, Preview } from '@storybook/addon-docs/blocks';
+import faker from 'faker'
+
+import Grid from '@Layout/Grid/Grid'
+import ColorMatrix from '@System/Design/Color/ColorMatrix'
+import Tokens from '$Tokens/colors.json'
+
+
+
+<Meta title="Design/Colors/Tints and tones" component={ColorMatrix} />
+
+# Tints and tones
+
+---
+
+### Brand tints
+
+These are the main brand colors, which are used not for states but just for identity pruposes and key actions, related to Maggioli.
+
+<ColorMatrix size="large" filter="brand" colors={Tokens.tint}/>
+
+### Status tints seeds
+
+These are the status colors, they should be used to explain the actions status of the app he’s using,
+like a success action, danger, for errors, warnings and infos, basically for **cognitive awarness** of contents they are reading.
+
+<ColorMatrix size="large" filter="status" colors={Tokens.tint}/>
+
+### Tones matrix
+
+To ease the process of making the color palette consistent, tones will be the key to modulate Status and Brand tints with a tone matrix that will be used to adjust their tones when the UI needs a different tone of the same tint seed.
+
+The tones matrix is a generative palette based on the [Scale tool][scale] created by [Hayk An][hayk].
+
+<ColorMatrix size="small" prefix="tone" colors={Tokens.tone}/>
+
+[scale]: https://hihayk.github.io/scale/#3/11/89/95/-50/0/100/36/595A63/89/90/99
+[hayk]: https://hayk.design/
