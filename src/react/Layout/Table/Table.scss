@@ -1,16 +1,10 @@
-@import '../../../scss/import';
+@import '~Sass/import';
 
-@mixin cell {
-  .table {
-    &__cell {
-      @content;
-    }
-  }
-}
-
-$cell-color: get($tone, 'tone-9');
-$cell-alt-color: rgba(get($tone, 'tone-1'), 0.075);
-$cell-alt-hover-color: rgba(get($tone, 'tone-1'), 0.05);
+$cell-background-color: get($tone, 'tone-13');
+$cell-border: get($tone, 'tone-13');
+$cell-border-first: get($tone, 'tone-6');
+$cell-border-hover: get($tone, 'tone-13');
+$border-style: 2px solid;
 
 .table {
   // sass-lint:disable no-vendor-prefixes
@@ -36,63 +30,67 @@ $cell-alt-hover-color: rgba(get($tone, 'tone-1'), 0.05);
   }
 
   &__element {
-    width: 100%;
     border-collapse: collapse;
+    width: 100%;
+  }
+
+  &__cell {
+    padding: s(0.5) s(1);
+    white-space: nowrap;
+    border-top: $border-style $cell-border;
+
+    &--header {
+      text-align: left;
+      border: 0;
+    }
+  }
+
+  &--interactive {
+    .table {
+      &__body {
+        .table {
+          &__row {
+            &:hover {
+              .table {
+                &__cell {
+                  --background-color: #{$cell-background-color};
+                  background-color: var(--background-color);
+                }
+              }
+            }
+          }
+        }
+
+        &:hover {
+          .table {
+            &__cell {
+              border-top: $border-style $cell-border-hover;
+            }
+          }
+        }
+      }
+    }
   }
 
   &__body {
     .table {
       &__row {
-        border-radius: get($radius, 'normal');
-
-        &:nth-child(odd) {
-          @include cell {
-            --background-color: #{$cell-alt-color};
-            background-color: var(--background-color);
-          }
-        }
-      }
-    }
-
-    &:hover {
-      .table {
-        &__row {
-          &:nth-child(odd) {
-            @include cell {
-              --background-color: #{$cell-alt-hover-color};
-              background-color: var(--background-color);
+        &:first-child {
+          .table {
+            &__cell {
+              border-top: $border-style $cell-border-first;
             }
           }
+        }
 
-          &:hover {
-            --box-shadow: #{get($shadow, 'outline'), get($shadow, 'small')};
-            box-shadow: var(--box-shadow);
-
-            @include cell {
-              --background-color: #{$cell-color};
-              background-color: var(--background-color);
+        &:last-child {
+          .table {
+            &__cell {
+              border-bottom: $border-style $cell-border;
             }
           }
         }
       }
-    }
-  }
-
-
-  &__cell {
-    padding: s(0.5) s(1);
-    white-space: nowrap;
-
-    &:first-child {
-      border-radius: get($radius, 'normal') 0 0 get($radius, 'normal');
-    }
-
-    &:last-child {
-      border-radius: 0 get($radius, 'normal') get($radius, 'normal') 0;
-    }
-
-    &--header {
-      text-align: left;
     }
   }
 

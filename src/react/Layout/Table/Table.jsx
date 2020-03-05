@@ -40,17 +40,19 @@ const TableBody = props =>
   </tbody>
 
 const Table = props =>
-  <div className="table">
+  <div className={`table ${props.interactive ? 'table--interactive' : ''}`}>
     <table className="table__element">
       {props.children}
     </table>
   </div>
 
 Table.propTypes = {
+  interactive: PropTypes.bool,
   scrollable: PropTypes.bool,
 }
 
 Table.defaultProps = {
+  interactive: false,
   scrollable: true,
 }
 

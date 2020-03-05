@@ -1,7 +1,6 @@
 import React from 'react'
 import PropTypes from 'prop-types'
 import contrast from 'get-contrast'
-import './Color.scss'
 import Icon from '@Design/Icon/Icon'
 
 function checkRatio(ratio) {
@@ -16,8 +15,8 @@ function checkRatio(ratio) {
   return null
 }
 
-const AccessibilityTest = props =>
-  <div class="flex-row">
+const ColorAccessibilityTest = props =>
+  <div class="sys-color-accessibility-test flex-row">
     <div>{contrast.score(props.color, props.base)}</div>
     <div>{contrast.ratio(props.color, props.base).toFixed(2)}</div>
     {!contrast.isAccessible(props.color, props.base) &&
@@ -25,14 +24,14 @@ const AccessibilityTest = props =>
     }
   </div>
 
-AccessibilityTest.propTypes = {
+ColorAccessibilityTest.propTypes = {
   base: PropTypes.string,
   color: PropTypes.string,
 }
 
-AccessibilityTest.defaultProps = {
+ColorAccessibilityTest.defaultProps = {
   base: '#ffffff',
   color: '#000000',
 }
 
-export default AccessibilityTest
+export default ColorAccessibilityTest

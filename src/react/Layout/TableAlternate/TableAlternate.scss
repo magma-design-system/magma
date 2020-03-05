@@ -1,0 +1,107 @@
+@import '~Sass/import';
+
+@mixin cell {
+  .table-alternate {
+    &__cell {
+      @content;
+    }
+  }
+}
+
+$cell-color: get($tone, 'tone-15');
+$cell-alt-color: rgba(get($tone, 'tone-4'), 0.075);
+$cell-alt-hover-color: rgba(get($tone, 'tone-2'), 0.05);
+
+.table-alternate {
+  // sass-lint:disable no-vendor-prefixes
+  -webkit-overflow-scrolling: touch;
+
+  border-bottom: 2px dashed get($tone, 'tone-7');
+  border-top: 2px dashed get($tone, 'tone-7');
+  display: flex;
+  margin-left: s(-1);
+  margin-right: s(-1);
+  overflow-x: auto;
+  padding-bottom: s(1);
+
+  @include media ('desktop') {
+    border-bottom-color: transparent;
+    border-top-color: transparent;
+  }
+
+  &::after,
+  &::before {
+    content: '';
+    min-width: s(1);
+  }
+
+  &__element {
+    width: 100%;
+    border-collapse: collapse;
+  }
+
+  &__body {
+    .table-alternate {
+      &__row {
+        border-radius: get($radius, 'normal');
+
+        &:nth-child(odd) {
+          @include cell {
+            --background-color: #{$cell-alt-color};
+            background-color: var(--background-color);
+          }
+        }
+      }
+    }
+  }
+
+  &--interactive {
+    .table-alternate {
+      &__body {
+        &:hover {
+          .table-alternate {
+            &__row {
+              &:nth-child(odd) {
+                @include cell {
+                  --background-color: #{$cell-alt-hover-color};
+                  background-color: var(--background-color);
+                }
+              }
+
+              &:hover {
+                --box-shadow: #{get($shadow, 'outline'), get($shadow, 'small')};
+                box-shadow: var(--box-shadow);
+
+                @include cell {
+                  --background-color: #{$cell-color};
+                  background-color: var(--background-color);
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+
+  &__cell {
+    padding: s(0.5) s(1);
+    white-space: nowrap;
+
+    &:first-child {
+      border-radius: get($radius, 'normal') 0 0 get($radius, 'normal');
+    }
+
+    &:last-child {
+      border-radius: 0 get($radius, 'normal') get($radius, 'normal') 0;
+    }
+
+    &--header {
+      text-align: left;
+    }
+  }
+
+  &__content {
+    display: flex;
+  }
+}

@@ -1,4 +1,4 @@
-@import '~SASS/import';
+@import '~Sass/import';
 
 $size: 75px;
 
@@ -10,6 +10,7 @@ $size: 75px;
 
   &__dot {
     border-radius: $size;
+    box-shadow: get($shadow, 'inline');
     flex-shrink: 0;
     height: $size;
     width: $size;
@@ -21,6 +22,7 @@ $size: 75px;
 
   &__name {
     text-transform: capitalize;
+    user-select: none;
   }
 
   &__code {
@@ -29,7 +31,7 @@ $size: 75px;
     width: 100%;
   }
 
-  &__hex {
+  &__color {
     user-select: none;
   }
 }

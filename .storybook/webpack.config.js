@@ -39,7 +39,7 @@ module.exports = async ({ config, mode }) => {
       '@Layout': path.resolve(__dirname, '../src/react/Layout/'),
       '@System': path.resolve(__dirname, '../src/react/System/'),
       '@Typography': path.resolve(__dirname, '../src/react/Design/Typography/'),
-      '~SASS': path.resolve(__dirname, '../src/scss/'),
+      '~Sass': path.resolve(__dirname, '../src/scss/'),
     }
 
     // Return the altered config
