@@ -102,5 +102,24 @@
         }
       }
     }
+  },
+  "mono": {
+    "family": "monospace, monospace",
+    "styles": {
+      "normal" : {
+        "default": {
+          "font-size": "16px",
+          "line-height": "25px",
+          "font-weight": "400"
+        }
+      },
+      "small" : {
+        "default": {
+          "font-size": "13px",
+          "line-height": "20px",
+          "font-weight": "400"
+        }
+      }
+    }
   }
 }

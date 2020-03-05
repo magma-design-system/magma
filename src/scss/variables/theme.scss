@@ -20,7 +20,9 @@ $tween: get($cosmetics, 'tween');
 
 
 $font-family: (
-  'sans': #{get(get($font-families, 'sans'), 'family')}
+  'sans': #{get(get($font-families, 'sans'), 'family')},
+  'mono': #{get(get($font-families, 'mono'), 'family')}
 );
 
 $font-sans-styles: get(get($font-families, 'sans'), 'styles');
+$font-mono-styles: get(get($font-families, 'mono'), 'styles');

@@ -1,0 +1,37 @@
+@import '~Sass/import';
+
+.sys-accessibility-set {
+  &__name {
+    text-transform: capitalize;
+  }
+
+  &__dot {
+    $size: 50px;
+    border-radius: $size;
+    box-shadow: get($shadow, 'inline');
+    height: $size;
+    width: $size;
+  }
+
+  &__codes {
+    grid-gap: 0;
+    width: 100%;
+  }
+
+  &__code {
+    border: 0;
+    border-radius: get($radius, 'normal');
+    outline: 0;
+    padding-left: s(0.5);
+    padding-right: s(0.5);
+
+    &:hover {
+      background-color: get($tone, 'tone-14');
+    }
+  }
+
+  &__example {
+    white-space: normal;
+    min-width: 250px;
+  }
+}

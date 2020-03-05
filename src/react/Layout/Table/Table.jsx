@@ -3,7 +3,7 @@ import PropTypes from 'prop-types'
 import './Table.scss'
 
 const TableCell = props =>
-  <td className="table__cell">
+  <td className={`table__cell ${props.className}`}>
     <div className="table__content">
       {props.children}
     </div>
@@ -11,10 +11,12 @@ const TableCell = props =>
 
 TableCell.propTypes = {
   align: PropTypes.string,
+  className: PropTypes.string,
 }
 
 TableCell.defaultProps = {
   align: '',
+  className: '',
 }
 
 const TableHeaderCell = props =>
@@ -23,9 +25,17 @@ const TableHeaderCell = props =>
   </th>
 
 const TableRow = props =>
-  <tr className="table__row">
+  <tr className={`table__row ${props.className}`}>
     {props.children}
   </tr>
+
+TableRow.propTypes = {
+  className: PropTypes.string,
+}
+
+TableRow.defaultProps = {
+  className: '',
+}
 
 const TableHeader = props =>
   <thead className="table__header">
@@ -35,23 +45,33 @@ const TableHeader = props =>
   </thead>
 
 const TableBody = props =>
-  <tbody className="table__body">
+  <tbody className={`table__body ${props.className}`}>
     {props.children}
   </tbody>
 
+TableBody.propTypes = {
+  className: PropTypes.string,
+}
+
+TableBody.defaultProps = {
+  className: '',
+}
+
 const Table = props =>
-  <div className={`table ${props.interactive ? 'table--interactive' : ''}`}>
+  <div className={`table ${props.className} ${props.interactive ? 'table--interactive' : ''}`}>
     <table className="table__element">
       {props.children}
     </table>
   </div>
 
 Table.propTypes = {
+  className: PropTypes.string,
   interactive: PropTypes.bool,
   scrollable: PropTypes.bool,
 }
 
 Table.defaultProps = {
+  className: '',
   interactive: false,
   scrollable: true,
 }
