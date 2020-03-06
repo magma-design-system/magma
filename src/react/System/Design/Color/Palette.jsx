@@ -4,7 +4,7 @@ import Table, { TableBody, TableRow, TableCell } from '@Layout/Table/Table'
 import './Palette.scss'
 
 import data from './PaletteData.scss'
-let palette = JSON.parse(data.palette.replace(/'/g, '').replace(/, ]/g, ']').toString())
+const palette = JSON.parse(data.palette.replace(/'/g, '').replace(/, ]/g, ']').toString())
 
 console.log(palette)
 
