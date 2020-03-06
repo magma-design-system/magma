@@ -51,8 +51,7 @@
       $result: $result + $char;
       $progress: str-slice($progress, 2);
     }
- }
-
+  }
   @return $result;
 }
 

@@ -23,7 +23,7 @@ ColorMatrix.propTypes = {
   size: PropTypes.string,
 }
 
-ColorMatrix.propTypes = {
+ColorMatrix.defaultProps = {
   filter: false,
   size: 'large',
 }

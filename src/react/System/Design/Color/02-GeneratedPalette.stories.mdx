@@ -2,15 +2,13 @@ import { Meta, Story, Preview } from '@storybook/addon-docs/blocks';
 import faker from 'faker'
 
 import Grid from '@Layout/Grid/Grid'
-import ColorMatrix from '@System/Design/Color/ColorMatrix'
+import Palette from '@System/Design/Color/Palette'
 import Tokens from '$Tokens/colors.json'
 
+<Meta title="Design/Colors/Generative palette" component={Palette} />
 
-
-<Meta title="Design/Colors/Generative palette" component={ColorMatrix} />
-
-### Generative palette
+### Generated palette
 
 To ease the process of making the color palette consistent, tones will be the key to modulate Status and Brand tints with a tone matrix that will be used to adjust their tones when the UI needs a different tone of the same tint seed.
 
-<ColorMatrix size="small" colors={Tokens.tone}/>
+<Palette />

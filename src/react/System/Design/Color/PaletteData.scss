@@ -1,0 +1,24 @@
+@import '~Sass/import';
+
+@function get-color-selector($property, $color-name, $color) {
+  @return '#{$property}-#{$color-name}|#{$color}';
+}
+
+@function get-scaled-selector($property, $tint-name, $tone-name) {
+  $tone-prefix: str-replace($tone-name, 'tone-', '');
+  $tone-name-reverse: reverse-tone-name($tone-name);
+  @return '{"name": "#{$tint-name}", "backgroundSelector": "background-color-#{$tint-name}--#{$tone-prefix}", "colorSelector": "color-#{$tint-name}--#{$tone-prefix}", "color": "#{hts($tint-name, $tone-name)}", "colorReverse": "#{hts($tint-name, $tone-name-reverse)}"}, ';
+}
+
+$data: '';
+
+@each $tint-name, $tint-color in $tint {
+  @each $tone-name, $tone-color in $tone {
+    $data: #{$data + get-scaled-selector('background-color', $tint-name, $tone-name)};
+  }
+}
+
+// sass-lint:disable no-misspelled-properties
+:export {
+  palette: '[#{$data}]';
+}

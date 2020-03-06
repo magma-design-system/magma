@@ -8,9 +8,9 @@
     "inline": "0 0 0 1px rgba(0, 0, 0, 0.05) inset",
     "normal": "(0 20px 80px rgba(0, 0, 0, 0.1), 0 0 0 2px rgba(0, 0, 0, 0.05))",
     "outline": "0 0 0 1px rgba(0, 0, 0, 0.05)",
-    "small": "0 5px 20px rgba(0, 0, 0, 0.1)",
+    "small": "0 8px 30px 0 rgba(0, 0, 0, 0.12)",
     "strong": "0 30px 80px rgba(0, 0, 0, 0.2)",
-    "tiny": "0 2px 4px rgba(0, 0, 0, 0.1)"
+    "tiny": "0 5px 10px 0 rgba(0, 0, 0, 0.12)"
   },
   "tween": {
     "hover": "0.5s cubic-bezier(0.165, 0.84, 0.44, 1)",

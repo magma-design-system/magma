@@ -30,3 +30,33 @@
   }
   @return hsl(hue(get($tint, $tint-name)), get($saturation, $saturation-amount), $lightness);
 }
+
+@function reverse-tone-name($tone-name) {
+  $tones-total: length(map-keys($tone));
+  $tones-index: index(map-keys($tone), $tone-name);
+  $tone-reverse-name: 'tone-#{abs($tones-index - $tones-total)}';
+  @return $tone-reverse-name;
+}
+
+@function hts ($tint-name, $tone-name, $saturation: 'original') {
+
+  $tint-color: get($tint, $tint-name);
+  $tone-color: get($tone, $tone-name);
+
+  $hue: hue($tint-color);
+  $lightness: lightness($tone-color);
+
+  @if $saturation == 'original' {
+    $saturation: round(lightness($tone-color));
+
+  } @else if $saturation == 'reverse' {
+    $tones-reverse-color: get($tone, reverse-tone-name($tone-name));
+    $saturation: round(lightness($tones-reverse-color));
+
+  } @else if $saturation == 'invert' {
+    $saturation: round(lightness(invert($tone-color, 100%)));
+
+  }
+
+  @return hsl($hue, $saturation, $lightness);
+}

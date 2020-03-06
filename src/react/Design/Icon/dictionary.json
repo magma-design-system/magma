@@ -19,5 +19,6 @@
   "tag": "label",
   "user": "person",
   "users": "group",
+  "success": "done",
   "warning": "warning"
 }
