@@ -1,12 +1,10 @@
 import React from 'react'
 import PropTypes from 'prop-types'
-import Table, { TableBody, TableRow, TableCell } from '@Layout/Table/Table'
+import Table, { TableHeader, TableHeaderCell, TableBody, TableRow, TableCell } from '@Layout/Table/Table'
 import './Palette.scss'
 
 import data from './PaletteData.scss'
-const palette = JSON.parse(data.palette.replace(/'/g, '').replace(/, ]/g, ']').toString())
-
-console.log(palette)
+const palettes = JSON.parse(data.palette.replace(/'/g, '').replace(/, ]/g, ']').toString())
 
 const PalettePreview = () =>
   <div>
@@ -24,15 +22,30 @@ PalettePreview.defaultProps = {
 }
 
 const Palette = props =>
-  <Table className="sys-palette">
+  <Table>
+    <TableHeader>
+      <TableHeaderCell>Preview</TableHeaderCell>
+      <TableHeaderCell>CSS</TableHeaderCell>
+      <TableHeaderCell>Accessibility</TableHeaderCell>
+    </TableHeader>
     <TableBody>
-      {
-        Object.entries(palette).map(([name, backgroundSelector, colorSelector, color], key) =>
-          <TableRow key={key} className="sys-palette__row">
-            <TableCell><PalettePreview name={name} backgroundSelector={backgroundSelector} colorSelector={colorSelector} color={color}/></TableCell>
-          </TableRow>,
-        )
-      }
+      {Object.entries(palettes).map(([name, palette], key) =>
+        <TableRow key={key} className="sys-palette">
+          <TableCell>
+            {console.log(palette.background, palette.color)}
+            <div className={`sys-palette__preview ${palette.background}`}>
+              <span className={palette.colorReverse}>Aa</span>
+            </div>
+          </TableCell>
+          <TableCell>
+            <span>{palette.background}</span>
+            <span>{palette.colorReverse}</span>
+          </TableCell>
+          <TableCell>
+            Accessibility
+          </TableCell>
+        </TableRow>,
+      )}
     </TableBody>
   </Table>
 

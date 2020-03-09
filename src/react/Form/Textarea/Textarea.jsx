@@ -30,7 +30,7 @@ const Textarea = props =>
 
 Textarea.propTypes = {
   className: PropTypes.string,
-  errors: PropTypes.obj,
+  errors: PropTypes.object,
   icon: PropTypes.string,
   iconClassName: PropTypes.string,
   label: PropTypes.string,

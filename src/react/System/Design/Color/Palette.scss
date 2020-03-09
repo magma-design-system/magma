@@ -2,6 +2,7 @@
 
 .sys-palette {
   &__preview {
+    border-radius: get($radius, 'normal');
     padding: s(1);
   }
 }

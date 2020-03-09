@@ -7,7 +7,10 @@
 @function get-scaled-selector($property, $tint-name, $tone-name) {
   $tone-prefix: str-replace($tone-name, 'tone-', '');
   $tone-name-reverse: reverse-tone-name($tone-name);
-  @return '{"name": "#{$tint-name}", "backgroundSelector": "background-color-#{$tint-name}--#{$tone-prefix}", "colorSelector": "color-#{$tint-name}--#{$tone-prefix}", "color": "#{hts($tint-name, $tone-name)}", "colorReverse": "#{hts($tint-name, $tone-name-reverse)}"}, ';
+  $tones-total: length(map-keys($tone));
+  $tones-index: index(map-keys($tone), $tone-name);
+  $reverse-prefix: abs($tones-index - $tones-total);
+  @return '{"name": "#{$tint-name}", "background": "background-color-#{$tint-name}--#{$tone-prefix}", "backgroundReverse": "background-color-#{$tint-name}--#{$reverse-prefix}", "color": "color-#{$tint-name}--#{$tone-prefix}", "colorReverse": "color-#{$tint-name}--#{$reverse-prefix}", "colorHex": "#{hts($tint-name, $tone-name)}", "colorHexReverse": "#{hts($tint-name, $tone-name-reverse)}"}, ';
 }
 
 $data: '';
