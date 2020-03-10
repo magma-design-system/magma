@@ -3,6 +3,16 @@
 .sys-palette {
   &__preview {
     border-radius: get($radius, 'normal');
-    padding: s(1);
+    padding: s(1) s(0.5);
+    text-align: center;
+    width: 100px;
+  }
+
+  &__preview-dot {
+    display: block;
+    $size: s(1);
+    border-radius: $size;
+    height: $size;
+    width: $size;
   }
 }

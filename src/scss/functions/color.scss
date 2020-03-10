@@ -38,7 +38,7 @@
   @return $tone-reverse-name;
 }
 
-@function hts ($tint-name, $tone-name, $saturation: 'reverse') {
+@function hts ($tint-name, $tone-name, $saturation: 'original') {
 
   $tint-color: get($tint, $tint-name);
   $tone-color: get($tone, $tone-name);
@@ -47,7 +47,7 @@
   $lightness: lightness($tone-color);
 
   @if $saturation == 'original' {
-    $saturation: round(lightness($tone-color));
+    $saturation: round(saturation($tint-color));
 
   } @else if $saturation == 'reverse' {
     $tones-reverse-color: get($tone, reverse-tone-name($tone-name));

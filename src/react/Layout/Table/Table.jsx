@@ -3,20 +3,20 @@ import PropTypes from 'prop-types'
 import './Table.scss'
 
 const TableCell = props =>
-  <td className={`table__cell ${props.className}`}>
+  <td className={`table__cell ${props.className} ${props.grow ? 'table__cell--grow' : ''}`}>
     <div className="table__content">
       {props.children}
     </div>
   </td>
 
 TableCell.propTypes = {
-  align: PropTypes.string,
   className: PropTypes.string,
+  grow: PropTypes.bool,
 }
 
 TableCell.defaultProps = {
-  align: '',
   className: '',
+  grow: false,
 }
 
 const TableHeaderCell = props =>

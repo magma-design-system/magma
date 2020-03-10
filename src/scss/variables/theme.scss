@@ -26,3 +26,12 @@ $font-family: (
 
 $font-sans-styles: get(get($font-families, 'sans'), 'styles');
 $font-mono-styles: get(get($font-families, 'mono'), 'styles');
+
+$size: (
+  'none':   0,
+  'xsmall': s(0.5),
+  'small':  s(1),
+  'normal': s(1.5),
+  'large':  s(2),
+  'xlarge': s(4),
+);

@@ -22,7 +22,7 @@ $cell-alt-hover-color: rgba(get($tone, 'tone-2'), 0.05);
   margin-left: s(-1);
   margin-right: s(-1);
   overflow-x: auto;
-  padding-bottom: s(1);
+  padding-bottom: s(2);
 
   @include media ('desktop') {
     border-bottom-color: transparent;
@@ -98,6 +98,10 @@ $cell-alt-hover-color: rgba(get($tone, 'tone-2'), 0.05);
 
     &--header {
       text-align: left;
+    }
+
+    &--grow {
+      width: 100%;
     }
   }
 

@@ -45,6 +45,10 @@ $border-style: 2px solid;
       text-align: left;
       border: 0;
     }
+
+    &--grow {
+      width: 100%;
+    }
   }
 
   &--interactive {

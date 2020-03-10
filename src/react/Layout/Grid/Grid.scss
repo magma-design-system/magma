@@ -1,22 +1,13 @@
 @import '~Sass/import';
 
 $columns: 4;
-$sizes: (
-  'none': 0,
-  'xsmall': s(0.5),
-  'small': s(1),
-  'normal': s(1.5),
-  'large': s(2),
-);
-
-:export {
-  columns: $columns;
-  sizes: #{$sizes};
-}
 
 @mixin gutter-modifier ($size-item) {
-  &--#{nth($size-item, 1)} {
-    grid-gap: nth($size-item, 2);
+  $modifier: nth($size-item, 1);
+  $gutter: nth($size-item, 2);
+
+  &--#{$modifier} {
+    grid-gap: $gutter;
   }
 }
 
@@ -35,9 +26,9 @@ $sizes: (
 
 .grid {
   display: grid;
-  grid-gap: get($sizes, 'normal');
+  grid-gap: get($size, 'normal');
 
-  @each $size-item in $sizes {
+  @each $size-item in $size {
     @include gutter-modifier ($size-item);
   }
 

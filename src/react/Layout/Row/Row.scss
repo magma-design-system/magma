@@ -1,0 +1,24 @@
+@import '~Sass/import';
+
+@mixin gutter-modifier ($size-item) {
+  $modifier: nth($size-item, 1);
+  $gutter: nth($size-item, 2);
+
+  &--#{$modifier} {
+    .row__child {
+      margin-right: $gutter;
+    }
+  }
+}
+
+.row {
+  display: flex;
+
+  @each $size-item in $size {
+    @include gutter-modifier ($size-item);
+  }
+
+  &__child {
+    margin-right: get($size, 'normal');
+  }
+}

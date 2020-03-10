@@ -9,8 +9,8 @@ export default {
   component: Grid,
 }
 
-let paragraph1 = faker.lorem.paragraph()
-let paragraph2 = faker.lorem.paragraph()
+const paragraph1 = faker.lorem.paragraph()
+const paragraph2 = faker.lorem.paragraph()
 
 export const gutterLarge = () =>
   <Grid gutter="large">
