@@ -79,13 +79,13 @@ $size: get($form, 'input-height');
       outline: 0;
 
       &::placeholder {
-        --color: #{get($tone, 'tone-6')};
+        --color: #{get($tone, 'tone-12')};
         color: var(--color);
       }
     }
 
     &::placeholder {
-      --color: #{get($tone, 'tone-4')};
+      --color: #{get($tone, 'tone-8')};
       color: var(--color);
       transition: color $ease;
     }

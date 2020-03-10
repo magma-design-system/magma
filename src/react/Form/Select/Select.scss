@@ -1,0 +1,16 @@
+@import '~Sass/import';
+
+.select {
+
+  &__label {
+    --color: #{get($tone, 'tone-2')};
+
+    color: var(--color);
+    margin-bottom: s(0.5);
+  }
+
+  &__field {
+    appearance: none;
+    padding: s(1);
+  }
+}
