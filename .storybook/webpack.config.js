@@ -1,4 +1,5 @@
 const path = require('path')
+const autoprefixer = require('autoprefixer')
 
 // Export a function. Accept the base config as the only param.
 module.exports = async ({ config, mode }) => {
@@ -12,11 +13,18 @@ module.exports = async ({ config, mode }) => {
         use: [{
             loader: "style-loader"
         }, {
-            loader: "css-loader", options: {
+            loader: "css-loader",
+            options: {
                 sourceMap: true
             }
         }, {
-            loader: "sass-loader", options: {
+          loader: 'postcss-loader',
+          options: {
+            plugins: () => [ autoprefixer() ]
+          }
+        }, {
+            loader: "sass-loader",
+            options: {
                 sourceMap: true,
                 data: "$app: storybook;"
             }
