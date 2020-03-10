@@ -1,4 +1,4 @@
-@import '../../../scss/import';
+@import '~Sass/import';
 
 $brand-color: get($tint, 'brand-maggioli');
 $ease: get($tween, 'hover');

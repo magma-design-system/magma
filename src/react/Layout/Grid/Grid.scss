@@ -1,7 +1,8 @@
-@import '../../../scss/import';
+@import '~Sass/import';
 
 $columns: 4;
 $sizes: (
+  'none': 0,
   'xsmall': s(0.5),
   'small': s(1),
   'normal': s(1.5),
