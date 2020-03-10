@@ -4,7 +4,7 @@ import './Radio.scss'
 import Icon from '@Design/Icon/Icon'
 
 const Radio = props =>
-  <label className={`radio ${props.className} ${props.icon ? 'radio--custom' : ''}`.trim()}>
+  <label className={`radio text-sans text-sans--paragraph ${props.className} ${props.icon ? 'radio--custom' : ''}`.trim()}>
     <input
       className="radio__field"
       defaultChecked={props.isChecked}

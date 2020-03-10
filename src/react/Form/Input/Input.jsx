@@ -12,7 +12,7 @@ const Input = props =>
     }
     {props.icon &&
       <div className="input__icon-area">
-        <Icon className={`input__icon ${props.iconClassName}`} name={props.icon}/>
+        <Icon className={`input__icon ${props.iconClassName !== '' ? props.iconClassName : ''}`} name={props.icon}/>
       </div>
     }
     {props.children}
