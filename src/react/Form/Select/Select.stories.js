@@ -1,7 +1,7 @@
 import React from 'react'
 import faker from 'faker'
 
-import Select from './Select'
+import Select, { SelectOption } from './Select'
 import Grid from '@Layout/Grid/Grid'
 faker.locale = 'it'
 
@@ -13,10 +13,10 @@ export default {
 export const basicUsage = () =>
   <Grid gutter="small">
     <Select>
-      <option value="1">{faker.lorem.word()}</option>
-      <option value="2">{faker.lorem.word()}</option>
-      <option value="3">{faker.lorem.word()}</option>
-      <option value="4">{faker.lorem.word()}</option>
-      <option value="5">{faker.lorem.word()}</option>
+      <SelectOption value="1">{faker.lorem.word()}</SelectOption>
+      <SelectOption value="2">{faker.lorem.word()}</SelectOption>
+      <SelectOption value="3">{faker.lorem.word()}</SelectOption>
+      <SelectOption value="4">{faker.lorem.word()}</SelectOption>
+      <SelectOption value="5">{faker.lorem.word()}</SelectOption>
     </Select>
   </Grid>

@@ -2,6 +2,23 @@ import React from 'react'
 import PropTypes from 'prop-types'
 import './Select.scss'
 
+import Icon from '@Design/Icon/Icon'
+
+const SelectOption = props =>
+  <option className={`select__option ${props.className}`}>
+    { props.children }
+  </option>
+
+SelectOption.propTypes = {
+  className: PropTypes.string,
+  value: PropTypes.string,
+}
+
+SelectOption.defaultProps = {
+  className: '',
+  value: '0',
+}
+
 const Select = props =>
   <div className={`select ${props.className}`}>
     { props.label &&
@@ -9,9 +26,12 @@ const Select = props =>
         {props.label}
       </div>
     }
-    <select className="select__field text-sans text-sans--paragraph" name={props.name}>
-      { props.children }
-    </select>
+    <div className="select__item">
+      <select className="select__field text-sans text-sans--paragraph" name={props.name}>
+        { props.children }
+      </select>
+      <Icon className="select__icon" name="formSelectOption"/>
+    </div>
   </div>
 
 Select.propTypes = {
@@ -29,3 +49,6 @@ Select.defaultProps = {
 }
 
 export default Select
+export {
+  SelectOption,
+}

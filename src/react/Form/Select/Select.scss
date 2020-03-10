@@ -1,5 +1,9 @@
 @import '~Sass/import';
 
+$brand-color: get($tint, 'brand-maggioli');
+$input-radius: get($radius, 'small');
+$size: get($form, 'input-height');
+
 .select {
 
   &__label {
@@ -9,8 +13,71 @@
     margin-bottom: s(0.5);
   }
 
+  &__item {
+    position: relative;
+  }
+
+  &__icon {
+    --border: 1px solid #{get($tone, 'tone-12')};
+    --color: #{get($tone, 'tone-6')};
+    align-items: center;
+    color: var(--color);
+    border-left: var(--border);
+    bottom: s(0.25);
+    display: flex;
+    height: auto;
+    justify-content: center;
+    pointer-events: none;
+    position: absolute;
+    right: 0;
+    top: s(0.25);
+    transition: border-left get($tween, 'hover'), color get($tween, 'hover');
+    width: $size;
+    z-index: 1;
+  }
+
   &__field {
+    --box-shadow: #{get($shadow, 'tiny'), get($shadow, 'outline')};
+    --color: #{get($tone, 'tone-2')};
     appearance: none;
-    padding: s(1);
+    background-color: transparent;
+    border-radius: $input-radius;
+    border: 1px solid transparent;
+    box-shadow: var(--box-shadow);
+    color: var(--color);
+    height: $size;
+    padding: 0 s(1);
+    position: relative;
+    text-transform: capitalize;
+    transition: box-shadow get($tween, 'hover'), color get($tween, 'hover'), border-color get($tween, 'hover');
+    width: 100%;
+    z-index: 0;
+
+    &::first-letter {
+      text-transform: uppercase;
+    }
+
+    &:focus {
+      --border-color: #{$brand-color};
+      --box-shadow: #{get($shadow, 'tiny'), get($shadow, 'outline')};
+
+      border-color: var(--border-color);
+      box-shadow: var(--box-shadow);
+      outline: 0;
+
+      &::placeholder {
+        --color: #{get($tone, 'tone-12')};
+        color: var(--color);
+      }
+
+      & + .select {
+        &__icon {
+          --border-color: #{$brand-color};
+          --color: #{$brand-color};
+          border-color: var(--border-color);
+          color: #{$brand-color};
+        }
+      }
+    }
   }
 }

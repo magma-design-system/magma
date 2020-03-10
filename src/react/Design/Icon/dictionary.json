@@ -5,7 +5,7 @@
   "formCheckboxUnchecked": "check_box_outline_blank",
   "formRadioChecked": "radio_button_checked",
   "formRadioUnchecked": "radio_button_unchecked",
-  "formSelectOption": "keyboard_arrow_down",
+  "formSelectOption": "unfold_more",
   "info": "info",
   "license": "payment",
   "logout": "lock_open",
