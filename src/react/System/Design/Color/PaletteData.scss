@@ -10,7 +10,7 @@
   $tones-total: length(map-keys($tone));
   $tones-index: index(map-keys($tone), $tone-name);
   $reverse-prefix: abs($tones-index - $tones-total);
-  @return '{"name": "#{$tint-name}", "background": "background-color-#{$tint-name}--#{$tone-prefix}", "backgroundReverse": "background-color-#{$tint-name}--#{$reverse-prefix}", "color": "color-#{$tint-name}--#{$tone-prefix}", "colorReverse": "color-#{$tint-name}--#{$reverse-prefix}", "colorHex": "#{hts($tint-name, $tone-name)}", "colorHexReverse": "#{hts($tint-name, $tone-name-reverse)}"}, ';
+  @return '{"id": "#{$tone-prefix}", "totalNodes": "#{$tones-total - 1}", "name": "#{$tint-name}", "background": "background-color-#{$tint-name}--#{$tone-prefix}", "backgroundBase": "background-color-#{$tint-name}", "color": "color-#{$tint-name}--#{$tone-prefix}", "colorBase": "color-#{$tint-name}", "colorHex": "#{hts($tint-name, $tone-name)}"}, ';
 }
 
 $data: '';

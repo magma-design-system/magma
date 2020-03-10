@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { Fragment } from 'react'
 import PropTypes from 'prop-types'
 import Table, { TableHeader, TableHeaderCell, TableBody, TableRow, TableCell } from '@Layout/Table/Table'
 import Grid from '@Layout/Grid/Grid'
@@ -7,6 +7,45 @@ import './Palette.scss'
 
 import data from './PaletteData.scss'
 const palettes = JSON.parse(data.palette.replace(/'/g, '').replace(/, ]/g, ']').toString())
+
+const PaletteRow = props =>
+  <TableRow className="sys-palette">
+    <TableCell>
+      <div className="sys-palette__preview">
+        <div className={`sys-palette__base ${props.backgroundBase}`}></div>
+        <div className={`sys-palette__variant ${props.background}`}></div>
+      </div>
+    </TableCell>
+    <TableCell grow={true}>
+      <Grid gutter="none">
+        <Row>
+          <div className={`sys-palette__text ${props.color}`}>
+            Aa
+          </div>
+          <span className="text-mono text-mono--small">{props.color}</span>
+        </Row>
+        <Row>
+          <div className={`sys-palette__dot ${props.background}`}></div>
+          <span className="text-mono text-mono--small">{props.background}</span>
+        </Row>
+      </Grid>
+    </TableCell>
+    <TableCell>
+      Accessibility
+    </TableCell>
+  </TableRow>
+
+PaletteRow.propTypes = {
+  backgroundBase: PropTypes.string,
+  background: PropTypes.string,
+  color: PropTypes.string,
+}
+
+PaletteRow.defaultProps = {
+  backgroundBase: '',
+  background: '',
+  color: '',
+}
 
 const Palette = props =>
   <Table>
@@ -17,37 +56,16 @@ const Palette = props =>
     </TableHeader>
     <TableBody>
       {Object.entries(palettes).map(([name, palette], key) =>
-        <TableRow key={key} className="sys-palette">
-          <TableCell>
-            <div className={`sys-palette__preview ${palette.background}`}>
-              <span className={`sys-palette__preview-dot background-color-${palette.name}`}></span>
-            </div>
-          </TableCell>
-          <TableCell>
-            <Grid gutter="none">
-              <Row>
-                <div className="sys-palette__preview-text">
-                  Aa
-                </div>
-                <span>{palette.colorReverse}</span>
-              </Row>
-              <span>{palette.background}</span>
-            </Grid>
-          </TableCell>
-          <TableCell>
-            Accessibility
-          </TableCell>
-        </TableRow>,
+        <Fragment key={key}>
+          {Number(palette.id) === 0 &&
+            <PaletteRow color={palette.colorBase} background={palette.backgroundBase} backgroundBase={palette.backgroundBase}/>
+          }
+          {Number(palette.id) > 0 && Number(palette.id) < Number(palette.totalNodes) &&
+            <PaletteRow color={palette.color} background={palette.background} backgroundBase={palette.backgroundBase}/>
+          }
+        </Fragment>,
       )}
     </TableBody>
   </Table>
-
-Palette.propTypes = {
-  collection: PropTypes.object,
-}
-
-Palette.defaultProps = {
-  collection: {},
-}
 
 export default Palette
