@@ -64,7 +64,7 @@ $size: get($form, 'textarea-height');
     border-radius: $input-radius;
     box-shadow: var(--box-shadow);
     color: var(--color);
-    height: calc(100% - #{s(1)});
+    height: 100%;
     max-height: $size * 2;
     min-height: $size;
     padding: s(0.25) s(0.5);
@@ -83,13 +83,13 @@ $size: get($form, 'textarea-height');
       outline: 0;
 
       &::placeholder {
-        --color: #{get($tone, 'tone-6')};
+        --color: #{get($tone, 'tone-12')};
         color: var(--color);
       }
     }
 
     &::placeholder {
-      --color: #{get($tone, 'tone-4')};
+      --color: #{get($tone, 'tone-8')};
       color: var(--color);
       transition: color $ease;
     }
@@ -147,12 +147,12 @@ $size: get($form, 'textarea-height');
       --box-shadow: #{get($shadow, 'tiny'), get($shadow, 'outline')};
 
       &::placeholder {
-        --color: #{get($tone, 'tone-6')};
+        --color: #{get($tone, 'tone-12')};
       }
     }
 
     &::placeholder {
-      --color: #{get($tone, 'tone-4')};
+      --color: #{get($tone, 'tone-8')};
     }
   }
 

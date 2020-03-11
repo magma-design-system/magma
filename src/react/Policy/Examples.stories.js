@@ -8,6 +8,7 @@ import Grid from './Layout/Grid/Grid'
 import InputEmail from '@Form/Input/InputEmail'
 import InputPhone from '@Form/Input/InputPhone'
 import InputText from '@Form/Input/InputText'
+import Select, { SelectOption } from '@Form/Select/Select'
 import Checkbox from '@Form/Checkbox/Checkbox'
 import Textarea from '@Form/Textarea/Textarea'
 faker.locale = 'it'
@@ -25,7 +26,13 @@ export const basicUsage = () =>
       <InputText label="Nome" placeholder={faker.name.firstName()}/>
       <InputText label="Cognome" placeholder={faker.name.lastName()}/>
     </Grid>
-    <InputPhone label="Telefono" placeholder={faker.phone.phoneNumber()}/>
+    <Grid columns="2">
+      <Select label="Prefisso telefonico">
+        <SelectOption>+ 39</SelectOption>
+        <SelectOption>+ 41</SelectOption>
+      </Select>
+      <InputPhone label="Telefono" placeholder={faker.phone.phoneNumber()}/>
+    </Grid>
     <InputEmail label="E-mail" placeholder={faker.internet.email()}/>
     <Textarea label="Messaggio" placeholder="Scrivi il mesaggio qui..."></Textarea>
     <Checkbox>{faker.lorem.sentence()}</Checkbox>

@@ -64,6 +64,7 @@ $size: get($form, 'input-height');
     box-shadow: var(--box-shadow);
     color: var(--color);
     height: $size;
+    line-height: $size;
     padding: 0 s(0.5);
     position: relative;
     transition: border-color $ease, border-radius $ease, box-shadow $ease;
@@ -87,6 +88,7 @@ $size: get($form, 'input-height');
     &::placeholder {
       --color: #{get($tone, 'tone-8')};
       color: var(--color);
+      line-height: $size;
       transition: color $ease;
     }
   }
@@ -144,12 +146,12 @@ $size: get($form, 'input-height');
         --box-shadow: #{get($shadow, 'tiny'), get($shadow, 'outline')};
 
         &::placeholder {
-          --color: #{get($tone, 'tone-6')};
+          --color: #{get($tone, 'tone-12')};
         }
       }
 
       &::placeholder {
-        --color: #{get($tone, 'tone-4')};
+        --color: #{get($tone, 'tone-8')};
       }
     }
 

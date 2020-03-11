@@ -18,27 +18,36 @@ $size: get($form, 'input-height');
   }
 
   &__icon {
-    --border: 1px solid #{get($tone, 'tone-12')};
-    --color: #{get($tone, 'tone-6')};
+    --background-color: #{get($tone, 'tone-3')};
+
     align-items: center;
-    color: var(--color);
-    border-left: var(--border);
+    background-color: var(--background-color);
+    border-radius: get($radius, 'small');
     bottom: s(0.25);
+    color: get($tone, 'tone-15');
     display: flex;
     height: auto;
     justify-content: center;
     pointer-events: none;
     position: absolute;
-    right: 0;
+    right: s(0.25);
     top: s(0.25);
-    transition: border-left get($tween, 'hover'), color get($tween, 'hover');
-    width: $size;
+    transition:
+      background-color get($tween, 'hover'),
+      border-radius get($tween, 'hover'),
+      bottom get($tween, 'hover'),
+      color get($tween, 'hover'),
+      right get($tween, 'hover'),
+      top get($tween, 'hover'),
+      width get($tween, 'hover');
+    width: $size - s(0.5);
     z-index: 1;
   }
 
   &__field {
     --box-shadow: #{get($shadow, 'tiny'), get($shadow, 'outline')};
     --color: #{get($tone, 'tone-2')};
+
     appearance: none;
     background-color: transparent;
     border-radius: $input-radius;
@@ -46,7 +55,7 @@ $size: get($form, 'input-height');
     box-shadow: var(--box-shadow);
     color: var(--color);
     height: $size;
-    padding: 0 s(1);
+    padding: 0 s(0.5);
     position: relative;
     text-transform: capitalize;
     transition: box-shadow get($tween, 'hover'), color get($tween, 'hover'), border-color get($tween, 'hover');
@@ -72,10 +81,13 @@ $size: get($form, 'input-height');
 
       & + .select {
         &__icon {
-          --border-color: #{$brand-color};
-          --color: #{$brand-color};
-          border-color: var(--border-color);
-          color: #{$brand-color};
+          --background-color: #{$brand-color};
+          background-color: var(--background-color);
+          border-radius: 0 get($radius, 'small') get($radius, 'small') 0;
+          bottom: 0;
+          right: 0;
+          top: 0;
+          width: $size;
         }
       }
     }

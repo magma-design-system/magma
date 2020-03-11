@@ -1,6 +1,7 @@
 {
   "radius": {
-    "small": "3px",
+    "mini": "2px",
+    "small": "4px",
     "normal": "6px",
     "large": "8px"
   },
