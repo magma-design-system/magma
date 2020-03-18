@@ -14,22 +14,22 @@
   }
 }
 
-@function tts ($tint-name, $tone-amount, $saturation-amount: false) {
-  @if $saturation-amount != false {
-    @return hsl(hue(get($tint, $tint-name)), get($saturation, $saturation-amount), lightness(get($tone, $tone-amount)));
-  } @else {
-    @return hsl(hue(get($tint, $tint-name)), saturation(get($tint, $tint-name)), lightness(get($tone, $tone-amount)));
-  }
-}
+// @function tts ($tint-name, $tone-amount, $saturation-amount: false) {
+//   @if $saturation-amount != false {
+//     @return hsl(hue(get($tint, $tint-name)), get($saturation, $saturation-amount), lightness(get($tone, $tone-amount)));
+//   } @else {
+//     @return hsl(hue(get($tint, $tint-name)), saturation(get($tint, $tint-name)), lightness(get($tone, $tone-amount)));
+//   }
+// }
 
-@function tst ($tint-name, $saturation-amount, $tone-amount: false) {
-  @if $tone-amount != false {
-    $lightness: lightness(get($tone, $tone-amount));
-  } @else {
-    $lightness: lightness(get($tint, $tint-name));
-  }
-  @return hsl(hue(get($tint, $tint-name)), get($saturation, $saturation-amount), $lightness);
-}
+// @function tst ($tint-name, $saturation-amount, $tone-amount: false) {
+//   @if $tone-amount != false {
+//     $lightness: lightness(get($tone, $tone-amount));
+//   } @else {
+//     $lightness: lightness(get($tint, $tint-name));
+//   }
+//   @return hsl(hue(get($tint, $tint-name)), get($saturation, $saturation-amount), $lightness);
+// }
 
 @function reverse-tone-name($tone-name) {
   $tones-total: length(map-keys($tone));

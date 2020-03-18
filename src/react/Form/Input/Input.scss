@@ -110,7 +110,7 @@ $size: get($form, 'input-height');
   }
 
   &__errors {
-    background-color: tts('status-error', 'tone-8', 'saturation-5');
+    background-color: hts('status-error', 'tone-8');
     border-radius: 0 0 $input-radius-error $input-radius-error;
     margin: 0;
     padding: s(0.5);

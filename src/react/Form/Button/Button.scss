@@ -27,7 +27,7 @@ $border-radius: get($radius, 'small');
   &:active,
   &:focus,
   &:hover {
-    --background: #{tts('brand-maggioli', 'tone-1', 'saturation-7')};
+    --background: #{hts('brand-maggioli', 'tone-2')};
     --color: #{get($tone, 'tone-15')};
 
     background-color: var(--background);
@@ -75,7 +75,7 @@ $border-radius: get($radius, 'small');
   &:active,
   &:focus,
   &:hover {
-    --background: #{tts('brand-maggioli', 'tone-1', 'saturation-7')};
+    --background: #{hts('brand-maggioli', 'tone-2')};
     --color: #{get($tone, 'tone-15')};
   }
 
