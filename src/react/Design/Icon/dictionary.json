@@ -1,12 +1,10 @@
 {
   "email": "email",
-  "error": "error",
   "formCheckboxChecked": "check_box",
   "formCheckboxUnchecked": "check_box_outline_blank",
   "formRadioChecked": "radio_button_checked",
   "formRadioUnchecked": "radio_button_unchecked",
   "formSelectOption": "unfold_more",
-  "info": "info",
   "license": "payment",
   "logout": "lock_open",
   "missingIcon": "priority_high",
@@ -16,9 +14,11 @@
   "phone": "phone",
   "shipping": "local_shipping",
   "smartphone": "smartphone",
+  "statusError": "error",
+  "statusInfo": "info",
+  "statusSuccess": "done",
+  "statusWarning": "warning",
   "tag": "label",
   "user": "person",
-  "users": "group",
-  "success": "done",
-  "warning": "warning"
+  "users": "group"
 }

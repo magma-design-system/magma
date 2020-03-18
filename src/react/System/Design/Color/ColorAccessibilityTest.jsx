@@ -9,7 +9,7 @@ const ColorAccessibilityTest = props =>
   <div className="sys-color-accessibility-test flex-row">
     <div className="sys-color-accessibility-test__result flex-row">
       {contrast.isAccessible(props.color, props.base) &&
-        <Icon name="success" className="color-status-success"/>
+        <Icon name="statusSuccess" className="color-status-success"/>
       }
       <div>{contrast.score(props.color, props.base)}</div>
       <div>{contrast.ratio(props.color, props.base).toFixed(2)}</div>

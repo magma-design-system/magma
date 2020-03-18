@@ -5,7 +5,7 @@ const Typography = props => {
   const HtmlTag = props.htmlTag.toLowerCase()
   return (
     <HtmlTag className={`text-sans ${props.className}`}>
-      {props.children}
+      { props.children }
     </HtmlTag>
   )
 }

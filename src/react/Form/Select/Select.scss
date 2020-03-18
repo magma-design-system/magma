@@ -66,6 +66,15 @@ $size: get($form, 'input-height');
       text-transform: uppercase;
     }
 
+    // sass-lint:disable no-color-literals
+    // sass-lint:disable no-vendor-prefixes
+    &:-moz-focusring {
+      color: transparent;
+      text-shadow: 0 0 0 #000;
+    }
+    // sass-lint:enable no-color-literals
+    // sass-lint:enable no-vendor-prefixes
+
     &:focus {
       --border-color: #{$brand-color};
       --box-shadow: #{get($shadow, 'tiny'), get($shadow, 'outline')};
