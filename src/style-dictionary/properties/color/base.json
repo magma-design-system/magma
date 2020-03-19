@@ -1,0 +1,64 @@
+{
+  "color": {
+    "brand": {
+      "maggioli": {
+        "1": { "value": "#003c80" },
+        "2": { "value": "#08458b" },
+        "3": { "value": "#114e97" },
+        "4": { "value": "#1b59a3", "comment": "seed" },
+        "5": { "value": "#2763ab" },
+        "6": { "value": "#356eb2"},
+        "7": { "value": "#437aba" },
+        "8": { "value": "#5386c2" },
+        "9": { "value": "#6392c9" },
+        "10": { "value": "#759fd1" },
+        "11": { "value": "#87add9" },
+        "12": { "value": "#9abbe0" },
+        "13": { "value": "#afc9e8" },
+        "14": { "value": "#c4d8f0" },
+        "15": { "value": "#dbe8f7" },
+        "16": { "value": "#f2f8ff" },
+        "seed": { "value": "{color.brand.maggioli.4.value}" }
+
+      }
+    },
+    "status": {
+      "success": {
+        "1": { "value": "#008042" },
+        "2": { "value": "#048a49" },
+        "3": { "value": "#099551" },
+        "4": { "value": "#0e9f59" },
+        "5": { "value": "#14aa61" },
+        "6": { "value": "#1ab46a" },
+        "7": { "value": "#21bf73", "comment": "seed" },
+        "8": { "value": "#33c67f" },
+        "9": { "value": "#47cd8d" },
+        "10": { "value": "#5cd49a" },
+        "11": { "value": "#72dba8" },
+        "12": { "value": "#89e3b7" },
+        "13": { "value": "#a1eac7" },
+        "14": { "value": "#bbf1d7" },
+        "15": { "value": "#d6f8e8" },
+        "16": { "value": "#f2fff9" }
+      },
+      "error": {
+        "1": { "value": "#802927" },
+        "2": { "value": "#8E2F2D" },
+        "3": { "value": "#9B3533" },
+        "4": { "value": "#A73B39" },
+        "5": { "value": "#B4423F" },
+        "6": { "value": "#C04946" },
+        "7": { "value": "#CB504D" },
+        "8": { "value": "#D75754" },
+        "9": { "value": "#E25E5B" },
+        "10": { "value": "#ED6663", "comment": "seed" },
+        "11": { "value": "#ED807E" },
+        "12": { "value": "#EF9997" },
+        "13": { "value": "#F1B2B0" },
+        "14": { "value": "#F4C9C8" },
+        "15": { "value": "#F8E0DF" },
+        "16": { "value": "#FDF5F5" }
+      }
+    }
+  }
+}
