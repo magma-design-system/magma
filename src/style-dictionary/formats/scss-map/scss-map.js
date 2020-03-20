@@ -13,6 +13,7 @@ StyleDictionary.registerFormat({
     console.log(dictionary.properties)
     return template({
       properties: dictionary.properties,
+      date: new Date().toUTCString(),
       options: platform,
     })
   },

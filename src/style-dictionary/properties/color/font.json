@@ -1,9 +1,11 @@
 {
   "color": {
     "font": {
-      "base"     : { "value": "{color.brand.maggioli.4}" },
-      "secondary": { "value": "{color.status.error.2}" },
-      "tertiary" : { "value": "{color.status.success.2}" }
+      "sans": {
+        "base": { "value": "#000ff0" },
+        "secondary": { "value": "#000ff0" },
+        "tertiary" : { "value": "#000ff0" }
+      }
     }
   }
 }
