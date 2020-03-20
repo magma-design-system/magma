@@ -1,0 +1,20 @@
+{
+  "spacing": {
+    "grid": {
+      "gutter": {
+        "none" :   { "value": "0" },
+        "small":   { "value": "10px"},
+        "normal":  { "value": "20px"},
+        "large":   { "value": "30px"},
+        "xlarge":  { "value": "40px"},
+        "xxlarge": { "value": "80px"},
+        "default": { "value": "{spacing.grid.gutter.normal.value}"}
+      }
+    },
+    "box": {
+      "vertical": {
+        "small" : { "value": "20px" }
+      }
+    }
+  }
+}

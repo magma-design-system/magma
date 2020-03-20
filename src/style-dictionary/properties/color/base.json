@@ -61,9 +61,27 @@
         "16": { "value": "#FDF5F5" },
         "seed": { "value": "{color.status.error.10.value}" }
       }
+    },
+    "adjust" : {
+      "tone": {
+        "1": { "value": "#1c1c1c" },
+        "2": { "value": "#2c2c2c" },
+        "3": { "value": "#3b3b3b" },
+        "4": { "value": "#4a4a4a" },
+        "5": { "value": "#5a5a5a" },
+        "6": { "value": "#696969" },
+        "7": { "value": "#797979" },
+        "8": { "value": "#888888" },
+        "9": { "value": "#979797" },
+        "10": { "value": "#a6a6a6" },
+        "11": { "value": "#b6b6b6" },
+        "12": { "value": "#c5c5c5" },
+        "13": { "value": "#d4d4d4" },
+        "14": { "value": "#e3e3e3" },
+        "15": { "value": "#f2f2f2" },
+        "16": { "value": "#fafafa" },
+        "seed": { "value": "{color.adjust.tone.8.value}" }
+      }
     }
-  },
-  "tone": {
-    
   }
 }

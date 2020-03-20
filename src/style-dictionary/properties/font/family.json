@@ -1,0 +1,14 @@
+{
+  "font": {
+    "sans": {
+      "family": {
+        "primary": {
+          "value": "Karla"
+        },
+        "secondary": {
+          "value": "Roboto"
+        }
+      }
+    }
+  }
+}

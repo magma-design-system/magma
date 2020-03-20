@@ -1,0 +1,11 @@
+{
+  "font": {
+    "sans": {
+      "line-height": {
+        "paragraph": {
+          "value": "25px"
+        }
+      }
+    }
+  }
+}

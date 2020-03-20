@@ -2,9 +2,7 @@
   "color": {
     "font": {
       "sans": {
-        "base": { "value": "#000ff0" },
-        "secondary": { "value": "#000ff0" },
-        "tertiary" : { "value": "#000ff0" }
+        "paragraph": { "value": "{color.adjust.tone.3.value}" }
       }
     }
   }
