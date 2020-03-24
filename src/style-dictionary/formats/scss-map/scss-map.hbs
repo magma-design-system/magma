@@ -5,15 +5,17 @@ Generated at {{ date }}
 */
 
 {{#each properties as | types |}}
+${{@key}}: (
   {{#each types as | items |}}
-${{@../key}}-{{@key}}: (
-    {{#each items as | item |}}
   '{{@key}}': (
-        {{#each item as | subItem |}}
-    '{{@key}}': {{subItem.value}}{{#unless @last}},{{/unless}}
-        {{/each}}
-  ){{#unless @last}},{{/unless}}
+    {{#each items as | item |}}
+    '{{@key}}': (
+      {{#each item as | subItem |}}
+      '{{@key}}': {{subItem.value}}{{#unless @last}},{{/unless}}
+          {{/each}}
+    ){{#unless @last}},{{/unless}}
     {{/each}}
-);
+  ){{#unless @last}},{{/unless}}
   {{/each}}
+);
 {{/each}}

@@ -13,7 +13,20 @@
     },
     "box": {
       "vertical": {
-        "small" : { "value": "20px" }
+        "small":   { "value": "10px"},
+        "normal":  { "value": "20px"},
+        "large":   { "value": "30px"},
+        "xlarge":  { "value": "40px"},
+        "xxlarge": { "value": "80px"},
+        "default": { "value": "{spacing.box.vertical.normal.value}"}
+      },
+      "horizontal": {
+        "small":   { "value": "20px"},
+        "normal":  { "value": "40px"},
+        "large":   { "value": "60px"},
+        "xlarge":  { "value": "80px"},
+        "xxlarge": { "value": "120px"},
+        "default": { "value": "{spacing.box.horizontal.normal.value}"}
       }
     }
   }

@@ -10,7 +10,6 @@ const template = Handlebars.compile(fs.readFileSync(templatePath).toString())
 StyleDictionary.registerFormat({
   name: 'scss/map',
   formatter: function(dictionary, platform) {
-    console.log(dictionary.properties)
     return template({
       properties: dictionary.properties,
       date: new Date().toUTCString(),
