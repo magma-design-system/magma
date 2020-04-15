@@ -3,7 +3,8 @@
 @import './colors';
 @import './cosmetics';
 @import './ease';
-@import './font-families';
+//@import './font-families';
+@import './font-families-copy';
 @import './media';
 @import './sizes';
 
@@ -20,11 +21,13 @@ $tween: get($cosmetics, 'tween');
 
 
 $font-family: (
-  'sans': #{get(get($font-families, 'sans'), 'family')},
-  'mono': #{get(get($font-families, 'mono'), 'family')}
+  'primary': #{get(get($font-families, 'primary'), 'family')},
+  'secondary': #{get(get($font-families, 'secondary'), 'family')},
+  'mono': #{get(get($font-families, 'mono'), 'family')},
 );
 
-$font-sans-styles: get(get($font-families, 'sans'), 'styles');
+$font-primary-styles: get(get($font-families, 'primary'), 'styles');
+$font-secondary-styles: get(get($font-families, 'secondary'), 'styles');
 $font-mono-styles: get(get($font-families, 'mono'), 'styles');
 
 $size: (

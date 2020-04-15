@@ -28,10 +28,34 @@
   }
 }
 
+@mixin add-font-property ($map, $set, $property-name) {
+  @each $viewport, $properties in map-get($map, $set) {
+    @if $viewport == 'default' {
+      @each $property, $value in $properties {
+        @if ($property == $property-name) {
+          #{$property}: $value;
+        }
+      }
+    } @else {
+      @include media ($viewport) {
+        @each $property, $value in $properties {
+          @if ($property == $property-name) {
+            #{$property}: $value;
+          }
+        }
+      }
+    }
+  }
+}
+
 @mixin add-styles-set ($map, $name) {
   @each $set, $viewports in $map {
     .#{$name}--#{$set} {
-      @include apply-styles-set ($map, $set);
+      @include apply-styles-set($map, $set);
+
+      &-line-height {
+        @include add-font-property($map, $set, 'line-height');
+      }
     }
   }
 }

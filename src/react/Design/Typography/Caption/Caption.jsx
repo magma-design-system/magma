@@ -4,7 +4,7 @@ import Typography from '../Typography'
 
 const Caption = props =>
   <Typography
-    className={`text-sans--caption ${props.className}`}
+    className={`text-secondary text-secondary--caption ${props.className}`}
     htmlTag={props.htmlTag}
   >
     {props.children}

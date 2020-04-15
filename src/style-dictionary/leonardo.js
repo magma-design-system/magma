@@ -1,25 +1,34 @@
-import { generateAdaptiveTheme } from '@adobe/leonardo-contrast-colors'
+import { generateAdaptiveTheme, generateContrastColors } from '@adobe/leonardo-contrast-colors'
+
+const colors = [
+  { color: '#0559a3', name: 'brand-maggioli' },
+  { color: '#21bf73', name: 'status-success' },
+  { color: '#ED6663', name: 'status-error' },
+  { color: '#ffc272', name: 'status-warning' },
+  { color: '#888888', name: 'tone' },
+]
 
 const ratios = [
   1.05,
-  1.10,
-  1.21,
-  1.36,
-  1.58,
-  1.87,
-  2.24,
-  2.71,
-  3.28,
-  3.97,
-  4.79,
-  5.74,
-  6.85,
-  8.11,
-  9.54,
+  1.15,
+  1.26,
+  1.4,
+  1.6,
+  1.9,
+  2.25,
+  2.7,
+  3.3,
+  4,
+  4.8,
+  5.75,
+  7,
+  8.5,
+  10.3,
   12.45,
 ]
 const colorspace = 'HSL'
-const baseScale = '#ffffff'
+const base = '#ffffff'
+const baseScale = 'tone'
 const brightness = 97
 const colorScales = []
 
@@ -35,16 +44,27 @@ const addAdaptivePalette = (name, color) => {
   )
 }
 
-addAdaptivePalette('brand-maggioli', '#0559a3')
-addAdaptivePalette('status-success', '#21bf73')
-addAdaptivePalette('status-error', '#ED6663')
-addAdaptivePalette('status-warning', '#ffc272')
-addAdaptivePalette('tone', '#888888')
+const addAdaptiveColor = (color, name) => {
+  const colorKeys = typeof color === 'string' ? [color] : color
+  return generateContrastColors(
+    {
+      colorKeys,
+      base,
+      ratios,
+      colorspace,
+    },
+  )
+}
 
-let theme = generateAdaptiveTheme({
-  colorScales,
-  baseScale,
-  brightness,
+colors.forEach(item => {
+  addAdaptivePalette(item.color, item.name)
 })
 
-console.log(theme)
+if (colorScales.length > 0) {
+  const theme = generateAdaptiveTheme({
+    colorScales,
+    baseScale,
+    brightness,
+  })
+  console.log(theme)
+}

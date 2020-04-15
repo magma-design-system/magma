@@ -4,7 +4,7 @@ import Typography from '../Typography'
 
 const H5 = props =>
   <Typography
-    className={`text-sans--h5 ${props.className}`}
+    className={`text-primary text-primary--h5 ${props.className}`}
     htmlTag={props.htmlTag}
   >
     {props.children}

@@ -2,22 +2,22 @@ import React from 'react'
 import PropTypes from 'prop-types'
 import Typography from '../Typography'
 
-const H1 = props =>
+const Code = props =>
   <Typography
-    className={`text-primary text-primary--h1 ${props.className}`}
+    className={`text-mono text-mono--code ${props.className}`}
     htmlTag={props.htmlTag}
   >
     {props.children}
   </Typography>
 
-H1.propTypes = {
+Code.propTypes = {
   className: PropTypes.string,
   htmlTag: PropTypes.string,
 }
 
-H1.defaultProps = {
+Code.defaultProps = {
   className: '',
-  htmlTag: 'h1',
+  htmlTag: 'p',
 }
 
-export default H1
+export default Code

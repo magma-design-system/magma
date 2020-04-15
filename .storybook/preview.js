@@ -5,6 +5,7 @@ import Page from '@System/Page/Page'
 // faker.locale = 'it'
 
 import '../node_modules/material-design-icons/iconfont/material-icons.css'
+import '../node_modules/typeface-karla/index.css'
 import '../node_modules/typeface-roboto/index.css'
 import '../src/scss/import-global.scss'
 

@@ -1,32 +1,33 @@
 $default-font-style: 'paragraph';
+$font-base-styles: $font-secondary-styles;
 
 body {
   // sass-lint:disable no-vendor-prefixes
   -webkit-tap-highlight-color: transparent;
-  @include apply-styles-set($font-sans-styles, $default-font-style);
+  @include apply-styles-set($font-base-styles, $default-font-style);
   background-color: get($tone, 'tone-15');
   color: get($tone, 'tone-3');
-  font-family: get($font-family, 'sans');
+  font-family: get($font-family, 'secondary');
   width: 100%;
 }
 
 button {
-  font-family: get($font-family, 'sans');
+  font-family: get($font-family, 'primary');
 }
 
 input,
 textarea {
   appearance: none;
-  @include apply-styles-set($font-sans-styles, $default-font-style);
+  @include apply-styles-set($font-base-styles, $default-font-style);
 
   &::placeholder {
-    @include apply-styles-set($font-sans-styles, $default-font-style);
+    @include apply-styles-set($font-base-styles, $default-font-style);
   }
 }
 
 b,
 strong {
-  @include apply-styles-set($font-sans-styles, 'bold');
+  @include apply-styles-set($font-base-styles, 'bold');
 }
 
 a {

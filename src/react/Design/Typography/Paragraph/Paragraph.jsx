@@ -5,7 +5,7 @@ import faker from 'faker'
 
 const Paragraph = props =>
   <Typography
-    className={`text-sans--paragraph ${props.className}`}
+    className={`text-secondary text-secondary--paragraph ${props.className}`}
     htmlTag={props.htmlTag}
   >
     { props.children ? props.children : faker.lorem.paragraph() }

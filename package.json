@@ -3,13 +3,14 @@
   "version": "0.0.1",
   "description": "Initial draft of Maggioli design system",
   "scripts": {
-    "style-dictionary": "cd ./src/style-dictionary/ && node build.js",
     "deploy": "storybook-to-ghpages",
-    "design-tokens": "run-for-every-file --src src/design-tokens/ --dest src/scss/variables/ --file '**/*.json' --not-file '**/*.scss' --run 'json-to-scss {{src-file}} {{dest}}{{file-name-ext}}'",
+    "dev:storybook": "npm run tokens && start-storybook --port 2046",
     "lint": "npm run lint:js && npm run lint:sass",
     "lint:js": "eslint src/react/**/*.{js,jsx} --fix",
     "lint:sass": "sass-lint -c .sass-lint.yml 'src/scss/**/*.scss' -v -i 'src/scss/variables/**/*.scss'",
-    "storybook": "npm run design-tokens && start-storybook --port 2046"
+    "tokens": "npm run tokens:css-tokens && npm run tokens:style-dictionary",
+    "tokens:css-tokens": "run-for-every-file --src src/style-dictionary/css-tokens/ --dest src/scss/variables/ --file '**/*.json' --not-file '**/*.scss' --run 'json-to-scss {{src-file}} {{dest}}{{file-name-ext}}'",
+    "tokens:style-dictionary": "cd ./src/style-dictionary/ && node build.js"
   },
   "husky": {
     "hooks": {
@@ -43,7 +44,9 @@
     "@storybook/addons": "^5.3.14",
     "@storybook/react": "^5.3.14",
     "autoprefixer": "^9.7.4",
+    "babel-cli": "^6.26.0",
     "babel-loader": "^8.0.6",
+    "babel-preset-es2015": "^6.24.1",
     "concat-files": "^0.1.1",
     "eslint": "^6.1.0",
     "eslint-config-standard": "^13.0.1",
@@ -77,6 +80,7 @@
     "react-hook-form": "^3.18.8",
     "react-router-dom": "^5.0.1",
     "react-timeago": "^4.4.0",
+    "typeface-karla": "0.0.72",
     "typeface-roboto": "0.0.75"
   }
 }

@@ -10,6 +10,8 @@ import H5 from '@Typography/H5/H5'
 import H6 from '@Typography/H6/H6'
 import Paragraph from '@Typography/Paragraph/Paragraph'
 import Caption from '@Typography/Caption/Caption'
+import Overline from '@Typography/Overline/Overline'
+import Code from '@Typography/Code/Code'
 
 faker.locale = 'it'
 
@@ -28,4 +30,6 @@ export const basicUsage = () =>
     <H6>H6 - {faker.lorem.paragraph()}</H6>
     <Paragraph>Paragraph - {faker.lorem.paragraphs()}</Paragraph>
     <Caption>Caption - {faker.lorem.paragraphs()}</Caption>
+    <Overline>Overline - {faker.lorem.paragraphs()}</Overline>
+    <Code>Code - {faker.lorem.paragraphs()}</Code>
   </Grid>

@@ -3,10 +3,13 @@
     "sans": {
       "family": {
         "primary": {
-          "value": "Karla"
+          "value": "Roboto"
         },
         "secondary": {
-          "value": "Roboto"
+          "value": "Karla"
+        },
+        "mono": {
+          "value": "Roboto Mono"
         }
       }
     }

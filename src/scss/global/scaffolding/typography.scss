@@ -1,10 +1,11 @@
-@mixin add-text ($style) {
+@mixin add-text ($style, $font-styles) {
   .text-#{$style} {
     font-family: get($font-family, $style);
   }
-  @include add-styles-set($font-sans-styles, 'text-#{$style}');
+  @include add-styles-set($font-styles, 'text-#{$style}');
 }
 
 
-@include add-text('sans');
-@include add-text('mono');
+@include add-text('primary', $font-primary-styles);
+@include add-text('secondary', $font-secondary-styles);
+@include add-text('mono', $font-mono-styles);

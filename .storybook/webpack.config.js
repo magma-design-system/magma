@@ -41,7 +41,7 @@ module.exports = async ({ config, mode }) => {
     })
 
     config.resolve.alias = {
-      '$Tokens': path.resolve(__dirname, '../src/design-tokens/'),
+      '$Tokens': path.resolve(__dirname, '../src/style-dictionary/css-tokens/'),
       '@Design': path.resolve(__dirname, '../src/react/Design/'),
       '@Form': path.resolve(__dirname, '../src/react/Form/'),
       '@Layout': path.resolve(__dirname, '../src/react/Layout/'),

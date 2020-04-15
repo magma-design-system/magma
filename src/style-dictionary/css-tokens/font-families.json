@@ -1,6 +1,6 @@
 {
-  "sans": {
-    "family": "-apple-system, BlinkMacSystemFont, San Francisco, Roboto, Segoe UI, Helvetica Neue, sans-serif",
+  "primary": {
+    "family": "Roboto, -apple-system, BlinkMacSystemFont, San Francisco, Segoe UI, Helvetica Neue, sans-serif",
     "styles": {
       "h1" : {
         "default": {
@@ -57,7 +57,7 @@
       },
       "h6" : {
         "default": {
-          "font-size": "16px",
+          "font-size": "18px",
           "font-variant-caps": "all-small-caps",
           "font-weight": "500",
           "line-height": "25px"
@@ -66,6 +66,32 @@
           "line-height": "30px"
         }
       },
+      "overline" : {
+        "default": {
+          "font-size": "14px",
+          "font-variant-caps": "all-small-caps",
+          "font-weight": "500",
+          "line-height": "20px"
+        },
+        "tablet": {
+          "line-height": "25px"
+        }
+      },
+      "button" : {
+        "default": {
+          "font-size": "16px",
+          "line-height": "25px",
+          "font-weight": "600"
+        },
+        "tablet": {
+          "line-height": "30px"
+        }
+      }
+    }
+  },
+  "secondary": {
+    "family": "Karla, -apple-system, BlinkMacSystemFont, San Francisco, Segoe UI, Helvetica Neue, sans-serif",
+    "styles": {
       "paragraph" : {
         "default": {
           "font-size": "16px",
@@ -90,34 +116,13 @@
         "desktop": {
           "line-height": "25px"
         }
-      },
-      "overline" : {
-        "default": {
-          "font-size": "13px",
-          "font-variant-caps": "all-small-caps",
-          "font-weight": "500",
-          "line-height": "20px"
-        },
-        "tablet": {
-          "line-height": "25px"
-        }
-      },
-      "button" : {
-        "default": {
-          "font-size": "16px",
-          "line-height": "25px",
-          "font-weight": "600"
-        },
-        "tablet": {
-          "line-height": "30px"
-        }
       }
     }
   },
   "mono": {
-    "family": "monospace, monospace",
+    "family": "Roboto Mono, monospace",
     "styles": {
-      "normal" : {
+      "code" : {
         "default": {
           "font-size": "16px",
           "line-height": "25px",
