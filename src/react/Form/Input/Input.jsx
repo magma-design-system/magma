@@ -6,7 +6,7 @@ import Icon from '@Design/Icon/Icon'
 const Input = props =>
   <label className={`input ${props.icon ? 'input--has-icon' : ''} ${Object.keys(props.errors).length > 0 ? 'input--has-errors' : ''} ${props.theme !== '' ? 'input--' + props.theme : ''} ${props.className}`}>
     {props.label &&
-      <div className="input__label text-sans text-sans--h6">
+      <div className="input__label text-primary text-primary--h6">
         {props.label}
       </div>
     }

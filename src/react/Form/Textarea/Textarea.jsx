@@ -6,7 +6,7 @@ import Icon from '@Design/Icon/Icon'
 const Textarea = props =>
   <label className={`textarea ${props.icon ? 'textarea--has-icon' : ''} ${Object.keys(props.errors).length > 0 ? 'textarea--has-errors' : ''}  ${props.className}`}>
     {props.label &&
-      <div className="textarea__label text-sans text-sans--h6">
+      <div className="textarea__label text-primary text-primary--h6">
         {props.label}
       </div>
     }
@@ -15,7 +15,7 @@ const Textarea = props =>
         <Icon className={`textarea__icon ${props.iconClassName}`} name={props.icon}/>
       </div>
     }
-    <textarea className="textarea__field text-sans text-sans--paragraph" name={props.name} placeholder={props.placeholder}>
+    <textarea className="textarea__field text-secondary text-secondary--paragraph" name={props.name} placeholder={props.placeholder}>
       {props.children}
     </textarea>
     <ul className="textarea__errors">

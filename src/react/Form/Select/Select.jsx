@@ -22,12 +22,12 @@ SelectOption.defaultProps = {
 const Select = props =>
   <div className={`select ${props.className}`}>
     { props.label &&
-      <div className="select__label text-sans text-sans--h6">
+      <div className="select__label text-primary text-primary--h6">
         {props.label}
       </div>
     }
     <div className="select__item">
-      <select className="select__field text-sans text-sans--paragraph" name={props.name}>
+      <select className="select__field text-secondary text-secondary--paragraph" name={props.name}>
         { props.children }
       </select>
       <Icon className="select__icon" name="formSelectOption"/>

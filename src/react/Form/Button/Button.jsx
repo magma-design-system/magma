@@ -27,7 +27,7 @@ Button.defaultProps = {
   disabled: false,
   icon: '',
   onClick: () => {},
-  textClassName: 'text-sans text-sans--button',
+  textClassName: 'text-primary text-primary--button',
 }
 
 export default Button

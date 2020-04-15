@@ -4,7 +4,7 @@ import './Checkbox.scss'
 import Icon from '@Design/Icon/Icon'
 
 const Checkbox = props =>
-  <label className={`checkbox ${props.className} ${props.icon ? 'checkbox--custom' : ''}`.trim()}>
+  <label className={`checkbox ${props.className} ${props.textClassName} ${props.icon ? 'checkbox--custom' : ''}`.trim()}>
     {!props.sync
       ? <input onChange={e => props.onChange(e.target.checked)} className="checkbox__field" defaultChecked={props.isChecked} type="checkbox" value="1"/>
       : <input onChange={e => props.onChange(e.target.checked)} className="checkbox__field" checked={props.isChecked} type="checkbox" value="1"/>
@@ -19,7 +19,7 @@ const Checkbox = props =>
         <Icon className={`checkbox__icon ${props.iconClassName}`} name="formCheckboxChecked"/>
       </Fragment>
     }
-    <div className="checkbox__text text-sans text-sans--caption">
+    <div className="checkbox__text">
       {props.children}
     </div>
   </label>
@@ -31,6 +31,7 @@ Checkbox.propTypes = {
   isChecked: PropTypes.bool,
   onChange: PropTypes.func,
   sync: PropTypes.bool,
+  textClassName: PropTypes.string,
 }
 
 Checkbox.defaultProps = {
@@ -39,6 +40,7 @@ Checkbox.defaultProps = {
   iconClassName: '',
   isChecked: false,
   sync: false,
+  textClassName: 'text-secondary text-secondary--caption',
 }
 
 export default Checkbox
