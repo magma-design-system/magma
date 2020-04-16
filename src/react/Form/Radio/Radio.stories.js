@@ -32,20 +32,20 @@ export const checkedByDefault = () =>
 
 export const customIcon = () =>
   <Grid gutter="small">
-    <Radio name="radioGroupName" value="1" icon="warning">
+    <Radio name="radioGroupName" value="1" icon="statusWarning">
       {faker.lorem.sentences()}
     </Radio>
-    <Radio name="radioGroupName" value="2" icon="error">
+    <Radio name="radioGroupName" value="2" icon="statusError">
       {faker.lorem.sentences()}
     </Radio>
   </Grid>
 
 export const customColor = () =>
   <Grid gutter="small">
-    <Radio name="radioGroupName" value="1" icon="warning" iconClassName="color-red-2">
+    <Radio name="radioGroupName" value="1" icon="statusWarning" iconClassName="color-status-warning">
       {faker.lorem.sentences()}
     </Radio>
-    <Radio name="radioGroupName" value="2" icon="error" iconClassName="color-red-2">
+    <Radio name="radioGroupName" value="2" icon="statusError" iconClassName="color-status-error">
       {faker.lorem.sentences()}
     </Radio>
   </Grid>

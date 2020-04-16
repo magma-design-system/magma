@@ -22,7 +22,16 @@ $size: get($form, 'input-height');
   &--has-icon {
     .input {
       &__field {
-        padding-right: $size;
+        padding-left: $size;
+      }
+    }
+  }
+
+  &:focus-within {
+    .input {
+      &__icon {
+        --color: #{$brand-color};
+        color: var(--color);
       }
     }
   }
@@ -99,7 +108,7 @@ $size: get($form, 'input-height');
     height: $size;
     justify-content: center;
     position: absolute;
-    right: 0;
+    left: 0;
     width: $size;
     z-index: 2;
   }
@@ -107,6 +116,7 @@ $size: get($form, 'input-height');
   &__icon {
     --color: #{get($tone, 'tone-2')};
     color: var(--color);
+    transition: color $ease;
   }
 
   &__errors {
