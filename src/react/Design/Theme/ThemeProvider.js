@@ -1,6 +1,7 @@
 import React, { useState } from 'react'
+import PropTypes from 'prop-types'
 
-export const ThemeContext = React.createContext({
+const ThemeContext = React.createContext({
 
   theme: {
     light: {
@@ -16,7 +17,7 @@ export const ThemeContext = React.createContext({
   setTheme: () => {},
 })
 
-export const ThemeContextProvider = props => {
+const ThemeProvider = props => {
   const theme = {
     light: {
       type: 'light',
@@ -35,7 +36,8 @@ export const ThemeContextProvider = props => {
   }
 
   const initState = {
-    theme: theme.dark,
+    name: props.name,
+    theme: props.theme,
     setTheme,
   }
 
@@ -46,4 +48,20 @@ export const ThemeContextProvider = props => {
       {props.children}
     </ThemeContext.Provider>
   )
+}
+
+ThemeProvider.propTypes = {
+  name: PropTypes.string,
+  theme: PropTypes.object,
+}
+
+ThemeProvider.defaultProps = {
+  name: 'default',
+  theme: {},
+}
+
+export default ThemeProvider
+
+export {
+  ThemeContext,
 }

@@ -1,5 +1,5 @@
 import { create } from '@storybook/theming';
-import brandImage from './maggioli.png';
+import brandImage from '../src/assets/logo/gruppo-maggioli.svg';
 
 export default create({
 
@@ -34,5 +34,5 @@ export default create({
 
   brandTitle: 'Maggiolino',
   brandUrl: 'https://www.maggioli.it',
-  brandImage: 'https://www.maggioli.it/wp-content/uploads/2015/12/gruppo-maggioli.png',
+  brandImage,
 })

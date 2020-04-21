@@ -69,18 +69,21 @@ $border-radius: get($radius, 'small');
 }
 
 .button {
-  --background: #{get($tint, 'brand-maggioli')};
-  --color: #{get($tone, 'tone-14')};
+  &--dark {
+    // --background: #{get($tint, 'brand-maggioli')};
+    --background: red;
+    --color: #{get($tone, 'tone-14')};
 
-  &:active,
-  &:focus,
-  &:hover {
-    --background: #{hts('brand-maggioli', 'tone-2')};
-    --color: #{get($tone, 'tone-15')};
-  }
+    &:active,
+    &:focus,
+    &:hover {
+      --background: #{hts('brand-maggioli', 'tone-2')};
+      --color: #{get($tone, 'tone-15')};
+    }
 
-  &--disabled {
-    --background: #{get($tone, 'tone-6')};
-    --color: #{get($tone, 'tone-9')};
+    &--disabled {
+      --background: #{get($tone, 'tone-6')};
+      --color: #{get($tone, 'tone-9')};
+    }
   }
 }

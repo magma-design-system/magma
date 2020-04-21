@@ -36,11 +36,12 @@ module.exports = async ({ config, mode }) => {
         use: ['file-loader']
     })
     config.module.rules.push({
-        test: /\.(jpeg|png|jpg)$/,
+        test: /\.(jpeg|png|jpg|svg)$/,
         loader: 'file-loader?name=img/[name].[ext]',
     })
 
     config.resolve.alias = {
+      '#Assets': path.resolve(__dirname, '../src/assets/'),
       '$Tokens': path.resolve(__dirname, '../src/style-dictionary/css-tokens/'),
       '@Design': path.resolve(__dirname, '../src/react/Design/'),
       '@Form': path.resolve(__dirname, '../src/react/Form/'),

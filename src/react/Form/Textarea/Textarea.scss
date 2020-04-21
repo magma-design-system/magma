@@ -66,10 +66,11 @@ $size: get($form, 'textarea-height');
   }
 
   &__field {
+    --border-color: transparent;
     --box-shadow: #{get($shadow, 'tiny'), get($shadow, 'outline')};
     --color: #{get($tone, 'tone-2')};
 
-    border: 1px solid transparent;
+    border: 1px solid var(--border-color);
     border-radius: $input-radius;
     box-shadow: var(--box-shadow);
     color: var(--color);
@@ -141,41 +142,45 @@ $size: get($form, 'textarea-height');
   }
 }
 
-.textarea {
+.textarea--flat {
   $text-color: get($tone, 'tone-2');
 
-  &__label {
-    --color: #{$text-color};
-  }
+  .textarea {
+    &__label {
+      --color: #{$text-color};
+    }
 
-  &:focus-within {
-    .textarea {
-      &__icon {
-        --color: #{$brand-color};
-        color: var(--color);
+    &:focus-within {
+      .textarea {
+        &__icon {
+          --color: #{$brand-color};
+          color: var(--color);
+        }
       }
     }
-  }
 
-  &__field {
-    --box-shadow: #{get($shadow, 'tiny'), get($shadow, 'outline')};
-    --color: #{$text-color};
+    &__field {
+      --box-shadow: none;
+      --border-color: #{get($tone, 'tone-10')};
+      --color: #{$text-color};
 
-    &:focus {
-      --border-color: #{$brand-color};
-      --box-shadow: #{get($shadow, 'tiny'), get($shadow, 'outline')};
+      &:focus {
+        --border-color: #{$brand-color};
+        --box-shadow: none;
+
+        &::placeholder {
+          --color: #{get($tone, 'tone-12')};
+        }
+      }
 
       &::placeholder {
-        --color: #{get($tone, 'tone-12')};
+        --color: #{get($tone, 'tone-8')};
       }
     }
 
-    &::placeholder {
-      --color: #{get($tone, 'tone-8')};
+    &__icon {
+      --color: #{$text-color};
     }
   }
 
-  &__icon {
-    --color: #{$text-color};
-  }
 }
