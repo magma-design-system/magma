@@ -46,7 +46,7 @@ const Form = () =>
     <Checkbox>{checkSentence3}</Checkbox>
     <Button>{buttonAction}</Button>
     <Row>
-      <img src="//via.placeholder.com/30x30"/>
+      <img src={logo}/>
       <Paragraph>Consulta la nostra Privacy Policy per ulteriori informazioni.</Paragraph>
     </Row>
   </Grid>
