@@ -59,3 +59,24 @@
     }
   }
 }
+
+
+@mixin scaffold-color($selector, $color-hex, $index) {
+  @if has-this-color($index) {
+    @include add-color-selector('color', $selector, $color-hex);
+    @include add-color-selector('background-color', $selector, $color-hex);
+  }
+}
+
+@mixin scaffold-colors ($colors) {
+  @each $group-name, $group-map in $colors {
+    @each $tint-name, $tints-map in $group-map {
+      $i: 0;
+      @each $color-name, $color-value in $tints-map {
+        $i: $i + 1;
+        $selector: str-replace('#{$group-name $tint-name $color-name}', ' ', '-');
+        @include scaffold-color($selector, $color-value, $i);
+      }
+    }
+  }
+}

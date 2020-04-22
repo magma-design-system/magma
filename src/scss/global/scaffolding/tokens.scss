@@ -1,0 +1,10 @@
+@function has-this-color($index) {
+  @each $color-index in get($scaffold, 'colors') {
+    @if $index == $color-index {
+      @return true;
+    }
+  }
+  @return false;
+}
+
+@include scaffold-colors($color);

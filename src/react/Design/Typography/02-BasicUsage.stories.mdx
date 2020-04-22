@@ -2,12 +2,22 @@ import { Meta, Story, Preview } from '@storybook/addon-docs/blocks';
 import faker from 'faker'
 
 import Grid from '@Layout/Grid/Grid'
+import H1 from '@Typography/H1/H1'
+import H2 from '@Typography/H2/H2'
+import H3 from '@Typography/H3/H3'
+import H4 from '@Typography/H4/H4'
+import H5 from '@Typography/H5/H5'
+import H6 from '@Typography/H6/H6'
 import Paragraph from '@Typography/Paragraph/Paragraph'
+import Caption from '@Typography/Caption/Caption'
+import Overline from '@Typography/Overline/Overline'
+import Code from '@Typography/Code/Code'
+import Hack from '@Typography/Hack/Hack'
 
 <Meta title="Design/Typography/Basic usage" component={Paragraph} />
 
-### Generated palette
-
-To ease the process of making the color palette consistent, tones will be the key to modulate Status and Brand tints with a tone matrix that will be used to adjust their tones when the UI needs a different tone of the same tint seed.
-
-<Paragraph />
+<Grid gutter="xsmall">
+  <H3>Basic usage</H3>
+  <Paragraph>To ease the process of making the color palette consistent, tones will be the key to modulate Status and Brand tints with a tone matrix that will be used to adjust their tones when the UI needs a different tone of the same tint seed.</Paragraph>
+  <Caption>This is a footer disclaimer</Caption>
+</Grid>
