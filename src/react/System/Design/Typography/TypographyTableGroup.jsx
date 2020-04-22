@@ -75,8 +75,7 @@ const TypographyTableGroup = props => {
           <Grid className="sys-typography-table-group__row">
             <div className={`text-${props.group} text-${props.group}--${name}`}>{name}</div>
             <div className={`text-${props.group} text-${props.group}--${name}`}>
-              {props.group === 'primary' && sentence}
-              {props.group === 'secondary' && paragraph}
+              {props.group === 'primary' ? sentence : paragraph}
             </div>
             <Styles cssStyles={cssStyles}/>
           </Grid>,
