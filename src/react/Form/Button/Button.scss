@@ -68,8 +68,7 @@ $border-radius: get($radius, 'small');
   }
 }
 
-.button {
-  &--dark {
+.button--dark {
     // --background: #{get($tint, 'brand-maggioli')};
     --background: red;
     --color: #{get($tone, 'tone-14')};
@@ -85,5 +84,4 @@ $border-radius: get($radius, 'small');
       --background: #{get($tone, 'tone-6')};
       --color: #{get($tone, 'tone-9')};
     }
-  }
 }

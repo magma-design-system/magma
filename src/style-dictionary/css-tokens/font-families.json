@@ -71,10 +71,10 @@
           "font-size": "14px",
           "font-variant-caps": "all-small-caps",
           "font-weight": "500",
-          "line-height": "20px"
+          "line-height": "15px"
         },
         "tablet": {
-          "line-height": "25px"
+          "line-height": "20px"
         }
       },
       "button" : {
@@ -129,11 +129,14 @@
           "font-weight": "400"
         }
       },
-      "small" : {
+      "hack" : {
         "default": {
-          "font-size": "13px",
+          "font-size": "11px",
           "line-height": "20px",
           "font-weight": "400"
+        },
+        "desktop": {
+          "line-height": "25px"
         }
       }
     }

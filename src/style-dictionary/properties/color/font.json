@@ -2,7 +2,7 @@
   "color": {
     "font": {
       "sans": {
-        "paragraph": { "value": "{color.adjust.tone.w03.value}" }
+        "paragraph": { "value": "{color.adjust.tone.t03.value}" }
       }
     }
   }

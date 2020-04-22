@@ -1,0 +1,24 @@
+@import '~Sass/import';
+
+
+@mixin division ($distance, $border-width) {
+  border-top: $border-width solid token('adjust.tone.t15', $color);
+  margin-top: $distance;
+  padding-top: $distance;
+}
+
+.sys-typography-table-group {
+
+  & + & {
+    @include division(s(4), s(1));
+  }
+
+  &__header {
+    grid-template-columns: 160px auto;
+  }
+
+  &__row {
+    grid-template-columns: 160px auto 250px;
+    @include division(s(2), 2px);
+  }
+}

@@ -36,6 +36,10 @@ $columns: 4;
     @include columns-modifier ($index);
   }
 
+  &--fit {
+    grid-auto-rows: minmax(min-content, max-content);
+  }
+
   @include media ('mobile') {
     grid-template-columns: 1fr;
   }
