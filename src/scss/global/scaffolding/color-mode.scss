@@ -4,6 +4,16 @@
       @each $light-mode-name-a, $light-modes-map-a in $tints-map {
         @each $light-mode-name-b, $light-modes-map-b in $tints-map {
           @if ($light-mode-name-a != $light-mode-name-b) {
+            &--#{$light-mode-name-a} {
+              @each $color-name, $color-value in $light-modes-map-a {
+                $selector: str-replace('--color-#{$group-name $tint-name $light-mode-name-b $color-name}', ' ', '-');
+
+                :root & {
+                  #{$selector}: #{$color-value};
+                }
+              }
+            }
+
             &--#{$light-mode-name-b} {
               @each $color-name, $color-value in $light-modes-map-b {
                 $selector: str-replace('--color-#{$group-name $tint-name $light-mode-name-a $color-name}', ' ', '-');
