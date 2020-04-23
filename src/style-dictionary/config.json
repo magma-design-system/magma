@@ -6,9 +6,13 @@
       "buildPath": "build/scss/",
       "files": [{
         "destination": "variables.scss",
-        "format": "scss/map"
+        "format": "scss/map-deep"
+      },{
+        "destination": "css-variables.scss",
+        "format": "css/variables"
       }]
     },
+
     "android": {
       "transformGroup": "android",
       "buildPath": "build/android/",

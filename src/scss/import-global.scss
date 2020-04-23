@@ -1,7 +1,7 @@
 @import 'node_modules/node-normalize-scss/_normalize.scss';
+@import '../style-dictionary/build/scss/css-variables';
 @import 'import';
 @import 'global/base';
 @import 'global/components/flex-row';
 @import 'global/scaffolding/typography';
-@import 'global/scaffolding/colors';
 @import 'global/scaffolding/tokens';

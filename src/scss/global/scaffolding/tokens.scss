@@ -7,4 +7,33 @@
   @return false;
 }
 
-@include scaffold-colors($color);
+@mixin scaffold-property($property, $name, $value) {
+  // sass-lint:disable no-important
+  .#{$property}-#{$name} {
+    #{$property}: var(#{$value});
+  }
+}
+
+@mixin scaffold-color($selector, $value, $index) {
+  @if has-this-color($index) {
+    @include scaffold-property('color', $selector, $value);
+    @include scaffold-property('background-color', $selector, $value);
+  }
+}
+
+@mixin scaffold-colors ($colors) {
+  @each $group-name, $group-map in $colors {
+    @each $tint-name, $tints-map in $group-map {
+      @each $light-mode-name, $light-modes-map in $tints-map {
+        $i: 0;
+        @each $color-name, $color-value in $light-modes-map {
+          $i: $i + 1;
+          $selector: str-replace('#{$group-name $tint-name $light-mode-name $color-name}', ' ', '-');
+          @include scaffold-color($selector, '--color-#{$selector}', $i);
+        }
+      }
+    }
+  }
+}
+
+@include scaffold-colors(get($tokens, 'color'));

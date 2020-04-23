@@ -2,117 +2,97 @@
   "color": {
     "brand": {
       "maggioli": {
-        "w01": { "value": "#033562" },
-        "w02": { "value": "#044278" },
-        "w03": { "value": "#044e8e" },
-        "w04": { "value": "#0559a4" },
-        "w05": { "value": "#0667bc" },
-        "w06": { "value": "#0672d2"},
-        "w07": { "value": "#077fe9" },
-        "w08": { "value": "#1990f8" },
-        "w09": { "value": "#40a3f9" },
-        "w10": { "value": "#62b3fa" },
-        "w11": { "value": "#81c2fb" },
-        "w12": { "value": "#a2d2fc" },
-        "w13": { "value": "#bbdefd" },
-        "w14": { "value": "#d0e8fe" },
-        "w15": { "value": "#e2f1fe" },
-        "w16": { "value": "#f5faff" },
-        "color": {
-          "value": "#0559a3",
-          "comment": "https://leonardocolor.io/?colorKeys=%230559a3&base=ffffff&ratios=1.05%2C1.15%2C1.26%2C1.4%2C1.6%2C1.9%2C2.25%2C2.7%2C3.3%2C4%2C4.8%2C5.75%2C7%2C8.5%2C10.3%2C12.45&mode=HSL"
-        }
-      }
-    },
-    "status": {
-      "success": {
-        "w01": { "value": "#0a3d24" },
-        "w02": { "value": "#0d4a2d" },
-        "w03": { "value": "#0f5935" },
-        "w04": { "value": "#12663e" },
-        "w05": { "value": "#147546" },
-        "w06": { "value": "#17834f" },
-        "w07": { "value": "#199258" },
-        "w08": { "value": "#1ca161" },
-        "w09": { "value": "#1fb46c" },
-        "w10": { "value": "#22c577" },
-        "w11": { "value": "#25d781" },
-        "w12": { "value": "#61e4a5" },
-        "w13": { "value": "#92ecc1" },
-        "w14": { "value": "#b6f2d6" },
-        "w15": { "value": "#d3f7e6" },
-        "w16": { "value": "#f0fcf7" },
-        "color": {
-          "value": "#21bf73",
-          "comment": "https://leonardocolor.io/?colorKeys=%2321bf73&base=ffffff&ratios=1.05%2C1.15%2C1.26%2C1.4%2C1.6%2C1.9%2C2.25%2C2.7%2C3.3%2C4%2C4.8%2C5.75%2C7%2C8.5%2C10.3%2C12.45&mode=HSL"
-        }
-      },
-      "warning": {
-        "w01": { "value": "#3c3400" },
-        "w02": { "value": "#4c4000" },
-        "w03": { "value": "#5a4d00" },
-        "w04": { "value": "#685800" },
-        "w05": { "value": "#776600" },
-        "w06": { "value": "#857200" },
-        "w07": { "value": "#947e00" },
-        "w08": { "value": "#a58c00" },
-        "w09": { "value": "#b79c00" },
-        "w10": { "value": "#c9ac00" },
-        "w11": { "value": "#dbba00" },
-        "w12": { "value": "#eecb00" },
-        "w13": { "value": "#fdd800" },
-        "w14": { "value": "#ffe656" },
-        "w15": { "value": "#fff19d" },
-        "w16": { "value": "#fffadc" },
-        "color": {
-          "value": "#fbd600",
-          "comment": "https://leonardocolor.io/?colorKeys=%23fbd600&base=ffffff&ratios=1.05%2C1.15%2C1.26%2C1.4%2C1.6%2C1.9%2C2.25%2C2.7%2C3.3%2C4%2C4.8%2C5.75%2C7%2C8.5%2C10.3%2C12.45&mode=HSL"
-        }
-      },
-      "error": {
-        "w01": { "value": "#6a0e0c" },
-        "w02": { "value": "#82120f" },
-        "w03": { "value": "#991512" },
-        "w04": { "value": "#b11814" },
-        "w05": { "value": "#c91b17" },
-        "w06": { "value": "#e11e1a" },
-        "w07": { "value": "#e8403c" },
-        "w08": { "value": "#ec5f5c" },
-        "w09": { "value": "#ef7b78" },
-        "w10": { "value": "#f29390" },
-        "w11": { "value": "#f5a8a6" },
-        "w12": { "value": "#f7bfbd" },
-        "w13": { "value": "#f9d0cf" },
-        "w14": { "value": "#fbdede" },
-        "w15": { "value": "#fdebeb" },
-        "w16": { "value": "#fef8f8" },
-        "color": {
-          "value": "#ed6663",
-          "comment": "https://leonardocolor.io/?colorKeys=%23ed6663&base=ffffff&ratios=1.05%2C1.15%2C1.26%2C1.4%2C1.6%2C1.9%2C2.25%2C2.7%2C3.3%2C4%2C4.8%2C5.75%2C7%2C8.5%2C10.3%2C12.45&mode=HSL"
+        "light": {
+          "c-01": { "value": "#033562" },
+          "c-02": { "value": "#044278" },
+          "c-03": { "value": "#044e8e" },
+          "c-04": { "value": "#0559a4" },
+          "c-05": { "value": "#0667bc" },
+          "c-06": { "value": "#0672d2"},
+          "c-07": { "value": "#077fe9" },
+          "c-08": { "value": "#1990f8" },
+          "c-09": { "value": "#40a3f9" },
+          "c-10": { "value": "#62b3fa" },
+          "c-11": { "value": "#81c2fb" },
+          "c-12": { "value": "#a2d2fc" },
+          "c-13": { "value": "#bbdefd" },
+          "c-14": { "value": "#d0e8fe" },
+          "c-15": { "value": "#e2f1fe" },
+          "c-16": { "value": "#f5faff" },
+          "color": {
+            "value": "#0559a3",
+            "comment": "https://leonardocolor.io/?colorKeys=%230559a3&base=000000&ratios=1.05%2C1.15%2C1.26%2C1.4%2C1.6%2C1.9%2C2.25%2C2.7%2C3.3%2C4%2C4.8%2C5.75%2C7%2C8.5%2C10.3%2C12.45&mode=HSL"
+          }
+        },
+        "dark": {
+          "c-01": { "value": "#010911" },
+          "c-02": { "value": "#011629" },
+          "c-03": { "value": "#021f38" },
+          "c-04": { "value": "#022849" },
+          "c-05": { "value": "#03325b" },
+          "c-06": { "value": "#033d6f" },
+          "c-07": { "value": "#044883" },
+          "c-08": { "value": "#055398" },
+          "c-09": { "value": "#0560af" },
+          "c-10": { "value": "#066cc7" },
+          "c-11": { "value": "#0779de" },
+          "c-12": { "value": "#0886f6" },
+          "c-13": { "value": "#2b98f9" },
+          "c-14": { "value": "#51abfa" },
+          "c-15": { "value": "#74bcfb" },
+          "c-16": { "value": "#97cdfc" },
+          "color": {
+            "value": "#0559a3",
+            "comment": "https://leonardocolor.io/?colorKeys=%230559a3&base=ffffff&ratios=1.05%2C1.15%2C1.26%2C1.4%2C1.6%2C1.9%2C2.25%2C2.7%2C3.3%2C4%2C4.8%2C5.75%2C7%2C8.5%2C10.3%2C12.45&mode=HSL"
+          }
         }
       }
     },
     "adjust" : {
       "tone": {
-        "t01": { "value": "#343434" },
-        "t02": { "value": "#414141" },
-        "t03": { "value": "#4d4d4d" },
-        "t04": { "value": "#595959" },
-        "t05": { "value": "#656565" },
-        "t06": { "value": "#727272" },
-        "t07": { "value": "#7f7f7f" },
-        "t08": { "value": "#8e8e8e" },
-        "t09": { "value": "#9d9d9d" },
-        "t10": { "value": "#adadad" },
-        "t11": { "value": "#bcbcbc" },
-        "t12": { "value": "#cccccc" },
-        "t13": { "value": "#dadada" },
-        "t14": { "value": "#e5e5e5" },
-        "t15": { "value": "#efefef" },
-        "t16": { "value": "#f9f9f9" },
-        "color": {
-          "value": "#fdfdfd",
-          "comment": "https://leonardocolor.io/?colorKeys=%23fdfdfd&base=ffffff&ratios=1.05%2C1.15%2C1.26%2C1.4%2C1.6%2C1.9%2C2.25%2C2.7%2C3.3%2C4%2C4.8%2C5.75%2C7%2C8.5%2C10.3%2C12.45&mode=HSL"
+        "light": {
+          "c-01": { "value": "#343434" },
+          "c-02": { "value": "#414141" },
+          "c-03": { "value": "#4d4d4d" },
+          "c-04": { "value": "#595959" },
+          "c-05": { "value": "#656565" },
+          "c-06": { "value": "#727272" },
+          "c-07": { "value": "#7f7f7f" },
+          "c-08": { "value": "#8e8e8e" },
+          "c-09": { "value": "#9d9d9d" },
+          "c-10": { "value": "#adadad" },
+          "c-11": { "value": "#bcbcbc" },
+          "c-12": { "value": "#cccccc" },
+          "c-13": { "value": "#dadada" },
+          "c-14": { "value": "#e5e5e5" },
+          "c-15": { "value": "#efefef" },
+          "c-16": { "value": "#f9f9f9" },
+          "color": {
+            "value": "#fdfdfd",
+            "comment": "https://leonardocolor.io/?colorKeys=%23fdfdfd&base=ffffff&ratios=1.05%2C1.15%2C1.26%2C1.4%2C1.6%2C1.9%2C2.25%2C2.7%2C3.3%2C4%2C4.8%2C5.75%2C7%2C8.5%2C10.3%2C12.45&mode=HSL"
+          }
+        },
+        "dark": {
+          "c-01": { "value": "#080808" },
+          "c-02": { "value": "#151515" },
+          "c-03": { "value": "#1e1e1e" },
+          "c-04": { "value": "#272727" },
+          "c-05": { "value": "#303030" },
+          "c-06": { "value": "#3c3c3c" },
+          "c-07": { "value": "#474747" },
+          "c-08": { "value": "#535353" },
+          "c-09": { "value": "#606060" },
+          "c-10": { "value": "#6c6c6c" },
+          "c-11": { "value": "#787878" },
+          "c-12": { "value": "#868686" },
+          "c-13": { "value": "#959595" },
+          "c-14": { "value": "#a5a5a5" },
+          "c-15": { "value": "#b6b6b6" },
+          "c-16": { "value": "#c7c7c7" },
+          "color": {
+            "value": "#fdfdfd",
+            "comment": "https://leonardocolor.io/?colorKeys=%23fdfdfd&base=000000&ratios=1.05%2C1.15%2C1.26%2C1.4%2C1.6%2C1.9%2C2.25%2C2.7%2C3.3%2C4%2C4.8%2C5.75%2C7%2C8.5%2C10.3%2C12.45&mode=HSL"
+          }
         }
       }
     }

@@ -1,4 +1,4 @@
-@mixin add-text ($style, $font-styles) {
+@mixin scaffold-text ($style, $font-styles) {
   .text-#{$style} {
     font-family: get($font-family, $style);
   }
@@ -6,6 +6,6 @@
 }
 
 
-@include add-text('primary', $font-primary-styles);
-@include add-text('secondary', $font-secondary-styles);
-@include add-text('mono', $font-mono-styles);
+@include scaffold-text('primary', $font-primary-styles);
+@include scaffold-text('secondary', $font-secondary-styles);
+@include scaffold-text('mono', $font-mono-styles);
