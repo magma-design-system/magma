@@ -1,0 +1,20 @@
+.color-mode {
+  @each $group-name, $group-map in get($tokens, 'color') {
+    @each $tint-name, $tints-map in $group-map {
+      @each $light-mode-name-a, $light-modes-map-a in $tints-map {
+        @each $light-mode-name-b, $light-modes-map-b in $tints-map {
+          @if ($light-mode-name-a != $light-mode-name-b) {
+            &--#{$light-mode-name-b} {
+              @each $color-name, $color-value in $light-modes-map-b {
+                $selector: str-replace('--color-#{$group-name $tint-name $light-mode-name-a $color-name}', ' ', '-');
+                :root & {
+                  #{$selector}: #{$color-value};
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}
