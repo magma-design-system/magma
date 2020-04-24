@@ -42,8 +42,148 @@
           "c-15": { "value": "#011629" },
           "c-16": { "value": "#010911" },
           "color": {
-            "value": "#2b98f9",
+            "value": "#0559a3",
             "comment": "https://leonardocolor.io/?colorKeys=%230559a3&base=ffffff&ratios=1.05%2C1.15%2C1.26%2C1.4%2C1.6%2C1.9%2C2.25%2C2.7%2C3.3%2C4%2C4.8%2C5.75%2C7%2C8.5%2C10.3%2C12.45&mode=HSL"
+          }
+        }
+      }
+    },
+    "status" : {
+      "success": {
+        "light": {
+          "c-01": { "value": "#1a3c1b" },
+          "c-02": { "value": "#204a22" },
+          "c-03": { "value": "#265728" },
+          "c-04": { "value": "#2c642e" },
+          "c-05": { "value": "#327335" },
+          "c-06": { "value": "#38813b"},
+          "c-07": { "value": "#3e8f42" },
+          "c-08": { "value": "#459f49" },
+          "c-09": { "value": "#4db251" },
+          "c-10": { "value": "#6cbf70" },
+          "c-11": { "value": "#89cc8c" },
+          "c-12": { "value": "#a7d9a9" },
+          "c-13": { "value": "#bfe3c0" },
+          "c-14": { "value": "#d2ecd3" },
+          "c-15": { "value": "#e4f3e5" },
+          "c-16": { "value": "#f6fbf6" },
+          "color": {
+            "value": "#4caf50",
+            "comment": "https://leonardocolor.io/?colorKeys=%234caf50&base=ffffff&ratios=1.05%2C1.15%2C1.26%2C1.4%2C1.6%2C1.9%2C2.25%2C2.7%2C3.3%2C4%2C4.8%2C5.75%2C7%2C8.5%2C10.3%2C12.45&mode=HSL"
+          }
+        },
+        "dark": {
+          "c-01": { "value": "#9dd59f" },
+          "c-02": { "value": "#7dc680" },
+          "c-03": { "value": "#5db960" },
+          "c-04": { "value": "#49a94d" },
+          "c-05": { "value": "#429745" },
+          "c-06": { "value": "#3b883e" },
+          "c-07": { "value": "#357b38" },
+          "c-08": { "value": "#2f6c31" },
+          "c-09": { "value": "#295e2b" },
+          "c-10": { "value": "#235025" },
+          "c-11": { "value": "#1e441f"},
+          "c-12": { "value": "#183719" },
+          "c-13": { "value": "#132c14" },
+          "c-14": { "value": "#0f2210" },
+          "c-15": { "value": "#0a180b" },
+          "c-16": { "value": "#040904" },
+          "color": {
+            "value": "#4caf50",
+            "comment": "https://leonardocolor.io/?colorKeys=%234caf50&base=000000&ratios=1.05%2C1.15%2C1.26%2C1.4%2C1.6%2C1.9%2C2.25%2C2.7%2C3.3%2C4%2C4.8%2C5.75%2C7%2C8.5%2C10.3%2C12.45&mode=HSL"
+          }
+        }
+      },
+      "warning": {
+        "light": {
+          "c-01": { "value": "#423200" },
+          "c-02": { "value": "#523e00" },
+          "c-03": { "value": "#624900" },
+          "c-04": { "value": "#715500" },
+          "c-05": { "value": "#826100" },
+          "c-06": { "value": "#916d00"},
+          "c-07": { "value": "#a17900" },
+          "c-08": { "value": "#b38600" },
+          "c-09": { "value": "#c79600" },
+          "c-10": { "value": "#dba400" },
+          "c-11": { "value": "#eeb200" },
+          "c-12": { "value": "#ffc414" },
+          "c-13": { "value": "#ffd65a" },
+          "c-14": { "value": "#ffe38f" },
+          "c-15": { "value": "#ffeebc" },
+          "c-16": { "value": "#fff9e6" },
+          "color": {
+            "value": "#ffc107",
+            "comment": "https://leonardocolor.io/?colorKeys=%23ffc107&base=ffffff&ratios=1.05%2C1.15%2C1.26%2C1.4%2C1.6%2C1.9%2C2.25%2C2.7%2C3.3%2C4%2C4.8%2C5.75%2C7%2C8.5%2C10.3%2C12.45&mode=HSL"
+          }
+        },
+        "dark": {
+          "c-01": { "value": "#fdbd00" },
+          "c-02": { "value": "#e6ad00" },
+          "c-03": { "value": "#d19d00" },
+          "c-04": { "value": "#bd8d00" },
+          "c-05": { "value": "#aa8000" },
+          "c-06": { "value": "#997300" },
+          "c-07": { "value": "#896700" },
+          "c-08": { "value": "#795b00" },
+          "c-09": { "value": "#694f00" },
+          "c-10": { "value": "#5a4400" },
+          "c-11": { "value": "#4d3900"},
+          "c-12": { "value": "#3e2e00" },
+          "c-13": { "value": "#312500" },
+          "c-14": { "value": "#271d00" },
+          "c-15": { "value": "#1b1400" },
+          "c-16": { "value": "#0a0800" },
+          "color": {
+            "value": "#ffc107",
+            "comment": "https://leonardocolor.io/?colorKeys=%23ffc107&base=000000&ratios=1.05%2C1.15%2C1.26%2C1.4%2C1.6%2C1.9%2C2.25%2C2.7%2C3.3%2C4%2C4.8%2C5.75%2C7%2C8.5%2C10.3%2C12.45&mode=HSL"
+          }
+        }
+      },
+      "error": {
+        "light": {
+          "c-01": { "value": "#6c0d06" },
+          "c-02": { "value": "#821007" },
+          "c-03": { "value": "#9b1208" },
+          "c-04": { "value": "#b2150a" },
+          "c-05": { "value": "#ca180b" },
+          "c-06": { "value": "#e21b0c"},
+          "c-07": { "value": "#f33021" },
+          "c-08": { "value": "#f5584c" },
+          "c-09": { "value": "#f7766d" },
+          "c-10": { "value": "#f89088" },
+          "c-11": { "value": "#faa6a0" },
+          "c-12": { "value": "#fbbeb9" },
+          "c-13": { "value": "#fcd0cd" },
+          "c-14": { "value": "#fddedc" },
+          "c-15": { "value": "#feebea" },
+          "c-16": { "value": "#fff8f7" },
+          "color": {
+            "value": "#f44336",
+            "comment": "https://leonardocolor.io/?colorKeys=%23f44336&base=ffffff&ratios=1.05%2C1.15%2C1.26%2C1.4%2C1.6%2C1.9%2C2.25%2C2.7%2C3.3%2C4%2C4.8%2C5.75%2C7%2C8.5%2C10.3%2C12.45&mode=HSL"
+          }
+        },
+        "dark": {
+          "c-01": { "value": "#fbb7b2" },
+          "c-02": { "value": "#f99d97" },
+          "c-03": { "value": "#f8837a" },
+          "c-04": { "value": "#f6665c" },
+          "c-05": { "value": "#f44538" },
+          "c-06": { "value": "#ee1c0d"},
+          "c-07": { "value": "#d5190c" },
+          "c-08": { "value": "#be170a" },
+          "c-09": { "value": "#a51409" },
+          "c-10": { "value": "#8f1108" },
+          "c-11": { "value": "#7a0f07" },
+          "c-12": { "value": "#640c05" },
+          "c-13": { "value": "#520a04" },
+          "c-14": { "value": "#410804" },
+          "c-15": { "value": "#300603" },
+          "c-16": { "value": "#180301" },
+          "color": {
+            "value": "#f44336",
+            "comment": "https://leonardocolor.io/?colorKeys=%23f44336&base=000000&ratios=1.05%2C1.15%2C1.26%2C1.4%2C1.6%2C1.9%2C2.25%2C2.7%2C3.3%2C4%2C4.8%2C5.75%2C7%2C8.5%2C10.3%2C12.45&mode=HSL"
           }
         }
       }
