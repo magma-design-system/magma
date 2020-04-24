@@ -3,8 +3,8 @@
 .checkbox {
 
   $opacity: 0.25;
-  $color-checked: get($tint, 'brand-maggioli');
-  $color-default: get($tone, 'tone-4');
+  $color-checked: var(--color-brand-maggioli-light-c-04);
+  $color-default: var(--color-adjust-tone-light-c-04);
 
   align-items: flex-start;
   display: inline-flex;
@@ -89,10 +89,10 @@
 }
 
 
-.checkbox {
+.checkbox--alt {
   $opacity: 0.25;
-  $color-checked: get($tint, 'brand-maggioli');
-  $color-default: get($tone, 'tone-4');
+  $color-checked: var(--color-brand-maggioli-light-c-04);
+  $color-default: var(--color-adjust-tone-light-c-04);
 
   &:hover {
     .checkbox {

@@ -58,7 +58,7 @@ TableBody.defaultProps = {
 }
 
 const Table = props =>
-  <div className={`table ${props.className} ${props.interactive ? 'table--interactive' : ''}`}>
+  <div className={`table ${props.className} ${props.interactive ? 'table--interactive' : ''} ${props.scrollable ? '' : 'table--no-scroll'} table--gain-${props.gain}`}>
     <table className="table__element">
       {props.children}
     </table>
@@ -66,12 +66,14 @@ const Table = props =>
 
 Table.propTypes = {
   className: PropTypes.string,
+  gain: PropTypes.number,
   interactive: PropTypes.bool,
   scrollable: PropTypes.bool,
 }
 
 Table.defaultProps = {
   className: '',
+  gain: 2,
   interactive: false,
   scrollable: true,
 }

@@ -1,5 +1,24 @@
 @import '~Sass/import';
 
+@mixin gain ($gain-step) {
+  &--gain-#{$gain-step} {
+    margin-left: s(-($gain-step));
+    margin-right: s(-($gain-step));
+
+    &::after,
+    &::before {
+      min-width: s($gain-step);
+    }
+
+    .table-alternate {
+      &__cell {
+        padding-left: s($gain-step);
+        padding-right: s($gain-step);
+      }
+    }
+  }
+}
+
 @mixin cell {
   .table-alternate {
     &__cell {
@@ -8,16 +27,16 @@
   }
 }
 
-$cell-color: get($tone, 'tone-15');
-$cell-alt-color: rgba(get($tone, 'tone-4'), 0.075);
-$cell-alt-hover-color: rgba(get($tone, 'tone-2'), 0.05);
+$cell-color: var(--color-adjust-tone-light-c-15);
+$cell-alt-color: var(--color-adjust-tone-light-c-15);
+$cell-alt-hover-color: transparent;
 
 .table-alternate {
   // sass-lint:disable no-vendor-prefixes
   -webkit-overflow-scrolling: touch;
 
-  border-bottom: 2px dashed get($tone, 'tone-7');
-  border-top: 2px dashed get($tone, 'tone-7');
+  border-bottom: 2px dashed var(--color-adjust-tone-light-c-07);
+  border-top: 2px dashed var(--color-adjust-tone-light-c-07);
   display: flex;
   margin-left: s(-1);
   margin-right: s(-1);
@@ -33,6 +52,14 @@ $cell-alt-hover-color: rgba(get($tone, 'tone-2'), 0.05);
   &::before {
     content: '';
     min-width: s(1);
+  }
+
+  @include gain(1); // default
+  @include gain(2);
+  @include gain(3);
+
+  &--no-scroll {
+    overflow: visible;
   }
 
   &__element {
@@ -69,9 +96,6 @@ $cell-alt-hover-color: rgba(get($tone, 'tone-2'), 0.05);
               }
 
               &:hover {
-                --box-shadow: #{get($shadow, 'outline'), get($shadow, 'small')};
-                box-shadow: var(--box-shadow);
-
                 @include cell {
                   --background-color: #{$cell-color};
                   background-color: var(--background-color);

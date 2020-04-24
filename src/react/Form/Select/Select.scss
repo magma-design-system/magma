@@ -1,13 +1,13 @@
 @import '~Sass/import';
 
-$brand-color: get($tint, 'brand-maggioli');
+$brand-color: var(--color-brand-maggioli-light-color);
 $input-radius: get($radius, 'small');
 $size: get($form, 'input-height');
 
 .select {
 
   &__label {
-    --color: #{get($tone, 'tone-2')};
+    --color: var(--color-adjust-tone-light-c-02);
 
     color: var(--color);
     margin-bottom: s(0.5);
@@ -18,13 +18,13 @@ $size: get($form, 'input-height');
   }
 
   &__icon {
-    --background-color: #{get($tone, 'tone-3')};
+    --background-color: var(--color-adjust-tone-light-c-03);
 
     align-items: center;
     background-color: var(--background-color);
     border-radius: get($radius, 'small');
     bottom: s(0.25);
-    color: get($tone, 'tone-15');
+    color: var(--color-adjust-tone-light-c-15);
     display: flex;
     height: auto;
     justify-content: center;

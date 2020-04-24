@@ -42,20 +42,24 @@ const TableAltBody = props =>
   </tbody>
 
 const TableAlternate = props =>
-  <div className={`table-alternate ${props.interactive ? 'table-alternate--interactive' : ''}`}>
+  <div className={`table-alternate ${props.interactive ? 'table-alternate--interactive' : ''} ${props.scrollable ? '' : 'table-alternate--no-scroll'} table-alternate--gain-${props.gain}`}>
     <table className="table-alternate__element">
       {props.children}
     </table>
   </div>
 
 TableAlternate.propTypes = {
-  scrollable: PropTypes.bool,
+  className: PropTypes.string,
+  gain: PropTypes.number,
   interactive: PropTypes.bool,
+  scrollable: PropTypes.bool,
 }
 
 TableAlternate.defaultProps = {
-  scrollable: true,
+  className: '',
+  gain: 2,
   interactive: false,
+  scrollable: true,
 }
 
 export default TableAlternate

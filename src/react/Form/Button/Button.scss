@@ -5,8 +5,8 @@ $border-radius: get($radius, 'small');
 
 .button {
 
-  --background: #{get($tint, 'brand-maggioli')};
-  --color: #{get($tone, 'tone-13')};
+  --background: var(--color-brand-maggioli-light-c-04);
+  --color: var(--color-adjust-tone-light-color);
 
   align-items: center;
   background-color: var(--background);
@@ -27,8 +27,8 @@ $border-radius: get($radius, 'small');
   &:active,
   &:focus,
   &:hover {
-    --background: #{hts('brand-maggioli', 'tone-2')};
-    --color: #{get($tone, 'tone-15')};
+    --background: var(--color-brand-maggioli-light-c-02);
+    --color: var(--color-adjust-tone-light-c-16);
 
     background-color: var(--background);
     border-color: var(--background);
@@ -58,8 +58,8 @@ $border-radius: get($radius, 'small');
   }
 
   &--disabled {
-    --background: #{get($tone, 'tone-6')};
-    --color: #{get($tone, 'tone-9')};
+    --background: var(--color-adjust-tone-light-c-13);
+    --color: var(--color-adjust-tone-light-c-16);
 
     background-color: var(--background);
     border-color: var(--background);
@@ -69,9 +69,8 @@ $border-radius: get($radius, 'small');
 }
 
 .button--dark {
-    // --background: #{get($tint, 'brand-maggioli')};
-    --background: red;
-    --color: #{get($tone, 'tone-14')};
+    --background: var(--color-brand-maggioli-light-c-04);
+    --color: var(--color-adjust-tone-light-color);
 
     &:active,
     &:focus,

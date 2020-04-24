@@ -1,17 +1,36 @@
 @import '~Sass/import';
 
-$cell-background-color: get($tone, 'tone-14');
-$cell-border: get($tone, 'tone-13');
-$cell-border-first: get($tone, 'tone-6');
-$cell-border-hover: get($tone, 'tone-13');
+$cell-background-color: var(--color-adjust-tone-light-c-15);
+$cell-border: var(--color-adjust-tone-light-c-14);
+$cell-border-first: var(--color-adjust-tone-light-c-11);
+$cell-border-hover: var(--color-adjust-tone-light-c-13);
 $border-style: 2px solid;
+
+@mixin gain ($gain-step) {
+  &--gain-#{$gain-step} {
+    margin-left: s(-($gain-step));
+    margin-right: s(-($gain-step));
+
+    &::after,
+    &::before {
+      min-width: s($gain-step);
+    }
+
+    .table {
+      &__cell {
+        padding-left: s($gain-step);
+        padding-right: s($gain-step);
+      }
+    }
+  }
+}
 
 .table {
   // sass-lint:disable no-vendor-prefixes
   -webkit-overflow-scrolling: touch;
 
-  border-bottom: 2px dashed get($tone, 'tone-7');
-  border-top: 2px dashed get($tone, 'tone-7');
+  border-bottom: 2px dashed var(--color-adjust-tone-light-c-07);
+  border-top: 2px dashed var(--color-adjust-tone-light-c-07);
   display: flex;
   margin-left: s(-1);
   margin-right: s(-1);
@@ -29,6 +48,14 @@ $border-style: 2px solid;
   &::before {
     content: '';
     min-width: s(1);
+  }
+
+  @include gain(1); // default
+  @include gain(2);
+  @include gain(3);
+
+  &--no-scroll {
+    overflow: visible;
   }
 
   &__element {

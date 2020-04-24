@@ -4,17 +4,17 @@ $dot-size: s(1);
 $padding-size: s(0.25);
 
 $dot: (
-  'checked': get($tone, 'tone-15'),
-  'hover': get($tone, 'tone-15'),
+  'checked': var(--color-adjust-tone-light-c-15),
+  'hover': var(--color-adjust-tone-light-c-15),
   'radius': 100px,
-  'unchecked': get($tone, 'tone-15'),
+  'unchecked': var(--color-adjust-tone-light-c-15),
 );
 
 $box: (
-  'checked': get($tint, 'brand-maggioli'),
-  'hover': get($tone, 'tone-10'),
+  'checked': var(--color-brand-maggioli-light-color),
+  'hover': var(--color-adjust-tone-light-c-10),
   'radius': 100px,
-  'unchecked': get($tone, 'tone-12'),
+  'unchecked': var(--color-adjust-tone-light-c-12),
 );
 
 .switch {
