@@ -1,4 +1,5 @@
 {
+  "close": "close",
   "email": "email",
   "formCheckboxChecked": "check_box",
   "formCheckboxUnchecked": "check_box_outline_blank",

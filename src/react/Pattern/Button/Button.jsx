@@ -1,14 +1,16 @@
 import React from 'react'
 import PropTypes from 'prop-types'
-import Typography from '../Typography'
+import FormButton from '@Form/Button/Button'
+import faker from 'faker'
 
 const Paragraph = props =>
-  <Typography
+  <FormButton
     className={`text-secondary text-secondary--paragraph ${props.className}`}
     htmlTag={props.htmlTag}
+    {...props}
   >
-    {props.children}
-  </Typography>
+    { props.children ? props.children : faker.lorem.paragraph() }
+  </FormButton>
 
 Paragraph.propTypes = {
   className: PropTypes.string,
@@ -17,7 +19,7 @@ Paragraph.propTypes = {
 
 Paragraph.defaultProps = {
   className: '',
-  htmlTag: 'p',
+  htmlTag: 'div',
 }
 
 export default Paragraph

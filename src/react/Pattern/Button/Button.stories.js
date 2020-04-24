@@ -7,7 +7,7 @@ import Grid from '@Layout/Grid/Grid'
 faker.locale = 'it'
 
 export default {
-  title: 'Form/Button',
+  title: 'Pattern/Button',
   component: Button,
 }
 

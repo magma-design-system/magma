@@ -46,6 +46,7 @@ module.exports = async ({ config, mode }) => {
       '@Design': path.resolve(__dirname, '../src/react/Design/'),
       '@Form': path.resolve(__dirname, '../src/react/Form/'),
       '@Layout': path.resolve(__dirname, '../src/react/Layout/'),
+      '@Pattern': path.resolve(__dirname, '../src/react/Pattern/'),
       '@System': path.resolve(__dirname, '../src/react/System/'),
       '@Typography': path.resolve(__dirname, '../src/react/Design/Typography/'),
       '~Sass': path.resolve(__dirname, '../src/scss/'),

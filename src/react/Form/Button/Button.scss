@@ -6,11 +6,12 @@ $border-radius: get($radius, 'small');
 .button {
 
   --background: var(--color-brand-maggioli-light-c-04);
+  --border-color: transparent;
   --color: var(--color-adjust-tone-light-color);
 
   align-items: center;
   background-color: var(--background);
-  border: 1px solid var(--background);
+  border: 1px solid var(--border-color);
   border-radius: $border-radius;
   color: var(--color);
   cursor: pointer;
@@ -58,29 +59,95 @@ $border-radius: get($radius, 'small');
   }
 
   &--disabled {
-    --background: var(--color-adjust-tone-light-c-13);
-    --color: var(--color-adjust-tone-light-c-16);
-
-    background-color: var(--background);
-    border-color: var(--background);
-    color: var(--color);
+    opacity: 0.4;
     pointer-events: none;
   }
 }
 
-.button--dark {
-    --background: var(--color-brand-maggioli-light-c-04);
+.button--small {
+  height: get($form, 'input-height-small');
+  padding: 0 s(0.5);
+}
+
+.button--round {
+  border-radius: get($form, 'input-height');
+}
+
+.button--link {
+  --background: transparent;
+  --color: var(--color-brand-maggioli-light-c-04);
+  justify-content: flex-start;
+
+  .button {
+    &__text {
+      text-decoration: underline;
+    }
+  }
+
+  &:active,
+  &:focus,
+  &:hover {
+    --background: transparent;
+    --color: var(--color-brand-maggioli-light-c-08);
+  }
+}
+
+@mixin scaffold-theme ($modifier, $color-set) {
+  .button--#{$modifier} {
+    --background: var(--color-#{$color-set}-light-c-04);
     --color: var(--color-adjust-tone-light-color);
 
     &:active,
     &:focus,
     &:hover {
-      --background: var(--color-brand-maggioli-light-c-02);
+      --background: var(--color-#{$color-set}-light-c-02);
       --color: var(--color-adjust-tone-light-c-15);
     }
+  }
 
-    &--disabled {
-      --background: var(--color-adjust-tone-light-c-06);
-      --color: var(--color-adjust-tone-light-c-09);
+  .button--#{$modifier}-outline {
+    --background: transparent;
+    --border-color: var(--color-#{$color-set}-light-c-04);
+    --color: var(--color-#{$color-set}-light-c-04);
+
+    &:active,
+    &:focus,
+    &:hover {
+      --background: var(--color-#{$color-set}-light-c-04);
+      --color: var(--color-adjust-tone-light-color);
     }
+  }
 }
+
+@mixin scaffold-status-theme ($modifier, $color-set) {
+  .button--#{$modifier} {
+    --background: var(--color-#{$color-set}-light-c-08);
+    --color: var(--color-adjust-tone-light-color);
+
+    &:active,
+    &:focus,
+    &:hover {
+      --background: var(--color-#{$color-set}-light-c-06);
+      --color: var(--color-adjust-tone-light-c-15);
+    }
+  }
+
+  .button--#{$modifier}-outline {
+    --background: var(--color-adjust-tone-light-color);
+    --border-color: var(--color-#{$color-set}-light-c-08);
+    --color: var(--color-#{$color-set}-light-c-08);
+
+    &:active,
+    &:focus,
+    &:hover {
+      --background: var(--color-#{$color-set}-light-c-08);
+      --color: var(--color-adjust-tone-light-c-15);
+    }
+  }
+}
+
+@include scaffold-theme('primary', 'brand-maggioli');
+@include scaffold-theme('secondary', 'adjust-tone');
+@include scaffold-status-theme('success', 'status-success');
+@include scaffold-status-theme('warning', 'status-warning');
+@include scaffold-status-theme('error', 'status-error');

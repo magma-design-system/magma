@@ -2,6 +2,7 @@ import React from 'react'
 import PropTypes from 'prop-types'
 import './Radio.scss'
 import Icon from '@Design/Icon/Icon'
+import Caption from '@Typography/Caption/Caption'
 
 const Radio = props =>
   <label className={`radio ${props.className} ${props.textClassName} ${props.icon ? 'radio--custom' : ''}`.trim()}>
@@ -14,9 +15,9 @@ const Radio = props =>
     />
     <Icon className={`radio__icon ${props.iconClassName}`} name={`${props.icon ? props.icon : 'formRadioUnchecked'}`}/>
     <Icon className={`radio__icon ${props.iconClassName}`} name={`${props.icon ? props.icon : 'formRadioChecked'}`}/>
-    <div className="radio__text">
+    <Caption className="radio__text">
       {props.children}
-    </div>
+    </Caption>
   </label>
 
 Radio.propTypes = {

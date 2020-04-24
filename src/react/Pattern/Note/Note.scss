@@ -1,0 +1,53 @@
+@import '~Sass/import';
+
+@mixin status-theme ($modifier) {
+  &--#{$modifier} {
+    background-color: var(--color-status-#{$modifier}-light-c-14);
+    color: var(--color-status-#{$modifier}-light-c-06);
+  }
+}
+
+// sass-lint:disable no-color-literals
+
+$note-color: #fae989;
+$note-color-dark: mix(#000, $note-color);
+$angle-size: s(1);
+
+.note {
+  background-color: $note-color;
+  box-shadow: 0 0 0 1px rgba(0, 0, 0, 0.04), 0 2px 4px rgba(0, 0, 0, 0.1);
+  color: $note-color-dark;
+  padding: s(0.5) s(1);
+  position: relative;
+
+  &::after {
+    border-color: transparent transparent rgba(#fff, 0.5);
+    border-style: solid;
+    border-width: 0 0 $angle-size $angle-size;
+    bottom: 0;
+    content: '';
+    height: 0;
+    position: absolute;
+    right: 0;
+    width: 0;
+    z-index: 1;
+  }
+
+  &__close {
+    cursor: pointer;
+    position: absolute;
+    right: s(0.25);
+    top: s(0.25);
+    user-select: none;
+    z-index: 2;
+  }
+
+  &--dismiss {
+    padding-right: s(2);
+  }
+
+  @include status-theme('success');
+  @include status-theme('warning');
+  @include status-theme('error');
+
+}

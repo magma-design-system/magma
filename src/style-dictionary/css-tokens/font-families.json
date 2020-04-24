@@ -80,11 +80,11 @@
       "button" : {
         "default": {
           "font-size": "14px",
-          "line-height": "25px",
+          "line-height": "15px",
           "font-weight": "500"
         },
         "tablet": {
-          "line-height": "30px"
+          "line-height": "15px"
         }
       }
     }
