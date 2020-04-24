@@ -59,7 +59,7 @@ $size: get($form, 'textarea-height');
   }
 
   &__label {
-    --color: #{get($tone, 'tone-2')};
+    --color: var(--color-adjust-tone-light-c-02);
 
     color: var(--color);
     margin-bottom: s(0.5);

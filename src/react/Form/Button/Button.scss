@@ -75,12 +75,12 @@ $border-radius: get($radius, 'small');
     &:active,
     &:focus,
     &:hover {
-      --background: #{hts('brand-maggioli', 'tone-2')};
-      --color: #{get($tone, 'tone-15')};
+      --background: var(--color-brand-maggioli-light-c-02);
+      --color: var(--color-adjust-tone-light-c-15);
     }
 
     &--disabled {
-      --background: #{get($tone, 'tone-6')};
-      --color: #{get($tone, 'tone-9')};
+      --background: var(--color-adjust-tone-light-c-06);
+      --color: var(--color-adjust-tone-light-c-09);
     }
 }

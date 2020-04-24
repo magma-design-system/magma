@@ -46,7 +46,7 @@ $size: get($form, 'input-height');
 
   &__field {
     --box-shadow: #{get($shadow, 'tiny'), get($shadow, 'outline')};
-    --color: #{get($tone, 'tone-2')};
+    --color: var(--color-adjust-tone-light-c-02);
 
     appearance: none;
     background-color: transparent;
@@ -84,7 +84,7 @@ $size: get($form, 'input-height');
       outline: 0;
 
       &::placeholder {
-        --color: #{get($tone, 'tone-12')};
+        --color: var(--color-adjust-tone-light-c-12);
         color: var(--color);
       }
 

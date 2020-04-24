@@ -15,11 +15,11 @@
 
 $data: '';
 
-@each $tint-name, $tint-color in $tint {
-  @each $tone-name, $tone-color in $tone {
-    $data: #{$data + get-scaled-selector('background-color', $tint-name, $tone-name)};
-  }
-}
+// @each $tint-name, $tint-color in $tint {
+//   @each $tone-name, $tone-color in $tone {
+//     $data: #{$data + get-scaled-selector('background-color', $tint-name, $tone-name)};
+//   }
+// }
 
 // sass-lint:disable no-misspelled-properties
 :export {
