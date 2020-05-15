@@ -17,7 +17,7 @@ export const basicUsage = () =>
   </Tag>
 
 export const Colors = () =>
-  <Tag iconClassName="color-status-success-light-c-09">
+  <Tag iconClassName="color-status-success-c-09">
     <Paragraph>{faker.lorem.word()}</Paragraph>
   </Tag>
 

@@ -1,13 +1,13 @@
 @import '~Sass/import';
 
-$brand-color: var(--color-brand-maggioli-light-color);
+$brand-color: var(--color-brand-maggioli-color);
 $input-radius: get($radius, 'small');
 $size: get($form, 'input-height');
 
 .select {
 
   &__label {
-    --color: var(--color-adjust-tone-light-c-02);
+    --color: var(--color-adjust-tone-c-02);
 
     color: var(--color);
     margin-bottom: s(0.5);
@@ -18,13 +18,13 @@ $size: get($form, 'input-height');
   }
 
   &__icon {
-    --background-color: var(--color-adjust-tone-light-c-03);
+    --background-color: var(--color-adjust-tone-c-03);
 
     align-items: center;
     background-color: var(--background-color);
     border-radius: get($radius, 'small');
     bottom: s(0.25);
-    color: var(--color-adjust-tone-light-c-15);
+    color: var(--color-adjust-tone-c-15);
     display: flex;
     height: auto;
     justify-content: center;
@@ -45,11 +45,12 @@ $size: get($form, 'input-height');
   }
 
   &__field {
+    --background-color: var(--color-adjust-tone-color);
     --box-shadow: #{get($shadow, 'tiny'), get($shadow, 'outline')};
-    --color: var(--color-adjust-tone-light-c-02);
+    --color: var(--color-adjust-tone-c-02);
 
     appearance: none;
-    background-color: transparent;
+    background-color: var(--background-color);
     border-radius: $input-radius;
     border: 1px solid transparent;
     box-shadow: var(--box-shadow);
@@ -84,7 +85,7 @@ $size: get($form, 'input-height');
       outline: 0;
 
       &::placeholder {
-        --color: var(--color-adjust-tone-light-c-12);
+        --color: var(--color-adjust-tone-c-12);
         color: var(--color);
       }
 

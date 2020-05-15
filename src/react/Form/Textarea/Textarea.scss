@@ -1,13 +1,13 @@
 @import '~Sass/import';
 
-$brand-color: var(--color-brand-maggioli-light-color);
+$brand-color: var(--color-brand-maggioli-color);
 $ease: get($tween, 'hover');
-$error-blur-border-color: var(--color-status-error-light-c-04);
-$error-focus-border-color: var(--color-status-error-light-color);
-$error-focus-outline: 0 0 0 4px var(--color-status-error-light-c-04);
+$error-blur-border-color: var(--color-status-error-c-04);
+$error-focus-border-color: var(--color-status-error-color);
+$error-focus-outline: 0 0 0 4px var(--color-status-error-c-04);
 $input-radius-error: get($radius, 'small');
 $input-radius: get($radius, 'small');
-$label-color: var(--color-adjust-tone-light-c-02);
+$label-color: var(--color-adjust-tone-c-02);
 $icon-size: get($form, 'input-height');
 $size: get($form, 'textarea-height');
 
@@ -59,7 +59,7 @@ $size: get($form, 'textarea-height');
   }
 
   &__label {
-    --color: var(--color-adjust-tone-light-c-02);
+    --color: var(--color-adjust-tone-c-02);
 
     color: var(--color);
     margin-bottom: s(0.5);
@@ -68,7 +68,7 @@ $size: get($form, 'textarea-height');
   &__field {
     --border-color: transparent;
     --box-shadow: #{get($shadow, 'tiny'), get($shadow, 'outline')};
-    --color: var(--color-adjust-tone-light-c-02);
+    --color: var(--color-adjust-tone-c-02);
 
     border: 1px solid var(--border-color);
     border-radius: $input-radius;
@@ -93,13 +93,13 @@ $size: get($form, 'textarea-height');
       outline: 0;
 
       &::placeholder {
-        --color: var(--color-adjust-tone-light-c-12);
+        --color: var(--color-adjust-tone-c-12);
         color: var(--color);
       }
     }
 
     &::placeholder {
-      --color: var(--color-adjust-tone-light-c-08);
+      --color: var(--color-adjust-tone-c-08);
       color: var(--color);
       transition: color $ease;
     }
@@ -117,13 +117,13 @@ $size: get($form, 'textarea-height');
   }
 
   &__icon {
-    --color: var(--color-adjust-tone-light-c-02);
+    --color: var(--color-adjust-tone-c-02);
     color: var(--color);
     transition: color $ease;
   }
 
   &__errors {
-    background-color: var(--color-status-error-light-c-08);
+    background-color: var(--color-status-error-c-08);
     border-radius: 0 0 $input-radius-error $input-radius-error;
     margin: 0;
     padding: s(0.5);
@@ -143,7 +143,7 @@ $size: get($form, 'textarea-height');
 }
 
 .textarea--flat {
-  $text-color: var(--color-adjust-tone-light-c-02);
+  $text-color: var(--color-adjust-tone-c-02);
 
   .textarea {
     &__label {
@@ -161,7 +161,7 @@ $size: get($form, 'textarea-height');
 
     &__field {
       --box-shadow: none;
-      --border-color: var(--color-adjust-tone-light-c-10);
+      --border-color: var(--color-adjust-tone-c-10);
       --color: #{$text-color};
 
       &:focus {
@@ -169,12 +169,12 @@ $size: get($form, 'textarea-height');
         --box-shadow: none;
 
         &::placeholder {
-          --color: var(--color-adjust-tone-light-c-12);
+          --color: var(--color-adjust-tone-c-12);
         }
       }
 
       &::placeholder {
-        --color: var(--color-adjust-tone-light-c-08);
+        --color: var(--color-adjust-tone-c-08);
       }
     }
 

@@ -3,8 +3,8 @@
 .radio {
 
   $opacity: 0.25;
-  $color-checked: var(--color-brand-maggioli-light-color);
-  $color-default: var(--color-adjust-tone-light-c-06);
+  $color-checked: var(--color-brand-maggioli-color);
+  $color-default: var(--color-adjust-tone-c-06);
 
   align-items: flex-start;
   display: inline-flex;
@@ -91,8 +91,8 @@
 
 .radio--custom {
   $opacity: 0.25;
-  $color-checked: var(--color-brand-maggioli-light-color);
-  $color-default: var(--color-adjust-tone-light-c-06);
+  $color-checked: var(--color-brand-maggioli-color);
+  $color-default: var(--color-adjust-tone-c-06);
 
   &:hover {
     .radio {

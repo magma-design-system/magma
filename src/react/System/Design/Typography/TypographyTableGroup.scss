@@ -3,7 +3,7 @@
 
 @mixin division ($distance, $border-width) {
   //border-top: $border-width solid token('adjust.tone.t15', $color);
-  border-top: $border-width solid var(--color-adjust-tone-light-15);
+  border-top: $border-width solid var(--color-adjust-tone-15);
   margin-top: $distance;
   padding-top: $distance;
 }

@@ -1,9 +1,9 @@
 @import '~Sass/import';
 
-$cell-background-color: var(--color-adjust-tone-light-c-15);
-$cell-border: var(--color-adjust-tone-light-c-14);
-$cell-border-first: var(--color-adjust-tone-light-c-11);
-$cell-border-hover: var(--color-adjust-tone-light-c-13);
+$cell-background-color: var(--color-adjust-tone-c-15);
+$cell-border: var(--color-adjust-tone-c-14);
+$cell-border-first: var(--color-adjust-tone-c-11);
+$cell-border-hover: var(--color-adjust-tone-c-13);
 $border-style: 2px solid;
 
 @mixin gain ($gain-step) {
@@ -29,8 +29,8 @@ $border-style: 2px solid;
   // sass-lint:disable no-vendor-prefixes
   -webkit-overflow-scrolling: touch;
 
-  border-bottom: 2px dashed var(--color-adjust-tone-light-c-07);
-  border-top: 2px dashed var(--color-adjust-tone-light-c-07);
+  border-bottom: 2px dashed var(--color-adjust-tone-c-07);
+  border-top: 2px dashed var(--color-adjust-tone-c-07);
   display: flex;
   margin-left: s(-1);
   margin-right: s(-1);

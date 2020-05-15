@@ -5,9 +5,9 @@ $border-radius: get($radius, 'small');
 
 .button {
 
-  --background: var(--color-brand-maggioli-light-c-04);
+  --background: var(--color-brand-maggioli-c-04);
   --border-color: transparent;
-  --color: var(--color-adjust-tone-light-color);
+  --color: var(--color-adjust-tone-color);
 
   align-items: center;
   background-color: var(--background);
@@ -28,8 +28,8 @@ $border-radius: get($radius, 'small');
   &:active,
   &:focus,
   &:hover {
-    --background: var(--color-brand-maggioli-light-c-02);
-    --color: var(--color-adjust-tone-light-c-16);
+    --background: var(--color-brand-maggioli-c-02);
+    --color: var(--color-adjust-tone-c-16);
 
     background-color: var(--background);
     border-color: var(--background);
@@ -75,7 +75,7 @@ $border-radius: get($radius, 'small');
 
 .button--link {
   --background: transparent;
-  --color: var(--color-brand-maggioli-light-c-04);
+  --color: var(--color-brand-maggioli-c-04);
   justify-content: flex-start;
 
   .button {
@@ -88,60 +88,60 @@ $border-radius: get($radius, 'small');
   &:focus,
   &:hover {
     --background: transparent;
-    --color: var(--color-brand-maggioli-light-c-08);
+    --color: var(--color-brand-maggioli-c-08);
   }
 }
 
 @mixin scaffold-theme ($modifier, $color-set) {
   .button--#{$modifier} {
-    --background: var(--color-#{$color-set}-light-c-04);
-    --color: var(--color-adjust-tone-light-color);
+    --background: var(--color-#{$color-set}-c-04);
+    --color: var(--color-adjust-tone-color);
 
     &:active,
     &:focus,
     &:hover {
-      --background: var(--color-#{$color-set}-light-c-02);
-      --color: var(--color-adjust-tone-light-c-15);
+      --background: var(--color-#{$color-set}-c-02);
+      --color: var(--color-adjust-tone-c-15);
     }
   }
 
   .button--#{$modifier}-outline {
     --background: transparent;
-    --border-color: var(--color-#{$color-set}-light-c-04);
-    --color: var(--color-#{$color-set}-light-c-04);
+    --border-color: var(--color-#{$color-set}-c-04);
+    --color: var(--color-#{$color-set}-c-04);
 
     &:active,
     &:focus,
     &:hover {
-      --background: var(--color-#{$color-set}-light-c-04);
-      --color: var(--color-adjust-tone-light-color);
+      --background: var(--color-#{$color-set}-c-04);
+      --color: var(--color-adjust-tone-color);
     }
   }
 }
 
 @mixin scaffold-status-theme ($modifier, $color-set) {
   .button--#{$modifier} {
-    --background: var(--color-#{$color-set}-light-c-08);
-    --color: var(--color-adjust-tone-light-color);
+    --background: var(--color-#{$color-set}-c-08);
+    --color: var(--color-adjust-tone-color);
 
     &:active,
     &:focus,
     &:hover {
-      --background: var(--color-#{$color-set}-light-c-06);
-      --color: var(--color-adjust-tone-light-c-15);
+      --background: var(--color-#{$color-set}-c-06);
+      --color: var(--color-adjust-tone-c-15);
     }
   }
 
   .button--#{$modifier}-outline {
-    --background: var(--color-adjust-tone-light-color);
-    --border-color: var(--color-#{$color-set}-light-c-08);
-    --color: var(--color-#{$color-set}-light-c-08);
+    --background: var(--color-adjust-tone-color);
+    --border-color: var(--color-#{$color-set}-c-08);
+    --color: var(--color-#{$color-set}-c-08);
 
     &:active,
     &:focus,
     &:hover {
-      --background: var(--color-#{$color-set}-light-c-08);
-      --color: var(--color-adjust-tone-light-c-15);
+      --background: var(--color-#{$color-set}-c-08);
+      --color: var(--color-adjust-tone-c-15);
     }
   }
 }

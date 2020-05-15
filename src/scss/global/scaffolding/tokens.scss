@@ -10,7 +10,7 @@
 @mixin scaffold-property($property, $name, $value) {
   // sass-lint:disable no-important
   .#{$property}-#{$name} {
-    #{$property}: var(#{$value});
+    #{$property}: var(#{$value}) !important;
   }
 }
 
