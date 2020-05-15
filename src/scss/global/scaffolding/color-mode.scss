@@ -18,16 +18,16 @@
 
 :root {
   @include scaffold-vars('light');
-}
 
-:root .color-mode {
-  // @include scaffold-vars('light');
+  .color-mode {
+    @media (prefers-color-scheme: dark) {
+      @include scaffold-vars('dark');
+    }
 
-  @media (prefers-color-scheme: dark) {
-    @include scaffold-vars('dark');
-  }
-
-  &--dark {
-    @include scaffold-vars('dark');
+    &--dark {
+      @include scaffold-vars('dark');
+    }
   }
 }
+
+
