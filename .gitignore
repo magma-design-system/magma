@@ -3,6 +3,6 @@
 .react/
 /out*
 /src/scss/variables/*.scss
-/style-dictionary/build
+/src/style-dictionary/build
 node_modules/
 npm-debug.log
