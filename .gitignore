@@ -1,8 +1,8 @@
+!src/scss/variables/theme.scss
 .DS_Store
+.react/
+/out*
+/src/scss/variables/*.scss
+/style-dictionary/build
 node_modules/
 npm-debug.log
-src/scss/variables/*.scss
-!src/scss/variables/theme.scss
-/out*
-.react/
-src/style-dictionary/build/*
