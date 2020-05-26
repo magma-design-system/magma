@@ -7,7 +7,8 @@
     "dev:storybook": "npm run tokens && start-storybook --port 2046",
     "lint": "npm run lint:js && npm run lint:sass",
     "lint:js": "eslint src/react/**/*.{js,jsx} --fix",
-    "lint:sass": "sass-lint -c .sass-lint.yml 'src/scss/**/*.scss' -v -i 'src/scss/variables/**/*.scss'",
+    "lint:sass": "echo 'SKIPPING lint:sass and waiting for lint:stylelint'",
+    "lint:stylelint": "npx stylelint --config .stylelintrc.json 'src/scss/**/*.scss' --ignore-pattern 'src/scss/variables/**/*.scss'",
     "tokens": "npm run tokens:css-tokens && npm run tokens:style-dictionary",
     "tokens:css-tokens": "run-for-every-file --src src/style-dictionary/css-tokens/ --dest src/scss/variables/ --file '**/*.json' --not-file '**/*.scss' --run 'json-to-scss {{src-file}} {{dest}}{{file-name-ext}}'",
     "tokens:style-dictionary": "cd ./src/style-dictionary/ && node build.js"
@@ -65,10 +66,14 @@
     "postcss-loader": "^3.0.0",
     "run-for-every-file": "^1.1.0",
     "sass-extract": "^2.1.0",
-    "sass-lint": "^1.13.1",
     "sass-loader": "^7.1.0",
     "standard": "^13.0.2",
-    "style-dictionary": "^2.8.3"
+    "style-dictionary": "^2.8.3",
+    "stylelint": "^13.5.0",
+    "stylelint-config-sass-guidelines": "^7.0.0",
+    "stylelint-config-standard": "^20.0.0",
+    "stylelint-order": "^4.0.0",
+    "stylelint-scss": "^3.17.2"
   },
   "dependencies": {
     "material-design-icons": "^3.0.1",

@@ -151,3 +151,9 @@ $border-radius: get($radius, 'small');
 @include scaffold-status-theme('success', 'status-success');
 @include scaffold-status-theme('warning', 'status-warning');
 @include scaffold-status-theme('error', 'status-error');
+
+/*
+--toolbar-theme: {
+    background-color: hsl(120, 70%, 95%);
+  };
+*/

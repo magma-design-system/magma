@@ -1,33 +1,60 @@
-@function get-var-name($group-name, $tint-name, $color-name) {
+
+@function get-var-name ($group-name, $tint-name, $color-name) {
   @return str-replace('--color-#{$group-name $tint-name $color-name}', ' ', '-');
 }
 
-@mixin scaffold-vars($light-mode) {
+@mixin scaffold-vars ($light-mode) {
   @each $group-name, $group-map in get($tokens, 'color') {
     @each $tint-name, $tints-map in $group-map {
       @each $light-mode-name, $light-modes-map in $tints-map {
+
         @if ($light-mode-name == $light-mode) {
           @each $color-name, $color-value in $light-modes-map {
             #{get-var-name($group-name, $tint-name, $color-name)}: #{$color-value};
           }
         }
+
       }
     }
   }
 }
 
 :root {
-  @include scaffold-vars('light');
+  @include scaffold-vars($light-mode: 'light');
 
   .color-mode {
-    @media (prefers-color-scheme: dark) {
-      @include scaffold-vars('dark');
+
+    $light-mode: dark;
+
+    @media (prefers-color-scheme: $light-mode) {
+      @include scaffold-vars($light-mode);
     }
 
     &--dark {
-      @include scaffold-vars('dark');
+      @include scaffold-vars($light-mode);
     }
   }
 }
 
+.color-mode {
 
+  &__dark {
+    @media (prefers-color-scheme: light) {
+      display: none;
+    }
+
+    .color-mode--light & {
+      display: none;
+    }
+  }
+
+  &__light {
+    .color-mode--dark & {
+      display: none;
+    }
+
+    @media (prefers-color-scheme: dark) {
+      display: none;
+    }
+  }
+}
