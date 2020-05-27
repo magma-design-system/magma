@@ -163,10 +163,9 @@ $modal-background: rgba(0, 0, 0, 0.5);
   }
 
   &__contents {
-    // sass-lint:disable no-vendor-prefixes
-    -webkit-overflow-scrolling: touch;
     flex-grow: 1;
     overflow: auto;
+    -webkit-overflow-scrolling: touch;
     padding: s(1);
 
     @include media ('tablet') {

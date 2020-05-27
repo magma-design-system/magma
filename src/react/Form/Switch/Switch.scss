@@ -2,14 +2,12 @@
 
 $dot-size: s(1);
 $padding-size: s(0.25);
-
 $dot: (
   'checked': var(--color-adjust-tone-c-15),
   'hover': var(--color-adjust-tone-c-15),
   'radius': 100px,
   'unchecked': var(--color-adjust-tone-c-15),
 );
-
 $box: (
   'checked': var(--color-brand-maggioli-color),
   'hover': var(--color-adjust-tone-c-10),
@@ -18,7 +16,6 @@ $box: (
 );
 
 .switch {
-
   align-items: flex-start;
   display: inline-flex;
 
@@ -31,6 +28,7 @@ $box: (
         filter: grayscale(0);
 
         // sass-lint:disable nesting-depth
+
         .switch__dot {
           background-color: get($dot, 'checked');
           transform: translate(100%, 0);

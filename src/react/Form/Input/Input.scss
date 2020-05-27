@@ -11,7 +11,6 @@ $label-color: var(--color-adjust-tone-c-02);
 $size: get($form, 'input-height');
 
 .input {
-
   display: block;
   line-height: 0;
   margin-bottom: s(-1);
@@ -30,7 +29,9 @@ $size: get($form, 'input-height');
   &:focus-within {
     .input {
       &__icon {
+
         --color: #{$brand-color};
+
         color: var(--color);
       }
     }
@@ -58,6 +59,7 @@ $size: get($form, 'input-height');
   }
 
   &__label {
+
     --color: var(--color-adjust-tone-c-02);
 
     color: var(--color);
@@ -65,6 +67,7 @@ $size: get($form, 'input-height');
   }
 
   &__field {
+
     --background-color: var(--color-adjust-tone-color);
     --border-color: transparent;
     --box-shadow: #{get($shadow, 'tiny'), get($shadow, 'outline')};
@@ -84,6 +87,7 @@ $size: get($form, 'input-height');
     z-index: 1;
 
     &:focus {
+
       --border-color: #{$brand-color};
       --box-shadow: #{get($shadow, 'tiny'), get($shadow, 'outline')};
 
@@ -92,13 +96,17 @@ $size: get($form, 'input-height');
       outline: 0;
 
       &::placeholder {
+
         --color: var(--color-adjust-tone-c-12);
+
         color: var(--color);
       }
     }
 
     &::placeholder {
+
       --color: var(--color-adjust-tone-c-08);
+
       color: var(--color);
       line-height: $size;
       transition: color $ease;
@@ -110,14 +118,16 @@ $size: get($form, 'input-height');
     display: flex;
     height: $size;
     justify-content: center;
-    position: absolute;
     left: 0;
+    position: absolute;
     width: $size;
     z-index: 2;
   }
 
   &__icon {
+
     --color: var(--color-adjust-tone-c-02);
+
     color: var(--color);
     transition: color $ease;
   }
@@ -144,32 +154,39 @@ $size: get($form, 'input-height');
 
 .input--flat {
   .input {
+
     $text-color: var(--color-adjust-tone-c-02);
 
     &__label {
+
       --color: #{$text-color};
     }
 
     &__field {
+
       --box-shadow: none;
       --border-color: var(--color-adjust-tone-c-10);
       --color: #{$text-color};
 
       &:focus {
+
         --border-color: #{$brand-color};
         --box-shadow: none;
 
         &::placeholder {
+
           --color: var(--color-adjust-tone-c-12);
         }
       }
 
       &::placeholder {
+
         --color: var(--color-adjust-tone-c-08);
       }
     }
 
     &__icon {
+
       --color: #{$text-color};
     }
   }

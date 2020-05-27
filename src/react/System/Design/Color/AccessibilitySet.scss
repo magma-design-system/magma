@@ -6,7 +6,9 @@
   }
 
   &__dot {
+
     $size: 50px;
+
     border-radius: $size;
     box-shadow: get($shadow, 'inline');
     height: $size;

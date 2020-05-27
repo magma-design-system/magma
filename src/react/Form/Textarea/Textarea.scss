@@ -12,7 +12,6 @@ $icon-size: get($form, 'input-height');
 $size: get($form, 'textarea-height');
 
 .textarea {
-
   display: block;
   line-height: 0;
   margin-bottom: s(-1);
@@ -31,7 +30,9 @@ $size: get($form, 'textarea-height');
   &:focus-within {
     .textarea {
       &__icon {
+
         --color: #{$brand-color};
+
         color: var(--color);
       }
     }
@@ -59,6 +60,7 @@ $size: get($form, 'textarea-height');
   }
 
   &__label {
+
     --color: var(--color-adjust-tone-c-02);
 
     color: var(--color);
@@ -66,6 +68,7 @@ $size: get($form, 'textarea-height');
   }
 
   &__field {
+
     --border-color: transparent;
     --box-shadow: #{get($shadow, 'tiny'), get($shadow, 'outline')};
     --color: var(--color-adjust-tone-c-02);
@@ -85,6 +88,7 @@ $size: get($form, 'textarea-height');
     z-index: 1;
 
     &:focus {
+
       --border-color: #{$brand-color};
       --box-shadow: #{get($shadow, 'tiny'), get($shadow, 'outline')};
 
@@ -93,13 +97,17 @@ $size: get($form, 'textarea-height');
       outline: 0;
 
       &::placeholder {
+
         --color: var(--color-adjust-tone-c-12);
+
         color: var(--color);
       }
     }
 
     &::placeholder {
+
       --color: var(--color-adjust-tone-c-08);
+
       color: var(--color);
       transition: color $ease;
     }
@@ -110,14 +118,16 @@ $size: get($form, 'textarea-height');
     display: flex;
     height: $icon-size;
     justify-content: center;
-    position: absolute;
     left: 0;
+    position: absolute;
     width: $icon-size;
     z-index: 2;
   }
 
   &__icon {
+
     --color: var(--color-adjust-tone-c-02);
+
     color: var(--color);
     transition: color $ease;
   }
@@ -143,44 +153,52 @@ $size: get($form, 'textarea-height');
 }
 
 .textarea--flat {
+
   $text-color: var(--color-adjust-tone-c-02);
 
   .textarea {
     &__label {
+
       --color: #{$text-color};
     }
 
     &:focus-within {
       .textarea {
         &__icon {
+
           --color: #{$brand-color};
+
           color: var(--color);
         }
       }
     }
 
     &__field {
+
       --box-shadow: none;
       --border-color: var(--color-adjust-tone-c-10);
       --color: #{$text-color};
 
       &:focus {
+
         --border-color: #{$brand-color};
         --box-shadow: none;
 
         &::placeholder {
+
           --color: var(--color-adjust-tone-c-12);
         }
       }
 
       &::placeholder {
+
         --color: var(--color-adjust-tone-c-08);
       }
     }
 
     &__icon {
+
       --color: #{$text-color};
     }
   }
-
 }

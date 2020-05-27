@@ -1,4 +1,3 @@
-
 @function get-var-name ($group-name, $tint-name, $color-name) {
   @return str-replace('--color-#{$group-name $tint-name $color-name}', ' ', '-');
 }
@@ -13,7 +12,6 @@
             #{get-var-name($group-name, $tint-name, $color-name)}: #{$color-value};
           }
         }
-
       }
     }
   }
@@ -37,8 +35,8 @@
 }
 
 .color-mode {
-
   &__dark {
+
     @media (prefers-color-scheme: light) {
       display: none;
     }

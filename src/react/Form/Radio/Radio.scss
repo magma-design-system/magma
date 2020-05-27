@@ -17,6 +17,7 @@
   &:hover {
     .radio {
       &__icon {
+
         --color: #{$color-checked};
 
         color: var(--color);
@@ -30,10 +31,10 @@
 
     & + .radio__icon {
       display: inline-block;
-    }
 
-    & + .radio__icon + .radio__icon {
-      display: none;
+      + .radio__icon {
+        display: none;
+      }
     }
 
     &:checked {
@@ -41,12 +42,15 @@
         display: none;
       }
 
-      & + .radio__icon + .radio__icon {
-        --color: #{$color-checked};
+      & + .radio__icon {
+        + .radio__icon {
 
-        color: var(--color);
-        display: inline-flex;
-        filter: grayscale(0);
+          --color: #{$color-checked};
+
+          color: var(--color);
+          display: inline-flex;
+          filter: grayscale(0);
+        }
       }
     }
   }
@@ -56,27 +60,29 @@
   }
 
   &--custom {
-
     .radio__icon {
       filter: grayscale(1);
     }
 
     .radio__field {
-
       & + .radio__icon {
+
         --opacity: #{$opacity};
 
         opacity: var(--opacity);
       }
 
-      & + .radio__icon + .radio__icon {
-        filter: grayscale(0);
-        opacity: 1;
+      & + .radio__icon {
+        + .radio__icon {
+          filter: grayscale(0);
+          opacity: 1;
+        }
       }
     }
   }
 
   &__icon {
+
     --color: #{$color-default};
 
     color: var(--color);
@@ -88,8 +94,8 @@
   }
 }
 
+.radio--theme {
 
-.radio--custom {
   $opacity: 0.25;
   $color-checked: var(--color-brand-maggioli-color);
   $color-default: var(--color-adjust-tone-c-06);
@@ -97,29 +103,30 @@
   &:hover {
     .radio {
       &__icon {
+
         --color: #{$color-checked};
       }
     }
   }
 
-  &__field {
-    &:checked {
-      & + .radio__icon + .radio__icon {
-        --color: #{$color-checked};
-      }
-    }
-  }
-
-  &--custom {
-    .radio__field {
+  .radio {
+    &__field {
       & + .radio__icon {
+
         --opacity: #{$opacity};
+      }
+
+      &:checked {
+        & + .radio__icon + .radio__icon {
+
+          --color: #{$color-checked};
+        }
       }
     }
   }
 
   &__icon {
+
     --color: #{$color-default};
   }
 }
-

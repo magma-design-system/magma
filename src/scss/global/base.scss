@@ -1,14 +1,13 @@
-$default-font-style: 'paragraph';
+$default-font-set: 'paragraph';
 $font-base-styles: $font-secondary-styles;
 
 body {
-  // sass-lint:disable no-vendor-prefixes
-  -webkit-tap-highlight-color: transparent;
-  @include apply-styles-set($font-base-styles, $default-font-style);
   background-color: var(--color-adjust-tone-light-color);
   color: var(--color-adjust-tone-light-c-02);
   font-family: get($font-family, 'secondary');
+  -webkit-tap-highlight-color: transparent;
   width: 100%;
+  @include apply-styles-set($map: $font-base-styles, $set: $default-font-set);
 }
 
 button {
@@ -18,16 +17,16 @@ button {
 input,
 textarea {
   appearance: none;
-  @include apply-styles-set($font-base-styles, $default-font-style);
+  @include apply-styles-set($map: $font-base-styles, $set: $default-font-set);
 
   &::placeholder {
-    @include apply-styles-set($font-base-styles, $default-font-style);
+    @include apply-styles-set($map: $font-base-styles, $set: $default-font-set);
   }
 }
 
 b,
 strong {
-  @include apply-styles-set($font-base-styles, 'bold');
+  @include apply-styles-set($map: $font-base-styles, $set: 'bold');
 }
 
 a {
@@ -66,8 +65,9 @@ p {
 }
 
 hr {
-  // sass-lint:disable no-important
+
   $size: 4px;
+
   background-color: var(--color-adjust-tone-light-c-13);
   border: 0 !important;
   border-radius: $size;
@@ -77,7 +77,6 @@ hr {
 }
 
 ::selection {
-  // sass-lint:disable no-color-literals
   background-color: var(--color-brand-maggioli-light-c-15);
   color: var(--color-brand-maggioli-light-color);
 }

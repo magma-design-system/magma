@@ -26,15 +26,15 @@ $border-style: 2px solid;
 }
 
 .table {
-  // sass-lint:disable no-vendor-prefixes
-  -webkit-overflow-scrolling: touch;
-
   border-bottom: 2px dashed var(--color-adjust-tone-c-07);
   border-top: 2px dashed var(--color-adjust-tone-c-07);
   display: flex;
   margin-left: s(-1);
   margin-right: s(-1);
   overflow: auto;
+
+  // sass-lint:disable no-vendor-prefixes
+  -webkit-overflow-scrolling: touch;
   padding-bottom: s(2);
   padding-top: s(1);
 
@@ -50,7 +50,7 @@ $border-style: 2px solid;
     min-width: s(1);
   }
 
-  @include gain(1); // default
+  @include gain(1);
   @include gain(2);
   @include gain(3);
 
@@ -64,13 +64,13 @@ $border-style: 2px solid;
   }
 
   &__cell {
+    border-top: $border-style $cell-border;
     padding: s(0.5) s(1);
     white-space: nowrap;
-    border-top: $border-style $cell-border;
 
     &--header {
-      text-align: left;
       border: 0;
+      text-align: left;
     }
 
     &--grow {
@@ -86,7 +86,9 @@ $border-style: 2px solid;
             &:hover {
               .table {
                 &__cell {
+
                   --background-color: #{$cell-background-color};
+
                   background-color: var(--background-color);
                 }
               }

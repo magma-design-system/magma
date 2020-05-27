@@ -1,8 +1,5 @@
 @import '~Sass/import';
 
 .sys-color-matrix {
-  margin-bottom: s(6);
-  margin-left: s(-1);
-  margin-right: s(-1);
-  margin-top: s(2);
+  margin: s(2) s(-1) s(6);
 }

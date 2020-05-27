@@ -1,5 +1,6 @@
-@function has-this-color($index) {
+@function has-this-color ($index) {
   @each $color-index in get($scaffold, 'colors') {
+
     @if $index == $color-index {
       @return true;
     }
@@ -7,17 +8,25 @@
   @return false;
 }
 
-@mixin scaffold-property($property, $name, $value) {
-  // sass-lint:disable no-important
+@mixin scaffold-property ($property, $name, $value) {
   .#{$property}-#{$name} {
     #{$property}: var(#{$value}) !important;
   }
 }
 
-@mixin scaffold-color($selector, $value, $index) {
+@mixin scaffold-color ($selector, $value, $index) {
+
   @if has-this-color($index) {
-    @include scaffold-property('color', $selector, $value);
-    @include scaffold-property('background-color', $selector, $value);
+    @include scaffold-property(
+      $property: 'color',
+      $name: $selector,
+      $value: $value
+    );
+    @include scaffold-property(
+      $property: 'background-color',
+      $name: $selector,
+      $value: $value
+    );
   }
 }
 
@@ -25,15 +34,25 @@
   @each $group-name, $group-map in $colors {
     @each $tint-name, $tints-map in $group-map {
       @each $light-mode-name, $light-modes-map in $tints-map {
+
         $i: 0;
+
         @each $color-name, $color-value in $light-modes-map {
+
           $i: $i + 1;
           $selector: str-replace('#{$group-name $tint-name $light-mode-name $color-name}', ' ', '-');
-          @include scaffold-color($selector, '--color-#{$selector}', $i);
+
+          @include scaffold-color(
+            $selector: $selector,
+            $value: '--color-#{$selector}',
+            $index: $i
+          );
         }
       }
     }
   }
 }
 
-@include scaffold-colors(get($tokens, 'color'));
+// stylelint-disable scss/at-mixin-named-arguments
+
+@include scaffold-colors($colors: get($tokens, 'color'));

@@ -1,6 +1,7 @@
 @import '~Sass/import';
 
 @mixin gutter-modifier ($size-item) {
+
   $modifier: nth($size-item, 1);
   $gutter: nth($size-item, 2);
 

@@ -2,7 +2,6 @@
 
 $dot-size: s(1);
 $padding-size: s(0.25);
-
 $track: (
   'focused': var(--color-brand-maggioli-color),
   'hover': var(--color-adjust-tone-c-08),
@@ -66,28 +65,34 @@ $thumb: (
 
   @supports (-webkit-appearance: none) {
     & {
-      -webkit-appearance: none;
+      appearance: none;
     }
 
     &::-webkit-slider-thumb {
+
       @extend %thumb;
-      -webkit-appearance: none;
+
+      appearance: none;
     }
 
     &::-webkit-slider-runnable-track {
+
       @extend %track;
-      -webkit-appearance: none;
+
+      appearance: none;
     }
   }
 
   @supports (-moz-appearance: none) {
     & {
-      -moz-appearance: none;
+      appearance: none;
     }
 
     &::-moz-range-thumb {
+
       @extend %thumb;
-      -moz-appearance: none;
+
+      appearance: none;
     }
 
     &::-moz-focus-outer {
@@ -95,8 +100,10 @@ $thumb: (
     }
 
     &::-moz-range-track {
+
       @extend %track;
-      -moz-appearance: none;
+
+      appearance: none;
       height: $dot-size;
     }
   }

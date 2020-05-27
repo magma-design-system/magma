@@ -5,8 +5,8 @@ $input-radius: get($radius, 'small');
 $size: get($form, 'input-height');
 
 .select {
-
   &__label {
+
     --color: var(--color-adjust-tone-c-02);
 
     color: var(--color);
@@ -18,6 +18,7 @@ $size: get($form, 'input-height');
   }
 
   &__icon {
+
     --background-color: var(--color-adjust-tone-c-03);
 
     align-items: center;
@@ -32,27 +33,21 @@ $size: get($form, 'input-height');
     position: absolute;
     right: s(0.25);
     top: s(0.25);
-    transition:
-      background-color get($tween, 'hover'),
-      border-radius get($tween, 'hover'),
-      bottom get($tween, 'hover'),
-      color get($tween, 'hover'),
-      right get($tween, 'hover'),
-      top get($tween, 'hover'),
-      width get($tween, 'hover');
+    transition: background-color get($tween, 'hover'), border-radius get($tween, 'hover'), bottom get($tween, 'hover'), color get($tween, 'hover'), right get($tween, 'hover'), top get($tween, 'hover'), width get($tween, 'hover');
     width: $size - s(0.5);
     z-index: 1;
   }
 
   &__field {
+
     --background-color: var(--color-adjust-tone-color);
     --box-shadow: #{get($shadow, 'tiny'), get($shadow, 'outline')};
     --color: var(--color-adjust-tone-c-02);
 
     appearance: none;
     background-color: var(--background-color);
-    border-radius: $input-radius;
     border: 1px solid transparent;
+    border-radius: $input-radius;
     box-shadow: var(--box-shadow);
     color: var(--color);
     height: $size;
@@ -69,14 +64,17 @@ $size: get($form, 'input-height');
 
     // sass-lint:disable no-color-literals
     // sass-lint:disable no-vendor-prefixes
+
     &:-moz-focusring {
       color: transparent;
-      text-shadow: 0 0 0 #000;
+      text-shadow: 0 0 0 #000000;
     }
+
     // sass-lint:enable no-color-literals
     // sass-lint:enable no-vendor-prefixes
 
     &:focus {
+
       --border-color: #{$brand-color};
       --box-shadow: #{get($shadow, 'tiny'), get($shadow, 'outline')};
 
@@ -85,13 +83,17 @@ $size: get($form, 'input-height');
       outline: 0;
 
       &::placeholder {
+
         --color: var(--color-adjust-tone-c-12);
+
         color: var(--color);
       }
 
       & + .select {
         &__icon {
+
           --background-color: #{$brand-color};
+
           background-color: var(--background-color);
           border-radius: 0 get($radius, 'small') get($radius, 'small') 0;
           bottom: 0;

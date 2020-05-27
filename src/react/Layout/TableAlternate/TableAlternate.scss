@@ -32,14 +32,14 @@ $cell-alt-color: var(--color-adjust-tone-c-15);
 $cell-alt-hover-color: transparent;
 
 .table-alternate {
-  // sass-lint:disable no-vendor-prefixes
-  -webkit-overflow-scrolling: touch;
-
   border-bottom: 2px dashed var(--color-adjust-tone-c-07);
   border-top: 2px dashed var(--color-adjust-tone-c-07);
   display: flex;
   margin-left: s(-1);
   margin-right: s(-1);
+
+  // sass-lint:disable no-vendor-prefixes
+  -webkit-overflow-scrolling: touch;
   overflow-x: auto;
   padding-bottom: s(2);
 
@@ -54,7 +54,7 @@ $cell-alt-hover-color: transparent;
     min-width: s(1);
   }
 
-  @include gain(1); // default
+  @include gain(1);
   @include gain(2);
   @include gain(3);
 
@@ -63,8 +63,8 @@ $cell-alt-hover-color: transparent;
   }
 
   &__element {
-    width: 100%;
     border-collapse: collapse;
+    width: 100%;
   }
 
   &__body {
@@ -72,9 +72,11 @@ $cell-alt-hover-color: transparent;
       &__row {
         border-radius: get($radius, 'normal');
 
-        &:nth-child(odd) {
+        &:nth-child( odd ) {
           @include cell {
+
             --background-color: #{$cell-alt-color};
+
             background-color: var(--background-color);
           }
         }
@@ -88,16 +90,20 @@ $cell-alt-hover-color: transparent;
         &:hover {
           .table-alternate {
             &__row {
-              &:nth-child(odd) {
+              &:nth-child( odd ) {
                 @include cell {
+
                   --background-color: #{$cell-alt-hover-color};
+
                   background-color: var(--background-color);
                 }
               }
 
               &:hover {
                 @include cell {
+
                   --background-color: #{$cell-color};
+
                   background-color: var(--background-color);
                 }
               }
