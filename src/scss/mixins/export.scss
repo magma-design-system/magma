@@ -24,7 +24,7 @@
     $camel-name: camelize($name);
 
     #{$camel-name}Selector: $selector;
-    @include get-font-viewports ($map, $set, $family);
+    @include get-font-viewports ($viewports: $map, $set: $set, $family: $family);
   }
 }
 
@@ -46,6 +46,4 @@
 
     #{$camel-name}: #{$rule};
   }
-
-  // list: #{$list};
 }

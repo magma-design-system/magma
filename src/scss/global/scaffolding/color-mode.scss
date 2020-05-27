@@ -35,6 +35,8 @@
 }
 
 .color-mode {
+  // stylelint-disable scss/media-feature-value-dollar-variable
+
   &__dark {
 
     @media (prefers-color-scheme: light) {
