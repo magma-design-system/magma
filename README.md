@@ -40,7 +40,7 @@ $ npm install
 Once node packages are installed, run storybook to see the current status of the design system and continue your development.
 
 ```
-$ npm run storybook
+$ npm run dev:storybook
 ```
 
 #### Documentation
@@ -52,14 +52,20 @@ Checkout [MDX][mdx] documentation and [node addon][addon-docs] for stories.
 The SCSS vars of the component library are based on design tokens located in `design-tokens` folder. These vars must be built first or the storybook build will break for some missing SCSS files. To avoid this or just update vars, run:
 
 ```
-$ npm run design-tokens
+$ npm run tokens
 ```
 
 ---
 
-#### IDE plugins
+#### IDE integration
 
-If you are using [Visual Studio Code][vsc], please consider to install [glen-84.sass-lint][vsc-sass-lint] and standard for runtime code linting based on project rules.
+the project supports ide integration with linter configs.
+
+| Plug-in   | Description  | Supported IDE  |
+|:----------|:----------|:----------|
+| [StyleLint](https://stylelint.io/) | Linter for CSS and SASS | [Visual Studio Code](https://marketplace.visualstudio.com/items?itemName=stylelint.vscode-stylelint), [Atom](https://atom.io/packages/linter-stylelint), [Sublime Text](https://github.com/SublimeLinter/SublimeLinter-stylelint) |
+| [ES Lint](https://eslint.org/) | Linter for JavaScript   | [Visual Studio Code](https://marketplace.visualstudio.com/items?itemName=dbaeumer.vscode-eslint) |
+
 
 [addon-docs]: https://www.npmjs.com/package/@storybook/addon-docs
 [mdx]: https://github.com/storybookjs/storybook/blob/next/addons/docs/docs/mdx.md

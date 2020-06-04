@@ -2,6 +2,8 @@ import React from 'react'
 import PropTypes from 'prop-types'
 import './Table.scss'
 
+import H6 from '@Typography/H6/H6'
+
 const TableCell = props =>
   <td className={`table__cell ${props.className} ${props.grow ? 'table__cell--grow' : ''}`}>
     <div className="table__content">
@@ -20,8 +22,10 @@ TableCell.defaultProps = {
 }
 
 const TableHeaderCell = props =>
-  <th className="table__cell table__cell--header text-sans text-sans--h6">
-    {props.children}
+  <th className="table__cell table__cell--header">
+    <H6>
+      {props.children}
+    </H6>
   </th>
 
 const TableRow = props =>

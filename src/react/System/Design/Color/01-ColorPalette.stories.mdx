@@ -1,0 +1,29 @@
+import { Meta, Story, Preview } from '@storybook/addon-docs/blocks';
+import faker from 'faker'
+
+import Grid from '@Layout/Grid/Grid'
+import Paragraph from '@Typography/Paragraph/Paragraph'
+import H5 from '@Typography/H5/H5'
+import H2 from '@Typography/H2/H2'
+import ColorPalette from '@System/Design/Color/ColorPalette/ColorPalette'
+import Tokens from '$Tokens/properties/color/base.json'
+
+<Meta title="System/Color/Palette" component={ColorPalette} />
+
+<H2>Palette</H2>
+<Paragraph>Questi sono i colori utilizzati dal brand Maggioli all'interno delle loro applicazioni, potrebbero subire variazioni in base al tuning che il Deisgn System subirà nel tempo.</Paragraph>
+<Paragraph>Ogni palette contiene il testo a colore di contrasto ottimale rispetto alla sua scala, selezionato automaticamente via codice per aiutare a velocizzare le scelte del team dove possibile.</Paragraph>
+
+<hr/>
+
+<Grid>
+  <ColorPalette token={Tokens.color.brand.maggioli.light} group="brand" name="maggioli"/>
+  <ColorPalette token={Tokens.color.status.success.light} group="status" name="success"/>
+  <ColorPalette token={Tokens.color.status.warning.light} group="status" name="warning"/>
+  <ColorPalette token={Tokens.color.status.error.light} group="status" name="error"/>
+  <ColorPalette token={Tokens.color.adjust.tone.light} group="adjust" name="tone"/>
+</Grid>
+
+<hr/>
+
+<Paragraph>La palette è a sua volta generata da <a href="https://github.com/adobe/leonardo">Adobe Leonardo</a>, utile per creare palette da colori differenti ma con lo stesso indice di contrasto, fondamentale per assicurare lo stesso livello di contrasto tra tinte diverse, al momento è l'unico approccio che permette questa feature.</Paragraph>

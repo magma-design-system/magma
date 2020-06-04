@@ -1,6 +1,7 @@
 import React from 'react'
 import PropTypes from 'prop-types'
 import './TableAlternate.scss'
+import H6 from '@Typography/H6/H6'
 
 const TableAltCell = props =>
   <td className={`table-alternate__cell ${props.className} ${props.grow ? 'table-alternate__cell--grow' : ''}`}>
@@ -20,8 +21,10 @@ TableAltCell.defaultProps = {
 }
 
 const TableAltHeaderCell = props =>
-  <th className="table-alternate__cell table-alternate__cell--header text-sans text-sans--h6">
-    {props.children}
+  <th className="table-alternate__cell table-alternate__cell--header">
+    <H6>
+      {props.children}
+    </H6>
   </th>
 
 const TableAltRow = props =>

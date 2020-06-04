@@ -50,9 +50,6 @@
           "font-size": "16px",
           "line-height": "25px",
           "font-weight": "600"
-        },
-        "tablet": {
-          "line-height": "30px"
         }
       },
       "h6" : {
@@ -61,9 +58,6 @@
           "font-variant-caps": "all-small-caps",
           "font-weight": "500",
           "line-height": "25px"
-        },
-        "tablet": {
-          "line-height": "30px"
         }
       },
       "overline" : {

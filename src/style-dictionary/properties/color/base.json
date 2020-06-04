@@ -21,7 +21,7 @@
           "c-16": { "value": "#f5faff" },
           "color": {
             "value": "#0559a3",
-            "comment": "https://leonardocolor.io/?colorKeys=%230559a3&base=000000&ratios=1.05%2C1.15%2C1.26%2C1.4%2C1.6%2C1.9%2C2.25%2C2.7%2C3.3%2C4%2C4.8%2C5.75%2C7%2C8.5%2C10.3%2C12.45&mode=HSL"
+            "comment": "https://leonardocolor.io/?colorKeys=%230559a3&base=FFFFFF&ratios=1.05%2C1.15%2C1.26%2C1.4%2C1.6%2C1.9%2C2.25%2C2.7%2C3.3%2C4%2C4.8%2C5.75%2C7%2C8.5%2C10.3%2C12.45&mode=HSL"
           }
         },
         "dark": {
@@ -43,7 +43,7 @@
           "c-16": { "value": "#010911" },
           "color": {
             "value": "#0559a3",
-            "comment": "https://leonardocolor.io/?colorKeys=%230559a3&base=ffffff&ratios=1.05%2C1.15%2C1.26%2C1.4%2C1.6%2C1.9%2C2.25%2C2.7%2C3.3%2C4%2C4.8%2C5.75%2C7%2C8.5%2C10.3%2C12.45&mode=HSL"
+            "comment": "https://leonardocolor.io/?colorKeys=%230559a3&base=000000&ratios=1.05%2C1.15%2C1.26%2C1.4%2C1.6%2C1.9%2C2.25%2C2.7%2C3.3%2C4%2C4.8%2C5.75%2C7%2C8.5%2C10.3%2C12.45&mode=HSL"
           }
         }
       },
