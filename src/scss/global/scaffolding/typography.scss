@@ -11,3 +11,23 @@
 @include scaffold-text($style: 'primary',   $font-styles: $font-primary-styles);
 @include scaffold-text($style: 'secondary', $font-styles: $font-secondary-styles);
 @include scaffold-text($style: 'mono',      $font-styles: $font-mono-styles);
+
+.text-primary {
+  & + & {
+    margin-top: s(1);
+  }
+
+  & + .text-secondary {
+    margin-top: s(0.5);
+  }
+}
+
+.text-secondary {
+  & + & {
+    margin-top: s(1);
+  }
+
+  & + .text-primary {
+    margin-top: s(2);
+  }
+}

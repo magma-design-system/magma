@@ -1,18 +1,62 @@
 import { Meta, Story, Preview } from '@storybook/addon-docs/blocks';
 import faker from 'faker'
 
-import Grid from '@Layout/Grid/Grid'
-import Paragraph from '@Typography/Paragraph/Paragraph'
-import H5 from '@Typography/H5/H5'
-import H2 from '@Typography/H2/H2'
+import Button from '@Pattern/Button/Button'
+import Code from '@Typography/Code/Code'
 import ColorPalette from '@System/Design/Color/ColorPalette/ColorPalette'
+import Grid from '@Layout/Grid/Grid'
+import H2 from '@Typography/H2/H2'
+import H3 from '@Typography/H3/H3'
+import H5 from '@Typography/H5/H5'
+import Caption from '@Typography/Caption/Caption'
+import Paragraph from '@Typography/Paragraph/Paragraph'
+import Table, { TableHeader, TableHeaderCell, TableBody, TableRow, TableCell } from '@Layout/Table/Table'
 import Tokens from '$Tokens/properties/color/base.json'
+import Usage, { UsageDo, UsageDont } from '@System/Pattern/Usage/Usage'
 
 <Meta title="System/Color/Palette" component={ColorPalette} />
 
 <H2>Palette</H2>
 <Paragraph>Questi sono i colori utilizzati dal brand Maggioli all'interno delle loro applicazioni, potrebbero subire variazioni in base al tuning naturale che il Deisgn System subisce nel tempo, in base a nuove integrazioni e la necessità di trovare nuove soluzioni per prodotti entranti.</Paragraph>
 <Paragraph>Ogni palette contiene il testo a colore di contrasto ottimale rispetto alla sua scala, il colore accoppiato viene selezionato tramite un test di contrasto automatico per aiutare a velocizzare le scelte del team dove possibile.</Paragraph>
+
+<H3>Naming convention</H3>
+
+<Paragraph>La palette di colori si basa su questo schema di esempio:</Paragraph>
+
+<Table>
+  <TableHeader>
+    <TableHeaderCell>Esempio #</TableHeaderCell>
+    <TableHeaderCell>Gruppo</TableHeaderCell>
+    <TableHeaderCell>Nome</TableHeaderCell>
+    <TableHeaderCell>Livello di contrasto</TableHeaderCell>
+    <TableHeaderCell>CSS custom property</TableHeaderCell>
+    <TableHeaderCell>Scaffold selector</TableHeaderCell>
+  </TableHeader>
+  <TableBody>
+    <TableRow>
+      <TableCell>1</TableCell>
+      <TableCell>Brand</TableCell>
+      <TableCell>Maggioli</TableCell>
+      <TableCell>C-08</TableCell>
+      <TableCell>--color-brand-maggioli-c-08</TableCell>
+      <TableCell>background-color-brand-maggioli-c-08</TableCell>
+    </TableRow>
+    <TableRow>
+      <TableCell>2</TableCell>
+      <TableCell>Status</TableCell>
+      <TableCell>Warning</TableCell>
+      <TableCell>C-08</TableCell>
+      <TableCell>--color-status-warning-c-08</TableCell>
+      <TableCell>background-color-status-warning-c-08</TableCell>
+    </TableRow>
+  </TableBody>
+</Table>
+
+<Paragraph>Il risultato ottenuto è quindi questo:</Paragraph>
+<Code className="background-color-adjust-tone-c-14">
+  adjust-tone-c-14
+</Code>
 
 <hr/>
 

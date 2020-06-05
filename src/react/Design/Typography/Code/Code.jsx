@@ -17,7 +17,7 @@ Code.propTypes = {
 
 Code.defaultProps = {
   className: '',
-  htmlTag: 'p',
+  htmlTag: 'code',
 }
 
 export default Code

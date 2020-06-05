@@ -1,0 +1,32 @@
+@import '~Sass/import';
+
+@mixin add-status ($modifier, $color) {
+  &--#{$modifier} {
+    border: 2px solid var(--color-#{$color}-c-15);
+
+    .mds-usage {
+      &__header {
+        background-color: var(--color-#{$color}-c-15);
+        color: var(--color-#{$color}-c-04);
+      }
+    }
+  }
+}
+
+.mds-usage {
+  margin-top: s(1);
+
+  &__item {
+    @include add-status($modifier: 'do', $color: 'status-success');
+    @include add-status($modifier: 'dont', $color: 'status-error');
+  }
+
+  &__header {
+    display: flex;
+    padding: s(1);
+  }
+
+  &__content {
+    padding: s(1);
+  }
+}

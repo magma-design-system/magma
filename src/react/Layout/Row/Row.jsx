@@ -23,7 +23,7 @@ Row.propTypes = {
 Row.defaultProps = {
   align: 'center',
   className: '',
-  gutter: '',
+  gutter: 'xsmall',
 }
 
 export default Row
