@@ -7,9 +7,14 @@
   display: grid;
   grid-gap: s(0.5);
   grid-template-columns: 1fr auto;
-  padding: s(0.5) s(1.5);
+  height: 70px;
+  padding: 0 s(1.5);
 
   &__infos {
     text-align: right;
+  }
+
+  &__seed {
+    color: inherit;
   }
 }

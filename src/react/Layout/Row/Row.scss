@@ -19,7 +19,15 @@
     @include gutter-modifier ($size-item);
   }
 
+  &--align-center {
+    align-items: center;
+  }
+
   &__child {
     margin-right: get($size, 'normal');
+
+    &:last-child {
+      margin-right: 0;
+    }
   }
 }

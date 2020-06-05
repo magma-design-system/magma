@@ -1,5 +1,6 @@
 {
   "close": "close",
+  "colorSeed": "color_lens",
   "email": "email",
   "formCheckboxChecked": "check_box",
   "formCheckboxUnchecked": "check_box_outline_blank",

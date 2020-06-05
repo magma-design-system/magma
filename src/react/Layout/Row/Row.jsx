@@ -3,7 +3,7 @@ import PropTypes from 'prop-types'
 import './Row.scss'
 
 const Row = props =>
-  <div className={`row ${props.className} ${props.gutter !== '' ? 'row--' + props.gutter : ''} `}>
+  <div className={`row ${props.className} ${props.gutter !== '' ? 'row--' + props.gutter : ''} ${props.align !== '' ? 'row--align-' + props.align : ''} `}>
     {
       React.Children.map(props.children, (child, index) => {
         return React.cloneElement(child, {
@@ -15,11 +15,13 @@ const Row = props =>
   </div>
 
 Row.propTypes = {
+  align: PropTypes.string,
   className: PropTypes.string,
   gutter: PropTypes.string,
 }
 
 Row.defaultProps = {
+  align: 'center',
   className: '',
   gutter: '',
 }
