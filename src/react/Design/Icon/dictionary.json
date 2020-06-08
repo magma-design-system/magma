@@ -1,6 +1,9 @@
 {
+  "background": "insert_photo",
   "close": "close",
   "colorSeed": "color_lens",
+  "do": "done",
+  "dont": "block",
   "email": "email",
   "formCheckboxChecked": "check_box",
   "formCheckboxUnchecked": "check_box_outline_blank",
@@ -21,6 +24,7 @@
   "statusSuccess": "done",
   "statusWarning": "warning",
   "tag": "label",
+  "text": "format_size",
   "user": "person",
   "users": "group"
 }

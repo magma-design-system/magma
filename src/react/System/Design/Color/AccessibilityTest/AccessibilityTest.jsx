@@ -2,10 +2,10 @@ import React from 'react'
 import PropTypes from 'prop-types'
 import contrast from 'get-contrast'
 import Icon from '@Design/Icon/Icon'
-import Caption from '@Typography/Caption/Caption'
+import Row from '@Layout/Row/Row'
 
 const AccessibilityTest = props =>
-  <Caption className="mds-accessibility-test flex-row">
+  <Row className="mds-accessibility-test">
     <div className="mds-color-accessibility-test__result flex-row">
       {contrast.isAccessible(props.color, props.base) &&
         <Icon name="statusSuccess" className="color-status-success" size="small"/>
@@ -13,7 +13,7 @@ const AccessibilityTest = props =>
       <div>{contrast.score(props.color, props.base)}</div>
       <div>{contrast.ratio(props.color, props.base).toFixed(2)}</div>
     </div>
-  </Caption>
+  </Row>
 
 AccessibilityTest.propTypes = {
   base: PropTypes.string,

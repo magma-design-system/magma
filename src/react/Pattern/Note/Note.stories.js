@@ -1,5 +1,4 @@
 import React from 'react'
-import faker from 'faker'
 
 import Note from './Note'
 import Grid from '@Layout/Grid/Grid'
@@ -29,15 +28,19 @@ export const Dismissable = () =>
 
 export const Colors = () =>
   <Grid columns="3" fit={true}>
-    <Note variant="success">
+    <Note status="success">
       <H5>Success</H5>
       <Caption></Caption>
     </Note>
-    <Note variant="warning">
+    <Note status="info">
+      <H5>Info</H5>
+      <Caption></Caption>
+    </Note>
+    <Note status="warning">
       <H5>Warning</H5>
       <Caption></Caption>
     </Note>
-    <Note variant="error">
+    <Note status="error">
       <H5>Error</H5>
       <Caption></Caption>
     </Note>

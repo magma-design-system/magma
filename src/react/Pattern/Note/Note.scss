@@ -3,7 +3,7 @@
 @mixin status-theme ($modifier) {
   &--#{$modifier} {
     background-color: var(--color-status-#{$modifier}-c-14);
-    color: var(--color-status-#{$modifier}-c-06);
+    color: var(--color-status-#{$modifier}-c-03);
   }
 }
 

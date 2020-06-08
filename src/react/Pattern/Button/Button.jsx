@@ -9,7 +9,7 @@ const Paragraph = props =>
     htmlTag={props.htmlTag}
     {...props}
   >
-    { props.children ? props.children : faker.lorem.paragraph() }
+    { props.children ? props.children : faker.hacker.verb() }
   </FormButton>
 
 Paragraph.propTypes = {

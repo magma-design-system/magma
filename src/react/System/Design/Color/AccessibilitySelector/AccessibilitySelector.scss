@@ -1,0 +1,7 @@
+@import '~Sass/import';
+
+.mds-accessibility-selector {
+  &__background {
+    padding: s(2);
+  }
+}

@@ -6,12 +6,12 @@ $border-radius: get($radius, 'small');
 .button {
 
   --background: var(--color-brand-maggioli-c-04);
-  --border-color: transparent;
+  --border: 1px solid transparent;
   --color: var(--color-adjust-tone-color);
 
   align-items: center;
   background-color: var(--background);
-  border: 1px solid var(--border-color);
+  border: var(--border);
   border-radius: $border-radius;
   color: var(--color);
   cursor: pointer;
@@ -25,18 +25,18 @@ $border-radius: get($radius, 'small');
   transition: background-color $ease, border $ease, color $ease, filter $ease;
   user-select: none;
 
-  &:active,
-  &:focus,
-  &:hover {
+  // &:active,
+  // &:focus,
+  // &:hover {
 
-    --background: var(--color-brand-maggioli-c-02);
-    --border-color: transparent;
-    --color: var(--color-adjust-tone-c-16);
+  //   --background: var(--color-brand-maggioli-c-02);
+  //   --border: 1px solid transparent;
+  //   --color: var(--color-adjust-tone-c-16);
 
-    background-color: var(--background);
-    border-color: var(--border-color);
-    color: var(--color);
-  }
+  //   background-color: var(--background);
+  //   border: var(--border);
+  //   color: var(--color);
+  // }
 
   &__text {
     text-transform: lowercase;
@@ -72,6 +72,13 @@ $border-radius: get($radius, 'small');
 
   &--round {
     border-radius: get($form, 'input-height');
+  }
+
+  &--outline {
+
+    --background: transparent;
+    --border: 1px solid var(--color-adjust-tone-c-03);
+    --color: var(--color-adjust-tone-c-03);
   }
 }
 

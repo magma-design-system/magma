@@ -27,6 +27,11 @@
       $name: $selector,
       $value: $value
     );
+    @include scaffold-property(
+      $property: 'border-color',
+      $name: $selector,
+      $value: $value
+    );
   }
 }
 

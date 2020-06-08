@@ -20,7 +20,7 @@ const ColorSwatchItem = props =>
         </Row>
       }
     </Grid>
-    <Caption className="mds-color-swatch__infos">
+    <Caption htmlTag="div" className="mds-color-swatch__infos">
       <AccessibilityTest base={props.colorBaseHexTest} color={props.colorTextHexTest}/>
       <div>Text { props.colorTextCode }</div>
     </Caption>
