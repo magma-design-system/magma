@@ -4,7 +4,8 @@ import faker from 'faker'
 
 import icons from './dictionary.json'
 import Icon from './Icon'
-import Table, { TableHeader, TableHeaderCell, TableBody, TableRow, TableCell } from '@Layout/Table/Table'
+import Grid from '@Layout/Grid/Grid'
+import Hack from '@Typography/Hack/Hack'
 faker.locale = 'it'
 
 export default {
@@ -13,10 +14,10 @@ export default {
 }
 
 const IconRow = props =>
-  <TableRow>
-    <TableCell align="center"><Icon {...props} /></TableCell>
-    <TableCell><code>{props.name}</code></TableCell>
-  </TableRow>
+  <Grid gutter="xsmall">
+    <div><Icon {...props} /></div>
+    <Hack className="color-adjust-tone-c-08">{props.name}</Hack>
+  </Grid>
 
 IconRow.propTypes = {
   name: PropTypes.string,
@@ -31,15 +32,11 @@ const iconDictionary = Object.entries(icons).map(([key, value]) =>
 )
 
 export const dictionary = () =>
-  <Table>
-    <TableHeader>
-      <TableHeaderCell>Icon</TableHeaderCell>
-      <TableHeaderCell>Name</TableHeaderCell>
-    </TableHeader>
-    <TableBody>
+  <div style={{ textAlign: 'center' }}>
+    <Grid columns="auto">
       {iconDictionary}
-    </TableBody>
-  </Table>
+    </Grid>
+  </div>
 
 export const basicUsage = () =>
   <Icon name='user'/>

@@ -6,6 +6,7 @@ import Code from '@Typography/Code/Code'
 import ColorPalette from '@System/Design/Color/ColorPalette/ColorPalette'
 import Grid from '@Layout/Grid/Grid'
 import H2 from '@Typography/H2/H2'
+import List, { ListItem } from '@Element/List/List'
 import Paragraph from '@Typography/Paragraph/Paragraph'
 import Tokens from '$Tokens/properties/color/base.json'
 import Usage, { UsageDo, UsageDont } from '@System/Pattern/Usage/Usage'
@@ -13,7 +14,18 @@ import Usage, { UsageDo, UsageDont } from '@System/Pattern/Usage/Usage'
 <Meta title="System/Color/Naming conventions" component={ColorPalette} />
 
 <H2>Naming convention</H2>
-<Paragraph>Questi sono i colori utilizzati dal brand Maggioli all'interno delle loro applicazioni, potrebbero subire variazioni in base al tuning naturale che il Deisgn System subisce nel tempo, in base a nuove integrazioni e la necessità di trovare nuove soluzioni per prodotti entranti.</Paragraph>
+<Paragraph>La palette di colori è suddivisa in gruppi di colori e ogni colore è suddiviso in una scala a 16 livelli di contrasto del colore.</Paragraph>
+<Paragraph>Il livello di contasto si basa su 2 colori di base, il bianco e il nero, rispettivamente utilizzati per la modalità normale e il dark mode.</Paragraph>
+
+<hr/>
+
+<Paragraph>Ad oggi, il Design System prevede vari tipi di set di colori utilizzabili dai prodotti Maggioli.</Paragraph>
+
+<List>
+  <ListItem>Hello</ListItem>
+</List>
+
+
 
 <hr/>
 

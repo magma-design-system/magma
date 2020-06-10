@@ -12,6 +12,7 @@ const InputPhone = props =>
       name={props.name}
       onBlur={e => { console.log(e) }}
       placeholder={props.placeholder}
+      pattern={props.pattern}
       type="tel"
     />
   </Input>
@@ -20,9 +21,10 @@ InputPhone.propTypes = {
   autoComplete: PropTypes.string,
   icon: PropTypes.string,
   iconClassName: PropTypes.string,
-  name: PropTypes.string,
-  placeholder: PropTypes.string,
   isValid: PropTypes.bool,
+  name: PropTypes.string,
+  pattern: PropTypes.string,
+  placeholder: PropTypes.string,
   validate: PropTypes.bool,
   value: PropTypes.string,
 }
@@ -31,9 +33,10 @@ InputPhone.defaultProps = {
   autoComplete: 'off',
   icon: 'phone',
   iconClassName: '',
-  name: 'phone',
-  placeholder: '+39 123 4567890',
   isValid: false,
+  name: 'phone',
+  pattern: '[+0-9.]+',
+  placeholder: '+39 123 4567890',
   validate: true,
   value: '',
 }

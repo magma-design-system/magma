@@ -4,6 +4,7 @@
   "colorSeed": "color_lens",
   "do": "done",
   "dont": "block",
+  "dot": "fiber_manual_record",
   "email": "email",
   "formCheckboxChecked": "check_box",
   "formCheckboxUnchecked": "check_box_outline_blank",

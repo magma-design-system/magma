@@ -1,35 +1,35 @@
 import React from 'react'
 
-import Flash from './Flash'
+import FlashMessage from './Flash'
 import Caption from '@Typography/Caption/Caption'
 import Paragraph from '@Typography/Paragraph/Paragraph'
 
 export default {
   title: 'Pattern/Flash',
-  component: Flash,
+  component: FlashMessage,
 }
 
 export const basicUsage = () =>
-  <Flash>
+  <FlashMessage>
     <Caption></Caption>
-  </Flash>
+  </FlashMessage>
 
 export const statusInfo = () =>
-  <Flash status="info">
+  <FlashMessage status="info">
     <Paragraph></Paragraph>
-  </Flash>
+  </FlashMessage>
 
 export const statusWarning = () =>
-  <Flash status="warning">
+  <FlashMessage status="warning">
     <Paragraph></Paragraph>
-  </Flash>
+  </FlashMessage>
 
 export const statusError = () =>
-  <Flash status="error">
+  <FlashMessage status="error">
     <Paragraph></Paragraph>
-  </Flash>
+  </FlashMessage>
 
 export const statusSuccess = () =>
-  <Flash status="success">
+  <FlashMessage status="success">
     <Paragraph></Paragraph>
-  </Flash>
+  </FlashMessage>

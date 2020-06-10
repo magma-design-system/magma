@@ -8,7 +8,7 @@ const Row = props =>
       React.Children.map(props.children, (child, index) => {
         return React.cloneElement(child, {
           key: index,
-          className: child.props.className + ' row__child',
+          className: child.props.className ? child.props.className + ' row__child' : 'row__child',
         })
       })
     }

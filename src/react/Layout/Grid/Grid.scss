@@ -42,6 +42,10 @@ $columns: 4;
     grid-auto-rows: minmax(min-content, max-content);
   }
 
+  &--auto-columns {
+    grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+  }
+
   @include media ('mobile') {
     grid-template-columns: 1fr;
   }

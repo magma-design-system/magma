@@ -4,7 +4,7 @@ import Link from './Link'
 import Paragraph from '@Typography/Paragraph/Paragraph'
 
 export default {
-  title: 'Pattern/Link',
+  title: 'Element/Link',
   component: Link,
 }
 

@@ -1,0 +1,17 @@
+@import '~Sass/import';
+
+.list {
+  display: grid;
+  grid-gap: s(0.5);
+  margin: s(1) 0;
+  padding-left: s(0.5);
+
+  &__item {
+    align-items: flex-start;
+    display: flex;
+  }
+
+  &__icon {
+    margin-right: s(0.5);
+  }
+}
