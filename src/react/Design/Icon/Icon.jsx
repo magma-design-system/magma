@@ -16,6 +16,7 @@ Icon.propTypes = {
 Icon.defaultProps = {
   className: '',
   name: 'missingIcon',
+  family: 'maggioli|material',
   size: '',
 }
 

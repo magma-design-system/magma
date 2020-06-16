@@ -92,6 +92,52 @@
             "comment": "https://leonardocolor.io/?colorKeys=%23ED7C63&base=000000&ratios=1.05%2C1.15%2C1.26%2C1.4%2C1.6%2C1.9%2C2.25%2C2.7%2C3.3%2C4%2C4.8%2C5.75%2C7%2C8.5%2C10.3%2C12.45&mode=HSL"
           }
         }
+      },
+      "eolo": {
+        "light": {
+          "c-01": { "value": "#233453" },
+          "c-02": { "value": "#2b4066" },
+          "c-03": { "value": "#334c79" },
+          "c-04": { "value": "#3b598d" },
+          "c-05": { "value": "#4466a0" },
+          "c-06": { "value": "#4c72b4" },
+          "c-07": { "value": "#5e80bb" },
+          "c-08": { "value": "#718fc3" },
+          "c-09": { "value": "#859ecb" },
+          "c-10": { "value": "#98aed4" },
+          "c-11": { "value": "#acbddc" },
+          "c-12": { "value": "#c0cde4" },
+          "c-13": { "value": "#d1dbec" },
+          "c-14": { "value": "#dfe6f1" },
+          "c-15": { "value": "#ebeff7" },
+          "c-16": { "value": "#f7f9fc" },
+          "color": {
+            "value": "#597CB9",
+            "comment": "https://leonardocolor.io/?colorKeys=%23597cb9&base=ffffff&ratios=1.05%2C1.15%2C1.26%2C1.4%2C1.6%2C1.9%2C2.25%2C2.7%2C3.3%2C4%2C4.8%2C5.75%2C7%2C8.5%2C10.3%2C12.45&mode=HSL"
+          }
+        },
+        "dark": {
+          "c-01": { "value": "#bac8e2" },
+          "c-02": { "value": "#a3b6d8" },
+          "c-03": { "value": "#8da5cf" },
+          "c-04": { "value": "#7996c7" },
+          "c-05": { "value": "#6687bf" },
+          "c-06": { "value": "#5579b7" },
+          "c-07": { "value": "#486caa" },
+          "c-08": { "value": "#405f97" },
+          "c-09": { "value": "#375383" },
+          "c-10": { "value": "#2f4770" },
+          "c-11": { "value": "#283c5e" },
+          "c-12": { "value": "#20314d" },
+          "c-13": { "value": "#1a273d" },
+          "c-14": { "value": "#141e30" },
+          "c-15": { "value": "#0e1522" },
+          "c-16": { "value": "#06090f" },
+          "color": {
+            "value": "#597CB9",
+            "comment": "https://leonardocolor.io/?colorKeys=%23597cb9&base=000000&ratios=1.05%2C1.15%2C1.26%2C1.4%2C1.6%2C1.9%2C2.25%2C2.7%2C3.3%2C4%2C4.8%2C5.75%2C7%2C8.5%2C10.3%2C12.45&mode=HSL"
+          }
+        }
       }
     },
     "status" : {
