@@ -6,4 +6,14 @@
 /src/style-dictionary/build
 node_modules/
 npm-debug.log
-.idea/
+/dist
+
+# Intellij
+/.idea/
+
+# Gatsby
+/public/
+/.cache/
+
+# Storybook
+/storybook-static

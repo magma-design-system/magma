@@ -1,5 +1,6 @@
 const path = require('path')
 const autoprefixer = require('autoprefixer')
+const aliases = require('../import-aliases')
 
 // Export a function. Accept the base config as the only param.
 module.exports = async ({ config, mode }) => {
@@ -40,18 +41,7 @@ module.exports = async ({ config, mode }) => {
       loader: 'file-loader?name=img/[name].[ext]',
     })
 
-    config.resolve.alias = {
-      '#Assets': path.resolve(__dirname, '../src/assets/'),
-      '$Tokens': path.resolve(__dirname, '../src/style-dictionary/'),
-      '@Design': path.resolve(__dirname, '../src/react/Design/'),
-      '@Element': path.resolve(__dirname, '../src/react/Element/'),
-      '@Form': path.resolve(__dirname, '../src/react/Form/'),
-      '@Layout': path.resolve(__dirname, '../src/react/Layout/'),
-      '@Pattern': path.resolve(__dirname, '../src/react/Pattern/'),
-      '@System': path.resolve(__dirname, '../src/react/System/'),
-      '@Typography': path.resolve(__dirname, '../src/react/Design/Typography/'),
-      '~Sass': path.resolve(__dirname, '../src/scss/'),
-    }
+    config.resolve.alias = aliases
 
     // Return the altered config
     return config
