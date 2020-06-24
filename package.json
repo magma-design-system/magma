@@ -32,6 +32,9 @@
     "last 2 versions"
   ],
   "main": "index.js",
+  "files": [
+    "/src/scss/**/*"
+  ],
   "author": {
     "name": "Vittorio Vittori",
     "email": "vittorio.vittori@maggioli.it",
