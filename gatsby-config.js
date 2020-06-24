@@ -9,9 +9,9 @@ module.exports = {
   plugins: [
     'gatsby-plugin-react-helmet',
     {
-      resolve: `gatsby-source-filesystem`,
+      resolve: 'gatsby-source-filesystem',
       options: {
-        name: `images`,
+        name: 'images',
         path: `${__dirname}/src/doc/images`,
       },
     },
@@ -22,27 +22,23 @@ module.exports = {
       },
     },
     {
-      resolve: `gatsby-plugin-page-creator`,
+      resolve: 'gatsby-plugin-page-creator',
       options: {
         path: `${__dirname}/src/doc/pages`,
       },
     },
     {
-      resolve: `gatsby-plugin-page-creator`,
+      resolve: 'gatsby-source-filesystem',
       options: {
+        name: 'pages',
         path: `${__dirname}/src/react/System/Design/Color`,
       },
     },
-    `gatsby-transformer-sharp`,
-    `gatsby-plugin-sharp`,
+    'gatsby-transformer-sharp',
+    'gatsby-plugin-sharp',
     'gatsby-plugin-offline',
-    `gatsby-plugin-sass`,
-    {
-      resolve: 'gatsby-plugin-mdx',
-      options: {
-        path: `${__dirname}/src/react/System/Design/Color`,
-      },
-    },
+    'gatsby-plugin-sass',
+    'gatsby-plugin-mdx',
     {
       resolve: 'gatsby-plugin-manifest',
       options: {
@@ -52,7 +48,7 @@ module.exports = {
         background_color: '#ffffff',
         theme_color: '#744C9E',
         display: 'standalone',
-        icon: `src/doc/images/gatsby-icon.png`, // This path is relative to the root of the site.
+        icon: 'src/doc/images/gatsby-icon.png', // This path is relative to the root of the site.
       },
     },
   ],
