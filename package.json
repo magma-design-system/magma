@@ -4,7 +4,7 @@
   "description": "Initial draft of Maggioli design system",
   "scripts": {
     "build": "run-p 'build:!(storybook)'",
-    "build:gatsby": "gatsby build",
+    "build:gatsby": "npm run tokens && gatsby build",
     "build:lib": "npm run tokens && build-storybook -o design-lib",
     "build:storybook": "build-storybook",
     "deploy": "storybook-to-ghpages",
