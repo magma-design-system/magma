@@ -27,7 +27,7 @@ module.exports = async ({ config, mode }) => {
       loader: "sass-loader",
       options: {
         sourceMap: true,
-        data: "$app: storybook;"
+        // data: "$app: storybook;"
       }
     }]
   })

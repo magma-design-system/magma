@@ -43,6 +43,8 @@ Once node packages are installed, run storybook to see the current status of the
 $ npm run dev:storybook
 ```
 
+This will run [Storybook][storybook] on the URL http://localhost:2046
+
 #### Documentation
 
 Checkout [MDX][mdx] documentation and [node addon][addon-docs] for stories.
