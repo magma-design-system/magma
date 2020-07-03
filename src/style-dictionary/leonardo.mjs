@@ -30,24 +30,22 @@ const colorspace = 'HSL'
 const base = '#ffffff'
 const baseScale = 'tone'
 const brightness = 97
-const colorScales = []
 
-const addAdaptivePalette = (name, color) => {
+const addAdaptivePalette = (color, name) => {
   const colorKeys = typeof color === 'string' ? [color] : color
-  colorScales.push(
-    {
-      name,
-      colorKeys,
-      colorspace,
-      ratios,
-    },
-  )
+  return {
+    name,
+    colorKeys,
+    colorspace,
+    ratios,
+  }
 }
 
 const addAdaptiveColor = (color, name) => {
   const colorKeys = typeof color === 'string' ? [color] : color
   return generateContrastColors(
     {
+      name,
       colorKeys,
       base,
       ratios,
@@ -56,9 +54,7 @@ const addAdaptiveColor = (color, name) => {
   )
 }
 
-colors.forEach(item => {
-  addAdaptivePalette(item.color, item.name)
-})
+const colorScales = colors.map(item => addAdaptivePalette(item.color, item.name))
 
 if (colorScales.length > 0) {
   const theme = generateAdaptiveTheme({
