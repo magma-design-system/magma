@@ -14,7 +14,7 @@
     "at-rule-name-case": "lower",
     "at-rule-name-newline-after": null,
     "at-rule-name-space-after": "always",
-    "at-rule-no-unknown": [ true, { "ignoreAtRules": [ "each", "else", "error", "extend", "for", "function", "if", "include", "mixin", "return", "warn", "while" ] } ],
+    "at-rule-no-unknown": [ true, { "ignoreAtRules": [ "at-root", "each", "else", "error", "extend", "for", "function", "if", "include", "mixin", "return", "warn", "while" ] } ],
     "at-rule-no-vendor-prefix": true,
     "at-rule-property-requirelist": { "font-face": ["font-display", "font-family", "font-style"] },
     "at-rule-semicolon-newline-after": "always",
