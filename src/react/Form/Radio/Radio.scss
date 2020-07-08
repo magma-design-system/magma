@@ -40,9 +40,7 @@
     &:checked {
       & + .radio__icon {
         display: none;
-      }
 
-      & + .radio__icon {
         + .radio__icon {
 
           --color: #{$color-checked};
@@ -70,9 +68,7 @@
         --opacity: #{$opacity};
 
         opacity: var(--opacity);
-      }
 
-      & + .radio__icon {
         + .radio__icon {
           filter: grayscale(0);
           opacity: 1;
@@ -117,9 +113,11 @@
       }
 
       &:checked {
-        & + .radio__icon + .radio__icon {
+        & + .radio__icon {
+          + .radio__icon {
 
-          --color: #{$color-checked};
+            --color: #{$color-checked};
+          }
         }
       }
     }
