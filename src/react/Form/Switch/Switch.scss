@@ -3,16 +3,16 @@
 $dot-size: s(1);
 $padding-size: s(0.25);
 $dot: (
-  'checked': var(--color-adjust-tone-c-15),
-  'hover': var(--color-adjust-tone-c-15),
+  'checked': color('adjust.tone', '15'),
+  'hover': color('adjust.tone', '15'),
   'radius': 100px,
-  'unchecked': var(--color-adjust-tone-c-15),
+  'unchecked': color('adjust.tone', '15'),
 );
 $box: (
-  'checked': var(--color-brand-maggioli-color),
-  'hover': var(--color-adjust-tone-c-10),
+  'checked': color('brand.maggioli'),
+  'hover': color('adjust.tone', '10'),
   'radius': 100px,
-  'unchecked': var(--color-adjust-tone-c-12),
+  'unchecked': color('adjust.tone', '12'),
 );
 
 .switch {

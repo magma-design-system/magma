@@ -1,6 +1,6 @@
 @import '~Sass/import';
 
 .page {
-  background-color: var(--color-adjust-tone-color);
+  background-color: color('adjust.tone');
   padding: s(2);
 }

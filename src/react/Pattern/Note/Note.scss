@@ -2,8 +2,8 @@
 
 @mixin status-theme ($modifier) {
   &--#{$modifier} {
-    background-color: var(--color-status-#{$modifier}-c-14);
-    color: var(--color-status-#{$modifier}-c-03);
+    background-color: color('status.#{$modifier}', '14');
+    color: color('status.#{$modifier}', '03');
   }
 }
 

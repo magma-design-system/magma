@@ -2,8 +2,8 @@ $default-font-set: 'paragraph';
 $font-base-styles: $font-secondary-styles;
 
 body {
-  background-color: var(--color-adjust-tone-color);
-  color: var(--color-adjust-tone-c-02);
+  background-color: color('adjust.tone');
+  color: color('adjust.tone', '02');
   font-family: get($font-family, 'secondary');
   -webkit-tap-highlight-color: transparent;
   width: 100%;
@@ -30,7 +30,7 @@ strong {
 }
 
 a {
-  color: var(--color-brand-maggioli-color);
+  color: color('brand.maggioli');
   font-family: inherit;
   font-size: inherit;
   font-weight: inherit;
@@ -74,7 +74,7 @@ hr {
 
   $size: 4px;
 
-  background-color: var(--color-adjust-tone-c-13);
+  background-color: color('adjust-tone', '13');
   border: 0 !important;
   border-radius: $size;
   height: $size;
@@ -83,6 +83,6 @@ hr {
 }
 
 ::selection {
-  background-color: var(--color-brand-maggioli-c-15);
-  color: var(--color-brand-maggioli-light-color);
+  background-color: color('brand.maggioli', '15');
+  color: color('brand.maggioli');
 }

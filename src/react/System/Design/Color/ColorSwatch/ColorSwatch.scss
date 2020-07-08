@@ -2,7 +2,7 @@
 
 .mds-color-swatch {
   align-items: center;
-  background-color: var(--color-adjust-tone-c-14);
+  background-color: color('adjust.tone', '14');
   border-radius: 100px;
   display: grid;
   grid-gap: s(0.5);

@@ -1,9 +1,9 @@
 @import '~Sass/import';
 
-$cell-background-color: var(--color-adjust-tone-c-15);
-$cell-border: var(--color-adjust-tone-c-14);
-$cell-border-first: var(--color-adjust-tone-c-11);
-$cell-border-hover: var(--color-adjust-tone-c-13);
+$cell-background-color: color('adjust.tone', '15');
+$cell-border: color('adjust.tone', '14');
+$cell-border-first: color('adjust.tone', '11');
+$cell-border-hover: color('adjust.tone', '13');
 $border-style: 2px solid;
 
 @mixin gain ($gain-step) {
@@ -26,8 +26,8 @@ $border-style: 2px solid;
 }
 
 .table {
-  border-bottom: 2px dashed var(--color-adjust-tone-c-07);
-  border-top: 2px dashed var(--color-adjust-tone-c-07);
+  border-bottom: 2px dashed color('adjust.tone', '07');
+  border-top: 2px dashed color('adjust.tone', '07');
   display: flex;
   margin-left: s(-1);
   margin-right: s(-1);

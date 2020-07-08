@@ -1,6 +1,6 @@
 @import '~Sass/import';
 
 .mds-code-snippet {
-  background-color: var(--color-adjust-tone-c-15);
+  background-color: color('adjust.tone', '15');
   padding: s(0.5) s(1);
 }

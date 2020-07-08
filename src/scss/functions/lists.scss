@@ -1,0 +1,10 @@
+@function list-has-value ($list, $search-value) {
+
+  @each $value in $list {
+
+    @if ($search-value == $value) {
+      @return true;
+    }
+  }
+  @return false;
+}

@@ -5,9 +5,9 @@ $border-radius: get($radius, 'small');
 
 .button {
 
-  --background: var(--color-brand-maggioli-c-04);
+  --background: color('brand.maggioli', '04');
   --border: 1px solid transparent;
-  --color: var(--color-adjust-tone-color);
+  --color: color('adjust.tone');
 
   align-items: center;
   background-color: var(--background);
@@ -29,9 +29,9 @@ $border-radius: get($radius, 'small');
   // &:focus,
   // &:hover {
 
-  //   --background: var(--color-brand-maggioli-c-02);
+  //   --background: color('brand.maggioli', '02');
   //   --border: 1px solid transparent;
-  //   --color: var(--color-adjust-tone-c-16);
+  //   --color: color('adjust.tone', '16');
 
   //   background-color: var(--background);
   //   border: var(--border);
@@ -77,15 +77,15 @@ $border-radius: get($radius, 'small');
   &--outline {
 
     --background: transparent;
-    --border: 1px solid var(--color-adjust-tone-c-03);
-    --color: var(--color-adjust-tone-c-03);
+    --border: 1px solid color('adjust.tone', '03');
+    --color: color('adjust.tone', '03');
   }
 }
 
 .button--link {
 
   --background: transparent;
-  --color: var(--color-brand-maggioli-c-04);
+  --color: color('brand.maggioli', '04');
 
   justify-content: flex-start;
 
@@ -100,7 +100,7 @@ $border-radius: get($radius, 'small');
   &:hover {
 
     --background: transparent;
-    --color: var(--color-brand-maggioli-c-08);
+    --color: color('brand.maggioli', '08');
   }
 }
 
@@ -108,30 +108,30 @@ $border-radius: get($radius, 'small');
 
   .button--#{$modifier} {
 
-    --background: var(--color-#{$color-set}-c-04);
-    --color: var(--color-adjust-tone-color);
+    --background: color(#{$color-set}, '04');
+    --color: color('adjust.tone');
 
     &:active,
     &:focus,
     &:hover {
 
-      --background: var(--color-#{$color-set}-c-02);
-      --color: var(--color-adjust-tone-c-15);
+      --background: color(#{$color-set}, '02');
+      --color: color('adjust.tone', '15');
     }
   }
 
   .button--#{$modifier}-outline {
 
     --background: transparent;
-    --border: 1px solid var(--color-#{$color-set}-c-04);
-    --color: var(--color-#{$color-set}-c-04);
+    --border: 1px solid color(#{$color-set}, '04');
+    --color: color(#{$color-set}, '04');
 
     &:active,
     &:focus,
     &:hover {
 
-      --background: var(--color-#{$color-set}-c-04);
-      --color: var(--color-adjust-tone-color);
+      --background: color(#{$color-set}, '04');
+      --color: color('adjust.tone');
     }
   }
 }
@@ -139,30 +139,30 @@ $border-radius: get($radius, 'small');
 @mixin scaffold-status-theme ($modifier, $color-set) {
   .button--#{$modifier} {
 
-    --background: var(--color-#{$color-set}-c-08);
-    --color: var(--color-adjust-tone-color);
+    --background: color(#{$color-set}, '08');
+    --color: color('adjust.tone');
 
     &:active,
     &:focus,
     &:hover {
 
-      --background: var(--color-#{$color-set}-c-06);
-      --color: var(--color-adjust-tone-c-15);
+      --background: color(#{$color-set}, '06');
+      --color: color('adjust.tone', '15');
     }
   }
 
   .button--#{$modifier}-outline {
 
-    --background: var(--color-adjust-tone-color);
-    --border: 1px solid var(--color-#{$color-set}-c-08);
-    --color: var(--color-#{$color-set}-c-08);
+    --background: color('adjust.tone');
+    --border: 1px solid color(#{$color-set}, '08');
+    --color: color(#{$color-set}, '08');
 
     &:active,
     &:focus,
     &:hover {
 
-      --background: var(--color-#{$color-set}-c-08);
-      --color: var(--color-adjust-tone-c-15);
+      --background: color(#{$color-set}, '08');
+      --color: color('adjust.tone', '15');
     }
   }
 }

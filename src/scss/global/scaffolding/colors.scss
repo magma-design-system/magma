@@ -1,5 +1,5 @@
-@function get-var-name ($group-name, $tint-name, $color-name) {
-  @return str-replace('--color-#{$group-name $tint-name $color-name}', ' ', '-');
+@function get-var-name ($prefix, $group-name, $tint-name, $color-name) {
+  @return str-replace('--#{$prefix}-#{$group-name $tint-name $color-name}', ' ', '-');
 }
 
 @mixin scaffold-vars ($light-mode) {
@@ -9,7 +9,14 @@
 
         @if ($light-mode-name == $light-mode) {
           @each $color-name, $color-value in $light-modes-map {
-            #{get-var-name($group-name, $tint-name, $color-name)}: #{$color-value};
+
+            @if list-has-value($palette-format, 'rgb-channels') {
+              #{get-var-name('rgb', $group-name, $tint-name, $color-name)}: #{red($color-value), green($color-value), blue($color-value)};
+            }
+
+            @if list-has-value($palette-format, 'hex') {
+              #{get-var-name('hex', $group-name, $tint-name, $color-name)}: #{$color-value};
+            }
           }
         }
       }

@@ -1,7 +1,7 @@
 @import '~Sass/import';
 
 @mixin division ($distance, $border-width) {
-  border-top: $border-width solid var(--color-adjust-tone-15);
+  border-top: $border-width solid color('adjust.tone', '15');
   margin-top: $distance;
   padding-top: $distance;
 }

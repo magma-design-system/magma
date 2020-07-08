@@ -3,10 +3,10 @@
 $dot-size: s(1);
 $padding-size: s(0.25);
 $track: (
-  'focused': var(--color-brand-maggioli-color),
-  'hover': var(--color-adjust-tone-c-08),
+  'focused': color('brand.maggioli'),
+  'hover': color('adjust.tone', '08'),
   'radius': 100px,
-  'unfocused': var(--color-adjust-tone-c-10),
+  'unfocused': color('adjust.tone', '10'),
 );
 
 %track {
@@ -27,10 +27,10 @@ $track: (
 }
 
 $thumb: (
-  'focused': var(--color-adjust-tone-c-12),
-  'hover': var(--color-adjust-tone-c-12),
+  'focused': color('adjust.tone', '12'),
+  'hover': color('adjust.tone', '12'),
   'size': s(1),
-  'unfocused': var(--color-adjust-tone-c-15),
+  'unfocused': color('adjust.tone', '15'),
 );
 
 %thumb {

@@ -27,13 +27,13 @@
   }
 }
 
-$cell-color: var(--color-adjust-tone-c-15);
-$cell-alt-color: var(--color-adjust-tone-c-15);
+$cell-color: color('adjust.tone', '15');
+$cell-alt-color: color('adjust.tone', '15');
 $cell-alt-hover-color: transparent;
 
 .table-alternate {
-  border-bottom: 2px dashed var(--color-adjust-tone-c-07);
-  border-top: 2px dashed var(--color-adjust-tone-c-07);
+  border-bottom: 2px dashed color('adjust.tone', '07');
+  border-top: 2px dashed color('adjust.tone', '07');
   display: flex;
   margin-left: s(-1);
   margin-right: s(-1);

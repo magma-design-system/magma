@@ -2,12 +2,12 @@
 
 @mixin add-status ($modifier, $color) {
   &--#{$modifier} {
-    border: 2px solid var(--color-#{$color}-c-15);
+    border: 2px solid color(#{$color}, '15');
 
     .mds-usage {
       &__header {
-        background-color: var(--color-#{$color}-c-15);
-        color: var(--color-#{$color}-c-04);
+        background-color: color(#{$color}, '15');
+        color: color(#{$color}, '04');
       }
     }
   }

@@ -1,13 +1,13 @@
 @import '~Sass/import';
 
-$brand-color: var(--color-brand-maggioli-color);
+$brand-color: color('brand.maggioli');
 $input-radius: get($radius, 'small');
 $size: get($form, 'input-height');
 
 .select {
   &__label {
 
-    --color: var(--color-adjust-tone-c-02);
+    --color: color('adjust.tone', '02');
 
     color: var(--color);
     margin-bottom: s(0.5);
@@ -19,13 +19,13 @@ $size: get($form, 'input-height');
 
   &__icon {
 
-    --background-color: var(--color-adjust-tone-c-03);
+    --background-color: color('adjust.tone', '03');
 
     align-items: center;
     background-color: var(--background-color);
     border-radius: get($radius, 'small');
     bottom: s(0.25);
-    color: var(--color-adjust-tone-c-15);
+    color: color('adjust.tone', '15');
     display: flex;
     height: auto;
     justify-content: center;
@@ -40,9 +40,9 @@ $size: get($form, 'input-height');
 
   &__field {
 
-    --background-color: var(--color-adjust-tone-color);
+    --background-color: color('adjust.tone');
     --box-shadow: #{get($shadow, 'tiny'), get($shadow, 'outline')};
-    --color: var(--color-adjust-tone-c-02);
+    --color: color('adjust.tone', '02');
 
     appearance: none;
     background-color: var(--background-color);
@@ -84,7 +84,7 @@ $size: get($form, 'input-height');
 
       &::placeholder {
 
-        --color: var(--color-adjust-tone-c-12);
+        --color: color('adjust.tone', '12');
 
         color: var(--color);
       }

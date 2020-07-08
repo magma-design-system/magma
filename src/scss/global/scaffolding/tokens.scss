@@ -1,36 +1,41 @@
 @function has-this-color ($index) {
-  @each $color-index in get($scaffold, 'colors') {
+
+  @each $color-index in $palette-scale {
 
     @if $index == $color-index {
       @return true;
     }
   }
+
   @return false;
 }
 
-@mixin scaffold-property ($property, $name, $value) {
-  .#{$property}-#{$name} {
-    #{$property}: var(#{$value}) !important;
+@mixin scaffold-property-color ($selector, $property, $name, $contrast) {
+  .#{$property}-#{$selector} {
+    #{$property}: color($name, $contrast);
   }
 }
 
-@mixin scaffold-color ($selector, $value, $index) {
+@mixin scaffold-color ($selector, $color-name, $contrast, $index) {
 
   @if has-this-color($index) {
-    @include scaffold-property(
+    @include scaffold-property-color(
+      $selector: $selector,
       $property: 'color',
-      $name: $selector,
-      $value: $value
+      $name: $color-name,
+      $contrast: $contrast
     );
-    @include scaffold-property(
+    @include scaffold-property-color(
+      $selector: $selector,
       $property: 'background-color',
-      $name: $selector,
-      $value: $value
+      $name: $color-name,
+      $contrast: $contrast
     );
-    @include scaffold-property(
+    @include scaffold-property-color(
+      $selector: $selector,
       $property: 'border-color',
-      $name: $selector,
-      $value: $value
+      $name: $color-name,
+      $contrast: $contrast
     );
   }
 }
@@ -42,14 +47,17 @@
 
         $i: 0;
 
-        @each $color-name, $color-value in $light-modes-map {
+        @each $contrast, $contrast-value in $light-modes-map {
 
           $i: $i + 1;
-          $selector: str-replace('#{$group-name $tint-name $color-name}', ' ', '-');
+          $selector: str-replace('#{$group-name $tint-name $contrast}', ' ', '-');
+          $color-name: str-replace('#{$group-name $tint-name}', ' ', '.');
+          $contrast-level: str-replace('#{$contrast}', 'c-', '');
 
           @include scaffold-color(
             $selector: $selector,
-            $value: '--color-#{$selector}',
+            $color-name: $color-name,
+            $contrast: $contrast-level,
             $index: $i
           );
         }

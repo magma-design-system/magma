@@ -16,7 +16,7 @@
   }
 
   &--chip {
-    background-color: var(--color-adjust-tone-c-15);
+    background-color: color('adjust.tone', '15');
     border-radius: get($form, 'input-height');
     height: get($form, 'input-height');
     padding: 0 s(1);
