@@ -1,9 +1,26 @@
 @function list-has-value ($list, $search-value) {
+  // list-has-value(('hello-world', 'foo'), 'hello') @return false
+  // list-has-value(('hello-world', 'foo'), 'hello-world') @return true
 
   @each $value in $list {
 
     @if ($search-value == $value) {
       @return true;
+    }
+  }
+  @return false;
+}
+
+@function list-like-value ($list, $search-value) {
+  // list-like-value(('hello-world', 'foo'), 'hello') @return true
+  // list-like-value(('hello-world', 'foo'), 'hello-world') @return true
+
+  @each $value in $list {
+    @each $name, $char in $value {
+
+      @if (str-index($name, $search-value)) {
+        @return true;
+      }
     }
   }
   @return false;

@@ -4,18 +4,26 @@
 
 @mixin scaffold-vars ($light-mode) {
   @each $group-name, $group-map in get($tokens, 'color') {
-    @each $tint-name, $tints-map in $group-map {
-      @each $light-mode-name, $light-modes-map in $tints-map {
 
-        @if ($light-mode-name == $light-mode) {
-          @each $color-name, $color-value in $light-modes-map {
+    @if list-like-value($palette-colors, $group-name) {
 
-            @if list-has-value($palette-format, 'rgb-channels') {
-              #{get-var-name('rgb', $group-name, $tint-name, $color-name)}: #{red($color-value), green($color-value), blue($color-value)};
-            }
+      @each $tint-name, $tints-map in $group-map {
 
-            @if list-has-value($palette-format, 'hex') {
-              #{get-var-name('hex', $group-name, $tint-name, $color-name)}: #{$color-value};
+        @if list-like-value($palette-colors, $tint-name) {
+
+          @each $light-mode-name, $light-modes-map in $tints-map {
+
+            @if ($light-mode-name == $light-mode) {
+              @each $color-name, $color-value in $light-modes-map {
+
+                @if list-has-value($palette-format, 'rgb-channels') {
+                  #{get-var-name('rgb', $group-name, $tint-name, $color-name)}: #{red($color-value), green($color-value), blue($color-value)};
+                }
+
+                @if list-has-value($palette-format, 'hex') {
+                  #{get-var-name('hex', $group-name, $tint-name, $color-name)}: #{$color-value};
+                }
+              }
             }
           }
         }

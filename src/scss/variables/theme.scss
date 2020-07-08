@@ -38,3 +38,4 @@ $size: (
 $palette: get($config, 'palette');
 $palette-format: get($palette, 'format');
 $palette-scale: get($palette, 'scale');
+$palette-colors: get($palette, 'colors');
