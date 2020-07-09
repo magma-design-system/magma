@@ -2,7 +2,7 @@
 
   @each $color-index in $palette-scale {
 
-    @if $index == $color-index {
+    @if #{$index} == #{$color-index} {
       @return true;
     }
   }
@@ -10,33 +10,28 @@
   @return false;
 }
 
-@mixin scaffold-property-color ($selector, $property, $name, $contrast) {
+@mixin scaffold-property-color ($property, $group-name, $tint-name, $contrast-level) {
+
+  $selector: str-replace('#{$group-name $tint-name $contrast-level}', ' ', '-');
+  $color-name: str-replace('#{$group-name $tint-name}', ' ', '.');
+
   .#{$property}-#{$selector} {
-    #{$property}: color($name, $contrast);
+    #{$property}: color($color-name, $contrast-level) !important;
   }
 }
 
-@mixin scaffold-color ($selector, $color-name, $contrast, $index) {
+@mixin scaffold-color ($group-name, $tint-name, $contrast-level, $index) {
 
-  @if has-this-color($index) {
-    @include scaffold-property-color(
-      $selector: $selector,
-      $property: 'color',
-      $name: $color-name,
-      $contrast: $contrast
-    );
-    @include scaffold-property-color(
-      $selector: $selector,
-      $property: 'background-color',
-      $name: $color-name,
-      $contrast: $contrast
-    );
-    @include scaffold-property-color(
-      $selector: $selector,
-      $property: 'border-color',
-      $name: $color-name,
-      $contrast: $contrast
-    );
+  @each $property-name in $palette-scaffold {
+
+    @if has-this-color($index) {
+      @include scaffold-property-color(
+        $property: $property-name,
+        $group-name: $group-name,
+        $tint-name: $tint-name,
+        $contrast-level: $contrast-level
+      );
+    }
   }
 }
 
@@ -49,17 +44,18 @@
 
         @each $contrast, $contrast-value in $light-modes-map {
 
-          $i: $i + 1;
-          $selector: str-replace('#{$group-name $tint-name $contrast}', ' ', '-');
-          $color-name: str-replace('#{$group-name $tint-name}', ' ', '.');
-          $contrast-level: str-replace('#{$contrast}', 'c-', '');
+          @if $light-mode-name == 'light' {
 
-          @include scaffold-color(
-            $selector: $selector,
-            $color-name: $color-name,
-            $contrast: $contrast-level,
-            $index: $i
-          );
+            $i: $i + 1;
+            $contrast-level: str-replace('#{$contrast}', 'c-', '');
+
+            @include scaffold-color(
+              $group-name: $group-name,
+              $tint-name: $tint-name,
+              $contrast-level: $contrast-level,
+              $index: $i
+            );
+          }
         }
       }
     }
