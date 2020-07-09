@@ -15,13 +15,13 @@ const AccessibilitySelector = props => {
   const initBackgroundState = {
     hex: 'd0e8fe',
     name: 'Brand Maggioli C-14',
-    selector: 'background-color-brand-maggioli-c-14',
+    selector: 'background-color-brand-maggioli-14',
   }
 
   const initTextState = {
     hex: 'd0e8fe',
     name: 'Brand Maggioli C-14',
-    selector: 'color-brand-maggioli-c-04',
+    selector: 'color-brand-maggioli-04',
   }
 
   const [backgroundState, setBackgroundState] = useState(initBackgroundState)
@@ -42,7 +42,7 @@ const AccessibilitySelector = props => {
               Object.entries(props.token).map(([code, color], key) =>
                 <SelectOption
                   key={key}
-                  value={{ selector: `background-color-brand-maggioli-${code}`, hex: color, name: `Brand Maggioli ${code}` }}
+                  value={{ selector: `background-color-brand-maggioli-${code.replace('c-', '')}`, hex: color, name: `Brand Maggioli ${code}` }}
                 >Brand Maggioli {code}</SelectOption>
                 ,
               )
