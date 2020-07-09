@@ -61,6 +61,7 @@
   "license": "ISC",
   "dependencies": {
     "material-design-icons": "^3.0.1",
+    "node-normalize-scss": "~8.0.1",
     "typeface-karla": "0.0.72",
     "typeface-roboto": "0.0.75"
   },
@@ -109,7 +110,6 @@
     "hex-rgb": "^4.1.0",
     "husky": "^4.2.5",
     "json-to-scss": "^1.5.0",
-    "node-normalize-scss": "^8.0.1",
     "node-sass": "^4.14.1",
     "postcss-loader": "^3.0.0",
     "prop-types": "^15.7.2",
