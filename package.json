@@ -35,6 +35,7 @@
   "main": "index.js",
   "files": [
     "/src/scss/**/*",
+    "/src/assets/**/*",
     "/src/style-dictionary/build/**/*"
   ],
   "publishConfig": {
