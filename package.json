@@ -1,6 +1,6 @@
 {
   "name": "@maggioli/design-system",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "description": "Maggioli design system",
   "scripts": {
     "build": "run-p 'build:!(storybook)'",
@@ -34,7 +34,8 @@
   ],
   "main": "index.js",
   "files": [
-    "/src/scss/**/*"
+    "/src/scss/**/*",
+    "/src/style-dictionary/build/**/*"
   ],
   "publishConfig": {
     "registry": "http://nexus.maggioli.it:8081/repository/npm/"
