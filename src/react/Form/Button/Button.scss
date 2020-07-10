@@ -5,9 +5,9 @@ $border-radius: get($radius, 'small');
 
 .button {
 
-  --background: color('brand.maggioli', '04');
+  --background: #{color('brand.maggioli', '04')};
   --border: 1px solid transparent;
-  --color: color('adjust.tone');
+  --color: #{color('adjust.tone')};
 
   align-items: center;
   background-color: var(--background);
@@ -77,15 +77,15 @@ $border-radius: get($radius, 'small');
   &--outline {
 
     --background: transparent;
-    --border: 1px solid color('adjust.tone', '03');
-    --color: color('adjust.tone', '03');
+    --border: 1px solid #{color('adjust.tone', '03')};
+    --color: #{color('adjust.tone', '03')};
   }
 }
 
 .button--link {
 
   --background: transparent;
-  --color: color('brand.maggioli', '04');
+  --color: #{color('brand.maggioli', '04')};
 
   justify-content: flex-start;
 
@@ -100,7 +100,7 @@ $border-radius: get($radius, 'small');
   &:hover {
 
     --background: transparent;
-    --color: color('brand.maggioli', '08');
+    --color: #{color('brand.maggioli', '08')};
   }
 }
 
@@ -108,30 +108,30 @@ $border-radius: get($radius, 'small');
 
   .button--#{$modifier} {
 
-    --background: color(#{$color-set}, '04');
-    --color: color('adjust.tone');
+    --background: #{color($color-set, '04')};
+    --color: #{color('adjust.tone')};
 
     &:active,
     &:focus,
     &:hover {
 
-      --background: color(#{$color-set}, '02');
-      --color: color('adjust.tone', '15');
+      --background: #{color($color-set, '02')};
+      --color: #{color('adjust.tone', '15')};
     }
   }
 
   .button--#{$modifier}-outline {
 
     --background: transparent;
-    --border: 1px solid color(#{$color-set}, '04');
-    --color: color(#{$color-set}, '04');
+    --border: 1px solid #{color($color-set, '04')};
+    --color: #{color($color-set, '04')};
 
     &:active,
     &:focus,
     &:hover {
 
-      --background: color(#{$color-set}, '04');
-      --color: color('adjust.tone');
+      --background: #{color($color-set, '04')};
+      --color: #{color('adjust.tone')};
     }
   }
 }
@@ -139,39 +139,39 @@ $border-radius: get($radius, 'small');
 @mixin scaffold-status-theme ($modifier, $color-set) {
   .button--#{$modifier} {
 
-    --background: color(#{$color-set}, '08');
-    --color: color('adjust.tone');
+    --background: #{color($color-set, '08')};
+    --color: #{color('adjust.tone')};
 
     &:active,
     &:focus,
     &:hover {
 
-      --background: color(#{$color-set}, '06');
-      --color: color('adjust.tone', '15');
+      --background: #{color($color-set, '06')};
+      --color: #{color('adjust.tone', '15')};
     }
   }
 
   .button--#{$modifier}-outline {
 
-    --background: color('adjust.tone');
-    --border: 1px solid color(#{$color-set}, '08');
-    --color: color(#{$color-set}, '08');
+    --background: #{color('adjust.tone')};
+    --border: 1px solid #{color($color-set, '08')};
+    --color: #{color($color-set, '08')};
 
     &:active,
     &:focus,
     &:hover {
 
-      --background: color(#{$color-set}, '08');
-      --color: color('adjust.tone', '15');
+      --background: #{color($color-set, '08')};
+      --color: #{color('adjust.tone', '15')};
     }
   }
 }
 
-@include scaffold-theme($modifier: 'primary', $color-set: 'brand-maggioli');
-@include scaffold-theme($modifier: 'secondary', $color-set: 'adjust-tone');
-@include scaffold-status-theme($modifier: 'success', $color-set: 'status-success');
-@include scaffold-status-theme($modifier: 'warning', $color-set: 'status-warning');
-@include scaffold-status-theme($modifier: 'error', $color-set: 'status-error');
+@include scaffold-theme($modifier: 'primary', $color-set: 'brand.maggioli');
+@include scaffold-theme($modifier: 'secondary', $color-set: 'adjust.tone');
+@include scaffold-status-theme($modifier: 'success', $color-set: 'status.success');
+@include scaffold-status-theme($modifier: 'warning', $color-set: 'status.warning');
+@include scaffold-status-theme($modifier: 'error', $color-set: 'status.error');
 
 // --toolbar-theme: {
 //   background-color: hsl(120, 70%, 95%);

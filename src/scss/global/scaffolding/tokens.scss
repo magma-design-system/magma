@@ -12,7 +12,16 @@
 
 @mixin scaffold-property-color ($property, $group-name, $tint-name, $contrast-level) {
 
-  $selector: str-replace('#{$group-name $tint-name $contrast-level}', ' ', '-');
+  $selector: '';
+
+  @if $contrast-level == 'color' {
+
+    $selector: str-replace('#{$group-name $tint-name}', ' ', '-');
+  } @else {
+
+    $selector: str-replace('#{$group-name $tint-name $contrast-level}', ' ', '-');
+  }
+
   $color-name: str-replace('#{$group-name $tint-name}', ' ', '.');
 
   .#{$property}-#{$selector} {

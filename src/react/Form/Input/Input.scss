@@ -60,7 +60,7 @@ $size: get($form, 'input-height');
 
   &__label {
 
-    --color: color('adjust.tone', '02');
+    --color: #{color('adjust.tone', '02')};
 
     color: var(--color);
     margin-bottom: s(0.5);
@@ -68,10 +68,10 @@ $size: get($form, 'input-height');
 
   &__field {
 
-    --background-color: color('adjust.tone');
+    --background-color: #{color('adjust.tone')};
     --border-color: transparent;
     --box-shadow: #{get($shadow, 'tiny'), get($shadow, 'outline')};
-    --color: color('adjust.tone', '02');
+    --color: #{color('adjust.tone', '02')};
 
     background-color: var(--background-color);
     border: 1px solid var(--border-color);
@@ -97,7 +97,7 @@ $size: get($form, 'input-height');
 
       &::placeholder {
 
-        --color: color('adjust.tone', '12');
+        --color: #{color('adjust.tone', '12')};
 
         color: var(--color);
       }
@@ -105,7 +105,7 @@ $size: get($form, 'input-height');
 
     &::placeholder {
 
-      --color: color('adjust.tone', '08');
+      --color: #{color('adjust.tone', '08')};
 
       color: var(--color);
       line-height: $size;
@@ -126,7 +126,7 @@ $size: get($form, 'input-height');
 
   &__icon {
 
-    --color: color('adjust.tone', '02');
+    --color: #{color('adjust.tone', '02')};
 
     color: var(--color);
     transition: color $ease;
@@ -165,7 +165,7 @@ $size: get($form, 'input-height');
     &__field {
 
       --box-shadow: none;
-      --border-color: color('adjust.tone', '10');
+      --border-color: #{color('adjust.tone', '10')};
       --color: #{$text-color};
 
       &:focus {
@@ -175,13 +175,13 @@ $size: get($form, 'input-height');
 
         &::placeholder {
 
-          --color: color('adjust.tone', '12');
+          --color: #{color('adjust.tone', '12')};
         }
       }
 
       &::placeholder {
 
-        --color: color('adjust.tone', '08');
+        --color: #{color('adjust.tone', '08')};
       }
     }
 
