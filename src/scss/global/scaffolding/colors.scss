@@ -33,43 +33,22 @@
 }
 
 :root {
-  @include scaffold-vars($light-mode: 'light');
+  @include scaffold-vars('light');
 
   .color-mode {
+    &--auto {
 
-    $light-mode: dark;
-
-    @media (prefers-color-scheme: $light-mode) {
-      @include scaffold-vars($light-mode);
+      @media (prefers-color-scheme: dark) { /* stylelint-disable-line */
+        @include scaffold-vars('dark');
+      }
     }
 
     &--dark {
-      @include scaffold-vars($light-mode);
-    }
-  }
-}
-
-.color-mode {
-  // stylelint-disable scss/media-feature-value-dollar-variable
-
-  &__dark {
-
-    @media (prefers-color-scheme: light) {
-      display: none;
+      @include scaffold-vars('dark');
     }
 
-    .color-mode--light & {
-      display: none;
-    }
-  }
-
-  &__light {
-    .color-mode--dark & {
-      display: none;
-    }
-
-    @media (prefers-color-scheme: dark) {
-      display: none;
+    &--light {
+      @include scaffold-vars('light');
     }
   }
 }
