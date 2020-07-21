@@ -64,6 +64,7 @@
   "dependencies": {
     "material-design-icons": "^3.0.1",
     "node-normalize-scss": "8.0.1",
+    "normalize.css": "^8.0.1",
     "typeface-karla": "0.0.72",
     "typeface-roboto": "0.0.75"
   },
