@@ -35,7 +35,7 @@ $size: (
 );
 
 $palette: get($config, 'palette');
-$palette-format: get($palette, 'format');
-$palette-scale: get($palette, 'scale');
-$palette-colors: get($palette, 'colors');
-$palette-scaffold: get($palette, 'scaffold');
+$palette-format: get(get($config, 'palette'), 'format');
+$palette-scale: get(get($config, 'palette'), 'scale');
+$palette-colors: get(get($config, 'palette'), 'colors');
+$palette-scaffold: get(get($config, 'palette'), 'scaffold');
