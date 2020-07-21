@@ -1,37 +1,14 @@
-import { generateAdaptiveTheme, generateContrastColors } from '@adobe/leonardo-contrast-colors'
+// based on https://leonardocolor.io/
 
-const colors = [
-  { color: '#0559a3', name: 'brand-maggioli' },
-  { color: '#21bf73', name: 'status-success' },
-  { color: '#ED6663', name: 'status-error' },
-  { color: '#ffc272', name: 'status-warning' },
-  { color: '#888888', name: 'tone' },
-]
+import { generateAdaptiveTheme } from '@adobe/leonardo-contrast-colors'
+import { readFileSync, writeFileSync } from 'fs'
 
-const ratios = [
-  1.05,
-  1.15,
-  1.26,
-  1.4,
-  1.6,
-  1.9,
-  2.25,
-  2.7,
-  3.3,
-  4,
-  4.8,
-  5.75,
-  7,
-  8.5,
-  10.3,
-  12.45,
-]
-const colorspace = 'HSL'
-const base = '#ffffff'
-const baseScale = 'tone'
-const brightness = 97
+const colorsRawData = readFileSync('colors.json')
+const { colors, ratios } = JSON.parse(colorsRawData)
 
-const addAdaptivePalette = (color, name) => {
+const baseScale = 'adjust.tone'
+
+const addAdaptivePalette = (color, name, colorspace) => {
   const colorKeys = typeof color === 'string' ? [color] : color
   return {
     name,
@@ -41,26 +18,75 @@ const addAdaptivePalette = (color, name) => {
   }
 }
 
-const addAdaptiveColor = (color, name) => {
-  const colorKeys = typeof color === 'string' ? [color] : color
-  return generateContrastColors(
-    {
-      name,
-      colorKeys,
-      base,
-      ratios,
-      colorspace,
-    },
-  )
+const getPalette = (theme, colorName, colorValue, reverse) => {
+  const palette = {}
+  theme.forEach((element, index) => {
+    if (Object.prototype.hasOwnProperty.call(element, 'name')) {
+      if (element.name === colorName) {
+        let paletteSource = element.values
+        if (reverse) {
+          paletteSource = paletteSource.reverse()
+        }
+        paletteSource.forEach((element, index) => {
+          const codeIndex = index + 1
+          const colorCode = `c-${codeIndex < 10 ? '0' + codeIndex : codeIndex}`
+          palette[colorCode] = { value: element.value }
+
+          if (paletteSource.length === codeIndex) {
+            palette.color = { value: colorValue }
+          }
+        })
+      }
+    }
+  })
+  return palette
 }
 
-const colorScales = colors.map(item => addAdaptivePalette(item.color, item.name))
+const colorScales = colors.map(item => addAdaptivePalette(item.color, item.name, item.colorspace))
 
 if (colorScales.length > 0) {
-  const theme = generateAdaptiveTheme({
+  let brightness = 100
+  const themeLight = generateAdaptiveTheme({
     colorScales,
     baseScale,
     brightness,
   })
-  console.log(theme)
+
+  brightness = 0
+  const themeDark = generateAdaptiveTheme({
+    colorScales,
+    baseScale,
+    brightness,
+  })
+
+  const palette = {
+    color: {},
+  }
+
+  colors.forEach((element, index) => {
+    const groupIndex = 0
+    const nameIndex = 1
+    const group = element.name.split('.')[groupIndex]
+    const name = element.name.split('.')[nameIndex]
+
+    if (!Object.prototype.hasOwnProperty.call(palette.color, group)) {
+      palette.color[group] = {}
+    }
+
+    if (!Object.prototype.hasOwnProperty.call(palette.color[group], name)) {
+      palette.color[group][name] = {
+        light: getPalette(themeLight, `${group}.${name}`, element.color, true),
+        dark: getPalette(themeDark, `${group}.${name}`, element.color, true),
+      }
+    }
+  })
+
+  const jsonPalette = JSON.stringify(palette, null, 2)
+
+  writeFileSync('./properties/color/base.json', jsonPalette, 'utf8', err => {
+    if (err) {
+      console.log('An error occured while writing JSON Object to File.')
+      return console.log(err)
+    }
+  })
 }
