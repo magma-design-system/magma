@@ -9,11 +9,11 @@ The project is currently store in [nexus.maggioli.it][nexus-mgg] under `@maggiol
 ---
 
 ### Documentation index
-- [Login](./notes/01-login)
-- [Install as dependance](./notes/02-install-as-dependance)
-- [Assets](./notes/03-assets)
-- [Development installation](./notes/04-development-installation)
-- [Publish module](./notes/05-publish-module)
+- [Login](./-/blob/master/notes/01-login.md)
+- [Install as dependance](./-/blob/master/notes/02-install-as-dependance)
+- [Assets](./-/blob/master/notes/03-assets)
+- [Development installation](./-/blob/master/notes/04-development-installation)
+- [Publish module](./-/blob/master/notes/05-publish-module)
 
 ---
 
