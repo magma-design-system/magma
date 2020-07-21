@@ -9,11 +9,11 @@ The project is currently store in [nexus.maggioli.it][nexus-mgg] under `@maggiol
 ---
 
 ### Documentation index
-- [Login](./-/blob/master/notes/01-login.md)
-- [Install as dependance](./-/blob/master/notes/02-install-as-dependance)
-- [Assets](./-/blob/master/notes/03-assets)
-- [Development installation](./-/blob/master/notes/04-development-installation)
-- [Publish module](./-/blob/master/notes/05-publish-module)
+- [Login](http://git.maggioli.it/ricerca-sviluppo-new-media/design-system/-/blob/master/notes/01-login.md)
+- [Install as dependance](http://git.maggioli.it/ricerca-sviluppo-new-media/design-system/-/blob/master/notes/02-install-as-dependance)
+- [Assets](http://git.maggioli.it/ricerca-sviluppo-new-media/design-system/-/blob/master/notes/03-assets)
+- [Development installation](http://git.maggioli.it/ricerca-sviluppo-new-media/design-system/-/blob/master/notes/04-development-installation)
+- [Publish module](http://git.maggioli.it/ricerca-sviluppo-new-media/design-system/-/blob/master/notes/05-publish-module)
 
 ---
 
