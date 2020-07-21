@@ -33,6 +33,8 @@ export const colors = () =>
       <Button icon="email" variant="primary-outline">Primary outline</Button>
       <Button icon="notification" variant="secondary">Secondary</Button>
       <Button icon="notification" variant="secondary-outline">Secondary outline</Button>
+      <Button icon="user" variant="info">Info</Button>
+      <Button icon="user" variant="info-outline">Info outline</Button>
       <Button icon="operator" variant="success">Success</Button>
       <Button icon="operator" variant="success-outline">Success outline</Button>
       <Button icon="phone" variant="warning">warning</Button>

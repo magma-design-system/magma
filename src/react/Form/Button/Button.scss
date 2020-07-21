@@ -172,6 +172,7 @@ $border-radius: get($radius, 'small');
 @include scaffold-status-theme($modifier: 'success', $color-set: 'status.success');
 @include scaffold-status-theme($modifier: 'warning', $color-set: 'status.warning');
 @include scaffold-status-theme($modifier: 'error', $color-set: 'status.error');
+@include scaffold-status-theme($modifier: 'info', $color-set: 'status.info');
 
 // --toolbar-theme: {
 //   background-color: hsl(120, 70%, 95%);

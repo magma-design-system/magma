@@ -13,7 +13,7 @@ function getColor(token, index) {
   const colorCode = Object.keys(token)[index]
   return {
     code: colorCode,
-    selectorCode: colorCode.replace('c-', ''),
+    selectorCode: colorCode.replace('c-', '-').replace('color', ''),
     value: colorValue,
   }
 }
@@ -34,7 +34,7 @@ function getBestContrastColor(token, index) {
 }
 
 function getSelectors(token, group, name, index) {
-  return `background-color-${group}-${name}-${getColor(token, index).selectorCode} color-${group}-${name}-${getBestContrastColor(token, index).selectorCode}`
+  return `background-color-${group}-${name}${getColor(token, index).selectorCode} color-${group}-${name}${getBestContrastColor(token, index).selectorCode}`
 }
 
 const ColorPalette = props =>
