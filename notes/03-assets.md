@@ -64,7 +64,23 @@ node_modules/@maggioli/design-system/src/scss/import-global.scss
 Dipendenza componente singolo
 
 ```
-node_modules/@maggioli/design-system/src/scss/import.scss
+node_modules/@maggioli/design-system/src/scss/import-framework.scss
 ```
 
-Gli asset dei **design token** sono generati in fase di pubblicazione del modulo, per tanto sono presenti in fase di utilizzo del modulo come dipendenza.
+Per fare un override della configurazione default, è necessario inserirla subito sopra gli import del design system, in entrambi i casi:
+
+##### Nel tuo componente React / Angular/ SCSS
+
+```scss
+@import 'your-custom-config';
+@import 'import-framework';
+```
+
+##### Nella tua pagina React / Angular / JS
+
+```js
+import 'your-custom-config.scss';
+import 'import-global.scss';
+```
+
+Gli asset dei **design token** sono generati in fase di pubblicazione del modulo, per tanto sono pre-generati *as is* in fase di utilizzo del modulo come dipendenza.
