@@ -1,4 +1,4 @@
-@import '~Sass/import';
+@import '~Sass/import-framework';
 
 @mixin division ($distance, $border-width) {
   border-top: $border-width solid color('adjust.tone', '15');

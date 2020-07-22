@@ -1,4 +1,4 @@
-@import '~Sass/import';
+@import '~Sass/import-framework';
 
 @mixin add-status ($modifier, $color) {
   &--#{$modifier} {

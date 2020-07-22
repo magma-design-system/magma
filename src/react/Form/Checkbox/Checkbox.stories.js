@@ -26,7 +26,7 @@ export const customIcon = () =>
   </Checkbox>
 
 export const customColor = () =>
-  <Checkbox iconClassName="color-red-2">
+  <Checkbox iconClassName="color-status-error-08">
     {faker.lorem.sentences()}
   </Checkbox>
 

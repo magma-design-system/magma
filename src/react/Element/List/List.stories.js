@@ -37,7 +37,7 @@ export const customIconMultiple = () =>
   </List>
 
 export const customColorGlobal = () =>
-  <List iconClassName="color-brand-maggioli-c-06" iconSize="normal">
+  <List iconClassName="color-brand-maggioli-06" iconSize="normal">
     <ListItem icon="email">{ faker.internet.email() }</ListItem>
     <ListItem icon="smartphone">{ faker.phone.phoneNumber() }</ListItem>
     <ListItem icon="shipping">{ faker.address.streetAddress() }</ListItem>
@@ -45,7 +45,7 @@ export const customColorGlobal = () =>
 
 export const customColorMultiple = () =>
   <List iconSize="normal">
-    <ListItem icon="email" iconClassName="color-brand-maggioli-c-08">{ faker.internet.email() }</ListItem>
-    <ListItem icon="statusWarning" iconClassName="color-status-warning-c-08">{ faker.phone.phoneNumber() }</ListItem>
-    <ListItem icon="statusSuccess" iconClassName="color-status-success-c-08">{ faker.address.streetAddress() }</ListItem>
+    <ListItem icon="email" iconClassName="color-brand-maggioli-08">{ faker.internet.email() }</ListItem>
+    <ListItem icon="statusWarning" iconClassName="color-status-warning-08">{ faker.phone.phoneNumber() }</ListItem>
+    <ListItem icon="statusSuccess" iconClassName="color-status-success-08">{ faker.address.streetAddress() }</ListItem>
   </List>
