@@ -27,8 +27,8 @@ There are various of planned changes, that will be added in the next weeks:
   * Design tokens (data behind styles and identity);
   * Icons;
   * Identity (Maggioli logo with the respective sub projects/services);
-  * Styles system (SCSS);
-  * Design system documentation (gatsby, react components and storybook).
+  * Theme layer (SCSS);
+  * Documentation (gatsby, react components and storybook).
 
 This roadmap will change depending on project progression and complexity of the integrations.
 
