@@ -74,13 +74,23 @@ Per fare un override della configurazione default, è necessario inserirla subit
 ```scss
 @import 'your-custom-config';
 @import 'import-framework';
+
+.component {
+  color: color('brand.maggioli', '09');
+}
 ```
 
 ##### Nella tua pagina React / Angular / JS
 
 ```js
+import Page from 'Components/Page'
+import Button from 'Components/Button'
 import 'your-custom-config.scss';
 import 'import-global.scss';
+
+<Page>
+  <Button>Hello world!</Button>
+</Page>
 ```
 
 Gli asset dei **design token** sono generati in fase di pubblicazione del modulo, per tanto sono pre-generati *as is* in fase di utilizzo del modulo come dipendenza.
