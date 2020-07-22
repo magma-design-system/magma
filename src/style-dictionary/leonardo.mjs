@@ -4,12 +4,13 @@ import { generateAdaptiveTheme } from '@adobe/leonardo-contrast-colors'
 import { readFileSync, writeFileSync } from 'fs'
 
 const colorsRawData = readFileSync('colors.json')
-const { colors, ratios } = JSON.parse(colorsRawData)
+const { colors, defaultColorspace, ratios } = JSON.parse(colorsRawData)
 
 const baseScale = 'adjust.tone'
 
-const addAdaptivePalette = (color, name, colorspace) => {
+const addAdaptivePalette = (color, name, itemColorspace) => {
   const colorKeys = typeof color === 'string' ? [color] : color
+  const colorspace = itemColorspace !== undefined ? itemColorspace : defaultColorspace
   return {
     name,
     colorKeys,

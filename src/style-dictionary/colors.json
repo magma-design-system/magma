@@ -6,34 +6,28 @@
       "name": "brand.maggioli"
     },{
       "color": "#597CB9",
-      "colorspace": "HSL",
       "name": "brand.eolo"
     },{
       "color": "#ED7C63",
-      "colorspace": "HSL",
       "name": "brand.argo"
     },{
       "color": "#23b2e1",
-      "colorspace": "HSL",
       "name": "status.info"
     },{
       "color": "#21bf73",
-      "colorspace": "HSL",
       "name": "status.success"
     },{
       "color": "#ED6663",
-      "colorspace": "HSL",
       "name": "status.error"
     },{
       "color": "#ffc107",
-      "colorspace": "HSL",
       "name": "status.warning"
     },{
       "color": "#ffffff",
-      "colorspace": "HSL",
       "name": "adjust.tone"
     }
   ],
+  "defaultColorspace": "HSL",
   "ratios": [
     1.05,
     1.15,
