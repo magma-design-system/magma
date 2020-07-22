@@ -54,7 +54,6 @@ $ npm run tokens
 The project supports various ide integrations with linter configs.
 
 
-
 | Plug-in | Description | Supported IDE |
 |:----------|:----------|:----------|
 | [StyleLint](https://stylelint.io/) | Linter for CSS and SASS | [Visual Studio Code](https://marketplace.visualstudio.com/items?itemName=stylelint.vscode-stylelint), [Atom](https://atom.io/packages/linter-stylelint), [Sublime Text](https://github.com/SublimeLinter/SublimeLinter-stylelint) |
