@@ -3,6 +3,15 @@ $config: (
     'format': ('rgb-channels', 'hex'),
     'scale': ('1', '2', '3', '4', '5', '6', '7', '8', '9', '10', '11', '12', '13', '14', '15', '16', '17'),
     'scaffold': ('background-color', 'color'),
-    'colors': ('brand.maggioli')
+    'colors': ('brand.maggioli', 'brand.argo', 'brand.eolo', 'status.info', 'status.success', 'status.error', 'status.warning', 'adjust.tone')
   )
 );
+
+// This must be user before import-framework.scss, so:
+// In the single component:
+//   @import 'custom-config';
+//   @import 'import-framework';
+
+// In the main import:
+//   @import 'custom-config';
+//   @import 'import-global';
