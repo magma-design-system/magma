@@ -67,7 +67,11 @@ Al momento non è possibile fare login tramite utente `nexusUser` con `npm` a ca
 
 **Si può facilmente risolvere il problema calcolando manualmente l'hash di autenticazione come descritto sopra.**
 
-Se si desidera fare logout e cancellare il file `~/.npmrc` riporto di seguito il comando:
+===
+
+### Non funziona su nexus
+
+Se si desidera fare login e cancellare il file `~/.npmrc` riporto di seguito il comando:
 
 ```bash
 npm login --registry=<url-group>
