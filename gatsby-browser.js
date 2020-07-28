@@ -1,2 +1,5 @@
+import './node_modules/normalize.css/normalize.css'
+import './node_modules/material-design-icons/iconfont/material-icons.css'
+import './node_modules/typeface-karla/index.css'
+import './node_modules/typeface-roboto/index.css'
 import './src/scss/import-global.scss'
-import './src/scss/default-assets.scss'

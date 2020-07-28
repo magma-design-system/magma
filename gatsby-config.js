@@ -16,7 +16,7 @@ module.exports = {
       },
     },
     {
-      resolve: `gatsby-alias-imports`,
+      resolve: 'gatsby-alias-imports',
       options: {
         aliases,
       },
@@ -52,4 +52,4 @@ module.exports = {
       },
     },
   ],
-};
+}

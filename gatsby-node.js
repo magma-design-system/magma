@@ -22,7 +22,7 @@ exports.onCreateNode = ({ node, actions, getNode }) => {
 
 const path = require('path')
 
-exports.createPages = async ({ graphql, actions, reporter }) => {
+exports.createPages = async({ graphql, actions, reporter }) => {
   // Destructure the createPage function from the actions object
   const { createPage } = actions
   const result = await graphql(`
