@@ -67,7 +67,7 @@ Al momento non è possibile fare login tramite utente `nexusUser` con `npm` a ca
 
 **Si può facilmente risolvere il problema calcolando manualmente l'hash di autenticazione come descritto sopra.**
 
-===
+---
 
 ### Non funziona su nexus
 
