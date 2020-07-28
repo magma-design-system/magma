@@ -3,7 +3,7 @@ import faker from 'faker'
 
 import TypographyTableGroup from '@System/Design/Typography/TypographyTableGroup'
 import Grid from '@Layout/Grid/Grid'
-import fontFamilies from '$Tokens/css-tokens/font-families.json'
+import fontFamilies from '+Tokens/css-tokens/font-families.json'
 
 faker.locale = 'it'
 
