@@ -153,6 +153,7 @@
       "search": [
         "account",
         "account_box",
+        "box",
         "human",
         "man",
         "person",
@@ -170,7 +171,13 @@
         "width": 1000
       },
       "search": [
-        "account_circle"
+        "account_circle",
+        "account",
+        "circle",
+        "human",
+        "man",
+        "person",
+        "user"
       ]
     },
     {
@@ -184,7 +191,14 @@
         "width": 1000
       },
       "search": [
-        "adb"
+        "adb",
+        "android",
+        "device",
+        "google",
+        "mobile",
+        "operative",
+        "os",
+        "system"
       ]
     },
     {
@@ -198,7 +212,16 @@
         "width": 1000
       },
       "search": [
-        "add_a_photo"
+        "add",
+        "add_a_photo",
+        "camera",
+        "device",
+        "image",
+        "photo",
+        "pic",
+        "picture",
+        "retouch",
+        "shot"
       ]
     },
     {
@@ -212,7 +235,12 @@
         "width": 1000
       },
       "search": [
-        "add_alarm"
+        "add",
+        "add_alarm",
+        "alarm",
+        "chronometer",
+        "clock",
+        "time"
       ]
     },
     {
