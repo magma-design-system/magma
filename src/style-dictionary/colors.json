@@ -24,6 +24,7 @@
       "name": "status.warning"
     },{
       "color": "#ffffff",
+      "colorDark": "#000000",
       "name": "adjust.tone"
     }
   ],
