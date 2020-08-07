@@ -1,7 +1,7 @@
 import React, { useState } from 'react'
 import faker from 'faker'
 
-import Checkbox from './Checkbox'
+import Checkbox from '@Form/Checkbox/Checkbox'
 import Grid from '@Layout/Grid/Grid'
 faker.locale = 'it'
 

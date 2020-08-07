@@ -1,7 +1,7 @@
 import React from 'react'
 import faker from 'faker'
 
-import Select, { SelectOption } from './Select'
+import Select, { SelectOption } from '@Form/Select/Select'
 import Grid from '@Layout/Grid/Grid'
 faker.locale = 'it'
 

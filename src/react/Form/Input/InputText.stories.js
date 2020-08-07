@@ -1,7 +1,7 @@
 import React from 'react'
 import faker from 'faker'
 
-import InputText from './InputText'
+import InputText from '@Form/Input/InputText'
 faker.locale = 'it'
 
 export default {

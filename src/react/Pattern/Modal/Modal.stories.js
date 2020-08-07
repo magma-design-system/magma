@@ -1,8 +1,7 @@
 import React, { Fragment, useState } from 'react'
-import PropTypes from 'prop-types'
 import faker from 'faker'
 
-import Modal from './Modal'
+import Modal from '@Pattern/Modal/Modal'
 import Button from '@Form/Button/Button'
 import Paragraph from '@Typography/Paragraph/Paragraph'
 

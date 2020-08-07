@@ -3,7 +3,7 @@ import PropTypes from 'prop-types'
 import faker from 'faker'
 
 import icons from './dictionary.json'
-import Icon from './Icon'
+import Icon from '@Design/Icon/Icon'
 import Grid from '@Layout/Grid/Grid'
 import Hack from '@Typography/Hack/Hack'
 faker.locale = 'it'

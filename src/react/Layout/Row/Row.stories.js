@@ -1,7 +1,7 @@
 import React from 'react'
 import faker from 'faker'
 
-import Row from './Row'
+import Row from '@Layout/Row/Row'
 import Button from '@Form/Button/Button'
 faker.locale = 'it'
 

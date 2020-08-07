@@ -1,6 +1,6 @@
 import React from 'react'
 
-import Link from './Link'
+import Link from '@Element/Link/Link'
 import Paragraph from '@Typography/Paragraph/Paragraph'
 
 export default {

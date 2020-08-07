@@ -1,11 +1,11 @@
 import React from 'react'
 import faker from 'faker'
 
-import Grid from './Grid'
+import Grid from '@App/Policy/Grid/Grid'
 faker.locale = 'it'
 
 export default {
-  title: 'Policy App/Layout/Grid',
+  title: 'App/Policy/Layout/Grid',
   component: Grid,
 }
 

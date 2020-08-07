@@ -1,7 +1,7 @@
 import React from 'react'
 import faker from 'faker'
 
-import Switch from './Switch'
+import Switch from '@Form/Switch/Switch'
 import Grid from '@Layout/Grid/Grid'
 faker.locale = 'it'
 

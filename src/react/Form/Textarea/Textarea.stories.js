@@ -1,7 +1,7 @@
 import React from 'react'
 import faker from 'faker'
 
-import Textarea from './Textarea'
+import Textarea from '@Form/Textarea/Textarea'
 faker.locale = 'it'
 
 export default {

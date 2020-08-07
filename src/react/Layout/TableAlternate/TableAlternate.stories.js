@@ -1,7 +1,7 @@
 import React from 'react'
 import faker from 'faker'
 
-import TableAlternate, { TableAltHeader, TableAltHeaderCell, TableAltBody, TableAltRow, TableAltCell } from './TableAlternate'
+import TableAlternate, { TableAltHeader, TableAltHeaderCell, TableAltBody, TableAltRow, TableAltCell } from '@Layout/TableAlternate/TableAlternate'
 faker.locale = 'it'
 
 export default {

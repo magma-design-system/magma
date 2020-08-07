@@ -1,7 +1,7 @@
 import React from 'react'
 import faker from 'faker'
 
-import InputEmail from './InputEmail'
+import InputEmail from '@Form/Input/InputEmail'
 faker.locale = 'it'
 
 export default {

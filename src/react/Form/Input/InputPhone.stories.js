@@ -1,7 +1,7 @@
 import React from 'react'
 import faker from 'faker'
 
-import InputPhone from './InputPhone'
+import InputPhone from '@Form/Input/InputPhone'
 faker.locale = 'it'
 
 export default {

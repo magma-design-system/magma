@@ -1,7 +1,7 @@
 import React from 'react'
 import faker from 'faker'
 
-import Radio from './Radio'
+import Radio from '@Form/Radio/Radio'
 import Grid from '@Layout/Grid/Grid'
 faker.locale = 'it'
 
