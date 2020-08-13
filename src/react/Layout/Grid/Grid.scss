@@ -46,7 +46,7 @@ $columns: 4;
     grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
   }
 
-  &--tmpl-design-system {
+  &--tmpl-design-system-page {
     grid-template-columns: 1fr;
 
     @include media ('desktop') {
