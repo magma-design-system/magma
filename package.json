@@ -1,6 +1,6 @@
 {
   "name": "@maggioli/design-system",
-  "version": "0.0.2",
+  "version": "0.0.3",
   "description": "Maggioli design system",
   "scripts": {
     "build": "run-p 'build:!(storybook)'",
@@ -64,7 +64,6 @@
   "license": "ISC",
   "dependencies": {
     "material-design-icons": "^3.0.1",
-    "node-normalize-scss": "^8.1.2",
     "normalize.css": "^8.0.1",
     "typeface-karla": "0.0.72",
     "typeface-roboto": "0.0.75"
