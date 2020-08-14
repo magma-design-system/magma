@@ -1,4 +1,5 @@
 import React from 'react'
+import PropTypes from 'prop-types'
 import './Navigation.scss'
 import Grid from '@Layout/Grid/Grid'
 import H1 from '@Typography/H1/H1'
@@ -24,7 +25,29 @@ const Navigation = props =>
           <MenuItem>integrazione</MenuItem>
         </Menu>
       </Grid>
+      <Hr/>
+      <Menu title="Design">
+        <MenuItem>Colori</MenuItem>
+        <MenuItem>Typography</MenuItem>
+        <MenuItem>Illustrazioni</MenuItem>
+        <MenuItem>Icone</MenuItem>
+      </Menu>
+      <Hr/>
+      <Menu title="Dev">
+        <MenuItem>Repository</MenuItem>
+        <MenuItem>Roadmap</MenuItem>
+        <MenuItem>Versione 0.0.3</MenuItem>
+      </Menu>
     </Grid>
   </div>
+
+Navigation.propTypes = {
+  className: PropTypes.string,
+  data: PropTypes.any,
+}
+
+Navigation.defaultProps = {
+  className: '',
+}
 
 export default Navigation

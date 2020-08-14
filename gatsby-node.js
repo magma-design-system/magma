@@ -1,3 +1,4 @@
+const path = require('path')
 const { createFilePath } = require('gatsby-source-filesystem')
 
 exports.onCreateNode = ({ node, actions, getNode }) => {
@@ -20,8 +21,6 @@ exports.onCreateNode = ({ node, actions, getNode }) => {
   }
 }
 
-const path = require('path')
-
 exports.createPages = async({ graphql, actions, reporter }) => {
   // Destructure the createPage function from the actions object
   const { createPage } = actions
@@ -39,9 +38,11 @@ exports.createPages = async({ graphql, actions, reporter }) => {
       }
     }
   `)
+
   if (result.errors) {
     reporter.panicOnBuild('🚨  ERROR: Loading "createPages" query')
   }
+
   // Create blog post pages.
   const posts = result.data.allMdx.edges
   // you'll call `createPage` for each result
@@ -51,7 +52,7 @@ exports.createPages = async({ graphql, actions, reporter }) => {
       // (or `node.frontmatter.slug`)
       path: node.fields.slug,
       // This component will wrap our MDX content
-      component: path.resolve('./src/doc/components/mdx-layout.js'),
+      component: path.resolve('./src/doc/components/Layout/LayoutMdx.js'),
       // You can use the values in this context in
       // our page layout component
       context: { id: node.id },

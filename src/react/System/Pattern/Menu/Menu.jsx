@@ -1,17 +1,17 @@
 import React from 'react'
 import PropTypes from 'prop-types'
 import Grid from '@Layout/Grid/Grid'
-import H1 from '@Typography/H1/H1'
-import H5 from '@Typography/H5/H5'
+import H2 from '@Typography/H2/H2'
+import Paragraph from '@Typography/Paragraph/Paragraph'
 
 const MenuItem = props =>
-  <H5 className="ds-menu-item">
+  <Paragraph className="ds-menu-item">
     {props.children}
-  </H5>
+  </Paragraph>
 
 const Menu = props =>
   <Grid gutter="none" fit={true} className="ds-menu">
-    <H1>{props.title}</H1>
+    <H2>{props.title}</H2>
     {props.children}
   </Grid>
 

@@ -42,6 +42,9 @@ module.exports = {
     {
       resolve: 'gatsby-plugin-manifest',
       options: {
+        defaultLayouts: {
+          default: require.resolve(`${__dirname}/src/doc/components/Layout/LayoutMdx`),
+        },
         name: 'Gatsby Storybook Starter',
         short_name: 'Gatsby Storybook Starter',
         start_url: '/',

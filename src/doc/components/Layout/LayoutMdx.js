@@ -1,21 +1,32 @@
 import React from 'react'
+import PropTypes from 'prop-types'
 import { MDXProvider } from '@mdx-js/react'
 import { MDXRenderer } from 'gatsby-plugin-mdx'
 import { Link, graphql } from 'gatsby'
-import Layout from './layout'
+import Page from '@System/Page/Page'
+import Grid from '@Layout/Grid/Grid'
+import Navigation from '@System/Layout/Navigation/Navigation'
 const shortcodes = { Link } // Provide common components here
 
-export default function PageTemplate({ data: { mdx } }) {
-  return (
-    <Layout>
-      {/* <h1>{mdx.frontmatter.title}</h1> */}
+const LayoutMDX = ({ data: { mdx } }) =>
+  <Page>
+    <Grid template="design-system-page">
+      <Navigation />
       <MDXProvider components={shortcodes}>
         <MDXRenderer>{mdx.body}</MDXRenderer>
       </MDXProvider>
-    </Layout>
-  )
+    </Grid>
+  </Page>
+
+LayoutMDX.propTypes = {
+  data: PropTypes.any,
 }
 
+LayoutMDX.defaultProps = {
+  data: '',
+}
+
+export default LayoutMDX
 export const pageQuery = graphql`
   query BlogPostQuery($id: String) {
     mdx(id: { eq: $id }) {
