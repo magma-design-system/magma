@@ -9,6 +9,12 @@ module.exports = {
   plugins: [
     'gatsby-plugin-react-helmet',
     {
+      resolve: 'gatsby-alias-imports',
+      options: {
+        aliases,
+      },
+    },
+    {
       resolve: 'gatsby-source-filesystem',
       options: {
         name: 'images',
@@ -16,9 +22,10 @@ module.exports = {
       },
     },
     {
-      resolve: 'gatsby-alias-imports',
+      resolve: 'gatsby-source-filesystem',
       options: {
-        aliases,
+        name: 'pages',
+        path: `${__dirname}/src/doc/pages`,
       },
     },
     {
@@ -27,24 +34,22 @@ module.exports = {
         path: `${__dirname}/src/doc/pages`,
       },
     },
-    {
-      resolve: 'gatsby-source-filesystem',
-      options: {
-        name: 'pages',
-        path: `${__dirname}/src/react/System/Design/Color`,
-      },
-    },
     'gatsby-transformer-sharp',
     'gatsby-plugin-sharp',
     'gatsby-plugin-offline',
     'gatsby-plugin-sass',
-    'gatsby-plugin-mdx',
+    {
+      resolve: 'gatsby-plugin-mdx',
+      options: {
+        // defaultLayouts: {
+        //   default: `${__dirname}/src/doc/components/Layout/Page/Default/Default`,
+        // },
+        extensions: ['.mdx', '.md'],
+      },
+    },
     {
       resolve: 'gatsby-plugin-manifest',
       options: {
-        defaultLayouts: {
-          default: require.resolve(`${__dirname}/src/doc/components/Layout/LayoutMdx`),
-        },
         name: 'Gatsby Storybook Starter',
         short_name: 'Gatsby Storybook Starter',
         start_url: '/',

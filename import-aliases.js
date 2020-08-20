@@ -7,6 +7,7 @@ module.exports = {
   '@Design': path.resolve(__dirname, 'src/react/Design/'),
   '@Element': path.resolve(__dirname, 'src/react/Element/'),
   '@Form': path.resolve(__dirname, 'src/react/Form/'),
+  '@Gatsby': path.resolve(__dirname, 'src/doc/components/'),
   '@Layout': path.resolve(__dirname, 'src/react/Layout/'),
   '@Pattern': path.resolve(__dirname, 'src/react/Pattern/'),
   '@System': path.resolve(__dirname, 'src/react/System/'),

@@ -1,15 +1,26 @@
 import React from 'react'
 import PropTypes from 'prop-types'
+import { StaticQuery, graphql } from 'gatsby'
 import './Navigation.scss'
 import Grid from '@Layout/Grid/Grid'
 import H1 from '@Typography/H1/H1'
 import Hr from '@System/Layout/Hr/Hr'
 import Menu, { MenuItem } from '@System/Pattern/Menu/Menu'
 
+const query = graphql`
+  query NavigationQuery {
+    site {
+      siteMetadata {
+        title
+      }
+    }
+  }
+`
+
 const Navigation = props =>
   <div className="ds-navigation">
     <Grid>
-      <H1>Maggioli Design System</H1>
+      <H1>{ props.title }</H1>
       <Hr/>
       <Grid columns="2">
         <Menu title="Doc">
@@ -43,11 +54,19 @@ const Navigation = props =>
 
 Navigation.propTypes = {
   className: PropTypes.string,
+  title: PropTypes.string,
   data: PropTypes.any,
 }
 
 Navigation.defaultProps = {
   className: '',
+  title: '',
 }
 
-export default Navigation
+export default () =>
+  <StaticQuery
+    query={query}
+    render={
+      data => (<Navigation title={data.site.siteMetadata.title}/>)
+    }
+  />
