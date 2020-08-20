@@ -10,13 +10,12 @@ const shortcodes = {
   Link,
   Grid,
 }
-/*
-const Page = props =>
+const Page = ({ data: { mdx } }) =>
   <Grid template="design-system-page">
     <Navigation />
     <div>
       <MDXProvider components={shortcodes}>
-        <MDXRenderer>{props.data.mdx.body}</MDXRenderer>
+        <MDXRenderer>{mdx.body}</MDXRenderer>
       </MDXProvider>
     </div>
   </Grid>
@@ -28,20 +27,8 @@ Page.propTypes = {
 Page.defaultProps = {
   data: {},
 }
-*/
 
-export default function Page( { data: { mdx } } ) {
-  return (
-    <Grid template="design-system-page">
-      <Navigation />
-      <div>
-        <MDXProvider components={shortcodes}>
-          <MDXRenderer>{mdx.body}</MDXRenderer>
-        </MDXProvider>
-      </div>
-    </Grid>
-  )
-}
+export default Page
 
 export const pageQuery = graphql`
   query LayoutQuery($id: String) {
