@@ -6,10 +6,10 @@ import { MDXRenderer } from 'gatsby-plugin-mdx'
 import Grid from '@Layout/Grid/Grid'
 import Navigation from '@Gatsby/Layout/Navigation/Navigation'
 
-// const shortcodes = {
-//   Link,
-//   Grid,
-// }
+const shortcodes = {
+  Link,
+  Grid,
+}
 // const Page = ({ data: { mdx } }) =>
 //   <Grid template="design-system-page">
 //     <Navigation />
@@ -74,7 +74,9 @@ const Layout = ({ children }) => (
                 paddingTop: 0,
               }}
             >
-              {children}
+              <MDXProvider components={shortcodes}>
+                {children}
+              </MDXProvider>
             </div>
           </Grid>
         </>
