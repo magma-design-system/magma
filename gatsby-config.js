@@ -2,9 +2,9 @@ const aliases = require('./import-aliases')
 
 module.exports = {
   siteMetadata: {
-    title: 'Design System documentation',
+    title: 'Maggioli Design System',
     description: 'Storybook stories rendered with GatsbyJs',
-    author: 'Us',
+    author: 'Maggioli Research & Development department',
   },
   plugins: [
     'gatsby-plugin-react-helmet',
@@ -42,8 +42,8 @@ module.exports = {
       resolve: 'gatsby-plugin-mdx',
       options: {
         defaultLayouts: {
-          pages: `${__dirname}/src/doc/components/Layout/Page/Default/Default`,
-          default: `${__dirname}/src/doc/components/Layout/Page/Default/Default`,
+          pages: `${__dirname}/src/doc/components/Layout/Default`,
+          default: `${__dirname}/src/doc/components/Layout/Default`,
         },
         extensions: ['.mdx', '.md'],
       },
