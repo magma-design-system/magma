@@ -30,6 +30,10 @@
 .ds-menu-item {
   transition: background-color get($tween, 'slide'), color get($tween, 'slide'), padding get($tween, 'slide');
 
+  &__list {
+    display: none;
+  }
+
   &--opened {
     background-color: color('adjust.tone', '04');
     color: color('adjust.tone');
