@@ -17,6 +17,8 @@ const query = graphql`
             date
           }
           slug
+          timeToRead
+          tableOfContents
         }
       }
     }
@@ -29,7 +31,15 @@ const query = graphql`
     }
   }
 `
-
+/*
+let menu = []     // [ { id: "doc", title: "Doc", url: "/doc", children: [ ... ] }]
+edges.foreach(edge => {
+  const path = edge.node.slug.split("/")  // ["doc", "colors", "pattern"]
+  const parent = findParent(menu, path.split(0, path.length - 1)
+  if (!parent.children) parent.children = []
+  parent.children.push({ title: edge.node.frontmatter.title, url: edge.node.slug })
+})
+*/
 const Navigation = props =>
   <div className="ds-navigation">
     <Grid>
