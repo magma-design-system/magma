@@ -5,8 +5,8 @@ import H2 from '@Typography/H2/H2'
 import './Menu.scss'
 
 const MenuSubItem = props =>
-  <div className={`ds-menu__child ${props.isSelected ? 'ds-menu__child--active' : ''}`}>
-    <a href={props.url} className="ds-menu__title text-primary text-primary--h5">
+  <div className={`ds-menu-child ${props.isSelected ? 'ds-menu-child--selected' : ''}`}>
+    <a href={props.url} className="ds-menu-child__title text-primary text-primary--h5">
       {props.title}
     </a>
   </div>
@@ -26,15 +26,16 @@ MenuSubItem.defaultProps = {
 }
 
 const MenuItem = props =>
-  <Grid gutter="none" fit={true} className={`ds-menu__item ${props.isSelected ? 'ds-menu__item--active' : ''}`}>
-    <a href={props.url} className="ds-menu__title text-primary text-primary--h4">{props.title}</a>
-    <Grid gutter="none" fit={true} className="ds-menu__list">
+  <Grid gutter="none" fit={true} className={`ds-menu-item ${props.isSelected ? 'ds-menu-item--selected' : ''} ${props.isOpened ? 'ds-menu-item--opened' : ''}`}>
+    <a href={props.url} className="ds-menu-item__title text-primary text-primary--h4">{props.title}</a>
+    <Grid gutter="none" fit={true} className="ds-menu-item__list">
       {props.children}
     </Grid>
   </Grid>
 
 MenuItem.propTypes = {
   className: PropTypes.string,
+  isOpened: PropTypes.bool,
   isSelected: PropTypes.bool,
   title: PropTypes.string,
   url: PropTypes.string,
@@ -42,6 +43,7 @@ MenuItem.propTypes = {
 
 MenuItem.defaultProps = {
   className: '',
+  isOpened: false,
   isSelected: false,
   title: 'Menu item',
   url: '#',

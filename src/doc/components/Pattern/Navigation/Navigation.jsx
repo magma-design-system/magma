@@ -7,6 +7,12 @@ import H1 from '@Typography/H1/H1'
 import Hr from '@Gatsby/Pattern/Hr/Hr'
 import Menu, { MenuItem, MenuSubItem } from '@Gatsby/Pattern/Menu/Menu'
 
+const basePathTitles = {
+  doc: 'Doc',
+  use: 'Use',
+  dev: 'Dev',
+}
+
 const query = graphql`
   query NavigationQuery {
     allMdx {
@@ -32,15 +38,6 @@ const query = graphql`
   }
 `
 
-/*
-let menu = []     // [ { id: "doc", title: "Doc", url: "/doc", children: [ ... ] }]
-edges.foreach(edge => {
-  const path = edge.node.slug.split('/')  // ['doc', 'colors', 'pattern']
-  const parent = findParent(menu, path.slice(0, path.length - 1)
-  if (!parent.children) parent.children = []
-  parent.children.push({ title: edge.node.frontmatter.title, url: edge.node.slug })
-})
-*/
 function updateMenu(menu, path) {
   let menuItem = menu.find(voce => voce.id === path[0])
   if (menuItem == null) {
@@ -59,14 +56,11 @@ function findParent(menu, path) {
 }
 
 const Navigation = props => {
-  console.log(props.data)
-
   let menu = []
   props.data.forEach(edge => {
     const link = edge.node.slug.endsWith('/') ? edge.node.slug.slice(0, -1) : edge.node.slug
     const path = link.split('/')
-    console.log('Edge: ', edge)
-    if (path.length == 1 && path[0] == '') return
+    if (path.length === 1 && path[0] === '') return
 
     menu = updateMenu(menu, path.slice(0, -1))
     const parent = findParent(menu, path.slice(0, -1))
@@ -83,7 +77,9 @@ const Navigation = props => {
       menuItem.url = `/${edge.node.slug}`
     }
   })
-  console.log("Menu: ", menu)
+  menu.forEach(voceMenu => (voceMenu.title = basePathTitles[voceMenu.id]))
+
+  const currentUrl = typeof window !== 'undefined' ? window.location.pathname : ''
 
   return (
     <div className="ds-navigation">
@@ -91,15 +87,15 @@ const Navigation = props => {
         <H1>{ props.title }</H1>
         {
           menu.map((menuItem, key) =>
-            <Fragment>
+            <Fragment key={key}>
               <Hr/>
-              <Menu title={menuItem.id}>
+              <Menu title={menuItem.title}>
                 {
                   (menuItem.children || []).map((menuSubItem, key) =>
-                    <MenuItem title={menuSubItem.title} url={menuSubItem.url} isSelected={false}>
+                    <MenuItem key={key} title={menuSubItem.title} url={menuSubItem.url} isSelected={currentUrl === menuSubItem.url} isOpened={currentUrl.startsWith(menuSubItem.url)}>
                       {
                         (menuSubItem.children || []).map((menuLastItem, key) =>
-                          <MenuSubItem title={menuLastItem.title} url={menuLastItem.url}/>,
+                          <MenuSubItem key={key} title={menuLastItem.title} url={menuLastItem.url} isSelected={currentUrl === menuLastItem.url}/>,
                         )
                       }
                     </MenuItem>,

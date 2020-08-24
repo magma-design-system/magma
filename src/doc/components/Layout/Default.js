@@ -15,16 +15,9 @@ const shortcodes = {
 const Layout = ({ children }) => (
   <StaticQuery
     query={graphql`
-      query SiteTitleQuery($id: String) {
+      query SiteTitleQuery {
         site {
           siteMetadata {
-            title
-          }
-        }
-        mdx(id: { eq: $id }) {
-          id
-          body
-          frontmatter {
             title
           }
         }
@@ -36,7 +29,8 @@ const Layout = ({ children }) => (
           <Navigation/>
           <div>
             <MDXProvider components={shortcodes}>
-              <MDXRenderer>{data.mdx.body}</MDXRenderer>
+              {/*<MDXRenderer>{data.mdx.body}</MDXRenderer>*/}
+              {children}
             </MDXProvider>
           </div>
         </Grid>

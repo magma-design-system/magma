@@ -4,59 +4,106 @@
   // margin: 0 s(-0.5);
 
   &__title {
-    cursor: pointer;
-
-    // padding: 0 s(0.5);
-
-    &--main {
-      cursor: default;
-    }
+    color: color('adjust.tone', '02');
+    cursor: default;
   }
 
   &__child {
+
+    @extend %bar-hidden;
+
     color: color('adjust.tone', '10');
-    position: relative;
 
-    &::after {
-      background-color: color('adjust.tone', '04');
-      content: '';
-      display: block;
-      height: 2px;
-      opacity: 0;
-      pointer-events: none;
-      position: absolute;
-      top: 50%;
-      transform: translate(0, -50%);
-      transition: opacity get($tween, 'slide');
-      width: 100%;
-    }
+    &--selected {
 
-    &--active {
+      @extend %bar-visible;
+
       color: color('adjust.tone');
-
-      &::after {
-        opacity: 1;
-      }
     }
   }
 
   &__list {
     display: none;
   }
+}
 
-  &__item {
-    transition: background-color get($tween, 'slide'), color get($tween, 'slide'), padding get($tween, 'slide');
+.ds-menu-item {
+  transition: background-color get($tween, 'slide'), color get($tween, 'slide'), padding get($tween, 'slide');
 
-    &--active {
-      background-color: color('adjust.tone', '04');
-      color: color('adjust.tone');
-      padding: s(0.25) s(0.5);
+  &--opened {
+    background-color: color('adjust.tone', '04');
+    color: color('adjust.tone');
+    padding: s(0.25) s(0.5);
 
-      .ds-menu {
-        &__list {
-          display: grid;
-        }
+    .ds-menu-item {
+      &__list {
+        display: grid;
+      }
+
+      &__title {
+        color: color('adjust.tone');
       }
     }
+  }
+
+  &--selected {
+    .ds-menu-item {
+      &__title {
+
+        @extend %bar-visible;
+      }
+    }
+  }
+
+  &__title {
+    color: color('adjust.tone', '02');
+    cursor: pointer;
+
+    @extend %bar-hidden;
+  }
+}
+
+.ds-menu-child {
+  &--selected {
+    .ds-menu-child {
+      &__title {
+
+        @extend %bar-visible;
+
+        color: color('adjust.tone');
+      }
+    }
+  }
+
+  &__title {
+
+    @extend %bar-hidden;
+
+    color: color('adjust.tone', '12');
+    cursor: pointer;
+  }
+}
+
+%bar-hidden {
+  position: relative;
+
+  &::after {
+    background-color: color('adjust.tone', '04');
+    content: '';
+    display: block;
+    height: 2px;
+    opacity: 0;
+    pointer-events: none;
+    position: absolute;
+    top: 50%;
+    transform: translate(0, -50%);
+    transition: opacity get($tween, 'slide');
+    width: 100%;
+  }
+}
+
+%bar-visible {
+  &::after {
+    opacity: 1;
   }
 }
