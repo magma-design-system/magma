@@ -2,34 +2,32 @@ import React from 'react'
 import PropTypes from 'prop-types'
 import Grid from '@Layout/Grid/Grid'
 import H2 from '@Typography/H2/H2'
-import H4 from '@Typography/H4/H4'
-import H5 from '@Typography/H5/H5'
 import './Menu.scss'
 
 const MenuSubItem = props =>
   <div className={`ds-menu__child ${props.isSelected ? 'ds-menu__child--active' : ''}`}>
-    <H5 className="ds-menu__title">
+    <a href={props.url} className="ds-menu__title text-primary text-primary--h5">
       {props.title}
-    </H5>
+    </a>
   </div>
 
 MenuSubItem.propTypes = {
   className: PropTypes.string,
   isSelected: PropTypes.bool,
   title: PropTypes.string,
+  url: PropTypes.string,
 }
 
 MenuSubItem.defaultProps = {
   className: '',
   isSelected: false,
   title: 'Menu sub item',
+  url: '#',
 }
 
 const MenuItem = props =>
   <Grid gutter="none" fit={true} className={`ds-menu__item ${props.isSelected ? 'ds-menu__item--active' : ''}`}>
-    <H4 className="ds-menu__title">
-      {props.title}
-    </H4>
+    <a href={props.url} className="ds-menu__title text-primary text-primary--h4">{props.title}</a>
     <Grid gutter="none" fit={true} className="ds-menu__list">
       {props.children}
     </Grid>
@@ -39,12 +37,14 @@ MenuItem.propTypes = {
   className: PropTypes.string,
   isSelected: PropTypes.bool,
   title: PropTypes.string,
+  url: PropTypes.string,
 }
 
 MenuItem.defaultProps = {
   className: '',
   isSelected: false,
   title: 'Menu item',
+  url: '#',
 }
 
 const Menu = props =>
