@@ -6,6 +6,8 @@ import Grid from '@Layout/Grid/Grid'
 import H1 from '@Typography/H1/H1'
 import Navigation from '@Gatsby/Pattern/Navigation/Navigation'
 import Page from '@Gatsby/Page/Page'
+import Hr from '@Gatsby/Pattern/Hr/Hr'
+import './Layout.scss'
 
 const shortcodes = {
   Link,
@@ -28,12 +30,15 @@ const Layout = ({ children }) => (
         <Grid template="design-system-page">
           <Navigation/>
           <article className="ds-layout__contents">
-            <H1>{data.site.siteMetadata.title}</H1>
-            <div className="ds-layout__markdown">
-              <MDXProvider components={shortcodes}>
-                {children}
-              </MDXProvider>
-            </div>
+            <Grid>
+              <H1>{data.site.siteMetadata.title}</H1>
+              <Hr/>
+              <div className="ds-layout__markdown">
+                <MDXProvider components={shortcodes}>
+                  {children}
+                </MDXProvider>
+              </div>
+            </Grid>
           </article>
         </Grid>
       </Page>

@@ -1,0 +1,8 @@
+@import '~Sass/import-framework';
+
+.ds-layout {
+  &__markdown {
+    background-color: color('adjust.tone', '16');
+    padding: s(2);
+  }
+}
