@@ -3,6 +3,7 @@ const path = require('path')
 module.exports = {
   '#Assets': path.resolve(__dirname, 'src/assets/'),
   '+Tokens': path.resolve(__dirname, 'src/style-dictionary/'),
+  '+Package': path.resolve(__dirname, './'),
   '@App': path.resolve(__dirname, 'src/react/app/'),
   '@Design': path.resolve(__dirname, 'src/react/Design/'),
   '@Element': path.resolve(__dirname, 'src/react/Element/'),

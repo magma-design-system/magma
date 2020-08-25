@@ -4,15 +4,31 @@ import { Link, StaticQuery, graphql } from 'gatsby'
 import { MDXProvider } from '@mdx-js/react'
 import Grid from '@Layout/Grid/Grid'
 import H1 from '@Typography/H1/H1'
+import H2 from '@Typography/H2/H2'
+import H3 from '@Typography/H3/H3'
+import H4 from '@Typography/H4/H4'
+import H5 from '@Typography/H5/H5'
+import H6 from '@Typography/H6/H6'
+import Paragraph from '@Typography/Paragraph/Paragraph'
 import Navigation from '@Gatsby/Pattern/Navigation/Navigation'
 import Page from '@Gatsby/Page/Page'
-import Hr from '@Gatsby/Pattern/Hr/Hr'
+import Hr, { HrLight } from '@Gatsby/Pattern/Hr/Hr'
 import './Layout.scss'
 import { createMenuList, findMenuItem } from '../Pattern/Navigation/menu'
 
 const shortcodes = {
-  Link,
   Grid,
+  Link,
+  Paragraph,
+  a: Link,
+  h1: H1,
+  h2: H2,
+  h3: H3,
+  h4: H4,
+  h5: H5,
+  h6: H6,
+  hr: HrLight,
+  p: Paragraph,
 }
 
 const Layout = ({ children }) => {

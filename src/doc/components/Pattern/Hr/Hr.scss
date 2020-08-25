@@ -6,4 +6,9 @@
   display: block;
   height: 2px;
   margin: 0;
+
+  &--light {
+    background-color: color('adjust.tone', '14');
+    margin: s(1) 0;
+  }
 }

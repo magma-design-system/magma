@@ -3,7 +3,7 @@ $config: (
     'format': ('rgb-channels', 'hex'),
     'scale': ('1', '2', '3', '4', '5', '6', '7', '8', '9', '10', '11', '12', '13', '14', '15', '16', '17'),
     'scaffold': ('background-color', 'color'),
-    'colors': ('brand.maggioli', 'brand.argo', 'brand.eolo', 'status.info', 'status.success', 'status.error', 'status.warning', 'adjust.tone')
+    'colors': ('brand.maggioli', 'brand.eolo', 'status.info', 'status.success', 'status.error', 'status.warning', 'adjust.tone')
   )
 );
 
@@ -15,3 +15,12 @@ $config: (
 // In the main import:
 //   @import 'custom-config';
 //   @import 'import-global';
+
+// on JavaScript file, you must wrap config and design system
+// imports in the same file, because javascript build sass
+// separately for every import it finds in the javascript import pipeline
+// so in your javascript file:
+//     import 'design-system/import.scss'
+// so in your design system file:
+//     $config: (...);
+//     @import 'import-global';
