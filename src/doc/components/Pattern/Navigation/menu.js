@@ -10,7 +10,7 @@ export function createMenuList(edges) {
     const path = (slug.endsWith('/') ? slug.slice(0, -1) : slug).split('/')
     if (isBlacklisted(path)) return // Some pages shouldn't be in the menu
 
-    menuList = createStructure(menuList, path.slice(0, -1))
+    menuList = createStructure(menuList, path)
     const parent = findVoceMenu(menuList, path.slice(0, -1))
 
     const menuItemData = {
@@ -20,12 +20,9 @@ export function createMenuList(edges) {
     }
 
     const menuItem = parent.children.find(voce => voce.id === menuItemData.id)
-    if (menuItem == null) {
-      parent.children.push(menuItemData)
-    } else {
-      menuItem.title = menuItemData.title
-      menuItem.url = menuItemData.url
-    }
+    if (menuItem == null) throw new Error(`menuItem ${menuItemData.id} with url ${menuItemData.url} not found. It should be created with createStructure.`)
+    menuItem.title = menuItemData.title
+    menuItem.url = menuItemData.url
   })
   menuList.forEach(voceMenu => (voceMenu.title = basePathTitles[voceMenu.id]))
   return menuList
