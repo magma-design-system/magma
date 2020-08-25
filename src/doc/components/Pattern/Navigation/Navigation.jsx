@@ -65,7 +65,7 @@ const Navigation = props => {
     menu = updateMenu(menu, path.slice(0, -1))
     const parent = findParent(menu, path.slice(0, -1))
 
-    const menuItem = parent.children.find(voce => voce.id === path[0])
+    const menuItem = parent.children.find(voce => voce.id === path[path.length - 1])
     if (menuItem == null) {
       parent.children.push({
         id: path[path.length - 1],
