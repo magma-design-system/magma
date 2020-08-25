@@ -2,8 +2,8 @@ import React from 'react'
 import PropTypes from 'prop-types'
 import { Link, StaticQuery, graphql } from 'gatsby'
 import { MDXProvider } from '@mdx-js/react'
-import { MDXRenderer } from 'gatsby-plugin-mdx'
 import Grid from '@Layout/Grid/Grid'
+import H1 from '@Typography/H1/H1'
 import Navigation from '@Gatsby/Pattern/Navigation/Navigation'
 import Page from '@Gatsby/Page/Page'
 
@@ -24,15 +24,17 @@ const Layout = ({ children }) => (
       }
     `}
     render={data =>
-      <Page>
+      <Page className="ds-layout">
         <Grid template="design-system-page">
           <Navigation/>
-          <div>
-            <MDXProvider components={shortcodes}>
-              {/*<MDXRenderer>{data.mdx.body}</MDXRenderer>*/}
-              {children}
-            </MDXProvider>
-          </div>
+          <article className="ds-layout__contents">
+            <H1>{data.site.siteMetadata.title}</H1>
+            <div className="ds-layout__markdown">
+              <MDXProvider components={shortcodes}>
+                {children}
+              </MDXProvider>
+            </div>
+          </article>
         </Grid>
       </Page>
     }
