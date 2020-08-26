@@ -22,7 +22,7 @@
   "smartphone": "smartphone",
   "statusError": "error",
   "statusInfo": "info",
-  "statusSuccess": "done",
+  "statusSuccess": "check_circle",
   "statusWarning": "warning",
   "tag": "label",
   "text": "format_size",

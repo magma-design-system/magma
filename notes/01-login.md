@@ -49,12 +49,6 @@ Per calcolare l'hash di autenticazione:
 echo -n '<user>:<password>' | openssl base64
 ```
 
-Per utilizzare le dipendenze con `nexusUser` nel file `.npmrc`
-```
-registry=http://nexus.maggioli.it:8081/repository/npm-group/
-_auth=bmV4dXNVc2VyOm5leHVzVXNlcg==
-```
-
 Per utilizzare le dipendenze con `nexusupload` nel file `.npmrc`
 ```
 registry=http://nexus.maggioli.it:8081/repository/npm-group/

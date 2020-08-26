@@ -1,0 +1,16 @@
+@import '~Sass/import-framework';
+
+.code-snippet {
+  background-color: color('adjust.tone', '15');
+  display: block;
+  display: flex;
+  margin: s(1) 0;
+  min-width: 100%;
+  overflow: auto;
+  padding: s(1);
+  width: 0;
+
+  &__block {
+    margin: 0;
+  }
+}

@@ -101,13 +101,14 @@
     position: absolute;
     top: 50%;
     transform: translate(0, -50%);
-    transition: opacity get($tween, 'slide');
+    transition: opacity get($tween, 'slide'), transform get($tween, 'slide');
     width: 100%;
   }
 }
 
 %bar-visible {
   &::after {
+    transform: translate(0, 0);
     opacity: 1;
   }
 }

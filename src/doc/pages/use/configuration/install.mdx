@@ -1,9 +1,36 @@
 ---
 title: 'Installazione'
-date: '2020-08-21'
+date: '2020-08-26'
 ---
 
-## Utilizzo di Nexus
+import data from '+Package/package.json'
 
-Design principles
+<List>
+  <ListItem icon="statusWarning" iconClassName="color-status-error-08">
+    Per procedere con questa pagina, è necesario aver rispettato i passi della <Link href="/use/configuration/accessing-nexus">pagina di accesso a Nexus</Link>.
+  </ListItem>
+</List>
 
+---
+
+## Modulo node
+
+Per installare questa dipendenza, è necessaria la presenza di un file `package.json` all'interno del proprio pogetto, che può essere creato con questo comando:
+
+```
+npm init
+```
+
+Una volta seguiti i passi della creazione del file, puoi installare il pacchetto, che funzionerà solo se hai già il `token` di accesso a [Nexus][accessing-nexus]:
+
+```
+npm install --save-dev @maggioli/design-system
+```
+
+Se l'installazione è andata a buon fine, all'interno di `package.json`, nelle `devDependencies` dovrebbe trovarsi questo pacchetto node:
+
+<CodeSnippet>
+  "@maggioli/design-system": "^{data.version}"
+</CodeSnippet>
+
+[accessing-nexus]: /use/configuration/accessing-nexus
