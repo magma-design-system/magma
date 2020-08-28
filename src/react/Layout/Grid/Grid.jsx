@@ -5,7 +5,7 @@ import './Grid.scss'
 const Grid = props => {
   const HtmlTag = props.htmlTag.toLowerCase()
   return (
-    <HtmlTag className={`grid ${props.className} ${props.template ? 'grid--tmpl-' + props.template : ''} ${props.fit ? 'grid--fit' : ''} ${props.columns !== '0' ? 'grid--' + props.columns + '-columns' : ''} ${props.gutter !== '' ? 'grid--' + props.gutter : ''} `}>
+    <HtmlTag className={`grid ${props.className} ${props.template ? 'grid--tmpl-' + props.template : ''} ${props.fit ? 'grid--fit' : ''} ${props.columns !== '0' ? 'grid--' + props.columns + '-columns' : ''} ${props.gutter !== '' ? 'grid--' + props.gutter : ''}`.replace(/\s\s+/g, ' ').trim()}>
       {props.children}
     </HtmlTag>
   )

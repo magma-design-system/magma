@@ -1,7 +1,7 @@
 import React from 'react'
 import faker from 'faker'
 
-import Grid from '../../System/Pattern/Menu/node_modules/@Layout/Grid/Grid'
+import Grid from '@Layout/Grid/Grid'
 import Paragraph from '@Typography/Paragraph/Paragraph'
 
 faker.locale = 'it'
