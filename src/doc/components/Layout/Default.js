@@ -86,7 +86,9 @@ const Layout = ({ children }) => {
 
         return <Page className="ds-layout">
           <Grid template="design-system-page">
-            <Navigation title={data.site.siteMetadata.title} menuList={menuList}/>
+            <Grid htmlTag="aside" className="ds-layout__aside">
+              <Navigation title={data.site.siteMetadata.title} menuList={menuList}/>
+            </Grid>
             <article className="ds-layout__contents">
               <Grid>
                 <H1>{currentMenuItem.title}</H1>
