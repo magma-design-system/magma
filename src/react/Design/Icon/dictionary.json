@@ -1,5 +1,8 @@
 {
-  "background": "insert_photo",
+  "background": {
+    "material": "insert_photo",
+    "font-awesome": "insert_photo"
+  },
   "close": "close",
   "colorSeed": "color_lens",
   "do": "done",
