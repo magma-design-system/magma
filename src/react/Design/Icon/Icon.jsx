@@ -4,6 +4,9 @@ import './Icon.scss'
 
 import dictionary from './dictionary.json'
 
+// todo: https://www.npmjs.com/package/svgtofont
+// todo: https://www.npmjs.com/package/svg-font-create
+// todo: https://www.npmjs.com/package/svg-to-iconfont
 // todo: https://www.meziantou.net/creating-a-fontawesome-bundle-with-only-the-icons-you-use.htm
 // todo: https://vuetifyjs.com/en/customization/icons/
 // todo: https://stackoverflow.com/questions/57552261/vuetifyjs-adding-only-used-icons-to-build#answer-57552882
