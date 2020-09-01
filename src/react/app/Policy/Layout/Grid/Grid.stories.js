@@ -1,7 +1,7 @@
 import React from 'react'
 import faker from 'faker'
 
-import Grid from '@App/Policy/Grid/Grid'
+import Grid from '@App/Policy/Layout/Grid/Grid'
 faker.locale = 'it'
 
 export default {

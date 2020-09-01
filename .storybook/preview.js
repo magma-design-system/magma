@@ -1,6 +1,6 @@
 import React from 'react';
 import { addDecorator } from '@storybook/react';
-import Page from '@System/Page/Page'
+import Page from '@Gatsby/Page/Page'
 // import faker from 'faker'
 // faker.locale = 'it'
 
