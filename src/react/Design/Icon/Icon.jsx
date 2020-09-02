@@ -12,7 +12,7 @@ import dictionary from './dictionary.json'
 // todo: https://stackoverflow.com/questions/57552261/vuetifyjs-adding-only-used-icons-to-build#answer-57552882
 
 const Icon = props =>
-  <i title={dictionary[props.name][props.family] ? '' : 'Warning: property "name" not set'} className={`material-icons icon ${(props.size ? 'icon--' + props.size : '')} ${props.className}`}>{(dictionary[props.name][props.family] ? dictionary[props.name][props.family] : dictionary.missingIcon[props.family])}</i>
+  <i title={dictionary[props.name] ? '' : 'Warning: property "name" not set'} className={`material-icons icon ${(props.size ? 'icon--' + props.size : '')} ${props.className}`}>{(dictionary[props.name] ? dictionary[props.name] : dictionary.missingIcon)}</i>
 
 Icon.propTypes = {
   className: PropTypes.string,
