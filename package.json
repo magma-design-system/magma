@@ -8,7 +8,7 @@
     "build:lib": "npm run tokens && build-storybook -o design-lib",
     "build:storybook": "build-storybook",
     "deploy": "storybook-to-ghpages",
-    "dev:storybook": "npm run tokens && start-storybook -p 7177",
+    "storybook": "npm run tokens && start-storybook -p 7177",
     "lint": "npm run lint:js && npm run lint:sass",
     "lint:js": "eslint src/react/**/*.{js,jsx} --fix",
     "lint:sass": "npx stylelint --config .stylelintrc.json 'src/scss/**/*.scss' --fix --ignore-pattern 'src/scss/variables/**/*.scss'",
@@ -20,7 +20,7 @@
     "start": "run-p start:**",
     "doc": "npm run clean:gatsby && npm run start:gatsby",
     "start:gatsby": "gatsby develop -H 0.0.0.0 -p 3898 -o",
-    "start:storybook": "npm run dev:storybook",
+    "start:storybook": "npm run storybook",
     "serve:gatsby": "gatsby serve -o -p 3898",
     "clean:gatsby": "gatsby clean"
   },

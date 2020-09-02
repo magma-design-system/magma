@@ -1,6 +1,10 @@
 @import '~Sass/import-framework';
 
 .ds-layout {
+  &__aside {
+    position: relative;
+  }
+
   &__markdown {
     background-color: color('adjust.tone', '16');
     padding: s(2) s(3);

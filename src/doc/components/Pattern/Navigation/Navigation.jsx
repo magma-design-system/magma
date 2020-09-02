@@ -11,7 +11,7 @@ const Navigation = props => {
 
   return (
     <div className="ds-navigation">
-      <Grid>
+      <Grid className="ds-navigation__contents">
         <H1>{ props.title }</H1>
         {
           props.menuList.map((menu, key) =>
