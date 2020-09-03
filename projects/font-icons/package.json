@@ -1,0 +1,48 @@
+{
+  "name": "@maggioli-common/font-icons",
+  "version": "0.0.1",
+  "description": "Maggioli font icons, part of Maggioli design system",
+  "publishConfig": {
+    "registry": "http://nexus.maggioli.it:8081/repository/npm/"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://git.maggioli.it/ricerca-sviluppo-new-media/design-system.git"
+  },
+  "author": {
+    "name": "Vittorio Vittori",
+    "email": "vittorio.vittori@maggioli.it",
+    "url": "http://vit.to"
+  },
+  "contributors": [
+    {
+      "name": "Gioele Masini",
+      "email": "gioele.masini@maggioli.it"
+    }
+  ],
+  "license": "ISC",
+  "main": "bin/font-icons.js",
+  "bin": {
+    "font-icons": "bin/font-icons.js"
+  },
+  "keywords": [
+    "font",
+    "icons",
+    "TTF",
+    "EOT",
+    "WOFF",
+    "WOFF2",
+    "SVG"
+  ],
+  "engines": {
+    "node": ">= 10.x.x"
+  },
+  "bugs": {
+    "url": "https://git.maggioli.it/ricerca-sviluppo-new-media/design-system/-/issues"
+  },
+  "dependencies": {
+    "@fortawesome/fontawesome-free": "^5.14.0",
+    "material-design-icons": "^3.0.1",
+    "svgtofont": "^3.1.0"
+  }
+}
