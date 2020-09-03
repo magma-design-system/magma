@@ -89,8 +89,8 @@ const Layout = ({ children }) => {
             <Grid htmlTag="aside" className="ds-layout__aside">
               <Navigation title={data.site.siteMetadata.title} menuList={menuList}/>
             </Grid>
-            <article className="ds-layout__contents">
-              <Grid>
+            <article className="ds-layout__article">
+              <Grid className="ds-layout__contents">
                 <H1>{currentMenuItem.title}</H1>
                 <Hr/>
                 <div className="ds-layout__markdown">
