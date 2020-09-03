@@ -17,6 +17,8 @@
 
   &__markdown {
     background-color: color('adjust.tone', '16');
+    display: grid;
+    grid-gap: s(1);
     padding: s(2) s(3);
   }
 }

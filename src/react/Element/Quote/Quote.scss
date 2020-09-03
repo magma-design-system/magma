@@ -2,7 +2,9 @@
 
 .quote {
   background-color: color('brand.maggioli', '15');
+  border-left: 4px solid color('brand.maggioli', '13');
   color: color('brand.maggioli', '04');
+  margin: 0;
   padding: s(1.25);
 
   &__content {

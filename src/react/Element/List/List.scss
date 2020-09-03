@@ -2,7 +2,7 @@
 
 .list {
   display: grid;
-  grid-gap: s(0.5);
+  grid-gap: s(0.25);
   margin: s(1) 0;
   padding-left: s(0.5);
 
@@ -13,5 +13,12 @@
 
   &__icon {
     margin-right: s(0.5);
+  }
+
+  &__numeric {
+    line-height: inherit;
+    margin-right: s(0.5);
+    min-width: s(1.5);
+    text-align: right;
   }
 }

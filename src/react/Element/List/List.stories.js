@@ -49,3 +49,17 @@ export const customColorMultiple = () =>
     <ListItem icon="statusWarning" iconClassName="color-status-warning-08">{ faker.phone.phoneNumber() }</ListItem>
     <ListItem icon="statusSuccess" iconClassName="color-status-success-08">{ faker.address.streetAddress() }</ListItem>
   </List>
+
+export const numeric = () =>
+  <List numeric={true}>
+    <ListItem>{ faker.lorem.sentences() }</ListItem>
+    <ListItem>{ faker.lorem.sentences() }</ListItem>
+    <ListItem>{ faker.lorem.sentences() }</ListItem>
+  </List>
+
+export const autoPunctuation = () =>
+  <List numeric={true} autoPunctuation={true}>
+    <ListItem>{ faker.lorem.sentences().slice(0, -1) }</ListItem>
+    <ListItem>{ faker.lorem.sentences().slice(0, -1) }</ListItem>
+    <ListItem>{ faker.lorem.sentences().slice(0, -1) }</ListItem>
+  </List>
