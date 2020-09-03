@@ -86,13 +86,14 @@ const Layout = ({ children }) => {
       `}
       render={data => {
         const menuList = createMenuList(data.allMdx.edges)
+        const sideMenuList = menuList.filter(menu => menu.id !== '')
         const currentUrl = typeof window !== 'undefined' ? window.location.pathname : ''
         const currentMenuItem = findMenuItem(menuList, currentUrl)
 
         return <Page className="ds-layout">
           <Grid template="design-system-page">
             <Grid htmlTag="aside" className="ds-layout__aside">
-              <Navigation title={data.site.siteMetadata.title} menuList={menuList}/>
+              <Navigation title={data.site.siteMetadata.title} menuList={sideMenuList}/>
             </Grid>
             <article className="ds-layout__article">
               <Grid className="ds-layout__contents">
