@@ -6,7 +6,8 @@
 /src/style-dictionary/build
 node_modules/
 npm-debug.log
-/dist
+dist/
+build/
 
 # Intellij
 /.idea/
