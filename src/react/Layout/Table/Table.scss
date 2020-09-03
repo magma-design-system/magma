@@ -9,7 +9,9 @@ $border-style: 2px solid;
 @mixin gain ($gain-step) {
   &--gain-#{$gain-step} {
     margin-left: s(-($gain-step));
-    margin-right: s(-($gain-step));
+
+    // margin-right: s(-($gain-step));
+    margin-right: 0;
 
     &::after,
     &::before {

@@ -14,12 +14,15 @@ import H6 from '@Typography/H6/H6'
 import Paragraph from '@Typography/Paragraph/Paragraph'
 import CodeSnippet from '@Element/CodeSnippet/CodeSnippet'
 import Code from '@Element/Code/Code'
+import Quote from '@Element/Quote/Quote'
 import List, { ListItem } from '@Element/List/List'
 import Navigation from '@Gatsby/Pattern/Navigation/Navigation'
 import Page from '@Gatsby/Page/Page'
 import Hr, { HrLight } from '@Gatsby/Pattern/Hr/Hr'
 import { createMenuList, findMenuItem } from '@Gatsby/Pattern/Navigation/menu'
 import Table, { TableHeader, TableHeaderCell, TableBody, TableRow, TableCell } from '@Layout/Table/Table'
+
+// https://www.gatsbyjs.com/plugins/gatsby-plugin-mdx/#mdxprovider
 
 const shortcodes = {
   Code,
@@ -30,6 +33,7 @@ const shortcodes = {
   List,
   ListItem,
   Paragraph,
+  Quote,
   Table,
   TableBody,
   TableCell,
@@ -37,6 +41,7 @@ const shortcodes = {
   TableHeaderCell,
   TableRow,
   a: Link,
+  blockquote: Quote,
   code: Code,
   h1: H1,
   h2: H2,
