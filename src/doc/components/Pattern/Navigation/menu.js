@@ -61,11 +61,3 @@ function findMenuItemFromPath(menuList, [voceId, ...restPath]) {
   if (restPath.length > 0) return findMenuItemFromPath(menuItem.children, restPath)
   return menuItem
 }
-
-function isBlacklisted(path) {
-  return isHomePage(path)
-}
-
-function isHomePage(path) {
-  return path.length === 1 && path[0] === ''
-}
