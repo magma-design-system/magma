@@ -1,0 +1,37 @@
+@import '~Sass/import-framework';
+
+.horizontal-scroll {
+
+  @extend %scroll;
+
+  display: block;
+  display: flex;
+  overflow: auto;
+  scroll-snap-type: x mandatory;
+
+  &::after,
+  &::before {
+    content: '';
+    display: none;
+    flex-shrink: 0;
+    height: 1px;
+    width: s(1);
+  }
+
+  &--outer-margin {
+    &::after,
+    &::before {
+      display: block;
+    }
+  }
+
+  &__item {
+    flex-shrink: 0;
+    margin-right: s(1);
+    scroll-snap-align: center;
+
+    &:last-child {
+      margin-right: 0;
+    }
+  }
+}

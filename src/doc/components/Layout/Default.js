@@ -17,6 +17,7 @@ import Code from '@Element/Code/Code'
 import Quote from '@Element/Quote/Quote'
 import List, { ListItem } from '@Element/List/List'
 import Navigation from '@Gatsby/Pattern/Navigation/Navigation'
+import HorizontalMenu from '@Gatsby/Pattern/HorizontalMenu/HorizontalMenu'
 import Page from '@Gatsby/Page/Page'
 import Hr, { HrLight } from '@Gatsby/Pattern/Hr/Hr'
 import { createMenuList, findMenuItem } from '@Gatsby/Pattern/Navigation/menu'
@@ -99,6 +100,7 @@ const Layout = ({ children }) => {
               <Grid className="ds-layout__contents">
                 <H1>{currentMenuItem.title}</H1>
                 <Hr/>
+                <HorizontalMenu/>
                 <div className="ds-layout__markdown">
                   <MDXProvider components={shortcodes}>
                     {children}

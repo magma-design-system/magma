@@ -6,7 +6,7 @@
   $gutter: nth($size-item, 2);
 
   &--#{$modifier} {
-    .row__child {
+    .row__item {
       margin-right: $gutter;
     }
   }
@@ -23,7 +23,7 @@
     align-items: center;
   }
 
-  &__child {
+  &__item {
     margin-right: get($size, 'normal');
 
     &:last-child {
