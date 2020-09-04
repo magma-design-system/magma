@@ -99,8 +99,7 @@ const Layout = ({ children }) => {
             <article className="ds-layout__article">
               <Grid className="ds-layout__contents">
                 <H1>{currentMenuItem.title}</H1>
-                <Hr/>
-                <HorizontalMenu/>
+                <HorizontalMenu className="ds-layout__actions" />
                 <div className="ds-layout__markdown">
                   <MDXProvider components={shortcodes}>
                     {children}

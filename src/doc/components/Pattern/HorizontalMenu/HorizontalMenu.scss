@@ -1,5 +1,6 @@
 @import '~Sass/import-framework';
 
 .ds-horizontal-menu {
-
+  background-color: color('adjust.tone');
+  transform: translate(0, -2px);
 }

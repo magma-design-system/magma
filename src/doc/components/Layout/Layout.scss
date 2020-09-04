@@ -23,4 +23,9 @@
 
     // padding: s(2) s(3);
   }
+
+  &__actions {
+    position: sticky;
+    top: 0;
+  }
 }

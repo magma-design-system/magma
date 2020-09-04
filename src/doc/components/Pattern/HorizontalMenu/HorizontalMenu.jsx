@@ -8,15 +8,30 @@ import Grid from '@Layout/Grid/Grid'
 import H5 from '@Typography/H5/H5'
 import Hr from '@Gatsby/Pattern/Hr/Hr'
 
+const HorizontalMenuItem = props =>
+  <H5 htmlTag="div" className={`ds-horizontal-menu__item ${props.className}`}>{ props.children }</H5>
+
+HorizontalMenuItem.propTypes = {
+  active: PropTypes.bool,
+  className: PropTypes.string,
+}
+
+HorizontalMenuItem.defaultProps = {
+  active: false,
+  className: '',
+}
+
 const HorizontalMenu = props =>
   <Grid className={`ds-horizontal-menu ${props.className}`}>
-    <HorizontalScroll className="ds-horizontal-menu__list">
-      <H5><Link>Menu item 1</Link></H5>
-      <H5><Link>Menu item 2</Link></H5>
-      <H5><Link>Menu item 4</Link></H5>
-      <H5><Link>Menu item 5</Link></H5>
-    </HorizontalScroll>
     <Hr className="ds-horizontal-menu__hr"/>
+    <HorizontalScroll className="ds-horizontal-menu__list">
+      <HorizontalMenuItem active={true}>Menu item 1</HorizontalMenuItem>
+      <HorizontalMenuItem>Menu item 2</HorizontalMenuItem>
+      <HorizontalMenuItem>Menu item 3</HorizontalMenuItem>
+      <HorizontalMenuItem>Menu item 4</HorizontalMenuItem>
+      <HorizontalMenuItem>Menu item 5</HorizontalMenuItem>
+    </HorizontalScroll>
+    <Hr/>
   </Grid>
 
 HorizontalMenu.propTypes = {
