@@ -1,0 +1,60 @@
+const fs = require('fs').promises
+const path = require('path')
+const { ICON_GROUPS } = require('../lib/icons-groups')
+const { ROOT_PATH_DIR } = require('../lib/utils')
+
+const BUILD_DIR = `${ROOT_PATH_DIR}/build`
+
+main(process.argv.slice(2))
+
+/**
+ * Main function
+ * @param parameters {string[]} Input parameters
+ * @return {void}
+ */
+function main (parameters) {
+  const promises = Object.entries(ICON_GROUPS).map(iconGroupList)
+  Promise.all(promises)
+    .then(generateIcons)
+    .then(generateInputFileFromIcons)
+    .then(() => console.log('Done! File created in', BUILD_DIR))
+}
+
+/**
+ *
+ * @param iconGroupLists
+ * @return {{ group: , list: }[]}
+ */
+function generateIcons (iconGroupLists) {
+  return iconGroupLists
+    .map(({ group, list }) => {
+      const getIconName = ICON_GROUPS[group].getIconName
+      return list.map(path => `${group}/${getIconName(path)}`)
+    })
+    .flat()
+}
+
+/**
+ *
+ * @param groupName
+ * @param group
+ * @return {Promise<{list: string, group: }>}
+ */
+function iconGroupList ([groupName, group]) {
+  switch (groupName) {
+    case 'maggioli':
+    case 'material':
+    case 'fontawesome':
+      return group.listPath().then(list => ({ group: groupName, list }))
+    default:
+      throw new Error(`Group ${groupName} not found in icons-group.js`)
+  }
+}
+
+function generateInputFileFromIcons (icons) {
+  const inputObject = icons.reduce((acc, icon) => {
+    acc[icon.replace('/', '-')] = icon
+    return acc
+  }, {})
+  return fs.writeFile(path.join(BUILD_DIR, 'input.json'), JSON.stringify(inputObject))
+}

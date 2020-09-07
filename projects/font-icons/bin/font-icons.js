@@ -3,8 +3,8 @@ const fs = require('fs').promises
 const path = require('path')
 const pkg = require('../package.json')
 const { ICON_GROUPS } = require('../lib/icons-groups')
+const { ROOT_PATH_DIR } = require('../lib/utils')
 
-const ROOT_PATH_DIR = path.join(__dirname, '..')
 const BUILD_SVG_DIR = `${ROOT_PATH_DIR}/build/svg`
 const BUILD_FONTS_DIR = `${ROOT_PATH_DIR}/build/fonts`
 
@@ -51,8 +51,8 @@ function iconsToTempFolder (inputData) {
   const promises = []
   for (const [key, value] of Object.entries(inputData)) {
     const icon = iconSelectorToObject(value)
-    const sourcePathPromise = ICON_GROUPS[icon.group].path(icon.name)
-    const destinationPath = `${BUILD_SVG_DIR}/${key}.svg`
+    const sourcePathPromise = ICON_GROUPS[icon.group].getPath(icon.name)
+    const destinationPath = path.join(BUILD_SVG_DIR, `${key}.svg`)
 
     const promise = sourcePathPromise.then(sourcePath => {
       console.debug('Copying', sourcePath, '->', destinationPath)
