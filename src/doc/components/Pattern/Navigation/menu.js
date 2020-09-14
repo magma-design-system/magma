@@ -61,3 +61,19 @@ function findMenuItemFromPath(menuList, [voceId, ...restPath]) {
   if (restPath.length > 0) return findMenuItemFromPath(menuItem.children, restPath)
   return menuItem
 }
+
+export function getPageData(edges, url) {
+  let page = {}
+  edges.forEach(({ node: { slug, timeToRead, frontmatter } }) => {
+    console.log(pathFromSlug(url).toString(), pathFromSlug(slug).toString(), pathFromSlug(url).toString() === pathFromSlug(slug).toString())
+
+    if (pathFromSlug(url).toString() === pathFromSlug(slug).toString()) {
+      page = {
+        frontmatter,
+        slug,
+        timeToRead,
+      }
+    }
+  })
+  return page
+}

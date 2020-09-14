@@ -3,6 +3,7 @@ import PropTypes from 'prop-types'
 import { Link, StaticQuery, graphql } from 'gatsby'
 import { MDXProvider } from '@mdx-js/react'
 import './Layout.scss'
+
 import Icon from '@Design/Icon/Icon'
 import Grid from '@Layout/Grid/Grid'
 import H1 from '@Typography/H1/H1'
@@ -20,7 +21,7 @@ import Navigation from '@Gatsby/Pattern/Navigation/Navigation'
 import HorizontalMenu from '@Gatsby/Pattern/HorizontalMenu/HorizontalMenu'
 import Page from '@Gatsby/Page/Page'
 import Hr, { HrLight } from '@Gatsby/Pattern/Hr/Hr'
-import { createMenuList, findMenuItem } from '@Gatsby/Pattern/Navigation/menu'
+import { createMenuList, findMenuItem, getPageData } from '@Gatsby/Pattern/Navigation/menu'
 import Table, { TableHeader, TableHeaderCell, TableBody, TableRow, TableCell } from '@Layout/Table/Table'
 
 // https://www.gatsbyjs.com/plugins/gatsby-plugin-mdx/#mdxprovider
@@ -29,6 +30,8 @@ const shortcodes = {
   Code,
   CodeSnippet,
   Grid,
+  Hr,
+  HrLight,
   Icon,
   Link,
   List,
@@ -67,8 +70,9 @@ const Layout = ({ children }) => {
             edges {
               node {
                 frontmatter {
-                  title
                   date
+                  source
+                  title
                 }
                 slug
                 timeToRead
@@ -90,6 +94,9 @@ const Layout = ({ children }) => {
         const sideMenuList = menuList.filter(menu => menu.id !== '')
         const currentUrl = typeof window !== 'undefined' ? window.location.pathname : ''
         const currentMenuItem = findMenuItem(menuList, currentUrl)
+        const page = getPageData(data.allMdx.edges, currentUrl)
+        // const horizontalMenuItems = [currentMenuItem, ...currentMenuItem.children]
+        const horizontalMenuItems = currentMenuItem.children
 
         return <Page className="ds-layout">
           <Grid template="design-system-page">
@@ -99,12 +106,14 @@ const Layout = ({ children }) => {
             <article className="ds-layout__article">
               <Grid className="ds-layout__contents">
                 <H1>{currentMenuItem.title}</H1>
-                <HorizontalMenu className="ds-layout__actions" />
+                {horizontalMenuItems && <HorizontalMenu className="ds-layout__actions" menuList={horizontalMenuItems}/>}
                 <div className="ds-layout__markdown">
                   <MDXProvider components={shortcodes}>
                     {children}
                   </MDXProvider>
                 </div>
+                { console.log(currentMenuItem) }
+                { page.frontmatter.source }
               </Grid>
             </article>
           </Grid>
