@@ -56,6 +56,10 @@ $columns: 4;
     }
   }
 
+  &--align-center {
+    align-items: center;
+  }
+
   @include media ('mobile') {
     grid-template-columns: 1fr;
   }

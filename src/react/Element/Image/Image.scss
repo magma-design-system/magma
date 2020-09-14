@@ -1,0 +1,17 @@
+.image {
+  height: auto;
+  overflow: hidden;
+  position: relative;
+  width: 100%;
+
+  &__element {
+    bottom: 0;
+    height: 100%;
+    left: 50%;
+    position: absolute;
+    right: 0;
+    top: 0;
+    transform: translate(-50%, 0);
+    width: auto;
+  }
+}

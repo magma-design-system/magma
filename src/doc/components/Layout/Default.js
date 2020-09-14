@@ -3,6 +3,7 @@ import PropTypes from 'prop-types'
 import { Link, StaticQuery, graphql } from 'gatsby'
 import { MDXProvider } from '@mdx-js/react'
 import './Layout.scss'
+import { createMenuList, findMenuItem, getPageData } from '@Gatsby/Pattern/Navigation/menu'
 
 import Icon from '@Design/Icon/Icon'
 import Grid from '@Layout/Grid/Grid'
@@ -14,6 +15,7 @@ import H5 from '@Typography/H5/H5'
 import H6 from '@Typography/H6/H6'
 import Paragraph from '@Typography/Paragraph/Paragraph'
 import CodeSnippet from '@Element/CodeSnippet/CodeSnippet'
+import Image from '@Element/Image/Image'
 import Code from '@Element/Code/Code'
 import Quote from '@Element/Quote/Quote'
 import List, { ListItem } from '@Element/List/List'
@@ -21,7 +23,6 @@ import Navigation from '@Gatsby/Pattern/Navigation/Navigation'
 import HorizontalMenu from '@Gatsby/Pattern/HorizontalMenu/HorizontalMenu'
 import Page from '@Gatsby/Page/Page'
 import Hr, { HrLight } from '@Gatsby/Pattern/Hr/Hr'
-import { createMenuList, findMenuItem, getPageData } from '@Gatsby/Pattern/Navigation/menu'
 import Table, { TableHeader, TableHeaderCell, TableBody, TableRow, TableCell } from '@Layout/Table/Table'
 
 // https://www.gatsbyjs.com/plugins/gatsby-plugin-mdx/#mdxprovider
@@ -30,9 +31,16 @@ const shortcodes = {
   Code,
   CodeSnippet,
   Grid,
+  H1,
+  H2,
+  H3,
+  H4,
+  H5,
+  H6,
   Hr,
   HrLight,
   Icon,
+  Image,
   Link,
   List,
   ListItem,
@@ -54,6 +62,7 @@ const shortcodes = {
   h5: H5,
   h6: H6,
   hr: HrLight,
+  img: Image,
   inlineCode: Code,
   li: ListItem,
   p: Paragraph,
