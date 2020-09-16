@@ -1,7 +1,7 @@
 {
-  "name": "@maggioli-common/font-icons",
-  "version": "0.0.1",
-  "description": "Maggioli font icons, part of Maggioli design system",
+  "name": "@maggioli-common/font-icons-cli",
+  "version": "0.0.2",
+  "description": "Font icons CLI, part of Maggioli design system",
   "publishConfig": {
     "registry": "http://nexus.maggioli.it:8081/repository/npm/"
   },
@@ -22,6 +22,11 @@
   ],
   "license": "ISC",
   "main": "bin/font-icons.js",
+  "files": [
+    "/bin/**/*",
+    "/lib/**/*",
+    "/svg/**/*"
+  ],
   "bin": {
     "font-icons": "bin/font-icons.js"
   },
