@@ -21,14 +21,14 @@
     }
   ],
   "license": "ISC",
-  "main": "bin/font-icons.js",
+  "main": "",
   "files": [
     "/bin/**/*",
     "/lib/**/*",
     "/svg/**/*"
   ],
   "bin": {
-    "font-icons": "bin/font-icons.js"
+    "font-icons": ""
   },
   "keywords": [
     "font",
