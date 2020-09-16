@@ -10,5 +10,11 @@ export default {
   component: Bibliography,
 }
 
-export const defaultUsageAPA = () =>
-  <Bibliography firstName="Giorgio" lastName="Moroder" date="2020-08-24" title="My name is Giovanni Giorgio, but everybody calls me Giorgio"/>
+export const formatAPA = () =>
+  <Bibliography firstName="Giorgio" lastName="Moroder" date="2020-08-24" title="My name is Giovanni Giorgio, but everybody calls me Giorgio" site="Daft Punk - Random Access Memories" url="https://www.daftpunk.com/collections/shop-by-product/products/beach-towel"/>
+
+export const formatMLA = () =>
+  <Bibliography format="mla" firstName="Giorgio" lastName="Moroder" date="2020-08-24" title="My name is Giovanni Giorgio, but everybody calls me Giorgio" site="Daft Punk - Random Access Memories" url="https://www.daftpunk.com/collections/shop-by-product/products/beach-towel"/>
+
+export const formatMLAMinimal = () =>
+  <Bibliography format="mla" title="My name is Giovanni Giorgio, but everybody calls me Giorgio" site="Daft Punk - Random Access Memories" url="https://www.daftpunk.com/collections/shop-by-product/products/beach-towel"/>

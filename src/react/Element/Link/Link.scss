@@ -1,16 +1,12 @@
 @import '~Sass/import-framework';
 
 .link {
-  border-radius: get($radius, 'mini');
-  box-shadow: 0 0 0 0 color('brand.maggioli', 15);
+  color: color('brand.maggioli', '05');
   text-decoration: underline;
-
-  // text-decoration-color: color('brand.maggioli', 12);
+  text-decoration-color: color('adjust.tone', '12');
   transition: background-color get($tween, 'hover'), box-shadow get($tween, 'hover'), text-decoration-color get($tween, 'hover');
 
   &:hover {
-    background-color: color('brand.maggioli', 15);
-    box-shadow: 0 0 0 2px color('brand.maggioli', 15);
-    text-decoration-color: transparent;
+    text-decoration-color: color('brand.maggioli', '05');
   }
 }
