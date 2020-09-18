@@ -5,7 +5,9 @@ import { MDXProvider } from '@mdx-js/react'
 import './Layout.scss'
 import { createMenuList, findMenuItem, getPageData } from '@Gatsby/Pattern/Navigation/menu'
 
-import Icon from '@Design/Icon/Icon'
+import Bibliography from '@Element/Bibliography/Bibliography'
+import Code from '@Element/Code/Code'
+import CodeSnippet from '@Element/CodeSnippet/CodeSnippet'
 import Grid from '@Layout/Grid/Grid'
 import H1 from '@Typography/H1/H1'
 import H2 from '@Typography/H2/H2'
@@ -13,16 +15,15 @@ import H3 from '@Typography/H3/H3'
 import H4 from '@Typography/H4/H4'
 import H5 from '@Typography/H5/H5'
 import H6 from '@Typography/H6/H6'
-import Paragraph from '@Typography/Paragraph/Paragraph'
-import CodeSnippet from '@Element/CodeSnippet/CodeSnippet'
+import HorizontalMenu from '@Gatsby/Pattern/HorizontalMenu/HorizontalMenu'
+import Hr, { HrLight } from '@Gatsby/Pattern/Hr/Hr'
+import Icon from '@Design/Icon/Icon'
 import Image from '@Element/Image/Image'
-import Code from '@Element/Code/Code'
-import Quote from '@Element/Quote/Quote'
 import List, { ListItem } from '@Element/List/List'
 import Navigation from '@Gatsby/Pattern/Navigation/Navigation'
-import HorizontalMenu from '@Gatsby/Pattern/HorizontalMenu/HorizontalMenu'
 import Page from '@Gatsby/Page/Page'
-import Hr, { HrLight } from '@Gatsby/Pattern/Hr/Hr'
+import Paragraph from '@Typography/Paragraph/Paragraph'
+import Quote from '@Element/Quote/Quote'
 import Table, { TableHeader, TableHeaderCell, TableBody, TableRow, TableCell } from '@Layout/Table/Table'
 
 // https://www.gatsbyjs.com/plugins/gatsby-plugin-mdx/#mdxprovider
@@ -80,7 +81,6 @@ const Layout = ({ children }) => {
               node {
                 frontmatter {
                   date
-                  source
                   title
                 }
                 slug
@@ -121,8 +121,7 @@ const Layout = ({ children }) => {
                     {children}
                   </MDXProvider>
                 </div>
-                { console.log(currentMenuItem) }
-                { page.frontmatter.source }
+                {page.frontmatter.source && <Bibliography format="mla" title={page.frontmatter.source.title} site={page.frontmatter.source.site} url={page.frontmatter.source.url}/> }
               </Grid>
             </article>
           </Grid>
