@@ -1,0 +1,29 @@
+{
+  "name": "@maggioli-common/mgg-icons",
+  "version": "0.0.1",
+  "description": "Maggioli font icons, part of Maggioli design system",
+  "main": "index.js",
+  "scripts": {
+    "build": "font-icons src/mgg-icons.json",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "font",
+    "icons"
+  ],
+  "author": {
+    "name": "Vittorio Vittori",
+    "email": "vittorio.vittori@maggioli.it",
+    "url": "http://vit.to"
+  },
+  "contributors": [
+    {
+      "name": "Gioele Masini",
+      "email": "gioele.masini@maggioli.it"
+    }
+  ],
+  "license": "ISC",
+  "devDependencies": {
+    "@maggioli-common/font-icons": "file:../font-icons"
+  }
+}

@@ -1,12 +1,14 @@
+#!/usr/bin/env node
+
 const svgtofont = require('svgtofont')
 const fs = require('fs').promises
 const path = require('path')
 const pkg = require('../package.json')
 const { ICON_GROUPS } = require('../lib/icons-groups')
-const { ROOT_PATH_DIR } = require('../lib/utils')
+const { ROOT_PATH_DIR, BUILD_PATH_DIR } = require('../lib/utils')
 
-const BUILD_SVG_DIR = `${ROOT_PATH_DIR}/build/svg`
-const BUILD_FONTS_DIR = `${ROOT_PATH_DIR}/build/fonts`
+const BUILD_SVG_DIR = `${BUILD_PATH_DIR}/svg`
+const BUILD_FONTS_DIR = `${BUILD_PATH_DIR}/fonts`
 
 main(process.argv.slice(2))
 
