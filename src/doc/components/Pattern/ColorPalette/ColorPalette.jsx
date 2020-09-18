@@ -4,7 +4,7 @@ import './ColorPalette.scss'
 
 import contrast from 'get-contrast'
 
-import ColorSwatch from '@System/Design/Color/ColorSwatch/ColorSwatch'
+import ColorSwatch from '@Gatsby/Pattern/ColorSwatch/ColorSwatch'
 import Grid from '@Layout/Grid/Grid'
 import H5 from '@Typography/H5/H5'
 
@@ -45,12 +45,14 @@ const ColorPalette = props =>
         Object.entries(props.token).map(([code, color], key) =>
           <ColorSwatch
             className={`${getSelectors(props.token, props.group, props.name, key)}`}
-            key={key}
-            colorSeedHref={code === 'color' ? color.comment : null}
             colorBaseCode={code}
             colorBaseHexTest={color.value}
+            colorSeedHref={code === 'color' ? color.comment : null}
             colorTextCode={getBestContrastColor(props.token, key).code}
             colorTextHexTest={getBestContrastColor(props.token, key).value}
+            group={props.group}
+            key={key}
+            name={props.name}
           />,
         )
       }

@@ -8,6 +8,8 @@
     ],
     "colors": [
       "brand.maggioli",
+      "brand.eolo",
+      "brand.argo",
       "status.info",
       "status.success",
       "status.error",

@@ -2,17 +2,17 @@ import React, { Fragment } from 'react'
 import PropTypes from 'prop-types'
 import './ColorSwatch.scss'
 
-import AccessibilityTest from '@System/Design/Color/AccessibilityTest/AccessibilityTest'
+import AccessibilityTest from '@Gatsby/Pattern/AccessibilityTest/AccessibilityTest'
 import Caption from '@Typography/Caption/Caption'
 import Grid from '@Layout/Grid/Grid'
 import Row from '@Layout/Row/Row'
-import H6 from '@Typography/H6/H6'
 import Icon from '@Design/Icon/Icon'
 
 const ColorSwatchItem = props =>
   <Grid className={`mds-color-swatch ${props.className}`}>
     <Grid gutter="none" className="mds-color-swatch__title">
-      <H6>{ props.colorBaseCode }</H6>
+      <Caption>CSS --hex-{ props.group }-{ props.name }-{ props.colorBaseCode.replace('c-', '') }</Caption>
+      <Caption>SCSS color('{ props.group }-{ props.name }', '{ props.colorBaseCode.replace('c-', '') }')</Caption>
       { props.colorSeedHref &&
         <Row gutter="xsmall" align="center">
           <Icon name="colorSeed"/>
@@ -22,7 +22,7 @@ const ColorSwatchItem = props =>
     </Grid>
     <Caption htmlTag="div" className="mds-color-swatch__infos">
       <AccessibilityTest base={props.colorBaseHexTest} color={props.colorTextHexTest}/>
-      <div>Text { props.colorTextCode }</div>
+      <div>Text { props.colorTextCode.replace('c-', '') }</div>
     </Caption>
   </Grid>
 
@@ -33,6 +33,8 @@ ColorSwatchItem.propTypes = {
   colorSeedHref: PropTypes.string,
   colorTextCode: PropTypes.string,
   colorTextHexTest: PropTypes.string,
+  group: PropTypes.string,
+  name: PropTypes.string,
 }
 
 ColorSwatchItem.defaultProps = {
@@ -42,6 +44,8 @@ ColorSwatchItem.defaultProps = {
   colorSeedHref: null,
   colorTextCode: 'Code',
   colorTextHexTest: '#ffffff',
+  group: 'Group',
+  name: 'Name',
 }
 
 const ColorSwatch = props =>
@@ -59,6 +63,8 @@ ColorSwatch.propTypes = {
   colorSeedHref: PropTypes.string,
   colorTextCode: PropTypes.string,
   colorTextHexTest: PropTypes.string,
+  group: PropTypes.string,
+  name: PropTypes.string,
 }
 
 ColorSwatch.defaultProps = {
@@ -68,6 +74,8 @@ ColorSwatch.defaultProps = {
   colorSeedHref: null,
   colorTextCode: 'Code',
   colorTextHexTest: '#ffffff',
+  group: 'Group',
+  name: 'Name',
 }
 
 export default ColorSwatch

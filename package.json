@@ -18,7 +18,7 @@
     "tokens:css-tokens-config": "json-to-scss --v=sq --s='!default;' src/style-dictionary/css-tokens/config.json src/scss/variables/config.scss",
     "tokens:style-dictionary": "cd ./src/style-dictionary/ && node build.js",
     "start": "run-p start:**",
-    "doc": "npm run clean:gatsby && npm run start:gatsby",
+    "doc": "npm run tokens && npm run clean:gatsby && npm run start:gatsby",
     "start:gatsby": "gatsby develop -H 0.0.0.0 -p 3898 -o",
     "start:storybook": "npm run storybook",
     "serve:gatsby": "gatsby serve -o -p 3898",
