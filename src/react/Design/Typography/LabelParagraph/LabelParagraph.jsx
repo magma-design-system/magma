@@ -2,22 +2,22 @@ import React from 'react'
 import PropTypes from 'prop-types'
 import Typography from '../Typography'
 
-const Hack = props =>
+const LabelParagraph = props =>
   <Typography
-    className={`text-mono text-mono--hack ${props.className}`}
+    className={`text-secondary text-secondary--label-paragraph ${props.className}`}
     htmlTag={props.htmlTag}
   >
     {props.children}
   </Typography>
 
-Hack.propTypes = {
+LabelParagraph.propTypes = {
   className: PropTypes.string,
   htmlTag: PropTypes.string,
 }
 
-Hack.defaultProps = {
+LabelParagraph.defaultProps = {
   className: '',
-  htmlTag: 'code',
+  htmlTag: 'p',
 }
 
-export default Hack
+export default LabelParagraph

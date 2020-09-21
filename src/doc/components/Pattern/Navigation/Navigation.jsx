@@ -3,6 +3,7 @@ import PropTypes from 'prop-types'
 import './Navigation.scss'
 import Grid from '@Layout/Grid/Grid'
 import H1 from '@Typography/H1/H1'
+import Image from '@Element/Image/Image'
 import Hr from '@Gatsby/Pattern/Hr/Hr'
 import Menu, { MenuItem, MenuSubItem } from '@Gatsby/Pattern/Menu/Menu'
 
@@ -13,26 +14,26 @@ const Navigation = props => {
     <div className="ds-navigation">
       <Grid className="ds-navigation__contents">
         <H1>{ props.title }</H1>
+        <Hr/>
         {
           props.menuList.map((menu, key) =>
-            <Fragment key={key}>
-              <Hr/>
-              <Menu title={menu.title}>
-                {
-                  (menu.children || []).map((menuItem, key) =>
-                    <MenuItem key={key} title={menuItem.title} url={menuItem.url} isSelected={currentUrl === menuItem.url} isOpened={currentUrl.startsWith(menuItem.url)}>
-                      {
-                        (menuItem.children || []).map((menuSubItem, key) =>
-                          <MenuSubItem key={key} title={menuSubItem.title} url={menuSubItem.url} isSelected={currentUrl === menuSubItem.url}/>,
-                        )
-                      }
-                    </MenuItem>,
-                  )
-                }
-              </Menu>
-            </Fragment>,
+            <Menu key={key} title={menu.title}>
+              {
+                (menu.children || []).map((menuItem, key) =>
+                  <MenuItem key={key} title={menuItem.title} url={menuItem.url} isSelected={currentUrl === menuItem.url} isOpened={currentUrl.startsWith(menuItem.url)}>
+                    {
+                      (menuItem.children || []).map((menuSubItem, key) =>
+                        <MenuSubItem key={key} title={menuSubItem.title} url={menuSubItem.url} isSelected={currentUrl === menuSubItem.url}/>,
+                      )
+                    }
+                  </MenuItem>,
+                )
+              }
+            </Menu>,
           )
         }
+        <Hr/>
+        <Image className="ds-navigation__logo" src={require('../../../../assets/logo/gruppo-maggioli.svg')}/>
       </Grid>
     </div>
   )

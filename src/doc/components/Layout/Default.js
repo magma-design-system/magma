@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useState, Component } from 'react'
 import PropTypes from 'prop-types'
 import { Link, StaticQuery, graphql } from 'gatsby'
 import { MDXProvider } from '@mdx-js/react'
@@ -106,13 +106,18 @@ const Layout = ({ children }) => {
         const page = getPageData(data.allMdx.edges, currentUrl)
         // const horizontalMenuItems = [currentMenuItem, ...currentMenuItem.children]
         const horizontalMenuItems = currentMenuItem.children
+        const [isOpened, setMenuOpened] = useState(false)
 
         return <Page className="ds-layout">
+          <div className={`ds-layout__switch ${isOpened ? 'ds-layout__switch--is-active' : ''}`} onClick={() => setMenuOpened(!isOpened)}>
+            <Icon name="menu" className="ds-layout__switch-icon ds-layout__switch-icon--menu"/>
+            <Icon name="close" className="ds-layout__switch-icon ds-layout__switch-icon--close"/>
+          </div>
           <Grid template="design-system-page">
-            <Grid htmlTag="aside" className="ds-layout__aside">
+            <Grid htmlTag="aside" className={`ds-layout__aside ${isOpened ? 'ds-layout__aside--is-active' : ''}`}>
               <Navigation title={data.site.siteMetadata.title} menuList={sideMenuList}/>
             </Grid>
-            <article className="ds-layout__article">
+            <article className={`ds-layout__article ${isOpened ? 'ds-layout__article--is-not-scrolling' : ''}`}>
               <Grid className="ds-layout__contents">
                 <H1>{currentMenuItem.title}</H1>
                 {horizontalMenuItems && <HorizontalMenu className="ds-layout__actions" menuList={horizontalMenuItems}/>}

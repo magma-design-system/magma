@@ -1,9 +1,37 @@
 @import '~Sass/import-framework';
 
+$menu-size: 60px;
+$menu-font-size: 48px;
+
 .ds-layout {
   &__aside {
+    background-color: color('adjust.tone', 'color');
+    bottom: 0;
+    box-shadow: 0 0 s(2) 0 color('adjust.tone', '01', 0), 0 0 0 100vw color('adjust.tone', '01', 0);
     height: 100vh;
+    left: 0;
     overflow-y: auto;
+    padding: 0 s(2);
+    position: fixed;
+    right: 0;
+    top: 0;
+    transform: translate(-100%, 0);
+    transition: transform get($tween, 'slide'), box-shadow get($tween, 'slide');
+    z-index: 1;
+
+    &--is-active {
+      box-shadow: 0 0 s(2) 0 color('adjust.tone', '01', 0.5), 0 0 0 100vw color('adjust.tone', '01', 0.5);
+      transform: translate(0, 0);
+      width: calc(100% - #{s(5)});
+    }
+
+    @include media('desktop') {
+      box-shadow: none;
+      padding: 0;
+      position: static;
+      transform: translate(0, 0);
+      width: auto;
+    }
   }
 
   &__contents {
@@ -11,8 +39,20 @@
   }
 
   &__article {
-    height: 100vh;
-    overflow-y: auto;
+    height: auto;
+    overflow: auto;
+
+    &--is-not-scrolling {
+      overflow: hidden;
+    }
+
+    @include media('desktop') {
+      height: 100vh;
+
+      &--is-not-scrolling {
+        overflow: auto;
+      }
+    }
   }
 
   &__markdown {
@@ -28,5 +68,55 @@
   &__actions {
     position: sticky;
     top: 0;
+  }
+
+  &__switch {
+    align-items: center;
+    background-color: color('adjust.tone', 'color', 0.8);
+    border-radius: $menu-size;
+    display: flex;
+    height: $menu-size;
+    justify-content: center;
+    position: fixed;
+    right: s(1);
+    top: s(1);
+    transition: transform get($tween, 'hover');
+    width: $menu-size;
+    z-index: 2;
+
+    @include media ('desktop') {
+      display: none;
+    }
+
+    &--is-active {
+      transform: rotate(45deg);
+
+      .ds-layout {
+        &__switch-icon {
+          &--menu {
+            opacity: 0;
+          }
+
+          &--close {
+            opacity: 1;
+          }
+        }
+      }
+    }
+  }
+
+  &__switch-icon {
+    font-size: $menu-font-size;
+    position: absolute;
+    transition: transform get($tween, 'hover'), opacity get($tween, 'hover');
+
+    &--menu {
+      opacity: 1;
+    }
+
+    &--close {
+      opacity: 0;
+      transform: rotate(-45deg);
+    }
   }
 }

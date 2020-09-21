@@ -56,6 +56,23 @@ $columns: 4;
     }
   }
 
+  &--tmpl-color-palette {
+    grid-gap: s(2);
+    grid-template-columns: 1fr;
+
+    @include media ('tablet') {
+      grid-template-columns: repeat(2, 1fr);
+    }
+
+    @include media ('desktop') {
+      grid-template-columns: repeat(2, 1fr);
+    }
+
+    @include media ('large') {
+      grid-template-columns: repeat(3, 1fr);
+    }
+  }
+
   &--align-center {
     align-items: center;
   }

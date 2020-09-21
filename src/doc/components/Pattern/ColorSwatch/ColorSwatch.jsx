@@ -4,6 +4,7 @@ import './ColorSwatch.scss'
 
 import AccessibilityTest from '@Gatsby/Pattern/AccessibilityTest/AccessibilityTest'
 import Caption from '@Typography/Caption/Caption'
+import H2 from '@Typography/H2/H2'
 import Grid from '@Layout/Grid/Grid'
 import Row from '@Layout/Row/Row'
 import Icon from '@Design/Icon/Icon'
@@ -11,8 +12,7 @@ import Icon from '@Design/Icon/Icon'
 const ColorSwatchItem = props =>
   <Grid className={`mds-color-swatch ${props.className}`}>
     <Grid gutter="none" className="mds-color-swatch__title">
-      <Caption>CSS --hex-{ props.group }-{ props.name }-{ props.colorBaseCode.replace('c-', '') }</Caption>
-      <Caption>SCSS color('{ props.group }-{ props.name }', '{ props.colorBaseCode.replace('c-', '') }')</Caption>
+      <H2>{ props.colorBaseCode.replace('c-', '') }</H2>
       { props.colorSeedHref &&
         <Row gutter="xsmall" align="center">
           <Icon name="colorSeed"/>

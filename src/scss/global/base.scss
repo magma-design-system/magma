@@ -1,5 +1,6 @@
 $default-font-set: 'paragraph';
 $font-base-styles: $font-secondary-styles;
+$font-base-variants: $font-secondary-variants;
 
 body {
   background-color: color('adjust.tone');
@@ -26,7 +27,7 @@ textarea {
 
 b,
 strong {
-  @include apply-styles-set($map: $font-base-styles, $set: 'bold');
+  @include apply-styles-set($map: $font-base-variants, $set: 'bold');
 }
 
 a {
