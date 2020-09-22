@@ -1,13 +1,26 @@
 @import '~Sass/import-framework';
 
-@mixin add-status ($modifier, $color) {
+@mixin add-status ($modifier, $color, $background, $text) {
   &--#{$modifier} {
-    border: 2px solid color(#{$color}, '15');
+    border: 2px solid color(#{$color}, $background);
 
     .mds-usage {
       &__header {
-        background-color: color(#{$color}, '15');
-        color: color(#{$color}, '04');
+        background-color: color(#{$color}, $background);
+        color: color(#{$color}, $text);
+      }
+    }
+  }
+}
+
+@mixin add-status-hover ($modifier, $color, $background, $text) {
+  &--#{$modifier}:hover {
+    border: 2px solid color(#{$color}, $background);
+
+    .mds-usage {
+      &__header {
+        background-color: color(#{$color}, $background);
+        color: color(#{$color}, $text);
       }
     }
   }
@@ -17,13 +30,24 @@
   margin-top: s(1);
 
   &__item {
-    @include add-status($modifier: 'do', $color: 'status-success');
-    @include add-status($modifier: 'dont', $color: 'status-error');
+    transition: border-color get($tween, 'hover');
+    @include add-status($modifier: 'do', $color: 'status-success', $background: '15', $text: '04');
+    @include add-status($modifier: 'dont', $color: 'status-error', $background: '15', $text: '04');
+  }
+
+  &:hover {
+    .mds-usage__item {
+      @include add-status($modifier: 'do', $color: 'status-success', $background: '16', $text: '06');
+      @include add-status($modifier: 'dont', $color: 'status-error', $background: '16', $text: '06');
+      @include add-status-hover($modifier: 'do', $color: 'status-success', $background: '15', $text: '04');
+      @include add-status-hover($modifier: 'dont', $color: 'status-error', $background: '15', $text: '04');
+    }
   }
 
   &__header {
     display: flex;
     padding: s(1);
+    transition: background-color get($tween, 'hover'), color get($tween, 'hover');
   }
 
   &__content {

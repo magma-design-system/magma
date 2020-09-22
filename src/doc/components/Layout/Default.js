@@ -6,6 +6,7 @@ import './Layout.scss'
 import { createMenuList, findMenuItem, getPageData } from '@Gatsby/Pattern/Navigation/menu'
 
 import Bibliography from '@Element/Bibliography/Bibliography'
+import Button from '@Pattern/Button/Button'
 import Code from '@Element/Code/Code'
 import CodeSnippet from '@Element/CodeSnippet/CodeSnippet'
 import Grid from '@Layout/Grid/Grid'
@@ -25,10 +26,12 @@ import Page from '@Gatsby/Page/Page'
 import Paragraph from '@Typography/Paragraph/Paragraph'
 import Quote from '@Element/Quote/Quote'
 import Table, { TableHeader, TableHeaderCell, TableBody, TableRow, TableCell } from '@Layout/Table/Table'
+import Usage, { UsageDo, UsageDont } from '@Gatsby/Pattern/Usage/Usage'
 
 // https://www.gatsbyjs.com/plugins/gatsby-plugin-mdx/#mdxprovider
 
 const shortcodes = {
+  Button,
   Code,
   CodeSnippet,
   Grid,
@@ -53,6 +56,9 @@ const shortcodes = {
   TableHeader,
   TableHeaderCell,
   TableRow,
+  Usage,
+  UsageDo,
+  UsageDont,
   a: Link,
   blockquote: Quote,
   code: Code,

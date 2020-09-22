@@ -25,24 +25,11 @@ $border-radius: get($radius, 'small');
   transition: background-color $ease, border $ease, color $ease, filter $ease;
   user-select: none;
 
-  // &:active,
-  // &:focus,
-  // &:hover {
-
-  //   --background: color('brand.maggioli', '02');
-  //   --border: 1px solid transparent;
-  //   --color: color('adjust.tone', '16');
-
-  //   background-color: var(--background);
-  //   border: var(--border);
-  //   color: var(--color);
-  // }
-
   &__text {
     text-transform: lowercase;
 
     &::first-letter {
-      text-transform: uppercase;
+      text-transform: capitalize;
     }
   }
 
