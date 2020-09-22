@@ -21,12 +21,15 @@ function main (parameters) {
   const inputFile = parameters[0]
   console.debug('Input file:', inputFile)
 
-  const inputData = require(path.join(process.cwd(), inputFile))
+  const inputFilePath = path.join(process.cwd(), inputFile)
+  const inputData = require(inputFilePath)
   console.debug('Input data:', inputData)
+
+  const fontName = path.basename(inputFilePath, path.extname(inputFilePath))
 
   createBuildDirective()
     .then(() => iconsToTempFolder(inputData))
-    .then(() => buildFont(BUILD_SVG_DIR, BUILD_FONTS_DIR))
+    .then(() => buildFont({ svgPath: BUILD_SVG_DIR, outputPath: BUILD_FONTS_DIR, fontName }))
     // .then(() => console.log('Font creation completed!'))
     .catch(err => console.error('Error:', err) || console.error('Something gone wrong... Aborted.'))
 }
@@ -93,17 +96,24 @@ function iconSelectorToObject (iconSelector) {
 }
 
 /**
+ * BuildFontOptions
+ * @typedef {Object} BuildFontOptions
+ * @property {string} svgPath - Path della cartella contenente gli svg da includere nel font.
+ * @property {string} outputPath - Path della cartella in cui creare i font e il sito di presentazione.
+ * @property {string} fontName - Indicates whether the Wisdom component is present.
+ */
+
+/**
  * Crea il font in tutti i formati supportati da svgtofont.
  * Crea anche un sito statico in cui visionare le icone.
- * @param svgPath Path della cartella contenente gli svg da includere nel font
- * @param outputPath Path della cartella in cui creare i font e il sito di presentazione
+ * @param {BuildFontOptions} options Configurazione del font
  * @return {Promise<void>}
  */
-function buildFont (svgPath, outputPath) {
+function buildFont ({ svgPath, outputPath, fontName } = {}) {
   return svgtofont({
     src: svgPath,
     dist: outputPath, // output path
-    fontName: 'maggioli-font-icons', // font name
+    fontName, // font name
     classNamePrefix: 'mgg',
     // css: true, // Create CSS files.
     // startNumber: 20000, // unicode start number
