@@ -6,7 +6,7 @@ import Caption from '@Typography/Caption/Caption'
 import H5 from '@Typography/H5/H5'
 
 export default {
-  title: 'Pattern/Note',
+  title: 'Element/Note',
   component: Note,
 }
 

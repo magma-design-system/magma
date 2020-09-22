@@ -5,7 +5,7 @@ import Caption from '@Typography/Caption/Caption'
 import Paragraph from '@Typography/Paragraph/Paragraph'
 
 export default {
-  title: 'Pattern/Flash',
+  title: 'Element/Flash',
   component: FlashMessage,
 }
 

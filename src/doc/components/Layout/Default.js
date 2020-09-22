@@ -6,7 +6,7 @@ import './Layout.scss'
 import { createMenuList, findMenuItem, getPageData } from '@Gatsby/Pattern/Navigation/menu'
 
 import Bibliography from '@Element/Bibliography/Bibliography'
-import Button from '@Pattern/Button/Button'
+import Button from '@Element/Button/Button'
 import Code from '@Element/Code/Code'
 import CodeSnippet from '@Element/CodeSnippet/CodeSnippet'
 import Grid from '@Layout/Grid/Grid'
