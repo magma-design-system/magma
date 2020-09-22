@@ -14,13 +14,15 @@
 }
 
 @mixin add-status-hover ($modifier, $color, $background, $text) {
-  &--#{$modifier}:hover {
-    border: 2px solid color(#{$color}, $background);
+  &--#{$modifier} {
+    :hover {
+      border: 2px solid color(#{$color}, $background);
 
-    .mds-usage {
-      &__header {
-        background-color: color(#{$color}, $background);
-        color: color(#{$color}, $text);
+      .mds-usage {
+        &__header {
+          background-color: color(#{$color}, $background);
+          color: color(#{$color}, $text);
+        }
       }
     }
   }
