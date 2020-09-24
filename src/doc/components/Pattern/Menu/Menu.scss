@@ -1,8 +1,12 @@
 @import '~Sass/import-framework';
 
 $radius: s(0.25);
+$gap: 2px;
+$line-height: 25px;
 
 .ds-menu {
+  grid-gap: $gap;
+
   &__title {
     color: color('adjust.tone', '02');
     cursor: default;
@@ -14,17 +18,17 @@ $radius: s(0.25);
 
   &__list {
     display: none;
-    grid-gap: 2px;
+    grid-gap: $gap;
   }
 }
 
 .ds-menu-item {
-  grid-gap: 2px;
+  grid-gap: $gap;
   transition: background-color get($tween, 'slide'), color get($tween, 'slide'), padding get($tween, 'slide');
 
   &__list {
     display: none;
-    grid-gap: 2px;
+    grid-gap: $gap;
   }
 
   &--opened {
@@ -44,6 +48,8 @@ $radius: s(0.25);
     border-radius: $radius;
     color: color('adjust.tone', '02');
     cursor: pointer;
+    display: inline-flex;
+    line-height: $line-height;
     padding: s(0.25) s(0.5) s(0.25) 0;
     transition: background-color get($tween, 'hover'), padding-left get($tween, 'hover');
 
@@ -69,6 +75,7 @@ $radius: s(0.25);
     color: color('adjust.tone', '02');
     cursor: pointer;
     display: inline-flex;
+    line-height: $line-height;
     padding: s(0.25) s(0.5) s(0.25) s(0.5);
     transition: background-color get($tween, 'hover'), padding-left get($tween, 'hover');
 
