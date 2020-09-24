@@ -1,6 +1,23 @@
 @import '~Sass/import-framework';
 
+$radius: s(0.25);
+
 .ds-horizontal-menu {
   background-color: color('adjust.tone');
   transform: translate(0, -2px);
+
+  &__item {
+    border-radius: $radius;
+
+    // @extend %bar-hidden;
+    color: color('adjust.tone', '02');
+    cursor: pointer;
+    display: inline-flex;
+    padding: s(0.25) s(0.5) s(0.25) s(0.5);
+    transition: background-color get($tween, 'hover');
+
+    &:hover {
+      background-color: color('adjust.tone', '15');
+    }
+  }
 }

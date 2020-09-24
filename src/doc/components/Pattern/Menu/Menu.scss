@@ -1,52 +1,55 @@
 @import '~Sass/import-framework';
 
-.ds-menu {
-  // margin: 0 s(-0.5);
+$radius: s(0.25);
 
+.ds-menu {
   &__title {
     color: color('adjust.tone', '02');
     cursor: default;
   }
 
   &__child {
-
-    @extend %bar-hidden;
-
     color: color('adjust.tone', '10');
-
-    &--selected {
-
-      @extend %bar-visible;
-
-      color: color('adjust.tone');
-    }
   }
 
   &__list {
     display: none;
+    grid-gap: 2px;
   }
 }
 
 .ds-menu-item {
+  grid-gap: 2px;
   transition: background-color get($tween, 'slide'), color get($tween, 'slide'), padding get($tween, 'slide');
 
   &__list {
     display: none;
+    grid-gap: 2px;
   }
 
   &--opened {
-    background-color: color('adjust.tone', '04');
-    color: color('adjust.tone');
-    padding: s(0.25) s(0.5);
-
     .ds-menu-item {
       &__list {
         display: grid;
       }
 
       &__title {
-        color: color('adjust.tone');
+
+        @extend %selected-section-title;
       }
+    }
+  }
+
+  &__title {
+    border-radius: $radius;
+    color: color('adjust.tone', '02');
+    cursor: pointer;
+    padding: s(0.25) s(0.5) s(0.25) 0;
+    transition: background-color get($tween, 'hover'), padding-left get($tween, 'hover');
+
+    &:hover {
+
+      @extend %hover-section-title;
     }
   }
 
@@ -54,61 +57,55 @@
     .ds-menu-item {
       &__title {
 
-        @extend %bar-visible;
+        @extend %selected-section-title;
       }
     }
-  }
-
-  &__title {
-    color: color('adjust.tone', '02');
-    cursor: pointer;
-
-    @extend %bar-hidden;
   }
 }
 
 .ds-menu-child {
+  &__title {
+    border-radius: $radius;
+    color: color('adjust.tone', '02');
+    cursor: pointer;
+    display: inline-flex;
+    padding: s(0.25) s(0.5) s(0.25) s(0.5);
+    transition: background-color get($tween, 'hover'), padding-left get($tween, 'hover');
+
+    &:hover {
+
+      @extend %hover-child-title;
+    }
+  }
+
   &--selected {
     .ds-menu-child {
       &__title {
 
-        @extend %bar-visible;
-
-        color: color('adjust.tone');
+        @extend %selected-child-title;
       }
     }
   }
-
-  &__title {
-
-    @extend %bar-hidden;
-
-    color: color('adjust.tone', '12');
-    cursor: pointer;
-  }
 }
 
-%bar-hidden {
-  position: relative;
-
-  &::after {
-    background-color: color('adjust.tone', '04');
-    content: '';
-    display: block;
-    height: 2px;
-    opacity: 0;
-    pointer-events: none;
-    position: absolute;
-    top: 50%;
-    transform: translate(0, -50%);
-    transition: opacity get($tween, 'slide'), transform get($tween, 'slide');
-    width: 100%;
-  }
+%hover-section-title {
+  background-color: color('adjust.tone', '15');
+  padding-left: s(0.5);
 }
 
-%bar-visible {
-  &::after {
-    transform: translate(0, 0);
-    opacity: 1;
-  }
+%selected-section-title {
+  background-color: color('adjust.tone', '03');
+  color: color('adjust.tone');
+  padding-left: s(0.5);
+}
+
+%hover-child-title {
+  background-color: color('adjust.tone', '15');
+  padding-left: s(1);
+}
+
+%selected-child-title {
+  background-color: color('adjust.tone', '03');
+  color: color('adjust.tone');
+  padding-left: s(1);
 }

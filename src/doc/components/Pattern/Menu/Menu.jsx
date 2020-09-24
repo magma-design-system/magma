@@ -27,7 +27,9 @@ MenuSubItem.defaultProps = {
 
 const MenuItem = props =>
   <Grid gutter="none" fit={true} className={`ds-menu-item ${props.isSelected ? 'ds-menu-item--selected' : ''} ${props.isOpened ? 'ds-menu-item--opened' : ''}`}>
-    <a href={props.url} className="ds-menu-item__title text-primary text-primary--h4">{props.title}</a>
+    <div className="ds-menu-item__section">
+      <a href={props.url} className="ds-menu-item__title text-primary text-primary--h4">{props.title}</a>
+    </div>
     <Grid gutter="none" fit={true} className="ds-menu-item__list">
       {props.children}
     </Grid>
