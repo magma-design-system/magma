@@ -7,6 +7,12 @@
     "build": "font-icons src/mgg-icons.json",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
+  "files": [
+    "/build/fonts/**/*.ttf",
+    "/build/fonts/**/*.woff",
+    "/build/fonts/**/*.woff2",
+    "/src/*.json"
+  ],
   "keywords": [
     "font",
     "icons"
@@ -24,6 +30,6 @@
   ],
   "license": "ISC",
   "devDependencies": {
-    "@maggioli-common/font-icons": "file:../font-icons"
+    "@maggioli-common/font-icons-cli": "0.0.4"
   }
 }
