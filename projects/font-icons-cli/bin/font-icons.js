@@ -114,7 +114,7 @@ function buildFont ({ svgPath, outputPath, fontName } = {}) {
     src: svgPath,
     dist: outputPath, // output path
     fontName, // font name
-    classNamePrefix: 'mgg',
+    classNamePrefix: fontName,
     // css: true, // Create CSS files.
     // startNumber: 20000, // unicode start number
     svgicons2svgfont: {
