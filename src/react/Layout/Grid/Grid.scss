@@ -47,12 +47,11 @@ $columns: 4;
   }
 
   &--tmpl-design-system-page {
-    grid-gap: s(2);
+    grid-gap: 0;
     grid-template-columns: 1fr;
 
     @include media ('desktop') {
-      grid-gap: s(3);
-      grid-template-columns: 350px auto;
+      grid-template-columns: 450px auto;
     }
   }
 

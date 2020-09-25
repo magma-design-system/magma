@@ -69,7 +69,7 @@ cat > ~/.npmrc
 
 Una volta creato il file, sarà necessario aggiungere questa riga con all'interno il registry privato.
 
-```
+```bash
 registry=http://nexus.maggioli.it:8081/repository/npm-group/
 ```
 
@@ -83,7 +83,7 @@ echo -n 'nexusupload:nexusupload' | openssl base64
 
 Questo comando genera un stringa hash che sarà da inserire nel campo `_auth` come nell'esempio qui sotto:
 
-```
+```bash
 registry=http://nexus.maggioli.it:8081/repository/npm-group/
 _auth=bmV4dXN1cGxvYWQ6bmV4dXN1cGxvYWQ=
 ```
@@ -100,7 +100,7 @@ _auth=bmV4dXN1cGxvYWQ6bmV4dXN1cGxvYWQ=
 
 All'interno del progetto ci andrà un file simile, dove al posto della stringa hash ci andrà la variabile di sistema `${NPM_TOKEN}`.
 
-```
+```bash
 registry=http://nexus.maggioli.it:8081/repository/npm-group/
 _auth=${NPM_TOKEN}
 ```
@@ -111,7 +111,7 @@ Questo file dovrà trovarsi nella stessa cartella del file `package.json` che ut
 
 potete quindi aggiungere la riga in un secondo momento e aggiungere questo comando git per evitare che venga aggiunto alle commit future.
 
-```
+```bash
 git update-index --assume-unchanged .npmrc
 ```
 

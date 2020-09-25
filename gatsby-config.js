@@ -35,6 +35,20 @@ module.exports = {
       },
     },
     'gatsby-transformer-sharp',
+    {
+      resolve: 'gatsby-transformer-remark',
+      options: {
+        plugins: [
+          {
+            resolve: 'gatsby-remark-highlight-code',
+            options: {
+              terminal: 'carbon',
+              theme: 'blackboard',
+            },
+          },
+        ],
+      },
+    },
     'gatsby-plugin-sharp',
     'gatsby-plugin-offline',
     'gatsby-plugin-sass',
@@ -46,6 +60,11 @@ module.exports = {
           default: `${__dirname}/src/doc/components/Layout/Default`,
         },
         extensions: ['.mdx', '.md'],
+        gatsbyRemarkPlugins: [
+          {
+            resolve: 'gatsby-remark-highlight-code',
+          },
+        ],
       },
     },
     {

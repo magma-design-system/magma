@@ -28,6 +28,9 @@ import Quote from '@Element/Quote/Quote'
 import Table, { TableHeader, TableHeaderCell, TableBody, TableRow, TableCell } from '@Layout/Table/Table'
 import Usage, { UsageDo, UsageDont } from '@Gatsby/Pattern/Usage/Usage'
 
+import { defineCustomElements as deckDeckGoHighlightElement } from '@deckdeckgo/highlight-code/dist/loader'
+deckDeckGoHighlightElement()
+
 // https://www.gatsbyjs.com/plugins/gatsby-plugin-mdx/#mdxprovider
 
 const shortcodes = {
@@ -61,7 +64,6 @@ const shortcodes = {
   UsageDont,
   a: Link,
   blockquote: Quote,
-  code: Code,
   h1: H1,
   h2: H2,
   h3: H3,
@@ -73,7 +75,6 @@ const shortcodes = {
   inlineCode: Code,
   li: ListItem,
   p: Paragraph,
-  pre: CodeSnippet,
   ul: List,
 }
 

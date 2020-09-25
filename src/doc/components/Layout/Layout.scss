@@ -27,7 +27,6 @@ $menu-font-size: 48px;
 
     @include media('desktop') {
       box-shadow: none;
-      padding: 0;
       position: static;
       transform: translate(0, 0);
       width: auto;
@@ -35,7 +34,7 @@ $menu-font-size: 48px;
   }
 
   &__contents {
-    padding: s(2) 0;
+    padding: s(2);
   }
 
   &__article {
@@ -59,10 +58,6 @@ $menu-font-size: 48px;
     // background-color: color('adjust.tone', '16');
     display: grid;
     grid-gap: s(1);
-
-    // max-width: 800px;
-
-    // padding: s(2) s(3);
   }
 
   &__actions {
