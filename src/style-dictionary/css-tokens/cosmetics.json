@@ -13,6 +13,7 @@
     "outline-top": "0 -1px 0 1px rgba(0, 0, 0, 0.05)",
     "small": "0 8px 30px 0 rgba(0, 0, 0, 0.12)",
     "strong": "0 30px 80px rgba(0, 0, 0, 0.2)",
+    "soft": "0 0 20px rgba(0, 0, 0, 0.1)",
     "tiny": "0 5px 10px 0 rgba(0, 0, 0, 0.12)"
   },
   "tween": {

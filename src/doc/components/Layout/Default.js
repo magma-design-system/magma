@@ -29,7 +29,6 @@ import Table, { TableHeader, TableHeaderCell, TableBody, TableRow, TableCell } f
 import Usage, { UsageDo, UsageDont } from '@Gatsby/Pattern/Usage/Usage'
 
 import { defineCustomElements as deckDeckGoHighlightElement } from '@deckdeckgo/highlight-code/dist/loader'
-deckDeckGoHighlightElement()
 
 // https://www.gatsbyjs.com/plugins/gatsby-plugin-mdx/#mdxprovider
 
@@ -79,6 +78,8 @@ const shortcodes = {
 }
 
 const Layout = ({ children }) => {
+  deckDeckGoHighlightElement()
+
   return (
     <StaticQuery
       query={graphql`
@@ -126,7 +127,7 @@ const Layout = ({ children }) => {
             </Grid>
             <article className={`ds-layout__article ${isOpened ? 'ds-layout__article--is-not-scrolling' : ''}`}>
               <Grid className="ds-layout__contents">
-                <H1>{currentMenuItem.title}</H1>
+                <H1 className="ds-layout__title">{currentMenuItem.title}</H1>
                 {horizontalMenuItems && <HorizontalMenu className="ds-layout__actions" menuList={horizontalMenuItems}/>}
                 <div className="ds-layout__markdown">
                   <MDXProvider components={shortcodes}>

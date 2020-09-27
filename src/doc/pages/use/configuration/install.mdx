@@ -7,7 +7,7 @@ import data from '+Package/package.json'
 
 <List>
   <ListItem icon="statusWarning" iconClassName="color-status-error-08">
-    Per procedere con questa pagina, è necesario aver rispettato i passi della <Link href="/use/configuration/accessing-nexus">pagina di accesso a Nexus</Link>.
+    Per procedere con questa pagina, è necesario aver rispettato i passi della <Link to="/use/configuration/accessing-nexus">pagina di accesso a Nexus</Link>.
   </ListItem>
 </List>
 
@@ -29,8 +29,12 @@ npm install --save-dev @maggioli/design-system
 
 Se l'installazione è andata a buon fine, all'interno di `package.json`, nelle `devDependencies` dovrebbe trovarsi questo pacchetto node:
 
-<CodeSnippet>
-  "@maggioli/design-system": "^{data.version}"
-</CodeSnippet>
+```json
+  "@maggioli/design-system": "^0.0.2"
+```
+
+<Paragraph>
+  Attualmente stai visualizzando la versione <Code>{data.version}</Code>
+</Paragraph>
 
 [accessing-nexus]: /use/configuration/accessing-nexus

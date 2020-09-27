@@ -1,14 +1,15 @@
 import React from 'react'
 import PropTypes from 'prop-types'
 import Grid from '@Layout/Grid/Grid'
+import { Link } from 'gatsby'
 import H2 from '@Typography/H2/H2'
 import './Menu.scss'
 
 const MenuSubItem = props =>
   <div className={`ds-menu-child ${props.isSelected ? 'ds-menu-child--selected' : ''}`}>
-    <a href={props.url} className="ds-menu-child__title text-primary text-primary--h5">
+    <Link to={props.url} className="ds-menu-child__title text-primary text-primary--h5">
       {props.title}
-    </a>
+    </Link>
   </div>
 
 MenuSubItem.propTypes = {
@@ -28,7 +29,9 @@ MenuSubItem.defaultProps = {
 const MenuItem = props =>
   <Grid gutter="none" fit={true} className={`ds-menu-item ${props.isSelected ? 'ds-menu-item--selected' : ''} ${props.isOpened ? 'ds-menu-item--opened' : ''}`}>
     <div className="ds-menu-item__section">
-      <a href={props.url} className="ds-menu-item__title text-primary text-primary--h4">{props.title}</a>
+      <Link to={props.url} className="ds-menu-item__title text-primary text-primary--h4">
+        {props.title}
+      </Link>
     </div>
     <Grid gutter="none" fit={true} className="ds-menu-item__list">
       {props.children}

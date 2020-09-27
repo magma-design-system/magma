@@ -6,13 +6,10 @@
         "default": {
           "font-size": "42px",
           "font-weight": "700",
-          "line-height": "60px"
-        },
-        "tablet": {
-          "line-height": "65px"
+          "line-height": "50px"
         },
         "desktop": {
-          "line-height": "70px"
+          "line-height": "55px"
         }
       },
       "h2" : {

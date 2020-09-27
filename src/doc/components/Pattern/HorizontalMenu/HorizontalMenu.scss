@@ -4,7 +4,12 @@ $radius: s(0.25);
 
 .ds-horizontal-menu {
   background-color: color('adjust.tone');
+  margin: 0 s(-1);
   transform: translate(0, -2px);
+
+  @include media('desktop') {
+    margin: 0;
+  }
 
   &__item {
     border-radius: $radius;

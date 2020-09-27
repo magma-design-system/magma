@@ -12,10 +12,13 @@
   &::after,
   &::before {
     content: '';
-    display: none;
     flex-shrink: 0;
     height: 1px;
     width: s(1);
+
+    @include media('desktop') {
+      display: none;
+    }
   }
 
   &--outer-margin {
