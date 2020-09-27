@@ -9,9 +9,7 @@ $border-style: 2px solid;
 @mixin gain ($gain-step) {
   &--gain-#{$gain-step} {
     margin-left: s(-($gain-step));
-
-    // margin-right: s(-($gain-step));
-    margin-right: 0;
+    margin-right: s(-($gain-step));
 
     &::after,
     &::before {
@@ -63,6 +61,10 @@ $border-style: 2px solid;
   &__element {
     border-collapse: collapse;
     width: 100%;
+
+    @include media('tablet') {
+      width: auto;
+    }
   }
 
   &__cell {

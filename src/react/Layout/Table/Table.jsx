@@ -77,7 +77,7 @@ Table.propTypes = {
 
 Table.defaultProps = {
   className: '',
-  gain: 2,
+  gain: 1,
   interactive: false,
   scrollable: true,
 }

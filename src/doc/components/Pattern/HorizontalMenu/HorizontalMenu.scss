@@ -11,7 +11,19 @@ $radius: s(0.25);
     margin: 0;
   }
 
+  &__list {
+    &::after {
+      min-width: s(4);
+    }
+  }
+
   &__item {
+    align-items: center;
+    display: flex;
+    height: s(5);
+  }
+
+  &__link {
     border-radius: $radius;
 
     // @extend %bar-hidden;
@@ -20,6 +32,7 @@ $radius: s(0.25);
     display: inline-flex;
     padding: s(0.25) s(0.5) s(0.25) s(0.5);
     transition: background-color get($tween, 'hover');
+    white-space: nowrap;
 
     &:hover {
       background-color: color('adjust.tone', '15');

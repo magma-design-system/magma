@@ -43,10 +43,7 @@ $menu-font-size: 48px;
   }
 
   &__article {
-    height: 100vh;
-
-    // height: auto;
-    overflow: auto;
+    height: auto;
 
     // &--is-not-scrolling {
     //   overflow: hidden;
@@ -145,5 +142,14 @@ $menu-font-size: 48px;
       transform: translate(-100%, 0);
       transition: transform get($tween, 'hover');
     }
+  }
+
+  &__footer {
+    padding-bottom: s(3);
+  }
+
+  &__footer-logo {
+    margin-top: s(1);
+    width: 40px !important;
   }
 }

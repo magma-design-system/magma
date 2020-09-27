@@ -8,7 +8,9 @@ import Grid from '@Layout/Grid/Grid'
 import Hr from '@Gatsby/Pattern/Hr/Hr'
 
 const HorizontalMenuItem = props =>
-  <Link className={`ds-horizontal-menu__item text-primary text-primary--h5 ${props.className}`} to={props.url}>{ props.children }</Link>
+  <div className="ds-horizontal-menu__item">
+    <Link className={`ds-horizontal-menu__link text-primary text-primary--h5 ${props.className}`} to={props.url}>{ props.children }</Link>
+  </div>
 
 HorizontalMenuItem.propTypes = {
   active: PropTypes.bool,
@@ -22,7 +24,7 @@ HorizontalMenuItem.defaultProps = {
 }
 
 const HorizontalMenu = props =>
-  <Grid className={`ds-horizontal-menu ${props.className}`}>
+  <Grid gutter="none" className={`ds-horizontal-menu ${props.className}`}>
     <Hr className="ds-horizontal-menu__hr"/>
     <HorizontalScroll className="ds-horizontal-menu__list">
       {
