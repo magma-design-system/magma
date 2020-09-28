@@ -1,7 +1,7 @@
 import React from 'react'
 import faker from 'faker'
 
-import Button from '@Pattern/Button/Button'
+import Button from '@Element/Button/Button'
 import Grid from '@Layout/Grid/Grid'
 
 faker.locale = 'it'

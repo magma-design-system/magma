@@ -1,6 +1,6 @@
 import React from 'react'
 
-import FlashMessage from '@Pattern/Flash/Flash'
+import FlashMessage from '@Element/Flash/Flash'
 import Caption from '@Typography/Caption/Caption'
 import Paragraph from '@Typography/Paragraph/Paragraph'
 

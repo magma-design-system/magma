@@ -1,13 +1,13 @@
 import React from 'react'
 import faker from 'faker'
 
-import Tag from '@Pattern/Tag/Tag'
+import Tag from '@Element/Tag/Tag'
 import Paragraph from '@Typography/Paragraph/Paragraph'
 
 faker.locale = 'it'
 
 export default {
-  title: 'Pattern/Tag',
+  title: 'Element/Tag',
   component: Tag,
 }
 

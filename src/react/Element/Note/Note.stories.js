@@ -1,6 +1,6 @@
 import React from 'react'
 
-import Note from '@Pattern/Note/Note'
+import Note from '@Element/Note/Note'
 import Grid from '@Layout/Grid/Grid'
 import Caption from '@Typography/Caption/Caption'
 import H5 from '@Typography/H5/H5'

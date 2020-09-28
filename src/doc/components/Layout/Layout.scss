@@ -44,6 +44,7 @@ $menu-font-size: 48px;
 
   &__article {
     height: auto;
+    -webkit-overflow-scrolling: touch;
 
     // &--is-not-scrolling {
     //   overflow: hidden;
@@ -51,6 +52,7 @@ $menu-font-size: 48px;
 
     @include media('desktop') {
       height: 100vh;
+      overflow: auto;
 
       &--is-not-scrolling {
         overflow: auto;
