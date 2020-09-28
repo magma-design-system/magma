@@ -21,7 +21,10 @@
     "/build/fonts/**/*.ttf",
     "/build/fonts/**/*.woff",
     "/build/fonts/**/*.woff2",
+    "/build/fonts/**/*.eot",
+    "/build/fonts/**/*.svg",
     "/build/fonts/**/*.scss",
+    "/build/fonts/**/*.css",
     "/src/*.json"
   ],
   "keywords": [
