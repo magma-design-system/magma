@@ -13,11 +13,5 @@ export default {
 export const basicUsage = () =>
   <InputText label={faker.lorem.sentence()} placeholder={faker.company.catchPhrase()}/>
 
-export const noLabel = () =>
-  <InputText placeholder={faker.company.catchPhrase()}/>
-
 export const customIcon = () =>
   <InputText placeholder={faker.phone.phoneNumber()} icon="operator"/>
-
-export const testColor = () =>
-  <Fragment>ciaone</Fragment>
