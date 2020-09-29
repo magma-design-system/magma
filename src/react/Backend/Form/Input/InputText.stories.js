@@ -1,4 +1,4 @@
-import React, { Fragment } from 'react'
+import React from 'react'
 import faker from 'faker'
 
 import InputText from '@Backend/Form/Input/InputText'
