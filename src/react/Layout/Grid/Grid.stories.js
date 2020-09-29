@@ -63,3 +63,12 @@ export const with4Columns = () =>
     <Paragraph>{faker.lorem.paragraph()}</Paragraph>
     <Paragraph>{faker.lorem.paragraph()}</Paragraph>
   </Grid>
+
+export const fit = () =>
+  <Grid columns="4" fit={true}>
+    <Paragraph>{faker.lorem.paragraph()}</Paragraph>
+    <Paragraph>{faker.lorem.paragraph()}</Paragraph>
+    <Paragraph>{faker.lorem.paragraph()}</Paragraph>
+    <Paragraph>{faker.lorem.paragraph()}</Paragraph>
+    <Paragraph>{faker.lorem.paragraph()}</Paragraph>
+  </Grid>

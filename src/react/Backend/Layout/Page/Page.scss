@@ -1,0 +1,35 @@
+@import '~Sass/import-framework';
+
+.grid {
+  &--tmpl-backoffice {
+    grid-template-columns: 300px auto;
+  }
+
+  &--tmpl-backoffice-section {
+    grid-template-rows: auto 1fr;
+  }
+}
+
+.backoffice-page {
+  min-height: 100vh;
+
+  &__aside {
+    background-color: color('adjust-tone');
+  }
+
+  &__section {
+    background-color: color('adjust-tone', '20');
+    padding: 0 s(2);
+  }
+
+  &__header {
+    background-color: color('adjust-tone', '20');
+    padding: s(2);
+  }
+
+  &__content {
+    background-color: color('adjust-tone', '19');
+    border-radius: s(1) s(1) 0 0;
+    padding: s(2);
+  }
+}

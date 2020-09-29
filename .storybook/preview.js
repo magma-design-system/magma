@@ -11,6 +11,7 @@ import '../node_modules/typeface-karla/index.css'
 import '../node_modules/typeface-roboto/index.css'
 
 // design system base styles
+import './storybook.scss'
 import '../src/scss/import-global.scss'
 
 addDecorator(storyFn => <Page>{storyFn()}</Page>);

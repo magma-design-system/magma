@@ -12,13 +12,10 @@ import Icon from '@Design/Icon/Icon'
 const ColorSwatchItem = props =>
   <Grid className={`mds-color-swatch ${props.className}`}>
     <Grid gutter="none" className="mds-color-swatch__title">
-      <H2>{ props.colorBaseCode.replace('c-', '') }</H2>
-      { props.colorSeedHref &&
-        <Row gutter="xsmall" align="center">
-          <Icon name="colorSeed"/>
-          <div className="text-secondary text-secondary--caption">Go to color seed</div>
-        </Row>
-      }
+      <Row gutter="xsmall">
+        <H2>{ props.colorBaseCode.replace('c-', '') }</H2>
+        <Caption className="text-secondary text-secondary--caption">{props.colorBaseHexTest}</Caption>
+      </Row>
     </Grid>
     <Caption htmlTag="div" className="mds-color-swatch__infos">
       <AccessibilityTest base={props.colorBaseHexTest} color={props.colorTextHexTest}/>
