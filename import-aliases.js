@@ -11,6 +11,7 @@ module.exports = {
   '@Form': path.resolve(__dirname, 'src/react/Form/'),
   '@Gatsby': path.resolve(__dirname, 'src/doc/components/'),
   '@Layout': path.resolve(__dirname, 'src/react/Layout/'),
+  '@Media': path.resolve(__dirname, 'src/react/Media/'),
   '@Pattern': path.resolve(__dirname, 'src/react/Pattern/'),
   '@System': path.resolve(__dirname, 'src/react/System/'),
   '@Template': path.resolve(__dirname, 'src/react/System/Template/'),
