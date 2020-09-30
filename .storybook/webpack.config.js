@@ -27,7 +27,6 @@ module.exports = async ({ config, mode }) => {
       loader: "sass-loader",
       options: {
         sourceMap: true,
-        // data: "$app: storybook;"
       }
     }]
   })
@@ -36,10 +35,11 @@ module.exports = async ({ config, mode }) => {
       exclude: /node_modules/,
       use: ['file-loader']
     })
-    config.module.rules.push({
-      test: /\.(jpeg|png|jpg|svg)$/,
-      loader: 'file-loader?name=img/[name].[ext]',
-    })
+
+    // config.module.rules.push({
+    //   test: /\.(jpeg|png|jpg|svg)$/,
+    //   loader: 'file-loader?name=img/[name].[ext]',
+    // })
 
     config.resolve.alias = aliases
 
