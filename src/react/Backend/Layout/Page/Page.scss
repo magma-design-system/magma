@@ -8,6 +8,10 @@
   &--tmpl-backoffice-section {
     grid-template-rows: auto 1fr;
   }
+
+  &--tmpl-backoffice-aside {
+    grid-template-rows: auto 1fr;
+  }
 }
 
 .backoffice-page {
@@ -15,6 +19,7 @@
 
   &__aside {
     background-color: color('adjust-tone');
+    padding: s(2);
   }
 
   &__section {
@@ -22,7 +27,7 @@
     padding: 0 s(2);
   }
 
-  &__header {
+  &__content-header {
     background-color: color('adjust-tone', '20');
     padding: s(2);
   }
@@ -31,5 +36,29 @@
     background-color: color('adjust-tone', '19');
     border-radius: s(1) s(1) 0 0;
     padding: s(2);
+  }
+}
+
+.backoffice-page-aside-header {
+  display: flex;
+
+  &__logo {
+    max-width: 100px;
+  }
+
+  &__contents {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    margin-left: s(1);
+    padding-bottom: 12px;
+  }
+
+  &__title {
+    color: color('adjust.tone', '01');
+  }
+
+  &__sub-title {
+    color: color('adjust.tone', '08');
   }
 }
