@@ -14,4 +14,10 @@ export const basicUsage = () =>
   <InputText label={faker.lorem.sentence()} placeholder={faker.company.catchPhrase()}/>
 
 export const customIcon = () =>
-  <InputText placeholder={faker.phone.phoneNumber()} icon="operator"/>
+  <InputText label={faker.lorem.sentence()} placeholder={faker.phone.phoneNumber()} icon="operator"/>
+
+export const noPlaceholder = () =>
+  <InputText label={faker.lorem.sentence()} icon="operator"/>
+
+export const fieldFilled = () =>
+  <InputText value="Filled content" label={faker.lorem.sentence()} placeholder={faker.phone.phoneNumber()} icon="operator"/>

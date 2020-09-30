@@ -13,6 +13,7 @@ const InputText = props =>
       name={props.name}
       onChange={e => props.onChange(e.target.value)}
       placeholder={props.placeholder}
+      value={props.value}
       type="text"
     />
   </Input>
@@ -33,7 +34,7 @@ InputText.defaultProps = {
   iconClassName: '',
   name: 'unassigned',
   onChange: value => { return value },
-  placeholder: 'Testo di prova',
+  placeholder: '',
   value: '',
 }
 
