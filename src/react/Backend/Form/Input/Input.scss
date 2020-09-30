@@ -2,6 +2,7 @@
 
 $size-opened: 100px;
 $size-focused: 50px;
+$ease: get($tween, 'slide');
 
 .backoffice-input {
   display: flex;
@@ -20,9 +21,9 @@ $size-focused: 50px;
     text-overflow: ellipsis;
     transform: translate(0, -85%);
     transform-origin: 0 0;
-    transition: transform get($tween, 'slide') 0.1s, width get($tween, 'slide') 0.1s, left get($tween, 'slide') 0.1s;
+    transition: transform $ease 0.1s, width $ease 0.1s, left $ease 0.1s;
     white-space: nowrap;
-    width: calc(100% - #{s(5)});
+    width: calc(100% - #{s(2)});
   }
 
   &__icon-area {
@@ -33,14 +34,14 @@ $size-focused: 50px;
     position: absolute;
     top: 0;
     transform: translate(s(1));
-    transition: top get($tween, 'slide') 0.1s, width get($tween, 'slide') 0.1s;
+    transition: top $ease, width $ease;
     width: s(3);
   }
 
   &__icon {
     color: color('brand-maggioli', '05');
-    font-size: 48px;
-    transition: font-size get($tween, 'slide') 0.1s;
+    font-size: 40px;
+    transition: font-size $ease;
   }
 
   &__field {
@@ -53,12 +54,13 @@ $size-focused: 50px;
     padding-left: s(1);
     padding-right: s(1);
     padding-top: s(1.75);
-    transition: background-color get($tween, 'slide'), height get($tween, 'slide'), box-shadow get($tween, 'slide'), padding-top get($tween, 'slide'), padding-left get($tween, 'slide') 0.1s;
+    transition: background-color $ease, height $ease, box-shadow $ease, padding-top $ease, padding-left $ease;
     width: 100%;
 
     &:focus {
       cursor: auto;
       outline: 0;
+      transition: background-color $ease 0.2s, height $ease 0.2s, box-shadow $ease 0.2s, padding-top $ease 0.2s, padding-left $ease 0.2s;
     }
 
     &::placeholder {
@@ -110,6 +112,7 @@ $size-focused: 50px;
     .backoffice-input {
       &__label {
         left: s(4.5);
+        width: calc(100% - #{s(5.5)});
       }
 
       &__field {
@@ -131,6 +134,7 @@ $size-focused: 50px;
           &__label {
             left: s(1);
             transform: translate(0, -100%) scale(0.75);
+            width: calc(135% - #{s(3)});
           }
 
           &__field {
