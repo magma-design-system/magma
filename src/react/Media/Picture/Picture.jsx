@@ -2,8 +2,7 @@ import React from 'react'
 import PropTypes from 'prop-types'
 
 import './Picture.scss'
-import { aspectRatio } from '@Element/Image/aspectRatio'
-import Image from '@Element/Image/Image'
+import { aspectRatio } from '@Media/Image/aspectRatio'
 
 function getDefaultSrc(sources) {
   let defaultSrc = ''
@@ -23,7 +22,7 @@ const Picture = props =>
         <source key={index} media={item.media} srcSet={item.srcset} />,
       )
     }
-    <Image className={`picture__element ${props.aspectRatio ? 'picture__element--aspect-ratio' : ''}`} src={getDefaultSrc(props.sources)} loading={props.loading} alt={props.alt}/>
+    <img className="picture__image" src={getDefaultSrc(props.sources)} loading={props.loading} alt={props.alt} />
   </picture>
 
 Picture.propTypes = {

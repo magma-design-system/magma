@@ -4,7 +4,7 @@ import PropTypes from 'prop-types'
 import './Image.scss'
 import Link from '@Element/Link/Link'
 
-import { aspectRatio } from '@Element/Image/aspectRatio'
+import { aspectRatio } from '@Media/Image/aspectRatio'
 
 const ImageSource = props =>
   <figcaption className="image__source">

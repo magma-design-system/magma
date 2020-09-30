@@ -1,12 +1,12 @@
 import React from 'react'
 import faker from 'faker'
 
-import Image from '@Element/Image/Image'
+import Image from '@Media/Image/Image'
 
 faker.locale = 'it'
 
 export default {
-  title: 'Element/Image',
+  title: 'Media/Image',
   component: Image,
 }
 
