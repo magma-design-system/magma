@@ -1,18 +1,18 @@
 @import '~Sass/import-framework';
 
-$dot-size: s(1);
-$padding-size: s(0.25);
+$dot-size: s(1.25);
+$padding-size: s(0.125);
 $dot: (
-  'checked': color('adjust.tone', '15'),
-  'hover': color('adjust.tone', '15'),
+  'checked': color('adjust.tone'),
+  'hover': color('adjust.tone'),
   'radius': 100px,
-  'unchecked': color('adjust.tone', '15'),
+  'unchecked': color('adjust.tone', '20'),
 );
 $box: (
   'checked': color('brand.maggioli'),
-  'hover': color('adjust.tone', '10'),
+  'hover': color('adjust.tone', '15'),
   'radius': 100px,
-  'unchecked': color('adjust.tone', '12'),
+  'unchecked': color('adjust.tone', '17'),
 );
 
 .switch {
@@ -50,6 +50,7 @@ $box: (
 
     &:hover {
       background-color: get($box, 'hover');
+      filter: grayscale(0);
 
       .switch {
         &__dot {
@@ -62,6 +63,7 @@ $box: (
   &__dot {
     background-color: get($dot, 'unchecked');
     border-radius: get($dot, 'radius');
+    box-shadow: get($shadow, 'box');
     display: inline-block;
     height: $dot-size;
     line-height: 0;

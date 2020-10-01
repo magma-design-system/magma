@@ -5,6 +5,7 @@
   "close": "close",
   "colorSeed": "color_lens",
   "do": "done",
+  "code": "receipt",
   "dont": "block",
   "dot": "fiber_manual_record",
   "email": "email",

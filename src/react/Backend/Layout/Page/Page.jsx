@@ -13,8 +13,6 @@ import H6 from '@Typography/H6/H6'
 import Icon from '@Design/Icon/Icon'
 import Image from '@Media/Image/Image'
 
-import Menu, { MenuItem, MenuItemTitle, MenuItemAction } from '@Backend/Element/Menu/Menu'
-
 import logoMaggioli from '#Assets/logo/gruppo-maggioli.svg'
 
 const PageHeader = props =>
@@ -31,20 +29,20 @@ PageHeader.defaultProps = {
   description: '',
 }
 
-export const PageLogo = () =>
+const PageLogo = props =>
   <header className="backoffice-page-aside-header">
     <Image src={logoMaggioli} className="backoffice-page-aside-header__logo"/>
     <div className="backoffice-page-aside-header__contents">
-      <H4 className="backoffice-page-aside-header__title">Maggioli</H4>
-      <Caption className="backoffice-page-aside-header__sub-title">Data entry tool</Caption>
+      <H4 className="backoffice-page-aside-header__title">{props.children}</H4>
+      <Caption className="backoffice-page-aside-header__sub-title">DS data entry</Caption>
     </div>
   </header>
 
-export const PageFooter = () =>
+const PageFooter = props =>
   <footer className="backoffice-page-aside-footer">
     <div className="backoffice-page-aside-footer__user">
       <Icon name="user" className="backoffice-page-aside-footer__icon"/>
-      <Caption className="backoffice-page-aside-footer__email">{faker.internet.email()}</Caption>
+      <Caption className="backoffice-page-aside-footer__email">{props.email}</Caption>
     </div>
     <div className="backoffice-page-aside-footer__actions">
       <Button small={true} className="backoffice-page-aside-footer__action background-color-adjust-tone-06">Gestisci</Button>
@@ -52,18 +50,22 @@ export const PageFooter = () =>
     </div>
   </footer>
 
+PageFooter.propTypes = {
+  email: PropTypes.string,
+}
+
+PageFooter.defaultProps = {
+  email: faker.internet.email(),
+}
+
 const Page = props =>
   <Grid className="backoffice-page" gutter="none" template="backoffice">
     <Grid htmlTag="aside" className="backoffice-page__aside" template="backoffice-aside">
-      <PageLogo className="backoffice-page__logo"/>
-      <Menu>
-        <MenuItem>
-          <MenuItemTitle icon="book">Libri</MenuItemTitle>
-          <MenuItemAction icon="list" to="/edit">Gestisci</MenuItemAction>
-          <MenuItemAction active={true} icon="add" to="/new">Aggiungi</MenuItemAction>
-        </MenuItem>
-      </Menu>
-      <PageFooter/>
+      <PageLogo className="backoffice-page__logo">
+        {props.title}
+      </PageLogo>
+      {props.menu}
+      {props.footer}
     </Grid>
     <Grid className="backoffice-page__section" gutter="none" template="backoffice-section">
       { props.header }
@@ -74,15 +76,18 @@ const Page = props =>
   </Grid>
 
 Page.propTypes = {
-  aside: PropTypes.any,
   header: PropTypes.any,
+  menu: PropTypes.any,
+  footer: PropTypes.any,
+  title: PropTypes.string,
 }
 
 Page.defaultProps = {
-  aside: '',
+  title: 'Maggioli',
 }
 
 export default Page
 export {
   PageHeader,
+  PageFooter,
 }

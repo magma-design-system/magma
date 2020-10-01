@@ -38,7 +38,8 @@ $ease: get($tween, 'slide');
 
   &--active {
     background-color: color('adjust.tone', '20');
-    margin-right: s(-4);
+    border-radius: s(0.25) 0 0 s(0.25);
+    margin-right: s(-2);
     pointer-events: none;
   }
 

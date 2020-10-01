@@ -1,0 +1,11 @@
+@import '~Sass/import-framework';
+
+.backend-button {
+  align-items: flex-end;
+  display: flex;
+  padding-bottom: s(0.25);
+
+  &__item {
+    width: 100%;
+  }
+}
