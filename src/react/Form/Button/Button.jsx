@@ -1,9 +1,11 @@
+import React from 'react'
 import PropTypes from 'prop-types'
 import './Button.scss'
 import Icon from '@Design/Icon/Icon'
 import faker from 'faker'
 
 const Button = props => {
+
   const HtmlTag = props.htmlTag.toLowerCase()
 
   return (
