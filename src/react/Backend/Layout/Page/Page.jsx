@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useState } from 'react'
 import PropTypes from 'prop-types'
 import faker from 'faker'
 
@@ -26,7 +26,7 @@ PageHeader.propTypes = {
 }
 
 PageHeader.defaultProps = {
-  description: '',
+  description: 'Entità',
 }
 
 const PageLogo = props =>
@@ -45,8 +45,8 @@ const PageFooter = props =>
       <Caption className="backoffice-page-aside-footer__email">{props.email}</Caption>
     </div>
     <div className="backoffice-page-aside-footer__actions">
-      <Button small={true} className="backoffice-page-aside-footer__action background-color-adjust-tone-06">Gestisci</Button>
-      <Button small={true} className="backoffice-page-aside-footer__action background-color-brand-maggioli-06">Esci</Button>
+      <Button small={true} className="backoffice-page-aside-footer__action background-color-adjust-tone-12">Gestisci</Button>
+      <Button small={true} className="backoffice-page-aside-footer__action background-color-status-error-12">Esci</Button>
     </div>
   </footer>
 
@@ -58,22 +58,30 @@ PageFooter.defaultProps = {
   email: faker.internet.email(),
 }
 
-const Page = props =>
-  <Grid className="backoffice-page" gutter="none" template="backoffice">
-    <Grid htmlTag="aside" className="backoffice-page__aside" template="backoffice-aside">
-      <PageLogo className="backoffice-page__logo">
-        {props.title}
-      </PageLogo>
-      {props.menu}
-      {props.footer}
-    </Grid>
-    <Grid className="backoffice-page__section" gutter="none" template="backoffice-section">
-      { props.header }
-      <div className="backoffice-page__content">
-        {props.children}
+
+const Page = props => {
+  const [isOpened, setMenu] = useState(false)
+  return (
+    <Grid className={`backoffice-page ${isOpened ? 'backoffice-page--menu-opened' : ''}`} gutter="none" template="backoffice">
+      <div className="backoffice-page__close" onClick={() => setMenu(!isOpened)}>
+        <Icon name={isOpened ? 'close' : 'menu'}/>
       </div>
+      <Grid htmlTag="aside" className="backoffice-page__aside" template="backoffice-aside">
+        <PageLogo className="backoffice-page__logo">
+          {props.title}
+        </PageLogo>
+        {props.menu}
+        {props.footer}
+      </Grid>
+      <Grid className="backoffice-page__section" gutter="none" template="backoffice-section">
+        { props.header }
+        <div className="backoffice-page__content">
+          {props.children}
+        </div>
+      </Grid>
     </Grid>
-  </Grid>
+  )
+}
 
 Page.propTypes = {
   header: PropTypes.any,

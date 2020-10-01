@@ -4,7 +4,7 @@ $grid-width: 300px;
 
 .grid {
   &--tmpl-backoffice {
-    grid-template-columns: 300px auto;
+    grid-template-columns: $grid-width auto;
   }
 
   &--tmpl-backoffice-section {
@@ -14,37 +14,94 @@ $grid-width: 300px;
   &--tmpl-backoffice-aside {
     grid-template-rows: auto 1fr;
   }
+
+  &--tmpl-form {
+    grid-template-columns: repeat(auto-fill, minmax(min-content, 3fr));
+  }
 }
 
 .backoffice-page {
   min-height: 100vh;
 
   &__aside {
-    background-color: color('adjust-tone');
+
+    $ease: get($tween, 'slide');
+
+    background-color: color('adjust.tone');
+    box-shadow: 0 0 0 100vw transparent, get($shadow, 'box');
     min-height: 100vh;
     padding: s(2);
     padding-bottom: 0;
+    position: fixed;
+    transform: translate(-100%, 0);
+    transition: box-shadow $ease, transform $ease;
+    width: calc(100vw - #{s(4)});
+    z-index: 1;
 
     @include media('desktop') {
+      box-shadow: none;
       height: 100vh;
       overflow: auto;
+      position: static;
+      transform: translate(0, 0);
+      width: auto;
     }
   }
 
   &__section {
-    background-color: color('adjust-tone', '20');
+    background-color: color('adjust.tone', '20');
+    grid-column: -1 / 1;
     padding: 0 s(2);
+
+    @include media('desktop') {
+      grid-column: auto;
+    }
   }
 
   &__content-header {
-    background-color: color('adjust-tone', '20');
+    background-color: color('adjust.tone', '20');
     padding: s(2);
   }
 
   &__content {
-    background-color: color('adjust-tone', '19');
+    background-color: color('adjust.tone', '19');
     border-radius: s(1) s(1) 0 0;
     padding: s(2);
+  }
+
+  &__close {
+
+    $size: s(2);
+
+    align-items: center;
+    background-color: color('adjust.tone');
+    border-radius: $size;
+    box-shadow: get($shadow, 'box');
+    display: flex;
+    height: $size;
+    justify-content: center;
+    position: fixed;
+    right: s(1);
+    top: s(1);
+    width: $size;
+    z-index: 2;
+
+    @include media('desktop') {
+      display: none;
+    }
+  }
+
+  &--menu-opened {
+    .backoffice-page {
+      &__aside {
+        box-shadow: 0 0 0 100vw color('adjust.tone', '01', 0.4), get($shadow, 'box');
+        transform: translate(0, 0);
+
+        @include media('desktop') {
+          box-shadow: none;
+        }
+      }
+    }
   }
 }
 

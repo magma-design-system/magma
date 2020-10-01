@@ -8,7 +8,7 @@ $ease: get($tween, 'slide');
   }
 
   &__item {
-    grid-gap: 2px;
+    grid-gap: 2px !important;
   }
 }
 
@@ -17,15 +17,24 @@ $ease: get($tween, 'slide');
   border-radius: s(0.25);
   color: color('adjust.tone', '04');
   display: flex;
-  padding: s(0.25) s(0.25);
+  padding: s(0.5);
   padding-left: 0;
   transition: background-color $ease, padding-left $ease;
+
+  @include media('desktop') {
+    padding: s(0.25);
+    padding-left: 0;
+  }
 
   &--active,
   &:hover {
     background-color: color('brand.maggioli', '20');
     cursor: pointer;
-    padding-left: s(0.25);
+    padding-left: s(0.5);
+
+    @include media('desktop') {
+      padding-left: s(0.25);
+    }
 
     .backend-menu-action {
       &__icon {
@@ -47,8 +56,12 @@ $ease: get($tween, 'slide');
     color: color('brand.maggioli');
     margin-right: -24px;
     opacity: 0;
-    transform: translate(s(-0.25), 0);
+    transform: translate(s(-0.5), 0);
     transition: margin-right $ease, opacity $ease, transform $ease 0.1s;
+
+    @include media('desktop') {
+      transform: translate(s(-0.25), 0);
+    }
   }
 
   &__text {

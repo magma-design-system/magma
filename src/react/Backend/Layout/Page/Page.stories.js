@@ -13,7 +13,6 @@ faker.locale = 'it'
 export default {
   title: 'Backend/Layout/Page',
   component: Page,
-  decorators: [Story => <Story/>],
 }
 
 export const basicUsage = () =>
@@ -46,7 +45,7 @@ export const basicUsage = () =>
     footer={
       <PageFooter email="pippo@gmail.com"/>
     }>
-    <Grid columns="3">
+    <Grid columns="2">
       <InputText label="Titolo mega lungo da paura" placeholder="Ciaone" icon="shipping" />
       <InputText label="Descrizione" icon="uploadPhoto" filled={true} />
       <InputText label="Descrizione" filled={true} />
