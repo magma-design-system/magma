@@ -6,13 +6,13 @@ import Icon from '@Design/Icon/Icon'
 import faker from 'faker'
 
 const Button = props => {
-  const state = useContext(ThemeContext)
-  const themeName = state.name !== undefined ? `button--${state.name}` : ''
+  //const state = useContext(ThemeContext)
+  //const themeName = state.name !== undefined ? `button--${state.name}` : ''
   const HtmlTag = props.htmlTag.toLowerCase()
 
   return (
     <HtmlTag
-      className={`button ${props.className} ${props.variant ? 'button--' + props.variant : ''} ${props.small ? 'button--small' : ''} ${props.round ? 'button--round' : ''} ${themeName} ${props.disabled ? 'button--disabled' : ''} ${props.outline ? 'button--outline' : ''}`.trim()}
+      className={`button ${props.className} ${props.variant ? 'button--' + props.variant : ''} ${props.small ? 'button--small' : ''} ${props.round ? 'button--round' : ''} ${props.disabled ? 'button--disabled' : ''} ${props.outline ? 'button--outline' : ''}`.trim()}
       onClick={() => props.onClick()}
       disabled={props.disabled ? 'disabled' : ''}>
       {props.icon && <Icon className='button__icon' name={props.icon}/>}

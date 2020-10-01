@@ -9,11 +9,9 @@ const InputText = props =>
       autoComplete={props.autoComplete}
       className="backoffice-input__field text-sans text-sans--input"
       defaultValue={props.value}
-      iconClassName={props.iconClassName}
       name={props.name}
-      onChange={e => props.onChange(e.target.value)}
+      onChange={props.onChange}
       placeholder={props.placeholder}
-      value={props.value}
       type="text"
     />
   </Input>
@@ -25,7 +23,6 @@ InputText.propTypes = {
   name: PropTypes.string,
   onChange: PropTypes.func,
   placeholder: PropTypes.string,
-  value: PropTypes.string,
 }
 
 InputText.defaultProps = {
@@ -33,9 +30,8 @@ InputText.defaultProps = {
   icon: '',
   iconClassName: '',
   name: 'unassigned',
-  onChange: value => { return value },
+  onChange: () => {},
   placeholder: '',
-  value: '',
 }
 
 export default InputText

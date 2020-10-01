@@ -28,7 +28,7 @@ PageHeader.propTypes = {
 }
 
 PageHeader.defaultProps = {
-  description: 'Crea un nuovo record per questo modello tramite il form sottostante',
+  description: '',
 }
 
 const PageLogo = () =>

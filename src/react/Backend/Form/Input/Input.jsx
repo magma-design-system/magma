@@ -29,7 +29,7 @@ const Input = props =>
 
 Input.propTypes = {
   className: PropTypes.string,
-  errors: PropTypes.obj,
+  errors: PropTypes.any,
   icon: PropTypes.string,
   iconClassName: PropTypes.string,
   label: PropTypes.string,
