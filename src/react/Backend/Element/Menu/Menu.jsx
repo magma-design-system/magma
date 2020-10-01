@@ -30,7 +30,7 @@ const MenuItem = props =>
   </Grid>
 
 const MenuItemAction = props =>
-  <a className={`backend-menu-action ${props.active ? 'backend-menu-action--active' : ''}`} href="#">
+  <a onClick={props.onClick} className={`backend-menu-action ${props.active ? 'backend-menu-action--active' : ''}`}>
     <Icon name={props.icon} className="backend-menu-action__icon"/>
     <Paragraph className="backend-menu-action__text">
       {props.children}
@@ -40,11 +40,13 @@ const MenuItemAction = props =>
 MenuItemAction.propTypes = {
   active: PropTypes.bool,
   icon: PropTypes.string,
+  onClick: PropTypes.func,
 }
 
 MenuItemAction.defaultProps = {
   active: false,
   icon: 'save',
+  onClick: () => {},
 }
 
 const Menu = props =>
