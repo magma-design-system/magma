@@ -24,8 +24,8 @@ $ease: get($tween, 'slide');
   &--active,
   &:hover {
     background-color: color('brand.maggioli', '20');
-    padding-left: s(0.25);
     cursor: pointer;
+    padding-left: s(0.25);
 
     .backend-menu-action {
       &__icon {
