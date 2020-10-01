@@ -58,7 +58,6 @@ PageFooter.defaultProps = {
   email: faker.internet.email(),
 }
 
-
 const Page = props => {
   const [isOpened, setMenu] = useState(false)
   return (
