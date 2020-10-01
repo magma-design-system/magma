@@ -28,7 +28,7 @@ $grid-width: 300px;
     $ease: get($tween, 'slide');
 
     background-color: color('adjust.tone');
-    box-shadow: 0 0 0 100vw transparent, get($shadow, 'box');
+    box-shadow: 0 0 0 100vw transparent, 0 0 0 transparent;
     min-height: 100vh;
     padding: s(2);
     padding-bottom: 0;
@@ -51,10 +51,11 @@ $grid-width: 300px;
   &__section {
     background-color: color('adjust.tone', '20');
     grid-column: -1 / 1;
-    padding: 0 s(2);
+    padding: 0 s(1);
 
     @include media('desktop') {
       grid-column: auto;
+      padding: 0 s(2);
     }
   }
 
@@ -66,12 +67,16 @@ $grid-width: 300px;
   &__content {
     background-color: color('adjust.tone', '19');
     border-radius: s(1) s(1) 0 0;
-    padding: s(2);
+    padding: s(1);
+
+    @include media('desktop') {
+      padding: s(2);
+    }
   }
 
   &__close {
 
-    $size: s(2);
+    $size: s(2.5);
 
     align-items: center;
     background-color: color('adjust.tone');
@@ -83,6 +88,7 @@ $grid-width: 300px;
     position: fixed;
     right: s(1);
     top: s(1);
+    transition: height get($tween, 'slide'), width get($tween, 'slide');
     width: $size;
     z-index: 2;
 
@@ -93,6 +99,14 @@ $grid-width: 300px;
 
   &--menu-opened {
     .backoffice-page {
+      &__close {
+
+        $size: s(2);
+
+        height: $size;
+        width: $size;
+      }
+
       &__aside {
         box-shadow: 0 0 0 100vw color('adjust.tone', '01', 0.4), get($shadow, 'box');
         transform: translate(0, 0);
