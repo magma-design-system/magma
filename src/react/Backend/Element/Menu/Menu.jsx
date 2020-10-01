@@ -8,7 +8,7 @@ import Row from '@Layout/Row/Row'
 import Grid from '@Layout/Grid/Grid'
 import Icon from '@Design/Icon/Icon'
 
-const MenuEntityTitle = props =>
+const MenuItemTitle = props =>
   <Row align="top">
     <div className="text-primary text-primary--h4">
       <Icon name={props.icon} className="backend-menu__icon"/>
@@ -16,20 +16,20 @@ const MenuEntityTitle = props =>
     <H4>{props.children}</H4>
   </Row>
 
-MenuEntityTitle.propTypes = {
+MenuItemTitle.propTypes = {
   icon: PropTypes.string,
 }
 
-MenuEntityTitle.defaultProps = {
+MenuItemTitle.defaultProps = {
   icon: 'save',
 }
 
-const MenuEntity = props =>
+const MenuItem = props =>
   <Grid className="backend-menu__item" fit={true} gutter="none">
     {props.children}
   </Grid>
 
-const MenuEntityAction = props =>
+const MenuItemAction = props =>
   <a className={`backend-menu-action ${props.active ? 'backend-menu-action--active' : ''}`} href="#">
     <Icon name={props.icon} className="backend-menu-action__icon"/>
     <Paragraph className="backend-menu-action__text">
@@ -37,23 +37,25 @@ const MenuEntityAction = props =>
     </Paragraph>
   </a>
 
-MenuEntityAction.propTypes = {
+MenuItemAction.propTypes = {
   active: PropTypes.bool,
   icon: PropTypes.string,
 }
 
-MenuEntityAction.defaultProps = {
+MenuItemAction.defaultProps = {
   active: false,
   icon: 'save',
 }
 
 const Menu = props =>
   <Grid className="backend-menu">
-    <MenuEntity>
-      <MenuEntityTitle icon="book">Libri</MenuEntityTitle>
-      <MenuEntityAction icon="list" to="/edit">Gestisci</MenuEntityAction>
-      <MenuEntityAction active={true} icon="add" to="/new">Aggiungi</MenuEntityAction>
-    </MenuEntity>
+    { props.children }
   </Grid>
 
 export default Menu
+
+export {
+  MenuItem,
+  MenuItemAction,
+  MenuItemTitle,
+}

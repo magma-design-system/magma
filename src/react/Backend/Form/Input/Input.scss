@@ -103,7 +103,7 @@ $ease: get($tween, 'slide');
     .backoffice-input {
       &__field {
         background-color: color('adjust.tone');
-        box-shadow: get($shadow, 'box');
+        box-shadow: get($shadow, 'tiny');
       }
     }
   }
