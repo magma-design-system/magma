@@ -1,13 +1,9 @@
-import React, { useContext } from 'react'
 import PropTypes from 'prop-types'
 import './Button.scss'
-import { ThemeContext } from '@Design/Theme/ThemeProvider'
 import Icon from '@Design/Icon/Icon'
 import faker from 'faker'
 
 const Button = props => {
-  //const state = useContext(ThemeContext)
-  //const themeName = state.name !== undefined ? `button--${state.name}` : ''
   const HtmlTag = props.htmlTag.toLowerCase()
 
   return (

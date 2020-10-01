@@ -23,6 +23,7 @@ InputText.propTypes = {
   name: PropTypes.string,
   onChange: PropTypes.func,
   placeholder: PropTypes.string,
+  value: PropTypes.string,
 }
 
 InputText.defaultProps = {
@@ -32,6 +33,7 @@ InputText.defaultProps = {
   name: 'unassigned',
   onChange: () => {},
   placeholder: '',
+  value: 'default',
 }
 
 export default InputText
