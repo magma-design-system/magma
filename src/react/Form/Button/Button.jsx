@@ -5,7 +5,6 @@ import Icon from '@Design/Icon/Icon'
 import faker from 'faker'
 
 const Button = props => {
-
   const HtmlTag = props.htmlTag.toLowerCase()
 
   return (
