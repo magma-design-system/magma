@@ -31,7 +31,7 @@ PageHeader.defaultProps = {
   description: '',
 }
 
-const PageLogo = () =>
+export const PageLogo = () =>
   <header className="backoffice-page-aside-header">
     <Image src={logoMaggioli} className="backoffice-page-aside-header__logo"/>
     <div className="backoffice-page-aside-header__contents">
@@ -40,7 +40,7 @@ const PageLogo = () =>
     </div>
   </header>
 
-const PageFooter = () =>
+export const PageFooter = () =>
   <footer className="backoffice-page-aside-footer">
     <div className="backoffice-page-aside-footer__user">
       <Icon name="user" className="backoffice-page-aside-footer__icon"/>
