@@ -32,8 +32,8 @@ InputText.defaultProps = {
   iconClassName: '',
   name: 'unassigned',
   onChange: () => {},
-  placeholder: '',
-  value: 'default',
+  placeholder: 'Default',
+  value: '',
 }
 
 export default InputText
