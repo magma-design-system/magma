@@ -51,10 +51,12 @@ $grid-width: 300px;
   &__section {
     background-color: color('adjust.tone', '20');
     grid-column: -1 / 1;
+    max-width: 100vw;
     padding: 0 s(1);
 
     @include media('desktop') {
       grid-column: auto;
+      max-width: calc(100vw - #{$grid-width});
       padding: 0 s(2);
     }
   }
