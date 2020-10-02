@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useState } from 'react'
 import PropTypes from 'prop-types'
 import faker from 'faker'
 
@@ -65,7 +65,7 @@ PageFooter.defaultProps = {
 const Page = props => {
   return (
     <Grid className={`backoffice-page ${props.isOpened ? 'backoffice-page--menu-opened' : ''}`} gutter="none" template="backoffice">
-      <div className="backoffice-page__close" onClick={() => !props.isOpened}>
+      <div className="backoffice-page__close" onClick={props.onClick}>
         <Icon name={props.isOpened ? 'close' : 'menu'}/>
       </div>
       <Grid htmlTag="aside" className="backoffice-page__aside" template="backoffice-aside">
@@ -89,12 +89,14 @@ Page.propTypes = {
   header: PropTypes.any,
   isOpened: PropTypes.bool,
   menu: PropTypes.any,
+  onClick: PropTypes.func,
   footer: PropTypes.any,
   title: PropTypes.string,
 }
 
 Page.defaultProps = {
   isOpened: false,
+  onClick: () => {},
   title: 'Maggioli',
 }
 
