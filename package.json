@@ -1,6 +1,6 @@
 {
   "name": "@maggioli/design-system",
-  "version": "0.0.5",
+  "version": "0.0.6",
   "description": "Maggioli Design system",
   "scripts": {
     "build": "run-p 'build:!(storybook)'",
@@ -36,8 +36,9 @@
   ],
   "main": "index.js",
   "files": [
-    "/src/scss/**/*",
     "/src/assets/**/*",
+    "/src/react/**/*",
+    "/src/scss/**/*",
     "/src/style-dictionary/build/**/*"
   ],
   "publishConfig": {
