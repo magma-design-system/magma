@@ -39,8 +39,38 @@ export const basicUsage = () =>
     </TableBody>
   </Table>
 
-export const interactive = () =>
+export const tableInteractive = () =>
   <Table interactive={true}>
+    <TableHeader>
+      <TableHeaderCell>{faker.database.column()}</TableHeaderCell>
+      <TableHeaderCell>{faker.database.column()}</TableHeaderCell>
+      <TableHeaderCell>{faker.database.column()}</TableHeaderCell>
+      <TableHeaderCell>{faker.database.column()}</TableHeaderCell>
+    </TableHeader>
+    <TableBody>
+      <TableRow>
+        <TableCell><b>{faker.name.findName()}</b></TableCell>
+        <TableCell><code>{faker.internet.email()}</code></TableCell>
+        <TableCell>{faker.phone.phoneNumber()}</TableCell>
+        <TableCell>{faker.company.companyName()}</TableCell>
+      </TableRow>
+      <TableRow>
+        <TableCell><b>{faker.name.findName()}</b></TableCell>
+        <TableCell><code>{faker.internet.email()}</code></TableCell>
+        <TableCell>{faker.phone.phoneNumber()}</TableCell>
+        <TableCell>{faker.company.companyName()}</TableCell>
+      </TableRow>
+      <TableRow>
+        <TableCell><b>{faker.name.findName()}</b></TableCell>
+        <TableCell><code>{faker.internet.email()}</code></TableCell>
+        <TableCell>{faker.phone.phoneNumber()}</TableCell>
+        <TableCell>{faker.company.companyName()}</TableCell>
+      </TableRow>
+    </TableBody>
+  </Table>
+
+export const themeAlternate = () =>
+  <Table theme="alternate">
     <TableHeader>
       <TableHeaderCell>{faker.database.column()}</TableHeaderCell>
       <TableHeaderCell>{faker.database.column()}</TableHeaderCell>

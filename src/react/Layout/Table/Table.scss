@@ -1,76 +1,79 @@
 @import '~Sass/import-framework';
 
-$cell-background-color: color('adjust.tone', '15');
-$cell-border: color('adjust.tone', '14');
-$cell-border-first: color('adjust.tone', '11');
-$cell-border-hover: color('adjust.tone', '13');
-$border-style: 2px solid;
+$cell-background-color: color('adjust.tone', '19');
+$cell-border: color('adjust.tone', '19');
+$cell-border-first: color('adjust.tone', '17');
+$cell-border-hover: color('adjust.tone', '19');
+$border-size: 2px;
+$border-style: $border-size solid;
 
-@mixin gain ($gain-step) {
-  &--gain-#{$gain-step} {
-    margin-left: s(-($gain-step));
-    margin-right: s(-($gain-step));
-
-    &::after,
+@mixin cell-outer-border-visible ($important: '') {
+  &:first-child {
     &::before {
-      min-width: s($gain-step);
+      background-color: $cell-background-color #{$important};
+      transform: translate(-100%, 0) #{$important};
     }
+  }
 
-    .table {
-      &__cell {
-        padding-left: s($gain-step);
-        padding-right: s($gain-step);
-      }
+  &:last-child {
+    &::before {
+      background-color: $cell-background-color #{$important};
+      transform: translate(100%, 0) #{$important};
     }
   }
 }
 
 .table {
-  border-bottom: 2px dashed color('adjust.tone', '07');
-  border-top: 2px dashed color('adjust.tone', '07');
+  background-color: color('adjust.tone');
+  border-radius: s(0.5);
   display: flex;
-  margin-left: s(-1);
-  margin-right: s(-1);
-  overflow: auto;
 
   // sass-lint:disable no-vendor-prefixes
   -webkit-overflow-scrolling: touch;
+  overflow-x: auto;
   padding-bottom: s(2);
   padding-top: s(1);
-
-  @include media ('desktop') {
-    border-bottom-color: transparent;
-    border-top-color: transparent;
-    overflow: hidden;
-  }
 
   &::after,
   &::before {
     content: '';
-    min-width: s(1);
-  }
-
-  @include gain(1);
-  @include gain(2);
-  @include gain(3);
-
-  &--no-scroll {
-    overflow: visible;
+    min-width: s(2);
   }
 
   &__element {
     border-collapse: collapse;
-    width: 100%;
-
-    @include media('tablet') {
-      width: auto;
-    }
+    flex-grow: 1;
   }
 
   &__cell {
     border-top: $border-style $cell-border;
     padding: s(0.5) s(1);
+    position: relative;
     white-space: nowrap;
+
+    &:first-child {
+      &::before {
+
+        @extend %outer-border;
+
+        border-radius: s(0.25) 0 0 s(0.25);
+        left: 0;
+        transform: translate(0, 0);
+      }
+    }
+
+    &:last-child {
+      position: relative;
+
+      &::before {
+
+        @extend %outer-border;
+
+        border-radius: 0 s(0.25) s(0.25) 0;
+        right: 0;
+        transform: translate(0, 0);
+      }
+    }
 
     &--header {
       border: 0;
@@ -92,6 +95,8 @@ $border-style: 2px solid;
                 &__cell {
 
                   --background-color: #{$cell-background-color};
+
+                  @include cell-outer-border-visible;
 
                   background-color: var(--background-color);
                 }
@@ -136,5 +141,83 @@ $border-style: 2px solid;
   &__content {
     align-items: center;
     display: flex;
+  }
+
+  &--theme-alternate {
+    .table {
+      &__body {
+        .table {
+          &__row {
+            &:nth-child( odd ) {
+              .table {
+                &__cell {
+
+                  @include cell-outer-border-visible;
+
+                  background-color: $cell-background-color;
+                }
+              }
+            }
+          }
+        }
+
+        &:hover {
+          .table {
+            &__row {
+              &:nth-child( odd ) {
+                .table {
+                  &__cell {
+
+                    @extend %cell-outer-border-invisible;
+
+                    background-color: transparent;
+                  }
+                }
+              }
+
+              &:hover {
+                .table {
+                  &__cell {
+
+                    @include cell-outer-border-visible (!important);
+
+                    background-color: $cell-background-color !important;
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}
+
+%outer-border {
+  &::before {
+    background-color: transparent;
+    content: '';
+    height: calc(100% + #{s(2, $border-size)});
+    min-width: s(1);
+    position: absolute;
+    top: s(-1, $border-size);
+    transform: translate(0, 0);
+    transition: transform get($tween, 'slide'), right get($tween, 'slide');
+  }
+}
+
+%cell-outer-border-invisible {
+  &:first-child {
+    &::before {
+      background-color: transparent;
+      transform: translate(0, 0);
+    }
+  }
+
+  &:last-child {
+    &::before {
+      background-color: transparent;
+      transform: translate(0, 0);
+    }
   }
 }

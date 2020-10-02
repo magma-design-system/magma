@@ -4,7 +4,6 @@ import faker from 'faker'
 import Menu, { MenuItem, MenuItemTitle, MenuItemAction } from '@Backend/Element/Menu/Menu'
 import Page, { PageHeader, PageFooter } from '@Backend/Layout/Page/Page'
 import Table, { TableHeader, TableHeaderCell, TableBody, TableRow, TableCell } from '@Layout/Table/Table'
-import TableAlternate, { TableAltHeader, TableAltHeaderCell, TableAltBody, TableAltRow, TableAltCell } from '@Layout/TableAlternate/TableAlternate'
 import InputText from '@Backend/Form/Input/InputText'
 import Switch from '@Backend/Form/Switch/Switch'
 import Button from '@Backend/Form/Button/Button'
@@ -99,10 +98,6 @@ export const table = () =>
         <TableHeaderCell>{faker.database.column()}</TableHeaderCell>
         <TableHeaderCell>{faker.database.column()}</TableHeaderCell>
         <TableHeaderCell>{faker.database.column()}</TableHeaderCell>
-        <TableHeaderCell>{faker.database.column()}</TableHeaderCell>
-        <TableHeaderCell>{faker.database.column()}</TableHeaderCell>
-        <TableHeaderCell>{faker.database.column()}</TableHeaderCell>
-        <TableHeaderCell>{faker.database.column()}</TableHeaderCell>
       </TableHeader>
       <TableBody>
         <TableRow>
@@ -110,79 +105,20 @@ export const table = () =>
           <TableCell><code>{faker.internet.email()}</code></TableCell>
           <TableCell>{faker.phone.phoneNumber()}</TableCell>
           <TableCell>{faker.company.companyName()}</TableCell>
-          <TableCell>{faker.company.companyName()}</TableCell>
-          <TableCell>{faker.company.companyName()}</TableCell>
-          <TableCell>{faker.company.companyName()}</TableCell>
-          <TableCell>{faker.company.companyName()}</TableCell>
         </TableRow>
         <TableRow>
           <TableCell><b>{faker.name.findName()}</b></TableCell>
           <TableCell><code>{faker.internet.email()}</code></TableCell>
           <TableCell>{faker.phone.phoneNumber()}</TableCell>
           <TableCell>{faker.company.companyName()}</TableCell>
-          <TableCell>{faker.company.companyName()}</TableCell>
-          <TableCell>{faker.company.companyName()}</TableCell>
-          <TableCell>{faker.company.companyName()}</TableCell>
-          <TableCell>{faker.company.companyName()}</TableCell>
         </TableRow>
         <TableRow>
           <TableCell><b>{faker.name.findName()}</b></TableCell>
           <TableCell><code>{faker.internet.email()}</code></TableCell>
           <TableCell>{faker.phone.phoneNumber()}</TableCell>
-          <TableCell>{faker.company.companyName()}</TableCell>
-          <TableCell>{faker.company.companyName()}</TableCell>
-          <TableCell>{faker.company.companyName()}</TableCell>
-          <TableCell>{faker.company.companyName()}</TableCell>
           <TableCell>{faker.company.companyName()}</TableCell>
         </TableRow>
       </TableBody>
     </Table>
   </PageTemplate>
 
-export const tableAlternate = () =>
-  <PageTemplate>
-    <TableAlternate>
-      <TableAltHeader>
-        <TableAltHeaderCell>{faker.database.column()}</TableAltHeaderCell>
-        <TableAltHeaderCell>{faker.database.column()}</TableAltHeaderCell>
-        <TableAltHeaderCell>{faker.database.column()}</TableAltHeaderCell>
-        <TableAltHeaderCell>{faker.database.column()}</TableAltHeaderCell>
-        <TableAltHeaderCell>{faker.database.column()}</TableAltHeaderCell>
-        <TableAltHeaderCell>{faker.database.column()}</TableAltHeaderCell>
-        <TableAltHeaderCell>{faker.database.column()}</TableAltHeaderCell>
-        <TableAltHeaderCell>{faker.database.column()}</TableAltHeaderCell>
-      </TableAltHeader>
-      <TableAltBody>
-        <TableAltRow>
-          <TableAltCell><b>{faker.name.findName()}</b></TableAltCell>
-          <TableAltCell><code>{faker.internet.email()}</code></TableAltCell>
-          <TableAltCell>{faker.phone.phoneNumber()}</TableAltCell>
-          <TableAltCell>{faker.company.companyName()}</TableAltCell>
-          <TableAltCell>{faker.company.companyName()}</TableAltCell>
-          <TableAltCell>{faker.company.companyName()}</TableAltCell>
-          <TableAltCell>{faker.company.companyName()}</TableAltCell>
-          <TableAltCell>{faker.company.companyName()}</TableAltCell>
-        </TableAltRow>
-        <TableAltRow>
-          <TableAltCell><b>{faker.name.findName()}</b></TableAltCell>
-          <TableAltCell><code>{faker.internet.email()}</code></TableAltCell>
-          <TableAltCell>{faker.phone.phoneNumber()}</TableAltCell>
-          <TableAltCell>{faker.company.companyName()}</TableAltCell>
-          <TableAltCell>{faker.company.companyName()}</TableAltCell>
-          <TableAltCell>{faker.company.companyName()}</TableAltCell>
-          <TableAltCell>{faker.company.companyName()}</TableAltCell>
-          <TableAltCell>{faker.company.companyName()}</TableAltCell>
-        </TableAltRow>
-        <TableAltRow>
-          <TableAltCell><b>{faker.name.findName()}</b></TableAltCell>
-          <TableAltCell><code>{faker.internet.email()}</code></TableAltCell>
-          <TableAltCell>{faker.phone.phoneNumber()}</TableAltCell>
-          <TableAltCell>{faker.company.companyName()}</TableAltCell>
-          <TableAltCell>{faker.company.companyName()}</TableAltCell>
-          <TableAltCell>{faker.company.companyName()}</TableAltCell>
-          <TableAltCell>{faker.company.companyName()}</TableAltCell>
-          <TableAltCell>{faker.company.companyName()}</TableAltCell>
-        </TableAltRow>
-      </TableAltBody>
-    </TableAlternate>
-  </PageTemplate>
