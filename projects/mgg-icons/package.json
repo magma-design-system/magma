@@ -14,7 +14,8 @@
     "url": "https://git.maggioli.it/ricerca-sviluppo-new-media/design-system/-/issues"
   },
   "scripts": {
-    "build": "font-icons src/mgg-icons.json",
+    "clean": "rm -rf build || true",
+    "build": "npm run clean && font-icons src/mgg-icons.json",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "files": [
