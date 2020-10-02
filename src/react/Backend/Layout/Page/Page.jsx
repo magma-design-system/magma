@@ -75,12 +75,12 @@ const Page = props => {
         {props.menu}
         {props.footer}
       </Grid>
-      <Grid className="backoffice-page__section" gutter="none" template="backoffice-section">
+      <div className="backoffice-page__section">
         { props.header }
         <div className="backoffice-page__content">
           {props.children}
         </div>
-      </Grid>
+      </div>
     </Grid>
   )
 }

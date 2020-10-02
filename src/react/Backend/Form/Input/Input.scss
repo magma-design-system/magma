@@ -16,14 +16,19 @@ $ease: get($tween, 'slide');
   &__label {
     left: s(1);
     overflow: hidden;
+    padding-bottom: s(0.125);
     pointer-events: none;
     position: absolute;
     text-overflow: ellipsis;
     transform: translate(0, -85%);
     transform-origin: 0 0;
-    transition: transform $ease 0.1s, width $ease 0.1s, left $ease 0.1s;
+    transition: left $ease 0.1s, transform $ease 0.1s, width $ease 0.1s;
     white-space: nowrap;
     width: calc(100% - #{s(2)});
+
+    @include media('desktop') {
+      padding-bottom: 0;
+    }
   }
 
   &__icon-area {
