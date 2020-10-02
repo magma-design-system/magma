@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React from 'react'
 import PropTypes from 'prop-types'
 import faker from 'faker'
 
@@ -45,25 +45,28 @@ const PageFooter = props =>
       <Caption className="backoffice-page-aside-footer__email">{props.email}</Caption>
     </div>
     <div className="backoffice-page-aside-footer__actions">
-      <Button small={true} className="backoffice-page-aside-footer__action background-color-adjust-tone-12">Gestisci</Button>
-      <Button small={true} className="backoffice-page-aside-footer__action background-color-status-error-12">Esci</Button>
+      <Button onClick={props.onClickManage} small={true} className="backoffice-page-aside-footer__action background-color-adjust-tone-12">Gestisci</Button>
+      <Button onClick={props.onClickExit} small={true} className="backoffice-page-aside-footer__action background-color-status-error-12">Esci</Button>
     </div>
   </footer>
 
 PageFooter.propTypes = {
   email: PropTypes.string,
+  onClickManage: PropTypes.func,
+  onClickExit: PropTypes.func,
 }
 
 PageFooter.defaultProps = {
   email: faker.internet.email(),
+  onClickManage: () => {},
+  onClickExit: () => {},
 }
 
 const Page = props => {
-  const [isOpened, setMenu] = useState(false)
   return (
-    <Grid className={`backoffice-page ${isOpened ? 'backoffice-page--menu-opened' : ''}`} gutter="none" template="backoffice">
-      <div className="backoffice-page__close" onClick={() => setMenu(!isOpened)}>
-        <Icon name={isOpened ? 'close' : 'menu'}/>
+    <Grid className={`backoffice-page ${props.isOpened ? 'backoffice-page--menu-opened' : ''}`} gutter="none" template="backoffice">
+      <div className="backoffice-page__close" onClick={() => !props.isOpened}>
+        <Icon name={props.isOpened ? 'close' : 'menu'}/>
       </div>
       <Grid htmlTag="aside" className="backoffice-page__aside" template="backoffice-aside">
         <PageLogo className="backoffice-page__logo">
@@ -84,12 +87,14 @@ const Page = props => {
 
 Page.propTypes = {
   header: PropTypes.any,
+  isOpened: PropTypes.bool,
   menu: PropTypes.any,
   footer: PropTypes.any,
   title: PropTypes.string,
 }
 
 Page.defaultProps = {
+  isOpened: false,
   title: 'Maggioli',
 }
 

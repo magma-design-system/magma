@@ -23,4 +23,3 @@ export const defaultUsage = () =>
       { media: '(min-width: 800px)', srcset: '//via.placeholder.com/1600x800' },
     ]} />
   </Grid>
-

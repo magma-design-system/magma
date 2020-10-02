@@ -16,6 +16,7 @@ Button.propTypes = {
   isChecked: PropTypes.bool,
   name: PropTypes.string,
   onChange: PropTypes.func,
+  onClick: PropTypes.func,
   value: PropTypes.string,
 }
 
@@ -25,6 +26,7 @@ Button.defaultProps = {
   isChecked: false,
   name: 'unassigned',
   onChange: value => { return value },
+  onClick: () => {},
   value: '0',
 }
 
