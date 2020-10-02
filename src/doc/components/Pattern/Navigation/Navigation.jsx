@@ -3,7 +3,7 @@ import PropTypes from 'prop-types'
 import './Navigation.scss'
 import Grid from '@Layout/Grid/Grid'
 import H1 from '@Typography/H1/H1'
-import Image from '@Element/Image/Image'
+import Image from '@Media/Image/Image'
 import Hr from '@Gatsby/Pattern/Hr/Hr'
 import Menu, { MenuItem, MenuSubItem } from '@Gatsby/Pattern/Menu/Menu'
 

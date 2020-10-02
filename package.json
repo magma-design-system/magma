@@ -1,7 +1,7 @@
 {
   "name": "@maggioli/design-system",
-  "version": "0.0.4",
-  "description": "Maggioli design system",
+  "version": "0.0.5",
+  "description": "Maggioli Design system",
   "scripts": {
     "build": "run-p 'build:!(storybook)'",
     "build:gatsby": "npm run tokens && gatsby build",
