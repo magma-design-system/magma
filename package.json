@@ -39,7 +39,8 @@
     "/src/assets/**/*",
     "/src/react/**/*",
     "/src/scss/**/*",
-    "/src/style-dictionary/build/**/*"
+    "/src/style-dictionary/build/**/*",
+    "import-aliases.js"
   ],
   "publishConfig": {
     "registry": "http://nexus.maggioli.it:8081/repository/npm/"
