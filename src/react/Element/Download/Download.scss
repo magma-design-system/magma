@@ -1,0 +1,50 @@
+@import '~Sass/import-framework';
+
+.download {
+  background-color: color('adjust.tone');
+  border-radius: s(0.5);
+  box-shadow: get($shadow, 'soft');
+  display: flex;
+  padding: s(0.5);
+  padding-right: s(1);
+
+  &__icon-area {
+    align-items: center;
+    display: flex;
+    justify-content: center;
+    min-width: s(2.5);
+  }
+
+  &__info {
+    display: flex;
+    flex-direction: column;
+  }
+
+  &__name {
+    display: flex;
+  }
+
+  &__file-name {
+    max-width: 250px;
+    min-width: 30px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  &__detail {
+    display: flex;
+  }
+
+  &__format {
+    background-color: color('adjust.tone', '18');
+    border-radius: s(0.125);
+    padding: 0 s(0.25);
+  }
+
+  &__description {
+    color: color('adjust.tone', '10');
+    margin-left: s(0.25);
+    white-space: nowrap;
+  }
+}
