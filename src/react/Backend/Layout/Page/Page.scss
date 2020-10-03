@@ -7,6 +7,15 @@ $grid-width: 300px;
     grid-template-columns: $grid-width auto;
   }
 
+  &--tmpl-content-header {
+    grid-template-columns: 1fr;
+    grid-template-rows: auto;
+
+    @include media('desktop') {
+      grid-template-columns: auto $grid-width;
+    }
+  }
+
   &--tmpl-backoffice-section {
     grid-template-rows: auto 1fr;
   }
@@ -61,11 +70,6 @@ $grid-width: 300px;
     }
   }
 
-  &__content-header {
-    background-color: color('adjust.tone', '20');
-    padding: s(2);
-  }
-
   &__content {
     background-color: color('adjust.tone', '19');
     border-radius: s(1) s(1) 0 0;
@@ -118,6 +122,15 @@ $grid-width: 300px;
         }
       }
     }
+  }
+}
+
+.backoffice-page-content-header {
+  background-color: color('adjust.tone', '20');
+  padding: s(2);
+
+  &__search {
+    align-self: flex-end;
   }
 }
 

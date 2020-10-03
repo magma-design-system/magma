@@ -31,6 +31,28 @@ $ease: get($tween, 'slide');
     }
   }
 
+  &__required {
+
+    $size: s(0.5);
+
+    align-items: center;
+    background-color: color('status.error', '10');
+    border: 1px solid transparent;
+    border-radius: $size;
+    color: transparent;
+    display: flex;
+    height: $size;
+    justify-content: center;
+    overflow: hidden;
+    pointer-events: none;
+    position: absolute;
+    right: s(0.5);
+    top: s(0.5);
+    transition: color $ease, height $ease, transform $ease, width $ease;
+    white-space: nowrap;
+    width: $size;
+  }
+
   &__icon-area {
     align-items: center;
     bottom: 0;
@@ -86,6 +108,15 @@ $ease: get($tween, 'slide');
         width: calc(135% - #{s(3)});
       }
 
+      &__required {
+        background-color: color('adjust.tone');
+        border-color: color('status.error', '10');
+        color: color('status.error', '18');
+        height: s(0.75);
+        transform: translate(0, s(2.5));
+        width: 90px;
+      }
+
       &__field {
         background-color: color('adjust.tone', '20');
         height: $size-focused;
@@ -106,6 +137,15 @@ $ease: get($tween, 'slide');
 
   &:focus-within {
     .backoffice-input {
+      &__required {
+        background-color: color('status.error', '10');
+        color: color('status.error', '18');
+        height: s(0.75);
+        transform: translate(0, s(2.5));
+        transition: color $ease 0.2s, height $ease 0.2s, transform $ease 0.2s, width $ease 0.2s;
+        width: 90px;
+      }
+
       &__field {
         background-color: color('adjust.tone');
         box-shadow: get($shadow, 'tiny');

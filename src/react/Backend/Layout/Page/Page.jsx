@@ -13,13 +13,18 @@ import H6 from '@Typography/H6/H6'
 import Icon from '@Design/Icon/Icon'
 import Image from '@Media/Image/Image'
 
+import InputSearch from '@Form/Input/InputText'
+
 import logoMaggioli from '#Assets/logo/gruppo-maggioli.svg'
 
 const PageHeader = props =>
-  <header className="backoffice-page__content-header">
-    <H1>{props.children}</H1>
-    <H6 className="color-adjust-tone-08">{props.description}</H6>
-  </header>
+  <Grid htmlTag="header" className="backoffice-page-content-header" template="content-header">
+    <div className="backoffice-page-content-header__info">
+      <H1>{props.children}</H1>
+      <H6 className="color-adjust-tone-08">{props.description}</H6>
+    </div>
+    <InputSearch className="backoffice-page-content-header__search" icon="search" placeholder="Cerca..."/>
+  </Grid>
 
 PageHeader.propTypes = {
   description: PropTypes.string,

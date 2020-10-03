@@ -80,7 +80,7 @@ export const basicUsage = () =>
       <PageFooter email="pippo@gmail.com"/>
     }>
     <Grid columns="2">
-      <InputText label="Titolo mega lungo da paura" placeholder="Ciaone" icon="shipping" />
+      <InputText label="Titolo mega lungo da paura" placeholder="Ciaone" icon="shipping" required={true}/>
       <InputText label="Descrizione" icon="uploadPhoto" filled={true} />
       <InputText label="Descrizione" filled={true} />
       <InputText label="Descrizione" />

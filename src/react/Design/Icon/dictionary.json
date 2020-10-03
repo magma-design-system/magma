@@ -23,6 +23,7 @@
   "operator": "headset_mic",
   "password": "lock",
   "phone": "phone",
+  "search": "search",
   "shipping": "local_shipping",
   "smartphone": "smartphone",
   "statusError": "error",
