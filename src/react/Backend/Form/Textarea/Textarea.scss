@@ -8,13 +8,10 @@ $size-focused: $size-opened - $top-size;
 $ease: get($tween, 'slide');
 
 .backoffice-textarea {
-  display: flex;
-  flex-direction: column;
-  justify-content: flex-end;
-  line-height: 0;
+
+  @extend %input;
+
   min-height: $size-opened;
-  position: relative;
-  width: 100%;
 
   &__label {
 

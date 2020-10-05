@@ -10,6 +10,7 @@ import InputText from '@Backend/Form/Input/InputText'
 import Switch from '@Backend/Form/Switch/Switch'
 import Button from '@Backend/Form/Button/Button'
 import Textarea from '@Backend/Form/Textarea/Textarea'
+import FileImage from '@Backend/Form/FileImage/FileImage'
 import Grid from '@Layout/Grid/Grid'
 import Hr from '@Backend/Element/Hr/Hr'
 import Download from '@Element/Download/Download'
@@ -68,6 +69,9 @@ export const basicUsage = () =>
         <InputText label="Titolo" placeholder="Titolo del volume" icon="contentTitle" required={true}/>
         <Textarea label="Descrizione" placeholder="Inserisci una breve descrizione del volume" icon="contentDescription" required={true} />
         <InputText label="ISBN" placeholder="Un codice ISBN di 13 cifre" icon="isbn" required={true}/>
+        <Grid columns="2">
+          <FileImage label="Copertina" placeholder="Carica un immagine JPG o JPEG"/>
+        </Grid>
         <Switch sChecked={true}>Questo libro può ricevere codici per approfondimento</Switch>
         <Button>Salva</Button>
       </Grid>
