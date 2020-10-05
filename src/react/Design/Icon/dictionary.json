@@ -5,6 +5,7 @@
   "close": "close",
   "code": "receipt",
   "colorSeed": "color_lens",
+  "delete" : "delete",
   "do": "done",
   "dont": "block",
   "dot": "fiber_manual_record",
@@ -49,5 +50,6 @@
   "text": "format_size",
   "uploadPhoto": "camera_alt",
   "user": "person",
-  "users": "group"
+  "users": "group",
+  "visibility" : "visibility"
 }
