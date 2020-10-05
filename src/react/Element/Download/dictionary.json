@@ -29,9 +29,11 @@
     "txt": { "format": "text", "description": "Documento di testo" },
     "wav": { "format": "audio", "description": "Audio non compresso" },
     "xls": { "format": "spreadsheet", "description": "Foglio di calcolo" },
-    "xlsx": { "format": "spreadsheet", "description": "Foglio di calcolo" }
+    "xlsx": { "format": "spreadsheet", "description": "Foglio di calcolo" },
+    "zip": { "format": "archive", "description": "Archivio compresso" }
   },
   "format": {
+    "archive": { "color": "color-adjust-tone-18", "background": "background-color-adjust-tone-04", "icon": "fileArchive" },
     "attachment": { "color": "color-adjust-tone-08", "background": "background-color-adjust-tone-18", "icon": "file" },
     "audio": { "color": "color-brand-maggioli-08", "background": "background-color-brand-maggioli-18", "icon": "fileAudio" },
     "document": { "color": "color-status-error-08", "background": "background-color-status-error-18", "icon": "fileDocument" },
