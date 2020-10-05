@@ -12,6 +12,7 @@
   border: 0;
   border-radius: s(0.5);
   box-shadow: get($shadow, 'soft');
+  cursor: pointer;
   width: 100%;
 
   &:focus {
