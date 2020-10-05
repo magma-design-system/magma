@@ -2,7 +2,6 @@ import React from 'react'
 import PropTypes from 'prop-types'
 import './Button.scss'
 import Icon from '@Design/Icon/Icon'
-import faker from 'faker'
 
 const Button = props => {
   const HtmlTag = props.htmlTag.toLowerCase()
@@ -13,9 +12,10 @@ const Button = props => {
       onClick={() => props.onClick()}
       disabled={props.disabled ? 'disabled' : ''}>
       {props.icon && <Icon className='button__icon' name={props.icon}/>}
-      <div className={`button__text ${props.textClassName}`}>
-        { props.children ? props.children : faker.hacker.phrase() }
+      { props.children && <div className={`button__text ${props.textClassName}`}>
+        { props.children }
       </div>
+      }
     </HtmlTag>
   )
 }

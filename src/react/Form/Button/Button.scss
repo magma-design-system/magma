@@ -42,7 +42,7 @@ $border-radius: get($radius, 'small');
       margin-right: s(0.25);
 
       &:last-child {
-        margin: 0;
+        margin: 0 s(-0.75);
       }
     }
   }

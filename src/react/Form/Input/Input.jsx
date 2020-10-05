@@ -1,6 +1,5 @@
-import React, { useContext } from 'react'
+import React from 'react'
 import PropTypes from 'prop-types'
-import { ThemeContext } from '@Design/Theme/ThemeProvider'
 import './Input.scss'
 import Icon from '@Design/Icon/Icon'
 
