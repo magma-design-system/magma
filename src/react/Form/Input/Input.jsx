@@ -5,11 +5,11 @@ import './Input.scss'
 import Icon from '@Design/Icon/Icon'
 
 const Input = props => {
-  const state = useContext(ThemeContext)
-  const themeName = `input--${state.name}`
+  // const state = useContext(ThemeContext)
+  // const themeName = `input--${state.name}`
 
   return (
-    <label className={`input ${themeName} ${props.icon ? 'input--has-icon' : ''} ${Object.keys(props.errors).length > 0 ? 'input--has-errors' : ''} ${props.theme !== '' ? 'input--' + props.theme : ''} ${props.className}`}>
+    <label className={`input ${props.icon ? 'input--has-icon' : ''} ${Object.keys(props.errors).length > 0 ? 'input--has-errors' : ''} ${props.theme !== '' ? 'input--' + props.theme : ''} ${props.className}`}>
       {props.label &&
         <div className="input__label text-primary text-primary--h6">
           {props.label}
@@ -35,7 +35,7 @@ const Input = props => {
 
 Input.propTypes = {
   className: PropTypes.string,
-  errors: PropTypes.obj,
+  errors: PropTypes.any,
   icon: PropTypes.string,
   iconClassName: PropTypes.string,
   label: PropTypes.string,
