@@ -27,7 +27,7 @@ const Download = props => {
   const { background, color, icon } = dictionary.format[format]
 
   return (
-    <div className={`download ${props.className}`}>
+    <a href={props.href} className={`download ${props.className}`}>
       <div className="download__icon-area">
         <Icon name={icon} className={`download__icon ${color}`}/>
       </div>
@@ -41,18 +41,20 @@ const Download = props => {
           <Caption className="download__description">{description}</Caption>
         </div>
       </div>
-    </div>
+    </a>
   )
 }
 
 Download.propTypes = {
   className: PropTypes.string,
   fileName: PropTypes.string,
+  href: PropTypes.string,
 }
 
 Download.defaultProps = {
   className: '',
   fileName: 'File name.ext',
+  href: '#',
 }
 
 export default Download

@@ -3,11 +3,19 @@
     "default": { "format": "attachment", "description": "Allegato sconosciuto" },
     "doc": { "format": "text", "description": "Documento Word" },
     "eml": { "format": "email", "description": "Posta elettronica" },
+    "gif": { "format": "image", "description": "Immagine compressa" },
+    "htm": { "format": "markup", "description": "Pagina web" },
+    "html": { "format": "markup", "description": "Pagina web" },
     "jpeg": { "format": "image", "description": "Immagine compressa" },
     "jpg": { "format": "image", "description": "Immagine compressa" },
+    "mp2": { "format": "audio", "description": "Audio compresso" },
     "mp3": { "format": "audio", "description": "Audio compresso" },
+    "mp4": { "format": "video", "description": "Filmato HD" },
+    "mp4v": { "format": "video", "description": "Filmato HD" },
     "mpeg": { "format": "video", "description": "Filmato SD" },
     "mpg": { "format": "video", "description": "Filmato SD" },
+    "mpg4": { "format": "video", "description": "Filmato SD" },
+    "mpga": { "format": "audio", "description": "Audio compresso" },
     "odt": { "format": "slide", "description": "Presentazione Libre Office" },
     "pdf": { "format": "document", "description": "Documento" },
     "png": { "format": "image", "description": "Immagine non compressa" },
@@ -18,50 +26,15 @@
     "xlsx": { "format": "spreadsheet", "description": "Foglio di calcolo" }
   },
   "format": {
-    "video": {
-      "color": "color-brand-maggioli-08",
-      "background": "background-color-brand-maggioli-18",
-      "icon": "fileVideo"
-    },
-    "audio": {
-      "color": "color-brand-maggioli-08",
-      "background": "background-color-brand-maggioli-18",
-      "icon": "volume_up"
-    },
-    "image": {
-      "color": "color-brand-maggioli-08",
-      "background": "background-color-brand-maggioli-18",
-      "icon": "fileImage"
-    },
-    "text": {
-      "color": "color-status-info-08",
-      "background": "background-color-status-info-18",
-      "icon": "fileText"
-    },
-    "document": {
-      "color": "color-status-error-08",
-      "background": "background-color-status-error-18",
-      "icon": "fileDocument"
-    },
-    "spreadsheet": {
-      "color": "color-status-success-08",
-      "background": "background-color-status-success-18",
-      "icon": "fileSpreadsheet"
-    },
-    "slide": {
-      "color": "color-status-warning-08",
-      "background": "background-color-status-warning-18",
-      "icon": "fileSlide"
-    },
-    "email": {
-      "color": "color-status-warning-08",
-      "background": "background-color-status-warning-18",
-      "icon": "email"
-    },
-    "attachment": {
-      "color": "color-status-warning-08",
-      "background": "background-color-status-warning-18",
-      "icon": "file"
-    }
+    "attachment": { "color": "color-adjust-tone-08", "background": "background-color-adjust-tone-18", "icon": "file" },
+    "audio": { "color": "color-brand-maggioli-08", "background": "background-color-brand-maggioli-18", "icon": "fileAudio" },
+    "document": { "color": "color-status-error-08", "background": "background-color-status-error-18", "icon": "fileDocument" },
+    "email": { "color": "color-status-error-08", "background": "background-color-status-error-18", "icon": "email" },
+    "image": { "color": "color-status-success-08", "background": "background-color-status-success-18", "icon": "fileImage" },
+    "markup": { "color": "color-status-success-08", "background": "background-color-status-success-18", "icon": "global" },
+    "slide": { "color": "color-status-warning-08", "background": "background-color-status-warning-18", "icon": "fileSlide" },
+    "spreadsheet": { "color": "color-status-success-08", "background": "background-color-status-success-18", "icon": "fileSpreadsheet" },
+    "text": { "color": "color-status-error-08", "background": "background-color-status-error-18", "icon": "fileText" },
+    "video": { "color": "color-status-error-08", "background": "background-color-status-error-18", "icon": "fileVideo" }
   }
 }
