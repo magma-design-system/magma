@@ -15,6 +15,7 @@
   "fileAudio": "audiotrack",
   "fileCode": "code",
   "fileDocument": "insert_drive_file",
+  "fileExecutable": "wysiwyg",
   "fileImage": "insert_photo",
   "fileSlide": "insert_chart",
   "fileSpreadsheet": "border_all",
