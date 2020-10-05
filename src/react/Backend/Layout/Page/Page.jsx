@@ -23,15 +23,19 @@ const PageHeader = props =>
       <H1>{props.children}</H1>
       <H6 className="color-adjust-tone-08">{props.description}</H6>
     </div>
-    <InputSearch className="backoffice-page-content-header__search" icon="search" placeholder="Cerca..."/>
+    <InputSearch onChange={props.onChange} className="backoffice-page-content-header__search" icon="search" placeholder="Cerca..." value={props.value}/>
   </Grid>
 
 PageHeader.propTypes = {
   description: PropTypes.string,
+  onChange: PropTypes.func,
+  value: PropTypes.string,
 }
 
 PageHeader.defaultProps = {
   description: 'Entità',
+  onChange: () => {},
+  value: '',
 }
 
 const PageLogo = props =>

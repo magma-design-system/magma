@@ -10,7 +10,7 @@ const InputText = props =>
       className="input__field text-sans text-sans--input"
       defaultValue={props.value}
       name={props.name}
-      onChange={e => props.onChange(e.target.value)}
+      onChange={props.onChange}
       placeholder={props.placeholder}
       type="text"
     />

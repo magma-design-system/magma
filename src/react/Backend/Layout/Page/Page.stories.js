@@ -75,7 +75,6 @@ export const basicUsage = () =>
     <Hr/>
   </PageTemplate>
 
-
 export const table = () =>
   <PageTemplate title="Tabella con contenuti random">
     <Table>
@@ -119,7 +118,7 @@ export const Allegati = () =>
         <TableHeaderCell>Azioni</TableHeaderCell>
       </TableHeader>
       <TableBody>
-      <TableRow>
+        <TableRow>
           <TableCell>
             <Download fileName={faker.system.commonFileName()}/>
           </TableCell>
