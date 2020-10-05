@@ -1,4 +1,5 @@
 @import '~Sass/import-framework';
+@import '../Input/extends';
 
 $top-size: 50px;
 $required-size: 90px;
@@ -16,18 +17,13 @@ $ease: get($tween, 'slide');
   width: 100%;
 
   &__label {
-    left: s(1);
-    overflow: hidden;
-    padding-bottom: s(0.125);
-    pointer-events: none;
-    position: absolute;
-    text-overflow: ellipsis;
-    top: 16px;
 
-    // transform: translate(0, -85%);
-    transform-origin: 0 0;
+    @extend %label;
+
+    left: s(1);
+    padding-bottom: s(0.125);
+    top: 16px;
     transition: left $ease 0.1s, transform $ease 0.1s, width $ease 0.1s;
-    white-space: nowrap;
     width: calc(100% - #{s(2)});
 
     @include media('desktop') {
@@ -37,33 +33,18 @@ $ease: get($tween, 'slide');
 
   &__required {
 
-    $size: s(0.5);
+    @extend %required;
 
-    align-items: center;
-    background-color: color('status.error', '10');
-    border: 1px solid transparent;
-    border-radius: $size;
-    color: transparent;
-    display: flex;
-    height: $size;
-    justify-content: center;
-    overflow: hidden;
-    pointer-events: none;
-    position: absolute;
     right: s(0.5);
     top: s(0.5);
     transition: color $ease, height $ease, transform $ease, width $ease;
-    white-space: nowrap;
-    width: $size;
   }
 
   &__icon-area {
-    align-items: center;
-    display: flex;
+
+    @extend %icon-area;
+
     height: 100px;
-    justify-content: center;
-    pointer-events: none;
-    position: absolute;
     top: 0;
     transform: translate(s(1));
     transition: height $ease, top $ease, width $ease;
@@ -71,37 +52,30 @@ $ease: get($tween, 'slide');
   }
 
   &__icon {
-    color: color('brand-maggioli', '05');
+
+    @extend %icon;
+
     font-size: 40px;
     transition: font-size $ease;
   }
 
   &__field {
-    background-color: color('adjust.tone', '20');
-    border: 0;
-    border-radius: s(0.5);
-    box-shadow: get($shadow, 'soft');
-    cursor: pointer;
+
+    @extend %field;
+
     height: $size-opened;
     padding-left: s(1);
     padding-right: s(1);
     padding-top: s(2.75);
     resize: none;
     transition: background-color $ease, height $ease, box-shadow $ease, padding-top $ease, padding-left $ease;
-    width: 100%;
 
     &:focus {
-      cursor: auto;
-      outline: 0;
       transition: background-color $ease 0.2s, height $ease 0.2s, box-shadow $ease 0.2s, padding-top $ease 0.2s, padding-left $ease 0.2s;
-    }
-
-    &::placeholder {
-      color: color('adjust.tone', '10');
     }
   }
 
-  &__errors {
+  &__error {
     display: none;
   }
 
@@ -115,23 +89,23 @@ $ease: get($tween, 'slide');
       }
 
       &__required {
-        background-color: color('status.error', '10');
-        border-color: color('status.error', '10');
-        color: color('status.error', '18');
-        height: s(0.75);
+
+        @extend %required-focused;
+
         transform: translate(0, s(2.5));
         width: $required-size;
       }
 
       &__field {
-        background-color: color('adjust.tone', '20');
+
+        @extend %field-focused;
+
         height: $size-focused;
         padding-top: s(0.6);
       }
 
       &__icon-area {
         height: 50px;
-        line-height: $top-size;
         top: $top-size;
         width: s(2);
       }
@@ -145,17 +119,16 @@ $ease: get($tween, 'slide');
   &:focus-within {
     .backoffice-textarea {
       &__required {
-        background-color: color('status.error', '10');
-        color: color('status.error', '18');
-        height: s(0.75);
+
+        @extend %required-focused;
+
         transform: translate(0, s(2.5));
         transition: color $ease 0.2s, height $ease 0.2s, transform $ease 0.2s, width $ease 0.2s;
-        width: $required-size;
       }
 
       &__field {
-        background-color: color('adjust.tone');
-        box-shadow: get($shadow, 'tiny');
+
+        @extend %field-focused;
       }
     }
   }
