@@ -6,7 +6,7 @@ import H3 from '@Typography/H3/H3'
 import LabelCaption from '@Typography/LabelCaption/LabelCaption'
 
 const Input = props =>
-  <label className={`backoffice-input ${props.value ? 'backoffice-input--filled' : ''} ${props.icon !== '' ? 'backoffice-input--has-icon' : ''} ${Object.keys(props.errors).length > 0 ? 'backoffice-input--has-errors' : ''} ${props.className}`}>
+  <label className={`backoffice-input ${props.value ? 'backoffice-input--filled' : ''} ${props.icon !== '' ? 'backoffice-input--has-icon' : ''} ${props.error ? 'backoffice-input--has-errors' : ''} ${props.className}`}>
     {props.label &&
       <H3 htmlTag="div" className="backoffice-input__label">
         {props.label}
@@ -23,19 +23,19 @@ const Input = props =>
       </div>
     }
     {props.children}
-    <ul className="backoffice-input__errors">
-      {Object.keys(props.errors).map(name =>
+    {props.error &&
+      <ul className="backoffice-input__error">
         <li className="backoffice-input__error">
-          <Icon className="backoffice-input__error-icon" name={props.errors[name].type}/>
-          {props.errors[name].message}
-        </li>,
-      )}
-    </ul>
+          <Icon className="backoffice-input__error-icon" name="statusError"/>
+          {props.error}
+        </li>
+      </ul>
+    }
   </label>
 
 Input.propTypes = {
   className: PropTypes.string,
-  errors: PropTypes.any,
+  error: PropTypes.string,
   icon: PropTypes.string,
   iconClassName: PropTypes.string,
   label: PropTypes.string,
@@ -46,7 +46,6 @@ Input.propTypes = {
 
 Input.defaultProps = {
   className: '',
-  errors: {},
   icon: '',
   iconClassName: '',
   label: '',
