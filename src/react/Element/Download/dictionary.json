@@ -1,6 +1,7 @@
 {
   "extension": {
     "default": { "format": "attachment", "description": "Allegato sconosciuto" },
+    "db": { "format": "code", "description": "File di database" },
     "doc": { "format": "text", "description": "Documento Word" },
     "eml": { "format": "email", "description": "Posta elettronica" },
     "gif": { "format": "image", "description": "Immagine compressa" },
@@ -8,6 +9,8 @@
     "html": { "format": "markup", "description": "Pagina web" },
     "jpeg": { "format": "image", "description": "Immagine compressa" },
     "jpg": { "format": "image", "description": "Immagine compressa" },
+    "js": { "format": "code", "description": "JavaScript" },
+    "jsx": { "format": "code", "description": "JavaScript" },
     "mp2": { "format": "audio", "description": "Audio compresso" },
     "mp3": { "format": "audio", "description": "Audio compresso" },
     "mp4": { "format": "video", "description": "Filmato HD" },
@@ -18,8 +21,11 @@
     "mpga": { "format": "audio", "description": "Audio compresso" },
     "odt": { "format": "slide", "description": "Presentazione Libre Office" },
     "pdf": { "format": "document", "description": "Documento" },
+    "php": { "format": "code", "description": "Hypertext Preprocessor" },
     "png": { "format": "image", "description": "Immagine non compressa" },
     "ppt": { "format": "slide", "description": "Presentazione Power Point" },
+    "sass": { "format": "code", "description": "Syntactically Awesome StyleSheets" },
+    "ts": { "format": "code", "description": "TypeScript" },
     "txt": { "format": "text", "description": "Documento di testo" },
     "wav": { "format": "audio", "description": "Audio non compresso" },
     "xls": { "format": "spreadsheet", "description": "Foglio di calcolo" },
@@ -35,6 +41,7 @@
     "slide": { "color": "color-status-warning-08", "background": "background-color-status-warning-18", "icon": "fileSlide" },
     "spreadsheet": { "color": "color-status-success-08", "background": "background-color-status-success-18", "icon": "fileSpreadsheet" },
     "text": { "color": "color-status-error-08", "background": "background-color-status-error-18", "icon": "fileText" },
+    "code": { "color": "color-brand-maggioli-08", "background": "background-color-brand-maggioli-18", "icon": "fileCode" },
     "video": { "color": "color-status-error-08", "background": "background-color-status-error-18", "icon": "fileVideo" }
   }
 }

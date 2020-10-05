@@ -12,6 +12,7 @@
   "email": "email",
   "file": "insert_drive_file",
   "fileImage": "insert_photo",
+  "fileCode": "code",
   "fileVideo": "videocam",
   "fileAudio": "audiotrack",
   "fileText": "article",
