@@ -27,7 +27,7 @@ const Download = props => {
   const { background, color, icon } = dictionary.format[format]
 
   return (
-    <a href={props.href} className={`download ${props.className}`}>
+    <a href={props.href} title={props.fileName} className={`download ${props.className}`}>
       <div className="download__icon-area">
         <Icon name={icon} className={`download__icon ${color}`}/>
       </div>

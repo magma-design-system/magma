@@ -1,0 +1,72 @@
+%label {
+  overflow: hidden;
+  pointer-events: none;
+  position: absolute;
+  text-overflow: ellipsis;
+  transform-origin: 0 0;
+  white-space: nowrap;
+}
+
+%field {
+  background-color: color('adjust.tone', '20');
+  border: 0;
+  border-radius: s(0.5);
+  box-shadow: get($shadow, 'soft');
+  cursor: pointer;
+  width: 100%;
+
+  &:focus {
+    cursor: auto;
+    outline: 0;
+  }
+
+  &::placeholder {
+    color: color('adjust.tone', '10');
+  }
+}
+
+%field-focused {
+  background-color: color('adjust.tone');
+  box-shadow: get($shadow, 'tiny');
+}
+
+%required {
+
+  $size: s(0.5);
+  $ease: get($tween, 'slide');
+
+  align-items: center;
+  background-color: color('status.error', '10');
+  border: 1px solid transparent;
+  border-radius: $size;
+  color: transparent;
+  display: flex;
+  height: $size;
+  justify-content: center;
+  overflow: hidden;
+  pointer-events: none;
+  position: absolute;
+  white-space: nowrap;
+  width: $size;
+}
+
+%required-focused {
+  background-color: color('status.error', '10');
+  border-color: color('status.error', '10');
+  color: color('status.error', '18');
+  height: s(0.75);
+  width: 90px;
+}
+
+%icon-area {
+  align-items: center;
+  display: flex;
+  justify-content: center;
+  pointer-events: none;
+  position: absolute;
+}
+
+%icon {
+  color: color('brand-maggioli', '05');
+  font-size: 40px;
+}

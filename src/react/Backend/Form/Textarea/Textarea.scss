@@ -1,12 +1,13 @@
 @import '~Sass/import-framework';
-@import './extends';
+@import '../Input/extends';
 
 $top-size: 50px;
-$size-opened: 100px;
+$required-size: 90px;
+$size-opened: 200px;
 $size-focused: $size-opened - $top-size;
 $ease: get($tween, 'slide');
 
-.backoffice-input {
+.backoffice-textarea {
   display: flex;
   flex-direction: column;
   justify-content: flex-end;
@@ -21,8 +22,7 @@ $ease: get($tween, 'slide');
 
     left: s(1);
     padding-bottom: s(0.125);
-    position: absolute;
-    transform: translate(0, -85%);
+    top: 16px;
     transition: left $ease 0.1s, transform $ease 0.1s, width $ease 0.1s;
     width: calc(100% - #{s(2)});
 
@@ -44,10 +44,10 @@ $ease: get($tween, 'slide');
 
     @extend %icon-area;
 
-    bottom: 0;
+    height: 100px;
     top: 0;
     transform: translate(s(1));
-    transition: top $ease, width $ease;
+    transition: height $ease, top $ease, width $ease;
     width: s(3);
   }
 
@@ -55,6 +55,7 @@ $ease: get($tween, 'slide');
 
     @extend %icon;
 
+    font-size: 40px;
     transition: font-size $ease;
   }
 
@@ -62,11 +63,11 @@ $ease: get($tween, 'slide');
 
     @extend %field;
 
-    border: 0;
     height: $size-opened;
     padding-left: s(1);
     padding-right: s(1);
-    padding-top: s(1.75);
+    padding-top: s(2.75);
+    resize: none;
     transition: background-color $ease, height $ease, box-shadow $ease, padding-top $ease, padding-left $ease;
 
     &:focus {
@@ -74,16 +75,16 @@ $ease: get($tween, 'slide');
     }
   }
 
-  &__errors {
+  &__error {
     display: none;
   }
 
   &:focus-within,
   &--filled {
-    .backoffice-input {
+    .backoffice-textarea {
       &__label {
         left: s(1);
-        transform: translate(0, -100%) scale(0.75);
+        transform: translate(0, -5px) scale(0.75);
         width: calc(135% - #{s(3)});
       }
 
@@ -92,6 +93,7 @@ $ease: get($tween, 'slide');
         @extend %required-focused;
 
         transform: translate(0, s(2.5));
+        width: $required-size;
       }
 
       &__field {
@@ -99,12 +101,12 @@ $ease: get($tween, 'slide');
         @extend %field-focused;
 
         height: $size-focused;
-        padding-top: 0;
+        padding-top: s(0.6);
       }
 
       &__icon-area {
-        line-height: $size-focused;
-        top: $size-focused;
+        height: 50px;
+        top: $top-size;
         width: s(2);
       }
 
@@ -115,7 +117,7 @@ $ease: get($tween, 'slide');
   }
 
   &:focus-within {
-    .backoffice-input {
+    .backoffice-textarea {
       &__required {
 
         @extend %required-focused;
@@ -132,7 +134,7 @@ $ease: get($tween, 'slide');
   }
 
   &--has-icon {
-    .backoffice-input {
+    .backoffice-textarea {
       &__label {
         left: s(4.5);
         width: calc(100% - #{s(5.5)});
@@ -144,16 +146,16 @@ $ease: get($tween, 'slide');
     }
 
     &:focus-within {
-      .backoffice-input {
+      .backoffice-textarea {
         &__field {
           padding-left: s(3);
         }
       }
     }
 
-    &.backoffice-input {
+    &.backoffice-textarea {
       &--filled {
-        .backoffice-input {
+        .backoffice-textarea {
           &__label {
             left: s(1);
             transform: translate(0, -100%) scale(0.75);
