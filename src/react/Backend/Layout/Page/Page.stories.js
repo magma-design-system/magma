@@ -119,6 +119,42 @@ export const Allegati = () =>
         <TableHeaderCell>Azioni</TableHeaderCell>
       </TableHeader>
       <TableBody>
+      <TableRow>
+          <TableCell>
+            <Download fileName={faker.system.commonFileName()}/>
+          </TableCell>
+          <TableCell><code>{faker.internet.email()}</code></TableCell>
+          <TableCell>{faker.phone.phoneNumber()}</TableCell>
+          <TableCell>{faker.company.companyName()}</TableCell>
+          <TableCell>{faker.company.companyName()}</TableCell>
+        </TableRow>
+        <TableRow>
+          <TableCell>
+            <Download fileName={faker.system.commonFileName()}/>
+          </TableCell>
+          <TableCell><code>{faker.internet.email()}</code></TableCell>
+          <TableCell>{faker.phone.phoneNumber()}</TableCell>
+          <TableCell>{faker.company.companyName()}</TableCell>
+          <TableCell>{faker.company.companyName()}</TableCell>
+        </TableRow>
+        <TableRow>
+          <TableCell>
+            <Download fileName={faker.system.commonFileName()}/>
+          </TableCell>
+          <TableCell><code>{faker.internet.email()}</code></TableCell>
+          <TableCell>{faker.phone.phoneNumber()}</TableCell>
+          <TableCell>{faker.company.companyName()}</TableCell>
+          <TableCell>{faker.company.companyName()}</TableCell>
+        </TableRow>
+        <TableRow>
+          <TableCell>
+            <Download fileName={faker.system.commonFileName()}/>
+          </TableCell>
+          <TableCell><code>{faker.internet.email()}</code></TableCell>
+          <TableCell>{faker.phone.phoneNumber()}</TableCell>
+          <TableCell>{faker.company.companyName()}</TableCell>
+          <TableCell>{faker.company.companyName()}</TableCell>
+        </TableRow>
         <TableRow>
           <TableCell>
             <Download fileName={faker.system.commonFileName()}/>

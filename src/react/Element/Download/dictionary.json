@@ -3,7 +3,7 @@
     "7z": { "format": "archive", "description": "Archivio compresso" },
     "ace": { "format": "archive", "description": "Archivio compresso" },
     "db": { "format": "code", "description": "File di database" },
-    "default": { "format": "attachment", "description": "Allegato sconosciuto" },
+    "default": { "format": "attachment", "description": "Formato sconosciuto" },
     "dmg": { "format": "executable", "description": "Immagine disco Mac" },
     "doc": { "format": "text", "description": "Documento Word" },
     "eml": { "format": "email", "description": "Posta elettronica" },
@@ -22,6 +22,7 @@
     "mp4v": { "format": "video", "description": "Filmato HD" },
     "mpeg": { "format": "video", "description": "Filmato SD" },
     "mpg": { "format": "video", "description": "Filmato SD" },
+    "m2v": { "format": "video", "description": "Filmato SD" },
     "mpg4": { "format": "video", "description": "Filmato SD" },
     "mpga": { "format": "audio", "description": "Audio compresso" },
     "odt": { "format": "slide", "description": "Presentazione Libre Office" },
@@ -48,11 +49,11 @@
     "executable": { "color": "color-status-error-08", "background": "background-color-status-error-18", "icon": "fileExecutable" },
     "email": { "color": "color-status-error-08", "background": "background-color-status-error-18", "icon": "email" },
     "image": { "color": "color-status-success-08", "background": "background-color-status-success-18", "icon": "fileImage" },
-    "markup": { "color": "color-status-success-08", "background": "background-color-status-success-18", "icon": "global" },
+    "markup": { "color": "color-status-warning-08", "background": "background-color-status-warning-18", "icon": "global" },
     "slide": { "color": "color-status-warning-08", "background": "background-color-status-warning-18", "icon": "fileSlide" },
     "spreadsheet": { "color": "color-status-success-08", "background": "background-color-status-success-18", "icon": "fileSpreadsheet" },
     "text": { "color": "color-status-error-08", "background": "background-color-status-error-18", "icon": "fileText" },
-    "code": { "color": "color-brand-maggioli-08", "background": "background-color-brand-maggioli-18", "icon": "fileCode" },
+    "code": { "color": "color-status-warning-08", "background": "background-color-status-warning-18", "icon": "fileCode" },
     "video": { "color": "color-status-error-08", "background": "background-color-status-error-18", "icon": "fileVideo" }
   }
 }

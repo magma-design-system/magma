@@ -1,6 +1,7 @@
 @import '~Sass/import-framework';
 
 $top-size: 50px;
+$required-size: 90px;
 $size-opened: 200px;
 $size-focused: $size-opened - $top-size;
 $ease: get($tween, 'slide');
@@ -21,7 +22,7 @@ $ease: get($tween, 'slide');
     pointer-events: none;
     position: absolute;
     text-overflow: ellipsis;
-    top: 20px;
+    top: 16px;
 
     // transform: translate(0, -85%);
     transform-origin: 0 0;
@@ -84,7 +85,8 @@ $ease: get($tween, 'slide');
     height: $size-opened;
     padding-left: s(1);
     padding-right: s(1);
-    padding-top: s(2.5);
+    padding-top: s(2.75);
+    resize: none;
     transition: background-color $ease, height $ease, box-shadow $ease, padding-top $ease, padding-left $ease;
     width: 100%;
 
@@ -108,7 +110,7 @@ $ease: get($tween, 'slide');
     .backoffice-textarea {
       &__label {
         left: s(1);
-        transform: translate(0, -10px) scale(0.75);
+        transform: translate(0, -5px) scale(0.75);
         width: calc(135% - #{s(3)});
       }
 
@@ -118,7 +120,7 @@ $ease: get($tween, 'slide');
         color: color('status.error', '18');
         height: s(0.75);
         transform: translate(0, s(2.5));
-        width: 90px;
+        width: $required-size;
       }
 
       &__field {
@@ -148,7 +150,7 @@ $ease: get($tween, 'slide');
         height: s(0.75);
         transform: translate(0, s(2.5));
         transition: color $ease 0.2s, height $ease 0.2s, transform $ease 0.2s, width $ease 0.2s;
-        width: 90px;
+        width: $required-size;
       }
 
       &__field {
