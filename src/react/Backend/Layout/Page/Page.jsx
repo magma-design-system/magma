@@ -1,6 +1,5 @@
 import React from 'react'
 import PropTypes from 'prop-types'
-import faker from 'faker'
 
 import './Page.scss'
 
@@ -66,7 +65,7 @@ PageFooter.propTypes = {
 }
 
 PageFooter.defaultProps = {
-  email: faker.internet.email(),
+  email: 'email@email.com',
   onClickManage: () => {},
   onClickExit: () => {},
 }
