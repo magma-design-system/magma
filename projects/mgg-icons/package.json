@@ -26,6 +26,7 @@
     "/build/fonts/**/*.svg",
     "/build/fonts/**/*.scss",
     "/build/fonts/**/*.css",
+    "/build/fonts/**/*.html",
     "/src/*.json"
   ],
   "keywords": [
@@ -41,6 +42,10 @@
     {
       "name": "Gioele Masini",
       "email": "gioele.masini@maggioli.it"
+    },
+    {
+      "name": "Federico Ciani",
+      "email": "federico.ciani@maggioli.it"
     }
   ],
   "license": "ISC",

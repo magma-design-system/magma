@@ -84,6 +84,7 @@
   "dependencies": {
     "@fortawesome/fontawesome-free": "^5.14.0",
     "material-design-icons": "^3.0.1",
+    "material-design-icons-updated": "^6.1.0",
     "normalize.css": "^8.0.1",
     "react-syntax-highlighter": "^13.5.3",
     "typeface-karla": "0.0.72",
