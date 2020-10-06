@@ -67,6 +67,9 @@ $ease: get($tween, 'slide');
   }
 
   &__delete {
+    background-color: color('adjust.tone');
+    box-shadow: get($shadow, 'box');
+    color: color('status.error', '09');
     position: absolute;
     right: s(1);
     top: s(1);

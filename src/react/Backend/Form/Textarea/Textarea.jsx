@@ -7,24 +7,26 @@ import LabelCaption from '@Typography/LabelCaption/LabelCaption'
 
 const Textarea = props =>
   <label className={`backoffice-textarea ${props.value ? 'backoffice-textarea--filled' : ''} ${props.icon !== '' ? 'backoffice-textarea--has-icon' : ''} ${props.error ? 'backoffice-textarea--has-errors' : ''} ${props.className}`}>
-    {props.label &&
-      <H3 htmlTag="div" className="backoffice-textarea__label">
-        {props.label}
-      </H3>
-    }
-    {props.required &&
-      <LabelCaption className="backoffice-textarea__required">
-        Obbligatorio
-      </LabelCaption>
-    }
-    {props.icon &&
-      <div className="backoffice-textarea__icon-area">
-        <Icon className={`backoffice-textarea__icon ${props.iconClassName !== '' ? props.iconClassName : ''}`} name={props.icon}/>
-      </div>
-    }
-    <textarea className="backoffice-textarea__field text-secondary text-secondary--paragraph" name={props.name} placeholder={props.placeholder}>
-      {props.children}
-    </textarea>
+    <div className="backoffice-textarea__content">
+      {props.label &&
+        <H3 htmlTag="div" className="backoffice-textarea__label">
+          {props.label}
+        </H3>
+      }
+      {props.required &&
+        <LabelCaption className="backoffice-textarea__required">
+          Obbligatorio
+        </LabelCaption>
+      }
+      {props.icon &&
+        <div className="backoffice-textarea__icon-area">
+          <Icon className={`backoffice-textarea__icon ${props.iconClassName !== '' ? props.iconClassName : ''}`} name={props.icon}/>
+        </div>
+      }
+      <textarea className="backoffice-textarea__field text-secondary text-secondary--paragraph" name={props.name} placeholder={props.placeholder}>
+        {props.children}
+      </textarea>
+    </div>
     {props.error &&
       <ul className="backoffice-textarea__error">
         <li className="backoffice-textarea__error">

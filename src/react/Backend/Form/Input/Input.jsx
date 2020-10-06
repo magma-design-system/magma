@@ -3,33 +3,36 @@ import PropTypes from 'prop-types'
 import './Input.scss'
 import Icon from '@Design/Icon/Icon'
 import H3 from '@Typography/H3/H3'
+import Paragraph from '@Typography/Paragraph/Paragraph'
 import LabelCaption from '@Typography/LabelCaption/LabelCaption'
 
 const Input = props =>
   <label className={`backoffice-input ${props.value ? 'backoffice-input--filled' : ''} ${props.icon !== '' ? 'backoffice-input--has-icon' : ''} ${props.error ? 'backoffice-input--has-errors' : ''} ${props.className}`}>
-    {props.label &&
-      <H3 htmlTag="div" className="backoffice-input__label">
-        {props.label}
-      </H3>
-    }
-    {props.required &&
-      <LabelCaption className="backoffice-input__required">
-        Obbligatorio
-      </LabelCaption>
-    }
-    {props.icon &&
-      <div className="backoffice-input__icon-area">
-        <Icon className={`backoffice-input__icon ${props.iconClassName !== '' ? props.iconClassName : ''}`} name={props.icon}/>
-      </div>
-    }
-    {props.children}
+    <div className="backoffice-input__content">
+      {props.label &&
+        <H3 htmlTag="div" className="backoffice-input__label">
+          {props.label}
+        </H3>
+      }
+      {props.required &&
+        <LabelCaption className="backoffice-input__required">
+          Obbligatorio
+        </LabelCaption>
+      }
+      {props.icon &&
+        <div className="backoffice-input__icon-area">
+          <Icon className={`backoffice-input__icon ${props.iconClassName !== '' ? props.iconClassName : ''}`} name={props.icon}/>
+        </div>
+      }
+      {props.children}
+    </div>
     {props.error &&
-      <ul className="backoffice-input__error">
-        <li className="backoffice-input__error">
-          <Icon className="backoffice-input__error-icon" name="statusError"/>
-          {props.error}
-        </li>
-      </ul>
+        <div className="backoffice-input__message">
+          <Paragraph htmlTag="div" className="backoffice-input__error">
+            <Icon className="backoffice-input__error-icon" name="statusError"/>
+            <div className="backoffice-input__error-text">{props.error}</div>
+          </Paragraph>
+        </div>
     }
   </label>
 

@@ -3,6 +3,7 @@
 
 $top-size: 50px;
 $required-size: 90px;
+$size-input: 100px;
 $size-opened: 200px;
 $size-focused: $size-opened - $top-size;
 $ease: get($tween, 'slide');
@@ -13,13 +14,21 @@ $ease: get($tween, 'slide');
 
   min-height: $size-opened;
 
+  &__content {
+    padding-top: 0;
+    position: relative;
+    transition: padding-top get($tween, 'slide');
+    z-index: 1;
+  }
+
   &__label {
 
     @extend %label;
 
     left: s(1);
     padding-bottom: s(0.125);
-    top: 16px;
+    position: absolute;
+    top: s(1);
     transition: left $ease 0.1s, transform $ease 0.1s, width $ease 0.1s;
     width: calc(100% - #{s(2)});
 
@@ -41,7 +50,7 @@ $ease: get($tween, 'slide');
 
     @extend %icon-area;
 
-    height: 100px;
+    height: $size-input;
     top: 0;
     transform: translate(s(1));
     transition: height $ease, top $ease, width $ease;
@@ -52,7 +61,6 @@ $ease: get($tween, 'slide');
 
     @extend %icon;
 
-    font-size: 40px;
     transition: font-size $ease;
   }
 
@@ -73,15 +81,34 @@ $ease: get($tween, 'slide');
   }
 
   &__error {
-    display: none;
+
+    @extend %error;
+  }
+
+  &__error-icon {
+
+    @extend %error-icon;
+  }
+
+  &__message {
+
+    @extend %error-message;
+
+    &--error {
+      max-height: 75px;
+    }
   }
 
   &:focus-within,
   &--filled {
     .backoffice-textarea {
+      &__content {
+        padding-top: $top-size;
+      }
+
       &__label {
         left: s(1);
-        transform: translate(0, -5px) scale(0.75);
+        transform: translate(0, -25%) scale(0.75);
         width: calc(135% - #{s(3)});
       }
 
@@ -102,7 +129,7 @@ $ease: get($tween, 'slide');
       }
 
       &__icon-area {
-        height: 50px;
+        height: $top-size;
         top: $top-size;
         width: s(2);
       }
@@ -115,6 +142,11 @@ $ease: get($tween, 'slide');
 
   &:focus-within {
     .backoffice-textarea {
+      &__content {
+        padding-top: $top-size;
+        transition: padding-top get($tween, 'slide') 0.2s;
+      }
+
       &__required {
 
         @extend %required-focused;
@@ -155,7 +187,7 @@ $ease: get($tween, 'slide');
         .backoffice-textarea {
           &__label {
             left: s(1);
-            transform: translate(0, -100%) scale(0.75);
+            transform: translate(0, -25%) scale(0.75);
             width: calc(135% - #{s(3)});
           }
 

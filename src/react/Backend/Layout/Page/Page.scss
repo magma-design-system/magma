@@ -31,7 +31,7 @@ $grid-width: 300px;
   &--tmpl-single-column-form {
     grid-template-columns: 1fr;
 
-    @include media('desktop') {
+    @include media('large') {
       grid-template-columns: 2fr 1fr;
     }
   }
@@ -69,7 +69,11 @@ $grid-width: 300px;
     background-color: color('adjust.tone', '20');
     grid-column: -1 / 1;
     max-width: 100vw;
-    padding: 0 s(1);
+    padding: 0;
+
+    @include media('tablet') {
+      padding: 0 s(1);
+    }
 
     @include media('desktop') {
       grid-column: auto;
@@ -80,8 +84,12 @@ $grid-width: 300px;
 
   &__content {
     background-color: color('adjust.tone', '19');
-    border-radius: s(1) s(1) 0 0;
+    border-radius: 0;
     padding: s(1);
+
+    @include media('tablet') {
+      border-radius: s(1) s(1) 0 0;
+    }
 
     @include media('desktop') {
       padding: s(2);

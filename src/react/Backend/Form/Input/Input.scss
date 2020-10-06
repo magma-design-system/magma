@@ -2,6 +2,7 @@
 @import './extends';
 
 $top-size: 50px;
+$required-size: 90px;
 $size-opened: 100px;
 $size-focused: $size-opened - $top-size;
 $ease: get($tween, 'slide');
@@ -12,6 +13,13 @@ $ease: get($tween, 'slide');
 
   min-height: $size-opened;
 
+  &__content {
+    padding-top: 0;
+    position: relative;
+    transition: padding-top get($tween, 'slide');
+    z-index: 1;
+  }
+
   &__label {
 
     @extend %label;
@@ -19,7 +27,7 @@ $ease: get($tween, 'slide');
     left: s(1);
     padding-bottom: s(0.125);
     position: absolute;
-    transform: translate(0, -85%);
+    top: s(1);
     transition: left $ease 0.1s, transform $ease 0.1s, width $ease 0.1s;
     width: calc(100% - #{s(2)});
 
@@ -59,7 +67,6 @@ $ease: get($tween, 'slide');
 
     @extend %field;
 
-    border: 0;
     height: $size-opened;
     padding-left: s(1);
     padding-right: s(1);
@@ -71,16 +78,39 @@ $ease: get($tween, 'slide');
     }
   }
 
-  &__errors {
-    display: none;
+  &__error {
+
+    @extend %error;
+  }
+
+  &__error-icon {
+
+    @extend %error-icon;
+  }
+
+  &__message {
+
+    @extend %error-message;
+  }
+
+  &--has-errors {
+    .backoffice-input {
+      &__message {
+        max-height: 75px;
+      }
+    }
   }
 
   &:focus-within,
   &--filled {
     .backoffice-input {
+      &__content {
+        padding-top: $top-size;
+      }
+
       &__label {
         left: s(1);
-        transform: translate(0, -100%) scale(0.75);
+        transform: translate(0, -25%) scale(0.75);
         width: calc(135% - #{s(3)});
       }
 
@@ -100,8 +130,8 @@ $ease: get($tween, 'slide');
       }
 
       &__icon-area {
-        line-height: $size-focused;
-        top: $size-focused;
+        line-height: $top-size;
+        top: $top-size;
         width: s(2);
       }
 
@@ -113,6 +143,11 @@ $ease: get($tween, 'slide');
 
   &:focus-within {
     .backoffice-input {
+      &__content {
+        padding-top: $top-size;
+        transition: padding-top get($tween, 'slide') 0.2s;
+      }
+
       &__required {
 
         @extend %required-focused;
@@ -153,7 +188,7 @@ $ease: get($tween, 'slide');
         .backoffice-input {
           &__label {
             left: s(1);
-            transform: translate(0, -100%) scale(0.75);
+            transform: translate(0, -25%) scale(0.75);
             width: calc(135% - #{s(3)});
           }
 
