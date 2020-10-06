@@ -8,7 +8,6 @@ import { createMenuList, findMenuItem, getPageData } from '@Gatsby/Pattern/Navig
 import Bibliography from '@Element/Bibliography/Bibliography'
 import Button from '@Element/Button/Button'
 import Code from '@Element/Code/Code'
-import CodeSnippet from '@Element/CodeSnippet/CodeSnippet'
 import Grid from '@Layout/Grid/Grid'
 import H1 from '@Typography/H1/H1'
 import H2 from '@Typography/H2/H2'
@@ -35,7 +34,6 @@ import { defineCustomElements as deckDeckGoHighlightElement } from '@deckdeckgo/
 const shortcodes = {
   Button,
   Code,
-  CodeSnippet,
   Grid,
   H1,
   H2,
