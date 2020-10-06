@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useState } from 'react'
 import PropTypes from 'prop-types'
 
 import './Page.scss'
@@ -71,10 +71,11 @@ PageFooter.defaultProps = {
 }
 
 const Page = props => {
+  const [isOpened, onClick] = useState(false)
   return (
-    <Grid className={`backoffice-page ${props.isOpened ? 'backoffice-page--menu-opened' : ''}`} gutter="none" template="backoffice">
-      <div className="backoffice-page__close" onClick={props.onClick}>
-        <Icon name={props.isOpened ? 'close' : 'menu'}/>
+    <Grid className={`backoffice-page ${isOpened ? 'backoffice-page--menu-opened' : ''}`} gutter="none" template="backoffice">
+      <div className="backoffice-page__close" onClick={() => onClick(!isOpened)}>
+        <Icon name={isOpened ? 'close' : 'menu'}/>
       </div>
       <Grid htmlTag="aside" className="backoffice-page__aside" template="backoffice-aside">
         <PageLogo className="backoffice-page__logo">
