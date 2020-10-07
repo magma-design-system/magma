@@ -23,7 +23,7 @@ const Textarea = props =>
           <Icon className={`backoffice-textarea__icon ${props.iconClassName !== '' ? props.iconClassName : ''}`} name={props.icon}/>
         </div>
       }
-      <textarea className="backoffice-textarea__field text-secondary text-secondary--paragraph" name={props.name} placeholder={props.placeholder}>
+      <textarea className="backoffice-textarea__field text-secondary text-secondary--paragraph" name={props.name} placeholder={props.placeholder} defaultValue={props.value} onChange={props.onChange}>
         {props.children}
       </textarea>
     </div>
@@ -44,6 +44,7 @@ Textarea.propTypes = {
   iconClassName: PropTypes.string,
   label: PropTypes.string,
   name: PropTypes.string,
+  onChange: PropTypes.func,
   placeholder: PropTypes.string,
   required: PropTypes.bool,
   theme: PropTypes.string,
@@ -56,6 +57,7 @@ Textarea.defaultProps = {
   iconClassName: '',
   label: '',
   name: 'unset',
+  onChange: () => {},
   placeholder: '',
   required: false,
 }
