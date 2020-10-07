@@ -155,7 +155,7 @@ async function iconGroupGetHelper (iconGroup, directories, iconName, filename) {
   for (const directory of directories) {
     const path = await searchFileInDirectory(directory, filename)
     if (path) {
-      console.debug(`Found ${iconGroup}/${iconName} -> ${path}`)
+      // console.debug(`Found ${iconGroup}/${iconName} -> ${path}`)
       return path
     }
   }

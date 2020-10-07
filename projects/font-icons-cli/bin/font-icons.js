@@ -23,7 +23,7 @@ function main (parameters) {
 
   const inputFilePath = path.join(process.cwd(), inputFile)
   const inputData = require(inputFilePath)
-  console.debug('Input data:', inputData)
+  // console.debug('Input data:', inputData)
 
   const fontName = path.basename(inputFilePath, path.extname(inputFilePath))
 
@@ -60,7 +60,7 @@ function iconsToTempFolder (inputData) {
     const destinationPath = path.join(BUILD_SVG_DIR, `${key}.svg`)
 
     const promise = sourcePathPromise.then(sourcePath => {
-      console.debug('Copying', sourcePath, '->', destinationPath)
+      // console.debug('Copying', sourcePath, '->', destinationPath)
       fs.copyFile(sourcePath, destinationPath)
         .catch(error => {
           console.error('Build directive creation failed.', error)
@@ -70,6 +70,10 @@ function iconsToTempFolder (inputData) {
     promises.push(promise)
   }
   return Promise.all(promises)
+    .then(copyResult => {
+      console.log('SVG files copied')
+      return copyResult
+    })
     .catch(error => {
       console.error('One or more icons not found.')
       if (Array.isArray(error)) error.forEach(error => console.error('-', error))
