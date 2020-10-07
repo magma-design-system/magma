@@ -9,6 +9,7 @@
   "do": "done",
   "dont": "block",
   "dot": "fiber_manual_record",
+  "download": "cloud_download",
   "contentTitle": "short_text",
   "contentDescription": "subject",
   "email": "email",
