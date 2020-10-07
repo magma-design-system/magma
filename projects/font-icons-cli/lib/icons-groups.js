@@ -46,16 +46,15 @@ class Maggioli {
 }
 
 class Material {
-  static ICONS_DIR = path.dirname(require.resolve('material-design-icons/package.json'))
-  static FILE_NAME_REGEX = /^ic_([\w-_]+)_48px\.svg$/
+  static ICONS_DIR = `${path.dirname(require.resolve('material-design-icons-updated/package.json'))}/icons/outline`
+  static FILE_NAME_REGEX = /^ic_([\w-_]+)_24px\.svg$/
 
   /**
    * List of paths of subdirectories (possibly) with icons
    * @return {Promise<string[]>}
    */
   static async subDirectories () {
-    return (await subDirectories(this.ICONS_DIR))
-      .map(subdir => `${subdir}/svg/production`)
+    return subDirectories(this.ICONS_DIR)
   }
 
   /**
@@ -65,7 +64,7 @@ class Material {
    */
   static async getPath (iconName) {
     const subdirectories = await Material.subDirectories()
-    const filename = `ic_${iconName}_48px.svg`
+    const filename = `ic_${iconName}_24px.svg`
 
     return iconGroupGetHelper('material', subdirectories, iconName, filename)
   }
