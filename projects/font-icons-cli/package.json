@@ -1,6 +1,6 @@
 {
   "name": "@maggioli-common/font-icons-cli",
-  "version": "0.0.6",
+  "version": "0.0.7",
   "description": "Font icons CLI, part of Maggioli design system",
   "publishConfig": {
     "registry": "http://nexus.maggioli.it:8081/repository/npm/"

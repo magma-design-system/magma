@@ -46,7 +46,7 @@ class Maggioli {
 }
 
 class Material {
-  static ICONS_DIR = `${path.dirname(require.resolve('material-design-icons-updated/package.json'))}/icons/outline`
+  static ICONS_DIR = `${path.dirname(require.resolve('material-design-icons-updated/package.json'))}/icons/filled`
   static FILE_NAME_REGEX = /^ic_([\w-_]+)_24px\.svg$/
 
   /**
