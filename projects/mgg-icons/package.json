@@ -1,6 +1,6 @@
 {
   "name": "@maggioli-common/mgg-icons",
-  "version": "0.0.4",
+  "version": "0.0.5",
   "description": "Maggioli font icons, part of Maggioli design system",
   "main": "index.js",
   "publishConfig": {
@@ -50,6 +50,9 @@
   ],
   "license": "ISC",
   "devDependencies": {
-    "@maggioli-common/font-icons-cli": "0.0.6"
+    "@maggioli-common/font-icons-cli": "0.0.7"
+  },
+  "dependencies": {
+    "material-design-icons-updated": "^6.1.0"
   }
 }

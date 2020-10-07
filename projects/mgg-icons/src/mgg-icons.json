@@ -62,9 +62,11 @@
   "tag": "material/local_offer",
   "time-calendar": "material/calendar_today",
   "travel-car": "material/directions_car",
+  "user": "material/person",
   "user-mention": "material/alternate_email",
   "user-offline": "material/panorama_fish_eye",
   "user-online": "material/lens",
-  "weather": "material/calculate",
+  "weather": "material/filter_drama",
+  "health-mask": "material/masks",
   "work-project": "material/work"
 }
