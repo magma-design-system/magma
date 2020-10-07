@@ -1,20 +1,16 @@
 !src/scss/variables/theme.scss
 .DS_Store
-.react/
+.cache
+.idea
+.react
+.vscode
 /out*
+/public/
 /src/scss/variables/*.scss
 /src/style-dictionary/build
-node_modules/
-npm-debug.log
-dist/
-build/
-
-# Intellij
-/.idea/
-
-# Gatsby
-/public/
-/.cache/
-
-# Storybook
+/src/style-dictionary/properties/color
 /storybook-static
+build
+dist
+node_modules
+*.log
