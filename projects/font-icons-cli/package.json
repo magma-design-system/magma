@@ -1,6 +1,6 @@
 {
   "name": "@maggioli-common/font-icons-cli",
-  "version": "0.0.5",
+  "version": "0.0.6",
   "description": "Font icons CLI, part of Maggioli design system",
   "publishConfig": {
     "registry": "http://nexus.maggioli.it:8081/repository/npm/"
@@ -47,7 +47,7 @@
   },
   "dependencies": {
     "@fortawesome/fontawesome-free": "^5.14.0",
-    "material-design-icons": "^3.0.1",
+    "material-design-icons-updated": "^6.1.0",
     "svgtofont": "^3.1.1"
   }
 }
