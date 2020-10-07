@@ -50,6 +50,6 @@
   ],
   "license": "ISC",
   "devDependencies": {
-    "@maggioli-common/font-icons-cli": "0.0.5"
+    "@maggioli-common/font-icons-cli": "0.0.6"
   }
 }
