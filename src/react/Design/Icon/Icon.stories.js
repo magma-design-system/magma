@@ -1,11 +1,11 @@
 import React from 'react'
 import PropTypes from 'prop-types'
 import faker from 'faker'
-
-import icons from './dictionary.json'
 import Icon from '@Design/Icon/Icon'
 import Grid from '@Layout/Grid/Grid'
-import Hack from '@Typography/Hack/Hack'
+import mggIconsDictionary from '£Project/mgg-icons/src/mgg-icons.json'
+
+import './Icon.stories.scss'
 faker.locale = 'it'
 
 export default {
@@ -14,9 +14,9 @@ export default {
 }
 
 const IconRow = props =>
-  <Grid gutter="xsmall">
+  <Grid className="icon-item" gutter="xsmall" htmlTag="label">
     <div><Icon {...props} /></div>
-    <Hack className="color-adjust-tone-c-08">{props.name}</Hack>
+    <input onFocus={event => event.target.select()} className="icon-input text-mono text-mono--hack color-adjust-tone-c-08" type="text" readOnly={true} value={props.name} />
   </Grid>
 
 IconRow.propTypes = {
@@ -27,7 +27,7 @@ IconRow.defaultProps = {
   name: '',
 }
 
-const iconDictionary = Object.entries(icons).map(([key, value]) =>
+const iconDictionary = Object.entries(mggIconsDictionary).map(([key, value]) =>
   <IconRow key={key} name={key}/>,
 )
 

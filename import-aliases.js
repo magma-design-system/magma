@@ -2,8 +2,8 @@ const path = require('path')
 
 module.exports = {
   '#Assets': path.resolve(__dirname, 'src/assets/'),
-  '+Tokens': path.resolve(__dirname, 'src/style-dictionary/'),
   '+Package': path.resolve(__dirname, './'),
+  '+Tokens': path.resolve(__dirname, 'src/style-dictionary/'),
   '@App': path.resolve(__dirname, 'src/react/app/'),
   '@Backoffice': path.resolve(__dirname, 'src/react/Backoffice/'),
   '@Design': path.resolve(__dirname, 'src/react/Design/'),
@@ -17,4 +17,5 @@ module.exports = {
   '@Template': path.resolve(__dirname, 'src/react/System/Template/'),
   '@Typography': path.resolve(__dirname, 'src/react/Design/Typography/'),
   '~Sass': path.resolve(__dirname, 'src/scss/'),
+  '£Project': path.resolve(__dirname, 'projects/'),
 }

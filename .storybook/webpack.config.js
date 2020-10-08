@@ -2,6 +2,8 @@ const path = require('path')
 const autoprefixer = require('autoprefixer')
 const aliases = require('../import-aliases')
 
+const localhostPort = 7177
+
 // Export a function. Accept the base config as the only param.
 module.exports = async ({ config, mode }) => {
   // `mode` has a value of 'DEVELOPMENT' or 'PRODUCTION'
@@ -12,9 +14,9 @@ module.exports = async ({ config, mode }) => {
     test: /\.scss$/,
     include: path.resolve(__dirname, '../'),
     use: [{
-      loader: "style-loader"
+      loader: 'style-loader'
     }, {
-      loader: "css-loader",
+      loader: 'css-loader',
       options: {
         sourceMap: true
       }
@@ -24,25 +26,15 @@ module.exports = async ({ config, mode }) => {
         plugins: () => [ autoprefixer() ]
       }
     }, {
-      loader: "sass-loader",
+      loader: 'sass-loader',
       options: {
         sourceMap: true,
       }
     }]
   })
-    config.module.rules.push({
-      test: /\.(ttf|woff|woff2|eot|otf)$/,
-      exclude: /node_modules/,
-      use: ['file-loader']
-    })
 
-    // config.module.rules.push({
-    //   test: /\.(jpeg|png|jpg|svg)$/,
-    //   loader: 'file-loader?name=img/[name].[ext]',
-    // })
+  config.resolve.alias = aliases
 
-    config.resolve.alias = aliases
-
-    // Return the altered config
-    return config
+  // Return the altered config
+  return config
 }

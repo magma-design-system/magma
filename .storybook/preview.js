@@ -6,7 +6,7 @@ import Page from '@Gatsby/Page/Page'
 
 // vendors
 import '../node_modules/normalize.css/normalize.css'
-import '../node_modules/material-design-icons/iconfont/material-icons.css'
+import '../projects/mgg-icons/build/fonts/mgg-icons.css'
 import '../node_modules/typeface-karla/index.css'
 import '../node_modules/typeface-roboto/index.css'
 

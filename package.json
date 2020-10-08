@@ -8,6 +8,7 @@
     "build:lib": "npm run tokens && build-storybook -o design-lib",
     "build:storybook": "build-storybook",
     "deploy": "storybook-to-ghpages",
+    "storybook-debug" : "npm run tokens && start-storybook --debug-webpack -p 7177",
     "storybook": "npm run tokens && start-storybook -p 7177",
     "lint": "npm run lint:js && npm run lint:sass",
     "lint:js": "eslint src/react/**/*.{js,jsx} --fix",

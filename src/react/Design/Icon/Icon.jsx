@@ -2,17 +2,21 @@ import React from 'react'
 import PropTypes from 'prop-types'
 import './Icon.scss'
 
-import dictionary from './dictionary.json'
+// import dictionary from './dictionary.json'
+import mggIconsDictionary from '£Project/mgg-icons/src/mgg-icons.json'
+const dictionary = Object.keys(mggIconsDictionary)
 
-// todo: https://www.npmjs.com/package/svgtofont
-// todo: https://www.npmjs.com/package/svg-font-create
-// todo: https://www.npmjs.com/package/svg-to-iconfont
-// todo: https://www.meziantou.net/creating-a-fontawesome-bundle-with-only-the-icons-you-use.htm
-// todo: https://vuetifyjs.com/en/customization/icons/
-// todo: https://stackoverflow.com/questions/57552261/vuetifyjs-adding-only-used-icons-to-build#answer-57552882
+console.log(dictionary)
 
-const Icon = props =>
-  <i title={dictionary[props.name] ? '' : 'Warning: property "name" not set'} className={`material-icons icon ${(props.size ? 'icon--' + props.size : '')} ${props.className}`}>{(dictionary[props.name] ? dictionary[props.name] : dictionary.missingIcon)}</i>
+const Icon = props => {
+  let icon = 'mgg-icons-status-warning'
+  let notFound = true
+  if (dictionary.includes(props.name)) {
+    icon = `mgg-icons-${props.name}`
+    notFound = false
+  }
+  return <i title={notFound ? `Warning, icon "${icon}" not found` : ''} className={`mgg-icons ${icon} icon ${(props.size ? 'icon--' + props.size : '')} ${props.className}`}></i>
+}
 
 Icon.propTypes = {
   className: PropTypes.string,
