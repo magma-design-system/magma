@@ -30,7 +30,7 @@ InputPassword.propTypes = {
 
 InputPassword.defaultProps = {
   autoComplete: 'off',
-  icon: 'password',
+  icon: 'security-password',
   iconClassName: '',
   name: 'password',
   onChange: () => {},

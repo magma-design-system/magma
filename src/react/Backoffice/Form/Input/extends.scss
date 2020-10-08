@@ -77,7 +77,11 @@
 
 %icon {
   color: color('brand-maggioli', '05');
-  font-size: 40px;
+  font-size: 40px !important;
+}
+
+%icon-focused {
+  font-size: 24px !important;
 }
 
 %error {

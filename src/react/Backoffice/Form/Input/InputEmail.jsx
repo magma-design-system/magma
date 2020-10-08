@@ -30,7 +30,7 @@ InputEmail.propTypes = {
 
 InputEmail.defaultProps = {
   autoComplete: 'off',
-  icon: 'email',
+  icon: 'document-email',
   iconClassName: '',
   name: 'email',
   onChange: () => {},

@@ -11,6 +11,7 @@
   &__icon-area {
     align-items: center;
     display: flex;
+    flex-shrink: 0;
     justify-content: center;
     min-width: s(2.5);
   }
@@ -18,6 +19,9 @@
   &__info {
     display: flex;
     flex-direction: column;
+    flex-grow: 1;
+    margin-left: s(0.5);
+    min-width: 0;
   }
 
   &__name {
@@ -44,7 +48,11 @@
 
   &__description {
     color: color('adjust.tone', '10');
+    flex: 1;
     margin-left: s(0.25);
+    min-width: 50px;
+    overflow: hidden;
+    text-overflow: ellipsis;
     white-space: nowrap;
   }
 }

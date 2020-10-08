@@ -22,7 +22,7 @@ const PageHeader = props =>
       <H1>{props.children}</H1>
       <H6 className="color-adjust-tone-08">{props.description}</H6>
     </div>
-    <InputSearch onChange={props.onChange} className="backoffice-page-content-header__search" icon="search" placeholder="Cerca..." value={props.value}/>
+    <InputSearch onChange={props.onChange} className="backoffice-page-content-header__search" icon="data-search" placeholder="Cerca..." value={props.value}/>
   </Grid>
 
 PageHeader.propTypes = {
@@ -42,7 +42,7 @@ const PageLogo = props =>
     <Image src={logoMaggioli} className="backoffice-page-aside-header__logo"/>
     <div className="backoffice-page-aside-header__contents">
       <H4 className="backoffice-page-aside-header__title">{props.children}</H4>
-      <Caption className="backoffice-page-aside-header__sub-title">DS data entry</Caption>
+      <Caption className="backoffice-page-aside-header__sub-title">Gruppo Maggioli</Caption>
     </div>
   </header>
 

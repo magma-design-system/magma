@@ -14,7 +14,7 @@ const FileImage = props => {
     <div onClick={() => clickHandler(!clicked)} className={`backoffice-file-image ${clicked ? 'backoffice-file-image--uploaded' : ''} ${props.icon !== '' ? 'backoffice-file-image--has-icon' : ''} ${props.error ? 'backoffice-file-image--has-errors' : ''} ${props.className}`}>
       <input type="file" className="backoffice-file-image__field"/>
       <div className="backoffice-file-image__image" style={{ backgroundImage: `url('${fakeImage}')` }}>
-        <Button className="backoffice-file-image__delete" icon="delete" />
+        <Button className="backoffice-file-image__delete" icon="crud-delete" />
       </div>
       <div className="backoffice-file-image__fake-field">
         {props.required &&
@@ -61,7 +61,7 @@ FileImage.propTypes = {
 
 FileImage.defaultProps = {
   className: '',
-  icon: 'file',
+  icon: 'media-image',
   name: 'unassigned',
   onChange: value => { return value },
   onClick: () => {},

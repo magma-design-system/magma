@@ -135,7 +135,8 @@ $ease: get($tween, 'slide');
       }
 
       &__icon {
-        font-size: 24px;
+
+        @extend %icon-focused;
       }
     }
   }

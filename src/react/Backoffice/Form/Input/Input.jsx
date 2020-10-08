@@ -29,7 +29,7 @@ const Input = props =>
     {props.error &&
         <div className="backoffice-input__message">
           <Paragraph htmlTag="div" className="backoffice-input__error">
-            <Icon className="backoffice-input__error-icon" name="statusError"/>
+            <Icon className="backoffice-input__error-icon" name="status-error"/>
             <div className="backoffice-input__error-text">{props.error}</div>
           </Paragraph>
         </div>
