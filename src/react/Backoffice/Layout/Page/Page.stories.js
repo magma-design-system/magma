@@ -32,19 +32,19 @@ const PageTemplate = props =>
     menu={
       <Menu>
         <MenuItem>
-          <MenuItemTitle icon="book">Libri</MenuItemTitle>
-          <MenuItemAction icon="list" to="/edit">Gestisci</MenuItemAction>
-          <MenuItemAction active={true} icon="add" to="/new">Aggiungi</MenuItemAction>
+          <MenuItemTitle icon="document-book">Libri</MenuItemTitle>
+          <MenuItemAction icon="data-view" to="/edit">Gestisci</MenuItemAction>
+          <MenuItemAction active={true} icon="data-add" to="/new">Aggiungi</MenuItemAction>
         </MenuItem>
         <MenuItem>
-          <MenuItemTitle icon="code">Codici</MenuItemTitle>
-          <MenuItemAction icon="list" to="/edit">Gestisci</MenuItemAction>
-          <MenuItemAction icon="add" to="/new">Genera</MenuItemAction>
+          <MenuItemTitle icon="security-code">Codici</MenuItemTitle>
+          <MenuItemAction icon="data-view" to="/edit">Gestisci</MenuItemAction>
+          <MenuItemAction icon="data-add" to="/new">Genera</MenuItemAction>
         </MenuItem>
         <MenuItem>
-          <MenuItemTitle icon="users">Utenti</MenuItemTitle>
-          <MenuItemAction icon="list" to="/edit">Gestisci</MenuItemAction>
-          <MenuItemAction icon="add" to="/new">Aggiungi</MenuItemAction>
+          <MenuItemTitle icon="user-groups">Utenti</MenuItemTitle>
+          <MenuItemAction icon="data-view" to="/edit">Gestisci</MenuItemAction>
+          <MenuItemAction icon="data-add" to="/new">Aggiungi</MenuItemAction>
         </MenuItem>
       </Menu>
     }
