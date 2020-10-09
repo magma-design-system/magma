@@ -50,7 +50,7 @@
   ],
   "license": "ISC",
   "devDependencies": {
-    "@maggioli-common/font-icons-cli": "0.0.7"
+    "@maggioli-common/font-icons-cli": "0.0.9"
   },
   "dependencies": {
     "material-design-icons-updated": "^6.1.0"
