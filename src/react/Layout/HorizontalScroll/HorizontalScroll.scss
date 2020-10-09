@@ -4,10 +4,8 @@
 
   @extend %scroll;
 
-  display: block;
   display: flex;
   overflow: auto;
-  scroll-snap-type: x mandatory;
 
   &::after,
   &::before {
@@ -21,6 +19,10 @@
     }
   }
 
+  &__item {
+    flex-shrink: 0;
+  }
+
   &--outer-margin {
     &::after,
     &::before {
@@ -28,13 +30,25 @@
     }
   }
 
-  &__item {
-    flex-shrink: 0;
-    margin-right: s(1);
-    scroll-snap-align: center;
+  &--inner-margin {
+    .horizontal-scroll {
+      &__item {
+        margin-right: s(1);
 
-    &:last-child {
-      margin-right: 0;
+        &:last-child {
+          margin-right: 0;
+        }
+      }
+    }
+  }
+
+  &--smooth {
+    scroll-snap-type: x mandatory;
+
+    .horizontal-scroll {
+      &__item {
+        scroll-snap-align: center;
+      }
     }
   }
 }

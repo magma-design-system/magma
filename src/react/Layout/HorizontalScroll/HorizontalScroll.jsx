@@ -3,7 +3,7 @@ import PropTypes from 'prop-types'
 import './HorizontalScroll.scss'
 
 const HorizontalScroll = props =>
-  <div className={`horizontal-scroll ${props.className} ${props.outerMargin ? 'horizontal-scroll--outer-margin' : ''}`}>
+  <div className={`horizontal-scroll ${props.className} ${props.smooth ? 'horizontal-scroll--smooth' : ''} ${props.innerMargin ? 'horizontal-scroll--inner-margin' : ''} ${props.outerMargin ? 'horizontal-scroll--outer-margin' : ''}`}>
     {
       React.Children.map(props.children, (child, index) => {
         return React.cloneElement(child, {
@@ -16,12 +16,16 @@ const HorizontalScroll = props =>
 
 HorizontalScroll.propTypes = {
   className: PropTypes.string,
+  innerMargin: PropTypes.bool,
   outerMargin: PropTypes.bool,
+  smooth: PropTypes.bool,
 }
 
 HorizontalScroll.defaultProps = {
   className: '',
+  innerMargin: false,
   outerMargin: false,
+  smooth: false,
 }
 
 export default HorizontalScroll
