@@ -44,18 +44,18 @@
     "zip": { "format": "archive", "description": "Archivio compresso" }
   },
   "format": {
-    "archive": { "color": "color-adjust-tone-18", "background": "background-color-adjust-tone-04", "icon": "fileArchive" },
-    "attachment": { "color": "color-adjust-tone-08", "background": "background-color-adjust-tone-18", "icon": "file" },
-    "audio": { "color": "color-brand-maggioli-08", "background": "background-color-brand-maggioli-18", "icon": "fileAudio" },
-    "document": { "color": "color-status-error-08", "background": "background-color-status-error-18", "icon": "fileDocument" },
-    "executable": { "color": "color-status-error-08", "background": "background-color-status-error-18", "icon": "fileExecutable" },
-    "email": { "color": "color-status-error-08", "background": "background-color-status-error-18", "icon": "email" },
-    "image": { "color": "color-status-success-08", "background": "background-color-status-success-18", "icon": "fileImage" },
-    "markup": { "color": "color-status-warning-08", "background": "background-color-status-warning-18", "icon": "global" },
-    "slide": { "color": "color-status-warning-08", "background": "background-color-status-warning-18", "icon": "fileSlide" },
-    "spreadsheet": { "color": "color-status-success-08", "background": "background-color-status-success-18", "icon": "fileSpreadsheet" },
-    "text": { "color": "color-status-error-08", "background": "background-color-status-error-18", "icon": "fileText" },
-    "code": { "color": "color-status-warning-08", "background": "background-color-status-warning-18", "icon": "fileCode" },
-    "video": { "color": "color-status-error-08", "background": "background-color-status-error-18", "icon": "fileVideo" }
+    "markup": { "color": "color-adjust-tone-08", "background": "background-color-adjust-tone-18", "icon": "document-web" },
+    "attachment": { "color": "color-adjust-tone-08", "background": "background-color-adjust-tone-18", "icon": "file-attachment" },
+    "audio": { "color": "color-brand-maggioli-08", "background": "background-color-brand-maggioli-18", "icon": "media-audio" },
+    "document": { "color": "color-status-error-08", "background": "background-color-status-error-18", "icon": "file-document" },
+    "executable": { "color": "color-status-error-08", "background": "background-color-status-error-18", "icon": "file-executable" },
+    "email": { "color": "color-status-error-08", "background": "background-color-status-error-18", "icon": "file-email" },
+    "image": { "color": "color-status-success-08", "background": "background-color-status-success-18", "icon": "media-image" },
+    "archive": { "color": "color-status-warning-08", "background": "background-color-status-warning-18", "icon": "file-archive" },
+    "slide": { "color": "color-status-warning-08", "background": "background-color-status-warning-18", "icon": "device-tv" },
+    "spreadsheet": { "color": "color-status-success-08", "background": "background-color-status-success-18", "icon": "document-spreadsheet" },
+    "text": { "color": "color-status-error-08", "background": "background-color-status-error-18", "icon": "document-text" },
+    "code": { "color": "color-adjust-tone-08", "background": "background-color-adjust-tone-18", "icon": "dev-terminal" },
+    "video": { "color": "color-status-error-08", "background": "background-color-status-error-18", "icon": "media-video" }
   }
 }

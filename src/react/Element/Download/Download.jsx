@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useState } from 'react'
 import PropTypes from 'prop-types'
 import './Download.scss'
 import Icon from '@Design/Icon/Icon'
@@ -25,19 +25,20 @@ const Download = props => {
   const name = getName(props.fileName, extension)
   const { description, format } = getExtensionInfos(extension)
   const { background, color, icon } = dictionary.format[format]
+  const [isDownloaded, setState] = useState(false)
 
   return (
-    <a href={props.href} title={props.fileName} className={`download ${props.className}`}>
+    <a href={props.href} onClick={() => { setState(true) }} title={props.fileName} className={`download ${props.className}`}>
       <div className="download__icon-area">
-        <Icon name={icon} className={`download__icon ${color}`}/>
+        <Icon name={`${isDownloaded ? 'status-success' : icon}`} className={`download__icon ${color}`}/>
       </div>
       <div className="download__info">
         <H5 htmlTag="div" className="download__name">
           <div className="download__file-name">{name}</div>
-          {extension !== name && <div className="download__file-ext">.{extension}</div>}
+          {extension !== name && extension !== 'default' && <div className="download__file-ext">.{extension}</div>}
         </H5>
         <div className="download__detail">
-          <LabelCaption className={`download__format ${color} ${background}`}>{extension}</LabelCaption>
+          {extension !== 'default' && <LabelCaption className={`download__format ${color} ${background}`}>{extension}</LabelCaption> }
           <Caption className="download__description">{description}</Caption>
         </div>
       </div>
