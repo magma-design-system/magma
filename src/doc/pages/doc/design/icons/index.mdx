@@ -1,0 +1,45 @@
+---
+title: 'Icone'
+date: '2020-09-25'
+---
+
+Le icone che utilizziamo si chiamano `mgg-icons`, al momento sono incluse dentro al [repo del Design System][ds] qui:
+
+---
+
+Per installare il pacchetto `mgg-icons` è necessario eseguire questo comando da terminale:
+
+```bash
+npm install --save @maggioli-common/mgg-icons
+```
+
+Questo comando intalla dentro le dipendenze node questi file:
+
+```bash
+@maggioli-common/mgg-icons/build/fonts
+
+index.html
+mgg-icons.css
+mgg-icons.eot
+mgg-icons.scss
+mgg-icons.svg
+mgg-icons.symbol.svg
+mgg-icons.ttf
+mgg-icons.woff
+mgg-icons.woff2
+symbol.html
+unicode.html
+```
+
+Se installato nel posto giusto, il design system dovrebbe riuscire ad includere automaticamente il set di icone per [Storybook][storybook].
+
+Quindi tramite storybook è possibile vedere se tutto funziona da qui:
+
+```bash
+npm run storybook
+```
+
+Una volta installato il pacchetto
+
+[ds]: https://git.maggioli.it/ricerca-sviluppo-new-media/design-system
+[storybook]: http://localhost:7177/iframe.html?id=design-icon--dictionary
