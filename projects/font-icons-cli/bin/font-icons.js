@@ -129,7 +129,7 @@ function buildFont ({ svgPath, outputPath, fontName } = {}) {
       title: pkg.name,
       description: pkg.description,
       version: pkg.version,
-      logo: path.resolve(ROOT_PATH_DIR, 'svg', 'smartphone.svg'),
+      logo: path.resolve(ROOT_PATH_DIR, 'svg', 'isbn.svg'),
       favicon: null,
       meta: {
         description: pkg.description,
