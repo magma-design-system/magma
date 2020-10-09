@@ -17,11 +17,10 @@ main(process.argv.slice(2))
  * @param parameters {string[]} Input parameters
  * @return {void}
  */
-function main (parameters) {
-  const inputFile = parameters[0]
-  console.debug('Input file:', inputFile)
+function main(parameters) {
+  console.debug('Input file:', parameters[0])
 
-  const inputFilePath = path.join(process.cwd(), inputFile)
+  const inputFilePath = path.join(process.cwd(), parameters[0])
   const inputData = require(inputFilePath)
   // console.debug('Input data:', inputData)
 
@@ -38,7 +37,7 @@ function main (parameters) {
  * Crea la cartella di lavoro per la build
  * @return {Promise<void>}
  */
-function createBuildDirective () {
+function createBuildDirective() {
   return fs.mkdir(BUILD_SVG_DIR, { recursive: true })
     .then(() => console.debug('Build directive created in', BUILD_SVG_DIR))
     .catch(error => {
@@ -95,7 +94,7 @@ function iconSelectorToObject (iconSelector) {
 
   return {
     group: array[0],
-    name: array[1]
+    name: array[1],
   }
 }
 
@@ -113,7 +112,7 @@ function iconSelectorToObject (iconSelector) {
  * @param {BuildFontOptions} options Configurazione del font
  * @return {Promise<void>}
  */
-function buildFont ({ svgPath, outputPath, fontName } = {}) {
+function buildFont({ svgPath, outputPath, fontName } = {}) {
   return svgtofont({
     src: svgPath,
     dist: outputPath, // output path
@@ -123,7 +122,7 @@ function buildFont ({ svgPath, outputPath, fontName } = {}) {
     // startNumber: 20000, // unicode start number
     svgicons2svgfont: {
       fontHeight: 1000,
-      normalize: true
+      normalize: true,
     },
     website: {
       title: pkg.name,
@@ -133,38 +132,38 @@ function buildFont ({ svgPath, outputPath, fontName } = {}) {
       favicon: null,
       meta: {
         description: pkg.description,
-        keywords: pkg.keywords.join(',')
+        keywords: pkg.keywords.join(','),
       },
       // Add a Github corner to your website
       corners: {
         url: pkg.repository.url,
         width: 62, // default: 60
         height: 62, // default: 60
-        bgColor: '#dc3545' // default: '#151513'
+        bgColor: '#dc3545', // default: '#151513'
       },
       links: [
         {
           title: 'Repository',
-          url: pkg.repository.url
+          url: pkg.repository.url,
         },
         {
           title: 'Feedback',
-          url: pkg.bugs.url
+          url: pkg.bugs.url,
         },
         {
           title: 'Font Class',
-          url: 'index.html'
+          url: 'index.html',
         },
         {
           title: 'Unicode',
-          url: 'unicode.html'
+          url: 'unicode.html',
         },
         {
           title: 'SVG Symbol',
-          url: 'symbol.html'
-        }
+          url: 'symbol.html',
+        },
       ],
-      footerInfo: 'Maggioli©.'
-    }
+      footerInfo: 'Maggioli©.',
+    },
   })
 }

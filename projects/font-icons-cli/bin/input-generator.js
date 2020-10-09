@@ -14,7 +14,7 @@ main(process.argv.slice(2))
  * @param parameters {string[]} Input parameters
  * @return {void}
  */
-function main (parameters) {
+function main(parameters) {
   const promises = Object.entries(ICON_GROUPS).map(iconGroupList)
   Promise.all(promises)
     .then(generateIcons)
@@ -27,10 +27,10 @@ function main (parameters) {
  * @param iconGroupLists
  * @return {{ group: , list: }[]}
  */
-function generateIcons (iconGroupLists) {
+function generateIcons(iconGroupLists) {
   return iconGroupLists
     .map(({ group, list }) => {
-      const getIconName = ICON_GROUPS[group].getIconName
+      const { getIconName } = ICON_GROUPS[group]
       return list.map(path => `${group}/${getIconName(path)}`)
     })
     .flat()
@@ -42,18 +42,18 @@ function generateIcons (iconGroupLists) {
  * @param group
  * @return {Promise<{list: string, group: }>}
  */
-function iconGroupList ([groupName, group]) {
+function iconGroupList([groupName, group]) {
   switch (groupName) {
-    case 'maggioli':
-    case 'material':
-    case 'fontawesome':
-      return group.listPath().then(list => ({ group: groupName, list }))
-    default:
-      throw new Error(`Group ${groupName} not found in icons-group.js`)
+  case 'maggioli':
+  case 'material':
+  case 'fontawesome':
+    return group.listPath().then(list => ({ group: groupName, list }))
+  default:
+    throw new Error(`Group ${groupName} not found in icons-group.js`)
   }
 }
 
-function generateInputFileFromIcons (icons) {
+function generateInputFileFromIcons(icons) {
   const inputObject = icons.reduce((acc, icon) => {
     acc[icon.replace('/', '-')] = icon
     return acc
