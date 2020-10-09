@@ -4,7 +4,6 @@ import faker from 'faker'
 
 import HorizontalScroll from '@Layout/HorizontalScroll/HorizontalScroll'
 import Grid from '@Layout/Grid/Grid'
-import Button from '@Form/Button/Button'
 import Paragraph from '@Typography/Paragraph/Paragraph'
 
 import './HorizontalScroll.stories.scss'
