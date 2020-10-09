@@ -1,6 +1,6 @@
 {
   "name": "@maggioli-common/mgg-icons",
-  "version": "0.0.5",
+  "version": "0.0.6",
   "description": "Maggioli font icons, part of Maggioli design system",
   "main": "index.js",
   "publishConfig": {
