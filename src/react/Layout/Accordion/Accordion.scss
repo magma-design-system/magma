@@ -1,6 +1,7 @@
 @import '~Sass/import-framework';
 
 $icon-size: s(2);
+$border-size: 3px;
 
 .accordion {
   background-color: color('adjust.tone', '18');
@@ -12,6 +13,8 @@ $icon-size: s(2);
 
   &__header {
     align-items: flex-start;
+    border-left: $border-size solid transparent;
+    border-right: $border-size solid transparent;
     display: flex;
     padding: s(1);
   }
@@ -29,16 +32,25 @@ $icon-size: s(2);
     align-items: center;
     background-color: color('adjust.tone');
     border-radius: $icon-size;
+    box-shadow: get($shadow, 'box');
+    cursor: pointer;
     display: flex;
     flex-shrink: 0;
     height: $icon-size;
     justify-content: center;
     margin-left: s(1);
+    transition: background-color get($tween, 'hover'), color get($tween, 'hover');
     width: $icon-size;
+
+    &:hover {
+      color: color('brand.maggioli', '05');
+    }
   }
 
   &__body {
     background-color: color('adjust.tone', '19');
+    border-left: $border-size solid transparent;
+    border-right: $border-size solid transparent;
     height: 0;
     overflow: hidden;
     padding: 0 s(1);
@@ -50,11 +62,17 @@ $icon-size: s(2);
 
     &--is-opened {
       .accordion {
+        &__title {
+          color: color('brand.maggioli', '04');
+        }
+
         &__header {
           background-color: color('adjust.tone', '19');
+          border-left-color: color('brand.maggioli', '05');
         }
 
         &__body {
+          border-left-color: color('brand.maggioli', '05');
           height: auto;
           padding-bottom: s(1);
         }
