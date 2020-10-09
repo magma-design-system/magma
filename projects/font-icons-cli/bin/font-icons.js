@@ -51,7 +51,7 @@ function createBuildDirective() {
  * @param inputData {Object.<string, string>} Mappa con l'icona desiderata come valore e il nome dell'icona come chiave
  * @returns {Promise<void[]>} Una promise da attendere perché termini la copia
  */
-function iconsToTempFolder (inputData) {
+function iconsToTempFolder(inputData) {
   const promises = []
   for (const [key, value] of Object.entries(inputData)) {
     const icon = iconSelectorToObject(value)
@@ -86,7 +86,7 @@ function iconsToTempFolder (inputData) {
  * @param iconSelector {string} Nome dell'icona desiderata
  * @return {{name: string, group: string}} Oggetto contenente le stesse informazioni presenti in iconSelector
  */
-function iconSelectorToObject (iconSelector) {
+function iconSelectorToObject(iconSelector) {
   let array = iconSelector.split('/')
   if (array.length === 1) {
     array = ['maggioli', ...array]
