@@ -58,6 +58,8 @@
   "media-video": "material/videocam",
   "menu-main": "material/menu",
   "menu-more": "material/more_vert",
+  "navigation-show": "material/keyboard_arrow_down",
+  "navigation-hide": "material/keyboard_arrow_up",
   "navigate-external-link": "material/open_in_new",
   "navigate-internal-link": "material/tab",
   "notifications": "material/notifications",
