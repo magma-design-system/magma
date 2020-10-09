@@ -10,40 +10,87 @@ import Icon from '@Design/Icon/Icon'
 const intermediateItems = 3
 
 const PaginatorFirst = props =>
-  <div className="paginator__item">
+  <div className={`paginator__item ${props.className}`}>
     1
   </div>
 
+PaginatorFirst.propTypes = {
+  className: PropTypes.string,
+}
+
+PaginatorFirst.defaultProps = {
+  className: '',
+}
+
 const PaginatorLast = props =>
-  <div className="paginator__item">
+  <div className={`paginator__item ${props.className}`}>
     100
   </div>
 
+PaginatorLast.propTypes = {
+  className: PropTypes.string,
+}
+
+PaginatorLast.defaultProps = {
+  className: '',
+}
+
 const PaginatorPrev = props =>
-  <div className="paginator__item">
+  <div className={`paginator__item ${props.className}`}>
     <Icon name="paginator-previous"/>
   </div>
 
+PaginatorPrev.propTypes = {
+  className: PropTypes.string,
+}
+
+PaginatorPrev.defaultProps = {
+  className: '',
+}
+
 const PaginatorNext = props =>
-  <div className="paginator__item">
+  <div className={`paginator__item ${props.className}`}>
     <Icon name="paginator-next"/>
   </div>
 
+PaginatorNext.propTypes = {
+  className: PropTypes.string,
+}
+
+PaginatorNext.defaultProps = {
+  className: '',
+}
+
 const PaginatorSeparator = props =>
-  <div className="paginator__item">
+  <div className={`paginator__item ${props.className}`}>
     ...
   </div>
 
+PaginatorSeparator.propTypes = {
+  className: PropTypes.string,
+}
+
+PaginatorSeparator.defaultProps = {
+  className: '',
+}
+
 const PaginatorItem = props =>
-  <div className="paginator__item">
-    <Icon name="next"/>
+  <div className={`paginator__item ${props.className}`}>
+    { props.children }
   </div>
 
+PaginatorItem.propTypes = {
+  className: PropTypes.string,
+}
+
+PaginatorItem.defaultProps = {
+  className: '',
+}
+
 const Paginator = props =>
-  <HorizontalScroll className={`paginator ${props.className}`}>
+  <HorizontalScroll smooth={false} className={`paginator ${props.className}`}>
     <PaginatorPrev/>
     <PaginatorFirst/>
-    <PaginatorItem>1</PaginatorItem>
     <PaginatorItem>2</PaginatorItem>
     <PaginatorItem>{intermediateItems}</PaginatorItem>
     <PaginatorSeparator/>

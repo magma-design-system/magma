@@ -5,6 +5,9 @@ import Icon from '@Design/Icon/Icon'
 import Button from '@Form/Button/Button'
 import H4 from '@Typography/H4/H4'
 
+// https://soshace.com/building-react-components-using-children-props-and-context-api/#crayon-5f80341482005894162361
+// https://codesandbox.io/s/github/supromikali/react-children-with-context
+
 const Modal = props =>
   <div className={`modal ${props.className} ${props.show ? 'modal--active' : ''} ${props.desktopMode ? 'modal--centered' : ''} modal--to-${props.position}`}>
     <Icon className="modal__close" name="close" onClick={() => { props.onClose() }}/>

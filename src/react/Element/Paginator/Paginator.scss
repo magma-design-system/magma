@@ -1,0 +1,25 @@
+@import '~Sass/import-framework';
+
+$size: s(2);
+
+.paginator {
+  background-color: color('adjust.tone', '18');
+  border-radius: s(2.25);
+  display: flex;
+  padding: s(0.25);
+
+  &__item {
+    align-items: center;
+    background-color: color('adjust.tone', '20');
+    border-radius: $size;
+    cursor: pointer;
+    display: flex;
+    height: $size;
+    justify-content: center;
+    width: $size;
+
+    & + & {
+      margin-left: 2px;
+    }
+  }
+}
