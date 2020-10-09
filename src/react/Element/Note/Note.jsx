@@ -7,7 +7,7 @@ import dictionary from './dictionary.json'
 
 const Note = props =>
   <div className={`note ${props.className} ${props.dismiss ? 'note--dismiss' : ''} ${dictionary[props.status].background} ${dictionary[props.status].color}`}>
-    {props.dismiss && <Icon className="note__close" name="close"/>}
+    {props.dismiss && <Icon className="note__close" name="action-close"/>}
     {props.children}
   </div>
 
