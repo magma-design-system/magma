@@ -3,23 +3,66 @@
 $size: s(2);
 
 .paginator {
-  background-color: color('adjust.tone', '18');
-  border-radius: s(2.25);
+  align-items: center;
+  background-color: color('adjust.tone', '20');
   display: flex;
-  padding: s(0.25);
+  padding: s(1);
+
+  @include media('desktop') {
+    background-color: transparent;
+  }
 
   &__item {
     align-items: center;
-    background-color: color('adjust.tone', '20');
+    background-color: transparent;
     border-radius: $size;
+    box-shadow: none;
     cursor: pointer;
     display: flex;
     height: $size;
     justify-content: center;
+    transition: background-color get($tween, 'hover'), box-shadow get($tween, 'hover'), color get($tween, 'hover');
     width: $size;
 
     & + & {
       margin-left: s(0.25);
+    }
+
+    &--disabled {
+      pointer-events: none;
+    }
+
+    &--active {
+      background-color: color('brand.maggioli', '05');
+      box-shadow: get($shadow, 'box');
+      color: color('brand.maggioli', '20');
+      pointer-events: none;
+    }
+
+    &--next,
+    &--prev {
+      background-color: color('adjust.tone');
+
+      @include media('desktop') {
+        background-color: color('adjust.tone', '19');
+      }
+    }
+
+    &:hover {
+      background-color: color('adjust.tone');
+      box-shadow: get($shadow, 'box');
+    }
+  }
+
+  &__list {
+    background-color: color('adjust.tone');
+    border-radius: s(2.25);
+    display: flex;
+    margin: 0 s(0.5);
+    padding: s(0.25);
+
+    @include media('desktop') {
+      background-color: color('adjust.tone', '19');
     }
   }
 }

@@ -10,7 +10,7 @@ import Icon from '@Design/Icon/Icon'
 const intermediateItems = 3
 
 const PaginatorFirst = props =>
-  <div className={`paginator__item ${props.className}`}>
+  <div className={`paginator__item paginator__item--first ${props.className}`}>
     1
   </div>
 
@@ -23,7 +23,7 @@ PaginatorFirst.defaultProps = {
 }
 
 const PaginatorLast = props =>
-  <div className={`paginator__item ${props.className}`}>
+  <div className={`paginator__item paginator__item--last ${props.className}`}>
     100
   </div>
 
@@ -36,7 +36,7 @@ PaginatorLast.defaultProps = {
 }
 
 const PaginatorPrev = props =>
-  <div className={`paginator__item ${props.className}`}>
+  <div className={`paginator__item paginator__item--prev ${props.className}`}>
     <Icon name="paginator-previous"/>
   </div>
 
@@ -49,7 +49,7 @@ PaginatorPrev.defaultProps = {
 }
 
 const PaginatorNext = props =>
-  <div className={`paginator__item ${props.className}`}>
+  <div className={`paginator__item paginator__item--next ${props.className}`}>
     <Icon name="paginator-next"/>
   </div>
 
@@ -62,7 +62,7 @@ PaginatorNext.defaultProps = {
 }
 
 const PaginatorSeparator = props =>
-  <div className={`paginator__item ${props.className}`}>
+  <div className={`paginator__item paginator__item--disabled ${props.className}`}>
     ...
   </div>
 
@@ -75,29 +75,33 @@ PaginatorSeparator.defaultProps = {
 }
 
 const PaginatorItem = props =>
-  <div className={`paginator__item ${props.className}`}>
+  <div className={`paginator__item ${props.className} ${props.isActive ? 'paginator__item--active' : ''}`}>
     { props.children }
   </div>
 
 PaginatorItem.propTypes = {
   className: PropTypes.string,
+  isActive: PropTypes.bool,
 }
 
 PaginatorItem.defaultProps = {
   className: '',
+  isActive: false,
 }
 
 const Paginator = props =>
   <HorizontalScroll smooth={false} className={`paginator ${props.className}`}>
     <PaginatorPrev/>
-    <PaginatorFirst/>
-    <PaginatorItem>2</PaginatorItem>
-    <PaginatorItem>{intermediateItems}</PaginatorItem>
-    <PaginatorSeparator/>
-    <PaginatorItem>7</PaginatorItem>
-    <PaginatorItem>8</PaginatorItem>
-    <PaginatorItem>9</PaginatorItem>
-    <PaginatorLast/>
+    <div className="paginator__list">
+      <PaginatorFirst/>
+      <PaginatorItem>2</PaginatorItem>
+      <PaginatorItem isActive>{intermediateItems}</PaginatorItem>
+      <PaginatorSeparator/>
+      <PaginatorItem>7</PaginatorItem>
+      <PaginatorItem>8</PaginatorItem>
+      <PaginatorItem>9</PaginatorItem>
+      <PaginatorLast/>
+    </div>
     <PaginatorNext/>
   </HorizontalScroll>
 
