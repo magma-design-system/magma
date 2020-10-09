@@ -43,13 +43,13 @@
   &__format {
     background-color: color('adjust.tone', '18');
     border-radius: s(0.125);
+    margin-right: s(0.25);
     padding: 0 s(0.25);
   }
 
   &__description {
     color: color('adjust.tone', '10');
     flex: 1;
-    margin-left: s(0.25);
     min-width: 50px;
     overflow: hidden;
     text-overflow: ellipsis;

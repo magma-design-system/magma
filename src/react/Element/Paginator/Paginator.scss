@@ -19,7 +19,7 @@ $size: s(2);
     width: $size;
 
     & + & {
-      margin-left: 2px;
+      margin-left: s(0.25);
     }
   }
 }

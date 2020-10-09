@@ -2,7 +2,8 @@
   "extension": {
     "7z": { "format": "archive", "description": "Archivio compresso" },
     "ace": { "format": "archive", "description": "Archivio compresso" },
-    "db": { "format": "code", "description": "File database" },
+    "db": { "format": "data", "description": "File database" },
+    "json": { "format": "data", "description": "File database" },
     "default": { "format": "attachment", "description": "Formato sconosciuto" },
     "dmg": { "format": "executable", "description": "Immagine disco Mac" },
     "doc": { "format": "text", "description": "Documento Word" },
@@ -46,18 +47,19 @@
     "zip": { "format": "archive", "description": "Archivio compresso" }
   },
   "format": {
-    "markup": { "color": "color-adjust-tone-08", "background": "background-color-adjust-tone-18", "icon": "document-web" },
+    "archive": { "color": "color-status-warning-08", "background": "background-color-status-warning-18", "icon": "file-archive" },
     "attachment": { "color": "color-adjust-tone-08", "background": "background-color-adjust-tone-18", "icon": "file-attachment" },
     "audio": { "color": "color-brand-maggioli-08", "background": "background-color-brand-maggioli-18", "icon": "media-audio" },
+    "code": { "color": "color-adjust-tone-08", "background": "background-color-adjust-tone-18", "icon": "dev-terminal" },
+    "data": { "color": "color-adjust-tone-08", "background": "background-color-adjust-tone-18", "icon": "device-hard-drive" },
     "document": { "color": "color-status-error-08", "background": "background-color-status-error-18", "icon": "file-document" },
-    "executable": { "color": "color-status-error-08", "background": "background-color-status-error-18", "icon": "file-executable" },
     "email": { "color": "color-status-error-08", "background": "background-color-status-error-18", "icon": "file-email" },
+    "executable": { "color": "color-status-error-08", "background": "background-color-status-error-18", "icon": "file-executable" },
     "image": { "color": "color-status-success-08", "background": "background-color-status-success-18", "icon": "media-image" },
-    "archive": { "color": "color-status-warning-08", "background": "background-color-status-warning-18", "icon": "file-archive" },
+    "markup": { "color": "color-adjust-tone-08", "background": "background-color-adjust-tone-18", "icon": "document-web" },
     "slide": { "color": "color-status-info-08", "background": "background-color-status-info-18", "icon": "device-tv" },
     "spreadsheet": { "color": "color-status-success-08", "background": "background-color-status-success-18", "icon": "document-spreadsheet" },
     "text": { "color": "color-status-error-08", "background": "background-color-status-error-18", "icon": "document-text" },
-    "code": { "color": "color-adjust-tone-08", "background": "background-color-adjust-tone-18", "icon": "dev-terminal" },
     "video": { "color": "color-status-error-08", "background": "background-color-status-error-18", "icon": "media-video" }
   }
 }
