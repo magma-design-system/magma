@@ -2,11 +2,8 @@ import React from 'react'
 import PropTypes from 'prop-types'
 import './Icon.scss'
 
-// import dictionary from './dictionary.json'
 import mggIconsDictionary from '£Project/mgg-icons/src/mgg-icons.json'
 const dictionary = Object.keys(mggIconsDictionary)
-
-console.log(dictionary)
 
 const Icon = props => {
   let icon = 'mgg-icons-status-warning'
