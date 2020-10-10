@@ -13,7 +13,7 @@ import Textarea from '@Backoffice/Form/Textarea/Textarea'
 import FileImage from '@Backoffice/Form/FileImage/FileImage'
 import Grid from '@Layout/Grid/Grid'
 import Hr from '@Backoffice/Element/Hr/Hr'
-import Download from '@Element/Download/Download'
+import Download from '@Content/Download/Download'
 faker.locale = 'it'
 
 export default {

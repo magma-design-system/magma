@@ -1,9 +1,9 @@
 import React from 'react'
 
-import Quote from '@Element/Quote/Quote'
+import Quote from '@Content/Quote/Quote'
 
 export default {
-  title: 'Element/Quote',
+  title: 'Content/Quote',
   component: Quote,
 }
 

@@ -1,7 +1,7 @@
 import React from 'react'
 import faker from 'faker'
 
-import Download from '@Element/Download/Download'
+import Download from '@Content/Download/Download'
 import Grid from '@Layout/Grid/Grid'
 
 import './Download.stories.scss'
@@ -11,7 +11,7 @@ import data from './dictionary.json'
 faker.locale = 'it'
 
 export default {
-  title: 'Element/Download',
+  title: 'Content/Download',
   component: Download,
 }
 

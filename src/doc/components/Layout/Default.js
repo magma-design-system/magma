@@ -5,10 +5,11 @@ import { MDXProvider } from '@mdx-js/react'
 import './Layout.scss'
 import { createMenuList, findMenuItem, getPageData } from '@Gatsby/Pattern/Navigation/menu'
 
-import Bibliography from '@Element/Bibliography/Bibliography'
+import Bibliography from '@Content/Bibliography/Bibliography'
 import Button from '@Element/Button/Button'
 import Code from '@Element/Code/Code'
 import Grid from '@Layout/Grid/Grid'
+import InfoBar from '@Content/InfoBar/InfoBar'
 import H1 from '@Typography/H1/H1'
 import H2 from '@Typography/H2/H2'
 import H3 from '@Typography/H3/H3'
@@ -23,7 +24,7 @@ import List, { ListItem } from '@Element/List/List'
 import Navigation from '@Gatsby/Pattern/Navigation/Navigation'
 import Page from '@Gatsby/Page/Page'
 import Paragraph from '@Typography/Paragraph/Paragraph'
-import Quote from '@Element/Quote/Quote'
+import Quote from '@Content/Quote/Quote'
 import Table, { TableHeader, TableHeaderCell, TableBody, TableRow, TableCell } from '@Layout/Table/Table'
 import Usage, { UsageDo, UsageDont } from '@Gatsby/Pattern/Usage/Usage'
 
@@ -44,6 +45,7 @@ const shortcodes = {
   Hr,
   HrLight,
   Icon,
+  InfoBar,
   Image,
   Link,
   List,

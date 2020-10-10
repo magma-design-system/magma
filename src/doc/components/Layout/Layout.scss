@@ -2,6 +2,7 @@
 
 $menu-size: 60px;
 $menu-font-size: 48px;
+$aside: 450px;
 
 .ds-layout {
   &__aside {
@@ -59,6 +60,10 @@ $menu-font-size: 48px;
   &__markdown {
     display: grid;
     grid-gap: s(1);
+
+    @include media('desktop') {
+      max-width: calc(calc(100vw - #{s(2, $aside)}) - #{s(2)});
+    }
   }
 
   &__actions {

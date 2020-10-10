@@ -55,6 +55,7 @@
   "input-tags": "material/local_offer",
   "input-time": "material/schedule",
   "internationalization": "material/language",
+  "list-dot": "list-dot",
   "media-audio": "material/audiotrack",
   "media-image": "material/panorama",
   "media-video": "material/videocam",

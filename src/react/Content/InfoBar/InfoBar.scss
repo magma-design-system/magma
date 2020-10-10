@@ -1,0 +1,26 @@
+@import '~Sass/import-framework';
+
+.info-bar {
+
+  $size: s(1);
+
+  max-width: 300px;
+
+  &__outer {
+    background-color: color('adjust.tone', '19');
+    border-radius: $size;
+    display: flex;
+    height: $size;
+    overflow: hidden;
+    width: 100%;
+  }
+
+  &__inner {
+    background-color: color('brand.maggioli', '10');
+    border-radius: $size;
+  }
+
+  &__perc {
+    color: color('brand.maggioli', '05');
+  }
+}

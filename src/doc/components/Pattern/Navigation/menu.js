@@ -2,7 +2,7 @@ const basePathTitles = {
   '': 'Home Page',
   doc: 'Doc',
   use: 'Use',
-  dev: 'Dev',
+  info: 'Info',
 }
 
 export function createMenuList(edges) {

@@ -6,7 +6,7 @@ import Paragraph from '@Typography/Paragraph/Paragraph'
 faker.locale = 'it'
 
 export default {
-  title: 'Element/KPI',
+  title: 'Content/KPI',
   component: Paragraph,
 }
 

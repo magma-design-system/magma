@@ -1,12 +1,12 @@
 import React from 'react'
 import faker from 'faker'
 
-import Bibliography from '@Element/Bibliography/Bibliography'
+import Bibliography from '@Content/Bibliography/Bibliography'
 
 faker.locale = 'it'
 
 export default {
-  title: 'Element/Bibliography',
+  title: 'Content/Bibliography',
   component: Bibliography,
 }
 

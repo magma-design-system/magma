@@ -6,7 +6,7 @@ import Paragraph from '@Typography/Paragraph/Paragraph'
 faker.locale = 'it'
 
 export default {
-  title: 'Element/Countdown',
+  title: 'Content/Countdown',
   component: Paragraph,
 }
 

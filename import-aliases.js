@@ -6,6 +6,7 @@ module.exports = {
   '+Tokens': path.resolve(__dirname, 'src/style-dictionary/'),
   '@App': path.resolve(__dirname, 'src/react/app/'),
   '@Backoffice': path.resolve(__dirname, 'src/react/Backoffice/'),
+  '@Content': path.resolve(__dirname, 'src/react/Content/'),
   '@Design': path.resolve(__dirname, 'src/react/Design/'),
   '@Element': path.resolve(__dirname, 'src/react/Element/'),
   '@Form': path.resolve(__dirname, 'src/react/Form/'),

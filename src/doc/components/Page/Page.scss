@@ -3,3 +3,14 @@
 .ds-page {
   background-color: color('adjust.tone');
 }
+
+.grid {
+  &--tmpl-design-system-page {
+    grid-gap: 0;
+    grid-template-columns: 1fr;
+
+    @include media ('desktop') {
+      grid-template-columns: 450px auto;
+    }
+  }
+}

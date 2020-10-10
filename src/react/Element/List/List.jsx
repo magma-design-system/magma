@@ -35,7 +35,7 @@ ListItem.propTypes = {
 ListItem.defaultProps = {
   autoPunctuation: false,
   className: '',
-  icon: 'dot',
+  icon: 'list-dot',
   iconClassName: '',
   iconSize: '',
   numeric: false,
@@ -71,7 +71,7 @@ List.propTypes = {
 List.defaultProps = {
   autoPunctuation: false,
   className: '',
-  icon: 'dot',
+  icon: 'list-dot',
   iconClassName: '',
   iconSize: 'small',
   numeric: false,
