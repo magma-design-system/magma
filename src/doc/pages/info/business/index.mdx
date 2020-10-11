@@ -1,6 +1,9 @@
 ---
 title: 'Business case'
 date: '2020-10-10'
+author:
+  name: Vittorio Vittori
+  avatar: https://via.placeholder.com/150x150
 source:
   -
     title: Building a compelling
@@ -11,9 +14,9 @@ source:
 
 <H6>Perché le figure di management hanno bisogno della consapevolezza che il Design System è un investimento utile per i team di prodotto.</H6>
 
-I Design System hanno raggiunto una grande popolarità. Non è un segreto che questo argomento sia stato estremamente popolare negli ultimi anni. Sembra che ogni team di prodotto ne abbia costruito uno, ne stia costruendo uno o lo stia per fare.
+I Design System hanno raggiunto una grande popolarità, non è un segreto che questo argomento sia stato estremamente popolare negli ultimi anni. Sembra che ogni team di prodotto ne abbia costruito uno, ne stia costruendo uno o lo stia per fare.
 
-Negli ultimi 10 anni, abbiamo passato il tempo a convincerci a vicenda che i vantaggi di un Design System superano perdita di libertà di progettazione, e siamo usciti dall'altra parte come una forza unita.
+Negli ultimi 10 anni, è aumentata sempre più la convinzione che i vantaggi di un Design System superano la erdita di libertà creativa e di progettazione, arrivando a convincere anche le figure più manageriali.
 
 Se non lo hanno già fatto, gran parte dei **designer** e **team di prodotto** sono intenzionati a fare un passo verso un futuro più coerente ed efficiente.
 
@@ -39,50 +42,127 @@ Realizzare un Design System completo non è un compito facile, eppure viene adot
 
 ---
 
-### Maturità
+## Maturità
 
 Quando guardiamo all'adozione e alla maturità del Design System, c'è uno spettro completo da considerare. Non significa semplicemente integrarlo o non integrarlo.
 
 ### 1. Nessun Design System
 
+Gran parte del codice e dei visual vengono riprogettati e scritti ogni volta da zero, o quasi. Si tratta di un workflow poco sostenibile.
+
 <List>
-  <ListItem>Design su misura</ListItem>
-  <ListItem>Codice su misura</ListItem>
-  <ListItem>Non ci sono asset e concetti riutilizzabili</ListItem>
+  <ListItem icon="design-crop">Design su misura, il far-west della grafica</ListItem>
+  <ListItem icon="design-measure">Codice su misura, il far-west dello sviluppo</ListItem>
+  <ListItem icon="crud-delete">Non ci sono asset e concetti riutilizzabili, la ruota si reinventa ogni volta</ListItem>
 </List>
 
 ### 2. Style Guide
 
+Documentazione HTML con stile per mostrare pulsanti, caratteri tipografici, form di acquisizione dati,
+Pratiche di sviluppo basate sui componenti che iniziano a formarsi nel team di front-end
+Forse alcuni simboli riutilizzabili costruiti in Sketch
+
 <List>
-  <ListItem>Palette di colori</ListItem>
-  <ListItem>Typography</ListItem>
-  <ListItem>Esempi HTML stilati</ListItem>
-  <ListItem>Codice su misura</ListItem>
+  <ListItem icon="design-palette">Palette di colori</ListItem>
+  <ListItem icon="design-typography">Typography</ListItem>
+  <ListItem icon="code-markup">Esempi HTML stilati</ListItem>
+  <ListItem icon="design-measure">Codice su misura</ListItem>
 </List>
 
 ### 3. Pattern Library
 
+Vocabolario condiviso tra progettazione e sviluppo, documentazione dei componenti principali (ad esempio pulsanti, form di acquisizione dati), ma anche strutture e modelli di componenti complessi documentati, una suite di simboli nidificati riutilizzabili costruita con Figma o Sketch, ma non ancora integrata con i processi di sviluppo.
+
 <List>
-  <ListItem>Vocabolario condiviso</ListItem>
-  <ListItem>Lievemente documentato</ListItem>
-  <ListItem>Esterno al codebase</ListItem>
-  <ListItem>Componenti riutilizzabili</ListItem>
+  <ListItem icon="talk-conversation">Vocabolario condiviso</ListItem>
+  <ListItem icon="document">Lievemente documentato</ListItem>
+  <ListItem icon="status-warning">Esterno al codebase</ListItem>
+  <ListItem icon="design-component">Componenti riutilizzabili</ListItem>
 </List>
 
 ### 4. Design System
 
+Design System è un prodotto che genera lo stesso codice che sta sotto ai prodotti/servizi erogati, è in gran parte documentato con manutenzione integrata nel processo di progettazione e sviluppo dei prodotti, in questo stadio, il Design System viene usato come un sandbox di sviluppo per i nuovi componenti, viene integrato con i flussi di lavoro quotidiani per designer e sviluppatori.
+
 <List>
-  <ListItem>In gran parte documentato</ListItem>
-  <ListItem>Integrato con un codebase</ListItem>
-  <ListItem>Manutenuto</ListItem>
-  <ListItem>Parte integrante dei dei workflow di sviluppo</ListItem>
+  <ListItem icon="document-book">In gran parte documentato</ListItem>
+  <ListItem icon="dev-terminal">Integrato con un codebase</ListItem>
+  <ListItem icon="user-team">Manutenuto</ListItem>
+  <ListItem icon="design-component">Parte integrante dei dei workflow di sviluppo</ListItem>
 </List>
 
-### 5. Adv Design System
+### 5. Design System avanzato
+
+Uno strumento avanzato, scalabile, e sempre aggiornato, che richiede molta cura e risorse, ma che è in grado di ridurre drammaticamente costi di progettazione e parte dello sviluppo.
 
 <List>
   <ListItem icon="document-book">Living documentation</ListItem>
-  <ListItem icon="user-groups">Team di sviluppo come risorsa dedicata</ListItem>
+  <ListItem icon="user-department">Team di sviluppo come risorsa dedicata</ListItem>
   <ListItem icon="accessibility">Governato e integrato autonomamente</ListItem>
-  <ListItem icon="data-view">Roadmap di sviluppo dettagliata</ListItem>
+  <ListItem icon="map-directions">Roadmap di sviluppo dettagliata</ListItem>
 </List>
+
+---
+
+## Perché l'uso dei Design System è cresciuto così tanto?
+
+Se si osserva lo stato del design negli ultimi anni, è facile capire perché i Design System hanno preso d'assalto il mondo della progettazione e dello sviluppo e perché crearne uno è un processo naturale per i team di prodotto:
+
+#### I team di design sono in forte crescita
+
+Il design sta maturando. Le grandi aziende stanno riconoscendo il **vantaggio competitivo** di una buona User Experience (UX) e stanno investendo nel design come non mai. Ciò significa operare con team più vasti e su iniziative più ambiziose. Far crescere i team e l'onboarding veloce è più semplice quando si dispone di un Design System solido su cui fare affidamento durante i primi mesi in cui i nuovi designer fanno i primi passi dentro l'azienda.
+
+#### Problemi di progettazione molto più complessi
+
+Le esigenze e l'attenzione ai dettagli dei nostri utenti sta aumentando rapidamente. Dall'avvento dell'iPhone e dell'AppStore, ci siamo rivolti al software per risolvere sempre più problemi nella nostra vita. Per essere competitivo, il software deve diventare sempre più sofisticato per stare al passo con le richieste e i desideri dei nostri utenti.
+
+#### Modelli di rilascio che enfatizzano i team cross-funzionali
+
+I modelli di rilascio agile non sono solo uno standard mondiale, lo sviluppo agile è destinato a restare, in quanto capace di coordinare team di rilascio cross-funzionali su discipline verticali. Ci muoviamo tutti a un ritmo più veloce e non siamo più co-localizzati con altri membri del nostro team di design, quindi **offrire esperienze coerenti su uno o più prodotti** è diventato più difficile che mai.
+
+<Image src={require('./live-collaboration-rafiki.svg')} sourceTitle="Illustration by Freepik Stories" sourceUrl="https://stories.freepik.com/"/>
+
+#### Team globali e distribuiti
+
+Fino a pochi anni fa, i nostri colleghi designer e ingegneri si collocavano a poche scrivanie di distanza perché lavoravano tutti nello stesso in ufficio. Oggi è diventato sempre più comune per i nostri colleghi essere in nazioni se non continenti diversi, nonostante questo, continuano a collaborare attraverso strumenti remoti per creare prodotti eccezionali.
+
+---
+
+
+## UX Business Case
+
+Dal punto di vista di un designer, è facile vedere i vantaggi di un linguaggio di progettazione centrale per rendere le cose più snelle e coese. I Design System sono nati per questo. Questi vantaggi hanno senso per i team di prodotto in prima linea nella progettazione e nella consegna, ma potrebbe avere poca importanza per le figure di management se non si illustrano i vantaggi competitivi, quali sono quindi vantaggi chiari e tangibili di avere un sistema di progettazione?
+
+<Image src={require('./designer-life-rafiki.svg')} sourceTitle="Illustration by Freepik Stories" sourceUrl="https://stories.freepik.com/"/>
+
+### I Vantaggi del team tradotti in business outcome
+
+<List icon="status-success" iconClassName="color-status-success-10">
+  <ListItem>
+    <H4 htmlTag="div">Efficienza</H4>
+    Flusso di lavoro del team e comunicazione efficienti tra i prodotti verticali
+  </ListItem>
+  <ListItem>
+    <H4 htmlTag="div">Manutenibilità</H4>
+    Il codice è più facile da testare e mantenere nel tempo
+  </ListItem>
+  <ListItem>
+    <H4 htmlTag="div">Consistenza</H4>
+    Una User Experience e un'interfaccia coerenti, tra prodotti e dispositivi
+  </ListItem>
+  <ListItem>
+    <H4 htmlTag="div">Accessibilità</H4>
+    Preparato per l'accessibilità, per rilasciare prodotti più inclusivi
+  </ListItem>
+  <ListItem>
+    <H4 htmlTag="div">Scalabilità</H4>
+    In grado di includere le richieste di funzionalità chiave in futuro
+  </ListItem>
+</List>
+
+
+
+
+
+
+

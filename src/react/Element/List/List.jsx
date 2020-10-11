@@ -7,6 +7,8 @@ import Icon from '@Design/Icon/Icon'
 import H5 from '@Typography/H5/H5'
 import Paragraph from '@Typography/Paragraph/Paragraph'
 
+const defaultIcon = 'list-dot'
+
 /* eslint-disable no-nested-ternary */
 
 const ListItem = props =>
@@ -35,7 +37,7 @@ ListItem.propTypes = {
 ListItem.defaultProps = {
   autoPunctuation: false,
   className: '',
-  icon: 'list-dot',
+  icon: defaultIcon,
   iconClassName: '',
   iconSize: '',
   numeric: false,
@@ -47,7 +49,7 @@ const List = props =>
       React.Children.map(props.children, (child, index) => {
         return React.cloneElement(child, {
           autoPunctuation: props.autoPunctuation,
-          icon: child.props.icon === 'dot' ? props.icon : child.props.icon,
+          icon: child.props.icon === defaultIcon ? props.icon : child.props.icon,
           iconClassName: child.props.iconClassName === '' ? props.iconClassName : child.props.iconClassName,
           iconSize: child.props.iconSize === '' ? props.iconSize : child.props.iconSize,
           id: index,
@@ -69,9 +71,9 @@ List.propTypes = {
 }
 
 List.defaultProps = {
-  autoPunctuation: false,
+  autoPunctuation: true,
   className: '',
-  icon: 'list-dot',
+  icon: defaultIcon,
   iconClassName: '',
   iconSize: 'small',
   numeric: false,

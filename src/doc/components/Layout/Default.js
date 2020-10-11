@@ -119,8 +119,8 @@ const Layout = ({ children }) => {
 
         return <Page className="ds-layout">
           <div className={`ds-layout__switch ${isOpened ? 'ds-layout__switch--is-active' : ''}`} onClick={() => setMenuOpened(!isOpened)}>
-            <Icon name="menu" className="ds-layout__switch-icon ds-layout__switch-icon--menu"/>
-            <Icon name="close" className="ds-layout__switch-icon ds-layout__switch-icon--close"/>
+            <Icon name="menu-main" className="ds-layout__switch-icon ds-layout__switch-icon--menu"/>
+            <Icon name="action-close" className="ds-layout__switch-icon ds-layout__switch-icon--close"/>
           </div>
           <Grid template="design-system-page">
             <Grid htmlTag="aside" className={`ds-layout__aside ${isOpened ? 'ds-layout__aside--is-active' : ''}`}>
