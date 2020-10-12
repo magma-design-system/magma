@@ -7,8 +7,6 @@ import './Paginator.scss'
 import HorizontalScroll from '@Layout/HorizontalScroll/HorizontalScroll'
 import Icon from '@Design/Icon/Icon'
 
-const intermediateItems = 3
-
 const PaginatorFirst = props =>
   <div className={`paginator__item paginator__item--first ${props.className}`}>
     1
@@ -98,46 +96,43 @@ PaginatorItem.defaultProps = {
 }
 
 function Paginator(props) {
+  const pages = Array.from({ length: props.pages }, (_, i) => i + 1)
 
-  const pages = Array.from({length: props.pages}, (_, i) => i + 1);
-
-  return(
-  <HorizontalScroll smooth={false} className={`paginator ${props.className}`}>
-    <PaginatorPrev onClick={props.onClickPrev}/>
-    <div className="paginator__list">
-      <PaginatorItem onClick={() => props.onClick(1)} isActive={1 === props.currentPage}>1</PaginatorItem>
-        { props.pages < 6 ? 
-            pages.map(elem => {
-              if (elem > 1 && elem < props.pages) {
-                return <PaginatorItem onClick={() => props.onClick(elem)} isActive={elem === props.currentPage}>{elem}</PaginatorItem>;
-              }
-            }) 
-          : 
-            pages.map(elem => {
-              if (elem > 1 && elem < props.pages) {
-                if (props.currentPage < 3 || props.currentPage > props.pages - 2) {
-                  if (elem < 4) {
-                    return <PaginatorItem onClick={() => props.onClick(elem)} isActive={elem === props.currentPage}>{elem}</PaginatorItem>;
-                  } else if (elem > props.pages - 3) {
-                    return <PaginatorItem onClick={() => props.onClick(elem)} isActive={elem === props.currentPage}>{elem}</PaginatorItem>;
-                  } else if (elem === 4) {
-                    return <PaginatorSeparator/>;
-                  }
-                } else {
-                  if (elem > props.currentPage - 2 && elem < props.currentPage + 2) {
-                    return <PaginatorItem onClick={() => props.onClick(elem)} isActive={elem === props.currentPage}>{elem}</PaginatorItem>;
-                  } else if (elem === props.currentPage - 2 || elem === props.currentPage + 2) {
-                    return <PaginatorSeparator/>;
-                  }
-                  
+  return (
+    <HorizontalScroll smooth={false} className={`paginator ${props.className}`}>
+      <PaginatorPrev onClick={props.onClickPrev}/>
+      <div className="paginator__list">
+        <PaginatorItem onClick={() => props.onClick(1)} isActive={props.currentPage === 1}>1</PaginatorItem>
+        { props.pages < 6
+          ? pages.map(elem => {
+            if (elem > 1 && elem < props.pages) {
+              return <PaginatorItem key={elem} onClick={() => props.onClick(elem)} isActive={elem === props.currentPage}>{elem}</PaginatorItem>
+            }
+          })
+          : pages.map(elem => {
+            if (elem > 1 && elem < props.pages) {
+              if (props.currentPage < 3 || props.currentPage > props.pages - 2) {
+                if (elem < 4) {
+                  return <PaginatorItem  key={elem} onClick={() => props.onClick(elem)} isActive={elem === props.currentPage}>{elem}</PaginatorItem>
+                } else if (elem > props.pages - 3) {
+                  return <PaginatorItem  key={elem} onClick={() => props.onClick(elem)} isActive={elem === props.currentPage}>{elem}</PaginatorItem>
+                } else if (elem === 4) {
+                  return <PaginatorSeparator/>
+                }
+              } else {
+                if (elem > props.currentPage - 2 && elem < props.currentPage + 2) {
+                  return <PaginatorItem key={elem} onClick={() => props.onClick(elem)} isActive={elem === props.currentPage}>{elem}</PaginatorItem>
+                } else if (elem === props.currentPage - 2 || elem === props.currentPage + 2) {
+                  return <PaginatorSeparator/>
                 }
               }
-            }) 
+            }
+          })
         }
-      <PaginatorItem onClick={() => props.onClick(props.pages)} isActive={props.pages === props.currentPage}>{props.pages}</PaginatorItem>   
-    </div>
-    <PaginatorNext onClick={props.onClickNext}/>
-  </HorizontalScroll>
+        <PaginatorItem onClick={() => props.onClick(props.pages)} isActive={props.pages === props.currentPage}>{props.pages}</PaginatorItem>
+      </div>
+      <PaginatorNext onClick={props.onClickNext}/>
+    </HorizontalScroll>
   )
 }
 
