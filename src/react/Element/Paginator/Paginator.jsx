@@ -24,41 +24,47 @@ PaginatorFirst.defaultProps = {
 
 const PaginatorLast = props =>
   <div className={`paginator__item paginator__item--last ${props.className}`}>
-    100
+    {props.value}
   </div>
 
 PaginatorLast.propTypes = {
   className: PropTypes.string,
+  value: PropTypes.number,
 }
 
 PaginatorLast.defaultProps = {
   className: '',
+  value: 50,
 }
 
 const PaginatorPrev = props =>
-  <div className={`paginator__item paginator__item--prev ${props.className}`}>
+  <div onClick={props.onClick} className={`paginator__item paginator__item--prev ${props.className}`}>
     <Icon name="paginator-previous"/>
   </div>
 
 PaginatorPrev.propTypes = {
   className: PropTypes.string,
+  onClick: PropTypes.func,
 }
 
 PaginatorPrev.defaultProps = {
   className: '',
+  onClick: () => {},
 }
 
 const PaginatorNext = props =>
-  <div className={`paginator__item paginator__item--next ${props.className}`}>
+  <div onClick={props.onClick} className={`paginator__item paginator__item--next ${props.className}`}>
     <Icon name="paginator-next"/>
   </div>
 
 PaginatorNext.propTypes = {
   className: PropTypes.string,
+  onClick: PropTypes.func,
 }
 
 PaginatorNext.defaultProps = {
   className: '',
+  onClick: () => {},
 }
 
 const PaginatorSeparator = props =>
@@ -75,44 +81,82 @@ PaginatorSeparator.defaultProps = {
 }
 
 const PaginatorItem = props =>
-  <div className={`paginator__item ${props.className} ${props.isActive ? 'paginator__item--active' : ''}`}>
+  <div onClick={props.onClick} className={`paginator__item ${props.className} ${props.isActive ? 'paginator__item--active' : ''}`}>
     { props.children }
   </div>
 
 PaginatorItem.propTypes = {
   className: PropTypes.string,
   isActive: PropTypes.bool,
+  onClick: PropTypes.func,
 }
 
 PaginatorItem.defaultProps = {
   className: '',
   isActive: false,
+  onClick: () => {},
 }
 
-const Paginator = props =>
+function Paginator(props) {
+
+  const pages = Array.from({length: props.pages}, (_, i) => i + 1);
+
+  return(
   <HorizontalScroll smooth={false} className={`paginator ${props.className}`}>
-    <PaginatorPrev/>
+    <PaginatorPrev onClick={props.onClickPrev}/>
     <div className="paginator__list">
-      <PaginatorFirst/>
-      <PaginatorItem>2</PaginatorItem>
-      <PaginatorItem isActive>{intermediateItems}</PaginatorItem>
-      <PaginatorSeparator/>
-      <PaginatorItem>7</PaginatorItem>
-      <PaginatorItem>8</PaginatorItem>
-      <PaginatorItem>9</PaginatorItem>
-      <PaginatorLast/>
+      <PaginatorItem onClick={() => props.onClick(1)} isActive={1 === props.currentPage}>1</PaginatorItem>
+        { props.pages < 6 ? 
+            pages.map(elem => {
+              if (elem > 1 && elem < props.pages) {
+                return <PaginatorItem onClick={() => props.onClick(elem)} isActive={elem === props.currentPage}>{elem}</PaginatorItem>;
+              }
+            }) 
+          : 
+            pages.map(elem => {
+              if (elem > 1 && elem < props.pages) {
+                if (props.currentPage < 3 || props.currentPage > props.pages - 2) {
+                  if (elem < 4) {
+                    return <PaginatorItem onClick={() => props.onClick(elem)} isActive={elem === props.currentPage}>{elem}</PaginatorItem>;
+                  } else if (elem > props.pages - 3) {
+                    return <PaginatorItem onClick={() => props.onClick(elem)} isActive={elem === props.currentPage}>{elem}</PaginatorItem>;
+                  } else if (elem === 4) {
+                    return <PaginatorSeparator/>;
+                  }
+                } else {
+                  if (elem > props.currentPage - 2 && elem < props.currentPage + 2) {
+                    return <PaginatorItem onClick={() => props.onClick(elem)} isActive={elem === props.currentPage}>{elem}</PaginatorItem>;
+                  } else if (elem === props.currentPage - 2 || elem === props.currentPage + 2) {
+                    return <PaginatorSeparator/>;
+                  }
+                  
+                }
+              }
+            }) 
+        }
+      <PaginatorItem onClick={() => props.onClick(props.pages)} isActive={props.pages === props.currentPage}>{props.pages}</PaginatorItem>   
     </div>
-    <PaginatorNext/>
+    <PaginatorNext onClick={props.onClickNext}/>
   </HorizontalScroll>
+  )
+}
 
 Paginator.propTypes = {
   pages: PropTypes.number,
   className: PropTypes.string,
+  currentPage: PropTypes.number,
+  onClick: PropTypes.func,
+  onClickPrev: PropTypes.func,
+  onClickNext: PropTypes.func,
 }
 
 Paginator.defaultProps = {
-  pages: 100,
+  pages: 7,
   className: '',
+  currentPage: 2,
+  onClick: () => {},
+  onClickPrev: () => {},
+  onClickNext: () => {},
 }
 
 export default Paginator
