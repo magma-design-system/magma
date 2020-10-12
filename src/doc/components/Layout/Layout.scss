@@ -74,6 +74,24 @@ $aside: 450px;
     position: sticky;
     top: 0;
     z-index: 1;
+
+    &::after,
+    &::before {
+      background-color: color('adjust.tone');
+      content: '';
+      height: calc(100% - 2px);
+      position: absolute;
+      width: s(1);
+    }
+
+    &::after {
+      right: 0;
+      transform: translate(100%, 0);
+    }
+
+    &::before {
+      transform: translate(-100%, 0);
+    }
   }
 
   &__title {
