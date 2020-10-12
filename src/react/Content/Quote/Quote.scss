@@ -1,8 +1,8 @@
 @import '~Sass/import-framework';
 
 .quote {
-  background-color: color('brand.maggioli', '15');
-  border-left: 4px solid color('brand.maggioli', '13');
+  background-color: color('brand.maggioli', '18');
+  border-left: 4px solid color('brand.maggioli', '16');
   color: color('brand.maggioli', '04');
   margin: 0;
   padding: s(1.25);
@@ -11,7 +11,7 @@
     display: flex;
 
     &::before {
-      color: color('brand.maggioli', '08');
+      color: color('brand.maggioli', '10');
       content: '“';
       display: inline-block;
       padding-right: 4px;
@@ -20,7 +20,7 @@
 
   &__text {
     &::after {
-      color: color('brand.maggioli', '08');
+      color: color('brand.maggioli', '10');
       content: '”';
       display: inline-block;
       padding-left: 4px;
