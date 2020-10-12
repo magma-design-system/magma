@@ -21,6 +21,10 @@ $radius: s(0.25);
     align-items: center;
     display: flex;
     height: s(5);
+
+    & + & {
+      margin-left: s(0.5);
+    }
   }
 
   &__link {
@@ -35,7 +39,7 @@ $radius: s(0.25);
     white-space: nowrap;
 
     &:hover {
-      background-color: color('adjust.tone', '15');
+      background-color: color('adjust.tone', '19');
     }
   }
 }
