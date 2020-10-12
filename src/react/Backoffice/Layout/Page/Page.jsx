@@ -22,19 +22,22 @@ const PageHeader = props =>
       <H1>{props.children}</H1>
       <H6 className="color-adjust-tone-08">{props.description}</H6>
     </div>
-    <InputSearch onChange={props.onChange} className="backoffice-page-content-header__search" icon="data-search" placeholder="Cerca..." value={props.value}/>
+    {props.visible ? 
+      <InputSearch onChange={props.onChange} className="backoffice-page-content-header__search" icon="data-search" placeholder="Cerca..." value={props.value}/> : ''}
   </Grid>
 
 PageHeader.propTypes = {
   description: PropTypes.string,
   onChange: PropTypes.func,
   value: PropTypes.string,
+  visible: PropTypes.bool,
 }
 
 PageHeader.defaultProps = {
   description: 'Entità',
   onChange: () => {},
   value: '',
+  visible: true,
 }
 
 const PageLogo = props =>
