@@ -78,7 +78,7 @@ const Page = props => {
   return (
     <Grid className={`backoffice-page ${props.isOpened ? 'backoffice-page--menu-opened' : ''}`} gutter="none" template="backoffice">
       <div className="backoffice-page__close" onClick={props.onClick}>
-        <Icon name={props.isOpened ? 'close' : 'menu'}/>
+        <Icon name={props.isOpened ? 'action-close' : 'menu-main'}/>
       </div>
       <Grid htmlTag="aside" className="backoffice-page__aside" template="backoffice-aside">
         <PageLogo className="backoffice-page__logo">
