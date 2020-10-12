@@ -113,17 +113,17 @@ function Paginator(props) {
             if (elem > 1 && elem < props.pages) {
               if (props.currentPage < 3 || props.currentPage > props.pages - 2) {
                 if (elem < 4) {
-                  return <PaginatorItem  key={elem} onClick={() => props.onClick(elem)} isActive={elem === props.currentPage}>{elem}</PaginatorItem>
+                  return <PaginatorItem key={elem} onClick={() => props.onClick(elem)} isActive={elem === props.currentPage}>{elem}</PaginatorItem>
                 } else if (elem > props.pages - 3) {
-                  return <PaginatorItem  key={elem} onClick={() => props.onClick(elem)} isActive={elem === props.currentPage}>{elem}</PaginatorItem>
+                  return <PaginatorItem key={elem} onClick={() => props.onClick(elem)} isActive={elem === props.currentPage}>{elem}</PaginatorItem>
                 } else if (elem === 4) {
-                  return <PaginatorSeparator/>
+                  return <PaginatorSeparator key={elem}/>
                 }
               } else {
                 if (elem > props.currentPage - 2 && elem < props.currentPage + 2) {
                   return <PaginatorItem key={elem} onClick={() => props.onClick(elem)} isActive={elem === props.currentPage}>{elem}</PaginatorItem>
                 } else if (elem === props.currentPage - 2 || elem === props.currentPage + 2) {
-                  return <PaginatorSeparator/>
+                  return <PaginatorSeparator key={elem}/>
                 }
               }
             }
