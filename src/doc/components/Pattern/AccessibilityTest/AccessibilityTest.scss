@@ -1,0 +1,29 @@
+.mds-accessibility-test {
+  &__result {
+    text-align: center;
+  }
+
+  &__vote {
+    text-align: center;
+
+    &--best {
+      border: 1px solid;
+      border-radius: 100px;
+
+      // line-height: 1;
+      padding: 0 8px;
+    }
+  }
+
+  &__detail {
+    align-items: center;
+    display: flex;
+    justify-content: center;
+    text-align: center;
+    width: 100%;
+  }
+
+  &__icon {
+    margin-right: 4px;
+  }
+}

@@ -49,8 +49,8 @@ const List = props =>
       React.Children.map(props.children, (child, index) => {
         return React.cloneElement(child, {
           autoPunctuation: props.autoPunctuation,
-          icon: child.props.icon === defaultIcon ? props.icon : child.props.icon,
-          iconClassName: child.props.iconClassName === '' ? props.iconClassName : child.props.iconClassName,
+          icon: child.props.icon !== undefined ? child.props.icon : props.icon,
+          iconClassName: child.props.iconClassName !== props.iconClassName ? props.iconClassName : child.props.iconClassName,
           iconSize: child.props.iconSize === '' ? props.iconSize : child.props.iconSize,
           id: index,
           last: props.children.length === index + 1,

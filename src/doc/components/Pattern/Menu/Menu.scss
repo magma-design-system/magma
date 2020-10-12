@@ -26,12 +26,19 @@ $line-height: 25px;
   grid-gap: $gap;
   transition: background-color get($tween, 'slide'), color get($tween, 'slide'), padding get($tween, 'slide');
 
+  &__section {
+    line-height: 0;
+  }
+
   &__list {
     display: none;
     grid-gap: $gap;
+    line-height: 0;
   }
 
   &--opened {
+    border-left: 2px solid color('adjust.tone', '04');
+
     .ds-menu-item {
       &__list {
         display: grid;
@@ -40,6 +47,8 @@ $line-height: 25px;
       &__title {
 
         @extend %selected-section-title;
+
+        border-radius: 0 $radius $radius 0;
       }
     }
   }
@@ -71,7 +80,7 @@ $line-height: 25px;
 
 .ds-menu-child {
   &__title {
-    border-radius: $radius;
+    border-radius: 0 $radius $radius 0;
     color: color('adjust.tone', '02');
     cursor: pointer;
     display: inline-flex;
@@ -96,7 +105,7 @@ $line-height: 25px;
 }
 
 %hover-section-title {
-  background-color: color('adjust.tone', '15');
+  background-color: color('adjust.tone', '18');
   padding-left: s(0.5);
 }
 
@@ -107,7 +116,7 @@ $line-height: 25px;
 }
 
 %hover-child-title {
-  background-color: color('adjust.tone', '15');
+  background-color: color('adjust.tone', '18');
   padding-left: s(1);
 }
 

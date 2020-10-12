@@ -17,8 +17,9 @@
     transition: background-color get($tween, 'hover'), border-color get($tween, 'hover');
 
     &:hover {
-      background-color: color('adjust.tone', '15');
-      border-color: color('adjust.tone', '15');
+      background-color: color('adjust.tone', '18');
+
+      // border-color: color('adjust.tone', '18');
     }
   }
 
@@ -32,5 +33,20 @@
     color: color('adjust.tone', '04');
     padding: s(0.25) s(0.5);
     user-select: none;
+  }
+}
+
+.grid {
+  &--tmpl-color-palette {
+    grid-gap: s(2);
+    grid-template-columns: 1fr;
+
+    @include media ('desktop') {
+      grid-template-columns: repeat(1, 1fr);
+    }
+
+    @include media ('large') {
+      grid-template-columns: repeat(2, 1fr);
+    }
   }
 }

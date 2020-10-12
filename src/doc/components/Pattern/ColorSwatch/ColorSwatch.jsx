@@ -7,21 +7,22 @@ import Caption from '@Typography/Caption/Caption'
 import H2 from '@Typography/H2/H2'
 import Grid from '@Layout/Grid/Grid'
 import Row from '@Layout/Row/Row'
-import Icon from '@Design/Icon/Icon'
 
 const ColorSwatchItem = props =>
-  <Grid className={`mds-color-swatch ${props.className}`}>
+  <Row className={`mds-color-swatch ${props.className}`}>
     <Grid gutter="none" className="mds-color-swatch__title">
       <Row gutter="xsmall">
         <H2>{ props.colorBaseCode.replace('c-', '') }</H2>
-        <Caption className="text-secondary text-secondary--caption">{props.colorBaseHexTest}</Caption>
+        <div>
+          <Caption className="text-secondary text-secondary--caption">{props.colorBaseHexTest}</Caption>
+          <Caption>T { props.colorTextCode.replace('c-', '') }</Caption>
+        </div>
       </Row>
     </Grid>
     <Caption htmlTag="div" className="mds-color-swatch__infos">
       <AccessibilityTest base={props.colorBaseHexTest} color={props.colorTextHexTest}/>
-      <div>Text { props.colorTextCode.replace('c-', '') }</div>
     </Caption>
-  </Grid>
+  </Row>
 
 ColorSwatchItem.propTypes = {
   className: PropTypes.string,

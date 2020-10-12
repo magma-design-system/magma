@@ -62,7 +62,11 @@ $aside: 450px;
     grid-gap: s(1);
 
     @include media('desktop') {
-      max-width: calc(calc(100vw - #{s(2, $aside)}) - #{s(2)});
+      max-width: 800px;
+    }
+
+    @include media('tv') {
+      max-width: 1200px;
     }
   }
 
