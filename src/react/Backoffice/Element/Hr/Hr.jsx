@@ -2,6 +2,6 @@ import React from 'react'
 import './Hr.scss'
 
 const Hr = props =>
-  <hr className="backend-hr"/>
+  <hr className="backoffice-hr"/>
 
 export default Hr

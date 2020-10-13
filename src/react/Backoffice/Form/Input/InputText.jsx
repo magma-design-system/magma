@@ -7,7 +7,7 @@ const InputText = props =>
   <Input {...props}>
     <input
       autoComplete={props.autoComplete}
-      className="backoffice-input__field text-sans text-sans--input"
+      className="backoffice-input__field text-secondary text-secondary--detail"
       defaultValue={props.value}
       name={props.name}
       onChange={props.onChange}

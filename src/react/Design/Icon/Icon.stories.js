@@ -33,7 +33,7 @@ const iconDictionary = Object.entries(mggIconsDictionary).map(([key, value]) =>
 
 export const dictionary = () =>
   <div style={{ textAlign: 'center' }}>
-    <Grid columns="auto">
+    <Grid template="auto-fill">
       {iconDictionary}
     </Grid>
   </div>

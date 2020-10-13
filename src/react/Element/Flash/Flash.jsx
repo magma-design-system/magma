@@ -23,7 +23,7 @@ FlashMessage.propTypes = {
 }
 
 FlashMessage.defaultProps = {
-  className: '',
+  className: 'text-secondary text-secondary--detail',
   status: 'info',
 }
 

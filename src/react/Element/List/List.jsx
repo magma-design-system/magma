@@ -37,8 +37,6 @@ ListItem.propTypes = {
 ListItem.defaultProps = {
   autoPunctuation: false,
   className: '',
-  icon: defaultIcon,
-  iconClassName: '',
   iconSize: '',
   numeric: false,
 }
@@ -50,7 +48,7 @@ const List = props =>
         return React.cloneElement(child, {
           autoPunctuation: props.autoPunctuation,
           icon: child.props.icon !== undefined ? child.props.icon : props.icon,
-          iconClassName: child.props.iconClassName !== props.iconClassName ? props.iconClassName : child.props.iconClassName,
+          iconClassName: child.props.iconClassName !== undefined ? child.props.iconClassName : props.iconClassName,
           iconSize: child.props.iconSize === '' ? props.iconSize : child.props.iconSize,
           id: index,
           last: props.children.length === index + 1,

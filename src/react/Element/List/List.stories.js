@@ -2,6 +2,7 @@ import React from 'react'
 import List, { ListItem } from '@Element/List/List'
 
 import faker from 'faker'
+import randomIcon from '@Design/Icon/faker'
 
 export default {
   title: 'Element/List',
@@ -16,14 +17,14 @@ export const basicUsage = () =>
   </List>
 
 export const iconSize = () =>
-  <List icon="statusWarning" iconSize="normal">
+  <List iconSize="normal">
     <ListItem>{ faker.lorem.sentences() }</ListItem>
     <ListItem>{ faker.lorem.sentences() }</ListItem>
     <ListItem>{ faker.lorem.sentences() }</ListItem>
   </List>
 
 export const customIconGlobal = () =>
-  <List icon="statusWarning">
+  <List icon={randomIcon()}>
     <ListItem>{ faker.lorem.sentences() }</ListItem>
     <ListItem>{ faker.lorem.sentences() }</ListItem>
     <ListItem>{ faker.lorem.sentences() }</ListItem>
@@ -31,23 +32,23 @@ export const customIconGlobal = () =>
 
 export const customIconMultiple = () =>
   <List iconSize="normal">
-    <ListItem icon="email">{ faker.internet.email() }</ListItem>
-    <ListItem icon="smartphone">{ faker.phone.phoneNumber() }</ListItem>
-    <ListItem icon="shipping">{ faker.address.streetAddress() }</ListItem>
+    <ListItem icon={randomIcon()}>{ faker.internet.email() }</ListItem>
+    <ListItem icon={randomIcon()}>{ faker.phone.phoneNumber() }</ListItem>
+    <ListItem icon={randomIcon()}>{ faker.address.streetAddress() }</ListItem>
   </List>
 
 export const customColorGlobal = () =>
   <List iconClassName="color-brand-maggioli-06" iconSize="normal">
-    <ListItem icon="email">{ faker.internet.email() }</ListItem>
-    <ListItem icon="smartphone">{ faker.phone.phoneNumber() }</ListItem>
-    <ListItem icon="shipping">{ faker.address.streetAddress() }</ListItem>
+    <ListItem icon={randomIcon()}>{ faker.internet.email() }</ListItem>
+    <ListItem icon={randomIcon()}>{ faker.phone.phoneNumber() }</ListItem>
+    <ListItem icon={randomIcon()}>{ faker.address.streetAddress() }</ListItem>
   </List>
 
 export const customColorMultiple = () =>
   <List iconSize="normal">
-    <ListItem icon="email" iconClassName="color-brand-maggioli-08">{ faker.internet.email() }</ListItem>
-    <ListItem icon="statusWarning" iconClassName="color-status-warning-08">{ faker.phone.phoneNumber() }</ListItem>
-    <ListItem icon="statusSuccess" iconClassName="color-status-success-08">{ faker.address.streetAddress() }</ListItem>
+    <ListItem icon={randomIcon()} iconClassName="color-brand-maggioli-08">{ faker.internet.email() }</ListItem>
+    <ListItem icon={randomIcon()} iconClassName="color-status-warning-08">{ faker.phone.phoneNumber() }</ListItem>
+    <ListItem icon={randomIcon()} iconClassName="color-status-success-08">{ faker.address.streetAddress() }</ListItem>
   </List>
 
 export const numeric = () =>

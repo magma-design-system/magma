@@ -1,8 +1,7 @@
 import React from 'react'
+import faker from 'faker'
 
 import FlashMessage from '@Element/Flash/Flash'
-import Caption from '@Typography/Caption/Caption'
-import Paragraph from '@Typography/Paragraph/Paragraph'
 
 export default {
   title: 'Element/Flash',
@@ -11,25 +10,35 @@ export default {
 
 export const basicUsage = () =>
   <FlashMessage>
-    <Caption></Caption>
+    {faker.lorem.paragraph()}
+  </FlashMessage>
+
+export const withCaption = () =>
+  <FlashMessage className="text-secondary text-secondary--caption">
+    {faker.lorem.paragraph()}
+  </FlashMessage>
+
+export const withParagraph = () =>
+  <FlashMessage className="text-secondary text-secondary--paragraph">
+    {faker.lorem.paragraph()}
   </FlashMessage>
 
 export const statusInfo = () =>
   <FlashMessage status="info">
-    <Paragraph></Paragraph>
+    {faker.lorem.paragraph()}
   </FlashMessage>
 
 export const statusWarning = () =>
   <FlashMessage status="warning">
-    <Paragraph></Paragraph>
+    {faker.lorem.paragraph()}
   </FlashMessage>
 
 export const statusError = () =>
   <FlashMessage status="error">
-    <Paragraph></Paragraph>
+    {faker.lorem.paragraph()}
   </FlashMessage>
 
 export const statusSuccess = () =>
   <FlashMessage status="success">
-    <Paragraph></Paragraph>
+    {faker.lorem.paragraph()}
   </FlashMessage>

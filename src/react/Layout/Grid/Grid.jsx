@@ -14,8 +14,8 @@ const Grid = props => {
 Grid.propTypes = {
   align: PropTypes.string,
   className: PropTypes.string,
-  columns: PropTypes.string,
   fit: PropTypes.bool,
+  columns: PropTypes.string,
   gutter: PropTypes.string,
   htmlTag: PropTypes.string,
   template: PropTypes.string,
@@ -24,7 +24,6 @@ Grid.propTypes = {
 Grid.defaultProps = {
   className: '',
   columns: '0',
-  fit: false,
   gutter: '',
   htmlTag: 'div',
   template: '',

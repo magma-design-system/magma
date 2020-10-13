@@ -38,12 +38,16 @@ $columns: 4;
     @include columns-modifier ($index);
   }
 
-  &--fit {
-    grid-auto-rows: minmax(min-content, max-content);
+  &--tmpl-auto-fit {
+    grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
   }
 
-  &--auto-columns {
+  &--tmpl-auto-fill {
     grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+  }
+
+  &--fit {
+    grid-auto-rows: minmax(min-content, max-content);
   }
 
   &--align-center {

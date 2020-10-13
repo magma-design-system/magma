@@ -4,7 +4,7 @@ import './FileImage.scss'
 import Icon from '@Design/Icon/Icon'
 import H3 from '@Typography/H3/H3'
 import LabelCaption from '@Typography/LabelCaption/LabelCaption'
-import Paragraph from '@Typography/Paragraph/Paragraph'
+import Detail from '@Typography/Detail/Detail'
 import Button from '@Element/Button/Button'
 
 const FileImage = props => {
@@ -34,9 +34,9 @@ const FileImage = props => {
             </H3>
           }
           {props.placeholder &&
-            <Paragraph className="backoffice-file-image__placeholder">
+            <Detail className="backoffice-file-image__placeholder">
               {props.placeholder}
-            </Paragraph>
+            </Detail>
           }
         </div>
       </div>

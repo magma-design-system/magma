@@ -4,8 +4,8 @@ import ButtonItem from '@Form/Button/Button'
 import './Button.scss'
 
 const Button = props =>
-  <div className="backend-button">
-    <ButtonItem className="backend-button__item">
+  <div className="backoffice-button">
+    <ButtonItem className="backoffice-button__item">
       {props.children}
     </ButtonItem>
   </div>

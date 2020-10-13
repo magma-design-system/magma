@@ -4,6 +4,7 @@
   background-color: color('adjust.tone');
   border-radius: s(0.5);
   box-shadow: get($shadow, 'soft');
+  box-sizing: border-box;
   display: flex;
   padding: s(0.5);
   padding-right: s(1);

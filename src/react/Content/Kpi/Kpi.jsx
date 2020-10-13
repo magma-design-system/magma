@@ -4,15 +4,14 @@ import React from 'react'
 import PropTypes from 'prop-types'
 import './Kpi.scss'
 
-import Grid from '@Layout/Grid/Grid'
-import H2 from '@Typography/H2/H2'
+import H1 from '@Typography/H1/H1'
 import LabelParagraph from '@Typography/LabelParagraph/LabelParagraph'
 import Icon from '@Design/Icon/Icon'
 
 const KpiItem = props =>
   <div className={`kpi__item ${props.className}`}>
     {props.icon && <Icon className="kpi__icon" name={ props.icon }/>}
-    <H2 className="kpi__title">{props.amount}</H2>
+    <H1 htmlTag="div" className="kpi__title">{props.amount}</H1>
     <LabelParagraph>{props.children}</LabelParagraph>
   </div>
 
@@ -28,16 +27,18 @@ KpiItem.defaultProps = {
 }
 
 const Kpi = props =>
-  <Grid className={`kpi ${props.className}`}>
+  <div className={`kpi ${props.className} ${props.inline ? 'kpi--inline' : ''}`}>
     {props.children}
-  </Grid>
+  </div>
 
 Kpi.propTypes = {
   className: PropTypes.string,
+  inline: PropTypes.bool,
 }
 
 Kpi.defaultProps = {
   className: '',
+  inline: true,
 }
 
 export default Kpi
