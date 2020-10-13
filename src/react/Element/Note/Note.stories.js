@@ -27,7 +27,7 @@ export const Dismissable = () =>
   </Grid>
 
 export const Colors = () =>
-  <Grid columns="3" auto="fit">
+  <Grid columns="3" fit={true}>
     <Note status="success">
       <H5>Success</H5>
       <Caption></Caption>

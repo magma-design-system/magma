@@ -2,7 +2,7 @@
 
 $ease: get($tween, 'slide');
 
-.backend-menu {
+.backoffice-menu {
   &__icon {
     color: color('brand.maggioli');
   }
@@ -12,7 +12,7 @@ $ease: get($tween, 'slide');
   }
 }
 
-.backend-menu-action {
+.backoffice-menu-action {
   align-items: flex-start;
   border-radius: s(0.25);
   color: color('adjust.tone', '04');
@@ -36,7 +36,7 @@ $ease: get($tween, 'slide');
       padding-left: s(0.25);
     }
 
-    .backend-menu-action {
+    .backoffice-menu-action {
       &__icon {
         margin-right: 0;
         opacity: 1;

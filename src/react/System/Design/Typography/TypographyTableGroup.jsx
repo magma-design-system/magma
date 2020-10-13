@@ -51,7 +51,7 @@ const Styles = props =>
   <Grid>
     {
       Object.entries(props.cssStyles).map(([viewport, styles], index) =>
-        <Grid auto="fit" gutter="none">
+        <Grid fit={true} gutter="none">
           <Caption>{viewport}</Caption>
           <StylesCode code={styles} />
         </Grid>,

@@ -64,8 +64,17 @@ export const with4Columns = () =>
     <Paragraph>{faker.lorem.paragraph()}</Paragraph>
   </Grid>
 
-export const fit = () =>
-  <Grid columns="4" auto="fit">
+export const autoFit = () =>
+  <Grid template="auto-fit">
+    <Paragraph>{faker.lorem.paragraph()}</Paragraph>
+    <Paragraph>{faker.lorem.paragraph()}</Paragraph>
+    <Paragraph>{faker.lorem.paragraph()}</Paragraph>
+    <Paragraph>{faker.lorem.paragraph()}</Paragraph>
+    <Paragraph>{faker.lorem.paragraph()}</Paragraph>
+  </Grid>
+
+export const autoFill = () =>
+  <Grid template="auto-fill">
     <Paragraph>{faker.lorem.paragraph()}</Paragraph>
     <Paragraph>{faker.lorem.paragraph()}</Paragraph>
     <Paragraph>{faker.lorem.paragraph()}</Paragraph>

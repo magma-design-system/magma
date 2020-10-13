@@ -30,6 +30,8 @@
   }
 
   &::placeholder {
+    @include apply-styles-set($map: $font-secondary-styles, $set: 'detail');
+
     color: color('adjust.tone', '10');
   }
 }

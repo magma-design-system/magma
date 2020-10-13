@@ -4,8 +4,8 @@ import SwitchItem from '@Form/Switch/Switch'
 import './Switch.scss'
 
 const Switch = props =>
-  <div className="backend-switch">
-    <SwitchItem className="backend-switch__item">
+  <div className="backoffice-switch">
+    <SwitchItem className="backoffice-switch__item">
       {props.children}
     </SwitchItem>
   </div>
