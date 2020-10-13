@@ -5,7 +5,7 @@ import './Grid.scss'
 const Grid = props => {
   const HtmlTag = props.htmlTag.toLowerCase()
   return (
-    <HtmlTag className={`grid ${props.className} ${props.template ? 'grid--tmpl-' + props.template : ''} ${props.fit ? 'grid--fit' : ''} ${props.align ? 'grid--align-' + props.align : ''} ${props.columns !== '0' ? 'grid--' + props.columns + '-columns' : ''} ${props.gutter !== '' ? 'grid--' + props.gutter : ''}`.replace(/\s\s+/g, ' ').trim()}>
+    <HtmlTag className={`grid ${props.className} ${props.template ? 'grid--tmpl-' + props.template : ''} ${props.fit ? 'grid--' + props.fit : ''} ${props.align ? 'grid--align-' + props.align : ''} ${props.columns !== '0' ? 'grid--' + props.columns + '-columns' : ''} ${props.gutter !== '' ? 'grid--' + props.gutter : ''}`.replace(/\s\s+/g, ' ').trim()}>
       {props.children}
     </HtmlTag>
   )
@@ -15,7 +15,7 @@ Grid.propTypes = {
   align: PropTypes.string,
   className: PropTypes.string,
   columns: PropTypes.string,
-  fit: PropTypes.bool,
+  fit: PropTypes.string,
   gutter: PropTypes.string,
   htmlTag: PropTypes.string,
   template: PropTypes.string,
@@ -24,7 +24,6 @@ Grid.propTypes = {
 Grid.defaultProps = {
   className: '',
   columns: '0',
-  fit: false,
   gutter: '',
   htmlTag: 'div',
   template: '',

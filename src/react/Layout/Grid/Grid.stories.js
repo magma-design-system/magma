@@ -65,7 +65,7 @@ export const with4Columns = () =>
   </Grid>
 
 export const fit = () =>
-  <Grid columns="4" fit={true}>
+  <Grid columns="4" auto="fit">
     <Paragraph>{faker.lorem.paragraph()}</Paragraph>
     <Paragraph>{faker.lorem.paragraph()}</Paragraph>
     <Paragraph>{faker.lorem.paragraph()}</Paragraph>

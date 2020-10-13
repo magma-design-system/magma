@@ -42,8 +42,12 @@ $columns: 4;
     grid-auto-rows: minmax(min-content, max-content);
   }
 
-  &--auto-columns {
+  &--auto-fit {
     grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+  }
+
+  &--auto-fill {
+    grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
   }
 
   &--align-center {

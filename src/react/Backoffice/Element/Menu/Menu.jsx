@@ -25,7 +25,7 @@ MenuItemTitle.defaultProps = {
 }
 
 const MenuItem = props =>
-  <Grid className="backend-menu__item" fit={true} gutter="none">
+  <Grid className="backend-menu__item" auto="fit" gutter="none">
     {props.children}
   </Grid>
 
@@ -50,7 +50,7 @@ MenuItemAction.defaultProps = {
 }
 
 const Menu = props =>
-  <Grid className="backend-menu" fit={true}>
+  <Grid className="backend-menu" auto="fit">
     { props.children }
   </Grid>
 
