@@ -103,7 +103,7 @@ $border-radius: get($radius, 'small');
     &:hover {
 
       --background: #{color($color-set, '02')};
-      --color: #{color('adjust.tone', '15')};
+      --color: #{color('adjust.tone', '20')};
     }
   }
 
@@ -134,7 +134,7 @@ $border-radius: get($radius, 'small');
     &:hover {
 
       --background: #{color($color-set, '06')};
-      --color: #{color('adjust.tone', '15')};
+      --color: #{color('adjust.tone', '20')};
     }
   }
 
@@ -149,7 +149,7 @@ $border-radius: get($radius, 'small');
     &:hover {
 
       --background: #{color($color-set, '08')};
-      --color: #{color('adjust.tone', '15')};
+      --color: #{color('adjust.tone', '20')};
     }
   }
 }
