@@ -2,3 +2,39 @@
 title: 'Dizionario'
 date: '2020-10-12'
 ---
+
+import IconDictionary from '@Design/Icon/IconDictionary'
+
+Di seguito, troverai la lista completa delle icone attualmente pubblicate per il Design System. A fondo pagina ci saranno alcune linee guida di implementazione.
+
+---
+
+<IconDictionary/>
+
+---
+
+### Implementazione
+
+Dentro al Design System, troverai il componente `Icon` fatto appositamente per sfruttare il modulo node `@maggioli-common/mgg-icons`. Dovrai quindi prima installare questo set per utilizzarle.
+
+```bash
+npm install --save @maggioli-common/mgg-icons
+```
+
+Mettiamo caso che ti serva un'icona all'interno di un componente React, di basterà utilizzarla in questo modo:
+
+
+```javascript
+import React from 'react'
+import Icon from '@Design/Icon/Icon'
+import './MyComponent.scss'
+
+const MyComponent = props =>
+  <div className="my-component">
+    <Icon className="my-component__icon" name="status-warning"/>
+  </div>
+
+export default MyComponent
+```
+
+Il componente `Icon` si occuperà di decorare il markup per poter renderizzare correttamente l'icona selezionata.

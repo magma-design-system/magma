@@ -38,12 +38,24 @@ $columns: 4;
     @include columns-modifier ($index);
   }
 
+  @include media ('mobile') {
+    grid-template-columns: 1fr;
+  }
+
   &--tmpl-auto-fit {
     grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+
+    @include media ('mobile') {
+      grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)) !important;
+    }
   }
 
   &--tmpl-auto-fill {
     grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+
+    @include media ('mobile') {
+      grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)) !important;
+    }
   }
 
   &--fit {
@@ -52,9 +64,5 @@ $columns: 4;
 
   &--align-center {
     align-items: center;
-  }
-
-  @include media ('mobile') {
-    grid-template-columns: 1fr;
   }
 }
