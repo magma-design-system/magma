@@ -7,6 +7,23 @@
   display: flex;
   padding: s(0.5);
   padding-right: s(1);
+  width: 100%;
+
+  &--short-name {
+    .download {
+      &__file-name {
+        max-width: 150px;
+      }
+    }
+  }
+
+  &--full-name {
+    .download {
+      &__file-name {
+        max-width: none;
+      }
+    }
+  }
 
   &__icon-area {
     align-items: center;

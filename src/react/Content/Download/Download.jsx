@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React from 'react'
 import PropTypes from 'prop-types'
 import './Download.scss'
 import Icon from '@Design/Icon/Icon'
@@ -25,12 +25,11 @@ const Download = props => {
   const name = getName(props.fileName, extension)
   const { description, format } = getExtensionInfos(extension)
   const { background, color, icon } = dictionary.format[format]
-  const [isDownloaded, setState] = useState(false)
 
   return (
-    <a href={props.href} onClick={() => { setState(true) }} title={props.fileName} className={`download ${props.className}`}>
+    <a href={props.href} title={props.fileName} className={`download ${props.className} ${props.length ? 'download--' + props.length + '-name': ''}`}>
       <div className="download__icon-area">
-        <Icon name={`${isDownloaded ? 'status-success' : icon}`} className={`download__icon ${color}`}/>
+        <Icon name={`${icon}`} className={`download__icon ${color}`}/>
       </div>
       <div className="download__info">
         <H5 htmlTag="div" className="download__name">
@@ -50,12 +49,14 @@ Download.propTypes = {
   className: PropTypes.string,
   fileName: PropTypes.string,
   href: PropTypes.string,
+  length: PropTypes.string,
 }
 
 Download.defaultProps = {
   className: '',
   fileName: 'File name.ext',
   href: '#',
+  length: ''
 }
 
 export default Download
