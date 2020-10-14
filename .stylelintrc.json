@@ -195,7 +195,7 @@
     "string-quotes": "single",
     "time-min-milliseconds": 100,
     "unicode-bom": "never",
-    "unit-blacklist": [ "ch", "cm", "em", "ex", "in", "mm", "pc", "pt", "rem" ],
+    "unit-blacklist": [ "cm", "em", "ex", "in", "mm", "pc", "pt", "rem" ],
     "unit-case": "lower",
     "unit-no-unknown": true,
     "value-keyword-case": "lower",

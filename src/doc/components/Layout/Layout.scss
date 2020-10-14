@@ -61,12 +61,15 @@ $aside: 450px;
     display: grid;
     grid-gap: s(1);
 
-    @include media('desktop') {
-      max-width: 800px;
+    .grid,
+    .quote,
+    .text-primary,
+    .text-secondary {
+      max-width: 70ch;
     }
 
-    @include media('tv') {
-      max-width: 1200px;
+    .image {
+      border-radius: s(1);
     }
   }
 
