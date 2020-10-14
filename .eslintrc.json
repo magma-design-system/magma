@@ -224,6 +224,7 @@
         "react/no-string-refs": "warn",
         "react/jsx-uses-vars": "warn",
         "react/jsx-uses-react": "warn",
+        "react/value-keyword-case": "off",
         "react/prefer-stateless-function": "warn",
         "react/prop-types": ["error", { "ignore": ["children"] }],
         "no-unused-vars": "error",

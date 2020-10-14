@@ -5,8 +5,12 @@
  * @returns {object{}} style object for React
  */
 
-export function aspectRatio(aspectRatio) {
+export function aspectRatioPaddingTop(aspectRatio) {
   const ratioBase = parseInt(aspectRatio.split(':')[1])
   const ratioDivisor = parseInt(aspectRatio.split(':')[0])
-  return { paddingTop: `${(ratioBase / ratioDivisor * 100).toFixed(2)}%` }
+  return `${(ratioBase / ratioDivisor * 100).toFixed(2)}%`
+}
+
+export function aspectRatio(aspectRatio) {
+  return { paddingTop: aspectRatioPaddingTop(aspectRatio) }
 }

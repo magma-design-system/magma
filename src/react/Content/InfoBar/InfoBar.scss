@@ -7,8 +7,12 @@
   max-width: 300px;
 
   &__outer {
+
+    $shadow: 0 2px 5px 0 color('adjust.tone', '01', 0.05) inset;
+
     background-color: color('adjust.tone', '19');
     border-radius: $size;
+    box-shadow: $shadow;
     display: flex;
     height: $size;
     overflow: hidden;

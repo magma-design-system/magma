@@ -23,6 +23,14 @@
     align-items: center;
   }
 
+  &--align-flex-start {
+    align-items: flex-start;
+  }
+
+  &--align-flex-end {
+    align-items: flex-end;
+  }
+
   &__item {
     margin-right: get($size, 'normal');
 

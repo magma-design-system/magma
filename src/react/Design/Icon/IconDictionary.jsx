@@ -7,7 +7,7 @@ import './IconDictionary.scss'
 import mggIconsDictionary from '£Project/mgg-icons/src/mgg-icons.json'
 
 const IconRow = props =>
-  <Grid className="icon-dictionary" gutter="xsmall" htmlTag="label">
+  <Grid className="icon-dictionary__item" gutter="xsmall" htmlTag="label">
     <div><Icon {...props} /></div>
     <input onFocus={event => event.target.select()} className="icon-dictionary__input text-mono text-mono--hack color-adjust-tone-c-08" type="text" readOnly={true} value={props.name} />
   </Grid>
@@ -25,7 +25,7 @@ const iconDictionary = Object.entries(mggIconsDictionary).map(([key, value]) =>
 )
 
 export const IconDictionary = () =>
-  <div style={{ textAlign: 'center' }}>
+  <div className="icon-dictionary" style={{ textAlign: 'center' }}>
     <Grid template="auto-fill">
       {iconDictionary}
     </Grid>

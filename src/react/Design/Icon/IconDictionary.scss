@@ -1,35 +1,40 @@
 @import '~Sass/import-framework';
 
 .icon-dictionary {
-  border-radius: s(0.5);
-  cursor: pointer;
-  padding: s(0.5);
-  transition: background-color get($tween, 'hover'), color get($tween, 'hover');
+  &__item {
+    border-radius: s(0.5);
+    box-shadow: none;
+    cursor: pointer;
+    padding: s(0.5);
+    transition: background-color get($tween, 'hover'), box-shadow get($tween, 'hover'), color get($tween, 'hover');
 
-  &:focus-within,
-  &:hover {
-    background-color: color('brand.maggioli', '20');
-    color: color('brand.maggioli', '05');
+    &:hover {
+      background-color: color('adjust.tone', 'color');
+      box-shadow: get($shadow, 'box');
+      color: color('brand.maggioli', '05');
+    }
+
+    &:focus-within {
+      background-color: color('brand.maggioli', '17');
+      box-shadow: none;
+      color: color('brand.maggioli', '05');
+    }
   }
 
-  &:focus-within {
-    background-color: color('brand.maggioli', '18');
-  }
-}
+  &__input {
+    background-color: transparent;
+    border: 0;
+    color: color('adjust.tone', '08');
+    cursor: pointer;
+    text-align: center;
+    text-overflow: ellipsis;
+    transition: background-color get($tween, 'hover'), color get($tween, 'hover');
+    user-select: none;
+    width: 100%;
 
-.icon-dictionary__input {
-  background-color: transparent;
-  border: 0;
-  color: color('adjust.tone', '08');
-  cursor: pointer;
-  text-align: center;
-  text-overflow: ellipsis;
-  transition: background-color get($tween, 'hover'), color get($tween, 'hover');
-  user-select: none;
-  width: 100%;
-
-  &:focus {
-    // background-color: color('adjust.tone');
-    outline: 0;
+    &:focus {
+      // background-color: color('adjust.tone');
+      outline: 0;
+    }
   }
 }

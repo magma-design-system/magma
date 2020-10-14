@@ -8,6 +8,10 @@
     "stylelint-order",
     "stylelint-scss"
   ],
+  "ignoreFiles": [
+    "**/*.js",
+    "**/*.jsx"
+  ],
   "rules": {
     "alpha-value-notation": "number",
     "at-rule-empty-line-before": [ "always", { "ignoreAtRules": [ "import", "each", "else", "include", "return", "use" ] } ],
