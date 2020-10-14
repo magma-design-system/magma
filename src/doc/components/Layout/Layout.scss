@@ -68,6 +68,11 @@ $contents-color: color('adjust.tone', '20');
       max-width: 70ch;
     }
 
+    .link {
+      color: color('adjust.tone', '01');
+      font-weight: 600;
+    }
+
     > .image {
       border-radius: s(1);
 

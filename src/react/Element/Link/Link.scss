@@ -1,12 +1,15 @@
 @import '~Sass/import-framework';
 
 .link {
-  color: color('brand.maggioli', '05');
+
+  --color: #{color('brand.maggioli', '05')};
+
+  color: var(--color);
   text-decoration: underline;
   text-decoration-color: color('adjust.tone', '12');
   transition: background-color get($tween, 'hover'), box-shadow get($tween, 'hover'), text-decoration-color get($tween, 'hover');
 
   &:hover {
-    text-decoration-color: color('brand.maggioli', '05');
+    text-decoration-color: initial;
   }
 }
