@@ -212,17 +212,13 @@ $border-style: $border-size solid;
 %cell-outer-border-invisible {
   &:first-child {
     &::before {
-      background-color: red;
-      min-width: s(1);
-      transform: translate(0, 0);
+      min-width: 0;
     }
   }
 
   &:last-child {
     &::before {
-      background-color: red;
-      min-width: s(1);
-      transform: translate(0, 0);
+      min-width: 0;
     }
   }
 }
