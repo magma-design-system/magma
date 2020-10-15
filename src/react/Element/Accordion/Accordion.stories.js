@@ -1,13 +1,13 @@
 import React from 'react'
 import faker from 'faker'
 
-import Accordion, { AccordionItem } from '@Layout/Accordion/Accordion'
+import Accordion, { AccordionItem } from '@Element/Accordion/Accordion'
 import Paragraph from '@Typography/Paragraph/Paragraph'
 
 faker.locale = 'it'
 
 export default {
-  title: 'Layout/Accordion',
+  title: 'Element/Accordion',
   component: Accordion,
 }
 

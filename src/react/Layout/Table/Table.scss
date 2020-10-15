@@ -11,14 +11,18 @@ $border-style: $border-size solid;
   &:first-child {
     &::before {
       background-color: $cell-background-color #{$important};
+      min-width: s(1) #{$important};
       transform: translate(-100%, 0) #{$important};
+      transition: background-color get($tween, 'slide'), transform get($tween, 'slide'), min-width get($tween, 'slide'), right get($tween, 'slide');
     }
   }
 
   &:last-child {
     &::before {
       background-color: $cell-background-color #{$important};
+      min-width: s(1) #{$important};
       transform: translate(100%, 0) #{$important};
+      transition: background-color get($tween, 'slide'), transform get($tween, 'slide'), min-width get($tween, 'slide'), right get($tween, 'slide');
     }
   }
 }
@@ -99,6 +103,7 @@ $border-style: $border-size solid;
                   @include cell-outer-border-visible;
 
                   background-color: var(--background-color);
+                  transition: background-color get($tween, 'slide');
                 }
               }
             }
@@ -182,6 +187,7 @@ $border-style: $border-size solid;
                     @include cell-outer-border-visible (!important);
 
                     background-color: $cell-background-color !important;
+                    transition: background-color get($tween, 'slide');
                   }
                 }
               }
@@ -194,29 +200,28 @@ $border-style: $border-size solid;
 }
 
 %outer-border {
-  &::before {
-    background-color: transparent;
-    content: '';
-    height: calc(100% + #{s(2, $border-size)});
-    min-width: s(1);
-    position: absolute;
-    top: s(-1, $border-size);
-    transform: translate(0, 0);
-    transition: transform get($tween, 'slide'), right get($tween, 'slide');
-  }
+  background-color: transparent;
+  content: '';
+  height: calc(100% + #{s(2, $border-size)});
+  min-width: 0;
+  position: absolute;
+  top: s(-1, $border-size);
+  transform: translate(0, 0);
 }
 
 %cell-outer-border-invisible {
   &:first-child {
     &::before {
-      background-color: transparent;
+      background-color: red;
+      min-width: s(1);
       transform: translate(0, 0);
     }
   }
 
   &:last-child {
     &::before {
-      background-color: transparent;
+      background-color: red;
+      min-width: s(1);
       transform: translate(0, 0);
     }
   }
