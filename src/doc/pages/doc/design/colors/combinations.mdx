@@ -11,17 +11,19 @@ Utilizza la seguente guida per comprendere come e quando usare insieme i colori 
 
 <Usage>
   <UsageDo>
-    <Caption>Usa qualsiasi colore di sfondo chiaro con il colore del testo corrispondente al suo gruppo e al suo nome.</Caption>
+    <Detail>Usa qualsiasi colore di sfondo chiaro con il colore del testo corrispondente al suo gruppo e al suo nome.</Detail>
     <Button className="background-color-brand-maggioli-14 color-brand-maggioli-04">Hello world</Button>
-    <CodeSnippet language="scss" code={`.component {
+    <CodeBlock language="scss">
+{`.component {
   background-color: color('brand.maggioli', '14');
   color: color('brand.maggioli', '04');
-}`} />
+}`}
+    </CodeBlock>
   </UsageDo>
   <UsageDont>
-    <Caption>Non mischiare palette differenti tra loro, anche se superano i test di contrasto verrano mix non coerenti per l'utilizzatore.</Caption>
+    <Detail>Non mischiare palette differenti tra loro, anche se superano i test di contrasto verrano mix non coerenti per l'utilizzatore.</Detail>
     <Button className="background-color-brand-maggioli-14 color-status-warning-04">Hello world</Button>
-    <CodeSnippet language="scss" code={`.component {
+    <CodeBlock language="scss" code={`.component {
   background-color: color('brand.maggioli', '14');
   color: color('status.warning', '04');
 }`} />
@@ -32,7 +34,7 @@ Utilizza la seguente guida per comprendere come e quando usare insieme i colori 
   <UsageDo>
     <Caption>Usa qualsiasi colore di sfondo chiaro con il colore del testo corrispondente al suo gruppo e al suo nome.</Caption>
     <Button className="background-color-brand-maggioli-14 color-brand-maggioli-01">Hello world</Button>
-    <CodeSnippet language="scss" code={`.component {
+    <CodeBlock language="scss" code={`.component {
   background-color: color('brand.maggioli', '14');
   color: color('brand.maggioli', '01');
 }`} />
@@ -40,7 +42,7 @@ Utilizza la seguente guida per comprendere come e quando usare insieme i colori 
   <UsageDont>
     <Caption>Controlla che i <Link href="/doc/design/colors/palette/">test di contrasto</Link> non falliscano.</Caption>
     <Button className="background-color-brand-maggioli-14 color-brand-maggioli-11">Hello world</Button>
-    <CodeSnippet language="scss" code={`.component {
+    <CodeBlock language="scss" code={`.component {
   background-color: color('brand.maggioli', '14');
   color: color('brand.maggioli', '11');
 }`} />

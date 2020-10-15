@@ -10,10 +10,10 @@ import H5 from '@Typography/H5/H5'
 const UsageDo = props =>
   <div className="mds-usage__item mds-usage__item--do">
     <Row className="mds-usage__header">
-      <Icon name="do"/>
+      <Icon name="status-success"/>
       <H5>Do</H5>
     </Row>
-    <Grid gutter="xsmall" className="mds-usage__content">
+    <Grid gutter="small" className="mds-usage__content">
       {props.children}
     </Grid>
   </div>
@@ -21,10 +21,10 @@ const UsageDo = props =>
 const UsageDont = props =>
   <div className="mds-usage__item mds-usage__item--dont">
     <Row className="mds-usage__header">
-      <Icon name="dont"/>
+      <Icon name="status-error"/>
       <H5>Don't</H5>
     </Row>
-    <Grid gutter="xsmall" className="mds-usage__content">
+    <Grid gutter="small" className="mds-usage__content">
       {props.children}
     </Grid>
   </div>

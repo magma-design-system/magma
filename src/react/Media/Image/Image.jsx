@@ -25,7 +25,7 @@ const Image = props => {
   if (props.aspectRatio) {
     styles = {
       backgroundImage: 'url(' + props.src + ')',
-      backgroundPosition: props.aspectRatioAlign,
+      backgroundPosition: props.aspectRatioPosition,
       paddingTop: aspectRatioPaddingTop(props.aspectRatio),
     }
   }
@@ -48,7 +48,7 @@ const Image = props => {
 Image.propTypes = {
   alt: PropTypes.string,
   aspectRatio: PropTypes.string,
-  aspectRatioAlign: PropTypes.string,
+  aspectRatioPosition: PropTypes.string,
   className: PropTypes.string,
   htmlTag: PropTypes.string,
   loading: PropTypes.string,
@@ -61,7 +61,7 @@ Image.defaultProps = {
   className: '',
   htmlTag: 'figure',
   loading: 'lazy',
-  aspectRatioAlign: '50% 0',
+  aspectRatioPosition: '50% 0',
   sourceTitle: '',
   sourceUrl: '',
   src: '',

@@ -8,9 +8,12 @@ import { createMenuList, findMenuItem, getPageData } from '@Gatsby/Pattern/Navig
 import Bibliography from '@Content/Bibliography/Bibliography'
 import Button from '@Element/Button/Button'
 import Code from '@Element/Code/Code'
+import CodeBlock from '@Element/CodeBlock/CodeBlock'
 import Grid from '@Layout/Grid/Grid'
 import InfoBar from '@Content/InfoBar/InfoBar'
 import H1 from '@Typography/H1/H1'
+import Caption from '@Typography/Caption/Caption'
+import Detail from '@Typography/Detail/Detail'
 import H2 from '@Typography/H2/H2'
 import H3 from '@Typography/H3/H3'
 import H4 from '@Typography/H4/H4'
@@ -27,7 +30,7 @@ import Page from '@Gatsby/Page/Page'
 import Paragraph from '@Typography/Paragraph/Paragraph'
 import Quote from '@Content/Quote/Quote'
 import Table, { TableHeader, TableHeaderCell, TableBody, TableRow, TableCell } from '@Layout/Table/Table'
-import Usage, { UsageDo, UsageDont } from '@Gatsby/Pattern/Usage/Usage'
+import Usage, { UsageDo, UsageDont } from '@Content/Usage/Usage'
 
 import { defineCustomElements as deckDeckGoHighlightElement } from '@deckdeckgo/highlight-code/dist/loader'
 
@@ -35,7 +38,10 @@ import { defineCustomElements as deckDeckGoHighlightElement } from '@deckdeckgo/
 
 const shortcodes = {
   Button,
+  Caption,
+  Detail,
   Code,
+  CodeBlock,
   Grid,
   H1,
   H2,

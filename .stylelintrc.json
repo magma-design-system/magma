@@ -159,7 +159,7 @@
     "scss/double-slash-comment-empty-line-before": [ "always", { "ignore": [ "between-comments", "stylelint-commands" ], "except": [ "first-nested" ] } ],
     "scss/double-slash-comment-inline": [ "never", { "ignore": [ "stylelint-commands" ] } ],
     "scss/double-slash-comment-whitespace-inside": "always",
-    "scss/function-color-relative": true,
+    "scss/function-color-relative": null,
     "scss/function-quote-no-quoted-strings-inside": true,
     "scss/function-unquote-no-unquoted-strings-inside": true,
     "scss/map-keys-quotes": "always",

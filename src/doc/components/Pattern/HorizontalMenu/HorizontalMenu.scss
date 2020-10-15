@@ -11,7 +11,7 @@ $contents-color-desktop: color('adjust.tone', '20', 0.8);
   width: auto;
 
   @include media('desktop') {
-    backdrop-filter: blur(6px);
+    backdrop-filter: saturate(180%) blur(20px);
     background-color: $contents-color-desktop;
     margin: 0 s(-2);
     padding-left: s(2);
@@ -46,7 +46,7 @@ $contents-color-desktop: color('adjust.tone', '20', 0.8);
     white-space: nowrap;
 
     &:hover {
-      background-color: color('adjust.tone', '17');
+      background-color: color('adjust.tone', '02', 0.1);
     }
   }
 }

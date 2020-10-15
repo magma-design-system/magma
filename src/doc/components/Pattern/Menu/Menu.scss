@@ -105,7 +105,8 @@ $line-height: 25px;
 }
 
 %hover-section-title {
-  background-color: color('adjust.tone', '18');
+  // background-color: color('adjust.tone', '18');
+  background-color: color('adjust.tone', '02', 0.1);
   padding-left: s(0.5);
 }
 
@@ -116,7 +117,8 @@ $line-height: 25px;
 }
 
 %hover-child-title {
-  background-color: color('adjust.tone', '18');
+  // background-color: color('adjust.tone', '18');
+  background-color: color('adjust.tone', '02', 0.1);
   padding-left: s(1);
 }
 
