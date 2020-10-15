@@ -1,5 +1,5 @@
 ---
-title: 'Principle'
+title: 'Principi chiave'
 date: '2020-08-21'
 author: Vittorio Vittori
 source:
@@ -24,8 +24,99 @@ Ciò che serve in queste fasi, sono una serie di Design Pinciple.
 
 Prima di procedere è bene definire le differenze tra termini che tendono ad essere interpretati in modo soggettivo, come ad esempio **principi**, **standard** e **valori**.
 
-#### Valori
+# Valori
 
 I **valori** sono le qualità che guidano i **principi**. Sono un sintetico sottoinsieme che va scelto con cura, basato su aggettivi intenzionalmente ampi (al limite dell'ovvio) che servono come meccanismo per rafforzare il senso dei **principi**.
 
 Descrivono come ci si dovrebbe sentire mentre si utilizza un prodotto. I valori sono utili, ma non utilizzati da soli.
+
+## Esempi di value
+
+<List numeric={true}>
+  <ListItem>Abilitante (Empowering)</ListItem>
+  <ListItem>Intuitivo</ListItem>
+  <ListItem>Flessibile</ListItem>
+  <ListItem>Inclusivo</ListItem>
+</List>
+
+---
+
+# Principle
+
+I principi (Principles) sono gli standard pratici, severi e supponenti che guidano il processo decisionale. Rafforzano i valori fondamentali e aiutano le decisioni a muoversi in una direzione coerente.
+
+Sono sentimenti accattivanti, memorabili e specifici che uniscono l'esperienza del prodotto in diverse circostanze.
+
+Ecco un esempio:
+
+### Strumenti sopra le regole
+
+Il Design System è come a una cassetta degli attrezzi, non è un manuale di istruzioni. Sostieni la community, non bloccarla.
+
+I Design System riguardano il potenziamento degli altri con strumenti e informazioni per migliorare ciò che è già stato costruito, non è qualcosa che si impone sul lavoro precedente.
+
+---
+
+### Aiuta con un esempio, non con delle spiegazioni
+
+Mostra le migliori pratiche con esempi reali, non istruzioni su come ricrearle. Scrivere un manuale di istruzioni sui modelli di progettazione è laborioso da scrivere e leggere. È molto più facile adottare, comprendere, aggiornare, mantenere e implementare da esempi dal vivo.
+
+<div>
+  <Image src={require('./lead-with-examples.jpg')}/>
+</div>
+
+Inoltre, un Design System non può e non deve cercare di prevedere ogni situazione in cui un componente verrà utilizzato con la documentazione. Cercare di documentare ogni scenario finisce per creare una lunga lista di eccezioni.
+
+Per esempio:
+
+I pulsanti iniziano sempre con un verbo... ad eccezione di azioni comuni come "Fine", "Annulla" o "OK" ... ma OK è consentito solo nelle applicazioni mobili... e questo non si applica ai gruppi di pulsanti... e non quando la lunghezza del pulsante potrebbe causare problemi nelle interfacce utente compatte.
+
+### Il vero risultato è l'efficienza, non la coerenza
+
+Ci sono sempre tanti obiettivi all'interno di un Design System: coerenza, usabilità, coerenza, consolidamento, accessibilità, efficienza... l'elenco potrebbe andare avanti per ore. Lo scopo di questo principio è ricordare che il driver principale per un Design System non è imporre la coerenza.
+
+La coerenza è la conseguenza dell'efficienza, non il contrario. Quando il Design System è intuitivo e versatile da usare, la coerenza diventa un sottoprodotto automatico dell'adozione. Certo, la coerenza è una considerazione chiave, ma quando è la priorità principale del Design System diventa una restrizione auto-governata che causa la stagnazione.
+
+### Rimuovi ciò che non è necessario e perfeziona ciò che rimane
+
+È molto facile aggiungere. È quasi impossibile rimuovere. Ogni aggiunta dovrebbe lottare per essere inclusa. Questa è una linea difficile da tracciare, ma le complessità che si insinuano nelle fondamenta di un Design System si propagano e diventano molto più difficili da modificare una volta entrate in produzione.
+
+Più materiale aggiungi, più ne mantieni. Ogni volta che qualcosa di nuovo viene adottato nel Design System, diventa un modello da seguire nelle definizioni successive.
+
+### Pensa in modo inclusivo
+
+L'accessibilità è una parte integrante dello sviluppo del Design System, non si tratta di una fase finale. L'inclusività è fondamentale per costruire prodotti etici di successo e scalabili.
+
+Per non parlare di quanto l'accessibilità sia difficile da implementare e i Desisgn System sono nella posizione unica di difenderla come standard fondamentale per la progettazione, lo sviluppo e la strategia dei contenuti.
+
+### I Design System parlano in Token
+
+Il modo in cui un Design System definisce, fa riferimento, parla e cura i suoi Design Token è molto importante. Sono l'anima dell'estetica del tuo DS, il blocco visivo più fondamentale e il collante che tiene insieme tutto in un modo che nessun'altra suo aspetto può fare. Spesso è anche il set di variabili di codice che maggiormente verrà sfruttato da tutto il codebase.
+
+Ad esempio, un colore non è solo un "colore" in un Design System. Molto probabilmente si tratterà di un Token astratto come "colore primario" o "colore del brand".
+
+Pensare in questo modo aiuta ad astrarre l'estetica visiva dai termini grezzi nel modo in cui gli attributi del design vengono applicati al contesto dell'intero sistema. Ciò è particolarmente utile quando si progetta tenendo a mente i temi.
+
+<div>
+  <Image src={require('./component-color-tokens.gif')} sourceTitle="Un esempio grezzo di come Design Token" sourceUrl="https://spectrum.adobe.com/page/design-tokens/"/>
+</div>
+
+### Il Design System funziona quando può essere utilizzato senza i suoi creatori
+
+È un aspetto fondamentale più che un principio. Il Design System funziona quando fornisce ad altri i principi, le conoscenze e gli strumenti per risolvere i problemi senza il team di progettazione originale.
+
+### Abbastanza flessibile per molteplici scenari, abbastanza specifico da essere utile
+
+Questo principio è non è immediato da seguire un punto di vista pratico.
+
+<Quote author="Nathan Curtis">
+  Design system principle #5: Favor elegance of simple things over flexibility of complex things.
+</Quote>
+
+La modularità è importante (soprattutto per incoraggiare l'adozione) ma se usata in modo eccessivo tutto diventa come un puzzle, troppo dettagliato e non lascia abbastanza spazio per la flessibilità. Trovare il punto debole dipende dal team, dall'attività, dal prodotto e dal componente.
+
+<div>
+  <Image src={require('./simplicity-vs-modularity.png')} sourceTitle="Sempplicità VS Modularità"/>
+</div>
+
+La definizione del livello appropriato di personalizzazione è il punto in cui i Design System possono flettere maggiormente la loro influenza, ma è anche il più opinionabile.
