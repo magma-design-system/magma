@@ -8,29 +8,31 @@ source:
     url: https://uxdesign.cc/defining-design-system-principles-69e4790b95b0#:~:text=There%20are%20a%20lot%20of,is%20not%20to%20enforce%20consistency.
 ---
 
-Come si può capire se siamo di fronte ad un buon Design System? In base a chi lo chiedi, la risposta può cambiare di molto. Buono per chi? In che senso è di buon livello? Come misuro la sua qualità?
+Come si può capire se siamo di fronte ad un Design System maturo? In base a chi lo chiedi, la risposta può cambiare di molto. Maturo per chi? In che senso maturo? Come misuro la sua maturità?
 
-A questo punto, qualcuno potrebbe replicare: *"Hai bisogno di definire dei valori"*.
+A questo punto, qualcuno potrebbe risponderti che *"Hai bisogno di definire dei valori"*.
 
-Spesso però, non è utile fare riferimento a una lista di parole generiche e spesso scontate come *"Semplice, intelligente e chiaro"*.
+I valori però se usati allo scopo di basare tutti i principi del Design System su di essi, hanno la stessa utilià di una lista di parole generiche e spesso scontate come *"Semplice, intelligente e chiaro"*.
 
-Quando si sceglie una direzione tecnica e di stile, o si affronta una scelta difficile durante la progettazione, gli aggettivi generici non sono molto utili.
+Quando si scelgono una direzione tecnica e uno stile si affronta un percorso complesso durante la progettazione, in questo caso, degli aggettivi generici non sono di grande aiuto.
 
-"Semplice" può significare cose drasticamente diverse a seconda della persona e del prodotto.
+Il problema nasce dal fatto che *"Semplice"* può significare cose drasticamente diverse a seconda della persona che le deve interpretare o del prodotto al quale si deve ispirare.
 
-Ciò che serve in queste fasi, sono una serie di Design Pinciple.
+Ciò che serve in queste fasi, sono una serie di **Design Pinciple**.
 
-<Image src={require('./people-sightseeing-outdoors-bro.svg')} sourceTitle="Illustrazione proveniente da Freepik Stories" sourceUrl="https://stories.freepik.com/"/>
+<Image src={require('./images/people-sightseeing-outdoors-bro.svg')} sourceTitle="Illustrazione proveniente da Freepik Stories" sourceUrl="https://stories.freepik.com/"/>
 
-Prima di procedere è bene definire le differenze tra termini che tendono ad essere interpretati in modo soggettivo, come ad esempio **principi**, **standard** e **valori**.
+Prima di procedere è bene definire le differenze tra questi termini che spesso sono interpretati in modo soggettivo, come ad esempio **principi**, **standard** e **valori**.
 
-# Valori
+---
 
-I **valori** sono le qualità che guidano i **principi**. Sono un sintetico sottoinsieme che va scelto con cura, basato su aggettivi intenzionalmente ampi (al limite dell'ovvio) che servono come meccanismo per rafforzare il senso dei **principi**.
+### Values
 
-Descrivono come ci si dovrebbe sentire mentre si utilizza un prodotto. I valori sono utili, ma non utilizzati da soli.
+I **Values** (valori) sono le qualità che guidano i **Design principle**. Sono un sintetico sottoinsieme che va scelto con cura, basato su aggettivi intenzionalmente ampi (al limite dell'ovvio) che servono come meccanismo per rafforzare il senso dei **Design Principle**.
 
-## Esempi di value
+Descrivono come ci si dovrebbe sentire mentre si utilizza un prodotto costruito con il Design System. I Value sono utili, ma inutilizzabili da soli.
+
+#### Esempi di Value
 
 <List numeric={true}>
   <ListItem>Abilitante (Empowering)</ListItem>
@@ -41,7 +43,7 @@ Descrivono come ci si dovrebbe sentire mentre si utilizza un prodotto. I valori 
 
 ---
 
-# Principle
+### Design Principle
 
 I principi (Principles) sono gli standard pratici, severi e supponenti che guidano il processo decisionale. Rafforzano i valori fondamentali e aiutano le decisioni a muoversi in una direzione coerente.
 
@@ -49,20 +51,28 @@ Sono sentimenti accattivanti, memorabili e specifici che uniscono l'esperienza d
 
 Ecco un esempio:
 
-### Strumenti sopra le regole
-
-Il Design System è come a una cassetta degli attrezzi, non è un manuale di istruzioni. Sostieni la community, non bloccarla.
-
-I Design System riguardano il potenziamento degli altri con strumenti e informazioni per migliorare ciò che è già stato costruito, non è qualcosa che si impone sul lavoro precedente.
+<Quote author="Nathan Curtis">
+  Favorisci l'eleganza delle cose semplici sopra la flessibilità delle cose complesse.
+</Quote>
 
 ---
 
-### Aiuta con un esempio, non con delle spiegazioni
+### È tutta una questione di lavoro di squadra
 
-Mostra le migliori pratiche con esempi reali, non istruzioni su come ricrearle. Scrivere un manuale di istruzioni sui modelli di progettazione è laborioso da scrivere e leggere. È molto più facile adottare, comprendere, aggiornare, mantenere e implementare da esempi dal vivo.
+Il Design System è fatto per essere utilizzato da un numero variabile di team interni[...]
+
+Il Design System è come a una cassetta degli attrezzi, non è un manuale di istruzioni. Fai crescere la micro community interna dell'azienda che gli orbita attorno, lascia che ne venga portato il contributo individuale al fine di uno strumento multifunzionale per tutti.
+
+I Design System riguardano la possibilità di abilitare i membri del team a migliorare ciò che è già stato costruito, non è qualcosa che si impone sul lavoro già fatto.
+
+---
+
+### Aiuta i membri con degli esempi, non con delle spiegazioni
+
+Mostra le best practice con esempi reali, non istruzioni su come ricrearle. Scrivere un manuale di istruzioni sui modelli di progettazione è laborioso da scrivere e leggere. È molto più facile adottare, comprendere, aggiornare, mantenere e implementare da esempi dal vivo.
 
 <div>
-  <Image src={require('./lead-with-examples.jpg')}/>
+  <Image src={require('./images/lead-with-examples.jpg')}/>
 </div>
 
 Inoltre, un Design System non può e non deve cercare di prevedere ogni situazione in cui un componente verrà utilizzato con la documentazione. Cercare di documentare ogni scenario finisce per creare una lunga lista di eccezioni.
@@ -98,7 +108,7 @@ Ad esempio, un colore non è solo un "colore" in un Design System. Molto probabi
 Pensare in questo modo aiuta ad astrarre l'estetica visiva dai termini grezzi nel modo in cui gli attributi del design vengono applicati al contesto dell'intero sistema. Ciò è particolarmente utile quando si progetta tenendo a mente i temi.
 
 <div>
-  <Image src={require('./component-color-tokens.gif')} sourceTitle="Un esempio grezzo di come Design Token" sourceUrl="https://spectrum.adobe.com/page/design-tokens/"/>
+  <Image src={require('./images/component-color-tokens.gif')} sourceTitle="Un esempio grezzo di come Design Token" sourceUrl="https://spectrum.adobe.com/page/design-tokens/"/>
 </div>
 
 ### Il Design System funziona quando può essere utilizzato senza i suoi creatori
@@ -113,10 +123,10 @@ Questo principio è non è immediato da seguire un punto di vista pratico.
   Design system principle #5: Favor elegance of simple things over flexibility of complex things.
 </Quote>
 
-La modularità è importante (soprattutto per incoraggiare l'adozione) ma se usata in modo eccessivo tutto diventa come un puzzle, troppo dettagliato e non lascia abbastanza spazio per la flessibilità. Trovare il punto debole dipende dal team, dall'attività, dal prodotto e dal componente.
+La modularità è importante (soprattutto per incoraggiarne l'utilizzo) ma se usata in modo eccessivo tutto diventa come un puzzle, troppo dettagliato e non lascia abbastanza spazio per la flessibilità. Trovare il giusto equilibrio dipende dal team, dall'attività, dal prodotto e dal componente.
 
 <div>
-  <Image src={require('./simplicity-vs-modularity.png')} sourceTitle="Sempplicità VS Modularità"/>
+  <Image src={require('./images/simplicity-vs-modularity.png')} sourceTitle="Sempplicità VS Modularità"/>
 </div>
 
 La definizione del livello appropriato di personalizzazione è il punto in cui i Design System possono flettere maggiormente la loro influenza, ma è anche il più opinionabile.
