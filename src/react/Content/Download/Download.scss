@@ -1,6 +1,7 @@
 @import '~Sass/import-framework';
 
 .download {
+  cursor: pointer;
   background-color: color('adjust.tone');
   border-radius: s(0.5);
   box-shadow: get($shadow, 'soft');
@@ -40,6 +41,7 @@
     flex-grow: 1;
     margin-left: s(0.5);
     min-width: 0;
+    color: color('brand-maggioli', '05');
   }
 
   &__name {
