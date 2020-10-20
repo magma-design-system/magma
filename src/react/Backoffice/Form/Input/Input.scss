@@ -45,6 +45,15 @@ $ease: get($tween, 'slide');
     transition: color $ease, height $ease, transform $ease, width $ease;
   }
 
+  &__correct {
+
+    @extend %correct;
+
+    right: s(0.5);
+    top: s(0.5);
+    transition: color $ease, height $ease, transform $ease, width $ease;
+  }
+
   &__icon-area {
 
     @extend %icon-area;
@@ -152,6 +161,13 @@ $ease: get($tween, 'slide');
       &__required {
 
         @extend %required-focused;
+
+        transform: translate(0, s(2.5));
+        transition: color $ease 0.2s, height $ease 0.2s, transform $ease 0.2s, width $ease 0.2s;
+      }
+
+      &__correct {
+        @extend %correct-focused;
 
         transform: translate(0, s(2.5));
         transition: color $ease 0.2s, height $ease 0.2s, transform $ease 0.2s, width $ease 0.2s;

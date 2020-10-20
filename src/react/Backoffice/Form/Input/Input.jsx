@@ -15,8 +15,10 @@ const Input = props =>
         </H3>
       }
       {props.required &&
-        <LabelCaption className="backoffice-input__required">
-          Obbligatorio
+        <LabelCaption className={`backoffice-input__${props.error === '' && props.value !== '' ? 'correct' : 'required'}`}>
+          {props.error === '' && props.value !== '' ? 'Corretto' : ''}
+          {props.value === '' && props.required ? 'Obbligatorio' : ''}
+          {props.value !== '' && props.error !== '' ? 'Non valido' : ''}
         </LabelCaption>
       }
       {props.icon &&
