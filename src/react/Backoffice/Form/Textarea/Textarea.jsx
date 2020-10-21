@@ -15,9 +15,9 @@ const Textarea = props =>
       }
       {props.required &&
         <LabelCaption className={`backoffice-textarea__${props.error === '' && props.value !== '' ? 'correct' : 'required'}`}>
-            {props.error === '' && props.value !== '' ? 'Corretto' : ''}
-            {props.value === '' && props.required ? 'Obbligatorio' : ''}
-            {props.value !== '' && props.error !== '' ? 'Non valido' : ''}
+          {props.error === '' && props.value !== '' ? 'Corretto' : ''}
+          {props.value === '' && props.required ? 'Obbligatorio' : ''}
+          {props.value !== '' && props.error !== '' ? 'Non valido' : ''}
         </LabelCaption>
       }
       {props.icon &&
@@ -25,7 +25,7 @@ const Textarea = props =>
           <Icon className={`backoffice-textarea__icon ${props.iconClassName !== '' ? props.iconClassName : ''}`} name={props.icon}/>
         </div>
       }
-      <textarea className="backoffice-textarea__field text-secondary text-secondary--paragraph" name={props.name} placeholder={props.placeholder} defaultValue={props.value} onChange={props.onChange}>
+      <textarea className="backoffice-textarea__field text-secondary text-secondary--detail" name={props.name} placeholder={props.placeholder} defaultValue={props.value} onChange={props.onChange}>
         {props.children}
       </textarea>
     </div>
