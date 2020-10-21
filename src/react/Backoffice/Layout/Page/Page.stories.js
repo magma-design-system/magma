@@ -66,7 +66,7 @@ export const basicUsage = () =>
   <PageTemplate title="Volume">
     <Grid template="single-column-form">
       <Grid>
-        <InputText label="Titolo" placeholder="Titolo del volume" icon="text-title" required={true} error="Il campo non sembra essere valido"/>
+        <InputText label="Titolo" placeholder="Titolo del volume" icon="text-title" required={true} error={faker.lorem.paragraphs()}/>
         <Textarea label="Descrizione" placeholder="Inserisci una breve descrizione del volume" icon="text-description" required={true} />
         <InputText label="ISBN" placeholder="Un codice ISBN di 13 cifre" icon="format-isbn" required={true}/>
         <Grid columns="2">

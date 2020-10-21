@@ -98,6 +98,7 @@
 }
 
 %error {
+  align-items: flex-start;
   background-color: color('status.error', '17');
   border-radius: 0 0 s(0.5) s(0.5);
   color: color('status.error', '09');
@@ -112,11 +113,8 @@
 }
 
 %error-message {
-  align-items: flex-end;
   display: flex;
-  margin-top: s(-0.5);
-  max-height: 0;
-  overflow: hidden;
+  margin-top: s(-1);
   padding-top: s(0.5);
   transition: max-height get($tween, 'slide') 0.1s;
 }

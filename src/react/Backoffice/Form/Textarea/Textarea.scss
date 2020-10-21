@@ -46,6 +46,7 @@ $ease: get($tween, 'slide');
     transition: color $ease, height $ease, transform $ease, width $ease;
 
     &--valid {
+
       @extend %required-valid;
     }
   }
@@ -97,10 +98,6 @@ $ease: get($tween, 'slide');
   &__message {
 
     @extend %error-message;
-
-    &--error {
-      max-height: 75px;
-    }
   }
 
   &:focus-within,
@@ -124,6 +121,7 @@ $ease: get($tween, 'slide');
         width: $required-size;
 
         &--valid {
+
           @extend %required-focused-valid;
         }
       }

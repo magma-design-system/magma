@@ -47,7 +47,7 @@ $ease: get($tween, 'slide');
     &--valid {
       background-color: color('status.success', '10');
 
-      @extend %required-valid;      
+      @extend %required-valid;
     }
   }
 
@@ -99,14 +99,6 @@ $ease: get($tween, 'slide');
     @extend %error-message;
   }
 
-  &--has-errors {
-    .backoffice-input {
-      &__message {
-        max-height: 75px;
-      }
-    }
-  }
-
   &:focus-within,
   &--filled {
     .backoffice-input {
@@ -127,6 +119,7 @@ $ease: get($tween, 'slide');
         transform: translate(0, s(2.5));
 
         &--valid {
+
           @extend %required-focused-valid;
         }
       }

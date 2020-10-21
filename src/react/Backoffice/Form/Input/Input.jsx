@@ -3,7 +3,7 @@ import PropTypes from 'prop-types'
 import './Input.scss'
 import Icon from '@Design/Icon/Icon'
 import H3 from '@Typography/H3/H3'
-import Paragraph from '@Typography/Paragraph/Paragraph'
+import Detail from '@Typography/Detail/Detail'
 import LabelCaption from '@Typography/LabelCaption/LabelCaption'
 
 const Input = props =>
@@ -30,10 +30,10 @@ const Input = props =>
     </div>
     {props.error &&
         <div className="backoffice-input__message">
-          <Paragraph htmlTag="div" className="backoffice-input__error">
+          <Detail htmlTag="div" className="backoffice-input__error">
             <Icon className="backoffice-input__error-icon" name="status-error"/>
             <div className="backoffice-input__error-text">{props.error}</div>
-          </Paragraph>
+          </Detail>
         </div>
     }
   </label>
