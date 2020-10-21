@@ -1,0 +1,15 @@
+@each $shadow-name, $shadow-value in $shadow {
+  @include scaffold-property (
+    $property-name: 'box-shadow',
+    $variant: $shadow-name,
+    $value: $shadow-value
+  );
+}
+
+@each $radius-name, $radius-value in $radius {
+  @include scaffold-property (
+    $property-name: 'border-radius',
+    $variant: $radius-name,
+    $value: $radius-value
+  );
+}

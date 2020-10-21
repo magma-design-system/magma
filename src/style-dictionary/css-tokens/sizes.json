@@ -1,5 +1,12 @@
 {
   "gutter": "20px",
+  "size": {
+    "xsmall": "10px",
+    "small": "20px",
+    "normal": "30px",
+    "large": "40px",
+    "xlarge": "60px"
+  },
   "form": {
     "input-height": "40px",
     "input-height-small": "30px",

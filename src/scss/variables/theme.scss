@@ -10,6 +10,7 @@
 
 $gutter: get($sizes, 'gutter');
 $form: get($sizes, 'form');
+$size: get($sizes, 'size');
 
 $radius: get($cosmetics, 'radius');
 $shadow: get($cosmetics, 'shadow');
@@ -25,15 +26,6 @@ $font-primary-styles: get(get($font-families, 'primary'), 'styles');
 $font-secondary-styles: get(get($font-families, 'secondary'), 'styles');
 $font-secondary-variants: get(get($font-families, 'secondary'), 'variants');
 $font-mono-styles: get(get($font-families, 'mono'), 'styles');
-
-$size: (
-  'none':   0,
-  'xsmall': s(0.5),
-  'small':  s(1),
-  'normal': s(1.5),
-  'large':  s(2),
-  'xlarge': s(4),
-);
 
 $palette: get($config, 'palette');
 $palette-format: get(get($config, 'palette'), 'format');

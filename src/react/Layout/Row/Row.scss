@@ -32,7 +32,7 @@
   }
 
   &__item {
-    margin-right: get($size, 'normal');
+    margin-right: s(1.5);
 
     &:last-child {
       margin-right: 0;

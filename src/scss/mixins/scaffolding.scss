@@ -1,3 +1,9 @@
+@mixin scaffold-property ($property-name, $variant, $value) {
+  .#{$property-name}-#{$variant} {
+    #{$property-name}: $value !important;
+  }
+}
+
 @mixin add-property-set ($property-name, $map, $group-name: false) {
   @each $attribute, $value in $map {
 
@@ -6,9 +12,7 @@
         #{$property-name}: $value;
       }
     } @else {
-      .#{$property-name}-#{$attribute} {
-        #{$property-name}: $value;
-      }
+      @include scaffold-property($property-name: $property-name, $variant: $attribute, $value: $value);
     }
   }
 }

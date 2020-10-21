@@ -65,7 +65,7 @@ for (const [group, groupObject] of Object.entries(paletteColors)) {
 
 export const parameters = {
   backgrounds: {
-    default: 'Adjust Tone 20',
+    default: 'Adjust Tone color',
     values: colors
   },
   viewport: {

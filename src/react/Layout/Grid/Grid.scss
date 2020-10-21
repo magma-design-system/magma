@@ -28,7 +28,7 @@ $columns: 4;
 
 .grid {
   display: grid;
-  grid-gap: get($size, 'normal');
+  grid-gap: s(1.5);
 
   @each $size-item in $size {
     @include gutter-modifier ($size-item);
