@@ -61,38 +61,22 @@
   width: $size;
 }
 
-%correct {
-  $size: s(0.5);
-  $ease: get($tween, 'slide');
-
-  align-items: center;
+%required-valid {
   background-color: color('status.success', '10');
-  border: 1px solid transparent;
-  border-radius: $size;
   color: transparent;
-  display: flex;
-  height: $size;
-  justify-content: center;
-  overflow: hidden;
-  pointer-events: none;
-  position: absolute;
-  white-space: nowrap;
-  width: $size;
 }
 
 %required-focused {
   background-color: color('status.error', '10');
   border-color: color('status.error', '10');
   color: color('status.error', '18');
-  height: auto;
   width: 90px;
 }
 
-%correct-focused {
+%required-focused-valid {
   background-color: color('status.success', '10');
   border-color: color('status.success', '10');
   color: color('status.success', '18');
-  height: auto;
   width: 90px;
 }
 

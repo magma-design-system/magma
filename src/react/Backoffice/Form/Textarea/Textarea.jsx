@@ -14,7 +14,7 @@ const Textarea = props =>
         </H3>
       }
       {props.required &&
-        <LabelCaption className={`backoffice-textarea__${props.error === '' && props.value !== '' ? 'correct' : 'required'}`}>
+        <LabelCaption className={`backoffice-textarea__required ${props.error === '' ? 'backoffice-textarea__required--valid' : ''}`}>
           {props.error === '' && props.value !== '' ? 'Corretto' : ''}
           {props.value === '' && props.required ? 'Obbligatorio' : ''}
           {props.value !== '' && props.error !== '' ? 'Non valido' : ''}
