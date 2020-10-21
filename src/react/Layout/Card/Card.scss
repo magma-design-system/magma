@@ -1,0 +1,7 @@
+@import '~Sass/import-framework';
+
+.card {
+  background-color: color('adjust.tone');
+  border-radius: s(1);
+  padding: s(1) s(1.5);
+}
