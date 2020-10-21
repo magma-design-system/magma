@@ -5,26 +5,26 @@ export default create({
 
   base: 'light',
   colorPrimary: '#1b59a3',
-  colorSecondary: '#888',
+  colorSecondary: '#1b59a3',
 
   // UI
   appBg: '#efefef',
   appContentBg: '#fff',
-  appBorderColor: '#aaa',
-  appBorderRadius: 0,
+  appBorderColor: 'transparent',
+  appBorderRadius: 5,
 
   // Typography
-  fontBase: '"Open Sans", sans-serif',
+  fontBase: 'Roboto, Karla, system, "Open Sans", sans-serif',
   fontCode: 'monospace',
 
   // Text colors
   textColor: '#333',
-  textInverseColor: '#ddd',
+  textInverseColor: '#aaa',
 
   // Toolbar default and active colors
   barTextColor: '#efefef',
   barSelectedColor: '#fff',
-  barBg: '#888',
+  barBg: '#c8c8c8',
 
   // Form colors
   inputBg: '#fff',

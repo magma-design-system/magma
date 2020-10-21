@@ -29,15 +29,6 @@
       "color": "#ffffff",
       "colorDark": "#000000",
       "name": "adjust.tone"
-    },{
-      "color": "#c66493",
-      "name": "dev.sass"
-    },{
-      "color": "#ee7e31",
-      "name": "dev.js"
-    },{
-      "color": "#7378ae",
-      "name": "dev.php"
     }
   ],
   "defaultColorspace": "HSL",
