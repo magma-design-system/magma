@@ -6,9 +6,10 @@ import H1 from '@Typography/H1/H1'
 import Image from '@Media/Image/Image'
 import Hr from '@Gatsby/Pattern/Hr/Hr'
 import Menu, { MenuItem, MenuSubItem } from '@Gatsby/Pattern/Menu/Menu'
+import { getCurrentUrl } from '@Gatsby/Pattern/Navigation/menu'
 
 const Navigation = props => {
-  const currentUrl = typeof window !== 'undefined' ? window.location.pathname : ''
+  const currentUrl = getCurrentUrl()
 
   return (
     <div className="ds-navigation">

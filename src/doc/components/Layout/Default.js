@@ -3,7 +3,7 @@ import PropTypes from 'prop-types'
 import { /* Link, */ StaticQuery, graphql } from 'gatsby'
 import { MDXProvider } from '@mdx-js/react'
 import './Layout.scss'
-import { createMenuList, findMenuItem, getPageData } from '@Gatsby/Pattern/Navigation/menu'
+import { createMenuList, findMenuItem, getPageData, createMenuItemList, createHorizontalMenuList } from '@Gatsby/Pattern/Navigation/menu'
 
 import Bibliography from '@Content/Bibliography/Bibliography'
 import Button from '@Element/Button/Button'
@@ -119,8 +119,8 @@ const Layout = ({ children }) => {
         const currentUrl = typeof window !== 'undefined' ? window.location.pathname : ''
         const currentMenuItem = findMenuItem(menuList, currentUrl)
         const page = getPageData(data.allMdx.edges, currentUrl)
-        // const horizontalMenuItems = [currentMenuItem, ...currentMenuItem.children]
-        const horizontalMenuItems = currentMenuItem.children
+        const menuItemList = createMenuItemList(menuList, currentUrl)
+        const horizontalMenuItems = createHorizontalMenuList(menuItemList)
         const [isOpened, setMenuOpened] = useState(false)
         const publicationYear = new Date().getFullYear().toString()
 

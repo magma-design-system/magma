@@ -29,8 +29,19 @@ export function createMenuList(edges) {
   return menuList
 }
 
+export function createHorizontalMenuList(menuItemList) {
+  const lastItem = menuItemList[menuItemList.length - 1]
+  if (lastItem.children) return lastItem.children
+  if (menuItemList.length === 1) return []
+  return menuItemList[menuItemList.length - 2].children
+}
+
 export function findMenuItem(menuList, url) {
   return findMenuItemFromPath(menuList, pathFromSlug(url))
+}
+
+export function createMenuItemList(menuList, url) {
+  return createMenuItemListFromPath(menuList, pathFromSlug(url))
 }
 
 /**
@@ -56,10 +67,15 @@ function createStructure(menu, [voceId, ...restPath]) {
   return menu
 }
 
-function findMenuItemFromPath(menuList, [voceId, ...restPath]) {
+function createMenuItemListFromPath(menuList, [voceId, ...restPath]) {
   const menuItem = menuList.find(voce => voce.id === voceId)
-  if (restPath.length > 0) return findMenuItemFromPath(menuItem.children, restPath)
-  return menuItem
+  const menuItemList = [menuItem]
+  if (restPath.length > 0) menuItemList.push(...createMenuItemListFromPath(menuItem.children, restPath))
+  return menuItemList
+}
+
+function findMenuItemFromPath(menuList, path) {
+  return createMenuItemListFromPath(menuList, path).pop()
 }
 
 export function getPageData(edges, url) {
@@ -76,4 +92,8 @@ export function getPageData(edges, url) {
     }
   })
   return page
+}
+
+export function getCurrentUrl() {
+  return typeof window !== 'undefined' ? window.location.pathname : ''
 }

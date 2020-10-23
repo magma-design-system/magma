@@ -6,6 +6,7 @@ import { Link } from 'gatsby'
 import HorizontalScroll from '@Layout/HorizontalScroll/HorizontalScroll'
 import Grid from '@Layout/Grid/Grid'
 import Hr from '@Gatsby/Pattern/Hr/Hr'
+import { getCurrentUrl } from '@Gatsby/Pattern/Navigation/menu'
 
 const HorizontalMenuItem = props =>
   <div className="ds-horizontal-menu__item">
@@ -23,18 +24,21 @@ HorizontalMenuItem.defaultProps = {
   className: '',
 }
 
-const HorizontalMenu = props =>
-  <Grid gutter="none" className={`ds-horizontal-menu ${props.className}`}>
+const HorizontalMenu = props => {
+  const currentUrl = getCurrentUrl()
+
+  return (<Grid gutter="none" className={`ds-horizontal-menu ${props.className}`}>
     <Hr className="ds-horizontal-menu__hr"/>
     <HorizontalScroll className="ds-horizontal-menu__list">
       {
         props.menuList.map((item, key) =>
-          <HorizontalMenuItem key={key} url={item.url}>{ item.title }</HorizontalMenuItem>,
+          <HorizontalMenuItem key={key} url={item.url} active={currentUrl.startsWith(item.url)}>{item.title}</HorizontalMenuItem>,
         )
       }
     </HorizontalScroll>
     <Hr/>
-  </Grid>
+  </Grid>)
+}
 
 HorizontalMenu.propTypes = {
   className: PropTypes.string,
