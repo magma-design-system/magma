@@ -122,7 +122,7 @@ const Layout = ({ children }) => {
         // const horizontalMenuItems = [currentMenuItem, ...currentMenuItem.children]
         const horizontalMenuItems = currentMenuItem.children
         const [isOpened, setMenuOpened] = useState(false)
-        const pubblicationYear = new Date().getFullYear().toString()
+        const publicationYear = new Date().getFullYear().toString()
 
         return <Page className="ds-layout">
           <div className={`ds-layout__switch ${isOpened ? 'ds-layout__switch--is-active' : ''}`} onClick={() => setMenuOpened(!isOpened)}>
@@ -146,7 +146,7 @@ const Layout = ({ children }) => {
                 <Hr/>
                 <footer className="ds-layout__footer">
                   <Paragraph><b>Design System</b> sviluppato dal reparto R&D.</Paragraph>
-                  <Paragraph>Gruppo Maggioli © 2020{pubblicationYear !== '2020' ? `–${pubblicationYear}` : ''}.</Paragraph>
+                  <Paragraph>Gruppo Maggioli © 2020{publicationYear !== '2020' ? `–${publicationYear}` : ''}.</Paragraph>
                   <Image className="ds-layout__footer-logo" src={require('../../../assets/logo/gruppo-maggioli.svg')}/>
                 </footer>
               </Grid>
