@@ -20,10 +20,10 @@ const Navigation = props => {
             <Menu key={key} title={menu.title}>
               {
                 (menu.children || []).map((menuItem, key) =>
-                  <MenuItem key={key} title={menuItem.title} url={menuItem.url} isSelected={currentUrl === menuItem.url} isOpened={currentUrl.startsWith(menuItem.url)}>
+                  <MenuItem key={key} title={menuItem.title} url={menuItem.url} isSelected={currentUrl.startsWith(menuItem.url)} isOpened={currentUrl.startsWith(menuItem.url)}>
                     {
                       (menuItem.children || []).map((menuSubItem, key) =>
-                        <MenuSubItem key={key} title={menuSubItem.title} url={menuSubItem.url} isSelected={currentUrl === menuSubItem.url}/>,
+                        <MenuSubItem key={key} title={menuSubItem.title} url={menuSubItem.url} isSelected={currentUrl.startsWith(menuSubItem.url)}/>,
                       )
                     }
                   </MenuItem>,
