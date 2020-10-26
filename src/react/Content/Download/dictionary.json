@@ -7,6 +7,8 @@
     "default": { "format": "attachment", "description": "Formato sconosciuto" },
     "dmg": { "format": "executable", "description": "Immagine disco Mac" },
     "doc": { "format": "text", "description": "Documento Word" },
+    "docm": { "format": "text", "description": "Documento Word" },
+    "docx": { "format": "text", "description": "Documento Word Compresso" },
     "eml": { "format": "email", "description": "Posta elettronica" },
     "exe": { "format": "executable", "description": "File eseguibile Windows" },
     "flac": { "format": "audio", "description": "Audio non compresso" },
