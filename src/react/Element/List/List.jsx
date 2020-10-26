@@ -5,14 +5,13 @@ import './List.scss'
 import Icon from '@Design/Icon/Icon'
 
 import H5 from '@Typography/H5/H5'
-import Paragraph from '@Typography/Paragraph/Paragraph'
 
 const defaultIcon = 'list-dot'
 
 /* eslint-disable no-nested-ternary */
 
 const ListItem = props =>
-  <Paragraph htmlTag="li" className={`list__item ${props.className}`}>
+  <li className={`list__item ${props.className}`}>
     {props.numeric
       ? <H5 className="list__numeric">{ props.id + 1 }.</H5>
       : <Icon className={`list__icon ${props.iconClassName}`} name={props.icon} size={props.iconSize}/>
@@ -21,7 +20,7 @@ const ListItem = props =>
       {props.children}
       {props.autoPunctuation ? props.last ? '.' : ';' : ''}
     </div>
-  </Paragraph>
+  </li>
 
 ListItem.propTypes = {
   autoPunctuation: PropTypes.bool,

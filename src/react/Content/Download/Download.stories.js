@@ -22,7 +22,7 @@ const downloadDictionary = Object.entries(data.extension).map(([key, value]) =>
 export const basicUsage = () =>
   <Download fileName={faker.system.commonFileName()}/>
 
-  export const dictionary = () =>
+export const dictionary = () =>
   <Grid template="downloads">
     {downloadDictionary}
   </Grid>
