@@ -107,7 +107,7 @@
   "time-calendar": "material/calendar_today",
   "touchpoint": "material/devices_other",
   "touchpoint-laptop": "material/laptop",
-  "touchpoint-phone": "material/phone_iphone",
+  "touchpoint-smartphone": "material/phone_iphone",
   "touchpoint-tablet": "material/tablet_mac",
   "touchpoint-tv": "material/tv",
   "touchpoint-watch": "material/watch",
