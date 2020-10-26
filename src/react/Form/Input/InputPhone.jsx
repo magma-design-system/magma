@@ -30,7 +30,7 @@ InputPhone.propTypes = {
 
 InputPhone.defaultProps = {
   autoComplete: 'off',
-  icon: 'phone',
+  icon: 'touchpoint-smartphone',
   iconClassName: '',
   isValid: false,
   name: 'phone',

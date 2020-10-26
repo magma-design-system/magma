@@ -2,9 +2,7 @@
 
 $brand-color: color('brand.maggioli', '04');
 $ease: get($tween, 'hover');
-$error-blur-border-color: color('status.error', '04');
-$error-focus-border-color: color('status.error');
-$error-focus-outline: 0 0 0 4px color('status.error', '04');
+$icon-color: color('brand.maggioli', '07');
 $input-radius-error: get($radius, 'small');
 $input-radius: get($radius, 'small');
 $label-color: color('adjust.tone', '02');
@@ -40,20 +38,28 @@ $size: get($form, 'input-height');
   &--has-errors {
     margin-bottom: 0;
 
-    .input {
-      &__errors {
-        display: block;
-        transform: translate(0, 0);
+    &:focus-within {
+      .input {
+        &__icon {
+          color: color('status.error', '06');
+        }
       }
+    }
 
+    .input {
       &__field {
-        border-color: $error-blur-border-color;
-        border-radius: $input-radius $input-radius 0 0;
+        background-color: color('status.error', '19');
+        border-color: color('status.error', '19');
 
         &:focus {
-          border-color: $error-focus-border-color;
-          box-shadow: $error-focus-outline;
+          background-color: color('status.error', '20');
+          border-color: color('status.error', '17');
+          box-shadow: none;
         }
+      }
+
+      &__icon {
+        color: color('status.error', '09');
       }
     }
   }
@@ -82,7 +88,7 @@ $size: get($form, 'input-height');
     line-height: $size;
     padding: 0 s(0.5);
     position: relative;
-    transition: border-color $ease, border-radius $ease, box-shadow $ease;
+    transition: background-color $ease, border-color $ease, border-radius $ease, box-shadow $ease;
     width: 100%;
     z-index: 1;
 
@@ -126,22 +132,23 @@ $size: get($form, 'input-height');
 
   &__icon {
 
-    --color: #{color('adjust.tone', '02')};
+    --color: #{$icon-color};
 
     color: var(--color);
     transition: color $ease;
   }
 
-  &__errors {
-    background-color: color('status.error', '08');
+  &__message {
+    background-color: color('status.error', '17');
     border-radius: 0 0 $input-radius-error $input-radius-error;
     margin: 0;
+    margin-top: s(-0.5);
     padding: s(0.5);
-    transform: translate(0, -100%);
-    transition: transform $ease;
+    padding-top: s(1);
   }
 
   &__error {
+    color: color('status.error', '09');
     display: flex;
     list-style-type: none;
     padding: 0;

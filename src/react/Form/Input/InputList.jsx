@@ -42,7 +42,7 @@ InputList.propTypes = {
 
 InputList.defaultProps = {
   autoComplete: 'off',
-  icon: '',
+  icon: 'data-search',
   iconClassName: '',
   name: 'unassigned',
   onChange: value => { return value },

@@ -62,8 +62,8 @@
     .#{$name}--#{$set} {
       @include apply-styles-set($map: $map, $set: $set);
 
-      &-line-height {
-        @include add-font-property($map: $map, $set: $set, $property-name: 'line-height');
+      &::placeholder {
+        @include apply-styles-set($map: $map, $set: $set);
       }
     }
   }

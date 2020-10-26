@@ -2,13 +2,14 @@ import React from 'react'
 import PropTypes from 'prop-types'
 import './Input.scss'
 import Icon from '@Design/Icon/Icon'
+import Detail from '@Typography/Detail/Detail'
 
 const Input = props => {
   // const state = useContext(ThemeContext)
   // const themeName = `input--${state.name}`
 
   return (
-    <label className={`input ${props.icon ? 'input--has-icon' : ''} ${Object.keys(props.errors).length > 0 ? 'input--has-errors' : ''} ${props.theme !== '' ? 'input--' + props.theme : ''} ${props.className}`}>
+    <label className={`input ${props.icon ? 'input--has-icon' : ''} ${props.error ? 'input--has-errors' : ''} ${props.theme !== '' ? 'input--' + props.theme : ''} ${props.className}`}>
       {props.label &&
         <div className="input__label text-primary text-primary--h6">
           {props.label}
@@ -20,21 +21,21 @@ const Input = props => {
         </div>
       }
       {props.children}
-      <ul className="input__errors">
-        {Object.keys(props.errors).map(name =>
-          <li className="input__error">
-            <Icon className="input__error-icon" name={props.errors[name].type}/>
-            {props.errors[name].message}
-          </li>,
-        )}
-      </ul>
+      {props.error &&
+        <div className="input__message">
+          <Detail htmlTag="div" className="input__error">
+            <Icon className="input__error-icon" name="status-error"/>
+            <div className="input__error-text">{props.error}</div>
+          </Detail>
+        </div>
+      }
     </label>
   )
 }
 
 Input.propTypes = {
   className: PropTypes.string,
-  errors: PropTypes.any,
+  error: PropTypes.string,
   icon: PropTypes.string,
   iconClassName: PropTypes.string,
   label: PropTypes.string,
@@ -43,7 +44,6 @@ Input.propTypes = {
 
 Input.defaultProps = {
   className: '',
-  errors: {},
   icon: '',
   iconClassName: '',
   label: '',

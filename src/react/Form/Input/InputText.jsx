@@ -7,7 +7,7 @@ const InputText = props =>
   <Input {...props}>
     <input
       autoComplete={props.autoComplete}
-      className="input__field"
+      className={`input__field ${props.font}`}
       defaultValue={props.value}
       name={props.name}
       onChange={props.onChange}
@@ -19,6 +19,7 @@ const InputText = props =>
 InputText.propTypes = {
   autoComplete: PropTypes.string,
   icon: PropTypes.string,
+  font: PropTypes.string,
   iconClassName: PropTypes.string,
   name: PropTypes.string,
   onChange: PropTypes.func,
@@ -29,6 +30,7 @@ InputText.propTypes = {
 InputText.defaultProps = {
   autoComplete: 'off',
   icon: '',
+  font: 'text-secondary text-secondary--detail',
   iconClassName: '',
   name: 'unassigned',
   onChange: value => { return value },

@@ -43,3 +43,6 @@ export const List = () =>
       <InputListItem value={city}/>,
     )}
   </InputList>
+
+export const Error = () =>
+  <InputText label={faker.lorem.sentence()} placeholder={faker.company.catchPhrase()} error={faker.lorem.sentence()}/>
