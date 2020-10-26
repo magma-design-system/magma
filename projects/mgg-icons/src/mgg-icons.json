@@ -6,6 +6,7 @@
   "avatar-placeholder": "material/account_circle",
   "calculator": "material/calculate",
   "cards-view": "material/view_module",
+  "code-barcode": "barcode",
   "code-isbn": "isbn",
   "code-qr": "material/qr_code_2",
   "columns-view": "material/view_column",
