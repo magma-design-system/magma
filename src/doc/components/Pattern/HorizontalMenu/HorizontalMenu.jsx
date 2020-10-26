@@ -10,7 +10,7 @@ import { getCurrentUrl } from '@Gatsby/Pattern/Navigation/menu'
 
 const HorizontalMenuItem = props =>
   <div className="ds-horizontal-menu__item">
-    <Link className={`ds-horizontal-menu__link text-primary text-primary--h5 ${props.className}`} to={props.url}>{ props.children }</Link>
+    <Link className={`ds-horizontal-menu__link text-primary text-primary--h5 ${props.active ? 'ds-horizontal-menu__link--active' : ''} ${props.className}`} to={props.url}>{ props.children }</Link>
   </div>
 
 HorizontalMenuItem.propTypes = {

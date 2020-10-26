@@ -68,7 +68,7 @@ $line-height: 25px;
     }
   }
 
-  &--selected {
+  &--active {
     .ds-menu-item {
       &__title {
 
@@ -94,7 +94,7 @@ $line-height: 25px;
     }
   }
 
-  &--selected {
+  &--active {
     .ds-menu-child {
       &__title {
 

@@ -2,12 +2,12 @@
 
 $columns: 4;
 
-@mixin gutter-modifier ($size-item) {
+@mixin gutter-modifier ($size-item: ('none', 0)) {
 
   $modifier: nth($size-item, 1);
   $gutter: nth($size-item, 2);
 
-  &--#{$modifier} {
+  &--gutter-#{$modifier} {
     grid-gap: $gutter;
   }
 }
@@ -29,6 +29,8 @@ $columns: 4;
 .grid {
   display: grid;
   grid-gap: s(1.5);
+
+  @include gutter-modifier;
 
   @each $size-item in $size {
     @include gutter-modifier ($size-item);

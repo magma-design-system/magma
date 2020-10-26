@@ -14,14 +14,20 @@ export default {
 const paragraph1 = faker.lorem.paragraph()
 const paragraph2 = faker.lorem.paragraph()
 
-export const gutterLarge = () =>
-  <Grid gutter="large">
+export const defaultUsage = () =>
+  <Grid>
     <Paragraph>{paragraph1}</Paragraph>
     <Paragraph>{paragraph2}</Paragraph>
   </Grid>
 
-export const gutterNormal = () =>
-  <Grid>
+export const gutterXLarge = () =>
+  <Grid gutter="xlarge">
+    <Paragraph>{paragraph1}</Paragraph>
+    <Paragraph>{paragraph2}</Paragraph>
+  </Grid>
+
+export const gutterLarge = () =>
+  <Grid gutter="large">
     <Paragraph>{paragraph1}</Paragraph>
     <Paragraph>{paragraph2}</Paragraph>
   </Grid>
