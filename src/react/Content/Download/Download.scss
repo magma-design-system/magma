@@ -19,6 +19,14 @@
     }
   }
 
+  &--average-name {
+    .download {
+      &__file-name {
+        max-width: 250px;
+      }
+    }
+  }
+
   &--full-name {
     .download {
       &__file-name {
