@@ -1,22 +1,36 @@
-import React from 'react'
+import React, { Fragment } from 'react'
 import PropTypes from 'prop-types'
 import './Input.scss'
 import Input from './Input'
 
-const InputPassword = props =>
+const InputListItem = props =>
+  <Fragment>
+    {props.children
+      ? <option className="input__list-item" value={props.value}>{props.children}</option>
+      : <option className="input__list-item" value={props.value}/>
+    }
+  </Fragment>
+
+InputListItem.propTypes = {
+  value: PropTypes.string,
+}
+
+const InputList = props =>
   <Input {...props}>
     <input
       autoComplete={props.autoComplete}
       className="input__field"
       defaultValue={props.value}
-      name={props.name}
       onChange={props.onChange}
       placeholder={props.placeholder}
-      type="password"
+      list={`list-${props.name}`}
     />
+    <datalist className="input__list" id={`list-${props.name}`}>
+      {props.children}
+    </datalist>
   </Input>
 
-InputPassword.propTypes = {
+InputList.propTypes = {
   autoComplete: PropTypes.string,
   icon: PropTypes.string,
   iconClassName: PropTypes.string,
@@ -26,9 +40,9 @@ InputPassword.propTypes = {
   value: PropTypes.string,
 }
 
-InputPassword.defaultProps = {
+InputList.defaultProps = {
   autoComplete: 'off',
-  icon: 'password',
+  icon: '',
   iconClassName: '',
   name: 'unassigned',
   onChange: value => { return value },
@@ -36,4 +50,7 @@ InputPassword.defaultProps = {
   value: '',
 }
 
-export default InputPassword
+export default InputList
+export {
+  InputListItem,
+}

@@ -6,7 +6,7 @@ const InputEmail = props =>
   <Input {...props}>
     <input
       autoComplete={props.autoComplete}
-      className="input__field text-sans text-sans--input"
+      className="input__field"
       defaultValue={props.value}
       name={props.name}
       onBlur={e => { console.log(e) }}
