@@ -1,7 +1,7 @@
 {
   "name": "@maggioli-common/mgg-icons",
-  "version": "0.0.12",
-  "description": "Maggioli font icons, part of Maggioli design system",
+  "version": "0.0.13",
+  "description": "Maggioli Design System Icons",
   "main": "index.js",
   "publishConfig": {
     "registry": "http://nexus.maggioli.it:8081/repository/npm/"
