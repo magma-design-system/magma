@@ -57,7 +57,7 @@ Download.defaultProps = {
   className: '',
   fileName: 'File name.ext',
   href: '#',
-  length: '',
+  length: 'full',
   target: '_self',
 }
 
