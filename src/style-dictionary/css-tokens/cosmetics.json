@@ -1,12 +1,12 @@
 {
-  "radius": {
+  "border-radius": {
     "xsmall": "5px",
     "small": "10px",
     "normal": "20px",
     "large": "25px",
     "xlarge": "30px"
   },
-  "shadow": {
+  "box-shadow": {
     "strong": "0 30px 80px rgba(0, 0, 0, 0.2)",
     "outline": "0 0 0 1px rgba(0, 0, 0, 0.05)",
     "soft": "0 0 20px rgba(0, 0, 0, 0.1)",

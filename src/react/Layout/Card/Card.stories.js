@@ -8,7 +8,7 @@ import Grid from '@Layout/Grid/Grid'
 import Flash from '@Element/Flash/Flash'
 
 import cosmetics from '+Tokens/css-tokens/cosmetics.json'
-const shadows = Object.keys(cosmetics.shadow)
+const shadows = Object.keys(cosmetics['box-shadow'])
 
 faker.locale = 'it'
 

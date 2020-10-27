@@ -12,8 +12,8 @@ $gutter: get($sizes, 'gutter');
 $form: get($sizes, 'form');
 $size: get($sizes, 'size');
 
-$radius: get($cosmetics, 'radius');
-$shadow: get($cosmetics, 'shadow');
+$radius: get($cosmetics, 'border-radius');
+$shadow: get($cosmetics, 'box-shadow');
 $tween: get($cosmetics, 'tween');
 
 $font-family: (
@@ -32,3 +32,5 @@ $palette-format: get(get($config, 'palette'), 'format');
 $palette-scale: get(get($config, 'palette'), 'scale');
 $palette-colors: get(get($config, 'palette'), 'colors');
 $palette-scaffold: get(get($config, 'palette'), 'scaffold');
+
+$cosmetics-scaffold: get(get($config, 'cosmetics'), 'scaffold');

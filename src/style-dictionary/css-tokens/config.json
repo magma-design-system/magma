@@ -17,5 +17,11 @@
       "status.warning",
       "adjust.tone"
     ]
+  },
+  "cosmetics": {
+    "scaffold": [
+      "box-shadow",
+      "border-radius"
+    ]
   }
 }
