@@ -112,8 +112,21 @@ function iconSelectorToObject(iconSelector) {
  * @param {BuildFontOptions} options Configurazione del font
  * @return {Promise<void>}
  */
-function buildFont({ svgPath, outputPath, fontName } = {}) {
-  return svgtofont({
+function buildFont(options) {
+  const _options = getSvgToFontOptions(options)
+  const scssFileName = `${options.outputPath}/${options.fontName}.scss`
+  return svgtofont(_options)
+    .then(() => fs.readFile(scssFileName))
+    .then((scssText) => {
+      const variableName = '$font-icons-base-url';
+      return `${variableName}: '' !default;\n\n${scssText}`
+        .replace(new RegExp('url\\((\'|")', 'g'), `url(${variableName} + $1`)
+    })
+    .then(scssText => fs.writeFile(scssFileName, scssText))
+}
+
+function getSvgToFontOptions({ svgPath, outputPath, fontName } = {}) {
+  return {
     src: svgPath,
     dist: outputPath, // output path
     fontName, // font name
@@ -168,5 +181,5 @@ function buildFont({ svgPath, outputPath, fontName } = {}) {
       ],
       footerInfo: 'Maggioli©.',
     },
-  })
+  }
 }
