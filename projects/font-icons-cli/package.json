@@ -47,6 +47,7 @@
   },
   "dependencies": {
     "@fortawesome/fontawesome-free": "^5.14.0",
+    "@mdi/svg": "^5.8.55",
     "material-design-icons-updated": "^6.1.0",
     "svgtofont": "^3.4.0"
   }
