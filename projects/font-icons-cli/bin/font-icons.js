@@ -118,7 +118,10 @@ function buildFont({ svgPath, outputPath, fontName } = {}) {
     dist: outputPath, // output path
     fontName, // font name
     classNamePrefix: fontName,
-    // css: true, // Create CSS files.
+    css: {
+      // Create CSS files.
+      fontSize: '24px',
+    },
     // startNumber: 20000, // unicode start number
     svgicons2svgfont: {
       fontHeight: 1000,

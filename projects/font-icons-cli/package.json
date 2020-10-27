@@ -48,6 +48,6 @@
   "dependencies": {
     "@fortawesome/fontawesome-free": "^5.14.0",
     "material-design-icons-updated": "^6.1.0",
-    "svgtofont": "^3.1.1"
+    "svgtofont": "^3.4.0"
   }
 }
