@@ -1,9 +1,8 @@
 $config: (
   'palette': (
     'format': ('rgb-channels', 'hex'),
-    'scale': ('1', '2', '3', '4', '5', '6', '7', '8', '9', '10', '11', '12', '13', '14', '15', '16', '17'),
     'scaffold': ('background-color', 'color'),
-    'colors': ('brand.maggioli', 'brand.eolo', 'status.info', 'status.success', 'status.error', 'status.warning', 'adjust.tone')
+    'colors': ('brand.maggioli', 'status.info', 'status.success', 'status.error', 'status.warning', 'adjust.tone')
   ),
   'cosmetics': (
     'scaffold': ('border-radius', 'box-shadow')

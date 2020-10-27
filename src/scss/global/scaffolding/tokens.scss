@@ -33,7 +33,17 @@
 
   @each $property-name in $palette-scaffold {
 
-    @if has-this-color($index) {
+    @if map-has-key($map: get($config, 'palette'), $key: 'scale') {
+
+      @if has-this-color($index) {
+        @include scaffold-property-color(
+          $property: $property-name,
+          $group-name: $group-name,
+          $tint-name: $tint-name,
+          $contrast-level: $contrast-level
+        );
+      }
+    } @else {
       @include scaffold-property-color(
         $property: $property-name,
         $group-name: $group-name,
