@@ -3,6 +3,7 @@ import faker from 'faker'
 
 import Radio from '@Form/Radio/Radio'
 import Grid from '@Layout/Grid/Grid'
+import randomIcon from '@Design/Icon/faker'
 faker.locale = 'it'
 
 export default {
@@ -32,20 +33,20 @@ export const checkedByDefault = () =>
 
 export const customIcon = () =>
   <Grid gutter="small">
-    <Radio name="radioGroupName" value="1" icon="statusWarning">
+    <Radio name="radioGroupName" value="1" icon={randomIcon()}>
       {faker.lorem.sentences()}
     </Radio>
-    <Radio name="radioGroupName" value="2" icon="statusError">
+    <Radio name="radioGroupName" value="2" icon={randomIcon()}>
       {faker.lorem.sentences()}
     </Radio>
   </Grid>
 
 export const customColor = () =>
   <Grid gutter="small">
-    <Radio name="radioGroupName" value="1" icon="statusWarning" iconClassName="color-status-warning">
+    <Radio name="radioGroupName" value="1" icon={randomIcon()} iconClassName="color-status-warning">
       {faker.lorem.sentences()}
     </Radio>
-    <Radio name="radioGroupName" value="2" icon="statusError" iconClassName="color-status-error">
+    <Radio name="radioGroupName" value="2" icon={randomIcon()} iconClassName="color-status-error">
       {faker.lorem.sentences()}
     </Radio>
   </Grid>

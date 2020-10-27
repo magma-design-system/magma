@@ -61,25 +61,27 @@ $border-size: 3px;
     background-color: color('adjust.tone', '20');
 
     &--is-opened {
-      .accordion {
-        &__title {
-          color: color('brand.maggioli', '04');
-        }
-
+      > .accordion {
         &__header {
           background-color: color('adjust.tone', '19');
           border-left-color: color('brand.maggioli', '05');
+
+          .accordion {
+            &__title {
+              color: color('brand.maggioli', '04');
+            }
+
+            &__action {
+              background-color: color('brand-maggioli', '05');
+              color: color('brand-maggioli', '20');
+            }
+          }
         }
 
         &__body {
           border-left-color: color('brand.maggioli', '05');
           height: auto;
           padding-bottom: s(1);
-        }
-
-        &__action {
-          background-color: color('brand-maggioli', '05');
-          color: color('brand-maggioli', '20');
         }
       }
     }

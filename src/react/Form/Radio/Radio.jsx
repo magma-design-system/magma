@@ -13,8 +13,8 @@ const Radio = props =>
       type="radio"
       value={props.value}
     />
-    <Icon className={`radio__icon ${props.iconClassName}`} name={`${props.icon ? props.icon : 'formRadioUnchecked'}`}/>
-    <Icon className={`radio__icon ${props.iconClassName}`} name={`${props.icon ? props.icon : 'formRadioChecked'}`}/>
+    <Icon className={`radio__icon ${props.iconClassName}`} name={`${props.icon ? props.icon : 'form-radio-unchecked'}`}/>
+    <Icon className={`radio__icon ${props.iconClassName}`} name={`${props.icon ? props.icon : 'form-radio-checked'}`}/>
     <Caption className="radio__text">
       {props.children}
     </Caption>

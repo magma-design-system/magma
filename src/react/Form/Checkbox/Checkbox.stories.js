@@ -3,6 +3,7 @@ import faker from 'faker'
 
 import Checkbox from '@Form/Checkbox/Checkbox'
 import Grid from '@Layout/Grid/Grid'
+import randomIcon from '@Design/Icon/faker'
 faker.locale = 'it'
 
 export default {
@@ -21,7 +22,7 @@ export const checkedByDefault = () =>
   </Checkbox>
 
 export const customIcon = () =>
-  <Checkbox icon="license">
+  <Checkbox icon={randomIcon()}>
     {faker.lorem.sentences()}
   </Checkbox>
 

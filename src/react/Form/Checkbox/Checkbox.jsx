@@ -15,8 +15,8 @@ const Checkbox = props =>
         <Icon className={`checkbox__icon ${props.iconClassName}`} name={props.icon}/>
       </Fragment>
       : <Fragment>
-        <Icon className={`checkbox__icon ${props.iconClassName}`} name="formCheckboxUnchecked"/>
-        <Icon className={`checkbox__icon ${props.iconClassName}`} name="formCheckboxChecked"/>
+        <Icon className={`checkbox__icon ${props.iconClassName}`} name="form-checkbox-unchecked"/>
+        <Icon className={`checkbox__icon ${props.iconClassName}`} name="form-checkbox-checked"/>
       </Fragment>
     }
     <div className="checkbox__text">
