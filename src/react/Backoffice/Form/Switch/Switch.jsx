@@ -4,7 +4,7 @@ import SwitchItem from '@Form/Switch/Switch'
 import './Switch.scss'
 
 const Switch = props =>
-  <div className="backoffice-switch">
+  <div className="backoffice-switch" onChange={props.onChange}>
     <SwitchItem className="backoffice-switch__item">
       {props.children}
     </SwitchItem>
