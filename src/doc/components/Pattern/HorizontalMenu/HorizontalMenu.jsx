@@ -5,6 +5,7 @@ import './HorizontalMenu.scss'
 import { Link } from 'gatsby'
 import HorizontalScroll from '@Layout/HorizontalScroll/HorizontalScroll'
 import Grid from '@Layout/Grid/Grid'
+import Icon from '@Design/Icon/Icon'
 import Hr from '@Gatsby/Pattern/Hr/Hr'
 import { getCurrentUrl } from '@Gatsby/Pattern/Navigation/menu'
 
@@ -30,6 +31,7 @@ const HorizontalMenu = props => {
   return (<Grid gutter="none" className={`ds-horizontal-menu ${props.className}`}>
     <Hr className="ds-horizontal-menu__hr"/>
     <HorizontalScroll className="ds-horizontal-menu__list">
+      <HorizontalMenuItem><Icon name="paginator-previous"/></HorizontalMenuItem>
       {
         props.menuList.map((item, key) =>
           <HorizontalMenuItem key={key} url={item.url} active={currentUrl.startsWith(item.url)}>{item.title}</HorizontalMenuItem>,

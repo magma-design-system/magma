@@ -1,5 +1,7 @@
 {
   "accessibility": "material/accessibility_new",
+  "action-back": "material/arrow_back",
+  "action-forward": "material/arrow_forward",
   "action-close": "material/close",
   "action-phone": "material/phone",
   "avatar-group": "material/supervised_user_circle",
