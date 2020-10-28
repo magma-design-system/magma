@@ -31,7 +31,7 @@ const HorizontalMenu = props => {
   return (<Grid gutter="none" className={`ds-horizontal-menu ${props.className}`}>
     <Hr className="ds-horizontal-menu__hr"/>
     <HorizontalScroll className="ds-horizontal-menu__list">
-      <HorizontalMenuItem><Icon name="paginator-previous"/></HorizontalMenuItem>
+      <HorizontalMenuItem><Icon name="action-back"/></HorizontalMenuItem>
       {
         props.menuList.map((item, key) =>
           <HorizontalMenuItem key={key} url={item.url} active={currentUrl.startsWith(item.url)}>{item.title}</HorizontalMenuItem>,
