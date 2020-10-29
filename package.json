@@ -25,7 +25,8 @@
     "start:gatsby": "gatsby develop -H 0.0.0.0 -p 3898 -o",
     "start:storybook": "npm run storybook",
     "serve:gatsby": "gatsby serve -o -p 3898",
-    "clean:gatsby": "gatsby clean"
+    "clean:gatsby": "gatsby clean",
+    "build:react": "webpack --config webpack.config.js"
   },
   "husky": {
     "hooks": {
@@ -37,13 +38,11 @@
     "> 1%",
     "last 2 versions"
   ],
-  "main": "index.js",
+  "main": "dist/bundle.min.js",
   "files": [
-    "/src/assets/**/*",
-    "/src/react/**/*",
     "/src/scss/**/*",
     "/src/style-dictionary/build/**/*",
-    "import-aliases.js"
+    "/dist/**/*"
   ],
   "publishConfig": {
     "registry": "http://nexus.maggioli.it:8081/repository/npm/"
@@ -101,7 +100,9 @@
   },
   "devDependencies": {
     "@adobe/leonardo-contrast-colors": "^1.0.0-alpha.7",
-    "@babel/core": "^7.11.1",
+    "@babel/core": "^7.12.3",
+    "@babel/preset-env": "^7.12.1",
+    "@babel/preset-react": "^7.12.1",
     "@deckdeckgo/highlight-code": "^2.1.0",
     "@mdx-js/mdx": "^1.6.16",
     "@mdx-js/react": "^1.6.16",
@@ -165,6 +166,8 @@
     "stylelint-config-sass-guidelines": "^7.0.0",
     "stylelint-config-standard": "^20.0.0",
     "stylelint-order": "^4.1.0",
-    "stylelint-scss": "^3.18.0"
+    "stylelint-scss": "^3.18.0",
+    "webpack": "^5.3.1",
+    "webpack-cli": "^4.1.0"
   }
 }
