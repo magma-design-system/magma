@@ -1,6 +1,6 @@
 import React, { useContext } from 'react'
 import PropTypes from 'prop-types'
-import { ThemeContext } from '@Design/Theme/ThemeProvider'
+import { ThemeContext } from '@Behavior/Theme/ThemeProvider'
 import './Textarea.scss'
 import Icon from '@Design/Icon/Icon'
 

@@ -4,7 +4,7 @@ module.exports = {
   '#Assets': path.resolve(__dirname, 'src/assets/'),
   '+Package': path.resolve(__dirname, './'),
   '+Tokens': path.resolve(__dirname, 'src/style-dictionary/'),
-  '@App': path.resolve(__dirname, 'src/react/app/'),
+  '@Behavior': path.resolve(__dirname, 'src/react/Behavior/'),
   '@Backoffice': path.resolve(__dirname, 'src/react/Backoffice/'),
   '@Content': path.resolve(__dirname, 'src/react/Content/'),
   '@Design': path.resolve(__dirname, 'src/react/Design/'),
