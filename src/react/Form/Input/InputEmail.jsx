@@ -6,7 +6,7 @@ const InputEmail = props =>
   <Input {...props}>
     <input
       autoComplete={props.autoComplete}
-      className="input__field"
+      className={`input__field ${props.font}`}
       defaultValue={props.value}
       name={props.name}
       onBlur={e => { console.log(e) }}
@@ -17,6 +17,7 @@ const InputEmail = props =>
 
 InputEmail.propTypes = {
   autoComplete: PropTypes.string,
+  font: PropTypes.string,
   icon: PropTypes.string,
   iconClassName: PropTypes.string,
   name: PropTypes.string,
@@ -28,6 +29,7 @@ InputEmail.propTypes = {
 
 InputEmail.defaultProps = {
   autoComplete: 'off',
+  font: 'text-secondary text-secondary--detail',
   icon: 'document-email',
   iconClassName: '',
   name: 'email',

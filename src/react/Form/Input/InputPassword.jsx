@@ -7,7 +7,7 @@ const InputPassword = props =>
   <Input {...props}>
     <input
       autoComplete={props.autoComplete}
-      className="input__field"
+      className={`input__field ${props.font}`}
       defaultValue={props.value}
       name={props.name}
       onChange={props.onChange}
@@ -18,6 +18,7 @@ const InputPassword = props =>
 
 InputPassword.propTypes = {
   autoComplete: PropTypes.string,
+  font: PropTypes.string,
   icon: PropTypes.string,
   iconClassName: PropTypes.string,
   name: PropTypes.string,
@@ -28,6 +29,7 @@ InputPassword.propTypes = {
 
 InputPassword.defaultProps = {
   autoComplete: 'off',
+  font: 'text-secondary text-secondary--detail',
   icon: 'security-password',
   iconClassName: '',
   name: 'unassigned',

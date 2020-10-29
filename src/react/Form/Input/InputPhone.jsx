@@ -6,7 +6,7 @@ const InputPhone = props =>
   <Input {...props}>
     <input
       autoComplete={props.autoComplete}
-      className="input__field"
+      className={`input__field ${props.font}`}
       defaultValue={props.value}
       name={props.name}
       onBlur={e => { console.log(e) }}
@@ -18,6 +18,7 @@ const InputPhone = props =>
 
 InputPhone.propTypes = {
   autoComplete: PropTypes.string,
+  font: PropTypes.string,
   icon: PropTypes.string,
   iconClassName: PropTypes.string,
   isValid: PropTypes.bool,
@@ -30,6 +31,7 @@ InputPhone.propTypes = {
 
 InputPhone.defaultProps = {
   autoComplete: 'off',
+  font: 'text-secondary text-secondary--detail',
   icon: 'touchpoint-smartphone',
   iconClassName: '',
   isValid: false,
