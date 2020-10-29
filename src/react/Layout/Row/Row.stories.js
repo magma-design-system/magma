@@ -42,3 +42,9 @@ export const gutterXSmall = () =>
     <Button>{word1}</Button>
     <Button>{word2}</Button>
   </Row>
+
+export const lastToRight = () =>
+  <Row gutter="xsmall" lastToRight={true}>
+    <Button>{word1}</Button>
+    <Button>{word2}</Button>
+  </Row>

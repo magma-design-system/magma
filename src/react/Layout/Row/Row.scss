@@ -31,6 +31,16 @@
     align-items: flex-end;
   }
 
+  &--last-to-right {
+    .row {
+      &__item {
+        &:last-child {
+          margin-left: auto;
+        }
+      }
+    }
+  }
+
   &__item {
     margin-right: s(1.5);
 
