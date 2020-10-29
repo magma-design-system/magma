@@ -9,10 +9,10 @@ module.exports = {
     extensions: ['.js', '.jsx'],
   },
   output: {
-    path: path.resolve(__dirname, 'dist'),
     filename: 'bundle.min.js',
-    chunkFilename: '[id].js',
-    publicPath: '',
+    library: 'maggioli-design-system',
+    libraryTarget: 'umd',
+    path: path.resolve(__dirname, 'dist'),
   },
   module: {
     rules: [

@@ -3,7 +3,6 @@ import PropTypes from 'prop-types'
 import './List.scss'
 
 import Icon from '@Design/Icon/Icon'
-
 import H5 from '@Typography/H5/H5'
 
 const defaultIcon = 'list-dot'
