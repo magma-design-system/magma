@@ -26,7 +26,7 @@ const Select = props =>
       </div>
     }
     <div className="select__item">
-      <select onChange={props.onChange} className="select__field text-secondary text-secondary--paragraph" name={props.name} value={props.value}>
+      <select onChange={props.onChange} className={`select__field ${props.font}`} name={props.name} value={props.value}>
         { props.children }
       </select>
       <Icon className="select__icon" name={props.icon}/>
@@ -35,6 +35,7 @@ const Select = props =>
 
 Select.propTypes = {
   className: PropTypes.string,
+  font: PropTypes.string,
   icon: PropTypes.string,
   label: PropTypes.string,
   name: PropTypes.string,
@@ -44,7 +45,8 @@ Select.propTypes = {
 
 Select.defaultProps = {
   className: '',
-  icon: 'formSelectOption',
+  font: 'text-secondary text-secondary--detail',
+  icon: 'navigation-show',
   label: '',
   name: 'unassigned',
   onChange: e => { return e.target.value },

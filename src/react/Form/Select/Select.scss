@@ -14,6 +14,7 @@ $size: get($form, 'input-height');
   }
 
   &__item {
+    line-height: 0;
     position: relative;
   }
 
@@ -23,11 +24,11 @@ $size: get($form, 'input-height');
 
     align-items: center;
     background-color: var(--background-color);
-    border-radius: get($radius, 'small');
+    border-radius: s(0.25);
     bottom: s(0.25);
-    color: color('adjust.tone', '15');
+    color: color('adjust.tone', '04');
     display: flex;
-    height: auto;
+    height: $size - s(0.5);
     justify-content: center;
     pointer-events: none;
     position: absolute;
@@ -92,14 +93,11 @@ $size: get($form, 'input-height');
       & + .select {
         &__icon {
 
-          --background-color: #{$brand-color};
+          --background-color: #{color('adjust.tone', '04')};
+          --color: #{color('adjust.tone', '20')};
 
           background-color: var(--background-color);
-          border-radius: 0 get($radius, 'small') get($radius, 'small') 0;
-          bottom: 0;
-          right: 0;
-          top: 0;
-          width: $size;
+          color: var(--color);
         }
       }
     }
