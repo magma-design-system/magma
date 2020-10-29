@@ -87,6 +87,14 @@ $size: get($form, 'textarea-height');
     width: 100%;
     z-index: 1;
 
+    &::placeholder {
+
+      --color: #{color('adjust.tone', '08')};
+
+      color: var(--color);
+      transition: color $ease;
+    }
+
     &:focus {
 
       --border-color: #{$brand-color};
@@ -98,18 +106,10 @@ $size: get($form, 'textarea-height');
 
       &::placeholder {
 
-        --color: color('adjust.tone', '12');
+        --color: #{color('adjust.tone', '16')};
 
         color: var(--color);
       }
-    }
-
-    &::placeholder {
-
-      --color: color('adjust.tone', '08');
-
-      color: var(--color);
-      transition: color $ease;
     }
   }
 

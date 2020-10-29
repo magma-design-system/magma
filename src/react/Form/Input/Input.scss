@@ -92,6 +92,14 @@ $size: get($form, 'input-height');
     width: 100%;
     z-index: 1;
 
+    &::placeholder {
+
+      --color: #{color('adjust.tone', '08')};
+
+      color: var(--color);
+      transition: color $ease;
+    }
+
     &:focus {
 
       --border-color: #{$brand-color};
@@ -103,19 +111,10 @@ $size: get($form, 'input-height');
 
       &::placeholder {
 
-        --color: #{color('adjust.tone', '12')};
+        --color: #{color('adjust.tone', '16')};
 
         color: var(--color);
       }
-    }
-
-    &::placeholder {
-
-      --color: #{color('adjust.tone', '08')};
-
-      color: var(--color);
-      line-height: $size;
-      transition: color $ease;
     }
   }
 
@@ -175,6 +174,11 @@ $size: get($form, 'input-height');
       --border-color: #{color('adjust.tone', '10')};
       --color: #{$text-color};
 
+      &::placeholder {
+
+        --color: #{color('adjust.tone', '08')};
+      }
+
       &:focus {
 
         --border-color: #{$brand-color};
@@ -182,13 +186,8 @@ $size: get($form, 'input-height');
 
         &::placeholder {
 
-          --color: #{color('adjust.tone', '12')};
+          --color: #{color('adjust.tone', '18')};
         }
-      }
-
-      &::placeholder {
-
-        --color: #{color('adjust.tone', '08')};
       }
     }
 
