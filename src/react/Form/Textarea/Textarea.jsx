@@ -9,7 +9,7 @@ const Textarea = props => {
   const themeName = `textarea--${state.name}`
 
   return (
-    <label className={`textarea ${themeName} ${props.icon ? 'textarea--has-icon' : ''} ${Object.keys(props.errors).length > 0 ? 'textarea--has-errors' : ''}  ${props.className}`}>
+    <label className={`textarea ${themeName} ${props.icon ? 'textarea--has-icon' : ''} ${props.error ? 'textarea--has-errors' : ''} ${props.className}`}>
       {props.label &&
         <div className="textarea__label text-primary text-primary--h6">
           {props.label}
@@ -20,24 +20,25 @@ const Textarea = props => {
           <Icon className={`textarea__icon ${props.iconClassName}`} name={props.icon}/>
         </div>
       }
-      <textarea className="textarea__field text-secondary text-secondary--paragraph" name={props.name} placeholder={props.placeholder}>
+      <textarea className={`textarea__field ${props.font}`} name={props.name} placeholder={props.placeholder}>
         {props.children}
       </textarea>
-      <ul className="textarea__errors">
-        {Object.keys(props.errors).map(name =>
-          <li className="textarea__error">
-            <Icon className="textarea__error-icon" name={props.errors[name].type}/>
-            {props.errors[name].message}
-          </li>,
-        )}
-      </ul>
+      {props.error &&
+        <div className="input__message">
+          <Detail htmlTag="div" className="input__error">
+            <Icon className="input__error-icon" name="status-error"/>
+            <div className="input__error-text">{props.error}</div>
+          </Detail>
+        </div>
+      }
     </label>
   )
 }
 
 Textarea.propTypes = {
   className: PropTypes.string,
-  errors: PropTypes.object,
+  error: PropTypes.string,
+  font: PropTypes.string,
   icon: PropTypes.string,
   iconClassName: PropTypes.string,
   label: PropTypes.string,
@@ -47,7 +48,7 @@ Textarea.propTypes = {
 
 Textarea.defaultProps = {
   className: '',
-  errors: {},
+  font: 'text-secondary text-secondary--detail',
   icon: '',
   iconClassName: '',
   label: '',

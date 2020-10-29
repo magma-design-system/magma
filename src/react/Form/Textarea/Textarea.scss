@@ -132,16 +132,17 @@ $size: get($form, 'textarea-height');
     transition: color $ease;
   }
 
-  &__errors {
-    background-color: color('status.error', '08');
+  &__message {
+    background-color: color('status.error', '17');
     border-radius: 0 0 $input-radius-error $input-radius-error;
     margin: 0;
+    margin-top: s(-0.5);
     padding: s(0.5);
-    transform: translate(0, -100%);
-    transition: transform $ease;
+    padding-top: s(1);
   }
 
   &__error {
+    color: color('status.error', '09');
     display: flex;
     list-style-type: none;
     padding: 0;
