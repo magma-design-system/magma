@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { Children, cloneElement } from 'react'
 import PropTypes from 'prop-types'
 import './List.scss'
 
@@ -42,8 +42,8 @@ ListItem.defaultProps = {
 const List = props =>
   <ul className={`list ${props.className} ${props.text}`}>
     {
-      React.Children.map(props.children, (child, index) => {
-        return React.cloneElement(child, {
+      Children.map(props.children, (child, index) => {
+        return cloneElement(child, {
           autoPunctuation: props.autoPunctuation,
           icon: child.props.icon !== undefined ? child.props.icon : props.icon,
           iconClassName: child.props.iconClassName !== undefined ? child.props.iconClassName : props.iconClassName,
