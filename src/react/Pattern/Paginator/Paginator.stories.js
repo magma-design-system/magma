@@ -1,9 +1,9 @@
 import React from 'react'
 
-import Paginator from '@Element/Paginator/Paginator'
+import Paginator from '@Pattern/Paginator/Paginator'
 
 export default {
-  title: 'Element/Paginator',
+  title: 'Pattern/Paginator',
   component: Paginator,
 }
 

@@ -3,7 +3,7 @@ import PropTypes from 'prop-types'
 import './Hr.scss'
 
 const Hr = props =>
-  <hr className={`backoffice-hr ${props.className}`}/>
+  <hr className={`hr ${props.className}`}/>
 
 Hr.propTypes = {
   className: PropTypes.string,

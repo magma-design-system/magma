@@ -1,8 +1,8 @@
 import React from 'react'
 import faker from 'faker'
 
-import CodeBlock from '@Element/CodeBlock/CodeBlock'
-import Code from '@Element/Code/Code'
+import CodeBlock from '@Content/CodeBlock/CodeBlock'
+import Code from '@Content/Code/Code'
 import Flash from '@Element/Flash/Flash'
 import Grid from '@Layout/Grid/Grid'
 import Link from '@Element/Link/Link'
@@ -10,7 +10,7 @@ import Link from '@Element/Link/Link'
 faker.locale = 'it'
 
 export default {
-  title: 'Element/CodeBlock',
+  title: 'Content/CodeBlock',
   component: CodeBlock,
 }
 

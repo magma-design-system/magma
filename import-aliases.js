@@ -17,6 +17,7 @@ module.exports = {
   '@System': path.resolve(__dirname, 'src/react/System/'),
   '@Template': path.resolve(__dirname, 'src/react/System/Template/'),
   '@Typography': path.resolve(__dirname, 'src/react/Design/Typography/'),
+  '@Variaint': path.resolve(__dirname, 'src/react/Variant/'),
   '~Sass': path.resolve(__dirname, 'src/scss/'),
   '£Project': path.resolve(__dirname, 'projects/'),
 }

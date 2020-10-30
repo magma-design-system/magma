@@ -12,7 +12,7 @@
     "settings": {
         "react": {
             "pragma": "React",
-            "version": "16.8.6"
+            "version": "16.13.1"
         }
     },
     "parserOptions": {
@@ -227,7 +227,7 @@
         "react/value-keyword-case": "off",
         "react/prefer-stateless-function": "warn",
         "react/prop-types": ["error", { "ignore": ["children"] }],
-        "no-unused-vars": "error",
+        "no-unused-vars": ["error", { "vars": "local" }],
         "no-fallthrough": "off",
         "curly": "off",
         "semi": "error",

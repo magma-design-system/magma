@@ -36,7 +36,7 @@ const StylesCode = props => {
     <Grid gutter="none">
       {
         Object.entries(props.code).map(([property, value], index) =>
-          <Hack>{property}: {value};</Hack>,
+          <Hack key={index}>{property}: {value};</Hack>,
         )
       }
     </Grid>
@@ -51,7 +51,7 @@ const Styles = props =>
   <Grid>
     {
       Object.entries(props.cssStyles).map(([viewport, styles], index) =>
-        <Grid fit={true} gutter="none">
+        <Grid key={index} fit={true} gutter="none">
           <Caption>{viewport}</Caption>
           <StylesCode code={styles} />
         </Grid>,
@@ -72,7 +72,7 @@ const TypographyTableGroup = props => {
       </Grid>
       {
         Object.entries(props.styles).map(([name, cssStyles], index) =>
-          <Grid className="sys-typography-table-group__row">
+          <Grid key={index} className="sys-typography-table-group__row">
             <div className={`text-${props.group} text-${props.group}--${name}`}>{name}</div>
             <div className={`text-${props.group} text-${props.group}--${name}`}>
               {props.group === 'primary' ? sentence : paragraph}

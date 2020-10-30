@@ -20,7 +20,7 @@ IconRow.defaultProps = {
   name: '',
 }
 
-const iconDictionary = Object.entries(mggIconsDictionary).map(([key, value]) =>
+const iconDictionary = Object.entries(mggIconsDictionary).map(([key]) =>
   <IconRow key={key} name={key}/>,
 )
 

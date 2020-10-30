@@ -1,11 +1,11 @@
 import React from 'react'
-import List, { ListItem } from '@Element/List/List'
+import List, { ListItem } from '@Content/List/List'
 
 import faker from 'faker'
 import randomIcon from '@Design/Icon/faker'
 
 export default {
-  title: 'Element/List',
+  title: 'Content/List',
   component: List,
 }
 

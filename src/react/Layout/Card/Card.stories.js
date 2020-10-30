@@ -3,7 +3,7 @@ import faker from 'faker'
 
 import Card from '@Layout/Card/Card'
 import Paragraph from '@Typography/Paragraph/Paragraph'
-import Code from '@Element/Code/Code'
+import Code from '@Content/Code/Code'
 import Grid from '@Layout/Grid/Grid'
 import Flash from '@Element/Flash/Flash'
 

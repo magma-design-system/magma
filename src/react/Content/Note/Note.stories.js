@@ -1,6 +1,6 @@
 import React from 'react'
 
-import Note from '@Element/Note/Note'
+import Note from '@Content/Note/Note'
 import Grid from '@Layout/Grid/Grid'
 import Caption from '@Typography/Caption/Caption'
 import Detail from '@Typography/Detail/Detail'
@@ -9,7 +9,7 @@ import H5 from '@Typography/H5/H5'
 import faker from 'faker'
 
 export default {
-  title: 'Element/Note',
+  title: 'Content/Note',
   component: Note,
 }
 
