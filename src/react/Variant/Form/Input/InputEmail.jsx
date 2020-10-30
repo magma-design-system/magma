@@ -1,6 +1,6 @@
 import PropTypes from 'prop-types'
-import BackofficeInputEmail from '@Backoffice/Form/InputEmail/InputEmail'
-import FormInputEmail from '@Form/InputEmail/InputEmail'
+import BackofficeInputEmail from '@Backoffice/Form/Input/InputEmail'
+import FormInputEmail from '@Form/Input/InputEmail'
 
 const variants = {
   backoffice: BackofficeInputEmail,

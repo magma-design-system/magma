@@ -1,6 +1,6 @@
 import PropTypes from 'prop-types'
-import BackofficeInputList from '@Backoffice/Form/InputList/InputList'
-import FormInputList from '@Form/InputList/InputList'
+import BackofficeInputList from '@Backoffice/Form/Input/InputList'
+import FormInputList from '@Form/Input/InputList'
 
 const variants = {
   backoffice: BackofficeInputList,

@@ -1,6 +1,6 @@
 import PropTypes from 'prop-types'
-import BackofficeInputPassword from '@Backoffice/Form/InputPassword/InputPassword'
-import FormInputPassword from '@Form/InputPassword/InputPassword'
+import BackofficeInputPassword from '@Backoffice/Form/Input/InputPassword'
+import FormInputPassword from '@Form/Input/InputPassword'
 
 const variants = {
   backoffice: BackofficeInputPassword,

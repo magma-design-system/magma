@@ -1,6 +1,6 @@
 import PropTypes from 'prop-types'
-import BackofficeInputPhone from '@Backoffice/Form/InputPhone/InputPhone'
-import FormInputPhone from '@Form/InputPhone/InputPhone'
+import BackofficeInputPhone from '@Backoffice/Form/Input/InputPhone'
+import FormInputPhone from '@Form/Input/InputPhone'
 
 const variants = {
   backoffice: BackofficeInputPhone,

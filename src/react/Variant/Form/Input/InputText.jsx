@@ -1,6 +1,6 @@
 import PropTypes from 'prop-types'
-import BackofficeInputText from '@Backoffice/Form/InputText/InputText'
-import FormInputText from '@Form/InputText/InputText'
+import BackofficeInputText from '@Backoffice/Form/Input/InputText'
+import FormInputText from '@Form/Input/InputText'
 
 const variants = {
   backoffice: BackofficeInputText,

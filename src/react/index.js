@@ -1,5 +1,5 @@
 import Menu from '@Backoffice/Element/Menu/Menu'
-import Button from '@Variants/Form/Button'
+import Button from '@Variant/Form/Button'
 import FileImage from '@Backoffice/Form/FileImage/FileImage'
 import Hr from '@Variant/Element/Hr/Hr'
 import InputEmail from '@Variant/Form/Input/InputEmail'
