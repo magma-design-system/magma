@@ -17,12 +17,12 @@ const Modal = props =>
           <H4 className="modal__title">
             {props.title}
           </H4>
-          <Icon className="modal__close-inside" name="close" onClick={() => { props.onClose() }}/>
+          <Icon className="modal__close-inside" name="action-close" onClick={() => { props.onClose() }}/>
         </header>
       }
       <div className={`modal__contents ${props.contentOnly ? 'modal__contents--clean' : ''} ${props.title ? 'modal__contents--close-outside' : ''}`}>
         {!props.title &&
-          <Icon className="modal__close-inside" name="close" onClick={() => { props.onClose() }}/>
+          <Icon className="modal__close-inside" name="action-close" onClick={() => { props.onClose() }}/>
         }
         {props.children}
       </div>

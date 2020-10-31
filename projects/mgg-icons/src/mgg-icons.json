@@ -96,6 +96,7 @@
   "sort": "material/sort",
   "sort-as": "material/arrow_upward",
   "sort-desc": "material/arrow_downward",
+  "source-web": "material/explore",
   "status-error": "material/error",
   "status-info": "material/info",
   "status-success": "material/check_circle",
