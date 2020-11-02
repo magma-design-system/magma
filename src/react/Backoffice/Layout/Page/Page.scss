@@ -59,7 +59,6 @@ $grid-width: 300px;
       box-shadow: none;
       height: 100vh;
       overflow: auto;
-      position: static;
       transform: translate(0, 0);
       width: auto;
     }
@@ -76,7 +75,7 @@ $grid-width: 300px;
     }
 
     @include media('desktop') {
-      grid-column: auto;
+      grid-column: -1 / 2;
       max-width: calc(100vw - #{$grid-width});
       padding: 0 s(2);
     }
