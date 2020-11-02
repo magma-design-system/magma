@@ -6,6 +6,7 @@ import './Page.scss'
 import Button from '@Element/Button/Button'
 import Caption from '@Typography/Caption/Caption'
 import Grid from '@Layout/Grid/Grid'
+import Row from '@Layout/Row/Row'
 import H1 from '@Typography/H1/H1'
 import H4 from '@Typography/H4/H4'
 import H6 from '@Typography/H6/H6'
@@ -55,10 +56,10 @@ const PageFooter = props =>
       <Icon name="user" className="backoffice-page-aside-footer__icon"/>
       <Caption className="backoffice-page-aside-footer__email">{props.email}</Caption>
     </div>
-    <div className="backoffice-page-aside-footer__actions">
+    <Row className="backoffice-page-aside-footer__actions" gutter="xsmall">
       <Button onClick={props.onClickManage} small={true} className="backoffice-page-aside-footer__action background-color-adjust-tone-12">Gestisci</Button>
       <Button onClick={props.onClickExit} small={true} className="backoffice-page-aside-footer__action background-color-status-error-12">Esci</Button>
-    </div>
+    </Row>
   </footer>
 
 PageFooter.propTypes = {

@@ -5,7 +5,7 @@
   $modifier: nth($size-item, 1);
   $gutter: nth($size-item, 2);
 
-  &--#{$modifier} {
+  &--gutter-#{$modifier} {
     .row__item {
       margin-right: $gutter;
     }

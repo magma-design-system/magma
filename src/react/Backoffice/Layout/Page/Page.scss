@@ -197,7 +197,8 @@ $grid-width: 300px;
 
   &__actions {
     display: flex;
-    gap: s(0.5);
+
+    // gap: s(0.5);
     margin-top: s(0.5);
   }
 

@@ -3,7 +3,7 @@ import PropTypes from 'prop-types'
 import './Row.scss'
 
 const Row = props =>
-  <div className={`row ${props.className} ${props.gutter !== '' ? 'row--' + props.gutter : ''} ${props.align !== '' ? 'row--align-' + props.align : ''} ${props.lastToRight ? 'row--last-to-right' : ''} `}>
+  <div className={`row ${props.className} ${props.gutter !== '' ? 'row--gutter-' + props.gutter : ''} ${props.align !== '' ? 'row--align-' + props.align : ''} ${props.lastToRight ? 'row--last-to-right' : ''} `}>
     {
       Children.map(props.children, (child, index) => {
         return cloneElement(child, {
