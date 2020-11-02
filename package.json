@@ -1,6 +1,6 @@
 {
   "name": "@maggioli/design-system",
-  "version": "0.0.16",
+  "version": "0.0.17",
   "description": "Maggioli Design system",
   "scripts": {
     "setup": "cd projects/mgg-icons && npm install && cd ../font-icons-cli && npm install && cd ../../ && npm install && npm run storybook",
@@ -42,6 +42,7 @@
   "files": [
     "/src/scss/**/*",
     "/src/style-dictionary/build/**/*",
+    "/import-aliases.js",
     "/dist/**/*"
   ],
   "publishConfig": {
@@ -78,6 +79,10 @@
       "email": "matteo.innocenti@maggioli.it"
     },
     {
+      "name": "Stefano Pascazi",
+      "email": "stefano.pascazi@maggioli.it"
+    },
+    {
       "name": "Thomas Trapanese",
       "email": "thomas.trapanese@maggioli.it"
     }
@@ -101,6 +106,7 @@
   "devDependencies": {
     "@adobe/leonardo-contrast-colors": "^1.0.0-alpha.7",
     "@babel/core": "^7.12.3",
+    "@babel/plugin-proposal-class-properties": "^7.12.1",
     "@babel/preset-env": "^7.12.1",
     "@babel/preset-react": "^7.12.1",
     "@deckdeckgo/highlight-code": "^2.1.0",
