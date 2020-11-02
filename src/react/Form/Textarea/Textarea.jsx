@@ -20,7 +20,7 @@ const Textarea = props => {
           <Icon className={`textarea__icon ${props.iconClassName}`} name={props.icon}/>
         </div>
       }
-      <textarea className={`textarea__field ${props.font}`} name={props.name} placeholder={props.placeholder}>
+      <textarea className={`textarea__field ${props.font}`} name={props.name} placeholder={props.placeholder} onChange={props.onChange}>
         {props.children}
       </textarea>
       {props.error &&
@@ -43,6 +43,7 @@ Textarea.propTypes = {
   iconClassName: PropTypes.string,
   label: PropTypes.string,
   name: PropTypes.string,
+  onChange: PropTypes.func,
   placeholder: PropTypes.string,
 }
 
@@ -53,6 +54,7 @@ Textarea.defaultProps = {
   iconClassName: '',
   label: '',
   name: 'unassigned',
+  onChange: () => {},
   placeholder: '',
 }
 
