@@ -24,29 +24,35 @@ module.exports = {
       {
         test: /\.scss$/,
         include: path.resolve(__dirname, '../'),
-        use: [{
-          loader: 'style-loader',
-        }, {
-          loader: 'css-loader',
-          options: {
-            sourceMap: true,
+        use: [
+          {
+            loader: 'style-loader',
+          }, {
+            loader: 'css-loader',
+            options: {
+              sourceMap: true,
+            },
+          }, {
+            loader: 'postcss-loader',
+            options: {
+              plugins: () => [autoprefixer()],
+            },
+          }, {
+            loader: 'sass-loader',
+            options: {
+              sourceMap: true,
+            },
           },
-        }, {
-          loader: 'postcss-loader',
-          options: {
-            plugins: () => [autoprefixer()],
-          },
-        }, {
-          loader: 'sass-loader',
-          options: {
-            sourceMap: true,
-          },
-        }],
+        ],
       },
-      // {
-      //   test: /\.(png|jpe?g|gif)$/,
-      //   loader: 'url-loader?limit=10000&name=img/[name].[ext]',
-      // },
+      {
+        test: /\.(a?png|avif|gif|jpe?g|svg|webp)$/i,
+        use: [
+          {
+            loader: 'file-loader',
+          },
+        ],
+      },
     ],
   },
 }
