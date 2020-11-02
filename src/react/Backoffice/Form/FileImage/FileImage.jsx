@@ -8,9 +8,10 @@ import Detail from '@Typography/Detail/Detail'
 import Button from '@Element/Button/Button'
 
 const FileImage = props => {
+  // const [clicked, clickHandler] = useState(false)
   const fakeImage = 'https://via.placeholder.com/1000x1400'
   return (
-    <div className={`backoffice-file-image ${props.loaded ? 'backoffice-file-image--uploaded' : ''} ${props.icon !== '' ? 'backoffice-file-image--has-icon' : ''} ${props.error ? 'backoffice-file-image--has-errors' : ''} ${props.className}`}>
+    <div onClick={props.onClick} className={`backoffice-file-image ${props.clicked ? 'backoffice-file-image--uploaded' : ''} ${props.icon !== '' ? 'backoffice-file-image--has-icon' : ''} ${props.error ? 'backoffice-file-image--has-errors' : ''} ${props.className}`}>
       <input type="file" className="backoffice-file-image__field"/>
       <div className="backoffice-file-image__image" style={{ backgroundImage: `url('${fakeImage}')` }}>
         <Button className="backoffice-file-image__delete" icon="crud-delete" />
@@ -45,12 +46,12 @@ const FileImage = props => {
 
 FileImage.propTypes = {
   className: PropTypes.string,
-  error: PropTypes.string,
+  clicked: PropTypes.bool,
   icon: PropTypes.string,
   iconClassName: PropTypes.string,
+  error: PropTypes.string,
   isChecked: PropTypes.bool,
   label: PropTypes.string,
-  loaded: PropTypes.bool,
   name: PropTypes.string,
   onChange: PropTypes.func,
   onClick: PropTypes.func,
@@ -61,12 +62,12 @@ FileImage.propTypes = {
 
 FileImage.defaultProps = {
   className: '',
+  clicked: false,
   icon: 'media-image',
   name: 'unassigned',
   onChange: value => { return value },
   onClick: () => {},
   required: false,
-  loaded: false,
 }
 
 export default FileImage

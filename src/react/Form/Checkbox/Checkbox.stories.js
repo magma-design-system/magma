@@ -34,7 +34,7 @@ export const customColor = () =>
 const checkboxText1 = faker.lorem.sentence()
 const checkboxText2 = faker.lorem.sentence()
 
-const SyncCheckboxes = props => {
+const SyncCheckboxes = () => {
   const [isCheckboxActive, activateCheckbox] = useState(false)
   return (
     <Grid gutter="small">
