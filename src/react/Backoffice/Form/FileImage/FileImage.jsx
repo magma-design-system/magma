@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React from 'react'
 import PropTypes from 'prop-types'
 import './FileImage.scss'
 import Icon from '@Design/Icon/Icon'
@@ -8,10 +8,10 @@ import Detail from '@Typography/Detail/Detail'
 import Button from '@Element/Button/Button'
 
 const FileImage = props => {
-  const [clicked, clickHandler] = useState(false)
+  // const [clicked, clickHandler] = useState(false)
   const fakeImage = 'https://via.placeholder.com/1000x1400'
   return (
-    <div onClick={() => clickHandler(!clicked)} className={`backoffice-file-image ${clicked ? 'backoffice-file-image--uploaded' : ''} ${props.icon !== '' ? 'backoffice-file-image--has-icon' : ''} ${props.error ? 'backoffice-file-image--has-errors' : ''} ${props.className}`}>
+    <div onClick={props.onClick} className={`backoffice-file-image ${props.clicked ? 'backoffice-file-image--uploaded' : ''} ${props.icon !== '' ? 'backoffice-file-image--has-icon' : ''} ${props.error ? 'backoffice-file-image--has-errors' : ''} ${props.className}`}>
       <input type="file" className="backoffice-file-image__field"/>
       <div className="backoffice-file-image__image" style={{ backgroundImage: `url('${fakeImage}')` }}>
         <Button className="backoffice-file-image__delete" icon="crud-delete" />
@@ -46,6 +46,7 @@ const FileImage = props => {
 
 FileImage.propTypes = {
   className: PropTypes.string,
+  clicked: PropTypes.bool,
   icon: PropTypes.string,
   iconClassName: PropTypes.string,
   error: PropTypes.string,
@@ -61,11 +62,12 @@ FileImage.propTypes = {
 
 FileImage.defaultProps = {
   className: '',
+  clicked: false,
   icon: 'media-image',
   name: 'unassigned',
   onChange: value => { return value },
   onClick: () => {},
-  required: 'false',
+  required: false,
 }
 
 export default FileImage

@@ -41,7 +41,7 @@ const cities = new Array(50)
 export const List = () =>
   <InputList label="Città" placeholder="Inerisci il nome di una città...">
     {cities.map((city, index) =>
-      <InputListItem value={city}/>,
+      <InputListItem key={index} value={city}/>,
     )}
   </InputList>
 

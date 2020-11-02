@@ -16,7 +16,7 @@ export const Families = () =>
   <Grid>
     {
       Object.entries(fontFamilies).map(([key, value], index) =>
-        <TypographyTableGroup group={key} family={value.family} styles={value.styles} />,
+        <TypographyTableGroup key={index} group={key} family={value.family} styles={value.styles} />,
       )
     }
   </Grid>

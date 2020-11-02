@@ -6,7 +6,7 @@ import Icon from '@Design/Icon/Icon'
 
 const SelectOption = props =>
   <option className={`select__option ${props.className}`} value={props.value}>
-    { props.children }
+    { props.children } &emsp;&ensp;
   </option>
 
 SelectOption.propTypes = {

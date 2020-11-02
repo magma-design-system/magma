@@ -15,7 +15,7 @@ export default {
   component: Download,
 }
 
-const downloadDictionary = Object.entries(data.extension).map(([key, value]) =>
+const downloadDictionary = Object.entries(data.extension).map(([key]) =>
   <Download fileName={`${faker.system.commonFileName().split('.')[0]}.${key}`} key={key}/>,
 )
 
