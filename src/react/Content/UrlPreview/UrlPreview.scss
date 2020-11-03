@@ -28,6 +28,8 @@
 
   &__url-field {
     display: flex;
+    flex-grow: 1;
+    justify-content: center;
     margin-right: s(0.5);
     overflow: hidden;
     text-overflow: ellipsis;
@@ -41,10 +43,9 @@
   &__frament {
     color: color('adjust.tone', '10');
     direction: rtl;
-    flex: 1;
-    margin-left: -3px;
     min-width: 0;
     overflow: hidden;
+    text-align: left;
     text-overflow: ellipsis;
   }
 
