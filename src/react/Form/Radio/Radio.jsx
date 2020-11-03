@@ -5,7 +5,7 @@ import Icon from '@Design/Icon/Icon'
 import Caption from '@Typography/Caption/Caption'
 
 const Radio = props =>
-  <label className={`radio ${props.className} ${props.textClassName} ${props.icon ? 'radio--custom' : ''}`.trim()}>
+  <label onChange={props.onChange} className={`radio ${props.className} ${props.textClassName} ${props.icon ? 'radio--custom' : ''}`.trim()}>
     <input
       className="radio__field"
       defaultChecked={props.isChecked}
