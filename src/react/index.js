@@ -7,6 +7,19 @@ import Row from '@Layout/Row/Row'
 
 import Icon from '@Design/Icon/Icon'
 
+// import Author from '@Content/Author/Author'
+// import Picture from '@Content/Picture/Picture'
+// import UrlPreview from '@Content/UrlPreview/UrlPreview'
+
+import Avatar from '@Content/Avatar/Avatar'
+import Bibliography from '@Content/Bibliography/Bibliography'
+import CodeBlock from '@Content/CodeBlock/CodeBlock'
+import Image from '@Content/Image/Image'
+import InfoBar from '@Content/InfoBar/InfoBar'
+import Kpi from '@Content/Kpi/Kpi'
+import Quote from '@Content/Quote/Quote'
+import Usage, { UsageDo, UsageDont } from '@Content/Usage/Usage'
+
 import Caption from '@Typography/Caption/Caption'
 import Code from '@Typography/Code/Code'
 import Detail from '@Typography/Detail/Detail'
@@ -59,6 +72,7 @@ import UploadFileImage from '@UI/UploadFileImage/UploadFileImage'
 
 export {
   Accordion,
+  Avatar,
   BackofficeButton,
   BackofficeHr,
   BackofficeInputEmail,
@@ -71,11 +85,13 @@ export {
   BackofficePageFooter,
   BackofficePageHeader,
   BackofficeTextarea,
+  Bibliography,
   Button,
   Caption,
   Card,
   Checkbox,
   Code,
+  CodeBlock,
   Detail,
   Download,
   Flash,
@@ -90,12 +106,15 @@ export {
   HorizontalScroll,
   Hr,
   Icon,
+  Image,
+  InfoBar,
   InlineCode,
   InputEmail,
   InputList,
   InputPassword,
   InputPhone,
   InputText,
+  Kpi,
   LabelCaption,
   LabelDetail,
   LabelParagraph,
@@ -107,6 +126,7 @@ export {
   Overline,
   Paginator,
   Paragraph,
+  Quote,
   Radio,
   Range,
   Row,
@@ -121,4 +141,7 @@ export {
   Tag,
   Textarea,
   UploadFileImage,
+  Usage,
+  UsageDo,
+  UsageDont,
 }
