@@ -3,7 +3,7 @@ import faker from 'faker'
 
 import Image from '@Content/Image/Image'
 import Flash from '@UI/Flash/Flash'
-import Code from '@UI/Code/Code'
+import Code from '@UI/InlineCode/InlineCode'
 import Grid from '@Layout/Grid/Grid'
 
 faker.locale = 'it'

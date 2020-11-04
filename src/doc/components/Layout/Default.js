@@ -7,7 +7,7 @@ import { createMenuList, findMenuItem, getPageData, createMenuItemList, createHo
 
 import Bibliography from '@Content/Bibliography/Bibliography'
 import Button from '@UI/Button/Button'
-import Code from '@UI/Code/Code'
+import Code from '@UI/InlineCode/InlineCode'
 import CodeBlock from '@Content/CodeBlock/CodeBlock'
 import Grid from '@Layout/Grid/Grid'
 import InfoBar from '@Content/InfoBar/InfoBar'

@@ -1,6 +1,6 @@
 import React from 'react'
 import PropTypes from 'prop-types'
-import Typography from '../Typography'
+import Typography from '@Typography/Typography'
 
 const Paragraph = props =>
   <Typography

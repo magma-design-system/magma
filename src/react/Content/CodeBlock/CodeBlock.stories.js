@@ -2,7 +2,7 @@ import React from 'react'
 import faker from 'faker'
 
 import CodeBlock from '@Content/CodeBlock/CodeBlock'
-import Code from '@UI/Code/Code'
+import Code from '@UI/InlineCode/InlineCode'
 import Flash from '@UI/Flash/Flash'
 import Grid from '@Layout/Grid/Grid'
 import Link from '@UI/Link/Link'
