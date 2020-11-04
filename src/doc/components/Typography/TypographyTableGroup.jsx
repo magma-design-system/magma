@@ -13,7 +13,7 @@ const paragraph = faker.lorem.paragraph()
 const GroupName = props =>
   <div>
     <H3>{props.children}</H3>
-    <Caption>Fallback fonts</Caption>
+    <Hack className="sys-typography-table-group__font-details">Fallback fonts</Hack>
   </div>
 
 const FontFamilyName = props => {
@@ -21,7 +21,7 @@ const FontFamilyName = props => {
   return (
     <div>
       <H3>{fallbacks[0]}</H3>
-      <Hack>{props.family.replace(fallbacks[0] + ',', '')}</Hack>
+      <Hack className="sys-typography-table-group__font-details">{props.family.replace(fallbacks[0] + ',', '')}</Hack>
     </div>
   )
 }
@@ -31,7 +31,6 @@ FontFamilyName.propTypes = {
 }
 
 const StylesCode = props => {
-  console.log(props.code)
   return (
     <Grid gutter="none">
       {
@@ -48,7 +47,7 @@ StylesCode.propTypes = {
 }
 
 const Styles = props =>
-  <Grid>
+  <Grid className="sys-typography-table-group__styles">
     {
       Object.entries(props.cssStyles).map(([viewport, styles], index) =>
         <Grid key={index} fit={true} gutter="none">

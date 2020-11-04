@@ -12,11 +12,31 @@
   }
 
   &__header {
-    grid-template-columns: 160px auto;
+    grid-template-columns: 1fr 2fr;
+
+    @include media('tablet') {
+      grid-template-columns: 160px auto;
+    }
   }
 
   &__row {
-    grid-template-columns: 160px auto 250px;
+    grid-template-columns: 1fr 2fr;
     @include division($distance: s(2), $border-width: 2px);
+
+    @include media('tablet') {
+      grid-template-columns: 160px auto 250px;
+    }
+  }
+
+  &__styles {
+    @include media('mobile') {
+      display: none;
+    }
+  }
+
+  &__font-details {
+    @include media('mobile') {
+      display: none;
+    }
   }
 }
