@@ -6,7 +6,7 @@ import PropTypes from 'prop-types'
 import './Bibliography.scss'
 
 import Paragraph from '@Typography/Paragraph/Paragraph'
-import Link from '@Element/Link/Link'
+import Link from '@UI/Link/Link'
 
 function getMonthName(index) {
   const names = [

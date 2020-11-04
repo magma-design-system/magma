@@ -1,0 +1,85 @@
+@import '~Sass/import-framework';
+@import '../Input/BackofficeExtends';
+
+$top-size: 50px;
+$size-opened: 100px;
+$size-focused: $size-opened - $top-size;
+$ease: get($tween, 'slide');
+
+.backoffice-file-image {
+
+  @extend %input;
+
+  @extend %field;
+
+  background-color: color('adjust.tone', '08');
+  min-height: $size-opened;
+  overflow: hidden;
+
+  &__field {
+    display: none;
+  }
+
+  &__fake-field {
+    align-items: center;
+    background-color: color('adjust.tone', '20');
+    box-shadow: none;
+    display: flex;
+    min-height: $size-opened;
+    overflow: hidden;
+    padding: s(1);
+    position: relative;
+  }
+
+  &__icon-area {
+
+    @extend %icon-area;
+
+    height: s(3);
+    position: static;
+    width: s(3);
+  }
+
+  &__icon {
+
+    @extend %icon;
+  }
+
+  &__required {
+
+    @extend %required;
+
+    right: s(1);
+    top: s(1);
+  }
+
+  &__placeholder {
+    color: color('adjust.tone', '10');
+  }
+
+  &__image {
+    background-position: center center;
+    background-repeat: no-repeat;
+    background-size: contain;
+    height: 0;
+    position: relative;
+    transition: height get($tween, 'slide');
+  }
+
+  &__delete {
+    background-color: color('adjust.tone');
+    box-shadow: get($shadow, 'box');
+    color: color('status.error', '09');
+    position: absolute;
+    right: s(1);
+    top: s(1);
+  }
+
+  &--uploaded {
+    .backoffice-file-image {
+      &__image {
+        height: 250px;
+      }
+    }
+  }
+}

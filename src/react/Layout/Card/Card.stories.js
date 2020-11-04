@@ -3,9 +3,9 @@ import faker from 'faker'
 
 import Card from '@Layout/Card/Card'
 import Paragraph from '@Typography/Paragraph/Paragraph'
-import Code from '@Content/Code/Code'
+import Code from '@UI/Code/Code'
 import Grid from '@Layout/Grid/Grid'
-import Flash from '@Element/Flash/Flash'
+import Flash from '@UI/Flash/Flash'
 
 import cosmetics from '+Tokens/css-tokens/cosmetics.json'
 const shadows = Object.keys(cosmetics['box-shadow'])

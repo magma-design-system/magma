@@ -2,10 +2,10 @@ import React from 'react'
 import faker from 'faker'
 
 import CodeBlock from '@Content/CodeBlock/CodeBlock'
-import Code from '@Content/Code/Code'
-import Flash from '@Element/Flash/Flash'
+import Code from '@UI/Code/Code'
+import Flash from '@UI/Flash/Flash'
 import Grid from '@Layout/Grid/Grid'
-import Link from '@Element/Link/Link'
+import Link from '@UI/Link/Link'
 
 faker.locale = 'it'
 
