@@ -1,0 +1,16 @@
+@import '~Sass/import-framework';
+
+@mixin modifier ($modifier, $value) {
+  &--size-#{$modifier} {
+    height: $value;
+    width: $value;
+  }
+}
+
+.avatar {
+  border-radius: 500px;
+
+  @each $size, $value in $avatar {
+    @include modifier($modifier: $size, $value: $value);
+  }
+}

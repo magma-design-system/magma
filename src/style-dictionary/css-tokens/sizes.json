@@ -11,5 +11,12 @@
     "input-height": "40px",
     "input-height-small": "30px",
     "textarea-height": "120px"
+  },
+  "avatar": {
+    "xsmall": "20px",
+    "small": "30px",
+    "normal": "60px",
+    "large": "80px",
+    "xlarge": "100px"
   }
 }
