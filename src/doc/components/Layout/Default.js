@@ -95,6 +95,18 @@ const Layout = ({ children }) => {
             edges {
               node {
                 frontmatter {
+                  author {
+                    name
+                    avatar
+                  }
+                  source {
+                    author
+                    authors
+                    date
+                    title
+                    site
+                    url
+                  }
                   date
                   title
                 }
@@ -142,7 +154,9 @@ const Layout = ({ children }) => {
                     {children}
                   </MDXProvider>
                 </div>
-                {page.frontmatter.source && <Bibliography format="mla" title={page.frontmatter.source.title} site={page.frontmatter.source.site} url={page.frontmatter.source.url}/> }
+                {/* page.frontmatter.source && <Bibliography format="mla" title={page.frontmatter.source.title} site={page.frontmatter.source.site} url={page.frontmatter.source.url}/> */}
+                { page.frontmatter.source && <H1>Source rilevato!!!</H1> }
+                { page.frontmatter.author && <H1>Autore rilevato!!!</H1> }
                 <Hr/>
                 <footer className="ds-layout__footer">
                   <Paragraph><b>Design System</b> sviluppato dal reparto R&D.</Paragraph>
