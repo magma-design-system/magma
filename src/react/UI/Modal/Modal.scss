@@ -15,10 +15,16 @@ $modal-background: rgba(0, 0, 0, 0.5);
   top: 0;
   transition: visibility get($tween, 'slide');
   visibility: hidden;
-  z-index: 1;
+  z-index: 3;
 
   &--to-right {
     visibility: visible;
+
+    .modal {
+      &__window {
+        border-radius: 0;
+      }
+    }
   }
 
   &--to-left {
@@ -32,7 +38,7 @@ $modal-background: rgba(0, 0, 0, 0.5);
       }
 
       &__window {
-        // transform: translate(calc(-100% + #{s(3)}), 0);
+        border-radius: 0;
         transform: translate(-100%, 0);
 
         @include media ('tablet') {
@@ -105,7 +111,7 @@ $modal-background: rgba(0, 0, 0, 0.5);
 
     .modal {
       &__window {
-        box-shadow: get($shadow, 'strong'), 0 0 0 1px color('adjust.tone', '04');
+        box-shadow: get($shadow, 'strong');
         opacity: 1;
         transform: translate(0, 0);
       }
@@ -126,19 +132,21 @@ $modal-background: rgba(0, 0, 0, 0.5);
     height: 100vh;
     max-width: calc(100% - #{s(3)});
     opacity: 1;
+    overflow: hidden;
     position: relative;
     transform: translate(calc(100% + #{s(3)}), 0);
     transition: box-shadow get($tween, 'slide'), opacity get($tween, 'slide'), transform get($tween, 'slide');
     z-index: 1;
 
     @include media ('tablet') {
+      border-radius: s(0.5);
       max-width: 600px;
       transform: translate(100%, 0);
     }
   }
 
   &__header {
-    background-color: color('brand.maggioli', '14');
+    background-color: color('brand.maggioli', '18');
     display: flex;
     flex-shrink: 0;
     padding: s(1);
@@ -154,7 +162,7 @@ $modal-background: rgba(0, 0, 0, 0.5);
   }
 
   &__footer {
-    background-color: color('adjust.tone', '15');
+    background-color: color('adjust.tone', '18');
     display: grid;
     grid-gap: s(1);
     grid-template-columns: 1fr 1fr;

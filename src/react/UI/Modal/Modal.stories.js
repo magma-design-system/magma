@@ -1,4 +1,4 @@
-import React, { Fragment, useState } from 'react'
+import React, { Fragment, useEffect, useState } from 'react'
 import faker from 'faker'
 
 import Modal from '@UI/Modal/Modal'
@@ -14,18 +14,23 @@ export default {
 
 export const basicUsage = () => {
   const [show, toggleModal] = useState(false)
-  const toggle = () => {
-    toggleModal(!show)
+  useEffect(() => {
+    if (show) {
+      toggleModal(false)
+    }
+  }, [show])
+  const openModal = () => {
+    toggleModal(true)
   }
   return (
     <Fragment>
-      <Button onClick={() => { toggle() }} icon="statusInfo">
+      <Button onClick={() => openModal()} icon="statusInfo">
         Open modal
       </Button>
-      <Modal show={show} onClose={() => { toggle() }}>
-        <Paragraph></Paragraph>
-        <Paragraph></Paragraph>
-        <Paragraph></Paragraph>
+      <Modal show={show}>
+        <Paragraph>{faker.lorem.paragraph()}</Paragraph>
+        <Paragraph>{faker.lorem.paragraph()}</Paragraph>
+        <Paragraph>{faker.lorem.paragraph()}</Paragraph>
       </Modal>
     </Fragment>
   )
@@ -33,35 +38,35 @@ export const basicUsage = () => {
 
 export const mobileMode = () =>
   <Modal show={true}>
-    <Paragraph></Paragraph>
-    <Paragraph></Paragraph>
-    <Paragraph></Paragraph>
+    <Paragraph>{faker.lorem.paragraph()}</Paragraph>
+    <Paragraph>{faker.lorem.paragraph()}</Paragraph>
+    <Paragraph>{faker.lorem.paragraph()}</Paragraph>
   </Modal>
 
 export const desktopMode = () =>
   <Modal desktopMode={true} show={true}>
-    <Paragraph></Paragraph>
-    <Paragraph></Paragraph>
-    <Paragraph></Paragraph>
+    <Paragraph>{faker.lorem.paragraph()}</Paragraph>
+    <Paragraph>{faker.lorem.paragraph()}</Paragraph>
+    <Paragraph>{faker.lorem.paragraph()}</Paragraph>
   </Modal>
 
 export const headerTitle = () =>
   <Modal title={faker.lorem.sentence()} desktopMode={true} show={true}>
-    <Paragraph></Paragraph>
-    <Paragraph></Paragraph>
-    <Paragraph></Paragraph>
+    <Paragraph>{faker.lorem.paragraph()}</Paragraph>
+    <Paragraph>{faker.lorem.paragraph()}</Paragraph>
+    <Paragraph>{faker.lorem.paragraph()}</Paragraph>
   </Modal>
 
 export const footerActions = () =>
   <Modal title={faker.lorem.sentence()} onConfirm={() => {}} desktopMode={true} show={true}>
-    <Paragraph></Paragraph>
-    <Paragraph></Paragraph>
-    <Paragraph></Paragraph>
+    <Paragraph>{faker.lorem.paragraph()}</Paragraph>
+    <Paragraph>{faker.lorem.paragraph()}</Paragraph>
+    <Paragraph>{faker.lorem.paragraph()}</Paragraph>
   </Modal>
 
 export const fullConfigured = () =>
   <Modal title={faker.lorem.sentence()} onConfirm={() => {}} show={true}>
-    <Paragraph></Paragraph>
-    <Paragraph></Paragraph>
-    <Paragraph></Paragraph>
+    <Paragraph>{faker.lorem.paragraph()}</Paragraph>
+    <Paragraph>{faker.lorem.paragraph()}</Paragraph>
+    <Paragraph>{faker.lorem.paragraph()}</Paragraph>
   </Modal>

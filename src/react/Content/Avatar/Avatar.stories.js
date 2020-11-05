@@ -19,12 +19,11 @@ export const basicUsage = () =>
   <Avatar url={require('./avatar-example.jpeg')}/>
 
 export const sizes = () =>
-  <Grid gutter="xlarge" columns="2">
+  <Grid gutter="xlarge" fit={true} template="avatar-sizes">
     {avatarSizes.map(key =>
       <Fragment>
         <Avatar key={key} size={key} url={require('./avatar-example.jpeg')}/>
         <InlineCode>{`${key}`}</InlineCode>
       </Fragment>,
-
     )}
   </Grid>

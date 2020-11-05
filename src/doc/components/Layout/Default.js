@@ -37,6 +37,7 @@ import { defineCustomElements as deckDeckGoHighlightElement } from '@deckdeckgo/
 // https://www.gatsbyjs.com/plugins/gatsby-plugin-mdx/#mdxprovider
 
 const shortcodes = {
+  Bibliography,
   Button,
   Caption,
   Detail,
