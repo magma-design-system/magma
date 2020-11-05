@@ -29,10 +29,18 @@ export function createMenuList(edges) {
   return menuList
 }
 
+/**
+ * Horizontal menu should be visible only when
+ * @param menuItemList
+ * @return {*[]|*}
+ */
 export function createHorizontalMenuList(menuItemList) {
+  if (menuItemList.length < 3) return []
+
   const lastItem = menuItemList[menuItemList.length - 1]
+  if (menuItemList.length === 3 && (!lastItem.children || lastItem.children.length === 0)) return []
+
   if (lastItem.children) return lastItem.children
-  if (menuItemList.length === 1) return []
   return menuItemList[menuItemList.length - 2].children
 }
 
