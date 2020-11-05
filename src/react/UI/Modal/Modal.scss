@@ -123,6 +123,23 @@ $modal-background: rgba(0, 0, 0, 0.5);
     }
   }
 
+  &--max-height {
+
+    $margin: s(8);
+
+    .modal {
+      &__contents {
+        max-height: calc(90vh - #{$margin});
+        min-height: calc(90vh - #{$margin});
+
+        @include media ('tablet') {
+          max-height: calc(90vh - #{$margin});
+          min-height: calc(90vh - #{$margin});
+        }
+      }
+    }
+  }
+
   &__window {
     background-color: color('adjust.tone');
     box-shadow: none;

@@ -16,7 +16,7 @@ const Modal = props => {
     }
   }, [props.show])
   return (
-    <div className={`modal ${props.className} ${show ? 'modal--active' : ''} ${props.desktopMode ? 'modal--centered' : ''} modal--to-${props.position}`}>
+    <div className={`modal ${props.className} ${show ? 'modal--active' : ''} ${props.maxHeight ? 'modal--max-height' : ''} ${props.desktopMode ? 'modal--centered' : ''} modal--to-${props.position}`}>
       <Icon className="modal__close" name="close" onClick={() => setShow(false)}/>
       <div className="modal__window">
         {props.title &&
@@ -52,6 +52,7 @@ Modal.propTypes = {
   className: PropTypes.string,
   contentOnly: PropTypes.bool,
   desktopMode: PropTypes.bool,
+  maxHeight: PropTypes.bool,
   onClose: PropTypes.func,
   onConfirm: PropTypes.func,
   position: PropTypes.string,
@@ -63,6 +64,7 @@ Modal.defaultProps = {
   className: '',
   contentOnly: false,
   desktopMode: false,
+  maxHeight: false,
   onClose: null,
   onConfirm: null,
   position: 'right', // right || left

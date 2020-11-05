@@ -43,6 +43,13 @@ export const mobileMode = () =>
     <Paragraph>{faker.lorem.paragraph()}</Paragraph>
   </Modal>
 
+export const mobileModeRight = () =>
+  <Modal show={true} position="left">
+    <Paragraph>{faker.lorem.paragraph()}</Paragraph>
+    <Paragraph>{faker.lorem.paragraph()}</Paragraph>
+    <Paragraph>{faker.lorem.paragraph()}</Paragraph>
+  </Modal>
+
 export const desktopMode = () =>
   <Modal desktopMode={true} show={true}>
     <Paragraph>{faker.lorem.paragraph()}</Paragraph>
@@ -59,6 +66,13 @@ export const headerTitle = () =>
 
 export const footerActions = () =>
   <Modal title={faker.lorem.sentence()} onConfirm={() => {}} desktopMode={true} show={true}>
+    <Paragraph>{faker.lorem.paragraph()}</Paragraph>
+    <Paragraph>{faker.lorem.paragraph()}</Paragraph>
+    <Paragraph>{faker.lorem.paragraph()}</Paragraph>
+  </Modal>
+
+export const maxHeight = () =>
+  <Modal title={faker.lorem.sentence()} onConfirm={() => {}} maxHeight={true} desktopMode={true} show={true}>
     <Paragraph>{faker.lorem.paragraph()}</Paragraph>
     <Paragraph>{faker.lorem.paragraph()}</Paragraph>
     <Paragraph>{faker.lorem.paragraph()}</Paragraph>
