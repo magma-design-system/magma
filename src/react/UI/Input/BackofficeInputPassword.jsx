@@ -1,7 +1,7 @@
 import React from 'react'
 import PropTypes from 'prop-types'
 import './BackofficeInput.scss'
-import BackofficeInput from './Input'
+import BackofficeInput from '@UI/Input/BackofficeInput'
 
 const BackofficeInputPassword = props =>
   <BackofficeInput {...props}>

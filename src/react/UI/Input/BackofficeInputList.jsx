@@ -1,7 +1,7 @@
 import React, { Fragment } from 'react'
 import PropTypes from 'prop-types'
 import './BackofficeInput.scss'
-import BackofficeInput from './BackofficeInput'
+import BackofficeInput from '@UI/Input/BackofficeInput'
 
 const BackofficeInputListItem = props =>
   <Fragment>

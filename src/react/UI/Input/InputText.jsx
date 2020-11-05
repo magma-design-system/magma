@@ -1,7 +1,7 @@
 import React from 'react'
 import PropTypes from 'prop-types'
 import './Input.scss'
-import Input from './Input'
+import Input from '@UI/Input/Input'
 
 const InputText = props =>
   <Input {...props}>

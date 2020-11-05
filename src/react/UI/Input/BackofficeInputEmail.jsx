@@ -1,7 +1,7 @@
 import React from 'react'
 import PropTypes from 'prop-types'
 import './Input.scss'
-import BackofficeInput from './BackofficeInput'
+import BackofficeInput from '@UI/Input/BackofficeInput'
 
 const BackofficeInputEmail = props =>
   <BackofficeInput {...props}>

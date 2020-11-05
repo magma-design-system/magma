@@ -1,78 +1,66 @@
 import React from 'react'
 import faker from 'faker'
 
-import PropTypes from 'prop-types'
-
-import Menu, { BackofficeMenuItem as MenuItem, BackofficeMenuItemTitle as MenuItemTitle, BackofficeMenuItemAction as MenuItemAction } from '@Layout/Menu/BackofficeMenu'
-import Page, { BackofficePageHeader as PageHeader, BackofficePageFooter as PageFooter } from '@Layout/Page/BackofficePage'
+import BackofficeMenu, { BackofficeMenuItem, BackofficeMenuItemAction, BackofficeMenuItemTitle } from '@Layout/Menu/BackofficeMenu'
+import BackofficePage, { BackofficePageAside, BackofficePageSectionHeader, BackofficePageSection, BackofficePageContent, BackofficePageAsideFooter } from '@Layout/Page/BackofficePage'
 import Table, { TableHeader, TableHeaderCell, TableBody, TableRow, TableCell } from '@UI/Table/Table'
 import Button from '@UI/Button/Button'
 import Download from '@UI/Download/Download'
 import Grid from '@Layout/Grid/Grid'
 import Hr from '@UI/Hr/BackofficeHr'
 import InputText from '@UI/Input/InputText'
-import Switch from '@UI/Switch/BackofficeSwitch'
-import Textarea from '@UI/Textarea/BackofficeTextarea'
+import BackofficeInputText from '@UI/Input/BackofficeInputText'
+import BackofficeSwitch from '@UI/Switch/BackofficeSwitch'
+import BackofficeTextarea from '@UI/Textarea/BackofficeTextarea'
 import UploadFileImage from '@UI/UploadFileImage/UploadFileImage'
 faker.locale = 'it'
 
 export default {
   title: 'Layout/BackofficePage',
-  component: Page,
+  component: BackofficePage,
+  decorators: [Story => <div style={{ margin: -15 }}><Story/></div>],
 }
 
 const PageTemplate = props =>
-  <Page
-    title="Approfondimenti"
-    header={
-      <PageHeader>
-        Libro
-      </PageHeader>
-    }
-    menu={
-      <Menu>
-        <MenuItem>
-          <MenuItemTitle icon="document-book">Libri</MenuItemTitle>
-          <MenuItemAction icon="data-view" to="/edit">Gestisci</MenuItemAction>
-          <MenuItemAction active={true} icon="data-add" to="/new">Aggiungi</MenuItemAction>
-        </MenuItem>
-        <MenuItem>
-          <MenuItemTitle icon="security-code">Codici</MenuItemTitle>
-          <MenuItemAction icon="data-view" to="/edit">Gestisci</MenuItemAction>
-          <MenuItemAction icon="data-add" to="/new">Genera</MenuItemAction>
-        </MenuItem>
-        <MenuItem>
-          <MenuItemTitle icon="user-groups">Utenti</MenuItemTitle>
-          <MenuItemAction icon="data-view" to="/edit">Gestisci</MenuItemAction>
-          <MenuItemAction icon="data-add" to="/new">Aggiungi</MenuItemAction>
-        </MenuItem>
-      </Menu>
-    }
-    footer={
-      <PageFooter email="pippo@gmail.com"/>
-    }>
-    {props.children}
-  </Page>
-
-PageTemplate.propTypes = {
-  title: PropTypes.string,
-}
-
-PageTemplate.defaultProps = {
-  title: faker.internet.email(),
-}
+  <BackofficePage>
+    <BackofficePageAside title="Backoffice" description="Gruppo Maggioli" logo={true}>
+      <BackofficeMenu>
+        <BackofficeMenuItem>
+          <BackofficeMenuItemTitle icon="user">
+            Utenti
+          </BackofficeMenuItemTitle>
+          <BackofficeMenuItemAction active={true} icon="design-component">Aggiungi</BackofficeMenuItemAction>
+          <BackofficeMenuItemAction icon="design-palette">Aggiungi</BackofficeMenuItemAction>
+        </BackofficeMenuItem>
+      </BackofficeMenu>
+      <BackofficePageAsideFooter/>
+    </BackofficePageAside>
+    <BackofficePageSection>
+      <BackofficePageSectionHeader title="Modello" description="Descrizione modello">
+        <InputText icon="data-search"/>
+      </BackofficePageSectionHeader>
+      <BackofficePageContent>
+        { props.children }
+      </BackofficePageContent>
+    </BackofficePageSection>
+  </BackofficePage>
 
 export const basicUsage = () =>
-  <PageTemplate title="Volume">
+  <PageTemplate>
+    <div>Contents here.</div>
+  </PageTemplate>
+
+export const simpleForm = () =>
+  <PageTemplate>
     <Grid template="single-column-form">
       <Grid>
-        <InputText label="Titolo" placeholder="Titolo del volume" icon="text-title" required={true} error={faker.lorem.paragraphs()}/>
-        <Textarea label="Descrizione" placeholder="Inserisci una breve descrizione del volume" icon="text-description" required={true} />
-        <InputText label="ISBN" placeholder="Un codice ISBN di 13 cifre" icon="format-isbn" required={true}/>
+        <BackofficeInputText label="Titolo" placeholder="Titolo del volume" icon="text-title" required={true} error={faker.lorem.paragraphs()}/>
+        <BackofficeTextarea label="Descrizione" placeholder="Inserisci una breve descrizione del volume" icon="text-description" required={true} />
+        <BackofficeInputText label="ISBN" placeholder="Un codice ISBN di 13 cifre" icon="format-isbn" required={true}/>
         <Grid columns="2">
           <UploadFileImage label="Copertina" placeholder="Carica un immagine JPG o JPEG"/>
         </Grid>
-        <Switch sChecked={true}>Questo libro può ricevere codici per approfondimento</Switch>
+        <BackofficeSwitch sChecked={true}>Questo libro può ricevere codici per approfondimento</BackofficeSwitch>
         <Button>Salva</Button>
       </Grid>
     </Grid>
@@ -80,7 +68,7 @@ export const basicUsage = () =>
   </PageTemplate>
 
 export const table = () =>
-  <PageTemplate title="Tabella con contenuti random">
+  <PageTemplate>
     <Table>
       <TableHeader>
         <TableHeaderCell>{faker.database.column()}</TableHeaderCell>

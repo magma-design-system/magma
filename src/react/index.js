@@ -1,5 +1,5 @@
-import BackofficeMenu from '@Layout/Menu/BackofficeMenu'
-import BackofficePage, { BackofficePageHeader, BackofficePageFooter } from '@Layout/Page/BackofficePage'
+import BackofficeMenu, { BackofficeMenuItem, BackofficeMenuItemAction, BackofficeMenuItemTitle } from '@Layout/Menu/BackofficeMenu'
+import BackofficePage, { BackofficePageAside, BackofficePageAsideFooter, BackofficePageContent, BackofficePageSection, BackofficePageSectionHeader } from '@Layout/Page/BackofficePage'
 import Card from '@Layout/Card/Card'
 import Grid from '@Layout/Grid/Grid'
 import HorizontalScroll from '@Layout/HorizontalScroll/HorizontalScroll'
@@ -60,7 +60,7 @@ import Link from '@UI/Link/Link'
 import List, { ListItem } from '@UI/List/List'
 import Modal from '@UI/Modal/Modal'
 import Note from '@UI/Note/Note'
-import Paginator from '@UI/Paginator/Paginator'
+import Paginator, { PaginatorItem } from '@UI/Paginator/Paginator'
 import Radio from '@UI/Radio/Radio'
 import Range from '@UI/Range/Range'
 import Select from '@UI/Select/Select'
@@ -81,9 +81,15 @@ export {
   BackofficeInputPhone,
   BackofficeInputText,
   BackofficeMenu,
+  BackofficeMenuItem,
+  BackofficeMenuItemAction,
+  BackofficeMenuItemTitle,
   BackofficePage,
-  BackofficePageFooter,
-  BackofficePageHeader,
+  BackofficePageAside,
+  BackofficePageAsideFooter,
+  BackofficePageContent,
+  BackofficePageSection,
+  BackofficePageSectionHeader,
   BackofficeTextarea,
   Bibliography,
   Button,
@@ -125,6 +131,7 @@ export {
   Note,
   Overline,
   Paginator,
+  PaginatorItem,
   Paragraph,
   Quote,
   Radio,

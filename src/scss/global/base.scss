@@ -2,6 +2,11 @@ $default-font-set: 'paragraph';
 $font-base-styles: $font-secondary-styles;
 $font-base-variants: $font-secondary-variants;
 
+body,
+html {
+  margin: 0;
+}
+
 body {
   background-color: color('adjust.tone');
   color: color('adjust.tone', '02');

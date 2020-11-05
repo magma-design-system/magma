@@ -13,44 +13,33 @@ import H6 from '@Typography/H6/H6'
 import Icon from '@Design/Icon/Icon'
 import Image from '@Content/Image/Image'
 
-import InputSearch from '@UI/Input/InputText'
+const logoMaggioli = require('#Assets/logo/gruppo-maggioli.svg')
 
-import logoMaggioli from '#Assets/logo/gruppo-maggioli.svg'
-
-const BackofficePageHeader = props =>
-  <Grid htmlTag="header" className="backoffice-page-content-header" template="content-header">
-    <div className="backoffice-page-content-header__info">
-      <H1>{props.children}</H1>
-      <H6 className="color-adjust-tone-08">{props.description}</H6>
-    </div>
-    {props.visible
-      ? <InputSearch onChange={props.onChange} className="backoffice-page-content-header__search" icon="data-search" placeholder="Cerca..." value={props.value}/> : ''}
+const BackofficePageAside = props =>
+  <Grid htmlTag="aside" className="backoffice-page__aside" template="backoffice-aside">
+    <header className="backoffice-page-aside-header">
+      {props.logo && <Image src={logoMaggioli} className="backoffice-page-aside-header__logo"/> }
+      <div className="backoffice-page-aside-header__contents">
+        <H4 className="backoffice-page-aside-header__title">{props.title}</H4>
+        {props.description && <Caption className="backoffice-page-aside-header__sub-title">{props.description}</Caption> }
+      </div>
+    </header>
+    {props.children}
   </Grid>
 
-BackofficePageHeader.propTypes = {
+BackofficePageAside.propTypes = {
+  logo: PropTypes.bool,
+  title: PropTypes.string,
   description: PropTypes.string,
-  onChange: PropTypes.func,
-  value: PropTypes.string,
-  visible: PropTypes.bool,
 }
 
-BackofficePageHeader.defaultProps = {
-  description: 'Entità',
-  onChange: () => {},
-  value: '',
-  visible: true,
+BackofficePageAside.defaultProps = {
+  logo: true,
+  title: 'Backoffice',
+  description: 'Gruppo Maggioli',
 }
 
-const BackofficePageLogo = props =>
-  <header className="backoffice-page-aside-header">
-    <Image src={logoMaggioli} className="backoffice-page-aside-header__logo"/>
-    <div className="backoffice-page-aside-header__contents">
-      <H4 className="backoffice-page-aside-header__title">{props.children}</H4>
-      <Caption className="backoffice-page-aside-header__sub-title">Gruppo Maggioli</Caption>
-    </div>
-  </header>
-
-const BackofficePageFooter = props =>
+const BackofficePageAsideFooter = props =>
   <footer className="backoffice-page-aside-footer">
     <div className="backoffice-page-aside-footer__user">
       <Icon name="user" className="backoffice-page-aside-footer__icon"/>
@@ -62,41 +51,62 @@ const BackofficePageFooter = props =>
     </Row>
   </footer>
 
-BackofficePageFooter.propTypes = {
+BackofficePageAsideFooter.propTypes = {
   email: PropTypes.string,
   onClickManage: PropTypes.func,
   onClickExit: PropTypes.func,
 }
 
-BackofficePageFooter.defaultProps = {
+BackofficePageAsideFooter.defaultProps = {
   email: 'email@email.com',
   onClickManage: () => {},
   onClickExit: () => {},
 }
 
-const BackofficePage = props => {
-  // const [isOpened, onClick] = useState(false)
-  return (
-    <Grid className={`backoffice-page ${props.isOpened ? 'backoffice-page--menu-opened' : ''}`} gutter="none" template="backoffice">
-      <div className="backoffice-page__close" onClick={props.onClick}>
-        <Icon name={props.isOpened ? 'action-close' : 'menu-main'}/>
-      </div>
-      <Grid htmlTag="aside" className="backoffice-page__aside" template="backoffice-aside">
-        <BackofficePageLogo className="backoffice-page__logo">
-          {props.title}
-        </BackofficePageLogo>
-        {props.menu}
-        {props.footer}
-      </Grid>
-      <div className="backoffice-page__section">
-        { props.header }
-        <div className="backoffice-page__content">
-          {props.children}
-        </div>
-      </div>
-    </Grid>
-  )
+const BackofficePageSectionHeader = props =>
+  <Grid htmlTag="header" className="backoffice-page-content-header" template="content-header">
+    <div className="backoffice-page-content-header__info">
+      <H1>{props.title}</H1>
+      <H6 className="color-adjust-tone-08">{props.description}</H6>
+    </div>
+    {props.children && <div className="backoffice-page-content-header__search">
+      {props.children}
+    </div>}
+  </Grid>
+
+BackofficePageSectionHeader.propTypes = {
+  title: PropTypes.string,
+  description: PropTypes.string,
+  onChange: PropTypes.func,
+  value: PropTypes.string,
+  visible: PropTypes.bool,
 }
+
+BackofficePageSectionHeader.defaultProps = {
+  title: 'Modello',
+  description: 'Description',
+  onChange: () => {},
+  value: '',
+  visible: true,
+}
+
+const BackofficePageSection = props =>
+  <div className="backoffice-page__section">
+    {props.children}
+  </div>
+
+const BackofficePageContent = props =>
+  <div className="backoffice-page__content">
+    {props.children}
+  </div>
+
+const BackofficePage = props =>
+  <Grid className={`backoffice-page ${props.isOpened ? 'backoffice-page--menu-opened' : ''}`} gutter="none" template="backoffice">
+    <div className="backoffice-page__close" onClick={props.onClick}>
+      <Icon name={props.isOpened ? 'action-close' : 'menu-main'}/>
+    </div>
+    {props.children}
+  </Grid>
 
 BackofficePage.propTypes = {
   header: PropTypes.any,
@@ -115,6 +125,9 @@ BackofficePage.defaultProps = {
 
 export default BackofficePage
 export {
-  BackofficePageHeader,
-  BackofficePageFooter,
+  BackofficePageAside,
+  BackofficePageAsideFooter,
+  BackofficePageContent,
+  BackofficePageSection,
+  BackofficePageSectionHeader,
 }
