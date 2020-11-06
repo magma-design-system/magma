@@ -1,18 +1,6 @@
 import React from 'react'
 import PropTypes from 'prop-types'
-import { aspectRatio } from '@Content/Image/aspectRatio'
 import './Picture.scss'
-
-function getDefaultSrc(sources) {
-  let defaultSrc = ''
-  sources.map((item, index) => {
-    if (index === 0) {
-      defaultSrc = item.srcset
-    }
-  })
-
-  return defaultSrc
-}
 
 function getMediaQuery(item) {
   console.log(item)
