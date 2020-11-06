@@ -1,11 +1,9 @@
 // APA: https://www.sciencebuddies.org/science-fair-projects/science-fair/writing-a-bibliography-apa-format
 // MLA: https://www.sciencebuddies.org/science-fair-projects/science-fair/writing-a-bibliography-mla-format
 
-import React from 'react'
+import React, { Fragment } from 'react'
 import PropTypes from 'prop-types'
 import './Bibliography.scss'
-
-import Paragraph from '@Typography/Paragraph/Paragraph'
 import Link from '@UI/Link/Link'
 
 function getMonthName(index) {
@@ -47,22 +45,22 @@ const Bibliography = props => {
   }
 
   return (
-    <div className={`bibliography ${props.className}`}>
+    <div className={`bibliography ${props.className} ${props.font}`}>
       {props.format === 'apa'
-        ? <Paragraph>
+        ? <Fragment>
           <span className="bibliography__item bibliography__item--full-name" title={fullName}>{ fullFormattedName }</span>
           <time className="bibliography__item bibliography__item--date" datetime={props.date}>{ date }</time>
           {props.title && <span className="bibliography__item bibliography__item--title">Tratto da <Link href={props.url}>{props.title}</Link>.</span>}
           {!props.title && <span className="bibliography__item bibliography__item--title">Tratto da <Link href={props.url}>{props.url}</Link>.</span>}
           {props.site && <i className="bibliography__item bibliography__item--site">{props.site}</i>}
-        </Paragraph>
-        : <Paragraph>
+        </Fragment>
+        : <Fragment>
           <span className="bibliography__item bibliography__item--full-name" title={fullName}>{ fullFormattedName }</span>
           {props.title && <span className="bibliography__item bibliography__item--title">Tratto da <Link href={props.url}>{props.title}</Link>.</span>}
           {!props.title && <span className="bibliography__item bibliography__item--title">Tratto da <Link href={props.url}>{props.url}</Link>.</span>}
           {props.site && <i className="bibliography__item bibliography__item--site">{props.site}.</i>}
           <time className="bibliography__item bibliography__item--date" datetime={props.date}>{ date }</time>
-        </Paragraph>
+        </Fragment>
       }
     </div>
   )
@@ -71,6 +69,7 @@ const Bibliography = props => {
 Bibliography.propTypes = {
   className: PropTypes.string,
   date: PropTypes.string,
+  font: PropTypes.string,
   firstName: PropTypes.string,
   format: PropTypes.string,
   lastName: PropTypes.string,
@@ -82,6 +81,7 @@ Bibliography.propTypes = {
 
 Bibliography.defaultProps = {
   className: '',
+  font: 'text-secondary text-secondary--paragraph',
   format: 'apa',
 }
 
