@@ -4,6 +4,7 @@
   bottom: 0;
   display: flex;
   left: 0;
+  padding-left: s(1);
   pointer-events: none;
   position: fixed;
   right: 0;
@@ -16,6 +17,8 @@
     margin: s(1) s(1) s(1) auto;
     max-width: 400px;
     overflow: hidden;
+    transform: translate(calc(100% + 100px), 0);
+    transition: opacity get($tween, 'slide'), transform get($tween, 'slide');
     width: 100%;
   }
 
@@ -53,6 +56,10 @@
     margin-right: s(0.5);
   }
 
+  &__close {
+    cursor: pointer;
+  }
+
   &__iframe {
     background-color: color('adjust.tone');
     border: 0;
@@ -60,8 +67,35 @@
     width: 100%;
   }
 
+  &--wide {
+    .url-preview {
+      &__window {
+        max-width: 768px;
+      }
+    }
+  }
+
+  &--centered {
+    .url-preview {
+      padding-right: s(1);
+
+      &__window {
+        margin: s(1) auto s(1) auto;
+        opacity: 0;
+        transform: translate(0, 20%);
+      }
+    }
+  }
+
   &--active {
-    background-color: color('adjust.tone', '01', 0.8);
+    background-color: color('adjust.tone', '01', 0.1);
     pointer-events: initial;
+
+    .url-preview {
+      &__window {
+        opacity: 1;
+        transform: translate(0, 0);
+      }
+    }
   }
 }

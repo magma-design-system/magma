@@ -9,7 +9,6 @@ export Icon from '@Design/Icon/Icon'
 
 // export Author from '@Content/Author/Author'
 // export Picture from '@Content/Picture/Picture'
-// export UrlPreview from '@Content/UrlPreview/UrlPreview'
 
 export Avatar from '@Content/Avatar/Avatar'
 export Bibliography from '@Content/Bibliography/Bibliography'
@@ -18,6 +17,7 @@ export Image from '@Content/Image/Image'
 export InfoBar from '@Content/InfoBar/InfoBar'
 export Kpi from '@Content/Kpi/Kpi'
 export Quote from '@Content/Quote/Quote'
+export UrlPreview from '@Content/UrlPreview/UrlPreview'
 export Usage, { UsageDo, UsageDont } from '@Content/Usage/Usage'
 
 export Caption from '@Typography/Caption/Caption'
@@ -45,6 +45,7 @@ export BackofficeInputPassword from '@UI/Input/BackofficeInputPassword'
 export BackofficeInputPhone from '@UI/Input/BackofficeInputPhone'
 export BackofficeInputText from '@UI/Input/BackofficeInputText'
 export BackofficeTextarea from '@UI/Textarea/BackofficeTextarea'
+
 export Button from '@UI/Button/Button'
 export Checkbox from '@UI/Checkbox/Checkbox'
 export InlineCode from '@UI/InlineCode/InlineCode'

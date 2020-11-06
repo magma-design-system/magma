@@ -32,25 +32,31 @@ UrlPreviewHeader.propTypes = {
 }
 
 const UrlPreview = props =>
-  <div className={`url-preview url-preview--active ${props.className} ${props.shadow ? props.shadow : ''}`}>
-    <div className="url-preview__window">
+  <div className={`url-preview ${props.className} ${props.active ? 'url-preview--active' : ''} ${props.wide ? 'url-preview--wide' : ''} ${props.centered ? 'url-preview--centered' : ''}`}>
+    <div className={`url-preview__window ${props.shadow ? props.shadow : ''}`}>
       <UrlPreviewHeader url={props.url}/>
       <iframe className="url-preview__iframe" src={props.url}></iframe>
     </div>
   </div>
 
 UrlPreview.propTypes = {
+  active: PropTypes.bool,
+  centered: PropTypes.bool,
   className: PropTypes.string,
   distractionFree: PropTypes.bool,
   shadow: PropTypes.string,
   url: PropTypes.string,
+  wide: PropTypes.bool,
 }
 
 UrlPreview.defaultProps = {
+  active: false,
+  centered: false,
   className: '',
   distractionFree: false,
   shadow: 'box-shadow-soft',
   url: 'https://www.maggioli.com',
+  wide: false,
 }
 
 export default UrlPreview

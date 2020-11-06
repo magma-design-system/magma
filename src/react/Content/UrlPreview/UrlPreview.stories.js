@@ -1,8 +1,7 @@
-import React, { Fragment, useState } from 'react'
+import React from 'react'
 import faker from 'faker'
 
 import UrlPreview from '@Content/UrlPreview/UrlPreview'
-import Paragraph from '@Typography/Paragraph/Paragraph'
 
 faker.locale = 'it'
 
@@ -11,41 +10,14 @@ export default {
   component: UrlPreview,
 }
 
-export const basicUsage = () => {
-  const [show, toggleModal] = useState(false)
-  const toggle = () => {
-    toggleModal(!show)
-  }
-  return (
-    <Fragment>
-      <Paragraph>In questo articolo viene citato un famoso articolo di Christian Jensen su <a onClick={() => { toggle() }}>come progettare i Design Principle</a>.</Paragraph>
-      <UrlPreview show={show} onClose={() => { toggle() }} url="https://polaris.shopify.com/"/>
-    </Fragment>
-  )
-}
+export const basicUsage = () =>
+  <UrlPreview active={true} url="https://stylable.io/"/>
 
-export const pipp = () => {
-  const [show, toggleModal] = useState(false)
-  const toggle = () => {
-    toggleModal(!show)
-  }
-  return (
-    <Fragment>
-      <Paragraph>In questo articolo viene citato un famoso articolo di Christian Jensen su <a onClick={() => { toggle() }}>come progettare i Design Principle</a>.</Paragraph>
-      <UrlPreview show={show} onClose={() => { toggle() }} url="https://stories.freepik.com/search"/>
-    </Fragment>
-  )
-}
+export const wide = () =>
+  <UrlPreview active={true} wide={true} url="https://stylable.io/"/>
 
-export const headers = () => {
-  const [show, toggleModal] = useState(false)
-  const toggle = () => {
-    toggleModal(!show)
-  }
-  return (
-    <Fragment>
-      <Paragraph>In questo articolo viene citato un famoso articolo di Christian Jensen su <a onClick={() => { toggle() }}>come progettare i Design Principle</a>.</Paragraph>
-      <UrlPreview show={show} onClose={() => { toggle() }} url="https://uxdesign.cc/the-cognitive-overload-happening-on-your-screen-right-now-deee2a913393"/>
-    </Fragment>
-  )
-}
+export const centered = () =>
+  <UrlPreview active={true} wide={true} centered={true} url="https://stylable.io/"/>
+
+export const customShadow = () =>
+  <UrlPreview active={true} wide={true} centered={true} shadow="box-shadow-strong" url="https://stylable.io/"/>
