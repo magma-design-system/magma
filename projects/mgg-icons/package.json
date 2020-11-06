@@ -27,6 +27,8 @@
     "/build/fonts/**/*.scss",
     "/build/fonts/**/*.css",
     "/build/fonts/**/*.html",
+    "/build/fonts/**/*.js",
+    "/build/fonts/**/*.ts",
     "/src/*.json"
   ],
   "keywords": [
