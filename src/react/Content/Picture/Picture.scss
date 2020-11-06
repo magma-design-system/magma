@@ -4,19 +4,12 @@
   position: relative;
   width: 100%;
 
-  &__element {
+  &__image {
     height: auto;
     width: 100%;
+  }
 
-    &--aspect-ratio {
-      bottom: 0;
-      height: 100%;
-      left: 50%;
-      position: absolute;
-      right: 0;
-      top: 0;
-      transform: translate(-50%, 0);
-      width: auto;
-    }
+  &__source {
+    display: none;
   }
 }

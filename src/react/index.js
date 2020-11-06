@@ -7,8 +7,6 @@ export Row from '@Layout/Row/Row'
 
 export Icon from '@Design/Icon/Icon'
 
-// export Picture from '@Content/Picture/Picture'
-
 export Author from '@Content/Author/Author'
 export Avatar from '@Content/Avatar/Avatar'
 export Bibliography from '@Content/Bibliography/Bibliography'
@@ -16,6 +14,7 @@ export CodeBlock from '@Content/CodeBlock/CodeBlock'
 export Image from '@Content/Image/Image'
 export InfoBar from '@Content/InfoBar/InfoBar'
 export Kpi from '@Content/Kpi/Kpi'
+export Picture from '@Content/Picture/Picture'
 export Quote from '@Content/Quote/Quote'
 export UrlPreview from '@Content/UrlPreview/UrlPreview'
 export Usage, { UsageDo, UsageDont } from '@Content/Usage/Usage'

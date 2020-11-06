@@ -11,7 +11,7 @@ export default {
   component: Accordion,
 }
 
-export const defaultUse = () =>
+export const defaultUsage = () =>
   <Accordion>
     <AccordionItem title={faker.lorem.sentence()}>
       <Paragraph>{faker.lorem.paragraph()}</Paragraph>

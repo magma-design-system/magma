@@ -26,7 +26,7 @@ export default {
   component: HorizontalScroll,
 }
 
-export const defaultUse = () =>
+export const defaultUsage = () =>
   <HorizontalScroll>
     <WideElement/>
     <WideElement/>

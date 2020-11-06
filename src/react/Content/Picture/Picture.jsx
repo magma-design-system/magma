@@ -1,8 +1,7 @@
 import React from 'react'
 import PropTypes from 'prop-types'
-
-import './Picture.scss'
 import { aspectRatio } from '@Content/Image/aspectRatio'
+import './Picture.scss'
 
 function getDefaultSrc(sources) {
   let defaultSrc = ''
@@ -15,22 +14,35 @@ function getDefaultSrc(sources) {
   return defaultSrc
 }
 
+function getMediaQuery(item) {
+  console.log(item)
+  if ({}.hasOwnProperty.call(item, 'minWidth')) {
+    return `(min-width: ${item.minWidth}px)`
+  }
+
+  if ({}.hasOwnProperty.call(item, 'maxWidth')) {
+    return `(max-width: ${item.maxWidth}px)`
+  }
+
+  return '()'
+}
+
 const Picture = props =>
-  <picture className={`picture ${props.className}`} style={props.aspectRatio ? aspectRatio(props.aspectRatio) : {} }>
+  <picture className={`picture ${props.className}`}>
     {
-      props.sources.map((item, index) =>
-        <source key={index} media={item.media} srcSet={item.srcset} />,
+      props.sources.reverse().map((item, index) =>
+        <source className="picture__source" key={index} media={getMediaQuery(item)} srcSet={item.srcset} />,
       )
     }
-    <img className="picture__image" src={getDefaultSrc(props.sources)} loading={props.loading} alt={props.alt} />
+    <img className="picture__image" src={props.src} loading={props.loading} alt={props.alt} />
   </picture>
 
 Picture.propTypes = {
-  aspectRatio: PropTypes.string,
   alt: PropTypes.string,
   className: PropTypes.string,
   loading: PropTypes.string,
   sources: PropTypes.array,
+  src: PropTypes.string,
 }
 
 Picture.defaultProps = {
