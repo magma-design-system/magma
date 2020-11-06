@@ -26,8 +26,15 @@ function getMonthName(index) {
 }
 
 const Bibliography = props => {
-  const fullName = `${props.firstName ? props.firstName : ''}${props.lastName ? ' ' + props.lastName : ''}`
-  let fullFormattedName = `${props.lastName ? props.lastName : ''}${props.firstName ? ', ' + props.firstName.substring(0, props.firstName.length - props.firstName.length + 1) + '.' : ''}`
+  let fullName = `${props.firstName ? props.firstName : ''}${props.lastName ? ' ' + props.lastName : ''}`
+  let { firstName, lastName } = props
+
+  if (props.fullName) {
+    firstName = props.fullName.split(' ')[0]
+    lastName = props.fullName.split(' ')[props.fullName.split(' ').length - 1]
+    fullName = `${firstName} ${lastName}`
+  }
+  let fullFormattedName = `${lastName}${firstName ? ', ' + firstName.substring(0, firstName.length - firstName.length + 1) + '.' : ''}`
 
   let date = ''
   if (props.date) {
@@ -36,7 +43,7 @@ const Bibliography = props => {
   }
 
   if (props.format === 'mla') {
-    fullFormattedName = `${props.lastName ? props.lastName : ''}${props.firstName ? ', ' + props.firstName + ':' : ''}`
+    fullFormattedName = `${lastName}${firstName ? ', ' + firstName + ':' : ''}`
 
     if (props.date) {
       const dateData = new Date(props.date)
@@ -69,9 +76,10 @@ const Bibliography = props => {
 Bibliography.propTypes = {
   className: PropTypes.string,
   date: PropTypes.string,
-  font: PropTypes.string,
   firstName: PropTypes.string,
+  font: PropTypes.string,
   format: PropTypes.string,
+  fullName: PropTypes.string,
   lastName: PropTypes.string,
   site: PropTypes.string,
   title: PropTypes.string,
@@ -81,8 +89,11 @@ Bibliography.propTypes = {
 
 Bibliography.defaultProps = {
   className: '',
+  firstName: '',
   font: 'text-secondary text-secondary--paragraph',
   format: 'apa',
+  fullName: '',
+  lastName: '',
 }
 
 export default Bibliography

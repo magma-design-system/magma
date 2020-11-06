@@ -5,6 +5,7 @@ import { MDXProvider } from '@mdx-js/react'
 import './Layout.scss'
 import { createMenuList, findMenuItem, getPageData, createMenuItemList, createHorizontalMenuList } from '@Gatsby/Pattern/Navigation/menu'
 
+import Author from '@Content/Author/Author'
 import Bibliography from '@Content/Bibliography/Bibliography'
 import Button from '@UI/Button/Button'
 import Code from '@UI/InlineCode/InlineCode'
@@ -155,9 +156,12 @@ const Layout = ({ children }) => {
                     {children}
                   </MDXProvider>
                 </div>
+                { page.frontmatter.source && page.frontmatter.author && <Hr/> }
                 {/* page.frontmatter.source && <Bibliography format="mla" title={page.frontmatter.source.title} site={page.frontmatter.source.site} url={page.frontmatter.source.url}/> */}
-                { page.frontmatter.source && <H1>Source rilevato!!!</H1> }
-                { page.frontmatter.author && <H1>Autore rilevato!!!</H1> }
+                {/* page.frontmatter.source && <Bibliography firstName={page.frontmatter.source[0].author} lastName={page.frontmatter.source[0].author.split(' ')[page.frontmatter.source[0].author.split(' ').length - 1]} url={page.frontmatter.source[0].url}/> */}
+                { page.frontmatter.source && <Bibliography title={page.frontmatter.source[0].title} fullName={page.frontmatter.source[0].author} url={page.frontmatter.source[0].url}/> }
+                { page.frontmatter.source && console.log(page.frontmatter.source) }
+                { page.frontmatter.author && <Author gravatar="">Autore rilevato!!!</Author> }
                 <Hr/>
                 <footer className="ds-layout__footer">
                   <Paragraph><b>Design System</b> sviluppato dal reparto R&D.</Paragraph>

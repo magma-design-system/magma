@@ -19,5 +19,8 @@ export const formatMLA = () =>
 export const formatMLAMinimal = () =>
   <Bibliography format="mla" title="My name is Giovanni Giorgio, but everybody calls me Giorgio" site="Daft Punk - Random Access Memories" url="https://www.daftpunk.com/collections/shop-by-product/products/beach-towel"/>
 
+export const fullName = () =>
+  <Bibliography fullName="Giorgio Moroder" url="https://www.daftpunk.com/collections/shop-by-product/products/beach-towel"/>
+
 export const font = () =>
   <Bibliography font="text-secondary text-secondary--detail" format="mla" title="My name is Giovanni Giorgio, but everybody calls me Giorgio" site="Daft Punk - Random Access Memories" url="https://www.daftpunk.com/collections/shop-by-product/products/beach-towel"/>
