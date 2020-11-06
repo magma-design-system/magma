@@ -1,8 +1,11 @@
 import React from 'react'
 import faker from 'faker'
-
+import Table, { TableHeader, TableHeaderCell, TableBody, TableRow, TableCell } from '@UI/Table/Table'
 import Row from '@Layout/Row/Row'
 import Button from '@UI/Button/Button'
+import InlineCode from '@UI/InlineCode/InlineCode'
+import sizesData from '+Tokens/css-tokens/sizes.json'
+const sizes = Object.keys(sizesData.size)
 faker.locale = 'it'
 
 export default {
@@ -13,38 +16,37 @@ export default {
 const word1 = faker.lorem.word()
 const word2 = faker.lorem.word()
 
-export const gutterXLarge = () =>
-  <Row gutter="xlarge">
-    <Button>{word1}</Button>
-    <Button>{word2}</Button>
-  </Row>
-
-export const gutterLarge = () =>
-  <Row gutter="large">
-    <Button>{word1}</Button>
-    <Button>{word2}</Button>
-  </Row>
-
-export const gutterNormal = () =>
+export const defaultUsage = () =>
   <Row>
     <Button>{word1}</Button>
     <Button>{word2}</Button>
   </Row>
 
-export const gutterSmall = () =>
-  <Row gutter="small">
-    <Button>{word1}</Button>
-    <Button>{word2}</Button>
-  </Row>
-
-export const gutterXSmall = () =>
-  <Row gutter="xsmall">
-    <Button>{word1}</Button>
-    <Button>{word2}</Button>
-  </Row>
-
 export const lastToRight = () =>
-  <Row gutter="xsmall" lastToRight={true}>
+  <Row lastToRight={true}>
     <Button>{word1}</Button>
     <Button>{word2}</Button>
   </Row>
+
+export const gutterSizes = () =>
+  <Table interactive={true}>
+    <TableHeader>
+      <TableHeaderCell>Preview</TableHeaderCell>
+      <TableHeaderCell>Size</TableHeaderCell>
+    </TableHeader>
+    <TableBody>
+      {sizes.map(key =>
+        <TableRow>
+          <TableCell>
+            <Row key={key} gutter={key}>
+              <Button>{word1}</Button>
+              <Button>{word2}</Button>
+            </Row>
+          </TableCell>
+          <TableCell>
+            <InlineCode>{`${key}`}</InlineCode>
+          </TableCell>
+        </TableRow>,
+      )}
+    </TableBody>
+  </Table>
