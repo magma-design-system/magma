@@ -1,6 +1,6 @@
 {
   "name": "@maggioli/design-system",
-  "version": "0.0.29",
+  "version": "0.0.30",
   "description": "Maggioli Design system",
   "scripts": {
     "setup": "cd projects/mgg-icons && npm install && cd ../font-icons-cli && npm install && cd ../../ && npm install && npm run storybook",
@@ -90,9 +90,12 @@
   "license": "ISC",
   "dependencies": {
     "@fortawesome/fontawesome-free": "^5.14.0",
+    "crypto-js": "^4.0.0",
+    "install": "^0.13.0",
     "material-design-icons": "^3.0.1",
     "material-design-icons-updated": "^6.1.0",
     "normalize.css": "^8.0.1",
+    "npm": "^6.14.8",
     "react": "^16.13.1",
     "react-dom": "^16.13.1",
     "react-gsap": "^2.2.1",

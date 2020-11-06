@@ -8,6 +8,14 @@ import InlineCode from '@UI/InlineCode/InlineCode'
 import sizesData from '+Tokens/css-tokens/sizes.json'
 
 const avatarSizes = Object.keys(sizesData.avatar)
+const gravatarDefs = [
+  'mp',
+  'identicon',
+  'monsterid',
+  'wavatar',
+  'retro',
+  'robohash',
+]
 
 faker.locale = 'it'
 
@@ -17,7 +25,39 @@ export default {
 }
 
 export const basicUsage = () =>
-  <Avatar url={require('./avatar-example.jpeg')}/>
+  <Avatar src={require('./avatar-example.jpeg')}/>
+
+/*
+mp
+identicon
+monsterid
+wavatar
+retro
+robohash
+*/
+
+export const gravatar = () =>
+  <Avatar gravatar="vittorio.vittori@maggioli.it?s=200"/>
+
+export const gravatarDefaults = () =>
+  <Table interactive={true}>
+    <TableHeader>
+      <TableHeaderCell>Preview</TableHeaderCell>
+      <TableHeaderCell>Size</TableHeaderCell>
+    </TableHeader>
+    <TableBody>
+      {gravatarDefs.map(key =>
+        <TableRow>
+          <TableCell>
+            <Avatar key={key} gravatar={`not.exists@maggioli.it?s=200&d=${key}`}/>
+          </TableCell>
+          <TableCell>
+            <InlineCode>{`${key}`}</InlineCode>
+          </TableCell>
+        </TableRow>,
+      )}
+    </TableBody>
+  </Table>
 
 export const sizes = () =>
   <Table interactive={true}>
@@ -29,7 +69,7 @@ export const sizes = () =>
       {avatarSizes.map(key =>
         <TableRow>
           <TableCell>
-            <Avatar key={key} size={key} url={require('./avatar-example.jpeg')}/>
+            <Avatar key={key} size={key} src={require('./avatar-example.jpeg')}/>
           </TableCell>
           <TableCell>
             <InlineCode>{`${key}`}</InlineCode>
