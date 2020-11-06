@@ -7,9 +7,9 @@ export Row from '@Layout/Row/Row'
 
 export Icon from '@Design/Icon/Icon'
 
-// export Author from '@Content/Author/Author'
 // export Picture from '@Content/Picture/Picture'
 
+export Author from '@Content/Author/Author'
 export Avatar from '@Content/Avatar/Avatar'
 export Bibliography from '@Content/Bibliography/Bibliography'
 export CodeBlock from '@Content/CodeBlock/CodeBlock'
