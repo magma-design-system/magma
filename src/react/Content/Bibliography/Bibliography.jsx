@@ -4,7 +4,7 @@
 import React, { Fragment } from 'react'
 import PropTypes from 'prop-types'
 import './Bibliography.scss'
-import Link from '@UI/Link/Link'
+import ExternalLink from '@UI/ExternalLink/ExternalLink'
 
 function getMonthName(index) {
   const names = [
@@ -57,14 +57,14 @@ const Bibliography = props => {
         ? <Fragment>
           <span className="bibliography__item bibliography__item--full-name" title={fullName}>{ fullFormattedName }</span>
           <time className="bibliography__item bibliography__item--date" datetime={props.date}>{ date }</time>
-          {props.title && <span className="bibliography__item bibliography__item--title">Tratto da <Link href={props.url}>{props.title}</Link>.</span>}
-          {!props.title && <span className="bibliography__item bibliography__item--title">Tratto da <Link href={props.url}>{props.url}</Link>.</span>}
+          {props.title && <span className="bibliography__item bibliography__item--title">Tratto da <ExternalLink href={props.url}>{props.title}</ExternalLink>.</span>}
+          {!props.title && <span className="bibliography__item bibliography__item--title">Tratto da <ExternalLink href={props.url}>{props.url}</ExternalLink>.</span>}
           {props.site && <i className="bibliography__item bibliography__item--site">{props.site}</i>}
         </Fragment>
         : <Fragment>
           <span className="bibliography__item bibliography__item--full-name" title={fullName}>{ fullFormattedName }</span>
-          {props.title && <span className="bibliography__item bibliography__item--title">Tratto da <Link href={props.url}>{props.title}</Link>.</span>}
-          {!props.title && <span className="bibliography__item bibliography__item--title">Tratto da <Link href={props.url}>{props.url}</Link>.</span>}
+          {props.title && <span className="bibliography__item bibliography__item--title">Tratto da <ExternalLink href={props.url}>{props.title}</ExternalLink>.</span>}
+          {!props.title && <span className="bibliography__item bibliography__item--title">Tratto da <ExternalLink href={props.url}>{props.url}</ExternalLink>.</span>}
           {props.site && <i className="bibliography__item bibliography__item--site">{props.site}.</i>}
           <time className="bibliography__item bibliography__item--date" datetime={props.date}>{ date }</time>
         </Fragment>

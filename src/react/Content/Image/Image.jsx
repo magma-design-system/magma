@@ -2,14 +2,14 @@ import React, { Fragment } from 'react'
 import PropTypes from 'prop-types'
 
 import './Image.scss'
-import Link from '@UI/Link/Link'
+import ExternalLink from '@UI/ExternalLink/ExternalLink'
 
 import { aspectRatioPaddingTop } from '@Content/Image/aspectRatio'
 
 const ImageSource = props =>
   <figcaption className="image__source text-secondary text-secondary--detail">
     { props.url
-      ? <Link href={props.url}>{ props.title ? props.title : props.url }</Link>
+      ? <ExternalLink href={props.url}>{ props.title ? props.title : props.url }</ExternalLink>
       : <div>{props.title}</div>
     }
   </figcaption>
