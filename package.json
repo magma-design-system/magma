@@ -1,6 +1,6 @@
 {
   "name": "@maggioli/design-system",
-  "version": "0.0.31",
+  "version": "0.0.32",
   "description": "Maggioli Design system",
   "scripts": {
     "setup": "cd projects/mgg-icons && npm install && cd ../font-icons-cli && npm install && cd ../../ && npm install && npm run storybook",
