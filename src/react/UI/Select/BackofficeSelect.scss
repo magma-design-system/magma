@@ -75,9 +75,16 @@ $ease: get($tween, 'slide');
   }
 
   &__field-icon {
+    background-color: color('brand.maggioli', '05');
+    border-radius: s(1.5);
+    color: color('adjust.tone');
+    height: s(1.5);
     position: absolute;
     right: s(1.5);
     top: 50%;
+    transform: translate(0, -50%);
+    transition: background-color get($tween, 'slide'), color get($tween, 'slide');
+    width: s(1.5);
   }
 
   &__field {
@@ -155,6 +162,12 @@ $ease: get($tween, 'slide');
         line-height: $top-size;
         top: $top-size;
         width: s(2);
+      }
+
+      &__field-icon {
+        background-color: transparent;
+        color: color('brand.maggioli', '05');
+        transition: background-color get($tween, 'slide') 0.2s, color get($tween, 'slide') 0.2s;
       }
 
       &__icon {
