@@ -1,6 +1,7 @@
 export BackofficeMenu, { BackofficeMenuItem, BackofficeMenuItemAction, BackofficeMenuItemTitle } from '@Layout/Menu/BackofficeMenu'
 export BackofficePage, { BackofficePageAside, BackofficePageAsideFooter, BackofficePageContent, BackofficePageSection, BackofficePageSectionHeader } from '@Layout/Page/BackofficePage'
 export Card from '@Layout/Card/Card'
+export Form from '@Layout/Form/Form'
 export Grid from '@Layout/Grid/Grid'
 export HorizontalScroll from '@Layout/HorizontalScroll/HorizontalScroll'
 export Row from '@Layout/Row/Row'
