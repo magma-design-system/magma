@@ -1,4 +1,4 @@
-import React, { Fragment } from 'react'
+import React from 'react'
 import faker from 'faker'
 import Hr from '@UI/Hr/Hr'
 import Detail from '@Typography/Detail/Detail'

@@ -2,7 +2,6 @@ import React from 'react'
 import faker from 'faker'
 
 import PackageInfo from '@Content/PackageInfo/PackageInfo'
-import randomIcon from '@Design/Icon/faker'
 
 faker.locale = 'it'
 
