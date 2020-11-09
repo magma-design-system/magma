@@ -1,7 +1,7 @@
 {
   "name": "@maggioli-common/font-icons-cli",
   "version": "0.0.14",
-  "description": "Font icons CLI, part of Maggioli design system",
+  "description": "Font icons CLI, part of Maggioli Design System",
   "publishConfig": {
     "registry": "http://nexus.maggioli.it:8081/repository/npm/"
   },
@@ -10,9 +10,8 @@
     "url": "https://git.maggioli.it/ricerca-sviluppo-new-media/design-system.git"
   },
   "author": {
-    "name": "Vittorio Vittori",
-    "email": "vittorio.vittori@maggioli.it",
-    "url": "http://vit.to"
+    "name": "Gioele Masini",
+    "email": "gioele.masini@maggioli.it"
   },
   "contributors": [
     {

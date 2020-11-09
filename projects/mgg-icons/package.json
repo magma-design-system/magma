@@ -51,7 +51,8 @@
     },
     {
       "name": "Vittorio Vittori",
-      "email": "vittorio.vittori@maggioli.it"
+      "email": "vittorio.vittori@maggioli.it",
+      "role": "Author"
     }
   ],
   "license": "ISC",
