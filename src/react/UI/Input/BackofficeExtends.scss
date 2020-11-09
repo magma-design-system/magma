@@ -51,6 +51,7 @@
 %field-focused {
   background-color: color('adjust.tone');
   box-shadow: get($shadow, 'tiny');
+  color: color('adjust.tone', '05');
 }
 
 %required {

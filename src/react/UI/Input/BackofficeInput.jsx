@@ -7,7 +7,7 @@ import Detail from '@Typography/Detail/Detail'
 import LabelCaption from '@Typography/LabelCaption/LabelCaption'
 
 const BackofficeInput = props =>
-  <label className={`backoffice-input ${props.value ? 'backoffice-input--filled' : ''} ${props.icon !== '' ? 'backoffice-input--has-icon' : ''} ${props.error ? 'backoffice-input--has-errors' : ''} ${props.className}`}>
+  <label className={`backoffice-input ${props.value ? 'backoffice-input--filled' : ''} ${props.icon !== '' ? 'backoffice-input--has-icon' : ''} ${props.error ? 'backoffice-input--has-errors' : ''} ${props.placeholder ? '' : 'backoffice-input--no-placeholder'} ${props.className}`}>
     <div className="backoffice-input__content">
       {props.label &&
         <H3 htmlTag="div" className="backoffice-input__label">
@@ -44,6 +44,7 @@ BackofficeInput.propTypes = {
   icon: PropTypes.string,
   iconClassName: PropTypes.string,
   label: PropTypes.string,
+  placeholder: PropTypes.string,
   required: PropTypes.bool,
   theme: PropTypes.string,
   value: PropTypes.string,

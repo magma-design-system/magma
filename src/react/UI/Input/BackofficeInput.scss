@@ -167,6 +167,14 @@ $ease: get($tween, 'slide');
     }
   }
 
+  &--no-placeholder {
+    .backoffice-input {
+      &__label {
+        transform: translate(0, s(0.5));
+      }
+    }
+  }
+
   &--has-icon {
     .backoffice-input {
       &__label {

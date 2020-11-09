@@ -12,9 +12,9 @@ export default {
 
 export const basicUsage = () =>
   <Grid gutter="small">
-    <BackofficeSelect label="Prova">
+    <BackofficeSelect label={faker.lorem.words()}>
       <BackofficeSelectOption value="1">{faker.lorem.word()}</BackofficeSelectOption>
-      <BackofficeSelectOption value="2">{2}</BackofficeSelectOption>
+      <BackofficeSelectOption value="2">{faker.lorem.word()}</BackofficeSelectOption>
       <BackofficeSelectOption value="3">{faker.lorem.word()}</BackofficeSelectOption>
       <BackofficeSelectOption value="4">{faker.lorem.word()}</BackofficeSelectOption>
       <BackofficeSelectOption value="5">{faker.lorem.word()}</BackofficeSelectOption>
