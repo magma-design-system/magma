@@ -1,3 +1,9 @@
-.grid--tmpl-package-info {
-  grid-template-columns: auto 1fr;
+@import '~Sass/import-framework';
+
+.grid--tmpl-package-info-authors {
+  grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+
+  @include media ('mobile') {
+    grid-template-columns: 1fr;
+  }
 }

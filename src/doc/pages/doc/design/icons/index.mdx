@@ -1,18 +1,15 @@
 ---
 title: 'Icone'
 date: '2020-09-25'
+author:
+  - vittorio.vittori@maggioli.it
 ---
 
 import packageData from '£Project/mgg-icons/package.json'
 
-Le icone che utilizziamo si chiamano `mgg-icons`, al momento sono incluse dentro al [repo del Design System][ds] qui:
+Il package `mgg-icons` è una font icon library basata su [Google Material Design Icons][gmdi] e [Material Design Icons][mdi].
 
-<Table>
-  <TableBody>
-    <TableCell>versione</TableCell>
-    <TableCell>Pipo</TableCell>
-  </TableBody>
-</Table>
+<PackageInfo package={packageData}/>
 
 ---
 
@@ -22,22 +19,10 @@ Per installare il pacchetto `mgg-icons` è necessario eseguire questo comando da
 npm install --save @maggioli-common/mgg-icons
 ```
 
-Questo comando intalla dentro le dipendenze node questi file:
+Questo comando installa dentro le dipendenze node questi file:
 
-```bash
-@maggioli-common/mgg-icons/build/fonts
-
-index.html
-mgg-icons.css
-mgg-icons.eot
-mgg-icons.scss
-mgg-icons.svg
-mgg-icons.symbol.svg
-mgg-icons.ttf
-mgg-icons.woff
-mgg-icons.woff2
-symbol.html
-unicode.html
+```javascript
+import '@maggioli-common/mgg-icons/build/fonts/mgg-icons.css'
 ```
 
 Se installato nel posto giusto, il design system dovrebbe riuscire ad includere automaticamente il set di icone per [Storybook][storybook].
@@ -52,3 +37,5 @@ Una volta installato il pacchetto
 
 [ds]: https://git.maggioli.it/ricerca-sviluppo-new-media/design-system
 [storybook]: http://localhost:7177/iframe.html?id=design-icon--dictionary
+[gmdi]: https://material.io/resources/icons/
+[mdi]: https://materialdesignicons.com/

@@ -1,20 +1,35 @@
-import React from 'react'
+import React, { Fragment } from 'react'
 import PropTypes from 'prop-types'
 import './Button.scss'
 import Icon from '@Design/Icon/Icon'
 
 const Button = props =>
-  <button
-    className={`button ${props.className} ${props.variant ? 'button--' + props.variant : ''} ${props.small ? 'button--small' : ''} ${props.round ? 'button--round' : ''} ${props.disabled ? 'button--disabled' : ''} ${props.outline ? 'button--outline' : ''}`.trim()}
-    onClick={() => props.onClick()}
-    disabled={props.disabled ? 'disabled' : ''}
-    type={props.type}>
-    {props.icon && <Icon className='button__icon' name={props.icon}/>}
-    { props.children && <div className={`button__text ${props.textClassName}`}>
-      { props.children }
-    </div>
+  <Fragment>
+    {!props.href
+      ? <button
+        className={`button ${props.className} ${props.variant ? 'button--' + props.variant : ''} ${props.small ? 'button--small' : ''} ${props.round ? 'button--round' : ''} ${props.disabled ? 'button--disabled' : ''} ${props.outline ? 'button--outline' : ''}`.trim()}
+        onClick={() => props.onClick()}
+        disabled={props.disabled ? 'disabled' : ''}
+        type={props.type}>
+        {props.icon && <Icon className='button__icon' name={props.icon}/>}
+        { props.children && <div className={`button__text ${props.textClassName}`}>
+          { props.children }
+        </div>
+        }
+      </button>
+      : <a
+        className={`button ${props.className} ${props.variant ? 'button--' + props.variant : ''} ${props.small ? 'button--small' : ''} ${props.round ? 'button--round' : ''} ${props.disabled ? 'button--disabled' : ''} ${props.outline ? 'button--outline' : ''}`.trim()}
+        onClick={() => props.onClick()}
+        target="_blank"
+        href={props.href}>
+        {props.icon && <Icon className='button__icon' name={props.icon}/>}
+        { props.children && <div className={`button__text ${props.textClassName}`}>
+          { props.children }
+        </div>
+        }
+      </a>
     }
-  </button>
+  </Fragment>
 
 Button.propTypes = {
   className: PropTypes.string,
@@ -26,6 +41,7 @@ Button.propTypes = {
   outline: PropTypes.bool,
   round: PropTypes.bool,
   small: PropTypes.bool,
+  href: PropTypes.string,
   textClassName: PropTypes.string,
   variant: PropTypes.string,
 }

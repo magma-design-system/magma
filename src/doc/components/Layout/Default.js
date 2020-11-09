@@ -12,6 +12,7 @@ import BibliographyMLA from '@Content/Bibliography/BibliographyMLA'
 import Button from '@UI/Button/Button'
 import Code from '@UI/InlineCode/InlineCode'
 import CodeBlock from '@Content/CodeBlock/CodeBlock'
+import PackageInfo from '@Content/PackageInfo/PackageInfo'
 import Grid from '@Layout/Grid/Grid'
 import InfoBar from '@Content/InfoBar/InfoBar'
 import H1 from '@Typography/H1/H1'
@@ -61,6 +62,7 @@ const shortcodes = {
   ExternalLink,
   List,
   ListItem,
+  PackageInfo,
   Paragraph,
   Quote,
   Table,

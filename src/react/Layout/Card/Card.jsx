@@ -4,24 +4,25 @@ import Grid from '@Layout/Grid/Grid'
 import './Card.scss'
 
 const Card = props =>
-  <Grid {...props} className={`card ${props.className}`}>
+  <Grid {...props} className={`card ${props.className} ${props.shadow ? props.shadow : ''}`}>
     {props.children}
   </Grid>
 
 Card.propTypes = {
   align: PropTypes.string,
   className: PropTypes.string,
-  fit: PropTypes.bool,
   columns: PropTypes.string,
+  fit: PropTypes.bool,
   gutter: PropTypes.string,
+  shadow: PropTypes.string,
   template: PropTypes.string,
 }
 
 Card.defaultProps = {
-  className: 'box-shadow-soft',
+  className: '',
   columns: '0',
   gutter: 'xsmall',
-  template: '',
+  shadow: 'box-shadow-soft',
 }
 
 export default Card

@@ -1,12 +1,13 @@
 @import '~Sass/import-framework';
 
+$border-size: 2px;
 $ease: get($tween, 'hover');
 $border-radius: get($radius, 'small');
 
 .button {
 
   --background: #{color('brand.maggioli', '04')};
-  --border: 1px solid transparent;
+  --border: 2px solid transparent;
   --color: #{color('adjust.tone')};
 
   align-items: center;
@@ -15,7 +16,7 @@ $border-radius: get($radius, 'small');
   border-radius: $border-radius;
   color: var(--color);
   cursor: pointer;
-  display: inline-flex;
+  display: flex;
   font-family: inherit;
   height: get($form, 'input-height');
   justify-content: center;
@@ -61,7 +62,7 @@ $border-radius: get($radius, 'small');
   &--outline {
 
     --background: transparent;
-    --border: 1px solid #{color('adjust.tone', '03')};
+    --border: #{$border-size} solid #{color('adjust.tone', '03')};
     --color: #{color('adjust.tone', '03')};
   }
 
@@ -111,7 +112,7 @@ $border-radius: get($radius, 'small');
   .button--#{$modifier}-outline {
 
     --background: transparent;
-    --border: 1px solid #{color($color-set, '04')};
+    --border: #{$border-size} solid #{color($color-set, '04')};
     --color: #{color($color-set, '04')};
 
     &:active,
@@ -142,7 +143,7 @@ $border-radius: get($radius, 'small');
   .button--#{$modifier}-outline {
 
     --background: #{color('adjust.tone')};
-    --border: 1px solid #{color($color-set, '08')};
+    --border: #{$border-size} solid #{color($color-set, '08')};
     --color: #{color($color-set, '08')};
 
     &:active,
