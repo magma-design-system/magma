@@ -45,7 +45,7 @@ export BackofficeInputList, { BackofficeInputListItem } from '@UI/Input/Backoffi
 export BackofficeInputPassword from '@UI/Input/BackofficeInputPassword'
 export BackofficeInputPhone from '@UI/Input/BackofficeInputPhone'
 export BackofficeInputText from '@UI/Input/BackofficeInputText'
-export BackofficeSelect, { BackofficeSelectOption } from '@UI/Textarea/BackofficeSelect'
+export BackofficeSelect, { BackofficeSelectOption } from '@UI/Select/BackofficeSelect'
 export BackofficeTextarea from '@UI/Textarea/BackofficeTextarea'
 
 export Button from '@UI/Button/Button'
