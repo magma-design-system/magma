@@ -1,34 +1,20 @@
-import React, { Fragment } from 'react'
+import React from 'react'
 import PropTypes from 'prop-types'
 import './Button.scss'
 import Icon from '@Design/Icon/Icon'
 
 const Button = props =>
-  <Fragment>
-    {props.type === 'button'
-      ? <button
-        className={`button ${props.className} ${props.variant ? 'button--' + props.variant : ''} ${props.small ? 'button--small' : ''} ${props.round ? 'button--round' : ''} ${props.disabled ? 'button--disabled' : ''} ${props.outline ? 'button--outline' : ''}`.trim()}
-        onClick={() => props.onClick()}
-        disabled={props.disabled ? 'disabled' : ''}>
-        {props.icon && <Icon className='button__icon' name={props.icon}/>}
-        { props.children && <div className={`button__text ${props.textClassName}`}>
-          { props.children }
-        </div>
-        }
-      </button>
-      : <label>
-        <input type={props.type} className="button__field" disabled={props.disabled ? 'disabled' : ''}/>
-        <div className={`button ${props.className} ${props.variant ? 'button--' + props.variant : ''} ${props.small ? 'button--small' : ''} ${props.round ? 'button--round' : ''} ${props.disabled ? 'button--disabled' : ''} ${props.outline ? 'button--outline' : ''}`.trim()}
-          onClick={() => props.onClick()}>
-          {props.icon && <Icon className='button__icon' name={props.icon}/>}
-          { props.children && <div className={`button__text ${props.textClassName}`}>
-            { props.children }
-          </div>
-          }
-        </div>
-      </label>
+  <button
+    className={`button ${props.className} ${props.variant ? 'button--' + props.variant : ''} ${props.small ? 'button--small' : ''} ${props.round ? 'button--round' : ''} ${props.disabled ? 'button--disabled' : ''} ${props.outline ? 'button--outline' : ''}`.trim()}
+    onClick={() => props.onClick()}
+    disabled={props.disabled ? 'disabled' : ''}
+    type={props.type}>
+    {props.icon && <Icon className='button__icon' name={props.icon}/>}
+    { props.children && <div className={`button__text ${props.textClassName}`}>
+      { props.children }
+    </div>
     }
-  </Fragment>
+  </button>
 
 Button.propTypes = {
   className: PropTypes.string,

@@ -47,4 +47,6 @@ export const colors = () =>
   </Grid>
 
 export const submit = () =>
-  <Button type="submit" icon={randomIcon()}>{faker.hacker.verb()}</Button>
+  <Grid template="auto-fill">
+    <Button type="submit" icon={randomIcon()}>{faker.hacker.verb()}</Button>
+  </Grid>
