@@ -1,8 +1,30 @@
 @import '~Sass/import-framework';
 
+@mixin spacing-modifier ($size-item) {
+
+  $modifier: nth($size-item, 1);
+  $spacing: nth($size-item, 2);
+
+  &--spacing-#{$modifier} {
+    margin-bottom: $spacing;
+    margin-top: $spacing;
+  }
+}
+
 .hr {
 
-  --background-color: #{color('adjust.tone', '06')};
+  --size: 4px;
+  --background-color: #{color('adjust.tone', '13')};
 
   background-color: var(--background-color);
+  border: 0;
+  border-radius: var(--size);
+  display: block;
+  height: var(--size);
+  margin: get($size, 'normal') 0;
+  width: 100%;
+
+  @each $size-item in $size {
+    @include spacing-modifier ($size-item: $size-item);
+  }
 }

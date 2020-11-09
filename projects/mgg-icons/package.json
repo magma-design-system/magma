@@ -44,10 +44,12 @@
     {
       "name": "Gioele Masini",
       "email": "gioele.masini@maggioli.it"
-    },
-    {
+    },{
       "name": "Federico Ciani",
       "email": "federico.ciani@maggioli.it"
+    },{
+      "name": "Vittorio Vittori",
+      "email": "vittorio.vittori@maggioli.it"
     }
   ],
   "license": "ISC",

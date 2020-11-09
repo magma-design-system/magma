@@ -45,3 +45,6 @@ export const colors = () =>
       <Button icon={randomIcon()} variant="link">Link</Button>
     </Grid>
   </Grid>
+
+export const submit = () =>
+  <Button type="submit" icon={randomIcon()}>{faker.hacker.verb()}</Button>

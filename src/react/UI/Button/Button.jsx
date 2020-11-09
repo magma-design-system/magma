@@ -1,30 +1,40 @@
-import React from 'react'
+import React, { Fragment } from 'react'
 import PropTypes from 'prop-types'
 import './Button.scss'
 import Icon from '@Design/Icon/Icon'
 
-const FormButton = props => {
-  const HtmlTag = props.htmlTag.toLowerCase()
+const Button = props =>
+  <Fragment>
+    {props.type === 'button'
+      ? <button
+        className={`button ${props.className} ${props.variant ? 'button--' + props.variant : ''} ${props.small ? 'button--small' : ''} ${props.round ? 'button--round' : ''} ${props.disabled ? 'button--disabled' : ''} ${props.outline ? 'button--outline' : ''}`.trim()}
+        onClick={() => props.onClick()}
+        disabled={props.disabled ? 'disabled' : ''}>
+        {props.icon && <Icon className='button__icon' name={props.icon}/>}
+        { props.children && <div className={`button__text ${props.textClassName}`}>
+          { props.children }
+        </div>
+        }
+      </button>
+      : <label>
+        <input type={props.type} className="button__field" disabled={props.disabled ? 'disabled' : ''}/>
+        <div className={`button ${props.className} ${props.variant ? 'button--' + props.variant : ''} ${props.small ? 'button--small' : ''} ${props.round ? 'button--round' : ''} ${props.disabled ? 'button--disabled' : ''} ${props.outline ? 'button--outline' : ''}`.trim()}
+          onClick={() => props.onClick()}>
+          {props.icon && <Icon className='button__icon' name={props.icon}/>}
+          { props.children && <div className={`button__text ${props.textClassName}`}>
+            { props.children }
+          </div>
+          }
+        </div>
+      </label>
+    }
+  </Fragment>
 
-  return (
-    <HtmlTag
-      className={`button ${props.className} ${props.variant ? 'button--' + props.variant : ''} ${props.small ? 'button--small' : ''} ${props.round ? 'button--round' : ''} ${props.disabled ? 'button--disabled' : ''} ${props.outline ? 'button--outline' : ''}`.trim()}
-      onClick={() => props.onClick()}
-      disabled={props.disabled ? 'disabled' : ''}>
-      {props.icon && <Icon className='button__icon' name={props.icon}/>}
-      { props.children && <div className={`button__text ${props.textClassName}`}>
-        { props.children }
-      </div>
-      }
-    </HtmlTag>
-  )
-}
-
-FormButton.propTypes = {
+Button.propTypes = {
   className: PropTypes.string,
   collapse: PropTypes.bool,
   disabled: PropTypes.bool,
-  htmlTag: PropTypes.string,
+  type: PropTypes.string,
   icon: PropTypes.string,
   onClick: PropTypes.func,
   outline: PropTypes.bool,
@@ -34,11 +44,11 @@ FormButton.propTypes = {
   variant: PropTypes.string,
 }
 
-FormButton.defaultProps = {
+Button.defaultProps = {
   className: '',
   collapse: false,
   disabled: false,
-  htmlTag: 'button',
+  type: 'button',
   icon: '',
   onClick: () => {},
   outline: false,
@@ -48,4 +58,4 @@ FormButton.defaultProps = {
   variant: '',
 }
 
-export default FormButton
+export default Button

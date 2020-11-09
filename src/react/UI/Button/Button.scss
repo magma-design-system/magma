@@ -34,10 +34,6 @@ $border-radius: get($radius, 'small');
   }
 
   &__icon {
-    &:last-child {
-      margin-left: s(0.25);
-    }
-
     &:first-child {
       margin-right: s(0.25);
 
@@ -66,6 +62,10 @@ $border-radius: get($radius, 'small');
     --background: transparent;
     --border: 1px solid #{color('adjust.tone', '03')};
     --color: #{color('adjust.tone', '03')};
+  }
+
+  &__field {
+    display: none;
   }
 }
 
