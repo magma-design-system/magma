@@ -9,7 +9,7 @@
 /src/scss/variables/*.scss
 /src/style-dictionary/build
 /src/style-dictionary/properties/color
-/storybook-static
+#/storybook-static
 build
 dist
 node_modules
