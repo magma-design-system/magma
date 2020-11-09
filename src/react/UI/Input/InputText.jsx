@@ -2,6 +2,7 @@ import React from 'react'
 import PropTypes from 'prop-types'
 import './Input.scss'
 import Input from '@UI/Input/Input'
+import { capitalize } from '@UI/Select/functions'
 
 const InputText = props =>
   <Input {...props}>
@@ -11,7 +12,7 @@ const InputText = props =>
       defaultValue={props.value}
       name={props.name}
       onChange={props.onChange}
-      placeholder={props.placeholder}
+      placeholder={capitalize(props.placeholder)}
       type="text"
     />
   </Input>

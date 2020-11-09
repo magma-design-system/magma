@@ -1,6 +1,7 @@
 import React from 'react'
 import PropTypes from 'prop-types'
 import Input from '@UI/Input/Input'
+import { capitalize } from '@UI/Select/functions'
 
 const InputEmail = props =>
   <Input {...props}>
@@ -10,7 +11,7 @@ const InputEmail = props =>
       defaultValue={props.value}
       name={props.name}
       onBlur={e => { console.log(e) }}
-      placeholder={props.placeholder}
+      placeholder={capitalize(props.placeholder)}
       type="email"
     />
   </Input>

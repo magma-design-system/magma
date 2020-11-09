@@ -2,6 +2,7 @@ import React from 'react'
 import PropTypes from 'prop-types'
 import './Input.scss'
 import BackofficeInput from '@UI/Input/BackofficeInput'
+import { capitalize } from '@UI/Select/functions'
 
 const BackofficeInputEmail = props =>
   <BackofficeInput {...props}>
@@ -11,7 +12,7 @@ const BackofficeInputEmail = props =>
       defaultValue={props.value}
       name={props.name}
       onChange={props.onChange}
-      placeholder={props.placeholder}
+      placeholder={capitalize(props.placeholder)}
       type="email"
     />
   </BackofficeInput>

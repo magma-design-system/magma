@@ -2,11 +2,12 @@ import React, { Fragment } from 'react'
 import PropTypes from 'prop-types'
 import './Input.scss'
 import Input from '@UI/Input/Input'
+import { capitalize } from '@UI/Select/functions'
 
 const InputListItem = props =>
   <Fragment>
     {props.children
-      ? <option className="input__list-item" value={props.value}>{props.children}</option>
+      ? <option className="input__list-item" value={props.value}>{capitalize(props.children)}</option>
       : <option className="input__list-item" value={props.value}/>
     }
   </Fragment>

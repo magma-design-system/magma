@@ -2,6 +2,7 @@ import React, { Fragment } from 'react'
 import PropTypes from 'prop-types'
 import './BackofficeInput.scss'
 import BackofficeInput from '@UI/Input/BackofficeInput'
+import { capitalize } from '@UI/Select/functions'
 
 const BackofficeInputListItem = props =>
   <Fragment>
@@ -23,7 +24,7 @@ const BackofficeInputList = props =>
       defaultValue={props.value}
       name={props.name}
       onChange={props.onChange}
-      placeholder={props.placeholder}
+      placeholder={capitalize(props.placeholder)}
       list={`list-${props.name}`}
     />
     <datalist className="backoffice-input__list" id={`list-${props.name}`}>

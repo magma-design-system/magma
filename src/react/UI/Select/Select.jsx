@@ -1,12 +1,12 @@
 import React from 'react'
 import PropTypes from 'prop-types'
+import { capitalize } from '@UI/Select/functions'
 import './Select.scss'
-
 import Icon from '@Design/Icon/Icon'
 
 const SelectOption = props =>
   <option className={`select__option ${props.className}`} value={props.value}>
-    { props.children }
+    { capitalize(props.children) }
   </option>
 
 SelectOption.propTypes = {
