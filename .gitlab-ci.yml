@@ -1,19 +1,25 @@
-# This file is a template, and might need editing before it works on your project.
-image: node:latest
+image : busybox:latest
 
-# This folder is cached between builds
-# http://docs.gitlab.com/ce/ci/yaml/README.html#cache
-cache:
-  paths:
-    - node_modules/
+variables:
+    GIT_DEPTH: "1"
 
-pages:
+stages:
+  - deploy
+
+deploy-storybook:
+  stage: deploy
+  image: kroniak/ssh-client
+  variables:
+    DEPLOY_FOLDER: $CI_DEPLOY_PATH
+    SERVER: $CI_SERVER_IP
   script:
-    - npm install
-    - npm run build:gatsby -- --prefix-paths
-  artifacts:
-    paths:
-      - public
-  only:
-    - master
+    - chmod +x ./.deploy/deploy-storybook.sh
+    - ./.deploy/deploy-storybook.sh
+  environment:
+    name: DeployWebApp
+    url: $CI_PRODUCTION_URL
+  allow_failure: false
   when: manual
+  only:
+    refs:
+      - master

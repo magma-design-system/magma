@@ -1,0 +1,14 @@
+FROM nginx:alpine
+
+COPY ./ /var/www/html
+
+RUN apk add nodejs;
+RUN apk add npm;
+RUN cd /var/www/html && npm install --silent;
+RUN cd /var/www/html && npm run build:storybook;
+RUN mkdir /var/safe
+RUN mv /var/www/html/storybook-static /var/safe;
+RUN rm -rf /var/www/html/*;
+RUN mv /var/safe /var/www/html;
+
+WORKDIR /var/www/html
