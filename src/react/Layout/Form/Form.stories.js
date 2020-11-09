@@ -1,0 +1,27 @@
+import React from 'react'
+import faker from 'faker'
+
+import Form from '@Layout/Form/Form'
+import Grid from '@Layout/Grid/Grid'
+import InputText from '@UI/Input/InputText'
+import InputPassword from '@UI/Input/InputPassword'
+import Button from '@UI/Button/Button'
+import Flash from '@UI/Flash/Flash'
+import InlineCode from '@UI/InlineCode/InlineCode'
+
+faker.locale = 'it'
+
+export default {
+  title: 'Layout/Form',
+  component: Form,
+}
+
+export const defaultUsage = () =>
+  <Grid>
+    <Flash>Il componente <InlineCode className="background-color-status-info-16 color-status-info-05">Form</InlineCode> eredita i comportamenti di layout da <InlineCode className="background-color-status-info-16 color-status-info-05">Grid</InlineCode>.</Flash>
+    <Form columns="3">
+      <InputText icon="user" placeholder="Username" />
+      <InputPassword placeholder="Password" />
+      <Button icon="action-save">Login</Button>
+    </Form>
+  </Grid>

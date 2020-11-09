@@ -19,7 +19,7 @@ export default {
 
 export const gutterLarge = () =>
   <Grid gutter="xlarge">
-    <Flash className="text-secondary text-secondary--paragraph">
+    <Flash>
       I componenti <Code className="background-color-status-info-16 color-status-info-04">Card</Code> funzionano esattamente come un componente <Code className="background-color-status-info-16 color-status-info-04">Grid</Code>, controllate quest'ulimo per consultarne le proprietà ereditate.
     </Flash>
     <Card>
