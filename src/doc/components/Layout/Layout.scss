@@ -182,3 +182,11 @@ $contents-color: color('adjust.tone', '20');
     width: 40px !important;
   }
 }
+
+.grid--tmpl-auto-fill-authors {
+  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+
+  @include media ('mobile') {
+    grid-template-columns: 1fr;
+  }
+}

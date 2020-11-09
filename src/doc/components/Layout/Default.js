@@ -1,12 +1,14 @@
-import React, { useState } from 'react'
+import React, { useState, Fragment } from 'react'
 import PropTypes from 'prop-types'
 import { /* Link, */ StaticQuery, graphql } from 'gatsby'
 import { MDXProvider } from '@mdx-js/react'
 import './Layout.scss'
 import { createMenuList, findMenuItem, getPageData, createMenuItemList, createHorizontalMenuList } from '@Gatsby/Pattern/Navigation/menu'
+import metadataAuthors from '../../metadata/authors.json'
+import metadataSources from '../../metadata/sources.json'
 
 import Author from '@Content/Author/Author'
-import Bibliography from '@Content/Bibliography/Bibliography'
+import BibliographyMLA from '@Content/Bibliography/BibliographyMLA'
 import Button from '@UI/Button/Button'
 import Code from '@UI/InlineCode/InlineCode'
 import CodeBlock from '@Content/CodeBlock/CodeBlock'
@@ -20,7 +22,7 @@ import H3 from '@Typography/H3/H3'
 import H4 from '@Typography/H4/H4'
 import H5 from '@Typography/H5/H5'
 import H6 from '@Typography/H6/H6'
-import Link from '@UI/Link/Link'
+import ExternalLink from '@UI/ExternalLink/ExternalLink'
 import HorizontalMenu from '@Gatsby/Pattern/HorizontalMenu/HorizontalMenu'
 import Hr, { HrLight } from '@Gatsby/Pattern/Hr/Hr'
 import Icon from '@Design/Icon/Icon'
@@ -38,7 +40,7 @@ import { defineCustomElements as deckDeckGoHighlightElement } from '@deckdeckgo/
 // https://www.gatsbyjs.com/plugins/gatsby-plugin-mdx/#mdxprovider
 
 const shortcodes = {
-  Bibliography,
+  BibliographyMLA,
   Button,
   Caption,
   Detail,
@@ -56,7 +58,7 @@ const shortcodes = {
   Icon,
   InfoBar,
   Image,
-  Link,
+  ExternalLink,
   List,
   ListItem,
   Paragraph,
@@ -70,7 +72,7 @@ const shortcodes = {
   Usage,
   UsageDo,
   UsageDont,
-  a: Link,
+  a: ExternalLink,
   blockquote: Quote,
   h1: H1,
   h2: H2,
@@ -86,6 +88,43 @@ const shortcodes = {
   ul: List,
 }
 
+const AuthorItem = authorData => {
+  let author = null
+
+  metadataAuthors.forEach(metadataAuthor => {
+    if (author === null) {
+      author = authorData.id === metadataAuthor.email ? metadataAuthor : null
+    }
+  })
+
+  if (author === null) {
+    return null
+  }
+
+  return <Author gravatar={`${author.email}?s=120&d=identicon`}>
+    <H5>{author.name}</H5>
+    {author.role && <Caption>{author.role}</Caption>}
+  </Author>
+}
+
+const SourceItem = sourceData => {
+  let source = null
+
+  console.log(sourceData)
+
+  metadataSources.forEach(metadataSource => {
+    if (source === null) {
+      source = sourceData.id.toString() === metadataSource.id.toString() ? metadataSource : null
+    }
+  })
+
+  if (source === null) {
+    return null
+  }
+
+  return <BibliographyMLA font="text-secondary text-secondary--detail" title={source.title} fullName={source.author} url={source.url}/>
+}
+
 const Layout = ({ children }) => {
   deckDeckGoHighlightElement()
 
@@ -97,19 +136,9 @@ const Layout = ({ children }) => {
             edges {
               node {
                 frontmatter {
-                  author {
-                    name
-                    avatar
-                  }
-                  source {
-                    author
-                    authors
-                    date
-                    title
-                    site
-                    url
-                  }
+                  author
                   date
+                  source
                   title
                 }
                 slug
@@ -157,11 +186,24 @@ const Layout = ({ children }) => {
                   </MDXProvider>
                 </div>
                 { page.frontmatter.source && page.frontmatter.author && <Hr/> }
-                {/* page.frontmatter.source && <Bibliography format="mla" title={page.frontmatter.source.title} site={page.frontmatter.source.site} url={page.frontmatter.source.url}/> */}
-                {/* page.frontmatter.source && <Bibliography firstName={page.frontmatter.source[0].author} lastName={page.frontmatter.source[0].author.split(' ')[page.frontmatter.source[0].author.split(' ').length - 1]} url={page.frontmatter.source[0].url}/> */}
-                { page.frontmatter.source && <Bibliography title={page.frontmatter.source[0].title} fullName={page.frontmatter.source[0].author} url={page.frontmatter.source[0].url}/> }
-                { page.frontmatter.source && console.log(page.frontmatter.source) }
-                { page.frontmatter.author && <Author gravatar="">Autore rilevato!!!</Author> }
+                { page.frontmatter.author &&
+                  <Grid gutter="xsmall">
+                    <H5>Autori</H5>
+                    <Grid template="auto-fill-authors">
+                      { page.frontmatter.author.map(author =>
+                        <AuthorItem id={author}/>,
+                      )}
+                    </Grid>
+                  </Grid>
+                }
+                { page.frontmatter.source &&
+                  <Grid gutter="none">
+                    <H5>Riferimenti esterni</H5>
+                    { page.frontmatter.source.map(source =>
+                      <SourceItem id={source}/>,
+                    )}
+                  </Grid>
+                }
                 <Hr/>
                 <footer className="ds-layout__footer">
                   <Paragraph><b>Design System</b> sviluppato dal reparto R&D.</Paragraph>

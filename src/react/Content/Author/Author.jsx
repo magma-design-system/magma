@@ -6,7 +6,7 @@ import Row from '@Layout/Row/Row'
 
 const Author = props =>
   <Row className={`author ${props.className}`} {...props}>
-    <Avatar className="author__avatar" {...props}/>
+    <Avatar className="author__avatar" src={props.avatar} {...props}/>
     <div className="author__infos">
       {props.children}
     </div>

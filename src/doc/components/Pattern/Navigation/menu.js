@@ -89,7 +89,7 @@ function findMenuItemFromPath(menuList, path) {
 export function getPageData(edges, url) {
   let page = {}
   edges.forEach(({ node: { slug, timeToRead, frontmatter } }) => {
-    console.log(pathFromSlug(url).toString(), pathFromSlug(slug).toString(), pathFromSlug(url).toString() === pathFromSlug(slug).toString())
+    // console.log(pathFromSlug(url).toString(), pathFromSlug(slug).toString(), pathFromSlug(url).toString() === pathFromSlug(slug).toString())
 
     if (pathFromSlug(url).toString() === pathFromSlug(slug).toString()) {
       page = {

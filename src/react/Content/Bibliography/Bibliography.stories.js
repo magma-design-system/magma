@@ -1,26 +1,30 @@
-import React from 'react'
+import React, { Fragment } from 'react'
 import faker from 'faker'
 
-import Bibliography from '@Content/Bibliography/Bibliography'
+import BibliographyAPA from '@Content/Bibliography/BibliographyAPA'
+import BibliographyMLA from '@Content/Bibliography/BibliographyMLA'
 
 faker.locale = 'it'
 
 export default {
   title: 'Content/Bibliography',
-  component: Bibliography,
+  component: BibliographyAPA,
 }
 
 export const formatAPA = () =>
-  <Bibliography firstName="Giorgio" lastName="Moroder" date="2020-08-24" title="My name is Giovanni Giorgio, but everybody calls me Giorgio" site="Daft Punk - Random Access Memories" url="https://www.daftpunk.com/collections/shop-by-product/products/beach-towel"/>
+  <BibliographyAPA fullName="Giorgio Moroder" date="2020-08-24" title="My name is Giovanni Giorgio, but everybody calls me Giorgio" site="Daft Punk - Random Access Memories" url="https://www.daftpunk.com/collections/shop-by-product/products/beach-towel"/>
+
+export const multipleAuthorsAPA = () =>
+  <BibliographyAPA fullName={['Daft Punk', 'Giorgio Moroder']} date="2020-08-24" title="My name is Giovanni Giorgio, but everybody calls me Giorgio" site="Daft Punk - Random Access Memories" url="https://www.daftpunk.com/collections/shop-by-product/products/beach-towel"/>
 
 export const formatMLA = () =>
-  <Bibliography format="mla" firstName="Giorgio" lastName="Moroder" date="2020-08-24" title="My name is Giovanni Giorgio, but everybody calls me Giorgio" site="Daft Punk - Random Access Memories" url="https://www.daftpunk.com/collections/shop-by-product/products/beach-towel"/>
+  <BibliographyMLA fullName="Giorgio Moroder" date="2020-08-24" title="My name is Giovanni Giorgio, but everybody calls me Giorgio" site="Daft Punk - Random Access Memories" url="https://www.daftpunk.com/collections/shop-by-product/products/beach-towel"/>
 
-export const formatMLAMinimal = () =>
-  <Bibliography format="mla" title="My name is Giovanni Giorgio, but everybody calls me Giorgio" site="Daft Punk - Random Access Memories" url="https://www.daftpunk.com/collections/shop-by-product/products/beach-towel"/>
+export const multipleAuthorsMLA = () =>
+  <BibliographyMLA fullName={['Daft Punk', 'Giorgio Moroder']} date="2020-08-24" title="My name is Giovanni Giorgio, but everybody calls me Giorgio" site="Daft Punk - Random Access Memories" url="https://www.daftpunk.com/collections/shop-by-product/products/beach-towel"/>
 
-export const fullName = () =>
-  <Bibliography fullName="Giorgio Moroder" url="https://www.daftpunk.com/collections/shop-by-product/products/beach-towel"/>
-
-export const font = () =>
-  <Bibliography font="text-secondary text-secondary--detail" format="mla" title="My name is Giovanni Giorgio, but everybody calls me Giorgio" site="Daft Punk - Random Access Memories" url="https://www.daftpunk.com/collections/shop-by-product/products/beach-towel"/>
+export const customFont = () =>
+  <Fragment>
+    <BibliographyAPA font="text-secondary text-secondary--detail" fullName="Giorgio Moroder" date="2020-08-24" title="My name is Giovanni Giorgio, but everybody calls me Giorgio" site="Daft Punk - Random Access Memories" url="https://www.daftpunk.com/collections/shop-by-product/products/beach-towel"/>
+    <BibliographyMLA font="text-secondary text-secondary--detail" fullName="Giorgio Moroder" date="2020-08-24" title="My name is Giovanni Giorgio, but everybody calls me Giorgio" site="Daft Punk - Random Access Memories" url="https://www.daftpunk.com/collections/shop-by-product/products/beach-towel"/>
+  </Fragment>
