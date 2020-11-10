@@ -20,7 +20,7 @@
   "crud-save": "material/check",
   "dashboard": "material/dashboard",
   "data-activity-log": "material/timeline",
-  "data-analytics": "material/insert_chart",
+  "data-analytics": "material/bar_chart",
   "data-add": "material/add",
   "data-export": "material/save_alt",
   "data-favorite": "material/bookmark",
