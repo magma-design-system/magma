@@ -7,7 +7,7 @@ import Row from '@Layout/Row/Row'
 
 import dictionary from './dictionary.json'
 
-const FlashMessage = props => {
+const Flash = props => {
   const { background, color } = dictionary[props.status]
   return (
     <Row align="flex-start" className={`flash ${props.className} ${background} ${color}`}>
@@ -17,14 +17,14 @@ const FlashMessage = props => {
   )
 }
 
-FlashMessage.propTypes = {
+Flash.propTypes = {
   className: PropTypes.string,
   status: PropTypes.string,
 }
 
-FlashMessage.defaultProps = {
+Flash.defaultProps = {
   className: 'text-secondary text-secondary--detail',
   status: 'info',
 }
 
-export default FlashMessage
+export default Flash
