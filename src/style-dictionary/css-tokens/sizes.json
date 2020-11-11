@@ -1,6 +1,7 @@
 {
   "gutter": "20px",
   "size": {
+    "xxsmall": "5px",
     "xsmall": "10px",
     "small": "20px",
     "normal": "30px",
