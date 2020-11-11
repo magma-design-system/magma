@@ -25,7 +25,7 @@ $border-radius: get($radius, 'small');
   text-decoration: none;
   transition: background-color $ease, border $ease, color $ease, filter $ease;
   user-select: none;
-  width: 100%;
+  width: auto;
 
   &__text {
     text-transform: lowercase;
@@ -64,6 +64,10 @@ $border-radius: get($radius, 'small');
     --background: transparent;
     --border: #{$border-size} solid #{color('adjust.tone', '03')};
     --color: #{color('adjust.tone', '03')};
+  }
+
+  &--expand {
+    width: 100%;
   }
 
   &__field {
