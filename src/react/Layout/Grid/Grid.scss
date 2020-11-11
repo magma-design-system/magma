@@ -29,6 +29,7 @@ $columns: 4;
 .grid {
   display: grid;
   grid-gap: s(1.5);
+  grid-template-columns: 100%;
 
   @include gutter-modifier;
 
