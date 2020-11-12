@@ -1,7 +1,7 @@
 {
   "name": "@maggioli-common/font-icons-cli",
   "version": "0.0.14",
-  "description": "Font icons CLI, part of Maggioli Design System",
+  "description": "Font icons CLI, part of Maggioli Design System, it's used by mgg-icons module to generate the font library from SVG icons.",
   "publishConfig": {
     "registry": "http://nexus.maggioli.it:8081/repository/npm/"
   },
@@ -16,7 +16,8 @@
   "contributors": [
     {
       "name": "Gioele Masini",
-      "email": "gioele.masini@maggioli.it"
+      "email": "gioele.masini@maggioli.it",
+      "role": "Author"
     }
   ],
   "license": "ISC",
