@@ -4,6 +4,8 @@ import './PackageInfo.scss'
 
 import Card from '@Layout/Card/Card'
 import Grid from '@Layout/Grid/Grid'
+import Tag from '@UI/Tag/Tag'
+import Row from '@Layout/Row/Row'
 import Button from '@UI/Button/Button'
 import List, { ListItem } from '@UI/List/List'
 import Hr from '@UI/Hr/Hr'
@@ -21,11 +23,11 @@ const PackageInfo = props =>
     </List>
     <Paragraph>{props.package.description}</Paragraph>
     <Grid template="package-info-authors">
-      <Button href={props.package.repository.url.replace('.git', '')}>Repository</Button>
-      <Button variant="secondary-outline" href={props.package.bugs.url.replace('.git', '')}>Issue</Button>
+      { props.package.repository.url && <Button href={props.package.repository.url.replace('.git', '')}>Repository</Button> }
+      { props.package.bugs && <Button variant="secondary-outline" href={props.package.bugs.url.replace('.git', '')}>Issue</Button> }
     </Grid>
     <Hr spacing="small" className="background-color-adjust-tone-18"/>
-    <H4>Contributors</H4>
+    <Row><H4>Contributors</H4><Tag chip={true} icon="user-team" className="background-color-brand-maggioli-20 color-brand-maggioli-08">{ props.package.contributors.length }</Tag></Row>
     <Grid template="package-info-authors">
       {props.package.contributors.map((item, key) =>
         <Author key={key} gravatar={`${item.email}?s=120&d=mp`}>
