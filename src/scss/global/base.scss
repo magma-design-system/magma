@@ -11,7 +11,11 @@ body {
   background-color: color('adjust.tone');
   color: color('adjust.tone', '03');
   font-family: get($font-family, 'secondary');
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
   -webkit-tap-highlight-color: transparent;
+  text-rendering: optimizeLegibility;
+  text-size-adjust: 100%;
   width: 100%;
   @include apply-styles-set($map: $font-base-styles, $set: $default-font-set);
 }
@@ -78,6 +82,14 @@ h5,
 h6,
 p {
   margin: 0;
+}
+
+button,
+input,
+optgroup,
+select,
+textarea {
+  font-family: inherit;
 }
 
 ::selection {

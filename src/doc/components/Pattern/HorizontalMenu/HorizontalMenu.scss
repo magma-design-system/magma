@@ -1,8 +1,8 @@
 @import '~Sass/import-framework';
 
 $radius: s(0.25);
-$contents-color: color('adjust.tone', '20');
-$contents-color-desktop: color('adjust.tone', '20', 0.8);
+$contents-color: color('adjust.tone', 'color');
+$contents-color-desktop: color('adjust.tone', 'color', 0.8);
 
 .ds-horizontal-menu {
   background-color: color('adjust.tone');
