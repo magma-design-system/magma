@@ -21,7 +21,7 @@ const PackageInfo = props =>
     </List>
     <Paragraph>{props.package.description}</Paragraph>
     <Grid template="package-info-authors">
-      <Button href={props.package.repository.url.replace('.git', '')}>Reposotory</Button>
+      <Button href={props.package.repository.url.replace('.git', '')}>Repository</Button>
       <Button variant="secondary-outline" href={props.package.bugs.url.replace('.git', '')}>Issue</Button>
     </Grid>
     <Hr spacing="small" className="background-color-adjust-tone-18"/>
@@ -30,7 +30,6 @@ const PackageInfo = props =>
       {props.package.contributors.map((item, key) =>
         <Author key={key} gravatar={`${item.email}?s=120&d=mp`}>
           <H5>{item.name}</H5>
-          {item.email && <Caption className="color-adjust-tone-08">{item.email}</Caption>}
           {item.role && <Caption className="color-adjust-tone-08">{item.role}</Caption>}
         </Author>,
       )}
