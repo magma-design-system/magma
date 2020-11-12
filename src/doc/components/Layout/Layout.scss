@@ -30,7 +30,7 @@ $contents-color: color('adjust.tone');
     @include media('desktop') {
       backdrop-filter: saturate(180%) blur(20px);
       background-color: color('adjust.tone', 'color', 0.8);
-      box-shadow: 0 0 s(2) 0 color('adjust.tone', '01', 0.05), 0 0 0 100vw color('adjust.tone', '01', 0);
+      box-shadow: 0 0 s(2) 0 color('adjust.tone', '01', 0.05) inset, 0 0 0 100vw color('adjust.tone', '01', 0);
       padding: 0 s(2);
       transform: translate(0, 0);
       width: $aside;
