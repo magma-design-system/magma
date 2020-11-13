@@ -187,7 +187,6 @@ const Layout = ({ children }) => {
                     {children}
                   </MDXProvider>
                 </div>
-                { page.frontmatter.source && page.frontmatter.author && <Hr/> }
                 { page.frontmatter.author &&
                   <Grid gutter="xsmall">
                     <H5>Autori</H5>
@@ -198,6 +197,7 @@ const Layout = ({ children }) => {
                     </Grid>
                   </Grid>
                 }
+                { page.frontmatter.source && <Hr/> }
                 { page.frontmatter.source &&
                   <Grid gutter="none">
                     <H5>Riferimenti esterni</H5>
