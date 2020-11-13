@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react'
+import React from 'react'
 import PropTypes from 'prop-types'
 import './Modal.scss'
 import Icon from '@Design/Icon/Icon'
@@ -9,33 +9,27 @@ import H4 from '@Typography/H4/H4'
 // https://codesandbox.io/s/github/supromikali/react-children-with-context
 
 const Modal = props => {
-  const [show, setShow] = useState(false)
-  useEffect(() => {
-    if (props.show) {
-      setShow(props.show)
-    }
-  }, [props.show])
   return (
-    <div className={`modal ${props.className} ${show ? 'modal--active' : ''} ${props.maxHeight ? 'modal--max-height' : ''} ${props.desktopMode ? 'modal--centered' : ''} modal--to-${props.position}`}>
-      <Icon className="modal__close" name="close" onClick={() => setShow(false)}/>
+    <div className={`modal ${props.className} ${props.visible ? 'modal--active' : ''} ${props.maxHeight ? 'modal--max-height' : ''} ${props.desktopMode ? 'modal--centered' : ''} modal--to-${props.position}`}>
+      <Icon className="modal__close" name="close" onClick={() => { props.onCancel() }}/>
       <div className="modal__window">
         {props.title &&
           <header className="modal__header">
             <H4 className="modal__title">
               {props.title}
             </H4>
-            <Icon className="modal__close-inside" name="action-close" onClick={() => setShow(false)}/>
+            <Icon className="modal__close-inside" name="action-close" onClick={() => { props.onCancel() }}/>
           </header>
         }
         <div className={`modal__contents ${props.contentOnly ? 'modal__contents--clean' : ''} ${props.title ? 'modal__contents--close-outside' : ''}`}>
           {!props.title &&
-            <Icon className="modal__close-inside" name="action-close" onClick={() => setShow(false)}/>
+            <Icon className="modal__close-inside" name="action-close" onClick={() => { props.onCancel() }}/>
           }
           {props.children}
         </div>
         {props.onConfirm &&
           <footer className="modal__footer grid">
-            <Button variant="secondary-outline" onClick={() => { props.onClose() }}>
+            <Button variant="secondary-outline" onClick={() => { props.onCancel() }}>
               Cancel
             </Button>
             <Button variant="primary" onClick={() => { props.onConfirm() }}>
@@ -53,10 +47,10 @@ Modal.propTypes = {
   contentOnly: PropTypes.bool,
   desktopMode: PropTypes.bool,
   maxHeight: PropTypes.bool,
-  onClose: PropTypes.func,
+  onCancel: PropTypes.func,
   onConfirm: PropTypes.func,
   position: PropTypes.string,
-  show: PropTypes.bool,
+  visible: PropTypes.bool,
   title: PropTypes.string,
 }
 
@@ -65,10 +59,10 @@ Modal.defaultProps = {
   contentOnly: false,
   desktopMode: false,
   maxHeight: false,
-  onClose: null,
+  onCancel: null,
   onConfirm: null,
   position: 'right', // right || left
-  show: true,
+  visible: true,
   title: '',
 }
 

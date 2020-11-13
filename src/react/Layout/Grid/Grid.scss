@@ -61,6 +61,28 @@ $columns: 4;
     }
   }
 
+  &--tmpl-auto-fill-medium {
+
+    $min: 200px;
+
+    grid-template-columns: repeat(auto-fill, minmax($min, 1fr));
+
+    @include media ('mobile') {
+      grid-template-columns: repeat(auto-fill, minmax($min, 1fr)) !important;
+    }
+  }
+
+  &--tmpl-auto-fill-large {
+
+    $min: 250px;
+
+    grid-template-columns: repeat(auto-fill, minmax($min, 1fr));
+
+    @include media ('mobile') {
+      grid-template-columns: repeat(auto-fill, minmax($min, 1fr)) !important;
+    }
+  }
+
   &--fit {
     grid-auto-rows: minmax(min-content, max-content);
   }

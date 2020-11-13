@@ -79,7 +79,6 @@ BackofficeSelect.propTypes = {
 BackofficeSelect.defaultProps = {
   className: '',
   label: '',
-  icon: 'data-view',
   name: 'unassigned',
   onChange: () => {},
   required: false,

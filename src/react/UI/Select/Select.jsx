@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { Fragment } from 'react'
 import PropTypes from 'prop-types'
 import { capitalize } from '@UI/Select/functions'
 import './Select.scss'
@@ -18,6 +18,15 @@ SelectOption.defaultProps = {
   className: '',
 }
 
+const OptionsData = props => {
+  return props.data.map((value, key) => <SelectOption key={key} value={value}>{value}</SelectOption>)
+}
+
+OptionsData.propTypes = {
+  data: PropTypes.any,
+  value: PropTypes.string,
+}
+
 const Select = props =>
   <div className={`select ${props.className}`}>
     { props.label &&
@@ -27,7 +36,10 @@ const Select = props =>
     }
     <div className="select__item">
       <select onChange={props.onChange} className={`select__field ${props.font}`} name={props.name} value={props.value}>
-        { props.children }
+        {!props.data
+          ? <Fragment>{ props.children }</Fragment>
+          : <OptionsData data={props.data} value={props.value}/>
+        }
       </select>
       <Icon className="select__icon" name={props.icon}/>
     </div>
@@ -35,6 +47,7 @@ const Select = props =>
 
 Select.propTypes = {
   className: PropTypes.string,
+  data: PropTypes.any,
   font: PropTypes.string,
   icon: PropTypes.string,
   label: PropTypes.string,

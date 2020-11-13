@@ -6,19 +6,19 @@ const TogglerContext = createContext()
 
 const renderChildren = (children, props) => context =>
   Children.map(children, el =>
-    cloneElement(el, props(context, el))
+    cloneElement(el, props(context, el)),
   )
 
-export class Toggler extends Component {
+export default class Toggler extends Component {
   state = { isVisible: false }
 
   setVisible = () =>
-    this.setState(({ isVisible }) => ({ isVisible: !isVisible }));
+    this.setState(({ isVisible }) => ({ isVisible: !isVisible }))
 
   static Trigger = ({ children }) => (
     <TogglerContext.Consumer>
       {renderChildren(children, context => ({
-        onClick: context.setVisible
+        onClick: context.setVisible,
       }))}
     </TogglerContext.Consumer>
   )
@@ -28,10 +28,10 @@ export class Toggler extends Component {
       {renderChildren(children, (context, el) => ({
         visible: context.isVisible,
         onCancel: context.setVisible,
-        onOk: () => {
+        onConfirm: () => {
           context.setVisible()
-          el.props.onOk()
-        }
+          el.props.onConfirm()
+        },
       }))}
     </TogglerContext.Consumer>
   )
@@ -40,8 +40,8 @@ export class Toggler extends Component {
     return (
       <TogglerContext.Provider
         value={{
-          isVisible: this.state.isVisible,
-          setVisible: this.setVisible
+          visible: this.state.visible,
+          setVisible: this.setVisible,
         }}
       >
         {this.props.children}
