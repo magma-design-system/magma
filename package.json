@@ -54,7 +54,7 @@
         "url": "https://git.maggioli.it/ricerca-sviluppo-new-media/design-system.git"
     },
     "bugs": {
-      "url": "https://git.maggioli.it/ricerca-sviluppo-new-media/design-system/-/issues"
+        "url": "https://git.maggioli.it/ricerca-sviluppo-new-media/design-system/-/issues"
     },
     "author": {
         "name": "Vittorio Vittori",
@@ -98,9 +98,9 @@
             "role": "Icons Tester"
         },
         {
-          "name": "Vittorio Vittori",
-          "email": "vittorio.vittori@maggioli.it",
-          "role": "Design System Lead"
+            "name": "Vittorio Vittori",
+            "email": "vittorio.vittori@maggioli.it",
+            "role": "Design System Lead"
         }
     ],
     "license": "ISC",
