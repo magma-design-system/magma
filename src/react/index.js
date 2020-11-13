@@ -1,3 +1,5 @@
+export Toggler from '@Behavior/Toggler'
+
 export BackofficeMenu, { BackofficeMenuItem, BackofficeMenuItemAction, BackofficeMenuItemTitle } from '@Layout/Menu/BackofficeMenu'
 export BackofficePage, { BackofficePageAside, BackofficePageAsideFooter, BackofficePageContent, BackofficePageSection, BackofficePageSectionHeader } from '@Layout/Page/BackofficePage'
 export Card from '@Layout/Card/Card'

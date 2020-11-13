@@ -17,12 +17,12 @@ export const basicUsage = () => {
   return (
     <Toggler>
       <Toggler.Trigger>
-        <Button icon="statusInfo">
-          Open modal
+        <Button icon="status-info">
+          Apri modale
         </Button>
       </Toggler.Trigger>
       <Toggler.Content>
-        <Modal show={true}>
+        <Modal onConfirm={() => console.log('onConfirm')} onCancel={() => console.log('onCancel')}>
           <Paragraph>{faker.lorem.paragraph()}</Paragraph>
           <Paragraph>{faker.lorem.paragraph()}</Paragraph>
           <Paragraph>{faker.lorem.paragraph()}</Paragraph>
@@ -32,51 +32,116 @@ export const basicUsage = () => {
   )
 }
 
-export const mobileMode = () =>
-  <Modal show={true}>
-    <Paragraph>{faker.lorem.paragraph()}</Paragraph>
-    <Paragraph>{faker.lorem.paragraph()}</Paragraph>
-    <Paragraph>{faker.lorem.paragraph()}</Paragraph>
-  </Modal>
+export const mobileModeLeft = () => {
+  return (
+    <Toggler>
+      <Toggler.Trigger>
+        <Button icon="status-info">
+          Apri modale
+        </Button>
+      </Toggler.Trigger>
+      <Toggler.Content>
+        <Modal position="left" onConfirm={() => console.log('onConfirm')} onCancel={() => console.log('onCancel')}>
+          <Paragraph>{faker.lorem.paragraph()}</Paragraph>
+          <Paragraph>{faker.lorem.paragraph()}</Paragraph>
+          <Paragraph>{faker.lorem.paragraph()}</Paragraph>
+        </Modal>
+      </Toggler.Content>
+    </Toggler>
+  )
+}
 
-export const mobileModeRight = () =>
-  <Modal show={true} position="left">
-    <Paragraph>{faker.lorem.paragraph()}</Paragraph>
-    <Paragraph>{faker.lorem.paragraph()}</Paragraph>
-    <Paragraph>{faker.lorem.paragraph()}</Paragraph>
-  </Modal>
+export const desktopMode = () => {
+  return (
+    <Toggler>
+      <Toggler.Trigger>
+        <Button icon="status-info">
+          Apri modale
+        </Button>
+      </Toggler.Trigger>
+      <Toggler.Content>
+        <Modal desktopMode={true}>
+          <Paragraph>{faker.lorem.paragraph()}</Paragraph>
+          <Paragraph>{faker.lorem.paragraph()}</Paragraph>
+          <Paragraph>{faker.lorem.paragraph()}</Paragraph>
+        </Modal>
+      </Toggler.Content>
+    </Toggler>
+  )
+}
 
-export const desktopMode = () =>
-  <Modal desktopMode={true} show={true}>
-    <Paragraph>{faker.lorem.paragraph()}</Paragraph>
-    <Paragraph>{faker.lorem.paragraph()}</Paragraph>
-    <Paragraph>{faker.lorem.paragraph()}</Paragraph>
-  </Modal>
+export const desktopModeSimple = () => {
+  return (
+    <Toggler>
+      <Toggler.Trigger>
+        <Button icon="status-info">
+          Apri modale
+        </Button>
+      </Toggler.Trigger>
+      <Toggler.Content>
+        <Modal desktopMode={true} footer={false}>
+          <Paragraph>{faker.lorem.paragraph()}</Paragraph>
+          <Paragraph>{faker.lorem.paragraph()}</Paragraph>
+          <Paragraph>{faker.lorem.paragraph()}</Paragraph>
+        </Modal>
+      </Toggler.Content>
+    </Toggler>
+  )
+}
 
-export const headerTitle = () =>
-  <Modal title={faker.lorem.sentence()} desktopMode={true} show={true}>
-    <Paragraph>{faker.lorem.paragraph()}</Paragraph>
-    <Paragraph>{faker.lorem.paragraph()}</Paragraph>
-    <Paragraph>{faker.lorem.paragraph()}</Paragraph>
-  </Modal>
+export const headerTitle = () => {
+  return (
+    <Toggler>
+      <Toggler.Trigger>
+        <Button icon="status-info">
+          Apri modale
+        </Button>
+      </Toggler.Trigger>
+      <Toggler.Content>
+        <Modal title={faker.lorem.sentence()} desktopMode={true} onConfirm={() => console.log('onConfirm')} onCancel={() => console.log('onCancel')}>
+          <Paragraph>{faker.lorem.paragraph()}</Paragraph>
+          <Paragraph>{faker.lorem.paragraph()}</Paragraph>
+          <Paragraph>{faker.lorem.paragraph()}</Paragraph>
+        </Modal>
+      </Toggler.Content>
+    </Toggler>
+  )
+}
 
-export const footerActions = () =>
-  <Modal title={faker.lorem.sentence()} onConfirm={() => {}} desktopMode={true} show={true}>
-    <Paragraph>{faker.lorem.paragraph()}</Paragraph>
-    <Paragraph>{faker.lorem.paragraph()}</Paragraph>
-    <Paragraph>{faker.lorem.paragraph()}</Paragraph>
-  </Modal>
+export const maxHeight = () => {
+  return (
+    <Toggler>
+      <Toggler.Trigger>
+        <Button icon="status-info">
+          Apri modale
+        </Button>
+      </Toggler.Trigger>
+      <Toggler.Content>
+        <Modal maxHeight={true} title={faker.lorem.sentence()} desktopMode={true} onConfirm={() => console.log('onConfirm')} onCancel={() => console.log('onCancel')}>
+          <Paragraph>{faker.lorem.paragraph()}</Paragraph>
+          <Paragraph>{faker.lorem.paragraph()}</Paragraph>
+          <Paragraph>{faker.lorem.paragraph()}</Paragraph>
+        </Modal>
+      </Toggler.Content>
+    </Toggler>
+  )
+}
 
-export const maxHeight = () =>
-  <Modal title={faker.lorem.sentence()} onConfirm={() => {}} maxHeight={true} desktopMode={true} show={true}>
-    <Paragraph>{faker.lorem.paragraph()}</Paragraph>
-    <Paragraph>{faker.lorem.paragraph()}</Paragraph>
-    <Paragraph>{faker.lorem.paragraph()}</Paragraph>
-  </Modal>
-
-export const fullConfigured = () =>
-  <Modal title={faker.lorem.sentence()} onConfirm={() => {}} show={true}>
-    <Paragraph>{faker.lorem.paragraph()}</Paragraph>
-    <Paragraph>{faker.lorem.paragraph()}</Paragraph>
-    <Paragraph>{faker.lorem.paragraph()}</Paragraph>
-  </Modal>
+export const simple = () => {
+  return (
+    <Toggler>
+      <Toggler.Trigger>
+        <Button icon="status-info">
+          Apri modale
+        </Button>
+      </Toggler.Trigger>
+      <Toggler.Content>
+        <Modal footer={false} maxHeight={true} title={faker.lorem.sentence()} desktopMode={true} onConfirm={() => console.log('onConfirm')} onCancel={() => console.log('onCancel')}>
+          <Paragraph>{faker.lorem.paragraph()}</Paragraph>
+          <Paragraph>{faker.lorem.paragraph()}</Paragraph>
+          <Paragraph>{faker.lorem.paragraph()}</Paragraph>
+        </Modal>
+      </Toggler.Content>
+    </Toggler>
+  )
+}
