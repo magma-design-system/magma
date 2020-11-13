@@ -10,23 +10,25 @@ const renderChildren = (children, props) => context =>
   )
 
 export default class Toggler extends Component {
-  state = { isVisible: false }
+  state = { visible: false }
 
   setVisible = () =>
-    this.setState(({ isVisible }) => ({ isVisible: !isVisible }))
+    this.setState(({ visible }) => ({ visible: !visible }))
 
-  static Trigger = ({ children }) => (
-    <TogglerContext.Consumer>
+  static Trigger = ({ children }) => {
+    return <TogglerContext.Consumer>
       {renderChildren(children, context => ({
-        onClick: context.setVisible,
+        onClick: () => {
+          context.setVisible()
+        },
       }))}
     </TogglerContext.Consumer>
-  )
+  }
 
-  static Content = ({ children }) => (
-    <TogglerContext.Consumer>
+  static Content = ({ children }) => {
+    return <TogglerContext.Consumer>
       {renderChildren(children, (context, el) => ({
-        visible: context.isVisible,
+        visible: context.visible,
         onCancel: context.setVisible,
         onConfirm: () => {
           context.setVisible()
@@ -34,7 +36,7 @@ export default class Toggler extends Component {
         },
       }))}
     </TogglerContext.Consumer>
-  )
+  }
 
   render() {
     return (
