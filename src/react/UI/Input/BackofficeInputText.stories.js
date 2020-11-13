@@ -16,6 +16,9 @@ export default {
 export const basicUsage = () =>
   <InputText label={faker.lorem.sentence()} placeholder={faker.company.catchPhrase()}/>
 
+export const filled = () =>
+  <InputText label={faker.lorem.sentence()} placeholder={faker.company.catchPhrase()} value={faker.lorem.sentence()}/>
+
 export const customIcon = () =>
   <InputText label={faker.lorem.sentence()} placeholder={faker.phone.phoneNumber()} icon="operator"/>
 

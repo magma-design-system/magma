@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useState } from 'react'
 import faker from 'faker'
 
 import BackofficeSelect, { BackofficeSelectOption } from '@UI/Select/BackofficeSelect'
@@ -20,3 +20,11 @@ export const basicUsage = () =>
       <BackofficeSelectOption value="5">{faker.lorem.word()}</BackofficeSelectOption>
     </BackofficeSelect>
   </Grid>
+
+export const dataDrivenOptions = () => {
+  const data = ['Roma', 'Forlì', 'Milano', 'Firenze']
+  const [value, setValue] = useState('Milano')
+  return <Grid gutter="small">
+    <BackofficeSelect data={data} value={value} label={faker.lorem.words()} onChange={e => setValue(e.target.value)} />
+  </Grid>
+}

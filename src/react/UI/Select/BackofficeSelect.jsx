@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { Fragment } from 'react'
 import PropTypes from 'prop-types'
 import './BackofficeSelect.scss'
 import Icon from '@Design/Icon/Icon'
@@ -20,6 +20,15 @@ BackofficeSelectOption.defaultProps = {
   className: '',
 }
 
+const BackofficeOptionsData = props => {
+  return props.data.map((value, key) => <BackofficeSelectOption key={key} value={value}>{value}</BackofficeSelectOption>)
+}
+
+BackofficeOptionsData.propTypes = {
+  data: PropTypes.any,
+  value: PropTypes.string,
+}
+
 const BackofficeSelect = props =>
   <label className={`backoffice-select ${props.value ? 'backoffice-select--filled' : ''} ${props.icon !== '' ? 'backoffice-select--has-icon' : ''} ${props.error ? 'backoffice-select--has-errors' : ''} ${props.className}`}>
     <div className="backoffice-select__content">
@@ -35,7 +44,10 @@ const BackofficeSelect = props =>
       }
       <div className="backoffice-select__item">
         <select onChange={props.onChange} className="backoffice-select__field text-secondary text-secondary--detail" name={props.name} value={props.value}>
-          { props.children }
+          {!props.data
+            ? <Fragment>{ props.children }</Fragment>
+            : <BackofficeOptionsData data={props.data} value={props.value}/>
+          }
         </select>
         <Icon className="backoffice-select__field-icon" name="navigation-show"/>
       </div>
@@ -52,14 +64,15 @@ const BackofficeSelect = props =>
 
 BackofficeSelect.propTypes = {
   className: PropTypes.string,
+  data: PropTypes.any,
   error: PropTypes.string,
   icon: PropTypes.string,
   iconClassName: PropTypes.string,
   label: PropTypes.string,
+  name: PropTypes.string,
   onChange: PropTypes.func,
   required: PropTypes.bool,
   theme: PropTypes.string,
-  name: PropTypes.string,
   value: PropTypes.string,
 }
 
