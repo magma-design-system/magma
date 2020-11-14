@@ -21,10 +21,10 @@
   border-radius: var(--size);
   display: block;
   height: var(--size);
-  margin: get($size, 'normal') 0;
+  margin: get($list-sizes, 'normal') 0;
   width: 100%;
 
-  @each $size-item in $size {
+  @each $size-item in $list-sizes {
     @include spacing-modifier ($size-item: $size-item);
   }
 }

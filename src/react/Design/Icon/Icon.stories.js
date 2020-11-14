@@ -1,11 +1,15 @@
 import React from 'react'
 import PropTypes from 'prop-types'
 import faker from 'faker'
-import Icon from '@Design/Icon/Icon'
 import Grid from '@Layout/Grid/Grid'
+import Icon from '@Design/Icon/Icon'
+import InlineCode from '@UI/InlineCode/InlineCode'
+import Table, { TableHeader, TableHeaderCell, TableBody, TableRow, TableCell } from '@UI/Table/Table'
 import mggIconsDictionary from '£Project/mgg-icons/src/mgg-icons.json'
-
 import './Icon.stories.scss'
+import randomIcon from '@Design/Icon/faker'
+import sizesData from '+Tokens/css-tokens/sizes.json'
+const sizes = Object.keys(sizesData.icon)
 faker.locale = 'it'
 
 export default {
@@ -38,8 +42,27 @@ export const dictionary = () =>
     </Grid>
   </div>
 
-export const basicUsage = () =>
-  <Icon name='user'/>
+const iconName = randomIcon()
 
-export const sizeSmall = () =>
-  <Icon name='user' size='small'/>
+export const basicUsage = () =>
+  <Icon name={iconName}/>
+
+export const iconSizes = () =>
+  <Table interactive={true}>
+    <TableHeader>
+      <TableHeaderCell>Preview</TableHeaderCell>
+      <TableHeaderCell>Size</TableHeaderCell>
+    </TableHeader>
+    <TableBody>
+      {sizes.map(key =>
+        <TableRow>
+          <TableCell>
+            <Icon name={iconName} size={key}/>
+          </TableCell>
+          <TableCell>
+            <InlineCode>{`${key}`}</InlineCode>
+          </TableCell>
+        </TableRow>,
+      )}
+    </TableBody>
+  </Table>

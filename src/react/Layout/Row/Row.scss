@@ -21,7 +21,7 @@
     }
   }
 
-  @each $size-item in $size {
+  @each $size-item in $list-sizes {
     @include gutter-modifier ($size-item);
   }
 

@@ -12,7 +12,7 @@ const Icon = props => {
     icon = `mgg-icons-${props.name}`
     notFound = false
   }
-  return <i onClick={ () => props.onClick() } title={notFound ? `Warning, icon "${icon}" not found` : ''} className={`mgg-icons ${icon} icon ${(props.size ? 'icon--' + props.size : '')} ${props.className}`}></i>
+  return <i onClick={ () => props.onClick() } title={notFound ? `Warning, icon "${icon}" not found` : ''} className={`mgg-icons ${icon} icon ${(props.size ? 'icon--size-' + props.size : '')} ${props.className}`}></i>
 }
 
 Icon.propTypes = {

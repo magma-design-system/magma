@@ -10,7 +10,7 @@
 .avatar {
   border-radius: 500px;
 
-  @each $size, $value in $avatar {
+  @each $size, $value in $avatar-sizes {
     @include modifier($modifier: $size, $value: $value);
   }
 }

@@ -18,6 +18,15 @@
     "small": "30px",
     "normal": "60px",
     "large": "80px",
-    "xlarge": "100px"
+    "xlarge": "100px",
+    "xxlarge": "130px"
+  },
+  "icon": {
+    "xsmall": "12px",
+    "small": "16px",
+    "normal": "24px",
+    "large": "32px",
+    "xlarge": "48px",
+    "xxlarge": "64px"
   }
 }

@@ -18,7 +18,7 @@ $border-radius: get($radius, 'small');
   cursor: pointer;
   display: flex;
   font-family: inherit;
-  height: get($form, 'input-height');
+  height: get($form-sizes, 'input-height');
   justify-content: center;
   outline: 0;
   padding: 0 s(1);
@@ -51,12 +51,12 @@ $border-radius: get($radius, 'small');
   }
 
   &--small {
-    height: get($form, 'input-height-small');
+    height: get($form-sizes, 'input-height-small');
     padding: 0 s(0.5);
   }
 
   &--round {
-    border-radius: get($form, 'input-height');
+    border-radius: get($form-sizes, 'input-height');
   }
 
   &--outline {

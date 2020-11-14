@@ -9,9 +9,10 @@
 @import './sizes';
 
 $gutter: get($sizes, 'gutter');
-$form: get($sizes, 'form');
-$size: get($sizes, 'size');
-$avatar: get($sizes, 'avatar');
+$form-sizes: get($sizes, 'form');
+$list-sizes: get($sizes, 'size');
+$avatar-sizes: get($sizes, 'avatar');
+$icon-sizes: get($sizes, 'icon');
 
 $radius: get($cosmetics, 'border-radius');
 $shadow: get($cosmetics, 'box-shadow');

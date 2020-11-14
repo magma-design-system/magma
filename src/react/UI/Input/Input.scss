@@ -6,7 +6,7 @@ $icon-color: color('brand.maggioli', '07');
 $input-radius-error: get($radius, 'small');
 $input-radius: get($radius, 'small');
 $label-color: color('adjust.tone', '02');
-$size: get($form, 'input-height');
+$size: get($form-sizes, 'input-height');
 
 .input {
   display: block;

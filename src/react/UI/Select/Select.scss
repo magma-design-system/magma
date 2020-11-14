@@ -2,7 +2,7 @@
 
 $brand-color: color('brand.maggioli');
 $input-radius: get($radius, 'small');
-$size: get($form, 'input-height');
+$size: get($form-sizes, 'input-height');
 
 .select {
   &__label {

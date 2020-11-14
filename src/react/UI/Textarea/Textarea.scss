@@ -8,8 +8,8 @@ $error-focus-outline: 0 0 0 4px color('status.error', '04');
 $input-radius-error: get($radius, 'small');
 $input-radius: get($radius, 'small');
 $label-color: color('adjust.tone', '02');
-$icon-size: get($form, 'input-height');
-$size: get($form, 'textarea-height');
+$icon-size: get($form-sizes, 'input-height');
+$size: get($form-sizes, 'textarea-height');
 
 .textarea {
   display: block;
