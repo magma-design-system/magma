@@ -1,4 +1,4 @@
-export Toggler from '@Behavior/Toggler'
+export Toggler from '@Behavior/Toggler/Toggler'
 
 export BackofficeMenu, { BackofficeMenuItem, BackofficeMenuItemAction, BackofficeMenuItemTitle } from '@Layout/Menu/BackofficeMenu'
 export BackofficePage, { BackofficePageAside, BackofficePageAsideFooter, BackofficePageContent, BackofficePageSection, BackofficePageSectionHeader } from '@Layout/Page/BackofficePage'
@@ -54,6 +54,7 @@ export Button from '@UI/Button/Button'
 export Checkbox from '@UI/Checkbox/Checkbox'
 export InlineCode from '@UI/InlineCode/InlineCode'
 export Download from '@UI/Download/Download'
+export Dropdown, { DropdownItem } from '@UI/Dropdown/Dropdown'
 export Flash from '@UI/Flash/Flash'
 export Hr from '@UI/Hr/Hr'
 export InputEmail from '@UI/Input/InputEmail'

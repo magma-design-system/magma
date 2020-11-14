@@ -5,7 +5,7 @@ $margin-height: s(0.75);
 $borders-color: color('adjust.tone');
 $menu-width: 250px;
 
-.dropdown-menu {
+.dropdown {
 
   --menu-width: #{$menu-width};
 
@@ -16,7 +16,7 @@ $menu-width: 250px;
   }
 
   &--visible {
-    .dropdown-menu {
+    .dropdown {
       &__list {
         opacity: 1;
         pointer-events: auto;
@@ -107,7 +107,7 @@ $menu-width: 250px;
       background-color: color('brand.maggioli', '19');
       color: color('brand.maggioli', '02');
 
-      .dropdown-menu {
+      .dropdown {
         &__item-icon {
           color: color('brand.maggioli', '06');
         }
