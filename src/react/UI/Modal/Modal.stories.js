@@ -4,7 +4,7 @@ import faker from 'faker'
 import Modal from '@UI/Modal/Modal'
 import Button from '@UI/Button/Button'
 import Paragraph from '@Typography/Paragraph/Paragraph'
-import Toggler from '@Behavior/Toggler'
+import Toggler from '@Behavior/Toggler/Toggler'
 
 faker.locale = 'it'
 
