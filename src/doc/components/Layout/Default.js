@@ -14,7 +14,7 @@ import Code from '@UI/InlineCode/InlineCode'
 import CodeBlock from '@Content/CodeBlock/CodeBlock'
 import PackageInfo from '@Content/PackageInfo/PackageInfo'
 import Grid from '@Layout/Grid/Grid'
-import InfoBar from '@Content/InfoBar/InfoBar'
+import BenchmarkBar from '@Content/BenchmarkBar/BenchmarkBar'
 import H1 from '@Typography/H1/H1'
 import Caption from '@Typography/Caption/Caption'
 import Detail from '@Typography/Detail/Detail'
@@ -57,7 +57,7 @@ const shortcodes = {
   Hr,
   HrLight,
   Icon,
-  InfoBar,
+  BenchmarkBar,
   Image,
   ExternalLink,
   List,

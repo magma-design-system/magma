@@ -1,12 +1,12 @@
 import React from 'react'
 import PropTypes from 'prop-types'
-import './InfoBar.scss'
+import './BenchmarkBar.scss'
 import Row from '@Layout/Row/Row'
 import Grid from '@Layout/Grid/Grid'
 import H2 from '@Typography/H2/H2'
 import Caption from '@Typography/Caption/Caption'
 
-const InfoBar = props =>
+const BenchmarkBar = props =>
   <Grid className={`info-bar ${props.className}`} gutter="xsmall">
     <Row>
       <H2 className="info-bar__perc">{props.perc}%</H2>
@@ -17,14 +17,14 @@ const InfoBar = props =>
     </div>
   </Grid>
 
-InfoBar.propTypes = {
+BenchmarkBar.propTypes = {
   className: PropTypes.string,
   perc: PropTypes.number,
 }
 
-InfoBar.defaultProps = {
+BenchmarkBar.defaultProps = {
   className: '',
   perc: 0,
 }
 
-export default InfoBar
+export default BenchmarkBar
