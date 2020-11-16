@@ -1,0 +1,44 @@
+@import '~Sass/import-framework';
+
+@mixin size-modifier ($icon-size) {
+
+  $modifier: nth($icon-size, 1);
+  $size: nth($icon-size, 2);
+
+  &--size-#{$modifier} {
+    height: $size;
+  }
+}
+
+.progress-bar {
+
+  $size: s(1);
+  $shadow: 0 2px 5px 0 color('adjust.tone', '01', 0.05) inset;
+
+  background-color: color('adjust.tone', '19');
+  box-shadow: $shadow;
+  display: flex;
+  height: $size;
+  max-width: 300px;
+  overflow: hidden;
+  width: 100%;
+
+  @each $icon-size in $list-sizes {
+    @include size-modifier ($icon-size);
+  }
+
+  &__inner {
+    background-color: color('brand.maggioli', '10');
+    transition: width get($tween, 'slide');
+  }
+
+  &--rounded {
+    border-radius: get($list-sizes, 'xlarge');
+
+    .progress-bar {
+      &__inner {
+        border-radius: get($list-sizes, 'xlarge');
+      }
+    }
+  }
+}

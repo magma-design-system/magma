@@ -2,7 +2,7 @@ import React from 'react'
 import PropTypes from 'prop-types'
 import './Icon.scss'
 
-import mggIconsDictionary from '£Project/mgg-icons/src/mgg-icons.json'
+import mggIconsDictionary from '+Project/mgg-icons/src/mgg-icons.json'
 const dictionary = Object.keys(mggIconsDictionary)
 
 const Icon = props => {

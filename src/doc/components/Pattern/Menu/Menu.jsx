@@ -33,9 +33,9 @@ const MenuItem = props =>
         {props.title}
       </Link>
     </div>
-    <Grid gutter="none" fit="auto-fit" className="ds-menu-item__list">
+    {props.children && <Grid gutter="none" fit="auto-fit" className="ds-menu-item__list">
       {props.children}
-    </Grid>
+    </Grid>}
   </Grid>
 
 MenuItem.propTypes = {

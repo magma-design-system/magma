@@ -5,26 +5,25 @@ import Row from '@Layout/Row/Row'
 import Grid from '@Layout/Grid/Grid'
 import H2 from '@Typography/H2/H2'
 import Caption from '@Typography/Caption/Caption'
+import ProgressBar from '@UI/ProgressBar/ProgressBar'
 
 const BenchmarkBar = props =>
-  <Grid className={`info-bar ${props.className}`} gutter="xsmall">
+  <Grid className={`benckmark-bar ${props.className}`} gutter="xsmall">
     <Row>
-      <H2 className="info-bar__perc">{props.perc}%</H2>
+      <H2 className="benckmark-bar__progress">{props.progress}%</H2>
       <Caption>{props.children}</Caption>
     </Row>
-    <div className="info-bar__outer">
-      <div className="info-bar__inner" style={{ width: `${props.perc}%` }}></div>
-    </div>
+    <ProgressBar progress={props.progress}/>
   </Grid>
 
 BenchmarkBar.propTypes = {
   className: PropTypes.string,
-  perc: PropTypes.number,
+  progress: PropTypes.number,
 }
 
 BenchmarkBar.defaultProps = {
   className: '',
-  perc: 0,
+  progress: 0,
 }
 
 export default BenchmarkBar

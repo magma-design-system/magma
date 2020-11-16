@@ -11,6 +11,6 @@ export default {
 }
 
 export const basicUsage = () =>
-  <BenchmarkBar perc={faker.random.number(100)}>
+  <BenchmarkBar progress={faker.random.number(100)}>
     { faker.lorem.sentence() }
   </BenchmarkBar>

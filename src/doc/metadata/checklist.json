@@ -1,0 +1,1360 @@
+[
+  {
+    "title":"Design language",
+    "description":"Like any language, a design language is a methodical way of communicating with your audience through your approach to product design. It’s the cornerstone of consistent customer experiences.",
+    "children":[
+      {
+        "title":"Brand",
+        "description":"Brand drives every single decision you make when building new products or features. A good brand is much more than a name and a logo. It’s the values that define your unique identity and what makes you stand out from others.",
+        "children":[
+          {
+            "title":"Vision",
+            "description":"Why you exist, what your values are and how they’ll help guide the future of your product.",
+            "done":false
+          },
+          {
+            "title":"Design principles",
+            "description":"The considerations that guide the basis of your practice. They outline how you approach design from a philosophical perspective and help with everyday decisions.",
+            "done":false
+          },
+          {
+            "title":"Tone of voice",
+            "description":"A clear tone of voice defines how you speak to your audience at every moment in their journey, helping them get wherever they want to go.",
+            "done":false
+          },
+          {
+            "title":"Terminology",
+            "description":"Create the standard terms and phrases that need to be kept the same throughout the user experience, speeding up the design process and unifying your voice.",
+            "done":false
+          },
+          {
+            "title":"Writing guidelines",
+            "description":"Every consistent experience needs watertight writing. Laying down the foundations for your house style early keeps everything in line with consistent grammar, style choices and action-oriented language to help your design.",
+            "done":false
+          }
+        ],
+        "references":[
+          {
+            "title":"Patagonia's vision",
+            "href":"https://www.patagonia.com/company-info.html"
+          },
+          {
+            "title":"IBM Design Principles",
+            "href":"https://www.designprinciplesftw.com/collections/ibm-design-principles"
+          },
+          {
+            "title":"Lightning Design System's Voice and Tone",
+            "href":"https://www.lightningdesignsystem.com/guidelines/voice-and-tone/"
+          }
+        ]
+      },
+      {
+        "title":"Logo",
+        "description":"Most customers form an opinion about a product in seconds. In most cases, your logo will be the first brand asset someone sees. It’s all about making the right first impression. A distinctive logo helps users recognise a product immediately and gives them the essence of your branding.",
+        "children":[
+          {
+            "title":"Monochrome version",
+            "description":"A monochrome version of your logo that looks good on top of photography or when it’s printed with a poor quality printer.",
+            "done":false
+          },
+          {
+            "title":"Small use guidance",
+            "description":"Your logo must perform well and be recognisable at all sizes. Tips for using your logo in these cases will minimise the risk of it being misused.",
+            "done":false
+          },
+          {
+            "title":"Placement and clearance guidance",
+            "description":"Your logo must come with clear guidance on how to place it and how to preserve its space since it lives along with other content.",
+            "done":false
+          },
+          {
+            "title":"Usage guidance",
+            "description":"These are the logo crimes, providing contextual examples of what to (not) do with your logo.",
+            "done":false
+          },
+          {
+            "title":"Different file formats",
+            "description":"Providing a variety of formats for the vector version of your logo will make it easier for others to work and prevent anyone from redrawing it.",
+            "done":false
+          }
+        ],
+        "references":[
+          {
+            "title":"Slack Brand Guidelines",
+            "href":"https://a.slack-edge.com/0f43e/marketing/img/media-kit/Slack-Brand-Guidelines.pdf"
+          },
+          {
+            "title":"Audi’s “Rings”",
+            "href":"https://www.audi.com/ci/en/intro/basics/rings.html"
+          },
+          {
+            "title":"Atlassian Logos",
+            "href":"https://www.atlassian.design/guidelines/brand/logos"
+          }
+        ]
+      },
+      {
+        "title":"Guidelines",
+        "description":"Providing guidance on how to approach common UX patterns will allow your organisation to establish a consistent approach and a consistent user experience on any platform.",
+        "children":[
+          {
+            "title":"Accessibility",
+            "description":"Guidelines for how you approach accessibility and how you leverage colour, hierarchy and assistive technologies to help your users.",
+            "done":false
+          },
+          {
+            "title":"User onboarding",
+            "description":"How you onboard your users to your product or a new feature and give them a great experience from the start.",
+            "done":false
+          },
+          {
+            "title":"Notifications and permissions",
+            "description":"Guardrails for how to write for the components that make up your designs, from style and technical rules to channeling your tone of voice correctly through copy.",
+            "done":false
+          },
+          {
+            "title":"Microcopy guidelines",
+            "description":"The standard way to write for the components in your design system. These take platform conventions and best practices for writing all into consideration.",
+            "done":false
+          }
+        ],
+        "references":[
+          {
+            "title":"Human Interface Guidelines: Notifications",
+            "href":"https://developer.apple.com/design/human-interface-guidelines/ios/system-capabilities/notifications/"
+          },
+          {
+            "title":"Material Design: Onboarding",
+            "href":"https://material.io/design/communication/onboarding.html#self-select-model"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "title":"Design tokens",
+    "description":"Variables that store values for the base layer of your design system, like colour and typography. They’re used in components, so changes on this level will resonate throughout the whole system.",
+    "children":[
+      {
+        "title":"Colour",
+        "description":"Not only an efficient way to showcase your brand, but also an efficient way to communicate with your users. Colour palettes created with purpose over aesthetics in mind can help you create intuitive design patterns by adding meaning to your interface.",
+        "children":[
+          {
+            "title":"Accessibility",
+            "description":"Make sure to have accessible pairings between the main colours in your palette. More importantly, make sure that your background and text colours have at least an AA standard contrast ratio between them.",
+            "done":false
+          },
+          {
+            "title":"Functional colours",
+            "description":"Besides your brand colours, make sure to have colours defined and made into variables for functions like disabled states, backgrounds, actions and high contrast text.",
+            "done":false
+          },
+          {
+            "title":"Dark mode",
+            "description":"Preparing a dark mode version of your colour palette will allow your design system to adapt to dark mode and respect what your user wants to see.",
+            "done":false
+          },
+          {
+            "title":"Guidelines",
+            "description":"Provide guidelines on how and when to use the colours in your palette, what to keep in mind when working with them and how not to use them.",
+            "done":false
+          }
+        ],
+        "references":[
+          {
+            "title":"Lyft: Re-approaching Color",
+            "href":"https://design.lyft.com/re-approaching-color-9e604ba22c88"
+          },
+          {
+            "title":"Material Design: Dark theme",
+            "href":"https://material.io/design/color/dark-theme.html"
+          },
+          {
+            "title":"IBM Design Language: Color",
+            "href":"https://www.ibm.com/design/language/color/"
+          }
+        ]
+      },
+      {
+        "title":"Layout",
+        "description":"A well thought out layout goes a long way. Consistent use of a grid and spacing makes it easier for your users to scan the user interface and grasp the content.",
+        "children":[
+          {
+            "title":"Units",
+            "description":"Units are the most granular building blocks for layout. Defining a set of values with consistent increments (such as 4, 8, 12 and 16 for a 4-point system) will provide you with the foundation when you’re designing your grid and spacing values.",
+            "done":false
+          },
+          {
+            "title":"Grid",
+            "description":"Every layout should sit on a grid that brings order and hierarchy to the interface. Define a grid separately for mobile, tablet and desktop devices with columns, gutters, and margins so your interface can adapt to any platform easily.",
+            "done":false
+          },
+          {
+            "title":"Breakpoints",
+            "description":"Predefine the screen sizes and orientations your grid will adapt to.",
+            "done":false
+          },
+          {
+            "title":"Spacing",
+            "description":"Horizontal and vertical rhythm plays a big role in a layout. You should provide easy methods for adding space between interface elements independent of your grid.",
+            "done":false
+          }
+        ],
+        "references":[
+          {
+            "title":"Material Design: Responsive Layout Grid",
+            "href":"https://material.io/design/layout/responsive-layout-grid.html"
+          },
+          {
+            "title":"Ant Design: Layout",
+            "href":"https://ant.design/docs/spec/layout"
+          }
+        ]
+      },
+      {
+        "title":"Typography",
+        "description":"Typography is one of the main ways you surface content in products. A clear hierarchy and contrasting styles in your typography scale will make things easier to read and help with the overall structure of your product. It’s also an opportunity to visualise your brand character and presence.",
+        "children":[
+          {
+            "title":"Responsiveness",
+            "description":"Desktop devices can usually afford to have bigger font sizes compared to mobile devices. Creating a typography scale that adapts to the viewport size will help with a more meaningful hierarchy and layout.",
+            "done":false
+          },
+          {
+            "title":"Grid relation",
+            "description":"Font sizes and leading should match your grid to allow better pairing between text and other UI elements. A good example of this is text paired with icons with bounding boxes.",
+            "done":false
+          },
+          {
+            "title":"Readability",
+            "description":"Optimising the letter spacing (tracking), line height (leading) and line length for your typography scale will help with the readability of text.",
+            "done":false
+          },
+          {
+            "title":"Performance",
+            "description":"Custom fonts need to be downloaded before they can be displayed, especially on the web. Make sure that you have sensible fallbacks and fast loading time for your typography assets. Using system fonts solves this performance problem.",
+            "done":false
+          },
+          {
+            "title":"Guidelines",
+            "description":"Provide guidelines on how and when to use the pairings in your typography scale, what to keep in mind when working with them and how not to use them.",
+            "done":false
+          }
+        ],
+        "references":[
+          {
+            "title":"Material Design: Understanding Typography",
+            "href":"https://material.io/design/typography/understanding-typography.html#type-properties"
+          },
+          {
+            "title":"Better Web Type",
+            "href":"https://betterwebtype.com/"
+          }
+        ]
+      },
+      {
+        "title":"Iconography",
+        "description":"Icons are symbols that represent functionality or content. They’re especially recognisable and helpful in user interfaces since their meaning can be understood at a glance. hough they can be used just for decoration, their full potential can be realised when they’re used meaningfully and consistently.",
+        "children":[
+          {
+            "title":"Accessibility",
+            "description":"For icons that convey a meaning or serve a function, add the necessary support for screen readers. You can skip this for decorative icons.",
+            "done":false
+          },
+          {
+            "title":"Style",
+            "description":"Make sure that your icon family makes visual sense as a whole. Picking an outlined or filled style and sticking with it will lead to better visual consistency and predictability.",
+            "done":false
+          },
+          {
+            "title":"Naming",
+            "description":"Name your icons based on what they are, not what they represent. For instance, a trash icon should be named trash, not delete. You can still add related keywords to improve discoverability.",
+            "done":false
+          },
+          {
+            "title":"Relation with grid",
+            "description":"Draw your icons in a bounding box that plays well with your grid. This makes for a better pairing with other UI elements. A good example of this would be icons with bounding boxes paired with text.",
+            "done":false
+          },
+          {
+            "title":"Sizes",
+            "description":"Provide different sizes for icons that correlate to your grid. Provide a minimum size and remove unnecessary detail for your icons for smaller sizes.",
+            "done":false
+          },
+          {
+            "title":"Keywords",
+            "description":"Adding keywords will improve the discoverability of each icon and provide a better user experience for anyone using your system.",
+            "done":false
+          },
+          {
+            "title":"Reserved icons",
+            "description":"Reserving icons that represent common actions will prevent their use in any other context. System icons for navigation or adding and deleting are a good example. This leads to a more intuitive user experience.",
+            "done":false
+          },
+          {
+            "title":"Guidelines",
+            "description":"Provide guidelines on how and when to use icons, what to keep in mind when working with them and how not to use them.",
+            "done":false
+          }
+        ],
+        "references":[
+          {
+            "title":"A complete guide to iconography",
+            "href":"https://www.designsystems.com/iconography-guide/"
+          },
+          {
+            "title":"Material Design: Product Icons",
+            "href":"https://material.io/design/iconography/product-icons.html"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "title":"Core components",
+    "description":"Components are the main building blocks for user interfaces. Building a reusable component library enhances your product development workflow by reducing design and tech debt and speeding up the process. Core components can’t be broken down into granular pieces without losing their meaning.",
+    "children":[
+      {
+        "title":"Avatar",
+        "description":"Avatars are used to show a thumbnail of a user photo or a visual representation of any other type of content.",
+        "children":[
+          {
+            "title":"Image",
+            "description":"Avatars should mask an image into their shape and work with any image size since they may get this image from unknown data sources.",
+            "done":false
+          },
+          {
+            "title":"Image fallback",
+            "description":"There should be fallbacks when there’s no image available. This can be done with placeholder images or initials.",
+            "done":false
+          },
+          {
+            "title":"Accessibility",
+            "description":"Always provide a description for screen readers describing what’s displayed on the avatar image instead of just naming its role.",
+            "done":false
+          },
+          {
+            "title":"Sizes",
+            "description":"There are many contexts to use avatars and they all require different sizes for the component. For average projects use at least 2-3 different sizes and make sure there’s at least a small size available.",
+            "done":false
+          },
+          {
+            "title":"Icon",
+            "description":"Avatars can be used with an icon instead of an image to emphasize areas that don’t necessarily have (or need) an image associated with it.",
+            "done":false
+          },
+          {
+            "title":"Background colours",
+            "description":"When used with icons or text, there has to be a background colour from the design system colour tokens applied to the avatar shape. Make sure that icons and text have enough contrast ratio with the background according to the WCAG AA standard.",
+            "done":false
+          }
+        ],
+        "references":[
+          {
+            "title":"Design Better Avatars",
+            "href":"https://uxdesign.cc/design-avatars-that-make-sense-and-be-more-inclusive-in-the-process-d4dd6a486ea6"
+          },
+          {
+            "title":"Lightning Design System: Avatar",
+            "href":"https://www.lightningdesignsystem.com/components/avatar/"
+          }
+        ]
+      },
+      {
+        "title":"Badge",
+        "description":"Badges are elements that represent the status of an object or user input value.",
+        "children":[
+          {
+            "title":"Appearance",
+            "description":"Badges may play various roles in your product and having a predefined colour for each role should help users understand their meaning. When changing colours, make sure the text has enough contrast ratio with the background according to the WCAG AA standard.",
+            "done":false
+          },
+          {
+            "title":"Dismissible action",
+            "description":"Badges can be used as a dynamic way to display selected values and there should be a way to dismiss them.",
+            "done":false
+          }
+        ],
+        "references":[
+          {
+            "title":"Atlaskit: Badge",
+            "href":"https://atlaskit.atlassian.com/packages/core/badge"
+          },
+          {
+            "title":"Material Design: Chips",
+            "href":"https://material.io/components/chips/"
+          }
+        ]
+      },
+      {
+        "title":"Banner",
+        "description":"Banners display an actionable message used as a prominent way of communicating with your users.",
+        "children":[
+          {
+            "title":"Appearance",
+            "description":"Banners are used to display different types of messages and it’s important to differentiate their visual appearance based on the role they’re playing. If you’re using background colours for role differentiation, make sure there’s enough contrast ratio with the content according to the WCAG AA standard.",
+            "done":false
+          },
+          {
+            "title":"Area for icons or images",
+            "description":"Banners can supplement their message using a supporting icon or image. They shouldn’t be used instead of text content.",
+            "done":false
+          },
+          {
+            "title":"Actions",
+            "description":"Actions in banners should relate to its text and provide a way to react to the message sent to the user.",
+            "done":false
+          },
+          {
+            "title":"Dismissible action",
+            "description":"Don’t overwhelm the user with banners on the page and include a dismissable action. That may be either a separate close button or one of the actions provided.",
+            "done":false
+          },
+          {
+            "title":"Accessibility",
+            "description":"If a banner dynamically appears on the page, it should be announced to the user by their assistive technology.",
+            "done":false
+          },
+          {
+            "title":"Responsiveness",
+            "description":"Banners should adapt to the viewport size. This usually means that they become full-width for mobile to save some space.",
+            "done":false
+          }
+        ],
+        "references":[
+          {
+            "title":"Shopify Polaris: Banner",
+            "href":"https://polaris.shopify.com/components/feedback-indicators/banner"
+          }
+        ]
+      },
+      {
+        "title":"Button",
+        "description":"Buttons are interactive elements used for single-step actions.",
+        "children":[
+          {
+            "title":"Hover state",
+            "description":"Clearly show that the button is interactive when it gets hovered with a mouse cursor.",
+            "done":false
+          },
+          {
+            "title":"Active state",
+            "description":"Used when a button gets pressed. The same state can be used to represent the button responsible for toggling another element on the page while that element is visibly opened.",
+            "done":false
+          },
+          {
+            "title":"Focused state",
+            "description":"Used when a button gets selected through keyboard navigation.",
+            "done":false
+          },
+          {
+            "title":"Icon support",
+            "description":"Icons easily communicate the purpose of the button when used next to its label or can be used without text when there’s not enough space. Make sure that the accessibility label is provided when used with an icon only.",
+            "done":false
+          },
+          {
+            "title":"Disabled",
+            "description":"Visually shows that a button is not interactive and restricts it from being pressed.",
+            "done":false
+          },
+          {
+            "title":"Loading",
+            "description":"Used when users have to wait for the result of their action after they press a button. If a spinner is used to display this state make sure that it’s not changing the original button width or height.",
+            "done":false
+          },
+          {
+            "title":"Full-width",
+            "description":"By default buttons take the width of their content, but they should also come with a full width variant that works well in mobile devices.",
+            "done":false
+          },
+          {
+            "title":"Variants",
+            "description":"When using multiple buttons, there should be a way to differentiate between primary and secondary actions. Buttons may play different roles for the user or be used on different types of surfaces and they have to change the way they look.",
+            "done":false
+          },
+          {
+            "title":"Sizes",
+            "description":"Buttons can be used in different areas of the website and may have multiple predefined sizes. On mobile, tappable areas have to be a minimum of 48px to be accessible according to iOS and Android accessibility guidelines.",
+            "done":false
+          }
+        ],
+        "references":[
+          {
+            "title":"Material Design: Buttons",
+            "href":"https://material.io/components/buttons/"
+          },
+          {
+            "title":"7 basic rules for button design",
+            "href":"https://uxplanet.org/7-basic-rules-for-button-design-63dcdf5676b4"
+          }
+        ]
+      },
+      {
+        "title":"Card",
+        "description":"Cards are used to group information about subjects and their related actions.",
+        "children":[
+          {
+            "title":"Supports any type of content",
+            "description":"Cards are one of the most used components in the product, so they have to be flexible enough to support any other components placed in them.",
+            "done":false
+          },
+          {
+            "title":"Information structure",
+            "description":"No matter how flexible cards are, it’s important for cards to have a specific structure for its elements for product consistency.",
+            "done":false
+          },
+          {
+            "title":"Supports media sections",
+            "description":"One of the most popular scenarios for using cards is mixing them with media content. The most popular options are having a full-width area on top of the content or full-height area at one of the card’s sides.",
+            "done":false
+          },
+          {
+            "title":"Supplementary actions",
+            "description":"Cards can be used with actions usually placed at the bottom of the card, or the card itself can be tappable and represent an action.",
+            "done":false
+          },
+          {
+            "title":"Responsiveness",
+            "description":"On mobile viewports cards are usually full-width in order to save space for the content.",
+            "done":false
+          }
+        ],
+        "references":[
+          {
+            "title":"Lightning Design System: Cards",
+            "href":"https://www.lightningdesignsystem.com/components/cards/"
+          },
+          {
+            "title":"Shopify Polaris: Cards",
+            "href":"https://polaris.shopify.com/components/structure/card"
+          }
+        ]
+      },
+      {
+        "title":"Carousel",
+        "description":"Carousels stack the same type of items and allows scrolling through them horizontally.",
+        "children":[
+          {
+            "title":"Navigation controls",
+            "description":"Carousels should have easy-to-find navigation controls for scrolling through content.",
+            "done":false
+          },
+          {
+            "title":"Supports any content",
+            "description":"Carousels can be used in different contexts and shouldn’t be limited to a specific child component. In some scenarios you might want items within the same carousel to differ from each other.",
+            "done":false
+          },
+          {
+            "title":"Items width customisation",
+            "description":"For simple products, it might be fine to use multiple predefined sizes for carousel items. For more flexibility, it’s good to provide a way to define a custom width.",
+            "done":false
+          },
+          {
+            "title":"Touch events support",
+            "description":"Carousels should be scrollable on touch devices. Some of the best practices are to use native scrolling and to make sure you’re supporting the same behaviour for all touch devices, not just mobile phones.",
+            "done":false
+          },
+          {
+            "title":"Keyboard navigation",
+            "description":"It should be possible to scroll through content with keyboard arrows when focused on navigation controls.",
+            "done":false
+          },
+          {
+            "title":"Responsiveness",
+            "description":"It’s good practice to hide or reduce the size of navigation controls for mobile viewports to improve the visibility of the content.",
+            "done":false
+          }
+        ],
+        "references":[
+          {
+            "title":"Carousel and slider design best practices",
+            "href":"https://webflow.com/blog/carousel-slider-design-best-practices"
+          },
+          {
+            "title":"Designing a User-Friendly Homepage Carousel",
+            "href":"https://uxplanet.org/designing-a-user-friendly-homepage-carousel-f664c9f2b50e"
+          },
+          {
+            "title":"GEL: Carousel",
+            "href":"https://www.bbc.co.uk/gel/guidelines/carousel"
+          }
+        ]
+      },
+      {
+        "title":"Dropdown",
+        "description":"Dropdowns are used to display a contextual subview with a list of actions or content related to the area where the dropdown is.",
+        "children":[
+          {
+            "title":"Supports any type of content",
+            "description":"Dropdowns may be used in a lot of contexts like date pickers, language selection or other product features.",
+            "done":false
+          },
+          {
+            "title":"Action menu",
+            "description":"One of the most used scenarios for dropdowns is providing an action menu for the user, so it’s useful to have this layout defined.",
+            "done":false
+          },
+          {
+            "title":"Focus trapping",
+            "description":"Once the dropdown’s opened, the focus should work only for elements inside the dropdown. When it’s closed, the focus should move to the dropdown trigger.",
+            "done":false
+          },
+          {
+            "title":"Close action",
+            "description":"Either some actions inside the dropdown should close it or there should be a separate close button. Also, it’s good practice to close the dropdown when a user clicks outside.",
+            "done":false
+          },
+          {
+            "title":"Keyboard navigation",
+            "description":"It should be possible to navigate through dropdown children elements with the keyboard and close it with an Esc key.",
+            "done":false
+          },
+          {
+            "title":"Dynamic positioning",
+            "description":"Dropdown content should be displayed based on the current position of the trigger element on the screen and always visible to the user.",
+            "done":false
+          },
+          {
+            "title":"Responsiveness",
+            "description":"Dropdown content should be adapted for mobile viewpoints as it may take a lot of space on desktops.",
+            "done":false
+          }
+        ],
+        "references":[
+          {
+            "title":"Dropdowns: Design Guidelines",
+            "href":"https://www.nngroup.com/articles/drop-down-menus/"
+          },
+          {
+            "title":"Atlaskit: Dropdown menu",
+            "href":"https://atlaskit.atlassian.com/packages/core/dropdown-menu"
+          },
+          {
+            "title":"Ant Design: Dropdown",
+            "href":"https://ant.design/components/dropdown/"
+          }
+        ]
+      },
+      {
+        "title":"Icon",
+        "description":"The icon component is a way to align the way iconography static assets are displayed in the product.",
+        "children":[
+          {
+            "title":"Sizes",
+            "description":"Icons should have a number of predefined sizes to provide a holistic experience across the product. Typography pairings may be used for these size values to ensure that they are aligned with the text sizes.",
+            "done":false
+          },
+          {
+            "title":"Colours",
+            "description":"Icons should be using values from the design system colour palette. Using parent element text colour for icon fill colour can make this automatic.",
+            "done":false
+          }
+        ],
+        "references":[
+
+        ]
+      },
+      {
+        "title":"Input checkbox",
+        "description":"An input checkbox is a form element used for selecting one or multiple options.",
+        "children":[
+          {
+            "title":"Checked state",
+            "description":"Used when the checkbox is selected and will use its value for the form submission.",
+            "done":false
+          },
+          {
+            "title":"Disabled state",
+            "description":"Prevents checkbox interactions and removes its value from the form submission.",
+            "done":false
+          },
+          {
+            "title":"Indeterminate state",
+            "description":"Used when the checkbox has children selectable elements and only some of them are selected.",
+            "done":false
+          },
+          {
+            "title":"Label",
+            "description":"There should be a text label linked with the checkbox field. Clicking the label should also trigger the checkbox selection.",
+            "done":false
+          },
+          {
+            "title":"Error state",
+            "description":"The error state is used for form validation errors when the error is related to the checkbox field only. Always use a text error along with changing the colour of the field.",
+            "done":false
+          },
+          {
+            "title":"Keyboard support",
+            "description":"Checkbox selections should be triggered with the Space key. Using native elements for this should provide this kind of interaction out of the box.",
+            "done":false
+          },
+          {
+            "title":"Checkbox group",
+            "description":"Checkboxes can be grouped to work with multiple values at the same time.",
+            "done":false
+          }
+        ],
+        "references":[
+          {
+            "title":"Ant Design: Checkbox",
+            "href":"https://ant.design/components/checkbox/"
+          },
+          {
+            "title":"Checkboxes – GOV.UK Design System",
+            "href":"https://design-system.service.gov.uk/components/checkboxes/"
+          },
+          {
+            "title":"UX Design: Checkbox and Toggle in Forms",
+            "href":"https://uxplanet.org/checkbox-and-toggle-in-forms-f0de6086ac41"
+          }
+        ]
+      },
+      {
+        "title":"Input radio",
+        "description":"An input radio is a form element used for selecting one option from a list.",
+        "children":[
+          {
+            "title":"Checked state",
+            "description":"Used when the radio is selected and will use its value for the form submission. A radio input can’t be unselected by pressing it again.",
+            "done":false
+          },
+          {
+            "title":"Disabled state",
+            "description":"Prevents radio interactions and removes its value from the form submission.",
+            "done":false
+          },
+          {
+            "title":"Label",
+            "description":"There should be a text label linked with the radio field. Clicking the label should also trigger the radio selection.",
+            "done":false
+          },
+          {
+            "title":"Error state",
+            "description":"The error state is used for form validation errors when the error is related to the radio field only. Always use a text error along with changing the colour of the field.",
+            "done":false
+          },
+          {
+            "title":"Keyboard support",
+            "description":"A radio selection should be triggered when the Space key is pressed. Using native elements for this should provide this kind of interaction out of the box.",
+            "done":false
+          },
+          {
+            "title":"Radio group",
+            "description":"Radio inputs should always be used in a group. If one of them is selected, it can be deselected only by choosing another radio.",
+            "done":false
+          }
+        ],
+        "references":[
+          {
+            "title":"Ant Design: Radio",
+            "href":"https://ant.design/components/radio/"
+          },
+          {
+            "title":"Radios – GOV.UK Design System",
+            "href":"https://design-system.service.gov.uk/components/radios/"
+          },
+          {
+            "title":"Radio Buttons UX Design",
+            "href":"https://uxplanet.org/radio-buttons-ux-design-588e5c0a50dc"
+          }
+        ]
+      },
+      {
+        "title":"Input text",
+        "description":"Input text lets users enter and edit text.",
+        "children":[
+          {
+            "title":"Disabled state",
+            "description":"Prevents input interactions and removes its value from the form submission.",
+            "done":false
+          },
+          {
+            "title":"Placeholder",
+            "description":"When there’s no value entered, show a placeholder with a potential value example. Don’t use placeholders as labels for the inputs.",
+            "done":false
+          },
+          {
+            "title":"Label",
+            "description":"There should be a text label linked with the text field. Clicking the label should move the focus to the field.",
+            "done":false
+          },
+          {
+            "title":"Error state",
+            "description":"The error state is used for form validation errors when the error is related to the text field only. Always use a text error along with changing the colour of the field.",
+            "done":false
+          },
+          {
+            "title":"Autocomplete",
+            "description":"When applicable, adding support for the HTML autocomplete attribute will allow users to easily enter different data types.",
+            "done":false
+          },
+          {
+            "title":"Icon support",
+            "description":"Icons are used to describe input methods, express a text field state or provide additional functionality.",
+            "done":false
+          }
+        ],
+        "references":[
+          {
+            "title":"The ultimate guide for text fields in UX — Part I",
+            "href":"https://blog.prototypr.io/the-ultimate-guide-for-text-fields-in-ux-part-i-b6e5eb58b0e4"
+          },
+          {
+            "title":"Backpack: Text Input",
+            "href":"https://backpack.github.io/components/text-input?platform=web"
+          },
+          {
+            "title":"Lightning Design System: Input",
+            "href":"https://www.lightningdesignsystem.com/components/input/"
+          },
+          {
+            "title":"MDN Web Docs: The HTML autocomplete attribute",
+            "href":"https://developer.mozilla.org/en-US/docs/Web/HTML/Attributes/autocomplete"
+          }
+        ]
+      },
+      {
+        "title":"Input switch",
+        "description":"Input switches toggle the state of a single item. Compared to the input checkbox, their changes usually apply without any additional submission.",
+        "children":[
+          {
+            "title":"Checked state",
+            "description":"Used when an input switch is turned on. It’s better to provide an additional way to indicate the checked state besides changing its colour when applicable.",
+            "done":false
+          },
+          {
+            "title":"Disabled state",
+            "description":"Prevents interacting with an input switch.",
+            "done":false
+          },
+          {
+            "title":"Label",
+            "description":"There should be a text label linked with the switch field. Clicking the label should also trigger the input selection. ",
+            "done":false
+          },
+          {
+            "title":"Keyboard support",
+            "description":"A switch selection should be triggered when the Space key is pressed.",
+            "done":false
+          }
+        ],
+        "references":[
+          {
+            "title":"UX Design: Checkbox and Toggle in Forms",
+            "href":"https://uxplanet.org/checkbox-and-toggle-in-forms-f0de6086ac41"
+          },
+          {
+            "title":"Material Design: Switches",
+            "href":"https://material.io/components/selection-controls/#switches"
+          },
+          {
+            "title":"Shopify Polaris: Setting Toggle",
+            "href":"https://polaris.shopify.com/components/actions/setting-toggle"
+          }
+        ]
+      },
+      {
+        "title":"List",
+        "description":"Lists define the layout of the page content or groups of elements stacking them vertically or horizontally.",
+        "children":[
+          {
+            "title":"Supports any type of content",
+            "description":"Lists can be used in any context from page-level layout to managing offsets between granular components. hey should work with any component used inside.",
+            "done":false
+          },
+          {
+            "title":"Horizontal stacking",
+            "description":"Lists can be used for inline elements and they have to manage how they’re stacked horizontally, including handling offsets between multiple rows of elements.",
+            "done":false
+          },
+          {
+            "title":"Divided variant",
+            "description":"Lists with dividers are the best practice advised by many platform guidelines (especially on mobile).",
+            "done":false
+          },
+          {
+            "title":"Supports actionable content",
+            "description":"Sometimes lists are used for grouping tappable components, where the whole area of the list item should be clickable.",
+            "done":false
+          }
+        ],
+        "references":[
+          {
+            "title":"Material Design: List",
+            "href":"https://material.io/components/lists/"
+          },
+          {
+            "title":"Cosmos: List",
+            "href":"https://auth0-cosmos.now.sh/docs/#/component/list"
+          }
+        ]
+      },
+      {
+        "title":"Loading indicator",
+        "description":"The loading indicator shows that an operation’s being performed and how long the process will take.",
+        "children":[
+          {
+            "title":"Linear and non-linear variants",
+            "description":"Depending on the context and the component it’s used for, the loading indicator can be represented either with linear or with a non-linear (e.g. circular) variant.",
+            "done":false
+          },
+          {
+            "title":"Determinate or indeterminate wait time",
+            "description":"In some cases, the wait time can’t be determined. The loading indicator should be shown until the loading finishes or an error happens. In other cases, it’s better to indicate how much time’s left until the loading is done.",
+            "done":false
+          },
+          {
+            "title":"Light variant",
+            "description":"The loading indicator should respect its parent element background and provide a variant to be used on darker background colours.",
+            "done":false
+          },
+          {
+            "title":"Reduced motion",
+            "description":"The loading indicator should be synced with the system motion settings and reduce its animation speed when reduced motion settings are turned on.",
+            "done":false
+          }
+        ],
+        "references":[
+          {
+            "title":"Audi: Loader",
+            "href":"https://www.audi.com/ci/en/guides/user-interface/components/loader.html"
+          },
+          {
+            "title":"Shopify Polaris: Progress Bar",
+            "href":"https://polaris.shopify.com/components/feedback-indicators/progress-bar"
+          },
+          {
+            "title":"Everything you need to know about Loading Animations",
+            "href":"https://medium.com/flawless-app-stories/everything-you-need-to-know-about-loading-animations-10db7f9b61e"
+          }
+        ]
+      },
+      {
+        "title":"Modal",
+        "description":"Modals are containers appearing in front of the main content to provide critical information or an actionable piece of content.",
+        "children":[
+          {
+            "title":"Supports any type of content",
+            "description":"Like any other container, modals can be used in different scenarios and you should be able to use it with any other component inside.",
+            "done":false
+          },
+          {
+            "title":"Supplementary actions",
+            "description":"Since content in the modal may be actionable, it’s important to have an area for action elements. This area is usually located at the bottom of the modal container.",
+            "done":false
+          },
+          {
+            "title":"Close action",
+            "description":"Modals should provide a clear way to be closed as they’re blocking content when open. This may be either a separate close button or one of the supplementary actions.",
+            "done":false
+          },
+          {
+            "title":"Information structure",
+            "description":"Even though modals can be used as an empty container for the content, they need a defined information structure to provide a holistic experience. It may include defining how titles and subtitles look by default or where an action element’s area is.",
+            "done":false
+          },
+          {
+            "title":"Keyboard navigation support",
+            "description":"It should be possible to close a modal by pressing the Esc key and all the focusable elements inside the modal container should be accessible with keyboard navigation.",
+            "done":false
+          },
+          {
+            "title":"Focus trapping",
+            "description":"Once a modal is opened, the focus should be moved to the first element inside the modal and should be looped within the modal container. Closing the modal should return the focus to the last focused element on the page.",
+            "done":false
+          }
+        ],
+        "references":[
+          {
+            "title":"Shopify Polaris: Modal",
+            "href":"https://polaris.shopify.com/components/overlays/modal"
+          },
+          {
+            "title":"Mixpanel: Modal",
+            "href":"https://design.mixpanel.com/#mp-modal"
+          },
+          {
+            "title":"Best Practices for Modals/Overlays/Dialog Windows",
+            "href":"https://uxplanet.org/best-practices-for-modals-overlays-dialog-windows-c00c66cddd8c"
+          }
+        ]
+      },
+      {
+        "title":"Tabs",
+        "description":"Tabs organise navigation between multiple pages or content sections.",
+        "children":[
+          {
+            "title":"Active button state",
+            "description":"There should be a clear differentiation between selected and unselected tab buttons.",
+            "done":false
+          },
+          {
+            "title":"Button icon support",
+            "description":"Icons help show the purpose of the tab buttons when used next to its label.",
+            "done":false
+          },
+          {
+            "title":"Equally-sized tab buttons",
+            "description":"Tabs can be used in a relatively small-sized container where you need to switch between a definite number of sections. For such scenarios, it’s better to support a variant where the button’s area is divided equally.",
+            "done":false
+          },
+          {
+            "title":"Keyboard navigation",
+            "description":"All tab buttons should be focusable and navigation between the tab’s component should be accessible from the keyboard.",
+            "done":false
+          },
+          {
+            "title":"Responsiveness",
+            "description":"If all tabs on mobile don’t fit into the viewport, users should still have access to all tab buttons. Ways to solve this can be making the button area scrollable for mobile or showing a More button containing a dropdown with the rest of the buttons.",
+            "done":false
+          }
+        ],
+        "references":[
+          {
+            "title":"Tabs, Used Right",
+            "href":"https://www.nngroup.com/articles/tabs-used-right/"
+          },
+          {
+            "title":"Material Design: Tabs",
+            "href":"https://material.io/components/tabs/"
+          },
+          {
+            "title":"Atlaskit: Tabs",
+            "href":"https://atlaskit.atlassian.com/packages/core/tabs"
+          }
+        ]
+      },
+      {
+        "title":"Toast",
+        "description":"Toasts provide short meaningful feedback messages about the action results.",
+        "children":[
+          {
+            "title":"Dismissed automatically",
+            "description":"Toast messages shouldn’t interrupt the user flow, block the screen for a long time or require additional action from the user.",
+            "done":false
+          },
+          {
+            "title":"Action support",
+            "description":"Besides displaying the message, toasts may also provide an action related to the message like undoing an action.",
+            "done":false
+          },
+          {
+            "title":"Handles multiple instances",
+            "description":"Even though it doesn’t happen often, toasts can be called from multiple sources at the same time and all resulting toasts should be queued. It’s good practice not to show all the messages at the same time.",
+            "done":false
+          },
+          {
+            "title":"Accessibility",
+            "description":"Toast messages should be announced by the voice assistive technology and their action should be easily accessible from the keyboard.",
+            "done":false
+          },
+          {
+            "title":"Responsiveness",
+            "description":"Toasts should be aligned with the mobile viewport and their action should be easily reachable for tapping.",
+            "done":false
+          }
+        ],
+        "references":[
+          {
+            "title":"Toasts or snack bars? — designing organic notifications",
+            "href":"https://uxdesign.cc/toasts-or-snack-bars-design-organic-system-notifications-1236f2883023"
+          },
+          {
+            "title":"Lightning Design System: Toast",
+            "href":"https://www.lightningdesignsystem.com/components/toast/"
+          },
+          {
+            "title":"Blueprint JS: Toast",
+            "href":"https://blueprintjs.com/docs/#core/components/toast"
+          }
+        ]
+      },
+      {
+        "title":"Tooltip",
+        "description":"Tooltips are desktop-only components that display additional information when hovering over or focusing on an element.",
+        "children":[
+          {
+            "title":"Keyboard hover support",
+            "description":"Tooltips should be accessible when an element is focused using the keyboard.",
+            "done":false
+          },
+          {
+            "title":"Dynamic positioning",
+            "description":"Tooltip content should be displayed based on the current position of the trigger element on the screen and always visible to the user.",
+            "done":false
+          },
+          {
+            "title":"Hover timeout",
+            "description":"Having a small timeout before triggering a tooltip will help to prevent occasionally showing tooltips while users move their mouse cursor.",
+            "done":false
+          },
+          {
+            "title":"Light variant",
+            "description":"The tooltip should respect its parent element background and provide a variant to be used on darker background colours.",
+            "done":false
+          },
+          {
+            "title":"Instant transition for element groups",
+            "description":"If there’s a group of elements using tooltips, hovering over another element while a tooltip’s already active shouldn’t trigger the animation.",
+            "done":false
+          }
+        ],
+        "references":[
+          {
+            "title":"Tooltip Guidelines",
+            "href":"https://www.nngroup.com/articles/tooltip-guidelines/"
+          },
+          {
+            "title":"Blueprint JS: Tooltip",
+            "href":"https://blueprintjs.com/docs/#core/components/tooltip"
+          },
+          {
+            "title":"Material Design: Tooltip",
+            "href":"https://material.io/components/tooltips/"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "title":"Tooling",
+    "description":"To make things efficient for anyone using your design system, make tooling essential. Find the workflows where you can integrate things with the tools people use. This helps organically spread your design system and make it crucial to people’s daily work.",
+    "children":[
+      {
+        "title":"Design",
+        "description":"The UI and UX in a design system need to be tied to development as much as possible. The tools in this checklist should help designers and developers work better together.",
+        "children":[
+          {
+            "title":"Design editor",
+            "description":"There are many design editors available in the market today with the most popular names being Sketch, Figma and Adobe XD. If you're unsure which route to go down it's often best to speak with your team.",
+            "done":false
+          },
+          {
+            "title":"Plugins",
+            "description":"Most popular Design Editors (Sketch and Figma, especially) come with third-party plugin support. Whilst it's best to use the editors in-built tools for laying out your components, plugins can bring in a range of useful data to populate them.",
+            "done":false
+          },
+          {
+            "title":"Version control",
+            "description":"Having your design versioned with semantic versioning will allow you to easily align design with development, roll back faulty changes and release changes in code and design at the same time.",
+            "done":false
+          },
+          {
+            "title":"Contribution guidelines",
+            "description":"Define the process of contributing to the UI and UX of the design system and document it in a discoverable place to make it easier for everyone to contribute.",
+            "done":false
+          }
+        ],
+        "references":[
+          {
+            "title":"Figma",
+            "href":"https://www.figma.com/"
+          },
+          {
+            "title":"Sketch",
+            "href":"https://www.sketch.com/"
+          },
+          {
+            "title":"Adobe XD",
+            "href":"https://www.adobe.com/uk/products/xd.html"
+          },
+          {
+            "title":"Abstract: Design Version Control",
+            "href":"http://www.abstract.com/"
+          },
+          {
+            "title":"Semantic Versioning for Designers",
+            "href":"https://github.com/jackunderhill/semver-design"
+          }
+        ]
+      },
+      {
+        "title":"Development",
+        "description":"One of the main challenges in developing a design system isn’t building the components. It’s making your code stable, easy to read and contribute to.",
+        "children":[
+          {
+            "title":"Component catalog",
+            "description":"Isolate your UI components’ environment outside of your product codebase to make sure they’re not dependent on any global dependencies and can be easily reused.",
+            "done":false
+          },
+          {
+            "title":"Documentation",
+            "description":"Having your code documented is key to driving adoption and reducing the load on the contributors.",
+            "done":false
+          },
+          {
+            "title":"Code style",
+            "description":"Having a defined code style helps align the way code’s written in the system and increases development velocity. It should be automated with the tools provided for each platform.",
+            "done":false
+          },
+          {
+            "title":"Unit testing",
+            "description":"Every part of the design system should be covered with unit tests. Once your system’s adopted, any change in the isolated environment may affect how the product works.",
+            "done":false
+          },
+          {
+            "title":"Accessibility testing",
+            "description":"Design systems should cover accessibility as much as possible. Making this automatic reduces the risk of inaccessible components or user flows in the product.",
+            "done":false
+          },
+          {
+            "title":"Semantic versioning",
+            "description":"Version your code with semantic versioning that dictates how version numbers are assigned and incremented.",
+            "done":false
+          },
+          {
+            "title":"Release strategy",
+            "description":"Design system releases should be automated and ideally use scripts ran locally or in remote CI pipelines to prevent broken releases.",
+            "done":false
+          },
+          {
+            "title":"Commit message guidelines and changelog",
+            "description":"Automate the generation of your changelog by adopting a commit message guidelines that categorise and define the changes being made.",
+            "done":false
+          },
+          {
+            "title":"MR templates",
+            "description":"Create merge request templates that outline the change being proposed to facilitate productive discussions.",
+            "done":false
+          },
+          {
+            "title":"Contribution guidelines",
+            "description":"Define the process of contributing to the code of the design system. Document everything in a discoverable place to make it easier for everyone to contribute.",
+            "done":false
+          }
+        ],
+        "references":[
+          {
+            "title":"Storybook: UI component explorer for frontend developers",
+            "href":"https://storybook.js.org/"
+          },
+          {
+            "title":"Axe Core: Accessibility engine for automated UI testing",
+            "href":"https://github.com/dequelabs/axe-core"
+          },
+          {
+            "title":"Commitizen: Conventional commit messages",
+            "href":"https://github.com/commitizen"
+          },
+          {
+            "title":"Prettier: Opinionated code formatter",
+            "href":"https://prettier.io/"
+          },
+          {
+            "title":"Semantic Versioning for Dummies",
+            "href":"https://medium.com/the-non-traditional-developer/semantic-versioning-for-dummies-45c7fe04a1f8"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "title":"Project management",
+    "description":"Design systems are no different than any other project your team might take on. In order to successfully build and maintain one, you need a clear strategy that’s well executed daily, and you‘ll need to create opportunities for your colleagues to give feedback to help share your design system together.",
+    "children":[
+      {
+        "title":"Task management",
+        "description":"Solid task management and workflows are a crucial step in executing any project. Adopting a methodology like Agile or Kanban helps you cover a lot of ground.",
+        "children":[
+          {
+            "title":"Roadmap",
+            "description":"Setting your short and long term vision and mapping things out helps you decide the steps to take, understand your place in the bigger picture and prioritise day-to-day tasks.",
+            "done":false
+          },
+          {
+            "title":"Milestones",
+            "description":"Define milestones that act as bigger epics in your project management with the help of your roadmap. These will help you understand your progress.",
+            "done":false
+          },
+          {
+            "title":"Ticketing",
+            "description":"Make it easier to track your day-to-day progress by using ticketing software like Jira, Trello or GitHub. This’ll make it easier for others to submit feature proposals or bug reports.",
+            "done":false
+          }
+        ],
+        "references":[
+          {
+            "title":"Carbon Design System: Roadmap",
+            "href":"https://www.carbondesignsystem.com/updates/roadmap/"
+          },
+          {
+            "title":"Tips For Managing Design Systems",
+            "href":"https://www.smashingmagazine.com/2019/05/tips-managing-design-systems/"
+          }
+        ]
+      },
+      {
+        "title":"Communications",
+        "description":"Your users play a great role in shaping your design system. Creating communication channels where they can raise their voices helps you keep track of how they’re using your system. It’ll also improve their sense of ownership and the adoption of your system.",
+        "children":[
+          {
+            "title":"Community meetings",
+            "description":"Arrange community meetings with everyone who uses the design system. Share your knowledge and make proposals to improve the sense of community.",
+            "done":false
+          },
+          {
+            "title":"Communication channel",
+            "description":"Most product development work happens digitally, so create a digital channel where people can reach out and ask questions.",
+            "done":false
+          },
+          {
+            "title":"Open hours",
+            "description":"Create open hours in which you can engage your audience in a more private setting where you can discuss things in more detail. You can also use these as peer coding or peer design opportunities.",
+            "done":false
+          },
+          {
+            "title":"FAQ",
+            "description":"To save everyone time, define which questions are asked frequently by your audience and document them in a discoverable place.",
+            "done":false
+          }
+        ],
+        "references":[
+          {
+            "title":"The Paradox of Design Systems",
+            "href":"https://spotify.design/articles/2018-12-04/the-paradox-of-design-systems/"
+          },
+          {
+            "title":"Maintaining Design Systems",
+            "href":"http://atomicdesign.bradfrost.com/chapter-5/"
+          }
+        ]
+      },
+      {
+        "title":"Analytics",
+        "description":"Data isn’t the only driving factor when it comes to the development of design systems. Keeping a sharp eye on how your system’s used in the development process and the end product can inform your go-forward strategy.",
+        "children":[
+          {
+            "title":"Component analytics",
+            "description":"Track the usage of your components. For development you can use built-in tools like Figma’s Design System Analytics. For the end product you can have a separate way of tracking per platform depending on the technology.",
+            "done":false
+          },
+          {
+            "title":"Error logging",
+            "description":"Implement a way to track and pinpoint component-related outages in your product.",
+            "done":false
+          },
+          {
+            "title":"Tooling analytics",
+            "description":"Track what tools are being used for your design system. Find out which ones are used the most and which features are the most popular.",
+            "done":false
+          },
+          {
+            "title":"Service and health metrics",
+            "description":"Define service and health metrics for your design system to set a benchmark on how well you’re doing. Common examples can be the number of tickets closed, improvements made or bugs fixed.",
+            "done":false
+          }
+        ],
+        "references":[
+          {
+            "title":"Opening up the data behind your design systems",
+            "href":"https://www.figma.com/blog/introducing-design-system-analytics/"
+          },
+          {
+            "title":"Measuring the Impact of a Design System",
+            "href":"https://medium.com/@didoo/measuring-the-impact-of-a-design-system-7f925af090f7"
+          }
+        ]
+      }
+    ]
+  }
+]

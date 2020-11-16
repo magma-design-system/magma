@@ -26,6 +26,7 @@ import H6 from '@Typography/H6/H6'
 import ExternalLink from '@UI/ExternalLink/ExternalLink'
 import HorizontalMenu from '@Gatsby/Pattern/HorizontalMenu/HorizontalMenu'
 import Hr, { HrLight } from '@Gatsby/Pattern/Hr/Hr'
+import RoadmapChecklist from '@Gatsby/Pattern/Roadmap/RoadmapChecklist'
 import Icon from '@Design/Icon/Icon'
 import Image from '@Content/Image/Image'
 import List, { ListItem } from '@UI/List/List'
@@ -65,6 +66,7 @@ const shortcodes = {
   PackageInfo,
   Paragraph,
   Quote,
+  RoadmapChecklist,
   Table,
   TableBody,
   TableCell,
