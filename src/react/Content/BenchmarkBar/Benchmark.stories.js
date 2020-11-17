@@ -22,6 +22,11 @@ export const barSize = () =>
     <Caption>Checkout ProgressBar for all sizes</Caption>
   </BenchmarkBar>
 
+export const decimals = () =>
+  <BenchmarkBar progress="33.75" size="small" decimals>
+    <Caption>Checkout ProgressBar for all sizes</Caption>
+  </BenchmarkBar>
+
 export const autoColor = () =>
   <Table interactive={true}>
     <TableHeader>

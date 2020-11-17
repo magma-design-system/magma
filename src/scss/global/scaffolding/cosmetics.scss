@@ -5,6 +5,13 @@
       $variant: $shadow-name,
       $value: $shadow-value
     );
+
+    @include scaffold-property-interactive (
+      $property-name: 'box-shadow',
+      $variant: $shadow-name,
+      $value: $shadow-value,
+      $initial-value: none
+    );
   }
 }
 

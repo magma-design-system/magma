@@ -1,35 +1,35 @@
 [
   {
     "title":"Design language",
-    "description":"Like any language, a design language is a methodical way of communicating with your audience through your approach to product design. It’s the cornerstone of consistent customer experiences.",
+    "description":"Come ogni linguaggio, un linguaggio di design è un modo metodico di comunicare con il tuo pubblico attraverso il tuo approccio al design del prodotto. È la pietra angolare di UX consistenti.",
     "children":[
       {
         "title":"Brand",
-        "description":"Brand drives every single decision you make when building new products or features. A good brand is much more than a name and a logo. It’s the values that define your unique identity and what makes you stand out from others.",
+        "description":"Il brand guida ogni singola decisione che prendi quando crei nuovi prodotti o funzionalità. Un buon marchio è molto più di un nome e un logo. Sono i valori che definiscono la tua identità unica e ciò che ti distingue dagli altri.",
         "children":[
           {
             "title":"Vision",
-            "description":"Why you exist, what your values are and how they’ll help guide the future of your product.",
+            "description":"Perché esisti, quali sono i tuoi valori e come questi aiuteranno a guidare il futuro del tuo prodotto.",
             "done":true
           },
           {
             "title":"Design principles",
-            "description":"The considerations that guide the basis of your practice. They outline how you approach design from a philosophical perspective and help with everyday decisions.",
+            "description":"Le considerazioni che guidano le basi della tua pratica. Descrivono il modo in cui ti avvicini al design da una prospettiva filosofica e ti aiutano nelle decisioni quotidiane.",
             "done":true
           },
           {
             "title":"Tone of voice",
-            "description":"A clear tone of voice defines how you speak to your audience at every moment in their journey, helping them get wherever they want to go.",
+            "description":"Un tono di voce chiaro definisce il modo in cui parli al tuo pubblico in ogni momento del loro viaggio, aiutandolo ad arrivare ovunque voglia andare.",
             "done":true
           },
           {
-            "title":"Terminology",
-            "description":"Create the standard terms and phrases that need to be kept the same throughout the user experience, speeding up the design process and unifying your voice.",
+            "title":"Terminologia",
+            "description":"Crea i termini e le frasi standard che devono essere mantenuti invariati durante l'esperienza utente, accelerando il processo di progettazione e unificando la tua voce.",
             "done":false
           },
           {
-            "title":"Writing guidelines",
-            "description":"Every consistent experience needs watertight writing. Laying down the foundations for your house style early keeps everything in line with consistent grammar, style choices and action-oriented language to help your design.",
+            "title":"Linee guida di scrittura",
+            "description":"Ogni esperienza coerente ha bisogno di una scrittura impermeabile. Gettare le basi per il tuo stile in anticipo mantiene tutto in linea con una grammatica coerente, scelte di stile e un linguaggio orientato all'azione per aiutare il tuo design.",
             "done":false
           }
         ],
@@ -50,31 +50,31 @@
       },
       {
         "title":"Logo",
-        "description":"Most customers form an opinion about a product in seconds. In most cases, your logo will be the first brand asset someone sees. It’s all about making the right first impression. A distinctive logo helps users recognise a product immediately and gives them the essence of your branding.",
+        "description":"La maggior parte dei clienti forma un'opinione su un prodotto in pochi secondi. Nella maggior parte dei casi, il tuo logo sarà la prima risorsa del brand che qualcuno vede. Si tratta di fare la prima impressione giusta. Un logo distintivo aiuta gli utenti a riconoscere immediatamente un prodotto e dà loro l'essenza del tuo marchio.",
         "children":[
           {
-            "title":"Monochrome version",
-            "description":"A monochrome version of your logo that looks good on top of photography or when it’s printed with a poor quality printer.",
+            "title":"Versione monocromatica",
+            "description":"Una versione monocromatica del tuo logo che sta bene sopra una fotografia o quando viene stampato con una stampante di scarsa qualità.",
             "done":false
           },
           {
-            "title":"Small use guidance",
-            "description":"Your logo must perform well and be recognisable at all sizes. Tips for using your logo in these cases will minimise the risk of it being misused.",
+            "title":"Guida all'utilizzo nel piccolo formato",
+            "description":"Il tuo logo deve funzionare bene ed essere riconoscibile in tutte le dimensioni. I suggerimenti per l'utilizzo del logo in questi casi ridurranno al minimo il rischio che venga utilizzato in modo improprio.",
             "done":false
           },
           {
-            "title":"Placement and clearance guidance",
-            "description":"Your logo must come with clear guidance on how to place it and how to preserve its space since it lives along with other content.",
+            "title":"Posizionamento e guida alla distanza",
+            "description":"Il tuo logo deve venire con una guida chiara su come posizionarlo e come preservarne lo spazio poiché vive insieme ad altri contenuti.",
             "done":false
           },
           {
-            "title":"Usage guidance",
-            "description":"These are the logo crimes, providing contextual examples of what to (not) do with your logo.",
+            "title":"Guida all'uso",
+            "description":"Questi sono gli errori di utilizzo del logo, che forniscono esempi contestuali di cosa (non) fare con il tuo logo.",
             "done":false
           },
           {
-            "title":"Different file formats",
-            "description":"Providing a variety of formats for the vector version of your logo will make it easier for others to work and prevent anyone from redrawing it.",
+            "title":"Diversi formati di file",
+            "description":"Fornire una varietà di formati per la versione vettoriale del tuo logo renderà più facile il lavoro degli altri e impedirà a chiunque di ridisegnarlo.",
             "done":false
           }
         ],
@@ -94,27 +94,27 @@
         ]
       },
       {
-        "title":"Guidelines",
-        "description":"Providing guidance on how to approach common UX patterns will allow your organisation to establish a consistent approach and a consistent user experience on any platform.",
+        "title":"Linee guida",
+        "description":"Fornire indicazioni su come affrontare i modelli di UX comuni consentirà alla tua organizzazione di stabilire un approccio coerente e un'esperienza utente coerente su qualsiasi piattaforma.",
         "children":[
           {
-            "title":"Accessibility",
-            "description":"Guidelines for how you approach accessibility and how you leverage colour, hierarchy and assistive technologies to help your users.",
+            "title":"Accessibilità",
+            "description":"Linee guida su come approcciare l'accessibilità e come sfruttare il colore, la gerarchia e le tecnologie assistive per aiutare i tuoi utenti.",
             "done":false
           },
           {
-            "title":"User onboarding",
-            "description":"How you onboard your users to your product or a new feature and give them a great experience from the start.",
+            "title":"Onboarding degli utenti",
+            "description":"Il modo in cui integri i tuoi utenti al tuo prodotto o una nuova funzionalità e offri loro un'ottima esperienza sin dall'inizio.",
             "done":false
           },
           {
-            "title":"Notifications and permissions",
-            "description":"Guardrails for how to write for the components that make up your designs, from style and technical rules to channeling your tone of voice correctly through copy.",
+            "title":"Notifiche e autorizzazioni",
+            "description":"Guardrail su come scrivere per i componenti che compongono i tuoi progetti, dallo stile e dalle regole tecniche per canalizzare correttamente il tuo tono di voce attraverso la copia.",
             "done":false
           },
           {
-            "title":"Microcopy guidelines",
-            "description":"The standard way to write for the components in your design system. These take platform conventions and best practices for writing all into consideration.",
+            "title":"Linee guida per microcopy",
+            "description":"Il modo standard di scrivere per i componenti nel Design System. Questi prendono in considerazione le convenzioni della piattaforma e le migliori pratiche per la scrittura.",
             "done":false
           }
         ],
@@ -133,31 +133,31 @@
   },
   {
     "title":"Design tokens",
-    "description":"Variables that store values for the base layer of your design system, like colour and typography. They’re used in components, so changes on this level will resonate throughout the whole system.",
+    "description":"Variabili che memorizzano i valori che esprimono il Design System, come il colore e la tipografia. Sono utilizzati nei componenti, quindi le modifiche a questo livello risuoneranno in tutto il sistema.",
     "children":[
       {
-        "title":"Colour",
-        "description":"Not only an efficient way to showcase your brand, but also an efficient way to communicate with your users. Colour palettes created with purpose over aesthetics in mind can help you create intuitive design patterns by adding meaning to your interface.",
+        "title":"Colore",
+        "description":"Non solo un modo efficiente per mostrare il tuo marchio, ma anche un modo efficiente per comunicare con i tuoi utenti. Le palette dei colori create pensando allo scopo rispetto all'estetica possono aiutarti a creare modelli di design intuitivi aggiungendo significato alla tua interfaccia.",
         "children":[
           {
-            "title":"Accessibility",
-            "description":"Make sure to have accessible pairings between the main colours in your palette. More importantly, make sure that your background and text colours have at least an AA standard contrast ratio between them.",
-            "done":false
+            "title":"Accessibilità",
+            "description":"Assicurati di avere abbinamenti accessibili tra i colori principali nella tua tavolozza. Ancora più importante, assicurati che i colori dello sfondo e del testo abbiano almeno un rapporto di contrasto standard AA tra di loro.",
+            "done":true
           },
           {
-            "title":"Functional colours",
-            "description":"Besides your brand colours, make sure to have colours defined and made into variables for functions like disabled states, backgrounds, actions and high contrast text.",
-            "done":false
+            "title":"Colori funzionali",
+            "description":"Oltre ai colori del tuo brand, assicurati di avere colori definiti e trasformati in variabili per funzioni come stati disabilitati, sfondi, azioni e testo ad alto contrasto.",
+            "done":true
           },
           {
             "title":"Dark mode",
-            "description":"Preparing a dark mode version of your colour palette will allow your design system to adapt to dark mode and respect what your user wants to see.",
-            "done":false
+            "description":"Preparare una versione in modalità scura della tavolozza dei colori consentirà al Design System di adattarsi alla modalità scura e di rispettare ciò che l'utente desidera vedere.",
+            "done":true
           },
           {
-            "title":"Guidelines",
-            "description":"Provide guidelines on how and when to use the colours in your palette, what to keep in mind when working with them and how not to use them.",
-            "done":false
+            "title":"Linee guida",
+            "description":"Fornisci linee guida su come e quando usare i colori nella tua tavolozza, cosa tenere a mente quando lavori con loro e come non usarli.",
+            "done":true
           }
         ],
         "references":[
@@ -177,27 +177,27 @@
       },
       {
         "title":"Layout",
-        "description":"A well thought out layout goes a long way. Consistent use of a grid and spacing makes it easier for your users to scan the user interface and grasp the content.",
+        "description":"Un layout ben congegnato fa molto. L'uso coerente di una griglia e di una spaziatura facilita agli utenti la scansione dell'interfaccia utente e la comprensione del contenuto.",
         "children":[
           {
-            "title":"Units",
-            "description":"Units are the most granular building blocks for layout. Defining a set of values with consistent increments (such as 4, 8, 12 and 16 for a 4-point system) will provide you with the foundation when you’re designing your grid and spacing values.",
-            "done":false
+            "title":"Unità",
+            "description":"Le unità sono gli elementi costitutivi più granulari per il layout. La definizione di una serie di valori con incrementi coerenti (come 4, 8, 12 e 16 per un sistema a 4 punti) fornirà le basi per la progettazione della griglia e dei valori di spaziatura.",
+            "done":true
           },
           {
-            "title":"Grid",
-            "description":"Every layout should sit on a grid that brings order and hierarchy to the interface. Define a grid separately for mobile, tablet and desktop devices with columns, gutters, and margins so your interface can adapt to any platform easily.",
-            "done":false
+            "title":"Griglia",
+            "description":"Ogni layout dovrebbe essere posizionato su una griglia che porta ordine e gerarchia all'interfaccia. Definisci una griglia separatamente per dispositivi mobili, tablet e desktop con colonne, grondaie e margini in modo che la tua interfaccia possa adattarsi facilmente a qualsiasi piattaforma.",
+            "done":true
           },
           {
-            "title":"Breakpoints",
-            "description":"Predefine the screen sizes and orientations your grid will adapt to.",
-            "done":false
+            "title":"Breakpoint",
+            "description":"Definisci le dimensioni dello schermo e gli orientamenti a cui si adatterà la griglia.",
+            "done":true
           },
           {
             "title":"Spacing",
-            "description":"Horizontal and vertical rhythm plays a big role in a layout. You should provide easy methods for adding space between interface elements independent of your grid.",
-            "done":false
+            "description":"Il ritmo orizzontale e verticale gioca un ruolo importante in un layout. È necessario fornire metodi semplici per aggiungere spazio tra gli elementi dell'interfaccia indipendentemente dalla griglia.",
+            "done":true
           }
         ],
         "references":[
@@ -213,31 +213,31 @@
       },
       {
         "title":"Typography",
-        "description":"Typography is one of the main ways you surface content in products. A clear hierarchy and contrasting styles in your typography scale will make things easier to read and help with the overall structure of your product. It’s also an opportunity to visualise your brand character and presence.",
+        "description":"La Typography è uno dei modi principali in cui esponi i contenuti nei prodotti. Una chiara gerarchia e stili contrastanti nella scala tipografica renderanno le cose più facili da leggere e aiuteranno con la struttura generale del tuo prodotto. È anche un'opportunità per visualizzare il carattere e la presenza del tuo marchio.",
         "children":[
           {
-            "title":"Responsiveness",
-            "description":"Desktop devices can usually afford to have bigger font sizes compared to mobile devices. Creating a typography scale that adapts to the viewport size will help with a more meaningful hierarchy and layout.",
-            "done":false
+            "title":"Responsività",
+            "description":"I dispositivi desktop di solito possono permettersi di avere caratteri di dimensioni maggiori rispetto ai dispositivi mobili. La creazione di una scala tipografica che si adatti alle dimensioni del riquadro di visualizzazione aiuterà con una gerarchia e un layout più significativi.",
+            "done":true
           },
           {
-            "title":"Grid relation",
-            "description":"Font sizes and leading should match your grid to allow better pairing between text and other UI elements. A good example of this is text paired with icons with bounding boxes.",
-            "done":false
+            "title":"Relazione di griglia",
+            "description":"Le dimensioni dei caratteri e l'interlinea devono corrispondere alla griglia per consentire un migliore accoppiamento tra il testo e altri elementi dell'interfaccia utente. Un buon esempio di ciò è il testo abbinato a icone con riquadri di delimitazione.",
+            "done":true
           },
           {
-            "title":"Readability",
-            "description":"Optimising the letter spacing (tracking), line height (leading) and line length for your typography scale will help with the readability of text.",
-            "done":false
+            "title":"Leggibilità",
+            "description":"L'ottimizzazione della spaziatura delle lettere (tracking), dell'altezza dell'interlinea (leading) e della lunghezza della linea per la scala tipografica aiuterà con la leggibilità del testo.",
+            "done":true
           },
           {
             "title":"Performance",
-            "description":"Custom fonts need to be downloaded before they can be displayed, especially on the web. Make sure that you have sensible fallbacks and fast loading time for your typography assets. Using system fonts solves this performance problem.",
+            "description":"I caratteri personalizzati devono essere scaricati prima di poter essere visualizzati, soprattutto sul web. Assicurati di disporre di fallback ragionevoli e di tempi di caricamento rapidi per le tue risorse tipografiche. L'utilizzo dei caratteri di sistema risolve questo problema di prestazioni.",
             "done":false
           },
           {
-            "title":"Guidelines",
-            "description":"Provide guidelines on how and when to use the pairings in your typography scale, what to keep in mind when working with them and how not to use them.",
+            "title":"Linee guida",
+            "description":"Fornire linee guida su come e quando utilizzare gli abbinamenti nella scala tipografica, cosa tenere a mente quando si lavora con essi e come non usarli.",
             "done":false
           }
         ],
@@ -254,46 +254,46 @@
       },
       {
         "title":"Iconography",
-        "description":"Icons are symbols that represent functionality or content. They’re especially recognisable and helpful in user interfaces since their meaning can be understood at a glance. hough they can be used just for decoration, their full potential can be realised when they’re used meaningfully and consistently.",
+        "description":"Le icone sono simboli che rappresentano funzionalità o contenuto. Sono particolarmente riconoscibili e utili nelle interfacce utente poiché il loro significato può essere compreso a colpo d'occhio. Sebbene possano essere usati solo per la decorazione, il loro pieno potenziale può essere realizzato quando vengono usati in modo significativo e coerente.",
         "children":[
           {
-            "title":"Accessibility",
-            "description":"For icons that convey a meaning or serve a function, add the necessary support for screen readers. You can skip this for decorative icons.",
+            "title":"Accessibilità",
+            "description":"Per le icone che trasmettono un significato o servono una funzione, aggiungi il supporto necessario per gli screen reader. Puoi saltare questo passaggio per le icone decorative.",
             "done":false
           },
           {
-            "title":"Style",
-            "description":"Make sure that your icon family makes visual sense as a whole. Picking an outlined or filled style and sticking with it will lead to better visual consistency and predictability.",
-            "done":false
+            "title":"Stile",
+            "description":"Assicurati che la tua famiglia di icone abbia un senso visivo nel suo insieme. Scegliere uno stile delineato o riempito e rispettarlo porterà a una migliore coerenza visiva e prevedibilità.",
+            "done":true
           },
           {
             "title":"Naming",
-            "description":"Name your icons based on what they are, not what they represent. For instance, a trash icon should be named trash, not delete. You can still add related keywords to improve discoverability.",
+            "description":"Assegna un nome alle icone in base a ciò che sono, non a ciò che rappresentano. Ad esempio, un'icona del cestino dovrebbe essere denominata cestino, non eliminare. Puoi comunque aggiungere parole chiave correlate per migliorare la rilevabilità.",
             "done":false
           },
           {
-            "title":"Relation with grid",
-            "description":"Draw your icons in a bounding box that plays well with your grid. This makes for a better pairing with other UI elements. A good example of this would be icons with bounding boxes paired with text.",
+            "title":"Relazione con la griglia",
+            "description":"Disegna le tue icone in un riquadro di delimitazione che si adatta bene alla tua griglia. Ciò consente un migliore abbinamento con altri elementi dell'interfaccia utente. Un buon esempio di ciò sarebbero le icone con riquadri di delimitazione abbinati al testo.",
+            "done":true
+          },
+          {
+            "title":"Dimensioni",
+            "description":"Fornisci dimensioni diverse per le icone correlate alla tua griglia. Fornisci una dimensione minima e rimuovi i dettagli non necessari per le tue icone per le dimensioni più piccole.",
+            "done":true
+          },
+          {
+            "title":"Parole chiave",
+            "description":"L'aggiunta di parole chiave renderà più semplice trovare ciascuna icona e fornirà una migliore esperienza utente a chiunque utilizzi il sistema.",
             "done":false
           },
           {
-            "title":"Sizes",
-            "description":"Provide different sizes for icons that correlate to your grid. Provide a minimum size and remove unnecessary detail for your icons for smaller sizes.",
+            "title":"Icone riservate",
+            "description":"Riservare le icone che rappresentano azioni comuni ne impedirà l'utilizzo in qualsiasi altro contesto. Le icone di sistema per la navigazione o l'aggiunta e l'eliminazione sono un buon esempio. Ciò porta a un'esperienza utente più intuitiva.",
             "done":false
           },
           {
-            "title":"Keywords",
-            "description":"Adding keywords will improve the discoverability of each icon and provide a better user experience for anyone using your system.",
-            "done":false
-          },
-          {
-            "title":"Reserved icons",
-            "description":"Reserving icons that represent common actions will prevent their use in any other context. System icons for navigation or adding and deleting are a good example. This leads to a more intuitive user experience.",
-            "done":false
-          },
-          {
-            "title":"Guidelines",
-            "description":"Provide guidelines on how and when to use icons, what to keep in mind when working with them and how not to use them.",
+            "title":"Linee guida",
+            "description":"Fornire linee guida su come e quando utilizzare le icone, cosa tenere a mente quando si lavora con esse e come non usarle.",
             "done":false
           }
         ],
@@ -311,41 +311,41 @@
     ]
   },
   {
-    "title":"Core components",
-    "description":"Components are the main building blocks for user interfaces. Building a reusable component library enhances your product development workflow by reducing design and tech debt and speeding up the process. Core components can’t be broken down into granular pieces without losing their meaning.",
+    "title":"Componenti core",
+    "description":"I componenti sono gli elementi costitutivi principali delle UI (interfaccie utente). La creazione di una libreria di componenti riutilizzabili migliora il flusso di lavoro di sviluppo del prodotto riducendo il debito di progettazione e tecnologia e accelerando il processo. I componenti principali non possono essere suddivisi in pezzi granulari senza perdere il loro significato.",
     "children":[
       {
         "title":"Avatar",
-        "description":"Avatars are used to show a thumbnail of a user photo or a visual representation of any other type of content.",
+        "description":"Gli avatar vengono utilizzati per mostrare una miniatura della foto di un utente o una rappresentazione visiva di qualsiasi altro tipo di contenuto.",
         "children":[
           {
-            "title":"Image",
-            "description":"Avatars should mask an image into their shape and work with any image size since they may get this image from unknown data sources.",
+            "title":"Immagine",
+            "description":"Gli avatar dovrebbero mascherare un'immagine nella loro forma e lavorare con qualsiasi dimensione dell'immagine poiché potrebbero ottenere questa immagine da fonti di dati sconosciute.",
+            "done":true
+          },
+          {
+            "title":"Fallback immagine",
+            "description":"Dovrebbero esserci dei fallback quando non sono disponibili immagini. Questo può essere fatto con immagini segnaposto o iniziali.",
             "done":false
           },
           {
-            "title":"Image fallback",
-            "description":"There should be fallbacks when there’s no image available. This can be done with placeholder images or initials.",
+            "title":"Accessibilità",
+            "description":"Fornisci sempre una descrizione per gli screen reader che descrivano ciò che viene visualizzato sull'immagine dell'avatar invece di limitarti a nominarne il ruolo.",
             "done":false
           },
           {
-            "title":"Accessibility",
-            "description":"Always provide a description for screen readers describing what’s displayed on the avatar image instead of just naming its role.",
+            "title":"Dimensioni",
+            "description":"Esistono molti contesti per utilizzare gli avatar e tutti richiedono dimensioni diverse per il componente. Per i progetti medi, utilizza almeno 2-3 dimensioni diverse e assicurati che sia disponibile almeno una dimensione piccola.",
+            "done":true
+          },
+          {
+            "title":"Icona",
+            "description":"Gli avatar possono essere utilizzati con un'icona invece di un'immagine per enfatizzare aree che non necessitano di un'immagine associata.",
             "done":false
           },
           {
-            "title":"Sizes",
-            "description":"There are many contexts to use avatars and they all require different sizes for the component. For average projects use at least 2-3 different sizes and make sure there’s at least a small size available.",
-            "done":false
-          },
-          {
-            "title":"Icon",
-            "description":"Avatars can be used with an icon instead of an image to emphasize areas that don’t necessarily have (or need) an image associated with it.",
-            "done":false
-          },
-          {
-            "title":"Background colours",
-            "description":"When used with icons or text, there has to be a background colour from the design system colour tokens applied to the avatar shape. Make sure that icons and text have enough contrast ratio with the background according to the WCAG AA standard.",
+            "title":"Colori di sfondo",
+            "description":"Quando viene utilizzato con icone o testo, deve esserci un colore di sfondo dai Design Token del colore del Design System applicati alla forma dell'avatar. Assicurati che le icone e il testo abbiano un rapporto di contrasto sufficiente con lo sfondo secondo lo standard WCAG AA.",
             "done":false
           }
         ],
@@ -362,16 +362,16 @@
       },
       {
         "title":"Badge",
-        "description":"Badges are elements that represent the status of an object or user input value.",
+        "description":"I badge sono elementi che rappresentano lo stato di un oggetto o un valore di input dell'utente.",
         "children":[
           {
-            "title":"Appearance",
-            "description":"Badges may play various roles in your product and having a predefined colour for each role should help users understand their meaning. When changing colours, make sure the text has enough contrast ratio with the background according to the WCAG AA standard.",
+            "title":"Aspetto",
+            "description":"I badge possono svolgere vari ruoli nel tuo prodotto, avere un colore predefinito per ogni ruolo dovrebbe aiutare gli utenti a comprenderne il significato. Quando cambi i colori, assicurati che il testo abbia un rapporto di contrasto sufficiente con lo sfondo secondo lo standard WCAG AA.",
             "done":false
           },
           {
-            "title":"Dismissible action",
-            "description":"Badges can be used as a dynamic way to display selected values and there should be a way to dismiss them.",
+            "title":"Azione annullabile",
+            "description":"I badge possono essere utilizzati come un modo dinamico per visualizzare i valori selezionati e dovrebbe esserci un modo per deselezionarli.",
             "done":false
           }
         ],
@@ -388,37 +388,37 @@
       },
       {
         "title":"Banner",
-        "description":"Banners display an actionable message used as a prominent way of communicating with your users.",
+        "description":"I banner mostrano un messaggio utilizzato come mezzo di comunicazione prominente con i tuoi utenti.",
         "children":[
           {
-            "title":"Appearance",
-            "description":"Banners are used to display different types of messages and it’s important to differentiate their visual appearance based on the role they’re playing. If you’re using background colours for role differentiation, make sure there’s enough contrast ratio with the content according to the WCAG AA standard.",
+            "title":"Aspetto",
+            "description":"I banner vengono utilizzati per visualizzare diversi tipi di messaggi ed è importante differenziarne l'aspetto visivo in base al ruolo che stanno giocando. Se utilizzi i colori di sfondo per la differenziazione dei ruoli, assicurati che ci sia un rapporto di contrasto sufficiente con il contenuto in base allo standard WCAG AA.",
+            "done":true
+          },
+          {
+            "title":"Area per icone o immagini",
+            "description":"I banner possono integrare il loro messaggio utilizzando un'icona o un'immagine di supporto. Non dovrebbero essere utilizzati al posto del contenuto di testo. ",
+            "done":true
+          },
+          {
+            "title":"Azioni",
+            "description":"Le azioni nei banner dovrebbero riguardare il testo e fornire un modo per reagire al messaggio inviato all'utente.",
             "done":false
           },
           {
-            "title":"Area for icons or images",
-            "description":"Banners can supplement their message using a supporting icon or image. They shouldn’t be used instead of text content.",
+            "title":"Azione annullabile",
+            "description":"Non sovraccaricare l'utente con banner sulla pagina e includere un'azione ignorabile. Potrebbe trattarsi di un pulsante di chiusura separato o di una delle azioni fornite.",
             "done":false
           },
           {
-            "title":"Actions",
-            "description":"Actions in banners should relate to its text and provide a way to react to the message sent to the user.",
+            "title":"Accessibilità",
+            "description":"Se un banner appare dinamicamente sulla pagina, dovrebbe essere annunciato all'utente dalla sua tecnologia assistiva.",
             "done":false
           },
           {
-            "title":"Dismissible action",
-            "description":"Don’t overwhelm the user with banners on the page and include a dismissable action. That may be either a separate close button or one of the actions provided.",
-            "done":false
-          },
-          {
-            "title":"Accessibility",
-            "description":"If a banner dynamically appears on the page, it should be announced to the user by their assistive technology.",
-            "done":false
-          },
-          {
-            "title":"Responsiveness",
-            "description":"Banners should adapt to the viewport size. This usually means that they become full-width for mobile to save some space.",
-            "done":false
+            "title":"Responsività",
+            "description":"I banner dovrebbero adattarsi alle dimensioni del viewport. Questo di solito significa che diventano a larghezza intera per i dispositivi mobili per risparmiare spazio.",
+            "done":true
           }
         ],
         "references":[
@@ -430,51 +430,51 @@
       },
       {
         "title":"Button",
-        "description":"Buttons are interactive elements used for single-step actions.",
+        "description":"I pulsanti sono elementi interattivi utilizzati per azioni a passaggio singolo.",
         "children":[
           {
-            "title":"Hover state",
-            "description":"Clearly show that the button is interactive when it gets hovered with a mouse cursor.",
+            "title":"Stato hover",
+            "description":"Mostra chiaramente che il pulsante è interattivo quando viene posizionato con il cursore del mouse.",
+            "done":true
+          },
+          {
+            "title":"Stato attvo",
+            "description":"Utilizzato quando viene premuto un pulsante. Lo stesso stato può essere utilizzato per rappresentare il pulsante responsabile della commutazione di un altro elemento sulla pagina mentre quell'elemento è visibilmente aperto.",
             "done":false
           },
           {
-            "title":"Active state",
-            "description":"Used when a button gets pressed. The same state can be used to represent the button responsible for toggling another element on the page while that element is visibly opened.",
+            "title":"Stato focus",
+            "description":"Utilizzato quando un pulsante viene selezionato tramite la navigazione da tastiera.",
             "done":false
           },
           {
-            "title":"Focused state",
-            "description":"Used when a button gets selected through keyboard navigation.",
+            "title":"Stato disabled",
+            "description":"Mostra visivamente che un pulsante non è interattivo e ne impedisce la pressione.",
+            "done":true
+          },
+          {
+            "title":"Stato loading",
+            "description":"Utilizzato quando gli utenti devono attendere il risultato della loro azione dopo aver premuto un pulsante. Se viene utilizzata una casella di selezione per visualizzare questo stato, assicurati che non stia modificando la larghezza o l'altezza del pulsante originale.",
             "done":false
           },
           {
-            "title":"Icon support",
-            "description":"Icons easily communicate the purpose of the button when used next to its label or can be used without text when there’s not enough space. Make sure that the accessibility label is provided when used with an icon only.",
+            "title":"Supporto delle icone",
+            "description":"Le icone comunicano facilmente lo scopo del pulsante quando vengono utilizzate accanto alla relativa etichetta o possono essere utilizzate senza testo quando non c'è abbastanza spazio. Assicurati che l'etichetta di accessibilità sia fornita solo se utilizzata con un'icona.",
+            "done":true
+          },
+          {
+            "title":"Larghezza intera",
+            "description":"Per impostazione predefinita, i pulsanti prendono la larghezza del loro contenuto, ma dovrebbero anche avere una variante a larghezza intera che funziona bene nei dispositivi mobili.",
             "done":false
           },
           {
-            "title":"Disabled",
-            "description":"Visually shows that a button is not interactive and restricts it from being pressed.",
-            "done":false
+            "title":"Varianti",
+            "description":"Quando si utilizzano più pulsanti, dovrebbe esserci un modo per distinguere tra azioni primarie e secondarie. I pulsanti possono svolgere ruoli diversi per l'utente o essere utilizzati su diversi tipi di superfici e devono cambiare il loro aspetto.",
+            "done":true
           },
           {
-            "title":"Loading",
-            "description":"Used when users have to wait for the result of their action after they press a button. If a spinner is used to display this state make sure that it’s not changing the original button width or height.",
-            "done":false
-          },
-          {
-            "title":"Full-width",
-            "description":"By default buttons take the width of their content, but they should also come with a full width variant that works well in mobile devices.",
-            "done":false
-          },
-          {
-            "title":"Variants",
-            "description":"When using multiple buttons, there should be a way to differentiate between primary and secondary actions. Buttons may play different roles for the user or be used on different types of surfaces and they have to change the way they look.",
-            "done":false
-          },
-          {
-            "title":"Sizes",
-            "description":"Buttons can be used in different areas of the website and may have multiple predefined sizes. On mobile, tappable areas have to be a minimum of 48px to be accessible according to iOS and Android accessibility guidelines.",
+            "title":"Dimensioni",
+            "description":"I pulsanti possono essere utilizzati in diverse aree delle applicazioni e possono avere più dimensioni predefinite. Sui dispositivi mobili, le aree selezionabili devono essere un minimo di 48 px per essere accessibili secondo le linee guida per l'accessibilità di iOS e Android.",
             "done":false
           }
         ],
@@ -491,32 +491,32 @@
       },
       {
         "title":"Card",
-        "description":"Cards are used to group information about subjects and their related actions.",
+        "description":"Le schede vengono utilizzate per raggruppare le informazioni sugli argomenti e sulle azioni correlate.",
         "children":[
           {
-            "title":"Supports any type of content",
-            "description":"Cards are one of the most used components in the product, so they have to be flexible enough to support any other components placed in them.",
+            "title":"Supporta qualsiasi tipo di contenuto",
+            "description":"Le card sono uno dei componenti più utilizzati nel prodotto, quindi devono essere sufficientemente flessibili da supportare qualsiasi altro componente inserito al loro interno.",
+            "done":true
+          },
+          {
+            "title":"Struttura delle informazioni",
+            "description":"Non importa quanto le card siano flessibili, l'importante è che abbiano una struttura specifica per i suoi elementi per la coerenza del prodotto.",
+            "done":true
+          },
+          {
+            "title":"Supporta le sezioni multimediali",
+            "description":"Uno degli scenari più popolari per l'utilizzo delle carte è combinarli con i contenuti multimediali. Le opzioni più popolari prevedono un'area a larghezza intera sopra il contenuto o un'area a tutta altezza su uno dei lati della scheda.",
             "done":false
           },
           {
-            "title":"Information structure",
-            "description":"No matter how flexible cards are, it’s important for cards to have a specific structure for its elements for product consistency.",
+            "title":"Azioni supplementari",
+            "description":"Le card possono essere utilizzate con azioni solitamente posizionate nella parte inferiore di esse, oppure la card stessa può essere TAPpabile e rappresentare un'azione.",
             "done":false
           },
           {
-            "title":"Supports media sections",
-            "description":"One of the most popular scenarios for using cards is mixing them with media content. The most popular options are having a full-width area on top of the content or full-height area at one of the card’s sides.",
-            "done":false
-          },
-          {
-            "title":"Supplementary actions",
-            "description":"Cards can be used with actions usually placed at the bottom of the card, or the card itself can be tappable and represent an action.",
-            "done":false
-          },
-          {
-            "title":"Responsiveness",
-            "description":"On mobile viewports cards are usually full-width in order to save space for the content.",
-            "done":false
+            "title":"Responsività",
+            "description":"Sulle viste mobili le card sono generalmente a larghezza intera per risparmiare spazio per il contenuto.",
+            "done":true
           }
         ],
         "references":[
@@ -532,36 +532,36 @@
       },
       {
         "title":"Carousel",
-        "description":"Carousels stack the same type of items and allows scrolling through them horizontally.",
+        "description":"I Carousel impilano lo stesso tipo di elementi e consentono di scorrerli orizzontalmente.",
         "children":[
           {
-            "title":"Navigation controls",
-            "description":"Carousels should have easy-to-find navigation controls for scrolling through content.",
+            "title":"Controlli di navigazione",
+            "description":"I Carousel dovrebbero avere controlli di navigazione facili da trovare per scorrere i contenuti.",
             "done":false
           },
           {
-            "title":"Supports any content",
-            "description":"Carousels can be used in different contexts and shouldn’t be limited to a specific child component. In some scenarios you might want items within the same carousel to differ from each other.",
+            "title":"Supporta qualsiasi contenuto",
+            "description":"I Carousel possono essere utilizzati in contesti diversi e non dovrebbero essere limitati a un componente figlio specifico. In alcuni scenari potresti volere che gli elementi all'interno dello stesso carosello differiscano l'uno dall'altro.",
             "done":false
           },
           {
-            "title":"Items width customisation",
-            "description":"For simple products, it might be fine to use multiple predefined sizes for carousel items. For more flexibility, it’s good to provide a way to define a custom width.",
+            "title":"Personalizzazione della larghezza degli articoli",
+            "description":"Per prodotti semplici, potrebbe essere sufficiente l'utilizzo di più dimensioni predefinite per gli elementi del Carousel. Per una maggiore flessibilità, è opportuno fornire un modo per definire una larghezza personalizzata.",
             "done":false
           },
           {
-            "title":"Touch events support",
-            "description":"Carousels should be scrollable on touch devices. Some of the best practices are to use native scrolling and to make sure you’re supporting the same behaviour for all touch devices, not just mobile phones.",
+            "title":"Supporto eventi touch",
+            "description":"I Carousel dovrebbero essere scorrevoli sui dispositivi touch. Alcune delle best practice sono utilizzare lo scorrimento nativo e assicurarti di supportare lo stesso comportamento per tutti i dispositivi touch, non solo per i telefoni cellulari.",
             "done":false
           },
           {
-            "title":"Keyboard navigation",
-            "description":"It should be possible to scroll through content with keyboard arrows when focused on navigation controls.",
+            "title":"Navigazione da tastiera",
+            "description":"Dovrebbe essere possibile scorrere il contenuto con le frecce della tastiera quando ci si concentra sui controlli di navigazione.",
             "done":false
           },
           {
-            "title":"Responsiveness",
-            "description":"It’s good practice to hide or reduce the size of navigation controls for mobile viewports to improve the visibility of the content.",
+            "title":"Responsività",
+            "description":"È buona norma nascondere o ridurre le dimensioni dei controlli di navigazione per le visualizzazioni mobili per migliorare la visibilità dei contenuti.",
             "done":false
           }
         ],
@@ -582,42 +582,42 @@
       },
       {
         "title":"Dropdown",
-        "description":"Dropdowns are used to display a contextual subview with a list of actions or content related to the area where the dropdown is.",
+        "description":"I Dropdown vengono utilizzati per visualizzare una sottoview contestuale con un elenco di azioni o contenuti correlati all'area in cui si trova il Dropdown.",
         "children":[
           {
-            "title":"Supports any type of content",
-            "description":"Dropdowns may be used in a lot of contexts like date pickers, language selection or other product features.",
+            "title":"Supporta qualsiasi tipo di contenuto",
+            "description":"I Dropdown possono essere utilizzati in molti contesti come selettori di date, selezione della lingua o altre funzionalità del prodotto.",
             "done":false
           },
           {
-            "title":"Action menu",
-            "description":"One of the most used scenarios for dropdowns is providing an action menu for the user, so it’s useful to have this layout defined.",
-            "done":false
+            "title":"Menu azione",
+            "description":"Uno degli scenari più utilizzati per i Dropdown è fornire un menu di azioni per l'utente, quindi è utile che questo layout sia definito.",
+            "done":true
           },
           {
             "title":"Focus trapping",
-            "description":"Once the dropdown’s opened, the focus should work only for elements inside the dropdown. When it’s closed, the focus should move to the dropdown trigger.",
+            "description":"Una volta aperto il Dropdown, lo stato attivo dovrebbe funzionare solo per gli elementi all'interno del Dropdown. Quando è chiuso, lo stato attivo dovrebbe spostarsi sull'attivatore del Dropdown.",
             "done":false
           },
           {
-            "title":"Close action",
-            "description":"Either some actions inside the dropdown should close it or there should be a separate close button. Also, it’s good practice to close the dropdown when a user clicks outside.",
+            "title":"Chiudi azione",
+            "description":"O alcune azioni all'interno del Dropdown dovrebbero chiuderlo o dovrebbe esserci un pulsante di chiusura separato. Inoltre, è buona norma chiudere il Dropdown quando un utente fa clic all'esterno.",
             "done":false
           },
           {
-            "title":"Keyboard navigation",
-            "description":"It should be possible to navigate through dropdown children elements with the keyboard and close it with an Esc key.",
+            "title":"Navigazione da tastiera",
+            "description":"Dovrebbe essere possibile navigare tra gli elementi figli a discesa con la tastiera e chiuderlo con un tasto Esc.",
             "done":false
           },
           {
-            "title":"Dynamic positioning",
-            "description":"Dropdown content should be displayed based on the current position of the trigger element on the screen and always visible to the user.",
-            "done":false
+            "title":"Posizionamento dinamico",
+            "description":"Il contenuto del Dropdown dovrebbe essere visualizzato in base alla posizione corrente dell'elemento di attivazione sullo schermo e sempre visibile all'utente.",
+            "done":true
           },
           {
-            "title":"Responsiveness",
-            "description":"Dropdown content should be adapted for mobile viewpoints as it may take a lot of space on desktops.",
-            "done":false
+            "title":"Responsività",
+            "description":"Il Dropdown dovrebbe essere adattato ai punti di vista dei dispositivi mobili in quanto potrebbe richiedere molto spazio sui desktop.",
+            "done":true
           }
         ],
         "references":[
@@ -636,61 +636,68 @@
         ]
       },
       {
-        "title":"Icon",
-        "description":"The icon component is a way to align the way iconography static assets are displayed in the product.",
+        "title":"Icone",
+        "description":"Il componente icona è un modo per allineare il modo in cui le risorse statiche dell'iconografia vengono visualizzate nel prodotto.",
         "children":[
           {
-            "title":"Sizes",
-            "description":"Icons should have a number of predefined sizes to provide a holistic experience across the product. Typography pairings may be used for these size values to ensure that they are aligned with the text sizes.",
-            "done":false
+            "title":"Dimensioni",
+            "description":"Le icone dovrebbero avere un numero di dimensioni predefinite per fornire un'esperienza olistica in tutto il prodotto. Gli abbinamenti tipografici possono essere utilizzati per questi valori di dimensione per garantire che siano allineati con le dimensioni del testo.",
+            "done":true
           },
           {
-            "title":"Colours",
-            "description":"Icons should be using values from the design system colour palette. Using parent element text colour for icon fill colour can make this automatic.",
-            "done":false
+            "title":"Colori",
+            "description":"Le icone dovrebbero utilizzare i valori della tavolozza dei colori del Design System. L'utilizzo del colore del testo dell'elemento principale per il colore di riempimento dell'icona può renderlo automatico.",
+            "done":true
           }
         ],
         "references":[
-
+          {
+            "title":"Google Material Design Icons",
+            "href":"https://material.io/resources/icons/"
+          },
+          {
+            "title":"Community Material Design Icons",
+            "href":"https://www.materialdesignicons.com/"
+          }
         ]
       },
       {
         "title":"Input checkbox",
-        "description":"An input checkbox is a form element used for selecting one or multiple options.",
+        "description":"Una Input checkbox è un elemento del form utilizzato per selezionare una o più opzioni.",
         "children":[
           {
-            "title":"Checked state",
-            "description":"Used when the checkbox is selected and will use its value for the form submission.",
+            "title":"Stato checked",
+            "description":"Utilizzato quando la Checkbox è selezionata e utilizzerà il suo valore per l'invio del form.",
+            "done":true
+          },
+          {
+            "title":"Stato disabled",
+            "description":"Impedisce le interazioni delle caselle di controllo e rimuove il suo valore dall'invio del form.",
             "done":false
           },
           {
-            "title":"Disabled state",
-            "description":"Prevents checkbox interactions and removes its value from the form submission.",
-            "done":false
-          },
-          {
-            "title":"Indeterminate state",
-            "description":"Used when the checkbox has children selectable elements and only some of them are selected.",
+            "title":"Stato indeterminate",
+            "description":"Utilizzato quando la Checkbox ha elementi secondari selezionabili e solo alcuni di essi sono selezionati.",
             "done":false
           },
           {
             "title":"Label",
-            "description":"There should be a text label linked with the checkbox field. Clicking the label should also trigger the checkbox selection.",
+            "description":"Dovrebbe essere presente un'etichetta di testo collegata al campo della Checkbox. Fare clic sull'etichetta dovrebbe anche attivare la selezione della Checkbox.",
+            "done":true
+          },
+          {
+            "title":"Stato errore",
+            "description":"Lo stato di errore viene utilizzato per gli errori di convalida del form quando l'errore è correlato solo al campo della Checkbox. Usa sempre un errore di testo insieme alla modifica del colore del campo.",
             "done":false
           },
           {
-            "title":"Error state",
-            "description":"The error state is used for form validation errors when the error is related to the checkbox field only. Always use a text error along with changing the colour of the field.",
+            "title":"Supporto per tastiera",
+            "description":"Le selezioni della Checkbox devono essere attivate con il tasto Spazio. L'utilizzo di elementi nativi per questo dovrebbe fornire questo tipo di interazione fuori dagli schemi.",
             "done":false
           },
           {
-            "title":"Keyboard support",
-            "description":"Checkbox selections should be triggered with the Space key. Using native elements for this should provide this kind of interaction out of the box.",
-            "done":false
-          },
-          {
-            "title":"Checkbox group",
-            "description":"Checkboxes can be grouped to work with multiple values at the same time.",
+            "title":"Gruppo di Checkbox",
+            "description":"Le Checkbox possono essere raggruppate per lavorare con più valori contemporaneamente.",
             "done":false
           }
         ],
@@ -711,37 +718,37 @@
       },
       {
         "title":"Input radio",
-        "description":"An input radio is a form element used for selecting one option from a list.",
+        "description":"Un Input radio è un elemento del form utilizzato per selezionare un'opzione da un elenco.",
         "children":[
           {
-            "title":"Checked state",
-            "description":"Used when the radio is selected and will use its value for the form submission. A radio input can’t be unselected by pressing it again.",
-            "done":false
+            "title":"Stato checked",
+            "description":"Utilizzato quando la radio è selezionata e utilizzerà il suo valore per l'invio del form. Un input radio non può essere deselezionato premendolo di nuovo.",
+            "done":true
           },
           {
-            "title":"Disabled state",
-            "description":"Prevents radio interactions and removes its value from the form submission.",
+            "title":"Stato disabled",
+            "description":"Impedisce le interazioni radio e rimuove il suo valore dall'invio del form.",
             "done":false
           },
           {
             "title":"Label",
-            "description":"There should be a text label linked with the radio field. Clicking the label should also trigger the radio selection.",
+            "description":"Dovrebbe esserci un'etichetta di testo collegata al campo radio. Fare clic sull'etichetta dovrebbe anche attivare la selezione della radio.",
+            "done":true
+          },
+          {
+            "title":"Stato errore",
+            "description":"Lo stato di errore viene utilizzato per gli errori di convalida del form quando l'errore è relativo solo al campo radio. Usa sempre un errore di testo insieme alla modifica del colore del campo.",
             "done":false
           },
           {
-            "title":"Error state",
-            "description":"The error state is used for form validation errors when the error is related to the radio field only. Always use a text error along with changing the colour of the field.",
-            "done":false
-          },
-          {
-            "title":"Keyboard support",
-            "description":"A radio selection should be triggered when the Space key is pressed. Using native elements for this should provide this kind of interaction out of the box.",
+            "title":"Supporto per tastiera",
+            "description":"Quando si preme il tasto Spazio, dovrebbe essere attivata una selezione radio. L'utilizzo di elementi nativi per questo dovrebbe fornire questo tipo di interazione fuori dagli schemi.",
             "done":false
           },
           {
             "title":"Radio group",
-            "description":"Radio inputs should always be used in a group. If one of them is selected, it can be deselected only by choosing another radio.",
-            "done":false
+            "description":"Gli Input radio dovrebbero essere sempre usati in un gruppo. Se uno di essi è selezionato, può essere deselezionato solo scegliendo un'altra radio.",
+            "done":true
           }
         ],
         "references":[
@@ -761,37 +768,37 @@
       },
       {
         "title":"Input text",
-        "description":"Input text lets users enter and edit text.",
+        "description":"Il testo di input consente agli utenti di inserire e modificare il testo.",
         "children":[
           {
-            "title":"Disabled state",
-            "description":"Prevents input interactions and removes its value from the form submission.",
+            "title":"Stato disabled",
+            "description":"Impedisce le interazioni di input e rimuove il suo valore dall'invio del form.",
             "done":false
           },
           {
             "title":"Placeholder",
-            "description":"When there’s no value entered, show a placeholder with a potential value example. Don’t use placeholders as labels for the inputs.",
-            "done":false
+            "description":"Quando non è stato inserito alcun valore, mostra un segnaposto con un esempio di valore potenziale. Non utilizzare segnaposto come etichette per gli input.",
+            "done":true
           },
           {
             "title":"Label",
-            "description":"There should be a text label linked with the text field. Clicking the label should move the focus to the field.",
-            "done":false
+            "description":"Dovrebbe esserci un'etichetta di testo collegata al campo di testo. Fare clic sull'etichetta dovrebbe spostare lo stato attivo sul campo.",
+            "done":true
           },
           {
-            "title":"Error state",
-            "description":"The error state is used for form validation errors when the error is related to the text field only. Always use a text error along with changing the colour of the field.",
-            "done":false
+            "title":"Stato di errore",
+            "description":"Lo stato di errore viene utilizzato per gli errori di convalida del form quando l'errore è relativo solo al campo di testo. Usa sempre un errore di testo insieme alla modifica del colore del campo.",
+            "done":true
           },
           {
             "title":"Autocomplete",
-            "description":"When applicable, adding support for the HTML autocomplete attribute will allow users to easily enter different data types.",
+            "description":"Se applicabile, l'aggiunta del supporto per l'attributo di completamento automatico HTML consentirà agli utenti di inserire facilmente diversi tipi di dati.",
             "done":false
           },
           {
-            "title":"Icon support",
-            "description":"Icons are used to describe input methods, express a text field state or provide additional functionality.",
-            "done":false
+            "title":"Supporto delle icone",
+            "description":"Le icone vengono utilizzate per descrivere i metodi di input, esprimere lo stato di un campo di testo o fornire funzionalità aggiuntive.",
+            "done":true
           }
         ],
         "references":[
@@ -815,26 +822,26 @@
       },
       {
         "title":"Input switch",
-        "description":"Input switches toggle the state of a single item. Compared to the input checkbox, their changes usually apply without any additional submission.",
+        "description":"Gli Switch alternano lo stato di un singolo elemento. Rispetto alla Checkbox, le loro modifiche di solito si applicano senza alcun invio aggiuntivo.",
         "children":[
           {
-            "title":"Checked state",
-            "description":"Used when an input switch is turned on. It’s better to provide an additional way to indicate the checked state besides changing its colour when applicable.",
-            "done":false
+            "title":"Stato checked",
+            "description":"Utilizzato quando uno Switch è attivato. È meglio fornire un modo aggiuntivo per indicare lo stato controllato oltre a cambiarne il colore quando applicabile.",
+            "done":true
           },
           {
-            "title":"Disabled state",
-            "description":"Prevents interacting with an input switch.",
-            "done":false
+            "title":"Stato disabilitato",
+            "description":"Impedisce l'interazione con uno Switch.",
+            "done":true
           },
           {
             "title":"Label",
-            "description":"There should be a text label linked with the switch field. Clicking the label should also trigger the input selection. ",
-            "done":false
+            "description":"Dovrebbe esserci un'etichetta di testo collegata al campo Switch. Fare clic sull'etichetta dovrebbe anche attivare la selezione dell'ingresso.",
+            "done":true
           },
           {
-            "title":"Keyboard support",
-            "description":"A switch selection should be triggered when the Space key is pressed.",
+            "title":"Supporto per tastiera",
+            "description":"Quando si preme il tasto Spazio, deve essere attivata una selezione dello Switch",
             "done":false
           }
         ],
@@ -855,26 +862,26 @@
       },
       {
         "title":"List",
-        "description":"Lists define the layout of the page content or groups of elements stacking them vertically or horizontally.",
+        "description":"Gli elenchi definiscono il layout del contenuto della pagina o dei gruppi di elementi impilandoli verticalmente o orizzontalmente.",
         "children":[
           {
-            "title":"Supports any type of content",
-            "description":"Lists can be used in any context from page-level layout to managing offsets between granular components. hey should work with any component used inside.",
+            "title":"Supporta qualsiasi tipo di contenuto",
+            "description":"I componenti List possono essere utilizzati in qualsiasi contesto, dal layout a livello di pagina alla gestione degli offset tra componenti granulari. Dovrebbe funzionare con qualsiasi componente utilizzato all'interno.",
             "done":false
           },
           {
-            "title":"Horizontal stacking",
-            "description":"Lists can be used for inline elements and they have to manage how they’re stacked horizontally, including handling offsets between multiple rows of elements.",
+            "title":"Impilamento orizzontale",
+            "description":"Gli elenchi possono essere utilizzati per gli elementi in linea e devono gestire il modo in cui vengono impilati orizzontalmente, inclusa la gestione degli offset tra più righe di elementi.",
             "done":false
           },
           {
-            "title":"Divided variant",
-            "description":"Lists with dividers are the best practice advised by many platform guidelines (especially on mobile).",
+            "title":"Variante con divisore",
+            "description":"Gli elenchi con divisori sono la best practice consigliata da molte linee guida della piattaforma (specialmente sui dispositivi mobili).",
             "done":false
           },
           {
-            "title":"Supports actionable content",
-            "description":"Sometimes lists are used for grouping tappable components, where the whole area of the list item should be clickable.",
+            "title":"Supporta contenuti utilizzabili",
+            "description":"A volte gli elenchi vengono utilizzati per raggruppare componenti selezionabili, in cui l'intera area dell'elemento dell'elenco dovrebbe essere selezionabile.",
             "done":false
           }
         ],
@@ -890,27 +897,27 @@
         ]
       },
       {
-        "title":"Loading indicator",
-        "description":"The loading indicator shows that an operation’s being performed and how long the process will take.",
+        "title":"Loading",
+        "description":"L'indicatore di Loading mostra che un'operazione è in corso e quanto tempo richiederà il processo.",
         "children":[
           {
-            "title":"Linear and non-linear variants",
-            "description":"Depending on the context and the component it’s used for, the loading indicator can be represented either with linear or with a non-linear (e.g. circular) variant.",
+            "title":"Varianti lineari e non lineari",
+            "description":"A seconda del contesto e del componente per il quale viene utilizzato, l'indicatore di Loading può essere rappresentato con una variante lineare o con una variante non lineare (ad es. Circolare).",
             "done":false
           },
           {
-            "title":"Determinate or indeterminate wait time",
-            "description":"In some cases, the wait time can’t be determined. The loading indicator should be shown until the loading finishes or an error happens. In other cases, it’s better to indicate how much time’s left until the loading is done.",
+            "title":"Tempo di attesa determinato o indeterminato",
+            "description":"In alcuni casi, il tempo di attesa non può essere determinato. Il componente Loading dovrebbe essere visualizzato fino al termine del caricamento o fino a quando non si verifica un errore. In altri casi, è meglio indicare quanto tempo manca al completamento del caricamento.",
             "done":false
           },
           {
-            "title":"Light variant",
-            "description":"The loading indicator should respect its parent element background and provide a variant to be used on darker background colours.",
-            "done":false
+            "title":"Varianti cromatiche",
+            "description":"Il componente Loading dovrebbe rispettare lo sfondo dell'elemento genitore e fornire una variante da utilizzare su colori di sfondo più scuri.",
+            "done":true
           },
           {
-            "title":"Reduced motion",
-            "description":"The loading indicator should be synced with the system motion settings and reduce its animation speed when reduced motion settings are turned on.",
+            "title":"Movimento ridotto",
+            "description":"Il componente Loading dovrebbe essere sincronizzato con le impostazioni di movimento del sistema e ridurre la sua velocità di animazione quando sono attivate le impostazioni di movimento ridotto.",
             "done":false
           }
         ],
@@ -931,36 +938,36 @@
       },
       {
         "title":"Modal",
-        "description":"Modals are containers appearing in front of the main content to provide critical information or an actionable piece of content.",
+        "description":"I modali sono contenitori che appaiono davanti al contenuto principale per fornire informazioni critiche o una parte di contenuto utilizzabile.",
         "children":[
           {
-            "title":"Supports any type of content",
-            "description":"Like any other container, modals can be used in different scenarios and you should be able to use it with any other component inside.",
-            "done":false
+            "title":"Supporta qualsiasi tipo di contenuto",
+            "description":"Come qualsiasi altro contenitore, i modali possono essere utilizzati in diversi scenari e dovresti essere in grado di usarli con qualsiasi altro componente all'interno.",
+            "done":true
           },
           {
-            "title":"Supplementary actions",
-            "description":"Since content in the modal may be actionable, it’s important to have an area for action elements. This area is usually located at the bottom of the modal container.",
-            "done":false
+            "title":"Azioni supplementari",
+            "description":"Poiché il contenuto nel modale può essere utilizzabile, è importante disporre di un'area per gli elementi di azione. Questa area si trova solitamente nella parte inferiore del contenitore modale.",
+            "done":true
           },
           {
-            "title":"Close action",
-            "description":"Modals should provide a clear way to be closed as they’re blocking content when open. This may be either a separate close button or one of the supplementary actions.",
-            "done":false
+            "title":"Azione chiudi",
+            "description":"I Modal dovrebbero fornire un modo chiaro per essere chiusi poiché bloccano i contenuti quando sono aperti. Può trattarsi di un pulsante di chiusura separato o di una delle azioni supplementari.",
+            "done":true
           },
           {
-            "title":"Information structure",
-            "description":"Even though modals can be used as an empty container for the content, they need a defined information structure to provide a holistic experience. It may include defining how titles and subtitles look by default or where an action element’s area is.",
-            "done":false
+            "title":"Struttura delle informazioni",
+            "description":"Anche se i Modal possono essere utilizzati come un contenitore vuoto per il contenuto, hanno bisogno di una struttura di informazioni definita per fornire un'esperienza olistica. Può includere la definizione di come i titoli e i sottotitoli appaiono per impostazione predefinita o dove si trova l'area di un elemento di azione.",
+            "done":true
           },
           {
-            "title":"Keyboard navigation support",
-            "description":"It should be possible to close a modal by pressing the Esc key and all the focusable elements inside the modal container should be accessible with keyboard navigation.",
+            "title":"Supporto per la navigazione da tastiera",
+            "description":"Dovrebbe essere possibile chiudere un modale premendo il tasto Esc e tutti gli elementi attivabili all'interno del contenitore modale dovrebbero essere accessibili con la navigazione da tastiera.",
             "done":false
           },
           {
             "title":"Focus trapping",
-            "description":"Once a modal is opened, the focus should be moved to the first element inside the modal and should be looped within the modal container. Closing the modal should return the focus to the last focused element on the page.",
+            "description":"Una volta aperto un modale, il focus dovrebbe essere spostato sul primo elemento all'interno del modale e dovrebbe essere ripetuto nel contenitore modale. La chiusura del modale dovrebbe riportare lo stato attivo sull'ultimo elemento attivo della pagina.",
             "done":false
           }
         ],
@@ -980,32 +987,32 @@
         ]
       },
       {
-        "title":"Tabs",
-        "description":"Tabs organise navigation between multiple pages or content sections.",
+        "title":"Tab",
+        "description":"I Tab (schede) organizzano la navigazione tra più pagine o sezioni di contenuto.",
         "children":[
           {
-            "title":"Active button state",
-            "description":"There should be a clear differentiation between selected and unselected tab buttons.",
+            "title":"Stato del pulsante attivo",
+            "description":"Dovrebbe esserci una chiara differenziazione tra i pulsanti di tabulazione selezionati e non selezionati.",
             "done":false
           },
           {
-            "title":"Button icon support",
-            "description":"Icons help show the purpose of the tab buttons when used next to its label.",
+            "title":"Supporto dell'icona del pulsante",
+            "description":"Le icone aiutano a mostrare lo scopo dei pulsanti scheda quando vengono utilizzati accanto alla relativa etichetta.",
             "done":false
           },
           {
-            "title":"Equally-sized tab buttons",
-            "description":"Tabs can be used in a relatively small-sized container where you need to switch between a definite number of sections. For such scenarios, it’s better to support a variant where the button’s area is divided equally.",
+            "title":"Pulsanti tab di dimensioni uguali",
+            "description":"Le schede possono essere utilizzate in un contenitore di dimensioni relativamente piccole in cui è necessario passare da un numero definito di sezioni. Per tali scenari, è meglio supportare una variante in cui l'area del pulsante è divisa equamente.",
             "done":false
           },
           {
-            "title":"Keyboard navigation",
-            "description":"All tab buttons should be focusable and navigation between the tab’s component should be accessible from the keyboard.",
+            "title":"Navigazione da tastiera",
+            "description":"Tutti i pulsanti delle schede dovrebbero essere attivabili e la navigazione tra i componenti della scheda dovrebbe essere accessibile dalla tastiera.",
             "done":false
           },
           {
-            "title":"Responsiveness",
-            "description":"If all tabs on mobile don’t fit into the viewport, users should still have access to all tab buttons. Ways to solve this can be making the button area scrollable for mobile or showing a More button containing a dropdown with the rest of the buttons.",
+            "title":"Responsività",
+            "description":"Se tutte le schede sui dispositivi mobili non si adattano alla visualizzazione, gli utenti dovrebbero comunque avere accesso a tutti i pulsanti delle schede. I modi per risolvere questo problema possono essere rendere scorrevole l'area dei pulsanti per dispositivi mobili o mostrare un pulsante Altro contenente un menu a discesa con il resto dei pulsanti.",
             "done":false
           }
         ],
@@ -1026,31 +1033,31 @@
       },
       {
         "title":"Toast",
-        "description":"Toasts provide short meaningful feedback messages about the action results.",
+        "description":"I Toast forniscono brevi messaggi di feedback significativi sui risultati dell'azione.",
         "children":[
           {
-            "title":"Dismissed automatically",
-            "description":"Toast messages shouldn’t interrupt the user flow, block the screen for a long time or require additional action from the user.",
+            "title":"Ignorato automaticamente",
+            "description":"I messaggi di avviso popup non devono interrompere il flusso dell'utente, bloccare lo schermo per un lungo periodo o richiedere un'azione aggiuntiva da parte dell'utente.",
             "done":false
           },
           {
-            "title":"Action support",
-            "description":"Besides displaying the message, toasts may also provide an action related to the message like undoing an action.",
+            "title":"Supporto all'azione",
+            "description":"Oltre a visualizzare il messaggio, i Toast possono anche fornire un'azione correlata al messaggio, come l'annullamento di un'azione.",
             "done":false
           },
           {
-            "title":"Handles multiple instances",
-            "description":"Even though it doesn’t happen often, toasts can be called from multiple sources at the same time and all resulting toasts should be queued. It’s good practice not to show all the messages at the same time.",
+            "title":"Gestisce più istanze",
+            "description":"Anche se non accade spesso, i toast possono essere chiamati da più origini contemporaneamente e tutti i toast risultanti dovrebbero essere messi in coda. È buona norma non mostrare tutti i messaggi contemporaneamente.",
             "done":false
           },
           {
-            "title":"Accessibility",
-            "description":"Toast messages should be announced by the voice assistive technology and their action should be easily accessible from the keyboard.",
+            "title":"Accessibilità",
+            "description":"I messaggi di avviso dovrebbero essere annunciati dalla tecnologia di assistenza vocale e la loro azione dovrebbe essere facilmente accessibile dalla tastiera.",
             "done":false
           },
           {
-            "title":"Responsiveness",
-            "description":"Toasts should be aligned with the mobile viewport and their action should be easily reachable for tapping.",
+            "title":"Responsività",
+            "description":"I Toast dovrebbero essere allineati con la visualizzazione mobile e la loro azione dovrebbe essere facilmente raggiungibile per il tocco.",
             "done":false
           }
         ],
@@ -1071,31 +1078,31 @@
       },
       {
         "title":"Tooltip",
-        "description":"Tooltips are desktop-only components that display additional information when hovering over or focusing on an element.",
+        "description":"I Tooltip sono componenti solo desktop che visualizzano informazioni aggiuntive quando si passa con il mouse o ci si concentra su un elemento.",
         "children":[
           {
-            "title":"Keyboard hover support",
-            "description":"Tooltips should be accessible when an element is focused using the keyboard.",
+            "title":"Supporto tastiera",
+            "description":"I Tooltip dovrebbero essere accessibili quando un elemento è focalizzato utilizzando la tastiera.",
             "done":false
           },
           {
-            "title":"Dynamic positioning",
-            "description":"Tooltip content should be displayed based on the current position of the trigger element on the screen and always visible to the user.",
+            "title":"Posizionamento dinamico",
+            "description":"Un Tooltip dovrebbe essere visualizzato in base alla posizione corrente dell'elemento trigger sullo schermo e sempre visibile all'utente.",
             "done":false
           },
           {
-            "title":"Hover timeout",
-            "description":"Having a small timeout before triggering a tooltip will help to prevent occasionally showing tooltips while users move their mouse cursor.",
+            "title":"Timeout al passaggio del mouse",
+            "description":"Avere un piccolo timeout prima di attivare un tooltip aiuterà a prevenire la visualizzazione occasionale di tooltip mentre gli utenti muovono il cursore del mouse.",
             "done":false
           },
           {
-            "title":"Light variant",
-            "description":"The tooltip should respect its parent element background and provide a variant to be used on darker background colours.",
+            "title":"Varianti",
+            "description":"Il suggerimento dovrebbe rispettare lo sfondo dell'elemento genitore e fornire una variante da utilizzare su colori di sfondo più scuri.",
             "done":false
           },
           {
-            "title":"Instant transition for element groups",
-            "description":"If there’s a group of elements using tooltips, hovering over another element while a tooltip’s already active shouldn’t trigger the animation.",
+            "title":"Transizione istantanea per gruppi di elementi",
+            "description":"Se è presente un gruppo di elementi che utilizza un Tooltip, il passaggio del mouse su un altro elemento mentre un Tooltip è già attivo non dovrebbe attivare l'animazione nuovamente.",
             "done":false
           }
         ],
@@ -1122,26 +1129,26 @@
     "children":[
       {
         "title":"Design",
-        "description":"The UI and UX in a design system need to be tied to development as much as possible. The tools in this checklist should help designers and developers work better together.",
+        "description":"La UI (interfaccia utente) e la UX (esperienza utente) in un Design System devono essere legate il più possibile allo sviluppo. Gli strumenti in questo elenco di controllo dovrebbero aiutare i designer e gli sviluppatori a lavorare meglio insieme.",
         "children":[
           {
             "title":"Design editor",
-            "description":"There are many design editors available in the market today with the most popular names being Sketch, Figma and Adobe XD. If you're unsure which route to go down it's often best to speak with your team.",
+            "description":"Ci sono molti editor di grafica disponibili oggi sul mercato con i nomi più popolari Sketch, Figma e Adobe XD. Se non sei sicuro di quale strada prendere, spesso è meglio parlare con la tua squadra.",
             "done":false
           },
           {
-            "title":"Plugins",
-            "description":"Most popular Design Editors (Sketch and Figma, especially) come with third-party plugin support. Whilst it's best to use the editors in-built tools for laying out your components, plugins can bring in a range of useful data to populate them.",
+            "title":"Plugin",
+            "description":"Gli editor di design più popolari (Sketch e Figma, in particolare) sono dotati di supporto per plug-in di terze parti. Sebbene sia meglio utilizzare gli strumenti incorporati nell'editor per disporre i componenti, i plugin possono inserire una serie di dati utili per popolarli.",
             "done":false
           },
           {
-            "title":"Version control",
-            "description":"Having your design versioned with semantic versioning will allow you to easily align design with development, roll back faulty changes and release changes in code and design at the same time.",
+            "title":"Controllo della versione",
+            "description":"Il controllo delle versioni del progetto con il controllo delle versioni semantico (Semver) ti consentirà di allineare facilmente il design con lo sviluppo, annullare le modifiche errate e rilasciare le modifiche nel codice e nella progettazione allo stesso tempo.",
             "done":false
           },
           {
-            "title":"Contribution guidelines",
-            "description":"Define the process of contributing to the UI and UX of the design system and document it in a discoverable place to make it easier for everyone to contribute.",
+            "title":"Linee guida per il contributo",
+            "description":"Definire il processo di contributo alla UI e alla UX del Design System e documentarlo in un luogo individuabile per rendere più facile il contributo di tutti.",
             "done":false
           }
         ],
@@ -1169,57 +1176,57 @@
         ]
       },
       {
-        "title":"Development",
-        "description":"One of the main challenges in developing a design system isn’t building the components. It’s making your code stable, easy to read and contribute to.",
+        "title":"Sviluppo",
+        "description":"Una delle sfide principali nello sviluppo di un Design System non è la costruzione dei componenti, ma renderlo codice stabile, facile da leggere e scalare da parte di altri membri della tua azienda.",
         "children":[
           {
             "title":"Component catalog",
-            "description":"Isolate your UI components’ environment outside of your product codebase to make sure they’re not dependent on any global dependencies and can be easily reused.",
+            "description":"Isola l'ambiente dei componenti UI al di fuori della base di codice del prodotto per assicurarti che non dipendano da dipendenze globali e che possano essere facilmente riutilizzati.",
+            "done":true
+          },
+          {
+            "title":"Documentazione",
+            "description":"La documentazione del codice è fondamentale per favorire l'adozione e ridurre il carico sui contributori.",
             "done":false
           },
           {
-            "title":"Documentation",
-            "description":"Having your code documented is key to driving adoption and reducing the load on the contributors.",
-            "done":false
-          },
-          {
-            "title":"Code style",
-            "description":"Having a defined code style helps align the way code’s written in the system and increases development velocity. It should be automated with the tools provided for each platform.",
+            "title":"Coding standard",
+            "description":"Avere un coding standard definito aiuta ad allineare il modo in cui il codice è scritto nel sistema e aumenta la velocità di sviluppo. Dovrebbe essere automatizzato con gli strumenti forniti per ciascuna piattaforma.",
             "done":false
           },
           {
             "title":"Unit testing",
-            "description":"Every part of the design system should be covered with unit tests. Once your system’s adopted, any change in the isolated environment may affect how the product works.",
+            "description":"Ogni parte del Design System dovrebbe essere coperta da unit test. Una volta adottato il sistema, qualsiasi modifica nell'ambiente isolato può influire sul funzionamento del prodotto.",
             "done":false
           },
           {
             "title":"Accessibility testing",
-            "description":"Design systems should cover accessibility as much as possible. Making this automatic reduces the risk of inaccessible components or user flows in the product.",
+            "description":"I Design System dovrebbero coprire l'accessibilità il più possibile. Rendendolo automatico si riduce il rischio di componenti inaccessibili o flussi utente incompletabili nel prodotto.",
             "done":false
           },
           {
             "title":"Semantic versioning",
-            "description":"Version your code with semantic versioning that dictates how version numbers are assigned and incremented.",
-            "done":false
+            "description":"Esegui la versione del codice con il controllo delle versioni semantico che determina come i numeri di versione vengono assegnati e incrementati.",
+            "done":true
           },
           {
             "title":"Release strategy",
-            "description":"Design system releases should be automated and ideally use scripts ran locally or in remote CI pipelines to prevent broken releases.",
+            "description":"I rilasci del Design System dovrebbero essere automatizzati e idealmente utilizzare script eseguiti localmente o in pipeline CI remote per evitare rilasci interrotti.",
             "done":false
           },
           {
-            "title":"Commit message guidelines and changelog",
-            "description":"Automate the generation of your changelog by adopting a commit message guidelines that categorise and define the changes being made.",
+            "title":"Conferma le linee guida dei messaggi e il log delle modifiche",
+            "description":"Automatizza la generazione del tuo changelog adottando linee guida per i messaggi di commit che classificano e definiscono le modifiche da apportare.",
             "done":false
           },
           {
-            "title":"MR templates",
-            "description":"Create merge request templates that outline the change being proposed to facilitate productive discussions.",
+            "title":"Modelli di merge request",
+            "description":"Crea modelli di merge request che delineano la modifica proposta per facilitare discussioni produttive.",
             "done":false
           },
           {
-            "title":"Contribution guidelines",
-            "description":"Define the process of contributing to the code of the design system. Document everything in a discoverable place to make it easier for everyone to contribute.",
+            "title":"Linee guida per il contributo",
+            "description":"Definire il processo di contributo al codice del Design System. Documenta tutto in un luogo individuabile per rendere più facile il contributo di tutti.",
             "done":false
           }
         ],
@@ -1250,26 +1257,26 @@
   },
   {
     "title":"Project management",
-    "description":"Design systems are no different than any other project your team might take on. In order to successfully build and maintain one, you need a clear strategy that’s well executed daily, and you‘ll need to create opportunities for your colleagues to give feedback to help share your design system together.",
+    "description":"I Design System non sono diversi da un qualsiasi altro progetto che il tuo team potrebbe intraprendere. Per crerlo e mantenerlo con successo, hai bisogno di una strategia chiara che sia ben eseguita ogni giorno e dovrai creare opportunità per i tuoi colleghi per fornire feedback per condividere insieme il Design System.",
     "children":[
       {
         "title":"Task management",
-        "description":"Solid task management and workflows are a crucial step in executing any project. Adopting a methodology like Agile or Kanban helps you cover a lot of ground.",
+        "description":"Una solida gestione delle attività e flussi di lavoro sono un passaggio cruciale nell'esecuzione di qualsiasi progetto. L'adozione di una metodologia come Agile o Kanban ti aiuta a coprire molte aree.",
         "children":[
           {
             "title":"Roadmap",
-            "description":"Setting your short and long term vision and mapping things out helps you decide the steps to take, understand your place in the bigger picture and prioritise day-to-day tasks.",
+            "description":"Impostare la tua visione a breve e lungo termine e mappare le cose ti aiuta a decidere i passi da compiere, a capire il tuo posto nel quadro più ampio e a dare la priorità alle attività quotidiane.",
             "done":false
           },
           {
-            "title":"Milestones",
-            "description":"Define milestones that act as bigger epics in your project management with the help of your roadmap. These will help you understand your progress.",
+            "title":"Milestone",
+            "description":"Definisci le Milestone che agiscono come Epic più grandi nella gestione del tuo progetto con l'aiuto della tua Roadmap. Questi ti aiuteranno a capire i tuoi progressi.",
             "done":false
           },
           {
             "title":"Ticketing",
-            "description":"Make it easier to track your day-to-day progress by using ticketing software like Jira, Trello or GitHub. This’ll make it easier for others to submit feature proposals or bug reports.",
-            "done":false
+            "description":"Rendi più facile tenere traccia dei tuoi progressi quotidiani utilizzando software di ticketing come Jira, Trello o GitHub. In questo modo sarà più facile per altri inviare proposte di funzionalità o segnalazioni di bug.",
+            "done":true
           }
         ],
         "references":[
@@ -1284,27 +1291,27 @@
         ]
       },
       {
-        "title":"Communications",
-        "description":"Your users play a great role in shaping your design system. Creating communication channels where they can raise their voices helps you keep track of how they’re using your system. It’ll also improve their sense of ownership and the adoption of your system.",
+        "title":"Comunicazioni",
+        "description":"I tuoi utenti giocano un ruolo importante nel dare forma al Design System. La creazione di canali di comunicazione in cui possono alzare la voce ti aiuta a tenere traccia di come stanno utilizzando il Design System. Migliorerà anche il loro senso di appartenenza e l'adozione del Design System.",
         "children":[
           {
-            "title":"Community meetings",
-            "description":"Arrange community meetings with everyone who uses the design system. Share your knowledge and make proposals to improve the sense of community.",
+            "title":"Incontri di community",
+            "description":"Organizza incontri di community con tutti coloro che utilizzano il Design System. Condividi le tue conoscenze e fai proposte per migliorare il senso di community.",
             "done":false
           },
           {
-            "title":"Communication channel",
-            "description":"Most product development work happens digitally, so create a digital channel where people can reach out and ask questions.",
-            "done":false
+            "title":"Canale di comunicazione",
+            "description":"La maggior parte del lavoro di sviluppo del prodotto avviene digitalmente, quindi crea un canale digitale in cui le persone possano contattare e porre domande.",
+            "done":true
           },
           {
-            "title":"Open hours",
-            "description":"Create open hours in which you can engage your audience in a more private setting where you can discuss things in more detail. You can also use these as peer coding or peer design opportunities.",
+            "title":"Orario di apertura",
+            "description":"Crea orari di apertura in cui puoi coinvolgere il tuo pubblico in un ambiente più privato dove puoi discutere le cose in modo più dettagliato. È inoltre possibile utilizzarli come codici peer o opportunità di progettazione tra pari.",
             "done":false
           },
           {
             "title":"FAQ",
-            "description":"To save everyone time, define which questions are asked frequently by your audience and document them in a discoverable place.",
+            "description":"Per risparmiare il tempo di tutti, definisci quali domande vengono poste frequentemente dal tuo pubblico e documentale in un luogo individuabile.",
             "done":false
           }
         ],
@@ -1321,26 +1328,26 @@
       },
       {
         "title":"Analytics",
-        "description":"Data isn’t the only driving factor when it comes to the development of design systems. Keeping a sharp eye on how your system’s used in the development process and the end product can inform your go-forward strategy.",
+        "description":"I dati non sono l'unico fattore trainante quando si tratta di sviluppo di Design System. Tenere d'occhio il modo in cui il Design System viene utilizzato nel processo di sviluppo e il prodotto finale può informare la tua strategia di progresso.",
         "children":[
           {
-            "title":"Component analytics",
-            "description":"Track the usage of your components. For development you can use built-in tools like Figma’s Design System Analytics. For the end product you can have a separate way of tracking per platform depending on the technology.",
+            "title":"Analytics sui componenti",
+            "description":"Tieni traccia dell'utilizzo dei tuoi componenti. Per lo sviluppo puoi utilizzare strumenti integrati come Design System Analytics di Figma. Per il prodotto finale puoi avere un modo separato di tracciamento per piattaforma a seconda della tecnologia.",
             "done":false
           },
           {
             "title":"Error logging",
-            "description":"Implement a way to track and pinpoint component-related outages in your product.",
+            "description":"Implementa un modo per monitorare e individuare le interruzioni relative ai componenti nel tuo prodotto.",
             "done":false
           },
           {
             "title":"Tooling analytics",
-            "description":"Track what tools are being used for your design system. Find out which ones are used the most and which features are the most popular.",
+            "description":"Tieni traccia degli strumenti utilizzati per il tuo Design System. Scopri quali vengono utilizzate di più e quali sono le funzionalità più apprezzate.",
             "done":false
           },
           {
             "title":"Service and health metrics",
-            "description":"Define service and health metrics for your design system to set a benchmark on how well you’re doing. Common examples can be the number of tickets closed, improvements made or bugs fixed.",
+            "description":"Definisci le metriche di servizio e di integrità per il tuo Design System per impostare un punto di riferimento sul tuo rendimento. Esempi comuni possono essere il numero di ticket chiusi, i miglioramenti apportati o i bug corretti.",
             "done":false
           }
         ],

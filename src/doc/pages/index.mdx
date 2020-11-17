@@ -1,21 +1,11 @@
 ---
-title: 'Welcome page'
-date: '2020-08-18'
+title: 'Maggioli Design System'
+date: '2020-11-16'
+author:
+  - gioele.masini@maggioli.it
+  - vittorio.vittori@maggioli.it
 ---
 
-import data from '+Package/package.json'
+import checklist from '+Metadata/checklist.json'
 
-# Hello world!
-
-Ciao mondo.
-<Paragraph>Stai vedendo la documentazione v{data.version}</Paragraph>
-
-```scss
-.selector {
-  background-color: red;
-}
-```
-
----
-
-[Gruppo Maggioli](http://www.maggioli.com)
+<RoadmapChecklist checklist={checklist}/>

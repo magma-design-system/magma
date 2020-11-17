@@ -31,16 +31,17 @@ const BenchmarkBar = props => {
 
   return <Grid className={`benckmark-bar ${props.className} ${classNameText}`} gutter="xxsmall">
     <Row>
-      <H2 className={`benckmark-bar__progress ${classNameText}`}>{props.progress}%</H2>
+      <H2 className={`benckmark-bar__progress ${classNameText}`}>{props.decimals ? Number(props.progress).toFixed(1) : Math.round(props.progress)}%</H2>
       {props.children}
     </Row>
-    <ProgressBar className={className} progressClassName={progressClassName} size={props.size} rounded={props.rounded} progress={props.progress}/>
+    <ProgressBar className={className} progressClassName={progressClassName} size={props.size} rounded={props.rounded} progress={props.decimals ? Number(props.progress).toFixed(1) : Math.round(props.progress)}/>
   </Grid>
 }
 
 BenchmarkBar.propTypes = {
   autoColor: PropTypes.bool,
   className: PropTypes.string,
+  decimals: PropTypes.bool,
   progress: PropTypes.number,
   rounded: PropTypes.bool,
   size: PropTypes.string,
@@ -49,6 +50,7 @@ BenchmarkBar.propTypes = {
 BenchmarkBar.defaultProps = {
   autoColor: false,
   className: '',
+  decimals: false,
   progress: 0,
   rounded: true,
   size: 'normal',

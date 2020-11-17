@@ -3,12 +3,15 @@ import PropTypes from 'prop-types'
 import Grid from '@Layout/Grid/Grid'
 import H2 from '@Typography/H2/H2'
 import H4 from '@Typography/H4/H4'
+import H6 from '@Typography/H6/H6'
 import Hr from '@UI/Hr/Hr'
 import Paragraph from '@Typography/Paragraph/Paragraph'
 import Detail from '@Typography/Detail/Detail'
+import Card from '@Layout/Card/Card'
 import BenchmarkBar from '@Content/BenchmarkBar/BenchmarkBar'
 import Row from '@Layout/Row/Row'
 import Icon from '@Design/Icon/Icon'
+import ExternalLink from '@UI/ExternalLink/ExternalLink'
 
 const getProgress = subTasks => {
   let completed = 0
@@ -23,7 +26,6 @@ const RoadmapChecklistTasks = props =>
     { props.checklist.map(element => {
       if (element.title.toLowerCase() === props.filter.toLowerCase()) {
         return <Grid gutter="small">
-          <H2>{ element.title }</H2>
           <Paragraph>{ element.description }</Paragraph>
           { element.children.map((section, sectionIndex) =>
             <Grid key={sectionIndex} gutter="small">
@@ -32,16 +34,21 @@ const RoadmapChecklistTasks = props =>
               { section.children.map((task, taskIndex) =>
                 <Grid gutter="none">
                   <Row key={taskIndex}>
-                    <Icon name={task.done ? 'form-checkbox-checked' : 'form-checkbox-unchecked'}/>
-                    <Detail><b>{task.title}</b></Detail>
+                    <Icon className={task.done ? 'color-status-success-08' : 'color-adjust-tone-16'} name="status-success"/>
+                    <Detail className={task.done ? '' : 'color-adjust-tone-08'}><b>{task.title}</b></Detail>
                   </Row>
                   <Detail>{task.description}</Detail>
                 </Grid>,
               ) }
-              <Hr/>
+              {section.references && <H6>Riferimenti esterni</H6>}
+              <Grid gutter="none">
+                { section.references.map((reference, referenceIndex) =>
+                  <span><ExternalLink key={referenceIndex} href={reference.href}>{reference.title}</ExternalLink></span>,
+                ) }
+              </Grid>
+              <Hr className="background-color-adjust-tone-18"/>
             </Grid>,
           ) }
-          <Hr className="background-color-adjust-tone-18"/>
         </Grid>
       }
     }) }
@@ -61,7 +68,9 @@ RoadmapChecklistTasks.defaultProps = {
 const RoadmapMainChecklistTasks = props =>
   <Fragment>
     { props.tasks.map((task, index) => {
-      return <BenchmarkBar key={index} autoColor={true} progress={getProgress(task.children)} size="xsmall"><H4>{task.title}</H4></BenchmarkBar>
+      return <Card interactive>
+        <BenchmarkBar key={index} autoColor={true} progress={getProgress(task.children)} size="xsmall"><H4>{task.title}</H4></BenchmarkBar>
+      </Card>
     })}
   </Fragment>
 
@@ -80,7 +89,7 @@ const RoadmapMainChecklist = props =>
       return <Grid gutter="small">
         <H2>{ element.title }</H2>
         <Paragraph>{ element.description }</Paragraph>
-        <Grid template="auto-fill-medium" gutter="large">
+        <Grid template="auto-fill-large" gutter="xsmall">
           <RoadmapMainChecklistTasks tasks={element.children} />
         </Grid>
         <Hr className="background-color-adjust-tone-18"/>
