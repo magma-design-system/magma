@@ -1,19 +1,45 @@
 @import '~Sass/import-framework';
 
-@mixin size-modifier ($icon-size) {
+@mixin radius-modifier ($item-radius) {
 
-  $modifier: nth($icon-size, 1);
-  $size: nth($icon-size, 2);
+  $modifier: nth($item-radius, 1);
+  $radius: nth($item-radius, 2);
+
+  &--radius-#{$modifier} {
+    border-radius: $radius;
+
+    .progress-bar {
+      &__inner {
+        border-radius: $radius;
+      }
+    }
+  }
+}
+
+@mixin size-modifier ($item-size) {
+
+  $modifier: nth($item-size, 1);
+  $size: nth($item-size, 2);
 
   &--size-#{$modifier} {
     height: $size;
+
+    // &.progress-bar {
+    //   &--neumorphic {
+    //     .progress-bar {
+    //       &__inner {
+    //         box-shadow: 0 2px 2px color('adjust.tone', '01', 0.2), 0 -2px 8px color('adjust.tone', '01', 0.2) inset, 0 2px 5px 2px color('adjust.tone', '20', 0.3) inset;
+    //       }
+    //     }
+    //   }
+    // }
   }
 }
 
 .progress-bar {
 
   $size: s(1);
-  $shadow: 0 2px 5px 0 color('adjust.tone', '01', 0.05) inset;
+  $shadow: 0 2px 8px 0 color('adjust.tone', '01', 0.08) inset;
 
   background-color: color('adjust.tone', '19');
   box-shadow: $shadow;
@@ -23,22 +49,16 @@
   overflow: hidden;
   width: 100%;
 
-  @each $icon-size in $list-sizes {
-    @include size-modifier ($icon-size);
+  @each $item-size in $list-sizes {
+    @include size-modifier ($item-size);
+  }
+
+  @each $radius-item in $radius {
+    @include radius-modifier ($radius-item);
   }
 
   &__inner {
     background-color: color('brand.maggioli', '10');
     transition: width get($tween, 'slide');
-  }
-
-  &--rounded {
-    border-radius: get($list-sizes, 'xlarge');
-
-    .progress-bar {
-      &__inner {
-        border-radius: get($list-sizes, 'xlarge');
-      }
-    }
   }
 }

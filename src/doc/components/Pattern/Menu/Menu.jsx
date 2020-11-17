@@ -27,13 +27,13 @@ MenuSubItem.defaultProps = {
 }
 
 const MenuItem = props =>
-  <Grid gutter="none" fit="auto-fit" className={`ds-menu-item ${props.active ? 'ds-menu-item--active' : ''} ${props.isOpened ? 'ds-menu-item--opened' : ''}`}>
+  <Grid gutter="none" fit className={`ds-menu-item ${props.active ? 'ds-menu-item--active' : ''} ${props.isOpened ? 'ds-menu-item--opened' : ''}`}>
     <div className="ds-menu-item__section">
       <Link to={props.url} className="ds-menu-item__title text-primary text-primary--h4">
         {props.title}
       </Link>
     </div>
-    {props.children && <Grid gutter="none" fit="auto-fit" className="ds-menu-item__list">
+    {props.children && <Grid gutter="none" fit className="ds-menu-item__list">
       {props.children}
     </Grid>}
   </Grid>

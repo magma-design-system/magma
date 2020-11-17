@@ -6,7 +6,9 @@ import InlineCode from '@UI/InlineCode/InlineCode'
 import Table, { TableHeader, TableHeaderCell, TableBody, TableRow, TableCell } from '@UI/Table/Table'
 
 import sizesData from '+Tokens/css-tokens/sizes.json'
+import cosmeticsData from '+Tokens/css-tokens/cosmetics.json'
 const sizes = Object.keys(sizesData.size)
+const borderRadius = Object.keys(cosmeticsData['border-radius'])
 
 faker.locale = 'it'
 
@@ -17,9 +19,6 @@ export default {
 
 export const basicUsage = () =>
   <ProgressBar progress={faker.random.number(90)}/>
-
-export const rounded = () =>
-  <ProgressBar progress={faker.random.number(90)} rounded={false}/>
 
 export const customColors = () =>
   <ProgressBar progress={faker.random.number(90)} className="background-color-status-error-19" progressClassName="background-color-status-error-09"/>
@@ -43,3 +42,29 @@ export const barSizes = () =>
       )}
     </TableBody>
   </Table>
+
+export const barRadius = () =>
+  <Table interactive={true}>
+    <TableHeader>
+      <TableHeaderCell>Preview</TableHeaderCell>
+      <TableHeaderCell>Size</TableHeaderCell>
+    </TableHeader>
+    <TableBody>
+      {borderRadius.map(key =>
+        <TableRow key={key}>
+          <TableCell>
+            <ProgressBar radius={key} size="xlarge" progress={faker.random.number(100)}/>
+          </TableCell>
+          <TableCell>
+            <InlineCode>{`${key}`}</InlineCode>
+          </TableCell>
+        </TableRow>,
+      )}
+    </TableBody>
+  </Table>
+
+export const noRadius = () =>
+  <ProgressBar progress={faker.random.number(90)} radius="none"/>
+
+export const autoColor = () =>
+  <ProgressBar progress={faker.random.number(100)} autoColor/>

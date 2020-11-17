@@ -10,17 +10,17 @@
           {
             "title":"Vision",
             "description":"Why you exist, what your values are and how they’ll help guide the future of your product.",
-            "done":false
+            "done":true
           },
           {
             "title":"Design principles",
             "description":"The considerations that guide the basis of your practice. They outline how you approach design from a philosophical perspective and help with everyday decisions.",
-            "done":false
+            "done":true
           },
           {
             "title":"Tone of voice",
             "description":"A clear tone of voice defines how you speak to your audience at every moment in their journey, helping them get wherever they want to go.",
-            "done":false
+            "done":true
           },
           {
             "title":"Terminology",
