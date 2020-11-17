@@ -32,8 +32,8 @@ const Modal = props => {
             <Button variant="secondary-outline" onClick={() => { props.onCancel() }}>
               Cancel
             </Button>
-            <Button disabled={props.confirmDisabled} variant="primary" 
-                    onClick={() => { props.onConfirm() }}>
+            <Button disabled={props.confirmDisabled} variant="primary"
+              onClick={() => { props.onConfirm() }}>
               Confirm
             </Button>
           </footer>
