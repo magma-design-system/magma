@@ -7,8 +7,6 @@ import Hr from '@UI/Hr/Hr'
 import Paragraph from '@Typography/Paragraph/Paragraph'
 import Detail from '@Typography/Detail/Detail'
 import BenchmarkBar from '@Content/BenchmarkBar/BenchmarkBar'
-import ProgressBar from '@UI/ProgressBar/ProgressBar'
-import List, { ListItem } from '@UI/List/List'
 import Row from '@Layout/Row/Row'
 import Icon from '@Design/Icon/Icon'
 
