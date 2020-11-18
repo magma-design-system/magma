@@ -10,17 +10,17 @@
           {
             "title":"Vision",
             "description":"Perché esisti, quali sono i tuoi valori e come questi aiuteranno a guidare il futuro del tuo prodotto.",
-            "done":true
+            "done":false
           },
           {
             "title":"Design principles",
             "description":"Le considerazioni che guidano le basi della tua pratica. Descrivono il modo in cui ti avvicini al design da una prospettiva filosofica e ti aiutano nelle decisioni quotidiane.",
-            "done":true
+            "done":false
           },
           {
             "title":"Tone of voice",
             "description":"Un tono di voce chiaro definisce il modo in cui parli al tuo pubblico in ogni momento del loro viaggio, aiutandolo ad arrivare ovunque voglia andare.",
-            "done":true
+            "done":false
           },
           {
             "title":"Terminologia",
@@ -109,7 +109,7 @@
           },
           {
             "title":"Notifiche e autorizzazioni",
-            "description":"Guardrail su come scrivere per i componenti che compongono i tuoi progetti, dallo stile e dalle regole tecniche per canalizzare correttamente il tuo tono di voce attraverso la copia.",
+            "description":"Guardrail su come scrivere per i componenti che compongono i tuoi progetti, dallo stile e dalle regole tecniche per canalizzare correttamente il Tone of voice attraverso il copy.",
             "done":false
           },
           {

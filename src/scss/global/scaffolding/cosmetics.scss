@@ -24,3 +24,13 @@
     );
   }
 }
+
+@if (index($cosmetics-scaffold, 'padding')) {
+  @each $padding-name, $padding-value in $list-sizes {
+    @include scaffold-property (
+      $property-name: 'padding',
+      $variant: $padding-name,
+      $value: $padding-value
+    );
+  }
+}

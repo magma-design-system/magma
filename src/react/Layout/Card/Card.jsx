@@ -4,7 +4,7 @@ import Grid from '@Layout/Grid/Grid'
 import './Card.scss'
 
 const Card = props =>
-  <Grid {...props} className={`card ${props.className} ${props.interactive ? props.shadow + '--interactive' : props.shadow} ${props.radius ? props.radius : ''}`}>
+  <Grid {...props} className={`card ${props.className} ${props.interactive ? props.shadow + '--interactive' : props.shadow} ${props.radius ? props.radius : ''} ${props.padding ? props.padding : ''}`}>
     {props.children}
   </Grid>
 
@@ -15,6 +15,7 @@ Card.propTypes = {
   fit: PropTypes.bool,
   gutter: PropTypes.string,
   interactive: PropTypes.bool,
+  padding: PropTypes.string,
   radius: PropTypes.string,
   shadow: PropTypes.string,
   template: PropTypes.string,
@@ -25,8 +26,9 @@ Card.defaultProps = {
   columns: '0',
   gutter: 'xsmall',
   interactive: false,
-  shadow: 'box-shadow-soft',
+  padding: 'padding-normal',
   radius: 'border-radius-normal',
+  shadow: 'box-shadow-soft',
 }
 
 export default Card

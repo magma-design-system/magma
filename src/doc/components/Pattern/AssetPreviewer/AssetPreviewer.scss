@@ -1,0 +1,17 @@
+@import '~Sass/import-framework';
+
+.ds-asset-previewer {
+  background-image: url('./background-tester.svg');
+  background-size: cover;
+  border: 2px solid transparent;
+  display: flex;
+
+  &--no-bg-tester {
+    background-image: none;
+  }
+
+  &__preview {
+    background-position: 0 0;
+    background-size: contain;
+  }
+}

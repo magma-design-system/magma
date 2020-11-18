@@ -10,6 +10,7 @@ import metadataSources from '../../metadata/sources.json'
 import Author from '@Content/Author/Author'
 import BibliographyMLA from '@Content/Bibliography/BibliographyMLA'
 import Button from '@UI/Button/Button'
+import Download from '@UI/Download/Download'
 import Code from '@UI/InlineCode/InlineCode'
 import CodeBlock from '@Content/CodeBlock/CodeBlock'
 import PackageInfo from '@Content/PackageInfo/PackageInfo'
@@ -32,6 +33,7 @@ import Image from '@Content/Image/Image'
 import List, { ListItem } from '@UI/List/List'
 import Navigation from '@Gatsby/Pattern/Navigation/Navigation'
 import Page from '@Gatsby/Page/Page'
+import AssetPreviewer from '@Gatsby/Pattern/AssetPreviewer/AssetPreviewer'
 import Paragraph from '@Typography/Paragraph/Paragraph'
 import Quote from '@Content/Quote/Quote'
 import Table, { TableHeader, TableHeaderCell, TableBody, TableRow, TableCell } from '@UI/Table/Table'
@@ -42,12 +44,14 @@ import { defineCustomElements as deckDeckGoHighlightElement } from '@deckdeckgo/
 // https://www.gatsbyjs.com/plugins/gatsby-plugin-mdx/#mdxprovider
 
 const shortcodes = {
+  AssetPreviewer,
   BibliographyMLA,
   Button,
   Caption,
   Detail,
   Code,
   CodeBlock,
+  Download,
   Grid,
   H1,
   H2,

@@ -66,13 +66,13 @@ RoadmapChecklistTasks.defaultProps = {
 }
 
 const RoadmapMainChecklistTasks = props =>
-  <Fragment>
+  <Grid template="auto-fill-large" gutter="large">
     { props.tasks.map((task, index) => {
-      return <Card interactive shadow="box-shadow-box" gutter="xlarge">
+      return <Card interactive shadow="box-shadow-box" gutter="xlarge" padding="padding-small">
         <BenchmarkBar key={index} autoColor={true} progress={getProgress(task.children)} size="xsmall"><H4>{task.title}</H4></BenchmarkBar>
       </Card>
     })}
-  </Fragment>
+  </Grid>
 
 RoadmapMainChecklistTasks.propTypes = {
   className: PropTypes.string,
@@ -89,9 +89,7 @@ const RoadmapMainChecklist = props =>
       return <Grid gutter="small">
         <H2>{ element.title }</H2>
         <Paragraph>{ element.description }</Paragraph>
-        <Grid template="auto-fill-large" gutter="xsmall">
-          <RoadmapMainChecklistTasks tasks={element.children} />
-        </Grid>
+        <RoadmapMainChecklistTasks tasks={element.children} />
         <Hr className="background-color-adjust-tone-18"/>
       </Grid>
     })}

@@ -75,14 +75,14 @@ $contents-color: color('adjust.tone');
       font-weight: 600;
     }
 
-    .image {
-      border-radius: s(1);
-      max-width: 70ch;
+    // .image {
+    //   border-radius: s(1);
+    //   max-width: 70ch;
 
-      .image__element {
-        border-radius: s(1);
-      }
-    }
+    //   .image__element {
+    //     border-radius: s(1);
+    //   }
+    // }
 
     > .image {
       border-radius: s(1);
