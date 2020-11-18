@@ -63,7 +63,7 @@ export const borderRadius = () =>
   </Grid>
 
 export const interactive = () =>
-  <Card interactive>
+  <Card interactive shadow="box-shadow-box">
     <Paragraph>{faker.lorem.paragraph()}</Paragraph>
     <Paragraph>{faker.lorem.paragraph()}</Paragraph>
   </Card>

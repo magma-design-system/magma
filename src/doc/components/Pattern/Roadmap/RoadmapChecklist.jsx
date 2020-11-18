@@ -68,7 +68,7 @@ RoadmapChecklistTasks.defaultProps = {
 const RoadmapMainChecklistTasks = props =>
   <Fragment>
     { props.tasks.map((task, index) => {
-      return <Card interactive>
+      return <Card interactive shadow="box-shadow-box" gutter="xlarge">
         <BenchmarkBar key={index} autoColor={true} progress={getProgress(task.children)} size="xsmall"><H4>{task.title}</H4></BenchmarkBar>
       </Card>
     })}

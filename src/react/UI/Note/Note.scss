@@ -16,8 +16,13 @@ $angle-size: s(1);
   background-color: $note-color;
   box-shadow: 0 0 0 1px rgba(0, 0, 0, 0.04), 0 2px 4px rgba(0, 0, 0, 0.1);
   color: $note-color-dark;
+  display: none;
   padding: s(0.5) s(1) s(1);
   position: relative;
+
+  &--visible {
+    display: block;
+  }
 
   &::after {
     border-color: transparent transparent rgba(#FFFFFF, 0.5);

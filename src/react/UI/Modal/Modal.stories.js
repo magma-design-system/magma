@@ -32,7 +32,7 @@ export const basicUsage = () => {
   )
 }
 
-export const mobileModeLeft = () => {
+export const fromLeft = () => {
   return (
     <Toggler>
       <Toggler.Trigger>
@@ -51,7 +51,7 @@ export const mobileModeLeft = () => {
   )
 }
 
-export const desktopMode = () => {
+export const fromCenter = () => {
   return (
     <Toggler>
       <Toggler.Trigger>
@@ -60,7 +60,7 @@ export const desktopMode = () => {
         </Button>
       </Toggler.Trigger>
       <Toggler.Content>
-        <Modal desktopMode={true}>
+        <Modal position="center">
           <Paragraph>{faker.lorem.paragraph()}</Paragraph>
           <Paragraph>{faker.lorem.paragraph()}</Paragraph>
           <Paragraph>{faker.lorem.paragraph()}</Paragraph>
@@ -79,7 +79,7 @@ export const desktopModeSimple = () => {
         </Button>
       </Toggler.Trigger>
       <Toggler.Content>
-        <Modal desktopMode={true} footer={false}>
+        <Modal position="center" footer={false}>
           <Paragraph>{faker.lorem.paragraph()}</Paragraph>
           <Paragraph>{faker.lorem.paragraph()}</Paragraph>
           <Paragraph>{faker.lorem.paragraph()}</Paragraph>
@@ -98,7 +98,7 @@ export const headerTitle = () => {
         </Button>
       </Toggler.Trigger>
       <Toggler.Content>
-        <Modal title={faker.lorem.sentence()} desktopMode={true} onConfirm={() => console.log('onConfirm')} onCancel={() => console.log('onCancel')}>
+        <Modal title={faker.lorem.sentence()} position="center" onConfirm={() => console.log('onConfirm')} onCancel={() => console.log('onCancel')}>
           <Paragraph>{faker.lorem.paragraph()}</Paragraph>
           <Paragraph>{faker.lorem.paragraph()}</Paragraph>
           <Paragraph>{faker.lorem.paragraph()}</Paragraph>
@@ -117,7 +117,7 @@ export const maxHeight = () => {
         </Button>
       </Toggler.Trigger>
       <Toggler.Content>
-        <Modal maxHeight={true} title={faker.lorem.sentence()} desktopMode={true} onConfirm={() => console.log('onConfirm')} onCancel={() => console.log('onCancel')}>
+        <Modal maxHeight={true} title={faker.lorem.sentence()} position="center" onConfirm={() => console.log('onConfirm')} onCancel={() => console.log('onCancel')}>
           <Paragraph>{faker.lorem.paragraph()}</Paragraph>
           <Paragraph>{faker.lorem.paragraph()}</Paragraph>
           <Paragraph>{faker.lorem.paragraph()}</Paragraph>
@@ -136,7 +136,7 @@ export const simple = () => {
         </Button>
       </Toggler.Trigger>
       <Toggler.Content>
-        <Modal footer={false} maxHeight={true} title={faker.lorem.sentence()} desktopMode={true} onConfirm={() => console.log('onConfirm')} onCancel={() => console.log('onCancel')}>
+        <Modal footer={false} maxHeight={true} title={faker.lorem.sentence()} position="center" onConfirm={() => console.log('onConfirm')} onCancel={() => console.log('onCancel')}>
           <Paragraph>{faker.lorem.paragraph()}</Paragraph>
           <Paragraph>{faker.lorem.paragraph()}</Paragraph>
           <Paragraph>{faker.lorem.paragraph()}</Paragraph>
