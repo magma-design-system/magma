@@ -34,7 +34,6 @@ export const dismissable = () =>
     </Toggler>
   </Grid>
 
-
 export const Colors = () =>
   <Grid columns="3" fit={true}>
     <Note status="success">
