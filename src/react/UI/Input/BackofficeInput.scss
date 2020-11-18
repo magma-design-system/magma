@@ -143,15 +143,6 @@ $ease: get($tween, 'slide');
         @extend %icon-focused;
       }
     }
-
-    &.backoffice-input--no-placeholder {
-      .backoffice-input {
-        &__label {
-          transform: translate(0, -25%) scale(0.75);
-          width: calc(135% - #{s(3)});
-        }
-      }
-    }
   }
 
   &:focus-within {
@@ -179,8 +170,8 @@ $ease: get($tween, 'slide');
   &--no-placeholder {
     .backoffice-input {
       &__label {
-        left: s(1);
-        transform: translate(0, 20%);
+        transform: translate(0, -25%) scale(0.75);
+        width: calc(135% - #{s(3)});
       }
     }
   }
