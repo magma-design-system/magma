@@ -170,7 +170,10 @@ $ease: get($tween, 'slide');
   &--no-placeholder {
     .backoffice-input {
       &__label {
-        transform: translate(0, s(0.5));
+        left: s(1);
+        transform: translate(0, 20%);
+
+        // width: calc(135% - #{s(3)});
       }
     }
   }

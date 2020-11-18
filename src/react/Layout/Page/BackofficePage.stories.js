@@ -13,7 +13,6 @@ import BackofficeInputText from '@UI/Input/BackofficeInputText'
 import BackofficeSwitch from '@UI/Switch/BackofficeSwitch'
 import BackofficeTextarea from '@UI/Textarea/BackofficeTextarea'
 import UploadFileImage from '@UI/UploadFileImage/UploadFileImage'
-import Modal from '@UI/Modal/Modal'
 faker.locale = 'it'
 
 export default {
@@ -66,7 +65,6 @@ export const simpleForm = () =>
       </Grid>
     </Grid>
     <Hr/>
-    <Modal active={true}/>
   </PageTemplate>
 
 export const table = () =>
