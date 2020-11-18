@@ -50,11 +50,15 @@ export const basicUsage = () =>
     <div>Contents here.</div>
   </PageTemplate>
 
+/*
+<BackofficeInputText label="Titolo" placeholder="Titolo del volume" icon="text-title" required={true} error={faker.lorem.paragraphs()}/>
+*/
+
 export const simpleForm = () =>
   <PageTemplate>
     <Grid template="single-column-form">
       <Grid>
-        <BackofficeInputText label="Titolo" placeholder="Titolo del volume" icon="text-title" required={true} error={faker.lorem.paragraphs()}/>
+        <BackofficeInputText label="Titolo" required={true} error={faker.lorem.paragraphs()}/>
         <BackofficeTextarea label="Descrizione" placeholder="Inserisci una breve descrizione del volume" icon="text-description" required={true} />
         <BackofficeInputText label="ISBN" placeholder="Un codice ISBN di 13 cifre" icon="format-isbn" required={true}/>
         <Grid columns="2">
