@@ -146,6 +146,7 @@ $border-style: $border-size solid;
   &__content {
     align-items: center;
     display: flex;
+    gap: 5px;
   }
 
   &--theme-alternate {
