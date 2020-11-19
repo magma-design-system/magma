@@ -66,12 +66,13 @@
           {
             "title":"Posizionamento e guida alla distanza",
             "description":"Il tuo logo deve venire con una guida chiara su come posizionarlo e come preservarne lo spazio poiché vive insieme ad altri contenuti.",
-            "done":false
+            "done":true,
+            "to":"/identity/logo/gruppo-maggioli/guideline"
           },
           {
             "title":"Guida all'uso",
             "description":"Questi sono gli errori di utilizzo del logo, che forniscono esempi contestuali di cosa (non) fare con il tuo logo.",
-            "done":false
+            "done":"/identity/logo/gruppo-maggioli/guideline"
           },
           {
             "title":"Diversi formati di file",
