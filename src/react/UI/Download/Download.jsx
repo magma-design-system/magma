@@ -28,8 +28,11 @@ const Download = props => {
 
   return (
     <a target={props.target} href={props.href} title={props.fileName} className={`download ${props.className} ${props.length ? 'download--' + props.length + '-name' : ''}`}>
-      <div className="download__icon-area">
-        <Icon name={`${icon}`} className={`download__icon ${color}`}/>
+      <div className={`download__icon-area ${props.transparency ? 'download__icon-area--transparency-grid' : ''}`}>
+        {props.preview
+          ? <div className="download__preview" style={{ backgroundImage: `url('${props.href}')` }}></div>
+          : <Icon name={`${icon}`} className={`download__icon ${color}`}/>
+        }
       </div>
       <div className="download__info">
         <H5 htmlTag="div" className="download__name">
@@ -50,7 +53,9 @@ Download.propTypes = {
   fileName: PropTypes.string,
   href: PropTypes.string,
   length: PropTypes.string,
+  preview: PropTypes.bool,
   target: PropTypes.string,
+  transparency: PropTypes.bool,
 }
 
 Download.defaultProps = {
@@ -58,7 +63,9 @@ Download.defaultProps = {
   fileName: 'File name.ext',
   href: '#',
   length: 'full',
+  preview: false,
   target: '_self',
+  transparency: false,
 }
 
 export default Download

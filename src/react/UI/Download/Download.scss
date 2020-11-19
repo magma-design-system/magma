@@ -39,9 +39,29 @@
     align-items: center;
     display: flex;
     flex-shrink: 0;
+    height: s(2.5);
     justify-content: center;
-    min-width: s(2.5);
     pointer-events: none;
+    width: s(2.5);
+
+    &--transparency-grid {
+      background-image: url('./transparency-grid.svg');
+      border-radius: s(0.125);
+
+      .download {
+        &__preview {
+          background-size: 80% 80%;
+        }
+      }
+    }
+  }
+
+  &__preview {
+    background-position: 50% 50%;
+    background-repeat: no-repeat;
+    background-size: contain;
+    height: s(2.5);
+    width: s(2.5);
   }
 
   &__info {
@@ -49,6 +69,7 @@
     display: flex;
     flex-direction: column;
     flex-grow: 1;
+    justify-content: center;
     margin-left: s(0.5);
     min-width: 0;
   }
