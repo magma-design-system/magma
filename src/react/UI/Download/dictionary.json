@@ -55,17 +55,17 @@
     "archive": { "color": "color-status-warning-08", "background": "background-color-status-warning-18", "icon": "file-archive" },
     "attachment": { "color": "color-adjust-tone-08", "background": "background-color-adjust-tone-18", "icon": "file-attachment" },
     "audio": { "color": "color-brand-maggioli-08", "background": "background-color-brand-maggioli-18", "icon": "media-audio" },
-    "code": { "color": "color-adjust-tone-08", "background": "background-color-adjust-tone-18", "icon": "dev-terminal" },
-    "data": { "color": "color-adjust-tone-08", "background": "background-color-adjust-tone-18", "icon": "device-hard-drive" },
+    "code": { "color": "color-adjust-info-08", "background": "background-color-adjust-info-18", "icon": "dev-terminal" },
+    "data": { "color": "color-adjust-tone-08", "background": "background-color-adjust-tone-18", "icon": "peripheral-hard-drive" },
     "document": { "color": "color-status-error-08", "background": "background-color-status-error-18", "icon": "file-document" },
     "email": { "color": "color-status-error-08", "background": "background-color-status-error-18", "icon": "file-email" },
     "executable": { "color": "color-status-error-08", "background": "background-color-status-error-18", "icon": "file-executable" },
-    "image": { "color": "color-status-success-08", "background": "background-color-status-success-18", "icon": "media-image" },
+    "image": { "color": "color-status-error-08", "background": "background-color-status-error-18", "icon": "media-image" },
     "markup": { "color": "color-adjust-tone-08", "background": "background-color-adjust-tone-18", "icon": "document-web" },
-    "slide": { "color": "color-status-info-08", "background": "background-color-status-info-18", "icon": "device-tv" },
+    "slide": { "color": "color-status-info-08", "background": "background-color-status-info-18", "icon": "touchpoint-tv" },
     "spreadsheet": { "color": "color-status-success-08", "background": "background-color-status-success-18", "icon": "document-spreadsheet" },
     "text": { "color": "color-status-error-08", "background": "background-color-status-error-18", "icon": "document-text" },
-    "vector": { "color": "color-status-info-08", "background": "background-color-status-info-18", "icon": "media-image" },
+    "vector": { "color": "color-status-success-08", "background": "background-color-status-success-18", "icon": "file-vector" },
     "video": { "color": "color-status-error-08", "background": "background-color-status-error-18", "icon": "media-video" }
   }
 }
