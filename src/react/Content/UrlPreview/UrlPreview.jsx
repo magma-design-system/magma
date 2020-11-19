@@ -24,38 +24,41 @@ const UrlPreviewHeader = props =>
         </Fragment>
       }
     </div>
-    <Icon name="action-close" className="url-preview__close"/>
+    <Icon name="action-close" className="url-preview__close" onClick={() => { props.onCancel() }}/>
   </header>
 
 UrlPreviewHeader.propTypes = {
   url: PropTypes.string,
+  onCancel: PropTypes.func,
 }
 
 const UrlPreview = props =>
-  <div className={`url-preview ${props.className} ${props.active ? 'url-preview--active' : ''} ${props.wide ? 'url-preview--wide' : ''} ${props.centered ? 'url-preview--centered' : ''}`}>
+  <div className={`url-preview ${props.className} ${props.visible ? 'url-preview--visible' : ''} ${props.wide ? 'url-preview--wide' : ''} ${props.centered ? 'url-preview--centered' : ''}`}>
     <div className={`url-preview__window ${props.shadow ? props.shadow : ''}`}>
-      <UrlPreviewHeader url={props.url}/>
-      <iframe className="url-preview__iframe" src={props.url}></iframe>
+      <UrlPreviewHeader url={props.url} onCancel={props.onCancel}/>
+      <iframe className="url-preview__iframe" src={props.url} loading="lazy"></iframe>
     </div>
   </div>
 
 UrlPreview.propTypes = {
-  active: PropTypes.bool,
   centered: PropTypes.bool,
   className: PropTypes.string,
   distractionFree: PropTypes.bool,
+  onCancel: PropTypes.func,
   shadow: PropTypes.string,
   url: PropTypes.string,
+  visible: PropTypes.bool,
   wide: PropTypes.bool,
 }
 
 UrlPreview.defaultProps = {
-  active: false,
   centered: false,
   className: '',
   distractionFree: false,
+  onCancel: null,
   shadow: 'box-shadow-soft',
   url: 'https://www.maggioli.com',
+  visible: false,
   wide: false,
 }
 

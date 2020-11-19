@@ -21,7 +21,8 @@
   "cosmetics": {
     "scaffold": [
       "box-shadow",
-      "border-radius"
+      "border-radius",
+      "padding"
     ]
   }
 }

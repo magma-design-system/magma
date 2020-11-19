@@ -4,7 +4,8 @@
     "small": "10px",
     "normal": "20px",
     "large": "25px",
-    "xlarge": "30px"
+    "xlarge": "30px",
+    "xxlarge": "60px"
   },
   "box-shadow": {
     "strong": "0 30px 80px rgba(0, 0, 0, 0.2)",

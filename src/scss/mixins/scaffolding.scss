@@ -4,6 +4,17 @@
   }
 }
 
+@mixin scaffold-property-interactive ($property-name, $variant, $value, $initial-value) {
+  .#{$property-name}-#{$variant}--interactive {
+    cursor: pointer;
+    #{$property-name}: $initial-value !important;
+
+    &:hover {
+      #{$property-name}: $value !important;
+    }
+  }
+}
+
 @mixin add-property-set ($property-name, $map, $group-name: false) {
   @each $attribute, $value in $map {
 

@@ -28,8 +28,6 @@ $border-radius: get($radius, 'small');
   width: auto;
 
   &__text {
-    text-transform: lowercase;
-
     &::first-letter {
       text-transform: capitalize;
     }

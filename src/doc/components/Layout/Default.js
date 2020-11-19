@@ -1,4 +1,4 @@
-import React, { useState, Fragment } from 'react'
+import React, { useState } from 'react'
 import PropTypes from 'prop-types'
 import { /* Link, */ StaticQuery, graphql } from 'gatsby'
 import { MDXProvider } from '@mdx-js/react'
@@ -10,6 +10,7 @@ import metadataSources from '../../metadata/sources.json'
 import Author from '@Content/Author/Author'
 import BibliographyMLA from '@Content/Bibliography/BibliographyMLA'
 import Button from '@UI/Button/Button'
+import Download from '@UI/Download/Download'
 import Code from '@UI/InlineCode/InlineCode'
 import CodeBlock from '@Content/CodeBlock/CodeBlock'
 import PackageInfo from '@Content/PackageInfo/PackageInfo'
@@ -26,12 +27,13 @@ import H6 from '@Typography/H6/H6'
 import ExternalLink from '@UI/ExternalLink/ExternalLink'
 import HorizontalMenu from '@Gatsby/Pattern/HorizontalMenu/HorizontalMenu'
 import Hr, { HrLight } from '@Gatsby/Pattern/Hr/Hr'
-import RoadmapChecklist from '@Gatsby/Pattern/Roadmap/RoadmapChecklist'
+import RoadmapChecklist, { RoadmapChecklistTasks } from '@Gatsby/Pattern/Roadmap/RoadmapChecklist'
 import Icon from '@Design/Icon/Icon'
 import Image from '@Content/Image/Image'
 import List, { ListItem } from '@UI/List/List'
 import Navigation from '@Gatsby/Pattern/Navigation/Navigation'
 import Page from '@Gatsby/Page/Page'
+import AssetPreviewer from '@Gatsby/Pattern/AssetPreviewer/AssetPreviewer'
 import Paragraph from '@Typography/Paragraph/Paragraph'
 import Quote from '@Content/Quote/Quote'
 import Table, { TableHeader, TableHeaderCell, TableBody, TableRow, TableCell } from '@UI/Table/Table'
@@ -42,12 +44,14 @@ import { defineCustomElements as deckDeckGoHighlightElement } from '@deckdeckgo/
 // https://www.gatsbyjs.com/plugins/gatsby-plugin-mdx/#mdxprovider
 
 const shortcodes = {
+  AssetPreviewer,
   BibliographyMLA,
   Button,
   Caption,
   Detail,
   Code,
   CodeBlock,
+  Download,
   Grid,
   H1,
   H2,
@@ -67,6 +71,7 @@ const shortcodes = {
   Paragraph,
   Quote,
   RoadmapChecklist,
+  RoadmapChecklistTasks,
   Table,
   TableBody,
   TableCell,
@@ -193,8 +198,8 @@ const Layout = ({ children }) => {
                   <Grid gutter="xsmall">
                     <H5>Autori</H5>
                     <Grid template="auto-fill-authors">
-                      { page.frontmatter.author.map(author =>
-                        <AuthorItem id={author}/>,
+                      { page.frontmatter.author.map((author, key) =>
+                        <AuthorItem key={key} id={author}/>,
                       )}
                     </Grid>
                   </Grid>
@@ -203,8 +208,8 @@ const Layout = ({ children }) => {
                 { page.frontmatter.source &&
                   <Grid gutter="none">
                     <H5>Riferimenti esterni</H5>
-                    { page.frontmatter.source.map(source =>
-                      <SourceItem id={source}/>,
+                    { page.frontmatter.source.map((source, key) =>
+                      <SourceItem key={key} id={source}/>,
                     )}
                   </Grid>
                 }

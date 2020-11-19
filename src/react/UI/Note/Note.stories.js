@@ -5,6 +5,7 @@ import Grid from '@Layout/Grid/Grid'
 import Caption from '@Typography/Caption/Caption'
 import Detail from '@Typography/Detail/Detail'
 import H5 from '@Typography/H5/H5'
+import Toggler from '@Behavior/Toggler/Toggler'
 
 import faker from 'faker'
 
@@ -21,12 +22,16 @@ export const basicUsage = () =>
     </Note>
   </Grid>
 
-export const Dismissable = () =>
+export const dismissable = () =>
   <Grid columns="3">
-    <Note dismiss={true}>
-      <H5>Action complete</H5>
-      <Caption>{faker.lorem.paragraph()}</Caption>
-    </Note>
+    <Toggler>
+      <Toggler.Content>
+        <Note dismiss={true}>
+          <H5>Action complete</H5>
+          <Caption>{faker.lorem.paragraph()}</Caption>
+        </Note>
+      </Toggler.Content>
+    </Toggler>
   </Grid>
 
 export const Colors = () =>

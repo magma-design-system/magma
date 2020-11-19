@@ -2,24 +2,39 @@ import React from 'react'
 import PropTypes from 'prop-types'
 import './ProgressBar.scss'
 
-const ProgressBar = props =>
-  <div className={`progress-bar ${props.className} ${props.size ? 'progress-bar--size-' + props.size : ''} ${props.rounded ? 'progress-bar--rounded' : ''}`}>
-    <div className={`progress-bar__inner ${props.progressClassName}`} style={{ width: `${props.progress}%` }}></div>
+import { benchmarkStatus } from '@Content/BenchmarkBar/BenchmarkBar'
+
+const ProgressBar = props => {
+  let status = 'info'
+  let className = ''
+  let progressClassName = ''
+
+  if (props.autoColor) {
+    status = benchmarkStatus(props.progress)
+    className = `background-color-status-${status}-19`
+    progressClassName = `background-color-status-${status}-10`
+  }
+
+  return <div className={`progress-bar ${props.className} ${className} ${props.size ? 'progress-bar--size-' + props.size : ''} ${props.radius ? 'progress-bar--radius-' + props.radius : ''}`}>
+    <div className={`progress-bar__inner ${props.progressClassName} ${progressClassName}`} style={{ width: `${props.progress}%` }}></div>
   </div>
+}
 
 ProgressBar.propTypes = {
+  autoColor: PropTypes.bool,
   className: PropTypes.string,
   progress: PropTypes.number,
   progressClassName: PropTypes.string,
-  rounded: PropTypes.bool,
+  radius: PropTypes.string,
   size: PropTypes.string,
 }
 
 ProgressBar.defaultProps = {
+  autoColor: false,
   className: '',
   progress: 0,
   progressClassName: '',
-  rounded: true,
+  radius: 'xxlarge',
   size: 'normal',
 }
 

@@ -4,22 +4,31 @@
   bottom: 0;
   display: flex;
   left: 0;
-  padding-left: s(1);
   pointer-events: none;
   position: fixed;
   right: 0;
   top: 0;
+  transition: background-color get($tween, 'slide');
+
+  @include media('tablet') {
+    padding-left: s(1);
+  }
 
   &__window {
-    border-radius: s(0.75);
+    border-radius: s(0.75) s(0.75) 0 0;
     display: flex;
     flex-direction: column;
-    margin: s(1) s(1) s(1) auto;
-    max-width: 400px;
+    margin: s(2) 0 0;
     overflow: hidden;
     transform: translate(calc(100% + 100px), 0);
     transition: opacity get($tween, 'slide'), transform get($tween, 'slide');
     width: 100%;
+
+    @include media('tablet') {
+      border-radius: s(0.75);
+      margin: s(1) s(1) s(1) auto;
+      max-width: 400px;
+    }
   }
 
   &__header {
@@ -87,9 +96,13 @@
     }
   }
 
-  &--active {
-    background-color: color('adjust.tone', '01', 0.1);
+  &--visible {
+    background-color: color('adjust.tone', '01', 0.5);
     pointer-events: initial;
+
+    @include media('tablet') {
+      background-color: color('adjust.tone', '01', 0.3);
+    }
 
     .url-preview {
       &__window {

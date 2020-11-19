@@ -8,7 +8,10 @@ import Grid from '@Layout/Grid/Grid'
 import Flash from '@UI/Flash/Flash'
 
 import cosmetics from '+Tokens/css-tokens/cosmetics.json'
+import sizes from '+Tokens/css-tokens/sizes.json'
+const paddingSizes = Object.keys(sizes.size)
 const shadows = Object.keys(cosmetics['box-shadow'])
+const radius = Object.keys(cosmetics['border-radius'])
 
 faker.locale = 'it'
 
@@ -28,11 +31,11 @@ export const gutterLarge = () =>
     </Card>
   </Grid>
 
-export const shadowsList = () =>
+export const boxShadow = () =>
   <Grid gutter="xlarge">
     {shadows.map(key => {
       return (
-        <Card key={key} className={`box-shadow-${key}`}>
+        <Card key={key} shadow={`box-shadow-${key}`}>
           <span>
             <Code>{`box-shadow-${key}`}</Code>
           </span>
@@ -42,3 +45,39 @@ export const shadowsList = () =>
       )
     })}
   </Grid>
+
+export const borderRadius = () =>
+  <Grid gutter="xlarge">
+    {radius.map(key => {
+      return (
+        <Card key={key} radius={`border-radius-${key}`}>
+          <span>
+            <Code>{`border-radius-${key}`}</Code>
+          </span>
+          <Paragraph>{faker.lorem.paragraph()}</Paragraph>
+          <Paragraph>{faker.lorem.paragraph()}</Paragraph>
+        </Card>
+      )
+    })}
+  </Grid>
+
+export const padding = () =>
+  <Grid gutter="xlarge">
+    {paddingSizes.map(key => {
+      return (
+        <Card key={key} padding={`padding-${key}`}>
+          <span>
+            <Code>{`padding-${key}`}</Code>
+          </span>
+          <Paragraph>{faker.lorem.paragraph()}</Paragraph>
+          <Paragraph>{faker.lorem.paragraph()}</Paragraph>
+        </Card>
+      )
+    })}
+  </Grid>
+
+export const interactive = () =>
+  <Card interactive shadow="box-shadow-box">
+    <Paragraph>{faker.lorem.paragraph()}</Paragraph>
+    <Paragraph>{faker.lorem.paragraph()}</Paragraph>
+  </Card>

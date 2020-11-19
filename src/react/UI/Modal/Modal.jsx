@@ -10,8 +10,8 @@ import H4 from '@Typography/H4/H4'
 
 const Modal = props => {
   return (
-    <div className={`modal ${props.className} ${props.visible ? 'modal--active' : ''} ${props.maxHeight ? 'modal--max-height' : ''} ${props.desktopMode ? 'modal--centered' : ''} ${props.position ? 'modal--to-' + props.position : ''}`}>
-      <Icon className="modal__close" name="close" onClick={() => { props.onCancel() }}/>
+    <div className={`modal ${props.className} ${props.visible ? 'modal--visible' : ''} ${props.maxHeight ? 'modal--max-height' : ''} ${props.position ? 'modal--from-' + props.position : ''}`}>
+      <Icon className="modal__close" name="action-close" onClick={() => { props.onCancel() }}/>
       <div className="modal__window">
         {props.title &&
           <header className="modal__header">
@@ -32,8 +32,8 @@ const Modal = props => {
             <Button variant="secondary-outline" onClick={() => { props.onCancel() }}>
               Cancel
             </Button>
-            <Button disabled={props.confirmDisabled} variant="primary" 
-                    onClick={() => { props.onConfirm() }}>
+            <Button disabled={props.confirmDisabled} variant="primary"
+              onClick={() => { props.onConfirm() }}>
               Confirm
             </Button>
           </footer>
@@ -47,7 +47,6 @@ Modal.propTypes = {
   className: PropTypes.string,
   confirmDisabled: PropTypes.bool,
   contentOnly: PropTypes.bool,
-  desktopMode: PropTypes.bool,
   footer: PropTypes.bool,
   maxHeight: PropTypes.bool,
   onCancel: PropTypes.func,
@@ -61,12 +60,11 @@ Modal.defaultProps = {
   className: '',
   confirmDisabled: false,
   contentOnly: false,
-  desktopMode: false,
   footer: true,
   maxHeight: false,
   onCancel: null,
   onConfirm: null,
-  position: 'right', // right || left
+  position: 'right', // right || left || center
   title: '',
   visible: true,
 }

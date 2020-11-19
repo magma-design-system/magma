@@ -17,19 +17,21 @@ $modal-background: rgba(0, 0, 0, 0.5);
   visibility: hidden;
   z-index: 3;
 
-  &--to-right {
-    visibility: visible;
-
-    .modal {
-      &__window {
-        border-radius: 0;
-      }
-    }
+  &::after {
+    background-color: $modal-background;
+    bottom: 0;
+    content: '';
+    left: 0;
+    opacity: 0;
+    pointer-events: none;
+    position: absolute;
+    right: 0;
+    top: 0;
+    transition: opacity get($tween, 'slide');
   }
 
-  &--to-left {
+  &--from-left {
     justify-content: flex-start;
-    visibility: visible;
 
     .modal {
       &__close {
@@ -48,39 +50,17 @@ $modal-background: rgba(0, 0, 0, 0.5);
     }
   }
 
-  &::after {
-    background-color: $modal-background;
-    bottom: 0;
-    content: '';
-    left: 0;
-    opacity: 0;
-    pointer-events: none;
-    position: absolute;
-    right: 0;
-    top: 0;
-    transition: opacity get($tween, 'slide');
-  }
+  &--from-center {
 
-  &--centered {
     @include media ('tablet') {
       justify-content: center;
     }
 
-    &--to-left {
-      @include media ('tablet') {
-        justify-content: center;
-      }
-    }
-
-    &--to-right {
-      @include media ('tablet') {
-        justify-content: center;
-      }
-    }
-
     .modal {
       &__window {
+
         @include media ('tablet') {
+          border-radius: s(1);
           height: auto;
           max-width: $modal-size;
           opacity: 0;
@@ -103,8 +83,9 @@ $modal-background: rgba(0, 0, 0, 0.5);
     }
   }
 
-  &--active {
+  &--visible {
     pointer-events: auto;
+    visibility: visible;
 
     &::after {
       opacity: 1;
@@ -157,14 +138,13 @@ $modal-background: rgba(0, 0, 0, 0.5);
     z-index: 1;
 
     @include media ('tablet') {
-      border-radius: s(0.5);
       max-width: 600px;
       transform: translate(100%, 0);
     }
   }
 
   &__header {
-    background-color: color('brand.maggioli', '18');
+    background-color: color('brand.maggioli', '19');
     display: flex;
     flex-shrink: 0;
     padding: s(1);
@@ -176,11 +156,11 @@ $modal-background: rgba(0, 0, 0, 0.5);
   }
 
   &__title {
-    color: color('brand.maggioli', '04');
+    color: color('brand.maggioli', '05');
   }
 
   &__footer {
-    background-color: color('adjust.tone', '18');
+    background-color: color('adjust.tone', '19');
     display: grid;
     grid-gap: s(1);
     grid-template-columns: 1fr 1fr;
@@ -196,7 +176,7 @@ $modal-background: rgba(0, 0, 0, 0.5);
 
     @include media ('tablet') {
       max-height: auto;
-      padding: s(1) s(3) s(1) s(1);
+      padding: s(1) s(4) s(1) s(1);
     }
 
     &--close-outside {
@@ -221,15 +201,24 @@ $modal-background: rgba(0, 0, 0, 0.5);
   }
 
   &__close-inside {
-    color: inherit;
+    background-color: color('brand.maggioli', '18');
+    border-radius: s(2);
+    color: color('brand.maggioli', '05');
     cursor: pointer;
+    height: s(2);
     left: auto;
     position: absolute;
     right: s(1);
     top: s(1);
+    transition: background-color get($tween, 'slide');
+    width: s(2);
 
     @include media ('mobile') {
       display: none;
+    }
+
+    &:hover {
+      background-color: color('brand.maggioli', '16');
     }
   }
 
