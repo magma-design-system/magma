@@ -75,7 +75,7 @@ const BackofficePageSectionHeader = props =>
   </Grid>
 
 BackofficePageSectionHeader.propTypes = {
-  title: PropTypes.string,
+  title: PropTypes.any,
   description: PropTypes.string,
   onChange: PropTypes.func,
   value: PropTypes.string,
