@@ -20,6 +20,7 @@ import Download from '@UI/Download/Download'
 import ExternalLink from '@UI/ExternalLink/ExternalLink'
 import Flash from '@UI/Flash/Flash'
 import Grid from '@Layout/Grid/Grid'
+import Row from '@Layout/Row/Row'
 import H1 from '@Typography/H1/H1'
 import H2 from '@Typography/H2/H2'
 import H3 from '@Typography/H3/H3'
@@ -27,7 +28,8 @@ import H4 from '@Typography/H4/H4'
 import H5 from '@Typography/H5/H5'
 import H6 from '@Typography/H6/H6'
 import HorizontalMenu from '@Gatsby/Pattern/HorizontalMenu/HorizontalMenu'
-import Hr, { HrLight } from '@Gatsby/Pattern/Hr/Hr'
+// import Hr, { HrLight } from '@Gatsby/Pattern/Hr/Hr'
+import Hr from '@UI/Hr/Hr'
 import Icon from '@Design/Icon/Icon'
 import Image from '@Content/Image/Image'
 import List, { ListItem } from '@UI/List/List'
@@ -63,7 +65,6 @@ const shortcodes = {
   H5,
   H6,
   Hr,
-  HrLight,
   Icon,
   BenchmarkBar,
   Image,
@@ -75,6 +76,7 @@ const shortcodes = {
   Quote,
   RoadmapChecklist,
   RoadmapChecklistTasks,
+  Row,
   Table,
   TableBody,
   TableCell,
@@ -93,7 +95,7 @@ const shortcodes = {
   h4: H4,
   h5: H5,
   h6: H6,
-  hr: HrLight,
+  hr: Hr,
   img: Image,
   inlineCode: Code,
   li: ListItem,
