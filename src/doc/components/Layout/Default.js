@@ -18,6 +18,7 @@ import CodeBlock from '@Content/CodeBlock/CodeBlock'
 import Detail from '@Typography/Detail/Detail'
 import Download from '@UI/Download/Download'
 import ExternalLink from '@UI/ExternalLink/ExternalLink'
+import Flash from '@UI/Flash/Flash'
 import Grid from '@Layout/Grid/Grid'
 import H1 from '@Typography/H1/H1'
 import H2 from '@Typography/H2/H2'
@@ -53,6 +54,7 @@ const shortcodes = {
   Code,
   CodeBlock,
   Download,
+  Flash,
   Grid,
   H1,
   H2,

@@ -52,6 +52,7 @@
   "file-document": "material/insert_drive_file",
   "file-download": "material/get_app",
   "file-email": "material/email",
+  "file-vector": "vector-curve",
   "file-executable": "material/wysiwyg",
   "file-upload": "material/publish",
   "form-checkbox-checked": "material/check_box",

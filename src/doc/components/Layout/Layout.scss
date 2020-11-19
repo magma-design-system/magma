@@ -75,6 +75,10 @@ $contents-color: color('adjust.tone');
       font-weight: 600;
     }
 
+    > .table {
+      max-width: 70ch;
+    }
+
     // .image {
     //   border-radius: s(1);
     //   max-width: 70ch;

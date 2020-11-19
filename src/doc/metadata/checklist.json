@@ -53,9 +53,10 @@
         "description":"La maggior parte dei clienti forma un'opinione su un prodotto in pochi secondi. Nella maggior parte dei casi, il tuo logo sarà la prima risorsa del brand che qualcuno vede. Si tratta di fare la prima impressione giusta. Un logo distintivo aiuta gli utenti a riconoscere immediatamente un prodotto e dà loro l'essenza del tuo marchio.",
         "children":[
           {
-            "title":"Versione monocromatica",
             "description":"Una versione monocromatica del tuo logo che sta bene sopra una fotografia o quando viene stampato con una stampante di scarsa qualità.",
-            "done":false
+            "done":true,
+            "title":"Versione monocromatica",
+            "to":"/identity/logo/"
           },
           {
             "title":"Guida all'utilizzo nel piccolo formato",
@@ -75,7 +76,8 @@
           {
             "title":"Diversi formati di file",
             "description":"Fornire una varietà di formati per la versione vettoriale del tuo logo renderà più facile il lavoro degli altri e impedirà a chiunque di ridisegnarlo.",
-            "done":false
+            "done":true,
+            "to":"/identity/logo/gruppo-maggioli/"
           }
         ],
         "references":[
