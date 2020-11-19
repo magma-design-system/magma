@@ -34,7 +34,7 @@ const Navigation = props => {
           )
         }
         <Hr/>
-        <Image className="ds-navigation__logo" src={require('../../../../assets/logo/gruppo-maggioli.svg')}/>
+        <Image className="ds-navigation__logo" src={require('#Assets/brand/gruppo-maggioli/logo-gruppo-maggioli.svg')}/>
       </Grid>
     </div>
   )

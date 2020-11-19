@@ -7,36 +7,37 @@ import { createMenuList, findMenuItem, getPageData, createMenuItemList, createHo
 import metadataAuthors from '../../metadata/authors.json'
 import metadataSources from '../../metadata/sources.json'
 
+import AssetPreviewer from '@Gatsby/Pattern/AssetPreviewer/AssetPreviewer'
 import Author from '@Content/Author/Author'
+import BenchmarkBar from '@Content/BenchmarkBar/BenchmarkBar'
 import BibliographyMLA from '@Content/Bibliography/BibliographyMLA'
 import Button from '@UI/Button/Button'
-import Download from '@UI/Download/Download'
+import Caption from '@Typography/Caption/Caption'
 import Code from '@UI/InlineCode/InlineCode'
 import CodeBlock from '@Content/CodeBlock/CodeBlock'
-import PackageInfo from '@Content/PackageInfo/PackageInfo'
-import Grid from '@Layout/Grid/Grid'
-import BenchmarkBar from '@Content/BenchmarkBar/BenchmarkBar'
-import H1 from '@Typography/H1/H1'
-import Caption from '@Typography/Caption/Caption'
 import Detail from '@Typography/Detail/Detail'
+import Download from '@UI/Download/Download'
+import ExternalLink from '@UI/ExternalLink/ExternalLink'
+import Grid from '@Layout/Grid/Grid'
+import H1 from '@Typography/H1/H1'
 import H2 from '@Typography/H2/H2'
 import H3 from '@Typography/H3/H3'
 import H4 from '@Typography/H4/H4'
 import H5 from '@Typography/H5/H5'
 import H6 from '@Typography/H6/H6'
-import ExternalLink from '@UI/ExternalLink/ExternalLink'
 import HorizontalMenu from '@Gatsby/Pattern/HorizontalMenu/HorizontalMenu'
 import Hr, { HrLight } from '@Gatsby/Pattern/Hr/Hr'
-import RoadmapChecklist, { RoadmapChecklistTasks } from '@Gatsby/Pattern/Roadmap/RoadmapChecklist'
 import Icon from '@Design/Icon/Icon'
 import Image from '@Content/Image/Image'
 import List, { ListItem } from '@UI/List/List'
 import Navigation from '@Gatsby/Pattern/Navigation/Navigation'
+import PackageInfo from '@Content/PackageInfo/PackageInfo'
 import Page from '@Gatsby/Page/Page'
-import AssetPreviewer from '@Gatsby/Pattern/AssetPreviewer/AssetPreviewer'
 import Paragraph from '@Typography/Paragraph/Paragraph'
 import Quote from '@Content/Quote/Quote'
+import RoadmapChecklist, { RoadmapChecklistTasks } from '@Gatsby/Pattern/Roadmap/RoadmapChecklist'
 import Table, { TableHeader, TableHeaderCell, TableBody, TableRow, TableCell } from '@UI/Table/Table'
+import Tag from '@UI/Tag/Tag'
 import Usage, { UsageDo, UsageDont } from '@Content/Usage/Usage'
 
 import { defineCustomElements as deckDeckGoHighlightElement } from '@deckdeckgo/highlight-code/dist/loader'
@@ -78,6 +79,7 @@ const shortcodes = {
   TableHeader,
   TableHeaderCell,
   TableRow,
+  Tag,
   Usage,
   UsageDo,
   UsageDont,
@@ -189,11 +191,11 @@ const Layout = ({ children }) => {
               <Grid className="ds-layout__contents">
                 <H1 className="ds-layout__title">{currentMenuItem.title}</H1>
                 {horizontalMenuItems?.length > 0 && <HorizontalMenu className="ds-layout__actions" menuList={horizontalMenuItems}/>}
-                <div className="ds-layout__markdown">
+                <Grid className="ds-layout__markdown">
                   <MDXProvider components={shortcodes}>
                     {children}
                   </MDXProvider>
-                </div>
+                </Grid>
                 { page.frontmatter.author &&
                   <Grid gutter="xsmall">
                     <H5>Autori</H5>
@@ -217,7 +219,7 @@ const Layout = ({ children }) => {
                 <footer className="ds-layout__footer">
                   <Paragraph><b>Design System</b> sviluppato dal reparto R&D.</Paragraph>
                   <Paragraph>Gruppo Maggioli © 2020{publicationYear !== '2020' ? `–${publicationYear}` : ''}.</Paragraph>
-                  <Image className="ds-layout__footer-logo" src={require('../../../assets/logo/gruppo-maggioli.svg')}/>
+                  <Image className="ds-layout__footer-logo" src={require('#Assets/brand/gruppo-maggioli/logo-gruppo-maggioli.svg')}/>
                 </footer>
               </Grid>
             </article>
