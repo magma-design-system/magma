@@ -8,29 +8,29 @@ import Icon from '@Design/Icon/Icon'
 import H5 from '@Typography/H5/H5'
 
 const UsageDo = props =>
-  <div className="mds-usage__item mds-usage__item--do">
-    <Row className="mds-usage__header">
+  <div className="usage__item usage__item--do">
+    <Row className="usage__header">
       <Icon name="status-success"/>
       <H5>Do</H5>
     </Row>
-    <Grid gutter="small" className="mds-usage__content">
+    <Grid gutter="small" className="usage__content">
       {props.children}
     </Grid>
   </div>
 
 const UsageDont = props =>
-  <div className="mds-usage__item mds-usage__item--dont">
-    <Row className="mds-usage__header">
+  <div className="usage__item usage__item--dont">
+    <Row className="usage__header">
       <Icon name="status-error"/>
       <H5>Don't</H5>
     </Row>
-    <Grid gutter="small" className="mds-usage__content">
+    <Grid gutter="small" className="usage__content">
       {props.children}
     </Grid>
   </div>
 
 const Usage = props =>
-  <Grid columns="2" className={`mds-usage ${props.className}`}>
+  <Grid columns="2" className={`usage ${props.className}`}>
     {props.children}
   </Grid>
 

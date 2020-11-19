@@ -3,17 +3,16 @@
 $colorBackgroundNotSelected: '19';
 $colorTextNotSelected: '10';
 
-@mixin add-status ($modifier, $color, $background, $text) {
+@mixin add-status ($modifier, $color) {
 
-  $colorBackgroundHover: '15';
+  $colorBackgroundBodyHover: '20';
+  $colorBackgroundHeaderHover: '15';
   $colorBackground: '18';
   $colorTextHover: '06';
   $colorText: '06';
 
   &--#{$modifier} {
-    box-shadow: 0 0 0 0 color(#{$color}, $colorBackground) !important;
-
-    .mds-usage {
+    .usage {
       &__header {
         background-color: color(#{$color}, $colorBackground);
         color: color(#{$color}, $colorText);
@@ -21,12 +20,11 @@ $colorTextNotSelected: '10';
     }
 
     &:hover {
-      box-shadow: 0 0 0 2px color(#{$color}, $colorBackgroundHover) !important;
+      background-color: color(#{$color}, $colorBackgroundBodyHover) !important;
 
-      .mds-usage {
+      .usage {
         &__header {
-          background-color: color(#{$color}, $colorBackgroundHover) !important;
-          border-radius: s(1) s(1) 0 0;
+          background-color: color(#{$color}, $colorBackgroundHeaderHover) !important;
           color: color(#{$color}, $colorTextHover) !important;
         }
       }
@@ -34,16 +32,15 @@ $colorTextNotSelected: '10';
   }
 }
 
-.mds-usage {
+.usage {
   margin-top: s(1);
 
   &__item {
     border-radius: s(1);
-    box-shadow: 0 0 0 0 transparent;
     overflow: hidden;
-    transition: box-shadow get($tween, 'hover');
-    @include add-status($modifier: 'do', $color: 'status-success', $background: '15', $text: '04');
-    @include add-status($modifier: 'dont', $color: 'status-error', $background: '15', $text: '04');
+    transition: background-color get($tween, 'hover');
+    @include add-status($modifier: 'do', $color: 'status-success');
+    @include add-status($modifier: 'dont', $color: 'status-error');
   }
 
   &__header {
@@ -58,12 +55,10 @@ $colorTextNotSelected: '10';
   }
 
   &:hover {
-    .mds-usage {
+    .usage {
       &__item {
         &--do {
-          border-color: color('status-success', $colorBackgroundNotSelected);
-
-          .mds-usage {
+          .usage {
             &__header {
               background-color: color('status-success', $colorBackgroundNotSelected);
               color: color('status-success', $colorTextNotSelected);
@@ -72,9 +67,7 @@ $colorTextNotSelected: '10';
         }
 
         &--dont {
-          border-color: color('status-error', $colorBackgroundNotSelected);
-
-          .mds-usage {
+          .usage {
             &__header {
               background-color: color('status-error', $colorBackgroundNotSelected);
               color: color('status-error', $colorTextNotSelected);

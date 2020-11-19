@@ -9,6 +9,6 @@ export default {
 
 export const basicUsage = () =>
   <Usage>
-    <UsageDo>Do this</UsageDo>
+    <UsageDo>Do this yo</UsageDo>
     <UsageDont>Dont do this</UsageDont>
   </Usage>
