@@ -5,6 +5,9 @@ import InputEmail from '@UI/Input/InputEmail'
 import InputList, { InputListItem } from '@UI/Input/InputList'
 import InputPassword from '@UI/Input/InputPassword'
 import InputPhone from '@UI/Input/InputPhone'
+import Flash from '@UI/Flash/Flash'
+import InlineCode from '@UI/InlineCode/InlineCode'
+import Grid from '@Layout/Grid/Grid'
 import InputText from '@UI/Input/InputText'
 import randomIcon from '@Design/Icon/faker'
 faker.locale = 'it'
@@ -18,10 +21,20 @@ export const basicUsage = () =>
   <InputText label={faker.lorem.sentence()} placeholder={faker.company.catchPhrase()}/>
 
 export const fill = () =>
-  <InputText placeholder={faker.company.catchPhrase()} fill/>
+  <Grid>
+    <Flash status="info">
+      Serve a dare <InlineCode status="info">width: 100%</InlineCode> al componente, altrimenti non riempirà la riga in cui si trova a meno che non sia gestito dal componente <InlineCode status="info">Grid</InlineCode>.
+    </Flash>
+    <InputText placeholder={faker.company.catchPhrase()} fill/>
+  </Grid>
 
 export const grow = () =>
-  <InputText placeholder={faker.company.catchPhrase()} grow/>
+  <Grid>
+    <Flash status="info">
+      Serve a dare <InlineCode status="info">flex-grow: 1</InlineCode> è utile in concomitanza di flex wrapper come il componente <InlineCode status="info">Row</InlineCode>.
+    </Flash>
+    <InputText placeholder={faker.company.catchPhrase()} grow/>
+  </Grid>
 
 export const noLabel = () =>
   <InputText placeholder={faker.company.catchPhrase()}/>
