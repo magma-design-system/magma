@@ -77,7 +77,13 @@ export const padding = () =>
   </Grid>
 
 export const interactive = () =>
-  <Card interactive shadow="box-shadow-box">
+  <Card interactive className="box-shadow-box" shadow="box-shadow-box">
+    <Paragraph>{faker.lorem.paragraph()}</Paragraph>
+    <Paragraph>{faker.lorem.paragraph()}</Paragraph>
+  </Card>
+
+export const template = () =>
+  <Card template="pippo-pluto">
     <Paragraph>{faker.lorem.paragraph()}</Paragraph>
     <Paragraph>{faker.lorem.paragraph()}</Paragraph>
   </Card>

@@ -3,27 +3,49 @@ import PropTypes from 'prop-types'
 import Grid from '@Layout/Grid/Grid'
 import './Card.scss'
 
-const Card = props =>
-  <Grid {...props} className={`card ${props.className} ${props.interactive ? props.shadow + '--interactive' : props.shadow} ${props.radius ? props.radius : ''} ${props.padding ? props.padding : ''}`}>
-    {props.children}
+/*
+modifier('card', {
+  gutter: props.gutter,
+})
+selector({
+  padding: props.padding,
+  radius: props.radius,
+  shadow: props.shadow,
+})
+cleanClass([
+  'card',
+  className,
+  interactive ? shadow + '--interactive' : shadow,
+  radius,
+  padding,
+])
+*/
+
+const Card = ({ children, className, interactive, padding, radius, shadow, ...restProps }) => {
+  const classNames = [
+    'card',
+    className,
+    interactive ? shadow + '--interactive' : shadow,
+    radius,
+    padding,
+  ].filter(value => !!value).join(' ')
+
+  return <Grid {...restProps} className={classNames}>
+    {children}
   </Grid>
+}
 
 Card.propTypes = {
-  align: PropTypes.string,
+  ...Grid.propTypes,
   className: PropTypes.string,
-  columns: PropTypes.string,
-  fit: PropTypes.bool,
-  gutter: PropTypes.string,
   interactive: PropTypes.bool,
   padding: PropTypes.string,
   radius: PropTypes.string,
   shadow: PropTypes.string,
-  template: PropTypes.string,
 }
 
 Card.defaultProps = {
   className: '',
-  columns: '0',
   gutter: 'xsmall',
   interactive: false,
   padding: 'padding-normal',
