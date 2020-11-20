@@ -11,10 +11,16 @@ $size: get($form-sizes, 'input-height');
 .input {
   display: block;
   line-height: 0;
-  margin-bottom: s(-1);
   position: relative;
   transition: margin-bottom $ease;
-  width: 100%;
+
+  &--fill {
+    width: 100%;
+  }
+
+  &--grow {
+    flex-grow: 1;
+  }
 
   &--has-icon {
     .input {

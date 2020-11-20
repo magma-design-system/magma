@@ -9,7 +9,7 @@ const Input = props => {
   // const themeName = `input--${state.name}`
 
   return (
-    <label className={`input ${props.icon ? 'input--has-icon' : ''} ${props.error ? 'input--has-errors' : ''} ${props.theme !== '' ? 'input--' + props.theme : ''} ${props.className}`}>
+    <label className={`input ${props.icon ? 'input--has-icon' : ''} ${props.error ? 'input--has-errors' : ''} ${props.grow ? 'input--grow' : ''} ${props.fill ? 'input--fill' : ''} ${props.theme !== '' ? 'input--' + props.theme : ''} ${props.className}`}>
       {props.label &&
         <div className="input__label text-primary text-primary--h6">
           {props.label}
@@ -40,10 +40,14 @@ Input.propTypes = {
   iconClassName: PropTypes.string,
   label: PropTypes.string,
   theme: PropTypes.string,
+  fill: PropTypes.bool,
+  grow: PropTypes.bool,
 }
 
 Input.defaultProps = {
   className: '',
+  fill: true,
+  grow: false,
   icon: '',
   iconClassName: '',
   label: '',

@@ -17,6 +17,12 @@ export default {
 export const basicUsage = () =>
   <InputText label={faker.lorem.sentence()} placeholder={faker.company.catchPhrase()}/>
 
+export const fill = () =>
+  <InputText placeholder={faker.company.catchPhrase()} fill/>
+
+export const grow = () =>
+  <InputText placeholder={faker.company.catchPhrase()} grow/>
+
 export const noLabel = () =>
   <InputText placeholder={faker.company.catchPhrase()}/>
 

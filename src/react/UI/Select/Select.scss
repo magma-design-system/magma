@@ -41,9 +41,9 @@ $size: get($form-sizes, 'input-height');
 
   &__field {
 
-    --background-color: color('adjust.tone');
+    --background-color: #{color('adjust.tone')};
     --box-shadow: #{get($shadow, 'tiny'), get($shadow, 'outline')};
-    --color: color('adjust.tone', '02');
+    --color: #{color('adjust.tone', '02')};
 
     appearance: none;
     background-color: var(--background-color);

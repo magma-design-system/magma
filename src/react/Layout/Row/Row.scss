@@ -49,6 +49,7 @@
   }
 
   &__item {
+    flex-shrink: 0;
     margin-right: s(1.5);
 
     &:last-child {
