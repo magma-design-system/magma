@@ -1,5 +1,37 @@
 @import '~Sass/import-framework';
 
+@mixin inner-margin-modifier ($item) {
+
+  $modifier: nth($item, 1);
+  $value: nth($item, 2);
+
+  &--inner-margin-#{$modifier} {
+    .horizontal-scroll {
+      &__item {
+        margin-right: $value;
+
+        &:last-child {
+          margin-right: 0;
+        }
+      }
+    }
+  }
+}
+
+@mixin outer-margin-modifier ($item) {
+
+  $modifier: nth($item, 1);
+  $value: nth($item, 2);
+
+  &--outer-margin-#{$modifier} {
+    &::after,
+    &::before {
+      display: block;
+      width: $value;
+    }
+  }
+}
+
 .horizontal-scroll {
 
   @extend %scroll;
@@ -23,26 +55,12 @@
     flex-shrink: 0;
   }
 
-  &--outer-margin {
-    &::after,
-    &::before {
-      display: block;
-    }
+  @each $size-item in $list-sizes {
+    @include inner-margin-modifier($size-item);
+    @include outer-margin-modifier($size-item);
   }
 
-  &--inner-margin {
-    .horizontal-scroll {
-      &__item {
-        margin-right: s(1);
-
-        &:last-child {
-          margin-right: 0;
-        }
-      }
-    }
-  }
-
-  &--smooth {
+  &--scroll-snap-centered {
     scroll-snap-type: x mandatory;
 
     .horizontal-scroll {

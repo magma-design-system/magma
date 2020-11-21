@@ -13,7 +13,7 @@ $columns: 4;
 }
 
 @mixin columns-modifier ($column-index) {
-  &--#{$column-index}-columns {
+  &--columns-#{$column-index} {
 
     @if ($column-index > 2) {
       @include media ('tablet') {
@@ -45,7 +45,7 @@ $columns: 4;
     grid-template-columns: 1fr;
   }
 
-  &--tmpl-auto-fit {
+  &--template-auto-fit {
     grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
 
     @include media ('mobile') {
@@ -53,7 +53,7 @@ $columns: 4;
     }
   }
 
-  &--tmpl-auto-fill {
+  &--template-auto-fill {
     grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
 
     @include media ('mobile') {
@@ -61,7 +61,7 @@ $columns: 4;
     }
   }
 
-  &--tmpl-auto-fill-medium {
+  &--template-auto-fill-medium {
 
     $min: 200px;
 
@@ -72,7 +72,7 @@ $columns: 4;
     }
   }
 
-  &--tmpl-auto-fill-large {
+  &--template-auto-fill-large {
 
     $min: 250px;
 
@@ -83,7 +83,7 @@ $columns: 4;
     }
   }
 
-  &--fit {
+  &--rows-fit-vertically {
     grid-auto-rows: minmax(min-content, max-content);
   }
 

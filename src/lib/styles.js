@@ -11,3 +11,18 @@ export const globalSelectors = items => {
   }
   return appendSelectors(selectors)
 }
+
+export const modifiers = (element, modifiers) => {
+  const selectors = []
+  for (const [key, value] of Object.entries(modifiers)) {
+    console.log(key, value)
+    if (value) {
+      if (typeof value === 'boolean') {
+        selectors.push(`${element}--${toDashCase(key)}`)
+      } else {
+        selectors.push(`${element}--${toDashCase(key)}-${value}`)
+      }
+    }
+  }
+  return appendSelectors(selectors)
+}

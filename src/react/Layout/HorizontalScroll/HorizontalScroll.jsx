@@ -1,11 +1,23 @@
 import React from 'react'
 import PropTypes from 'prop-types'
+import { appendSelectors, modifiers } from '@Library/styles'
 import './HorizontalScroll.scss'
 
-const HorizontalScroll = props =>
-  <div className={`horizontal-scroll ${props.className} ${props.smooth ? 'horizontal-scroll--smooth' : ''} ${props.innerMargin ? 'horizontal-scroll--inner-margin' : ''} ${props.outerMargin ? 'horizontal-scroll--outer-margin' : ''}`}>
+const HorizontalScroll = ({ innerMargin, outerMargin, scrollSnap, ...restProps }) => {
+  const localClassNames = appendSelectors([
+    'horizontal-scroll',
+    restProps.className,
+  ])
+
+  const modifierClassNames = modifiers('horizontal-scroll', {
+    innerMargin,
+    outerMargin,
+    scrollSnap,
+  })
+
+  return <div className={`${localClassNames} ${modifierClassNames}`}>
     {
-      React.Children.map(props.children, (child, index) => {
+      React.Children.map(restProps.children, (child, index) => {
         return React.cloneElement(child, {
           key: index,
           className: child.props.className ? child.props.className + ' horizontal-scroll__item' : 'horizontal-scroll__item',
@@ -13,19 +25,20 @@ const HorizontalScroll = props =>
       })
     }
   </div>
+}
 
 HorizontalScroll.propTypes = {
   className: PropTypes.string,
-  innerMargin: PropTypes.bool,
-  outerMargin: PropTypes.bool,
-  smooth: PropTypes.bool,
+  innerMargin: PropTypes.string,
+  outerMargin: PropTypes.string,
+  scrollSnap: PropTypes.string, // center || left
 }
 
 HorizontalScroll.defaultProps = {
   className: '',
-  innerMargin: false,
-  outerMargin: false,
-  smooth: false,
+  innerMargin: 'none',
+  outerMargin: 'none',
+  scrollSnap: 'left',
 }
 
 export default HorizontalScroll

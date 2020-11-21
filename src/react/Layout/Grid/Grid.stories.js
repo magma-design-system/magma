@@ -2,7 +2,12 @@ import React from 'react'
 import faker from 'faker'
 
 import Grid from '@Layout/Grid/Grid'
+import InlineCode from '@UI/InlineCode/InlineCode'
+import Hr from '@UI/Hr/Hr'
 import Paragraph from '@Typography/Paragraph/Paragraph'
+
+import sizes from '+Tokens/css-tokens/sizes.json'
+const sizesList = Object.keys(sizes.size)
 
 faker.locale = 'it'
 
@@ -20,55 +25,40 @@ export const defaultUsage = () =>
     <Paragraph>{paragraph2}</Paragraph>
   </Grid>
 
-export const gutterXLarge = () =>
+export const gutter = () =>
   <Grid gutter="xlarge">
-    <Paragraph>{paragraph1}</Paragraph>
-    <Paragraph>{paragraph2}</Paragraph>
+    {sizesList.map(key => {
+      return (
+        <Grid key={key} gutter={key}>
+          <span>
+            <InlineCode>{`${key}`}</InlineCode>
+          </span>
+          <Paragraph>{faker.lorem.paragraph()}</Paragraph>
+          <Paragraph>{faker.lorem.paragraph()}</Paragraph>
+        </Grid>
+      )
+    })}
   </Grid>
 
-export const gutterLarge = () =>
-  <Grid gutter="large">
-    <Paragraph>{paragraph1}</Paragraph>
-    <Paragraph>{paragraph2}</Paragraph>
-  </Grid>
-
-export const gutterSmall = () =>
-  <Grid gutter="small">
-    <Paragraph>{paragraph1}</Paragraph>
-    <Paragraph>{paragraph2}</Paragraph>
-  </Grid>
-
-export const gutterXSmall = () =>
-  <Grid gutter="xsmall">
-    <Paragraph>{paragraph1}</Paragraph>
-    <Paragraph>{paragraph2}</Paragraph>
-  </Grid>
-
-export const with2Columns = () =>
-  <Grid columns="2">
-    <Paragraph>{faker.lorem.paragraph()}</Paragraph>
-    <Paragraph>{faker.lorem.paragraph()}</Paragraph>
-    <Paragraph>{faker.lorem.paragraph()}</Paragraph>
-    <Paragraph>{faker.lorem.paragraph()}</Paragraph>
-  </Grid>
-
-export const with3Columns = () =>
-  <Grid columns="3">
-    <Paragraph>{faker.lorem.paragraph()}</Paragraph>
-    <Paragraph>{faker.lorem.paragraph()}</Paragraph>
-    <Paragraph>{faker.lorem.paragraph()}</Paragraph>
-    <Paragraph>{faker.lorem.paragraph()}</Paragraph>
-    <Paragraph>{faker.lorem.paragraph()}</Paragraph>
-  </Grid>
-
-export const with4Columns = () =>
-  <Grid columns="4">
-    <Paragraph>{faker.lorem.paragraph()}</Paragraph>
-    <Paragraph>{faker.lorem.paragraph()}</Paragraph>
-    <Paragraph>{faker.lorem.paragraph()}</Paragraph>
-    <Paragraph>{faker.lorem.paragraph()}</Paragraph>
-    <Paragraph>{faker.lorem.paragraph()}</Paragraph>
-  </Grid>
+export const columns = () =>
+  <div>
+    {[2, 3, 4].map(key => {
+      return (
+        <Grid>
+          <Grid key={key} columns={key}>
+            <span>
+              <InlineCode>{`${key}`}</InlineCode>
+              <Paragraph>{faker.lorem.paragraph()}</Paragraph>
+            </span>
+            <Paragraph>{faker.lorem.paragraph()}</Paragraph>
+            <Paragraph>{faker.lorem.paragraph()}</Paragraph>
+            <Paragraph>{faker.lorem.paragraph()}</Paragraph>
+          </Grid>
+          <Hr/>
+        </Grid>
+      )
+    })}
+  </div>
 
 export const autoFit = () =>
   <Grid template="auto-fit">

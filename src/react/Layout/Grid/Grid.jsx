@@ -1,21 +1,33 @@
 import React from 'react'
 import PropTypes from 'prop-types'
+import { appendSelectors, modifiers } from '@Library/styles'
 import './Grid.scss'
 
-const Grid = props => {
-  const HtmlTag = props.htmlTag.toLowerCase()
-  return (
-    <HtmlTag className={`grid ${props.className} ${props.template ? 'grid--tmpl-' + props.template : ''} ${props.fit ? 'grid--fit' : ''} ${props.align ? 'grid--align-' + props.align : ''} ${props.columns !== '0' ? 'grid--' + props.columns + '-columns' : ''} ${props.gutter !== '' ? 'grid--gutter-' + props.gutter : ''}`.replace(/\s\s+/g, ' ').trim()}>
-      { props.children }
-    </HtmlTag>
-  )
+const Grid = ({ align, columns, gutter, htmlTag, rows, template, ...restProps }) => {
+  const HtmlTag = htmlTag.toLowerCase()
+  const localClassNames = appendSelectors([
+    'grid',
+    restProps.className,
+  ])
+
+  const modifierClassNames = modifiers('grid', {
+    align,
+    columns,
+    gutter,
+    rows,
+    template,
+  })
+
+  return <HtmlTag className={`${localClassNames} ${modifierClassNames}`}>
+    { restProps.children }
+  </HtmlTag>
 }
 
 Grid.propTypes = {
   align: PropTypes.string,
   className: PropTypes.string,
-  fit: PropTypes.bool,
   columns: PropTypes.string,
+  rows: PropTypes.string, // fit-vertically
   gutter: PropTypes.string,
   htmlTag: PropTypes.string,
   template: PropTypes.string,
@@ -23,10 +35,7 @@ Grid.propTypes = {
 
 Grid.defaultProps = {
   className: '',
-  columns: '0',
-  gutter: '',
   htmlTag: 'div',
-  template: '',
 }
 
 export default Grid

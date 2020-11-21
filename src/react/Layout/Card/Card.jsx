@@ -6,6 +6,7 @@ import './Card.scss'
 import { appendSelectors, globalSelectors } from '@Library/styles'
 
 const Card = ({ className, padding, borderRadius, boxShadow, ...restProps }) => {
+  console.log(restProps)
   const localClassNames = appendSelectors([
     'card',
     className,
@@ -34,7 +35,6 @@ Card.defaultProps = {
   borderRadius: 'normal',
   boxShadow: 'soft',
   className: '',
-  interactive: false,
   padding: 'normal',
 }
 
