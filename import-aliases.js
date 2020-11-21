@@ -11,6 +11,7 @@ module.exports = {
   '@Design': path.resolve(__dirname, 'src/react/Design/'),
   '@Gatsby': path.resolve(__dirname, 'src/doc/components/'),
   '@Layout': path.resolve(__dirname, 'src/react/Layout/'),
+  '@Library': path.resolve(__dirname, 'src/lib/'),
   '@Typography': path.resolve(__dirname, 'src/react/Design/Typography/'),
   '@UI': path.resolve(__dirname, 'src/react/UI/'),
   '~Sass': path.resolve(__dirname, 'src/scss/'),

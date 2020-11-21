@@ -35,9 +35,9 @@ export const boxShadow = () =>
   <Grid gutter="xlarge">
     {shadows.map(key => {
       return (
-        <Card key={key} shadow={`box-shadow-${key}`}>
+        <Card key={key} boxShadow={`${key}`}>
           <span>
-            <Code>{`box-shadow-${key}`}</Code>
+            <Code>{`${key}`}</Code>
           </span>
           <Paragraph>{faker.lorem.paragraph()}</Paragraph>
           <Paragraph>{faker.lorem.paragraph()}</Paragraph>
@@ -50,9 +50,9 @@ export const borderRadius = () =>
   <Grid gutter="xlarge">
     {radius.map(key => {
       return (
-        <Card key={key} radius={`border-radius-${key}`}>
+        <Card key={key} borderRadius={`${key}`}>
           <span>
-            <Code>{`border-radius-${key}`}</Code>
+            <Code>{`${key}`}</Code>
           </span>
           <Paragraph>{faker.lorem.paragraph()}</Paragraph>
           <Paragraph>{faker.lorem.paragraph()}</Paragraph>
@@ -65,9 +65,9 @@ export const padding = () =>
   <Grid gutter="xlarge">
     {paddingSizes.map(key => {
       return (
-        <Card key={key} padding={`padding-${key}`}>
+        <Card key={key} padding={`${key}`}>
           <span>
-            <Code>{`padding-${key}`}</Code>
+            <Code>{`${key}`}</Code>
           </span>
           <Paragraph>{faker.lorem.paragraph()}</Paragraph>
           <Paragraph>{faker.lorem.paragraph()}</Paragraph>
@@ -77,13 +77,7 @@ export const padding = () =>
   </Grid>
 
 export const interactive = () =>
-  <Card interactive className="box-shadow-box" shadow="box-shadow-box">
-    <Paragraph>{faker.lorem.paragraph()}</Paragraph>
-    <Paragraph>{faker.lorem.paragraph()}</Paragraph>
-  </Card>
-
-export const template = () =>
-  <Card template="pippo-pluto">
+  <Card boxShadow="box--interactive">
     <Paragraph>{faker.lorem.paragraph()}</Paragraph>
     <Paragraph>{faker.lorem.paragraph()}</Paragraph>
   </Card>

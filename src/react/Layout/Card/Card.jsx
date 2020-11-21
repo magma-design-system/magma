@@ -3,54 +3,39 @@ import PropTypes from 'prop-types'
 import Grid from '@Layout/Grid/Grid'
 import './Card.scss'
 
-/*
-modifier('card', {
-  gutter: props.gutter,
-})
-selector({
-  padding: props.padding,
-  radius: props.radius,
-  shadow: props.shadow,
-})
-cleanClass([
-  'card',
-  className,
-  interactive ? shadow + '--interactive' : shadow,
-  radius,
-  padding,
-])
-*/
+import { appendSelectors, globalSelectors } from '@Library/styles'
 
-const Card = ({ children, className, interactive, padding, radius, shadow, ...restProps }) => {
-  const classNames = [
+const Card = ({ className, padding, borderRadius, boxShadow, ...restProps }) => {
+  const localClassNames = appendSelectors([
     'card',
     className,
-    interactive ? shadow + '--interactive' : shadow,
-    radius,
-    padding,
-  ].filter(value => !!value).join(' ')
+  ])
 
-  return <Grid {...restProps} className={classNames}>
-    {children}
+  const globalClassNames = globalSelectors({
+    padding,
+    borderRadius,
+    boxShadow,
+  })
+
+  return <Grid {...restProps} className={`${localClassNames} ${globalClassNames}`}>
+    {restProps.children}
   </Grid>
 }
 
 Card.propTypes = {
   ...Grid.propTypes,
+  borderRadius: PropTypes.string,
+  boxShadow: PropTypes.string,
   className: PropTypes.string,
-  interactive: PropTypes.bool,
   padding: PropTypes.string,
-  radius: PropTypes.string,
-  shadow: PropTypes.string,
 }
 
 Card.defaultProps = {
+  borderRadius: 'normal',
+  boxShadow: 'soft',
   className: '',
-  gutter: 'xsmall',
   interactive: false,
-  padding: 'padding-normal',
-  radius: 'border-radius-normal',
-  shadow: 'box-shadow-soft',
+  padding: 'normal',
 }
 
 export default Card
