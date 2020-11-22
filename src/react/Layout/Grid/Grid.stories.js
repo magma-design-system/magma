@@ -2,9 +2,10 @@ import React from 'react'
 import faker from 'faker'
 
 import Grid from '@Layout/Grid/Grid'
-import InlineCode from '@UI/InlineCode/InlineCode'
 import Hr from '@UI/Hr/Hr'
 import Paragraph from '@Typography/Paragraph/Paragraph'
+import Flash from '@UI/Flash/Flash'
+import InlineCode from '@UI/InlineCode/InlineCode'
 
 import sizes from '+Tokens/css-tokens/sizes.json'
 const sizesList = Object.keys(sizes.size)
@@ -71,6 +72,18 @@ export const autoFit = () =>
 
 export const autoFill = () =>
   <Grid template="auto-fill">
+    <Paragraph>{faker.lorem.paragraph()}</Paragraph>
+    <Paragraph>{faker.lorem.paragraph()}</Paragraph>
+    <Paragraph>{faker.lorem.paragraph()}</Paragraph>
+    <Paragraph>{faker.lorem.paragraph()}</Paragraph>
+    <Paragraph>{faker.lorem.paragraph()}</Paragraph>
+  </Grid>
+
+export const rows = () =>
+  <Grid rows="fit-vertically">
+    <Flash>
+      Property <InlineCode status="info">rows="fit-vertically"</InlineCode> works nice if you need to distribute elements vertically but with different heights.
+    </Flash>
     <Paragraph>{faker.lorem.paragraph()}</Paragraph>
     <Paragraph>{faker.lorem.paragraph()}</Paragraph>
     <Paragraph>{faker.lorem.paragraph()}</Paragraph>

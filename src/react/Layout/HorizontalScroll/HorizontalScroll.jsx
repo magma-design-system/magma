@@ -4,12 +4,13 @@ import { appendSelectors, modifiers } from '@Library/styles'
 import './HorizontalScroll.scss'
 
 const HorizontalScroll = ({ innerMargin, outerMargin, scrollSnap, ...restProps }) => {
+  const mainSelector = 'horizontal-scroll'
   const localClassNames = appendSelectors([
-    'horizontal-scroll',
+    mainSelector,
     restProps.className,
   ])
 
-  const modifierClassNames = modifiers('horizontal-scroll', {
+  const modifierClassNames = modifiers(mainSelector, {
     innerMargin,
     outerMargin,
     scrollSnap,

@@ -16,12 +16,6 @@
   display: flex;
   text-align: left;
 
-  &--gutter-none {
-    .row__item {
-      margin-right: 0;
-    }
-  }
-
   @each $size-item in $list-sizes {
     @include gutter-modifier ($size-item);
   }
@@ -38,7 +32,7 @@
     align-items: flex-end;
   }
 
-  &--last-to-right {
+  &--last-child-to-right {
     .row {
       &__item {
         &:last-child {
@@ -50,7 +44,6 @@
 
   &__item {
     flex-shrink: 0;
-    margin-right: s(1.5);
 
     &:last-child {
       margin-right: 0;
