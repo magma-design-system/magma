@@ -2,31 +2,31 @@
   "xxsmall": {
     "font": "text-secondary text-secondary--caption",
     "iconSize": "small",
-    "paddingOverride": "normal"
+    "padding": "normal"
   },
   "small": {
     "font": "text-primary text-primary--button",
     "iconSize": "small",
-    "paddingOverride": "normal"
+    "padding": "normal"
   },
   "normal": {
     "font": "text-primary text-primary--button",
     "iconSize": "normal",
-    "paddingOverride": "normal"
+    "padding": "normal"
   },
   "large": {
     "font": "text-primary text-primary--button",
     "iconSize": "normal",
-    "paddingOverride": "normal"
+    "padding": "normal"
   },
   "xlarge": {
     "font": "text-primary text-primary--h5",
     "iconSize": "normal",
-    "paddingOverride": "normal"
+    "padding": "normal"
   },
   "xxlarge": {
     "font": "text-primary text-primary--h5",
     "iconSize": "large",
-    "paddingOverride": "normal"
+    "padding": "normal"
   }
 }
