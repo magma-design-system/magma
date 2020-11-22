@@ -1,12 +1,12 @@
 @import '~Sass/import-framework';
 
-@mixin size-modifier ($icon-size) {
+@mixin size-modifier ($item) {
 
-  $modifier: nth($icon-size, 1);
-  $size: nth($icon-size, 2);
+  $modifier: nth($item, 1);
+  $value: nth($item, 2);
 
   &--size-#{$modifier} {
-    font-size: $size;
+    font-size: $value;
   }
 }
 
@@ -18,7 +18,7 @@
   line-height: inherit;
   user-select: none;
 
-  @each $icon-size in $icon-sizes {
-    @include size-modifier ($icon-size);
+  @each $item in $icon-sizes {
+    @include size-modifier ($item);
   }
 }

@@ -1,7 +1,7 @@
 @import '~Sass/import-framework';
 
 .grid {
-  &--tmpl-downloads {
+  &--template-downloads {
     grid-template-columns: minmax(0, 1fr);
 
     @include media('tablet') {

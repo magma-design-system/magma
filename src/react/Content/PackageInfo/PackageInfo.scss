@@ -1,6 +1,6 @@
 @import '~Sass/import-framework';
 
-.grid--tmpl-package-info-authors {
+.grid--template-package-info-authors {
   grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
 
   @include media ('mobile') {

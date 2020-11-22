@@ -3,11 +3,11 @@
 $grid-width: 300px;
 
 .grid {
-  &--tmpl-backoffice {
+  &--template-backoffice {
     grid-template-columns: $grid-width auto;
   }
 
-  &--tmpl-content-header {
+  &--template-content-header {
     grid-template-columns: 1fr;
     grid-template-rows: auto;
 
@@ -16,19 +16,19 @@ $grid-width: 300px;
     }
   }
 
-  &--tmpl-backoffice-section {
+  &--template-backoffice-section {
     grid-template-rows: auto 1fr;
   }
 
-  &--tmpl-backoffice-aside {
+  &--template-backoffice-aside {
     grid-template-rows: auto 1fr;
   }
 
-  &--tmpl-form {
+  &--template-form {
     grid-template-columns: repeat(auto-fill, minmax(min-content, 3fr));
   }
 
-  &--tmpl-single-column-form {
+  &--template-single-column-form {
     grid-template-columns: 1fr;
 
     @include media('large') {
