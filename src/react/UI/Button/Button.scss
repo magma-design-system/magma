@@ -4,6 +4,27 @@ $border-size: 2px;
 $ease: get($tween, 'hover');
 $border-radius: get($radius, 'small');
 
+@mixin size-modifier ($item) {
+
+  $modifier: nth($item, 1);
+  $value: nth($item, 2);
+
+  &--size-#{$modifier} {
+    height: $value;
+  }
+}
+
+@mixin padding-modifier ($item) {
+
+  $modifier: nth($item, 1);
+  $value: nth($item, 2);
+
+  &--padding-#{$modifier} {
+    padding-left: $value;
+    padding-right: $value;
+  }
+}
+
 .button {
 
   --background: #{color('brand.maggioli', '04')};
@@ -27,6 +48,14 @@ $border-radius: get($radius, 'small');
   user-select: none;
   width: auto;
 
+  @each $item in $button-sizes {
+    @include size-modifier ($item);
+  }
+
+  @each $item in $list-sizes {
+    @include padding-modifier ($item);
+  }
+
   &__text {
     &::first-letter {
       text-transform: capitalize;
@@ -48,15 +77,6 @@ $border-radius: get($radius, 'small');
     pointer-events: none;
   }
 
-  &--small {
-    height: get($form-sizes, 'input-height-small');
-    padding: 0 s(0.5);
-  }
-
-  &--round {
-    border-radius: get($form-sizes, 'input-height');
-  }
-
   &--outline {
 
     --background: transparent;
@@ -64,7 +84,7 @@ $border-radius: get($radius, 'small');
     --color: #{color('adjust.tone', '03')};
   }
 
-  &--expand {
+  &--width-fill {
     width: 100%;
   }
 
@@ -73,7 +93,7 @@ $border-radius: get($radius, 'small');
   }
 }
 
-.button--link {
+.button--variant-link {
 
   --background: transparent;
   --color: #{color('brand.maggioli', '04')};
@@ -95,9 +115,9 @@ $border-radius: get($radius, 'small');
   }
 }
 
-@mixin scaffold-theme ($modifier, $color-set) {
+@mixin scaffold-variant ($modifier, $color-set) {
 
-  .button--#{$modifier} {
+  .button--variant-#{$modifier} {
 
     --background: #{color($color-set, '04')};
     --color: #{color('adjust.tone')};
@@ -111,7 +131,7 @@ $border-radius: get($radius, 'small');
     }
   }
 
-  .button--#{$modifier}-outline {
+  .button--variant-#{$modifier}-outline {
 
     --background: transparent;
     --border: #{$border-size} solid #{color($color-set, '04')};
@@ -127,8 +147,8 @@ $border-radius: get($radius, 'small');
   }
 }
 
-@mixin scaffold-status-theme ($modifier, $color-set) {
-  .button--#{$modifier} {
+@mixin scaffold-status-variant ($modifier, $color-set) {
+  .button--variant-#{$modifier} {
 
     --background: #{color($color-set, '08')};
     --color: #{color('adjust.tone')};
@@ -142,7 +162,7 @@ $border-radius: get($radius, 'small');
     }
   }
 
-  .button--#{$modifier}-outline {
+  .button--variant-#{$modifier}-outline {
 
     --background: #{color('adjust.tone')};
     --border: #{$border-size} solid #{color($color-set, '08')};
@@ -158,12 +178,12 @@ $border-radius: get($radius, 'small');
   }
 }
 
-@include scaffold-theme($modifier: 'primary', $color-set: 'brand.maggioli');
-@include scaffold-theme($modifier: 'secondary', $color-set: 'adjust.tone');
-@include scaffold-status-theme($modifier: 'success', $color-set: 'status.success');
-@include scaffold-status-theme($modifier: 'warning', $color-set: 'status.warning');
-@include scaffold-status-theme($modifier: 'error', $color-set: 'status.error');
-@include scaffold-status-theme($modifier: 'info', $color-set: 'status.info');
+@include scaffold-variant($modifier: 'primary', $color-set: 'brand.maggioli');
+@include scaffold-variant($modifier: 'secondary', $color-set: 'adjust.tone');
+@include scaffold-status-variant($modifier: 'success', $color-set: 'status.success');
+@include scaffold-status-variant($modifier: 'warning', $color-set: 'status.warning');
+@include scaffold-status-variant($modifier: 'error', $color-set: 'status.error');
+@include scaffold-status-variant($modifier: 'info', $color-set: 'status.info');
 
 // --toolbar-theme: {
 //   background-color: hsl(120, 70%, 95%);

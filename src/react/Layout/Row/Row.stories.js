@@ -34,20 +34,18 @@ export const lastChild = () =>
 
 export const align = () =>
   <Grid>
-    {alignList.map(key => {
-      return (
-        <Grid>
-          <span>
-            <InlineCode>{`${key}`}</InlineCode>
-          </span>
-          <Row key={key} align={key}>
-            <Button>{word1}</Button>
-            <Button>{word2}</Button>
-          </Row>
-          <Hr/>
-        </Grid>
-      )
-    })}
+    {alignList.map(key =>
+      <Grid>
+        <span>
+          <InlineCode>{`${key}`}</InlineCode>
+        </span>
+        <Row key={key} align={key}>
+          <Button>{word1}</Button>
+          <Button>{word2}</Button>
+        </Row>
+        <Hr/>
+      </Grid>,
+    )}
   </Grid>
 
 export const gutterSizes = () =>

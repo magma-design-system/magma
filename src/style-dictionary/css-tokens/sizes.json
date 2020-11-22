@@ -28,5 +28,13 @@
     "large": "32px",
     "xlarge": "48px",
     "xxlarge": "64px"
+  },
+  "button": {
+    "xxsmall": "20px",
+    "small": "30px",
+    "normal": "40px",
+    "large": "50px",
+    "xlarge": "60px",
+    "xxlarge": "80px"
   }
 }

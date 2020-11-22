@@ -1,65 +1,86 @@
 import React, { Fragment } from 'react'
 import PropTypes from 'prop-types'
-import './Button.scss'
+import { appendSelectors, globalSelectors, modifiers } from '@Library/styles'
 import Icon from '@Design/Icon/Icon'
+import dictionary from './dictionary.json'
+import './Button.scss'
 
-const Button = props =>
-  <Fragment>
-    {!props.href
+const Button = ({ borderRadius, boxShadow, disabled, href, icon, onClick, outline, padding, size, type, variant, width, ...restProps }) => {
+  const { font, iconSize } = dictionary[size]
+
+  const mainSelector = 'button'
+  const localClassNames = appendSelectors([
+    mainSelector,
+    restProps.className,
+  ])
+
+  const modifierClassNames = modifiers(mainSelector, {
+    disabled,
+    outline,
+    padding,
+    size,
+    variant,
+    width,
+  })
+
+  const globalClassNames = globalSelectors({
+    borderRadius,
+    boxShadow,
+  })
+
+  return <Fragment>
+    {!href
       ? <button
-        className={`button ${props.className} ${props.expand ? 'button--expand' : ''} ${props.variant ? 'button--' + props.variant : ''} ${props.small ? 'button--small' : ''} ${props.round ? 'button--round' : ''} ${props.disabled ? 'button--disabled' : ''} ${props.outline ? 'button--outline' : ''}`.trim()}
-        onClick={() => props.onClick()}
-        disabled={props.disabled ? 'disabled' : ''}
-        type={props.type}>
-        {props.icon && <Icon className='button__icon' name={props.icon}/>}
-        { props.children && <div className={`button__text ${props.textClassName}`}>
-          { props.children }
+        className={`${localClassNames} ${modifierClassNames} ${globalClassNames}`}
+        onClick={onClick}
+        disabled={disabled ? 'disabled' : ''}
+        type={type}>
+        {icon && <Icon className='button__icon' name={icon} size={iconSize}/>}
+        { restProps.children && <div className={`button__text ${font}`}>
+          { restProps.children }
         </div>
         }
       </button>
       : <a
-        className={`button ${props.className} ${props.variant ? 'button--' + props.variant : ''} ${props.small ? 'button--small' : ''} ${props.round ? 'button--round' : ''} ${props.disabled ? 'button--disabled' : ''} ${props.outline ? 'button--outline' : ''}`.trim()}
-        onClick={() => props.onClick()}
+        className={`${localClassNames} ${modifierClassNames} ${globalClassNames}`}
+        onClick={onClick}
         target="_blank"
-        href={props.href}>
-        {props.icon && <Icon className='button__icon' name={props.icon}/>}
-        { props.children && <div className={`button__text ${props.textClassName}`}>
-          { props.children }
+        href={href}>
+        {icon && <Icon className='button__icon' name={icon} size={iconSize}/>}
+        { restProps.children && <div className={`button__text ${font}`}>
+          { restProps.children }
         </div>
         }
       </a>
     }
   </Fragment>
+}
 
 Button.propTypes = {
+  borderRadius: PropTypes.string,
+  boxShadow: PropTypes.string,
   className: PropTypes.string,
-  collapse: PropTypes.bool,
   disabled: PropTypes.bool,
-  expand: PropTypes.bool,
   href: PropTypes.string,
   icon: PropTypes.string,
   onClick: PropTypes.func,
   outline: PropTypes.bool,
-  round: PropTypes.bool,
-  small: PropTypes.bool,
-  textClassName: PropTypes.string,
+  padding: PropTypes.string,
+  size: PropTypes.string,
   type: PropTypes.string,
   variant: PropTypes.string,
+  width: PropTypes.string, // inline || fill
 }
 
 Button.defaultProps = {
   className: '',
-  collapse: false,
   disabled: false,
-  expand: false,
   icon: '',
   onClick: () => {},
   outline: false,
-  round: false,
-  small: false,
-  textClassName: 'text-primary text-primary--button',
+  size: 'normal',
   type: 'button',
-  variant: '',
+  width: 'inline',
 }
 
 export default Button
