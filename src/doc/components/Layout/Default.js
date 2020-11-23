@@ -13,7 +13,7 @@ import BenchmarkBar from '@Content/BenchmarkBar/BenchmarkBar'
 import BibliographyMLA from '@Content/Bibliography/BibliographyMLA'
 import Button from '@UI/Button/Button'
 import Caption from '@Typography/Caption/Caption'
-import Code from '@UI/InlineCode/InlineCode'
+import InlineCode from '@UI/InlineCode/InlineCode'
 import CodeBlock from '@Content/CodeBlock/CodeBlock'
 import Detail from '@Typography/Detail/Detail'
 import Download from '@UI/Download/Download'
@@ -53,7 +53,7 @@ const shortcodes = {
   Button,
   Caption,
   Detail,
-  Code,
+  InlineCode,
   CodeBlock,
   Download,
   Flash,
@@ -97,7 +97,7 @@ const shortcodes = {
   h6: H6,
   hr: Hr,
   img: Image,
-  inlineCode: Code,
+  inlineCode: InlineCode,
   li: ListItem,
   p: Paragraph,
   ul: List,

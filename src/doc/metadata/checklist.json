@@ -468,7 +468,7 @@
           {
             "title":"Larghezza intera",
             "description":"Per impostazione predefinita, i pulsanti prendono la larghezza del loro contenuto, ma dovrebbero anche avere una variante a larghezza intera che funziona bene nei dispositivi mobili.",
-            "done":false
+            "done":true
           },
           {
             "title":"Varianti",
@@ -478,7 +478,7 @@
           {
             "title":"Dimensioni",
             "description":"I pulsanti possono essere utilizzati in diverse aree delle applicazioni e possono avere più dimensioni predefinite. Sui dispositivi mobili, le aree selezionabili devono essere un minimo di 48 px per essere accessibili secondo le linee guida per l'accessibilità di iOS e Android.",
-            "done":false
+            "done":true
           }
         ],
         "references":[
