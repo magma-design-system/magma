@@ -25,7 +25,7 @@ BackofficeMenuItemTitle.defaultProps = {
 }
 
 const BackofficeMenuItem = props =>
-  <Grid className="backoffice-menu__item" fit={true} gutter="none">
+  <Grid className="backoffice-menu__item" rows="fit-vertically" gutter="none">
     {props.children}
   </Grid>
 
@@ -50,7 +50,7 @@ BackofficeMenuItemAction.defaultProps = {
 }
 
 const BackofficeMenu = props =>
-  <Grid className="backoffice-menu" fit={true}>
+  <Grid className="backoffice-menu" rows="fit-vertically">
     { props.children }
   </Grid>
 

@@ -35,7 +35,7 @@ export const dismissable = () =>
   </Grid>
 
 export const Colors = () =>
-  <Grid columns="3" fit={true}>
+  <Grid columns="3" rows="fit-vertically">
     <Note status="success">
       <H5>Success</H5>
       <Detail>{faker.lorem.paragraph()}</Detail>
