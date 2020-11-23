@@ -1,19 +1,31 @@
 ---
 title: 'Colori'
-date: '2020-08-21'
+date: '2020-09-18'
 source:
   - 9
 ---
 
+import ColorPalette from '@Gatsby/Pattern/ColorPalette/ColorPalette'
+import Tokens from '+Tokens/properties/color/base.json'
 
+Questi sono i colori utilizzati dal brand Maggioli all'interno delle loro applicazioni, potrebbero subire variazioni in base al tuning naturale che il Design System subisce nel tempo, in base a nuove integrazioni e la necessità di trovare nuove soluzioni per prodotti entranti.
 
-Maggioli utilizza i colori in modo mirato per comunicare come funzionano le cose nell'interfaccia. Questo ci aiuta a creare schemi visivi che possono rendere l'interazione con il nostro prodotto più facile e più prevedibile per i commercianti.
+Ogni palette contiene il testo a colore di contrasto ottimale rispetto alla sua scala, il colore accoppiato viene selezionato tramite un test di contrasto automatico per aiutare a velocizzare le scelte del team dove possibile.
 
-
-<Grid columns="2" align="center">
-  <Grid fit="auto-fit" gutter="none">
-    <H5>Comunicazione oltre al colore</H5>
-    <Paragraph>Sebbene apprezziamo un uso esteticamente gradevole del colore, attribuiamo un valore maggiore alla comunicazione chiara. Il nostro uso del colore dovrebbe essere mirato, razionale e dovrebbe servire a supportare lo scopo del contenuto.</Paragraph>
-  </Grid>
-  <Image src={require("./color-should-focus-attention.png")} aspectRatio="16:9" />
+<Grid>
+  <ColorPalette token={Tokens.color.brand.maggioli.light} group="brand" name="maggioli"/>
+  <Hr/>
+  <ColorPalette token={Tokens.color.brand.eolo.light} group="brand" name="eolo"/>
+  <Hr/>
+  <ColorPalette token={Tokens.color.brand.eolo.light} group="brand" name="argo"/>
+  <Hr/>
+  <ColorPalette token={Tokens.color.status.success.light} group="status" name="info"/>
+  <Hr/>
+  <ColorPalette token={Tokens.color.status.success.light} group="status" name="success"/>
+  <Hr/>
+  <ColorPalette token={Tokens.color.status.warning.light} group="status" name="warning"/>
+  <Hr/>
+  <ColorPalette token={Tokens.color.status.error.light} group="status" name="error"/>
+  <Hr/>
+  <ColorPalette token={Tokens.color.adjust.tone.light} group="adjust" name="tone"/>
 </Grid>
