@@ -8,5 +8,6 @@
 
   &__progress {
     color: color('brand.maggioli', '05');
+    flex-shrink: 0;
   }
 }
