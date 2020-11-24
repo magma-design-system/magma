@@ -314,7 +314,7 @@
     ]
   },
   {
-    "title": "Core components",
+    "title": "Componenti core",
     "description": "I componenti sono gli elementi costitutivi principali delle UI (interfaccie utente). La creazione di una libreria di componenti riutilizzabili migliora il flusso di lavoro di sviluppo del prodotto riducendo il debito di progettazione e tecnologia e accelerando il processo. I componenti principali non possono essere suddivisi in pezzi granulari senza perdere il loro significato.",
     "children": [
       {
@@ -1127,7 +1127,7 @@
     ]
   },
   {
-    "title": "Layout components",
+    "title": "Componenti Layout",
     "description": "I componenti sono gli elementi costitutivi principali delle UI (interfaccie utente). La creazione di una libreria di componenti riutilizzabili migliora il flusso di lavoro di sviluppo del prodotto riducendo il debito di progettazione e tecnologia e accelerando il processo. I componenti principali non possono essere suddivisi in pezzi granulari senza perdere il loro significato.",
     "children": [
       {
@@ -1268,7 +1268,7 @@
     ]
   },
   {
-    "title": "UI components",
+    "title": "Componenti UI",
     "description": "I componenti sono gli elementi costitutivi principali delle UI (interfaccie utente). La creazione di una libreria di componenti riutilizzabili migliora il flusso di lavoro di sviluppo del prodotto riducendo il debito di progettazione e tecnologia e accelerando il processo. I componenti principali non possono essere suddivisi in pezzi granulari senza perdere il loro significato.",
     "children": [
       {
