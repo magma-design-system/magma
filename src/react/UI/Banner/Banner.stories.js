@@ -1,44 +1,44 @@
 import React from 'react'
 import faker from 'faker'
 
-import FlashMessage from '@UI/Flash/Flash'
+import Banner from '@UI/Banner/Banner'
 
 export default {
-  title: 'UI/Flash',
-  component: FlashMessage,
+  title: 'UI/Banner',
+  component: Banner,
 }
 
 export const basicUsage = () =>
-  <FlashMessage>
+  <Banner>
     {faker.lorem.paragraph()}
-  </FlashMessage>
+  </Banner>
 
 export const withCaption = () =>
-  <FlashMessage className="text-secondary text-secondary--caption">
+  <Banner className="text-secondary text-secondary--caption">
     {faker.lorem.paragraph()}
-  </FlashMessage>
+  </Banner>
 
 export const withParagraph = () =>
-  <FlashMessage className="text-secondary text-secondary--paragraph">
+  <Banner className="text-secondary text-secondary--paragraph">
     {faker.lorem.paragraph()}
-  </FlashMessage>
+  </Banner>
 
 export const statusInfo = () =>
-  <FlashMessage status="info">
+  <Banner status="info">
     {faker.lorem.paragraph()}
-  </FlashMessage>
+  </Banner>
 
 export const statusWarning = () =>
-  <FlashMessage status="warning">
+  <Banner status="warning">
     {faker.lorem.paragraph()}
-  </FlashMessage>
+  </Banner>
 
 export const statusError = () =>
-  <FlashMessage status="error">
+  <Banner status="error">
     {faker.lorem.paragraph()}
-  </FlashMessage>
+  </Banner>
 
 export const statusSuccess = () =>
-  <FlashMessage status="success">
+  <Banner status="success">
     {faker.lorem.paragraph()}
-  </FlashMessage>
+  </Banner>

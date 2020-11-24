@@ -18,7 +18,7 @@ import CodeBlock from '@Content/CodeBlock/CodeBlock'
 import Detail from '@Typography/Detail/Detail'
 import Download from '@UI/Download/Download'
 import ExternalLink from '@UI/ExternalLink/ExternalLink'
-import Flash from '@UI/Flash/Flash'
+import Banner from '@UI/Banner/Banner'
 import Grid from '@Layout/Grid/Grid'
 import Row from '@Layout/Row/Row'
 import H1 from '@Typography/H1/H1'
@@ -32,7 +32,7 @@ import HorizontalMenu from '@Gatsby/Pattern/HorizontalMenu/HorizontalMenu'
 import Hr from '@UI/Hr/Hr'
 import Icon from '@Design/Icon/Icon'
 import Image from '@Content/Image/Image'
-import List, { ListItem } from '@UI/List/List'
+import UList, { UListItem } from '@UI/UList/UList'
 import Navigation from '@Gatsby/Pattern/Navigation/Navigation'
 import PackageInfo from '@Content/PackageInfo/PackageInfo'
 import Page from '@Gatsby/Page/Page'
@@ -56,7 +56,7 @@ const shortcodes = {
   InlineCode,
   CodeBlock,
   Download,
-  Flash,
+  Banner,
   Grid,
   H1,
   H2,
@@ -69,8 +69,8 @@ const shortcodes = {
   BenchmarkBar,
   Image,
   ExternalLink,
-  List,
-  ListItem,
+  UList,
+  UListItem,
   PackageInfo,
   Paragraph,
   Quote,
@@ -98,9 +98,9 @@ const shortcodes = {
   hr: Hr,
   img: Image,
   inlineCode: InlineCode,
-  li: ListItem,
+  li: UListItem,
   p: Paragraph,
-  ul: List,
+  ul: UList,
 }
 
 const AuthorItem = authorData => {

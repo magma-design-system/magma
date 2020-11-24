@@ -4,6 +4,7 @@ import Table, { TableHeader, TableHeaderCell, TableBody, TableRow, TableCell } f
 import Row from '@Layout/Row/Row'
 import Grid from '@Layout/Grid/Grid'
 import Button from '@UI/Button/Button'
+import Switch from '@UI/Switch/Switch'
 import Hr from '@UI/Hr/Hr'
 import InlineCode from '@UI/InlineCode/InlineCode'
 import sizesData from '+Tokens/css-tokens/sizes.json'
@@ -28,8 +29,16 @@ export const defaultUsage = () =>
 
 export const lastChild = () =>
   <Row lastChild="to-right">
+    <div>
+      <Button>{word1}</Button>
+    </div>
+    <div>
+      <Button>{word1}</Button>
+    </div>
     <Button>{word1}</Button>
-    <Button>{word2}</Button>
+    <Switch>
+      Switcha questo
+    </Switch>
   </Row>
 
 export const align = () =>

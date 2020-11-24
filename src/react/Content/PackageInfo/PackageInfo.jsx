@@ -7,7 +7,7 @@ import Grid from '@Layout/Grid/Grid'
 import Tag from '@UI/Tag/Tag'
 import Row from '@Layout/Row/Row'
 import Button from '@UI/Button/Button'
-import List, { ListItem } from '@UI/List/List'
+import UList, { UListItem } from '@UI/UList/UList'
 import Hr from '@UI/Hr/Hr'
 import InlineCode from '@UI/InlineCode/InlineCode'
 import Paragraph from '@Typography/Paragraph/Paragraph'
@@ -18,9 +18,9 @@ import Author from '@Content/Author/Author'
 
 const PackageInfo = props =>
   <Card className={`package-info ${props.className}`} {...props} gutter="xsmall">
-    <List autoPunctuation={false}>
-      <ListItem icon="dev-terminal"><InlineCode>{props.package.name}</InlineCode> <InlineCode>v{props.package.version}</InlineCode></ListItem>
-    </List>
+    <UList autoPunctuation={false}>
+      <UListItem icon="dev-terminal"><InlineCode>{props.package.name}</InlineCode> <InlineCode>v{props.package.version}</InlineCode></UListItem>
+    </UList>
     <Paragraph>{props.package.description}</Paragraph>
     <Grid template="package-info-authors">
       { props.package.repository.url && <Button href={props.package.repository.url.replace('.git', '')}>Repository</Button> }

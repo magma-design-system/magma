@@ -1,6 +1,6 @@
 import React, { Children, cloneElement } from 'react'
 import PropTypes from 'prop-types'
-import './List.scss'
+import './UList.scss'
 
 import Icon from '@Design/Icon/Icon'
 import H5 from '@Typography/H5/H5'
@@ -9,19 +9,19 @@ const defaultIcon = 'list-dot'
 
 /* eslint-disable no-nested-ternary */
 
-const ListItem = props =>
-  <li className={`list__item ${props.className}`}>
+const UListItem = props =>
+  <li className={`u-list__item ${props.className}`}>
     {props.numeric
-      ? <H5 className="list__numeric">{ props.id + 1 }.</H5>
-      : <Icon className={`list__icon ${props.iconClassName}`} name={props.icon} size={props.iconSize}/>
+      ? <H5 className="u-list__numeric">{ props.id + 1 }.</H5>
+      : <Icon className={`u-list__icon ${props.iconClassName}`} name={props.icon} size={props.iconSize}/>
     }
-    <div className="list__text">
+    <div className="u-list__text">
       {props.children}
       {props.autoPunctuation ? props.last ? '.' : ';' : ''}
     </div>
   </li>
 
-ListItem.propTypes = {
+UListItem.propTypes = {
   autoPunctuation: PropTypes.bool,
   className: PropTypes.string,
   icon: PropTypes.string,
@@ -32,14 +32,14 @@ ListItem.propTypes = {
   numeric: PropTypes.bool,
 }
 
-ListItem.defaultProps = {
+UListItem.defaultProps = {
   autoPunctuation: false,
   className: '',
   iconSize: '',
   numeric: false,
 }
 
-const List = props =>
+const UList = props =>
   <ul className={`list ${props.className} ${props.text}`}>
     {
       Children.map(props.children, (child, index) => {
@@ -56,7 +56,7 @@ const List = props =>
     }
   </ul>
 
-List.propTypes = {
+UList.propTypes = {
   autoPunctuation: PropTypes.bool,
   className: PropTypes.string,
   icon: PropTypes.string,
@@ -66,7 +66,7 @@ List.propTypes = {
   text: PropTypes.string,
 }
 
-List.defaultProps = {
+UList.defaultProps = {
   autoPunctuation: true,
   className: '',
   icon: defaultIcon,
@@ -76,7 +76,7 @@ List.defaultProps = {
   text: 'text-secondary text-secondary--paragraph',
 }
 
-export default List
+export default UList
 export {
-  ListItem,
+  UListItem,
 }

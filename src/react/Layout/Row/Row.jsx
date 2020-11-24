@@ -17,18 +17,23 @@ const Row = ({ align, gutter, htmlTag, lastChild, onClick, ...restProps }) => {
     lastChild,
   })
 
-  return <HtmlTag {...restProps} onClick={onClick} className={`${localClassNames} ${modifierClassNames}`}>
-    {
-      Children.map(restProps.children, (child, index) => {
-        if (child !== null) {
-          return cloneElement(child, {
-            key: index,
-            className: child.props.className ? `${child.props.className} row__item` : 'row__item',
-          })
-        }
-      })
+  const addClasses = child => {
+    // eslint-disable-next-line no-undef
+    const className = classNames(
+      child.props.className,
+      'row__items',
+    )
+
+    const props = {
+      className,
     }
-  </HtmlTag>
+
+    return cloneElement(child, props)
+  }
+
+  const children = Children.map(restProps.children, child => addClasses(child))
+
+  return <HtmlTag {...restProps} onClick={onClick} className={`${localClassNames} ${modifierClassNames}`}>{children}</HtmlTag>
 }
 
 Row.propTypes = {

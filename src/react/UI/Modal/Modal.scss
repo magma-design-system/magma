@@ -71,7 +71,6 @@ $modal-background: rgba(0, 0, 0, 0.5);
       &__contents {
         @include media ('tablet') {
           max-height: 50vh;
-          min-height: 350px;
         }
 
         &--clean {
@@ -107,16 +106,14 @@ $modal-background: rgba(0, 0, 0, 0.5);
 
   &--max-height {
 
-    $margin: s(8);
+    $margin: s(14);
 
     .modal {
       &__contents {
-        max-height: calc(90vh - #{$margin});
-        min-height: calc(90vh - #{$margin});
+        max-height: calc(100vh - #{$margin});
 
         @include media ('tablet') {
-          max-height: calc(90vh - #{$margin});
-          min-height: calc(90vh - #{$margin});
+          max-height: calc(100vh - #{$margin});
         }
       }
     }
@@ -147,11 +144,11 @@ $modal-background: rgba(0, 0, 0, 0.5);
     background-color: color('brand.maggioli', '19');
     display: flex;
     flex-shrink: 0;
-    padding: s(1);
+    padding: s(1.5);
     position: relative;
 
     @include media ('tablet') {
-      padding: s(1) s(3) s(1) s(1);
+      padding: s(1.5) s(4) s(1.5) s(1.5);
     }
   }
 
@@ -161,10 +158,7 @@ $modal-background: rgba(0, 0, 0, 0.5);
 
   &__footer {
     background-color: color('adjust.tone', '19');
-    display: grid;
-    grid-gap: s(1);
-    grid-template-columns: 1fr 1fr;
-    padding: s(1);
+    padding: s(1.5);
     position: relative;
   }
 
@@ -172,16 +166,16 @@ $modal-background: rgba(0, 0, 0, 0.5);
     flex-grow: 1;
     overflow: auto;
     -webkit-overflow-scrolling: touch;
-    padding: s(1);
+    padding: s(1.5);
 
     @include media ('tablet') {
       max-height: auto;
-      padding: s(1) s(4) s(1) s(1);
+      padding: s(1.5) s(4) s(1.5) s(1.5);
     }
 
     &--close-outside {
       @include media ('tablet') {
-        padding: s(1);
+        padding: s(1.5);
       }
 
       &.modal__contents--clean {
@@ -208,8 +202,8 @@ $modal-background: rgba(0, 0, 0, 0.5);
     height: s(2);
     left: auto;
     position: absolute;
-    right: s(1);
-    top: s(1);
+    right: s(1.5);
+    top: s(1.5);
     transition: background-color get($tween, 'slide');
     width: s(2);
 
@@ -225,10 +219,10 @@ $modal-background: rgba(0, 0, 0, 0.5);
   &__close {
     color: color('adjust.tone');
     cursor: pointer;
-    left: s(1);
+    left: s(1.5);
     opacity: 0;
     position: fixed;
-    top: s(1);
+    top: s(1.5);
     transform: translate(-100%, 0);
     transition: opacity get($tween, 'slide'), transform get($tween, 'slide');
     z-index: 2;

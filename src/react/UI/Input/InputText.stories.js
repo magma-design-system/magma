@@ -5,7 +5,7 @@ import InputEmail from '@UI/Input/InputEmail'
 import InputList, { InputListItem } from '@UI/Input/InputList'
 import InputPassword from '@UI/Input/InputPassword'
 import InputPhone from '@UI/Input/InputPhone'
-import Flash from '@UI/Flash/Flash'
+import Banner from '@UI/Banner/Banner'
 import InlineCode from '@UI/InlineCode/InlineCode'
 import Grid from '@Layout/Grid/Grid'
 import InputText from '@UI/Input/InputText'
@@ -22,17 +22,17 @@ export const basicUsage = () =>
 
 export const fill = () =>
   <Grid>
-    <Flash status="info">
+    <Banner status="info">
       Serve a dare <InlineCode status="info">width: 100%</InlineCode> al componente, altrimenti non riempirà la riga in cui si trova a meno che non sia gestito dal componente <InlineCode status="info">Grid</InlineCode>.
-    </Flash>
+    </Banner>
     <InputText placeholder={faker.company.catchPhrase()} fill/>
   </Grid>
 
 export const grow = () =>
   <Grid>
-    <Flash status="info">
+    <Banner status="info">
       Serve a dare <InlineCode status="info">flex-grow: 1</InlineCode> è utile in concomitanza di flex wrapper come il componente <InlineCode status="info">Row</InlineCode>.
-    </Flash>
+    </Banner>
     <InputText placeholder={faker.company.catchPhrase()} grow/>
   </Grid>
 
