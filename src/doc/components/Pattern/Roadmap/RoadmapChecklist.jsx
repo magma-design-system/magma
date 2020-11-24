@@ -1,4 +1,4 @@
-import React, { Fragment } from 'react'
+import React from 'react'
 import PropTypes from 'prop-types'
 import Grid from '@Layout/Grid/Grid'
 import H2 from '@Typography/H2/H2'
@@ -32,8 +32,8 @@ const RoadmapChecklistTasks = props =>
               <H4>{section.title}</H4>
               <Detail>{section.description}</Detail>
               { section.children.map((task, taskIndex) =>
-                <Grid gutter="none">
-                  <Row key={taskIndex}>
+                <Grid gutter="none" key={taskIndex}>
+                  <Row>
                     <Icon className={task.done ? 'color-status-success-08' : 'color-adjust-tone-16'} name="status-success"/>
                     <Detail className={task.done ? '' : 'color-adjust-tone-08'}><b>{task.title}</b></Detail>
                   </Row>
@@ -68,7 +68,7 @@ RoadmapChecklistTasks.defaultProps = {
 const RoadmapMainChecklistTasks = props =>
   <Grid template="auto-fill-large" gutter="large">
     { props.tasks.map((task, index) => {
-      return <Card interactive shadow="box-shadow-box" gutter="xlarge" padding="padding-small">
+      return <Card boxShadow="box--interactive" gutter="xlarge" padding="padding-small">
         <BenchmarkBar key={index} autoColor={true} progress={getProgress(task.children)} size="xsmall"><H4>{task.title}</H4></BenchmarkBar>
       </Card>
     })}
