@@ -1,6 +1,6 @@
 {
     "name": "@maggioli/design-system",
-    "version": "0.0.74",
+    "version": "0.0.75",
     "description": "Maggioli Design system",
     "scripts": {
         "build": "run-p 'build:!(storybook)'",
@@ -67,8 +67,7 @@
         "email": "vittorio.vittori@maggioli.it",
         "url": "http://vit.to"
     },
-    "contributors": [
-        {
+    "contributors": [{
             "name": "Fabion Dautaj",
             "email": "fabion.dautaj@maggioli.it",
             "role": "React Components"
