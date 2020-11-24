@@ -46,7 +46,7 @@ const Dropdown = props => {
       <Grid className={`dropdown__list box-shadow-box ${props.pivot ? 'dropdown__list--pivot-' + props.pivot : ''}`} gutter="none">
         <H6 className="dropdown__header">{ props.label }</H6>
         {
-          Children.map(props.children, (child, index) => {
+          Children.map(props.children.filter(Boolean), (child, index) => {
             return cloneElement(child, {
               key: index,
               font: props.font,

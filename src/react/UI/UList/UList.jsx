@@ -42,7 +42,7 @@ UListItem.defaultProps = {
 const UList = props =>
   <ul className={`list ${props.className} ${props.text}`}>
     {
-      Children.map(props.children, (child, index) => {
+      Children.map(props.children.filter(Boolean), (child, index) => {
         return cloneElement(child, {
           autoPunctuation: props.autoPunctuation,
           icon: child.props.icon !== undefined ? child.props.icon : props.icon,

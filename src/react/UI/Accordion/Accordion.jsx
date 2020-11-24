@@ -37,7 +37,7 @@ const Accordion = props => {
   return (
     <div className={`accordion ${props.className}`}>
       {
-        Children.map(props.children, (child, index) => {
+        Children.map(props.children.filter(Boolean), (child, index) => {
           return cloneElement(child, {
             key: index,
             onClick: () => console.log(index),
