@@ -8,13 +8,14 @@ import Detail from '@Typography/Detail/Detail'
 import Button from '@UI/Button/Button'
 
 const UploadFileImage = props => {
-  // const [clicked, clickHandler] = useState(false)
-  const fakeImage = 'https://via.placeholder.com/1000x1400'
+  const inputFile = props.uriImage === '' ? 
+                    <input type="file" className="backoffice-file-image__field" onChange={props.onFileChange}/>
+                    : null;
   return (
-    <div onClick={props.onClick} className={`backoffice-file-image ${props.clicked ? 'backoffice-file-image--uploaded' : ''} ${props.icon !== '' ? 'backoffice-file-image--has-icon' : ''} ${props.error ? 'backoffice-file-image--has-errors' : ''} ${props.className}`}>
-      <input type="file" className="backoffice-file-image__field"/>
-      <div className="backoffice-file-image__image" style={{ backgroundImage: `url('${fakeImage}')` }}>
-        <Button className="backoffice-file-image__delete" icon="crud-delete" />
+    <label className={`backoffice-file-image ${props.uriImage !== '' ? 'backoffice-file-image--uploaded' : ''} ${props.icon !== '' ? 'backoffice-file-image--has-icon' : ''} ${props.error ? 'backoffice-file-image--has-errors' : ''} ${props.className}`}>
+      {inputFile}
+      <div className="backoffice-file-image__image" style={{ backgroundImage: `url('${props.uriImage}')` }}>
+        <Button onClick={props.deleteImage} className="backoffice-file-image__delete" icon="crud-delete" />
       </div>
       <div className="backoffice-file-image__fake-field">
         {props.required &&
@@ -40,13 +41,14 @@ const UploadFileImage = props => {
           }
         </div>
       </div>
-    </div>
+    </label>
   )
 }
 
 UploadFileImage.propTypes = {
   className: PropTypes.string,
   clicked: PropTypes.bool,
+  deleteImage: PropTypes.func,
   icon: PropTypes.string,
   iconClassName: PropTypes.string,
   error: PropTypes.string,
@@ -57,17 +59,20 @@ UploadFileImage.propTypes = {
   onClick: PropTypes.func,
   placeholder: PropTypes.string,
   required: PropTypes.bool,
+  uriImage: PropTypes.string,
   value: PropTypes.string,
 }
 
 UploadFileImage.defaultProps = {
   className: '',
   clicked: false,
+  deleteImage: () => {},
   icon: 'media-image',
   name: 'unassigned',
   onChange: value => { return value },
   onClick: () => {},
   required: false,
+  uriImage: '',
 }
 
 export default UploadFileImage
