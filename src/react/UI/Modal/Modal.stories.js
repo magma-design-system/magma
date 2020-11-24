@@ -121,6 +121,11 @@ export const maxHeight = () => {
           <Paragraph>{faker.lorem.paragraph()}</Paragraph>
           <Paragraph>{faker.lorem.paragraph()}</Paragraph>
           <Paragraph>{faker.lorem.paragraph()}</Paragraph>
+          <Paragraph>{faker.lorem.paragraph()}</Paragraph>
+          <Paragraph>{faker.lorem.paragraph()}</Paragraph>
+          <Paragraph>{faker.lorem.paragraph()}</Paragraph>
+          <Paragraph>{faker.lorem.paragraph()}</Paragraph>
+          <Paragraph>{faker.lorem.paragraph()}</Paragraph>
         </Modal>
       </Toggler.Content>
     </Toggler>

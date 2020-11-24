@@ -1,9 +1,10 @@
 import React from 'react'
 import PropTypes from 'prop-types'
 import './Modal.scss'
-import Icon from '@Design/Icon/Icon'
 import Button from '@UI/Button/Button'
+import Grid from '@Layout/Grid/Grid'
 import H4 from '@Typography/H4/H4'
+import Icon from '@Design/Icon/Icon'
 
 // https://soshace.com/building-react-components-using-children-props-and-context-api/#crayon-5f80341482005894162361
 // https://codesandbox.io/s/github/supromikali/react-children-with-context
@@ -28,7 +29,7 @@ const Modal = props => {
           {props.children}
         </div>
         {props.footer &&
-          <footer className="modal__footer grid">
+          <Grid className="modal__footer" columns="2">
             <Button variant="secondary-outline" onClick={() => { props.onCancel() }}>
               Cancel
             </Button>
@@ -36,7 +37,7 @@ const Modal = props => {
               onClick={() => { props.onConfirm() }}>
               Confirm
             </Button>
-          </footer>
+          </Grid>
         }
       </div>
     </div>
