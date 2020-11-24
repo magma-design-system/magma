@@ -18,9 +18,9 @@ const Row = ({ align, gutter, htmlTag, lastChild, onClick, ...restProps }) => {
   })
 
   const children = Children.map(restProps.children.filter(Boolean), child => {
-      return cloneElement(child, {
-        className: `${child.props.className ? child.props.className : ''} row__item`,
-      })
+    return cloneElement(child, {
+      className: `${child.props.className ? child.props.className : ''} row__item`,
+    })
   })
 
   return <HtmlTag {...restProps} onClick={onClick} className={`${localClassNames} ${modifierClassNames}`}>{children}</HtmlTag>

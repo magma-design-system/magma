@@ -39,22 +39,23 @@ UListItem.defaultProps = {
   numeric: false,
 }
 
-const UList = props =>
-  <ul className={`list ${props.className} ${props.text}`}>
-    {
-      Children.map(props.children.filter(Boolean), (child, index) => {
-        return cloneElement(child, {
-          autoPunctuation: props.autoPunctuation,
-          icon: child.props.icon !== undefined ? child.props.icon : props.icon,
-          iconClassName: child.props.iconClassName !== undefined ? child.props.iconClassName : props.iconClassName,
-          iconSize: child.props.iconSize === '' ? props.iconSize : child.props.iconSize,
-          id: index,
-          last: props.children.length === index + 1,
-          numeric: props.numeric,
-        })
-      })
-    }
+const UList = props => {
+  const children = Children.map(props.children, (child, index) => {
+    return cloneElement(child, {
+      autoPunctuation: props.autoPunctuation,
+      icon: child.props.icon !== undefined ? child.props.icon : props.icon,
+      iconClassName: child.props.iconClassName !== undefined ? child.props.iconClassName : props.iconClassName,
+      iconSize: child.props.iconSize === '' ? props.iconSize : child.props.iconSize,
+      id: index,
+      last: props.children.length === index + 1,
+      numeric: props.numeric,
+    })
+  })
+
+  return <ul className={`list ${props.className} ${props.text}`}>
+    {children}
   </ul>
+}
 
 UList.propTypes = {
   autoPunctuation: PropTypes.bool,

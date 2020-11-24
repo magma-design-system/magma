@@ -314,7 +314,7 @@
     ]
   },
   {
-    "title": "Componenti core",
+    "title": "Core components",
     "description": "I componenti sono gli elementi costitutivi principali delle UI (interfaccie utente). La creazione di una libreria di componenti riutilizzabili migliora il flusso di lavoro di sviluppo del prodotto riducendo il debito di progettazione e tecnologia e accelerando il processo. I componenti principali non possono essere suddivisi in pezzi granulari senza perdere il loro significato.",
     "children": [
       {
@@ -1127,9 +1127,69 @@
     ]
   },
   {
-    "title": "Componenti Layout",
+    "title": "Layout components",
     "description": "I componenti sono gli elementi costitutivi principali delle UI (interfaccie utente). La creazione di una libreria di componenti riutilizzabili migliora il flusso di lavoro di sviluppo del prodotto riducendo il debito di progettazione e tecnologia e accelerando il processo. I componenti principali non possono essere suddivisi in pezzi granulari senza perdere il loro significato.",
     "children": [
+      {
+        "title": "BackofficePage",
+        "description": "Template contentente un set di componenti che servono a mettere in piedi velocemente una vista a Backoffice. È utiile come scheletro per poter iniziare ad inserire velocemente form di data entry.",
+        "children": [
+          {
+            "title": "Mobile ready",
+            "description": "Dovrebbe essere in grado di essere utilizzabile anche su dispositivi mobili, in modo che si possa intervenire sul backoffice della applicazione che si sta utilizzando in qualsiasi momento.",
+            "done": true
+          },
+          {
+            "title": "Navigazione",
+            "description": "Il componente dovrebbe avere una navigazione che permette all'utilizzatore di muoversi all'interno del Backoffice facilmente e poter raggiungere ogni sezione.",
+            "done": true
+          }
+        ],
+        "references": [
+          {
+            "title": "Tooltip Guidelines",
+            "href": "https://www.nngroup.com/articles/tooltip-guidelines/"
+          },
+          {
+            "title": "Blueprint JS: Tooltip",
+            "href": "https://blueprintjs.com/docs/#core/components/tooltip"
+          },
+          {
+            "title": "Material Design: Tooltip",
+            "href": "https://material.io/components/tooltips/"
+          }
+        ]
+      },
+      {
+        "title": "Form",
+        "description": "Si basa sul componente Grid e serve a sfruttare i form di compilazione di dati, è utile quando si vogliono impaginare componenti dedicati al data entry.",
+        "children": [
+          {
+            "title": "Eredita Grid",
+            "description": "Sfruttando Grid il componente eredita di fatto tutte le sue funzionalità.",
+            "done": true
+          },
+          {
+            "title": "onSubmit",
+            "description": "Supporta l'evento onSubmit in modo da essere sfruttato con gruppi di componenti di input.",
+            "done": true
+          }
+        ],
+        "references": [
+          {
+            "title": "Tooltip Guidelines",
+            "href": "https://www.nngroup.com/articles/tooltip-guidelines/"
+          },
+          {
+            "title": "Blueprint JS: Tooltip",
+            "href": "https://blueprintjs.com/docs/#core/components/tooltip"
+          },
+          {
+            "title": "Material Design: Tooltip",
+            "href": "https://material.io/components/tooltips/"
+          }
+        ]
+      },
       {
         "title": "Grid",
         "description": "I Tooltip sono componenti solo desktop che visualizzano informazioni aggiuntive quando si passa con il mouse o ci si concentra su un elemento.",
@@ -1164,16 +1224,78 @@
             "href": "https://material.io/components/tooltips/"
           }
         ]
+      },
+      {
+        "title": "HorizontalScroll",
+        "description": "Lo scroll orizontale automatizza la possibilità di scrollare un menu orizontale troppo lungo su mobile che non si vuole ridistribuire verticalmente, se si ha il'intenzione di renderlo scollabile orizontalmente. Si basa sul componente Row.",
+        "children": [
+          {
+            "title": "Eredita Row",
+            "description": "Sfrutta le funzionalità di Row per essere gestito orizontalmente",
+            "done": true
+          },
+          {
+            "title": "Scroll snapping",
+            "description": "Grazie allo snapping nativo del CSS, ora è possibile decidere come gli item al suo interno potranno allinearsi in fase di scroll orizontale, è molto efficace su mobile.",
+            "done": true
+          },
+          {
+            "title": "Distanziamento tra item",
+            "description": "È possibile distanziare gli item con una scala presente nel Design System",
+            "done": true
+          },
+          {
+            "title": "Padding verticale",
+            "description": "Per evitare crop di effetti come ombre sui componenti contenuti, è necessario aggiungere un padding verticale con lo stesso principio del distanziamento tra item",
+            "done": false
+          }
+        ],
+        "references": [
+          {
+            "title": "Tooltip Guidelines",
+            "href": "https://www.nngroup.com/articles/tooltip-guidelines/"
+          },
+          {
+            "title": "Blueprint JS: Tooltip",
+            "href": "https://blueprintjs.com/docs/#core/components/tooltip"
+          },
+          {
+            "title": "Material Design: Tooltip",
+            "href": "https://material.io/components/tooltips/"
+          }
+        ]
       }
     ]
   },
   {
-    "title": "Componenti UI",
+    "title": "UI components",
     "description": "I componenti sono gli elementi costitutivi principali delle UI (interfaccie utente). La creazione di una libreria di componenti riutilizzabili migliora il flusso di lavoro di sviluppo del prodotto riducendo il debito di progettazione e tecnologia e accelerando il processo. I componenti principali non possono essere suddivisi in pezzi granulari senza perdere il loro significato.",
     "children": [
       {
+        "title": "Accordion",
+        "description": "Un Accordion è un elemento di controllo che comprende un elenco di elementi impilato verticalmente, come etichette o miniature. Ha uno scopo simile a un'interfaccia a schede.",
+        "children": [
+          {
+            "title": "Elemento aperto iniziale",
+            "description": "Dare la possibilità di avere un elemento aperto quando il componente viene renderizzato in pagina, è importante quando si vuole partire con la comunicazione di un gruppo di informazioni, o si torna nella pagina al punto in cui si era lasciato il componente.",
+            "done": false
+          },
+          {
+            "title": "Supporto a qualsiasi tipo di contenuto",
+            "description": "È possibile definire diversi set di colonne o righe estendendo la griglia con template che si possono basare sul progetto specifico alla quale si sta lavorando. Ciò permette di mantenere le regole di spaziatura del Design System ma su un set di colonne personalizzato.",
+            "done": true
+          },
+          {
+            "title": "Customizzazione dell'icona aperto/chiuso",
+            "description": "Anche qui a seconda del tema può essere opportuno utilizzare un arrow o degli operatori per rappresentare quando l'Accordion è aperto o chiuso.",
+            "done": false
+          }
+        ],
+        "references": []
+      },
+      {
         "title": "Author",
-        "description": "Componente che mostra i dettagli di un utente. Si presta per mostrare informazioni legate all'autore che ha scritto i contenuti della pagina che si sta leggendo.",
+        "description": "Rappresenta l'autore o il referente che ha inserito uno specifico contenuto, all'interno di una vista.",
         "children": [
           {
             "title": "Avatar",
@@ -1189,26 +1311,67 @@
         "references": []
       },
       {
-        "title": "Download",
-        "description": "I Tooltip sono componenti solo desktop che visualizzano informazioni aggiuntive quando si passa con il mouse o ci si concentra su un elemento.",
+        "title": "BenchmarkBar",
+        "description": "Serve a mostrare il valore percentuale di un argomento, può servire per mostrare, performance e benchmark in generale.",
         "children": [
           {
-            "title": "Gutter",
-            "description": "La distanza tra una cella e l'altra della griglia, serve a rendere ciò che contiene più leggibile.",
+            "title": "Valore in percentuale",
+            "description": "La barra di avanzamento non è sufficiente a mostrare uno stato di avanzamento o delle performance, il valore percentuale può disambiguare valore molto simili tra loro e capire su quale scala agiscono.",
             "done": true
           },
           {
-            "title": "Supporto ai template",
-            "description": "È possibile definire diversi set di colonne o righe estendendo la griglia con template che si possono basare sul progetto specifico alla quale si sta lavorando. Ciò permette di mantenere le regole di spaziatura del Design System ma su un set di colonne personalizzato.",
+            "title": "Barra di avanzamento",
+            "description": "Mostra una barra di avanzamento visiva che aiuta a colpo d'occhio a farsi un'idea delle performance di avanzamento di un contesto.",
             "done": true
           },
           {
-            "title": "Preset di colonne",
-            "description": "Nel caso si voglia usare la griglia in modo generico, è possibile utilizzare set di colonne distribuite equamente, utile per mettere in piedi velocemente una applicazione senza andare troppo nel dettalgio con la gestione delle colonne.",
+            "title": "Colori automatici",
+            "description": "Colorazione automatica per lo stato di avanzamento, generalmente suddivisi in rosso, giallo e verde in base alla qualità delle performance rispetto al valore massimo raggiungibile.",
+            "done": true
+          },
+          {
+            "title": "Decimali",
+            "description": "Se il benchmark richiede più precisione, è possibile mostrare i decimali della percentuale di avanzamento.",
             "done": true
           }
         ],
         "references": []
+      },
+      {
+        "title": "Bibliography",
+        "description": "Bibliography è un componente specifico per mostrare la fonte di un argomento.",
+        "children": [
+          {
+            "title": "Formato MLA",
+            "description": "Il formato MLA è uno degli stili di scrittura più usati in ambito accademico e professionale.",
+            "done": true
+          },
+          {
+            "title": "Formato APA",
+            "description": "MostraLo stile di citazione APA utilizza il sistema \"autore-data\", che prevede l'indicazione dell’autore e dell’anno di pubblicazione della fonte consultata nel corpo del testo. Al temine del documento è necessario compilare una bibliografia contenente i riferimenti completi, ordinata alfabeticamente per autore.",
+            "done": true
+          },
+          {
+            "title": "Formato personalizzato",
+            "description": "Dare la possibilità di rappresentare le bibliografia nel modo più adatto al nostro contesto.",
+            "done": true
+          },
+          {
+            "title": "Decimali",
+            "description": "Se il benchmark richiede più precisione, è possibile mostrare i decimali della percentuale di avanzamento.",
+            "done": true
+          }
+        ],
+        "references": [
+          {
+            "title": "Introduzione allo stile APA",
+            "href": "https://it.bul.sbu.usi.ch/learning/apa_date#lea-apa-introduzione-allo-stile-apa"
+          },
+          {
+            "title": "Stile MLA",
+            "href": "https://www.atuttatesi.it/laurea/guide-tesi/stile-mla-autore-pagina-della-modern-language-association-of-america/"
+          }
+        ]
       }
     ]
   },
