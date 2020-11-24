@@ -16,7 +16,6 @@ const Row = ({ align, gutter, htmlTag, lastChild, onClick, ...restProps }) => {
     gutter,
     lastChild,
   })
-
   const updateProps = Children.map(restProps.children, (child, index) => {
     return cloneElement(child, {
       key: index,
