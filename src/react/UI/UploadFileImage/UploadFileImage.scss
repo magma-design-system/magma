@@ -76,6 +76,7 @@ $ease: get($tween, 'slide');
   }
 
   &--uploaded {
+    cursor: auto;
     .backoffice-file-image {
       &__image {
         height: 250px;

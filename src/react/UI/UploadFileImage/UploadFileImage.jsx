@@ -8,12 +8,10 @@ import Detail from '@Typography/Detail/Detail'
 import Button from '@UI/Button/Button'
 
 const UploadFileImage = props => {
-  const inputFile = props.uriImage === '' ? 
-                    <input type="file" className="backoffice-file-image__field" onChange={props.onFileChange}/>
-                    : null;
+  const HTMLElement = props.uriImage !== '' ? 'div' : 'label'
   return (
-    <label className={`backoffice-file-image ${props.uriImage !== '' ? 'backoffice-file-image--uploaded' : ''} ${props.icon !== '' ? 'backoffice-file-image--has-icon' : ''} ${props.error ? 'backoffice-file-image--has-errors' : ''} ${props.className}`}>
-      {inputFile}
+    <HTMLElement className={`backoffice-file-image ${props.uriImage !== '' ? 'backoffice-file-image--uploaded' : ''} ${props.icon !== '' ? 'backoffice-file-image--has-icon' : ''} ${props.error ? 'backoffice-file-image--has-errors' : ''} ${props.className}`}>
+      <input type="file" className="backoffice-file-image__field" onChange={props.onFileChange}/>
       <div className="backoffice-file-image__image" style={{ backgroundImage: `url('${props.uriImage}')` }}>
         <Button onClick={props.deleteImage} className="backoffice-file-image__delete" icon="crud-delete" />
       </div>
@@ -41,7 +39,7 @@ const UploadFileImage = props => {
           }
         </div>
       </div>
-    </label>
+    </HTMLElement>
   )
 }
 
@@ -57,6 +55,7 @@ UploadFileImage.propTypes = {
   name: PropTypes.string,
   onChange: PropTypes.func,
   onClick: PropTypes.func,
+  onFileChange: PropTypes.func,
   placeholder: PropTypes.string,
   required: PropTypes.bool,
   uriImage: PropTypes.string,
@@ -71,6 +70,7 @@ UploadFileImage.defaultProps = {
   name: 'unassigned',
   onChange: value => { return value },
   onClick: () => {},
+  onFileChange: () => {},
   required: false,
   uriImage: '',
 }
