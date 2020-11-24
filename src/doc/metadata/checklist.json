@@ -639,7 +639,7 @@
         ]
       },
       {
-        "title": "Icone",
+        "title": "Icon",
         "description": "Il componente icona è un modo per allineare il modo in cui le risorse statiche dell'iconografia vengono visualizzate nel prodotto.",
         "children": [
           {
@@ -665,7 +665,7 @@
         ]
       },
       {
-        "title": "Input checkbox",
+        "title": "InputCheckbox",
         "description": "Una Input checkbox è un elemento del form utilizzato per selezionare una o più opzioni.",
         "children": [
           {
@@ -720,7 +720,7 @@
         ]
       },
       {
-        "title": "Input radio",
+        "title": "InputRadio",
         "description": "Un Input radio è un elemento del form utilizzato per selezionare un'opzione da un elenco.",
         "children": [
           {
@@ -770,7 +770,7 @@
         ]
       },
       {
-        "title": "Input text",
+        "title": "InputText",
         "description": "Il testo di input consente agli utenti di inserire e modificare il testo.",
         "children": [
           {

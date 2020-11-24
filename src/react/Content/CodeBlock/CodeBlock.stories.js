@@ -20,8 +20,8 @@ const InfoFlash = () =>
   </Banner>
 
 const jsCode =
-`function test() {
-  console.log(this is a test)
+`const test = () => {
+  console.log('this is a test')
 }`
 
 export const basicUsage = () =>
