@@ -28,8 +28,18 @@ export const defaultUsage = () =>
 
 export const lastChild = () =>
   <Row lastChild="to-right">
-    <Button>{word1}</Button>
-    <Button>{word2}</Button>
+    <div>
+      <Button>{word1}</Button>
+    </div>
+    <div>
+      <Button>{word1}</Button>
+    </div>
+    <div>
+      <Button>{word1}</Button>
+    </div>
+    <div>
+      <Button>{word1}</Button>
+    </div>
   </Row>
 
 export const align = () =>
