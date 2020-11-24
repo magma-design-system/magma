@@ -2,7 +2,7 @@ import React from 'react'
 import faker from 'faker'
 
 import Image from '@Content/Image/Image'
-import Flash from '@UI/Flash/Flash'
+import Banner from '@UI/Banner/Banner'
 import Code from '@UI/InlineCode/InlineCode'
 import Grid from '@Layout/Grid/Grid'
 
@@ -17,17 +17,17 @@ const CodeWarning = props =>
   <Code className="background-color-status-warning-16 color-status-warning-05">{props.children}</Code>
 
 const WarningMessage = () =>
-  <Flash status="warning" className="text-secondary text-secondary--paragraph">
+  <Banner status="warning" className="text-secondary text-secondary--paragraph">
     Utilizzare la proprietà <CodeWarning>aspectRatio</CodeWarning> cambia la struttura del markup impedento alla property <CodeWarning>loading</CodeWarning> di essere settata, in quanto l'immagine viene trattata come uno stile CSS <CodeWarning>background-image</CodeWarning>.
-  </Flash>
+  </Banner>
 
 const CodeInfo = props =>
   <Code className="background-color-status-info-16 color-status-info-05">{props.children}</Code>
 
 const InfoMessage = () =>
-  <Flash status="info" className="text-secondary text-secondary--paragraph">
+  <Banner status="info" className="text-secondary text-secondary--paragraph">
     Come valore predefinito <CodeInfo>aspectRatioPosition</CodeInfo> ha come valore predefiniti <CodeInfo>50% 0</CodeInfo> e impostando la proprietà CSS <CodeInfo>background-position</CodeInfo>. Generalmente quando ci sono persone nella foto, le teste sono sempre in alto, per questo verticalmente non c'è allineamento centrale come impostazione predefinita.
-  </Flash>
+  </Banner>
 
 export const defaultUsage = () =>
   <Image src="//via.placeholder.com/700x350" />

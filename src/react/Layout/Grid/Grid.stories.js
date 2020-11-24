@@ -4,7 +4,7 @@ import faker from 'faker'
 import Grid from '@Layout/Grid/Grid'
 import Hr from '@UI/Hr/Hr'
 import Paragraph from '@Typography/Paragraph/Paragraph'
-import Flash from '@UI/Flash/Flash'
+import Banner from '@UI/Banner/Banner'
 import InlineCode from '@UI/InlineCode/InlineCode'
 
 import sizes from '+Tokens/css-tokens/sizes.json'
@@ -81,9 +81,9 @@ export const autoFill = () =>
 
 export const rows = () =>
   <Grid rows="fit-vertically">
-    <Flash>
+    <Banner>
       Property <InlineCode status="info">rows="fit-vertically"</InlineCode> works nice if you need to distribute elements vertically but with different heights.
-    </Flash>
+    </Banner>
     <Paragraph>{faker.lorem.paragraph()}</Paragraph>
     <Paragraph>{faker.lorem.paragraph()}</Paragraph>
     <Paragraph>{faker.lorem.paragraph()}</Paragraph>

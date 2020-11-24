@@ -42,14 +42,14 @@ Per poter accedere ai moduli node pubblicati dentro Nexus è necessario avere de
   </TableBody>
 </Table>
 
-<List>
-  <ListItem icon="statusWarning" iconClassName="color-status-error-08">
+<UList>
+  <UListItem icon="statusWarning" iconClassName="color-status-error-08">
     L'utente <Code>nexusUser</Code> è camelcase ed è noto che il registry non supporta i caratteri maisucoli, per tanto il sistemà può dare problemi su certi casi d'uso.
-  </ListItem>
-  <ListItem icon="statusSuccess" iconClassName="color-status-success-08">
+  </UListItem>
+  <UListItem icon="statusSuccess" iconClassName="color-status-success-08">
     Utilizza <Code>nexusupload</Code> fino a quando il problema non sarà risolto.
-  </ListItem>
-</List>
+  </UListItem>
+</UList>
 
 ---
 
@@ -57,11 +57,11 @@ Per poter accedere ai moduli node pubblicati dentro Nexus è necessario avere de
 
 Per l'autenticazione è necessario creare un file `.npmrc` dove andranno le credenziali e il registry di nexus, in modo che durante l'installazione dei pacchetti node questo sia la prima scelta per la ricerca dei pacchetti da installare.
 
-<List>
-  <ListItem icon="password" iconClassName="color-status-warning-08">
+<UList>
+  <UListItem icon="password" iconClassName="color-status-warning-08">
     La posizione di questo file è da tenere esterna al progetto, ad esempio <Code>~/.npmrc</Code> in quanto ci finiranno dati sensibili come il <Code>token</Code> di autenticazione.
-  </ListItem>
-</List>
+  </UListItem>
+</UList>
 
 Da terminale puoi creare un file in questo modo:
 
@@ -90,11 +90,11 @@ registry=http://nexus.maggioli.it:8081/repository/npm-group/
 _auth=bmV4dXN1cGxvYWQ6bmV4dXN1cGxvYWQ=
 ```
 
-<List>
-  <ListItem icon="password" iconClassName="color-status-warning-08">
+<UList>
+  <UListItem icon="password" iconClassName="color-status-warning-08">
     In futuro è probabile che ogni utente avrà la sua <Code>username</Code> e <Code>password</Code> per evitare problemi di sicurezza.
-  </ListItem>
-</List>
+  </UListItem>
+</UList>
 
 ---
 

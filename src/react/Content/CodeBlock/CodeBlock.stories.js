@@ -3,7 +3,7 @@ import faker from 'faker'
 
 import CodeBlock from '@Content/CodeBlock/CodeBlock'
 import Code from '@UI/InlineCode/InlineCode'
-import Flash from '@UI/Flash/Flash'
+import Banner from '@UI/Banner/Banner'
 import Grid from '@Layout/Grid/Grid'
 import ExternalLink from '@UI/ExternalLink/ExternalLink'
 
@@ -15,9 +15,9 @@ export default {
 }
 
 const InfoFlash = () =>
-  <Flash status="info">
+  <Banner status="info">
     The component <Code className="background-color-status-info-16 color-status-info-04">CodeBlock</Code> is based on <ExternalLink href="https://github.com/react-syntax-highlighter/react-syntax-highlighter#readme" className="color-status-info-04">React Syntax Highlighter</ExternalLink>, please read it's documentation for more details.
-  </Flash>
+  </Banner>
 
 const jsCode =
 `function test() {

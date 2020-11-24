@@ -2,7 +2,7 @@ import React from 'react'
 import faker from 'faker'
 
 import InlineCode from '@UI/InlineCode/InlineCode'
-import Flash from '@UI/Flash/Flash'
+import Banner from '@UI/Banner/Banner'
 import Grid from '@Layout/Grid/Grid'
 
 export default {
@@ -17,7 +17,7 @@ export const basicUsage = () =>
 
 export const statusInfo = () =>
   <Grid>
-    <Flash status="info">The <InlineCode status="info">status</InlineCode> property, is designed for <InlineCode status="info">Flash</InlineCode> component (this component)</Flash>
+    <Banner status="info">The <InlineCode status="info">status</InlineCode> property, is designed for <InlineCode status="info">Flash</InlineCode> component (this component)</Banner>
     <div>
       <InlineCode status="info">
         {faker.hacker.adjective()}: {faker.hacker.verb()};
@@ -27,7 +27,7 @@ export const statusInfo = () =>
 
 export const statusWarning = () =>
   <Grid>
-    <Flash status="warning">The <InlineCode status="warning">status</InlineCode> property, is designed for <InlineCode status="warning">Flash</InlineCode> component (this component)</Flash>
+    <Banner status="warning">The <InlineCode status="warning">status</InlineCode> property, is designed for <InlineCode status="warning">Flash</InlineCode> component (this component)</Banner>
     <div>
       <InlineCode status="warning">
         {faker.hacker.adjective()}: {faker.hacker.verb()};
@@ -37,7 +37,7 @@ export const statusWarning = () =>
 
 export const statusError = () =>
   <Grid>
-    <Flash status="error">The <InlineCode status="error">status</InlineCode> property, is designed for <InlineCode status="error">Flash</InlineCode> component (this component)</Flash>
+    <Banner status="error">The <InlineCode status="error">status</InlineCode> property, is designed for <InlineCode status="error">Flash</InlineCode> component (this component)</Banner>
     <div>
       <InlineCode status="error">
         {faker.hacker.adjective()}: {faker.hacker.verb()};
@@ -47,7 +47,7 @@ export const statusError = () =>
 
 export const statusSuccess = () =>
   <Grid>
-    <Flash status="success">The <InlineCode status="success">status</InlineCode> property, is designed for <InlineCode status="success">Flash</InlineCode> component (this component)</Flash>
+    <Banner status="success">The <InlineCode status="success">status</InlineCode> property, is designed for <InlineCode status="success">Flash</InlineCode> component (this component)</Banner>
     <div>
       <InlineCode status="success">
         {faker.hacker.adjective()}: {faker.hacker.verb()};
