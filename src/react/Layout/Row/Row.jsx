@@ -17,15 +17,14 @@ const Row = ({ align, gutter, htmlTag, lastChild, onClick, ...restProps }) => {
     lastChild,
   })
 
-  const children = Children.map(restProps.children, (child, index) =>
-    cloneElement(child, {
+  const updateProps = Children.map(restProps.children, (child, index) => {
+    return cloneElement(child, {
       key: index,
       className: child.props.className ? `${child.props.className} row__item` : 'row__item',
-    }))
+    }, null)
+  })
 
-  return <HtmlTag {...restProps} onClick={onClick} className={`${localClassNames} ${modifierClassNames}`}>
-    {children}
-  </HtmlTag>
+  return <HtmlTag {...restProps} onClick={onClick} className={`${localClassNames} ${modifierClassNames}`}>{updateProps}</HtmlTag>
 }
 
 Row.propTypes = {
