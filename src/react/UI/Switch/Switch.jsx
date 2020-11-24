@@ -6,7 +6,7 @@ const Switch = props =>
   <label className={`switch text-secondary text-secondary--paragraph ${props.className}`}>
     <input
       className="switch__field"
-      defaultChecked={props.isChecked}
+      checked={props.isChecked}
       name={props.name}
       onChange={e => props.onChange(e.target.checked)}
       type="checkbox"
