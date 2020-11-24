@@ -43,6 +43,10 @@
   }
 
   &__item {
+    min-width: 0;
+    overflow: hidden;
+    text-overflow: ellipsis;
+
     &:last-child {
       margin-right: 0;
     }
