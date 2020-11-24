@@ -17,21 +17,11 @@ const Row = ({ align, gutter, htmlTag, lastChild, onClick, ...restProps }) => {
     lastChild,
   })
 
-  const addClasses = child => {
-    // eslint-disable-next-line no-undef
-    const className = classNames(
-      child.props.className,
-      'row__items',
-    )
-
-    const props = {
-      className,
-    }
-
-    return cloneElement(child, props)
-  }
-
-  const children = Children.map(restProps.children, child => addClasses(child))
+  const children = Children.map(restProps.children, child => {
+    return cloneElement(child, {
+      className: `${child.props.className ? child.props.className : ''} row__item`,
+    })
+  })
 
   return <HtmlTag {...restProps} onClick={onClick} className={`${localClassNames} ${modifierClassNames}`}>{children}</HtmlTag>
 }
