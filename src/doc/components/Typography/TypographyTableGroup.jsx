@@ -50,7 +50,7 @@ const Styles = props =>
   <Grid className="sys-typography-table-group__styles">
     {
       Object.entries(props.cssStyles).map(([viewport, styles], index) =>
-        <Grid key={index} fit={true} gutter="none">
+        <Grid key={index} rows="fit-vertically" gutter="none">
           <Caption>{viewport}</Caption>
           <StylesCode code={styles} />
         </Grid>,
