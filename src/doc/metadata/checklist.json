@@ -1372,6 +1372,108 @@
             "href": "https://www.atuttatesi.it/laurea/guide-tesi/stile-mla-autore-pagina-della-modern-language-association-of-america/"
           }
         ]
+      },
+      {
+        "title": "CodeBlock",
+        "description": "Si usa per mostrare esempi di codice di programmazione, supporta sintassi diverse.",
+        "children": [
+          {
+            "title": "Supporto a più linguaggi",
+            "description": "Questo componente dovrebbe supportare tutti i linguaggi utilizzati internamente.",
+            "done": true
+          },
+          {
+            "title": "Tema chiaro",
+            "description": "Dovrebbe essere disponibile per tutti coloro che amano lavorare in ambienti illuminati e che solitamente preferiscono temi chiari.",
+            "done": true
+          },
+          {
+            "title": "Tema scuro",
+            "description": "Dovrebbe essere disponibile per tutti coloro che amano lavorare in ambienti poco illuminati e che solitamente preferiscono temi scuri per non rovinarsi gli occhi.",
+            "done": true
+          }
+        ],
+        "references": [
+          {
+            "title": "React Syntax Highlighter",
+            "href": "https://github.com/react-syntax-highlighter/react-syntax-highlighter"
+          }
+        ]
+      },
+      {
+        "title": "Download",
+        "description": "È un pulsante che mostra una serie di informazioni utili all'utilizzatore che sta per scaricare un file, in modo che sappia cosa sta per scaricare.",
+        "children": [
+          {
+            "title": "Supporto a più estensioni",
+            "description": "Questo componente dovrebbe supportare tutte le estensioni utilizzate internamente e sui nostri prodotti.",
+            "done": true
+          },
+          {
+            "title": "Colori per tipi di file",
+            "description": "A seconda del tipo di file che si utilizza, dovrebbe essereci un colore che li differenzia in modo che sia facilmente riconoscibile il file che si sta per scaricare.",
+            "done": true
+          },
+          {
+            "title": "Preview file visualizzabili",
+            "description": "Per i formati come immagini, è utile dare la possibilità di mostrare un'anteprima del file che si sta per visualizzare.",
+            "done": true
+          }
+        ],
+        "references": []
+      },
+      {
+        "title": "ExternalLink",
+        "description": "Un componente ipertestuale che manda l'utilizzatore in una pagina esterna a quella in cui ci si trova.",
+        "children": [
+          {
+            "title": "Target black automatico",
+            "description": "Essendo dedicato a pagine esterne, il componente dovrebbe facilitare l'inserimento del target black rendendolo una funzione automatica.",
+            "done": true
+          }
+        ],
+        "references": []
+      },
+      {
+        "title": "Hr",
+        "description": "È un elemento orizontale con il solo scopo di separare tematicamente contenuti nella stessa pagina.",
+        "children": [
+          {
+            "title": "Spaziatura verticale",
+            "description": "A seconda del contesto, il componente Hr dovrebbe supportare un distanziamento verticale dagli elementi vicini in modo da dare il respiro giusto alla lettura dei contenuti.",
+            "done": true
+          }
+        ],
+        "references": []
+      },
+      {
+        "title": "Image",
+        "description": "Il componente Image rappresenta un'immagine, basata su una risorsa esterna che può essere incorporata nel corpo di un documento.",
+        "children": [
+          {
+            "title": "Lazy loading",
+            "description": "Per aumentare le performance delle pagine, questo componente dovrebbe supportare un lazy loading automatico. L'utilizzatore sarà molto più motivato a leggere una pagina che carica istantaneamente i contenuti dando priorità alla parte visibile della pagina.",
+            "done": true
+          },
+          {
+            "title": "Aspect ratio",
+            "description": "Questo componente dovrebbe essere in grado di facilitare l'impaginazione delle immagini all'interno delle pagine, dando la possibilità di impostare un aspect ratio alle immagini.",
+            "done": true
+          }
+        ],
+        "references": []
+      },
+      {
+        "title": "InlineCode",
+        "description": "Il componente InlineCode è simile a CodeBlock, con la differenza che si presta a mostrare solo piccole porzioni di codice, come nomi di variabili, valori o proprietà.",
+        "children": [
+          {
+            "title": "Colore personalizzabile",
+            "description": "A seconda del contesto in cui si trova, il componente dovrebbe essere in grado di adattarsi per essere visualizzato in modo coerente rispetto al prorio contesto.",
+            "done": true
+          }
+        ],
+        "references": []
       }
     ]
   },

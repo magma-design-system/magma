@@ -52,7 +52,7 @@ const UList = props => {
     })
   })
 
-  return <ul className={`list ${props.className} ${props.text}`}>
+  return <ul className={`u-list ${props.className} ${props.text}`}>
     {children}
   </ul>
 }

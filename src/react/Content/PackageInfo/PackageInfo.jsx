@@ -18,7 +18,7 @@ import Author from '@Content/Author/Author'
 
 const PackageInfo = props =>
   <Card className={`package-info ${props.className}`} {...props} gutter="xsmall">
-    <UList autoPunctuation={false}>
+    <UList autoPunctuation={false} iconSize="normal">
       <UListItem icon="dev-terminal"><InlineCode>{props.package.name}</InlineCode> <InlineCode>v{props.package.version}</InlineCode></UListItem>
     </UList>
     <Paragraph>{props.package.description}</Paragraph>
