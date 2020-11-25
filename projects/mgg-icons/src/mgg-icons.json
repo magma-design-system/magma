@@ -1,8 +1,11 @@
 {
   "accessibility": "material/accessibility_new",
   "action-back": "material/arrow_back",
-  "action-forward": "material/arrow_forward",
+  "action-clear": "material/clear_all",
   "action-close": "material/close",
+  "action-forward": "material/arrow_forward",
+  "action-link-off": "material/link_off",
+  "action-link-on": "material/link",
   "action-phone": "material/phone",
   "avatar-group": "material/supervised_user_circle",
   "avatar-placeholder": "material/account_circle",
@@ -76,6 +79,7 @@
   "media-video": "material/videocam",
   "menu-main": "material/menu",
   "menu-more": "material/more_vert",
+  "menu-more-horizontal": "material/more_horiz",
   "navigate-external-link": "material/open_in_new",
   "navigate-internal-link": "material/tab",
   "navigation-hide": "material/keyboard_arrow_up",
@@ -131,5 +135,6 @@
   "user-online": "material/lens",
   "user-team": "material/group",
   "weather": "material/filter_drama",
-  "work-project": "material/work"
+  "work-project": "material/work",
+  "work-project-outline": "material/work_outline"
 }
