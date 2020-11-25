@@ -110,7 +110,6 @@ $modal-background: rgba(0, 0, 0, 0.5);
 
     .modal {
       &__contents {
-        max-height: calc(100vh - #{$margin});
 
         @include media ('tablet') {
           max-height: calc(100vh - #{$margin});

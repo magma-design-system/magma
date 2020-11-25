@@ -3,6 +3,8 @@ import faker from 'faker'
 
 import Modal from '@UI/Modal/Modal'
 import Button from '@UI/Button/Button'
+import Image from '@Content/Image/Image'
+import Grid from '@Layout/Grid/Grid'
 import Paragraph from '@Typography/Paragraph/Paragraph'
 import Toggler from '@Behavior/Toggler/Toggler'
 
@@ -132,21 +134,38 @@ export const maxHeight = () => {
   )
 }
 
-export const simple = () => {
-  return (
-    <Toggler>
-      <Toggler.Trigger>
-        <Button icon="status-info">
-          Apri modale
-        </Button>
-      </Toggler.Trigger>
-      <Toggler.Content>
-        <Modal footer={false} maxHeight={true} title={faker.lorem.sentence()} position="center" onConfirm={() => console.log('onConfirm')} onCancel={() => console.log('onCancel')}>
+export const simple = () =>
+  <Toggler>
+    <Toggler.Trigger>
+      <Button icon="status-info">
+        Apri modale
+      </Button>
+    </Toggler.Trigger>
+    <Toggler.Content>
+      <Modal footer={false} maxHeight={true} title={faker.lorem.sentence()} position="center" onConfirm={() => console.log('onConfirm')} onCancel={() => console.log('onCancel')}>
+        <Paragraph>{faker.lorem.paragraph()}</Paragraph>
+        <Paragraph>{faker.lorem.paragraph()}</Paragraph>
+        <Paragraph>{faker.lorem.paragraph()}</Paragraph>
+      </Modal>
+    </Toggler.Content>
+  </Toggler>
+
+export const contentOnly = () =>
+  <Toggler>
+    <Toggler.Trigger>
+      <Button icon="status-info">
+        Apri modale
+      </Button>
+    </Toggler.Trigger>
+    <Toggler.Content>
+      <Modal contentOnly footer={false} maxHeight={true} title={faker.lorem.sentence()} position="center" onConfirm={() => console.log('onConfirm')} onCancel={() => console.log('onCancel')}>
+        <Image src="//via.placeholder.com/350x150" />
+        <Grid className="padding-normal">
           <Paragraph>{faker.lorem.paragraph()}</Paragraph>
           <Paragraph>{faker.lorem.paragraph()}</Paragraph>
           <Paragraph>{faker.lorem.paragraph()}</Paragraph>
-        </Modal>
-      </Toggler.Content>
-    </Toggler>
-  )
-}
+          <Paragraph>{faker.lorem.paragraph()}</Paragraph>
+        </Grid>
+      </Modal>
+    </Toggler.Content>
+  </Toggler>
