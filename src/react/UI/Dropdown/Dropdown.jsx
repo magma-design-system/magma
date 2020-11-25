@@ -37,6 +37,15 @@ const Dropdown = props => {
     setVisible(!visible)
   }
 
+  const children = Children.map(props.children, (child, index) => {
+    if (child !== null) {
+      return cloneElement(child, {
+        key: index,
+        font: props.font,
+      })
+    }
+  })
+
   return <div className={`dropdown ${props.className} ${visible ? 'dropdown--visible' : ''} ${props.direction ? 'dropdown--direction-' + props.direction : ''}`}>
     <div ref={ref} className="dropdown__wrapper">
       { props.icon && <Row onClick={handleClickBtn} className="dropdown__toggler" gutter="xxsmall">
@@ -45,14 +54,7 @@ const Dropdown = props => {
       </Row> }
       <Grid className={`dropdown__list box-shadow-box ${props.pivot ? 'dropdown__list--pivot-' + props.pivot : ''}`} gutter="none">
         <H6 className="dropdown__header">{ props.label }</H6>
-        {
-          Children.map(props.children.filter(Boolean), (child, index) => {
-            return cloneElement(child, {
-              key: index,
-              font: props.font,
-            })
-          })
-        }
+        {children}
         <div className="dropdown__footer"></div>
       </Grid>
     </div>

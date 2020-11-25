@@ -5,7 +5,7 @@ const TogglerContext = createContext()
 // https://codesandbox.io/s/github/supromikali/react-children-with-context
 
 const renderChildren = (children, props) => context =>
-  Children.map(children.filter(Boolean), el =>
+  Children.map(children, el =>
     cloneElement(el, props(context, el)),
   )
 

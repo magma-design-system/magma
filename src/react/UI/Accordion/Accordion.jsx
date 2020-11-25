@@ -34,16 +34,18 @@ AccordionItem.defaultProps = {
 }
 
 const Accordion = props => {
+  const children = Children.map(props.children, (child, index) => {
+    if (child !== null) {
+      return cloneElement(child, {
+        key: index,
+        onClick: () => console.log(index),
+      })
+    }
+  })
+
   return (
     <div className={`accordion ${props.className}`}>
-      {
-        Children.map(props.children.filter(Boolean), (child, index) => {
-          return cloneElement(child, {
-            key: index,
-            onClick: () => console.log(index),
-          })
-        })
-      }
+      {children}
     </div>
   )
 }
