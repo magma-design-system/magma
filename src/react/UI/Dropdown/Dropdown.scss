@@ -98,13 +98,13 @@ $menu-width: 250px;
   }
 
   &__item {
-    background-color: color('brand.maggioli', '20');
+    background-color: color('adjust.tone', '20');
     color: color('adjust.tone', '04');
     cursor: pointer;
     padding: 0 s(0.75);
 
     &:hover {
-      background-color: color('brand.maggioli', '19');
+      background-color: color('adjust.tone');
       color: color('brand.maggioli', '02');
 
       .dropdown {
@@ -116,7 +116,7 @@ $menu-width: 250px;
   }
 
   &__item-icon {
-    color: color('brand.maggioli', '10');
+    color: color('brand.maggioli', '05');
   }
 
   &__text {
