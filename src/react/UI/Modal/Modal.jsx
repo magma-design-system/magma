@@ -12,7 +12,7 @@ import Icon from '@Design/Icon/Icon'
 const Modal = props => {
   return (
     <div className={`modal ${props.className} ${props.visible ? 'modal--visible' : ''} ${props.maxHeight ? 'modal--max-height' : ''} ${props.position ? 'modal--from-' + props.position : ''}`}>
-      <Icon className="modal__close" name="action-close" onClick={() => { props.onCancel() }}/>
+      <Icon className="modal__close" name="action-close" size="large" onClick={() => { props.onCancel() }}/>
       <div className="modal__window">
         {props.title &&
           <header className="modal__header">
