@@ -1,6 +1,6 @@
 {
     "name": "@maggioli/design-system",
-    "version": "0.0.76",
+    "version": "0.0.77",
     "description": "Maggioli Design system",
     "scripts": {
         "build": "run-p 'build:!(storybook)'",
