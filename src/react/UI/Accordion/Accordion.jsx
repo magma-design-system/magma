@@ -1,40 +1,58 @@
 import React, { Children, cloneElement } from 'react'
 import PropTypes from 'prop-types'
+import { styles } from '@Library/styles'
 import './Accordion.scss'
 
 import H3 from '@Typography/H3/H3'
 import Icon from '@Design/Icon/Icon'
 
-const AccordionItem = props =>
-  <div className={`accordion__item ${props.className} ${props.isOpened ? 'accordion__item--is-opened' : ''}`}>
+const AccordionItem = ({ icon, opened, title, ...restProps }) => {
+  const classes = styles('accordion__item', {
+    selectors: [
+      restProps.className,
+    ],
+    modifiers: {
+      opened,
+    },
+  })
+  return <div className={classes}>
     <header className="accordion__header">
-      {props.icon && <Icon name={props.icon} className="accordion__icon"/>}
-      <H3 className="accordion__title">{props.title}</H3>
+      {icon && <Icon name={icon} className="accordion__icon"/>}
+      <H3 className="accordion__title">{title}</H3>
       <div className="accordion__toggle">
-        <Icon name={props.isOpened ? 'navigation-hide' : 'navigation-show'} className="accordion__action"/>
+        <Icon name={opened ? 'navigation-hide' : 'navigation-show'} className="accordion__action"/>
       </div>
     </header>
     <section className="accordion__body">
       <div className="accordion__content">
-        {props.children}
+        {restProps.children}
       </div>
     </section>
   </div>
+}
 
 AccordionItem.propTypes = {
   className: PropTypes.string,
   icon: PropTypes.string,
-  isOpened: PropTypes.bool,
+  opened: PropTypes.bool,
   title: PropTypes.string,
 }
 
 AccordionItem.defaultProps = {
   className: '',
-  isOpened: false,
+  opened: false,
 }
 
-const Accordion = props => {
-  const children = Children.map(props.children, (child, index) => {
+const Accordion = ({ initialItem, ...restProps }) => {
+  const classes = styles('accordion', {
+    selectors: [
+      restProps.className,
+    ],
+  })
+
+  console.log(initialItem)
+
+  const children = Children.map(restProps.children, (child, index) => {
     if (child !== null) {
       return cloneElement(child, {
         key: index,
@@ -44,7 +62,7 @@ const Accordion = props => {
   })
 
   return (
-    <div className={`accordion ${props.className}`}>
+    <div className={classes}>
       {children}
     </div>
   )

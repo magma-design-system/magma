@@ -1,24 +1,25 @@
 import React from 'react'
 import PropTypes from 'prop-types'
-import { appendSelectors, modifiers } from '@Library/styles'
+import { styles } from '@Library/styles'
 import './Grid.scss'
 
 const Grid = ({ align, columns, gutter, htmlTag, rows, template, ...restProps }) => {
   const HtmlTag = htmlTag.toLowerCase()
-  const localClassNames = appendSelectors([
-    'grid',
-    restProps.className,
-  ])
 
-  const modifierClassNames = modifiers('grid', {
-    align,
-    columns,
-    gutter,
-    rows,
-    template,
+  const classes = styles('grid', {
+    selectors: [
+      restProps.className,
+    ],
+    modifiers: {
+      align,
+      columns,
+      gutter,
+      rows,
+      template,
+    },
   })
 
-  return <HtmlTag className={`${localClassNames} ${modifierClassNames}`}>
+  return <HtmlTag className={classes}>
     { restProps.children }
   </HtmlTag>
 }

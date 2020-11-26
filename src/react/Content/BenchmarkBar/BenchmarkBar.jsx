@@ -1,6 +1,6 @@
 import React from 'react'
 import PropTypes from 'prop-types'
-import { appendSelectors } from '@Library/styles'
+import { styles } from '@Library/styles'
 import './BenchmarkBar.scss'
 import Row from '@Layout/Row/Row'
 import Grid from '@Layout/Grid/Grid'
@@ -30,15 +30,20 @@ const BenchmarkBar = ({ autoColor, className, children, decimals, progress, prog
   const classNameBg = `background-color-status-${status}-19`
   const progressClassName = `background-color-status-${status}-10`
 
-  const localClassNames = appendSelectors([
-    'benckmark-bar',
-    classNameText,
-    className,
-  ])
+  const classes = styles('benckmark-bar', {
+    selectors: [
+      classNameText,
+      className,
+    ],
+  })
 
-  const progressClassNames = appendSelectors(['benckmark-bar__progress', classNameText])
+  const progressClassNames = styles('benckmark-bar__progress', {
+    selectors: [
+      classNameText,
+    ],
+  })
 
-  return <Grid {...restProps} className={localClassNames} gutter="xxsmall">
+  return <Grid {...restProps} className={classes} gutter="xxsmall">
     <Row>
       {progressText && <H2 className={progressClassNames}>
         {decimals ? Number(progress).toFixed(1) : Math.round(progress)}%

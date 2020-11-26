@@ -1,30 +1,31 @@
-import React from 'react'
+import React, { Children, cloneElement } from 'react'
 import PropTypes from 'prop-types'
-import { appendSelectors, modifiers } from '@Library/styles'
+import { styles } from '@Library/styles'
 import './HorizontalScroll.scss'
 
 const HorizontalScroll = ({ innerMargin, outerMargin, scrollSnap, ...restProps }) => {
-  const mainSelector = 'horizontal-scroll'
-  const localClassNames = appendSelectors([
-    mainSelector,
-    restProps.className,
-  ])
-
-  const modifierClassNames = modifiers(mainSelector, {
-    innerMargin,
-    outerMargin,
-    scrollSnap,
+  const classes = styles('horizontal-scroll', {
+    selectors: [
+      restProps.className,
+    ],
+    modifiers: {
+      innerMargin,
+      outerMargin,
+      scrollSnap,
+    },
   })
 
-  return <div className={`${localClassNames} ${modifierClassNames}`}>
-    {
-      React.Children.map(restProps.children, (child, index) => {
-        return React.cloneElement(child, {
-          key: index,
-          className: child.props.className ? child.props.className + ' horizontal-scroll__item' : 'horizontal-scroll__item',
-        })
+  const children = Children.map(restProps.children, (child, index) => {
+    if (child !== null) {
+      return cloneElement(child, {
+        key: index,
+        className: `${child.props.className ? child.props.className : ''} horizontal-scroll__item`,
       })
     }
+  })
+
+  return <div className={classes}>
+    {children}
   </div>
 }
 

@@ -1,5 +1,6 @@
 import React from 'react'
 import PropTypes from 'prop-types'
+import { styles } from '@Library/styles'
 import './Banner.scss'
 
 import Icon from '@Design/Icon/Icon'
@@ -7,12 +8,20 @@ import Row from '@Layout/Row/Row'
 
 import dictionary from './dictionary.json'
 
-const Banner = props => {
-  const { background, color } = dictionary[props.status]
+const Banner = ({ status, ...restProps }) => {
+  const { background, color } = dictionary[status]
+  const classes = styles('banner', {
+    selectors: [
+      restProps.className,
+      background,
+      color,
+    ],
+  })
+
   return (
-    <Row align="flex-start" className={`banner ${props.className} ${background} ${color}`}>
-      <Icon name={ dictionary[props.status].icon }/>
-      <div>{props.children}</div>
+    <Row align="flex-start" className={classes}>
+      <Icon className="banner__icon" name={ dictionary[status].icon }/>
+      <div>{restProps.children}</div>
     </Row>
   )
 }
