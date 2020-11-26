@@ -26,12 +26,12 @@ export const previewImage = () =>
   <Download fileName="logo-gruppo-maggioli-bordered.svg" href={require('#Assets/brand/gruppo-maggioli/logo-gruppo-maggioli-bordered.svg')} preview/>
 
 export const transparencyGrid = () =>
-  <Download fileName="logo-gruppo-maggioli-bordered.svg" href={require('#Assets/brand/gruppo-maggioli/logo-gruppo-maggioli-bordered.svg')} preview transparency/>
+  <Download fileName="logo-gruppo-maggioli-bordered.svg" href={require('#Assets/brand/gruppo-maggioli/logo-gruppo-maggioli-bordered.svg')} preview transparencyGrid/>
 
 export const dictionary = () =>
   <Grid template="downloads">
     {downloadDictionary}
   </Grid>
 
-export const cropName = () =>
-  <Download fileName="A very very very long file name.svg" length="short"/>
+export const name = () =>
+  <Download fileName="A very very very long file name.svg" name="short"/>

@@ -29,14 +29,10 @@ export const modifierSelectors = (block, modifiers) => {
 }
 
 export const styles = (block, selectors) => {
-  const results = componentSelectors([
+  return componentSelectors([
     block,
     selectors.selectors ? componentSelectors(selectors.selectors) : null,
     selectors.modifiers ? modifierSelectors(block, selectors.modifiers) : null,
     selectors.scaffolded ? scaffoldedSelectors(selectors.scaffolded) : null,
   ])
-
-  console.log(results)
-
-  return results
 }
