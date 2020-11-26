@@ -68,8 +68,13 @@ RoadmapChecklistTasks.defaultProps = {
 const RoadmapMainChecklistTasks = props =>
   <Grid template="auto-fill-large" gutter="large">
     { props.tasks.map((task, index) => {
-      return <Card boxShadow="box--interactive" gutter="xlarge" padding="padding-small">
-        <BenchmarkBar key={index} autoColor={true} progress={getProgress(task.children)} size="xsmall"><H4>{task.title}</H4></BenchmarkBar>
+      return <Card boxShadow="box--interactive" gutter="xsmall" padding="padding-small" rows="fit-vertically">
+        <BenchmarkBar progressText={false} key={index} autoColor={true} progress={getProgress(task.children)} size="xsmall"><H4>{task.title}</H4></BenchmarkBar>
+        <Grid template="auto-fill-icon" gutter="none">
+          { task.children.sort((x, y) => { if (x.done === y.done) { return 0 } else if (x.done) { return -1 } return 1 }).map(subTask =>
+            <Icon name="status-success" className={`${subTask.done ? 'color-status-success-10' : 'color-adjust-tone-16'}`}/>,
+          )}
+        </Grid>
       </Card>
     })}
   </Grid>

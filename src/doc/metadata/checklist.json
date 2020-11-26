@@ -1427,8 +1427,8 @@
         "description": "Un componente ipertestuale che manda l'utilizzatore in una pagina esterna a quella in cui ci si trova.",
         "children": [
           {
-            "title": "Target black automatico",
-            "description": "Essendo dedicato a pagine esterne, il componente dovrebbe facilitare l'inserimento del target black rendendolo una funzione automatica.",
+            "title": "Target blank automatico",
+            "description": "Essendo dedicato a pagine esterne, il componente dovrebbe facilitare l'inserimento del target blank rendendolo una funzione automatica.",
             "done": true
           }
         ],
@@ -1458,6 +1458,11 @@
           {
             "title": "Aspect ratio",
             "description": "Questo componente dovrebbe essere in grado di facilitare l'impaginazione delle immagini all'interno delle pagine, dando la possibilità di impostare un aspect ratio alle immagini.",
+            "done": true
+          },
+          {
+            "title": "Descrizione",
+            "description": "Ci sono casi in cui è necessario inserire la fonte dell'immagine o semplicemente la sua descrizione per contestualizzarne meglio il contesto.",
             "done": true
           }
         ],
