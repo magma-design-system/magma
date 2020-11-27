@@ -23,16 +23,6 @@
 
   &--size-#{$modifier} {
     height: $size;
-
-    // &.progress-bar {
-    //   &--neumorphic {
-    //     .progress-bar {
-    //       &__inner {
-    //         box-shadow: 0 2px 2px color('adjust.tone', '01', 0.2), 0 -2px 8px color('adjust.tone', '01', 0.2) inset, 0 2px 5px 2px color('adjust.tone', '20', 0.3) inset;
-    //       }
-    //     }
-    //   }
-    // }
   }
 }
 

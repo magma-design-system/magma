@@ -187,10 +187,12 @@ const Layout = ({ children }) => {
             <Icon name="menu-main" className="ds-layout__switch-icon ds-layout__switch-icon--menu"/>
             <Icon name="action-close" className="ds-layout__switch-icon ds-layout__switch-icon--close"/>
           </div>
-          <main>
-            <div htmlTag="aside" className={`ds-layout__aside ${isOpened ? 'ds-layout__aside--is-active' : ''}`}>
-              <Navigation title={data.site.siteMetadata.title} menuList={sideMenuList}/>
-            </div>
+          <main className="ds-layout__main">
+            <aside className={`ds-layout__aside ${isOpened ? 'ds-layout__aside--is-active' : ''}`}>
+              <div className="ds-layout__aside-content">
+                <Navigation title={data.site.siteMetadata.title} menuList={sideMenuList}/>
+              </div>
+            </aside>
             <article className={`ds-layout__article ${isOpened ? 'ds-layout__article--is-not-scrolling' : ''}`}>
               <Grid className="ds-layout__contents">
                 <H1 className="ds-layout__title">{currentMenuItem.title}</H1>

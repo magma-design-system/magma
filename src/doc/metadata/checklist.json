@@ -1479,6 +1479,150 @@
           }
         ],
         "references": []
+      },
+      {
+        "title": "PackageInfo",
+        "description": "Componente che rappresenta informazioni generali legate al file package.json di un modulo node. Si tratta di progetti di sviluppo e va utilizzato per mostrare le informazioni generali legate ad uno specifico progetto.",
+        "children": [
+          {
+            "title": "Informazioni generali",
+            "description": "Per poter visualizzare correttamente le informazioni del pacchetto, quelle principali tra cui titolo e descrizione sono basilari per permettere all'utilizzatore di comprendere il contesto del modulo.",
+            "done": true
+          },
+          {
+            "title": "Azioni",
+            "description": "L'utilizzatore dovrebbe essere in grado di risalire facilmente alla paigna Git del modulo ed eventualmente alle issue, così che possa segnalare con facilità un problema.",
+            "done": true
+          },
+          {
+            "title": "Contributors",
+            "description": "Un' altra informazione essenziale è chi ha lavorato al progetto e possibilmente i ruoli dei contributor sul progetto, così che sia più semplice risalire a chi può aiutare l'utente in un determinato intervento.",
+            "done": true
+          }
+        ],
+        "references": []
+      },
+      {
+        "title": "Paginator",
+        "description": "Il Paginator serve all'utente quando deve visualizzare un sottoinsieme di dati ordinati in una forma comprensibile. Evita enormi singole paginate di dati, frazionandoli in pagine numerate.",
+        "children": [
+          {
+            "title": "Vai al precedente o successivo",
+            "description": "L'azione più immediata per un utilizzatore è quella di sfogliare le pagina da quella in cui si è a quella successiva fino a risalire alle infomazioni che interessano.",
+            "done": true
+          },
+          {
+            "title": "Vai alla prima o ultima pagina",
+            "description": "Il paginatore dovrebbe aiutare l'utilzzatore a raggiungere facilmente l'inizio e la fine delle pagine di visualizzazione dei contenuti.",
+            "done": true
+          }
+        ],
+        "references": []
+      },
+      {
+        "title": "Picture",
+        "description": "Il componente Picture è molto simile ad Image ma supporta più formati della stessa immagine, molto utile se è necessario sfruttare maggiormente i viewport per le immagini selettive.",
+        "children": [
+          {
+            "title": "Srcset e media query",
+            "description": "Questo componente deve essere in grado di erogare un immagine specifica in base alle regole del viewport definito, così che si possa avere un contenuto specifico alla UX che si vuole offrire.",
+            "done": true
+          },
+          {
+            "title": "Lazy loading",
+            "description": "Per aumentare le performance delle pagine, questo componente dovrebbe supportare un lazy loading automatico. L'utilizzatore sarà molto più motivato a leggere una pagina che carica istantaneamente i contenuti dando priorità alla parte visibile della pagina.",
+            "done": true
+          }
+        ],
+        "references": []
+      },
+      {
+        "title": "ProgressBar",
+        "description": "Una barra di caricamento che va da un minimo di 0% ad un massimo di 100%, descrive uno stato di progressione.",
+        "children": [
+          {
+            "title": "Colori personalizzabili",
+            "description": "La ProgressBar dovrebbe supportare la possibilità di essere colorabile per enfatizzare lo stato di avanzamento in base al contesto.",
+            "done": true
+          },
+          {
+            "title": "Dimensioni barra",
+            "description": "La ProgressBar dovrebbe avere più dimensioni in modo che se ne possa enfatizzare l'importanza in base al contesto di utilizzo.",
+            "done": true
+          },
+          {
+            "title": "Border radius",
+            "description": "La ProgressBar dovrebbe avere più stili di border radius in modo che se ne possa enfatizzare lo stile in base al contesto di utilizzo.",
+            "done": true
+          },
+          {
+            "title": "Colori automatici",
+            "description": "Colorazione automatica per lo stato di avanzamento, generalmente suddivisi in rosso, giallo e verde in base alla qualità delle performance rispetto al valore massimo raggiungibile.",
+            "done": true
+          }
+        ],
+        "references": []
+      },
+      {
+        "title": "Quote",
+        "description": "Il componente Quote definisce una sezione all'interno di un documento citata da un'altra fonte, viene utilizzato per indicare la citazione di un'ampia sezione di testo da un'altra fonte.",
+        "children": [
+          {
+            "title": "Autore",
+            "description": "Oltre alla citazione contenuta, è importante che sia possibile mostrare l'autore del contenuto citato. Questo da credibilità alla citazione e permette di avere più contesto di fruizione.",
+            "done": true
+          },
+          {
+            "title": "Link alla fonte",
+            "description": "La citazione dovrebbe poter portare alla fonte dalla quale proviene (se presente) in modo da aiutare l'utilizzatore ulteriormente nella sua ricerca o per approfondire l'argomento.",
+            "done": false
+          }
+        ],
+        "references": []
+      },
+      {
+        "title": "Table",
+        "description": "Tabella è un componente fatto per rappresentare informazioni tabellari, generalmente usata per backoffice o viste su dati dettagliati.",
+        "children": [
+          {
+            "title": "Modalità mobile",
+            "description": "Dovrebbe essere visibile anche su mobile tramite scroll orizontale in modo da non escludire gli utilizzatori che non sono al computer desktop.",
+            "done": true
+          },
+          {
+            "title": "Interazione righe",
+            "description": "La tabella dovrebbe dare la possibilità di evidenziare le righe nella quali l'utente si dirige col mouse, in modo da aumentare il carico cognitivo sulla parte interessata.",
+            "done": true
+          }
+        ],
+        "references": []
+      },
+      {
+        "title": "Tag",
+        "description": "I Tag servono a descrivere elementi devono essere etichettati, classificati e organizzati utilizzando parole chiave che li descrivono.",
+        "children": [
+          {
+            "title": "Chip",
+            "description": "Il Tag può essere visualizzato anche in formato chip che aiuta a delimitare meglio la suddivisione tra un tag e l'altro.",
+            "done": true
+          },
+          {
+            "title": "Colori personalizzabili",
+            "description": "A seconda del tema o categoria del Tag dovrebbe essere possibile creare delle varianti in modo da differenziarli ulteriormente.",
+            "done": true
+          },
+          {
+            "title": "Pulsante di rimozione",
+            "description": "Se un tag viene associato ad una entità, questo dovrebbe dare la possibilità di essere rimosso facilmente in caso sia un errore di inserimento.",
+            "done": false
+          },
+          {
+            "title": "Dimensioni",
+            "description": "È necessario dare la possibilità di visualizzare i tag in dimensioni differenti a seconda del contesto di utilizzo, in modo che possano essere impaginate anche su aree ridotte.",
+            "done": false
+          }
+        ],
+        "references": []
       }
     ]
   },
@@ -1705,7 +1849,7 @@
             "done": false
           },
           {
-            "title": "Service and health metrics",
+            "title": "Service e health metrics",
             "description": "Definisci le metriche di servizio e di integrità per il tuo Design System per impostare un punto di riferimento sul tuo rendimento. Esempi comuni possono essere il numero di ticket chiusi, i miglioramenti apportati o i bug corretti.",
             "done": false
           }
