@@ -29,6 +29,7 @@ const RoadmapChecklistTasks = props =>
           <Paragraph>{ element.description }</Paragraph>
           { element.children.map((section, sectionIndex) =>
             <Grid key={sectionIndex} gutter="small">
+              <Hr className="background-color-adjust-tone-18"/>
               <H4>{section.title}</H4>
               <Detail>{section.description}</Detail>
               { section.children.map((task, taskIndex) =>
@@ -46,7 +47,6 @@ const RoadmapChecklistTasks = props =>
                   <span><ExternalLink key={referenceIndex} href={reference.href}>{reference.title}</ExternalLink></span>,
                 ) }
               </Grid>
-              <Hr className="background-color-adjust-tone-18"/>
             </Grid>,
           ) }
         </Grid>
@@ -90,12 +90,12 @@ RoadmapMainChecklistTasks.defaultProps = {
 
 const RoadmapMainChecklist = props =>
   <Grid>
-    { props.checklist.map(element => {
+    { props.checklist.map((element, index) => {
       return <Grid gutter="small">
+        {index !== 0 && <Hr className="background-color-adjust-tone-18"/>}
         <H2>{ element.title }</H2>
         <Paragraph>{ element.description }</Paragraph>
         <RoadmapMainChecklistTasks tasks={element.children} />
-        <Hr className="background-color-adjust-tone-18"/>
       </Grid>
     })}
   </Grid>

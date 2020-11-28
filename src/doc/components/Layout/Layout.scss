@@ -3,11 +3,20 @@
 $menu-size: 60px;
 $menu-font-size: 48px;
 $aside: 450px;
+$aside-desktop: 300px;
 $content: 1440px;
 $contents-color: color('adjust.tone');
 
 body {
-  background-color: color('adjust.tone', '20');
+  background-color: color('adjust.tone');
+
+  // background-attachment: fixed;
+  // background-image: url('https://i.redd.it/iibrptucse951.png');
+  // background-size: cover;
+
+  @include media('desktop') {
+    background-color: color('adjust.tone', '20');
+  }
 }
 
 .ds-layout {
@@ -36,6 +45,10 @@ body {
 
     @include media('desktop') {
       transform: translate(0, 0);
+      width: $aside-desktop;
+    }
+
+    @include media('large') {
       width: $aside;
     }
   }
@@ -48,66 +61,48 @@ body {
     padding: 0 s(1);
 
     @include media('desktop') {
-      background-color: color('adjust.tone', '20');
+      background-color: transparent;
       padding: 0 s(2);
     }
   }
 
   &__article {
+    margin-bottom: s(2);
+
+    @include media('desktop') {
+      margin-left: $aside-desktop;
+      margin-right: s(1);
+    }
+
+    @include media('large') {
+      margin-left: $aside;
+      margin-right: s(2);
+    }
+  }
+
+  &__contents {
     background-color: color('adjust.tone');
     height: auto;
     -webkit-overflow-scrolling: touch;
+    padding: s(2) s(1);
 
     @include media('desktop') {
       background-color: $contents-color;
       border-radius: get($radius, 'large');
       box-shadow: get($shadow, 'box');
-      margin-left: $aside;
+      margin-bottom: s(2);
       margin-top: s(2);
       min-height: 100vh;
       overflow: visible;
+      padding: s(2);
       position: relative;
       z-index: 2;
-    }
-  }
-
-  &__contents {
-    padding: s(2) s(1);
-
-    @include media('desktop') {
-      margin-bottom: s(2);
-      padding: s(2);
     }
   }
 
   &__markdown {
     display: grid;
     grid-gap: s(1);
-
-    // > .grid,
-    // .quote,
-    // .text-primary,
-    // .text-secondary {
-    //   max-width: 70ch;
-    // }
-
-    // .link {
-    //   color: color('adjust.tone', '01');
-    //   font-weight: 600;
-    // }
-
-    // > .table {
-    //   max-width: 70ch;
-    // }
-
-    // // .image {
-    // //   border-radius: s(1);
-    // //   max-width: 70ch;
-
-    // //   .image__element {
-    // //     border-radius: s(1);
-    // //   }
-    // // }
 
     > .image {
       border-radius: s(1);
@@ -200,7 +195,11 @@ body {
   }
 
   &__footer {
-    // padding-bottom: s(3);
+    padding: 0 s(1);
+
+    @include media('desktop') {
+      padding: 0 s(2);
+    }
   }
 
   &__footer-logo {
