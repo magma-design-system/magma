@@ -9,13 +9,10 @@ $contents-color: color('adjust.tone');
 
 body {
   background-color: color('adjust.tone');
-
-  // background-attachment: fixed;
-  // background-image: url('https://i.redd.it/iibrptucse951.png');
-  // background-size: cover;
+  color: color('adjust.tone', '04');
 
   @include media('desktop') {
-    background-color: color('adjust.tone', '20');
+    background-color: color('brand.eolo', '20');
   }
 }
 
