@@ -40,13 +40,13 @@ deploy-designsystem:
     DEPLOY_FOLDER: $CI_DEPLOY_PATH
     SERVER: $CI_SERVER_IP
   before_script:
-    - chmod +x ./.deploy/deploy-designsystem.sh
+    - chmod +x ./projects/design-system/.deploy/deploy-designsystem.sh
   script:
-    - ./.deploy/deploy-designsystem.sh
+    - ./projects/design-system/.deploy/deploy-designsystem.sh
   after_script:
-    - chmod +x ./.deploy/clean-designsystem.sh
-    - ./.deploy/clean-designsystem.sh
-    - rm ./.deploy/clean-designsystem.sh
+    - chmod +x ./projects/design-system/.deploy/clean-designsystem.sh
+    - ./projects/design-system/.deploy/clean-designsystem.sh
+#    - rm ./projects/design-system/.deploy/clean-designsystem.sh
   environment:
     name: DeployWebApp
     url: $CI_PRODUCTION_URL
