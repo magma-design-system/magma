@@ -9,7 +9,7 @@ variables:
   KUBE_HELM_IMAGE: dtzar/helm-kubectl:3.3.4
 
 stages:
-  - build
+#  - build
   - deploy
 
 include:
