@@ -11,7 +11,7 @@
   padding-right: s(1);
   width: 100%;
 
-  &--short-name {
+  &--name-short {
     .download {
       &__file-name {
         max-width: 150px;
@@ -19,7 +19,7 @@
     }
   }
 
-  &--average-name {
+  &--name-average {
     .download {
       &__file-name {
         max-width: 250px;
@@ -27,7 +27,7 @@
     }
   }
 
-  &--full-name {
+  &--name-full {
     .download {
       &__file-name {
         max-width: none;

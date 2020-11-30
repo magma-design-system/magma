@@ -1,20 +1,19 @@
 import React, { Children, cloneElement } from 'react'
 import PropTypes from 'prop-types'
-import { appendSelectors, modifiers } from '@Library/styles'
+import { styles } from '@Library/styles'
 import './Row.scss'
 
 const Row = ({ align, gutter, htmlTag, lastChild, onClick, ...restProps }) => {
   const HtmlTag = htmlTag.toLowerCase()
-  const mainSelector = 'row'
-  const localClassNames = appendSelectors([
-    mainSelector,
-    restProps.className,
-  ])
-
-  const modifierClassNames = modifiers(mainSelector, {
-    align,
-    gutter,
-    lastChild,
+  const classes = styles('row', {
+    selectors: [
+      restProps.className,
+    ],
+    modifiers: {
+      align,
+      gutter,
+      lastChild,
+    },
   })
 
   const children = Children.map(restProps.children, child => {
@@ -25,7 +24,7 @@ const Row = ({ align, gutter, htmlTag, lastChild, onClick, ...restProps }) => {
     }
   })
 
-  return <HtmlTag {...restProps} onClick={onClick} className={`${localClassNames} ${modifierClassNames}`}>{children}</HtmlTag>
+  return <HtmlTag {...restProps} onClick={onClick} className={classes}>{children}</HtmlTag>
 }
 
 Row.propTypes = {

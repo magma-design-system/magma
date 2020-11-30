@@ -3,21 +3,21 @@ import PropTypes from 'prop-types'
 import Grid from '@Layout/Grid/Grid'
 import './Card.scss'
 
-import { appendSelectors, globalSelectors } from '@Library/styles'
+import { styles } from '@Library/styles'
 
 const Card = ({ className, padding, borderRadius, boxShadow, ...restProps }) => {
-  const localClassNames = appendSelectors([
-    'card',
-    className,
-  ])
-
-  const globalClassNames = globalSelectors({
-    padding,
-    borderRadius,
-    boxShadow,
+  const classes = styles('card', {
+    selectors: [
+      className,
+    ],
+    scaffolded: {
+      padding,
+      borderRadius,
+      boxShadow,
+    },
   })
 
-  return <Grid {...restProps} className={`${localClassNames} ${globalClassNames}`}>
+  return <Grid {...restProps} className={classes}>
     {restProps.children}
   </Grid>
 }

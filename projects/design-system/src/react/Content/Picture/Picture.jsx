@@ -3,7 +3,6 @@ import PropTypes from 'prop-types'
 import './Picture.scss'
 
 function getMediaQuery(item) {
-  console.log(item)
   if ({}.hasOwnProperty.call(item, 'minWidth')) {
     return `(min-width: ${item.minWidth}px)`
   }

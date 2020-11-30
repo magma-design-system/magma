@@ -3,6 +3,10 @@
 .ds-navigation {
   padding: s(2) 0;
 
+  &__contents {
+    color: color('adjust.tone', '04');
+  }
+
   &__logo {
     width: 60px;
   }

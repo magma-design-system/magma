@@ -1,15 +1,26 @@
 import React from 'react'
 import PropTypes from 'prop-types'
+import { styles } from '@Library/styles'
 import './Tag.scss'
 import Icon from '@Design/Icon/Icon'
 
-const Tag = props =>
-  <div className={`tag ${props.className} ${props.chip ? 'tag--chip' : ''}`}>
-    <Icon name={props.icon} className={`tag__icon ${props.iconClassName}`}/>
+const Tag = ({ chip, className, icon, iconClassName, ...restProps }) => {
+  const classes = styles('tag', {
+    selectors: [
+      className,
+    ],
+    modifiers: {
+      chip,
+    },
+  })
+
+  return <div className={classes}>
+    <Icon name={icon} className={`tag__icon ${iconClassName}`}/>
     <div className="tag__text">
-      {props.children}
+      {restProps.children}
     </div>
   </div>
+}
 
 Tag.propTypes = {
   chip: PropTypes.bool,

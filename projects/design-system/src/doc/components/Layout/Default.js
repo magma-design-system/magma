@@ -187,12 +187,14 @@ const Layout = ({ children }) => {
             <Icon name="menu-main" className="ds-layout__switch-icon ds-layout__switch-icon--menu"/>
             <Icon name="action-close" className="ds-layout__switch-icon ds-layout__switch-icon--close"/>
           </div>
-          <main>
-            <div htmlTag="aside" className={`ds-layout__aside ${isOpened ? 'ds-layout__aside--is-active' : ''}`}>
-              <Navigation title={data.site.siteMetadata.title} menuList={sideMenuList}/>
-            </div>
+          <main className="ds-layout__main">
+            <aside className={`ds-layout__aside ${isOpened ? 'ds-layout__aside--is-active' : ''}`}>
+              <div className="ds-layout__aside-content">
+                <Navigation title={data.site.siteMetadata.title} menuList={sideMenuList}/>
+              </div>
+            </aside>
             <article className={`ds-layout__article ${isOpened ? 'ds-layout__article--is-not-scrolling' : ''}`}>
-              <Grid className="ds-layout__contents">
+              <Grid className="ds-layout__contents" rows="fit-vertically">
                 <H1 className="ds-layout__title">{currentMenuItem.title}</H1>
                 {horizontalMenuItems?.length > 0 && <HorizontalMenu className="ds-layout__actions" menuList={horizontalMenuItems}/>}
                 <Grid className="ds-layout__markdown">
@@ -200,6 +202,7 @@ const Layout = ({ children }) => {
                     {children}
                   </MDXProvider>
                 </Grid>
+                <Hr spacing="xsmall" className="background-color-adjust-tone-18"/>
                 { page.frontmatter.author &&
                   <Grid gutter="xsmall">
                     <H5>Autori</H5>
@@ -210,7 +213,7 @@ const Layout = ({ children }) => {
                     </Grid>
                   </Grid>
                 }
-                { page.frontmatter.source && <Hr/> }
+                { page.frontmatter.source && <Hr spacing="xsmall" className="background-color-adjust-tone-18"/> }
                 { page.frontmatter.source &&
                   <Grid gutter="none">
                     <H5>Riferimenti esterni</H5>
@@ -219,13 +222,14 @@ const Layout = ({ children }) => {
                     )}
                   </Grid>
                 }
-                <Hr/>
-                <footer className="ds-layout__footer">
-                  <Paragraph><b>Design System</b> sviluppato dal reparto R&D.</Paragraph>
-                  <Paragraph>Gruppo Maggioli © 2020{publicationYear !== '2020' ? `–${publicationYear}` : ''}.</Paragraph>
-                  <Image className="ds-layout__footer-logo" src={require('#Assets/brand/gruppo-maggioli/logo-gruppo-maggioli.svg')}/>
-                </footer>
               </Grid>
+              <Row htmlTag="footer" gutter="normal" className="ds-layout__footer">
+                <Image className="ds-layout__footer-logo" src={require('#Assets/brand/gruppo-maggioli/logo-gruppo-maggioli.svg')}/>
+                <div>
+                  <Detail><b>Design System</b> sviluppato con ❤️ &nbsp;dal reparto R&D e tutti i supporter all'interno di Maggioli.</Detail>
+                  <Caption>Gruppo Maggioli © 2020{publicationYear !== '2020' ? `–${publicationYear}` : ''}.</Caption>
+                </div>
+              </Row>
             </article>
           </main>
         </Page>

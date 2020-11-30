@@ -22,6 +22,6 @@ export const defaultUsage = () =>
     <Form columns="3">
       <InputText icon="user" placeholder="Username" />
       <InputPassword placeholder="Password" />
-      <Button icon="action-save">Login</Button>
+      <Button icon="crud-save">Login</Button>
     </Form>
   </Grid>

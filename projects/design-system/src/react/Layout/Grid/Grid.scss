@@ -53,6 +53,14 @@ $columns: 4;
     }
   }
 
+  &--template-auto-fill-icon {
+    grid-template-columns: repeat(auto-fill, minmax(30px, 1fr));
+
+    @include media ('mobile') {
+      grid-template-columns: repeat(auto-fill, minmax(30px, 1fr)) !important;
+    }
+  }
+
   &--template-auto-fill {
     grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
 

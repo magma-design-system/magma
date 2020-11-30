@@ -8,7 +8,7 @@ $line-height: 25px;
   grid-gap: $gap;
 
   &__title {
-    color: color('adjust.tone', '02');
+    color: color('adjust.tone', '04');
     cursor: default;
   }
 
@@ -55,7 +55,7 @@ $line-height: 25px;
 
   &__title {
     border-radius: $radius;
-    color: color('adjust.tone', '02');
+    color: color('adjust.tone', '04');
     cursor: pointer;
     display: inline-flex;
     line-height: $line-height;
@@ -81,7 +81,7 @@ $line-height: 25px;
 .ds-menu-child {
   &__title {
     border-radius: 0 $radius $radius 0;
-    color: color('adjust.tone', '02');
+    color: color('adjust.tone', '04');
     cursor: pointer;
     display: inline-flex;
     line-height: $line-height;
@@ -106,24 +106,24 @@ $line-height: 25px;
 
 %hover-section-title {
   // background-color: color('adjust.tone', '18');
-  background-color: color('adjust.tone', '02', 0.1);
+  background-color: color('adjust.tone', '04', 0.1);
   padding-left: s(0.5);
 }
 
 %selected-section-title {
-  background-color: color('adjust.tone', '03');
+  background-color: color('adjust.tone', '04');
   color: color('adjust.tone');
   padding-left: s(0.5);
 }
 
 %hover-child-title {
   // background-color: color('adjust.tone', '18');
-  background-color: color('adjust.tone', '02', 0.1);
+  background-color: color('adjust.tone', '04', 0.1);
   padding-left: s(1);
 }
 
 %selected-child-title {
-  background-color: color('adjust.tone', '03');
+  background-color: color('adjust.tone', '04');
   color: color('adjust.tone');
   padding-left: s(1);
 }

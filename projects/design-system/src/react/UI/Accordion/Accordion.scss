@@ -60,7 +60,7 @@ $border-size: 3px;
   &__item {
     background-color: color('adjust.tone', '20');
 
-    &--is-opened {
+    &--opened {
       > .accordion {
         &__header {
           background-color: color('adjust.tone', '19');
