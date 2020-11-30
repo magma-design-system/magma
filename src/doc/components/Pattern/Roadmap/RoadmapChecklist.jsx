@@ -72,7 +72,7 @@ const RoadmapMainChecklistTasks = props =>
         <BenchmarkBar progressText={false} key={index} autoColor={true} progress={getProgress(task.children)} size="xsmall"><H4>{task.title}</H4></BenchmarkBar>
         <Grid template="auto-fill-icon" gutter="none">
           { task.children.sort((x, y) => { if (x.done === y.done) { return 0 } else if (x.done) { return -1 } return 1 }).map(subTask =>
-            <Icon name="status-success" className={`${subTask.done ? 'color-status-success-10' : 'color-adjust-tone-16'}`}/>,
+            <Icon name="status-success" className={`${subTask.done ? 'color-adjust-tone-06' : 'color-adjust-tone-16'}`}/>,
           )}
         </Grid>
       </Card>

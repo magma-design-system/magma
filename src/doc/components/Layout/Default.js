@@ -226,7 +226,7 @@ const Layout = ({ children }) => {
               <Row htmlTag="footer" gutter="normal" className="ds-layout__footer">
                 <Image className="ds-layout__footer-logo" src={require('#Assets/brand/gruppo-maggioli/logo-gruppo-maggioli.svg')}/>
                 <div>
-                  <Detail><b>Design System</b> sviluppato con ❤️ dal reparto R&D e tutti i supporter all'interno di Maggioli.</Detail>
+                  <Detail><b>Design System</b> sviluppato con ❤️ &nbsp;dal reparto R&D e tutti i supporter all'interno di Maggioli.</Detail>
                   <Caption>Gruppo Maggioli © 2020{publicationYear !== '2020' ? `–${publicationYear}` : ''}.</Caption>
                 </div>
               </Row>

@@ -1623,6 +1623,89 @@
           }
         ],
         "references": []
+      },
+      {
+        "title": "UList",
+        "description": "Per UList si intende un elenco puntanto non ordinato, serve a mostrare una serie di punti legati dallo stesso argomento.",
+        "children": [
+          {
+            "title": "Punteggiatura automatica",
+            "description": "Per semplificare l'inserimento dei punti elenco, è possibile entrare in modalità punteggiatura automatica, che inserire un ';' in fondo ad ogni punto e un '.' in fondo all'ultimo.",
+            "done": true
+          },
+          {
+            "title": "Punti elenco icone personalizzabili",
+            "description": "Le icone dei punti elenco di UList dovrebbero essere personalizzabili in modo che si possa enfatizzare maggiormente il contesto e la tematica di cui si tratta, punto per punto o globalmente.",
+            "done": true
+          },
+          {
+            "title": "Dimensione punti elenco",
+            "description": "Nel caso serva dare meno carico cognitivo all'elenco puntato dovrebbe essere possibile ridurre le dimensioni delle icone degli elenchi puntati.",
+            "done": true
+          },
+          {
+            "title": "Punti elenco numerici",
+            "description": "È possibile decidere di utilizzare degli elenchi numerici anziché renderli puntati, per questo è possibile ",
+            "done": true
+          },
+          {
+            "title": "Punti elenco numerici",
+            "description": "È necessario dare la possibilità di visualizzare i tag in dimensioni differenti a seconda del contesto di utilizzo, in modo che possano essere impaginate anche su aree ridotte.",
+            "done": true
+          }
+        ],
+        "references": []
+      },
+      {
+        "title": "UploadFileImage",
+        "description": "Serve a caricare un immagine legata ad un form mostrandone l'anteprima una volta caricata. L'immagine sarà poi rimuovibile col pusante di cancellazione.",
+        "children": [
+          {
+            "title": "Annullamento upload",
+            "description": "L'immagine caricata dovrebbe essere annullabile subito dopo averla caricata, così che l'utente possa correggere un proprio errore facilmente.",
+            "done": true
+          },
+          {
+            "title": "Preview",
+            "description": "L'immagine caricata dovrebbe essere visibile in una preview, in modo che ci sia feedback visivo sullo stato di caricamento dell'immagine.",
+            "done": true
+          }
+        ],
+        "references": []
+      },
+      {
+        "title": "UrlPreview",
+        "description": "Il componente UrlPreview mostra l'anteprima di un indirizzo web, può essere utile per fruire una bibliografia senza cambiare pagina web.",
+        "children": [
+          {
+            "title": "Lazy loading",
+            "description": "Per evitare rallentamenti in fase di atterraggio in pagina, il componente dovrebbe supportare il lazy loading della pagina che si sta per caricare, l'esperienza sarà più performante e darà senso di immediatezza all'utilizzatore.",
+            "done": true
+          },
+          {
+            "title": "Wide",
+            "description": "Alcune pagine web di atterraggio potrebbero essere più leggibili in una modalità più larga del viewport mobile, soprattutto se si parla di documentazione, non tutti i siti sono ottimizzati per mobile.",
+            "done": true
+          }
+        ],
+        "references": []
+      },
+      {
+        "title": "Usage",
+        "description": "Usage serve a veicolare il lettore su quali sono le best e bad practice di un argomento correlato senza doverle necessariamente alternare. È utile in manuali di utilizzo e documentazione specifica.",
+        "children": [
+          {
+            "title": "Do",
+            "description": "Area che rappresenta i contenuti da intendersi come best practice, in base ai colori l'utente intuirà subito che si tratta di un consiglio da seguire.",
+            "done": true
+          },
+          {
+            "title": "Dont",
+            "description": "Area che rappresenta i contenuti da intendersi come bad practice, in base ai colori l'utente intuirà subito che si tratta di un problema da evitare.",
+            "done": true
+          }
+        ],
+        "references": []
       }
     ]
   },
@@ -1745,6 +1828,10 @@
           {
             "title": "Commitizen: Conventional commit messages",
             "href": "https://github.com/commitizen"
+          },
+          {
+            "title": "Conventional commits",
+            "href": "https://www.conventionalcommits.org/en/v1.0.0/"
           },
           {
             "title": "Prettier: Opinionated code formatter",
