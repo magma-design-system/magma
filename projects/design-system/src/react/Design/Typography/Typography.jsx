@@ -3,11 +3,9 @@ import PropTypes from 'prop-types'
 
 const Typography = props => {
   const HtmlTag = props.htmlTag.toLowerCase()
-  return (
-    <HtmlTag className={`${props.className}`}>
-      { props.children }
-    </HtmlTag>
-  )
+  return <HtmlTag className={props.className}>
+    { props.children }
+  </HtmlTag>
 }
 
 Typography.propTypes = {

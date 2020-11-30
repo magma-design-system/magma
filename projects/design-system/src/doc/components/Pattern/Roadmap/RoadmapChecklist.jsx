@@ -29,6 +29,7 @@ const RoadmapChecklistTasks = props =>
           <Paragraph>{ element.description }</Paragraph>
           { element.children.map((section, sectionIndex) =>
             <Grid key={sectionIndex} gutter="small">
+              <Hr className="background-color-adjust-tone-18"/>
               <H4>{section.title}</H4>
               <Detail>{section.description}</Detail>
               { section.children.map((task, taskIndex) =>
@@ -46,7 +47,6 @@ const RoadmapChecklistTasks = props =>
                   <span><ExternalLink key={referenceIndex} href={reference.href}>{reference.title}</ExternalLink></span>,
                 ) }
               </Grid>
-              <Hr className="background-color-adjust-tone-18"/>
             </Grid>,
           ) }
         </Grid>
@@ -68,8 +68,13 @@ RoadmapChecklistTasks.defaultProps = {
 const RoadmapMainChecklistTasks = props =>
   <Grid template="auto-fill-large" gutter="large">
     { props.tasks.map((task, index) => {
-      return <Card boxShadow="box--interactive" gutter="xlarge" padding="padding-small">
-        <BenchmarkBar key={index} autoColor={true} progress={getProgress(task.children)} size="xsmall"><H4>{task.title}</H4></BenchmarkBar>
+      return <Card boxShadow="box--interactive" gutter="xsmall" padding="padding-small" rows="fit-vertically">
+        <BenchmarkBar progressText={false} key={index} autoColor={true} progress={getProgress(task.children)} size="xsmall"><H4>{task.title}</H4></BenchmarkBar>
+        <Grid template="auto-fill-icon" gutter="none">
+          { task.children.sort((x, y) => { if (x.done === y.done) { return 0 } else if (x.done) { return -1 } return 1 }).map(subTask =>
+            <Icon name="status-success" className={`${subTask.done ? 'color-adjust-tone-06' : 'color-adjust-tone-16'}`}/>,
+          )}
+        </Grid>
       </Card>
     })}
   </Grid>
@@ -85,12 +90,12 @@ RoadmapMainChecklistTasks.defaultProps = {
 
 const RoadmapMainChecklist = props =>
   <Grid>
-    { props.checklist.map(element => {
+    { props.checklist.map((element, index) => {
       return <Grid gutter="small">
+        {index !== 0 && <Hr className="background-color-adjust-tone-18"/>}
         <H2>{ element.title }</H2>
         <Paragraph>{ element.description }</Paragraph>
         <RoadmapMainChecklistTasks tasks={element.children} />
-        <Hr className="background-color-adjust-tone-18"/>
       </Grid>
     })}
   </Grid>

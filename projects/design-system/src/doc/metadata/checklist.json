@@ -1427,8 +1427,8 @@
         "description": "Un componente ipertestuale che manda l'utilizzatore in una pagina esterna a quella in cui ci si trova.",
         "children": [
           {
-            "title": "Target black automatico",
-            "description": "Essendo dedicato a pagine esterne, il componente dovrebbe facilitare l'inserimento del target black rendendolo una funzione automatica.",
+            "title": "Target blank automatico",
+            "description": "Essendo dedicato a pagine esterne, il componente dovrebbe facilitare l'inserimento del target blank rendendolo una funzione automatica.",
             "done": true
           }
         ],
@@ -1459,6 +1459,11 @@
             "title": "Aspect ratio",
             "description": "Questo componente dovrebbe essere in grado di facilitare l'impaginazione delle immagini all'interno delle pagine, dando la possibilità di impostare un aspect ratio alle immagini.",
             "done": true
+          },
+          {
+            "title": "Descrizione",
+            "description": "Ci sono casi in cui è necessario inserire la fonte dell'immagine o semplicemente la sua descrizione per contestualizzarne meglio il contesto.",
+            "done": true
           }
         ],
         "references": []
@@ -1470,6 +1475,233 @@
           {
             "title": "Colore personalizzabile",
             "description": "A seconda del contesto in cui si trova, il componente dovrebbe essere in grado di adattarsi per essere visualizzato in modo coerente rispetto al prorio contesto.",
+            "done": true
+          }
+        ],
+        "references": []
+      },
+      {
+        "title": "PackageInfo",
+        "description": "Componente che rappresenta informazioni generali legate al file package.json di un modulo node. Si tratta di progetti di sviluppo e va utilizzato per mostrare le informazioni generali legate ad uno specifico progetto.",
+        "children": [
+          {
+            "title": "Informazioni generali",
+            "description": "Per poter visualizzare correttamente le informazioni del pacchetto, quelle principali tra cui titolo e descrizione sono basilari per permettere all'utilizzatore di comprendere il contesto del modulo.",
+            "done": true
+          },
+          {
+            "title": "Azioni",
+            "description": "L'utilizzatore dovrebbe essere in grado di risalire facilmente alla paigna Git del modulo ed eventualmente alle issue, così che possa segnalare con facilità un problema.",
+            "done": true
+          },
+          {
+            "title": "Contributors",
+            "description": "Un' altra informazione essenziale è chi ha lavorato al progetto e possibilmente i ruoli dei contributor sul progetto, così che sia più semplice risalire a chi può aiutare l'utente in un determinato intervento.",
+            "done": true
+          }
+        ],
+        "references": []
+      },
+      {
+        "title": "Paginator",
+        "description": "Il Paginator serve all'utente quando deve visualizzare un sottoinsieme di dati ordinati in una forma comprensibile. Evita enormi singole paginate di dati, frazionandoli in pagine numerate.",
+        "children": [
+          {
+            "title": "Vai al precedente o successivo",
+            "description": "L'azione più immediata per un utilizzatore è quella di sfogliare le pagina da quella in cui si è a quella successiva fino a risalire alle infomazioni che interessano.",
+            "done": true
+          },
+          {
+            "title": "Vai alla prima o ultima pagina",
+            "description": "Il paginatore dovrebbe aiutare l'utilzzatore a raggiungere facilmente l'inizio e la fine delle pagine di visualizzazione dei contenuti.",
+            "done": true
+          }
+        ],
+        "references": []
+      },
+      {
+        "title": "Picture",
+        "description": "Il componente Picture è molto simile ad Image ma supporta più formati della stessa immagine, molto utile se è necessario sfruttare maggiormente i viewport per le immagini selettive.",
+        "children": [
+          {
+            "title": "Srcset e media query",
+            "description": "Questo componente deve essere in grado di erogare un immagine specifica in base alle regole del viewport definito, così che si possa avere un contenuto specifico alla UX che si vuole offrire.",
+            "done": true
+          },
+          {
+            "title": "Lazy loading",
+            "description": "Per aumentare le performance delle pagine, questo componente dovrebbe supportare un lazy loading automatico. L'utilizzatore sarà molto più motivato a leggere una pagina che carica istantaneamente i contenuti dando priorità alla parte visibile della pagina.",
+            "done": true
+          }
+        ],
+        "references": []
+      },
+      {
+        "title": "ProgressBar",
+        "description": "Una barra di caricamento che va da un minimo di 0% ad un massimo di 100%, descrive uno stato di progressione.",
+        "children": [
+          {
+            "title": "Colori personalizzabili",
+            "description": "La ProgressBar dovrebbe supportare la possibilità di essere colorabile per enfatizzare lo stato di avanzamento in base al contesto.",
+            "done": true
+          },
+          {
+            "title": "Dimensioni barra",
+            "description": "La ProgressBar dovrebbe avere più dimensioni in modo che se ne possa enfatizzare l'importanza in base al contesto di utilizzo.",
+            "done": true
+          },
+          {
+            "title": "Border radius",
+            "description": "La ProgressBar dovrebbe avere più stili di border radius in modo che se ne possa enfatizzare lo stile in base al contesto di utilizzo.",
+            "done": true
+          },
+          {
+            "title": "Colori automatici",
+            "description": "Colorazione automatica per lo stato di avanzamento, generalmente suddivisi in rosso, giallo e verde in base alla qualità delle performance rispetto al valore massimo raggiungibile.",
+            "done": true
+          }
+        ],
+        "references": []
+      },
+      {
+        "title": "Quote",
+        "description": "Il componente Quote definisce una sezione all'interno di un documento citata da un'altra fonte, viene utilizzato per indicare la citazione di un'ampia sezione di testo da un'altra fonte.",
+        "children": [
+          {
+            "title": "Autore",
+            "description": "Oltre alla citazione contenuta, è importante che sia possibile mostrare l'autore del contenuto citato. Questo da credibilità alla citazione e permette di avere più contesto di fruizione.",
+            "done": true
+          },
+          {
+            "title": "Link alla fonte",
+            "description": "La citazione dovrebbe poter portare alla fonte dalla quale proviene (se presente) in modo da aiutare l'utilizzatore ulteriormente nella sua ricerca o per approfondire l'argomento.",
+            "done": false
+          }
+        ],
+        "references": []
+      },
+      {
+        "title": "Table",
+        "description": "Tabella è un componente fatto per rappresentare informazioni tabellari, generalmente usata per backoffice o viste su dati dettagliati.",
+        "children": [
+          {
+            "title": "Modalità mobile",
+            "description": "Dovrebbe essere visibile anche su mobile tramite scroll orizontale in modo da non escludire gli utilizzatori che non sono al computer desktop.",
+            "done": true
+          },
+          {
+            "title": "Interazione righe",
+            "description": "La tabella dovrebbe dare la possibilità di evidenziare le righe nella quali l'utente si dirige col mouse, in modo da aumentare il carico cognitivo sulla parte interessata.",
+            "done": true
+          }
+        ],
+        "references": []
+      },
+      {
+        "title": "Tag",
+        "description": "I Tag servono a descrivere elementi devono essere etichettati, classificati e organizzati utilizzando parole chiave che li descrivono.",
+        "children": [
+          {
+            "title": "Chip",
+            "description": "Il Tag può essere visualizzato anche in formato chip che aiuta a delimitare meglio la suddivisione tra un tag e l'altro.",
+            "done": true
+          },
+          {
+            "title": "Colori personalizzabili",
+            "description": "A seconda del tema o categoria del Tag dovrebbe essere possibile creare delle varianti in modo da differenziarli ulteriormente.",
+            "done": true
+          },
+          {
+            "title": "Pulsante di rimozione",
+            "description": "Se un tag viene associato ad una entità, questo dovrebbe dare la possibilità di essere rimosso facilmente in caso sia un errore di inserimento.",
+            "done": false
+          },
+          {
+            "title": "Dimensioni",
+            "description": "È necessario dare la possibilità di visualizzare i tag in dimensioni differenti a seconda del contesto di utilizzo, in modo che possano essere impaginate anche su aree ridotte.",
+            "done": false
+          }
+        ],
+        "references": []
+      },
+      {
+        "title": "UList",
+        "description": "Per UList si intende un elenco puntanto non ordinato, serve a mostrare una serie di punti legati dallo stesso argomento.",
+        "children": [
+          {
+            "title": "Punteggiatura automatica",
+            "description": "Per semplificare l'inserimento dei punti elenco, è possibile entrare in modalità punteggiatura automatica, che inserire un ';' in fondo ad ogni punto e un '.' in fondo all'ultimo.",
+            "done": true
+          },
+          {
+            "title": "Punti elenco icone personalizzabili",
+            "description": "Le icone dei punti elenco di UList dovrebbero essere personalizzabili in modo che si possa enfatizzare maggiormente il contesto e la tematica di cui si tratta, punto per punto o globalmente.",
+            "done": true
+          },
+          {
+            "title": "Dimensione punti elenco",
+            "description": "Nel caso serva dare meno carico cognitivo all'elenco puntato dovrebbe essere possibile ridurre le dimensioni delle icone degli elenchi puntati.",
+            "done": true
+          },
+          {
+            "title": "Punti elenco numerici",
+            "description": "È possibile decidere di utilizzare degli elenchi numerici anziché renderli puntati, per questo è possibile ",
+            "done": true
+          },
+          {
+            "title": "Punti elenco numerici",
+            "description": "È necessario dare la possibilità di visualizzare i tag in dimensioni differenti a seconda del contesto di utilizzo, in modo che possano essere impaginate anche su aree ridotte.",
+            "done": true
+          }
+        ],
+        "references": []
+      },
+      {
+        "title": "UploadFileImage",
+        "description": "Serve a caricare un immagine legata ad un form mostrandone l'anteprima una volta caricata. L'immagine sarà poi rimuovibile col pusante di cancellazione.",
+        "children": [
+          {
+            "title": "Annullamento upload",
+            "description": "L'immagine caricata dovrebbe essere annullabile subito dopo averla caricata, così che l'utente possa correggere un proprio errore facilmente.",
+            "done": true
+          },
+          {
+            "title": "Preview",
+            "description": "L'immagine caricata dovrebbe essere visibile in una preview, in modo che ci sia feedback visivo sullo stato di caricamento dell'immagine.",
+            "done": true
+          }
+        ],
+        "references": []
+      },
+      {
+        "title": "UrlPreview",
+        "description": "Il componente UrlPreview mostra l'anteprima di un indirizzo web, può essere utile per fruire una bibliografia senza cambiare pagina web.",
+        "children": [
+          {
+            "title": "Lazy loading",
+            "description": "Per evitare rallentamenti in fase di atterraggio in pagina, il componente dovrebbe supportare il lazy loading della pagina che si sta per caricare, l'esperienza sarà più performante e darà senso di immediatezza all'utilizzatore.",
+            "done": true
+          },
+          {
+            "title": "Wide",
+            "description": "Alcune pagine web di atterraggio potrebbero essere più leggibili in una modalità più larga del viewport mobile, soprattutto se si parla di documentazione, non tutti i siti sono ottimizzati per mobile.",
+            "done": true
+          }
+        ],
+        "references": []
+      },
+      {
+        "title": "Usage",
+        "description": "Usage serve a veicolare il lettore su quali sono le best e bad practice di un argomento correlato senza doverle necessariamente alternare. È utile in manuali di utilizzo e documentazione specifica.",
+        "children": [
+          {
+            "title": "Do",
+            "description": "Area che rappresenta i contenuti da intendersi come best practice, in base ai colori l'utente intuirà subito che si tratta di un consiglio da seguire.",
+            "done": true
+          },
+          {
+            "title": "Dont",
+            "description": "Area che rappresenta i contenuti da intendersi come bad practice, in base ai colori l'utente intuirà subito che si tratta di un problema da evitare.",
             "done": true
           }
         ],
@@ -1598,6 +1830,10 @@
             "href": "https://github.com/commitizen"
           },
           {
+            "title": "Conventional commits",
+            "href": "https://www.conventionalcommits.org/en/v1.0.0/"
+          },
+          {
             "title": "Prettier: Opinionated code formatter",
             "href": "https://prettier.io/"
           },
@@ -1700,7 +1936,7 @@
             "done": false
           },
           {
-            "title": "Service and health metrics",
+            "title": "Service e health metrics",
             "description": "Definisci le metriche di servizio e di integrità per il tuo Design System per impostare un punto di riferimento sul tuo rendimento. Esempi comuni possono essere il numero di ticket chiusi, i miglioramenti apportati o i bug corretti.",
             "done": false
           }

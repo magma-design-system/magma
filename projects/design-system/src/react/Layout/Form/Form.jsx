@@ -2,15 +2,16 @@ import React from 'react'
 import PropTypes from 'prop-types'
 import Grid from '@Layout/Grid/Grid'
 
-import { appendSelectors } from '@Library/styles'
+import { styles } from '@Library/styles'
 
 const Form = ({ className, onSubmit, ...restProps }) => {
-  const localClassNames = appendSelectors([
-    'form',
-    className,
-  ])
+  const classes = styles('form', {
+    selectors: [
+      className,
+    ],
+  })
 
-  return <form onSubmit={onSubmit} className={`${localClassNames}`}>
+  return <form onSubmit={onSubmit} className={classes}>
     <Grid {...restProps}>
       {restProps.children}
     </Grid>

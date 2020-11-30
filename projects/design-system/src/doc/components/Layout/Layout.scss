@@ -3,90 +3,103 @@
 $menu-size: 60px;
 $menu-font-size: 48px;
 $aside: 450px;
+$aside-desktop: 300px;
+$content: 1440px;
 $contents-color: color('adjust.tone');
 
+body {
+  background-color: color('adjust.tone');
+  color: color('adjust.tone', '04');
+
+  @include media('desktop') {
+    background-color: color('brand.eolo', '20');
+  }
+}
+
 .ds-layout {
+  &__main {
+    margin: auto;
+    max-width: $content;
+    position: relative;
+  }
+
   &__aside {
-    background-color: color('adjust.tone', 'color');
     bottom: 0;
-    box-shadow: 0 0 s(2) 0 color('adjust.tone', '01', 0), 0 0 0 100vw color('adjust.tone', '01', 0);
-    height: 100vh;
-    left: 0;
-    overflow-y: auto;
-    padding: 0 s(1);
+    max-width: $content;
     position: fixed;
-    right: 0;
     top: 0;
     transform: translate(-100%, 0);
     transition: transform get($tween, 'slide'), box-shadow get($tween, 'slide');
     z-index: 2;
 
-    &--is-active {
-      box-shadow: 0 0 s(2) 0 color('adjust.tone', '01', 0.5), 0 0 0 100vw color('adjust.tone', '01', 0.75);
-      transform: translate(0, 0);
-      width: calc(100% - #{s(4)});
+    @include media('mobile') {
+      &--is-active {
+        box-shadow: 0 0 s(2) 0 color('adjust.tone', '01', 0.5), 0 0 0 100vw color('adjust.tone', '01', 0.75);
+        transform: translate(0, 0);
+        width: calc(100% - #{s(4)});
+      }
     }
 
     @include media('desktop') {
-      backdrop-filter: saturate(180%) blur(20px);
-      background-color: color('adjust.tone', 'color', 0.8);
-
-      // box-shadow: 0 0 s(2) 0 color('adjust.tone', '01', 0.05) inset, 0 0 0 100vw color('adjust.tone', '01', 0);
-      padding: 0 s(2);
       transform: translate(0, 0);
+      width: $aside-desktop;
+    }
+
+    @include media('large') {
       width: $aside;
     }
   }
 
-  &__article {
-    background-color: color('adjust.tone');
-    height: auto;
-    -webkit-overflow-scrolling: touch;
+  &__aside-content {
+    background-color: color('adjust.tone', 'color');
+    box-shadow: 0 0 s(2) 0 color('adjust.tone', '01', 0), 0 0 0 100vw color('adjust.tone', '01', 0);
+    height: 100vh;
+    overflow-y: auto;
+    padding: 0 s(1);
 
     @include media('desktop') {
-      background-color: $contents-color;
+      background-color: transparent;
+      padding: 0 s(2);
+    }
+  }
+
+  &__article {
+    margin-bottom: s(2);
+
+    @include media('desktop') {
+      margin-left: $aside-desktop;
+      margin-right: s(1);
+    }
+
+    @include media('large') {
       margin-left: $aside;
-      min-height: 100vh;
-      overflow: visible;
+      margin-right: s(2);
     }
   }
 
   &__contents {
+    background-color: color('adjust.tone');
+    height: auto;
+    -webkit-overflow-scrolling: touch;
     padding: s(2) s(1);
 
     @include media('desktop') {
+      background-color: $contents-color;
+      border-radius: get($radius, 'large');
+      box-shadow: get($shadow, 'box');
+      margin-bottom: s(2);
+      margin-top: s(2);
+      min-height: 100vh;
+      overflow: visible;
       padding: s(2);
+      position: relative;
+      z-index: 2;
     }
   }
 
   &__markdown {
     display: grid;
     grid-gap: s(1);
-
-    > .grid,
-    .quote,
-    .text-primary,
-    .text-secondary {
-      max-width: 70ch;
-    }
-
-    .link {
-      color: color('adjust.tone', '01');
-      font-weight: 600;
-    }
-
-    > .table {
-      max-width: 70ch;
-    }
-
-    // .image {
-    //   border-radius: s(1);
-    //   max-width: 70ch;
-
-    //   .image__element {
-    //     border-radius: s(1);
-    //   }
-    // }
 
     > .image {
       border-radius: s(1);
@@ -179,7 +192,11 @@ $contents-color: color('adjust.tone');
   }
 
   &__footer {
-    padding-bottom: s(3);
+    padding: 0 s(1);
+
+    @include media('desktop') {
+      padding: 0 s(2);
+    }
   }
 
   &__footer-logo {

@@ -2,4 +2,8 @@
 
 .banner {
   padding: s(1);
+
+  &__icon {
+    flex-shrink: 0;
+  }
 }

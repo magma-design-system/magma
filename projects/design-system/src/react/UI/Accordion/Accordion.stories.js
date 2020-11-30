@@ -16,7 +16,7 @@ export const defaultUsage = () =>
     <AccordionItem title={faker.lorem.sentence()}>
       <Paragraph>{faker.lorem.paragraph()}</Paragraph>
     </AccordionItem>
-    <AccordionItem title={faker.lorem.sentence()} isOpened>
+    <AccordionItem title={faker.lorem.sentence()} opened>
       <Paragraph>{faker.lorem.paragraph()}</Paragraph>
     </AccordionItem>
     <AccordionItem title={faker.lorem.sentence()}>
@@ -32,7 +32,7 @@ export const customIcon = () =>
     <AccordionItem icon={randomIcon()} title={faker.lorem.sentence()}>
       <Paragraph>{faker.lorem.paragraph()}</Paragraph>
     </AccordionItem>
-    <AccordionItem icon={randomIcon()} title={faker.lorem.sentence()} isOpened>
+    <AccordionItem icon={randomIcon()} title={faker.lorem.sentence()} opened>
       <Paragraph>{faker.lorem.paragraph()}</Paragraph>
     </AccordionItem>
     <AccordionItem icon={randomIcon()} title={faker.lorem.sentence()}>
@@ -48,12 +48,12 @@ export const accordionNesting = () =>
     <AccordionItem icon={randomIcon()} title={faker.lorem.sentence()}>
       <Paragraph>{faker.lorem.paragraph()}</Paragraph>
     </AccordionItem>
-    <AccordionItem icon={randomIcon()} title={faker.lorem.sentence()} isOpened>
+    <AccordionItem icon={randomIcon()} title={faker.lorem.sentence()} opened>
       <Accordion>
         <AccordionItem title={faker.lorem.sentence()}>
           <Paragraph>{faker.lorem.paragraph()}</Paragraph>
         </AccordionItem>
-        <AccordionItem title={faker.lorem.sentence()}>
+        <AccordionItem title={faker.lorem.sentence()} opened>
           <Paragraph>{faker.lorem.paragraph()}</Paragraph>
         </AccordionItem>
         <AccordionItem title={faker.lorem.sentence()}>

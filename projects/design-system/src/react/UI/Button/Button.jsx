@@ -1,37 +1,34 @@
 import React, { Fragment } from 'react'
 import PropTypes from 'prop-types'
-import { appendSelectors, globalSelectors, modifiers } from '@Library/styles'
+import { styles } from '@Library/styles'
 import Icon from '@Design/Icon/Icon'
 import dictionary from './dictionary.json'
 import './Button.scss'
 
 const Button = ({ borderRadius, boxShadow, disabled, href, icon, onClick, outline, padding, size, type, variant, width, ...restProps }) => {
   const { font, iconSize } = dictionary[size]
-
-  const mainSelector = 'button'
-  const localClassNames = appendSelectors([
-    mainSelector,
-    restProps.className,
-  ])
-
-  const modifierClassNames = modifiers(mainSelector, {
-    disabled,
-    outline,
-    padding,
-    size,
-    variant,
-    width,
-  })
-
-  const globalClassNames = globalSelectors({
-    borderRadius,
-    boxShadow,
+  const classes = styles('button', {
+    selectors: [
+      restProps.className,
+    ],
+    modifiers: {
+      disabled,
+      outline,
+      padding,
+      size,
+      variant,
+      width,
+    },
+    scaffolded: {
+      borderRadius,
+      boxShadow,
+    },
   })
 
   return <Fragment>
     {!href
       ? <button
-        className={`${localClassNames} ${modifierClassNames} ${globalClassNames}`}
+        className={classes}
         onClick={onClick}
         disabled={disabled ? 'disabled' : ''}
         type={type}>
@@ -42,7 +39,7 @@ const Button = ({ borderRadius, boxShadow, disabled, href, icon, onClick, outlin
         }
       </button>
       : <a
-        className={`${localClassNames} ${modifierClassNames} ${globalClassNames}`}
+        className={classes}
         onClick={onClick}
         target="_blank"
         href={href}>
