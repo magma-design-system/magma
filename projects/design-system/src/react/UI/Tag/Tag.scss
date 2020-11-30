@@ -1,0 +1,24 @@
+@import '~Sass/import-framework';
+
+.tag {
+  align-items: center;
+  display: inline-flex;
+  padding: 0 s(0.25);
+
+  &__icon {
+    margin-right: s(0.25);
+  }
+
+  &__text {
+    max-width: 220px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  &--chip {
+    background-color: color('adjust.tone', '15');
+    border-radius: get($form-sizes, 'input-height');
+    height: get($form-sizes, 'input-height');
+    padding: 0 s(1);
+  }
+}

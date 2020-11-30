@@ -1,0 +1,25 @@
+@import '~Sass/import-framework';
+
+.code-block {
+  overflow-x: auto;
+  width: 100%;
+
+  &--light {
+    background-color: color('adjust.tone');
+    border-radius: s(0.5);
+    box-shadow: get($shadow, 'tiny');
+
+    pre {
+      background-color: transparent !important;
+    }
+  }
+
+  &--dark {
+    border-radius: s(0.5);
+  }
+
+  pre {
+    margin: 0;
+    padding: s(0.5) s(1) !important;
+  }
+}

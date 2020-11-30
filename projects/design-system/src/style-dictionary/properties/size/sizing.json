@@ -1,0 +1,13 @@
+{
+  "sizing": {
+    "form": {
+      "field": {
+        "height" : { "value": "40px" }
+      },
+      "textarea": {
+        "height" : { "value": "120px" },
+        "max-height" : { "value": "240px" }
+      }
+    }
+  }
+}

@@ -1,0 +1,121 @@
+---
+title: 'Accesso a Nexus'
+date: '2020-08-26'
+author:
+  - vittorio.vittori@maggioli.it
+---
+
+## Cos'è Nexus
+
+[Nexus][nexus] è il registry che utiliziamo internamente per ospitare i progetti pubblicati come moduli [Node.js][nodejs].
+
+Dal momento in cui il progetto non è ancora maturo al punto di poter essere condiviso pubblicamente, per ora sarà ospitato qui.
+
+---
+
+
+## Come accedere
+
+Per poter accedere ai moduli node pubblicati dentro Nexus è necessario avere delle credenziali di accesso composte da `username`, `password` e un `token` di autenticazione.
+
+---
+
+### Tabella degli utenti disponibili
+
+<Table interactive={true}>
+  <TableHeader>
+    <TableHeaderCell>Username</TableHeaderCell>
+    <TableHeaderCell>Password</TableHeaderCell>
+    <TableHeaderCell>Descrizione</TableHeaderCell>
+  </TableHeader>
+  <TableBody>
+    <TableRow>
+      <TableCell><Code>nexusUser</Code></TableCell>
+      <TableCell><Code>nexusUser</Code></TableCell>
+      <TableCell>Per il download e l'uso dei pacchetti.</TableCell>
+    </TableRow>
+    <TableRow>
+      <TableCell><Code>nexusupload</Code></TableCell>
+      <TableCell><Code>nexusupload</Code></TableCell>
+      <TableCell>Per la pubblicazione dei pacchetti</TableCell>
+    </TableRow>
+  </TableBody>
+</Table>
+
+<UList>
+  <UListItem icon="statusWarning" iconClassName="color-status-error-08">
+    L'utente <Code>nexusUser</Code> è camelcase ed è noto che il registry non supporta i caratteri maisucoli, per tanto il sistemà può dare problemi su certi casi d'uso.
+  </UListItem>
+  <UListItem icon="statusSuccess" iconClassName="color-status-success-08">
+    Utilizza <Code>nexusupload</Code> fino a quando il problema non sarà risolto.
+  </UListItem>
+</UList>
+
+---
+
+### Configurazione globale
+
+Per l'autenticazione è necessario creare un file `.npmrc` dove andranno le credenziali e il registry di nexus, in modo che durante l'installazione dei pacchetti node questo sia la prima scelta per la ricerca dei pacchetti da installare.
+
+<UList>
+  <UListItem icon="password" iconClassName="color-status-warning-08">
+    La posizione di questo file è da tenere esterna al progetto, ad esempio <Code>~/.npmrc</Code> in quanto ci finiranno dati sensibili come il <Code>token</Code> di autenticazione.
+  </UListItem>
+</UList>
+
+Da terminale puoi creare un file in questo modo:
+
+```bash
+cat > ~/.npmrc
+```
+
+Una volta creato il file, sarà necessario aggiungere questa riga con all'interno il registry privato.
+
+```bash
+registry=http://nexus.maggioli.it:8081/repository/npm-group/
+```
+
+##### Aggiunta del token
+
+Nel file globale è necessario aggiungere il token che si potrà generare in questo modo:
+
+```bash
+echo -n 'nexusupload:nexusupload' | openssl base64
+```
+
+Questo comando genera un stringa hash che sarà da inserire nel campo `_auth` come nell'esempio qui sotto:
+
+```bash
+registry=http://nexus.maggioli.it:8081/repository/npm-group/
+_auth=bmV4dXN1cGxvYWQ6bmV4dXN1cGxvYWQ=
+```
+
+<UList>
+  <UListItem icon="password" iconClassName="color-status-warning-08">
+    In futuro è probabile che ogni utente avrà la sua <Code>username</Code> e <Code>password</Code> per evitare problemi di sicurezza.
+  </UListItem>
+</UList>
+
+---
+
+### Configurazione progetto
+
+All'interno del progetto ci andrà un file simile, dove al posto della stringa hash ci andrà la variabile di sistema `${NPM_TOKEN}`.
+
+```bash
+registry=http://nexus.maggioli.it:8081/repository/npm-group/
+_auth=${NPM_TOKEN}
+```
+
+Questo file dovrà trovarsi nella stessa cartella del file `package.json` che utilizza node per le installazione delle dipendenze.
+
+È consigliabile **non salvare mai** la riga `_auth` in un file nelle cartelle di progetto per non versionarla.
+
+potete quindi aggiungere la riga in un secondo momento e aggiungere questo comando git per evitare che venga aggiunto alle commit future.
+
+```bash
+git update-index --assume-unchanged .npmrc
+```
+
+[nexus]: https://www.sonatype.com/product-nexus-repository
+[nodejs]: https://nodejs.org/

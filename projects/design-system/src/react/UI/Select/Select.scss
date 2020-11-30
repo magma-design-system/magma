@@ -1,0 +1,106 @@
+@import '~Sass/import-framework';
+
+$brand-color: color('brand.maggioli');
+$input-radius: get($radius, 'small');
+$size: get($form-sizes, 'input-height');
+
+.select {
+  &__label {
+
+    --color: color('adjust.tone', '02');
+
+    color: var(--color);
+    margin-bottom: s(0.5);
+  }
+
+  &__item {
+    line-height: 0;
+    position: relative;
+  }
+
+  &__icon {
+
+    --background-color: color('adjust.tone', '03');
+
+    align-items: center;
+    background-color: var(--background-color);
+    border-radius: s(0.25);
+    bottom: s(0.25);
+    color: color('adjust.tone', '04');
+    display: flex;
+    height: $size - s(0.5);
+    justify-content: center;
+    pointer-events: none;
+    position: absolute;
+    right: s(0.25);
+    top: s(0.25);
+    transition: background-color get($tween, 'hover'), border-radius get($tween, 'hover'), bottom get($tween, 'hover'), color get($tween, 'hover'), right get($tween, 'hover'), top get($tween, 'hover'), width get($tween, 'hover');
+    width: $size - s(0.5);
+    z-index: 1;
+  }
+
+  &__field {
+
+    --background-color: #{color('adjust.tone')};
+    --box-shadow: #{get($shadow, 'tiny'), get($shadow, 'outline')};
+    --color: #{color('adjust.tone', '02')};
+
+    appearance: none;
+    background-color: var(--background-color);
+    border: 1px solid transparent;
+    border-radius: $input-radius;
+    box-shadow: var(--box-shadow);
+    color: var(--color);
+    height: $size;
+    padding: 0 s(0.5);
+    padding-right: s(2);
+    position: relative;
+    text-transform: capitalize;
+    transition: box-shadow get($tween, 'hover'), color get($tween, 'hover'), border-color get($tween, 'hover');
+    width: 100%;
+    z-index: 0;
+
+    &::first-letter {
+      text-transform: uppercase;
+    }
+
+    // sass-lint:disable no-color-literals
+    // sass-lint:disable no-vendor-prefixes
+
+    &:-moz-focusring {
+      color: transparent;
+      text-shadow: 0 0 0 #000000;
+    }
+
+    // sass-lint:enable no-color-literals
+    // sass-lint:enable no-vendor-prefixes
+
+    &:focus {
+
+      --border-color: #{$brand-color};
+      --box-shadow: #{get($shadow, 'tiny'), get($shadow, 'outline')};
+
+      border-color: var(--border-color);
+      box-shadow: var(--box-shadow);
+      outline: 0;
+
+      &::placeholder {
+
+        --color: color('adjust.tone', '12');
+
+        color: var(--color);
+      }
+
+      & + .select {
+        &__icon {
+
+          --background-color: #{color('adjust.tone', '04')};
+          --color: #{color('adjust.tone', '20')};
+
+          background-color: var(--background-color);
+          color: var(--color);
+        }
+      }
+    }
+  }
+}

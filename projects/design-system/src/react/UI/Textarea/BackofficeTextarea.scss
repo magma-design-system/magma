@@ -1,0 +1,208 @@
+@import '~Sass/import-framework';
+@import '../Input/BackofficeExtends';
+
+$top-size: 50px;
+$required-size: 90px;
+$size-input: 100px;
+$size-opened: 200px;
+$size-focused: $size-opened - $top-size;
+$ease: get($tween, 'slide');
+
+.backoffice-textarea {
+
+  @extend %input;
+
+  min-height: $size-opened;
+
+  &__content {
+    padding-top: 0;
+    position: relative;
+    transition: padding-top get($tween, 'slide');
+    z-index: 1;
+  }
+
+  &__label {
+
+    @extend %label;
+
+    left: s(1);
+    padding-bottom: s(0.125);
+    position: absolute;
+    top: s(1);
+    transition: left $ease 0.1s, transform $ease 0.1s, width $ease 0.1s;
+    width: calc(100% - #{s(2)});
+
+    @include media('desktop') {
+      padding-bottom: 0;
+    }
+  }
+
+  &__required {
+
+    @extend %required;
+
+    right: s(0.5);
+    top: s(0.5);
+    transition: color $ease, height $ease, transform $ease, width $ease;
+
+    &--valid {
+
+      @extend %required-valid;
+    }
+  }
+
+  &__icon-area {
+
+    @extend %icon-area;
+
+    height: $size-input;
+    top: 0;
+    transform: translate(s(1));
+    transition: height $ease, top $ease, width $ease;
+    width: s(3);
+  }
+
+  &__icon {
+
+    @extend %icon;
+
+    transition: font-size $ease;
+  }
+
+  &__field {
+
+    @extend %field;
+
+    height: $size-opened;
+    padding-left: s(1);
+    padding-right: s(1);
+    padding-top: s(2.75);
+    resize: none;
+    transition: background-color $ease, height $ease, box-shadow $ease, padding-top $ease, padding-left $ease;
+
+    &:focus {
+      transition: background-color $ease 0.2s, height $ease 0.2s, box-shadow $ease 0.2s, padding-top $ease 0.2s, padding-left $ease 0.2s;
+    }
+  }
+
+  &__error {
+
+    @extend %error;
+  }
+
+  &__error-icon {
+
+    @extend %error-icon;
+  }
+
+  &__message {
+
+    @extend %error-message;
+  }
+
+  &:focus-within,
+  &--filled {
+    .backoffice-textarea {
+      &__content {
+        padding-top: $top-size;
+      }
+
+      &__label {
+        left: s(1);
+        transform: translate(0, -25%) scale(0.75);
+        width: calc(135% - #{s(3)});
+      }
+
+      &__required {
+
+        @extend %required-focused;
+
+        transform: translate(0, s(2.5));
+        width: $required-size;
+
+        &--valid {
+
+          @extend %required-focused-valid;
+        }
+      }
+
+      &__field {
+
+        @extend %field-focused;
+
+        height: $size-focused;
+        padding-top: s(0.6);
+      }
+
+      &__icon-area {
+        height: $top-size;
+        top: $top-size;
+        width: s(2);
+      }
+
+      &__icon {
+
+        @extend %icon-focused;
+      }
+    }
+  }
+
+  &:focus-within {
+    .backoffice-textarea {
+      &__content {
+        padding-top: $top-size;
+        transition: padding-top get($tween, 'slide') 0.2s;
+      }
+
+      &__required {
+
+        @extend %required-focused;
+
+        transform: translate(0, s(2.5));
+        transition: color $ease 0.2s, height $ease 0.2s, transform $ease 0.2s, width $ease 0.2s;
+      }
+
+      &__field {
+
+        @extend %field-focused;
+      }
+    }
+  }
+
+  &--has-icon {
+    .backoffice-textarea {
+      &__label {
+        left: s(4.5);
+        width: calc(100% - #{s(5.5)});
+      }
+
+      &__field {
+        padding-left: s(4.5);
+      }
+    }
+
+    &:focus-within {
+      .backoffice-textarea {
+        &__field {
+          padding-left: s(3);
+        }
+      }
+    }
+
+    &.backoffice-textarea {
+      &--filled {
+        .backoffice-textarea {
+          &__label {
+            left: s(1);
+            transform: translate(0, -25%) scale(0.75);
+            width: calc(135% - #{s(3)});
+          }
+
+          &__field {
+            padding-left: s(3);
+          }
+        }
+      }
+    }
+  }
+}

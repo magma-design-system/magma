@@ -1,0 +1,134 @@
+@import '~Sass/import-framework';
+
+$pivot-offset: s(0.5);
+$margin-height: s(0.75);
+$borders-color: color('adjust.tone');
+$menu-width: 250px;
+
+.dropdown {
+
+  --menu-width: #{$menu-width};
+
+  display: inline-flex;
+
+  &--direction-right {
+    justify-content: flex-end;
+  }
+
+  &--visible {
+    .dropdown {
+      &__list {
+        opacity: 1;
+        pointer-events: auto;
+        transform: scale(1) translate(0, 0);
+      }
+    }
+  }
+
+  &__wrapper {
+    position: relative;
+  }
+
+  &__toggler {
+    cursor: pointer;
+    padding: 0 s(0.5) 0 s(0.25);
+  }
+
+  &__description {
+    &::first-letter {
+      text-transform: uppercase;
+    }
+  }
+
+  &__list {
+
+    $neg-pivot: s(-1, $pivot-offset);
+    $scale: scale(0.5);
+
+    border-radius: s(0.5);
+    opacity: 0;
+    overflow: hidden;
+    pointer-events: none;
+    position: absolute;
+    transform: $scale;
+    transition: opacity get($tween, 'slide'), transform get($tween, 'slide');
+    width: var(--menu-width);
+
+    &--pivot-bottom-left {
+      bottom: $neg-pivot;
+      left: $neg-pivot;
+      transform-origin: $pivot-offset calc(100% - #{$pivot-offset});
+    }
+
+    &--pivot-top-left {
+      left: $neg-pivot;
+      top: $neg-pivot;
+      transform: $scale translate($pivot-offset, $pivot-offset);
+      transform-origin: $neg-pivot $neg-pivot;
+    }
+
+    &--pivot-bottom-right {
+      bottom: $neg-pivot;
+      right: $neg-pivot;
+      transform: $scale;
+      transform-origin: calc(100% - #{$pivot-offset}) calc(100% - #{$pivot-offset});
+    }
+
+    &--pivot-top-right {
+      right: $neg-pivot;
+      top: $neg-pivot;
+      transform-origin: calc(100% - #{$pivot-offset}) $pivot-offset;
+    }
+  }
+
+  &__header {
+    background-color: $borders-color;
+    min-height: $margin-height;
+    padding: s(0.5) s(1);
+
+    &::first-letter {
+      text-transform: uppercase;
+    }
+  }
+
+  &__footer {
+    background-color: $borders-color;
+    min-height: $margin-height;
+    padding: s(0.5);
+  }
+
+  &__item {
+    background-color: color('adjust.tone', '20');
+    color: color('adjust.tone', '04');
+    cursor: pointer;
+    padding: 0 s(0.75);
+
+    &:hover {
+      background-color: color('adjust.tone');
+      color: color('brand.maggioli', '02');
+
+      .dropdown {
+        &__item-icon {
+          color: color('brand.maggioli', '06');
+        }
+      }
+    }
+  }
+
+  &__item-icon {
+    color: color('brand.maggioli', '05');
+  }
+
+  &__text {
+    flex: 1;
+    min-width: 0;
+    overflow: hidden;
+    text-align: left;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+
+    &::first-letter {
+      text-transform: uppercase;
+    }
+  }
+}

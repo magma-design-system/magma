@@ -1,0 +1,8 @@
+@import '~Sass/import-framework';
+
+.wide-element {
+  background-color: color('adjust.tone', '17');
+  border: 1px solid color('adjust.tone');
+  height: 200px;
+  width: 300px;
+}

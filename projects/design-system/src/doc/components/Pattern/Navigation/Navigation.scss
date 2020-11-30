@@ -1,0 +1,21 @@
+@import '~Sass/import-framework';
+
+.ds-navigation {
+  padding: s(2) 0;
+
+  &__logo {
+    width: 60px;
+  }
+}
+
+.ds-navigation-switch {
+  display: flex;
+  position: fixed;
+  right: s(2);
+  top: s(2);
+  z-index: 1;
+
+  @include media('desktop') {
+    display: none;
+  }
+}

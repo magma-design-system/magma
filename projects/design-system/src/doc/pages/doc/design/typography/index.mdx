@@ -1,0 +1,17 @@
+---
+title: 'Typography'
+date: '2020-09-25'
+author:
+  - vittorio.vittori@maggioli.it
+---
+
+import TypographyTableGroup from '@Gatsby/Typography/TypographyTableGroup'
+import fontFamilies from '+Tokens/css-tokens/font-families.json'
+
+<Fragment>
+  {
+    Object.entries(fontFamilies).map(([key, value], index) =>
+      <TypographyTableGroup key={index} group={key} family={value.family} styles={value.styles} />,
+    )
+  }
+</Fragment>

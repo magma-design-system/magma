@@ -1,0 +1,86 @@
+@function has-this-color ($index) {
+
+  @each $color-index in $palette-scale {
+
+    @if #{$index} == #{$color-index} {
+      @return true;
+    }
+  }
+
+  @return false;
+}
+
+@mixin scaffold-property-color ($property, $group-name, $tint-name, $contrast-level) {
+
+  $selector: '';
+
+  @if $contrast-level == 'color' {
+
+    $selector: str-replace('#{$group-name $tint-name}', ' ', '-');
+  } @else {
+
+    $selector: str-replace('#{$group-name $tint-name $contrast-level}', ' ', '-');
+  }
+
+  $color-name: str-replace('#{$group-name $tint-name}', ' ', '.');
+
+  .#{$property}-#{$selector} {
+    #{$property}: color($color-name, $contrast-level) !important;
+  }
+}
+
+@mixin scaffold-color ($group-name, $tint-name, $contrast-level, $index) {
+
+  @each $property-name in $palette-scaffold {
+
+    @if map-has-key($map: get($config, 'palette'), $key: 'scale') {
+
+      @if has-this-color($index) {
+        @include scaffold-property-color(
+          $property: $property-name,
+          $group-name: $group-name,
+          $tint-name: $tint-name,
+          $contrast-level: $contrast-level
+        );
+      }
+    } @else {
+      @include scaffold-property-color(
+        $property: $property-name,
+        $group-name: $group-name,
+        $tint-name: $tint-name,
+        $contrast-level: $contrast-level
+      );
+    }
+  }
+}
+
+@mixin scaffold-colors ($colors) {
+  @each $group-name, $group-map in $colors {
+    @each $tint-name, $tints-map in $group-map {
+      @each $light-mode-name, $light-modes-map in $tints-map {
+
+        $i: 0;
+
+        @each $contrast, $contrast-value in $light-modes-map {
+
+          @if $light-mode-name == 'light' {
+
+            $i: $i + 1;
+            $contrast-level: str-replace('#{$contrast}', 'c-', '');
+
+            @include scaffold-color(
+              $group-name: $group-name,
+              $tint-name: $tint-name,
+              $contrast-level: $contrast-level,
+              $index: $i
+            );
+          }
+        }
+      }
+    }
+  }
+}
+
+// stylelint-disable scss/at-mixin-named-arguments
+
+@include scaffold-colors($colors: get($tokens, 'color'));

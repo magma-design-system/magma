@@ -1,0 +1,205 @@
+@import '~Sass/import-framework';
+
+$brand-color: color('brand.maggioli', '04');
+$ease: get($tween, 'hover');
+$icon-color: color('brand.maggioli', '07');
+$input-radius-error: get($radius, 'small');
+$input-radius: get($radius, 'small');
+$label-color: color('adjust.tone', '02');
+$size: get($form-sizes, 'input-height');
+
+.input {
+  display: block;
+  line-height: 0;
+  position: relative;
+  transition: margin-bottom $ease;
+
+  &--fill {
+    width: 100%;
+  }
+
+  &--grow {
+    flex-grow: 1;
+  }
+
+  &--has-icon {
+    .input {
+      &__field {
+        padding-left: $size;
+      }
+    }
+  }
+
+  &:focus-within {
+    .input {
+      &__icon {
+
+        --color: #{$brand-color};
+
+        color: var(--color);
+      }
+    }
+  }
+
+  &--has-errors {
+    margin-bottom: 0;
+
+    &:focus-within {
+      .input {
+        &__icon {
+          color: color('status.error', '06');
+        }
+      }
+    }
+
+    .input {
+      &__field {
+        background-color: color('status.error', '19');
+        border-color: color('status.error', '19');
+
+        &:focus {
+          background-color: color('status.error', '20');
+          border-color: color('status.error', '17');
+          box-shadow: none;
+        }
+      }
+
+      &__icon {
+        color: color('status.error', '09');
+      }
+    }
+  }
+
+  &__label {
+
+    --color: #{color('adjust.tone', '02')};
+
+    color: var(--color);
+    margin-bottom: s(0.5);
+  }
+
+  &__field {
+
+    --background-color: #{color('adjust.tone')};
+    --border-color: transparent;
+    --box-shadow: #{get($shadow, 'tiny'), get($shadow, 'outline')};
+    --color: #{color('adjust.tone', '02')};
+
+    background-color: var(--background-color);
+    border: 1px solid var(--border-color);
+    border-radius: $input-radius;
+    box-shadow: var(--box-shadow);
+    color: var(--color);
+    height: $size;
+    line-height: $size;
+    padding: 0 s(0.5);
+    position: relative;
+    transition: background-color $ease, border-color $ease, border-radius $ease, box-shadow $ease;
+    width: 100%;
+    z-index: 1;
+
+    &::placeholder {
+
+      --color: #{color('adjust.tone', '08')};
+
+      color: var(--color);
+      transition: color $ease;
+    }
+
+    &:focus {
+
+      --border-color: #{$brand-color};
+      --box-shadow: #{get($shadow, 'tiny'), get($shadow, 'outline')};
+
+      border-color: var(--border-color);
+      box-shadow: var(--box-shadow);
+      outline: 0;
+
+      &::placeholder {
+
+        --color: #{color('adjust.tone', '16')};
+
+        color: var(--color);
+      }
+    }
+  }
+
+  &__icon-area {
+    align-items: center;
+    display: flex;
+    height: $size;
+    justify-content: center;
+    left: 0;
+    position: absolute;
+    width: $size;
+    z-index: 2;
+  }
+
+  &__icon {
+
+    --color: #{$icon-color};
+
+    color: var(--color);
+    transition: color $ease;
+  }
+
+  &__message {
+    background-color: color('status.error', '17');
+    border-radius: 0 0 $input-radius-error $input-radius-error;
+    margin: 0;
+    margin-top: s(-0.5);
+    padding: s(0.5);
+    padding-top: s(1);
+  }
+
+  &__error {
+    color: color('status.error', '09');
+    display: flex;
+    list-style-type: none;
+    padding: 0;
+  }
+
+  &__error-icon {
+    margin-right: s(0.5);
+  }
+}
+
+.input--flat {
+  .input {
+
+    $text-color: color('adjust.tone', '02');
+
+    &__label {
+
+      --color: #{$text-color};
+    }
+
+    &__field {
+
+      --box-shadow: none;
+      --border-color: #{color('adjust.tone', '10')};
+      --color: #{$text-color};
+
+      &::placeholder {
+
+        --color: #{color('adjust.tone', '08')};
+      }
+
+      &:focus {
+
+        --border-color: #{$brand-color};
+        --box-shadow: none;
+
+        &::placeholder {
+
+          --color: #{color('adjust.tone', '18')};
+        }
+      }
+    }
+
+    &__icon {
+
+      --color: #{$text-color};
+    }
+  }
+}

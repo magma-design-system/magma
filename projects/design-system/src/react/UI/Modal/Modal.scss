@@ -1,0 +1,235 @@
+@import '~Sass/import-framework';
+
+$modal-size: 550px;
+$modal-background: rgba(0, 0, 0, 0.5);
+
+.modal {
+  align-items: center;
+  bottom: 0;
+  display: flex;
+  justify-content: flex-end;
+  left: 0;
+  pointer-events: none;
+  position: fixed;
+  right: 0;
+  top: 0;
+  transition: visibility get($tween, 'slide');
+  visibility: hidden;
+  z-index: 3;
+
+  &::after {
+    background-color: $modal-background;
+    bottom: 0;
+    content: '';
+    left: 0;
+    opacity: 0;
+    pointer-events: none;
+    position: absolute;
+    right: 0;
+    top: 0;
+    transition: opacity get($tween, 'slide');
+  }
+
+  &--from-left {
+    justify-content: flex-start;
+
+    .modal {
+      &__close {
+        left: auto;
+        right: s(0.75);
+      }
+
+      &__window {
+        border-radius: 0;
+        transform: translate(-100%, 0);
+
+        @include media ('tablet') {
+          transform: translate(-100%, 0);
+        }
+      }
+    }
+  }
+
+  &--from-center {
+
+    @include media ('tablet') {
+      justify-content: center;
+    }
+
+    .modal {
+      &__window {
+
+        @include media ('tablet') {
+          border-radius: s(1);
+          height: auto;
+          max-width: $modal-size;
+          opacity: 0;
+          transform: translate(0, 10%);
+        }
+      }
+
+      &__contents {
+        @include media ('tablet') {
+          max-height: 50vh;
+        }
+
+        &--clean {
+          @include media ('tablet') {
+            padding-right: 0;
+          }
+        }
+      }
+    }
+  }
+
+  &--visible {
+    pointer-events: auto;
+    visibility: visible;
+
+    &::after {
+      opacity: 1;
+    }
+
+    .modal {
+      &__window {
+        box-shadow: get($shadow, 'strong');
+        opacity: 1;
+        transform: translate(0, 0);
+      }
+
+      &__close {
+        opacity: 1;
+        transform: translate(0, 0);
+      }
+    }
+  }
+
+  &--max-height {
+
+    $margin: s(14);
+
+    .modal {
+      &__contents {
+
+        @include media ('tablet') {
+          max-height: calc(100vh - #{$margin});
+        }
+      }
+    }
+  }
+
+  &__window {
+    background-color: color('adjust.tone');
+    box-shadow: none;
+    display: flex;
+    flex-direction: column;
+    flex-grow: 1;
+    height: 100vh;
+    max-width: calc(100% - #{s(3)});
+    opacity: 1;
+    overflow: hidden;
+    position: relative;
+    transform: translate(calc(100% + #{s(3)}), 0);
+    transition: box-shadow get($tween, 'slide'), opacity get($tween, 'slide'), transform get($tween, 'slide');
+    z-index: 1;
+
+    @include media ('tablet') {
+      max-width: 600px;
+      transform: translate(100%, 0);
+    }
+  }
+
+  &__header {
+    background-color: color('brand.maggioli', '19');
+    display: flex;
+    flex-shrink: 0;
+    padding: s(1.5);
+    position: relative;
+
+    @include media ('tablet') {
+      padding: s(1.5) s(4) s(1.5) s(1.5);
+    }
+  }
+
+  &__title {
+    color: color('brand.maggioli', '05');
+  }
+
+  &__footer {
+    background-color: color('adjust.tone', '19');
+    padding: s(1.5);
+    position: relative;
+  }
+
+  &__contents {
+    flex-grow: 1;
+    overflow: auto;
+    -webkit-overflow-scrolling: touch;
+    padding: s(1.5);
+
+    @include media ('tablet') {
+      max-height: auto;
+      padding: s(1.5) s(4) s(1.5) s(1.5);
+    }
+
+    &--close-outside {
+      @include media ('tablet') {
+        padding: s(1.5);
+      }
+
+      &.modal__contents--clean {
+        @include media ('tablet') {
+          padding-right: 0;
+        }
+      }
+    }
+
+    &--clean {
+      padding: 0;
+
+      @include media ('tablet') {
+        padding-right: s(3);
+      }
+    }
+  }
+
+  &__close-inside {
+    background-color: color('brand.maggioli', '18');
+    border-radius: s(2);
+    color: color('brand.maggioli', '05');
+    cursor: pointer;
+    height: s(2);
+    left: auto;
+    line-height: 1;
+    position: absolute;
+    right: s(1.5);
+    top: s(1.5);
+    transition: background-color get($tween, 'slide');
+    width: s(2);
+
+    @include media ('mobile') {
+      display: none;
+    }
+
+    &:hover {
+      background-color: color('brand.maggioli', '16');
+    }
+  }
+
+  &__close {
+    color: color('adjust.tone');
+    cursor: pointer;
+    left: s(0.75);
+    line-height: 1;
+    opacity: 0;
+    position: fixed;
+    top: s(1.5);
+    transform: translate(-100%, 0);
+    transition: opacity get($tween, 'slide'), transform get($tween, 'slide');
+    z-index: 2;
+
+    @include media ('tablet') {
+      display: none;
+    }
+  }
+}

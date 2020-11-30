@@ -1,0 +1,11 @@
+@import '~Sass/import-framework';
+
+.bibliography {
+  &__item {
+    margin-right: s(0.25);
+
+    &:last-child {
+      margin: 0;
+    }
+  }
+}

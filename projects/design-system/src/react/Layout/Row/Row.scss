@@ -1,0 +1,54 @@
+@import '~Sass/import-framework';
+
+@mixin gutter-modifier ($size-item) {
+
+  $modifier: nth($size-item, 1);
+  $gutter: nth($size-item, 2);
+
+  &--gutter-#{$modifier} {
+    .row__item {
+      margin-right: $gutter;
+    }
+  }
+}
+
+.row {
+  display: flex;
+  text-align: left;
+
+  @each $size-item in $list-sizes {
+    @include gutter-modifier ($size-item);
+  }
+
+  &--align-center {
+    align-items: center;
+  }
+
+  &--align-flex-start {
+    align-items: flex-start;
+  }
+
+  &--align-flex-end {
+    align-items: flex-end;
+  }
+
+  &--last-child-to-right {
+    .row {
+      &__item {
+        &:last-child {
+          margin-left: auto;
+        }
+      }
+    }
+  }
+
+  &__item {
+    min-width: 0;
+    overflow: hidden;
+    text-overflow: ellipsis;
+
+    &:last-child {
+      margin-right: 0;
+    }
+  }
+}

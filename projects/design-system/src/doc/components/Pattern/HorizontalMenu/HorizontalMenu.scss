@@ -1,0 +1,58 @@
+@import '~Sass/import-framework';
+
+$radius: s(0.25);
+$contents-color: color('adjust.tone', 'color');
+$contents-color-desktop: color('adjust.tone', 'color', 0.8);
+
+.ds-horizontal-menu {
+  background-color: color('adjust.tone');
+  margin: 0 s(-1);
+  transform: translate(0, -2px);
+  width: auto;
+
+  @include media('desktop') {
+    backdrop-filter: saturate(180%) blur(20px);
+    background-color: $contents-color-desktop;
+    margin: 0 s(-2);
+    padding-left: s(2);
+    padding-right: s(2);
+  }
+
+  &__list {
+    &::after {
+      min-width: s(4);
+    }
+  }
+
+  &__item {
+    align-items: center;
+    display: flex;
+    height: s(5);
+
+    & + & {
+      margin-left: s(0.5);
+    }
+  }
+
+  &__link {
+    border-radius: $radius;
+
+    // @extend %bar-hidden;
+    color: color('adjust.tone', '02');
+    cursor: pointer;
+    display: inline-flex;
+    padding: s(0.25) s(0.5) s(0.25) s(0.5);
+    transition: background-color get($tween, 'hover');
+    white-space: nowrap;
+
+    &:hover {
+      background-color: color('adjust.tone', '02', 0.1);
+    }
+
+    &--active {
+      background-color: color('adjust.tone', '02');
+      color: color('adjust.tone', '20');
+      pointer-events: none;
+    }
+  }
+}

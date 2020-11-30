@@ -1,0 +1,54 @@
+@import '~Sass/import-framework';
+
+.kpi {
+
+  --background-color: #{color('brand.maggioli', '05')};
+  --border-radius: #{s(1)};
+  --box-shadow: #{get($shadow, 'box')};
+
+  display: grid;
+  grid-gap: s(1);
+  grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+  padding-bottom: s(1.25);
+  padding-top: s(1.25);
+
+  @include media('desktop') {
+    justify-content: space-around;
+  }
+
+  &__item {
+    align-items: center;
+    background-color: var(--background-color);
+    border-radius: var(--border-radius);
+    box-shadow: var(--box-shadow);
+    color: color('brand.maggioli', '20');
+    display: flex;
+    flex-basis: 0;
+    flex-direction: column;
+    flex-grow: 1;
+    justify-content: center;
+    padding: s(1);
+  }
+
+  &__icon {
+
+    --color: #{color('brand.maggioli', '20')};
+
+    color: var(--color);
+    font-size: 48px !important;
+  }
+
+  &__title {
+    margin-bottom: s(0.5);
+  }
+
+  &--inline {
+    .kpi {
+      &__item {
+        flex-grow: 0;
+        flex-shrink: 0;
+        min-width: 150px;
+      }
+    }
+  }
+}

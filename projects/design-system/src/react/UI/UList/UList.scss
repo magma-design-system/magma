@@ -1,0 +1,25 @@
+@import '~Sass/import-framework';
+
+.u-list {
+  display: grid;
+  grid-gap: s(0.25);
+  margin: 0;
+  padding-left: s(0.5);
+
+  &__item {
+    align-items: flex-start;
+    display: flex;
+    list-style-type: none;
+  }
+
+  &__icon {
+    margin-right: s(0.5);
+  }
+
+  &__numeric {
+    line-height: inherit;
+    margin-right: s(0.5);
+    min-width: s(1.5);
+    text-align: right;
+  }
+}

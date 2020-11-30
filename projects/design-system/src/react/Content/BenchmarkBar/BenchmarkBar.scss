@@ -1,0 +1,13 @@
+@import '~Sass/import-framework';
+
+.benckmark-bar {
+
+  $size: s(1);
+
+  max-width: 300px;
+
+  &__progress {
+    color: color('brand.maggioli', '05');
+    flex-shrink: 0;
+  }
+}

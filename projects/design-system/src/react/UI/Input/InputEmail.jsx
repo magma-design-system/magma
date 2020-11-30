@@ -1,0 +1,43 @@
+import React from 'react'
+import PropTypes from 'prop-types'
+import Input from '@UI/Input/Input'
+import { capitalize } from '@UI/Select/functions'
+
+const InputEmail = props =>
+  <Input {...props}>
+    <input
+      autoComplete={props.autoComplete}
+      className={`input__field ${props.font}`}
+      defaultValue={props.value}
+      name={props.name}
+      onBlur={e => { console.log(e) }}
+      placeholder={capitalize(props.placeholder)}
+      type="email"
+    />
+  </Input>
+
+InputEmail.propTypes = {
+  autoComplete: PropTypes.string,
+  font: PropTypes.string,
+  icon: PropTypes.string,
+  iconClassName: PropTypes.string,
+  name: PropTypes.string,
+  placeholder: PropTypes.string,
+  isValid: PropTypes.bool,
+  validate: PropTypes.bool,
+  value: PropTypes.string,
+}
+
+InputEmail.defaultProps = {
+  autoComplete: 'off',
+  font: 'text-secondary text-secondary--detail',
+  icon: 'document-email',
+  iconClassName: '',
+  name: 'email',
+  placeholder: 'your@email.com',
+  isValid: false,
+  validate: true,
+  value: '',
+}
+
+export default InputEmail

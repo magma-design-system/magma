@@ -1,0 +1,22 @@
+{
+  "warning": {
+    "background": "background-color-status-warning-18",
+    "icon": "status-warning",
+    "color": "color-status-warning-04"
+  },
+  "error": {
+    "background": "background-color-status-error-18",
+    "icon": "status-error",
+    "color": "color-status-error-04"
+  },
+  "success": {
+    "background": "background-color-status-success-18",
+    "icon": "status-success",
+    "color": "color-status-success-04"
+  },
+  "info": {
+    "background": "background-color-status-info-18",
+    "icon": "status-info",
+    "color": "color-status-info-04"
+  }
+}

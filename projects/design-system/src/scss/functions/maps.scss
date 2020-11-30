@@ -1,0 +1,54 @@
+@function get ($map, $search-key) {
+  // es:
+  // background-color: get($backgrounds, 'alto');
+  @each $key, $value in $map {
+
+    @if ('#{$key}' == '#{$search-key}') {
+      @return $value;
+    }
+  }
+  @return null;
+
+  @error 'No attribute key \'#{$key}\' found inside map #{$map}\nPlease checkout your code to fine where is the problem.';
+}
+
+@function reverse ($map) {
+
+  $result: null;
+
+  @if type-of($map) == 'map' {
+
+    $keys: map-keys($map);
+    $map-reversed: ();
+
+    @for $i from length($keys) through 1 {
+
+      $map-reversed: map-merge($map-reversed, (nth($keys, $i): map-get($map, nth($keys, $i))));
+    }
+
+    @if type-of($map-reversed) == 'map' {
+
+      $result: $map-reversed;
+    } @else {
+
+      @warn 'There was an error reversing the order of "#{$map}"';
+    }
+  } @else {
+
+    @warn '"#{$map}" is not a valid map';
+  }
+
+  @return $result;
+}
+
+@function token ($path, $map, $separator: '.') {
+
+  $list: str-split($path, $separator);
+  $partial-map: $map;
+
+  @each $key in $list {
+
+    $partial-map: get($partial-map, $key);
+  }
+  @return $partial-map;
+}

@@ -1,0 +1,70 @@
+@import '~Sass/import-framework';
+
+$ease: get($tween, 'slide');
+
+.backoffice-menu {
+  &__icon {
+    color: color('brand.maggioli');
+  }
+
+  &__item {
+    grid-gap: 2px !important;
+  }
+}
+
+.backoffice-menu-action {
+  align-items: flex-start;
+  border-radius: s(0.25);
+  color: color('adjust.tone', '04');
+  display: flex;
+  padding: s(0.5);
+  padding-left: 0;
+  transition: background-color $ease, padding-left $ease;
+
+  @include media('desktop') {
+    padding: s(0.25);
+    padding-left: 0;
+  }
+
+  &--active,
+  &:hover {
+    background-color: color('brand.maggioli', '20');
+    cursor: pointer;
+    padding-left: s(0.5);
+
+    @include media('desktop') {
+      padding-left: s(0.25);
+    }
+
+    .backoffice-menu-action {
+      &__icon {
+        margin-right: 0;
+        opacity: 1;
+        transform: translate(0, 0);
+      }
+    }
+  }
+
+  &--active {
+    background-color: color('adjust.tone', '20');
+    border-radius: s(0.25) 0 0 s(0.25);
+    margin-right: s(-2);
+    pointer-events: none;
+  }
+
+  &__icon {
+    color: color('brand.maggioli');
+    margin-right: -24px;
+    opacity: 0;
+    transform: translate(s(-0.5), 0);
+    transition: margin-right $ease, opacity $ease, transform $ease 0.1s;
+
+    @include media('desktop') {
+      transform: translate(s(-0.25), 0);
+    }
+  }
+
+  &__text {
+    margin-left: s(0.25);
+  }
+}

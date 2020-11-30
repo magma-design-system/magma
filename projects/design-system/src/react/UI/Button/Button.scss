@@ -1,0 +1,190 @@
+@import '~Sass/import-framework';
+
+$border-size: 2px;
+$ease: get($tween, 'hover');
+$border-radius: get($radius, 'small');
+
+@mixin size-modifier ($item) {
+
+  $modifier: nth($item, 1);
+  $value: nth($item, 2);
+
+  &--size-#{$modifier} {
+    height: $value;
+  }
+}
+
+@mixin padding-modifier ($item) {
+
+  $modifier: nth($item, 1);
+  $value: nth($item, 2);
+
+  &--padding-#{$modifier} {
+    padding-left: $value;
+    padding-right: $value;
+  }
+}
+
+.button {
+
+  --background: #{color('brand.maggioli', '04')};
+  --border: 2px solid transparent;
+  --color: #{color('adjust.tone')};
+
+  align-items: center;
+  background-color: var(--background);
+  border: var(--border);
+  border-radius: $border-radius;
+  color: var(--color);
+  cursor: pointer;
+  display: flex;
+  font-family: inherit;
+  height: get($form-sizes, 'input-height');
+  justify-content: center;
+  outline: 0;
+  padding: 0 s(1);
+  text-decoration: none;
+  transition: background-color $ease, border $ease, color $ease, filter $ease;
+  user-select: none;
+  width: auto;
+
+  @each $item in $button-sizes {
+    @include size-modifier ($item);
+  }
+
+  @each $item in $list-sizes {
+    @include padding-modifier ($item);
+  }
+
+  &__text {
+    &::first-letter {
+      text-transform: capitalize;
+    }
+  }
+
+  &__icon {
+    &:first-child {
+      margin-right: s(0.25);
+
+      &:last-child {
+        margin: 0 s(-0.75);
+      }
+    }
+  }
+
+  &--disabled {
+    opacity: 0.4;
+    pointer-events: none;
+  }
+
+  &--outline {
+
+    --background: transparent;
+    --border: #{$border-size} solid #{color('adjust.tone', '03')};
+    --color: #{color('adjust.tone', '03')};
+  }
+
+  &--width-fill {
+    width: 100%;
+  }
+
+  &__field {
+    display: none;
+  }
+}
+
+.button--variant-link {
+
+  --background: transparent;
+  --color: #{color('brand.maggioli', '04')};
+
+  justify-content: flex-start;
+
+  .button {
+    &__text {
+      text-decoration: underline;
+    }
+  }
+
+  &:active,
+  &:focus,
+  &:hover {
+
+    --background: transparent;
+    --color: #{color('brand.maggioli', '08')};
+  }
+}
+
+@mixin scaffold-variant ($modifier, $color-set) {
+
+  .button--variant-#{$modifier} {
+
+    --background: #{color($color-set, '04')};
+    --color: #{color('adjust.tone')};
+
+    &:active,
+    &:focus,
+    &:hover {
+
+      --background: #{color($color-set, '02')};
+      --color: #{color('adjust.tone', '20')};
+    }
+  }
+
+  .button--variant-#{$modifier}-outline {
+
+    --background: transparent;
+    --border: #{$border-size} solid #{color($color-set, '04')};
+    --color: #{color($color-set, '04')};
+
+    &:active,
+    &:focus,
+    &:hover {
+
+      --background: #{color($color-set, '04')};
+      --color: #{color('adjust.tone')};
+    }
+  }
+}
+
+@mixin scaffold-status-variant ($modifier, $color-set) {
+  .button--variant-#{$modifier} {
+
+    --background: #{color($color-set, '08')};
+    --color: #{color('adjust.tone')};
+
+    &:active,
+    &:focus,
+    &:hover {
+
+      --background: #{color($color-set, '06')};
+      --color: #{color('adjust.tone', '20')};
+    }
+  }
+
+  .button--variant-#{$modifier}-outline {
+
+    --background: #{color('adjust.tone')};
+    --border: #{$border-size} solid #{color($color-set, '08')};
+    --color: #{color($color-set, '08')};
+
+    &:active,
+    &:focus,
+    &:hover {
+
+      --background: #{color($color-set, '08')};
+      --color: #{color('adjust.tone', '20')};
+    }
+  }
+}
+
+@include scaffold-variant($modifier: 'primary', $color-set: 'brand.maggioli');
+@include scaffold-variant($modifier: 'secondary', $color-set: 'adjust.tone');
+@include scaffold-status-variant($modifier: 'success', $color-set: 'status.success');
+@include scaffold-status-variant($modifier: 'warning', $color-set: 'status.warning');
+@include scaffold-status-variant($modifier: 'error', $color-set: 'status.error');
+@include scaffold-status-variant($modifier: 'info', $color-set: 'status.info');
+
+// --toolbar-theme: {
+//   background-color: hsl(120, 70%, 95%);
+// };
