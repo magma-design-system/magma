@@ -10,9 +10,7 @@ variables:
 
 stages:
   - build
-  - push
   - deploy
-
 
 include:
   - '/projects/design-system/.gitlab-ci.yml'
