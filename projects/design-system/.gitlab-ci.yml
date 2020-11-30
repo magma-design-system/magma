@@ -55,6 +55,7 @@ deploy-designsystem:
   only:
     refs:
       - master
+      - ci
     changes:
       - "*"
       - "projects/design-system/**/*"
