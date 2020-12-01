@@ -2,12 +2,13 @@
 FROM node:15 as node
 LABEL step=build
 WORKDIR /app/design-system
-COPY package.json package-lock.json /app/design-system/
+COPY ./design-system/package.json /app/design-system/
+COPY ./design-system/package-lock.json /app/design-system/
 RUN [ "npm", "install" ]
-COPY ./ /app/design-system
+COPY ./design-system /app/design-system
 # TODO font-icons-cli e mgg-icons dovrebbero essere delle dipendenze, non dovrebbero essere usati direttamente
-COPY ../font-icons-cli /app/font-icons-cli
-COPY ../mgg-icons /app/mgg-icons
+COPY ./font-icons-cli /app/font-icons-cli
+COPY ./mgg-icons /app/mgg-icons
 
 # TODO Copiare solo i sorgenti invece di fare clean:gatsby
 RUN [ "npm", "run", "clean:gatsby" ]
@@ -21,5 +22,5 @@ LABEL step=runtime
 COPY --from=node /app/design-system/public/ /var/www/html/gatsby
 COPY --from=node /app/design-system/storybook-static /var/www/html/storybook
 
-COPY ./docker/nginx/nginx.conf /etc/nginx/nginx.conf
-COPY ./docker/nginx/sites/ /etc/nginx/sites-available
+COPY ./design-system/docker/nginx/nginx.conf /etc/nginx/nginx.conf
+COPY ./design-system/docker/nginx/sites/ /etc/nginx/sites-available
