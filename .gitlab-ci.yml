@@ -6,13 +6,11 @@ variables:
   # Abilita debug gitlab-ci
   #CI_DEBUG_TRACE: "true"
   # Deploy Image
-  KUBE_HELM_IMAGE: dtzar/helm-kubectl:3.3.4
+  #KUBE_HELM_IMAGE: dtzar/helm-kubectl:3.3.4
 
 stages:
-  - build
-  - push
+#  - build
   - deploy
-
 
 include:
   - '/projects/design-system/.gitlab-ci.yml'

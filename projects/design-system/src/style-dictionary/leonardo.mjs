@@ -1,7 +1,7 @@
 // based on https://leonardocolor.io/
 
 import { generateAdaptiveTheme } from '@adobe/leonardo-contrast-colors'
-import { readFileSync, writeFileSync } from 'fs'
+import { readFileSync, writeFileSync, mkdirSync } from 'fs'
 
 const colorsRawData = readFileSync('colors.json')
 const { colors, defaultColorspace, ratios } = JSON.parse(colorsRawData)
@@ -113,6 +113,7 @@ if (colorScales.length > 0) {
 
   const jsonPalette = JSON.stringify(palette, null, 2)
 
+  mkdirSync('./properties/color', { recursive: true })
   writeFileSync('./properties/color/base.json', jsonPalette, 'utf8', err => {
     if (err) {
       console.log('An error occured while writing JSON Object to File.')
