@@ -15,7 +15,7 @@
   },
   "scripts": {
     "clean": "rm -rf build || true",
-    "build": "npm run clean && npx font-icons src/mgg-icons.json",
+    "build": "npm run clean && font-icons src/mgg-icons.json",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "files": [
