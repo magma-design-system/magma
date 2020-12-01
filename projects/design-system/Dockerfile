@@ -6,7 +6,7 @@ WORKDIR /app/design-system
 # TODO font-icons-cli e mgg-icons dovrebbero essere delle dipendenze, non dovrebbero essere usati direttamente
 COPY ./font-icons-cli/package.json /app/font-icons-cli/
 COPY ./font-icons-cli/package-lock.json /app/font-icons-cli/
-RUN cd ./app/font-icons-cli/ && npm install
+RUN cd /app/font-icons-cli/ && npm install
 COPY ./mgg-icons/package.json /app/mgg-icons/
 COPY ./mgg-icons/package-lock.json /app/mgg-icons/
 RUN cd /app/mgg-icons/ && npm install
