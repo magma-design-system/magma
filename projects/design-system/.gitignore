@@ -1,7 +1,7 @@
-!/src/scss/variables/theme.scss
 /out*
 /public/
 /src/scss/variables/*.scss
 /src/style-dictionary/build
 /src/style-dictionary/properties/color
+!/src/scss/variables/theme.scss
 /storybook-static
