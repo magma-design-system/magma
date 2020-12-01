@@ -43,9 +43,9 @@ deploy-designsystem:
     - chmod +x ./projects/design-system/.deploy/deploy-designsystem.sh
   script:
     - ./projects/design-system/.deploy/deploy-designsystem.sh
-  after_script:
-    - chmod +x ./projects/design-system/.deploy/clean-designsystem.sh
-    - ./projects/design-system/.deploy/clean-designsystem.sh
+#  after_script:
+#    - chmod +x ./projects/design-system/.deploy/clean-designsystem.sh
+#    - ./projects/design-system/.deploy/clean-designsystem.sh
 #    - rm ./projects/design-system/.deploy/clean-designsystem.sh
   environment:
     name: DeployWebApp
