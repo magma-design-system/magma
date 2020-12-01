@@ -19,11 +19,20 @@ $contents-color-desktop: color('adjust.tone', 'color', 0.8);
   }
 
   &__list {
-    margin-left: s(-2);
-    margin-right: s(-2);
+    &::before {
+      min-width: s(1);
+
+      @include media('desktop') {
+        min-width: 0;
+      }
+    }
 
     &::after {
       min-width: s(4);
+
+      @include media('desktop') {
+        min-width: 0;
+      }
     }
   }
 

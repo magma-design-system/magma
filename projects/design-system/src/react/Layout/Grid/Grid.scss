@@ -41,10 +41,6 @@ $columns: 4;
     @include columns-modifier ($index);
   }
 
-  @include media ('mobile') {
-    grid-template-columns: 1fr;
-  }
-
   &--template-auto-fit {
     grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
 

@@ -141,11 +141,6 @@ body {
     width: $menu-size + s(0.5);
     z-index: 3;
 
-    @include media ('tablet') {
-      right: s(0);
-      top: s(1.5);
-    }
-
     @include media ('desktop') {
       display: none;
     }

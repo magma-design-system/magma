@@ -30,7 +30,7 @@ const HorizontalMenu = props => {
 
   return (<Grid gutter="none" className={`ds-horizontal-menu ${props.className}`}>
     <Hr className="ds-horizontal-menu__hr"/>
-    <HorizontalScroll outerMargin="normal" className="ds-horizontal-menu__list">
+    <HorizontalScroll outerMargin="none" className="ds-horizontal-menu__list">
       <HorizontalMenuItem><Icon name="action-back"/></HorizontalMenuItem>
       {
         props.menuList.map((item, key) =>
