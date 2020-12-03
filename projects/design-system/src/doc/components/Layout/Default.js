@@ -9,6 +9,7 @@ import metadataAuthors from '../../metadata/authors.json'
 import metadataSources from '../../metadata/sources.json'
 
 import AssetPreviewer from '@Gatsby/Pattern/AssetPreviewer/AssetPreviewer'
+import Head from '@Gatsby/Pattern/Head/Head'
 import Author from '@Content/Author/Author'
 import BenchmarkBar from '@Content/BenchmarkBar/BenchmarkBar'
 import BibliographyMLA from '@Content/Bibliography/BibliographyMLA'
@@ -126,8 +127,6 @@ const AuthorItem = authorData => {
 const SourceItem = sourceData => {
   let source = null
 
-  console.log(sourceData)
-
   metadataSources.forEach(metadataSource => {
     if (source === null) {
       source = sourceData.id.toString() === metadataSource.id.toString() ? metadataSource : null
@@ -185,10 +184,7 @@ const Layout = ({ children }) => {
 
         return <Page className="ds-layout">
           <Helmet>
-            <meta charSet="utf-8" />
-            <title>{currentMenuItem.title ? currentMenuItem.title : data.site.siteMetadata.title}</title>
-            <meta name="viewport" content="width=device-width, initial-scale=1"></meta>
-            <link rel="canonical" href="http://designsystem.maggiolicloud.it/" />
+            <Head pageTitle={currentMenuItem.title} siteTitle={data.site.siteMetadata.title}/>
           </Helmet>
           <div className={`ds-layout__switch ${isOpened ? 'ds-layout__switch--is-active' : ''}`} onClick={() => setMenuOpened(!isOpened)}>
             <Icon name="menu-main" className="ds-layout__switch-icon ds-layout__switch-icon--menu"/>
