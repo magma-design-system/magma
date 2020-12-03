@@ -5,7 +5,8 @@
     "es6": true,
     "jest": true
   },
-  "extends": "standard",
+  "extends": ["../../.eslintrc.json", "standard"],
+  "ignorePatterns": ["!**/*"],
   "globals": {
     "Atomics": "readonly",
     "SharedArrayBuffer": "readonly"
@@ -19,6 +20,9 @@
   "parserOptions": {
     "ecmaFeatures": {
       "jsx": true
+    },
+    "babelOptions": {
+      "configFile": "./projects/design-system/.babelrc"
     },
     "ecmaVersion": 2018,
     "sourceType": "module"
