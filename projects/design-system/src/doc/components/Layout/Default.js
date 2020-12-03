@@ -1,6 +1,6 @@
 import React, { useState } from 'react'
 import PropTypes from 'prop-types'
-import { Helmet } from "react-helmet"
+import { Helmet } from 'react-helmet'
 import { /* Link, */ StaticQuery, graphql } from 'gatsby'
 import { MDXProvider } from '@mdx-js/react'
 import './Layout.scss'
@@ -9,7 +9,6 @@ import metadataAuthors from '../../metadata/authors.json'
 import metadataSources from '../../metadata/sources.json'
 
 import AssetPreviewer from '@Gatsby/Pattern/AssetPreviewer/AssetPreviewer'
-import Head from '@Gatsby/Pattern/Head/Head'
 import Author from '@Content/Author/Author'
 import BenchmarkBar from '@Content/BenchmarkBar/BenchmarkBar'
 import BibliographyMLA from '@Content/Bibliography/BibliographyMLA'
@@ -184,7 +183,11 @@ const Layout = ({ children }) => {
 
         return <Page className="ds-layout">
           <Helmet>
-            <Head pageTitle={currentMenuItem.title} siteTitle={data.site.siteMetadata.title}/>
+            <meta charSet="utf-8" />
+            <title>{currentMenuItem.title ? currentMenuItem.title : data.site.siteMetadata.title}</title>
+            <meta http-equiv="x-ua-compatible" content="ie=edge"></meta>
+            <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no"></meta>
+            <link rel="canonical" href="http://designsystem.maggiolicloud.it/" />
           </Helmet>
           <div className={`ds-layout__switch ${isOpened ? 'ds-layout__switch--is-active' : ''}`} onClick={() => setMenuOpened(!isOpened)}>
             <Icon name="menu-main" className="ds-layout__switch-icon ds-layout__switch-icon--menu"/>
