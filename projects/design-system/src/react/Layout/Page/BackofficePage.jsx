@@ -12,9 +12,7 @@ import H4 from '@Typography/H4/H4'
 import H6 from '@Typography/H6/H6'
 import Icon from '@Design/Icon/Icon'
 import Image from '@Content/Image/Image'
-import logoMaggioli from '../../../assets/brand/gruppo-maggioli/logo-gruppo-maggioli.svg'
-
-/* const logoMaggioli = require('#Assets/brand/gruppo-maggioli/logo-gruppo-maggioli.svg') */
+const logoMaggioli = require('#Assets/brand/gruppo-maggioli/logo-gruppo-maggioli.svg')
 
 const BackofficePageAside = props =>
   <Grid htmlTag="aside" className="backoffice-page__aside" template="backoffice-aside">
