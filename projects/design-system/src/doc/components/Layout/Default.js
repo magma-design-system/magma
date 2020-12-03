@@ -1,5 +1,6 @@
 import React, { useState } from 'react'
 import PropTypes from 'prop-types'
+import { Helmet } from "react-helmet"
 import { /* Link, */ StaticQuery, graphql } from 'gatsby'
 import { MDXProvider } from '@mdx-js/react'
 import './Layout.scss'
@@ -183,6 +184,12 @@ const Layout = ({ children }) => {
         const publicationYear = new Date().getFullYear().toString()
 
         return <Page className="ds-layout">
+          <Helmet>
+            <meta charSet="utf-8" />
+            <title>{currentMenuItem.title ? currentMenuItem.title : data.site.siteMetadata.title}</title>
+            <meta name="viewport" content="width=device-width, initial-scale=1"></meta>
+            <link rel="canonical" href="http://designsystem.maggiolicloud.it/" />
+          </Helmet>
           <div className={`ds-layout__switch ${isOpened ? 'ds-layout__switch--is-active' : ''}`} onClick={() => setMenuOpened(!isOpened)}>
             <Icon name="menu-main" className="ds-layout__switch-icon ds-layout__switch-icon--menu"/>
             <Icon name="action-close" className="ds-layout__switch-icon ds-layout__switch-icon--close"/>
