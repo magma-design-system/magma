@@ -1,0 +1,55 @@
+---
+title: 'Linee guida di Submission'
+date: '2020-12-03'
+author:
+  - vittorio.vittori@maggioli.it
+source:
+  - 10
+---
+
+## Invio di un problema
+
+Prima di inviare un problema, cerca nel tracker del problema, forse il tuo problema è già in fase di discussione ed esiste già e la discussione potrebbe informarti di soluzioni alternative prontamente disponibili.
+
+Vogliamo risolvere tutti i problemi il prima possibile, ma prima di correggere un bug dobbiamo riprodurlo e confermarlo. Per riprodurre i bug, ti chiederemo sistematicamente di fornire uno scenario di riproduzione minimo. Avere uno scenario live e riproducibile ci fornisce una grande quantità di informazioni importanti senza doverti rivolgere domande aggiuntive come:
+
+- Versione del Design System usata
+- Librerie di terze parti e relative versioni
+- E, cosa più importante, un caso d'uso che fallisce
+
+Uno scenario di riproduzione minimo ci consente di confermare rapidamente un bug (o segnalare un problema di sviluppo) e di confermare che stiamo risolvendo il problema corretto. Se non trovi un modo adatto per dimostrare il problema (ad esempio per problemi relativi al nostro pacchetto npm), crea un repository git autonomo che dimostri il problema.
+
+Insisteremo per uno scenario di riproduzione minimo per risparmiare tempo ai manutentori e alla fine saremo in grado di correggere più bug. È interessante notare che dalla nostra esperienza gli utenti spesso trovano da soli problemi sul codice mentre preparano l'esempio minimo. Comprendiamo che a volte potrebbe essere difficile estrarre parti essenziali di codice da una code base più ampia, ma abbiamo davvero bisogno di isolare il problema prima di poterlo risolvere.
+
+Sfortunatamente, non siamo in grado di indagare / correggere bug senza una riproduzione minima, quindi se non riceviamo tue notizie chiuderemo un problema che non dispone di informazioni sufficienti per essere riprodotto.
+
+## Invio di una pull request (PR)
+
+Prima di inviare la tua pull request (PR), considera le seguenti linee guida:
+
+- Cerca su [GitLab][gitlab] una PR aperta o chiusa correlata alla tua presentazione
+- Fai un fork del repo [design-system][gitlab]
+- Apporta le modifiche in un nuovo branch git `git checkout -b my-fix-branch master`
+- Crea la tua patch, inclusi i test appropriati
+- Segui le nostre regole di sviluppo
+- Esegui la suite di test completa, come descritto nella documentazione per sviluppatori, e assicurati che tutti i test vengano superati
+- Committa le modifiche utilizzando un messaggio di commit descrittivo che segue le nostre **convenzioni sui messaggi di commit**. L'adesione a queste convenzioni è necessaria perché le note sulla versione vengono generate automaticamente da questi messaggi.
+- Push del tuo branch su GitLab `git push origin my-fix-branch`
+- In GitLab, invia una pull request a design-system:master
+
+#### Se suggeriamo modifiche, allora:
+
+- Effettua gli aggiornamenti richiesti
+- Riesegui le suite di test per assicurarti che i test siano ancora superati
+- Fai un rebase del tuo branch e forza il push al tuo repository GitLab (questo aggiornerà la tua richiesta pull)
+
+Questo è tutto! Grazie per il tuo contributo!
+
+#### Dopo che la tua pull request è stata mergiata
+
+Dopo che la tua pull request è stata mergiata, puoi eliminare in sicurezza il tuo ramo ed estrarre le modifiche dal repository principale (a monte)
+
+[gitlab]: https://git.maggioli.it/ricerca-sviluppo-new-media/design-system
+[issue]: https://git.maggioli.it/ricerca-sviluppo-new-media/design-system/-/issues
+[slack]: https://maggioli.slack.com/
+[stackoverflow]: https://stackoverflow.com/

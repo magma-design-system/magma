@@ -48,5 +48,9 @@
     "id": "9",
     "title": "Color combinations",
     "url": "https://polaris.shopify.com/design/colors#section-color-combinations"
+  },{
+    "id": "10",
+    "title": "Contributing to Angular",
+    "url": "https://github.com/angular/angular/blob/22b96b9/CONTRIBUTING.md"
   }
 ]
