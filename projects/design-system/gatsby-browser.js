@@ -1,5 +1,5 @@
 import './node_modules/normalize.css/normalize.css'
-import '../mgg-icons/build/fonts/mgg-icons.css'
+import './node_modules/@maggioli-common/mgg-icons/build/fonts/mgg-icons.css'
 import './node_modules/typeface-karla/index.css'
 import './node_modules/typeface-roboto/index.css'
 import './src/scss/import-global.scss'
