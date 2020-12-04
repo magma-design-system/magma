@@ -1,13 +1,12 @@
-import React from 'react';
-import { MINIMAL_VIEWPORTS } from '@storybook/addon-viewport';
-import { addDecorator } from '@storybook/react';
+import React from 'react'
+import { addDecorator } from '@storybook/react'
 import Page from '@Gatsby/Page/Page'
 // import faker from 'faker'
 // faker.locale = 'it'
 
 // vendors
 import '../node_modules/normalize.css/normalize.css'
-import '../../mgg-icons/build/fonts/mgg-icons.css'
+import '../node_modules/@maggioli-common/mgg-icons/build/fonts/mgg-icons.css'
 import '../node_modules/typeface-karla/index.css'
 import '../node_modules/typeface-roboto/index.css'
 
@@ -19,7 +18,7 @@ import media from '+Tokens/css-tokens/media.json'
 import palette from '+Tokens/properties/color/base.json'
 const paletteColors = palette.color
 
-const toUpperCase = (string) => {
+const toUpperCase = string => {
   return string.charAt(0).toUpperCase() + string.slice(1)
 }
 
@@ -38,14 +37,14 @@ const decorateViewport = (name, item) => {
     styles: {
       width: `${item.match(re)[0]}px`,
       height: '100%',
-    }
+    },
   }
 }
 
 const viewportKeys = Object.keys(media)
-let viewports = {}
+const viewports = {}
 
-viewportKeys.forEach((viewportKeys) => {
+viewportKeys.forEach(viewportKeys => {
   viewports[viewportKeys] = decorateViewport(viewportKeys, media[viewportKeys])
 })
 
@@ -66,11 +65,11 @@ for (const [group, groupObject] of Object.entries(paletteColors)) {
 export const parameters = {
   backgrounds: {
     default: 'Adjust Tone color',
-    values: colors
+    values: colors,
   },
   viewport: {
-    viewports: viewports,
+    viewports,
   },
 }
 
-addDecorator(storyFn => <Page>{storyFn()}</Page>);
+addDecorator(storyFn => <Page>{storyFn()}</Page>)
