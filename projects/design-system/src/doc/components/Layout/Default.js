@@ -1,4 +1,4 @@
-import React, { useState, Fragment } from 'react'
+import React, { useState } from 'react'
 import PropTypes from 'prop-types'
 import { Helmet } from 'react-helmet'
 import { /* Link, */ StaticQuery, graphql } from 'gatsby'
