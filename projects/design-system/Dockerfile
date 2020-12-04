@@ -20,7 +20,7 @@ COPY ./design-system /app/design-system
 
 
 # TODO Copiare solo i sorgenti invece di fare clean:gatsby
-RUN [ "npm", "run", "clean:gatsby" ]
+RUN [ "npm", "run", "gatsby:clean" ]
 RUN [ "npm", "run", "build:gatsby" ]
 RUN [ "npm", "run", "build:storybook" ]
 
