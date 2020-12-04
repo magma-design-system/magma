@@ -202,8 +202,9 @@ body {
   }
 
   &__footer-logo {
+    flex-shrink: 0;
     margin-top: s(1);
-    width: 40px !important;
+    width: 46px !important;
   }
 }
 

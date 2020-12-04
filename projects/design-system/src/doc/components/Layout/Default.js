@@ -241,7 +241,7 @@ const Layout = ({ children }) => {
                   </Grid>
                 }
               </Grid>
-              <Row htmlTag="footer" gutter="normal" className="ds-layout__footer">
+              <Row htmlTag="footer" gutter="normal" align="flex-start" className="ds-layout__footer">
                 <Image className="ds-layout__footer-logo" src={require('#Assets/brand/gruppo-maggioli/logo-gruppo-maggioli.svg')}/>
                 <div>
                   <Detail><b>Design System</b> sviluppato con ❤️ &nbsp;dal reparto R&D e tutti i supporter all'interno di Maggioli.</Detail>
