@@ -102,11 +102,12 @@ body {
     grid-gap: s(1);
 
     > .image {
-      border-radius: s(1);
-      max-width: 100%;
+      margin-left: s(-1);
+      margin-right: s(-1);
 
       @include media('desktop') {
-        transform: translate(s(-0.5, $aside), 0);
+        margin-left: s(-2);
+        margin-right: s(-2);
       }
     }
   }
