@@ -10,7 +10,8 @@
   ],
   "ignoreFiles": [
     "**/*.js",
-    "**/*.jsx"
+    "**/*.jsx",
+    "**/*.svg"
   ],
   "rules": {
     "alpha-value-notation": "number",
