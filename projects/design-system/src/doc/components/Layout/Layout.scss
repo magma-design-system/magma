@@ -187,6 +187,12 @@ body {
     }
   }
 
+  &__pubblication-date {
+    &::first-letter {
+      text-transform: uppercase;
+    }
+  }
+
   &__footer {
     padding: 0 s(1);
 

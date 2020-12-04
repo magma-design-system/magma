@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useState, Fragment } from 'react'
 import PropTypes from 'prop-types'
 import { Helmet } from 'react-helmet'
 import { /* Link, */ StaticQuery, graphql } from 'gatsby'
@@ -7,6 +7,10 @@ import './Layout.scss'
 import { createMenuList, findMenuItem, getPageData, createMenuItemList, createHorizontalMenuList } from '@Gatsby/Pattern/Navigation/menu'
 import metadataAuthors from '../../metadata/authors.json'
 import metadataSources from '../../metadata/sources.json'
+
+import TimeAgo from 'react-timeago'
+import frenchStrings from 'react-timeago/lib/language-strings/it'
+import buildFormatter from 'react-timeago/lib/formatters/buildFormatter'
 
 import AssetPreviewer from '@Gatsby/Pattern/AssetPreviewer/AssetPreviewer'
 import Author from '@Content/Author/Author'
@@ -45,6 +49,8 @@ import Tag from '@UI/Tag/Tag'
 import Usage, { UsageDo, UsageDont } from '@Content/Usage/Usage'
 
 import { defineCustomElements as deckDeckGoHighlightElement } from '@deckdeckgo/highlight-code/dist/loader'
+
+const formatter = buildFormatter(frenchStrings)
 
 // https://www.gatsbyjs.com/plugins/gatsby-plugin-mdx/#mdxprovider
 
@@ -217,6 +223,12 @@ const Layout = ({ children }) => {
                         <AuthorItem key={key} id={author}/>,
                       )}
                     </Grid>
+                  </Grid>
+                }
+                { page.frontmatter.date &&
+                  <Grid gutter="none">
+                    <H5>Data di pubblicazione</H5>
+                    <TimeAgo className="ds-layout__pubblication-date text-secondary text-secondary--detail" date={page.frontmatter.date} formatter={formatter} />
                   </Grid>
                 }
                 { page.frontmatter.source && <Hr spacing="xsmall" className="background-color-adjust-tone-18"/> }
