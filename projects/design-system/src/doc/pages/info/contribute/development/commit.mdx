@@ -8,4 +8,16 @@ source:
   - 10
 ---
 
-Per poter contribuire ti basterà seguire le regole che sono stabilite in questa guida.
+Abbiamo regole molto precise su come possono essere formattati i nostri messaggi git commit. Questo porta a messaggi più leggibili che sono facili da seguire quando si guarda attraverso la cronologia del progetto. Ma usiamo anche i messaggi git commit per generare il log delle modifiche del Design System.
+
+## Formato messaggio delle commit
+
+Ogni messaggio di commit è costituito da un **header**, un **body** e un **footer**. L'header ha un formato speciale che include un **type**, uno **scope** e un **subject**:
+
+```
+<type>(<scope>): <subject>
+<BLANK LINE>
+<body>
+<BLANK LINE>
+<footer>
+```

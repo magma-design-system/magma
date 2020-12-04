@@ -112,6 +112,7 @@
     "license": "ISC",
     "dependencies": {
         "@fortawesome/fontawesome-free": "^5.14.0",
+        "@maggioli-common/mgg-icons": "0.0.21",
         "crypto-js": "^4.0.0",
         "install": "^0.13.0",
         "material-design-icons": "^3.0.1",
