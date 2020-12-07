@@ -22,7 +22,7 @@
       "jsx": true
     },
     "babelOptions": {
-      "configFile": "./projects/design-system/.babelrc"
+      "configFile": "./.babelrc"
     },
     "ecmaVersion": 2018,
     "sourceType": "module"
