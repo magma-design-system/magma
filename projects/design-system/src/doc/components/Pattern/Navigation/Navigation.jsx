@@ -1,15 +1,18 @@
 import React from 'react'
 import PropTypes from 'prop-types'
 import './Navigation.scss'
+import Caption from '@Typography/Caption/Caption'
+import Detail from '@Typography/Detail/Detail'
+import ExternalLink from '@UI/ExternalLink/ExternalLink'
 import Grid from '@Layout/Grid/Grid'
-import Row from '@Layout/Row/Row'
-import InlineCode from '@UI/InlineCode/InlineCode'
 import H1 from '@Typography/H1/H1'
 import H5 from '@Typography/H5/H5'
-import Caption from '@Typography/Caption/Caption'
-import Image from '@Content/Image/Image'
 import Hr from '@Gatsby/Pattern/Hr/Hr'
+import Image from '@Content/Image/Image'
+import Icon from '@Design/Icon/Icon'
+import InlineCode from '@UI/InlineCode/InlineCode'
 import Menu, { MenuItem, MenuSubItem } from '@Gatsby/Pattern/Menu/Menu'
+import Row from '@Layout/Row/Row'
 import { getCurrentUrl } from '@Gatsby/Pattern/Navigation/menu'
 import designSystemPackageData from '+Package/package.json'
 
@@ -39,13 +42,16 @@ const Navigation = props => {
           )
         }
         <Hr/>
-        <Row gutter="normal">
-          <Image className="ds-navigation__logo" src={require('#Assets/brand/gruppo-maggioli/logo-gruppo-maggioli.svg')}/>
-          <div>
-            <H5>{designSystemPackageData.name}</H5>
-            <Caption>Versione <InlineCode className="text-mono text-mono--hack">{designSystemPackageData.version}</InlineCode></Caption>
-          </div>
-        </Row>
+        <Grid gutter="xsmall">
+          <Row gutter="xsmall">
+            <Icon image={require('./storybook-logo.svg')}/>
+            <Caption><ExternalLink href="/storybook">Vai alla Pattern Library</ExternalLink></Caption>
+          </Row>
+          <Row gutter="xsmall">
+            <Icon image={require('#Assets/brand/gruppo-maggioli/logo-gruppo-maggioli.svg')}/>
+            <Caption><ExternalLink href={designSystemPackageData.repository.url}>{designSystemPackageData.name}</ExternalLink> <InlineCode className="text-mono text-mono--hack">{designSystemPackageData.version}</InlineCode></Caption>
+          </Row>
+        </Grid>
       </Grid>
     </div>
   )
