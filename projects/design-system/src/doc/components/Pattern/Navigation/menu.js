@@ -2,7 +2,7 @@ const basePathTitles = {
   '': 'Maggioli Design System',
   doc: 'Doc',
   identity: 'Identity',
-  info: 'Info',
+  governance: 'Governance',
 }
 
 export function createMenuList(edges) {
