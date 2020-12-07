@@ -7,6 +7,8 @@
 
   &--size-#{$modifier} {
     font-size: $value;
+    height: $value;
+    width: $value;
   }
 }
 
@@ -17,6 +19,12 @@
   justify-content: center;
   line-height: inherit;
   user-select: none;
+
+  &--image {
+    background-position: 50% 50%;
+    background-repeat: no-repeat;
+    background-size: contain;
+  }
 
   @each $item in $icon-sizes {
     @include size-modifier ($item);

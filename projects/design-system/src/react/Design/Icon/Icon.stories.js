@@ -66,3 +66,6 @@ export const iconSizes = () =>
       )}
     </TableBody>
   </Table>
+
+export const customImage = () =>
+  <Icon image={require('#Assets/brand/gruppo-maggioli/logo-gruppo-maggioli.svg')} />
