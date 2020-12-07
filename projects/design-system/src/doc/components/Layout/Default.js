@@ -52,8 +52,6 @@ import { defineCustomElements as deckDeckGoHighlightElement } from '@deckdeckgo/
 
 const formatter = buildFormatter(frenchStrings)
 
-// https://www.gatsbyjs.com/plugins/gatsby-plugin-mdx/#mdxprovider
-
 const shortcodes = {
   AssetPreviewer,
   BibliographyMLA,
