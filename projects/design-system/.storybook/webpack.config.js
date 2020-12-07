@@ -5,7 +5,7 @@ const aliases = require('../import-aliases')
 const localhostPort = 7177
 
 // Export a function. Accept the base config as the only param.
-module.exports = async ({ config, mode }) => {
+module.exports = async({ config, mode }) => {
   // `mode` has a value of 'DEVELOPMENT' or 'PRODUCTION'
   // You can change the configuration based on that.
   // 'PRODUCTION' is used when building the static version of storybook.
@@ -14,23 +14,23 @@ module.exports = async ({ config, mode }) => {
     test: /\.scss$/,
     include: path.resolve(__dirname, '../'),
     use: [{
-      loader: 'style-loader'
+      loader: 'style-loader',
     }, {
       loader: 'css-loader',
       options: {
-        sourceMap: true
-      }
+        sourceMap: true,
+      },
     }, {
       loader: 'postcss-loader',
       options: {
-        plugins: () => [ autoprefixer() ]
-      }
+        plugins: () => [autoprefixer()],
+      },
     }, {
       loader: 'sass-loader',
       options: {
         sourceMap: true,
-      }
-    }]
+      },
+    }],
   })
 
   config.resolve.alias = aliases
