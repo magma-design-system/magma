@@ -32,6 +32,10 @@
     align-items: flex-end;
   }
 
+  &--width-inline {
+    display: inline-flex;
+  }
+
   &--last-child-to-right {
     .row {
       &__item {
