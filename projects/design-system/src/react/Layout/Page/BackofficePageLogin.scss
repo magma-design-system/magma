@@ -1,0 +1,25 @@
+@import '~Sass/import-framework';
+
+.backoffice-page-login {
+  align-items: center;
+  background-color: color('adjust.tone', '20');
+  display: flex;
+  justify-content: center;
+  min-height: 100vh;
+  padding: s(1);
+
+  &__content {
+    flex-grow: 1;
+    max-width: 400px;
+  }
+
+  &__body {
+    max-width: 400px;
+    width: 100%;
+  }
+
+  &__footer {
+    padding: 0 s(1);
+    text-align: center;
+  }
+}
