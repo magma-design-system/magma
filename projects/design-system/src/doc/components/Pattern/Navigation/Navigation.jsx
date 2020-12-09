@@ -2,17 +2,15 @@ import React from 'react'
 import PropTypes from 'prop-types'
 import './Navigation.scss'
 import Caption from '@Typography/Caption/Caption'
-import Detail from '@Typography/Detail/Detail'
 import ExternalLink from '@UI/ExternalLink/ExternalLink'
 import Grid from '@Layout/Grid/Grid'
 import H1 from '@Typography/H1/H1'
-import H5 from '@Typography/H5/H5'
 import Hr from '@Gatsby/Pattern/Hr/Hr'
-import Image from '@Content/Image/Image'
 import Icon from '@Design/Icon/Icon'
 import InlineCode from '@UI/InlineCode/InlineCode'
 import Menu, { MenuItem, MenuSubItem } from '@Gatsby/Pattern/Menu/Menu'
 import Row from '@Layout/Row/Row'
+import { Link } from 'gatsby'
 import { getCurrentUrl } from '@Gatsby/Pattern/Navigation/menu'
 import designSystemPackageData from '+Package/package.json'
 
@@ -22,7 +20,7 @@ const Navigation = props => {
   return (
     <div className="ds-navigation">
       <Grid className="ds-navigation__contents">
-        <H1>{ props.title }</H1>
+        <Link to="/" className="ds-navigation__title"><H1>{ props.title }</H1></Link>
         <Hr/>
         {
           props.menuList.map((menu, key) =>

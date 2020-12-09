@@ -3,6 +3,17 @@
 .ds-navigation {
   padding: s(2) 0;
 
+  &__title {
+    color: inherit;
+    text-decoration: underline;
+    text-decoration-color: transparent;
+    transition: text-decoration-color get($tween, 'hover');
+
+    &:hover {
+      text-decoration-color: color('adjust.tone', '15');
+    }
+  }
+
   &__contents {
     color: color('adjust.tone', '04');
   }
