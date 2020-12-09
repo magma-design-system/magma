@@ -27,4 +27,8 @@ echo "docker-compose build and start"
 
 ssh $CI_SSH_USER@$SERVER "cd $DEPLOY_FOLDER/projects/design-system && docker-compose -f ./.deploy/docker-compose-designsystem.yml up -d --build"
 
+echo "Clean app image not necessary"
+
+ssh $CI_SSH_USER@$SERVER "cd $DEPLOY_FOLDER/projects/design-system && docker image prune -f --filter label=step=build"
+
 echo "deploy script terminated"
