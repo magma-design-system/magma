@@ -51,6 +51,7 @@ deploy-designsystem:
     name: DeployWebApp
     url: $CI_PRODUCTION_URL
   allow_failure: false
+  when: manual
   only:
     refs:
       - master
