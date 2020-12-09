@@ -13,8 +13,8 @@ const BibliographyAPA = props => {
   return <div className={`bibliography ${props.className} ${props.font}`}>
     <span className="bibliography__item bibliography__item--full-name" title={fullName}>{ formattedName }</span>
     {props.date && <time className="bibliography__item bibliography__item--date" dateTime={props.date}>{ date }</time>}
-    {props.title && <span className="bibliography__item bibliography__item--title">Tratto da <ExternalLink href={props.url}>{props.title}</ExternalLink>.</span>}
-    {!props.title && <span className="bibliography__item bibliography__item--title">Tratto da <ExternalLink href={props.url}>{props.url}</ExternalLink>.</span>}
+    {props.title && <span className="bibliography__item bibliography__item--title">Tratto da <b><ExternalLink href={props.url}>{props.title}</ExternalLink></b>.</span>}
+    {!props.title && <span className="bibliography__item bibliography__item--title">Tratto da <b><ExternalLink href={props.url}>{props.url}</ExternalLink></b>.</span>}
     {props.site && <i className="bibliography__item bibliography__item--site">{props.site}</i>}
   </div>
 }
