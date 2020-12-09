@@ -11,7 +11,7 @@ services:
     expose:
       - "443"
     environment:
-      - VIRTUAL_HOST=storybook.maggiolicloud.it
+      - VIRTUAL_HOST=design-system.maggiolicloud.it
       - CERT_NAME=shared
 
 networks:
