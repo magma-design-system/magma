@@ -17,6 +17,7 @@ RUN npm install -g npm-install-peers
 
 COPY ./design-system/package.json /app/design-system/
 COPY ./design-system/package-lock.json /app/design-system/
+COPY ./design-system/.eslintrc.json /app/design-system/
 RUN npm install
 RUN npm-install-peers
 COPY ./design-system /app/design-system
