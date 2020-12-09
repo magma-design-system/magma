@@ -3,7 +3,7 @@ import PropTypes from 'prop-types'
 import { styles } from '@Library/styles'
 import './Row.scss'
 
-const Row = ({ align, gutter, htmlTag, lastChild, onClick, ...restProps }) => {
+const Row = ({ align, gutter, htmlTag, lastChild, onClick, width, ...restProps }) => {
   const HtmlTag = htmlTag.toLowerCase()
   const classes = styles('row', {
     selectors: [
@@ -13,6 +13,7 @@ const Row = ({ align, gutter, htmlTag, lastChild, onClick, ...restProps }) => {
       align,
       gutter,
       lastChild,
+      width,
     },
   })
 
@@ -34,12 +35,14 @@ Row.propTypes = {
   htmlTag: PropTypes.string,
   lastChild: PropTypes.string, // to-right
   onClick: PropTypes.func,
+  width: PropTypes.string, // full || inline
 }
 
 Row.defaultProps = {
   align: 'center',
   gutter: 'xsmall',
   htmlTag: 'div',
+  width: 'full',
 }
 
 export default Row
