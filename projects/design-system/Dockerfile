@@ -17,15 +17,16 @@ RUN npm install -g npm-install-peers
 
 COPY ./design-system/package.json /app/design-system/
 COPY ./design-system/package-lock.json /app/design-system/
-RUN [ "npm", "install" ]
+RUN npm install
 RUN npm-install-peers
 COPY ./design-system /app/design-system
 
 
-# TODO Copiare solo i sorgenti invece di fare clean:gatsby
-RUN [ "npm", "run", "gatsby:clean" ]
-RUN [ "npm", "run", "build:gatsby" ]
-RUN [ "npm", "run", "build:storybook" ]
+RUN npm run lint
+# TODO Copiare solo i sorgenti invece di fare gatsby:clean
+RUN npm run gatsby:clean
+RUN npm run build:gatsby
+RUN npm run build:storybook
 
 # Stage 1, based on Nginx, to have only the compiled website, ready for production with Nginx
 FROM nginx:alpine

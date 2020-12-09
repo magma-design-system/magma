@@ -10,7 +10,7 @@ import Icon from '@Design/Icon/Icon'
 
 const KpiItem = props =>
   <div className={`kpi__item ${props.className}`}>
-    {props.icon && <Icon className="kpi__icon" name={ props.icon }/>}
+    {props.icon && <Icon className="kpi__icon" size="xlarge" name={ props.icon }/>}
     <H1 htmlTag="div" className="kpi__title">{props.amount}</H1>
     <LabelParagraph>{props.children}</LabelParagraph>
   </div>

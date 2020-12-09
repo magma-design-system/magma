@@ -113,6 +113,7 @@ function Paginator(props) {
                 {elem}
               </PaginatorItem>
             }
+            return null
           })
           : pages.map(elem => {
             if (elem > 1 && elem < props.pages) {
@@ -141,6 +142,7 @@ function Paginator(props) {
                 }
               }
             }
+            return null
           })
         }
         { props.pages > 1
