@@ -13,9 +13,12 @@ RUN cd /app/mgg-icons/ && npm install
 COPY ./font-icons-cli /app/font-icons-cli
 COPY ./mgg-icons /app/mgg-icons
 
+RUN [ "npm", "install", " npm-install-peers" ]
+
 COPY ./design-system/package.json /app/design-system/
 COPY ./design-system/package-lock.json /app/design-system/
 RUN [ "npm", "install" ]
+RUN [ "npm", " npm-install-peers" ]
 COPY ./design-system /app/design-system
 
 
