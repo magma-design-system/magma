@@ -4,24 +4,24 @@ import './Input.scss'
 import Input from '@UI/Input/Input'
 import { capitalize } from '@UI/Select/functions'
 
-const InputPassword = props =>
-  <Input {...props}>
+const InputPassword = ({ autoComplete, font, name, onChange, placeholder, value, ...restProps }) => {
+  return <Input {...restProps}>
     <input
-      autoComplete={props.autoComplete}
-      className={`input__field ${props.font}`}
-      defaultValue={props.value}
-      name={props.name}
-      onChange={props.onChange}
-      placeholder={capitalize(props.placeholder)}
+      autoComplete={autoComplete}
+      className={`input__field ${font}`}
+      defaultValue={value}
+      name={name}
+      onChange={onChange}
+      placeholder={capitalize(placeholder)}
       type="password"
     />
   </Input>
+}
 
 InputPassword.propTypes = {
+  ...Input.propTypes,
   autoComplete: PropTypes.string,
   font: PropTypes.string,
-  icon: PropTypes.string,
-  iconClassName: PropTypes.string,
   name: PropTypes.string,
   onChange: PropTypes.func,
   placeholder: PropTypes.string,
@@ -35,7 +35,7 @@ InputPassword.defaultProps = {
   iconClassName: '',
   name: 'unassigned',
   onChange: value => { return value },
-  placeholder: '',
+  placeholder: 'Inserisci almeno 8 caratteri',
   value: '',
 }
 
