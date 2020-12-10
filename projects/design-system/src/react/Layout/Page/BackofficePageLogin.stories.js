@@ -35,6 +35,7 @@ export const register = () =>
       <BackofficePageLoginHeader logo={require('#Assets/brand/argo/logo-argo-icon.svg')} title="Argo" description="Registrati al servizio"/>
       <InputEmail />
       <InputPassword />
+      <InputPassword placeholder="ripeti password" />
       <Button>Registrati</Button>
     </BackofficePageLoginBody>
     <BackofficePageLoginFooter columns="2">
@@ -43,11 +44,24 @@ export const register = () =>
     </BackofficePageLoginFooter>
   </BackofficePageLogin>
 
+export const registerFeedback = () =>
+  <BackofficePageLogin>
+    <BackofficePageLoginBody>
+      <BackofficePageLoginHeader logo={require('#Assets/brand/argo/logo-argo-icon.svg')} title="Argo" description="Registrati al servizio"/>
+      <BackofficePageLoginBanner status="success">Utente registrato con successo.</BackofficePageLoginBanner>
+      <Detail>Tra poco riceverai una <b>e-mail</b> per attivare il tuo account e poter accedere al servizio.</Detail>
+      <Button>Accedi</Button>
+    </BackofficePageLoginBody>
+    <BackofficePageLoginFooter>
+      <Button size="small" variant="secondary-outline">Recupera password</Button>
+    </BackofficePageLoginFooter>
+  </BackofficePageLogin>
+
 export const passwordRecover = () =>
   <BackofficePageLogin>
     <BackofficePageLoginBody>
       <BackofficePageLoginHeader logo={require('#Assets/brand/argo/logo-argo-icon.svg')} title="Argo" description="Recupero password"/>
-      <InputEmail />
+      <InputEmail/>
       <Button>Invia e-mail di recupero</Button>
     </BackofficePageLoginBody>
     <BackofficePageLoginFooter columns="2">
@@ -61,11 +75,11 @@ export const passwordRecoverFeedback = () =>
     <BackofficePageLoginBody>
       <BackofficePageLoginHeader logo={require('#Assets/brand/argo/logo-argo-icon.svg')} title="Argo" description="Recupero password"/>
       <BackofficePageLoginBanner status="success">Email di recupero inviata correttamente.</BackofficePageLoginBanner>
-      <Detail>Nel giro di qualche minuto riceverai una e-mail con i dettagli per reimpostare la password.</Detail>
+      <Detail>Tra poco riceverai una <b>e-mail</b> con i dettagli per reimpostare la password.</Detail>
     </BackofficePageLoginBody>
     <BackofficePageLoginFooter columns="2">
-      <Button size="small" variant="secondary">Registrati</Button>
       <Button size="small" variant="secondary">Accedi</Button>
+      <Button size="small" variant="secondary">Registrati</Button>
     </BackofficePageLoginFooter>
   </BackofficePageLogin>
 
@@ -90,7 +104,7 @@ export const passwordRecoverChangeFeedback = () =>
       <BackofficePageLoginHeader logo={require('#Assets/brand/argo/logo-argo-icon.svg')} title="Argo" description="Recupero password"/>
       <Detail>Grazie per la tua pazienza, segnati la password in un Wallet criptato in modo da metterla in un posto sicuro.</Detail>
       <Detail>Ora potrai accedere nuovamente.</Detail>
-      <Button size="small" variant="secondary">Accedi</Button>
+      <Button>Accedi</Button>
     </BackofficePageLoginBody>
     <BackofficePageLoginFooter>
       <Button size="small" variant="secondary">Registrati</Button>
