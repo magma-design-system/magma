@@ -13,6 +13,11 @@
     max-width: 400px;
   }
 
+  &__banner {
+    margin-left: s(-1.5);
+    margin-right: s(-1.5);
+  }
+
   &__body {
     max-width: 400px;
     width: 100%;

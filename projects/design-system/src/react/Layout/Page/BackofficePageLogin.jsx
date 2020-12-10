@@ -8,8 +8,17 @@ import H5 from '@Typography/H5/H5'
 import Icon from '@Design/Icon/Icon'
 import Row from '@Layout/Row/Row'
 import ExternalLink from '@UI/ExternalLink/ExternalLink'
+import Banner from '@UI/Banner/Banner'
 
 import './BackofficePageLogin.scss'
+
+const BackofficePageLoginBanner = props => {
+  return <Banner className="backoffice-page-login__banner" {...props}><Detail>{props.children}</Detail></Banner>
+}
+
+BackofficePageLoginBanner.propTypes = {
+  ...Banner.propTypes,
+}
 
 const BackofficePageLoginHeader = ({ logo, title, description, ...restProps }) => {
   return <Row gutter="small" {...restProps}>
@@ -73,6 +82,7 @@ const BackofficePageLogin = props => {
 
 export default BackofficePageLogin
 export {
+  BackofficePageLoginBanner,
   BackofficePageLoginBody,
   BackofficePageLoginFooter,
   BackofficePageLoginHeader,
