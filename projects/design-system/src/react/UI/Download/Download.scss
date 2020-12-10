@@ -47,12 +47,6 @@
     &--transparency-grid {
       background-image: url('./transparency-grid.svg');
       border-radius: s(0.125);
-
-      .download {
-        &__preview {
-          background-size: 80% 80%;
-        }
-      }
     }
   }
 
