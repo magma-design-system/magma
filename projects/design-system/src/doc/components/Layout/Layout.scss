@@ -150,7 +150,7 @@ body {
       background-color: color('adjust.tone', 'color', 0);
       box-shadow: none;
       color: color('adjust.tone');
-      transform: translate(s(2.25), 0);
+      transform: translate(s(1.5), 0);
       transition: transform get($tween, 'hover');
 
       .ds-layout {
@@ -169,7 +169,6 @@ body {
   }
 
   &__switch-icon {
-    font-size: $menu-font-size !important;
     position: absolute;
     transition: color get($tween, 'hover'), transform get($tween, 'hover'), opacity get($tween, 'hover');
 

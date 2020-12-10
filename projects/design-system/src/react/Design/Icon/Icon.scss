@@ -6,7 +6,7 @@
   $value: nth($item, 2);
 
   &--size-#{$modifier} {
-    font-size: $value;
+    font-size: $value !important;
     height: $value;
     width: $value;
   }

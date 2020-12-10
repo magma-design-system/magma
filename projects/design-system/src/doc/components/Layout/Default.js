@@ -194,8 +194,8 @@ const Layout = ({ children }) => {
             <link rel="canonical" href="http://designsystem.maggiolicloud.it/" />
           </Helmet>
           <div className={`ds-layout__switch ${isOpened ? 'ds-layout__switch--is-active' : ''}`} onClick={() => setMenuOpened(!isOpened)}>
-            <Icon name="menu-main" className="ds-layout__switch-icon ds-layout__switch-icon--menu"/>
-            <Icon name="action-close" className="ds-layout__switch-icon ds-layout__switch-icon--close"/>
+            <Icon name="menu-main" size="large" className="ds-layout__switch-icon ds-layout__switch-icon--menu"/>
+            <Icon name="action-close" size="large" className="ds-layout__switch-icon ds-layout__switch-icon--close"/>
           </div>
           <main className="ds-layout__main">
             <aside className={`ds-layout__aside ${isOpened ? 'ds-layout__aside--is-active' : ''}`}>
