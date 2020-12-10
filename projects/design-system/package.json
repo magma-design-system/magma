@@ -31,14 +31,15 @@
     },
     "husky": {
         "hooks": {
-            "pre-commit": "npm run lint:sass && lint-staged",
+            "pre-commit": "lint-staged",
             "pre-push": ""
         }
     },
     "lint-staged": {
-        "src/react/**/*.{js,jsx}": [
-            "npm run lint:js"
-        ]
+      "src/doc/**/*.{js,jsx}": [ "npm run lint:js" ],
+      "src/react/**/*.{js,jsx}": [ "npm run lint:js" ],
+      "src/doc/**/*.{scss}": [ "npm run lint:sass" ],
+      "src/react/**/*.{scss}": [ "npm run lint:sass" ]
     },
     "browserslist": [
         "> 1%",
