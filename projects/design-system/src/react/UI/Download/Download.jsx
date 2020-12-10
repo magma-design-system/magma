@@ -50,7 +50,7 @@ const Download = ({ fileName, href, name, preview, target, transparencyGrid, ...
   })
 
   return (
-    <a target={target} href={href} title={fileName} className={classes}>
+    <a target={target} href={href} download={fileName} title={fileName} className={classes}>
       <div className={classesIcon}>
         {preview
           ? <div className="download__preview" style={{ backgroundImage: `url('${href}')` }}></div>
