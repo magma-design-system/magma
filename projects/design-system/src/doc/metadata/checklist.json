@@ -651,6 +651,11 @@
             "title": "Colori",
             "description": "Le icone dovrebbero utilizzare i valori della tavolozza dei colori del Design System. L'utilizzo del colore del testo dell'elemento principale per il colore di riempimento dell'icona può renderlo automatico.",
             "done": true
+          },
+          {
+            "title": "Suporto immagine esterna",
+            "description": "Il componente Icon dovrebbe dare la possibilità di inserire velocemente anche icone non per forza supportate dal set di icone ufficiale, potrebbe essere necessario inserire un logo di un servizio esterno senza dover reinventare la ruota.",
+            "done": true
           }
         ],
         "references": [
