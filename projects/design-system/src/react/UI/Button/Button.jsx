@@ -7,6 +7,10 @@ import './Button.scss'
 
 const Button = ({ borderRadius, boxShadow, disabled, href, icon, onClick, outline, padding, size, type, variant, width, ...restProps }) => {
   const { font, iconSize } = dictionary[size]
+  let borderRadiusChoosen = dictionary[size].borderRadius
+  if (borderRadius) {
+    borderRadiusChoosen = borderRadius
+  }
   const classes = styles('button', {
     selectors: [
       restProps.className,
@@ -20,7 +24,7 @@ const Button = ({ borderRadius, boxShadow, disabled, href, icon, onClick, outlin
       width,
     },
     scaffolded: {
-      borderRadius,
+      borderRadius: borderRadiusChoosen,
       boxShadow,
     },
   })

@@ -30,7 +30,7 @@
     "xxlarge": "64px"
   },
   "button": {
-    "xxsmall": "20px",
+    "xsmall": "20px",
     "small": "30px",
     "normal": "40px",
     "large": "50px",

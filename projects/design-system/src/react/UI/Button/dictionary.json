@@ -1,32 +1,38 @@
 {
-  "xxsmall": {
+  "xsmall": {
     "font": "text-secondary text-secondary--caption",
     "iconSize": "small",
-    "padding": "normal"
+    "padding": "small",
+    "borderRadius": "xsmall"
   },
   "small": {
     "font": "text-primary text-primary--button",
     "iconSize": "small",
-    "padding": "normal"
+    "padding": "normal",
+    "borderRadius": "xsmall"
   },
   "normal": {
     "font": "text-primary text-primary--button",
     "iconSize": "normal",
-    "padding": "normal"
+    "padding": "normal",
+    "borderRadius": "small"
   },
   "large": {
     "font": "text-primary text-primary--button",
     "iconSize": "normal",
-    "padding": "normal"
+    "padding": "normal",
+    "borderRadius": "small"
   },
   "xlarge": {
     "font": "text-primary text-primary--h5",
     "iconSize": "normal",
-    "padding": "normal"
+    "padding": "normal",
+    "borderRadius": "small"
   },
   "xxlarge": {
     "font": "text-primary text-primary--h5",
     "iconSize": "large",
-    "padding": "normal"
+    "padding": "normal",
+    "borderRadius": "normal"
   }
 }
