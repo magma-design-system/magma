@@ -32,6 +32,7 @@ textarea {
   @include apply-styles-set($map: $font-base-styles, $set: $default-font-set);
 
   &::placeholder {
+    user-select: none;
     @include apply-styles-set($map: $font-base-styles, $set: $default-font-set);
   }
 }
