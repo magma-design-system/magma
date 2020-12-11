@@ -12,12 +12,13 @@ import BenchmarkBar from '@Content/BenchmarkBar/BenchmarkBar'
 import Row from '@Layout/Row/Row'
 import { Link } from 'gatsby'
 import Icon from '@Design/Icon/Icon'
+import Button from '@UI/Button/Button'
+import Tag from '@UI/Tag/Tag'
 import ExternalLink from '@UI/ExternalLink/ExternalLink'
 
 const getProgress = subTasks => {
-  let completed = 0
-  subTasks.map(subTask => {
-    completed = subTask.done ? completed + 1 : completed
+  const completed = subTasks.map(subTask => {
+    return subTask.done ? completed + 1 : completed
   })
   return completed * 100 / subTasks.length
 }
@@ -29,17 +30,22 @@ const RoadmapChecklistTasks = props =>
         return <Grid gutter="small">
           <Paragraph>{ element.description }</Paragraph>
           { element.children.map((section, sectionIndex) =>
-            <Grid key={sectionIndex} gutter="small">
+            <Grid key={sectionIndex} gutter="normal">
               <Hr className="background-color-adjust-tone-18"/>
               <H4>{section.title}</H4>
               <Detail>{section.description}</Detail>
               { section.children.map((task, taskIndex) =>
-                <Grid gutter="none" key={taskIndex}>
+                <Grid gutter="xsmall" key={taskIndex}>
                   <Row>
                     <Icon className={task.done ? 'color-status-success-08' : 'color-adjust-tone-16'} name="status-success"/>
                     <Detail className={task.done ? '' : 'color-adjust-tone-08'}><b>{task.title}</b></Detail>
                   </Row>
                   <Detail>{task.description}</Detail>
+                  <Grid gutter="xsmall" template="auto-fill-medium">
+                    {task.done && task.done !== true && <Button href={task.done} icon="document-book" size="small">Vai al contenuto</Button> }
+                    {task.done && task.done === true && <Tag icon="warning" chip size="small" status="warning">Da documentare</Tag> }
+                    {task.storybook && <Button href={`https://design-system.maggiolicloud.it/storybook/?path=/story/${task.storybook}`} icon="document-book" size="small" variant="secondary">Storybook</Button> }
+                  </Grid>
                 </Grid>,
               ) }
               {section.references && <H6>Riferimenti esterni</H6>}
@@ -52,6 +58,7 @@ const RoadmapChecklistTasks = props =>
           ) }
         </Grid>
       }
+      return null
     }) }
   </Grid>
 

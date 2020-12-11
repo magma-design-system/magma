@@ -10,7 +10,8 @@
           {
             "title": "Vision",
             "description": "Perché esisti, quali sono i tuoi valori e come questi aiuteranno a guidare il futuro del tuo prodotto.",
-            "done": false
+            "done": false,
+            "priority": true
           },
           {
             "title": "Design principles",
@@ -53,10 +54,9 @@
         "description": "La maggior parte dei clienti forma un'opinione su un prodotto in pochi secondi. Nella maggior parte dei casi, il tuo logo sarà la prima risorsa del brand che qualcuno vede. Si tratta di fare la prima impressione giusta. Un logo distintivo aiuta gli utenti a riconoscere immediatamente un prodotto e dà loro l'essenza del tuo marchio.",
         "children": [
           {
-            "description": "Una versione monocromatica del tuo logo che sta bene sopra una fotografia o quando viene stampato con una stampante di scarsa qualità.",
-            "done": true,
             "title": "Versione monocromatica",
-            "to": "/identity/logo/"
+            "description": "Una versione monocromatica del tuo logo che sta bene sopra una fotografia o quando viene stampato con una stampante di scarsa qualità.",
+            "done": "/identity/logo/gruppo-maggioli/"
           },
           {
             "title": "Guida all'utilizzo nel piccolo formato",
@@ -66,8 +66,7 @@
           {
             "title": "Posizionamento e guida alla distanza",
             "description": "Il tuo logo deve venire con una guida chiara su come posizionarlo e come preservarne lo spazio poiché vive insieme ad altri contenuti.",
-            "done": true,
-            "to": "/identity/logo/gruppo-maggioli/guideline"
+            "done": "/identity/logo/gruppo-maggioli/guideline"
           },
           {
             "title": "Guida all'uso",
@@ -77,8 +76,7 @@
           {
             "title": "Diversi formati di file",
             "description": "Fornire una varietà di formati per la versione vettoriale del tuo logo renderà più facile il lavoro degli altri e impedirà a chiunque di ridisegnarlo.",
-            "done": true,
-            "to": "/identity/logo/gruppo-maggioli/"
+            "done": "/identity/logo/gruppo-maggioli/"
           }
         ],
         "references": [
@@ -103,7 +101,8 @@
           {
             "title": "Accessibilità",
             "description": "Linee guida su come approcciare l'accessibilità e come sfruttare il colore, la gerarchia e le tecnologie assistive per aiutare i tuoi utenti.",
-            "done": false
+            "done": false,
+            "priority": true
           },
           {
             "title": "Onboarding degli utenti",
@@ -145,12 +144,12 @@
           {
             "title": "Accessibilità",
             "description": "Assicurati di avere abbinamenti accessibili tra i colori principali nella tua tavolozza. Ancora più importante, assicurati che i colori dello sfondo e del testo abbiano almeno un rapporto di contrasto standard AA tra di loro.",
-            "done": true
+            "done": "/doc/design/colors/"
           },
           {
             "title": "Colori funzionali",
             "description": "Oltre ai colori del tuo brand, assicurati di avere colori definiti e trasformati in variabili per funzioni come stati disabilitati, sfondi, azioni e testo ad alto contrasto.",
-            "done": true
+            "done": "/doc/design/colors/"
           },
           {
             "title": "Dark mode",
@@ -160,7 +159,7 @@
           {
             "title": "Linee guida",
             "description": "Fornisci linee guida su come e quando usare i colori nella tua tavolozza, cosa tenere a mente quando lavori con loro e come non usarli.",
-            "done": true
+            "done": "/doc/design/colors/guidelines/"
           }
         ],
         "references": [
@@ -221,17 +220,17 @@
           {
             "title": "Responsività",
             "description": "I dispositivi desktop di solito possono permettersi di avere caratteri di dimensioni maggiori rispetto ai dispositivi mobili. La creazione di una scala tipografica che si adatti alle dimensioni del riquadro di visualizzazione aiuterà con una gerarchia e un layout più significativi.",
-            "done": true
+            "done": "/doc/design/typography/"
           },
           {
             "title": "Relazione di griglia",
             "description": "Le dimensioni dei caratteri e l'interlinea devono corrispondere alla griglia per consentire un migliore accoppiamento tra il testo e altri elementi dell'interfaccia utente. Un buon esempio di ciò è il testo abbinato a icone con riquadri di delimitazione.",
-            "done": true
+            "done": "/doc/design/typography/"
           },
           {
             "title": "Leggibilità",
             "description": "L'ottimizzazione della spaziatura delle lettere (tracking), dell'altezza dell'interlinea (leading) e della lunghezza della linea per la scala tipografica aiuterà con la leggibilità del testo.",
-            "done": true
+            "done": "/doc/design/typography/"
           },
           {
             "title": "Performance",
@@ -267,7 +266,8 @@
           {
             "title": "Stile",
             "description": "Assicurati che la tua famiglia di icone abbia un senso visivo nel suo insieme. Scegliere uno stile delineato o riempito e rispettarlo porterà a una migliore coerenza visiva e prevedibilità.",
-            "done": true
+            "done": "/doc/design/icons/",
+            "storybook": "design-icon--dictionary"
           },
           {
             "title": "Naming",
@@ -277,12 +277,14 @@
           {
             "title": "Relazione con la griglia",
             "description": "Disegna le tue icone in un riquadro di delimitazione che si adatta bene alla tua griglia. Ciò consente un migliore abbinamento con altri elementi dell'interfaccia utente. Un buon esempio di ciò sarebbero le icone con riquadri di delimitazione abbinati al testo.",
-            "done": true
+            "done": "/doc/design/icons/",
+            "storybook": "design-icon--dictionary"
           },
           {
             "title": "Dimensioni",
             "description": "Fornisci dimensioni diverse per le icone correlate alla tua griglia. Fornisci una dimensione minima e rimuovi i dettagli non necessari per le tue icone per le dimensioni più piccole.",
-            "done": true
+            "done": true,
+            "storybook": "design-icon--icon-sizes"
           },
           {
             "title": "Parole chiave",
@@ -314,7 +316,7 @@
     ]
   },
   {
-    "title": "Componenti core",
+    "title": "Core components",
     "description": "I componenti sono gli elementi costitutivi principali delle UI (interfaccie utente). La creazione di una libreria di componenti riutilizzabili migliora il flusso di lavoro di sviluppo del prodotto riducendo il debito di progettazione e tecnologia e accelerando il processo. I componenti principali non possono essere suddivisi in pezzi granulari senza perdere il loro significato.",
     "children": [
       {
@@ -324,7 +326,8 @@
           {
             "title": "Immagine",
             "description": "Gli avatar dovrebbero mascherare un'immagine nella loro forma e lavorare con qualsiasi dimensione dell'immagine poiché potrebbero ottenere questa immagine da fonti di dati sconosciute.",
-            "done": true
+            "done": true,
+            "storybook": "content-avatar--basic-usage"
           },
           {
             "title": "Fallback immagine",
@@ -339,7 +342,8 @@
           {
             "title": "Dimensioni",
             "description": "Esistono molti contesti per utilizzare gli avatar e tutti richiedono dimensioni diverse per il componente. Per i progetti medi, utilizza almeno 2-3 dimensioni diverse e assicurati che sia disponibile almeno una dimensione piccola.",
-            "done": true
+            "done": true,
+            "storybook": "content-avatar--sizes"
           },
           {
             "title": "Icona",
@@ -396,12 +400,13 @@
           {
             "title": "Aspetto",
             "description": "I banner vengono utilizzati per visualizzare diversi tipi di messaggi ed è importante differenziarne l'aspetto visivo in base al ruolo che stanno giocando. Se utilizzi i colori di sfondo per la differenziazione dei ruoli, assicurati che ci sia un rapporto di contrasto sufficiente con il contenuto in base allo standard WCAG AA.",
-            "done": true
+            "done": true,
+            "storybook": "ui-banner--basic-usage"
           },
           {
             "title": "Area per icone o immagini",
             "description": "I banner possono integrare il loro messaggio utilizzando un'icona o un'immagine di supporto. Non dovrebbero essere utilizzati al posto del contenuto di testo. ",
-            "done": true
+            "done": false
           },
           {
             "title": "Azioni",
@@ -421,7 +426,8 @@
           {
             "title": "Responsività",
             "description": "I banner dovrebbero adattarsi alle dimensioni del viewport. Questo di solito significa che diventano a larghezza intera per i dispositivi mobili per risparmiare spazio.",
-            "done": true
+            "done": true,
+            "storybook": "ui-banner--basic-usage"
           }
         ],
         "references": [
@@ -438,7 +444,8 @@
           {
             "title": "Stato hover",
             "description": "Mostra chiaramente che il pulsante è interattivo quando viene posizionato con il cursore del mouse.",
-            "done": true
+            "done": true,
+            "storybook": "ui-button--variants"
           },
           {
             "title": "Stato attvo",
@@ -453,7 +460,8 @@
           {
             "title": "Stato disabled",
             "description": "Mostra visivamente che un pulsante non è interattivo e ne impedisce la pressione.",
-            "done": true
+            "done": true,
+            "storybook": "ui-button--disabled"
           },
           {
             "title": "Stato loading",
@@ -463,22 +471,26 @@
           {
             "title": "Supporto delle icone",
             "description": "Le icone comunicano facilmente lo scopo del pulsante quando vengono utilizzate accanto alla relativa etichetta o possono essere utilizzate senza testo quando non c'è abbastanza spazio. Assicurati che l'etichetta di accessibilità sia fornita solo se utilizzata con un'icona.",
-            "done": true
+            "done": true,
+            "storybook": "ui-button--with-icon"
           },
           {
             "title": "Larghezza intera",
             "description": "Per impostazione predefinita, i pulsanti prendono la larghezza del loro contenuto, ma dovrebbero anche avere una variante a larghezza intera che funziona bene nei dispositivi mobili.",
-            "done": true
+            "done": true,
+            "storybook": "ui-button--width"
           },
           {
             "title": "Varianti",
             "description": "Quando si utilizzano più pulsanti, dovrebbe esserci un modo per distinguere tra azioni primarie e secondarie. I pulsanti possono svolgere ruoli diversi per l'utente o essere utilizzati su diversi tipi di superfici e devono cambiare il loro aspetto.",
-            "done": true
+            "done": true,
+            "storybook": "ui-button--variants"
           },
           {
             "title": "Dimensioni",
             "description": "I pulsanti possono essere utilizzati in diverse aree delle applicazioni e possono avere più dimensioni predefinite. Sui dispositivi mobili, le aree selezionabili devono essere un minimo di 48 px per essere accessibili secondo le linee guida per l'accessibilità di iOS e Android.",
-            "done": true
+            "done": true,
+            "storybook": "ui-button--size"
           }
         ],
         "references": [
@@ -1132,7 +1144,7 @@
     ]
   },
   {
-    "title": "Componenti Layout",
+    "title": "Layout components",
     "description": "I componenti sono gli elementi costitutivi principali delle UI (interfaccie utente). La creazione di una libreria di componenti riutilizzabili migliora il flusso di lavoro di sviluppo del prodotto riducendo il debito di progettazione e tecnologia e accelerando il processo. I componenti principali non possono essere suddivisi in pezzi granulari senza perdere il loro significato.",
     "children": [
       {
@@ -1273,7 +1285,7 @@
     ]
   },
   {
-    "title": "Componenti UI",
+    "title": "UI Components",
     "description": "I componenti sono gli elementi costitutivi principali delle UI (interfaccie utente). La creazione di una libreria di componenti riutilizzabili migliora il flusso di lavoro di sviluppo del prodotto riducendo il debito di progettazione e tecnologia e accelerando il processo. I componenti principali non possono essere suddivisi in pezzi granulari senza perdere il loro significato.",
     "children": [
       {
@@ -1773,7 +1785,8 @@
           {
             "title": "Component catalog",
             "description": "Isola l'ambiente dei componenti UI al di fuori della base di codice del prodotto per assicurarti che non dipendano da dipendenze globali e che possano essere facilmente riutilizzati.",
-            "done": true
+            "done": true,
+            "url": "https://design-system.maggiolicloud.it/storybook/"
           },
           {
             "title": "Documentazione",
@@ -1813,7 +1826,7 @@
           {
             "title": "Modelli di merge request",
             "description": "Crea modelli di merge request che delineano la modifica proposta per facilitare discussioni produttive.",
-            "done": false
+            "done": true
           },
           {
             "title": "Linee guida per il contributo",
