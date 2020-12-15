@@ -1,7 +1,7 @@
 {
     "name": "@maggioli/design-system",
     "version": "0.2.104",
-    "description": "Maggioli Design system",
+    "description": "Maggioli Design System è uno strumento nato per condividere una unica visione di progettazione condivisa tra tutti gli esperti di dominio aziendali. Ciò permette di offrie una UX unica, condivisa tra i prodotti che saranno coerenti allo stile dell’azienda.",
     "scripts": {
         "build": "run-p 'build:!(storybook)'",
         "build:gatsby": "npm run tokens && gatsby build",
@@ -36,10 +36,8 @@
         }
     },
     "lint-staged": {
-      "src/doc/**/*.{js,jsx}": [ "npm run lint:js" ],
-      "src/react/**/*.{js,jsx}": [ "npm run lint:js" ],
-      "src/doc/**/*.{scss}": [ "npm run lint:sass" ],
-      "src/react/**/*.{scss}": [ "npm run lint:sass" ]
+      "src/{doc,react}/**/*.{js,jsx}": [ "npm run lint:js" ],
+      "src/{doc,react}/**/*.{scss}": [ "npm run lint:sass" ]
     },
     "browserslist": [
         "> 1%",
