@@ -69,7 +69,7 @@ export const size = () =>
     </TableBody>
   </Table>
 
-export const padding = () =>
+export const horizontalPadding = () =>
   <Table interactive={true}>
     <TableHeader>
       <TableHeaderCell>Preview</TableHeaderCell>
@@ -79,7 +79,7 @@ export const padding = () =>
       {Object.entries(paddingSizes).map(([key]) =>
         <TableRow>
           <TableCell>
-            <Button icon={randomIcon()} padding={key}>Button {key}</Button>
+            <Button icon={randomIcon()} horizontalPadding={key}>Button {key}</Button>
           </TableCell>
           <TableCell>
             <InlineCode>{`${key}`}</InlineCode>

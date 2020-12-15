@@ -5,12 +5,18 @@ import Icon from '@Design/Icon/Icon'
 import dictionary from './dictionary.json'
 import './Button.scss'
 
-const Button = ({ borderRadius, boxShadow, disabled, href, icon, onClick, outline, padding, size, type, variant, width, ...restProps }) => {
+const Button = ({ borderRadius, boxShadow, disabled, horizontalPadding, href, icon, onClick, outline, size, type, variant, width, ...restProps }) => {
   const { font, iconSize } = dictionary[size]
   let borderRadiusChoosen = dictionary[size].borderRadius
   if (borderRadius) {
     borderRadiusChoosen = borderRadius
   }
+
+  let horizontalPaddingChoosen = dictionary[size].horizontalPadding
+  if (horizontalPadding) {
+    horizontalPaddingChoosen = horizontalPadding
+  }
+
   const classes = styles('button', {
     selectors: [
       restProps.className,
@@ -18,7 +24,6 @@ const Button = ({ borderRadius, boxShadow, disabled, href, icon, onClick, outlin
     modifiers: {
       disabled,
       outline,
-      padding,
       size,
       variant,
       width,
@@ -26,6 +31,7 @@ const Button = ({ borderRadius, boxShadow, disabled, href, icon, onClick, outlin
     scaffolded: {
       borderRadius: borderRadiusChoosen,
       boxShadow,
+      horizontalPadding: horizontalPaddingChoosen,
     },
   })
 
@@ -62,11 +68,11 @@ Button.propTypes = {
   boxShadow: PropTypes.string,
   className: PropTypes.string,
   disabled: PropTypes.bool,
+  horizontalPadding: PropTypes.string,
   href: PropTypes.string,
   icon: PropTypes.string,
   onClick: PropTypes.func,
   outline: PropTypes.bool,
-  padding: PropTypes.string,
   size: PropTypes.string,
   type: PropTypes.string,
   variant: PropTypes.string,
@@ -74,7 +80,6 @@ Button.propTypes = {
 }
 
 Button.defaultProps = {
-  className: '',
   disabled: false,
   icon: '',
   onClick: () => {},

@@ -2,37 +2,37 @@
   "xsmall": {
     "font": "text-secondary text-secondary--caption",
     "iconSize": "small",
-    "padding": "small",
-    "borderRadius": "xsmall"
+    "borderRadius": "xsmall",
+    "horizontalPadding": "xsmall"
   },
   "small": {
     "font": "text-primary text-primary--button",
     "iconSize": "small",
-    "padding": "normal",
-    "borderRadius": "xsmall"
+    "borderRadius": "xsmall",
+    "horizontalPadding": "small"
   },
   "normal": {
     "font": "text-primary text-primary--button",
     "iconSize": "normal",
-    "padding": "normal",
-    "borderRadius": "small"
+    "borderRadius": "small",
+    "horizontalPadding": "normal"
   },
   "large": {
     "font": "text-primary text-primary--button",
     "iconSize": "normal",
-    "padding": "normal",
-    "borderRadius": "small"
+    "borderRadius": "small",
+    "horizontalPadding": "normal"
   },
   "xlarge": {
     "font": "text-primary text-primary--h5",
     "iconSize": "normal",
-    "padding": "normal",
-    "borderRadius": "small"
+    "borderRadius": "small",
+    "horizontalPadding": "large"
   },
   "xxlarge": {
     "font": "text-primary text-primary--h5",
     "iconSize": "large",
-    "padding": "normal",
-    "borderRadius": "normal"
+    "borderRadius": "normal",
+    "horizontalPadding": "large"
   }
 }
