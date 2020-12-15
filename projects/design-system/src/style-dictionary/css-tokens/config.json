@@ -20,9 +20,11 @@
   },
   "cosmetics": {
     "scaffold": [
-      "box-shadow",
       "border-radius",
-      "padding"
+      "box-shadow",
+      "padding",
+      "horizontal-padding",
+      "vertical-padding"
     ]
   }
 }

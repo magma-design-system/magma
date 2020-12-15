@@ -34,3 +34,21 @@
     );
   }
 }
+
+@if (index($cosmetics-scaffold, 'horizontal-padding')) {
+  @each $variant, $value in $list-sizes {
+    .horizontal-padding-#{$variant} {
+      padding-left: $value !important;
+      padding-right: $value !important;
+    }
+  }
+}
+
+@if (index($cosmetics-scaffold, 'vertical-padding')) {
+  @each $variant, $value in $list-sizes {
+    .vertical-padding-#{$variant} {
+      padding-bottom: $value !important;
+      padding-top: $value !important;
+    }
+  }
+}

@@ -1,5 +1,5 @@
-@mixin scaffold-property ($property-name, $variant, $value) {
-  .#{$property-name}-#{$variant} {
+@mixin scaffold-property ($property-name, $variant, $value, $modifier-name:$property-name) {
+  .#{$modifier-name}-#{$variant} {
     #{$property-name}: $value !important;
   }
 }
