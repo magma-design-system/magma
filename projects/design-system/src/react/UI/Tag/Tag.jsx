@@ -3,20 +3,40 @@ import PropTypes from 'prop-types'
 import { styles } from '@Library/styles'
 import './Tag.scss'
 import Icon from '@Design/Icon/Icon'
+import dictionary from './dictionary.json'
 
-const Tag = ({ chip, className, icon, iconClassName, ...restProps }) => {
+const Tag = ({ chip, icon, iconClassName, size, status, ...restProps }) => {
+  console.log(size, dictionary.size[size])
+  const { font, iconSize, horizontalPadding } = dictionary.size[size]
+  const background = status ? dictionary.status[status].background : ''
+  const iconClassStatus = status ? dictionary.status[status].icon : ''
+  const color = status ? dictionary.status[status].color : ''
+
   const classes = styles('tag', {
     selectors: [
-      className,
+      restProps.className,
+      background,
+      color,
     ],
     modifiers: {
+      size,
       chip,
+    },
+    scaffolded: {
+      horizontalPadding,
     },
   })
 
+  const iconClasses = styles('tag__icon', {
+    selectors: [
+      iconClassName,
+      iconClassStatus,
+    ],
+  })
+
   return <div className={classes}>
-    <Icon name={icon} className={`tag__icon ${iconClassName}`}/>
-    <div className="tag__text">
+    <Icon name={icon} size={iconSize} className={iconClasses}/>
+    <div className={`tag__text ${font}`}>
       {restProps.children}
     </div>
   </div>
@@ -27,6 +47,8 @@ Tag.propTypes = {
   className: PropTypes.string,
   icon: PropTypes.string,
   iconClassName: PropTypes.string,
+  size: PropTypes.string,
+  status: PropTypes.string,
 }
 
 Tag.defaultProps = {
@@ -34,6 +56,7 @@ Tag.defaultProps = {
   className: '',
   icon: 'tag',
   iconClassName: '',
+  size: 'normal',
 }
 
 export default Tag

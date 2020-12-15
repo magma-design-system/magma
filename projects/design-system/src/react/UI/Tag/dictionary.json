@@ -1,0 +1,56 @@
+{
+  "status": {
+    "warning": {
+      "background": "background-color-status-warning-18",
+      "icon": "color-status-warning-04",
+      "color": "color-status-warning-06"
+    },
+    "error": {
+      "background": "background-color-status-error-18",
+      "icon": "color-status-error-04",
+      "color": "color-status-error-06"
+    },
+    "success": {
+      "background": "background-color-status-success-18",
+      "icon": "color-status-success-04",
+      "color": "color-status-success-06"
+    },
+    "info": {
+      "background": "background-color-status-info-18",
+      "icon": "color-status-info-04",
+      "color": "color-status-info-06"
+    }
+  },
+  "size": {
+    "xxsmall": {
+      "font": "text-secondary text-secondary--caption",
+      "iconSize": "small",
+      "horizontalPadding": "xsmall"
+    },
+    "xsmall": {
+      "font": "text-secondary text-secondary--caption",
+      "iconSize": "small",
+      "horizontalPadding": "small"
+    },
+    "small": {
+      "font": "text-secondary text-secondary--detail",
+      "iconSize": "normal",
+      "horizontalPadding": "small"
+    },
+    "normal": {
+      "font": "text-secondary text-secondary--detail",
+      "iconSize": "normal",
+      "horizontalPadding": "small"
+    },
+    "large": {
+      "font": "text-secondary text-secondary--detail",
+      "iconSize": "normal",
+      "horizontalPadding": "normal"
+    },
+    "xlarge": {
+      "font": "text-secondary text-secondary--paragraph",
+      "iconSize": "large",
+      "horizontalPadding": "normal"
+    }
+  }
+}

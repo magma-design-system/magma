@@ -1,24 +1,39 @@
 @import '~Sass/import-framework';
 
+@mixin size-modifier ($item) {
+
+  $modifier: nth($item, 1);
+  $value: nth($item, 2);
+
+  &--size-#{$modifier} {
+    height: $value;
+  }
+}
+
 .tag {
   align-items: center;
   display: inline-flex;
   padding: 0 s(0.25);
+
+  @each $item in $button-sizes {
+    @include size-modifier ($item);
+  }
 
   &__icon {
     margin-right: s(0.25);
   }
 
   &__text {
-    max-width: 220px;
+    flex: 1;
+    min-width: 0;
     overflow: hidden;
     text-overflow: ellipsis;
+    white-space: nowrap;
   }
 
   &--chip {
-    background-color: color('adjust.tone', '15');
+    background-color: color('adjust.tone', '18');
     border-radius: get($form-sizes, 'input-height');
-    height: get($form-sizes, 'input-height');
     padding: 0 s(1);
   }
 }
