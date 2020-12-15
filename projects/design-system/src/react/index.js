@@ -4,6 +4,7 @@ export { styles } from '@Library/styles'
 
 export BackofficeMenu, { BackofficeMenuItem, BackofficeMenuItemAction, BackofficeMenuItemTitle } from '@Layout/Menu/BackofficeMenu'
 export BackofficePage, { BackofficePageAside, BackofficePageAsideFooter, BackofficePageContent, BackofficePageSection, BackofficePageSectionHeader } from '@Layout/Page/BackofficePage'
+export BackofficePageLogin, { BackofficePageLoginBanner, BackofficePageLoginHeader, BackofficePageLoginBody, BackofficePageLoginFooter } from '@Layout/Page/BackofficePageLogin'
 export Card from '@Layout/Card/Card'
 export Form from '@Layout/Form/Form'
 export Grid from '@Layout/Grid/Grid'
