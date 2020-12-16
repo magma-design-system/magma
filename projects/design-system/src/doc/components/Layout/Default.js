@@ -156,6 +156,7 @@ const Layout = ({ children }) => {
                 frontmatter {
                   author
                   date
+                  lastEdit
                   source
                   title
                 }
@@ -223,12 +224,20 @@ const Layout = ({ children }) => {
                     </Grid>
                   </Grid>
                 }
-                { page.frontmatter.date &&
-                  <Grid gutter="none">
-                    <H5>Data di pubblicazione</H5>
-                    <TimeAgo className="ds-layout__pubblication-date text-secondary text-secondary--detail" date={page.frontmatter.date} formatter={formatter} />
-                  </Grid>
-                }
+                <Grid template="auto-fill-authors">
+                  { page.frontmatter.date &&
+                    <Grid gutter="none">
+                      <H5>Data di pubblicazione</H5>
+                      <TimeAgo className="ds-layout__pubblication-date text-secondary text-secondary--detail" date={page.frontmatter.date} formatter={formatter} />
+                    </Grid>
+                  }
+                  { page.frontmatter.lastEdit &&
+                    <Grid gutter="none">
+                      <H5>Ultima modifica</H5>
+                      <TimeAgo className="ds-layout__pubblication-date text-secondary text-secondary--detail" date={page.frontmatter.lastEdit} formatter={formatter} />
+                    </Grid>
+                  }
+                </Grid>
                 { page.frontmatter.source && <Hr spacing="xsmall" className="background-color-adjust-tone-18"/> }
                 { page.frontmatter.source &&
                   <Grid gutter="none">
