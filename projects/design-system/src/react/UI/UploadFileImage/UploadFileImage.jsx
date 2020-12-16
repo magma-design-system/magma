@@ -13,15 +13,16 @@ const UploadFileImage = ({ deleteImage, error, icon, iconClassName, label, name,
 
   const hasIcon = icon !== null
   const hasErrors = error !== null
+  const uploaded = uriImage !== null
 
   const classes = styles('backoffice-file-image', {
     selectors: [
       restProps.className,
     ],
     modifiers: {
-      uriImage,
       hasIcon,
       hasErrors,
+      uploaded,
     },
   })
 
