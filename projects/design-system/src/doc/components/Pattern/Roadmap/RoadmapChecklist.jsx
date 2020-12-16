@@ -17,10 +17,7 @@ import Tag from '@UI/Tag/Tag'
 import ExternalLink from '@UI/ExternalLink/ExternalLink'
 
 const getProgress = subTasks => {
-  const completed = subTasks.map(subTask => {
-    return subTask.done ? completed + 1 : completed
-  })
-  return completed * 100 / subTasks.length
+  return subTasks.filter(subTask => subTask.done !== false).length * 100 / subTasks.length
 }
 
 const RoadmapChecklistTasks = props =>
