@@ -97,7 +97,7 @@ PaginatorItem.defaultProps = {
 
 function Paginator(props) {
   const pages = Array.from({ length: props.pages }, (_, i) => i + 1)
-  if(props.pages === 1){return <div></div>}
+  if (props.pages === 1) { return <div className="paginator"></div> }
   return (
     <HorizontalScroll smooth={false} className={`paginator ${props.className}`}>
       <PaginatorPrev onClick={props.onClickPrev}/>
