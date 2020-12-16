@@ -1,6 +1,6 @@
 {
     "name": "@maggioli/design-system",
-    "version": "0.2.107",
+    "version": "0.3.108",
     "description": "Maggioli Design System è uno strumento nato per condividere una unica visione di progettazione condivisa tra tutti gli esperti di dominio aziendali. Ciò permette di offrie una UX unica, condivisa tra i prodotti che saranno coerenti allo stile dell’azienda.",
     "scripts": {
         "build": "run-p 'build:!(storybook)'",
@@ -79,7 +79,7 @@
         {
             "name": "Federico Ciani",
             "email": "federico.ciani@maggioli.it",
-            "role": "Icons Taxonomy"
+            "role": "UI Designer"
         },
         {
             "name": "Gioele Masini",
