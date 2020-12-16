@@ -1,75 +1,97 @@
 import React from 'react'
 import PropTypes from 'prop-types'
 import './UploadFileImage.scss'
+import { styles } from '@Library/styles'
 import Icon from '@Design/Icon/Icon'
 import H3 from '@Typography/H3/H3'
 import LabelCaption from '@Typography/LabelCaption/LabelCaption'
 import Detail from '@Typography/Detail/Detail'
 import Button from '@UI/Button/Button'
 
-const UploadFileImage = props => {
-  const HTMLElement = props.uriImage !== '' ? 'div' : 'label'
+const UploadFileImage = ({ deleteImage, error, icon, iconClassName, label, name, onFileChange, placeholder, required, uriImage, ...restProps }) => {
+  const HTMLElement = uriImage !== '' ? 'div' : 'label'
+
+  const hasIcon = icon !== null
+  const hasErrors = error !== null
+
+  const classes = styles('backoffice-file-image', {
+    selectors: [
+      restProps.className,
+    ],
+    modifiers: {
+      uriImage,
+      hasIcon,
+      hasErrors,
+    },
+  })
+
+  const iconClasses = styles('backoffice-file-image__icon', {
+    selectors: [
+      restProps.className,
+      iconClassName,
+    ],
+  })
+
   return (
-    <HTMLElement className={`backoffice-file-image ${props.uriImage !== '' ? 'backoffice-file-image--uploaded' : ''} ${props.icon !== '' ? 'backoffice-file-image--has-icon' : ''} ${props.error ? 'backoffice-file-image--has-errors' : ''} ${props.className}`}>
-      <input type="file" className="backoffice-file-image__field" onChange={props.onFileChange}/>
-      <div className="backoffice-file-image__image" style={{ backgroundImage: `url('${props.uriImage}')` }}>
-        <Button onClick={props.deleteImage} className="backoffice-file-image__delete" icon="crud-delete" />
+    <HTMLElement className={classes}>
+      <input type="file" name={name} className="backoffice-file-image__field" onChange={onFileChange}/>
+      <div className="backoffice-file-image__image" style={{ backgroundImage: `url('${uriImage}')` }}>
+        <Button onClick={deleteImage} className="backoffice-file-image__delete" icon="crud-delete" />
       </div>
-      <div className="backoffice-file-image__fake-field">
-        {props.required &&
+      <div className="backoffice-file-image__fake-field border-radius-small">
+        {required &&
           <LabelCaption className="backoffice-file-image__required">
             Obbligatorio
           </LabelCaption>
         }
-        {props.icon &&
+        {icon &&
           <div className="backoffice-file-image__icon-area">
-            <Icon className={`backoffice-file-image__icon ${props.iconClassName !== '' ? props.iconClassName : ''}`} name={props.icon}/>
+            <Icon className={iconClasses} name={icon}/>
           </div>
         }
         <div className="backoffice-file-image__info">
-          {props.label &&
+          {label &&
             <H3 htmlTag="div" className="backoffice-file-image__label">
-              {props.label}
+              {label}
             </H3>
           }
-          {props.placeholder &&
+          {placeholder &&
             <Detail className="backoffice-file-image__placeholder">
-              {props.placeholder}
+              {placeholder}
             </Detail>
           }
         </div>
       </div>
+      {error &&
+        <div className="backoffice-input__message">
+          <Detail htmlTag="div" className="backoffice-input__error">
+            <Icon className="backoffice-input__error-icon" name="status-error"/>
+            <div className="backoffice-input__error-text">{error}</div>
+          </Detail>
+        </div>
+      }
     </HTMLElement>
   )
 }
 
 UploadFileImage.propTypes = {
   className: PropTypes.string,
-  clicked: PropTypes.bool,
   deleteImage: PropTypes.func,
   error: PropTypes.string,
   icon: PropTypes.string,
   iconClassName: PropTypes.string,
-  isChecked: PropTypes.bool,
   label: PropTypes.string,
   name: PropTypes.string,
-  onChange: PropTypes.func,
-  onClick: PropTypes.func,
   onFileChange: PropTypes.func,
   placeholder: PropTypes.string,
   required: PropTypes.bool,
   uriImage: PropTypes.string,
-  value: PropTypes.string,
 }
 
 UploadFileImage.defaultProps = {
-  className: '',
-  clicked: false,
   deleteImage: () => {},
   icon: 'media-image',
   name: 'unassigned',
-  onChange: value => { return value },
-  onClick: () => {},
   onFileChange: () => {},
   required: false,
   uriImage: '',

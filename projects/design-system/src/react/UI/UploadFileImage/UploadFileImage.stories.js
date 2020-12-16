@@ -9,4 +9,7 @@ export default {
 }
 
 export const basicUsage = () =>
-  <UploadFileImage/>
+  <UploadFileImage label="Copertina" placeholder="Carica un immagine JPG o PNG"/>
+
+export const error = () =>
+  <UploadFileImage label="Copertina" placeholder="Carica un immagine JPG o PNG" error="Formato immagine non valido"/>

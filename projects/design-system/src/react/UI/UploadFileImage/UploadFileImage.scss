@@ -75,8 +75,14 @@ $ease: get($tween, 'slide');
     top: s(1);
   }
 
+  &__message {
+
+    @extend %error-message;
+  }
+
   &--uploaded {
     cursor: auto;
+
     .backoffice-file-image {
       &__image {
         height: 250px;
