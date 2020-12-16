@@ -31,12 +31,12 @@ const Textarea = props =>
       </textarea>
     </div>
     {props.error &&
-        <div className="backoffice-input__message">
-          <Detail htmlTag="div" className="backoffice-input__error">
-            <Icon className="backoffice-input__error-icon" name="status-error"/>
-            <div className="backoffice-input__error-text">{props.error}</div>
-          </Detail>
-        </div>
+      <div className="backoffice-input__message">
+        <Detail htmlTag="div" className="backoffice-input__error">
+          <Icon className="backoffice-input__error-icon" name="status-error"/>
+          <div className="backoffice-input__error-text">{props.error}</div>
+        </Detail>
+      </div>
     }
   </label>
 
