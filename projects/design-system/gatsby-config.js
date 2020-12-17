@@ -1,10 +1,11 @@
 const aliases = require('./import-aliases')
+const path = require('path')
 
 module.exports = {
   siteMetadata: {
     title: 'Maggioli Design System',
-    description: 'Storybook stories rendered with GatsbyJs',
-    author: 'Maggioli Research & Development department',
+    description: 'Maggioli Design System è uno strumento nato per condividere una unica visione di progettazione condivisa tra tutti gli esperti di dominio aziendali. Ciò permette di offrire una UX unica, condivisa tra i prodotti che saranno coerenti allo stile dell’azienda.',
+    author: 'Maggioli Informatica, R&D department',
   },
   plugins: [
     'gatsby-plugin-react-helmet',
@@ -18,20 +19,20 @@ module.exports = {
       resolve: 'gatsby-source-filesystem',
       options: {
         name: 'images',
-        path: `${__dirname}/src/doc/images`,
+        path: path.resolve(__dirname, '/src/doc/images'),
       },
     },
     {
       resolve: 'gatsby-source-filesystem',
       options: {
         name: 'pages',
-        path: `${__dirname}/src/doc/pages`,
+        path: path.resolve(__dirname, '/src/doc/pages'),
       },
     },
     {
       resolve: 'gatsby-plugin-page-creator',
       options: {
-        path: `${__dirname}/src/doc/pages`,
+        path: path.resolve(__dirname, '/src/doc/pages'),
       },
     },
     'gatsby-transformer-sharp',
@@ -56,8 +57,8 @@ module.exports = {
       resolve: 'gatsby-plugin-mdx',
       options: {
         defaultLayouts: {
-          pages: `${__dirname}/src/doc/components/Layout/Default`,
-          default: `${__dirname}/src/doc/components/Layout/Default`,
+          pages: path.resolve(__dirname, '/src/doc/components/Layout/Default'),
+          default: path.resolve(__dirname, '/src/doc/components/Layout/Default'),
         },
         extensions: ['.mdx', '.md'],
         gatsbyRemarkPlugins: [
