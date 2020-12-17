@@ -19,20 +19,20 @@ module.exports = {
       resolve: 'gatsby-source-filesystem',
       options: {
         name: 'images',
-        path: path.resolve(__dirname, '/src/doc/images'),
+        path: path.resolve(__dirname, './src/doc/images'),
       },
     },
     {
       resolve: 'gatsby-source-filesystem',
       options: {
         name: 'pages',
-        path: path.resolve(__dirname, '/src/doc/pages'),
+        path: path.resolve(__dirname, './src/doc/pages'),
       },
     },
     {
       resolve: 'gatsby-plugin-page-creator',
       options: {
-        path: path.resolve(__dirname, '/src/doc/pages'),
+        path: path.resolve(__dirname, './src/doc/pages'),
       },
     },
     'gatsby-transformer-sharp',
@@ -57,8 +57,8 @@ module.exports = {
       resolve: 'gatsby-plugin-mdx',
       options: {
         defaultLayouts: {
-          pages: path.resolve(__dirname, '/src/doc/components/Layout/Default'),
-          default: path.resolve(__dirname, '/src/doc/components/Layout/Default'),
+          pages: path.resolve(__dirname, './src/doc/components/Layout/Default'),
+          default: path.resolve(__dirname, './src/doc/components/Layout/Default'),
         },
         extensions: ['.mdx', '.md'],
         gatsbyRemarkPlugins: [
