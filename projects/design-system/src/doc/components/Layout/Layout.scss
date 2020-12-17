@@ -101,7 +101,8 @@ body {
     display: grid;
     grid-gap: s(1);
 
-    > .image {
+    > .image,
+    > .table {
       margin-left: s(-1);
       margin-right: s(-1);
 

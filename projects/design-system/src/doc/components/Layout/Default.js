@@ -216,7 +216,7 @@ const Layout = ({ children }) => {
                 <Hr spacing="xsmall" className="background-color-adjust-tone-18"/>
                 { page.frontmatter.author &&
                   <Grid gutter="xsmall">
-                    <H5>Autori</H5>
+                    <H5>{page.frontmatter.author.length === 1 ? 'Autore' : 'Autori'}</H5>
                     <Grid template="auto-fill-authors">
                       { page.frontmatter.author.map((author, key) =>
                         <AuthorItem key={key} id={author}/>,
@@ -224,7 +224,7 @@ const Layout = ({ children }) => {
                     </Grid>
                   </Grid>
                 }
-                <Grid template="auto-fill-authors">
+                <Grid template="auto-fill-large">
                   { page.frontmatter.date &&
                     <Grid gutter="none">
                       <H5>Data di pubblicazione</H5>

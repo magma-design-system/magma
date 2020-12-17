@@ -1,6 +1,7 @@
 ---
 title: 'Commit'
 date: '2020-12-03 15:44:06'
+lastEdit: '2020-12-17 13:09:49'
 author:
   - gioele.masini@maggioli.it
   - vittorio.vittori@maggioli.it
@@ -53,14 +54,81 @@ Nel corpo dovrebbe dire: `Questo ripristina il commit <hash>.`, Dove l'hash è *
 Deve essere uno dei seguenti:
 
 - **build**: Modifiche che influenzano il sistema di build o le dipendenze esterne (ambiti di esempio: gulp, broccoli, npm)
+- **change**: Modifica di una funzionalità che cambia la API di funzionamento
 - **ci**: Modifiche ai nostri file e script di configurazione CI (ambiti di esempio: Travis, Circle, BrowserStack, SauceLabs)
 - **docs**: Modifiche alla documentazione
 - **feat**: Aggiunta di una nuova feature
 - **fix**: Un bug fix
 - **perf**: Modifica al codice che migliora le performance
 - **refactor**: Modifica al codice che non fixa bug o aggiunge delle feature
-- **style**: Modifiche che non influiscono sul codice (stile, spazi, formattazione, punti e virgola mancanti, ecc.)
+- **style**: Modifiche che non influiscono sul codice (stile, spazi, formattazione, punti e virgola mancanti, ecc.), **non si applica allo scope** `styles`
 - **test**: Aggiunta di test mancanti o correzione di test esistenti
+
+---
+
+#### Come influiscono sul versionamento
+
+Di seguito puoi vedere come come impostare il **versionamento in base ai type** committati:
+
+<Table interactive={true}>
+  <TableHeader>
+    <TableHeaderCell>Type</TableHeaderCell>
+    <TableHeaderCell>Versionamento</TableHeaderCell>
+    <TableHeaderCell>Esempio</TableHeaderCell>
+  </TableHeader>
+  <TableBody>
+    <TableRow>
+      <TableCell><b>build</b></TableCell>
+      <TableCell><InlineCode status="warning">Minor</InlineCode></TableCell>
+      <TableCell><span className="color-adjust-tone-10">0.</span><b>1</b><span className="color-adjust-tone-10">.0</span></TableCell>
+    </TableRow>
+    <TableRow>
+      <TableCell><b>change</b></TableCell>
+      <TableCell><InlineCode status="error">Major</InlineCode></TableCell>
+      <TableCell><b>1</b><span className="color-adjust-tone-10">.0.0</span></TableCell>
+    </TableRow>
+    <TableRow>
+      <TableCell><b>ci</b></TableCell>
+      <TableCell><InlineCode status="warning">Minor</InlineCode></TableCell>
+      <TableCell><span className="color-adjust-tone-10">0.</span><b>1</b><span className="color-adjust-tone-10">.0</span></TableCell>
+    </TableRow>
+    <TableRow>
+      <TableCell><b>docs</b></TableCell>
+      <TableCell><InlineCode status="success">Patch</InlineCode></TableCell>
+      <TableCell><span className="color-adjust-tone-10">0.0.</span><b>1</b></TableCell>
+    </TableRow>
+    <TableRow>
+      <TableCell><b>feat</b></TableCell>
+      <TableCell><InlineCode status="warning">Minor</InlineCode></TableCell>
+      <TableCell><span className="color-adjust-tone-10">0.</span><b>1</b><span className="color-adjust-tone-10">.0</span></TableCell>
+    </TableRow>
+    <TableRow>
+      <TableCell><b>fix</b></TableCell>
+      <TableCell><InlineCode status="success">Patch</InlineCode></TableCell>
+      <TableCell><span className="color-adjust-tone-10">0.0.</span><b>1</b></TableCell>
+    </TableRow>
+    <TableRow>
+      <TableCell><b>perf</b></TableCell>
+      <TableCell><InlineCode status="success">Patch</InlineCode></TableCell>
+      <TableCell><span className="color-adjust-tone-10">0.0.</span><b>1</b></TableCell>
+    </TableRow>
+    <TableRow>
+      <TableCell><b>refactor</b></TableCell>
+      <TableCell><InlineCode status="success">Patch</InlineCode></TableCell>
+      <TableCell><span className="color-adjust-tone-10">0.0.</span><b>1</b></TableCell>
+    </TableRow>
+    <TableRow>
+      <TableCell><b>style</b></TableCell>
+      <TableCell><InlineCode status="success">Patch</InlineCode></TableCell>
+      <TableCell><span className="color-adjust-tone-10">0.0.</span><b>1</b></TableCell>
+    </TableRow>
+    <TableRow>
+      <TableCell><b>test</b></TableCell>
+      <TableCell><InlineCode status="success">Patch</InlineCode></TableCell>
+      <TableCell><span className="color-adjust-tone-10">0.0.</span><b>1</b></TableCell>
+    </TableRow>
+  </TableBody>
+</Table>
 
 ## Scope
 
@@ -68,9 +136,13 @@ Lo **scope** essere il nome del progetto **npm** interessato visto dalla persona
 
 Di seguito è riportato l'elenco degli scope supportati:
 
-- **design-system**
+- **angular**
 - **font-icons-cli**
 - **mgg-icons**
+- **react**
+- **styles**
+- **tokens**
+- **web-component**
 
 ---
 
