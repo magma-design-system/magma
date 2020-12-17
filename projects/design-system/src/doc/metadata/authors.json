@@ -2,10 +2,14 @@
   {
     "name": "Vittorio Vittori",
     "email": "vittorio.vittori@maggioli.it",
-    "role": "Design System Architect"
+    "role": "Author"
   },{
     "name": "Gioele Masini",
     "email": "gioele.masini@maggioli.it",
     "role": "Software Engineer"
+  },{
+    "name": "Federico Ciani",
+    "email": "federico.ciani@maggioli.it",
+    "role": "UX/UI Designer"
   }
 ]
