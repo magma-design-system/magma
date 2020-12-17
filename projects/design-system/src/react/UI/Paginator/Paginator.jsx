@@ -101,7 +101,7 @@ function Paginator(props) {
   const currentPage = props.currentPage > props.pages ? props.pages : props.currentPage
 
   if (props.pages === 1) {
-    return <div></div>
+    return <div className="paginator"></div>
   }
 
   return (
