@@ -7,7 +7,7 @@
 
   &--size-#{$modifier} {
     font-size: $value !important;
-    height: $value;
+    min-height: $value;
     width: $value;
   }
 }
