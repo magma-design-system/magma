@@ -9,11 +9,11 @@ import Detail from '@Typography/Detail/Detail'
 import Button from '@UI/Button/Button'
 
 const UploadFileImage = ({ deleteImage, error, icon, iconClassName, label, name, onFileChange, placeholder, required, uriImage, ...restProps }) => {
-  const HTMLElement = uriImage !== '' ? 'div' : 'label'
+  const HTMLElement = uriImage !== null ? 'div' : 'label'
 
   const hasIcon = icon !== null
   const hasErrors = error !== null
-  const uploaded = uriImage !== ''
+  const uploaded = uriImage !== null
 
   const classes = styles('backoffice-file-image', {
     selectors: [
@@ -95,7 +95,6 @@ UploadFileImage.defaultProps = {
   name: 'unassigned',
   onFileChange: () => {},
   required: false,
-  uriImage: '',
 }
 
 export default UploadFileImage
