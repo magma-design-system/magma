@@ -1,14 +1,22 @@
 import React from 'react'
 import PropTypes from 'prop-types'
+import { styles } from '@Library/styles'
 import Typography from '@Typography/Typography'
 
-const Hack = props =>
-  <Typography
-    className={`text-mono text-mono--hack ${props.className}`}
-    htmlTag={props.htmlTag}
+const Hack = ({ htmlTag, ...restProps }) => {
+  const classes = styles('hack', {
+    selectors: [
+      restProps.className,
+      'text-mono text-mono--hack',
+    ],
+  })
+  return <Typography
+    className={classes}
+    htmlTag={htmlTag}
   >
-    {props.children}
+    {restProps.children}
   </Typography>
+}
 
 Hack.propTypes = {
   className: PropTypes.string,
@@ -16,7 +24,6 @@ Hack.propTypes = {
 }
 
 Hack.defaultProps = {
-  className: '',
   htmlTag: 'code',
 }
 

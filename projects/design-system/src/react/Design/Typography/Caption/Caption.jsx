@@ -1,14 +1,22 @@
 import React from 'react'
 import PropTypes from 'prop-types'
+import { styles } from '@Library/styles'
 import Typography from '@Typography/Typography'
 
-const Caption = props =>
-  <Typography
-    className={`text-secondary text-secondary--caption ${props.className}`}
-    htmlTag={props.htmlTag}
+const Caption = ({ htmlTag, ...restProps }) => {
+  const classes = styles('caption', {
+    selectors: [
+      restProps.className,
+      'text-secondary text-secondary--caption',
+    ],
+  })
+  return <Typography
+    className={classes}
+    htmlTag={htmlTag}
   >
-    {props.children}
+    {restProps.children}
   </Typography>
+}
 
 Caption.propTypes = {
   className: PropTypes.string,
@@ -16,7 +24,6 @@ Caption.propTypes = {
 }
 
 Caption.defaultProps = {
-  className: '',
   htmlTag: 'p',
 }
 

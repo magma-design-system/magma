@@ -1,14 +1,22 @@
 import React from 'react'
 import PropTypes from 'prop-types'
+import { styles } from '@Library/styles'
 import Typography from '@Typography/Typography'
 
-const H3 = props =>
-  <Typography
-    className={`text-primary text-primary--h3 ${props.className}`}
-    htmlTag={props.htmlTag}
+const H3 = ({ htmlTag, ...restProps }) => {
+  const classes = styles('h3', {
+    selectors: [
+      restProps.className,
+      'text-primary text-primary--h3',
+    ],
+  })
+  return <Typography
+    className={classes}
+    htmlTag={htmlTag}
   >
-    {props.children}
+    {restProps.children}
   </Typography>
+}
 
 H3.propTypes = {
   className: PropTypes.string,
@@ -16,7 +24,6 @@ H3.propTypes = {
 }
 
 H3.defaultProps = {
-  className: '',
   htmlTag: 'h3',
 }
 

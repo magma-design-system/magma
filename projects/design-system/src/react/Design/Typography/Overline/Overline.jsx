@@ -1,14 +1,22 @@
 import React from 'react'
 import PropTypes from 'prop-types'
+import { styles } from '@Library/styles'
 import Typography from '@Typography/Typography'
 
-const Overline = props =>
-  <Typography
-    className={`text-primary text-primary--overline ${props.className}`}
-    htmlTag={props.htmlTag}
+const Overline = ({ htmlTag, ...restProps }) => {
+  const classes = styles('overline', {
+    selectors: [
+      restProps.className,
+      'text-primary text-primary--overline',
+    ],
+  })
+  return <Typography
+    className={classes}
+    htmlTag={htmlTag}
   >
-    {props.children}
+    {restProps.children}
   </Typography>
+}
 
 Overline.propTypes = {
   className: PropTypes.string,
@@ -16,7 +24,6 @@ Overline.propTypes = {
 }
 
 Overline.defaultProps = {
-  className: '',
   htmlTag: 'p',
 }
 

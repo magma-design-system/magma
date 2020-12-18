@@ -1,14 +1,22 @@
 import React from 'react'
 import PropTypes from 'prop-types'
+import { styles } from '@Library/styles'
 import Typography from '@Typography/Typography'
 
-const Code = props =>
-  <Typography
-    className={`text-mono text-mono--code ${props.className}`}
-    htmlTag={props.htmlTag}
+const Code = ({ htmlTag, ...restProps }) => {
+  const classes = styles('code', {
+    selectors: [
+      restProps.className,
+      'text-mono text-mono--code',
+    ],
+  })
+  return <Typography
+    className={classes}
+    htmlTag={htmlTag}
   >
-    {props.children}
+    {restProps.children}
   </Typography>
+}
 
 Code.propTypes = {
   className: PropTypes.string,
@@ -16,7 +24,6 @@ Code.propTypes = {
 }
 
 Code.defaultProps = {
-  className: '',
   htmlTag: 'code',
 }
 

@@ -1,14 +1,22 @@
 import React from 'react'
 import PropTypes from 'prop-types'
+import { styles } from '@Library/styles'
 import Typography from '@Typography/Typography'
 
-const Detail = props =>
-  <Typography
-    className={`text-secondary text-secondary--detail ${props.className}`}
-    htmlTag={props.htmlTag}
+const Detail = ({ htmlTag, ...restProps }) => {
+  const classes = styles('detail', {
+    selectors: [
+      restProps.className,
+      'text-secondary text-secondary--detail',
+    ],
+  })
+  return <Typography
+    className={classes}
+    htmlTag={htmlTag}
   >
-    {props.children}
+    {restProps.children}
   </Typography>
+}
 
 Detail.propTypes = {
   className: PropTypes.string,
@@ -16,7 +24,6 @@ Detail.propTypes = {
 }
 
 Detail.defaultProps = {
-  className: '',
   htmlTag: 'p',
 }
 

@@ -1,14 +1,22 @@
 import React from 'react'
 import PropTypes from 'prop-types'
+import { styles } from '@Library/styles'
 import Typography from '@Typography/Typography'
 
-const LabelCaption = props =>
-  <Typography
-    className={`text-secondary text-secondary--label-caption ${props.className}`}
-    htmlTag={props.htmlTag}
+const LabelCaption = ({ htmlTag, ...restProps }) => {
+  const classes = styles('label-caption', {
+    selectors: [
+      restProps.className,
+      'text-secondary text-secondary--label-caption',
+    ],
+  })
+  return <Typography
+    className={classes}
+    htmlTag={htmlTag}
   >
-    {props.children}
+    {restProps.children}
   </Typography>
+}
 
 LabelCaption.propTypes = {
   className: PropTypes.string,
@@ -16,7 +24,6 @@ LabelCaption.propTypes = {
 }
 
 LabelCaption.defaultProps = {
-  className: '',
   htmlTag: 'p',
 }
 

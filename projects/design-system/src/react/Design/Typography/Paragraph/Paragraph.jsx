@@ -1,14 +1,22 @@
 import React from 'react'
 import PropTypes from 'prop-types'
+import { styles } from '@Library/styles'
 import Typography from '@Typography/Typography'
 
-const Paragraph = props =>
-  <Typography
-    className={`text-secondary text-secondary--paragraph ${props.className}`}
-    htmlTag={props.htmlTag}
+const Paragraph = ({ htmlTag, ...restProps }) => {
+  const classes = styles('paragraph', {
+    selectors: [
+      restProps.className,
+      'text-secondary text-secondary--paragraph',
+    ],
+  })
+  return <Typography
+    className={classes}
+    htmlTag={htmlTag}
   >
-    {props.children}
+    {restProps.children}
   </Typography>
+}
 
 Paragraph.propTypes = {
   className: PropTypes.string,
@@ -16,7 +24,6 @@ Paragraph.propTypes = {
 }
 
 Paragraph.defaultProps = {
-  className: '',
   htmlTag: 'p',
 }
 

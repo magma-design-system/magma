@@ -1,23 +1,30 @@
 import React from 'react'
 import PropTypes from 'prop-types'
+import { styles } from '@Library/styles'
 import Typography from '@Typography/Typography'
 
-const LabelParagraph = props =>
-  <Typography
-    className={`text-secondary text-secondary--label-detail ${props.className}`}
-    htmlTag={props.htmlTag}
+const LabelDetail = ({ htmlTag, ...restProps }) => {
+  const classes = styles('label-detail', {
+    selectors: [
+      restProps.className,
+      'text-secondary text-secondary--label-detail',
+    ],
+  })
+  return <Typography
+    className={classes}
+    htmlTag={htmlTag}
   >
-    {props.children}
+    {restProps.children}
   </Typography>
+}
 
-LabelParagraph.propTypes = {
+LabelDetail.propTypes = {
   className: PropTypes.string,
   htmlTag: PropTypes.string,
 }
 
-LabelParagraph.defaultProps = {
-  className: '',
+LabelDetail.defaultProps = {
   htmlTag: 'p',
 }
 
-export default LabelParagraph
+export default LabelDetail
