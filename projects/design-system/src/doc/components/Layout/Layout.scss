@@ -111,6 +111,16 @@ body {
         margin-right: s(-2);
       }
     }
+
+    > .h1,
+    > .h2,
+    > .h3,
+    > .h4,
+    > .h5,
+    > .h6, {
+      margin-bottom: s(-0.5);
+      margin-top: s(1.5);
+    }
   }
 
   &__actions {
