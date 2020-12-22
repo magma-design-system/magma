@@ -69,7 +69,8 @@
         "email": "vittorio.vittori@maggioli.it",
         "url": "http://vit.to"
     },
-    "contributors": [{
+    "contributors": [
+        {
             "name": "Fabion Dautaj",
             "email": "fabion.dautaj@maggioli.it",
             "role": "React Components"
@@ -114,6 +115,7 @@
     "dependencies": {
         "@maggioli-common/mgg-icons": "0.0.21",
         "crypto-js": "^4.0.0",
+        "gsap": "^3.5.1",
         "install": "^0.13.0",
         "material-design-icons": "^3.0.1",
         "material-design-icons-updated": "^6.1.0",
