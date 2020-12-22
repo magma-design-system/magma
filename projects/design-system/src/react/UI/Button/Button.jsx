@@ -23,6 +23,7 @@ const Button = ({ borderRadius, boxShadow, disabled, horizontalPadding, href, ic
     ],
     modifiers: {
       disabled,
+      icon: !restProps.children,
       outline,
       size,
       variant,

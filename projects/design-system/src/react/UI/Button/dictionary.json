@@ -1,24 +1,24 @@
 {
   "xsmall": {
-    "font": "text-secondary text-secondary--caption",
+    "font": "text-primary text-primary--overline",
     "iconSize": "small",
     "borderRadius": "xsmall",
     "horizontalPadding": "xsmall"
   },
   "small": {
-    "font": "text-primary text-primary--button",
+    "font": "text-primary text-primary--action",
     "iconSize": "small",
     "borderRadius": "xsmall",
     "horizontalPadding": "small"
   },
   "normal": {
-    "font": "text-primary text-primary--button",
+    "font": "text-primary text-primary--action",
     "iconSize": "normal",
     "borderRadius": "small",
     "horizontalPadding": "normal"
   },
   "large": {
-    "font": "text-primary text-primary--button",
+    "font": "text-primary text-primary--action",
     "iconSize": "normal",
     "borderRadius": "small",
     "horizontalPadding": "normal"

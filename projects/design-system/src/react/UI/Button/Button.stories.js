@@ -27,6 +27,9 @@ export const basicUsage = () =>
 export const withIcon = () =>
   <Button icon={randomIcon()}>{faker.hacker.verb()}</Button>
 
+export const iconButton = () =>
+  <Button icon={randomIcon()}/>
+
 export const disabled = () =>
   <Button icon={randomIcon()} disabled={true}>{faker.hacker.verb()}</Button>
 
@@ -59,7 +62,7 @@ export const size = () =>
       {Object.entries(sizeVariants).map(([key]) =>
         <TableRow>
           <TableCell>
-            <Button icon={randomIcon()} size={key}>Button {key}</Button>
+            <Button icon={randomIcon()} size={key}>Size {key}</Button>
           </TableCell>
           <TableCell>
             <InlineCode>{`${key}`}</InlineCode>
@@ -79,7 +82,7 @@ export const horizontalPadding = () =>
       {Object.entries(paddingSizes).map(([key]) =>
         <TableRow>
           <TableCell>
-            <Button icon={randomIcon()} horizontalPadding={key}>Button {key}</Button>
+            <Button icon={randomIcon()} horizontalPadding={key}>Horizontal padding {key}</Button>
           </TableCell>
           <TableCell>
             <InlineCode>{`${key}`}</InlineCode>
