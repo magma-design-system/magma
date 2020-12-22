@@ -1,5 +1,6 @@
 import React from 'react'
 import faker from 'faker'
+import Action from '@Typography/Action/Action'
 import H1 from '@Typography/H1/H1'
 import H2 from '@Typography/H2/H2'
 import H3 from '@Typography/H3/H3'
@@ -39,6 +40,9 @@ export const primaryH5 = () =>
 
 export const primaryH6 = () =>
   <H6>{faker.lorem.paragraph()}</H6>
+
+export const primaryAction = () =>
+  <Action>{faker.lorem.paragraph()}</Action>
 
 export const primaryOverline = () =>
   <Overline>{faker.lorem.paragraph()}</Overline>
