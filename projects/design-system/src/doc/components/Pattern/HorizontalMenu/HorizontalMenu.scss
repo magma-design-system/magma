@@ -50,7 +50,7 @@ $contents-color-desktop: color('adjust.tone', 'color', 0.8);
     border-radius: $radius;
 
     // @extend %bar-hidden;
-    color: color('adjust.tone', '02');
+    color: color('adjust.tone', '04');
     cursor: pointer;
     display: inline-flex;
     padding: s(0.25) s(0.5) s(0.25) s(0.5);
@@ -58,11 +58,11 @@ $contents-color-desktop: color('adjust.tone', 'color', 0.8);
     white-space: nowrap;
 
     &:hover {
-      background-color: color('adjust.tone', '02', 0.1);
+      background-color: color('adjust.tone', '04', 0.1);
     }
 
     &--active {
-      background-color: color('adjust.tone', '02');
+      background-color: color('adjust.tone', '04');
       color: color('adjust.tone', '20');
       pointer-events: none;
     }

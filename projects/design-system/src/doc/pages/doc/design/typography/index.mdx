@@ -1,20 +1,170 @@
 ---
 title: 'Typography'
-date: '2020-09-25'
-lastEdit: '2020-12-18 11:10:26'
+date: '2020-12-22 12:16:11'
 author:
   - vittorio.vittori@maggioli.it
 source:
   - 13
+  - 14
+  - 15
 ---
 
-import TypographyTableGroup from '@Gatsby/Typography/TypographyTableGroup'
-import fontFamilies from '+Tokens/css-tokens/font-families.json'
+In questa pagina troverai come accoppiare la Typography e la gerachia da utilizzare. Il Design System utilizza dei **gruppi** di typography che servono a orientare su come utilizzarli.
 
-<Fragment>
-  {
-    Object.entries(fontFamilies).map(([key, value], index) =>
-      <TypographyTableGroup key={index} group={key} family={value.family} styles={value.styles} />,
-    )
-  }
-</Fragment>
+<Image src={require('./muller-brockmann-typography.jpg')} sourceTitle="Uno dei poster di Josef Müller-Brockmann, genio del '900 nell'impaginazione tipografica."/>
+
+### Primary
+
+Il gruppo **primary** definisce i **titoli** dei contenuti, quindi le intestazioni con le quali si definiscono parti di contenuti che meritano un paragrafo suddiviso dal resto del contesto.
+
+<Table interactive={true}>
+  <TableHeader>
+    <TableHeaderCell>Typography</TableHeaderCell>
+    <TableHeaderCell>Gruppo</TableHeaderCell>
+    <TableHeaderCell>Utilizzo</TableHeaderCell>
+  </TableHeader>
+  <TableBody>
+    <TableRow>
+      <TableCell><H1>H1</H1></TableCell>
+      <TableCell><b>Primary</b></TableCell>
+      <TableCell>
+        <Detail>Si utilizza per il titolo più importante della pagina che stai vedendo. Nasce per portare il focus del lettore sul tema proncipale della piattaforma, non si usa in modo massiccio nella pagina ma <b>va usato una volta sola</b> per pagina.</Detail>
+      </TableCell>
+    </TableRow>
+    <TableRow>
+      <TableCell><H2>H2</H2></TableCell>
+      <TableCell><b>Primary</b></TableCell>
+      <TableCell>
+        <Detail>Si utilizza titoli molto importanti e serve a suddividere parti che hanno molta importanza. Essendo un titolo di grande importanza, si presta a delimitare sezioni.</Detail>
+      </TableCell>
+    </TableRow>
+    <TableRow>
+      <TableCell><H3>H3</H3></TableCell>
+      <TableCell><b>Primary</b></TableCell>
+      <TableCell>
+        <Detail>Si utilizza per titoli legati ad argomenti importanti, ma non tanto da delimitarne una seizione.</Detail>
+      </TableCell>
+    </TableRow>
+    <TableRow>
+      <TableCell><H4>H4</H4></TableCell>
+      <TableCell><b>Primary</b></TableCell>
+      <TableCell>
+        <Detail>È adatto per essere usato assieme al componente secondary <b>Paragraph</b> in quanto ha un ingombro proporzionato ad esso.</Detail>
+      </TableCell>
+    </TableRow>
+    <TableRow>
+      <TableCell><H5>H5</H5></TableCell>
+      <TableCell><b>Primary</b></TableCell>
+      <TableCell>
+        <Detail>È adatto per essere usato assieme al componente secondary <b>Detail</b> in quanto ha un ingombro proporzionato ad esso.</Detail>
+      </TableCell>
+    </TableRow>
+    <TableRow>
+      <TableCell><H6>H6</H6></TableCell>
+      <TableCell><b>Primary</b></TableCell>
+      <TableCell>
+        <Detail>È adatto per essere usato assieme al componente secondary <b>Caption</b> in quanto ha un ingombro proporzionato ad esso.</Detail>
+      </TableCell>
+    </TableRow>
+    <TableRow>
+      <TableCell><Action>Action</Action></TableCell>
+      <TableCell><b>Primary</b></TableCell>
+      <TableCell>
+        <Detail>Viene usato per dare alle <b>action</b> la stessa enfasi dei titoli, in quanto il focus è differente da quello della lettura di un contenuto. Va usato per pulsanti e in generale azioni che scatenano eventi o sulla navigazine.</Detail>
+      </TableCell>
+    </TableRow>
+    <TableRow>
+      <TableCell><Overline>Overline</Overline></TableCell>
+      <TableCell><b>Primary</b></TableCell>
+      <TableCell>
+        <Detail>In questo caso si parla di action secondarie che non hanno funzionalità cruciali e che vanno messe in secondo piano.</Detail>
+      </TableCell>
+    </TableRow>
+  </TableBody>
+</Table>
+
+
+### Secondary
+
+Il gruppo **secondary** serve a rappresentare i **contenuti**, questo gruppo viene rafforzato quando il primary lo delimita e gli da importanza.
+
+<Table interactive={true}>
+  <TableHeader>
+    <TableHeaderCell>Typography</TableHeaderCell>
+    <TableHeaderCell>Gruppo</TableHeaderCell>
+    <TableHeaderCell>Utilizzo</TableHeaderCell>
+  </TableHeader>
+  <TableBody>
+    <TableRow>
+      <TableCell><Paragraph>Paragraph</Paragraph></TableCell>
+      <TableCell><b>Secondary</b></TableCell>
+      <TableCell>
+        <Detail>Questa variante va utilizzata per la fruizione di contenuti che vanno letti con attenzione. Il suo impiego principale è quello della lettura di documentazione o pubblicazioni.</Detail>
+      </TableCell>
+    </TableRow>
+    <TableRow>
+      <TableCell><Detail>Detail</Detail></TableCell>
+      <TableCell><b>Secondary</b></TableCell>
+      <TableCell>
+        <Detail>Da utilizzare principalmente per UI o per rappresentare contenuti composti da poche parole o concetti di minore importanza.</Detail>
+      </TableCell>
+    </TableRow>
+    <TableRow>
+      <TableCell><Caption>Caption</Caption></TableCell>
+      <TableCell><b>Secondary</b></TableCell>
+      <TableCell>
+        <Detail>Questa variante si utilizza per contenuti accessori che non sono importanti ne per la navigazione ne per la fruizione di contenuti, è adatto a footer e informazioni legati accessorie.</Detail>
+      </TableCell>
+    </TableRow>
+    <TableRow>
+      <TableCell><LabelParagraph>Label Paragraph</LabelParagraph></TableCell>
+      <TableCell><b>Secondary</b></TableCell>
+      <TableCell>
+        <Detail>Viene usata esplicitamente per accompagnare i <b>Paragraph</b> e i titoli che li introdurranno.</Detail>
+      </TableCell>
+    </TableRow>
+    <TableRow>
+      <TableCell><LabelDetail>Label Detail</LabelDetail></TableCell>
+      <TableCell><b>Secondary</b></TableCell>
+      <TableCell>
+        <Detail>Viene usata esplicitamente per accompagnare i <b>Detail</b> e i titoli che li introdurranno.</Detail>
+      </TableCell>
+    </TableRow>
+    <TableRow>
+      <TableCell><LabelCaption>Label Caption</LabelCaption></TableCell>
+      <TableCell><b>Secondary</b></TableCell>
+      <TableCell>
+        <Detail>Viene usata esplicitamente per accompagnare i <b>Caption</b> e i titoli che li introdurranno.</Detail>
+      </TableCell>
+    </TableRow>
+  </TableBody>
+</Table>
+
+
+### Mono
+
+Il gruppo **mono** nasce con l'esigenza di rappresentare contenuti tecnici come codici, parametri e in generale informazioni come dati sensibili.
+
+<Table interactive={true}>
+  <TableHeader>
+    <TableHeaderCell>Typography</TableHeaderCell>
+    <TableHeaderCell>Gruppo</TableHeaderCell>
+    <TableHeaderCell>Utilizzo</TableHeaderCell>
+  </TableHeader>
+  <TableBody>
+    <TableRow>
+      <TableCell><Code>Code</Code></TableCell>
+      <TableCell><b>Mono</b></TableCell>
+      <TableCell>
+        <Detail>Si utilizza per rappresentare codici, non solo intesi come linguaggio di programmazione, come password in chiaro, codici ci sblocco, PIN o eventualmente un Codice fiscale.</Detail>
+      </TableCell>
+    </TableRow>
+    <TableRow>
+      <TableCell><Hack>Hack</Hack></TableCell>
+      <TableCell><b>Mono</b></TableCell>
+      <TableCell>
+        <Detail>Ha lo stesso scopo di <b>Code</b> con la differenza che serve per contenuti meno importanti, come footer o altre informazioni accessorie.</Detail>
+      </TableCell>
+    </TableRow>
+  </TableBody>
+</Table>
