@@ -55,6 +55,10 @@ $border-style: $border-size solid;
     position: relative;
     white-space: nowrap;
 
+    @include media('desktop') {
+      white-space: normal;
+    }
+
     &:first-child {
       &::before {
 

@@ -18,6 +18,7 @@ import BenchmarkBar from '@Content/BenchmarkBar/BenchmarkBar'
 import BibliographyMLA from '@Content/Bibliography/BibliographyMLA'
 import Button from '@UI/Button/Button'
 import Caption from '@Typography/Caption/Caption'
+import Action from '@Typography/Action/Action'
 import InlineCode from '@UI/InlineCode/InlineCode'
 import CodeBlock from '@Content/CodeBlock/CodeBlock'
 import Detail from '@Typography/Detail/Detail'
@@ -32,6 +33,12 @@ import H3 from '@Typography/H3/H3'
 import H4 from '@Typography/H4/H4'
 import H5 from '@Typography/H5/H5'
 import H6 from '@Typography/H6/H6'
+import Code from '@Typography/Code/Code'
+import Hack from '@Typography/Hack/Hack'
+import Overline from '@Typography/Overline/Overline'
+import LabelCaption from '@Typography/LabelCaption/LabelCaption'
+import LabelDetail from '@Typography/LabelDetail/LabelDetail'
+import LabelParagraph from '@Typography/LabelParagraph/LabelParagraph'
 import HorizontalMenu from '@Gatsby/Pattern/HorizontalMenu/HorizontalMenu'
 // import Hr, { HrLight } from '@Gatsby/Pattern/Hr/Hr'
 import Hr from '@UI/Hr/Hr'
@@ -53,15 +60,18 @@ import { defineCustomElements as deckDeckGoHighlightElement } from '@deckdeckgo/
 const formatter = buildFormatter(frenchStrings)
 
 const shortcodes = {
+  Action,
   AssetPreviewer,
+  Banner,
+  BenchmarkBar,
   BibliographyMLA,
   Button,
   Caption,
-  Detail,
-  InlineCode,
+  Code,
   CodeBlock,
+  Detail,
   Download,
-  Banner,
+  ExternalLink,
   Grid,
   H1,
   H2,
@@ -69,13 +79,15 @@ const shortcodes = {
   H4,
   H5,
   H6,
+  Hack,
   Hr,
   Icon,
-  BenchmarkBar,
   Image,
-  ExternalLink,
-  UList,
-  UListItem,
+  InlineCode,
+  LabelCaption,
+  LabelDetail,
+  LabelParagraph,
+  Overline,
   PackageInfo,
   Paragraph,
   Quote,
@@ -89,6 +101,8 @@ const shortcodes = {
   TableHeaderCell,
   TableRow,
   Tag,
+  UList,
+  UListItem,
   Usage,
   UsageDo,
   UsageDont,

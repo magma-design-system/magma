@@ -7,6 +7,7 @@ import Hack from '@Typography/Hack/Hack'
 import './TypographyTableGroup.scss'
 import faker from 'faker'
 
+const code = faker.finance.creditCardNumber()
 const sentence = faker.lorem.sentence()
 const paragraph = faker.lorem.paragraph()
 
@@ -74,7 +75,9 @@ const TypographyTableGroup = props => {
           <Grid key={index} className="sys-typography-table-group__row">
             <div className={`text-${props.group} text-${props.group}--${name}`}>{name}</div>
             <div className={`text-${props.group} text-${props.group}--${name}`}>
-              {props.group === 'primary' ? sentence : paragraph}
+              {props.group === 'primary' ? sentence : ''}
+              {props.group === 'secondary' ? paragraph : ''}
+              {props.group === 'mono' ? code : ''}
             </div>
             <Styles cssStyles={cssStyles}/>
           </Grid>,

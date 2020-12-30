@@ -13,15 +13,22 @@ export default {
   component: Tooltip,
 }
 
-export const basicUsage = () => {
+export const basicUsage = () =>
   <Card>
-    <Tooltip>
-      <TooltipBalloon onConfirm={() => console.log('onConfirm')} onCancel={() => console.log('onCancel')}>
-        <Detail>{faker.lorem.paragraph()}</Detail>
-      </TooltipBalloon>
-      <Button icon="status-info">
-        Do something
-      </Button>
-    </Tooltip>
+    <br/>
+    <br/>
+    <br/>
+    <br/>
+    <br/>
+    <br/>
+    <div>
+      <Tooltip>
+        <TooltipBalloon onConfirm={() => console.log('onConfirm')} onCancel={() => console.log('onCancel')}>
+          <Detail>{faker.lorem.sentences()}</Detail>
+        </TooltipBalloon>
+        <Button icon="status-info">
+          Hello
+        </Button>
+      </Tooltip>
+    </div>
   </Card>
-}

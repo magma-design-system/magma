@@ -59,13 +59,14 @@
           "font-size": "14px",
           "font-variant-caps": "all-small-caps",
           "font-weight": "500",
-          "line-height": "15px"
+          "line-height": "15px",
+          "padding-bottom": "2px"
         },
         "tablet": {
           "line-height": "20px"
         }
       },
-      "button" : {
+      "action" : {
         "default": {
           "font-size": "14px",
           "font-weight": "500",

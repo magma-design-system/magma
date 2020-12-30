@@ -184,22 +184,26 @@
           {
             "title": "Unità",
             "description": "Le unità sono gli elementi costitutivi più granulari per il layout. La definizione di una serie di valori con incrementi coerenti (come 4, 8, 12 e 16 per un sistema a 4 punti) fornirà le basi per la progettazione della griglia e dei valori di spaziatura.",
-            "done": true
+            "done": true,
+            "storybook": "layout-grid--columns"
           },
           {
             "title": "Griglia",
             "description": "Ogni layout dovrebbe essere posizionato su una griglia che porta ordine e gerarchia all'interfaccia. Definisci una griglia separatamente per dispositivi mobili, tablet e desktop con colonne, grondaie e margini in modo che la tua interfaccia possa adattarsi facilmente a qualsiasi piattaforma.",
-            "done": true
+            "done": true,
+            "storybook": "layout-grid--default-usage"
           },
           {
             "title": "Breakpoint",
             "description": "Definisci le dimensioni dello schermo e gli orientamenti a cui si adatterà la griglia.",
-            "done": true
+            "done": true,
+            "storybook": "layout-grid--columns"
           },
           {
             "title": "Spacing",
             "description": "Il ritmo orizzontale e verticale gioca un ruolo importante in un layout. È necessario fornire metodi semplici per aggiungere spazio tra gli elementi dell'interfaccia indipendentemente dalla griglia.",
-            "done": true
+            "done": true,
+            "storybook": "layout-grid--gutter"
           }
         ],
         "references": [
@@ -220,7 +224,8 @@
           {
             "title": "Responsività",
             "description": "I dispositivi desktop di solito possono permettersi di avere caratteri di dimensioni maggiori rispetto ai dispositivi mobili. La creazione di una scala tipografica che si adatti alle dimensioni del riquadro di visualizzazione aiuterà con una gerarchia e un layout più significativi.",
-            "done": "/doc/design/typography/"
+            "done": "/doc/design/typography/",
+            "storybook": "design-typography--secondary-paragraph"
           },
           {
             "title": "Relazione di griglia",
