@@ -4,7 +4,7 @@ import { styles } from '@Library/styles'
 import './Checkbox.scss'
 import Icon from '@Design/Icon/Icon'
 
-const Checkbox = ({ icon, iconClassName, isChecked, onChange, sync, textClassName, ...restProps }) => {
+const Checkbox = ({ icon, iconClassName, isChecked, onChange, sync, textClassName, value, ...restProps }) => {
   const custom = icon ? { custom: true } : null
   const classes = styles('checkbox', {
     selectors: [
@@ -18,7 +18,7 @@ const Checkbox = ({ icon, iconClassName, isChecked, onChange, sync, textClassNam
 
   return <label className={classes}>
     {!sync
-      ? <input onChange={e => onChange(e.target.checked)} className="checkbox__field" defaultChecked={isChecked} type="checkbox" value="1"/>
+      ? <input onChange={e => onChange(e.target.checked)} className="checkbox__field" checked={isChecked} type="checkbox" defaultValue={value}/>
       : <input onChange={e => onChange(e.target.checked)} className="checkbox__field" checked={isChecked} type="checkbox" value="1"/>
     }
     {icon
@@ -45,6 +45,7 @@ Checkbox.propTypes = {
   onChange: PropTypes.func,
   sync: PropTypes.bool,
   textClassName: PropTypes.string,
+  value: PropTypes.string,
 }
 
 Checkbox.defaultProps = {
@@ -54,6 +55,7 @@ Checkbox.defaultProps = {
   isChecked: false,
   sync: false,
   textClassName: 'text-secondary text-secondary--caption',
+  value: '0',
 }
 
 export default Checkbox
