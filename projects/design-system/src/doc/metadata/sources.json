@@ -76,5 +76,25 @@
     "title": "Getting Typography Right in Digital Design",
     "author": "Nick Babich",
     "url": "https://medium.springboard.com/the-guide-to-getting-typography-right-in-digital-design-bb61214ff3ad"
+  },{
+    "id": "16",
+    "title": "Part 1: Adaptive Color in Design Systems",
+    "author": "Nate Baldwin",
+    "url": "https://medium.com/thinking-design/adaptive-color-in-design-systems-7bcd2e664fa0"
+  },{
+    "id": "17",
+    "title": "Part 2: Introducing Adaptive Color Palettes",
+    "author": "Nate Baldwin",
+    "url": "https://medium.com/thinking-design/introducing-adaptive-color-palettes-111b5842fc88"
+  },{
+    "id": "18",
+    "title": "Part 3: Adaptive Color in Spectrum, Adobe’s Design System",
+    "author": "Nate Baldwin",
+    "url": "https://medium.com/thinking-design/adaptive-color-in-spectrum-adobes-design-system-feeeec89a2c7"
+  },{
+    "id": "19",
+    "title": "Leonardo: an open source contrast-based color generator",
+    "author": "Nate Baldwin",
+    "url": "https://medium.com/@NateBaldwin/leonardo-an-open-source-contrast-based-color-generator-92d61b6521d2"
   }
 ]
