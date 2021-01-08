@@ -54,9 +54,9 @@
         "description": "La maggior parte dei clienti forma un'opinione su un prodotto in pochi secondi. Nella maggior parte dei casi, il tuo logo sarà la prima risorsa del brand che qualcuno vede. Si tratta di fare la prima impressione giusta. Un logo distintivo aiuta gli utenti a riconoscere immediatamente un prodotto e dà loro l'essenza del tuo marchio.",
         "children": [
           {
-            "title": "Versione monocromatica",
             "description": "Una versione monocromatica del tuo logo che sta bene sopra una fotografia o quando viene stampato con una stampante di scarsa qualità.",
-            "done": "/identity/logo/gruppo-maggioli/"
+            "done": "/identity/logo/gruppo-maggioli/",
+            "title": "Versione monocromatica"
           },
           {
             "title": "Guida all'utilizzo nel piccolo formato",
@@ -1311,6 +1311,31 @@
             "title": "Customizzazione dell'icona aperto/chiuso",
             "description": "Anche qui a seconda del tema può essere opportuno utilizzare un arrow o degli operatori per rappresentare quando l'Accordion è aperto o chiuso.",
             "done": false
+          }
+        ],
+        "references": []
+      },
+      {
+        "title": "ActionsBar",
+        "description": "Questo componente serve ad apportare azioni su uno o più elementi dello stesso tipo, funziona come gruppo di azioni contestuali che compaiono quando uno o più elementi sono stati selezionati.",
+        "children": [
+          {
+            "title": "Numero di azioni variabili",
+            "description": "Il componente deve supportare un numero di azioni che possono essere inserite al suo interno, come ad esempio Modifica, Cancella o altre azioni che si possono apportare a un gruppo di elementi.",
+            "storybook": "ui-actionsbar--basic-usage",
+            "done": true
+          },
+          {
+            "title": "Positionamento",
+            "description": "ActionsBar dovrebbe dare la possibilità di essere posizionabile orizontalmente, in modo che non sia d'intralcio ad altre informazioni che sono in pagina potenzialmente utili per l'utente.",
+            "storybook": "ui-actionsbar--position-center",
+            "done": true
+          },
+          {
+            "title": "Descrizione",
+            "description": "Il componente deve dare la possibilità di mostrare il numero corrente di elementi che si sta selezionando o altre informazioni che arrivano dall'esterno per aiutare l'utilizzatore a comprendere il perché la ActionsBar sia comparsa.",
+            "storybook": "ui-actionsbar--basic-usage",
+            "done": true
           }
         ],
         "references": []
