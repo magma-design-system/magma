@@ -169,3 +169,22 @@ export const contentOnly = () =>
       </Modal>
     </Toggler.Content>
   </Toggler>
+
+export const customButtons = () => {
+  return (
+    <Toggler>
+      <Toggler.Trigger>
+        <Button icon="status-info">
+          Apri modale
+        </Button>
+      </Toggler.Trigger>
+      <Toggler.Content>
+        <Modal position="center" confirmButton='Salva' cancelButton='Torna indietro'>
+          <Paragraph>{faker.lorem.paragraph()}</Paragraph>
+          <Paragraph>{faker.lorem.paragraph()}</Paragraph>
+          <Paragraph>{faker.lorem.paragraph()}</Paragraph>
+        </Modal>
+      </Toggler.Content>
+    </Toggler>
+  )
+}
