@@ -53,6 +53,7 @@ export BackofficeInputText from '@UI/Input/BackofficeInputText'
 export BackofficeSelect, { BackofficeSelectOption } from '@UI/Select/BackofficeSelect'
 export BackofficeTextarea from '@UI/Textarea/BackofficeTextarea'
 
+export ActionsBar, { ActionsBarItems } from '@UI/ActionsBar/ActionsBar'
 export Button from '@UI/Button/Button'
 export Checkbox from '@UI/Checkbox/Checkbox'
 export InlineCode from '@UI/InlineCode/InlineCode'
