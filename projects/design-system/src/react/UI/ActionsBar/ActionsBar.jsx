@@ -18,14 +18,14 @@ ActionsBarItems.defaultProps = {
   gutter: 'small',
 }
 
-const ActionsBar = ({ position, visible, ...restProps }) => {
+const ActionsBar = ({ position, notVisible, ...restProps }) => {
   const classes = styles('actions-bar', {
     selectors: [
       restProps.className,
     ],
     modifiers: {
       position,
-      notVisible: visible,
+      notVisible,
     },
   })
 
@@ -39,7 +39,7 @@ const ActionsBar = ({ position, visible, ...restProps }) => {
 ActionsBar.propTypes = {
   ...Card.propTypes,
   position: PropTypes.string,
-  visible: PropTypes.bool,
+  notVisible: PropTypes.bool,
 }
 
 ActionsBar.defaultProps = {
