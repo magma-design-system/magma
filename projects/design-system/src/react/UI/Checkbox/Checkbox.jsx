@@ -4,11 +4,11 @@ import { styles } from '@Library/styles'
 import './Checkbox.scss'
 import Icon from '@Design/Icon/Icon'
 
-const Checkbox = ({ icon, iconClassName, isChecked, onChange, sync, textClassName, value, ...restProps }) => {
+const Checkbox = ({ className, icon, iconClassName, isChecked, onChange, sync, textClassName, value, ...restProps }) => {
   const custom = icon ? { custom: true } : null
   const classes = styles('checkbox', {
     selectors: [
-      restProps.className,
+      className,
       textClassName,
     ],
     modifiers: {

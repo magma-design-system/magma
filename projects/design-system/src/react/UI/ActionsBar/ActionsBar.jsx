@@ -18,10 +18,10 @@ ActionsBarItems.defaultProps = {
   gutter: 'small',
 }
 
-const ActionsBar = ({ position, notVisible, ...restProps }) => {
+const ActionsBar = ({ className, position, notVisible, ...restProps }) => {
   const classes = styles('actions-bar', {
     selectors: [
-      restProps.className,
+      className,
     ],
     modifiers: {
       position,

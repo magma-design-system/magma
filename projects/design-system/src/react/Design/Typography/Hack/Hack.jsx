@@ -3,10 +3,10 @@ import PropTypes from 'prop-types'
 import { styles } from '@Library/styles'
 import Typography from '@Typography/Typography'
 
-const Hack = ({ htmlTag, ...restProps }) => {
+const Hack = ({ className, htmlTag, ...restProps }) => {
   const classes = styles('hack', {
     selectors: [
-      restProps.className,
+      className,
       'text-mono text-mono--hack',
     ],
   })

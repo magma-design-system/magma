@@ -3,10 +3,10 @@ import PropTypes from 'prop-types'
 import { styles } from '@Library/styles'
 import Typography from '@Typography/Typography'
 
-const H3 = ({ htmlTag, ...restProps }) => {
+const H3 = ({ className, htmlTag, ...restProps }) => {
   const classes = styles('h3', {
     selectors: [
-      restProps.className,
+      className,
       'text-primary text-primary--h3',
     ],
   })

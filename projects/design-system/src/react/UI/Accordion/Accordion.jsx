@@ -6,10 +6,10 @@ import './Accordion.scss'
 import H3 from '@Typography/H3/H3'
 import Icon from '@Design/Icon/Icon'
 
-const AccordionItem = ({ icon, opened, title, ...restProps }) => {
+const AccordionItem = ({ className, icon, opened, title, ...restProps }) => {
   const classes = styles('accordion__item', {
     selectors: [
-      restProps.className,
+      className,
     ],
     modifiers: {
       opened,
@@ -43,14 +43,12 @@ AccordionItem.defaultProps = {
   opened: false,
 }
 
-const Accordion = ({ initialItem, ...restProps }) => {
+const Accordion = ({ className, ...restProps }) => {
   const classes = styles('accordion', {
     selectors: [
-      restProps.className,
+      className,
     ],
   })
-
-  console.log(initialItem)
 
   const children = Children.map(restProps.children, (child, index) => {
     if (child !== null) {

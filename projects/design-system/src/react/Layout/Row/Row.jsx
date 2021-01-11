@@ -3,11 +3,11 @@ import PropTypes from 'prop-types'
 import { styles } from '@Library/styles'
 import './Row.scss'
 
-const Row = ({ align, gutter, htmlTag, lastChild, onClick, width, ...restProps }) => {
+const Row = ({ align, className, gutter, htmlTag, lastChild, onClick, width, ...restProps }) => {
   const HtmlTag = htmlTag.toLowerCase()
   const classes = styles('row', {
     selectors: [
-      restProps.className,
+      className,
     ],
     modifiers: {
       align,

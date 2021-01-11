@@ -9,10 +9,10 @@ import Row from '@Layout/Row/Row'
 import Grid from '@Layout/Grid/Grid'
 import H6 from '@Typography/H6/H6'
 
-const DropdownItem = ({ icon, font, href, ...restProps }) => {
+const DropdownItem = ({ className, icon, font, href, ...restProps }) => {
   const classes = styles('dropdown__item', {
     selectors: [
-      restProps.className,
+      className,
     ],
   })
 
@@ -33,7 +33,7 @@ DropdownItem.defaultProps = {
   className: '',
 }
 
-const Dropdown = ({ description, direction, font, icon, label, pivot, ...restProps }) => {
+const Dropdown = ({ className, description, direction, font, icon, label, pivot, ...restProps }) => {
   const [visible, setVisible] = useState(false)
   const ref = useOnclickOutside(() => {
     setVisible(false)
@@ -54,7 +54,7 @@ const Dropdown = ({ description, direction, font, icon, label, pivot, ...restPro
 
   const classes = styles('dropdown', {
     selectors: [
-      restProps.className,
+      className,
     ],
     modifiers: {
       direction,

@@ -5,8 +5,7 @@ import './Tag.scss'
 import Icon from '@Design/Icon/Icon'
 import dictionary from './dictionary.json'
 
-const Tag = ({ chip, icon, iconClassName, size, status, ...restProps }) => {
-  console.log(size, dictionary.size[size])
+const Tag = ({ chip, className, icon, iconClassName, size, status, ...restProps }) => {
   const { font, iconSize, horizontalPadding } = dictionary.size[size]
   const background = status ? dictionary.status[status].background : ''
   const iconClassStatus = status ? dictionary.status[status].icon : ''
@@ -14,7 +13,7 @@ const Tag = ({ chip, icon, iconClassName, size, status, ...restProps }) => {
 
   const classes = styles('tag', {
     selectors: [
-      restProps.className,
+      className,
       background,
       color,
     ],

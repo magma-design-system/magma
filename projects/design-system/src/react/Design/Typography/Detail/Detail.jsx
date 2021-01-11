@@ -3,10 +3,10 @@ import PropTypes from 'prop-types'
 import { styles } from '@Library/styles'
 import Typography from '@Typography/Typography'
 
-const Detail = ({ htmlTag, ...restProps }) => {
+const Detail = ({ className, htmlTag, ...restProps }) => {
   const classes = styles('detail', {
     selectors: [
-      restProps.className,
+      className,
       'text-secondary text-secondary--detail',
     ],
   })

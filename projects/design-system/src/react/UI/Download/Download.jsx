@@ -21,7 +21,7 @@ function getExtensionInfos(extension) {
   return dictionary.extension[extension] !== undefined ? dictionary.extension[extension] : dictionary.extension.default
 }
 
-const Download = ({ fileName, href, name, preview, target, transparencyGrid, ...restProps }) => {
+const Download = ({ className, fileName, href, name, preview, target, transparencyGrid, ...restProps }) => {
   const extension = getExtension(fileName)
   const fileNameNoExt = getName(fileName, extension)
   const { description, format } = getExtensionInfos(extension)
@@ -29,7 +29,7 @@ const Download = ({ fileName, href, name, preview, target, transparencyGrid, ...
 
   const classes = styles('download', {
     selectors: [
-      restProps.className,
+      className,
     ],
     modifiers: {
       name,
@@ -50,7 +50,7 @@ const Download = ({ fileName, href, name, preview, target, transparencyGrid, ...
   })
 
   return (
-    <a target={target} href={href} download={fileName} title={fileName} className={classes}>
+    <a target={target} {...restProps} href={href} download={fileName} title={fileName} className={classes}>
       <div className={classesIcon}>
         {preview
           ? <div className="download__preview" style={{ backgroundImage: `url('${href}')` }}></div>

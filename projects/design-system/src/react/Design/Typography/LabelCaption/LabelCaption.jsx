@@ -3,10 +3,10 @@ import PropTypes from 'prop-types'
 import { styles } from '@Library/styles'
 import Typography from '@Typography/Typography'
 
-const LabelCaption = ({ htmlTag, ...restProps }) => {
+const LabelCaption = ({ className, htmlTag, ...restProps }) => {
   const classes = styles('label-caption', {
     selectors: [
-      restProps.className,
+      className,
       'text-secondary text-secondary--label-caption',
     ],
   })

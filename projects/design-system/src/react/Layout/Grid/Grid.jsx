@@ -3,12 +3,12 @@ import PropTypes from 'prop-types'
 import { styles } from '@Library/styles'
 import './Grid.scss'
 
-const Grid = ({ align, columns, gutter, htmlTag, rows, template, ...restProps }) => {
+const Grid = ({ align, className, columns, gutter, htmlTag, rows, template, ...restProps }) => {
   const HtmlTag = htmlTag.toLowerCase()
 
   const classes = styles('grid', {
     selectors: [
-      restProps.className,
+      className,
     ],
     modifiers: {
       align,

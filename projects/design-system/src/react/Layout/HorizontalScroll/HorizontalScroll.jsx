@@ -3,10 +3,10 @@ import PropTypes from 'prop-types'
 import { styles } from '@Library/styles'
 import './HorizontalScroll.scss'
 
-const HorizontalScroll = ({ innerMargin, outerMargin, scrollSnap, ...restProps }) => {
+const HorizontalScroll = ({ className, innerMargin, outerMargin, scrollSnap, ...restProps }) => {
   const classes = styles('horizontal-scroll', {
     selectors: [
-      restProps.className,
+      className,
     ],
     modifiers: {
       innerMargin,

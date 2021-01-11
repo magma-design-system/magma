@@ -6,11 +6,11 @@ import './Icon.scss'
 import mggIconsDictionary from '+Project/mgg-icons/src/mgg-icons.json'
 const dictionary = Object.keys(mggIconsDictionary)
 
-const Icon = ({ image, name, onClick, size, ...restProps }) => {
+const Icon = ({ className, image, name, onClick, size, ...restProps }) => {
   if (image) {
     const classes = styles('icon', {
       selectors: [
-        restProps.className,
+        className,
       ],
       modifiers: {
         size,
@@ -28,7 +28,7 @@ const Icon = ({ image, name, onClick, size, ...restProps }) => {
 
   const classes = styles('icon', {
     selectors: [
-      restProps.className,
+      className,
       icon,
     ],
     modifiers: {
@@ -36,7 +36,7 @@ const Icon = ({ image, name, onClick, size, ...restProps }) => {
     },
   })
 
-  return <i onClick={onClick} className={classes} title={notFound ? `Warning: icon <${name}> not found` : ''}></i>
+  return <i {...restProps} onClick={onClick} className={classes} title={notFound ? `Warning: icon <${name}> not found` : ''}></i>
 }
 
 Icon.propTypes = {

@@ -8,7 +8,7 @@ import LabelCaption from '@Typography/LabelCaption/LabelCaption'
 import Detail from '@Typography/Detail/Detail'
 import Button from '@UI/Button/Button'
 
-const UploadFileImage = ({ deleteImage, error, icon, iconClassName, label, name, onFileChange, placeholder, required, uriImage, ...restProps }) => {
+const UploadFileImage = ({ className, deleteImage, error, icon, iconClassName, label, name, onFileChange, placeholder, required, uriImage, ...restProps }) => {
   const HTMLElement = uriImage !== null ? 'div' : 'label'
 
   const hasIcon = icon !== null
@@ -17,7 +17,7 @@ const UploadFileImage = ({ deleteImage, error, icon, iconClassName, label, name,
 
   const classes = styles('backoffice-file-image', {
     selectors: [
-      restProps.className,
+      className,
     ],
     modifiers: {
       hasIcon,
@@ -28,13 +28,12 @@ const UploadFileImage = ({ deleteImage, error, icon, iconClassName, label, name,
 
   const iconClasses = styles('backoffice-file-image__icon', {
     selectors: [
-      restProps.className,
       iconClassName,
     ],
   })
 
   return (
-    <HTMLElement className={classes}>
+    <HTMLElement className={classes} {...restProps}>
       <input type="file" name={name} className="backoffice-file-image__field" onChange={onFileChange}/>
       <div className="backoffice-file-image__image" style={{ backgroundImage: `url('${uriImage}')` }}>
         <Button onClick={deleteImage} className="backoffice-file-image__delete" icon="crud-delete" />

@@ -3,10 +3,10 @@ import PropTypes from 'prop-types'
 import { styles } from '@Library/styles'
 import Typography from '@Typography/Typography'
 
-const Overline = ({ htmlTag, ...restProps }) => {
+const Overline = ({ className, htmlTag, ...restProps }) => {
   const classes = styles('overline', {
     selectors: [
-      restProps.className,
+      className,
       'text-primary text-primary--overline',
     ],
   })

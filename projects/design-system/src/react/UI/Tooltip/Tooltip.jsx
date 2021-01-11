@@ -32,10 +32,10 @@ TooltipBalloon.defaultProps = {
   onConfirm: null,
 }
 
-const Tooltip = ({ position, ...restProps }) => {
+const Tooltip = ({ className, position, ...restProps }) => {
   const classes = styles('tooltip', {
     selectors: [
-      restProps.className,
+      className,
     ],
     modifiers: {
       position,

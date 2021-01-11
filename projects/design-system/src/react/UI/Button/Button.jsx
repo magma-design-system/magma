@@ -5,7 +5,7 @@ import Icon from '@Design/Icon/Icon'
 import dictionary from './dictionary.json'
 import './Button.scss'
 
-const Button = ({ borderRadius, boxShadow, disabled, horizontalPadding, href, icon, onClick, outline, size, type, variant, width, ...restProps }) => {
+const Button = ({ borderRadius, boxShadow, className, disabled, horizontalPadding, href, icon, onClick, outline, size, type, variant, width, ...restProps }) => {
   const { font, iconSize } = dictionary[size]
   let borderRadiusChoosen = dictionary[size].borderRadius
   if (borderRadius) {
@@ -19,7 +19,7 @@ const Button = ({ borderRadius, boxShadow, disabled, horizontalPadding, href, ic
 
   const classes = styles('button', {
     selectors: [
-      restProps.className,
+      className,
     ],
     modifiers: {
       disabled,

@@ -8,11 +8,11 @@ import Row from '@Layout/Row/Row'
 
 import dictionary from './dictionary.json'
 
-const Banner = ({ status, ...restProps }) => {
+const Banner = ({ className, status, ...restProps }) => {
   const { background, color } = dictionary[status]
   const classes = styles('banner', {
     selectors: [
-      restProps.className,
+      className,
       background,
       color,
     ],
