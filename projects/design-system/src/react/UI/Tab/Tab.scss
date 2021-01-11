@@ -1,0 +1,18 @@
+@import '~Sass/import-framework';
+
+.tab {
+  align-items: center;
+  display: inline-flex;
+}
+
+.background-color-adjust-tone-20\:hover {
+  &:hover {
+    background-color: color('adjust.tone') !important;
+  }
+}
+
+.box-shadow-box\:hover {
+  &:hover {
+    box-shadow: get($shadow, 'box') !important;
+  }
+}
