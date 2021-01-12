@@ -1,9 +1,8 @@
-@function prop-name ($long-name, $short-name) {
+@function property-name ($property, $index: 1) {
 
-  @if ($config-scaffold-format == 'short') {
-
-    @return $short-name;
+  @if (length(str-split($property, ':')) == 2) {
+    @return nth(str-split($property, ':'), $index);
   }
 
-  @return $long-name;
+  @return $property;
 }

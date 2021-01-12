@@ -2,8 +2,8 @@
   "palette": {
     "format": [ "rgb-channels", "hex" ],
     "scaffold": [
-      "background-color",
-      "color"
+      "bg:background-color",
+      "text:color"
     ],
     "colors": [
       "brand.maggioli",
@@ -27,12 +27,10 @@
     ]
   },
   "scaffold": {
-    "format": "classic",
+    "format": "short",
     "properties": [
-      "background-color",
       "border-radius",
       "box-shadow",
-      "color",
       "horizontal-padding",
       "padding",
       "vertical-padding"

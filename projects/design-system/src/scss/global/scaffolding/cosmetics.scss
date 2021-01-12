@@ -1,73 +1,50 @@
-@if (index($config-scaffold-properties, 'box-shadow')) {
+@mixin scaffold-property-set ($name, $property, $list, $interactive: true) {
 
-  $modifier-name: prop-name('border-radius', 'br');
+  @if (property-name($property, 2) == $name) {
 
-  @each $shadow-name, $shadow-value in $shadow {
-    @include scaffold-property (
-      $property-name: 'box-shadow',
-      $modifier-name: $modifier-name,
-      $variant: $shadow-name,
-      $value: $shadow-value
-    );
+    $property-selector: property-name($property, 1);
+    $property-name: property-name($property, 2);
 
-    @include scaffold-property-interactive (
-      $property-name: 'box-shadow',
-      $modifier-name: $modifier-name,
-      $variant: $shadow-name,
-      $value: $shadow-value,
-      $initial-value: none
-    );
-  }
-}
-
-@if (index($config-scaffold-properties, 'border-radius')) {
-
-  $modifier-name: prop-name('border-radius', 'br');
-
-  @each $radius-name, $radius-value in $radius {
-    @include scaffold-property (
-      $property-name: 'border-radius',
-      $modifier-name: $modifier-name,
-      $variant: $radius-name,
-      $value: $radius-value
-    );
-  }
-}
-
-@if (index($config-scaffold-properties, 'padding')) {
-
-  $modifier-name: prop-name('padding', 'p');
-
-  @each $padding-name, $padding-value in $list-sizes {
-    @include scaffold-property (
-      $property-name: 'padding',
-      $modifier-name: $modifier-name,
-      $variant: $padding-name,
-      $value: $padding-value
-    );
-  }
-}
-
-@if (index($config-scaffold-properties, 'horizontal-padding')) {
-
-  $modifier-name: prop-name('horizontal-padding', 'px');
-
-  @each $variant, $value in $list-sizes {
-    .#{$modifier-name}-#{$variant} {
-      padding-left: $value !important;
-      padding-right: $value !important;
+    @each $variant, $value in $list {
+      @include scaffold-property (
+        $property-name: $property-name,
+        $property-selector: $property-selector,
+        $variant: $variant,
+        $value: $value,
+        $interactive: $interactive
+      );
     }
   }
 }
 
-@if (index($config-scaffold-properties, 'vertical-padding')) {
+@each $property in $config-scaffold-properties {
+  @include scaffold-property-set($name: 'box-shadow', $property: $property, $list: $shadow, $interactive: true);
+  @include scaffold-property-set($name: 'border-radius', $property: $property, $list: $radius, $interactive: true);
+  @include scaffold-property-set($name: 'padding', $property: $property, $list: $list-sizes, $interactive: true);
 
-  $modifier-name: prop-name('vertical-padding', 'py');
+  @if (index($property, 'horizontal-padding')) {
 
-  @each $variant, $value in $list-sizes {
-    .#{$modifier-name}-#{$variant} {
-      padding-bottom: $value !important;
-      padding-top: $value !important;
+    $property-selector: property-name($property, 1);
+    $property-name: property-name($property, 2);
+
+    @each $variant, $value in $list-sizes {
+      .#{$property-selector}-#{$variant} {
+        padding-left: $value !important;
+        padding-right: $value !important;
+      }
+    }
+  }
+
+  @if (index($property, 'vertical-padding')) {
+
+    $property-selector: property-name($property, 1);
+    $property-name: property-name($property, 2);
+
+    @each $variant, $value in $list-sizes {
+      .#{$property-selector}-#{$variant} {
+        padding-bottom: $value !important;
+        padding-top: $value !important;
+      }
     }
   }
 }
