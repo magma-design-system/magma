@@ -48,3 +48,15 @@
     }
   }
 }
+
+.transition-cosmetics {
+  transition: box-shadow get($tween, 'hover'), border-radius get($tween, 'hover'), padding get($tween, 'hover') !important;
+}
+
+.transition-colors {
+  transition: background-color get($tween, 'hover'), color get($tween, 'hover') !important;
+}
+
+.transition {
+  transition: background-color get($tween, 'hover'), color get($tween, 'hover'), box-shadow get($tween, 'hover'), border-radius get($tween, 'hover'), padding get($tween, 'hover') !important;
+}
