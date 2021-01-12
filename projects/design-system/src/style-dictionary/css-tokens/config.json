@@ -17,23 +17,14 @@
       "adjust.tone"
     ]
   },
-  "cosmetics": {
-    "scaffold": [
-      "border-radius",
-      "box-shadow",
-      "padding",
-      "horizontal-padding",
-      "vertical-padding"
-    ]
-  },
   "scaffold": {
     "format": "short",
     "properties": [
-      "border-radius",
-      "box-shadow",
-      "horizontal-padding",
-      "padding",
-      "vertical-padding"
+      "br:border-radius",
+      "bs:box-shadow",
+      "p:padding",
+      "px:horizontal-padding",
+      "py:vertical-padding"
     ]
   }
 }

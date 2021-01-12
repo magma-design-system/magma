@@ -22,7 +22,7 @@
   @include scaffold-property-set($name: 'border-radius', $property: $property, $list: $radius, $interactive: true);
   @include scaffold-property-set($name: 'padding', $property: $property, $list: $list-sizes, $interactive: true);
 
-  @if (index($property, 'horizontal-padding')) {
+  @if (property-name($property, 2) == 'horizontal-padding') {
 
     $property-selector: property-name($property, 1);
     $property-name: property-name($property, 2);
@@ -35,7 +35,7 @@
     }
   }
 
-  @if (index($property, 'vertical-padding')) {
+  @if (property-name($property, 2) == 'vertical-padding') {
 
     $property-selector: property-name($property, 1);
     $property-name: property-name($property, 2);
