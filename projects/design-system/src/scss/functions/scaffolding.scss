@@ -1,0 +1,9 @@
+@function prop-name ($long-name, $short-name) {
+
+  @if ($config-scaffold-format == 'short') {
+
+    @return $short-name;
+  }
+
+  @return $long-name;
+}

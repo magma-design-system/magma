@@ -1,10 +1,16 @@
+@mixin scaffold-property-nu ($property-name, $variant, $value, $modifier-name:$property-name) {
+  .#{$modifier-name}-#{$variant} {
+    #{$property-name}: $value !important;
+  }
+}
+
 @mixin scaffold-property ($property-name, $variant, $value, $modifier-name:$property-name) {
   .#{$modifier-name}-#{$variant} {
     #{$property-name}: $value !important;
   }
 }
 
-@mixin scaffold-property-interactive ($property-name, $variant, $value, $initial-value) {
+@mixin scaffold-property-interactive ($property-name, $variant, $value, $initial-value, $modifier-name:$property-name) {
   .#{$property-name}-#{$variant}--interactive {
     cursor: pointer;
     #{$property-name}: $initial-value !important;

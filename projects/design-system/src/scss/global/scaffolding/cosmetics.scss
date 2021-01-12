@@ -1,13 +1,18 @@
-@if (index($cosmetics-scaffold, 'box-shadow')) {
+@if (index($config-scaffold-properties, 'box-shadow')) {
+
+  $modifier-name: prop-name('border-radius', 'br');
+
   @each $shadow-name, $shadow-value in $shadow {
     @include scaffold-property (
       $property-name: 'box-shadow',
+      $modifier-name: $modifier-name,
       $variant: $shadow-name,
       $value: $shadow-value
     );
 
     @include scaffold-property-interactive (
       $property-name: 'box-shadow',
+      $modifier-name: $modifier-name,
       $variant: $shadow-name,
       $value: $shadow-value,
       $initial-value: none
@@ -15,38 +20,52 @@
   }
 }
 
-@if (index($cosmetics-scaffold, 'border-radius')) {
+@if (index($config-scaffold-properties, 'border-radius')) {
+
+  $modifier-name: prop-name('border-radius', 'br');
+
   @each $radius-name, $radius-value in $radius {
     @include scaffold-property (
       $property-name: 'border-radius',
+      $modifier-name: $modifier-name,
       $variant: $radius-name,
       $value: $radius-value
     );
   }
 }
 
-@if (index($cosmetics-scaffold, 'padding')) {
+@if (index($config-scaffold-properties, 'padding')) {
+
+  $modifier-name: prop-name('padding', 'p');
+
   @each $padding-name, $padding-value in $list-sizes {
     @include scaffold-property (
       $property-name: 'padding',
+      $modifier-name: $modifier-name,
       $variant: $padding-name,
       $value: $padding-value
     );
   }
 }
 
-@if (index($cosmetics-scaffold, 'horizontal-padding')) {
+@if (index($config-scaffold-properties, 'horizontal-padding')) {
+
+  $modifier-name: prop-name('horizontal-padding', 'px');
+
   @each $variant, $value in $list-sizes {
-    .horizontal-padding-#{$variant} {
+    .#{$modifier-name}-#{$variant} {
       padding-left: $value !important;
       padding-right: $value !important;
     }
   }
 }
 
-@if (index($cosmetics-scaffold, 'vertical-padding')) {
+@if (index($config-scaffold-properties, 'vertical-padding')) {
+
+  $modifier-name: prop-name('vertical-padding', 'py');
+
   @each $variant, $value in $list-sizes {
-    .vertical-padding-#{$variant} {
+    .#{$modifier-name}-#{$variant} {
       padding-bottom: $value !important;
       padding-top: $value !important;
     }
