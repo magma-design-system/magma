@@ -9,7 +9,7 @@ const TabItem = ({ active, borderRadius, className, ...restProps }) => {
   const classes = styles('tab__item', {
     selectors: [
       className,
-      active ? 'transition bg-brand-maggioli-05 text-adjust-tone-20' : 'transition bg-adjust-tone-19 hover:bg-adjust-tone-20 hover:bs-box text-adjust-tone-04',
+      active ? 'transition background-color-brand-maggioli-05 color-adjust-tone-20' : 'transition background-color-adjust-tone-19 hover:background-color-adjust-tone-20 hover:box-shadow-box color-adjust-tone-04 hover:color-brand-maggioli-04',
     ],
     scaffolded: {
       borderRadius,
@@ -56,7 +56,7 @@ Tab.propTypes = {
 }
 
 Tab.defaultProps = {
-  className: 'bg-adjust-tone-19',
+  className: 'background-color-adjust-tone-19',
   gutter: 'xsmall',
   padding: 'xsmall',
   borderRadius: 'xlarge',

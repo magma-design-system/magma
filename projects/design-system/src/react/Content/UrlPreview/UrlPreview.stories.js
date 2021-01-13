@@ -66,7 +66,7 @@ export const customShadow = () => {
         </Button>
       </Toggler.Trigger>
       <Toggler.Content>
-        <UrlPreview wide={true} centered={true} shadow="box-shadow-strong" url="https://stylable.io/"/>
+        <UrlPreview wide={true} centered={true} boxShadow="strong" url="https://stylable.io/"/>
       </Toggler.Content>
     </Toggler>
   )

@@ -68,7 +68,7 @@ const Dropdown = ({ className, description, direction, font, icon, label, pivot,
         <Icon className="dropdown__icon" name={icon}/>
         { description && <div className="dropdown__description">{ description }</div> }
       </Row> }
-      <Grid className={`dropdown__list box-shadow-box ${pivot ? 'dropdown__list--pivot-' + pivot : ''}`} gutter="none">
+      <Grid className={`dropdown__list bs-box ${pivot ? 'dropdown__list--pivot-' + pivot : ''}`} gutter="none">
         <H6 className="dropdown__header">{ label }</H6>
         {children}
         <div className="dropdown__footer"></div>

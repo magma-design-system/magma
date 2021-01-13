@@ -3,6 +3,8 @@ import PropTypes from 'prop-types'
 import Icon from '@Design/Icon/Icon'
 import './UrlPreview.scss'
 
+import { styles } from '@Library/styles'
+
 const urlDomain = url => {
   const domain = new URL(url)
   return domain.hostname.replace('www.', '')
@@ -32,20 +34,40 @@ UrlPreviewHeader.propTypes = {
   onCancel: PropTypes.func,
 }
 
-const UrlPreview = props =>
-  <div className={`url-preview ${props.className} ${props.visible ? 'url-preview--visible' : ''} ${props.wide ? 'url-preview--wide' : ''} ${props.centered ? 'url-preview--centered' : ''}`}>
-    <div className={`url-preview__window ${props.shadow ? props.shadow : ''}`}>
-      <UrlPreviewHeader url={props.url} onCancel={props.onCancel}/>
-      <iframe className="url-preview__iframe" src={props.url} loading="lazy"></iframe>
+const UrlPreview = ({ boxShadow, centered, className, onCancel, url, visible, wide }) => {
+  const classes = styles('url-preview', {
+    selectors: [
+      className,
+    ],
+    modifiers: {
+      centered,
+      visible,
+      wide,
+    },
+    scaffolded: {
+      boxShadow,
+    },
+  })
+
+  const windowClasses = styles('url-preview__window', {
+    scaffolded: {
+      boxShadow,
+    },
+  })
+
+  return <div className={classes}>
+    <div className={windowClasses}>
+      <UrlPreviewHeader url={url} onCancel={onCancel}/>
+      <iframe className="url-preview__iframe" src={url} loading="lazy"></iframe>
     </div>
   </div>
+}
 
 UrlPreview.propTypes = {
   centered: PropTypes.bool,
   className: PropTypes.string,
-  distractionFree: PropTypes.bool,
   onCancel: PropTypes.func,
-  shadow: PropTypes.string,
+  boxShadow: PropTypes.string,
   url: PropTypes.string,
   visible: PropTypes.bool,
   wide: PropTypes.bool,
@@ -54,9 +76,8 @@ UrlPreview.propTypes = {
 UrlPreview.defaultProps = {
   centered: false,
   className: '',
-  distractionFree: false,
   onCancel: null,
-  shadow: 'box-shadow-soft',
+  boxShadow: 'soft',
   url: 'https://www.maggioli.com',
   visible: false,
   wide: false,
