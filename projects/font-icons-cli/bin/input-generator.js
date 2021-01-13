@@ -31,7 +31,7 @@ function generateIcons (iconGroupLists) {
   return iconGroupLists
     .map(({ group, list }) => {
       const { getIconName } = ICON_GROUPS[group]
-      return list.map(path => `${group}/${getIconName(path)}`)
+      return list.map(path => `${group ? group + '/' : ''}${getIconName(path)}`)
     })
     .flat()
 }
@@ -48,6 +48,8 @@ function iconGroupList ([groupName, group]) {
     case 'material':
     case 'fontawesome':
       return group.listPath().then(list => ({ group: groupName, list }))
+    //case 'localDirectory':
+    //  return group.listPath().then(list => ({ group: groupName, list }))
     default:
       throw new Error(`Group ${groupName} not found in icons-group.js`)
   }

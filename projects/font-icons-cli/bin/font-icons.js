@@ -19,11 +19,14 @@ main(process.argv.slice(2))
  * @return {void}
  */
 function main (parameters) {
-  console.debug('Input file:', parameters[0])
+  const [inputFileParameter, ...localDirectories] = parameters;
+  console.debug('Input file:', inputFileParameter)
 
-  const inputFilePath = path.join(process.cwd(), parameters[0])
+  const inputFilePath = path.join(process.cwd(), inputFileParameter)
   const inputData = require(inputFilePath)
   // console.debug('Input data:', inputData)
+
+  ICON_GROUPS.localDirectory.subDirectories.push(...localDirectories);
 
   const fontName = path.basename(inputFilePath, path.extname(inputFilePath))
   const options = { svgPath: BUILD_SVG_DIR, outputPath: BUILD_FONTS_DIR, fontName }
@@ -92,7 +95,7 @@ function iconsToTempFolder (inputData) {
 function iconSelectorToObject (iconSelector) {
   let array = iconSelector.split('/')
   if (array.length === 1) {
-    array = ['maggioli', ...array]
+    array = ['localDirectory', ...array]
   }
 
   return {
