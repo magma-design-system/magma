@@ -8,7 +8,7 @@ import LabelCaption from '@Typography/LabelCaption/LabelCaption'
 import Detail from '@Typography/Detail/Detail'
 import Button from '@UI/Button/Button'
 
-const UploadFileImage = ({ className, deleteImage, error, icon, iconClassName, label, name, onFileChange, placeholder, required, uriImage, ...restProps }) => {
+const UploadFileImage = ({ className, deleteImage, error, icon, iconClassName, label, multiple, name, onFileChange, placeholder, required, uriImage, ...restProps }) => {
   const HTMLElement = uriImage !== null ? 'div' : 'label'
 
   const hasIcon = icon !== null
@@ -34,7 +34,10 @@ const UploadFileImage = ({ className, deleteImage, error, icon, iconClassName, l
 
   return (
     <HTMLElement className={classes} {...restProps}>
-      <input type="file" name={name} className="backoffice-file-image__field" onChange={onFileChange}/>
+      { multiple ? 
+        <input multiple type="file" name={name} className="backoffice-file-image__field" onChange={onFileChange}/> 
+        : <input type="file" name={name} className="backoffice-file-image__field" onChange={onFileChange}/>
+      }
       <div className="backoffice-file-image__image" style={{ backgroundImage: `url('${uriImage}')` }}>
         <Button onClick={deleteImage} className="backoffice-file-image__delete" icon="crud-delete" />
       </div>
@@ -81,6 +84,7 @@ UploadFileImage.propTypes = {
   icon: PropTypes.string,
   iconClassName: PropTypes.string,
   label: PropTypes.string,
+  multiple: PropTypes.bool,
   name: PropTypes.string,
   onFileChange: PropTypes.func,
   placeholder: PropTypes.string,
@@ -91,6 +95,7 @@ UploadFileImage.propTypes = {
 UploadFileImage.defaultProps = {
   deleteImage: () => {},
   icon: 'media-image',
+  multiple: false,
   name: 'unassigned',
   onFileChange: () => {},
   required: false,
