@@ -1,0 +1,28 @@
+{
+  "name": "maggioli-design-system",
+  "version": "1.0.0",
+  "description": "This design system is based on [React][react], [Storybook][storybook] and [Gatsby][gatsby], you can see it on [Maggioli design system][storybook-online] website.",
+  "main": "index.js",
+  "directories": {
+    "doc": "docs"
+  },
+  "dependencies": {
+    "eslint": "^7.15.0",
+    "eslint-plugin-standard": "^4.1.0",
+    "stylelint": "^13.8.0",
+    "stylelint-config-sass-guidelines": "^7.1.0",
+    "stylelint-config-standard": "^20.0.0",
+    "stylelint-order": "^4.1.0",
+    "stylelint-scss": "^3.18.0"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "http://git.maggioli.it/ricerca-sviluppo-new-media/design-system.git"
+  },
+  "author": "Vittorio Vittori",
+  "license": "ISC"
+}
