@@ -3,9 +3,7 @@
 const fs = require('fs').promises
 const path = require('path')
 const { ICON_GROUPS } = require('../lib/icons-groups')
-const { ROOT_PATH_DIR } = require('../lib/utils')
-
-const BUILD_DIR = `${ROOT_PATH_DIR}/build`
+const { BUILD_PATH_DIR } = require('../lib/utils')
 
 main(process.argv.slice(2))
 
@@ -19,7 +17,7 @@ function main (parameters) {
   Promise.all(promises)
     .then(generateIcons)
     .then(generateInputFileFromIcons)
-    .then(() => console.log('Done! File created in', BUILD_DIR))
+    .then(() => console.log('Done! File created in', BUILD_PATH_DIR))
 }
 
 /**
@@ -60,5 +58,5 @@ function generateInputFileFromIcons (icons) {
     acc[icon.replace('/', '-')] = icon
     return acc
   }, {})
-  return fs.writeFile(path.join(BUILD_DIR, 'input.json'), JSON.stringify(inputObject))
+  return fs.writeFile(path.join(BUILD_PATH_DIR, 'input.json'), JSON.stringify(inputObject))
 }
