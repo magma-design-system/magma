@@ -4,13 +4,23 @@
     "scss": {
       "transformGroup": "scss",
       "buildPath": "dist/scss/",
-      "files": [{
-        "destination": "variables.scss",
-        "format": "scss/map-deep"
-      },{
-        "destination": "css-variables.scss",
-        "format": "css/variables"
-      }]
+      "files": [
+        {
+          "destination": "variables.scss",
+          "format": "scss/map-deep"
+        }
+      ]
+    },
+
+    "css": {
+      "transformGroup": "css",
+      "buildPath": "dist/css/",
+      "files": [
+        {
+          "format": "css/variables",
+          "destination": "variables.css"
+        }
+      ]
     },
 
     "android": {

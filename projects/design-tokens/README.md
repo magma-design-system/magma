@@ -1,149 +1,21 @@
-# Basic Style Dictionary
+<img width="auto" height="80px" alt="" src="data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNjAiIGhlaWdodD0iNjMiIHZpZXdCb3g9IjAgMCA2MCA2MyIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KPHBhdGggZD0iTTQ4LjMzMDcgNTMuMzUwMkM0OC4zMzA3IDUxLjYwMDUgNDguMzA4NSA0OS4zNjgzIDQ2LjE4MDkgNDkuMzY4M0M0NC4wNTIzIDQ5LjM2ODMgNDQuMDMxMSA1MS42MDA1IDQ0LjAzMTEgNTMuMzUwMkM0NC4wMzExIDU1LjExOTcgNDQuMDUyMyA1Ny4zNTM3IDQ2LjE4MDkgNTcuMzUzN0M0OC4zMDg1IDU3LjM1MzcgNDguMzMwNyA1NS4xMTk3IDQ4LjMzMDcgNTMuMzUwMloiIGZpbGw9IiMwNTU5QTQiLz4KPHBhdGggZD0iTTQxLjY5NjUgNy41Mzc4M0M0MS42OTY1IDYuNjM3NDQgNDIuMTU1IDYuNDI4MjkgNDIuNDUxNSA2LjQyODI5QzQyLjc1MDMgNi40MjgyOSA0My4yMDY2IDYuNjM3NDQgNDMuMjA2NiA3LjUzNzgzQzQzLjIwNjYgOC40Mzc3NyA0Mi43NTAzIDguNjQ3ODIgNDIuNDUxNSA4LjY0NzgyQzQyLjE1NSA4LjY0NzgyIDQxLjY5NjUgOC40Mzc3NyA0MS42OTY1IDcuNTM3ODNaIiBmaWxsPSIjMDU1OUE0Ii8+CjxwYXRoIGQ9Ik0zNy41MjUzIDYuNTUzMTVIMzcuMDA0M1Y3LjM3Mzg3SDM3LjQ1N0MzNy43NTk0IDcuMzczODcgMzguMDc5NCA3LjM1MTI0IDM4LjA3OTQgNi45NDM4MkMzOC4wNzk0IDYuNTc1NzggMzcuODEwNSA2LjU1MzE1IDM3LjUyNTMgNi41NTMxNVoiIGZpbGw9IiMwNTU5QTQiLz4KPHBhdGggZD0iTTMyLjcyMDggNi41NTMxNUgzMi4xOTkzVjcuMzczODdIMzIuNjUyNEMzMi45NTQ4IDcuMzczODcgMzMuMjc0IDcuMzUxMjQgMzMuMjc0IDYuOTQzODJDMzMuMjc0IDYuNTc1NzggMzMuMDA4MyA2LjU1MzE1IDMyLjcyMDggNi41NTMxNVoiIGZpbGw9IiMwNTU5QTQiLz4KPHBhdGggZD0iTTIyLjY0ODcgNi40Nzk3NkgyMi4xMDE5VjcuMjgzNzNIMjIuNzEzNEMyMi45MzA3IDcuMjgzNzMgMjMuMjI4NiA3LjI0MzQ0IDIzLjIyODYgNi44ODEyOUMyMy4yMjg2IDYuNjI2ODggMjMuMDk1NSA2LjQ3OTc2IDIyLjY0ODcgNi40Nzk3NloiIGZpbGw9IiMwNTU5QTQiLz4KPHBhdGggZmlsbC1ydWxlPSJldmVub2RkIiBjbGlwLXJ1bGU9ImV2ZW5vZGQiIGQ9Ik0wIDBINjBWNjAuMDAwMUgzOS43Mjg2QzM5Ljg1NjcgNTkuNjQyIDM5LjkyNzggNTkuMjM2IDM5LjkyNzggNTguNzc4MUMzOS45Mjc4IDU4LjMyMiAzOS44NDAxIDU3Ljg4OTIgMzkuNjMzOSA1Ny41MDE0SDQyLjc5MjhWNTcuMDE2MUg0MS41NTExVjQ4Ljk0NTdDNDAuNzkxIDQ5LjEzNjIgMzkuOTY5NCA0OS4xNTY2IDM5LjE4OTQgNDkuMTU2NkgzNi42Mzg2QzM2LjI2IDQ5LjAyNTUgMzUuODI1OCA0OC45NjA2IDM1LjMzMyA0OC45NjA2QzMzLjI0NzUgNDguOTYwNiAzMi4yOTk2IDUwLjUzOTYgMzIuMjk5NiA1MS44Njc4QzMyLjI5OTYgNTMuMDY5MiAzMi45MzE1IDUzLjc4NDUgMzMuODgwNCA1NC4yNDY3VjU0LjI5MUMzMy4wNzk2IDU0LjQxNjQgMzIuMTg3OCA1NC43ODM2IDMxLjYxMzMgNTUuOTQyQzMxLjQ5MiA1Ni4xODU5IDMxLjM4OSA1Ni4zOTY5IDMxLjMwNjcgNTYuNTc5OEMzMC43MzMgNTYuMjUzIDI5Ljg2OTcgNTYuMTg2IDI3Ljc3NSA1Ni4xODZIMjUuNTIwNkMyNS4yMDQ2IDU2LjE4NiAyNC45NzI4IDU1Ljk3NjQgMjQuOTcyOCA1NS43NDQ2QzI0Ljk3MjggNTQuODU4MiAyNi4zNDQzIDU0LjcwMjMgMjguMDIxMyA1NC41MTE2TDI4LjAyMTYgNTQuNTExNkMyOC4zMzgzIDU0LjQ3NTYgMjguNjY1OSA1NC40MzgzIDI4Ljk5NzIgNTQuMzk0N0MyOS40NDA0IDU0LjM1MzEgMzEuMTI1OCA1My43NDI4IDMxLjEyNTggNTEuNzYyM0MzMS4xMjU4IDUxLjM5OTMgMzEuMDE0MiA1MS4wNTIxIDMwLjkyODMgNTAuNzg1QzMwLjg3NDcgNTAuNjE4MSAzMC44MzExIDUwLjQ4MjUgMzAuODMxMSA1MC4zOTM4QzMwLjgzMTEgNTAuMTgwNiAzMS4yODY5IDQ5Ljg4NzMgMzEuNDk3OSA0OS44ODczQzMxLjU1NjMgNDkuODg3MyAzMS42MjQyIDQ5Ljk4NDYgMzEuNzA2NiA1MC4xMDI4QzMxLjgzNDMgNTAuMjg1OSAzMS45OTcgNTAuNTE5MiAzMi4yMTQgNTAuNTE5MkMzMi42NTcyIDUwLjUxOTIgMzIuODg5NCA1MC4xMzk5IDMyLjg4OTQgNDkuNzE5OEMzMi44ODk0IDQ5LjE3MTEgMzIuNDQ1MyA0OS4wMDE0IDMyLjA2ODMgNDkuMDAxNEMzMS4zNzE2IDQ5LjAwMTQgMzAuNzI2NSA0OS42OTYzIDMwLjUxNDIgNTAuMTgwNkMyOS45NjY0IDQ5LjM2MDQgMjkuMTAyNyA0OC45NjA2IDI3Ljg4MDkgNDguOTYwNkMyNS43OTQ5IDQ4Ljk2MDYgMjQuODQ3IDUwLjUzOTYgMjQuODQ3IDUxLjg2NzhDMjQuODQ3IDUzLjA2OTIgMjUuNDc4OSA1My43ODQ1IDI2LjQyNjQgNTQuMjQ2N1Y1NC4yOTFDMjUuNjI2NSA1NC40MTY0IDI0LjMxOTYgNTQuNzU1IDI0LjMxOTYgNTUuOTExN0MyNC4zMTk2IDU1LjkzOTkgMjQuMzA4NSA1NS45NjQyIDI0LjI5NjQgNTUuOTkwOUMyNC4yODg1IDU2LjAwODEgMjQuMjgwMyA1Ni4wMjYyIDI0LjI3NDIgNTYuMDQ3QzI0LjE3MDEgNTYuNDA1MSAyMy45NTkyIDU2Ljk5NTggMjMuNTM4NiA1Ni45OTU4QzIzLjA5NSA1Ni45OTU4IDIzLjA5NSA1Ni42NTgxIDIzLjA5NSA1Ni4wMjY2VjUxLjAxMThDMjMuMDk1IDUwLjE2ODQgMjMuMDk1IDQ4Ljk0NTIgMjAuMjI4NiA0OC45NDUyQzE3LjcyMiA0OC45NDUyIDE2Ljg1NjUgNTAuMjEwNSAxNi44NTY1IDUwLjk2OTJDMTYuODU2NSA1MS41NTgyIDE3LjE3MzggNTEuOTgxIDE3Ljc0MzMgNTEuOTgxQzE4LjI2ODkgNTEuOTgxIDE4LjYwNjYgNTEuNjIyOSAxOC42MDY2IDUxLjA5NTFDMTguNjA2NiA1MC42Mjk3IDE4LjMyMzcgNTAuNDI5MSAxOC4xMzY2IDUwLjI5NjVDMTguMDQ0MiA1MC4yMzEgMTcuOTc1MSA1MC4xODIgMTcuOTc1MSA1MC4xMjU5QzE3Ljk3NTEgNDkuNTEzOCAxOS40Njk5IDQ5LjM2ODEgMTkuOTM0OCA0OS4zNjgxQzIwLjY3MDggNDkuMzY4MSAyMS40NTE3IDQ5LjY2NDEgMjEuNDUxNyA1MC42NTI4VjUyLjY1NDZDMTguMjI4MSA1Mi42NTQ2IDE2LjIyNjQgNTMuNzUxIDE2LjE2MjEgNTUuNzEwMkMxNi4xNjIxIDU3LjI2ODggMTcuMzAwMSA1Ny43NzU0IDE4LjYyNzQgNTcuNzc1NEMxOS43MDI1IDU3Ljc3NTQgMjAuNzU1NSA1Ny4zNzQzIDIxLjQ3MzUgNTYuNDg5M0MyMS42MjAxIDU3LjI2ODggMjIuMDYzMyA1Ny43NzU0IDIyLjg0MTkgNTcuNzc1NEMyMy41Nzg2IDU3Ljc3NTQgMjQuMTkzMyA1Ny4zNDk3IDI0LjQ3MzkgNTYuNzEwNkMyNC44Mjk0IDU3LjQ3ODcgMjUuNzM5NCA1Ny42MDQyIDI2LjU3MjUgNTcuNzE5TDI2LjYxNjYgNTcuNzI1MVY1Ny43ODg5QzI1LjU2OCA1OC4wNTYyIDI0LjIxOTYgNTguNjAyMiAyNC4xNTQ2IDYwLjAwMDFIMFYwWk00OS4zOTEyIDU3LjUwMTRWNTcuMDE2MUg1MS4wMTQxVjQzLjk5MTVINDkuMzkxMlY0My41MDcxSDUwLjI5NzlDNTEuMDc4OCA0My41MDcxIDUxLjg5ODIgNDMuNDYzNiA1Mi42NTY5IDQzLjMxN1Y1Ny4wMTYxTDU1LjE1NzIgNTcuMDE2MVY0OS42NDMySDUzLjc0NTdWNDkuMTU2Nkg1NC40NDE5QzU1LjIyMTkgNDkuMTU2NiA1Ni4wNDIyIDQ5LjEzNjIgNTYuODAyMiA0OC45NDU3VjU3LjAxNjFINTguMDQ1M1Y1Ny41MDE0TDQ5LjM5MTIgNTcuNTAxNFpNNTUuOTU4OSA0Ni4xNjlDNTYuNDY2NCA0Ni4xNjkgNTcuMDMyOCA0Ni42MzEyIDU3LjAzMjggNDcuMTgxM0M1Ny4wMzI4IDQ3LjgzMzIgNTYuNTY5NiA0OC4yOTczIDU1Ljk1ODkgNDguMjk3M0M1NS4zNDg2IDQ4LjI5NzMgNTQuOTQ3NCA0Ny43OTE2IDU0Ljk0NzQgNDcuMTgxM0M1NC45NDc0IDQ2LjYzMTIgNTUuNDMyMyA0Ni4xNjkgNTUuOTU4OSA0Ni4xNjlaTTQyLjExNTMgNTMuMzUwMkM0Mi4xMTUzIDUwLjgwMTUgNDMuOTY4NiA0OC45NDU1IDQ2LjE4MDkgNDguOTQ1NUM0OC4zOTMyIDQ4Ljk0NTUgNTAuMjQ2NSA1MC44MDE1IDUwLjI0NjUgNTMuMzUwMkM1MC4yNDY1IDU1Ljg5OTIgNDguMzkzMiA1Ny43NzU2IDQ2LjE4MDkgNTcuNzc1NkM0My45Njg2IDU3Ljc3NTYgNDIuMTE1MyA1NS44OTkyIDQyLjExNTMgNTMuMzUwMlpNNDEuNjA0NyA0Ny4xNTU3QzQxLjYwNDcgNDYuNjA5MiA0MS4wMzQzIDQ2LjE0NTEgNDAuNTI4NiA0Ni4xNDUxQzQwLjAwMTYgNDYuMTQ1MSAzOS41MTk0IDQ2LjYwOTIgMzkuNTE5NCA0Ny4xNTU3QzM5LjUxOTQgNDcuNzY3OCAzOS45MTc4IDQ4LjI3MzUgNDAuNTI4NiA0OC4yNzM1QzQxLjE0MDIgNDguMjczNSA0MS42MDQ3IDQ3LjgwODUgNDEuNjA0NyA0Ny4xNTU3Wk0xLjcyMTI1IDQzLjQyNVY0My45MTAySDMuMzAyMDNWNTcuMDE2SDEuNzIxMjVWNTcuNTAxM0g1LjUxNDMxVjU3LjAxNkgzLjkzMzk4VjQ0LjE2MzNIMy45NzYwOEw3LjkxNjcyIDU3LjUwMTNIOC40NjQwMkwxMi41NTEzIDQ0LjE2MzNIMTIuNTk0M1Y1Ny4wMTZIMTAuOTcxNVY1Ny41MDEzSDE2LjI0MDNWNTcuMDE2SDE0LjYzODJWNDMuOTEwMkgxNi4yNDAzVjQzLjQyNUgxMi4wNDY2TDguOTQ4NCA1My43OTI0SDguOTA2NzVMNS45MzU3NyA0My40MjVIMS43MjEyNVpNMTguNTUyNiA5LjU1OTAySDE5LjI5MVY3LjMzNDA2SDE3LjczODJWOC4yMDAwNUgxOC4yNTQ4QzE4LjE5NTkgOC41MDAxOSAxNy45MTk4IDguNjQ3NzYgMTcuNjQ5MSA4LjY0Nzc2QzE2LjkzNjEgOC42NDc3NiAxNi43OTI2IDcuOTg1MDMgMTYuNzkyNiA3LjYwNjEzTDE2Ljc5MjUgNy41ODA0OUMxNi43OTE4IDcuMjc3MjMgMTYuNzg5NiA2LjQyODIzIDE3LjU2ODkgNi40MjgyM0MxNy44NDUxIDYuNDI4MjMgMTguMDc5MSA2LjYzNzM4IDE4LjEyMTcgNi45MzI1M0gxOS4yNDM5QzE5LjA3MzcgNS45ODE0MyAxOC40NjIxIDUuNDIxIDE3LjQ5NTIgNS40MjFDMTYuNjM4MiA1LjQyMSAxNS42MjI4IDYuMDM3MTEgMTUuNjIyOCA3LjU3NzYxQzE1LjYyMjggOC43MjY5OCAxNi4zMTQ1IDkuNjU1NDQgMTcuNDM1OCA5LjY1NTQ0QzE3Ljg1MDUgOS42NTU0NCAxOC4yNTQ4IDkuNTAyODkgMTguNTE0NiA5LjE0NTcyTDE4LjU1MjYgOS41NTkwMlpNNDAuNTI3MiA3LjUzNzgzQzQwLjUyNzIgOC43NzIzMSA0MS4yOTg1IDkuNjU1NSA0Mi40NTE1IDkuNjU1NUM0My42MDYzIDkuNjU1NSA0NC4zNzY0IDguNzcyMzEgNDQuMzc2NCA3LjUzNzgzQzQ0LjM3NjQgNi4zMDMzNSA0My42MDYzIDUuNDIxMDYgNDIuNDUxNSA1LjQyMTA2QzQxLjI5ODUgNS40MjEwNiA0MC41MjcyIDYuMzAzMzUgNDAuNTI3MiA3LjUzNzgzWk0zNy4wMDQzIDkuNTU4OTlIMzUuODM1VjUuNTE3NEgzNy43OTE1QzM4LjgyMzIgNS41MTc0IDM5LjE4NCA2LjMyMDkyIDM5LjE4NCA2Ljg5ODU1QzM5LjE4NCA3Ljg3NzI2IDM4LjU2NzQgOC4zMzYyOCAzNy42OTQ2IDguMzM2MjhIMzcuMDA0M1Y5LjU1ODk5Wk0zMi4xOTkzIDkuNTU4OTlIMzEuMDMwOVY1LjUxNzRIMzIuOTg3QzM0LjAxNzcgNS41MTc0IDM0LjM3OSA2LjMyMDkyIDM0LjM3OSA2Ljg5ODU1QzM0LjM3OSA3Ljg3NzI2IDMzLjc2MjQgOC4zMzYyOCAzMi44OTE1IDguMzM2MjhIMzIuMTk5M1Y5LjU1ODk5Wk0yMi4xMDE5IDkuNTU4OTRIMjAuOTMyMVY1LjUxNzhIMjMuMTU5M0MyMy44MjM0IDUuNTE3OCAyNC4zOTg4IDUuOTA3NTYgMjQuMzk4OCA2LjY3MTdDMjQuMzk4OCA3LjA5MDg4IDI0LjIxNzMgNy41MzI3MSAyMy44MjkzIDcuNjg1NzJDMjQuMTQ4IDcuODE1MTggMjQuMzQ1NCA4LjE4OTEgMjQuMzg3OSA4LjY5MzRDMjQuMzkwNyA4LjcyODc1IDI0LjM5MzEgOC43NzMxNiAyNC4zOTU4IDguODIzMzJDMjQuNDA4NSA5LjA1MzgxIDI0LjQyNzggOS40MDU3NiAyNC41MTUxIDkuNTU4OTRIMjMuMzQ1OEMyMy4yODcgOS4zNTUyMyAyMy4yNjU3IDkuMTQ2MDkgMjMuMjUwMyA4LjkzNjA0TDIzLjI1IDguOTMyNDhDMjMuMjE4IDguNTQ4NzggMjMuMTg0NiA4LjE0OTI3IDIyLjcyMzQgOC4xNDkyN0gyMi4xMDE5VjkuNTU4OTRaTTI4LjIwOTIgNS41MTc1NUgyOS4zNzg1VjcuOTk2MDFDMjkuMzc4NSA5LjExNzMyIDI4LjgwOTQgOS42NTU1NiAyNy42NTE1IDkuNjU1NTZDMjYuNDkxNyA5LjY1NTU2IDI1LjkxNzIgOS4xMTczMiAyNS45MTcyIDcuOTk2MDFWNS41MTc1NUgyNy4wODc0VjcuNzE5ODdDMjcuMDg3NCA4LjEzMjcyIDI3LjA4NzQgOC42NDc4OCAyNy42NTY0IDguNjQ3ODhDMjguMjA5MiA4LjY0Nzg4IDI4LjIwOTIgOC4xMzI3MiAyOC4yMDkyIDcuNzE5ODdWNS41MTc1NVoiIGZpbGw9IiMwNTU5QTQiLz4KPHBhdGggZD0iTTIxLjAyMDMgNTYuMzA5MkMyMS4xOTA4IDU2LjE0MjkgMjEuNDUxNyA1NS44ODg0IDIxLjQ1MTcgNTUuMDU2MVY1My4wOTY0QzIwLjA4MjMgNTMuMTE3NyAxNy43NDMzIDUzLjM1MDMgMTcuNzQzMyA1NS4yODc0QzE3Ljc0MzMgNTYuMzIxOCAxOC4zOTYxIDU2Ljk1MzMgMTkuMzY1NyA1Ni45NTMzQzIwLjAzOTggNTYuOTUzMyAyMC40ODI1IDU2Ljc4MjYgMjAuOTg4NiA1Ni4zNDAzQzIwLjk5ODYgNTYuMzMwNCAyMS4wMDkxIDU2LjMyMDIgMjEuMDE5OSA1Ni4zMDk2TDIxLjAyMDMgNTYuMzA5MloiIGZpbGw9IiMwNTU5QTQiLz4KPHBhdGggZD0iTTM5LjkwNiA1Ny4wMTYxSDM5LjI4ODNDMzguNjMzNyA1Ni4zMDY5IDM4LjA0MjYgNTYuMTg2IDM1LjIyOTQgNTYuMTg2SDMyLjk3MzJDMzIuNjU3MiA1Ni4xODYgMzIuNDI1OSA1NS45NzY0IDMyLjQyNTkgNTUuNzQ0NkMzMi40MjU5IDU0Ljg1ODIgMzMuNzk2OSA1NC43MDIzIDM1LjQ3MzkgNTQuNTExNkMzNS43OTA3IDU0LjQ3NTYgMzYuMTE4NCA1NC40Mzg0IDM2LjQ0OTggNTQuMzk0N0MzNi44OTMgNTQuMzUzMSAzOC41Nzc5IDUzLjc0MjggMzguNTc3OSA1MS43NjIzQzM4LjU3NzkgNTAuODMzIDM3Ljk2NjMgNTAuMTgwNiAzNy45NjYzIDUwLjE4MDZDMzcuODI5MiA0OS45NzUyIDM3LjY3MjMgNDkuNzk2MiAzNy40OTUgNDkuNjQzMkgzOS45MDZWNTcuMDE2MVoiIGZpbGw9IiMwNTU5QTQiLz4KPHBhdGggZD0iTTMyLjg1MjggNTkuOTUxNEMzMi44NTI4IDYxLjI5OTEgMzQuMjY0MiA2MS43NDM2IDM1LjM2MDYgNjEuNzQzNkMzOC45NDQxIDYxLjc0MzYgMzkuMDkyMSA1OS43NDE4IDM5LjA5MjEgNTkuNDA1QzM5LjA5MjEgNTguMTYxMSAzOC43MTIzIDU3LjU1MDggMzYuMDM1NiA1Ny41NTA4QzMzLjU0OSA1Ny41NTA4IDMyLjg1MjggNTkuMjM1MyAzMi44NTI4IDU5Ljk1MTRaIiBmaWxsPSIjMDU1OUE0Ii8+CjxwYXRoIGQ9Ik0zMy44NDQxIDUxLjgxOEMzMy44NDQxIDQ5LjgxNzEgMzQuMzUwNyA0OS4zMTE1IDM1LjQwMjcgNDkuMzExNUMzNi42Njc2IDQ5LjMxMTUgMzYuODM1IDUwLjU3NDkgMzYuODM1IDUxLjYyOTdDMzYuODM1IDUyLjkzNTcgMzYuNzI5NiA1NC4wMzAzIDM1LjE5MzYgNTQuMDMwM0MzNC4wMzI1IDU0LjAzMDMgMzMuODQ0MSA1Mi43NjY4IDMzLjg0NDEgNTEuODE4WiIgZmlsbD0iIzA1NTlBNCIvPgo8cGF0aCBkPSJNMjcuOTA5IDYxLjc0MzZDMjYuODEyMSA2MS43NDM2IDI1LjQwMDIgNjEuMjk5MSAyNS40MDAyIDU5Ljk1MTRDMjUuNDAwMiA1OS4yMzUzIDI2LjA5NTUgNTcuNTUwOCAyOC41ODI2IDU3LjU1MDhDMzEuMjU3NSA1Ny41NTA4IDMxLjYzODIgNTguMTYxMSAzMS42MzgyIDU5LjQwNUMzMS42MzgyIDU5Ljc0MTggMzEuNDkwMiA2MS43NDM2IDI3LjkwOSA2MS43NDM2WiIgZmlsbD0iIzA1NTlBNCIvPgo8cGF0aCBkPSJNMjcuOTQ5NyA0OS4zMTE1QzI2Ljg5NjggNDkuMzExNSAyNi4zOTExIDQ5LjgxNzEgMjYuMzkxMSA1MS44MThDMjYuMzkxMSA1Mi43NjY4IDI2LjU4MDMgNTQuMDMwMyAyNy43Mzg4IDU0LjAzMDNDMjkuMjc3OSA1NC4wMzAzIDI5LjM4MzQgNTIuOTM1NyAyOS4zODM0IDUxLjYyOTdDMjkuMzgzNCA1MC41NzQ5IDI5LjIxNSA0OS4zMTE1IDI3Ljk0OTcgNDkuMzExNVoiIGZpbGw9IiMwNTU5QTQiLz4KPC9zdmc+Cg==" />
 
-This example code is bare-bones to show you what this framework can do. If you have the style-dictionary module installed globally, you can `cd` into this directory and run:
-```bash
-style-dictionary build
+# Design Tokens
+
+This project generates the Design Tokens for the whole Design System.
+
+To install che project as dependency:
+
+```
+npm install --save @maggioli-design-system/design-tokens
 ```
 
-You should see something like this output:
+---
+
+### Development
+
+To perform a local build
+
 ```
-Copying starter files...
-
-Source style dictionary starter files created!
-
-Running `style-dictionary build` for the first time to generate build artifacts.
-
-
-scss
-✔︎  build/scss/_variables.scss
-
-android
-✔︎  build/android/font_dimens.xml
-✔︎  build/android/colors.xml
-
-ios
-✔︎  build/ios/StyleDictionaryColor.h
-✔︎  build/ios/StyleDictionaryColor.m
-✔︎  build/ios/StyleDictionarySize.h
-✔︎  build/ios/StyleDictionarySize.m
-
-ios-swift
-✔︎  build/ios-swift/StyleDictionary.swift
-
-ios-swift-separate-enums
-✔︎  build/ios-swift/StyleDictionaryColor.swift
-✔︎  build/ios-swift/StyleDictionarySize.swift
+npm run tokens
 ```
-
-Pat yourself on the back, you have now built your first style dictionary! Moving on, take a look at what we have built. This should have created a build directory and it should look like this:
-```
-├── README.md
-├── config.json
-├── properties/
-│   ├── color/
-│       ├── base.json
-│       ├── font.json
-│   ├── size/
-│       ├── font.json
-├── build/
-│   ├── android/
-│      ├── font_dimens.xml
-│      ├── colors.xml
-│   ├── scss/
-│      ├── _variables.scss
-│   ├── ios/
-│      ├── StyleDictionaryColor.h
-│      ├── StyleDictionaryColor.m
-│      ├── StyleDictionarySize.h
-│      ├── StyleDictionarySize.m
-│   ├── ios-swift/
-│      ├── StyleDictionary.swift
-│      ├── StyleDictionaryColor.swift
-│      ├── StyleDictionarySize.swift
-```
-
-If you open `config.json` you will see there are 3 platforms defined: scss, android, ios. Each platform has a transformGroup, buildPath, and files. The buildPath and files of the platform should match up to the files what were built. The files built should look like these:
-
-**Android**
-```xml
-<!-- font_dimens.xml -->
-<resources>
-  <dimen name="size_font_small">12.00sp</dimen>
-  <dimen name="size_font_medium">16.00sp</dimen>
-  <dimen name="size_font_large">32.00sp</dimen>
-  <dimen name="size_font_base">16.00sp</dimen>
-</resources>
-
-<!-- colors.xml -->
-<resources>
-  <color name="color_base_gray_light">#ffcccccc</color>
-  <color name="color_base_gray_medium">#ff999999</color>
-  <color name="color_base_gray_dark">#ff111111</color>
-  <color name="color_base_red">#ffff0000</color>
-  <color name="color_base_green">#ff00ff00</color>
-  <color name="color_font_base">#ffff0000</color>
-  <color name="color_font_secondary">#ff00ff00</color>
-  <color name="color_font_tertiary">#ffcccccc</color>
-</resources>
-```
-
-**SCSS**
-```scss
-// variables.scss
-$color-base-gray-light: #cccccc;
-$color-base-gray-medium: #999999;
-$color-base-gray-dark: #111111;
-$color-base-red: #ff0000;
-$color-base-green: #00ff00;
-$color-font-base: #ff0000;
-$color-font-secondary: #00ff00;
-$color-font-tertiary: #cccccc;
-$size-font-small: 0.75rem;
-$size-font-medium: 1rem;
-$size-font-large: 2rem;
-$size-font-base: 1rem;
-```
-
-**iOS**
-```objc
-#import "StyleDictionaryColor.h"
-
-@implementation StyleDictionaryColor
-
-+ (UIColor *)color:(StyleDictionaryColorName)colorEnum{
-  return [[self values] objectAtIndex:colorEnum];
-}
-
-+ (NSArray *)values {
-  static NSArray* colorArray;
-  static dispatch_once_t onceToken;
-
-  dispatch_once(&onceToken, ^{
-    colorArray = @[
-[UIColor colorWithRed:0.800f green:0.800f blue:0.800f alpha:1.000f],
-[UIColor colorWithRed:0.600f green:0.600f blue:0.600f alpha:1.000f],
-[UIColor colorWithRed:0.067f green:0.067f blue:0.067f alpha:1.000f],
-[UIColor colorWithRed:1.000f green:0.000f blue:0.000f alpha:1.000f],
-[UIColor colorWithRed:0.000f green:1.000f blue:0.000f alpha:1.000f],
-[UIColor colorWithRed:1.000f green:0.000f blue:0.000f alpha:1.000f],
-[UIColor colorWithRed:0.000f green:1.000f blue:0.000f alpha:1.000f],
-[UIColor colorWithRed:0.800f green:0.800f blue:0.800f alpha:1.000f]
-    ];
-  });
-
-  return colorArray;
-}
-
-@end
-```
-
-Pretty nifty! This shows a few things happening:
-1. The build system does a deep merge of all the property JSON files defined in the `source` attribute of `config.json`. This allows you to split up the property JSON files however you want. There are 2 JSON files with `color` as the top level key, but they get merged properly.
-1. The build system resolves references to other style properties. `{size.font.medium.value}` gets resolved properly.
-1. The build system handles references to property values in other files as well as you can see in `properties/color/font.json`.
-
-Now let's make a change and see how that affects things. Open up `properties/color/base.json` and change `"#111111"` to `"#000000"`. After you make that change, save the file and re-run the build command `style-dictionary build`. Open up the build files and take a look.
-
-**Huzzah!**
-
-Now go forth and create! Take a look at all the built-in [transforms](https://amzn.github.io/style-dictionary/#/transforms?id=pre-defined-transforms) and [formats](https://amzn.github.io/style-dictionary/#/formats?id=pre-defined-formats).
