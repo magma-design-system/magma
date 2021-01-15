@@ -1,0 +1,33 @@
+{
+  "name": "@maggioli-design-system/design-tokens",
+  "version": "0.0.1",
+  "description": "This example code is bare-bones to show you what this framework can do. If you have the style-dictionary module installed globally, you can `cd` into this directory and run: ```bash style-dictionary build ```",
+  "main": "build.js",
+  "dependencies": {},
+  "devDependencies": {
+    "json-to-scss": "^1.6.2",
+    "run-for-every-file": "^1.1.0",
+    "style-dictionary": "^2.10.2"
+  },
+  "scripts": {
+    "tokens": "npm run tokens:rebuild-palette && npm run tokens:css-tokens && npm run tokens:css-tokens-config && npm run tokens:style-dictionary",
+    "tokens:css-tokens": "run-for-every-file --src ./css-tokens/ --dest src/scss/variables/ --file '**/*.json' --not-file '**/*.scss' --run 'json-to-scss {{src-file}} {{dest}}{{file-name-ext}}'",
+    "tokens:css-tokens-config": "json-to-scss --v=sq --s='!default;' ./css-tokens/config.json src/scss/variables/config.scss",
+    "tokens:rebuild-palette": "node leonardo.mjs",
+    "tokens:style-dictionary": "node build.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://git.maggioli.it/ricerca-sviluppo-new-media/design-system.git"
+  },
+  "keywords": [
+    "amazon",
+    "data-driven",
+    "design-token",
+    "json",
+    "platform-agnostic",
+    "style-dictionary"
+  ],
+  "author": "Vittorio Vittori",
+  "license": "ISC"
+}

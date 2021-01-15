@@ -1,0 +1,164 @@
+{
+  "primary": {
+    "family": "Roboto, -apple-system, BlinkMacSystemFont, San Francisco, Segoe UI, Helvetica Neue, sans-serif",
+    "styles": {
+      "h1" : {
+        "default": {
+          "font-size": "42px",
+          "font-weight": "700",
+          "line-height": "50px"
+        },
+        "desktop": {
+          "line-height": "50px"
+        }
+      },
+      "h2" : {
+        "default": {
+          "font-size": "33px",
+          "font-weight": "700",
+          "line-height": "50px"
+        },
+        "desktop": {
+          "line-height": "50px"
+        }
+      },
+      "h3" : {
+        "default": {
+          "font-size": "26px",
+          "font-weight": "600",
+          "line-height": "40px"
+        },
+        "desktop": {
+          "line-height": "40px"
+        }
+      },
+      "h4" : {
+        "default": {
+          "font-size": "20px",
+          "font-weight": "600",
+          "line-height": "30px"
+        }
+      },
+      "h5" : {
+        "default": {
+          "font-size": "16px",
+          "font-weight": "600",
+          "line-height": "25px"
+        }
+      },
+      "h6" : {
+        "default": {
+          "font-size": "20px",
+          "font-variant-caps": "all-small-caps",
+          "font-weight": "500",
+          "line-height": "30px"
+        }
+      },
+      "overline" : {
+        "default": {
+          "font-size": "14px",
+          "font-variant-caps": "all-small-caps",
+          "font-weight": "500",
+          "line-height": "15px",
+          "padding-bottom": "2px"
+        },
+        "tablet": {
+          "line-height": "20px"
+        }
+      },
+      "action" : {
+        "default": {
+          "font-size": "14px",
+          "font-weight": "500",
+          "line-height": "15px"
+        },
+        "tablet": {
+          "line-height": "15px"
+        }
+      }
+    }
+  },
+  "secondary": {
+    "family": "Karla, -apple-system, BlinkMacSystemFont, San Francisco, Segoe UI, Helvetica Neue, sans-serif",
+    "styles": {
+      "paragraph" : {
+        "default": {
+          "font-size": "20px",
+          "font-weight": "400",
+          "line-height": "35px"
+        }
+      },
+      "detail" : {
+        "default": {
+          "font-size": "16px",
+          "font-weight": "400",
+          "line-height": "25px"
+        }
+      },
+      "caption" : {
+        "default": {
+          "font-size": "13px",
+          "font-weight": "400",
+          "line-height": "20px"
+        },
+        "desktop": {
+          "line-height": "20px"
+        }
+      },
+      "label-paragraph" : {
+        "default": {
+          "font-size": "13px",
+          "font-weight": "600",
+          "line-height": "20px",
+          "text-transform": "uppercase"
+        }
+      },
+      "label-detail" : {
+        "default": {
+          "font-size": "12px",
+          "font-weight": "600",
+          "line-height": "20px",
+          "text-transform": "uppercase"
+        }
+      },
+      "label-caption" : {
+        "default": {
+          "font-size": "10px",
+          "font-weight": "600",
+          "line-height": "15px",
+          "text-transform": "uppercase"
+        },
+        "desktop": {
+          "line-height": "20px"
+        }
+      }
+    },
+    "variants": {
+      "bold" : {
+        "default": {
+          "font-weight": "600",
+          "letter-spacing": "-0.5px"
+        }
+      }
+    }
+  },
+  "mono": {
+    "family": "Roboto Mono, monospace",
+    "styles": {
+      "code" : {
+        "default": {
+          "font-size": "16px",
+          "font-weight": "400",
+          "line-height": "20px"
+        }
+      },
+      "hack" : {
+        "default": {
+          "font-size": "11px",
+          "font-weight": "400",
+          "line-height": "15px"
+        }
+      }
+    }
+  }
+}
