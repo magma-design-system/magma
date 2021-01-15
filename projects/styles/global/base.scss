@@ -1,0 +1,101 @@
+$default-font-set: 'paragraph';
+$font-base-styles: $font-secondary-styles;
+$font-base-variants: $font-secondary-variants;
+
+body,
+html {
+  margin: 0;
+}
+
+body {
+  background-color: color('adjust.tone');
+  color: color('adjust.tone', '03');
+  font-family: get($font-family, 'secondary');
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  -webkit-tap-highlight-color: transparent;
+  text-align: -webkit-left;
+  text-align: left;
+  text-rendering: optimizeLegibility;
+  text-size-adjust: 100%;
+  width: 100%;
+  @include apply-styles-set($map: $font-base-styles, $set: $default-font-set);
+}
+
+button {
+  font-family: get($font-family, 'primary');
+}
+
+input,
+textarea {
+  appearance: none;
+  @include apply-styles-set($map: $font-base-styles, $set: $default-font-set);
+
+  &::placeholder {
+    user-select: none;
+    @include apply-styles-set($map: $font-base-styles, $set: $default-font-set);
+  }
+}
+
+b,
+strong {
+  @include apply-styles-set($map: $font-base-variants, $set: 'bold');
+}
+
+a {
+  color: color('brand.maggioli');
+  font-family: inherit;
+  font-size: inherit;
+  font-weight: inherit;
+  text-decoration: none;
+}
+
+a,
+aside,
+body,
+code,
+div,
+datalist,
+footer,
+form,
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+header,
+hr,
+html,
+input,
+li,
+main,
+section,
+span,
+ul,
+textarea {
+  box-sizing: border-box;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+p {
+  margin: 0;
+}
+
+button,
+input,
+optgroup,
+select,
+textarea {
+  font-family: inherit;
+}
+
+::selection {
+  background-color: color('brand.maggioli', '15');
+  color: color('brand.maggioli');
+}

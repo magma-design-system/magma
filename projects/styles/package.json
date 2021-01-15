@@ -1,0 +1,35 @@
+{
+  "name": "@maggioli-design-system/styles",
+  "version": "0.1.0",
+  "description": "Styles layer",
+  "main": "index.js",
+  "scripts": {
+    "update-tokens": "cp ./node_modules/@maggioli-design-system/design-tokens/dist/scss/* ./variables"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://git.maggioli.it/ricerca-sviluppo-new-media/design-system.git"
+  },
+  "keywords": [
+    "sass",
+    "scss",
+    "css",
+    "tailwindcss"
+  ],
+  "author": "Vittorio Vittori",
+  "license": "ISC",
+  "files": [
+    "/dist/*"
+  ],
+  "dependencies": {
+    "@maggioli-design-system/design-tokens": "^0.1.0",
+    "normalize.css": "^8.0.1",
+    "tailwindcss": "^2.0.2",
+    "typeface-karla": "1.1.13",
+    "typeface-roboto": "1.1.13"
+  },
+  "devDependencies": {
+    "autoprefixer": "^10.2.1",
+    "postcss": "^8.2.4"
+  }
+}

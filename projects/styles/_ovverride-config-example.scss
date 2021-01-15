@@ -1,0 +1,28 @@
+$config: (
+  'palette': (
+    'format': ('rgb-channels', 'hex'),
+    'scaffold': ('background-color', 'color'),
+    'colors': ('brand.maggioli', 'status.info', 'status.success', 'status.error', 'status.warning', 'adjust.tone')
+  ),
+  'cosmetics': (
+    'scaffold': ('border-radius', 'box-shadow', 'padding', 'horizontal-padding', 'vertical-padding')
+  )
+);
+
+// This must be user before import-framework.scss, so:
+// In the single component:
+//   @import 'custom-config';
+//   @import 'import-framework';
+
+// In the main import:
+//   @import 'custom-config';
+//   @import 'import-global';
+
+// on JavaScript file, you must wrap config and design system
+// imports in the same file, because javascript build sass
+// separately for every import it finds in the javascript import pipeline
+// so in your javascript file:
+//     import 'design-system/import.scss'
+// so in your design system file:
+//     $config: (...);
+//     @import 'import-global';

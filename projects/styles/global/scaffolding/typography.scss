@@ -1,0 +1,17 @@
+@mixin scaffold-text ($style, $font-styles) {
+  .text-#{$style} {
+    font-family: get($font-family, $style);
+
+    &::placeholder {
+      font-family: get($font-family, $style);
+    }
+  }
+  @include add-styles-set(
+    $map: $font-styles,
+    $name: 'text-#{$style}'
+  );
+}
+
+@include scaffold-text($style: 'primary',   $font-styles: $font-primary-styles);
+@include scaffold-text($style: 'secondary', $font-styles: $font-secondary-styles);
+@include scaffold-text($style: 'mono',      $font-styles: $font-mono-styles);
