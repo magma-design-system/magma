@@ -15,7 +15,7 @@
   },
   "scripts": {
     "clean": "rm -rf dist || true",
-    "build": "npm run clean && font-icons src/mgg-icons.json",
+    "build": "npm run clean && font-icons resources/mgg-icons.json",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "files": [
@@ -29,7 +29,7 @@
     "/dist/fonts/**/*.html",
     "/dist/fonts/**/*.js",
     "/dist/fonts/**/*.ts",
-    "/src/*.json"
+    "/resources/*.json"
   ],
   "keywords": [
     "font",
