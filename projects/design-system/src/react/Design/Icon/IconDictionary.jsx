@@ -4,7 +4,7 @@ import Grid from '@Layout/Grid/Grid'
 import Icon from '@Design/Icon/Icon'
 import './IconDictionary.scss'
 
-import mggIconsDictionary from '+Project/mgg-icons/src/mgg-icons.json'
+import mggIconsDictionary from '+Project/mgg-icons/resources/mgg-icons.json'
 
 const IconRow = props =>
   <Grid className="icon-dictionary__item" gutter="xsmall" htmlTag="label">
