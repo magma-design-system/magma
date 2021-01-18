@@ -7,6 +7,7 @@
   position: fixed;
   right: s(1);
   transition: box-shadow get($tween, 'slide'), transform get($tween, 'slide');
+  z-index: 5;
 
   &__items {
     align-items: end;
