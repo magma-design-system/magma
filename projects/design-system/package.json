@@ -1,6 +1,6 @@
 {
     "name": "@maggioli/design-system",
-    "version": "0.12.0",
+    "version": "0.13.0",
     "description": "Maggioli Design System è uno strumento nato per condividere una unica visione di progettazione condivisa tra tutti gli esperti di dominio aziendali. Ciò permette di offrire una UX unica, condivisa tra i prodotti che saranno coerenti allo stile dell’azienda.",
     "scripts": {
         "build": "run-p 'build:!(storybook)'",

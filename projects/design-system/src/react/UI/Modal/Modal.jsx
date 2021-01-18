@@ -30,10 +30,10 @@ const Modal = props => {
         </div>
         {props.footer &&
           <Grid className="modal__footer" columns="2">
-            <Button variant="secondary-outline" onClick={() => { props.onCancel() }}>
+            <Button variant={props.cancelVariant} onClick={() => { props.onCancel() }}>
               {props.cancelButton}
             </Button>
-            <Button disabled={props.confirmDisabled} variant="primary"
+            <Button disabled={props.confirmDisabled} variant={props.confirmVariant}
               onClick={() => { props.onConfirm() }}>
               {props.confirmButton}
             </Button>
@@ -46,9 +46,11 @@ const Modal = props => {
 
 Modal.propTypes = {
   cancelButton: PropTypes.string,
+  cancelVariant: PropTypes.string,
   className: PropTypes.string,
   confirmButton: PropTypes.string,
   confirmDisabled: PropTypes.bool,
+  confirmVariant: PropTypes.string,
   contentOnly: PropTypes.bool,
   footer: PropTypes.bool,
   maxHeight: PropTypes.bool,
@@ -61,9 +63,11 @@ Modal.propTypes = {
 
 Modal.defaultProps = {
   cancelButton: 'Annulla',
+  cancelVariant: 'secondary-outline',
   className: '',
   confirmButton: 'Conferma',
   confirmDisabled: false,
+  confirmVariant: 'primary',
   contentOnly: false,
   footer: true,
   maxHeight: false,
