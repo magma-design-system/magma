@@ -2,6 +2,7 @@ const fs = require('fs').promises
 const path = require('path')
 
 class Maggioli {
+  static ICONS_DIR = `${path.dirname(require.resolve('@maggioli-common/mgg-icons-svg/package.json'))}/svg`
   static FILE_NAME_REGEX = /^([\w-]+)\.svg$/
 
   /**
@@ -9,9 +10,7 @@ class Maggioli {
    * @return {Promise<string[]>}
    */
   static async subDirectories () {
-    return [
-      path.join(__dirname, '../svg')
-    ]
+    return [this.ICONS_DIR]
   }
 
   /**
@@ -32,7 +31,7 @@ class Maggioli {
    */
   static async listPath () {
     const subdirectories = await Maggioli.subDirectories()
-    return iconGroupListHelper('maggioli', subdirectories)
+    return iconGroupListHelper('maggioli', subdirectories, Maggioli.FILE_NAME_REGEX)
   }
 
   /**

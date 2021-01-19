@@ -7,6 +7,8 @@ const pkg = require('../package.json')
 const { ICON_GROUPS } = require('../lib/icons-groups')
 const { ROOT_PATH_DIR, BUILD_PATH_DIR } = require('../lib/utils')
 const { writeCodersFiles } = require('../lib/coders-helper')
+const util = require('util');
+const exec = util.promisify(require('child_process').exec);
 
 const BUILD_SVG_DIR = `${BUILD_PATH_DIR}/svg`
 const BUILD_FONTS_DIR = `${BUILD_PATH_DIR}/fonts`
@@ -35,6 +37,7 @@ function main (parameters) {
     .then(() => iconsToTempFolder(inputData))
     .then(() => buildFont(options))
     .then(() => writeCodersFiles(inputData, options))
+    .then(() => buildTypescriptFiles())
     // .then(() => console.log('Font creation completed!'))
     .catch(err => err ? console.error('Error:', err) : console.error('Something gone wrong... Aborted.'))
 }
@@ -192,4 +195,17 @@ function getSvgToFontOptions ({ svgPath, outputPath, fontName } = {}) {
       footerInfo: 'Maggioli©.',
     },
   }
+}
+
+function buildTypescriptFiles () {
+  let error = false;
+
+  // Necessary to build all typescript files
+  // https://stackoverflow.com/a/35734638/3687018
+  fs.writeFile(path.join(BUILD_PATH_DIR, 'tsconfig.json'), '{ "include": ["fonts/**/*"] }')
+    .then(() => exec('npm bin'))
+    .then(({ stdout }) => stdout.split('\n')[0])
+    .then(npmBinFolder => exec(`${path.join(npmBinFolder, 'tsc')} -p ${BUILD_PATH_DIR} -d --declarationMap`))
+    .then(() => console.log('SUCCESS Builded typescript files'))
+    .catch((err) => console.error('Error in typescript files compilation.\n', err))
 }

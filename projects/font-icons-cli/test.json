@@ -8,7 +8,5 @@
   "fontawesome-android": "fontawesome/android",
   "fontawesome-addressbook": "fontawesome/address-book",
   "fontawesome-ad": "fontawesome/ad",
-  "local-barcode": "barcode",
-  "local-terminal": "terminal",
-  "local-hard-drive": "hard-drive"
+  "local-barcode": "barcode"
 }
