@@ -3,6 +3,7 @@
   "version": "1.0.0-RC.1",
   "description": "Maggioli Design System Icons is an icon font package based on Google Material Design Icons and Material Design Icons community icons.",
   "main": "index.js",
+  "type": "module",
   "publishConfig": {
     "registry": "http://nexus.maggioli.it:8081/repository/npm/"
   },
@@ -16,6 +17,7 @@
   "scripts": {
     "clean": "rm -rf dist || true",
     "build": "npm run clean && font-icons resources/mgg-icons.json",
+    "build:svg": "npm run clean && node ./tools/setup-package-svg.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "files": [
@@ -33,7 +35,8 @@
   ],
   "keywords": [
     "font",
-    "icons"
+    "icons",
+    "svg"
   ],
   "author": {
     "name": "Vittorio Vittori",
@@ -59,6 +62,7 @@
   ],
   "license": "ISC",
   "dependencies": {
-    "@maggioli-common/font-icons-cli": "1.0.0-RC.1"
+    "@maggioli-common/font-icons-cli": "1.0.0-RC.1",
+    "fs-extra": "^9.0.1"
   }
 }
