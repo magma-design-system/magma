@@ -16,28 +16,27 @@ const ROOT_DIR = join(__dirname, '..');
 const DIST_DIR = join(ROOT_DIR, 'dist');
 
 function main() {
-    const source = fs.readFileSync(join(ROOT_DIR, 'package.json')).toString('utf-8');
-    const sourceObj = JSON.parse(source);
+  const source = fs.readFileSync(join(ROOT_DIR, 'package.json')).toString('utf-8');
+  const sourceObj = JSON.parse(source);
 
-    // Package.json editing
-    sourceObj.name += '-svg';
-    sourceObj.scripts = {};
-    sourceObj.devDependencies = {};
-    delete sourceObj.main
-    sourceObj.files = ['svg/**/*.svg'];
+  // Package.json editing
+  sourceObj.name += '-svg';
+  sourceObj.scripts = {};
+  sourceObj.devDependencies = {};
+  delete sourceObj.main
+  sourceObj.files = ['svg/**/*.svg'];
 
-    // Output
-    if (!fs.existsSync(DIST_DIR)) {
-      fs.mkdirSync(DIST_DIR);
-    }
+  // Output
+  if (!fs.existsSync(DIST_DIR)) {
+    fs.mkdirSync(DIST_DIR);
+  }
 
-    fs.writeFileSync(join(DIST_DIR, 'package.json'), Buffer.from(JSON.stringify(sourceObj, null, 2)));
-    // fs.writeFileSync(join(DIST_DIR, 'version.txt'), Buffer.from(sourceObj.version, 'utf-8') );
-    fs.copyFileSync(join(ROOT_DIR, '.npmrc'), join(DIST_DIR, '.npmrc') );
+  fs.writeFileSync(join(DIST_DIR, 'package.json'), Buffer.from(JSON.stringify(sourceObj, null, 2)));
+  // fs.writeFileSync(join(DIST_DIR, 'version.txt'), Buffer.from(sourceObj.version));
+  fs.copyFileSync(join(ROOT_DIR, '.npmrc'), join(DIST_DIR, '.npmrc') );
 
-    // Copy of svg folder
-    fse.copySync(join(ROOT_DIR, 'resources/svg'), join(DIST_DIR, 'svg'))
-      //.catch(err => console.error(err));
+  // Copy of svg folder
+  fse.copySync(join(ROOT_DIR, 'resources/svg'), join(DIST_DIR, 'svg'))
 }
 
 main();
