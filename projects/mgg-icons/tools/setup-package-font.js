@@ -33,6 +33,7 @@ function main() {
 
     fs.writeFileSync(join(DIST_DIR, '/package.json'), Buffer.from(JSON.stringify(sourceObj, null, 2)) );
     // fs.writeFileSync(join(DIST_DIR, '/version.txt'), Buffer.from(sourceObj.version));
+    fs.copyFileSync(join(ROOT_DIR, '.npmrc'), join(DIST_DIR, '.npmrc') );
 
     // fs.copyFileSync(join(ROOT_DIR, '/.npmignore'), join(DIST_DIR, '/.npmignore'));
 
