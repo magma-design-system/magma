@@ -51,11 +51,11 @@
     "test:build": "npm run clean && npm start test.json svg"
   },
   "dependencies": {
-    "@fortawesome/fontawesome-free": "^5.14.0",
+    "@fortawesome/fontawesome-free": "^5.15.2",
     "@maggioli-common/mgg-icons-svg": "^1.0.0-RC.1",
-    "@mdi/svg": "^5.8.55",
-    "material-design-icons-updated": "^6.1.0",
-    "svgtofont": "^3.4.0",
+    "@mdi/svg": "^5.9.55",
+    "material-design-icons-updated": "^6.3.0",
+    "svgtofont": "^3.8.0",
     "typescript": "^4.1.3"
   },
   "devDependencies": {
