@@ -31,12 +31,13 @@ function main (parameters) {
   ICON_GROUPS.localDirectory.subDirectories.push(...localDirectories);
 
   const fontName = path.basename(inputFilePath, path.extname(inputFilePath))
-  const options = { svgPath: BUILD_SVG_DIR, outputPath: BUILD_FONTS_DIR, fontName }
+  const options = { svgPath: BUILD_SVG_DIR, outputPath: BUILD_PATH_DIR, fontName }
 
   createBuildDirective()
     .then(() => iconsToTempFolder(inputData))
     .then(() => buildFont(options))
-    .then(() => writeCodersFiles(inputData, options))
+    // .then(() => writeCodersFiles(inputData, options))
+    .then(() => organizeFiles())
     .then(() => buildTypescriptFiles())
     // .then(() => console.log('Font creation completed!'))
     .catch(err => err ? console.error('Error:', err) : console.error('Something gone wrong... Aborted.'))
@@ -125,39 +126,41 @@ function buildFont (options) {
   const _options = getSvgToFontOptions(options)
   const scssFileName = `${options.outputPath}/${options.fontName}.scss`
   return svgtofont(_options)
-    .then(() => addPrefixToAssetsUrlInScss(scssFileName))
+    .then(() => addPrefixToAssetsUrlInScss(scssFileName, 'fonts/')) // defaultValue == cssPath
 }
 
-function addPrefixToAssetsUrlInScss (scssFileName) {
+function addPrefixToAssetsUrlInScss (scssFileName, defaultValue = '') {
   return fs.readFile(scssFileName)
     .then((scssText) => {
       const variableName = '$font-icons-base-url'
-      return `${variableName}: '' !default;\n\n${scssText}`
-        .replace(new RegExp('url\\((\'|")', 'g'), `url(${variableName} + $1`)
+      return `${variableName}: '${defaultValue}' !default;\n\n${scssText}`
+        .replace(new RegExp(`url\\(('|")${defaultValue}`, 'g'), `url(${variableName} + $1`)
     })
     .then(scssText => fs.writeFile(scssFileName, scssText))
 }
 
-function getSvgToFontOptions ({ svgPath, outputPath, fontName } = {}) {
+function getSvgToFontOptions ({ svgPath, outputPath, fontName, website } = {}) {
   return {
     src: svgPath,
-    dist: outputPath, // output path
+    dist: `dist/fonts`, // font, website and typescript files
     fontName, // font name
     classNamePrefix: fontName,
     css: {
-      // Create CSS files.
       fontSize: '24px',
+      cssPath: 'fonts/',
+      output: 'dist' // css/scss/less/styl files
     },
     // startNumber: 20000, // unicode start number
     svgicons2svgfont: {
       fontHeight: 1000,
       normalize: true,
     },
-    website: {
+    typescript: true,
+    website: !website ? null : {
       title: pkg.name,
       description: pkg.description,
       version: pkg.version,
-      logo: path.resolve(ROOT_PATH_DIR, 'svg', 'isbn.svg'),
+      logo: path.resolve(ROOT_PATH_DIR, 'svg', 'barcode.svg'),
       favicon: null,
       meta: {
         description: pkg.description,
@@ -197,15 +200,33 @@ function getSvgToFontOptions ({ svgPath, outputPath, fontName } = {}) {
   }
 }
 
-function buildTypescriptFiles () {
-  let error = false;
+function organizeFiles () {
+  // Moving out of "fonts" folder files witch aren't fonts
+  const isFontFile = /\.(ttf|woff|woff2|eot|svg)$/i;
+  return fs.readdir(BUILD_FONTS_DIR)
+    .then(files => files.filter(filename => !isFontFile.test(filename)))
+    .then(files => Promise.all(files.map(
+      file => fs.rename(path.join(BUILD_FONTS_DIR, file), path.join(BUILD_PATH_DIR, file))
+    )))
+}
 
+function buildTypescriptFiles () {
   // Necessary to build all typescript files
   // https://stackoverflow.com/a/35734638/3687018
-  fs.writeFile(path.join(BUILD_PATH_DIR, 'tsconfig.json'), '{ "include": ["fonts/**/*"] }')
+  fs.writeFile(path.join(BUILD_PATH_DIR, 'tsconfig.json'),
+`{
+  "include": ["**/*"],
+  "compilerOptions": {
+    "declaration": true,
+    "module": "es2015",
+    "target": "es2015",
+    "moduleResolution": "node"
+  },
+}`
+  )
     .then(() => exec('npm bin'))
     .then(({ stdout }) => stdout.split('\n')[0])
     .then(npmBinFolder => exec(`${path.join(npmBinFolder, 'tsc')} -p ${BUILD_PATH_DIR} -d --declarationMap`))
-    .then(() => console.log('SUCCESS Builded typescript files'))
+    .then(() => console.log('SUCCESS Compiled typescript files'))
     .catch((err) => console.error('Error in typescript files compilation.\n', err))
 }
