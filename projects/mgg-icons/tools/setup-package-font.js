@@ -19,6 +19,7 @@ function main() {
   const sourceObj = JSON.parse(source);
 
   // Package.json editing
+  delete sourceObj.private;
   sourceObj.scripts = {};
   sourceObj.devDependencies = {};
   if (sourceObj.main.startsWith('dist/')) {

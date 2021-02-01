@@ -20,6 +20,7 @@ function main() {
   const sourceObj = JSON.parse(source);
 
   // Package.json editing
+  delete sourceObj.private;
   sourceObj.name += '-svg';
   sourceObj.scripts = {};
   sourceObj.devDependencies = {};
