@@ -1,0 +1,17 @@
+{
+  "name": "identity",
+  "version": "1.0.0",
+  "description": "Maggioli brand identity assets",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "asset",
+    "brand",
+    "identity",
+    "logo"
+  ],
+  "author": "Vittorio Vittori",
+  "license": "ISC"
+}
