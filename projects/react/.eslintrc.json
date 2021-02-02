@@ -1,12 +1,13 @@
 {
+  "root": true,
+  "extends": ["standard"],
+  "ignorePatterns": ["!**/*"],
   "parser": "@babel/eslint-parser",
   "env": {
     "browser": true,
     "es6": true,
     "jest": true
   },
-  "extends": ["../../.eslintrc.json", "standard"],
-  "ignorePatterns": ["!**/*"],
   "globals": {
     "Atomics": "readonly",
     "SharedArrayBuffer": "readonly"
@@ -20,9 +21,6 @@
   "parserOptions": {
     "ecmaFeatures": {
       "jsx": true
-    },
-    "babelOptions": {
-      "configFile": "./.babelrc"
     },
     "ecmaVersion": 2018,
     "sourceType": "module"
