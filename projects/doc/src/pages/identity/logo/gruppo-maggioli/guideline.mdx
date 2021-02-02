@@ -1,0 +1,63 @@
+---
+title: 'Linee guida'
+date: '2020-08-24'
+author:
+  - vittorio.vittori@maggioli.it
+---
+
+Di seguito troverai una guida che può aiutarti a comprendere meglio le best practice sull'utilizzo del logo Gruppo Maggioli.
+
+<Grid columns="2" align="center">
+  <Image src={require('./guideline-logo-borders.svg')}/>
+  <Grid>
+    <Detail>Indicativamente, il margine ideale è attorno 33% del quadrato blu. Questo garantisce una buona visibilità dentro a header, footer e in generale elementi online.</Detail>
+    <Detail>Se si parla di stampa, il problema non cambia, è sempre buona norma utilizzare del margine attorno al logo per renderlo maggiormente leggibile.</Detail>
+    <Detail>Tra i file scaricabili, troverai una versione che contiene già questa spaziatura.</Detail>
+  </Grid>
+</Grid>
+
+<Usage>
+  <UsageDo>
+    <Detail>Utilizza sempre delle spaziature tra il logo e gli altri elementi. Questa pratica è fondamentale per dare al logo la dignità che si merita e non risultare un design pacchiano.</Detail>
+    <Hr className="background-color-status-success-18" spacing="xsmall" />
+    <Grid template="auto-fill" gutter="large">
+      <Image src={require('#Identity/gruppo-maggioli/logo-gruppo-maggioli.svg')}/>
+      <div>
+        <H4>Gruppo Maggioli</H4>
+        <Detail>Diamo grande attenzione ai dettagli per offrire ai nostri clienti un serivzio impeccabile.</Detail>
+      </div>
+    </Grid>
+  </UsageDo>
+  <UsageDont>
+    <Detail>Non attaccare elementi in prossimità del logo, è fastidioso da un punto di vista cognitivo e un utente può percepire poca serietà nella mancanza di questi dettagli di eleganza.</Detail>
+    <Hr className="background-color-status-error-18" spacing="xsmall" />
+    <Grid template="auto-fill" gutter="none">
+      <Image src={require('#Identity/gruppo-maggioli/logo-gruppo-maggioli.svg')}/>
+      <div>
+        <H4>Gruppo Maggioli</H4>
+        <Detail>Diamo grande attenzione ai dettagli per offrire ai nostri clienti un serivzio impeccabile.</Detail>
+      </div>
+    </Grid>
+  </UsageDont>
+</Usage>
+
+<Usage>
+  <UsageDont>
+    <Detail>Non usare mai il logo con colori differenti dal blu, bianco o nero.</Detail>
+    <Image src={require('./guideline-wrong-logo-colors.svg')}/>
+    <Detail>La solidità di un brand deriva prima di tutto dal suo corretto utilizzo.</Detail>
+  </UsageDont>
+  <UsageDont>
+    <Detail>Non applicare trasformazioni al logo o rielaborazioni come smussature.</Detail>
+    <Image src={require('./guideline-wrong-transformations-logo.svg')}/>
+    <Detail>La solidità di un brand deriva prima di tutto dal suo corretto utilizzo.</Detail>
+  </UsageDont>
+</Usage>
+
+<Usage>
+  <UsageDont>
+    <Detail>Non usare mai immagini a bassa risoluzione. Risulteranno fastidiose per l'occhio e difficili da leggere.</Detail>
+    <Image src={require('./guideline-low-resolution.jpg')}/>
+    <Detail>Se lavori con JPG o PNG, ricordati sempre che la risoluzione dell'immagine dovrebbe essere 2 volte la dimensione dell'area in cui viene posizionata, in modo da risultare pulita anche su Apple Display Retina e Ultra HD.</Detail>
+  </UsageDont>
+</Usage>

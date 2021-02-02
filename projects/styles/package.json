@@ -22,7 +22,7 @@
     "/dist/*"
   ],
   "dependencies": {
-    "@maggioli-design-system/design-tokens": "^0.1.0",
+    "@maggioli-design-system/design-tokens": "../design-tokens",
     "normalize.css": "^8.0.1",
     "tailwindcss": "^2.0.2",
     "typeface-karla": "1.1.13",
