@@ -13,4 +13,4 @@ stages:
   - deploy
 
 include:
-  - '/projects/design-system/.gitlab-ci.yml'
+  - '/projects/doc/.gitlab-ci.yml'

@@ -1,38 +1,38 @@
 # Stage 0, based on Node.js, to build and compile the website
 FROM node:15 as node
 LABEL step=build
-WORKDIR /app/design-system
-
-# TODO font-icons-cli e mgg-icons dovrebbero essere delle dipendenze, non dovrebbero essere usati direttamente
-COPY ./font-icons-cli/package.json /app/font-icons-cli/
-COPY ./font-icons-cli/package-lock.json /app/font-icons-cli/
-RUN cd /app/font-icons-cli/ && npm install
-COPY ./mgg-icons/package.json /app/mgg-icons/
-COPY ./mgg-icons/package-lock.json /app/mgg-icons/
-RUN cd /app/mgg-icons/ && npm install
-COPY ./font-icons-cli /app/font-icons-cli
-COPY ./mgg-icons /app/mgg-icons
+WORKDIR /app
 
 RUN npm install -g npm-install-peers
 
-COPY ./design-system/package.json /app/design-system/
-COPY ./design-system/package-lock.json /app/design-system/
-RUN npm install
-RUN npm-install-peers
-COPY ./design-system /app/design-system
+# Storybook of react project, dependency install
+COPY ./react/package.json /app/react
+COPY ./react/package-lock.json /app/react
+RUN cd react && npm install
+RUN cd react && npm-install-peers
+
+# Website of doc project, dependency install
+COPY ./doc/package.json /app/doc/
+COPY ./doc/package-lock.json /app/doc/
+RUN cd doc && npm install
+RUN cd doc && npm-install-peers
+
+# Copy of all sources
+COPY ./react /app/react
+COPY ./doc /app/doc
 
 
 # TODO Copiare solo i sorgenti invece di fare gatsby:clean
-RUN npm run gatsby:clean
-RUN npm run build:gatsby
-RUN npm run build:storybook
+RUN cd react && npm run build:storybook
+RUN cd doc && npm run clean
+RUN cd doc && npm run build
 
 # Stage 1, based on Nginx, to have only the compiled website, ready for production with Nginx
 FROM nginx:alpine
 LABEL step=runtime
 
-COPY --from=node /app/design-system/public/ /var/www/html/gatsby
-COPY --from=node /app/design-system/storybook-static /var/www/html/storybook
+COPY --from=node /app/doc/public/ /var/www/html/gatsby
+COPY --from=node /app/react/storybook-static /var/www/html/storybook
 
-COPY ./design-system/docker/nginx/nginx.conf /etc/nginx/nginx.conf
-COPY ./design-system/docker/nginx/sites/ /etc/nginx/sites-available
+COPY ./doc/docker/nginx/nginx.conf /etc/nginx/nginx.conf
+COPY ./doc/docker/nginx/sites/ /etc/nginx/sites-available

@@ -40,9 +40,9 @@ deploy-designsystem:
     DEPLOY_FOLDER: $CI_DEPLOY_PATH
     SERVER: $CI_SERVER_IP
   before_script:
-    - chmod +x ./projects/design-system/.deploy/deploy-designsystem.sh
+    - chmod +x ./projects/doc/.deploy/deploy-designsystem.sh
   script:
-    - ./projects/design-system/.deploy/deploy-designsystem.sh
+    - ./projects/doc/.deploy/deploy-designsystem.sh
 #  after_script:
 #    - chmod +x ./projects/design-system/.deploy/clean-designsystem.sh
 #    - ./projects/design-system/.deploy/clean-designsystem.sh
@@ -57,4 +57,5 @@ deploy-designsystem:
       - master
     changes:
       - "*"
-      - "projects/design-system/**/*"
+      - "projects/doc/**/*"
+      - "projects/react/**/*"

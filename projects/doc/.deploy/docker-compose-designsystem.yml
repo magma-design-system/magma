@@ -5,7 +5,7 @@ services:
   designsystem:
     build:
       context: ../../
-      dockerfile: ./design-system/Dockerfile
+      dockerfile: ./doc/Dockerfile
     restart: unless-stopped
     container_name: designsystem
     expose:
