@@ -1,11 +1,12 @@
 {
-  "isbn": "isbn",
-  "terminal": "terminal",
-  "zip": "folder-zip",
+  "maggioli-isbn": "maggioli/isbn",
+  "maggioli-terminal": "maggioli/terminal",
+  "maggioli-zip": "maggioli/folder-zip",
   "material-3d_rotation": "material/3d_rotation",
   "material-audio": "material/audiotrack",
   "material-export": "material/save_alt",
   "fontawesome-android": "fontawesome/android",
   "fontawesome-addressbook": "fontawesome/address-book",
-  "fontawesome-ad": "fontawesome/ad"
+  "fontawesome-ad": "fontawesome/ad",
+  "local-barcode": "barcode"
 }

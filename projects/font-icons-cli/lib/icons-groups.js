@@ -2,6 +2,7 @@ const fs = require('fs').promises
 const path = require('path')
 
 class Maggioli {
+  static ICONS_DIR = `${path.dirname(require.resolve('@maggioli-common/mgg-icons-svg/package.json'))}/svg`
   static FILE_NAME_REGEX = /^([\w-]+)\.svg$/
 
   /**
@@ -9,9 +10,7 @@ class Maggioli {
    * @return {Promise<string[]>}
    */
   static async subDirectories () {
-    return [
-      path.join(__dirname, '../svg')
-    ]
+    return [this.ICONS_DIR]
   }
 
   /**
@@ -32,7 +31,7 @@ class Maggioli {
    */
   static async listPath () {
     const subdirectories = await Maggioli.subDirectories()
-    return iconGroupListHelper('maggioli', subdirectories)
+    return iconGroupListHelper('maggioli', subdirectories, Maggioli.FILE_NAME_REGEX)
   }
 
   /**
@@ -131,6 +130,50 @@ class FontAwesome {
   }
 }
 
+class LocalDirectory {
+  static FILE_NAME_REGEX = /^([\w-]+)\.svg$/
+
+  /**
+   * List of paths of subdirectories (possibly) with icons
+   * @return {Promise<string[]>}
+   */
+  static async subDirectories () {
+    return LocalDirectory._subDirectories;
+  }
+  static _subDirectories = []
+
+  /**
+   * Search the requested icon in the local directory
+   * @param iconName {string} name of the icon
+   * @return {Promise<string>}
+   */
+  static async getPath (iconName) {
+    const subdirectories = await LocalDirectory.subDirectories()
+    const filename = `${iconName}.svg`
+
+    return iconGroupGetHelper(null, subdirectories, iconName, filename)
+  }
+
+  /**
+   * Search all the local icons
+   * @return {Promise<string[]>} Paths of all the local icons
+   */
+  static async listPath () {
+    const subdirectories = await LocalDirectory.subDirectories()
+    return iconGroupListHelper(null, subdirectories)
+  }
+
+  /**
+   * Given the path of an icon or just the file name, it returns the icon name
+   * @param path the path of an icon or just the file name
+   * @return {string} The icon name
+   */
+  static getIconName (path) {
+    if (!path.includes('/')) return false;
+    return path.match(LocalDirectory.FILE_NAME_REGEX)[1];
+  }
+}
+
 /**
  * Ritorna un array con i path delle sottocartelle rispetto alla cartella passata in input
  * @param source {string} Path di una cartella
@@ -159,7 +202,7 @@ async function iconGroupGetHelper (iconGroup, directories, iconName, filename) {
       return path
     }
   }
-  throw new Error(`Icon not found: ${iconGroup}/${iconName}, searched as ${filename}`)
+  throw new Error(`Icon not found: ${iconGroup ? iconGroup + '/' : ''}${iconName}, searched as ${filename}`)
 }
 
 /**
@@ -201,13 +244,14 @@ async function searchFileInDirectory (directory, filename) {
 const ICON_GROUPS = {
   maggioli: { getPath: Maggioli.getPath, listPath: Maggioli.listPath, getIconName: Maggioli.getIconName },
   material: { getPath: Material.getPath, listPath: Material.listPath, getIconName: Material.getIconName },
-  fontawesome: { getPath: FontAwesome.getPath, listPath: FontAwesome.listPath, getIconName: FontAwesome.getIconName }
+  fontawesome: { getPath: FontAwesome.getPath, listPath: FontAwesome.listPath, getIconName: FontAwesome.getIconName },
+  localDirectory: { getPath: LocalDirectory.getPath, listPath: LocalDirectory.listPath, getIconName: LocalDirectory.getIconName, subDirectories: LocalDirectory._subDirectories }
 }
 
 /**
  * Given the path of an icon, it returns the icon group name
  * @param path path of an icon
- * @return {Promise<*>}
+ * @return {Promise<string>}
  */
 async function pathToIconsGroup(path) {
   for (const [key, value] of ICON_GROUPS) {

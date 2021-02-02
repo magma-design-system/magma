@@ -3,9 +3,7 @@
 const fs = require('fs').promises
 const path = require('path')
 const { ICON_GROUPS } = require('../lib/icons-groups')
-const { ROOT_PATH_DIR } = require('../lib/utils')
-
-const BUILD_DIR = `${ROOT_PATH_DIR}/build`
+const { BUILD_PATH_DIR } = require('../lib/utils')
 
 main(process.argv.slice(2))
 
@@ -19,7 +17,7 @@ function main (parameters) {
   Promise.all(promises)
     .then(generateIcons)
     .then(generateInputFileFromIcons)
-    .then(() => console.log('Done! File created in', BUILD_DIR))
+    .then(() => console.log('Done! File created in', BUILD_PATH_DIR))
 }
 
 /**
@@ -31,7 +29,7 @@ function generateIcons (iconGroupLists) {
   return iconGroupLists
     .map(({ group, list }) => {
       const { getIconName } = ICON_GROUPS[group]
-      return list.map(path => `${group}/${getIconName(path)}`)
+      return list.map(path => `${group ? group + '/' : ''}${getIconName(path)}`)
     })
     .flat()
 }
@@ -48,6 +46,8 @@ function iconGroupList ([groupName, group]) {
     case 'material':
     case 'fontawesome':
       return group.listPath().then(list => ({ group: groupName, list }))
+    //case 'localDirectory':
+    //  return group.listPath().then(list => ({ group: groupName, list }))
     default:
       throw new Error(`Group ${groupName} not found in icons-group.js`)
   }
@@ -58,5 +58,5 @@ function generateInputFileFromIcons (icons) {
     acc[icon.replace('/', '-')] = icon
     return acc
   }, {})
-  return fs.writeFile(path.join(BUILD_DIR, 'input.json'), JSON.stringify(inputObject))
+  return fs.writeFile(path.join(BUILD_PATH_DIR, 'input.json'), JSON.stringify(inputObject))
 }

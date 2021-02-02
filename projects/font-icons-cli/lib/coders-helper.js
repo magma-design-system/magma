@@ -71,7 +71,7 @@ function getTypeName (fontName) {
 function writeCodersFiles (inputData, options) {
   const icons = Object.keys(inputData)
   const files = [
-    generateJavascript(icons, options.fontName),
+    //generateJavascript(icons, options.fontName),
     generateTypescript(icons, options.fontName)
   ]
   return Promise.all(

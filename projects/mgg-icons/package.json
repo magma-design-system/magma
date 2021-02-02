@@ -1,8 +1,12 @@
 {
   "name": "@maggioli-common/mgg-icons",
-  "version": "0.0.21",
+  "version": "1.0.0",
   "description": "Maggioli Design System Icons is an icon font package based on Google Material Design Icons and Material Design Icons community icons.",
-  "main": "index.js",
+  "private": true,
+  "main": "mgg-icons.js",
+  "typings": "mgg-icons.d.ts",
+  "type": "module",
+  "sideEffects": false,
   "publishConfig": {
     "registry": "http://nexus.maggioli.it:8081/repository/npm/"
   },
@@ -14,26 +18,30 @@
     "url": "https://git.maggioli.it/ricerca-sviluppo-new-media/design-system/-/issues"
   },
   "scripts": {
-    "clean": "rm -rf build || true",
-    "build": "npm run clean && font-icons src/mgg-icons.json",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "clean": "rm -rf dist || true",
+    "build": "npm run clean && font-icons resources/mgg-icons.json && node ./tools/setup-package-font.js",
+    "build:svg": "npm run clean && node ./tools/setup-package-svg.js",
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "publish": "(cd dist && npm publish)"
   },
   "files": [
-    "/build/fonts/**/*.ttf",
-    "/build/fonts/**/*.woff",
-    "/build/fonts/**/*.woff2",
-    "/build/fonts/**/*.eot",
-    "/build/fonts/**/*.svg",
-    "/build/fonts/**/*.scss",
-    "/build/fonts/**/*.css",
-    "/build/fonts/**/*.html",
-    "/build/fonts/**/*.js",
-    "/build/fonts/**/*.ts",
-    "/src/*.json"
+    "/dist/fonts/*.ttf",
+    "/dist/fonts/*.woff",
+    "/dist/fonts/*.woff2",
+    "/dist/fonts/*.eot",
+    "/dist/fonts/*.svg",
+    "/dist/svg/*.svg",
+    "/dist/*.scss",
+    "/dist/*.css",
+    "/dist/*.html",
+    "/dist/*.js",
+    "/dist/*.ts",
+    "/resources/*.json"
   ],
   "keywords": [
     "font",
-    "icons"
+    "icons",
+    "svg"
   ],
   "author": {
     "name": "Vittorio Vittori",
@@ -58,7 +66,8 @@
     }
   ],
   "license": "ISC",
-  "dependencies": {
-    "@maggioli-common/font-icons-cli": "0.0.15"
+  "devDependencies": {
+    "@maggioli-common/font-icons-cli": "1.0.0-RC.3",
+    "fs-extra": "^9.0.1"
   }
 }
