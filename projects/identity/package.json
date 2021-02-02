@@ -1,5 +1,5 @@
 {
-  "name": "identity",
+  "name": "@maggioli-design-system/identity",
   "version": "1.0.0",
   "description": "Maggioli brand identity assets",
   "main": "index.js",
