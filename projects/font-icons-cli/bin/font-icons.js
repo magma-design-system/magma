@@ -21,8 +21,13 @@ main(process.argv.slice(2))
  * @return {void}
  */
 function main (parameters) {
-  const [inputFileParameter, ...localDirectories] = parameters;
+  const [inputFileParameter, ...restParams] = parameters;
+  const IS_PARAM = param => param.startsWith('--') || param.startsWith('-')
+  const customParams = restParams.filter(IS_PARAM)
+  const localDirectories = restParams.filter(p => !IS_PARAM(p))
+  const shouldCreateWebsite = customParams.includes('--website') || false
   console.debug('Input file:', inputFileParameter)
+  if (shouldCreateWebsite) console.debug('A website with all the icons will be created.')
 
   const inputFilePath = path.join(process.cwd(), inputFileParameter)
   const inputData = require(inputFilePath)
@@ -31,7 +36,7 @@ function main (parameters) {
   ICON_GROUPS.localDirectory.subDirectories.push(...localDirectories);
 
   const fontName = path.basename(inputFilePath, path.extname(inputFilePath))
-  const options = { svgPath: BUILD_SVG_DIR, outputPath: BUILD_PATH_DIR, fontName }
+  const options = { svgPath: BUILD_SVG_DIR, outputPath: BUILD_PATH_DIR, fontName, website: shouldCreateWebsite }
 
   createBuildDirective()
     .then(() => iconsToTempFolder(inputData))
