@@ -1,10 +1,7 @@
 {
-  "name": "@maggioli-common/mgg-icons",
+  "name": "@maggioli-common/mgg-icons-svg",
   "version": "1.0.0",
   "description": "Maggioli Design System Icons is an icon font package based on Google Material Design Icons and Material Design Icons community icons.",
-  "private": true,
-  "type": "module",
-  "sideEffects": false,
   "publishConfig": {
     "registry": "http://nexus.maggioli.it:8081/repository/npm/"
   },
@@ -15,28 +12,10 @@
   "bugs": {
     "url": "https://git.maggioli.it/ricerca-sviluppo-new-media/design-system/-/issues"
   },
-  "scripts": {
-    "clean": "rm -rf dist || true",
-    "build": "npm run clean && font-icons resources/mgg-icons.json && node ./tools/setup-package-font.js",
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "publish": "(cd dist && npm publish)"
-  },
   "files": [
-    "/dist/fonts/*.ttf",
-    "/dist/fonts/*.woff",
-    "/dist/fonts/*.woff2",
-    "/dist/fonts/*.eot",
-    "/dist/fonts/*.svg",
-    "/dist/svg/*.svg",
-    "/dist/*.scss",
-    "/dist/*.css",
-    "/dist/*.html",
-    "/dist/*.js",
-    "/dist/*.ts",
-    "/resources/*.json"
+    "/svg/*.svg"
   ],
   "keywords": [
-    "font",
     "icons",
     "svg"
   ],
@@ -62,9 +41,5 @@
       "role": "Author"
     }
   ],
-  "license": "ISC",
-  "devDependencies": {
-    "@maggioli-common/font-icons-cli": "1.0.0-RC.3",
-    "fs-extra": "^9.0.1"
-  }
+  "license": "ISC"
 }
