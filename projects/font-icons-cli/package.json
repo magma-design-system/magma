@@ -52,7 +52,7 @@
   },
   "dependencies": {
     "@fortawesome/fontawesome-free": "^5.15.2",
-    "@maggioli-common/mgg-icons-svg": "^1.0.0-RC.1",
+    "@maggioli-common/mgg-icons-svg": "^1.0.0",
     "@mdi/svg": "^5.9.55",
     "material-design-icons-updated": "^6.3.0",
     "svgtofont": "^3.8.0",
