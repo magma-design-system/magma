@@ -1,0 +1,54 @@
+{
+  "compilerOptions": {
+    "paths": {
+      "@maggioli-design-system/design-tokens": [
+        "projects/design-tokens/build"
+      ],
+      "@maggioli-design-system/design-tokens/*": [
+        "projects/design-tokens/*"
+      ],
+      "@maggioli-design-system/doc": [
+        "projects/doc"
+      ],
+      "@maggioli-design-system/doc/*": [
+        "projects/doc/*"
+      ],
+      "@maggioli-common/font-icons-cli": [
+        "projects/font-icons-cli/bin/font-icons"
+      ],
+      "@maggioli-common/font-icons-cli/*": [
+        "projects/font-icons-cli/*"
+      ],
+      "@maggioli-design-system/identity": [
+        "projects/identity/index"
+      ],
+      "@maggioli-design-system/identity/*": [
+        "projects/identity/*"
+      ],
+      "@maggioli-common/mgg-icons": [
+        "projects/mgg-icons"
+      ],
+      "@maggioli-common/mgg-icons/*": [
+        "projects/mgg-icons/*"
+      ],
+      "@maggioli-common/mgg-icons-svg": [
+        "projects/mgg-icons-svg"
+      ],
+      "@maggioli-common/mgg-icons-svg/*": [
+        "projects/mgg-icons-svg/*"
+      ],
+      "@maggioli-design-system/react": [
+        "projects/react/dist/bundle.min"
+      ],
+      "@maggioli-design-system/react/*": [
+        "projects/react/*"
+      ],
+      "@maggioli-design-system/styles": [
+        "projects/styles/index"
+      ],
+      "@maggioli-design-system/styles/*": [
+        "projects/styles/*"
+      ]
+    }
+  }
+}

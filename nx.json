@@ -1,0 +1,60 @@
+{
+  "npmScope": "maggioli-design-system",
+  "implicitDependencies": {
+    "workspace.json": "*",
+    "package.json": {
+      "dependencies": "*",
+      "devDependencies": "*"
+    },
+    "nx.json": "*"
+  },
+  "tasksRunnerOptions": {
+    "default": {
+      "runner": "@nrwl/workspace/tasks-runners/default",
+      "options": {
+        "cacheableOperations": [
+          "build",
+          "test",
+          "lint",
+          "package"
+        ]
+      }
+    }
+  },
+  "projects": {
+    "design-tokens": {
+      "implicitDependencies": []
+    },
+    "doc": {
+      "tags": ["type:app"],
+      "implicitDependencies": ["styles", "mgg-icons"]
+    },
+    "font-icons-cli": {
+      "tags": ["type:lib"],
+      "implicitDependencies": ["mgg-icons-svg"]
+    },
+    "identity": {
+      "tags": ["type:lib"],
+      "implicitDependencies": []
+    },
+    "mgg-icons": {
+      "tags": ["type:lib"],
+      "implicitDependencies": ["font-icons-cli"]
+    },
+    "mgg-icons-svg": {
+      "tags": ["type:lib"],
+      "implicitDependencies": []
+    },
+    "react": {
+      "tags": ["type:lib"],
+      "implicitDependencies": ["styles", "mgg-icons"]
+    },
+    "styles": {
+      "tags": ["type:lib"],
+      "implicitDependencies": ["design-tokens"]
+    }
+  },
+  "affected": {
+    "defaultBase": "dev"
+  }
+}

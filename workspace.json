@@ -1,0 +1,37 @@
+{
+  "version": 2,
+  "projects": {
+    "design-tokens": {
+      "root": "projects/design-tokens",
+      "type": "library"
+    },
+    "doc": {
+      "root": "projects/doc",
+      "type": "application"
+    },
+    "font-icons-cli": {
+      "root": "projects/font-icons-cli",
+      "type": "library"
+    },
+    "identity": {
+      "root": "projects/identity",
+      "type": "library"
+    },
+    "mgg-icons": {
+      "root": "projects/mgg-icons",
+      "type": "library"
+    },
+    "mgg-icons-svg": {
+      "root": "projects/mgg-icons-svg",
+      "type": "library"
+    },
+    "react": {
+      "root": "projects/react",
+      "type": "library"
+    },
+    "styles": {
+      "root": "projects/styles",
+      "type": "library"
+    }
+  }
+}

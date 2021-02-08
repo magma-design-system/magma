@@ -22,7 +22,7 @@ function main() {
   delete sourceObj.private;
   sourceObj.scripts = {};
   sourceObj.devDependencies = {};
-  if (sourceObj.main.startsWith('dist/')) {
+  if (sourceObj.main?.startsWith('dist/')) {
     sourceObj.main = sourceObj.main.slice(5);
   }
   sourceObj.files = sourceObj.files.map(file => file.startsWith('/dist') ? file.slice(5) : file);

@@ -3,7 +3,7 @@
   "version": "1.0.0-RC.4",
   "description": "Font icons CLI, part of Maggioli Design System, it's used by mgg-icons module to generate the font library from SVG icons.",
   "publishConfig": {
-    "registry": "http://nexus.maggioli.it:8081/repository/npm/"
+    "registry": "http://nexus.maggioli.it:8081/repository/npm-group/"
   },
   "repository": {
     "type": "git",
@@ -54,7 +54,7 @@
     "@fortawesome/fontawesome-free": "^5.15.2",
     "@maggioli-common/mgg-icons-svg": "^1.0.0",
     "@mdi/svg": "^5.9.55",
-    "material-design-icons-updated": "^6.3.0",
+    "material-design-icons-updated": "^7.0.0",
     "svgtofont": "^3.8.0",
     "typescript": "^4.1.3"
   },
