@@ -4,7 +4,7 @@
   "description": "Styles layer",
   "main": "index.js",
   "scripts": {
-    "update-tokens": "cp ./node_modules/@maggioli-design-system/design-tokens/dist/scss/* ./variables"
+    "update-tokens": "cp ../../node_modules/@maggioli-design-system/design-tokens/dist/scss/* ./variables"
   },
   "repository": {
     "type": "git",

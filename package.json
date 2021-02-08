@@ -4,7 +4,8 @@
   "description": "This design system is based on [React][react], [Storybook][storybook] and [Gatsby][gatsby], you can see it on [Maggioli design system][storybook-online] website.",
   "private": true,
   "workspaces": [
-    "projects/*"
+    "projects/!(mgg-icons)",
+    "projects/mgg-icons/dist"
   ],
   "devDependencies": {
     "@nrwl/cli": "latest",

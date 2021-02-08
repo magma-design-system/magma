@@ -12,7 +12,7 @@ module.exports = async({ config, mode }) => {
 
   config.module.rules.push({
     test: /\.scss$/,
-    include: [path.resolve(__dirname, '../'), path.resolve(__dirname, '../node_modules/@maggioli-design-system')],
+    include: [path.resolve(__dirname, '../'), path.resolve(__dirname, '../../../node_modules/@maggioli-design-system')],
     use: [{
       loader: 'style-loader',
     }, {
