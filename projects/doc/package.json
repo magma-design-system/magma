@@ -11,8 +11,7 @@
         "develop": "gatsby develop -H 0.0.0.0 -p 3898 -o",
         "lint": "npm run lint:js && npm run lint:sass",
         "lint:js": "eslint src/**/*.{js,jsx} --fix",
-        "lint:sass": "npx stylelint --config .stylelintrc.json 'src/**/*.scss' --fix",
-        "setup": "(cd ../mgg-icons && npm install) && (cd ../font-icons-cli && npm install) && npm install"
+        "lint:sass": "stylelint --config .stylelintrc.json 'src/**/*.scss' --fix",
     },
     "husky": {
         "hooks": {

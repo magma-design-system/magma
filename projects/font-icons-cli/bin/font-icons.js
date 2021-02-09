@@ -229,7 +229,7 @@ function buildTypescriptFiles () {
   },
 }`
   )
-    .then(() => exec('npm bin'))
+    .then(() => exec('(cd .. && npm bin)'))
     .then(({ stdout }) => stdout.split('\n')[0])
     .then(npmBinFolder => exec(`${path.join(npmBinFolder, 'tsc')} -p ${BUILD_PATH_DIR} -d --declarationMap`))
     .then(() => console.log('SUCCESS Compiled typescript files'))
