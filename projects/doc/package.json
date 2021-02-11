@@ -9,9 +9,9 @@
         "clean": "gatsby clean",
         "serve": "gatsby serve -o -p 3898",
         "develop": "gatsby develop -H 0.0.0.0 -p 3898 -o",
-        "lint": "npm run lint:js && npm run lint:sass",
-        "lint:js": "eslint src/**/*.{js,jsx} --fix",
-        "lint:sass": "stylelint --config .stylelintrc.json 'src/**/*.scss' --fix"
+        "lint": "npm run lint-js && npm run lint-sass",
+        "lint-js": "eslint src/**/*.{js,jsx} --fix",
+        "lint-sass": "stylelint --config .stylelintrc.json 'src/**/*.scss' --fix"
     },
     "husky": {
         "hooks": {
@@ -21,10 +21,10 @@
     },
     "lint-staged": {
         "src/**/*.{js,jsx}": [
-            "npm run lint:js"
+            "npm run lint-js"
         ],
         "src/**/*.{scss}": [
-            "npm run lint:sass"
+            "npm run lint-sass"
         ]
     },
     "browserslist": [

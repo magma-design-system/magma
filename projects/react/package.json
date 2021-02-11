@@ -4,13 +4,13 @@
     "description": "Maggioli Design System è uno strumento nato per condividere una unica visione di progettazione condivisa tra tutti gli esperti di dominio aziendali. Ciò permette di offrire una UX unica, condivisa tra i prodotti che saranno coerenti allo stile dell’azienda.",
     "scripts": {
         "build": "webpack --config webpack.config.js",
-        "build:storybook": "build-storybook",
-        "deploy:storybook": "storybook-to-ghpages",
-        "lint": "npm run lint:js && npm run lint:sass",
-        "lint:js": "eslint src/**/*.{js,jsx} --fix",
-        "lint:sass": "stylelint --config .stylelintrc.json 'src/**/*.scss' --fix",
-        "start:storybook": "start-storybook -p 7177",
-        "start:storybook:debug": "start-storybook --debug-webpack -p 7177"
+        "build-storybook": "build-storybook",
+        "deploy-storybook": "storybook-to-ghpages",
+        "lint": "npm run lint-js && npm run lint-sass",
+        "lint-js": "eslint src/**/*.{js,jsx} --fix",
+        "lint-sass": "stylelint --config .stylelintrc.json 'src/**/*.scss' --fix",
+        "start-storybook": "start-storybook -p 7177",
+        "start-storybook-debug": "start-storybook --debug-webpack -p 7177"
     },
     "husky": {
         "hooks": {
@@ -20,10 +20,10 @@
     },
     "lint-staged": {
         "src/**/*.{js,jsx}": [
-            "npm run lint:js"
+            "npm run lint-js"
         ],
         "src/**/*.{scss}": [
-            "npm run lint:sass"
+            "npm run lint-sass"
         ]
     },
     "browserslist": [

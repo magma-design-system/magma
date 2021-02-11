@@ -17,8 +17,10 @@
   },
   "scripts": {
     "clean": "rm -rf dist || true",
-    "build": "npm run clean && font-icons resources/mgg-icons.json && node ./tools/setup-package-font.js",
-    "build:website": "npm run clean && font-icons resources/mgg-icons.json --website resources/svg && node ./tools/setup-package-font.js",
+    "prebuild": "npm run clean",
+    "build": "font-icons resources/mgg-icons.json",
+    "postbuild": "node ./tools/setup-package-font.js",
+    "build-website": "npm run build -- --website resources/svg",
     "test": "echo \"Error: no test specified\" && exit 1",
     "publish": "(cd dist && npm publish)"
   },

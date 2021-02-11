@@ -6,11 +6,11 @@
   "license": "ISC",
   "main": "build.js",
   "scripts": {
-    "tokens": "npm run tokens:rebuild-palette && npm run tokens:css-tokens && npm run tokens:css-tokens-config && npm run tokens:style-dictionary",
-    "tokens:css-tokens": "run-for-every-file --src ./css-tokens/ --dest dist/scss/ --file '**/*.json' --not-file '**/*.scss' --run 'json-to-scss {{src-file}} {{dest}}{{file-name-ext}}'",
-    "tokens:css-tokens-config": "json-to-scss --v=sq --s='!default;' ./css-tokens/config.json dist/scss/config.scss",
-    "tokens:rebuild-palette": "node leonardo.mjs",
-    "tokens:style-dictionary": "node build.js"
+    "build": "npm run build-palette && npm run build-css-tokens && npm run build-css-tokens-config && npm run build-style-dictionary",
+    "build-css-tokens": "run-for-every-file --src ./css-tokens/ --dest dist/scss/ --file '**/*.json' --not-file '**/*.scss' --run 'json-to-scss {{src-file}} {{dest}}{{file-name-ext}}'",
+    "build-css-tokens-config": "json-to-scss --v=sq --s='!default;' ./css-tokens/config.json dist/scss/config.scss",
+    "build-palette": "node leonardo.mjs",
+    "build-style-dictionary": "node build.js"
   },
   "files": [
     "/dist/*"

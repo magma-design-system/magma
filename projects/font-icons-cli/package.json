@@ -48,7 +48,7 @@
     "clean": "rm -rf dist || true",
     "start": "./bin/font-icons.js",
     "test": "jest --coverage",
-    "test:build": "npm run clean && npm start test.json svg -- --website"
+    "test-build": "npm run clean && npm start test.json svg -- --website"
   },
   "dependencies": {
     "@fortawesome/fontawesome-free": "^5.15.2",
