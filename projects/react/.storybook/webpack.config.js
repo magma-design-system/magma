@@ -12,7 +12,7 @@ module.exports = async({ config, mode }) => {
 
   config.module.rules.push({
     test: /\.scss$/,
-    include: [path.resolve(__dirname, '../'), path.resolve(__dirname, '../../../node_modules/@maggioli-design-system')],
+    include: [path.resolve(__dirname, '../')],
     use: [{
       loader: 'style-loader',
     }, {
@@ -40,6 +40,12 @@ module.exports = async({ config, mode }) => {
   })
 
   config.resolve.alias = aliases
+
+  // To fix error: "Module not found: Error: Can't resolve 'fs'"
+  // https://stackoverflow.com/questions/57161839/module-not-found-error-cant-resolve-fs-in
+  config.node = {
+    fs: 'empty',
+  }
 
   // Return the altered config
   return config
