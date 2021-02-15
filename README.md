@@ -8,29 +8,23 @@ The project is currently store in [nexus.maggioli.it][nexus-mgg] under `@maggiol
 
 ---
 
-### Documentation index
-- [Login](http://git.maggioli.it/ricerca-sviluppo-new-media/design-system/-/blob/master/notes/01-login.md)
-- [Install as dependance](http://git.maggioli.it/ricerca-sviluppo-new-media/design-system/-/blob/master/notes/02-install-as-dependance.md)
-- [Assets](http://git.maggioli.it/ricerca-sviluppo-new-media/design-system/-/blob/master/notes/03-assets.md)
-- [Development installation](http://git.maggioli.it/ricerca-sviluppo-new-media/design-system/-/blob/master/notes/04-development-installation.md)
-- [Develop design tokens](http://git.maggioli.it/ricerca-sviluppo-new-media/design-system/-/blob/master/notes/05-develop-design-tokens.md)
-- [Publish module](http://git.maggioli.it/ricerca-sviluppo-new-media/design-system/-/blob/master/notes/06-publish-module.md)
+### Installation
 
----
+Install `node v14.x.x` with nvm and `npm 7.x.x` manually:
 
-### Roadmap
+```
+nvm use
+npm install -g npm
+```
 
-There are various of planned changes, that will be added in the next weeks:
+Then launch:
 
-* Prepare the final layout for the design system website (also the local documentation);
-* Due to the complexity which is rising, split the project in sub projects, something like:
-  * Design tokens (data behind styles and identity);
-  * Icons;
-  * Identity (Maggioli logo with the respective sub projects/services);
-  * Theme layer (SCSS);
-  * Documentation (gatsby, react components and storybook).
-
-This roadmap will change depending on project progression and complexity of the integrations.
+```
+npm install
+npx nx run mgg-icons:build
+npm install
+npx nx affected:build
+```
 
 [adobe-leonardo]: (https://leonardocolor.io/)
 [addon-docs]: https://www.npmjs.com/package/@storybook/addon-docs

@@ -12,6 +12,7 @@
     "@nrwl/tao": "latest",
     "@nrwl/workspace": "latest",
     "eslint": "^7.15.0",
+    "prettier": "^2.2.1",
     "stylelint": "^13.8.0",
     "stylelint-config-sass-guidelines": "^7.1.0",
     "stylelint-config-standard": "^20.0.0",
