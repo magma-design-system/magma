@@ -3,9 +3,6 @@
   "version": "0.1.0",
   "description": "Styles layer",
   "main": "index.js",
-  "scripts": {
-    "update-tokens": "cp ../../node_modules/@maggioli-design-system/design-tokens/dist/scss/* ./variables"
-  },
   "repository": {
     "type": "git",
     "url": "https://git.maggioli.it/ricerca-sviluppo-new-media/design-system.git"
