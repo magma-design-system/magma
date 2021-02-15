@@ -13,5 +13,9 @@
     "logo"
   ],
   "author": "Vittorio Vittori",
-  "license": "ISC"
+  "license": "ISC",
+  "devDependencies": {
+    "sharp": "^0.27.1",
+    "shelljs": "^0.8.4"
+  }
 }
