@@ -123,6 +123,7 @@
   "euro": "material/euro",
   "file-executable": "material/wysiwyg",
   "file-folder": "material/folder",
+  "file-folder-open": "maggioli/folder-open",
   "file-import": "maggioli/file-import",
   "file-lock": "maggioli/file-lock",
   "file-multiple": "maggioli/file-multiple",
