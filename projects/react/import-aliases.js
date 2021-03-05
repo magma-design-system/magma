@@ -1,7 +1,7 @@
 const path = require('path')
 
 module.exports = {
-  '#Identity': path.resolve(__dirname, '../identity/src/'),
+  '#Identity': path.resolve(__dirname, '../identity/resources/'),
   '+Metadata': path.resolve(__dirname, 'src/doc/metadata/'),
   '+Package': path.resolve(__dirname, './'),
   '+Project': path.resolve(__dirname, '../'),
