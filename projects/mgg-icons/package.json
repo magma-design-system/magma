@@ -67,7 +67,7 @@
   ],
   "license": "ISC",
   "devDependencies": {
-    "@maggioli-common/font-icons-cli": "1.0.0-RC.5",
+    "@maggioli-common/font-icons-cli": "1.0.0-RC.6",
     "fs-extra": "^9.0.1"
   }
 }
