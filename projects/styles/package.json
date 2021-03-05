@@ -7,6 +7,9 @@
     "type": "git",
     "url": "https://git.maggioli.it/ricerca-sviluppo-new-media/design-system.git"
   },
+  "publishConfig": {
+    "registry": "http://nexus.maggioli.it:8081/repository/npm/"
+  },
   "keywords": [
     "sass",
     "scss",

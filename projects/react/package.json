@@ -32,11 +32,11 @@
     ],
     "main": "dist/bundle.min.js",
     "files": [
-        "/import-aliases.js",
-        "/dist/**/*"
+      "/import-aliases.js",
+      "/dist/**/*"
     ],
     "publishConfig": {
-        "registry": "http://nexus.maggioli.it:8081/repository/npm-group/"
+      "registry": "http://nexus.maggioli.it:8081/repository/npm/"
     },
     "repository": {
         "type": "git",

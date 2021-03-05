@@ -32,7 +32,7 @@
         "last 2 versions"
     ],
     "publishConfig": {
-        "registry": "http://nexus.maggioli.it:8081/repository/npm-group/"
+      "registry": "http://nexus.maggioli.it:8081/repository/npm/"
     },
     "repository": {
         "type": "git",

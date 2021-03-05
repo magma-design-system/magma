@@ -5,6 +5,9 @@
   "author": "Vittorio Vittori",
   "license": "ISC",
   "main": "build.js",
+  "publishConfig": {
+    "registry": "http://nexus.maggioli.it:8081/repository/npm/"
+  },
   "scripts": {
     "build": "npm run build-palette && npm run build-style-dictionary && npm run build-css-tokens && npm run build-css-tokens-config",
     "build-css-tokens": "run-for-every-file --src ./css-tokens/ --dest dist/scss/ --file '**/*.json' --not-file '**/*.scss' --run 'json-to-scss {{src-file}} {{dest}}{{file-name-ext}}'",
