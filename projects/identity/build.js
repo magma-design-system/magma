@@ -3,7 +3,7 @@ const path = require('path')
 const sharp = require('sharp')
 const shell = require('shelljs')
 
-const directoryPath = path.join(__dirname, 'src')
+const directoryPath = path.join(__dirname, 'resources/')
 
 var walk = function(dir, done) {
   var results = []
@@ -35,7 +35,7 @@ function removeDuplicates(arr) {
 }
 
 function exportImage(item, size) {
-  sharp(path.join(__dirname, `src/${item}.svg`))
+  sharp(path.join(__dirname, `resources/${item}.svg`))
     .resize(size)
     .png()
     .toFile(path.join(__dirname, `dist/${item}-${size}w.png`))
@@ -56,7 +56,7 @@ walk(directoryPath, function (err, results) {
 
   results.forEach((item, index) => {
     if (item.indexOf('.svg') != -1) {
-      cleanResults.push(item.split('src/')[1])
+      cleanResults.push(item.split('resources/')[1])
     }
   })
 
@@ -72,8 +72,10 @@ walk(directoryPath, function (err, results) {
 
   cleanResults.forEach((item, index) => {
     item = item.replace('.svg', '')
-    shell.cp('-R', 'src/*', 'dist')
+    shell.cp('-R', 'resources/*', 'dist')
     exportImage(item, 512)
     exportImage(item, 1024)
   })
+
+  // https://github.com/lovell/sharp/issues/729
 })

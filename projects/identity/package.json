@@ -3,6 +3,9 @@
   "version": "1.0.0",
   "description": "Maggioli brand identity assets",
   "main": "index.js",
+  "files": [
+    "/resources/**/*"
+  ],
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
