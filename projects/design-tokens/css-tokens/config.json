@@ -7,9 +7,6 @@
     ],
     "colors": [
       "brand.maggioli",
-      "brand.eolo",
-      "brand.argo",
-      "brand.la-polizia-locale",
       "status.info",
       "status.success",
       "status.error",
@@ -18,7 +15,6 @@
     ]
   },
   "scaffold": {
-    "format": "short",
     "properties": [
       "border-radius:border-radius",
       "box-shadow:box-shadow",
