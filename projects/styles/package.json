@@ -1,8 +1,17 @@
 {
   "name": "@maggioli-design-system/styles",
-  "version": "0.1.0",
+  "version": "1.0.0",
   "description": "Styles layer",
-  "main": "index.js",
+  "scripts": {
+    "build": "npm run clean && npm run package && npm run config && npm run sass && npm run sass:min && npm run copy:sass",
+    "clean": "rm -rf dist || true && mkdir -p dist/css dist/sass",
+    "config": "cp ./node_modules/@maggioli-design-system/design-tokens/dist/scss/config.scss ./sass",
+    "copy:sass": "cp -r sass dist",
+    "package": "cp package.json dist/package.json",
+    "publish": "npm run build && npm publish",
+    "sass": "node-sass sass/import-global.scss --output-style=expanded --source-map-embed -o dist/css && mv dist/css/import-global.css dist/css/styles.css",
+    "sass:min": "node-sass sass/import-global.scss --output-style=compressed -o dist/css && mv dist/css/import-global.css dist/css/styles.min.css"
+  },
   "repository": {
     "type": "git",
     "url": "https://git.maggioli.it/ricerca-sviluppo-new-media/design-system.git"
@@ -24,12 +33,16 @@
   "dependencies": {
     "@maggioli-design-system/design-tokens": "0.1.0",
     "normalize.css": "^8.0.1",
-    "tailwindcss": "^2.0.2",
     "typeface-karla": "1.1.13",
     "typeface-roboto": "1.1.13"
   },
   "devDependencies": {
     "autoprefixer": "^10.2.1",
-    "postcss": "^8.2.4"
+    "node-sass": "^4.14.1",
+    "postcss": "^8.2.4",
+    "sass": "^1.32.8",
+    "sass-extract": "^2.1.0",
+    "sass-loader": "^10.1.0",
+    "tailwindcss": "^2.0.2"
   }
 }

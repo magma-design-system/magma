@@ -1,2 +1,3 @@
 /variables/*.scss
 !/variables/theme.scss
+/sass/config.scss
