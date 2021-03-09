@@ -11,10 +11,10 @@ The project is currently store in [nexus.maggioli.it][nexus-mgg] under `@maggiol
 ### Installation
 
 Install `node v14.x.x` with nvm and `npm 7.x.x` manually:
+You just need to install from project root:
 
 ```
-nvm use
-npm install -g npm
+git clone https://git.maggioli.it/ricerca-sviluppo-new-media/design-system.git
 ```
 
 Then launch:
@@ -24,6 +24,13 @@ npm install
 npx nx run mgg-icons:build
 npm install
 npx nx affected:build
+```
+
+### Update node
+
+```
+nvm use
+npm install -g npm
 ```
 
 [adobe-leonardo]: (https://leonardocolor.io/)
