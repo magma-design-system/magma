@@ -9,8 +9,8 @@
         "lint": "npm run lint-js && npm run lint-sass",
         "lint-js": "eslint src/**/*.{js,jsx} --fix",
         "lint-sass": "stylelint --config .stylelintrc.json 'src/**/*.scss' --fix",
-        "start-storybook": "start-storybook -p 7177",
-        "start-storybook-debug": "start-storybook --debug-webpack -p 7177"
+        "start": "start-storybook -p 7177",
+        "start-debug": "start-storybook --debug-webpack -p 7177"
     },
     "husky": {
         "hooks": {
