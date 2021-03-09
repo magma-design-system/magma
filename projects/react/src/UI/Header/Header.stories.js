@@ -1,8 +1,9 @@
 import React from 'react'
 
-import Header from '@UI/Header/Header'
 import Button from '@UI/Button/Button'
-import Image from '@Content/Image/Image'
+import InputText from '@UI/Input/InputText'
+import Header, { HeaderLogo, HeaderMenu } from '@UI/Header/Header'
+import Row from '@Layout/Row/Row'
 // import logoImage from '@maggioli-design-system/identity/resources/la-polizia-locale/logo-la-polizia-locale-black.svg'
 
 export default {
@@ -11,7 +12,12 @@ export default {
 }
 
 export const basicUsage = () =>
-  <Header>
-    <Image src="https://avatars3.githubusercontent.com/u/26166261?s=400"/>
-    <Button>Hello</Button>
+  <Header lastChild="to-right">
+    <HeaderLogo src="http://bibliotecadigitale.maggioli.it/skin/frontend/argentolibreria/argentolibreria/images/logo-biblioteca-digitale.png"/>
+    <HeaderMenu>
+      <InputText className="overflow-visible" icon="data-search" placeholder="Cerca un volume..."/>
+      <Button variant="secondary-outline">Accedi</Button>
+      <Button icon="paginator-next">Abbonati</Button>
+    </HeaderMenu>
   </Header>
+

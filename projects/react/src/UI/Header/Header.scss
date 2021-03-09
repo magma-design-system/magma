@@ -3,7 +3,20 @@
 .header {
   background-color: color('adjust.tone');
   left: 0;
+  padding: s(1);
   position: fixed;
   right: 0;
   top: 0;
+
+  &__logo {
+    height: s(2);
+    max-width: 100%;
+    width: auto;
+
+    .image__element {
+      height: inherit;
+      max-width: 100%;
+      width: inherit;
+    }
+  }
 }

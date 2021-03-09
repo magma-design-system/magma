@@ -39,6 +39,7 @@ $border-radius: get($radius, 'small');
   color: var(--color);
   cursor: pointer;
   display: flex;
+  flex-shrink: 0;
   font-family: inherit;
   height: get($form-sizes, 'input-height');
   justify-content: center;
@@ -55,6 +56,22 @@ $border-radius: get($radius, 'small');
 
   @each $item in $list-sizes {
     @include padding-modifier ($item);
+  }
+
+  &--icon-position-left {
+    .button {
+      &__text {
+        padding-right: s(0.5);
+      }
+    }
+  }
+
+  &--icon-position-right {
+    .button {
+      &__text {
+        padding-left: s(0.5);
+      }
+    }
   }
 
   &__text {

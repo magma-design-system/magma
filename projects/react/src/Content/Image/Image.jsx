@@ -6,6 +6,7 @@ import ExternalLink from '@UI/ExternalLink/ExternalLink'
 
 import { aspectRatioPaddingTop } from '@Content/Image/aspectRatio'
 
+
 const ImageSource = props =>
   <figcaption className="image__source text-secondary text-secondary--detail">
     { props.url
@@ -19,26 +20,39 @@ ImageSource.propTypes = {
   url: PropTypes.string,
 }
 
-const Image = props => {
-  const HtmlTag = props.htmlTag.toLowerCase()
-  let styles = {}
-  if (props.aspectRatio) {
-    styles = {
-      backgroundImage: 'url(' + props.src + ')',
-      backgroundPosition: props.aspectRatioPosition,
-      paddingTop: aspectRatioPaddingTop(props.aspectRatio),
+
+import { styles } from '@Library/styles'
+
+
+const Image = ({ alt, aspectRatio, aspectRatioPosition, className, htmlTag, loading, sourceTitle, sourceUrl, src, ...restProps }) => {
+  const classes = styles('image', {
+    selectors: [
+      className,
+    ],
+  })
+
+  const HtmlTag = htmlTag.toLowerCase()
+  let imageStyles = {}
+  if (aspectRatio) {
+    imageStyles = {
+      backgroundImage: 'url(' + src + ')',
+      backgroundPosition: aspectRatioPosition,
+      paddingTop: aspectRatioPaddingTop(aspectRatio),
     }
   }
+
+  console.log(classes)
+
   return (
     <Fragment>
-      {props.aspectRatio
-        ? <HtmlTag className={`image ${props.className}`}>
-          <div className="image__container" style={styles}></div>
-          {props.sourceTitle + props.sourceUrl !== '' && <ImageSource title={props.sourceTitle} url={props.sourceUrl} /> }
+      {aspectRatio
+        ? <HtmlTag className={classes}>
+          <div className="image__container" style={imageStyles}></div>
+          {sourceTitle + sourceUrl !== '' && <ImageSource title={sourceTitle} url={sourceUrl} /> }
         </HtmlTag>
-        : <HtmlTag className={`image ${props.className}`}>
-          <img className="image__element" src={props.src} loading={props.loading} alt={props.alt} />
-          {props.sourceTitle + props.sourceUrl !== '' && <ImageSource title={props.sourceTitle} url={props.sourceUrl} /> }
+        : <HtmlTag className={classes}>
+          <img className="image__element" src={src} loading={loading} alt={alt} />
+          {sourceTitle + sourceUrl !== '' && <ImageSource title={sourceTitle} url={sourceUrl} /> }
         </HtmlTag>
       }
     </Fragment>
@@ -58,7 +72,6 @@ Image.propTypes = {
 }
 
 Image.defaultProps = {
-  className: '',
   htmlTag: 'figure',
   loading: 'lazy',
   aspectRatioPosition: '50% 0',
