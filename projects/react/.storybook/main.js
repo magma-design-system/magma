@@ -1,6 +1,6 @@
 module.exports = {
   stories: [
-    '../src/**/*.stories.js',
+    '../src/**/*.pippo.stories.js',
   ],
   addons: [
     '@storybook/addon-backgrounds',

@@ -1,6 +1,5 @@
 import { create } from '@storybook/theming';
-import brandImage from '../../identity/static/gruppo-maggioli/logo-gruppo-maggioli.svg';
-
+import brandImage from '@maggioli-design-system/identity/resources/gruppo-maggioli/logo-gruppo-maggioli.svg'
 export default create({
 
   base: 'light',
