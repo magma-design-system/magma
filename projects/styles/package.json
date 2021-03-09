@@ -8,6 +8,7 @@
     "config": "cp ./node_modules/@maggioli-design-system/design-tokens/dist/scss/config.scss ./sass",
     "copy:sass": "cp -r sass dist",
     "package": "cp package.json dist/package.json",
+    "publish": "cd dist && npm publish",
     "sass": "node-sass sass/import-global.scss --output-style=expanded --source-map-embed -o dist/css && mv dist/css/import-global.css dist/css/styles.css",
     "sass:min": "node-sass sass/import-global.scss --output-style=compressed -o dist/css && mv dist/css/import-global.css dist/css/styles.min.css"
   },
@@ -26,9 +27,6 @@
   ],
   "author": "Vittorio Vittori",
   "license": "ISC",
-  "files": [
-    "/dist/*"
-  ],
   "dependencies": {
     "@maggioli-design-system/design-tokens": "0.1.0",
     "normalize.css": "^8.0.1",
