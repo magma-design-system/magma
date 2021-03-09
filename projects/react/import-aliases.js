@@ -14,5 +14,4 @@ module.exports = {
   '@Library': path.resolve(__dirname, 'src/lib/'),
   '@Typography': path.resolve(__dirname, 'src/Design/Typography/'),
   '@UI': path.resolve(__dirname, 'src/UI/'),
-  '~Sass': path.resolve(__dirname, '@maggioli-design-system/styles/scss/'),
 }
