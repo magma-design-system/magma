@@ -1,2 +1,4 @@
 **/*.svg
 src/scss/variables/**/*.scss
+dist/
+node_modules/
