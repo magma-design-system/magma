@@ -2,13 +2,13 @@
   "name": "@maggioli-design-system/styles",
   "version": "1.0.0",
   "description": "Styles layer",
+  "main": "css/styles.min.css",
   "scripts": {
     "build": "npm run clean && npm run package && npm run config && npm run sass && npm run sass:min && npm run copy:sass",
     "clean": "rm -rf dist || true && mkdir -p dist/css dist/sass",
     "config": "cp ./node_modules/@maggioli-design-system/design-tokens/dist/scss/config.scss ./sass",
     "copy:sass": "cp -r sass dist",
     "package": "cp package.json dist/package.json",
-    "publish": "cd dist && npm publish",
     "sass": "node-sass sass/import-global.scss --output-style=expanded --source-map-embed -o dist/css && mv dist/css/import-global.css dist/css/styles.css",
     "sass:min": "node-sass sass/import-global.scss --output-style=compressed -o dist/css && mv dist/css/import-global.css dist/css/styles.min.css"
   },
