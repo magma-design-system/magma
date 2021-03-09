@@ -1,0 +1,9 @@
+.view-limit {
+  box-sizing: border-box;
+  margin: auto;
+  max-width: 1024px;
+
+  @include media ('large') {
+    max-width: 1280px;
+  }
+}

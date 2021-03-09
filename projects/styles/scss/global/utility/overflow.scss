@@ -1,0 +1,9 @@
+.overflow {
+  &-hidden {
+    overflow: hidden !important;
+  }
+
+  &-visible {
+    overflow: visible !important;
+  }
+}
