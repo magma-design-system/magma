@@ -8,7 +8,7 @@
         "deploy-storybook": "storybook-to-ghpages",
         "lint": "npm run lint-js && npm run lint-sass",
         "lint-js": "eslint src/**/*.{js,jsx} --fix",
-        "lint-sass": "stylelint --config .stylelintrc.json 'src/**/*.scss' --fix",
+        "lint-sass": "stylelint --config ../../.stylelintrc.json 'src/**/*.scss' --fix",
         "start": "start-storybook -p 7177",
         "start-debug": "start-storybook --debug-webpack -p 7177"
     },
