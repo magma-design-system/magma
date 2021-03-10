@@ -8,6 +8,26 @@
   right: 0;
   top: 0;
 
+  &__item {
+    &:not( :last-child ) {
+      display: none;
+    }
+
+    @include media('large') {
+      &:not( :last-child ) {
+        display: inline-flex;
+      }
+
+      &:last-child {
+        display: none;
+      }
+    }
+
+    &--action {
+      cursor: pointer;
+    }
+  }
+
   &__logo {
     height: s(2);
     max-width: 100%;

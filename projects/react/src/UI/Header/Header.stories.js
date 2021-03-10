@@ -1,6 +1,7 @@
-import React from 'react'
+import React, { Fragment, useState } from 'react'
 
 import Button from '@UI/Button/Button'
+import Modal from '@UI/Modal/Modal'
 import InputText from '@UI/Input/InputText'
 import Header, { HeaderLogo, HeaderMenu } from '@UI/Header/Header'
 import Row from '@Layout/Row/Row'
@@ -11,13 +12,22 @@ export default {
   component: Header,
 }
 
-export const basicUsage = () =>
-  <Header lastChild="to-right">
-    <HeaderLogo src="http://bibliotecadigitale.maggioli.it/skin/frontend/argentolibreria/argentolibreria/images/logo-biblioteca-digitale.png"/>
-    <HeaderMenu>
+export const basicUsage = () => {
+  const [ visible, setVisible ] = useState(false);
+  return <Fragment>
+    <Header lastChild="to-right">
+      <HeaderLogo src="http://bibliotecadigitale.maggioli.it/skin/frontend/argentolibreria/argentolibreria/images/logo-biblioteca-digitale.png"/>
+      <HeaderMenu onClick={() => setVisible(!visible)}>
+        <InputText className="overflow-visible" icon="data-search" placeholder="Cerca un volume..."/>
+        <Button variant="secondary-outline">Accedi</Button>
+        <Button icon="paginator-next">Abbonati</Button>
+      </HeaderMenu>
+    </Header>
+    <Modal visible={visible} onCancel={() => setVisible(false)} position="left" footer={false} contentOnly={true}>
       <InputText className="overflow-visible" icon="data-search" placeholder="Cerca un volume..."/>
       <Button variant="secondary-outline">Accedi</Button>
       <Button icon="paginator-next">Abbonati</Button>
-    </HeaderMenu>
-  </Header>
+    </Modal>
+  </Fragment>
+}
 
