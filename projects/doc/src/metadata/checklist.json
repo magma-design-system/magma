@@ -1914,7 +1914,7 @@
           {
             "title": "Ticketing",
             "description": "Rendi più facile tenere traccia dei tuoi progressi quotidiani utilizzando software di ticketing come Jira, Trello o GitHub. In questo modo sarà più facile per altri inviare proposte di funzionalità o segnalazioni di bug.",
-            "done": true
+            "done": "/governance/communication/"
           }
         ],
         "references": [
@@ -1935,22 +1935,22 @@
           {
             "title": "Incontri di community",
             "description": "Organizza incontri di community con tutti coloro che utilizzano il Design System. Condividi le tue conoscenze e fai proposte per migliorare il senso di community.",
-            "done": false
+            "done": "/governance/communication/"
           },
           {
             "title": "Canale di comunicazione",
             "description": "La maggior parte del lavoro di sviluppo del prodotto avviene digitalmente, quindi crea un canale digitale in cui le persone possano contattare e porre domande.",
-            "done": true
+            "done": "/governance/communication/"
           },
           {
             "title": "Orario di apertura",
             "description": "Crea orari di apertura in cui puoi coinvolgere il tuo pubblico in un ambiente più privato dove puoi discutere le cose in modo più dettagliato. È inoltre possibile utilizzarli come codici peer o opportunità di progettazione tra pari.",
-            "done": false
+            "done": "/governance/communication/"
           },
           {
             "title": "FAQ",
             "description": "Per risparmiare il tempo di tutti, definisci quali domande vengono poste frequentemente dal tuo pubblico e documentale in un luogo individuabile.",
-            "done": false
+            "done": "/governance/communication/faq"
           }
         ],
         "references": [
