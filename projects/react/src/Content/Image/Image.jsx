@@ -6,6 +6,7 @@ import ExternalLink from '@UI/ExternalLink/ExternalLink'
 
 import { aspectRatioPaddingTop } from '@Content/Image/aspectRatio'
 
+import { styles } from '@Library/styles'
 
 const ImageSource = props =>
   <figcaption className="image__source text-secondary text-secondary--detail">
@@ -19,10 +20,6 @@ ImageSource.propTypes = {
   title: PropTypes.string,
   url: PropTypes.string,
 }
-
-
-import { styles } from '@Library/styles'
-
 
 const Image = ({ alt, aspectRatio, aspectRatioPosition, className, htmlTag, loading, sourceTitle, sourceUrl, src, ...restProps }) => {
   const classes = styles('image', {
@@ -41,16 +38,14 @@ const Image = ({ alt, aspectRatio, aspectRatioPosition, className, htmlTag, load
     }
   }
 
-  console.log(classes)
-
   return (
     <Fragment>
       {aspectRatio
-        ? <HtmlTag className={classes}>
+        ? <HtmlTag className={classes} {...restProps}>
           <div className="image__container" style={imageStyles}></div>
           {sourceTitle + sourceUrl !== '' && <ImageSource title={sourceTitle} url={sourceUrl} /> }
         </HtmlTag>
-        : <HtmlTag className={classes}>
+        : <HtmlTag className={classes} {...restProps}>
           <img className="image__element" src={src} loading={loading} alt={alt} />
           {sourceTitle + sourceUrl !== '' && <ImageSource title={sourceTitle} url={sourceUrl} /> }
         </HtmlTag>

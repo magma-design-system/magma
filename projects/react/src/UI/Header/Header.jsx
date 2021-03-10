@@ -14,7 +14,7 @@ const HeaderLogo = ({ className, src, ...restProps }) => {
     ],
   })
 
-  return <Image className={classes} src={src}/>
+  return <Image className={classes} src={src} {...restProps}/>
 }
 
 HeaderLogo.propTypes = {

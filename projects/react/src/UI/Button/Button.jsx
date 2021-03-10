@@ -17,10 +17,6 @@ const Button = ({ borderRadius, boxShadow, className, disabled, horizontalPaddin
     horizontalPaddingChoosen = horizontalPadding
   }
 
-  if (icon == '') {
-    iconPosition = ''
-  }
-
   const classes = styles('button', {
     selectors: [
       className,
@@ -28,7 +24,7 @@ const Button = ({ borderRadius, boxShadow, className, disabled, horizontalPaddin
     modifiers: {
       disabled,
       icon: !restProps.children,
-      iconPosition,
+      iconPosition: icon !== '' ? iconPosition : null,
       outline,
       size,
       variant,
