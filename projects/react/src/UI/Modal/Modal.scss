@@ -169,7 +169,7 @@ $modal-background: rgba(0, 0, 0, 0.5);
 
     @include media ('tablet') {
       max-height: auto;
-      padding: s(1.5) s(4) s(1.5) s(1.5);
+      padding: s(1.5) s(4.5) s(1.5) s(1.5);
     }
 
     &--close-outside {
@@ -188,7 +188,7 @@ $modal-background: rgba(0, 0, 0, 0.5);
       padding: 0;
 
       @include media ('tablet') {
-        padding-right: s(3);
+        padding-right: s(4.5);
       }
     }
   }
