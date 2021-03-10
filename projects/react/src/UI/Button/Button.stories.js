@@ -24,8 +24,11 @@ export default {
 export const basicUsage = () =>
   <Button>{faker.hacker.verb()}</Button>
 
-export const withIcon = () =>
+  export const withIcon = () =>
   <Button icon={randomIcon()}>{faker.hacker.verb()}</Button>
+
+export const withIconRight = () =>
+  <Button icon={randomIcon()} iconPosition="right">{faker.hacker.verb()}</Button>
 
 export const iconButton = () =>
   <Button icon={randomIcon()}/>

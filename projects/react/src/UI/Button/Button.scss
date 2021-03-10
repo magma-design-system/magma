@@ -61,6 +61,7 @@ $border-radius: get($radius, 'small');
   &--icon-position-left {
     .button {
       &__text {
+        padding-left: s(0.25);
         padding-right: s(0.5);
       }
     }
@@ -70,6 +71,11 @@ $border-radius: get($radius, 'small');
     .button {
       &__text {
         padding-left: s(0.5);
+        padding-right: s(0.25);
+      }
+
+      &__icon {
+        order: 1;
       }
     }
   }
@@ -77,16 +83,6 @@ $border-radius: get($radius, 'small');
   &__text {
     &::first-letter {
       text-transform: capitalize;
-    }
-  }
-
-  &__icon {
-    &:first-child {
-      margin-right: s(0.25);
-
-      &:last-child {
-        margin-right: 0;
-      }
     }
   }
 
