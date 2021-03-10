@@ -32,16 +32,6 @@
       "name": "Gioele Masini",
       "email": "gioele.masini@maggioli.it",
       "role": "Lead Developer"
-    },
-    {
-      "name": "Federico Ciani",
-      "email": "federico.ciani@maggioli.it",
-      "role": "Icons Taxonomy"
-    },
-    {
-      "name": "Vittorio Vittori",
-      "email": "vittorio.vittori@maggioli.it",
-      "role": "Author"
     }
   ],
   "license": "ISC"

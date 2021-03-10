@@ -1,6 +1,6 @@
 {
   "name": "@maggioli-design-system/styles",
-  "version": "1.0.0",
+  "version": "1.1.0",
   "description": "Styles layer",
   "main": "css/styles.min.css",
   "scripts": {

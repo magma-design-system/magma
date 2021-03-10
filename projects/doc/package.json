@@ -1,7 +1,7 @@
 {
     "name": "@maggioli-design-system/doc",
-    "version": "0.13.0",
-    "description": "Maggioli Design System è uno strumento nato per condividere una unica visione di progettazione condivisa tra tutti gli esperti di dominio aziendali. Ciò permette di offrire una UX unica, condivisa tra i prodotti che saranno coerenti allo stile dell’azienda.",
+    "version": "0.13.2",
+    "description": "Progetto della documentazione del Design System del Gruppo Maggioli.",
     "private": true,
     "scripts": {
         "start": "npm run clean && npm run develop",
@@ -48,16 +48,6 @@
     },
     "contributors": [
         {
-            "name": "Fabion Dautaj",
-            "email": "fabion.dautaj@maggioli.it",
-            "role": "React Components"
-        },
-        {
-            "name": "Federica Turroni",
-            "email": "federica.turroni@maggioli.it",
-            "role": "Icons Tester"
-        },
-        {
             "name": "Federico Ciani",
             "email": "federico.ciani@maggioli.it",
             "role": "UI Designer"
@@ -66,21 +56,6 @@
             "name": "Gioele Masini",
             "email": "gioele.masini@maggioli.it",
             "role": "Software Architecture Lead"
-        },
-        {
-            "name": "Matteo Innocenti",
-            "email": "matteo.innocenti@maggioli.it",
-            "role": "React Components"
-        },
-        {
-            "name": "Stefano Pascazi",
-            "email": "stefano.pascazi@maggioli.it",
-            "role": "React Components"
-        },
-        {
-            "name": "Thomas Trapanese",
-            "email": "thomas.trapanese@maggioli.it",
-            "role": "Icons Tester"
         },
         {
             "name": "Vittorio Vittori",

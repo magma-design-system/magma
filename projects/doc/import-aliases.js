@@ -3,7 +3,7 @@ const path = require('path')
 module.exports = {
   '#Identity': path.resolve(__dirname, '../identity/resources/'),
   '+Metadata': path.resolve(__dirname, 'src/metadata/'),
-  '+Package': path.resolve(__dirname, './'),
+  '+Package': path.resolve(__dirname, '../../'),
   '+Project': path.resolve(__dirname, '../'),
   '+Tokens': path.resolve(__dirname, '../design-tokens/dist/'),
   '@Behavior': path.resolve(__dirname, '../react/src/Behavior/'),

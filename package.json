@@ -1,7 +1,7 @@
 {
   "name": "maggioli-design-system",
   "version": "1.0.0",
-  "description": "This design system is based on [React][react], [Storybook][storybook] and [Gatsby][gatsby], you can see it on [Maggioli design system][storybook-online] website.",
+  "description": "Maggioli Design System è uno strumento nato per condividere una unica visione di progettazione condivisa tra tutti gli esperti di dominio aziendali. Ciò permette di offrire una UX unica, condivisa tra i prodotti che saranno coerenti allo stile dell’azienda.",
   "private": true,
   "workspaces": [
     "projects/!(mgg-icons)",
@@ -27,6 +27,52 @@
     "type": "git",
     "url": "http://git.maggioli.it/ricerca-sviluppo-new-media/design-system.git"
   },
-  "author": "Vittorio Vittori",
+  "author": {
+    "name": "Vittorio Vittori",
+    "email": "vittorio.vittori@maggioli.it",
+    "url": "http://vit.to"
+  },
+  "contributors": [
+    {
+      "name": "Fabion Dautaj",
+      "email": "fabion.dautaj@maggioli.it",
+      "role": "React Components"
+    },
+    {
+      "name": "Federica Turroni",
+      "email": "federica.turroni@maggioli.it",
+      "role": "Icons Tester"
+    },
+    {
+      "name": "Federico Ciani",
+      "email": "federico.ciani@maggioli.it",
+      "role": "UI Designer"
+    },
+    {
+      "name": "Gioele Masini",
+      "email": "gioele.masini@maggioli.it",
+      "role": "Software Architecture Lead"
+    },
+    {
+      "name": "Matteo Innocenti",
+      "email": "matteo.innocenti@maggioli.it",
+      "role": "React Components"
+    },
+    {
+      "name": "Stefano Pascazi",
+      "email": "stefano.pascazi@maggioli.it",
+      "role": "React Components"
+    },
+    {
+      "name": "Thomas Trapanese",
+      "email": "thomas.trapanese@maggioli.it",
+      "role": "Icons Tester"
+    },
+    {
+      "name": "Vittorio Vittori",
+      "email": "vittorio.vittori@maggioli.it",
+      "role": "Author"
+    }
+  ],
   "license": "ISC"
 }

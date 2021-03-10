@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { Fragment } from 'react'
 import PropTypes from 'prop-types'
 import './PackageInfo.scss'
 
@@ -34,6 +34,7 @@ const PackageInfo = ({ className, packageData, ...restProps }) => {
       { packageData.repository.url && <Button href={packageData.repository.url.replace('.git', '')}>Repository</Button> }
       { packageData.bugs && <Button variant="secondary-outline" href={packageData.bugs.url.replace('.git', '')}>Issue</Button> }
     </Grid>
+    { packageData.contributors && <Fragment>
     <Hr spacing="small" className="background-color-adjust-tone-18"/>
     <Row><H4>Contributors</H4><Tag chip={true} icon="user-team" className="background-color-brand-maggioli-20 color-brand-maggioli-08">{ packageData.contributors.length }</Tag></Row>
     <Grid template="package-info-authors">
@@ -44,6 +45,7 @@ const PackageInfo = ({ className, packageData, ...restProps }) => {
         </Author>,
       )}
     </Grid>
+    </Fragment> }
   </Card>
 }
 
