@@ -35,9 +35,6 @@
         "/import-aliases.js",
         "/dist/**/*"
     ],
-    "publishConfig": {
-        "registry": "http://nexus.maggioli.it:8081/repository/npm/"
-    },
     "repository": {
         "type": "git",
         "url": "https://git.maggioli.it/ricerca-sviluppo-new-media/design-system.git"

@@ -2,9 +2,6 @@
   "name": "@maggioli-design-system/identity",
   "version": "1.0.0",
   "description": "Maggioli brand identity assets",
-  "publishConfig": {
-    "registry": "http://nexus.maggioli.it:8081/repository/npm/"
-  },
   "main": "index.js",
   "files": [
     "/resources/**/*"
