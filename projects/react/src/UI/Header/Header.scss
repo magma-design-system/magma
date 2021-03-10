@@ -13,7 +13,7 @@
       display: none;
     }
 
-    @include media('large') {
+    @include media('desktop') {
       &:not( :last-child ) {
         display: inline-flex;
       }

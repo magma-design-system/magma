@@ -20,7 +20,7 @@ export const basicUsage = () => {
       <HeaderMenu onClick={() => setVisible(!visible)}>
         <InputText className="overflow-visible" icon="data-search" placeholder="Cerca un volume..."/>
         <Button variant="secondary-outline">Accedi</Button>
-        <Button icon="paginator-next">Abbonati</Button>
+        <Button icon="paginator-next" iconPosition="right" variant="success">Abbonati</Button>
       </HeaderMenu>
     </Header>
     <Modal visible={visible} onCancel={() => setVisible(false)} position="left" footer={false} contentOnly={true}>
