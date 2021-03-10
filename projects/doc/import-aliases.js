@@ -1,7 +1,7 @@
 const path = require('path')
 
 module.exports = {
-  '#Identity': path.resolve(__dirname, '../identity/src/'),
+  '#Identity': path.resolve(__dirname, '../identity/resources/'),
   '+Metadata': path.resolve(__dirname, 'src/metadata/'),
   '+Package': path.resolve(__dirname, './'),
   '+Project': path.resolve(__dirname, '../'),
@@ -14,5 +14,4 @@ module.exports = {
   '@Library': path.resolve(__dirname, '../react/src/lib/'),
   '@Typography': path.resolve(__dirname, '../react/src/Design/Typography/'),
   '@UI': path.resolve(__dirname, '../react/src/UI/'),
-  '~Sass': path.resolve(__dirname, '../styles/'),
 }
