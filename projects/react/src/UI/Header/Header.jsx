@@ -46,7 +46,7 @@ const HeaderMenu = ({ className, onClick, ...restProps }) => {
 HeaderMenu.propTypes = {
   ...Row.propTypes,
   className: PropTypes.string,
-  onClick: PropTypes.function,
+  onClick: PropTypes.func,
 }
 
 HeaderMenu.defaultProps = {
