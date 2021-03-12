@@ -61,8 +61,8 @@ $border-radius: get($radius, 'small');
   &--icon-position-left {
     .button {
       &__text {
-        padding-left: s(0.25);
-        padding-right: s(0.5);
+        padding-left: s(0.5);
+        padding-right: s(0.25);
       }
     }
   }
@@ -70,8 +70,8 @@ $border-radius: get($radius, 'small');
   &--icon-position-right {
     .button {
       &__text {
-        padding-left: s(0.5);
-        padding-right: s(0.25);
+        padding-left: s(0.25);
+        padding-right: s(0.5);
       }
 
       &__icon {
