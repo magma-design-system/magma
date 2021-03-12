@@ -1,6 +1,6 @@
 {
     "name": "@maggioli-design-system/react",
-    "version": "0.16.0",
+    "version": "0.16.1",
     "description": "Maggioli Design System è uno strumento nato per condividere una unica visione di progettazione condivisa tra tutti gli esperti di dominio aziendali. Ciò permette di offrire una UX unica, condivisa tra i prodotti che saranno coerenti allo stile dell’azienda.",
     "scripts": {
         "build": "webpack --config webpack.config.js",
