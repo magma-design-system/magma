@@ -11,7 +11,7 @@ const Textarea = props => {
   return (
     <label className={`textarea ${themeName} ${props.icon ? 'textarea--has-icon' : ''} ${props.error ? 'textarea--has-errors' : ''} ${props.className}`}>
       {props.label &&
-        <div className="textarea__label text-primary text-primary--h6">
+        <div className="textarea__label text-secondary text-secondary--label-paragraph">
           {props.label}
         </div>
       }
