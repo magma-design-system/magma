@@ -1,13 +1,10 @@
 {
   "name": "@maggioli-design-system/design-tokens",
-  "version": "1.0.0",
-  "description": "This example code is bare-bones to show you what this framework can do. If you have the style-dictionary module installed globally, you can `cd` into this directory and run: ```bash style-dictionary build ```",
+  "version": "1.1.0",
+  "description": "This is the Design Token library of Maggioli Design System, here you'll find all ",
   "author": "Vittorio Vittori",
   "license": "ISC",
   "main": "build.js",
-  "publishConfig": {
-    "registry": "http://nexus.maggioli.it:8081/repository/npm/"
-  },
   "scripts": {
     "build": "npm run build-palette && npm run build-style-dictionary && npm run build-css-tokens && npm run build-css-tokens-config",
     "build-css-tokens": "run-for-every-file --src ./css-tokens/ --dest dist/scss/ --file '**/*.json' --not-file '**/*.scss' --run 'json-to-scss {{src-file}} {{dest}}{{file-name-ext}}'",

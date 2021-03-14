@@ -1,6 +1,17 @@
 {
   "source": ["properties/**/*.json"],
   "platforms": {
+    "js": {
+      "transformGroup": "js",
+      "buildPath": "dist/js/",
+      "files": [
+        {
+          "destination": "colors.js",
+          "format": "js/config"
+        }
+      ]
+    },
+
     "scss": {
       "transformGroup": "scss",
       "buildPath": "dist/scss/",
