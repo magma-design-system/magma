@@ -17,3 +17,6 @@ export const noLabel = () =>
 
 export const customIcon = () =>
   <Textarea label={faker.lorem.sentence()} placeholder={faker.company.catchPhrase()} icon={randomIcon()}></Textarea>
+
+export const Error = () =>
+  <Textarea label={faker.lorem.sentence()} placeholder={faker.company.catchPhrase()} con={randomIcon()} error={faker.lorem.paragraph()}></Textarea>

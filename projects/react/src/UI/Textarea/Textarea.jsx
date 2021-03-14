@@ -2,6 +2,7 @@ import React from 'react'
 import PropTypes from 'prop-types'
 import './Textarea.scss'
 import Icon from '@Design/Icon/Icon'
+import Detail from '@Typography/Detail/Detail'
 
 const Textarea = props =>
   <label className={`textarea ${props.icon ? 'textarea--has-icon' : ''} ${props.error ? 'textarea--has-errors' : ''} ${props.className}`}>
@@ -38,6 +39,7 @@ Textarea.propTypes = {
   name: PropTypes.string,
   onChange: PropTypes.func,
   placeholder: PropTypes.string,
+  required: PropTypes.bool,
 }
 
 Textarea.defaultProps = {
@@ -49,6 +51,7 @@ Textarea.defaultProps = {
   name: 'unassigned',
   onChange: () => {},
   placeholder: '',
+  required: false,
 }
 
 export default Textarea
