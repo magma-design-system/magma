@@ -5,12 +5,12 @@
   "main": "css/styles.min.css",
   "scripts": {
     "build": "npm run clean && npm run package && npm run config && npm run sass && npm run sass:min && npm run copy:sass",
-    "clean": "rm -rf dist || true && mkdir -p dist/css dist/sass",
-    "config": "cp ./node_modules/@maggioli-design-system/design-tokens/dist/scss/config.scss ./sass",
-    "copy:sass": "cp -r sass dist",
+    "clean": "rm -rf dist || true && mkdir -p dist/css dist/scss",
+    "config": "cp ./node_modules/@maggioli-design-system/design-tokens/dist/scss/config.scss ./scss",
+    "copy:sass": "cp -r scss dist",
     "package": "cp package.json dist/package.json",
-    "sass": "node-sass sass/import-global.scss --output-style=expanded --source-map-embed -o dist/css && mv dist/css/import-global.css dist/css/styles.css",
-    "sass:min": "node-sass sass/import-global.scss --output-style=compressed -o dist/css && mv dist/css/import-global.css dist/css/styles.min.css"
+    "sass": "node-sass scss/import-global.scss --output-style=expanded --source-map-embed -o dist/css && mv dist/css/import-global.css dist/css/styles.css",
+    "sass:min": "node-sass scss/import-global.scss --output-style=compressed -o dist/css && mv dist/css/import-global.css dist/css/styles.min.css"
   },
   "repository": {
     "type": "git",
@@ -28,7 +28,7 @@
   "author": "Vittorio Vittori",
   "license": "ISC",
   "dependencies": {
-    "@maggioli-design-system/design-tokens": "0.1.0",
+    "@maggioli-design-system/design-tokens": "^1.1.0",
     "normalize.css": "^8.0.1",
     "typeface-karla": "1.1.13",
     "typeface-roboto": "1.1.13"
