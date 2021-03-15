@@ -4,7 +4,7 @@
 
   @if $contrast != 'color' {
 
-    $contrast: 'c-#{$contrast}';
+    $contrast: '#{$contrast}';
   }
 
   @if $opacity == 1 {
