@@ -4,7 +4,6 @@
   "description": "This is the Design Token library of Maggioli Design System, here you'll find all ",
   "author": "Vittorio Vittori",
   "license": "ISC",
-  "main": "build.js",
   "scripts": {
     "build": "npm run build-palette && npm run build-style-dictionary && npm run build-css-tokens && npm run build-css-tokens-config",
     "build-css-tokens": "run-for-every-file --src ./css-tokens/ --dest dist/scss/ --file '**/*.json' --not-file '**/*.scss' --run 'json-to-scss {{src-file}} {{dest}}{{file-name-ext}}'",
@@ -16,7 +15,6 @@
   "files": [
     "/dist/*"
   ],
-  "dependencies": {},
   "devDependencies": {
     "@adobe/leonardo-contrast-colors": "1.0.0-alpha.8",
     "handlebars": "^4.7.6",

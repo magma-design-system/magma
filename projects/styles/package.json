@@ -36,8 +36,8 @@
   "devDependencies": {
     "autoprefixer": "^10.2.1",
     "node-sass": "^4.14.1",
-    "postcss": "^8.2.4",
     "sass": "^1.32.8",
+    "postcss": "^8.2.4",
     "sass-extract": "^2.1.0",
     "sass-loader": "^10.1.0",
     "tailwindcss": "^2.0.2"

@@ -81,10 +81,9 @@ $size: get($form-sizes, 'textarea-height');
     --color: color('adjust.tone', '02');
 
     border: 1px solid var(--border-color);
-    border-radius: $input-radius;
+    border-radius: $input-radius $input-radius 0 $input-radius;
     box-shadow: var(--box-shadow);
     color: var(--color);
-    height: 100%;
     max-height: $size * 2;
     min-height: $size;
     padding: s(0.25) s(0.5);

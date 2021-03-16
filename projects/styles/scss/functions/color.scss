@@ -1,5 +1,5 @@
 @function color ($path, $contrast: 'color', $opacity: 1) {
-  // color: color('brand.maggioli', 3) => color: var(--hex-brand-maggioli-c-03)
+  // color: color('brand.maggioli', 3) => color: var(--hex-brand-maggioli-03)
   $name: str-replace($path, '.', '-');
 
   @if $contrast != 'color' {
