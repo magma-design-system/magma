@@ -34,7 +34,7 @@ const Tag = ({ chip, className, icon, iconClassName, size, status, ...restProps 
   })
 
   return <div className={classes}>
-    <Icon name={icon} size={iconSize} className={iconClasses}/>
+    {icon && <Icon name={icon} size={iconSize} className={iconClasses}/>}
     <div className={`tag__text ${font}`}>
       {restProps.children}
     </div>
@@ -53,7 +53,6 @@ Tag.propTypes = {
 Tag.defaultProps = {
   chip: false,
   className: '',
-  icon: 'tag',
   iconClassName: '',
   size: 'normal',
 }

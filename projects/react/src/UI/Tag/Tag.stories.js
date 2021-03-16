@@ -18,7 +18,7 @@ export default {
 }
 
 export const basicUsage = () =>
-  <Tag>
+  <Tag icon={randomIcon()}>
     <Paragraph>{faker.lorem.word()}</Paragraph>
   </Tag>
 
@@ -33,17 +33,17 @@ export const customIcon = () =>
   </Tag>
 
 export const chipTag = () =>
-  <Tag chip={true}>
+  <Tag chip icon={randomIcon()}>
     <Paragraph>{faker.lorem.word()}</Paragraph>
   </Tag>
 
 export const chipColors = () =>
-  <Tag icon={randomIcon()} chip={true} iconClassName="color-status-warning-09" className="color-status-warning-04 background-color-status-warning-18">
+  <Tag icon={randomIcon()} chip iconClassName="color-status-warning-09" className="color-status-warning-04 background-color-status-warning-18">
     <Detail>{faker.lorem.word()}</Detail>
   </Tag>
 
 export const size = () =>
-  <Table interactive={true}>
+  <Table interactive>
     <TableHeader>
       <TableHeaderCell>Preview</TableHeaderCell>
       <TableHeaderCell>Size</TableHeaderCell>
