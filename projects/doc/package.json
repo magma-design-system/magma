@@ -31,9 +31,6 @@
         "> 1%",
         "last 2 versions"
     ],
-    "publishConfig": {
-      "registry": "http://nexus.maggioli.it:8081/repository/npm/"
-    },
     "repository": {
         "type": "git",
         "url": "https://git.maggioli.it/ricerca-sviluppo-new-media/design-system.git"
@@ -156,14 +153,5 @@
         "stylelint-scss": "^3.19.0",
         "webpack": "^4.44.2",
         "webpack-cli": "^4.2.0"
-    },
-    "peerDependencies": {
-        "@emotion/react": "^11.0.0",
-        "@emotion/core": "^11.0.0",
-        "react": "^16.0.0",
-        "react-dom": "^16.0.0",
-        "typescript": "^4.0.0",
-        "eslint": "^6.0.0",
-        "gsap": "^3.5.1"
     }
 }
