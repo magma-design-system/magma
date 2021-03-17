@@ -23,8 +23,41 @@
       "color": "#ED6663",
       "name": "status.error"
     },{
-      "color": "#ffc107",
+      "color": "#FFC107",
       "name": "status.warning"
+    },{
+      "color": "#E67E22",
+      "name": "area.administration"
+    },{
+      "color": "#E74C3C",
+      "name": "area.personal"
+    },{
+      "color": "#D36CDC",
+      "name": "area.accounting"
+    },{
+      "color": "#A85DBE",
+      "name": "area.tributes"
+    },{
+      "color": "#52BE7F",
+      "name": "area.public-procurement"
+    },{
+      "color": "#16A085",
+      "name": "area.building-urban"
+    },{
+      "color": "#F1C40F",
+      "name": "area.demographic"
+    },{
+      "color": "#95A5A6",
+      "name": "area.social-service"
+    },{
+      "color": "#428BBA",
+      "name": "area.police"
+    },{
+      "color": "#5CACE2",
+      "name": "area.productive"
+    },{
+      "color": "#FF9900",
+      "name": "area.elections"
     },{
       "color": "#ffffff",
       "colorDark": "#000000",
