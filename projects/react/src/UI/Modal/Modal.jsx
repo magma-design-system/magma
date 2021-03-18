@@ -1,5 +1,6 @@
 import React from 'react'
 import PropTypes from 'prop-types'
+import { styles } from '@Library/styles'
 import './Modal.scss'
 import Button from '@UI/Button/Button'
 import Grid from '@Layout/Grid/Grid'
@@ -9,33 +10,46 @@ import Icon from '@Design/Icon/Icon'
 // https://soshace.com/building-react-components-using-children-props-and-context-api/#crayon-5f80341482005894162361
 // https://codesandbox.io/s/github/supromikali/react-children-with-context
 
-const Modal = props => {
+const Modal = ({ cancelButton, cancelVariant, className, confirmButton, confirmDisabled, confirmVariant, contentOnly, footer, maxHeight, maxWidth, onCancel, onConfirm, position, title, visible, ...restProps }) => {
+
+  const classes = styles('modal', {
+    selectors: [
+      className,
+    ],
+    modifiers: {
+      visible,
+      maxHeight,
+      maxWidth,
+      position,
+    },
+  })
+
   return (
-    <div className={`modal ${props.className} ${props.visible ? 'modal--visible' : ''} ${props.maxHeight ? 'modal--max-height' : ''} ${props.position ? 'modal--from-' + props.position : ''}`}>
+    <div className={classes}>
       <Icon className="modal__close" name="action-close" size="large" onClick={() => { props.onCancel() }}/>
       <div className="modal__window">
-        {props.title &&
+        {title &&
           <header className="modal__header">
             <H4 className="modal__title">
-              {props.title}
+              {title}
             </H4>
-            <Icon className="modal__close-inside" name="action-close" onClick={() => { props.onCancel() }}/>
+            <Icon className="modal__close-inside" name="action-close" onClick={() => { onCancel() }}/>
           </header>
         }
-        <div className={`modal__contents ${props.contentOnly ? 'modal__contents--clean' : ''} ${props.title ? 'modal__contents--close-outside' : ''}`}>
-          {!props.title &&
-            <Icon className="modal__close-inside" name="action-close" onClick={() => { props.onCancel() }}/>
+        <div className={`modal__contents ${contentOnly ? 'modal__contents--clean' : ''} ${title ? 'modal__contents--close-outside' : ''}`}>
+          {!title &&
+            <Icon className="modal__close-inside" name="action-close" onClick={() => { onCancel() }}/>
           }
-          {props.children}
+          {restProps.children}
         </div>
-        {props.footer &&
+        {footer &&
           <Grid className="modal__footer" columns="2">
-            <Button variant={props.cancelVariant} onClick={() => { props.onCancel() }}>
-              {props.cancelButton}
+            <Button variant={cancelVariant} onClick={() => { onCancel() }}>
+              {cancelButton}
             </Button>
-            <Button disabled={props.confirmDisabled} variant={props.confirmVariant}
-              onClick={() => { props.onConfirm() }}>
-              {props.confirmButton}
+            <Button disabled={confirmDisabled} variant={confirmVariant}
+              onClick={() => { onConfirm() }}>
+              {confirmButton}
             </Button>
           </Grid>
         }
@@ -54,6 +68,7 @@ Modal.propTypes = {
   contentOnly: PropTypes.bool,
   footer: PropTypes.bool,
   maxHeight: PropTypes.bool,
+  maxWidth: PropTypes.bool,
   onCancel: PropTypes.func,
   onConfirm: PropTypes.func,
   position: PropTypes.string,
@@ -71,6 +86,7 @@ Modal.defaultProps = {
   contentOnly: false,
   footer: true,
   maxHeight: false,
+  maxWidth: false,
   onCancel: null,
   onConfirm: null,
   position: 'right', // right || left || center

@@ -134,6 +134,30 @@ export const maxHeight = () => {
   )
 }
 
+export const maxWidth = () => {
+  return (
+    <Toggler>
+      <Toggler.Trigger>
+        <Button icon="status-info">
+          Apri modale
+        </Button>
+      </Toggler.Trigger>
+      <Toggler.Content>
+        <Modal maxWidth title={faker.lorem.sentence()} position="center" onConfirm={() => console.log('onConfirm')} onCancel={() => console.log('onCancel')}>
+          <Paragraph>{faker.lorem.paragraph()}</Paragraph>
+          <Paragraph>{faker.lorem.paragraph()}</Paragraph>
+          <Paragraph>{faker.lorem.paragraph()}</Paragraph>
+          <Paragraph>{faker.lorem.paragraph()}</Paragraph>
+          <Paragraph>{faker.lorem.paragraph()}</Paragraph>
+          <Paragraph>{faker.lorem.paragraph()}</Paragraph>
+          <Paragraph>{faker.lorem.paragraph()}</Paragraph>
+          <Paragraph>{faker.lorem.paragraph()}</Paragraph>
+        </Modal>
+      </Toggler.Content>
+    </Toggler>
+  )
+}
+
 export const simple = () =>
   <Toggler>
     <Toggler.Trigger>
