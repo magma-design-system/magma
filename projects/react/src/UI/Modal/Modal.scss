@@ -106,7 +106,7 @@ $modal-background: rgba(0, 0, 0, 0.5);
 
   &--max-height {
 
-    $margin: s(14);
+    $margin: s(2);
 
     .modal {
       &__contents {
@@ -120,7 +120,7 @@ $modal-background: rgba(0, 0, 0, 0.5);
 
   &--max-width {
 
-    $margin: s(14);
+    $margin: s(2);
 
     .modal {
       &__window {
