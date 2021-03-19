@@ -3,7 +3,7 @@ const StyleDictionary = require('style-dictionary')
 const fs = require('fs')
 const path = require('path')
 
-const templatePath = path.resolve(__dirname, './js-config.hbs')
+const templatePath = path.resolve(__dirname, './js-module.hbs')
 
 const template = Handlebars.compile(fs.readFileSync(templatePath).toString())
 
@@ -20,7 +20,7 @@ Handlebars.registerHelper('ifEquals', function(arg1, arg2, options) {
 });
 
 StyleDictionary.registerFormat({
-  name: 'js/config',
+  name: 'js/module',
   formatter: function(dictionary, platform) {
     return template({
       properties: dictionary.properties,

@@ -7,7 +7,7 @@
       "files": [
         {
           "destination": "colors.js",
-          "format": "js/config"
+          "format": "js/module"
         }
       ]
     },
