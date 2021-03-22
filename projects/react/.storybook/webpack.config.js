@@ -1,5 +1,6 @@
 const path = require('path')
 const autoprefixer = require('autoprefixer')
+const tailwindcss = require('tailwindcss')
 const aliases = require('../import-aliases')
 
 const localhostPort = 7177
@@ -29,7 +30,7 @@ module.exports = async({ config, mode }) => {
               'autoprefixer',
             ],
           ],
-        },
+        },c
       },
     }, {
       loader: 'sass-loader',
