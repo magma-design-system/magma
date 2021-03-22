@@ -33,7 +33,7 @@ const Tag = ({ chip, className, icon, iconClassName, size, status, ...restProps 
     ],
   })
 
-  return <div className={classes}>
+  return <div className={classes} {...restProps}>
     {icon && <Icon name={icon} size={iconSize} className={iconClasses}/>}
     <div className={`tag__text ${font}`}>
       {restProps.children}
@@ -46,6 +46,7 @@ Tag.propTypes = {
   className: PropTypes.string,
   icon: PropTypes.string,
   iconClassName: PropTypes.string,
+  onClick: PropTypes.func,
   size: PropTypes.string,
   status: PropTypes.string,
 }
