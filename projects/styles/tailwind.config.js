@@ -1,14 +1,12 @@
-const colors = require('tailwindcss/colors')
-
-// module.exports = {
-//   designSystemColors = {}
-// }
-
-
-const paletteLight = require('@maggioli-design-system/design-tokens').paletteLight
+const palette = require('@maggioli-design-system/design-tokens').palette
 
 module.exports = {
-  purge: ['./**/*.{js,jsx,ts,tsx}'],
+  purge: {
+    content: ['./**/*.{js,jsx,ts,tsx}'],
+    layers: ['base', 'components', 'utilities', 'variables'],
+    enabled: true,
+    variables: true,
+  },
   presets: [],
   darkMode: false, // or 'media' or 'class'
   theme: {
@@ -23,7 +21,7 @@ module.exports = {
     colors: {
       transparent: 'transparent',
       current: 'currentColor',
-      paletteLight,
+      palette,
     },
     spacing: {
       px: '1px',
