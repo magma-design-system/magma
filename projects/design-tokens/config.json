@@ -28,8 +28,8 @@
       "buildPath": "dist/css/",
       "files": [
         {
-          "format": "css/variables",
-          "destination": "variables.css"
+          "format": "css/vars",
+          "destination": "vars.css"
         }
       ]
     },
