@@ -4,7 +4,7 @@ Do not edit directly
 Generated at {{ date }}
 */
 
-const paletteLight = {
+const palette = {
   {{#each properties as | groups |}}
     {{#each groups as | names |}}
       {{#each names as | lightModes |}}
@@ -13,31 +13,9 @@ const paletteLight = {
           {{#ifEquals @key 'light'}}
             {{#each palettes as | palette |}}
               {{#ifEquals @key 'color'}}
-    'DEFAULT': '{{palette.value}}'{{#unless @last}},{{/unless}}
+    'DEFAULT': 'var(--{{@../../../key}}-{{@../../key}})'{{#unless @last}},{{/unless}}
               {{else}}
-    '{{@key}}': '{{palette.value}}'{{#unless @last}},{{/unless}}
-              {{/ifEquals}}
-            {{/each}}
-          {{/ifEquals}}
-          {{/each}}
-  },
-      {{/each}}
-    {{/each}}
-  {{/each}}
-}
-
-const paletteDark = {
-  {{#each properties as | groups |}}
-    {{#each groups as | names |}}
-      {{#each names as | lightModes |}}
-  '{{@../key}}-{{@key}}': {
-        {{#each lightModes as | palettes |}}
-          {{#ifEquals @key 'dark'}}
-            {{#each palettes as | palette |}}
-              {{#ifEquals @key 'color'}}
-    'DEFAULT': '{{palette.value}}'{{#unless @last}},{{/unless}}
-              {{else}}
-    '{{@key}}': '{{palette.value}}'{{#unless @last}},{{/unless}}
+    '{{@key}}': 'var(--{{@../../../key}}-{{@../../key}}-{{@key}})'{{#unless @last}},{{/unless}}
               {{/ifEquals}}
             {{/each}}
           {{/ifEquals}}
@@ -49,6 +27,5 @@ const paletteDark = {
 }
 
 module.exports = {
-  paletteLight,
-  paletteDark,
+  palette,
 }
