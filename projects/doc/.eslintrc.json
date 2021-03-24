@@ -3,10 +3,10 @@
   "extends": ["standard"],
   "ignorePatterns": ["!**/*"],
   "parser": "@babel/eslint-parser",
-  "babelOptions": {
-    "configFile": "./.babelrc"
-  },
   "parserOptions": {
+    "babelOptions": {
+      "configFile": "./projects/doc/.babelrc"
+    },
     "ecmaFeatures": {
       "jsx": true
     },
