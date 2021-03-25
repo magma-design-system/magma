@@ -23,6 +23,13 @@
     "tailwindcss"
   ],
   "author": "Vittorio Vittori",
+  "contributors": [
+    {
+        "name": "Vittorio Vittori",
+        "email": "vittorio.vittori@maggioli.it",
+        "role": "CSS, SASS developer"
+    }
+  ],
   "license": "ISC",
   "dependencies": {
     "@maggioli-design-system/design-tokens": "^1.2.2",
