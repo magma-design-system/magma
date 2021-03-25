@@ -38,7 +38,7 @@ function removeDuplicates(arr) {
 }
 
 function exportImage(item, size) {
-  const density = 72 * size / 16
+  const density = 72 * size / 16 // https://github.com/lovell/sharp/issues/729
   sharp(path.join(__dirname, `resources/${item}.svg`), { density: density })
     .resize(size)
     .png()
@@ -109,6 +109,4 @@ walk(directoryPath, function (err, results) {
     exportImage(item, 512)
     exportImage(item, 1024)
   })
-
-  // https://github.com/lovell/sharp/issues/729
 })
