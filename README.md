@@ -17,20 +17,19 @@ You just need to install from project root:
 git clone https://git.maggioli.it/ricerca-sviluppo-new-media/design-system.git
 ```
 
+You must have NPM 7.x.x installed
+
+```
+npm install -g npm
+```
+
 Then launch:
 
 ```
 npm install
-npx nx run mgg-icons:build
+npx nx run-many --all --target=build
 npm install
 npx nx affected:build
-```
-
-### Update node
-
-```
-nvm use
-npm install -g npm
 ```
 
 [adobe-leonardo]: (https://leonardocolor.io/)
