@@ -22,6 +22,10 @@
         "role": "Development"
     }
   ],
+  "repository": {
+    "type": "git",
+    "url": "http://git.maggioli.it/ricerca-sviluppo-new-media/design-system.git"
+  },
   "license": "ISC",
   "devDependencies": {
     "pdfkit": "^0.11.0",
