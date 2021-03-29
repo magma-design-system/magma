@@ -87,49 +87,6 @@ class Material {
   }
 }
 
-class FontAwesome {
-  static ICONS_DIR = `${path.dirname(require.resolve('@fortawesome/fontawesome-free/package.json'))}/svgs`
-  static FILE_NAME_REGEX = /^([\w-]+)\.svg$/
-
-  /**
-   * List of paths of subdirectories (possibly) with icons
-   * @return {Promise<string[]>}
-   */
-  static async subDirectories() {
-    return subDirectories(this.ICONS_DIR)
-  }
-
-  /**
-   * Search the requested icon in FontAwesome icons
-   * @param iconName {string}
-   * @return {Promise<string>}
-   */
-  static async getPath (iconName) {
-    const subdirectories = await FontAwesome.subDirectories()
-    const filename = `${iconName}.svg`
-
-    return iconGroupGetHelper('fontawesome', subdirectories, iconName, filename)
-  }
-
-  /**
-   * Search all the FontAwesome icons
-   * @return {Promise<string[]>} Paths of all the FontAwesome icons
-   */
-  static async listPath () {
-    const subdirectories = await FontAwesome.subDirectories()
-    return iconGroupListHelper('fontawesome', subdirectories, FontAwesome.FILE_NAME_REGEX)
-  }
-
-  /**
-   * Given the path of an icon or just the file name, it returns the icon name
-   * @param path the path of an icon or just the file name
-   * @return {string} The icon name
-   */
-  static getIconName (path) {
-    return path.split('/').slice(-1)[0].match(FontAwesome.FILE_NAME_REGEX)[1]
-  }
-}
-
 class LocalDirectory {
   static FILE_NAME_REGEX = /^([\w-]+)\.svg$/
 
@@ -244,7 +201,6 @@ async function searchFileInDirectory (directory, filename) {
 const ICON_GROUPS = {
   maggioli: { getPath: Maggioli.getPath, listPath: Maggioli.listPath, getIconName: Maggioli.getIconName },
   material: { getPath: Material.getPath, listPath: Material.listPath, getIconName: Material.getIconName },
-  fontawesome: { getPath: FontAwesome.getPath, listPath: FontAwesome.listPath, getIconName: FontAwesome.getIconName },
   localDirectory: { getPath: LocalDirectory.getPath, listPath: LocalDirectory.listPath, getIconName: LocalDirectory.getIconName, subDirectories: LocalDirectory._subDirectories }
 }
 
