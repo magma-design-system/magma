@@ -61,8 +61,11 @@ function exportPDF(item) {
 
         const width = dimensions.width
         const height = dimensions.height
+        const scale = 0.25
+        const widthScaled = width - (width * scale)
+        const heightScaled = height - (height * scale)
         const doc = new PDFDocument({
-          size: [ width , height ]
+          size: [ widthScaled , heightScaled ]
         })
 
         SVGtoPDF(doc, data, 0, 0, { width: width, height: height })
@@ -105,8 +108,8 @@ walk(directoryPath, function (err, results) {
     item = item.replace('.svg', '')
     shell.cp('-R', 'resources/*', 'dist')
     exportPDF(item)
-    exportImage(item, 256)
-    exportImage(item, 512)
-    exportImage(item, 1024)
+    // exportImage(item, 256)
+    // exportImage(item, 512)
+    // exportImage(item, 1024)
   })
 })
