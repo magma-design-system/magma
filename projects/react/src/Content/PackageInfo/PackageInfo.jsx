@@ -31,7 +31,7 @@ const PackageInfo = ({ className, packageData, ...restProps }) => {
     </UList>
     <Paragraph>{packageData.description}</Paragraph>
     <Grid template="package-info-authors">
-      { packageData.repository.url && <Button href={packageData.repository.url.replace('.git', '')}>Repository</Button> }
+      { packageData.repository && <Button href={packageData.repository.url.replace('.git', '')}>Repository</Button> }
       { packageData.bugs && <Button variant="secondary-outline" href={packageData.bugs.url.replace('.git', '')}>Issue</Button> }
     </Grid>
     { packageData.contributors && <Fragment>
