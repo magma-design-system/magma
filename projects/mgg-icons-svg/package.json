@@ -9,9 +9,6 @@
   "bugs": {
     "url": "https://git.maggioli.it/ricerca-sviluppo-new-media/design-system/-/issues"
   },
-  "scripts": {
-    "publish": "npm publish"
-  },
   "files": [
     "/svg/*.svg"
   ],
