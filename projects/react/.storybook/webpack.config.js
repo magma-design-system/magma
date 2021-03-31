@@ -30,7 +30,7 @@ module.exports = async({ config, mode }) => {
               'autoprefixer',
             ],
           ],
-        },c
+        },
       },
     }, {
       loader: 'sass-loader',
