@@ -5,7 +5,7 @@
   "parser": "@babel/eslint-parser",
   "parserOptions": {
     "babelOptions": {
-      "configFile": "./projects/doc/.babelrc"
+      "configFile": "./projects/docs/.babelrc"
     },
     "ecmaFeatures": {
       "jsx": true

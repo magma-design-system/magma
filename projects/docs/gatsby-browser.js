@@ -1,5 +1,5 @@
 import 'normalize.css/normalize.css'
 import 'typeface-karla/index.css'
 import 'typeface-roboto/index.css'
-import '@maggioli-common/mgg-icons/mgg-icons.css'
-import '@maggioli-design-system/styles/scss/import-global.scss'
+import '@maggioli-design-system/icons/mgg-icons.css'
+import '@maggioli-design-system/styles/dist/scss/import-global.scss'

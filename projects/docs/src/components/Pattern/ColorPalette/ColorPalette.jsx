@@ -12,9 +12,10 @@ import Hack from '@Typography/Hack/Hack'
 function getColor(token, index) {
   const colorValue = token[Object.keys(token)[index]].value
   const colorCode = Object.keys(token)[index]
+  const selectorCode = colorCode.replace('c-', '').replace('color', '')
   return {
     code: colorCode,
-    selectorCode: colorCode.replace('c-', '-').replace('color', ''),
+    selectorCode,
     value: colorValue,
   }
 }
@@ -35,7 +36,9 @@ function getBestContrastColor(token, index) {
 }
 
 function getSelectors(token, group, name, index) {
-  return `background-color-${group}-${name}${getColor(token, index).selectorCode} color-${group}-${name}${getBestContrastColor(token, index).selectorCode}`
+  const color = getColor(token, index).selectorCode !== '' ? '-' + getColor(token, index).selectorCode : getColor(token, index).selectorCode
+  const bestColor = getBestContrastColor(token, index).selectorCode !== '' ? '-' + getBestContrastColor(token, index).selectorCode : getBestContrastColor(token, index).selectorCode
+  return `background-color-${group}-${name}${color} color-${group}-${name}${bestColor}`
 }
 
 const ColorPalette = props =>
