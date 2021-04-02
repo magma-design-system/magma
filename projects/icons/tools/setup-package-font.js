@@ -33,20 +33,12 @@ function main() {
   }
 
   fs.writeFileSync(join(DIST_DIR, '/package.json'), Buffer.from(JSON.stringify(sourceObj, null, 2)) );
-  // fs.writeFileSync(join(DIST_DIR, '/version.txt'), Buffer.from(sourceObj.version));
-  try {
-    fs.copyFileSync(join(ROOT_DIR, '.npmrc'), join(DIST_DIR, '.npmrc') );
-  } catch {
-    console.log('.npmrc not found. Skipping.');
-  }
-
-  // fs.copyFileSync(join(ROOT_DIR, '/.npmignore'), join(DIST_DIR, '/.npmignore'));
 
   const resourcesDir = join(DIST_DIR, 'resources');
   if (!fs.existsSync(resourcesDir)) {
     fs.mkdirSync(resourcesDir);
   }
-  fs.copyFileSync(join(ROOT_DIR, 'resources', 'mgg-icons.json'), join(resourcesDir, 'mgg-icons.json'));
+  fs.copyFileSync(join(ROOT_DIR, 'resources', 'mgg-icons.json'), join(resourcesDir, 'dictionary.json'));
 
   // Moving out of "fonts" folder files witch aren't fonts
   const fontsDir = join(DIST_DIR, 'fonts');
