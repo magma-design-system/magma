@@ -3,6 +3,7 @@ const palette = require('@maggioli-design-system/design-tokens').palette
 module.exports = {
   important: true,
   purge: {
+    mode: 'all',
     content: [
       './src/**/*.{js,jsx}'
     ],

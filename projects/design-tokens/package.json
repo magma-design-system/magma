@@ -18,10 +18,10 @@
   ],
   "devDependencies": {
     "@adobe/leonardo-contrast-colors": "1.0.0-alpha.8",
-    "handlebars": "^4.7.6",
+    "handlebars": "^4.7.7",
     "json-to-scss": "^1.6.2",
     "run-for-every-file": "^1.1.0",
-    "style-dictionary": "^2.10.2"
+    "style-dictionary": "^2.10.3"
   },
   "repository": {
     "type": "git",

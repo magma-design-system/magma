@@ -7,6 +7,8 @@ import Avatar from '@Content/Avatar/Avatar'
 import InlineCode from '@UI/InlineCode/InlineCode'
 import sizesData from '+Tokens/css-tokens/sizes.json'
 
+import avatarExample from './avatar-example.jpeg'
+
 const avatarSizes = Object.keys(sizesData.avatar)
 const gravatarDefs = [
   'mp',
@@ -25,7 +27,7 @@ export default {
 }
 
 export const basicUsage = () =>
-  <Avatar src={require('./avatar-example.jpeg')}/>
+  <Avatar src={avatarExample}/>
 
 /*
 mp

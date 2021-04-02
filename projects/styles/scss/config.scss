@@ -2,16 +2,9 @@ $config: (
   palette: (
     format: ('rgb-channels', 'hex'),
     scaffold: ('background-color:background-color', 'color:color'),
-    colors: (
-      'brand.maggioli',
-      'status.info',
-      'status.success',
-      'status.error',
-      'status.warning',
-      'adjust.tone',
-    )
+    colors: ('brand.maggioli', 'status.info', 'status.success', 'status.error', 'status.warning', 'adjust.tone')
   ),
   scaffold: (
     properties: ('border-radius:border-radius', 'box-shadow:box-shadow', 'padding:padding', 'horizontal-padding:horizontal-padding', 'vertical-padding:vertical-padding')
   )
-) !default;
+)!default;

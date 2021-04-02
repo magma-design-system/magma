@@ -70,6 +70,6 @@
   "license": "ISC",
   "devDependencies": {
     "@maggioli-design-system/font-icons-cli": "1.0.0-RC.12",
-    "fs-extra": "^9.0.1"
+    "fs-extra": "^9.1.0"
   }
 }

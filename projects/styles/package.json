@@ -9,8 +9,8 @@
     "config": "cp ../../node_modules/@maggioli-design-system/design-tokens/dist/scss/config.scss ./scss",
     "copy:sass": "cp -r scss dist",
     "package": "cp package.json dist/package.json",
-    "sass": "node-sass scss/import-global.scss --output-style=expanded --source-map-embed -o dist/css && mv dist/css/import-global.css dist/css/styles.css",
-    "sass:min": "node-sass scss/import-global.scss --output-style=compressed -o dist/css && mv dist/css/import-global.css dist/css/styles.min.css"
+    "sass": "sass ./scss/import-global.scss ./dist/css/styles.css --style=expanded --embed-source-map --load-path=../../node_modules",
+    "sass:min": "sass ./scss/import-global.scss ./dist/css/styles.min.css --style=compressed --load-path=../../node_modules"
   },
   "repository": {
     "type": "git",
@@ -25,25 +25,24 @@
   "author": "Vittorio Vittori",
   "contributors": [
     {
-        "name": "Vittorio Vittori",
-        "email": "vittorio.vittori@maggioli.it",
-        "role": "CSS, SASS developer"
+      "name": "Vittorio Vittori",
+      "email": "vittorio.vittori@maggioli.it",
+      "role": "CSS, SASS developer"
     }
   ],
   "license": "ISC",
   "dependencies": {
-    "@maggioli-design-system/design-tokens": "^1.2.2",
     "normalize.css": "^8.0.1",
     "typeface-karla": "1.1.13",
-    "tailwindcss": "^2.0.2",
     "typeface-roboto": "1.1.13"
   },
   "devDependencies": {
-    "autoprefixer": "^10.2.1",
-    "node-sass": "^4.14.1",
-    "postcss": "^8.2.4",
+    "@tailwindcss/postcss7-compat": "^2.0.4",
+    "autoprefixer": "^9.8.6",
+    "postcss": "^7.0.35",
     "sass": "^1.32.8",
     "sass-extract": "^2.1.0",
-    "sass-loader": "^10.1.0"
+    "sass-loader": "^11.0.1",
+    "tailwindcss": "npm:@tailwindcss/postcss7-compat@^2.0.4"
   }
 }
