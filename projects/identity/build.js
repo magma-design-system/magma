@@ -39,7 +39,7 @@ function removeDuplicates(arr) {
 
 function exportImage(item, size) {
   const density = 72 * size / 16 // https://github.com/lovell/sharp/issues/729
-  sharp(path.join(__dirname, `resources/${item}.svg`), { density: density })
+  sharp(path.join(__dirname, `resources/${item}.svg`), { density: density, limitInputPixels: false })
     .resize(size)
     .png()
     .toFile(path.join(__dirname, `dist/${item}-${size}w.png`))
@@ -47,7 +47,7 @@ function exportImage(item, size) {
       console.log(`Generating PNG image: "${item}-${size}w.png" ${info.width}x${info.height}px ${size / 1024}kB`)
     })
     .catch(function(err) {
-      console.error(err)
+      console.error(`${err}: "${item}-${size}w.png"`)
     })
 }
 
