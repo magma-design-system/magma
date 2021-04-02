@@ -25,29 +25,29 @@
     "design-tokens": {
       "implicitDependencies": []
     },
-    "doc": {
+    "docs": {
       "tags": ["type:app"],
-      "implicitDependencies": ["styles", "mgg-icons"]
+      "implicitDependencies": ["styles", "icons"]
     },
     "font-icons-cli": {
       "tags": ["type:lib"],
-      "implicitDependencies": ["mgg-icons-svg"]
+      "implicitDependencies": ["icons-svg"]
     },
     "identity": {
       "tags": ["type:lib"],
       "implicitDependencies": []
     },
-    "mgg-icons": {
+    "icons": {
       "tags": ["type:lib"],
       "implicitDependencies": ["font-icons-cli"]
     },
-    "mgg-icons-svg": {
+    "icons-svg": {
       "tags": ["type:lib"],
       "implicitDependencies": []
     },
     "react": {
       "tags": ["type:lib"],
-      "implicitDependencies": ["styles", "mgg-icons"]
+      "implicitDependencies": ["styles", "icons"]
     },
     "styles": {
       "tags": ["type:lib"],
