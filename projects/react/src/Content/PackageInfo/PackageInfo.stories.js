@@ -11,10 +11,10 @@ export default {
 }
 
 export const basicUsage = () =>
-  <PackageInfo packageData={require('+Project/mgg-icons/package.json')}/>
+  <PackageInfo packageData={require('+Project/icons/package.json')}/>
 
 export const fontIconsCLI = () =>
   <PackageInfo packageData={require('+Project/font-icons-cli/package.json')}/>
 
 export const designSystem = () =>
-  <PackageInfo packageData={require('+Project/doc/package.json')}/>
+  <PackageInfo packageData={require('+Project/docs/package.json')}/>
