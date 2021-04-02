@@ -1,5 +1,5 @@
 {
-  "name": "@maggioli-common/font-icons-cli",
+  "name": "@maggioli-design-system/font-icons-cli",
   "version": "1.0.0-RC.12",
   "description": "Font icons CLI, part of Maggioli Design System, it's used by mgg-icons module to generate the font library from SVG icons.",
   "repository": {
