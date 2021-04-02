@@ -25,16 +25,16 @@
       "@maggioli-design-system/identity/*": [
         "projects/identity/*"
       ],
-      "@maggioli-common/mgg-icons": [
+      "@maggioli-design-system/icons": [
         "projects/mgg-icons"
       ],
       "@maggioli-common/mgg-icons/*": [
         "projects/mgg-icons/*"
       ],
-      "@maggioli-common/mgg-icons-svg": [
+      "@maggioli-design-system/icons-svg": [
         "projects/mgg-icons-svg"
       ],
-      "@maggioli-common/mgg-icons-svg/*": [
+      "@maggioli-design-system/icons-svg/*": [
         "projects/mgg-icons-svg/*"
       ],
       "@maggioli-design-system/react": [

@@ -48,7 +48,7 @@
     "test-build": "npm run clean && npm start test.json svg -- --website"
   },
   "dependencies": {
-    "@maggioli-common/mgg-icons-svg": "^1.5.4",
+    "@maggioli-design-system/icons-svg": "^1.5.4",
     "@mdi/svg": "^5.9.55",
     "material-design-icons-updated": "^7.0.0"
   },

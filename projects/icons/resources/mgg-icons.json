@@ -170,7 +170,7 @@
   "navigation-hide": "material/keyboard_arrow_up",
   "navigation-show": "material/keyboard_arrow_down",
   "notifications": "material/notifications",
-  "office": "maggioli/office",
+  "office": "maggioli/mdi-desk",
   "paginator-first": "material/first_page",
   "paginator-last": "material/last_page",
   "paginator-next": "material/navigate_next",

@@ -2,7 +2,7 @@ const fs = require('fs').promises
 const path = require('path')
 
 class Maggioli {
-  static ICONS_DIR = `${path.dirname(require.resolve('@maggioli-common/mgg-icons-svg/package.json'))}/svg`
+  static ICONS_DIR = `${path.dirname(require.resolve('@maggioli-design-system/icons-svg/package.json'))}/svg`
   static FILE_NAME_REGEX = /^([\w-]+)\.svg$/
 
   /**

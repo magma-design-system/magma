@@ -62,7 +62,7 @@
     ],
     "license": "ISC",
     "dependencies": {
-        "@maggioli-common/mgg-icons": "1.3.0",
+        "@maggioli-design-system/icons": "1.3.0",
         "crypto-js": "^4.0.0",
         "gsap": "^3.5.1",
         "install": "^0.13.0",

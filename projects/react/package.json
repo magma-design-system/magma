@@ -76,7 +76,7 @@
     ],
     "license": "ISC",
     "dependencies": {
-        "@maggioli-common/mgg-icons": "^1.5.0",
+        "@maggioli-design-system/icons": "^1.5.0",
         "@maggioli-design-system/design-tokens": "^1.1.0",
         "@maggioli-design-system/identity": "^1.0.0",
         "@maggioli-design-system/styles": "^1.1.2",
