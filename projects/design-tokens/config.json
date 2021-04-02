@@ -30,6 +30,10 @@
         {
           "format": "css/vars",
           "destination": "vars.css"
+        },
+        {
+          "format": "css/vars-tailwind",
+          "destination": "vars-tailwind.css"
         }
       ]
     },
