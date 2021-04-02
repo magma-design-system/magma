@@ -7,16 +7,16 @@
       "@maggioli-design-system/design-tokens/*": [
         "projects/design-tokens/*"
       ],
-      "@maggioli-design-system/doc": [
-        "projects/doc"
+      "@maggioli-design-system/docs": [
+        "projects/docs"
       ],
-      "@maggioli-design-system/doc/*": [
-        "projects/doc/*"
+      "@maggioli-design-system/docs/*": [
+        "projects/docs/*"
       ],
-      "@maggioli-common/font-icons-cli": [
+      "@maggioli-design-system/font-icons-cli": [
         "projects/font-icons-cli/bin/font-icons"
       ],
-      "@maggioli-common/font-icons-cli/*": [
+      "@maggioli-design-system/font-icons-cli/*": [
         "projects/font-icons-cli/*"
       ],
       "@maggioli-design-system/identity": [
@@ -26,16 +26,16 @@
         "projects/identity/*"
       ],
       "@maggioli-design-system/icons": [
-        "projects/mgg-icons"
+        "projects/icons"
       ],
-      "@maggioli-common/mgg-icons/*": [
-        "projects/mgg-icons/*"
+      "@maggioli-design-system/icons/*": [
+        "projects/icons/*"
       ],
       "@maggioli-design-system/icons-svg": [
-        "projects/mgg-icons-svg"
+        "projects/icons-svg"
       ],
       "@maggioli-design-system/icons-svg/*": [
-        "projects/mgg-icons-svg/*"
+        "projects/icons-svg/*"
       ],
       "@maggioli-design-system/react": [
         "projects/react/dist/bundle.min"
