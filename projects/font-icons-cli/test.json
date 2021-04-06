@@ -5,5 +5,6 @@
   "material-3d_rotation": "material/3d_rotation",
   "material-audio": "material/audiotrack",
   "material-export": "material/save_alt",
+  "mdi-desk": "mdi/desk",
   "local-barcode": "barcode"
 }
