@@ -3,14 +3,8 @@ const autoprefixer = require('autoprefixer')
 const tailwindcss = require('tailwindcss')
 const aliases = require('../import-aliases')
 
-const localhostPort = 7177
-
-// Export a function. Accept the base config as the only param.
-module.exports = async({ config, mode }) => {
-  // `mode` has a value of 'DEVELOPMENT' or 'PRODUCTION'
-  // You can change the configuration based on that.
-  // 'PRODUCTION' is used when building the static version of storybook.
-  config.mode = 'production';
+module.exports = async({ config }) => {
+  config.mode = 'production'
 
   config.module.rules.push({
     test: /\.scss$/,
@@ -26,7 +20,7 @@ module.exports = async({ config, mode }) => {
       loader: 'postcss-loader',
       options: {
         sourceMap: true,
-        implementation: require("postcss"),
+        implementation: require('postcss'),
         postcssOptions: {
           plugins: [
             [
@@ -53,6 +47,5 @@ module.exports = async({ config, mode }) => {
     crypto: false,
   }
 
-  // Return the altered config
   return config
 }
