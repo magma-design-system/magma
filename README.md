@@ -25,14 +25,16 @@ Then run `yarn install` from project root:
 
 ```
 yarn install
-npx nx run-many --all --target=build
+npx nx run-many --all --target=build --skip-nx-cache
 yarn install
 npx nx run affected:build
 ```
 
+If you want to test your nx build without cache, use `--skip-nx-cache` to avoid it. Be aware this command will SLOW build time.
+
 Then you can run for every project:
 
 ```
-npx nx run react:start
+npx nx run react:start --skip-nx-cache
 ```
 

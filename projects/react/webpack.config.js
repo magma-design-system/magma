@@ -8,6 +8,7 @@ module.exports = {
   resolve: {
     alias,
     extensions: ['.js', '.jsx'],
+    fallback: { crypto: false },
   },
   output: {
     // filename: '[name].js',

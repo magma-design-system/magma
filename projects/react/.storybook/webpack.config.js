@@ -50,6 +50,7 @@ module.exports = async({ config, mode }) => {
   // https://stackoverflow.com/questions/57161839/module-not-found-error-cant-resolve-fs-in
   config.resolve.fallback = {
     fs: 'empty',
+    crypto: false,
   }
 
   // Return the altered config

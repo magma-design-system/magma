@@ -14,12 +14,12 @@
   },
   "scripts": {
     "clean": "rm -rf dist || true",
-    "prebuild": "npm run clean",
+    "prebuild": "yarn run clean",
     "build": "font-icons resources/mgg-icons.json",
     "postbuild": "node ./tools/setup-package-font.js",
-    "build-website": "npm run build -- --website",
+    "build-website": "yarn run build -- --website",
     "test": "echo \"Error: no test specified\" && exit 1",
-    "publish": "(cd dist && npm publish)"
+    "publish": "(cd dist && yarn publish)"
   },
   "files": [
     "/dist/fonts/*.ttf",
