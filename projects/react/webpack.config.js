@@ -1,5 +1,4 @@
 const path = require('path')
-// const autoprefixer = require('autoprefixer')
 const alias = require('./import-aliases')
 
 module.exports = {
@@ -38,7 +37,7 @@ module.exports = {
             loader: 'postcss-loader',
             options: {
               sourceMap: true,
-              implementation: require("postcss"),
+              implementation: require('postcss'),
               postcssOptions: {
                 plugins: [
                   [
