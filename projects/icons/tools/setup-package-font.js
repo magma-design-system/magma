@@ -38,7 +38,7 @@ function main() {
   if (!fs.existsSync(resourcesDir)) {
     fs.mkdirSync(resourcesDir);
   }
-  fs.copyFileSync(join(ROOT_DIR, 'resources', 'mgg-icons.json'), join(resourcesDir, 'dictionary.json'));
+  fs.copyFileSync(join(ROOT_DIR, 'resources', 'mgg-icons.json'), join(resourcesDir, 'mgg-icons.json'));
 
   // Moving out of "fonts" folder files witch aren't fonts
   const fontsDir = join(DIST_DIR, 'fonts');
