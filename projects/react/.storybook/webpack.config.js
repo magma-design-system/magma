@@ -2,9 +2,18 @@ const path = require('path')
 const autoprefixer = require('autoprefixer')
 const tailwindcss = require('tailwindcss')
 const aliases = require('../import-aliases')
+const webpack = require('webpack')
 
 module.exports = async({ config }) => {
   // config.mode = 'production'
+
+  config.plugins.push(
+    new webpack.DefinePlugin({
+      'process.env': {
+        NODE_ENV: JSON.stringify('production'),
+      },
+    }),
+  )
 
   config.module.rules.push({
     test: /\.s?css$/,
@@ -47,6 +56,7 @@ module.exports = async({ config }) => {
     crypto: false,
     assert: false,
   }
+
 
   return config
 }
