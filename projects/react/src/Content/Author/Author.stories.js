@@ -14,14 +14,14 @@ export default {
 }
 
 export const basicUsage = () =>
-  <Author avatar={avatarExample} className="bg-brand-eolo-08">
+  <Author avatar={avatarExample}>
     <H5>Fred Brooks</H5>
-    <Detail className="color-adjust-tone-06">Software engineer</Detail>
+    <Detail className="text-adjust-tone-06">Software engineer</Detail>
   </Author>
 
 export const addFields = () =>
   <Author gutter="small" avatar={avatarExample} size={'large'}>
     <H5>Fred Brooks</H5>
-    <Caption className="color-adjust-tone-06">Software engineer</Caption>
-    <Caption className="color-adjust-tone-06">fred@brooks.com</Caption>
+    <Caption className="text-adjust-tone-06">Software engineer</Caption>
+    <Caption className="text-adjust-tone-06">fred@brooks.com</Caption>
   </Author>

@@ -47,9 +47,5 @@ module.exports = async({ config }) => {
     crypto: false,
   }
 
-  config.resolve.modules = [
-    path.resolve(__dirname, '..', 'node_modules'),
-  ]
-
   return config
 }
