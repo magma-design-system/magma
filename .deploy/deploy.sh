@@ -3,8 +3,8 @@ set -e
 echo "deploy script started"
 
 echo "preparing .env file"
-envsubst < ./projects/doc/deploy/$ENV/docker-compose.yml > ./projects/doc/deploy/$ENV/docker-compose.yml.replaced
-rm ./projects/doc/deploy/$ENV/docker-compose.yml && mv ./projects/doc/deploy/$ENV/docker-compose.yml.replaced .deploy/$ENV/docker-compose.yml
+envsubst < .deploy/$ENV/docker-compose.yml > .deploy/$ENV/docker-compose.yml.replaced
+rm .deploy/$ENV/docker-compose.yml && mv .deploy/$ENV/docker-compose.yml.replaced .deploy/$ENV/docker-compose.yml
 
 eval $(ssh-agent -s)
 
@@ -24,7 +24,7 @@ echo "copying $ENV files to $SERVER:$DEPLOY_FOLDER/$ENV/"
 
 ssh $SSH_USER@$SERVER "mkdir -p $DEPLOY_FOLDER/$ENV/"
 
-scp -oStrictHostKeyChecking=no -r ./projects/doc/deploy/$ENV/* $SSH_USER@$SERVER:$DEPLOY_FOLDER/$ENV/
+scp -oStrictHostKeyChecking=no -r .deploy/$ENV/* $SSH_USER@$SERVER:$DEPLOY_FOLDER/$ENV/
 
 echo "Login to Azure repository"
 
