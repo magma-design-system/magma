@@ -14,7 +14,7 @@ RUN cd react && npm-install-peers
 COPY ./projects/docs/package.json /app/doc/package.json
 
 RUN cd doc && npm install && \
-    cd doc && npm-install-peers
+    npm-install-peers
 
 # Copy of all sources
 COPY ./projects/react /app/react
@@ -23,8 +23,8 @@ COPY ./projects/docs /app/doc
 
 # TODO Copiare solo i sorgenti invece di fare gatsby:clean
 RUN cd react && npm run build:storybook && \
-    cd doc && npm run clean && \
-    cd doc && npm run build
+    cd /app/doc && npm run clean && \
+    npm run build
 
 # Stage 1, based on Nginx, to have only the compiled website, ready for production with Nginx
 FROM nginx:alpine
