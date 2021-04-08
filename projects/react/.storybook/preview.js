@@ -1,7 +1,7 @@
 import React from 'react'
 import { addDecorator } from '@storybook/react'
 
-import 'normalize.css/normalize.css'
+import 'normalize.css'
 import '@maggioli-design-system/icons'
 import 'typeface-karla'
 import 'typeface-roboto'
