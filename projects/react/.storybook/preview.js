@@ -1,18 +1,12 @@
 import React from 'react'
 import { addDecorator } from '@storybook/react'
-// import Page from '@Gatsby/Page/Page'
-// import faker from 'faker'
-// faker.locale = 'it'
 
-// vendors
 import 'normalize.css/normalize.css'
 import '@maggioli-design-system/icons/mgg-icons.css'
 import 'typeface-karla/index.css'
 import 'typeface-roboto/index.css'
 
-// design system base styles
 import './storybook.scss'
-// import '@maggioli-design-system/styles/import-global.scss'
 
 import media from '@maggioli-design-system/design-tokens/dist/css-tokens/media.json'
 import palette from '@maggioli-design-system/design-tokens/dist/properties/color/base.json'
