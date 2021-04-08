@@ -4,7 +4,7 @@ const tailwindcss = require('tailwindcss')
 const aliases = require('../import-aliases')
 
 module.exports = async({ config }) => {
-  config.mode = 'production'
+  // config.mode = 'production'
 
   config.module.rules.push({
     test: /\.s?css$/,
