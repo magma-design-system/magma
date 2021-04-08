@@ -22,9 +22,9 @@ COPY ./projects/docs /app/doc
 
 
 # TODO Copiare solo i sorgenti invece di fare gatsby:clean
-RUN cd react && npm run build-storybook
-RUN cd doc && npm run clean && \
-    npm run build
+RUN cd react && yarn run build-storybook
+RUN cd doc && yarn run clean && \
+    yarn run build
 
 # Stage 1, based on Nginx, to have only the compiled website, ready for production with Nginx
 FROM nginx:alpine
