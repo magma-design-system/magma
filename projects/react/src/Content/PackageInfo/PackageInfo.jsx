@@ -31,20 +31,20 @@ const PackageInfo = ({ className, packageData, ...restProps }) => {
     </UList>
     <Paragraph>{packageData.description}</Paragraph>
     <Grid template="package-info-authors">
-      { packageData.repository.url && <Button href={packageData.repository.url.replace('.git', '')}>Repository</Button> }
+      { packageData.repository && <Button href={packageData.repository.url.replace('.git', '')}>Repository</Button> }
       { packageData.bugs && <Button variant="secondary-outline" href={packageData.bugs.url.replace('.git', '')}>Issue</Button> }
     </Grid>
     { packageData.contributors && <Fragment>
-    <Hr spacing="small" className="background-color-adjust-tone-18"/>
-    <Row><H4>Contributors</H4><Tag chip={true} icon="user-team" className="background-color-brand-maggioli-20 color-brand-maggioli-08">{ packageData.contributors.length }</Tag></Row>
-    <Grid template="package-info-authors">
-      {packageData.contributors.map((item, key) =>
-        <Author key={key} gravatar={`${item.email}?s=120&d=mp`}>
-          <H5>{item.name}</H5>
-          {item.role && <Caption className="color-adjust-tone-08">{item.role}</Caption>}
-        </Author>,
-      )}
-    </Grid>
+      <Hr spacing="small" className="background-color-adjust-tone-18"/>
+      <Row><H4>Contributors</H4><Tag chip={true} icon="user-team" className="background-color-brand-maggioli-20 color-brand-maggioli-08">{ packageData.contributors.length }</Tag></Row>
+      <Grid template="package-info-authors">
+        {packageData.contributors.map((item, key) =>
+          <Author key={key} gravatar={`${item.email}?s=120&d=mp`}>
+            <H5>{item.name}</H5>
+            {item.role && <Caption className="color-adjust-tone-08">{item.role}</Caption>}
+          </Author>,
+        )}
+      </Grid>
     </Fragment> }
   </Card>
 }

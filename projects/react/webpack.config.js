@@ -1,18 +1,19 @@
 const path = require('path')
-const autoprefixer = require('autoprefixer')
 const alias = require('./import-aliases')
 
 module.exports = {
-  entry: './src/index.js',
+  mode: 'production',
+  // entry: './src/index.js',
   resolve: {
     alias,
     extensions: ['.js', '.jsx'],
+    fallback: { crypto: false },
   },
   output: {
-    filename: 'bundle.min.js',
+    // filename: '[name].js',
     library: 'maggioli-design-system',
     libraryTarget: 'umd',
-    path: path.resolve(__dirname, 'dist'),
+    // path: path.resolve(__dirname, 'dist'),
   },
   module: {
     rules: [
@@ -35,10 +36,13 @@ module.exports = {
           }, {
             loader: 'postcss-loader',
             options: {
+              sourceMap: true,
+              implementation: require('postcss'),
               postcssOptions: {
                 plugins: [
                   [
-                    'autoprefixer',
+                    require('autoprefixer'),
+                    require('tailwindcss'),
                   ],
                 ],
               },
@@ -53,11 +57,7 @@ module.exports = {
       },
       {
         test: /\.(a?png|avif|gif|jpe?g|svg|webp)$/i,
-        use: [
-          {
-            loader: 'file-loader',
-          },
-        ],
+        type: 'asset',
       },
     ],
   },

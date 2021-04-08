@@ -11,14 +11,14 @@ RUN cd react && npm install
 RUN cd react && npm-install-peers
 
 # Website of doc project, dependency install
-COPY ./projects/doc/package.json /app/doc/package.json
+COPY ./projects/docs/package.json /app/doc/package.json
 
 RUN cd doc && npm install && \
     cd doc && npm-install-peers
 
 # Copy of all sources
 COPY ./projects/react /app/react
-COPY ./projects/doc /app/doc
+COPY ./projects/docs /app/doc
 
 
 # TODO Copiare solo i sorgenti invece di fare gatsby:clean

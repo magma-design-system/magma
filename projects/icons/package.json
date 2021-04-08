@@ -1,0 +1,75 @@
+{
+  "name": "@maggioli-design-system/icons",
+  "version": "1.5.1",
+  "description": "Maggioli Design System Icons is an icon font package based on Google Material Design Icons and Material Design Icons community icons.",
+  "private": true,
+  "type": "module",
+  "sideEffects": false,
+  "repository": {
+    "type": "git",
+    "url": "https://git.maggioli.it/ricerca-sviluppo-new-media/design-system.git"
+  },
+  "bugs": {
+    "url": "https://git.maggioli.it/ricerca-sviluppo-new-media/design-system/-/issues"
+  },
+  "scripts": {
+    "clean": "rm -rf dist || true",
+    "prebuild": "yarn run clean",
+    "build": "font-icons resources/mgg-icons.json",
+    "postbuild": "node ./tools/setup-package-font.js",
+    "build-website": "yarn run build -- --website",
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "publish": "(cd dist && yarn publish)"
+  },
+  "files": [
+    "/dist/fonts/*.ttf",
+    "/dist/fonts/*.woff",
+    "/dist/fonts/*.woff2",
+    "/dist/fonts/*.eot",
+    "/dist/fonts/*.svg",
+    "/dist/svg/*.svg",
+    "/dist/*.scss",
+    "/dist/*.css",
+    "/dist/*.html",
+    "/dist/*.js",
+    "/dist/*.ts",
+    "/resources/*.json"
+  ],
+  "keywords": [
+    "font",
+    "icons",
+    "svg"
+  ],
+  "author": {
+    "name": "Vittorio Vittori",
+    "email": "vittorio.vittori@maggioli.it",
+    "url": "http://vit.to"
+  },
+  "contributors": [
+    {
+      "name": "Gioele Masini",
+      "email": "gioele.masini@maggioli.it",
+      "role": "Lead Developer"
+    },
+    {
+      "name": "Federico Ciani",
+      "email": "federico.ciani@maggioli.it",
+      "role": "Icons Taxonomy"
+    },
+    {
+      "name": "Thomas Trapanese",
+      "email": "thomas.trapanese@maggioli.it",
+      "role": "Icons Tester"
+    },
+    {
+      "name": "Vittorio Vittori",
+      "email": "vittorio.vittori@maggioli.it",
+      "role": "Author"
+    }
+  ],
+  "license": "ISC",
+  "devDependencies": {
+    "@maggioli-design-system/font-icons-cli": "^1.1.0",
+    "fs-extra": "^9.1.0"
+  }
+}

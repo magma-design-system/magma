@@ -1,6 +1,17 @@
 {
   "source": ["properties/**/*.json"],
   "platforms": {
+    "js": {
+      "transformGroup": "js",
+      "buildPath": "dist/js/",
+      "files": [
+        {
+          "destination": "colors.js",
+          "format": "js/module"
+        }
+      ]
+    },
+
     "scss": {
       "transformGroup": "scss",
       "buildPath": "dist/scss/",
@@ -17,8 +28,12 @@
       "buildPath": "dist/css/",
       "files": [
         {
-          "format": "css/variables",
-          "destination": "variables.css"
+          "format": "css/vars",
+          "destination": "vars.css"
+        },
+        {
+          "format": "css/vars-tailwind",
+          "destination": "vars-tailwind.css"
         }
       ]
     },

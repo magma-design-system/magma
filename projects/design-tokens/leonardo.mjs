@@ -55,7 +55,7 @@ const getPalette = (theme, colorName, colorValue, scaffold, colorDark) => {
             codeIndex = index + 1
           }
 
-          const colorCode = `c-${codeIndex < 10 ? '0' + codeIndex : codeIndex}`
+          const colorCode = `${codeIndex < 10 ? '0' + codeIndex : codeIndex}`
           palette[colorCode] = { value: element.value }
 
           if (paletteSource.length === index + 1) {

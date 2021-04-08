@@ -30,7 +30,7 @@ BackofficeOptionsData.propTypes = {
 }
 
 const BackofficeSelect = props =>
-  <label className={`backoffice-select ${props.value ? 'backoffice-select--filled' : ''} ${props.icon !== '' ? 'backoffice-select--has-icon' : ''} ${props.error ? 'backoffice-select--has-errors' : ''} ${props.className}`}>
+  <label className={`backoffice-select ${props.value ? 'backoffice-select--filled' : ''} ${props.icon ? 'backoffice-select--has-icon' : ''} ${props.error ? 'backoffice-select--has-errors' : ''} ${props.className}`}>
     <div className="backoffice-select__content">
       {props.label &&
         <H3 htmlTag="div" className="backoffice-select__label">

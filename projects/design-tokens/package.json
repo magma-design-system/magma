@@ -1,13 +1,9 @@
 {
   "name": "@maggioli-design-system/design-tokens",
-  "version": "1.0.0",
-  "description": "This example code is bare-bones to show you what this framework can do. If you have the style-dictionary module installed globally, you can `cd` into this directory and run: ```bash style-dictionary build ```",
+  "version": "1.3.0",
+  "description": "This is the Design Token library of Maggioli Design System, here you'll find all ",
   "author": "Vittorio Vittori",
   "license": "ISC",
-  "main": "build.js",
-  "publishConfig": {
-    "registry": "http://nexus.maggioli.it:8081/repository/npm/"
-  },
   "scripts": {
     "build": "npm run build-palette && npm run build-style-dictionary && npm run build-css-tokens && npm run build-css-tokens-config",
     "build-css-tokens": "run-for-every-file --src ./css-tokens/ --dest dist/scss/ --file '**/*.json' --not-file '**/*.scss' --run 'json-to-scss {{src-file}} {{dest}}{{file-name-ext}}'",
@@ -16,16 +12,16 @@
     "build-style-dictionary": "node build.js",
     "postbuild": "cp -rf properties ./dist/properties && cp -rf css-tokens ./dist/css-tokens"
   },
+  "main": "dist/js/colors.js",
   "files": [
     "/dist/*"
   ],
-  "dependencies": {},
   "devDependencies": {
     "@adobe/leonardo-contrast-colors": "1.0.0-alpha.8",
-    "handlebars": "^4.7.6",
+    "handlebars": "^4.7.7",
     "json-to-scss": "^1.6.2",
     "run-for-every-file": "^1.1.0",
-    "style-dictionary": "^2.10.2"
+    "style-dictionary": "^2.10.3"
   },
   "repository": {
     "type": "git",

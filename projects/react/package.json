@@ -1,164 +1,179 @@
 {
-    "name": "@maggioli-design-system/react",
-    "version": "0.15.6",
-    "description": "Maggioli Design System è uno strumento nato per condividere una unica visione di progettazione condivisa tra tutti gli esperti di dominio aziendali. Ciò permette di offrire una UX unica, condivisa tra i prodotti che saranno coerenti allo stile dell’azienda.",
-    "scripts": {
-        "build": "webpack --config webpack.config.js",
-        "build-storybook": "build-storybook",
-        "deploy-storybook": "storybook-to-ghpages",
-        "lint": "npm run lint-js && npm run lint-sass",
-        "lint-js": "eslint src/**/*.{js,jsx} --fix",
-        "lint-sass": "stylelint --config ../../.stylelintrc.json 'src/**/*.scss' --fix",
-        "start": "start-storybook -p 7177",
-        "start-debug": "start-storybook --debug-webpack -p 7177"
-    },
-    "husky": {
-        "hooks": {
-            "pre-commit": "lint-staged",
-            "pre-push": ""
-        }
-    },
-    "lint-staged": {
-        "src/**/*.{js,jsx}": [
-            "npm run lint-js"
-        ],
-        "src/**/*.{scss}": [
-            "npm run lint-sass"
-        ]
-    },
-    "browserslist": [
-        "> 1%",
-        "last 2 versions"
-    ],
-    "main": "dist/bundle.min.js",
-    "files": [
-        "/import-aliases.js",
-        "/dist/**/*"
-    ],
-    "repository": {
-        "type": "git",
-        "url": "https://git.maggioli.it/ricerca-sviluppo-new-media/design-system.git"
-    },
-    "bugs": {
-        "url": "https://git.maggioli.it/ricerca-sviluppo-new-media/design-system/-/issues"
-    },
-    "author": {
-        "name": "Vittorio Vittori",
-        "email": "vittorio.vittori@maggioli.it",
-        "url": "http://vit.to"
-    },
-    "contributors": [
-        {
-            "name": "Fabion Dautaj",
-            "email": "fabion.dautaj@maggioli.it",
-            "role": "React Components"
-        },
-        {
-            "name": "Gioele Masini",
-            "email": "gioele.masini@maggioli.it",
-            "role": "Software Architecture Lead"
-        },
-        {
-            "name": "Matteo Innocenti",
-            "email": "matteo.innocenti@maggioli.it",
-            "role": "React Components"
-        },
-        {
-            "name": "Stefano Pascazi",
-            "email": "stefano.pascazi@maggioli.it",
-            "role": "React Components"
-        },
-        {
-            "name": "Vittorio Vittori",
-            "email": "vittorio.vittori@maggioli.it",
-            "role": "Author"
-        }
-    ],
-    "license": "ISC",
-    "dependencies": {
-        "@maggioli-common/mgg-icons": "1.3.0",
-        "@maggioli-design-system/design-tokens": "^1.0.0",
-        "@maggioli-design-system/identity": "^1.0.0",
-        "@maggioli-design-system/styles": "^1.0.0",
-        "crypto-js": "^4.0.0",
-        "gsap": "^3.5.1",
-        "install": "^0.13.0",
-        "react": "^16.0.0",
-        "react-cool-onclickoutside": "^1.5.8",
-        "react-dom": "^16.0.0",
-        "react-gsap": "^2.2.1",
-        "react-helmet": "^6.1.0",
-        "react-router-dom": "^5.2.0",
-        "react-syntax-highlighter": "^15.3.1",
-        "react-timeago": "^5.2.0",
-        "typeface-karla": "1.1.13",
-        "typeface-roboto": "1.1.13"
-    },
-    "devDependencies": {
-        "@adobe/leonardo-contrast-colors": "^1.0.0-alpha.8",
-        "@babel/core": "^7.12.9",
-        "@babel/eslint-parser": "^7.12.1",
-        "@babel/plugin-proposal-class-properties": "^7.12.1",
-        "@babel/plugin-proposal-export-default-from": "^7.12.1",
-        "@babel/plugin-syntax-jsx": "^7.12.1",
-        "@babel/preset-env": "^7.12.7",
-        "@babel/preset-react": "^7.12.7",
-        "@babel/types": "^7.12.7",
-        "@deckdeckgo/highlight-code": "^2.2.1",
-        "@mdx-js/mdx": "^1.6.22",
-        "@mdx-js/react": "^1.6.22",
-        "@storybook/addon-actions": "^6.1.10",
-        "@storybook/addon-backgrounds": "^6.1.10",
-        "@storybook/addon-docs": "^6.1.10",
-        "@storybook/addon-links": "^6.1.10",
-        "@storybook/addon-viewport": "^6.1.10",
-        "@storybook/addons": "^6.1.10",
-        "@storybook/react": "^6.1.10",
-        "autoprefixer": "^10.2.4",
-        "babel-cli": "^6.26.0",
-        "babel-loader": "^8.2.2",
-        "babel-plugin-styled-components": "^1.12.0",
-        "babel-preset-es2015": "^6.24.1",
-        "concat-files": "^0.1.1",
-        "eslint": "^7.15.0",
-        "eslint-config-standard": "^16.0.2",
-        "eslint-plugin-import": "^2.22.1",
-        "eslint-plugin-jsx-a11y": "^6.4.1",
-        "eslint-plugin-node": "^11.1.0",
-        "eslint-plugin-promise": "^4.2.1",
-        "eslint-plugin-react": "^7.21.5",
-        "faker": "^5.1.0",
-        "get-contrast": "^2.0.0",
-        "handlebars": "^4.7.6",
-        "hex-rgb": "^4.2.0",
-        "husky": "^4.3.5",
-        "json-to-scss": "^1.6.2",
-        "lint-staged": "^10.5.3",
-        "postcss-loader": "^4.2.0",
-        "prop-types": "^15.7.2",
-        "query-string": "^6.13.7",
-        "sass": "^1.32.6",
-        "sass-extract": "^2.1.0",
-        "sass-loader": "^10.1.0",
-        "standard": "^16.0.3",
-        "style-dictionary": "^2.10.2",
-        "styled-components": "^5.2.1",
-        "styled-reset-advanced": "^1.0.3",
-        "stylelint": "^13.8.0",
-        "stylelint-config-sass-guidelines": "^7.1.0",
-        "stylelint-config-standard": "^20.0.0",
-        "stylelint-order": "^4.1.0",
-        "stylelint-scss": "^3.19.0",
-        "webpack": "^4.44.2",
-        "webpack-cli": "^4.2.0"
-    },
-    "peerDependencies": {
-        "@emotion/core": "^11.0.0",
-        "@emotion/react": "^11.0.0",
-        "eslint": "^6.0.0",
-        "gsap": "^3.5.1",
-        "react": "^16.0.0",
-        "react-dom": "^16.0.0",
-        "typescript": "^4.0.0"
+  "name": "@maggioli-design-system/react",
+  "version": "0.20.2",
+  "description": "Maggioli Design System è uno strumento nato per condividere una visione di progettazione coordintata con tutti gli esperti di dominio aziendali. Ciò permette di offrire una UX unica, condivisa tra i prodotti che saranno coerenti allo stile dell’azienda.",
+  "license": "ISC",
+  "scripts": {
+    "build": "webpack --config webpack.config.js",
+    "build-storybook": "build-storybook",
+    "deploy-storybook": "storybook-to-ghpages",
+    "lint": "npm run lint-js && npm run lint-sass",
+    "lint-js": "eslint src/**/*.{js,jsx} --fix",
+    "lint-sass": "stylelint --config ../../.stylelintrc.json 'src/**/*.scss' --fix",
+    "start": "start-storybook -p 7177",
+    "start-debug": "start-storybook --debug-webpack -p 7177"
+  },
+  "husky": {
+    "hooks": {
+      "pre-commit": "lint-staged",
+      "pre-push": ""
     }
+  },
+  "lint-staged": {
+    "src/**/*.{js,jsx}": [
+      "npm run lint-js"
+    ],
+    "src/**/*.{scss}": [
+      "npm run lint-sass"
+    ]
+  },
+  "browserslist": [
+    "> 1%",
+    "last 2 versions"
+  ],
+  "main": "dist/bundle.min.js",
+  "files": [
+    "/import-aliases.js",
+    "/dist/**/*"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "https://git.maggioli.it/ricerca-sviluppo-new-media/design-system.git"
+  },
+  "bugs": {
+    "url": "https://git.maggioli.it/ricerca-sviluppo-new-media/design-system/-/issues"
+  },
+  "author": {
+    "name": "Vittorio Vittori",
+    "email": "vittorio.vittori@maggioli.it",
+    "url": "http://vit.to"
+  },
+  "contributors": [
+    {
+      "name": "Fabion Dautaj",
+      "email": "fabion.dautaj@maggioli.it",
+      "role": "React Components"
+    },
+    {
+      "name": "Gioele Masini",
+      "email": "gioele.masini@maggioli.it",
+      "role": "Software Architecture Lead"
+    },
+    {
+      "name": "Matteo Innocenti",
+      "email": "matteo.innocenti@maggioli.it",
+      "role": "React Components"
+    },
+    {
+      "name": "Stefano Pascazi",
+      "email": "stefano.pascazi@maggioli.it",
+      "role": "React Components"
+    },
+    {
+      "name": "Vittorio Vittori",
+      "email": "vittorio.vittori@maggioli.it",
+      "role": "Author"
+    }
+  ],
+  "dependencies": {
+    "@maggioli-design-system/icons": "^1.5.0",
+    "@maggioli-design-system/design-tokens": "^1.2.2",
+    "@maggioli-design-system/identity": "^1.1.1",
+    "@maggioli-design-system/styles": "^1.1.3",
+    "crypto-js": "^4.0.0",
+    "gsap": "^3.6.1",
+    "react": "^16.0.0",
+    "react-cool-onclickoutside": "^1.6.1",
+    "react-dom": "^16.0.0",
+    "react-gsap": "^2.2.1",
+    "react-helmet": "^6.1.0",
+    "react-router-dom": "^5.2.0",
+    "react-syntax-highlighter": "^15.4.3",
+    "react-timeago": "^5.2.0",
+    "typeface-karla": "1.1.13",
+    "typeface-roboto": "1.1.13"
+  },
+  "devDependencies": {
+    "@adobe/leonardo-contrast-colors": "^1.0.0-alpha.8",
+    "@babel/core": "^7.13.14",
+    "@babel/eslint-parser": "^7.13.14",
+    "@babel/plugin-proposal-class-properties": "^7.13.0",
+    "@babel/plugin-proposal-export-default-from": "^7.12.13",
+    "@babel/plugin-syntax-jsx": "^7.12.13",
+    "@babel/preset-env": "^7.13.12",
+    "@babel/preset-react": "^7.13.13",
+    "@babel/types": "^7.13.14",
+    "@deckdeckgo/highlight-code": "^2.5.1",
+    "@mdx-js/mdx": "^1.6.22",
+    "@mdx-js/react": "^1.6.22",
+    "@storybook/addon-actions": "^6.2.0",
+    "@storybook/addon-backgrounds": "^6.2.0",
+    "@storybook/addon-docs": "^6.2.0",
+    "@storybook/addon-links": "^6.2.0",
+    "@storybook/addon-viewport": "^6.2.0",
+    "@storybook/addons": "^6.2.0",
+    "@storybook/builder-webpack5": "^6.2.0",
+    "@storybook/react": "^6.2.0",
+    "@tailwindcss/postcss7-compat": "^2.0.4",
+    "autoprefixer": "^9.8.6",
+    "babel-cli": "^6.26.0",
+    "babel-loader": "^8.2.2",
+    "babel-plugin-styled-components": "^1.12.0",
+    "concat-files": "^0.1.1",
+    "eslint": "^7.15.0",
+    "eslint-config-standard": "^16.0.2",
+    "eslint-plugin-import": "^2.22.1",
+    "eslint-plugin-jsx-a11y": "^6.4.1",
+    "eslint-plugin-node": "^11.1.0",
+    "eslint-plugin-promise": "^4.3.1",
+    "eslint-plugin-react": "^7.23.1",
+    "faker": "^5.5.2",
+    "get-contrast": "^2.0.0",
+    "handlebars": "^4.7.7",
+    "hex-rgb": "^4.2.0",
+    "husky": "^6.0.0",
+    "json-to-scss": "^1.6.2",
+    "lint-staged": "^10.5.4",
+    "postcss": "^7.0.35",
+    "postcss-loader": "^5.2.0",
+    "prop-types": "^15.7.2",
+    "query-string": "^7.0.0",
+    "sass": "^1.32.8",
+    "sass-extract": "^2.1.0",
+    "sass-loader": "^11.0.1",
+    "standard": "^16.0.3",
+    "style-dictionary": "^2.10.3",
+    "styled-components": "^5.2.2",
+    "styled-reset-advanced": "^1.0.3",
+    "stylelint": "^13.12.0",
+    "stylelint-config-sass-guidelines": "^8.0.0",
+    "stylelint-config-standard": "^21.0.0",
+    "stylelint-order": "^4.1.0",
+    "stylelint-scss": "^3.19.0",
+    "tailwindcss": "npm:@tailwindcss/postcss7-compat@^2.0.4",
+    "webpack": "^5.28.0",
+    "webpack-cli": "^4.6.0"
+  },
+  "peerDependencies": {
+    "@emotion/core": "^11.0.0",
+    "@emotion/react": "^11.1.5",
+    "eslint": "^7.23.0",
+    "gsap": "^3.6.1",
+    "react": "^16.0.0",
+    "react-dom": "^16.0.0",
+    "typescript": "^4.1.3"
+  },
+  "resolutions": {
+    "webpack": "^5.0.0",
+    "css-loader": "^5.0.0",
+    "dotenv-webpack": "^6.0.0",
+    "html-webpack-plugin": "^5.0.0",
+    "style-loader": "^2.0.0",
+    "terser-webpack-plugin": "^5.0.0",
+    "webpack-dev-middleware": "^4.1.0",
+    "webpack-virtual-modules": "^0.4.2"
+  },
+  "browser": {
+    "crypto": false
+  }
 }

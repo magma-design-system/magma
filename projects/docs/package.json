@@ -1,0 +1,157 @@
+{
+    "name": "@maggioli-design-system/docs",
+    "version": "0.13.2",
+    "description": "Progetto della documentazione del Design System del Gruppo Maggioli.",
+    "private": true,
+    "scripts": {
+        "start": "npm run clean && npm run develop",
+        "build": "gatsby build",
+        "clean": "gatsby clean",
+        "serve": "gatsby serve -o -p 3898",
+        "develop": "gatsby develop -H 0.0.0.0 -p 3898 -o",
+        "lint": "npm run lint-js && npm run lint-sass",
+        "lint-js": "eslint src/**/*.{js,jsx} --fix",
+        "lint-sass": "stylelint --config .stylelintrc.json 'src/**/*.scss' --fix"
+    },
+    "husky": {
+        "hooks": {
+            "pre-commit": "lint-staged",
+            "pre-push": ""
+        }
+    },
+    "lint-staged": {
+        "src/**/*.{js,jsx}": [
+            "npm run lint-js"
+        ],
+        "src/**/*.{scss}": [
+            "npm run lint-sass"
+        ]
+    },
+    "browserslist": [
+        "> 1%",
+        "last 2 versions"
+    ],
+    "repository": {
+        "type": "git",
+        "url": "https://git.maggioli.it/ricerca-sviluppo-new-media/design-system.git"
+    },
+    "bugs": {
+        "url": "https://git.maggioli.it/ricerca-sviluppo-new-media/design-system/-/issues"
+    },
+    "author": {
+        "name": "Vittorio Vittori",
+        "email": "vittorio.vittori@maggioli.it",
+        "url": "http://vit.to"
+    },
+    "contributors": [
+        {
+            "name": "Federico Ciani",
+            "email": "federico.ciani@maggioli.it",
+            "role": "UI Designer"
+        },
+        {
+            "name": "Gioele Masini",
+            "email": "gioele.masini@maggioli.it",
+            "role": "Software Architecture Lead"
+        },
+        {
+            "name": "Vittorio Vittori",
+            "email": "vittorio.vittori@maggioli.it",
+            "role": "Author"
+        }
+    ],
+    "license": "ISC",
+    "dependencies": {
+        "@maggioli-design-system/icons": "^1.5.0",
+        "crypto-js": "^4.0.0",
+        "gsap": "^3.6.1",
+        "install": "^0.13.0",
+        "material-design-icons": "^3.0.1",
+        "material-design-icons-updated": "^7.0.0",
+        "normalize.css": "^8.0.1",
+        "react": "^16.0.0",
+        "react-cool-onclickoutside": "^1.6.1",
+        "react-dom": "^16.0.0",
+        "react-gsap": "^2.2.1",
+        "react-helmet": "^6.1.0",
+        "react-router-dom": "^5.2.0",
+        "react-syntax-highlighter": "^15.4.3",
+        "react-timeago": "^5.2.0",
+        "typeface-karla": "1.1.13",
+        "typeface-roboto": "1.1.13"
+    },
+    "devDependencies": {
+        "@adobe/leonardo-contrast-colors": "^1.0.0-alpha.8",
+        "@babel/core": "^7.13.14",
+        "@babel/eslint-parser": "^7.13.14",
+        "@babel/plugin-proposal-class-properties": "^7.13.0",
+        "@babel/plugin-proposal-export-default-from": "^7.12.13",
+        "@babel/plugin-syntax-jsx": "^7.12.13",
+        "@babel/preset-env": "^7.13.12",
+        "@babel/preset-react": "^7.13.13",
+        "@babel/types": "^7.13.14",
+        "@deckdeckgo/highlight-code": "^2.5.1",
+        "@mdx-js/mdx": "^1.6.22",
+        "@mdx-js/react": "^1.6.22",
+        "autoprefixer": "~9.7.6",
+        "babel-cli": "^6.26.0",
+        "babel-loader": "^8.2.2",
+        "babel-plugin-styled-components": "^1.12.0",
+        "concat-files": "^0.1.1",
+        "eslint": "^7.23.0",
+        "eslint-config-standard": "^16.0.2",
+        "eslint-plugin-import": "^2.22.1",
+        "eslint-plugin-jsx-a11y": "^6.4.1",
+        "eslint-plugin-node": "^11.1.0",
+        "eslint-plugin-promise": "^4.3.1",
+        "eslint-plugin-react": "^7.23.1",
+        "faker": "^5.5.1",
+        "gatsby": "^2.2.0",
+        "gatsby-alias-imports": "^1.0.6",
+        "gatsby-plugin-manifest": "^2.2.0",
+        "gatsby-plugin-mdx": "^2.2.0",
+        "gatsby-plugin-offline": "^3.2.0",
+        "gatsby-plugin-page-creator": "^2.2.0",
+        "gatsby-plugin-react-helmet": "^3.2.0",
+        "gatsby-plugin-root-import": "^2.0.6",
+        "gatsby-plugin-sass": "^3.2.0",
+        "gatsby-plugin-sharp": "^2.2.0",
+        "gatsby-plugin-styled-components": "^3.2.0",
+        "gatsby-remark-highlight-code": "^2.2.0",
+        "gatsby-source-filesystem": "^2.2.0",
+        "gatsby-transformer-remark": "^2.2.0",
+        "gatsby-transformer-sharp": "^2.2.0",
+        "get-contrast": "^2.0.0",
+        "handlebars": "^4.7.7",
+        "hex-rgb": "^4.2.0",
+        "json-to-scss": "^1.6.2",
+        "postcss-loader": "^5.2.0",
+        "prop-types": "^15.7.2",
+        "query-string": "^7.0.0",
+        "sass": "^1.32.8",
+        "sass-extract": "^2.1.0",
+        "sass-loader": "^11.0.1",
+        "standard": "^16.0.3",
+        "style-dictionary": "^2.10.3",
+        "styled-components": "^5.2.2",
+        "styled-reset-advanced": "^1.0.3",
+        "stylelint": "^13.12.0",
+        "stylelint-config-sass-guidelines": "^8.0.0",
+        "stylelint-config-standard": "^21.0.0",
+        "stylelint-order": "^4.1.0",
+        "stylelint-scss": "^3.19.0",
+        "webpack": "^5.28.0",
+        "webpack-cli": "^4.6.0"
+    },
+    "resolutions": {
+      "gatsby": "^3.0.0",
+      "webpack": "^5.0.0",
+      "css-loader": "^5.0.0",
+      "dotenv-webpack": "^6.0.0",
+      "html-webpack-plugin": "^5.0.0",
+      "style-loader": "^2.0.0",
+      "terser-webpack-plugin": "^5.0.0",
+      "webpack-dev-middleware": "^4.1.0",
+      "webpack-virtual-modules": "^0.4.2"
+    }
+}

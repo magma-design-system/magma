@@ -1,23 +1,20 @@
 {
   "name": "@maggioli-design-system/styles",
-  "version": "1.1.0",
+  "version": "1.1.3",
   "description": "Styles layer",
   "main": "css/styles.min.css",
   "scripts": {
     "build": "npm run clean && npm run package && npm run config && npm run sass && npm run sass:min && npm run copy:sass",
-    "clean": "rm -rf dist || true && mkdir -p dist/css dist/sass",
-    "config": "cp ./node_modules/@maggioli-design-system/design-tokens/dist/scss/config.scss ./sass",
-    "copy:sass": "cp -r sass dist",
+    "clean": "rm -rf dist || true && mkdir -p dist/css dist/scss",
+    "config": "cp ../../node_modules/@maggioli-design-system/design-tokens/dist/scss/config.scss ./scss",
+    "copy:sass": "cp -r scss dist",
     "package": "cp package.json dist/package.json",
-    "sass": "node-sass sass/import-global.scss --output-style=expanded --source-map-embed -o dist/css && mv dist/css/import-global.css dist/css/styles.css",
-    "sass:min": "node-sass sass/import-global.scss --output-style=compressed -o dist/css && mv dist/css/import-global.css dist/css/styles.min.css"
+    "sass": "sass ./scss/import-global.scss ./dist/css/styles.css --style=expanded --embed-source-map --load-path=../../node_modules",
+    "sass:min": "sass ./scss/import-global.scss ./dist/css/styles.min.css --style=compressed --load-path=../../node_modules"
   },
   "repository": {
     "type": "git",
     "url": "https://git.maggioli.it/ricerca-sviluppo-new-media/design-system.git"
-  },
-  "publishConfig": {
-    "registry": "http://nexus.maggioli.it:8081/repository/npm/"
   },
   "keywords": [
     "sass",
@@ -26,20 +23,26 @@
     "tailwindcss"
   ],
   "author": "Vittorio Vittori",
+  "contributors": [
+    {
+      "name": "Vittorio Vittori",
+      "email": "vittorio.vittori@maggioli.it",
+      "role": "CSS, SASS developer"
+    }
+  ],
   "license": "ISC",
   "dependencies": {
-    "@maggioli-design-system/design-tokens": "0.1.0",
     "normalize.css": "^8.0.1",
     "typeface-karla": "1.1.13",
     "typeface-roboto": "1.1.13"
   },
   "devDependencies": {
-    "autoprefixer": "^10.2.1",
-    "node-sass": "^4.14.1",
-    "postcss": "^8.2.4",
+    "@tailwindcss/postcss7-compat": "^2.0.4",
+    "autoprefixer": "^9.8.6",
+    "postcss": "^7.0.35",
     "sass": "^1.32.8",
     "sass-extract": "^2.1.0",
-    "sass-loader": "^10.1.0",
-    "tailwindcss": "^2.0.2"
+    "sass-loader": "^11.0.1",
+    "tailwindcss": "npm:@tailwindcss/postcss7-compat@^2.0.4"
   }
 }

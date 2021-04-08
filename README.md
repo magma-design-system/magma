@@ -1,48 +1,40 @@
+# Maggioli Design System
 
+This repo contains [Maggioli Design System][docs].
 
-# Maggioli design system
-
-This design system is based on [React][react], [Storybook][storybook] and [Gatsby][gatsby], you can see it on [Maggioli design system][storybook-online] website.
-
-The project is currently store in [nexus.maggioli.it][nexus-mgg] under `@maggioli` group.
+[docs]: https://design-system.maggiolicloud.it/
 
 ---
 
 ### Installation
 
-Install `node v14.x.x` with nvm and `npm 7.x.x` manually:
-You just need to install from project root:
+Clone the private repository form Git:
 
 ```
 git clone https://git.maggioli.it/ricerca-sviluppo-new-media/design-system.git
 ```
 
-Then launch:
+Install needed node dependencies:
 
 ```
-npm install
-npx nx run mgg-icons:build
-npm install
-npx nx affected:build
+npm install -g npx
+npm install -g yarn
 ```
 
-### Update node
+Then run `yarn install` from project root:
 
 ```
-nvm use
-npm install -g npm
+yarn install
+npx nx run-many --all --target=build --skip-nx-cache
+yarn install
+npx nx run affected:build
 ```
 
-[adobe-leonardo]: (https://leonardocolor.io/)
-[addon-docs]: https://www.npmjs.com/package/@storybook/addon-docs
-[mdx]: https://github.com/storybookjs/storybook/blob/next/addons/docs/docs/mdx.md
-[nvm]: https://github.com/nvm-sh/nvm
-[node]: https://nodejs.org/
-[nexus-mgg]: http://nexus.maggioli.it:8081#browse/search/npm=group%3Dmaggioli
-[react]: https://reactjs.org/
-[gatsby]: https://www.gatsbyjs.org/
-[storybook-local]: http://localhost:2046
-[storybook-online]: https://designsystem.maggioli.it
-[storybook]: https://storybook.js.org/
-[vsc-sass-lint]: https://marketplace.visualstudio.com/items?itemName=glen-84.sass-lint
-[vsc]: https://code.visualstudio.com/
+If you want to test your nx build without cache, use `--skip-nx-cache` to avoid it. Be aware this command will SLOW build time.
+
+Then you can run for every project:
+
+```
+npx nx run react:start --skip-nx-cache
+```
+

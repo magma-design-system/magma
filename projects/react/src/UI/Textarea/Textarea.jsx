@@ -1,39 +1,33 @@
-import React, { useContext } from 'react'
+import React from 'react'
 import PropTypes from 'prop-types'
-import { ThemeContext } from '@Behavior/Theme/ThemeProvider'
 import './Textarea.scss'
 import Icon from '@Design/Icon/Icon'
+import Detail from '@Typography/Detail/Detail'
 
-const Textarea = props => {
-  const state = useContext(ThemeContext)
-  const themeName = `textarea--${state.name}`
-
-  return (
-    <label className={`textarea ${themeName} ${props.icon ? 'textarea--has-icon' : ''} ${props.error ? 'textarea--has-errors' : ''} ${props.className}`}>
-      {props.label &&
-        <div className="textarea__label text-primary text-primary--h6">
-          {props.label}
-        </div>
-      }
-      {props.icon &&
-        <div className="textarea__icon-area">
-          <Icon className={`textarea__icon ${props.iconClassName}`} name={props.icon}/>
-        </div>
-      }
-      <textarea className={`textarea__field ${props.font}`} name={props.name} placeholder={props.placeholder} onChange={props.onChange}>
-        {props.children}
-      </textarea>
-      {props.error &&
-        <div className="input__message">
-          <Detail htmlTag="div" className="input__error">
-            <Icon className="input__error-icon" name="status-error"/>
-            <div className="input__error-text">{props.error}</div>
-          </Detail>
-        </div>
-      }
-    </label>
-  )
-}
+const Textarea = props =>
+  <label className={`textarea ${props.icon ? 'textarea--has-icon' : ''} ${props.error ? 'textarea--has-errors' : ''} ${props.className}`}>
+    {props.label &&
+      <div className="textarea__label text-secondary text-secondary--label-paragraph">
+        {props.label}
+      </div>
+    }
+    {props.icon &&
+      <div className="textarea__icon-area">
+        <Icon className={`textarea__icon ${props.iconClassName}`} name={props.icon}/>
+      </div>
+    }
+    <textarea className={`textarea__field ${props.font}`} name={props.name} placeholder={props.placeholder} onChange={props.onChange}>
+      {props.children}
+    </textarea>
+    {props.error &&
+      <div className="input__message">
+        <Detail htmlTag="div" className="input__error">
+          <Icon className="input__error-icon" name="status-error"/>
+          <div className="input__error-text">{props.error}</div>
+        </Detail>
+      </div>
+    }
+  </label>
 
 Textarea.propTypes = {
   className: PropTypes.string,
@@ -45,6 +39,7 @@ Textarea.propTypes = {
   name: PropTypes.string,
   onChange: PropTypes.func,
   placeholder: PropTypes.string,
+  required: PropTypes.bool,
 }
 
 Textarea.defaultProps = {
@@ -56,6 +51,7 @@ Textarea.defaultProps = {
   name: 'unassigned',
   onChange: () => {},
   placeholder: '',
+  required: false,
 }
 
 export default Textarea

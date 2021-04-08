@@ -13,7 +13,7 @@ import Banner from '@UI/Banner/Banner'
 import './BackofficePageLogin.scss'
 
 const BackofficePageLoginBanner = props => {
-  return <Banner className="backoffice-page-login__banner" {...props}><Detail>{props.children}</Detail></Banner>
+  return <Banner className="backoffice-page-login__banner text-secondary text-secondary--detail" {...props}>{props.children}</Banner>
 }
 
 BackofficePageLoginBanner.propTypes = {

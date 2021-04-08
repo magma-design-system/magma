@@ -4,9 +4,10 @@
   background-color: color('adjust.tone');
   left: 0;
   padding: s(1);
-  position: fixed;
+  position: sticky;
   right: 0;
   top: 0;
+  z-index: 2;
 
   &__item {
     &:not( :last-child ) {

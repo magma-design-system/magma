@@ -5,8 +5,8 @@
       "root": "projects/design-tokens",
       "type": "library"
     },
-    "doc": {
-      "root": "projects/doc",
+    "docs": {
+      "root": "projects/docs",
       "type": "application"
     },
     "font-icons-cli": {
@@ -17,12 +17,12 @@
       "root": "projects/identity",
       "type": "library"
     },
-    "mgg-icons": {
-      "root": "projects/mgg-icons",
+    "icons": {
+      "root": "projects/icons",
       "type": "library"
     },
-    "mgg-icons-svg": {
-      "root": "projects/mgg-icons-svg",
+    "icons-svg": {
+      "root": "projects/icons-svg",
       "type": "library"
     },
     "react": {

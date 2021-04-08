@@ -1,4 +1,8 @@
 @import '~@maggioli-design-system/styles/scss/import-global.scss';
+@import '~@maggioli-design-system/design-tokens/dist/css/vars.css';
+@import "tailwindcss/base";
+@import "tailwindcss/components";
+@import "tailwindcss/utilities";
 
 .sb-show-main {
   // padding: 0 !important;

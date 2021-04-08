@@ -1,13 +1,12 @@
 {
   "name": "@maggioli-design-system/identity",
-  "version": "1.0.0",
+  "version": "1.1.1",
   "description": "Maggioli brand identity assets",
-  "main": "index.js",
   "files": [
-    "/resources/**/*"
+    "/dist/**/*"
   ],
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "build": "node build.js"
   },
   "keywords": [
     "asset",
@@ -16,9 +15,23 @@
     "logo"
   ],
   "author": "Vittorio Vittori",
+  "contributors": [
+    {
+        "name": "Vittorio Vittori",
+        "email": "vittorio.vittori@maggioli.it",
+        "role": "Development"
+    }
+  ],
+  "repository": {
+    "type": "git",
+    "url": "http://git.maggioli.it/ricerca-sviluppo-new-media/design-system.git"
+  },
   "license": "ISC",
   "devDependencies": {
+    "pdfkit": "^0.11.0",
     "sharp": "^0.27.1",
-    "shelljs": "^0.8.4"
+    "shelljs": "^0.8.4",
+    "svg-dimensions": "^1.0.2",
+    "svg-to-pdfkit": "^0.1.8"
   }
 }

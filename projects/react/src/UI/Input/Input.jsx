@@ -11,7 +11,7 @@ const Input = props => {
   return (
     <label className={`input ${props.icon ? 'input--has-icon' : ''} ${props.error ? 'input--has-errors' : ''} ${props.grow ? 'input--grow' : ''} ${props.fill ? 'input--fill' : ''} ${props.theme !== '' ? 'input--' + props.theme : ''} ${props.className}`}>
       {props.label &&
-        <div className="input__label text-primary text-primary--h6">
+        <div className="input__label text-secondary text-secondary--label-paragraph">
           {props.label}
         </div>
       }

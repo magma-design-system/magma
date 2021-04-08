@@ -44,7 +44,6 @@ function iconGroupList ([groupName, group]) {
   switch (groupName) {
     case 'maggioli':
     case 'material':
-    case 'fontawesome':
       return group.listPath().then(list => ({ group: groupName, list }))
     //case 'localDirectory':
     //  return group.listPath().then(list => ({ group: groupName, list }))

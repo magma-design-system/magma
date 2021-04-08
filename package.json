@@ -4,14 +4,16 @@
   "description": "Maggioli Design System è uno strumento nato per condividere una unica visione di progettazione condivisa tra tutti gli esperti di dominio aziendali. Ciò permette di offrire una UX unica, condivisa tra i prodotti che saranno coerenti allo stile dell’azienda.",
   "private": true,
   "workspaces": [
-    "projects/!(mgg-icons)",
-    "projects/mgg-icons/dist"
+    "projects/!(icons)",
+    "projects/icons/dist"
   ],
   "devDependencies": {
     "@nrwl/cli": "latest",
     "@nrwl/tao": "latest",
     "@nrwl/workspace": "latest",
     "eslint": "^7.15.0",
+    "husky": "^6.0.0",
+    "lint-staged": "^10.5.4",
     "prettier": "^2.2.1",
     "stylelint": "^13.8.0",
     "stylelint-config-sass-guidelines": "^7.1.0",
@@ -19,6 +21,9 @@
     "stylelint-order": "^4.1.0",
     "stylelint-scss": "^3.19.0",
     "typescript": "4.1.3"
+  },
+  "engines": {
+    "npm": ">=7.0.0"
   },
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"

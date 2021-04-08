@@ -10,7 +10,7 @@ module.exports = {
   output: {
     filename: 'css/styles.css',
     library: 'maggioli-design-system',
-    path: path.resolve(__dirname, 'dist'),
+    // path: path.resolve(__dirname, 'dist'),
   },
   module: {
     rules: [

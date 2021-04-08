@@ -50,7 +50,7 @@ $modal-background: rgba(0, 0, 0, 0.5);
     }
   }
 
-  &--from-center {
+  &--position-center {
 
     @include media ('tablet') {
       justify-content: center;
@@ -106,13 +106,27 @@ $modal-background: rgba(0, 0, 0, 0.5);
 
   &--max-height {
 
-    $margin: s(14);
+    $margin: s(2);
 
     .modal {
       &__contents {
 
         @include media ('tablet') {
           max-height: calc(100vh - #{$margin});
+        }
+      }
+    }
+  }
+
+  &--max-width {
+
+    $margin: s(2);
+
+    .modal {
+      &__window {
+
+        @include media ('tablet') {
+          max-width: calc(100vw - #{$margin});
         }
       }
     }
@@ -198,6 +212,7 @@ $modal-background: rgba(0, 0, 0, 0.5);
     border-radius: s(2);
     color: color('brand.maggioli', '05');
     cursor: pointer;
+    display: flex;
     height: s(2);
     left: auto;
     line-height: 1;

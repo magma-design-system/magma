@@ -1,5 +1,5 @@
-import { addons } from '@storybook/addons';
-import themeMaggioli from './theme';
+import { addons } from '@storybook/addons'
+import themeMaggioli from './theme'
 
 addons.setConfig({
   /**
@@ -54,4 +54,4 @@ addons.setConfig({
    * @type {String}
    */
   selectedPanel: undefined,
-});
+})

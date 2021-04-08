@@ -10,7 +10,6 @@ $size: get($form-sizes, 'input-height');
 
 .input {
   display: block;
-  line-height: 0;
   position: relative;
   transition: margin-bottom $ease;
 

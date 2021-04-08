@@ -2,7 +2,7 @@ const fs = require('fs').promises
 const path = require('path')
 
 class Maggioli {
-  static ICONS_DIR = `${path.dirname(require.resolve('@maggioli-common/mgg-icons-svg/package.json'))}/svg`
+  static ICONS_DIR = `${path.dirname(require.resolve('@maggioli-design-system/icons-svg/package.json'))}/svg`
   static FILE_NAME_REGEX = /^([\w-]+)\.svg$/
 
   /**
@@ -87,37 +87,37 @@ class Material {
   }
 }
 
-class FontAwesome {
-  static ICONS_DIR = `${path.dirname(require.resolve('@fortawesome/fontawesome-free/package.json'))}/svgs`
+class MaterialCommunity {
+  static ICONS_DIR = `${path.dirname(require.resolve('@mdi/svg/package.json'))}/svg`
   static FILE_NAME_REGEX = /^([\w-]+)\.svg$/
 
   /**
    * List of paths of subdirectories (possibly) with icons
    * @return {Promise<string[]>}
    */
-  static async subDirectories() {
-    return subDirectories(this.ICONS_DIR)
+  static async subDirectories () {
+    return [this.ICONS_DIR]
   }
 
   /**
-   * Search the requested icon in FontAwesome icons
-   * @param iconName {string}
+   * Search the requested icon in Material Design Icons Community
+   * @param iconName {string} name of the icon
    * @return {Promise<string>}
    */
   static async getPath (iconName) {
-    const subdirectories = await FontAwesome.subDirectories()
+    const subdirectories = await MaterialCommunity.subDirectories()
     const filename = `${iconName}.svg`
 
-    return iconGroupGetHelper('fontawesome', subdirectories, iconName, filename)
+    return iconGroupGetHelper('mdi', subdirectories, iconName, filename)
   }
 
   /**
-   * Search all the FontAwesome icons
-   * @return {Promise<string[]>} Paths of all the FontAwesome icons
+   * Search all the Maggioli icons
+   * @return {Promise<string[]>} Paths of all the Material Design Icons Community icons
    */
   static async listPath () {
-    const subdirectories = await FontAwesome.subDirectories()
-    return iconGroupListHelper('fontawesome', subdirectories, FontAwesome.FILE_NAME_REGEX)
+    const subdirectories = await MaterialCommunity.subDirectories()
+    return iconGroupListHelper('mdi', subdirectories, MaterialCommunity.FILE_NAME_REGEX)
   }
 
   /**
@@ -126,7 +126,7 @@ class FontAwesome {
    * @return {string} The icon name
    */
   static getIconName (path) {
-    return path.split('/').slice(-1)[0].match(FontAwesome.FILE_NAME_REGEX)[1]
+    return path.split('/').slice(-1)[0].match(MaterialCommunity.FILE_NAME_REGEX)[1]
   }
 }
 
@@ -242,10 +242,10 @@ async function searchFileInDirectory (directory, filename) {
 }
 
 const ICON_GROUPS = {
+  localDirectory: { getPath: LocalDirectory.getPath, listPath: LocalDirectory.listPath, getIconName: LocalDirectory.getIconName, subDirectories: LocalDirectory._subDirectories },
   maggioli: { getPath: Maggioli.getPath, listPath: Maggioli.listPath, getIconName: Maggioli.getIconName },
   material: { getPath: Material.getPath, listPath: Material.listPath, getIconName: Material.getIconName },
-  fontawesome: { getPath: FontAwesome.getPath, listPath: FontAwesome.listPath, getIconName: FontAwesome.getIconName },
-  localDirectory: { getPath: LocalDirectory.getPath, listPath: LocalDirectory.listPath, getIconName: LocalDirectory.getIconName, subDirectories: LocalDirectory._subDirectories }
+  mdi: { getPath: MaterialCommunity.getPath, listPath: MaterialCommunity.listPath, getIconName: MaterialCommunity.getIconName },
 }
 
 /**

@@ -49,6 +49,28 @@ $columns: 4;
     }
   }
 
+  &--template-auto-fit-medium {
+
+    $min: 200px;
+
+    grid-template-columns: repeat(auto-fit, minmax($min, 1fr));
+
+    @include media ('mobile') {
+      grid-template-columns: repeat(auto-fit, minmax($min, 1fr)) !important;
+    }
+  }
+
+  &--template-auto-fit-large {
+
+    $min: 250px;
+
+    grid-template-columns: repeat(auto-fit, minmax($min, 1fr));
+
+    @include media ('mobile') {
+      grid-template-columns: repeat(auto-fit, minmax($min, 1fr)) !important;
+    }
+  }
+
   &--template-auto-fill-icon {
     grid-template-columns: repeat(auto-fill, minmax(30px, 1fr));
 
