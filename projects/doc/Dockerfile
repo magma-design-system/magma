@@ -6,14 +6,12 @@ WORKDIR /app
 RUN npm install -g npm-install-peers
 
 # Storybook of react project, dependency install
-COPY ./react/package.json /app/react
-COPY ./react/package-lock.json /app/react
+COPY ./react/package.json /app/react/package.json
 RUN cd react && npm install
 RUN cd react && npm-install-peers
 
 # Website of doc project, dependency install
-COPY ./doc/package.json /app/doc/
-COPY ./doc/package-lock.json /app/doc/
+COPY ./doc/package.json /app/doc/package.json
 RUN cd doc && npm install
 RUN cd doc && npm-install-peers
 
