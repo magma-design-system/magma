@@ -11,4 +11,4 @@ export default {
 }
 
 export const basicUsage = () =>
-  <PackageInfo packageData={require('./package.json')}/>
+  <PackageInfo packageData={require('../../../package.json')}/>
