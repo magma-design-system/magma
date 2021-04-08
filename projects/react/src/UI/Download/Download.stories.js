@@ -23,10 +23,10 @@ export const basicUsage = () =>
   <Download fileName={faker.system.commonFileName()}/>
 
 export const previewImage = () =>
-  <Download fileName="logo-gruppo-maggioli-bordered.svg" href={require('#Identity/gruppo-maggioli/logo-gruppo-maggioli-bordered.svg')} preview/>
+  <Download fileName="logo-gruppo-maggioli-bordered.svg" href={require('@maggioli-design-system/identity/dist/gruppo-maggioli/logo-gruppo-maggioli-bordered.svg')} preview/>
 
 export const transparencyGrid = () =>
-  <Download fileName="logo-gruppo-maggioli-bordered.svg" href={require('#Identity/gruppo-maggioli/logo-gruppo-maggioli-bordered.svg')} preview transparencyGrid/>
+  <Download fileName="logo-gruppo-maggioli-bordered.svg" href={require('@maggioli-design-system/identity/dist/gruppo-maggioli/logo-gruppo-maggioli-bordered.svg')} preview transparencyGrid/>
 
 export const dictionary = () =>
   <Grid template="downloads">

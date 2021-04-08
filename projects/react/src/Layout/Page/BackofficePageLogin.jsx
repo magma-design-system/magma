@@ -38,7 +38,7 @@ BackofficePageLoginHeader.propTypes = {
 }
 
 BackofficePageLoginHeader.defaultProps = {
-  logo: require('#Identity/gruppo-maggioli/logo-gruppo-maggioli.svg'),
+  logo: require('@maggioli-design-system/identity/dist/gruppo-maggioli/logo-gruppo-maggioli.svg'),
   title: 'Gruppo Maggioli',
   description: 'Accedi al servizio',
 }
@@ -61,7 +61,7 @@ const BackofficePageLoginFooter = ({ children, ...restProps }) => {
     <div>
       <Row width="inline">
         <Caption>Servizio sviluppato da</Caption>
-        <Icon size="normal" image={require('#Identity/gruppo-maggioli/logo-gruppo-maggioli.svg')}/>
+        <Icon size="normal" image={require('@maggioli-design-system/identity/dist/gruppo-maggioli/logo-gruppo-maggioli.svg')}/>
         <ExternalLink href="https://www.maggioli.it"><Caption>Gruppo Maggioli</Caption></ExternalLink>
       </Row>
     </div>

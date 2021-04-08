@@ -1,4 +1,4 @@
-import config from '+Tokens/css-tokens/config.json'
+import config from '@maggioli-design-system/design-tokens/dist/css-tokens/config.json'
 
 const toDashCase = value =>
   value[0].toLowerCase() + value.slice(1, value.length).replace(/[A-Z]/g, letter => `-${letter.toLowerCase()}`)

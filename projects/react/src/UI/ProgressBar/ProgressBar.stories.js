@@ -5,8 +5,8 @@ import ProgressBar from '@UI/ProgressBar/ProgressBar'
 import InlineCode from '@UI/InlineCode/InlineCode'
 import Table, { TableHeader, TableHeaderCell, TableBody, TableRow, TableCell } from '@UI/Table/Table'
 
-import sizesData from '+Tokens/css-tokens/sizes.json'
-import cosmeticsData from '+Tokens/css-tokens/cosmetics.json'
+import sizesData from '@maggioli-design-system/design-tokens/dist/css-tokens/sizes.json'
+import cosmeticsData from '@maggioli-design-system/design-tokens/dist/css-tokens/cosmetics.json'
 const sizes = Object.keys(sizesData.size)
 const borderRadius = Object.keys(cosmeticsData['border-radius'])
 

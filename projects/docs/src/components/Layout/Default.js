@@ -263,7 +263,7 @@ const Layout = ({ children }) => {
                 }
               </Grid>
               <Row htmlTag="footer" gutter="normal" align="flex-start" className="ds-layout__footer">
-                <Image className="ds-layout__footer-logo" src={require('#Identity/gruppo-maggioli/logo-gruppo-maggioli.svg')}/>
+                <Image className="ds-layout__footer-logo" src={require('@maggioli-design-system/identity/dist/gruppo-maggioli/logo-gruppo-maggioli.svg')}/>
                 <div>
                   <Detail><b>Design System</b> sviluppato con ❤️ &nbsp;dal reparto R&D e tutti i supporter all'interno di Maggioli.</Detail>
                   <Caption>Gruppo Maggioli © 2020{publicationYear !== '2020' ? `–${publicationYear}` : ''}.</Caption>

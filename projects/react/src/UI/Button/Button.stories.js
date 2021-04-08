@@ -8,8 +8,8 @@ import InlineCode from '@UI/InlineCode/InlineCode'
 import Table, { TableHeader, TableHeaderCell, TableBody, TableRow, TableCell } from '@UI/Table/Table'
 
 import sizeVariants from './dictionary.json'
-import cosmetics from '+Tokens/css-tokens/cosmetics.json'
-import sizes from '+Tokens/css-tokens/sizes.json'
+import cosmetics from '@maggioli-design-system/design-tokens/dist/css-tokens/cosmetics.json'
+import sizes from '@maggioli-design-system/design-tokens/dist/css-tokens/sizes.json'
 const paddingSizes = sizes.size
 const shadows = Object.keys(cosmetics['box-shadow'])
 const radius = Object.keys(cosmetics['border-radius'])

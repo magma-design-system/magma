@@ -46,7 +46,7 @@ const Navigation = props => {
             <Caption><ExternalLink href="/storybook">Vai alla Pattern Library</ExternalLink></Caption>
           </Row>
           <Row gutter="xsmall">
-            <Icon image={require('#Identity/gruppo-maggioli/logo-gruppo-maggioli.svg')}/>
+            <Icon image={require('@maggioli-design-system/identity/dist/gruppo-maggioli/logo-gruppo-maggioli.svg')}/>
             <Caption><ExternalLink href={designSystemPackageData.repository.url}>{designSystemPackageData.name}</ExternalLink> <InlineCode className="text-mono text-mono--hack">{designSystemPackageData.version}</InlineCode></Caption>
           </Row>
         </Grid>

@@ -14,8 +14,8 @@ import 'typeface-roboto/index.css'
 import './storybook.scss'
 // import '@maggioli-design-system/styles/import-global.scss'
 
-import media from '+Tokens/css-tokens/media.json'
-import palette from '+Tokens/properties/color/base.json'
+import media from '@maggioli-design-system/design-tokens/dist/css-tokens/media.json'
+import palette from '@maggioli-design-system/design-tokens/dist/properties/color/base.json'
 const paletteColors = palette.color
 
 const toUpperCase = string => {
