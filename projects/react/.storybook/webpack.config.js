@@ -6,11 +6,11 @@ const webpack = require('webpack')
 
 module.exports = async({ config }) => {
   // config.mode = 'production'
-  // config.plugins.push(
-  //   new webpack.DefinePlugin({
-  //     'process.env.NODE_ENV': JSON.stringify('production'),
-  //   }),
-  // )
+  config.plugins.push(
+    new webpack.DefinePlugin({
+      'process.env.NODE_ENV': JSON.stringify('development'),
+    }),
+  )
 
   config.module.rules.push({
     test: /\.s?css$/,
