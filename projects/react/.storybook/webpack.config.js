@@ -45,6 +45,7 @@ module.exports = async({ config }) => {
   config.resolve.fallback = {
     fs: 'empty',
     crypto: false,
+    assert: false,
   }
 
   return config
