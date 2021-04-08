@@ -3,7 +3,7 @@ import PropTypes from 'prop-types'
 import { styles } from '@Library/styles'
 import './Icon.scss'
 
-import mggIconsDictionary from '+Project/icons/resources/mgg-icons.json'
+import mggIconsDictionary from '@maggioli-design-system/icons/mgg-icons.json'
 const dictionary = Object.keys(mggIconsDictionary)
 
 const Icon = ({ className, image, name, onClick, size, ...restProps }) => {

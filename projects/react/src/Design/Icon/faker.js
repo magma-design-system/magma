@@ -1,5 +1,5 @@
 import faker from 'faker'
-import mggIconsDictionary from '+Project/icons/resources/mgg-icons.json'
+import mggIconsDictionary from '@maggioli-design-system/icons/mgg-icons.json'
 
 const randomIcon = () => {
   const iconNames = Object.keys(mggIconsDictionary)
