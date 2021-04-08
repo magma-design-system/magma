@@ -7,7 +7,7 @@ module.exports = async({ config }) => {
   config.mode = 'production'
 
   config.module.rules.push({
-    test: /\.scss$/,
+    test: /\.s?css$/,
     include: [path.resolve(__dirname, '../')],
     use: [{
       loader: 'style-loader',
