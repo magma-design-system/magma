@@ -1,0 +1,61 @@
+#designsystem-build:
+#  stage: build
+#  before_script:
+#    - cd projects/design-system
+#  variables:
+#    CI_IMAGE_NAME: designsystem
+#    CI_IMAGE_TAG: $CI_REGISTRY/$CI_IMAGE_NAME:${CI_COMMIT_SHORT_SHA}
+#  script:
+#    - echo $CI_REGISTRY_PSW | docker login -u $CI_REGISTRY_USR --password-stdin https://$CI_REGISTRY
+#    - docker build -t $CI_IMAGE_TAG .
+#  only:
+#    refs: ["dev", "master", "merge_requests"]
+#    changes: ["*", "projects/design-system/**/*"]
+#
+#designsystem-push:
+#  stage: push
+#  variables:
+#    GIT_STRATEGY: none
+#    CI_IMAGE_NAME: designsystem
+#    CI_IMAGE_TAG: $CI_REGISTRY/$CI_IMAGE_NAME:${CI_COMMIT_SHORT_SHA}
+#    CI_IMAGE_PROD_TAG: $CI_REGISTRY/$CI_IMAGE_NAME:${CI_COMMIT_TAG}
+#  script:
+#    - echo $CI_REGISTRY_PSW | docker login -u $CI_REGISTRY_USR --password-stdin https://$CI_REGISTRY
+#    - docker push $CI_IMAGE_TAG
+#    - if [ -n "$CI_COMMIT_TAG" ]; then docker tag $CI_IMAGE_TAG $CI_IMAGE_PROD_TAG; fi
+#    - if [ -n "$CI_COMMIT_TAG" ]; then docker push $CI_IMAGE_PROD_TAG; fi
+#  only:
+#    refs:
+#      - master
+#    changes:
+#      - "*"
+#      - "projects/design-system/**/*"
+
+#image: busybox:latest
+
+deploy-designsystem:
+  stage: deploy
+  image: kroniak/ssh-client
+  variables:
+    DEPLOY_FOLDER: $CI_DEPLOY_PATH
+    SERVER: $CI_SERVER_IP
+  before_script:
+    - chmod +x ./projects/doc/.deploy/deploy-designsystem.sh
+  script:
+    - ./projects/doc/.deploy/deploy-designsystem.sh
+#  after_script:
+#    - chmod +x ./projects/design-system/.deploy/clean-designsystem.sh
+#    - ./projects/design-system/.deploy/clean-designsystem.sh
+#    - rm ./projects/design-system/.deploy/clean-designsystem.sh
+  environment:
+    name: DeployWebApp
+    url: $CI_PRODUCTION_URL
+  allow_failure: false
+  when: manual
+  only:
+    refs:
+      - master
+    changes:
+      - "*"
+      - "projects/doc/**/*"
+      - "projects/react/**/*"
