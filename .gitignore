@@ -10,3 +10,4 @@ node_modules
 .directory
 coverage
 projects/**/package-lock.json
+projects/**/yarn.lock
