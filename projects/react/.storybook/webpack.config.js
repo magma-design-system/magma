@@ -24,7 +24,7 @@ module.exports = async({ config }) => {
         postcssOptions: {
           plugins: [
             [
-              tailwindcss('../tailwind.config.js'),
+              tailwindcss('tailwind.config.js'),
               autoprefixer,
             ],
           ],
