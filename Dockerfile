@@ -8,13 +8,14 @@ RUN npm install -g npm-install-peers
 # Storybook of react project, dependency install
 COPY ./projects/react/package.json /app/react/package.json
 RUN cd react && yarn install
-RUN cd react && npm-install-peers
+# RUN cd react && npm-install-peers
 
 # Website of doc project, dependency install
 COPY ./projects/docs/package.json /app/doc/package.json
 
-RUN cd doc && yarn install && \
-    npm-install-peers
+RUN cd doc && yarn install
+# RUN cd doc && yarn install && \
+#     npm-install-peers
 
 # Copy of all sources
 COPY ./projects/react /app/react
