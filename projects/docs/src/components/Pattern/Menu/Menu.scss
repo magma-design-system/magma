@@ -31,7 +31,7 @@ $line-height: 25px;
   }
 
   &__list {
-    display: none;
+    display: none !important;
     grid-gap: $gap;
     line-height: 0;
   }
@@ -41,7 +41,7 @@ $line-height: 25px;
 
     .ds-menu-item {
       &__list {
-        display: grid;
+        display: grid !important;
       }
 
       &__title {

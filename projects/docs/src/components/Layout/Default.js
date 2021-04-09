@@ -55,6 +55,8 @@ import Table, { TableHeader, TableHeaderCell, TableBody, TableRow, TableCell } f
 import Tag from '@UI/Tag/Tag'
 import Usage, { UsageDo, UsageDont } from '@Content/Usage/Usage'
 
+import logoMaggioli from '@maggioli-design-system/identity/dist/gruppo-maggioli/logo-gruppo-maggioli.svg'
+
 import { defineCustomElements as deckDeckGoHighlightElement } from '@deckdeckgo/highlight-code/dist/loader'
 
 const formatter = buildFormatter(frenchStrings)
@@ -263,7 +265,7 @@ const Layout = ({ children }) => {
                 }
               </Grid>
               <Row htmlTag="footer" gutter="normal" align="flex-start" className="ds-layout__footer">
-                <Image className="ds-layout__footer-logo" src={require('@maggioli-design-system/identity/dist/gruppo-maggioli/logo-gruppo-maggioli.svg')}/>
+                <Image className="ds-layout__footer-logo" src={logoMaggioli}/>
                 <div>
                   <Detail><b>Design System</b> sviluppato con ❤️ &nbsp;dal reparto R&D e tutti i supporter all'interno di Maggioli.</Detail>
                   <Caption>Gruppo Maggioli © 2020{publicationYear !== '2020' ? `–${publicationYear}` : ''}.</Caption>

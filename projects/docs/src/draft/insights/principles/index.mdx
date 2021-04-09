@@ -7,6 +7,11 @@ source:
   - 3
 ---
 
+import imageSrcPeopleSightseeingOutdoors from './images/people-sightseeing-outdoors-bro.svg'
+import imageSrcLeadWithExamples from './images/lead-with-examples.jpg'
+import imageSrcComponentColorTokens from './images/component-color-tokens.gif'
+import imageSrcSimplicityVsModularity from './images/simplicity-vs-modularity.png'
+
 Come si può capire se siamo di fronte ad un Design System maturo? In base a chi lo chiedi, la risposta può cambiare di molto. Maturo per chi? In che senso maturo? Come misuro la sua maturità?
 
 A questo punto, qualcuno potrebbe risponderti che *"Hai bisogno di definire dei valori"*.
@@ -19,7 +24,7 @@ Il problema nasce dal fatto che *"Semplice"* può significare cose drasticamente
 
 Ciò che serve in queste fasi, sono una serie di **Design Pinciple**.
 
-<Image src={require('./images/people-sightseeing-outdoors-bro.svg')} sourceTitle="Illustrazione proveniente da Freepik Stories" sourceUrl="https://stories.freepik.com/"/>
+<Image src={imageSrcPeopleSightseeingOutdoors} sourceTitle="Illustrazione proveniente da Freepik Stories" sourceUrl="https://stories.freepik.com/"/>
 
 Prima di procedere è bene definire le differenze tra questi termini che spesso sono interpretati in modo soggettivo, come ad esempio **principi**, **standard** e **valori**.
 
@@ -71,7 +76,7 @@ I Design System riguardano la possibilità di abilitare i membri del team a migl
 Mostra le best practice con esempi reali, non istruzioni su come ricrearle. Scrivere un manuale di istruzioni sui modelli di progettazione è laborioso da scrivere e leggere. È molto più facile adottare, comprendere, aggiornare, mantenere e implementare da esempi dal vivo.
 
 <div>
-  <Image src={require('./images/lead-with-examples.jpg')}/>
+  <Image src={imageSrcLeadWithExamples}/>
 </div>
 
 Inoltre, un Design System non può e non deve cercare di prevedere ogni situazione in cui un componente verrà utilizzato con la documentazione. Cercare di documentare ogni scenario finisce per creare una lunga lista di eccezioni.
@@ -107,7 +112,7 @@ Ad esempio, un colore non è solo un "colore" in un Design System. Molto probabi
 Pensare in questo modo aiuta ad astrarre l'estetica visiva dai termini grezzi nel modo in cui gli attributi del design vengono applicati al contesto dell'intero sistema. Ciò è particolarmente utile quando si progetta tenendo a mente i temi.
 
 <div>
-  <Image src={require('./images/component-color-tokens.gif')} sourceTitle="Un esempio grezzo di come Design Token" sourceUrl="https://spectrum.adobe.com/page/design-tokens/"/>
+  <Image src={imageSrcComponentColorTokens} sourceTitle="Un esempio grezzo di come Design Token" sourceUrl="https://spectrum.adobe.com/page/design-tokens/"/>
 </div>
 
 ### Il Design System funziona quando può essere utilizzato senza i suoi creatori
@@ -125,7 +130,7 @@ Questo principio è non è immediato da seguire un punto di vista pratico.
 La modularità è importante (soprattutto per incoraggiarne l'utilizzo) ma se usata in modo eccessivo tutto diventa come un puzzle, troppo dettagliato e non lascia abbastanza spazio per la flessibilità. Trovare il giusto equilibrio dipende dal team, dall'attività, dal prodotto e dal componente.
 
 <div>
-  <Image src={require('./images/simplicity-vs-modularity.png')} sourceTitle="Sempplicità VS Modularità"/>
+  <Image src={imageSrcSimplicityVsModularity} sourceTitle="Sempplicità VS Modularità"/>
 </div>
 
 La definizione del livello appropriato di personalizzazione è il punto in cui i Design System possono flettere maggiormente la loro influenza, ma è anche il più opinionabile.
