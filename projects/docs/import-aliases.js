@@ -1,6 +1,7 @@
 const path = require('path')
 
 module.exports = {
+  '+Docs': path.resolve(__dirname, './'),
   '+Metadata': path.resolve(__dirname, 'src/metadata/'),
   '+Package': path.resolve(__dirname, '../../'),
   '+Project': path.resolve(__dirname, '../'),

@@ -12,7 +12,7 @@ import Menu, { MenuItem, MenuSubItem } from '@Gatsby/Pattern/Menu/Menu'
 import Row from '@Layout/Row/Row'
 import { Link } from 'gatsby'
 import { getCurrentUrl } from '@Gatsby/Pattern/Navigation/menu'
-import designSystemPackageData from '+Package/package.json'
+import designSystemPackageData from '+Docs/package.json'
 
 const Navigation = props => {
   const currentUrl = getCurrentUrl()
