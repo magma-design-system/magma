@@ -147,7 +147,6 @@
         "webpack-cli": "^4.6.0"
     },
     "resolutions": {
-      "gatsby": "^3.0.0",
       "webpack": "^5.0.0",
       "css-loader": "^5.0.0",
       "dotenv-webpack": "^6.0.0",
