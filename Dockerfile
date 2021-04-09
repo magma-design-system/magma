@@ -23,7 +23,6 @@ COPY ./projects/docs /app/doc
 
 
 # TODO Copiare solo i sorgenti invece di fare gatsby:clean
-RUN ls -l react/node_modules
 RUN cd react && yarn run build-storybook
 RUN cd doc && yarn run clean && \
     yarn run build
