@@ -17,7 +17,7 @@ git clone https://git.maggioli.it/ricerca-sviluppo-new-media/design-system.git
 Install needed node dependencies:
 
 ```
-npm install -g yarn nx
+npm install -g yarn nx npx
 ```
 
 > Note: if you are using NVM and you change the node version, you must reinstall global packages for the current version you are using.
