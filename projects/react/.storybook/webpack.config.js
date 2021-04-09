@@ -4,7 +4,7 @@ const tailwindcss = require('tailwindcss')
 const aliases = require('../import-aliases')
 const webpack = require('webpack')
 
-module.exports = async({ config, mode }) => {
+module.exports = async({ config }) => {
   // config.mode = 'production'
   // config.plugins.push(
   //   new webpack.DefinePlugin({
@@ -13,7 +13,7 @@ module.exports = async({ config, mode }) => {
   // )
 
   config.module.rules.push({
-    test: /\.s?css$/,
+    test: /\.scss$/,
     include: [path.resolve(__dirname, '../')],
     use: [{
       loader: 'style-loader',
