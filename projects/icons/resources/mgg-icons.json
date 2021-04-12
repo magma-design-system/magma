@@ -13,7 +13,7 @@
   "action-copy-paste": "maggioli/copy-paste",
   "action-customize": "material/handyman",
   "action-download": "material/get_app",
-  "action-drop-down": "maggioli/action-drop-down",
+  "action-drop-down": "material/action-drop-down",
   "action-drop-up": "maggioli/action-drop-up",
   "action-email-send": "maggioli/action-email-send",
   "action-expand-horizontal": "maggioli/action-expand-horizontal",
