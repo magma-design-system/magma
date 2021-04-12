@@ -1,3 +1,5 @@
+image : docker:latest
+
 variables:
   # The GIT_DEPTH option makes the project clone process in each job a bit faster, pulling only the current commit, not the whole Git history.
   GIT_DEPTH: "1"
@@ -9,8 +11,57 @@ variables:
   #KUBE_HELM_IMAGE: dtzar/helm-kubectl:3.3.4
 
 stages:
-#  - build
+  - build
   - deploy
 
-include:
-  - '/projects/doc/.gitlab-ci.yml'
+.build-base:  
+  stage: build
+  variables:
+    CI_IMAGE_NAME: desingsystem
+    CI_IMAGE_TAG: $CI_REGISTRY/$CI_IMAGE_NAME:${CI_COMMIT_SHORT_SHA}
+  script:
+    - echo $CI_REGISTRY_PSW | docker login -u $CI_REGISTRY_USR --password-stdin https://$CI_REGISTRY
+    - docker build -t $CI_IMAGE_TAG .
+    - docker push $CI_IMAGE_TAG
+
+build-stage:  
+  extends: .build-base
+  rules:
+    - if: $CI_COMMIT_BRANCH == "stage"
+    #changes: ["*", "api/**/*"]
+
+build-prod:  
+  extends: .build-base
+  rules:
+    - if: $CI_COMMIT_BRANCH == "master"
+    #changes: ["*", "api/**/*"]
+
+.deploy-base:
+  stage: deploy
+  image: maggiolieditore.azurecr.io/alpine-ssh-envsubst
+  variables:
+    DEPLOY_FOLDER: $DEPLOY_FOLDER
+  script:
+    - chmod +x .deploy/deploy.sh
+    - .deploy/deploy.sh
+  allow_failure: false
+
+deploy-stage:
+  extends: .deploy-base
+  variables:
+    SERVER: $CI_SERVER_IP
+    SSH_PRIV_KEY: $CI_SSH_PRIV_KEY
+    SSH_USER: $CI_SSH_USER
+    ENV: stage
+  rules:
+    - if: $CI_COMMIT_BRANCH == "stage"
+
+deploy-prod:
+  extends: .deploy-base
+  variables:
+    SERVER: $CI_SERVER_IP
+    SSH_PRIV_KEY: $CI_SSH_PRIV_KEY
+    SSH_USER: $CI_SSH_USER
+    ENV: prod
+  rules:
+    - if: $CI_COMMIT_BRANCH == "master"

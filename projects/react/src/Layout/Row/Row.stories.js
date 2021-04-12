@@ -7,7 +7,7 @@ import Button from '@UI/Button/Button'
 import Switch from '@UI/Switch/Switch'
 import Hr from '@UI/Hr/Hr'
 import InlineCode from '@UI/InlineCode/InlineCode'
-import sizesData from '+Tokens/css-tokens/sizes.json'
+import sizesData from '@maggioli-design-system/design-tokens/dist/css-tokens/sizes.json'
 const sizes = Object.keys(sizesData.size)
 faker.locale = 'it'
 

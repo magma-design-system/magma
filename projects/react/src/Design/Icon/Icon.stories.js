@@ -5,10 +5,10 @@ import Grid from '@Layout/Grid/Grid'
 import Icon from '@Design/Icon/Icon'
 import InlineCode from '@UI/InlineCode/InlineCode'
 import Table, { TableHeader, TableHeaderCell, TableBody, TableRow, TableCell } from '@UI/Table/Table'
-import mggIconsDictionary from '+Project/icons/resources/mgg-icons.json'
+import mggIconsDictionary from '@maggioli-design-system/icons/resources/mgg-icons.json'
 import './Icon.stories.scss'
 import randomIcon from '@Design/Icon/faker'
-import sizesData from '+Tokens/css-tokens/sizes.json'
+import sizesData from '@maggioli-design-system/design-tokens/dist/css-tokens/sizes.json'
 const sizes = Object.keys(sizesData.icon)
 faker.locale = 'it'
 
@@ -68,4 +68,4 @@ export const iconSizes = () =>
   </Table>
 
 export const customImage = () =>
-  <Icon image={require('#Identity/gruppo-maggioli/logo-gruppo-maggioli.svg')} />
+  <Icon image={require('@maggioli-design-system/identity/dist/gruppo-maggioli/logo-gruppo-maggioli.svg')} />

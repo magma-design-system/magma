@@ -5,7 +5,7 @@ import Table, { TableHeader, TableHeaderCell, TableBody, TableRow, TableCell } f
 
 import Avatar from '@Content/Avatar/Avatar'
 import InlineCode from '@UI/InlineCode/InlineCode'
-import sizesData from '+Tokens/css-tokens/sizes.json'
+import sizesData from '@maggioli-design-system/design-tokens/dist/css-tokens/sizes.json'
 
 import avatarExample from './avatar-example.jpeg'
 

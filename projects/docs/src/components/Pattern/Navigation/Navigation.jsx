@@ -12,7 +12,10 @@ import Menu, { MenuItem, MenuSubItem } from '@Gatsby/Pattern/Menu/Menu'
 import Row from '@Layout/Row/Row'
 import { Link } from 'gatsby'
 import { getCurrentUrl } from '@Gatsby/Pattern/Navigation/menu'
-import designSystemPackageData from '+Package/package.json'
+import designSystemPackageData from '+Docs/package.json'
+
+import storybookLogo from './storybook-logo.svg'
+import maggioliLogo from '@maggioli-design-system/identity/dist/gruppo-maggioli/logo-gruppo-maggioli.svg'
 
 const Navigation = props => {
   const currentUrl = getCurrentUrl()
@@ -42,11 +45,11 @@ const Navigation = props => {
         <Hr/>
         <Grid gutter="xsmall">
           <Row gutter="xsmall">
-            <Icon image={require('./storybook-logo.svg')}/>
+            <Icon image={storybookLogo}/>
             <Caption><ExternalLink href="/storybook">Vai alla Pattern Library</ExternalLink></Caption>
           </Row>
           <Row gutter="xsmall">
-            <Icon image={require('#Identity/gruppo-maggioli/logo-gruppo-maggioli.svg')}/>
+            <Icon image={maggioliLogo}/>
             <Caption><ExternalLink href={designSystemPackageData.repository.url}>{designSystemPackageData.name}</ExternalLink> <InlineCode className="text-mono text-mono--hack">{designSystemPackageData.version}</InlineCode></Caption>
           </Row>
         </Grid>

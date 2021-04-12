@@ -1,8 +1,9 @@
 {
   "name": "@maggioli-design-system/icons",
-  "version": "1.5.0",
+  "version": "1.5.3",
   "description": "Maggioli Design System Icons is an icon font package based on Google Material Design Icons and Material Design Icons community icons.",
   "private": true,
+  "main": "mgg-icons.css",
   "type": "module",
   "sideEffects": false,
   "repository": {
@@ -14,12 +15,12 @@
   },
   "scripts": {
     "clean": "rm -rf dist || true",
-    "prebuild": "npm run clean",
+    "prebuild": "yarn run clean",
     "build": "font-icons resources/mgg-icons.json",
     "postbuild": "node ./tools/setup-package-font.js",
-    "build-website": "npm run build -- --website",
+    "build-website": "yarn run build -- --website",
     "test": "echo \"Error: no test specified\" && exit 1",
-    "publish": "(cd dist && npm publish)"
+    "publish": "(cd dist && yarn publish)"
   },
   "files": [
     "/dist/fonts/*.ttf",
@@ -69,7 +70,7 @@
   ],
   "license": "ISC",
   "devDependencies": {
-    "@maggioli-design-system/font-icons-cli": "1.0.0-RC.12",
+    "@maggioli-design-system/font-icons-cli": "^1.1.0",
     "fs-extra": "^9.1.0"
   }
 }

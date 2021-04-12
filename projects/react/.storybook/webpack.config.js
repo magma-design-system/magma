@@ -2,15 +2,15 @@ const path = require('path')
 const autoprefixer = require('autoprefixer')
 const tailwindcss = require('tailwindcss')
 const aliases = require('../import-aliases')
+const webpack = require('webpack')
 
-const localhostPort = 7177
-
-// Export a function. Accept the base config as the only param.
-module.exports = async({ config, mode }) => {
-  // `mode` has a value of 'DEVELOPMENT' or 'PRODUCTION'
-  // You can change the configuration based on that.
-  // 'PRODUCTION' is used when building the static version of storybook.
-  config.mode = 'production';
+module.exports = async({ config }) => {
+  // config.mode = 'production'
+  // config.plugins.push(
+  //   new webpack.DefinePlugin({
+  //     'process.env.NODE_ENV': JSON.stringify('production'),
+  //   }),
+  // )
 
   config.module.rules.push({
     test: /\.scss$/,
@@ -26,11 +26,11 @@ module.exports = async({ config, mode }) => {
       loader: 'postcss-loader',
       options: {
         sourceMap: true,
-        implementation: require("postcss"),
+        implementation: require('postcss'),
         postcssOptions: {
           plugins: [
             [
-              tailwindcss,
+              tailwindcss('tailwind.config.js'),
               autoprefixer,
             ],
           ],
@@ -50,8 +50,9 @@ module.exports = async({ config, mode }) => {
   // https://stackoverflow.com/questions/57161839/module-not-found-error-cant-resolve-fs-in
   config.resolve.fallback = {
     fs: 'empty',
+    crypto: false,
+    assert: false,
   }
 
-  // Return the altered config
   return config
 }

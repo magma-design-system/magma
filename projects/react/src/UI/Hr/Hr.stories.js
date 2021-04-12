@@ -3,7 +3,7 @@ import faker from 'faker'
 import Hr from '@UI/Hr/Hr'
 import Detail from '@Typography/Detail/Detail'
 
-import sizes from '+Tokens/css-tokens/sizes.json'
+import sizes from '@maggioli-design-system/design-tokens/dist/css-tokens/sizes.json'
 const size = Object.keys(sizes.size)
 
 export default {

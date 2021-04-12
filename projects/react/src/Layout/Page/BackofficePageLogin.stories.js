@@ -18,7 +18,7 @@ export default {
 export const basicUsage = () =>
   <BackofficePageLogin>
     <BackofficePageLoginBody>
-      <BackofficePageLoginHeader logo={require('#Identity/argo/logo-argo-icon.svg')} title="Argo" description="Accedi al servizio"/>
+      <BackofficePageLoginHeader logo={require('@maggioli-design-system/identity/dist/argo/logo-argo-icon.svg')} title="Argo" description="Accedi al servizio"/>
       <InputEmail />
       <InputPassword />
       <Button>Accedi</Button>
@@ -32,7 +32,7 @@ export const basicUsage = () =>
 export const register = () =>
   <BackofficePageLogin>
     <BackofficePageLoginBody>
-      <BackofficePageLoginHeader logo={require('#Identity/argo/logo-argo-icon.svg')} title="Argo" description="Registrati al servizio"/>
+      <BackofficePageLoginHeader logo={require('@maggioli-design-system/identity/dist/argo/logo-argo-icon.svg')} title="Argo" description="Registrati al servizio"/>
       <InputEmail />
       <InputPassword />
       <InputPassword placeholder="ripeti password" />
@@ -47,7 +47,7 @@ export const register = () =>
 export const registerFeedback = () =>
   <BackofficePageLogin>
     <BackofficePageLoginBody>
-      <BackofficePageLoginHeader logo={require('#Identity/argo/logo-argo-icon.svg')} title="Argo" description="Registrati al servizio"/>
+      <BackofficePageLoginHeader logo={require('@maggioli-design-system/identity/dist/argo/logo-argo-icon.svg')} title="Argo" description="Registrati al servizio"/>
       <BackofficePageLoginBanner status="success">Utente registrato con successo.</BackofficePageLoginBanner>
       <Detail>Tra poco riceverai una <b>e-mail</b> per attivare il tuo account e poter accedere al servizio.</Detail>
       <Button>Accedi</Button>
@@ -60,7 +60,7 @@ export const registerFeedback = () =>
 export const passwordRecover = () =>
   <BackofficePageLogin>
     <BackofficePageLoginBody>
-      <BackofficePageLoginHeader logo={require('#Identity/argo/logo-argo-icon.svg')} title="Argo" description="Recupero password"/>
+      <BackofficePageLoginHeader logo={require('@maggioli-design-system/identity/dist/argo/logo-argo-icon.svg')} title="Argo" description="Recupero password"/>
       <InputEmail/>
       <Button>Invia e-mail di recupero</Button>
     </BackofficePageLoginBody>
@@ -73,7 +73,7 @@ export const passwordRecover = () =>
 export const passwordRecoverFeedback = () =>
   <BackofficePageLogin>
     <BackofficePageLoginBody>
-      <BackofficePageLoginHeader logo={require('#Identity/argo/logo-argo-icon.svg')} title="Argo" description="Recupero password"/>
+      <BackofficePageLoginHeader logo={require('@maggioli-design-system/identity/dist/argo/logo-argo-icon.svg')} title="Argo" description="Recupero password"/>
       <BackofficePageLoginBanner status="success">Email di recupero inviata correttamente.</BackofficePageLoginBanner>
       <Detail>Tra poco riceverai una <b>e-mail</b> con i dettagli per reimpostare la password.</Detail>
     </BackofficePageLoginBody>
@@ -86,7 +86,7 @@ export const passwordRecoverFeedback = () =>
 export const passwordRecoverChange = () =>
   <BackofficePageLogin>
     <BackofficePageLoginBody>
-      <BackofficePageLoginHeader logo={require('#Identity/argo/logo-argo-icon.svg')} title="Argo" description="Recupero password"/>
+      <BackofficePageLoginHeader logo={require('@maggioli-design-system/identity/dist/argo/logo-argo-icon.svg')} title="Argo" description="Recupero password"/>
       <Detail>Imposta una nuova password per l'account <b>nome.cognome@maggioli.it</b>. Una volta impostata, potrai nuovamente accedere.</Detail>
       <InputPassword />
       <InputPassword placeholder="ripeti password" />
@@ -101,7 +101,7 @@ export const passwordRecoverChange = () =>
 export const passwordRecoverChangeFeedback = () =>
   <BackofficePageLogin>
     <BackofficePageLoginBody>
-      <BackofficePageLoginHeader logo={require('#Identity/argo/logo-argo-icon.svg')} title="Argo" description="Recupero password"/>
+      <BackofficePageLoginHeader logo={require('@maggioli-design-system/identity/dist/argo/logo-argo-icon.svg')} title="Argo" description="Recupero password"/>
       <Detail>Grazie per la tua pazienza, segnati la password in un Wallet criptato in modo da metterla in un posto sicuro.</Detail>
       <Detail>Ora potrai accedere nuovamente.</Detail>
       <Button>Accedi</Button>

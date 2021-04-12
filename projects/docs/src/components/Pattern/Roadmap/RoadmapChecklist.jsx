@@ -22,9 +22,9 @@ const getProgress = subTasks => {
 
 const RoadmapChecklistTasks = props =>
   <Grid>
-    { props.checklist.map(element => {
+    { props.checklist.map((element, elementIndex) => {
       if (element.title.toLowerCase() === props.filter.toLowerCase()) {
-        return <Grid gutter="small">
+        return <Grid gutter="small" key={elementIndex}>
           <Paragraph>{ element.description }</Paragraph>
           { element.children.map((section, sectionIndex) =>
             <Grid key={sectionIndex} gutter="normal">

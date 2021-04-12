@@ -8,7 +8,7 @@ import Detail from '@Typography/Detail/Detail'
 import InlineCode from '@UI/InlineCode/InlineCode'
 import Table, { TableHeader, TableHeaderCell, TableBody, TableRow, TableCell } from '@UI/Table/Table'
 
-import sizes from '+Tokens/css-tokens/sizes.json'
+import sizes from '@maggioli-design-system/design-tokens/dist/css-tokens/sizes.json'
 
 faker.locale = 'it'
 

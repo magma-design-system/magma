@@ -7,7 +7,7 @@ import Paragraph from '@Typography/Paragraph/Paragraph'
 import Banner from '@UI/Banner/Banner'
 import InlineCode from '@UI/InlineCode/InlineCode'
 
-import sizes from '+Tokens/css-tokens/sizes.json'
+import sizes from '@maggioli-design-system/design-tokens/dist/css-tokens/sizes.json'
 const sizesList = Object.keys(sizes.size)
 
 faker.locale = 'it'

@@ -6,8 +6,8 @@ import Paragraph from '@Typography/Paragraph/Paragraph'
 import Code from '@UI/InlineCode/InlineCode'
 import Grid from '@Layout/Grid/Grid'
 
-import cosmetics from '+Tokens/css-tokens/cosmetics.json'
-import sizes from '+Tokens/css-tokens/sizes.json'
+import cosmetics from '@maggioli-design-system/design-tokens/dist/css-tokens/cosmetics.json'
+import sizes from '@maggioli-design-system/design-tokens/dist/css-tokens/sizes.json'
 const paddingSizes = Object.keys(sizes.size)
 const shadows = Object.keys(cosmetics['box-shadow'])
 const radius = Object.keys(cosmetics['border-radius'])

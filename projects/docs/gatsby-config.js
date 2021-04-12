@@ -8,6 +8,7 @@ module.exports = {
     author: 'Maggioli Informatica, R&D department',
   },
   plugins: [
+    // 'gatsby-plugin-postcss',
     'gatsby-plugin-react-helmet',
     {
       resolve: 'gatsby-alias-imports',

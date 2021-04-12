@@ -8,32 +8,34 @@ This repo contains [Maggioli Design System][docs].
 
 ### Installation
 
-Install `node v14.x.x` with nvm and `npm 7.x.x` manually:
-You just need to install from project root:
+Clone the private repository form Git:
 
 ```
 git clone https://git.maggioli.it/ricerca-sviluppo-new-media/design-system.git
 ```
 
-You **must have NPM 7.x.x installed** and `npx` or `nx` will not work
+Install needed node dependencies:
 
 ```
-npm install -g npm
-npm install -g npx
+npm install -g yarn nx npx
 ```
 
-Then launch:
+> Note: if you are using NVM and you change the node version, you must reinstall global packages for the current version you are using.
+
+Then run `yarn install` from project root:
 
 ```
-npm install
-npx nx run-many --all --target=build
-npm install
+yarn install
+npx nx run-many --all --target=build --skip-nx-cache
+yarn install
 npx nx run affected:build
 ```
+
+If you want to test your nx build without cache, use `--skip-nx-cache` to avoid it. Be aware this command will SLOW build time.
 
 Then you can run for every project:
 
 ```
-npx nx run react:start
+npx nx run react:start --skip-nx-cache
 ```
 
