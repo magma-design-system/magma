@@ -45,8 +45,8 @@ export const modifierSelectors = (block, modifiers) => {
 export const styles = (block, selectors) => {
   return componentSelectors([
     block,
-    selectors.selectors ? componentSelectors(selectors.selectors) : null,
     selectors.modifiers ? modifierSelectors(block, selectors.modifiers) : null,
     selectors.scaffolded ? scaffoldedSelectors(selectors.scaffolded) : null,
+    selectors.selectors ? componentSelectors(selectors.selectors) : null,
   ])
 }
