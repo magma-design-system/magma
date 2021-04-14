@@ -18,7 +18,7 @@ export default {
 
 export const defaultUsage = () =>
   <Grid>
-    <Banner>Il componente <InlineCode className="background-color-status-info-16 color-status-info-05">Form</InlineCode> eredita i comportamenti di layout da <InlineCode className="background-color-status-info-16 color-status-info-05">Grid</InlineCode>.</Banner>
+    <Banner>Il componente <InlineCode className="bg-status-info-16 text-status-info-05">Form</InlineCode> eredita i comportamenti di layout da <InlineCode className="bg-status-info-16 text-status-info-05">Grid</InlineCode>.</Banner>
     <Form columns="3">
       <InputText icon="user" placeholder="Username" />
       <InputPassword placeholder="Password" />
