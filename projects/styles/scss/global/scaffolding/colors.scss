@@ -17,11 +17,11 @@
               @each $color-name, $color-value in $light-modes-map {
 
                 @if list-has-value($palette-format, 'rgb-channels') {
-                  #{get-var-name('rgb', $group-name, $tint-name, $color-name)}: #{red($color-value), green($color-value), blue($color-value)};
+                  #{get-var-name('rgb', $group-name, $tint-name, lead-zero($color-name))}: #{red($color-value), green($color-value), blue($color-value)};
                 }
 
                 @if list-has-value($palette-format, 'hex') {
-                  #{get-var-name('hex', $group-name, $tint-name, $color-name)}: #{$color-value};
+                  #{get-var-name('hex', $group-name, $tint-name, lead-zero($color-name))}: #{$color-value};
                 }
               }
             }

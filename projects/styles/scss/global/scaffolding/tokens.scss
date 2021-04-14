@@ -60,7 +60,7 @@
           $property: $property-name,
           $group-name: $group-name,
           $tint-name: $tint-name,
-          $contrast-level: $contrast-level,
+          $contrast-level: lead-zero($contrast-level),
           $color-mode: $color-mode
         );
       }

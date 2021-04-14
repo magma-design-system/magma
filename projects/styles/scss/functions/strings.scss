@@ -1,3 +1,12 @@
+@function lead-zero ($value) {
+
+  @if str-length($value) < 2 {
+    @return '0#{$value}';
+  }
+
+  @return $value;
+}
+
 @function capitalize ($string) {
   @return to-upper-case(str-slice($string, 1, 1)) + str-slice($string, 2);
 }

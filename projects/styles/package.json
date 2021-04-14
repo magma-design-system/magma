@@ -1,6 +1,6 @@
 {
   "name": "@maggioli-design-system/styles",
-  "version": "1.2.0",
+  "version": "2.0.1",
   "description": "This module contains SCSS and CSS styles used by Maggioli Design System, it also makes available a Tailwind config based on Maggioli design tokens.",
   "main": "css/styles.min.css",
   "scripts": {
@@ -33,7 +33,7 @@
   ],
   "license": "ISC",
   "dependencies": {
-    "@maggioli-design-system/design-tokens": "^2.0.0",
+    "@maggioli-design-system/design-tokens": "^2.0.2",
     "normalize.css": "^8.0.1",
     "typeface-karla": "1.1.13",
     "typeface-roboto": "1.1.13"
