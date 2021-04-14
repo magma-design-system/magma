@@ -1,15 +1,16 @@
 {
   "name": "@maggioli-design-system/design-tokens",
-  "version": "2.0.0",
+  "version": "2.0.1",
   "description": "This is the Design Token library of Maggioli Design System, here you'll find all ",
   "author": "Vittorio Vittori",
   "license": "ISC",
   "scripts": {
-    "build": "npm run build-palette && npm run build-style-dictionary && npm run build-css-tokens && npm run build-css-tokens-config",
+    "build": "npm run clean || true && npm run build-palette && npm run build-style-dictionary && npm run build-css-tokens && npm run build-css-tokens-config",
     "build-css-tokens": "run-for-every-file --src ./css-tokens/ --dest dist/scss/ --file '**/*.json' --not-file '**/*.scss' --run 'json-to-scss {{src-file}} {{dest}}{{file-name-ext}}'",
     "build-css-tokens-config": "json-to-scss --v=sq --s='!default;' ./css-tokens/config.json dist/scss/config.scss",
     "build-palette": "node leonardo.mjs",
     "build-style-dictionary": "node build.js",
+    "clean": "rm -rf dist",
     "postbuild": "cp -rf properties ./dist/properties && cp -rf css-tokens ./dist/css-tokens"
   },
   "main": "dist/js/colors.js",

@@ -13,8 +13,8 @@ ${{@key}}: (
         {{#each lightModes as | palettes |}}
           '{{@key}}': (
             {{#each palettes as | palette |}}
-            '{{@key}}': {{palette.value}}{{#unless @last}},{{/unless}}
-                {{/each}}
+              '{{leadZero @key}}': {{palette.value}}{{#unless @last}},{{/unless}}
+            {{/each}}
           ){{#unless @last}},{{/unless}}
         {{/each}}
       ){{#unless @last}},{{/unless}}

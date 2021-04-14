@@ -2,8 +2,7 @@ const fs = require('fs')
 const path = require('path')
 const beautify = require('js-beautify').js
 
-let StyleDictionary = require('./formats/scss-map/scss-map').extend('./config.json')
-StyleDictionary = require('./formats/js-module/js-module').extend('./config.json')
+let StyleDictionary = require('./formats/js-module/js-module').extend('./config.json')
 StyleDictionary = require('./formats/css-vars/css-vars').extend('./config.json')
 StyleDictionary = require('./formats/css-vars-tailwind/css-vars-tailwind').extend('./config.json')
 StyleDictionary.buildAllPlatforms()

@@ -8,6 +8,10 @@ const templatePath = path.resolve(__dirname, './js-module.hbs')
 
 const template = Handlebars.compile(fs.readFileSync(templatePath).toString())
 
+Handlebars.registerHelper('leadZero', function(value) {
+  return Number(value) < 10 ? `0${value}` : value
+});
+
 Handlebars.registerHelper('ifEquals', function(arg1, arg2, options) {
   return (arg1 == arg2) ? options.fn(this) : options.inverse(this);
 });

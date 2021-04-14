@@ -16,7 +16,7 @@ Generated at {{ date }}
                 {{#ifEquals @key 'color'}}
     --{{@../../../key}}-{{@../../key}}: {{palette.value}};
                 {{else}}
-    --{{@../../../key}}-{{@../../key}}-{{@key}}: {{palette.value}};
+    --{{@../../../key}}-{{@../../key}}-{{leadZero @key}}: {{palette.value}};
                 {{/ifEquals}}
               {{/each}}
             {{/ifEquals}}
@@ -37,7 +37,7 @@ Generated at {{ date }}
                   {{#ifEquals @key 'color'}}
       --{{@../../../key}}-{{@../../key}}: {{palette.value}};
                   {{else}}
-      --{{@../../../key}}-{{@../../key}}-{{@key}}: {{palette.value}};
+      --{{@../../../key}}-{{@../../key}}-{{leadZero @key}}: {{palette.value}};
                   {{/ifEquals}}
                 {{/each}}
               {{/ifEquals}}

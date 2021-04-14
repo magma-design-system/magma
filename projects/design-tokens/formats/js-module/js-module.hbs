@@ -15,7 +15,7 @@ const palette = {
               {{#ifEquals @key 'color'}}
     'DEFAULT': 'var(--{{@../../../key}}-{{@../../key}})'{{#unless @last}},{{/unless}}
               {{else}}
-    '{{@key}}': 'var(--{{@../../../key}}-{{@../../key}}-{{@key}})'{{#unless @last}},{{/unless}}
+    '{{leadZero @key}}': 'var(--{{@../../../key}}-{{@../../key}}-{{leadZero @key}})'{{#unless @last}},{{/unless}}
               {{/ifEquals}}
             {{/each}}
           {{/ifEquals}}
