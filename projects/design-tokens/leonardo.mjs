@@ -57,6 +57,8 @@ const getPalette = (theme, colorName, colorValue, scaffold, colorDark) => {
 
           const colorCode = `${codeIndex < 10 ? '0' + codeIndex : codeIndex}`
           palette[colorCode] = { value: element.value }
+          // const colorCode = codeIndex
+          // console.log(palette, colorCode)
 
           if (paletteSource.length === index + 1) {
             if (colorDark !== undefined) {
@@ -69,7 +71,7 @@ const getPalette = (theme, colorName, colorValue, scaffold, colorDark) => {
       }
     }
   })
-  return palette
+  return Object.fromEntries(palette)
 }
 
 const colorScales = colors.map(item => addAdaptivePalette(item.color, item.name, item.colorspace, item.scaffold))
@@ -111,7 +113,11 @@ if (colorScales.length > 0) {
     }
   })
 
+
+  console.log('----------\n', palette.color.brand.maggioli.dark)
+
   const jsonPalette = JSON.stringify(palette, null, 2)
+  // console.log(jsonPalette)
 
   mkdirSync('./properties/color', { recursive: true })
   writeFileSync('./properties/color/base.json', jsonPalette, 'utf8', err => {
