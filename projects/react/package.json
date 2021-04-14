@@ -82,9 +82,9 @@
     "@maggioli-design-system/styles": "^2.0.1",
     "crypto-js": "^4.0.0",
     "gsap": "^3.6.1",
-    "react": "^17.0.2",
+    "react": "^16.0.0",
     "react-cool-onclickoutside": "^1.6.1",
-    "react-dom": "^17.0.2",
+    "react-dom": "^16.0.0",
     "react-gsap": "^3.2.1",
     "react-helmet": "^6.1.0",
     "react-router-dom": "^5.2.0",
@@ -149,7 +149,7 @@
     "stylelint-order": "^4.1.0",
     "stylelint-scss": "^3.19.0",
     "tailwindcss": "npm:@tailwindcss/postcss7-compat@^2.1.0",
-    "webpack": "^5.4.0",
+    "webpack": "^5.32.0",
     "webpack-cli": "^4.6.0"
   },
   "peerDependencies": {
