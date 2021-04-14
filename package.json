@@ -52,6 +52,11 @@
   },
   "contributors": [
     {
+      "name": "Andrea Pruccoli",
+      "email": "andrea.pruccoli@maggioli.it",
+      "role": "Software Development"
+    },
+    {
       "name": "Fabion Dautaj",
       "email": "fabion.dautaj@maggioli.it",
       "role": "React Components"
