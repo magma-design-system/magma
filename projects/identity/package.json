@@ -1,12 +1,13 @@
 {
   "name": "@maggioli-design-system/identity",
-  "version": "1.1.1",
+  "version": "1.2.0",
   "description": "Maggioli brand identity assets",
   "files": [
     "/dist/**/*"
   ],
   "scripts": {
-    "build": "node build.js"
+    "clean": "rm -rf dist",
+    "build": "npm run clean && node build.js"
   },
   "keywords": [
     "asset",
