@@ -6,5 +6,5 @@
     @return '#{map-keys($rule)}-width: #{get($rule, map-keys($rule))}';
   }
 
-  @return $rule;
+  @return 'min-width: #{$rule}';
 }
