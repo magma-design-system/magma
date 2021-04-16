@@ -17,11 +17,6 @@ body {
 }
 
 .ds-layout {
-  display: block;
-  @include media('mobile') {
-    background-color: yellow;
-  }
-
   &__main {
     margin: auto;
     max-width: $content;

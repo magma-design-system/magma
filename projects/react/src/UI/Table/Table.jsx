@@ -5,8 +5,8 @@ import './Table.scss'
 import H6 from '@Typography/H6/H6'
 
 const TableCell = props =>
-  <td className={`table__cell ${props.className} ${props.grow ? 'table__cell--grow' : ''}`}>
-    <div className="table__content">
+  <td className={`Table__cell ${props.className} ${props.grow ? 'Table__cell--grow' : ''}`}>
+    <div className="Table__content">
       {props.children}
     </div>
   </td>
@@ -22,14 +22,14 @@ TableCell.defaultProps = {
 }
 
 const TableHeaderCell = props =>
-  <th className="table__cell table__cell--header">
+  <th className="Table__cell Table__cell--header">
     <H6>
       {props.children}
     </H6>
   </th>
 
 const TableRow = props =>
-  <tr className={`table__row ${props.className}`}>
+  <tr className={`Table__row ${props.className}`}>
     {props.children}
   </tr>
 
@@ -42,14 +42,14 @@ TableRow.defaultProps = {
 }
 
 const TableHeader = props =>
-  <thead className="table__header">
-    <tr className="table__row table__row--header">
+  <thead className="Table__header">
+    <tr className="Table__row Table__row--header">
       {props.children}
     </tr>
   </thead>
 
 const TableBody = props =>
-  <tbody className={`table__body ${props.className}`}>
+  <tbody className={`Table__body ${props.className}`}>
     {props.children}
   </tbody>
 
@@ -62,8 +62,8 @@ TableBody.defaultProps = {
 }
 
 const Table = props =>
-  <div className={`table ${props.className} ${props.theme ? 'table--theme-alternate' : ''} ${props.interactive ? 'table--interactive' : ''}`}>
-    <table className="table__element">
+  <div className={`Table ${props.className} ${props.theme ? 'Table--theme-alternate' : ''} ${props.interactive ? 'Table--interactive' : ''}`}>
+    <table className="Table__element">
       {props.children}
     </table>
   </div>

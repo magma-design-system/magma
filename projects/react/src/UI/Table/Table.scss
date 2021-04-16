@@ -27,7 +27,7 @@ $border-style: $border-size solid;
   }
 }
 
-.table {
+.Table {
   background-color: color('adjust.tone');
   border-radius: s(0.5);
   display: flex;
@@ -94,12 +94,12 @@ $border-style: $border-size solid;
   }
 
   &--interactive {
-    .table {
+    .Table {
       &__body {
-        .table {
+        .Table {
           &__row {
             &:hover {
-              .table {
+              .Table {
                 &__cell {
 
                   --background-color: #{$cell-background-color};
@@ -115,7 +115,7 @@ $border-style: $border-size solid;
         }
 
         &:hover {
-          .table {
+          .Table {
             &__cell {
               border-top: $border-style $cell-border-hover;
             }
@@ -126,10 +126,10 @@ $border-style: $border-size solid;
   }
 
   &__body {
-    .table {
+    .Table {
       &__row {
         &:first-child {
-          .table {
+          .Table {
             &__cell {
               border-top: $border-style $cell-border-first;
             }
@@ -137,7 +137,7 @@ $border-style: $border-size solid;
         }
 
         &:last-child {
-          .table {
+          .Table {
             &__cell {
               border-bottom: $border-style $cell-border;
             }
@@ -154,12 +154,12 @@ $border-style: $border-size solid;
   }
 
   &--theme-alternate {
-    .table {
+    .Table {
       &__body {
-        .table {
+        .Table {
           &__row {
             &:nth-child( odd ) {
-              .table {
+              .Table {
                 &__cell {
 
                   @include cell-outer-border-visible;
@@ -172,10 +172,10 @@ $border-style: $border-size solid;
         }
 
         &:hover {
-          .table {
+          .Table {
             &__row {
               &:nth-child( odd ) {
-                .table {
+                .Table {
                   &__cell {
 
                     @extend %cell-outer-border-invisible;
@@ -186,7 +186,7 @@ $border-style: $border-size solid;
               }
 
               &:hover {
-                .table {
+                .Table {
                   &__cell {
 
                     @include cell-outer-border-visible (!important);
