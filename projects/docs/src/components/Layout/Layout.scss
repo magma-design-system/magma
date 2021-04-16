@@ -1,4 +1,4 @@
-@import '@maggioli-design-system/styles/scss/import-framework';
+@import '~@maggioli-design-system/styles/scss/import-framework';
 
 $menu-size: 60px;
 $menu-font-size: 48px;
@@ -17,6 +17,11 @@ body {
 }
 
 .ds-layout {
+  display: block;
+  @include media('mobile') {
+    background-color: yellow;
+  }
+
   &__main {
     margin: auto;
     max-width: $content;

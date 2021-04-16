@@ -11,10 +11,10 @@ import Hack from '@Typography/Hack/Hack'
 
 function getColor(token, index) {
   const colorValue = token[Object.keys(token)[index]].value
-  const colorCode = Object.keys(token)[index]
-  const selectorCode = colorCode.replace('c-', '').replace('color', '')
+  const colorCode = Object.keys(token)[index] !== 'color' ? Number(Object.keys(token)[index]) : ''
+  const selectorCode = typeof colorCode === 'number' && colorCode < 10 ? `0${colorCode}` : colorCode.toString()
   return {
-    code: colorCode,
+    code: selectorCode,
     selectorCode,
     value: colorValue,
   }
