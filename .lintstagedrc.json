@@ -1,0 +1,8 @@
+{
+  "projects/*/src/**/*.{js,jsx}": [
+    "yarn run nx run-many --target=lint-js --all"
+  ],
+  "projects/*/src/**/*.{scss}": [
+    "yarn run nx run-many --target=lint-sass --all"
+  ]
+}

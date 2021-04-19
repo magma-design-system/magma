@@ -24,7 +24,7 @@ function getBestContrastColor(token, index) {
   const currentColor = getColor(token, index)
   let bestColor = {}
   let bestRatio = 0
-  Object.entries(token).map(([name, color], key) => {
+  Object.entries(token).forEach((_value, key) => {
     const checkColor = getColor(token, key)
     const currentRatio = contrast.ratio(currentColor.value, checkColor.value).toFixed(2)
     if (currentRatio > bestRatio) {
