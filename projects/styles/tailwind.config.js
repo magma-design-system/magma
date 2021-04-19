@@ -3,6 +3,7 @@ const mediaQueries = require('@maggioli-design-system/design-tokens/dist/js/medi
 
 module.exports = {
   important: true,
+  mode: 'jit',
   purge: {
     mode: 'all',
     content: [

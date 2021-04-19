@@ -99,7 +99,7 @@
       "@deckdeckgo/highlight-code": "^2.5.1",
       "@mdx-js/mdx": "^1.6.22",
       "@mdx-js/react": "^1.6.22",
-      "@tailwindcss/postcss7-compat": "^2.0.4",
+      "@tailwindcss/postcss7-compat": "^2.1.0",
       "autoprefixer": "~9.7.6",
       "babel-cli": "^6.26.0",
       "babel-loader": "^8.2.2",

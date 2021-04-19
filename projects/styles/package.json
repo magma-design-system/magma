@@ -39,7 +39,7 @@
     "typeface-roboto": "1.1.13"
   },
   "devDependencies": {
-    "@tailwindcss/postcss7-compat": "^2.0.4",
+    "@tailwindcss/postcss7-compat": "^2.1.0",
     "autoprefixer": "^9.8.6",
     "postcss": "^7.0.35",
     "sass": "^1.32.8",
