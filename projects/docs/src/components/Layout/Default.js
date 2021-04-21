@@ -46,6 +46,7 @@ import Icon from '@Design/Icon/Icon'
 import Image from '@Content/Image/Image'
 import UList, { UListItem } from '@UI/UList/UList'
 import Navigation from '@Gatsby/Pattern/Navigation/Navigation'
+import Cover from '@Gatsby/Pattern/Cover/Cover'
 import PackageInfo from '@Content/PackageInfo/PackageInfo'
 import Page from '@Gatsby/Page/Page'
 import Paragraph from '@Typography/Paragraph/Paragraph'
@@ -71,6 +72,7 @@ const shortcodes = {
   Caption,
   Code,
   CodeBlock,
+  Cover,
   Detail,
   Download,
   ExternalLink,
@@ -165,7 +167,7 @@ const Layout = ({ children }) => {
   return (
     <StaticQuery
       query={graphql`
-        query NavigationQuery {
+        query DefaultTemplateNavigationQuery {
           allMdx {
             edges {
               node {
@@ -221,7 +223,7 @@ const Layout = ({ children }) => {
               </div>
             </aside>
             <article className={`ds-layout__article ${isOpened ? 'ds-layout__article--is-not-scrolling' : ''}`}>
-              <Grid className="ds-layout__contents" rows="fit-vertically">
+              <Grid className="ds-layout__contents shadow rounded-3xl" rows="fit-vertically">
                 <H1 className="ds-layout__title">{currentMenuItem.title}</H1>
                 {horizontalMenuItems?.length > 0 && <HorizontalMenu className="ds-layout__actions" menuList={horizontalMenuItems}/>}
                 <Grid className="ds-layout__markdown">

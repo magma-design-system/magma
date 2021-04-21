@@ -12,7 +12,7 @@ body {
   color: color('adjust.tone', '04');
 
   @include media('desktop') {
-    background-color: color('brand.eolo', '20');
+    background-color: color('adjust.tone', '20');
   }
 }
 
@@ -85,8 +85,9 @@ body {
 
     @include media('desktop') {
       background-color: $contents-color;
-      border-radius: get($radius, 'large');
-      box-shadow: get($shadow, 'box');
+
+      // border-radius: get($radius, 'large');
+      // box-shadow: get($shadow, 'box');
       margin-bottom: s(2);
       margin-top: s(2);
       min-height: 100vh;
