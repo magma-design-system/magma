@@ -33,7 +33,7 @@
   ],
   "license": "ISC",
   "dependencies": {
-    "@maggioli-design-system/design-tokens": "^2.1.1",
+    "@maggioli-design-system/design-tokens": "^2.1.2",
     "normalize.css": "^8.0.1",
     "typeface-karla": "1.1.13",
     "typeface-roboto": "1.1.13"
