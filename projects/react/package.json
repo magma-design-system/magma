@@ -65,7 +65,7 @@
     "@maggioli-design-system/icons": "^1.5.3",
     "@maggioli-design-system/design-tokens": "^2.1.2",
     "@maggioli-design-system/identity": "^1.4.0",
-    "@maggioli-design-system/styles": "^2.0.2",
+    "@maggioli-design-system/styles": "^2.1.0",
     "crypto-js": "^4.0.0",
     "gsap": "^3.6.1",
     "react": "^16.0.0",
