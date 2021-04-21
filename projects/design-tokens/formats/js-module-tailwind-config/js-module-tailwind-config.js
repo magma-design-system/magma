@@ -2,8 +2,9 @@ const Handlebars = require('handlebars')
 const StyleDictionary = require('style-dictionary')
 const fs = require('fs')
 const path = require('path')
+const sortKeys = require('../../lib.js').sortKeys
 
-const templatePath = path.resolve(__dirname, './css-vars-tailwind.hbs')
+const templatePath = path.resolve(__dirname, './js-module-tailwind-config.hbs')
 
 const template = Handlebars.compile(fs.readFileSync(templatePath).toString())
 
@@ -11,15 +12,20 @@ Handlebars.registerHelper('leadZero', function(value) {
   return Number(value) < 10 ? `0${value}` : value
 });
 
+Handlebars.registerHelper('rgbChannel', function(value) {
+  const color = hexRgb(value)
+  return `${color.red}, ${color.green}, ${color.blue}`
+});
+
 Handlebars.registerHelper('ifEquals', function(arg1, arg2, options) {
   return (arg1 == arg2) ? options.fn(this) : options.inverse(this);
 });
 
 StyleDictionary.registerFormat({
-  name: 'css/vars-tailwind',
+  name: 'js/module-tailwind-config',
   formatter: function(dictionary, platform) {
     return template({
-      properties: dictionary.properties,
+      properties: sortKeys(dictionary.properties),
       date: new Date().toUTCString(),
       options: platform,
     })

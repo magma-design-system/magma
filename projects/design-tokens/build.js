@@ -3,8 +3,9 @@ const path = require('path')
 const beautify = require('js-beautify').js
 
 let StyleDictionary = require('./formats/js-module/js-module').extend('./config.json')
+StyleDictionary = require('./formats/js-module-tailwind-config/js-module-tailwind-config').extend('./config.json')
 StyleDictionary = require('./formats/css-vars/css-vars').extend('./config.json')
-StyleDictionary = require('./formats/css-vars-tailwind/css-vars-tailwind').extend('./config.json')
+StyleDictionary = require('./formats/css-vars-rgb-channels/css-vars-rgb-channels').extend('./config.json')
 StyleDictionary.buildAllPlatforms()
 
 const beautifyConfig = {

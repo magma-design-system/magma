@@ -14,9 +14,9 @@ Generated at {{ date }}
             {{#ifEquals @key 'light'}}
               {{#each palettes as | palette |}}
                 {{#ifEquals @key 'color'}}
-    --{{@../../../key}}-{{@../../key}}: {{palette.value}};
+    --{{@../../../key}}-{{@../../key}}: {{rgbChannel palette.value}};
                 {{else}}
-    --{{@../../../key}}-{{@../../key}}-{{leadZero @key}}: {{palette.value}};
+    --{{@../../../key}}-{{@../../key}}-{{leadZero @key}}: {{rgbChannel palette.value}};
                 {{/ifEquals}}
               {{/each}}
             {{/ifEquals}}
@@ -35,9 +35,9 @@ Generated at {{ date }}
               {{#ifEquals @key 'dark'}}
                 {{#each palettes as | palette |}}
                   {{#ifEquals @key 'color'}}
-      --{{@../../../key}}-{{@../../key}}: {{palette.value}};
+      --{{@../../../key}}-{{@../../key}}: {{rgbChannel palette.value}};
                   {{else}}
-      --{{@../../../key}}-{{@../../key}}-{{leadZero @key}}: {{palette.value}};
+      --{{@../../../key}}-{{@../../key}}-{{leadZero @key}}: {{rgbChannel palette.value}};
                   {{/ifEquals}}
                 {{/each}}
               {{/ifEquals}}
