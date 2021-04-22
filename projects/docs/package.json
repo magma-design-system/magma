@@ -53,7 +53,7 @@
         "@maggioli-design-system/icons": "^1.5.3",
         "@maggioli-design-system/icons-svg": "^2.0.0",
         "@maggioli-design-system/identity": "^1.4.0",
-        "@maggioli-design-system/react": "^0.20.2",
+        "@maggioli-design-system/react": "^0.22.0",
         "@maggioli-design-system/styles": "^2.1.0",
         "crypto-js": "^4.0.0",
         "gsap": "^3.6.1",
