@@ -3,7 +3,7 @@ import PropTypes from 'prop-types'
 import { styles } from '@Library/styles'
 import Typography from '@Typography/Typography'
 
-const Caption = ({ className, htmlTag, ...restProps }) => {
+const Caption = ({ children, className, htmlTag, ...restProps }) => {
   const classes = styles('caption', {
     selectors: [
       className,
@@ -13,8 +13,9 @@ const Caption = ({ className, htmlTag, ...restProps }) => {
   return <Typography
     className={classes}
     htmlTag={htmlTag}
+    {...restProps}
   >
-    {restProps.children}
+    {children}
   </Typography>
 }
 

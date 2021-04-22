@@ -26,6 +26,12 @@ export default {
 export const primaryH1 = () =>
   <H1>{faker.lorem.paragraph()}</H1>
 
+export const AutomaticID = () =>
+  <H1 id>{faker.lorem.paragraph()}</H1>
+
+export const ManualID = () =>
+  <H1 id="Hello world!">{faker.lorem.paragraph()}</H1>
+
 export const primaryH2 = () =>
   <H2>{faker.lorem.paragraph()}</H2>
 

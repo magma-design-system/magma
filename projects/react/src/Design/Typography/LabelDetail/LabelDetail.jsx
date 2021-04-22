@@ -3,7 +3,7 @@ import PropTypes from 'prop-types'
 import { styles } from '@Library/styles'
 import Typography from '@Typography/Typography'
 
-const LabelDetail = ({ className, htmlTag, ...restProps }) => {
+const LabelDetail = ({ children, className, htmlTag, ...restProps }) => {
   const classes = styles('label-detail', {
     selectors: [
       className,
@@ -13,12 +13,14 @@ const LabelDetail = ({ className, htmlTag, ...restProps }) => {
   return <Typography
     className={classes}
     htmlTag={htmlTag}
+    {...restProps}
   >
-    {restProps.children}
+    {children}
   </Typography>
 }
 
 LabelDetail.propTypes = {
+  ...Typography.propTypes,
   className: PropTypes.string,
   htmlTag: PropTypes.string,
 }

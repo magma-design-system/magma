@@ -3,7 +3,7 @@ import PropTypes from 'prop-types'
 import { styles } from '@Library/styles'
 import Typography from '@Typography/Typography'
 
-const H3 = ({ className, htmlTag, ...restProps }) => {
+const H3 = ({ children, className, htmlTag, ...restProps }) => {
   const classes = styles('h3', {
     selectors: [
       className,
@@ -13,18 +13,21 @@ const H3 = ({ className, htmlTag, ...restProps }) => {
   return <Typography
     className={classes}
     htmlTag={htmlTag}
+    {...restProps}
   >
-    {restProps.children}
+    {children}
   </Typography>
 }
 
 H3.propTypes = {
+  ...Typography.propTypes,
   className: PropTypes.string,
   htmlTag: PropTypes.string,
 }
 
 H3.defaultProps = {
   htmlTag: 'h3',
+  id: true,
 }
 
 export default H3
