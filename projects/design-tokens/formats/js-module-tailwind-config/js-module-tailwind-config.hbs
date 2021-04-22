@@ -4,6 +4,16 @@ Do not edit directly
 Generated at {{ date }}
 */
 
+const getColor = (cssVar, {opacityVariable, opacityValue}) => {
+  if (opacityValue !== undefined) {
+    return `rgba(var(--${cssVar}), ${opacityValue})`
+  }
+  if (opacityVariable !== undefined) {
+    return `rgba(var(--${cssVar}), var(${opacityVariable}, 1))`
+  }
+  return `rgb(var(--${cssVar}))`
+};
+
 const palette = {
   {{#each properties as | groups |}}
     {{#each groups as | names |}}
@@ -12,25 +22,9 @@ const palette = {
           {{#ifEquals @key 'light'}}
             {{#each palettes as | palette |}}
               {{#ifEquals @key 'color'}}
-    '{{@../../../key}}-{{@../../key}}': ({ opacityVariable, opacityValue }) => {
-      if (opacityValue !== undefined) {
-        return `rgba(var(--{{@../../../key}}-{{@../../key}}), ${opacityValue})`
-      }
-      if (opacityVariable !== undefined) {
-        return `rgba(var(--{{@../../../key}}-{{@../../key}}), var(${opacityVariable}, 1))`
-      }
-      return `rgb(var(--{{@../../../key}}-{{@../../key}}))`
-    },
+    '{{@../../../key}}-{{@../../key}}': (params) => getColor('{{@../../../key}}-{{@../../key}}', params),
               {{else}}
-    '{{@../../../key}}-{{@../../key}}-{{leadZero @key}}': ({ opacityVariable, opacityValue }) => {
-      if (opacityValue !== undefined) {
-        return `rgba(var(--{{@../../../key}}-{{@../../key}}-{{leadZero @key}}), ${opacityValue})`
-      }
-      if (opacityVariable !== undefined) {
-        return `rgba(var(--{{@../../../key}}-{{@../../key}}-{{leadZero @key}}), var(${opacityVariable}, 1))`
-      }
-      return `rgb(var(--{{@../../../key}}-{{@../../key}}-{{leadZero @key}}))`
-    },
+    '{{@../../../key}}-{{@../../key}}-{{leadZero @key}}': (params) => getColor('{{@../../../key}}-{{@../../key}}-{{leadZero @key}}', params),
               {{/ifEquals}}
             {{/each}}
           {{/ifEquals}}
