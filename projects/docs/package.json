@@ -48,7 +48,7 @@
     ],
     "license": "ISC",
     "dependencies": {
-        "@maggioli-design-system/design-tokens": "^2.2.0",
+        "@maggioli-design-system/design-tokens": "^2.2.1",
         "@maggioli-design-system/font-icons-cli": "^1.1.0",
         "@maggioli-design-system/icons": "^1.5.3",
         "@maggioli-design-system/icons-svg": "^2.0.0",
