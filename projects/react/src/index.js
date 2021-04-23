@@ -25,6 +25,7 @@ export Picture from '@Content/Picture/Picture'
 export Quote from '@Content/Quote/Quote'
 export UrlPreview from '@Content/UrlPreview/UrlPreview'
 export Usage, { UsageDo, UsageDont } from '@Content/Usage/Usage'
+export Video from '@Content/Video/Video'
 
 export Caption from '@Typography/Caption/Caption'
 export Code from '@Typography/Code/Code'

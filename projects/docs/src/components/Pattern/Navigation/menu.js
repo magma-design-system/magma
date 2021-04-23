@@ -1,7 +1,8 @@
 const basePathTitles = {
   '': 'Maggioli Design System',
-  doc: 'Doc',
+  project: 'Project',
   info: 'Info',
+  doc: 'Doc',
   identity: 'Identity',
   governance: 'Governance',
 }

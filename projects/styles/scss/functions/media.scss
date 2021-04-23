@@ -1,0 +1,10 @@
+@function rule ($viewport) {
+
+  $rule: get($media, $viewport);
+
+  @if type-of($rule) == 'map' {
+    @return '#{map-keys($rule)}-width: #{get($rule, map-keys($rule))}';
+  }
+
+  @return 'min-width: #{$rule}';
+}

@@ -105,11 +105,19 @@ walk(directoryPath, function (err, results) {
   })
 
   cleanResults.forEach((item, index) => {
+    const sizes = [
+      256,
+      512,
+      1024,
+    ]
     item = item.replace('.svg', '')
+    const currentItem = item.split('/')
     shell.cp('-R', 'resources/*', 'dist')
+
     exportPDF(item)
-    exportImage(item, 256)
-    exportImage(item, 512)
-    exportImage(item, 1024)
+
+    sizes.forEach((sizeItem, sizeIndex) => {
+      exportImage(item, sizeItem)
+    })
   })
 })

@@ -7,13 +7,9 @@ const templatePath = path.resolve(__dirname, './css-vars.hbs')
 
 const template = Handlebars.compile(fs.readFileSync(templatePath).toString())
 
-Handlebars.registerHelper('eachSorted', (context, options) => {
-  let ret = ''
-  Object.keys(context).sort().forEach((key, index) => {
-    ret = ret + options.fn({ key, value: context[key] })
-  })
-  return ret
-})
+Handlebars.registerHelper('leadZero', function(value) {
+  return Number(value) < 10 ? `0${value}` : value
+});
 
 Handlebars.registerHelper('ifEquals', function(arg1, arg2, options) {
   return (arg1 == arg2) ? options.fn(this) : options.inverse(this);

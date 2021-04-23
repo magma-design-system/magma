@@ -3,7 +3,7 @@ import PropTypes from 'prop-types'
 import { styles } from '@Library/styles'
 import Typography from '@Typography/Typography'
 
-const Detail = ({ className, htmlTag, ...restProps }) => {
+const Detail = ({ children, className, htmlTag, ...restProps }) => {
   const classes = styles('detail', {
     selectors: [
       className,
@@ -13,8 +13,9 @@ const Detail = ({ className, htmlTag, ...restProps }) => {
   return <Typography
     className={classes}
     htmlTag={htmlTag}
+    {...restProps}
   >
-    {restProps.children}
+    {children}
   </Typography>
 }
 

@@ -1,15 +1,21 @@
 import React from 'react'
 import faker from 'faker'
+import sizesData from '@maggioli-design-system/design-tokens/dist/css-tokens/sizes.json'
 
 import Table, { TableHeader, TableHeaderCell, TableBody, TableRow, TableCell } from '@UI/Table/Table'
 
 import Avatar from '@Content/Avatar/Avatar'
 import InlineCode from '@UI/InlineCode/InlineCode'
-import sizesData from '@maggioli-design-system/design-tokens/dist/css-tokens/sizes.json'
 
-import avatarExample from './avatar-example.jpeg'
+const avatarExample = faker.random.arrayElement([
+  'https://www.w3schools.com/howto/img_avatar.png',
+  'https://www.w3schools.com/howto/img_avatar2.png',
+  'https://www.w3schools.com/w3images/avatar2.png',
+  'https://www.w3schools.com/w3images/avatar6.png',
+])
 
 const avatarSizes = Object.keys(sizesData.avatar)
+
 const gravatarDefs = [
   'mp',
   'identicon',

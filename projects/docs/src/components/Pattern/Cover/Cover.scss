@@ -1,0 +1,9 @@
+.Cover {
+  &__border {
+    background-image: url('./waves.svg');
+    background-repeat: no-repeat;
+    background-size: contain;
+    height: 150px;
+    transform: translate(0, -150px) rotate(180deg);
+  }
+}

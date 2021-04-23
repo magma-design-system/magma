@@ -15,10 +15,10 @@
   },
   "scripts": {
     "clean": "rm -rf dist || true",
-    "prebuild": "yarn run clean",
+    "prebuild": "npm run clean",
     "build": "font-icons resources/mgg-icons.json",
     "postbuild": "node ./tools/setup-package-font.js",
-    "build-website": "yarn run build -- --website",
+    "build-website": "npm run build -- --website",
     "test": "echo \"Error: no test specified\" && exit 1",
     "publish": "(cd dist && yarn publish)"
   },

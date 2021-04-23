@@ -1,0 +1,21 @@
+.Video {
+  &__overlay {
+    &--classic {
+      background-image: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAYAAAAGCAYAAADgzO9IAAAALElEQVQYV2NkwAEYoeIzGRgYtjAwMGxmYGAAs2ESvlBBkDowGyaBYSDpRgEAkLwKoa+v7O8AAAAASUVORK5CYII=');
+    }
+
+    &--sharp {
+      background-image: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAgAAAAICAYAAADED76LAAAAOklEQVQoU2NkYGAwZoCAs2hssCAjNkFkMZACGMBqEswErMaDTEJWgNUkmBU4HYpNAYpJyI4ESWCYBAAe2A7Vb66lfAAAAABJRU5ErkJggg==');
+    }
+
+    &--soft {
+      background-image: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAgAAAAGCAYAAAD+Bd/7AAAAOElEQVQYV2NkYGAwZoCA51BaEpnPiKTgLFQCpgHMR1aA0wQpbEYzMDCArQKZAAMoRsOsBinAawIAOXkJ1Ff0CjwAAAAASUVORK5CYII=');
+    }
+
+    &--tv {
+      background-image: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAcAAAAHCAYAAADEUlfTAAAAMElEQVQYV2NkYGDwZcABGP8zKBuD5Bj/P4coEf0Kod8wSjH+Z5CVgki+RZc0HghJADPEICMR8Ep/AAAAAElFTkSuQmCC');
+    }
+  }
+}
+
+// https://loading.io/asset/472365

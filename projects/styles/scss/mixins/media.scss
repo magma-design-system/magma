@@ -2,7 +2,7 @@
   // es:
   // @include media('mobile') { ... }
 
-  @media (get($media, $viewport)) {
+  @media (rule($viewport)) {
     @content;
   }
 }

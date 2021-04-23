@@ -52,7 +52,6 @@
     @if $light-mode-name == $color-mode {
 
       $i: $i + 1;
-      $contrast-level: str-replace('#{$contrast}', 'c-', '');
 
       @each $property-name in $palette-scaffold {
 
@@ -60,7 +59,7 @@
           $property: $property-name,
           $group-name: $group-name,
           $tint-name: $tint-name,
-          $contrast-level: $contrast-level,
+          $contrast-level: lead-zero($contrast),
           $color-mode: $color-mode
         );
       }

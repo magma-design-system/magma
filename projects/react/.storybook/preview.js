@@ -29,7 +29,7 @@ const decorateViewport = (name, item) => {
     name: toUpperCase(name),
     type: name,
     styles: {
-      width: `${item.match(re)[0]}px`,
+      width: `${typeof item === 'object' ? item[Object.keys(item)[0]] : item.match(re)[0]}`,
       height: '100%',
     },
   }

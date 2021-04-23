@@ -6,7 +6,7 @@ This repo contains [Maggioli Design System][docs].
 
 ---
 
-### Installation
+## Installation
 
 Clone the private repository form Git:
 
@@ -39,3 +39,15 @@ Then you can run for every project:
 npx nx run react:start --skip-nx-cache
 ```
 
+## Development
+
+Using VSCode you should install at least ESLint plugin by Dirk Baeumer and configure the editor properly:
+create the file `.vscode/settings.json` with the following content:
+
+```json
+{
+  "eslint.workingDirectories": [
+    { "pattern": "./projects/*/" }
+  ]
+}
+```

@@ -3,7 +3,7 @@ import PropTypes from 'prop-types'
 import { styles } from '@Library/styles'
 import Typography from '@Typography/Typography'
 
-const Hack = ({ className, htmlTag, ...restProps }) => {
+const Hack = ({ children, className, htmlTag, ...restProps }) => {
   const classes = styles('hack', {
     selectors: [
       className,
@@ -13,12 +13,14 @@ const Hack = ({ className, htmlTag, ...restProps }) => {
   return <Typography
     className={classes}
     htmlTag={htmlTag}
+    {...restProps}
   >
-    {restProps.children}
+    {children}
   </Typography>
 }
 
 Hack.propTypes = {
+  ...Typography.propTypes,
   className: PropTypes.string,
   htmlTag: PropTypes.string,
 }

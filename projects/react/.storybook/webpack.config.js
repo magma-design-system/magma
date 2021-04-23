@@ -2,7 +2,7 @@ const path = require('path')
 const autoprefixer = require('autoprefixer')
 const tailwindcss = require('tailwindcss')
 const aliases = require('../import-aliases')
-const webpack = require('webpack')
+// const webpack = require('webpack')
 
 module.exports = async({ config }) => {
   // config.mode = 'production'

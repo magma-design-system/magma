@@ -1,7 +1,11 @@
 import config from '@maggioli-design-system/design-tokens/dist/css-tokens/config.json'
 
-const toDashCase = value =>
-  value[0].toLowerCase() + value.slice(1, value.length).replace(/[A-Z]/g, letter => `-${letter.toLowerCase()}`)
+const toDashCase = value => {
+  if (value[0] === '0') {
+    return value.slice(1, value.length).replace(/[A-Z]/g, letter => `-${letter.toLowerCase()}`)
+  }
+  return value[0].toLowerCase() + value.slice(1, value.length).replace(/[A-Z]/g, letter => `-${letter.toLowerCase()}`)
+}
 
 export const componentSelectors = items =>
   items.filter(value => !!value).join(' ')
@@ -35,7 +39,7 @@ export const modifierSelectors = (block, modifiers) => {
       if (typeof variant === 'boolean') {
         selectors.push(`${block}--${toDashCase(modifier)}`)
       } else {
-        selectors.push(`${block}--${toDashCase(modifier)}-${variant}`)
+        selectors.push(`${block}--${toDashCase(modifier) ? toDashCase(modifier) + '-' : ''}${variant}`)
       }
     }
   }
@@ -45,8 +49,8 @@ export const modifierSelectors = (block, modifiers) => {
 export const styles = (block, selectors) => {
   return componentSelectors([
     block,
-    selectors.selectors ? componentSelectors(selectors.selectors) : null,
     selectors.modifiers ? modifierSelectors(block, selectors.modifiers) : null,
     selectors.scaffolded ? scaffoldedSelectors(selectors.scaffolded) : null,
+    selectors.selectors ? componentSelectors(selectors.selectors) : null,
   ])
 }
