@@ -1,26 +1,31 @@
-import React from 'react'
+import React, { Fragment } from 'react'
 import PropTypes from 'prop-types'
 import contrast from 'get-contrast'
 import Icon from '@Design/Icon/Icon'
-import Row from '@Layout/Row/Row'
 
 import './AccessibilityTest.scss'
 
 const AccessibilityTest = props =>
-  <Row className="mds-accessibility-test">
-    <div className="mds-accessibility-test__result">
+  <Fragment>
+    <div>
       {contrast.score(props.color, props.base) === 'AAA'
-        ? <b className="mds-accessibility-test__vote mds-accessibility-test__vote--best">{contrast.score(props.color, props.base)}</b>
-        : <div className="mds-accessibility-test__vote">
-          {!contrast.isAccessible(props.color, props.base)
-            ? <div className="mds-accessibility-test__detail"><Icon className="mds-accessibility-test__icon" name="status-warning" size="small"/> <span>{contrast.score(props.color, props.base)}</span></div>
-            : <div className="mds-accessibility-test__detail">{contrast.score(props.color, props.base)}</div>
-          }
+        ? <div className="inline-flex rounded-full bg-status-success-18 text-status-success-04 px-4 py-1">
+          <Icon className="text-status-success-08 mr-1" name="status-success" size="small"/>
+          <b>{contrast.score(props.color, props.base)}</b>
         </div>
+        : <Fragment>
+          {!contrast.isAccessible(props.color, props.base)
+            ? <div className="inline-flex rounded-full bg-status-error-18 text-status-error-04 px-4 py-1">
+              <Icon className="text-status-error-08 mr-1" name="status-warning" size="small"/>
+              <b>{contrast.score(props.color, props.base)}</b>
+            </div>
+            : <b className="inline-flex rounded-full px-4 py-1">{contrast.score(props.color, props.base)}</b>
+          }
+        </Fragment>
       }
-      <div>{contrast.ratio(props.color, props.base).toFixed(2)}</div>
     </div>
-  </Row>
+    <div>{contrast.ratio(props.color, props.base).toFixed(2)}</div>
+  </Fragment>
 
 AccessibilityTest.propTypes = {
   base: PropTypes.string,

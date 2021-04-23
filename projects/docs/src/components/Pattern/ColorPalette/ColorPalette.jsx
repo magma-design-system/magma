@@ -7,7 +7,6 @@ import contrast from 'get-contrast'
 import ColorSwatch from '@Gatsby/Pattern/ColorSwatch/ColorSwatch'
 import Grid from '@Layout/Grid/Grid'
 import H3 from '@Typography/H3/H3'
-import Hack from '@Typography/Hack/Hack'
 
 function getColor(token, index) {
   const colorValue = token[Object.keys(token)[index]].value
@@ -44,25 +43,20 @@ function getSelectors(token, group, name, index) {
 const ColorPalette = props =>
   <Grid gutter="small" className={`mds-color-palette ${props.className}`}>
     <H3 className="mds-color-palette__title">{ props.group } { props.name }</H3>
-    <Grid template="color-palette">
+    <Grid template="auto-fit">
       {
         Object.entries(props.token).map(([code, color], key) =>
-          <Grid gutter="small" className="mds-color-palette__item" key={key}>
-            <ColorSwatch
-              className={`${getSelectors(props.token, props.group, props.name, key)}`}
-              colorBaseCode={code}
-              colorBaseHexTest={color.value}
-              colorSeedHref={code === 'color' ? color.comment : null}
-              colorTextCode={getBestContrastColor(props.token, key).code}
-              colorTextHexTest={getBestContrastColor(props.token, key).value}
-              group={props.group}
-              name={props.name}
-            />
-            <Grid gutter="xsmall" className="mds-color-palette__doc">
-              <Hack><span className="mds-color-palette__lang">CSS</span> --hex-{props.group}-{props.name}-{ code.replace('c-', '') }</Hack>
-              <Hack><span className="mds-color-palette__lang">SCSS</span> color('{props.group}.{props.name}', '{ code.replace('c-', '') }');</Hack>
-            </Grid>
-          </Grid>,
+          <ColorSwatch
+            key={key}
+            className={`${getSelectors(props.token, props.group, props.name, key)}`}
+            colorBaseCode={Number(code) < 10 ? `0${code}` : code }
+            colorBaseHexTest={color.value}
+            colorSeedHref={code === 'color' ? color.comment : null}
+            colorTextCode={getBestContrastColor(props.token, key).code}
+            colorTextHexTest={getBestContrastColor(props.token, key).value}
+            group={props.group}
+            name={props.name}
+          />,
         )
       }
     </Grid>

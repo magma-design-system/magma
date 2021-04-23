@@ -6,23 +6,23 @@ import AccessibilityTest from '@Gatsby/Pattern/AccessibilityTest/AccessibilityTe
 import Caption from '@Typography/Caption/Caption'
 import H2 from '@Typography/H2/H2'
 import Grid from '@Layout/Grid/Grid'
-import Row from '@Layout/Row/Row'
 
 const ColorSwatchItem = props =>
-  <Row className={`mds-color-swatch ${props.className}`}>
-    <Grid gutter="none" className="mds-color-swatch__title">
-      <Row gutter="xsmall">
-        <H2>{ props.colorBaseCode.replace('c-', '') }</H2>
-        <div>
-          <Caption className="text-secondary text-secondary--caption">{props.colorBaseHexTest}</Caption>
-          <Caption>T { props.colorTextCode.replace('c-', '') }</Caption>
-        </div>
-      </Row>
+  <Grid className="gap-3 group">
+    <div>
+      <div className={`${props.className} pt-1/1 relative width-full flex items-center justify-center rounded-full`}>
+        <H2 className="absolute width-full top-1/2 transform -translate-y-2/4">
+          { props.colorBaseCode }
+        </H2>
+      </div>
+    </div>
+    <Grid className="text-center gap-0">
+      <Caption>{ props.colorTextCode }/{ props.colorBaseCode }</Caption>
+      <Caption htmlTag="div" className="text-center">
+        <AccessibilityTest base={props.colorBaseHexTest} color={props.colorTextHexTest}/>
+      </Caption>
     </Grid>
-    <Caption htmlTag="div" className="mds-color-swatch__infos">
-      <AccessibilityTest base={props.colorBaseHexTest} color={props.colorTextHexTest}/>
-    </Caption>
-  </Row>
+  </Grid>
 
 ColorSwatchItem.propTypes = {
   className: PropTypes.string,

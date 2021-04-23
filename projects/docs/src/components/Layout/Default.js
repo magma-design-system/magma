@@ -244,8 +244,8 @@ const Layout = ({ children }) => {
                     {children}
                   </MDXProvider>
                 </Grid>
-                <Hr spacing="xsmall" className="background-color-adjust-tone-18"/>
-                { page.frontmatter.author &&
+                <Hr spacing="xsmall" className="bg-adjust-tone-18"/>
+                {/* page.frontmatter.author &&
                   <Grid gutter="xsmall">
                     <H5>{page.frontmatter.author.length === 1 ? 'Autore' : 'Autori'}</H5>
                     <Grid template="auto-fill-authors">
@@ -254,7 +254,7 @@ const Layout = ({ children }) => {
                       )}
                     </Grid>
                   </Grid>
-                }
+                */}
                 <Grid template="auto-fill-large">
                   { page.frontmatter.date &&
                     <Grid gutter="none">
@@ -269,7 +269,7 @@ const Layout = ({ children }) => {
                     </Grid>
                   }
                 </Grid>
-                { page.frontmatter.source && <Hr spacing="xsmall" className="background-color-adjust-tone-18"/> }
+                { page.frontmatter.source && <Hr spacing="xsmall" className="bg-adjust-tone-18"/> }
                 { page.frontmatter.source &&
                   <Grid gutter="none">
                     <H5>Riferimenti esterni</H5>
