@@ -23,35 +23,31 @@
   },
   "projects": {
     "design-tokens": {
-      "implicitDependencies": []
+      "tags": ["type:lib"]
     },
     "docs": {
       "tags": ["type:app"],
-      "implicitDependencies": ["styles", "icons"]
+      "implicitDependencies": ["icons"]
     },
     "font-icons-cli": {
       "tags": ["type:lib"],
       "implicitDependencies": ["icons-svg"]
     },
     "identity": {
-      "tags": ["type:lib"],
-      "implicitDependencies": []
+      "tags": ["type:lib"]
     },
     "icons": {
       "tags": ["type:lib"],
       "implicitDependencies": ["font-icons-cli"]
     },
     "icons-svg": {
-      "tags": ["type:lib"],
-      "implicitDependencies": []
+      "tags": ["type:lib"]
     },
     "react": {
-      "tags": ["type:lib"],
-      "implicitDependencies": ["styles", "icons"]
+      "tags": ["type:lib"]
     },
     "styles": {
-      "tags": ["type:lib"],
-      "implicitDependencies": ["design-tokens"]
+      "tags": ["type:lib"]
     }
   },
   "affected": {
