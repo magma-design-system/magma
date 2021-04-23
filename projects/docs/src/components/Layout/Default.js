@@ -4,7 +4,7 @@ import { Helmet } from 'react-helmet'
 import { /* Link, */ StaticQuery, graphql } from 'gatsby'
 import { MDXProvider } from '@mdx-js/react'
 import './Layout.scss'
-import { createMenuList, findMenuItem, getPageData, createMenuItemList, createHorizontalMenuList } from '@Gatsby/Pattern/Navigation/menu'
+import { createMenuList, findMenuItem, getPageData, createMenuItemList, createHorizontalMenuList, getCurrentUrl } from '@Gatsby/Pattern/Navigation/menu'
 import metadataAuthors from '../../metadata/authors.json'
 import metadataSources from '../../metadata/sources.json'
 
@@ -195,9 +195,13 @@ const Layout = ({ children }) => {
         }
       `}
       render={data => {
+        const currentUrl = getCurrentUrl()
         const menuList = createMenuList(data.allMdx.edges)
-        const sideMenuList = menuList.filter(menu => menu.id !== '')
-        const currentUrl = typeof window !== 'undefined' ? window.location.pathname : ''
+        const currentUrlEndingWithSlash = currentUrl[currentUrl.length - 1] === '/' ? currentUrl : `${currentUrl}/`
+        const sideMenuList = menuList
+          .filter(menu => menu.id !== '') // Filtering home page
+          .find(menu => currentUrlEndingWithSlash.startsWith(menu.url)) // Searching the first navigation level
+          ?.children
         const currentMenuItem = findMenuItem(menuList, currentUrl)
         const page = getPageData(data.allMdx.edges, currentUrl)
         const menuItemList = createMenuItemList(menuList, currentUrl)

@@ -26,7 +26,7 @@ const Navigation = props => {
         <Link to="/" className="ds-navigation__title"><H1>{ props.title }</H1></Link>
         <Hr/>
         {
-          props.menuList.map((menu, key) =>
+          props.menuList?.map((menu, key) =>
             <Menu key={key} title={menu.title}>
               {
                 (menu.children || []).map((menuItem, key) =>
