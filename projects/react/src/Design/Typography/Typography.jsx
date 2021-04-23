@@ -35,12 +35,12 @@ const Typography = ({ anchor, children, classNameAnchor, className, htmlTag, ...
       <div className={classesAnchor}>
         <Icon name="action-link-on"/>
       </div>
-      <HtmlTag id={elementId.toString()} className={className}>
+      <HtmlTag id={elementId} className={className}>
         { children }
       </HtmlTag>
     </Row>
   }
-  return <HtmlTag id={elementId.toString()} className={className}>
+  return <HtmlTag id={elementId} className={className}>
     { children }
   </HtmlTag>
 }
