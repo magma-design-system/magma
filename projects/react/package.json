@@ -6,7 +6,6 @@
   "scripts": {
     "build": "webpack --config webpack.config.js",
     "build-storybook": "build-storybook --debug-webpack --loglevel verbose",
-    "deploy-storybook": "storybook-to-ghpages",
     "lint": "npm run lint-js && npm run lint-sass",
     "lint-js": "eslint src/**/*.{js,jsx} --fix",
     "lint-sass": "stylelint --config ../../.stylelintrc.json 'src/**/*.scss' --fix",
