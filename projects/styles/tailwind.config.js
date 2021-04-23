@@ -35,12 +35,22 @@ module.exports = {
         '6': '6rem',
         '7': '7rem',
         '8': '8rem',
-      }
+      },
+      padding: {
+        '1/1': '100%',
+        '3/2': '66.67%',
+        '4/3': '75%',
+        '5/4': '80%',
+        '16/9': '56.25%',
+      },
     },
   },
   variants: {
     extend: {
+      backgroundColor: ['group-hover'],
+      borderColor: ['group-hover'],
       margin: ['first', 'last'],
+      textColor: ['group-hover'],
     },
   },
   plugins: [],
