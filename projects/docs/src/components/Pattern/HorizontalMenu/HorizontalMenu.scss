@@ -44,6 +44,10 @@ $contents-color-desktop: color('adjust.tone', 'color', 0.8);
     & + & {
       margin-left: s(0.5);
     }
+
+    &--disabled {
+      pointer-events: none;
+    }
   }
 
   &__link {

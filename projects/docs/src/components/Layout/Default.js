@@ -13,6 +13,7 @@ import frenchStrings from 'react-timeago/lib/language-strings/it'
 import buildFormatter from 'react-timeago/lib/formatters/buildFormatter'
 
 import AssetPreviewer from '@Gatsby/Pattern/AssetPreviewer/AssetPreviewer'
+import SectionMenu, { SectionMenuItem } from '@Gatsby/Pattern/SectionMenu/SectionMenu'
 import Author from '@Content/Author/Author'
 import BenchmarkBar from '@Content/BenchmarkBar/BenchmarkBar'
 import BibliographyMLA from '@Content/Bibliography/BibliographyMLA'
@@ -223,7 +224,15 @@ const Layout = ({ children }) => {
               </div>
             </aside>
             <article className={`ds-layout__article ${isOpened ? 'ds-layout__article--is-not-scrolling' : ''}`}>
-              <Grid className="ds-layout__contents shadow rounded-3xl" rows="fit-vertically">
+              <SectionMenu>
+                <SectionMenuItem><H3>News</H3></SectionMenuItem>
+                <SectionMenuItem active><H3>Governance</H3></SectionMenuItem>
+                <SectionMenuItem><H3>Content</H3></SectionMenuItem>
+                <SectionMenuItem><H3>Design</H3></SectionMenuItem>
+                <SectionMenuItem><H3>Develop</H3></SectionMenuItem>
+                <Icon className="ml-auto" name="data-search"/>
+              </SectionMenu>
+              <Grid className="ds-layout__contents mt-10 shadow rounded-3xl" rows="fit-vertically">
                 <H1 className="ds-layout__title">{currentMenuItem.title}</H1>
                 {horizontalMenuItems?.length > 0 && <HorizontalMenu className="ds-layout__actions" menuList={horizontalMenuItems}/>}
                 <Grid className="ds-layout__markdown">
