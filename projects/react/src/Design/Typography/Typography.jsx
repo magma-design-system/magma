@@ -20,19 +20,29 @@ const Typography = ({ anchor, children, classNameAnchor, className, htmlTag, ...
   })
 
   const HtmlTag = htmlTag.toLowerCase()
-  const Element = () => <HtmlTag id={id(restProps.id, children)} className={className} {...restProps}>
-    { children }
-  </HtmlTag>
+
+  let elementId = id(restProps.id, children)
+
+  if (anchor) {
+    const useId = !restProps.id ? true : restProps.id
+    elementId = id(useId, children)
+  } else {
+    elementId = id(restProps.id, children)
+  }
 
   if (anchor) {
     return <Row className="items-start">
       <div className={classesAnchor}>
         <Icon name="action-link-on"/>
       </div>
-      <Element/>
+      <HtmlTag id={elementId.toString()} className={className}>
+        { children }
+      </HtmlTag>
     </Row>
   }
-  return <Element/>
+  return <HtmlTag id={elementId.toString()} className={className}>
+    { children }
+  </HtmlTag>
 }
 
 Typography.propTypes = {
