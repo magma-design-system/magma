@@ -32,7 +32,7 @@ body {
     transition: transform get($tween, 'slide'), box-shadow get($tween, 'slide');
     z-index: 2;
 
-    @include media('mobile') {
+    @include media('tablet') {
       &--is-active {
         box-shadow: 0 0 s(2) 0 color('adjust.tone', '01', 0.5), 0 0 0 100vw color('adjust.tone', '01', 0.75);
         transform: translate(0, 0);

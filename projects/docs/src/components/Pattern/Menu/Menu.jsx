@@ -2,7 +2,7 @@ import React from 'react'
 import PropTypes from 'prop-types'
 import Grid from '@Layout/Grid/Grid'
 import { Link } from 'gatsby'
-import H2 from '@Typography/H2/H2'
+import H3 from '@Typography/H3/H3'
 import './Menu.scss'
 
 const MenuSubItem = props =>
@@ -56,7 +56,7 @@ MenuItem.defaultProps = {
 
 const Menu = props =>
   <Grid gutter="none" rows="fit-vertically" className="ds-menu">
-    <H2 className="ds-menu__title ds-menu__title--main">{props.title}</H2>
+    <H3 className="ds-menu__title ds-menu__title--main">{props.title}</H3>
     {props.children}
   </Grid>
 
