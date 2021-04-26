@@ -1,9 +1,9 @@
-import fs from "fs";
+import fs from 'fs';
 
 import { fileURLToPath } from 'url';
 import { dirname, join } from 'path';
 
-// __dirname with "type: module" or .mjs file
+// __dirname with 'type: module' or .mjs file
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
 
@@ -11,11 +11,11 @@ const __dirname = dirname(__filename);
 // It will not be included in the npm package.
 // source: https://stackoverflow.com/a/52177090/3687018
 
-const ROOT_DIR = __dirname + "/..";
-const DIST_DIR = ROOT_DIR + "/dist";
+const ROOT_DIR = __dirname + '/..';
+const DIST_DIR = ROOT_DIR + '/dist';
 
 function main() {
-  const source = fs.readFileSync(join(ROOT_DIR, "/package.json")).toString('utf-8');
+  const source = fs.readFileSync(join(ROOT_DIR, '/package.json')).toString('utf-8');
   const sourceObj = JSON.parse(source);
 
   // Package.json editing
@@ -40,7 +40,7 @@ function main() {
   }
   fs.copyFileSync(join(ROOT_DIR, 'resources', 'mgg-icons.json'), join(resourcesDir, 'mgg-icons.json'));
 
-  // Moving out of "fonts" folder files witch aren't fonts
+  // Moving out of 'fonts' folder files witch aren't fonts
   const fontsDir = join(DIST_DIR, 'fonts');
   const isFontFile = /\.(ttf|woff|woff2|eot|svg)$/i;
   const files = fs.readdirSync(fontsDir).filter(filename => !isFontFile.test(filename));
