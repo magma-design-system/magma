@@ -52,7 +52,7 @@
         "@maggioli-design-system/font-icons-cli": "^1.1.0",
         "@maggioli-design-system/icons": "^1.5.3",
         "@maggioli-design-system/icons-svg": "^2.0.0",
-        "@maggioli-design-system/identity": "^1.4.0",
+        "@maggioli-design-system/identity": "^1.5.0",
         "@maggioli-design-system/react": "^0.22.1",
         "@maggioli-design-system/styles": "^2.1.0",
         "crypto-js": "^4.0.0",
