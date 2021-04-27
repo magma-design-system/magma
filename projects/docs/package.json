@@ -49,18 +49,13 @@
     "license": "ISC",
     "dependencies": {
         "@maggioli-design-system/design-tokens": "^2.2.1",
-        "@maggioli-design-system/font-icons-cli": "^1.1.0",
-        "@maggioli-design-system/icons": "^1.5.3",
-        "@maggioli-design-system/icons-svg": "^2.0.0",
+        "@maggioli-design-system/icons": "^1.7.1",
         "@maggioli-design-system/identity": "^1.5.0",
         "@maggioli-design-system/react": "^0.22.1",
         "@maggioli-design-system/styles": "^2.1.0",
         "crypto-js": "^4.0.0",
         "gsap": "^3.6.1",
         "install": "^0.13.0",
-        "material-design-icons": "^3.0.1",
-        "material-design-icons-updated": "^7.0.0",
-        "normalize.css": "^8.0.1",
         "react": "^16.0.0",
         "react-cool-onclickoutside": "^1.6.1",
         "react-dom": "^16.0.0",
@@ -68,9 +63,7 @@
         "react-helmet": "^6.1.0",
         "react-router-dom": "^5.2.0",
         "react-syntax-highlighter": "^15.4.3",
-        "react-timeago": "^5.2.0",
-        "typeface-karla": "1.1.13",
-        "typeface-roboto": "1.1.13"
+        "react-timeago": "^5.2.0"
     },
     "devDependencies": {
       "@adobe/leonardo-contrast-colors": "^1.0.0-alpha.8",
