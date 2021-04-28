@@ -1,16 +1,17 @@
 {
   "name": "@maggioli-design-system/react",
-  "version": "0.22.3",
+  "version": "0.22.4",
   "description": "Maggioli Design System è uno strumento nato per condividere una visione di progettazione coordintata con tutti gli esperti di dominio aziendali. Ciò permette di offrire una UX unica, condivisa tra i prodotti che saranno coerenti allo stile dell’azienda.",
   "license": "ISC",
   "scripts": {
-    "build": "webpack --config webpack.config.js",
-    "build-storybook": "build-storybook --debug-webpack --loglevel verbose",
+    "clean" :"rm -rf dist || true && rm -rf storybook-static || true ",
+    "build": "npm run clean && webpack --config webpack.config.js",
+    "build-storybook": "npm run clean && build-storybook --debug-webpack --loglevel verbose",
     "lint": "npm run lint-js && npm run lint-sass",
     "lint-js": "eslint src/**/*.{js,jsx} --fix",
     "lint-sass": "stylelint --config ../../.stylelintrc.json 'src/**/*.scss' --fix",
-    "start": "start-storybook -p 7177",
-    "start-debug": "start-storybook --debug-webpack -p 7177"
+    "start": "npm run clean && start-storybook -p 7177",
+    "start-debug": "npm run clean && start-storybook --debug-webpack -p 7177"
   },
   "browserslist": [
     "> 1%",

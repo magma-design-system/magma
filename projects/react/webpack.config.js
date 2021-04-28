@@ -10,10 +10,10 @@ module.exports = {
     fallback: { crypto: false },
   },
   output: {
-    // filename: '[name].js',
+    filename: 'bundle.min.js',
     library: 'maggioli-design-system',
     libraryTarget: 'umd',
-    // path: path.resolve(__dirname, 'dist'),
+    path: path.resolve(__dirname, 'dist'),
   },
   module: {
     rules: [
