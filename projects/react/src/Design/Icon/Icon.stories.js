@@ -47,6 +47,9 @@ const iconName = randomIcon()
 export const basicUsage = () =>
   <Icon name={iconName}/>
 
+export const wrongIcon = () =>
+  <Icon name="pippo"/>
+
 export const iconSizes = () =>
   <Table interactive={true}>
     <TableHeader>

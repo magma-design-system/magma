@@ -16,7 +16,7 @@ const Icon = ({ className, image, name, onClick, size, ...restProps }) => {
     return <div onClick={onClick} className={`${classes} icon--image`} style={{ backgroundImage: `url("${image}")` }}></div>
   }
 
-  const icon = `mgg-icons-${name}`
+  const icon = !image ? 'mgg-icons-' + name : ''
 
   const classes = styles('icon', {
     selectors: [
