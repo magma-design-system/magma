@@ -13,6 +13,7 @@ const DropdownItem = ({ className, icon, font, href, ...restProps }) => {
   const classes = styles('dropdown__item', {
     selectors: [
       className,
+      'rounded',
     ],
   })
 
@@ -68,10 +69,9 @@ const Dropdown = ({ className, description, direction, font, icon, label, pivot,
         <Icon className="dropdown__icon" name={icon}/>
         { description && <div className="dropdown__description">{ description }</div> }
       </Row> }
-      <Grid className={`dropdown__list bs-box ${pivot ? 'dropdown__list--pivot-' + pivot : ''}`} gutter="none">
+      <Grid className={`dropdown__list shadow ${pivot ? 'dropdown__list--pivot-' + pivot : ''}`} gutter="none">
         <H6 className="dropdown__header">{ label }</H6>
-        {children}
-        <div className="dropdown__footer"></div>
+        <Grid className="p-2 bg-brand-maggioli-20" gutter="none">{children}</Grid>
       </Grid>
     </div>
   </div>

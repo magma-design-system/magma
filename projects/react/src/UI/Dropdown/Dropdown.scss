@@ -98,13 +98,12 @@ $menu-width: 250px;
   }
 
   &__item {
-    background-color: color('adjust.tone', '20');
     color: color('adjust.tone', '04');
     cursor: pointer;
     padding: 0 s(0.75);
 
     &:hover {
-      background-color: color('adjust.tone');
+      background-color: color('brand.maggioli', '18');
       color: color('brand.maggioli', '02');
 
       .dropdown {
