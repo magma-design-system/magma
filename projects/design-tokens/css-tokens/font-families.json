@@ -54,7 +54,7 @@
           "font-size": "20px",
           "font-variant-caps": "all-small-caps",
           "font-weight": "500",
-          "line-height": "30px"
+          "line-height": "20px"
         }
       },
       "overline" : {
@@ -62,8 +62,7 @@
           "font-size": "14px",
           "font-variant-caps": "all-small-caps",
           "font-weight": "500",
-          "line-height": "15px",
-          "padding-bottom": "2px"
+          "line-height": "15px"
         },
         "tablet": {
           "line-height": "20px"
@@ -73,10 +72,10 @@
         "default": {
           "font-size": "14px",
           "font-weight": "500",
-          "line-height": "15px"
+          "line-height": "24px"
         },
         "tablet": {
-          "line-height": "15px"
+          "line-height": "24px"
         }
       }
     }
@@ -128,7 +127,7 @@
         "default": {
           "font-size": "10px",
           "font-weight": "600",
-          "line-height": "15px",
+          "line-height": "20px",
           "text-transform": "uppercase"
         },
         "desktop": {
@@ -152,14 +151,14 @@
         "default": {
           "font-size": "16px",
           "font-weight": "400",
-          "line-height": "20px"
+          "line-height": "30px"
         }
       },
       "hack" : {
         "default": {
-          "font-size": "11px",
+          "font-size": "12px",
           "font-weight": "400",
-          "line-height": "15px"
+          "line-height": "20px"
         }
       }
     }
