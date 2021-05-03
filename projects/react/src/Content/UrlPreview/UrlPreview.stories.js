@@ -27,36 +27,6 @@ export const basicUsage = () => {
   )
 }
 
-export const wide = () => {
-  return (
-    <Toggler>
-      <Toggler.Trigger>
-        <Button icon="status-info">
-          Apri URL Previewer
-        </Button>
-      </Toggler.Trigger>
-      <Toggler.Content>
-        <UrlPreview wide={true} url="https://stylable.io/"/>
-      </Toggler.Content>
-    </Toggler>
-  )
-}
-
-export const centered = () => {
-  return (
-    <Toggler>
-      <Toggler.Trigger>
-        <Button icon="status-info">
-          Apri URL Previewer
-        </Button>
-      </Toggler.Trigger>
-      <Toggler.Content>
-        <UrlPreview wide={true} centered={true} url="https://stylable.io/"/>
-      </Toggler.Content>
-    </Toggler>
-  )
-}
-
 export const customShadow = () => {
   return (
     <Toggler>
@@ -66,125 +36,159 @@ export const customShadow = () => {
         </Button>
       </Toggler.Trigger>
       <Toggler.Content>
-        <UrlPreview wide={true} centered={true} boxShadow="strong" url="https://stylable.io/"/>
+        <UrlPreview
+          centered={true}
+          size="wide"
+          url="https://stylable.io/"
+          windowClassName="shadow-2xl"
+        />
       </Toggler.Content>
     </Toggler>
   )
 }
 
-/*
-
-export const mobileModeLeft = () => {
+export const sizeSmall = () => {
   return (
     <Toggler>
       <Toggler.Trigger>
         <Button icon="status-info">
-          Apri modale
+          Apri URL Previewer
         </Button>
       </Toggler.Trigger>
       <Toggler.Content>
-        <Modal position="left" onConfirm={() => console.log('onConfirm')} onCancel={() => console.log('onCancel')}>
-          <Paragraph>{faker.lorem.paragraph()}</Paragraph>
-          <Paragraph>{faker.lorem.paragraph()}</Paragraph>
-          <Paragraph>{faker.lorem.paragraph()}</Paragraph>
-        </Modal>
+        <UrlPreview
+          size="small"
+          url="https://stylable.io/"
+        />
       </Toggler.Content>
     </Toggler>
   )
 }
 
-export const desktopMode = () => {
+export const sizeSmallCentered = () => {
   return (
     <Toggler>
       <Toggler.Trigger>
         <Button icon="status-info">
-          Apri modale
+          Apri URL Previewer
         </Button>
       </Toggler.Trigger>
       <Toggler.Content>
-        <Modal desktopMode={true}>
-          <Paragraph>{faker.lorem.paragraph()}</Paragraph>
-          <Paragraph>{faker.lorem.paragraph()}</Paragraph>
-          <Paragraph>{faker.lorem.paragraph()}</Paragraph>
-        </Modal>
+        <UrlPreview
+          centered={true}
+          url="https://stylable.io/"
+        />
       </Toggler.Content>
     </Toggler>
   )
 }
 
-export const desktopModeSimple = () => {
+export const sizeWide = () => {
   return (
     <Toggler>
       <Toggler.Trigger>
         <Button icon="status-info">
-          Apri modale
+          Apri URL Previewer
         </Button>
       </Toggler.Trigger>
       <Toggler.Content>
-        <Modal desktopMode={true} footer={false}>
-          <Paragraph>{faker.lorem.paragraph()}</Paragraph>
-          <Paragraph>{faker.lorem.paragraph()}</Paragraph>
-          <Paragraph>{faker.lorem.paragraph()}</Paragraph>
-        </Modal>
+        <UrlPreview
+          size="wide"
+          url="https://stylable.io/"
+        />
       </Toggler.Content>
     </Toggler>
   )
 }
 
-export const headerTitle = () => {
+export const sizeWideCentered = () => {
   return (
     <Toggler>
       <Toggler.Trigger>
         <Button icon="status-info">
-          Apri modale
+          Apri URL Previewer
         </Button>
       </Toggler.Trigger>
       <Toggler.Content>
-        <Modal title={faker.lorem.sentence()} desktopMode={true} onConfirm={() => console.log('onConfirm')} onCancel={() => console.log('onCancel')}>
-          <Paragraph>{faker.lorem.paragraph()}</Paragraph>
-          <Paragraph>{faker.lorem.paragraph()}</Paragraph>
-          <Paragraph>{faker.lorem.paragraph()}</Paragraph>
-        </Modal>
+        <UrlPreview
+          size="wide"
+          centered
+          url="https://stylable.io/"
+        />
       </Toggler.Content>
     </Toggler>
   )
 }
 
-export const maxHeight = () => {
+export const sizeFitWindow = () => {
   return (
     <Toggler>
       <Toggler.Trigger>
         <Button icon="status-info">
-          Apri modale
+          Apri URL Previewer
         </Button>
       </Toggler.Trigger>
       <Toggler.Content>
-        <Modal maxHeight={true} title={faker.lorem.sentence()} desktopMode={true} onConfirm={() => console.log('onConfirm')} onCancel={() => console.log('onCancel')}>
-          <Paragraph>{faker.lorem.paragraph()}</Paragraph>
-          <Paragraph>{faker.lorem.paragraph()}</Paragraph>
-          <Paragraph>{faker.lorem.paragraph()}</Paragraph>
-        </Modal>
+        <UrlPreview
+          centered={true}
+          size="fit-window"
+          title="iLibro"
+          url="https://stylable.io/"
+        />
       </Toggler.Content>
     </Toggler>
   )
 }
 
-export const simple = () => {
+export const titleCustom = () => {
   return (
     <Toggler>
       <Toggler.Trigger>
         <Button icon="status-info">
-          Apri modale
+          Apri URL Previewer
         </Button>
       </Toggler.Trigger>
       <Toggler.Content>
-        <Modal footer={false} maxHeight={true} title={faker.lorem.sentence()} desktopMode={true} onConfirm={() => console.log('onConfirm')} onCancel={() => console.log('onCancel')}>
-          <Paragraph>{faker.lorem.paragraph()}</Paragraph>
-          <Paragraph>{faker.lorem.paragraph()}</Paragraph>
-          <Paragraph>{faker.lorem.paragraph()}</Paragraph>
-        </Modal>
+        <UrlPreview
+          title="Stylable"
+          url="https://stylable.io/"
+        />
       </Toggler.Content>
     </Toggler>
   )
 }
-*/
+
+export const titleAuto = () => {
+  return (
+    <Toggler>
+      <Toggler.Trigger>
+        <Button icon="status-info">
+          Apri URL Previewer
+        </Button>
+      </Toggler.Trigger>
+      <Toggler.Content>
+        <UrlPreview
+          url="https://stylable.io/docs/getting-started/intro"
+        />
+      </Toggler.Content>
+    </Toggler>
+  )
+}
+
+export const titleFalse = () => {
+  return (
+    <Toggler>
+      <Toggler.Trigger>
+        <Button icon="status-info">
+          Apri URL Previewer
+        </Button>
+      </Toggler.Trigger>
+      <Toggler.Content>
+        <UrlPreview
+          title={false}
+          url="https://stylable.io/"
+        />
+      </Toggler.Content>
+    </Toggler>
+  )
+}

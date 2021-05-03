@@ -1,4 +1,4 @@
-import React, { Fragment } from 'react'
+import React from 'react'
 import PropTypes from 'prop-types'
 import Icon from '@Design/Icon/Icon'
 import './UrlPreview.scss'
@@ -10,31 +10,28 @@ const urlDomain = url => {
   return domain.hostname.replace('www.', '')
 }
 
-const urlLastFragment = url => {
-  return url.substring(url.lastIndexOf('/') + 1)
-}
-
-const UrlPreviewHeader = props =>
-  <header className="url-preview__header">
+const UrlPreviewHeader = ({ onCancel, title, url, ...restProps }) =>
+  <header className="url-preview__header" {...restProps}>
     <Icon name="source-web" className="url-preview__icon"/>
-    <div className="url-preview__url-field text-secondary text-secondary--caption">
-      <div className="url-preview__domain">{urlDomain(props.url)}</div>
-      {urlLastFragment(props.url) &&
-        <Fragment>
-          <div className="url-preview__separator">/</div>
-          <div className="url-preview__frament">{urlLastFragment(props.url)}</div>
-        </Fragment>
-      }
-    </div>
-    <Icon name="action-close" className="url-preview__close" onClick={() => { props.onCancel() }}/>
+    {typeof title === 'boolean' && title && <div className="url-preview__url-field text-secondary text-secondary--caption">{urlDomain(url)}</div>}
+    {typeof title === 'boolean' && !title && <div className="url-preview__url-field text-secondary text-secondary--caption"></div>}
+    {typeof title === 'string' && <div className="url-preview__url-field text-secondary text-secondary--caption">{title}</div>}
+    <Icon name="action-close" className="url-preview__close" onClick={() => { onCancel() }}/>
   </header>
 
 UrlPreviewHeader.propTypes = {
-  url: PropTypes.string,
   onCancel: PropTypes.func,
+  title: PropTypes.any,
+  url: PropTypes.string,
 }
 
-const UrlPreview = ({ boxShadow, centered, className, onCancel, url, visible, wide }) => {
+UrlPreviewHeader.defaultProps = {
+  onCancel: null,
+  title: true,
+  url: 'https://www.maggioli.com',
+}
+
+const UrlPreview = ({ centered, className, onCancel, size, title, url, visible, windowClassName, ...restProps }) => {
   const classes = styles('url-preview', {
     selectors: [
       className,
@@ -42,45 +39,39 @@ const UrlPreview = ({ boxShadow, centered, className, onCancel, url, visible, wi
     modifiers: {
       centered,
       visible,
-      wide,
-    },
-    scaffolded: {
-      boxShadow,
+      size,
     },
   })
 
   const windowClasses = styles('url-preview__window', {
-    scaffolded: {
-      boxShadow,
-    },
+    selectors: [
+      windowClassName,
+    ],
   })
 
-  return <div className={classes}>
+  return <div className={classes} {...restProps}>
     <div className={windowClasses}>
-      <UrlPreviewHeader url={url} onCancel={onCancel}/>
+      <UrlPreviewHeader url={url} onCancel={onCancel} title={title}/>
       <iframe className="url-preview__iframe" src={url} loading="lazy"></iframe>
     </div>
   </div>
 }
 
 UrlPreview.propTypes = {
+  ...UrlPreviewHeader.propTypes,
   centered: PropTypes.bool,
   className: PropTypes.string,
-  onCancel: PropTypes.func,
-  boxShadow: PropTypes.string,
-  url: PropTypes.string,
+  size: PropTypes.string,
   visible: PropTypes.bool,
-  wide: PropTypes.bool,
+  windowClassName: PropTypes.string,
 }
 
 UrlPreview.defaultProps = {
+  ...UrlPreviewHeader.defaultProps,
   centered: false,
-  className: '',
-  onCancel: null,
-  boxShadow: 'soft',
-  url: 'https://www.maggioli.com',
+  windowClassName: 'shadow-lg',
   visible: false,
-  wide: false,
+  size: 'small',
 }
 
 export default UrlPreview
