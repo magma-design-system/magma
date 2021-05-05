@@ -107,6 +107,7 @@ $border-radius: get($radius, 'small');
   }
 
   &--icon {
+    line-height: calc(100% + #{s(2, $border-size)});
     padding: 0 !important;
   }
 }
