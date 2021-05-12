@@ -43,6 +43,8 @@ export const variants = () =>
       <Button icon={randomIcon()} variant="primary-outline">Primary outline</Button>
       <Button icon={randomIcon()} variant="secondary">Secondary</Button>
       <Button icon={randomIcon()} variant="secondary-outline">Secondary outline</Button>
+      <Button icon={randomIcon()} variant="secondary-light">Secondary light</Button>
+      <Button icon={randomIcon()} variant="secondary-light-outline">Secondary light outline</Button>
       <Button icon={randomIcon()} variant="info">Info</Button>
       <Button icon={randomIcon()} variant="info-outline">Info outline</Button>
       <Button icon={randomIcon()} variant="success">Success</Button>
@@ -52,6 +54,7 @@ export const variants = () =>
       <Button icon={randomIcon()} variant="error">error</Button>
       <Button icon={randomIcon()} variant="error-outline">error outline</Button>
       <Button icon={randomIcon()} variant="link">Link</Button>
+      <Button icon={randomIcon()} variant="text" className="text-adjust-tone-04 hover:text-adjust-tone-08">Text</Button>
     </Grid>
   </Grid>
 

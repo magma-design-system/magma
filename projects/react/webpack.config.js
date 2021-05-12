@@ -11,6 +11,7 @@ module.exports = {
   },
   output: {
     filename: 'bundle.min.js',
+    globalObject: 'this',
     library: 'maggioli-design-system',
     libraryTarget: 'umd',
     path: path.resolve(__dirname, 'dist'),

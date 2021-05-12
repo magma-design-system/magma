@@ -134,6 +134,18 @@ $border-radius: get($radius, 'small');
   }
 }
 
+.button--variant-text {
+
+  --background: transparent;
+
+  &:active,
+  &:focus,
+  &:hover {
+
+    --background: transparent;
+  }
+}
+
 @mixin scaffold-variant ($modifier, $color-set) {
 
   .button--variant-#{$modifier} {
@@ -166,6 +178,38 @@ $border-radius: get($radius, 'small');
   }
 }
 
+@mixin scaffold-light-variant ($modifier, $color-set) {
+
+  .button--variant-#{$modifier}-light {
+
+    --background: #{color($color-set)};
+    --color: #{color($color-set, '04')};
+
+    &:active,
+    &:focus,
+    &:hover {
+
+      --background: #{color($color-set)};
+      --color: #{color($color-set, '04')};
+    }
+  }
+
+  .button--variant-#{$modifier}-light-outline {
+
+    --background: transparent;
+    --border: #{$border-size} solid #{color($color-set)};
+    --color: #{color($color-set)};
+
+    &:active,
+    &:focus,
+    &:hover {
+
+      --background: #{color($color-set)};
+      --color: #{color($color-set, '04')};
+    }
+  }
+}
+
 @mixin scaffold-status-variant ($modifier, $color-set) {
   .button--variant-#{$modifier} {
 
@@ -183,7 +227,7 @@ $border-radius: get($radius, 'small');
 
   .button--variant-#{$modifier}-outline {
 
-    --background: #{color('adjust.tone')};
+    --background: transparent;
     --border: #{$border-size} solid #{color($color-set, '08')};
     --color: #{color($color-set, '08')};
 
@@ -192,13 +236,14 @@ $border-radius: get($radius, 'small');
     &:hover {
 
       --background: #{color($color-set, '08')};
-      --color: #{color('adjust.tone', '20')};
+      --color: #{color($color-set, '20')};
     }
   }
 }
 
 @include scaffold-variant($modifier: 'primary', $color-set: 'brand.maggioli');
 @include scaffold-variant($modifier: 'secondary', $color-set: 'adjust.tone');
+@include scaffold-light-variant($modifier: 'secondary', $color-set: 'adjust.tone');
 @include scaffold-status-variant($modifier: 'success', $color-set: 'status.success');
 @include scaffold-status-variant($modifier: 'warning', $color-set: 'status.warning');
 @include scaffold-status-variant($modifier: 'error', $color-set: 'status.error');
