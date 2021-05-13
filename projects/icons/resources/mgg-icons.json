@@ -67,6 +67,8 @@
   "action-visibility-on": "material/visibility",
   "action-zoom-in": "material/zoom_in",
   "action-zoom-out": "material/zoom_out",
+  "activity-coffee-break": "material/local_cafe",
+  "activity-lunch": "material/local_dining",
   "additional-contents": "maggioli/additional-contents",
   "adv": "material/campaign",
   "avatar-placeholder-user": "material/account_circle",
