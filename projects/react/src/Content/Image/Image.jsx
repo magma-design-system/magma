@@ -50,8 +50,6 @@ const Image = ({ alt, aspectRatio, aspectRatioPosition, className, height, htmlT
     }
   }
 
-  console.log(imageWidth, imageHeight)
-
   const HtmlTag = htmlTag.toLowerCase()
   let imageStyles = {}
   if (aspectRatio) {
