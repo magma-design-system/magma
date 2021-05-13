@@ -21,12 +21,36 @@ ImageSource.propTypes = {
   url: PropTypes.string,
 }
 
-const Image = ({ alt, aspectRatio, aspectRatioPosition, className, htmlTag, loading, sourceTitle, sourceUrl, src, ...restProps }) => {
+const Image = ({ alt, aspectRatio, aspectRatioPosition, className, height, htmlTag, loading, sourceTitle, sourceUrl, src, width, ...restProps }) => {
   const classes = styles('image', {
     selectors: [
       className,
     ],
+    modifiers: {
+      autoSize: !height && !width,
+    },
   })
+
+  let imageWidth = ''
+  let imageHeight = ''
+
+  if (height) {
+    imageHeight = `${height}px`
+
+    if (!width) {
+      imageWidth = 'auto'
+    }
+  }
+
+  if (width) {
+    imageWidth = `${width}px`
+
+    if (!height) {
+      imageHeight = 'auto'
+    }
+  }
+
+  console.log(imageWidth, imageHeight)
 
   const HtmlTag = htmlTag.toLowerCase()
   let imageStyles = {}
@@ -46,7 +70,7 @@ const Image = ({ alt, aspectRatio, aspectRatioPosition, className, htmlTag, load
           {sourceTitle + sourceUrl !== '' && <ImageSource title={sourceTitle} url={sourceUrl} /> }
         </HtmlTag>
         : <HtmlTag className={classes} {...restProps}>
-          <img className="image__element" src={src} loading={loading} alt={alt} />
+          <img className="image__element" src={src} style={{ width: imageWidth, height: imageHeight }} loading={loading} alt={alt} />
           {sourceTitle + sourceUrl !== '' && <ImageSource title={sourceTitle} url={sourceUrl} /> }
         </HtmlTag>
       }
@@ -59,11 +83,13 @@ Image.propTypes = {
   aspectRatio: PropTypes.string,
   aspectRatioPosition: PropTypes.string,
   className: PropTypes.string,
+  height: PropTypes.string,
   htmlTag: PropTypes.string,
   loading: PropTypes.string,
   sourceTitle: PropTypes.string,
   sourceUrl: PropTypes.string,
   src: PropTypes.string,
+  width: PropTypes.string,
 }
 
 Image.defaultProps = {

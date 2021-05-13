@@ -32,6 +32,12 @@ const InfoMessage = () =>
 export const defaultUsage = () =>
   <Image src="//via.placeholder.com/700x350" />
 
+export const width = () =>
+  <Image src="//via.placeholder.com/700x350" width="350" />
+
+export const height = () =>
+  <Image src="//via.placeholder.com/700x350" height="175" />
+
 export const aspectRatioCinema = () =>
   <Grid>
     <WarningMessage/>

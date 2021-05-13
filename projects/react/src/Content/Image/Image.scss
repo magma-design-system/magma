@@ -8,6 +8,15 @@
   position: relative;
   width: auto;
 
+  &--auto-size {
+    .image {
+      &__element {
+        height: auto;
+        width: 100%;
+      }
+    }
+  }
+
   &__container {
     background-position: 50% 0;
     background-size: cover;
@@ -24,11 +33,6 @@
         width: auto;
       }
     }
-  }
-
-  &__element {
-    height: auto;
-    width: 100%;
   }
 
   &__source {
