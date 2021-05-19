@@ -43,7 +43,7 @@ function main (parameters) {
     .then(() => buildFont(options))
     // .then(() => writeCodersFiles(inputData, options))
     .then(() => organizeFiles())
-    .then(() => buildTypescriptFiles())
+    // .then(() => buildTypescriptFiles())
     // .then(() => console.log('Font creation completed!'))
     .catch(err => err ? console.error('Error:', err) : console.error('Something gone wrong... Aborted.'))
 }
