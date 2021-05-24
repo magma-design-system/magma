@@ -68,7 +68,7 @@ UList.propTypes = {
 }
 
 UList.defaultProps = {
-  autoPunctuation: true,
+  autoPunctuation: false,
   className: '',
   icon: defaultIcon,
   iconClassName: '',

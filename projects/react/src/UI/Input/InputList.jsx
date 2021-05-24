@@ -32,10 +32,10 @@ const InputList = props =>
   </Input>
 
 InputList.propTypes = {
+  ...Input.propTypes,
   autoComplete: PropTypes.string,
+  autoFocus: PropTypes.bool,
   font: PropTypes.string,
-  icon: PropTypes.string,
-  iconClassName: PropTypes.string,
   name: PropTypes.string,
   onChange: PropTypes.func,
   placeholder: PropTypes.string,

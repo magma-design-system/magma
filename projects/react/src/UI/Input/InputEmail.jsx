@@ -2,10 +2,11 @@ import React from 'react'
 import PropTypes from 'prop-types'
 import Input from '@UI/Input/Input'
 
-const InputEmail = ({ autoComplete, font, name, placeholder, value, ...restProps }) => {
+const InputEmail = ({ autoComplete, autoFocus, font, name, placeholder, value, ...restProps }) => {
   return <Input {...restProps}>
     <input
       autoComplete={autoComplete}
+      autoFocus={autoFocus}
       className={`input__field ${font}`}
       defaultValue={value}
       name={name}
@@ -18,6 +19,7 @@ const InputEmail = ({ autoComplete, font, name, placeholder, value, ...restProps
 InputEmail.propTypes = {
   ...Input.propTypes,
   autoComplete: PropTypes.string,
+  autoFocus: PropTypes.bool,
   font: PropTypes.string,
   name: PropTypes.string,
   placeholder: PropTypes.string,

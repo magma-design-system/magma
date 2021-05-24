@@ -4,10 +4,11 @@ import './Input.scss'
 import Input from '@UI/Input/Input'
 import { capitalize } from '@UI/Select/functions'
 
-const InputPassword = ({ autoComplete, font, name, onChange, placeholder, value, ...restProps }) => {
+const InputPassword = ({ autoComplete, autoFocus, font, name, onChange, placeholder, value, ...restProps }) => {
   return <Input {...restProps}>
     <input
       autoComplete={autoComplete}
+      autoFocus={autoFocus}
       className={`input__field ${font}`}
       defaultValue={value}
       name={name}
@@ -21,6 +22,7 @@ const InputPassword = ({ autoComplete, font, name, onChange, placeholder, value,
 InputPassword.propTypes = {
   ...Input.propTypes,
   autoComplete: PropTypes.string,
+  autoFocus: PropTypes.bool,
   font: PropTypes.string,
   name: PropTypes.string,
   onChange: PropTypes.func,

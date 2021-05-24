@@ -4,24 +4,25 @@ import './Input.scss'
 import Input from '@UI/Input/Input'
 import { capitalize } from '@UI/Select/functions'
 
-const InputText = props =>
-  <Input {...props}>
+const InputText = ({ autoComplete, autoFocus, font, name, onChange, placeholder, value, ...restProps }) =>
+  <Input {...restProps}>
     <input
-      autoComplete={props.autoComplete}
-      className={`input__field ${props.font}`}
-      defaultValue={props.value}
-      name={props.name}
-      onChange={props.onChange}
-      placeholder={capitalize(props.placeholder)}
+      autoComplete={autoComplete}
+      autoFocus={autoFocus}
+      className={`input__field ${font}`}
+      defaultValue={value}
+      name={name}
+      onChange={onChange}
+      placeholder={capitalize(placeholder)}
       type="text"
     />
   </Input>
 
 InputText.propTypes = {
+  ...Input.propTypes,
   autoComplete: PropTypes.string,
-  icon: PropTypes.string,
+  autoFocus: PropTypes.bool,
   font: PropTypes.string,
-  iconClassName: PropTypes.string,
   name: PropTypes.string,
   onChange: PropTypes.func,
   placeholder: PropTypes.string,

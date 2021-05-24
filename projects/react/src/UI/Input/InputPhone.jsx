@@ -3,25 +3,26 @@ import PropTypes from 'prop-types'
 import Input from '@UI/Input/Input'
 import { capitalize } from '@UI/Select/functions'
 
-const InputPhone = props =>
-  <Input {...props}>
+const InputPhone = ({ autoComplete, autoFocus, font, name, onChange, pattern, placeholder, value, ...restProps }) =>
+  <Input {...restProps}>
     <input
-      autoComplete={props.autoComplete}
-      className={`input__field ${props.font}`}
-      defaultValue={props.value}
-      name={props.name}
-      onBlur={e => { console.log(e) }}
-      placeholder={capitalize(props.placeholder)}
-      pattern={props.pattern}
+      autoComplete={autoComplete}
+      autoFocus={autoFocus}
+      className={`input__field ${font}`}
+      defaultValue={value}
+      name={name}
+      onChange={onChange}
+      placeholder={capitalize(placeholder)}
+      pattern={pattern}
       type="tel"
     />
   </Input>
 
 InputPhone.propTypes = {
+  ...Input.propTypes,
   autoComplete: PropTypes.string,
+  autoFocus: PropTypes.bool,
   font: PropTypes.string,
-  icon: PropTypes.string,
-  iconClassName: PropTypes.string,
   isValid: PropTypes.bool,
   name: PropTypes.string,
   pattern: PropTypes.string,

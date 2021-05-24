@@ -66,3 +66,6 @@ export const List = () =>
 
 export const Error = () =>
   <InputText label={faker.lorem.sentence()} placeholder={faker.company.catchPhrase()} icon={randomIcon()} error={faker.lorem.sentence()}/>
+
+export const autoFocus = () =>
+  <InputText label={faker.lorem.sentence()} placeholder={faker.company.catchPhrase()} icon={randomIcon()} autoFocus/>
