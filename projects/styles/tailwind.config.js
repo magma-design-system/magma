@@ -36,6 +36,13 @@ module.exports = {
         '7': '7rem',
         '8': '8rem',
       },
+      minHeight: {
+        '4': '400px',
+        '5': '500px',
+        '6': '600px',
+        '7': '700px',
+        '8': '800px',
+      },
       padding: {
         '1/1': '100%',
         '3/2': '66.67%',
@@ -53,5 +60,7 @@ module.exports = {
       textColor: ['group-hover'],
     },
   },
-  plugins: [],
+  plugins: [
+    require('tailwindcss-multi-column')(),
+  ],
 }
