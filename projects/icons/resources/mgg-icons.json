@@ -224,6 +224,7 @@
   "rating-full": "material/lens",
   "rating-half": "mdi/circle-half-full",
   "read-only": "material/visibility",
+  "recycle": "mdi/recycle",
   "role-admin": "mdi/police-badge",
   "role-editor": "material/verified_user",
   "role-owner": "mdi/crown",
