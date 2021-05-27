@@ -1,6 +1,6 @@
 {
   "name": "@maggioli-design-system/identity",
-  "version": "1.8.1",
+  "version": "1.8.2",
   "description": "Maggioli brand identity assets",
   "files": [
     "/dist/**/*"
