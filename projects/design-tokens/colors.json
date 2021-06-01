@@ -1,67 +1,40 @@
 {
   "colors": [
+    { "color": "#00379e", "name": "brand.maggioli", "colorspace": "HSL" },
+    { "color": "#597CB9", "name": "brand.eolo" },
+    { "color": "#ED7C63", "name": "brand.argo" },
+    { "color": "#01495C", "name": "brand.la-polizia-locale" },
+    { "color": "#FBE00E", "name": "brand.cantiere-innovazione" },
+
+    { "color": "#23b2e1", "name": "status.info" },
+    { "color": "#21bf73", "name": "status.success" },
+    { "color": "#ED6663", "name": "status.error" },
+    { "color": "#FFC107", "name": "status.warning" },
+
+    { "color": "#E67E22", "name": "area.administration" },
+    { "color": "#E74C3C", "name": "area.personal" },
+    { "color": "#D36CDC", "name": "area.accounting" },
+    { "color": "#A85DBE", "name": "area.tributes" },
+    { "color": "#52BE7F", "name": "area.public-procurement" },
+    { "color": "#16A085", "name": "area.building-urban" },
+    { "color": "#F1C40F", "name": "area.demographic" },
+    { "color": "#95A5A6", "name": "area.social-service" },
+    { "color": "#428BBA", "name": "area.police" },
+    { "color": "#5CACE2", "name": "area.productive" },
+    { "color": "#FF9900", "name": "area.elections" },
+
+    { "color": "#EE1A24", "name": "label.red" },
+    { "color": "#fb5120", "name": "label.tomato" },
+    { "color": "#f58e16", "name": "label.orange" },
+    { "color": "#ffc417", "name": "label.yellow" },
+    { "color": "#a0cc3b", "name": "label.lime" },
+    { "color": "#00ca4a", "name": "label.green" },
+    { "color": "#00bfc3", "name": "label.azure" },
+    { "color": "#3b61c8", "name": "label.blue" },
+    { "color": "#7e3ac9", "name": "label.purple" },
+    { "color": "#d31faa", "name": "label.fucsia" },
+
     {
-      "color": "#00379e",
-      "colorspace": "HSL",
-      "name": "brand.maggioli"
-    },{
-      "color": "#597CB9",
-      "name": "brand.eolo"
-    },{
-      "color": "#ED7C63",
-      "name": "brand.argo"
-    },{
-      "color": "#01495C",
-      "name": "brand.la-polizia-locale"
-    },{
-      "color": "#FBE00E",
-      "name": "brand.cantiere-innovazione"
-    },{
-      "color": "#23b2e1",
-      "name": "status.info"
-    },{
-      "color": "#21bf73",
-      "name": "status.success"
-    },{
-      "color": "#ED6663",
-      "name": "status.error"
-    },{
-      "color": "#FFC107",
-      "name": "status.warning"
-    },{
-      "color": "#E67E22",
-      "name": "area.administration"
-    },{
-      "color": "#E74C3C",
-      "name": "area.personal"
-    },{
-      "color": "#D36CDC",
-      "name": "area.accounting"
-    },{
-      "color": "#A85DBE",
-      "name": "area.tributes"
-    },{
-      "color": "#52BE7F",
-      "name": "area.public-procurement"
-    },{
-      "color": "#16A085",
-      "name": "area.building-urban"
-    },{
-      "color": "#F1C40F",
-      "name": "area.demographic"
-    },{
-      "color": "#95A5A6",
-      "name": "area.social-service"
-    },{
-      "color": "#428BBA",
-      "name": "area.police"
-    },{
-      "color": "#5CACE2",
-      "name": "area.productive"
-    },{
-      "color": "#FF9900",
-      "name": "area.elections"
-    },{
       "color": "#ffffff",
       "colorDark": "#000000",
       "name": "adjust.tone"
@@ -71,7 +44,7 @@
   "ratios": [
     1.05,
     1.1,
-    1.16,
+    1.17,
     1.24,
     1.32,
     1.41,
@@ -88,6 +61,6 @@
     8.5,
     10.3,
     12.45,
-    14
+    15
   ]
 }
