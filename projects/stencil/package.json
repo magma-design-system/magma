@@ -1,0 +1,51 @@
+{
+  "name": "stencil-components",
+  "version": "0.0.1",
+  "description": "Stencil Component Starter",
+  "main": "dist/index.cjs.js",
+  "module": "dist/custom-elements/index.js",
+  "es2015": "dist/esm/index.mjs",
+  "es2017": "dist/esm/index.mjs",
+  "types": "dist/custom-elements/index.d.ts",
+  "collection": "dist/collection/collection-manifest.json",
+  "collection:main": "dist/collection/index.js",
+  "unpkg": "dist/stencil-components/stencil-components.esm.js",
+  "files": [
+    "dist/",
+    "loader/"
+  ],
+  "scripts": {
+    "build": "stencil build --docs",
+    "build.watch": "stencil build --docs-readme --watch --serve",
+    "clean": "rimraf dist && rimraf dist-storybook",
+    "generate": "stencil generate",
+    "start": "stencil build --dev --watch --serve",
+    "storybook.build": "build-storybook -o ./dist-storybook",
+    "storybook.deploy": "storybook-to-aws-s3 --existing-output-dir ./dist-storybook --bucket-path <AWS_BUCKET_PATH>",
+    "storybook.prebuild": "npm run build-stencil",
+    "storybook.predeploy": "npm run build-storybook",
+    "storybook.start": "start-storybook -p 6006 -s dist --no-manager-cache",
+    "test": "stencil test --spec --e2e",
+    "test.watch": "stencil test --spec --e2e --watchAll"
+  },
+  "dependencies": {
+    "@stencil/core": "^2.0.1",
+    "clsx": "^1.1.1"
+  },
+  "license": "MIT",
+  "devDependencies": {
+    "@babel/core": "^7.14.3",
+    "@babel/preset-react": "^7.13.13",
+    "@storybook/addon-actions": "^6.2.9",
+    "@storybook/addon-essentials": "^6.2.9",
+    "@storybook/addon-links": "^6.2.9",
+    "@storybook/addon-notes": "^5.3.21",
+    "@storybook/addon-viewport": "^6.2.9",
+    "@storybook/html": "^6.2.9",
+    "@storybook/react": "^6.1.21",
+    "@storybook/storybook-deployer": "^2.8.7",
+    "@types/jest": "^26.0.23",
+    "babel-loader": "^8.2.2",
+    "rimraf": "^3.0.2"
+  }
+}

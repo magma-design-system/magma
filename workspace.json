@@ -29,6 +29,10 @@
       "root": "projects/react",
       "type": "library"
     },
+    "stencil": {
+      "root": "projects/stencil",
+      "type": "library"
+    },
     "styles": {
       "root": "projects/styles",
       "type": "library"
