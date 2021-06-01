@@ -16,14 +16,16 @@ trim_trailing_whitespace = true
 [Makefile]
 indent_style = space
 
-[{*.jsx, *.js}]
+[{*.jsx, *.js, *.tsx, *.ts}]
 indent_size = 2
 indent_style = space
 
 [*.scss]
 indent_size = 2
 tab_width = 2
+indent_style = space
 
 [*.json]
 indent_size = 2
 tab_width = 2
+indent_style = space
