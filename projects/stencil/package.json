@@ -29,11 +29,11 @@
     "test.watch": "stencil test --spec --e2e --watchAll"
   },
   "dependencies": {
-    "@stencil/core": "^2.0.1",
-    "@maggioli-design-system/icons": "^1.10.0",
     "@maggioli-design-system/design-tokens": "^2.6.0",
+    "@maggioli-design-system/icons": "^1.10.0",
     "@maggioli-design-system/identity": "^1.8.1",
     "@maggioli-design-system/styles": "^2.4.0",
+    "@stencil/core": "^2.0.1",
     "clsx": "^1.1.1"
   },
   "license": "MIT",
@@ -54,6 +54,7 @@
     "autoprefixer": "^10.2.6",
     "babel-loader": "^8.2.2",
     "css-loader": "^5.2.6",
+    "faker": "^5.5.3",
     "postcss": "^8.3.0",
     "postcss-flexbugs-fixes": "^5.0.2",
     "postcss-loader": "^5.3.0",
