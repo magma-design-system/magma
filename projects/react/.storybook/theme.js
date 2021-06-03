@@ -3,8 +3,8 @@ import brandImage from '@maggioli-design-system/identity/dist/gruppo-maggioli/lo
 export default create({
 
   base: 'light',
-  colorPrimary: '#1b59a3',
-  colorSecondary: '#1b59a3',
+  colorPrimary: '#00379e',
+  colorSecondary: '#00379e',
 
   // UI
   appBg: '#efefef',
