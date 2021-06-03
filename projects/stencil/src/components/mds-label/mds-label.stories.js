@@ -24,8 +24,8 @@ const defaultArgs = {
 };
 
 const Template = args => {
-  return <mds-label {...args}></mds-label>;
-};
+  return <div className="bg-brand-maggioli-18 block p-2"><mds-label {...args}>Label name</mds-label></div>
+}
 
 export const Default = Template.bind({});
 Default.args = { ...defaultArgs };

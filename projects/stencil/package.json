@@ -17,7 +17,7 @@
   "scripts": {
     "build": "stencil build --docs",
     "build.watch": "stencil build --docs-readme --watch --serve",
-    "clean": "rimraf dist && rimraf dist-storybook",
+    "clean": "rimraf dist && rimraf loader && rimraf www && rimraf dist-storybook",
     "generate": "stencil generate",
     "start": "stencil build --dev --watch --serve",
     "storybook.build": "build-storybook -o ./dist-storybook",
@@ -30,6 +30,10 @@
   },
   "dependencies": {
     "@stencil/core": "^2.0.1",
+    "@maggioli-design-system/icons": "^1.10.0",
+    "@maggioli-design-system/design-tokens": "^2.6.0",
+    "@maggioli-design-system/identity": "^1.8.1",
+    "@maggioli-design-system/styles": "^2.4.0",
     "clsx": "^1.1.1"
   },
   "license": "MIT",
@@ -40,12 +44,22 @@
     "@storybook/addon-essentials": "^6.2.9",
     "@storybook/addon-links": "^6.2.9",
     "@storybook/addon-notes": "^5.3.21",
+    "@storybook/addon-postcss": "^2.0.0",
     "@storybook/addon-viewport": "^6.2.9",
     "@storybook/html": "^6.2.9",
     "@storybook/react": "^6.1.21",
     "@storybook/storybook-deployer": "^2.8.7",
     "@types/jest": "^26.0.23",
+    "@types/tapable": "^2.2.2",
+    "autoprefixer": "^10.2.6",
     "babel-loader": "^8.2.2",
-    "rimraf": "^3.0.2"
+    "css-loader": "^5.2.6",
+    "postcss": "^8.3.0",
+    "postcss-flexbugs-fixes": "^5.0.2",
+    "postcss-loader": "^5.3.0",
+    "rimraf": "^3.0.2",
+    "sass-loader": "10.2.0",
+    "style-loader": "^2.0.0",
+    "tailwindcss": "^2.1.4"
   }
 }
