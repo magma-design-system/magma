@@ -1,13 +1,19 @@
 {
   "colors": [
-    { "color": "#00379e", "name": "brand.maggioli", "colorspace": "HSL" },
+    {
+      "color": "#FFFFFF",
+      "colorDark": "#000000",
+      "name": "adjust.tone"
+    },
+
+    { "color": "#00379E", "name": "brand.maggioli", "colorspace": "HSL" },
     { "color": "#597CB9", "name": "brand.eolo" },
     { "color": "#ED7C63", "name": "brand.argo" },
     { "color": "#01495C", "name": "brand.la-polizia-locale" },
     { "color": "#FBE00E", "name": "brand.cantiere-innovazione" },
 
-    { "color": "#23b2e1", "name": "status.info" },
-    { "color": "#21bf73", "name": "status.success" },
+    { "color": "#23B2E1", "name": "status.info" },
+    { "color": "#21BF73", "name": "status.success" },
     { "color": "#ED6663", "name": "status.error" },
     { "color": "#FFC107", "name": "status.warning" },
 
@@ -24,21 +30,15 @@
     { "color": "#FF9900", "name": "area.elections" },
 
     { "color": "#EE1A24", "name": "label.red" },
-    { "color": "#fb5120", "name": "label.tomato" },
-    { "color": "#f58e16", "name": "label.orange" },
-    { "color": "#ffc417", "name": "label.yellow" },
-    { "color": "#a0cc3b", "name": "label.lime" },
-    { "color": "#00ca4a", "name": "label.green" },
-    { "color": "#00bfc3", "name": "label.azure" },
-    { "color": "#3b61c8", "name": "label.blue" },
-    { "color": "#7e3ac9", "name": "label.purple" },
-    { "color": "#d31faa", "name": "label.fucsia" },
-
-    {
-      "color": "#ffffff",
-      "colorDark": "#000000",
-      "name": "adjust.tone"
-    }
+    { "color": "#FA5D0B", "name": "label.tomato" },
+    { "color": "#F58E16", "name": "label.orange" },
+    { "color": "#FFC417", "name": "label.yellow" },
+    { "color": "#ABCC29", "name": "label.lime" },
+    { "color": "#00CC00", "name": "label.green" },
+    { "color": "#00B2C4", "name": "label.aqua" },
+    { "color": "#3B61C8", "name": "label.blue" },
+    { "color": "#7B3FC8", "name": "label.purple" },
+    { "color": "#D13CB5", "name": "label.fucsia" }
   ],
   "defaultColorspace": "HSL",
   "ratios": [
