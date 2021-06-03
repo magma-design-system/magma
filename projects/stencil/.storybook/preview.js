@@ -1,6 +1,5 @@
 import { defineCustomElements } from '../dist/esm/loader';
 
-import '@maggioli-design-system/design-tokens/dist/css/vars-rgb-channels.css'
 import 'normalize.css'
 import '@maggioli-design-system/icons'
 import 'typeface-karla'

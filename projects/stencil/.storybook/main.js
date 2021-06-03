@@ -1,3 +1,5 @@
+// https://www.mokkapps.de/blog/run-build-and-deploy-stencil-and-storybook-from-one-repository
+
 const path = require('path')
 
 module.exports = {
