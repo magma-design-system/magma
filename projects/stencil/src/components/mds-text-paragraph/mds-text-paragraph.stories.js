@@ -25,7 +25,7 @@ const defaultArgs = {
 };
 
 const Template = args => {
-  return <mds-text-paragraph class="p-2 bg-adjust-tone-18" {...args}>
+  return <mds-text-paragraph class="p-2 bg-status-warning-18" {...args}>
     {faker.lorem.paragraph()}
   </mds-text-paragraph>
 }
