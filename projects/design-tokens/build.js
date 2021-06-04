@@ -13,19 +13,37 @@ const beautifyConfig = {
   space_in_empty_paren: true
 }
 
-fs.readFile(path.resolve(__dirname, 'css-tokens/media.json'), (err, data) => {
-  if (err) throw err;
-  let media = JSON.parse(data);
+const saveAsJs = ({ filePath, varName, destination }) => {
+  fs.readFile(path.resolve(__dirname, filePath), (err, data) => {
+    if (err) throw err;
+    let media = JSON.parse(data);
 
-  const jsData = `
-  const media = ${JSON.stringify(media, null, 4)}
-  module.exports = {
-    media,
-  }
-  `
+    const jsData = `
+    const ${varName} = ${JSON.stringify(media, null, 4)}
+    module.exports = {
+      ${varName},
+    }
+    `
 
-  fs.writeFile(path.resolve(__dirname, 'dist/js/media.js'), beautify(jsData, beautifyConfig), function (err) {
-    if (err) return console.log(err);
-    console.log('CSS: media.js exported successfully.');
-  })
-});
+    fs.writeFile(path.resolve(__dirname, destination), beautify(jsData, beautifyConfig), function (err) {
+      if (err) return console.log(err);
+      console.log(`Token: ${destination} exported successfully.`);
+    })
+  });
+}
+
+console.log('')
+
+saveAsJs({
+  destination: 'dist/js/media.js',
+  filePath: 'css-tokens/media.json',
+  varName: 'media',
+})
+
+saveAsJs({
+  destination: 'dist/js/font-family.js',
+  filePath: 'css-tokens/font-family.json',
+  varName: 'fontFamily',
+})
+
+

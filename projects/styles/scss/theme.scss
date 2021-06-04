@@ -3,7 +3,7 @@
 @import '@maggioli-design-system/design-tokens/dist/scss/config';
 @import '@maggioli-design-system/design-tokens/dist/scss/cosmetics';
 @import '@maggioli-design-system/design-tokens/dist/scss/ease';
-@import '@maggioli-design-system/design-tokens/dist/scss/font-families';
+@import '@maggioli-design-system/design-tokens/dist/scss/font-family-styles';
 @import '@maggioli-design-system/design-tokens/dist/scss/media';
 @import '@maggioli-design-system/design-tokens/dist/scss/sizes';
 
@@ -17,14 +17,14 @@ $radius: get($cosmetics, 'border-radius');
 $shadow: get($cosmetics, 'box-shadow');
 $tween: get($cosmetics, 'tween');
 $font-family: (
-  'primary': #{get(get($font-families, 'primary'), 'family')},
-  'secondary': #{get(get($font-families, 'secondary'), 'family')},
-  'mono': #{get(get($font-families, 'mono'), 'family')},
+  'primary': #{get(get($font-family-styles, 'primary'), 'family')},
+  'secondary': #{get(get($font-family-styles, 'secondary'), 'family')},
+  'mono': #{get(get($font-family-styles, 'mono'), 'family')},
 );
-$font-primary-styles: get(get($font-families, 'primary'), 'styles');
-$font-secondary-styles: get(get($font-families, 'secondary'), 'styles');
-$font-secondary-variants: get(get($font-families, 'secondary'), 'variants');
-$font-mono-styles: get(get($font-families, 'mono'), 'styles');
+$font-primary-styles: get(get($font-family-styles, 'primary'), 'styles');
+$font-secondary-styles: get(get($font-family-styles, 'secondary'), 'styles');
+$font-secondary-variants: get(get($font-family-styles, 'secondary'), 'variants');
+$font-mono-styles: get(get($font-family-styles, 'mono'), 'styles');
 $palette: get($config, 'palette');
 $palette-format: get(get($config, 'palette'), 'format');
 $palette-scale: get(get($config, 'palette'), 'scale');

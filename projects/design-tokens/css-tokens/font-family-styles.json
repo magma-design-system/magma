@@ -8,9 +8,6 @@
           "font-weight": "800",
           "letter-spacing": "-0.025rem",
           "line-height": "50px"
-        },
-        "desktop": {
-          "line-height": "50px"
         }
       },
       "h2" : {
@@ -19,9 +16,6 @@
           "font-weight": "800",
           "letter-spacing": "-0.025rem",
           "line-height": "50px"
-        },
-        "desktop": {
-          "line-height": "50px"
         }
       },
       "h3" : {
@@ -29,9 +23,6 @@
           "font-size": "26px",
           "font-weight": "700",
           "letter-spacing": "-0.025rem",
-          "line-height": "40px"
-        },
-        "desktop": {
           "line-height": "40px"
         }
       },
@@ -64,17 +55,16 @@
           "font-weight": "500",
           "line-height": "15px"
         },
-        "tablet": {
-          "line-height": "20px"
+        "media": {
+          "tablet": {
+            "line-height": "20px"
+          }
         }
       },
       "action" : {
         "default": {
           "font-size": "14px",
           "font-weight": "500",
-          "line-height": "24px"
-        },
-        "tablet": {
           "line-height": "24px"
         }
       }
@@ -129,9 +119,6 @@
           "font-weight": "600",
           "line-height": "20px",
           "text-transform": "uppercase"
-        },
-        "desktop": {
-          "line-height": "20px"
         }
       }
     },

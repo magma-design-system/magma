@@ -1,0 +1,5 @@
+/dist
+/loader
+/src/components/**/readme.md
+/src/components.d.ts
+/www
