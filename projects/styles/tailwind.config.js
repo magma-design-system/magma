@@ -1,5 +1,6 @@
 const palette = require('@maggioli-design-system/design-tokens').palette
 const mediaQueries = require('@maggioli-design-system/design-tokens/dist/js/media').media
+const fontFamily = require('@maggioli-design-system/design-tokens/dist/js/font-family').fontFamily
 
 module.exports = {
   important: true,
@@ -21,8 +22,14 @@ module.exports = {
       current: 'currentColor',
       ...palette,
     },
+    fontFamily: {
+      ...fontFamily,
+    },
     screens: mediaQueries,
     extend: {
+      fontSize: {
+        'xxs': '0.625rem',
+      },
       maxWidth: {
         '1/4': '25%',
         '1/2': '50%',
