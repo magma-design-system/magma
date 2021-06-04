@@ -1,6 +1,6 @@
 {
   "name": "@maggioli-design-system/design-tokens",
-  "version": "2.5.1",
+  "version": "2.6.0",
   "description": "This is the Design Token library of Maggioli Design System, here you'll find all the visual data used around the libraries.",
   "author": "Vittorio Vittori",
   "license": "ISC",
