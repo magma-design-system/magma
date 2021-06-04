@@ -4,5 +4,5 @@
 
 :host {
   display: block;
-  @apply font-primary font-extrabold text-5xl tracking-tight;
+  @apply antialiased font-extrabold font-primary text-5xl tracking-tight;
 }

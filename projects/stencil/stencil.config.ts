@@ -1,4 +1,7 @@
-import { Config } from '@stencil/core';
+import { Config } from '@stencil/core'
+import { postcss } from '@stencil/postcss'
+import autoprefixer from 'autoprefixer'
+import tailwind from 'tailwindcss'
 
 // import { angularOutputTarget, ValueAccessorConfig } from '@stencil/angular-output-target';
 
@@ -63,4 +66,12 @@ export const config: Config = {
       type: 'dist',
     },
   ],
+  plugins: [
+    postcss({
+      plugins: [
+        autoprefixer(),
+        tailwind(),
+      ]
+    })
+  ]
 };
