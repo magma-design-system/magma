@@ -52,20 +52,20 @@
     "zip": { "format": "archive", "description": "Archivio compresso" }
   },
   "format": {
-    "archive": { "color": "color-status-warning-08", "background": "background-color-status-warning-18", "icon": "file-archive" },
-    "attachment": { "color": "color-adjust-tone-08", "background": "background-color-adjust-tone-18", "icon": "file-attachment" },
-    "audio": { "color": "color-brand-maggioli-08", "background": "background-color-brand-maggioli-18", "icon": "media-audio" },
-    "code": { "color": "color-adjust-info-08", "background": "background-color-adjust-info-18", "icon": "dev-terminal" },
-    "data": { "color": "color-adjust-tone-08", "background": "background-color-adjust-tone-18", "icon": "peripheral-hard-drive" },
-    "document": { "color": "color-status-error-08", "background": "background-color-status-error-18", "icon": "file-document" },
-    "email": { "color": "color-status-error-08", "background": "background-color-status-error-18", "icon": "file-email" },
-    "executable": { "color": "color-status-error-08", "background": "background-color-status-error-18", "icon": "file-executable" },
-    "image": { "color": "color-status-error-08", "background": "background-color-status-error-18", "icon": "media-image" },
-    "markup": { "color": "color-adjust-tone-08", "background": "background-color-adjust-tone-18", "icon": "document-web" },
-    "slide": { "color": "color-status-info-08", "background": "background-color-status-info-18", "icon": "touchpoint-tv" },
-    "spreadsheet": { "color": "color-status-success-08", "background": "background-color-status-success-18", "icon": "document-spreadsheet" },
-    "text": { "color": "color-status-error-08", "background": "background-color-status-error-18", "icon": "document-text" },
-    "vector": { "color": "color-status-success-08", "background": "background-color-status-success-18", "icon": "file-vector" },
-    "video": { "color": "color-status-error-08", "background": "background-color-status-error-18", "icon": "media-video" }
+    "archive": { "color": "text-status-warning-08", "background": "bg-status-warning-18", "icon": "file-archive" },
+    "attachment": { "color": "text-adjust-tone-08", "background": "bg-adjust-tone-18", "icon": "file-attachment" },
+    "audio": { "color": "text-brand-maggioli-08", "background": "bg-brand-maggioli-18", "icon": "media-audio" },
+    "code": { "color": "text-adjust-info-08", "background": "bg-adjust-info-18", "icon": "dev-terminal" },
+    "data": { "color": "text-adjust-tone-08", "background": "bg-adjust-tone-18", "icon": "peripheral-hard-drive" },
+    "document": { "color": "text-status-error-08", "background": "bg-status-error-18", "icon": "document" },
+    "email": { "color": "text-status-error-08", "background": "bg-status-error-18", "icon": "file-email" },
+    "executable": { "color": "text-status-error-08", "background": "bg-status-error-18", "icon": "file-executable" },
+    "image": { "color": "text-status-error-08", "background": "bg-status-error-18", "icon": "media-image" },
+    "markup": { "color": "text-adjust-tone-08", "background": "bg-adjust-tone-18", "icon": "document-web" },
+    "slide": { "color": "text-status-info-08", "background": "bg-status-info-18", "icon": "touchpoint-tv" },
+    "spreadsheet": { "color": "text-status-success-08", "background": "bg-status-success-18", "icon": "document-spreadsheet" },
+    "text": { "color": "text-status-error-08", "background": "bg-status-error-18", "icon": "document-text" },
+    "vector": { "color": "text-status-success-08", "background": "bg-status-success-18", "icon": "file-type-vector" },
+    "video": { "color": "text-status-error-08", "background": "bg-status-error-18", "icon": "media-video" }
   }
 }
