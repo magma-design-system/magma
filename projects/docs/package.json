@@ -38,12 +38,12 @@
         {
             "name": "Gioele Masini",
             "email": "gioele.masini@maggioli.it",
-            "role": "Software Architecture Lead"
+            "role": "Software Engineer"
         },
         {
             "name": "Vittorio Vittori",
             "email": "vittorio.vittori@maggioli.it",
-            "role": "Author"
+            "role": "UX UI Designer"
         }
     ],
     "license": "ISC",

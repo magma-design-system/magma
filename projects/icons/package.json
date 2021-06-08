@@ -50,22 +50,22 @@
     {
       "name": "Gioele Masini",
       "email": "gioele.masini@maggioli.it",
-      "role": "Lead Developer"
+      "role": "Software Engineer"
     },
     {
       "name": "Federico Ciani",
       "email": "federico.ciani@maggioli.it",
-      "role": "Icons Taxonomy"
+      "role": "UI Designer"
     },
     {
       "name": "Thomas Trapanese",
       "email": "thomas.trapanese@maggioli.it",
-      "role": "Icons Tester"
+      "role": "Software Engineer"
     },
     {
       "name": "Vittorio Vittori",
       "email": "vittorio.vittori@maggioli.it",
-      "role": "Author"
+      "role": "UX UI Designer"
     }
   ],
   "license": "ISC",

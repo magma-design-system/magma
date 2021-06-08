@@ -19,17 +19,17 @@
   "author": {
     "name": "Gioele Masini",
     "email": "gioele.masini@maggioli.it",
-    "role": "Lead Developer"
+    "role": "Software Engineer"
   },
   "contributors": [
     {
       "name": "Gioele Masini",
       "email": "gioele.masini@maggioli.it",
-      "role": "Lead Developer"
+      "role": "Software Engineer"
     },{
       "name": "Vittorio Vittori",
       "email": "vittorio.vittori@maggioli.it",
-      "role": "Developer"
+      "role": "UX UI Designer"
     }
   ],
   "license": "ISC"
