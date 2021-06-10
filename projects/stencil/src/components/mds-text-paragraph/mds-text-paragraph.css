@@ -4,5 +4,5 @@
 
 :host {
   display: block;
-  @apply font-primary font-extrabold text-5xl tracking-tight;
+  @apply font-primary font-extrabold text-5xl tracking-tight p-2;
 }

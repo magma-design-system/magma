@@ -1,8 +1,6 @@
-@tailwind base;
 @tailwind components;
 @tailwind utilities;
 
 :host {
-  display: block;
-  @apply antialiased font-extrabold font-primary text-5xl tracking-tight;
+  @apply block antialiased font-extrabold font-primary text-5xl tracking-tight;
 }
