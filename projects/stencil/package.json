@@ -32,7 +32,7 @@
     "@maggioli-design-system/design-tokens": "^3.0.0",
     "@maggioli-design-system/icons": "^1.10.0",
     "@maggioli-design-system/identity": "^1.8.1",
-    "@maggioli-design-system/styles": "^2.5.0",
+    "@maggioli-design-system/styles": "^2.6.0",
     "@stencil/core": "^2.0.1"
   },
   "license": "MIT",
@@ -64,5 +64,27 @@
     "sass-loader": "10.2.0",
     "style-loader": "^2.0.0",
     "tailwindcss": "^2.1.4"
-  }
+  },
+  "author": {
+    "name": "Vittorio Vittori",
+    "email": "vittorio.vittori@maggioli.it",
+    "url": "http://vit.to"
+  },
+  "contributors": [
+    {
+      "name": "Andrea Pruccoli",
+      "email": "andrea.pruccoli@maggioli.it",
+      "role": "Software Engineer"
+    },
+    {
+      "name": "Stefano Pascazi",
+      "email": "stefano.pascazi@maggioli.it",
+      "role": "Software Engineer"
+    },
+    {
+      "name": "Vittorio Vittori",
+      "email": "vittorio.vittori@maggioli.it",
+      "role": "UX UI Designer"
+    }
+  ]
 }

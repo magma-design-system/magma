@@ -1,10 +1,10 @@
 import React from 'react'
 import faker from 'faker'
-import MdsTextParagraph from '../../../dist/collection/components/mds-text-paragraph/mds-text-paragraph';
+import MdsTypoH1 from '../../../dist/collection/components/mds-typo-h1/mds-typo-h1';
 
 export default {
-  title: 'MdsTextParagraph',
-  component: MdsTextParagraph,
+  title: 'MdsTypoH1',
+  component: MdsTypoH1,
   argTypes: {
     label: { type: 'text', description: 'The text which is shown as label' },
     name: {
@@ -24,10 +24,12 @@ const defaultArgs = {
   disabled: false,
 };
 
+// TODO: la build di stencil esporta anche i valori default, circa 4KB di roba, va tolta e resa solo globale?
+
 const Template = args => {
-  return <mds-text-paragraph class="p-10 bg-status-warning-18" {...args}>
+  return <mds-typo-h1 class="bg-brand-maggioli-06 text-brand-maggioli-12 p-10" {...args}>
     {faker.lorem.paragraph()}
-  </mds-text-paragraph>
+  </mds-typo-h1>
 }
 
 export const Default = Template.bind({});
