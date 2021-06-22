@@ -2137,10 +2137,15 @@
     "@babel/runtime" "^7.7.2"
     regenerator-runtime "^0.13.3"
 
-"@maggioli-design-system/design-tokens@^2.3.0", "@maggioli-design-system/design-tokens@^2.6.0":
+"@maggioli-design-system/design-tokens@^2.3.0":
   version "2.6.0"
   resolved "https://registry.yarnpkg.com/@maggioli-design-system/design-tokens/-/design-tokens-2.6.0.tgz#a37cf6b8aac7d33c5c7c373b1111aa4a1afb21bf"
   integrity sha512-Fwj9ht9JMHPtbTzbYytFiKrSvFCozIEabfSXMp2p9byWpqKqkYEkznZbtLFbXeRXK7sEiCUrXAeWgUbenjIktw==
+
+"@maggioli-design-system/design-tokens@^3.0.0":
+  version "3.0.0"
+  resolved "https://registry.yarnpkg.com/@maggioli-design-system/design-tokens/-/design-tokens-3.0.0.tgz#71afa1c2c29859713d77093eedd21d970adff5f2"
+  integrity sha512-+86/KT/I4TGc7i2gjJ093EaHSIS95mUvffZmrcer/H/qeVY8bRhc6Vx3KP8Sl/r7YT5TEJqRekgiPuQXBWhE8A==
 
 "@maggioli-design-system/icons@^1.10.0":
   version "1.10.0"
@@ -2167,6 +2172,16 @@
     react-router-dom "^5.2.0"
     react-syntax-highlighter "^15.4.3"
     react-timeago "^5.2.0"
+    typeface-karla "1.1.13"
+    typeface-roboto "1.1.13"
+
+"@maggioli-design-system/styles@^2.1.4", "@maggioli-design-system/styles@^2.6.0":
+  version "2.6.0"
+  resolved "https://registry.yarnpkg.com/@maggioli-design-system/styles/-/styles-2.6.0.tgz#47b47cafd63d39a49ab2de68b681bf0acc71fd5c"
+  integrity sha512-176haxpsZf8qxDMjjmmXwpWaIue9rlP0d5nty/k9r9zWcNQo19jQREbZq28PgkCzw/nvcykvCCmgsTSgPVRq4w==
+  dependencies:
+    "@maggioli-design-system/design-tokens" "^3.0.0"
+    normalize.css "^8.0.1"
     typeface-karla "1.1.13"
     typeface-roboto "1.1.13"
 
