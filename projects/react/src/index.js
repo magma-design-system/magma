@@ -53,7 +53,7 @@ export BackofficeInputText from '@UI/Input/BackofficeInputText'
 export BackofficeSelect, { BackofficeSelectOption } from '@UI/Select/BackofficeSelect'
 export BackofficeTextarea from '@UI/Textarea/BackofficeTextarea'
 
-export Accordion from '@UI/Accordion/Accordion'
+export Accordion, { AccordionItem } from '@UI/Accordion/Accordion'
 export ActionsBar, { ActionsBarItems } from '@UI/ActionsBar/ActionsBar'
 export Banner from '@UI/Banner/Banner'
 export Button from '@UI/Button/Button'
