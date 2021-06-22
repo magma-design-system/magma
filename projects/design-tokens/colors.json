@@ -29,16 +29,16 @@
     { "color": "#5CACE2", "name": "area.productive" },
     { "color": "#FF9900", "name": "area.elections" },
 
-    { "color": "#EE1A24", "name": "label.red" },
-    { "color": "#FA5D0B", "name": "label.tomato" },
-    { "color": "#F58E16", "name": "label.orange" },
-    { "color": "#FFC417", "name": "label.yellow" },
-    { "color": "#ABCC29", "name": "label.lime" },
-    { "color": "#00CC00", "name": "label.green" },
-    { "color": "#00B2C4", "name": "label.aqua" },
-    { "color": "#3B61C8", "name": "label.blue" },
-    { "color": "#7B3FC8", "name": "label.purple" },
-    { "color": "#D13CB5", "name": "label.fucsia" }
+    { "color": "#EA3464", "name": "label.amaranth" },
+    { "color": "#E33BDA", "name": "label.orchid" },
+    { "color": "#782FF6", "name": "label.violet" },
+    { "color": "#0E36F6", "name": "label.blue" },
+    { "color": "#4DAFFA", "name": "label.sky" },
+    { "color": "#74FAC8", "name": "label.aqua" },
+    { "color": "#78F966", "name": "label.green" },
+    { "color": "#B9FB50", "name": "label.lime" },
+    { "color": "#F9E14E", "name": "label.yellow" },
+    { "color": "#F17032", "name": "label.orange" }
   ],
   "defaultColorspace": "HSL",
   "ratios": [
