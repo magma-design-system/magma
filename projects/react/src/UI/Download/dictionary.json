@@ -34,7 +34,7 @@
     "odp": { "format": "slide", "description": "Presentazione LibreOffice" },
     "ods": { "format": "spreadsheet", "description": "Foglio di calcolo LibreOffice" },
     "odt": { "format": "text", "description": "File di testo LibreOffice" },
-    "pdf": { "format": "document", "description": "Documento" },
+    "pdf": { "format": "document", "description": "Documento Adobe" },
     "php": { "format": "code", "description": "Hypertext Preprocessor" },
     "png": { "format": "image", "description": "Immagine non compressa", "preview": true },
     "ppt": { "format": "slide", "description": "Presentazione PowerPoint" },
@@ -52,20 +52,20 @@
     "zip": { "format": "archive", "description": "Archivio compresso" }
   },
   "format": {
-    "archive": { "color": "text-status-warning-08", "background": "bg-status-warning-18", "icon": "file-archive" },
+    "archive": { "color": "text-label-orange-08", "background": "bg-label-orange-18", "icon": "file-archive" },
     "attachment": { "color": "text-adjust-tone-08", "background": "bg-adjust-tone-18", "icon": "file-attachment" },
-    "audio": { "color": "text-brand-maggioli-08", "background": "bg-brand-maggioli-18", "icon": "media-audio" },
-    "code": { "color": "text-adjust-info-08", "background": "bg-adjust-info-18", "icon": "dev-terminal" },
-    "data": { "color": "text-adjust-tone-08", "background": "bg-adjust-tone-18", "icon": "peripheral-hard-drive" },
-    "document": { "color": "text-status-error-08", "background": "bg-status-error-18", "icon": "document" },
-    "email": { "color": "text-status-error-08", "background": "bg-status-error-18", "icon": "file-email" },
-    "executable": { "color": "text-status-error-08", "background": "bg-status-error-18", "icon": "file-executable" },
-    "image": { "color": "text-status-error-08", "background": "bg-status-error-18", "icon": "media-image" },
-    "markup": { "color": "text-adjust-tone-08", "background": "bg-adjust-tone-18", "icon": "document-web" },
-    "slide": { "color": "text-status-info-08", "background": "bg-status-info-18", "icon": "touchpoint-tv" },
-    "spreadsheet": { "color": "text-status-success-08", "background": "bg-status-success-18", "icon": "document-spreadsheet" },
-    "text": { "color": "text-status-error-08", "background": "bg-status-error-18", "icon": "document-text" },
-    "vector": { "color": "text-status-success-08", "background": "bg-status-success-18", "icon": "file-type-vector" },
-    "video": { "color": "text-status-error-08", "background": "bg-status-error-18", "icon": "media-video" }
+    "audio": { "color": "text-label-violet-08", "background": "bg-label-violet-18", "icon": "media-audio" },
+    "code": { "color": "text-label-yellow-08", "background": "bg-label-yellow-18", "icon": "dev-terminal" },
+    "data": { "color": "text-label-yellow-08", "background": "bg-label-yellow-18", "icon": "peripheral-hard-drive" },
+    "document": { "color": "text-label-amaranth-08", "background": "bg-label-amaranth-18", "icon": "document" },
+    "email": { "color": "text-label-blue-08", "background": "bg-label-blue-18", "icon": "file-email" },
+    "executable": { "color": "text-label-orange-08", "background": "bg-label-orange-18", "icon": "file-executable" },
+    "image": { "color": "text-label-aqua-08", "background": "bg-label-aqua-18", "icon": "media-image" },
+    "markup": { "color": "text-label-yellow-08", "background": "bg-label-yellow-18", "icon": "document-web" },
+    "slide": { "color": "text-label-orchid-08", "background": "bg-label-orchid-18", "icon": "touchpoint-tv" },
+    "spreadsheet": { "color": "text-label-lime-08", "background": "bg-label-lime-18", "icon": "document-spreadsheet" },
+    "text": { "color": "text-label-blue-08", "background": "bg-label-blue-18", "icon": "document-text" },
+    "vector": { "color": "text-label-aqua-08", "background": "bg-label-aqua-18", "icon": "file-type-vector" },
+    "video": { "color": "text-label-violet-08", "background": "bg-label-violet-18", "icon": "media-video" }
   }
 }
