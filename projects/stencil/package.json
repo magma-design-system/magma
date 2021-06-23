@@ -30,7 +30,7 @@
   },
   "dependencies": {
     "@maggioli-design-system/design-tokens": "^3.0.0",
-    "@maggioli-design-system/icons": "^1.11.0",
+    "@maggioli-design-system/icons": "^1.11.1",
     "@maggioli-design-system/identity": "^1.8.1",
     "@maggioli-design-system/styles": "^2.6.0",
     "@stencil/core": "^2.0.1"

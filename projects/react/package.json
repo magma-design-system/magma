@@ -62,7 +62,7 @@
     }
   ],
   "dependencies": {
-    "@maggioli-design-system/icons": "^1.11.0",
+    "@maggioli-design-system/icons": "^1.11.1",
     "@maggioli-design-system/design-tokens": "^4.0.0",
     "@maggioli-design-system/identity": "^1.8.3",
     "@maggioli-design-system/styles": "^3.0.0",
