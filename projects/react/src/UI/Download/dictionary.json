@@ -39,6 +39,7 @@
     "png": { "format": "image", "description": "Immagine non compressa", "preview": true },
     "ppt": { "format": "slide", "description": "Presentazione PowerPoint" },
     "rar": { "format": "archive", "description": "Archivio compresso" },
+    "rtf": { "format": "text", "description": "Rich Text Format" },
     "sass": { "format": "code", "description": "Syntactically Awesome StyleSheets" },
     "shtml": { "format": "markup", "description": "Pagina web" },
     "svg": { "format": "vector", "description": "Immagine vettoriale", "preview": true },
