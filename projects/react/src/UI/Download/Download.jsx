@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { Fragment } from 'react'
 import PropTypes from 'prop-types'
 import { styles } from '@Library/styles'
 import './Download.scss'
@@ -21,20 +21,11 @@ function getExtensionInfos(extension) {
   return dictionary.extension[extension] !== undefined ? dictionary.extension[extension] : dictionary.extension.default
 }
 
-const Download = ({ className, fileName, href, name, preview, target, transparencyGrid, ...restProps }) => {
+const DownloadContent = ({ fileName, preview, transparencyGrid }) => {
   const extension = getExtension(fileName)
   const fileNameNoExt = getName(fileName, extension)
   const { description, format } = getExtensionInfos(extension)
   const { background, color, icon } = dictionary.format[format]
-
-  const classes = styles('download', {
-    selectors: [
-      className,
-    ],
-    modifiers: {
-      name,
-    },
-  })
 
   const classesFormat = styles('download__format', {
     selectors: [
@@ -50,10 +41,10 @@ const Download = ({ className, fileName, href, name, preview, target, transparen
   })
 
   return (
-    <a target={target} {...restProps} href={href} download={fileName} title={fileName} className={classes}>
+    <Fragment>
       <div className={classesIcon}>
         {preview
-          ? <div className="download__preview" style={{ backgroundImage: `url('${href}')` }}></div>
+          ? <div className="download__preview" style={{ backgroundImage: `url('${preview}')` }}></div>
           : <Icon name={`${icon}`} className={`download__icon ${color}`}/>
         }
       </div>
@@ -67,28 +58,51 @@ const Download = ({ className, fileName, href, name, preview, target, transparen
           <Caption className="download__description">{description}</Caption>
         </div>
       </div>
-    </a>
+    </Fragment>
+  )
+}
+
+DownloadContent.propTypes = {
+  fileName: PropTypes.string,
+  preview: PropTypes.string,
+  transparencyGrid: PropTypes.bool,
+}
+
+const Download = ({ className, fileName, href, name, target, ...restProps }) => {
+  const classes = styles('download', {
+    selectors: [
+      className,
+    ],
+    modifiers: {
+      name,
+    },
+  })
+
+  return (
+    <Fragment>
+      { href
+        ? <a target={target} {...restProps} href={href} download={fileName} title={fileName} className={classes}>
+          <DownloadContent fileName={fileName} preview={restProps.preview} transparencyGrid={restProps.transparencyGrid}/>
+        </a>
+        : <div className={classes} {...restProps}>
+          <DownloadContent fileName={fileName} preview={restProps.preview} transparencyGrid={restProps.transparencyGrid}/>
+        </div>
+      }
+    </Fragment>
   )
 }
 
 Download.propTypes = {
+  ...DownloadContent.propTypes,
   className: PropTypes.string,
-  fileName: PropTypes.string,
   href: PropTypes.string,
   name: PropTypes.string,
-  preview: PropTypes.bool,
   target: PropTypes.string,
-  transparencyGrid: PropTypes.bool,
 }
 
 Download.defaultProps = {
-  className: '',
-  fileName: 'File name.ext',
-  href: '#',
   name: 'full',
-  preview: false,
   target: '_self',
-  transparencyGrid: false,
 }
 
 export default Download

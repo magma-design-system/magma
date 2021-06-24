@@ -60,7 +60,7 @@
     "document": { "color": "text-label-amaranth-08", "background": "bg-label-amaranth-18", "icon": "document" },
     "email": { "color": "text-label-blue-08", "background": "bg-label-blue-18", "icon": "file-email" },
     "executable": { "color": "text-label-orange-08", "background": "bg-label-orange-18", "icon": "file-executable" },
-    "image": { "color": "text-label-aqua-08", "background": "bg-label-aqua-18", "icon": "media-image" },
+    "image": { "color": "text-label-green-08", "background": "bg-label-green-18", "icon": "media-image" },
     "markup": { "color": "text-label-yellow-08", "background": "bg-label-yellow-18", "icon": "document-web" },
     "slide": { "color": "text-label-orchid-08", "background": "bg-label-orchid-18", "icon": "touchpoint-tv" },
     "spreadsheet": { "color": "text-label-lime-08", "background": "bg-label-lime-18", "icon": "document-spreadsheet" },

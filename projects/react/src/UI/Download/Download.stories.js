@@ -23,10 +23,10 @@ export const basicUsage = () =>
   <Download fileName={faker.system.commonFileName()}/>
 
 export const previewImage = () =>
-  <Download fileName="logo-gruppo-maggioli-bordered.svg" href={require('@maggioli-design-system/identity/dist/gruppo-maggioli/logo-gruppo-maggioli-bordered.svg')} preview/>
+  <Download fileName="logo-gruppo-maggioli-bordered.svg" href={require('@maggioli-design-system/identity/dist/gruppo-maggioli/logo-gruppo-maggioli-bordered.svg')} preview={require('@maggioli-design-system/identity/dist/gruppo-maggioli/logo-gruppo-maggioli-bordered.svg')}/>
 
 export const transparencyGrid = () =>
-  <Download fileName="logo-gruppo-maggioli-bordered.svg" href={require('@maggioli-design-system/identity/dist/gruppo-maggioli/logo-gruppo-maggioli-bordered.svg')} preview transparencyGrid/>
+  <Download fileName="logo-gruppo-maggioli-bordered.svg" href={require('@maggioli-design-system/identity/dist/gruppo-maggioli/logo-gruppo-maggioli-bordered.svg')} preview={require('@maggioli-design-system/identity/dist/gruppo-maggioli/logo-gruppo-maggioli-bordered.svg')} transparencyGrid/>
 
 export const dictionary = () =>
   <Grid template="downloads">
@@ -35,3 +35,6 @@ export const dictionary = () =>
 
 export const name = () =>
   <Download fileName="A very very very long file name.svg" name="short"/>
+
+export const noHref = () =>
+  <Download fileName={faker.system.commonFileName()}/>
