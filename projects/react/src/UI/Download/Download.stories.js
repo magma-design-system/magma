@@ -20,10 +20,13 @@ const downloadDictionary = Object.entries(data.extension).map(([key]) =>
 )
 
 export const basicUsage = () =>
+  <Download />
+
+export const fileName = () =>
   <Download fileName={faker.system.commonFileName()}/>
 
 export const previewImage = () =>
-  <Download fileName="logo-gruppo-maggioli-bordered.svg" href={require('@maggioli-design-system/identity/dist/gruppo-maggioli/logo-gruppo-maggioli-bordered.svg')} preview={require('@maggioli-design-system/identity/dist/gruppo-maggioli/logo-gruppo-maggioli-bordered.svg')}/>
+  <Download fileName="logo-gruppo-maggioli-bordered.SVG" href={require('@maggioli-design-system/identity/dist/gruppo-maggioli/logo-gruppo-maggioli-bordered.svg')} preview={require('@maggioli-design-system/identity/dist/gruppo-maggioli/logo-gruppo-maggioli-bordered.svg')}/>
 
 export const transparencyGrid = () =>
   <Download fileName="logo-gruppo-maggioli-bordered.svg" href={require('@maggioli-design-system/identity/dist/gruppo-maggioli/logo-gruppo-maggioli-bordered.svg')} preview={require('@maggioli-design-system/identity/dist/gruppo-maggioli/logo-gruppo-maggioli-bordered.svg')} transparencyGrid/>

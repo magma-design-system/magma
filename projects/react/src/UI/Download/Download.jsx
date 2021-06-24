@@ -10,7 +10,8 @@ import LabelCaption from '@Typography/LabelCaption/LabelCaption'
 import dictionary from './dictionary.json'
 
 function getExtension(fileName) {
-  return fileName.substr(fileName.lastIndexOf('.') + 1).toLowerCase()
+  const extension = fileName.substr(fileName.lastIndexOf('.') + 1)
+  return fileName !== extension ? extension.toLowerCase() : 'default'
 }
 
 function getName(fileName, extension) {
@@ -24,7 +25,7 @@ function getExtensionInfos(extension) {
 const DownloadContent = ({ fileName, preview, transparencyGrid }) => {
   const extension = getExtension(fileName)
   const fileNameNoExt = getName(fileName, extension)
-  const { description, format } = getExtensionInfos(extension)
+  const { description, format } = getExtensionInfos(extension.toLowerCase())
   const { background, color, icon } = dictionary.format[format]
 
   const classesFormat = styles('download__format', {
@@ -68,6 +69,10 @@ DownloadContent.propTypes = {
   transparencyGrid: PropTypes.bool,
 }
 
+DownloadContent.defaultProps = {
+  fileName: 'Missing filename',
+}
+
 const Download = ({ className, fileName, href, name, target, ...restProps }) => {
   const classes = styles('download', {
     selectors: [
@@ -101,6 +106,7 @@ Download.propTypes = {
 }
 
 Download.defaultProps = {
+  ...DownloadContent.defaultProps,
   name: 'full',
   target: '_self',
 }
