@@ -2147,10 +2147,10 @@
   resolved "https://registry.yarnpkg.com/@maggioli-design-system/design-tokens/-/design-tokens-3.0.0.tgz#71afa1c2c29859713d77093eedd21d970adff5f2"
   integrity sha512-+86/KT/I4TGc7i2gjJ093EaHSIS95mUvffZmrcer/H/qeVY8bRhc6Vx3KP8Sl/r7YT5TEJqRekgiPuQXBWhE8A==
 
-"@maggioli-design-system/icons@^1.10.0":
-  version "1.10.0"
-  resolved "https://registry.yarnpkg.com/@maggioli-design-system/icons/-/icons-1.10.0.tgz#af7fa4de07626055be396784c839461b55dd75fc"
-  integrity sha512-lMDQf+Fg07SjB5Eti6tTAGJfQndzrMh+v9EINmzVI3uxPVycqHMW4j/k4/h84T0UTazqeis/3qYhQW2ih6k4pw==
+"@maggioli-design-system/icons@^1.12.0":
+  version "1.12.0"
+  resolved "https://registry.yarnpkg.com/@maggioli-design-system/icons/-/icons-1.12.0.tgz#a912bb1f74c33e590b2a48583b222a1f8e027e42"
+  integrity sha512-Oqw2GmW5xmZYpNMgtzt8qRZqUh/npLywXbrN/H8eoXFhu6CQO6lDpCVE3QOFGXodtYdMfm1+grM/Hv3xkGsyrg==
 
 "@maggioli-design-system/react@^0.22.6":
   version "0.22.8"
@@ -2175,7 +2175,7 @@
     typeface-karla "1.1.13"
     typeface-roboto "1.1.13"
 
-"@maggioli-design-system/styles@^2.1.4", "@maggioli-design-system/styles@^2.6.0":
+"@maggioli-design-system/styles@^2.1.4":
   version "2.6.0"
   resolved "https://registry.yarnpkg.com/@maggioli-design-system/styles/-/styles-2.6.0.tgz#47b47cafd63d39a49ab2de68b681bf0acc71fd5c"
   integrity sha512-176haxpsZf8qxDMjjmmXwpWaIue9rlP0d5nty/k9r9zWcNQo19jQREbZq28PgkCzw/nvcykvCCmgsTSgPVRq4w==

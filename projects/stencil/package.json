@@ -29,10 +29,10 @@
     "test.watch": "stencil test --spec --e2e --watchAll"
   },
   "dependencies": {
-    "@maggioli-design-system/design-tokens": "^3.0.0",
+    "@maggioli-design-system/design-tokens": "^4.0.2",
     "@maggioli-design-system/icons": "^1.12.0",
-    "@maggioli-design-system/identity": "^1.8.1",
-    "@maggioli-design-system/styles": "^2.6.0",
+    "@maggioli-design-system/identity": "^1.8.3",
+    "@maggioli-design-system/styles": "^3.0.2",
     "@stencil/core": "^2.0.1"
   },
   "license": "MIT",
