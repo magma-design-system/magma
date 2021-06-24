@@ -10,7 +10,7 @@ import Icon from '@Design/Icon/Icon'
 // https://soshace.com/building-react-components-using-children-props-and-context-api/#crayon-5f80341482005894162361
 // https://codesandbox.io/s/github/supromikali/react-children-with-context
 
-const Modal = ({ cancelButton, cancelVariant, className, classNameWindow, confirmButton, confirmDisabled, confirmVariant, contentOnly, footer, maxHeight, maxWidth, onCancel, onConfirm, position, title, visible, ...restProps }) => {
+const Modal = ({ cancelButton, cancelVariant, className, classNameContents, classNameWindow, confirmButton, confirmDisabled, confirmVariant, contentOnly, footer, maxHeight, maxWidth, onCancel, onConfirm, position, title, visible, ...restProps }) => {
   const classes = styles('modal', {
     selectors: [
       className,
@@ -29,6 +29,14 @@ const Modal = ({ cancelButton, cancelVariant, className, classNameWindow, confir
     ],
   })
 
+  const classesContents = styles('modal__contents', {
+    selectors: [
+      classNameContents,
+      contentOnly ? 'modal__contents--clean' : '',
+      title ? 'modal__contents--close-outside' : '',
+    ],
+  })
+
   return (
     <div className={classes}>
       <Icon className="modal__close" name="action-close" size="large" onClick={() => { onCancel() }}/>
@@ -41,7 +49,7 @@ const Modal = ({ cancelButton, cancelVariant, className, classNameWindow, confir
             <Icon className="modal__close-inside" name="action-close" onClick={() => { onCancel() }}/>
           </header>
         }
-        <div className={`modal__contents ${contentOnly ? 'modal__contents--clean' : ''} ${title ? 'modal__contents--close-outside' : ''}`}>
+        <div className={classesContents}>
           {!title &&
             <Icon className="modal__close-inside" name="action-close" onClick={() => { onCancel() }}/>
           }
@@ -68,6 +76,7 @@ Modal.propTypes = {
   cancelVariant: PropTypes.string,
   className: PropTypes.string,
   classNameWindow: PropTypes.string,
+  classNameContents: PropTypes.string,
   confirmButton: PropTypes.string,
   confirmDisabled: PropTypes.bool,
   confirmVariant: PropTypes.string,
@@ -85,8 +94,6 @@ Modal.propTypes = {
 Modal.defaultProps = {
   cancelButton: 'Annulla',
   cancelVariant: 'secondary-outline',
-  className: '',
-  classNameWindow: '',
   confirmButton: 'Conferma',
   confirmDisabled: false,
   confirmVariant: 'primary',
