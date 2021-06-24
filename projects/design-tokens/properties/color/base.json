@@ -3708,132 +3708,132 @@
       "lime": {
         "light": {
           "1": {
-            "value": "#1b2b01"
+            "value": "#1f2901"
           },
           "2": {
-            "value": "#243a01"
+            "value": "#2a3801"
           },
           "3": {
-            "value": "#2d4702"
+            "value": "#344502"
           },
           "4": {
-            "value": "#355502"
+            "value": "#3f5402"
           },
           "5": {
-            "value": "#3d6302"
+            "value": "#486102"
           },
           "6": {
-            "value": "#467103"
+            "value": "#536e03"
           },
           "7": {
-            "value": "#4f7f03"
+            "value": "#5c7b03"
           },
           "8": {
-            "value": "#588d03"
+            "value": "#678a03"
           },
           "9": {
-            "value": "#629d04"
+            "value": "#739a04"
           },
           "10": {
-            "value": "#6dae04"
+            "value": "#80ab04"
           },
           "11": {
-            "value": "#77bf04"
+            "value": "#8cbc04"
           },
           "12": {
-            "value": "#81d005"
+            "value": "#98cc05"
           },
           "13": {
-            "value": "#8bdf05"
+            "value": "#a3da05"
           },
           "14": {
-            "value": "#91e805"
+            "value": "#abe405"
           },
           "15": {
-            "value": "#96f005"
+            "value": "#b0eb05"
           },
           "16": {
-            "value": "#9bf806"
+            "value": "#b6f306"
           },
           "17": {
-            "value": "#b3fb42"
+            "value": "#bdfa0f"
           },
           "18": {
-            "value": "#cbfc7d"
+            "value": "#d5fb65"
           },
           "19": {
-            "value": "#e2fdb7"
+            "value": "#e5fda0"
           },
           "20": {
-            "value": "#effed8"
+            "value": "#f2fed1"
           },
           "color": {
-            "value": "#B9FB50"
+            "value": "#CFFB50"
           }
         },
         "dark": {
           "1": {
-            "value": "#96f206"
+            "value": "#b2ed05"
           },
           "2": {
-            "value": "#8ade05"
+            "value": "#a2d905"
           },
           "3": {
-            "value": "#7dc905"
+            "value": "#94c605"
           },
           "4": {
-            "value": "#72b704"
+            "value": "#86b404"
           },
           "5": {
-            "value": "#67a604"
+            "value": "#7aa204"
           },
           "6": {
-            "value": "#5d9503"
+            "value": "#6d9203"
           },
           "7": {
-            "value": "#548603"
+            "value": "#628303"
           },
           "8": {
-            "value": "#4b7803"
+            "value": "#587603"
           },
           "9": {
-            "value": "#426b02"
+            "value": "#4d6802"
           },
           "10": {
-            "value": "#395c02"
+            "value": "#435a02"
           },
           "11": {
-            "value": "#314f02"
+            "value": "#3a4e02"
           },
           "12": {
-            "value": "#2a4302"
+            "value": "#314201"
           },
           "13": {
-            "value": "#233901"
+            "value": "#2a3701"
           },
           "14": {
-            "value": "#1f3201"
+            "value": "#243101"
           },
           "15": {
-            "value": "#1c2c01"
+            "value": "#202b01"
           },
           "16": {
-            "value": "#182601"
+            "value": "#1c2601"
           },
           "17": {
-            "value": "#142001"
+            "value": "#181f01"
           },
           "18": {
-            "value": "#101a01"
+            "value": "#121901"
           },
           "19": {
-            "value": "#0b1200"
+            "value": "#0d1200"
           },
           "20": {
-            "value": "#060a00"
+            "value": "#070a00"
           },
           "color": {
-            "value": "#B9FB50"
+            "value": "#CFFB50"
           }
         }
       },

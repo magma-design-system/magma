@@ -36,7 +36,7 @@
     { "color": "#4DAFFA", "name": "label.sky" },
     { "color": "#74FAEA", "name": "label.aqua" },
     { "color": "#78F966", "name": "label.green" },
-    { "color": "#B9FB50", "name": "label.lime" },
+    { "color": "#CFFB50", "name": "label.lime" },
     { "color": "#F9E14E", "name": "label.yellow" },
     { "color": "#F17032", "name": "label.orange" }
   ],
