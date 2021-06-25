@@ -1,5 +1,6 @@
 import React, { Children, cloneElement } from 'react'
 import PropTypes from 'prop-types'
+import { styles } from '@Library/styles'
 import './UList.scss'
 
 import Icon from '@Design/Icon/Icon'
@@ -9,15 +10,15 @@ const defaultIcon = 'list-dot'
 
 /* eslint-disable no-nested-ternary */
 
-const UListItem = props =>
-  <li className={`u-list__item ${props.className}`}>
-    {props.numeric
-      ? <H5 className="u-list__numeric">{ props.id + 1 }.</H5>
-      : <Icon className={`u-list__icon ${props.iconClassName}`} name={props.icon} size={props.iconSize}/>
+const UListItem = ({ autoPunctuation, className, icon, iconClassName, iconSize, id, last, numeric, ...restProps }) =>
+  <li className={`u-list__item ${className}`} {...restProps}>
+    {numeric
+      ? <H5 className="u-list__numeric">{ id + 1 }.</H5>
+      : <Icon className={`u-list__icon ${iconClassName}`} name={icon} size={iconSize}/>
     }
     <div className="u-list__text">
-      {props.children}
-      {props.autoPunctuation ? props.last ? '.' : ';' : ''}
+      {restProps.children}
+      {autoPunctuation ? last ? '.' : ';' : ''}
     </div>
   </li>
 
@@ -39,20 +40,27 @@ UListItem.defaultProps = {
   numeric: false,
 }
 
-const UList = props => {
-  const children = Children.map(props.children, (child, index) => {
+const UList = ({ autoPunctuation, className, icon, iconClassName, iconSize, numeric, text, ...restProps }) => {
+  const children = Children.map(restProps.children, (child, index) => {
     return cloneElement(child, {
-      autoPunctuation: props.autoPunctuation,
-      icon: child.props.icon !== undefined ? child.props.icon : props.icon,
-      iconClassName: child.props.iconClassName !== undefined ? child.props.iconClassName : props.iconClassName,
-      iconSize: child.props.iconSize === '' ? props.iconSize : child.props.iconSize,
+      autoPunctuation,
+      icon: child.props.icon !== undefined ? child.props.icon : icon,
+      iconClassName: child.props.iconClassName !== undefined ? child.props.iconClassName : iconClassName,
+      iconSize: child.props.iconSize === '' ? iconSize : child.props.iconSize,
       id: index,
-      last: props.children.length === index + 1,
-      numeric: props.numeric,
+      last: restProps.children.length === index + 1,
+      numeric,
     })
   })
 
-  return <ul className={`u-list ${props.className} ${props.text}`}>
+  const classes = styles('u-list', {
+    selectors: [
+      className,
+      text,
+    ],
+  })
+
+  return <ul className={classes}>
     {children}
   </ul>
 }
