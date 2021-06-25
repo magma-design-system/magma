@@ -24,7 +24,7 @@ const Typography = ({ anchor, children, classNameAnchor, className, htmlTag, ...
   let elementId = id(restProps.id, children)
 
   if (anchor) {
-    const useId = !restProps.id ? true : restProps.id
+    const useId = !restProps.id ? "" : restProps.id
     elementId = id(useId, children)
   } else {
     elementId = id(restProps.id, children)
