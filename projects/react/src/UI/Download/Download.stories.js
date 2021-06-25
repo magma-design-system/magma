@@ -25,6 +25,9 @@ export const basicUsage = () =>
 export const fileName = () =>
   <Download fileName={faker.system.commonFileName()}/>
 
+export const description = () =>
+  <Download fileName={faker.system.commonFileName()} description="Click to download this file"/>
+
 export const previewImage = () =>
   <Download fileName="logo-gruppo-maggioli-bordered.SVG" href={require('@maggioli-design-system/identity/dist/gruppo-maggioli/logo-gruppo-maggioli-bordered.svg')} preview={require('@maggioli-design-system/identity/dist/gruppo-maggioli/logo-gruppo-maggioli-bordered.svg')}/>
 

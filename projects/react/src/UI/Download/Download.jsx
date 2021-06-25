@@ -10,8 +10,8 @@ import LabelCaption from '@Typography/LabelCaption/LabelCaption'
 import dictionary from './dictionary.json'
 
 function getExtension(fileName) {
-  const extension = fileName.substr(fileName.lastIndexOf('.') + 1)
-  return fileName !== extension ? extension.toLowerCase() : 'default'
+  const extension = fileName.split('.').pop()
+  return fileName !== extension ? extension : 'default'
 }
 
 function getName(fileName, extension) {
@@ -22,10 +22,10 @@ function getExtensionInfos(extension) {
   return dictionary.extension[extension] !== undefined ? dictionary.extension[extension] : dictionary.extension.default
 }
 
-const DownloadContent = ({ fileName, preview, transparencyGrid }) => {
+const DownloadContent = ({ description, fileName, preview, transparencyGrid }) => {
   const extension = getExtension(fileName)
   const fileNameNoExt = getName(fileName, extension)
-  const { description, format } = getExtensionInfos(extension.toLowerCase())
+  const { extDescription, format } = getExtensionInfos(extension.toLowerCase())
   const { background, color, icon } = dictionary.format[format]
 
   const classesFormat = styles('download__format', {
@@ -56,7 +56,7 @@ const DownloadContent = ({ fileName, preview, transparencyGrid }) => {
         </H5>
         <div className="download__detail">
           {extension !== 'default' && <LabelCaption className={classesFormat}>{extension}</LabelCaption> }
-          <Caption className="download__description">{description}</Caption>
+          <Caption className="download__description">{description || extDescription}</Caption>
         </div>
       </div>
     </Fragment>
@@ -64,6 +64,7 @@ const DownloadContent = ({ fileName, preview, transparencyGrid }) => {
 }
 
 DownloadContent.propTypes = {
+  description: PropTypes.string,
   fileName: PropTypes.string,
   preview: PropTypes.string,
   transparencyGrid: PropTypes.bool,
@@ -87,10 +88,10 @@ const Download = ({ className, fileName, href, name, target, ...restProps }) => 
     <Fragment>
       { href
         ? <a target={target} {...restProps} href={href} download={fileName} title={fileName} className={classes}>
-          <DownloadContent fileName={fileName} preview={restProps.preview} transparencyGrid={restProps.transparencyGrid}/>
+          <DownloadContent fileName={fileName} preview={restProps.preview} description={restProps.description} transparencyGrid={restProps.transparencyGrid}/>
         </a>
         : <div className={classes} {...restProps}>
-          <DownloadContent fileName={fileName} preview={restProps.preview} transparencyGrid={restProps.transparencyGrid}/>
+          <DownloadContent fileName={fileName} preview={restProps.preview} description={restProps.description} transparencyGrid={restProps.transparencyGrid}/>
         </div>
       }
     </Fragment>
