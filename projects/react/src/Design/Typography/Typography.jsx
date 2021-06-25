@@ -40,7 +40,7 @@ const Typography = ({ anchor, children, classNameAnchor, className, htmlTag, ...
       </HtmlTag>
     </Row>
   }
-  return <HtmlTag id={elementId} className={className}>
+  return <HtmlTag id={elementId} className={className} {...restProps}>
     { children }
   </HtmlTag>
 }
