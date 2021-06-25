@@ -30,6 +30,10 @@ module.exports = {
       fontSize: {
         'xxs': '0.625rem',
       },
+      width: {
+        'paragraph': '75ch',
+        'phrase': '50ch',
+      },
       maxWidth: {
         '1/4': '25%',
         '1/2': '50%',
@@ -46,6 +50,8 @@ module.exports = {
         '10': '10rem',
         '11': '11rem',
         '12': '12rem',
+        'paragraph': '75ch',
+        'phrase': '50ch',
       },
       minHeight: {
         '4': '400px',
