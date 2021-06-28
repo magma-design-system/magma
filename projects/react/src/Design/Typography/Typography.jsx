@@ -2,11 +2,11 @@ import React from 'react'
 import PropTypes from 'prop-types'
 // import { CopyToClipboard } from 'react-copy-to-clipboard'
 import { styles } from '@Library/styles'
-import { id } from '@Library/markup'
+import { toId } from '@Library/markup'
 import Row from '@Layout/Row/Row'
 import Icon from '@Design/Icon/Icon'
 
-const Typography = ({ anchor, children, classNameAnchor, className, htmlTag, ...restProps }) => {
+const Typography = ({ autoId, anchor, beautifyId, children, classNameAnchor, className, htmlTag, id, ...restProps }) => {
   const classesAnchor = styles('anchor', {
     selectors: [
       className,
@@ -21,21 +21,15 @@ const Typography = ({ anchor, children, classNameAnchor, className, htmlTag, ...
 
   const HtmlTag = htmlTag.toLowerCase()
 
-  let elementId = id(restProps.id, children)
-
-  if (anchor) {
-    const useId = !restProps.id ? "" : restProps.id
-    elementId = id(useId, children)
-  } else {
-    elementId = id(restProps.id, children)
-  }
+  let elementId = !id && autoId ? toId(children) : id
+  elementId = beautifyId ? toId(elementId) : elementId
 
   if (anchor) {
     return <Row className="items-start">
       <div className={classesAnchor}>
         <Icon name="action-link-on"/>
       </div>
-      <HtmlTag id={elementId} className={className}>
+      <HtmlTag id={elementId} className={className} {...restProps}>
         { children }
       </HtmlTag>
     </Row>
@@ -47,18 +41,20 @@ const Typography = ({ anchor, children, classNameAnchor, className, htmlTag, ...
 
 Typography.propTypes = {
   anchor: PropTypes.bool,
+  autoId: PropTypes.bool,
+  beautifyId: PropTypes.bool,
   className: PropTypes.string,
   classNameAnchor: PropTypes.string,
   htmlTag: PropTypes.string,
-  id: PropTypes.any,
+  id: PropTypes.string,
 }
 
 Typography.defaultProps = {
   anchor: false,
+  autoId: false,
+  beautifyId: false,
   classNameAnchor: 'hover:bg-adjust-tone-18',
-  className: '',
   htmlTag: 'span',
-  id: false,
 }
 
 export default Typography

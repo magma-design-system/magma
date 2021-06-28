@@ -25,7 +25,7 @@ Caption.propTypes = {
 }
 
 Caption.defaultProps = {
-  htmlTag: 'p',
+  htmlTag: 'span',
 }
 
 export default Caption

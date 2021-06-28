@@ -26,7 +26,7 @@ LabelParagraph.propTypes = {
 }
 
 LabelParagraph.defaultProps = {
-  htmlTag: 'p',
+  htmlTag: 'span',
 }
 
 export default LabelParagraph

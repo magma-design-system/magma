@@ -30,10 +30,13 @@ export const Anchor = () =>
   <H1 anchor>{faker.lorem.paragraph()}</H1>
 
 export const AutomaticID = () =>
-  <H1 id>{faker.lorem.paragraph()}</H1>
+  <H1 autoId>{faker.lorem.paragraph()}</H1>
 
 export const ManualID = () =>
   <H1 id="Hello world!">{faker.lorem.paragraph()}</H1>
+
+export const ManualIDWithBeautify = () =>
+  <H1 id="Hello world!" beautifyId>{faker.lorem.paragraph()}</H1>
 
 export const primaryH2 = () =>
   <H2>{faker.lorem.paragraph()}</H2>

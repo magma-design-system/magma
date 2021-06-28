@@ -26,7 +26,7 @@ LabelDetail.propTypes = {
 }
 
 LabelDetail.defaultProps = {
-  htmlTag: 'p',
+  htmlTag: 'span',
 }
 
 export default LabelDetail

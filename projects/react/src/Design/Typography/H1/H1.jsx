@@ -28,7 +28,8 @@ H1.propTypes = {
 
 H1.defaultProps = {
   htmlTag: 'h1',
-  id: true,
+  id: '',
+  autoId: true,
 }
 
 export default H1

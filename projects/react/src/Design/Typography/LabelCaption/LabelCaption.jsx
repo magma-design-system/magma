@@ -26,7 +26,7 @@ LabelCaption.propTypes = {
 }
 
 LabelCaption.defaultProps = {
-  htmlTag: 'p',
+  htmlTag: 'span',
 }
 
 export default LabelCaption

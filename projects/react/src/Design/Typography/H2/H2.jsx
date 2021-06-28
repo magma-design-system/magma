@@ -27,7 +27,7 @@ H2.propTypes = {
 
 H2.defaultProps = {
   htmlTag: 'h2',
-  id: true,
+  autoId: true,
 }
 
 export default H2

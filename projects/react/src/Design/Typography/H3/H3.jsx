@@ -27,7 +27,6 @@ H3.propTypes = {
 
 H3.defaultProps = {
   htmlTag: 'h3',
-  id: false,
 }
 
 export default H3
