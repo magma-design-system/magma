@@ -31,8 +31,9 @@ module.exports = {
         'xxs': '0.625rem',
       },
       width: {
-        'paragraph': '75ch',
         'phrase': '50ch',
+        'text': '75ch',
+        'title': '30ch',
       },
       maxWidth: {
         '1/4': '25%',
@@ -50,8 +51,9 @@ module.exports = {
         '10': '10rem',
         '11': '11rem',
         '12': '12rem',
-        'paragraph': '75ch',
         'phrase': '50ch',
+        'text': '75ch',
+        'title': '30ch',
       },
       minHeight: {
         '4': '400px',
