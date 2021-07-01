@@ -1,11 +1,11 @@
 import { Component, Host, h } from '@stencil/core';
 
 @Component({
-  tag: 'mds-typo-h1',
-  styleUrl: 'mds-typo-h1.css',
+  tag: 'mds-h1',
+  styleUrl: 'mds-h1.css',
   shadow: true,
 })
-export class MdsTypoH1 {
+export class MdsH1 {
 
   render() {
     return (

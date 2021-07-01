@@ -1,18 +1,18 @@
 import { newSpecPage } from '@stencil/core/testing';
-import { MdsBanner } from '../mds-banner';
+import { MdsH1 } from '../mds-h1';
 
-describe('mds-banner', () => {
+describe('mds-h1', () => {
   it('renders', async () => {
     const page = await newSpecPage({
-      components: [MdsBanner],
-      html: `<mds-banner></mds-banner>`,
+      components: [MdsH1],
+      html: `<mds-h1></mds-h1>`,
     });
     expect(page.root).toEqualHtml(`
-      <mds-banner>
+      <mds-h1>
         <mock:shadow-root>
           <slot></slot>
         </mock:shadow-root>
-      </mds-banner>
+      </mds-h1>
     `);
   });
 });

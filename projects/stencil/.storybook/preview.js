@@ -2,7 +2,6 @@ import { defineCustomElements } from '../dist/esm/loader';
 
 import 'normalize.css'
 import '@maggioli-design-system/icons'
-import '@maggioli-design-system/styles/dist/css/base.css'
 import 'typeface-karla'
 import 'typeface-roboto'
 

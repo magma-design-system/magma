@@ -1,10 +1,10 @@
 import React from 'react'
 import faker from 'faker'
-import MdsTextParagraph from '../../../dist/collection/components/mds-text-paragraph/mds-text-paragraph';
+import MdsInput from '../../../dist/collection/components/mds-input/mds-input'
 
 export default {
-  title: 'MdsTextParagraph',
-  component: MdsTextParagraph,
+  title: 'Form / Input',
+  component: MdsInput,
   argTypes: {
     label: { type: 'text', description: 'The text which is shown as label' },
     name: {
@@ -18,17 +18,9 @@ export default {
       defaultValue: { summary: false },
     },
   },
-};
-
-const defaultArgs = {
-  disabled: false,
-};
-
-const Template = args => {
-  return <mds-text-paragraph class="p-10 bg-status-warning-18" {...args}>
-    {faker.lorem.paragraph()}
-  </mds-text-paragraph>
 }
 
-export const Default = Template.bind({});
-Default.args = { ...defaultArgs };
+export const Default = args =>
+  <mds-input {...args}>
+    {faker.lorem.paragraph()}
+  </mds-input>
