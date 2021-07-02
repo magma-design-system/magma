@@ -1,24 +1,24 @@
-@function color ($path, $contrast: 'color', $opacity: 1) {
+@function color ($path, $contrast: '', $opacity: 1) {
   // color: color('brand.maggioli', 3) => color: var(--hex-brand-maggioli-03)
   $name: str-replace($path, '.', '-');
 
-  @if $contrast != 'color' {
+  @if $contrast != '' {
 
-    $contrast: '#{$contrast}';
+    $contrast: '-#{$contrast}';
   }
 
   @if $opacity == 1 {
 
     @if list-has-value($palette-format, 'hex') {
-      @return var(--hex-#{$name}-#{$contrast});
+      @return var(--hex-#{$name}#{$contrast});
     } @else {
-      @return RGB(var(--#{$name}-#{$contrast})); /* stylelint-disable-line */
+      @return RGB(var(--#{$name}#{$contrast})); /* stylelint-disable-line */
     }
   }
 
   @if list-has-value($palette-format, 'rgb-channels') {
-    @return rgba(var(--#{$name}-#{$contrast}), $opacity);
+    @return rgba(var(--#{$name}#{$contrast}), $opacity);
   } @else {
-    @return RGB(var(--#{$name}-#{$contrast})); /* stylelint-disable-line */
+    @return RGB(var(--#{$name}#{$contrast})); /* stylelint-disable-line */
   }
 }

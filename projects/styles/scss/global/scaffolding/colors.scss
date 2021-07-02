@@ -1,9 +1,17 @@
 @function get-var-name ($prefix, $group-name, $tint-name, $color-name) {
 
-  @if $prefix == 'rgb' {
-    @return str-replace('--#{$group-name $tint-name $color-name}', ' ', '-');
+  @if $color-name == 'color' {
+
+    $color-name: '';
+  } @else {
+
+    $color-name: ' #{$color-name}';
   }
-  @return str-replace('--#{$prefix}-#{$group-name $tint-name $color-name}', ' ', '-');
+
+  @if $prefix == 'rgb' {
+    @return str-replace('--#{$group-name $tint-name}#{$color-name}', ' ', '-');
+  }
+  @return str-replace('--#{$prefix}-#{$group-name $tint-name}#{$color-name}', ' ', '-');
 }
 
 @mixin scaffold-vars ($light-mode) {
