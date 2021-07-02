@@ -1,4 +1,8 @@
 @function get-var-name ($prefix, $group-name, $tint-name, $color-name) {
+
+  @if $prefix == 'rgb' {
+    @return str-replace('--#{$group-name $tint-name $color-name}', ' ', '-');
+  }
   @return str-replace('--#{$prefix}-#{$group-name $tint-name $color-name}', ' ', '-');
 }
 
