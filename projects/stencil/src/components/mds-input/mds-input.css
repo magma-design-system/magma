@@ -1,9 +1,15 @@
+@import '~@maggioli-design-system/styles/dist/tailwind/typography.css';
+@tailwind components;
 @tailwind utilities;
 
 :host {
-  @apply font-primary font-extrabold text-5xl tracking-tight;
+  @apply flex text-secondary-detail;
 }
 
 input {
-  @apply border-transparent bg-label-green-18;
+  @apply bg-adjust-tone border-none border-transparent overflow-ellipsis overflow-hidden px-4 py-3 ring-0 rounded shadow text-secondary-detail duration-300 transition-input ease-out-expo w-full;
+}
+
+input:focus {
+  @apply outline-none shadow-lg transition-input duration-300 ease-out-expo;
 }

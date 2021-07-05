@@ -1,0 +1,7 @@
+@import '~@maggioli-design-system/styles/dist/tailwind/typography.css';
+@tailwind components;
+@tailwind utilities;
+
+:host {
+  @apply block;
+}

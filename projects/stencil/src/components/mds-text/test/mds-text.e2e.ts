@@ -1,11 +1,11 @@
 import { newE2EPage } from '@stencil/core/testing';
 
-describe('mds-h1', () => {
+describe('mds-text', () => {
   it('renders', async () => {
     const page = await newE2EPage();
-    await page.setContent('<mds-h1></mds-h1>');
+    await page.setContent('<mds-text></mds-text>');
 
-    const element = await page.find('mds-h1');
+    const element = await page.find('mds-text');
     expect(element).toHaveClass('hydrated');
   });
 });

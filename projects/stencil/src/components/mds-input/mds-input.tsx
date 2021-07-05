@@ -32,8 +32,8 @@ export class MdsInput {
   @State() hasFocus = false;
 
   // https://www.w3schools.com/tags/tag_input.asp
-  @Prop() autocomplete: AutocompleteTypes = 'off';
-  @Prop() autofocus?: boolean = false;
+  @Prop() autoComplete?: AutocompleteTypes = 'off';
+  @Prop() autoFocus?: boolean = false;
   @Prop() disabled?: boolean = false;
   @Prop() max?: string;
   @Prop() maxlength?: number;
@@ -44,7 +44,7 @@ export class MdsInput {
   @Prop() placeholder?: string;
   @Prop() readonly?: boolean = false;
   @Prop() required?: boolean = false;
-  @Prop() spellcheck?: boolean = false;
+  @Prop() spellCheck?: boolean = false;
   @Prop() step?: string;
   @Prop() type: TextFieldTypes = 'text';
   @Prop({ mutable: true }) value?: string | number | null = '';
@@ -118,7 +118,6 @@ export class MdsInput {
 
   render() {
     const value = this.getValue();
-
     return (
       <Host aria-disabled={this.disabled ? 'true' : null}
         class={{
@@ -126,27 +125,27 @@ export class MdsInput {
           'has-focus': this.hasFocus,
         }}>
         <input
-          ref={(input) => (this.nativeInput = input)}
+          autocomplete={this.autoComplete}
+          autofocus={this.autoFocus}
           disabled={this.disabled}
-          autoComplete={this.autocomplete}
-          autoFocus={this.autofocus}
-          min={this.min}
           max={this.max}
-          minLength={this.minlength}
-          maxLength={this.maxlength}
+          maxlength={this.maxlength}
+          min={this.min}
+          minlength={this.minlength}
           name={this.name}
+          onBlur={this.onBlur}
+          onFocus={this.onFocus}
+          onInput={this.onInput}
           pattern={this.pattern}
           placeholder={this.placeholder || ''}
-          readOnly={this.readonly}
+          readonly={this.readonly}
+          ref={(input) => (this.nativeInput = input)}
           required={this.required}
-          spellcheck={this.spellcheck ? 'true' : undefined}
+          spellcheck={this.spellCheck ? 'true' : undefined}
           step={this.step}
           tabindex={this.tabindex}
           type={this.type}
           value={value}
-          onInput={this.onInput}
-          onBlur={this.onBlur}
-          onFocus={this.onFocus}
         />
       </Host>
     );

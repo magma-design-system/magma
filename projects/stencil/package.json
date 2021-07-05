@@ -15,8 +15,8 @@
     "loader/"
   ],
   "scripts": {
-    "build": "stencil build --docs",
-    "build.watch": "stencil build --docs-readme --watch --serve",
+    "build": "stencil build --docs --docs-readme",
+    "build.watch": "stencil build --watch",
     "clean": "rimraf dist && rimraf loader && rimraf www && rimraf dist-storybook",
     "generate": "stencil generate",
     "start": "stencil build --dev --watch --serve",
