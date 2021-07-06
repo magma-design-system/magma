@@ -10,13 +10,13 @@ StyleDictionary.buildAllPlatforms()
 
 const beautifyConfig = {
   indent_size: 2,
-  space_in_empty_paren: true
+  space_in_empty_paren: true,
 }
 
 const saveAsJs = ({ filePath, varName, destination }) => {
   fs.readFile(path.resolve(__dirname, filePath), (err, data) => {
     if (err) throw err;
-    let media = JSON.parse(data);
+    const media = JSON.parse(data)
 
     const jsData = `
     const ${varName} = ${JSON.stringify(media, null, 4)}
@@ -25,14 +25,22 @@ const saveAsJs = ({ filePath, varName, destination }) => {
     }
     `
 
-    fs.writeFile(path.resolve(__dirname, destination), beautify(jsData, beautifyConfig), function (err) {
-      if (err) return console.log(err);
+    fs.writeFile(path.resolve(__dirname, destination), beautify(jsData, beautifyConfig), err => {
+      if (err) {
+        console.log(err)
+      }
       console.log(`Token: ${destination} exported successfully.`);
     })
-  });
+  })
 }
 
 console.log('')
+
+saveAsJs({
+  destination: 'dist/js/ease.js',
+  filePath: 'css-tokens/ease.json',
+  varName: 'ease',
+})
 
 saveAsJs({
   destination: 'dist/js/media.js',
