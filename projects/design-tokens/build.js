@@ -15,7 +15,7 @@ const beautifyConfig = {
 
 const saveAsJs = ({ filePath, varName, destination }) => {
   fs.readFile(path.resolve(__dirname, filePath), (err, data) => {
-    if (err) throw err;
+    if (err) throw err
     const media = JSON.parse(data)
 
     const jsData = `
