@@ -1,72 +1,60 @@
 const dictionary = {
-  "action": {
-    "tag": "span",
-    "selector": "text-primary-action",
+  action: {
+    tag: 'span',
+    selector: 'text-primary-action',
   },
-  "caption": {
-    "tag": "span",
-    "selector": "text-secondary-caption",
+  caption: {
+    tag: 'span',
+    selector: 'text-secondary-caption',
   },
-  "code": {
-    "tag": "code",
-    "selector": "text-mono-code",
+  code: {
+    tag: 'code',
+    selector: 'text-mono-code',
   },
-  "detail": {
-    "tag": "p",
-    "selector": "text-secondary-detail",
+  detail: {
+    tag: 'p',
+    selector: 'text-secondary-detail',
   },
-  "h1": {
-    "tag": "h1",
-    "selector": "text-primary-h1",
+  h1: {
+    tag: 'h1',
+    selector: 'text-primary-h1',
   },
-  "h2": {
-    "tag": "h2",
-    "selector": "text-primary-h2",
+  h2: {
+    tag: 'h2',
+    selector: 'text-primary-h2',
   },
-  "h3": {
-    "tag": "h3",
-    "selector": "text-primary-h3",
+  h3: {
+    tag: 'h3',
+    selector: 'text-primary-h3',
   },
-  "h4": {
-    "tag": "h4",
-    "selector": "text-primary-h4",
+  h4: {
+    tag: 'h4',
+    selector: 'text-primary-h4',
   },
-  "h5": {
-    "tag": "h5",
-    "selector": "text-primary-h5",
+  h5: {
+    tag: 'h5',
+    selector: 'text-primary-h5',
   },
-  "h6": {
-    "tag": "h6",
-    "selector": "text-primary-h6",
+  h6: {
+    tag: 'h6',
+    selector: 'text-primary-h6',
   },
-  "hack": {
-    "tag": "code",
-    "selector": "text-mono-hack",
+  hack: {
+    tag: 'code',
+    selector: 'text-mono-hack',
   },
-  "label": {
-    "tag": "label",
-    "selector": "text-secondary-label",
+  label: {
+    tag: 'label',
+    selector: 'text-secondary-label',
   },
-  "label-caption": {
-    "tag": "label",
-    "selector": "text-label-caption",
+  overline: {
+    tag: 'span',
+    selector: 'text-primary-overline',
   },
-  "label-detail": {
-    "tag": "label",
-    "selector": "text-label-detail",
+  paragraph: {
+    tag: 'p',
+    selector: 'text-secondary-paragraph',
   },
-  "label-paragraph": {
-    "tag": "label",
-    "selector": "text-label-paragraph",
-  },
-  "overline": {
-    "tag": "span",
-    "selector": "text-primary-overline",
-  },
-  "paragraph": {
-    "tag": "p",
-    "selector": "text-secondary-paragraph",
-  }
 }
 
 const tags = [

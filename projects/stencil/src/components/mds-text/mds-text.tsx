@@ -8,13 +8,19 @@ import dictionary from './defaults'
   shadow: true,
 })
 export class MdsText {
-
+  /**
+   * Specifies the HTML tag of the element
+   */
   @Prop() tag?: TagTypes
+
+  /**
+   * Specifies the typography of the element
+   */
   @Prop() type: TypeTypes = 'detail'
 
   render() {
-    let Tag = this.tag ? this.tag : dictionary[this.type].tag
-    const selector = dictionary[this.type].selector
+    const Tag = this.tag !== undefined ? this.tag : dictionary[this.type].tag
+    const { selector } = dictionary[this.type]
     return (
       <Host>
         <Tag class={selector}>

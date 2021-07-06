@@ -1,5 +1,4 @@
 import React from 'react'
-import faker from 'faker'
 import MdsInput from '../../../dist/collection/components/mds-input/mds-input'
 
 // https://developers.google.com/web/updates/2015/06/checkout-faster-with-autofill
@@ -12,7 +11,7 @@ export default {
       defaultValue: undefined,
       description: 'Specifies whether the element should have autocomplete enabled',
       options: ['on', 'off'],
-      control: { type: 'select' }
+      control: { type: 'select' },
     },
     autoFocus: {
       type: { name: 'boolean', required: false },
@@ -69,6 +68,11 @@ export default {
       description: 'Specifies that the element must be filled out before submitting the form',
       defaultValue: false,
     },
+    step: {
+      type: { name: 'string', required: false },
+      description: 'Specifies the interval between legal numbers in an input field',
+      defaultValue: undefined,
+    },
     type: {
       type: { name: 'string', required: true },
       description: 'Specifies the type of element',
@@ -84,30 +88,30 @@ export default {
   },
 }
 
-const Template = (args) =>
-  <mds-input {...args}></mds-input>;
+const Template = args =>
+  <mds-input {...args}></mds-input>
 
-export const Default = Template.bind({});
+export const Default = Template.bind({})
 Default.args = {
   value: 'This is an input field',
-};
+}
 
-export const autoComplete = Template.bind({});
+export const autoComplete = Template.bind({})
 autoComplete.args = {
   autoComplete: 'cc-name',
   type: 'text',
   value: 'Search a country...',
-};
+}
 
-export const Disabled = Template.bind({});
+export const Disabled = Template.bind({})
 Disabled.args = {
   disabled: true,
   value: 'Input field with disabled attribute',
-};
+}
 
-export const max = Template.bind({});
+export const max = Template.bind({})
 max.args = {
   max: '3',
   type: 'number',
   value: '2',
-};
+}

@@ -9,11 +9,12 @@ import {
   State,
   Watch,
   h,
-} from '@stencil/core';
+} from '@stencil/core'
 
-import { AutocompleteTypes, TextFieldTypes } from './interface';
+// https://www.w3schools.com/tags/tag_input.asp
+import { AutocompleteTypes, TextFieldTypes } from './interface'
 export interface InputChangeEventDetail {
-  value: string | number | undefined | null;
+  value: string | number | undefined | null
 }
 
 @Component({
@@ -31,43 +32,107 @@ export class MdsInput {
 
   @State() hasFocus = false;
 
-  // https://www.w3schools.com/tags/tag_input.asp
-  @Prop() autoComplete?: AutocompleteTypes = 'off';
-  @Prop() autoFocus?: boolean = false;
-  @Prop() disabled?: boolean = false;
-  @Prop() max?: string;
-  @Prop() maxlength?: number;
-  @Prop() min?: string;
-  @Prop() minlength?: number;
+  /**
+   * Specifies whether the element should have autocomplete enabled
+   */
+  @Prop() autoComplete?: AutocompleteTypes = 'off'
+
+  /**
+   * Specifies that the element should automatically get focus when the page loads
+   */
+  @Prop() autoFocus?: boolean = false
+
+  /**
+   * If true, the element is displayed as disabled
+   */
+  @Prop() disabled?: boolean = false
+
+  /**
+   * Specifies the maximum value
+   * use it with input type="number"
+   * */
+  @Prop() max?: string
+
+  /**
+   * Specifies the maximum number of characters allowed in an element
+   * use it with input type="number"
+   */
+  @Prop() maxlength?: number
+
+  /**
+   * Specifies the minimum value
+   * use it with input type="number"
+   */
+  @Prop() min?: string
+
+  /**
+   * Specifies the minimum number of characters allowed in an element
+   * use it with input type="number"
+   */
+  @Prop() minlength?: number
+
+  /**
+   * Is needed to reference the form data after the form is submitted
+   */
   @Prop() name?: string;
-  @Prop() pattern?: string;
-  @Prop() placeholder?: string;
-  @Prop() readonly?: boolean = false;
-  @Prop() required?: boolean = false;
-  @Prop() spellCheck?: boolean = false;
-  @Prop() step?: string;
-  @Prop() type: TextFieldTypes = 'text';
-  @Prop({ mutable: true }) value?: string | number | null = '';
 
-  @Event() changeEvent!: EventEmitter<InputChangeEventDetail>;
-  @Event() keyDownEvent!: EventEmitter<KeyboardEvent>;
-  @Event() blurEvent!: EventEmitter<void>;
-  @Event() focusEvent!: EventEmitter<void>;
+  /**
+   * Specifies a regular expression that element\'s value is checked against
+   */
+  @Prop() pattern?: string
 
-  componentWillLoad() {
+  /**
+   * Specifies a short hint that describes the expected value of the element
+   */
+  @Prop() placeholder?: string
+
+  /**
+   * Specifies that the element is read-only
+   */
+  @Prop() readonly?: boolean = false
+
+  /**
+   * Specifies that the element must be filled out before submitting the form
+   */
+  @Prop() required?: boolean = false
+
+  /**
+   * Specifies the interval between legal numbers in an input field
+   */
+  @Prop() step?: string
+
+  /**
+   * Specifies the type of element
+   */
+  @Prop() type: TextFieldTypes = 'text'
+
+  /**
+   * Specifies the value of the element
+   */
+  @Prop({ mutable: true }) value?: string | number | null = ''
+
+  @Event() changeEvent!: EventEmitter<InputChangeEventDetail>
+  @Event() keyDownEvent!: EventEmitter<KeyboardEvent>
+  @Event() blurEvent!: EventEmitter<void>
+  @Event() focusEvent!: EventEmitter<void>
+
+  componentWillLoad(): void {
     // If the mds-input has a tabindex attribute we get the value
     // and pass it down to the native input, then remove it from the
     // mds-input to avoid causing tabbing twice on the same element
     if (this.el.hasAttribute('tabindex')) {
-      const tabindex = this.el.getAttribute('tabindex');
-      this.tabindex = tabindex !== null ? tabindex : undefined;
-      this.el.removeAttribute('tabindex');
+      const tabindex = this.el.getAttribute('tabindex')
+      this.tabindex = tabindex !== null ? tabindex : undefined
+      this.el.removeAttribute('tabindex')
     }
   }
 
+  /**
+   * Emits the change event when the component value changes
+   */
   @Watch('value')
-  protected valueChanged() {
-    this.changeEvent.emit({ value: this.value == null ? this.value : this.value.toString() });
+  protected valueChanged():void {
+    this.changeEvent.emit({ value: this.value === null ? this.value : this.value.toString() })
   }
 
   /**
@@ -76,9 +141,9 @@ export class MdsInput {
    * of the global `input.focus()`.
    */
   @Method()
-  async setFocus() {
+  async setFocus():Promise<void> {
     if (this.nativeInput) {
-      this.nativeInput.focus();
+      this.nativeInput.focus()
     }
   }
 
@@ -87,37 +152,37 @@ export class MdsInput {
    */
   @Method()
   getInputElement(): Promise<HTMLInputElement> {
-    return Promise.resolve(this.nativeInput!);
+    return Promise.resolve(this.nativeInput!)
   }
 
   private getValue(): string {
-    return typeof this.value === 'number' ? this.value.toString() : (this.value || '').toString();
+    return typeof this.value === 'number' ? this.value.toString() : (this.value || '').toString()
   }
 
   private onInput = (ev: Event) => {
-    const input = ev.target as HTMLInputElement | null;
+    const input = ev.target as HTMLInputElement | false
     if (input) {
-      this.value = input.value || '';
+      this.value = input.value || ''
     }
-    this.keyDownEvent.emit(ev as KeyboardEvent);
-  };
+    this.keyDownEvent.emit(ev as KeyboardEvent)
+  }
 
   private hasValue(): boolean {
-    return this.getValue().length > 0;
+    return this.getValue().length > 0
   }
 
   private onBlur = () => {
-    this.hasFocus = false;
-    this.blurEvent.emit();
-  };
+    this.hasFocus = false
+    this.blurEvent.emit()
+  }
 
   private onFocus = () => {
-    this.hasFocus = true;
-    this.focusEvent.emit();
+    this.hasFocus = true
+    this.focusEvent.emit()
   }
 
   render() {
-    const value = this.getValue();
+    const value = this.getValue()
     return (
       <Host aria-disabled={this.disabled ? 'true' : null}
         class={{
@@ -139,15 +204,14 @@ export class MdsInput {
           pattern={this.pattern}
           placeholder={this.placeholder || ''}
           readonly={this.readonly}
-          ref={(input) => (this.nativeInput = input)}
+          ref={ input => (this.nativeInput = input)}
           required={this.required}
-          spellcheck={this.spellCheck ? 'true' : undefined}
           step={this.step}
           tabindex={this.tabindex}
           type={this.type}
           value={value}
         />
       </Host>
-    );
+    )
   }
 }

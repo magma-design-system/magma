@@ -20,6 +20,10 @@
             "allowedNames": ["render"]
           }
         ],
+        "@typescript-eslint/no-non-null-assertion": "off",
+        "@stencil/strict-boolean-conditions": "off",
+        "@stencil/element-type": "off",
+        "@stencil/required-jsdoc": "off",
         "@stencil/async-methods": "error",
         "@stencil/ban-prefix": ["error", ["stencil", "stnl", "st"]],
         "@stencil/decorators-context": "error",
@@ -34,7 +38,6 @@
             "listen": "multiline"
           }
         ],
-        "@stencil/element-type": "error",
         "@stencil/host-data-deprecated": "error",
         "@stencil/methods-must-be-public": "error",
         "@stencil/no-unused-watch": "error",
@@ -42,9 +45,8 @@
         "@stencil/own-props-must-be-private": "error",
         "@stencil/prefer-vdom-listener": "error",
         "@stencil/props-must-be-public": "error",
-        "@stencil/props-must-be-readonly": "error",
+        "@stencil/props-must-be-readonly": "off",
         "@stencil/render-returns-host": "error",
-        "@stencil/required-jsdoc": "error",
         "@stencil/reserved-member-names": "error",
         "@stencil/single-export": "error",
         "@stencil/strict-mutable": "error"
