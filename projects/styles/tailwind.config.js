@@ -1,6 +1,7 @@
-const palette = require('@maggioli-design-system/design-tokens').palette
+const { palette } = require('@maggioli-design-system/design-tokens')
 const mediaQueries = require('@maggioli-design-system/design-tokens/dist/js/media').media
-const fontFamily = require('@maggioli-design-system/design-tokens/dist/js/font-family').fontFamily
+const { fontFamily } = require('@maggioli-design-system/design-tokens/dist/js/font-family')
+const { ease } = require('@maggioli-design-system/design-tokens/dist/js/ease')
 
 module.exports = {
   important: true,
@@ -8,7 +9,7 @@ module.exports = {
   purge: {
     mode: 'all',
     content: [
-      './src/**/*.{js,jsx}'
+      './src/**/*.{js,jsx}',
     ],
     variables: true,
     options: {
@@ -26,41 +27,48 @@ module.exports = {
       ...fontFamily,
     },
     screens: mediaQueries,
+    transitionTimingFunction: {
+      ...ease,
+    },
     extend: {
       fontSize: {
-        'xxs': '0.625rem',
+        xxs: '0.625rem',
+      },
+      transitionProperty : {
+        input: 'background-color, border-color, box-shadow, color, padding',
+        size: 'width, height, padding, margin',
       },
       width: {
-        'phrase': '50ch',
-        'text': '75ch',
-        'title': '30ch',
+        phrase: '50ch',
+        text: '75ch',
+        title: '30ch',
       },
       maxWidth: {
         '1/4': '25%',
         '1/2': '50%',
         '3/4': '75%',
-        '1': '1rem',
-        '2': '2rem',
-        '3': '3rem',
-        '4': '4rem',
-        '5': '5rem',
-        '6': '6rem',
-        '7': '7rem',
-        '8': '8rem',
-        '9': '9rem',
-        '10': '10rem',
-        '11': '11rem',
-        '12': '12rem',
-        'phrase': '50ch',
-        'text': '75ch',
-        'title': '30ch',
+        1: '1rem',
+        2: '2rem',
+        3: '3rem',
+        4: '4rem',
+        5: '5rem',
+        6: '6rem',
+        7: '7rem',
+        8: '8rem',
+        9: '9rem',
+        10: '10rem',
+        11: '11rem',
+        12: '12rem',
+        phrase: '50ch',
+        text: '75ch',
+        title: '30ch',
       },
       minHeight: {
-        '4': '400px',
-        '5': '500px',
-        '6': '600px',
-        '7': '700px',
-        '8': '800px',
+        4: '400px',
+        5: '500px',
+        6: '600px',
+        7: '700px',
+        8: '800px',
       },
       padding: {
         '1/1': '100%',
