@@ -29,7 +29,7 @@ const saveAsJs = ({ filePath, varName, destination }) => {
       if (err) {
         console.log(err)
       }
-      console.log(`Token: ${destination} exported successfully.`);
+      console.log(`Token: ${destination} exported successfully.`)
     })
   })
 }
