@@ -15,7 +15,7 @@ const Author = props =>
 Author.propTypes = {
   avatar: PropTypes.string,
   className: PropTypes.string,
-  size: PropTypes.string
+  size: PropTypes.string,
 }
 
 Author.defaultProps = {
