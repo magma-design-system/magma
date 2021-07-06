@@ -19,6 +19,9 @@
     "build.watch": "stencil build --watch",
     "clean": "rimraf dist && rimraf loader && rimraf www && rimraf dist-storybook",
     "generate": "stencil generate",
+    "lint": "npm run lint-ts && npm run lint-css",
+    "lint-css": "stylelint --config ../../.stylelintrc.json 'src/**/*.css' --fix",
+    "lint-ts": "eslint src/**/*.{ts,tsx} --fix",
     "start": "stencil build --dev --watch --serve",
     "storybook.build": "build-storybook -o ./dist-storybook",
     "storybook.deploy": "storybook-to-aws-s3 --existing-output-dir ./dist-storybook --bucket-path <AWS_BUCKET_PATH>",
@@ -39,6 +42,7 @@
   "devDependencies": {
     "@babel/core": "^7.14.6",
     "@babel/preset-react": "^7.14.5",
+    "@stencil/eslint-plugin": "0.3.1",
     "@stencil/postcss": "2.0.0",
     "@storybook/addon-actions": "^6.3.2",
     "@storybook/addon-essentials": "^6.3.2",
