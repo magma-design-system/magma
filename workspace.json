@@ -5,10 +5,6 @@
       "root": "projects/design-tokens",
       "type": "library"
     },
-    "docs": {
-      "root": "projects/docs",
-      "type": "application"
-    },
     "font-icons-cli": {
       "root": "projects/font-icons-cli",
       "type": "library"
