@@ -11,12 +11,12 @@ export class MdsText {
   /**
    * Specifies the HTML tag of the element
    */
-  @Prop() tag?: TagTypes
+  @Prop() readonly tag?: TagTypes
 
   /**
    * Specifies the typography of the element
    */
-  @Prop() type: TypeTypes = 'detail'
+  @Prop() readonly type: TypeTypes = 'detail'
 
   render() {
     const Tag = this.tag !== undefined ? this.tag : dictionary[this.type].tag

@@ -28,7 +28,7 @@ export class MdsInput {
   private nativeInput?: HTMLInputElement;
   private tabindex?: string | number;
 
-  @Element() el!: HTMLElement;
+  @Element() el!: HTMLMdsInputElement;
 
   @State() hasFocus = false;
 
@@ -102,18 +102,33 @@ export class MdsInput {
   @Prop() step?: string
 
   /**
-   * Specifies the type of element
+   * Specifies the type of input element
    */
   @Prop() type: TextFieldTypes = 'text'
 
   /**
-   * Specifies the value of the element
+   * Specifies the value of the input element
    */
   @Prop({ mutable: true }) value?: string | number | null = ''
 
+  /**
+   * Emits an InputChangeEventDetail when the value of the input element changes
+   */
   @Event() changeEvent!: EventEmitter<InputChangeEventDetail>
+
+  /**
+   * Emits a KeyboardEvent when a keboard key is pressed on the focused input element
+   */
   @Event() keyDownEvent!: EventEmitter<KeyboardEvent>
+
+  /**
+   * Emits a void event when input element is blurred
+   */
   @Event() blurEvent!: EventEmitter<void>
+
+  /**
+   * Emits a void event when input element is focused
+   */
   @Event() focusEvent!: EventEmitter<void>
 
   componentWillLoad(): void {
@@ -142,7 +157,7 @@ export class MdsInput {
    */
   @Method()
   async setFocus():Promise<void> {
-    if (this.nativeInput) {
+    if (this.nativeInput !== null) {
       this.nativeInput.focus()
     }
   }
@@ -152,6 +167,7 @@ export class MdsInput {
    */
   @Method()
   getInputElement(): Promise<HTMLInputElement> {
+    // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
     return Promise.resolve(this.nativeInput!)
   }
 

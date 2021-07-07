@@ -20,10 +20,11 @@
             "allowedNames": ["render"]
           }
         ],
-        "@typescript-eslint/no-non-null-assertion": "off",
-        "@stencil/strict-boolean-conditions": "off",
-        "@stencil/element-type": "off",
-        "@stencil/required-jsdoc": "off",
+        "@typescript-eslint/no-non-null-assertion": "error",
+        "@stencil/strict-boolean-conditions": "error",
+        "@stencil/element-type": "error",
+        "@stencil/required-jsdoc": "error",
+        "@stencil/props-must-be-readonly": "off",
         "@stencil/async-methods": "error",
         "@stencil/ban-prefix": ["error", ["stencil", "stnl", "st"]],
         "@stencil/decorators-context": "error",
@@ -45,7 +46,6 @@
         "@stencil/own-props-must-be-private": "error",
         "@stencil/prefer-vdom-listener": "error",
         "@stencil/props-must-be-public": "error",
-        "@stencil/props-must-be-readonly": "off",
         "@stencil/render-returns-host": "error",
         "@stencil/reserved-member-names": "error",
         "@stencil/single-export": "error",
