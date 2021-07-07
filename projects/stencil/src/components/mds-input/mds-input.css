@@ -3,13 +3,18 @@
 @tailwind utilities;
 
 :host {
-  @apply flex text-secondary-detail;
+  @apply block text-secondary-detail;
 }
 
 input {
-  @apply bg-adjust-tone border-none border-transparent overflow-ellipsis overflow-hidden px-4 py-3 ring-0 rounded shadow text-secondary-detail duration-300 transition-input ease-out-expo w-full;
+  @apply bg-adjust-tone border-none border-transparent box-border duration-300 ease-out-expo overflow-ellipsis overflow-hidden px-4 py-3 ring-0 rounded shadow text-secondary-detail transition-input w-full;
 }
 
 input:focus {
-  @apply outline-none shadow-lg transition-input duration-300 ease-out-expo;
+  @apply outline-none shadow-lg-sharp transition-input duration-300 ease-out-expo;
+}
+
+input:disabled,
+input::placeholder:disabled {
+  @apply text-adjust-tone-10;
 }

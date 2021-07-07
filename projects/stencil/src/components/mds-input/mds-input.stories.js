@@ -1,5 +1,6 @@
 import React from 'react'
 import MdsInput from '../../../dist/collection/components/mds-input/mds-input'
+import autoCompleteDictionary from './defaults'
 
 // https://developers.google.com/web/updates/2015/06/checkout-faster-with-autofill
 
@@ -7,13 +8,13 @@ export default {
   title: 'Form / Input',
   component: MdsInput,
   argTypes: {
-    autoComplete: {
+    autocomplete: {
       defaultValue: undefined,
       description: 'Specifies whether the element should have autocomplete enabled',
-      options: ['on', 'off'],
+      options: autoCompleteDictionary,
       control: { type: 'select' },
     },
-    autoFocus: {
+    autofocus: {
       type: { name: 'boolean', required: false },
       description: 'Specifies that the element should automatically get focus when the page loads',
       defaultValue: false,
@@ -98,15 +99,21 @@ Default.args = {
 
 export const autoComplete = Template.bind({})
 autoComplete.args = {
-  autoComplete: 'cc-name',
+  autocomplete: 'address',
   type: 'text',
-  value: 'Search a country...',
+  placeholder: 'Intestatario carta di credito',
+}
+
+export const autoFocus = Template.bind({})
+autoFocus.args = {
+  autofocus: true,
+  placeholder: 'Auto focus input text',
 }
 
 export const Disabled = Template.bind({})
 Disabled.args = {
   disabled: true,
-  value: 'Input field with disabled attribute',
+  placeholder: 'Input field with disabled attribute',
 }
 
 export const max = Template.bind({})

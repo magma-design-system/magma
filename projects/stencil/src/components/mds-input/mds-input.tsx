@@ -12,6 +12,8 @@ import {
 } from '@stencil/core'
 
 // https://www.w3schools.com/tags/tag_input.asp
+// https://github.com/ionic-team/stencil-ds-output-targets/blob/55d62af2727395cd6d729735cb9d81e5d60cc637/packages/example-project/component-library/src/components/my-input/my-input.tsx
+
 import { AutocompleteTypes, TextFieldTypes } from './interface'
 export interface InputChangeEventDetail {
   value: string | number | undefined | null
@@ -26,7 +28,7 @@ export interface InputChangeEventDetail {
 export class MdsInput {
 
   private nativeInput?: HTMLInputElement;
-  private tabindex?: string | number;
+  private tabindex?: number;
 
   @Element() el!: HTMLMdsInputElement;
 
@@ -35,12 +37,12 @@ export class MdsInput {
   /**
    * Specifies whether the element should have autocomplete enabled
    */
-  @Prop() autoComplete?: AutocompleteTypes = 'off'
+  @Prop() autocomplete?: AutocompleteTypes = 'off'
 
   /**
    * Specifies that the element should automatically get focus when the page loads
    */
-  @Prop() autoFocus?: boolean = false
+  @Prop() autofocus?: boolean = false
 
   /**
    * If true, the element is displayed as disabled
@@ -109,7 +111,7 @@ export class MdsInput {
   /**
    * Specifies the value of the input element
    */
-  @Prop({ mutable: true }) value?: string | number | null = ''
+  @Prop() value?: string | number | null = ''
 
   /**
    * Emits an InputChangeEventDetail when the value of the input element changes
@@ -137,7 +139,7 @@ export class MdsInput {
     // mds-input to avoid causing tabbing twice on the same element
     if (this.el.hasAttribute('tabindex')) {
       const tabindex = this.el.getAttribute('tabindex')
-      this.tabindex = tabindex !== null ? tabindex : undefined
+      this.tabindex = tabindex !== null ? parseInt(tabindex) : undefined
       this.el.removeAttribute('tabindex')
     }
   }
@@ -183,10 +185,6 @@ export class MdsInput {
     this.keyDownEvent.emit(ev as KeyboardEvent)
   }
 
-  private hasValue(): boolean {
-    return this.getValue().length > 0
-  }
-
   private onBlur = () => {
     this.hasFocus = false
     this.blurEvent.emit()
@@ -200,30 +198,26 @@ export class MdsInput {
   render() {
     const value = this.getValue()
     return (
-      <Host aria-disabled={this.disabled ? 'true' : null}
-        class={{
-          'has-value': this.hasValue(),
-          'has-focus': this.hasFocus,
-        }}>
+      <Host>
         <input
-          autocomplete={this.autoComplete}
-          autofocus={this.autoFocus}
+          autoComplete={this.autocomplete}
+          autoFocus={this.autofocus}
           disabled={this.disabled}
           max={this.max}
-          maxlength={this.maxlength}
+          maxLength={this.maxlength}
           min={this.min}
-          minlength={this.minlength}
+          minLength={this.minlength}
           name={this.name}
           onBlur={this.onBlur}
           onFocus={this.onFocus}
           onInput={this.onInput}
           pattern={this.pattern}
           placeholder={this.placeholder || ''}
-          readonly={this.readonly}
+          readOnly={this.readonly}
           ref={ input => (this.nativeInput = input)}
           required={this.required}
           step={this.step}
-          tabindex={this.tabindex}
+          tabIndex={this.tabindex}
           type={this.type}
           value={value}
         />

@@ -1,6 +1,7 @@
 
 export type AutocompleteTypes =
   | 'additional-name'
+  | 'address'
   | 'address-level1'
   | 'address-level2'
   | 'address-level3'
