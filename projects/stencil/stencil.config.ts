@@ -57,11 +57,6 @@ export const config: Config = {
       type: 'www',
       serviceWorker: null, // disable service workers
     },
-    // angularOutputTarget({
-    //   componentCorePackage: 'stencil-components',
-    //   directivesProxyFile: './directives/proxies.ts', //'../component-library-angular/src/directives/proxies.ts',
-    //   valueAccessorConfigs: angularValueAccessorBindings,
-    // }),
     {
       type: 'dist',
     },
