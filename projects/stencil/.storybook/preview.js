@@ -35,15 +35,6 @@ viewportKeys.forEach(viewportKeys => {
   viewports[viewportKeys] = decorateViewport(viewportKeys, media[viewportKeys])
 })
 
-// const req = require.context('../src', true, /\.tsx/);
-// if (module.hot) {
-//   module.hot.accept(req.id, () => {
-//     window.location.reload();
-//   });
-// }
-
-// console.log(req, module)
-
 export const parameters = {
   actions: { argTypesRegex: '^on[A-Z].*' },
   viewport: {
