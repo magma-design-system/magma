@@ -38,15 +38,6 @@ module.exports = {
       fontSize: {
         xxs: '0.625rem',
       },
-      transitionProperty : {
-        input: 'background-color, border-color, box-shadow, color, padding',
-        size: 'width, height, padding, margin',
-      },
-      width: {
-        phrase: '50ch',
-        text: '75ch',
-        title: '30ch',
-      },
       maxWidth: {
         '1/4': '25%',
         '1/2': '50%',
@@ -80,6 +71,21 @@ module.exports = {
         '4/3': '75%',
         '5/4': '80%',
         '16/9': '56.25%',
+      },
+      overflow: {
+        inherit: 'inherit',
+      },
+      textOverflow: {
+        inherit: 'inherit',
+      },
+      transitionProperty : {
+        input: 'background-color, border-color, box-shadow, color, padding',
+        size: 'width, height, padding, margin',
+      },
+      width: {
+        phrase: '50ch',
+        text: '75ch',
+        title: '30ch',
       },
     },
   },
