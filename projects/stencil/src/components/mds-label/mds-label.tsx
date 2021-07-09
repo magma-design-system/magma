@@ -32,10 +32,10 @@ export class MdsLabel {
   render() {
     return (
       <Host>
-        <mds-text typography={this.typography} class={clsx('flex-grow min-w-0', this.truncate && 'truncate')}>
+        <mds-text part="text" typography={this.typography} class={clsx('flex-grow min-w-0', this.truncate && 'truncate')}>
           <slot></slot>
         </mds-text>
-        <mds-icon name="action-close" class="flex-shrink-0 ml-1 bg-adjust-tone rounded-full text-adjust-tone-04"/>
+        <mds-icon name="action-close" class="bg-adjust-tone hover:bg-adjust-tone-20 transition-colors bg-opacity-50 cursor-pointer flex-shrink-0 ml-1 rounded-full text-inherit"/>
       </Host>
     )
   }

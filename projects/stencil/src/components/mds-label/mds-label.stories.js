@@ -41,17 +41,14 @@ onClickDelete.args = {
   onClickDelete: () => { console.log('hello') },
 }
 
-export const tailwindRadius = () =>
-  <mds-label class="rounded-3xl">{faker.lorem.paragraph()}</mds-label>
+export const tailwindRadius = (args) =>
+  <mds-label class="rounded-3xl" {...args}>{faker.lorem.paragraph()}</mds-label>
 
-export const tailwindFont = () =>
-  <mds-label class="text-secondary-detail">{faker.lorem.paragraph()}</mds-label>
+export const tailwindColor = (args) =>
+  <mds-label class="bg-label-blue-18 text-label-blue-04" {...args}>{faker.lorem.paragraph()}</mds-label>
 
-export const tailwindColor = () =>
-  <mds-label class="bg-label-blue-17 text-label-blue-04">{faker.lorem.paragraph()}</mds-label>
-
-export const test = () =>
-  <div>
-    <mds-icon name="action-close" class="flex-shrink-0 ml-1 bg-adjust-tone rounded-full w-5 h-5"/>
-    <mds-label class="bg-label-blue-17 text-label-blue-04">{faker.lorem.paragraph()}</mds-label>
-  </div>
+export const tailwindPadding = (args) =>
+  <mds-label class="px-4" {...args}>{faker.lorem.paragraph()}</mds-label>
+tailwindPadding.args = {
+  typography: 'h3',
+}

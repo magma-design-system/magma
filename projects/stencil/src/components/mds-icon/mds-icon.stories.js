@@ -21,5 +21,5 @@ const Template = args =>
 
 export const Default = Template.bind({})
 
-export const taliwindStyle = () =>
-  <mds-icon class="text-5xl leading-none text-adjust-tone-05 bg-label-yellow-18 rounded p-2"/>
+export const taliwindStyle = (args) =>
+  <mds-icon {...args} class="text-5xl leading-none text-adjust-tone-05 bg-label-yellow-18 rounded p-2"/>

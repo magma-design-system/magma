@@ -21,6 +21,7 @@ module.exports = {
     colors: {
       transparent: 'transparent',
       current: 'currentColor',
+      inherit: 'inherit',
       ...palette,
     },
     fontFamily: {

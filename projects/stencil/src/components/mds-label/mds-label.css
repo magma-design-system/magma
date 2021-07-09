@@ -1,12 +1,6 @@
 @tailwind components;
 @tailwind utilities;
 
-@layer components {
-  .text-secondary-caption {
-    @apply antialiased font-secondary text-sm;
-  }
-}
-
 :host {
-  @apply pl-3 pr-1 py-1 bg-adjust-tone-16 flex items-center overflow-hidden text-adjust-tone-06 text-secondary-caption;
+  @apply bg-adjust-tone-18 flex items-center overflow-hidden pl-3 pr-1 py-1 rounded-md text-adjust-tone-06;
 }

@@ -15,7 +15,7 @@ export class MdsIcon {
 
   render() {
     return (
-      <Host class={`mgg-icons-${this.name}`} part={this.name}/>
+      <Host class={`mgg-icons-${this.name}`}/>
     )
   }
 
