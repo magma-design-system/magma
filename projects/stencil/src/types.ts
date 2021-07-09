@@ -15,3 +15,7 @@ export type TypographyTypes =
   | 'label-paragraph'
   | 'overline'
   | 'paragraph'
+
+export type ListTypeTypes =
+  | 'ordered'
+  | 'unordered'

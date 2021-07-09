@@ -1,0 +1,10 @@
+@tailwind components;
+@tailwind utilities;
+
+:host {
+  @apply flex w-full items-start justify-start;
+}
+
+mds-icon {
+  @apply mr-2;
+}
