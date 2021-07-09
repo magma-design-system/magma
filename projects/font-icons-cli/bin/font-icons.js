@@ -54,7 +54,7 @@ function main(parameters) {
 function buildCSSEncoded(fontName) {
   const fontPath = path.resolve(BUILD_FONTS_DIR, `${fontName}.ttf`)
   const cssPath = path.resolve(BUILD_PATH_DIR, `${fontName}.css`)
-  const newCssPath = path.resolve(BUILD_PATH_DIR, `${fontName}-base64.css`)
+  const newCssPath = path.resolve(BUILD_PATH_DIR, `${fontName}.base64.css`)
 
   const fontBase64$ = fs.readFile(fontPath)
     .then(fontBuffer => Promise.resolve(fontBuffer.toString('base64')))
@@ -69,7 +69,7 @@ function buildCSSEncoded(fontName) {
       return Promise.resolve(cssAscii.replace(stringToReplace, `src: url(data:font/truetype;charset=utf-8;base64,${fontBase64});`))
     })
     .then(cssString => fs.writeFile(newCssPath, cssString))
-    .then(() => console.debug('Build CSS Encoded created in ', newCssPath))
+    .then(() => console.debug('Build CSS Encoded created in ', newCssPath.split('/icons')[1]))
     .catch(error => {
       console.error('Build CSS Encoded failed.', error)
       return Promise.reject(error)
@@ -82,7 +82,7 @@ function buildCSSEncoded(fontName) {
  */
 function createBuildDirective() {
   return fs.mkdir(BUILD_SVG_DIR, { recursive: true })
-    .then(() => console.debug('Build directive created in', BUILD_SVG_DIR))
+    .then(() => console.debug('Build directive created in', BUILD_SVG_DIR.split('/icons')[1]))
     .catch(error => {
       console.error('Build directive creation failed.', error)
       return Promise.reject(error)
