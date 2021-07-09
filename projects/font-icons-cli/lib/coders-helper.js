@@ -17,15 +17,15 @@ const fs = require('fs').promises
  * @param {string} fontName
  * @return {File}
  */
-function generateTypescript (icons, fontName) {
+function generateTypescript(icons, fontName) {
   const types = icons.map(icon => `'${icon}'`).join('|')
   const values = icons.map(icon => `'${icon}'`).join(',')
   const typeName = getTypeName(fontName)
   return {
     name: `${fontName}.ts`,
     content: `export type ${typeName} = ${types};
-
-export const ${getVariableName(fontName)}: ${typeName}[] = [${values}];\n`
+export const ${getVariableName(fontName)}: ${typeName}[] = [${values}];
+`,
   }
 }
 
@@ -39,13 +39,13 @@ export const ${getVariableName(fontName)}: ${typeName}[] = [${values}];\n`
  * @param {string} fontName
  * @return {File}
  */
-function generateJavascript (icons, fontName) {
-  const values = icons.map(icon => `'${icon}'`).join(',')
-  return {
-    name: `${fontName}.js`,
-    content: `export const ${getVariableName(fontName)} = [${values}];\n`
-  }
-}
+// function generateJavascript(icons, fontName) {
+//   const values = icons.map(icon => `'${icon}'`).join(',')
+//   return {
+//     name: `${fontName}.js`,
+//     content: `export const ${getVariableName(fontName)} = [${values}];\n`
+//   }
+// }
 
 /**
  * @example
@@ -53,7 +53,7 @@ function generateJavascript (icons, fontName) {
  * @param {string} fontName
  * @return {string}
  */
-function getVariableName (fontName) {
+function getVariableName(fontName) {
   return fontName.replace(/-([\w])/gi, (match, firstGroup) => firstGroup.toUpperCase())
 }
 
@@ -63,23 +63,23 @@ function getVariableName (fontName) {
  * @param fontName
  * @return {string}
  */
-function getTypeName (fontName) {
+function getTypeName(fontName) {
   const varName = getVariableName(fontName)
   return varName.charAt(0).toUpperCase() + varName.slice(1)
 }
 
-function writeCodersFiles (inputData, options) {
+function writeCodersFiles(inputData, options) {
   const icons = Object.keys(inputData)
   const files = [
-    //generateJavascript(icons, options.fontName),
-    generateTypescript(icons, options.fontName)
+    // generateJavascript(icons, options.fontName),
+    generateTypescript(icons, options.fontName),
   ]
   return Promise.all(
     files.map(file =>
       fs.writeFile(`${options.outputPath}/${file.name}`, file.content)
         .then(() => console.log(`SUCCESS Created ${options.outputPath}/${file.name}`))
-        .catch(error => console.error(`ERROR Creating ${options.outputPath}/${file.name}`, error))
-    )
+        .catch(error => console.error(`ERROR Creating ${options.outputPath}/${file.name}`, error)),
+    ),
   )
 }
 
