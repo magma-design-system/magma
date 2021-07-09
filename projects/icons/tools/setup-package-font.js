@@ -35,7 +35,6 @@ function main() {
   }
 
   fs.writeFileSync(join(DIST_DIR, '/package.json'), Buffer.from(JSON.stringify(sourceObj, null, 2)) )
-  console.log('ZIO CANE')
   const resourcesDir = join(DIST_DIR, 'resources')
   if (!fs.existsSync(resourcesDir)) {
     fs.mkdirSync(resourcesDir)
