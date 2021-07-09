@@ -54,24 +54,26 @@ function main(parameters) {
 function buildCSSEncoded(fontName) {
   const fontPath = path.resolve(BUILD_FONTS_DIR, `${fontName}.ttf`)
   const cssPath = path.resolve(BUILD_PATH_DIR, `${fontName}.css`)
-  const fileSys = require('fs')
-  fileSys.readFile(fontPath, (err, data) => {
-    const fontBase64 = data.toString('base64')
-    // console.log(data.toString('base64'))
+  const newCssPath = path.resolve(BUILD_PATH_DIR, `${fontName}-base64.css`)
 
-    fileSys.readFile(cssPath, (err, data) => {
+  const fontBase64$ = fs.readFile(fontPath)
+    .then(fontBuffer => Promise.resolve(fontBuffer.toString('base64')))
+
+  const cssAscii$ = fs.readFile(cssPath)
+    .then(cssBuffer => Promise.resolve(cssBuffer.toString('ascii')))
+
+  return Promise.all([fontBase64$, cssAscii$])
+    .then(([ fontBase64, cssAscii]) => {
       const regex = /src:(.|[\r\n][^\}])*/m
-      const dataString = data.toString('ascii')
-      const [ stringToReplace ] = dataString.match(regex)
-      const cssString = dataString.replace(stringToReplace, `src: url(data:font/truetype;charset=utf-8;base64,${fontBase64});`)
-      const newCssPath = path.resolve(BUILD_PATH_DIR, `${fontName}-base64.css`)
-      fileSys.writeFile(newCssPath, cssString, (err, data) => {
-        console.log(`${newCssPath} saved successfully`);
-      })
+      const [ stringToReplace ] = cssAscii.match(regex)
+      return Promise.resolve(cssAscii.replace(stringToReplace, `src: url(data:font/truetype;charset=utf-8;base64,${fontBase64});`))
     })
-  })
-
-  //
+    .then(cssString => fs.writeFile(newCssPath, cssString))
+    .then(() => console.debug('Build CSS Encoded created in ', newCssPath))
+    .catch(error => {
+      console.error('Build CSS Encoded failed.', error)
+      return Promise.reject(error)
+    })
 }
 
 /**
