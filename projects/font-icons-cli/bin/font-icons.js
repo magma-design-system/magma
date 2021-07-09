@@ -41,6 +41,7 @@ function main(parameters) {
   createBuildDirective()
     .then(() => iconsToTempFolder(inputData))
     .then(() => buildFont(options))
+    .then(() => buildCSSEncoded(fontName))
     // .then(() => writeCodersFiles(inputData, options))
     .then(() => organizeFiles())
     // .then(() => buildTypescriptFiles())
@@ -48,6 +49,29 @@ function main(parameters) {
     .catch(err => {
       err ? console.error('Error:', err) : console.error('Something gone wrong... Aborted.')
     })
+}
+
+function buildCSSEncoded(fontName) {
+  const fontPath = path.resolve(BUILD_FONTS_DIR, `${fontName}.ttf`)
+  const cssPath = path.resolve(BUILD_PATH_DIR, `${fontName}.css`)
+  const fileSys = require('fs')
+  fileSys.readFile(fontPath, (err, data) => {
+    const fontBase64 = data.toString('base64')
+    // console.log(data.toString('base64'))
+
+    fileSys.readFile(cssPath, (err, data) => {
+      const regex = /src:(.|[\r\n][^\}])*/m
+      const dataString = data.toString('ascii')
+      const [ stringToReplace ] = dataString.match(regex)
+      const cssString = dataString.replace(stringToReplace, `src: url(data:font/truetype;charset=utf-8;base64,${fontBase64});`)
+      const newCssPath = path.resolve(BUILD_PATH_DIR, `${fontName}-base64.css`)
+      fileSys.writeFile(newCssPath, cssString, (err, data) => {
+        console.log(`${newCssPath} saved successfully`);
+      })
+    })
+  })
+
+  //
 }
 
 /**
