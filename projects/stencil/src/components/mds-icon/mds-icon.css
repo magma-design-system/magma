@@ -1,0 +1,8 @@
+/* @import '~@maggioli-design-system/icons/mgg-icons.base64.css'; */
+
+@tailwind components;
+@tailwind utilities;
+
+:host {
+  @apply inline-flex items-center justify-center leading-none;
+}

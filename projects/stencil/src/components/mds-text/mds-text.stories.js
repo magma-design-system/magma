@@ -4,7 +4,7 @@ import MdsText from '../../../dist/collection/components/mds-text/mds-text'
 import dictionary, { tags } from './defaults'
 
 export default {
-  title: 'Typography / Text',
+  title: 'Design / Typography',
   component: MdsText,
   argTypes: {
     tag: {
@@ -12,7 +12,7 @@ export default {
       options: tags,
       control: { type: 'select' },
     },
-    type: {
+    typography: {
       description: 'Specifies the typography of the element',
       options: Object.keys(dictionary),
       control: { type: 'select' },
@@ -26,65 +26,65 @@ export const Default = Template.bind({})
 
 export const H1 = Template.bind({})
 H1.args = {
-  type: 'h1',
+  typography: 'h1',
 }
 
 export const H2 = Template.bind({})
 H2.args = {
-  type: 'h2',
+  typography: 'h2',
 }
 
 export const H3 = Template.bind({})
 H3.args = {
-  type: 'h3',
+  typography: 'h3',
 }
 
 export const H4 = Template.bind({})
 H4.args = {
-  type: 'h4',
+  typography: 'h4',
 }
 
 export const H5 = Template.bind({})
 H5.args = {
-  type: 'h5',
+  typography: 'h5',
 }
 
 export const H6 = Template.bind({})
 H6.args = {
-  type: 'h6',
+  typography: 'h6',
 }
 
 export const Action = Template.bind({})
 Action.args = {
-  type: 'action',
+  typography: 'action',
 }
 
 export const Paragraph = Template.bind({})
 Paragraph.args = {
-  type: 'paragraph',
+  typography: 'paragraph',
 }
 
 export const Detail = Template.bind({})
 Detail.args = {
-  type: 'detail',
+  typography: 'detail',
 }
 
 export const Caption = Template.bind({})
 Caption.args = {
-  type: 'caption',
+  typography: 'caption',
 }
 
 export const Label = Template.bind({})
 Label.args = {
-  type: 'label',
+  typography: 'label',
 }
 
 export const Code = Template.bind({})
 Code.args = {
-  type: 'code',
+  typography: 'code',
 }
 
 export const Hack = Template.bind({})
 Hack.args = {
-  type: 'hack',
+  typography: 'hack',
 }

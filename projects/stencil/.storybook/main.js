@@ -40,6 +40,16 @@ module.exports = {
     //   ],
     // })
 
+    // config.module.rules.push({
+    //   test: /\.css$/,
+    //   include: [path.resolve(__dirname, '../')],
+    //   use: [
+    //     'style-loader',
+    //     'css-loader',
+    //     'postcss-loader'
+    //   ],
+    // })
+
     config.resolve.fallback = { 'assert': false }
     return config
   },

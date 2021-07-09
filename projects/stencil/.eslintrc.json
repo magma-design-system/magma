@@ -7,6 +7,7 @@
   "parserOptions": {
     "project": "./tsconfig.json"
   },
+  "ignorePatterns": ["**/*.stories.js"],
   "overrides": [
     {
       "files":[

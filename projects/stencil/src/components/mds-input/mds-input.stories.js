@@ -25,7 +25,7 @@ export default {
       defaultValue: false,
     },
     max: {
-      type: { name: 'string', required: false },
+      type: { name: 'number', required: false },
       description: 'Specifies the maximum value',
       defaultValue: undefined,
     },
@@ -35,7 +35,7 @@ export default {
       defaultValue: undefined,
     },
     min: {
-      type: { name: 'string', required: false },
+      type: { name: 'number', required: false },
       description: 'Specifies the minimum value',
       defaultValue: undefined,
     },

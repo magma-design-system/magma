@@ -1,4 +1,5 @@
 @import '~@maggioli-design-system/styles/dist/tailwind/typography.css';
+
 @tailwind components;
 @tailwind utilities;
 
@@ -7,7 +8,7 @@
 }
 
 input {
-  @apply bg-adjust-tone border-none border-transparent box-border duration-300 ease-out-expo overflow-ellipsis overflow-hidden px-4 py-3 ring-0 rounded shadow text-secondary-detail transition-input w-full;
+  @apply bg-adjust-tone text-secondary-detail border-none border-transparent box-border duration-300 ease-out-expo overflow-ellipsis overflow-hidden px-4 py-3 ring-0 rounded shadow-sharp transition-input w-full;
 }
 
 input:focus {

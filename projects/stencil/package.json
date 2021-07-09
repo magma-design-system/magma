@@ -15,7 +15,8 @@
     "loader/"
   ],
   "scripts": {
-    "build": "rm src/components.d.ts || true && stencil build --docs --docs-readme",
+    "build": "stencil build",
+    "build.full": "rm src/components.d.ts || true && stencil build --docs --docs-readme",
     "build.watch": "stencil build --watch",
     "clean": "rimraf dist && rimraf loader && rimraf www && rimraf dist-storybook",
     "generate": "stencil generate",
