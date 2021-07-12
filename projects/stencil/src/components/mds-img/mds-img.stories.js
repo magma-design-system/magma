@@ -1,6 +1,6 @@
 import React from 'react'
-import faker from 'faker'
-import MdsImg from '../../../dist/collection/components/mds-img/mds-img'
+import MdsImg from '@component/mds-img/mds-img'
+import readme from './readme.md'
 
 import { loading as loadingDictionary } from './types-dictionary'
 
@@ -25,6 +25,7 @@ const URLs = [
 export default {
   title: 'UI / Image',
   component: MdsImg,
+  notes: readme,
   argTypes: {
     alt: {
       description: 'Specifies an alternate text for an image',
