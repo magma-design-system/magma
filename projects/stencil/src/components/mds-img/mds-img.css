@@ -1,0 +1,7 @@
+:host {
+  @apply flex overflow-hidden bg-cover bg-no-repeat bg-center;
+}
+
+img {
+  @apply w-full;
+}
