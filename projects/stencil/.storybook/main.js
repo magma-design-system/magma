@@ -30,25 +30,27 @@ module.exports = {
     // You can change the configuration based on that.
     // 'PRODUCTION' is used when building the static version of storybook.
 
-    // config.module.rules.push({
-    //   test: /\.scss$/,
-    //   include: [path.resolve(__dirname, '../')],
-    //   use: [
-    //     'style-loader',
-    //     'css-loader',
-    //     'sass-loader'
-    //   ],
-    // })
+    config.resolve.alias = {
+      '@component': path.resolve(__dirname, '../dist/collection/components'),
+    }
 
-    // config.module.rules.push({
-    //   test: /\.css$/,
-    //   include: [path.resolve(__dirname, '../')],
-    //   use: [
-    //     'style-loader',
-    //     'css-loader',
-    //     'postcss-loader'
-    //   ],
-    // })
+    config.module.rules.push({
+      test: /\.css$/,
+      use: [
+        {
+          loader: 'postcss-loader',
+          options: {
+            postcssOptions: {
+              plugins: [
+                require('tailwindcss'),
+                require('autoprefixer')
+              ],
+            },
+          },
+        },
+      ],
+      include: path.resolve(__dirname, '../'),
+    })
 
     config.resolve.fallback = { 'assert': false }
     return config
