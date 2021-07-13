@@ -1,5 +1,4 @@
-import { Component, Host, h, Prop } from '@stencil/core'
-import { ListTypeTypes } from '../../types'
+import { Component, Host, h } from '@stencil/core'
 
 @Component({
   tag: 'mds-list',
@@ -8,11 +7,6 @@ import { ListTypeTypes } from '../../types'
 })
 
 export class MdsList {
-
-  /**
-   * Defines if the list is ordered or unordered
-   */
-  @Prop() readonly type: ListTypeTypes = 'unordered'
 
   render() {
     return (

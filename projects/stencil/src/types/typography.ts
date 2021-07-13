@@ -16,7 +16,3 @@ export type TypographyTypes =
   | 'option'
   | 'overline'
   | 'paragraph'
-
-export type ListTypeTypes =
-  | 'ordered'
-  | 'unordered'

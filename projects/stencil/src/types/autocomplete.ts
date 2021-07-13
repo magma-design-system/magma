@@ -1,4 +1,3 @@
-
 export type AutocompleteTypes =
   | 'additional-name'
   | 'address'
@@ -56,14 +55,3 @@ export type AutocompleteTypes =
   | 'transaction-currency'
   | 'url'
   | 'username'
-
-export type TextFieldTypes =
-  | 'date'
-  | 'email'
-  | 'number'
-  | 'password'
-  | 'search'
-  | 'tel'
-  | 'text'
-  | 'time'
-  | 'url'

@@ -1,5 +1,5 @@
 import React from 'react'
-import MdsIcon from '../../../dist/collection/components/mds-icon/mds-icon'
+import MdsIcon from '@component/mds-icon/mds-icon'
 import mggIconsDictionary from '@maggioli-design-system/icons/resources/mgg-icons.json'
 
 export default {

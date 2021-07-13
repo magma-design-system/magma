@@ -14,7 +14,8 @@ import {
 // https://www.w3schools.com/tags/tag_input.asp
 // https://github.com/ionic-team/stencil-ds-output-targets/blob/55d62af2727395cd6d729735cb9d81e5d60cc637/packages/example-project/component-library/src/components/my-input/my-input.tsx
 
-import { AutocompleteTypes, TextFieldTypes } from './interface'
+import { InputTypeTypes } from '../../types/input-type'
+import { AutocompleteTypes } from '../../types/autocomplete'
 export interface InputChangeEventDetail {
   value: string | number | undefined | null
 }
@@ -108,7 +109,7 @@ export class MdsInput {
   /**
    * Specifies the type of input element
    */
-  @Prop() type: TextFieldTypes = 'text'
+  @Prop() type: InputTypeTypes = 'text'
 
   /**
    * Specifies the value of the input element

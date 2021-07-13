@@ -1,4 +1,4 @@
-const dictionary = {
+const typographyDefaultsDictionary = {
   action: {
     tag: 'span',
     selector: 'text-primary-action',
@@ -61,61 +61,9 @@ const dictionary = {
   },
 }
 
-const tags = [
-  'abbr',
-  'address',
-  'article',
-  'b',
-  'bdo',
-  'blockquote',
-  'cite',
-  'code',
-  'dd',
-  'del',
-  'details',
-  'dfn',
-  'div',
-  'dl',
-  'dt',
-  'em',
-  'figcaption',
-  'h1',
-  'h2',
-  'h3',
-  'h4',
-  'h5',
-  'h6',
-  'i',
-  'ins',
-  'kbd',
-  'label',
-  'legend',
-  'li',
-  'mark',
-  'ol',
-  'p',
-  'pre',
-  'q',
-  'rb',
-  'rt',
-  'ruby',
-  's',
-  'samp',
-  'small',
-  'span',
-  'strong',
-  'sub',
-  'summary',
-  'sup',
-  'time',
-  'u',
-  'ul',
-  'var',
-  'wbr',
-]
 
-export default dictionary
 export {
-  tags,
+  typographyDefaultsDictionary,
 }
+
 

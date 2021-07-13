@@ -1,4 +1,4 @@
-const autoComplete = [
+const autoCompleteDictionary = [
   'additional-name',
   'address',
   'address-level1',
@@ -57,4 +57,6 @@ const autoComplete = [
   'username',
 ]
 
-export default autoComplete
+export {
+  autoCompleteDictionary,
+}

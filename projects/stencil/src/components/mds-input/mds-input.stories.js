@@ -1,6 +1,6 @@
 import React from 'react'
-import MdsInput from '../../../dist/collection/components/mds-input/mds-input'
-import autoCompleteDictionary from './defaults'
+import MdsInput from '@component/mds-input/mds-input'
+import { autoCompleteDictionary } from '../../dictionary/autocomplete'
 
 // https://developers.google.com/web/updates/2015/06/checkout-faster-with-autofill
 

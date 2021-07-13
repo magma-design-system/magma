@@ -1,5 +1,5 @@
 import { Component, Host, h, Prop } from '@stencil/core'
-import { TypographyTypes } from '../../types'
+import { TypographyTypes } from '../../types/typography'
 
 @Component({
   tag: 'mds-list-item',

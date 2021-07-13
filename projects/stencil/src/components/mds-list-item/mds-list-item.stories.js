@@ -1,7 +1,6 @@
 import React from 'react'
 import faker from 'faker'
-import MdsList from '../../../dist/collection/components/mds-list/mds-list'
-import { typography as typographyDictionary } from '../../types-dictionary'
+import MdsList from '@component/mds-list/mds-list'
 
 export default {
   title: 'UI / List item',

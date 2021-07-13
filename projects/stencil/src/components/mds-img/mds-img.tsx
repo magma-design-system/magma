@@ -1,10 +1,7 @@
 import { Component, Host, h, Prop } from '@stencil/core'
-
-import {
-  CrossoriginTypes,
-  LoadingTypes,
-  ReferrerpolicyTypes,
-} from './types'
+import { CrossoriginTypes } from '../../types/crossorigin'
+import { LoadingTypes } from '../../types/loading'
+import { ReferrerpolicyTypes } from '../../types/referrerpolicy'
 
 @Component({
   tag: 'mds-img',
