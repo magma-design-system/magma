@@ -11,6 +11,7 @@ const typography = [
   'h6',
   'hack',
   'label',
+  'option',
   'overline',
   'paragraph',
 ]

@@ -4,18 +4,87 @@
 @tailwind utilities;
 
 :host {
-  @apply block text-secondary-detail;
+  @apply
+    block
+    relative
+    text-secondary-detail;
 }
 
 input {
-  @apply bg-adjust-tone text-secondary-detail border-none border-transparent box-border duration-300 ease-out-expo overflow-ellipsis overflow-hidden px-4 py-3 ring-0 rounded shadow-sharp transition-input w-full;
+  @apply
+    bg-adjust-tone
+    text-secondary-detail
+    border-none
+    border-transparent
+    box-border
+    duration-300
+    ease-out-expo
+    overflow-ellipsis
+    overflow-hidden
+    px-4
+    py-3
+    ring-1
+    ring-adjust-tone-04
+    ring-opacity-10
+    rounded-lg
+    shadow
+    transition-input
+    w-full;
 }
 
 input:focus {
-  @apply outline-none shadow-lg-sharp transition-input duration-300 ease-out-expo;
+  @apply
+    outline-none
+    shadow-lg-sharp
+    ring
+    ring-brand-maggioli-08
+    transition-input
+    duration-300
+    ease-out-expo;
+}
+
+input:disabled {
+  @apply bg-adjust-tone-20;
 }
 
 input:disabled,
-input::placeholder:disabled {
-  @apply text-adjust-tone-10;
+input:disabled::placeholder {
+  @apply
+    text-adjust-tone-10;
+}
+
+.disabled,
+.required {
+  @apply
+    absolute
+    duration-300
+    ease-out-expo
+    h-3
+    justify-center
+    pointer-events-none
+    right-1
+    rounded-full
+    top-1
+    transition-size;
+}
+
+.required {
+  @apply
+    bg-status-error-10
+    text-adjust-tone
+    text-opacity-0
+    w-3;
+}
+
+.disabled {
+  @apply
+    bg-adjust-tone-10
+    px-2
+    text-adjust-tone;
+}
+
+input:focus + .required {
+  @apply
+    text-opacity-100
+    w-20;
 }

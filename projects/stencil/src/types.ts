@@ -13,6 +13,7 @@ export type TypographyTypes =
   | 'label-caption'
   | 'label-detail'
   | 'label-paragraph'
+  | 'option'
   | 'overline'
   | 'paragraph'
 

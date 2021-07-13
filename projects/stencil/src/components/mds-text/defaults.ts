@@ -47,6 +47,10 @@ const dictionary = {
     tag: 'label',
     selector: 'text-secondary-label',
   },
+  option: {
+    tag: 'label',
+    selector: 'text-secondary-option',
+  },
   overline: {
     tag: 'span',
     selector: 'text-primary-overline',

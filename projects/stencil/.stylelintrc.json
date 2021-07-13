@@ -13,6 +13,8 @@
     "**/*.svg"
   ],
   "rules": {
+    "at-rule-name-space-after": null,
+    "color-function-notation": null,
     "selector-type-no-unknown": null
   }
 }

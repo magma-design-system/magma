@@ -79,6 +79,11 @@ Label.args = {
   typography: 'label',
 }
 
+export const Option = Template.bind({})
+Option.args = {
+  typography: 'option',
+}
+
 export const Code = Template.bind({})
 Code.args = {
   typography: 'code',

@@ -2,5 +2,5 @@
 @tailwind utilities;
 
 :host {
-  @apply bg-adjust-tone grid overflow-hidden p-4 rounded-xl shadow-md;
+  @apply bg-adjust-tone grid overflow-hidden p-4 rounded-xl;
 }

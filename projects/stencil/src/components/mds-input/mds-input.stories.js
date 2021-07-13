@@ -94,7 +94,7 @@ const Template = args =>
 
 export const Default = Template.bind({})
 Default.args = {
-  value: 'This is an input field',
+  placeholder: 'Scrivi qualcosa',
 }
 
 export const autoComplete = Template.bind({})
@@ -121,4 +121,10 @@ max.args = {
   max: '3',
   type: 'number',
   value: '2',
+}
+
+export const Required = Template.bind({})
+Required.args = {
+  required: true,
+  placeholder: 'This is a required field',
 }

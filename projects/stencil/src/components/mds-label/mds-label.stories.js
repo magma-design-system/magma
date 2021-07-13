@@ -33,7 +33,7 @@ truncate.args = {
 
 export const typography = Template.bind({})
 typography.args = {
-  typography: 'detail',
+  typography: 'label',
 }
 
 export const onClickDelete = Template.bind({})
@@ -45,10 +45,5 @@ export const tailwindRadius = (args) =>
   <mds-label class="rounded-3xl" {...args}>{faker.lorem.paragraph()}</mds-label>
 
 export const tailwindColor = (args) =>
-  <mds-label class="bg-label-blue-18 text-label-blue-04" {...args}>{faker.lorem.paragraph()}</mds-label>
+  <mds-label class="bg-label-blue-06 text-label-blue-20" {...args}>{faker.lorem.paragraph()}</mds-label>
 
-export const tailwindPadding = (args) =>
-  <mds-label class="px-4" {...args}>{faker.lorem.paragraph()}</mds-label>
-tailwindPadding.args = {
-  typography: 'h3',
-}

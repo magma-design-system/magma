@@ -2,5 +2,29 @@
 @tailwind utilities;
 
 :host {
-  @apply bg-adjust-tone-18 flex items-center overflow-hidden pl-3 pr-1 py-1 rounded-md text-adjust-tone-06;
+  @apply
+    bg-adjust-tone-16
+    flex
+    items-stretch
+    overflow-hidden
+    pl-3
+    rounded-md
+    text-adjust-tone-06;
+}
+
+.close {
+  @apply
+    bg-adjust-tone
+    bg-opacity-30
+    cursor-pointer
+    filter
+    flex
+    flex-shrink-0
+    hover:bg-opacity-50
+    invert
+    items-center
+    ml-1
+    px-1.5
+    text-inherit
+    transition-colors;
 }
