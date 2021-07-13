@@ -43,6 +43,10 @@
     @apply antialiased font-bold font-secondary text-xs uppercase;
   }
 
+  .text-secondary-option {
+    @apply antialiased font-bold font-secondary leading-none text-xxs tracking-tight uppercase;
+  }
+
   .text-mono-code {
     @apply antialiased font-mono leading-relaxed text-base;
   }
