@@ -20,7 +20,7 @@
   }
 
   .text-primary-h6 {
-    @apply antialiased font-bold font-primary text-sm uppercase;
+    @apply antialiased font-bold font-primary text-base tracking-tight;
   }
 
   .text-primary-action {
