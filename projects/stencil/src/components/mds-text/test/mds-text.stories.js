@@ -1,8 +1,8 @@
 import React from 'react'
 import faker from 'faker'
 import MdsText from '@component/mds-text/mds-text'
-import { typographyDictionary } from '../../dictionary/typography'
-import { tagsDictionary } from '../../dictionary/tag'
+import { typographyDictionary } from '@dictionary/typography'
+import { tagsDictionary } from '@dictionary/tag'
 
 export default {
   title: 'Design / Typography',

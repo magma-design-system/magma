@@ -2,6 +2,17 @@ import { defineCustomElements } from '../dist/esm/loader';
 
 import 'normalize.css'
 import '@maggioli-design-system/design-tokens/dist/css/vars-rgb-channels.css'
+
+/**
+ * Problema:
+ * mgg-icons.base64.css serve a mostrare le icone
+ * anche se il css è stato embeddato nel web component
+ * se mds-icon è un sub-componente l'icona non si vede
+ * si vede correttamente solo se all'interno della pagina
+ * c'è un mds-icon come discendente diretto della pagina
+ */
+import '@maggioli-design-system/icons/mgg-icons.css'
+
 import 'typeface-karla'
 import 'typeface-roboto'
 

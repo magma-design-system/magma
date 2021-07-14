@@ -1,12 +1,10 @@
 import React from 'react'
 import faker from 'faker'
 import MdsCard from '@component/mds-card/mds-card'
-import readme from './readme.md'
 
 export default {
   title: 'Layout / Card',
   component: MdsCard,
-  notes: readme,
 }
 
 const Template = args =>

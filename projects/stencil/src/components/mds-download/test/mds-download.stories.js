@@ -2,7 +2,7 @@ import React from 'react'
 import faker from 'faker'
 import MdsDownload from '@component/mds-download/mds-download'
 import MdsIcon from '@component/mds-icon/mds-icon'
-import { fileExtensionsDictionary } from '../../dictionary/file-extensions'
+import { fileExtensionsDictionary } from '@dictionary/file-extensions'
 
 // import imageFile from './avatar-gruppo-maggioli-512w.png'
 
@@ -48,13 +48,13 @@ const Template = args =>
 
 export const Default = Template.bind({})
 Default.args = {
-  filename: filesList[2],
+  filename: filesList[11],
 }
 
 export const Description = Template.bind({})
 Description.args = {
   description: 'This is a custom description',
-  filename: filesList[2],
+  filename: filesList[22],
 }
 
 export const filesWithoutExtension = Template.bind({})

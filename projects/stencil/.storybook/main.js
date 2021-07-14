@@ -32,6 +32,8 @@ module.exports = {
 
     config.resolve.alias = {
       '@component': path.resolve(__dirname, '../dist/collection/components'),
+      '@dictionary': path.resolve(__dirname, '../src/dictionary/'),
+      '@type': path.resolve(__dirname, '../src/types/'),
     }
 
     config.module.rules.push({

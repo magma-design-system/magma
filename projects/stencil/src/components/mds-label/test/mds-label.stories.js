@@ -1,7 +1,7 @@
 import React from 'react'
 import faker from 'faker'
 import MdsLabel from '@component/mds-label/mds-label'
-import { typographyDictionary } from '../../types-dictionary'
+import { typographyDictionary } from '@dictionary/typography'
 
 export default {
   title: 'UI / Label',
