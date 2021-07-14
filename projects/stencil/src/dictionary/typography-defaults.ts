@@ -51,10 +51,6 @@ const typographyDefaultsDictionary = {
     tag: 'label',
     selector: 'text-secondary-option',
   },
-  overline: {
-    tag: 'span',
-    selector: 'text-primary-overline',
-  },
   paragraph: {
     tag: 'p',
     selector: 'text-secondary-paragraph',

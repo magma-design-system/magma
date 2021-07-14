@@ -14,5 +14,4 @@ export type TypographyTypes =
   | 'label-detail'
   | 'label-paragraph'
   | 'option'
-  | 'overline'
   | 'paragraph'

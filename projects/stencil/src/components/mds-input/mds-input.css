@@ -19,6 +19,7 @@ input {
     box-border
     duration-300
     ease-out-expo
+    m-0
     overflow-ellipsis
     overflow-hidden
     px-4
@@ -35,7 +36,7 @@ input {
 input:focus {
   @apply
     outline-none
-    shadow-lg-sharp
+    shadow-sharp-lg
     ring
     ring-brand-maggioli-08
     transition-input

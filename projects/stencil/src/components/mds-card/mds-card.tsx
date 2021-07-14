@@ -9,7 +9,7 @@ export class MdsCard {
 
   render() {
     return (
-      <Host class="shadow-md">
+      <Host>
         <slot></slot>
       </Host>
     )

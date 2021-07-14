@@ -1,7 +1,7 @@
 import React from 'react'
 import faker from 'faker'
 import MdsText from '@component/mds-text/mds-text'
-import { typographyDefaultsDictionary } from '../../dictionary/typography-defaults'
+import { typographyDictionary } from '../../dictionary/typography'
 import { tagsDictionary } from '../../dictionary/tag'
 
 export default {
@@ -14,8 +14,8 @@ export default {
       control: { type: 'select' },
     },
     typography: {
-      description: 'Specifies the typography of the element',
-      options: Object.keys(typographyDefaultsDictionary),
+      description: 'Specifies the font typography of the element',
+      options: typographyDictionary,
       control: { type: 'select' },
     },
   },

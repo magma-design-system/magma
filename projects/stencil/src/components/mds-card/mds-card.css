@@ -2,5 +2,12 @@
 @tailwind utilities;
 
 :host {
-  @apply bg-adjust-tone grid overflow-hidden p-4 rounded-xl;
+  @apply
+    bg-adjust-tone
+    grid
+    overflow-hidden
+    p-4
+    rounded-xl;
+
+  box-shadow: theme('boxShadow.md');
 }

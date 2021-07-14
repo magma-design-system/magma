@@ -1,4 +1,4 @@
-const typography = [
+const typographyDictionary = [
   'action',
   'caption',
   'code',
@@ -12,10 +12,9 @@ const typography = [
   'hack',
   'label',
   'option',
-  'overline',
   'paragraph',
 ]
 
 export {
-  typography,
+  typographyDictionary,
 }

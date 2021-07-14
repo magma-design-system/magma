@@ -3,13 +3,17 @@
 
 :host {
   @apply
-    bg-adjust-tone-16
+    bg-label-yellow-19
     flex
     items-stretch
     overflow-hidden
     pl-3
     rounded-md
     text-adjust-tone-06;
+}
+
+.text:last-child {
+  @apply pr-3;
 }
 
 .close {

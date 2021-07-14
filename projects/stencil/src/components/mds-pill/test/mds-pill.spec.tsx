@@ -1,18 +1,18 @@
 import { newSpecPage } from '@stencil/core/testing'
-import { MdsFileExtension } from '../mds-file-extension'
+import { MdsPill } from '../mds-pill'
 
-describe('mds-file-extension', () => {
+describe('mds-pill', () => {
   it('renders', async() => {
     const page = await newSpecPage({
-      components: [MdsFileExtension],
-      html: '<mds-file-extension></mds-file-extension>',
+      components: [MdsPill],
+      html: '<mds-pill></mds-pill>',
     })
     expect(page.root).toEqualHtml(`
-      <mds-file-extension>
+      <mds-pill>
         <mock:shadow-root>
           <slot></slot>
         </mock:shadow-root>
-      </mds-file-extension>
+      </mds-pill>
     `)
   })
 })

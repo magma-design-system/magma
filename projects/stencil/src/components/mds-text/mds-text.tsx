@@ -15,7 +15,7 @@ export class MdsText {
   @Prop() readonly tag?: TagTypes
 
   /**
-   * Specifies the typography of the element
+   * Specifies the font typography of the element
    */
   @Prop() readonly typography: TypographyTypes = 'detail'
 

@@ -1,7 +1,7 @@
 import { Component, Host, h, Prop } from '@stencil/core'
 import { ExtensionSuffixTypes } from '../../types/extension-suffix'
-// import { fileFormatsDictionary } from '../../dictionary/fileformats'
-// import { fileExtensionsDictionary } from '../../dictionary/file-extensions'
+import { fileFormatsDictionary } from '../../dictionary/fileformats'
+import { fileExtensionsDictionary } from '../../dictionary/file-extensions'
 
 @Component({
   tag: 'mds-download',
@@ -26,32 +26,76 @@ export class MdsDownload {
   @Prop() readonly filename: string
 
   /**
-   * The image preview if available of a file, useful if you have a logo to display, or a smaller version of a bigger image
+   * The image preview src if available of a file, useful if you have a logo to display, or a smaller version of a bigger image
    */
   @Prop() readonly preview?: string
 
-  /**
-   * Choose if display a transparency grid for the preview image, useful if your image has transparent areas and you want to display them
-   */
-  @Prop() readonly transparencyGrid?: boolean = false
+  private sanitizeFilename = () => {
+    if (this.filename === undefined ) {
+      throw console.error('Attribute "filename" is undefined.')
+    }
+    if (this.filename.includes('/')) {
+      return this.filename.split('/').pop()
+    }
+    return this.filename
+  }
+
+  private sanitizeSuffix = () => {
+    const filename = this.sanitizeFilename()
+    if (filename.includes('.')) {
+      return filename.split('.').pop()
+    }
+    return filename
+  }
+
+  private getName = () => {
+    const filename = this.sanitizeFilename()
+    if (filename.includes('.')) {
+      return filename.split('.')[0]
+    }
+    return filename
+  }
+
+  private getSuffix = () => {
+    const suffix = this.sanitizeSuffix()
+    const filename = this.sanitizeFilename()
+    if (this.suffix !== undefined) {
+      return this.suffix.toLowerCase()
+    }
+    if (suffix !== filename) {
+      return suffix
+    }
+    return null
+  }
+
+  private getExtensionInfos = () => {
+    const suffix = this.getSuffix() !== null ? this.getSuffix().toLowerCase() : 'default'
+    return fileExtensionsDictionary[suffix] !== undefined ? fileExtensionsDictionary[suffix] : fileExtensionsDictionary.default
+  }
 
   render() {
+    const { format, description } = this.getExtensionInfos()
+    const { background, color, icon, iconBackground } = fileFormatsDictionary[format]
+
     return (
-      <Host class="bg-adjust-tone flex overflow-hidden rounded-md shadow-sharp items-stretch w-full">
-        <div class="flex items-center justify-center w-12 bg-adjust-tone-19 flex-shrink-0">
-          <mds-icon name="status-warning"/>
+      <Host>
+        <div class={`preview ${color} ${iconBackground}`}>
+          { this.preview !== undefined
+            ? <div class="image-preview" style={{ backgroundImage: `url(${this.preview})` }}></div>
+            : <mds-icon name={icon}/>
+          }
         </div>
-        <div class="flex flex-col py-2 px-3 flex-grow min-w-0">
-          <div class="flex min-w-0">
-            <mds-text typography="action" class="min-w-0 truncate">This is the filename</mds-text>
-            <mds-text typography="action" class="flex-shrink-0">.ext</mds-text>
+        <div class="info">
+          <div class="filename" title={ this.filename }>
+            <mds-text typography="h6" class="name">{ this.getName() }</mds-text>
+            { this.suffix === undefined && this.getSuffix() && <mds-text typography="h6" class="extension">.{ this.getSuffix() }</mds-text> }
           </div>
-          <div class="flex min-w-0">
-            <mds-file-extension suffix="mpeg"></mds-file-extension>
+          <div class="detail">
+            { this.getSuffix() && <mds-pill class={`suffix ${background} ${color}`}>{ this.getSuffix() }</mds-pill> }
+            <mds-text typography="caption" class="description" title={ this.description || description }>{ this.description || description }</mds-text>
           </div>
         </div>
       </Host>
     )
   }
-
 }

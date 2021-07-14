@@ -15,7 +15,7 @@ export default {
     typography: {
       type: { name: 'string', required: false },
       control: { type: 'select' },
-      description: 'Truncates text inside the label or displays it in multiline if needed',
+      description: 'Specifies the font typography of the element',
       defaultValue: undefined,
       options: typographyDictionary,
     },

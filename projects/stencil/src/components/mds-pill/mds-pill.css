@@ -1,0 +1,6 @@
+@tailwind components;
+@tailwind utilities;
+
+:host {
+  @apply bg-label-sky-18 inline-flex items-center px-2 py-1 rounded text-label-sky-06;
+}
