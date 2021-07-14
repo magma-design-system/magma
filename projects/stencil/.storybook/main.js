@@ -42,7 +42,7 @@ module.exports = {
           options: {
             postcssOptions: {
               plugins: [
-                require('tailwindcss'),
+                require('tailwindcss')('./.storybook/tailwind.config.js'),
                 require('autoprefixer')
               ],
             },

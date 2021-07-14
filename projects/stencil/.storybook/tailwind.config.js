@@ -1,10 +1,9 @@
 const config = require('@maggioli-design-system/styles/tailwind.config')
 
-console.log('Tailwind / Stencil config')
+console.log('Tailwind / Storybook config')
 
-config.important = false
 config.purge.content = [
-  './src/**/*.{ts,tsx}',
+  './src/**/*.{stories.js,tsx}',
 ]
 
 module.exports = config

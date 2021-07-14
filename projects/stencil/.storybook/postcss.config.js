@@ -4,6 +4,6 @@ module.exports = {
     require('autoprefixer')({
       flexbox: 'no-2009',
     }),
-    require('tailwindcss'),
+    require('tailwindcss')('./.storybook/tailwind.config.js'),
   ]
 }
