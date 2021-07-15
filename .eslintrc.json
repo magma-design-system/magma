@@ -77,7 +77,7 @@
       ],
       "space-before-function-paren": [
         "error",
-        "never"
+        "always"
       ],
       "space-before-blocks": [
         "error",
