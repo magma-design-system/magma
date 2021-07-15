@@ -15,6 +15,9 @@ extensionsList.forEach((extension) => {
   filesList.push(`${faker.system.commonFileName().split('.')[0]}.${extension}`)
 })
 
+const getFile = () =>
+  filesList[faker.random.number(filesList.length - 1)]
+
 export default {
   title: 'UI / Download',
   component: MdsDownload,
@@ -48,23 +51,26 @@ const Template = args =>
 
 export const Default = Template.bind({})
 Default.args = {
-  filename: filesList[11],
+  filename: getFile(),
 }
 
 export const Description = Template.bind({})
 Description.args = {
   description: 'This is a custom description',
-  filename: filesList[22],
+  filename: getFile(),
 }
+
+export const tailwindInline = () =>
+  <mds-download filename={getFile()} class="w-auto"/>
 
 export const filesWithoutExtension = Template.bind({})
 filesWithoutExtension.args = {
-  filename: filesList[0],
+  filename: getFile(),
   suffix: 'pdf',
 }
 
 export const preview = Template.bind({})
 preview.args = {
-  filename: filesList[1],
+  filename: getFile(),
   preview: 'https://i2.wp.com/clipart.info/images/ccovers/1495750818Apple-PNG-Clip-Art.png',
 }

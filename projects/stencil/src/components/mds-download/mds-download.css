@@ -5,7 +5,7 @@
   @apply
     bg-adjust-tone
     cursor-pointer
-    flex
+    inline-flex
     items-stretch
     overflow-hidden
     rounded-md
