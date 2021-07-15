@@ -3,6 +3,7 @@
 
 :host {
   @apply
+    auto-rows-max
     bg-adjust-tone
     grid
     overflow-hidden
