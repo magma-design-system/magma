@@ -12,15 +12,15 @@ const fs = require('fs')
  * @api private
  */
 function parse (data) {
-  data = data.toString('utf-8')
+  let dataParsed = data.toString('utf-8')
 
   //
   // Remove a possible UTF-8 BOM (byte order marker) as this can lead to parse
   // values when passed in to the JSON.parse.
   //
-  if (data.charCodeAt(0) === 0xFEFF) data = data.slice(1)
+  if (dataParsed.charCodeAt(0) === 0xFEFF) dataParsed = dataParsed.slice(1)
 
-  try { return JSON.parse(data) } catch (e) { return false }
+  try { return JSON.parse(dataParsed) } catch (e) { return false }
 }
 
 const iteratorSymbol = typeof Symbol === 'function' && typeof Symbol.iterator === 'symbol' ? Symbol.iterator : null
@@ -48,10 +48,10 @@ function addSymbolIterator (result) {
  * @api public
  */
 module.exports = function find (root) {
-  root = root || process.cwd()
-  if (typeof root !== 'string') {
-    if (typeof root === 'object' && typeof root.filename === 'string') {
-      root = root.filename
+  let rootPath = root || process.cwd()
+  if (typeof rootPath !== 'string') {
+    if (typeof rootPath === 'object' && typeof rootPath.filename === 'string') {
+      rootPath = rootPath.filename
     } else {
       throw new Error('Must pass a filename string or a module object to finder')
     }
@@ -64,18 +64,18 @@ module.exports = function find (root) {
      * @api public
      */
     next: function next () {
-      if (root.match(/^(\w:\\|\/)$/)) {
+      if (rootPath.match(/^(\w:\\|\/)$/)) {
         return addSymbolIterator({
           value: undefined,
           filename: undefined,
-          done: true
+          done: true,
         })
       }
 
-      const file = path.join(root, 'package.json')
+      const file = path.join(rootPath, 'package.json')
       let data
 
-      root = path.resolve(root, '..')
+      rootPath = path.resolve(rootPath, '..')
 
       if (fs.existsSync(file) && (data = parse(fs.readFileSync(file)))) {
         data.__path = file
@@ -83,11 +83,10 @@ module.exports = function find (root) {
         return addSymbolIterator({
           value: data,
           filename: file,
-          done: false
+          done: false,
         })
       }
-
       return next()
-    }
+    },
   })
 }

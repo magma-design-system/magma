@@ -20,7 +20,7 @@ main(process.argv.slice(2))
  * @param parameters {string[]} Input parameters
  * @return {void}
  */
-function main(parameters) {
+function main (parameters) {
   const [inputFileParameter, ...restParams] = parameters
   const IS_PARAM = param => param.startsWith('--') || param.startsWith('-')
   const customParams = restParams.filter(IS_PARAM)
@@ -51,7 +51,7 @@ function main(parameters) {
     })
 }
 
-function buildCSSEncoded(fontName) {
+function buildCSSEncoded (fontName) {
   const fontPath = path.resolve(BUILD_FONTS_DIR, `${fontName}.ttf`)
   const cssPath = path.resolve(BUILD_PATH_DIR, `${fontName}.css`)
   const newCssPath = path.resolve(BUILD_PATH_DIR, `${fontName}.base64.css`)
@@ -80,7 +80,7 @@ function buildCSSEncoded(fontName) {
  * Crea la cartella di lavoro per la build
  * @return {Promise<void>}
  */
-function createBuildDirective() {
+function createBuildDirective () {
   return fs.mkdir(BUILD_SVG_DIR, { recursive: true })
     .then(() => console.debug('Build directive created in', BUILD_SVG_DIR.split('/icons')[1]))
     .catch(error => {
@@ -94,7 +94,7 @@ function createBuildDirective() {
  * @param inputData {Object.<string, string>} Mappa con l'icona desiderata come valore e il nome dell'icona come chiave
  * @returns {Promise<void[]>} Una promise da attendere perché termini la copia
  */
-function iconsToTempFolder(inputData) {
+function iconsToTempFolder (inputData) {
   const promises = []
   for (const [key, value] of Object.entries(inputData)) {
     const icon = iconSelectorToObject(value)
@@ -129,7 +129,7 @@ function iconsToTempFolder(inputData) {
  * @param iconSelector {string} Nome dell'icona desiderata
  * @return {{name: string, group: string}} Oggetto contenente le stesse informazioni presenti in iconSelector
  */
-function iconSelectorToObject(iconSelector) {
+function iconSelectorToObject (iconSelector) {
   let array = iconSelector.split('/')
   if (array.length === 1) {
     array = ['localDirectory', ...array]
@@ -155,24 +155,24 @@ function iconSelectorToObject(iconSelector) {
  * @param {BuildFontOptions} options Configurazione del font
  * @return {Promise<void>}
  */
-function buildFont(options) {
+function buildFont (options) {
   const _options = getSvgToFontOptions(options)
   const scssFileName = `${options.outputPath}/${options.fontName}.scss`
   return svgtofont(_options)
     .then(() => addPrefixToAssetsUrlInScss(scssFileName, 'fonts/')) // defaultValue == cssPath
 }
 
-function addPrefixToAssetsUrlInScss(scssFileName, defaultValue = '') {
+function addPrefixToAssetsUrlInScss (scssFileName, defaultValue = '') {
   return fs.readFile(scssFileName)
     .then(scssText => {
       const variableName = '$font-icons-base-url'
-      return `${variableName}: '${defaultValue}' !default\n\n${scssText}`
+      return `${variableName}: '${defaultValue}' !default;\n\n${scssText}`
         .replace(new RegExp(`url\\(('|")${defaultValue}`, 'g'), `url(${variableName} + $1`)
     })
     .then(scssText => fs.writeFile(scssFileName, scssText))
 }
 
-function getSvgToFontOptions({ svgPath, outputPath, fontName, website } = {}) {
+function getSvgToFontOptions ({ svgPath, outputPath, fontName, website } = {}) {
   outputPath
   return {
     src: svgPath,
@@ -234,7 +234,7 @@ function getSvgToFontOptions({ svgPath, outputPath, fontName, website } = {}) {
   }
 }
 
-function organizeFiles() {
+function organizeFiles () {
   // Moving out of "fonts" folder files witch aren't fonts
   const isFontFile = /\.(ttf|woff|woff2|eot|svg)$/i
   return fs.readdir(BUILD_FONTS_DIR)

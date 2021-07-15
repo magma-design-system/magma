@@ -17,7 +17,7 @@ const fs = require('fs').promises
  * @param {string} fontName
  * @return {File}
  */
-function generateTypescript(icons, fontName) {
+function generateTypescript (icons, fontName) {
   const types = icons.map(icon => `'${icon}'`).join('|')
   const values = icons.map(icon => `'${icon}'`).join(',')
   const typeName = getTypeName(fontName)
@@ -53,7 +53,7 @@ export const ${getVariableName(fontName)}: ${typeName}[] = [${values}];
  * @param {string} fontName
  * @return {string}
  */
-function getVariableName(fontName) {
+function getVariableName (fontName) {
   return fontName.replace(/-([\w])/gi, (match, firstGroup) => firstGroup.toUpperCase())
 }
 
@@ -63,12 +63,12 @@ function getVariableName(fontName) {
  * @param fontName
  * @return {string}
  */
-function getTypeName(fontName) {
+function getTypeName (fontName) {
   const varName = getVariableName(fontName)
   return varName.charAt(0).toUpperCase() + varName.slice(1)
 }
 
-function writeCodersFiles(inputData, options) {
+function writeCodersFiles (inputData, options) {
   const icons = Object.keys(inputData)
   const files = [
     // generateJavascript(icons, options.fontName),
