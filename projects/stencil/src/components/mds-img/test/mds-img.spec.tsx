@@ -2,7 +2,7 @@ import { newSpecPage } from '@stencil/core/testing'
 import { MdsImg } from '../mds-img'
 
 describe('mds-img', () => {
-  it('renders', async() => {
+  it('renders', async () => {
     const page = await newSpecPage({
       components: [MdsImg],
       html: '<mds-img></mds-img>',

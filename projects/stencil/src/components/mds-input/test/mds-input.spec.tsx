@@ -2,7 +2,7 @@ import { newSpecPage } from '@stencil/core/testing'
 import { MdsInput } from '../mds-input'
 
 describe('mds-input', () => {
-  it('renders', async() => {
+  it('renders', async () => {
     const page = await newSpecPage({
       components: [MdsInput],
       html: '<mds-input></mds-input>',

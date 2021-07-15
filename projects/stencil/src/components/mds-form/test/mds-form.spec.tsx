@@ -2,7 +2,7 @@ import { newSpecPage } from '@stencil/core/testing'
 import { MdsForm } from '../mds-form'
 
 describe('mds-form', () => {
-  it('renders', async() => {
+  it('renders', async () => {
     const page = await newSpecPage({
       components: [MdsForm],
       html: '<mds-form></mds-form>',
