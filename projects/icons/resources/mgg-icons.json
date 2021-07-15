@@ -165,6 +165,7 @@
   "finance-savings": "material/savings",
   "finance-waller": "material/account_balance_wallet",
   "form-checkbox-checked": "material/check_box",
+  "form-checkbox-checked-clean": "maggioli/check-tiny",
   "form-checkbox-unchecked": "material/check_box_outline_blank",
   "form-dropdown": "material/keyboard_arrow_down",
   "form-radio-checked": "material/radio_button_checked",
