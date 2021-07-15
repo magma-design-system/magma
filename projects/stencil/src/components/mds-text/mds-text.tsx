@@ -19,7 +19,7 @@ export class MdsText {
    */
   @Prop() readonly typography: TypographyType = 'detail'
 
-  render() {
+  render () {
     const Tag = this.tag !== undefined ? this.tag : typographyDefaultsDictionary[this.typography].tag
     const { selector } = typographyDefaultsDictionary[this.typography]
     return (

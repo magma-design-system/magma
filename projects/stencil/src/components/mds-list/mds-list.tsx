@@ -8,7 +8,7 @@ import { Component, Host, h } from '@stencil/core'
 
 export class MdsList {
 
-  render() {
+  render () {
     return (
       <Host>
         <slot></slot>

@@ -73,7 +73,7 @@ export class MdsDownload {
     return fileExtensionsDictionary[suffix] !== undefined ? fileExtensionsDictionary[suffix] : fileExtensionsDictionary.default
   }
 
-  render() {
+  render () {
     const { format, description } = this.getExtensionInfos()
     const { background, color, icon, iconBackground } = fileFormatsDictionary[format]
 

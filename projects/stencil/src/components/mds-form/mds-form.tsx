@@ -4,7 +4,6 @@ import { CharacterSetType } from '../../types/character-set'
 import { EnctypeType } from '../../types/enctype'
 import { FormAutocompleteType } from '../../types/form-autocomplete'
 import { FormMethodType } from '../../types/form-method'
-import { FormRelType } from '../../types/form-rel'
 
 @Component({
   tag: 'mds-form',
@@ -59,7 +58,7 @@ export class MdsForm {
    */
   @Prop() readonly target?: string
 
-  render() {
+  render () {
     return (
       <Host>
         <form

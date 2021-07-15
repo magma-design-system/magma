@@ -13,7 +13,7 @@ export class MdsPill {
    */
   @Prop() readonly typography: TypographyType = 'option'
 
-  render() {
+  render () {
     return (
       <Host>
         <mds-text typography={this.typography}><slot></slot></mds-text>

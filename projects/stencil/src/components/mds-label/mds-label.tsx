@@ -29,7 +29,7 @@ export class MdsLabel {
   //   onClick={this.onClickDelete('clicked')}
   // }
 
-  render() {
+  render () {
     return (
       <Host>
         <mds-text typography={this.typography} class={clsx('text flex-grow min-w-0 py-1', this.truncate && 'truncate')}>

@@ -18,7 +18,7 @@ export class MdsListItem {
    */
   @Prop() readonly icon: string = 'list-dot'
 
-  render() {
+  render () {
     return (
       <Host>
         <mds-icon name={this.icon} part="icon"/>

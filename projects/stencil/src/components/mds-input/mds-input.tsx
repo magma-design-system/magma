@@ -136,7 +136,7 @@ export class MdsInput {
    */
   @Event() focusEvent!: EventEmitter<void>
 
-  componentWillLoad(): void {
+  componentWillLoad (): void {
     // If the mds-input has a tabindex attribute we get the value
     // and pass it down to the native input, then remove it from the
     // mds-input to avoid causing tabbing twice on the same element
@@ -151,7 +151,7 @@ export class MdsInput {
    * Emits the change event when the component value changes
    */
   @Watch('value')
-  protected valueChanged():void {
+  protected valueChanged ():void {
     this.changeEvent.emit({ value: this.value === null ? this.value : this.value.toString() })
   }
 
@@ -161,7 +161,7 @@ export class MdsInput {
    * of the global `input.focus()`.
    */
   @Method()
-  async setFocus():Promise<void> {
+  async setFocus ():Promise<void> {
     if (this.nativeInput !== null) {
       this.nativeInput.focus()
     }
@@ -171,12 +171,12 @@ export class MdsInput {
    * Returns the native `<input>` element used under the hood.
    */
   @Method()
-  getInputElement(): Promise<HTMLInputElement> {
+  getInputElement (): Promise<HTMLInputElement> {
     // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
     return Promise.resolve(this.nativeInput!)
   }
 
-  private getValue(): string {
+  private getValue (): string {
     return typeof this.value === 'number' ? this.value.toString() : (this.value || '').toString()
   }
 
@@ -198,7 +198,7 @@ export class MdsInput {
     this.focusEvent.emit()
   }
 
-  render() {
+  render () {
     const value = this.getValue()
     return (
       <Host>

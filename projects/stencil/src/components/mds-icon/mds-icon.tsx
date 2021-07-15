@@ -13,7 +13,7 @@ export class MdsIcon {
    */
   @Prop() readonly name?: string
 
-  render() {
+  render () {
     return (
       <Host class={`mgg-icons-${this.name}`}/>
     )

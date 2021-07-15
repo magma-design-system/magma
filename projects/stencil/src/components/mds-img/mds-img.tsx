@@ -68,24 +68,24 @@ export class MdsImg {
    */
   @Prop() readonly width?: string
 
-  private aspectRatioPaddingTop() {
+  private aspectRatioPaddingTop () {
     const ratioBase = parseInt(this.aspectRatio.split('/')[1])
     const ratioDivisor = parseInt(this.aspectRatio.split('/')[0])
     return `${(ratioBase / ratioDivisor * 100).toFixed(2)}%`
   }
 
-  private aspectRatioSanitized() {
+  private aspectRatioSanitized () {
     return `${this.aspectRatio.split('/')[0]} / ${this.aspectRatio.split('/')[1]}`
   }
 
-  private getAspectRatio() {
+  private getAspectRatio () {
     if (this.aspectRatioModern) {
       return { aspectRatio: this.aspectRatioSanitized() }
     }
     return { paddingTop: this.aspectRatioPaddingTop() }
   }
 
-  render() {
+  render () {
     if (this.aspectRatio !== undefined) {
       return (
         <Host

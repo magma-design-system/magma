@@ -7,7 +7,7 @@ import { Component, Host, h } from '@stencil/core'
 })
 export class MdsGrid {
 
-  render() {
+  render () {
     return (
       <Host>
         <slot></slot>
