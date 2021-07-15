@@ -14,7 +14,7 @@ const __dirname = dirname(__filename)
 const ROOT_DIR = __dirname + '/..'
 const DIST_DIR = ROOT_DIR + '/dist'
 
-function main() {
+function main () {
   const source = fs.readFileSync(join(ROOT_DIR, '/package.json')).toString('utf-8')
   const sourceObj = JSON.parse(source)
 
