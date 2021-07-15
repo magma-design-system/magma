@@ -1,8 +1,8 @@
 import { Component, Host, h, Prop } from '@stencil/core'
 
 import { CharacterSetType } from '../../types/character-set'
-import { FormAutocompleteType } from '../../types/form-autocomplete'
 import { EnctypeType } from '../../types/enctype'
+import { FormAutocompleteType } from '../../types/form-autocomplete'
 import { FormMethodType } from '../../types/form-method'
 import { FormRelType } from '../../types/form-rel'
 
@@ -29,6 +29,11 @@ export class MdsForm {
   @Prop() readonly autocomplete?: FormAutocompleteType
 
   /**
+   * Specifies one or more classnames for an element (refers to a class in a style sheet)
+   */
+  @Prop() readonly class?: string
+
+  /**
    * Specifies how the form-data should be encoded when submitting it to the server (only for method="post")
    */
   @Prop() readonly enctype?: EnctypeType
@@ -49,14 +54,25 @@ export class MdsForm {
   @Prop() readonly novalidate?: boolean
 
   /**
-   * Specifies the relationship between the current document and the linked document
+   * Specifies a name or a keyword that indicates where to display the response that is received after submitting the form.
+   * Possible values are _blank, _self, _parent, _top or a custom frame name
    */
-  @Prop() readonly rel?: FormRelType
+  @Prop() readonly target?: string
 
   render() {
     return (
       <Host>
-        <form>
+        <form
+          acceptcharset={this.acceptcharset}
+          action={this.action}
+          autocomplete={this.autocomplete}
+          class={this.class}
+          enctype={this.enctype}
+          method={this.method}
+          name={this.name}
+          novalidate={this.novalidate}
+          target={this.target}
+        >
           <slot></slot>
         </form>
       </Host>
