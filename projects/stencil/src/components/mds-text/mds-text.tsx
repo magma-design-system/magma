@@ -1,6 +1,6 @@
 import { Component, Host, Prop, h } from '@stencil/core'
-import { TagTypes } from '../../types/tag'
-import { TypographyTypes } from '../../types/typography'
+import { TypographyTagType } from '../../types/typography-tag'
+import { TypographyType } from '../../types/typography'
 import { typographyDefaultsDictionary } from '../../dictionary/typography-defaults'
 
 @Component({
@@ -12,12 +12,12 @@ export class MdsText {
   /**
    * Specifies the HTML tag of the element
    */
-  @Prop() readonly tag?: TagTypes
+  @Prop() readonly tag?: TypographyTagType
 
   /**
    * Specifies the font typography of the element
    */
-  @Prop() readonly typography: TypographyTypes = 'detail'
+  @Prop() readonly typography: TypographyType = 'detail'
 
   render() {
     const Tag = this.tag !== undefined ? this.tag : typographyDefaultsDictionary[this.typography].tag

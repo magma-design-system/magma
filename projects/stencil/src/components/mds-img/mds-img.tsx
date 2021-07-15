@@ -1,7 +1,7 @@
 import { Component, Host, h, Prop } from '@stencil/core'
-import { CrossoriginTypes } from '../../types/crossorigin'
-import { LoadingTypes } from '../../types/loading'
-import { ReferrerpolicyTypes } from '../../types/referrerpolicy'
+import { CrossoriginType } from '../../types/crossorigin'
+import { LoadingType } from '../../types/loading'
+import { ReferrerpolicyType } from '../../types/referrerpolicy'
 
 @Component({
   tag: 'mds-img',
@@ -28,7 +28,7 @@ export class MdsImg {
    * Allow images from third-party sites that allow
    * cross-origin access to be used with canvas
    */
-  @Prop() readonly crossorigin?: CrossoriginTypes = 'use-credentials'
+  @Prop() readonly crossorigin?: CrossoriginType = 'use-credentials'
 
   /**
    * The height attribute specifies the height of an image, in pixels.
@@ -39,12 +39,12 @@ export class MdsImg {
    * Specifies whether a browser should load an image immediately
    * or to defer loading of images until some conditions are met.
    */
-  @Prop() readonly loading?: LoadingTypes = 'lazy'
+  @Prop() readonly loading?: LoadingType = 'lazy'
 
   /**
    * Specifies which referrer information to use when fetching an image.
    */
-  @Prop() readonly referrerpolicy?: ReferrerpolicyTypes = 'no-referrer-when-downgrade'
+  @Prop() readonly referrerpolicy?: ReferrerpolicyType = 'no-referrer-when-downgrade'
 
   /**
    * One or more strings separated by commas, indicating a set of source sizes.

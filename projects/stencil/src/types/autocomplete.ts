@@ -1,4 +1,4 @@
-export type AutocompleteTypes =
+export type AutocompleteType =
   | 'additional-name'
   | 'address'
   | 'address-level1'

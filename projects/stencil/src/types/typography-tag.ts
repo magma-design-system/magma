@@ -1,4 +1,4 @@
-export type TagTypes =
+export type TypographyTagType =
   | 'abbr'
   | 'address'
   | 'article'

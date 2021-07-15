@@ -1,4 +1,4 @@
-export type InputTypeTypes =
+export type InputTextType =
   | 'date'
   | 'email'
   | 'number'

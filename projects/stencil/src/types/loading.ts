@@ -1,3 +1,3 @@
-export type LoadingTypes =
+export type LoadingType =
   | 'eager'
   | 'lazy'

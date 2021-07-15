@@ -1,5 +1,5 @@
 import { Component, Host, h, Prop } from '@stencil/core'
-import { TypographyTypes } from '../../types/typography'
+import { TypographyType } from '../../types/typography'
 import clsx from 'clsx'
 
 @Component({
@@ -17,7 +17,7 @@ export class MdsLabel {
   /**
    * Specifies the typography of the element
    */
-  @Prop() readonly typography?: TypographyTypes = 'detail'
+  @Prop() readonly typography?: TypographyType = 'detail'
 
   /**
    * Displays a close / delete button to the right of the label

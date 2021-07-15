@@ -1,4 +1,4 @@
-export type ReferrerpolicyTypes =
+export type ReferrerpolicyType =
   | 'no-referrer'
   | 'no-referrer-when-downgrade'
   | 'origin'

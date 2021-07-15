@@ -1,4 +1,4 @@
-export type TypographyTypes =
+export type TypographyType =
   | 'action'
   | 'caption'
   | 'code'

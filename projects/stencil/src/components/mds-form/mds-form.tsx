@@ -1,9 +1,10 @@
 import { Component, Host, h, Prop } from '@stencil/core'
 
 import { CharacterSetType } from '../../types/character-set'
-import { AutocompleteTypes } from '../../types/autocomplete'
+import { FormAutocompleteType } from '../../types/form-autocomplete'
 import { EnctypeType } from '../../types/enctype'
-import { FormMethodTypes } from '../../types/form-method'
+import { FormMethodType } from '../../types/form-method'
+import { FormRelType } from '../../types/form-rel'
 
 @Component({
   tag: 'mds-form',
@@ -25,7 +26,7 @@ export class MdsForm {
   /**
    * Specifies whether a form should have autocomplete on or off
    */
-  @Prop() readonly autocomplete?: AutocompleteTypes
+  @Prop() readonly autocomplete?: FormAutocompleteType
 
   /**
    * Specifies how the form-data should be encoded when submitting it to the server (only for method="post")
@@ -35,7 +36,7 @@ export class MdsForm {
   /**
    * Specifies the HTTP method to use when sending form-data
    */
-  @Prop() readonly method?: FormMethodTypes
+  @Prop() readonly method?: FormMethodType
 
   /**
    * Specifies the name of the form
@@ -46,6 +47,11 @@ export class MdsForm {
    * Specifies that the form should not be validated when submitted
    */
   @Prop() readonly novalidate?: boolean
+
+  /**
+   * Specifies the relationship between the current document and the linked document
+   */
+  @Prop() readonly rel?: FormRelType
 
   render() {
     return (

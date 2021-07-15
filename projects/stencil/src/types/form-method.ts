@@ -1,3 +1,3 @@
-export type FormMethodTypes =
+export type FormMethodType =
   | 'get'
   | 'post'

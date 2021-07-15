@@ -1,4 +1,4 @@
-export type ExtensionSuffixTypes =
+export type ExtensionSuffixType =
   | '7z'
   | 'ace'
   | 'ai'

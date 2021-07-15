@@ -1,5 +1,5 @@
 import { Component, Host, h, Prop } from '@stencil/core'
-import { ExtensionSuffixTypes } from '../../types/extension-suffix'
+import { ExtensionSuffixType } from '../../types/extension-suffix'
 import { fileFormatsDictionary } from '../../dictionary/fileformats'
 import { fileExtensionsDictionary } from '../../dictionary/file-extensions'
 
@@ -13,7 +13,7 @@ export class MdsDownload {
   /**
    * Overrides the automatic filetype recongition by forcing the suffix to one of the available formats choosen
    */
-  @Prop() readonly suffix?: ExtensionSuffixTypes
+  @Prop() readonly suffix?: ExtensionSuffixType
 
   /**
    * Overrides the default filetype description

@@ -1,3 +1,3 @@
-export type CrossoriginTypes =
+export type CrossoriginType =
   | 'anonymous'
   | 'use-credentials'
