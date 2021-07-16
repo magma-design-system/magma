@@ -13,7 +13,10 @@ export default {
 }
 
 const Template = args =>
-  <mds-form {...args}>Hello form</mds-form>
+  <mds-form {...args} class="gap-4">
+    <mds-text>Hello form</mds-text>
+    <mds-input placeholder="Full name"/>
+  </mds-form>
 
 export const Default = Template.bind({})
 Default.args = {

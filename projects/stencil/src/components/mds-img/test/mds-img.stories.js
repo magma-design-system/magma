@@ -23,7 +23,6 @@ const URLs = [
 export default {
   title: 'UI / Image',
   component: MdsImg,
-  notes: readme,
   argTypes: {
     alt: {
       description: 'Specifies an alternate text for an image',

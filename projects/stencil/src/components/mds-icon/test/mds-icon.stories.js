@@ -8,10 +8,9 @@ export default {
   argTypes: {
     name: {
       type: { name: 'string', required: false },
-      description: 'Truncates text inside the label or displays it in multiline if needed',
+      description: 'The name of the icon set. The icon set is strictly realted to @maggioli-design-system/icons',
       options: Object.keys(mggIconsDictionary).sort(),
       control: { type: 'select' },
-      defaultValue: 'status-warning',
     },
   },
 }

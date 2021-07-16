@@ -11,7 +11,6 @@ export default {
       type: { name: 'string', required: false },
       control: { type: 'select' },
       description: 'Specifies the font typography of the element',
-      defaultValue: undefined,
       options: typographyDictionary,
     },
   },

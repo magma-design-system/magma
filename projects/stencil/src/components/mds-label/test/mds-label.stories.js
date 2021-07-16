@@ -10,13 +10,11 @@ export default {
     truncate: {
       type: { name: 'boolean', required: false },
       description: 'Truncates text inside the label or displays it in multiline if needed',
-      defaultValue: true,
     },
     typography: {
       type: { name: 'string', required: false },
       control: { type: 'select' },
       description: 'Specifies the font typography of the element',
-      defaultValue: undefined,
       options: typographyDictionary,
     },
   },

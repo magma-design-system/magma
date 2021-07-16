@@ -4,3 +4,7 @@
 :host {
   @apply grid;
 }
+
+form {
+  @apply grid;
+}

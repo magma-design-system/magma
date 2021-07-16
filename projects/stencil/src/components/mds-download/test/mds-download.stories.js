@@ -16,7 +16,7 @@ extensionsList.forEach((extension) => {
 })
 
 const getFile = () =>
-  filesList[faker.random.number(filesList.length - 1)]
+  filesList[faker.datatype.number(filesList.length - 1)]
 
 export default {
   title: 'UI / Download',

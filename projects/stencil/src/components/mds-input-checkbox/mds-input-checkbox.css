@@ -1,0 +1,64 @@
+@tailwind components;
+@tailwind utilities;
+
+:host {
+  @apply
+    gap-2
+    inline-flex
+    items-start
+    text-adjust-tone-04;
+}
+
+.field {
+  @apply hidden;
+}
+
+.label-icon {
+  @apply
+    cursor-pointer;
+}
+
+.label-text {
+  @apply cursor-pointer;
+}
+
+.icons {
+  @apply relative;
+}
+
+.icon-checked,
+.icon-unchecked {
+  @apply
+    ease-out-expo
+    font-normal;
+}
+
+.icon-unchecked {
+  @apply
+    duration-700
+    opacity-100
+    text-adjust-tone-10
+    transition-opacity;
+}
+
+.icon-checked {
+  @apply
+    absolute
+    duration-300
+    left-0
+    text-label-sky-06
+    transform
+    transition-transform;
+
+  transform: scale(theme('scale.0'));
+}
+
+.field:checked + .label-icon .icon-unchecked {
+  @apply duration-300 opacity-0;
+}
+
+.field:checked + .label-icon .icon-checked {
+  @apply duration-700;
+
+  transform: scale(theme('scale.100'));
+}

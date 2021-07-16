@@ -21,6 +21,7 @@
             "allowedNames": ["render"]
           }
         ],
+        "@typescript-eslint/prefer-nullish-coalescing": "error",
         "@typescript-eslint/no-non-null-assertion": "error",
         "@stencil/strict-boolean-conditions": "error",
         "@stencil/element-type": "error",

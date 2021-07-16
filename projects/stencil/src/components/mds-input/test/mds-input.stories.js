@@ -9,7 +9,6 @@ export default {
   component: MdsInput,
   argTypes: {
     autocomplete: {
-      defaultValue: undefined,
       description: 'Specifies whether the element should have autocomplete enabled',
       options: autoCompleteDictionary,
       control: { type: 'select' },
@@ -17,74 +16,60 @@ export default {
     autofocus: {
       type: { name: 'boolean', required: false },
       description: 'Specifies that the element should automatically get focus when the page loads',
-      defaultValue: false,
     },
     disabled: {
       type: { name: 'boolean', required: false },
       description: 'If true, the element is displayed as disabled',
-      defaultValue: false,
     },
     max: {
       type: { name: 'number', required: false },
       description: 'Specifies the maximum value',
-      defaultValue: undefined,
     },
     maxLength: {
       type: { name: 'number', required: false },
       description: 'Specifies the maximum number of characters allowed in an element',
-      defaultValue: undefined,
     },
     min: {
       type: { name: 'number', required: false },
       description: 'Specifies the minimum value',
-      defaultValue: undefined,
     },
     minLength: {
       type: { name: 'number', required: false },
       description: 'Specifies the minimum number of characters allowed in an element',
-      defaultValue: undefined,
     },
     name: {
       type: { name: 'string', required: false },
       description: 'Is needed to reference the form data after the form is submitted',
-      defaultValue: undefined,
     },
     pattern: {
       type: { name: 'string', required: false },
       description: 'Specifies a regular expression that element\'s value is checked against',
-      defaultValue: undefined,
     },
     placeholder: {
       type: { name: 'string', required: false },
       description: 'Specifies a short hint that describes the expected value of the element',
-      defaultValue: undefined,
     },
     readOnly: {
       type: { name: 'boolean', required: false },
       description: 'Specifies that the element is read-only',
-      defaultValue: false,
     },
     required: {
       type: { name: 'boolean', required: false },
       description: 'Specifies that the element must be filled out before submitting the form',
-      defaultValue: false,
     },
     step: {
       type: { name: 'string', required: false },
       description: 'Specifies the interval between legal numbers in an input field',
-      defaultValue: undefined,
     },
     type: {
       type: { name: 'string', required: true },
       description: 'Specifies the type of element',
       options: ['date', 'email', 'number', 'password', 'search', 'tel', 'text', 'time', 'url'],
       control: { type: 'select' },
-      defaultValue: 'text',
     },
     value: {
       type: { name: 'string', required: false },
       description: 'Specifies the value of the element',
-      defaultValue: undefined,
     },
   },
 }

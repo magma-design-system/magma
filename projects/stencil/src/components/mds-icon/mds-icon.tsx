@@ -3,7 +3,7 @@ import { Component, Host, h, Prop } from '@stencil/core'
 @Component({
   tag: 'mds-icon',
   styleUrl: 'mds-icon.css',
-  shadow: false,
+  shadow: true,
 })
 export class MdsIcon {
 
@@ -18,5 +18,4 @@ export class MdsIcon {
       <Host class={`mgg-icons-${this.name}`}/>
     )
   }
-
 }

@@ -8,7 +8,7 @@ import { FormMethodType } from '../../types/form-method'
 @Component({
   tag: 'mds-form',
   styleUrl: 'mds-form.css',
-  shadow: true,
+  shadow: false,
 })
 export class MdsForm {
 
