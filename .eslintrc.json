@@ -10,11 +10,18 @@
     ],
     "parser": "@typescript-eslint/parser",
     "parserOptions": {
+        "project": [
+          "./project/stencil/tsconfig.json"
+        ],
         "ecmaVersion": 12,
         "sourceType": "module"
     },
     "plugins": [
         "@typescript-eslint"
+    ],
+    "ignorePatterns": [
+      "**/node_modules/*.{js,ts}",
+      "**/dist/*.{js,ts}"
     ],
     "rules": {
       "linebreak-style": [
