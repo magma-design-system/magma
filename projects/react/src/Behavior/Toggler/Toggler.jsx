@@ -38,7 +38,7 @@ export default class Toggler extends Component {
     </TogglerContext.Consumer>
   }
 
-  render() {
+  render () {
     return (
       <TogglerContext.Provider
         value={{

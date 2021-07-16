@@ -2,7 +2,7 @@ import React from 'react'
 import PropTypes from 'prop-types'
 import './Picture.scss'
 
-function getMediaQuery(item) {
+function getMediaQuery (item) {
   if ({}.hasOwnProperty.call(item, 'minWidth')) {
     return `(min-width: ${item.minWidth}px)`
   }

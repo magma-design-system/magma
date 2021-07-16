@@ -9,16 +9,16 @@ import LabelCaption from '@Typography/LabelCaption/LabelCaption'
 
 import dictionary from './dictionary.json'
 
-function getExtension(fileName) {
+function getExtension (fileName) {
   const extension = fileName.split('.').pop()
   return fileName !== extension ? extension : 'default'
 }
 
-function getName(fileName, extension) {
+function getName (fileName, extension) {
   return fileName.replace(`.${extension}`, '')
 }
 
-function getExtensionInfos(extension) {
+function getExtensionInfos (extension) {
   return dictionary.extension[extension] !== undefined ? dictionary.extension[extension] : dictionary.extension.default
 }
 

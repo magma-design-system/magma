@@ -95,39 +95,39 @@ PaginatorItem.defaultProps = {
   onClick: () => {},
 }
 
-function getPageButton(props, number) {
+function getPageButton (props, number) {
   return <PaginatorItem onClick={() => props.onClick(number)}
     isActive={number === props.currentPage}>
     {number}
   </PaginatorItem>
 }
 
-function fewPages(props) {
+function fewPages (props) {
   const pages = Array.from({ length: props.pages - 2 }, (_, i) => i + 1)
   return generatePaginator(props, pages.map(page => page + 1))
 }
 
-function firstOrLast(props) {
+function firstOrLast (props) {
   const pages = [2, 3, 0, props.pages - 2, props.pages - 1]
   return generatePaginator(props, pages)
 }
 
-function third(props) {
+function third (props) {
   const pages = [2, 3, 4, 0, props.pages - 1]
   return generatePaginator(props, pages)
 }
 
-function lastThird(props) {
+function lastThird (props) {
   const pages = [2, 0, props.pages - 3, props.pages - 2, props.pages - 1]
   return generatePaginator(props, pages)
 }
 
-function middle(props, currentPage) {
+function middle (props, currentPage) {
   const pages = [0, currentPage - 1, currentPage, currentPage + 1, 0]
   return generatePaginator(props, pages)
 }
 
-function generatePaginator(props, pages) {
+function generatePaginator (props, pages) {
   return pages.map(page => {
     if (page !== 0) {
       return getPageButton(props, page)
@@ -136,7 +136,7 @@ function generatePaginator(props, pages) {
   })
 }
 
-function paginatorCore(props) {
+function paginatorCore (props) {
   const { pages } = props
   const currentPage = props.currentPage > pages ? pages : props.currentPage
 
@@ -151,7 +151,7 @@ function paginatorCore(props) {
 
 const minPages = 8
 
-function Paginator(props) {
+function Paginator (props) {
   if (props.pages === 1) return <div className="paginator"></div>
 
   return (
