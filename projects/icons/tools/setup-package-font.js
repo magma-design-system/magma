@@ -26,7 +26,7 @@ function main () {
     sourceObj.main = sourceObj.main.slice(5)
   }
   sourceObj.files = sourceObj.files.map(file => {
-    file.startsWith('/dist') ? file.slice(5) : file
+    return file.startsWith('/dist') ? file.slice(5) : file
   })
 
   // Output folder
