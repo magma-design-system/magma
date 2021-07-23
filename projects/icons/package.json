@@ -34,6 +34,17 @@
     "/dist/*.html",
     "/dist/*.js",
     "/dist/*.ts",
+    "/dist/natural/fonts/*.ttf",
+    "/dist/natural/fonts/*.woff",
+    "/dist/natural/fonts/*.woff2",
+    "/dist/natural/fonts/*.eot",
+    "/dist/natural/fonts/*.svg",
+    "/dist/natural/svg/*.svg",
+    "/dist/natural/*.scss",
+    "/dist/natural/*.css",
+    "/dist/natural/*.html",
+    "/dist/natural/*.js",
+    "/dist/natural/*.ts",
     "/resources/*.json"
   ],
   "keywords": [
