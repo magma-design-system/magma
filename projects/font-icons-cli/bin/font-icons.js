@@ -5,13 +5,18 @@ const fs = require('fs').promises
 const path = require('path')
 const pkg = require('../package.json')
 const { ICON_GROUPS } = require('../lib/icons-groups')
-const { ROOT_PATH_DIR, BUILD_PATH_DIR } = require('../lib/utils')
+const { ROOT_PATH_DIR, BUILD_PATH_DIR, BUILD_NATURAL_PATH_DIR } = require('../lib/utils')
 // const { writeCodersFiles } = require('../lib/coders-helper')
 // const util = require('util')
 // const exec = util.promisify(require('child_process').exec)
 
 const BUILD_SVG_DIR = `${BUILD_PATH_DIR}/svg`
 const BUILD_FONTS_DIR = `${BUILD_PATH_DIR}/fonts`
+
+const BUILD_NATURAL_SVG_DIR = `${BUILD_NATURAL_PATH_DIR}/svg`
+const BUILD_NATURAL_FONTS_DIR = `${BUILD_NATURAL_PATH_DIR}/fonts`
+
+// console.debug('Natural path dir', BUILD_NATURAL_PATH_DIR.split('/icons')[1]);
 
 main(process.argv.slice(2))
 
@@ -36,14 +41,24 @@ function main (parameters) {
   ICON_GROUPS.localDirectory.subDirectories.push(...localDirectories)
 
   const fontName = path.basename(inputFilePath, path.extname(inputFilePath))
-  const options = { svgPath: BUILD_SVG_DIR, outputPath: BUILD_PATH_DIR, fontName, website: shouldCreateWebsite }
+  const options = { svgPath: BUILD_SVG_DIR, outputPath: BUILD_PATH_DIR, relativeOutputPath: BUILD_PATH_DIR.split('icons/')[1], cssPath: 'fonts/', fontName, website: shouldCreateWebsite }
+  const optionsNatural = { ...options, svgPath: BUILD_NATURAL_SVG_DIR, outputPath: BUILD_NATURAL_PATH_DIR, relativeOutputPath: BUILD_NATURAL_PATH_DIR.split('icons/')[1] }
 
-  createBuildDirective()
-    .then(() => iconsToTempFolder(inputData))
+  createBuildDirective(BUILD_SVG_DIR)
+    .then(() => iconsToTempFolder(BUILD_SVG_DIR, inputData))
     .then(() => buildFont(options))
-    .then(() => buildCSSEncoded(fontName))
+    .then(() => buildCSSEncoded(BUILD_FONTS_DIR, BUILD_PATH_DIR, fontName))
     // .then(() => writeCodersFiles(inputData, options))
-    .then(() => organizeFiles())
+    .then(() => organizeFiles(BUILD_FONTS_DIR, BUILD_PATH_DIR))
+    // .then(() => buildTypescriptFiles())
+    // .then(() => console.log('Font creation completed!'))
+    .then(() => createBuildDirective(BUILD_NATURAL_SVG_DIR))
+    .then(() => createNaturalNames(inputData))
+    .then((naturalInputData) => iconsToTempFolder(BUILD_NATURAL_SVG_DIR, naturalInputData))
+    .then(() => buildFont(optionsNatural))
+    .then(() => buildCSSEncoded(BUILD_NATURAL_FONTS_DIR, BUILD_NATURAL_PATH_DIR, fontName))
+    // .then(() => writeCodersFiles(inputData, options))
+    .then(() => organizeFiles(BUILD_NATURAL_FONTS_DIR, BUILD_NATURAL_PATH_DIR))
     // .then(() => buildTypescriptFiles())
     // .then(() => console.log('Font creation completed!'))
     .catch(err => {
@@ -51,10 +66,20 @@ function main (parameters) {
     })
 }
 
-function buildCSSEncoded (fontName) {
-  const fontPath = path.resolve(BUILD_FONTS_DIR, `${fontName}.ttf`)
-  const cssPath = path.resolve(BUILD_PATH_DIR, `${fontName}.css`)
-  const newCssPath = path.resolve(BUILD_PATH_DIR, `${fontName}.base64.css`)
+function createNaturalNames(inputData) {
+  const naturalInputData = {};
+
+  for (const icon of [ ...new Set(Object.values(inputData)) ]) {
+    naturalInputData[icon.split('/')[1].replace(/_/gm, '-')] = icon;
+  }
+
+  return Promise.resolve(naturalInputData)
+}
+
+function buildCSSEncoded (buildFontsDir, buildPathDir, fontName) {
+  const fontPath = path.resolve(buildFontsDir, `${fontName}.ttf`)
+  const cssPath = path.resolve(buildPathDir, `${fontName}.css`)
+  const newCssPath = path.resolve(buildPathDir, `${fontName}.base64.css`)
 
   const fontBase64$ = fs.readFile(fontPath)
     .then(fontBuffer => Promise.resolve(fontBuffer.toString('base64')))
@@ -80,9 +105,9 @@ function buildCSSEncoded (fontName) {
  * Crea la cartella di lavoro per la build
  * @return {Promise<void>}
  */
-function createBuildDirective () {
-  return fs.mkdir(BUILD_SVG_DIR, { recursive: true })
-    .then(() => console.debug('Build directive created in', BUILD_SVG_DIR.split('/icons')[1]))
+function createBuildDirective (buildSvgDir) {
+  return fs.mkdir(buildSvgDir, { recursive: true })
+    .then(() => console.debug('Build directive created in', buildSvgDir.split('/icons')[1]))
     .catch(error => {
       console.error('Build directive creation failed.', error)
       return Promise.reject(error)
@@ -94,12 +119,12 @@ function createBuildDirective () {
  * @param inputData {Object.<string, string>} Mappa con l'icona desiderata come valore e il nome dell'icona come chiave
  * @returns {Promise<void[]>} Una promise da attendere perché termini la copia
  */
-function iconsToTempFolder (inputData) {
+function iconsToTempFolder (buildSvgDir, inputData) {
   const promises = []
   for (const [key, value] of Object.entries(inputData)) {
     const icon = iconSelectorToObject(value)
     const sourcePathPromise = ICON_GROUPS[icon.group].getPath(icon.name)
-    const destinationPath = path.join(BUILD_SVG_DIR, `${key}.svg`)
+    const destinationPath = path.join(buildSvgDir, `${key}.svg`)
 
     const promise = sourcePathPromise.then(sourcePath => {
       // console.debug('Copying', sourcePath, '->', destinationPath)
@@ -159,30 +184,29 @@ function buildFont (options) {
   const _options = getSvgToFontOptions(options)
   const scssFileName = `${options.outputPath}/${options.fontName}.scss`
   return svgtofont(_options)
-    .then(() => addPrefixToAssetsUrlInScss(scssFileName, 'fonts/')) // defaultValue == cssPath
+    .then(() => addPrefixToAssetsUrlInScss(scssFileName, options.cssPath)) // defaultValue == cssPath
 }
 
-function addPrefixToAssetsUrlInScss (scssFileName, defaultValue = '') {
+function addPrefixToAssetsUrlInScss (scssFileName, cssPath = '') {
   return fs.readFile(scssFileName)
     .then(scssText => {
       const variableName = '$font-icons-base-url'
-      return `${variableName}: '${defaultValue}' !default;\n\n${scssText}`
-        .replace(new RegExp(`url\\(('|")${defaultValue}`, 'g'), `url(${variableName} + $1`)
+      return `${variableName}: '${cssPath}' !default;\n\n${scssText}`
+        .replace(new RegExp(`url\\(('|")${cssPath}`, 'g'), `url(${variableName} + $1`)
     })
     .then(scssText => fs.writeFile(scssFileName, scssText))
 }
 
-function getSvgToFontOptions ({ svgPath, outputPath, fontName, website } = {}) {
-  outputPath
+function getSvgToFontOptions ({ svgPath, outputPath, relativeOutputPath, cssPath, fontName, website } = {}) {
   return {
     src: svgPath,
-    dist: 'dist/fonts', // font, website and typescript files
+    dist: `${relativeOutputPath}/${cssPath.split('/')[0]}`, // font, website and typescript files
     fontName, // font name
     classNamePrefix: fontName,
     css: {
       fontSize: '24px',
-      cssPath: 'fonts/',
-      output: 'dist', // css/scss/less/styl files
+      cssPath,
+      output: relativeOutputPath, // css/scss/less/styl files
     },
     // startNumber: 20000, // unicode start number
     svgicons2svgfont: {
@@ -234,13 +258,13 @@ function getSvgToFontOptions ({ svgPath, outputPath, fontName, website } = {}) {
   }
 }
 
-function organizeFiles () {
+function organizeFiles(buildFontsDir, buildPathDir) {
   // Moving out of "fonts" folder files witch aren't fonts
   const isFontFile = /\.(ttf|woff|woff2|eot|svg)$/i
-  return fs.readdir(BUILD_FONTS_DIR)
+  return fs.readdir(buildFontsDir)
     .then(files => files.filter(filename => !isFontFile.test(filename)))
     .then(files => Promise.all(files.map(
-      file => fs.rename(path.join(BUILD_FONTS_DIR, file), path.join(BUILD_PATH_DIR, file)),
+      file => fs.rename(path.join(buildFontsDir, file), path.join(buildPathDir, file)),
     )))
 }
 
