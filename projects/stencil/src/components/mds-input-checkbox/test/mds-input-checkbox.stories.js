@@ -8,15 +8,27 @@ export default {
   title: 'Form / Checkbox',
   component: MdsCheckbox,
   argTypes: {
+    autofocus: {
+      type: { name: 'boolean', required: false },
+      description: 'Sets or returns whether a checkbox should automatically get focus when the page loads',
+    },
     checked: {
       type: { name: 'boolean', required: false },
       description: 'Specifies that an <input> element should be pre-selected when the page loads (for type="checkbox" or type="radio")',
+    },
+    disabled: {
+      type: { name: 'boolean', required: false },
+      description: 'Sets or returns whether a checkbox is disabled, or not',
     },
     icon: {
       type: { name: 'string', required: false },
       description: 'The name of the icon set. The icon set is strictly realted to @maggioli-design-system/icons',
       options: Object.keys(mggIconsDictionary).sort(),
       control: { type: 'select' },
+    },
+    indeterminate: {
+      type: { name: 'boolean', required: false },
+      description: 'Sets or returns the indeterminate state of the checkbox',
     },
     name: {
       type: { name: 'string', required: false },
@@ -39,6 +51,12 @@ const Template = args =>
 
 export const Default = Template.bind({})
 Default.args = {
+  name: 'checkbox-name',
+}
+
+export const autoFocus = Template.bind({})
+autoFocus.args = {
+  autofocus: true,
   name: 'checkbox-name',
 }
 

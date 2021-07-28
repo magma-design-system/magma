@@ -15,15 +15,26 @@
 
 .label-icon {
   @apply
-    cursor-pointer;
+    cursor-pointer
+    relative;
 }
 
 .label-text {
   @apply cursor-pointer;
 }
 
-.icons {
-  @apply relative;
+.icon-typography-checked,
+.icon-typography-unchecked {
+  @apply
+    flex
+    items-center;
+}
+
+.icon-typography-checked {
+  @apply
+    absolute
+    left-0
+    top-0;
 }
 
 .icon-checked,
@@ -38,27 +49,59 @@
     duration-700
     opacity-100
     text-adjust-tone-10
-    transition-opacity;
+    transform
+    transition-cosmetic;
+
+  transform: scale(theme('scale.100'));
 }
 
 .icon-checked {
   @apply
-    absolute
     duration-300
-    left-0
     text-label-sky-06
     transform
-    transition-transform;
+    transition-cosmetic;
 
   transform: scale(theme('scale.0'));
 }
 
+.indeterminate .icon-checked {
+  @apply text-adjust-tone-06;
+}
+
 .field:checked + .label-icon .icon-unchecked {
-  @apply duration-300 opacity-0;
+  @apply
+    duration-700
+    opacity-0;
+
+  transform: scale(theme('scale.150'));
 }
 
 .field:checked + .label-icon .icon-checked {
   @apply duration-700;
 
   transform: scale(theme('scale.100'));
+}
+
+.field:focus + .label-icon .icon-checked,
+.field:focus + .label-icon .icon-unchecked {
+  @apply
+    ring
+    rounded-md;
+}
+
+.field:disabled + .label-icon .icon-unchecked {
+  @apply text-adjust-tone-12;
+}
+
+.field:disabled + .label-icon .icon-checked {
+  @apply text-adjust-tone-08;
+}
+
+.field:disabled + .label-icon {
+  @apply cursor-default;
+}
+
+.field:disabled + .label-icon + .label-text {
+  @apply cursor-default;
 }
