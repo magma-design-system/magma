@@ -138,7 +138,7 @@ class LocalDirectory {
    * @return {Promise<string[]>}
    */
   static async subDirectories () {
-    return LocalDirectory._subDirectories;
+    return LocalDirectory._subDirectories
   }
   static _subDirectories = []
 
@@ -169,8 +169,8 @@ class LocalDirectory {
    * @return {string} The icon name
    */
   static getIconName (path) {
-    if (!path.includes('/')) return false;
-    return path.match(LocalDirectory.FILE_NAME_REGEX)[1];
+    if (!path.includes('/')) return false
+    return path.match(LocalDirectory.FILE_NAME_REGEX)[1]
   }
 }
 
@@ -226,7 +226,7 @@ async function iconGroupListHelper (iconGroup, directories, fileTemplate) {
 async function listFilesInDirectory (directory, fileTemplate) {
   return fs.readdir(directory)
     .catch(() => [])
-    .then(files => fileTemplate ? files.filter(file => file.match(fileTemplate)) : files)
+    .then(files => (fileTemplate ? files.filter(file => file.match(fileTemplate)) : files))
 }
 
 /**
@@ -253,7 +253,7 @@ const ICON_GROUPS = {
  * @param path path of an icon
  * @return {Promise<string>}
  */
-async function pathToIconsGroup(path) {
+async function pathToIconsGroup (path) {
   for (const [key, value] of ICON_GROUPS) {
     const subdirectories = await value.subDirectories()
     if (subdirectories.find(dir => path.startsWith(dir))) {

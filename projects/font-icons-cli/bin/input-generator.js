@@ -13,6 +13,7 @@ main(process.argv.slice(2))
  * @return {void}
  */
 function main (parameters) {
+  console.log(parameters)
   const promises = Object.entries(ICON_GROUPS).map(iconGroupList)
   Promise.all(promises)
     .then(generateIcons)
@@ -42,13 +43,13 @@ function generateIcons (iconGroupLists) {
  */
 function iconGroupList ([groupName, group]) {
   switch (groupName) {
-    case 'maggioli':
-    case 'material':
-      return group.listPath().then(list => ({ group: groupName, list }))
-    //case 'localDirectory':
-    //  return group.listPath().then(list => ({ group: groupName, list }))
-    default:
-      throw new Error(`Group ${groupName} not found in icons-group.js`)
+  case 'maggioli':
+  case 'material':
+    return group.listPath().then(list => ({ group: groupName, list }))
+    // case 'localDirectory':
+    // return group.listPath().then(list => ({ group: groupName, list }))
+  default:
+    throw new Error(`Group ${groupName} not found in icons-group.js`)
   }
 }
 

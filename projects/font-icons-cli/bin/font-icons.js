@@ -54,7 +54,7 @@ function main (parameters) {
     // .then(() => console.log('Font creation completed!'))
     .then(() => createBuildDirective(BUILD_ORIGINAL_SVG_DIR))
     .then(() => createNaturalNames(inputData))
-    .then((naturalInputData) => iconsToTempFolder(BUILD_ORIGINAL_SVG_DIR, naturalInputData))
+    .then(naturalInputData => iconsToTempFolder(BUILD_ORIGINAL_SVG_DIR, naturalInputData))
     .then(() => buildFont(optionsNatural))
     .then(() => buildCSSEncoded(BUILD_ORIGINAL_FONTS_DIR, BUILD_ORIGINAL_PATH_DIR, fontName))
     // .then(() => writeCodersFiles(inputData, options))
@@ -66,11 +66,11 @@ function main (parameters) {
     })
 }
 
-function createNaturalNames(inputData) {
-  const naturalInputData = {};
+function createNaturalNames (inputData) {
+  const naturalInputData = {}
 
   for (const icon of [ ...new Set(Object.values(inputData)) ]) {
-    naturalInputData[icon.split('/')[1].replace(/_/gm, '-')] = icon;
+    naturalInputData[icon.split('/')[1].replace(/_/gm, '-')] = icon
   }
 
   return Promise.resolve(naturalInputData)
@@ -214,7 +214,7 @@ function addPrefixToAssetsUrlInScss (scssFileName, cssPath = '') {
     .then(scssText => fs.writeFile(scssFileName, scssText))
 }
 
-function getSvgToFontOptions ({ svgPath, outputPath, relativeOutputPath, cssPath, fontName, website } = {}) {
+function getSvgToFontOptions ({ svgPath, relativeOutputPath, cssPath, fontName, website } = {}) {
   return {
     src: svgPath,
     dist: `${relativeOutputPath}/${cssPath.split('/')[0]}`, // font, website and typescript files
@@ -275,7 +275,7 @@ function getSvgToFontOptions ({ svgPath, outputPath, relativeOutputPath, cssPath
   }
 }
 
-function organizeFiles(buildFontsDir, buildPathDir) {
+function organizeFiles (buildFontsDir, buildPathDir) {
   // Moving out of "fonts" folder files witch aren't fonts
   const isFontFile = /\.(ttf|woff|woff2|eot|svg)$/i
   return fs.readdir(buildFontsDir)
