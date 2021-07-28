@@ -76,7 +76,9 @@
 }
 
 .suffix {
-  @apply flex-shrink-0;
+  @apply
+    flex-shrink-0
+    pointer-events-none;
 }
 
 .description {
