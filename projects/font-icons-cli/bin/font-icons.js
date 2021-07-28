@@ -5,7 +5,7 @@ const fs = require('fs').promises
 const path = require('path')
 const pkg = require('../package.json')
 const { ICON_GROUPS } = require('../lib/icons-groups')
-const { ROOT_PATH_DIR, BUILD_PATH_DIR, BUILD_NATURAL_PATH_DIR } = require('../lib/utils')
+const { ROOT_PATH_DIR, BUILD_PATH_DIR, BUILD_ORIGINAL_PATH_DIR } = require('../lib/utils')
 // const { writeCodersFiles } = require('../lib/coders-helper')
 // const util = require('util')
 // const exec = util.promisify(require('child_process').exec)
@@ -13,10 +13,10 @@ const { ROOT_PATH_DIR, BUILD_PATH_DIR, BUILD_NATURAL_PATH_DIR } = require('../li
 const BUILD_SVG_DIR = `${BUILD_PATH_DIR}/svg`
 const BUILD_FONTS_DIR = `${BUILD_PATH_DIR}/fonts`
 
-const BUILD_NATURAL_SVG_DIR = `${BUILD_NATURAL_PATH_DIR}/svg`
-const BUILD_NATURAL_FONTS_DIR = `${BUILD_NATURAL_PATH_DIR}/fonts`
+const BUILD_ORIGINAL_SVG_DIR = `${BUILD_ORIGINAL_PATH_DIR}/svg`
+const BUILD_ORIGINAL_FONTS_DIR = `${BUILD_ORIGINAL_PATH_DIR}/fonts`
 
-// console.debug('Natural path dir', BUILD_NATURAL_PATH_DIR.split('/icons')[1]);
+// console.debug('Natural path dir', BUILD_ORIGINAL_PATH_DIR.split('/icons')[1]);
 
 main(process.argv.slice(2))
 
@@ -42,7 +42,7 @@ function main (parameters) {
 
   const fontName = path.basename(inputFilePath, path.extname(inputFilePath))
   const options = { svgPath: BUILD_SVG_DIR, outputPath: BUILD_PATH_DIR, relativeOutputPath: BUILD_PATH_DIR.split('icons/')[1], cssPath: 'fonts/', fontName, website: shouldCreateWebsite }
-  const optionsNatural = { ...options, svgPath: BUILD_NATURAL_SVG_DIR, outputPath: BUILD_NATURAL_PATH_DIR, relativeOutputPath: BUILD_NATURAL_PATH_DIR.split('icons/')[1] }
+  const optionsNatural = { ...options, svgPath: BUILD_ORIGINAL_SVG_DIR, outputPath: BUILD_ORIGINAL_PATH_DIR, relativeOutputPath: BUILD_ORIGINAL_PATH_DIR.split('icons/')[1] }
 
   createBuildDirective(BUILD_SVG_DIR)
     .then(() => iconsToTempFolder(BUILD_SVG_DIR, inputData))
@@ -52,13 +52,13 @@ function main (parameters) {
     .then(() => organizeFiles(BUILD_FONTS_DIR, BUILD_PATH_DIR))
     // .then(() => buildTypescriptFiles())
     // .then(() => console.log('Font creation completed!'))
-    .then(() => createBuildDirective(BUILD_NATURAL_SVG_DIR))
+    .then(() => createBuildDirective(BUILD_ORIGINAL_SVG_DIR))
     .then(() => createNaturalNames(inputData))
-    .then((naturalInputData) => iconsToTempFolder(BUILD_NATURAL_SVG_DIR, naturalInputData))
+    .then((naturalInputData) => iconsToTempFolder(BUILD_ORIGINAL_SVG_DIR, naturalInputData))
     .then(() => buildFont(optionsNatural))
-    .then(() => buildCSSEncoded(BUILD_NATURAL_FONTS_DIR, BUILD_NATURAL_PATH_DIR, fontName))
+    .then(() => buildCSSEncoded(BUILD_ORIGINAL_FONTS_DIR, BUILD_ORIGINAL_PATH_DIR, fontName))
     // .then(() => writeCodersFiles(inputData, options))
-    .then(() => organizeFiles(BUILD_NATURAL_FONTS_DIR, BUILD_NATURAL_PATH_DIR))
+    .then(() => organizeFiles(BUILD_ORIGINAL_FONTS_DIR, BUILD_ORIGINAL_PATH_DIR))
     // .then(() => buildTypescriptFiles())
     // .then(() => console.log('Font creation completed!'))
     .catch(err => {
@@ -76,10 +76,24 @@ function createNaturalNames(inputData) {
   return Promise.resolve(naturalInputData)
 }
 
+function splitCSSEncoded (cssBuffer, fontFacePath, classesPath) {
+  const cssAscii = cssBuffer.toString('ascii')
+  const regex = /@font-face \{.|[^\}]*\}$/m
+  const [ fontFaceAscii ] = cssAscii.match(regex)
+  const cssSelectorsAscii = cssAscii.replace(regex, '')
+  return Promise.all([
+    fs.writeFile(fontFacePath, fontFaceAscii),
+    fs.writeFile(classesPath, cssSelectorsAscii),
+  ])
+}
+
 function buildCSSEncoded (buildFontsDir, buildPathDir, fontName) {
+  const BASE64_PATH_DIR = path.resolve(buildPathDir, 'base64')
   const fontPath = path.resolve(buildFontsDir, `${fontName}.ttf`)
   const cssPath = path.resolve(buildPathDir, `${fontName}.css`)
-  const newCssPath = path.resolve(buildPathDir, `${fontName}.base64.css`)
+  const newCssPath = path.resolve(BASE64_PATH_DIR, `${fontName}.css`)
+  const newCssFontFacePath = path.resolve(BASE64_PATH_DIR, `${fontName}-font-face.css`)
+  const newCssClassesPath = path.resolve(BASE64_PATH_DIR, `${fontName}-classes.css`)
 
   const fontBase64$ = fs.readFile(fontPath)
     .then(fontBuffer => Promise.resolve(fontBuffer.toString('base64')))
@@ -87,13 +101,16 @@ function buildCSSEncoded (buildFontsDir, buildPathDir, fontName) {
   const cssAscii$ = fs.readFile(cssPath)
     .then(cssBuffer => Promise.resolve(cssBuffer.toString('ascii')))
 
-  return Promise.all([fontBase64$, cssAscii$])
+  return fs.mkdir(BASE64_PATH_DIR)
+    .then(() => Promise.all([fontBase64$, cssAscii$]))
     .then(([ fontBase64, cssAscii]) => {
       const regex = /src:(.|[\r\n][^\}])*/m
       const [ stringToReplace ] = cssAscii.match(regex)
       return Promise.resolve(cssAscii.replace(stringToReplace, `src: url(data:font/truetype;charset=utf-8;base64,${fontBase64});`))
     })
     .then(cssString => fs.writeFile(newCssPath, cssString))
+    .then(() => fs.readFile(newCssPath))
+    .then(cssBuffer => splitCSSEncoded(cssBuffer, newCssFontFacePath, newCssClassesPath))
     .then(() => console.debug('Build CSS Encoded created in ', newCssPath.split('/icons')[1]))
     .catch(error => {
       console.error('Build CSS Encoded failed.', error)
