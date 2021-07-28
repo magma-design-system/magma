@@ -226,6 +226,7 @@ export class MdsInput {
         />
         { this.required && <mds-text typography="option" class="required">Obbligatorio</mds-text> }
         { this.disabled && <mds-text typography="option" class="disabled">Non attivo</mds-text> }
+        { this.readonly && <mds-text typography="option" class="read-only">Sola lettura</mds-text> }
       </Host>
     )
   }

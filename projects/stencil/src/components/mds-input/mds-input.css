@@ -55,6 +55,7 @@ input:disabled::placeholder {
 }
 
 .disabled,
+.read-only,
 .required {
   @apply
     absolute
@@ -67,6 +68,13 @@ input:disabled::placeholder {
     rounded-full
     top-1
     transition-size;
+}
+
+.read-only {
+  @apply
+    bg-status-info-10
+    text-adjust-tone
+    w-20;
 }
 
 .required {

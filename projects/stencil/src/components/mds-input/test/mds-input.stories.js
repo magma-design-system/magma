@@ -113,3 +113,9 @@ Required.args = {
   required: true,
   placeholder: 'This is a required field',
 }
+
+export const readOnly = Template.bind({})
+readOnly.args = {
+  readOnly: true,
+  value: 'This is a read only field',
+}
