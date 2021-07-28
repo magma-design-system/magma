@@ -88,8 +88,8 @@ module.exports = {
         inherit: 'inherit',
       },
       transitionProperty : {
-        cosmetic: 'background-color, border-color, box-shadow, color, height, margin, padding, width, opacity',
-        input: 'padding, color, box-shadow, border-color, background-color',
+        cosmetic: 'background-color, border-color, box-shadow, color, height, margin, opacity, padding, transform, width',
+        input: 'background-color, border-color, box-shadow, color, padding',
         size: 'height, margin, padding, width',
       },
       width: {
