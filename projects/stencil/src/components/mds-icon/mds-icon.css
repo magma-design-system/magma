@@ -1,4 +1,4 @@
-@import '~@maggioli-design-system/icons/mgg-icons.base64-classes.css';
+@import '~@maggioli-design-system/icons/base64/mgg-icons-classes.css';
 
 @tailwind components;
 @tailwind utilities;

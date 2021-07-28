@@ -2,7 +2,7 @@ import { defineCustomElements } from '../dist/esm/loader';
 
 import 'normalize.css'
 import '@maggioli-design-system/design-tokens/dist/css/vars-rgb-channels.css'
-import '@maggioli-design-system/icons/mgg-icons.base64-font-face.css'
+import '@maggioli-design-system/icons/base64/mgg-icons-font-face.css'
 
 import 'typeface-karla'
 import 'typeface-roboto'
