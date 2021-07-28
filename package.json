@@ -89,5 +89,6 @@
       "role": "UX UI Designer"
     }
   ],
-  "license": "ISC"
+  "license": "ISC",
+  "dependencies": {}
 }

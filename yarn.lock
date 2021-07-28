@@ -2955,6 +2955,31 @@
     "@babel/runtime" "^7.7.2"
     regenerator-runtime "^0.13.3"
 
+"@maggioli-design-system/design-tokens@latest":
+  version "4.2.0"
+  resolved "https://registry.yarnpkg.com/@maggioli-design-system/design-tokens/-/design-tokens-4.2.0.tgz#31c0efab993dcdae940b3f899038ccbb9d194e25"
+  integrity sha512-3Lmu4gKIpqj4CZcKgUXrlOc1Rv3dyYomsE+7b4UwU5aAdCEfeyN4t+JIp6oeVfU2ENiPi1W3pp02dO5hf5z17w==
+
+"@maggioli-design-system/icons@latest":
+  version "1.14.0"
+  resolved "https://registry.yarnpkg.com/@maggioli-design-system/icons/-/icons-1.14.0.tgz#9343fe3ee39adf1372ba8bc2260506e0e134599d"
+  integrity sha512-pmFhdSjSqYRYkV7mW7d74BYsV1M1JpoL16InPeLu8I6R/tjJ1CYmLqzSy4/QO8PqJpUg4pr0LKTxXLY7hs1kQg==
+
+"@maggioli-design-system/identity@latest":
+  version "1.8.3"
+  resolved "https://registry.yarnpkg.com/@maggioli-design-system/identity/-/identity-1.8.3.tgz#504cae4af230702834960e936bb4bf389ca79cbf"
+  integrity sha512-/Vsp14eqzjzKvlTqIZbQZ0of/epEXcTrME6YeR/acaKb4O2IxNq2XnRBcATV6diltnQ5yEQupH0ybHvujjoX0w==
+
+"@maggioli-design-system/styles@latest":
+  version "3.8.0"
+  resolved "https://registry.yarnpkg.com/@maggioli-design-system/styles/-/styles-3.8.0.tgz#d33d6022d4fa28a9a9671cf2a5907d1e275e5c0f"
+  integrity sha512-x0eBAjwLNotNTn4sj9fgnXypFlGyuBytlvliSuzthKWY4yh8YNdLA3s8WZbqQMve8j2e7gEAxtc9fRbMMScsvA==
+  dependencies:
+    "@maggioli-design-system/design-tokens" "^4.0.2"
+    normalize.css "^8.0.1"
+    typeface-karla "1.1.13"
+    typeface-roboto "1.1.13"
+
 "@mdi/svg@^5.9.55":
   version "5.9.55"
   resolved "https://registry.npmjs.org/@mdi/svg/-/svg-5.9.55.tgz"
@@ -7363,25 +7388,15 @@ caniuse-api@^3.0.0:
     lodash.memoize "^4.1.2"
     lodash.uniq "^4.5.0"
 
-caniuse-lite@^1.0.0, caniuse-lite@^1.0.30001109, caniuse-lite@^1.0.30001125, caniuse-lite@^1.0.30001214:
-  version "1.0.30001214"
-  resolved "https://registry.npmjs.org/caniuse-lite/-/caniuse-lite-1.0.30001214.tgz"
-  integrity sha512-O2/SCpuaU3eASWVaesQirZv1MSjUNOvmugaD8zNSJqw6Vv5SGwoOpA9LJs3pNPfM745nxqPvfZY3MQKY4AKHYg==
+caniuse-lite@^1.0.0, caniuse-lite@^1.0.30001109, caniuse-lite@^1.0.30001125, caniuse-lite@^1.0.30001214, caniuse-lite@^1.0.30001219, caniuse-lite@^1.0.30001230, caniuse-lite@^1.0.30001243:
+  version "1.0.30001248"
+  resolved "https://registry.npmjs.org/caniuse-lite/-/caniuse-lite-1.0.30001248.tgz"
+  integrity sha512-NwlQbJkxUFJ8nMErnGtT0QTM2TJ33xgz4KXJSMIrjXIbDVdaYueGyjOrLKRtJC+rTiWfi6j5cnZN1NBiSBJGNw==
 
-caniuse-lite@^1.0.30001219:
-  version "1.0.30001228"
-  resolved "https://registry.npmjs.org/caniuse-lite/-/caniuse-lite-1.0.30001228.tgz"
-  integrity sha512-QQmLOGJ3DEgokHbMSA8cj2a+geXqmnpyOFT0lhQV6P3/YOJvGDEwoedcwxEQ30gJIwIIunHIicunJ2rzK5gB2A==
-
-caniuse-lite@^1.0.30001230:
-  version "1.0.30001242"
-  resolved "https://registry.npmjs.org/caniuse-lite/-/caniuse-lite-1.0.30001242.tgz"
-  integrity sha512-KvNuZ/duufelMB3w2xtf9gEWCSxJwUgoxOx5b6ScLXC4kPc9xsczUVCPrQU26j5kOsHM4pSUL54tAZt5THQKug==
-
-caniuse-lite@^1.0.30001243:
-  version "1.0.30001244"
-  resolved "https://registry.yarnpkg.com/caniuse-lite/-/caniuse-lite-1.0.30001244.tgz#a6dc49ad5fa02d81d04373ec3f5ceabc3da06abf"
-  integrity sha512-Wb4UFZPkPoJoKKVfELPWytRzpemjP/s0pe22NriANru1NoI+5bGNxzKtk7edYL8rmCWTfQO8eRiF0pn1Dqzx7Q==
+caniuse-lite@^1.0.30001248:
+  version "1.0.30001248"
+  resolved "https://registry.yarnpkg.com/caniuse-lite/-/caniuse-lite-1.0.30001248.tgz#26ab45e340f155ea5da2920dadb76a533cb8ebce"
+  integrity sha512-NwlQbJkxUFJ8nMErnGtT0QTM2TJ33xgz4KXJSMIrjXIbDVdaYueGyjOrLKRtJC+rTiWfi6j5cnZN1NBiSBJGNw==
 
 capital-case@^1.0.4:
   version "1.0.4"
