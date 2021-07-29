@@ -89,7 +89,6 @@ module.exports = {
       },
       transitionProperty : {
         cosmetic: 'background-color, border-color, box-shadow, color, height, margin, opacity, padding, transform, width',
-        input: 'background-color, border-color, box-shadow, color, padding',
         size: 'height, margin, padding, width',
       },
       width: {

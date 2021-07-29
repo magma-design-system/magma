@@ -1,57 +1,57 @@
 @layer components {
   .text-primary-h1 {
-    @apply antialiased font-extrabold font-primary text-5xl tracking-tight;
+    @apply antialiased font-extrabold font-primary inline-block text-5xl tracking-tight;
   }
 
   .text-primary-h2 {
-    @apply antialiased font-extrabold font-primary text-4xl tracking-tight;
+    @apply antialiased font-extrabold font-primary inline-block text-4xl tracking-tight;
   }
 
   .text-primary-h3 {
-    @apply antialiased font-bold font-primary text-3xl tracking-tight;
+    @apply antialiased font-bold font-primary inline-block text-3xl tracking-tight;
   }
 
   .text-primary-h4 {
-    @apply antialiased font-bold font-primary text-2xl tracking-tight;
+    @apply antialiased font-bold font-primary inline-block text-2xl tracking-tight;
   }
 
   .text-primary-h5 {
-    @apply antialiased font-bold font-primary text-xl tracking-tight;
+    @apply antialiased font-bold font-primary inline-block text-xl tracking-tight;
   }
 
   .text-primary-h6 {
-    @apply antialiased font-bold font-primary text-base tracking-tight;
+    @apply antialiased font-bold font-primary inline-block text-base tracking-tight;
   }
 
   .text-primary-action {
-    @apply antialiased font-medium font-primary leading-relaxed text-sm;
+    @apply antialiased font-medium font-primary inline-block leading-relaxed text-sm;
   }
 
   .text-secondary-paragraph {
-    @apply antialiased font-secondary text-xl;
+    @apply antialiased font-secondary inline-block text-xl;
   }
 
   .text-secondary-detail {
-    @apply antialiased font-secondary text-base;
+    @apply antialiased font-secondary inline-block text-base;
   }
 
   .text-secondary-caption {
-    @apply antialiased font-secondary text-sm;
+    @apply antialiased font-secondary inline-block text-sm;
   }
 
   .text-secondary-label {
-    @apply antialiased font-bold font-secondary text-xs uppercase;
+    @apply antialiased font-bold font-secondary inline-block text-xs uppercase;
   }
 
   .text-secondary-option {
-    @apply antialiased font-bold font-secondary leading-none text-xxs tracking-tight uppercase;
+    @apply antialiased font-bold font-secondary inline-block leading-none text-xxs tracking-tight uppercase;
   }
 
   .text-mono-code {
-    @apply antialiased font-mono leading-relaxed text-base;
+    @apply antialiased font-mono inline-block leading-relaxed text-base;
   }
 
   .text-mono-hack {
-    @apply antialiased font-mono leading-relaxed text-xs;
+    @apply antialiased font-mono inline-block leading-relaxed text-xs;
   }
 }
