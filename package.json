@@ -31,6 +31,7 @@
   },
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
+    "clean-modules": "rm -rf node_modules || true && rm -rf projects/**/node_modules || true",
     "prepare": "husky install"
   },
   "repository": {
