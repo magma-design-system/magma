@@ -1,4 +1,4 @@
-import { Component, Host, h, Prop, State } from '@stencil/core'
+import { Component, Host, h, Prop } from '@stencil/core'
 import { TypographyType } from '../../types/typography'
 import { InputSwitchType } from '../../types/input-switch-type'
 import { inputSwitchIconDictionary } from '../../dictionary/input-switch-icons'
