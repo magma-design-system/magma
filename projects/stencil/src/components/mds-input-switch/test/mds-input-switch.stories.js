@@ -53,9 +53,27 @@ export default {
 }
 
 const Template = args =>
-  <mds-input-switch {...args}>{faker.lorem.paragraph()}</mds-input-switch>
+  <mds-input-switch {...args}>{faker.lorem.words(10)}</mds-input-switch>
+
+const TemplateMultiple = args =>
+  <form name="form-name">
+    <mds-input-switch {...args} value="1">{faker.lorem.words(10)}</mds-input-switch>
+    <mds-input-switch {...args} value="2">{faker.lorem.words(10)}</mds-input-switch>
+  </form>
 
 export const Default = Template.bind({})
 Default.args = {
   name: 'input-name',
+}
+
+export const checkbox = Template.bind({})
+checkbox.args = {
+  type: 'checkbox',
+  name: 'checkbox-name',
+}
+
+export const radio = TemplateMultiple.bind({})
+radio.args = {
+  type: 'radio',
+  name: 'radio-name',
 }

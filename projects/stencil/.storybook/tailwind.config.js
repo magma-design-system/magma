@@ -1,9 +1,11 @@
 const config = require('@maggioli-design-system/styles/tailwind.config')
+const chalk = require('chalk')
 
-console.log('Tailwind / Storybook config')
+console.log(chalk.green('Storybook config / Tailwind'))
 
 config.purge.content = [
-  './src/**/*.{stories.js,tsx}',
+  '../src/**/*.{js,ts,tsx}',
+  '../dist/**/*.{js}',
 ]
 
 module.exports = config

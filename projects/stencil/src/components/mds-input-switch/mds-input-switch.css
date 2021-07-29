@@ -1,3 +1,4 @@
+@tailwind base;
 @tailwind components;
 @tailwind utilities;
 
@@ -5,7 +6,6 @@
   @apply
     gap-2
     inline-flex
-    items-start
     text-adjust-tone-04;
 }
 
@@ -16,17 +16,22 @@
 .label-icon {
   @apply
     cursor-pointer
+    flex
+    items-baseline
     relative;
 }
 
 .label-text {
-  @apply cursor-pointer;
+  @apply
+    cursor-pointer
+    flex
+    items-center;
 }
 
 .icon-typography-checked,
 .icon-typography-unchecked {
   @apply
-    flex
+    inline-flex
     items-center;
 }
 
@@ -58,7 +63,7 @@
 .icon-checked {
   @apply
     duration-300
-    text-label-sky-06
+    text-brand-maggioli-08
     transform
     transition-cosmetic;
 
@@ -67,6 +72,38 @@
 
 .indeterminate .icon-checked {
   @apply text-adjust-tone-06;
+}
+
+.switch,
+.switch-container {
+  @apply
+    flex-shrink-0
+    box-border
+    w-14;
+}
+
+.switch {
+  @apply
+    bg-adjust-tone-14
+    duration-300
+    flex-shrink-0
+    p-1
+    rounded-full
+    transition-colors;
+}
+
+.switch-toggle {
+  @apply
+    bg-adjust-tone-19
+    cursor-pointer
+    duration-300
+    ease-out-expo
+    h-6
+    rounded-full
+    shadow
+    transform
+    transition-transform
+    w-6;
 }
 
 .field:checked + .label-icon .icon-unchecked {
@@ -81,6 +118,17 @@
   @apply duration-700;
 
   transform: scale(theme('scale.100'));
+}
+
+.field:checked + .switch-container .switch {
+  @apply
+    bg-brand-maggioli-08;
+}
+
+.field:checked + .switch-container .switch-toggle {
+  @apply
+    bg-adjust-tone
+    translate-x-full;
 }
 
 .field:focus + .label-icon .icon-checked,
@@ -104,4 +152,14 @@
 
 .field:disabled + .label-icon + .label-text {
   @apply cursor-default;
+}
+
+.field:disabled + .switch-container .switch {
+  @apply
+    bg-adjust-tone-17;
+}
+
+.field:disabled + .switch-container .switch-toggle {
+  @apply
+    bg-adjust-tone-19;
 }

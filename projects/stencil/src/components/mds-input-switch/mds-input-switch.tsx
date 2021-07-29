@@ -1,4 +1,4 @@
-import { Component, Host, h, Prop } from '@stencil/core'
+import { Component, Host, h, Prop, State } from '@stencil/core'
 import { TypographyType } from '../../types/typography'
 import { InputSwitchType } from '../../types/input-switch-type'
 import { inputSwitchIconDictionary } from '../../dictionary/input-switch-icons'
@@ -33,7 +33,7 @@ export class MdsInputSwitch {
   /**
    * The checked icon displayed
    */
-  @Prop() icon?: string
+  @Prop() readonly icon?: string = null
 
   /**
    * Sets or returns the indeterminate state of the checkbox
@@ -48,7 +48,7 @@ export class MdsInputSwitch {
   /**
    * Specifies switch type: switch (default), checkbox and radio
    */
-  @Prop() readonly type?: InputSwitchType = 'switch'
+  @Prop() readonly type?: InputSwitchType = 'checkbox'
 
   /**
    * Specifies the font typography of the element
@@ -63,18 +63,14 @@ export class MdsInputSwitch {
   render () {
 
     const { iconChecked, iconUnchecked, iconIndeterminate } = inputSwitchIconDictionary[this.type]
-
-    if (this.icon === null) {
-      this.icon = iconChecked
-    }
-
-    console.log(`iconChecked: ${iconChecked}, iconUnchecked: ${iconUnchecked}, iconIndeterminate: ${iconIndeterminate}`)
+    const iconCheckedUser = this.icon !== null ? this.icon : iconChecked
 
     return (
       <Host
         class={clsx(
           this.disabled && 'disabled',
           this.indeterminate && 'indeterminate',
+          this.type === 'switch' ? 'items-stretch' : 'items-start',
         )}
       >
         <input
@@ -88,14 +84,23 @@ export class MdsInputSwitch {
           type={this.type === 'switch' ? 'checkbox' : this.type }
           value={this.value}
         />
-        <label htmlFor="field" class="label-icon">
-          <mds-text class="icon-typography-unchecked" tag="div" typography={this.typography}>
-            <mds-icon class="icon-unchecked" name={iconUnchecked}/>
-          </mds-text>
-          <mds-text class="icon-typography-checked" tag="div" typography={this.typography}>
-            <mds-icon class="icon-checked" name={clsx(this.indeterminate ? iconIndeterminate : this.icon)}/>
-          </mds-text>
-        </label>
+        { this.type === 'switch'
+          ?
+          <label htmlFor="field" class="switch-container">
+            <div class="switch">
+              <div class="switch-toggle"></div>
+            </div>
+          </label>
+          :
+          <label htmlFor="field" class="label-icon">
+            <mds-text class="icon-typography-unchecked" tag="div" typography={this.typography}>
+              <mds-icon class="icon-unchecked" name={iconUnchecked}/>
+            </mds-text>
+            <mds-text class="icon-typography-checked" tag="div" typography={this.typography}>
+              <mds-icon class="icon-checked" name={clsx(this.indeterminate ? iconIndeterminate : iconCheckedUser)}/>
+            </mds-text>
+          </label>
+        }
         <label htmlFor="field" class="label-text">
           <mds-text typography={this.typography}>
             <slot></slot>

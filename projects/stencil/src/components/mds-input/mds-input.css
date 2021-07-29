@@ -1,5 +1,6 @@
 @import '~@maggioli-design-system/styles/dist/tailwind/typography.css';
 
+@tailwind base;
 @tailwind components;
 @tailwind utilities;
 
@@ -29,8 +30,10 @@ input {
     ring-opacity-10
     rounded-lg
     shadow
-    transition-input
+    transition-cosmetic
     w-full;
+
+  /* box-shadow: theme('boxShadow.DEFAULT'); */
 }
 
 input:focus {
@@ -39,7 +42,7 @@ input:focus {
     shadow-sharp-lg
     ring
     ring-brand-maggioli-08
-    transition-input
+    transition-cosmetic
     duration-300
     ease-out-expo;
 }

@@ -193,7 +193,11 @@ export class MdsInput {
     this.blurEvent.emit()
   }
 
-  private onFocus = () => {
+  private onFocus = (ev: Event) => {
+    const input = ev.target as HTMLInputElement
+    if (this.readonly) {
+      input.select()
+    }
     this.hasFocus = true
     this.focusEvent.emit()
   }
