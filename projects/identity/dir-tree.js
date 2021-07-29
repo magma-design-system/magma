@@ -1,10 +1,10 @@
 const fs = require('fs')
 const dirTree = require('directory-tree')
 
-function createDirectoryTree() {
+function createDirectoryTree () {
   const tree = dirTree('dist/', {
-    extensions: /\.(svg|png|pdf)$/
-  });
+    extensions: /\.(svg|png|pdf)$/,
+  })
 
   const jsonData = JSON.stringify(tree, null, 2)
 
