@@ -1,0 +1,107 @@
+@tailwind components;
+@tailwind utilities;
+
+:host {
+  @apply
+    gap-2
+    inline-flex
+    items-start
+    text-adjust-tone-04;
+}
+
+.field {
+  @apply hidden;
+}
+
+.label-icon {
+  @apply
+    cursor-pointer
+    relative;
+}
+
+.label-text {
+  @apply cursor-pointer;
+}
+
+.icon-typography-checked,
+.icon-typography-unchecked {
+  @apply
+    flex
+    items-center;
+}
+
+.icon-typography-checked {
+  @apply
+    absolute
+    left-0
+    top-0;
+}
+
+.icon-checked,
+.icon-unchecked {
+  @apply
+    ease-out-expo
+    font-normal;
+}
+
+.icon-unchecked {
+  @apply
+    duration-700
+    opacity-100
+    text-adjust-tone-10
+    transform
+    transition-cosmetic;
+
+  transform: scale(theme('scale.100'));
+}
+
+.icon-checked {
+  @apply
+    duration-300
+    text-label-sky-06
+    transform
+    transition-cosmetic;
+
+  transform: scale(theme('scale.0'));
+}
+
+.indeterminate .icon-checked {
+  @apply text-adjust-tone-06;
+}
+
+.field:checked + .label-icon .icon-unchecked {
+  @apply
+    duration-700
+    opacity-0;
+
+  transform: scale(theme('scale.150'));
+}
+
+.field:checked + .label-icon .icon-checked {
+  @apply duration-700;
+
+  transform: scale(theme('scale.100'));
+}
+
+.field:focus + .label-icon .icon-checked,
+.field:focus + .label-icon .icon-unchecked {
+  @apply
+    ring
+    rounded-md;
+}
+
+.field:disabled + .label-icon .icon-unchecked {
+  @apply text-adjust-tone-12;
+}
+
+.field:disabled + .label-icon .icon-checked {
+  @apply text-adjust-tone-08;
+}
+
+.field:disabled + .label-icon {
+  @apply cursor-default;
+}
+
+.field:disabled + .label-icon + .label-text {
+  @apply cursor-default;
+}
