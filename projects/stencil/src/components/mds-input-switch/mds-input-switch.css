@@ -122,7 +122,7 @@
 }
 
 .field:checked + .label-icon .icon-checked {
-  @apply duration-700;
+  @apply duration-500;
 
   transform: scale(theme('scale.100'));
 }

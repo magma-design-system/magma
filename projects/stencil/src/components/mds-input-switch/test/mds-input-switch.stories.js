@@ -64,16 +64,19 @@ const TemplateMultiple = args =>
 export const Default = Template.bind({})
 Default.args = {
   name: 'input-name',
+  value: '1',
 }
 
 export const checkbox = Template.bind({})
 checkbox.args = {
-  type: 'checkbox',
   name: 'checkbox-name',
+  type: 'checkbox',
+  value: '1',
 }
 
 export const radio = TemplateMultiple.bind({})
 radio.args = {
-  type: 'radio',
   name: 'radio-name',
+  type: 'radio',
+  value: '1',
 }
