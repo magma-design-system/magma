@@ -15,25 +15,28 @@ import {
 // https://github.com/ionic-team/stencil-ds-output-targets/blob/55d62af2727395cd6d729735cb9d81e5d60cc637/packages/example-project/component-library/src/components/my-input/my-input.tsx
 
 import { InputTextType } from '../../types/input-text-type'
-import { StatusType } from '../../types/status'
 import { AutocompleteType } from '../../types/autocomplete'
-import { inputFocusStatusDictionary, inputTipStatusDictionary } from '../../dictionary/input-tip-status'
+import { StatusType } from '../../types/status'
+import { inputFieldStatusDictionary } from '../../dictionary/input-field-status'
+import clsx from 'clsx'
 export interface InputChangeEventDetail {
   value: string | number | undefined | null
 }
 
 @Component({
-  tag: 'mds-input',
-  styleUrl: 'mds-input.css',
+  tag: 'mds-input-field',
+  styleUrl: 'mds-input-field.css',
   shadow: true,
 })
 
-export class MdsInput {
+export class MdsInputField {
+
+  // inherited props
 
   private nativeInput?: HTMLInputElement;
   private tabindex?: number;
 
-  @Element() el!: HTMLMdsInputElement;
+  @Element() el!: HTMLMdsInputFieldElement;
 
   @State() hasFocus = false;
 
@@ -102,16 +105,6 @@ export class MdsInput {
    * Specifies that the element must be filled out before submitting the form
    */
   @Prop() required?: boolean = false
-
-  /**
-   * Sets the status of the input field
-   */
-  @Prop() status?: StatusType
-
-  /**
-   * Sets the word(s) of the status of the input field
-   */
-  @Prop() statusTip?: string
 
   /**
    * Specifies the interval between legal numbers in an input field
@@ -218,37 +211,61 @@ export class MdsInput {
     }
   }
 
+  // component props
+
+  /**
+   * Display a text on the top of the input text field
+   */
+  @Prop() label?: string
+
+  /**
+   * Display a message at the bottom of the input text field
+   */
+  @Prop() message?: string
+
+  /**
+   * Display the status of a message at the bottom of the input text field
+   */
+  @Prop() status?: StatusType
+
+  /**
+   * Display the status of a message at the bottom of the input text field
+   */
+  @Prop() statusTip?: string
+
   render () {
     const value = this.getValue()
     return (
       <Host>
-        <input
-          class={`${inputFocusStatusDictionary[this.status || 'default']}`}
-          autoComplete={this.autocomplete}
-          autoFocus={this.autofocus}
-          disabled={this.disabled}
-          max={this.max}
-          maxLength={this.maxlength}
-          min={this.min}
-          minLength={this.minlength}
-          name={this.name}
-          onBlur={this.onBlur}
-          onFocus={this.onFocus}
-          onInput={this.onInput}
-          pattern={this.pattern}
-          placeholder={this.placeholder || ''}
-          readOnly={this.readonly}
-          ref={ input => (this.nativeInput = input)}
-          required={this.required}
-          step={this.step}
-          tabIndex={this.tabindex}
-          type={this.type}
-          value={value}
-        />
-        { this.required && <mds-text typography="option" class="tip top-1 required">Obbligatorio</mds-text> }
-        { this.disabled && <mds-text typography="option" class="tip top-1 disabled">Non attivo</mds-text> }
-        { this.readonly && <mds-text typography="option" class="tip top-1 read-only">Sola lettura</mds-text> }
-        { this.status && this.statusTip && <mds-text typography="option" class={`tip bottom-1 ${inputTipStatusDictionary[this.status]}`}>{ this.statusTip }</mds-text> }
+        { this.label && <mds-text class="label" typography="label">{ this.label }</mds-text> }
+        <div class={clsx('message-window', this.message && 'message-window--opened', this.message && this.status && inputFieldStatusDictionary[this.status])}>
+          <mds-input
+            autocomplete={this.autocomplete}
+            autofocus={this.autofocus}
+            disabled={this.disabled}
+            id="field"
+            max={this.max}
+            maxlength={this.maxlength}
+            min={this.min}
+            minlength={this.minlength}
+            name={this.name}
+            onBlur={this.onBlur}
+            onFocus={this.onFocus}
+            onInput={this.onInput}
+            pattern={this.pattern}
+            placeholder={this.placeholder || ''}
+            readonly={this.readonly}
+            ref={ input => (this.nativeInput = input)}
+            required={this.required}
+            status={this.status}
+            statusTip={this.statusTip}
+            step={this.step}
+            tabIndex={this.tabindex}
+            type={this.type}
+            value={value}
+          />
+          { this.message && <mds-text class="message" typography="caption">{ this.message }</mds-text> }
+        </div>
       </Host>
     )
   }

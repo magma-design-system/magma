@@ -14,7 +14,6 @@
 input {
   @apply
     bg-adjust-tone
-    text-secondary-detail
     border-none
     border-transparent
     box-border
@@ -30,6 +29,8 @@ input {
     ring-opacity-10
     rounded-lg
     shadow
+    text-adjust-tone-04
+    text-secondary-detail
     transition-cosmetic
     w-full;
 
@@ -57,9 +58,7 @@ input:disabled::placeholder {
     text-adjust-tone-10;
 }
 
-.disabled,
-.read-only,
-.required {
+.tip {
   @apply
     absolute
     duration-300
@@ -69,15 +68,13 @@ input:disabled::placeholder {
     pointer-events-none
     right-1
     rounded-full
-    top-1
-    transition-size;
+    px-2
+    text-adjust-tone
+    transition-cosmetic;
 }
 
 .read-only {
-  @apply
-    bg-status-info-10
-    text-adjust-tone
-    w-20;
+  @apply bg-status-info-10;
 }
 
 .required {
@@ -85,14 +82,12 @@ input:disabled::placeholder {
     bg-status-error-10
     text-adjust-tone
     text-opacity-0
+    p-0
     w-3;
 }
 
 .disabled {
-  @apply
-    bg-adjust-tone-10
-    px-2
-    text-adjust-tone;
+  @apply bg-adjust-tone-10;
 }
 
 input:focus + .required {

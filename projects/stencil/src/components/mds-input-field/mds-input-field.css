@@ -1,0 +1,32 @@
+@tailwind components;
+@tailwind utilities;
+
+:host {
+  @apply
+    grid
+    gap-2
+    text-adjust-tone-04;
+}
+
+.message-window {
+  @apply
+    duration-300
+    ease-out-expo
+    gap-2
+    grid
+    p-0
+    rounded-xl
+    transition-cosmetic;
+}
+
+.message-window--opened {
+  @apply
+    p-2;
+}
+
+.message {
+  @apply
+    pb-2
+    pt-1
+    px-2;
+}

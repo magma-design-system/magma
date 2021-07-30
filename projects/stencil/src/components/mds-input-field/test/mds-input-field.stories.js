@@ -1,13 +1,12 @@
 import React from 'react'
-import MdsInput from '@component/mds-input/mds-input'
-import { statusDictionary } from '@dictionary/status'
+import MdsInputField from '@component/mds-input-field/mds-input-field'
 import { autoCompleteDictionary } from '@dictionary/autocomplete'
-
-// https://developers.google.com/web/updates/2015/06/checkout-faster-with-autofill
+import { statusDictionary } from '@dictionary/status'
+import faker from 'faker'
 
 export default {
-  title: 'Form / Input',
-  component: MdsInput,
+  title: 'Form / Input Field',
+  component: MdsInputField,
   argTypes: {
     autocomplete: {
       description: 'Specifies whether the element should have autocomplete enabled',
@@ -21,6 +20,10 @@ export default {
     disabled: {
       type: { name: 'boolean', required: false },
       description: 'If true, the element is displayed as disabled',
+    },
+    label: {
+      type: { name: 'string', required: false },
+      description: 'Display a text on the top of the input text field',
     },
     max: {
       type: { name: 'number', required: false },
@@ -64,9 +67,9 @@ export default {
     },
     status: {
       type: { name: 'string', required: false },
+      description: 'Display the status of a message at the bottom of the input text field',
       options: statusDictionary,
       control: { type: 'select' },
-      description: 'Sets the status of the input field',
     },
     'status-tip': {
       type: { name: 'string', required: false },
@@ -86,15 +89,17 @@ export default {
 }
 
 const Template = args =>
-  <mds-input {...args}></mds-input>
+  <mds-input-field {...args}></mds-input-field>
 
 export const Default = Template.bind({})
 Default.args = {
+  label: 'Questo è un label',
   placeholder: 'Scrivi qualcosa',
 }
 
 export const autoComplete = Template.bind({})
 autoComplete.args = {
+  label: 'Questo è un label',
   autocomplete: 'address',
   type: 'text',
   placeholder: 'Intestatario carta di credito',
@@ -102,18 +107,21 @@ autoComplete.args = {
 
 export const autoFocus = Template.bind({})
 autoFocus.args = {
+  label: 'Questo è un label',
   autofocus: true,
   placeholder: 'Auto focus input text',
 }
 
 export const Disabled = Template.bind({})
 Disabled.args = {
+  label: 'Questo è un label',
   disabled: true,
   placeholder: 'Input field with disabled attribute',
 }
 
 export const max = Template.bind({})
 max.args = {
+  label: 'Questo è un label',
   max: '3',
   type: 'number',
   value: '2',
@@ -121,19 +129,30 @@ max.args = {
 
 export const Required = Template.bind({})
 Required.args = {
+  label: 'Questo è un label',
   required: true,
   placeholder: 'This is a required field',
 }
 
 export const readOnly = Template.bind({})
 readOnly.args = {
+  label: 'Questo è un label',
   readOnly: true,
   value: 'This is a read only field',
 }
 
+export const message = Template.bind({})
+message.args = {
+  label: 'Questo è un label',
+  placeholder: 'This is a field with a message',
+  message: faker.lorem.paragraph(1),
+}
+
 export const status = Template.bind({})
 status.args = {
-  status: 'error',
-  placeholder: 'Status input field',
-  'status-tip': 'errore',
+  label: 'Questo è un label',
+  placeholder: 'This is a field with a message',
+  status: 'warning',
+  'status-tip': 'attenzione',
+  message: faker.lorem.paragraph(1),
 }
