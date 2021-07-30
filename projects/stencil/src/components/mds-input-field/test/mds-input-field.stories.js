@@ -2,6 +2,7 @@ import React from 'react'
 import MdsInputField from '@component/mds-input-field/mds-input-field'
 import { autoCompleteDictionary } from '@dictionary/autocomplete'
 import { statusDictionary } from '@dictionary/status'
+import { inputTextTypeDictionary } from '@dictionary/input-text-type'
 import faker from 'faker'
 
 export default {
@@ -78,7 +79,7 @@ export default {
     type: {
       type: { name: 'string', required: true },
       description: 'Specifies the type of element',
-      options: ['date', 'email', 'number', 'password', 'search', 'tel', 'text', 'time', 'url'],
+      options: inputTextTypeDictionary,
       control: { type: 'select' },
     },
     value: {
@@ -152,7 +153,8 @@ export const status = Template.bind({})
 status.args = {
   label: 'Questo è un label',
   placeholder: 'This is a field with a message',
-  status: 'warning',
-  'status-tip': 'attenzione',
+  status: 'error',
+  value: 'Input field text',
+  'status-tip': 'errore',
   message: faker.lorem.paragraph(1),
 }

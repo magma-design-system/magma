@@ -6,5 +6,6 @@ export type InputTextType =
   | 'search'
   | 'tel'
   | 'text'
+  | 'textarea'
   | 'time'
   | 'url'

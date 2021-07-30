@@ -2,6 +2,7 @@ import React from 'react'
 import MdsInput from '@component/mds-input/mds-input'
 import { statusDictionary } from '@dictionary/status'
 import { autoCompleteDictionary } from '@dictionary/autocomplete'
+import { inputTextTypeDictionary } from '@dictionary/input-text-type'
 
 // https://developers.google.com/web/updates/2015/06/checkout-faster-with-autofill
 
@@ -75,7 +76,7 @@ export default {
     type: {
       type: { name: 'string', required: true },
       description: 'Specifies the type of element',
-      options: ['date', 'email', 'number', 'password', 'search', 'tel', 'text', 'time', 'url'],
+      options: inputTextTypeDictionary,
       control: { type: 'select' },
     },
     value: {

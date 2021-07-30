@@ -11,6 +11,8 @@ import {
   h,
 } from '@stencil/core'
 
+import clsx from 'clsx'
+
 // https://www.w3schools.com/tags/tag_input.asp
 // https://github.com/ionic-team/stencil-ds-output-targets/blob/55d62af2727395cd6d729735cb9d81e5d60cc637/packages/example-project/component-library/src/components/my-input/my-input.tsx
 
@@ -30,7 +32,7 @@ export interface InputChangeEventDetail {
 
 export class MdsInput {
 
-  private nativeInput?: HTMLInputElement;
+  private nativeInput?: HTMLInputElement | HTMLTextAreaElement;
   private tabindex?: number;
 
   @Element() el!: HTMLMdsInputElement;
@@ -183,7 +185,7 @@ export class MdsInput {
    * Returns the native `<input>` element used under the hood.
    */
   @Method()
-  getInputElement (): Promise<HTMLInputElement> {
+  getInputElement (): Promise<HTMLInputElement | HTMLTextAreaElement> {
     // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
     return Promise.resolve(this.nativeInput!)
   }
@@ -193,7 +195,7 @@ export class MdsInput {
   }
 
   private onInput = (ev: Event) => {
-    const input = ev.target as HTMLInputElement | false
+    const input = ev.target as HTMLInputElement | HTMLTextAreaElement | false
     if (input) {
       this.value = input.value || ''
     }
@@ -206,7 +208,7 @@ export class MdsInput {
   }
 
   private onFocus = (ev: Event) => {
-    const input = ev.target as HTMLInputElement
+    const input = ev.target as HTMLInputElement | HTMLTextAreaElement
     this.hasFocus = true
     this.focusEvent.emit()
     if (this.readonly) {
@@ -222,29 +224,48 @@ export class MdsInput {
     const value = this.getValue()
     return (
       <Host>
-        <input
-          class={`${inputFocusStatusDictionary[this.status || 'default']}`}
-          autoComplete={this.autocomplete}
-          autoFocus={this.autofocus}
-          disabled={this.disabled}
-          max={this.max}
-          maxLength={this.maxlength}
-          min={this.min}
-          minLength={this.minlength}
-          name={this.name}
-          onBlur={this.onBlur}
-          onFocus={this.onFocus}
-          onInput={this.onInput}
-          pattern={this.pattern}
-          placeholder={this.placeholder || ''}
-          readOnly={this.readonly}
-          ref={ input => (this.nativeInput = input)}
-          required={this.required}
-          step={this.step}
-          tabIndex={this.tabindex}
-          type={this.type}
-          value={value}
-        />
+        { this.type === 'textarea'
+          ? <textarea
+            class={clsx('input', inputFocusStatusDictionary[this.status || 'default'])}
+            autoFocus={this.autofocus}
+            disabled={this.disabled}
+            maxLength={this.maxlength}
+            minLength={this.minlength}
+            name={this.name}
+            onBlur={this.onBlur}
+            onFocus={this.onFocus}
+            onInput={this.onInput}
+            placeholder={this.placeholder || ''}
+            readOnly={this.readonly}
+            ref={ input => (this.nativeInput = input)}
+            required={this.required}
+            tabIndex={this.tabindex}
+            value={value}>
+          </textarea>
+          : <input
+            class={clsx('input', inputFocusStatusDictionary[this.status || 'default'])}
+            autoComplete={this.autocomplete}
+            autoFocus={this.autofocus}
+            disabled={this.disabled}
+            max={this.max}
+            maxLength={this.maxlength}
+            min={this.min}
+            minLength={this.minlength}
+            name={this.name}
+            onBlur={this.onBlur}
+            onFocus={this.onFocus}
+            onInput={this.onInput}
+            pattern={this.pattern}
+            placeholder={this.placeholder || ''}
+            readOnly={this.readonly}
+            ref={ input => (this.nativeInput = input)}
+            required={this.required}
+            step={this.step}
+            tabIndex={this.tabindex}
+            type={this.type}
+            value={value}
+          />
+        }
         { this.required && <mds-text typography="option" class="tip top-1 required">Obbligatorio</mds-text> }
         { this.disabled && <mds-text typography="option" class="tip top-1 disabled">Non attivo</mds-text> }
         { this.readonly && <mds-text typography="option" class="tip top-1 read-only">Sola lettura</mds-text> }

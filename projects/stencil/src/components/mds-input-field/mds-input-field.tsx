@@ -238,7 +238,7 @@ export class MdsInputField {
     return (
       <Host>
         { this.label && <mds-text class="label" typography="label">{ this.label }</mds-text> }
-        <div class={clsx('message-window', this.message && 'message-window--opened', this.message && this.status && inputFieldStatusDictionary[this.status])}>
+        <div class={clsx('message-window', this.status && `message-window--opened ${inputFieldStatusDictionary[this.status]}`)}>
           <mds-input
             autocomplete={this.autocomplete}
             autofocus={this.autofocus}

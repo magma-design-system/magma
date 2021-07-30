@@ -6,12 +6,12 @@
 
 :host {
   @apply
-    block
+    flex
     relative
     text-secondary-detail;
 }
 
-input {
+.input {
   @apply
     bg-adjust-tone
     border-none
@@ -37,7 +37,7 @@ input {
   /* box-shadow: theme('boxShadow.DEFAULT'); */
 }
 
-input:focus {
+.input:focus {
   @apply
     outline-none
     shadow-sharp-lg
@@ -48,12 +48,12 @@ input:focus {
     ease-out-expo;
 }
 
-input:disabled {
+.input:disabled {
   @apply bg-adjust-tone-20;
 }
 
-input:disabled,
-input:disabled::placeholder {
+.input:disabled,
+.input:disabled::placeholder {
   @apply
     text-adjust-tone-10;
 }
@@ -90,7 +90,7 @@ input:disabled::placeholder {
   @apply bg-adjust-tone-10;
 }
 
-input:focus + .required {
+.input:focus + .required {
   @apply
     text-opacity-100
     w-20;
