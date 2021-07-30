@@ -4,8 +4,7 @@ const chalk = require('chalk')
 console.log(chalk.green('Storybook config / Tailwind'))
 
 config.purge.content = [
-  '../src/**/*.{js,ts,tsx}',
-  '../dist/**/*.{js}',
+  './src/**/*.{stories.js,tsx}',
 ]
 
 module.exports = config
