@@ -1,5 +1,5 @@
 import { Component, Host, h, Prop } from '@stencil/core'
-import { TypographyType } from '../../types/typography'
+import { TypographySecondaryType } from '../../types/typography'
 import { InputSwitchType } from '../../types/input-switch-type'
 import { inputSwitchIconDictionary } from '../../dictionary/input-switch-icons'
 import clsx from 'clsx'
@@ -53,7 +53,7 @@ export class MdsInputSwitch {
   /**
    * Specifies the font typography of the element
    */
-  @Prop() readonly typography?: TypographyType = 'detail'
+  @Prop() readonly typography?: TypographySecondaryType = 'detail'
 
   /**
    * Specifies the value of the input element

@@ -24,7 +24,7 @@ export class MdsText {
     const { selector } = typographyDefaultsDictionary[this.typography]
     return (
       <Host>
-        <Tag class={selector}>
+        <Tag class={`${selector} text`}>
           <slot></slot>
         </Tag>
       </Host>

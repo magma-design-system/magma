@@ -10,8 +10,13 @@ export type TypographyType =
   | 'h5'
   | 'h6'
   | 'hack'
-  | 'label-caption'
-  | 'label-detail'
-  | 'label-paragraph'
+  | 'label'
+  | 'option'
+  | 'paragraph'
+
+export type TypographySecondaryType =
+  | 'caption'
+  | 'detail'
+  | 'label'
   | 'option'
   | 'paragraph'

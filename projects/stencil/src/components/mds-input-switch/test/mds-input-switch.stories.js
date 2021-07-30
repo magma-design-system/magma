@@ -1,7 +1,7 @@
 import React from 'react'
 import MdsSwitch from '@component/mds-input-switch/mds-input-switch'
 import faker from 'faker'
-import { typographyDictionary } from '@dictionary/typography'
+import { typographySecondaryDictionary } from '@dictionary/typography'
 import mggIconsDictionary from '@maggioli-design-system/icons/resources/mgg-icons.json'
 
 export default {
@@ -36,7 +36,7 @@ export default {
     },
     typography: {
       description: 'Specifies the font typography of the element',
-      options: typographyDictionary,
+      options: typographySecondaryDictionary,
       control: { type: 'select' },
     },
     type: {

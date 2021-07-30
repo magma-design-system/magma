@@ -6,6 +6,7 @@
   @apply
     gap-2
     inline-flex
+    items-start
     text-adjust-tone-04;
 }
 
@@ -25,7 +26,8 @@
   @apply
     cursor-pointer
     flex
-    items-center;
+    items-center
+    self-center;
 }
 
 .icon-typography-checked,
@@ -74,6 +76,10 @@
   @apply text-adjust-tone-06;
 }
 
+.switch-container {
+  @apply self-stretch;
+}
+
 .switch,
 .switch-container {
   @apply
@@ -87,6 +93,7 @@
     bg-adjust-tone-14
     duration-300
     flex-shrink-0
+    inline-flex
     p-1
     rounded-full
     transition-colors;
@@ -94,7 +101,7 @@
 
 .switch-toggle {
   @apply
-    bg-adjust-tone-19
+    bg-adjust-tone
     cursor-pointer
     duration-300
     ease-out-expo
@@ -120,17 +127,6 @@
   transform: scale(theme('scale.100'));
 }
 
-.field:checked + .switch-container .switch {
-  @apply
-    bg-brand-maggioli-08;
-}
-
-.field:checked + .switch-container .switch-toggle {
-  @apply
-    bg-adjust-tone
-    translate-x-full;
-}
-
 .field:focus + .label-icon .icon-checked,
 .field:focus + .label-icon .icon-unchecked {
   @apply
@@ -154,9 +150,25 @@
   @apply cursor-default;
 }
 
+.field:checked + .switch-container .switch {
+  @apply
+    bg-brand-maggioli-08;
+}
+
+.field:checked + .switch-container .switch-toggle {
+  @apply
+    bg-adjust-tone
+    translate-x-full;
+}
+
 .field:disabled + .switch-container .switch {
   @apply
     bg-adjust-tone-17;
+}
+
+.field:checked:disabled + .switch-container .switch {
+  @apply
+    bg-adjust-tone-12;
 }
 
 .field:disabled + .switch-container .switch-toggle {

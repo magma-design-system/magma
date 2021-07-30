@@ -6,6 +6,10 @@
   @apply inline-flex items-center;
 }
 
+.text {
+  display: inherit;
+}
+
 abbr,
 address,
 article,
