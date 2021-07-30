@@ -199,7 +199,7 @@ export class MdsInput {
     this.focusEvent.emit()
     if (this.readonly) {
       // setTimeout to avoid Safari 14.1.2
-      // to unselect is mouse is clicked slowly
+      // to unselect text when mouse is clicked slowly
       setTimeout(() => {
         input.select()
       }, 10)
