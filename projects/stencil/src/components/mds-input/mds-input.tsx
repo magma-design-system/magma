@@ -195,11 +195,15 @@ export class MdsInput {
 
   private onFocus = (ev: Event) => {
     const input = ev.target as HTMLInputElement
-    if (this.readonly) {
-      input.select()
-    }
     this.hasFocus = true
     this.focusEvent.emit()
+    if (this.readonly) {
+      // setTimeout to avoid Safari 14.1.2
+      // to unselect is mouse is clicked slowly
+      setTimeout(() => {
+        input.select()
+      }, 10)
+    }
   }
 
   render () {
