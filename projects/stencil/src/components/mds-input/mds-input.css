@@ -32,9 +32,18 @@
     text-adjust-tone-04
     text-secondary-detail
     transition-cosmetic
+    min-h-12
     w-full;
+}
 
-  /* box-shadow: theme('boxShadow.DEFAULT'); */
+textarea.input:active {
+  @apply transition-none;
+}
+
+textarea.input {
+  @apply
+    min-h-32
+    max-h-64;
 }
 
 .input:focus {

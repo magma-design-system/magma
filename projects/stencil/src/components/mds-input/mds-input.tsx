@@ -50,6 +50,12 @@ export class MdsInput {
   @Prop() autofocus?: boolean = false
 
   /**
+   * A list of search terms to be searched from the input field,
+   * it should be used with type="search" input.
+   */
+  @Prop() datalist?: Array<string>
+
+  /**
    * If true, the element is displayed as disabled
    */
   @Prop() disabled?: boolean = false
@@ -222,6 +228,7 @@ export class MdsInput {
 
   render () {
     const value = this.getValue()
+    console.log(this.datalist)
     return (
       <Host>
         { this.type === 'textarea'
@@ -256,6 +263,7 @@ export class MdsInput {
             onFocus={this.onFocus}
             onInput={this.onInput}
             pattern={this.pattern}
+            list={this.datalist && 'datalist'}
             placeholder={this.placeholder || ''}
             readOnly={this.readonly}
             ref={ input => (this.nativeInput = input)}
@@ -270,6 +278,13 @@ export class MdsInput {
         { this.disabled && <mds-text typography="option" class="tip top-1 disabled">Non attivo</mds-text> }
         { this.readonly && <mds-text typography="option" class="tip top-1 read-only">Sola lettura</mds-text> }
         { this.status && this.statusTip && <mds-text typography="option" class={`tip bottom-1 ${inputTipStatusDictionary[this.status]}`}>{ this.statusTip }</mds-text> }
+        { this.datalist &&
+          <datalist id="datalist" class="datalist">
+            { this.datalist.forEach(element => {
+              <option value={element}/>
+            })}
+          </datalist>
+        }
       </Host>
     )
   }

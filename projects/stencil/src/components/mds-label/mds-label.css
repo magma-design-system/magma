@@ -12,6 +12,14 @@
     text-adjust-tone-06;
 }
 
+.text {
+  @apply
+    block
+    flex-grow
+    min-w-0
+    py-1;
+}
+
 .text:last-child {
   @apply pr-3;
 }

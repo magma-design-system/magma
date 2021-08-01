@@ -34,6 +34,10 @@ export default {
       type: { name: 'number', required: false },
       description: 'Specifies the maximum number of characters allowed in an element',
     },
+    message: {
+      type: { name: 'string', required: false },
+      description: 'Display a message at the bottom of the input text field',
+    },
     min: {
       type: { name: 'number', required: false },
       description: 'Specifies the minimum value',

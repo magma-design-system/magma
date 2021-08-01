@@ -1,5 +1,6 @@
 import React from 'react'
 import MdsInput from '@component/mds-input/mds-input'
+import { citiesDictionary } from './cities'
 import { statusDictionary } from '@dictionary/status'
 import { autoCompleteDictionary } from '@dictionary/autocomplete'
 import { inputTextTypeDictionary } from '@dictionary/input-text-type'
@@ -18,6 +19,10 @@ export default {
     autofocus: {
       type: { name: 'boolean', required: false },
       description: 'Specifies that the element should automatically get focus when the page loads',
+    },
+    datalist: {
+      type: { name: 'array', required: false },
+      description: 'A list of search terms to be searched from the input field, it should be used with type="search" input',
     },
     disabled: {
       type: { name: 'boolean', required: false },
@@ -137,4 +142,11 @@ status.args = {
   status: 'error',
   placeholder: 'Status input field',
   'status-tip': 'errore',
+}
+
+export const search = Template.bind({})
+search.args = {
+  datalist: citiesDictionary,
+  type: 'search',
+  placeholder: 'Search a city name...',
 }
