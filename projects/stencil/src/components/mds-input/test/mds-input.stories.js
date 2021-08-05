@@ -1,6 +1,6 @@
 import React from 'react'
 import MdsInput from '@component/mds-input/mds-input'
-import { citiesDictionary } from './cities'
+import { citiesDictionary } from '@fixture/cities'
 import { statusDictionary } from '@dictionary/status'
 import { autoCompleteDictionary } from '@dictionary/autocomplete'
 import { inputTextTypeDictionary } from '@dictionary/input-text-type'
@@ -8,7 +8,7 @@ import { inputTextTypeDictionary } from '@dictionary/input-text-type'
 // https://developers.google.com/web/updates/2015/06/checkout-faster-with-autofill
 
 export default {
-  title: 'Form / Input',
+  title: 'Form / Input / Input',
   component: MdsInput,
   argTypes: {
     autocomplete: {

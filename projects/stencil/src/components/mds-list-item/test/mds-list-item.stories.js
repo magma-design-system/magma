@@ -3,7 +3,7 @@ import faker from 'faker'
 import MdsList from '@component/mds-list/mds-list'
 
 export default {
-  title: 'UI / List item',
+  title: 'UI / List / List Item',
   component: MdsList,
   argTypes: {
     type: {

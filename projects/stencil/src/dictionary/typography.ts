@@ -15,6 +15,21 @@ const typographyDictionary = [
   'paragraph',
 ]
 
+const typographyMonoDictionary = [
+  'code',
+  'hack',
+]
+
+const typographyPrimaryDictionary = [
+  'action',
+  'h1',
+  'h2',
+  'h3',
+  'h4',
+  'h5',
+  'h6',
+]
+
 const typographySecondaryDictionary = [
   'caption',
   'detail',
@@ -25,5 +40,7 @@ const typographySecondaryDictionary = [
 
 export {
   typographyDictionary,
+  typographyMonoDictionary,
+  typographyPrimaryDictionary,
   typographySecondaryDictionary,
 }

@@ -1,3 +1,82 @@
+@import '~@maggioli-design-system/styles/dist/tailwind/typography.css';
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
 :host {
-  display: block;
+  @apply
+    flex
+    relative
+    text-adjust-tone-04
+    text-secondary-detail;
+}
+
+.input {
+  @apply
+    appearance-none
+    bg-adjust-tone
+    border-none
+    border-transparent
+    box-border
+    cursor-pointer
+    duration-300
+    ease-out-expo
+    m-0
+    min-h-12
+    overflow-ellipsis
+    overflow-hidden
+    pl-4
+    pr-12
+    py-3
+    ring-1
+    ring-adjust-tone-04
+    ring-opacity-10
+    rounded-lg
+    shadow
+    text-adjust-tone-10
+    text-secondary-detail
+    transition-cosmetic
+    w-full;
+}
+
+.input:focus {
+  @apply
+    duration-300
+    ease-out-expo
+    outline-none
+    ring
+    ring-brand-maggioli-08
+    shadow-sharp-lg
+    transition-cosmetic;
+}
+
+.input--selected {
+  @apply text-adjust-tone-04;
+}
+
+.icon-container {
+  @apply
+    absolute
+    flex
+    h-12
+    items-center
+    pointer-events-none
+    right-4
+    text-inherit;
+}
+
+.icon {
+  @apply
+    bg-adjust-tone-19
+    duration-200
+    rounded-full
+    transition-colors;
+}
+
+.input:focus + .icon-container .icon,
+.input:hover + .icon-container .icon {
+  @apply
+    bg-brand-maggioli-18
+    text-brand-maggioli-06;
 }

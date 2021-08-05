@@ -1,5 +1,5 @@
 import { Component, Host, h, Prop } from '@stencil/core'
-import { TypographyType } from '../../types/typography'
+import { TypographySecondaryType } from '../../types/typography'
 
 @Component({
   tag: 'mds-pill',
@@ -11,7 +11,7 @@ export class MdsPill {
   /**
    * Specifies the typography of the element
    */
-  @Prop() readonly typography: TypographyType = 'option'
+  @Prop() readonly typography: TypographySecondaryType = 'option'
 
   render () {
     return (

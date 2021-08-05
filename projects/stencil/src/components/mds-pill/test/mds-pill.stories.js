@@ -1,7 +1,7 @@
 import React from 'react'
 import faker from 'faker'
 import MdsPill from '@component/mds-pill/mds-pill'
-import { typographyDictionary } from '@dictionary/typography'
+import { typographySecondaryDictionary } from '@dictionary/typography'
 
 export default {
   title: 'UI / Pill',
@@ -11,7 +11,7 @@ export default {
       type: { name: 'string', required: false },
       control: { type: 'select' },
       description: 'Specifies the font typography of the element',
-      options: typographyDictionary,
+      options: typographySecondaryDictionary,
     },
   },
 }

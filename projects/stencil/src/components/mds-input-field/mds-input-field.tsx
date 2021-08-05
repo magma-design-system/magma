@@ -14,14 +14,12 @@ import {
 // https://www.w3schools.com/tags/tag_input.asp
 // https://github.com/ionic-team/stencil-ds-output-targets/blob/55d62af2727395cd6d729735cb9d81e5d60cc637/packages/example-project/component-library/src/components/my-input/my-input.tsx
 
-import { InputTextType } from '../../types/input-text-type'
+import clsx from 'clsx'
 import { AutocompleteType } from '../../types/autocomplete'
+import { InputTextType } from '../../types/input-text-type'
+import { InputValue } from '../../interface/input-value'
 import { StatusType } from '../../types/status'
 import { inputFieldStatusDictionary } from '../../dictionary/input-field-status'
-import clsx from 'clsx'
-export interface InputChangeEventDetail {
-  value: string | number | undefined | null
-}
 
 @Component({
   tag: 'mds-input-field',
@@ -33,7 +31,7 @@ export class MdsInputField {
 
   // inherited props
 
-  private nativeInput?: HTMLInputElement;
+  private nativeInput?: HTMLMdsInputElement;
   private tabindex?: number;
 
   @Element() el!: HTMLMdsInputFieldElement;
@@ -122,9 +120,9 @@ export class MdsInputField {
   @Prop() value?: string | number | null = ''
 
   /**
-   * Emits an InputChangeEventDetail when the value of the input element changes
+   * Emits an InputValue when the value of the input element changes
    */
-  @Event() changeEvent!: EventEmitter<InputChangeEventDetail>
+  @Event() changeEvent!: EventEmitter<InputValue>
 
   /**
    * Emits a KeyboardEvent when a keboard key is pressed on the focused input element
@@ -176,7 +174,7 @@ export class MdsInputField {
    * Returns the native `<input>` element used under the hood.
    */
   @Method()
-  getInputElement (): Promise<HTMLInputElement> {
+  getInputElement (): Promise<HTMLMdsInputElement> {
     // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
     return Promise.resolve(this.nativeInput!)
   }

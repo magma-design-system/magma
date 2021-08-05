@@ -6,7 +6,7 @@ import { inputTextTypeDictionary } from '@dictionary/input-text-type'
 import faker from 'faker'
 
 export default {
-  title: 'Form / Input Field',
+  title: 'Form / Input / Input Field',
   component: MdsInputField,
   argTypes: {
     autocomplete: {

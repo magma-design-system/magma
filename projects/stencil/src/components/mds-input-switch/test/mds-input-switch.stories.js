@@ -56,7 +56,7 @@ const Template = args =>
   <mds-input-switch {...args}>{faker.lorem.words(10)}</mds-input-switch>
 
 const TemplateMultiple = args =>
-  <form name="form-name">
+  <form name="form-name" className="grid grid-cols-1 gap-4">
     <mds-input-switch {...args} value="1">{faker.lorem.words(10)}</mds-input-switch>
     <mds-input-switch {...args} value="2">{faker.lorem.words(10)}</mds-input-switch>
   </form>
@@ -64,6 +64,7 @@ const TemplateMultiple = args =>
 export const Default = Template.bind({})
 Default.args = {
   name: 'input-name',
+  type: 'switch',
   value: '1',
 }
 

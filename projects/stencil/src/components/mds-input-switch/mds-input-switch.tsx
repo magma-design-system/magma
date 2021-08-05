@@ -1,10 +1,10 @@
-import { Component, Host, h, Prop } from '@stencil/core'
-import { TypographySecondaryType } from '../../types/typography'
-import { InputSwitchType } from '../../types/input-switch-type'
-import { inputSwitchIconDictionary } from '../../dictionary/input-switch-icons'
+import { Component, Host, h, Prop, Event, EventEmitter, Watch } from '@stencil/core'
 import clsx from 'clsx'
-
-// https://www.w3schools.com/jsref/dom_obj_checkbox.asp
+import { InputSwitchType } from '../../types/input-switch-type'
+import { InputValue } from '../../interface/input-value'
+import { InputValueType } from '../../types/input-value-type'
+import { TypographySecondaryType } from '../../types/typography'
+import { inputSwitchIconDictionary } from '../../dictionary/input-switch-icons'
 
 @Component({
   tag: 'mds-input-switch',
@@ -58,7 +58,20 @@ export class MdsInputSwitch {
   /**
    * Specifies the value of the input element
    */
-  @Prop() value?: string | number | null = ''
+  @Prop() value?: InputValueType = ''
+
+  /**
+   * Emits when the value changes
+   */
+  @Event() changeEvent: EventEmitter<InputValue>
+
+  /**
+   * Emits the change event when the component value changes
+   */
+  @Watch('value')
+  protected valueChanged ():void {
+    this.changeEvent.emit({ value: this.value === null ? this.value : this.value.toString() })
+  }
 
   render () {
 

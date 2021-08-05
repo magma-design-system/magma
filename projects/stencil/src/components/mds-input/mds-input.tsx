@@ -17,13 +17,11 @@ import clsx from 'clsx'
 // https://github.com/ionic-team/stencil-ds-output-targets/blob/55d62af2727395cd6d729735cb9d81e5d60cc637/packages/example-project/component-library/src/components/my-input/my-input.tsx
 
 import { InputTextType } from '../../types/input-text-type'
+import { InputValue } from '../../interface/input-value'
 import { StatusType } from '../../types/status'
 import { AutocompleteType } from '../../types/autocomplete'
 import { inputFocusStatusDictionary, inputTipStatusDictionary } from '../../dictionary/input-tip-status'
-export interface InputChangeEventDetail {
-  value: string | number | undefined | null
-}
-
+import { InputValueType } from '../../types/input-value-type'
 @Component({
   tag: 'mds-input',
   styleUrl: 'mds-input.css',
@@ -53,7 +51,7 @@ export class MdsInput {
    * A list of search terms to be searched from the input field,
    * it should be used with type="search" input.
    */
-  @Prop() datalist?: Array<string>
+  @Prop() datalist?: string[]
 
   /**
    * If true, the element is displayed as disabled
@@ -134,12 +132,12 @@ export class MdsInput {
   /**
    * Specifies the value of the input element
    */
-  @Prop() value?: string | number | null = ''
+  @Prop() value?: InputValueType = ''
 
   /**
    * Emits an InputChangeEventDetail when the value of the input element changes
    */
-  @Event() changeEvent!: EventEmitter<InputChangeEventDetail>
+  @Event() changeEvent!: EventEmitter<InputValue>
 
   /**
    * Emits a KeyboardEvent when a keboard key is pressed on the focused input element
