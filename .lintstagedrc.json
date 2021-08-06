@@ -5,7 +5,7 @@
   "projects/*/src/**/*.{ts,tsx}": [
     "yarn run nx run-many --target=lint-ts --all"
   ],
-  "projects/*/src/**/*.{scss}": [
+  "projects/*/src/**/*.scss": [
     "yarn run nx run-many --target=lint-sass --all"
   ]
 }
