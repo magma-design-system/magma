@@ -11,7 +11,7 @@ export class MdsIcon {
    * The name of the icon set.
    * The icon set is strictly realted to @maggioli-design-system/icons
    */
-  @Prop() readonly name?: string
+  @Prop() readonly name!: string
 
   /**
    * The name of the icon set.

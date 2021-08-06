@@ -12,7 +12,7 @@ export default {
   component: MdsIcon,
   argTypes: {
     name: {
-      type: { name: 'string', required: false },
+      type: { name: 'string', required: true },
       description: 'The name of the icon set. The icon set is strictly realted to @maggioli-design-system/icons',
       options: iconsDictionary,
       control: { type: 'select' },
