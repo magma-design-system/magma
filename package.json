@@ -8,13 +8,13 @@
     "projects/icons/dist"
   ],
   "devDependencies": {
-    "@nrwl/cli": "latest",
-    "@nrwl/tao": "latest",
-    "@nrwl/workspace": "latest",
+    "@nrwl/cli": "12.6.3",
+    "@nrwl/tao": "12.6.3",
+    "@nrwl/workspace": "12.6.3",
     "@typescript-eslint/eslint-plugin": "^4.28.2",
     "@typescript-eslint/parser": "^4.28.2",
     "eslint": "^7.30.0",
-    "eslint-plugin-react": "latest",
+    "eslint-plugin-react": "^7.24.0",
     "husky": "^7.0.0",
     "lint-staged": "^11.0.0",
     "prettier": "^2.3.2",
@@ -31,7 +31,7 @@
   },
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "clean-modules": "rm -rf node_modules || true && rm -rf projects/**/node_modules || true",
+    "clean-modules": "rm -rf node_modules || true && rm -rf projects/**/node_modules || true && rm yarn.lock",
     "prepare": "husky install"
   },
   "repository": {

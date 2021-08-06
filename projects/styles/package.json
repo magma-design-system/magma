@@ -1,14 +1,14 @@
 {
   "name": "@maggioli-design-system/styles",
-  "version": "3.8.3",
+  "version": "3.8.4",
   "description": "This module contains SCSS and CSS styles used by Maggioli Design System, it also makes available a Tailwind config based on Maggioli design tokens.",
   "main": "css/styles.min.css",
   "scripts": {
     "build": "npm run clean && npm run config && npm run sass && npm run copy:sass && npm run copy:tailwind",
     "clean": "rm -rf dist || true && mkdir -p dist/css dist/scss dist/tailwind",
     "config": "cp ../../node_modules/@maggioli-design-system/design-tokens/dist/scss/config.scss ./scss",
-    "copy:sass": "cp -r scss dist",
-    "copy:tailwind": "cp -r tailwind dist",
+    "copy:sass": "cp -rf scss dist",
+    "copy:tailwind": "cp -rf tailwind dist",
     "sass": "npm run sass:styles && npm run sass:styles:min && npm run sass:base && npm run sass:base:min && npm run sass:colors && npm run sass:colors:min && npm run sass:palette && npm run sass:palette:min && npm run sass:typography && npm run sass:typography:min",
     "sass:base": "sass ./scss/export/base.scss ./dist/css/base.css --style=expanded --load-path=../../node_modules",
     "sass:base:min": "sass ./scss/export/base.scss ./dist/css/base.min.css --style=compressed --no-source-map --load-path=../../node_modules",
