@@ -53,7 +53,8 @@
         "@stencil/render-returns-host": "error",
         "@stencil/reserved-member-names": "error",
         "@stencil/single-export": "error",
-        "@stencil/strict-mutable": "error"
+        "@stencil/strict-mutable": "error",
+        "react/jsx-no-bind": "off"
       }
     }
   ]
