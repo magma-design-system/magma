@@ -1,0 +1,25 @@
+@tailwind components;
+@tailwind utilities;
+
+:host {
+  @apply
+    bg-brand-maggioli-06
+    cursor-pointer
+    duration-500
+    ease-out-expo
+    gap-2
+    inline-flex
+    px-6
+    py-2
+    rounded-lg
+    text-adjust-tone
+    transition-colors;
+}
+
+.text {
+  @apply min-w-0 select-none truncate;
+}
+
+.text::first-letter {
+  @apply uppercase;
+}
