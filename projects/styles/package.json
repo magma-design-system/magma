@@ -47,19 +47,20 @@
   "license": "ISC",
   "dependencies": {
     "@maggioli-design-system/design-tokens": "^4.0.2",
+    "@tailwindcss/aspect-ratio": "0.2.1",
     "normalize.css": "^8.0.1",
+    "tailwindcss-multi-column": "^1.0.2",
+    "tailwindcss-scroll-snap": "^1.1.0",
     "typeface-karla": "1.1.13",
     "typeface-roboto": "1.1.13"
   },
   "devDependencies": {
-    "@tailwindcss/aspect-ratio": "0.2.1",
     "autoprefixer": "^10.3.1",
     "postcss": "^8.3.5",
     "postcss-import": "14.0.2",
     "sass": "^1.35.1",
     "sass-extract": "^2.1.0",
     "sass-loader": "^12.1.0",
-    "tailwindcss": "^2.2.4",
-    "tailwindcss-multi-column": "^1.0.2"
+    "tailwindcss": "^2.2.4"
   }
 }
