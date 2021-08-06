@@ -1,0 +1,8 @@
+@tailwind components;
+@tailwind utilities;
+
+:host {
+  @apply
+    gap-4
+    flex;
+}
