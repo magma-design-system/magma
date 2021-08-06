@@ -1,0 +1,76 @@
+@tailwind components;
+@tailwind utilities;
+
+:host {
+  @apply
+    border-transparent
+    border-b-2
+    border-t-2
+    duration-500
+    ease-out-expo
+    grid
+    py-4
+    relative
+    text-adjust-tone-04
+    transition-cosmetic !important;
+
+  margin-bottom: -2px;
+}
+
+:host( .opened ) {
+  @apply
+    border-b-adjust-tone-19
+    border-t-adjust-tone-19
+    py-8
+    !important;
+}
+
+:host( .opened:first-child ) {
+  @apply
+    border-t-transparent
+    !important;
+}
+
+:host( .opened:last-child ) {
+  @apply
+    border-b-transparent
+    !important;
+}
+
+.header {
+  @apply
+    auto-cols-min
+    cursor-pointer
+    gap-4;
+
+  grid-template-columns: 1fr auto;
+}
+
+.icon-button {
+  @apply
+    block
+    font-normal;
+}
+
+.font-inherit {
+  font-size: inherit;
+}
+
+.contents {
+  @apply
+    duration-300
+    ease-out-quad
+    flex
+    h-0
+    opacity-0
+    overflow-hidden
+    pt-0
+    transition-cosmetic;
+}
+
+.contents--opened {
+  @apply
+    h-auto
+    opacity-100
+    pt-4;
+}
