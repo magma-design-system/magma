@@ -1,7 +1,6 @@
-import { Component, Host, h, Prop, Event, EventEmitter, Watch } from '@stencil/core'
+import { Component, Host, h, Prop, Event, EventEmitter } from '@stencil/core'
 import clsx from 'clsx'
 import { InputSwitchType } from '../../types/input-switch-type'
-import { InputValue } from '../../interface/input-value'
 import { InputValueType } from '../../types/input-value-type'
 import { TypographySecondaryType } from '../../types/typography'
 import { inputSwitchIconDictionary } from '../../dictionary/input-switch-icons'
@@ -23,7 +22,7 @@ export class MdsInputSwitch {
    * Specifies that an <input> element should be pre-selected
    * when the page loads (for type="checkbox" or type="radio")
    */
-  @Prop() readonly checked?: boolean
+  @Prop({ reflect: true }) readonly checked?: boolean
 
   /**
    * Sets or returns whether a checkbox is disabled, or not
@@ -63,14 +62,13 @@ export class MdsInputSwitch {
   /**
    * Emits when the value changes
    */
-  @Event() changeEvent: EventEmitter<InputValue>
+  @Event() changeEvent: EventEmitter<{ name: string, value: InputValueType }>
 
-  /**
-   * Emits the change event when the component value changes
-   */
-  @Watch('value')
-  protected valueChanged ():void {
-    this.changeEvent.emit({ value: this.value === null ? this.value : this.value.toString() })
+  private handleInputOnChange (e: Event): void {
+    const { value } = (e.target as HTMLInputElement)
+    e.preventDefault()
+    e.stopPropagation()
+    this.changeEvent.emit({ name: this.name, value })
   }
 
   render () {
@@ -96,6 +94,7 @@ export class MdsInputSwitch {
           name={this.name}
           type={this.type === 'switch' ? 'checkbox' : this.type }
           value={this.value}
+          onChange={event => this.handleInputOnChange(event)}
         />
         { this.type === 'switch'
           ?
