@@ -1,0 +1,32 @@
+{
+  "iphone-5": {
+    "name": "Device / iPhone 5/SE",
+    "styles": { "width": "320", "height": "568" },
+    "type": "iphone5"
+  },
+  "iphone-678": {
+    "name": "Device / iPhone 6/7/8",
+    "styles": { "width": "375", "height": "667" },
+    "type": "iphone678"
+  },
+  "ipad": {
+    "name": "Device / iPad",
+    "styles": { "width": "768", "height": "1024" },
+    "type": "ipad"
+  },
+  "ipad-pro": {
+    "name": "Device / iPad Pro",
+    "styles": { "width": "1024", "height": "1366" },
+    "type": "ipadpro"
+  },
+  "desktop-small": {
+    "name": "Standard / Desktop small",
+    "styles": { "width": "1366", "height": "768" },
+    "type": "desktop-small"
+  },
+  "desktop-wide": {
+    "name": "Standard / Desktop wide",
+    "styles": { "width": "1920", "height": "1080" },
+    "type": "desktop-wide"
+  }
+}

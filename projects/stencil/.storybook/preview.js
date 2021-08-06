@@ -4,6 +4,8 @@ import 'normalize.css'
 import '@maggioli-design-system/design-tokens/dist/css/vars-rgb-channels.css'
 import '@maggioli-design-system/icons/base64/mgg-icons-font-face.css'
 
+import devices from './devices.json'
+
 import 'typeface-karla'
 import 'typeface-roboto'
 
@@ -36,9 +38,12 @@ viewportKeys.forEach(viewportKeys => {
   viewports[viewportKeys] = decorateViewport(viewportKeys, media[viewportKeys])
 })
 
+console.log(devices, viewports)
+
 export const parameters = {
   actions: { argTypesRegex: '^on[A-Z].*' },
   viewport: {
+    devices,
     viewports,
   },
 }
