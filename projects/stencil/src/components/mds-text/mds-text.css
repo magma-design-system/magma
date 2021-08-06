@@ -3,7 +3,7 @@
 @tailwind utilities;
 
 :host {
-  @apply inline-flex items-center;
+  @apply block items-center;
 }
 
 .text {

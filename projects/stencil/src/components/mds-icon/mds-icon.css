@@ -4,5 +4,15 @@
 @tailwind utilities;
 
 :host {
-  @apply inline-flex items-center justify-center leading-none;
+  @apply
+    font-normal
+    inline-flex
+    items-center
+    justify-center
+    leading-none
+    text-2xl;
+}
+
+i {
+  font-size: inherit !important;
 }
