@@ -1,8 +1,7 @@
 import React from 'react'
 import MdsIcon from '@component/mds-icon/mds-icon'
 import faker from 'faker'
-import mggIconsDictionary from '@maggioli-design-system/icons/resources/mgg-icons.json'
-const iconsDictionary = Object.keys(mggIconsDictionary).sort()
+import { iconsDictionary } from '@dictionary/icon'
 
 const getIcon = () =>
   iconsDictionary[faker.datatype.number(iconsDictionary.length - 1)]
