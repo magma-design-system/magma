@@ -1,4 +1,4 @@
-import { Component, Host, h, Prop, State } from '@stencil/core'
+import { Component, Host, h, Prop, State, Event, EventEmitter, Watch } from '@stencil/core'
 import clsx from 'clsx'
 import { TypographyPrimaryType } from '../../types/typography'
 
@@ -28,12 +28,23 @@ export class MdsAccordionItem {
 
   componentWillLoad (): void {
     this.isOpened = this.opened
-    console.log('componentWillLoad', this.isOpened)
   }
 
   private toggle = () => {
     this.isOpened = !this.isOpened
-    console.log('toggle', this.isOpened)
+    if (this.isOpened) {
+      this.openedEvent.emit(this.description)
+    }
+  }
+
+  /**
+   * Emits when the accordion is opened
+   */
+  @Event() openedEvent: EventEmitter<string>
+
+  @Watch('opened')
+  validateOpened (newValue: boolean): void {
+    this.isOpened = newValue
   }
 
   render () {
