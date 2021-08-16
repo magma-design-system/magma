@@ -1,5 +1,5 @@
 import { Component, Host, h, Prop } from '@stencil/core'
-import { TypographyType } from '../../types/typography'
+import { TypographySecondaryType } from '../../types/typography'
 
 @Component({
   tag: 'mds-list-item',
@@ -11,7 +11,7 @@ export class MdsListItem {
   /**
    * Specifies the typography of the element
    */
-  @Prop() readonly typography: TypographyType = 'detail'
+  @Prop() readonly typography: TypographySecondaryType = 'detail'
 
   /**
    * Specifies the typography of the element
