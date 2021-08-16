@@ -1,0 +1,37 @@
+@tailwind components;
+@tailwind utilities;
+
+:host {
+
+  --background-progress: theme('colors.adjust-tone-06');
+  --background: theme('colors.adjust-tone-18');
+  --thickness: theme('height.2');
+  --radius: theme('borderRadius.lg');
+
+  @apply flex overflow-hidden;
+
+  background-color: var(--background);
+  border-radius: var(--radius);
+  height: var(--thickness);
+}
+
+:host ( .horizontal ) {
+  @apply w-full;
+
+  height: var(--thickness);
+}
+
+:host ( .vertical ) {
+  @apply h-full min-h-8 flex-col;
+
+  width: var(--thickness);
+}
+
+.progress {
+
+  @apply duration-500 ease-out-expo;
+
+  background-color: var(--background-progress);
+  border-radius: var(--radius);
+  transition-property: flex-grow;
+}
