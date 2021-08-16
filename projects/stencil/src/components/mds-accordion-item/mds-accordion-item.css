@@ -60,7 +60,8 @@
   @apply
     duration-300
     ease-out-quad
-    flex
+    gap-4
+    grid
     h-0
     opacity-0
     overflow-hidden
