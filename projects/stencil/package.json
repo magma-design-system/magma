@@ -1,6 +1,6 @@
 {
   "name": "stencil-components",
-  "version": "0.19.1",
+  "version": "0.19.2",
   "description": "Stencil Component Starter",
   "main": "dist/index.cjs.js",
   "module": "dist/custom-elements/index.js",
@@ -28,7 +28,7 @@
     "storybook.deploy": "storybook-to-aws-s3 --existing-output-dir ./dist-storybook --bucket-path <AWS_BUCKET_PATH>",
     "storybook.prebuild": "npm run build-stencil",
     "storybook.predeploy": "npm run build-storybook",
-    "storybook.start": "start-storybook -p 6006 -s dist --no-manager-cache",
+    "storybook.start": "start-storybook -p 6006 -s ./dist,./assets --no-manager-cache",
     "test": "stencil test --spec --e2e",
     "test.watch": "stencil test --spec --e2e --watchAll"
   },
