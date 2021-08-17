@@ -4,7 +4,7 @@ import { typographyPrimaryDictionary } from '@dictionary/typography'
 import faker from 'faker'
 
 export default {
-  title: 'UI / Accordion / Accordion',
+  title: 'UI / Accordion',
   component: MdsAccordion,
   argTypes: {
     multiple: {

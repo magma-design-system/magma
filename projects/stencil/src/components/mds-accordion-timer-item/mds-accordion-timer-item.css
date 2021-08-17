@@ -1,0 +1,56 @@
+@tailwind components;
+@tailwind utilities;
+
+:host {
+  @apply
+    duration-500
+    ease-out-expo
+    grid
+    py-4
+    relative
+    text-adjust-tone-04
+    transition-cosmetic;
+}
+
+:host ( :hover:not(.active) ) .progress-bar {
+
+  --background: theme('colors.adjust-tone-12');
+}
+
+.row {
+  @apply flex gap-4;
+}
+
+.accordion {
+  @apply grid;
+}
+
+.progress-bar {
+  @apply flex-shrink-0;
+
+  --thickness: theme('width.1');
+}
+
+.header {
+  @apply cursor-pointer;
+}
+
+.contents {
+  @apply
+    duration-300
+    ease-out-quad
+    gap-4
+    grid
+    h-0
+    opacity-0
+    overflow-hidden
+    pt-0
+    transition-cosmetic;
+}
+
+.contents--opened {
+  @apply
+    h-auto
+    opacity-100
+    pt-4;
+}
