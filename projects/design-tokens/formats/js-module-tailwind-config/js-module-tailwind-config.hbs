@@ -4,7 +4,7 @@ Do not edit directly
 Generated at {{ date }}
 */
 
-const getColor = (cssVar, {opacityVariable, opacityValue}) => {
+const getColor = (cssVar, { opacityVariable, opacityValue }) => {
   if (opacityValue !== undefined) {
     return `rgba(var(--${cssVar}), ${opacityValue})`
   }
@@ -12,7 +12,7 @@ const getColor = (cssVar, {opacityVariable, opacityValue}) => {
     return `rgba(var(--${cssVar}), var(${opacityVariable}, 1))`
   }
   return `rgb(var(--${cssVar}))`
-};
+}
 
 const palette = {
   {{#each properties as | groups |}}
@@ -22,9 +22,9 @@ const palette = {
           {{#ifEquals @key 'light'}}
             {{#each palettes as | palette |}}
               {{#ifEquals @key 'color'}}
-    '{{@../../../key}}-{{@../../key}}': (params) => getColor('{{@../../../key}}-{{@../../key}}', params),
+  '{{@../../../key}}-{{@../../key}}': params => getColor('{{@../../../key}}-{{@../../key}}', params),
               {{else}}
-    '{{@../../../key}}-{{@../../key}}-{{leadZero @key}}': (params) => getColor('{{@../../../key}}-{{@../../key}}-{{leadZero @key}}', params),
+  '{{@../../../key}}-{{@../../key}}-{{leadZero @key}}': params => getColor('{{@../../../key}}-{{@../../key}}-{{leadZero @key}}', params),
               {{/ifEquals}}
             {{/each}}
           {{/ifEquals}}
