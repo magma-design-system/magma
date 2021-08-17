@@ -8,7 +8,7 @@
   --thickness: theme('height.2');
   --radius: theme('borderRadius.lg');
 
-  @apply flex overflow-hidden;
+  @apply flex overflow-hidden transition-colors;
 
   background-color: var(--background);
   border-radius: var(--radius);
