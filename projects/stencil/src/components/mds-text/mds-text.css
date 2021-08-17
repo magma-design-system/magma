@@ -3,7 +3,9 @@
 @tailwind utilities;
 
 :host {
-  @apply block items-center;
+  @apply
+    block
+    items-center;
 }
 
 .text {

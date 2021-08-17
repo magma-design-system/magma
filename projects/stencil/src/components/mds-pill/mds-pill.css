@@ -2,5 +2,18 @@
 @tailwind utilities;
 
 :host {
-  @apply bg-label-sky-18 inline-flex items-center px-2 py-1 rounded text-label-sky-06;
+
+  --background-color: theme('colors.bg-label-sky-18');
+  --border-radius: theme('borderRadius.DEFAULT');
+  --color: theme('colors.bg-label-sky-06');
+
+  @apply
+    inline-flex
+    items-center
+    px-2
+    py-1;
+
+  background-color: var(--background-color);
+  border-radius: var(--border-radius);
+  color: var(--color);
 }

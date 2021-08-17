@@ -1,5 +1,12 @@
+@tailwind utilities;
+
 :host {
-  @apply flex overflow-hidden bg-cover bg-no-repeat bg-center;
+  @apply
+    bg-center
+    bg-cover
+    bg-no-repeat
+    flex
+    overflow-hidden;
 }
 
 img {

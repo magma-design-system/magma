@@ -2,6 +2,10 @@
 @tailwind utilities;
 
 :host {
+
+  --box-shadow-hover: theme('boxShadow.sharp-md');
+  --box-shadow: theme('boxShadow.sharp');
+
   @apply
     bg-adjust-tone
     cursor-pointer
@@ -13,11 +17,11 @@
     transition-shadow
     w-full;
 
-  box-shadow: theme('boxShadow.sharp');
+  box-shadow: var(--box-shadow);
 }
 
 :host( :hover ) {
-  box-shadow: theme('boxShadow.sharp-md');
+  box-shadow: var(--box-shadow-hover);
 }
 
 .preview {

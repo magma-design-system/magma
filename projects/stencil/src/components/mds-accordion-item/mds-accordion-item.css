@@ -2,6 +2,9 @@
 @tailwind utilities;
 
 :host {
+
+  --color: theme('colors.adjust-tone-04');
+
   @apply
     border-transparent
     border-b-2
@@ -11,9 +14,9 @@
     grid
     py-4
     relative
-    text-adjust-tone-04
     transition-cosmetic !important;
 
+  color: var(--color);
   margin-bottom: -2px;
 }
 

@@ -2,14 +2,20 @@
 @tailwind utilities;
 
 :host {
+
+  --background-color: theme('colors.label-yellow-19');
+  --border-radius: theme('borderRadius.md');
+  --color: theme('colors.adjust-tone-06');
+
   @apply
-    bg-label-yellow-19
     flex
     items-stretch
     overflow-hidden
-    pl-3
-    rounded-md
-    text-adjust-tone-06;
+    pl-3;
+
+  background-color: var(--background-color);
+  border-radius: var(--border-radius);
+  color: var(--color);
 }
 
 .text {

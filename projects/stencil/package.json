@@ -1,6 +1,6 @@
 {
   "name": "stencil-components",
-  "version": "0.21.0",
+  "version": "0.21.11",
   "description": "Stencil Component Starter",
   "main": "dist/index.cjs.js",
   "module": "dist/custom-elements/index.js",

@@ -2,7 +2,11 @@
 @tailwind utilities;
 
 :host {
-  @apply flex w-full items-start justify-start;
+  @apply
+    flex
+    items-start
+    justify-start
+    w-full;
 }
 
 mds-icon {

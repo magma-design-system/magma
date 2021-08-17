@@ -2,8 +2,12 @@
 @tailwind utilities;
 
 :host {
+
+  --border-radius: theme('borderRadius.lg');
+  --background-color: theme('colors.brand-maggioli-06');
+  --color: theme('colors.adjust-tone');
+
   @apply
-    bg-brand-maggioli-06
     cursor-pointer
     duration-500
     ease-out-expo
@@ -11,9 +15,11 @@
     inline-flex
     px-6
     py-2
-    rounded-lg
-    text-adjust-tone
     transition-colors;
+
+  background-color: var(--background-color);
+  border-radius: var(--border-radius);
+  color: var(--color);
 }
 
 .text {

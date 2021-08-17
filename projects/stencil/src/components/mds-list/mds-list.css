@@ -2,9 +2,14 @@
 @tailwind utilities;
 
 :host {
-  @apply gap-4 grid pl-4;
+  @apply
+    gap-4
+    grid
+    pl-4;
 }
 
 ul {
-  @apply m-0 p-0;
+  @apply
+    m-0
+    p-0;
 }

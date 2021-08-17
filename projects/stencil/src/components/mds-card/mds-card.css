@@ -2,13 +2,18 @@
 @tailwind utilities;
 
 :host {
+
+  --shadow: theme('boxShadow.md');
+  --border-radius: theme('borderRadius.xl');
+  --background-color: theme('colors.adjust-tone');
+
   @apply
     auto-rows-max
-    bg-adjust-tone
     grid
     overflow-hidden
-    p-4
-    rounded-xl;
+    p-4;
 
-  box-shadow: theme('boxShadow.md');
+  background-color: var(--background-color);
+  border-radius: var(--border-radius);
+  box-shadow: var(--shadow);
 }
