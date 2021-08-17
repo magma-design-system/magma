@@ -3,9 +3,9 @@
 
 :host {
 
-  --background-color: theme('colors.bg-label-sky-18');
+  --background-color: theme('colors.label-sky-18');
   --border-radius: theme('borderRadius.DEFAULT');
-  --color: theme('colors.bg-label-sky-06');
+  --color: theme('colors.label-sky-06');
 
   @apply
     inline-flex
