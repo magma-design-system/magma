@@ -35,6 +35,10 @@
   @apply cursor-pointer;
 }
 
+:host ( .active ) .header {
+  @apply cursor-auto;
+}
+
 .contents {
   @apply
     duration-300

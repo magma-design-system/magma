@@ -19,7 +19,7 @@ export class MdsAccordionTimerItem {
   /**
    * Specifies if the accordion item is opened or not
    */
-  @Prop() readonly active?: boolean
+  @Prop({ reflect: true }) readonly active?: boolean
 
   /**
    * Specifies the title shown when the accordion is closed or opened
@@ -31,43 +31,48 @@ export class MdsAccordionTimerItem {
    */
   @Prop() readonly progress?: number = 0
 
+  /**
+   * Used automatically by MdsAccordionTimer wrapper to handle it's siblings
+   */
+  @Prop() readonly uuid?: number = 0
+
   componentWillLoad (): void {
     this.isActive = this.active
   }
 
   private toggle = () => {
-    this.isActive = !this.isActive
-    if (this.isActive) {
-      this.activeEvent.emit(this.description)
+    if (!this.isActive) {
+      this.isActive = true
+      this.clickActive.emit(this.description)
     }
   }
 
-  private mouseHover = () => {
+  private mouseEnter = () => {
     if (this.isActive) {
-      this.hoverActiveEvent.emit(this.description)
+      this.mouseEnterActive.emit(this.description)
     }
   }
 
-  private mouseOut = () => {
+  private mouseLeave = () => {
     if (this.isActive) {
-      this.outActiveEvent.emit(this.description)
+      this.mouseLeaveActive.emit(this.description)
     }
   }
 
   /**
    * Emits when the accordion is clicked by the mouse
    */
-  @Event() activeEvent: EventEmitter<string>
+  @Event() clickActive: EventEmitter<string>
 
   /**
    * Emits when the accordion is hovered by the mouse
    */
-  @Event() hoverActiveEvent: EventEmitter<string>
+  @Event() mouseEnterActive: EventEmitter<string>
 
   /**
    * Emits when the accordion is hovered by the mouse
    */
-  @Event() outActiveEvent: EventEmitter<string>
+  @Event() mouseLeaveActive: EventEmitter<string>
 
   @Watch('active')
   validateOpened (newValue: boolean): void {
@@ -76,7 +81,7 @@ export class MdsAccordionTimerItem {
 
   render () {
     return (
-      <Host class={ clsx(this.isActive && 'active') } onMouseOver={ this.mouseHover } onMouseOut={ this.mouseOut }>
+      <Host class={ clsx(this.isActive && 'active') } onMouseEnter={ this.mouseEnter } onMouseLeave={ this.mouseLeave }>
         <div class="row">
           <mds-progress class="progress-bar" progress={this.progress} direction="vertical"/>
           <div class="accordion">

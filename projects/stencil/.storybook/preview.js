@@ -38,8 +38,6 @@ viewportKeys.forEach(viewportKeys => {
   viewports[viewportKeys] = decorateViewport(viewportKeys, media[viewportKeys])
 })
 
-console.log(devices, viewports)
-
 export const parameters = {
   actions: { argTypesRegex: '^on[A-Z].*' },
   viewport: {
