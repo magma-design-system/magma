@@ -1,4 +1,4 @@
-import { Component, Host, h, Listen, Prop } from '@stencil/core'
+import { Component, Host, h, Listen, Prop, Element } from '@stencil/core'
 import { InputValueType } from '../../types/input-value-type'
 
 @Component({
@@ -13,14 +13,13 @@ export class MdsInputSwitchGroup {
    */
   @Prop() name: string
 
+  @Element() private element: HTMLMdsInputSwitchGroupElement
+
   @Listen('changeEvent')
   changeEventHandler (event: CustomEvent<{ name: string, value: InputValueType }>): void {
-    // Cares only about changes on mds-input-switch with the same name
-    if (event.detail.name === this.name) {
-      console.log('Received the custom changeEvent event: ', this.name, event.detail)
-      const radios = document.querySelectorAll<HTMLMdsInputSwitchElement>(`mds-input-switch[name="${this.name}"]`)
-      this.validateRadios(radios, event.detail.value)
-    }
+    console.log('Received the custom changeEvent event: ', this.name, event.detail)
+    const radios = this.element.querySelectorAll<HTMLMdsInputSwitchElement>(`mds-input-switch[name="${this.name}"]`)
+    this.validateRadios(radios, event.detail.value)
   }
 
   private validateRadios (radios: NodeListOf<HTMLMdsInputSwitchElement>, value: InputValueType): void {
