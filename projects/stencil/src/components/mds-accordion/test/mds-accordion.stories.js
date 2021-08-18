@@ -29,6 +29,8 @@ const Template = args =>
   </mds-accordion>
 
 export const Default = Template.bind({})
-Default.args = {
-  description: 'Come funziona il monitoraggio del sonno?',
+
+export const Multiple = Template.bind({})
+Multiple.args = {
+  multiple: true,
 }

@@ -7,9 +7,9 @@ export default {
   title: 'UI / Accordion Timer',
   component: MdsAccordionTimer,
   argTypes: {
-    multiple: {
-      type: { name: 'boolean', required: false },
-      description: 'Choose if multiple siblings can be opened simultaneously',
+    duration: {
+      type: { name: 'number', required: false },
+      description: 'Sets the duration of the single accordion item',
     },
   },
 }
@@ -26,6 +26,8 @@ const Template = args =>
   </div>
 
 export const Default = Template.bind({})
-Default.args = {
-  description: 'Come funziona il monitoraggio del sonno?',
+
+export const Duration = Template.bind({})
+Duration.args = {
+  duration: 1000,
 }
