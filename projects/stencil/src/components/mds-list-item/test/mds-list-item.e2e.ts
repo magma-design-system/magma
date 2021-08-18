@@ -1,7 +1,7 @@
 import { newE2EPage } from '@stencil/core/testing'
 
 describe('mds-list-item', () => {
-  it('renders', async() => {
+  it('renders', async () => {
     const page = await newE2EPage()
     await page.setContent('<mds-list-item></mds-list-item>')
 
