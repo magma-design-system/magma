@@ -62,13 +62,13 @@ export class MdsInputSwitch {
   /**
    * Emits when the value changes
    */
-  @Event() changeEvent: EventEmitter<{ name: string, value: InputValueType }>
+  @Event() valueChange: EventEmitter<{ name: string, value: InputValueType }>
 
   private handleInputOnChange (e: Event): void {
     const { value } = (e.target as HTMLInputElement)
     e.preventDefault()
     e.stopPropagation()
-    this.changeEvent.emit({ name: this.name, value })
+    this.valueChange.emit({ name: this.name, value })
   }
 
   render () {

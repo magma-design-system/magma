@@ -15,9 +15,9 @@ export class MdsInputSwitchGroup {
 
   @Element() private element: HTMLMdsInputSwitchGroupElement
 
-  @Listen('changeEvent')
-  changeEventHandler (event: CustomEvent<{ name: string, value: InputValueType }>): void {
-    console.log('Received the custom changeEvent event: ', this.name, event.detail)
+  @Listen('valueChange')
+  onValueChange (event: CustomEvent<{ name: string, value: InputValueType }>): void {
+    console.log('Received the custom onValueChange event: ', this.name, event.detail)
     const radios = this.element.querySelectorAll<HTMLMdsInputSwitchElement>(`mds-input-switch[name="${this.name}"]`)
     this.validateRadios(radios, event.detail.value)
   }
