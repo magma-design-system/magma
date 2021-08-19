@@ -1,4 +1,4 @@
-import { Component, Host, h, Prop } from '@stencil/core'
+import { Component, Event, EventEmitter, Host, h, Prop } from '@stencil/core'
 import { CrossoriginType } from '../../types/crossorigin'
 import { LoadingType } from '../../types/loading'
 import { ReferrerpolicyType } from '../../types/referrerpolicy'
@@ -85,6 +85,26 @@ export class MdsImg {
     return { paddingTop: this.aspectRatioPaddingTop() }
   }
 
+  /**
+   * Emits when the accordion changes it's item
+   */
+  @Event() loadError: EventEmitter<HTMLImageElement>
+
+  private onError = (ev: Event) => {
+    const image = ev.target as HTMLImageElement
+    this.loadError.emit(image)
+  }
+
+  /**
+   * Emits when the accordion changes it's item
+   */
+  @Event() loadSuccess: EventEmitter<HTMLImageElement>
+
+  private onSuccess = (ev: Event) => {
+    const image = ev.target as HTMLImageElement
+    this.loadSuccess.emit(image)
+  }
+
   render () {
     if (this.aspectRatio !== undefined) {
       return (
@@ -102,6 +122,8 @@ export class MdsImg {
           height={this.height}
           loading={this.loading}
           // referrerpolicy={this.referrerpolicy}
+          onError={this.onError}
+          onLoad={this.onSuccess}
           sizes={this.sizes}
           src={this.src}
           srcset={this.srcset}
