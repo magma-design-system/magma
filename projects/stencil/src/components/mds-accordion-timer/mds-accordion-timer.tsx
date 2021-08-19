@@ -106,13 +106,11 @@ export class MdsAccordionTimer {
     this.time = this.beginningTime()
     this.activeItemDurationTime = this.duration
     this.addTimeListener()
-    // this.timer = window.setInterval(this.timerStopped, this.duration)
   }
 
   private playTimer = (): void => {
     this.beginningTime()
     this.addTimeListener()
-    // this.timer = window.setInterval(this.timerStopped, this.time)
   }
 
   private pauseTimer = (): void => {
