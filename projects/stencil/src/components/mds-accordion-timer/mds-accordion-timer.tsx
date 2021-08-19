@@ -139,6 +139,7 @@ export class MdsAccordionTimer {
     })
     this.setActiveItem(selectedUuid)
     this.startTimer()
+    this.pauseTimer()
   }
 
   @Listen('mouseEnterActive')
