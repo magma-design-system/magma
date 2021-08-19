@@ -1,4 +1,4 @@
-import { Component, getAssetPath, Host, h, State, Prop } from '@stencil/core'
+import { Component, Host, h, State, Prop } from '@stencil/core'
 import clsx from 'clsx'
 
 @Component({
