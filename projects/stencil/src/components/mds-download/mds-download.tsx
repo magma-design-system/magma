@@ -91,7 +91,7 @@ export class MdsDownload {
             { this.suffix === undefined && this.getSuffix() && <mds-text typography="h6" class="extension">.{ this.getSuffix() }</mds-text> }
           </div>
           <div class="detail">
-            { this.getSuffix() && <mds-pill class={`suffix ${background} ${color}`}>{ this.getSuffix() }</mds-pill> }
+            { this.getSuffix() && <mds-badge class={`suffix ${background} ${color}`}>{ this.getSuffix() }</mds-badge> }
             <mds-text typography="caption" class="description" title={ this.description || description }>{ this.description || description }</mds-text>
           </div>
         </div>
