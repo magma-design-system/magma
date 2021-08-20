@@ -18,7 +18,7 @@ import clsx from 'clsx'
 
 import { InputTextType } from '../../types/input-text-type'
 import { InputValue } from '../../interface/input-value'
-import { StatusType } from '../../types/status'
+import { StatusVariantType } from '../../types/variant'
 import { AutocompleteType } from '../../types/autocomplete'
 import { inputFocusStatusDictionary, inputTipStatusDictionary } from '../../dictionary/input-tip-status'
 import { InputValueType } from '../../types/input-value-type'
@@ -112,7 +112,7 @@ export class MdsInput {
   /**
    * Sets the status of the input field
    */
-  @Prop() status?: StatusType
+  @Prop() status?: StatusVariantType
 
   /**
    * Sets the word(s) of the status of the input field

@@ -18,7 +18,7 @@ import clsx from 'clsx'
 import { AutocompleteType } from '../../types/autocomplete'
 import { InputTextType } from '../../types/input-text-type'
 import { InputValue } from '../../interface/input-value'
-import { StatusType } from '../../types/status'
+import { StatusVariantType } from '../../types/variant'
 import { inputFieldStatusDictionary } from '../../dictionary/input-field-status'
 
 @Component({
@@ -224,7 +224,7 @@ export class MdsInputField {
   /**
    * Display the status of a message at the bottom of the input text field
    */
-  @Prop() status?: StatusType
+  @Prop() status?: StatusVariantType
 
   /**
    * Display the status of a message at the bottom of the input text field
