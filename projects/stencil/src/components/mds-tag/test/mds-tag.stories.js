@@ -7,7 +7,7 @@ export default {
   title: 'UI / Tag',
   component: MdsTag,
   argTypes: {
-    close: {
+    deletable: {
       type: { name: 'boolean', required: false },
       description: 'Enables the cross icon to perform cancel/delete action on element',
     },
@@ -40,7 +40,7 @@ typography.args = {
 
 export const onClickClose = Template.bind({})
 onClickClose.args = {
-  close: true,
+  deletable: true,
   onClickClose: event => { console.log(event, 'hello') },
 }
 

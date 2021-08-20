@@ -1,6 +1,6 @@
 import React from 'react'
 import faker from 'faker'
-import MdsPill from '@component/mds-pill/mds-pill'
+import MdsBadge from '@component/mds-badge/mds-badge'
 import { typographySecondaryDictionary } from '@dictionary/typography'
 
 export default {

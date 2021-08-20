@@ -24,7 +24,7 @@ export class MdsTag {
   /**
    * Enables the cross icon to perform cancel/delete action on element
    */
-  @Prop() readonly close?: boolean = false
+  @Prop() readonly deletable?: boolean = false
 
   private onClickClose = (ev: Event) => {
     ev.stopPropagation()
@@ -35,7 +35,7 @@ export class MdsTag {
   /**
    * Emits when the label has to be cancelled
    */
-  @Event() clickClose: EventEmitter<HTMLMdsLabelElement>
+  @Event() clickClose: EventEmitter<HTMLMdsTagElement>
 
   render () {
     return (
@@ -43,7 +43,7 @@ export class MdsTag {
         <mds-text typography={this.typography} class={clsx('text', this.truncate && 'truncate')}>
           <slot></slot>
         </mds-text>
-        { this.close && <mds-icon name="action-close" class="close" onClick={ this.onClickClose.bind(this) }/> }
+        { this.deletable && <mds-icon name="action-close" class="close" onClick={ this.onClickClose.bind(this) }/> }
       </Host>
     )
   }
