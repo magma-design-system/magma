@@ -1,0 +1,77 @@
+@tailwind utilities;
+
+:host {
+
+  --background-color: theme('colors.adjust-tone-20');
+  --color: theme('colors.adjust-tone-04');
+
+  @apply grid;
+
+  background-color: var(--background-color);
+  color: var(--color);
+}
+
+.header {
+  @apply
+    flex
+    gap-4
+    items-center
+    px-6
+    py-4
+    shadow-sm;
+}
+
+.headline {
+  @apply flex-grow;
+}
+
+.header .close-icon {
+  @apply flex-shrink-0;
+}
+
+.content {
+  @apply p-6;
+}
+
+.content--has-icon-isolated {
+  @apply
+    pr-16
+    relative;
+}
+
+.header + .content {
+  @apply pt-4;
+}
+
+:host ( .has-actions ) .content {
+  @apply pb-0;
+}
+
+.close-icon--isolated {
+  @apply
+    absolute
+    right-6
+    top-6;
+}
+
+.actions {
+  @apply
+    flex-wrap
+    gap-4
+    justify-end
+    p-6;
+}
+
+.close-icon {
+  @apply
+    bg-adjust-tone
+    bg-opacity-0
+    cursor-pointer
+    p-1
+    rounded-md
+    transition-colors;
+}
+
+.close-icon:hover {
+  @apply bg-opacity-50;
+}
