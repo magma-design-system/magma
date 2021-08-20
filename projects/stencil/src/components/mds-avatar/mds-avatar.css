@@ -66,5 +66,4 @@
     w-full;
 
   color: var(--color-placeholder);
-  font-size: clamp(2rem, 2.5vw, 96rem) !important;
 }
