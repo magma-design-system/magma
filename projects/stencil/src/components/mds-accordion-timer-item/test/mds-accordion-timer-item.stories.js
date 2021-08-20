@@ -42,8 +42,8 @@ Default.args = {
   description: 'Come funziona il monitoraggio del sonno?',
 }
 
-export const opened = Template.bind({})
-opened.args = {
-  opened: true,
+export const active = Template.bind({})
+active.args = {
+  active: true,
   description: 'Come funziona il monitoraggio del sonno?',
 }
