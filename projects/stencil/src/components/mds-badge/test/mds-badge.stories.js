@@ -4,8 +4,8 @@ import MdsPill from '@component/mds-pill/mds-pill'
 import { typographySecondaryDictionary } from '@dictionary/typography'
 
 export default {
-  title: 'UI / Pill',
-  component: MdsPill,
+  title: 'UI / Badge',
+  component: MdsBadge,
   argTypes: {
     typography: {
       type: { name: 'string', required: false },
@@ -17,9 +17,9 @@ export default {
 }
 
 const Template = args =>
-  <mds-pill {...args}>{faker.animal.dog()}</mds-pill>
+  <mds-badge {...args}>{faker.animal.dog()}</mds-badge>
 
 export const Default = Template.bind({})
 export const tailwindStyle = () =>
-  <mds-pill class="rounded-full text-adjust-tone bg-adjust-tone-04">{faker.animal.dog()}</mds-pill>
+  <mds-badge class="rounded-full text-adjust-tone bg-adjust-tone-04">{faker.animal.dog()}</mds-badge>
 

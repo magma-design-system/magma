@@ -2,11 +2,11 @@ import { Component, Host, h, Prop } from '@stencil/core'
 import { TypographySecondaryType } from '../../types/typography'
 
 @Component({
-  tag: 'mds-pill',
-  styleUrl: 'mds-pill.css',
+  tag: 'mds-badge',
+  styleUrl: 'mds-badge.css',
   shadow: true,
 })
-export class MdsPill {
+export class MdsBadge {
 
   /**
    * Specifies the typography of the element

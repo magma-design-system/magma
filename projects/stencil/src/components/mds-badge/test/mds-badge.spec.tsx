@@ -1,18 +1,18 @@
 import { newSpecPage } from '@stencil/core/testing'
-import { MdsPill } from '../mds-pill'
+import { MdsBadge } from '../mds-badge'
 
-describe('mds-pill', () => {
+describe('mds-badge', () => {
   it('renders', async () => {
     const page = await newSpecPage({
-      components: [MdsPill],
-      html: '<mds-pill></mds-pill>',
+      components: [MdsBadge],
+      html: '<mds-badge></mds-badge>',
     })
     expect(page.root).toEqualHtml(`
-      <mds-pill>
+      <mds-badge>
         <mock:shadow-root>
           <slot></slot>
         </mock:shadow-root>
-      </mds-pill>
+      </mds-badge>
     `)
   })
 })
