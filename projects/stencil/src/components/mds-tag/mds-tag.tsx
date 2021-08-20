@@ -1,0 +1,50 @@
+import { Component, Element, Event, EventEmitter, Host, h, Prop } from '@stencil/core'
+import { TypographyType } from '../../types/typography'
+import clsx from 'clsx'
+
+@Component({
+  tag: 'mds-tag',
+  styleUrl: 'mds-tag.css',
+  shadow: true,
+})
+export class MdsTag {
+
+  @Element() private element: HTMLMdsTagElement
+
+  /**
+   * Truncates text inside the label or displays it in multiline if needed
+   */
+  @Prop() readonly truncate?: boolean = true
+
+  /**
+   * Specifies the typography of the element
+   */
+  @Prop() readonly typography?: TypographyType = 'detail'
+
+  /**
+   * Enables the cross icon to perform cancel/delete action on element
+   */
+  @Prop() readonly close?: boolean = false
+
+  private onClickClose = (ev: Event) => {
+    ev.stopPropagation()
+    ev.preventDefault()
+    this.clickClose.emit(this.element)
+  }
+
+  /**
+   * Emits when the label has to be cancelled
+   */
+  @Event() clickClose: EventEmitter<HTMLMdsLabelElement>
+
+  render () {
+    return (
+      <Host>
+        <mds-text typography={this.typography} class={clsx('text', this.truncate && 'truncate')}>
+          <slot></slot>
+        </mds-text>
+        { this.close && <mds-icon name="action-close" class="close" onClick={ this.onClickClose.bind(this) }/> }
+      </Host>
+    )
+  }
+}

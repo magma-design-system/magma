@@ -1,15 +1,19 @@
 import React from 'react'
 import faker from 'faker'
-import MdsLabel from '@component/mds-label/mds-label'
+import MdsTag from '@component/mds-tag/mds-tag'
 import { typographyDictionary } from '@dictionary/typography'
 
 export default {
-  title: 'UI / Label',
-  component: MdsLabel,
+  title: 'UI / Tag',
+  component: MdsTag,
   argTypes: {
+    close: {
+      type: { name: 'boolean', required: false },
+      description: 'Enables the cross icon to perform cancel/delete action on element',
+    },
     truncate: {
       type: { name: 'boolean', required: false },
-      description: 'Truncates text inside the label or displays it in multiline if needed',
+      description: 'Truncates text inside the tag or displays it in multiline if needed',
     },
     typography: {
       type: { name: 'string', required: false },
@@ -20,7 +24,7 @@ export default {
   },
 }
 const Template = args =>
-  <mds-label {...args}>{faker.lorem.paragraph()}</mds-label>
+  <mds-tag {...args}>{faker.lorem.paragraph()}</mds-tag>
 
 export const Default = Template.bind({})
 
@@ -34,14 +38,15 @@ typography.args = {
   typography: 'label',
 }
 
-export const onClickDelete = Template.bind({})
-onClickDelete.args = {
-  onClickDelete: () => { console.log('hello') },
+export const onClickClose = Template.bind({})
+onClickClose.args = {
+  close: true,
+  onClickClose: event => { console.log(event, 'hello') },
 }
 
 export const tailwindRadius = (args) =>
-  <mds-label class="rounded-3xl" {...args}>{faker.lorem.paragraph()}</mds-label>
+  <mds-tag class="rounded-3xl" {...args}>{faker.lorem.paragraph()}</mds-tag>
 
 export const tailwindColor = (args) =>
-  <mds-label class="bg-label-blue-06 text-label-blue-20" {...args}>{faker.lorem.paragraph()}</mds-label>
+  <mds-tag class="bg-label-blue-06 text-label-blue-20" {...args}>{faker.lorem.paragraph()}</mds-tag>
 
