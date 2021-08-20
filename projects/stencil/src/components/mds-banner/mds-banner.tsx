@@ -13,14 +13,19 @@ export class MdsBanner {
   private actions: boolean
 
   /**
+   * Shows the cross icon to perform cancel/delete action on element
+   */
+  @Prop() readonly deletable?: boolean
+
+  /**
    * The title on the top of the banner
    */
   @Prop() readonly headline?: string
 
   /**
-   * Shows the cross icon to perform cancel/delete action on element
+   * An icon displayed at the top left of the banner
    */
-  @Prop() readonly deletable?: boolean
+  @Prop() readonly icon?: string
 
   componentWillLoad (): void {
     this.actions = this.hostElement.querySelector('[slot="actions"]') !== null
@@ -34,6 +39,7 @@ export class MdsBanner {
         { this.headline !== undefined
           &&
           <header class="header">
+            { this.icon && <mds-icon name={ this.icon } class="icon"/> }
             <mds-text typography="h6" class="headline">{ this.headline }</mds-text>
             { this.deletable && <mds-icon name="action-close" class="close-icon"/> }
           </header>
@@ -46,6 +52,7 @@ export class MdsBanner {
             &&
             <mds-icon name="action-close" class="close-icon close-icon--isolated"/>
           }
+          { this.headline === undefined && this.icon && <mds-icon name={ this.icon } class="icon"/> }
           <mds-text class="text" typography="detail">
             <slot/>
           </mds-text>

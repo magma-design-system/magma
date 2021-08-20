@@ -1,6 +1,7 @@
 import React from 'react'
 import faker from 'faker'
 import MdsBanner from '@component/mds-banner/mds-banner'
+import { iconsDictionary } from '@dictionary/icon'
 
 export default {
   title: 'UI / Banner',
@@ -13,6 +14,12 @@ export default {
     headline: {
       type: { name: 'string', required: false },
       description: 'The title on the top of the banner',
+    },
+    icon: {
+      type: { name: 'string', required: true },
+      description: 'The name of the icon set. The icon set is strictly realted to @maggioli-design-system/icons',
+      options: iconsDictionary,
+      control: { type: 'select' },
     },
   },
 }
@@ -34,6 +41,11 @@ export const Default = Template.bind({})
 export const Headline = Template.bind({})
 Headline.args = {
   headline: faker.animal.dog(),
+}
+
+export const Icon = Template.bind({})
+Icon.args = {
+  icon: 'status-warning',
 }
 
 export const Deletable = Template.bind({})

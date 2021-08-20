@@ -30,7 +30,11 @@
 }
 
 .content {
-  @apply p-6;
+  @apply
+    flex
+    gap-4
+    items-start
+    p-6;
 }
 
 .content--has-icon-isolated {
