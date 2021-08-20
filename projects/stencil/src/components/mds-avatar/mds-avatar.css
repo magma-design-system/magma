@@ -29,13 +29,14 @@
   @apply
     flex
     items-center
-    justify-center;
+    justify-center
+    p-4;
 
   background-color: var(--background-color-placeholder);
 }
 
 :host ( .initials ) {
-  @apply p-4;
+  @apply p-2;
 }
 
 .image {
