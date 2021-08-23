@@ -1,4 +1,4 @@
-const typographyDefaultsDictionary = {
+const typographyDefaultsVariaint = {
   action: {
     tag: 'span',
     selector: 'text-primary-action',
@@ -59,7 +59,7 @@ const typographyDefaultsDictionary = {
 
 
 export {
-  typographyDefaultsDictionary,
+  typographyDefaultsVariaint,
 }
 
 

@@ -36,6 +36,7 @@ module.exports = {
       '@fixture': path.resolve(__dirname, '../src/fixtures/'),
       '@placeholder': 'https://via.placeholder.com',
       '@type': path.resolve(__dirname, '../src/types/'),
+      '@variant': path.resolve(__dirname, '../src/variants/'),
     }
 
     config.module.rules.push({

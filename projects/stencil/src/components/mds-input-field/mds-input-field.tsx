@@ -19,7 +19,7 @@ import { AutocompleteType } from '../../types/autocomplete'
 import { InputTextType } from '../../types/input-text-type'
 import { InputValue } from '../../interface/input-value'
 import { StatusVariantType } from '../../types/variant'
-import { inputFieldStatusDictionary } from '../../dictionary/input-field-status'
+import { inputFieldStatusVariant } from '../../variants/input-field-status'
 
 @Component({
   tag: 'mds-input-field',
@@ -236,7 +236,7 @@ export class MdsInputField {
     return (
       <Host>
         { this.label && <mds-text class="label" typography="label">{ this.label }</mds-text> }
-        <div class={clsx('message-window', this.status && `message-window--opened ${inputFieldStatusDictionary[this.status]}`)}>
+        <div class={clsx('message-window', this.status && `message-window--opened ${inputFieldStatusVariant[this.status]}`)}>
           <mds-input
             autocomplete={this.autocomplete}
             autofocus={this.autofocus}

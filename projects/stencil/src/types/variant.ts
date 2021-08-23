@@ -21,6 +21,20 @@ export type ActionVariantType =
   | 'dark'
   | 'light'
 
+export type ButtonVariantType =
+  | 'primary'
+  | 'dark'
+  | 'light'
+  | 'error'
+  | 'info'
+  | 'success'
+  | 'warning'
+
+export type StateVariantType =
+  | 'disabled'
+  | 'focused'
+  | 'readonly'
+
 export type ToneVariantType =
   | 'strong' // background strong
   | 'weak' // background weak

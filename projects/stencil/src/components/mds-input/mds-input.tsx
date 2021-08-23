@@ -20,7 +20,7 @@ import { InputTextType } from '../../types/input-text-type'
 import { InputValue } from '../../interface/input-value'
 import { StatusVariantType } from '../../types/variant'
 import { AutocompleteType } from '../../types/autocomplete'
-import { inputFocusStatusDictionary, inputTipStatusDictionary } from '../../dictionary/input-tip-status'
+import { inputFocusStatusVariant, inputTipStatusVariant } from '../../variants/input-tip-status'
 import { InputValueType } from '../../types/input-value-type'
 @Component({
   tag: 'mds-input',
@@ -231,7 +231,7 @@ export class MdsInput {
       <Host>
         { this.type === 'textarea'
           ? <textarea
-            class={clsx('input', inputFocusStatusDictionary[this.status || 'default'])}
+            class={clsx('input', inputFocusStatusVariant[this.status || 'default'])}
             autoFocus={this.autofocus}
             disabled={this.disabled}
             maxLength={this.maxlength}
@@ -248,7 +248,7 @@ export class MdsInput {
             value={value}>
           </textarea>
           : <input
-            class={clsx('input', inputFocusStatusDictionary[this.status || 'default'])}
+            class={clsx('input', inputFocusStatusVariant[this.status || 'default'])}
             autoComplete={this.autocomplete}
             autoFocus={this.autofocus}
             disabled={this.disabled}
@@ -275,7 +275,7 @@ export class MdsInput {
         { this.required && <mds-text typography="option" class="tip top-1 required">Obbligatorio</mds-text> }
         { this.disabled && <mds-text typography="option" class="tip top-1 disabled">Non attivo</mds-text> }
         { this.readonly && <mds-text typography="option" class="tip top-1 read-only">Sola lettura</mds-text> }
-        { this.status && this.statusTip && <mds-text typography="option" class={`tip bottom-1 ${inputTipStatusDictionary[this.status]}`}>{ this.statusTip }</mds-text> }
+        { this.status && this.statusTip && <mds-text typography="option" class={`tip bottom-1 ${inputTipStatusVariant[this.status]}`}>{ this.statusTip }</mds-text> }
         { this.datalist &&
           <datalist id="datalist" class="datalist">
             { this.datalist.forEach(element => {

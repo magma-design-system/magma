@@ -1,11 +1,9 @@
+@import '~@maggioli-design-system/styles/dist/tailwind/typography.css';
+
 @tailwind components;
 @tailwind utilities;
 
 :host {
-
-  --border-radius: theme('borderRadius.lg');
-  --background-color: theme('colors.brand-maggioli-06');
-  --color: theme('colors.adjust-tone');
 
   @apply
     cursor-pointer
@@ -13,19 +11,34 @@
     ease-out-expo
     gap-2
     inline-flex
+    items-center
     px-6
     py-2
     transition-colors;
 
-  background-color: var(--background-color);
-  border-radius: var(--border-radius);
-  color: var(--color);
+  background-color: var(--background-color, theme('colors.brand-maggioli-06'));
+  border-color: var(--border-color, transparent) !important;
+  border-radius: var(--border-radius, theme('borderRadius.lg'));
+  border-width: theme('borderWidth.2') !important;
+  color: var(--color, theme('colors.adjust-tone'));
 }
 
 .text {
-  @apply min-w-0 select-none truncate;
+  @apply
+    min-w-0
+    select-none
+    truncate;
 }
 
 .text::first-letter {
   @apply uppercase;
 }
+
+@import './css/mds-button-variant-primary.css';
+@import './css/mds-button-variant-dark.css';
+@import './css/mds-button-variant-light.css';
+@import './css/mds-button-variant-error.css';
+@import './css/mds-button-variant-warning.css';
+@import './css/mds-button-variant-info.css';
+@import './css/mds-button-variant-success.css';
+@import './css/mds-button-size.css';

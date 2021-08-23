@@ -1,4 +1,4 @@
-const inputFocusStatusDictionary = {
+const inputFocusStatusVariant = {
   default: 'focus:ring-brand-maggioli-08',
   error: 'focus:ring-status-error-08',
   info: 'focus:ring-status-info-08',
@@ -6,7 +6,7 @@ const inputFocusStatusDictionary = {
   warning: 'focus:ring-status-warning-08',
 }
 
-const inputTipStatusDictionary = {
+const inputTipStatusVariant = {
   error: 'bg-status-error-10 text-status-error-19',
   info: 'bg-status-info-10 text-status-info-19',
   success: 'bg-status-success-10 text-status-success-19',
@@ -14,6 +14,6 @@ const inputTipStatusDictionary = {
 }
 
 export {
-  inputFocusStatusDictionary,
-  inputTipStatusDictionary,
+  inputFocusStatusVariant,
+  inputTipStatusVariant,
 }

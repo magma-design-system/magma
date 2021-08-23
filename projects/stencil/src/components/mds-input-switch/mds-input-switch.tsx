@@ -3,7 +3,7 @@ import clsx from 'clsx'
 import { InputSwitchType } from '../../types/input-switch-type'
 import { InputValueType } from '../../types/input-value-type'
 import { TypographySecondaryType } from '../../types/typography'
-import { inputSwitchIconDictionary } from '../../dictionary/input-switch-icons'
+import { inputSwitchIconVariant } from '../../variants/input-switch-icons'
 
 @Component({
   tag: 'mds-input-switch',
@@ -73,7 +73,7 @@ export class MdsInputSwitch {
 
   render () {
 
-    const { iconChecked, iconUnchecked, iconIndeterminate } = inputSwitchIconDictionary[this.type]
+    const { iconChecked, iconUnchecked, iconIndeterminate } = inputSwitchIconVariant[this.type]
     const iconCheckedUser = this.icon !== null ? this.icon : iconChecked
 
     return (

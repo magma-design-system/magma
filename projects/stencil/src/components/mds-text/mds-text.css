@@ -3,13 +3,71 @@
 @tailwind utilities;
 
 :host {
-  @apply
-    block
-    items-center;
+  @apply block;
+}
+
+:host ( .text-primary-h1 ) {
+  @apply text-primary-h1;
+}
+
+:host ( .text-primary-h2 ) {
+  @apply text-primary-h2;
+}
+
+:host ( .text-primary-h3 ) {
+  @apply text-primary-h3;
+}
+
+:host ( .text-primary-h4 ) {
+  @apply text-primary-h4;
+}
+
+:host ( .text-primary-h5 ) {
+  @apply text-primary-h5;
+}
+
+:host ( .text-primary-h6 ) {
+  @apply text-primary-h6;
+}
+
+:host ( .text-primary-action ) {
+  @apply text-primary-action;
+}
+
+:host ( .text-secondary-paragraph ) {
+  @apply text-secondary-paragraph;
+}
+
+:host ( .text-secondary-detail ) {
+  @apply text-secondary-detail;
+}
+
+:host ( .text-secondary-caption ) {
+  @apply text-secondary-caption;
+}
+
+:host ( .text-secondary-label ) {
+  @apply text-secondary-label;
+}
+
+:host ( .text-secondary-option ) {
+  @apply text-secondary-option;
+}
+
+:host ( .text-mono-code ) {
+  @apply text-mono-code;
+}
+
+:host ( .text-mono-hack ) {
+  @apply text-mono-hack;
 }
 
 .text {
   display: inherit;
+  font-family: inherit;
+  font-size: inherit;
+  font-weight: inherit;
+  line-height: inherit;
 }
 
 abbr,

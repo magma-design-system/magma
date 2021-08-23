@@ -1,4 +1,4 @@
-const inputSwitchIconDictionary = {
+const inputSwitchIconVariant = {
   switch: {
     iconChecked: null,
     iconIndeterminate: null,
@@ -17,5 +17,5 @@ const inputSwitchIconDictionary = {
 }
 
 export {
-  inputSwitchIconDictionary,
+  inputSwitchIconVariant,
 }

@@ -1,6 +1,6 @@
 import { Component, Host, h, Prop } from '@stencil/core'
 import { ExtensionSuffixType } from '../../types/extension-suffix'
-import { fileFormatsDictionary } from '../../dictionary/fileformats'
+import { fileFormatsVariant } from '../../variants/fileformats'
 import { fileExtensionsDictionary } from '../../dictionary/file-extensions'
 
 @Component({
@@ -75,7 +75,7 @@ export class MdsDownload {
 
   render () {
     const { format, description } = this.getExtensionInfos()
-    const { background, color, icon, iconBackground } = fileFormatsDictionary[format]
+    const { background, color, icon, iconBackground } = fileFormatsVariant[format]
 
     return (
       <Host>

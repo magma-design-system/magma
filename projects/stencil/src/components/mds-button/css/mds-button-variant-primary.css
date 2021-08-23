@@ -1,0 +1,75 @@
+@tailwind utilities;
+
+:host ( [variant=primary] ),
+:host ( [variant=primary][tone=strong] ) {
+
+  --background-color: theme('colors.brand-maggioli-06');
+  --color: theme('colors.adjust-tone');
+}
+
+:host ( [variant=primary]:hover ),
+:host ( [variant=primary][tone=strong]:hover ) {
+
+  --background-color: theme('colors.brand-maggioli-05');
+}
+
+:host ( [variant=primary][active] ),
+:host ( [variant=primary][tone=strong][active] ) {
+
+  --background-color: theme('colors.brand-maggioli-04');
+}
+
+:host ( [variant=primary][tone=weak] ) {
+
+  --background-color: theme('colors.brand-maggioli-19');
+  --color: theme('colors.brand-maggioli-04');
+}
+
+:host ( [variant=primary][tone=weak]:hover ) {
+
+  --background-color: theme('colors.brand-maggioli-18');
+}
+
+:host ( [variant=primary][tone=weak][active] ) {
+
+  --background-color: theme('colors.brand-maggioli-17');
+}
+
+:host ( [variant=primary][tone=ghost] ) {
+
+  --background-color: transparent;
+  --border-color: theme('colors.brand-maggioli-06');
+  --color: theme('colors.brand-maggioli-06');
+}
+
+:host ( [variant=primary][tone=ghost]:hover ) {
+
+  --background-color: transparent;
+  --border-color: theme('colors.brand-maggioli-05');
+  --color: theme('colors.brand-maggioli-05');
+}
+
+:host ( [variant=primary][tone=ghost][active] ) {
+
+  --background-color: transparent;
+  --border-color: theme('colors.brand-maggioli-04');
+  --color: theme('colors.brand-maggioli-04');
+}
+
+:host ( [variant=primary][tone=quiet] ) {
+
+  --background-color: transparent;
+  --color: theme('colors.brand-maggioli-04');
+}
+
+:host ( [variant=primary][tone=quiet]:hover ) {
+
+  --background-color: transparent;
+  --color: theme('colors.brand-maggioli-06');
+}
+
+:host ( [variant=primary][tone=quiet][active] ) {
+
+  --background-color: transparent;
+  --color: theme('colors.brand-maggioli-07');
+}

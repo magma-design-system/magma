@@ -3,3 +3,9 @@ export type ButtonType =
   | 'button'
   | 'reset'
   | 'submit'
+
+export type ButtonSizeType =
+| 'sm'
+| 'md'
+| 'lg'
+| 'xl'

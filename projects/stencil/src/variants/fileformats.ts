@@ -1,4 +1,4 @@
-const fileFormatsDictionary = {
+const fileFormatsVariant = {
   archive: { color: 'text-label-amaranth-08', background: 'bg-label-amaranth-18', icon: 'file-archive', iconBackground: 'bg-label-amaranth-20' },
   attachment: { color: 'text-adjust-tone-08', background: 'bg-adjust-tone-18', icon: 'file-attachment', iconBackground: 'bg-adjust-tone-20' },
   audio: { color: 'text-label-violet-08', background: 'bg-label-violet-18', icon: 'media-audio', iconBackground: 'bg-label-violet-20' },
@@ -17,5 +17,5 @@ const fileFormatsDictionary = {
 }
 
 export {
-  fileFormatsDictionary,
+  fileFormatsVariant,
 }

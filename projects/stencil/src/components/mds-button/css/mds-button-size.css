@@ -1,0 +1,23 @@
+:host ( [size=sm] ) {
+  @apply
+    px-3
+    py-0;
+}
+
+:host ( [size=md] ) {
+  @apply
+    px-3
+    py-1;
+}
+
+:host ( [size=lg] ) {
+  @apply
+    px-6
+    py-2;
+}
+
+:host ( [size=xl] ) {
+  @apply
+    px-8
+    py-2;
+}
