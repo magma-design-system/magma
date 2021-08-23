@@ -2,6 +2,8 @@ import React from 'react'
 import faker from 'faker'
 import MdsBanner from '@component/mds-banner/mds-banner'
 import { iconsDictionary } from '@dictionary/icon'
+import { bannerVariantDictionary, bannerToneVariantDictionary } from '@dictionary/banner'
+
 
 export default {
   title: 'UI / Banner',
@@ -19,6 +21,18 @@ export default {
       type: { name: 'string', required: true },
       description: 'The name of the icon set. The icon set is strictly realted to @maggioli-design-system/icons',
       options: iconsDictionary,
+      control: { type: 'select' },
+    },
+    tone: {
+      type: { name: 'string', required: false },
+      description: 'Specifies the tone variant of the banner',
+      options: bannerToneVariantDictionary,
+      control: { type: 'select' },
+    },
+    variant: {
+      type: { name: 'string', required: false },
+      description: 'Specifies the variant of the banner',
+      options: bannerVariantDictionary,
       control: { type: 'select' },
     },
   },

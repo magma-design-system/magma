@@ -2,13 +2,14 @@
 
 :host {
 
-  --background-color: theme('colors.adjust-tone-20');
-  --color: theme('colors.adjust-tone-04');
-
   @apply grid;
 
-  background-color: var(--background-color);
-  color: var(--color);
+  background-color: var(--mds-banner-background-color, theme('colors.adjust-tone-20'));
+  border-color: var(--mds-banner-border-color, transparent) !important;
+  border-radius: var(--mds-banner-border-radius, 0);
+  border-width: theme('borderWidth.2') !important;
+  box-shadow: var(--mds-banner-box-shadow, none);
+  color: var(--mds-banner-color, theme('colors.adjust-tone-04'));
 }
 
 .header {
@@ -79,3 +80,9 @@
 .close-icon:hover {
   @apply bg-opacity-50;
 }
+
+.text {
+  @apply text-inherit;
+}
+
+@import './css/mds-banner-variant-light.css';

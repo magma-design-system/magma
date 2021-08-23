@@ -30,6 +30,14 @@ export type ButtonVariantType =
   | 'success'
   | 'warning'
 
+export type BannerVariantType =
+  | 'dark'
+  | 'light'
+  | 'error'
+  | 'info'
+  | 'success'
+  | 'warning'
+
 export type StateVariantType =
   | 'disabled'
   | 'focused'
