@@ -59,7 +59,7 @@ export class MdsDownload {
   private getSuffix = () => {
     const suffix = this.sanitizeSuffix()
     const filename = this.sanitizeFilename()
-    if (this.suffix !== undefined) {
+    if (this.suffix !== null && this.suffix !== undefined) {
       return this.suffix.toLowerCase()
     }
     if (suffix !== filename) {
