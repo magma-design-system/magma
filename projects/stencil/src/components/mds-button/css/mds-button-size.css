@@ -2,6 +2,12 @@
   @apply
     px-3
     py-0;
+
+  --border-radius: theme('borderRadius.md');
+}
+
+:host ( [size=sm] ) .text {
+  @apply font-medium;
 }
 
 :host ( [size=md] ) {

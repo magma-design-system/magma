@@ -13,6 +13,8 @@ import { buttonSizeTypographyVariant } from '../../variants/button'
 })
 export class MdsButton {
 
+  private typography?: TypographyType
+
   /**
    * The icon displayed in the button
    */
@@ -27,11 +29,6 @@ export class MdsButton {
    * The type of the button element
    */
   @Prop() readonly type?: ButtonType = 'submit'
-
-  /**
-   * Specifies the font typography of the element
-   */
-  @Prop() typography?: TypographyType
 
   /**
    * Specifies the color variant for the button

@@ -35,12 +35,6 @@ export default {
       options: buttonToneVariantDictionary,
       control: { type: 'select' },
     },
-    typography: {
-      type: { name: 'string', required: false },
-      description: 'Specifies the typography of the element',
-      options: typographyPrimaryDictionary,
-      control: { type: 'select' },
-    },
     variant: {
       type: { name: 'string', required: false },
       description: 'Specifies the variant of the button',

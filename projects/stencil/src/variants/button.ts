@@ -1,7 +1,7 @@
 const buttonSizeTypographyVariant = {
   sm: 'action',
-  md: 'h6',
-  lg: 'h5',
+  md: 'action',
+  lg: 'h6',
   xl: 'h4',
 }
 
