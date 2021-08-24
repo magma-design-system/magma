@@ -1,0 +1,27 @@
+@tailwind utilities;
+
+:host {
+  @apply
+    inline-flex
+    gap-4
+    items-center;
+}
+
+.avatar {
+  @apply flex-shrink-0;
+}
+
+.infos {
+  @apply
+    flex-grow
+    grid;
+}
+
+@container (max-width: 200px) {
+  :host {
+    @apply
+      flex-col
+      justify-center
+      text-center;
+  }
+}

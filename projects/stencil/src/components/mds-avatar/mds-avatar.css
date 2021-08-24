@@ -1,11 +1,10 @@
-@tailwind components;
 @tailwind utilities;
 
 :host {
 
   --color-placeholder: theme('colors.brand-maggioli-20');
   --background-color-pending: theme('colors.adjust-tone-17');
-  --background-color-placeholder: theme('colors.brand-maggioli-06');
+  --background-color-placeholder: theme('colors.brand-maggioli-12');
   --border-radius: theme('borderRadius.full');
 
   @apply
@@ -36,7 +35,7 @@
 }
 
 :host ( .initials ) {
-  @apply p-2;
+  @apply p-0;
 }
 
 .image {
