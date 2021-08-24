@@ -24,7 +24,7 @@
   }
 
   .text-primary-action {
-    @apply antialiased font-medium font-primary leading-relaxed text-sm;
+    @apply antialiased font-bold font-primary leading-relaxed text-sm;
   }
 
   .text-secondary-paragraph {
