@@ -14,19 +14,34 @@
 
 .header {
   @apply
+    gap-4
+    grid
+    pt-6
+    px-6;
+}
+
+.separator {
+  @apply
+    border-0
+    m-0
+    rounded;
+
+  background-color: var(--mds-banner-separator-color, transparent);
+  height: 2px;
+}
+
+.header-row {
+  @apply
     flex
     gap-4
-    items-center
-    px-6
-    py-4
-    shadow-sm;
+    items-center;
 }
 
 .headline {
   @apply flex-grow;
 }
 
-.header .close-icon {
+.header-row .close-icon {
   @apply flex-shrink-0;
 }
 
@@ -85,4 +100,9 @@
   @apply text-inherit;
 }
 
+@import './css/mds-banner-variant-dark.css';
+@import './css/mds-banner-variant-error.css';
+@import './css/mds-banner-variant-info.css';
 @import './css/mds-banner-variant-light.css';
+@import './css/mds-banner-variant-success.css';
+@import './css/mds-banner-variant-warning.css';

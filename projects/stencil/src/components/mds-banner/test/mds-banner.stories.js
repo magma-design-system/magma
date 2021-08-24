@@ -46,8 +46,8 @@ const Template = args =>
 const TemplateActions = args =>
   <mds-banner {...args}>
     { faker.lorem.paragraph() }
-    <mds-button slot="actions">{ faker.hacker.verb() }</mds-button>
-    <mds-button slot="actions">{ faker.hacker.verb() }</mds-button>
+    <mds-button slot="actions" variant={args.variant} tone="weak">{ faker.hacker.verb() }</mds-button>
+    <mds-button slot="actions" variant={args.variant}>{ faker.hacker.verb() }</mds-button>
   </mds-banner>
 
 export const Default = Template.bind({})
@@ -68,3 +68,8 @@ Deletable.args = {
 }
 
 export const Actions = TemplateActions.bind({})
+
+export const Variant = TemplateActions.bind({})
+Variant.args = {
+  variant: 'success',
+}

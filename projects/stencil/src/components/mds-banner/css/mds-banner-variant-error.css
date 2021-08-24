@@ -1,0 +1,42 @@
+@tailwind utilities;
+
+:host ( [variant=error] ),
+:host ( [variant=error][tone=strong] ) {
+
+  --mds-banner-background-color: theme('colors.status-error-19');
+  --mds-banner-border-radius: theme('borderRadius.lg');
+  --mds-banner-box-shadow: theme('boxShadow.sharp-lg');
+  --mds-banner-color: theme('colors.status-error-04');
+  --mds-banner-separator-color: theme('colors.status-error-17');
+}
+
+:host ( [variant=error][tone=weak] ) {
+
+  --mds-banner-background-color: theme('colors.status-error-20');
+  --mds-banner-border-radius: theme('borderRadius.md');
+  --mds-banner-box-shadow: theme('boxShadow.sharp-sm');
+  --mds-banner-color: theme('colors.status-error-05');
+  --mds-banner-separator-color: theme('colors.status-error-19');
+}
+
+:host ( [variant=error][tone=ghost] ) {
+
+  --mds-banner-background-color: theme('colors.status-error-20');
+  --mds-banner-border-color: theme('colors.status-error-17');
+  --mds-banner-border-radius: theme('borderRadius.lg');
+  --mds-banner-box-shadow: none;
+  --mds-banner-color: theme('colors.status-error-04');
+  --mds-banner-separator-color: theme('colors.status-error-18');
+}
+
+:host ( [variant=error][tone=quiet] ) {
+
+  --mds-banner-background-color: theme('colors.status-error-20');
+  --mds-banner-box-shadow: none;
+  --mds-banner-color: theme('colors.status-error-04');
+  --mds-banner-separator-color: theme('colors.status-error-20');
+}
+
+:host ( [variant=error][tone=quiet] ) .separator {
+  @apply hidden;
+}
