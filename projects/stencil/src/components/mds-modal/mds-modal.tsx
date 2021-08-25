@@ -16,9 +16,9 @@ export type ModalAnimationType =
 })
 export class MdsModal {
 
-  private window: boolean
-  private header: boolean
-  private actions: boolean
+  private window: boolean = null
+  private header: boolean = null
+  private actions: boolean = null
   private animationState: ModalAnimationStateType = 'intro'
   @Element() hostElement: HTMLMdsModalElement
 
@@ -87,7 +87,7 @@ export class MdsModal {
             }
           </div>
         }
-        { this.window && <mds-icon name="action-close" class="close"/> }
+        { this.window === null && <mds-icon name="action-close" class="close"/> }
       </Host>
     )
   }

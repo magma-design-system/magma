@@ -27,9 +27,9 @@
   .animate-left,
   .animate-right {
     @apply
-      duration-300
+      duration-500
       opacity-0
-      ease-out-expo
+      ease-in-out-expo
       transition-cosmetic;
   }
 
