@@ -1,37 +1,148 @@
+@tailwind components;
 @tailwind utilities;
+
+@layer components {
+  .animate-center {
+    @apply
+      duration-500
+      ease-in-out-expo
+      opacity-0
+      transition-cosmetic;
+  }
+
+  .animate-center-intro {
+    transform: rotateX(-22deg) scale(0.5) translateY(40%);
+  }
+
+  .animate-center-opened {
+    @apply opacity-100;
+
+    transform: rotateX(0) scale(1) translateY(0);
+  }
+
+  .animate-center-outro {
+    transform: rotateX(10deg) scale(0.75) translateY(20%);
+  }
+
+  .animate-left,
+  .animate-right {
+    @apply
+      duration-300
+      opacity-0
+      ease-out-expo
+      transition-cosmetic;
+  }
+
+  .animate-right-intro,
+  .animate-right-outro {
+    transform: translateX(calc(100% + 50px));
+  }
+
+  .animate-right-opened,
+  .animate-left-opened {
+    @apply opacity-100;
+
+    transform: translateX(0);
+  }
+
+  .animate-left-intro,
+  .animate-left-outro {
+    transform: translateX(calc(-100% - 50px));
+  }
+}
 
 :host {
   @apply
     bg-adjust-tone-01
     bg-opacity-0
-    duration-300
-    ease-out-expo
+    duration-700
+    ease-in-out-expo
     fixed
     flex
     inset-0
     items-center
     justify-center
+    pointer-events-none;
+
+  perspective: 600px;
+}
+
+:host ( .animate-center-opened ),
+:host ( .animate-left-opened ),
+:host ( .animate-right-opened ) {
+  @apply
+    bg-opacity-30
+    duration-500
+    pointer-events-auto;
+}
+
+:host ( .animate-center ) {
+  @apply
+    justify-center
     mobile:p-4
     p-8;
 }
 
-:host ( .opened ) {
-  @apply bg-opacity-30;
+:host ( .animate-left ) {
+  @apply justify-start;
 }
 
-::slotted ( [slot=window] ) {
+:host ( .animate-right ) {
+  @apply justify-end;
+}
+
+:host ( .animate-center ) .window,
+:host ( .animate-center ) > ::slotted ( [slot=window] ) {
+  @apply animate-center;
+}
+
+:host ( .animate-center-intro ) .window,
+:host ( .animate-center-intro ) > ::slotted ( [slot=window] ) {
+  @apply animate-center-intro;
+}
+
+:host ( .animate-center-opened.animate-center-outro ) .window,
+:host ( .animate-center-opened.animate-center-outro ) > ::slotted ( [slot=window] ),
+:host ( .animate-center-opened ) .window,
+:host ( .animate-center-opened ) > ::slotted ( [slot=window] ) {
+  @apply animate-center-opened;
+}
+
+:host ( .animate-center-outro ) .window,
+:host ( .animate-center-outro ) > ::slotted ( [slot=window] ) {
+  @apply animate-center-outro;
+}
+
+:host ( .animate-right ) .window,
+:host ( .animate-right ) > ::slotted ( [slot=window] ) {
+  @apply animate-right;
+}
+
+:host ( .animate-right-intro ) .window,
+:host ( .animate-right-intro ) > ::slotted ( [slot=window] ) {
+  @apply animate-right-intro;
+}
+
+:host ( .animate-right-opened.animate-right-outro ) .window,
+:host ( .animate-right-opened.animate-right-outro ) > ::slotted ( [slot=window] ),
+:host ( .animate-right-opened ) .window,
+:host ( .animate-right-opened ) > ::slotted ( [slot=window] ) {
+  @apply animate-right-opened;
+}
+
+:host ( .animate-right-outro ) .window,
+:host ( .animate-right-outro ) > ::slotted ( [slot=window] ) {
+  @apply animate-right-outro;
+}
+
+.window {
   @apply
-    duration-500
-    ease-in-out-expo
-    pointer-events-none
-    opacity-0;
+    gap-0
+    grid
+    h-full;
 
-  transform: matrix3d(1, 0, 0, 0, 0, 1, 0, -0.0001, 0, 0, 1, 0, 0, 20, 0, 1);
-  transform-style: preserve-3d;
-}
-
-.opened ::slotted ( [slot=window] ) {
-  @apply pointer-events-auto;
-
-  transform: matrix3d(1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1);
+  background-color: var(--mds-modal-window, theme('colors.adjust-tone'));
+  box-shadow: var(--mds-modal-window-shadow, theme('boxShadow.2xl'));
+  grid-template-rows: var(--mds-modal-grid-template, auto 1fr auto);
+  max-width: calc(100vw - 200px);
 }
