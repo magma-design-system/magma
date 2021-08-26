@@ -49,6 +49,9 @@ const Template = args =>
     { faker.lorem.sentence(2) }
   </mds-button>
 
+const TemplateIcon = args =>
+  <mds-button {...args}/>
+
 export const Default = Template.bind({})
 Default.args = {
   icon: 'action-send',
@@ -68,6 +71,11 @@ Tone.args = {
 export const Size = Template.bind({})
 Size.args = {
   size: 'sm',
+}
+
+export const icon = TemplateIcon.bind({})
+icon.args = {
+  icon: 'action-send',
 }
 
 export const iconPosition = Template.bind({})

@@ -11,10 +11,11 @@
   @apply flex-shrink-0;
 }
 
-.infos {
+.info {
   @apply
     flex-grow
-    grid;
+    grid
+    min-w-0;
 }
 
 @container (max-width: 200px) {

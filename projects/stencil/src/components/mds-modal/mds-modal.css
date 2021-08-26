@@ -71,68 +71,27 @@
 :host ( .animate-left-opened ),
 :host ( .animate-right-opened ) {
   @apply
-    bg-opacity-30
+    bg-opacity-50
     duration-500
     pointer-events-auto;
 }
 
-:host ( .animate-center ) {
+.close {
   @apply
-    justify-center
-    mobile:p-4
-    p-8;
-}
+    absolute
+    duration-500
+    ease-in-out-quart
+    h-9
+    origin-center
+    text-shadow
+    text-4xl
+    opacity-0
+    text-adjust-tone-20
+    top-0
+    transition-cosmetic
+    w-9;
 
-:host ( .animate-left ) {
-  @apply justify-start;
-}
-
-:host ( .animate-right ) {
-  @apply justify-end;
-}
-
-:host ( .animate-center ) .window,
-:host ( .animate-center ) > ::slotted ( [slot=window] ) {
-  @apply animate-center;
-}
-
-:host ( .animate-center-intro ) .window,
-:host ( .animate-center-intro ) > ::slotted ( [slot=window] ) {
-  @apply animate-center-intro;
-}
-
-:host ( .animate-center-opened.animate-center-outro ) .window,
-:host ( .animate-center-opened.animate-center-outro ) > ::slotted ( [slot=window] ),
-:host ( .animate-center-opened ) .window,
-:host ( .animate-center-opened ) > ::slotted ( [slot=window] ) {
-  @apply animate-center-opened;
-}
-
-:host ( .animate-center-outro ) .window,
-:host ( .animate-center-outro ) > ::slotted ( [slot=window] ) {
-  @apply animate-center-outro;
-}
-
-:host ( .animate-right ) .window,
-:host ( .animate-right ) > ::slotted ( [slot=window] ) {
-  @apply animate-right;
-}
-
-:host ( .animate-right-intro ) .window,
-:host ( .animate-right-intro ) > ::slotted ( [slot=window] ) {
-  @apply animate-right-intro;
-}
-
-:host ( .animate-right-opened.animate-right-outro ) .window,
-:host ( .animate-right-opened.animate-right-outro ) > ::slotted ( [slot=window] ),
-:host ( .animate-right-opened ) .window,
-:host ( .animate-right-opened ) > ::slotted ( [slot=window] ) {
-  @apply animate-right-opened;
-}
-
-:host ( .animate-right-outro ) .window,
-:host ( .animate-right-outro ) > ::slotted ( [slot=window] ) {
-  @apply animate-right-outro;
+  transform: translate(0, 24px) rotate(90deg);
 }
 
 .window {
@@ -144,5 +103,9 @@
   background-color: var(--mds-modal-window, theme('colors.adjust-tone'));
   box-shadow: var(--mds-modal-window-shadow, theme('boxShadow.2xl'));
   grid-template-rows: var(--mds-modal-grid-template, auto 1fr auto);
-  max-width: calc(100vw - 200px);
+  max-width: calc(100vw - 80px);
 }
+
+@import './css/mds-modal-animate-center.css';
+@import './css/mds-modal-animate-right.css';
+@import './css/mds-modal-animate-left.css';

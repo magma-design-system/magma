@@ -2,35 +2,53 @@ import React from 'react'
 import faker from 'faker'
 import MdsModal from '@component/mds-modal/mds-modal'
 
+import { modalPositionDictionary } from '@dictionary/modal'
+
 export default {
   title: 'UI / Modal',
   component: MdsModal,
   argTypes: {
     opened: {
-      type: { name: 'boolean', required: false },
       description: 'Specifies if the modal is opened or not',
+      type: { name: 'boolean', required: false },
     },
+    position: {
+      control: { type: 'select' },
+      description: 'Specifies the animation position of the modal window',
+      options: modalPositionDictionary,
+      type: { name: 'string', required: false },
+    }
   },
 }
 
 const buttonA = faker.hacker.verb()
 const buttonB = faker.hacker.verb()
 const text = faker.lorem.paragraphs(3)
-const header = faker.lorem.sentence(3)
+const firstName = faker.name.firstName(1)
+const lastName = faker.name.lastName(1)
+const fullName = `${firstName} ${lastName}`
+const email = faker.internet.email(firstName, lastName)
 
 const Template = args =>
   <mds-modal {...args}>
-    <header slot="header" class="p-4">
-      <mds-text typography="h5">{ header }</mds-text>
+    <header slot="top" className="p-8 flex gap-4 max-w-96 items-center border-b border-adjust-tone-18">
+      <mds-img class="w-16" src="/logo-gruppo-maggioli-512w.webp"/>
+      <div className="ml-auto flex-shrink-0">
+        <mds-avatar class="w-16" initials="vv"/>
+      </div>
     </header>
-    <div slot="body">
+    <div className="p-8 max-w-96 w-full">
       <mds-text>
         { text }
       </mds-text>
     </div>
-    <footer slot="footer">
-      <mds-button variant={args.variant} tone="weak">{ buttonA }</mds-button>
-      <mds-button variant={args.variant} tone="weak">{ buttonB }</mds-button>
+    <footer slot="bottom" className="p-8 flex gap-4 text-adjust-tone-04 border-t border-adjust-tone-18">
+      <mds-author>
+        <mds-avatar slot="avatar" class="w-16 mobile:w-12" src="/avatar-01-200x200.jpeg"/>
+        <mds-text typography="h6" class="truncate min-w-0">{ fullName }</mds-text>
+        <mds-text typography="caption" class="text-adjust-tone-08 truncate min-w-0">{ email }</mds-text>
+      </mds-author>
+      <mds-button icon="menu-more" class="ml-auto bg-transparent text-adjust-tone-04 p-4 border border-adjust-tone-18 rounded-full"/>
     </footer>
   </mds-modal>
 

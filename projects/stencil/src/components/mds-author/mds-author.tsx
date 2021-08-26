@@ -13,8 +13,8 @@ export class MdsAuthor {
         <div class="avatar">
           <slot name="avatar"></slot>
         </div>
-        <div class="infos">
-          <slot name="infos"></slot>
+        <div class="info">
+          <slot/>
         </div>
       </Host>
     )

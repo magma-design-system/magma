@@ -1,0 +1,42 @@
+:host ( .animate-left ) {
+  @apply justify-start;
+}
+
+:host ( .animate-left ) .window,
+:host ( .animate-left ) > ::slotted ( [slot=window] ) {
+  @apply animate-left;
+}
+
+:host ( .animate-left-intro ) .window,
+:host ( .animate-left-intro ) > ::slotted ( [slot=window] ) {
+  @apply animate-left-intro;
+}
+
+:host ( .animate-left-opened.animate-left-outro ) .window,
+:host ( .animate-left-opened.animate-left-outro ) > ::slotted ( [slot=window] ),
+:host ( .animate-left-opened ) .window,
+:host ( .animate-left-opened ) > ::slotted ( [slot=window] ) {
+  @apply animate-left-opened;
+}
+
+:host ( .animate-left-opened ) .close,
+:host ( .animate-left-opened.animate-left-outro ) .close {
+  @apply opacity-100;
+
+  transform: translate(-24px, 24px) rotate(0);
+}
+
+:host ( .animate-left-outro ) .window,
+:host ( .animate-left-outro ) > ::slotted ( [slot=window] ) {
+  @apply animate-left-outro;
+}
+
+:host ( .animate-left-outro ) .close {
+  transform: translate(24px, 24px) rotate(-90deg);
+}
+
+:host ( .animate-left ) .close {
+  @apply right-0;
+
+  transform: translate(36px, 24px) rotate(90deg);
+}

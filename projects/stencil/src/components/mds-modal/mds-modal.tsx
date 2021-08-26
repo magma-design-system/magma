@@ -1,14 +1,6 @@
-import { Component, Element, Host, h, State, Prop } from '@stencil/core'
+import { Component, Element, Host, h, Prop, Watch } from '@stencil/core'
 import clsx from 'clsx'
-
-export type ModalAnimationStateType =
-  | 'intro'
-  | 'outro'
-
-export type ModalAnimationType =
-  | 'center'
-  | 'left'
-  | 'right'
+import { ModalPositionType, ModalAnimationStateType } from './types'
 @Component({
   tag: 'mds-modal',
   styleUrl: 'mds-modal.css',
@@ -16,9 +8,10 @@ export type ModalAnimationType =
 })
 export class MdsModal {
 
+  private animationDeelay
   private window: boolean = null
-  private header: boolean = null
-  private actions: boolean = null
+  private top: boolean = null
+  private bottom: boolean = null
   private animationState: ModalAnimationStateType = 'intro'
   @Element() hostElement: HTMLMdsModalElement
 
@@ -30,11 +23,12 @@ export class MdsModal {
   /**
    * Specifies the animation position of the modal window
    */
-  @Prop({ reflect: true }) position?: ModalAnimationType = null
+  @Prop({ reflect: true }) position?: ModalPositionType = null
 
   componentWillLoad (): void {
+    this.bottom = this.hostElement.querySelector('[slot="bottom"]') !== null
+    this.top = this.hostElement.querySelector('[slot="top"]') !== null
     this.window = this.hostElement.querySelector('[slot="window"]') !== null
-    this.header = this.hostElement.querySelector('[slot="header"]') !== null
 
     if (this.window && this.position === null) {
       this.position = 'center'
@@ -51,15 +45,24 @@ export class MdsModal {
   }
 
   componentDidRender (): void {
-    setTimeout(() => {
+    this.animationDeelay = window.setTimeout(() => {
       this.animationState = this.animationState === 'intro' ? 'outro' : 'intro'
       this.hostElement.classList.remove(this.animationName(this.animationState === 'intro' ? 'outro' : 'intro'))
       this.hostElement.classList.add(this.animationName(this.animationState))
+      window.clearTimeout(this.animationDeelay)
     }, 500)
   }
 
-  private animationName = (customState: string = null): string => {
-    return `animate-${this.position}${customState !== null ? '-' + customState : ''}`
+  private animationName = (customState: string = null, customPosition: string = null): string => {
+    return `animate-${customPosition !== null ? customPosition : this.position}${customState !== null ? '-' + customState : ''}`
+  }
+
+  @Watch('position')
+  positionChange (newValue: string, oldValue: string): void {
+    window.clearTimeout(this.animationDeelay)
+    this.hostElement.classList.remove(this.animationName(null, oldValue))
+    this.hostElement.classList.remove(this.animationName('intro', oldValue))
+    this.hostElement.classList.remove(this.animationName('outro', oldValue))
   }
 
   render () {
@@ -72,22 +75,18 @@ export class MdsModal {
           <slot name="window"/>
           :
           <div class="window">
-            { this.header &&
-              <header>
-                <slot name="header"/>
-              </header>
+            { this.top &&
+              <slot name="top"/>
             }
             <div class="content">
-              <slot></slot>
+              <slot/>
             </div>
-            { this.actions &&
-              <footer>
-                <slot name="actions"/>
-              </footer>
+            { this.bottom &&
+              <slot name="bottom"/>
             }
           </div>
         }
-        { this.window === null && <mds-icon name="action-close" class="close"/> }
+        { !this.window && <mds-icon name="action-close" class="close"/> }
       </Host>
     )
   }

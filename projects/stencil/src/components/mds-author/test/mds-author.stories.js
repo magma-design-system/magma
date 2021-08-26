@@ -22,9 +22,9 @@ export default {
 const Template = args =>
   <mds-author {...args} class="text-adjust-tone-08">
     <mds-avatar initials="jd" slot="avatar" class="w-20 bg-brand-maggioli-12"/>
-    <mds-text typography="h6" slot="infos" class="text-adjust-tone-04">{ `${faker.name.firstName()} ${faker.name.lastName()}` }</mds-text>
-    <mds-text typography="caption" slot="infos">{ faker.name.jobTitle() }</mds-text>
-    <mds-text typography="caption" slot="infos">{ faker.name.jobArea() }</mds-text>
+    <mds-text typography="h6" class="text-adjust-tone-04">{ `${faker.name.firstName()} ${faker.name.lastName()}` }</mds-text>
+    <mds-text typography="caption">{ faker.name.jobTitle() }</mds-text>
+    <mds-text typography="caption">{ faker.name.jobArea() }</mds-text>
   </mds-author>
 
 export const Default = Template.bind({})

@@ -1,0 +1,28 @@
+:host ( .animate-center ) {
+  @apply
+    justify-center
+    mobile:p-4
+    p-8;
+}
+
+:host ( .animate-center ) .window,
+:host ( .animate-center ) > ::slotted ( [slot=window] ) {
+  @apply animate-center;
+}
+
+:host ( .animate-center-intro ) .window,
+:host ( .animate-center-intro ) > ::slotted ( [slot=window] ) {
+  @apply animate-center-intro;
+}
+
+:host ( .animate-center-opened.animate-center-outro ) .window,
+:host ( .animate-center-opened.animate-center-outro ) > ::slotted ( [slot=window] ),
+:host ( .animate-center-opened ) .window,
+:host ( .animate-center-opened ) > ::slotted ( [slot=window] ) {
+  @apply animate-center-opened;
+}
+
+:host ( .animate-center-outro ) .window,
+:host ( .animate-center-outro ) > ::slotted ( [slot=window] ) {
+  @apply animate-center-outro;
+}

@@ -30,6 +30,10 @@
     truncate;
 }
 
+.text:empty {
+  display: none;
+}
+
 .text::first-letter {
   @apply uppercase;
 }
