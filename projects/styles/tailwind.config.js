@@ -135,7 +135,8 @@ module.exports = {
   },
   plugins: [
     require('@tailwindcss/aspect-ratio'),
-    require('tailwindcss-scroll-snap'),
     require('tailwindcss-multi-column')(),
+    require('tailwindcss-scroll-snap'),
+    require('tailwindcss-textshadow'),
   ],
 }
