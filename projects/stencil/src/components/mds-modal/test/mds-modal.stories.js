@@ -31,18 +31,19 @@ const email = faker.internet.email(firstName, lastName)
 
 const Template = args =>
   <mds-modal {...args}>
-    <header slot="top" className="p-8 flex gap-4 max-w-96 items-center border-b border-adjust-tone-18">
+    <header slot="top" className="p-8 max-w-lg flex gap-4 items-center border-b border-adjust-tone-18">
       <mds-img class="w-16" src="/logo-gruppo-maggioli-512w.webp"/>
-      <div className="ml-auto flex-shrink-0">
-        <mds-avatar class="w-16" initials="vv"/>
+      <div className="text-adjust-tone-04">
+        <mds-text typography="h5" class="truncate min-w-0">Maggioli Editore</mds-text>
+        <mds-text typography="detail" class="truncate min-w-0">Menu di servizio</mds-text>
       </div>
     </header>
-    <div className="p-8 max-w-96 w-full">
+    <div className="p-8 max-w-lg">
       <mds-text>
         { text }
       </mds-text>
     </div>
-    <footer slot="bottom" className="p-8 flex gap-4 text-adjust-tone-04 border-t border-adjust-tone-18">
+    <footer slot="bottom" className="p-8 max-w-lg flex gap-4 text-adjust-tone-04 border-t border-adjust-tone-18">
       <mds-author>
         <mds-avatar slot="avatar" class="w-16 mobile:w-12" src="/avatar-01-200x200.jpeg"/>
         <mds-text typography="h6" class="truncate min-w-0">{ fullName }</mds-text>

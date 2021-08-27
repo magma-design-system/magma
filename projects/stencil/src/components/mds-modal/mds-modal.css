@@ -82,11 +82,11 @@
     duration-500
     ease-in-out-quart
     h-9
-    origin-center
-    text-shadow
-    text-4xl
     opacity-0
+    origin-center
+    text-4xl
     text-adjust-tone-20
+    text-shadow
     top-0
     transition-cosmetic
     w-9;

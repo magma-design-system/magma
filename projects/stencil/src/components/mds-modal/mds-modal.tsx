@@ -18,7 +18,7 @@ export class MdsModal {
   /**
    * Specifies if the modal is opened or not
    */
-  @Prop({ reflect: true }) readonly opened?: boolean
+  @Prop({ reflect: true, mutable: true }) opened?: boolean
 
   /**
    * Specifies the animation position of the modal window
@@ -65,11 +65,15 @@ export class MdsModal {
     this.hostElement.classList.remove(this.animationName('outro', oldValue))
   }
 
+  private closeWindow = (e:Event): void => {
+    this.opened = e.target !== e.currentTarget
+  }
+
   render () {
     return (
       <Host class={clsx(
         this.opened && this.animationName('opened'),
-      )}>
+      )} onClick={(e:Event) => { this.closeWindow(e) }}>
         { this.window
           ?
           <slot name="window"/>
@@ -78,9 +82,7 @@ export class MdsModal {
             { this.top &&
               <slot name="top"/>
             }
-            <div class="content">
-              <slot/>
-            </div>
+            <slot/>
             { this.bottom &&
               <slot name="bottom"/>
             }
