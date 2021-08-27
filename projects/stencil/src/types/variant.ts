@@ -21,23 +21,6 @@ export type ActionVariantType =
   | 'dark'
   | 'light'
 
-export type ButtonVariantType =
-  | 'primary'
-  | 'dark'
-  | 'light'
-  | 'error'
-  | 'info'
-  | 'success'
-  | 'warning'
-
-export type BannerVariantType =
-  | 'dark'
-  | 'light'
-  | 'error'
-  | 'info'
-  | 'success'
-  | 'warning'
-
 export type StateVariantType =
   | 'disabled'
   | 'focused'

@@ -19,7 +19,7 @@ import { AutocompleteType } from '../../types/autocomplete'
 import { InputTextType } from '../../types/input-text-type'
 import { InputValue } from '../../interface/input-value'
 import { StatusVariantType } from '../../types/variant'
-import { inputFieldStatusVariant } from '../../variants/input-field-status'
+import { inputFieldStatusVariant } from './meta/variants'
 
 @Component({
   tag: 'mds-input-field',
@@ -52,6 +52,11 @@ export class MdsInputField {
    * If true, the element is displayed as disabled
    */
   @Prop() disabled?: boolean = false
+
+  /**
+   * An icon displayed at the right of the input
+   */
+  @Prop() icon?: string
 
   /**
    * Specifies the maximum value
@@ -241,6 +246,7 @@ export class MdsInputField {
             autocomplete={this.autocomplete}
             autofocus={this.autofocus}
             disabled={this.disabled}
+            icon={this.icon}
             id="field"
             max={this.max}
             maxlength={this.maxlength}

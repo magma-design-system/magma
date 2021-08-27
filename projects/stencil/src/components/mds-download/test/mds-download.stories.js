@@ -2,7 +2,7 @@ import React from 'react'
 import faker from 'faker'
 import MdsDownload from '@component/mds-download/mds-download'
 import MdsIcon from '@component/mds-icon/mds-icon'
-import { fileExtensionsDictionary } from '@dictionary/file-extensions'
+import { fileExtensionsDictionary } from '../meta/dictionary'
 
 // import imageFile from './avatar-gruppo-maggioli-512w.png'
 

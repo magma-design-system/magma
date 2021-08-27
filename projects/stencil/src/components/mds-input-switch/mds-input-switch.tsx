@@ -1,9 +1,9 @@
 import { Component, Host, h, Prop, Event, EventEmitter } from '@stencil/core'
 import clsx from 'clsx'
-import { InputSwitchType } from '../../types/input-switch-type'
+import { InputSwitchType } from './meta/types'
+import { inputSwitchIconVariant } from './meta/variants'
 import { InputValueType } from '../../types/input-value-type'
 import { TypographySecondaryType } from '../../types/typography'
-import { inputSwitchIconVariant } from '../../variants/input-switch-icons'
 
 @Component({
   tag: 'mds-input-switch',

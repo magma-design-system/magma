@@ -2,7 +2,7 @@ import React from 'react'
 import faker from 'faker'
 import MdsModal from '@component/mds-modal/mds-modal'
 
-import { modalPositionDictionary } from '@dictionary/modal'
+import { modalPositionDictionary } from '../meta/dictionary'
 
 export default {
   title: 'UI / Modal',

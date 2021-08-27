@@ -1,7 +1,7 @@
 import { Component, Host, h, Prop } from '@stencil/core'
-import { ExtensionSuffixType } from '../../types/extension-suffix'
-import { fileFormatsVariant } from '../../variants/fileformats'
-import { fileExtensionsDictionary } from '../../dictionary/file-extensions'
+import { ExtensionSuffixType } from './meta/types'
+import { fileFormatsVariant } from './meta/variants'
+import { fileExtensionsDictionary } from './meta/dictionary'
 
 @Component({
   tag: 'mds-download',

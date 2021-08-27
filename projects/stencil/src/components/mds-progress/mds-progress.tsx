@@ -1,5 +1,5 @@
 import { Component, Host, h, Prop } from '@stencil/core'
-import { DirectionType } from '../../types/direction'
+import { DirectionType } from './meta/types'
 
 @Component({
   tag: 'mds-progress',

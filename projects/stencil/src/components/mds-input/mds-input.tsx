@@ -16,12 +16,12 @@ import clsx from 'clsx'
 // https://www.w3schools.com/tags/tag_input.asp
 // https://github.com/ionic-team/stencil-ds-output-targets/blob/55d62af2727395cd6d729735cb9d81e5d60cc637/packages/example-project/component-library/src/components/my-input/my-input.tsx
 
-import { InputTextType } from '../../types/input-text-type'
-import { InputValue } from '../../interface/input-value'
-import { StatusVariantType } from '../../types/variant'
+import { InputValue } from './meta/interfaces'
+import { inputFocusStatusVariant, inputTipStatusVariant } from './meta/variants'
 import { AutocompleteType } from '../../types/autocomplete'
-import { inputFocusStatusVariant, inputTipStatusVariant } from '../../variants/input-tip-status'
+import { InputTextType } from '../../types/input-text-type'
 import { InputValueType } from '../../types/input-value-type'
+import { StatusVariantType } from '../../types/variant'
 @Component({
   tag: 'mds-input',
   styleUrl: 'mds-input.css',
@@ -57,6 +57,11 @@ export class MdsInput {
    * If true, the element is displayed as disabled
    */
   @Prop() disabled?: boolean = false
+
+  /**
+   * An icon displayed at the right of the input
+   */
+  @Prop() icon?: string
 
   /**
    * Specifies the maximum value
@@ -231,7 +236,11 @@ export class MdsInput {
       <Host>
         { this.type === 'textarea'
           ? <textarea
-            class={clsx('input', inputFocusStatusVariant[this.status || 'default'])}
+            class={clsx(
+              'input',
+              inputFocusStatusVariant[this.status || 'default'],
+              this.icon && 'has-icon',
+            )}
             autoFocus={this.autofocus}
             disabled={this.disabled}
             maxLength={this.maxlength}
@@ -248,7 +257,11 @@ export class MdsInput {
             value={value}>
           </textarea>
           : <input
-            class={clsx('input', inputFocusStatusVariant[this.status || 'default'])}
+            class={clsx(
+              'input',
+              inputFocusStatusVariant[this.status || 'default'],
+              this.icon && 'has-icon',
+            )}
             autoComplete={this.autocomplete}
             autoFocus={this.autofocus}
             disabled={this.disabled}
@@ -283,6 +296,7 @@ export class MdsInput {
             })}
           </datalist>
         }
+        { this.icon && <mds-icon class={clsx('icon', this.status)} name={this.icon}/> }
       </Host>
     )
   }

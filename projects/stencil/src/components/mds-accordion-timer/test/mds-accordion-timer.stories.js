@@ -1,6 +1,5 @@
 import React from 'react'
 import MdsAccordionTimer from '@component/mds-accordion-timer/mds-accordion-timer'
-import { typographyPrimaryDictionary } from '@dictionary/typography'
 import faker from 'faker'
 
 export default {

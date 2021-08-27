@@ -1,6 +1,6 @@
 import React from 'react'
 import MdsImg from '@component/mds-img/mds-img'
-import { loadingDictionary } from '@dictionary/loading'
+import { loadingDictionary } from '../meta/dictionary'
 
 const aspectRatios = [
   '1/1',

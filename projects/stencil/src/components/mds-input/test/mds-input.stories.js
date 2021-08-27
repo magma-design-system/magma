@@ -4,6 +4,7 @@ import { citiesDictionary } from '@fixture/cities'
 import { statusDictionary } from '@dictionary/status'
 import { autoCompleteDictionary } from '@dictionary/autocomplete'
 import { inputTextTypeDictionary } from '@dictionary/input-text-type'
+import { iconsDictionary } from '@dictionary/icon'
 
 // https://developers.google.com/web/updates/2015/06/checkout-faster-with-autofill
 
@@ -27,6 +28,12 @@ export default {
     disabled: {
       type: { name: 'boolean', required: false },
       description: 'If true, the element is displayed as disabled',
+    },
+    icon: {
+      control: { type: 'select' },
+      description: 'An icon displayed at the right of the input',
+      options: iconsDictionary,
+      type: { name: 'string', required: false },
     },
     max: {
       type: { name: 'number', required: false },
@@ -149,4 +156,10 @@ search.args = {
   datalist: citiesDictionary,
   type: 'search',
   placeholder: 'Search a city name...',
+}
+
+export const icon = Template.bind({})
+icon.args = {
+  icon: 'status-warning',
+  placeholder: 'Status input field',
 }

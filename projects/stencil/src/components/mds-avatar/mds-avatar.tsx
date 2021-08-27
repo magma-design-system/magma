@@ -5,7 +5,6 @@ import clsx from 'clsx'
   tag: 'mds-avatar',
   styleUrl: 'mds-avatar.css',
   shadow: true,
-  assetsDirs: ['./'],
 })
 export class MdsAvatar {
 

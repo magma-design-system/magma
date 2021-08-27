@@ -1,0 +1,24 @@
+export type ButtonType =
+  | 'a'
+  | 'button'
+  | 'reset'
+  | 'submit'
+
+export type ButtonSizeType =
+  | 'sm'
+  | 'md'
+  | 'lg'
+  | 'xl'
+
+export type ButtonIconPositionType =
+  | 'left'
+  | 'right'
+
+export type ButtonVariantType =
+  | 'primary'
+  | 'dark'
+  | 'light'
+  | 'error'
+  | 'info'
+  | 'success'
+  | 'warning'

@@ -1,7 +1,7 @@
 import React from 'react'
 import faker from 'faker'
 import MdsProgress from '@component/mds-progress/mds-progress'
-import { directionDictionary } from '@dictionary/direction'
+import { directionDictionary } from '../meta/dictionary'
 
 export default {
   title: 'UI / Progress',

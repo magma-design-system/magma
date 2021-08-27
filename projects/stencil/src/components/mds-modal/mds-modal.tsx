@@ -1,6 +1,6 @@
 import { Component, Element, Host, h, Prop, Watch } from '@stencil/core'
 import clsx from 'clsx'
-import { ModalPositionType, ModalAnimationStateType } from './types'
+import { ModalPositionType, ModalAnimationStateType } from './meta/types'
 @Component({
   tag: 'mds-modal',
   styleUrl: 'mds-modal.css',

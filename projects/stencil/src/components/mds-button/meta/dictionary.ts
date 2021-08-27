@@ -22,8 +22,14 @@ const buttonSizeDictionary = [
   'xl',
 ]
 
+const buttonIconPositionDictionary = [
+  'left',
+  'right',
+]
+
 export {
   buttonSizeDictionary,
   buttonToneVariantDictionary,
   buttonVariantDictionary,
+  buttonIconPositionDictionary,
 }

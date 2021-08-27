@@ -1,9 +1,11 @@
 import { Component, Host, h, Prop } from '@stencil/core'
 
-import { CharacterSetType } from '../../types/character-set'
-import { EnctypeType } from '../../types/enctype'
-import { FormAutocompleteType } from '../../types/form-autocomplete'
-import { FormMethodType } from '../../types/form-method'
+import {
+  CharacterSetType,
+  EnctypeType,
+  FormAutocompleteType,
+  FormMethodType,
+} from './meta/types'
 
 @Component({
   tag: 'mds-form',

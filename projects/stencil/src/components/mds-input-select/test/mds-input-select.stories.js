@@ -1,7 +1,6 @@
 import React from 'react'
 import MdsInputSelect from '@component/mds-input-select/mds-input-select'
 import { citiesDictionary } from '@fixture/cities'
-import faker from 'faker'
 
 const cities = {}
 citiesDictionary.map((element, index) => { cities[index] = element } )

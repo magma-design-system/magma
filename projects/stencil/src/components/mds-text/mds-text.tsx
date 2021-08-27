@@ -1,7 +1,7 @@
 import { Component, Host, Prop, h } from '@stencil/core'
-import { TypographyTagType } from '../../types/typography-tag'
+import { TypographyTagType } from './meta/types'
 import { TypographyType } from '../../types/typography'
-import { typographyDefaultsVariaint } from '../../variants/typography-defaults'
+import { typographyDefaultsVariaint } from './meta/variants'
 import clsx from 'clsx'
 
 @Component({

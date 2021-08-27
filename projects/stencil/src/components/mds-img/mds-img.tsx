@@ -1,7 +1,9 @@
 import { Component, Event, EventEmitter, Host, h, Prop } from '@stencil/core'
-import { CrossoriginType } from '../../types/crossorigin'
-import { LoadingType } from '../../types/loading'
-import { ReferrerpolicyType } from '../../types/referrerpolicy'
+import {
+  CrossoriginType,
+  LoadingType,
+  ReferrerpolicyType,
+} from './meta/types'
 
 @Component({
   tag: 'mds-img',

@@ -2,7 +2,7 @@ import React from 'react'
 import faker from 'faker'
 import MdsBanner from '@component/mds-banner/mds-banner'
 import { iconsDictionary } from '@dictionary/icon'
-import { bannerVariantDictionary, bannerToneVariantDictionary } from '@dictionary/banner'
+import { bannerVariantDictionary, bannerToneVariantDictionary } from '../meta/dictionary'
 
 
 export default {

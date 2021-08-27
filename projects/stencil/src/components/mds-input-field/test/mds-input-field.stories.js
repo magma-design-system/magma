@@ -3,6 +3,7 @@ import MdsInputField from '@component/mds-input-field/mds-input-field'
 import { autoCompleteDictionary } from '@dictionary/autocomplete'
 import { statusDictionary } from '@dictionary/status'
 import { inputTextTypeDictionary } from '@dictionary/input-text-type'
+import { iconsDictionary } from '@dictionary/icon'
 import faker from 'faker'
 
 export default {
@@ -21,6 +22,12 @@ export default {
     disabled: {
       type: { name: 'boolean', required: false },
       description: 'If true, the element is displayed as disabled',
+    },
+    icon: {
+      control: { type: 'select' },
+      description: 'An icon displayed at the right of the input',
+      options: iconsDictionary,
+      type: { name: 'string', required: false },
     },
     label: {
       type: { name: 'string', required: false },
@@ -161,4 +168,11 @@ status.args = {
   value: 'Input field text',
   'status-tip': 'errore',
   message: faker.lorem.paragraph(1),
+}
+
+export const icon = Template.bind({})
+icon.args = {
+  icon: 'status-success',
+  label: 'Questo è un label',
+  placeholder: 'This is a field',
 }

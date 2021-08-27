@@ -1,10 +1,5 @@
 import React from 'react'
 import MdsAvatar from '@component/mds-avatar/mds-avatar'
-import { typographyPrimaryDictionary } from '@dictionary/typography'
-import { iconPositionDictionary } from '@dictionary/icon-position'
-import mggIconsDictionary from '@maggioli-design-system/icons/resources/mgg-icons.json'
-const iconsDictionary = Object.keys(mggIconsDictionary).sort()
-import faker from 'faker'
 
 export default {
   title: 'UI / Avatar',

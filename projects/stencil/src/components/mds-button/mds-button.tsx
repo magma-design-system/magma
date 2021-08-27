@@ -1,10 +1,14 @@
 import { Component, Host, h, Prop } from '@stencil/core'
 
-import { ButtonType, ButtonSizeType } from '../../types/button'
-import { IconPositionType } from '../../types/icon-position'
+import {
+  ButtonType,
+  ButtonSizeType,
+  ButtonIconPositionType,
+  ButtonVariantType,
+} from './meta/types'
+import { buttonSizeTypographyVariant } from './meta/variants'
 import { TypographyType } from '../../types/typography'
-import { ButtonVariantType, ToneVariantType } from '../../types/variant'
-import { buttonSizeTypographyVariant } from '../../variants/button'
+import { ToneVariantType } from '../../types/variant'
 
 @Component({
   tag: 'mds-button',
@@ -23,7 +27,7 @@ export class MdsButton {
   /**
    * Specifies the horizontal position of the icon displayed in the button
    */
-  @Prop() readonly iconPosition?: IconPositionType = 'left'
+  @Prop() readonly iconPosition?: ButtonIconPositionType = 'left'
 
   /**
    * The type of the button element

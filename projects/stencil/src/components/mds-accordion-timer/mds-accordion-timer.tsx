@@ -1,8 +1,5 @@
 import { Component, Host, Element, Event, EventEmitter, h, Prop, Listen, State } from '@stencil/core'
 
-// https://store.google.com/product/nest_wifi_learn?hl=it
-// https://stenciljs.com/docs/component-lifecycle#async-lifecycle-methods
-
 @Component({
   tag: 'mds-accordion-timer',
   styleUrl: 'mds-accordion-timer.css',

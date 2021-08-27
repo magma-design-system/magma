@@ -55,3 +55,15 @@ export type AutocompleteType =
   | 'transaction-currency'
   | 'url'
   | 'username'
+
+export type InputTextType =
+  | 'date'
+  | 'email'
+  | 'number'
+  | 'password'
+  | 'search'
+  | 'tel'
+  | 'text'
+  | 'textarea'
+  | 'time'
+  | 'url'

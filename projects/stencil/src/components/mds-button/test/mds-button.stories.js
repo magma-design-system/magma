@@ -1,11 +1,14 @@
 import React from 'react'
+import faker from 'faker'
 import MdsButton from '@component/mds-button/mds-button'
-import { typographyPrimaryDictionary } from '@dictionary/typography'
-import { buttonVariantDictionary, buttonSizeDictionary, buttonToneVariantDictionary } from '@dictionary/button'
-import { iconPositionDictionary } from '@dictionary/icon-position'
 import mggIconsDictionary from '@maggioli-design-system/icons/resources/mgg-icons.json'
 const iconsDictionary = Object.keys(mggIconsDictionary).sort()
-import faker from 'faker'
+import {
+  buttonVariantDictionary,
+  buttonSizeDictionary,
+  buttonToneVariantDictionary,
+  buttonIconPositionDictionary,
+} from '../meta/dictionary'
 
 export default {
   title: 'Form / Button',
@@ -20,7 +23,7 @@ export default {
     'icon-position': {
       type: { name: 'string', required: false },
       description: 'Specifies the horizontal position of the icon displayed in the button',
-      options: iconPositionDictionary,
+      options: buttonIconPositionDictionary,
       control: { type: 'select' },
     },
     size: {

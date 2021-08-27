@@ -1,6 +1,5 @@
 import React from 'react'
 import MdsAccordion from '@component/mds-accordion/mds-accordion'
-import { typographyPrimaryDictionary } from '@dictionary/typography'
 import faker from 'faker'
 
 export default {
@@ -19,10 +18,7 @@ const Template = args =>
     <mds-accordion-item description={ faker.lorem.sentence() }>
       <mds-text>{ faker.lorem.paragraphs(2) }</mds-text>
     </mds-accordion-item>
-    <mds-accordion-item description={ faker.lorem.sentence() }>
-      <mds-img src="/howls-moving-castle-01-1024x768.jpg"/>
-      <mds-text>{ faker.lorem.paragraphs(2) }</mds-text>
-    </mds-accordion-item>
+    <mds-accordion-item description={ faker.lorem.sentence() }><mds-text>{ faker.lorem.paragraphs(2) }</mds-text></mds-accordion-item>
     <mds-accordion-item description={ faker.lorem.sentence() }><mds-text>{ faker.lorem.paragraphs(2) }</mds-text></mds-accordion-item>
     <mds-accordion-item description={ faker.lorem.sentence() }><mds-text>{ faker.lorem.paragraphs(2) }</mds-text></mds-accordion-item>
     <mds-accordion-item description={ faker.lorem.sentence() }><mds-text>{ faker.lorem.paragraphs(2) }</mds-text></mds-accordion-item>

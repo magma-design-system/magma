@@ -1,5 +1,6 @@
 import { Component, Host, h, Element, Prop } from '@stencil/core'
-import { BannerVariantType, ToneVariantType } from '../../types/variant'
+import { ToneVariantType } from '../../types/variant'
+import { BannerVariantType } from './meta/types'
 import clsx from 'clsx'
 
 @Component({
