@@ -20,6 +20,8 @@ import { InputTextType } from '../../types/input-text-type'
 import { InputValue } from '../../interface/input-value'
 import { StatusVariantType } from '../../types/variant'
 import { inputFieldStatusVariant } from './meta/variants'
+import { ValidationModelType } from './meta/types'
+import { modelValidator } from './meta/validators'
 
 @Component({
   tag: 'mds-input-field',
@@ -29,14 +31,13 @@ import { inputFieldStatusVariant } from './meta/variants'
 
 export class MdsInputField {
 
-  // inherited props
+  private cleanValue?: string | number | null = ''
+  private nativeInput?: HTMLMdsInputElement
+  private tabindex?: number
 
-  private nativeInput?: HTMLMdsInputElement;
-  private tabindex?: number;
+  @Element() el!: HTMLMdsInputFieldElement
 
-  @Element() el!: HTMLMdsInputFieldElement;
-
-  @State() hasFocus = false;
+  @State() hasFocus = false
 
   /**
    * Specifies whether the element should have autocomplete enabled
@@ -120,6 +121,11 @@ export class MdsInputField {
   @Prop() type: InputTextType = 'text'
 
   /**
+   * Specifies the type of model data to be automatically validated
+   */
+  @Prop() validate?: ValidationModelType
+
+  /**
    * Specifies the value of the input element
    */
   @Prop() value?: string | number | null = ''
@@ -161,6 +167,8 @@ export class MdsInputField {
   @Watch('value')
   protected valueChanged ():void {
     this.changeEvent.emit({ value: this.value === null ? this.value : this.value.toString() })
+    // this.cleanValue = this.value
+    // console.log(this.cleanValue)
   }
 
   /**
@@ -188,17 +196,41 @@ export class MdsInputField {
     return typeof this.value === 'number' ? this.value.toString() : (this.value || '').toString()
   }
 
+  private mask (value: string | number | null = '' ): string | number | null {
+    let i = -1
+    const v = value.toString()
+    const { mask } = modelValidator[this.validate]
+    let maskedChars: string
+
+    return mask.replace(/#/g, () => {
+      i += 1
+      console.log(v.length, i, v[ i ])
+      console.log(`'${mask[i]}'`)
+      maskedChars = v[ i ] !== undefined ? v[ i ] : ''
+      return maskedChars
+    })
+  }
+
   private onInput = (ev: Event) => {
     const input = ev.target as HTMLInputElement | false
     if (input) {
       this.value = input.value || ''
     }
     this.keyDownEvent.emit(ev as KeyboardEvent)
+
+    if (this.validate !== null) {
+      this.mask(this.value)
+      // console.log(`"${this.mask(this.value)}"`)
+    }
   }
 
   private onBlur = () => {
     this.hasFocus = false
     this.blurEvent.emit()
+
+    if (this.validate !== null) {
+
+    }
   }
 
   private onFocus = (ev: Event) => {
@@ -245,6 +277,7 @@ export class MdsInputField {
           <mds-input
             autocomplete={this.autocomplete}
             autofocus={this.autofocus}
+            class={clsx(this.validate && modelValidator[this.validate].font)}
             disabled={this.disabled}
             icon={this.icon}
             id="field"

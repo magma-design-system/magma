@@ -4,6 +4,7 @@ import { autoCompleteDictionary } from '@dictionary/autocomplete'
 import { statusDictionary } from '@dictionary/status'
 import { inputTextTypeDictionary } from '@dictionary/input-text-type'
 import { iconsDictionary } from '@dictionary/icon'
+import { validationModelDictionary } from '../meta/dictionary'
 import faker from 'faker'
 
 export default {
@@ -93,6 +94,12 @@ export default {
       options: inputTextTypeDictionary,
       control: { type: 'select' },
     },
+    validate: {
+      type: { name: 'string', required: true },
+      description: 'Specifies the type of model data to be automatically validated',
+      options: validationModelDictionary,
+      control: { type: 'select' },
+    },
     value: {
       type: { name: 'string', required: false },
       description: 'Specifies the value of the element',
@@ -175,4 +182,11 @@ icon.args = {
   icon: 'status-success',
   label: 'Questo è un label',
   placeholder: 'This is a field',
+}
+
+export const validate = Template.bind({})
+validate.args = {
+  validate: 'cf',
+  label: 'inserisci il tuo codice fiscale',
+  placeholder: 'Es: MRCRSS83B21D704L',
 }
