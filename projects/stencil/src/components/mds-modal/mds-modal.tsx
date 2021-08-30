@@ -59,6 +59,16 @@ export class MdsModal {
 
   @Watch('position')
   positionChange (newValue: string, oldValue: string): void {
+    newValue
+    window.clearTimeout(this.animationDeelay)
+    this.hostElement.classList.remove(this.animationName(null, oldValue))
+    this.hostElement.classList.remove(this.animationName('intro', oldValue))
+    this.hostElement.classList.remove(this.animationName('outro', oldValue))
+  }
+
+  @Watch('opened')
+  openedChange (newValue: string, oldValue: string): void {
+    newValue
     window.clearTimeout(this.animationDeelay)
     this.hostElement.classList.remove(this.animationName(null, oldValue))
     this.hostElement.classList.remove(this.animationName('intro', oldValue))

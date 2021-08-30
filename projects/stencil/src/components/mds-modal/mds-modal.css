@@ -21,7 +21,7 @@
   }
 
   .animate-center-outro {
-    transform: rotateX(10deg) scale(0.75) translateY(20%);
+    transform: rotateX(-22deg) scale(0.5) translateY(-40%);
   }
 
   .animate-left,
@@ -79,6 +79,7 @@
 .close {
   @apply
     absolute
+    cursor-pointer
     duration-500
     ease-in-out-quart
     h-9
