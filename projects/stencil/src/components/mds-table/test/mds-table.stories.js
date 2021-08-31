@@ -37,7 +37,9 @@ const Template = () =>
       </mds-table-row>
     </mds-table-body>
     <mds-table-footer>
-        <mds-table-cell class="colspan-3" typography="action">{ faker.lorem.sentence(12) }</mds-table-cell>
+        <mds-table-cell typography="action">{ faker.lorem.word() }</mds-table-cell>
+        <mds-table-cell typography="action">{ faker.lorem.word() }</mds-table-cell>
+        <mds-table-cell typography="action">{ faker.lorem.word() }</mds-table-cell>
     </mds-table-footer>
   </mds-table>
 
