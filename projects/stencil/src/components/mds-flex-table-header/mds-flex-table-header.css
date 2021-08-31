@@ -1,0 +1,9 @@
+@tailwind utilities;
+
+mds-flex-table-header {
+  @apply flex;
+}
+
+mds-flex-table-header mds-flex-table-cell mds-text::first-letter {
+  @apply uppercase;
+}

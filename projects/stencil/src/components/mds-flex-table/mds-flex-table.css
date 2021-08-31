@@ -1,0 +1,20 @@
+@tailwind utilities;
+
+:host {
+
+  --mds-flex-table-background: theme('colors.adjust-tone');
+  --mds-flex-table-border-color: theme('colors.adjust-tone-18');
+  --mds-flex-table-border-radius: theme('borderRadius.lg');
+  --mds-flex-table-cell-padding: theme('spacing.4');
+  --mds-flex-table-shadow: theme('boxShadow.sharp-md');
+
+  @apply
+    flex;
+}
+
+.flex-table {
+  @apply
+    flex
+    flex-col
+    w-full;
+}

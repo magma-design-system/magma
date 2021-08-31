@@ -9,7 +9,7 @@ export class MdsTableFooter {
 
   render () {
     return (
-      <Host class="table-footer">
+      <Host class="table-footer" role="row">
         <slot></slot>
       </Host>
     )

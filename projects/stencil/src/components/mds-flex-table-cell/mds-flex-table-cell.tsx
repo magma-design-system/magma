@@ -1,12 +1,18 @@
 import { Component, Host, h, Prop } from '@stencil/core'
+
 import { TypographyType } from '../../types/typography'
 
 @Component({
-  tag: 'mds-table-cell',
-  styleUrl: 'mds-table-cell.css',
+  tag: 'mds-flex-table-cell',
+  styleUrl: 'mds-flex-table-cell.css',
   shadow: false,
 })
-export class MdsTableCell {
+export class MdsFlexTableCell {
+
+  /**
+   * Specifies the template for flex children elements
+   */
+  @Prop() readonly flexGrow?: string
 
   /**
    * Specifies the font typography of the element
@@ -15,8 +21,8 @@ export class MdsTableCell {
 
   render () {
     return (
-      <Host class="table-cell">
-        <mds-text typography={this.typography} role="gridcell">
+      <Host style={ { flexGrow: this.flexGrow } } role="gridcell">
+        <mds-text typography={this.typography}>
           <slot></slot>
         </mds-text>
       </Host>

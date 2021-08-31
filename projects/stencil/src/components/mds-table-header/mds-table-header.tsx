@@ -9,7 +9,7 @@ export class MdsTableHeader {
 
   render () {
     return (
-      <Host class="table-header">
+      <Host class="table-header" role="row">
         <slot></slot>
       </Host>
     )

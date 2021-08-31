@@ -10,7 +10,7 @@ export class MdsTable {
   render () {
     return (
       <Host>
-        <table class="table">
+        <table class="table" role="grid">
           <slot></slot>
         </table>
       </Host>

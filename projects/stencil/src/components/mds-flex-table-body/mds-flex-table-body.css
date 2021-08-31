@@ -1,0 +1,18 @@
+@tailwind utilities;
+
+mds-flex-table-body {
+
+  @apply
+    flex
+    flex-col
+    overflow-auto;
+
+  background-color: var(--mds-flex-table-background, theme('colors.adjust-tone'));
+  border-radius: var(--mds-flex-table-border-radius, 0);
+  box-shadow: var(--mds-flex-table-shadow, none);
+  scroll-snap-type: y mandatory;
+}
+
+.no-wrap {
+  @apply whitespace-nowrap;
+}

@@ -9,7 +9,7 @@ export class MdsTableBody {
 
   render () {
     return (
-      <Host class="table-body">
+      <Host class="table-body" role="rowgroup">
         <slot></slot>
       </Host>
     )

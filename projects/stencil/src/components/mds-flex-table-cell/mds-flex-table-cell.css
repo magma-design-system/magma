@@ -1,0 +1,16 @@
+@tailwind utilities;
+
+mds-flex-table-cell {
+
+  @apply
+    flex
+    flex-shrink
+    items-center;
+
+  flex-basis: 0%;
+  padding: var(--mds-flex-table-cell-padding, 0);
+}
+
+/* mds-text {
+  @apply truncate min-w-0;
+} */

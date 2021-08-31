@@ -1,0 +1,15 @@
+@tailwind utilities;
+
+mds-flex-table-row {
+
+  @apply
+    border-b
+    flex;
+
+  border-bottom-color: var(--mds-table-border-color, theme('colors.adjust-tone-18'));
+  scroll-snap-align: start;
+}
+
+mds-flex-table-row:last-child {
+  border-bottom: 0;
+}
