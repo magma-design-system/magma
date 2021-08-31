@@ -1,0 +1,10 @@
+@tailwind utilities;
+
+.table-body {
+
+  @apply table-row-group;
+
+  border-radius: var(--mds-table-border-radius, 0);
+  box-shadow: var(--mds-table-shadow, none);
+  overflow: hidden;
+}

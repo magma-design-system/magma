@@ -1,0 +1,15 @@
+@tailwind utilities;
+
+.table-header {
+  @apply
+    overflow-hidden
+    table-row;
+}
+
+.table-header .table-cell {
+  @apply bg-transparent;
+}
+
+.table-header .table-cell::first-letter {
+  @apply uppercase;
+}

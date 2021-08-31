@@ -1,0 +1,33 @@
+@tailwind utilities;
+
+.table-row {
+  @apply
+    border-b
+    table-row;
+
+  border-bottom-color: var(--mds-table-border-color, theme('colors.adjust-tone-18'));
+}
+
+.table-row:last-child {
+  @apply border-transparent;
+}
+
+.table-row:first-child .table-cell:first-child {
+  border-top-left-radius: var(--mds-table-border-radius, 0);
+}
+
+.table-row:last-child .table-cell:first-child {
+  border-bottom-left-radius: var(--mds-table-border-radius, 0);
+}
+
+.table-row:first-child .table-cell:last-child {
+  border-top-right-radius: var(--mds-table-border-radius, 0);
+}
+
+.table-row:last-child .table-cell:last-child {
+  border-bottom-right-radius: var(--mds-table-border-radius, 0);
+}
+
+.table-row:focus {
+  @apply opacity-50;
+}

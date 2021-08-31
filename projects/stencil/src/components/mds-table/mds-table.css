@@ -1,0 +1,31 @@
+@tailwind utilities;
+
+:host {
+
+  --mds-table-background: theme('colors.adjust-tone');
+  --mds-table-border-color: theme('colors.adjust-tone-18');
+  --mds-table-border-radius: theme('borderRadius.lg');
+  --mds-table-cell-padding: theme('spacing.4');
+  --mds-table-shadow: theme('boxShadow.sharp-md');
+
+  @apply
+    flex;
+}
+
+.table {
+  @apply
+    w-full
+    border-collapse;
+}
+
+.colspan-1 {
+  column-span: 1;
+}
+
+.colspan-2 {
+  column-span: 2;
+}
+
+.colspan-3 {
+  column-span: 3;
+}

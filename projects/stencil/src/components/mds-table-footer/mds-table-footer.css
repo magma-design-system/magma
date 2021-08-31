@@ -1,0 +1,11 @@
+@tailwind utilities;
+
+.table-footer {
+  @apply
+    overflow-hidden
+    table-row;
+}
+
+.table-footer .table-cell {
+  @apply bg-transparent;
+}
