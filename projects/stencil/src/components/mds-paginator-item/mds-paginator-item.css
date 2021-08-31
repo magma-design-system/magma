@@ -1,0 +1,30 @@
+@tailwind utilities;
+
+:host {
+  @apply
+    cursor-pointer
+    flex
+    items-center
+    justify-center;
+
+  aspect-ratio: 1/1;
+  background-color: var(--mds-paginator-item-background-color, transparent);
+  border-radius: var(--mds-paginator-item-border-radius, 200px);
+  box-shadow: var(--mds-paginator-item-box-shadow, none);
+  color: var(--mds-paginator-item-color, theme('colors.adjust-tone-04'));
+  width: var(--mds-paginator-item-size, theme('spacing.16'));
+}
+
+:host ( :hover ) {
+  background-color: var(--mds-paginator-item-background-color-hover, theme('colors.adjust-tone-18'));
+  box-shadow: var(--mds-paginator-item-box-shadow-hover, none);
+  color: var(--mds-paginator-item-color-hover, theme('colors.adjust-tone'));
+}
+
+:host ( .selected ) {
+  @apply pointer-events-none;
+
+  background-color: var(--mds-paginator-item-background-color-selected, theme('colors.brand-maggioli-06'));
+  box-shadow: var(--mds-paginator-item-box-shadow-selected, theme('boxShadow.sharp-md'));
+  color: var(--mds-paginator-item-color-selected, theme('colors.adjust-tone'));
+}
