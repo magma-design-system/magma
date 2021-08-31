@@ -231,7 +231,6 @@ export class MdsInput {
 
   render () {
     const value = this.getValue()
-    console.log(this.datalist)
     return (
       <Host>
         { this.type === 'textarea'
