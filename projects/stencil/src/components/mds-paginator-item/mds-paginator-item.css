@@ -1,30 +1,54 @@
 @tailwind utilities;
 
-:host {
+mds-paginator-item {
   @apply
+    box-border
     cursor-pointer
-    flex
+    flex-shrink-0
+    inline-flex
     items-center
-    justify-center;
+    justify-center
+    px-3
+    select-none
+    transition-colors;
 
-  aspect-ratio: 1/1;
-  background-color: var(--mds-paginator-item-background-color, transparent);
+  background-color: var(--mds-paginator-item-background-color, theme('colors.adjust-tone-20'));
   border-radius: var(--mds-paginator-item-border-radius, 200px);
   box-shadow: var(--mds-paginator-item-box-shadow, none);
   color: var(--mds-paginator-item-color, theme('colors.adjust-tone-04'));
-  width: var(--mds-paginator-item-size, theme('spacing.16'));
+  height: var(--mds-paginator-item-size, theme('spacing.9'));
+  min-width: var(--mds-paginator-item-size, theme('spacing.9'));
+  scroll-snap-align: center;
 }
 
-:host ( :hover ) {
+.pressed {
+  background-color: var(--mds-paginator-item-background-color-pressed, theme('colors.adjust-tone-16'));
+  box-shadow: var(--mds-paginator-item-box-shadow-hover, none);
+  color: var(--mds-paginator-item-color-hover, theme('colors.adjust-tone-04'));
+}
+
+mds-paginator-item:hover {
   background-color: var(--mds-paginator-item-background-color-hover, theme('colors.adjust-tone-18'));
   box-shadow: var(--mds-paginator-item-box-shadow-hover, none);
-  color: var(--mds-paginator-item-color-hover, theme('colors.adjust-tone'));
+  color: var(--mds-paginator-item-color-hover, theme('colors.adjust-tone-04'));
 }
 
-:host ( .selected ) {
+mds-paginator-item.active {
   @apply pointer-events-none;
 
   background-color: var(--mds-paginator-item-background-color-selected, theme('colors.brand-maggioli-06'));
   box-shadow: var(--mds-paginator-item-box-shadow-selected, theme('boxShadow.sharp-md'));
   color: var(--mds-paginator-item-color-selected, theme('colors.adjust-tone'));
+}
+
+mds-paginator-item.disabled {
+  @apply pointer-events-none;
+
+  background-color: var(--mds-paginator-item-background-color-disabled, theme('colors.adjust-tone-20'));
+  box-shadow: var(--mds-paginator-item-box-shadow-disabled, none);
+  color: var(--mds-paginator-item-color-disabled, theme('colors.adjust-tone-12'));
+}
+
+.icon {
+  @apply px-0;
 }
