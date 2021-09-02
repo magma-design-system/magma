@@ -2272,6 +2272,58 @@
     "@babel/runtime" "^7.7.2"
     regenerator-runtime "^0.13.3"
 
+"@maggioli-design-system/design-tokens@latest":
+  version "4.2.1"
+  resolved "https://registry.yarnpkg.com/@maggioli-design-system/design-tokens/-/design-tokens-4.2.1.tgz#05e8c12e0b95f06402404951d4e3bbf50ca80b65"
+  integrity sha512-pC2XO3aDG4zDItYRszoNKCy2d7UR+sXkL+RhQ109mpCyfCQz5unvydlkiimvpQgHJGBdr7A3v+WiD4AYiEcwIQ==
+
+"@maggioli-design-system/icons@latest":
+  version "1.16.0"
+  resolved "https://registry.yarnpkg.com/@maggioli-design-system/icons/-/icons-1.16.0.tgz#60a1b84ccbc87f935c36adbe4e30252807b9aa3e"
+  integrity sha512-bGg5Z/pHhcEXAoVThOe5IzNXEEZPFMiCc7nbwwh/7ia+ihoRHMWvI1fHCKLUoURUc0u6k5P4I9FqzbZPFGfRJw==
+
+"@maggioli-design-system/identity@latest":
+  version "1.8.3"
+  resolved "https://registry.yarnpkg.com/@maggioli-design-system/identity/-/identity-1.8.3.tgz#504cae4af230702834960e936bb4bf389ca79cbf"
+  integrity sha512-/Vsp14eqzjzKvlTqIZbQZ0of/epEXcTrME6YeR/acaKb4O2IxNq2XnRBcATV6diltnQ5yEQupH0ybHvujjoX0w==
+
+"@maggioli-design-system/react@^0.27.6":
+  version "0.27.7"
+  resolved "https://registry.yarnpkg.com/@maggioli-design-system/react/-/react-0.27.7.tgz#4a7aec35effde31d578f993620655567e4536a5a"
+  integrity sha512-5J/rz9EsQzoXf8Fevj0ZcgwtBovhT3G/Udp8iyVbudTflmy2rB8BsB/29zjAQtopI1opsBRTdfDh9MqS3GmqBQ==
+  dependencies:
+    "@maggioli-design-system/design-tokens" latest
+    "@maggioli-design-system/icons" latest
+    "@maggioli-design-system/identity" latest
+    "@maggioli-design-system/styles" latest
+    crypto-js "^4.0.0"
+    gsap "^3.7.0"
+    react "^17.0.2"
+    react-cool-onclickoutside "^1.6.2"
+    react-copy-to-clipboard "^5.0.3"
+    react-dom "^17.0.2"
+    react-gsap "^3.2.1"
+    react-helmet "^6.1.0"
+    react-router-dom "^5.2.0"
+    react-syntax-highlighter "^15.4.3"
+    react-timeago "^6.2.1"
+    typeface-karla "1.1.13"
+    typeface-roboto "1.1.13"
+
+"@maggioli-design-system/styles@latest":
+  version "3.9.0"
+  resolved "https://registry.yarnpkg.com/@maggioli-design-system/styles/-/styles-3.9.0.tgz#c0f0f1d1a558ca1b2076fbc0f925b740d5dd3964"
+  integrity sha512-Y2ry1MwNCxD1y+fCWWnNFNKVjSmkEFR+B9ikecHPkoRfEyWLDGg7bzfzaoBewW8IdozhaggDTp4MbgZ9LFIr5Q==
+  dependencies:
+    "@maggioli-design-system/design-tokens" "^4.0.2"
+    "@tailwindcss/aspect-ratio" "0.2.1"
+    normalize.css "^8.0.1"
+    tailwindcss-multi-column "^1.0.2"
+    tailwindcss-scroll-snap "^1.1.0"
+    tailwindcss-textshadow "^2.1.3"
+    typeface-karla "1.1.13"
+    typeface-roboto "1.1.13"
+
 "@mdi/svg@^5.9.55":
   version "5.9.55"
   resolved "https://registry.yarnpkg.com/@mdi/svg/-/svg-5.9.55.tgz#7cba058135afd5d8a3da977f51b71ffc6a3a3699"
