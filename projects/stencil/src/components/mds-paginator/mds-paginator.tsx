@@ -19,7 +19,7 @@ export class MdsPaginator {
    */
   @Prop({ mutable: true, reflect: true }) currentPage? = 1
 
-  componentDidRender (): void {
+  componentDidLoad (): void {
     setTimeout(() => {
       this.goToPage(this.currentPage)
     }, 10)
@@ -30,27 +30,32 @@ export class MdsPaginator {
    */
   @Event() pageChangedEvent: EventEmitter<number>
 
-  private goToPage = (selectedPage: number): void => {
-    if (selectedPage < 1 || selectedPage > this.pages) {
-      return
-    }
-    this.currentPage = selectedPage
+  private scrollPage = (): void => {
     const elementIndex = this.currentPage - 2
     const pagesElement = this.element.shadowRoot.querySelector<HTMLDivElement>('.pages')
     const pagesItems = pagesElement.querySelectorAll<HTMLMdsPaginatorItemElement>('mds-paginator-item')
+
     if (elementIndex < 0) {
       pagesElement.scrollLeft = 0
       return
     }
 
     if (elementIndex > pagesItems.length - 1) {
-      pagesElement.scrollLeft = pagesElement.offsetWidth
       const pageItem = pagesItems[pagesItems.length - 1]
-      pagesElement.scrollLeft = pageItem.offsetLeft - pagesElement.offsetLeft - (pagesElement.offsetWidth / 2) + (pageItem.offsetWidth / 2)
+      pagesElement.scrollLeft = pageItem.offsetLeft - pagesElement.offsetLeft
       return
     }
+
     const pageItem = pagesItems[elementIndex]
     pagesElement.scrollLeft = pageItem.offsetLeft - pagesElement.offsetLeft - (pagesElement.offsetWidth / 2) + (pageItem.offsetWidth / 2)
+  }
+
+  private goToPage = (selectedPage: number): void => {
+    if (selectedPage < 1 || selectedPage > this.pages) {
+      return
+    }
+    this.currentPage = selectedPage
+    this.scrollPage()
     this.pageChangedEvent.emit(this.currentPage)
   }
 
