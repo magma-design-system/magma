@@ -6,9 +6,13 @@ export default {
   title: 'UI / Paginator',
   component: MdsPaginator,
   argTypes: {
-    type: {
-      type: { name: 'string', required: false },
-      description: 'Defines if the list is ordered or unordered',
+    pages: {
+      type: { name: 'number', required: false },
+      description: 'Specifies the number of total pages to be handled',
+    },
+    'current-page': {
+      type: { name: 'number', required: false },
+      description: 'Specifies the current page selected in the paginator',
     },
   },
 }
@@ -17,5 +21,11 @@ const Template = args =>
 
 export const Default = Template.bind({})
 Default.args = {
-  pages: 35,
+  pages: 32,
+}
+
+export const currentPage = Template.bind({})
+currentPage.args = {
+  'current-page': 16,
+  pages: 32,
 }

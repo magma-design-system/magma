@@ -19,6 +19,12 @@ export class MdsPaginator {
    */
   @Prop({ mutable: true, reflect: true }) currentPage? = 1
 
+  componentDidRender (): void {
+    setTimeout(() => {
+      this.goToPage(this.currentPage)
+    }, 10)
+  }
+
   /**
    * Emits when a page is changed
    */
