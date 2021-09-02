@@ -16,7 +16,26 @@ export const basicUsage = () => {
   const [ visible, setVisible ] = useState(false);
   return <Fragment>
     <Header lastChild="to-right">
-      <HeaderLogo src="http://bibliotecadigitale.maggioli.it/skin/frontend/argentolibreria/argentolibreria/images/logo-biblioteca-digitale.png"/>
+      <HeaderLogo src="//via.placeholder.com/350x150"/>
+      <HeaderMenu onClick={() => setVisible(!visible)}>
+        <InputText className="overflow-visible" icon="data-search" placeholder="Cerca un volume..."/>
+        <Button variant="secondary-outline">Accedi</Button>
+        <Button icon="paginator-next" iconPosition="right" variant="success">Abbonati</Button>
+      </HeaderMenu>
+    </Header>
+    <Modal visible={visible} onCancel={() => setVisible(false)} position="left" footer={false} contentOnly={true}>
+      <InputText className="overflow-visible" icon="data-search" placeholder="Cerca un volume..."/>
+      <Button variant="secondary-outline">Accedi</Button>
+      <Button icon="paginator-next">Abbonati</Button>
+    </Modal>
+  </Fragment>
+}
+
+export const headline = () => {
+  const [ visible, setVisible ] = useState(false)
+  return <Fragment>
+    <Header lastChild="to-right">
+      <HeaderLogo headline="di Maggioli Editore" src="//via.placeholder.com/350x150"/>
       <HeaderMenu onClick={() => setVisible(!visible)}>
         <InputText className="overflow-visible" icon="data-search" placeholder="Cerca un volume..."/>
         <Button variant="secondary-outline">Accedi</Button>

@@ -1,7 +1,9 @@
 import React, { Children, cloneElement } from 'react'
 import PropTypes from 'prop-types'
 import Row from '@Layout/Row/Row'
+import Grid from '@Layout/Grid/Grid'
 import Image from '@Content/Image/Image'
+import Caption from '@Typography/Caption/Caption'
 import Icon from '@Design/Icon/Icon'
 import './Header.scss'
 

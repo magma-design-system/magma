@@ -1,13 +1,20 @@
 @import '~@maggioli-design-system/styles/scss/import-framework';
 
 .header {
+  align-items: center;
   background-color: color('adjust.tone');
+  display: flex;
+  height: 80px;
   left: 0;
-  padding: s(1);
+  padding: 0 s(1);
   position: sticky;
   right: 0;
   top: 0;
   z-index: 2;
+
+  &__row {
+    flex-grow: 1;
+  }
 
   &__item {
     &:not( :last-child ) {
