@@ -30,9 +30,19 @@ export class MdsPaginator {
     }
     this.currentPage = selectedPage
     const elementIndex = this.currentPage - 2
-    /* eslint-disable prefer-destructuring */
-    const pagesElement = this.element.shadowRoot.querySelectorAll<HTMLDivElement>('.pages')[0]
+    const pagesElement = this.element.shadowRoot.querySelector<HTMLDivElement>('.pages')
     const pagesItems = pagesElement.querySelectorAll<HTMLMdsPaginatorItemElement>('mds-paginator-item')
+    if (elementIndex < 0) {
+      pagesElement.scrollLeft = 0
+      return
+    }
+
+    if (elementIndex > pagesItems.length - 1) {
+      pagesElement.scrollLeft = pagesElement.offsetWidth
+      const pageItem = pagesItems[pagesItems.length - 1]
+      pagesElement.scrollLeft = pageItem.offsetLeft - pagesElement.offsetLeft - (pagesElement.offsetWidth / 2) + (pageItem.offsetWidth / 2)
+      return
+    }
     const pageItem = pagesItems[elementIndex]
     pagesElement.scrollLeft = pageItem.offsetLeft - pagesElement.offsetLeft - (pagesElement.offsetWidth / 2) + (pageItem.offsetWidth / 2)
     this.pageChangedEvent.emit(this.currentPage)
