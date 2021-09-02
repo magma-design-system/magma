@@ -19,7 +19,8 @@
 
   background-color: var(--mds-paginator-pages-background-color, theme('colors.adjust-tone-20'));
   scroll-behavior: smooth;
-  scroll-snap-type: x mandatory;
+
+  /* scroll-snap-type: x mandatory; */
 }
 
 :host () .pages {

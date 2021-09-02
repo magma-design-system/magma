@@ -29,10 +29,12 @@ export class MdsPaginator {
       return
     }
     this.currentPage = selectedPage
-    // const elementIndex = this.currentPage - 2
-    // const [ pagesElement ] = this.element.shadowRoot.querySelectorAll('.pages')
-    // const selectedItem = pagesElement[elementIndex]
-    // console.log(selectedItem)
+    const elementIndex = this.currentPage - 2
+    /* eslint-disable prefer-destructuring */
+    const pagesElement = this.element.shadowRoot.querySelectorAll<HTMLDivElement>('.pages')[0]
+    const pagesItems = pagesElement.querySelectorAll<HTMLMdsPaginatorItemElement>('mds-paginator-item')
+    const pageItem = pagesItems[elementIndex]
+    pagesElement.scrollLeft = pageItem.offsetLeft - pagesElement.offsetLeft - (pagesElement.offsetWidth / 2) + (pageItem.offsetWidth / 2)
     this.pageChangedEvent.emit(this.currentPage)
   }
 

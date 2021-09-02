@@ -18,7 +18,8 @@ mds-paginator-item {
   color: var(--mds-paginator-item-color, theme('colors.adjust-tone-04'));
   height: var(--mds-paginator-item-size, theme('spacing.9'));
   min-width: var(--mds-paginator-item-size, theme('spacing.9'));
-  scroll-snap-align: center;
+
+  /* scroll-snap-align: center; */
 }
 
 .pressed {
