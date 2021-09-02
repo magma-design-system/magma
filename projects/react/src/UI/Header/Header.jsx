@@ -7,18 +7,26 @@ import './Header.scss'
 
 import { styles } from '@Library/styles'
 
-const HeaderLogo = ({ className, src, ...restProps }) => {
+const HeaderLogo = ({ className, headline, src, ...restProps }) => {
   const classes = styles('header__logo', {
     selectors: [
       className,
     ],
   })
 
+  if (headline) {
+    return <Grid gutter="none">
+      <Image className={classes} src={src} {...restProps}/>
+      <Caption className="text-adjust-tone-10">{ headline }</Caption>
+    </Grid>
+  }
+
   return <Image className={classes} src={src} {...restProps}/>
 }
 
 HeaderLogo.propTypes = {
   className: PropTypes.string,
+  headline: PropTypes.string,
   src: PropTypes.string,
 }
 
