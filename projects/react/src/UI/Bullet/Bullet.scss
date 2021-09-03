@@ -1,0 +1,25 @@
+@import '~@maggioli-design-system/styles/scss/import-framework';
+
+.bullet {
+  background-color: color('adjust.tone', '19');
+  border-radius: 1000px;
+  display: inline-flex;
+  overflow: hidden;
+
+  &__text {
+    flex-grow: 1;
+    padding-left: s(0.5);
+    padding-right: s(0.25);
+
+    &:last-child {
+      padding-right: s(0.5);
+    }
+  }
+
+  &__value {
+    background-color: color('adjust.tone', '01', 0.1);
+    flex-shrink: 0;
+    padding-left: s(0.25);
+    padding-right: s(0.5);
+  }
+}
