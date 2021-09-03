@@ -1,0 +1,25 @@
+@import '~@maggioli-design-system/styles/scss/import-framework';
+
+.checklist-item {
+  color: color('adjust.tone', '10');
+  display: flex;
+
+  &__icon {
+    color: color('adjust.tone', '10');
+    line-height: 16px;
+  }
+
+  &__text {
+    line-height: 16px;
+  }
+
+  &--checked {
+    color: color('adjust.tone', '04');
+
+    .checklist-item {
+      &__icon {
+        color: color('status.success', '10');
+      }
+    }
+  }
+}
