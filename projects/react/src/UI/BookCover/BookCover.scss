@@ -1,0 +1,29 @@
+@import '~@maggioli-design-system/styles/scss/import-framework';
+
+$radius: 8px;
+
+.book-cover {
+  background-color: color('adjust.tone', '16');
+  border-radius: $radius 0 0 $radius;
+  display: inline-flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  overflow: hidden;
+  position: relative;
+
+  &__decoration {
+    aspect-ratio: 66/8;
+    background-image: url('data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNjYiIGhlaWdodD0iOCIgdmlld0JveD0iMCAwIDY2IDgiIGZpbGw9Im5vbmUiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+CjxwYXRoIGQ9Ik0wIDhINjZWMEgwVjhaIiBmaWxsPSJ1cmwoI3BhaW50MF9saW5lYXIpIi8+CjxkZWZzPgo8bGluZWFyR3JhZGllbnQgaWQ9InBhaW50MF9saW5lYXIiIHgxPSIzMyIgeTE9IjgiIHgyPSIzMyIgeTI9IjAiIGdyYWRpZW50VW5pdHM9InVzZXJTcGFjZU9uVXNlIj4KPHN0b3Agc3RvcC1jb2xvcj0iI0JFQkNBOSIvPgo8c3RvcCBvZmZzZXQ9IjEiIHN0b3AtY29sb3I9IiNFQ0VCRTIiLz4KPC9saW5lYXJHcmFkaWVudD4KPC9kZWZzPgo8L3N2Zz4K');
+    background-repeat: repeat-x;
+    background-size: cover;
+    border-radius: $radius 0 0;
+    margin-top: -#{$radius};
+    position: relative;
+    z-index: 1;
+  }
+
+  &__image {
+    height: auto;
+    width: 100%;
+  }
+}
