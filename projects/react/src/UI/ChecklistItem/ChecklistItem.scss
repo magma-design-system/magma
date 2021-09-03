@@ -6,11 +6,11 @@
 
   &__icon {
     color: color('adjust.tone', '10');
-    line-height: 16px;
+    line-height: 16px !important;
   }
 
   &__text {
-    line-height: 16px;
+    line-height: 16px !important;
   }
 
   &--checked {
