@@ -1,13 +1,17 @@
 @import '~@maggioli-design-system/styles/scss/import-framework';
 
 .benckmark-bar {
-
-  $size: s(1);
-
   max-width: 300px;
 
+  &__text {
+    flex-grow: 1;
+    font-weight: 700;
+    min-width: 0;
+    white-space: nowrap;
+  }
+
   &__progress {
-    color: color('brand.maggioli', '05');
     flex-shrink: 0;
+    font-weight: 700;
   }
 }

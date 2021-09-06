@@ -4,7 +4,7 @@ import { styles } from '@Library/styles'
 import './BenchmarkBar.scss'
 import Row from '@Layout/Row/Row'
 import Grid from '@Layout/Grid/Grid'
-import H2 from '@Typography/H2/H2'
+import LabelDetail from '@Typography/LabelDetail/LabelDetail'
 import ProgressBar from '@UI/ProgressBar/ProgressBar'
 
 const benchmarkStatus = progress => {
@@ -18,13 +18,11 @@ const benchmarkStatus = progress => {
   return status
 }
 
-const BenchmarkBar = ({ autoColor, className, children, decimals, progress, progressText, rounded, size, ...restProps }) => {
+const BenchmarkBar = ({ autoColor, className, children, decimals, progress, progressText, radius, rounded, size, ...restProps }) => {
   let status = 'info'
-  let classNameText = ''
 
   if (autoColor) {
     status = benchmarkStatus(progress)
-    classNameText = `color-status-${status}-04`
   }
 
   const classNameBg = `background-color-status-${status}-19`
@@ -32,25 +30,21 @@ const BenchmarkBar = ({ autoColor, className, children, decimals, progress, prog
 
   const classes = styles('benckmark-bar', {
     selectors: [
-      classNameText,
       className,
-    ],
-  })
-
-  const progressClassNames = styles('benckmark-bar__progress', {
-    selectors: [
-      classNameText,
     ],
   })
 
   return <Grid {...restProps} className={classes} gutter="xxsmall">
     <Row>
-      {progressText && <H2 className={progressClassNames}>
-        {decimals ? Number(progress).toFixed(1) : Math.round(progress)}%
-      </H2>}
-      {children}
+      <LabelDetail title={children} className="benckmark-bar__text"><b>{children}</b></LabelDetail>
+      <LabelDetail className="benckmark-bar__progress">
+        { progressText
+          ? <b>{ progressText }</b>
+          : <b>{ decimals ? Number(progress).toFixed(1) : Math.round(progress) }%</b>
+        }
+      </LabelDetail>
     </Row>
-    <ProgressBar className={classNameBg} progressClassName={progressClassName} size={size} rounded={rounded} progress={decimals ? Number(progress).toFixed(1) : Math.round(progress)}/>
+    <ProgressBar className={classNameBg} progressClassName={progressClassName} size={size} radius={radius} rounded={rounded} progress={decimals ? Number(progress).toFixed(1) : Math.round(progress)}/>
   </Grid>
 }
 
@@ -60,8 +54,9 @@ BenchmarkBar.propTypes = {
   className: PropTypes.string,
   decimals: PropTypes.bool,
   progress: PropTypes.number,
-  progressText: PropTypes.bool,
+  progressText: PropTypes.string,
   rounded: PropTypes.bool,
+  radius: PropTypes.string,
   size: PropTypes.string,
 }
 
@@ -70,9 +65,9 @@ BenchmarkBar.defaultProps = {
   className: '',
   decimals: false,
   progress: 0,
-  progressText: true,
   rounded: true,
-  size: 'normal',
+  radius: 'xsmall',
+  size: 'xsmall',
 }
 
 export default BenchmarkBar
