@@ -7,6 +7,25 @@ import Grid from '@Layout/Grid/Grid'
 import LabelDetail from '@Typography/LabelDetail/LabelDetail'
 import ProgressBar from '@UI/ProgressBar/ProgressBar'
 
+const benchmarkVariants = {
+  info: {
+    background: 'bg-adjust-tone-19',
+    progress: 'bg-status-info-10',
+  },
+  success: {
+    background: 'bg-status-success-19',
+    progress: 'bg-status-success-10',
+  },
+  warning: {
+    background: 'bg-status-warning-19',
+    progress: 'bg-status-warning-10',
+  },
+  error: {
+    background: 'bg-status-error-19',
+    progress: 'bg-status-error-10',
+  },
+}
+
 const benchmarkStatus = progress => {
   let status = 'success'
   if (progress < 70) {
@@ -25,8 +44,8 @@ const BenchmarkBar = ({ autoColor, className, children, decimals, progress, prog
     status = benchmarkStatus(progress)
   }
 
-  const classNameBg = `background-color-status-${status}-19`
-  const progressClassName = `background-color-status-${status}-10`
+  const classNameBg = benchmarkVariants[status].background
+  const progressClassName = benchmarkVariants[status].progress
 
   const classes = styles('benckmark-bar', {
     selectors: [
@@ -55,8 +74,8 @@ BenchmarkBar.propTypes = {
   decimals: PropTypes.bool,
   progress: PropTypes.number,
   progressText: PropTypes.string,
-  rounded: PropTypes.bool,
   radius: PropTypes.string,
+  rounded: PropTypes.bool,
   size: PropTypes.string,
 }
 
