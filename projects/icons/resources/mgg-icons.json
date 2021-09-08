@@ -46,6 +46,7 @@
   "action-process": "mdi/cogs",
   "action-redo": "material/redo",
   "action-refresh": "material/refresh",
+  "action-replay": "mdi/replay",
   "action-reply": "material/reply",
   "action-reply-all": "material/reply_all",
   "action-rotate-left": "material/rotate_left",
