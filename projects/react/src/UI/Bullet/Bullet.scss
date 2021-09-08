@@ -3,10 +3,14 @@
 .bullet {
   background-color: color('adjust.tone', '19');
   border-radius: 1000px;
+  color: color('adjust.tone', '04');
   display: inline-flex;
   overflow: hidden;
 
   &__text {
+    align-items: center;
+    color: inherit;
+    display: flex;
     flex-grow: 1;
     padding-left: s(0.5);
     padding-right: s(0.25);
@@ -17,7 +21,10 @@
   }
 
   &__value {
+    align-items: center;
     background-color: color('adjust.tone', '01', 0.1);
+    color: inherit;
+    display: flex;
     flex-shrink: 0;
     padding-left: s(0.25);
     padding-right: s(0.5);

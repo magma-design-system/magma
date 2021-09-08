@@ -53,20 +53,20 @@
     "zip": { "format": "archive", "extDescription": "Archivio compresso" }
   },
   "format": {
-    "archive": { "color": "text-label-amaranth-08", "background": "bg-label-amaranth-18", "icon": "file-archive" },
-    "attachment": { "color": "text-adjust-tone-08", "background": "bg-adjust-tone-18", "icon": "file-attachment" },
-    "audio": { "color": "text-label-violet-08", "background": "bg-label-violet-18", "icon": "media-audio" },
-    "code": { "color": "text-label-yellow-08", "background": "bg-label-yellow-18", "icon": "dev-terminal" },
-    "data": { "color": "text-label-yellow-08", "background": "bg-label-yellow-18", "icon": "peripheral-hard-drive" },
-    "document": { "color": "text-label-orange-08", "background": "bg-label-orange-18", "icon": "document" },
-    "email": { "color": "text-label-blue-08", "background": "bg-label-blue-18", "icon": "file-email" },
-    "executable": { "color": "text-label-amaranth-08", "background": "bg-label-amaranth-18", "icon": "file-executable" },
-    "image": { "color": "text-label-green-08", "background": "bg-label-green-18", "icon": "media-image" },
-    "markup": { "color": "text-label-yellow-08", "background": "bg-label-yellow-18", "icon": "document-web" },
-    "slide": { "color": "text-label-orchid-08", "background": "bg-label-orchid-18", "icon": "touchpoint-tv" },
-    "spreadsheet": { "color": "text-label-lime-08", "background": "bg-label-lime-18", "icon": "document-spreadsheet" },
-    "text": { "color": "text-label-blue-08", "background": "bg-label-blue-18", "icon": "document-text" },
-    "vector": { "color": "text-label-aqua-08", "background": "bg-label-aqua-18", "icon": "file-type-vector" },
-    "video": { "color": "text-label-violet-08", "background": "bg-label-violet-18", "icon": "media-video" }
+    "archive": { "color": "text-label-amaranth-08", "background": "bg-label-amaranth-18", "icon": "file-archive", "backgroundIcon": "bg-label-amaranth-20" },
+    "attachment": { "color": "text-adjust-tone-08", "background": "bg-adjust-tone-18", "icon": "file-attachment", "backgroundIcon": "bg-adjust-tone-20" },
+    "audio": { "color": "text-label-violet-08", "background": "bg-label-violet-18", "icon": "media-audio", "backgroundIcon": "bg-label-violet-20" },
+    "code": { "color": "text-label-yellow-08", "background": "bg-label-yellow-18", "icon": "dev-terminal", "backgroundIcon": "bg-label-yellow-20" },
+    "data": { "color": "text-label-yellow-08", "background": "bg-label-yellow-18", "icon": "peripheral-hard-drive", "backgroundIcon": "bg-label-yellow-20" },
+    "document": { "color": "text-label-orange-08", "background": "bg-label-orange-18", "icon": "document", "backgroundIcon": "bg-label-orange-20" },
+    "email": { "color": "text-label-blue-08", "background": "bg-label-blue-18", "icon": "file-email", "backgroundIcon": "bg-label-blue-20" },
+    "executable": { "color": "text-label-amaranth-08", "background": "bg-label-amaranth-18", "icon": "file-executable", "backgroundIcon": "bg-label-amaranth-20" },
+    "image": { "color": "text-label-green-08", "background": "bg-label-green-18", "icon": "media-image", "backgroundIcon": "bg-label-green-20" },
+    "markup": { "color": "text-label-yellow-08", "background": "bg-label-yellow-18", "icon": "document-web", "backgroundIcon": "bg-label-yellow-20" },
+    "slide": { "color": "text-label-orchid-08", "background": "bg-label-orchid-18", "icon": "touchpoint-tv", "backgroundIcon": "bg-label-orchid-20" },
+    "spreadsheet": { "color": "text-label-lime-08", "background": "bg-label-lime-18", "icon": "document-spreadsheet", "backgroundIcon": "bg-label-lime-20" },
+    "text": { "color": "text-label-blue-08", "background": "bg-label-blue-18", "icon": "document-text", "backgroundIcon": "bg-label-blue-20" },
+    "vector": { "color": "text-label-aqua-08", "background": "bg-label-aqua-18", "icon": "file-type-vector", "backgroundIcon": "bg-label-aqua-20" },
+    "video": { "color": "text-label-violet-08", "background": "bg-label-violet-18", "icon": "media-video", "backgroundIcon": "bg-label-violet-20" }
   }
 }

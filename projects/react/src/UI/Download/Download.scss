@@ -1,14 +1,16 @@
 @import '~@maggioli-design-system/styles/scss/import-framework';
 
+$size: s(3);
+
 .download {
   background-color: color('adjust.tone');
   border-radius: s(0.5);
-  box-shadow: get($shadow, 'soft');
   box-sizing: border-box;
   cursor: pointer;
   display: flex;
-  padding: s(0.5);
+  overflow: hidden;
   padding-right: s(1);
+  transition: box-shadow get($tween, 'hover');
   width: 100%;
 
   &--name-short {
@@ -39,12 +41,13 @@
     align-items: center;
     display: flex;
     flex-shrink: 0;
-    height: s(2.5);
+    height: $size;
     justify-content: center;
     pointer-events: none;
-    width: s(2.5);
+    width: $size;
 
     &--transparency-grid {
+      background-color: transparent;
       background-image: url('./transparency-grid.svg');
       border-radius: s(0.125);
     }

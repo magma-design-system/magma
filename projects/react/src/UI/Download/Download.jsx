@@ -26,7 +26,7 @@ const DownloadContent = ({ description, fileName, preview, transparencyGrid }) =
   const extension = getExtension(fileName)
   const fileNameNoExt = getName(fileName, extension)
   const { extDescription, format } = getExtensionInfos(extension.toLowerCase())
-  const { background, color, icon } = dictionary.format[format]
+  const { background, color, icon, backgroundIcon } = dictionary.format[format]
 
   const classesFormat = styles('download__format', {
     selectors: [
@@ -36,11 +36,14 @@ const DownloadContent = ({ description, fileName, preview, transparencyGrid }) =
   })
 
   const classesIcon = styles('download__icon-area', {
+    selectors: [
+      backgroundIcon,
+      color,
+    ],
     modifiers: {
       transparencyGrid,
     },
   })
-
   return (
     <Fragment>
       <div className={classesIcon}>
@@ -75,7 +78,7 @@ DownloadContent.defaultProps = {
 }
 
 const Download = ({ className, fileName, href, name, target, ...restProps }) => {
-  const classes = styles('download', {
+  const classes = styles('download shadow-sharp hover:shadow-sharp-md', {
     selectors: [
       className,
     ],
