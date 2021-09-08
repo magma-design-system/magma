@@ -37,11 +37,22 @@ const benchmarkStatus = progress => {
   return status
 }
 
-const BenchmarkBar = ({ autoColor, className, children, decimals, progress, progressText, radius, rounded, size, ...restProps }) => {
+const benchmarkStatusInvert = progress => {
+  let status = 'error'
+  if (progress < 70) {
+    status = 'warning'
+  }
+  if (progress < 40) {
+    status = 'success'
+  }
+  return status
+}
+
+const BenchmarkBar = ({ autoColor, className, colorInvert, children, decimals, progress, progressText, radius, rounded, size, ...restProps }) => {
   let status = 'info'
 
   if (autoColor) {
-    status = benchmarkStatus(progress)
+    status = colorInvert ? benchmarkStatusInvert(progress) : benchmarkStatus(progress)
   }
 
   const classNameBg = benchmarkVariants[status].background
@@ -71,6 +82,7 @@ BenchmarkBar.propTypes = {
   ...Grid.propTypes,
   autoColor: PropTypes.bool,
   className: PropTypes.string,
+  colorInvert: PropTypes.bool,
   decimals: PropTypes.bool,
   progress: PropTypes.number,
   progressText: PropTypes.string,
@@ -82,10 +94,11 @@ BenchmarkBar.propTypes = {
 BenchmarkBar.defaultProps = {
   autoColor: false,
   className: '',
+  colorInvert: false,
   decimals: false,
   progress: 0,
-  rounded: true,
   radius: 'xsmall',
+  rounded: true,
   size: 'xsmall',
 }
 

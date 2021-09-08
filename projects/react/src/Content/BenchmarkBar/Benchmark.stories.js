@@ -70,3 +70,43 @@ export const autoColor = () =>
       </TableRow>
     </TableBody>
   </Table>
+
+export const autoColorInvert = () =>
+  <Table interactive={true}>
+    <TableHeader>
+      <TableHeaderCell>Preview</TableHeaderCell>
+      <TableHeaderCell>Size</TableHeaderCell>
+    </TableHeader>
+    <TableBody>
+      <TableRow>
+        <TableCell>
+          <BenchmarkBar progress="39" autoColor colorInvert>
+            This is a very low value, nice.
+          </BenchmarkBar>
+        </TableCell>
+        <TableCell>
+          <span>Under <InlineCode>39%</InlineCode></span>
+        </TableCell>
+      </TableRow>
+      <TableRow>
+        <TableCell>
+          <BenchmarkBar progress="69" autoColor colorInvert>
+            This is a middle value, not bad.
+          </BenchmarkBar>
+        </TableCell>
+        <TableCell>
+          <span>Under <InlineCode>69%</InlineCode></span>
+        </TableCell>
+      </TableRow>
+      <TableRow>
+        <TableCell>
+          <BenchmarkBar progress="70" autoColor colorInvert>
+            This is a high value, oh no!
+          </BenchmarkBar>
+        </TableCell>
+        <TableCell>
+          <span>Over <InlineCode>70%</InlineCode></span>
+        </TableCell>
+      </TableRow>
+    </TableBody>
+  </Table>
