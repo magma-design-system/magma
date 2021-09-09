@@ -3,7 +3,7 @@ import PropTypes from 'prop-types'
 import './Switch.scss'
 
 const Switch = props =>
-  <label className={`switch text-secondary text-secondary--paragraph ${props.className}`}>
+  <label className={`switch text-secondary text-secondary--${props.typography} ${props.className}`}>
     <input
       className="switch__field"
       checked={props.isChecked}
@@ -23,6 +23,7 @@ const Switch = props =>
 Switch.propTypes = {
   className: PropTypes.string,
   boxClassName: PropTypes.string,
+  typography: PropTypes.string,
   isChecked: PropTypes.bool,
   name: PropTypes.string,
   onChange: PropTypes.func,
@@ -32,6 +33,7 @@ Switch.propTypes = {
 Switch.defaultProps = {
   className: '',
   boxClassName: '',
+  typography: 'detail',
   isChecked: false,
   name: 'unassigned',
   onChange: value => { return value },
