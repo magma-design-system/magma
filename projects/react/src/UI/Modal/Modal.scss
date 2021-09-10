@@ -2,6 +2,7 @@
 
 $modal-size: 550px;
 $modal-background: rgba(0, 0, 0, 0.5);
+$margin: s(2);
 
 .modal {
   align-items: center;
@@ -105,9 +106,6 @@ $modal-background: rgba(0, 0, 0, 0.5);
   }
 
   &--max-height {
-
-    $margin: s(2);
-
     .modal {
       &__contents {
         max-height: 100%;
@@ -123,9 +121,6 @@ $modal-background: rgba(0, 0, 0, 0.5);
   }
 
   &--max-width {
-
-    $margin: s(2);
-
     .modal {
       &__window {
 
@@ -134,6 +129,10 @@ $modal-background: rgba(0, 0, 0, 0.5);
         }
       }
     }
+  }
+
+  &--max-width-hardcoded {
+    padding-left: s(1.5, $margin);
   }
 
   &__window {

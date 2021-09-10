@@ -12,7 +12,15 @@ import Icon from '@Design/Icon/Icon'
 
 const Modal = ({ cancelButton, cancelVariant, className, classNameContents, classNameWindow, confirmButton, confirmDisabled, confirmVariant, contentOnly, footer, maxHeight, maxWidth, onCancel, onConfirm, position, title, visible, ...restProps }) => {
 
-  const maxWidthSelector = typeof maxWidth === 'boolean' ? 'modal--max-width' : null
+  let maxWidthSelector = typeof maxWidth === 'boolean' ? 'modal--max-width' : null
+
+  if (typeof maxWidth !== 'boolean') {
+    maxWidthSelector = 'modal--max-width-hardcoded'
+  }
+
+  if (maxWidth === undefined) {
+    maxWidthSelector = undefined
+  }
 
   const classes = styles('modal', {
     selectors: [
