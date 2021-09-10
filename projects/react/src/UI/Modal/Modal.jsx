@@ -11,14 +11,17 @@ import Icon from '@Design/Icon/Icon'
 // https://codesandbox.io/s/github/supromikali/react-children-with-context
 
 const Modal = ({ cancelButton, cancelVariant, className, classNameContents, classNameWindow, confirmButton, confirmDisabled, confirmVariant, contentOnly, footer, maxHeight, maxWidth, onCancel, onConfirm, position, title, visible, ...restProps }) => {
+
+  const maxWidthSelector = typeof maxWidth === 'boolean' ? 'modal--max-width' : null
+
   const classes = styles('modal', {
     selectors: [
       className,
+      maxWidthSelector,
     ],
     modifiers: {
       visible,
       maxHeight,
-      maxWidth,
       position,
     },
   })
@@ -40,7 +43,7 @@ const Modal = ({ cancelButton, cancelVariant, className, classNameContents, clas
   return (
     <div className={classes}>
       <Icon className="modal__close" name="action-close" size="large" onClick={() => { onCancel() }}/>
-      <div className={classesWindow}>
+      <div className={classesWindow} style={{ maxWidth: typeof maxWidth !== 'boolean' ? `${maxWidth}px` : undefined }}>
         {title &&
           <header className="modal__header">
             <H4 className="modal__title">
@@ -83,7 +86,7 @@ Modal.propTypes = {
   contentOnly: PropTypes.bool,
   footer: PropTypes.bool,
   maxHeight: PropTypes.bool,
-  maxWidth: PropTypes.bool,
+  maxWidth: PropTypes.any,
   onCancel: PropTypes.func,
   onConfirm: PropTypes.func,
   position: PropTypes.string,
