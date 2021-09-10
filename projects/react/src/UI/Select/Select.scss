@@ -55,7 +55,6 @@ $size: get($form-sizes, 'input-height');
     padding: 0 s(0.5);
     padding-right: s(2);
     position: relative;
-    text-transform: capitalize;
     transition: box-shadow get($tween, 'hover'), color get($tween, 'hover'), border-color get($tween, 'hover');
     width: 100%;
     z-index: 0;
