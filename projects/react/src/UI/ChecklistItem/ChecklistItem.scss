@@ -7,7 +7,7 @@ $size: 16px;
   display: flex;
 
   &__icon {
-    color: color('adjust.tone', '10');
+    color: color('status.error', '10');
     font-size: $size !important;
     line-height: $size !important;
   }
