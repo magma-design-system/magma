@@ -75,6 +75,9 @@ module.exports = {
       fontSize: {
         xxs: '0.625rem',
       },
+      gridAutoRows: {
+        1: '1fr',
+      },
       gridTemplateColumns: {
         'fit-sm': 'repeat(auto-fit, minmax(10rem, 1fr))',
         fit: 'repeat(auto-fit, minmax(12.5rem, 1fr))',
