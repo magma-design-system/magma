@@ -36,6 +36,10 @@
     display: inline-flex;
   }
 
+  &--width-full {
+    width: 100%;
+  }
+
   &--last-child-to-right {
     .row {
       &__item {
