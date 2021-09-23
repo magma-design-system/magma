@@ -1,6 +1,6 @@
 {
   "name": "@maggioli-design-system/react",
-  "version": "0.34.5",
+  "version": "0.36.1",
   "description": "Maggioli Design System è uno strumento nato per condividere una visione di progettazione coordintata con tutti gli esperti di dominio aziendali. Ciò permette di offrire una UX unica, condivisa tra i prodotti che saranno coerenti allo stile dell’azienda.",
   "license": "ISC",
   "scripts": {
@@ -62,10 +62,11 @@
     }
   ],
   "dependencies": {
-    "@maggioli-design-system/icons": "^1.22.0",
+    "@maggioli-design-system/icons": "^1.24.0",
     "@maggioli-design-system/design-tokens": "^4.2.1",
     "@maggioli-design-system/identity": "^1.8.3",
     "@maggioli-design-system/styles": "^3.10.0",
+    "clsx": "1.1.1",
     "crypto-js": "^4.0.0",
     "gsap": "^3.7.0",
     "react": "^17.0.2",
@@ -73,7 +74,6 @@
     "react-copy-to-clipboard": "^5.0.3",
     "react-dom": "^17.0.2",
     "react-gsap": "^3.2.1",
-    "react-helmet": "^6.1.0",
     "react-router-dom": "^5.2.0",
     "react-syntax-highlighter": "^15.4.3",
     "react-timeago": "^6.2.1",
