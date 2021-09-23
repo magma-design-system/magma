@@ -47,7 +47,7 @@ const HeaderMenu = ({ className, onClick, ...restProps }) => {
     }
   })
 
-  return <Row {...restProps} className={classes}>
+  return <Row {...restProps} width="inline" className={classes}>
     {children}
     <Icon name="menu-main" size="large" className="header__item header__item--action" onClick={onClick}/>
   </Row>

@@ -14,13 +14,13 @@ export default {
 }
 
 export const basicUsage = () =>
-  <Author avatar={avatarExample}>
+  <Author src={avatarExample}>
     <H5>Fred Brooks</H5>
     <Detail className="text-adjust-tone-06">Software engineer</Detail>
   </Author>
 
 export const addFields = () =>
-  <Author gutter="small" avatar={avatarExample} size={'large'}>
+  <Author gutter="small" src={avatarExample} size={'large'}>
     <H5>Fred Brooks</H5>
     <Caption className="text-adjust-tone-06">Software engineer</Caption>
     <Caption className="text-adjust-tone-06">fred@brooks.com</Caption>

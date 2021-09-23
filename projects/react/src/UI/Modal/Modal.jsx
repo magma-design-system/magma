@@ -111,7 +111,7 @@ Modal.defaultProps = {
   contentOnly: false,
   footer: true,
   maxHeight: false,
-  maxWidth: false,
+  maxWidth: '550',
   onCancel: null,
   onConfirm: null,
   position: 'right', // right || left || center

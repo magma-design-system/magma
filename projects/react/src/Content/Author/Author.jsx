@@ -1,26 +1,21 @@
 import React from 'react'
 import PropTypes from 'prop-types'
+import clsx from 'clsx'
 
 import Avatar from '@Content/Avatar/Avatar'
 import Row from '@Layout/Row/Row'
 
-const Author = props =>
-  <Row className={`author ${props.className}`} {...props}>
-    <Avatar className="author__avatar" src={props.avatar} {...props}/>
+const Author = ({ children, className, ...restProps }) =>
+  <Row className={clsx('author', className)}>
+    <Avatar className="author__avatar" {...restProps}/>
     <div className="author__infos text-white">
-      {props.children}
+      { children }
     </div>
   </Row>
 
 Author.propTypes = {
-  avatar: PropTypes.string,
+  ...Avatar.propTypes,
   className: PropTypes.string,
-  size: PropTypes.string,
-}
-
-Author.defaultProps = {
-  className: '',
-  size: 'normal',
 }
 
 export default Author
