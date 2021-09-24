@@ -72,5 +72,5 @@ filesWithoutExtension.args = {
 export const preview = Template.bind({})
 preview.args = {
   filename: getFile(),
-  preview: 'https://i2.wp.com/clipart.info/images/ccovers/1495750818Apple-PNG-Clip-Art.png',
+  preview: 'https://via.placeholder.com/64x64',
 }
