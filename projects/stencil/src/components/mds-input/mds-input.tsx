@@ -40,99 +40,99 @@ export class MdsInput {
   /**
    * Specifies whether the element should have autocomplete enabled
    */
-  @Prop() autocomplete?: AutocompleteType = 'off'
+  @Prop() readonly autocomplete?: AutocompleteType = 'off'
 
   /**
    * Specifies that the element should automatically get focus when the page loads
    */
-  @Prop() autofocus?: boolean = false
+  @Prop() readonly autofocus?: boolean = false
 
   /**
    * A list of search terms to be searched from the input field,
    * it should be used with type="search" input.
    */
-  @Prop() datalist?: string[]
+  @Prop() readonly datalist?: string[]
 
   /**
    * If true, the element is displayed as disabled
    */
-  @Prop() disabled?: boolean = false
+  @Prop() readonly disabled?: boolean = false
 
   /**
    * An icon displayed at the right of the input
    */
-  @Prop() icon?: string
+  @Prop() readonly icon?: string
 
   /**
    * Specifies the maximum value
    * use it with input type="number" or type="date"
    * Example: max="180", max="2046-12-04"
    */
-  @Prop() max?: number
+  @Prop() readonly max?: number
 
   /**
    * Specifies the maximum number of characters allowed in an element
    * use it with input type="number"
    */
-  @Prop() maxlength?: number
+  @Prop() readonly maxlength?: number
 
   /**
    * Specifies the minimum value
    * use it with input type="number" or type="date"
    * Example: min="-3", min="1988-04-15"
    */
-  @Prop() min?: string
+  @Prop() readonly min?: string
 
   /**
    * Specifies the minimum number of characters allowed in an element
    * use it with input type="number"
    */
-  @Prop() minlength?: number
+  @Prop() readonly minlength?: number
 
   /**
    * Is needed to reference the form data after the form is submitted
    */
-  @Prop() name?: string;
+  @Prop() readonly name?: string;
 
   /**
    * Specifies a regular expression that element\'s value is checked against
    */
-  @Prop() pattern?: string
+  @Prop() readonly pattern?: string
 
   /**
    * Specifies a short hint that describes the expected value of the element
    */
-  @Prop() placeholder?: string
+  @Prop() readonly placeholder?: string
 
   /**
    * Specifies that the element is read-only
    */
-  @Prop() readonly?: boolean = false
+  @Prop() readonly readonly?: boolean = false
 
   /**
    * Specifies that the element must be filled out before submitting the form
    */
-  @Prop() required?: boolean = false
+  @Prop() readonly required?: boolean = false
 
   /**
    * Sets the status of the input field
    */
-  @Prop() status?: StatusVariantType
+  @Prop() readonly status?: StatusVariantType
 
   /**
    * Sets the word(s) of the status of the input field
    */
-  @Prop() statusTip?: string
+  @Prop() readonly statusTip?: string
 
   /**
    * Specifies the interval between legal numbers in an input field
    */
-  @Prop() step?: string
+  @Prop() readonly step?: string
 
   /**
    * Specifies the type of input element
    */
-  @Prop() type: InputTextType = 'text'
+  @Prop() readonly type: InputTextType = 'text'
 
   /**
    * Specifies the value of the input element
