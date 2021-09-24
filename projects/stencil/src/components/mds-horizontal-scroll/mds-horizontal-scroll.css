@@ -1,0 +1,30 @@
+@tailwind components;
+@tailwind utilities;
+
+:host {
+  @apply flex gap-2 snap-px-2 overflow-auto w-full;
+
+  -ms-overflow-style: none;
+  scroll-snap-type: x mandatory;
+  scrollbar-width: none;
+}
+
+:host::-webkit-scrollbar {
+  display: none;
+}
+
+:host( .scroll--align-none ) > ::slotted ( * ) {
+  scroll-snap-align: none;
+}
+
+:host( .scroll--align-start ) > ::slotted ( * ) {
+  scroll-snap-align: start;
+}
+
+:host( .scroll--align-center ) > ::slotted ( * ) {
+  scroll-snap-align: center;
+}
+
+:host( .scroll--align-end ) > ::slotted ( * ) {
+  scroll-snap-align: end;
+}
