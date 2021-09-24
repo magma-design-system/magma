@@ -195,10 +195,12 @@ async function subDirectories (source) {
  * @throws Throws error if the icon is not found
  */
 async function iconGroupGetHelper (iconGroup, directories, iconName, filename) {
+  // console.debug(iconGroup, directories, iconName, filename)
+  const hidePath = path.resolve(__dirname, '../../../')
   for (const directory of directories) {
     const path = await searchFileInDirectory(directory, filename)
     if (path) {
-      // console.debug(`Found ${iconGroup}/${iconName} -> ${path}`)
+      console.debug(`Found ${iconGroup}/${iconName}  >  ${path.replace(hidePath, '')}`)
       return path
     }
   }

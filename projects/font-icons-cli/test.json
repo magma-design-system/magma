@@ -1,10 +1,10 @@
 {
   "maggioli-isbn": "maggioli/isbn",
   "maggioli-terminal": "maggioli/terminal",
-  "maggioli-zip": "maggioli/folder-zip",
+  "maggioli-breadcrumb": "maggioli/breadcrumb",
   "material-3d_rotation": "material/3d_rotation",
   "material-audio": "material/audiotrack",
   "material-export": "material/save_alt",
   "mdi-desk": "mdi/desk",
-  "local-barcode": "barcode"
+  "isbn-code": "code-isbn"
 }

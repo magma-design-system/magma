@@ -46,6 +46,7 @@ function main (parameters) {
 
   createBuildDirective(BUILD_SVG_DIR)
     .then(() => iconsToTempFolder(BUILD_SVG_DIR, inputData))
+    .then(() => iconsToDictionary(BUILD_PATH_DIR, inputData))
     .then(() => buildFont(options))
     .then(() => buildCSSEncoded(BUILD_FONTS_DIR, BUILD_PATH_DIR, fontName))
     // .then(() => writeCodersFiles(inputData, options))
@@ -54,6 +55,7 @@ function main (parameters) {
     // .then(() => console.log('Font creation completed!'))
     .then(() => createBuildDirective(BUILD_ORIGINAL_SVG_DIR))
     .then(() => createNaturalNames(inputData))
+    .then(naturalInputData => iconsToDictionary(BUILD_ORIGINAL_PATH_DIR, naturalInputData))
     .then(naturalInputData => iconsToTempFolder(BUILD_ORIGINAL_SVG_DIR, naturalInputData))
     .then(() => buildFont(optionsNatural))
     .then(() => buildCSSEncoded(BUILD_ORIGINAL_FONTS_DIR, BUILD_ORIGINAL_PATH_DIR, fontName))
@@ -127,6 +129,24 @@ function createBuildDirective (buildSvgDir) {
     .then(() => console.debug('Build directive created in', buildSvgDir.split('/icons')[1]))
     .catch(error => {
       console.error('Build directive creation failed.', error)
+      return Promise.reject(error)
+    })
+}
+
+/**
+ * Crea un dizionario con le icone presenti nella libreria di font
+ * @param buildPathDir {String} Il path di destinazione del dictionary delle icone creato
+ * @param inputData {Object.<string, string>} Mappa con l'icona desiderata come valore e il nome dell'icona come chiave
+ * @returns {Promise<void[]>} Una promise da attendere perché termini la copia
+ */
+function iconsToDictionary (buildPathDir, inputData) {
+  return fs.writeFile(path.resolve(buildPathDir, 'dictionary.json'), JSON.stringify(inputData, null, 2))
+    .then(() => {
+      console.info('Dictionary creation success')
+      return Promise.resolve(inputData)
+    })
+    .catch(error => {
+      console.error('Dictionary creation failed.', error)
       return Promise.reject(error)
     })
 }
