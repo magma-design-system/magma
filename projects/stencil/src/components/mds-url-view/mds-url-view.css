@@ -1,0 +1,57 @@
+@tailwind components;
+@tailwind utilities;
+
+:host {
+
+  --background-color: theme('colors.adjust-tone-20');
+  --border-radius: theme('borderRadius.md');
+  --color: theme('colors.adjust-tone-04');
+  --box-shadow: theme('boxShadow.lg');
+
+  @apply
+    flex
+    flex-col
+    h-screen
+    p-4;
+}
+
+.window {
+  @apply
+    flex
+    flex-col
+    flex-grow
+    overflow-hidden
+    w-full;
+
+  border-radius: var(--border-radius);
+  box-shadow: var(--box-shadow);
+}
+
+.header {
+  @apply
+    flex
+    items-center
+    gap-2
+    flex-shrink-0
+    p-2;
+
+  background-color: var(--background-color);
+  color: var(--color);
+}
+
+.title {
+  @apply truncate min-w-0 flex-grow;
+}
+
+.close {
+  @apply cursor-pointer;
+}
+
+.iframe {
+  @apply
+    border-0
+    flex-grow
+    m-0
+    p-0
+    w-full;
+}

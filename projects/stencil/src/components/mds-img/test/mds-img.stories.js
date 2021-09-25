@@ -1,6 +1,7 @@
 import React from 'react'
 import MdsImg from '@component/mds-img/mds-img'
-import { loadingDictionary } from '../meta/dictionary'
+
+import { loadingDictionary } from '@dictionary/loading'
 
 const aspectRatios = [
   '1/1',
@@ -40,7 +41,7 @@ export default {
     },
     loading: {
       control: { type: 'select' },
-      description: 'The height attribute specifies the height of an image, in pixels',
+      description: 'Specifies whether a browser should load an image immediately or to defer loading of images until some conditions are met',
       options: loadingDictionary,
       type: { name: 'string', required: false },
     },
