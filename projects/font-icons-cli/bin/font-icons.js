@@ -40,9 +40,14 @@ function main (parameters) {
 
   ICON_GROUPS.localDirectory.subDirectories.push(...localDirectories)
 
+  const regexp = new RegExp('(font-icons-cli|icons)\/')
+
   const fontName = path.basename(inputFilePath, path.extname(inputFilePath))
-  const options = { svgPath: BUILD_SVG_DIR, outputPath: BUILD_PATH_DIR, relativeOutputPath: BUILD_PATH_DIR.split('icons/')[1], cssPath: 'fonts/', fontName, website: shouldCreateWebsite }
-  const optionsNatural = { ...options, svgPath: BUILD_ORIGINAL_SVG_DIR, outputPath: BUILD_ORIGINAL_PATH_DIR, relativeOutputPath: BUILD_ORIGINAL_PATH_DIR.split('icons/')[1] }
+  const options = { svgPath: BUILD_SVG_DIR, outputPath: BUILD_PATH_DIR, relativeOutputPath: BUILD_PATH_DIR.split(regexp)[2], cssPath: 'fonts/', fontName, website: shouldCreateWebsite }
+  const optionsNatural = { ...options, svgPath: BUILD_ORIGINAL_SVG_DIR, outputPath: BUILD_ORIGINAL_PATH_DIR, relativeOutputPath: BUILD_ORIGINAL_PATH_DIR.split(regexp)[2] }
+
+  console.log('Options', options)
+  console.log('Options natural', optionsNatural)
 
   createBuildDirective(BUILD_SVG_DIR)
     .then(() => iconsToTempFolder(BUILD_SVG_DIR, inputData))

@@ -5,6 +5,5 @@
   "material-3d_rotation": "material/3d_rotation",
   "material-audio": "material/audiotrack",
   "material-export": "material/save_alt",
-  "mdi-desk": "mdi/desk",
-  "isbn-code": "code-isbn"
+  "mdi-desk": "mdi/desk"
 }
