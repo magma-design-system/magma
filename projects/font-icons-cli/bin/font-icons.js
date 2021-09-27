@@ -113,7 +113,7 @@ function buildCSSEncoded (buildFontsDir, buildPathDir, fontName) {
     .then(cssString => fs.writeFile(newCssPath, cssString))
     .then(() => fs.readFile(newCssPath))
     .then(cssBuffer => splitCSSEncoded(cssBuffer, newCssFontFacePath, newCssClassesPath))
-    .then(() => console.debug('Build CSS Encoded created in ', newCssPath.split('/icons')[1]))
+    .then(() => console.debug('Build CSS Encoded created in ', newCssPath.split('/design-system')[1]))
     .catch(error => {
       console.error('Build CSS Encoded failed.', error)
       return Promise.reject(error)
@@ -126,7 +126,7 @@ function buildCSSEncoded (buildFontsDir, buildPathDir, fontName) {
  */
 function createBuildDirective (buildSvgDir) {
   return fs.mkdir(buildSvgDir, { recursive: true })
-    .then(() => console.debug('Build directive created in', buildSvgDir.split('/icons')[1]))
+    .then(() => console.debug('Build directive created in', buildSvgDir.split('/design-system')[1]))
     .catch(error => {
       console.error('Build directive creation failed.', error)
       return Promise.reject(error)
@@ -167,7 +167,7 @@ function iconsToTempFolder (buildSvgDir, inputData) {
       // console.debug('Copying', sourcePath, '->', destinationPath)
       fs.copyFile(sourcePath, destinationPath)
         .catch(error => {
-          console.error('Build directive creation failed.', error)
+          console.error('Icons copy to temp folder error.', error)
           return Promise.reject(error)
         })
     })
