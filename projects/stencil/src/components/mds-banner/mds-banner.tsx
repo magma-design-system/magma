@@ -1,4 +1,4 @@
-import { Component, Host, h, Element, Prop } from '@stencil/core'
+import { Component, Host, h, Element, Event, EventEmitter, Prop } from '@stencil/core'
 import { ToneVariantType } from '../../types/variant'
 import { BannerVariantType } from './meta/types'
 import clsx from 'clsx'
@@ -43,6 +43,15 @@ export class MdsBanner {
     this.actions = this.hostElement.querySelector('[slot="actions"]') !== null
   }
 
+  /**
+   * Emits when the url view is closed
+   */
+  @Event() close: EventEmitter<void>
+
+  private closeBanner = (): void => {
+    this.close.emit()
+  }
+
   render () {
     return (
       <Host class={clsx(
@@ -54,7 +63,7 @@ export class MdsBanner {
             <header class="header-row">
               { this.icon && <mds-icon name={ this.icon } class="icon"/> }
               <mds-text typography="h6" class="headline">{ this.headline }</mds-text>
-              { this.deletable && <mds-icon name="action-close" class="close-icon"/> }
+              { this.deletable && <mds-icon name="close" class="close-icon" onClick={this.closeBanner} /> }
             </header>
             <hr class="separator"/>
           </header>
@@ -65,7 +74,7 @@ export class MdsBanner {
         )}>
           { this.headline === undefined && this.deletable
             &&
-            <mds-icon name="action-close" class="close-icon close-icon--isolated"/>
+            <mds-icon name="close" class="close-icon close-icon--isolated" onClick={this.closeBanner}/>
           }
           { this.headline === undefined && this.icon && <mds-icon name={ this.icon } class="icon"/> }
           <mds-text class="text" typography="detail">

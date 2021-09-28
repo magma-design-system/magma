@@ -1,4 +1,4 @@
-import { Component, Host, h, Prop } from '@stencil/core'
+import { Component, Event, EventEmitter, Host, h, Prop } from '@stencil/core'
 
 import { LoadingType } from '../../types/loading'
 
@@ -25,6 +25,15 @@ export class MdsUrlView {
     return domain.hostname.replace('www.', '')
   }
 
+  /**
+   * Emits when the url view is closed
+   */
+  @Event() close: EventEmitter<void>
+
+  private closeUrlView = (): void => {
+    this.close.emit()
+  }
+
   render () {
     return (
       <Host>
@@ -34,7 +43,7 @@ export class MdsUrlView {
             <mds-text class="title" typography="caption">
               { this.urlDomain(this.src) }
             </mds-text>
-            <mds-icon class="close" name="close"/>
+            <mds-icon class="close" name="close" onClick={this.closeUrlView}/>
           </header>
           <iframe class="iframe" src={ this.src }/>
         </div>

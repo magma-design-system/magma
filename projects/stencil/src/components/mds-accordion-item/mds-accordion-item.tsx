@@ -69,7 +69,7 @@ export class MdsAccordionItem {
           <mds-text typography={ this.typography }>{ this.description }</mds-text>
           <mds-text class="icon-button" typography={ this.typography }>
             <mds-icon class={ clsx('icon', fontSizeInherit)} name={clsx(
-              this.isOpened ? 'navigation-hide' : 'navigation-show',
+              this.isOpened ? 'keyboard-arrow-up' : 'keyboard-arrow-down',
             ) }/>
           </mds-text>
         </mds-grid>

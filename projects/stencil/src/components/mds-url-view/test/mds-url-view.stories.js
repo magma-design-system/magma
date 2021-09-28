@@ -6,10 +6,6 @@ import { loadingDictionary } from '@dictionary/loading'
 
 const URLs = [
   'http://azumbrunnen.me/',
-  'https://www.buzzfeed.com/',
-  'https://www.etsy.com/',
-  'https://www.huffpost.com/',
-  'https://www.shutterfly.com/',
   'https://www.typeform.com/',
 ]
 

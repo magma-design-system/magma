@@ -99,7 +99,8 @@
   @apply
     gap-0
     grid
-    h-full;
+    h-full
+    overflow-auto;
 
   background-color: var(--mds-modal-window, theme('colors.adjust-tone'));
   box-shadow: var(--mds-modal-window-shadow, theme('boxShadow.2xl'));

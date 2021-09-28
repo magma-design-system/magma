@@ -1,4 +1,4 @@
-import { Component, Element, Host, h, Prop, Watch } from '@stencil/core'
+import { Component, Element, Event, EventEmitter, Host, h, Listen, Prop, Watch } from '@stencil/core'
 import clsx from 'clsx'
 import { ModalPositionType, ModalAnimationStateType } from './meta/types'
 @Component({
@@ -59,7 +59,7 @@ export class MdsModal {
 
   @Watch('position')
   positionChange (newValue: string, oldValue: string): void {
-    newValue
+    console.log(newValue, oldValue)
     window.clearTimeout(this.animationDeelay)
     this.hostElement.classList.remove(this.animationName(null, oldValue))
     this.hostElement.classList.remove(this.animationName('intro', oldValue))
@@ -67,23 +67,39 @@ export class MdsModal {
   }
 
   @Watch('opened')
-  openedChange (newValue: string, oldValue: string): void {
-    newValue
+  openedChange (newValue: boolean, oldValue: boolean): void {
+    console.log('@Watch.opened', newValue, oldValue)
     window.clearTimeout(this.animationDeelay)
-    this.hostElement.classList.remove(this.animationName(null, oldValue))
-    this.hostElement.classList.remove(this.animationName('intro', oldValue))
-    this.hostElement.classList.remove(this.animationName('outro', oldValue))
+    // this.hostElement.classList.remove(this.animationName(null, oldValue))
+    // this.hostElement.classList.remove(this.animationName('intro', oldValue))
+    // this.hostElement.classList.remove(this.animationName('outro', oldValue))
   }
 
-  private closeWindow = (e:Event): void => {
+  /**
+   * Emits when a modal is closed
+   */
+  @Event() modalClosedEvent: EventEmitter<void>
+
+  private closeModal = (e:Event = null): void => {
     this.opened = e.target !== e.currentTarget
+    this.modalClosedEvent.emit()
+  }
+
+  @Listen('close')
+  onClose (): void {
+    // using setTimeout to avoid children to trigger closeModal opened
+    // to true every time after this callback
+    setTimeout(() => {
+      this.opened = false
+      this.modalClosedEvent.emit()
+    }, 1)
   }
 
   render () {
     return (
       <Host class={clsx(
         this.opened && this.animationName('opened'),
-      )} onClick={(e:Event) => { this.closeWindow(e) }}>
+      )} onClick={(e:Event) => { this.closeModal(e) }}>
         { this.window
           ?
           <slot name="window"/>
@@ -98,7 +114,7 @@ export class MdsModal {
             }
           </div>
         }
-        { !this.window && <mds-icon name="action-close" class="close"/> }
+        { !this.window && <mds-icon name="close" class="close"/> }
       </Host>
     )
   }

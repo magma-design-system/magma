@@ -40,7 +40,11 @@
 }
 
 .title {
-  @apply truncate min-w-0 flex-grow;
+  @apply
+    flex-grow
+    min-w-0
+    text-center
+    truncate;
 }
 
 .close {
