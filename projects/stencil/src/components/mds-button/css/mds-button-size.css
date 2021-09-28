@@ -6,6 +6,10 @@
   --border-radius: theme('borderRadius.md');
 }
 
+:host ( .no-text[size=sm] ) {
+  @apply p-0;
+}
+
 :host ( [size=sm] ) .text {
   @apply font-medium;
 }
@@ -16,14 +20,26 @@
     py-1;
 }
 
+:host ( .no-text[size=md] ) {
+  @apply p-1;
+}
+
 :host ( [size=lg] ) {
   @apply
     px-6
     py-2;
 }
 
+:host ( .no-text[size=lg] ) {
+  @apply p-2;
+}
+
 :host ( [size=xl] ) {
   @apply
     px-8
     py-2;
+}
+
+:host ( .no-text[size=xl] ) {
+  @apply p-2;
 }

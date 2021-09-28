@@ -49,7 +49,7 @@ export default {
 
 const Template = args =>
   <mds-button {...args}>
-    { faker.lorem.sentence(2) }
+    <span slot="text">{ faker.lorem.sentence(2) }</span>
   </mds-button>
 
 const TemplateIcon = args =>
@@ -57,7 +57,7 @@ const TemplateIcon = args =>
 
 export const Default = Template.bind({})
 Default.args = {
-  icon: 'action-send',
+  icon: 'home-group',
 }
 
 export const Variant = Template.bind({})
@@ -78,11 +78,11 @@ Size.args = {
 
 export const icon = TemplateIcon.bind({})
 icon.args = {
-  icon: 'action-send',
+  icon: 'home-group',
 }
 
 export const iconPosition = Template.bind({})
 iconPosition.args = {
   'icon-position': 'right',
-  icon: 'action-send',
+  icon: 'home-group',
 }

@@ -43,7 +43,7 @@ export class MdsTag {
         <mds-text typography={this.typography} class={clsx('text', this.truncate && 'truncate')}>
           <slot></slot>
         </mds-text>
-        { this.deletable && <mds-icon name="action-close" class="close" onClick={ this.onClickClose.bind(this) }/> }
+        { this.deletable && <mds-icon name="close" class="close" onClick={ this.onClickClose.bind(this) }/> }
       </Host>
     )
   }

@@ -1,0 +1,13 @@
+@tailwind components;
+@tailwind utilities;
+
+:host {
+  @apply
+    border-0
+    flex
+    h-1
+    rounded
+    w-full;
+
+  background-color: var(--background-color, theme('colors.adjust-tone-19'));
+}

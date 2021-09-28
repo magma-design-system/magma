@@ -1,4 +1,4 @@
-import { Component, Host, h, Prop } from '@stencil/core'
+import { Component, Host, Element, h, Prop } from '@stencil/core'
 
 import {
   ButtonType,
@@ -9,6 +9,7 @@ import {
 import { buttonSizeTypographyVariant } from './meta/variants'
 import { TypographyType } from '../../types/typography'
 import { ToneVariantType } from '../../types/variant'
+import clsx from 'clsx'
 
 @Component({
   tag: 'mds-button',
@@ -18,6 +19,9 @@ import { ToneVariantType } from '../../types/variant'
 export class MdsButton {
 
   private typography?: TypographyType
+  private hasText?: boolean
+
+  @Element() hostElement: HTMLMdsButtonElement;
 
   /**
    * The icon displayed in the button
@@ -62,13 +66,17 @@ export class MdsButton {
     this.active = false
   }
 
+  componentWillLoad ():void {
+    this.hasText = this.hostElement.querySelector('[slot="text"]') !== null
+  }
+
   render () {
     this.typography = buttonSizeTypographyVariant[this.size] as TypographyType
 
     return (
-      <Host onMouseDown={this.mouseDown} onMouseUp={this.mouseUp} onMouseOut={this.mouseUp}>
+      <Host className={clsx(!this.hasText && 'no-text')} onMouseDown={this.mouseDown} onMouseUp={this.mouseUp} onMouseOut={this.mouseUp}>
         { this.icon && this.iconPosition === 'left' && <mds-icon name={this.icon} /> }
-        <mds-text class="text" typography={this.typography}><slot></slot></mds-text>
+        { this.hasText && <mds-text class="text" typography={this.typography}><slot name="text"></slot></mds-text> }
         { this.icon && this.iconPosition === 'right' && <mds-icon name={this.icon} /> }
       </Host>
     )
