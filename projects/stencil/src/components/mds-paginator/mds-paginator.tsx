@@ -62,7 +62,7 @@ export class MdsPaginator {
   render () {
     return (
       <Host>
-        <mds-paginator-item icon="paginator-previous" disabled={this.currentPage === 1} onClick={() => this.goToPage(this.currentPage - 1)}/>
+        <mds-paginator-item icon="arrow-back" disabled={this.currentPage === 1} onClick={() => this.goToPage(this.currentPage - 1)}/>
         { this.pages > 0 && <mds-paginator-item active={this.currentPage === 1} onClick={() => this.goToPage(1)}>1</mds-paginator-item>}
         { this.pages > 2 &&
           <div class="pages">
@@ -70,7 +70,7 @@ export class MdsPaginator {
           </div>
         }
         { this.pages && <mds-paginator-item active={this.currentPage === this.pages} onClick={() => this.goToPage(this.pages)}>{ this.pages }</mds-paginator-item>}
-        <mds-paginator-item icon="paginator-next" disabled={this.currentPage === this.pages} onClick={() => this.goToPage(this.currentPage + 1)}/>
+        <mds-paginator-item icon="arrow-forward" disabled={this.currentPage === this.pages} onClick={() => this.goToPage(this.currentPage + 1)}/>
       </Host>
     )
   }
