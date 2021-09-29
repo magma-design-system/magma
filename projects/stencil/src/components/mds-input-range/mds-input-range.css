@@ -1,0 +1,24 @@
+@tailwind components;
+@tailwind utilities;
+
+:host {
+  @apply
+    gap-1
+    grid;
+}
+
+.header {
+  @apply
+    flex
+    gap-2;
+}
+
+.label {
+  @apply
+    min-w-0
+    truncate;
+}
+
+.value {
+  @apply ml-auto;
+}
