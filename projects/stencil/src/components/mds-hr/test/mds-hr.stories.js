@@ -11,6 +11,8 @@ const Template = args =>
   <mds-hr {...args}/>
 
 export const Default = Template.bind({})
-Default.args = {
-  icon: 'home-group',
+
+export const Style = Template.bind({})
+Style.args = {
+  class: 'bg-adjust-tone-04',
 }
