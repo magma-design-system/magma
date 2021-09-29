@@ -2,15 +2,52 @@
 @tailwind utilities;
 
 :host {
-  @apply flex gap-2 snap-px-2 overflow-auto w-full;
 
+  --scrollbar-radius: 0;
+  --scrollbar-margin: 0;
+  --scrollbar-size: theme('spacing.2');
+  --scrollbar-thumb-background: rgba(var(--adjust-tone-04), theme('opacity.30'));
+  --scrollbar-track-background: rgba(var(--adjust-tone-12), theme('opacity.30'));
+
+  @apply
+    flex
+    gap-2
+    overflow-auto
+    snap-px-2
+    w-full;
+
+  scroll-snap-type: x mandatory;
+}
+
+:host ( :not(.scroll--show-scrollbar) ) {
+  -webkit-overflow-scrolling: touch;
   -ms-overflow-style: none;
   scroll-snap-type: x mandatory;
   scrollbar-width: none;
 }
 
 :host::-webkit-scrollbar {
-  display: none;
+  height: var(--scrollbar-size);
+  width: var(--scrollbar-size);
+}
+
+:host::-webkit-scrollbar-track {
+  background-color: var(--scrollbar-track-background);
+  border-radius: var(--scrollbar-radius);
+  margin-block: var(--scrollbar-margin);
+  margin-inline: var(--scrollbar-margin);
+}
+
+:host::-webkit-scrollbar-thumb {
+  background-color: var(--scrollbar-thumb-background);
+  border-radius: var(--scrollbar-radius);
+}
+
+@supports (scrollbar-color: transparent transparent) {
+  :host {
+    scrollbar-color: var(--scrollbar-thumb-background) var(--scrollbar-track-background);
+    scrollbar-width: thin;
+  }
 }
 
 :host( .scroll--align-none ) > ::slotted ( * ) {

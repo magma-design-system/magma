@@ -17,15 +17,15 @@ export default {
 
 const Template = args =>
   <mds-horizontal-scroll {...args}>
-    <mds-button>First blood</mds-button>
-    <mds-button>Second impact</mds-button>
-    <mds-button>The third reich</mds-button>
-    <mds-button>Four rooms</mds-button>
-    <mds-button>The fifth element</mds-button>
-    <mds-button>The sixth sense</mds-button>
-    <mds-button>Seven psychopaths</mds-button>
-    <mds-button>The hateful eight</mds-button>
-    <mds-button>The ninth gate</mds-button>
+    <mds-button><span slot="text">First blood</span></mds-button>
+    <mds-button><span slot="text">Second impact</span></mds-button>
+    <mds-button><span slot="text">The third reich</span></mds-button>
+    <mds-button><span slot="text">Four rooms</span></mds-button>
+    <mds-button><span slot="text">The fifth element</span></mds-button>
+    <mds-button><span slot="text">The sixth sense</span></mds-button>
+    <mds-button><span slot="text">Seven psychopaths</span></mds-button>
+    <mds-button><span slot="text">The hateful eight</span></mds-button>
+    <mds-button><span slot="text">The ninth gate</span></mds-button>
   </mds-horizontal-scroll>
 
 export const Default = Template.bind({})
