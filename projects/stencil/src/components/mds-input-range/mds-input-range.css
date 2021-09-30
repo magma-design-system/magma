@@ -1,4 +1,3 @@
-@tailwind components;
 @tailwind utilities;
 
 :host {
@@ -8,8 +7,6 @@
   --track-background: theme('colors.adjust-tone-18');
   --track-size: theme('spacing.2');
   --track-progress-background: var(--thumb-background);
-
-  /* --track-progress-background: theme('colors.label-amaranth-10'); */
 
   @apply
     gap-1
