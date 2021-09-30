@@ -17,6 +17,7 @@
 
 .window {
   @apply
+    bg-adjust-tone-18
     flex
     flex-col
     flex-grow
