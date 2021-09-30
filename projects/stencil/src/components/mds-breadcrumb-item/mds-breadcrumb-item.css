@@ -1,0 +1,47 @@
+@tailwind utilities;
+
+mds-breadcrumb-item {
+  @apply
+    flex
+    flex-shrink-0
+    gap-0
+    items-center;
+}
+
+mds-breadcrumb-item:last-child .icon {
+  @apply hidden;
+}
+
+mds-breadcrumb-item:last-child .text {
+  @apply pointer-events-none;
+
+  color: var(--current-item-color, theme('colors.adjust-tone-10'));
+}
+
+.text {
+  @apply
+    cursor-pointer
+    px-4
+    py-1
+    rounded-full
+    transition-colors
+    whitespace-nowrap;
+
+  background-color: var(--item-background, transparent);
+  color: var(--item-color, theme('colors.adjust-tone-04'));
+}
+
+.text:hover {
+  background-color: var(--item-background-hover, theme('colors.brand-maggioli-18'));
+  color: var(--item-color-hover, theme('colors.brand-maggioli-08'));
+}
+
+.text::first-letter {
+  @apply uppercase;
+}
+
+.icon {
+  @apply pointer-events-none;
+
+  color: var(--arrow-depth-color, theme('colors.adjust-tone-15'));
+}

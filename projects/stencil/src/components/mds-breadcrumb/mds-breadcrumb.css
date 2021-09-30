@@ -1,0 +1,49 @@
+@tailwind utilities;
+
+:host {
+
+  --arrow-back-color-hover: theme('colors.adjust-tone-04');
+  --arrow-back-color: theme('colors.adjust-tone-04');
+  --arrow-depth-color: theme('colors.adjust-tone-15');
+  --item-background-hover: theme('colors.brand-maggioli-18');
+  --item-background: transparent;
+  --item-color-hover: theme('colors.brand-maggioli-08');
+  --item-color: theme('colors.adjust-tone-04');
+
+  @apply
+    flex
+    gap-0
+    items-center
+    overflow-auto
+    w-full;
+
+  -webkit-overflow-scrolling: touch;
+  -ms-overflow-style: none;
+  scroll-snap-type: x mandatory;
+  scrollbar-width: none;
+}
+
+:host::-webkit-scrollbar {
+  display: none;
+}
+
+.back {
+  @apply
+    cursor-pointer
+    flex
+    flex-shrink-0
+    h-8
+    items-center
+    justify-center
+    rounded-full
+    transition-colors
+    w-8;
+
+  background-color: var(--item-background);
+  color: var(--item-color);
+}
+
+.back:hover {
+  background-color: var(--item-background-hover);
+  color: var(--item-color-hover);
+}
