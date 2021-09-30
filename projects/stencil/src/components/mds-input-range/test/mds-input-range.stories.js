@@ -33,8 +33,20 @@ export const Default = Template.bind({})
 
 export const Min = Template.bind({})
 Min.args = {
-  min: 0,
-  max: 100,
-  step: 1,
-  value: 10,
+  min: -100,
+}
+
+export const Max = Template.bind({})
+Max.args = {
+  max: 200,
+}
+
+export const Step = Template.bind({})
+Step.args = {
+  step: 10,
+}
+
+export const Value = Template.bind({})
+Value.args = {
+  value: 90,
 }

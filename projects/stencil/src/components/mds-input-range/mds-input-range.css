@@ -2,6 +2,15 @@
 @tailwind utilities;
 
 :host {
+
+  --thumb-size: theme('spacing.4');
+  --thumb-background: theme('colors.brand-maggioli-06');
+  --track-background: theme('colors.adjust-tone-18');
+  --track-size: theme('spacing.2');
+  --track-progress-background: var(--thumb-background);
+
+  /* --track-progress-background: theme('colors.label-amaranth-10'); */
+
   @apply
     gap-1
     grid;
@@ -21,4 +30,75 @@
 
 .value {
   @apply ml-auto;
+}
+
+.range {
+  @apply
+    flex
+    items-center
+    relative;
+
+  height: var(--thumb-size);
+}
+
+.track {
+  @apply
+    absolute
+    box-border
+    w-full;
+
+  --margin: calc(var(--track-size) / 2);
+
+  padding: 0 var(--margin);
+}
+
+.field {
+  @apply
+    flex-grow
+    m-0
+    z-20;
+}
+
+.field:focus {
+  outline: none;
+}
+
+.track-total {
+  @apply hidden;
+}
+
+@supports (-webkit-appearance: none) {
+  input[type = 'range']::-webkit-slider-thumb {
+    appearance: none;
+    background-color: var(--thumb-background);
+    border: 0;
+    border-radius: var(--thumb-size);
+    cursor: pointer;
+    height: var(--thumb-size);
+    line-height: 0;
+    transform: translate(0, -50%);
+    width: var(--thumb-size);
+  }
+
+  input[type = 'range']::-webkit-slider-runnable-track {
+    appearance: none;
+    border: 0;
+    height: 0;
+    width: 100%;
+  }
+
+  .track-progress {
+    @apply flex;
+
+    background-color: var(--track-progress-background);
+    height: var(--track-size);
+  }
+
+  .track-total {
+    @apply flex w-full overflow-hidden;
+
+    background-color: var(--track-background);
+    border-radius: var(--track-size);
+    height: var(--track-size);
+  }
 }
