@@ -1,0 +1,25 @@
+@tailwind utilities;
+
+:host {
+  @apply flex;
+}
+
+.button {
+  background-color: var(--button-background, transparent);
+  border-radius: var(--button-radius, theme('spacing.2'));
+  color: var(--button-color, theme('colors.adjust-tone-08'));
+}
+
+.button:hover {
+  background-color: var(--button-background-hover, transparent);
+  color: var(--button-color-hover, theme('colors.adjust-tone-04'));
+}
+
+.button--selected:hover,
+.button--selected {
+  @apply pointer-events-none;
+
+  background-color: var(--button-background-selected, theme('colors.adjust-tone'));
+  box-shadow: var(--button-shadow-selected, theme('boxShadow.DEFAULT'));
+  color: var(--button-color-selected, theme('colors.adjust-tone-04'));
+}

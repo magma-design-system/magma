@@ -1,0 +1,31 @@
+@tailwind utilities;
+
+:host {
+
+  --button-background-hover: transparent;
+  --button-background-selected: theme('colors.adjust-tone');
+  --button-background: transparent;
+  --button-color-hover: theme('colors.adjust-tone-04');
+  --button-color-selected: theme('colors.adjust-tone-04');
+  --button-color: theme('colors.adjust-tone-08');
+  --button-radius: theme('spacing.2');
+  --button-shadow-selected: theme('boxShadow.DEFAULT');
+
+  @apply
+    flex
+    gap-2
+    overflow-auto
+    p-2;
+
+  background-color: var(--background, theme('colors.adjust-tone-19'));
+  border-radius: var(--radius, theme('spacing.4'));
+  -webkit-overflow-scrolling: touch;
+  -ms-overflow-style: none;
+  scroll-behavior: smooth;
+  scroll-snap-type: x mandatory;
+  scrollbar-width: none;
+}
+
+:host::-webkit-scrollbar {
+  display: none;
+}
