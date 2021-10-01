@@ -1,4 +1,4 @@
-import { Component, Host, h } from '@stencil/core'
+import { Component, Listen, Host, h, Prop } from '@stencil/core'
 
 @Component({
   tag: 'mds-breadcrumb',
@@ -7,12 +7,24 @@ import { Component, Host, h } from '@stencil/core'
 })
 export class MdsBreadcrumb {
 
+  /**
+   * Choose to display or not the back arrow button
+   */
+  @Prop() readonly back?: boolean = true
+
+  @Listen('clickBack', { capture: true })
+  onClickBack ():void {
+    console.log('click')
+  }
+
   render () {
     return (
       <Host>
-        <div class="back">
-          <mds-icon name="arrow-back" />
-        </div>
+        { this.back &&
+          <div class="back">
+            <mds-icon name="arrow-back" />
+          </div>
+        }
         <slot name="breadcrumb-item"/>
       </Host>
     )
