@@ -25,6 +25,7 @@
 
 .text {
   @apply
+    m-auto
     min-w-0
     select-none
     truncate;
