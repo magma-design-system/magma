@@ -1,4 +1,4 @@
-import { Component, Host, h, Prop, Listen, Element } from '@stencil/core'
+import { Component, Host, h, Listen, Element } from '@stencil/core'
 
 @Component({
   tag: 'mds-tab',
