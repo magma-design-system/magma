@@ -1,4 +1,4 @@
-import { Component, Host, h, Prop, State, Event, EventEmitter, Watch } from '@stencil/core'
+import { Component, Host, h, Prop, State, Element, Event, EventEmitter, Watch } from '@stencil/core'
 import clsx from 'clsx'
 import { TypographyPrimaryType } from '../../types/typography'
 
@@ -9,6 +9,7 @@ import { TypographyPrimaryType } from '../../types/typography'
 })
 export class MdsAccordionItem {
 
+  @Element() private element: HTMLMdsAccordionItemElement;
   @State() isOpened:boolean
 
   /**
@@ -33,7 +34,7 @@ export class MdsAccordionItem {
   private toggle = () => {
     this.isOpened = !this.isOpened
     if (this.isOpened) {
-      this.openedEvent.emit(this.description)
+      this.openedEvent.emit(this.element.id)
     }
   }
 
