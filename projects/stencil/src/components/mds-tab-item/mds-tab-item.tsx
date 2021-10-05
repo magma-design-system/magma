@@ -1,6 +1,11 @@
 import { Component, Host, h, Element, Prop, State, Event, EventEmitter, Watch } from '@stencil/core'
 import clsx from 'clsx'
 
+import {
+  ButtonIconPositionType,
+  ButtonType,
+  ButtonSizeType,
+} from '../../types/button'
 @Component({
   tag: 'mds-tab-item',
   styleUrl: 'mds-tab-item.css',
@@ -15,6 +20,26 @@ export class MdsTabItem {
    * Specifies if the tab item is selected or not
    */
   @Prop() readonly selected?: boolean
+
+  /**
+   * The icon displayed in the tab item
+   */
+  @Prop() readonly icon?: string
+
+  /**
+   * Specifies the horizontal position of the icon displayed in the tab item
+   */
+  @Prop() readonly iconPosition?: ButtonIconPositionType = 'left'
+
+  /**
+   * The type of the tab item element
+   */
+  @Prop() readonly type?: ButtonType = 'submit'
+
+  /**
+   * Specifies the size for the tab item
+   */
+  @Prop({ reflect: true }) readonly size?: ButtonSizeType = 'md'
 
   private toggle = () => {
     this.isSelected = !this.isSelected
@@ -36,7 +61,12 @@ export class MdsTabItem {
   render () {
     return (
       <Host slot="tab-item" onClick={this.toggle}>
-        <mds-button class={clsx('button', this.selected && 'button--selected')}>
+        <mds-button class={clsx('button', this.selected && 'button--selected')}
+          icon={this.icon}
+          iconPosition={this.iconPosition}
+          size={this.size}
+          type={this.type}
+        >
           <span slot="text">
             <slot/>
           </span>

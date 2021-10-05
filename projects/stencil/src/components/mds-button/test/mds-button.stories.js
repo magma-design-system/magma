@@ -3,12 +3,13 @@ import faker from 'faker'
 import MdsButton from '@component/mds-button/mds-button'
 import mggIconsDictionary from '@maggioli-design-system/icons/resources/mgg-icons.json'
 const iconsDictionary = Object.keys(mggIconsDictionary).sort()
+
 import {
   buttonVariantDictionary,
   buttonSizeDictionary,
   buttonToneVariantDictionary,
   buttonIconPositionDictionary,
-} from '../meta/dictionary'
+} from '@dictionary/button'
 
 export default {
   title: 'Form / Button',

@@ -5,7 +5,7 @@ import {
   ButtonSizeType,
   ButtonIconPositionType,
   ButtonVariantType,
-} from './meta/types'
+} from '../../types/button'
 import { buttonSizeTypographyVariant } from './meta/variants'
 import { TypographyType } from '../../types/typography'
 import { ToneVariantType } from '../../types/variant'
