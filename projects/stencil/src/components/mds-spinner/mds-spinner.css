@@ -2,14 +2,16 @@
 
 :host {
 
+  --background: transparent;
   --color: theme('colors.brand-maggioli-05');
-  --scale: 1;
+  --size: 58px;
+  --duration: 1.5s;
 
-  @apply flex relative;
+  @apply inline-flex relative rounded-full;
 
-  height: 58px;
-  transform: scale(var(--scale));
-  width: 58px;
+  background-color: var(--background);
+  height: var(--size);
+  width: var(--size);
 }
 
 .wifi-wave {
@@ -18,24 +20,37 @@
 
 .wifi-wave path {
   fill: var(--color);
+  transform-origin: 50% 50%;
 }
 
 .wifi-wave--large {
-  animation: rotate 1.5s ease-in-out 0.3s infinite;
-  height: 100%;
-  width: 100%;
+  animation: rotate var(--duration) ease-in-out calc(var(--duration) / 7) infinite;
+  height: var(--size);
+  width: var(--size);
   z-index: 1;
 }
 
 .wifi-wave--medium {
-  animation: rotate 1.5s ease-in-out 0.15s infinite;
-  inset: 8px;
+
+  --scale: 0.7242;
+  --offset: calc(calc(var(--size) / 2) - calc(var(--size) * var(--scale) / 2));
+
+  animation: rotate var(--duration) ease-in-out calc(var(--duration) / 10) infinite;
+  height: calc(var(--size) * var(--scale));
+  inset: var(--offset);
+  width: calc(var(--size) * var(--scale));
   z-index: 2;
 }
 
 .wifi-wave--small {
-  animation: rotate 1.5s ease-in-out infinite;
-  inset: 16px;
+
+  --scale: 0.4485;
+  --offset: calc(calc(var(--size) / 2) - calc(var(--size) * var(--scale) / 2));
+
+  animation: rotate var(--duration) ease-in-out infinite;
+  height: calc(var(--size) * var(--scale));
+  inset: var(--offset);
+  width: calc(var(--size) * var(--scale));
   z-index: 3;
 }
 
