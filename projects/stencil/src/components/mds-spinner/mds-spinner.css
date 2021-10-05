@@ -1,0 +1,54 @@
+@tailwind utilities;
+
+:host {
+
+  --color: theme('colors.brand-maggioli-05');
+  --scale: 1;
+
+  @apply flex relative;
+
+  height: 58px;
+  transform: scale(var(--scale));
+  width: 58px;
+}
+
+.wifi-wave {
+  @apply absolute inset-0;
+}
+
+.wifi-wave path {
+  fill: var(--color);
+}
+
+.wifi-wave--large {
+  animation: rotate 1.5s ease-in-out 0.3s infinite;
+  height: 100%;
+  width: 100%;
+  z-index: 1;
+}
+
+.wifi-wave--medium {
+  animation: rotate 1.5s ease-in-out 0.15s infinite;
+  inset: 8px;
+  z-index: 2;
+}
+
+.wifi-wave--small {
+  animation: rotate 1.5s ease-in-out infinite;
+  inset: 16px;
+  z-index: 3;
+}
+
+@keyframes rotate {
+  0% {
+    transform: rotate(0deg);
+  }
+
+  75% {
+    transform: rotate(360deg);
+  }
+
+  100% {
+    transform: rotate(360deg);
+  }
+}
