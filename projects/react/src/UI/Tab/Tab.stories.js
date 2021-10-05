@@ -11,7 +11,7 @@ export default {
 }
 
 export const basicUsage = () =>
-  <Tab current={2}>
+  <Tab>
     <TabItem active>{faker.lorem.word()}</TabItem>
     <TabItem>{faker.lorem.word()}</TabItem>
     <TabItem>{faker.lorem.word()}</TabItem>

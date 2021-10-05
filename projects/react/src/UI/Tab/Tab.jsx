@@ -5,15 +5,14 @@ import Row from '@Layout/Row/Row'
 import Button from '@UI/Button/Button'
 import './Tab.scss'
 
-const TabItem = ({ active, borderRadius, className, ...restProps }) => {
-  const classes = styles('tab__item', {
+const TabItem = ({ active, className, ...restProps }) => {
+  const classes = styles('tab__item transition', {
     selectors: [
       className,
-      active ? 'transition background-color-brand-maggioli-05 color-adjust-tone-20' : 'transition background-color-adjust-tone-19 hover:background-color-adjust-tone-20 hover:box-shadow-box color-adjust-tone-04 hover:color-brand-maggioli-04',
+      active
+        ? 'bg-brand-maggioli-05 rounded-full text-adjust-tone-20'
+        : 'bg-transparent hover:bg-adjust-tone-20 hover:shadow hover:text-brand-maggioli-04 rounded-full text-adjust-tone-04',
     ],
-    scaffolded: {
-      borderRadius,
-    },
   })
 
   return <Button className={classes} {...restProps}>
@@ -32,15 +31,12 @@ TabItem.defaultProps = {
   borderRadius: 'large',
 }
 
-const Tab = ({ borderRadius, className, padding, ...restProps }) => {
+const Tab = ({ className, ...restProps }) => {
   const classes = styles('tab', {
     selectors: [
       className,
+      'p-3 rounded-full gap-1',
     ],
-    scaffolded: {
-      borderRadius,
-      padding,
-    },
   })
 
   return <Row className={classes} {...restProps}>
@@ -51,15 +47,11 @@ const Tab = ({ borderRadius, className, padding, ...restProps }) => {
 Tab.propTypes = {
   ...Row.propTypes,
   borderRadius: PropTypes.string,
-  current: PropTypes.number,
   padding: PropTypes.string,
 }
 
 Tab.defaultProps = {
-  className: 'background-color-adjust-tone-19',
-  gutter: 'xsmall',
-  padding: 'xsmall',
-  borderRadius: 'xlarge',
+  className: 'bg-adjust-tone-19',
 }
 
 export default Tab
