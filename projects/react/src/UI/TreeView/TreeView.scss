@@ -1,0 +1,57 @@
+@import '~@maggioli-design-system/styles/scss/import-framework';
+
+.tree-view {
+  border-radius: s(1);
+  box-shadow: get($shadow, 'box');
+  gap: s(0.5);
+  padding: s(0.5);
+}
+
+.tree-view-item {
+
+  --button-background-color: #{color('adjust.tone', '13')};
+  --background-color: #{color('adjust.tone', '13')};
+
+  border-radius: s(0.75);
+  padding: s(0.25);
+
+  &--expanded {
+    background-color: color('brand.maggioli', '19');
+  }
+
+  &__button {
+    background-color: transparent;
+    border-radius: s(0.5);
+    cursor: pointer;
+    padding: s(0.5);
+
+    &:hover {
+      background-color: color('adjust.tone');
+    }
+
+    // scss/selector-nest-combinators disable
+
+    &--selected {
+      background-color: color('brand.maggioli', '10');
+      color: color('adjust.tone');
+
+      &:hover {
+        background-color: color('brand.maggioli', '10');
+        color: color('adjust.tone');
+      }
+    }
+  }
+
+  &__icon {
+    transition: transform get($tween, 'hover');
+
+    &--expanded {
+      transform: rotate(90deg);
+    }
+  }
+
+  &__list {
+    gap: 0;
+    padding-left: s(1.5);
+  }
+}

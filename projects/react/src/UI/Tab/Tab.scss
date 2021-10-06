@@ -3,16 +3,16 @@
 .tab {
   align-items: center;
   display: inline-flex;
+  overflow: auto;
+
+  // scss/selector-nest-combinators disable
+  -webkit-overflow-scrolling: touch;
+  -ms-overflow-style: none;
+  scroll-behavior: smooth;
+  scroll-snap-type: x mandatory;
+  scrollbar-width: none;
 }
 
-.background-color-adjust-tone-20\:hover {
-  &:hover {
-    background-color: color('adjust.tone') !important;
-  }
-}
-
-.box-shadow-box\:hover {
-  &:hover {
-    box-shadow: get($shadow, 'box') !important;
-  }
-}
+// .tab::-webkit-scrollbar {
+//   display: none;
+// }

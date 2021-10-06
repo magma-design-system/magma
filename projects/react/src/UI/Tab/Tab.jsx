@@ -18,7 +18,7 @@ const TabItem = ({ active, className, ...restProps }) => {
   return <Button className={classes} {...restProps}>
     {restProps.children}
   </Button>
-}
+} 
 
 TabItem.propTypes = {
   ...Button.propTypes,
@@ -28,7 +28,6 @@ TabItem.propTypes = {
 
 TabItem.defaultProps = {
   active: false,
-  borderRadius: 'large',
 }
 
 const Tab = ({ className, ...restProps }) => {
