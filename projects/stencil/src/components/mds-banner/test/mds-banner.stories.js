@@ -2,8 +2,7 @@ import React from 'react'
 import faker from 'faker'
 import MdsBanner from '@component/mds-banner/mds-banner'
 import { iconsDictionary } from '@dictionary/icon'
-import { bannerVariantDictionary, bannerToneVariantDictionary } from '../meta/dictionary'
-
+import { themeVariantDictionary, toneVariantDictionary } from '@dictionary/variant'
 
 export default {
   title: 'UI / Banner',
@@ -25,14 +24,14 @@ export default {
     },
     tone: {
       type: { name: 'string', required: false },
-      description: 'Specifies the tone variant of the banner',
-      options: bannerToneVariantDictionary,
+      description: 'Sets the tone of the color variant',
+      options: toneVariantDictionary,
       control: { type: 'select' },
     },
     variant: {
       type: { name: 'string', required: false },
-      description: 'Specifies the variant of the banner',
-      options: bannerVariantDictionary,
+      description: 'Sets the theme variant colors',
+      options: themeVariantDictionary,
       control: { type: 'select' },
     },
   },

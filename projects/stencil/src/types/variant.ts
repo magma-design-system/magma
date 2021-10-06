@@ -4,6 +4,14 @@ export type StatusVariantType =
   | 'success'
   | 'warning'
 
+export type ThemeVariantType =
+  | 'dark'
+  | 'light'
+  | 'error'
+  | 'info'
+  | 'success'
+  | 'warning'
+
 export type LabelVariantType =
   | 'amaranth'
   | 'aqua'

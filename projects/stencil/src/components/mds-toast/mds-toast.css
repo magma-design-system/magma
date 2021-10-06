@@ -1,0 +1,51 @@
+@tailwind utilities;
+
+:host {
+
+  --color: theme('colors.adjust-tone');
+  --background: theme('colors.adjust-tone-04');
+  --shadow: theme('boxShadow.xl');
+
+  @apply
+    bottom-0
+    fixed
+    flex
+    pointer-events-none
+    justify-center
+    left-0
+    right-0;
+
+  color: var(--color);
+}
+
+.dialog {
+  @apply
+    duration-300
+    ease-in-cubic
+    gap-4
+    inline-flex
+    items-center
+    p-4
+    pointer-events-none
+    rounded-xl
+    transform
+    transition-transform;
+
+  background-color: var(--background);
+  box-shadow: var(--shadow);
+  transform: translate(0, calc(theme('translate.full') + theme('translate.2')));
+}
+
+.dialog--visible {
+  @apply
+    -translate-y-12
+    duration-700
+    ease-in-out-expo
+    pointer-events-auto;
+
+  transform: translate(0, theme('translate.-2'));
+}
+
+.actions {
+  @apply flex gap-2;
+}
