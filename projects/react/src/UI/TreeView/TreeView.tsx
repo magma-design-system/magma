@@ -13,14 +13,20 @@ let totItems: number = 0;
 
 const TreeViewItem = ({ selectItem, openedItem, itemSelected, className, expanded, itemId, text, ...restProps }) => {
   const [isExpanded, setStatus] = useState(expanded)
+  const [id, setId] = useState(itemId);
+
   useEffect(() => setStatus(expanded), [expanded])
+  useEffect(() => {
+    if (id === itemSelected) {
+      selectItem(itemId);
+    }
+    setId(itemId)
+  }, [itemId])
 
   const children = Children.map(restProps.children, (child) => {
     if (child !== null) {
       totItems = totItems + 1;
-      console.log('TreeViewItem', child.props)
       return cloneElement(child, {
-        expanded: totItems === child.itemId,
         itemId: totItems,
         selectItem: selectItem,
         itemSelected: itemSelected,
@@ -33,19 +39,16 @@ const TreeViewItem = ({ selectItem, openedItem, itemSelected, className, expande
     setStatus(!isExpanded);
     selectItem(itemId);
     if (openedItem) {
-      console.log(`setStatus(${isExpanded}), selectItem(${itemId}), openedItem(${itemId});`)
       openedItem(itemId);
-    } else {
-      console.log(`setStatus(${isExpanded}), selectItem(${itemId})`)
     }
   }
 
-  const isSelected = itemSelected === itemId
+  const isSelected = itemSelected === id
 
   return <div onClick={e => e.stopPropagation()} className={clsx('tree-view-item', isExpanded && 'tree-view-item--expanded', className)} {...restProps}>
     <Row className={clsx('tree-view-item__button', isSelected && 'tree-view-item__button--selected')} onClick={select}>
       <Icon name={clsx(children ? 'paginator-next' : 'list-dot')} className={clsx('tree-view-item__icon', isExpanded && 'tree-view-item__icon--expanded')}/>
-      <H5>{ text } ({ itemId })</H5>
+      <H5>{ text }</H5>
     </Row>
     { children && isExpanded && <Grid className="tree-view-item__list">
       { children }
@@ -78,7 +81,6 @@ const TreeView = ({ className, ...restProps }) => {
   const children = Children.map(restProps.children, child => {
     if (child !== null) {
       totItems = totItems + 1;
-      console.log('TreeView.TreeViewItem', child.props)
       return cloneElement(child, {
         itemId: totItems,
         expanded: totItems === itemOpened,
