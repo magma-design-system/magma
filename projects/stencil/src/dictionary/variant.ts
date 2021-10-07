@@ -7,6 +7,18 @@ const themeVariantDictionary = [
   'warning',
 ]
 
+const themeLuminanceVariantDictionary = [
+  'dark',
+  'light',
+]
+
+const themeStatusVariantDictionary = [
+  'error',
+  'info',
+  'success',
+  'warning',
+]
+
 const toneVariantDictionary = [
   'strong',
   'weak',
@@ -15,6 +27,8 @@ const toneVariantDictionary = [
 ]
 
 export {
-  toneVariantDictionary,
+  themeLuminanceVariantDictionary,
+  themeStatusVariantDictionary,
   themeVariantDictionary,
+  toneVariantDictionary,
 }

@@ -4,28 +4,21 @@
 :host ( [variant=error][tone=strong] ) {
 
   --background: theme('colors.status-error-19');
-  --border-radius: theme('borderRadius.lg');
   --color: theme('colors.status-error-04');
-  --separator-color: theme('colors.status-error-17');
   --shadow: theme('boxShadow.sharp-lg');
 }
 
 :host ( [variant=error][tone=weak] ) {
 
   --background: theme('colors.status-error-20');
-  --border-radius: theme('borderRadius.md');
   --color: theme('colors.status-error-05');
-  --separator-color: theme('colors.status-error-19');
   --shadow: theme('boxShadow.sharp-sm');
 }
 
 :host ( [variant=error][tone=ghost] ) {
 
   --background: theme('colors.status-error-20');
-  --border-color: theme('colors.status-error-17');
-  --border-radius: theme('borderRadius.lg');
   --color: theme('colors.status-error-04');
-  --separator-color: theme('colors.status-error-18');
   --shadow: none;
 }
 
@@ -33,10 +26,5 @@
 
   --background: theme('colors.status-error-20');
   --color: theme('colors.status-error-04');
-  --separator-color: theme('colors.status-error-20');
   --shadow: none;
-}
-
-:host ( [variant=error][tone=quiet] ) .separator {
-  @apply hidden;
 }

@@ -1,5 +1,5 @@
-import { Component, Host, h, Prop } from '@stencil/core'
-import { ToneVariantType, ThemeVariantType } from '../../types/variant'
+import { Component, Element, Event, EventEmitter, Host, h, Prop, Watch } from '@stencil/core'
+import { ToneVariantType, ThemeLuminanceVariantType } from '../../types/variant'
 import clsx from 'clsx'
 
 @Component({
@@ -9,20 +9,79 @@ import clsx from 'clsx'
 })
 export class MdsToast {
 
+  private timer
+  private timerToastDismiss
+  private dismissAnimationDuration = 300 // hardcoded from CSS :-(
+  private actions: boolean
+
+  @Element() hostElement: HTMLMdsToastElement
+
+  /**
+   * If set, specifies the visibility duration in milliseconds of the element inside the viewport, when the time is up the visible property will be set to false.
+   */
+  @Prop({ mutable: true, reflect: true }) readonly duration?: number = 5000
+
   /**
    * Specifies if toast is visible at the bottom or not
    */
-  @Prop() readonly visible?: boolean
+  @Prop({ mutable: true, reflect: true }) visible?: boolean
 
   /**
    * Sets the theme variant colors
    */
-  @Prop({ reflect: true }) readonly variant?: ThemeVariantType = 'light'
+  @Prop({ reflect: true }) readonly variant?: ThemeLuminanceVariantType = 'light'
 
   /**
    * Sets the tone of the color variant
    */
   @Prop({ reflect: true }) readonly tone?: ToneVariantType = 'strong'
+
+  /**
+   * Emits when the accordion is opened
+   */
+  @Event() timerFinishedEvent: EventEmitter<void>
+
+  private reloadTimeListeners = (visible: boolean):void => {
+    if (!visible) {
+      return
+    }
+    this.removeTimeListener()
+    this.addTimeListener()
+  }
+
+  private removeTimeListener = (): void => {
+    window.clearInterval(this.timer)
+    this.timer = null
+  }
+
+  private addTimeListener = (): void => {
+    this.timer = window.setInterval(() => {
+      this.visible = false
+      this.timerToastDismiss = window.setInterval(() => {
+        // this is used to wait the toast to finish the outro animation
+        this.timerFinishedEvent.emit()
+        window.clearInterval(this.timerToastDismiss)
+        this.timerToastDismiss = null
+      }, this.dismissAnimationDuration)
+    }, this.duration)
+  }
+
+  componentWillLoad (): void {
+    this.actions = this.hostElement.querySelector('[slot="action"]') !== null
+    if (this.visible) {
+      this.addTimeListener()
+    }
+  }
+
+  @Watch('visible')
+  visibleChanged (visible: boolean): void {
+    this.reloadTimeListeners(visible)
+  }
+
+  @Watch('duration')
+  durationChanged (): void {
+    this.reloadTimeListeners(this.visible)
+  }
 
   render () {
     return (
@@ -32,9 +91,11 @@ export class MdsToast {
           <mds-text typography="caption">
             <slot name="text"/>
           </mds-text>
-          <div class="actions">
-            <slot name="action"/>
-          </div>
+          { this.actions &&
+            <div class="actions">
+              <slot name="action"/>
+            </div>
+          }
         </div>
       </Host>
     )

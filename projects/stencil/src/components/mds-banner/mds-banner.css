@@ -4,12 +4,12 @@
 
   @apply grid;
 
-  background-color: var(--mds-banner-background-color, theme('colors.adjust-tone-20'));
-  border-color: var(--mds-banner-border-color, transparent) !important;
-  border-radius: var(--mds-banner-border-radius, 0);
+  background-color: var(--background, theme('colors.adjust-tone-20'));
+  border-color: var(--border-color, transparent) !important;
+  border-radius: var(--border-radius, 0);
   border-width: theme('borderWidth.2') !important;
-  box-shadow: var(--mds-banner-box-shadow, none);
-  color: var(--mds-banner-color, theme('colors.adjust-tone-04'));
+  box-shadow: var(--shadow, none);
+  color: var(--color, theme('colors.adjust-tone-04'));
 }
 
 .header {
@@ -26,7 +26,7 @@
     m-0
     rounded;
 
-  background-color: var(--mds-banner-separator-color, transparent);
+  background-color: var(--separator-color, transparent);
   height: 2px;
 }
 

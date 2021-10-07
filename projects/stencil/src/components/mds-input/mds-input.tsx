@@ -21,7 +21,7 @@ import { inputFocusStatusVariant, inputTipStatusVariant } from './meta/variants'
 import { AutocompleteType } from '../../types/autocomplete'
 import { InputTextType } from '../../types/input-text-type'
 import { InputValueType } from '../../types/input-value-type'
-import { StatusVariantType } from '../../types/variant'
+import { ThemeStatusVariantType } from '../../types/variant'
 @Component({
   tag: 'mds-input',
   styleUrl: 'mds-input.css',
@@ -117,7 +117,7 @@ export class MdsInput {
   /**
    * Sets the status of the input field
    */
-  @Prop() readonly status?: StatusVariantType
+  @Prop() readonly status?: ThemeStatusVariantType
 
   /**
    * Sets the word(s) of the status of the input field

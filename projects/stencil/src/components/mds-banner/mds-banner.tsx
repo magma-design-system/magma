@@ -9,9 +9,9 @@ import clsx from 'clsx'
 })
 export class MdsBanner {
 
-  @Element() hostElement: HTMLMdsBannerElement
-
   private actions: boolean
+
+  @Element() hostElement: HTMLMdsBannerElement
 
   /**
    * Sets the theme variant colors

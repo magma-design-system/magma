@@ -3,38 +3,38 @@
 :host ( [variant=info] ),
 :host ( [variant=info][tone=strong] ) {
 
-  --mds-banner-background-color: theme('colors.status-info-19');
-  --mds-banner-border-radius: theme('borderRadius.lg');
-  --mds-banner-box-shadow: theme('boxShadow.sharp-lg');
-  --mds-banner-color: theme('colors.status-info-04');
-  --mds-banner-separator-color: theme('colors.status-info-17');
+  --background: theme('colors.status-info-19');
+  --banner-color: theme('colors.status-info-04');
+  --border-radius: theme('borderRadius.lg');
+  --separator-color: theme('colors.status-info-17');
+  --shadow: theme('boxShadow.sharp-lg');
 }
 
 :host ( [variant=info][tone=weak] ) {
 
-  --mds-banner-background-color: theme('colors.status-info-20');
-  --mds-banner-border-radius: theme('borderRadius.md');
-  --mds-banner-box-shadow: theme('boxShadow.sharp-sm');
-  --mds-banner-color: theme('colors.status-info-05');
-  --mds-banner-separator-color: theme('colors.status-info-19');
+  --background: theme('colors.status-info-20');
+  --banner-color: theme('colors.status-info-05');
+  --border-radius: theme('borderRadius.md');
+  --separator-color: theme('colors.status-info-19');
+  --shadow: theme('boxShadow.sharp-sm');
 }
 
 :host ( [variant=info][tone=ghost] ) {
 
-  --mds-banner-background-color: theme('colors.status-info-20');
-  --mds-banner-border-color: theme('colors.status-info-17');
-  --mds-banner-border-radius: theme('borderRadius.lg');
-  --mds-banner-box-shadow: none;
-  --mds-banner-color: theme('colors.status-info-04');
-  --mds-banner-separator-color: theme('colors.status-info-18');
+  --background: theme('colors.status-info-20');
+  --banner-color: theme('colors.status-info-04');
+  --border-color: theme('colors.status-info-17');
+  --border-radius: theme('borderRadius.lg');
+  --separator-color: theme('colors.status-info-18');
+  --shadow: none;
 }
 
 :host ( [variant=info][tone=quiet] ) {
 
-  --mds-banner-background-color: theme('colors.status-info-20');
-  --mds-banner-box-shadow: none;
-  --mds-banner-color: theme('colors.status-info-04');
-  --mds-banner-separator-color: theme('colors.status-info-20');
+  --background: theme('colors.status-info-20');
+  --banner-color: theme('colors.status-info-04');
+  --separator-color: theme('colors.status-info-20');
+  --shadow: none;
 }
 
 :host ( [variant=info][tone=quiet] ) .separator {

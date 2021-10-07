@@ -1,0 +1,30 @@
+@tailwind utilities;
+
+:host ( [variant=info] ),
+:host ( [variant=info][tone=strong] ) {
+
+  --background: theme('colors.status-info-19');
+  --color: theme('colors.status-info-04');
+  --shadow: theme('boxShadow.sharp-lg');
+}
+
+:host ( [variant=info][tone=weak] ) {
+
+  --background: theme('colors.status-info-20');
+  --color: theme('colors.status-info-05');
+  --shadow: theme('boxShadow.sharp-sm');
+}
+
+:host ( [variant=info][tone=ghost] ) {
+
+  --background: theme('colors.status-info-20');
+  --color: theme('colors.status-info-04');
+  --shadow: none;
+}
+
+:host ( [variant=info][tone=quiet] ) {
+
+  --background: theme('colors.status-info-20');
+  --color: theme('colors.status-info-04');
+  --shadow: none;
+}

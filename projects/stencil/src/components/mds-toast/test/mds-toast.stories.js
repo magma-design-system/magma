@@ -6,6 +6,10 @@ export default {
   title: 'UI / Toast',
   component: MdsToast,
   argTypes: {
+    duration: {
+      description: 'If set, specifies the visibility duration in milliseconds of the element inside the viewport, when the time is up the visible property will be set to false',
+      type: { name: 'number', required: false },
+    },
     tone: {
       type: { name: 'string', required: false },
       description: 'Sets the tone of the color variant',
@@ -25,10 +29,23 @@ export default {
   },
 }
 
+const checkVariant = (variant) => {
+  if (variant === 'dark') {
+    return 'light'
+  }
+
+  if (variant === 'light') {
+    return 'dark'
+  }
+
+  return variant
+}
+
 const Template = args =>
   <mds-toast {...args}>
     <span slot="text">Elemento cancellato con successo</span>
-    <mds-button slot="action" size="sm" variant={args.variant} tone={args.tone}><span slot="text">Annulla</span></mds-button>
+    <mds-button slot="action" size="sm" inherit-theme variant={checkVariant(args.variant)} tone="ghost"><span slot="text">Annulla</span></mds-button>
+    <mds-button slot="action" size="sm" variant={checkVariant(args.variant)} tone={args.tone}><span slot="text">Annulla</span></mds-button>
   </mds-toast>
 
 export const Default = Template.bind({})

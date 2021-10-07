@@ -25,6 +25,7 @@
     gap-4
     inline-flex
     items-center
+    mx-4
     p-4
     pointer-events-none
     rounded-xl
@@ -40,12 +41,19 @@
   @apply
     -translate-y-12
     duration-700
-    ease-in-out-expo
+    ease-out-expo
     pointer-events-auto;
 
-  transform: translate(0, theme('translate.-2'));
+  transform: translate(0, theme('translate.-4'));
 }
 
 .actions {
   @apply flex gap-2;
 }
+
+@import './css/mds-toast-variant-dark.css';
+@import './css/mds-toast-variant-error.css';
+@import './css/mds-toast-variant-info.css';
+@import './css/mds-toast-variant-light.css';
+@import './css/mds-toast-variant-success.css';
+@import './css/mds-toast-variant-warning.css';

@@ -18,7 +18,7 @@ import clsx from 'clsx'
 import { AutocompleteType } from '../../types/autocomplete'
 import { InputTextType } from '../../types/input-text-type'
 import { InputValue } from '../../interface/input-value'
-import { StatusVariantType } from '../../types/variant'
+import { ThemeStatusVariantType } from '../../types/variant'
 import { inputFieldStatusVariant } from './meta/variants'
 import { ValidationModelType } from './meta/types'
 import { modelValidator } from './meta/validators'
@@ -31,7 +31,7 @@ import { modelValidator } from './meta/validators'
 
 export class MdsInputField {
 
-  private cleanValue?: string | number | null = ''
+  // private cleanValue?: string | number | null = ''
   private nativeInput?: HTMLMdsInputElement
   private tabindex?: number
 
@@ -261,7 +261,7 @@ export class MdsInputField {
   /**
    * Display the status of a message at the bottom of the input text field
    */
-  @Prop() status?: StatusVariantType
+  @Prop() status?: ThemeStatusVariantType
 
   /**
    * Display the status of a message at the bottom of the input text field

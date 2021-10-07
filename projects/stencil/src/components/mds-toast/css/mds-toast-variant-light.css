@@ -4,33 +4,25 @@
 :host ( [variant=light][tone=strong] ) {
 
   --background: theme('colors.adjust-tone');
-  --border-radius: theme('borderRadius.lg');
   --color: theme('colors.adjust-tone-04');
-  --separator-color: theme('colors.adjust-tone-18');
   --shadow: theme('boxShadow.sharp-lg');
 }
 
 :host ( [variant=light][tone=weak] ) {
 
   --background: theme('colors.adjust-tone');
-  --border-radius: theme('borderRadius.md');
   --color: theme('colors.adjust-tone-04');
-  --separator-color: theme('colors.adjust-tone-19');
   --shadow: theme('boxShadow.sharp-sm');
 }
 
 :host ( [variant=light][tone=ghost] ) {
 
-  --border-color: theme('colors.adjust-tone-18');
-  --border-radius: theme('borderRadius.lg');
   --color: theme('colors.adjust-tone-04');
-  --separator-color: theme('colors.adjust-tone-18');
   --shadow: none;
 }
 
 :host ( [variant=light][tone=quiet] ) {
 
   --color: theme('colors.adjust-tone-04');
-  --separator-color: theme('colors.adjust-tone-20');
   --shadow: none;
 }

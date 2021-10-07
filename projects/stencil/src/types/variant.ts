@@ -1,4 +1,4 @@
-export type StatusVariantType =
+export type ThemeStatusVariantType =
   | 'error'
   | 'info'
   | 'success'
@@ -11,6 +11,10 @@ export type ThemeVariantType =
   | 'info'
   | 'success'
   | 'warning'
+
+export type ThemeLuminanceVariantType =
+  | 'dark'
+  | 'light'
 
 export type LabelVariantType =
   | 'amaranth'
