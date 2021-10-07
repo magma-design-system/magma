@@ -9,24 +9,28 @@ import Row from '@Layout/Row/Row'
 
 import './TreeView.scss'
 
-const TreeViewItem = ({ allChildren, setAllChildren, className, expanded, key, text, ...restProps }) => {
+let totItems: number = 0;
+
+const TreeViewItem = ({ selectItem, itemSelected, className, expanded, key, text, ...restProps }) => {
   const [isExpanded, setStatus] = useState(expanded)
   useEffect(() => setStatus(expanded), [expanded])
 
-  const children = Children.map(restProps.children, (child, index) => {
+  const children = Children.map(restProps.children, (child) => {
     if (child !== null) {
-      //setAllChildren([...allChildren, child])
+      totItems = totItems + 1;
       return cloneElement(child, {
-        allChildren,
-        expanded: index === child.key,
-        key: allChildren.lenght + index,
-        setAllChildren: v => setAllChildren(v),
+        expanded: totItems === child.key,
+        key: totItems,
+        selectItem: selectItem,
+        itemSelected: itemSelected,          
       })
     }
   })
 
-  return <div onClick={e => { e.stopPropagation() }} className={clsx('tree-view-item', isExpanded && 'tree-view-item--expanded', className)} {...restProps}>
-    <Row className={clsx('tree-view-item__button', isExpanded && !children && 'tree-view-item__button--selected')} onClick={() => { deselectOtherItems(key); setStatus(!isExpanded) }}>
+  const isSelected = selectItem === key;
+
+  return <div onClick={e => { e.stopPropagation(); selectItem(key); }} className={clsx('tree-view-item', isExpanded && 'tree-view-item--expanded', className)} {...restProps}>
+    <Row className={clsx('tree-view-item__button', isSelected && 'tree-view-item__button--selected')} onClick={() => { setStatus(!isExpanded) }}>
       <Icon name={clsx(children ? 'paginator-next' : 'list-dot')} className={clsx('tree-view-item__icon', isExpanded && 'tree-view-item__icon--expanded')}/>
       <H5>{ text }</H5>
     </Row>
@@ -37,42 +41,37 @@ const TreeViewItem = ({ allChildren, setAllChildren, className, expanded, key, t
 }
 
 TreeViewItem.propTypes = {
-  allChildren: PropTypes.array,
   className: PropTypes.string,
   expanded: PropTypes.bool,
   key: PropTypes.number,
-  setAllChildren: PropTypes.func,
   text: PropTypes.string,
+  selectItem: PropTypes.func,
+  itemSelected: PropTypes.number,
 }
 
 TreeViewItem.defaultProps = {
   expanded: false,
+  selectItem: () => {},
+  itemSelected: 0,
 }
 
 const TreeView = ({ className, ...restProps }) => {
 
-  const [itemIndex, setItemSelected] = useState(null)
-  const [allChildren, setAllChildren] = useState([])
+  const [itemOpened, setItemOpened] = useState(null);
+  const [itemSelected, setItemSelected] = useState(0);
 
   const children = Children.map(restProps.children, (child, index) => {
     if (child !== null) {
-      setAllChildren([...allChildren, child])
+      totItems = totItems + 1;
       return cloneElement(child, {
-        key: index,
-        expanded: index === itemIndex,
-        onClick: () => setItemSelected(index),
-        allChildren,
-        setAllChildren: v => setAllChildren(v),
+        key: totItems,
+        expanded: index === itemOpened,
+        onClick: () => setItemOpened(index),
+        selectItem: setItemSelected,
+        itemSelected: itemSelected,
       })
     }
   })
-
-  // const deselectAllItems = (index) => {
-  //   const firstPart: IAnswer[] = data.slice(0, index);
-  //   const secondPart: IAnswer[] = data.slice(index + 1, data.length);
-  //   const oldAnswer: IAnswer = data[index];
-  //   setData([ ...firstPart, oldAnswer, ...secondPart ]);
-  // }
 
   return <div className={clsx('tree-view', className)} {...restProps}>
     { children }
