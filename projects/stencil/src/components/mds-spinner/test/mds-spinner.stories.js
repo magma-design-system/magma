@@ -1,5 +1,4 @@
 import React from 'react'
-import faker from 'faker'
 import MdsSpinner from '@component/mds-spinner/mds-spinner'
 
 export default {

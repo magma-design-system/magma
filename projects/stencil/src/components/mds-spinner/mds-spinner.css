@@ -5,9 +5,12 @@
   --background: transparent;
   --color: theme('colors.brand-maggioli-05');
   --size: 58px;
-  --duration: 1.5s;
+  --duration: 1.25s;
 
-  @apply inline-flex relative rounded-full;
+  @apply
+    inline-flex
+    relative
+    rounded-full;
 
   background-color: var(--background);
   height: var(--size);
@@ -15,7 +18,9 @@
 }
 
 .wifi-wave {
-  @apply absolute inset-0;
+  @apply
+    absolute
+    inset-0;
 }
 
 .wifi-wave path {
