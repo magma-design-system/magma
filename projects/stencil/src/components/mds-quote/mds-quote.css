@@ -1,5 +1,17 @@
 @tailwind utilities;
 
 :host {
-  @apply inline-flex;
+  @apply inline-flex gap-1;
+}
+
+.quote {
+  @apply grid gap-4;
+}
+
+.left-quotation-mark {
+  @apply mr-1;
+}
+
+.right-quotation-mark {
+  @apply ml-1;
 }
