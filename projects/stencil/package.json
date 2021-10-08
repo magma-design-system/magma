@@ -37,7 +37,7 @@
     "@maggioli-design-system/icons": "^1.25.0",
     "@maggioli-design-system/identity": "^1.8.3",
     "@maggioli-design-system/styles": "^3.10.0",
-    "@stencil/core": "^2.7.0",
+    "@stencil/core": "^2.8.1",
     "@stencil/state-tunnel": "^1.0.1"
   },
   "license": "MIT",
