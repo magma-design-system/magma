@@ -1,5 +1,5 @@
 import React from 'react'
-import { TreeView, TreeViewItem } from '@UI/TreeView/TreeView'
+import TreeView, { TreeViewItem } from '@UI/TreeView/TreeView'
 import Card from '@Layout/Card/Card'
 
 export default {

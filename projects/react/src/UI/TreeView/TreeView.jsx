@@ -9,37 +9,37 @@ import Row from '@Layout/Row/Row'
 
 import './TreeView.scss'
 
-let totItems: number = 0;
+let totItems = 0
 
 const TreeViewItem = ({ selectItem, openedItem, itemSelected, className, expanded, itemId, text, ...restProps }) => {
   const [isExpanded, setStatus] = useState(expanded)
-  const [id, setId] = useState(itemId);
+  const [id, setId] = useState(itemId)
 
   useEffect(() => setStatus(expanded), [expanded])
   useEffect(() => {
     if (id === itemSelected) {
-      selectItem(itemId);
+      selectItem(itemId)
     }
     setId(itemId)
   }, [itemId])
 
-  const children = Children.map(restProps.children, (child) => {
+  const children = Children.map(restProps.children, child => {
     if (child !== null) {
-      totItems = totItems + 1;
+      totItems = totItems + 1
       return cloneElement(child, {
         itemId: totItems,
-        selectItem: selectItem,
-        itemSelected: itemSelected,
+        selectItem,
+        itemSelected,
       })
     }
   })
 
-  const select = (e) => {
-    e.stopPropagation();
-    setStatus(!isExpanded);
-    selectItem(itemId);
+  const select = e => {
+    e.stopPropagation()
+    setStatus(!isExpanded)
+    selectItem(itemId)
     if (openedItem) {
-      openedItem(itemId);
+      openedItem(itemId)
     }
   }
 
@@ -74,19 +74,19 @@ TreeViewItem.defaultProps = {
 
 const TreeView = ({ className, ...restProps }) => {
 
-  const [itemOpened, setItemOpened] = useState(null);
-  const [itemSelected, setItemSelected] = useState(0);
+  const [itemOpened, setItemOpened] = useState(null)
+  const [itemSelected, setItemSelected] = useState(0)
   totItems = 0
 
   const children = Children.map(restProps.children, child => {
     if (child !== null) {
-      totItems = totItems + 1;
+      totItems = totItems + 1
       return cloneElement(child, {
         itemId: totItems,
         expanded: totItems === itemOpened,
         selectItem: setItemSelected,
         openedItem: setItemOpened,
-        itemSelected: itemSelected,
+        itemSelected,
       })
     }
   })
@@ -96,7 +96,11 @@ const TreeView = ({ className, ...restProps }) => {
   </div>
 }
 
+TreeView.propTypes = {
+  className: PropTypes.string,
+}
+
+export default TreeView
 export {
-  TreeView,
   TreeViewItem,
 }
