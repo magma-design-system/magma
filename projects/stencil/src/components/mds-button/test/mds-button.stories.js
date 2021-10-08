@@ -50,7 +50,7 @@ export default {
 
 const Template = args =>
   <mds-button {...args}>
-    <span slot="text">{ faker.lorem.sentence(2) }</span>
+    { faker.lorem.sentence(2) }
   </mds-button>
 
 const TemplateIcon = args =>
