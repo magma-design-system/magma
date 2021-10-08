@@ -16,12 +16,12 @@ export default {
 const Template = args =>
   <div class="relative inline-flex">
     <mds-notification class="absolute right-0 top-0" {...args}/>
-    <mds-button><span slot="text">Incoming messages</span></mds-button>
+    <mds-button icon="email"><span slot="text">Incoming messages</span></mds-button>
   </div>
 
 export const Default = Template.bind({})
 
 export const Value = Template.bind({})
 Value.args = {
-  value: 3000000
+  value: 7
 }

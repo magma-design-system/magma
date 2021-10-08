@@ -1,4 +1,3 @@
-@tailwind components;
 @tailwind utilities;
 
 :host {
@@ -8,7 +7,10 @@
   --thickness: theme('height.2');
   --radius: theme('borderRadius.lg');
 
-  @apply flex overflow-hidden transition-colors;
+  @apply
+    flex
+    overflow-hidden
+    transition-colors;
 
   background-color: var(--background);
   border-radius: var(--radius);
@@ -22,14 +24,19 @@
 }
 
 :host ( .vertical ) {
-  @apply h-full min-h-8 flex-col;
+  @apply
+    h-full
+    min-h-8
+    flex-col;
 
   width: var(--thickness);
 }
 
 .progress {
 
-  @apply duration-500 ease-out-expo;
+  @apply
+    duration-500
+    ease-out-expo;
 
   background-color: var(--background-progress);
   border-radius: var(--radius);
