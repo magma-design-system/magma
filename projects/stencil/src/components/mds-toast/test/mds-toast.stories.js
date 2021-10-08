@@ -43,9 +43,10 @@ const checkVariant = (variant) => {
 
 const Template = args =>
   <mds-toast {...args}>
-    <span slot="text">Elemento cancellato con successo</span>
-    <mds-button slot="action" size="sm" inherit-theme variant={checkVariant(args.variant)} tone="ghost"><span slot="text">Annulla</span></mds-button>
-    <mds-button slot="action" size="sm" variant={checkVariant(args.variant)} tone={args.tone}><span slot="text">Annulla</span></mds-button>
+    <mds-icon slot="icon" name="warning"/>
+    Elemento spidiguddato a sinistra con successo
+    <mds-button slot="action" size="sm" inherit-theme variant={checkVariant(args.variant)} tone="ghost">Annulla</mds-button>
+    <mds-button slot="action" size="sm" variant={checkVariant(args.variant)} tone={args.tone}>Annulla</mds-button>
   </mds-toast>
 
 export const Default = Template.bind({})

@@ -67,9 +67,7 @@ export class MdsTabItem {
           size={this.size}
           type={this.type}
         >
-          <span slot="text">
-            <slot/>
-          </span>
+          <slot/>
         </mds-button>
       </Host>
     )

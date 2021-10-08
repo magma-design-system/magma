@@ -57,8 +57,8 @@ const CustomTemplate = args =>
   <mds-modal {...args}>
     <mds-banner slot="window" class="max-w-xl" deletable headline="Action required">
       { text }
-      <mds-button slot="actions" variant={args.variant} tone="weak"><span slot="text">{ buttonA }</span></mds-button>
-      <mds-button slot="actions" variant={args.variant}><span slot="text">{ buttonB }</span></mds-button>
+      <mds-button slot="actions" variant={args.variant} tone="weak">{ buttonA }</mds-button>
+      <mds-button slot="actions" variant={args.variant}>{ buttonB }</mds-button>
     </mds-banner>
   </mds-modal>
 

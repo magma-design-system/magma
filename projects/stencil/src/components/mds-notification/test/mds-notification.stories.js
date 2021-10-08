@@ -16,7 +16,7 @@ export default {
 const Template = args =>
   <div class="relative inline-flex">
     <mds-notification class="absolute right-0 top-0" {...args}/>
-    <mds-button icon="email"><span slot="text">Incoming messages</span></mds-button>
+    <mds-button icon="email">Incoming messages</mds-button>
   </div>
 
 export const Default = Template.bind({})

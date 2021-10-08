@@ -13,6 +13,7 @@ export class MdsToast {
   private timerToastDismiss
   private dismissAnimationDuration = 300 // hardcoded from CSS :-(
   private actions: boolean
+  private hasText?: boolean
 
   @Element() hostElement: HTMLMdsToastElement
 
@@ -67,6 +68,7 @@ export class MdsToast {
   }
 
   componentWillLoad (): void {
+    this.hasText = this.hostElement.innerHTML !== ''
     this.actions = this.hostElement.querySelector('[slot="action"]') !== null
     if (this.visible) {
       this.addTimeListener()
@@ -87,10 +89,12 @@ export class MdsToast {
     return (
       <Host>
         <div class={clsx('dialog', this.visible && 'dialog--visible')}>
-          <mds-icon name="warning"/>
-          <mds-text typography="caption">
-            <slot name="text"/>
-          </mds-text>
+          <slot name="icon" />
+          { this.hasText &&
+            <mds-text typography="caption">
+              <slot />
+            </mds-text>
+          }
           { this.actions &&
             <div class="actions">
               <slot name="action"/>
