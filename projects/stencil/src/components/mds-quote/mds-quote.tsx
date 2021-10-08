@@ -15,10 +15,10 @@ export class MdsQuote {
   render () {
     return (
       <Host>
-        <mds-text class="left-quotation-mark" typography={ this.typography }><i>❝</i></mds-text>
+        <mds-text typography={ this.typography }><i>❝&nbsp;</i></mds-text>
         <div class="quote">
           <mds-text typography={ this.typography }>
-            <i><slot/><span class="right-quotation-mark">❞</span></i>
+            <i><slot/>&nbsp;❞</i>
           </mds-text>
           <slot name="author"/>
         </div>
