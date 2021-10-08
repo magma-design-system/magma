@@ -1,0 +1,33 @@
+@tailwind utilities;
+
+:host {
+
+  --background: theme('colors.status-error-09');
+  --color: theme('colors.adjust-tone');
+  --size: theme('spacing.5');
+  --translate: translate(calc(var(--size) / 2), calc(var(--size) / -2));
+
+  @apply
+    duration-300
+    ease-out-cubic
+    inline-flex
+    items-center
+    justify-center
+    pointer-events-none
+    px-1
+    rounded-full
+    transition-transform;
+
+  background-color: var(--background);
+  color: var(--color);
+  height: var(--size);
+  min-width: var(--size);
+  transform: var(--translate) scale(1);
+}
+
+:host ( .mds-notification--hidden ) {
+  @apply
+    ease-in-cubic;
+
+  transform: var(--translate) scale(0);
+}
