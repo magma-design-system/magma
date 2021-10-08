@@ -184,6 +184,8 @@
   "form-dropdown": "material/keyboard_arrow_down",
   "form-radio-checked": "material/radio_button_checked",
   "form-radio-unchecked": "material/radio_button_unchecked",
+  "format-quote-close": "mdi/format-quote-close",
+  "format-quote-open": "mdi/format-quote-open",
   "forward": "material/forward",
   "gantt": "mdi/chart-gantt",
   "head-question": "mdi/head-question",
