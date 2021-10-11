@@ -97,7 +97,9 @@
 }
 
 .text {
-  @apply text-inherit;
+  @apply
+    gap-2
+    grid;
 }
 
 @import './css/mds-banner-variant-dark.css';

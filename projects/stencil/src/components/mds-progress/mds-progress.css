@@ -2,7 +2,7 @@
 
 :host {
 
-  --background-progress: theme('colors.adjust-tone-06');
+  --background-progress: theme('colors.brand-maggioli-06');
   --background: theme('colors.adjust-tone-18');
   --thickness: theme('height.2');
   --radius: theme('borderRadius.lg');
@@ -40,5 +40,12 @@
 
   background-color: var(--background-progress);
   border-radius: var(--radius);
-  transition-property: flex-grow;
+  transition-property: background-color, flex-grow;
 }
+
+@import './css/mds-progress-variant-dark.css';
+@import './css/mds-progress-variant-error.css';
+@import './css/mds-progress-variant-info.css';
+@import './css/mds-progress-variant-light.css';
+@import './css/mds-progress-variant-success.css';
+@import './css/mds-progress-variant-warning.css';

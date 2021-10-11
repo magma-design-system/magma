@@ -44,7 +44,9 @@ const Template = args =>
 
 const TemplateActions = args =>
   <mds-banner {...args}>
-    { faker.lorem.paragraph() }
+    <mds-text typography="detail">
+      { faker.lorem.paragraph() }
+    </mds-text>
     <mds-button slot="actions" variant={args.variant} tone="weak">{ faker.hacker.verb() }</mds-button>
     <mds-button slot="actions" variant={args.variant}>{ faker.hacker.verb() }</mds-button>
   </mds-banner>

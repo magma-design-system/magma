@@ -1,0 +1,22 @@
+@tailwind utilities;
+
+:host {
+  @apply
+    gap-1
+    grid
+    grid-cols-full;
+}
+
+.infos {
+  @apply
+    flex
+    gap-1
+    justify-between
+    w-full;
+}
+
+.label {
+  @apply
+    min-w-0
+    truncate;
+}

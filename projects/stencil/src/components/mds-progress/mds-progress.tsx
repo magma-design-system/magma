@@ -1,5 +1,6 @@
 import { Component, Host, h, Prop } from '@stencil/core'
 import { DirectionType } from './meta/types'
+import { ToneStrictVariantType, ThemeVariantType } from '../../types/variant'
 
 @Component({
   tag: 'mds-progress',
@@ -17,6 +18,16 @@ export class MdsProgress {
    * Specifies the direction of the progress bar, if horizonatl or vertical
    */
   @Prop() readonly direction?: DirectionType = 'horizontal'
+
+  /**
+   * Sets the theme variant colors
+   */
+  @Prop({ reflect: true }) readonly variant?: ThemeVariantType = 'dark'
+
+  /**
+   * Sets the tone of the color variant
+   */
+  @Prop({ reflect: true }) readonly tone?: ToneStrictVariantType = 'strong'
 
   render () {
     return (

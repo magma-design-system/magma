@@ -26,9 +26,15 @@ const toneVariantDictionary = [
   'quiet',
 ]
 
+const toneStrictVariantDictionary = [
+  'strong',
+  'weak',
+]
+
 export {
   themeLuminanceVariantDictionary,
   themeStatusVariantDictionary,
   themeVariantDictionary,
+  toneStrictVariantDictionary,
   toneVariantDictionary,
 }

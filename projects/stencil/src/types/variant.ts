@@ -43,3 +43,7 @@ export type ToneVariantType =
   | 'weak' // background weak
   | 'ghost' // bordered
   | 'quiet' // no background, no border
+
+export type ToneStrictVariantType =
+  | 'strong' // background strong
+  | 'weak' // background weak

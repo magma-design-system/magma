@@ -1,0 +1,14 @@
+@tailwind utilities;
+
+:host ( [variant=error] ),
+:host ( [variant=error][tone=strong] ) {
+
+  --background-progress: theme('colors.status-error-10');
+  --background: theme('colors.status-error-18');
+}
+
+:host ( [variant=error][tone=weak] ) {
+
+  --background-progress: theme('colors.status-error-14');
+  --background: theme('colors.status-error-19');
+}

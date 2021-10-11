@@ -76,9 +76,9 @@ export class MdsBanner {
             <mds-icon name="close" class="close-icon close-icon--isolated" onClick={this.closeBanner}/>
           }
           { this.headline === undefined && this.icon && <mds-icon name={ this.icon } class="icon"/> }
-          <mds-text class="text" typography="detail">
+          <div class="text">
             <slot/>
-          </mds-text>
+          </div>
         </div>
         { this.actions
           &&
