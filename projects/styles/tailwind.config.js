@@ -84,6 +84,7 @@ module.exports = {
         'fit-md': 'repeat(auto-fit, minmax(15rem, 1fr))',
         'fit-lg': 'repeat(auto-fit, minmax(17.5rem, 1fr))',
         'fit-xl': 'repeat(auto-fit, minmax(20rem, 1fr))',
+        full: '100%',
       },
       maxWidth: {
         '1/4': '25%',
