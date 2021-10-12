@@ -1,0 +1,18 @@
+@tailwind utilities;
+
+:host {
+  @apply inline;
+}
+
+.link {
+  @apply
+    duration-200;
+
+  color: var(--color, inherit);
+  text-decoration-color: var(--text-decoration, theme('colors.adjust-tone-12'));
+  transition-property: text-decoration, color;
+}
+
+.link:hover {
+  text-decoration-color: var(--text-decoration-hover, inherit);
+}
