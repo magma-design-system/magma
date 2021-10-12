@@ -2,7 +2,7 @@ import React from 'react'
 import faker from 'faker'
 import MdsProgress from '@component/mds-progress/mds-progress'
 import { directionDictionary } from '../meta/dictionary'
-import { themeVariantDictionary, toneStrictVariantDictionary } from '@dictionary/variant'
+import { themeVariantDictionary } from '@dictionary/variant'
 
 export default {
   title: 'UI / Progress',
@@ -18,12 +18,6 @@ export default {
       control: { type: 'range', step: 0.01, min: 0, max: 1 },
       type: { name: 'number', required: false },
       description: 'A value between 0 and 1 that rapresents the status progress',
-    },
-    tone: {
-      type: { name: 'string', required: false },
-      description: 'Sets the tone of the color variant',
-      options: toneStrictVariantDictionary,
-      control: { type: 'select' },
     },
     variant: {
       type: { name: 'string', required: false },

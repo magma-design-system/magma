@@ -1,18 +1,12 @@
 import React from 'react'
 import faker from 'faker'
 import MdsBenchmarkBar from '@component/mds-benchmark-bar/mds-benchmark-bar'
-import { themeVariantDictionary, toneStrictVariantDictionary } from '@dictionary/variant'
+import { themeVariantDictionary } from '@dictionary/variant'
 
 export default {
   title: 'UI / Benchmark Bar',
   component: MdsBenchmarkBar,
   argTypes: {
-    tone: {
-      type: { name: 'string', required: false },
-      description: 'Sets the tone of the color variant',
-      options: toneStrictVariantDictionary,
-      control: { type: 'select' },
-    },
     variant: {
       type: { name: 'string', required: false },
       description: 'Sets the theme variant colors',

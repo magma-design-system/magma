@@ -1,5 +1,5 @@
 import { Component, Host, h, Prop } from '@stencil/core'
-import { ToneStrictVariantType, ThemeVariantType } from '../../types/variant'
+import { ThemeVariantType } from '../../types/variant'
 
 @Component({
   tag: 'mds-benchmark-bar',
@@ -18,11 +18,6 @@ export class MdsBenchmarkBar {
    */
   @Prop({ reflect: true }) readonly variant?: ThemeVariantType = 'dark'
 
-  /**
-   * Sets the tone of the color variant
-   */
-  @Prop({ reflect: true }) readonly tone?: ToneStrictVariantType = 'strong'
-
   render () {
     return (
       <Host>
@@ -30,7 +25,7 @@ export class MdsBenchmarkBar {
           <mds-text typography="option" class="label"><slot/></mds-text>
           <mds-text typography="option" class="value">{this.value}</mds-text>
         </div>
-        <mds-progress class="progress" variant={this.variant} tone={this.tone} progress={this.value / 100}/>
+        <mds-progress class="progress" variant={this.variant} progress={this.value / 100}/>
       </Host>
     )
   }
