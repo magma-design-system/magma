@@ -1,0 +1,51 @@
+@tailwind utilities;
+
+:host {
+
+  --fold-size: 40px;
+
+  @apply
+    duration-300
+    gap-4
+    grid
+    relative
+    overflow-hidden
+    p-6
+    transition-colors;
+
+  background-color: var(--background, theme('colors.label-yellow-19'));
+  box-shadow: var(--shadow, theme('boxShadow.DEFAULT'));
+  color: var(--color, theme('colors.label-yellow-04'));
+}
+
+:host ( .mds-note--close-outside ) {
+  @apply pr-12;
+}
+
+:host ( .mds-note--close-outside ) .close {
+  @apply
+    absolute
+    right-4
+    top-4;
+}
+
+.fold {
+  @apply
+    absolute
+    block
+    border-solid
+    bottom-0
+    h-0
+    right-0
+    w-0;
+
+  border-color: transparent transparent var(--background, theme('colors.label-yellow-19')) transparent;
+  border-width: 0 0 var(--fold-size) var(--fold-size);
+  filter: drop-shadow(0 0 var(--fold-size) rgba(0, 0, 0, 0.5));
+}
+
+.close {
+  @apply cursor-pointer;
+}
+
+@import './css/mds-note-variants.css';

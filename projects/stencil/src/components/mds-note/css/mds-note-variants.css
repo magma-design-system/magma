@@ -1,0 +1,61 @@
+@tailwind utilities;
+
+:host ( [variant=amaranth] ) {
+
+  --background: theme('colors.label-amaranth-19');
+  --color: theme('colors.label-amaranth-04');
+}
+
+:host ( [variant=aqua] ) {
+
+  --background: theme('colors.label-aqua-19');
+  --color: theme('colors.label-aqua-04');
+}
+
+:host ( [variant=blue] ) {
+
+  --background: theme('colors.label-blue-19');
+  --color: theme('colors.label-blue-04');
+}
+
+:host ( [variant=green] ) {
+
+  --background: theme('colors.label-green-19');
+  --color: theme('colors.label-green-04');
+}
+
+:host ( [variant=lime] ) {
+
+  --background: theme('colors.label-lime-19');
+  --color: theme('colors.label-lime-04');
+}
+
+:host ( [variant=orange] ) {
+
+  --background: theme('colors.label-orange-19');
+  --color: theme('colors.label-orange-04');
+}
+
+:host ( [variant=orchid] ) {
+
+  --background: theme('colors.label-orchid-19');
+  --color: theme('colors.label-orchid-04');
+}
+
+:host ( [variant=sky] ) {
+
+  --background: theme('colors.label-sky-19');
+  --color: theme('colors.label-sky-04');
+}
+
+:host ( [variant=violet] ) {
+
+  --background: theme('colors.label-violet-19');
+  --color: theme('colors.label-violet-04');
+}
+
+:host ( [variant=yellow] ) {
+
+  --background: theme('colors.label-yellow-19');
+  --color: theme('colors.label-yellow-04');
+}
