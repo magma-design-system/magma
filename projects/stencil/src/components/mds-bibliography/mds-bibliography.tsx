@@ -120,7 +120,7 @@ export class MdsBibliography {
     return `${lastName}, ${formattedFirstName}`
   }
 
-  private formatAuthors = (author: string): any => {
+  private formatAuthors = (author: string): Record<string, unknown> => {
     const authorName = author.replace(new RegExp('"', 'g'), '\'')
     const splitNames = new RegExp(/([A-Za-z ]{2,})/g)
     const fullName = authorName.match(splitNames)
@@ -164,7 +164,7 @@ export class MdsBibliography {
     return authorsList
   }
 
-  private showAuthors = (authors: []): string => {
+  private showAuthors = (authors: Array<[]>): string => {
 
     let authorsList = ''
     authors.forEach((author, index: number) => {
