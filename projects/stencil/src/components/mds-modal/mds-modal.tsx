@@ -59,7 +59,6 @@ export class MdsModal {
 
   @Watch('position')
   positionChange (newValue: string, oldValue: string): void {
-    console.log(newValue, oldValue)
     window.clearTimeout(this.animationDeelay)
     this.hostElement.classList.remove(this.animationName(null, oldValue))
     this.hostElement.classList.remove(this.animationName('intro', oldValue))
@@ -67,31 +66,26 @@ export class MdsModal {
   }
 
   @Watch('opened')
-  openedChange (newValue: boolean, oldValue: boolean): void {
-    console.log('@Watch.opened', newValue, oldValue)
+  openedChange (): void {
     window.clearTimeout(this.animationDeelay)
-    // this.hostElement.classList.remove(this.animationName(null, oldValue))
-    // this.hostElement.classList.remove(this.animationName('intro', oldValue))
-    // this.hostElement.classList.remove(this.animationName('outro', oldValue))
   }
 
   /**
    * Emits when a modal is closed
    */
-  @Event() modalClosedEvent: EventEmitter<void>
+  @Event() close: EventEmitter<void>
 
   private closeModal = (e:Event = null): void => {
     this.opened = e.target !== e.currentTarget
-    this.modalClosedEvent.emit()
+    this.close.emit()
   }
 
   @Listen('close')
-  onClose (): void {
+  onCloseListener (): void {
     // using setTimeout to avoid children to trigger closeModal opened
     // to true every time after this callback
     setTimeout(() => {
       this.opened = false
-      this.modalClosedEvent.emit()
     }, 1)
   }
 
