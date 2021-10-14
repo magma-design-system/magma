@@ -21,12 +21,19 @@ const Template = args =>
         <mds-text typography="option" class="text-adjust-tone-08">Header by RD Team</mds-text>
       </div>
     </div>
-    <mds-button slot="nav" variant="dark" tone="ghost">Login</mds-button>
-    <mds-button slot="nav">Register</mds-button>
+    <mds-button slot="nav" variant="dark" tone="ghost">Accedi</mds-button>
+    <mds-button slot="nav" icon="person">Registrati</mds-button>
     <div slot="nav-mobile">
+      <div className="flex gap-2 items-center p-6 border-b border-adjust-tone-18">
+        <mds-img class="w-10" src="./logo-gruppo-maggioli.svg"/>
+        <div className="mb-1">
+          <mds-text typography="h6">Gruppo Maggioli</mds-text>
+          <mds-text typography="option" class="text-adjust-tone-08">Header by RD Team</mds-text>
+        </div>
+      </div>
       <div className="grid gap-2 p-6">
-        <mds-button variant="dark" tone="ghost">Login</mds-button>
-        <mds-button>Register</mds-button>
+        <mds-button variant="dark" tone="ghost">Accedi</mds-button>
+        <mds-button icon="person">Registrati</mds-button>
       </div>
     </div>
   </mds-header>
