@@ -77,7 +77,9 @@ export class MdsModal {
 
   private closeModal = (e:Event = null): void => {
     this.opened = e.target !== e.currentTarget
-    this.close.emit()
+    if (!this.opened) {
+      this.close.emit()
+    }
   }
 
   @Listen('close')
