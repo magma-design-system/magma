@@ -1,7 +1,7 @@
 import { Component, Host, h, Prop } from '@stencil/core'
 import { BibliographyFormatType, BibliographyRelationshipType } from './meta/types'
 import { TypographySecondaryType } from '../../types/typography'
-
+import { FormattedAuthor } from './meta/interface'
 @Component({
   tag: 'mds-bibliography',
   styleUrl: 'mds-bibliography.css',
@@ -120,7 +120,7 @@ export class MdsBibliography {
     return `${lastName}, ${formattedFirstName}`
   }
 
-  private formatAuthors = (author: string): Record<string, unknown> => {
+  private formatAuthors = (author: string): FormattedAuthor => {
     const authorName = author.replace(new RegExp('"', 'g'), '\'')
     const splitNames = new RegExp(/([A-Za-z ]{2,})/g)
     const fullName = authorName.match(splitNames)
@@ -148,9 +148,9 @@ export class MdsBibliography {
     }
   }
 
-  private normalizeAuthors = (authors: string) => {
+  private normalizeAuthors = (authors: string):FormattedAuthor[] => {
 
-    const authorsList = []
+    const authorsList: FormattedAuthor[] = []
     if (authors.includes(',')) {
       const authorsRawList = authors.split(',')
       authorsRawList.forEach((author: string) => {
@@ -164,7 +164,7 @@ export class MdsBibliography {
     return authorsList
   }
 
-  private showAuthors = (authors: Array<[]>): string => {
+  private showAuthors = (authors: FormattedAuthor[]): string => {
 
     let authorsList = ''
     authors.forEach((author, index: number) => {

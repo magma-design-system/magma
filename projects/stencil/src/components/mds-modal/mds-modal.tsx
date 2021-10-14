@@ -93,7 +93,7 @@ export class MdsModal {
     return (
       <Host class={clsx(
         this.opened && this.animationName('opened'),
-      )} onClick={(e:Event) => { this.closeModal(e) }}>
+      )} onClick={(e: Event) => { this.closeModal(e) }}>
         { this.window
           ?
           <slot name="window"/>
