@@ -6,11 +6,12 @@
 
   @apply
     duration-300
-    gap-4
+    gap-2
     grid
-    relative
     overflow-hidden
     p-6
+    relative
+    rounded
     transition-colors;
 
   background-color: var(--background, theme('colors.label-yellow-19'));
@@ -45,7 +46,24 @@
 }
 
 .close {
-  @apply cursor-pointer;
+  @apply
+    bg-transparent
+    cursor-pointer
+    hover:bg-adjust-tone
+    p-1
+    rounded-full
+    transition-cosmetic;
+}
+
+.title {
+  @apply
+    flex
+    gap-4
+    items-start;
+}
+
+.title .close {
+  @apply ml-auto;
 }
 
 @import './css/mds-note-variants.css';
