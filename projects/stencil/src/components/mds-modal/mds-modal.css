@@ -102,9 +102,11 @@
     h-full
     overflow-auto;
 
-  background-color: var(--mds-modal-window, theme('colors.adjust-tone'));
-  box-shadow: var(--mds-modal-window-shadow, theme('boxShadow.2xl'));
-  grid-template-rows: var(--mds-modal-grid-template, auto 1fr auto);
+  background-color: var(--window-background, theme('colors.adjust-tone'));
+  box-shadow: var(--window-shadow, theme('boxShadow.2xl'));
+  grid-template-rows: 1fr;
+
+  /* grid-template-rows: var(--grid-template-rows, auto 1fr auto); */
   max-width: calc(100vw - 80px);
 }
 

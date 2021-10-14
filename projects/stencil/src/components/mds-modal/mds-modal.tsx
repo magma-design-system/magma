@@ -84,11 +84,7 @@ export class MdsModal {
 
   @Listen('close')
   onCloseListener (): void {
-    // using setTimeout to avoid children to trigger closeModal opened
-    // to true every time after this callback
-    setTimeout(() => {
-      this.opened = false
-    }, 1)
+    this.opened = false
   }
 
   render () {

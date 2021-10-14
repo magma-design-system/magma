@@ -23,9 +23,11 @@ const Template = args =>
     </div>
     <mds-button slot="nav" variant="dark" tone="ghost">Login</mds-button>
     <mds-button slot="nav">Register</mds-button>
-    <div slot="nav-mobile" className="grid gap-2 p-6 max-w-72 w-full">
-      <mds-button variant="dark" tone="ghost">Login</mds-button>
-      <mds-button>Register</mds-button>
+    <div slot="nav-mobile">
+      <div className="grid gap-2 p-6">
+        <mds-button variant="dark" tone="ghost">Login</mds-button>
+        <mds-button>Register</mds-button>
+      </div>
     </div>
   </mds-header>
 
