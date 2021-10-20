@@ -39,6 +39,7 @@
   "action-magic-wand": "material/auto_fix_high",
   "action-multiselect": "mdi/checkbox-multiple-blank",
   "action-multiselect-off": "mdi/checkbox-multiple-blank-outline",
+  "action-open-predective-link": "material/north_west",
   "action-paste": "material/content_paste",
   "action-phone": "material/phone",
   "action-print": "material/print",
@@ -187,6 +188,8 @@
   "format-quote-close": "mdi/format-quote-close",
   "format-quote-open": "mdi/format-quote-open",
   "forward": "material/forward",
+  "fullscreen-off": "material/close_fullscreen",
+  "fullscreen-on": "material/fullscreen",
   "gantt": "mdi/chart-gantt",
   "head-question": "mdi/head-question",
   "health-mask": "material/masks",
@@ -268,6 +271,7 @@
   "sentiment-neutral": "material/sentiment_neutral",
   "sentiment-satisfied": "material/sentiment_satisfied",
   "settings": "material/settings",
+  "share-alt": "material/ios_share",
   "shop-cart": "material/shopping_cart",
   "shop-cart-empty": "material/remove_shopping_cart",
   "shop-store": "material/store",
@@ -335,5 +339,6 @@
   "work-project": "material/work",
   "work-project-outline": "material/work_outline",
   "workspace": "material/workspaces",
-  "write-only": "material/drive_file_rename_outline"
+  "write-only": "material/drive_file_rename_outline",
+  "zen-mode": "material/self_improvement"
 }
