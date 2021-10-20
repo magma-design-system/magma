@@ -4,6 +4,7 @@ const svgtofont = require('svgtofont')
 const fs = require('fs').promises
 const path = require('path')
 const pkg = require('../package.json')
+const pkgIcons = require('../../icons/package.json')
 const { ICON_GROUPS } = require('../lib/icons-groups')
 const { ROOT_PATH_DIR, BUILD_PATH_DIR, BUILD_ORIGINAL_PATH_DIR } = require('../lib/utils')
 // const { writeCodersFiles } = require('../lib/coders-helper')
@@ -257,21 +258,21 @@ function getSvgToFontOptions ({ svgPath, relativeOutputPath, cssPath, fontName, 
     },
     typescript: true,
     website: !website ? null : {
-      title: pkg.name,
-      description: pkg.description,
-      version: pkg.version,
-      logo: path.resolve(ROOT_PATH_DIR, 'svg', 'barcode.svg'),
+      title: pkgIcons.name,
+      description: pkgIcons.description,
+      version: pkgIcons.version,
+      logo: '',
       favicon: null,
       meta: {
-        description: pkg.description,
-        keywords: pkg.keywords.join(','),
+        description: pkgIcons.description,
+        keywords: pkgIcons.keywords.join(','),
       },
       // Add a Github corner to your website
       corners: {
-        url: pkg.repository.url,
+        url: pkgIcons.repository.url,
         width: 62, // default: 60
         height: 62, // default: 60
-        bgColor: '#dc3545', // default: '#151513'
+        bgColor: '#151513',
       },
       links: [
         {
@@ -282,20 +283,8 @@ function getSvgToFontOptions ({ svgPath, relativeOutputPath, cssPath, fontName, 
           title: 'Feedback',
           url: pkg.bugs.url,
         },
-        {
-          title: 'Font Class',
-          url: 'index.html',
-        },
-        {
-          title: 'Unicode',
-          url: 'unicode.html',
-        },
-        {
-          title: 'SVG Symbol',
-          url: 'symbol.html',
-        },
       ],
-      footerInfo: 'Maggioli©.',
+      footerInfo: 'Gruppo Maggioli, tutti i diritti riservati.',
     },
   }
 }
@@ -309,24 +298,3 @@ function organizeFiles (buildFontsDir, buildPathDir) {
       file => fs.rename(path.join(buildFontsDir, file), path.join(buildPathDir, file)),
     )))
 }
-
-// function buildTypescriptFiles() {
-//   // Necessary to build all typescript files
-//   // https://stackoverflow.com/a/35734638/3687018
-//   fs.writeFile(path.join(BUILD_PATH_DIR, 'tsconfig.json'),
-//     `{
-//   "include": ["**/*"],
-//   "compilerOptions": {
-//     "declaration": true,
-//     "module": "es2015",
-//     "target": "es2015",
-//     "moduleResolution": "node"
-//   },
-// }`,
-//   )
-//     .then(() => exec('(cd .. && npm bin)'))
-//     .then(({ stdout }) => stdout.split('\n')[0])
-//     .then(npmBinFolder => exec(`${path.join(npmBinFolder, 'tsc')} -p ${BUILD_PATH_DIR} -d --declarationMap`))
-//     .then(() => console.log('SUCCESS Compiled typescript files'))
-//     .catch(err => console.error('Error in typescript files compilation.\n', err))
-// }
