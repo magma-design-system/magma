@@ -1,0 +1,54 @@
+@tailwind utilities;
+
+@property --value {
+  inherits: false;
+  initial-value: 0;
+  syntax: '<integer>';
+}
+
+mds-kpi-item {
+
+  --description-color: theme('colors.adjust-tone-08');
+  --value-color: theme('colors.adjust-tone-04');
+  --info-padding: theme('spacing.4');
+
+  @apply
+    gap-0
+    grid
+    overflow-hidden
+    rounded-2xl;
+
+  background-color: var(--background-color, theme('colors.adjust-tone'));
+  box-shadow: var(--box-shadow, theme('boxShadow.lg'));
+}
+
+.icon {
+  @apply
+    flex
+    items-start
+    justify-center;
+}
+
+.info {
+  @apply
+    gap-0
+    grid
+    justify-center
+    text-center;
+
+  padding: var(--info-padding);
+}
+
+.value {
+  color: var(--value-color);
+  counter-set: num var(--value);
+  transition: --value 1s;
+}
+
+.value::after {
+  content: counter(num);
+}
+
+.description {
+  color: var(--description-color);
+}
