@@ -1,6 +1,6 @@
 {
   "name": "@maggioli-design-system/magma",
-  "version": "0.41.3",
+  "version": "0.42.0",
   "description": "Stencil Component Starter",
   "main": "dist/index.cjs.js",
   "module": "dist/custom-elements/index.js",
@@ -34,7 +34,7 @@
   },
   "dependencies": {
     "@maggioli-design-system/design-tokens": "^4.2.1",
-    "@maggioli-design-system/icons": "^1.27.0",
+    "@maggioli-design-system/icons": "^1.29.0",
     "@maggioli-design-system/identity": "^1.8.3",
     "@maggioli-design-system/styles": "^3.10.1",
     "@stencil/core": "^2.8.1",

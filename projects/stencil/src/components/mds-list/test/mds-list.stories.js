@@ -3,7 +3,7 @@ import faker from 'faker'
 import MdsList from '@component/mds-list/mds-list'
 
 export default {
-  title: 'UI / List / List',
+  title: 'UI / List',
   component: MdsList,
   argTypes: {
     type: {
@@ -12,6 +12,7 @@ export default {
     },
   },
 }
+
 const Template = args =>
   <mds-list {...args}>
     <mds-list-item>{faker.lorem.paragraph()}</mds-list-item>
