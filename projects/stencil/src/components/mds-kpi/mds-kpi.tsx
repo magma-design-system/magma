@@ -1,4 +1,4 @@
-import { Component, Element, Host, Listen, h } from '@stencil/core'
+import { Component, Host, h } from '@stencil/core'
 
 @Component({
   tag: 'mds-kpi',
