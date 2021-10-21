@@ -1,0 +1,58 @@
+@tailwind utilities;
+
+:host {
+
+  --video-fit: cover;
+  --noise-background-color: rgba(var(--brand-maggioli-05), 0.8);
+
+  @apply flex relative bg-adjust-tone-04;
+
+  aspect-ratio: var(--aspect-ratio, auto);
+}
+
+.content {
+  @apply
+    flex
+    h-full
+    items-center
+    justify-center
+    relative
+    w-full;
+
+  z-index: 3;
+}
+
+video,
+.noise {
+  @apply
+    absolute
+    h-full
+    inset-0
+    w-full;
+}
+
+video {
+  object-fit: var(--video-fit);
+  z-index: 1;
+}
+
+.noise {
+  background-color: var(--noise-background-color);
+  z-index: 2;
+}
+
+.noise--classic {
+  background-image: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAYAAAAGCAYAAADgzO9IAAAALElEQVQYV2NkwAEYoeIzGRgYtjAwMGxmYGAAs2ESvlBBkDowGyaBYSDpRgEAkLwKoa+v7O8AAAAASUVORK5CYII=');
+}
+
+.noise--sharp {
+  background-image: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAgAAAAICAYAAADED76LAAAAOklEQVQoU2NkYGAwZoCAs2hssCAjNkFkMZACGMBqEswErMaDTEJWgNUkmBU4HYpNAYpJyI4ESWCYBAAe2A7Vb66lfAAAAABJRU5ErkJggg==');
+}
+
+.noise--soft {
+  background-image: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAgAAAAGCAYAAAD+Bd/7AAAAOElEQVQYV2NkYGAwZoCA51BaEpnPiKTgLFQCpgHMR1aA0wQpbEYzMDCArQKZAAMoRsOsBinAawIAOXkJ1Ff0CjwAAAAASUVORK5CYII=');
+}
+
+.noise--tv {
+  background-image: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAcAAAAHCAYAAADEUlfTAAAAMElEQVQYV2NkYGDwZcABGP8zKBuD5Bj/P4coEf0Kod8wSjH+Z5CVgki+RZc0HghJADPEICMR8Ep/AAAAAElFTkSuQmCC');
+}
