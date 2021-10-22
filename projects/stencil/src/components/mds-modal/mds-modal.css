@@ -110,6 +110,18 @@
   max-width: calc(100vw - 80px);
 }
 
+.window--top {
+  grid-template-rows: auto 1fr;
+}
+
+.window--bottom {
+  grid-template-rows: 1fr auto;
+}
+
+.window--top-bottom {
+  grid-template-rows: auto 1fr auto;
+}
+
 @import './css/mds-modal-animate-center.css';
 @import './css/mds-modal-animate-right.css';
 @import './css/mds-modal-animate-left.css';

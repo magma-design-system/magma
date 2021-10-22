@@ -96,7 +96,7 @@ export class MdsModal {
           ?
           <slot name="window"/>
           :
-          <div class="window">
+          <div class={clsx('window', (this.top || this.bottom) && `window-${this.top ? '-top' : ''}${this.bottom ? '-bottom' : ''}`)}>
             { this.top &&
               <slot name="top"/>
             }

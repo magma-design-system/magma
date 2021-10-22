@@ -39,7 +39,9 @@ export default {
 
 const Template = args =>
   <mds-banner {...args}>
-    { faker.lorem.paragraph() }
+    <mds-text typography="detail">
+      { faker.lorem.paragraph() }
+    </mds-text>
   </mds-banner>
 
 const TemplateActions = args =>
