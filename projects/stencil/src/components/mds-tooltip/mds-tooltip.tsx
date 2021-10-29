@@ -3,6 +3,7 @@ import clsx from 'clsx'
 
 import { TargetOffset, TooltipPosition } from './meta/interface'
 import { TooltipPositionType } from './meta/types'
+import { ThemeLuminanceVariantType } from '../../types/variant'
 
 @Component({
   tag: 'mds-tooltip',
@@ -30,6 +31,11 @@ export class MdsTooltip {
    * Specifies the position of the tooltip relative to the trigger element
    */
   @Prop() readonly position?: TooltipPositionType = 'top'
+
+  /**
+   * Specifies the color variant for the element
+   */
+  @Prop() readonly variant?: ThemeLuminanceVariantType = 'dark'
 
   componentWillLoad (): void {
     this.targetElement = document.getElementById(this.for)
@@ -190,7 +196,7 @@ export class MdsTooltip {
     return (
       <Host class={clsx(
         `mds-tooltip--${this.position}`,
-        this.visible && 'mds-tooltip--visible',
+        this.visible ? 'mds-tooltip--visible' : 'mds-tooltip--hidden',
       )}>
         <div class="balloon">
           <mds-text typography="caption"><slot/></mds-text>

@@ -1,6 +1,7 @@
 import React from 'react'
 import MdsTooltip from '@component/mds-tooltip/mds-tooltip'
 import { tooltipPositionDictionary } from '../meta/dictionary'
+import { themeLuminanceVariantDictionary } from '@dictionary/variant'
 import faker from 'faker'
 
 export default {
@@ -19,6 +20,12 @@ export default {
       type: { name: 'string' },
       description: 'Specifies the position of the tooltip relative to the trigger element',
       options: tooltipPositionDictionary,
+      control: { type: 'select' },
+    },
+    variant: {
+      type: { name: 'string' },
+      description: 'Specifies the color variant for the element',
+      options: themeLuminanceVariantDictionary,
       control: { type: 'select' },
     },
   },

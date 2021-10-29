@@ -10,14 +10,13 @@
 
   @apply
     fixed
-    flex
     opacity-0
+    hidden
     p-3
     pointer-events-none;
 
   filter: var(--drop-shadow);
-  transition: opacity var(--transition-outro), transform var(--transition-outro);
-  z-index: -100;
+  transition: visbility 0s, opacity var(--transition-outro) 0.1s, transform var(--transition-outro) 0.1s;
 }
 
 :host ( .mds-tooltip--bottom ) {
@@ -40,17 +39,22 @@
   transform-origin: 100% 50%;
 }
 
-:host ( .hydrated ) {
-  @apply opacity-0;
+:host ( .mds-tooltip--hidden.hydrated ) {
+  @apply
+    flex
+    opacity-0;
 
-  z-index: auto;
+  visibility: hidden;
 }
 
-:host ( .hydrated.mds-tooltip--visible ) {
-  @apply opacity-100;
+:host ( .mds-tooltip--visible ) {
+  @apply
+    flex
+    opacity-100;
 
   transform: perspective(600px) rotateY(0) translateX(0);
-  transition: opacity var(--transition-intro), transform var(--transition-intro);
+  transition: visbility 0s, opacity var(--transition-intro) 0.1s, transform var(--transition-intro) 0.1s;
+  visibility: visible;
 }
 
 .balloon {
@@ -105,3 +109,5 @@
   top: calc(50% - calc(var(--arrow-size) / 2));
   transform: translate(100%, 0);
 }
+
+@import './css/mds-tooltip-variants.css';

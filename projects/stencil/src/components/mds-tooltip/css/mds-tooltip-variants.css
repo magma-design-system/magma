@@ -1,0 +1,15 @@
+@tailwind utilities;
+
+:host ( [variant=light] ) {
+
+  --background-color: theme('colors.adjust-tone');
+  --color: theme('colors.adjust-tone-04');
+  --drop-shadow: drop-shadow(theme('dropShadow.DEFAULT.0')) drop-shadow(theme('dropShadow.DEFAULT.1'));
+}
+
+:host ( [variant=dark] ) {
+
+  --background-color: theme('colors.adjust-tone-01');
+  --color: theme('colors.adjust-tone');
+  --drop-shadow: drop-shadow(theme('dropShadow.2xl'));
+}
