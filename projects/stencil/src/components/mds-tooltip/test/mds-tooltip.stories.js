@@ -63,3 +63,10 @@ position.args = {
   for: 'button-id',
   position: 'left',
 }
+
+export const variant = Template.bind({})
+variant.args = {
+  delay: 500,
+  for: 'button-id',
+  variant: 'light',
+}
