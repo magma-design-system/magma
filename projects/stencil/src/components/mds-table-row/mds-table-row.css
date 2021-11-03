@@ -5,7 +5,7 @@
     border-b
     table-row;
 
-  border-bottom-color: var(--mds-table-border-color, theme('colors.adjust-tone-18'));
+  border-bottom-color: var(--border-color, theme('colors.adjust-tone-18'));
 }
 
 .table-row:last-child {
@@ -13,21 +13,25 @@
 }
 
 .table-row:first-child .table-cell:first-child {
-  border-top-left-radius: var(--mds-table-border-radius, 0);
+  border-top-left-radius: var(--border-radius, theme('borderRadius.lg'));
 }
 
 .table-row:last-child .table-cell:first-child {
-  border-bottom-left-radius: var(--mds-table-border-radius, 0);
+  border-bottom-left-radius: var(--border-radius, theme('borderRadius.lg'));
 }
 
 .table-row:first-child .table-cell:last-child {
-  border-top-right-radius: var(--mds-table-border-radius, 0);
+  border-top-right-radius: var(--border-radius, theme('borderRadius.lg'));
 }
 
 .table-row:last-child .table-cell:last-child {
-  border-bottom-right-radius: var(--mds-table-border-radius, 0);
+  border-bottom-right-radius: var(--border-radius, theme('borderRadius.lg'));
 }
 
 .table-row:focus {
   @apply opacity-50;
+}
+
+.table-row:hover .table-cell {
+  background-color: var(--background-hover, theme('colors.adjust-tone-20'));
 }

@@ -4,7 +4,7 @@
 
   @apply table-row-group;
 
-  border-radius: var(--mds-table-border-radius, 0);
-  box-shadow: var(--mds-table-shadow, none);
+  border-radius: var(--border-radius, 0);
+  box-shadow: var(--shadow, none);
   overflow: hidden;
 }

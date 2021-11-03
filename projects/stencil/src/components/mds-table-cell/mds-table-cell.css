@@ -4,6 +4,6 @@
   @apply
     table-cell;
 
-  background-color: var(--mds-table-background, transparent);
-  padding: var(--mds-table-cell-padding, 0);
+  background-color: var(--background, transparent);
+  padding: var(--cell-padding, 0);
 }

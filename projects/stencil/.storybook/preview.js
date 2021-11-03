@@ -3,14 +3,11 @@ import { defineCustomElements } from '../dist/esm/loader'
 import 'normalize.css'
 import '@maggioli-design-system/design-tokens/dist/css/vars-rgb-channels.css'
 import '@maggioli-design-system/icons/original/base64/mgg-icons-font-face.css'
-
-import devices from './devices.json'
-
 import 'typeface-karla'
 import 'typeface-roboto'
-
 import './tailwind.css'
 
+import devices from './devices.json'
 import media from '@maggioli-design-system/design-tokens/dist/css-tokens/media.json'
 
 defineCustomElements();
