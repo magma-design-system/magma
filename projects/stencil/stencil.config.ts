@@ -2,6 +2,7 @@ import { Config } from '@stencil/core'
 import { postcss } from '@stencil/postcss'
 import autoprefixer from 'autoprefixer'
 import tailwind from 'tailwindcss'
+import { reactOutputTarget } from '@stencil/react-output-target'
 
 export const config: Config = {
   namespace: 'mds-components',
@@ -26,6 +27,11 @@ export const config: Config = {
     {
       type: 'dist',
     },
+    reactOutputTarget({
+      componentCorePackage: 'component-library',
+      proxiesFile: '../component-library-react/src/components.ts',
+      includeDefineCustomElements: true,
+    }),
   ],
   plugins: [
     postcss({
