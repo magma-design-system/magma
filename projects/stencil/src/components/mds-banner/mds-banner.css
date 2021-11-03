@@ -2,6 +2,16 @@
 
 :host {
 
+  /**
+    * @prop --background: Sets the background-color of the component
+    * @prop --border-color: Sets the border-color of the component
+    * @prop --border-radius: Sets the border-radius of the component
+    * @prop --color: Sets the text color of the component
+    * @prop --separator-color: Sets the background-color of the separator inside the component
+    * @prop --shadow: Sets the box-shadow of the component
+    */
+  --background: theme('colors.adjust-tone-20');
+
   @apply grid;
 
   background-color: var(--background, theme('colors.adjust-tone-20'));

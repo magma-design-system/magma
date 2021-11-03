@@ -1,0 +1,75 @@
+@tailwind utilities;
+
+:host ( [variant=warning] ),
+:host ( [variant=warning][tone=strong] ) {
+
+  --background-color: theme('colors.status-warning-08');
+  --color: theme('colors.adjust-tone');
+}
+
+:host ( [variant=warning]:hover ),
+:host ( [variant=warning][tone=strong]:hover ) {
+
+  --background-color: theme('colors.status-warning-07');
+}
+
+:host ( [variant=warning][active] ),
+:host ( [variant=warning][tone=strong][active] ) {
+
+  --background-color: theme('colors.status-warning-06');
+}
+
+:host ( [variant=warning][tone=weak] ) {
+
+  --background-color: theme('colors.status-warning-19');
+  --color: theme('colors.status-warning-04');
+}
+
+:host ( [variant=warning][tone=weak]:hover ) {
+
+  --background-color: theme('colors.status-warning-18');
+}
+
+:host ( [variant=warning][tone=weak][active] ) {
+
+  --background-color: theme('colors.status-warning-17');
+}
+
+:host ( [variant=warning][tone=ghost] ) {
+
+  --background-color: transparent;
+  --border-color: theme('colors.status-warning-06');
+  --color: theme('colors.status-warning-06');
+}
+
+:host ( [variant=warning][tone=ghost]:hover ) {
+
+  --background-color: transparent;
+  --border-color: theme('colors.status-warning-05');
+  --color: theme('colors.status-warning-05');
+}
+
+:host ( [variant=warning][tone=ghost][active] ) {
+
+  --background-color: transparent;
+  --border-color: theme('colors.status-warning-04');
+  --color: theme('colors.status-warning-04');
+}
+
+:host ( [variant=warning][tone=quiet] ) {
+
+  --background-color: transparent;
+  --color: theme('colors.status-warning-04');
+}
+
+:host ( [variant=warning][tone=quiet]:hover ) {
+
+  --background-color: transparent;
+  --color: theme('colors.status-warning-06');
+}
+
+:host ( [variant=warning][tone=quiet][active] ) {
+
+  --background-color: transparent;
+  --color: theme('colors.status-warning-07');
+}

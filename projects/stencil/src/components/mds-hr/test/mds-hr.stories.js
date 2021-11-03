@@ -16,3 +16,5 @@ export const Style = Template.bind({})
 Style.args = {
   class: 'bg-adjust-tone-04',
 }
+
+<mds-hr class="bg-adjust-tone-04 p-4"/>

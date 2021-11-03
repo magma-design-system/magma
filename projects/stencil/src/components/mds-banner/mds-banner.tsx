@@ -51,6 +51,11 @@ export class MdsBanner {
     this.close.emit()
   }
 
+  /**
+   * @slot default - To put the text inside the component
+   * @slot actions - Will host the bottom action of the component
+   */
+
   render () {
     return (
       <Host class={clsx(

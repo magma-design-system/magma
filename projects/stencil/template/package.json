@@ -1,0 +1,27 @@
+{
+  "name": "@maggioli-design-system/{{ componentName }}",
+  "version": "1.0.0",
+  "description": "{{ componentName }} is a web-component from Maggioli Design System Magma, built with StencilJS, TypeScript, Storybook. It's based on the web-component standard and it's designed to be agnostic from the JavaScirpt framework you are using.",
+  "main": "dist/index.cjs.js",
+  "module": "dist/custom-elements/index.js",
+  "es2015": "dist/esm/index.mjs",
+  "es2017": "dist/esm/index.mjs",
+  "types": "dist/custom-elements/index.d.ts",
+  "collection": "dist/collection/collection-manifest.json",
+  "collection:main": "dist/collection/index.js",
+  "unpkg": "dist/{{ componentName }}/{{ componentName }}.esm.js",
+  "files": [
+    "dist/",
+    "loader/",
+    "readme.md",
+    "src/",
+    "www/"
+  ],
+  "scripts": {
+    "build": "rm src/components.d.ts || true && stencil build --docs --docs-readme"
+  },
+  "dependencies": {{{ dependencies }}},
+  "license": "MIT",
+  "author": {{{ author }}},
+  "contributors": {{{ contributors }}}
+}

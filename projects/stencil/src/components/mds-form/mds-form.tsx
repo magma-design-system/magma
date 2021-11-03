@@ -10,7 +10,7 @@ import {
 @Component({
   tag: 'mds-form',
   styleUrl: 'mds-form.css',
-  shadow: false,
+  shadow: true,
 })
 export class MdsForm {
 
@@ -73,8 +73,9 @@ export class MdsForm {
           name={this.name}
           novalidate={this.novalidate}
           target={this.target}
+          onSubmit={(e: Event):void => { console.log(e) }}
         >
-          <slot></slot>
+          <slot/>
         </form>
       </Host>
     )

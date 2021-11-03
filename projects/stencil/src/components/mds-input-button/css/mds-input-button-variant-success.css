@@ -1,0 +1,75 @@
+@tailwind utilities;
+
+:host ( [variant=success] ),
+:host ( [variant=success][tone=strong] ) {
+
+  --background-color: theme('colors.status-success-08');
+  --color: theme('colors.adjust-tone');
+}
+
+:host ( [variant=success]:hover ),
+:host ( [variant=success][tone=strong]:hover ) {
+
+  --background-color: theme('colors.status-success-07');
+}
+
+:host ( [variant=success][active] ),
+:host ( [variant=success][tone=strong][active] ) {
+
+  --background-color: theme('colors.status-success-06');
+}
+
+:host ( [variant=success][tone=weak] ) {
+
+  --background-color: theme('colors.status-success-19');
+  --color: theme('colors.status-success-04');
+}
+
+:host ( [variant=success][tone=weak]:hover ) {
+
+  --background-color: theme('colors.status-success-18');
+}
+
+:host ( [variant=success][tone=weak][active] ) {
+
+  --background-color: theme('colors.status-success-17');
+}
+
+:host ( [variant=success][tone=ghost] ) {
+
+  --background-color: transparent;
+  --border-color: theme('colors.status-success-06');
+  --color: theme('colors.status-success-06');
+}
+
+:host ( [variant=success][tone=ghost]:hover ) {
+
+  --background-color: transparent;
+  --border-color: theme('colors.status-success-05');
+  --color: theme('colors.status-success-05');
+}
+
+:host ( [variant=success][tone=ghost][active] ) {
+
+  --background-color: transparent;
+  --border-color: theme('colors.status-success-04');
+  --color: theme('colors.status-success-04');
+}
+
+:host ( [variant=success][tone=quiet] ) {
+
+  --background-color: transparent;
+  --color: theme('colors.status-success-04');
+}
+
+:host ( [variant=success][tone=quiet]:hover ) {
+
+  --background-color: transparent;
+  --color: theme('colors.status-success-06');
+}
+
+:host ( [variant=success][tone=quiet][active] ) {
+
+  --background-color: transparent;
+  --color: theme('colors.status-success-07');
+}

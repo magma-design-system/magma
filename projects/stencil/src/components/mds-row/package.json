@@ -1,0 +1,53 @@
+{
+  "name": "@maggioli-design-system/mds-row",
+  "version": "1.0.1",
+  "description": "mds-row is a web-component from Maggioli Design System Magma, built with StencilJS, TypeScript, Storybook. It's based on the web-component standard and it's designed to be agnostic from the JavaScirpt framework you are using.",
+  "main": "dist/index.cjs.js",
+  "module": "dist/custom-elements/index.js",
+  "es2015": "dist/esm/index.mjs",
+  "es2017": "dist/esm/index.mjs",
+  "types": "dist/custom-elements/index.d.ts",
+  "collection": "dist/collection/collection-manifest.json",
+  "collection:main": "dist/collection/index.js",
+  "unpkg": "dist/mds-row/mds-row.esm.js",
+  "files": [
+    "dist/",
+    "loader/",
+    "readme.md",
+    "src/",
+    "www/"
+  ],
+  "scripts": {
+    "build": "rm src/components.d.ts || true && stencil build --docs --docs-readme"
+  },
+  "dependencies": {
+    "@maggioli-design-system/design-tokens": "^4.2.1",
+    "@maggioli-design-system/icons": "^1.29.0",
+    "@maggioli-design-system/identity": "^1.8.3",
+    "@maggioli-design-system/styles": "^3.10.1",
+    "tailwindcss": "^2.2.19"
+},
+  "license": "MIT",
+  "author": {
+    "name": "Vittorio Vittori",
+    "email": "vittorio.vittori@maggioli.it",
+    "url": "http://vit.to"
+},
+  "contributors": [
+    {
+        "name": "Andrea Pruccoli",
+        "email": "andrea.pruccoli@maggioli.it",
+        "role": "Software Engineer"
+    },
+    {
+        "name": "Stefano Pascazi",
+        "email": "stefano.pascazi@maggioli.it",
+        "role": "Software Engineer"
+    },
+    {
+        "name": "Vittorio Vittori",
+        "email": "vittorio.vittori@maggioli.it",
+        "role": "UX UI Designer"
+    }
+]
+}

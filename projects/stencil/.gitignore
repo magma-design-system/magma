@@ -1,5 +1,8 @@
 /dist
 /loader
-/src/components/**/readme.md
 /src/components.d.ts
+/src/components/**/readme.md
+/src/components/**/src
+/src/components/**/stencil.config.ts
+/src/components/**/tsconfig.json
 /www

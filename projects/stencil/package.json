@@ -19,6 +19,7 @@
     "build.old": "stencil build",
     "build.watch": "stencil build --watch",
     "clean": "rimraf dist && rimraf loader && rimraf www && rimraf dist-storybook",
+    "generate.package": "node ./scripts/scaffold.mjs",
     "generate": "stencil generate",
     "lint": "npm run lint-ts && npm run lint-css",
     "lint-css": "stylelint --config ../../.stylelintrc.json 'src/**/*.css' --fix",
@@ -37,13 +38,13 @@
     "@maggioli-design-system/icons": "^1.29.0",
     "@maggioli-design-system/identity": "^1.8.3",
     "@maggioli-design-system/styles": "^3.10.1",
-    "@stencil/core": "^2.8.1",
-    "@stencil/state-tunnel": "^1.0.1"
+    "tailwindcss": "^2.2.19"
   },
   "license": "MIT",
   "devDependencies": {
     "@babel/core": "^7.14.6",
     "@babel/preset-react": "^7.14.5",
+    "@stencil/core": "^2.10.0",
     "@stencil/eslint-plugin": "0.3.1",
     "@stencil/postcss": "2.0.0",
     "@storybook/addon-actions": "^6.3.2",
@@ -63,14 +64,15 @@
     "clsx": "^1.1.1",
     "css-loader": "^5.2.6",
     "faker": "^5.5.3",
+    "handlebars": "^4.7.7",
     "postcss": "^8.3.5",
     "postcss-flexbugs-fixes": "^5.0.2",
     "postcss-import": "14.0.2",
     "postcss-loader": "^6.1.0",
     "rimraf": "^3.0.2",
     "sass-loader": "12.1.0",
-    "style-loader": "^3.0.0",
-    "tailwindcss": "2.2.7"
+    "stdio": "^2.1.1",
+    "style-loader": "^3.0.0"
   },
   "author": {
     "name": "Vittorio Vittori",
