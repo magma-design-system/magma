@@ -1,5 +1,5 @@
-import { Component, Host, h } from '@stencil/core'
-
+import { Component, Host, h, Listen, Prop } from '@stencil/core'
+import clsx from 'clsx'
 @Component({
   tag: 'mds-table-row',
   styleUrl: 'mds-table-row.css',
@@ -7,10 +7,20 @@ import { Component, Host, h } from '@stencil/core'
 })
 export class MdsTableRow {
 
+  /**
+   * Specifies if the table row are higlighted on mouseover event
+   */
+  @Prop({ reflect: true, mutable: true }) interactive?: boolean
+
+  @Listen('tableInteractive', { target: 'body' })
+  tableInteractiveHandler (event: CustomEvent<boolean>): void {
+    this.interactive = event.detail
+  }
+
   render () {
     return (
-      <Host class="table-row" role="row">
-        <slot></slot>
+      <Host class={clsx('table-row', this.interactive && 'table-row--interactive')} role="row">
+        <slot/>
       </Host>
     )
   }

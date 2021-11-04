@@ -11,13 +11,13 @@
   "collection:main": "dist/collection/index.js",
   "unpkg": "dist/{{ componentName }}/{{ componentName }}.esm.js",
   "files": [
-    "components.d.ts",
+    "src/components.d.ts",
     "dist/",
     "loader/",
     "readme.md"
   ],
   "scripts": {
-    "build": "rm src/components.d.ts || true && stencil build --docs --docs-readme"
+    "build": "stencil build --docs --docs-readme"
   },
   "dependencies": {{{ dependencies }}},
   "license": "MIT",

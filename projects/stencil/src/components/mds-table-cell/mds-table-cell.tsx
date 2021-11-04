@@ -8,17 +8,10 @@ import { TypographyType } from '../../types/typography'
 })
 export class MdsTableCell {
 
-  /**
-   * Specifies the font typography of the element
-   */
-  @Prop() readonly typography: TypographyType = 'detail'
-
   render () {
     return (
       <Host class="table-cell">
-        <mds-text typography={this.typography} role="gridcell">
-          <slot></slot>
-        </mds-text>
+        <slot></slot>
       </Host>
     )
   }

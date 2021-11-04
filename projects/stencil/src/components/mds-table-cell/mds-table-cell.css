@@ -2,7 +2,8 @@
 
 .table-cell {
   @apply
-    table-cell;
+    table-cell
+    transition-colors;
 
   background-color: var(--background, transparent);
   padding: var(--cell-padding, 0);

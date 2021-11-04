@@ -1,7 +1,7 @@
 {
-  "name": "@maggioli-design-system/mds-text",
-  "version": "1.0.5",
-  "description": "mds-text is a web-component from Maggioli Design System Magma, built with StencilJS, TypeScript, Storybook. It's based on the web-component standard and it's designed to be agnostic from the JavaScirpt framework you are using.",
+  "name": "@maggioli-design-system/mds-table-footer",
+  "version": "1.0.0",
+  "description": "mds-table-footer is a web-component from Maggioli Design System Magma, built with StencilJS, TypeScript, Storybook. It's based on the web-component standard and it's designed to be agnostic from the JavaScirpt framework you are using.",
   "main": "dist/index.cjs.js",
   "module": "dist/custom-elements/index.js",
   "es2015": "dist/esm/index.mjs",
@@ -9,23 +9,22 @@
   "types": "dist/custom-elements/index.d.ts",
   "collection": "dist/collection/collection-manifest.json",
   "collection:main": "dist/collection/index.js",
-  "unpkg": "dist/mds-text/mds-text.esm.js",
+  "unpkg": "dist/mds-table-footer/mds-table-footer.esm.js",
   "files": [
+    "src/components.d.ts",
     "dist/",
     "loader/",
-    "readme.md",
-    "src/",
-    "www/"
+    "readme.md"
   ],
   "scripts": {
-    "build": "rm src/components.d.ts || true && stencil build --docs --docs-readme"
+    "build": "stencil build --docs --docs-readme"
   },
   "dependencies": {
-    "@maggioli-design-system/design-tokens": "latest",
-    "@maggioli-design-system/styles": "latest",
-    "tailwindcss": "^2.2.19",
-    "typeface-karla": "^1.1.13",
-    "typeface-roboto": "^1.1.13"
+    "@maggioli-design-system/mds-table": "latest",
+    "@maggioli-design-system/mds-table-body": "latest",
+    "@maggioli-design-system/mds-table-cell": "latest",
+    "@maggioli-design-system/mds-table-header": "latest",
+    "@maggioli-design-system/mds-table-row": "latest"
 },
   "license": "MIT",
   "author": {

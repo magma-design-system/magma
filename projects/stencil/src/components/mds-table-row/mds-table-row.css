@@ -32,6 +32,6 @@
   @apply opacity-50;
 }
 
-.table-row:hover .table-cell {
+.table-row--interactive:hover .table-cell {
   background-color: var(--background-hover, theme('colors.adjust-tone-20'));
 }

@@ -1,4 +1,5 @@
-import { Component, Host, h } from '@stencil/core'
+import { Component, Event, EventEmitter, Host, h, Prop, Watch, Listen } from '@stencil/core'
+import clsx from 'clsx'
 
 @Component({
   tag: 'mds-table',
@@ -7,11 +8,32 @@ import { Component, Host, h } from '@stencil/core'
 })
 export class MdsTable {
 
+  /**
+   * Specifies if the table row are higlighted on mouseover event
+   */
+  @Prop() readonly interactive?: boolean
+
+  /**
+   * Dispatces when interactive property changes
+   */
+  @Event({ composed: true }) tableInteractive: EventEmitter<boolean>
+
+  componentDidLoad ():void {
+    this.tableInteractive.emit(this.interactive)
+    console.log('componentDidLoad')
+  }
+
+  @Watch('interactive')
+  onTableInteractive (): void {
+    console.log('mds-table onTableInteractive')
+    this.tableInteractive.emit(this.interactive)
+  }
+
   render () {
     return (
       <Host>
-        <table class="table" role="grid">
-          <slot></slot>
+        <table class={clsx('table', this.interactive && 'table--interactive')} role="grid">
+          <slot/>
         </table>
       </Host>
     )
