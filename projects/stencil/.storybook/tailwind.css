@@ -3,4 +3,4 @@
 @tailwind utilities;
 
 @import '@maggioli-design-system/styles/dist/tailwind/base.css';
-@import '@maggioli-design-system/styles/dist/tailwind/typography.css';
+@import '~@maggioli-design-system/styles/dist/tailwind/typography.css';

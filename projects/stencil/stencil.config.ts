@@ -4,9 +4,13 @@ import autoprefixer from 'autoprefixer'
 import tailwind from 'tailwindcss'
 import { reactOutputTarget } from '@stencil/react-output-target'
 
+const packageName = 'magma-components'
+const srcDir = './src'
+
 export const config: Config = {
-  namespace: 'mds-components',
+  namespace: packageName,
   taskQueue: 'async',
+  srcDir,
   buildEs5: true,
   outputTargets: [
     {
@@ -22,16 +26,17 @@ export const config: Config = {
     },
     {
       type: 'www',
-      serviceWorker: null, // disable service workers
+      serviceWorker: null,
     },
     {
-      type: 'dist',
+      type: 'stats',
+      file: './dist/stats.json',
     },
-    reactOutputTarget({
-      componentCorePackage: 'component-library',
-      proxiesFile: '../component-library-react/src/components.ts',
-      includeDefineCustomElements: true,
-    }),
+    // reactOutputTarget({
+    //   componentCorePackage: packageName,
+    //   proxiesFile: './dist/react-proxy.tsx',
+    //   includeDefineCustomElements: true,
+    // }),
   ],
   plugins: [
     postcss({
@@ -41,6 +46,6 @@ export const config: Config = {
         }),
         tailwind(),
       ],
-    })
+    }),
   ],
-};
+}

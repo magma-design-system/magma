@@ -1,6 +1,6 @@
 {
   "name": "@maggioli-design-system/magma",
-  "version": "0.45.0",
+  "version": "0.45.1",
   "description": "Stencil Component Starter",
   "main": "dist/index.cjs.js",
   "module": "dist/custom-elements/index.js",
@@ -16,10 +16,11 @@
   ],
   "scripts": {
     "build": "rm src/components.d.ts || true && stencil build --docs --docs-readme",
-    "build.old": "stencil build",
+    "build.old": "stencil build --docs --docs-readme",
     "build.watch": "stencil build --watch",
     "clean": "rimraf dist && rimraf loader && rimraf www && rimraf dist-storybook",
-    "generate.package": "node ./scripts/scaffold.mjs",
+    "package": "node ./scripts/scaffold.mjs",
+    "package.clean": "node ./scripts/scaffold-clean.mjs",
     "generate": "stencil generate",
     "lint": "npm run lint-ts && npm run lint-css",
     "lint-css": "stylelint --config ../../.stylelintrc.json 'src/**/*.css' --fix",

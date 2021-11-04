@@ -18,7 +18,7 @@ const copy = (fileName, componentName) => {
   copyFile(
     new URL(`${TEMPLATES_PATH}/${fileName}`, import.meta.url),
     new URL(`${COMPONENTS_PATH}/${componentName}/${fileName}`, import.meta.url),
-    fs.constants.COPYFILE_EXCL,
+    fs.constants.COPYFILE_FICLONE,
     (err) => {
       if (err) throw err
       console.log(`${fileName} was copied to ${componentName} component path.`)
@@ -34,10 +34,20 @@ async function main () {
   compilePackage(componentName)
   compileStencil(componentName)
   copy('tsconfig.json', componentName)
+  copy('tailwind.config.js', componentName)
 }
 
 const compilePackage = async (componentName) => {
+  const exists = !!(await fs.promises.stat(new URL(`${COMPONENTS_PATH}/${componentName}/package.json`, import.meta.url)).catch(() => null))
+  if (exists) {
+    console.log('File package.json previously created, skipping it.')
+    return
+  } else {
+    await createPackage(componentName)
+  }
+}
 
+const createPackage = async (componentName) => {
   const packageData = JSON.parse(
     await readFile(
       new URL(`${PROJECT_PATH}/package.json`, import.meta.url)

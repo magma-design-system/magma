@@ -19,7 +19,7 @@
     "resolveJsonModule": true
   },
   "include": [
-    "src"
+    "."
   ],
   "exclude": [
     "dist",
