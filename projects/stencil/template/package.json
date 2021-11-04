@@ -10,7 +10,7 @@
   "collection": "dist/collection/collection-manifest.json",
   "collection:main": "dist/collection/index.js",
   "unpkg": "dist/{{ componentName }}/{{ componentName }}.esm.js",
-  "files": [+
+  "files": [
     "components.d.ts",
     "dist/",
     "loader/",
