@@ -1,5 +1,4 @@
-import { Component, Host, h, Prop } from '@stencil/core'
-import { TypographyType } from '../../types/typography'
+import { Component, Host, h } from '@stencil/core'
 
 @Component({
   tag: 'mds-table-cell',
@@ -11,7 +10,7 @@ export class MdsTableCell {
   render () {
     return (
       <Host class="table-cell">
-        <slot></slot>
+        <slot/>
       </Host>
     )
   }
