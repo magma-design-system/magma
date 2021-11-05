@@ -1,0 +1,47 @@
+{
+  "name": "@maggioli-design-system/mds-flex-table-cell",
+  "version": "1.0.0",
+  "description": "mds-flex-table-cell is a web-component from Maggioli Design System Magma, built with StencilJS, TypeScript, Storybook. It's based on the web-component standard and it's designed to be agnostic from the JavaScirpt framework you are using.",
+  "main": "dist/index.cjs.js",
+  "module": "dist/custom-elements/index.js",
+  "es2015": "dist/esm/index.mjs",
+  "es2017": "dist/esm/index.mjs",
+  "types": "dist/custom-elements/index.d.ts",
+  "collection": "dist/collection/collection-manifest.json",
+  "collection:main": "dist/collection/index.js",
+  "unpkg": "dist/mds-flex-table-cell/mds-flex-table-cell.esm.js",
+  "files": [
+    "src/components.d.ts",
+    "dist/",
+    "loader/",
+    "readme.md"
+  ],
+  "scripts": {
+    "build": "stencil build --docs --docs-readme"
+  },
+  "dependencies": {
+    "@maggioli-design-system/mds-flex-table": "latest",
+    "@maggioli-design-system/mds-flex-table-body": "latest",
+    "@maggioli-design-system/mds-flex-table-footer": "latest",
+    "@maggioli-design-system/mds-flex-table-header": "latest",
+    "@maggioli-design-system/mds-flex-table-row": "latest"
+},
+  "license": "MIT",
+  "author": {
+    "name": "Vittorio Vittori",
+    "email": "vittorio.vittori@maggioli.it",
+    "url": "http://vit.to"
+},
+  "contributors": [
+    {
+        "name": "Andrea Pruccoli",
+        "email": "andrea.pruccoli@maggioli.it",
+        "role": "Software Engineer"
+    },
+    {
+        "name": "Vittorio Vittori",
+        "email": "vittorio.vittori@maggioli.it",
+        "role": "UX UI Designer"
+    }
+]
+}

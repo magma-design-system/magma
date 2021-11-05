@@ -1,4 +1,5 @@
-import { Component, Element, Host, h, Prop } from '@stencil/core'
+import { Component, Host, h, Listen, State } from '@stencil/core'
+import clsx from 'clsx'
 
 @Component({
   tag: 'mds-flex-table-body',
@@ -7,26 +8,17 @@ import { Component, Element, Host, h, Prop } from '@stencil/core'
 })
 export class MdsFlexTableBody {
 
-  @Element() el: HTMLMdsFlexTableBodyElement;
+  @State() interactive?: boolean
 
-  /**
-   * Specifies the template grid to use with table grid's elements
-   */
-  @Prop() readonly template?: string
-
-  componentWillLoad (): void {
-    this.el.childNodes.forEach(element => {
-      /* eslint-disable dot-notation */
-      if (element['template'] === undefined) {
-        element['template'] = this.template
-      }
-    })
+  @Listen('flexTableInteractive', { target: 'body' })
+  tableInteractiveHandler (event: CustomEvent<boolean>): void {
+    this.interactive = event.detail
   }
 
   render () {
     return (
-      <Host role="rowgroup">
-        <slot></slot>
+      <Host class={clsx('flex-table-body', this.interactive && 'flex-table-body--interactive')} role="rowgroup">
+        <slot/>
       </Host>
     )
   }

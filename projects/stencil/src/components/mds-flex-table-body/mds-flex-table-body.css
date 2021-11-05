@@ -7,12 +7,16 @@ mds-flex-table-body {
     flex-col
     overflow-auto;
 
-  background-color: var(--mds-flex-table-background, theme('colors.adjust-tone'));
-  border-radius: var(--mds-flex-table-border-radius, 0);
-  box-shadow: var(--mds-flex-table-shadow, none);
+  background-color: var(--background, theme('colors.adjust-tone'));
+  border-radius: var(--border-radius, 0);
+  box-shadow: var(--shadow, none);
   scroll-snap-type: y mandatory;
 }
 
 .no-wrap {
   @apply whitespace-nowrap;
+}
+
+.flex-table-body--interactive:hover mds-flex-table-row {
+  background-color: var(--background-hover, theme('colors.adjust-tone-20'));
 }

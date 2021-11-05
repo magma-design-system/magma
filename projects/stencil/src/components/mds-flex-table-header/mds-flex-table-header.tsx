@@ -1,4 +1,4 @@
-import { Component, Element, Host, h, Prop } from '@stencil/core'
+import { Component, Element, Host, Listen, State, h } from '@stencil/core'
 
 @Component({
   tag: 'mds-flex-table-header',
@@ -12,23 +12,27 @@ export class MdsFlexTableHeader {
   /**
    * Specifies the template for flex children elements
    */
-  @Prop() readonly template?: string
+  @State() template?: string
 
-  componentWillLoad (): void {
-    this.el.childNodes.forEach((element, index) => {
-      /* eslint-disable dot-notation */
+  private setTemplate = () => {
+
+    this.el.querySelectorAll('mds-flex-table-cell').forEach((element, index) => {
       const flexGrowTemplates: Array<string> = this.template.split(' ')
-      if (index > 0 && element['flexGrow'] === undefined) {
-        console.log(flexGrowTemplates[index - 1])
-        element['flexGrow'] = flexGrowTemplates[index - 1]
-      }
+      /* eslint-disable dot-notation */
+      element['flexGrow'] = flexGrowTemplates[index]
     })
+  }
+
+  @Listen('flexTableTemplateChanged', { target: 'body' })
+  tableInteractiveHandler (event: CustomEvent<string>): void {
+    this.template = event.detail
+    this.setTemplate()
   }
 
   render () {
     return (
       <Host role="row">
-        <slot></slot>
+        <slot/>
       </Host>
     )
   }

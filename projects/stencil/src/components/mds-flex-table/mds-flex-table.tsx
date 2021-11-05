@@ -1,5 +1,4 @@
-import { Component, Element, Host, h, Prop } from '@stencil/core'
-
+import { Component, Element, Event, EventEmitter, Host, h, Prop, Watch } from '@stencil/core'
 @Component({
   tag: 'mds-flex-table',
   styleUrl: 'mds-flex-table.css',
@@ -14,14 +13,34 @@ export class MdsFlexTable {
    */
   @Prop() readonly template?: string
 
-  componentWillLoad (): void {
-    this.el.childNodes.forEach(element => {
-      /* eslint-disable dot-notation */
-      console.log('HTMLMdsFlexTableElement', `"${this.template}"`)
-      if (element['template'] === undefined) {
-        element['template'] = this.template
-      }
-    })
+  /**
+   * Dispatces when template property changes
+   */
+  @Event({ composed: true }) flexTableTemplateChanged: EventEmitter<string>
+
+  @Watch('template')
+  onTemplateChanged (): void {
+    this.flexTableTemplateChanged.emit(this.template)
+  }
+
+  /**
+   * Specifies if the table row are higlighted on mouseover event
+   */
+  @Prop() readonly interactive?: boolean
+
+  /**
+   * Dispatces when interactive property changes
+   */
+  @Event({ composed: true }) flexTableInteractive: EventEmitter<boolean>
+
+  componentDidLoad ():void {
+    this.flexTableInteractive.emit(this.interactive)
+    this.flexTableTemplateChanged.emit(this.template)
+  }
+
+  @Watch('interactive')
+  onTableInteractive (): void {
+    this.flexTableInteractive.emit(this.interactive)
   }
 
   render () {

@@ -4,13 +4,9 @@ mds-flex-table-cell {
 
   @apply
     flex
-    flex-shrink
-    items-center;
+    flex-shrink;
 
+  align-items: var(--cell-align-items, center);
   flex-basis: 0%;
-  padding: var(--mds-flex-table-cell-padding, 0);
+  padding: var(--cell-padding, 0);
 }
-
-/* mds-text {
-  @apply truncate min-w-0;
-} */
