@@ -5,6 +5,6 @@
     table-cell
     transition-colors;
 
-  background-color: var(--background, transparent);
+  background-color: var(--background, theme('colors.adjust-tone'));
   padding: var(--cell-padding, 0);
 }
