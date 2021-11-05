@@ -20,12 +20,10 @@ export class MdsTable {
 
   componentDidLoad ():void {
     this.tableInteractive.emit(this.interactive)
-    console.log('componentDidLoad')
   }
 
   @Watch('interactive')
   onTableInteractive (): void {
-    console.log('mds-table onTableInteractive')
     this.tableInteractive.emit(this.interactive)
   }
 
