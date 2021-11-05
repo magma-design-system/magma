@@ -1,37 +1,48 @@
 {
-  "version": 2,
+  "version": 3,
   "projects": {
     "design-tokens": {
       "root": "projects/design-tokens",
-      "type": "library"
+      "type": "library",
+      "tags": ["type:lib"]
     },
     "font-icons-cli": {
       "root": "projects/font-icons-cli",
-      "type": "library"
-    },
-    "identity": {
-      "root": "projects/identity",
-      "type": "library"
+      "type": "library",
+      "tags": ["type:lib"],
+      "implicitDependencies": ["icons-svg"]
     },
     "icons": {
       "root": "projects/icons",
-      "type": "library"
+      "type": "library",
+      "tags": ["type:lib"],
+      "implicitDependencies": ["font-icons-cli"]
     },
     "icons-svg": {
       "root": "projects/icons-svg",
-      "type": "library"
+      "type": "library",
+      "tags": ["type:lib"]
+    },
+    "identity": {
+      "root": "projects/identity",
+      "type": "library",
+      "tags": ["type:lib"]
     },
     "react": {
       "root": "projects/react",
-      "type": "library"
+      "type": "library",
+      "tags": ["type:lib"],
+      "implicitDependencies": ["icons"]
     },
     "stencil": {
       "root": "projects/stencil",
-      "type": "library"
+      "type": "library",
+      "tags": ["type:lib"]
     },
     "styles": {
       "root": "projects/styles",
-      "type": "library"
+      "type": "library",
+      "tags": ["type:lib"]
     }
   }
 }

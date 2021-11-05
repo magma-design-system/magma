@@ -12,42 +12,8 @@
     "default": {
       "runner": "@nrwl/workspace/tasks-runners/default",
       "options": {
-        "cacheableOperations": [
-          "build",
-          "test",
-          "lint",
-          "package"
-        ]
+        "cacheableOperations": ["build", "test", "lint", "package"]
       }
-    }
-  },
-  "projects": {
-    "design-tokens": {
-      "tags": ["type:lib"]
-    },
-    "font-icons-cli": {
-      "tags": ["type:lib"],
-      "implicitDependencies": ["icons-svg"]
-    },
-    "identity": {
-      "tags": ["type:lib"]
-    },
-    "icons": {
-      "tags": ["type:lib"],
-      "implicitDependencies": ["font-icons-cli"]
-    },
-    "icons-svg": {
-      "tags": ["type:lib"]
-    },
-    "react": {
-      "tags": ["type:lib"],
-      "implicitDependencies": ["icons"]
-    },
-    "stencil": {
-      "tags": ["type:lib"]
-    },
-    "styles": {
-      "tags": ["type:lib"]
     }
   },
   "affected": {

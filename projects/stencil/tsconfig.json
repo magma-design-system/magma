@@ -25,6 +25,7 @@
     "dist",
     "loader",
     "node_modules",
+    "template",
     "www",
   ]
 }

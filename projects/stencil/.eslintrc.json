@@ -1,6 +1,5 @@
 {
   "extends": [
-    "../../.eslintrc.json",
     "plugin:@typescript-eslint/recommended",
     "plugin:@stencil/recommended"
   ],
@@ -31,7 +30,7 @@
         "@stencil/props-must-be-readonly": "off",
         "@stencil/async-methods": "error",
         "@stencil/ban-prefix": ["error", ["stencil", "stnl", "st"]],
-        "@stencil/decorators-context": "error",
+        "@stencil/decorators-context": "off",
         "@stencil/decorators-style": [
           "error", {
             "prop": "inline",
