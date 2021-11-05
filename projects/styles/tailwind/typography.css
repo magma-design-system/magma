@@ -52,6 +52,6 @@
   }
 
   .text-mono-hack {
-    @apply antialiased font-mono leading-relaxed text-xs;
+    @apply antialiased font-mono leading-relaxed text-sm;
   }
 }
