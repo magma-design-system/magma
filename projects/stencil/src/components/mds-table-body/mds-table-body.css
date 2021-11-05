@@ -8,3 +8,7 @@
   box-shadow: var(--shadow, none);
   overflow: hidden;
 }
+
+.table-body--interactive:hover .table-cell {
+  background-color: var(--background-hover, theme('colors.adjust-tone-20'));
+}

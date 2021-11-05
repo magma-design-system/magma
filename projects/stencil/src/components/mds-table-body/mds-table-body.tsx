@@ -1,5 +1,5 @@
-import { Component, Host, h } from '@stencil/core'
-
+import { Component, Listen, Host, h, State } from '@stencil/core'
+import clsx from 'clsx'
 @Component({
   tag: 'mds-table-body',
   styleUrl: 'mds-table-body.css',
@@ -7,10 +7,17 @@ import { Component, Host, h } from '@stencil/core'
 })
 export class MdsTableBody {
 
+  @State() interactive?: boolean
+
+  @Listen('tableInteractive', { target: 'body' })
+  tableInteractiveHandler (event: CustomEvent<boolean>): void {
+    this.interactive = event.detail
+  }
+
   render () {
     return (
-      <Host class="table-body" role="rowgroup">
-        <slot></slot>
+      <Host class={clsx('table-body', this.interactive && 'table-body--interactive')} role="rowgroup">
+        <slot/>
       </Host>
     )
   }

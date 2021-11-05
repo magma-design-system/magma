@@ -3,14 +3,16 @@
 :host {
 
   /**
-  * @prop --background: The cell background-color
-  * @prop --background-hover: The cell background-color when the mouse go over the table row element
+  * @prop --background: The cell background-color of the table body
+  * @prop --background-hover: The background-color of the table body when the mouse go over the table body element
+  * @prop --background-row-hover: The cell background-color when the mouse go over the table row element
   * @prop --border-color: The border color between table rows
   * @prop --border-radius: The radius of the table (header and footer excluded)
   * @prop --cell-padding: The cell padding used on table cell
   * @prop --shadow: The box-shadow used on the table (header and footer excluded)
   */
 
+  --background-row-hover: theme('colors.adjust-tone');
   --background-hover: theme('colors.adjust-tone-20');
   --background: theme('colors.adjust-tone');
   --border-color: theme('colors.adjust-tone-18');

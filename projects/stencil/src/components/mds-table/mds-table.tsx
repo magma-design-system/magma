@@ -1,4 +1,4 @@
-import { Component, Event, EventEmitter, Host, h, Prop, Watch, Listen } from '@stencil/core'
+import { Component, Event, EventEmitter, Host, h, Prop, Watch } from '@stencil/core'
 import clsx from 'clsx'
 
 @Component({
