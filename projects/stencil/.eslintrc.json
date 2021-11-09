@@ -3,14 +3,19 @@
     "plugin:@typescript-eslint/recommended"
   ],
   "parserOptions": {
-    "project": "./tsconfig.json"
+    "project": "tsconfig.json"
   },
   "ignorePatterns": [
-    "**/*.stories.js"
+    "**/*.stories.js",
+    "./**/dist/**/*.js",
+    "./**/dist/**/*.ts",
+    "./**/dist/**/*.tsx",
+    "./src/componnts.d.ts"
   ],
   "overrides": [
     {
       "files":[
+        "./**/*.mjs",
         "./**/*.tsx",
         "./**/*.ts"
       ],
