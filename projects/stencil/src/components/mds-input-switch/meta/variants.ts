@@ -5,14 +5,14 @@ const inputSwitchIconVariant = {
     iconUnchecked: null,
   },
   checkbox: {
-    iconChecked: 'form-checkbox-checked',
-    iconIndeterminate: 'form-checkbox-indeterminate',
-    iconUnchecked: 'form-checkbox-unchecked',
+    iconChecked: 'check-box',
+    iconIndeterminate: 'indeterminate-check-box',
+    iconUnchecked: 'check-box-outline-blank',
   },
   radio: {
-    iconChecked: 'form-radio-checked',
+    iconChecked: 'radio-button-checked',
     iconIndeterminate: null,
-    iconUnchecked: 'form-radio-unchecked',
+    iconUnchecked: 'radio-button-unchecked',
   },
 }
 
