@@ -108,13 +108,13 @@ function exportPDF (item) {
     svgDim.get(sourceFile, (err, dimensions) => {
       if (err) console.log(err)
       const { height, width } = dimensions
-      const scale = 0.25
-      const widthScaled = width - (width * scale)
-      const heightScaled = height - (height * scale)
+      // const scale = 0.25
+      // const widthScaled = width - (width * scale)
+      // const heightScaled = height - (height * scale)
       const doc = new PDFDocument({
-        size: [ widthScaled, heightScaled ],
+        size: [ width, height ],
       })
-      SVGtoPDF(doc, data, 0, 0, { width, height })
+      SVGtoPDF(doc, data, 0, 0, { assumePt: true })
       const stream = fs.createWriteStream(`dist/${item}.pdf`)
       stream.on('finish', () => {
         itemsCurrent = itemsCurrent + 1
