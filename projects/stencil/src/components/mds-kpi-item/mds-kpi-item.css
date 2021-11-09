@@ -42,7 +42,7 @@ mds-kpi-item {
 .value {
   color: var(--value-color);
   counter-set: num var(--value);
-  transition: --value 1s;
+  transition: --value 1s; /* stylelint-disable-line custom-property-no-missing-var-function */
 }
 
 .value::after {

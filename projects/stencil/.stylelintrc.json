@@ -3,11 +3,12 @@
     "https://stylelint.io/user-guide/rules/list",
     "https://github.com/kristerkari/stylelint-scss"
   ],
-  "extends": "../../.stylelintrc.json",
+  "extends": ["../../.stylelintrc.json"],
   "plugins": [
     "stylelint-order"
   ],
   "ignoreFiles": [
+    "**/dist/*.css",
     "**/*.js",
     "**/*.jsx",
     "**/*.svg"
