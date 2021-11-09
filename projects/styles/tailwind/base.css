@@ -8,7 +8,10 @@ html {
 }
 
 body {
-  @apply font-secondary text-secondary-detail text-adjust-tone-03;
+  @apply
+    font-secondary
+    text-secondary-detail
+    text-adjust-tone-04;
 
   -moz-osx-font-smoothing: grayscale;
   -webkit-font-smoothing: antialiased;
@@ -20,7 +23,11 @@ body {
 button,
 optgroup,
 select {
-  @apply antialiased font-medium font-primary leading-relaxed;
+  @apply
+    antialiased
+    font-medium
+    font-primary
+    leading-relaxed;
 }
 
 input,
@@ -32,7 +39,9 @@ textarea {
 
 b,
 strong {
-  @apply tracking-tight font-semibold;
+  @apply
+    tracking-tight
+    font-semibold;
 }
 
 a {
@@ -81,5 +90,7 @@ p {
 }
 
 ::selection {
-  @apply bg-brand-maggioli-15 text-brand-maggioli;
+  @apply
+    bg-brand-maggioli-15
+    text-brand-maggioli;
 }

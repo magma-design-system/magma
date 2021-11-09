@@ -1,14 +1,6 @@
-@mixin scaffold-property ($property-name, $variant, $value, $property-selector:$property-name, $interactive: true) {
+@mixin scaffold-property ($property-name, $variant, $value, $property-selector:$property-name) {
   .#{$property-selector}-#{$variant} {
     #{$property-name}: $value !important;
-  }
-
-  @if ($interactive) {
-    .hover\:#{$property-selector}-#{$variant} {
-      &:hover {
-        #{$property-name}: $value !important;
-      }
-    }
   }
 }
 

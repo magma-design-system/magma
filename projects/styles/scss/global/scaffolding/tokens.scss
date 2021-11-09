@@ -18,12 +18,6 @@
     .#{$property-selector}-#{$selector} {
       #{$property-name}: color($color-name, $contrast-level) !important;
     }
-
-    .hover\:#{$property-selector}-#{$selector} {
-      &:hover {
-        #{$property-name}: color($color-name, $contrast-level) !important;
-      }
-    }
   } @else {
     .color-mode {
       &--auto {
