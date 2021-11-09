@@ -1,6 +1,6 @@
 {
   "name": "@maggioli-design-system/mds-row",
-  "version": "1.0.2",
+  "version": "1.0.3",
   "description": "mds-row is a web-component from Maggioli Design System Magma, built with StencilJS, TypeScript, Storybook. It's based on the web-component standard and it's designed to be agnostic from the JavaScirpt framework you are using.",
   "main": "dist/index.cjs.js",
   "module": "dist/custom-elements/index.js",
@@ -20,13 +20,6 @@
   "scripts": {
     "build": "stencil build --docs --docs-readme"
   },
-  "dependencies": {
-    "@maggioli-design-system/design-tokens": "^4.2.1",
-    "@maggioli-design-system/icons": "^1.29.0",
-    "@maggioli-design-system/identity": "^1.8.3",
-    "@maggioli-design-system/styles": "^3.10.1",
-    "tailwindcss": "^2.2.19"
-},
   "license": "MIT",
   "author": {
     "name": "Vittorio Vittori",
