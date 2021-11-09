@@ -1,6 +1,6 @@
 {
   "name": "@maggioli-design-system/font-icons-cli",
-  "version": "1.15.1",
+  "version": "1.15.2",
   "description": "Font icons CLI, part of Maggioli Design System, it's used by mgg-icons module to generate the font library from SVG icons.",
   "repository": {
     "type": "git",
@@ -57,7 +57,7 @@
   },
   "dependencies": {
     "@maggioli-design-system/icons-svg": "^2.2.0",
-    "@mdi/svg": "^5.9.55",
+    "@mdi/svg": "^6.4.95",
     "material-design-icons-updated": "^7.0.0"
   },
   "devDependencies": {
