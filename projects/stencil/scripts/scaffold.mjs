@@ -28,8 +28,16 @@ const copy = (fileName, componentName) => {
 
 async function main () {
   console.log('This script will scaffold stencil and package.json global configuration into a specific component.')
-  const componentName = await ask('Component name')
+  const continueTask = await ask('Continue?', { options: ['y', 'n', ''] });
 
+  if (continueTask === 'n') {
+    return
+  }
+  askComponentName()
+}
+
+async function askComponentName () {
+  const componentName = await ask('Component name')
   console.log('Creating component "%s"', componentName)
   compilePackage(componentName)
   compileStencil(componentName)
@@ -101,5 +109,5 @@ const compileStencil = (componentName) => {
 }
 
 main()
-  .then(() => console.log('Component created.'))
+  .then(() => console.log('Process finished.'))
   .catch(error => console.warn(error))
