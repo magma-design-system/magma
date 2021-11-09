@@ -16,7 +16,7 @@ export class MdsFlexTableFooter {
 
   private setTemplate = () => {
 
-    this.el.querySelectorAll('mds-flex-table-cell').forEach((element, index) => {
+    this.el.querySelectorAll('mds-flex-table-cell').forEach((element: HTMLMdsFlexTableCellElement, index: number) => {
       const flexGrowTemplates: Array<string> = this.template.split(' ')
       /* eslint-disable dot-notation */
       element['flexGrow'] = flexGrowTemplates[index]
