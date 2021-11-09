@@ -21,7 +21,7 @@ export const config: Config = {
     },
     {
       type: 'docs-readme',
-      footer: 'Build with love @ **Maggioli Informatica / R&D Department**',
+      footer: 'Built with love @ **Maggioli Informatica / R&D Department**',
     },
     {
       type: 'www',
