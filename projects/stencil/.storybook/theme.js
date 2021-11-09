@@ -1,5 +1,5 @@
 import { create } from '@storybook/theming'
-import brandImage from '@maggioli-design-system/identity/dist/gruppo-maggioli/logo-gruppo-maggioli.svg'
+import brandImage from './magma-design-system.svg'
 export default create({
   base: 'light',
   colorPrimary: '#00379e',
