@@ -13,7 +13,7 @@ import {
 })
 export class MdsTabItem {
 
-  @Element() private element: HTMLMdsTabItemElement;
+  @Element() private element: HTMLMdsTabItemElement
   @State() isSelected: boolean
 
   /**

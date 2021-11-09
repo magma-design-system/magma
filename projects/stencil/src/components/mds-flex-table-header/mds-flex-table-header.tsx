@@ -7,7 +7,7 @@ import { Component, Element, Host, Listen, State, h } from '@stencil/core'
 })
 export class MdsFlexTableHeader {
 
-  @Element() el: HTMLMdsFlexTableHeaderElement;
+  @Element() el: HTMLMdsFlexTableHeaderElement
 
   /**
    * Specifies the template for flex children elements

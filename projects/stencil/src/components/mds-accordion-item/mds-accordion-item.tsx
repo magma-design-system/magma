@@ -9,7 +9,7 @@ import { TypographyPrimaryType } from '../../types/typography'
 })
 export class MdsAccordionItem {
 
-  @Element() private element: HTMLMdsAccordionItemElement;
+  @Element() private element: HTMLMdsAccordionItemElement
   @State() isOpened:boolean
 
   /**

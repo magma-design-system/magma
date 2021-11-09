@@ -7,7 +7,7 @@ import { Component, Element, Event, EventEmitter, Host, h, Prop } from '@stencil
 })
 export class MdsPaginator {
 
-  @Element() private element: HTMLMdsPaginatorElement;
+  @Element() private element: HTMLMdsPaginatorElement
 
   /**
    * Specifies the number of total pages to be handled

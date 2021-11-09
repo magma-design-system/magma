@@ -7,7 +7,7 @@ import { Component, Element, Host, h, Prop, Listen } from '@stencil/core'
 })
 export class MdsAccordion {
 
-  @Element() private element: HTMLMdsAccordionElement;
+  @Element() private element: HTMLMdsAccordionElement
 
   /**
    * Choose if multiple siblings can be opened simultaneously

@@ -21,7 +21,7 @@ export class MdsButton {
   private typography?: TypographyType
   private hasText?: boolean
 
-  @Element() hostElement: HTMLMdsButtonElement;
+  @Element() hostElement: HTMLMdsButtonElement
 
   /**
    * The icon displayed in the button

@@ -8,7 +8,7 @@ import clsx from 'clsx'
 })
 export class MdsFlexTableRow {
 
-  @Element() el: HTMLMdsFlexTableRowElement;
+  @Element() el: HTMLMdsFlexTableRowElement
 
   /**
    * Specifies the template for flex children elements

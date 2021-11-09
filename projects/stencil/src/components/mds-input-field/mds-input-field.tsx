@@ -88,7 +88,7 @@ export class MdsInputField {
   /**
    * Is needed to reference the form data after the form is submitted
    */
-  @Prop() name?: string;
+  @Prop() name?: string
 
   /**
    * Specifies a regular expression that element\'s value is checked against

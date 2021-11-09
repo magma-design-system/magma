@@ -30,12 +30,10 @@ import { ThemeStatusVariantType } from '../../types/variant'
 
 export class MdsInput {
 
-  private nativeInput?: HTMLInputElement | HTMLTextAreaElement;
-  private tabindex?: number;
-
-  @Element() el!: HTMLMdsInputElement;
-
-  @State() hasFocus = false;
+  private nativeInput?: HTMLInputElement | HTMLTextAreaElement
+  private tabindex?: number
+  @Element() el!: HTMLMdsInputElement
+  @State() hasFocus = false
 
   /**
    * Specifies whether the element should have autocomplete enabled
@@ -92,7 +90,7 @@ export class MdsInput {
   /**
    * Is needed to reference the form data after the form is submitted
    */
-  @Prop() readonly name?: string;
+  @Prop() readonly name?: string
 
   /**
    * Specifies a regular expression that element\'s value is checked against

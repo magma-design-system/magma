@@ -6,22 +6,7 @@ import { Component, Element, Event, EventEmitter, Host, h, Prop, Watch } from '@
 })
 export class MdsFlexTable {
 
-  @Element() el: HTMLMdsFlexTableElement;
-
-  /**
-   * Specifies the template for flex children elements
-   */
-  @Prop() readonly template?: string
-
-  /**
-   * Dispatces when template property changes
-   */
-  @Event({ composed: true }) flexTableTemplateChanged: EventEmitter<string>
-
-  @Watch('template')
-  onTemplateChanged (): void {
-    this.flexTableTemplateChanged.emit(this.template)
-  }
+  @Element() el: HTMLMdsFlexTableElement
 
   /**
    * Specifies if the table row are higlighted on mouseover event
@@ -29,18 +14,33 @@ export class MdsFlexTable {
   @Prop() readonly interactive?: boolean
 
   /**
+   * Specifies the template for flex children elements
+   */
+  @Prop() readonly template?: string
+
+  /**
    * Dispatces when interactive property changes
    */
   @Event({ composed: true }) flexTableInteractive: EventEmitter<boolean>
 
-  componentDidLoad ():void {
-    this.flexTableInteractive.emit(this.interactive)
-    this.flexTableTemplateChanged.emit(this.template)
-  }
+  /**
+   * Dispatces when template property changes
+   */
+  @Event({ composed: true }) flexTableTemplateChanged: EventEmitter<string>
 
   @Watch('interactive')
   onTableInteractive (): void {
     this.flexTableInteractive.emit(this.interactive)
+  }
+
+  @Watch('template')
+  onTemplateChanged (): void {
+    this.flexTableTemplateChanged.emit(this.template)
+  }
+
+  componentDidLoad ():void {
+    this.flexTableInteractive.emit(this.interactive)
+    this.flexTableTemplateChanged.emit(this.template)
   }
 
   render () {
