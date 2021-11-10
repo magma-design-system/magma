@@ -1,6 +1,6 @@
 {
   "name": "@maggioli-design-system/mds-table-footer",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "description": "mds-table-footer is a web-component from Maggioli Design System Magma, built with StencilJS, TypeScript, Storybook. It's based on the web-component standard and it's designed to be agnostic from the JavaScirpt framework you are using.",
   "main": "dist/index.cjs.js",
   "module": "dist/custom-elements/index.js",
@@ -25,7 +25,8 @@
     "@maggioli-design-system/mds-table-body": "latest",
     "@maggioli-design-system/mds-table-cell": "latest",
     "@maggioli-design-system/mds-table-header": "latest",
-    "@maggioli-design-system/mds-table-row": "latest"
+    "@maggioli-design-system/mds-table-row": "latest",
+    "@stencil/core": "^2.10.0"
   },
   "license": "MIT",
   "author": {

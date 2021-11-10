@@ -2341,11 +2341,6 @@
   resolved "https://registry.yarnpkg.com/@maggioli-design-system/design-tokens/-/design-tokens-4.2.1.tgz#05e8c12e0b95f06402404951d4e3bbf50ca80b65"
   integrity sha512-pC2XO3aDG4zDItYRszoNKCy2d7UR+sXkL+RhQ109mpCyfCQz5unvydlkiimvpQgHJGBdr7A3v+WiD4AYiEcwIQ==
 
-"@maggioli-design-system/icons@^1.29.0":
-  version "1.30.0"
-  resolved "https://registry.yarnpkg.com/@maggioli-design-system/icons/-/icons-1.30.0.tgz#2a1b607022bb61be1d3a192ce2db3429bb368f27"
-  integrity sha512-ArSTW0xitubQgSIWCrXk/zH+8VinTnBelJHvep/7hZAG+K/It6zi1SFdc5OuQlHY9V1/+xTOf0D/2EMa1HVRMQ==
-
 "@maggioli-design-system/icons@latest":
   version "1.29.1"
   resolved "https://registry.yarnpkg.com/@maggioli-design-system/icons/-/icons-1.29.1.tgz#7595bfcd79d2a02173186f4a581f75c251ffc1f1"
