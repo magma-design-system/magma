@@ -2,6 +2,7 @@ import { ask } from 'stdio';
 import Handlebars from 'handlebars'
 import { readFile, copyFile } from 'fs/promises'
 import fs from 'fs'
+import chalk from 'chalk'
 const PROJECT_PATH = '..'
 const COMPONENTS_PATH = `${PROJECT_PATH}/src/components`
 const TEMPLATES_PATH = `${PROJECT_PATH}/template`
@@ -27,13 +28,14 @@ const copy = (fileName, componentName) => {
 }
 
 async function main () {
-  console.log('This script will scaffold stencil and package.json global configuration into a specific component.')
+  console.log(`This script will ${chalk.green('scaffold')} stencil and package.json global configuration into a specific component.`)
   const continueTask = await ask('Continue?', { options: ['y', 'n', ''] });
 
   if (continueTask === 'n') {
     return
   }
-  askComponentName()
+  await askComponentName()
+  console.log('Process finished.')
 }
 
 async function askComponentName () {
@@ -108,6 +110,4 @@ const compileStencil = (componentName) => {
   )
 }
 
-main()
-  .then(() => console.log('Process finished.'))
-  .catch(error => console.warn(error))
+main().catch(error => console.warn(error))

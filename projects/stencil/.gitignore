@@ -9,4 +9,5 @@
 /src/components/**/tailwind.config.js
 /src/components/**/tsconfig.json
 /src/components/**/types
+/src/stencil.config.ts
 /www

@@ -6,7 +6,7 @@ const packageName = '{{ componentName }}'
 const srcDir = './'
 
 export const config: Config = {
+  ...baseConfig,
   namespace: packageName,
   srcDir,
-  ...baseConfig,
 }

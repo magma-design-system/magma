@@ -17,7 +17,9 @@
     "readme.md"
   ],
   "scripts": {
-    "build": "stencil build --docs --docs-readme"
+    "clean:before": "rm -rf dist && rm -rf loader && rm -rf src && rm -rf www",
+    "clean:after": "rm -rf dist/types/",
+    "build": "npm run clean:before && stencil build --config ./stencil.config.ts --debug --docs --docs-readme && npm run clean:after"
   },
   "dependencies": {{{ dependencies }}},
   "license": "MIT",

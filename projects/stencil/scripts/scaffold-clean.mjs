@@ -1,16 +1,18 @@
 import { ask } from 'stdio';
 import { rm } from 'fs/promises'
+import chalk from 'chalk'
 const PROJECT_PATH = '..'
 const COMPONENTS_PATH = `${PROJECT_PATH}/src/components`
 
 async function main () {
-  console.log('This script will DELETE the stencil and package.json global configuration from a specific component.')
+  console.log(`This script will ${chalk.red('DELETE')} the stencil and package.json global configuration from a specific component.`)
   const continueTask = await ask('Continue?', { options: ['y', 'n', ''] });
 
   if (continueTask === 'n') {
     return
   }
-  cleanComponent()
+  await cleanComponent()
+  console.log('Process finished.')
 }
 
 async function cleanComponent () {
@@ -43,6 +45,4 @@ async function cleanComponent () {
   })
 }
 
-main()
-  .then(() => console.log('Process finished.'))
-  .catch(error => console.warn(error))
+main().catch(error => console.warn(error))
