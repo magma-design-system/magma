@@ -11,7 +11,7 @@ import './TreeView.scss'
 
 let totItems = 0
 
-const TreeViewItem = ({ selectItem, openedItem, itemSelected, className, expanded, itemId, text, onClick, ...restProps }) => {
+const TreeViewItem = ({ selectItem, openedItem, itemSelected, className, expanded, itemId, text, onCallback, ...restProps }) => {
   const [isExpanded, setStatus] = useState(expanded)
   const [id, setId] = useState(itemId)
 
@@ -36,7 +36,7 @@ const TreeViewItem = ({ selectItem, openedItem, itemSelected, className, expande
 
   const select = e => {
     e.stopPropagation()
-    onClick()
+    onCallback()
     setStatus(!isExpanded)
     selectItem(itemId)
     if (openedItem) {
@@ -65,14 +65,14 @@ TreeViewItem.propTypes = {
   selectItem: PropTypes.func,
   openedItem: PropTypes.func,
   itemSelected: PropTypes.number,
-  onClick: PropTypes.func,
+  onCallback: PropTypes.func,
 }
 
 TreeViewItem.defaultProps = {
   expanded: false,
   selectItem: () => {},
   itemSelected: 0,
-  onClick: () => {},
+  onCallback: () => {},
 }
 
 const TreeView = ({ className, ...restProps }) => {
