@@ -11,15 +11,13 @@
   "collection:main": "dist/collection/index.js",
   "unpkg": "dist/{{ componentName }}/{{ componentName }}.esm.js",
   "files": [
-    "src/components.d.ts",
+    "src/",
     "dist/",
     "loader/",
     "readme.md"
   ],
   "scripts": {
-    "clean:before": "rm -rf dist && rm -rf loader && rm -rf src && rm -rf www",
-    "clean:after": "rm -rf dist/types/",
-    "build": "npm run clean:before && stencil build --config ./stencil.config.ts --debug --docs --docs-readme && npm run clean:after"
+    "build": "stencil build --docs-readme"
   },
   "dependencies": {{{ dependencies }}},
   "license": "MIT",

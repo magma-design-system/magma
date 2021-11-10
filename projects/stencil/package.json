@@ -19,6 +19,7 @@
     "build.old": "stencil build --docs --docs-readme",
     "build.watch": "stencil build --watch",
     "clean": "rimraf dist && rimraf loader && rimraf www && rimraf dist-storybook",
+    "isolate-component": "node ./scripts/isolate-component.mjs",
     "package": "node ./scripts/scaffold.mjs",
     "package.clean": "node ./scripts/scaffold-clean.mjs",
     "generate": "stencil generate",

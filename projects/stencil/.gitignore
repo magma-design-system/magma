@@ -11,3 +11,4 @@
 /src/components/**/types
 /src/stencil.config.ts
 /www
+/.build
