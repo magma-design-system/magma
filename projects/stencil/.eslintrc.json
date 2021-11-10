@@ -7,10 +7,10 @@
   },
   "ignorePatterns": [
     "**/*.stories.js",
-    "./**/dist/**/*.js",
-    "./**/dist/**/*.ts",
-    "./**/dist/**/*.tsx",
-    "./src/componnts.d.ts"
+    "./.build",
+    "./dist",
+    "./src/componnts.d.ts",
+    "./template"
   ],
   "overrides": [
     {

@@ -11,10 +11,11 @@
   "collection:main": "dist/collection/index.js",
   "unpkg": "dist/{{ componentName }}/{{ componentName }}.esm.js",
   "files": [
-    "src/",
     "dist/",
     "loader/",
-    "readme.md"
+    "readme.md",
+    "src/",
+    "www/"
   ],
   "scripts": {
     "build": "stencil build --docs-readme"

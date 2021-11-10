@@ -1,6 +1,6 @@
 {
   "name": "@maggioli-design-system/magma",
-  "version": "0.46.0",
+  "version": "0.46.1",
   "description": "Stencil Component Starter",
   "main": "dist/index.cjs.js",
   "module": "dist/custom-elements/index.js",
@@ -40,13 +40,13 @@
     "@maggioli-design-system/icons": "^1.29.0",
     "@maggioli-design-system/identity": "^1.8.3",
     "@maggioli-design-system/styles": "^3.10.1",
+    "@stencil/core": "^2.10.0",
     "tailwindcss": "^2.2.19"
   },
   "license": "MIT",
   "devDependencies": {
     "@babel/core": "^7.16.0",
     "@babel/preset-react": "^7.16.0",
-    "@stencil/core": "^2.10.0",
     "@stencil/eslint-plugin": "^0.4.0",
     "@stencil/postcss": "2.1.0",
     "@storybook/addon-actions": "^6.3.12",

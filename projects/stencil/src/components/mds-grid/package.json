@@ -11,21 +11,21 @@
   "collection:main": "dist/collection/index.js",
   "unpkg": "dist/mds-grid/mds-grid.esm.js",
   "files": [
-    "src/components.d.ts",
     "dist/",
     "loader/",
-    "readme.md"
+    "readme.md",
+    "src/",
+    "www/"
   ],
   "scripts": {
-    "clean": "rm -rf dist && rm -rf loader && rm -rf src && rm -rf www",
-    "build": "npm run clean && stencil build --config ./stencil.config.ts --docs --docs-readme && rm -rf dist/types/"
+    "build": "stencil build --docs-readme"
   },
   "license": "MIT",
   "author": {
     "name": "Vittorio Vittori",
     "email": "vittorio.vittori@maggioli.it",
     "url": "http://vit.to"
-},
+  },
   "contributors": [
     {
         "name": "Andrea Pruccoli",
@@ -37,5 +37,5 @@
         "email": "vittorio.vittori@maggioli.it",
         "role": "UX UI Designer"
     }
-]
+  ]
 }

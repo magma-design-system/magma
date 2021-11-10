@@ -11,13 +11,14 @@
   "collection:main": "dist/collection/index.js",
   "unpkg": "dist/mds-table-cell/mds-table-cell.esm.js",
   "files": [
-    "src/components.d.ts",
     "dist/",
     "loader/",
-    "readme.md"
+    "readme.md",
+    "src/",
+    "www/"
   ],
   "scripts": {
-    "build": "stencil build --docs --docs-readme"
+    "build": "stencil build --docs-readme"
   },
   "dependencies": {
     "@maggioli-design-system/mds-table": "latest",
@@ -25,13 +26,13 @@
     "@maggioli-design-system/mds-table-footer": "latest",
     "@maggioli-design-system/mds-table-header": "latest",
     "@maggioli-design-system/mds-table-row": "latest"
-},
+  },
   "license": "MIT",
   "author": {
     "name": "Vittorio Vittori",
     "email": "vittorio.vittori@maggioli.it",
     "url": "http://vit.to"
-},
+  },
   "contributors": [
     {
         "name": "Andrea Pruccoli",
@@ -43,5 +44,5 @@
         "email": "vittorio.vittori@maggioli.it",
         "role": "UX UI Designer"
     }
-]
+  ]
 }

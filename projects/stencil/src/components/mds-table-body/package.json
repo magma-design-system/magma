@@ -11,13 +11,14 @@
   "collection:main": "dist/collection/index.js",
   "unpkg": "dist/mds-table-body/mds-table-body.esm.js",
   "files": [
-    "src/components.d.ts",
     "dist/",
     "loader/",
-    "readme.md"
+    "readme.md",
+    "src/",
+    "www/"
   ],
   "scripts": {
-    "build": "stencil build --docs --docs-readme"
+    "build": "stencil build --docs-readme"
   },
   "dependencies": {
     "@maggioli-design-system/mds-table": "latest",
