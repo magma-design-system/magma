@@ -1,0 +1,89 @@
+@tailwind utilities;
+
+:host {
+
+  /**
+   * @prop --background: The background-color of the entity
+   * @prop --background-icon: The background-color of the icon
+   * @prop --background-delete: The background-color of the delete action
+   * @prop --color: The color of the entity name
+   * @prop --color-delete: The icon color of the delete action
+   * @prop --color-detail: The color of the text details
+   * @prop --color-icon: The color of the icon
+  */
+
+  @apply
+    flex
+    gap-2
+    items-center
+    p-2
+    rounded-lg;
+
+  background-color: var(--background, theme('colors.adjust-tone'));
+  color: var(--color, theme('colors.adjust-tone-04'));
+}
+
+.avatar,
+.delete,
+.icon {
+  @apply
+    flex-shrink-0
+    rounded
+    w-11;
+}
+
+.icon {
+  @apply
+    inline-flex
+    items-center
+    justify-center;
+
+  aspect-ratio: 1/1;
+  background-color: var(--background-icon, theme('colors.label-blue-18'));
+  color: var(--color-icon, theme('colors.label-blue-08'));
+}
+
+.delete {
+  @apply
+    cursor-pointer
+    inline-flex
+    items-center
+    justify-center
+    rounded-full;
+
+  aspect-ratio: 1/1;
+  background-color: var(--background-delete, theme('colors.status-error-18'));
+  color: var(--color-delete, theme('colors.status-error-08'));
+}
+
+.infos {
+  @apply
+    flex
+    flex-col
+    flex-grow
+    gap-0
+    min-w-0
+    whitespace-nowrap;
+}
+
+.details {
+  @apply
+    flex
+    gap-1
+    items-center;
+
+  color: var(--color-detail, theme('colors.adjust-tone-08'));
+}
+
+::slotted ( * ) {
+  @apply
+    truncate
+    whitespace-nowrap;
+}
+
+.title {
+  @apply
+    flex
+    min-w-0
+    truncate;
+}
