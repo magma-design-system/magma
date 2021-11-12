@@ -2,6 +2,7 @@ import { Component, Host, h, Prop } from '@stencil/core'
 import { ExtensionSuffixType } from './meta/types'
 import { fileFormatsVariant } from './meta/variants'
 import { fileExtensionsDictionary } from './meta/dictionary'
+import { ThemeFullVariantType } from '../../types/variant'
 
 @Component({
   tag: 'mds-download',
@@ -75,8 +76,7 @@ export class MdsDownload {
 
   render () {
     const { format, description } = this.getExtensionInfos()
-    const { background, color, icon, iconBackground } = fileFormatsVariant[format]
-
+    const { variant, color, icon, iconBackground } = fileFormatsVariant[format]
     return (
       <Host>
         <div class={`preview ${color} ${iconBackground}`}>
@@ -91,7 +91,7 @@ export class MdsDownload {
             { this.suffix === undefined && this.getSuffix() && <mds-text typography="h6" class="extension">.{ this.getSuffix() }</mds-text> }
           </div>
           <div class="detail">
-            { this.getSuffix() && <mds-badge class={`suffix ${background} ${color}`}>{ this.getSuffix() }</mds-badge> }
+            { this.getSuffix() && <mds-badge variant={variant as ThemeFullVariantType} tone="quiet" class="suffix">{ this.getSuffix() }</mds-badge> }
             <mds-text typography="caption" class="description" title={ this.description || description }>{ this.description || description }</mds-text>
           </div>
         </div>
