@@ -1,6 +1,6 @@
 {
   "name": "@maggioli-design-system/magma",
-  "version": "0.46.1",
+  "version": "0.47.0",
   "description": "Stencil Component Starter",
   "main": "dist/index.cjs.js",
   "module": "dist/custom-elements/index.js",
@@ -15,7 +15,7 @@
     "loader/"
   ],
   "scripts": {
-    "build": "rm src/components.d.ts || true && stencil build --docs --docs-readme",
+    "build": "rm src/components.d.ts || true && stencil build --docs-readme",
     "build.old": "stencil build --docs --docs-readme",
     "build.watch": "stencil build --watch",
     "clean": "rimraf dist && rimraf loader && rimraf www && rimraf dist-storybook",
