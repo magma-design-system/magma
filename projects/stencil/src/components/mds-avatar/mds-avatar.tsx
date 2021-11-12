@@ -12,7 +12,7 @@ export class MdsAvatar {
   @State() loaded: boolean
 
   /**
-   * The placeholder icon in case the image is broken or not set
+   * Specifies the path to the image
    */
   @Prop() readonly src?: string
 
