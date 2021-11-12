@@ -1,0 +1,20 @@
+@tailwind utilities;
+
+:host ( [variant=light] ),
+:host ( [variant=light][tone=strong] ) {
+
+  --background: theme('colors.adjust-tone-20');
+  --color: theme('colors.adjust-tone-06');
+}
+
+:host ( [variant=light][tone=weak] ) {
+
+  --background: theme('colors.adjust-tone-19');
+  --color: theme('colors.adjust-tone-05');
+}
+
+:host ( [variant=light][tone=quiet] ) {
+
+  --background: theme('colors.adjust-tone-18');
+  --color: theme('colors.adjust-tone-04');
+}

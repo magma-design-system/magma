@@ -1,19 +1,43 @@
-@tailwind components;
 @tailwind utilities;
 
 :host {
 
-  --background-color: theme('colors.label-sky-18');
+  /**
+    * @prop --background: Sets the background-color of the component
+    * @prop --border-radius: Sets the border-radius of the component
+    * @prop --color: Sets the text color of the component
+    */
+
+  --background: theme('colors.label-sky-18');
   --border-radius: theme('borderRadius.DEFAULT');
   --color: theme('colors.label-sky-06');
 
   @apply
     inline-flex
     items-center
+    min-w-min
     px-2
-    py-1;
+    py-1
+    transition-colors;
 
-  background-color: var(--background-color);
+  background-color: var(--background);
   border-radius: var(--border-radius);
   color: var(--color);
 }
+
+@import './css/mds-badge-variant-amaranth.css';
+@import './css/mds-badge-variant-aqua.css';
+@import './css/mds-badge-variant-blue.css';
+@import './css/mds-badge-variant-dark.css';
+@import './css/mds-badge-variant-error.css';
+@import './css/mds-badge-variant-green.css';
+@import './css/mds-badge-variant-info.css';
+@import './css/mds-badge-variant-light.css';
+@import './css/mds-badge-variant-lime.css';
+@import './css/mds-badge-variant-orange.css';
+@import './css/mds-badge-variant-orchid.css';
+@import './css/mds-badge-variant-sky.css';
+@import './css/mds-badge-variant-success.css';
+@import './css/mds-badge-variant-violet.css';
+@import './css/mds-badge-variant-warning.css';
+@import './css/mds-badge-variant-yellow.css';

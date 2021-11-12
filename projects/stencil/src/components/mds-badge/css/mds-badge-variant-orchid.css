@@ -1,0 +1,20 @@
+@tailwind utilities;
+
+:host ( [variant=orchid] ),
+:host ( [variant=orchid][tone=strong] ) {
+
+  --background: theme('colors.label-orchid-08');
+  --color: theme('colors.label-orchid-20');
+}
+
+:host ( [variant=orchid][tone=weak] ) {
+
+  --background: theme('colors.label-orchid-16');
+  --color: theme('colors.label-orchid-04');
+}
+
+:host ( [variant=orchid][tone=quiet] ) {
+
+  --background: theme('colors.label-orchid-18');
+  --color: theme('colors.label-orchid-08');
+}
