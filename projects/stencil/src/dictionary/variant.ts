@@ -19,6 +19,25 @@ const themeStatusVariantDictionary = [
   'warning',
 ]
 
+const themeFullVariantDictionary = [
+  'amaranth',
+  'aqua',
+  'blue',
+  'dark',
+  'error',
+  'green',
+  'info',
+  'light',
+  'lime',
+  'orange',
+  'orchid',
+  'sky',
+  'success',
+  'violet',
+  'warning',
+  'yellow',
+]
+
 const themeLabelVariantDictionary = [
   'amaranth',
   'aqua',
@@ -39,10 +58,18 @@ const toneVariantDictionary = [
   'quiet',
 ]
 
+const toneSimpleVariantDictionary = [
+  'strong',
+  'weak',
+  'quiet',
+]
+
 export {
+  themeFullVariantDictionary,
   themeLabelVariantDictionary,
   themeLuminanceVariantDictionary,
   themeStatusVariantDictionary,
   themeVariantDictionary,
+  toneSimpleVariantDictionary,
   toneVariantDictionary,
 }

@@ -12,6 +12,24 @@ export type ThemeVariantType =
   | 'success'
   | 'warning'
 
+export type ThemeFullVariantType =
+  | 'amaranth'
+  | 'aqua'
+  | 'blue'
+  | 'dark'
+  | 'error'
+  | 'green'
+  | 'info'
+  | 'light'
+  | 'lime'
+  | 'orange'
+  | 'orchid'
+  | 'sky'
+  | 'success'
+  | 'violet'
+  | 'warning'
+  | 'yellow'
+
 export type ThemeLuminanceVariantType =
   | 'dark'
   | 'light'
@@ -44,3 +62,7 @@ export type ToneVariantType =
   | 'ghost' // bordered
   | 'quiet' // no background, no border
 
+export type ToneSimpleVariantType =
+  | 'strong'
+  | 'weak'
+  | 'quiet'
