@@ -21,9 +21,9 @@
     "build": "stencil build --docs-readme"
   },
   "dependencies": {
-    "@maggioli-design-system/mds-text": "latest",
     "@maggioli-design-system/mds-badge": "latest",
     "@maggioli-design-system/mds-icon": "latest",
+    "@maggioli-design-system/mds-text": "latest",
     "@stencil/core": "^2.10.0"
   },
   "license": "MIT",
