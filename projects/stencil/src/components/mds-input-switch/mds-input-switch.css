@@ -7,7 +7,7 @@
     gap-2
     inline-flex
     items-start
-    text-adjust-tone-04;
+    text-adjust-tone-02;
 }
 
 .field {
@@ -55,7 +55,7 @@
   @apply
     duration-700
     opacity-100
-    text-adjust-tone-10
+    text-adjust-tone-05
     transform
     transition-cosmetic;
 
@@ -65,7 +65,7 @@
 .icon-checked {
   @apply
     duration-300
-    text-brand-maggioli-08
+    text-brand-maggioli-04
     transform
     transition-cosmetic;
 
@@ -73,7 +73,7 @@
 }
 
 .indeterminate .icon-checked {
-  @apply text-adjust-tone-06;
+  @apply text-adjust-tone-03;
 }
 
 .switch-container {
@@ -90,7 +90,7 @@
 
 .switch {
   @apply
-    bg-adjust-tone-14
+    bg-adjust-tone-07
     duration-300
     flex-shrink-0
     inline-flex
@@ -135,11 +135,11 @@
 }
 
 .field:disabled + .label-icon .icon-unchecked {
-  @apply text-adjust-tone-12;
+  @apply text-adjust-tone-06;
 }
 
 .field:disabled + .label-icon .icon-checked {
-  @apply text-adjust-tone-08;
+  @apply text-adjust-tone-04;
 }
 
 .field:disabled + .label-icon {
@@ -152,7 +152,7 @@
 
 .field:checked + .switch-container .switch {
   @apply
-    bg-brand-maggioli-08;
+    bg-brand-maggioli-04;
 }
 
 .field:checked + .switch-container .switch-toggle {
@@ -163,15 +163,15 @@
 
 .field:disabled + .switch-container .switch {
   @apply
-    bg-adjust-tone-17;
+    bg-adjust-tone-08;
 }
 
 .field:checked:disabled + .switch-container .switch {
   @apply
-    bg-adjust-tone-12;
+    bg-adjust-tone-06;
 }
 
 .field:disabled + .switch-container .switch-toggle {
   @apply
-    bg-adjust-tone-19;
+    bg-adjust-tone-09;
 }
