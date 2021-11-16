@@ -12,42 +12,42 @@ mds-paginator-item {
     select-none
     transition-colors;
 
-  background-color: var(--mds-paginator-item-background-color, theme('colors.adjust-tone-20'));
-  border-radius: var(--mds-paginator-item-border-radius, 200px);
-  box-shadow: var(--mds-paginator-item-box-shadow, none);
-  color: var(--mds-paginator-item-color, theme('colors.adjust-tone-04'));
-  height: var(--mds-paginator-item-size, theme('spacing.9'));
-  min-width: var(--mds-paginator-item-size, theme('spacing.9'));
+  background-color: var(--background, theme('colors.adjust-tone-10'));
+  border-radius: var(--border-radius, 200px);
+  box-shadow: var(--shadow, none);
+  color: var(--color, theme('colors.adjust-tone-02'));
+  height: var(--size, theme('spacing.9'));
+  min-width: var(--size, theme('spacing.9'));
 
   /* scroll-snap-align: center; */
 }
 
 .pressed {
-  background-color: var(--mds-paginator-item-background-color-pressed, theme('colors.adjust-tone-16'));
-  box-shadow: var(--mds-paginator-item-box-shadow-hover, none);
-  color: var(--mds-paginator-item-color-hover, theme('colors.adjust-tone-04'));
+  background-color: var(--background-pressed, theme('colors.adjust-tone-08'));
+  box-shadow: var(--shadow-hover, none);
+  color: var(--color-hover, theme('colors.adjust-tone-02'));
 }
 
 mds-paginator-item:hover {
-  background-color: var(--mds-paginator-item-background-color-hover, theme('colors.adjust-tone-18'));
-  box-shadow: var(--mds-paginator-item-box-shadow-hover, none);
-  color: var(--mds-paginator-item-color-hover, theme('colors.adjust-tone-04'));
+  background-color: var(--background-hover, theme('colors.adjust-tone-09'));
+  box-shadow: var(--shadow-hover, none);
+  color: var(--color-hover, theme('colors.adjust-tone-02'));
 }
 
 mds-paginator-item.active {
   @apply pointer-events-none;
 
-  background-color: var(--mds-paginator-item-background-color-selected, theme('colors.brand-maggioli-06'));
-  box-shadow: var(--mds-paginator-item-box-shadow-selected, theme('boxShadow.sharp-md'));
-  color: var(--mds-paginator-item-color-selected, theme('colors.adjust-tone'));
+  background-color: var(--background-selected, theme('colors.brand-maggioli-03'));
+  box-shadow: var(--shadow-selected, theme('boxShadow.sharp-md'));
+  color: var(--color-selected, theme('colors.adjust-tone'));
 }
 
 mds-paginator-item.disabled {
   @apply pointer-events-none;
 
-  background-color: var(--mds-paginator-item-background-color-disabled, theme('colors.adjust-tone-20'));
-  box-shadow: var(--mds-paginator-item-box-shadow-disabled, none);
-  color: var(--mds-paginator-item-color-disabled, theme('colors.adjust-tone-12'));
+  background-color: var(--background-disabled, theme('colors.adjust-tone-10'));
+  box-shadow: var(--shadow-disabled, none);
+  color: var(--color-disabled, theme('colors.adjust-tone-06'));
 }
 
 .icon {
