@@ -160,6 +160,6 @@ search.args = {
 
 export const icon = Template.bind({})
 icon.args = {
-  icon: 'status-warning',
+  icon: 'email',
   placeholder: 'Status input field',
 }
