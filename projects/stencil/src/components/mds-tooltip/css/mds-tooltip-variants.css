@@ -3,7 +3,7 @@
 :host ( [variant=light] ) {
 
   --background-color: theme('colors.adjust-tone');
-  --color: theme('colors.adjust-tone-04');
+  --color: theme('colors.adjust-tone-02');
   --drop-shadow: drop-shadow(theme('dropShadow.DEFAULT.0')) drop-shadow(theme('dropShadow.DEFAULT.1'));
 }
 
