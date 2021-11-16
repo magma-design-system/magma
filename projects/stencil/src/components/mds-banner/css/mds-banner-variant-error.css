@@ -3,10 +3,10 @@
 :host ( [variant=error] ),
 :host ( [variant=error][tone=strong] ) {
 
-  --background: theme('colors.status-error-19');
+  --background: theme('colors.status-error-09');
   --border-radius: theme('borderRadius.lg');
-  --color: theme('colors.status-error-04');
-  --separator-color: theme('colors.status-error-17');
+  --color: theme('colors.status-error-02');
+  --separator-color: theme('colors.status-error-08');
   --shadow: theme('boxShadow.sharp-lg');
 }
 
@@ -14,26 +14,26 @@
 
   --background: theme('colors.status-error-20');
   --border-radius: theme('borderRadius.md');
-  --color: theme('colors.status-error-05');
-  --separator-color: theme('colors.status-error-19');
+  --color: theme('colors.status-error-02');
+  --separator-color: theme('colors.status-error-09');
   --shadow: theme('boxShadow.sharp-sm');
 }
 
 :host ( [variant=error][tone=ghost] ) {
 
-  --background: theme('colors.status-error-20');
-  --border-color: theme('colors.status-error-17');
+  --background: theme('colors.status-error-10');
+  --border-color: theme('colors.status-error-08');
   --border-radius: theme('borderRadius.lg');
-  --color: theme('colors.status-error-04');
-  --separator-color: theme('colors.status-error-18');
+  --color: theme('colors.status-error-02');
+  --separator-color: theme('colors.status-error-09');
   --shadow: none;
 }
 
 :host ( [variant=error][tone=quiet] ) {
 
-  --background: theme('colors.status-error-20');
-  --color: theme('colors.status-error-04');
-  --separator-color: theme('colors.status-error-20');
+  --background: theme('colors.status-error-10');
+  --color: theme('colors.status-error-02');
+  --separator-color: theme('colors.status-error-10');
   --shadow: none;
 }
 

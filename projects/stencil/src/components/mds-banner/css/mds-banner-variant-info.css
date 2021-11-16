@@ -3,37 +3,37 @@
 :host ( [variant=info] ),
 :host ( [variant=info][tone=strong] ) {
 
-  --background: theme('colors.status-info-19');
-  --banner-color: theme('colors.status-info-04');
+  --background: theme('colors.status-info-09');
   --border-radius: theme('borderRadius.lg');
-  --separator-color: theme('colors.status-info-17');
+  --color: theme('colors.status-info-02');
+  --separator-color: theme('colors.status-info-08');
   --shadow: theme('boxShadow.sharp-lg');
 }
 
 :host ( [variant=info][tone=weak] ) {
 
   --background: theme('colors.status-info-20');
-  --banner-color: theme('colors.status-info-05');
   --border-radius: theme('borderRadius.md');
-  --separator-color: theme('colors.status-info-19');
+  --color: theme('colors.status-info-02');
+  --separator-color: theme('colors.status-info-09');
   --shadow: theme('boxShadow.sharp-sm');
 }
 
 :host ( [variant=info][tone=ghost] ) {
 
-  --background: theme('colors.status-info-20');
-  --banner-color: theme('colors.status-info-04');
-  --border-color: theme('colors.status-info-17');
+  --background: theme('colors.status-info-10');
+  --border-color: theme('colors.status-info-08');
   --border-radius: theme('borderRadius.lg');
-  --separator-color: theme('colors.status-info-18');
+  --color: theme('colors.status-info-02');
+  --separator-color: theme('colors.status-info-09');
   --shadow: none;
 }
 
 :host ( [variant=info][tone=quiet] ) {
 
-  --background: theme('colors.status-info-20');
-  --banner-color: theme('colors.status-info-04');
-  --separator-color: theme('colors.status-info-20');
+  --background: theme('colors.status-info-10');
+  --color: theme('colors.status-info-02');
+  --separator-color: theme('colors.status-info-10');
   --shadow: none;
 }
 

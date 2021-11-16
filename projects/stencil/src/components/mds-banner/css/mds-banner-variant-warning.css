@@ -3,10 +3,10 @@
 :host ( [variant=warning] ),
 :host ( [variant=warning][tone=strong] ) {
 
-  --background: theme('colors.status-warning-19');
+  --background: theme('colors.status-warning-09');
   --border-radius: theme('borderRadius.lg');
-  --color: theme('colors.status-warning-04');
-  --separator-color: theme('colors.status-warning-17');
+  --color: theme('colors.status-warning-02');
+  --separator-color: theme('colors.status-warning-08');
   --shadow: theme('boxShadow.sharp-lg');
 }
 
@@ -14,26 +14,26 @@
 
   --background: theme('colors.status-warning-20');
   --border-radius: theme('borderRadius.md');
-  --color: theme('colors.status-warning-05');
-  --separator-color: theme('colors.status-warning-19');
+  --color: theme('colors.status-warning-02');
+  --separator-color: theme('colors.status-warning-09');
   --shadow: theme('boxShadow.sharp-sm');
 }
 
 :host ( [variant=warning][tone=ghost] ) {
 
-  --background: theme('colors.status-warning-20');
-  --border-color: theme('colors.status-warning-17');
+  --background: theme('colors.status-warning-10');
+  --border-color: theme('colors.status-warning-08');
   --border-radius: theme('borderRadius.lg');
-  --color: theme('colors.status-warning-04');
-  --separator-color: theme('colors.status-warning-18');
+  --color: theme('colors.status-warning-02');
+  --separator-color: theme('colors.status-warning-09');
   --shadow: none;
 }
 
 :host ( [variant=warning][tone=quiet] ) {
 
-  --background: theme('colors.status-warning-20');
-  --color: theme('colors.status-warning-04');
-  --separator-color: theme('colors.status-warning-20');
+  --background: theme('colors.status-warning-10');
+  --color: theme('colors.status-warning-02');
+  --separator-color: theme('colors.status-warning-10');
   --shadow: none;
 }
 

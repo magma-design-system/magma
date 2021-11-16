@@ -3,10 +3,10 @@
 :host ( [variant=success] ),
 :host ( [variant=success][tone=strong] ) {
 
-  --background: theme('colors.status-success-19');
+  --background: theme('colors.status-success-09');
   --border-radius: theme('borderRadius.lg');
-  --color: theme('colors.status-success-04');
-  --separator-color: theme('colors.status-success-17');
+  --color: theme('colors.status-success-02');
+  --separator-color: theme('colors.status-success-08');
   --shadow: theme('boxShadow.sharp-lg');
 }
 
@@ -14,26 +14,26 @@
 
   --background: theme('colors.status-success-20');
   --border-radius: theme('borderRadius.md');
-  --color: theme('colors.status-success-05');
-  --separator-color: theme('colors.status-success-19');
+  --color: theme('colors.status-success-02');
+  --separator-color: theme('colors.status-success-09');
   --shadow: theme('boxShadow.sharp-sm');
 }
 
 :host ( [variant=success][tone=ghost] ) {
 
-  --background: theme('colors.status-success-20');
-  --border-color: theme('colors.status-success-17');
+  --background: theme('colors.status-success-10');
+  --border-color: theme('colors.status-success-08');
   --border-radius: theme('borderRadius.lg');
-  --color: theme('colors.status-success-04');
-  --separator-color: theme('colors.status-success-18');
+  --color: theme('colors.status-success-02');
+  --separator-color: theme('colors.status-success-09');
   --shadow: none;
 }
 
 :host ( [variant=success][tone=quiet] ) {
 
-  --background: theme('colors.status-success-20');
-  --color: theme('colors.status-success-04');
-  --separator-color: theme('colors.status-success-20');
+  --background: theme('colors.status-success-10');
+  --color: theme('colors.status-success-02');
+  --separator-color: theme('colors.status-success-10');
   --shadow: none;
 }
 
