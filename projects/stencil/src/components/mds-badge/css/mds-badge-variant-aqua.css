@@ -3,18 +3,18 @@
 :host ( [variant=aqua] ),
 :host ( [variant=aqua][tone=strong] ) {
 
-  --background: theme('colors.label-aqua-08');
-  --color: theme('colors.label-aqua-20');
+  --background: theme('colors.label-aqua-04');
+  --color: theme('colors.label-aqua-10');
 }
 
 :host ( [variant=aqua][tone=weak] ) {
 
-  --background: theme('colors.label-aqua-16');
-  --color: theme('colors.label-aqua-04');
+  --background: theme('colors.label-aqua-08');
+  --color: theme('colors.label-aqua-02');
 }
 
 :host ( [variant=aqua][tone=quiet] ) {
 
-  --background: theme('colors.label-aqua-18');
-  --color: theme('colors.label-aqua-08');
+  --background: theme('colors.label-aqua-09');
+  --color: theme('colors.label-aqua-04');
 }

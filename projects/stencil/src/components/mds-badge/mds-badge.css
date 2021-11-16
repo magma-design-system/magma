@@ -8,9 +8,9 @@
     * @prop --color: Sets the text color of the component
     */
 
-  --background: theme('colors.label-sky-18');
+  --background: theme('colors.label-sky-09');
   --border-radius: theme('borderRadius.DEFAULT');
-  --color: theme('colors.label-sky-06');
+  --color: theme('colors.label-sky-03');
 
   @apply
     inline-flex

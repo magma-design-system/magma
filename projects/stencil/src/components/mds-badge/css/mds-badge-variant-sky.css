@@ -3,18 +3,18 @@
 :host ( [variant=sky] ),
 :host ( [variant=sky][tone=strong] ) {
 
-  --background: theme('colors.label-sky-08');
-  --color: theme('colors.label-sky-20');
+  --background: theme('colors.label-sky-04');
+  --color: theme('colors.label-sky-10');
 }
 
 :host ( [variant=sky][tone=weak] ) {
 
-  --background: theme('colors.label-sky-16');
-  --color: theme('colors.label-sky-04');
+  --background: theme('colors.label-sky-08');
+  --color: theme('colors.label-sky-02');
 }
 
 :host ( [variant=sky][tone=quiet] ) {
 
-  --background: theme('colors.label-sky-18');
-  --color: theme('colors.label-sky-08');
+  --background: theme('colors.label-sky-09');
+  --color: theme('colors.label-sky-04');
 }

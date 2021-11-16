@@ -3,18 +3,18 @@
 :host ( [variant=success] ),
 :host ( [variant=success][tone=strong] ) {
 
-  --background: theme('colors.status-success-08');
-  --color: theme('colors.status-success-20');
+  --background: theme('colors.status-success-04');
+  --color: theme('colors.status-success-10');
 }
 
 :host ( [variant=success][tone=weak] ) {
 
-  --background: theme('colors.status-success-16');
-  --color: theme('colors.status-success-04');
+  --background: theme('colors.status-success-08');
+  --color: theme('colors.status-success-02');
 }
 
 :host ( [variant=success][tone=quiet] ) {
 
-  --background: theme('colors.status-success-18');
-  --color: theme('colors.status-success-08');
+  --background: theme('colors.status-success-09');
+  --color: theme('colors.status-success-04');
 }

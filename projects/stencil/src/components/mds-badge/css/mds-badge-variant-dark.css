@@ -3,18 +3,18 @@
 :host ( [variant=dark] ),
 :host ( [variant=dark][tone=strong] ) {
 
-  --background: theme('colors.adjust-tone-04');
-  --color: theme('colors.adjust-tone-18');
+  --background: theme('colors.adjust-tone-02');
+  --color: theme('colors.adjust-tone-09');
 }
 
 :host ( [variant=dark][tone=weak] ) {
 
-  --background: theme('colors.adjust-tone-16');
-  --color: theme('colors.adjust-tone-04');
+  --background: theme('colors.adjust-tone-08');
+  --color: theme('colors.adjust-tone-02');
 }
 
 :host ( [variant=dark][tone=quiet] ) {
 
-  --background: theme('colors.adjust-tone-18');
+  --background: theme('colors.adjust-tone-09');
   --color: theme('colors.adjust-tone-04');
 }
