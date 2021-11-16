@@ -10,16 +10,16 @@
     * @prop --separator-color: Sets the background-color of the separator inside the component
     * @prop --shadow: Sets the box-shadow of the component
     */
-  --background: theme('colors.adjust-tone-20');
+  --background: theme('colors.adjust-tone-10');
 
   @apply grid;
 
-  background-color: var(--background, theme('colors.adjust-tone-20'));
+  background-color: var(--background, theme('colors.adjust-tone-10'));
   border-color: var(--border-color, transparent) !important;
   border-radius: var(--border-radius, 0);
   border-width: theme('borderWidth.2') !important;
   box-shadow: var(--shadow, none);
-  color: var(--color, theme('colors.adjust-tone-04'));
+  color: var(--color, theme('colors.adjust-tone-02'));
 }
 
 .header {
