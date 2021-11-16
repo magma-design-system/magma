@@ -13,10 +13,10 @@
   * @prop --shadow: The box-shadow used on the table (header and footer excluded)
   */
 
-  --background-hover: theme('colors.adjust-tone-20');
+  --background-hover: theme('colors.adjust-tone-10');
   --background-row-hover: theme('colors.adjust-tone');
   --background: theme('colors.adjust-tone');
-  --border-color: theme('colors.adjust-tone-18');
+  --border-color: theme('colors.adjust-tone-09');
   --border-radius: theme('borderRadius.lg');
   --cell-align-items: center;
   --cell-padding: theme('spacing.4');
