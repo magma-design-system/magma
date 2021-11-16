@@ -17,7 +17,7 @@
     p-2
     rounded-full;
 
-  background-color: var(--mds-paginator-pages-background-color, theme('colors.adjust-tone-20'));
+  background-color: var(--background, theme('colors.adjust-tone-10'));
   scroll-behavior: smooth;
 
   /* scroll-snap-type: x mandatory; */
