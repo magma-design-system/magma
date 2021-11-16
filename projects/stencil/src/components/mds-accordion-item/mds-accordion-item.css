@@ -3,7 +3,7 @@
 
 :host {
 
-  --color: theme('colors.adjust-tone-04');
+  --color: theme('colors.adjust-tone-02');
 
   @apply
     border-transparent
@@ -22,8 +22,8 @@
 
 :host( .opened ) {
   @apply
-    border-b-adjust-tone-19
-    border-t-adjust-tone-19
+    border-b-adjust-tone-09
+    border-t-adjust-tone-09
     py-8
     !important;
 }
