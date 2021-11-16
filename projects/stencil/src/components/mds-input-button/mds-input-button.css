@@ -17,7 +17,7 @@
     py-2
     transition-colors;
 
-  background-color: var(--background-color, theme('colors.brand-maggioli-06'));
+  background-color: var(--background-color, theme('colors.brand-maggioli-03'));
   border-color: var(--border-color, transparent) !important;
   border-radius: var(--border-radius, theme('borderRadius.lg'));
   border-width: theme('borderWidth.2') !important;

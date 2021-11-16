@@ -1,73 +1,73 @@
 :host ( [variant=dark] ),
 :host ( [variant=dark][tone=strong] ) {
 
-  --background-color: theme('colors.adjust-tone-06');
+  --background-color: theme('colors.adjust-tone-03');
   --color: theme('colors.adjust-tone');
 }
 
 :host ( [variant=dark]:hover ),
 :host ( [variant=dark][tone=strong]:hover ) {
 
-  --background-color: theme('colors.adjust-tone-05');
+  --background-color: theme('colors.adjust-tone-04');
 }
 
 :host ( [variant=dark][active] ),
 :host ( [variant=dark][tone=strong][active] ) {
 
-  --background-color: theme('colors.adjust-tone-04');
+  --background-color: theme('colors.adjust-tone-02');
 }
 
 :host ( [variant=dark][tone=weak] ) {
 
-  --background-color: theme('colors.adjust-tone-19');
-  --color: theme('colors.adjust-tone-04');
+  --background-color: theme('colors.adjust-tone-09');
+  --color: theme('colors.adjust-tone-02');
 }
 
 :host ( [variant=dark][tone=weak]:hover ) {
 
-  --background-color: theme('colors.adjust-tone-18');
+  --background-color: theme('colors.adjust-tone-10');
 }
 
 :host ( [variant=dark][tone=weak][active] ) {
 
-  --background-color: theme('colors.adjust-tone-17');
+  --background-color: theme('colors.adjust-tone-08');
 }
 
 :host ( [variant=dark][tone=ghost] ) {
 
   --background-color: transparent;
-  --border-color: theme('colors.adjust-tone-06');
-  --color: theme('colors.adjust-tone-06');
+  --border-color: theme('colors.adjust-tone-03');
+  --color: theme('colors.adjust-tone-03');
 }
 
 :host ( [variant=dark][tone=ghost]:hover ) {
-
-  --background-color: transparent;
-  --border-color: theme('colors.adjust-tone-05');
-  --color: theme('colors.adjust-tone-05');
-}
-
-:host ( [variant=dark][tone=ghost][active] ) {
 
   --background-color: transparent;
   --border-color: theme('colors.adjust-tone-04');
   --color: theme('colors.adjust-tone-04');
 }
 
+:host ( [variant=dark][tone=ghost][active] ) {
+
+  --background-color: transparent;
+  --border-color: theme('colors.adjust-tone-02');
+  --color: theme('colors.adjust-tone-02');
+}
+
 :host ( [variant=dark][tone=quiet] ) {
 
   --background-color: transparent;
-  --color: theme('colors.adjust-tone-04');
+  --color: theme('colors.adjust-tone-02');
 }
 
 :host ( [variant=dark][tone=quiet]:hover ) {
 
   --background-color: transparent;
-  --color: theme('colors.adjust-tone-06');
+  --color: theme('colors.adjust-tone-04');
 }
 
 :host ( [variant=dark][tone=quiet][active] ) {
 
   --background-color: transparent;
-  --color: theme('colors.adjust-tone-07');
+  --color: theme('colors.adjust-tone-02');
 }

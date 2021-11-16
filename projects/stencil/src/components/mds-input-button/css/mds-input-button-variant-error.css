@@ -3,73 +3,73 @@
 :host ( [variant=error] ),
 :host ( [variant=error][tone=strong] ) {
 
-  --background-color: theme('colors.status-error-08');
+  --background-color: theme('colors.status-error-04');
   --color: theme('colors.adjust-tone');
 }
 
 :host ( [variant=error]:hover ),
 :host ( [variant=error][tone=strong]:hover ) {
 
-  --background-color: theme('colors.status-error-07');
+  --background-color: theme('colors.status-error-03');
 }
 
 :host ( [variant=error][active] ),
 :host ( [variant=error][tone=strong][active] ) {
 
-  --background-color: theme('colors.status-error-06');
+  --background-color: theme('colors.status-error-03');
 }
 
 :host ( [variant=error][tone=weak] ) {
 
-  --background-color: theme('colors.status-error-19');
-  --color: theme('colors.status-error-04');
+  --background-color: theme('colors.status-error-09');
+  --color: theme('colors.status-error-02');
 }
 
 :host ( [variant=error][tone=weak]:hover ) {
 
-  --background-color: theme('colors.status-error-18');
+  --background-color: theme('colors.status-error-09');
 }
 
 :host ( [variant=error][tone=weak][active] ) {
 
-  --background-color: theme('colors.status-error-17');
+  --background-color: theme('colors.status-error-08');
 }
 
 :host ( [variant=error][tone=ghost] ) {
 
   --background-color: transparent;
-  --border-color: theme('colors.status-error-06');
-  --color: theme('colors.status-error-06');
+  --border-color: theme('colors.status-error-03');
+  --color: theme('colors.status-error-03');
 }
 
 :host ( [variant=error][tone=ghost]:hover ) {
 
   --background-color: transparent;
-  --border-color: theme('colors.status-error-05');
-  --color: theme('colors.status-error-05');
+  --border-color: theme('colors.status-error-02');
+  --color: theme('colors.status-error-02');
 }
 
 :host ( [variant=error][tone=ghost][active] ) {
 
   --background-color: transparent;
-  --border-color: theme('colors.status-error-04');
-  --color: theme('colors.status-error-04');
+  --border-color: theme('colors.status-error-01');
+  --color: theme('colors.status-error-01');
 }
 
 :host ( [variant=error][tone=quiet] ) {
 
   --background-color: transparent;
-  --color: theme('colors.status-error-04');
+  --color: theme('colors.status-error-02');
 }
 
 :host ( [variant=error][tone=quiet]:hover ) {
 
   --background-color: transparent;
-  --color: theme('colors.status-error-06');
+  --color: theme('colors.status-error-03');
 }
 
 :host ( [variant=error][tone=quiet][active] ) {
 
   --background-color: transparent;
-  --color: theme('colors.status-error-07');
+  --color: theme('colors.status-error-01');
 }

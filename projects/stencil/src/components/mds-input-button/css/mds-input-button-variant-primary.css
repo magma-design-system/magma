@@ -3,73 +3,73 @@
 :host ( [variant=primary] ),
 :host ( [variant=primary][tone=strong] ) {
 
-  --background-color: theme('colors.brand-maggioli-06');
+  --background-color: theme('colors.brand-maggioli-04');
   --color: theme('colors.adjust-tone');
 }
 
 :host ( [variant=primary]:hover ),
 :host ( [variant=primary][tone=strong]:hover ) {
 
-  --background-color: theme('colors.brand-maggioli-05');
+  --background-color: theme('colors.brand-maggioli-03');
 }
 
 :host ( [variant=primary][active] ),
 :host ( [variant=primary][tone=strong][active] ) {
 
-  --background-color: theme('colors.brand-maggioli-04');
+  --background-color: theme('colors.brand-maggioli-03');
 }
 
 :host ( [variant=primary][tone=weak] ) {
 
-  --background-color: theme('colors.brand-maggioli-19');
-  --color: theme('colors.brand-maggioli-04');
+  --background-color: theme('colors.brand-maggioli-09');
+  --color: theme('colors.brand-maggioli-02');
 }
 
 :host ( [variant=primary][tone=weak]:hover ) {
 
-  --background-color: theme('colors.brand-maggioli-18');
+  --background-color: theme('colors.brand-maggioli-09');
 }
 
 :host ( [variant=primary][tone=weak][active] ) {
 
-  --background-color: theme('colors.brand-maggioli-17');
+  --background-color: theme('colors.brand-maggioli-08');
 }
 
 :host ( [variant=primary][tone=ghost] ) {
 
   --background-color: transparent;
-  --border-color: theme('colors.brand-maggioli-06');
-  --color: theme('colors.brand-maggioli-06');
+  --border-color: theme('colors.brand-maggioli-03');
+  --color: theme('colors.brand-maggioli-03');
 }
 
 :host ( [variant=primary][tone=ghost]:hover ) {
 
   --background-color: transparent;
-  --border-color: theme('colors.brand-maggioli-05');
-  --color: theme('colors.brand-maggioli-05');
+  --border-color: theme('colors.brand-maggioli-02');
+  --color: theme('colors.brand-maggioli-02');
 }
 
 :host ( [variant=primary][tone=ghost][active] ) {
 
   --background-color: transparent;
-  --border-color: theme('colors.brand-maggioli-04');
-  --color: theme('colors.brand-maggioli-04');
+  --border-color: theme('colors.brand-maggioli-01');
+  --color: theme('colors.brand-maggioli-01');
 }
 
 :host ( [variant=primary][tone=quiet] ) {
 
   --background-color: transparent;
-  --color: theme('colors.brand-maggioli-04');
+  --color: theme('colors.brand-maggioli-02');
 }
 
 :host ( [variant=primary][tone=quiet]:hover ) {
 
   --background-color: transparent;
-  --color: theme('colors.brand-maggioli-06');
+  --color: theme('colors.brand-maggioli-03');
 }
 
 :host ( [variant=primary][tone=quiet][active] ) {
 
   --background-color: transparent;
-  --color: theme('colors.brand-maggioli-07');
+  --color: theme('colors.brand-maggioli-01');
 }

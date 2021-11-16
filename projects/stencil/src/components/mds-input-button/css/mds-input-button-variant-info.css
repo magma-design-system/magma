@@ -3,73 +3,73 @@
 :host ( [variant=info] ),
 :host ( [variant=info][tone=strong] ) {
 
-  --background-color: theme('colors.status-info-08');
+  --background-color: theme('colors.status-info-04');
   --color: theme('colors.adjust-tone');
 }
 
 :host ( [variant=info]:hover ),
 :host ( [variant=info][tone=strong]:hover ) {
 
-  --background-color: theme('colors.status-info-07');
+  --background-color: theme('colors.status-info-03');
 }
 
 :host ( [variant=info][active] ),
 :host ( [variant=info][tone=strong][active] ) {
 
-  --background-color: theme('colors.status-info-06');
+  --background-color: theme('colors.status-info-03');
 }
 
 :host ( [variant=info][tone=weak] ) {
 
-  --background-color: theme('colors.status-info-19');
-  --color: theme('colors.status-info-04');
+  --background-color: theme('colors.status-info-09');
+  --color: theme('colors.status-info-02');
 }
 
 :host ( [variant=info][tone=weak]:hover ) {
 
-  --background-color: theme('colors.status-info-18');
+  --background-color: theme('colors.status-info-09');
 }
 
 :host ( [variant=info][tone=weak][active] ) {
 
-  --background-color: theme('colors.status-info-17');
+  --background-color: theme('colors.status-info-08');
 }
 
 :host ( [variant=info][tone=ghost] ) {
 
   --background-color: transparent;
-  --border-color: theme('colors.status-info-06');
-  --color: theme('colors.status-info-06');
+  --border-color: theme('colors.status-info-03');
+  --color: theme('colors.status-info-03');
 }
 
 :host ( [variant=info][tone=ghost]:hover ) {
 
   --background-color: transparent;
-  --border-color: theme('colors.status-info-05');
-  --color: theme('colors.status-info-05');
+  --border-color: theme('colors.status-info-02');
+  --color: theme('colors.status-info-02');
 }
 
 :host ( [variant=info][tone=ghost][active] ) {
 
   --background-color: transparent;
-  --border-color: theme('colors.status-info-04');
-  --color: theme('colors.status-info-04');
+  --border-color: theme('colors.status-info-01');
+  --color: theme('colors.status-info-01');
 }
 
 :host ( [variant=info][tone=quiet] ) {
 
   --background-color: transparent;
-  --color: theme('colors.status-info-04');
+  --color: theme('colors.status-info-02');
 }
 
 :host ( [variant=info][tone=quiet]:hover ) {
 
   --background-color: transparent;
-  --color: theme('colors.status-info-06');
+  --color: theme('colors.status-info-03');
 }
 
 :host ( [variant=info][tone=quiet][active] ) {
 
   --background-color: transparent;
-  --color: theme('colors.status-info-07');
+  --color: theme('colors.status-info-01');
 }
