@@ -2,6 +2,6 @@
 
 :host ( [variant=error] ) {
 
-  --background-progress: theme('colors.status-error-10');
-  --background: theme('colors.status-error-18');
+  --background-progress: theme('colors.status-error-05');
+  --background: theme('colors.status-error-09');
 }

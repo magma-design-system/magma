@@ -2,6 +2,6 @@
 
 :host ( [variant=warning] ) {
 
-  --background-progress: theme('colors.status-warning-10');
-  --background: theme('colors.status-warning-18');
+  --background-progress: theme('colors.status-warning-05');
+  --background: theme('colors.status-warning-09');
 }

@@ -2,6 +2,6 @@
 
 :host ( [variant=info] ) {
 
-  --background-progress: theme('colors.status-info-10');
-  --background: theme('colors.status-info-18');
+  --background-progress: theme('colors.status-info-05');
+  --background: theme('colors.status-info-09');
 }
