@@ -24,17 +24,17 @@
     px-4
     py-3
     ring-1
-    ring-adjust-tone-04
+    ring-adjust-tone-02
     ring-opacity-10
     rounded-lg
     shadow
-    text-adjust-tone-04
+    text-adjust-tone-02
     text-secondary-detail
     transition-cosmetic
     min-h-12
     w-full;
 
-  background-color: var(--mds-input--background-color, theme('colors.adjust-tone'));
+  background-color: var(--background, theme('colors.adjust-tone'));
 }
 
 textarea.input:active {
@@ -53,20 +53,20 @@ textarea.input {
     outline-none
     shadow-sharp-lg
     ring
-    ring-brand-maggioli-08
+    ring-brand-maggioli-04
     transition-cosmetic
     duration-300
     ease-out-expo;
 }
 
 .input:disabled {
-  @apply bg-adjust-tone-20;
+  @apply bg-adjust-tone-10;
 }
 
 .input:disabled,
 .input:disabled::placeholder {
   @apply
-    text-adjust-tone-10;
+    text-adjust-tone-05;
 }
 
 .input.has-icon {
@@ -91,12 +91,12 @@ textarea.input {
 }
 
 .read-only {
-  @apply bg-status-info-10;
+  @apply bg-status-info-05;
 }
 
 .required {
   @apply
-    bg-status-error-10
+    bg-status-error-05
     text-adjust-tone
     text-opacity-0
     p-0
@@ -104,7 +104,7 @@ textarea.input {
 }
 
 .disabled {
-  @apply bg-adjust-tone-10;
+  @apply bg-adjust-tone-05;
 }
 
 .input:focus + .required {
@@ -117,22 +117,22 @@ textarea.input {
   @apply
     absolute
     left-3
-    text-brand-maggioli-08
+    text-brand-maggioli-04
     top-3;
 }
 
 .icon.success {
-  @apply text-status-success-08;
+  @apply text-status-success-04;
 }
 
 .icon.info {
-  @apply text-status-info-08;
+  @apply text-status-info-04;
 }
 
 .icon.error {
-  @apply text-status-error-08;
+  @apply text-status-error-04;
 }
 
 .icon.warning {
-  @apply text-status-warning-08;
+  @apply text-status-warning-04;
 }
