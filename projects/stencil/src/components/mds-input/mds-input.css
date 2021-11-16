@@ -110,7 +110,7 @@ textarea.input {
 .input:focus + .required {
   @apply
     text-opacity-100
-    w-20;
+    w-24;
 }
 
 .icon {
