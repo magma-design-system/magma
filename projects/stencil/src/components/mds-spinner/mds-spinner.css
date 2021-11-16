@@ -3,7 +3,7 @@
 :host {
 
   --background: transparent;
-  --color: theme('colors.brand-maggioli-05');
+  --color: theme('colors.brand-maggioli-03');
   --size: 58px;
   --duration: 1.25s;
 
