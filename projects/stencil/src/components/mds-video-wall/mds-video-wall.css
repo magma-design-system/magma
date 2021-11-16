@@ -3,9 +3,12 @@
 :host {
 
   --video-fit: cover;
-  --noise-background-color: rgba(var(--brand-maggioli-05), 0.8);
+  --noise-background-color: rgba(var(--brand-maggioli-03), 0.8);
 
-  @apply flex relative bg-adjust-tone-04;
+  @apply
+    bg-adjust-tone-02
+    flex
+    relative;
 
   aspect-ratio: var(--aspect-ratio, auto);
 }
