@@ -3,28 +3,28 @@
 :host ( [variant=error] ),
 :host ( [variant=error][tone=strong] ) {
 
-  --background: theme('colors.status-error-19');
-  --color: theme('colors.status-error-04');
+  --background: theme('colors.status-error-09');
+  --color: theme('colors.status-error-02');
   --shadow: theme('boxShadow.sharp-lg');
 }
 
 :host ( [variant=error][tone=weak] ) {
 
-  --background: theme('colors.status-error-20');
-  --color: theme('colors.status-error-05');
+  --background: theme('colors.status-error-10');
+  --color: theme('colors.status-error-03');
   --shadow: theme('boxShadow.sharp-sm');
 }
 
 :host ( [variant=error][tone=ghost] ) {
 
-  --background: theme('colors.status-error-20');
-  --color: theme('colors.status-error-04');
+  --background: theme('colors.status-error-10');
+  --color: theme('colors.status-error-02');
   --shadow: none;
 }
 
 :host ( [variant=error][tone=quiet] ) {
 
-  --background: theme('colors.status-error-20');
-  --color: theme('colors.status-error-04');
+  --background: theme('colors.status-error-10');
+  --color: theme('colors.status-error-02');
   --shadow: none;
 }

@@ -3,7 +3,7 @@
 :host {
 
   --color: theme('colors.adjust-tone');
-  --background: theme('colors.adjust-tone-04');
+  --background: theme('colors.adjust-tone-02');
   --shadow: theme('boxShadow.xl');
 
   @apply
