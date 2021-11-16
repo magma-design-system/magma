@@ -8,8 +8,8 @@
 
 mds-kpi-item {
 
-  --description-color: theme('colors.adjust-tone-08');
-  --value-color: theme('colors.adjust-tone-04');
+  --description-color: theme('colors.adjust-tone-04');
+  --value-color: theme('colors.adjust-tone-02');
   --info-padding: theme('spacing.4');
 
   @apply
