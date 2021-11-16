@@ -8,17 +8,19 @@
     grid
     py-4
     relative
-    text-adjust-tone-04
+    text-adjust-tone-02
     transition-cosmetic;
 }
 
 :host ( :hover:not(.active) ) .progress-bar {
 
-  --background: theme('colors.adjust-tone-12');
+  --background: theme('colors.adjust-tone-06');
 }
 
 .row {
-  @apply flex gap-4;
+  @apply
+    flex
+    gap-4;
 }
 
 .accordion {
