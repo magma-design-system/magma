@@ -2,9 +2,9 @@
 
 :host {
 
-  --color-placeholder: theme('colors.brand-maggioli-20');
-  --background-color-pending: theme('colors.adjust-tone-17');
-  --background-color-placeholder: theme('colors.brand-maggioli-12');
+  --color-placeholder: theme('colors.brand-maggioli-10');
+  --background-color-pending: theme('colors.adjust-tone-08');
+  --background-color-placeholder: theme('colors.brand-maggioli-06');
   --border-radius: theme('borderRadius.full');
 
   @apply
