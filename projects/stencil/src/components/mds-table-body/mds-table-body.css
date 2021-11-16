@@ -10,5 +10,5 @@
 }
 
 .table-body--interactive:hover .table-cell {
-  background-color: var(--background-hover, theme('colors.adjust-tone-20'));
+  background-color: var(--background-hover, theme('colors.adjust-tone-10'));
 }
