@@ -8,7 +8,7 @@
   @apply
     flex
     relative
-    text-adjust-tone-04
+    text-adjust-tone-02
     text-secondary-detail;
 }
 
@@ -30,11 +30,11 @@
     pr-12
     py-3
     ring-1
-    ring-adjust-tone-04
+    ring-adjust-tone-02
     ring-opacity-10
     rounded-lg
     shadow
-    text-adjust-tone-10
+    text-adjust-tone-05
     text-secondary-detail
     transition-cosmetic
     w-full;
@@ -46,13 +46,13 @@
     ease-out-expo
     outline-none
     ring
-    ring-brand-maggioli-08
+    ring-brand-maggioli-04
     shadow-sharp-lg
     transition-cosmetic;
 }
 
 .input--selected {
-  @apply text-adjust-tone-04;
+  @apply text-adjust-tone-02;
 }
 
 .icon-container {
@@ -68,7 +68,7 @@
 
 .icon {
   @apply
-    bg-adjust-tone-19
+    bg-adjust-tone-09
     duration-200
     rounded-full
     transition-colors;
@@ -77,6 +77,6 @@
 .input:focus + .icon-container .icon,
 .input:hover + .icon-container .icon {
   @apply
-    bg-brand-maggioli-18
-    text-brand-maggioli-06;
+    bg-brand-maggioli-09
+    text-brand-maggioli-03;
 }
