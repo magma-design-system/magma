@@ -6,7 +6,7 @@
       "name": "adjust.tone"
     },
 
-    { "color": "#00379E", "name": "brand.maggioli", "colorspace": "HSL" },
+    { "color": "#00379E", "name": "brand.maggioli", "colorspace": "RGB" },
     { "color": "#597CB9", "name": "brand.eolo" },
     { "color": "#ED7C63", "name": "brand.argo" },
     { "color": "#01495C", "name": "brand.la-polizia-locale" },
@@ -40,27 +40,17 @@
     { "color": "#F9E14E", "name": "label.yellow" },
     { "color": "#F17032", "name": "label.orange" }
   ],
-  "defaultColorspace": "HSL",
+  "defaultColorspace": "RGB",
   "ratios": [
     1.05,
-    1.1,
-    1.17,
     1.24,
-    1.32,
-    1.41,
-    1.51,
-    1.65,
-    1.9,
-    2.25,
-    2.7,
-    3.3,
-    4,
-    4.8,
-    5.75,
-    7,
-    8.5,
-    10.3,
-    12.45,
+    1.64,
+    2.23,
+    3.09,
+    4.3,
+    5.89,
+    7.93,
+    10.46,
     15
   ]
 }

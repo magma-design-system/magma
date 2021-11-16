@@ -1,6 +1,6 @@
 {
   "name": "@maggioli-design-system/design-tokens",
-  "version": "4.2.1",
+  "version": "5.0.0",
   "description": "This is the Design Token library of Maggioli Design System, here you'll find all the visual data used around the libraries.",
   "author": "Vittorio Vittori",
   "contributors": [
@@ -28,10 +28,10 @@
     "@adobe/leonardo-contrast-colors": "1.0.0-alpha.8",
     "handlebars": "^4.7.7",
     "hex-rgb": "^4.3.0",
-    "js-beautify": "1.13.5",
+    "js-beautify": "1.14.0",
     "json-to-scss": "^1.6.2",
     "run-for-every-file": "^1.1.0",
-    "style-dictionary": "^2.10.3"
+    "style-dictionary": "^3.0.3"
   },
   "repository": {
     "type": "git",

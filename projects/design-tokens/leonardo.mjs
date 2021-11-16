@@ -12,7 +12,7 @@ const reverseRatios = ratios.reverse()
 const filteredRatios = (ratios, scaffold) => {
   const newRatios = []
   reverseRatios.forEach((ratioElement, ratioIdex) => {
-    scaffold.forEach((scaffoldElement, scaffoldIndex) => {
+    scaffold.forEach(scaffoldElement => {
       if (ratioIdex === scaffoldElement) {
         newRatios.push(ratioElement)
       }
@@ -38,7 +38,7 @@ const addAdaptivePalette = (color, name, itemColorspace, itemScaffold) => {
 
 const getPalette = (theme, colorName, colorValue, scaffold, colorDark) => {
   const palette = {}
-  theme.forEach((element, index) => {
+  theme.forEach(element => {
     if (Object.prototype.hasOwnProperty.call(element, 'name')) {
       if (element.name === colorName) {
         const paletteSource = element.values
@@ -93,7 +93,7 @@ if (colorScales.length > 0) {
     color: {},
   }
 
-  colors.forEach((element, index) => {
+  colors.forEach(element => {
     const groupIndex = 0
     const nameIndex = 1
     const group = element.name.split('.')[groupIndex]
