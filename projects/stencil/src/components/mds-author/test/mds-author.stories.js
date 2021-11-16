@@ -5,16 +5,6 @@ import faker from 'faker'
 export default {
   title: 'UI / Author',
   component: MdsAuthor,
-  argTypes: {
-    initials: {
-      type: { name: 'string', required: false },
-      description: 'The user\'s inizials displayed if there\'s no image available',
-    },
-    src: {
-      type: { name: 'string', required: false },
-      description: 'The URL of the avatar image',
-    },
-  },
 }
 
 
@@ -28,6 +18,3 @@ const Template = args =>
   </mds-author>
 
 export const Default = Template.bind({})
-Default.args = {
-  src: 'https://via.placeholder.com/256x256',
-}
