@@ -9,7 +9,7 @@
     duration-200;
 
   color: var(--color, inherit);
-  text-decoration-color: var(--text-decoration, theme('colors.adjust-tone-12'));
+  text-decoration-color: var(--text-decoration, theme('colors.adjust-tone-06'));
   transition-property: text-decoration, color;
 }
 
