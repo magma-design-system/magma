@@ -3,9 +3,9 @@
 
 :host {
 
-  --background-color: theme('colors.label-yellow-19');
+  --background-color: theme('colors.label-yellow-09');
   --border-radius: theme('borderRadius.md');
-  --color: theme('colors.adjust-tone-06');
+  --color: theme('colors.adjust-tone-03');
 
   @apply
     flex
