@@ -3,9 +3,9 @@
 
 :host {
 
-  --background-color: theme('colors.adjust-tone-20');
+  --background-color: theme('colors.adjust-tone-10');
   --border-radius: theme('borderRadius.md');
-  --color: theme('colors.adjust-tone-04');
+  --color: theme('colors.adjust-tone-02');
   --box-shadow: theme('boxShadow.lg');
 
   @apply
