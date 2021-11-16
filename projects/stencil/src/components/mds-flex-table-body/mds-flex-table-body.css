@@ -18,5 +18,5 @@ mds-flex-table-body {
 }
 
 .flex-table-body--interactive:hover mds-flex-table-row {
-  background-color: var(--background-hover, theme('colors.adjust-tone-20'));
+  background-color: var(--background-hover, theme('colors.adjust-tone-10'));
 }
