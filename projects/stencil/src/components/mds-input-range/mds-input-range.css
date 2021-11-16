@@ -3,8 +3,8 @@
 :host {
 
   --thumb-size: theme('spacing.4');
-  --thumb-background: theme('colors.brand-maggioli-06');
-  --track-background: theme('colors.adjust-tone-18');
+  --thumb-background: theme('colors.brand-maggioli-03');
+  --track-background: theme('colors.adjust-tone-09');
   --track-size: theme('spacing.2');
   --track-progress-background: var(--thumb-background);
 
