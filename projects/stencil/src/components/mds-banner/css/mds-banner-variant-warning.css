@@ -12,7 +12,7 @@
 
 :host ( [variant=warning][tone=weak] ) {
 
-  --background: theme('colors.status-warning-20');
+  --background: theme('colors.status-warning-10');
   --border-radius: theme('borderRadius.md');
   --color: theme('colors.status-warning-02');
   --separator-color: theme('colors.status-warning-09');

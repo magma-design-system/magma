@@ -12,7 +12,7 @@
 
 :host ( [variant=success][tone=weak] ) {
 
-  --background: theme('colors.status-success-20');
+  --background: theme('colors.status-success-10');
   --border-radius: theme('borderRadius.md');
   --color: theme('colors.status-success-02');
   --separator-color: theme('colors.status-success-09');
