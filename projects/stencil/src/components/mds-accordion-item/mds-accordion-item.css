@@ -3,6 +3,10 @@
 
 :host {
 
+  /**
+    * @prop --color: Sets the text-color of the element
+    */
+
   --color: theme('colors.adjust-tone-02');
 
   @apply
