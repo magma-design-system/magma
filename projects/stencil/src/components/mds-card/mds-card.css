@@ -1,11 +1,16 @@
-@tailwind components;
 @tailwind utilities;
+
+/**
+  * @prop --background: Sets the background-color of the component
+  * @prop --radius: Sets the border-radius of the component
+  * @prop --shadow: Sets the box-shadow of the component
+  */
 
 :host {
 
   --shadow: theme('boxShadow.md');
-  --border-radius: theme('borderRadius.xl');
-  --background-color: theme('colors.adjust-tone');
+  --radius: theme('borderRadius.xl');
+  --background: theme('colors.adjust-tone');
 
   @apply
     auto-rows-max
@@ -13,7 +18,7 @@
     overflow-hidden
     p-4;
 
-  background-color: var(--background-color);
-  border-radius: var(--border-radius);
+  background-color: var(--background);
+  border-radius: var(--radius);
   box-shadow: var(--shadow);
 }
