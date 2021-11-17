@@ -15,7 +15,7 @@ mds-breadcrumb-item:last-child .icon {
 mds-breadcrumb-item:last-child .text {
   @apply pointer-events-none;
 
-  color: var(--current-item-color, theme('colors.adjust-tone-10'));
+  color: var(--current-button-color, theme('colors.adjust-tone-05'));
 }
 
 .text {
@@ -27,13 +27,13 @@ mds-breadcrumb-item:last-child .text {
     transition-colors
     whitespace-nowrap;
 
-  background-color: var(--item-background, transparent);
-  color: var(--item-color, theme('colors.adjust-tone-04'));
+  background-color: var(--button-background, transparent);
+  color: var(--button-color, theme('colors.adjust-tone-02'));
 }
 
 .text:hover {
-  background-color: var(--item-background-hover, theme('colors.brand-maggioli-18'));
-  color: var(--item-color-hover, theme('colors.brand-maggioli-08'));
+  background-color: var(--button-background-hover, theme('colors.brand-maggioli-09'));
+  color: var(--button-color-hover, theme('colors.brand-maggioli-04'));
 }
 
 .text::first-letter {
@@ -43,5 +43,5 @@ mds-breadcrumb-item:last-child .text {
 .icon {
   @apply pointer-events-none;
 
-  color: var(--arrow-depth-color, theme('colors.adjust-tone-15'));
+  color: var(--arrow-depth-color, theme('colors.adjust-tone-07'));
 }
