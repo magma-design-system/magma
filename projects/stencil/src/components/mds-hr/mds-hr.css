@@ -1,6 +1,10 @@
 @tailwind components;
 @tailwind utilities;
 
+/**
+  * @prop --background: Sets the background-color of the component
+  */
+
 :host {
   @apply
     border-0
@@ -9,5 +13,5 @@
     rounded
     w-full;
 
-  background-color: var(--background-color, theme('colors.adjust-tone-08'));
+  background-color: var(--background, theme('colors.adjust-tone-08'));
 }
