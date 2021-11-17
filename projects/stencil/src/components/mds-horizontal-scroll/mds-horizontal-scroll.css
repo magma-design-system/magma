@@ -1,5 +1,13 @@
-@tailwind components;
 @tailwind utilities;
+
+/**
+  * @prop --background: Sets the background-color of the component
+  * @prop --scrollbar-radius: Sets the border-radius of the browser scroll bar (if supported)
+  * @prop --scrollbar-margin: Sets the margin of the browser scroll bar (if supported)
+  * @prop --scrollbar-size: Sets the height and width of the browser scroll bar (if supported)
+  * @prop --scrollbar-thumb-background: Sets the background-color of the browser scroll bar thumb (if supported)
+  * @prop --scrollbar-track-background: Sets the background-color of the browser scroll bar track (if supported)
+  */
 
 :host {
 
