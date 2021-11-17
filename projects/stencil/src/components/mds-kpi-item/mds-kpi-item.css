@@ -19,7 +19,7 @@ mds-kpi-item {
     rounded-2xl;
 
   background-color: var(--background-color, theme('colors.adjust-tone'));
-  box-shadow: var(--box-shadow, theme('boxShadow.lg'));
+  box-shadow: var(--shadow, theme('boxShadow.lg'));
 }
 
 .icon {
