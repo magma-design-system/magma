@@ -12,7 +12,7 @@ import {
 } from '@dictionary/button'
 
 export default {
-  title: 'Form / Button',
+  title: 'UI / Button',
   component: MdsButton,
   argTypes: {
     icon: {

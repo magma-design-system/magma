@@ -4,35 +4,35 @@
 :host ( [variant=light][tone=strong] ) {
 
   --background-color: theme('colors.adjust-tone');
-  --color: theme('colors.adjust-tone-06');
+  --color: theme('colors.adjust-tone-03');
 }
 
 :host ( [variant=light]:hover ),
 :host ( [variant=light][tone=strong]:hover ) {
 
-  --color: theme('colors.adjust-tone-05');
+  --color: theme('colors.adjust-tone-04');
 }
 
 :host ( [variant=light][active] ),
 :host ( [variant=light][tone=strong][active] ) {
 
-  --color: theme('colors.adjust-tone-04');
+  --color: theme('colors.adjust-tone-02');
 }
 
 :host ( [variant=light][tone=weak] ) {
 
   --background-color: theme('colors.adjust-tone');
-  --color: theme('colors.adjust-tone-10');
+  --color: theme('colors.adjust-tone-05');
 }
 
 :host ( [variant=light][tone=weak]:hover ) {
 
-  --color: theme('colors.adjust-tone-09');
+  --color: theme('colors.adjust-tone-04');
 }
 
 :host ( [variant=light][tone=weak][active] ) {
 
-  --color: theme('colors.adjust-tone-08');
+  --color: theme('colors.adjust-tone-03');
 }
 
 :host ( [variant=light][tone=ghost] ) {

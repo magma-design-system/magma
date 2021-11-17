@@ -3,73 +3,73 @@
 :host ( [variant=success] ),
 :host ( [variant=success][tone=strong] ) {
 
-  --background-color: theme('colors.status-success-08');
+  --background-color: theme('colors.status-success-04');
   --color: theme('colors.adjust-tone');
 }
 
 :host ( [variant=success]:hover ),
 :host ( [variant=success][tone=strong]:hover ) {
 
-  --background-color: theme('colors.status-success-07');
+  --background-color: theme('colors.status-success-03');
 }
 
 :host ( [variant=success][active] ),
 :host ( [variant=success][tone=strong][active] ) {
 
-  --background-color: theme('colors.status-success-06');
+  --background-color: theme('colors.status-success-03');
 }
 
 :host ( [variant=success][tone=weak] ) {
 
-  --background-color: theme('colors.status-success-19');
-  --color: theme('colors.status-success-04');
+  --background-color: theme('colors.status-success-09');
+  --color: theme('colors.status-success-02');
 }
 
 :host ( [variant=success][tone=weak]:hover ) {
 
-  --background-color: theme('colors.status-success-18');
+  --background-color: theme('colors.status-success-09');
 }
 
 :host ( [variant=success][tone=weak][active] ) {
 
-  --background-color: theme('colors.status-success-17');
+  --background-color: theme('colors.status-success-08');
 }
 
 :host ( [variant=success][tone=ghost] ) {
 
   --background-color: transparent;
-  --border-color: theme('colors.status-success-06');
-  --color: theme('colors.status-success-06');
+  --border-color: theme('colors.status-success-03');
+  --color: theme('colors.status-success-03');
 }
 
 :host ( [variant=success][tone=ghost]:hover ) {
 
   --background-color: transparent;
-  --border-color: theme('colors.status-success-05');
-  --color: theme('colors.status-success-05');
+  --border-color: theme('colors.status-success-02');
+  --color: theme('colors.status-success-02');
 }
 
 :host ( [variant=success][tone=ghost][active] ) {
 
   --background-color: transparent;
-  --border-color: theme('colors.status-success-04');
-  --color: theme('colors.status-success-04');
+  --border-color: theme('colors.status-success-01');
+  --color: theme('colors.status-success-01');
 }
 
 :host ( [variant=success][tone=quiet] ) {
 
   --background-color: transparent;
-  --color: theme('colors.status-success-04');
+  --color: theme('colors.status-success-02');
 }
 
 :host ( [variant=success][tone=quiet]:hover ) {
 
   --background-color: transparent;
-  --color: theme('colors.status-success-06');
+  --color: theme('colors.status-success-03');
 }
 
 :host ( [variant=success][tone=quiet][active] ) {
 
   --background-color: transparent;
-  --color: theme('colors.status-success-07');
+  --color: theme('colors.status-success-01');
 }
