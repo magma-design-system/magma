@@ -1,10 +1,15 @@
 @tailwind components;
 @tailwind utilities;
 
+/**
+  * @prop --shadow-hover: Sets the box-shadow of the component when the mouse is over it
+  * @prop --shadow: Sets the box-shadow of the component
+  */
+
 :host {
 
-  --box-shadow-hover: theme('boxShadow.sharp-md');
-  --box-shadow: theme('boxShadow.sharp');
+  --shadow-hover: theme('boxShadow.sharp-md');
+  --shadow: theme('boxShadow.sharp');
 
   @apply
     bg-adjust-tone
@@ -17,11 +22,11 @@
     transition-shadow
     w-full;
 
-  box-shadow: var(--box-shadow);
+  box-shadow: var(--shadow);
 }
 
 :host( :hover ) {
-  box-shadow: var(--box-shadow-hover);
+  box-shadow: var(--shadow-hover);
 }
 
 .preview {
