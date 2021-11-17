@@ -31,9 +31,9 @@ const email = faker.internet.email(firstName, lastName)
 
 const Template = args =>
   <mds-modal {...args}>
-    <header slot="top" className="p-8 max-w-lg flex gap-4 items-center border-b border-adjust-tone-18">
+    <header slot="top" className="p-8 max-w-lg flex gap-4 items-center border-b border-adjust-tone-09">
       <mds-img class="w-16" src="/logo-gruppo-maggioli-512w.webp"/>
-      <div className="text-adjust-tone-04">
+      <div className="text-adjust-tone-02">
         <mds-text typography="h5" class="truncate min-w-0">Maggioli Editore</mds-text>
         <mds-text typography="detail" class="truncate min-w-0">Menu di servizio</mds-text>
       </div>
@@ -43,13 +43,13 @@ const Template = args =>
         { text }
       </mds-text>
     </div>
-    <footer slot="bottom" className="p-8 max-w-lg flex gap-4 text-adjust-tone-04 border-t border-adjust-tone-18">
+    <footer slot="bottom" className="p-8 max-w-lg flex gap-4 text-adjust-tone-02 border-t border-adjust-tone-09">
       <mds-author>
         <mds-avatar slot="avatar" class="w-16 mobile:w-12" src="/avatar-01-200x200.jpeg"/>
         <mds-text typography="h6" class="truncate min-w-0">{ fullName }</mds-text>
-        <mds-text typography="caption" class="text-adjust-tone-08 truncate min-w-0">{ email }</mds-text>
+        <mds-text typography="caption" class="text-adjust-tone-04 truncate min-w-0">{ email }</mds-text>
       </mds-author>
-      <mds-button icon="menu-more" class="ml-auto bg-transparent text-adjust-tone-04 p-4 border border-adjust-tone-18 rounded-full"/>
+      <mds-button icon="menu-more" class="ml-auto bg-transparent text-adjust-tone-02 p-4 border border-adjust-tone-09 rounded-full"/>
     </footer>
   </mds-modal>
 
