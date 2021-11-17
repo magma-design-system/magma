@@ -1,20 +1,27 @@
-@tailwind components;
 @tailwind utilities;
 
+/**
+  * @prop --background-active: Sets the background-color of the progress bar when the item is selected
+  * @prop --color: Sets the text color of the component
+  * @prop --thickness: Sets thickness of the progress bar
+  */
+
 :host {
+
   @apply
     duration-500
     ease-out-expo
     grid
     py-4
     relative
-    text-adjust-tone-02
     transition-cosmetic;
+
+  color: var(--color, theme('colors.adjust-tone-02'));
 }
 
 :host ( :hover:not(.active) ) .progress-bar {
 
-  --background: theme('colors.adjust-tone-06');
+  --background-active: theme('colors.adjust-tone-07');
 }
 
 .row {
