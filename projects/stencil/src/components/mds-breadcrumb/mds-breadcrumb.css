@@ -1,14 +1,26 @@
 @tailwind utilities;
 
+/**
+  * @prop --arrow-back-color-hover: Sets the color of arrow back icon when the mouse is over it
+  * @prop --arrow-back-color: Sets the color of arrow back icon
+  * @prop --arrow-depth-color: Sets the color of arrow depth icon
+  * @prop --button-background-hover: Sets the background-color of the button when the mouse is over it
+  * @prop --button-background: Sets the background-color of the button item
+  * @prop --button-color-hover: Sets the text color of the button when the mouse is over it
+  * @prop --button-color: Sets the text color of the button
+  * @prop --current-button-color: Sets the text color of the current depth button
+  */
+
 :host {
 
-  --arrow-back-color-hover: theme('colors.adjust-tone-04');
-  --arrow-back-color: theme('colors.adjust-tone-04');
-  --arrow-depth-color: theme('colors.adjust-tone-15');
-  --item-background-hover: theme('colors.brand-maggioli-18');
-  --item-background: transparent;
-  --item-color-hover: theme('colors.brand-maggioli-08');
-  --item-color: theme('colors.adjust-tone-04');
+  --arrow-back-color-hover: theme('colors.adjust-tone-02');
+  --arrow-back-color: theme('colors.adjust-tone-02');
+  --arrow-depth-color: theme('colors.adjust-tone-07');
+  --button-background-hover: theme('colors.brand-maggioli-09');
+  --button-background: transparent;
+  --button-color-hover: theme('colors.brand-maggioli-04');
+  --button-color: theme('colors.adjust-tone-02');
+  --current-button-color: theme('colors.adjust-tone-05');
 
   @apply
     flex
@@ -39,11 +51,11 @@
     transition-colors
     w-8;
 
-  background-color: var(--item-background);
-  color: var(--item-color);
+  background-color: var(--button-background);
+  color: var(--button-color);
 }
 
 .back:hover {
-  background-color: var(--item-background-hover);
-  color: var(--item-color-hover);
+  background-color: var(--button-background-hover);
+  color: var(--button-color-hover);
 }
