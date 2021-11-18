@@ -8,7 +8,7 @@ mds-flex-table-body {
     overflow-auto;
 
   background-color: var(--background, theme('colors.adjust-tone'));
-  border-radius: var(--border-radius, 0);
+  border-radius: var(--radius, 0);
   box-shadow: var(--shadow, none);
   scroll-snap-type: y mandatory;
 }
