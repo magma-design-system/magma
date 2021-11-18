@@ -1,5 +1,22 @@
 @tailwind utilities;
 
+/*
+  * @prop --background-disabled: Sets the background-color of the item when is disabled
+  * @prop --background-hover: Sets the background-color of the item when the mouse is over it
+  * @prop --background-selected: Sets the background-color of the item when is selected
+  * @prop --background: Sets the background-color of the pages area and the item
+  * @prop --color-disabled: Sets the color of the item when is disabled
+  * @prop --color-hover: Sets the text color of the item when the mouse is over it
+  * @prop --color-selected: Sets the text color of the item when is selected
+  * @prop --color: Sets the text color of the component
+  * @prop --radius: Sets the border-radius of the component
+  * @prop --shadow-disabled: Sets the box-shadow of the item when is disabled
+  * @prop --shadow-hover: Sets the box-shadow of the item when the mouse is over it
+  * @prop --shadow-selected: Sets the box-shadow of the item when is selected
+  * @prop --shadow: Sets the box-shadow of the component
+  * @prop --size: Sets the height and the min-width of the paginator item
+  */
+
 mds-paginator-item {
   @apply
     box-border
@@ -13,19 +30,13 @@ mds-paginator-item {
     transition-colors;
 
   background-color: var(--background, theme('colors.adjust-tone-10'));
-  border-radius: var(--border-radius, 200px);
+  border-radius: var(--radius, 200px);
   box-shadow: var(--shadow, none);
   color: var(--color, theme('colors.adjust-tone-02'));
   height: var(--size, theme('spacing.9'));
   min-width: var(--size, theme('spacing.9'));
 
   /* scroll-snap-align: center; */
-}
-
-.pressed {
-  background-color: var(--background-pressed, theme('colors.adjust-tone-08'));
-  box-shadow: var(--shadow-hover, none);
-  color: var(--color-hover, theme('colors.adjust-tone-02'));
 }
 
 mds-paginator-item:hover {

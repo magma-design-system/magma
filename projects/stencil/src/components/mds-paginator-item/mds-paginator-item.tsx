@@ -8,8 +8,6 @@ import clsx from 'clsx'
 })
 export class MdsPaginatorItem {
 
-  private pressed = false
-
   /**
    * Specifies the icon used inside the paginator item
    */
@@ -25,23 +23,13 @@ export class MdsPaginatorItem {
    */
   @Prop({ reflect: true }) readonly disabled?:boolean
 
-
-  private mouseDown = () => {
-    this.pressed = true
-  }
-
-  private mouseUp = () => {
-    this.pressed = false
-  }
-
   render () {
     return (
       <Host class={clsx(
         this.active && 'active',
         this.disabled && 'disabled',
         this.icon && 'icon',
-        this.pressed && 'pressed',
-      )} onMouseDown={this.mouseDown} onMouseUp={this.mouseUp} onMouseOut={this.mouseUp}>
+      )}>
         { this.icon !== undefined
           ? <mds-icon name={this.icon}/>
           : <mds-text class="text" typography="detail">
