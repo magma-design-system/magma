@@ -28,6 +28,7 @@
   @apply w-full;
 
   height: var(--thickness);
+  min-width: var(--thickness);
 }
 
 :host ( .vertical ) {

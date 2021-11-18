@@ -2,6 +2,6 @@
 
 :host ( [variant=light] ) {
 
-  --background-progress: theme('colors.adjust-tone');
+  --progress-background: theme('colors.adjust-tone');
   --background: theme('colors.adjust-tone-04');
 }
