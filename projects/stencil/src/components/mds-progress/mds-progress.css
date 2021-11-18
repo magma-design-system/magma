@@ -1,11 +1,18 @@
 @tailwind utilities;
 
+/*
+  * @prop --background: Sets the background-color of the component
+  * @prop --progress-background: Sets the background-color of the progress
+  * @prop --radius: Sets the border-radius of the component
+  * @prop --thickness: Sets the thickness of the progress bar
+  */
+
 :host {
 
-  --background-progress: theme('colors.brand-maggioli-03');
   --background: theme('colors.adjust-tone-09');
-  --thickness: theme('height.2');
+  --progress-background: theme('colors.brand-maggioli-03');
   --radius: theme('borderRadius.lg');
+  --thickness: theme('height.2');
 
   @apply
     flex
@@ -38,7 +45,7 @@
     duration-500
     ease-out-expo;
 
-  background-color: var(--background-progress);
+  background-color: var(--progress-background);
   border-radius: var(--radius);
   transition-property: background-color, flex-grow;
 }
