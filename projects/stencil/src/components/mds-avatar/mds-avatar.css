@@ -2,10 +2,17 @@
 
 :host {
 
-  --color-placeholder: theme('colors.brand-maggioli-10');
+  /**
+    * @prop --background-color-pending: The background-color when an image is loading
+    * @prop --background-color-placeholder: The background-color of the placeholder icon
+    * @prop --radius: The border-radius of the element
+    * @prop --color-placeholder: The color of the placeholder icon
+    */
+
   --background-color-pending: theme('colors.adjust-tone-08');
   --background-color-placeholder: theme('colors.brand-maggioli-06');
-  --border-radius: theme('borderRadius.full');
+  --radius: theme('borderRadius.full');
+  --color-placeholder: theme('colors.brand-maggioli-10');
 
   @apply
     animate-pulse
@@ -16,7 +23,7 @@
 
   aspect-ratio: 1/1;
   background-color: var(--background-color-pending);
-  border-radius: var(--border-radius);
+  border-radius: var(--radius);
 }
 
 :host ( .loaded ) {
