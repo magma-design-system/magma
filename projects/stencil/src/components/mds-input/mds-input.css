@@ -4,6 +4,10 @@
 @tailwind components;
 @tailwind utilities;
 
+/**
+  * @prop --background: Sets the background-color of the component
+  */
+
 :host {
   @apply
     flex
