@@ -22,8 +22,11 @@ export class MdsHorizontalScroll {
 
   render () {
     return (
-      <Host class={clsx(this.snap && `scroll--align-${this.snap}`)}>
-        <slot></slot>
+      <Host class={clsx(
+        `scroll--align-${this.snap}`,
+        this.scrollbar ? 'scroll--show-scrollbar' : 'scroll--hide-scrollbar',
+      )}>
+        <slot/>
       </Host>
     )
   }

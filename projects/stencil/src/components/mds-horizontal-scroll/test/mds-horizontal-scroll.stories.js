@@ -6,9 +6,13 @@ export default {
   title: 'Layout / Horizontal Scroll',
   component: MdsHorizontalScroll,
   argTypes: {
+    scrollbar: {
+      description: 'Specifies if the scrollbar is visible or not',
+      type: { name: 'boolean' },
+    },
     snap: {
-      type: { name: 'string', required: false },
-      description: 'The filename shown as component title, is used to auto assign one of the filetype known in the filetype dictionary',
+      type: { name: 'string' },
+      description: 'Specifies the box’s snap position as an alignment of its snap area',
       options: snapDictionary,
       control: { type: 'select' },
     },
@@ -33,6 +37,11 @@ export const Default = Template.bind({})
 export const Snap = Template.bind({})
 Snap.args = {
   snap: 'end',
+}
+
+export const Scrollbar = Template.bind({})
+Scrollbar.args = {
+  scrollbar: true,
 }
 
 export const tailwindStyled = Template.bind({})

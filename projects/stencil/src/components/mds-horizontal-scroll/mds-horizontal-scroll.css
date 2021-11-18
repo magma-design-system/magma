@@ -27,26 +27,29 @@
   scroll-snap-type: x mandatory;
 }
 
-:host ( :not(.scroll--show-scrollbar) ) {
+:host ( .scroll--hide-scrollbar ) {
   -webkit-overflow-scrolling: touch;
   -ms-overflow-style: none;
-  scroll-snap-type: x mandatory;
   scrollbar-width: none;
 }
 
-:host::-webkit-scrollbar {
+:host( .scroll--hide-scrollbar )::-webkit-scrollbar {
+  display: none;
+}
+
+:host( .scroll--show-scrollbar )::-webkit-scrollbar {
   height: var(--scrollbar-size);
   width: var(--scrollbar-size);
 }
 
-:host::-webkit-scrollbar-track {
+:host( .scroll--show-scrollbar )::-webkit-scrollbar-track {
   background-color: var(--scrollbar-track-background);
   border-radius: var(--scrollbar-radius);
   margin-block: var(--scrollbar-margin);
   margin-inline: var(--scrollbar-margin);
 }
 
-:host::-webkit-scrollbar-thumb {
+:host( .scroll--show-scrollbar )::-webkit-scrollbar-thumb {
   background-color: var(--scrollbar-thumb-background);
   border-radius: var(--scrollbar-radius);
 }
