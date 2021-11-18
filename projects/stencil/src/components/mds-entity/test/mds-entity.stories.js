@@ -28,14 +28,14 @@ export default {
 const Template = args =>
   <mds-entity {...args}>
     <mds-text typography="h6">Mario Rossi</mds-text>
-    <mds-badge slot="detail" variant="orange">good</mds-badge>
+    <mds-badge slot="detail" variant="orange" tone="quiet">good</mds-badge>
     <mds-text slot="detail" typography="caption">mario@nintendo.com</mds-text>
   </mds-entity>
 
 const TemplateWario = args =>
   <mds-entity {...args}>
     <mds-text typography="h6">Wario</mds-text>
-    <mds-badge slot="detail" variant="violet">evil</mds-badge>
+    <mds-badge slot="detail" variant="violet" tone="quiet">evil</mds-badge>
     <mds-text slot="detail" typography="caption">wario@nintendo.com</mds-text>
   </mds-entity>
 

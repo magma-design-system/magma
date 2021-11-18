@@ -1,8 +1,6 @@
 @tailwind utilities;
 
-:host {
-
-  /**
+/**
    * @prop --background: The background-color of the entity
    * @prop --background-icon: The background-color of the icon
    * @prop --background-delete: The background-color of the delete action
@@ -11,6 +9,8 @@
    * @prop --color-detail: The color of the text details
    * @prop --color-icon: The color of the icon
   */
+
+:host {
 
   @apply
     flex
@@ -40,7 +40,7 @@
 
   aspect-ratio: 1/1;
   background-color: var(--background-icon, theme('colors.label-blue-09'));
-  color: var(--color-icon, theme('colors.label-blue-02'));
+  color: var(--color-icon, theme('colors.label-blue-04'));
 }
 
 .delete {
@@ -53,7 +53,7 @@
 
   aspect-ratio: 1/1;
   background-color: var(--background-delete, theme('colors.status-error-09'));
-  color: var(--color-delete, theme('colors.status-error-02'));
+  color: var(--color-delete, theme('colors.status-error-04'));
 }
 
 .infos {
@@ -72,7 +72,7 @@
     gap-1
     items-center;
 
-  color: var(--color-detail, theme('colors.adjust-tone-02'));
+  color: var(--color-detail, theme('colors.adjust-tone-03'));
 }
 
 ::slotted ( * ) {
