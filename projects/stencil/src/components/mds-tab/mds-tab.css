@@ -1,5 +1,18 @@
 @tailwind utilities;
 
+/*
+  * @prop --background: Sets the background-color of the component
+  * @prop --button-background-hover: Sets the background-color of the button when the mouse is over it
+  * @prop --button-background-selected: Sets the background-color of the button when it's selected
+  * @prop --button-background: Sets the background-color of the button
+  * @prop --button-color-hover: Sets the text color of the button when the mouse is over it
+  * @prop --button-color-selected: Sets the text color of the button when it's selected
+  * @prop --button-color: Sets the text color of the button
+  * @prop --button-radius: Sets the border-radius of the button
+  * @prop --button-shadow-selected: Sets the box-shadow of the button when it's selected
+  * @prop --radius: Sets the border-radius of the button when the mouse is over it
+  */
+
 :host {
 
   --button-background-hover: transparent;
