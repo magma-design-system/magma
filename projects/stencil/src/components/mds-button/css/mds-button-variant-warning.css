@@ -3,73 +3,73 @@
 :host ( [variant=warning] ),
 :host ( [variant=warning][tone=strong] ) {
 
-  --background-color: theme('colors.status-warning-04');
+  --background: theme('colors.status-warning-04');
   --color: theme('colors.adjust-tone');
 }
 
 :host ( [variant=warning]:hover ),
 :host ( [variant=warning][tone=strong]:hover ) {
 
-  --background-color: theme('colors.status-warning-03');
+  --background: theme('colors.status-warning-03');
 }
 
 :host ( [variant=warning][active] ),
 :host ( [variant=warning][tone=strong][active] ) {
 
-  --background-color: theme('colors.status-warning-03');
+  --background: theme('colors.status-warning-03');
 }
 
 :host ( [variant=warning][tone=weak] ) {
 
-  --background-color: theme('colors.status-warning-09');
+  --background: theme('colors.status-warning-09');
   --color: theme('colors.status-warning-02');
 }
 
 :host ( [variant=warning][tone=weak]:hover ) {
 
-  --background-color: theme('colors.status-warning-09');
+  --background: theme('colors.status-warning-09');
 }
 
 :host ( [variant=warning][tone=weak][active] ) {
 
-  --background-color: theme('colors.status-warning-08');
+  --background: theme('colors.status-warning-08');
 }
 
 :host ( [variant=warning][tone=ghost] ) {
 
-  --background-color: transparent;
+  --background: transparent;
   --border-color: theme('colors.status-warning-03');
   --color: theme('colors.status-warning-03');
 }
 
 :host ( [variant=warning][tone=ghost]:hover ) {
 
-  --background-color: transparent;
+  --background: transparent;
   --border-color: theme('colors.status-warning-02');
   --color: theme('colors.status-warning-02');
 }
 
 :host ( [variant=warning][tone=ghost][active] ) {
 
-  --background-color: transparent;
+  --background: transparent;
   --border-color: theme('colors.status-warning-01');
   --color: theme('colors.status-warning-01');
 }
 
 :host ( [variant=warning][tone=quiet] ) {
 
-  --background-color: transparent;
+  --background: transparent;
   --color: theme('colors.status-warning-02');
 }
 
 :host ( [variant=warning][tone=quiet]:hover ) {
 
-  --background-color: transparent;
+  --background: transparent;
   --color: theme('colors.status-warning-03');
 }
 
 :host ( [variant=warning][tone=quiet][active] ) {
 
-  --background-color: transparent;
+  --background: transparent;
   --color: theme('colors.status-warning-01');
 }

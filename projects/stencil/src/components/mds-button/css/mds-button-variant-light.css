@@ -3,7 +3,7 @@
 :host ( [variant=light] ),
 :host ( [variant=light][tone=strong] ) {
 
-  --background-color: theme('colors.adjust-tone');
+  --background: theme('colors.adjust-tone');
   --color: theme('colors.adjust-tone-03');
 }
 
@@ -21,7 +21,7 @@
 
 :host ( [variant=light][tone=weak] ) {
 
-  --background-color: theme('colors.adjust-tone');
+  --background: theme('colors.adjust-tone');
   --color: theme('colors.adjust-tone-05');
 }
 
@@ -37,39 +37,39 @@
 
 :host ( [variant=light][tone=ghost] ) {
 
-  --background-color: transparent;
+  --background: transparent;
   --border-color: theme('colors.adjust-tone');
   --color: theme('colors.adjust-tone');
 }
 
 :host ( [variant=light][tone=ghost]:hover ) {
 
-  --background-color: transparent;
+  --background: transparent;
   --border-color: theme('colors.adjust-tone');
   --color: theme('colors.adjust-tone');
 }
 
 :host ( [variant=light][tone=ghost][active] ) {
 
-  --background-color: transparent;
+  --background: transparent;
   --border-color: theme('colors.adjust-tone');
   --color: theme('colors.adjust-tone');
 }
 
 :host ( [variant=light][tone=quiet] ) {
 
-  --background-color: transparent;
+  --background: transparent;
   --color: theme('colors.adjust-tone');
 }
 
 :host ( [variant=light][tone=quiet]:hover ) {
 
-  --background-color: transparent;
+  --background: transparent;
   --color: theme('colors.adjust-tone');
 }
 
 :host ( [variant=light][tone=quiet][active] ) {
 
-  --background-color: transparent;
+  --background: transparent;
   --color: theme('colors.adjust-tone');
 }
