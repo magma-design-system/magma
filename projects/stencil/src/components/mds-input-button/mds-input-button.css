@@ -3,6 +3,13 @@
 @tailwind components;
 @tailwind utilities;
 
+/**
+  * @prop --background: Sets the background-color of the component
+  * @prop --border-color: Sets the border-color of the component
+  * @prop --radius: Sets the border-radius of the component
+  * @prop --color: Sets the text color of the component
+  */
+
 :host {
 
   @apply
@@ -19,7 +26,7 @@
 
   background-color: var(--background-color, theme('colors.brand-maggioli-03'));
   border-color: var(--border-color, transparent) !important;
-  border-radius: var(--border-radius, theme('borderRadius.lg'));
+  border-radius: var(--radius, theme('borderRadius.lg'));
   border-width: theme('borderWidth.2') !important;
   color: var(--color, theme('colors.adjust-tone'));
 }
