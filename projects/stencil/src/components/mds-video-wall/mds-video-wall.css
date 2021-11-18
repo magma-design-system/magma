@@ -1,5 +1,11 @@
 @tailwind utilities;
 
+/**
+  * @prop --aspect-ratio: Sets the aspect-ratio of the component
+  * @prop --noise-background-color: Sets the background-color of the noise when active
+  * @prop --video-fit: Sets the object-fit of the video stream
+  */
+
 :host {
 
   --video-fit: cover;
