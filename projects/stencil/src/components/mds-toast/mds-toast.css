@@ -1,5 +1,11 @@
 @tailwind utilities;
 
+/**
+  * @prop --background: Sets the background-color of the component
+  * @prop --color: Sets the text color of the component
+  * @prop --shadow: Sets the box-shadow of the component
+  */
+
 :host {
 
   --color: theme('colors.adjust-tone');
