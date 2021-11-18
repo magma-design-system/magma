@@ -1,73 +1,73 @@
 :host ( [variant=dark] ),
 :host ( [variant=dark][tone=strong] ) {
 
-  --background-color: theme('colors.adjust-tone-03');
+  --background: theme('colors.adjust-tone-03');
   --color: theme('colors.adjust-tone');
 }
 
 :host ( [variant=dark]:hover ),
 :host ( [variant=dark][tone=strong]:hover ) {
 
-  --background-color: theme('colors.adjust-tone-04');
+  --background: theme('colors.adjust-tone-04');
 }
 
 :host ( [variant=dark][active] ),
 :host ( [variant=dark][tone=strong][active] ) {
 
-  --background-color: theme('colors.adjust-tone-02');
+  --background: theme('colors.adjust-tone-02');
 }
 
 :host ( [variant=dark][tone=weak] ) {
 
-  --background-color: theme('colors.adjust-tone-09');
+  --background: theme('colors.adjust-tone-09');
   --color: theme('colors.adjust-tone-02');
 }
 
 :host ( [variant=dark][tone=weak]:hover ) {
 
-  --background-color: theme('colors.adjust-tone-10');
+  --background: theme('colors.adjust-tone-10');
 }
 
 :host ( [variant=dark][tone=weak][active] ) {
 
-  --background-color: theme('colors.adjust-tone-08');
+  --background: theme('colors.adjust-tone-08');
 }
 
 :host ( [variant=dark][tone=ghost] ) {
 
-  --background-color: transparent;
+  --background: transparent;
   --border-color: theme('colors.adjust-tone-03');
   --color: theme('colors.adjust-tone-03');
 }
 
 :host ( [variant=dark][tone=ghost]:hover ) {
 
-  --background-color: transparent;
+  --background: transparent;
   --border-color: theme('colors.adjust-tone-04');
   --color: theme('colors.adjust-tone-04');
 }
 
 :host ( [variant=dark][tone=ghost][active] ) {
 
-  --background-color: transparent;
+  --background: transparent;
   --border-color: theme('colors.adjust-tone-02');
   --color: theme('colors.adjust-tone-02');
 }
 
 :host ( [variant=dark][tone=quiet] ) {
 
-  --background-color: transparent;
+  --background: transparent;
   --color: theme('colors.adjust-tone-02');
 }
 
 :host ( [variant=dark][tone=quiet]:hover ) {
 
-  --background-color: transparent;
+  --background: transparent;
   --color: theme('colors.adjust-tone-04');
 }
 
 :host ( [variant=dark][tone=quiet][active] ) {
 
-  --background-color: transparent;
+  --background: transparent;
   --color: theme('colors.adjust-tone-02');
 }
