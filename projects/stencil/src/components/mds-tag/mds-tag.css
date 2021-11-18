@@ -1,10 +1,16 @@
 @tailwind components;
 @tailwind utilities;
 
+/**
+  * @prop --background: Sets the background-color of the component
+  * @prop --color: Sets the text color of the component
+  * @prop --shadow: Sets the box-shadow of the component
+  */
+
 :host {
 
-  --background-color: theme('colors.label-yellow-09');
-  --border-radius: theme('borderRadius.md');
+  --background: theme('colors.label-yellow-09');
+  --radius: theme('borderRadius.md');
   --color: theme('colors.adjust-tone-03');
 
   @apply
@@ -13,8 +19,8 @@
     overflow-hidden
     pl-3;
 
-  background-color: var(--background-color);
-  border-radius: var(--border-radius);
+  background-color: var(--background);
+  border-radius: var(--radius);
   color: var(--color);
 }
 
@@ -23,7 +29,8 @@
     block
     flex-grow
     min-w-0
-    py-1;
+    py-1
+    self-center;
 }
 
 .text:last-child {
