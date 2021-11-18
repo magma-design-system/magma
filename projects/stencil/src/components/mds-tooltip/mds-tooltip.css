@@ -64,7 +64,7 @@
     relative;
 
   background-color: var(--background-color, theme('colors.adjust-tone-01'));
-  border-radius: var(--border-radius, theme('borderRadius.DEFAULT'));
+  border-radius: var(--radius, theme('borderRadius.DEFAULT'));
   color: var(--color, theme('colors.adjust-tone'));
   max-width: var(--max-width);
 }
