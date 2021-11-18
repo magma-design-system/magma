@@ -1,12 +1,18 @@
-@tailwind components;
 @tailwind utilities;
+
+/**
+  * @prop --background: Sets the background-color of the component
+  * @prop --color: Sets the text color of the component
+  * @prop --radius: Sets the border-radius of the component
+  * @prop --shadow: Sets the box-shadow of the component
+  */
 
 :host {
 
-  --background-color: theme('colors.adjust-tone-10');
-  --border-radius: theme('borderRadius.md');
+  --background: theme('colors.adjust-tone-10');
   --color: theme('colors.adjust-tone-02');
-  --box-shadow: theme('boxShadow.lg');
+  --radius: theme('borderRadius.md');
+  --shadow: theme('boxShadow.lg');
 
   @apply
     flex
@@ -17,15 +23,15 @@
 
 .window {
   @apply
-    bg-adjust-tone-18
+    bg-adjust-tone-09
     flex
     flex-col
     flex-grow
     overflow-hidden
     w-full;
 
-  border-radius: var(--border-radius);
-  box-shadow: var(--box-shadow);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow);
 }
 
 .header {
@@ -36,7 +42,7 @@
     flex-shrink-0
     p-2;
 
-  background-color: var(--background-color);
+  background-color: var(--background);
   color: var(--color);
 }
 
