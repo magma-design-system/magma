@@ -4,8 +4,8 @@
 :host ( [variant=dark][tone=strong] ) {
 
   --background: theme('colors.adjust-tone-01');
-  --border-radius: theme('borderRadius.lg');
-  --color: theme('colors.adjust-tone-04');
+  --radius: theme('borderRadius.lg');
+  --color: theme('colors.adjust-tone-08');
   --separator-color: theme('colors.adjust-tone-02');
   --shadow: theme('boxShadow.sharp-lg');
 }
@@ -13,16 +13,16 @@
 :host ( [variant=dark][tone=weak] ) {
 
   --background: theme('colors.adjust-tone-02');
-  --border-radius: theme('borderRadius.md');
-  --color: theme('colors.adjust-tone-05');
-  --separator-color: theme('colors.adjust-tone-02');
+  --radius: theme('borderRadius.md');
+  --color: theme('colors.adjust-tone-08');
+  --separator-color: theme('colors.adjust-tone-03');
   --shadow: theme('boxShadow.sharp-sm');
 }
 
 :host ( [variant=dark][tone=ghost] ) {
 
   --border-color: theme('colors.adjust-tone-04');
-  --border-radius: theme('borderRadius.lg');
+  --radius: theme('borderRadius.lg');
   --color: theme('colors.adjust-tone-05');
   --separator-color: theme('colors.adjust-tone-02');
   --shadow: none;
@@ -30,7 +30,8 @@
 
 :host ( [variant=dark][tone=quiet] ) {
 
-  --color: theme('colors.adjust-tone-05');
-  --separator-color: theme('colors.adjust-tone-02');
+  --background: transparent;
+  --color: theme('colors.adjust-tone-04');
+  --separator-color: theme('colors.adjust-tone-03');
   --shadow: none;
 }

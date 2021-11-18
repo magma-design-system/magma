@@ -5,18 +5,19 @@
   /**
     * @prop --background: Sets the background-color of the component
     * @prop --border-color: Sets the border-color of the component
-    * @prop --border-radius: Sets the border-radius of the component
+    * @prop --radius: Sets the border-radius of the component
     * @prop --color: Sets the text color of the component
     * @prop --separator-color: Sets the background-color of the separator inside the component
     * @prop --shadow: Sets the box-shadow of the component
     */
+
   --background: theme('colors.adjust-tone-10');
 
   @apply grid;
 
   background-color: var(--background, theme('colors.adjust-tone-10'));
   border-color: var(--border-color, transparent) !important;
-  border-radius: var(--border-radius, 0);
+  border-radius: var(--radius, 0);
   border-width: theme('borderWidth.2') !important;
   box-shadow: var(--shadow, none);
   color: var(--color, theme('colors.adjust-tone-02'));

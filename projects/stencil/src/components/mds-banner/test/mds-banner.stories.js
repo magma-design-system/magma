@@ -1,5 +1,6 @@
 import React from 'react'
 import faker from 'faker'
+import clsx from 'clsx'
 import MdsBanner from '@component/mds-banner/mds-banner'
 import { iconsDictionary } from '@dictionary/icon'
 import { themeVariantDictionary, toneVariantDictionary } from '@dictionary/variant'
@@ -45,13 +46,15 @@ const Template = args =>
   </mds-banner>
 
 const TemplateActions = args =>
-  <mds-banner {...args}>
-    <mds-text typography="detail">
-      { faker.lorem.paragraph() }
-    </mds-text>
-    <mds-button slot="actions" variant={args.variant} tone="weak">{ faker.hacker.verb() }</mds-button>
-    <mds-button slot="actions" variant={args.variant}>{ faker.hacker.verb() }</mds-button>
-  </mds-banner>
+  <div class={clsx(args.tone === 'quiet' && args.variant === 'light' ? 'bg-adjust-tone-01' : 'bg-adjust-tone-10', 'p-4 transition-colors delay-300')}>
+    <mds-banner {...args}>
+      <mds-text typography="detail">
+        { faker.lorem.paragraph() }
+      </mds-text>
+      <mds-button slot="actions" variant={args.variant} tone="ghost">{ faker.hacker.verb() }</mds-button>
+      <mds-button slot="actions" variant={args.variant}>{ faker.hacker.verb() }</mds-button>
+    </mds-banner>
+  </div>
 
 export const Default = Template.bind({})
 
@@ -62,7 +65,7 @@ Headline.args = {
 
 export const Icon = Template.bind({})
 Icon.args = {
-  icon: 'status-warning',
+  icon: 'warning',
 }
 
 export const Deletable = Template.bind({})
@@ -74,5 +77,8 @@ export const Actions = TemplateActions.bind({})
 
 export const Variant = TemplateActions.bind({})
 Variant.args = {
-  variant: 'success',
+  headline: faker.animal.dog(),
+  icon: 'warning',
+  deletable: true,
+  variant: 'warning',
 }

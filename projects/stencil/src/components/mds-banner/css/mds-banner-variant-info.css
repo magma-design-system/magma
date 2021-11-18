@@ -4,7 +4,7 @@
 :host ( [variant=info][tone=strong] ) {
 
   --background: theme('colors.status-info-09');
-  --border-radius: theme('borderRadius.lg');
+  --radius: theme('borderRadius.lg');
   --color: theme('colors.status-info-02');
   --separator-color: theme('colors.status-info-08');
   --shadow: theme('boxShadow.sharp-lg');
@@ -13,7 +13,7 @@
 :host ( [variant=info][tone=weak] ) {
 
   --background: theme('colors.status-info-10');
-  --border-radius: theme('borderRadius.md');
+  --radius: theme('borderRadius.md');
   --color: theme('colors.status-info-02');
   --separator-color: theme('colors.status-info-09');
   --shadow: theme('boxShadow.sharp-sm');
@@ -23,7 +23,7 @@
 
   --background: theme('colors.status-info-10');
   --border-color: theme('colors.status-info-08');
-  --border-radius: theme('borderRadius.lg');
+  --radius: theme('borderRadius.lg');
   --color: theme('colors.status-info-02');
   --separator-color: theme('colors.status-info-09');
   --shadow: none;
@@ -31,7 +31,7 @@
 
 :host ( [variant=info][tone=quiet] ) {
 
-  --background: theme('colors.status-info-10');
+  --background: transparent;
   --color: theme('colors.status-info-02');
   --separator-color: theme('colors.status-info-10');
   --shadow: none;
