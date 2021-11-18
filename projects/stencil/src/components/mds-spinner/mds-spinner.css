@@ -1,11 +1,18 @@
 @tailwind utilities;
 
+/*
+  * @prop --background: Sets the background-color of the component
+  * @prop --color: Sets the color of the icon
+  * @prop --duration: Sets the duration of the icon animation
+  * @prop --size: Sets the size of the component
+  */
+
 :host {
 
   --background: transparent;
   --color: theme('colors.brand-maggioli-03');
-  --size: 58px;
   --duration: 1.25s;
+  --size: 58px;
 
   @apply
     inline-flex
