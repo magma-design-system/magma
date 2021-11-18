@@ -24,8 +24,28 @@ Generated at {{ date }}
   {{/each}}
 }
 
+:root .dark-mode {
+  {{#each properties as | groups |}}
+    {{#each groups as | names |}}
+      {{#each names as | lightModes |}}
+        {{#each lightModes as | palettes |}}
+          {{#ifEquals @key 'dark'}}
+            {{#each palettes as | palette |}}
+              {{#ifEquals @key 'color'}}
+  --{{@../../../key}}-{{@../../key}}: {{palette.value}};
+              {{else}}
+  --{{@../../../key}}-{{@../../key}}-{{leadZero @key}}: {{palette.value}};
+              {{/ifEquals}}
+            {{/each}}
+          {{/ifEquals}}
+          {{/each}}
+      {{/each}}
+    {{/each}}
+  {{/each}}
+}
+
 @media (prefers-color-scheme: dark) {
-  :root .dark-mode {
+  :root .dark-mode-os {
     {{#each properties as | groups |}}
       {{#each groups as | names |}}
         {{#each names as | lightModes |}}
