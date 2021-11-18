@@ -1,5 +1,15 @@
 @tailwind utilities;
 
+/**
+  * @prop --arrow-size: Specifies the size of the arrow decoration
+  * @prop --background: Specifies the background-color of the component
+  * @prop --color: Specifies the text color of the component
+  * @prop --drop-shadow: Specifies the drop-shadow filter of the component (not box-shadow)
+  * @prop --max-width: Specifies the max-width of the component
+  * @prop --transition-intro: Specifies the transition animation effect of the component when is triggered
+  * @prop --transition-outro: Specifies the transition animation effect of the component when is closed
+  */
+
 :host {
 
   --arrow-size: theme('spacing[1.5]');
