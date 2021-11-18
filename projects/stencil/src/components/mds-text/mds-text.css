@@ -2,10 +2,6 @@
 @tailwind components;
 @tailwind utilities;
 
-:host {
-  @apply block;
-}
-
 :host ( .text-primary-h1 ) {
   @apply text-primary-h1;
 }

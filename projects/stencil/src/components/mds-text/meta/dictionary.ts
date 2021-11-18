@@ -1,4 +1,3 @@
-
 const tagsDictionary = [
   'abbr',
   'address',
@@ -49,7 +48,6 @@ const tagsDictionary = [
   'u',
   'ul',
   'var',
-  'wbr',
 ]
 
 export {

@@ -1,7 +1,7 @@
 import { Component, Host, Prop, h } from '@stencil/core'
 import { TypographyTagType } from './meta/types'
 import { TypographyType } from '../../types/typography'
-import { typographyDefaultsVariaint } from './meta/variants'
+import { htmlTagDisplayProperty, typographyDefaultsVariaint } from './meta/variants'
 import clsx from 'clsx'
 
 @Component({
@@ -23,8 +23,9 @@ export class MdsText {
   render () {
     const Tag = this.tag !== undefined ? this.tag : typographyDefaultsVariaint[this.typography].tag
     const { selector } = typographyDefaultsVariaint[this.typography]
+    const display = htmlTagDisplayProperty[this.tag]
     return (
-      <Host class={clsx(selector)}>
+      <Host class={clsx(selector, display)}>
         <Tag class="text">
           <slot></slot>
         </Tag>

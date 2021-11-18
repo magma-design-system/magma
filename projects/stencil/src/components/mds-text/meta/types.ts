@@ -48,4 +48,3 @@ export type TypographyTagType =
   | 'u'
   | 'ul'
   | 'var'
-  | 'wbr'
