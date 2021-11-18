@@ -45,7 +45,6 @@ const Template = args =>
   <mds-toast {...args}>
     <mds-icon slot="icon" name="warning"/>
     Elemento spidiguddato a sinistra con successo
-    <mds-button slot="action" size="sm" inherit-theme variant={checkVariant(args.variant)} tone="ghost">Annulla</mds-button>
     <mds-button slot="action" size="sm" variant={checkVariant(args.variant)} tone={args.tone}>Annulla</mds-button>
   </mds-toast>
 
