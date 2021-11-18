@@ -73,7 +73,7 @@
     py-2
     relative;
 
-  background-color: var(--background-color, theme('colors.adjust-tone-01'));
+  background-color: var(--background, theme('colors.adjust-tone-01'));
   border-radius: var(--radius, theme('borderRadius.DEFAULT'));
   color: var(--color, theme('colors.adjust-tone'));
   max-width: var(--max-width);
@@ -89,7 +89,7 @@
 }
 
 .arrow--bottom {
-  border-color: transparent transparent var(--background-color, theme('colors.adjust-tone-01')) transparent;
+  border-color: transparent transparent var(--background, theme('colors.adjust-tone-01')) transparent;
   border-width: 0 var(--arrow-size) var(--arrow-size) var(--arrow-size);
   left: calc(50% - calc(var(--arrow-size) / 2));
   top: 0;
@@ -97,7 +97,7 @@
 }
 
 .arrow--top {
-  border-color: var(--background-color, theme('colors.adjust-tone-01')) transparent transparent transparent;
+  border-color: var(--background, theme('colors.adjust-tone-01')) transparent transparent transparent;
   border-width: var(--arrow-size) var(--arrow-size) 0 var(--arrow-size);
   bottom: 0;
   left: calc(50% - calc(var(--arrow-size) / 2));
@@ -105,7 +105,7 @@
 }
 
 .arrow--right {
-  border-color: transparent var(--background-color, theme('colors.adjust-tone-01')) transparent transparent;
+  border-color: transparent var(--background, theme('colors.adjust-tone-01')) transparent transparent;
   border-width: calc(var(--arrow-size) / 1.5) var(--arrow-size) calc(var(--arrow-size) / 1.5) 0;
   left: 0;
   top: calc(50% - calc(var(--arrow-size) / 2));
@@ -113,7 +113,7 @@
 }
 
 .arrow--left {
-  border-color: transparent transparent transparent var(--background-color, theme('colors.adjust-tone-01'));
+  border-color: transparent transparent transparent var(--background, theme('colors.adjust-tone-01'));
   border-width: calc(var(--arrow-size) / 1.5) 0 calc(var(--arrow-size) / 1.5) var(--arrow-size);
   right: 0;
   top: calc(50% - calc(var(--arrow-size) / 2));
