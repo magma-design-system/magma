@@ -1,5 +1,13 @@
 @tailwind utilities;
 
+/**
+  * @prop --thumb-size: Sets the thumb width and height of the component
+  * @prop --thumb-background:
+  * @prop --track-background:
+  * @prop --track-size:
+  * @prop --track-progress-background:
+  */
+
 :host {
 
   --thumb-size: theme('spacing.4');
