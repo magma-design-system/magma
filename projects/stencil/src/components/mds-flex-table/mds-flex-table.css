@@ -1,23 +1,23 @@
 @tailwind utilities;
 
-:host {
-
-  /**
+/**
   * @prop --background: The cell background-color of the table body
   * @prop --background-hover: The background-color of the table body when the mouse go over the table body element
   * @prop --background-row-hover: The cell background-color when the mouse go over the table row element
   * @prop --border-color: The border color between table rows
-  * @prop --border-radius: The radius of the table (header and footer excluded)
+  * @prop --radius: The radius of the table (header and footer excluded)
   * @prop --cell-padding: The cell padding used on table cell
   * @prop --cell-align-items: The cell vertical align, based on flex align-items CSS property
   * @prop --shadow: The box-shadow used on the table (header and footer excluded)
   */
 
+:host {
+
   --background-hover: theme('colors.adjust-tone-10');
   --background-row-hover: theme('colors.adjust-tone');
   --background: theme('colors.adjust-tone');
   --border-color: theme('colors.adjust-tone-09');
-  --border-radius: theme('borderRadius.lg');
+  --radius: theme('borderRadius.lg');
   --cell-align-items: center;
   --cell-padding: theme('spacing.4');
   --shadow: theme('boxShadow.sharp-md');
