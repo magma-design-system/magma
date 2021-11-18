@@ -2,7 +2,13 @@
 
 :host {
 
-  --background: theme('colors.status-error-04');
+  /*
+  * @prop --background: Sets the background-color of the component
+  * @prop --color: Sets the text color of the component
+  * @prop --size: Sets the size of the component
+  */
+
+  --background: theme('colors.status-error-06');
   --color: theme('colors.adjust-tone');
   --size: theme('spacing.5');
   --translate: translate(calc(var(--size) / 2), calc(var(--size) / -2));
