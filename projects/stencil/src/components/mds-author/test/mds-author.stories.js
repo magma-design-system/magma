@@ -7,12 +7,10 @@ export default {
   component: MdsAuthor,
 }
 
-
-
 const Template = args =>
-  <mds-author {...args} class="text-adjust-tone-08">
-    <mds-avatar initials="jd" slot="avatar" class="w-20 bg-brand-maggioli-12"/>
-    <mds-text typography="h6" class="text-adjust-tone-04">{ `${faker.name.firstName()} ${faker.name.lastName()}` }</mds-text>
+  <mds-author {...args} class="text-adjust-tone-04">
+    <mds-avatar initials="jd" slot="avatar" class="w-20 bg-brand-maggioli-06"/>
+    <mds-text typography="h6" class="text-adjust-tone-02">{ `${faker.name.firstName()} ${faker.name.lastName()}` }</mds-text>
     <mds-text typography="caption">{ faker.name.jobTitle() }</mds-text>
     <mds-text typography="caption">{ faker.name.jobArea() }</mds-text>
   </mds-author>
