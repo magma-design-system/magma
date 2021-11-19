@@ -14,17 +14,3 @@
   --color: theme('colors.status-warning-03');
   --shadow: theme('boxShadow.sharp-sm');
 }
-
-:host ( [variant=warning][tone=ghost] ) {
-
-  --background: theme('colors.status-warning-10');
-  --color: theme('colors.status-warning-02');
-  --shadow: none;
-}
-
-:host ( [variant=warning][tone=quiet] ) {
-
-  --background: theme('colors.status-warning-10');
-  --color: theme('colors.status-warning-02');
-  --shadow: none;
-}

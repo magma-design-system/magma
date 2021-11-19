@@ -1,5 +1,5 @@
 import { Component, Element, Event, EventEmitter, Host, h, Prop, Watch } from '@stencil/core'
-import { ToneVariantType, ThemeLuminanceVariantType } from '../../types/variant'
+import { ToneMinimalVariantType, ThemeLuminanceVariantType } from '../../types/variant'
 import clsx from 'clsx'
 
 @Component({
@@ -35,7 +35,7 @@ export class MdsToast {
   /**
    * Sets the tone of the color variant
    */
-  @Prop({ reflect: true }) readonly tone?: ToneVariantType = 'strong'
+  @Prop({ reflect: true }) readonly tone?: ToneMinimalVariantType = 'strong'
 
   /**
    * Emits when the accordion is opened

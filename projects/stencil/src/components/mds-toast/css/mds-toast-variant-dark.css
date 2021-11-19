@@ -14,15 +14,3 @@
   --color: theme('colors.adjust-tone-10');
   --shadow: theme('boxShadow.sharp-sm');
 }
-
-:host ( [variant=dark][tone=ghost] ) {
-
-  --color: theme('colors.adjust-tone-10');
-  --shadow: none;
-}
-
-:host ( [variant=dark][tone=quiet] ) {
-
-  --color: theme('colors.adjust-tone-10');
-  --shadow: none;
-}

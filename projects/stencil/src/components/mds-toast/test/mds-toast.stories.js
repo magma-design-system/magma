@@ -1,6 +1,6 @@
 import React from 'react'
 import MdsToast from '@component/mds-toast/mds-toast'
-import { themeVariantDictionary, toneVariantDictionary } from '@dictionary/variant'
+import { themeVariantDictionary, toneMinimalVariantDictionary } from '@dictionary/variant'
 
 export default {
   title: 'UI / Toast',
@@ -13,7 +13,7 @@ export default {
     tone: {
       type: { name: 'string', required: false },
       description: 'Sets the tone of the color variant',
-      options: toneVariantDictionary,
+      options: toneMinimalVariantDictionary,
       control: { type: 'select' },
     },
     variant: {
