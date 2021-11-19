@@ -36,10 +36,10 @@
     "test.watch": "stencil test --spec --e2e --watchAll"
   },
   "dependencies": {
-    "@maggioli-design-system/design-tokens": "^5.0.0",
+    "@maggioli-design-system/design-tokens": "^5.0.2",
     "@maggioli-design-system/icons": "^1.29.0",
     "@maggioli-design-system/identity": "^1.8.3",
-    "@maggioli-design-system/styles": "^4.0.0",
+    "@maggioli-design-system/styles": "^4.0.1",
     "@stencil/core": "^2.10.0",
     "tailwindcss": "^2.2.19"
   },
