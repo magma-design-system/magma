@@ -66,6 +66,71 @@
   line-height: inherit;
 }
 
+:host ( .article ),
+:host ( .blockquote ),
+:host ( .dd ),
+:host ( .details ),
+:host ( .div ),
+:host ( .dl ),
+:host ( .dt ),
+:host ( .figcaption ),
+:host ( .h1 ),
+:host ( .h2 ),
+:host ( .h3 ),
+:host ( .h4 ),
+:host ( .h5 ),
+:host ( .h6 ),
+:host ( .legend ),
+:host ( .li ),
+:host ( .ol ),
+:host ( .p ),
+:host ( .pre ),
+:host ( .summary ),
+:host ( .ul ) {
+  @apply block;
+}
+
+:host ( .abbr ),
+:host ( .address ),
+:host ( .b ),
+:host ( .bdo ),
+:host ( .cite ),
+:host ( .code ),
+:host ( .del ),
+:host ( .dfn ),
+:host ( .em ),
+:host ( .i ),
+:host ( .ins ),
+:host ( .kbd ),
+:host ( .label ),
+:host ( .mark ),
+:host ( .q ),
+:host ( .rb ),
+:host ( .rt ),
+:host ( .ruby ),
+:host ( .s ),
+:host ( .samp ),
+:host ( .small ),
+:host ( .span ),
+:host ( .strong ),
+:host ( .sub ),
+:host ( .sup ),
+:host ( .time ),
+:host ( .u ),
+:host ( .var ) {
+  @apply inline;
+
+  line-height: inherit;
+}
+
+:host ( .code ) {
+  @apply
+    bg-adjust-tone-02
+    bg-opacity-20
+    px-1
+    rounded;
+}
+
 abbr,
 address,
 article,
