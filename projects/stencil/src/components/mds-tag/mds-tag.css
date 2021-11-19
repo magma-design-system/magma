@@ -53,3 +53,20 @@
     text-inherit
     transition-colors;
 }
+
+@import './css/mds-tag-variant-amaranth.css';
+@import './css/mds-tag-variant-aqua.css';
+@import './css/mds-tag-variant-blue.css';
+@import './css/mds-tag-variant-dark.css';
+@import './css/mds-tag-variant-error.css';
+@import './css/mds-tag-variant-green.css';
+@import './css/mds-tag-variant-info.css';
+@import './css/mds-tag-variant-light.css';
+@import './css/mds-tag-variant-lime.css';
+@import './css/mds-tag-variant-orange.css';
+@import './css/mds-tag-variant-orchid.css';
+@import './css/mds-tag-variant-sky.css';
+@import './css/mds-tag-variant-success.css';
+@import './css/mds-tag-variant-violet.css';
+@import './css/mds-tag-variant-warning.css';
+@import './css/mds-tag-variant-yellow.css';

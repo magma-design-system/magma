@@ -1,5 +1,6 @@
 import { Component, Element, Event, EventEmitter, Host, h, Prop } from '@stencil/core'
 import { TypographyType } from '../../types/typography'
+import { ThemeFullVariantType, ToneSimpleVariantType } from '../../types/variant'
 import clsx from 'clsx'
 
 @Component({
@@ -10,6 +11,16 @@ import clsx from 'clsx'
 export class MdsTag {
 
   @Element() private element: HTMLMdsTagElement
+
+  /**
+   * Sets the theme variant colors
+   */
+  @Prop({ reflect: true }) variant?: ThemeFullVariantType = 'sky'
+
+  /**
+   * Sets the tone of the color variant
+   */
+  @Prop({ reflect: true }) tone?: ToneSimpleVariantType = 'quiet'
 
   /**
    * Truncates text inside the label or displays it in multiline if needed

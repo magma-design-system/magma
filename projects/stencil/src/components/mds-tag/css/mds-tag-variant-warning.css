@@ -1,0 +1,20 @@
+@tailwind utilities;
+
+:host ( [variant=warning] ),
+:host ( [variant=warning][tone=strong] ) {
+
+  --background: theme('colors.status-warning-04');
+  --color: theme('colors.status-warning-10');
+}
+
+:host ( [variant=warning][tone=weak] ) {
+
+  --background: theme('colors.status-warning-08');
+  --color: theme('colors.status-warning-02');
+}
+
+:host ( [variant=warning][tone=quiet] ) {
+
+  --background: theme('colors.status-warning-09');
+  --color: theme('colors.status-warning-04');
+}

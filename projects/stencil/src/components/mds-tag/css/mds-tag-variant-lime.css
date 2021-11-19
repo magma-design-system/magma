@@ -1,0 +1,20 @@
+@tailwind utilities;
+
+:host ( [variant=lime] ),
+:host ( [variant=lime][tone=strong] ) {
+
+  --background: theme('colors.label-lime-04');
+  --color: theme('colors.label-lime-10');
+}
+
+:host ( [variant=lime][tone=weak] ) {
+
+  --background: theme('colors.label-lime-08');
+  --color: theme('colors.label-lime-02');
+}
+
+:host ( [variant=lime][tone=quiet] ) {
+
+  --background: theme('colors.label-lime-09');
+  --color: theme('colors.label-lime-04');
+}

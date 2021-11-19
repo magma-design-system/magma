@@ -2,24 +2,38 @@ import React from 'react'
 import faker from 'faker'
 import MdsTag from '@component/mds-tag/mds-tag'
 import { typographyDictionary } from '@dictionary/typography'
+import { typographySecondaryDictionary } from '@dictionary/typography'
+import { themeFullVariantDictionary, toneSimpleVariantDictionary } from '@dictionary/variant'
 
 export default {
   title: 'UI / Tag',
   component: MdsTag,
   argTypes: {
     deletable: {
-      type: { name: 'boolean', required: false },
+      type: { name: 'boolean' },
       description: 'Enables the cross icon to perform cancel/delete action on element',
     },
     truncate: {
-      type: { name: 'boolean', required: false },
+      type: { name: 'boolean' },
       description: 'Truncates text inside the tag or displays it in multiline if needed',
     },
     typography: {
-      type: { name: 'string', required: false },
+      type: { name: 'string' },
       control: { type: 'select' },
       description: 'Specifies the font typography of the element',
       options: typographyDictionary,
+    },
+    tone: {
+      type: { name: 'string' },
+      control: { type: 'select' },
+      description: 'Sets the tone of the color variant',
+      options: toneSimpleVariantDictionary,
+    },
+    variant: {
+      type: { name: 'string' },
+      control: { type: 'select' },
+      description: 'Sets the theme variant colors',
+      options: themeFullVariantDictionary,
     },
   },
 }

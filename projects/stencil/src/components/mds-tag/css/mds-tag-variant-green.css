@@ -1,0 +1,20 @@
+@tailwind utilities;
+
+:host ( [variant=green] ),
+:host ( [variant=green][tone=strong] ) {
+
+  --background: theme('colors.label-green-04');
+  --color: theme('colors.label-green-10');
+}
+
+:host ( [variant=green][tone=weak] ) {
+
+  --background: theme('colors.label-green-08');
+  --color: theme('colors.label-green-02');
+}
+
+:host ( [variant=green][tone=quiet] ) {
+
+  --background: theme('colors.label-green-09');
+  --color: theme('colors.label-green-04');
+}
