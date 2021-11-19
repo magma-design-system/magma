@@ -21,13 +21,14 @@
 
 :host ( [variant=info][tone=weak] ) {
 
-  --background: theme('colors.status-info-09');
+  --background: theme('colors.status-info-08');
   --color: theme('colors.status-info-02');
 }
 
 :host ( [variant=info][tone=weak]:hover ) {
 
-  --background: theme('colors.status-info-09');
+  --background: theme('colors.status-info-07');
+  --color: theme('colors.status-info-01');
 }
 
 :host ( [variant=info][tone=weak][active] ) {

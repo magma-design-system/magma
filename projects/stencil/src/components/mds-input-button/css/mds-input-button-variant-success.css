@@ -21,13 +21,14 @@
 
 :host ( [variant=success][tone=weak] ) {
 
-  --background: theme('colors.status-success-09');
+  --background: theme('colors.status-success-08');
   --color: theme('colors.status-success-02');
 }
 
 :host ( [variant=success][tone=weak]:hover ) {
 
-  --background: theme('colors.status-success-09');
+  --background: theme('colors.status-success-07');
+  --color: theme('colors.status-success-01');
 }
 
 :host ( [variant=success][tone=weak][active] ) {
