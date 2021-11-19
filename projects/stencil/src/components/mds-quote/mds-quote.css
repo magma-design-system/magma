@@ -7,5 +7,10 @@
 .quote {
   @apply
     gap-4
-    grid;
+    grid
+    select-all;
+}
+
+span {
+  @apply select-none;
 }

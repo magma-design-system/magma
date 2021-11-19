@@ -15,10 +15,10 @@ export class MdsQuote {
   render () {
     return (
       <Host>
-        <mds-text typography={ this.typography }><i>❝&nbsp;</i></mds-text>
+        <mds-text typography={ this.typography }><span><i>❝&nbsp;</i></span></mds-text>
         <div class="quote">
           <mds-text typography={ this.typography }>
-            <i><slot/>&nbsp;❞</i>
+            <i><slot/><span>&nbsp;❞</span></i>
           </mds-text>
           <slot name="author"/>
         </div>
