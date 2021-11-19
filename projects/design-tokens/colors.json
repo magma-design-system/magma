@@ -6,7 +6,7 @@
       "name": "adjust.tone"
     },
 
-    { "color": "#00379E", "name": "brand.maggioli" },
+    { "color": "#00379E", "name": "brand.maggioli", "colorspace": "HSL" },
     { "color": "#597CB9", "name": "brand.eolo" },
     { "color": "#ED7C63", "name": "brand.argo" },
     { "color": "#01495C", "name": "brand.la-polizia-locale" },
@@ -43,7 +43,7 @@
   "defaultColorspace": "RGB",
   "ratios": [
     1.05,
-    1.24,
+    1.18,
     1.64,
     2.23,
     3.09,
