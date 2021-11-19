@@ -66,3 +66,7 @@ export type ToneSimpleVariantType =
   | 'strong'
   | 'weak'
   | 'quiet'
+
+export type ToneMinimalVariantType =
+| 'strong'
+| 'weak'

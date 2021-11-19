@@ -107,6 +107,10 @@
   @apply bg-opacity-50;
 }
 
+.icon {
+  color: var(--icon-color, theme('colors.adjust-tone-04'));
+}
+
 .text {
   @apply
     gap-2

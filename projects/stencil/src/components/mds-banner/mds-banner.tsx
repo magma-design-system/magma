@@ -1,5 +1,5 @@
 import { Component, Host, h, Element, Event, EventEmitter, Prop } from '@stencil/core'
-import { ToneVariantType, ThemeVariantType } from '../../types/variant'
+import { ToneSimpleVariantType, ThemeVariantType } from '../../types/variant'
 import clsx from 'clsx'
 
 @Component({
@@ -21,7 +21,7 @@ export class MdsBanner {
   /**
    * Sets the tone of the color variant
    */
-  @Prop({ reflect: true }) readonly tone?: ToneVariantType = 'strong'
+  @Prop({ reflect: true }) readonly tone?: ToneSimpleVariantType = 'strong'
 
   /**
    * Shows the cross icon to perform cancel/delete action on element

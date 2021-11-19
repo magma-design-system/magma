@@ -64,12 +64,18 @@ const toneSimpleVariantDictionary = [
   'quiet',
 ]
 
+const toneMinimalVariantDictionary = [
+  'strong',
+  'weak',
+]
+
 export {
   themeFullVariantDictionary,
   themeLabelVariantDictionary,
   themeLuminanceVariantDictionary,
   themeStatusVariantDictionary,
   themeVariantDictionary,
+  toneMinimalVariantDictionary,
   toneSimpleVariantDictionary,
   toneVariantDictionary,
 }
