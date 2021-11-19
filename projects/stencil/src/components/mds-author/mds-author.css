@@ -8,7 +8,9 @@
 }
 
 .avatar {
-  @apply flex-shrink-0;
+  @apply
+    flex-shrink-0
+    select-none;
 }
 
 .info {
