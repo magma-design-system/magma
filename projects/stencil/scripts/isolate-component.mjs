@@ -28,18 +28,20 @@ const stencilTemplate = await readFile(
 );
 
 async function main() {
-  // TODO checka esistenza file necessari (tipo readme.md dentro a componentName), altrimenti skippa
   console.log(
     `This script will ${chalk.green(
       "scaffold"
     )} stencil and package.json global configuration into a specific component as stenciljs isolated project, ready to be published.`
   );
+
   const continueTask = await ask("Continue?", { options: ["Y", "n", ""] });
 
   if (continueTask === "n") {
     return;
   }
+
   await askComponentName();
+
   console.log("Process finished.");
 }
 
@@ -51,14 +53,27 @@ async function askComponentName() {
 
   if (!exist) {
     console.log(
-      chalk.red(`Il componente ${componentName} non esiste, riprovare.`)
+      chalk.red(`Component ${componentName} does not exist, type name again.`)
     );
     await askComponentName();
   } else {
+    const built = await checkComponentWasBuilt(componentName);
+
+    if (!built) {
+      console.log(chalk.redBright(`Component ${componentName} was not built, build it then try again.`));
+      return;
+    }
+
     console.log('Creating component "%s"', componentName);
     await compilePackage(componentName);
     await createTempProjectInstance(componentName);
   }
+}
+
+async function checkComponentWasBuilt(componentName) {
+  return stat(`${COMPONENTS_PATH}/${componentName}/readme.md`)
+    .then((fsStat) => fsStat.isFile())
+    .catch(() => false);
 }
 
 async function checkComponentExistance(componentName) {
