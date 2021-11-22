@@ -11,15 +11,11 @@ import {
   h,
 } from '@stencil/core'
 
-// https://www.w3schools.com/tags/tag_input.asp
-// https://github.com/ionic-team/stencil-ds-output-targets/blob/55d62af2727395cd6d729735cb9d81e5d60cc637/packages/example-project/component-library/src/components/my-input/my-input.tsx
-
 import clsx from 'clsx'
 import { AutocompleteType } from '../../types/autocomplete'
 import { InputTextType } from '../../types/input-text-type'
 import { InputValue } from '../../interface/input-value'
 import { ThemeStatusVariantType } from '../../types/variant'
-import { inputFieldStatusVariant } from './meta/variants'
 import { ValidationModelType } from './meta/types'
 import { modelValidator } from './meta/validators'
 
@@ -259,21 +255,21 @@ export class MdsInputField {
   @Prop() message?: string
 
   /**
-   * Display the status of a message at the bottom of the input text field
+   * Display the variant of a message at the bottom of the input text field
    */
-  @Prop() status?: ThemeStatusVariantType
+  @Prop() variant?: ThemeStatusVariantType
 
   /**
-   * Display the status of a message at the bottom of the input text field
+   * Display the variant of a message at the bottom of the input text field
    */
-  @Prop() statusTip?: string
+  @Prop() variantTip?: string
 
   render () {
     const value = this.getValue()
     return (
       <Host>
         { this.label && <mds-text class="label" typography="label">{ this.label }</mds-text> }
-        <div class={clsx('message-window', this.status && `message-window--opened ${inputFieldStatusVariant[this.status]}`)}>
+        <div class={clsx('message-window', this.variant && 'message-window--opened')}>
           <mds-input
             autocomplete={this.autocomplete}
             autofocus={this.autofocus}
@@ -294,8 +290,8 @@ export class MdsInputField {
             readonly={this.readonly}
             ref={ input => (this.nativeInput = input)}
             required={this.required}
-            status={this.status}
-            statusTip={this.statusTip}
+            variant={this.variant}
+            variantTip={this.variantTip}
             step={this.step}
             tabIndex={this.tabindex}
             type={this.type}

@@ -1,7 +1,7 @@
 import React from 'react'
 import MdsInputField from '@component/mds-input-field/mds-input-field'
 import { autoCompleteDictionary } from '@dictionary/autocomplete'
-import { statusDictionary } from '@dictionary/status'
+import { themeStatusVariantDictionary } from '@dictionary/variant'
 import { inputTextTypeDictionary } from '@dictionary/input-text-type'
 import { iconsDictionary } from '@dictionary/icon'
 import { validationModelDictionary } from '../meta/dictionary'
@@ -78,15 +78,15 @@ export default {
       type: { name: 'string', required: false },
       description: 'Specifies the interval between legal numbers in an input field',
     },
-    status: {
-      type: { name: 'string', required: false },
-      description: 'Display the status of a message at the bottom of the input text field',
-      options: statusDictionary,
+    variant: {
+      type: { name: 'string' },
+      options: themeStatusVariantDictionary,
       control: { type: 'select' },
+      description: 'Sets the variant of the input field',
     },
-    'status-tip': {
-      type: { name: 'string', required: false },
-      description: 'Sets the message of the status of the input field',
+    'variant-tip': {
+      type: { name: 'string' },
+      description: 'Sets the message of the variant of the input field',
     },
     type: {
       type: { name: 'string', required: true },

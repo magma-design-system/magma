@@ -1,0 +1,25 @@
+@tailwind utilities;
+
+:host ( [variant=info] ) .message-window {
+  @apply
+    bg-status-info-09
+    text-status-info-04;
+}
+
+:host ( [variant=success] ) .message-window {
+  @apply
+    bg-status-success-09
+    text-status-success-04;
+}
+
+:host ( [variant=warning] ) .message-window {
+  @apply
+    bg-status-warning-09
+    text-status-warning-04;
+}
+
+:host ( [variant=error] ) .message-window {
+  @apply
+    bg-status-error-09
+    text-status-error-04;
+}
