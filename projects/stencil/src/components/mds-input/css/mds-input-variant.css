@@ -1,0 +1,57 @@
+@tailwind utilities;
+
+:host ( [variant=info] ) .input:focus {
+  @apply ring-status-info-06;
+}
+
+:host ( [variant=info] ) .tip-variant {
+  @apply
+    bg-status-info-06
+    text-status-info-09;
+}
+
+:host ( [variant=info] ) .icon {
+  @apply text-status-info-06;
+}
+
+:host ( [variant=success] ) .input:focus {
+  @apply ring-status-success-06;
+}
+
+:host ( [variant=success] ) .tip-variant {
+  @apply
+    bg-status-success-06
+    text-status-success-09;
+}
+
+:host ( [variant=success] ) .icon {
+  @apply text-status-success-06;
+}
+
+:host ( [variant=warning] ) .input:focus {
+  @apply ring-status-warning-06;
+}
+
+:host ( [variant=warning] ) .tip-variant {
+  @apply
+    bg-status-warning-06
+    text-status-warning-09;
+}
+
+:host ( [variant=warning] ) .icon {
+  @apply text-status-warning-06;
+}
+
+:host ( [variant=error] ) .input:focus {
+  @apply ring-status-error-06;
+}
+
+:host ( [variant=error] ) .tip-variant {
+  @apply
+    bg-status-error-06
+    text-status-error-09;
+}
+
+:host ( [variant=error] ) .icon {
+  @apply text-status-error-06;
+}

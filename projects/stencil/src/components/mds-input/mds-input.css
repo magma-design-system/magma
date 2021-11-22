@@ -77,7 +77,8 @@ textarea.input {
   @apply pl-11;
 }
 
-.tip {
+.tip,
+.tip-variant {
   @apply
     absolute
     duration-300
@@ -89,18 +90,21 @@ textarea.input {
     rounded-full
     px-2
     text-adjust-tone
+    text-center
     transition-cosmetic;
 
   line-height: theme('spacing.3');
 }
 
 .read-only {
-  @apply bg-status-info-05;
+  @apply
+    bg-status-info-06
+    text-status-info-09;
 }
 
 .required {
   @apply
-    bg-status-error-05
+    bg-status-error-06
     text-adjust-tone
     text-opacity-0
     p-0
@@ -108,7 +112,7 @@ textarea.input {
 }
 
 .disabled {
-  @apply bg-adjust-tone-05;
+  @apply bg-adjust-tone-06;
 }
 
 .input:focus + .required {
@@ -125,18 +129,4 @@ textarea.input {
     top-3;
 }
 
-.icon.success {
-  @apply text-status-success-04;
-}
-
-.icon.info {
-  @apply text-status-info-04;
-}
-
-.icon.error {
-  @apply text-status-error-04;
-}
-
-.icon.warning {
-  @apply text-status-warning-04;
-}
+@import './css/mds-input-variant.css';

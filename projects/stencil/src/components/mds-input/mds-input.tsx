@@ -13,11 +13,7 @@ import {
 
 import clsx from 'clsx'
 
-// https://www.w3schools.com/tags/tag_input.asp
-// https://github.com/ionic-team/stencil-ds-output-targets/blob/55d62af2727395cd6d729735cb9d81e5d60cc637/packages/example-project/component-library/src/components/my-input/my-input.tsx
-
 import { InputValue } from './meta/interfaces'
-import { inputFocusStatusVariant, inputTipStatusVariant } from './meta/variants'
 import { AutocompleteType } from '../../types/autocomplete'
 import { InputTextType } from '../../types/input-text-type'
 import { InputValueType } from '../../types/input-value-type'
@@ -113,14 +109,14 @@ export class MdsInput {
   @Prop() readonly required?: boolean = false
 
   /**
-   * Sets the status of the input field
+   * Sets the variant of the input field
    */
-  @Prop() readonly status?: ThemeStatusVariantType
+  @Prop({ reflect: true }) readonly variant?: ThemeStatusVariantType
 
   /**
-   * Sets the word(s) of the status of the input field
+   * Sets the word(s) of the variant of the input field
    */
-  @Prop() readonly statusTip?: string
+  @Prop() readonly variantTip?: string
 
   /**
    * Specifies the interval between legal numbers in an input field
@@ -235,7 +231,6 @@ export class MdsInput {
           ? <textarea
             class={clsx(
               'input',
-              inputFocusStatusVariant[this.status || 'default'],
               this.icon && 'has-icon',
             )}
             autoFocus={this.autofocus}
@@ -256,7 +251,6 @@ export class MdsInput {
           : <input
             class={clsx(
               'input',
-              inputFocusStatusVariant[this.status || 'default'],
               this.icon && 'has-icon',
             )}
             autoComplete={this.autocomplete}
@@ -283,9 +277,9 @@ export class MdsInput {
           />
         }
         { this.required && <mds-text typography="option" class="tip top-1 required">Obbligatorio</mds-text> }
-        { this.disabled && <mds-text typography="option" class="tip top-1 disabled">Non attivo</mds-text> }
+        { this.disabled && <mds-text typography="option" class="tip top-1 disabled">Disabilitato</mds-text> }
         { this.readonly && <mds-text typography="option" class="tip top-1 read-only">Sola lettura</mds-text> }
-        { this.status && this.statusTip && <mds-text typography="option" class={`tip bottom-1 ${inputTipStatusVariant[this.status]}`}>{ this.statusTip }</mds-text> }
+        { this.variant && this.variantTip && <mds-text typography="option" class="tip-variant bottom-1">{ this.variantTip }</mds-text> }
         { this.datalist &&
           <datalist id="datalist" class="datalist">
             { this.datalist.forEach(element => {
@@ -293,7 +287,7 @@ export class MdsInput {
             })}
           </datalist>
         }
-        { this.icon && <mds-icon class={clsx('icon', this.status)} name={this.icon}/> }
+        { this.icon && <mds-icon class={clsx('icon', this.variant)} name={this.icon}/> }
       </Host>
     )
   }

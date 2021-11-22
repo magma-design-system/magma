@@ -1,7 +1,7 @@
 import React from 'react'
 import MdsInput from '@component/mds-input/mds-input'
 import { citiesDictionary } from '@fixture/cities'
-import { statusDictionary } from '@dictionary/status'
+import { themeStatusVariantDictionary } from '@dictionary/variant'
 import { autoCompleteDictionary } from '@dictionary/autocomplete'
 import { inputTextTypeDictionary } from '@dictionary/input-text-type'
 import { iconsDictionary } from '@dictionary/icon'
@@ -18,72 +18,72 @@ export default {
       control: { type: 'select' },
     },
     autofocus: {
-      type: { name: 'boolean', required: false },
+      type: { name: 'boolean' },
       description: 'Specifies that the element should automatically get focus when the page loads',
     },
     datalist: {
-      type: { name: 'array', required: false },
+      type: { name: 'array' },
       description: 'A list of search terms to be searched from the input field, it should be used with type="search" input',
     },
     disabled: {
-      type: { name: 'boolean', required: false },
+      type: { name: 'boolean' },
       description: 'If true, the element is displayed as disabled',
     },
     icon: {
       control: { type: 'select' },
       description: 'An icon displayed at the right of the input',
       options: iconsDictionary,
-      type: { name: 'string', required: false },
+      type: { name: 'string' },
     },
     max: {
-      type: { name: 'number', required: false },
+      type: { name: 'number' },
       description: 'Specifies the maximum value',
     },
     maxLength: {
-      type: { name: 'number', required: false },
+      type: { name: 'number' },
       description: 'Specifies the maximum number of characters allowed in an element',
     },
     min: {
-      type: { name: 'number', required: false },
+      type: { name: 'number' },
       description: 'Specifies the minimum value',
     },
     minLength: {
-      type: { name: 'number', required: false },
+      type: { name: 'number' },
       description: 'Specifies the minimum number of characters allowed in an element',
     },
     name: {
-      type: { name: 'string', required: false },
+      type: { name: 'string' },
       description: 'Is needed to reference the form data after the form is submitted',
     },
     pattern: {
-      type: { name: 'string', required: false },
+      type: { name: 'string' },
       description: 'Specifies a regular expression that element\'s value is checked against',
     },
     placeholder: {
-      type: { name: 'string', required: false },
+      type: { name: 'string' },
       description: 'Specifies a short hint that describes the expected value of the element',
     },
     readOnly: {
-      type: { name: 'boolean', required: false },
+      type: { name: 'boolean' },
       description: 'Specifies that the element is read-only',
     },
     required: {
-      type: { name: 'boolean', required: false },
+      type: { name: 'boolean' },
       description: 'Specifies that the element must be filled out before submitting the form',
     },
     step: {
-      type: { name: 'string', required: false },
+      type: { name: 'string' },
       description: 'Specifies the interval between legal numbers in an input field',
     },
-    status: {
-      type: { name: 'string', required: false },
-      options: statusDictionary,
+    variant: {
+      type: { name: 'string' },
+      options: themeStatusVariantDictionary,
       control: { type: 'select' },
-      description: 'Sets the status of the input field',
+      description: 'Sets the variant of the input field',
     },
-    'status-tip': {
-      type: { name: 'string', required: false },
-      description: 'Sets the message of the status of the input field',
+    'variant-tip': {
+      type: { name: 'string' },
+      description: 'Sets the message of the variant of the input field',
     },
     type: {
       type: { name: 'string', required: true },
@@ -92,7 +92,7 @@ export default {
       control: { type: 'select' },
     },
     value: {
-      type: { name: 'string', required: false },
+      type: { name: 'string' },
       description: 'Specifies the value of the element',
     },
   },
