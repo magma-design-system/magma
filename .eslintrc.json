@@ -18,8 +18,8 @@
         "@typescript-eslint"
     ],
     "ignorePatterns": [
-      "**/node_modules/*.{js,ts}",
-      "**/dist/*.{js,ts}"
+      "**/node_modules/*",
+      "**/dist/*"
     ],
     "rules": {
       "linebreak-style": [
