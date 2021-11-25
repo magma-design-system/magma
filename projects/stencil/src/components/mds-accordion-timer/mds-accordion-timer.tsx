@@ -7,10 +7,10 @@ import { Component, Host, Element, Event, EventEmitter, h, Prop, Listen, State }
 })
 export class MdsAccordionTimer {
 
-  private timer
-  private timeChecker
-  private timeStarted
-  private activeItemDurationTime
+  private timer: number
+  private timeChecker: number
+  private timeStarted: number
+  private activeItemDurationTime: number
   private children: NodeListOf<HTMLMdsAccordionTimerItemElement>
   private activeItem: HTMLMdsAccordionTimerItemElement
   @Element() private element: HTMLMdsAccordionTimerElement
