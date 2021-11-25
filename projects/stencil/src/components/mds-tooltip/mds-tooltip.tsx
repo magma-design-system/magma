@@ -1,4 +1,5 @@
 import { Component, Element, Host, h, Prop, State } from '@stencil/core'
+// import { createPopper } from '@popperjs/core'
 import clsx from 'clsx'
 
 import { TargetOffset, TooltipPosition } from './meta/interface'
@@ -124,47 +125,6 @@ export class MdsTooltip {
   private rightPosition = (): void => {
     this.element.style.top = `${this.right().y}px`
     this.element.style.left = `${this.right().x}px`
-  }
-
-  private bestPosition = (): TooltipPositionType => {
-    if (!this.top().overflow) {
-      return 'top'
-    }
-
-    if (!this.right().overflow) {
-      return 'right'
-    }
-
-    if (!this.bottom().overflow) {
-      return 'bottom'
-    }
-
-    if (!this.left().overflow) {
-      return 'left'
-    }
-  }
-
-  private checkPosition = (): void => {
-    this.arrowPosition = this.bestPosition()
-    console.log('checkPosition', this.arrowPosition)
-
-    switch (this.arrowPosition) {
-    case 'top':
-      this.topPosition()
-      break
-    case 'bottom':
-      this.bottomPosition()
-      break
-    case 'right':
-      this.rightPosition()
-      break
-    case 'left':
-      this.leftPosition()
-      break
-    default:
-      this.topPosition()
-      break
-    }
   }
 
   private targetOnMouseOver = (): void => {
