@@ -126,9 +126,9 @@ const createPackage = async componentName => {
         console.log('An error occured while writing package.json file.')
         return console.log(err)
       }
-      console.log('File package.json has been saved successfully.')
     },
   )
+  console.log('File package.json has been saved successfully.')
 }
 
 const createTempProjectInstance = async componentName => {
@@ -191,9 +191,9 @@ const compileStencil = async componentName => {
         console.log(`An error occured while writing ${fileName} file.`)
         return console.log(err)
       }
-      console.log(`File ${fileName} has been saved successfully.`)
     },
   )
+  console.log(chalk.green(`File ${fileName} has been saved successfully.`))
 }
 
 main()
