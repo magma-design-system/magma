@@ -78,6 +78,17 @@ const formatColor = (theme, colorName, colorValue, scaffold, colorDark) => {
   return palette
 }
 
+const url = () => {
+  const [, color ] = colors
+  const query = [
+    `?colorKeys=%23${color.color.substring(1)}`,
+    '&base=ffffff',
+    `&ratios=${ratios.join('%2C')}`,
+    `&mode=${color.colorspace !== undefined ? color.colorspace : colorspace}`,
+  ]
+  return `https://leonardocolor.io/${query.join('')}`
+}
+
 const formatPalette = async opts => {
   console.log('Formatting color palette to JSON format')
 
@@ -117,10 +128,9 @@ const formatPalette = async opts => {
       console.log(chalk.red(err))
     }
   })
-  console.log(chalk.green('Design tokens color palette generated successfully.'))
 }
 
-const build = () => {
+const build = async () => {
 
   console.log('Generating color palette')
 
@@ -143,10 +153,13 @@ const build = () => {
     lightness: 0,
   })
 
-  formatPalette({
+  await formatPalette({
     themeLight: themeLight.contrastColors,
     themeDark: themeDark.contrastColors,
   })
+
+  console.log(`\nPalette URL: ${chalk.blue(url())}`)
+  console.log(chalk.green('Design tokens color palette generated successfully.'))
 }
 
 build()
