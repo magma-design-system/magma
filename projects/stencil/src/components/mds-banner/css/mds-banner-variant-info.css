@@ -5,7 +5,7 @@
 
   --background: theme('colors.status-info-09');
   --color: theme('colors.status-info-02');
-  --icon-color: theme('colors.status-info-06');
+  --icon-color: theme('colors.status-info-05');
   --radius: theme('borderRadius.lg');
   --separator-color: theme('colors.status-info-07');
   --shadow: none;
@@ -15,9 +15,9 @@
 
   --background: theme('colors.status-info-10');
   --color: theme('colors.status-info-03');
-  --icon-color: theme('colors.status-info-05');
+  --icon-color: theme('colors.status-info-06');
   --radius: theme('borderRadius.md');
-  --separator-color: theme('colors.status-info-09');
+  --separator-color: theme('colors.status-info-08');
   --shadow: none;
 }
 

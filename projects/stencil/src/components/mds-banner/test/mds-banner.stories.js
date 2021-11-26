@@ -90,10 +90,10 @@ const TemplateVariantLight = args =>
 const TemplateVariantStatus = args =>
   <mds-banner {...args}>
     <mds-text typography="detail">
-      { faker.lorem.paragraph() }
+      { args._text }
     </mds-text>
-    <mds-button slot="actions" variant={ args.variant } tone="quiet">Cancel</mds-button>
-    <mds-button slot="actions" variant={ args.variant } tone="weak">Confirm</mds-button>
+    <mds-button slot="actions" variant={ args.variant } tone="quiet">Annulla</mds-button>
+    <mds-button slot="actions" variant={ args.variant } tone="weak">Conferma</mds-button>
   </mds-banner>
 
 export const Default = Template.bind({})
@@ -138,10 +138,11 @@ VariantLight.args = {
   variant: 'light',
 }
 
-export const VariantStatus = TemplateVariantStatus.bind({})
-VariantStatus.args = {
-  headline: faker.animal.dog(),
-  icon: 'warning',
+export const VariantStatusWarning = TemplateVariantStatus.bind({})
+VariantStatusWarning.args = {
+  _text: 'Se procederai, perderai i dati relativi modelli del database che hai registrato in precedenza. Conferma solo se sei consapevole di ciò che stai facendo.',
   deletable: true,
+  headline: 'Questa azione non può essere annullata',
+  icon: 'warning',
   variant: 'warning',
 }
