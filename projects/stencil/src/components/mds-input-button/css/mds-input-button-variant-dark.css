@@ -19,13 +19,13 @@
 
 :host ( [variant=dark][tone=weak] ) {
 
-  --background: theme('colors.adjust-tone-09');
+  --background: theme('colors.adjust-tone-08');
   --color: theme('colors.adjust-tone-02');
 }
 
 :host ( [variant=dark][tone=weak]:hover ) {
 
-  --background: theme('colors.adjust-tone-10');
+  --background: theme('colors.adjust-tone-09');
 }
 
 :host ( [variant=dark][tone=weak][active] ) {
