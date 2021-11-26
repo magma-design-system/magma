@@ -9,10 +9,9 @@ const PROJECT_PATH = resolve(dirname(fileURLToPath(import.meta.url)), './')
 const COLOR_PATH = `${PROJECT_PATH}/properties/color`
 
 const colorsRawData = readFileSync('colors.json')
-const { colors, defaultColorspace, ratios } = JSON.parse(colorsRawData)
+const { colors, colorspace, ratios, smooth } = JSON.parse(colorsRawData)
 
 const output = 'HEX'
-const smooth = true
 
 const getBackgroundColor = (colors, name) => {
   let filteredColor = null
@@ -20,11 +19,11 @@ const getBackgroundColor = (colors, name) => {
     if (color.name === name) {
       filteredColor = new BackgroundColor({
         colorKeys: [color.color],
-        colorSpace: color.colorSpace || defaultColorspace,
+        colorspace: color.colorspace !== undefined ? color.colorspace : colorspace,
         name: color.name,
         output,
         ratios,
-        smooth,
+        smooth: color.smooth !== undefined ? color.smooth : smooth,
       })
     }
   })
@@ -35,11 +34,11 @@ const getBackgroundColor = (colors, name) => {
 const color = colorItem => {
   return new Color({
     colorKeys: [colorItem.color],
-    colorSpace: colorItem.colorSpace || defaultColorspace,
+    colorspace: colorItem.colorspace !== undefined ? colorItem.colorspace : colorspace,
     name: colorItem.name,
     output,
     ratios,
-    smooth,
+    smooth: color.smooth !== undefined ? color.smooth : smooth,
   })
 }
 
