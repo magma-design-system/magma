@@ -30,7 +30,7 @@ export class MdsTag {
   /**
    * Specifies the typography of the element
    */
-  @Prop() readonly typography?: TypographyType = 'detail'
+  @Prop() readonly typography?: TypographyType = 'caption'
 
   /**
    * Enables the cross icon to perform cancel/delete action on element
