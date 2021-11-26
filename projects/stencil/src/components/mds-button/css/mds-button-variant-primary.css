@@ -21,14 +21,14 @@
 
 :host ( [variant=primary][tone=weak] ) {
 
-  --background: theme('colors.brand-maggioli-08');
+  --background: theme('colors.brand-maggioli-07');
   --color: theme('colors.brand-maggioli-02');
 }
 
 :host ( [variant=primary][tone=weak]:hover ) {
 
-  --background: theme('colors.brand-maggioli-07');
-  --color: theme('colors.brand-maggioli-01');
+  --background: theme('colors.brand-maggioli-08');
+  --color: theme('colors.brand-maggioli-03');
 }
 
 :host ( [variant=primary][tone=weak][active] ) {
