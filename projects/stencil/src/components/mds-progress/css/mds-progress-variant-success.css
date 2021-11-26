@@ -2,6 +2,6 @@
 
 :host ( [variant=success] ) {
 
-  --progress-background: theme('colors.status-success-06');
+  --progress-background: theme('colors.status-success-05');
   --background: theme('colors.status-success-09');
 }
