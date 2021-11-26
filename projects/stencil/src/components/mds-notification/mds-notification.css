@@ -8,7 +8,7 @@
   * @prop --size: Sets the size of the component
   */
 
-  --background: theme('colors.status-error-06');
+  --background: theme('colors.status-error-05');
   --color: theme('colors.adjust-tone');
   --size: theme('spacing.5');
   --translate: translate(calc(var(--size) / 2), calc(var(--size) / -2));
