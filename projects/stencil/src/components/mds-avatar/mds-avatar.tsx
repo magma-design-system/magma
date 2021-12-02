@@ -8,8 +8,8 @@ import clsx from 'clsx'
 })
 export class MdsAvatar {
 
-  @State() placeholder: boolean
-  @State() loaded: boolean
+  @State() placeholder = false
+  @State() loaded = false
 
   /**
    * Specifies the path to the image

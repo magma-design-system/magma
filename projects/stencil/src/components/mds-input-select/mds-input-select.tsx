@@ -29,22 +29,22 @@ export class MdsInputSelect {
   /**
    * Emits an InputChangeEventDetail when the value of the input element changes
    */
-  @Event() changeEvent!: EventEmitter<InputValue>
+  @Event() changeEvent: EventEmitter<InputValue>
 
   /**
     * Emits a KeyboardEvent when a keboard key is pressed on the focused input element
     */
-  @Event() keyDownEvent!: EventEmitter<KeyboardEvent>
+  @Event() keyDownEvent: EventEmitter<KeyboardEvent>
 
   /**
     * Emits a void event when input element is blurred
     */
-  @Event() blurEvent!: EventEmitter<void>
+  @Event() blurEvent: EventEmitter<void>
 
   /**
     * Emits a void event when input element is focused
     */
-  @Event() focusEvent!: EventEmitter<void>
+  @Event() focusEvent: EventEmitter<void>
 
   private onInput = (ev: Event) => {
     const input = ev.target as HTMLSelectElement | false
