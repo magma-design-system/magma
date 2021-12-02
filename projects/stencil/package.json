@@ -71,6 +71,7 @@
     "postcss-flexbugs-fixes": "^5.0.2",
     "postcss-import": "14.0.2",
     "postcss-loader": "^6.2.0",
+    "puppeteer": "^10.0.0",
     "rimraf": "^3.0.2",
     "sass-loader": "12.3.0",
     "stdio": "^2.1.1",
