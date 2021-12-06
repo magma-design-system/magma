@@ -6,6 +6,7 @@
     "project": "tsconfig.json"
   },
   "ignorePatterns": [
+    "**/*.config.js",
     "**/*.stories.js",
     "./.build",
     "./dist",
