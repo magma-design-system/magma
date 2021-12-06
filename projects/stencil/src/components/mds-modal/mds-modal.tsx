@@ -23,7 +23,7 @@ export class MdsModal {
   /**
    * Specifies the animation position of the modal window
    */
-  @Prop({ reflect: true }) position?: ModalPositionType = null
+  @Prop({ reflect: true, mutable: true }) position?: ModalPositionType = null
 
   componentWillLoad (): void {
     this.bottom = this.hostElement.querySelector('[slot="bottom"]') !== null
