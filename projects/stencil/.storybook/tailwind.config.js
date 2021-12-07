@@ -1,7 +1,11 @@
-const config = require('@maggioli-design-system/styles/tailwind.config')
-
-config.purge.content = [
-  './src/**/*.{stories.js,tsx}',
-]
-
-module.exports = config
+module.exports = {
+  purge: {
+    content: [
+      './src/**/*.{stories.js,tsx}',
+    ],
+  },
+  important: false,
+  presets: [
+    require('@maggioli-design-system/styles'),
+  ],
+}

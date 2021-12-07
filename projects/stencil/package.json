@@ -39,7 +39,7 @@
     "@maggioli-design-system/design-tokens": "^5.0.5",
     "@maggioli-design-system/icons": "^1.29.0",
     "@maggioli-design-system/identity": "^1.8.3",
-    "@maggioli-design-system/styles": "^4.0.1",
+    "@maggioli-design-system/styles": "^4.0.2",
     "@stencil/core": "^2.10.0",
     "tailwindcss": "^2.2.19"
   },
