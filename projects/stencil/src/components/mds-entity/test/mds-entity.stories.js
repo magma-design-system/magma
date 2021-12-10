@@ -1,5 +1,4 @@
 import React from 'react'
-import faker from 'faker'
 import MdsEntity from '@component/mds-entity/mds-entity'
 
 export default {
