@@ -1,5 +1,4 @@
 import React from 'react'
-import faker from 'faker'
 import MdsBibliography from '@component/mds-bibliography/mds-bibliography'
 import { bibliographyFormatDictionary, bibliographyRelationshipDictionary } from '../meta/dictionary'
 import { typographySecondaryDictionary } from '@dictionary/typography'
