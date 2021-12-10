@@ -1,6 +1,7 @@
 import React, { Fragment } from 'react'
 import faker from 'faker'
 import MdsFlexTable from '@component/mds-flex-table/mds-flex-table'
+import clsx from 'clsx'
 
 export default {
   title: 'Layout / Table (Flex)',
@@ -20,29 +21,29 @@ export default {
 const Template = args =>
   <mds-flex-table {...args}>
     <mds-flex-table-header>
-      <mds-flex-table-cell><mds-text typography="action">{ faker.lorem.word() }</mds-text></mds-flex-table-cell>
-      <mds-flex-table-cell><mds-text typography="action">{ faker.lorem.word() }</mds-text></mds-flex-table-cell>
-      <mds-flex-table-cell><mds-text typography="action">{ faker.lorem.word() }</mds-text></mds-flex-table-cell>
+      <mds-flex-table-cell><mds-text typography="action">Username</mds-text></mds-flex-table-cell>
+      <mds-flex-table-cell><mds-text typography="action">Email</mds-text></mds-flex-table-cell>
+      <mds-flex-table-cell><mds-text typography="action">Creation date</mds-text></mds-flex-table-cell>
     </mds-flex-table-header>
     <mds-flex-table-body>
       <mds-flex-table-row>
-        <mds-flex-table-cell><mds-text>{ faker.lorem.sentence() }</mds-text></mds-flex-table-cell>
-        <mds-flex-table-cell><mds-text>{ faker.lorem.sentence() }</mds-text></mds-flex-table-cell>
-        <mds-flex-table-cell><mds-text>{ faker.lorem.paragraph() }</mds-text></mds-flex-table-cell>
+        <mds-flex-table-cell><mds-text>mario</mds-text></mds-flex-table-cell>
+        <mds-flex-table-cell><mds-text>mario.bros@nintendo.com</mds-text></mds-flex-table-cell>
+        <mds-flex-table-cell><mds-text>13 settembre 1985</mds-text></mds-flex-table-cell>
       </mds-flex-table-row>
       <mds-flex-table-row>
-        <mds-flex-table-cell><mds-text>{ faker.lorem.sentence() }</mds-text></mds-flex-table-cell>
-        <mds-flex-table-cell><mds-text>{ faker.lorem.sentence() }</mds-text></mds-flex-table-cell>
-        <mds-flex-table-cell><mds-text>{ faker.lorem.paragraph() }</mds-text></mds-flex-table-cell>
+        <mds-flex-table-cell><mds-text>wario</mds-text></mds-flex-table-cell>
+        <mds-flex-table-cell><mds-text>war.io@nintendo.com</mds-text></mds-flex-table-cell>
+        <mds-flex-table-cell><mds-text>21 ottobre 1992</mds-text></mds-flex-table-cell>
       </mds-flex-table-row>
       <mds-flex-table-row>
-        <mds-flex-table-cell><mds-text>{ faker.lorem.sentence() }</mds-text></mds-flex-table-cell>
-        <mds-flex-table-cell><mds-text>{ faker.lorem.sentence() }</mds-text></mds-flex-table-cell>
-        <mds-flex-table-cell><mds-text>{ faker.lorem.paragraph() }</mds-text></mds-flex-table-cell>
+        <mds-flex-table-cell><mds-text>luigi</mds-text></mds-flex-table-cell>
+        <mds-flex-table-cell><mds-text>lou81@nintendo.com</mds-text></mds-flex-table-cell>
+        <mds-flex-table-cell><mds-text>13 settembre 1985</mds-text></mds-flex-table-cell>
       </mds-flex-table-row>
     </mds-flex-table-body>
     <mds-flex-table-footer template="1fr">
-      <mds-flex-table-cell><mds-text typography="action">{ faker.lorem.paragraph() }</mds-text></mds-flex-table-cell>
+      <mds-flex-table-cell><mds-text typography="caption" class="text-adjust-tone-04">Lista utenti storici Nintendo</mds-text></mds-flex-table-cell>
     </mds-flex-table-footer>
   </mds-flex-table>
 
@@ -54,133 +55,41 @@ const TemplateManyItems = args =>
       <mds-flex-table-cell><mds-text typography="action">Email</mds-text></mds-flex-table-cell>
       <mds-flex-table-cell><mds-text typography="action">Full name</mds-text></mds-flex-table-cell>
     </mds-flex-table-header>
-    <mds-flex-table-body>
+    <mds-flex-table-body class={clsx(args._scroll && 'max-h-40')}>
       <mds-flex-table-row>
-        <mds-flex-table-cell><mds-avatar class="w-12" initials={faker.internet.userName()}/></mds-flex-table-cell>
-        <mds-flex-table-cell><mds-text>{ faker.internet.userName() }</mds-text></mds-flex-table-cell>
-        <mds-flex-table-cell><mds-text typography="hack">{ faker.internet.email() }</mds-text></mds-flex-table-cell>
-        <mds-flex-table-cell><mds-text>{ faker.name.firstName() + ' ' + faker.name.firstName() }</mds-text></mds-flex-table-cell>
+        <mds-flex-table-cell><mds-avatar class="w-12" initials="mr" src="./avatar-mario-02.jpeg"/></mds-flex-table-cell>
+        <mds-flex-table-cell><mds-text>mario</mds-text></mds-flex-table-cell>
+        <mds-flex-table-cell><mds-text typography="hack">mario.bros@nintendo.com</mds-text></mds-flex-table-cell>
+        <mds-flex-table-cell><mds-text>Mario Rossi</mds-text></mds-flex-table-cell>
       </mds-flex-table-row>
       <mds-flex-table-row>
-        <mds-flex-table-cell><mds-avatar class="w-12" initials={faker.internet.userName()}/></mds-flex-table-cell>
-        <mds-flex-table-cell><mds-text>{ faker.internet.userName() }</mds-text></mds-flex-table-cell>
-        <mds-flex-table-cell><mds-text typography="hack">{ faker.internet.email() }</mds-text></mds-flex-table-cell>
-        <mds-flex-table-cell><mds-text>{ faker.name.firstName() + ' ' + faker.name.firstName() }</mds-text></mds-flex-table-cell>
+        <mds-flex-table-cell><mds-avatar class="w-12" initials="lv" src="./avatar-luigi-02.jpeg"/></mds-flex-table-cell>
+        <mds-flex-table-cell><mds-text>luigi</mds-text></mds-flex-table-cell>
+        <mds-flex-table-cell><mds-text typography="hack">lou85@nintendo.com</mds-text></mds-flex-table-cell>
+        <mds-flex-table-cell><mds-text>Luigi Verdi</mds-text></mds-flex-table-cell>
       </mds-flex-table-row>
       <mds-flex-table-row>
-        <mds-flex-table-cell><mds-avatar class="w-12" initials={faker.internet.userName()}/></mds-flex-table-cell>
-        <mds-flex-table-cell><mds-text>{ faker.internet.userName() }</mds-text></mds-flex-table-cell>
-        <mds-flex-table-cell><mds-text typography="hack">{ faker.internet.email() }</mds-text></mds-flex-table-cell>
-        <mds-flex-table-cell><mds-text>{ faker.name.firstName() + ' ' + faker.name.firstName() }</mds-text></mds-flex-table-cell>
+        <mds-flex-table-cell><mds-avatar class="w-12" initials="wr" src="./avatar-wario-02.jpg"/></mds-flex-table-cell>
+        <mds-flex-table-cell><mds-text>wario</mds-text></mds-flex-table-cell>
+        <mds-flex-table-cell><mds-text typography="hack">war.io@nintendo.com</mds-text></mds-flex-table-cell>
+        <mds-flex-table-cell><mds-text>Wario Broccoli</mds-text></mds-flex-table-cell>
       </mds-flex-table-row>
       <mds-flex-table-row>
-        <mds-flex-table-cell><mds-avatar class="w-12" initials={faker.internet.userName()}/></mds-flex-table-cell>
-        <mds-flex-table-cell><mds-text>{ faker.internet.userName() }</mds-text></mds-flex-table-cell>
-        <mds-flex-table-cell><mds-text typography="hack">{ faker.internet.email() }</mds-text></mds-flex-table-cell>
-        <mds-flex-table-cell><mds-text>{ faker.name.firstName() + ' ' + faker.name.firstName() }</mds-text></mds-flex-table-cell>
-      </mds-flex-table-row>
-      <mds-flex-table-row>
-        <mds-flex-table-cell><mds-avatar class="w-12" initials={faker.internet.userName()}/></mds-flex-table-cell>
-        <mds-flex-table-cell><mds-text>{ faker.internet.userName() }</mds-text></mds-flex-table-cell>
-        <mds-flex-table-cell><mds-text typography="hack">{ faker.internet.email() }</mds-text></mds-flex-table-cell>
-        <mds-flex-table-cell><mds-text>{ faker.name.firstName() + ' ' + faker.name.firstName() }</mds-text></mds-flex-table-cell>
-      </mds-flex-table-row>
-      <mds-flex-table-row>
-        <mds-flex-table-cell><mds-avatar class="w-12" initials={faker.internet.userName()}/></mds-flex-table-cell>
-        <mds-flex-table-cell><mds-text>{ faker.internet.userName() }</mds-text></mds-flex-table-cell>
-        <mds-flex-table-cell><mds-text typography="hack">{ faker.internet.email() }</mds-text></mds-flex-table-cell>
-        <mds-flex-table-cell><mds-text>{ faker.name.firstName() + ' ' + faker.name.firstName() }</mds-text></mds-flex-table-cell>
-      </mds-flex-table-row>
-      <mds-flex-table-row>
-        <mds-flex-table-cell><mds-avatar class="w-12" initials={faker.internet.userName()}/></mds-flex-table-cell>
-        <mds-flex-table-cell><mds-text>{ faker.internet.userName() }</mds-text></mds-flex-table-cell>
-        <mds-flex-table-cell><mds-text typography="hack">{ faker.internet.email() }</mds-text></mds-flex-table-cell>
-        <mds-flex-table-cell><mds-text>{ faker.name.firstName() + ' ' + faker.name.firstName() }</mds-text></mds-flex-table-cell>
-      </mds-flex-table-row>
-      <mds-flex-table-row>
-        <mds-flex-table-cell><mds-avatar class="w-12" initials={faker.internet.userName()}/></mds-flex-table-cell>
-        <mds-flex-table-cell><mds-text>{ faker.internet.userName() }</mds-text></mds-flex-table-cell>
-        <mds-flex-table-cell><mds-text typography="hack">{ faker.internet.email() }</mds-text></mds-flex-table-cell>
-        <mds-flex-table-cell><mds-text>{ faker.name.firstName() + ' ' + faker.name.firstName() }</mds-text></mds-flex-table-cell>
-      </mds-flex-table-row>
-      <mds-flex-table-row>
-        <mds-flex-table-cell><mds-avatar class="w-12" initials={faker.internet.userName()}/></mds-flex-table-cell>
-        <mds-flex-table-cell><mds-text>{ faker.internet.userName() }</mds-text></mds-flex-table-cell>
-        <mds-flex-table-cell><mds-text typography="hack">{ faker.internet.email() }</mds-text></mds-flex-table-cell>
-        <mds-flex-table-cell><mds-text>{ faker.name.firstName() + ' ' + faker.name.firstName() }</mds-text></mds-flex-table-cell>
+        <mds-flex-table-cell><mds-avatar class="w-12" initials="tf" src="./avatar-toad-01.jpg"/></mds-flex-table-cell>
+        <mds-flex-table-cell><mds-text>toad</mds-text></mds-flex-table-cell>
+        <mds-flex-table-cell><mds-text typography="hack">toad@nintendo.com</mds-text></mds-flex-table-cell>
+        <mds-flex-table-cell><mds-text>Toad Fungi</mds-text></mds-flex-table-cell>
       </mds-flex-table-row>
     </mds-flex-table-body>
     <mds-flex-table-footer template="1fr">
-      <mds-flex-table-cell typography="caption">The grid table works with tabular data, no long text shoud be used.</mds-flex-table-cell>
-    </mds-flex-table-footer>
-  </mds-flex-table>
-
-const TemplateManyItemsScroll = args =>
-  <mds-flex-table {...args}>
-    <mds-flex-table-header>
-      <mds-flex-table-cell><mds-text typography="action">Avatar</mds-text></mds-flex-table-cell>
-      <mds-flex-table-cell><mds-text typography="action">Username</mds-text></mds-flex-table-cell>
-      <mds-flex-table-cell><mds-text typography="action">Email</mds-text></mds-flex-table-cell>
-      <mds-flex-table-cell><mds-text typography="action">Full name</mds-text></mds-flex-table-cell>
-    </mds-flex-table-header>
-    <mds-flex-table-body class="max-h-96">
-      <mds-flex-table-row>
-        <mds-flex-table-cell><mds-avatar class="w-12" initials={faker.internet.userName()}/></mds-flex-table-cell>
-        <mds-flex-table-cell><mds-text>{ faker.internet.userName() }</mds-text></mds-flex-table-cell>
-        <mds-flex-table-cell><mds-text typography="hack">{ faker.internet.email() }</mds-text></mds-flex-table-cell>
-        <mds-flex-table-cell><mds-text>{ faker.name.firstName() + ' ' + faker.name.firstName() }</mds-text></mds-flex-table-cell>
-      </mds-flex-table-row>
-      <mds-flex-table-row>
-        <mds-flex-table-cell><mds-avatar class="w-12" initials={faker.internet.userName()}/></mds-flex-table-cell>
-        <mds-flex-table-cell><mds-text>{ faker.internet.userName() }</mds-text></mds-flex-table-cell>
-        <mds-flex-table-cell><mds-text typography="hack">{ faker.internet.email() }</mds-text></mds-flex-table-cell>
-        <mds-flex-table-cell><mds-text>{ faker.name.firstName() + ' ' + faker.name.firstName() }</mds-text></mds-flex-table-cell>
-      </mds-flex-table-row>
-      <mds-flex-table-row>
-        <mds-flex-table-cell><mds-avatar class="w-12" initials={faker.internet.userName()}/></mds-flex-table-cell>
-        <mds-flex-table-cell><mds-text>{ faker.internet.userName() }</mds-text></mds-flex-table-cell>
-        <mds-flex-table-cell><mds-text typography="hack">{ faker.internet.email() }</mds-text></mds-flex-table-cell>
-        <mds-flex-table-cell><mds-text>{ faker.name.firstName() + ' ' + faker.name.firstName() }</mds-text></mds-flex-table-cell>
-      </mds-flex-table-row>
-      <mds-flex-table-row>
-        <mds-flex-table-cell><mds-avatar class="w-12" initials={faker.internet.userName()}/></mds-flex-table-cell>
-        <mds-flex-table-cell><mds-text>{ faker.internet.userName() }</mds-text></mds-flex-table-cell>
-        <mds-flex-table-cell><mds-text typography="hack">{ faker.internet.email() }</mds-text></mds-flex-table-cell>
-        <mds-flex-table-cell><mds-text>{ faker.name.firstName() + ' ' + faker.name.firstName() }</mds-text></mds-flex-table-cell>
-      </mds-flex-table-row>
-      <mds-flex-table-row>
-        <mds-flex-table-cell><mds-avatar class="w-12" initials={faker.internet.userName()}/></mds-flex-table-cell>
-        <mds-flex-table-cell><mds-text>{ faker.internet.userName() }</mds-text></mds-flex-table-cell>
-        <mds-flex-table-cell><mds-text typography="hack">{ faker.internet.email() }</mds-text></mds-flex-table-cell>
-        <mds-flex-table-cell><mds-text>{ faker.name.firstName() + ' ' + faker.name.firstName() }</mds-text></mds-flex-table-cell>
-      </mds-flex-table-row>
-      <mds-flex-table-row>
-        <mds-flex-table-cell><mds-avatar class="w-12" initials={faker.internet.userName()}/></mds-flex-table-cell>
-        <mds-flex-table-cell><mds-text>{ faker.internet.userName() }</mds-text></mds-flex-table-cell>
-        <mds-flex-table-cell><mds-text typography="hack">{ faker.internet.email() }</mds-text></mds-flex-table-cell>
-        <mds-flex-table-cell><mds-text>{ faker.name.firstName() + ' ' + faker.name.firstName() }</mds-text></mds-flex-table-cell>
-      </mds-flex-table-row>
-      <mds-flex-table-row>
-        <mds-flex-table-cell><mds-avatar class="w-12" initials={faker.internet.userName()}/></mds-flex-table-cell>
-        <mds-flex-table-cell><mds-text>{ faker.internet.userName() }</mds-text></mds-flex-table-cell>
-        <mds-flex-table-cell><mds-text typography="hack">{ faker.internet.email() }</mds-text></mds-flex-table-cell>
-        <mds-flex-table-cell><mds-text>{ faker.name.firstName() + ' ' + faker.name.firstName() }</mds-text></mds-flex-table-cell>
-      </mds-flex-table-row>
-      <mds-flex-table-row>
-        <mds-flex-table-cell><mds-avatar class="w-12" initials={faker.internet.userName()}/></mds-flex-table-cell>
-        <mds-flex-table-cell><mds-text>{ faker.internet.userName() }</mds-text></mds-flex-table-cell>
-        <mds-flex-table-cell><mds-text typography="hack">{ faker.internet.email() }</mds-text></mds-flex-table-cell>
-        <mds-flex-table-cell><mds-text>{ faker.name.firstName() + ' ' + faker.name.firstName() }</mds-text></mds-flex-table-cell>
-      </mds-flex-table-row>
-      <mds-flex-table-row>
-        <mds-flex-table-cell><mds-avatar class="w-12" initials={faker.internet.userName()}/></mds-flex-table-cell>
-        <mds-flex-table-cell><mds-text>{ faker.internet.userName() }</mds-text></mds-flex-table-cell>
-        <mds-flex-table-cell><mds-text typography="hack">{ faker.internet.email() }</mds-text></mds-flex-table-cell>
-        <mds-flex-table-cell><mds-text>{ faker.name.firstName() + ' ' + faker.name.firstName() }</mds-text></mds-flex-table-cell>
-      </mds-flex-table-row>
-    </mds-flex-table-body>
-    <mds-flex-table-footer template="1fr">
-      <mds-flex-table-cell typography="caption">The grid table works with tabular data, no long text shoud be used.</mds-flex-table-cell>
+      <mds-flex-table-cell>
+        <mds-text typography="caption">
+          { args._scroll
+            ? 'Scroll down inside the table area to see how scroll contents works.'
+            : 'The grid table works with tabular data, no long text shoud be used.'
+          }
+        </mds-text>
+      </mds-flex-table-cell>
     </mds-flex-table-footer>
   </mds-flex-table>
 
@@ -191,10 +100,11 @@ Default.args = {
 
 export const tabularContents = TemplateManyItems.bind({})
 tabularContents.args = {
-  template: '1 1 1 1',
+  template: '0 1 4 2',
 }
 
-export const scrollContents = TemplateManyItemsScroll.bind({})
+export const scrollContents = TemplateManyItems.bind({})
 scrollContents.args = {
-  template: '1 1 1 1',
+  _scroll: true,
+  template: '0 1 4 2',
 }
