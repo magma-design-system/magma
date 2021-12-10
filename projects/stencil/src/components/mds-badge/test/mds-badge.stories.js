@@ -1,5 +1,4 @@
 import React from 'react'
-import faker from 'faker'
 import MdsBadge from '@component/mds-badge/mds-badge'
 import { typographySecondaryDictionary } from '@dictionary/typography'
 import { themeFullVariantDictionary, toneSimpleVariantDictionary } from '@dictionary/variant'
@@ -9,19 +8,19 @@ export default {
   component: MdsBadge,
   argTypes: {
     tone: {
-      type: { name: 'string', required: false },
+      type: { name: 'string' },
       control: { type: 'select' },
       description: 'Sets the tone of the color variant',
       options: toneSimpleVariantDictionary,
     },
     typography: {
-      type: { name: 'string', required: false },
+      type: { name: 'string' },
       control: { type: 'select' },
       description: 'Specifies the font typography of the element',
       options: typographySecondaryDictionary,
     },
     variant: {
-      type: { name: 'string', required: false },
+      type: { name: 'string' },
       control: { type: 'select' },
       description: 'Sets the theme variant colors',
       options: themeFullVariantDictionary,
@@ -30,8 +29,11 @@ export default {
 }
 
 const Template = args =>
-  <mds-badge {...args}>{faker.animal.dog()}</mds-badge>
+  <mds-badge {...args}>bovaro del bernese</mds-badge>
 
 export const Default = Template.bind({})
-
+Default.args = {
+  tone: 'strong',
+  variant: 'violet',
+}
 
