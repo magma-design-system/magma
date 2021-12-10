@@ -102,17 +102,22 @@ const formatPalette = async opts => {
     const group = element.name.split('.')[groupIndex]
     const name = element.name.split('.')[nameIndex]
 
-    if (!Object.prototype.hasOwnProperty.call(palette.color, group)) {
-
-      console.log(`Creating color ${chalk.magenta('group')} ${group}`)
-      palette.color[group] = {}
+    if (element.disabled === undefined) {
+      element.disabled = false
     }
 
-    if (!Object.prototype.hasOwnProperty.call(palette.color[group], name)) {
-      console.log(`Creating color ${chalk.blue('name')} ${name}`)
-      palette.color[group][name] = {
-        light: formatColor(opts.themeLight, `${group}.${name}`, element.color, element.scaffold),
-        dark: formatColor(opts.themeDark, `${group}.${name}`, element.color, element.scaffold, element.colorDark),
+    if (!element.disabled) {
+      if (!Object.prototype.hasOwnProperty.call(palette.color, group)) {
+        console.log(`Creating color ${chalk.magenta('group')} ${group}`)
+        palette.color[group] = {}
+      }
+
+      if (!Object.prototype.hasOwnProperty.call(palette.color[group], name)) {
+        console.log(`Creating color ${chalk.blue('name')} ${name}`)
+        palette.color[group][name] = {
+          light: formatColor(opts.themeLight, `${group}.${name}`, element.color, element.scaffold),
+          dark: formatColor(opts.themeDark, `${group}.${name}`, element.color, element.scaffold, element.colorDark),
+        }
       }
     }
   })
