@@ -20,7 +20,7 @@ export class MdsAccordionTimer {
   /**
    * Sets the duration of the single accordion item
    */
-  @Prop() duration?: number = 5000
+  @Prop() duration?: number = 10000
 
   /**
    * Emits when the accordion changes it's item
