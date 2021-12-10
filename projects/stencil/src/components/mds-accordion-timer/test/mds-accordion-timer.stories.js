@@ -6,7 +6,7 @@ export default {
   component: MdsAccordionTimer,
   argTypes: {
     duration: {
-      type: { name: 'number', required: false },
+      type: { name: 'number' },
       description: 'Sets the duration of the single accordion item',
     },
   },
