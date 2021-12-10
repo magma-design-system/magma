@@ -125,10 +125,13 @@
 
 :host ( .code ) {
   @apply
-    bg-adjust-tone-02
-    bg-opacity-20
+    bg-adjust-tone-09
+    dark:bg-adjust-tone-04
+    dark:text-adjust-tone-09
     px-1
-    rounded;
+    rounded
+    text-adjust-tone-03
+    transition-colors;
 }
 
 abbr,
