@@ -1,7 +1,6 @@
 import React from 'react'
 import MdsAccordionTimerItem from '@component/mds-accordion-timer-item/mds-accordion-timer-item'
 import { typographyPrimaryDictionary } from '@dictionary/typography'
-import faker from 'faker'
 
 export default {
   title: 'UI / Accordion Timer / Accordion Timer Item',
@@ -32,18 +31,24 @@ export default {
 const Template = args =>
   <div>
     <mds-accordion-timer-item {...args}>
-      <mds-text typography="paragraph" class="text-adjust-tone-08">{ faker.lorem.paragraphs(2) }</mds-text>
+      <mds-text>Blipbug presenta delle fattezze riconducibili agli insetti nello stadio pre-crisalide. Il suo corpo si sviluppa in lunghezza, ed è formato principalmente da tre parti: la sua grande testa, il suo collo (molto simile ad un collare), e il corpo vero e proprio. La prima di queste è suddivisa in una parte color crema e una parte color denim; dello stesso colore sono le appenidici a forma di "V" che si trovano sopra e ai lati della testa. I suoi occhi sono enormi e grigi, ed hanno delle sottilissime sopracciglia sopra di essi. Il suo "collare", anch'esso color denim, presenta delle "setole" giallo sabbia, con le quali percepisce i segnali esterni: stesso colore si presenta nel segmento centrale della sua parte inferiore, dove sono presenti un primo paio di zampe crema. Il segmento superiore del corpo è bianco e ospita delle zampe anteriori color crema, ed infine, la parte finale, o la "coda", è color denim e finisce con un'appendice a "V" un po' piú grossa.</mds-text>
     </mds-accordion-timer-item>
   </div>
 
 export const Default = Template.bind({})
 Default.args = {
-  progress: 0.15,
-  description: 'Come funziona il monitoraggio del sonno?',
+  description: 'Blipbug',
 }
 
 export const active = Template.bind({})
 active.args = {
   active: true,
-  description: 'Come funziona il monitoraggio del sonno?',
+  description: 'Blipbug',
+}
+
+export const Progress = Template.bind({})
+Progress.args = {
+  active: true,
+  description: 'Blipbug',
+  progress: 0.5,
 }
