@@ -6,11 +6,11 @@ export default {
   component: MdsAvatar,
   argTypes: {
     initials: {
-      type: { name: 'string', required: false },
+      type: { name: 'string' },
       description: 'The user\'s inizials displayed if there\'s no image available',
     },
     src: {
-      type: { name: 'string', required: false },
+      type: { name: 'string' },
       description: 'The URL of the avatar image',
     },
   },
