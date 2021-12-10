@@ -1,5 +1,4 @@
 import React from 'react'
-import faker from 'faker'
 import MdsButton from '@component/mds-button/mds-button'
 import mggIconsDictionary from '@maggioli-design-system/icons/resources/mgg-icons.json'
 const iconsDictionary = Object.keys(mggIconsDictionary).sort()
@@ -50,7 +49,7 @@ export default {
 
 const Template = args =>
   <mds-button {...args}>
-    { faker.lorem.sentence(2) }
+    Conferma azione
   </mds-button>
 
 const TemplateIcon = args =>
