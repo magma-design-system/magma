@@ -1,5 +1,4 @@
 import React from 'react'
-import faker from 'faker'
 import MdsBadge from '@component/mds-badge/mds-badge'
 import { typographySecondaryDictionary } from '@dictionary/typography'
 import { themeFullVariantDictionary, toneSimpleVariantDictionary } from '@dictionary/variant'
