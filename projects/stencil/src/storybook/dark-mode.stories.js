@@ -31,54 +31,54 @@ const Template = args =>
       <mds-text>Selector <mds-text typography="code">dark-mode-os</mds-text> will set Dark Mode if your OS is set to Dark Mode and your browser supports it.</mds-text>
     </mds-grid>
     <mds-grid class="grid-cols-3 min-w-min">
-      <div><mds-badge variant="dark" tone="strong">{faker.animal.dog()}</mds-badge></div>
-      <div><mds-badge variant="dark" tone="weak">{faker.animal.dog()}</mds-badge></div>
-      <div><mds-badge variant="dark" tone="quiet">{faker.animal.dog()}</mds-badge></div>
-      <div><mds-badge variant="light" tone="strong">{faker.animal.dog()}</mds-badge></div>
-      <div><mds-badge variant="light" tone="weak">{faker.animal.dog()}</mds-badge></div>
-      <div><mds-badge variant="light" tone="quiet">{faker.animal.dog()}</mds-badge></div>
-      <div><mds-badge variant="error" tone="strong">{faker.animal.dog()}</mds-badge></div>
-      <div><mds-badge variant="error" tone="weak">{faker.animal.dog()}</mds-badge></div>
-      <div><mds-badge variant="error" tone="quiet">{faker.animal.dog()}</mds-badge></div>
-      <div><mds-badge variant="amaranth" tone="strong">{faker.animal.dog()}</mds-badge></div>
-      <div><mds-badge variant="amaranth" tone="weak">{faker.animal.dog()}</mds-badge></div>
-      <div><mds-badge variant="amaranth" tone="quiet">{faker.animal.dog()}</mds-badge></div>
-      <div><mds-badge variant="orchid" tone="strong">{faker.animal.dog()}</mds-badge></div>
-      <div><mds-badge variant="orchid" tone="weak">{faker.animal.dog()}</mds-badge></div>
-      <div><mds-badge variant="orchid" tone="quiet">{faker.animal.dog()}</mds-badge></div>
-      <div><mds-badge variant="violet" tone="strong">{faker.animal.dog()}</mds-badge></div>
-      <div><mds-badge variant="violet" tone="weak">{faker.animal.dog()}</mds-badge></div>
-      <div><mds-badge variant="violet" tone="quiet">{faker.animal.dog()}</mds-badge></div>
-      <div><mds-badge variant="blue" tone="strong">{faker.animal.dog()}</mds-badge></div>
-      <div><mds-badge variant="blue" tone="weak">{faker.animal.dog()}</mds-badge></div>
-      <div><mds-badge variant="blue" tone="quiet">{faker.animal.dog()}</mds-badge></div>
-      <div><mds-badge variant="sky" tone="strong">{faker.animal.dog()}</mds-badge></div>
-      <div><mds-badge variant="sky" tone="weak">{faker.animal.dog()}</mds-badge></div>
-      <div><mds-badge variant="sky" tone="quiet">{faker.animal.dog()}</mds-badge></div>
-      <div><mds-badge variant="info" tone="strong">{faker.animal.dog()}</mds-badge></div>
-      <div><mds-badge variant="info" tone="weak">{faker.animal.dog()}</mds-badge></div>
-      <div><mds-badge variant="info" tone="quiet">{faker.animal.dog()}</mds-badge></div>
-      <div><mds-badge variant="aqua" tone="strong">{faker.animal.dog()}</mds-badge></div>
-      <div><mds-badge variant="aqua" tone="weak">{faker.animal.dog()}</mds-badge></div>
-      <div><mds-badge variant="aqua" tone="quiet">{faker.animal.dog()}</mds-badge></div>
-      <div><mds-badge variant="success" tone="strong">{faker.animal.dog()}</mds-badge></div>
-      <div><mds-badge variant="success" tone="weak">{faker.animal.dog()}</mds-badge></div>
-      <div><mds-badge variant="success" tone="quiet">{faker.animal.dog()}</mds-badge></div>
-      <div><mds-badge variant="green" tone="strong">{faker.animal.dog()}</mds-badge></div>
-      <div><mds-badge variant="green" tone="weak">{faker.animal.dog()}</mds-badge></div>
-      <div><mds-badge variant="green" tone="quiet">{faker.animal.dog()}</mds-badge></div>
-      <div><mds-badge variant="lime" tone="strong">{faker.animal.dog()}</mds-badge></div>
-      <div><mds-badge variant="lime" tone="weak">{faker.animal.dog()}</mds-badge></div>
-      <div><mds-badge variant="lime" tone="quiet">{faker.animal.dog()}</mds-badge></div>
-      <div><mds-badge variant="yellow" tone="strong">{faker.animal.dog()}</mds-badge></div>
-      <div><mds-badge variant="yellow" tone="weak">{faker.animal.dog()}</mds-badge></div>
-      <div><mds-badge variant="yellow" tone="quiet">{faker.animal.dog()}</mds-badge></div>
-      <div><mds-badge variant="warning" tone="strong">{faker.animal.dog()}</mds-badge></div>
-      <div><mds-badge variant="warning" tone="weak">{faker.animal.dog()}</mds-badge></div>
-      <div><mds-badge variant="warning" tone="quiet">{faker.animal.dog()}</mds-badge></div>
-      <div><mds-badge variant="orange" tone="strong">{faker.animal.dog()}</mds-badge></div>
-      <div><mds-badge variant="orange" tone="weak">{faker.animal.dog()}</mds-badge></div>
-      <div><mds-badge variant="orange" tone="quiet">{faker.animal.dog()}</mds-badge></div>
+      <div><mds-badge variant="dark" tone="strong">Bovaro del Bernese</mds-badge></div>
+      <div><mds-badge variant="dark" tone="weak">Bovaro del Bernese</mds-badge></div>
+      <div><mds-badge variant="dark" tone="quiet">Bovaro del Bernese</mds-badge></div>
+      <div><mds-badge variant="light" tone="strong">Samoiedo</mds-badge></div>
+      <div><mds-badge variant="light" tone="weak">Samoiedo</mds-badge></div>
+      <div><mds-badge variant="light" tone="quiet">Samoiedo</mds-badge></div>
+      <div><mds-badge variant="error" tone="strong">Bovaro del Bernese</mds-badge></div>
+      <div><mds-badge variant="error" tone="weak">Bovaro del Bernese</mds-badge></div>
+      <div><mds-badge variant="error" tone="quiet">Bovaro del Bernese</mds-badge></div>
+      <div><mds-badge variant="amaranth" tone="strong">Samoiedo</mds-badge></div>
+      <div><mds-badge variant="amaranth" tone="weak">Samoiedo</mds-badge></div>
+      <div><mds-badge variant="amaranth" tone="quiet">Samoiedo</mds-badge></div>
+      <div><mds-badge variant="orchid" tone="strong">Bovaro del Bernese</mds-badge></div>
+      <div><mds-badge variant="orchid" tone="weak">Bovaro del Bernese</mds-badge></div>
+      <div><mds-badge variant="orchid" tone="quiet">Bovaro del Bernese</mds-badge></div>
+      <div><mds-badge variant="violet" tone="strong">Samoiedo</mds-badge></div>
+      <div><mds-badge variant="violet" tone="weak">Samoiedo</mds-badge></div>
+      <div><mds-badge variant="violet" tone="quiet">Samoiedo</mds-badge></div>
+      <div><mds-badge variant="blue" tone="strong">Bovaro del Bernese</mds-badge></div>
+      <div><mds-badge variant="blue" tone="weak">Bovaro del Bernese</mds-badge></div>
+      <div><mds-badge variant="blue" tone="quiet">Bovaro del Bernese</mds-badge></div>
+      <div><mds-badge variant="sky" tone="strong">Samoiedo</mds-badge></div>
+      <div><mds-badge variant="sky" tone="weak">Samoiedo</mds-badge></div>
+      <div><mds-badge variant="sky" tone="quiet">Samoiedo</mds-badge></div>
+      <div><mds-badge variant="info" tone="strong">Bovaro del Bernese</mds-badge></div>
+      <div><mds-badge variant="info" tone="weak">Bovaro del Bernese</mds-badge></div>
+      <div><mds-badge variant="info" tone="quiet">Bovaro del Bernese</mds-badge></div>
+      <div><mds-badge variant="aqua" tone="strong">Samoiedo</mds-badge></div>
+      <div><mds-badge variant="aqua" tone="weak">Samoiedo</mds-badge></div>
+      <div><mds-badge variant="aqua" tone="quiet">Samoiedo</mds-badge></div>
+      <div><mds-badge variant="success" tone="strong">Bovaro del Bernese</mds-badge></div>
+      <div><mds-badge variant="success" tone="weak">Bovaro del Bernese</mds-badge></div>
+      <div><mds-badge variant="success" tone="quiet">Bovaro del Bernese</mds-badge></div>
+      <div><mds-badge variant="green" tone="strong">Samoiedo</mds-badge></div>
+      <div><mds-badge variant="green" tone="weak">Samoiedo</mds-badge></div>
+      <div><mds-badge variant="green" tone="quiet">Samoiedo</mds-badge></div>
+      <div><mds-badge variant="lime" tone="strong">Bovaro del Bernese</mds-badge></div>
+      <div><mds-badge variant="lime" tone="weak">Bovaro del Bernese</mds-badge></div>
+      <div><mds-badge variant="lime" tone="quiet">Bovaro del Bernese</mds-badge></div>
+      <div><mds-badge variant="yellow" tone="strong">Samoiedo</mds-badge></div>
+      <div><mds-badge variant="yellow" tone="weak">Samoiedo</mds-badge></div>
+      <div><mds-badge variant="yellow" tone="quiet">Samoiedo</mds-badge></div>
+      <div><mds-badge variant="warning" tone="strong">Bovaro del Bernese</mds-badge></div>
+      <div><mds-badge variant="warning" tone="weak">Bovaro del Bernese</mds-badge></div>
+      <div><mds-badge variant="warning" tone="quiet">Bovaro del Bernese</mds-badge></div>
+      <div><mds-badge variant="orange" tone="strong">Samoiedo</mds-badge></div>
+      <div><mds-badge variant="orange" tone="weak">Samoiedo</mds-badge></div>
+      <div><mds-badge variant="orange" tone="quiet">Samoiedo</mds-badge></div>
     </mds-grid>
   </div>
 
