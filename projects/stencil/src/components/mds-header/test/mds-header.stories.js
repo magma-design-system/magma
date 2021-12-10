@@ -1,10 +1,5 @@
 import React from 'react'
 import MdsHeader from '@component/mds-header/mds-header'
-import faker from 'faker'
-import { iconsDictionary } from '@dictionary/icon'
-
-const getIcon = () =>
-  iconsDictionary[faker.datatype.number(iconsDictionary.length - 1)]
 
 export default {
   title: 'UI / Header',
