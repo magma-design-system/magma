@@ -7,20 +7,20 @@ export default {
   component: MdsAccordionTimerItem,
   argTypes: {
     description: {
-      type: { name: 'string', required: true },
+      type: { name: 'string' },
       description: 'Specifies the title shown when the accordion is closed or opened',
     },
     active: {
-      type: { name: 'boolean', required: false },
+      type: { name: 'boolean' },
       description: 'Specifies if the accordion item is opened or not',
     },
     progress: {
       control: { type: 'range', step: 0.01, min: 0, max: 1 },
-      type: { name: 'number', required: false },
+      type: { name: 'number' },
       description: 'A value between 0 and 100 that rapresents the status progress',
     },
     typography: {
-      type: { name: 'string', required: false },
+      type: { name: 'string' },
       description: 'Specifies the typography of the element',
       options: typographyPrimaryDictionary,
       control: { type: 'select' },
