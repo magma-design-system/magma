@@ -18,8 +18,8 @@
 
     { "color": "#f48600", "disabled": true, "name": "area.admin", "title": "Ufficio amministrazione", "alias": [ "Amministrazione", "Personale" ] },
     { "color": "#a85ebe", "disabled": true, "name": "area.finance", "title": "Ufficio tributi", "alias": [ "Bilancio", "Contabilità", "Tributi" ] },
-    { "color": "#90b953", "disabled": true, "name": "area.procurement", "title": "Ufficio appalti", "alias": [ "Appalti", "Appalti pubblici", "Contratti" ] },
-    { "color": "#53be7e", "disabled": true, "name": "area.tech", "title": "Ufficio tecnico", "alias": [ "Edilizia e Urbanistica", "Territorio" ] },
+    { "color": "#52be7f", "disabled": true, "name": "area.procurement", "title": "Ufficio appalti", "alias": [ "Appalti", "Appalti pubblici", "Contratti" ] },
+    { "color": "#52be7f", "disabled": true, "name": "area.tech", "title": "Ufficio tecnico", "alias": [ "Edilizia e Urbanistica", "Territorio" ] },
     { "color": "#95a5a6", "disabled": true, "name": "area.social", "title": "Servizi sociali" },
     { "color": "#558dd2", "disabled": true, "name": "area.police", "title": "Polizia", "alias": [ "Commercio", "Attività economiche", "Attività produttive" ] },
     { "color": "#F1C40F", "disabled": true, "name": "area.registry", "title": "Ufficio anagrafe", "alias": [ "Servizi demografici", "Elezioni", "Referendum" ] },
