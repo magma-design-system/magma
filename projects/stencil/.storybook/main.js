@@ -57,7 +57,7 @@ module.exports = {
       include: path.resolve(__dirname, '../'),
     })
 
-    config.resolve.fallback = { 'assert': false }
+    config.resolve.fallback = { path: false }
     return config
   },
 }
