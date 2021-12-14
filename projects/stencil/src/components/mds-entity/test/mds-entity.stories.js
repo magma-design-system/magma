@@ -46,7 +46,7 @@ const TemplateLocation = args =>
 
 export const Default = Template.bind({})
 Default.args = {
-  src: './mario-avatar-01.png'
+  src: './avatar-mario-01.png'
 }
 
 export const Deletable = TemplateWario.bind({})

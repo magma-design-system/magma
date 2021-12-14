@@ -5,8 +5,8 @@ import MdsUrlView from '@component/mds-url-view/mds-url-view'
 import { loadingDictionary } from '@dictionary/loading'
 
 const URLs = [
-  'http://azumbrunnen.me/',
   'https://www.typeform.com/',
+  'http://azumbrunnen.me/',
 ]
 
 export default {
@@ -34,6 +34,9 @@ const Template = args =>
   </mds-modal>
 
 export const Default = Template.bind({})
-Default.args = {
-  src: 'http://azumbrunnen.me/',
+Default = {
+  loki: { skip: true },
+  args: {
+    src: 'http://azumbrunnen.me/',
+  },
 }
