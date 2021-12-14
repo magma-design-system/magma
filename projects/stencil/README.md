@@ -77,7 +77,7 @@ nx run stencil:test.regression.reference
 When you have the reference images and you have worked
 
 ```
-nx run stencil:test.loki.review
+nx run stencil:test.regression.review
 ```
 
 ##### Clean to remove all image references
@@ -85,7 +85,7 @@ nx run stencil:test.loki.review
 If for some reason you need to clean loki image cache:
 
 ```
-nx run stencil:test.loki.clean
+nx run stencil:test.regression.clean
 ```
 
 ---

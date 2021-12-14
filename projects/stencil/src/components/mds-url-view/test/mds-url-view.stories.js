@@ -33,10 +33,8 @@ const Template = args =>
     <mds-url-view class="max-w-lg w-full" slot="window" {...args}/>
   </mds-modal>
 
-export const Default = Template.bind({})
-Default = {
-  loki: { skip: true },
-  args: {
-    src: 'http://azumbrunnen.me/',
-  },
+export let Default = Template.bind({})
+Default.args = {
+  src: 'http://azumbrunnen.me/',
 }
+Default.loki = { skip: true }

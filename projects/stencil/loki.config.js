@@ -2,7 +2,7 @@ module.exports = {
   chromeSelector: '.wrapper > *, #root > *, .story-decorator > *',
   chromeTolerance: 0.3,
   diffingEngine: 'looks-same',
-  storiesFilter: '',
+  storiesFilter: 'avatar',
   configurations: {
     'chrome.laptop': {
       target: 'chrome.docker',

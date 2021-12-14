@@ -34,10 +34,15 @@ initials.args = {
   initials: 'mg',
 }
 
-export let brokenSrc = Template.bind({})
+export const brokenSrc = Template.bind({})
 brokenSrc.args = {
   src: 'http://broken-link',
 }
-brokenSrc.loki = {
-  skip: true,
+brokenSrc.story = {
+  parameters: {
+    loki: { skip: true },
+  },
 }
+
+// https://github.com/oblador/loki/blob/master/docs/flaky-tests.md
+console.log(brokenSrc.loki)
