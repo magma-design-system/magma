@@ -44,3 +44,50 @@ cd .build/component-name
 npm run build
 npm publish --access public
 ```
+
+---
+
+## Tests
+
+All tests paths are from this project `design-system/projects/stencil/` path.
+
+### Regression tests
+
+To run regression tests you'll need to have Docker installed on your local machine, this will ensure to run the same Chrome render between local machines with different operative systems.
+
+#### Create references
+
+First, if you don't have a reference images `.loki/reference` path, you need to run:
+
+```
+nx run stencil:test.regression.reference
+```
+
+Then you should see images inside `.loki/reference`, these images will be used to check differences after your changes.
+
+You should do it AFTER a `git pull` and BEFORE starting to work:
+
+```
+git pull
+nx run stencil:test.regression.reference
+```
+
+#### Make changes to the code and then run regression tests
+
+When you have the reference images and you have worked
+
+```
+nx run stencil:test.loki.review
+```
+
+##### Clean to remove all image references
+
+If for some reason you need to clean loki image cache:
+
+```
+nx run stencil:test.loki.clean
+```
+
+---
+
+
