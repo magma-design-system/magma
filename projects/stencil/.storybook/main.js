@@ -3,15 +3,19 @@
 const path = require('path')
 
 module.exports = {
-  'core': {
-    'builder': 'webpack5',
+  core: {
+    builder: 'webpack5',
   },
-  'stories': [
+  stories: [
     '../src/**/*.stories.mdx',
     '../src/**/*.stories.@(js|jsx|ts|tsx)',
     '../src/**/*.stories.js',
   ],
-  'addons': [
+  staticDirs: [
+    '../assets',
+    '../dist',
+  ],
+  addons: [
     '@storybook/addon-essentials',
     '@storybook/addon-links',
     '@storybook/addon-notes',
