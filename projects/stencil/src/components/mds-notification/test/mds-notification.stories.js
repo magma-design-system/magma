@@ -14,7 +14,7 @@ export default {
 }
 
 const Template = args =>
-  <div class="relative inline-flex">
+  <div className="relative inline-flex">
     <mds-notification class="absolute right-0 top-0" {...args}/>
     <mds-button icon="email">Incoming messages</mds-button>
   </div>

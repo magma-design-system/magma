@@ -50,11 +50,11 @@ const TemplateScroll = args =>
   <div>
     <div className="flex min-h-screen pb-8">
       <div className="bg-label-orchid-10 flex flex-grow p-4 flex-col items-center justify-center rounded-3xl text-center text-label-orchid-04">
-        <div class="flex-grow flex flex-col items-center justify-center">
+        <div className="flex-grow flex flex-col items-center justify-center">
           <mds-text typography="detail">Scroll the page down to see text entrance effect.</mds-text>
           <mds-text typography="caption">(It will trigger once)</mds-text>
         </div>
-        <div class="flex-grow flex ">
+        <div className="flex-grow flex ">
           <mds-icon name="arrow-circle-down" class="self-end animate-bounce"/>
         </div>
       </div>

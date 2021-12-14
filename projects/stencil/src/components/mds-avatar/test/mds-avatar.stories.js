@@ -34,10 +34,10 @@ initials.args = {
   initials: 'mg',
 }
 
-export const brokenSrc = Template.bind({})
-brokenSrc = {
-  loki: { skip: true },
-  args: {
-    src: 'http://broken-link',
-  }
+export let brokenSrc = Template.bind({})
+brokenSrc.args = {
+  src: 'http://broken-link',
+}
+brokenSrc.loki = {
+  skip: true,
 }

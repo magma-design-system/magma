@@ -49,7 +49,7 @@ const Template = args =>
 
 const TemplateContents = args =>
   <mds-video-wall {...args} style={{ '--aspect-ratio': '16/9' }}>
-    <div slot="content" class="text-adjust-tone text-center p-2">
+    <div slot="content" className="text-adjust-tone text-center p-2">
       <mds-text typography="h1">This is a text</mds-text>
     </div>
   </mds-video-wall>

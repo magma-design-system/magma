@@ -32,6 +32,7 @@ const Template = args =>
   </mds-accordion>
 
 export const Default = Template.bind({})
+// console.log(Default)
 
 export const Multiple = Template.bind({})
 Multiple.args = {
