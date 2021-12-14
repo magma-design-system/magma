@@ -44,3 +44,11 @@ export const parameters = {
     viewports,
   },
 }
+
+export const decorators = [
+  (Story) => (
+    <div class="inline-flex p-4">
+      <Story />
+    </div>
+  ),
+];
