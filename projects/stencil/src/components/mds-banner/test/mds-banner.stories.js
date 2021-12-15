@@ -45,15 +45,13 @@ const Template = args =>
   </mds-banner>
 
 const TemplateActions = args =>
-  <div className={clsx(args.tone === 'quiet' && args.variant === 'light' ? 'bg-adjust-tone-01' : 'bg-adjust-tone-10', 'p-4 transition-colors delay-300')}>
-    <mds-banner {...args}>
-      <mds-text typography="detail">
-        Pare che la licenza di questo servizio sia scaduta, il servizio non smetterà di funzionare ma non potrai più utilizzare le <a href="#">funzioni premium</a>.
-      </mds-text>
-      <mds-button slot="actions" variant={args.variant} tone="ghost">Annulla</mds-button>
-      <mds-button slot="actions" variant={args.variant}>Rinnova abbonamento</mds-button>
-    </mds-banner>
-  </div>
+  <mds-banner {...args}>
+    <mds-text typography="detail">
+      Pare che la licenza di questo servizio sia scaduta, il servizio non smetterà di funzionare ma non potrai più utilizzare le <a href="#">funzioni premium</a>.
+    </mds-text>
+    <mds-button slot="actions" variant={args.variant} tone="ghost">Annulla</mds-button>
+    <mds-button slot="actions" variant={args.variant}>Rinnova abbonamento</mds-button>
+  </mds-banner>
 
 const TemplateVariantDefault = args =>
   <mds-banner {...args}>

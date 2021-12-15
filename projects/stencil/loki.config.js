@@ -2,12 +2,12 @@ module.exports = {
   chromeSelector: '.wrapper > *, #root > *, .story-decorator > *',
   chromeTolerance: 0.3,
   diffingEngine: 'looks-same',
-  storiesFilter: 'avatar',
+  // storiesFilter: 'avatar',
   configurations: {
-    'chrome.laptop': {
+    'chrome.tablet': {
       target: 'chrome.docker',
-      width: 1366,
-      height: 768,
+      width: 768,
+      height: 1024,
     },
     // 'chrome.iphone7': {
     //   target: 'chrome.docker',

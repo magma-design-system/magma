@@ -47,7 +47,7 @@ export const parameters = {
 
 export const decorators = [
   (Story) => (
-    <div className="flex p-4 w-full">
+    <div className="p-4">
       <Story />
     </div>
   ),
