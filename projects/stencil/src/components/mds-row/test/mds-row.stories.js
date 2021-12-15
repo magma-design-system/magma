@@ -1,5 +1,4 @@
 import React, { Fragment } from 'react'
-import faker from 'faker'
 import MdsRow from '@component/mds-row/mds-row'
 
 export default {
@@ -8,37 +7,37 @@ export default {
 }
 
 export const Default = () =>
-  <mds-row>
-    <mds-card class="gap-2 bg-label-amaranth-18 shadow-none">
-      <mds-text>{faker.lorem.sentence()}</mds-text>
+  <mds-row class="w-full">
+    <mds-card class="gap-2 bg-label-amaranth-09 shadow-none">
+      <mds-text>Il componente mds-row è un semplice wrapper che ha come default il display a <mds-text typography="hack">flex</mds-text> e <mds-text typography="hack">gap</mds-text> di distanza tra gli elementi predefinito.</mds-text>
     </mds-card>
-    <mds-card class="gap-2 bg-label-yellow-18 shadow-none">
-      <mds-text>{faker.lorem.sentence()}</mds-text>
+    <mds-card class="gap-2 bg-label-yellow-09 shadow-none">
+      <mds-text>Seconda colonna</mds-text>
     </mds-card>
-    <mds-card class="gap-2 bg-label-green-18 shadow-none">
-      <mds-text>{faker.lorem.sentence()}</mds-text>
+    <mds-card class="gap-2 bg-label-green-09 shadow-none">
+      <mds-text>Terza colonna</mds-text>
     </mds-card>
   </mds-row>
 
 export const Wrap = () =>
-  <mds-row class="flex-wrap tablet:flex-nowrap">
-    <mds-card class="flex-grow gap-2 bg-label-amaranth-18 shadow-none">
-      <mds-text>{faker.lorem.sentence(10)}</mds-text>
+  <mds-row class="flex-wrap w-full">
+    <mds-card class="flex-grow gap-2 bg-label-amaranth-09 shadow-none">
+      <mds-text>Il componente mds-row è un semplice wrapper che ha come default il display a <mds-text typography="hack">flex</mds-text> e <mds-text typography="hack">gap</mds-text> di distanza tra gli elementi predefinito.</mds-text>
     </mds-card>
-    <mds-card class="flex-grow gap-2 bg-label-yellow-18 shadow-none">
-      <mds-text>{faker.lorem.sentence(3)}</mds-text>
+    <mds-card class="flex-grow gap-2 bg-label-yellow-09 shadow-none">
+      <mds-text>Seconda colonna</mds-text>
     </mds-card>
-    <mds-card class="flex-grow gap-2 bg-label-green-18 shadow-none">
-      <mds-text>{faker.lorem.sentence(3)}</mds-text>
+    <mds-card class="flex-grow gap-2 bg-label-green-09 shadow-none">
+      <mds-text>Terza colonna</mds-text>
     </mds-card>
   </mds-row>
 
 export const Grow = () =>
-  <mds-row>
-    <mds-card class="flex-grow gap-2 bg-label-amaranth-18 shadow-none">
-      <mds-text>{faker.lorem.sentence()}</mds-text>
+  <mds-row class="w-full">
+    <mds-card class="flex-grow gap-2 bg-label-amaranth-09 shadow-none w-full">
+    <mds-text>Il componente mds-row è un semplice wrapper che ha come default il display a <mds-text typography="hack">flex</mds-text> e <mds-text typography="hack">gap</mds-text> di distanza tra gli elementi predefinito.</mds-text>
     </mds-card>
-    <mds-card class="gap-2 bg-label-green-18 shadow-none">
-      <mds-text>{faker.lorem.sentence()}</mds-text>
+    <mds-card class="gap-2 bg-label-green-09 shadow-none">
+      <mds-text>Seconda colonna</mds-text>
     </mds-card>
   </mds-row>

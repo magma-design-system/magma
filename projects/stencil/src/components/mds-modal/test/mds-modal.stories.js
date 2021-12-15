@@ -1,5 +1,4 @@
 import React from 'react'
-import faker from 'faker'
 import MdsModal from '@component/mds-modal/mds-modal'
 
 import { modalPositionDictionary } from '../meta/dictionary'
@@ -21,13 +20,10 @@ export default {
   },
 }
 
-const buttonA = faker.hacker.verb()
-const buttonB = faker.hacker.verb()
-const text = faker.lorem.paragraphs(3)
-const firstName = faker.name.firstName(1)
-const lastName = faker.name.lastName(1)
+const firstName = 'Mario'
+const lastName = 'Rossi'
 const fullName = `${firstName} ${lastName}`
-const email = faker.internet.email(firstName, lastName)
+const email = `${firstName.toLowerCase()}.${lastName.toLowerCase()}@nintendo.com`
 
 const Template = args =>
   <mds-modal {...args}>
@@ -40,7 +36,7 @@ const Template = args =>
     </header>
     <div className="p-8 max-w-lg">
       <mds-text>
-        { text }
+        As a multi-brand design system, our components need to be flexible enough for any one of our brands to use them for multiple use cases. To achieve this, we ensure that all of the brands are involved in the specification stage, giving us more confidence that we’re future-proofing our components as more brands adopt NewsKit.
       </mds-text>
     </div>
     <footer slot="bottom" className="p-8 max-w-lg flex gap-4 text-adjust-tone-02 border-t border-adjust-tone-09">
@@ -57,7 +53,7 @@ const CustomTemplate = args =>
   <mds-modal {...args}>
     <mds-banner slot="window" class="max-w-xl" deletable headline="Action required">
       <mds-text typography="detail">
-        { text }
+        As a multi-brand design system, our components need to be flexible enough for any one of our brands to use them for multiple use cases. To achieve this, we ensure that all of the brands are involved in the specification stage, giving us more confidence that we’re future-proofing our components as more brands adopt NewsKit.
       </mds-text>
       <mds-button slot="actions" variant="primary" tone="quiet">Cancel</mds-button>
       <mds-button slot="actions" variant="primary">Confirm</mds-button>

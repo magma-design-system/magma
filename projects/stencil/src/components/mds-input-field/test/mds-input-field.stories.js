@@ -5,7 +5,6 @@ import { themeStatusVariantDictionary } from '@dictionary/variant'
 import { inputTextTypeDictionary } from '@dictionary/input-text-type'
 import { iconsDictionary } from '@dictionary/icon'
 import { validationModelDictionary } from '../meta/dictionary'
-import faker from 'faker'
 
 export default {
   title: 'Form / Input / Input Field',
@@ -163,18 +162,18 @@ readOnly.args = {
 export const message = Template.bind({})
 message.args = {
   label: 'Questo è un label',
-  placeholder: 'This is a field with a message',
-  message: faker.lorem.paragraph(1),
+  placeholder: 'Placeholder text...',
+  message: 'This is a field with a message',
 }
 
 export const status = Template.bind({})
 status.args = {
   label: 'Questo è un label',
-  placeholder: 'This is a field with a message',
+  placeholder: 'Placeholder text...',
   status: 'error',
   value: 'Input field text',
   'status-tip': 'errore',
-  message: faker.lorem.paragraph(1),
+  message: 'This is a field with a message',
 }
 
 export const icon = Template.bind({})

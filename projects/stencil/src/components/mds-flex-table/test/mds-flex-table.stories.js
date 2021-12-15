@@ -1,5 +1,4 @@
 import React, { Fragment } from 'react'
-import faker from 'faker'
 import MdsFlexTable from '@component/mds-flex-table/mds-flex-table'
 import clsx from 'clsx'
 

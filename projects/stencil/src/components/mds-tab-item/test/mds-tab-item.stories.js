@@ -1,5 +1,4 @@
 import React from 'react'
-import faker from 'faker'
 import MdsTabItem from '@component/mds-tab-item/mds-tab-item'
 import { iconsDictionary } from '@dictionary/icon'
 import {

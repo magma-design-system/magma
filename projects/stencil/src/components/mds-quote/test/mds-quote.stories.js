@@ -1,5 +1,4 @@
 import React from 'react'
-import faker from 'faker'
 import MdsQuote from '@component/mds-quote/mds-quote'
 import { typographyPrimaryDictionary } from '@dictionary/typography'
 

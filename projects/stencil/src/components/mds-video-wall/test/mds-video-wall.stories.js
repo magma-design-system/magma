@@ -1,5 +1,4 @@
 import React from 'react'
-import faker from 'faker'
 import MdsVideoWall from '@component/mds-video-wall/mds-video-wall'
 import { noiseDictionary, preloadDictionary } from '../meta/dictionary'
 

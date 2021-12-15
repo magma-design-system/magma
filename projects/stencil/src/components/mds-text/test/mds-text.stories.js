@@ -1,5 +1,4 @@
 import React from 'react'
-import faker from 'faker'
 import MdsText from '@component/mds-text/mds-text'
 import { typographyDictionary } from '@dictionary/typography'
 import { tagsDictionary } from '../meta/dictionary'
@@ -21,7 +20,7 @@ export default {
   },
 }
 const Template = args =>
-  <mds-text {...args}>{faker.lorem.paragraph()}</mds-text>
+  <mds-text {...args}>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Praesent dictum nec eros vitae dictum. Nunc lobortis pharetra lectus. Mauris egestas velit et mattis molestie. Sed risus purus, laoreet a massa in, tincidunt iaculis sem. Nam congue, ipsum viverra condimentum dignissim, mauris mi lacinia tortor, eu sodales magna augue a dui.</mds-text>
 
 export const Default = Template.bind({})
 

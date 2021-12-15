@@ -1,8 +1,6 @@
 import React from 'react'
-import faker from 'faker'
 import MdsTag from '@component/mds-tag/mds-tag'
 import { typographyDictionary } from '@dictionary/typography'
-import { typographySecondaryDictionary } from '@dictionary/typography'
 import { themeFullVariantDictionary, toneSimpleVariantDictionary } from '@dictionary/variant'
 
 export default {
@@ -38,13 +36,14 @@ export default {
   },
 }
 const Template = args =>
-  <mds-tag {...args}>{faker.lorem.paragraph()}</mds-tag>
+  <mds-tag {...args}>Tag con un testo piuttosto lungo</mds-tag>
 
 export const Default = Template.bind({})
 
 export const truncate = Template.bind({})
 truncate.args = {
   truncate: false,
+  class: 'w-32',
 }
 
 export const typography = Template.bind({})
@@ -59,8 +58,8 @@ onClickClose.args = {
 }
 
 export const tailwindRadius = (args) =>
-  <mds-tag class="rounded-3xl" {...args}>{faker.lorem.paragraph()}</mds-tag>
+  <mds-tag class="rounded-3xl bg-label-lime-09 text-label-lime-02" {...args}>Limone</mds-tag>
 
 export const tailwindColor = (args) =>
-  <mds-tag class="bg-label-blue-06 text-label-blue-20" {...args}>{faker.lorem.paragraph()}</mds-tag>
+  <mds-tag class="bg-label-blue-09 text-label-blue-02" {...args}>Sale</mds-tag>
 

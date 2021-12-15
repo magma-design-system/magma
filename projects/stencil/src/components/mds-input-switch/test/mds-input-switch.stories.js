@@ -1,6 +1,5 @@
 import React from 'react'
 import MdsSwitch from '@component/mds-input-switch/mds-input-switch'
-import faker from 'faker'
 import { typographySecondaryDictionary } from '@dictionary/typography'
 import mggIconsDictionary from '@maggioli-design-system/icons/resources/mgg-icons.json'
 
@@ -53,12 +52,12 @@ export default {
 }
 
 const Template = args =>
-  <mds-input-switch {...args}>{faker.lorem.words(10)}</mds-input-switch>
+  <mds-input-switch {...args}>Notifiche via e-mail</mds-input-switch>
 
 const TemplateMultiple = args =>
   <form name="form-name" className="grid grid-cols-1 gap-4">
-    <mds-input-switch {...args} value="1">{faker.lorem.words(10)}</mds-input-switch>
-    <mds-input-switch {...args} value="2">{faker.lorem.words(10)}</mds-input-switch>
+    <mds-input-switch {...args} value="1">Accetto</mds-input-switch>
+    <mds-input-switch {...args} value="2">Non accetto</mds-input-switch>
   </form>
 
 export const Default = Template.bind({})

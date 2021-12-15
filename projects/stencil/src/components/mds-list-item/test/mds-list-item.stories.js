@@ -1,5 +1,4 @@
 import React from 'react'
-import faker from 'faker'
 import MdsList from '@component/mds-list/mds-list'
 import { typographySecondaryDictionary } from '@dictionary/typography'
 import { iconsDictionary } from '@dictionary/icon'
@@ -24,9 +23,9 @@ export default {
 }
 const Template = args =>
   <mds-list>
-    <mds-list-item {...args}>{faker.lorem.paragraph()}</mds-list-item>
-    <mds-list-item {...args}>{faker.lorem.paragraph()}</mds-list-item>
-    <mds-list-item {...args}>{faker.lorem.paragraph()}</mds-list-item>
+    <mds-list-item {...args}>Pane</mds-list-item>
+    <mds-list-item {...args}>Acqua</mds-list-item>
+    <mds-list-item {...args}>Pasta</mds-list-item>
   </mds-list>
 
 export const Default = Template.bind({})

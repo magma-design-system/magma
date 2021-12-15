@@ -1,5 +1,4 @@
 import React from 'react'
-import faker from 'faker'
 import MdsPaginator from '@component/mds-paginator/mds-paginator'
 
 export default {

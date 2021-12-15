@@ -1,5 +1,4 @@
 import React from 'react'
-import faker from 'faker'
 import MdsNote from '@component/mds-note/mds-note'
 import { themeLabelVariantDictionary } from '@dictionary/variant'
 
@@ -22,13 +21,14 @@ export default {
 
 const Template = args =>
   <mds-note {...args}>
-    <mds-text typography="detail">{faker.lorem.paragraph()}</mds-text>
+    <mds-text typography="detail">What one programmer can do in one month, two programmers can do in two months.</mds-text>
   </mds-note>
 
 const TemplateTitle = args =>
   <mds-note {...args}>
-    <mds-text typography="h5" slot="title">{faker.lorem.sentence()}</mds-text>
-    <mds-text typography="detail">{faker.lorem.paragraph()}</mds-text>
+    <mds-text typography="h5" slot="title">Nota riunione Synbee</mds-text>
+    <mds-text typography="detail">Posso prendere i dati solo dopo previa conferma dell'utente registrato.</mds-text>
+    <mds-text typography="detail">È necessario dare il consenso anche a partner di terze parti per poter rendere al massimo l'analisi dei dati dell'utente.</mds-text>
   </mds-note>
 
 export const Default = Template.bind({})

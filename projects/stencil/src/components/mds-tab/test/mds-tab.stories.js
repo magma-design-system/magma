@@ -1,5 +1,4 @@
 import React from 'react'
-import faker from 'faker'
 import MdsTab from '@component/mds-tab/mds-tab'
 
 export default {

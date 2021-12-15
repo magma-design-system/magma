@@ -1,5 +1,4 @@
 import React from 'react'
-import faker from 'faker'
 import MdsUrlView from '@component/mds-url-view/mds-url-view'
 
 import { loadingDictionary } from '@dictionary/loading'
@@ -37,4 +36,8 @@ export let Default = Template.bind({})
 Default.args = {
   src: 'http://azumbrunnen.me/',
 }
-Default.loki = { skip: true }
+Default.story = {
+  parameters: {
+    loki: { skip: true },
+  },
+}

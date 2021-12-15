@@ -1,5 +1,4 @@
 import React from 'react'
-import faker from 'faker'
 import MdsProgress from '@component/mds-progress/mds-progress'
 import { directionDictionary } from '../meta/dictionary'
 import { themeVariantDictionary } from '@dictionary/variant'

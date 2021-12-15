@@ -1,5 +1,4 @@
 import React, { Fragment } from 'react'
-import faker from 'faker'
 import MdsGrid from '@component/mds-grid/mds-grid'
 
 export default {

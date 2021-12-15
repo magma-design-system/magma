@@ -1,5 +1,4 @@
 import React from 'react'
-import faker from 'faker'
 import MdsList from '@component/mds-list/mds-list'
 
 export default {
@@ -15,9 +14,9 @@ export default {
 
 const Template = args =>
   <mds-list {...args}>
-    <mds-list-item>{faker.lorem.paragraph()}</mds-list-item>
-    <mds-list-item>{faker.lorem.paragraph()}</mds-list-item>
-    <mds-list-item>{faker.lorem.paragraph()}</mds-list-item>
+    <mds-list-item>Pane</mds-list-item>
+    <mds-list-item>Acqua</mds-list-item>
+    <mds-list-item>Pasta</mds-list-item>
   </mds-list>
 
 export const Default = Template.bind({})

@@ -1,5 +1,4 @@
 import React from 'react'
-import faker from 'faker'
 import MdsCard from '@component/mds-card/mds-card'
 
 export default {

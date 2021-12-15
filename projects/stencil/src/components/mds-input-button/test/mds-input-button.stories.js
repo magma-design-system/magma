@@ -1,5 +1,4 @@
 import React from 'react'
-import faker from 'faker'
 import MdsInputButton from '@component/mds-input-button/mds-input-button'
 import mggIconsDictionary from '@maggioli-design-system/icons/resources/mgg-icons.json'
 const iconsDictionary = Object.keys(mggIconsDictionary).sort()
@@ -50,7 +49,7 @@ export default {
 
 const Template = args =>
   <mds-input-button {...args}>
-    { faker.lorem.sentence(2) }
+    Button action
   </mds-input-button>
 
 const TemplateIcon = args =>

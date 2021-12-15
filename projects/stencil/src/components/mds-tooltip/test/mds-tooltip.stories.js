@@ -2,7 +2,6 @@ import React from 'react'
 import MdsTooltip from '@component/mds-tooltip/mds-tooltip'
 import { tooltipPositionDictionary } from '../meta/dictionary'
 import { themeLuminanceVariantDictionary } from '@dictionary/variant'
-import faker from 'faker'
 
 export default {
   title: 'UI / Tooltip',
@@ -33,17 +32,17 @@ export default {
 
 const Template = args =>
   <div className="flex items-center justify-center w-screen h-screen -mx-4 -my-4 bg-adjust-tone-18">
-    <mds-button id={args.for}>Trigger on hover</mds-button>
+    <mds-button id={args.for}>Registrati</mds-button>
     <mds-tooltip {...args}>
-    { faker.lorem.sentence(3) }
+      Clicca il pulsante regitsrati per registrarti
     </mds-tooltip>
   </div>
 
 const TemplateBig = args =>
   <div className="flex items-center justify-center w-screen h-screen -mx-4 -my-4 bg-adjust-tone-18">
-    <mds-button id={args.for}>Trigger on hover</mds-button>
+    <mds-button id={args.for}>Registrati</mds-button>
     <mds-tooltip {...args}>
-      { faker.lorem.paragraph(5) }
+      Clicca il pulsante regitsrati per registrarti
     </mds-tooltip>
   </div>
 
