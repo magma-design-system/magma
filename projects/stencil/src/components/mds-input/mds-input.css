@@ -98,13 +98,13 @@ textarea.input {
 
 .read-only {
   @apply
-    bg-status-info-06
+    bg-status-info-05
     text-status-info-09;
 }
 
 .required {
   @apply
-    bg-status-error-06
+    bg-status-error-05
     text-adjust-tone
     text-opacity-0
     p-0
@@ -112,7 +112,7 @@ textarea.input {
 }
 
 .disabled {
-  @apply bg-adjust-tone-06;
+  @apply bg-adjust-tone-05;
 }
 
 .input:focus + .required {

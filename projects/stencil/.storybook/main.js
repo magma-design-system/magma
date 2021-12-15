@@ -38,6 +38,7 @@ module.exports = {
       '@dictionary': path.resolve(__dirname, '../src/dictionary/'),
       '@fixture': path.resolve(__dirname, '../src/fixtures/'),
       '@placeholder': 'https://via.placeholder.com',
+      '@test': path.resolve(__dirname, '../src/test/'),
       '@type': path.resolve(__dirname, '../src/types/'),
       '@variant': path.resolve(__dirname, '../src/variants/'),
     }

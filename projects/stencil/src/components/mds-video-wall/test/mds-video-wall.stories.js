@@ -1,6 +1,7 @@
 import React from 'react'
 import MdsVideoWall from '@component/mds-video-wall/mds-video-wall'
 import { noiseDictionary, preloadDictionary } from '../meta/dictionary'
+import { lokiDisabled } from '@test/loki-disabled'
 
 export default {
   title: 'UI / Video wall',
@@ -59,44 +60,44 @@ Default.args = {
   src: './video-nature.mp4',
 }
 
-export const autoplay = Template.bind({})
-autoplay.args = {
+export const Autoplay = Template.bind({})
+Autoplay.args = {
   class: 'max-w-full',
   autoplay: false,
   src: './video-nature.mp4',
 }
 
-export const loop = Template.bind({})
-loop.args = {
+export const Loop = Template.bind({})
+Loop.args = {
   class: 'max-w-full',
   loop: false,
   src: './video-nature.mp4',
 }
 
-export const muted = Template.bind({})
-muted.args = {
+export const Muted = Template.bind({})
+Muted.args = {
   class: 'max-w-full',
   muted: false,
   src: './video-nature.mp4',
 }
 
-export const noise = Template.bind({})
-noise.args = {
+export const Noise = Template.bind({})
+Noise.args = {
   class: 'max-w-full',
   noise: 'classic',
   src: './video-nature.mp4',
 }
 
-export const poster = Template.bind({})
-poster.args = {
+export const Poster = Template.bind({})
+Poster.args = {
   class: 'max-w-full',
   autoplay: false,
   poster: './video-nature-preview.webp',
   src: './video-nature.mp4',
 }
 
-export const preload = Template.bind({})
-preload.args = {
+export const Preload = Template.bind({})
+Preload.args = {
   class: 'max-w-full',
   preload: 'metadata',
   src: './video-nature.mp4',
@@ -108,3 +109,12 @@ Content.args = {
   src: './video-nature.mp4',
 }
 
+
+Default.story = lokiDisabled
+Autoplay.story = lokiDisabled
+Loop.story = lokiDisabled
+Muted.story = lokiDisabled
+Noise.story = lokiDisabled
+// Poster.story = lokiDisabled
+Preload.story = lokiDisabled
+Content.story = lokiDisabled

@@ -1,5 +1,6 @@
 import React from 'react'
 import MdsPaginator from '@component/mds-paginator/mds-paginator'
+import { lokiDisabled } from '@test/loki-disabled'
 
 export default {
   title: 'UI / Paginator',
@@ -28,3 +29,5 @@ currentPage.args = {
   'current-page': 16,
   pages: 32,
 }
+
+currentPage.story = lokiDisabled

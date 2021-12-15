@@ -1,6 +1,7 @@
 import React from 'react'
 import MdsAccordionTimerItem from '@component/mds-accordion-timer-item/mds-accordion-timer-item'
 import { typographyPrimaryDictionary } from '@dictionary/typography'
+import { lokiDisabled } from '@test/loki-disabled'
 
 export default {
   title: 'UI / Accordion Timer / Accordion Timer Item',
@@ -40,8 +41,8 @@ Default.args = {
   description: 'Blipbug',
 }
 
-export const active = Template.bind({})
-active.args = {
+export const Active = Template.bind({})
+Active.args = {
   active: true,
   description: 'Blipbug',
 }
@@ -52,3 +53,7 @@ Progress.args = {
   description: 'Blipbug',
   progress: 0.5,
 }
+
+Default.story = lokiDisabled
+Active.story = lokiDisabled
+Progress.story = lokiDisabled

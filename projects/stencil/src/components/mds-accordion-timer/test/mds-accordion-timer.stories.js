@@ -1,5 +1,6 @@
 import React from 'react'
 import MdsAccordionTimer from '@component/mds-accordion-timer/mds-accordion-timer'
+import { lokiDisabled } from '@test/loki-disabled'
 
 export default {
   title: 'UI / Accordion Timer',
@@ -34,8 +35,15 @@ const Template = args =>
   </div>
 
 export const Default = Template.bind({})
+Default.story = lokiDisabled
 
 export const Duration = Template.bind({})
 Duration.args = {
   duration: 1000,
+}
+Duration.story = lokiDisabled
+
+export const LokiTest = Template.bind({})
+LokiTest.args = {
+  duration: 0,
 }
