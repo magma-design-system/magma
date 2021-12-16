@@ -10,51 +10,52 @@
 :host ( [variant=error]:hover ),
 :host ( [variant=error][tone=strong]:hover ) {
 
-  --background: theme('colors.status-error-06');
+  --background: theme('colors.status-error-04');
 }
 
 :host ( [variant=error][active] ),
 :host ( [variant=error][tone=strong][active] ) {
 
-  --background: theme('colors.status-error-04');
+  --background: theme('colors.status-error-06');
 }
 
 :host ( [variant=error][tone=weak] ) {
 
-  --background: theme('colors.status-error-07');
-  --color: theme('colors.status-error-02');
+  --background: theme('colors.status-error-06');
+  --color: theme('colors.status-error-10');
 }
 
 :host ( [variant=error][tone=weak]:hover ) {
 
-  --background: theme('colors.status-error-08');
-  --color: theme('colors.status-error-03');
+  --background: theme('colors.status-error-05');
+  --color: theme('colors.adjust-tone');
 }
 
 :host ( [variant=error][tone=weak][active] ) {
 
-  --background: theme('colors.status-error-08');
+  --background: theme('colors.status-error-07');
+  --color: theme('colors.status-error-10');
 }
 
 :host ( [variant=error][tone=ghost] ) {
 
   --background: transparent;
-  --border-color: theme('colors.status-error-03');
+  --border-color: theme('colors.status-error-07');
   --color: theme('colors.status-error-03');
 }
 
 :host ( [variant=error][tone=ghost]:hover ) {
 
   --background: transparent;
-  --border-color: theme('colors.status-error-02');
+  --border-color: theme('colors.status-error-06');
   --color: theme('colors.status-error-02');
 }
 
 :host ( [variant=error][tone=ghost][active] ) {
 
   --background: transparent;
-  --border-color: theme('colors.status-error-01');
-  --color: theme('colors.status-error-01');
+  --border-color: theme('colors.status-error-05');
+  --color: theme('colors.status-error-03');
 }
 
 :host ( [variant=error][tone=quiet] ) {
@@ -66,7 +67,7 @@
 :host ( [variant=error][tone=quiet]:hover ) {
 
   --background: transparent;
-  --color: theme('colors.status-error-03');
+  --color: theme('colors.status-error-04');
 }
 
 :host ( [variant=error][tone=quiet][active] ) {

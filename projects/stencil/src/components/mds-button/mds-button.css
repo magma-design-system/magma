@@ -12,6 +12,11 @@
 
 :host {
 
+  --background: theme('colors.brand-maggioli-02');
+  --border-color: transparent;
+  --color: theme('colors.adjust-tone');
+  --radius: theme('borderRadius.lg');
+
   @apply
     cursor-pointer
     duration-500
@@ -24,11 +29,11 @@
     py-2
     transition-colors;
 
-  background-color: var(--background, theme('colors.brand-maggioli-02'));
-  border-color: var(--border-color, transparent) !important;
+  background-color: var(--background);
+  border-color: var(--border-color) !important;
   border-radius: var(--radius, theme('borderRadius.lg'));
   border-width: theme('borderWidth.2') !important;
-  color: var(--color, theme('colors.adjust-tone'));
+  color: var(--color);
 }
 
 .text {

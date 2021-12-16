@@ -15,31 +15,31 @@ export default {
   component: MdsButton,
   argTypes: {
     icon: {
-      type: { name: 'string', required: false },
+      type: { name: 'string' },
       description: 'The name of the icon set. The icon set is strictly realted to @maggioli-design-system/icons',
       options: iconsDictionary,
       control: { type: 'select' },
     },
     'icon-position': {
-      type: { name: 'string', required: false },
+      type: { name: 'string' },
       description: 'Specifies the horizontal position of the icon displayed in the button',
       options: buttonIconPositionDictionary,
       control: { type: 'select' },
     },
     size: {
-      type: { name: 'string', required: false },
+      type: { name: 'string' },
       description: 'Specifies the size of the button',
       options: buttonSizeDictionary,
       control: { type: 'select' },
     },
     tone: {
-      type: { name: 'string', required: false },
+      type: { name: 'string' },
       description: 'Specifies the tone variant of the button',
       options: buttonToneVariantDictionary,
       control: { type: 'select' },
     },
     variant: {
-      type: { name: 'string', required: false },
+      type: { name: 'string' },
       description: 'Specifies the variant of the button',
       options: buttonVariantDictionary,
       control: { type: 'select' },
