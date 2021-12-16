@@ -1,0 +1,37 @@
+@tailwind utilities;
+
+:host ( [variant=dark] ) {
+
+  --progress-background: theme('colors.adjust-tone-04');
+  --background: theme('colors.adjust-tone-08');
+}
+
+:host ( [variant=light] ) {
+
+  --progress-background: theme('colors.adjust-tone');
+  --background: theme('colors.adjust-tone-05');
+}
+
+:host ( [variant=error] ) {
+
+  --progress-background: theme('colors.status-error-06');
+  --background: theme('colors.status-error-09');
+}
+
+:host ( [variant=warning] ) {
+
+  --progress-background: theme('colors.status-warning-06');
+  --background: theme('colors.status-warning-09');
+}
+
+:host ( [variant=success] ) {
+
+  --progress-background: theme('colors.status-success-06');
+  --background: theme('colors.status-success-09');
+}
+
+:host ( [variant=info] ) {
+
+  --progress-background: theme('colors.status-info-06');
+  --background: theme('colors.status-info-09');
+}

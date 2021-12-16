@@ -41,7 +41,6 @@
 }
 
 .progress {
-
   @apply
     duration-500
     ease-out-expo;
@@ -51,9 +50,4 @@
   transition-property: background-color, flex-grow;
 }
 
-@import './css/mds-progress-variant-dark.css';
-@import './css/mds-progress-variant-error.css';
-@import './css/mds-progress-variant-info.css';
-@import './css/mds-progress-variant-light.css';
-@import './css/mds-progress-variant-success.css';
-@import './css/mds-progress-variant-warning.css';
+@import './css/mds-progress-variant.css';

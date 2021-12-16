@@ -1,7 +1,0 @@
-@tailwind utilities;
-
-:host ( [variant=error] ) {
-
-  --progress-background: theme('colors.status-error-05');
-  --background: theme('colors.status-error-09');
-}
