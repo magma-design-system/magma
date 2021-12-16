@@ -6,28 +6,22 @@
   --background: theme('colors.adjust-tone-01');
   --color: theme('colors.adjust-tone-08');
   --icon-color: theme('colors.adjust-tone-07');
-  --radius: theme('borderRadius.lg');
-  --separator-color: theme('colors.adjust-tone-02');
   --shadow: theme('boxShadow.sharp-lg');
 }
 
 :host ( [variant=dark][tone=weak] ) {
 
-  --background: theme('colors.adjust-tone-02');
-  --color: theme('colors.adjust-tone-08');
-  --icon-color: theme('colors.adjust-tone-06');
-  --radius: theme('borderRadius.md');
-  --separator-color: theme('colors.adjust-tone-03');
+  --background: theme('colors.adjust-tone-03');
+  --color: theme('colors.adjust-tone-09');
+  --icon-color: theme('colors.adjust-tone-07');
   --shadow: theme('boxShadow.sharp-sm');
 }
 
 :host ( [variant=dark][tone=ghost] ) {
 
   --border-color: theme('colors.adjust-tone-04');
-  --radius: theme('borderRadius.lg');
-  --icon-color: theme('colors.adjust-tone-04');
   --color: theme('colors.adjust-tone-05');
-  --separator-color: theme('colors.adjust-tone-02');
+  --icon-color: theme('colors.adjust-tone-04');
   --shadow: none;
 }
 
@@ -35,6 +29,5 @@
 
   --background: transparent;
   --color: theme('colors.adjust-tone-04');
-  --separator-color: theme('colors.adjust-tone-03');
   --shadow: none;
 }

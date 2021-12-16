@@ -6,8 +6,6 @@
   --background: theme('colors.adjust-tone');
   --color: theme('colors.adjust-tone-02');
   --icon-color: theme('colors.brand-maggioli-05');
-  --radius: theme('borderRadius.lg');
-  --separator-color: theme('colors.adjust-tone-09');
   --shadow: theme('boxShadow.sharp-lg');
 }
 
@@ -16,17 +14,13 @@
   --background: theme('colors.adjust-tone');
   --color: theme('colors.adjust-tone-02');
   --icon-color: theme('colors.brand-maggioli-05');
-  --radius: theme('borderRadius.md');
-  --separator-color: theme('colors.adjust-tone-09');
   --shadow: theme('boxShadow.sharp-sm');
 }
 
 :host ( [variant=light][tone=ghost] ) {
 
   --border-color: theme('colors.adjust-tone-09');
-  --radius: theme('borderRadius.lg');
   --color: theme('colors.adjust-tone-02');
-  --separator-color: theme('colors.adjust-tone-09');
   --shadow: none;
 }
 
@@ -34,6 +28,5 @@
 
   --background: transparent;
   --color: theme('colors.adjust-tone-10');
-  --separator-color: theme('colors.adjust-tone-09');
   --shadow: none;
 }

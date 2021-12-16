@@ -21,7 +21,7 @@ export class MdsBanner {
   /**
    * Sets the tone of the color variant
    */
-  @Prop({ reflect: true }) readonly tone?: ToneSimpleVariantType = 'strong'
+  @Prop({ reflect: true }) readonly tone?: ToneSimpleVariantType = 'weak'
 
   /**
    * Shows the cross icon to perform cancel/delete action on element
@@ -64,12 +64,9 @@ export class MdsBanner {
         { this.headline !== undefined
           &&
           <header class="header">
-            <header class="header-row">
-              { this.icon && <mds-icon name={ this.icon } class="icon"/> }
-              <mds-text typography="h6" class="headline">{ this.headline }</mds-text>
-              { this.deletable && <mds-icon name="close" class="close-icon" onClick={this.closeBanner} /> }
-            </header>
-            <hr class="separator"/>
+            { this.icon && <mds-icon name={ this.icon } class="icon"/> }
+            <mds-text typography="h6" class="headline">{ this.headline }</mds-text>
+            { this.deletable && <mds-icon name="close" class="close-icon" onClick={this.closeBanner} /> }
           </header>
         }
         <div class={clsx(

@@ -6,8 +6,6 @@
   --background: theme('colors.status-success-09');
   --color: theme('colors.status-success-02');
   --icon-color: theme('colors.status-success-05');
-  --radius: theme('borderRadius.lg');
-  --separator-color: theme('colors.status-success-07');
   --shadow: none;
 }
 
@@ -16,8 +14,6 @@
   --background: theme('colors.status-success-10');
   --color: theme('colors.status-success-03');
   --icon-color: theme('colors.status-success-06');
-  --radius: theme('borderRadius.md');
-  --separator-color: theme('colors.status-success-08');
   --shadow: none;
 }
 

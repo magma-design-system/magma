@@ -6,8 +6,6 @@
   --background: theme('colors.status-warning-09');
   --color: theme('colors.status-warning-02');
   --icon-color: theme('colors.status-warning-05');
-  --radius: theme('borderRadius.lg');
-  --separator-color: theme('colors.status-warning-07');
   --shadow: none;
 }
 
@@ -16,8 +14,6 @@
   --background: theme('colors.status-warning-10');
   --color: theme('colors.status-warning-03');
   --icon-color: theme('colors.status-warning-06');
-  --radius: theme('borderRadius.md');
-  --separator-color: theme('colors.status-warning-08');
   --shadow: none;
 }
 
