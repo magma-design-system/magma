@@ -3,11 +3,10 @@
   "version": "1.0.1",
   "description": "mds-input-button is a web-component from Maggioli Design System Magma, built with StencilJS, TypeScript, Storybook. It's based on the web-component standard and it's designed to be agnostic from the JavaScirpt framework you are using.",
   "main": "dist/index.cjs.js",
-  "module": "dist/custom-elements/index.js",
+  "module": "dist/index.js",
   "es2015": "dist/esm/index.mjs",
   "es2017": "dist/esm/index.mjs",
-  "types": "dist/custom-elements/index.d.ts",
-  "collection": "dist/collection/collection-manifest.json",
+"types": "dist/types/components.d.ts",  "collection": "dist/collection/collection-manifest.json",
   "collection:main": "dist/collection/index.js",
   "unpkg": "dist/mds-input-button/mds-input-button.esm.js",
   "files": [
@@ -27,23 +26,23 @@
     "@maggioli-design-system/styles": "^4.0.0",
     "@stencil/core": "^2.10.0",
     "tailwindcss": "^2.2.19"
-},
+  },
   "license": "MIT",
   "author": {
     "name": "Vittorio Vittori",
     "email": "vittorio.vittori@maggioli.it",
     "url": "http://vit.to"
-},
+  },
   "contributors": [
     {
-        "name": "Andrea Pruccoli",
-        "email": "andrea.pruccoli@maggioli.it",
-        "role": "Software Engineer"
+      "name": "Andrea Pruccoli",
+      "email": "andrea.pruccoli@maggioli.it",
+      "role": "Software Engineer"
     },
     {
-        "name": "Vittorio Vittori",
-        "email": "vittorio.vittori@maggioli.it",
-        "role": "UX UI Designer"
+      "name": "Vittorio Vittori",
+      "email": "vittorio.vittori@maggioli.it",
+      "role": "UX UI Designer"
     }
-]
+  ]
 }

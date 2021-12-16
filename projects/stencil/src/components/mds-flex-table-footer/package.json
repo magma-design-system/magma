@@ -3,11 +3,10 @@
   "version": "1.0.1",
   "description": "mds-flex-table-footer is a web-component from Maggioli Design System Magma, built with StencilJS, TypeScript, Storybook. It's based on the web-component standard and it's designed to be agnostic from the JavaScirpt framework you are using.",
   "main": "dist/index.cjs.js",
-  "module": "dist/custom-elements/index.js",
+  "module": "dist/index.js",
   "es2015": "dist/esm/index.mjs",
   "es2017": "dist/esm/index.mjs",
-  "types": "dist/custom-elements/index.d.ts",
-  "collection": "dist/collection/collection-manifest.json",
+"types": "dist/types/components.d.ts",  "collection": "dist/collection/collection-manifest.json",
   "collection:main": "dist/collection/index.js",
   "unpkg": "dist/mds-flex-table-footer/mds-flex-table-footer.esm.js",
   "files": [

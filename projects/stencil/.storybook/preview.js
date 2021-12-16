@@ -3,7 +3,7 @@ import { defineCustomElements } from '../dist/esm/loader'
 import 'loki/configure-react'
 
 import 'normalize.css'
-import '@maggioli-design-system/design-tokens/dist/css/vars-rgb-channels.css'
+import '@maggioli-design-system/design-tokens/dist/css/colors-rgb.css'
 import '@maggioli-design-system/icons/original/base64/mgg-icons-font-face.css'
 import 'typeface-karla'
 import 'typeface-roboto'

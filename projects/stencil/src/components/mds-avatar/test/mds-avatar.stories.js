@@ -1,5 +1,6 @@
 import React from 'react'
 import MdsAvatar from '@component/mds-avatar/mds-avatar'
+import { lokiDisabled } from '@test/loki-disabled'
 
 export default {
   title: 'UI / Avatar',
@@ -38,11 +39,4 @@ export const brokenSrc = Template.bind({})
 brokenSrc.args = {
   src: 'http://broken-link',
 }
-brokenSrc.story = {
-  parameters: {
-    loki: { skip: true },
-  },
-}
-
-// https://github.com/oblador/loki/blob/master/docs/flaky-tests.md
-console.log(brokenSrc.loki)
+brokenSrc.story = lokiDisabled
