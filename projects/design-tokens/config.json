@@ -34,11 +34,11 @@
       "files": [
         {
           "format": "css/vars",
-          "destination": "vars.css"
+          "destination": "colors.css"
         },
         {
           "format": "css/vars-rgb-channels",
-          "destination": "vars-rgb-channels.css"
+          "destination": "colors-rgb.css"
         }
       ]
     },
@@ -47,9 +47,6 @@
       "transformGroup": "android",
       "buildPath": "dist/android/",
       "files": [{
-        "destination": "font_dimens.xml",
-        "format": "android/fontDimens"
-      },{
         "destination": "colors.xml",
         "format": "android/colors"
       }]
@@ -77,26 +74,6 @@
             "category": "color"
           }
         }
-      },{
-        "destination": "StyleDictionarySize.h",
-        "format": "ios/static.h",
-        "className": "StyleDictionarySize",
-        "type": "float",
-        "filter": {
-          "attributes": {
-            "category": "size"
-          }
-        }
-      },{
-        "destination": "StyleDictionarySize.m",
-        "format": "ios/static.m",
-        "className": "StyleDictionarySize",
-        "type": "float",
-        "filter": {
-          "attributes": {
-            "category": "size"
-          }
-        }
       }]
     },
     "ios-swift": {
@@ -119,16 +96,6 @@
         "filter": {
           "attributes": {
             "category": "color"
-          }
-        }
-      },{
-        "destination": "StyleDictionarySize.swift",
-        "format": "ios-swift/enum.swift",
-        "className": "StyleDictionarySize",
-        "type": "float",
-        "filter": {
-          "attributes": {
-            "category": "size"
           }
         }
       }]
