@@ -1,8 +1,0 @@
-@function property-name ($property, $index: 1) {
-
-  @if (length(str-split($property, ':')) == 2) {
-    @return nth(str-split($property, ':'), $index);
-  }
-
-  @return $property;
-}

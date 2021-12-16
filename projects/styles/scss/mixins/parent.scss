@@ -1,6 +1,0 @@
-@mixin has-parent ($selector) {
-
-  @at-root .#{$selector} & {
-    @content;
-  }
-}

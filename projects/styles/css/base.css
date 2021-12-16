@@ -9,8 +9,10 @@ html {
 
 body {
   @apply
+    antialiased
+    font-secondary
     text-adjust-tone-04
-    text-secondary-detail;
+    text-base;
 
   -moz-osx-font-smoothing: grayscale;
   -webkit-font-smoothing: antialiased;
