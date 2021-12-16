@@ -22,7 +22,7 @@ const getBackgroundColor = (colors, name) => {
         colorspace: color.colorspace !== undefined ? color.colorspace : colorspace,
         name: color.name,
         output,
-        ratios,
+        ratios: color.ratios !== undefined ? ratios[color.ratios] : ratios.default,
         smooth: color.smooth !== undefined ? color.smooth : smooth,
       })
     }
@@ -37,8 +37,8 @@ const color = colorItem => {
     colorspace: colorItem.colorspace !== undefined ? colorItem.colorspace : colorspace,
     name: colorItem.name,
     output,
-    ratios,
-    smooth: color.smooth !== undefined ? color.smooth : smooth,
+    ratios: colorItem.ratios !== undefined ? ratios[colorItem.ratios] : ratios.default,
+    smooth: colorItem.smooth !== undefined ? colorItem.smooth : smooth,
   })
 }
 
@@ -78,15 +78,45 @@ const formatColor = (theme, colorName, colorValue, scaffold, colorDark) => {
   return palette
 }
 
-const url = () => {
-  const [, color ] = colors
+const url = color => {
+  const colorRatios = color.ratios !== undefined ? ratios[color.ratios] : ratios.default
   const query = [
     `?colorKeys=%23${color.color.substring(1)}`,
     '&base=ffffff',
-    `&ratios=${ratios.join('%2C')}`,
+    `&ratios=${colorRatios.join('%2C')}`,
     `&mode=${color.colorspace !== undefined ? color.colorspace : colorspace}`,
   ]
   return `https://leonardocolor.io/${query.join('')}`
+}
+
+const generatePaletteURL = () => {
+
+  console.log(chalk.yellow('\nGenerating @adobe/leonardo URL palettes'))
+
+  const palette = {
+    color: {},
+  }
+  colors.forEach(element => {
+    const groupIndex = 0
+    const nameIndex = 1
+    const group = element.name.split('.')[groupIndex]
+    const name = element.name.split('.')[nameIndex]
+
+    if (element.disabled === undefined) {
+      element.disabled = false
+    }
+
+    if (!element.disabled) {
+
+      if (!Object.prototype.hasOwnProperty.call(palette.color, group)) {
+        palette.color[group] = {}
+      }
+
+      if (!Object.prototype.hasOwnProperty.call(palette.color[group], name)) {
+        console.log(`${chalk.blue('Palette ' + name)}: ${url(element)}`)
+      }
+    }
+  })
 }
 
 const formatPalette = async opts => {
@@ -108,12 +138,12 @@ const formatPalette = async opts => {
 
     if (!element.disabled) {
       if (!Object.prototype.hasOwnProperty.call(palette.color, group)) {
-        console.log(`Creating color ${chalk.magenta('group')} ${group}`)
+        console.log(`Creating ${chalk.magenta('group')} ${group}`)
         palette.color[group] = {}
       }
 
       if (!Object.prototype.hasOwnProperty.call(palette.color[group], name)) {
-        console.log(`Creating color ${chalk.blue('name')} ${name}`)
+        console.log(`Creating ${chalk.blue('color')} ${name}`)
         palette.color[group][name] = {
           light: formatColor(opts.themeLight, `${group}.${name}`, element.color, element.scaffold),
           dark: formatColor(opts.themeDark, `${group}.${name}`, element.color, element.scaffold, element.colorDark),
@@ -137,7 +167,7 @@ const formatPalette = async opts => {
 
 const build = async () => {
 
-  console.log('Generating color palette')
+  console.log(chalk.yellow('Generating color palette'))
 
   const palette = []
   colors.forEach(element => {
@@ -163,7 +193,8 @@ const build = async () => {
     themeDark: themeDark.contrastColors,
   })
 
-  console.log(`\nPalette URL: ${chalk.blue(url())}`)
+  generatePaletteURL()
+  console.log('')
   console.log(chalk.green('Design tokens color palette generated successfully.'))
 }
 

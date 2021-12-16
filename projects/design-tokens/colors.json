@@ -3,7 +3,8 @@
     {
       "color": "#FFFFFF",
       "colorDark": "#000000",
-      "name": "adjust.tone"
+      "name": "adjust.tone",
+      "ratios": "tone"
     },
     { "color": "#00379E", "name": "brand.maggioli", "colorspace": "HSL", "smooth": true },
     { "color": "#597CB9", "name": "brand.synbee" },
@@ -39,16 +40,42 @@
   ],
   "colorspace": "CAM02",
   "smooth": false,
-  "ratios": [
-    1.07,
-    1.14,
-    1.34,
-    1.55,
-    1.8,
-    3.4,
-    4.9,
-    7,
-    11,
-    16
-  ]
+  "ratios": {
+    "orignal": [
+      1.07,
+      1.14,
+      1.34,
+      1.55,
+      1.8,
+      3.4,
+      4.9,
+      7,
+      11,
+      16
+    ],
+    "tone": [
+      1.05,
+      1.1,
+      1.24,
+      1.47,
+      2.54,
+      4.83,
+      7.56,
+      10.31,
+      14.68,
+      16
+    ],
+    "default": [
+      1.09,
+      1.22,
+      1.42,
+      1.82,
+      2.57,
+      3.71,
+      5.13,
+      6.71,
+      8.75,
+      10.36
+    ]
+  }
 }
