@@ -1,6 +1,6 @@
 {
   "name": "@maggioli-design-system/styles",
-  "version": "5.0.0",
+  "version": "5.0.2",
   "description": "This module contains SCSS and CSS styles used by Maggioli Design System, it also makes available a Tailwind config based on Maggioli design tokens.",
   "main": "./tailwind.config.js",
   "scripts": {
@@ -38,7 +38,7 @@
   ],
   "license": "ISC",
   "dependencies": {
-    "@maggioli-design-system/design-tokens": "^6.0.0",
+    "@maggioli-design-system/design-tokens": "^6.1.1",
     "@tailwindcss/aspect-ratio": "^0.2.1",
     "normalize.css": "^8.0.1",
     "tailwindcss-multi-column": "^1.0.2",
