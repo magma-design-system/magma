@@ -3,58 +3,59 @@
 :host ( [variant=warning] ),
 :host ( [variant=warning][tone=strong] ) {
 
-  --background: theme('colors.status-warning-04');
+  --background: theme('colors.status-warning-05');
   --color: theme('colors.adjust-tone');
 }
 
 :host ( [variant=warning]:hover ),
 :host ( [variant=warning][tone=strong]:hover ) {
 
-  --background: theme('colors.status-warning-03');
+  --background: theme('colors.status-warning-04');
 }
 
 :host ( [variant=warning][active] ),
 :host ( [variant=warning][tone=strong][active] ) {
 
-  --background: theme('colors.status-warning-03');
+  --background: theme('colors.status-warning-06');
 }
 
 :host ( [variant=warning][tone=weak] ) {
 
-  --background: theme('colors.status-warning-07');
-  --color: theme('colors.status-warning-02');
+  --background: theme('colors.status-warning-06');
+  --color: theme('colors.status-warning-10');
 }
 
 :host ( [variant=warning][tone=weak]:hover ) {
 
-  --background: theme('colors.status-warning-06');
-  --color: theme('colors.status-warning-01');
+  --background: theme('colors.status-warning-05');
+  --color: theme('colors.adjust-tone');
 }
 
 :host ( [variant=warning][tone=weak][active] ) {
 
-  --background: theme('colors.status-warning-08');
+  --background: theme('colors.status-warning-07');
+  --color: theme('colors.status-warning-10');
 }
 
 :host ( [variant=warning][tone=ghost] ) {
 
   --background: transparent;
-  --border-color: theme('colors.status-warning-03');
+  --border-color: theme('colors.status-warning-07');
   --color: theme('colors.status-warning-03');
 }
 
 :host ( [variant=warning][tone=ghost]:hover ) {
 
   --background: transparent;
-  --border-color: theme('colors.status-warning-02');
+  --border-color: theme('colors.status-warning-06');
   --color: theme('colors.status-warning-02');
 }
 
 :host ( [variant=warning][tone=ghost][active] ) {
 
   --background: transparent;
-  --border-color: theme('colors.status-warning-01');
-  --color: theme('colors.status-warning-01');
+  --border-color: theme('colors.status-warning-05');
+  --color: theme('colors.status-warning-03');
 }
 
 :host ( [variant=warning][tone=quiet] ) {
@@ -66,7 +67,7 @@
 :host ( [variant=warning][tone=quiet]:hover ) {
 
   --background: transparent;
-  --color: theme('colors.status-warning-03');
+  --color: theme('colors.status-warning-04');
 }
 
 :host ( [variant=warning][tone=quiet][active] ) {
