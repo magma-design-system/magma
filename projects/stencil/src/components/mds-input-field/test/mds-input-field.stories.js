@@ -166,13 +166,13 @@ message.args = {
   message: 'This is a field with a message',
 }
 
-export const status = Template.bind({})
-status.args = {
+export const variant = Template.bind({})
+variant.args = {
   label: 'Questo è un label',
   placeholder: 'Placeholder text...',
-  status: 'error',
+  variant: 'error',
   value: 'Input field text',
-  'status-tip': 'errore',
+  'variant-tip': 'errore',
   message: 'This is a field with a message',
 }
 
