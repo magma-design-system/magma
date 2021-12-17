@@ -39,18 +39,9 @@ const minSize = {
 
 module.exports = {
   important: true,
-  mode: 'jit',
-  purge: {
-    mode: 'all',
-    content: [
-      './src/**/*.{js,jsx}',
-    ],
-    variables: true,
-    options: {
-      keyframes: true,
-    },
-  },
-  darkMode: 'media',
+  content: [
+    './src/**/*.{js,jsx}',
+  ],
   theme: {
     colors: {
       transparent: 'transparent',
@@ -61,7 +52,9 @@ module.exports = {
     fontFamily: {
       ...fontFamily,
     },
-    screens: mediaQueries,
+    screens: {
+      ...mediaQueries,
+    },
     transitionTimingFunction: {
       ...ease,
     },
@@ -136,18 +129,10 @@ module.exports = {
       },
     },
   },
-  variants: {
-    extend: {
-      backgroundColor: ['group-hover'],
-      borderColor: ['group-hover'],
-      margin: ['first', 'last'],
-      textColor: ['group-hover'],
-    },
-  },
   plugins: [
     require('@tailwindcss/aspect-ratio'),
-    require('tailwindcss-multi-column')(),
-    require('tailwindcss-scroll-snap'),
-    require('tailwindcss-textshadow'),
+    // require('tailwindcss-multi-column')(),
+    // require('tailwindcss-scroll-snap'),
+    // require('tailwindcss-textshadow'),
   ],
 }
