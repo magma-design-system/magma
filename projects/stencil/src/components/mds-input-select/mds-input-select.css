@@ -68,7 +68,7 @@
 
 .icon {
   @apply
-    bg-adjust-tone-09
+    bg-brand-maggioli-10
     duration-200
     rounded-full
     transition-colors;
