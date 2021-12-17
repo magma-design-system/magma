@@ -9,7 +9,7 @@
   * @prop --shadow: Sets the box-shadow of the component
   */
 
-  --background: theme('colors.label-yellow-09');
+  --background: theme('colors.label-yellow-10');
   --color: theme('colors.label-yellow-02');
   --fold-size: 40px;
   --shadow: theme('boxShadow.DEFAULT');

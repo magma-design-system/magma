@@ -2,60 +2,60 @@
 
 :host ( [variant=amaranth] ) {
 
-  --background: theme('colors.label-amaranth-09');
+  --background: theme('colors.label-amaranth-10');
   --color: theme('colors.label-amaranth-02');
 }
 
 :host ( [variant=aqua] ) {
 
-  --background: theme('colors.label-aqua-09');
+  --background: theme('colors.label-aqua-10');
   --color: theme('colors.label-aqua-02');
 }
 
 :host ( [variant=blue] ) {
 
-  --background: theme('colors.label-blue-09');
+  --background: theme('colors.label-blue-10');
   --color: theme('colors.label-blue-02');
 }
 
 :host ( [variant=green] ) {
 
-  --background: theme('colors.label-green-09');
+  --background: theme('colors.label-green-10');
   --color: theme('colors.label-green-02');
 }
 
 :host ( [variant=lime] ) {
 
-  --background: theme('colors.label-lime-09');
+  --background: theme('colors.label-lime-10');
   --color: theme('colors.label-lime-02');
 }
 
 :host ( [variant=orange] ) {
 
-  --background: theme('colors.label-orange-09');
+  --background: theme('colors.label-orange-10');
   --color: theme('colors.label-orange-02');
 }
 
 :host ( [variant=orchid] ) {
 
-  --background: theme('colors.label-orchid-09');
+  --background: theme('colors.label-orchid-10');
   --color: theme('colors.label-orchid-02');
 }
 
 :host ( [variant=sky] ) {
 
-  --background: theme('colors.label-sky-09');
+  --background: theme('colors.label-sky-10');
   --color: theme('colors.label-sky-02');
 }
 
 :host ( [variant=violet] ) {
 
-  --background: theme('colors.label-violet-09');
+  --background: theme('colors.label-violet-10');
   --color: theme('colors.label-violet-02');
 }
 
 :host ( [variant=yellow] ) {
 
-  --background: theme('colors.label-yellow-09');
+  --background: theme('colors.label-yellow-10');
   --color: theme('colors.label-yellow-02');
 }
