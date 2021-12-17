@@ -76,7 +76,7 @@ export class MdsInputSelect {
           ) }
         </select>
         <div class="icon-container">
-          <mds-icon class="icon" name="form-dropdown" />
+          <mds-icon class="icon" name="keyboard-arrow-down" />
         </div>
       </Host>
     )
