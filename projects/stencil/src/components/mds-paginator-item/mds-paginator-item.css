@@ -26,21 +26,18 @@ mds-paginator-item {
     items-center
     justify-center
     px-3
-    select-none
-    transition-colors;
+    select-none;
 
-  background-color: var(--background, theme('colors.adjust-tone-10'));
+  background-color: var(--background, theme('colors.adjust-tone-09'));
   border-radius: var(--radius, 200px);
   box-shadow: var(--shadow, none);
   color: var(--color, theme('colors.adjust-tone-02'));
   height: var(--size, theme('spacing.9'));
   min-width: var(--size, theme('spacing.9'));
-
-  /* scroll-snap-align: center; */
 }
 
 mds-paginator-item:hover {
-  background-color: var(--background-hover, theme('colors.adjust-tone-09'));
+  background-color: var(--background-hover, theme('colors.adjust-tone-08'));
   box-shadow: var(--shadow-hover, none);
   color: var(--color-hover, theme('colors.adjust-tone-02'));
 }
@@ -56,7 +53,7 @@ mds-paginator-item.active {
 mds-paginator-item.disabled {
   @apply pointer-events-none;
 
-  background-color: var(--background-disabled, theme('colors.adjust-tone-10'));
+  background-color: var(--background-disabled, theme('colors.adjust-tone-09'));
   box-shadow: var(--shadow-disabled, none);
   color: var(--color-disabled, theme('colors.adjust-tone-06'));
 }
