@@ -39,11 +39,7 @@
   "license": "ISC",
   "dependencies": {
     "@maggioli-design-system/design-tokens": "^6.1.1",
-    "@tailwindcss/aspect-ratio": "^0.3.0",
     "normalize.css": "^8.0.1",
-    "tailwindcss-multi-column": "^1.0.2",
-    "tailwindcss-scroll-snap": "^1.1.0",
-    "tailwindcss-textshadow": "^2.1.3",
     "typeface-karla": "^1.1.13",
     "typeface-roboto": "^1.1.13"
   },
