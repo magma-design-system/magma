@@ -18,6 +18,22 @@
   */
 
 :host {
+
+  --background-disabled: theme('colors.adjust-tone-09');
+  --background-hover: theme('colors.adjust-tone-08');
+  --background-selected: theme('colors.brand-maggioli-03');
+  --background: theme('colors.adjust-tone-09');
+  --color-disabled: theme('colors.adjust-tone-06');
+  --color-hover: theme('colors.adjust-tone-02');
+  --color-selected: theme('colors.adjust-tone');
+  --color: theme('colors.adjust-tone-02');
+  --radius: 200px;
+  --shadow-disabled: none;
+  --shadow-hover: none;
+  --shadow-selected: theme('boxShadow.sharp-md');
+  --shadow: none;
+  --size: theme('spacing.9');
+
   @apply
     flex
     gap-1
@@ -34,7 +50,7 @@
     p-2
     rounded-full;
 
-  background-color: var(--background, theme('colors.adjust-tone-10'));
+  background-color: var(--background);
   gap: 2px;
   scroll-behavior: smooth;
 
