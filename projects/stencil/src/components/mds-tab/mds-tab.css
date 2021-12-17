@@ -15,6 +15,7 @@
 
 :host {
 
+  --background: theme('colors.adjust-tone-09');
   --button-background-hover: transparent;
   --button-background-selected: theme('colors.adjust-tone');
   --button-background: transparent;
@@ -23,6 +24,7 @@
   --button-color: theme('colors.adjust-tone-04');
   --button-radius: theme('spacing.2');
   --button-shadow-selected: theme('boxShadow.DEFAULT');
+  --radius: theme('spacing.4');
 
   @apply
     flex
@@ -30,8 +32,8 @@
     overflow-auto
     p-2;
 
-  background-color: var(--background, theme('colors.adjust-tone-09'));
-  border-radius: var(--radius, theme('spacing.4'));
+  background-color: var(--background);
+  border-radius: var(--radius);
   -webkit-overflow-scrolling: touch;
   -ms-overflow-style: none;
   scroll-behavior: smooth;
