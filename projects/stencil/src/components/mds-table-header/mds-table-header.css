@@ -1,15 +1,15 @@
 @tailwind utilities;
 
-.table-header {
+mds-table-header {
   @apply
     overflow-hidden
     table-row;
 }
 
-.table-header .table-cell {
+mds-table-header mds-table-cell {
   @apply bg-transparent;
 }
 
-.table-header .table-cell::first-letter {
+mds-table-header mds-table-cell::first-letter {
   @apply uppercase;
 }
