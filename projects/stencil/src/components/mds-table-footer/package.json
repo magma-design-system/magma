@@ -1,6 +1,6 @@
 {
   "name": "@maggioli-design-system/mds-table-footer",
-  "version": "1.0.2",
+  "version": "1.0.3",
   "description": "mds-table-footer is a web-component from Maggioli Design System Magma, built with StencilJS, TypeScript, Storybook. It's based on the web-component standard and it's designed to be agnostic from the JavaScirpt framework you are using.",
   "main": "dist/index.cjs.js",
   "module": "dist/index.js",
@@ -20,12 +20,12 @@
     "build": "stencil build --docs-readme"
   },
   "dependencies": {
-    "@maggioli-design-system/mds-table": "latest",
-    "@maggioli-design-system/mds-table-body": "latest",
-    "@maggioli-design-system/mds-table-cell": "latest",
-    "@maggioli-design-system/mds-table-header": "latest",
-    "@maggioli-design-system/mds-table-row": "latest",
-    "@stencil/core": "^2.10.0"
+    "@maggioli-design-system/mds-table": "^1.1.2",
+    "@maggioli-design-system/mds-table-body": "^1.2.0",
+    "@maggioli-design-system/mds-table-cell": "^1.1.0",
+    "@maggioli-design-system/mds-table-header": "^1.0.3",
+    "@maggioli-design-system/mds-table-row": "^1.2.0",
+    "@stencil/core": "^2.12.0"
   },
   "license": "MIT",
   "author": {
@@ -35,14 +35,14 @@
   },
   "contributors": [
     {
-        "name": "Andrea Pruccoli",
-        "email": "andrea.pruccoli@maggioli.it",
-        "role": "Software Engineer"
+      "name": "Andrea Pruccoli",
+      "email": "andrea.pruccoli@maggioli.it",
+      "role": "Software Engineer"
     },
     {
-        "name": "Vittorio Vittori",
-        "email": "vittorio.vittori@maggioli.it",
-        "role": "UX UI Designer"
+      "name": "Vittorio Vittori",
+      "email": "vittorio.vittori@maggioli.it",
+      "role": "UX UI Designer"
     }
   ]
 }

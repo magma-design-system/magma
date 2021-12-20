@@ -1,11 +1,11 @@
 @tailwind utilities;
 
-.table-footer {
+mds-table-footer {
   @apply
     overflow-hidden
     table-row;
 }
 
-.table-footer .table-cell {
+mds-table-footer mds-table-cell {
   @apply bg-transparent;
 }
