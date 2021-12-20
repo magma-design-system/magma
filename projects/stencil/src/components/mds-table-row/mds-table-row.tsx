@@ -16,7 +16,7 @@ export class MdsTableRow {
 
   render () {
     return (
-      <Host class={clsx('table-row', this.interactive && 'table-row--interactive')} role="row">
+      <Host class={clsx(this.interactive && 'interactive')} role="row">
         <slot/>
       </Host>
     )
