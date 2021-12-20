@@ -20,7 +20,8 @@
     "build": "stencil build --docs-readme"
   },
   "dependencies": {
-    "@maggioli-design-system/mds-icon": "^1.0.5"
+    "@maggioli-design-system/mds-icon": "^1.0.5",
+    "@stencil/core": "^2.12.0"
   },
   "license": "MIT",
   "author": {
