@@ -19,7 +19,6 @@
 
 :host ( [variant=dark][tone=ghost] ) {
 
-  --border-color: theme('colors.adjust-tone-04');
   --color: theme('colors.adjust-tone-05');
   --icon-color: theme('colors.adjust-tone-04');
   --shadow: none;

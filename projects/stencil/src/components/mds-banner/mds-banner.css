@@ -4,7 +4,6 @@
 
   /**
     * @prop --background: Sets the background-color of the component
-    * @prop --border: Sets the border-color of the component
     * @prop --radius: Sets the border-radius of the component
     * @prop --color: Sets the text color of the component
     * @prop --shadow: Sets the box-shadow of the component
@@ -12,7 +11,6 @@
     */
 
   --background: theme('colors.adjust-tone-10');
-  --border: transparent;
   --color: theme('colors.adjust-tone-02');
   --icon-color: theme('colors.adjust-tone-04');
   --radius: theme('borderRadius.lg');
@@ -23,9 +21,7 @@
     transition-cosmetic;
 
   background-color: var(--background);
-  border-color: var(--border) !important;
   border-radius: var(--radius);
-  border-width: theme('borderWidth.2') !important;
   box-shadow: var(--shadow);
   color: var(--color);
 }
@@ -40,7 +36,7 @@
 }
 
 .header .close-icon {
-  @apply flex-shrink-0;
+  @apply shrink-0;
 }
 
 .headline {
