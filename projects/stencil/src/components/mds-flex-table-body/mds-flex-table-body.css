@@ -17,6 +17,6 @@ mds-flex-table-body {
   @apply whitespace-nowrap;
 }
 
-.flex-table-body--interactive:hover mds-flex-table-row {
+mds-flex-table-body.interactive:hover mds-flex-table-row {
   background-color: var(--background-hover, theme('colors.adjust-tone-10'));
 }

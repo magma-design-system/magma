@@ -17,7 +17,7 @@ export class MdsFlexTableBody {
 
   render () {
     return (
-      <Host class={clsx('flex-table-body', this.interactive && 'flex-table-body--interactive')} role="rowgroup">
+      <Host class={clsx(this.interactive && 'interactive')} role="rowgroup">
         <slot/>
       </Host>
     )
