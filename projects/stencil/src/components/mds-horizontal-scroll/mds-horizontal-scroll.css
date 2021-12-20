@@ -21,7 +21,8 @@
     flex
     gap-2
     overflow-auto
-    snap-px-2
+    scroll-px-2
+    snap-x
     w-full;
 
   scroll-snap-type: x mandatory;
@@ -61,18 +62,14 @@
   }
 }
 
-:host( .scroll--align-none ) > ::slotted ( * ) {
-  scroll-snap-align: none;
-}
-
 :host( .scroll--align-start ) > ::slotted ( * ) {
-  scroll-snap-align: start;
+  @apply snap-start;
 }
 
 :host( .scroll--align-center ) > ::slotted ( * ) {
-  scroll-snap-align: center;
+  @apply snap-center;
 }
 
 :host( .scroll--align-end ) > ::slotted ( * ) {
-  scroll-snap-align: end;
+  @apply snap-end;
 }
