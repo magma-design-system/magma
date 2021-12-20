@@ -1,11 +1,11 @@
 @tailwind utilities;
 
 /**
-  * @prop --background: Sets the background-color of the component
-  * @prop --color: Sets the text color of the component
-  * @prop --radius: Sets the border-radius of the component
-  * @prop --shadow: Sets the box-shadow of the component
-  */
+* @prop --background: Sets the background-color of the component
+* @prop --color: Sets the text color of the component
+* @prop --radius: Sets the border-radius of the component
+* @prop --shadow: Sets the box-shadow of the component
+*/
 
 :host {
 
@@ -39,7 +39,7 @@
     flex
     items-center
     gap-2
-    flex-shrink-0
+    shrink-0
     p-2;
 
   background-color: var(--background);
