@@ -145,7 +145,7 @@
     "time-min-milliseconds": 100,
     "unicode-bom": "never",
     "unit-case": "lower",
-    "unit-disallowed-list": [ "cm", "em", "ex", "in", "mm", "pc", "pt", "rem" ],
+    "unit-disallowed-list": [ "cm", "em", "ex", "in", "mm", "pc", "pt" ],
     "unit-no-unknown": true,
     "value-keyword-case": "lower",
     "value-list-comma-newline-after": "never-multi-line",
