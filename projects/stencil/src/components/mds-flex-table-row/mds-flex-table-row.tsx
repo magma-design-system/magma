@@ -39,7 +39,7 @@ export class MdsFlexTableRow {
 
   render () {
     return (
-      <Host class={clsx('flex-table-row', this.interactive && 'flex-table-row--interactive')} role="row">
+      <Host class={clsx(this.interactive && 'interactive')} role="row">
         <slot/>
       </Host>
     )
