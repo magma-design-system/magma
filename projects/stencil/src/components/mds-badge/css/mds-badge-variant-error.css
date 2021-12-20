@@ -3,7 +3,7 @@
 :host ( [variant=error] ),
 :host ( [variant=error][tone=strong] ) {
 
-  --background: theme('colors.status-error-04');
+  --background: theme('colors.status-error-05');
   --color: theme('colors.status-error-10');
 }
 

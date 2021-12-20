@@ -3,7 +3,7 @@
 :host ( [variant=amaranth] ),
 :host ( [variant=amaranth][tone=strong] ) {
 
-  --background: theme('colors.label-amaranth-04');
+  --background: theme('colors.label-amaranth-05');
   --color: theme('colors.label-amaranth-10');
 }
 

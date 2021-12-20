@@ -3,7 +3,7 @@
 :host ( [variant=sky] ),
 :host ( [variant=sky][tone=strong] ) {
 
-  --background: theme('colors.label-sky-04');
+  --background: theme('colors.label-sky-05');
   --color: theme('colors.label-sky-10');
 }
 

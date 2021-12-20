@@ -3,7 +3,7 @@
 :host ( [variant=success] ),
 :host ( [variant=success][tone=strong] ) {
 
-  --background: theme('colors.status-success-04');
+  --background: theme('colors.status-success-05');
   --color: theme('colors.status-success-10');
 }
 

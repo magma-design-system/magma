@@ -3,7 +3,7 @@
 :host ( [variant=yellow] ),
 :host ( [variant=yellow][tone=strong] ) {
 
-  --background: theme('colors.label-yellow-04');
+  --background: theme('colors.label-yellow-05');
   --color: theme('colors.label-yellow-10');
 }
 

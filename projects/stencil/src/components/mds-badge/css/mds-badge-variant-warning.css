@@ -3,7 +3,7 @@
 :host ( [variant=warning] ),
 :host ( [variant=warning][tone=strong] ) {
 
-  --background: theme('colors.status-warning-04');
+  --background: theme('colors.status-warning-05');
   --color: theme('colors.status-warning-10');
 }
 

@@ -3,7 +3,7 @@
 :host ( [variant=info] ),
 :host ( [variant=info][tone=strong] ) {
 
-  --background: theme('colors.status-info-04');
+  --background: theme('colors.status-info-05');
   --color: theme('colors.status-info-10');
 }
 

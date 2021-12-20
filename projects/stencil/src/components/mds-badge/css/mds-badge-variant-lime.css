@@ -3,7 +3,7 @@
 :host ( [variant=lime] ),
 :host ( [variant=lime][tone=strong] ) {
 
-  --background: theme('colors.label-lime-04');
+  --background: theme('colors.label-lime-05');
   --color: theme('colors.label-lime-10');
 }
 

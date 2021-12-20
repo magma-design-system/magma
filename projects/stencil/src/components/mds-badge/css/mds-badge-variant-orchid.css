@@ -3,7 +3,7 @@
 :host ( [variant=orchid] ),
 :host ( [variant=orchid][tone=strong] ) {
 
-  --background: theme('colors.label-orchid-04');
+  --background: theme('colors.label-orchid-05');
   --color: theme('colors.label-orchid-10');
 }
 

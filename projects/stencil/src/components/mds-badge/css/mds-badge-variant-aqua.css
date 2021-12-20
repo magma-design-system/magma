@@ -3,7 +3,7 @@
 :host ( [variant=aqua] ),
 :host ( [variant=aqua][tone=strong] ) {
 
-  --background: theme('colors.label-aqua-04');
+  --background: theme('colors.label-aqua-05');
   --color: theme('colors.label-aqua-10');
 }
 
