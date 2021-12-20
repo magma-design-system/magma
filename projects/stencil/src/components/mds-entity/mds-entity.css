@@ -27,7 +27,7 @@
 .delete,
 .icon {
   @apply
-    flex-shrink-0
+    shrink-0
     rounded
     w-11;
 }

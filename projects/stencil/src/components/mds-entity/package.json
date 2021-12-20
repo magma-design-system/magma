@@ -20,10 +20,10 @@
     "build": "stencil build --docs-readme"
   },
   "dependencies": {
-    "@maggioli-design-system/mds-avatar": "latest",
-    "@maggioli-design-system/mds-icon": "latest",
-    "@maggioli-design-system/mds-row": "latest",
-    "@stencil/core": "^2.10.0"
+    "@maggioli-design-system/mds-avatar": "^1.1.1",
+    "@maggioli-design-system/mds-icon": "^1.0.5",
+    "@maggioli-design-system/mds-row": "^1.0.5",
+    "@stencil/core": "^2.12.0"
   },
   "license": "MIT",
   "author": {
