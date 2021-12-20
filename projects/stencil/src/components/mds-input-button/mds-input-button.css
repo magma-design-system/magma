@@ -1,13 +1,14 @@
 @import '~@maggioli-design-system/styles/dist/tailwind/typography.css';
 
+@tailwind base;
 @tailwind components;
 @tailwind utilities;
 
 /**
   * @prop --background: Sets the background-color of the component
   * @prop --border-color: Sets the border-color of the component
-  * @prop --radius: Sets the border-radius of the component
   * @prop --color: Sets the text color of the component
+  * @prop --radius: Sets the border-radius of the component
   */
 
 :host {
