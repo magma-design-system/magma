@@ -3,7 +3,7 @@
 mds-breadcrumb-item {
   @apply
     flex
-    flex-shrink-0
+    shrink-0
     gap-0
     items-center;
 }
