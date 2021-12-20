@@ -83,7 +83,7 @@
 .switch,
 .switch-container {
   @apply
-    flex-shrink-0
+    shrink-0
     box-border
     w-14;
 }
@@ -92,7 +92,7 @@
   @apply
     bg-adjust-tone-07
     duration-300
-    flex-shrink-0
+    shrink-0
     inline-flex
     p-1
     rounded-full
