@@ -1,6 +1,6 @@
 {
   "name": "@maggioli-design-system/mds-banner",
-  "version": "1.3.0",
+  "version": "1.4.0",
   "description": "This is mds-banner web component from Maggioli Design System Magma. ",
   "main": "dist/index.cjs.js",
   "module": "dist/index.js",
