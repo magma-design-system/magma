@@ -43,7 +43,7 @@
   @apply
     cursor-pointer
     flex
-    flex-shrink-0
+    shrink-0
     h-8
     items-center
     justify-center
