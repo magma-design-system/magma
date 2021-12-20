@@ -9,7 +9,7 @@ export class MdsTableCell {
 
   render () {
     return (
-      <Host class="table-cell">
+      <Host>
         <slot/>
       </Host>
     )

@@ -16,7 +16,7 @@ export class MdsTableBody {
 
   render () {
     return (
-      <Host class={clsx('table-body', this.interactive && 'table-body--interactive')} role="rowgroup">
+      <Host class={clsx(this.interactive && 'interactive')} role="rowgroup">
         <slot/>
       </Host>
     )

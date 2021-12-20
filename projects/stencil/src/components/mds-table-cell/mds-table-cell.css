@@ -1,6 +1,11 @@
 @tailwind utilities;
 
-.table-cell {
+/**
+  * @prop --background: The cell background-color of the table body
+  * @prop --cell-padding: The cell padding used on table cell
+  */
+
+mds-table-cell {
   @apply
     table-cell
     transition-colors;
