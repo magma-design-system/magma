@@ -24,7 +24,7 @@
     ease-out-expo
     m-0
     min-h-12
-    overflow-ellipsis
+    text-ellipsis
     overflow-hidden
     pl-4
     pr-12
@@ -68,15 +68,16 @@
 
 .icon {
   @apply
-    bg-brand-maggioli-10
+    bg-transparent
     duration-200
     rounded-full
+    text-brand-maggioli-04
     transition-colors;
 }
 
 .input:focus + .icon-container .icon,
 .input:hover + .icon-container .icon {
   @apply
-    bg-brand-maggioli-09
-    text-brand-maggioli-03;
+    bg-adjust-tone-09
+    text-brand-maggioli-02;
 }
