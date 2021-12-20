@@ -21,7 +21,7 @@ mds-paginator-item {
   @apply
     box-border
     cursor-pointer
-    flex-shrink-0
+    shrink-0
     inline-flex
     items-center
     justify-center
