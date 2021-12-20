@@ -6,6 +6,7 @@
   --background: theme('colors.adjust-tone');
   --color: theme('colors.adjust-tone-02');
   --shadow: theme('boxShadow.sharp-lg');
+  --icon-color: theme('colors.adjust-tone-03');
 }
 
 :host ( [variant=light][tone=weak] ) {
@@ -13,4 +14,5 @@
   --background: theme('colors.adjust-tone');
   --color: theme('colors.adjust-tone-02');
   --shadow: theme('boxShadow.sharp-sm');
+  --icon-color: theme('colors.adjust-tone-04');
 }

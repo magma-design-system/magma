@@ -1,14 +1,16 @@
+@tailwind base;
 @tailwind utilities;
 
 /**
-  * @prop --background: Sets the background-color of the component
-  * @prop --color: Sets the text color of the component
-  * @prop --shadow: Sets the box-shadow of the component
-  */
+* @prop --background: Sets the background-color of the component
+* @prop --color: Sets the text color of the component
+* @prop --shadow: Sets the box-shadow of the component
+*/
 
 :host {
 
   --color: theme('colors.adjust-tone');
+  --icon-color: theme('colors.adjust-tone');
   --background: theme('colors.adjust-tone-02');
   --shadow: theme('boxShadow.xl');
 
@@ -35,7 +37,6 @@
     p-4
     pointer-events-none
     rounded-xl
-    transform
     transition-transform;
 
   background-color: var(--background);
@@ -45,16 +46,21 @@
 
 .dialog--visible {
   @apply
-    -translate-y-12
     duration-700
     ease-out-expo
     pointer-events-auto;
 
-  transform: translate(0, theme('translate.-4'));
+  transform: translate(0, calc(theme('translate.4') * -1));
 }
 
 .actions {
   @apply flex gap-2;
+}
+
+::slotted ( [slot=icon] ) {
+  @apply transition-colors;
+
+  color: var(--icon-color);
 }
 
 @import './css/mds-toast-variant-dark.css';
