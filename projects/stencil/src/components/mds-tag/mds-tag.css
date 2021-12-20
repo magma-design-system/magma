@@ -2,10 +2,10 @@
 @tailwind utilities;
 
 /**
-  * @prop --background: Sets the background-color of the component
-  * @prop --color: Sets the text color of the component
-  * @prop --shadow: Sets the box-shadow of the component
-  */
+* @prop --background: Sets the background-color of the component
+* @prop --color: Sets the text color of the component
+* @prop --shadow: Sets the box-shadow of the component
+*/
 
 :host {
 
@@ -42,11 +42,9 @@
     bg-adjust-tone
     bg-opacity-30
     cursor-pointer
-    filter
     flex
-    flex-shrink-0
+    shrink-0
     hover:bg-opacity-50
-    invert
     items-center
     ml-1
     px-1.5
