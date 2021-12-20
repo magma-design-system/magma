@@ -124,7 +124,7 @@
   "data-like": "material/favorite",
   "data-like-off": "material/favorite_border",
   "data-outgoing": "material/outbox",
-  "data-percent": "material/percent",
+  "data-percent": "mdi/percent-outline",
   "data-search": "material/search",
   "data-send": "material/send",
   "data-share": "material/share",
