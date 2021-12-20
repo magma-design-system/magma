@@ -1,11 +1,12 @@
 module.exports = {
-  purge: {
-    content: [
-      './src/**/*.{ts,tsx}',
-      './.storybook/preview.js',
-    ],
-  },
+  content: [
+    './src/**/*.{ts,tsx}',
+    './.storybook/preview.js',
+  ],
   important: false,
+  corePlugins: {
+    preflight: false,
+  },
   presets: [
     require('@maggioli-design-system/styles'),
   ],
