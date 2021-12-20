@@ -35,7 +35,7 @@
 }
 
 .progress-bar {
-  @apply flex-shrink-0;
+  @apply shrink-0;
 
   --thickness: theme('width.1');
 }
