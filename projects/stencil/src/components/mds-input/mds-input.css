@@ -23,7 +23,7 @@
     duration-300
     ease-out-expo
     m-0
-    overflow-ellipsis
+    text-ellipsis
     overflow-hidden
     px-4
     py-3
@@ -55,7 +55,8 @@ textarea.input {
 .input:focus {
   @apply
     outline-none
-    shadow-sharp-lg
+    shadow-md
+    shadow-brand-maggioli-04/50
     ring
     ring-brand-maggioli-04
     transition-cosmetic
