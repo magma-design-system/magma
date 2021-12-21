@@ -1,7 +1,7 @@
 import type { NextPage } from 'next'
 import Link from 'next/link'
 
-const Home: Function = () => {
+const Home = (): JSX.Element => {
   return <mds-text>
     <Link href={`about`}>Mario</Link>
     </mds-text>
