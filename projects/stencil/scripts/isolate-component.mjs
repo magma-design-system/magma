@@ -2,15 +2,18 @@ import { ask } from 'stdio'
 import Handlebars from 'handlebars'
 import chalk from 'chalk'
 import {
-  readFile,
   copyFile,
-  writeFile,
-  stat,
-  mkdir,
   cp,
+  mkdir,
+  readFile,
   rename,
+  stat,
+  writeFile,
 } from 'fs/promises'
-import { dirname, resolve } from 'path'
+import {
+  dirname,
+  resolve,
+} from 'path'
 import { fileURLToPath } from 'url'
 
 const PROJECT_PATH = resolve(dirname(fileURLToPath(import.meta.url)), '../')
@@ -31,7 +34,7 @@ async function main () {
   console.log(
     `This script will ${chalk.green(
       'scaffold',
-    )} stencil and package.json global configuration into a specific component as stenciljs isolated project, ready to be published.`,
+    )} stencil and package.json global configuration into a specific component as isolated project, ready to be published.`,
   )
 
   const continueTask = await ask('Continue?', { options: ['Y', 'n', ''] })
@@ -53,7 +56,7 @@ async function askComponentName () {
 
   if (!exist) {
     console.log(
-      chalk.red(`Component ${componentName} does not exist, type name again.`),
+      chalk.red(`Component ${componentName} does not exist, please try again.`),
     )
     await askComponentName()
   } else {
