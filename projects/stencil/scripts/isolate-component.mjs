@@ -13,7 +13,7 @@ async function main () {
   console.log(
     `This script will ${chalk.green(
       'isolate',
-    )} stencil and package.json global configuration into a specific component as isolated project, ready to be published.`,
+    )} a stencil component and will create package.json if missing into a an isolated stencil project, ready to be published.`,
   )
 
   const continueTask = await ask('Continue?', { options: ['Y', 'n', ''] })

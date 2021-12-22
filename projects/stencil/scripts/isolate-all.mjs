@@ -16,7 +16,7 @@ async function main () {
   console.log(
     `This script will ${chalk.green(
       'isolate ALL',
-    )} stencil components and package.json global configuration into a set of specific components as isolated projects, ready to be published.`,
+    )} stencil components with package.json already created into a set of isolated stencil projects, ready to be published.`,
   )
 
   const continueTask = await ask('Continue?', { options: ['Y', 'n', ''] })
