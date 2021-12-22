@@ -2,30 +2,20 @@ import { ask } from 'stdio'
 import chalk from 'chalk'
 import dirTree from 'directory-tree'
 import {
-  copyFile,
-  cp,
-  mkdir,
-  readFile,
-  rename,
-  stat,
-  writeFile,
-} from 'fs/promises'
-import {
   dirname,
   resolve,
 } from 'path'
 import { fileURLToPath } from 'url'
 
 const PROJECT_PATH = resolve(dirname(fileURLToPath(import.meta.url)), '../')
-
 const COMPONENTS_PATH = `${PROJECT_PATH}/src/components`
-const TEMPLATES_PATH = `${PROJECT_PATH}/template`
-const TEMP_PROJECT_PATH = `${PROJECT_PATH}/.build`
+
+import { createTempProjectInstance } from './lib.mjs'
 
 async function main () {
   console.log(
     `This script will ${chalk.green(
-      'scaffold ALL',
+      'isolate ALL',
     )} stencil components and package.json global configuration into a set of specific components as isolated projects, ready to be published.`,
   )
 
@@ -35,13 +25,19 @@ async function main () {
     return
   }
 
-  await scaffoldAll()
+  await isolateAll()
 
-  console.log('Process finished.')
 }
 
-const scaffoldAll = async () => {
-  console.log('ciao')
+const isolateAll = async () => {
+  dirTree(COMPONENTS_PATH, {
+    extensions: /\.json$/,
+  },
+  async (item, PATH) => {
+    const componentName = PATH.replace(COMPONENTS_PATH, '').replace('package.json', '').replaceAll('/', '')
+    console.log(`Isolating component ${chalk.green('%s')}`, componentName)
+    await createTempProjectInstance(componentName)
+  })
 }
 
 main()
