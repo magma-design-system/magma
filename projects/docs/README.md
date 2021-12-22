@@ -2,6 +2,6 @@
 
 ### docs
 
-This repo generate the [living docuemntation][docs] for the Design System.
+This repo generate the [living documentation][docs] for the Design System.
 
 [docs]: https://design-system.maggiolicloud.it/
