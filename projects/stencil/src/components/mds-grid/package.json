@@ -6,7 +6,8 @@
   "module": "dist/index.js",
   "es2015": "dist/esm/index.mjs",
   "es2017": "dist/esm/index.mjs",
-"types": "dist/types/components.d.ts",  "collection": "dist/collection/collection-manifest.json",
+  "types": "dist/types/components.d.ts",
+  "collection": "dist/collection/collection-manifest.json",
   "collection:main": "dist/collection/index.js",
   "unpkg": "dist/mds-grid/mds-grid.esm.js",
   "files": [
@@ -20,7 +21,7 @@
     "build": "stencil build --docs-readme"
   },
   "dependencies": {
-    "@stencil/core": "^2.10.0"
+    "@stencil/core": "^2.12.0"
   },
   "license": "MIT",
   "author": {
@@ -30,14 +31,14 @@
   },
   "contributors": [
     {
-        "name": "Andrea Pruccoli",
-        "email": "andrea.pruccoli@maggioli.it",
-        "role": "Software Engineer"
+      "name": "Andrea Pruccoli",
+      "email": "andrea.pruccoli@maggioli.it",
+      "role": "Software Engineer"
     },
     {
-        "name": "Vittorio Vittori",
-        "email": "vittorio.vittori@maggioli.it",
-        "role": "UX UI Designer"
+      "name": "Vittorio Vittori",
+      "email": "vittorio.vittori@maggioli.it",
+      "role": "UX UI Designer"
     }
   ]
 }
