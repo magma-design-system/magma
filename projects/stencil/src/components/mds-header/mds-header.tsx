@@ -8,7 +8,6 @@ import { Component, Element, Host, h, State, Event, EventEmitter, Listen } from 
 export class MdsHeader {
 
   private hasNav: boolean
-  // private hasNavMobile: boolean
   @Element() hostElement: HTMLMdsHeaderElement
   @State() isOpened:boolean
 
