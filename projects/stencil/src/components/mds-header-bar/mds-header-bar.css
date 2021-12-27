@@ -1,0 +1,71 @@
+@tailwind base;
+@tailwind utilities;
+
+/*
+* @prop --background: Sets the background-color of the component
+* @prop --shadow: Sets the box-shadow od the header
+*/
+
+:host {
+
+  --background: theme('colors.adjust-tone');
+  --shadow: theme('boxShadow.sharp-md');
+  @apply
+    bg-adjust-tone
+    duration-500
+    ease-out-expo
+    fixed
+    flex
+    justify-center
+    left-0
+    px-6
+    py-4
+    right-0
+    top-0;
+
+  background-color: var(--background);
+  box-shadow: var(--shadow);
+  transition-delay: 0.2s;
+  transition-property: transform;
+}
+
+:host ( .opened ) {
+  @apply
+    duration-300
+    ease-in-quart;
+
+  transform: translate(0, calc(calc(100% + theme('spacing.4')) * -1));
+  transition-delay: 0s;
+}
+
+.logo {
+  @apply flex;
+
+  color: var(--color);
+}
+
+.contents {
+  @apply
+    flex
+    flex-grow
+    gap-4
+    items-center
+    justify-between
+    max-w-screen-wide;
+}
+
+.nav {
+  @apply
+    gap-4
+    inline-flex
+    tablet-max:hidden;
+}
+
+.icon {
+  @apply
+    cursor-pointer
+    desktop:hidden
+    text-4xl;
+
+  color: var(--color);
+}
