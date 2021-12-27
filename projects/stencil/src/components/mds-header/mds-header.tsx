@@ -1,5 +1,4 @@
-import { Component, Element, Host, h, State } from '@stencil/core'
-import clsx from 'clsx'
+import { Component, Element, Host, h, State, Event, EventEmitter, Listen } from '@stencil/core'
 
 @Component({
   tag: 'mds-header',
@@ -9,37 +8,36 @@ import clsx from 'clsx'
 export class MdsHeader {
 
   private hasNav: boolean
-  private hasNavMobile: boolean
+  // private hasNavMobile: boolean
   @Element() hostElement: HTMLMdsHeaderElement
+  @State() isOpened:boolean
 
-  @State() modalOpened:boolean
+  /**
+   * Emits when the component is closed
+   */
+  @Event({ bubbles: true, composed: true }) headerClosed: EventEmitter<void>
+
+  private close = () => {
+    this.isOpened = false
+    this.headerClosed.emit()
+  }
 
   componentWillLoad (): void {
-    this.hasNav = this.hostElement.querySelector('[slot="nav"]') !== null
-    this.hasNavMobile = this.hostElement.querySelector('[slot="nav-mobile"]') !== null
+    this.hasNav = this.hostElement.querySelector('[slot="nav-mobile"]') !== null
+  }
+
+  @Listen('headerOpened', { target: 'document' })
+  onModalOpenedHandler (): void {
+    this.isOpened = true
   }
 
   render () {
     return (
       <Host>
-        <header class={clsx('header', this.modalOpened && 'header--opened')}>
-          <div class="contents">
-            <div class="logo">
-              <slot/>
-            </div>
-            { this.hasNav &&
-              <nav class="nav">
-                <slot name="nav"/>
-              </nav>
-            }
-            { this.hasNavMobile &&
-              <mds-icon class="icon" name="menu" onClick={() => { this.modalOpened = true }}/>
-            }
-          </div>
-        </header>
-        { this.hasNavMobile &&
-          <div class="nav-mobile">
-            <mds-modal opened={ this.modalOpened } onClose={ () => { this.modalOpened = false } }>
+        <slot/>
+        { this.hasNav &&
+          <div class="nav">
+            <mds-modal opened={ this.isOpened } onClose={ this.close }>
               <slot name="nav-mobile"/>
             </mds-modal>
           </div>
