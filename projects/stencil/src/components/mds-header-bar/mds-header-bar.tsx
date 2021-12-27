@@ -9,7 +9,7 @@ import clsx from 'clsx'
 export class MdsHeaderBar {
 
   private hasNav: boolean
-  @Element() hostElement: HTMLMdsHeaderElement
+  @Element() hostElement: HTMLMdsHeaderBarElement
 
   @State() isOpened:boolean
 
