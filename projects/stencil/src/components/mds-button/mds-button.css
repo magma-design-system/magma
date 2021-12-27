@@ -35,6 +35,7 @@
   background-color: var(--background);
   border-color: var(--border-color) !important;
   border-radius: var(--radius, theme('borderRadius.lg'));
+  border-style: solid;
   border-width: theme('borderWidth.2') !important;
   color: var(--color);
 }
