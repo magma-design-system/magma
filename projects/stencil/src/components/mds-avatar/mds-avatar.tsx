@@ -34,7 +34,7 @@ export class MdsAvatar {
       )}>
         { this.placeholder
           ? <div class={clsx(this.initials !== undefined ? 'initials-text' : 'fallback-image')}>
-            { this.initials !== undefined && <mds-text typography="h4">{ this.initials.substring(0, 2) }</mds-text> }
+            { this.initials !== undefined && <mds-text typography="h5">{ this.initials.substring(0, 2) }</mds-text> }
           </div>
           : <mds-img
             class="image"
