@@ -6,9 +6,10 @@ export type ThemeStatusVariantType =
 
 export type ThemeVariantType =
   | 'dark'
-  | 'light'
   | 'error'
   | 'info'
+  | 'light'
+  | 'primary'
   | 'success'
   | 'warning'
 

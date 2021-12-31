@@ -3,6 +3,7 @@ const themeVariantDictionary = [
   'error',
   'info',
   'light',
+  'primary',
   'success',
   'warning',
 ]

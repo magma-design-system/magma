@@ -1,29 +1,29 @@
 @tailwind utilities;
 
-:host ( [variant=light] ),
-:host ( [variant=light][tone=strong] ) {
+:host ( [variant=primary] ),
+:host ( [variant=primary][tone=strong] ) {
 
   --background: theme('colors.adjust-tone');
   --color: theme('colors.adjust-tone-02');
-  --icon-color: theme('colors.adjust-tone-05');
+  --icon-color: theme('colors.brand-maggioli-05');
   --shadow: theme('boxShadow.sharp-lg');
 }
 
-:host ( [variant=light][tone=weak] ) {
+:host ( [variant=primary][tone=weak] ) {
 
   --background: theme('colors.adjust-tone');
   --color: theme('colors.adjust-tone-02');
-  --icon-color: theme('colors.adjust-tone-05');
+  --icon-color: theme('colors.brand-maggioli-05');
   --shadow: theme('boxShadow.sharp-sm');
 }
 
-:host ( [variant=light][tone=ghost] ) {
+:host ( [variant=primary][tone=ghost] ) {
 
   --color: theme('colors.adjust-tone-02');
   --shadow: none;
 }
 
-:host ( [variant=light][tone=quiet] ) {
+:host ( [variant=primary][tone=quiet] ) {
 
   --background: transparent;
   --color: theme('colors.adjust-tone-10');
