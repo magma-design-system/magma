@@ -35,3 +35,9 @@
   --progress-background: theme('colors.status-info-06');
   --background: theme('colors.status-info-09');
 }
+
+:host ( [variant=primary] ) {
+
+  --progress-background: theme('colors.brand-maggioli-03');
+  --background: theme('colors.adjust-tone-08');
+}
