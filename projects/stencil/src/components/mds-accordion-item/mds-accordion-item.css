@@ -1,47 +1,46 @@
 @tailwind components;
 @tailwind utilities;
 
+/**
+* @prop --color: Sets the text-color of the element
+* @prop --border-color: Sets the color of the border that separates elements
+*/
+
 :host {
 
-  /**
-    * @prop --color: Sets the text-color of the element
-    */
-
   --color: theme('colors.adjust-tone-02');
+  --border-color: theme('colors.adjust-tone-08');
 
   @apply
-    border-transparent
-    border-b-2
-    border-t-2
     duration-500
     ease-out-expo
     grid
     py-4
     relative
-    transition-cosmetic !important;
+    transition-cosmetic;
 
+  border-bottom: solid 2px;
+  border-color: transparent !important;
+  border-top: solid 2px;
   color: var(--color);
   margin-bottom: -2px;
 }
 
 :host( .opened ) {
   @apply
-    border-b-adjust-tone-09
-    border-t-adjust-tone-09
-    py-8
-    !important;
+    my-4
+    py-8;
+
+  border-bottom-color: var(--border-color) !important;
+  border-top-color: var(--border-color) !important;
 }
 
 :host( .opened:first-child ) {
-  @apply
-    border-t-transparent
-    !important;
+  border-top-color: transparent !important;
 }
 
 :host( .opened:last-child ) {
-  @apply
-    border-b-transparent
-    !important;
+  border-bottom-color: transparent !important;
 }
 
 .header {
