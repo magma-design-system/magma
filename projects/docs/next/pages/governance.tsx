@@ -1,5 +1,4 @@
 import type { ReactElement } from 'react'
-import Layout from '../layouts/homepage'
 import Resources from '../fragments/resources'
 import Separator from '../fragments/separator'
 import ArticlePreview from '../fragments/article-preview'
@@ -61,7 +60,7 @@ const Changelog = (): JSX.Element =>
 
 const RoadmapItem = (): JSX.Element =>
   <div className="flex gap-4 items-center">
-    <mds-benchmark-bar value={96} class="flex-grow" variant="primary">Design language</mds-benchmark-bar>
+    <mds-benchmark-bar value={96} class="flex-grow">Design language</mds-benchmark-bar>
     <mds-button size="sm" class="flex-shrink-0">Leggi</mds-button>
   </div>
 
@@ -76,7 +75,7 @@ const Roadmap = (): JSX.Element =>
     </div>
   </div>
 
-const Home = (): JSX.Element =>
+const Governance = (): JSX.Element =>
   <div>
     <Headline/>
     <News/>
@@ -86,9 +85,26 @@ const Home = (): JSX.Element =>
     </section>
   </div>
 
-export default Home
+export default Governance
 
-Home.getLayout = (page: ReactElement) =>
+import Layout from '../layouts/section'
+import AsideMenu from '../layouts/fragments/aside/menu'
+import ContentWrapper from '../layouts/fragments/content-wrapper'
+import AsideButton from '../layouts/fragments/aside/button'
+
+Governance.getLayout = (page: ReactElement) =>
   <Layout>
-    { page }
+    <AsideMenu className="-mt-20 bg-adjust-tone-10">
+      <AsideButton name="Components" opened>
+        <AsideButton name="Button" selected/>
+        <AsideButton name="Checkbox"/>
+        <AsideButton name="Download"/>
+      </AsideButton>
+      <AsideButton name="Design Tokens"/>
+      <AsideButton name="Accessibility"/>
+      <AsideButton name="CSS"/>
+    </AsideMenu>
+    <ContentWrapper>
+      { page }
+    </ContentWrapper>
   </Layout>

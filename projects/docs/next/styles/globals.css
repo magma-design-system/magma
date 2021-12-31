@@ -1,3 +1,27 @@
+@import '../node_modules/@maggioli-design-system/styles/dist/tailwind/base.css';
+@import '../node_modules/@maggioli-design-system/styles/dist/tailwind/typography.css';
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+/* stylelint-disable selector-type-no-unknown */
+
+mds-text[typography = 'h1'],
+mds-text[typography = 'h2'],
+mds-text[typography = 'h3'],
+mds-text[typography = 'h4'],
+mds-text[typography = 'h5'],
+mds-text[typography = 'h6'] {
+  @apply text-adjust-tone-01;
+}
+
+main {
+  background-color: theme('colors.adjust-tone-10');
+}
+
+mds-tab-item {
+
+  --button-color: theme('colors.adjust-tone-05');
+  --button-color-selected: theme('colors.brand-maggioli-02');
+}
