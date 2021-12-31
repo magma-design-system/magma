@@ -67,7 +67,8 @@
     duration-300
     ease-out-quad
     gap-4
-    grid
+    flex
+    flex-col
     h-0
     opacity-0
     overflow-hidden
