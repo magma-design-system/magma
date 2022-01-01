@@ -1,6 +1,6 @@
 import type { ReactElement } from 'react'
 import Resources from '../fragments/resources'
-import Separator from '../fragments/separator'
+import { ArticleSeparator as Separator } from '../fragments/separator'
 import ArticlePreview from '../fragments/article-preview'
 
 const Headline = (): JSX.Element =>

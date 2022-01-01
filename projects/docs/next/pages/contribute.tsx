@@ -3,7 +3,8 @@ import Header from '../fragments/article/header'
 import Menu from '../fragments/article/menu'
 import ArticleSimpleContent from '../fragments/article/simple-content'
 import ArticleKeyPoints, { ArticleKeyPoint } from '../fragments/article/key-points'
-
+import Authors from '../fragments/article/authors'
+import Bibliography from '../fragments/article/bibliography'
 
 const CompanyValues = (): JSX.Element =>
   <div>
@@ -27,6 +28,10 @@ const CompanyValues = (): JSX.Element =>
         </ArticleKeyPoint>
       </ArticleKeyPoints>
       <ArticleSimpleContent/>
+      <footer>
+        <Authors/>
+        <Bibliography/>
+      </footer>
     </article>
   </div>
 

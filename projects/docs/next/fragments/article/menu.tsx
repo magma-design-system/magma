@@ -1,13 +1,13 @@
 import clsx from 'clsx'
 import { FC } from 'react'
-import Separator from '../separator'
+import { ArticleSeparator as Separator } from '../separator'
 
 type ComponentProps = {
   className?: string
 }
 
 const ArticleMenu: FC<ComponentProps> = ({ className }): JSX.Element =>
-  <div className={clsx('-mx-6 backdrop-blur-md backdrop-saturate-200 bg-adjust-tone-10/80 pt-4 px-6 sticky top-20 z-10')}>
+  <div className={clsx('-mx-6 desktop:backdrop-blur-md desktop:backdrop-saturate-200 backdrop-saturate-50 desktop:bg-adjust-tone-10/80 bg-adjust-tone-10/90 pt-4 px-6 sticky top-20 z-10')}>
     <mds-tab class="bg-transparent -mx-2">
       <mds-tab-item>Condotta</mds-tab-item>
       <mds-tab-item>Commit</mds-tab-item>

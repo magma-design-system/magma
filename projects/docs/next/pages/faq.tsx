@@ -2,9 +2,6 @@ import type { ReactElement } from 'react'
 import Header from '../fragments/article/header'
 import Menu from '../fragments/article/menu'
 import Authors from '../fragments/article/authors'
-import ArticleSimpleContent from '../fragments/article/simple-content'
-import ArticleKeyPoints, { ArticleKeyPoint } from '../fragments/article/key-points'
-
 
 const Faq = (): JSX.Element =>
   <div>

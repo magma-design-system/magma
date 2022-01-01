@@ -10,7 +10,7 @@ const Layout: FC<LayoutProps> = ({ children }): ReactElement => {
   return (
     <main className="pt-20 dark-mode-oss">
       <Header />
-      <div className="grid grid-cols-section">
+      <div className="grid desktop:grid-cols-section">
         { children }
       </div>
     </main>

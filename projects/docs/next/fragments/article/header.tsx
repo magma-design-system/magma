@@ -6,7 +6,7 @@ type ComponentProps = {
 }
 
 const ArticleHeader: FC<ComponentProps> = ({ className }): JSX.Element =>
-  <div className={clsx('flex flex-col gap-8 min-h-32 pt-8 backdrop-blur-md backdrop-saturate-200 bg-adjust-tone-10/80 -mx-6 px-6', className)}>
+  <div className={clsx('flex flex-col gap-8 min-h-32 pt-8 desktop:backdrop-blur-md desktop:backdrop-saturate-200 backdrop-saturate-50 desktop:bg-adjust-tone-10/80 bg-adjust-tone-10/90 -mx-6 px-6', className)}>
     <mds-text typography="h1" class="max-w-title">Lorem ipsum dolr sit amet</mds-text>
   </div>
 
