@@ -18,7 +18,7 @@ export class MdsBibliography {
   /**
    * Specifies the bibliography format to rapresent the bibliography content
    */
-  @Prop() readonly format?: BibliographyFormatType = 'mla'
+  @Prop() readonly format?: BibliographyFormatType = 'apa'
 
   /**
    * Specifies a single or mupltiple authors, this field expect a string or an array of strings.
