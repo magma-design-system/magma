@@ -6,9 +6,9 @@ import ArticlePreview from '../fragments/article-preview'
 
 const Headline = (): JSX.Element =>
   <section className="py-12">
-    <div className="grid grid-cols-4 gap-6 auto-rows-fr items-end">
-      <div className="grid col-span-2 gap-6">
-        <div className='flex items-center justify-center'>
+    <div className="grid desktop:grid-cols-4 tablet:grid-cols-2 grid-cols-1 desktop:gap-6 gap-12 desktop:auto-rows-fr desktop:items-end">
+      <div className="grid tablet:col-span-2 gap-6 self-stretch grid-rows-[1fr_auto_auto]">
+        <div className="flex items-center justify-center self-stretch">
           <mds-img src="./magma-fake-logo.png" class="w-1/2"/>
         </div>
         <mds-text typography="h1">Maggioli Design System</mds-text>
@@ -34,10 +34,10 @@ const Headline = (): JSX.Element =>
 
 const News = (): JSX.Element =>
   <section className=" pb-12">
-    <div className="grid grid-cols-4 gap-6 auto-rows-fr">
-      <div className="grid col-span-2 gap-12 auto-rows-min">
+    <div className="grid desktop:grid-cols-4 gap-6 desktop:auto-rows-fr">
+      <div className="grid tablet:col-span-2 gap-12 auto-rows-min">
         <Separator/>
-        <div className="grid grid-cols-2 gap-6 auto-rows-min">
+        <div className="grid desktop:grid-cols-2 gap-6 auto-rows-min">
           <mds-text typography="h2">News</mds-text>
           <ArticlePreview/>
         </div>
@@ -53,10 +53,10 @@ const News = (): JSX.Element =>
     </div>
   </section>
 
-const Changelog = (): JSX.Element =>
+const Releases = (): JSX.Element =>
   <div className="grid gap-12 auto-rows-min">
     <Separator/>
-    <mds-text typography="h2">Changelog</mds-text>
+    <mds-text typography="h2">Rilasci</mds-text>
   </div>
 
 const RoadmapItem = (): JSX.Element =>
@@ -80,9 +80,9 @@ const Home = (): JSX.Element =>
   <div>
     <Headline/>
     <News/>
-    <section className="pb-12 grid grid-cols-2 gap-6">
+    <section className="pb-12 grid tablet:grid-cols-2 gap-6">
       <Roadmap/>
-      <Changelog/>
+      <Releases/>
     </section>
   </div>
 

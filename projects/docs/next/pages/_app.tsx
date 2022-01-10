@@ -23,6 +23,8 @@ import { applyPolyfills as apMdsHeader, defineCustomElements as dceMdsHeader } f
 import { applyPolyfills as apMdsHeaderBar, defineCustomElements as dceMdsHeaderBar } from '@maggioli-design-system/mds-header-bar/loader'
 import { applyPolyfills as apMdsIcon, defineCustomElements as dceMdsIcon } from '@maggioli-design-system/mds-icon/loader'
 import { applyPolyfills as apMdsImg, defineCustomElements as dceMdsImg } from '@maggioli-design-system/mds-img/loader'
+import { applyPolyfills as apMdsList, defineCustomElements as dceMdsList } from '@maggioli-design-system/mds-list/loader'
+import { applyPolyfills as apMdsListItem, defineCustomElements as dceMdsListItem } from '@maggioli-design-system/mds-list-item/loader'
 import { applyPolyfills as apMdsModal, defineCustomElements as dceMdsModal } from '@maggioli-design-system/mds-modal/loader'
 import { applyPolyfills as apMdsProgress, defineCustomElements as dceMdsProgress } from '@maggioli-design-system/mds-progress/loader'
 import { applyPolyfills as apMdsTab, defineCustomElements as dceMdsTab } from '@maggioli-design-system/mds-tab/loader'
@@ -40,6 +42,8 @@ apMdsHeader().then(void dceMdsHeader())
 apMdsHeaderBar().then(void dceMdsHeaderBar())
 apMdsIcon().then(void dceMdsIcon())
 apMdsImg().then(void dceMdsImg())
+apMdsList().then(void dceMdsList())
+apMdsListItem().then(void dceMdsListItem())
 apMdsModal().then(void dceMdsModal())
 apMdsProgress().then(void dceMdsProgress())
 apMdsTab().then(void dceMdsTab())
