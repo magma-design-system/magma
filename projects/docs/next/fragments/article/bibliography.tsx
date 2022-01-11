@@ -1,12 +1,9 @@
 import clsx from 'clsx'
 import { FC } from 'react'
 import { ArticleSeparator as Separator } from '../separator'
+import { ReactComponentProps } from '../../meta/props/ReactComponent'
 
-type ComponentProps = {
-  className?: string
-}
-
-const ArticleBibliography: FC<ComponentProps> = ({ className }): JSX.Element =>
+const ArticleBibliography: FC<ReactComponentProps> = ({ className }: ReactComponentProps): JSX.Element =>
   <div className={clsx('flex flex-col gap-8 pt-8 backdrop-blur-md backdrop-saturate-200 bg-adjust-tone-10/80 -mx-6 px-6', className)}>
     <Separator className='mt-4 -mx-6-'/>
     <div className="grid gap-4">

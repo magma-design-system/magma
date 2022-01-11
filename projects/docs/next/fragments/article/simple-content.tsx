@@ -1,12 +1,9 @@
 import clsx from 'clsx'
 import { FC } from 'react'
 import ArticleRelatedContent from './related-content'
+import { ReactComponentProps } from '../../meta/props/ReactComponent'
 
-type ComponentProps = {
-  className?: string
-}
-
-const ArticleSimpleContent: FC<ComponentProps> = ({ className }): JSX.Element =>
+const ArticleSimpleContent: FC<ReactComponentProps> = ({ className }: ReactComponentProps): JSX.Element =>
   <div className={clsx('grid tablet:grid-cols-4 gap-6', className)}>
     <div className="tablet:col-span-3 grid gap-6">
       <mds-text typography="h3" class="text-brand-maggioli-02 max-w-title">Una Family Company con obiettivi di sviluppo sostenibile</mds-text>

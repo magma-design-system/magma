@@ -1,10 +1,6 @@
 import clsx from 'clsx'
 import { ReactNode, FC } from 'react'
-
-type ComponentProps = {
-  className?: string
-  children?: ReactNode
-}
+import { ReactComponentProps } from '../../meta/props/ReactComponent'
 
 interface ArticleKeyPointProps {
   className?: string,
@@ -14,13 +10,18 @@ interface ArticleKeyPointProps {
   action?: string,
 }
 
-const ArticleKeyPoints: FC<ComponentProps> = ({ className, children }): JSX.Element =>
-  <div className="grid grid-cols-2 gap-6">
+const ArticleKeyPoints: FC<ReactComponentProps> = ({ className, children }: ReactComponentProps): JSX.Element =>
+  <div className={clsx(className, 'gap-6 grid grid-cols-2')}>
     { children }
   </div>
 
-const ArticleKeyPoint: FC<ArticleKeyPointProps> = ({ action, children, className, icon, title }: ArticleKeyPointProps): JSX.Element =>
-  <div className="grid gap-4">
+const ArticleKeyPoint: FC<ArticleKeyPointProps> = ({
+  children,
+  className,
+  icon,
+  title,
+}: ArticleKeyPointProps): JSX.Element =>
+  <div className={clsx(className, 'gap-4 grid')}>
     { icon
       ? <div className="flex gap-4 items-center text-brand-maggioli-02">
         <mds-icon name={icon} class="text-4xl leading-none"/>

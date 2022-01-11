@@ -37,10 +37,10 @@ const CompanyValues = (): JSX.Element =>
 
 export default CompanyValues
 
-import Layout from '../layouts/section'
-import AsideMenu from '../layouts/fragments/aside/menu'
-import ContentWrapper from '../layouts/fragments/content-wrapper'
-import AsideButton from '../layouts/fragments/aside/button'
+import Layout from '../fragments/layouts/section'
+import AsideMenu from '../fragments/layouts/fragments/aside/menu'
+import ContentWrapper from '../fragments/layouts/fragments/content-wrapper'
+import AsideButton from '../fragments/layouts/fragments/aside/button'
 
 CompanyValues.getLayout = (page: ReactElement) =>
   <Layout>

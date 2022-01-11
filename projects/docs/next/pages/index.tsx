@@ -1,7 +1,8 @@
 import type { ReactElement } from 'react'
-import Layout from '../layouts/homepage'
+import Layout from '../fragments/layouts/homepage'
 import Resources from '../fragments/resources'
 import Separator from '../fragments/separator'
+import Card from '../fragments/card'
 import ArticlePreview from '../fragments/article-preview'
 
 const Headline = (): JSX.Element =>
@@ -57,6 +58,16 @@ const Releases = (): JSX.Element =>
   <div className="grid gap-12 auto-rows-min">
     <Separator/>
     <mds-text typography="h2">Rilasci</mds-text>
+    <div className="grid gap-6">
+      <Card>
+        <mds-text typography="h6">mds-text</mds-text>
+        <mds-text typography="h6">5.0.3</mds-text>
+      </Card>
+      <Card>
+        <mds-text typography="h6">mds-text</mds-text>
+        <mds-text typography="h6">5.0.3</mds-text>
+      </Card>
+    </div>
   </div>
 
 const RoadmapItem = (): JSX.Element =>
@@ -70,6 +81,8 @@ const Roadmap = (): JSX.Element =>
     <Separator/>
     <mds-text typography="h2">Roadmap</mds-text>
     <div className="grid gap-6">
+      <RoadmapItem/>
+      <RoadmapItem/>
       <RoadmapItem/>
       <RoadmapItem/>
       <RoadmapItem/>
