@@ -1,11 +1,18 @@
 import React from 'react'
 import MdsBenchmarkBar from '@component/mds-benchmark-bar/mds-benchmark-bar'
 import { themeVariantDictionary } from '@dictionary/variant'
+import { benchmarkBarTypographyDictionary } from '../meta/dictionary'
 
 export default {
   title: 'UI / Benchmark Bar',
   component: MdsBenchmarkBar,
   argTypes: {
+    typography: {
+      type: { name: 'string' },
+      description: 'Sets the theme variant colors',
+      options: benchmarkBarTypographyDictionary,
+      control: { type: 'select' },
+    },
     variant: {
       type: { name: 'string' },
       description: 'Sets the theme variant colors',
@@ -28,4 +35,9 @@ const Template = args =>
 export const Default = Template.bind({})
 Default.args = {
   value: 30,
+}
+
+export const Typography = Template.bind({})
+Typography.args = {
+  typography: 'option',
 }

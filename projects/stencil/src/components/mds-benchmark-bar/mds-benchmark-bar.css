@@ -15,6 +15,10 @@
     w-full;
 }
 
+.value {
+  @apply flex-shrink-0;
+}
+
 .label {
   @apply
     min-w-0
