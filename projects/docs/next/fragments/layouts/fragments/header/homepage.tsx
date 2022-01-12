@@ -1,11 +1,14 @@
-const Header = (): JSX.Element =>
+import { FC } from 'react'
+import { LayoutProps } from '../../../../meta/props/LayoutProps'
+
+const Header: FC<LayoutProps> = (): JSX.Element =>
   <mds-header>
     <mds-header-bar class="sticky top-0 px-0 shadow-none border-b border-0 border-solid border-adjust-tone-02 blur-overlay">
       <div className="flex gap-4 items-center ml-6">
         <mds-img class="h-12 w-12" src="./logo-gruppo-maggioli.svg"/>
         <div className="mb-1">
-          <mds-text typography="h5">Magma</mds-text>
-          <mds-text typography="option" class="text-adjust-tone-05">Design System</mds-text>
+          <mds-text typography="h6">Maggioli Design System</mds-text>
+          <mds-text typography="h6">Magma</mds-text>
         </div>
       </div>
       <mds-button slot="nav" variant="dark" tone="quiet" class="text-adjust-tone-04 hover:text-brand-maggioli-01 hover:bg-brand-maggioli-03/10">Governance</mds-button>

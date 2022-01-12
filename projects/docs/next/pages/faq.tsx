@@ -54,7 +54,7 @@ import ContentWrapper from '../fragments/layouts/fragments/content-wrapper'
 import AsideButton from '../fragments/layouts/fragments/aside/button'
 
 Faq.getLayout = (page: ReactElement) =>
-  <Layout>
+  <Layout title="FAQ">
     <AsideMenu className="-mt-20 bg-adjust-tone-10">
       <AsideButton name="Components" opened>
         <AsideButton name="Button" selected/>

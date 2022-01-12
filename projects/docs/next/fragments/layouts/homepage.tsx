@@ -1,11 +1,11 @@
 import { ReactElement, FC } from 'react'
 import Header from './fragments/header/homepage'
 import ContentWrapper from './fragments/content-wrapper'
-import { ReactComponentProps } from '../../meta/props/ReactComponent'
+import { LayoutProps } from '../../meta/props/LayoutProps'
 
-const Layout: FC<ReactComponentProps> = ({ children }: ReactComponentProps): ReactElement =>
+const Layout: FC<LayoutProps> = ({ children, title }: LayoutProps): ReactElement =>
   <main className="dark-mode-os">
-    <Header />
+    <Header/>
     <ContentWrapper>
       { children }
     </ContentWrapper>

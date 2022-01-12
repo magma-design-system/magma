@@ -1,11 +1,11 @@
 import { ReactElement, FC } from 'react'
 import SectionHeader from './fragments/header/section'
-import { ReactComponentProps } from '../../meta/props/ReactComponent'
+import { LayoutProps } from '../../meta/props/LayoutProps'
 
-const Layout: FC<ReactComponentProps> = ({ children }: ReactComponentProps): ReactElement => {
+const Layout: FC<LayoutProps> = ({ children, title }: LayoutProps): ReactElement => {
   return (
     <main className="pt-20 dark-mode-os">
-      <SectionHeader />
+      <SectionHeader title={title} />
       <div className="grid desktop:grid-cols-section col-start-2 col-stop-2">
         { children }
       </div>
