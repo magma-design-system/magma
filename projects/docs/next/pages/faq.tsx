@@ -5,8 +5,13 @@ import Authors from '../fragments/article/authors'
 
 const Faq = (): JSX.Element =>
   <div>
-    <Header/>
-    <Menu/>
+    <Header title="FAQ"/>
+    <Menu>
+      <mds-tab-item>Condotta</mds-tab-item>
+      <mds-tab-item>Commit</mds-tab-item>
+      <mds-tab-item>Submission</mds-tab-item>
+      <mds-tab-item>Versionamento</mds-tab-item>
+    </Menu>
     <article className="py-12 grid gap-12 text-adjust-tone-01">
       <mds-accordion>
         <mds-accordion-item description="In che modo è possibile contribuire al Design System?">

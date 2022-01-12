@@ -1,11 +1,8 @@
 import clsx from 'clsx'
 import { FC } from 'react'
+import { ReactComponentProps } from '../meta/props/ReactComponent'
 
-type ComponentProps = {
-  className?: string
-}
-
-const ArticlePreview: FC<ComponentProps> = ({ className }): JSX.Element => {
+const ArticlePreview: FC<ReactComponentProps> = ({ className }: ReactComponentProps): JSX.Element => {
   return (
     <div className={clsx('flex flex-col gap-8', className)}>
       <div className="flex flex-col gap-4">

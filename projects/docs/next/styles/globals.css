@@ -7,6 +7,17 @@
 
 /* stylelint-disable selector-type-no-unknown */
 
+@layer components {
+  .blur-overlay {
+    @apply
+      backdrop-saturate-50
+      bg-adjust-tone-10/95
+      desktop:backdrop-blur-md
+      desktop:backdrop-saturate-200
+      desktop:bg-adjust-tone-10/85;
+  }
+}
+
 mds-text[typography = 'h1'],
 mds-text[typography = 'h2'],
 mds-text[typography = 'h3'],

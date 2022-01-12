@@ -5,17 +5,22 @@ import ArticleSimpleContent from '../fragments/article/simple-content'
 import ArticleKeyPoints, { ArticleKeyPoint } from '../fragments/article/key-points'
 import Authors from '../fragments/article/authors'
 import Bibliography from '../fragments/article/bibliography'
+import DesignPrinciple from '../fragments/design-principle'
 
 const CompanyValues = (): JSX.Element =>
   <div>
-    <Header title="Contribuisci"/>
+    <Header title="Design principles"/>
     <Menu>
-      <mds-tab-item>Condotta</mds-tab-item>
-      <mds-tab-item>Commit</mds-tab-item>
-      <mds-tab-item>Submission</mds-tab-item>
-      <mds-tab-item>Versionamento</mds-tab-item>
+      <mds-tab-item>Leggi</mds-tab-item>
+      <mds-tab-item>Cosa sono?</mds-tab-item>
     </Menu>
     <article className="py-12 grid gap-12 text-adjust-tone-01">
+      <div className='-mt-12'>
+        <DesignPrinciple title="Unified" description="Each piece is part of a greater whole and should contribute positively to the system at scale. There should be no isolated features or outliers."/>
+        <DesignPrinciple title="Universal" description="Airbnb is used around the world by a wide global community. Our products and visual language should be welcoming and accessible."/>
+        <DesignPrinciple title="Iconic" description="We’re focused when it comes to both design and functionality. Our work should speak boldly and clearly to this focus."/>
+        <DesignPrinciple title="Conversational" description="Our use of motion breathes life into our products, and allows us to communicate with users in easily understood ways."/>
+      </div>
       <ArticleSimpleContent/>
       <ArticleSimpleContent/>
       <ArticleKeyPoints>

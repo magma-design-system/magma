@@ -3,13 +3,10 @@ import { FC } from 'react'
 import { ArticleSeparator as Separator } from '../separator'
 import { ReactComponentProps } from '../../meta/props/ReactComponent'
 
-const ArticleMenu: FC<ReactComponentProps> = ({ className }: ReactComponentProps): JSX.Element =>
-  <div className={clsx('-mx-6 backdrop-saturate-50 bg-adjust-tone-10/90 desktop:backdrop-blur-md desktop:backdrop-saturate-200 desktop:bg-adjust-tone-10/80 pt-4 px-6 sticky top-20 z-10', className)}>
+const ArticleMenu: FC<ReactComponentProps> = ({ className, children }: ReactComponentProps): JSX.Element =>
+  <div className={clsx('-mx-6 blur-overlay pt-4 px-6 sticky top-20 z-10', className)}>
     <mds-tab class="bg-transparent -mx-2">
-      <mds-tab-item>Condotta</mds-tab-item>
-      <mds-tab-item>Commit</mds-tab-item>
-      <mds-tab-item>Submission</mds-tab-item>
-      <mds-tab-item>Versionamento</mds-tab-item>
+      { children }
     </mds-tab>
     <Separator className='mt-4 -mx-6-'/>
   </div>

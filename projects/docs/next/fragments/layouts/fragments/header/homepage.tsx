@@ -1,6 +1,6 @@
 const Header = (): JSX.Element =>
   <mds-header>
-    <mds-header-bar class="sticky top-0 px-0 shadow-none border-b border-0 border-solid border-adjust-tone-02 backdrop-blur-md backdrop-saturate-200 bg-adjust-tone-10/80">
+    <mds-header-bar class="sticky top-0 px-0 shadow-none border-b border-0 border-solid border-adjust-tone-02 blur-overlay">
       <div className="flex gap-4 items-center ml-6">
         <mds-img class="h-12 w-12" src="./logo-gruppo-maggioli.svg"/>
         <div className="mb-1">

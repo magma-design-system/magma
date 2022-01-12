@@ -1,13 +1,9 @@
 import clsx from 'clsx'
-import { ReactNode, FC } from 'react'
+import { FC } from 'react'
 import Separator from './separator'
+import { ReactComponentProps } from '../meta/props/ReactComponent'
 
-type ComponentProps = {
-  children?: ReactNode,
-  className?: string,
-}
-
-const ResourceItem: FC<ComponentProps> = ({ children, className }): JSX.Element => {
+const ResourceItem: FC<ReactComponentProps> = ({ children, className }: ReactComponentProps): JSX.Element => {
   return (
     <div className={clsx('flex justify-between px-0 rounded transition-cosmetic hover:bg-brand-maggioli-09 hover:px-2 hover:text-brand-maggioli-03 cursor-pointer', className)}>
       <mds-text typography="paragraph">{ children }</mds-text>
@@ -16,7 +12,7 @@ const ResourceItem: FC<ComponentProps> = ({ children, className }): JSX.Element 
   )
 }
 
-const Resources: FC<ComponentProps> = ({ className }): JSX.Element => {
+const Resources: FC<ReactComponentProps> = ({ className }: ReactComponentProps): JSX.Element => {
   return (
     <div className={clsx('grid gap-2', className)}>
       <mds-text typography="h5" class="text-brand-maggioli-02">Risorse</mds-text>

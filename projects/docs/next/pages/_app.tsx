@@ -15,6 +15,7 @@ import { applyPolyfills as apMdsAccordion, defineCustomElements as dceMdsAccordi
 import { applyPolyfills as apMdsAccordionItem, defineCustomElements as dceMdsAccordionItem } from '@maggioli-design-system/mds-accordion-item/loader'
 import { applyPolyfills as apMdsAuthor, defineCustomElements as dceMdsAuthor } from '@maggioli-design-system/mds-author/loader'
 import { applyPolyfills as apMdsAvatar, defineCustomElements as dceMdsAvatar } from '@maggioli-design-system/mds-avatar/loader'
+import { applyPolyfills as apMdsBadge, defineCustomElements as dceMdsBadge } from '@maggioli-design-system/mds-badge/loader'
 import { applyPolyfills as apMdsBenchmarkBar, defineCustomElements as dceMdsBenchmarkBar } from '@maggioli-design-system/mds-benchmark-bar/loader'
 import { applyPolyfills as apMdsBibliography, defineCustomElements as dceMdsBibliography } from '@maggioli-design-system/mds-bibliography/loader'
 import { applyPolyfills as apMdsButton, defineCustomElements as dceMdsButton } from '@maggioli-design-system/mds-button/loader'
@@ -35,6 +36,7 @@ apMdsAccordion().then(void dceMdsAccordion())
 apMdsAccordionItem().then(void dceMdsAccordionItem())
 apMdsAuthor().then(void dceMdsAuthor())
 apMdsAvatar().then(void dceMdsAvatar())
+apMdsBadge().then(void dceMdsBadge())
 apMdsBenchmarkBar().then(void dceMdsBenchmarkBar())
 apMdsBibliography().then(void dceMdsBibliography())
 apMdsButton().then(void dceMdsButton())

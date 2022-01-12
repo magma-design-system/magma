@@ -54,19 +54,37 @@ const News = (): JSX.Element =>
     </div>
   </section>
 
+const ReleaseCommit = (): JSX.Element => {
+
+  return <div className="flex gap-2 items-start">
+    <mds-badge class="rounded-full text-brand-maggioli-03 bg-transparent border border-solid border-brand-maggioli-03">feat</mds-badge>
+    <mds-text typography="caption">Add typography property</mds-text>
+  </div>
+}
+
+const Release = (): JSX.Element =>
+  <Card className="grid-cols-4">
+    <div className="grid">
+      <mds-text typography="h6" class="text-brand-maggioli-03">mds-text</mds-text>
+      <mds-text typography="h6" class="text-adjust-tone-04"><b>5.0.3</b></mds-text>
+      <mds-text typography="caption"><b>4 giorni fa</b></mds-text>
+    </div>
+    <div className="col-span-3 relative justify-between flex flex-col">
+      <ReleaseCommit/>
+      <ReleaseCommit/>
+      <ReleaseCommit/>
+      <mds-badge variant="dark" tone="quiet" class="rounded-full top-0 right-0 absolute">12 commit</mds-badge>
+    </div>
+  </Card>
+
 const Releases = (): JSX.Element =>
   <div className="grid gap-12 auto-rows-min">
     <Separator/>
     <mds-text typography="h2">Rilasci</mds-text>
-    <div className="grid gap-6">
-      <Card>
-        <mds-text typography="h6">mds-text</mds-text>
-        <mds-text typography="h6">5.0.3</mds-text>
-      </Card>
-      <Card>
-        <mds-text typography="h6">mds-text</mds-text>
-        <mds-text typography="h6">5.0.3</mds-text>
-      </Card>
+    <div className="grid gap-4">
+      <Release/>
+      <Release/>
+      <Release/>
     </div>
   </div>
 
@@ -81,6 +99,8 @@ const Roadmap = (): JSX.Element =>
     <Separator/>
     <mds-text typography="h2">Roadmap</mds-text>
     <div className="grid gap-6">
+      <RoadmapItem/>
+      <RoadmapItem/>
       <RoadmapItem/>
       <RoadmapItem/>
       <RoadmapItem/>
