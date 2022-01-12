@@ -1,5 +1,6 @@
 const fs = require('fs').promises
 const path = require('path')
+const chalk = require('chalk')
 
 class Maggioli {
   static ICONS_DIR = `${path.dirname(require.resolve('@maggioli-design-system/icons-svg/package.json'))}/svg`
@@ -195,16 +196,15 @@ async function subDirectories (source) {
  * @throws Throws error if the icon is not found
  */
 async function iconGroupGetHelper (iconGroup, directories, iconName, filename) {
-  // console.debug(iconGroup, directories, iconName, filename)
   const hidePath = path.resolve(__dirname, '../../../')
   for (const directory of directories) {
     const path = await searchFileInDirectory(directory, filename)
     if (path) {
-      console.debug(`Found ${iconGroup}/${iconName}  >  ${path.replace(hidePath, '')}`)
+      console.log(`${chalk.green('Found:')} ${iconGroup}/${iconName}  >  ${path.replace(hidePath, '')}`)
       return path
     }
   }
-  throw new Error(`Icon not found: ${iconGroup ? iconGroup + '/' : ''}${iconName}, searched as ${filename}`)
+  throw new Error(`${chalk.red('Icon not found:')} ${iconGroup ? iconGroup + '/' : ''}${iconName}, searched as ${filename}`)
 }
 
 /**
