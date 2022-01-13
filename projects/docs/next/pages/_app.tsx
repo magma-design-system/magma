@@ -33,6 +33,7 @@ import { applyPolyfills as apMdsQuote, defineCustomElements as dceMdsQuote } fro
 import { applyPolyfills as apMdsTab, defineCustomElements as dceMdsTab } from '@maggioli-design-system/mds-tab/loader'
 import { applyPolyfills as apMdsTabItem, defineCustomElements as dceMdsTabItem } from '@maggioli-design-system/mds-tab-item/loader'
 import { applyPolyfills as apMdsText, defineCustomElements as dceMdsText } from '@maggioli-design-system/mds-text/loader'
+import { applyPolyfills as apMdsUsage, defineCustomElements as dceMdsUsage } from '@maggioli-design-system/mds-usage/loader'
 apMdsAccordion().then(void dceMdsAccordion())
 apMdsAccordionItem().then(void dceMdsAccordionItem())
 apMdsAuthor().then(void dceMdsAuthor())
@@ -55,6 +56,7 @@ apMdsQuote().then(void dceMdsQuote())
 apMdsTab().then(void dceMdsTab())
 apMdsTabItem().then(void dceMdsTabItem())
 apMdsText().then(void dceMdsText())
+apMdsUsage().then(void dceMdsUsage())
 
 type NextPageWithLayout = NextPage & {
   getLayout?: (page: ReactElement) => ReactNode

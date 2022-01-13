@@ -160,6 +160,14 @@ const CompanyValues = (): JSX.Element =>
           </ArticleRelatedLinks>
         </ArticleWidgetAside>
       </ArticleWidget>
+      <ArticleKeyPoints>
+        <mds-usage>
+          <mds-text>Fai questo ma non quello</mds-text>
+        </mds-usage>
+        <mds-usage variant="dont">
+          <mds-text>Fai questo ma non quello</mds-text>
+        </mds-usage>
+      </ArticleKeyPoints>
       <footer>
         <Authors/>
         <Bibliography/>
