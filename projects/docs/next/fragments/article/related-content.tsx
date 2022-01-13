@@ -1,16 +1,16 @@
 import clsx from 'clsx'
-import { FC } from 'react'
-import { ReactComponentProps } from '../../meta/props/ReactComponent'
-import Card from '../card'
+import { FC, ReactNode } from 'react'
 
-const ArticleRelatedContent: FC<ReactComponentProps> = ({ className }: ReactComponentProps): JSX.Element =>
-  <Card className={clsx('gap-2', className)}>
-    <mds-text typography="label">Contenuti correlati</mds-text>
-    <mds-list class="p-0 gap-1">
-      <mds-list-item><mds-text><a href="#">Hello world</a></mds-text></mds-list-item>
-      <mds-list-item><mds-text><a href="#">Il contributo di un web-component se usato male</a></mds-text></mds-list-item>
-      <mds-list-item><mds-text><a href="#">Antani alla brematurata</a></mds-text></mds-list-item>
-    </mds-list>
-  </Card>
+interface ArticleRelatedContentProps {
+  className?: string,
+  children?: ReactNode,
+  title?: string,
+}
+
+const ArticleRelatedContent: FC<ArticleRelatedContentProps> = ({ children, className, title }: ArticleRelatedContentProps): JSX.Element =>
+  <div className={clsx('gap-2 border-l border-solid border-0 pl-6 ', className)}>
+    { title && <mds-text typography="label" class="mb-4">{ title }</mds-text> }
+    { children }
+  </div>
 
 export default ArticleRelatedContent
