@@ -1,0 +1,45 @@
+{
+  "name": "@maggioli-design-system/mds-quote",
+  "version": "1.0.0",
+  "description": "mds-quote is a web-component from Maggioli Design System Magma, built with StencilJS, TypeScript, Storybook. It's based on the web-component standard and it's designed to be agnostic from the JavaScirpt framework you are using.",
+  "main": "dist/index.cjs.js",
+  "module": "dist/index.js",
+  "es2015": "dist/esm/index.mjs",
+  "es2017": "dist/esm/index.mjs",
+  "types": "dist/types/components.d.ts",
+  "collection": "dist/collection/collection-manifest.json",
+  "collection:main": "dist/collection/index.js",
+  "unpkg": "dist/mds-quote/mds-quote.esm.js",
+  "files": [
+    "dist/",
+    "loader/",
+    "readme.md",
+    "src/",
+    "www/"
+  ],
+  "scripts": {
+    "build": "stencil build --docs-readme"
+  },
+  "dependencies": {
+    "@maggioli-design-system/mds-text": "^1.2.1",
+    "@stencil/core": "^2.12.0"
+  },
+  "license": "MIT",
+  "author": {
+    "name": "Vittorio Vittori",
+    "email": "vittorio.vittori@maggioli.it",
+    "url": "http://vit.to"
+  },
+  "contributors": [
+    {
+      "name": "Andrea Pruccoli",
+      "email": "andrea.pruccoli@maggioli.it",
+      "role": "Software Engineer"
+    },
+    {
+      "name": "Vittorio Vittori",
+      "email": "vittorio.vittori@maggioli.it",
+      "role": "UX UI Designer"
+    }
+  ]
+}
