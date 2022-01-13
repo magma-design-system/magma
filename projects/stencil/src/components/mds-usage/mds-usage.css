@@ -1,0 +1,37 @@
+@tailwind utilities;
+
+/**
+* @prop --background: Sets the background-color of the component
+* @prop --border-width: Sets the colored border-size of the component
+*/
+
+:host {
+
+  --border-width: 2px;
+  --background: theme('colors.adjust-tone');
+
+  @apply grid;
+
+  background-color: var(--background);
+}
+
+.header {
+  @apply
+    border-0
+    border-solid
+    flex
+    gap-2
+    items-center
+    p-6
+    pb-4;
+
+  border-top-width: var(--border-width);
+}
+
+.content {
+  @apply
+    gap-4
+    grid
+    p-6
+    pt-0;
+}
