@@ -2,9 +2,9 @@
 @tailwind utilities;
 
 /**
-  * @prop --shadow-hover: Sets the box-shadow of the component when the mouse is over it
-  * @prop --shadow: Sets the box-shadow of the component
-  */
+* @prop --shadow-hover: Sets the box-shadow of the component when the mouse is over it
+* @prop --shadow: Sets the box-shadow of the component
+*/
 
 :host {
 
