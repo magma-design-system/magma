@@ -29,6 +29,7 @@ import { applyPolyfills as apMdsList, defineCustomElements as dceMdsList } from 
 import { applyPolyfills as apMdsListItem, defineCustomElements as dceMdsListItem } from '@maggioli-design-system/mds-list-item/loader'
 import { applyPolyfills as apMdsModal, defineCustomElements as dceMdsModal } from '@maggioli-design-system/mds-modal/loader'
 import { applyPolyfills as apMdsProgress, defineCustomElements as dceMdsProgress } from '@maggioli-design-system/mds-progress/loader'
+import { applyPolyfills as apMdsQuote, defineCustomElements as dceMdsQuote } from '@maggioli-design-system/mds-quote/loader'
 import { applyPolyfills as apMdsTab, defineCustomElements as dceMdsTab } from '@maggioli-design-system/mds-tab/loader'
 import { applyPolyfills as apMdsTabItem, defineCustomElements as dceMdsTabItem } from '@maggioli-design-system/mds-tab-item/loader'
 import { applyPolyfills as apMdsText, defineCustomElements as dceMdsText } from '@maggioli-design-system/mds-text/loader'
@@ -50,6 +51,7 @@ apMdsList().then(void dceMdsList())
 apMdsListItem().then(void dceMdsListItem())
 apMdsModal().then(void dceMdsModal())
 apMdsProgress().then(void dceMdsProgress())
+apMdsQuote().then(void dceMdsQuote())
 apMdsTab().then(void dceMdsTab())
 apMdsTabItem().then(void dceMdsTabItem())
 apMdsText().then(void dceMdsText())
