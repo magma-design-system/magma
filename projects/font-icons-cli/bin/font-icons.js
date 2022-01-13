@@ -4,6 +4,7 @@ const svgtofont = require('svgtofont')
 const fs = require('fs').promises
 const path = require('path')
 const pkg = require('../package.json')
+const chalk = require('chalk')
 const pkgIcons = require('../../icons/package.json')
 const { ICON_GROUPS } = require('../lib/icons-groups')
 const { BUILD_PATH_DIR, BUILD_ORIGINAL_PATH_DIR } = require('../lib/utils')
@@ -185,10 +186,11 @@ function iconsToTempFolder (buildSvgDir, inputData) {
       return copyResult
     })
     .catch(error => {
-      console.error('One or more icons not found.')
-      if (Array.isArray(error)) error.forEach(error => console.error('-', error))
-      else console.error('-', error)
-      return Promise.reject(error)
+      console.error(`${chalk.red('One or more icons not found')}`)
+      // if (Array.isArray(error)) error.forEach(error => console.error('-', error))
+      // else console.error('-', error)
+      // return Promise.reject(error)
+      Promise.reject(error)
     })
 }
 
