@@ -1,47 +1,61 @@
 @tailwind utilities;
 
+/**
+* @prop --background-color-pending: The background-color when an image is loading
+* @prop --background-color-placeholder: The background-color of the placeholder icon
+* @prop --radius: The border-radius of the element
+* @prop --color-placeholder: The color of the placeholder icon
+*/
+
 :host {
 
-  /**
-    * @prop --background-color-pending: The background-color when an image is loading
-    * @prop --background-color-placeholder: The background-color of the placeholder icon
-    * @prop --radius: The border-radius of the element
-    * @prop --color-placeholder: The color of the placeholder icon
-    */
-
   --background-color-pending: theme('colors.adjust-tone-08');
-  --background-color-placeholder: theme('colors.brand-maggioli-06');
+  --background-color-placeholder: theme('colors.brand-maggioli-04');
   --radius: theme('borderRadius.full');
   --color-placeholder: theme('colors.brand-maggioli-10');
 
+  @apply
+    inline-flex
+    w-full;
+
+  aspect-ratio: 1/1;
+}
+
+.avatar {
   @apply
     animate-pulse
     block
     overflow-hidden
     text-transparent
-    transition-colors;
+    transition-colors
+    w-full;
 
   aspect-ratio: 1/1;
-  background-color: var(--background-color-pending);
   border-radius: var(--radius);
 }
 
-:host ( .loaded ) {
+.avatar.pending {
+  background-color: var(--background-color-pending);
+}
+
+.avatar.loaded {
   @apply animate-none;
 }
 
-:host ( .fallback ),
-:host ( .initials ) {
+.avatar.fallback,
+.avatar.initials {
   @apply
     flex
     items-center
     justify-center
     p-4;
+}
 
+.avatar.fallback {
   background-color: var(--background-color-placeholder);
 }
 
-:host ( .initials ) {
+.avatar.initials {
   @apply p-0;
 }
 
