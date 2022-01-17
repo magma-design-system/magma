@@ -45,7 +45,7 @@ export class MdsDetails {
         <div class="contents">
           <header class="header" onClick={ this.toggle }>
             <slot name="title"/>
-            <mds-icon name="add" class={clsx('helper-icon', this.isOpened && 'opened')}/>
+            <mds-icon name="keyboard-arrow-down" class={clsx('helper-icon', this.isOpened && 'opened')}/>
           </header>
           <div class={clsx('details', this.isOpened && 'opened')}>
             <slot/>

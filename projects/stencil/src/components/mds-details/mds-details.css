@@ -26,6 +26,7 @@
     grid
     h-0
     opacity-0
+    overflow-hidden
     pointer-events-none
     pt-0
     transition-cosmetic;
@@ -43,7 +44,7 @@
   @apply
     flex
     gap-2
-    items-center;
+    items-start;
 }
 
 .icon {
@@ -55,14 +56,16 @@
 .helper-icon {
   @apply
     cursor-pointer
+    flex-shrink-0
     rotate-0
+    duration-300
     transition-transform;
 
   color: var(--helper-icon-color);
 }
 
 .helper-icon.opened {
-  @apply rotate-45;
+  @apply rotate-180;
 }
 
 .actions {
