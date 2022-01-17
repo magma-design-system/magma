@@ -284,6 +284,7 @@
   "read-only": "material/visibility",
   "recycle": "mdi/recycle",
   "remove-circle-outline": "material/remove_circle_outline",
+  "remove-circle": "material/remove_circle",
   "role-admin": "mdi/police-badge",
   "role-editor": "material/verified_user",
   "role-owner": "mdi/crown",
