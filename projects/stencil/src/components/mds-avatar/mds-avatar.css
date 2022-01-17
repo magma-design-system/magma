@@ -16,22 +16,23 @@
 
   @apply
     inline-flex
+    overflow-hidden
     w-full;
 
   aspect-ratio: 1/1;
+  border-radius: var(--radius);
 }
 
 .avatar {
   @apply
     animate-pulse
-    block
+    inline-flex
     overflow-hidden
     text-transparent
     transition-colors
     w-full;
 
   aspect-ratio: 1/1;
-  border-radius: var(--radius);
 }
 
 .avatar.pending {
