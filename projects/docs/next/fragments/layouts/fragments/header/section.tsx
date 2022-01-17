@@ -2,8 +2,8 @@ import { FC } from 'react'
 import { LayoutProps } from '../../../../meta/props/LayoutProps'
 
 const Header: FC<LayoutProps> = ({ title, children }): JSX.Element =>
-  <div className="grid desktop:grid-cols-section fixed top-0 left-0 right-0 z-20">
-    <mds-header class="px-0 desktop:col-start-2">
+  <div className="desktop:grid tablet-max:flex desktop:grid-cols-section fixed top-0 left-0 right-0 z-20">
+    <mds-header class="px-0 desktop:col-start-2 tablet-max:w-full">
       <mds-header-bar class="border-0 border-adjust-tone-02 border-b border-solid desktop:px-0 blur-overlay shadow-none static">
         <div className="flex gap-4 items-center">
           <mds-img class="h-12 w-12 desktop:-ml-12 desktop:opacity-0" src="./logo-gruppo-maggioli.svg"/>

@@ -12,8 +12,8 @@
     "@maggioli-design-system/identity": "^1.8.3",
     "@maggioli-design-system/mds-accordion": "^1.0.2",
     "@maggioli-design-system/mds-accordion-item": "^1.0.3",
-    "@maggioli-design-system/mds-author": "^1.0.1",
-    "@maggioli-design-system/mds-avatar": "^1.1.2",
+    "@maggioli-design-system/mds-author": "^1.0.4",
+    "@maggioli-design-system/mds-avatar": "^1.2.2",
     "@maggioli-design-system/mds-badge": "^1.1.2",
     "@maggioli-design-system/mds-benchmark-bar": "^1.2.0",
     "@maggioli-design-system/mds-bibliography": "^1.0.0",
@@ -22,7 +22,7 @@
     "@maggioli-design-system/mds-grid": "^1.0.1",
     "@maggioli-design-system/mds-header": "^2.0.1",
     "@maggioli-design-system/mds-header-bar": "^1.0.1",
-    "@maggioli-design-system/mds-icon": "^1.1.0",
+    "@maggioli-design-system/mds-icon": "^1.1.1",
     "@maggioli-design-system/mds-img": "^1.0.2",
     "@maggioli-design-system/mds-list": "^1.0.0",
     "@maggioli-design-system/mds-list-item": "^1.0.0",
@@ -31,7 +31,7 @@
     "@maggioli-design-system/mds-tab": "^1.0.0",
     "@maggioli-design-system/mds-tab-item": "^1.0.0",
     "@maggioli-design-system/mds-text": "^1.2.1",
-    "@maggioli-design-system/mds-usage": "^1.0.0",
+    "@maggioli-design-system/mds-usage": "^1.1.0",
     "@maggioli-design-system/styles": "^6.0.1",
     "next": "12.0.7",
     "nprogress": "^0.2.0",
@@ -48,7 +48,7 @@
     "eslint-config-next": "12.0.7",
     "postcss": "^8.4.5",
     "postcss-import": "^14.0.2",
-    "tailwindcss": "^3.0.7",
+    "tailwindcss": "^3.0.13",
     "typescript": "4.5.4"
   }
 }

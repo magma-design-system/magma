@@ -7,6 +7,8 @@ import ArticleKeyPoints, { ArticleKeyPoint } from '../fragments/article/key-poin
 import Authors from '../fragments/article/authors'
 import Bibliography from '../fragments/article/bibliography'
 import DesignPrinciple from '../fragments/design-principle'
+import { ArticleSeparator } from '../fragments/separator'
+import { Roadmap, RoadmapItem } from '../fragments/Roadmap'
 import { ArticleWidgetContents, ArticleWidgetAside, ArticleWidget } from '../fragments/article/widget'
 
 const articleTitle = 'Article cheatsheet'
@@ -18,7 +20,9 @@ const CompanyValues = (): JSX.Element =>
       <mds-tab-item>Condotta</mds-tab-item>
       <mds-tab-item>Commit</mds-tab-item>
       <mds-tab-item>Submission</mds-tab-item>
+      <mds-tab-item>Voce ulteriore</mds-tab-item>
       <mds-tab-item>Versionamento</mds-tab-item>
+      <mds-tab-item>SwissTransfer</mds-tab-item>
     </Menu>
     <article className="py-12 grid gap-12 text-adjust-tone-01">
       <div className='-mt-12'>
@@ -162,12 +166,41 @@ const CompanyValues = (): JSX.Element =>
       </ArticleWidget>
       <ArticleKeyPoints>
         <mds-usage>
-          <mds-text>Fai questo ma non quello</mds-text>
+          <mds-text>Lorem ipsum, dolor sit amet consectetur adipisicing elit.</mds-text>
+          <mds-text>Laboriosam, nulla perferendis facere recusandae ipsa ab tempora voluptatum voluptates ullam sit excepturi quisquam, placeat consectetur suscipit. Eius ipsa consequatur eveniet nostrum!</mds-text>
         </mds-usage>
         <mds-usage variant="dont">
-          <mds-text>Fai questo ma non quello</mds-text>
+          <mds-text>Lorem ipsum, dolor sit amet consectetur adipisicing elit. Eius ipsa consequatur eveniet nostrum!</mds-text>
+          <mds-text>Laboriosam, nulla perferendis facere recusandae ipsa ab tempora voluptatum voluptates ullam sit excepturi quisquam, placeat consectetur suscipit.</mds-text>
+        </mds-usage>
+        <mds-usage variant="warn">
+          <mds-text>Lorem ipsum, dolor sit amet consectetur adipisicing elit.</mds-text>
+          <mds-text>Laboriosam, nulla perferendis facere recusandae ipsa ab tempora voluptatum voluptates ullam sit excepturi quisquam, placeat consectetur suscipit. Eius ipsa consequatur eveniet nostrum!</mds-text>
+        </mds-usage>
+        <mds-usage variant="dont">
+          <mds-text>Lorem ipsum, dolor sit amet consectetur adipisicing elit. Eius ipsa consequatur eveniet nostrum!</mds-text>
+          <mds-text>Laboriosam, nulla perferendis facere recusandae ipsa ab tempora voluptatum voluptates ullam sit excepturi quisquam, placeat consectetur suscipit.</mds-text>
         </mds-usage>
       </ArticleKeyPoints>
+      <div className="grid gap-6">
+        <mds-text typography="h4" class="text-brand-maggioli-02">Design Language</mds-text>
+        <ArticleSeparator/>
+        <ArticleWidget>
+          <ArticleWidgetContents>
+            <mds-text typography="paragraph" class="max-w-text">Da oltre 115 anni siamo una Family Company che da ben quattro generazioni ama definirsi usando l’espressione “innovatori per tradizione”: un’espressione che racchiude il nostro spirito imprenditoriale e ben interpreta i principi ed i valori alla base della nostra cultura d&apos;impresa.</mds-text>
+          </ArticleWidgetContents>
+        </ArticleWidget>
+        <div className="grid tablet:grid-cols-2 gap-6">
+          <mds-benchmark-bar value={14} class="flex-grow" variant="primary">Brand</mds-benchmark-bar>
+          <mds-benchmark-bar value={83} class="flex-grow" variant="primary">Logo</mds-benchmark-bar>
+          <mds-benchmark-bar value={67} class="flex-grow" variant="primary">Linee guida</mds-benchmark-bar>
+        </div>
+      </div>
+      <Roadmap title="Brand" description="Da oltre 115 anni siamo una Family Company che da ben quattro generazioni ama definirsi usando l’espressione “innovatori per tradizione”: un’espressione che racchiude il nostro spirito imprenditoriale e ben interpreta i principi ed i valori alla base della nostra cultura d'impresa.">
+        <RoadmapItem done={true} title="Vision" description="Perché esisti, quali sono i tuoi valori e come questi aiuteranno a guidare il futuro del tuo prodotto. Lorem ipsum dolor sit amet consectetur adipisicing elit. Consectetur, vel ad. Harum aliquid inventore dolorum non molestiae eius, reprehenderit repellendus blanditiis iusto perspiciatis necessitatibus ipsam consequuntur esse cumque iste mollitia?"/>
+        <RoadmapItem done={false} title="Vision" description="Perché esisti, quali sono i tuoi valori e come questi aiuteranno a guidare il futuro del tuo prodotto. Lorem ipsum dolor sit amet consectetur adipisicing elit. Consectetur, vel ad. Harum aliquid inventore dolorum non molestiae eius, reprehenderit repellendus blanditiis iusto perspiciatis necessitatibus ipsam consequuntur esse cumque iste mollitia?"/>
+        <RoadmapItem done={false} title="Vision" description="Perché esisti, quali sono i tuoi valori e come questi aiuteranno a guidare il futuro del tuo prodotto. Lorem ipsum dolor sit amet consectetur adipisicing elit. Consectetur, vel ad. Harum aliquid inventore dolorum non molestiae eius, reprehenderit repellendus blanditiis iusto perspiciatis necessitatibus ipsam consequuntur esse cumque iste mollitia?"/>
+      </Roadmap>
       <footer>
         <Authors/>
         <Bibliography/>

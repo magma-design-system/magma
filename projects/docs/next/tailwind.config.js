@@ -12,7 +12,7 @@ module.exports = {
   theme: {
     extend: {
       gridTemplateColumns: {
-        section: '340px auto',
+        section: '340px minmax(0, auto)',
       },
       opacity: {
         '85': '.85',
