@@ -1,0 +1,72 @@
+@tailwind utilities;
+
+/**
+* @prop --icon-color: Sets the box-shadow of the component when the mouse is over it
+* @prop --helper-icon-color: Sets the box-shadow of the component when the mouse is over it
+*/
+
+:host {
+
+  --icon-color: theme('colors.brand-maggioli-04');
+  --helper-icon-color: var(--icon-color);
+
+  @apply
+    flex
+    gap-2
+    items-start;
+}
+
+.contents {
+  @apply grid;
+}
+
+.details {
+  @apply
+    gap-4
+    grid
+    h-0
+    opacity-0
+    pointer-events-none
+    pt-0
+    transition-cosmetic;
+}
+
+.details.opened {
+  @apply
+    h-auto
+    opacity-100
+    pointer-events-auto
+    pt-4;
+}
+
+.header {
+  @apply
+    flex
+    gap-2
+    items-center;
+}
+
+.icon {
+  @apply cursor-pointer;
+
+  color: var(--icon-color);
+}
+
+.helper-icon {
+  @apply
+    cursor-pointer
+    rotate-0
+    transition-transform;
+
+  color: var(--helper-icon-color);
+}
+
+.helper-icon.opened {
+  @apply rotate-45;
+}
+
+.actions {
+  @apply
+    flex
+    gap-4;
+}
