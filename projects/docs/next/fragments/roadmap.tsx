@@ -2,6 +2,7 @@ import clsx from 'clsx'
 import { ReactNode, FC } from 'react'
 
 interface RoadmapItemProps {
+  children?: ReactNode,
   className?: string,
   description: string,
   done: boolean,
@@ -10,26 +11,17 @@ interface RoadmapItemProps {
 
 const RoadmapItem: FC<RoadmapItemProps> = ({
   className,
+  children,
   done,
   description = 'Lorem ipsum dolor sit amet consectetur adipisicing elit. Consectetur, vel ad. Harum aliquid inventore dolorum non molestiae eius, reprehenderit repellendus blanditiis iusto perspiciatis necessitatibus ipsam consequuntur esse cumque iste mollitia?',
   title = 'Brand',
 }: RoadmapItemProps): JSX.Element =>
-  <div className={clsx('flex gap-2 items-start', className)}>
-    <mds-icon name={ done ? 'check-circle' : 'remove-circle' } class={ done ? 'text-brand-maggioli-04' : 'text-adjust-tone-07'}/>
-    <div className="grid gap-2">
-      <div className="flex gap-2 items-center">
-        <mds-text typography="h6">{ title }</mds-text>
-        <mds-icon name="close" class="text-brand-maggioli-02"/>
-      </div>
-      <div className="grid gap-4">
-        <mds-text typography="caption" class="text-adjust-tone-04">{ description }</mds-text>
-        <div className="flex gap-4">
-          <mds-button size="sm">Vai alla contenuto</mds-button>
-          <mds-button size="sm" tone="ghost">Storybook</mds-button>
-        </div>
-      </div>
-    </div>
-  </div>
+  <mds-details class={clsx(className)}>
+    <mds-icon name={ done ? 'check-circle' : 'remove-circle' } class={ done ? 'text-brand-maggioli-04' : 'text-adjust-tone-07'} slot="icon"/>
+    <mds-text typography="h6" slot="title">{ title }</mds-text>
+    <mds-text typography="caption" class="text-adjust-tone-04">{ description }</mds-text>
+    { children }
+  </mds-details>
 
 interface RoadmapProps {
   children?: ReactNode,

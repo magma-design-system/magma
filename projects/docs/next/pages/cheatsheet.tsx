@@ -6,6 +6,7 @@ import ArticleRelatedContent from '../fragments/article/related-content'
 import ArticleKeyPoints, { ArticleKeyPoint } from '../fragments/article/key-points'
 import Authors from '../fragments/article/authors'
 import Bibliography from '../fragments/article/bibliography'
+import ArticlePreview from '../fragments/article-preview'
 import DesignPrinciple from '../fragments/design-principle'
 import { ArticleSeparator } from '../fragments/separator'
 import { Roadmap, RoadmapItem } from '../fragments/Roadmap'
@@ -197,10 +198,75 @@ const CompanyValues = (): JSX.Element =>
         </div>
       </div>
       <Roadmap title="Brand" description="Da oltre 115 anni siamo una Family Company che da ben quattro generazioni ama definirsi usando l’espressione “innovatori per tradizione”: un’espressione che racchiude il nostro spirito imprenditoriale e ben interpreta i principi ed i valori alla base della nostra cultura d'impresa.">
-        <RoadmapItem done={true} title="Vision" description="Perché esisti, quali sono i tuoi valori e come questi aiuteranno a guidare il futuro del tuo prodotto. Lorem ipsum dolor sit amet consectetur adipisicing elit. Consectetur, vel ad. Harum aliquid inventore dolorum non molestiae eius, reprehenderit repellendus blanditiis iusto perspiciatis necessitatibus ipsam consequuntur esse cumque iste mollitia?"/>
-        <RoadmapItem done={false} title="Vision" description="Perché esisti, quali sono i tuoi valori e come questi aiuteranno a guidare il futuro del tuo prodotto. Lorem ipsum dolor sit amet consectetur adipisicing elit. Consectetur, vel ad. Harum aliquid inventore dolorum non molestiae eius, reprehenderit repellendus blanditiis iusto perspiciatis necessitatibus ipsam consequuntur esse cumque iste mollitia?"/>
-        <RoadmapItem done={false} title="Vision" description="Perché esisti, quali sono i tuoi valori e come questi aiuteranno a guidare il futuro del tuo prodotto. Lorem ipsum dolor sit amet consectetur adipisicing elit. Consectetur, vel ad. Harum aliquid inventore dolorum non molestiae eius, reprehenderit repellendus blanditiis iusto perspiciatis necessitatibus ipsam consequuntur esse cumque iste mollitia?"/>
+        <RoadmapItem done={true} title="Logo" description="Perché esisti, quali sono i tuoi valori e come questi aiuteranno a guidare il futuro del tuo prodotto. Lorem ipsum dolor sit amet consectetur adipisicing elit. Consectetur, vel ad. Harum aliquid inventore dolorum non molestiae eius, reprehenderit repellendus blanditiis iusto perspiciatis necessitatibus ipsam consequuntur esse cumque iste mollitia?">
+          <mds-button size="sm" slot="action">Vai alla contenuto</mds-button>
+          <mds-button size="sm" slot="action" tone="ghost">Storybook</mds-button>
+        </RoadmapItem>
+        <RoadmapItem done={true} title="Vision" description="Perché esisti, quali sono i tuoi valori e come questi aiuteranno a guidare il futuro del tuo prodotto. Lorem ipsum dolor sit amet consectetur adipisicing elit. Consectetur, vel ad. Harum aliquid inventore dolorum non molestiae eius, reprehenderit repellendus blanditiis iusto perspiciatis necessitatibus ipsam consequuntur esse cumque iste mollitia?">
+          <mds-button size="sm" slot="action">Vai alla contenuto</mds-button>
+          <mds-button size="sm" slot="action" tone="ghost">Storybook</mds-button>
+        </RoadmapItem>
+        <RoadmapItem done={false} title="Immagine coordinata" description="Perché esisti, quali sono i tuoi valori e come questi aiuteranno a guidare il futuro del tuo prodotto. Lorem ipsum dolor sit amet consectetur adipisicing elit. Consectetur, vel ad. Harum aliquid inventore dolorum non molestiae eius, reprehenderit repellendus blanditiis iusto perspiciatis necessitatibus ipsam consequuntur esse cumque iste mollitia?">
+          <mds-button size="sm" slot="action">Vai alla contenuto</mds-button>
+          <mds-button size="sm" slot="action" tone="ghost">Storybook</mds-button>
+        </RoadmapItem>
       </Roadmap>
+      <Roadmap title="Componenti" description="Da oltre 115 anni siamo una Family Company che da ben quattro generazioni ama definirsi usando l’espressione “innovatori per tradizione”: un’espressione che racchiude il nostro spirito imprenditoriale e ben interpreta i principi ed i valori alla base della nostra cultura d'impresa.">
+        <RoadmapItem done={true} title="Logo" description="Perché esisti, quali sono i tuoi valori e come questi aiuteranno a guidare il futuro del tuo prodotto. Lorem ipsum dolor sit amet consectetur adipisicing elit. Consectetur, vel ad. Harum aliquid inventore dolorum non molestiae eius, reprehenderit repellendus blanditiis iusto perspiciatis necessitatibus ipsam consequuntur esse cumque iste mollitia?">
+          <mds-button size="sm" slot="action">Vai alla contenuto</mds-button>
+          <mds-button size="sm" slot="action" tone="ghost">Storybook</mds-button>
+        </RoadmapItem>
+        <RoadmapItem done={true} title="Vision" description="Perché esisti, quali sono i tuoi valori e come questi aiuteranno a guidare il futuro del tuo prodotto. Lorem ipsum dolor sit amet consectetur adipisicing elit. Consectetur, vel ad. Harum aliquid inventore dolorum non molestiae eius, reprehenderit repellendus blanditiis iusto perspiciatis necessitatibus ipsam consequuntur esse cumque iste mollitia?">
+          <mds-button size="sm" slot="action">Vai alla contenuto</mds-button>
+          <mds-button size="sm" slot="action" tone="ghost">Storybook</mds-button>
+        </RoadmapItem>
+        <RoadmapItem done={false} title="Immagine coordinata" description="Perché esisti, quali sono i tuoi valori e come questi aiuteranno a guidare il futuro del tuo prodotto. Lorem ipsum dolor sit amet consectetur adipisicing elit. Consectetur, vel ad. Harum aliquid inventore dolorum non molestiae eius, reprehenderit repellendus blanditiis iusto perspiciatis necessitatibus ipsam consequuntur esse cumque iste mollitia?">
+          <mds-button size="sm" slot="action">Vai alla contenuto</mds-button>
+          <mds-button size="sm" slot="action" tone="ghost">Storybook</mds-button>
+        </RoadmapItem>
+      </Roadmap>
+      <ArticleSeparator/>
+      <ArticleWidget>
+        <ArticleWidgetContents>
+          <ArticlePreview/>
+        </ArticleWidgetContents>
+        <ArticleWidgetAside>
+          <ArticleRelatedContent title="Argomenti">
+            <mds-list class="gap-0">
+              <mds-list-item><mds-text typography="caption">Refactoring</mds-text></mds-list-item>
+              <mds-list-item><mds-text typography="caption">Restyling</mds-text></mds-list-item>
+            </mds-list>
+          </ArticleRelatedContent>
+        </ArticleWidgetAside>
+      </ArticleWidget>
+      <ArticleSeparator/>
+      <ArticleWidget>
+        <ArticleWidgetContents>
+          <ArticlePreview/>
+        </ArticleWidgetContents>
+        <ArticleWidgetAside>
+          <ArticleRelatedContent title="Argomenti">
+            <mds-list class="gap-0">
+              <mds-list-item><mds-text typography="caption">Refactoring</mds-text></mds-list-item>
+              <mds-list-item><mds-text typography="caption">Restyling</mds-text></mds-list-item>
+            </mds-list>
+          </ArticleRelatedContent>
+        </ArticleWidgetAside>
+      </ArticleWidget>
+      <ArticleSeparator/>
+      <ArticleWidget>
+        <ArticleWidgetContents>
+          <ArticlePreview/>
+        </ArticleWidgetContents>
+        <ArticleWidgetAside>
+          <ArticleRelatedContent title="Argomenti">
+            <mds-list class="gap-0">
+              <mds-list-item><mds-text typography="caption">Refactoring</mds-text></mds-list-item>
+              <mds-list-item><mds-text typography="caption">Restyling</mds-text></mds-list-item>
+            </mds-list>
+          </ArticleRelatedContent>
+        </ArticleWidgetAside>
+      </ArticleWidget>
       <footer>
         <Authors/>
         <Bibliography/>

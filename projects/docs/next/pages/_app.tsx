@@ -20,6 +20,7 @@ import { applyPolyfills as apMdsBenchmarkBar, defineCustomElements as dceMdsBenc
 import { applyPolyfills as apMdsBibliography, defineCustomElements as dceMdsBibliography } from '@maggioli-design-system/mds-bibliography/loader'
 import { applyPolyfills as apMdsButton, defineCustomElements as dceMdsButton } from '@maggioli-design-system/mds-button/loader'
 import { applyPolyfills as apMdsCard, defineCustomElements as dceMdsCard } from '@maggioli-design-system/mds-card/loader'
+import { applyPolyfills as apMdsDetails, defineCustomElements as dceMdsDetails } from '@maggioli-design-system/mds-details/loader'
 import { applyPolyfills as apMdsGrid, defineCustomElements as dceMdsGrid } from '@maggioli-design-system/mds-grid/loader'
 import { applyPolyfills as apMdsHeader, defineCustomElements as dceMdsHeader } from '@maggioli-design-system/mds-header/loader'
 import { applyPolyfills as apMdsHeaderBar, defineCustomElements as dceMdsHeaderBar } from '@maggioli-design-system/mds-header-bar/loader'
@@ -43,6 +44,7 @@ apMdsBenchmarkBar().then(void dceMdsBenchmarkBar())
 apMdsBibliography().then(void dceMdsBibliography())
 apMdsButton().then(void dceMdsButton())
 apMdsCard().then(void dceMdsCard())
+apMdsDetails().then(void dceMdsDetails())
 apMdsGrid().then(void dceMdsGrid())
 apMdsHeader().then(void dceMdsHeader())
 apMdsHeaderBar().then(void dceMdsHeaderBar())

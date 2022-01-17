@@ -19,6 +19,7 @@
     "@maggioli-design-system/mds-bibliography": "^1.0.0",
     "@maggioli-design-system/mds-button": "^1.1.2",
     "@maggioli-design-system/mds-card": "^1.0.0",
+    "@maggioli-design-system/mds-details": "^1.0.2",
     "@maggioli-design-system/mds-grid": "^1.0.1",
     "@maggioli-design-system/mds-header": "^2.0.1",
     "@maggioli-design-system/mds-header-bar": "^1.0.1",
