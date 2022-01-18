@@ -2,8 +2,8 @@ import type { FC } from 'react'
 import { ReactComponentProps } from '../../meta/props/ReactComponent'
 import clsx from 'clsx'
 
-const ArticleWidgetContents: FC<ReactComponentProps> = ({ children }: ReactComponentProps): JSX.Element =>
-  <div className="tablet:col-span-3 grid gap-6">
+const ArticleWidgetContents: FC<ReactComponentProps> = ({ children, className }: ReactComponentProps): JSX.Element =>
+  <div className={clsx('tablet:col-span-3 grid gap-6', className)}>
     { children }
   </div>
 

@@ -1,6 +1,6 @@
 import { ReactNode } from 'react'
 
 export interface ReactComponentProps {
-  children?: ReactNode,
+  children?: JSX.Element|JSX.Element[],
   className?: string,
 }

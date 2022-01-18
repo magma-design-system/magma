@@ -9,7 +9,8 @@ import Bibliography from '../fragments/article/bibliography'
 import ArticlePreview from '../fragments/article-preview'
 import DesignPrinciple from '../fragments/design-principle'
 import { ArticleSeparator } from '../fragments/separator'
-import { Roadmap, RoadmapItem } from '../fragments/Roadmap'
+import { Roadmap, RoadmapItem } from '../fragments/roadmap'
+import { Release, ReleaseCommit } from '../fragments/release'
 import { ArticleWidgetContents, ArticleWidgetAside, ArticleWidget } from '../fragments/article/widget'
 
 const articleTitle = 'Article cheatsheet'
@@ -264,6 +265,30 @@ const CompanyValues = (): JSX.Element =>
               <mds-list-item><mds-text typography="caption">Refactoring</mds-text></mds-list-item>
               <mds-list-item><mds-text typography="caption">Restyling</mds-text></mds-list-item>
             </mds-list>
+          </ArticleRelatedContent>
+        </ArticleWidgetAside>
+      </ArticleWidget>
+      <ArticleWidget>
+        <ArticleWidgetContents>
+          <Release name="mds-text" date="2022-01-12" version="1.0.3" commits={32}>
+            <ReleaseCommit category="fix" message="Add typography property to prevent stuff to work bad and be depressed, so please understand me"/>
+            <ReleaseCommit category="style" message="Change default text color"/>
+            <ReleaseCommit category="refact" message="Move variants into separated file"/>
+          </Release>
+          <Release name="mds-icon" date="2022-01-06" version="2.0.3" commits={7}>
+            <ReleaseCommit category="change" message="Change default text color"/>
+            <ReleaseCommit category="feat" message="Add typography property"/>
+            <ReleaseCommit category="refact" message="Move variants into separated file"/>
+          </Release>
+          <Release name="icons" date="2022-01-04" version="1.4.7" commits={14} last>
+            <ReleaseCommit category="style" message="Change default text color"/>
+            <ReleaseCommit category="refact" message="Move variants into separated file"/>
+            <ReleaseCommit category="fix" message="Add typography property"/>
+          </Release>
+        </ArticleWidgetContents>
+        <ArticleWidgetAside>
+          <ArticleRelatedContent title="Perché UX e UI sono così cool?">
+            <mds-text typography="caption" class="max-w-text">Da oltre 115 anni siamo una Family Company che da ben quattro generazioni ama definirsi usando l’espressione “innovatori per tradizione”: un’espressione che racchiude il nostro spirito imprenditoriale e ben interpreta i principi ed i valori alla base della nostra cultura d&apos;impresa.</mds-text>
           </ArticleRelatedContent>
         </ArticleWidgetAside>
       </ArticleWidget>

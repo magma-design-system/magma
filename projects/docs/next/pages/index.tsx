@@ -2,7 +2,8 @@ import type { ReactElement } from 'react'
 import Layout from '../fragments/layouts/homepage'
 import Resources from '../fragments/resources'
 import Separator from '../fragments/separator'
-import Card from '../fragments/card'
+// import Card from '../fragments/card'
+import { ReleasePreview, ReleaseCommit } from '../fragments/release'
 import ArticlePreview from '../fragments/article-preview'
 
 const Headline = (): JSX.Element =>
@@ -54,37 +55,26 @@ const News = (): JSX.Element =>
     </div>
   </section>
 
-const ReleaseCommit = (): JSX.Element => {
-
-  return <div className="flex gap-2 items-start">
-    <mds-badge class="rounded-full text-brand-maggioli-03 bg-transparent border border-solid border-brand-maggioli-03">feat</mds-badge>
-    <mds-text typography="caption">Add typography property</mds-text>
-  </div>
-}
-
-const Release = (): JSX.Element =>
-  <Card className="grid-cols-4">
-    <div className="grid">
-      <mds-text typography="h6" class="text-brand-maggioli-03">mds-text</mds-text>
-      <mds-text typography="h6" class="text-adjust-tone-04"><b>5.0.3</b></mds-text>
-      <mds-text typography="caption"><b>4 giorni fa</b></mds-text>
-    </div>
-    <div className="col-span-3 relative justify-between flex flex-col">
-      <ReleaseCommit/>
-      <ReleaseCommit/>
-      <ReleaseCommit/>
-      <mds-badge variant="dark" tone="quiet" class="rounded-full top-0 right-0 absolute">12 commit</mds-badge>
-    </div>
-  </Card>
-
 const Releases = (): JSX.Element =>
   <div className="grid gap-12 auto-rows-min">
     <Separator/>
     <mds-text typography="h2">Rilasci</mds-text>
     <div className="grid gap-4">
-      <Release/>
-      <Release/>
-      <Release/>
+      <ReleasePreview name="mds-text" date="2022-01-12" version="1.0.3" commits={32}>
+        <ReleaseCommit category="fix" message="Add typography property to prevent stuff to work bad and be depressed, so please understand me"/>
+        <ReleaseCommit category="style" message="Change default text color"/>
+        <ReleaseCommit category="refact" message="Move variants into separated file"/>
+      </ReleasePreview>
+      <ReleasePreview name="mds-icon" date="2022-01-06" version="2.0.3" commits={7}>
+        <ReleaseCommit category="change" message="Change default text color"/>
+        <ReleaseCommit category="feat" message="Add typography property"/>
+        <ReleaseCommit category="refact" message="Move variants into separated file"/>
+      </ReleasePreview>
+      <ReleasePreview name="icons" date="2022-01-04" version="1.4.7" commits={14}>
+        <ReleaseCommit category="style" message="Change default text color"/>
+        <ReleaseCommit category="refact" message="Move variants into separated file"/>
+        <ReleaseCommit category="fix" message="Add typography property"/>
+      </ReleasePreview>
     </div>
   </div>
 
