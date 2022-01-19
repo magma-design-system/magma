@@ -2,6 +2,8 @@ import Card from './card'
 import { ReactComponentProps } from '../meta/props/ReactComponent'
 import { FC, Fragment } from 'react'
 import clsx from 'clsx'
+import moment from 'moment'
+import 'moment/locale/it'
 
 interface ReleaseCommitProps {
   category: string
@@ -81,8 +83,8 @@ const Release: FC<ReleaseProps> = ({
   <div className="grid grid-cols-1 tablet:grid-cols-[1fr_2fr] gap-6 auto-rows-min">
     <div className="flex justify-between gap-4">
       <div className="mt-4">
-        <mds-text><b>{ date }</b></mds-text>
-        <mds-text typography="option" class="text-adjust-tone-05">3 giorni fa</mds-text>
+        <mds-text><b>{ moment(date, 'YYYY-MM-DD').format('LL') }</b></mds-text>
+        <mds-text typography="option" class="text-adjust-tone-05">{ moment(date, 'YYYY-MM-DD').fromNow() }</mds-text>
       </div>
       <ReleaseDotSeparator last={last}/>
     </div>

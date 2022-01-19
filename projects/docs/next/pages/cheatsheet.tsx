@@ -12,12 +12,14 @@ import { ArticleSeparator } from '../fragments/separator'
 import { Roadmap, RoadmapItem } from '../fragments/roadmap'
 import { Release, ReleaseCommit } from '../fragments/release'
 import { ArticleWidgetContents, ArticleWidgetAside, ArticleWidget } from '../fragments/article/widget'
+import readingTime from 'reading-time'
 
 const articleTitle = 'Article cheatsheet'
+const stats = readingTime('Lorem ipsum dolor sit amet, consectetur adipiscing elit. Praesent placerat leo ante, et accumsan enim posuere euismod. Sed dignissim at sem vitae consectetur. Nullam risus leo, rutrum in orci et, faucibus volutpat leo. Aenean sollicitudin porta sollicitudin. Nulla a interdum turpis, quis tempus augue. Praesent maximus tortor in nibh consectetur ullamcorper. Proin non enim dui. Aliquam erat volutpat. Donec ullamcorper ac turpis eu sodales. Donec varius mi id nisl commodo, sit amet imperdiet nulla placerat. Suspendisse ullamcorper orc.')
 
 const CompanyValues = (): JSX.Element =>
   <div>
-    <Header title={articleTitle}/>
+    <Header title={articleTitle} readTime={Math.ceil(stats.minutes)}/>
     <Menu>
       <mds-tab-item>Condotta</mds-tab-item>
       <mds-tab-item>Commit</mds-tab-item>

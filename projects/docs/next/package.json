@@ -36,10 +36,12 @@
     "@maggioli-design-system/mds-text": "^1.2.1",
     "@maggioli-design-system/mds-usage": "^1.1.0",
     "@maggioli-design-system/styles": "^6.0.1",
+    "moment": "^2.29.1",
     "next": "12.0.7",
     "nprogress": "^0.2.0",
     "react": "17.0.2",
-    "react-dom": "17.0.2"
+    "react-dom": "17.0.2",
+    "reading-time": "^1.5.0"
   },
   "devDependencies": {
     "@types/node": "17.0.1",
