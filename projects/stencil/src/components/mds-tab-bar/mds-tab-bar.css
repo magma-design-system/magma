@@ -1,0 +1,22 @@
+@tailwind utilities;
+
+/*
+* @prop --background: Sets the background-color of the component
+*/
+
+:host {
+
+  --background: theme('colors.adjust-tone');
+  --shadow: theme('boxShadow.sharp-sm');
+
+  @apply
+    bottom-0
+    fixed
+    flex
+    justify-around
+    left-0
+    right-0;
+
+  background-color: var(--background);
+  box-shadow: var(--shadow);
+}

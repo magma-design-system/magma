@@ -1,0 +1,33 @@
+import { Component, Element, Host, h, Listen } from '@stencil/core'
+
+@Component({
+  tag: 'mds-tab-bar',
+  styleUrl: 'mds-tab-bar.css',
+  shadow: true,
+})
+export class MdsTabBar {
+
+  @Element() private element: HTMLMdsTabBarElement
+
+  private queryItems = ():NodeListOf<HTMLMdsTabBarItemElement> =>
+    this.element.querySelectorAll<HTMLMdsTabBarItemElement>('mds-tab-bar-item')
+
+  componentWillLoad ():void {
+    const items = this.queryItems()
+    items.forEach((item, key) => item.id = `item-${key}`)
+  }
+
+  @Listen('selectedEvent')
+  changeEventHandler (event: CustomEvent<string>): void {
+    const items = this.queryItems()
+    items.forEach((item, key) => item.selected = `item-${key}` === event.detail)
+  }
+
+  render () {
+    return (
+      <Host>
+        <slot/>
+      </Host>
+    )
+  }
+}
