@@ -37,16 +37,16 @@ const ReleasePreview: FC<ReleasePreviewProps> = ({
   version,
 }: ReleasePreviewProps): JSX.Element =>
   <Card className="grid-cols-4">
-    <div className="grid auto-rows-min grid-rows-[auto_1fr_1fr_1fr]">
+    <div className="grid auto-rows-min">
       <mds-text typography="h6" class="text-brand-maggioli-03">{ name }</mds-text>
       <mds-text typography="h6" class="text-adjust-tone-04"><b>{ version }</b></mds-text>
       <mds-text typography="label"><b>{ date }</b></mds-text>
-      <div className="flex items-end">
-        <mds-badge variant="dark" tone="weak" class="rounded-full text-adjust-tone-05 border">{ commits } commit totali</mds-badge>
-      </div>
     </div>
     <ReleaseCommits className="col-span-3">
       { children }
+      <div className="col-start-2">
+        <mds-badge variant="dark" tone="weak" class="rounded-full text-adjust-tone-05 border">+ { commits } commit</mds-badge>
+      </div>
     </ReleaseCommits>
   </Card>
 

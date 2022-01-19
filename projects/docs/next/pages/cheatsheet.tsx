@@ -26,7 +26,7 @@ const CompanyValues = (): JSX.Element =>
       <mds-tab-item>Versionamento</mds-tab-item>
       <mds-tab-item>SwissTransfer</mds-tab-item>
     </Menu>
-    <article className="py-12 grid gap-12 text-adjust-tone-01">
+    <article className="pt-12 pb-32 desktop:pb-12 grid gap-12 text-adjust-tone-01">
       <div className='-mt-12'>
         <DesignPrinciple title="Unified" description="Each piece is part of a greater whole and should contribute positively to the system at scale. There should be no isolated features or outliers."/>
         <DesignPrinciple title="Universal" description="Airbnb is used around the world by a wide global community. Our products and visual language should be welcoming and accessible."/>
@@ -297,6 +297,13 @@ const CompanyValues = (): JSX.Element =>
         <Bibliography/>
       </footer>
     </article>
+    <mds-tab-bar class="desktop:hidden">
+      <mds-tab-bar-item icon="signpost" typography="option">Governance</mds-tab-bar-item>
+      <mds-tab-bar-item icon="description" typography="option">Content</mds-tab-bar-item>
+      <mds-tab-bar-item icon="palette" typography="option">Design</mds-tab-bar-item>
+      <mds-tab-bar-item icon="handyman" typography="option">Develop</mds-tab-bar-item>
+      <mds-tab-bar-item icon="person" typography="option">Account</mds-tab-bar-item>
+    </mds-tab-bar>
   </div>
 
 export default CompanyValues

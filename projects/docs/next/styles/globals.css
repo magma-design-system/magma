@@ -36,3 +36,16 @@ mds-tab-item {
   --button-color: theme('colors.adjust-tone-05');
   --button-color-selected: theme('colors.brand-maggioli-02');
 }
+
+mds-tab-bar {
+
+  --background: theme('colors.adjust-tone-10');
+  --shadow: none;
+
+  border-top: 1px solid theme('colors.adjust-tone-01');
+}
+
+mds-tab-bar-item {
+
+  --background-selected: theme('colors.adjust-tone');
+}
