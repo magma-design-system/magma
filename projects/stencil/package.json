@@ -1,0 +1,97 @@
+{
+  "name": "@maggioli-design-system/magma",
+  "version": "1.0.0",
+  "description": "Stencil Component Starter",
+  "main": "dist/index.cjs.js",
+  "module": "dist/index.js",
+  "es2015": "dist/esm/index.mjs",
+  "es2017": "dist/esm/index.mjs",
+  "types": "dist/types/components.d.ts",
+  "collection": "dist/collection/collection-manifest.json",
+  "collection:main": "dist/collection/index.js",
+  "unpkg": "dist/mds-components/mds-components.esm.js",
+  "files": [
+    "dist/",
+    "loader/"
+  ],
+  "scripts": {
+    "build": "rm src/components.d.ts || true && stencil build --docs-readme",
+    "clean": "rimraf dist && rimraf loader && rimraf www && rimraf dist-storybook",
+    "lint": "npm run lint.ts && npm run lint.css",
+    "generate": "stencil generate",
+    "lint.css": "stylelint --config ./.stylelintrc.json 'src/**/*.css'",
+    "lint.ts": "eslint --config ./.eslintrc.json src/**/*.{ts,tsx}",
+    "publish.isolate.all": "node ./scripts/isolate-all.mjs",
+    "publish.isolate.component": "node ./scripts/isolate-component.mjs",
+    "storybook.build": "build-storybook -o ./dist-storybook",
+    "storybook.start": "npm run build && start-storybook -p 6006 --no-manager-cache",
+    "test": "npm run test.e2e",
+    "test.e2e": "stencil test --spec --e2e",
+    "test.e2e.watch": "stencil test --spec --e2e --watchAll",
+    "test.regression.approve": "loki approve",
+    "test.regression.clean": "rm -rf .loki/current .loki/difference .loki/reference",
+    "test.regression.reference": "npm run build && loki update --port 6006 --chromeFlags='--wm-window-animations-disabled --headless --disable-gpu --hide-scrollbars' --chromeEnableAnimations=false",
+    "test.regression.review": "npm run build && loki test --port 6006 --requireReference --chromeEnableAnimations=false"
+  },
+  "dependencies": {
+    "@maggioli-design-system/design-tokens": "^6.1.1",
+    "@maggioli-design-system/icons": "^1.34.0",
+    "@maggioli-design-system/identity": "^1.8.3",
+    "@maggioli-design-system/styles": "^6.0.1",
+    "@stencil/core": "^2.12.1",
+    "tailwindcss": "^3.0.13"
+  },
+  "license": "MIT",
+  "devDependencies": {
+    "@babel/core": "^7.16.0",
+    "@babel/preset-react": "^7.16.0",
+    "@stencil/eslint-plugin": "^0.4.0",
+    "@stencil/postcss": "2.1.0",
+    "@storybook/addon-actions": "^6.4.9",
+    "@storybook/addon-essentials": "^6.4.9",
+    "@storybook/addon-links": "^6.4.9",
+    "@storybook/addon-notes": "^5.3.21",
+    "@storybook/addon-postcss": "^2.0.0",
+    "@storybook/addon-viewport": "^6.4.9",
+    "@storybook/html": "^6.4.9",
+    "@storybook/manager-webpack5": "^6.4.9",
+    "@storybook/react": "^6.4.9",
+    "@storybook/storybook-deployer": "^2.8.10",
+    "@types/jest": "^27.0.3",
+    "@types/tapable": "^2.2.2",
+    "autoprefixer": "^10.4.0",
+    "babel-loader": "^8.2.3",
+    "chalk": "^5.0.0",
+    "clsx": "^1.1.1",
+    "css-loader": "^6.5.1",
+    "directory-tree": "^3.0.1",
+    "handlebars": "^4.7.7",
+    "loki":"^0.28.1",
+    "postcss": "^8.4.5",
+    "postcss-flexbugs-fixes": "^5.0.2",
+    "postcss-import": "14.0.2",
+    "postcss-loader": "^6.2.1",
+    "puppeteer": "^13.0.0",
+    "rimraf": "^3.0.2",
+    "sass-loader": "12.4.0",
+    "stdio": "^2.1.1",
+    "style-loader": "^3.3.1"
+  },
+  "author": {
+    "name": "Vittorio Vittori",
+    "email": "vittorio.vittori@maggioli.it",
+    "url": "http://vit.to"
+  },
+  "contributors": [
+    {
+      "name": "Andrea Pruccoli",
+      "email": "andrea.pruccoli@maggioli.it",
+      "role": "Software Engineer"
+    },
+    {
+      "name": "Vittorio Vittori",
+      "email": "vittorio.vittori@maggioli.it",
+      "role": "UX UI Designer"
+    }
+  ]
+}
