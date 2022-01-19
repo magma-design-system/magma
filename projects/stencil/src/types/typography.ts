@@ -30,6 +30,10 @@ export type TypographySecondaryType =
   | 'option'
   | 'paragraph'
 
+export type TypographySmallerType =
+  | 'caption'
+  | 'option'
+
 export type TypographyMonoType =
   | 'code'
   | 'hack'

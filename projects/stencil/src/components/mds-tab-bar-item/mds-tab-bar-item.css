@@ -1,0 +1,37 @@
+@tailwind utilities;
+
+/*
+* @prop --background-selected: Sets the background-color of the component when it's selected
+* @prop --background: Sets the background-color of the component
+* @prop --color-selected: Sets the text color of the component when it's selected
+* @prop --color: Sets the text color of the component
+*/
+
+:host {
+
+  --background: transparent;
+  --background-selected: var(--background);
+  --color: theme('colors.adjust-tone-06');
+  --color-selected: theme('colors.brand-maggioli-04');
+
+  @apply
+    basis-0
+    cursor-pointer
+    flex
+    flex-col
+    flex-grow
+    flex-shrink-0
+    gap-1
+    items-center
+    p-2
+    text-center
+    transition-colors;
+
+  background-color: var(--background);
+  color: var(--color);
+}
+
+:host( [selected] ) {
+  background-color: var(--background-selected);
+  color: var(--color-selected);
+}

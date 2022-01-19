@@ -38,9 +38,15 @@ const typographySecondaryDictionary = [
   'paragraph',
 ]
 
+const typographySmallerDictionary = [
+  'caption',
+  'option',
+]
+
 export {
   typographyDictionary,
   typographyMonoDictionary,
   typographyPrimaryDictionary,
   typographySecondaryDictionary,
+  typographySmallerDictionary,
 }
