@@ -7,7 +7,8 @@
       "ratios": "tone"
     },
     { "color": "#00379E", "name": "brand.maggioli", "colorspace": "HSL", "smooth": true },
-    { "color": "#597CB9", "name": "brand.synbee" },
+    { "color": "#597CB9", "name": "brand.synbee-eolo" },
+    { "color": "#FFCF21", "name": "brand.synbee" },
     { "color": "#ED7C63", "disabled": true, "name": "brand.argo" },
     { "color": "#01495C", "disabled": true, "name": "brand.la-polizia-locale" },
     { "color": "#FBE00E", "disabled": true, "name": "brand.cantiere-innovazione" },
