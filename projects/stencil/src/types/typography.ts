@@ -13,6 +13,7 @@ export type TypographyType =
   | 'label'
   | 'option'
   | 'paragraph'
+  | 'tip'
 
 export type TypographyPrimaryType =
   | 'action'
@@ -29,9 +30,10 @@ export type TypographySecondaryType =
   | 'label'
   | 'option'
   | 'paragraph'
+  | 'tip'
 
 export type TypographySmallerType =
-  | 'caption'
+  | 'tip'
   | 'option'
 
 export type TypographyMonoType =

@@ -13,6 +13,7 @@ const typographyDictionary = [
   'label',
   'option',
   'paragraph',
+  'tip',
 ]
 
 const typographyMonoDictionary = [
@@ -36,11 +37,12 @@ const typographySecondaryDictionary = [
   'label',
   'option',
   'paragraph',
+  'tip',
 ]
 
 const typographySmallerDictionary = [
-  'caption',
   'option',
+  'tip',
 ]
 
 export {
