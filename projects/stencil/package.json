@@ -22,6 +22,7 @@
     "lint.css": "stylelint --config ./.stylelintrc.json 'src/**/*.css'",
     "lint.ts": "eslint --config ./.eslintrc.json src/**/*.{ts,tsx}",
     "publish.isolate.all": "node ./scripts/isolate-all.mjs",
+    "publish.isolate.clean": "rimraf .build",
     "publish.isolate.component": "node ./scripts/isolate-component.mjs",
     "storybook.build": "build-storybook -o ./dist-storybook",
     "storybook.start": "npm run build && start-storybook -p 6006 --no-manager-cache",
