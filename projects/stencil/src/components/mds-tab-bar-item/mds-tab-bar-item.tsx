@@ -21,7 +21,7 @@ export class MdsTabBarItem {
   /**
    * Specifies the typography of the element
    */
-  @Prop() readonly typography?: TypographySmallerType = 'caption'
+  @Prop() readonly typography?: TypographySmallerType = 'tip'
 
   componentWillLoad (): void {
     this.isSelected = this.selected
