@@ -46,6 +46,10 @@
   @apply text-secondary-label;
 }
 
+:host ( .text-secondary-tip ) {
+  @apply text-secondary-tip;
+}
+
 :host ( .text-secondary-option ) {
   @apply text-secondary-option;
 }

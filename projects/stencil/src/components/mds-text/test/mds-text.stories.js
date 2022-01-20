@@ -84,6 +84,11 @@ Option.args = {
   typography: 'option',
 }
 
+export const Tip = Template.bind({})
+Tip.args = {
+  typography: 'tip',
+}
+
 export const Code = Template.bind({})
 Code.args = {
   typography: 'code',
