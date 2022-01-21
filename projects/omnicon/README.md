@@ -64,7 +64,6 @@ const iconName = `${prefix}/${icon}`
 - filename: `todo-IN-prendere_in_carico.svg`
   => icon name `mgg/todo-in-prendere-in-carico`
 
-
 ---
 
 ## Config
@@ -80,7 +79,9 @@ module.exports = {
     './layouts/**/*.{js}',
   ],
   plugin: {
-
+    require('@omnicon/material-google')({ prefix: 'gm' }),
+    require('@omnicon/mdi'),
+    require('@omnicon/mgg-icons-svg'),
   }
 }
 ```
