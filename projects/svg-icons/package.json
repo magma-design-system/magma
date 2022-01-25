@@ -1,7 +1,8 @@
 {
   "name": "@maggioli-design-system/svg-icons",
-  "version": "2.6.1",
+  "version": "2.6.2",
   "description": "Maggioli Design System Icons is an icon font package based on Google Material Design Icons and Material Design Icons community icons.",
+  "main": "./index.js",
   "repository": {
     "type": "git",
     "url": "https://git.maggioli.it/ricerca-sviluppo-new-media/design-system.git"
