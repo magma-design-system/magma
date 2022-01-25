@@ -10,18 +10,13 @@
       "root": "projects/font-icons-cli",
       "type": "library",
       "tags": ["type:lib"],
-      "implicitDependencies": ["icons-svg"]
+      "implicitDependencies": ["svg-icons"]
     },
     "icons": {
       "root": "projects/icons",
       "type": "library",
       "tags": ["type:lib"],
       "implicitDependencies": ["font-icons-cli"]
-    },
-    "icons-svg": {
-      "root": "projects/icons-svg",
-      "type": "library",
-      "tags": ["type:lib"]
     },
     "identity": {
       "root": "projects/identity",
@@ -45,6 +40,11 @@
       "type": "library",
       "tags": ["type:lib"],
       "implicitDependencies": ["design-tokens"]
+    },
+    "svg-icons": {
+      "root": "projects/svg-icons",
+      "type": "library",
+      "tags": ["type:lib"]
     }
   }
 }
