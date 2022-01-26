@@ -12,7 +12,6 @@
     "build": "node ./bin/font-icons resources/mgg-icons.json",
     "build-website": "npm run build -- --website",
     "chalk": "^4.1.1",
-    "clean": "rm -rf dist || true",
     "postbuild": "node ./tools/setup-package-font.js",
     "prebuild": "npm run clean",
     "start": "./bin/font-icons.js",
