@@ -3,22 +3,16 @@
 const svgtofont = require('svgtofont')
 const fs = require('fs').promises
 const path = require('path')
-const pkg = require('../package.json')
 const chalk = require('chalk')
-const pkgIcons = require('../../icons/package.json')
+const pkg = require('../package.json')
 const { ICON_GROUPS } = require('../lib/icons-groups')
 const { BUILD_PATH_DIR, BUILD_ORIGINAL_PATH_DIR } = require('../lib/utils')
-// const { writeCodersFiles } = require('../lib/coders-helper')
-// const util = require('util')
-// const exec = util.promisify(require('child_process').exec)
 
 const BUILD_SVG_DIR = `${BUILD_PATH_DIR}/svg`
 const BUILD_FONTS_DIR = `${BUILD_PATH_DIR}/fonts`
 
 const BUILD_ORIGINAL_SVG_DIR = `${BUILD_ORIGINAL_PATH_DIR}/svg`
 const BUILD_ORIGINAL_FONTS_DIR = `${BUILD_ORIGINAL_PATH_DIR}/fonts`
-
-// console.debug('Natural path dir', BUILD_ORIGINAL_PATH_DIR.split('/icons')[1]);
 
 main(process.argv.slice(2))
 
@@ -260,18 +254,18 @@ function getSvgToFontOptions ({ svgPath, relativeOutputPath, cssPath, fontName, 
     },
     typescript: true,
     website: !website ? null : {
-      title: pkgIcons.name,
-      description: pkgIcons.description,
-      version: pkgIcons.version,
+      title: pkg.name,
+      description: pkg.description,
+      version: pkg.version,
       logo: '',
       favicon: null,
       meta: {
-        description: pkgIcons.description,
-        keywords: pkgIcons.keywords.join(','),
+        description: pkg.description,
+        keywords: pkg.keywords.join(','),
       },
       // Add a Github corner to your website
       corners: {
-        url: pkgIcons.repository.url,
+        url: pkg.repository.url,
         width: 62, // default: 60
         height: 62, // default: 60
         bgColor: '#151513',

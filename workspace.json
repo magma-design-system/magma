@@ -6,17 +6,11 @@
       "type": "library",
       "tags": ["type:lib"]
     },
-    "font-icons-cli": {
-      "root": "projects/font-icons-cli",
-      "type": "library",
-      "tags": ["type:lib"],
-      "implicitDependencies": ["svg-icons"]
-    },
     "icons": {
       "root": "projects/icons",
       "type": "library",
       "tags": ["type:lib"],
-      "implicitDependencies": ["font-icons-cli"]
+      "implicitDependencies": ["svg-icons"]
     },
     "identity": {
       "root": "projects/identity",

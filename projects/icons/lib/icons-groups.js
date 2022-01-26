@@ -3,7 +3,7 @@ const path = require('path')
 const chalk = require('chalk')
 
 class Maggioli {
-  static ICONS_DIR = `${path.dirname(require.resolve('@maggioli-design-system/icons-svg/package.json'))}/svg`
+  static ICONS_DIR = `${path.dirname(require.resolve('@maggioli-design-system/svg-icons/package.json'))}/svg`
   static FILE_NAME_REGEX = /^([\w-]+)\.svg$/
 
   /**
