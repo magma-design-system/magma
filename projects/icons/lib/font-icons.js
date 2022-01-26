@@ -36,7 +36,7 @@ function main (parameters) {
 
   const regexp = new RegExp('(font-icons-cli|icons)\/')
 
-  const fontName = path.basename(inputFilePath, path.extname(inputFilePath))
+  const fontName = 'mgg-icons' // path.basename(inputFilePath, path.extname(inputFilePath))
   const options = { svgPath: BUILD_SVG_DIR, outputPath: BUILD_PATH_DIR, relativeOutputPath: BUILD_PATH_DIR.split(regexp)[2], cssPath: 'fonts/', fontName, website: shouldCreateWebsite }
   const optionsNatural = { ...options, svgPath: BUILD_ORIGINAL_SVG_DIR, outputPath: BUILD_ORIGINAL_PATH_DIR, relativeOutputPath: BUILD_ORIGINAL_PATH_DIR.split(regexp)[2] }
 

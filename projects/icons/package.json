@@ -1,8 +1,8 @@
 {
   "name": "@maggioli-design-system/icons",
-  "version": "1.35.1",
+  "version": "1.35.2",
   "description": "Maggioli Design System Icons is an icon font package based on Google Material Design Icons and Material Design Icons community icons.",
-  "main": "./mgg-icons.css",
+  "main": "./dist/mgg-icons.css",
   "files": [
     "/dist/*",
     "/resources/*.json"
@@ -10,7 +10,7 @@
   "scripts": {
     "build": "node ./lib/font-icons.js dictionary.json -- --website",
     "postbuild": "node ./tools/setup-package-font.js",
-    "clean": "",
+    "clean": "rm -rf ./dist",
     "prebuild": "npm run clean",
     "start": "./bin/font-icons.js",
     "test": "jest --coverage",
