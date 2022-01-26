@@ -1,8 +1,7 @@
 const fs = require('fs')
 const { join } = require('path')
-
-const ROOT_DIR = __dirname + '/..'
-const DIST_DIR = ROOT_DIR + '/dist'
+const { BUILD_PATH_DIR } = require('../lib/utils.js')
+const DIST_DIR = BUILD_PATH_DIR
 
 function main () {
 
@@ -10,12 +9,6 @@ function main () {
   if (!fs.existsSync(DIST_DIR)) {
     fs.mkdirSync(DIST_DIR)
   }
-
-  const resourcesDir = join(DIST_DIR, 'resources')
-  if (!fs.existsSync(resourcesDir)) {
-    fs.mkdirSync(resourcesDir)
-  }
-  fs.copyFileSync(join(ROOT_DIR, 'resources', 'mgg-icons.json'), join(resourcesDir, 'mgg-icons.json'))
 
   // Moving out of 'fonts' folder files witch aren't fonts
   const fontsDir = join(DIST_DIR, 'fonts')

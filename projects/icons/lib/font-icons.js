@@ -1,5 +1,3 @@
-#!/usr/bin/env node
-
 const svgtofont = require('svgtofont')
 const fs = require('fs').promises
 const path = require('path')
@@ -104,7 +102,7 @@ function buildCSSEncoded (buildFontsDir, buildPathDir, fontName) {
   const cssAscii$ = fs.readFile(cssPath)
     .then(cssBuffer => Promise.resolve(cssBuffer.toString('ascii')))
 
-  return fs.mkdir(BASE64_PATH_DIR)
+  return fs.mkdir(BASE64_PATH_DIR, { recursive: true })
     .then(() => Promise.all([fontBase64$, cssAscii$]))
     .then(([ fontBase64, cssAscii]) => {
       const regex = /src:(.|[\r\n][^\}])*/m
@@ -265,21 +263,10 @@ function getSvgToFontOptions ({ svgPath, relativeOutputPath, cssPath, fontName, 
       },
       // Add a Github corner to your website
       corners: {
-        url: pkg.repository.url,
         width: 62, // default: 60
         height: 62, // default: 60
         bgColor: '#151513',
       },
-      links: [
-        {
-          title: 'Repository',
-          url: pkg.repository.url,
-        },
-        {
-          title: 'Feedback',
-          url: pkg.bugs.url,
-        },
-      ],
       footerInfo: 'Gruppo Maggioli, tutti i diritti riservati.',
     },
   }
