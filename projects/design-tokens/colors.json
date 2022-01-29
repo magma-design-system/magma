@@ -6,6 +6,36 @@
       "name": "adjust.tone",
       "ratios": "tone"
     },
+    {
+      "color": "#94a3b8",
+      "name": "tone.slate",
+      "seed": { "light": "#FFFFFF", "dark": "#000000" },
+      "ratios": "tone"
+    },
+    {
+      "color": "#9ca3af",
+      "name": "tone.grey",
+      "seed": { "light": "#FFFFFF", "dark": "#000000" },
+      "ratios": "tone"
+    },
+    {
+      "color": "#a1a1aa",
+      "name": "tone.zinc",
+      "seed": { "light": "#FFFFFF", "dark": "#000000" },
+      "ratios": "tone"
+    },
+    {
+      "color": "#a3a3a3",
+      "name": "tone.neutral",
+      "seed": { "light": "#FFFFFF", "dark": "#000000" },
+      "ratios": "tone"
+    },
+    {
+      "color": "#a8a29e",
+      "name": "tone.stone",
+      "seed": { "light": "#FFFFFF", "dark": "#000000" },
+      "ratios": "tone"
+    },
     { "color": "#00379E", "name": "brand.maggioli", "colorspace": "HSL", "smooth": true },
     { "color": "#597CB9", "name": "brand.synbee-eolo" },
     { "color": "#FFCF30", "name": "brand.synbee" },

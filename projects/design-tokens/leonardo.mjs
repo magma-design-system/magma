@@ -42,7 +42,7 @@ const color = colorItem => {
   })
 }
 
-const formatColor = (theme, colorName, colorValue, scaffold, colorDark) => {
+const formatColor = (theme, colorName, colorValue, scaffold, seed, colorMode) => {
   const palette = {}
   theme.forEach(element => {
     if (Object.prototype.hasOwnProperty.call(element, 'name')) {
@@ -67,8 +67,8 @@ const formatColor = (theme, colorName, colorValue, scaffold, colorDark) => {
           if (paletteSource.length === index + 1) {
             palette.color = { value: colorValue }
 
-            if (colorDark !== undefined) {
-              palette.color = { value: colorDark }
+            if (seed !== undefined) {
+              palette.color = { value: seed[colorMode] }
             }
           }
         })
@@ -145,8 +145,8 @@ const formatPalette = async opts => {
       if (!Object.prototype.hasOwnProperty.call(palette.color[group], name)) {
         console.log(`Creating ${chalk.blue('color')} ${name}`)
         palette.color[group][name] = {
-          light: formatColor(opts.themeLight, `${group}.${name}`, element.color, element.scaffold),
-          dark: formatColor(opts.themeDark, `${group}.${name}`, element.color, element.scaffold, element.colorDark),
+          light: formatColor(opts.themeLight, `${group}.${name}`, element.color, element.scaffold, element.seed, 'light'),
+          dark: formatColor(opts.themeDark, `${group}.${name}`, element.color, element.scaffold, element.seed, 'dark'),
         }
       }
     }
