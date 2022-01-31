@@ -99,6 +99,9 @@ module.exports = {
         text: '75ch',
         title: '30ch',
       },
+      height: {
+        13: '3.25rem',
+      },
       minHeight: {
         ...minSize,
       },
