@@ -4,7 +4,7 @@ import 'loki/configure-react'
 
 import 'normalize.css'
 import '@maggioli-design-system/design-tokens/dist/css/colors-rgb.css'
-import '@maggioli-design-system/icons/original/base64/mgg-icons-font-face.css'
+import '@maggioli-design-system/icons/dist/original/base64/mgg-icons-font-face.css'
 import 'typeface-karla'
 import 'typeface-roboto'
 import './tailwind.css'

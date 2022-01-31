@@ -1,7 +1,7 @@
 import React from 'react'
 import MdsSwitch from '@component/mds-input-switch/mds-input-switch'
 import { typographySecondaryDictionary } from '@dictionary/typography'
-import mggIconsDictionary from '@maggioli-design-system/icons/resources/mgg-icons.json'
+import { iconsDictionary } from '@dictionary/icon'
 
 export default {
   title: 'Form / Switch',
@@ -22,7 +22,7 @@ export default {
     icon: {
       type: { name: 'string', required: false },
       description: 'The name of the icon set. The icon set is strictly realted to @maggioli-design-system/icons',
-      options: Object.keys(mggIconsDictionary).sort(),
+      options: iconsDictionary,
       control: { type: 'select' },
     },
     indeterminate: {

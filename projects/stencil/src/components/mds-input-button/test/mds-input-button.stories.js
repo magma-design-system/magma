@@ -1,7 +1,6 @@
 import React from 'react'
 import MdsInputButton from '@component/mds-input-button/mds-input-button'
-import mggIconsDictionary from '@maggioli-design-system/icons/resources/mgg-icons.json'
-const iconsDictionary = Object.keys(mggIconsDictionary).sort()
+import { iconsDictionary } from '@dictionary/icon'
 
 import {
   buttonVariantDictionary,
