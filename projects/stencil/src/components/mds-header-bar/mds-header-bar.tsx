@@ -1,5 +1,4 @@
 import { Component, Element, Event, EventEmitter, Host, Listen, State, h } from '@stencil/core'
-import clsx from 'clsx'
 
 @Component({
   tag: 'mds-header-bar',
@@ -34,7 +33,7 @@ export class MdsHeaderBar {
 
   render () {
     return (
-      <Host class={clsx(this.isOpened && 'opened')}>
+      <Host>
         <div class="contents">
           <div class="logo">
             <slot/>
