@@ -19,6 +19,7 @@
   --radius: theme('borderRadius.lg');
 
   @apply
+    box-border
     cursor-pointer
     duration-500
     ease-out-expo
