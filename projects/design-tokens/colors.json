@@ -2,7 +2,7 @@
   "colors": [
     {
       "color": "#FFFFFF",
-      "colorDark": "#000000",
+      "seed": { "light": "#FFFFFF", "dark": "#000000" },
       "name": "adjust.tone",
       "ratios": "tone"
     },
