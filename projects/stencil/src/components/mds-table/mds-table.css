@@ -5,20 +5,24 @@
 * @prop --background-row-hover: The cell background-color when the mouse go over the table row element
 * @prop --background: The cell background-color of the table body
 * @prop --border-color: The border color between table rows
+* @prop --border-width: The border width between table rows
 * @prop --cell-padding: The cell padding used on table cell
+* @prop --section-border-color: The border bottom color of table header and footer
 * @prop --radius: The radius of the table (header and footer excluded)
 * @prop --shadow: The box-shadow used on the table (header and footer excluded)
 */
 
 :host {
 
-  --background-hover: theme('colors.adjust-tone-10');
-  --background-row-hover: theme('colors.adjust-tone');
+  --background-hover: theme('colors.adjust-tone');
+  --background-row-hover: theme('colors.adjust-tone-10');
   --background: theme('colors.adjust-tone');
   --border-color: theme('colors.adjust-tone-09');
+  --border-width: theme('borderWidth.2');
   --cell-padding: theme('spacing.4');
-  --radius: theme('borderRadius.lg');
-  --shadow: theme('boxShadow.sharp-md');
+  --section-border-color: theme('colors.adjust-tone-07');
+  --radius: theme('borderRadius.none');
+  --shadow: theme('boxShadow.none');
 
   @apply
     flex;
