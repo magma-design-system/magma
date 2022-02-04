@@ -1,9 +1,16 @@
 @tailwind utilities;
 
+/**
+* @prop --section-border-color: The border color of the table header and footer
+* @prop --border-width: The border width between table rows
+*/
+
 mds-table-header {
   @apply
     overflow-hidden
     table-row;
+
+  border-bottom: var(--border-width, theme('borderWidth.2')) solid var(--section-border-color, theme('colors.adjust-tone-07'));
 }
 
 mds-table-header mds-table-cell {
