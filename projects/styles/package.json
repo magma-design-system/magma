@@ -1,15 +1,14 @@
 {
   "name": "@maggioli-design-system/styles",
-  "version": "6.2.0",
+  "version": "6.3.0",
   "description": "This module contains SCSS and CSS styles used by Maggioli Design System, it also makes available a Tailwind config based on Maggioli design tokens.",
   "main": "./tailwind.config.js",
   "scripts": {
     "build": "npm run clean && npm run copy && npm run tailwind.build",
     "clean": "rm -rf dist || true && mkdir -p dist/css dist/tailwind",
-    "copy": "npm run copy.tailwind && npm run copy.css.hex && npm run copy.css.rgb",
+    "copy": "npm run copy.tailwind && npm run copy.css",
     "copy.tailwind": "cp -rf tailwind dist",
-    "copy.css.hex": "cp -rf ../design-tokens/dist/css/colors.css ./dist/css/colors.css",
-    "copy.css.rgb": "cp -rf ../design-tokens/dist/css/colors-rgb.css ./dist/css/colors-rgb.css",
+    "copy.css": "cp -rf ../design-tokens/dist/css/*.css ./dist/css/.",
     "tailwind.base": "tailwindcss -i ./css/base.css -o ./dist/css/base.css",
     "tailwind.build": "npm run tailwind.base && npm run tailwind.typography",
     "tailwind.typography": "tailwindcss -i ./css/typography.css -o ./dist/css/typography.css"
@@ -38,7 +37,7 @@
   ],
   "license": "ISC",
   "dependencies": {
-    "@maggioli-design-system/design-tokens": "^6.1.1",
+    "@maggioli-design-system/design-tokens": "^6.4.0",
     "normalize.css": "^8.0.1",
     "typeface-karla": "^1.1.13",
     "typeface-roboto": "^1.1.13"
