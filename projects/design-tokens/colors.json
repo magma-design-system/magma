@@ -4,70 +4,76 @@
       "color": "#FFFFFF",
       "seed": { "light": "#FFFFFF", "dark": "#000000" },
       "name": "adjust.tone",
-      "ratios": "tone"
+      "ratios": "tone",
+      "export": "tones"
     },
     {
       "color": "#94a3b8",
       "name": "tone.slate",
       "seed": { "light": "#FFFFFF", "dark": "#000000" },
-      "ratios": "tone"
+      "ratios": "tone",
+      "export": "tones"
     },
     {
       "color": "#9ca3af",
       "name": "tone.grey",
       "seed": { "light": "#FFFFFF", "dark": "#000000" },
-      "ratios": "tone"
+      "ratios": "tone",
+      "export": "tones"
     },
     {
       "color": "#a1a1aa",
       "name": "tone.zinc",
       "seed": { "light": "#FFFFFF", "dark": "#000000" },
-      "ratios": "tone"
+      "ratios": "tone",
+      "export": "tones"
     },
     {
       "color": "#a3a3a3",
       "name": "tone.neutral",
       "seed": { "light": "#FFFFFF", "dark": "#000000" },
-      "ratios": "tone"
+      "ratios": "tone",
+      "export": "tones"
     },
     {
       "color": "#a8a29e",
       "name": "tone.stone",
       "seed": { "light": "#FFFFFF", "dark": "#000000" },
-      "ratios": "tone"
+      "ratios": "tone",
+      "export": "tones"
     },
-    { "color": "#00379E", "name": "brand.maggioli", "colorspace": "HSL", "smooth": true },
-    { "color": "#597CB9", "name": "brand.synbee-eolo" },
-    { "color": "#FFCF30", "name": "brand.synbee" },
+    { "color": "#00379E", "name": "brand.maggioli", "colorspace": "HSL", "smooth": true, "export": "brand" },
+    { "color": "#597CB9", "name": "brand.synbee-eolo", "export": "brand-synbee" },
+    { "color": "#FFCF30", "name": "brand.synbee", "export": "brand-synbee" },
     { "color": "#ED7C63", "disabled": true, "name": "brand.argo" },
     { "color": "#01495C", "disabled": true, "name": "brand.la-polizia-locale" },
     { "color": "#FBE00E", "disabled": true, "name": "brand.cantiere-innovazione" },
 
-    { "color": "#23B2E1", "name": "status.info" },
-    { "color": "#21BF73", "name": "status.success" },
-    { "color": "#ED6663", "name": "status.error" },
-    { "color": "#FFC107", "name": "status.warning" },
+    { "color": "#23B2E1", "name": "status.info", "export": "status" },
+    { "color": "#21BF73", "name": "status.success", "export": "status" },
+    { "color": "#ED6663", "name": "status.error", "export": "status" },
+    { "color": "#FFC107", "name": "status.warning", "export": "status" },
 
-    { "color": "#f48600", "disabled": true, "name": "area.admin", "title": "Ufficio amministrazione", "alias": [ "Amministrazione", "Personale" ] },
-    { "color": "#a85ebe", "disabled": true, "name": "area.finance", "title": "Ufficio tributi", "alias": [ "Bilancio", "Contabilità", "Tributi" ] },
-    { "color": "#52be7f", "disabled": true, "name": "area.procurement", "title": "Ufficio appalti", "alias": [ "Appalti", "Appalti pubblici", "Contratti" ] },
-    { "color": "#52be7f", "disabled": true, "name": "area.tech", "title": "Ufficio tecnico", "alias": [ "Edilizia e Urbanistica", "Territorio" ] },
-    { "color": "#95a5a6", "disabled": true, "name": "area.social", "title": "Servizi sociali" },
-    { "color": "#558dd2", "disabled": true, "name": "area.police", "title": "Polizia", "alias": [ "Commercio", "Attività economiche", "Attività produttive" ] },
-    { "color": "#F1C40F", "disabled": true, "name": "area.registry", "title": "Ufficio anagrafe", "alias": [ "Servizi demografici", "Elezioni", "Referendum" ] },
-    { "color": "#71b8c8", "disabled": true, "name": "area.health", "title": "Sanità" },
-    { "color": "#829887", "disabled": true, "name": "area.school", "title": "Scuola" },
+    { "color": "#f48600", "disabled": true, "name": "area.admin", "export": "area", "title": "Ufficio amministrazione", "alias": [ "Amministrazione", "Personale" ] },
+    { "color": "#a85ebe", "disabled": true, "name": "area.finance", "export": "area", "title": "Ufficio tributi", "alias": [ "Bilancio", "Contabilità", "Tributi" ] },
+    { "color": "#52be7f", "disabled": true, "name": "area.procurement", "export": "area", "title": "Ufficio appalti", "alias": [ "Appalti", "Appalti pubblici", "Contratti" ] },
+    { "color": "#52be7f", "disabled": true, "name": "area.tech", "export": "area", "title": "Ufficio tecnico", "alias": [ "Edilizia e Urbanistica", "Territorio" ] },
+    { "color": "#95a5a6", "disabled": true, "name": "area.social", "export": "area", "title": "Servizi sociali" },
+    { "color": "#558dd2", "disabled": true, "name": "area.police", "export": "area", "title": "Polizia", "alias": [ "Commercio", "Attività economiche", "Attività produttive" ] },
+    { "color": "#F1C40F", "disabled": true, "name": "area.registry", "export": "area", "title": "Ufficio anagrafe", "alias": [ "Servizi demografici", "Elezioni", "Referendum" ] },
+    { "color": "#71b8c8", "disabled": true, "name": "area.health", "export": "area", "title": "Sanità" },
+    { "color": "#829887", "disabled": true, "name": "area.school", "export": "area", "title": "Scuola" },
 
-    { "color": "#EA3464", "name": "label.amaranth" },
-    { "color": "#E33BDA", "name": "label.orchid" },
-    { "color": "#782FF6", "name": "label.violet" },
-    { "color": "#0E36F6", "name": "label.blue" },
-    { "color": "#4DAFFA", "name": "label.sky" },
-    { "color": "#74FAEA", "name": "label.aqua" },
-    { "color": "#78F966", "name": "label.green" },
-    { "color": "#CFFB50", "name": "label.lime" },
-    { "color": "#F9E14E", "name": "label.yellow" },
-    { "color": "#F17032", "name": "label.orange" }
+    { "color": "#EA3464", "name": "label.amaranth", "export": "label" },
+    { "color": "#E33BDA", "name": "label.orchid", "export": "label" },
+    { "color": "#782FF6", "name": "label.violet", "export": "label" },
+    { "color": "#0E36F6", "name": "label.blue", "export": "label" },
+    { "color": "#4DAFFA", "name": "label.sky", "export": "label" },
+    { "color": "#74FAEA", "name": "label.aqua", "export": "label" },
+    { "color": "#78F966", "name": "label.green", "export": "label" },
+    { "color": "#CFFB50", "name": "label.lime", "export": "label" },
+    { "color": "#F9E14E", "name": "label.yellow", "export": "label" },
+    { "color": "#F17032", "name": "label.orange", "export": "label" }
   ],
   "colorspace": "HSL",
   "smooth": false,

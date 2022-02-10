@@ -1,12 +1,15 @@
 import { Theme, Color, BackgroundColor } from '@adobe/leonardo-contrast-colors'
 import { readFileSync } from 'fs'
 import chalk from 'chalk'
-import { writeFile, mkdir } from 'fs/promises'
+import { writeFile, mkdir, readFile } from 'fs/promises'
 import { dirname, resolve } from 'path'
 import { fileURLToPath } from 'url'
+import Handlebars from 'handlebars'
 
 const PROJECT_PATH = resolve(dirname(fileURLToPath(import.meta.url)), './')
 const COLOR_PATH = `${PROJECT_PATH}/properties/color`
+const CONFIG_PATH = `${PROJECT_PATH}/config`
+const TEMPLATES_PATH = `${PROJECT_PATH}/template`
 
 const colorsRawData = readFileSync('colors.json')
 const { colors, colorspace, ratios, smooth } = JSON.parse(colorsRawData)
@@ -119,12 +122,57 @@ const generatePaletteURL = () => {
   })
 }
 
+const exportPalettes = async palettes => {
+
+  const configTemplate = await readFile(
+    new URL(`${TEMPLATES_PATH}/config.json`, import.meta.url),
+  )
+  const template = Handlebars.compile(configTemplate.toString())
+
+  for (const palette of Object.keys(palettes)) {
+    const jsonPalette = JSON.stringify(palettes[palette], null, 2)
+
+    console.log(`Exporting ${chalk.yellow('color palette')} ${palette}`)
+
+    await mkdir(new URL(`${COLOR_PATH}`, import.meta.url), { recursive: true })
+    await writeFile(new URL(`${COLOR_PATH}/${palette}.json`, import.meta.url), jsonPalette, 'utf8', err => {
+      if (err) {
+        console.log(chalk.red('An error occured while writing JSON Object to File.'))
+        console.log(chalk.red(err))
+      }
+    })
+
+    await mkdir(new URL(`${CONFIG_PATH}`, import.meta.url), { recursive: true })
+    const data = {
+      fileName: palette,
+    }
+    const compiledConfig = template(data)
+
+    await writeFile(
+      new URL(
+        `${CONFIG_PATH}/${palette}.json`,
+        import.meta.url,
+      ),
+      compiledConfig,
+      'utf8',
+      err => {
+        if (err) {
+          console.log('An error occured while writing JSON Object file.')
+          return console.log(err)
+        }
+      },
+    )
+  }
+}
+
 const formatPalette = async opts => {
   console.log('Formatting color palette to JSON format')
 
   const palette = {
     color: {},
   }
+
+  const exportGroups = {}
 
   colors.forEach(element => {
     const groupIndex = 0
@@ -137,11 +185,11 @@ const formatPalette = async opts => {
     }
 
     if (!element.disabled) {
+
       if (!Object.prototype.hasOwnProperty.call(palette.color, group)) {
         console.log(`Creating ${chalk.magenta('group')} ${group}`)
         palette.color[group] = {}
       }
-
       if (!Object.prototype.hasOwnProperty.call(palette.color[group], name)) {
         console.log(`Creating ${chalk.blue('color')} ${name}`)
         palette.color[group][name] = {
@@ -149,12 +197,30 @@ const formatPalette = async opts => {
           dark: formatColor(opts.themeDark, `${group}.${name}`, element.color, element.scaffold, element.seed, 'dark'),
         }
       }
+
+      if (element.export !== undefined) {
+        if (exportGroups[element.export] === undefined) {
+          exportGroups[element.export] = {}
+          exportGroups[element.export].color = {}
+        }
+        if (exportGroups[element.export].color[group] === undefined) {
+          exportGroups[element.export].color[group] = {}
+        }
+        exportGroups[element.export].color[group][name] = {
+          light: formatColor(opts.themeLight, `${group}.${name}`, element.color, element.scaffold, element.seed, 'light'),
+          dark: formatColor(opts.themeDark, `${group}.${name}`, element.color, element.scaffold, element.seed, 'dark'),
+        }
+      }
     }
   })
 
+  if (exportGroups !== {}) {
+    await exportPalettes(exportGroups)
+  }
+
   const jsonPalette = JSON.stringify(palette, null, 2)
 
-  console.log('Exporting color palette')
+  console.log('Exporting whole color palette')
 
   await mkdir(new URL(`${COLOR_PATH}`, import.meta.url), { recursive: true })
   await writeFile(new URL(`${COLOR_PATH}/base.json`, import.meta.url), jsonPalette, 'utf8', err => {

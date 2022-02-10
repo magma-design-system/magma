@@ -1,6 +1,6 @@
 {
   "source": [
-    "properties/**/*.json"
+    "properties/color/base.json"
   ],
   "platforms": {
     "js": {

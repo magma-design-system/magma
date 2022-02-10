@@ -1,0 +1,21 @@
+{
+  "source": [
+    "properties/color/{{fileName}}.json"
+  ],
+  "platforms": {
+    "css": {
+      "transformGroup": "css",
+      "buildPath": "dist/css/",
+      "files": [
+        {
+          "format": "css/vars",
+          "destination": "colors-{{fileName}}.css"
+        },
+        {
+          "format": "css/vars-rgb-channels",
+          "destination": "colors-rgb-{{fileName}}.css"
+        }
+      ]
+    }
+  }
+}
