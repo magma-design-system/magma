@@ -1,4 +1,4 @@
-import { Component, Element, Event, EventEmitter, Host, h, Listen, Prop, Watch } from '@stencil/core'
+import { Component, Element, Event, EventEmitter, Host, h, Listen, Prop, Watch, State } from '@stencil/core'
 import clsx from 'clsx'
 import { ModalPositionType, ModalAnimationStateType } from './meta/types'
 @Component({
@@ -13,6 +13,7 @@ export class MdsModal {
   private top: boolean = null
   private bottom: boolean = null
   private animationState: ModalAnimationStateType = 'intro'
+  @State() stateOpened: boolean
   @Element() hostElement: HTMLMdsModalElement
 
   /**
@@ -29,6 +30,7 @@ export class MdsModal {
     this.bottom = this.hostElement.querySelector('[slot="bottom"]') !== null
     this.top = this.hostElement.querySelector('[slot="top"]') !== null
     this.window = this.hostElement.querySelector('[slot="window"]') !== null
+    this.stateOpened = this.opened
 
     if (this.window && this.position === null) {
       this.position = 'center'
@@ -66,23 +68,27 @@ export class MdsModal {
   }
 
   @Watch('opened')
-  openedChange (): void {
+  openedChange (newValue: boolean): void {
+    this.stateOpened = newValue
     window.clearTimeout(this.animationDeelay)
   }
 
   /**
    * Emits when a modal is closed
    */
-  @Event() close: EventEmitter<void>
+  @Event({ bubbles: true, composed: true }) close: EventEmitter<void>
 
   private closeModal = (e:Event = null): void => {
+    if ((e.target as HTMLElement)?.localName !== 'mds-modal') {
+      return
+    }
     this.opened = e.target !== e.currentTarget
     if (!this.opened) {
       this.close.emit()
     }
   }
 
-  @Listen('close')
+  @Listen('close', { target: 'document' })
   onCloseListener (): void {
     this.opened = false
   }
@@ -90,7 +96,7 @@ export class MdsModal {
   render () {
     return (
       <Host class={clsx(
-        this.opened && this.animationName('opened'),
+        this.stateOpened && this.animationName('opened'),
       )} onClick={(e: Event) => { this.closeModal(e) }}>
         { this.window
           ?
