@@ -206,9 +206,10 @@ const formatPalette = async opts => {
         if (exportGroups[element.export].color[group] === undefined) {
           exportGroups[element.export].color[group] = {}
         }
+
         exportGroups[element.export].color[group][name] = {
-          light: formatColor(opts.themeLight, `${group}.${name}`, element.color, element.scaffold, element.seed, 'light'),
-          dark: formatColor(opts.themeDark, `${group}.${name}`, element.color, element.scaffold, element.seed, 'dark'),
+          light: palette.color[group][name].light,
+          dark: palette.color[group][name].dark,
         }
       }
     }
