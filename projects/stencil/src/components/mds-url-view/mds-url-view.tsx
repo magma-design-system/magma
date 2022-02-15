@@ -1,5 +1,4 @@
 import { Component, Event, EventEmitter, Host, h, Prop } from '@stencil/core'
-
 import { LoadingType } from '../../types/loading'
 
 @Component({
@@ -8,6 +7,11 @@ import { LoadingType } from '../../types/loading'
   shadow: true,
 })
 export class MdsUrlView {
+
+  /**
+   * Specifies if domain is visible on header
+   */
+  @Prop() readonly domain!: boolean
 
   /**
    * Specifies the URL to the web page
@@ -28,7 +32,7 @@ export class MdsUrlView {
   /**
    * Emits when the url view is closed
    */
-  @Event() close: EventEmitter<void>
+  @Event({ bubbles: true, composed: true }) close: EventEmitter<void>
 
   private closeUrlView = (): void => {
     this.close.emit()
@@ -40,9 +44,9 @@ export class MdsUrlView {
         <div class="window">
           <header class="header">
             <mds-icon class="browser-icon" name="explore"/>
-            <mds-text class="title" typography="caption">
+            { this.domain && <mds-text class="title" typography="caption">
               { this.urlDomain(this.src) }
-            </mds-text>
+            </mds-text> }
             <mds-icon class="close" name="close" onClick={this.closeUrlView}/>
           </header>
           <iframe class="iframe" src={ this.src }/>
