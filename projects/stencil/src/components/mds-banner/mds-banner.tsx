@@ -84,9 +84,9 @@ export class MdsBanner {
         </div>
         { this.actions
           &&
-          <mds-row class="actions">
+          <div class="actions">
             <slot name="actions"/>
-          </mds-row>
+          </div>
         }
       </Host>
     )
