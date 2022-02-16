@@ -12,6 +12,7 @@
   --background: theme('colors.adjust-tone-10');
   --color: theme('colors.adjust-tone-02');
   --radius: theme('borderRadius.md');
+  --header-shadow: theme('boxShadow.sharp-sm');
   --shadow: theme('boxShadow.lg');
 
   @apply
@@ -31,6 +32,7 @@
     overflow-hidden
     w-full;
 
+  background-color: var(--background);
   border-radius: var(--radius);
   box-shadow: var(--shadow);
 }
@@ -42,9 +44,11 @@
     items-center
     justify-between
     p-2
+    relative
     shrink-0;
 
   background-color: var(--background);
+  box-shadow: var(--header-shadow);
   color: var(--color);
 }
 
