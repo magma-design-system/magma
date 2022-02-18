@@ -2,7 +2,9 @@
 @tailwind utilities;
 
 @layer components {
-  .animate-center {
+  .animate-bottom,
+  .animate-center,
+  .animate-top {
     @apply
       duration-500
       ease-in-out-expo
@@ -10,17 +12,23 @@
       transition-cosmetic;
   }
 
-  .animate-center-intro {
+  .animate-bottom-intro,
+  .animate-center-intro,
+  .animate-top-intro {
     transform: rotateX(-22deg) scale(0.5) translateY(40%);
   }
 
-  .animate-center-opened {
+  .animate-bottom-opened,
+  .animate-center-opened,
+  .animate-top-opened {
     @apply opacity-100;
 
     transform: rotateX(0) scale(1) translateY(0);
   }
 
-  .animate-center-outro {
+  .animate-bottom-outro,
+  .animate-center-outro,
+  .animate-top-outro {
     transform: rotateX(-22deg) scale(0.5) translateY(-40%);
   }
 
@@ -67,9 +75,23 @@
   perspective: 600px;
 }
 
+:host ( [position=top] ) {
+  @apply
+    items-start
+    justify-center;
+}
+
+:host ( [position=bottom] ) {
+  @apply
+    items-end
+    justify-center;
+}
+
+:host ( .animate-bottom-opened ),
 :host ( .animate-center-opened ),
 :host ( .animate-left-opened ),
-:host ( .animate-right-opened ) {
+:host ( .animate-right-opened ),
+:host ( .animate-top-opened ) {
   @apply
     bg-opacity-50
     duration-500
@@ -121,6 +143,8 @@
   grid-template-rows: auto 1fr auto;
 }
 
+@import './css/mds-modal-animate-bottom.css';
 @import './css/mds-modal-animate-center.css';
-@import './css/mds-modal-animate-right.css';
 @import './css/mds-modal-animate-left.css';
+@import './css/mds-modal-animate-right.css';
+@import './css/mds-modal-animate-top.css';

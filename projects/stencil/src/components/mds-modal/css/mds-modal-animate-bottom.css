@@ -1,0 +1,28 @@
+:host ( .animate-bottom ) {
+  @apply
+    justify-center
+    mobile:p-4
+    p-8;
+}
+
+:host ( .animate-bottom ) .window,
+:host ( .animate-bottom ) > ::slotted ( [slot=window] ) {
+  @apply animate-bottom;
+}
+
+:host ( .animate-bottom-intro ) .window,
+:host ( .animate-bottom-intro ) > ::slotted ( [slot=window] ) {
+  @apply animate-bottom-intro;
+}
+
+:host ( .animate-bottom-opened.animate-bottom-outro ) .window,
+:host ( .animate-bottom-opened.animate-bottom-outro ) > ::slotted ( [slot=window] ),
+:host ( .animate-bottom-opened ) .window,
+:host ( .animate-bottom-opened ) > ::slotted ( [slot=window] ) {
+  @apply animate-bottom-opened;
+}
+
+:host ( .animate-bottom-outro ) .window,
+:host ( .animate-bottom-outro ) > ::slotted ( [slot=window] ) {
+  @apply animate-bottom-outro;
+}
