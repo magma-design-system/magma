@@ -7,7 +7,7 @@
 * @prop --radius: The radius of the table (header and footer excluded)
 */
 
-mds-table-row {
+:host {
   @apply
     border-b
     table-row;
@@ -15,30 +15,20 @@ mds-table-row {
   border-bottom: var(--border-width, theme('borderWidth.2')) solid var(--border-color, theme('colors.adjust-tone-09'));
 }
 
-mds-table-row:last-child {
+:host ( :first-child ) {
+
+  --radius-top-left: var(--radius, theme('borderRadius.lg'));
+  --radius-top-right: var(--radius, theme('borderRadius.lg'));
+}
+
+:host ( :last-child ) {
   @apply border-transparent;
+
+  --radius-bottom-left: var(--radius, theme('borderRadius.lg'));
+  --radius-bottom-right: var(--radius, theme('borderRadius.lg'));
 }
 
-mds-table-row:first-child mds-table-cell:first-child {
-  border-top-left-radius: var(--radius, theme('borderRadius.lg'));
-}
+:host ( [interactive]:hover ) {
 
-mds-table-row:last-child mds-table-cell:first-child {
-  border-bottom-left-radius: var(--radius, theme('borderRadius.lg'));
-}
-
-mds-table-row:first-child mds-table-cell:last-child {
-  border-top-right-radius: var(--radius, theme('borderRadius.lg'));
-}
-
-mds-table-row:last-child mds-table-cell:last-child {
-  border-bottom-right-radius: var(--radius, theme('borderRadius.lg'));
-}
-
-mds-table-row:focus {
-  @apply opacity-50;
-}
-
-mds-table-row.interactive:hover mds-table-cell {
-  background-color: var(--background-row-hover, theme('colors.adjust-tone')) !important;
+  --background: var(--background-row-hover, theme('colors.adjust-tone'));
 }
