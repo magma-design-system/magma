@@ -1,15 +1,26 @@
 @tailwind utilities;
 
 /**
-  * @prop --background: The cell background-color of the table body
-  * @prop --cell-padding: The cell padding used on table cell
-  */
+* @prop --background: The cell background-color of the table body
+* @prop --cell-padding: The cell padding used on table cell
+*/
 
-mds-table-cell {
+:host {
   @apply
     table-cell
     transition-colors;
 
   background-color: var(--background, theme('colors.adjust-tone'));
+  border-top: var(--border-top, 0);
   padding: var(--cell-padding, 0);
+}
+
+:host( :first-child ) {
+  border-bottom-left-radius: var(--radius-bottom-left, 0);
+  border-top-left-radius: var(--radius-top-left, 0);
+}
+
+:host( :last-child ) {
+  border-bottom-right-radius: var(--radius-bottom-right, 0);
+  border-top-right-radius: var(--radius-top-right, 0);
 }
