@@ -5,13 +5,11 @@
 * @prop --border-width: The border width between table rows
 */
 
-mds-table-footer {
+:host {
   @apply
     overflow-hidden
     table-row;
-}
 
-mds-table-footer mds-table-cell {
-  border-top: var(--border-width, theme('borderWidth.2')) solid var(--section-border-color, theme('colors.adjust-tone-07'));
-  @apply bg-transparent;
+  --background: transparent;
+  --border-top: var(--border-width, theme('borderWidth.2')) solid var(--section-border-color, theme('colors.adjust-tone-07'));
 }
