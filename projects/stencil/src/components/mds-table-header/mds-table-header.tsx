@@ -3,14 +3,14 @@ import { Component, Host, h } from '@stencil/core'
 @Component({
   tag: 'mds-table-header',
   styleUrl: 'mds-table-header.css',
-  shadow: false,
+  shadow: true,
 })
 export class MdsTableHeader {
 
   render () {
     return (
-      <Host class="table-header" role="row">
-        <slot></slot>
+      <Host role="row">
+        <slot/>
       </Host>
     )
   }

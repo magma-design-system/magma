@@ -5,18 +5,12 @@
 * @prop --border-width: The border width between table rows
 */
 
-mds-table-header {
+:host {
   @apply
     overflow-hidden
     table-row;
 
+  --background: transparent;
+
   border-bottom: var(--border-width, theme('borderWidth.2')) solid var(--section-border-color, theme('colors.adjust-tone-07'));
-}
-
-mds-table-header mds-table-cell {
-  @apply bg-transparent;
-}
-
-mds-table-header mds-table-cell::first-letter {
-  @apply uppercase;
 }
