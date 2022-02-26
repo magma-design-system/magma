@@ -8,6 +8,7 @@ import '@maggioli-design-system/icons/dist/original/base64/mgg-icons-font-face.c
 import 'typeface-karla'
 import 'typeface-roboto'
 import './tailwind.css'
+import './iconsauce.css'
 
 import devices from './devices.json'
 import media from '@maggioli-design-system/design-tokens/dist/css-tokens/media.json'

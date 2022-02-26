@@ -16,6 +16,8 @@
   ],
   "scripts": {
     "build": "rm src/components.d.ts || true && stencil build --docs-readme",
+    "build.icons": "iconsauce --output ./.iconsauce/iconsauce.css --config ./iconsauce.config.js --verbose --dictionary=./.iconsauce/icons.json && npm run build.icons.fixtures",
+    "build.icons.fixtures": "node --experimental-json-modules ./scripts/filter-icons.mjs",
     "clean": "rimraf dist && rimraf loader && rimraf www && rimraf dist-storybook",
     "lint": "npm run lint.ts && npm run lint.css",
     "generate": "stencil generate",
@@ -38,9 +40,8 @@
     "@maggioli-design-system/design-tokens": "^6.4.1",
     "@maggioli-design-system/icons": "^1.34.0",
     "@maggioli-design-system/identity": "^1.9.0",
-    "@maggioli-design-system/styles": "^6.3.2",
-    "@stencil/core": "^2.14.0",
-    "tailwindcss": "^3.0.22"
+    "@maggioli-design-system/styles": "^6.3.3",
+    "@stencil/core": "^2.14.0"
   },
   "license": "MIT",
   "devDependencies": {
@@ -70,6 +71,7 @@
     "loki":"^0.28.1",
     "postcss": "^8.4.5",
     "postcss-flexbugs-fixes": "^5.0.2",
+    "postcss-iconsauce": "^0.2.0",
     "postcss-import": "14.0.2",
     "postcss-loader": "^6.2.1",
     "prettier": "^2.5.1",
@@ -78,7 +80,8 @@
     "rimraf": "^3.0.2",
     "sass-loader": "12.4.0",
     "stdio": "^2.1.1",
-    "style-loader": "^3.3.1"
+    "style-loader": "^3.3.1",
+    "tailwindcss": "^3.0.22"
   },
   "author": {
     "name": "Vittorio Vittori",

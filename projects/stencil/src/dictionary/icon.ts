@@ -1,5 +1,5 @@
-import mggIconsDictionary from '@maggioli-design-system/icons/dist/original/dictionary.json'
-const iconsDictionary = Object.keys(mggIconsDictionary).sort()
+import jsonIconsDictionary from '../fixtures/icons.json'
+const iconsDictionary = jsonIconsDictionary
 export {
   iconsDictionary,
 }

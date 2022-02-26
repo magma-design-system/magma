@@ -1,6 +1,7 @@
 // https://www.mokkapps.de/blog/run-build-and-deploy-stencil-and-storybook-from-one-repository
 
 const path = require('path')
+console.log('webpack.config.js', path.resolve(__dirname))
 
 module.exports = {
   core: {
@@ -51,6 +52,7 @@ module.exports = {
           options: {
             postcssOptions: {
               plugins: [
+                require('postcss-iconsauce')('./.storybook/iconsauce.config.js'),
                 require('tailwindcss')('./.storybook/tailwind.config.js'),
                 require('autoprefixer')
               ],
