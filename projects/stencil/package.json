@@ -71,7 +71,7 @@
     "loki":"^0.28.1",
     "postcss": "^8.4.5",
     "postcss-flexbugs-fixes": "^5.0.2",
-    "postcss-iconsauce": "^0.2.0",
+    "postcss-iconsauce": "^0.3.1",
     "postcss-import": "14.0.2",
     "postcss-loader": "^6.2.1",
     "prettier": "^2.5.1",
