@@ -20,5 +20,6 @@ const Template = args =>
 
 export const Default = Template.bind({})
 Default.args = {
-  name: iconsDictionary[1]
+  name: 'mdi/alien',
+  class: 'fill-label-amaranth-05'
 }

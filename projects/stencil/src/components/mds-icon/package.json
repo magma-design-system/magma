@@ -21,8 +21,7 @@
     "build": "rm src/components.d.ts || true && stencil build --docs-readme"
   },
   "dependencies": {
-    "@maggioli-design-system/icons": "1.34.0",
-    "@stencil/core": "^2.12.1"
+    "@stencil/core": "^2.14.0"
   },
   "license": "MIT",
   "author": {

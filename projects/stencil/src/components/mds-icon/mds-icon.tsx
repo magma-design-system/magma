@@ -1,9 +1,10 @@
 import { Component, Host, h, Prop } from '@stencil/core'
+import clsx from 'clsx'
 
 @Component({
   tag: 'mds-icon',
   styleUrl: 'mds-icon.css',
-  shadow: true,
+  shadow: false,
 })
 export class MdsIcon {
 
@@ -15,7 +16,11 @@ export class MdsIcon {
 
   render () {
     return (
-      <Host class={this.name}/>
+      <Host class={clsx(this.name)}/>
     )
   }
 }
+
+
+
+<mds-icon-house/>

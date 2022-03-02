@@ -1,6 +1,6 @@
 module.exports = {
   content: [
-    './src/**/*.{tsx,ts,json}',
+    './src/**/*.{js,json,ts,tsx}',
   ],
   plugin: [
     require('@iconsauce/material-design-icons-updated'),

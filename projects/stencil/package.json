@@ -15,9 +15,8 @@
     "loader/"
   ],
   "scripts": {
-    "build": "rm src/components.d.ts || true && stencil build --docs-readme",
-    "build.icons": "iconsauce --output ./.iconsauce/iconsauce.css --config ./iconsauce.config.js --verbose --dictionary=./.iconsauce/icons.json && npm run build.icons.fixtures",
-    "build.icons.fixtures": "node --experimental-json-modules ./scripts/filter-icons.mjs",
+    "build": "rm src/components.d.ts || true && npm run build.icons && stencil build --docs-readme",
+    "build.icons": "iconsauce --verbose --config ./.storybook/iconsauce.config.js --output-dictionary ./src/fixtures/icons.json --output-svg ./.iconsauce/svg",
     "clean": "rimraf dist && rimraf loader && rimraf www && rimraf dist-storybook",
     "lint": "npm run lint.ts && npm run lint.css",
     "generate": "stencil generate",
@@ -71,7 +70,7 @@
     "loki":"^0.28.1",
     "postcss": "^8.4.5",
     "postcss-flexbugs-fixes": "^5.0.2",
-    "postcss-iconsauce": "^0.3.1",
+    "postcss-iconsauce": "^1.0.3",
     "postcss-import": "14.0.2",
     "postcss-loader": "^6.2.1",
     "prettier": "^2.5.1",
