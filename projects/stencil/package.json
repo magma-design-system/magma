@@ -16,7 +16,7 @@
   ],
   "scripts": {
     "build": "rm src/components.d.ts || true && npm run build.icons && stencil build --docs-readme",
-    "build.icons": "iconsauce --verbose --config ./.storybook/iconsauce.config.js --output-dictionary ./src/fixtures/icons.json --output-svg ./.iconsauce/svg",
+    "build.icons": "iconsauce --verbose --config ./.storybook/iconsauce.config.js --output-dictionary ./src/fixtures/icons.json --output-svg ./assets/svg",
     "clean": "rimraf dist && rimraf loader && rimraf www && rimraf dist-storybook",
     "lint": "npm run lint.ts && npm run lint.css",
     "generate": "stencil generate",

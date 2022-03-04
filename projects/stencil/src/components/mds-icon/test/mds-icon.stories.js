@@ -21,5 +21,5 @@ const Template = args =>
 export const Default = Template.bind({})
 Default.args = {
   name: 'mdi/alien',
-  class: 'fill-label-amaranth-05'
+  class: 'text-label-amaranth-05'
 }

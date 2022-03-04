@@ -15,6 +15,22 @@ import media from '@maggioli-design-system/design-tokens/dist/css-tokens/media.j
 
 defineCustomElements();
 
+const mdsIconSvgGet = async () => {
+  await customElements.whenDefined('mds-icon-svg')
+
+  const mdsIconSvg = document.createElement('mds-icon-svg')
+
+  document.body.appendChild(mdsIconSvg)
+
+  if ('setSvgPath' in mdsIconSvg) {
+    mdsIconSvg.setSvgPath('/svg/')
+  }
+
+  document.body.removeChild(mdsIconSvg)
+}
+
+mdsIconSvgGet()
+
 const toUpperCase = string => {
   return string.charAt(0).toUpperCase() + string.slice(1)
 }
