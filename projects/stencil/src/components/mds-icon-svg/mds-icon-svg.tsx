@@ -15,6 +15,12 @@ export class MdsIconSvg {
 
   @State() _iconHref: string
 
+  private readonly _svgPathKey = 'mdsIconSvgPath'
+
+  static setSvgPathStatic (path: string): void {
+    IconsSetService.setSvgPath(path)
+  }
+
   @Method()
   async setSvgPath (svgPath: string): Promise<void> {
     IconsSetService.setSvgPath(svgPath)
@@ -24,6 +30,7 @@ export class MdsIconSvg {
   @Watch('name')
   updateIconHref (): void {
     const svgPath = IconsSetService.getSvgPath()
+    // const svgPath = window.sessionStorage.getItem(this._svgPathKey)
     this._iconHref = svgPath ? svgPath.concat(this.name).concat('.svg') : this.name
   }
 
