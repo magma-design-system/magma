@@ -1,10 +1,9 @@
-import { Component, Element, Host, Listen, State, h } from '@stencil/core'
-import clsx from 'clsx'
+import { Component, Element, Host, Listen, State, h, Prop } from '@stencil/core'
 
 @Component({
   tag: 'mds-flex-table-row',
   styleUrl: 'mds-flex-table-row.css',
-  shadow: false,
+  shadow: true,
 })
 export class MdsFlexTableRow {
 
@@ -14,9 +13,9 @@ export class MdsFlexTableRow {
    * Specifies the template for flex children elements
    */
   @State() template?: string
+  @Prop({ mutable: true, reflect: true }) interactive?: boolean
 
   private setTemplate = () => {
-
     this.el.querySelectorAll('mds-flex-table-cell').forEach((element, index) => {
       const flexGrowTemplates: Array<string> = this.template.split(' ')
       /* eslint-disable dot-notation */
@@ -30,8 +29,6 @@ export class MdsFlexTableRow {
     this.setTemplate()
   }
 
-  @State() interactive?: boolean
-
   @Listen('flexTableInteractive', { target: 'body' })
   tableInteractiveHandler (event: CustomEvent<boolean>): void {
     this.interactive = event.detail
@@ -39,7 +36,7 @@ export class MdsFlexTableRow {
 
   render () {
     return (
-      <Host class={clsx(this.interactive && 'interactive')} role="row">
+      <Host role="row">
         <slot/>
       </Host>
     )

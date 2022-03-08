@@ -1,6 +1,6 @@
 @tailwind utilities;
 
-mds-flex-table-row {
+:host {
 
   @apply
     border-b
@@ -12,10 +12,10 @@ mds-flex-table-row {
   border-bottom-style: solid;
 }
 
-mds-flex-table-row:last-child {
+:host ( :last-child ) {
   border-bottom: 0;
 }
 
-mds-flex-table-row.interactive:hover {
+:host ( [interactive]:hover ) {
   background-color: var(--background-row-hover, theme('colors.adjust-tone')) !important;
 }
