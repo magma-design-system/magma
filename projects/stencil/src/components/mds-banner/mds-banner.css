@@ -18,6 +18,7 @@
 
   @apply
     grid
+    grid-cols-1
     transition-cosmetic;
 
   background-color: var(--background);
@@ -96,6 +97,9 @@
 }
 
 .icon {
+  @apply
+    shrink-0;
+
   color: var(--icon-color);
 }
 
