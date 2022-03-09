@@ -12,40 +12,40 @@ import './iconsauce.css'
 
 import devices from './devices.json'
 import media from '@maggioli-design-system/design-tokens/dist/css-tokens/media.json'
-import { mds_icon_svg } from '../dist/esm/mds-icon-svg.entry'
-import { MdsIconSvg } from '../dist/components/mds-icon-svg'
+import { mds_icon } from '../dist/esm/mds-icon.entry'
+import { MdsIcon } from '../dist/components/mds-icon'
 
 defineCustomElements();
 
-// Method 1 - call static function of MdsIconSvg
-const mdsIconSvgGet = async () => {
-  await customElements.whenDefined('mds-icon-svg')
+// Method 1 - call static function of MdsIcon
+const mdsIconGet = async () => {
+  await customElements.whenDefined('mds-icon')
 
-  mds_icon_svg.setSvgPathStatic('/svg/')
-  // MdsIconSvg.setSvgPathStatic('/svg/') // non va, why?
+  mds_icon.setSvgPathStatic('/svg/')
+  // MdsIcon.setSvgPathStatic('/svg/') // non va, why?
 }
 
-mdsIconSvgGet()
+mdsIconGet()
 
 // Method 2 - use of sessionStorage
-// window.sessionStorage.setItem('mdsIconSvgPath', '/svg/')
+// window.sessionStorage.setItem('mdsIconPath', '/svg/')
 
-// Method 3 - instantiate a temp MdsIconSvg DOM node element to call a stencil class Method
-// const mdsIconSvgGet = async () => {
-//   await customElements.whenDefined('mds-icon-svg')
+// Method 3 - instantiate a temp MdsIcon DOM node element to call a stencil class Method
+// const mdsIconGet = async () => {
+//   await customElements.whenDefined('mds-icon')
 
-//   const mdsIconSvg = document.createElement('mds-icon-svg')
+//   const mdsIcon = document.createElement('mds-icon')
 
-//   document.body.appendChild(mdsIconSvg)
+//   document.body.appendChild(mdsIcon)
 
-//   if ('setSvgPath' in mdsIconSvg) {
-//     mdsIconSvg.setSvgPath('/svg/')
+//   if ('setSvgPath' in mdsIcon) {
+//     mdsIcon.setSvgPath('/svg/')
 //   }
 
-//   document.body.removeChild(mdsIconSvg)
+//   document.body.removeChild(mdsIcon)
 // }
 
-// mdsIconSvgGet()
+// mdsIconGet()
 
 const toUpperCase = string => {
   return string.charAt(0).toUpperCase() + string.slice(1)
