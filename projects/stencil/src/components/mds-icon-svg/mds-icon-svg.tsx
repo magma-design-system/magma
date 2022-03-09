@@ -1,10 +1,12 @@
 import { Component, h, Host, Method, Prop, State, Watch } from '@stencil/core'
-import { IconNameResolverFn } from './meta/icon-set'
 import { IconsSetService } from './services/icons-set.service'
+
+import 'external-svg-loader'
 
 @Component({
   tag: 'mds-icon-svg',
-  shadow: true,
+  styleUrl: 'mds-icon-svg.css',
+  shadow: false,
 })
 export class MdsIconSvg {
 
@@ -15,7 +17,7 @@ export class MdsIconSvg {
 
   @State() _iconHref: string
 
-  private readonly _svgPathKey = 'mdsIconSvgPath'
+  static readonly _svgPathKey = 'mdsIconSvgPath'
 
   static setSvgPathStatic (path: string): void {
     IconsSetService.setSvgPath(path)
@@ -29,21 +31,18 @@ export class MdsIconSvg {
 
   @Watch('name')
   updateIconHref (): void {
-    const svgPath = IconsSetService.getSvgPath()
-    // const svgPath = window.sessionStorage.getItem(this._svgPathKey)
-    this._iconHref = svgPath ? svgPath.concat(this.name).concat('.svg') : this.name
+    const svgPath = IconsSetService.getSvgPath() || window.sessionStorage.getItem(MdsIconSvg._svgPathKey)
+    this._iconHref = svgPath && !this.name.startsWith('http') ? window.location.origin.concat(svgPath.concat(this.name).concat('.svg')) : this.name
   }
 
-  connectedCallback (): void {
+  componentWillLoad (): void {
     this.updateIconHref()
   }
 
   render () {
     return (
       <Host>
-        <svg xmlns="http://www.w3.org/2000/svg" height="20" width="20">
-          <image xlinkHref={this._iconHref} width="100%" height="100%"></image>
-        </svg>
+        <svg data-src={this._iconHref} height="24" width="24" data-cache="disabled"></svg>
       </Host>
     )
   }
