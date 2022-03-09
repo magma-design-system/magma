@@ -3,7 +3,7 @@ import { Component, Element, State, Listen, Host, h } from '@stencil/core'
 @Component({
   tag: 'mds-flex-table-footer',
   styleUrl: 'mds-flex-table-footer.css',
-  shadow: false,
+  shadow: true,
 })
 export class MdsFlexTableFooter {
 

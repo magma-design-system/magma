@@ -1,6 +1,6 @@
 @tailwind utilities;
 
-mds-flex-table-cell {
+:host {
 
   @apply
     flex

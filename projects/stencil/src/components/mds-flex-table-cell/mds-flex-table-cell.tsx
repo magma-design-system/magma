@@ -2,7 +2,7 @@ import { Component, Host, h, Prop } from '@stencil/core'
 @Component({
   tag: 'mds-flex-table-cell',
   styleUrl: 'mds-flex-table-cell.css',
-  shadow: false,
+  shadow: true,
 })
 export class MdsFlexTableCell {
 

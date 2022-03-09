@@ -1,11 +1,12 @@
 @tailwind utilities;
 
-mds-flex-table-body {
+:host {
 
   @apply
     flex
     flex-col
-    overflow-auto;
+    overflow-auto
+    transition-colors;
 
   background-color: var(--background, theme('colors.adjust-tone'));
   border-radius: var(--radius, 0);
@@ -13,10 +14,7 @@ mds-flex-table-body {
   scroll-snap-type: y mandatory;
 }
 
-.no-wrap {
-  @apply whitespace-nowrap;
-}
+:host ( [interactive]:hover ) {
 
-mds-flex-table-body.interactive:hover mds-flex-table-row {
-  background-color: var(--background-hover, theme('colors.adjust-tone-10'));
+  --background: var(--background-hover, theme('colors.adjust-tone-10'));
 }

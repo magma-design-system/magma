@@ -1,9 +1,5 @@
 @tailwind utilities;
 
-mds-grid-table-footer {
+:host {
   @apply flex;
-}
-
-mds-grid-table-footer mds-grid-table-cell mds-text::first-letter {
-  @apply uppercase;
 }
