@@ -47,7 +47,3 @@ export class MdsIcon {
     )
   }
 }
-
-
-
-<mds-icon-house/>
