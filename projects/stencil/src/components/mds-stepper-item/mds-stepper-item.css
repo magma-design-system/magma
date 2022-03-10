@@ -1,0 +1,89 @@
+@tailwind utilities;
+
+:host {
+
+  --color-checked: theme('colors.adjust-tone-04');
+  --color-current: theme('colors.adjust-tone-03');
+  --color: theme('colors.adjust-tone-06');
+  --duaration: 500ms;
+  --icon-background-checked: theme('colors.brand-maggioli-04');
+  --icon-background-current: theme('colors.brand-maggioli-04');
+  --icon-background: var(--progress-background, theme('colors.adjust-tone-08'));
+  --icon-color-checked: theme('colors.brand-maggioli-08');
+  --icon-color-current: theme('colors.adjust-tone');
+  --icon-color: theme('colors.adjust-tone-04');
+  --icon-ring-color: var(--icon-background-current);
+  --icon-ring-size: theme('height.1');
+
+  @apply
+    cursor-pointer
+    flex
+    flex-col
+    gap-1
+    items-center
+    justify-center
+    shrink-0;
+}
+
+:host ( :first-child ) {
+  @apply items-start;
+}
+
+:host ( :last-child ) {
+  @apply items-end;
+}
+
+:host ( [ current ] ) .icon {
+
+  --icon-background: var(--icon-background-current);
+  --icon-color: var(--icon-color-current);
+
+  box-shadow: 0 0 0 var(--icon-ring-size) var(--icon-ring-color);
+  transition-delay: calc(var(--duaration) / 4);
+}
+
+:host ( [ checked ] ) .icon {
+
+  --icon-background: var(--icon-background-checked);
+  --icon-color: var(--icon-color-checked);
+
+  transition-delay: 0ms;
+}
+
+:host ( [ checked ] ) .text {
+
+  --color: var(--color-checked);
+}
+
+:host ( [ current ] ) .text {
+
+  --color: var(--color-current);
+}
+
+:host ( :not([ checked ]) ) .icon,
+:host ( :not([ current ]) ) .icon {
+
+  --icon-ring-color: var(--icon-background);
+}
+
+.icon {
+  @apply
+    flex
+    p-2
+    rounded-full
+    transition-cosmetic;
+
+  background-color: var(--icon-background);
+  box-shadow: 0 0 0 0 var(--icon-ring-color);
+  color: var(--icon-color);
+  transition-duration: calc(var(--duaration) / 2);
+}
+
+.text {
+  @apply
+    absolute
+    -top-1
+    pt-12;
+
+  color: var(--color);
+}
