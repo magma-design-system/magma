@@ -3,7 +3,7 @@ import { LayoutProps } from '../../../../meta/props/LayoutProps'
 
 const Menu: FC<LayoutProps> = (): JSX.Element =>
   <Fragment>
-    <mds-button icon="signpost" slot="nav" variant="dark" tone="quiet" class="text-adjust-tone-04 hover:text-brand-maggioli-01 hover:bg-brand-maggioli-03/10 wide:flex hidden">Governance</mds-button>
+    <mds-button icon="mdi/close" slot="nav" variant="dark" tone="quiet" class="text-adjust-tone-04 hover:text-brand-maggioli-01 hover:bg-brand-maggioli-03/10 wide:flex hidden">Governance</mds-button>
     <mds-button slot="nav" variant="dark" tone="quiet" class="text-adjust-tone-04 hover:text-brand-maggioli-01 hover:bg-brand-maggioli-03/10 flex wide:hidden">Governance</mds-button>
 
     <mds-button icon="description" slot="nav" variant="dark" tone="quiet" class="text-adjust-tone-04 hover:text-brand-maggioli-01 hover:bg-brand-maggioli-03/10 wide:flex hidden">Content</mds-button>
