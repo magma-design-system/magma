@@ -1,6 +1,7 @@
 /.build
 /.iconsauce
 /.loki
+/assets/svg
 /dist
 /dist-storybook
 /loader
@@ -12,5 +13,6 @@
 /src/components/**/tailwind.config.js
 /src/components/**/tsconfig.json
 /src/components/**/types
+/src/fixtures/icons.json
 /src/stencil.config.ts
 /www
