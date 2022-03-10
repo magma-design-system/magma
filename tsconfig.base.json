@@ -3,14 +3,10 @@
     "paths": {
       "@maggioli-design-system/design-tokens": ["projects/design-tokens/build"],
       "@maggioli-design-system/design-tokens/*": ["projects/design-tokens/*"],
-      "@maggioli-design-system/font-icons-cli": [
-        "projects/font-icons-cli/bin/font-icons"
-      ],
-      "@maggioli-design-system/font-icons-cli/*": ["projects/font-icons-cli/*"],
       "@maggioli-design-system/icons": ["projects/icons"],
-      "@maggioli-design-system/icons-svg": ["projects/icons-svg"],
-      "@maggioli-design-system/icons-svg/*": ["projects/icons-svg/*"],
       "@maggioli-design-system/icons/*": ["projects/icons/*"],
+      "@maggioli-design-system/svg-icons": ["projects/svg-icons"],
+      "@maggioli-design-system/svg-icons/*": ["projects/svg-icons/*"],
       "@maggioli-design-system/identity": ["projects/identity/index"],
       "@maggioli-design-system/identity/*": ["projects/identity/*"],
       "@maggioli-design-system/react": ["projects/react/dist/bundle.min"],
