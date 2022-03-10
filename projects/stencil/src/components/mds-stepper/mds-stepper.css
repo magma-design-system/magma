@@ -1,0 +1,47 @@
+@tailwind utilities;
+
+:host {
+
+  --progress-background: theme('colors.adjust-tone-08');
+  --progress-color: theme('colors.brand-maggioli-03');
+  --progress-thickness: theme('height.2');
+
+  @apply
+    block
+    relative;
+}
+
+.items {
+  @apply
+    flex
+    gap-0
+    justify-between
+    relative
+    z-10;
+}
+
+.progress {
+  @apply
+    absolute
+    flex
+    h-10
+    inset-0
+    items-center
+    px-3;
+}
+
+.progress-bar {
+
+  --background: var(--progress-background);
+  --color: var(--progress-color);
+  --thickness: var(--progress-thickness);
+}
+
+:host ( [ linear=true ] ) ::slotted ( mds-stepper-item ),
+:host ( [ linear ] ) ::slotted ( mds-stepper-item ) {
+  @apply pointer-events-none;
+}
+
+:host ( [ linear=false ] ) ::slotted ( mds-stepper-item ) {
+  @apply pointer-events-auto;
+}
