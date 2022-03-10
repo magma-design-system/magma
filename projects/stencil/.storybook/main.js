@@ -1,7 +1,16 @@
 // https://www.mokkapps.de/blog/run-build-and-deploy-stencil-and-storybook-from-one-repository
 
 const path = require('path')
-console.log('webpack.config.js', path.resolve(__dirname))
+
+const alias = {
+  '@component': path.resolve(__dirname, '../dist/collection/components'),
+  '@dictionary': path.resolve(__dirname, '../src/dictionary/'),
+  '@fixture': path.resolve(__dirname, '../src/fixtures/'),
+  '@placeholder': 'https://via.placeholder.com',
+  '@test': path.resolve(__dirname, '../src/test/'),
+  '@type': path.resolve(__dirname, '../src/types/'),
+  '@variant': path.resolve(__dirname, '../src/variants/'),
+}
 
 module.exports = {
   core: {
@@ -35,13 +44,8 @@ module.exports = {
     // 'PRODUCTION' is used when building the static version of storybook.
 
     config.resolve.alias = {
-      '@component': path.resolve(__dirname, '../dist/collection/components'),
-      '@dictionary': path.resolve(__dirname, '../src/dictionary/'),
-      '@fixture': path.resolve(__dirname, '../src/fixtures/'),
-      '@placeholder': 'https://via.placeholder.com',
-      '@test': path.resolve(__dirname, '../src/test/'),
-      '@type': path.resolve(__dirname, '../src/types/'),
-      '@variant': path.resolve(__dirname, '../src/variants/'),
+      ...config.resolve.alias,
+      ...alias
     }
 
     config.module.rules.push({
