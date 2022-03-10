@@ -38,6 +38,10 @@ const minSize = {
   800: '800px',
 }
 
+const paddingAndMargin = {
+  13: '3.25rem',
+}
+
 module.exports = {
   important: true,
   content: [
@@ -115,7 +119,10 @@ module.exports = {
         '3/2': '66.67%',
         '4/3': '75%',
         '5/4': '80%',
-        13: '3.25rem',
+        ...paddingAndMargin,
+      },
+      margin: {
+        ...paddingAndMargin,
       },
       overflow: {
         inherit: 'inherit',
