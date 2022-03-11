@@ -55,6 +55,10 @@ const typographyDefaultsVariaint = {
     tag: 'p',
     selector: 'text-secondary-paragraph',
   },
+  tip: {
+    tag: 'span',
+    selector: 'text-secondary-tip',
+  },
 }
 
 export {
