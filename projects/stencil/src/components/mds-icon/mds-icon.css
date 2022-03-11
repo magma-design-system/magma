@@ -3,20 +3,14 @@
 
 :host {
   @apply
-    inline-flex
-    items-center
-    justify-center;
-}
-
-mds-icon {
-  @apply
+    aspect-square
     inline-flex
     items-center
     justify-center
     w-6;
 }
 
-:host () ::slotted ( * ) {
+svg {
   @apply
     aspect-square
     h-full

@@ -9,7 +9,6 @@ class IconsSetController {
   private memoryCache = {}
 
   addIconSet (name: string, path: string, resolveIconName: IconNameResolverFn): boolean {
-    console.log(`addIconSet - name: ${name} | path: ${path}`)
     let resolveFunction = resolveIconName
 
     const existingSet = this._iconsSets.get(name)
@@ -29,7 +28,6 @@ class IconsSetController {
   }
 
   getIconSet (iconName: string) {
-    console.log(`getIconSet - iconName: ${iconName}`)
     if (!iconName) return { set: null }
     return { set: this._iconsSets.get(iconName.split('/')[0]) }
   }
@@ -45,13 +43,13 @@ class IconsSetController {
   // Try to retrieve svg from cache
   private isCacheAvailable = async (url: string) => {
     try {
-      let item = await get(`loader_${url}`)
+      const loaderItem: string = await get(`loader_${url}`)
 
-      if (!item) {
+      if (!loaderItem) {
         return false
       }
 
-      item = JSON.parse(item)
+      const item = JSON.parse(loaderItem)
 
       if (Date.now() < item.expiry) {
         return item.data
