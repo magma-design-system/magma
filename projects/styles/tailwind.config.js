@@ -131,7 +131,7 @@ module.exports = {
         inherit: 'inherit',
       },
       transitionProperty : {
-        cosmetic: 'background-color, border-color, box-shadow, color, height, margin, opacity, padding, transform, width',
+        cosmetic: 'background-color, border-color, box-shadow, color, fill, height, margin, opacity, padding, transform, width',
         size: 'height, margin, padding, width',
       },
       width: {
