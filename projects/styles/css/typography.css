@@ -83,6 +83,13 @@
     text-sm;
 }
 
+.text-secondary-tip {
+  @apply
+    antialiased
+    font-secondary
+    text-xs;
+}
+
 .text-secondary-label {
   @apply
     antialiased
