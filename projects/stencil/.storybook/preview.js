@@ -13,7 +13,6 @@ import './iconsauce.css'
 import devices from './devices.json'
 import media from '@maggioli-design-system/design-tokens/dist/css-tokens/media.json'
 import { mds_icon } from '../dist/esm/mds-icon.entry'
-import { MdsIcon } from '../dist/components/mds-icon'
 
 defineCustomElements();
 

@@ -41,7 +41,7 @@
     "@maggioli-design-system/identity": "^1.9.0",
     "@maggioli-design-system/styles": "^6.5.2",
     "@stencil/core": "^2.14.1",
-    "external-svg-loader": "1.4.0"
+    "idb-keyval": "6.1.0"
   },
   "license": "MIT",
   "devDependencies": {
