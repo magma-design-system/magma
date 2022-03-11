@@ -1,8 +1,12 @@
+import { get, set, del } from 'idb-keyval'
 import { IconNameResolverFn, MdsIconSet } from '../meta/icon-set'
-
 class IconsSetController {
   private _svgPath: string
   private _iconsSets: Map<string, MdsIconSet> = new Map()
+
+  private readonly cacheExp = 60 * 60 * 1000 * 24
+
+  private memoryCache = {}
 
   addIconSet (name: string, path: string, resolveIconName: IconNameResolverFn): boolean {
     console.log(`addIconSet - name: ${name} | path: ${path}`)
@@ -36,6 +40,71 @@ class IconsSetController {
 
   getSvgPath (): string {
     return this._svgPath
+  }
+
+  // Try to retrieve svg from cache
+  private isCacheAvailable = async (url: string) => {
+    try {
+      let item = await get(`loader_${url}`)
+
+      if (!item) {
+        return false
+      }
+
+      item = JSON.parse(item)
+
+      if (Date.now() < item.expiry) {
+        return item.data
+      }
+
+      del(`loader_${url}`)
+      return false
+    } catch (e) {
+      return false
+    }
+  }
+
+  // Set svg to cache
+  private setCache = async (url: string, data: string) => {
+    try {
+      await set(`loader_${url}`, JSON.stringify({
+        data,
+        expiry: Date.now() + this.cacheExp,
+      }))
+
+    } catch (e) {
+      console.error(e)
+    }
+  }
+
+  async fetchSvg (src: string): Promise<string> {
+    try {
+      const lsCache = await this.isCacheAvailable(src)
+
+      if (this.memoryCache[src] || lsCache) {
+        return this.memoryCache[src] || lsCache
+      }
+
+      const response = await fetch(src)
+      if (!response.ok) {
+        throw Error(`Request for '${src}' returned ${response.status} (${response.statusText})`)
+      }
+      const body = await response.text()
+      const bodyLower = body.toLowerCase().trim()
+
+      if (!(bodyLower.startsWith('<svg') || bodyLower.startsWith('<?xml'))) {
+        throw Error(`Resource '${src}' returned an invalid SVG file`)
+      }
+
+      this.setCache(src, body)
+
+      this.memoryCache[src] = body
+
+      return body
+    } catch (e) {
+      console.error(e)
+      return ''
+    }
   }
 }
 

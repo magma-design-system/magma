@@ -23,3 +23,9 @@ Default.args = {
   name: 'mdi/alien',
   class: 'fill-label-blue-05'
 }
+
+export const ExternalSVG = Template.bind({})
+ExternalSVG.args = {
+  name: 'https://clayto.com/icons/font-awesome/solid/carrot.svg',
+  class: 'fill-label-green-06'
+}

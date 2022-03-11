@@ -16,7 +16,7 @@ mds-icon {
     w-6;
 }
 
-mds-icon svg {
+:host () ::slotted ( * ) {
   @apply
     aspect-square
     h-full
