@@ -7,7 +7,7 @@
     * @prop --radius: Sets the border-radius of the component
     * @prop --color: Sets the text color of the component
     * @prop --shadow: Sets the box-shadow of the component
-    * @prop --icon-color: Sets the close icon color of the component
+    * @prop --icon-color: Sets the close icon fill color of the component
     */
 
   --background: theme('colors.adjust-tone-10');
@@ -102,7 +102,7 @@
   @apply
     shrink-0;
 
-  color: var(--icon-color);
+  fill: var(--icon-color);
 }
 
 .text {
