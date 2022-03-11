@@ -22,6 +22,7 @@
   },
   "dependencies": {
     "@maggioli-design-system/mds-icon": "^2.0.0",
+    "@maggioli-design-system/mds-text": "^1.3.0",
     "@stencil/core": "^2.14.1",
     "external-svg-loader": "1.4.0"
   },

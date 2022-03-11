@@ -5,7 +5,7 @@
   --color-checked: theme('colors.adjust-tone-04');
   --color-current: theme('colors.adjust-tone-03');
   --color: theme('colors.adjust-tone-06');
-  --duaration: 500ms;
+  --duaration: 250ms;
   --icon-background-checked: theme('colors.brand-maggioli-04');
   --icon-background-current: theme('colors.brand-maggioli-04');
   --icon-background: var(--progress-background, theme('colors.adjust-tone-08'));
@@ -39,7 +39,7 @@
   --icon-color: var(--icon-color-current);
 
   box-shadow: 0 0 0 var(--icon-ring-size) var(--icon-ring-color);
-  transition-delay: calc(var(--duaration) / 4);
+  transition-delay: calc(var(--duaration) / 2);
 }
 
 :host ( [ checked ] ) .icon {
@@ -58,6 +58,10 @@
 :host ( [ current ] ) .text {
 
   --color: var(--color-current);
+
+  @apply translate-y-1;
+
+  transition-delay: calc(var(--duaration) / 2);
 }
 
 :host ( :not([ checked ]) ) .icon,
@@ -76,14 +80,16 @@
   background-color: var(--icon-background);
   box-shadow: 0 0 0 0 var(--icon-ring-color);
   color: var(--icon-color);
-  transition-duration: calc(var(--duaration) / 2);
+  transition-duration: var(--duaration);
 }
 
 .text {
   @apply
-    absolute
     -top-1
-    pt-12;
+    absolute
+    pt-13
+    transition-cosmetic;
 
   color: var(--color);
+  transition-duration: var(--duaration);
 }
