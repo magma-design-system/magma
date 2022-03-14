@@ -1,12 +1,12 @@
-import { Component, Element, Event, EventEmitter, Host, Prop, getAssetPath, h } from '@stencil/core'
+import { Component, Element, Event, EventEmitter, Host, Prop, h } from '@stencil/core'
 import { ToneSimpleVariantType, ThemeVariantType } from '../../types/variant'
 import clsx from 'clsx'
+import miBaselineClose from '@icon/mi/baseline/close.svg'
 
 @Component({
   tag: 'mds-banner',
   styleUrl: 'mds-banner.css',
   shadow: true,
-  assetsDirs: ['../../../assets/svg'],
 })
 export class MdsBanner {
 
@@ -67,7 +67,7 @@ export class MdsBanner {
           <header class="header">
             { this.icon && <mds-icon name={ this.icon } class="icon"/> }
             <mds-text typography="h6" class="headline">{ this.headline }</mds-text>
-            { this.deletable && <mds-icon name={getAssetPath('mi/baseline/close')} class="close-icon" onClick={this.closeBanner} /> }
+            { this.deletable && <i class="svg close-icon" innerHTML={miBaselineClose} onClick={this.closeBanner} /> }
           </header>
         }
         <div class={clsx(
@@ -76,7 +76,7 @@ export class MdsBanner {
         )}>
           { this.headline === undefined && this.deletable
             &&
-            <mds-icon name={getAssetPath('mi/baseline/close')} class="close-icon close-icon--isolated" onClick={this.closeBanner}/>
+            <i class="svg close-icon close-icon--isolated" innerHTML={miBaselineClose} onClick={this.closeBanner} />
           }
           { this.headline === undefined && this.icon && <mds-icon name={ this.icon } class="icon"/> }
           <div class="text">

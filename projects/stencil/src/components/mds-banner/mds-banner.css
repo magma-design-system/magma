@@ -1,4 +1,5 @@
 @tailwind utilities;
+@tailwind components;
 
 :host {
 
@@ -86,16 +87,17 @@
 
 .close-icon {
   @apply
-    bg-adjust-tone
-    bg-opacity-0
+    bg-adjust-tone-05/0
     cursor-pointer
     p-1
     rounded-md
     transition-colors;
+
+  fill: var(--color);
 }
 
 .close-icon:hover {
-  @apply bg-opacity-50;
+  @apply bg-adjust-tone-05/20;
 }
 
 .icon {
@@ -119,3 +121,4 @@
 @import './css/mds-banner-variant-primary.css';
 @import './css/mds-banner-variant-success.css';
 @import './css/mds-banner-variant-warning.css';
+@import '../../tailwind/components.css';
