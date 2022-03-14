@@ -21,7 +21,6 @@
     "build": "rm src/components.d.ts || true && stencil build --docs-readme"
   },
   "dependencies": {
-    "@maggioli-design-system/mds-icon": "^2.0.0",
     "@maggioli-design-system/mds-text": "^1.3.2",
     "@stencil/core": "^2.14.2"
   },

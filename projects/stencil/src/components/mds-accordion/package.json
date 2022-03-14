@@ -21,7 +21,7 @@
     "build": "rm src/components.d.ts || true && stencil build --docs-readme"
   },
   "dependencies": {
-    "@maggioli-design-system/mds-accordion-item": "^2.0.0",
+    "@maggioli-design-system/mds-accordion-item": "^1.1.0",
     "@stencil/core": "^2.14.2"
   },
   "license": "MIT",
