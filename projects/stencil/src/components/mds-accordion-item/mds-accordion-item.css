@@ -1,6 +1,8 @@
 @tailwind components;
 @tailwind utilities;
 
+@import '../../tailwind/components.css';
+
 /**
 * @prop --color: Sets the text-color of the element
 * @prop --border-color: Sets the color of the border that separates elements
@@ -23,10 +25,11 @@
   border-color: transparent !important;
   border-top: solid 2px;
   color: var(--color);
+  fill: var(--color);
   margin-bottom: -2px;
 }
 
-:host( .opened ) {
+:host( [opened] ) {
   @apply
     my-4
     py-8;
@@ -35,11 +38,15 @@
   border-top-color: var(--border-color) !important;
 }
 
-:host( .opened:first-child ) {
+:host( .sibling[opened] ) {
+  @apply -mt-[1.125rem];
+}
+
+:host( [opened]:first-child ) {
   border-top-color: transparent !important;
 }
 
-:host( .opened:last-child ) {
+:host( [opened]:last-child ) {
   border-bottom-color: transparent !important;
 }
 
@@ -58,10 +65,6 @@
     font-normal;
 }
 
-.font-inherit {
-  font-size: inherit;
-}
-
 .contents {
   @apply
     duration-300
@@ -76,9 +79,22 @@
     transition-cosmetic;
 }
 
-.contents--opened {
+:host( [opened] ) .contents {
   @apply
     h-auto
     opacity-100
     pt-4;
+}
+
+.icon {
+  @apply
+    duration-500
+    ease-out-expo
+    transform
+    rotate-180
+    transition-transform;
+}
+
+:host( [opened] ) .icon {
+  @apply rotate-0;
 }
