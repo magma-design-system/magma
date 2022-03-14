@@ -1,7 +1,10 @@
-import { Config } from '@stencil/core'
-import { postcss } from '@stencil/postcss'
+import alias from '@rollup/plugin-alias';
 import autoprefixer from 'autoprefixer'
+import path from 'path'
 import tailwind from 'tailwindcss'
+import { Config } from '@stencil/core'
+import { inlineSvg } from 'stencil-inline-svg'
+import { postcss } from '@stencil/postcss'
 
 const packageName = 'magma-components'
 const srcDir = './src'
@@ -41,6 +44,12 @@ export const config: Config = {
         tailwind(),
       ],
     }),
+    alias({
+      entries: [
+        { find: /^@icon\/([a-zA-Z-\/]+)\.svg$/, replacement: path.resolve(path.resolve(__dirname), './assets/svg/$1.svg') },
+      ]
+    }),
+    inlineSvg(),
   ],
   testing: {
     testPathIgnorePatterns: ['<rootDir>/.build/', '<rootDir>/template/', '<rootDir>/node_modules/'],

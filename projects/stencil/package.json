@@ -48,6 +48,7 @@
     "@babel/core": "^7.16.0",
     "@babel/preset-react": "^7.16.0",
     "@iconsauce/material-icons": "^1.0.0",
+    "@rollup/plugin-alias": "^3.1.9",
     "@stencil/eslint-plugin": "^0.4.0",
     "@stencil/postcss": "2.1.0",
     "@storybook/addon-actions": "^6.4.9",
@@ -81,6 +82,7 @@
     "rimraf": "^3.0.2",
     "sass-loader": "12.4.0",
     "stdio": "^2.1.1",
+    "stencil-inline-svg": "^1.1.0",
     "style-loader": "^3.3.1",
     "tailwindcss": "^3.0.22"
   },

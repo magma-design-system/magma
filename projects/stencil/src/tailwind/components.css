@@ -1,0 +1,14 @@
+@tailwind components;
+
+@layer components {
+  .svg {
+    @apply flex;
+  }
+
+  .svg svg {
+    @apply
+      aspect-square
+      h-full
+      w-full;
+  }
+}
