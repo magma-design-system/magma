@@ -24,17 +24,25 @@ export class MdsAccordion {
 
   @Listen('openedEvent')
   changeEventHandler (event: CustomEvent<string>): void {
+    const items = this.queryItems()
     if (this.multiple) {
+      const list = []
+      items.forEach((item, key) => {
+        item.opened ? list.push(item) : list.push(null)
+        item.classList.remove('sibling')
+        if (list.length > 1 && list[key - 1] !== null) {
+          item.classList.add('sibling')
+        }
+      })
       return
     }
-    const items = this.queryItems()
     items.forEach((item, key) => item.opened = `item-${key}` === event.detail)
   }
 
   render () {
     return (
       <Host>
-        <slot></slot>
+        <slot/>
       </Host>
     )
   }
