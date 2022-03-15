@@ -1,4 +1,5 @@
 import { Component, Element, Event, EventEmitter, Host, Listen, State, h } from '@stencil/core'
+import miRoundMenu from '@icon/mi/round/menu.svg'
 
 @Component({
   tag: 'mds-header-bar',
@@ -44,7 +45,7 @@ export class MdsHeaderBar {
             </nav>
           }
           { this.hasNav &&
-            <mds-icon class="icon" name="menu" onClick={ this.open }/>
+            <i class="svg icon" innerHTML={miRoundMenu} onClick={ this.open } />
           }
         </div>
       </Host>
