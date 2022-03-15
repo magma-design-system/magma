@@ -1,6 +1,7 @@
 @tailwind utilities;
+@import '../../tailwind/components.css';
 
-mds-breadcrumb-item {
+:host {
   @apply
     flex
     shrink-0
@@ -8,11 +9,11 @@ mds-breadcrumb-item {
     items-center;
 }
 
-mds-breadcrumb-item:last-child .icon {
+:host( :last-child ) .icon {
   @apply hidden;
 }
 
-mds-breadcrumb-item:last-child .text {
+:host( :last-child ) .text {
   @apply pointer-events-none;
 
   color: var(--current-button-color, theme('colors.adjust-tone-05'));

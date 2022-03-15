@@ -1,9 +1,10 @@
 import { Component, Host, h } from '@stencil/core'
+import miBaselineNavigateNext from '@icon/mi/baseline/navigate-next.svg'
 
 @Component({
   tag: 'mds-breadcrumb-item',
   styleUrl: 'mds-breadcrumb-item.css',
-  shadow: false,
+  shadow: true,
 })
 export class MdsBreadcrumbItem {
 
@@ -13,7 +14,7 @@ export class MdsBreadcrumbItem {
         <mds-text class="text" typography="detail">
           <slot/>
         </mds-text>
-        <mds-icon class="icon" name="navigate-next"/>
+        <i class="svg icon" innerHTML={miBaselineNavigateNext}/>
       </Host>
     )
   }
