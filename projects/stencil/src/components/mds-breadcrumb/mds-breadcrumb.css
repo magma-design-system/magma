@@ -1,4 +1,5 @@
 @tailwind utilities;
+@import '../../tailwind/components.css';
 
 /**
   * @prop --arrow-back-color-hover: Sets the color of arrow back icon when the mouse is over it
@@ -16,7 +17,7 @@
   --arrow-back-color-hover: theme('colors.adjust-tone-02');
   --arrow-back-color: theme('colors.adjust-tone-02');
   --arrow-depth-color: theme('colors.adjust-tone-07');
-  --button-background-hover: theme('colors.brand-maggioli-09');
+  --button-background-hover: theme('colors.label-blue-09');
   --button-background: transparent;
   --button-color-hover: theme('colors.brand-maggioli-04');
   --button-color: theme('colors.adjust-tone-02');

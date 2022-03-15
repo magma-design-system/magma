@@ -1,4 +1,5 @@
 import { Component, Listen, Host, h, Prop } from '@stencil/core'
+import miBaselineArrowBack from '@icon/mi/baseline/arrow-back.svg'
 
 @Component({
   tag: 'mds-breadcrumb',
@@ -22,7 +23,7 @@ export class MdsBreadcrumb {
       <Host>
         { this.back &&
           <div class="back">
-            <mds-icon name="arrow-back" />
+            <i class="svg icon" innerHTML={miBaselineArrowBack}/>
           </div>
         }
         <slot name="breadcrumb-item"/>
