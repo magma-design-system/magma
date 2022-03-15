@@ -14,7 +14,7 @@ export default {
 
 const Template = args =>
   <mds-details {...args}>
-    <mds-icon slot="icon" name="check-circle"/>
+    <mds-icon slot="icon" name="mi/baseline/check-circle"/>
     <mds-text typography="h6" slot="title">Vision</mds-text>
     <mds-text typography="detail">
       Perché esisti, quali sono i tuoi valori e come questi aiuteranno a guidare il futuro del tuo prodotto.
