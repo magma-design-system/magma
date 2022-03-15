@@ -21,7 +21,7 @@
     "build": "rm src/components.d.ts || true && stencil build --docs-readme"
   },
   "dependencies": {
-    "@stencil/core": "^2.14.0",
+    "@stencil/core": "^2.14.2",
     "idb-keyval": "6.1.0"
   },
   "license": "MIT",
@@ -32,24 +32,24 @@
   },
   "contributors": [
     {
-        "name": "Andrea Pruccoli",
-        "email": "andrea.pruccoli@maggioli.it",
-        "role": "Software Engineer"
+      "name": "Andrea Pruccoli",
+      "email": "andrea.pruccoli@maggioli.it",
+      "role": "Software Engineer"
     },
     {
-        "name": "Federico Ciani",
-        "email": "federico.ciani@maggioli.it",
-        "role": "UX UI Designer"
+      "name": "Federico Ciani",
+      "email": "federico.ciani@maggioli.it",
+      "role": "UX UI Designer"
     },
     {
-        "name": "Stefano Pascazi",
-        "email": "stefano.pascazi@maggioli.it",
-        "role": "Software Engineer"
+      "name": "Stefano Pascazi",
+      "email": "stefano.pascazi@maggioli.it",
+      "role": "Software Engineer"
     },
     {
-        "name": "Vittorio Vittori",
-        "email": "vittorio.vittori@maggioli.it",
-        "role": "UX UI Designer"
+      "name": "Vittorio Vittori",
+      "email": "vittorio.vittori@maggioli.it",
+      "role": "UX UI Designer"
     }
   ]
 }
