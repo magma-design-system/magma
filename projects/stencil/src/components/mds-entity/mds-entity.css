@@ -1,16 +1,25 @@
 @tailwind utilities;
+@import '../../tailwind/components.css';
 
 /**
-   * @prop --background: The background-color of the entity
-   * @prop --background-icon: The background-color of the icon
-   * @prop --background-delete: The background-color of the delete action
-   * @prop --color: The color of the entity name
-   * @prop --color-delete: The icon color of the delete action
-   * @prop --color-detail: The color of the text details
-   * @prop --color-icon: The color of the icon
-  */
+* @prop --background: The background-color of the entity
+* @prop --color: The color of the entity name
+* @prop --delete-background: The background-color of the delete action
+* @prop --delete-color: The icon color of the delete action
+* @prop --detail-color: The color of the text details
+* @prop --icon-background: The background-color of the icon
+* @prop --icon-color: The color of the icon
+*/
 
 :host {
+
+  --background: theme('colors.adjust-tone');
+  --color: theme('colors.adjust-tone-02');
+  --delete-background: theme('colors.status-error-09');
+  --delete-color: theme('colors.status-error-04');
+  --detail-color: theme('colors.adjust-tone-03');
+  --icon-background: theme('colors.label-blue-09');
+  --icon-color: theme('colors.label-blue-04');
 
   @apply
     flex
@@ -19,8 +28,8 @@
     p-2
     rounded-lg;
 
-  background-color: var(--background, theme('colors.adjust-tone'));
-  color: var(--color, theme('colors.adjust-tone-02'));
+  background-color: var(--background);
+  color: var(--color);
 }
 
 .avatar,
@@ -39,8 +48,8 @@
     justify-center;
 
   aspect-ratio: 1/1;
-  background-color: var(--background-icon, theme('colors.label-blue-09'));
-  color: var(--color-icon, theme('colors.label-blue-04'));
+  background-color: var(--icon-background);
+  fill: var(--icon-color);
 }
 
 .delete {
@@ -52,8 +61,8 @@
     rounded-full;
 
   aspect-ratio: 1/1;
-  background-color: var(--background-delete, theme('colors.status-error-09'));
-  color: var(--color-delete, theme('colors.status-error-04'));
+  background-color: var(--delete-background);
+  fill: var(--delete-color);
 }
 
 .infos {
@@ -72,7 +81,7 @@
     gap-1
     items-center;
 
-  color: var(--color-detail, theme('colors.adjust-tone-03'));
+  color: var(--detail-color);
 }
 
 ::slotted ( * ) {

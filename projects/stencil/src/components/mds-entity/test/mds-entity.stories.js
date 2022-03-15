@@ -57,5 +57,5 @@ Deletable.args = {
 
 export const Icon = TemplateLocation.bind({})
 Icon.args = {
-  icon: 'routes'
+  icon: 'mi/baseline/route'
 }

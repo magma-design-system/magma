@@ -1,5 +1,5 @@
 import { Component, Element, Host, h, Prop } from '@stencil/core'
-
+import miBaselineClose from '@icon/mi/baseline/close.svg'
 @Component({
   tag: 'mds-entity',
   styleUrl: 'mds-entity.css',
@@ -48,14 +48,14 @@ export class MdsEntity {
         <div class="infos">
           <slot/>
           { this.details &&
-            <mds-row class="details">
+            <div class="details">
               <slot name="detail"/>
-            </mds-row>
+            </div>
           }
         </div>
         { this.deletable &&
           <div class="delete">
-            <mds-icon name="close"/>
+            <i class="svg" innerHTML={miBaselineClose}/>
           </div>
         }
       </Host>
