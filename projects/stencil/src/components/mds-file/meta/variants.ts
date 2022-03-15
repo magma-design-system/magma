@@ -25,7 +25,7 @@ const fileFormatsVariant = {
   },
   data: {
     color: 'fill-label-yellow-04 text-label-yellow-04',
-    icon: 'mi/baseline/harddisk',
+    icon: 'mdi/harddisk',
     iconBackground: 'bg-label-yellow-10',
     variant: 'yellow',
   },
