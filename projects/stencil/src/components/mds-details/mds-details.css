@@ -1,4 +1,5 @@
 @tailwind utilities;
+@import '../../tailwind/components.css';
 
 /**
 * @prop --icon-color: Sets the box-shadow of the component when the mouse is over it
@@ -51,6 +52,10 @@
   @apply cursor-pointer;
 
   color: var(--icon-color);
+}
+
+.title {
+  @apply cursor-pointer;
 }
 
 .helper-icon {

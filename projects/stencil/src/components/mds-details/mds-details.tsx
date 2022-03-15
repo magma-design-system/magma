@@ -1,5 +1,6 @@
 import { Component, Host, h, Prop, State, Event, Watch, EventEmitter } from '@stencil/core'
 import clsx from 'clsx'
+import miBaselineKeyboardArrowDown from '@icon/mi/baseline/keyboard-arrow-down.svg'
 
 @Component({
   tag: 'mds-details',
@@ -43,9 +44,11 @@ export class MdsDetails {
           <slot name="icon"/>
         </div>
         <div class="contents">
-          <header class="header" onClick={ this.toggle }>
-            <slot name="title"/>
-            <mds-icon name="keyboard-arrow-down" class={clsx('helper-icon', this.isOpened && 'opened')}/>
+          <header class="header">
+            <div class="title" onClick={ this.toggle }>
+              <slot name="title"/>
+            </div>
+            <i onClick={ this.toggle } class={clsx('svg helper-icon', this.isOpened && 'opened')} innerHTML={miBaselineKeyboardArrowDown}/>
           </header>
           <div class={clsx('details', this.isOpened && 'opened')}>
             <slot/>
