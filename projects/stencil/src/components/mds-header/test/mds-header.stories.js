@@ -18,7 +18,7 @@ const Template = args =>
         </div>
       </div>
       <mds-button slot="nav" variant="dark" tone="ghost">Accedi</mds-button>
-      <mds-button slot="nav" icon="person">Registrati</mds-button>
+      <mds-button slot="nav" icon="mi/round/person">Registrati</mds-button>
     </mds-header-bar>
     <div slot="nav-mobile">
       <div className="flex gap-2 items-center p-6 border-b border-adjust-tone-09">
