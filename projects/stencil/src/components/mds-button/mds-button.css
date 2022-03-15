@@ -16,6 +16,7 @@
   --background: theme('colors.brand-maggioli-02');
   --border-color: transparent;
   --color: theme('colors.adjust-tone');
+  --icon-color: theme('colors.adjust-tone');
   --radius: theme('borderRadius.lg');
 
   @apply
@@ -48,6 +49,10 @@
 
 .text::first-letter {
   @apply uppercase;
+}
+
+.icon {
+  fill: var(--icon-color);
 }
 
 @import './css/mds-button-variant-primary.css';

@@ -56,7 +56,7 @@ const TemplateIcon = args =>
 
 export const Default = Template.bind({})
 Default.args = {
-  icon: 'home-group',
+  icon: 'mdi/home-group',
 }
 
 export const Variant = Template.bind({})
@@ -77,11 +77,11 @@ Size.args = {
 
 export const icon = TemplateIcon.bind({})
 icon.args = {
-  icon: 'home-group',
+  icon: 'mdi/home-group',
 }
 
 export const iconPosition = Template.bind({})
 iconPosition.args = {
   'icon-position': 'right',
-  icon: 'home-group',
+  icon: 'mdi/home-group',
 }
