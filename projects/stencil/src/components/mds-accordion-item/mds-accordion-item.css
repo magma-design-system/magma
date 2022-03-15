@@ -40,6 +40,8 @@
 
 :host( .sibling[opened] ) {
   @apply -mt-[1.125rem];
+
+  border-top-color: transparent !important;
 }
 
 :host( [opened]:first-child ) {
