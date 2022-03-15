@@ -1,6 +1,8 @@
 @tailwind utilities;
 @tailwind components;
 
+@import '../../tailwind/components.css';
+
 :host {
 
   /**
@@ -121,4 +123,3 @@
 @import './css/mds-banner-variant-primary.css';
 @import './css/mds-banner-variant-success.css';
 @import './css/mds-banner-variant-warning.css';
-@import '../../tailwind/components.css';
