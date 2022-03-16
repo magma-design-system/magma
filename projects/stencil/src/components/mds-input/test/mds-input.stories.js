@@ -160,6 +160,6 @@ search.args = {
 
 export const icon = Template.bind({})
 icon.args = {
-  icon: 'email',
+  icon: 'mi/round/email',
   placeholder: 'Status input field',
 }
