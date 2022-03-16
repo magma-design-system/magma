@@ -3,11 +3,14 @@
 @tailwind utilities;
 
 :host {
+
+  --duration: 300ms;
+  --size: theme('spacing.6');
+
   @apply
     gap-2
     inline-flex
-    items-start
-    text-adjust-tone-02;
+    items-start;
 }
 
 .field {
@@ -53,23 +56,23 @@
 
 .icon-unchecked {
   @apply
-    duration-700
     opacity-100
     text-adjust-tone-05
     transform
     transition-cosmetic;
 
   transform: scale(theme('scale.100'));
+  transition-duration: calc(var(--duration) * 2);
 }
 
 .icon-checked {
   @apply
-    duration-300
     text-brand-maggioli-04
     transform
     transition-cosmetic;
 
   transform: scale(theme('scale.0'));
+  transition-duration: var(--duration);
 }
 
 .indeterminate .icon-checked {
@@ -84,33 +87,38 @@
 .switch-container {
   @apply
     shrink-0
-    box-border
-    w-14;
+    box-border;
+
+  width: calc(calc(var(--size) * 2) + calc(var(--size) / 3));
 }
 
 .switch {
   @apply
     bg-adjust-tone-07
-    duration-300
     shrink-0
     inline-flex
-    p-1
     rounded-full
     transition-colors;
+
+  padding: calc(var(--size) / 6);
+  transition-duration: var(--duration);
 }
 
 .switch-toggle {
   @apply
     bg-adjust-tone
     cursor-pointer
-    duration-300
     ease-out-expo
-    h-6
     rounded-full
     shadow
     transform
-    transition-transform
-    w-6;
+    transition-transform;
+
+  /* animation-duration: var(--duration);
+  animation-name: check; */
+  height: var(--size);
+  transition-duration: var(--duration);
+  width: var(--size);
 }
 
 .field:checked + .label-icon .icon-unchecked {
@@ -119,12 +127,12 @@
     opacity-0;
 
   transform: scale(theme('scale.150'));
+  transition-duration: calc(var(--duration) * 2);
 }
 
 .field:checked + .label-icon .icon-checked {
-  @apply duration-500;
-
   transform: scale(theme('scale.100'));
+  transition-duration: calc(var(--duration) * 1.5);
 }
 
 .field:focus + .label-icon .icon-checked,
@@ -159,6 +167,10 @@
   @apply
     bg-adjust-tone
     translate-x-full;
+
+  /* animation-duration: var(--duration);
+  animation-name: check; */
+  transition-delay: var(--duration);
 }
 
 .field:disabled + .switch-container .switch {
@@ -174,4 +186,18 @@
 .field:disabled + .switch-container .switch-toggle {
   @apply
     bg-adjust-tone-09;
+}
+
+@keyframes check {
+  0% {
+    width: var(--size);
+  }
+
+  50% {
+    width: calc(var(--size) * 2);
+  }
+
+  100% {
+    width: var(--size);
+  }
 }
