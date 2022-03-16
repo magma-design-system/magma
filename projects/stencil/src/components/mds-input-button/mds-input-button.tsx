@@ -75,9 +75,9 @@ export class MdsInputButton {
 
     return (
       <Host class={clsx(!this.hasText && 'no-text')} onMouseDown={this.mouseDown} onMouseUp={this.mouseUp} onMouseOut={this.mouseUp}>
-        { this.icon && this.iconPosition === 'left' && <mds-icon name={this.icon} /> }
+        { this.icon && this.iconPosition === 'left' && <mds-icon class="icon" name={this.icon} /> }
         { this.hasText && <mds-text class="text" typography={this.typography}><slot /></mds-text> }
-        { this.icon && this.iconPosition === 'right' && <mds-icon name={this.icon} /> }
+        { this.icon && this.iconPosition === 'right' && <mds-icon class="icon" name={this.icon} /> }
       </Host>
     )
   }
