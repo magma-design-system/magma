@@ -9,6 +9,10 @@
   */
 
 :host {
+
+  --background: theme('colors.adjust-tone');
+  --icon-color: theme('colors.adjust-tone');
+
   @apply
     flex
     relative
@@ -38,7 +42,7 @@
     min-h-12
     w-full;
 
-  background-color: var(--background, theme('colors.adjust-tone'));
+  background-color: var(--background);
 }
 
 textarea.input:active {
@@ -126,8 +130,9 @@ textarea.input {
   @apply
     absolute
     left-3
-    text-brand-maggioli-04
     top-3;
+
+  fill: theme('colors.brand-maggioli-04');
 }
 
 @import './css/mds-input-variant.css';
