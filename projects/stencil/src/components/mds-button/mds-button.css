@@ -52,6 +52,8 @@
 }
 
 .icon {
+  @apply transition-colors;
+
   fill: var(--icon-color);
 }
 
