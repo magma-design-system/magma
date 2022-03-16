@@ -46,7 +46,7 @@ export const config: Config = {
     }),
     alias({
       entries: [
-        { find: /^@icon\/([a-zA-Z-\/]+)\.svg$/, replacement: path.resolve(path.resolve(__dirname), './assets/svg/$1.svg') },
+        { find: /^@icon\/([a-zA-Z-\/]+)\.svg$/, replacement: path.resolve(__dirname, './assets/svg/$1.svg') },
       ]
     }),
     inlineSvg(),
