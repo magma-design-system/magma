@@ -1,8 +1,9 @@
-@import '~@maggioli-design-system/styles/dist/tailwind/typography.css';
-
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+@import '~@maggioli-design-system/styles/dist/tailwind/typography.css';
+@import '../../tailwind/components.css';
 
 :host {
   @apply
@@ -71,7 +72,7 @@
     bg-transparent
     duration-200
     rounded-full
-    text-brand-maggioli-04
+    fill-brand-maggioli-04
     transition-colors;
 }
 
@@ -79,5 +80,5 @@
 .input:hover + .icon-container .icon {
   @apply
     bg-adjust-tone-09
-    text-brand-maggioli-02;
+    fill-brand-maggioli-02;
 }

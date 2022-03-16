@@ -1,7 +1,7 @@
 import { Component, Event, EventEmitter, Host, Prop, h, State } from '@stencil/core'
-
 import clsx from 'clsx'
 import { InputValue } from '../../interface/input-value'
+import miBaselineKeyboardArrowDown from '@icon/mi/baseline/keyboard-arrow-down.svg'
 @Component({
   tag: 'mds-input-select',
   styleUrl: 'mds-input-select.css',
@@ -76,7 +76,7 @@ export class MdsInputSelect {
           ) }
         </select>
         <div class="icon-container">
-          <mds-icon class="icon" name="keyboard-arrow-down" />
+          <i class="svg icon" innerHTML={miBaselineKeyboardArrowDown} />
         </div>
       </Host>
     )
