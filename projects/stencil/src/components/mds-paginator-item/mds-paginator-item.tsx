@@ -4,7 +4,7 @@ import clsx from 'clsx'
 @Component({
   tag: 'mds-paginator-item',
   styleUrl: 'mds-paginator-item.css',
-  shadow: false,
+  shadow: true,
 })
 export class MdsPaginatorItem {
 
