@@ -5,16 +5,19 @@
 
   --background: theme('colors.label-orchid-04');
   --color: theme('colors.label-orchid-10');
+  --icon-color: theme('colors.label-orchid-10');
 }
 
 :host ( [variant=orchid][tone=weak] ) {
 
   --background: theme('colors.label-orchid-08');
   --color: theme('colors.label-orchid-02');
+  --icon-color: theme('colors.label-orchid-02');
 }
 
 :host ( [variant=orchid][tone=quiet] ) {
 
   --background: theme('colors.label-orchid-09');
   --color: theme('colors.label-orchid-04');
+  --icon-color: theme('colors.label-orchid-04');
 }

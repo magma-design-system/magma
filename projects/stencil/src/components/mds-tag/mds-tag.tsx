@@ -2,6 +2,7 @@ import { Component, Element, Event, EventEmitter, Host, h, Prop } from '@stencil
 import { TypographyType } from '../../types/typography'
 import { ThemeFullVariantType, ToneSimpleVariantType } from '../../types/variant'
 import clsx from 'clsx'
+import miBaselineClose from '@icon/mi/baseline/close.svg'
 
 @Component({
   tag: 'mds-tag',
@@ -52,9 +53,9 @@ export class MdsTag {
     return (
       <Host>
         <mds-text typography={this.typography} class={clsx('text', this.truncate && 'truncate')}>
-          <slot></slot>
+          <slot/>
         </mds-text>
-        { this.deletable && <mds-icon name="close" class="close" onClick={ this.onClickClose.bind(this) }/> }
+        { this.deletable && <i innerHTML={miBaselineClose} class="svg close" onClick={ this.onClickClose.bind(this) }/> }
       </Host>
     )
   }

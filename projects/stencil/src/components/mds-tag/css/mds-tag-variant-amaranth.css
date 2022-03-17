@@ -5,16 +5,19 @@
 
   --background: theme('colors.label-amaranth-04');
   --color: theme('colors.label-amaranth-10');
+  --icon-color: theme('colors.label-amaranth-10');
 }
 
 :host ( [variant=amaranth][tone=weak] ) {
 
   --background: theme('colors.label-amaranth-08');
   --color: theme('colors.label-amaranth-02');
+  --icon-color: theme('colors.label-amaranth-02');
 }
 
 :host ( [variant=amaranth][tone=quiet] ) {
 
   --background: theme('colors.label-amaranth-09');
   --color: theme('colors.label-amaranth-04');
+  --icon-color: theme('colors.label-amaranth-04');
 }
