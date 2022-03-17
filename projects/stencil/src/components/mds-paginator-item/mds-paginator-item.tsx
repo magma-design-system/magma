@@ -33,7 +33,7 @@ export class MdsPaginatorItem {
         { this.icon !== undefined
           ? <mds-icon name={this.icon}/>
           : <mds-text class="text" typography="detail">
-            <slot></slot>
+            <slot/>
           </mds-text>
         }
       </Host>
