@@ -2,27 +2,49 @@
 @tailwind components;
 @tailwind utilities;
 
+/*
+* @prop --animation-timing-adjust: Set the size multiplier when the switch toggle is resizing by animation
+* @prop --animation-timing-function: Set the timing function of the animation
+* @prop --duration: Set the duration of the animation
+* @prop --icon-color-checked-disabled: Set the color of the icon when the switch is disabled and checked
+* @prop --icon-color-checked: Set the color of the icon when the switch is checked
+* @prop --icon-color-indeterminate-disabled: Set the color of the icon when the switch is disabled and indeterminate
+* @prop --icon-color-indeterminate: Set the color of the icon when the switch is indeterminate
+* @prop --icon-color-unchecked-disabled: Set the color of the icon when the switch is disabled and unchecked
+* @prop --icon-color-unchecked: Set the color of the icon when the switch is unchecked
+* @prop --switch-color-checked: Set the color of the switch when the switch is checked
+* @prop --switch-color-disabled-checked: Set the color of the switch when the switch is disabled and checked
+* @prop --switch-color-disabled-unchecked: Set the color of the switch when the switch is disabled and unchecked
+* @prop --switch-color-unchecked: Set the color of the switch when the switch is unchecked
+* @prop --switch-padding: Set the padding of the switch toggle's container
+* @prop --switch-toggle-color-checked: Set the color of the switch toggle when the switch is checked
+* @prop --switch-toggle-color-disabled-checked: Set the color of the switch toggle when the switch is disabled and checked
+* @prop --switch-toggle-color-disabled-unchecked: Set the color of the switch toggle when the switch is disabled and unchecked
+* @prop --switch-toggle-color-unchecked: Set the color of the switch toggle when the switch is unchecked
+* @prop --switch-toggle-size: Sets the size of the switch toggle
+*/
+
 :host {
 
   --animation-timing-adjust: 1.4;
   --animation-timing-function: theme('transitionTimingFunction.in-out-quad');
   --duration: 300ms;
-  --switch-size: theme('spacing.6');
-  --switch-padding: theme('spacing.1');
-  --switch-unchecked: theme('colors.adjust-tone-07');
-  --switch-checked: theme('colors.brand-maggioli-04');
-  --switch-disabled-unchecked: theme('colors.adjust-tone-08');
-  --switch-disabled-checked: theme('colors.adjust-tone-06');
-  --switch-toggle-unchecked: theme('colors.adjust-tone-10');
-  --switch-toggle-checked: theme('colors.adjust-tone');
-  --switch-toggle-disabled-unchecked: theme('colors.adjust-tone-09');
-  --switch-toggle-disabled-checked: theme('colors.adjust-tone');
-  --icon-color-unchecked: theme('colors.adjust-tone-06');
-  --icon-color-indeterminate: theme('colors.adjust-tone-05');
-  --icon-color-checked: theme('colors.brand-maggioli-04');
-  --icon-color-unchecked-disabled: theme('colors.adjust-tone-06');
-  --icon-color-indeterminate-disabled: theme('colors.adjust-tone-05');
   --icon-color-checked-disabled: theme('colors.brand-maggioli-04');
+  --icon-color-checked: theme('colors.brand-maggioli-04');
+  --icon-color-indeterminate-disabled: theme('colors.adjust-tone-05');
+  --icon-color-indeterminate: theme('colors.adjust-tone-05');
+  --icon-color-unchecked-disabled: theme('colors.adjust-tone-06');
+  --icon-color-unchecked: theme('colors.adjust-tone-06');
+  --switch-color-checked: theme('colors.brand-maggioli-04');
+  --switch-color-disabled-checked: theme('colors.adjust-tone-06');
+  --switch-color-disabled-unchecked: theme('colors.adjust-tone-08');
+  --switch-color-unchecked: theme('colors.adjust-tone-07');
+  --switch-padding: theme('spacing.1');
+  --switch-toggle-color-checked: theme('colors.adjust-tone');
+  --switch-toggle-color-disabled-checked: theme('colors.adjust-tone');
+  --switch-toggle-color-disabled-unchecked: theme('colors.adjust-tone-09');
+  --switch-toggle-color-unchecked: theme('colors.adjust-tone-10');
+  --switch-toggle-size: theme('spacing.6');
 
   @apply
     gap-2
@@ -107,7 +129,7 @@
     transition-size
     box-border;
 
-  width: calc(calc(var(--switch-size) * 2) + calc(var(--switch-padding) * 2));
+  width: calc(calc(var(--switch-toggle-size) * 2) + calc(var(--switch-padding) * 2));
 }
 
 .switch {
@@ -117,7 +139,7 @@
     rounded-full
     transition-cosmetic;
 
-  background-color: var(--switch-unchecked);
+  background-color: var(--switch-color-unchecked);
   padding: var(--switch-padding);
   transition-duration: var(--duration);
 }
@@ -136,9 +158,9 @@
   animation-name: none;
   animation-play-state: paused;
   animation-timing-function: var(--animation-timing-function);
-  background-color: var(--switch-toggle-checked);
-  height: var(--switch-size);
-  width: var(--switch-size);
+  background-color: var(--switch-toggle-color-checked);
+  height: var(--switch-toggle-size);
+  width: var(--switch-toggle-size);
 }
 
 .field:checked + .label-icon .icon-unchecked {
@@ -181,68 +203,68 @@
 }
 
 .field:checked + .switch-container .switch {
-  background-color: var(--switch-checked);
+  background-color: var(--switch-color-checked);
 }
 
 .field:checked + .switch-container .switch-toggle {
   animation-name: check;
   animation-play-state: initial;
-  background-color: var(--switch-toggle-checked);
+  background-color: var(--switch-toggle-color-checked);
 }
 
 .field:not( :checked ) + .dirty .switch-toggle {
   animation-name: uncheck;
   animation-play-state: initial;
-  background-color: var(--switch-toggle-unchecked);
+  background-color: var(--switch-toggle-color-unchecked);
 }
 
 .field:disabled + .switch-container .switch {
-  background-color: var(--switch-disabled-unchecked);
+  background-color: var(--switch-color-disabled-unchecked);
 }
 
 .field:checked:disabled + .switch-container .switch {
-  background-color: var(--switch-disabled-checked);
+  background-color: var(--switch-color-disabled-checked);
 }
 
 .field:disabled + .switch-container .switch-toggle {
-  background-color: var(--switch-toggle-disabled-unchecked);
+  background-color: var(--switch-toggle-color-disabled-unchecked);
 }
 
 .field:checked:disabled + .switch-container .switch-toggle {
-  background-color: var(--switch-toggle-disabled-checked);
+  background-color: var(--switch-toggle-color-disabled-checked);
 }
 
 @keyframes check {
   0% {
     transform: translateX(0);
-    width: var(--switch-size);
+    width: var(--switch-toggle-size);
   }
 
   50% {
     transform: translateX(0);
-    width: calc(var(--switch-size) * var(--animation-timing-adjust));
+    width: calc(var(--switch-toggle-size) * var(--animation-timing-adjust));
   }
 
   100% {
     transform: translateX(100%);
-    width: var(--switch-size);
+    width: var(--switch-toggle-size);
   }
 }
 
 @keyframes uncheck {
   0% {
     transform: translateX(100%);
-    width: var(--switch-size);
+    width: var(--switch-toggle-size);
   }
 
   50% {
     transform: translateX(0);
-    width: calc(var(--switch-size) * var(--animation-timing-adjust));
+    width: calc(var(--switch-toggle-size) * var(--animation-timing-adjust));
   }
 
   100% {
     transform: translateX(0);
-    width: var(--switch-size);
+    width: var(--switch-toggle-size);
   }
 }
 
