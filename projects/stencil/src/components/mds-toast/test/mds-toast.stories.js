@@ -43,7 +43,7 @@ const checkVariant = (variant) => {
 
 const Template = args =>
   <mds-toast {...args}>
-    <mds-icon slot="icon" name="warning"/>
+    <mds-icon slot="icon" name="mi/baseline/warning"/>
     Elemento spidiguddato a sinistra con successo
     <mds-button slot="action" size="sm" variant={checkVariant(args.variant)} tone={args.tone}>Annulla</mds-button>
   </mds-toast>
