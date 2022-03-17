@@ -20,27 +20,27 @@ const Template = args =>
   <mds-kpi {...args}>
     <mds-kpi-item value="75" description="Allenatori">
       <div slot="icon" className="bg-label-sky-09 text-label-sky-04 p-6 pb-3 w-full flex justify-center items-center">
-        <mds-icon name="groups" class="text-5xl"/>
+        <mds-icon name="mi/round/groups" class="text-5xl"/>
       </div>
     </mds-kpi-item>
     <mds-kpi-item value="123" description="Arbitri">
       <div slot="icon" className="bg-label-sky-09 text-label-sky-04 p-6 pb-3 w-full flex justify-center items-center">
-        <mds-icon name="groups" class="text-5xl"/>
+        <mds-icon name="mi/round/groups" class="text-5xl"/>
       </div>
     </mds-kpi-item>
     <mds-kpi-item value="48" description="Tifosi">
       <div slot="icon" className="bg-label-sky-09 text-label-sky-04 p-6 pb-3 w-full flex justify-center items-center">
-        <mds-icon name="groups" class="text-5xl"/>
+        <mds-icon name="mi/round/groups" class="text-5xl"/>
       </div>
     </mds-kpi-item>
     <mds-kpi-item value="188" description="Stadi">
       <div slot="icon" className="bg-label-sky-09 text-label-sky-04 p-6 pb-3 w-full flex justify-center items-center">
-        <mds-icon name="groups" class="text-5xl"/>
+        <mds-icon name="mi/round/groups" class="text-5xl"/>
       </div>
     </mds-kpi-item>
     <mds-kpi-item value="3" description="Giocatori">
       <div slot="icon" className="bg-label-sky-09 text-label-sky-04 p-6 pb-3 w-full flex justify-center items-center">
-        <mds-icon name="groups" class="text-5xl"/>
+        <mds-icon name="mi/round/groups" class="text-5xl"/>
       </div>
     </mds-kpi-item>
   </mds-kpi>
@@ -54,34 +54,34 @@ const TemplateScroll = args =>
           <mds-text typography="caption">(It will trigger once)</mds-text>
         </div>
         <div className="flex-grow flex ">
-          <mds-icon name="arrow-circle-down" class="self-end animate-bounce"/>
+          <mds-icon name="mi/round/arrow-circle-down" class="self-end animate-bounce"/>
         </div>
       </div>
     </div>
     <mds-kpi {...args}>
       <mds-kpi-item value="451" description="Progetti">
         <div slot="icon" className="bg-label-sky-10 text-label-sky-04 p-6 pb-3 w-full flex justify-center items-center">
-          <mds-icon name="groups" class="text-5xl"/>
+          <mds-icon name="mi/baseline/groups" class="text-5xl"/>
         </div>
       </mds-kpi-item>
       <mds-kpi-item value="385" description="Manager">
         <div slot="icon" className="bg-label-sky-10 text-label-sky-04 p-6 pb-3 w-full flex justify-center items-center">
-          <mds-icon name="groups" class="text-5xl"/>
+          <mds-icon name="mi/baseline/groups" class="text-5xl"/>
         </div>
       </mds-kpi-item>
       <mds-kpi-item value="196" description="Case">
         <div slot="icon" className="bg-label-sky-10 text-label-sky-04 p-6 pb-3 w-full flex justify-center items-center">
-          <mds-icon name="groups" class="text-5xl"/>
+          <mds-icon name="mi/baseline/groups" class="text-5xl"/>
         </div>
       </mds-kpi-item>
       <mds-kpi-item value="67" description="Automobili">
         <div slot="icon" className="bg-label-sky-10 text-label-sky-04 p-6 pb-3 w-full flex justify-center items-center">
-          <mds-icon name="groups" class="text-5xl"/>
+          <mds-icon name="mi/baseline/groups" class="text-5xl"/>
         </div>
       </mds-kpi-item>
       <mds-kpi-item value="22" description="Formaggi">
         <div slot="icon" className="bg-label-sky-10 text-label-sky-04 p-6 pb-3 w-full flex justify-center items-center">
-          <mds-icon name="groups" class="text-5xl"/>
+          <mds-icon name="mi/baseline/groups" class="text-5xl"/>
         </div>
       </mds-kpi-item>
     </mds-kpi>
