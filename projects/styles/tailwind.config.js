@@ -60,9 +60,6 @@ module.exports = {
     screens: {
       ...mediaQueries,
     },
-    transitionTimingFunction: {
-      ...ease,
-    },
     extend: {
       boxShadow: {
         'sharp-lg': '0 0 1px 1px rgba(0, 0, 0, 0.06), 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05)',
@@ -133,6 +130,9 @@ module.exports = {
       transitionProperty : {
         cosmetic: 'background-color, border-color, box-shadow, color, fill, height, margin, opacity, padding, transform, width',
         size: 'height, margin, padding, width',
+      },
+      transitionTimingFunction: {
+        ...ease,
       },
       width: {
         phrase: '50ch',
