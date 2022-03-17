@@ -104,11 +104,11 @@
     cursor-pointer
     duration-500
     ease-in-out-quart
+    fill-adjust-tone-10
     h-9
     opacity-0
     origin-center
     text-4xl
-    text-adjust-tone-10
     top-0
     transition-cosmetic
     w-9;

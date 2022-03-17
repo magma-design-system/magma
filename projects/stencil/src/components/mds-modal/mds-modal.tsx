@@ -1,6 +1,8 @@
 import { Component, Element, Event, EventEmitter, Host, h, Listen, Prop, Watch, State } from '@stencil/core'
 import clsx from 'clsx'
 import { ModalPositionType, ModalAnimationStateType } from './meta/types'
+import miBaselineClose from '@icon/mi/baseline/close.svg'
+
 @Component({
   tag: 'mds-modal',
   styleUrl: 'mds-modal.css',
@@ -112,7 +114,7 @@ export class MdsModal {
             }
           </div>
         }
-        { !this.window && <mds-icon name="close" class="close"/> }
+        { !this.window && <i innerHTML={miBaselineClose} class="svg close"/> }
       </Host>
     )
   }
