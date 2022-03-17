@@ -17,45 +17,65 @@
   * @prop --size: Sets the height and the min-width of the paginator item
   */
 
-mds-paginator-item {
+:host {
+
+  --background-disabled: theme('colors.adjust-tone-09');
+  --background-hover: theme('colors.adjust-tone-08');
+  --background-selected: theme('colors.brand-maggioli-03');
+  --background: theme('colors.adjust-tone-09');
+  --color-disabled: theme('colors.adjust-tone-06');
+  --color-hover: theme('colors.adjust-tone-02');
+  --color-selected: theme('colors.adjust-tone');
+  --color: theme('colors.adjust-tone-02');
+  --radius: 200px;
+  --shadow-disabled: none;
+  --shadow-hover: none;
+  --shadow-selected: theme('boxShadow.sharp-md');
+  --shadow: none;
+  --size: theme('spacing.9');
+
   @apply
     box-border
     cursor-pointer
-    shrink-0
     inline-flex
     items-center
     justify-center
     px-3
-    select-none;
+    select-none
+    shrink-0
+    transition-colors;
 
-  background-color: var(--background, theme('colors.adjust-tone-09'));
-  border-radius: var(--radius, 200px);
-  box-shadow: var(--shadow, none);
-  color: var(--color, theme('colors.adjust-tone-02'));
-  height: var(--size, theme('spacing.9'));
-  min-width: var(--size, theme('spacing.9'));
+  background-color: var(--background);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow);
+  color: var(--color);
+  height: var(--size);
+  min-width: var(--size);
 }
 
-mds-paginator-item:hover {
-  background-color: var(--background-hover, theme('colors.adjust-tone-08'));
-  box-shadow: var(--shadow-hover, none);
-  color: var(--color-hover, theme('colors.adjust-tone-02'));
+:host( :hover ) {
+  background-color: var(--background-hover);
+  box-shadow: var(--shadow-hover);
+  color: var(--color-hover);
+  fill: var(--color-hover);
 }
 
-mds-paginator-item.active {
+:host ( [active]) {
   @apply pointer-events-none;
 
-  background-color: var(--background-selected, theme('colors.brand-maggioli-03'));
-  box-shadow: var(--shadow-selected, theme('boxShadow.sharp-md'));
-  color: var(--color-selected, theme('colors.adjust-tone'));
+  background-color: var(--background-selected);
+  box-shadow: var(--shadow-selected);
+  color: var(--color-selected);
+  fill: var(--color-selected);
 }
 
-mds-paginator-item.disabled {
+:host ( [disabled]) {
   @apply pointer-events-none;
 
-  background-color: var(--background-disabled, theme('colors.adjust-tone-09'));
-  box-shadow: var(--shadow-disabled, none);
-  color: var(--color-disabled, theme('colors.adjust-tone-06'));
+  background-color: var(--background-disabled);
+  box-shadow: var(--shadow-disabled);
+  color: var(--color-disabled);
+  fill: var(--color-disabled);
 }
 
 .icon {
