@@ -1,4 +1,5 @@
 @tailwind utilities;
+@import '../../tailwind/components.css';
 
 :host {
 
