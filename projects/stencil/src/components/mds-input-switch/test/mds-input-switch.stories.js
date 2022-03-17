@@ -1,6 +1,7 @@
 import React from 'react'
 import MdsSwitch from '@component/mds-input-switch/mds-input-switch'
 import { typographySecondaryDictionary } from '@dictionary/typography'
+import { inputSwitchSizeDictionary } from '../meta/dictionary'
 import { iconsDictionary } from '@dictionary/icon'
 
 export default {
@@ -33,19 +34,26 @@ export default {
       type: { name: 'string', required: false },
       description: 'Specifies the name of an <input> element',
     },
+    size: {
+      control: { type: 'select' },
+      description: 'Specifies the size for the switch toggle, it works only if attribute "type" is set to "switch"',
+      options: inputSwitchSizeDictionary,
+      type: { name: 'string' },
+    },
     typography: {
+      control: { type: 'select' },
       description: 'Specifies the font typography of the element',
       options: typographySecondaryDictionary,
-      control: { type: 'select' },
+      type: { name: 'string' },
     },
     type: {
-      type: { name: 'string', required: true },
+      control: { type: 'select' },
       description: 'Specifies the type of element',
       options: ['switch', 'checkbox', 'radio'],
-      control: { type: 'select' },
+      type: { name: 'string' },
     },
     value: {
-      type: { name: 'string', required: true },
+      type: { name: 'string' },
       description: 'Specifies the value of the input element',
     },
   },

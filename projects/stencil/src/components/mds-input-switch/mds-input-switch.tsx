@@ -1,6 +1,6 @@
-import { Component, Host, h, Prop, Event, EventEmitter } from '@stencil/core'
+import { Component, Host, h, Prop, Event, EventEmitter, State } from '@stencil/core'
 import clsx from 'clsx'
-import { InputSwitchType } from './meta/types'
+import { InputSwitchType, InputSwitchSizeType } from './meta/types'
 import { inputSwitchIconVariant } from './meta/variants'
 import { InputValueType } from '../../types/input-value-type'
 import { TypographySecondaryType } from '../../types/typography'
@@ -12,6 +12,7 @@ import { TypographySecondaryType } from '../../types/typography'
 })
 export class MdsInputSwitch {
 
+  @State() dirty: boolean = null
   /**
    * Sets or returns whether a checkbox should automatically
    * get focus when the page loads
@@ -45,9 +46,14 @@ export class MdsInputSwitch {
   @Prop() readonly name?: string
 
   /**
+   * Specifies the size for the switch toggle, it works only if attribute 'type' is set to 'switch'
+   */
+  @Prop({ reflect: true }) readonly size?: InputSwitchSizeType = 'md'
+
+  /**
    * Specifies switch type: switch (default), checkbox and radio
    */
-  @Prop() readonly type?: InputSwitchType = 'checkbox'
+  @Prop() readonly type?: InputSwitchType = 'switch'
 
   /**
    * Specifies the font typography of the element
@@ -64,11 +70,15 @@ export class MdsInputSwitch {
    */
   @Event() valueChange: EventEmitter<{ name: string, value: InputValueType }>
 
-  private handleInputOnChange (e: Event): void {
+  private handleInputOnChange = (e: Event): void => {
     const { value } = (e.target as HTMLInputElement)
     e.preventDefault()
     e.stopPropagation()
     this.valueChange.emit({ name: this.name, value })
+  }
+
+  private handleDirty = (): void => {
+    this.dirty = true
   }
 
   render () {
@@ -83,6 +93,7 @@ export class MdsInputSwitch {
           this.indeterminate && 'indeterminate',
           this.type === 'switch' ? 'items-stretch' : 'items-start',
         )}
+        onClick={this.handleDirty}
       >
         <input
           autoFocus={this.autofocus}
@@ -98,9 +109,9 @@ export class MdsInputSwitch {
         />
         { this.type === 'switch'
           ?
-          <label htmlFor="field" class="switch-container">
+          <label htmlFor="field" class={clsx(this.dirty !== null && 'dirty', 'switch-container')}>
             <div class="switch">
-              <div class="switch-toggle"></div>
+              <div class="switch-toggle"/>
             </div>
           </label>
           :

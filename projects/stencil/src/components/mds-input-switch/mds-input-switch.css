@@ -4,8 +4,25 @@
 
 :host {
 
+  --animation-timing-adjust: 1.4;
+  --animation-timing-function: theme('transitionTimingFunction.in-out-quad');
   --duration: 300ms;
-  --size: theme('spacing.6');
+  --switch-size: theme('spacing.6');
+  --switch-padding: theme('spacing.1');
+  --switch-unchecked: theme('colors.adjust-tone-07');
+  --switch-checked: theme('colors.brand-maggioli-04');
+  --switch-disabled-unchecked: theme('colors.adjust-tone-08');
+  --switch-disabled-checked: theme('colors.adjust-tone-06');
+  --switch-toggle-unchecked: theme('colors.adjust-tone-10');
+  --switch-toggle-checked: theme('colors.adjust-tone');
+  --switch-toggle-disabled-unchecked: theme('colors.adjust-tone-09');
+  --switch-toggle-disabled-checked: theme('colors.adjust-tone');
+  --icon-color-unchecked: theme('colors.adjust-tone-06');
+  --icon-color-indeterminate: theme('colors.adjust-tone-05');
+  --icon-color-checked: theme('colors.brand-maggioli-04');
+  --icon-color-unchecked-disabled: theme('colors.adjust-tone-06');
+  --icon-color-indeterminate-disabled: theme('colors.adjust-tone-05');
+  --icon-color-checked-disabled: theme('colors.brand-maggioli-04');
 
   @apply
     gap-2
@@ -57,26 +74,26 @@
 .icon-unchecked {
   @apply
     opacity-100
-    text-adjust-tone-05
     transform
     transition-cosmetic;
 
+  fill: var(--icon-color-unchecked);
   transform: scale(theme('scale.100'));
   transition-duration: calc(var(--duration) * 2);
 }
 
 .icon-checked {
   @apply
-    text-brand-maggioli-04
     transform
     transition-cosmetic;
 
+  fill: var(--icon-color-checked);
   transform: scale(theme('scale.0'));
   transition-duration: var(--duration);
 }
 
 .indeterminate .icon-checked {
-  @apply text-adjust-tone-03;
+  fill: var(--icon-color-indeterminate);
 }
 
 .switch-container {
@@ -87,44 +104,45 @@
 .switch-container {
   @apply
     shrink-0
+    transition-size
     box-border;
 
-  width: calc(calc(var(--size) * 2) + calc(var(--size) / 3));
+  width: calc(calc(var(--switch-size) * 2) + calc(var(--switch-padding) * 2));
 }
 
 .switch {
   @apply
-    bg-adjust-tone-07
     shrink-0
     inline-flex
     rounded-full
-    transition-colors;
+    transition-cosmetic;
 
-  padding: calc(var(--size) / 6);
+  background-color: var(--switch-unchecked);
+  padding: var(--switch-padding);
   transition-duration: var(--duration);
 }
 
 .switch-toggle {
   @apply
-    bg-adjust-tone
     cursor-pointer
-    ease-out-expo
+    ease-linear
     rounded-full
     shadow
-    transform
-    transition-transform;
+    transition-cosmetic;
 
-  /* animation-duration: var(--duration);
-  animation-name: check; */
-  height: var(--size);
-  transition-duration: var(--duration);
-  width: var(--size);
+  animation-duration: calc(var(--duration) * 1.5);
+  animation-fill-mode: forwards;
+  animation-iteration-count: 1;
+  animation-name: none;
+  animation-play-state: paused;
+  animation-timing-function: var(--animation-timing-function);
+  background-color: var(--switch-toggle-checked);
+  height: var(--switch-size);
+  width: var(--switch-size);
 }
 
 .field:checked + .label-icon .icon-unchecked {
-  @apply
-    duration-700
-    opacity-0;
+  @apply opacity-0;
 
   transform: scale(theme('scale.150'));
   transition-duration: calc(var(--duration) * 2);
@@ -143,11 +161,15 @@
 }
 
 .field:disabled + .label-icon .icon-unchecked {
-  @apply text-adjust-tone-06;
+  fill: var(--icon-color-unchecked-disabled);
 }
 
 .field:disabled + .label-icon .icon-checked {
-  @apply text-adjust-tone-04;
+  fill: var(--icon-color-checked-disabled);
+}
+
+.indeterminate .field:disabled + .label-icon .icon-checked {
+  fill: var(--icon-color-indeterminate-disabled);
 }
 
 .field:disabled + .label-icon {
@@ -159,45 +181,69 @@
 }
 
 .field:checked + .switch-container .switch {
-  @apply
-    bg-brand-maggioli-04;
+  background-color: var(--switch-checked);
 }
 
 .field:checked + .switch-container .switch-toggle {
-  @apply
-    bg-adjust-tone
-    translate-x-full;
+  animation-name: check;
+  animation-play-state: initial;
+  background-color: var(--switch-toggle-checked);
+}
 
-  /* animation-duration: var(--duration);
-  animation-name: check; */
-  transition-delay: var(--duration);
+.field:not( :checked ) + .dirty .switch-toggle {
+  animation-name: uncheck;
+  animation-play-state: initial;
+  background-color: var(--switch-toggle-unchecked);
 }
 
 .field:disabled + .switch-container .switch {
-  @apply
-    bg-adjust-tone-08;
+  background-color: var(--switch-disabled-unchecked);
 }
 
 .field:checked:disabled + .switch-container .switch {
-  @apply
-    bg-adjust-tone-06;
+  background-color: var(--switch-disabled-checked);
 }
 
 .field:disabled + .switch-container .switch-toggle {
-  @apply
-    bg-adjust-tone-09;
+  background-color: var(--switch-toggle-disabled-unchecked);
+}
+
+.field:checked:disabled + .switch-container .switch-toggle {
+  background-color: var(--switch-toggle-disabled-checked);
 }
 
 @keyframes check {
   0% {
-    width: var(--size);
+    transform: translateX(0);
+    width: var(--switch-size);
   }
 
   50% {
-    width: calc(var(--size) * 2);
+    transform: translateX(0);
+    width: calc(var(--switch-size) * var(--animation-timing-adjust));
   }
 
   100% {
-    width: var(--size);
+    transform: translateX(100%);
+    width: var(--switch-size);
   }
 }
+
+@keyframes uncheck {
+  0% {
+    transform: translateX(100%);
+    width: var(--switch-size);
+  }
+
+  50% {
+    transform: translateX(0);
+    width: calc(var(--switch-size) * var(--animation-timing-adjust));
+  }
+
+  100% {
+    transform: translateX(0);
+    width: var(--switch-size);
+  }
+}
+
+@import './css/mds-input-switch-size.css';
