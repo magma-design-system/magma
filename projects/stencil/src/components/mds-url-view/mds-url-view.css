@@ -1,4 +1,5 @@
 @tailwind utilities;
+@import '../../tailwind/components.css';
 
 /**
 * @prop --background: Sets the background-color of the component
@@ -60,8 +61,14 @@
     truncate;
 }
 
+.browser-icon {
+  fill: var(--color);
+}
+
 .close {
   @apply cursor-pointer;
+
+  fill: var(--color);
 }
 
 .iframe {

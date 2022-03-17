@@ -1,5 +1,7 @@
 import { Component, Event, EventEmitter, Host, h, Prop } from '@stencil/core'
 import { LoadingType } from '../../types/loading'
+import miBaselineExplore from '@icon/mi/baseline/explore.svg'
+import miBaselineClose from '@icon/mi/baseline/close.svg'
 
 @Component({
   tag: 'mds-url-view',
@@ -43,11 +45,11 @@ export class MdsUrlView {
       <Host>
         <div class="window">
           <header class="header">
-            <mds-icon class="browser-icon" name="explore"/>
+            <i class="svg browser-icon" innerHTML={miBaselineExplore}/>
             { this.domain && <mds-text class="title" typography="caption">
               { this.urlDomain(this.src) }
             </mds-text> }
-            <mds-icon class="close" name="close" onClick={this.closeUrlView}/>
+            <i class="svg close" innerHTML={miBaselineClose} onClick={this.closeUrlView}/>
           </header>
           <iframe class="iframe" src={ this.src }/>
         </div>
