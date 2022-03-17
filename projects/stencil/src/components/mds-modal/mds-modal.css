@@ -1,5 +1,6 @@
 @tailwind components;
 @tailwind utilities;
+@import '../../tailwind/components.css';
 
 @layer components {
   .animate-bottom,
