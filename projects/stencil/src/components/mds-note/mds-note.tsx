@@ -1,6 +1,7 @@
 import { Component, Element, Event, EventEmitter, Host, h, Prop } from '@stencil/core'
 import { LabelVariantType } from '../../types/variant'
 import clsx from 'clsx'
+import miBaselineClose from '@icon/mi/baseline/close.svg'
 
 @Component({
   tag: 'mds-note',
@@ -43,10 +44,10 @@ export class MdsNote {
         { this.hasTitle &&
           <div class="title">
             <slot name="title"/>
-            { this.deletable && <mds-icon name="close" class="close" onClick={ this.onClickClose.bind(this) }/> }
+            { this.deletable && <i innerHTML={miBaselineClose} class="svg close" onClick={ this.onClickClose.bind(this) }/> }
           </div>
         }
-        { !this.hasTitle && this.deletable && <mds-icon name="close" class="close" onClick={ this.onClickClose.bind(this) }/> }
+        { !this.hasTitle && this.deletable && <i innerHTML={miBaselineClose} class="svg close" onClick={ this.onClickClose.bind(this) }/> }
         <slot/>
         <div class="fold"/>
       </Host>
