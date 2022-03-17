@@ -1,6 +1,5 @@
 import { Component, Host, h, Prop, Element, Event, EventEmitter } from '@stencil/core'
 import { TypographyPrimaryType } from '../../types/typography'
-
 import miBaselineKeyboardArrowUp from '@icon/mi/baseline/keyboard-arrow-up.svg'
 
 @Component({
