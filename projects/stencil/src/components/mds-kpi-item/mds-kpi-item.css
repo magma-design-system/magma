@@ -1,16 +1,22 @@
 @tailwind utilities;
 
+/*
+* @prop --description-color: Set the color of the description text
+* @prop --info-padding: Set the padding of the info text
+* @prop --value-color: Set the color of the value text
+*/
+
 @property --value {
   inherits: false;
   initial-value: 0;
   syntax: '<integer>';
 }
 
-mds-kpi-item {
+:host {
 
   --description-color: theme('colors.adjust-tone-04');
-  --value-color: theme('colors.adjust-tone-02');
   --info-padding: theme('spacing.4');
+  --value-color: theme('colors.adjust-tone-02');
 
   @apply
     gap-0

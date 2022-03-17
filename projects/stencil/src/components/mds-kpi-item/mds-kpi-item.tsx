@@ -3,7 +3,7 @@ import { Component, Element, Host, Prop, h, State } from '@stencil/core'
 @Component({
   tag: 'mds-kpi-item',
   styleUrl: 'mds-kpi-item.css',
-  shadow: false,
+  shadow: true,
 })
 export class MdsKpiItem {
 
