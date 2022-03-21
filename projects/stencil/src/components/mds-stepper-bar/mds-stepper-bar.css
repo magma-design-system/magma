@@ -1,19 +1,9 @@
 @tailwind utilities;
 
-/*
-  * @prop --progress-background: Sets the background color of the progress bar
-  * @prop --progress-color: Sets the color of the progress bar
-  * @prop --progress-thickness: Sets the thickness of the progress bar
-  */
-
 :host {
-
-  --progress-background: theme('colors.adjust-tone-08');
-  --progress-color: theme('colors.brand-maggioli-03');
-  --progress-thickness: theme('height.2');
-
   @apply
-    block
+    gap-6
+    grid
     relative;
 }
 
@@ -21,33 +11,20 @@
   @apply
     flex
     gap-0
-    justify-between
+    grow
+    overflow-auto
     relative
+    snap-x
+    scroll-smooth
+    w-full
     z-10;
 }
 
-.progress {
-  @apply
-    absolute
-    flex
-    h-10
-    inset-0
-    items-center
-    px-3;
-}
-
-.progress-bar {
-
-  --background: var(--progress-background);
-  --color: var(--progress-color);
-  --thickness: var(--progress-thickness);
-}
-
-:host ( [ linear=true ] ) ::slotted ( mds-stepper-bar-item ),
-:host ( [ linear ] ) ::slotted ( mds-stepper-bar-item ) {
+:host ( [linear=true] ) ::slotted ( mds-stepper-bar-item ),
+:host ( [linear] ) ::slotted ( mds-stepper-bar-item ) {
   @apply pointer-events-none;
 }
 
-:host ( [ linear=false ] ) ::slotted ( mds-stepper-bar-item ) {
+:host ( [linear=false] ) ::slotted ( mds-stepper-bar-item ) {
   @apply pointer-events-auto;
 }

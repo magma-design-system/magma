@@ -18,11 +18,17 @@ export default {
 
 const Template = args =>
   <mds-stepper-bar {...args}>
-    <mds-stepper-bar-item checked icon="mi/baseline/agriculture" text="Scavatore"/>
-    <mds-stepper-bar-item checked icon="mi/baseline/adobe" text="Calendario"/>
-    <mds-stepper-bar-item checked icon="mi/baseline/book" text="Activate"/>
-    <mds-stepper-bar-item icon="mi/baseline/css" text="Puppo"/>
-    <mds-stepper-bar-item icon="mi/baseline/done" text="Login"/>
+    <mds-stepper-bar-item badge step checked icon-checked="mi/baseline/done" icon="mi/baseline/person" text="Nuovo account"/>
+    <mds-stepper-bar-item badge step checked icon-checked="mi/baseline/done" icon="mi/baseline/badge" text="Dati personali"/>
+    <mds-stepper-bar-item badge step checked icon-checked="mi/baseline/done" icon="mi/round/email" text="Impostazioni newsletter"/>
+    <mds-stepper-bar-item badge step icon-checked="mi/baseline/done" icon="mi/baseline/lock-open" text="Attivazione account"/>
+    <mds-stepper-bar-item badge step icon-checked="mi/baseline/done" icon="mi/baseline/login" text="Accedi"/>
+    <div slot="content" className="min-h-80 flex rounded-lg items-center justify-center bg-label-amaranth-10 text-label-amaranth-04"><mds-text>Nuovo account</mds-text></div>
+    <div slot="content" className="min-h-80 flex rounded-lg items-center justify-center bg-label-blue-10 text-label-blue-04"><mds-text>Dati personali</mds-text></div>
+    <div slot="content" className="min-h-80 flex rounded-lg items-center justify-center bg-label-green-10 text-label-green-04"><mds-text>Impostazioni newsletter</mds-text></div>
+    <div slot="content" className="min-h-80 flex rounded-lg items-center justify-center bg-label-orange-10 text-label-orange-04"><mds-text>Attivazione account</mds-text></div>
+    <div slot="content" className="min-h-80 flex rounded-lg items-center justify-center bg-label-violet-10 text-label-violet-04"><mds-text>Accedi</mds-text></div>
+    <div slot="content" className="min-h-80 flex rounded-lg items-center justify-center bg-label-sky-10 text-label-sky-04"><mds-text>Finished</mds-text></div>
   </mds-stepper-bar>
 
 export const Default = Template.bind({})
