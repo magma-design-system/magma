@@ -1,6 +1,7 @@
 import { Component, Element, Event, EventEmitter, Host, Prop, State, Watch, h } from '@stencil/core'
-import { TypographySecondaryType } from '../../types/typography'
+import { TypographyType } from '../../types/typography'
 import clsx from 'clsx'
+import { MdsBadge } from '../mds-badge/mds-badge'
 
 @Component({
   tag: 'mds-stepper-bar-item',
@@ -13,11 +14,22 @@ export class MdsStepperBarItem {
 
   @State() isChecked: boolean
   @State() isCurrent: boolean
+  @State() index: number
 
   /**
    * Specifies a short description of the component
    */
   @Prop() readonly text!: string
+
+  /**
+   * Specifies if the step is displayed
+   */
+  @Prop() readonly step: boolean
+
+  /**
+   * Specifies if the badge status is displayed
+   */
+  @Prop({ mutable: true, reflect: true }) badge: boolean
 
   /**
    * Specifies the icon displayed of the component when is not checked or the current item
@@ -42,11 +54,12 @@ export class MdsStepperBarItem {
   /**
    * Specifies the typography of the element
    */
-  @Prop() readonly typography?: TypographySecondaryType = 'caption'
+  @Prop() readonly typography?: TypographyType = 'h6'
 
   componentWillLoad (): void {
     this.isCurrent = this.current
     this.isChecked = this.checked
+    this.index = [...Array.from(this.element.parentElement.childNodes)].indexOf(this.element)
   }
 
   @Watch('checked')
@@ -66,6 +79,16 @@ export class MdsStepperBarItem {
     }
   }
 
+  private showBadge = (): MdsBadge => {
+    if (this.isChecked) {
+      return <mds-badge class="badge" variant="success" tone="weak" typography="option">Completato</mds-badge>
+    }
+    if (this.isCurrent) {
+      return <mds-badge class="badge" variant="info" tone="weak" typography="option">In corso</mds-badge>
+    }
+    return <mds-badge class="badge" variant="dark" tone="weak" typography="option">In coda</mds-badge>
+  }
+
   /**
    * Emits when the accordion is current
    */
@@ -74,8 +97,15 @@ export class MdsStepperBarItem {
   render () {
     return (
       <Host onClick={ this.toggle }>
-        <mds-icon class="icon" name={ clsx(this.checked && !this.current ? this.iconChecked : this.icon) }/>
-        { this.text && <mds-text class="text" typography={ this.typography }>{ this.text }</mds-text> }
+        <header class="header">
+          <mds-icon class="icon" name={ clsx(this.isChecked && !this.isCurrent ? this.iconChecked : this.icon) }/>
+          <mds-progress class="progress" progress={ this.isChecked ? 1 : 0 }/>
+        </header>
+        <div class="infos">
+          { this.step && <mds-text class="step" typography="option">step { this.index + 1 }</mds-text> }
+          { this.text && <mds-text class="text" typography={ this.typography }>{ this.text }</mds-text> }
+          { this.badge && <div>{ this.showBadge() }</div> }
+        </div>
       </Host>
     )
   }

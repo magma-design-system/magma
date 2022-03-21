@@ -1,8 +1,6 @@
 @tailwind utilities;
 
 /*
-  * @prop --color-checked: Sets the color of the text when the component is checked
-  * @prop --color-current: Sets the color of the text when the component is current
   * @prop --color: Sets the color of the text
   * @prop --duaration: Sets the duration of the animation
   * @prop --icon-background-checked: Sets the background-color of the icon when the component is checked
@@ -12,39 +10,54 @@
   * @prop --icon-color-current: Sets the color of the icon when the component is current
   * @prop --icon-color: Sets the color of the icon
   * @prop --icon-ring-size: Sets the size of the icon circle when the component is current
+  * @prop --min-width: Sets the minimum width of the component
+  * @prop --progress-background: Sets the background color of the progress bar
+  * @prop --progress-color: Sets the color of the progress bar
+  * @prop --progress-thickness: Sets the thickness of the progress bar
   */
 
 :host {
 
-  --color-checked: theme('colors.adjust-tone-04');
-  --color-current: theme('colors.adjust-tone-03');
-  --color: theme('colors.adjust-tone-06');
+  --color: theme('colors.adjust-tone-03');
   --duaration: 250ms;
-  --icon-background-checked: theme('colors.brand-maggioli-04');
+  --icon-background-checked: theme('colors.status-success-05');
   --icon-background-current: theme('colors.brand-maggioli-04');
   --icon-background: var(--progress-background, theme('colors.adjust-tone-08'));
-  --icon-color-checked: theme('colors.brand-maggioli-08');
+  --icon-color-checked: theme('colors.status-success-10');
   --icon-color-current: theme('colors.adjust-tone');
   --icon-color: theme('colors.adjust-tone-04');
   --icon-ring-color: var(--icon-background-current);
+  --icon-ring-separator-color: theme('colors.adjust-tone');
+  --icon-ring-separator-size: 0.375rem;
   --icon-ring-size: theme('height.1');
+  --min-width: 180px;
+  --progress-background: theme('colors.adjust-tone-08');
+  --progress-color: theme('colors.status-success-04');
+  --progress-thickness: theme('height.2');
 
   @apply
+    basis-0
     cursor-pointer
     flex
     flex-col
-    gap-1
-    items-center
-    justify-center
-    shrink-0;
+    gap-4
+    grow
+    items-start
+    relative
+    shrink-0
+    snap-center;
+
+  min-width: var(--min-width);
+  padding-left: calc(var(--icon-ring-size) + var(--icon-ring-separator-size));
+  padding-top: calc(var(--icon-ring-size) + var(--icon-ring-separator-size));
 }
 
-:host ( :first-child ) {
-  @apply items-start;
+:host ( :last-of-type ) {
+  @apply basis-1;
 }
 
-:host ( :last-child ) {
-  @apply items-end;
+:host ( :last-of-type ) .progress {
+  @apply hidden;
 }
 
 :host ( [ checked ] ) .icon {
@@ -60,21 +73,7 @@
   --icon-background: var(--icon-background-current);
   --icon-color: var(--icon-color-current);
 
-  box-shadow: 0 0 0 var(--icon-ring-size) var(--icon-ring-color);
-  transition-delay: calc(var(--duaration) / 2);
-}
-
-:host ( [ checked ] ) .text {
-
-  --color: var(--color-checked);
-}
-
-:host ( [ current ] ) .text {
-
-  --color: var(--color-current);
-
-  @apply translate-y-1;
-
+  box-shadow: 0 0 0 var(--icon-ring-size) var(--icon-ring-color), 0 0 0 var(--icon-ring-separator-size) var(--icon-ring-separator-color);
   transition-delay: calc(var(--duaration) / 2);
 }
 
@@ -84,26 +83,64 @@
   --icon-ring-color: var(--icon-background);
 }
 
+.header {
+  @apply
+    flex
+    items-center
+    w-full;
+}
+
 .icon {
   @apply
     flex
     p-2
+    relative
     rounded-full
+    shrink-0
     transition-cosmetic;
 
   background-color: var(--icon-background);
-  box-shadow: 0 0 0 0 var(--icon-ring-color);
+  box-shadow: 0 0 0 0 var(--icon-ring-color), 0 0 0 0 var(--icon-ring-separator-color);
   fill: var(--icon-color);
   transition-duration: var(--duaration);
 }
 
-.text {
+.progress {
+
+  --background: var(--progress-background);
+  --color: var(--progress-color);
+  --thickness: var(--progress-thickness);
+
   @apply
-    -top-1
-    absolute
-    pt-13
-    transition-cosmetic;
+    -ml-1
+    grow;
+
+  margin-right: calc(calc(calc(var(--icon-ring-size) + var(--icon-ring-separator-size)) * -1) - theme('spacing.1'));
+}
+
+.infos {
+  @apply
+    gap-1
+    grid
+    pl-1;
+}
+
+.text {
+  @apply pointer-events-none transition-cosmetic;
 
   color: var(--color);
   transition-duration: var(--duaration);
+}
+
+.badge {
+  @apply
+    pointer-events-none
+    rounded-full;
+}
+
+.step {
+  @apply
+    pointer-events-none
+    rounded-full
+    text-adjust-tone-04;
 }
