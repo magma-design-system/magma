@@ -22,11 +22,11 @@
     overflow-auto
     mx-2
     p-2
-    rounded-full;
+    rounded-full
+    scroll-smooth;
 
   background-color: var(--background);
   gap: 2px;
-  scroll-behavior: smooth;
 
   /* scroll-snap-type: x mandatory; */
 }
