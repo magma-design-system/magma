@@ -51,7 +51,7 @@ const Template = args =>
 
 const CustomTemplate = args =>
   <mds-modal {...args}>
-    <mds-banner slot="window" class="max-w-xl" deletable headline="Action required">
+    <mds-banner slot="window" class="max-w-xl mx-6" deletable headline="Action required">
       <mds-text typography="detail">
         As a multi-brand design system, our components need to be flexible enough for any one of our brands to use them for multiple use cases. To achieve this, we ensure that all of the brands are involved in the specification stage, giving us more confidence that we’re future-proofing our components as more brands adopt NewsKit.
       </mds-text>
