@@ -14,7 +14,7 @@ accordion-isolate:
 # TEST
 accordion-test:
   extends: [.base-test, .base-accordion]
-  dependencies: [accordion-isolate]
+  dependencies: [accordion-build]
 
 # PUBLISH
 accordion-publish:

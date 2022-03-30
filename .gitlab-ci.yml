@@ -33,16 +33,31 @@ stages:
     WORK_DIR: projects/stencil/.build/$COMPONENT
   before_script:
     - npm install -g nx
+    - yarn install
   script:
-    - cd $BUILD_DIR
-    - npm install
-    - npm run build
+    - nx run design-tokens:build
+    - nx run styles:build
+    - nx run icons:build
+    - nx run stencil:build
   cache:
     key: $COMPONENT-cache
     paths:
       - node_modules
-      - $BUILD_DIR/node_modules
+      - projects/design-tokens/node_modules
+      - projects/styles/node_modules
+      - projects/icons/node_modules
+      - projects/stencil/node_modules
     policy: pull-push
+  artifacts:
+    name: $COMPONENT-build
+    expire_in: 1 day
+    paths:
+      - projects/design-tokens/dist
+      - projects/design-tokens/config
+      - projects/design-tokens/properties
+      - projects/styles/dist
+      - projects/icons/dist
+      - projects/stencil/dist
   rules:
     - if: $CI_COMMIT_BRANCH == "pipeline"
       changes: ["*", "${BUILD_DIR}/**/*"]
@@ -51,10 +66,7 @@ stages:
   extends: .base-build
   stage: build:isolate
   script:
-    - nx run stencil:publish.isolate.component $COMPONENT
-    - cd $WORK_DIR
-    - npm install
-    - npm run build
+    - nx run stencil:publish.isolate.component --component=$COMPONENT
   artifacts:
     name: $COMPONENT-stencil-build
     expire_in: 1 day
