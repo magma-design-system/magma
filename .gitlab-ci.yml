@@ -74,12 +74,13 @@ stages:
     paths:
       - $WORK_DIR
 
-.base-test:
+.base-stencil-test:
   extends: .base-build
   stage: test
   script:
-    - echo "TEST" # test -> stencil esegue test unit e e2e TODO: da aggiungere nel package.json di ogni componente
+    - nx run stencil:test # TODO: trovare modo per eseguire test solo per il componente modificato, ora vengono eseguiti i test su tutti i componenti
     # TODO aggiungere test su pacchettizzazione/publish tipo npm --dry-run pack e npm --dry-run publish
+  allow_failure: true # TODO: fix test, ora falliscono
   rules:
     - if: $CI_PIPELINE_SOURCE == "merge_request_event" || $CI_COMMIT_BRANCH == "pipeline"
       changes: ["*", "${BUILD_DIR}/**/*"]
