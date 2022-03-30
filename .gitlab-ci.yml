@@ -77,7 +77,7 @@ stages:
   stage: publish
   script:
     - cd $WORK_DIR
-    - npm publish
+    - npm publish --access public
   rules:
     - if: $CI_COMMIT_BRANCH == "main"
       changes: ["*", "${BUILD_DIR}/**/*"]
