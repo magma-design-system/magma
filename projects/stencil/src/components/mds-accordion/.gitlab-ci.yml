@@ -1,0 +1,22 @@
+.base-accordion:
+  variables:
+    COMPONENT: mds-accordion
+
+# BUILD
+accordion-build:
+  extends: [.base-build, .base-accordion]
+
+# ISOLATE
+accordion-isolate:
+  extends: [.base-isolate, .base-accordion]
+  dependencies: [accordion-build]
+
+# TEST
+accordion-test:
+  extends: [.base-test, .base-accordion]
+  dependencies: [accordion-isolate]
+
+# PUBLISH
+accordion-publish:
+  extends: [.base-publish, .base-accordion]
+  dependencies: [accordion-isolate]
