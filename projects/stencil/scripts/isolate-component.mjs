@@ -12,8 +12,9 @@ import { createTempProjectInstance, compilePackage } from './lib.mjs'
 var componentNameArgument = ""
 var nonInteractive = false
 
+console.log(process.argv)
 if (process.argv.length === 3){
-  componentNameArgument = process.argv[2]
+  componentNameArgument = process.argv[2].split("=")[1]
   nonInteractive = true
   console.log(
     chalk.red(`Non-interactive Mode: using ${componentNameArgument} component name.`),
