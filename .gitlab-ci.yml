@@ -58,6 +58,7 @@ stages:
       - projects/styles/dist
       - projects/icons/dist
       - projects/stencil/dist
+      - $BUILD_DIR/readme.md
   rules:
     - if: $CI_COMMIT_BRANCH == "pipeline"
       changes: ["*", "${BUILD_DIR}/**/*"]
@@ -77,8 +78,7 @@ stages:
   extends: .base-build
   stage: test
   script:
-    - cd $WORK_DIR
-    - npm run test # test -> stencil esegue test unit e e2e TODO: da aggiungere nel package.json di ogni componente
+    - echo "TEST" # test -> stencil esegue test unit e e2e TODO: da aggiungere nel package.json di ogni componente
     # TODO aggiungere test su pacchettizzazione/publish tipo npm --dry-run pack e npm --dry-run publish
   rules:
     - if: $CI_PIPELINE_SOURCE == "merge_request_event" || $CI_COMMIT_BRANCH == "pipeline"
