@@ -67,7 +67,7 @@ stages:
   script:
     - cd $WORK_DIR
     - npm run test # test -> stencil esegue test unit e e2e TODO: da aggiungere nel package.json di ogni componente
-    - # TODO aggiungere test su pacchettizzazione/publish tipo npm --dry-run pack e npm --dry-run publish
+    # TODO aggiungere test su pacchettizzazione/publish tipo npm --dry-run pack e npm --dry-run publish
   rules:
     - if: $CI_PIPELINE_SOURCE == "merge_request_event" || $CI_COMMIT_BRANCH == "pipeline"
       changes: ["*", "${BUILD_DIR}/**/*"]
