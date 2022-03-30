@@ -105,6 +105,9 @@ const createTempProjectInstance = async componentName => {
   await cp(`${PROJECT_PATH}/src/fixtures`, `${ISOLATED_PATH}/src/fixtures`, {
     recursive: true,
   })
+  await cp(`${PROJECT_PATH}/src/tailwind`, `${ISOLATED_PATH}/src/tailwind`, {
+    recursive: true,
+  })
   await cp(`${PROJECT_PATH}/src/interface`, `${ISOLATED_PATH}/src/interface`, {
     recursive: true,
   })
