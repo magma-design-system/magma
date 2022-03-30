@@ -18,7 +18,8 @@
     "www/"
   ],
   "scripts": {
-    "build": "rm src/components.d.ts || true && stencil build --docs-readme"
+    "build": "rm src/components.d.ts || true && stencil build --docs-readme",
+    "prepublishOnly": "npm run build"
   },
   "dependencies": {
     "@maggioli-design-system/mds-tab-item": "^1.0.0",
