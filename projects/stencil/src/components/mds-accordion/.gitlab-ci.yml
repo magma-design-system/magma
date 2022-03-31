@@ -12,9 +12,13 @@ accordion-isolate:
   dependencies: [accordion-build]
 
 # TEST
-accordion-test:
+accordion-stencil-test:
   extends: [.base-stencil-test, .base-accordion]
   dependencies: [accordion-build, accordion-isolate]
+
+accordion-publish-test:
+  extends: [ .base-publish-test, .base-accordion ]
+  dependencies: [ accordion-build, accordion-isolate ]
 
 # PUBLISH
 accordion-publish:

@@ -15,6 +15,10 @@ variables:
   # Abilita debug gitlab-ci
   #CI_DEBUG_TRACE: "true"
 
+default:
+  tags:
+    - maggioli-network
+
 stages:
   - build
   - build:isolate
@@ -33,8 +37,8 @@ stages:
     WORK_DIR: projects/stencil/.build/$COMPONENT
   before_script:
     - npm install -g nx
-    - yarn install
   script:
+    - yarn install
     - nx run design-tokens:build
     - nx run styles:build
     - nx run icons:build
@@ -76,14 +80,25 @@ stages:
 
 .base-stencil-test:
   extends: .base-build
+  image: browserless/chrome
   stage: test
   script:
     - nx run stencil:test # TODO: trovare modo per eseguire test solo per il componente modificato, ora vengono eseguiti i test su tutti i componenti
-    # TODO aggiungere test su pacchettizzazione/publish tipo npm --dry-run pack e npm --dry-run publish
   allow_failure: true # TODO: fix test, ora falliscono
   rules:
     - if: $CI_PIPELINE_SOURCE == "merge_request_event" || $CI_COMMIT_BRANCH == "pipeline"
       changes: ["*", "${BUILD_DIR}/**/*"]
+
+.base-publish-test:
+  extends: .base-build
+  stage: test
+  script:
+    - cd $WORK_DIR
+    - npm pack --dry-run
+    - npm publish --access public --dry-run
+  rules:
+    - if: $CI_PIPELINE_SOURCE == "merge_request_event" || $CI_COMMIT_BRANCH == "pipeline"
+      changes: [ "*", "${BUILD_DIR}/**/*" ]
 
 .base-publish:
   extends: .base-build
