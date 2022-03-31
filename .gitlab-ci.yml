@@ -82,8 +82,7 @@ stages:
   extends: .base-build
   image: browserless/chrome
   stage: test
-  before_script:
-    - yarn install
+  before_script: []
   script:
     - cd projects/stencil
     - npm run test # TODO: trovare modo per eseguire test solo per il componente modificato, ora vengono eseguiti i test su tutti i componenti
