@@ -1,0 +1,26 @@
+.base-accordion-item:
+  variables:
+    COMPONENT: mds-accordion-item
+
+# BUILD
+accordion-item-build:
+  extends: [.base-build, .base-accordion-item]
+
+# ISOLATE
+accordion-item-isolate:
+  extends: [.base-isolate, .base-accordion-item]
+  dependencies: [accordion-item-build]
+
+# TEST
+accordion-item-stencil-test:
+  extends: [.base-stencil-test, .base-accordion-item]
+  dependencies: [accordion-item-build, accordion-item-isolate]
+
+accordion-item-publish-test:
+  extends: [.base-publish-test, .base-accordion-item]
+  dependencies: [accordion-item-build, accordion-item-isolate]
+
+# PUBLISH
+accordion-item-publish:
+  extends: [.base-publish, .base-accordion]
+  dependencies: [accordion-item-build, accordion-item-isolate]

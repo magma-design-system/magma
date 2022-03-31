@@ -1,0 +1,26 @@
+.base-bibliography:
+  variables:
+    COMPONENT: mds-bibliography
+
+# BUILD
+bibliography-build:
+  extends: [.base-build, .base-bibliography]
+
+# ISOLATE
+bibliography-isolate:
+  extends: [.base-isolate, .base-bibliography]
+  dependencies: [bibliography-build]
+
+# TEST
+bibliography-stencil-test:
+  extends: [.base-stencil-test, .base-bibliography]
+  dependencies: [bibliography-build, bibliography-isolate]
+
+bibliography-publish-test:
+  extends: [.base-publish-test, .base-bibliography]
+  dependencies: [bibliography-build, bibliography-isolate]
+
+# PUBLISH
+bibliography-publish:
+  extends: [.base-publish, .base-accordion]
+  dependencies: [bibliography-build, bibliography-isolate]

@@ -1,0 +1,26 @@
+.base-accordion-timer-item:
+  variables:
+    COMPONENT: mds-accordion-timer-item
+
+# BUILD
+accordion-timer-item-build:
+  extends: [.base-build, .base-accordion-timer-item]
+
+# ISOLATE
+accordion-timer-item-isolate:
+  extends: [.base-isolate, .base-accordion-timer-item]
+  dependencies: [accordion-timer-item-build]
+
+# TEST
+accordion-timer-item-stencil-test:
+  extends: [.base-stencil-test, .base-accordion-timer-item]
+  dependencies: [accordion-timer-item-build, accordion-timer-item-isolate]
+
+accordion-timer-item-publish-test:
+  extends: [.base-publish-test, .base-accordion-timer-item]
+  dependencies: [accordion-timer-item-build, accordion-timer-item-isolate]
+
+# PUBLISH
+accordion-timer-item-publish:
+  extends: [.base-publish, .base-accordion]
+  dependencies: [accordion-timer-item-build, accordion-timer-item-isolate]

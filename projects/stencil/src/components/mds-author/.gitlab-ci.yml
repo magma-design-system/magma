@@ -1,0 +1,26 @@
+.base-author:
+  variables:
+    COMPONENT: mds-author
+
+# BUILD
+author-build:
+  extends: [.base-build, .base-author]
+
+# ISOLATE
+author-isolate:
+  extends: [.base-isolate, .base-author]
+  dependencies: [author-build]
+
+# TEST
+author-stencil-test:
+  extends: [.base-stencil-test, .base-author]
+  dependencies: [author-build, author-isolate]
+
+author-publish-test:
+  extends: [.base-publish-test, .base-author]
+  dependencies: [author-build, author-isolate]
+
+# PUBLISH
+author-publish:
+  extends: [.base-publish, .base-accordion]
+  dependencies: [author-build, author-isolate]
