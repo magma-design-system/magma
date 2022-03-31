@@ -36,7 +36,7 @@ stages:
     BUILD_DIR: projects/stencil/src/components/$COMPONENT
     WORK_DIR: projects/stencil/.build/$COMPONENT
   before_script:
-    - npm install -g nx
+    - npm install -g nx yarn
     - yarn install
   script:
     - nx run design-tokens:build
@@ -80,9 +80,8 @@ stages:
 
 .base-stencil-test:
   extends: .base-build
-  image: browserless/chrome
+  image: atools/chrome-headless:java11-node16-latest
   stage: test
-  before_script: []
   script:
     - cd projects/stencil
     - npm run test # TODO: trovare modo per eseguire test solo per il componente modificato, ora vengono eseguiti i test su tutti i componenti
@@ -96,8 +95,7 @@ stages:
   stage: test
   script:
     - cd $WORK_DIR
-    - npm pack --dry-run
-    - npm publish --access public --dry-run
+    - npm pack && npm install maggioli-design-system-${COMPONENT}-*.tgz && npm publish --access public --dry-run
   rules:
     - if: $CI_PIPELINE_SOURCE == "merge_request_event" || $CI_COMMIT_BRANCH == "pipeline"
       changes: [ "*", "${BUILD_DIR}/**/*" ]
