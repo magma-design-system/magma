@@ -23,8 +23,8 @@ stages:
   - build
   - build:isolate
   - test
-  - deploy:storybook # TODO
   - publish
+  - deploy:storybook # TODO
   - deploy:website # TODO
 
 # BASE
