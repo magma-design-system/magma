@@ -15,9 +15,9 @@ variables:
   # Abilita debug gitlab-ci
   #CI_DEBUG_TRACE: "true"
 
-default:
-  tags:
-    - maggioli-network
+#default:
+#  tags:
+#    - maggioli-network
 
 stages:
   - build
