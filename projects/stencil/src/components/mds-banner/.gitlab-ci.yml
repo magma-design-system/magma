@@ -22,5 +22,5 @@ banner-publish-test:
 
 # PUBLISH
 banner-publish:
-  extends: [.base-publish, .base-accordion]
+  extends: [.base-publish, .base-banner]
   dependencies: [banner-build, banner-isolate]

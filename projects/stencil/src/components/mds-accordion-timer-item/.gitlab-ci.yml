@@ -22,5 +22,5 @@ accordion-timer-item-publish-test:
 
 # PUBLISH
 accordion-timer-item-publish:
-  extends: [.base-publish, .base-accordion]
+  extends: [.base-publish, .base-accordion-timer-item]
   dependencies: [accordion-timer-item-build, accordion-timer-item-isolate]

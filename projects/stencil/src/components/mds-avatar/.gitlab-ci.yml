@@ -22,5 +22,5 @@ avatar-publish-test:
 
 # PUBLISH
 avatar-publish:
-  extends: [.base-publish, .base-accordion]
+  extends: [.base-publish, .base-avatar]
   dependencies: [avatar-build, avatar-isolate]
