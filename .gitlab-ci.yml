@@ -37,8 +37,8 @@ stages:
     WORK_DIR: projects/stencil/.build/$COMPONENT
   before_script:
     - npm install -g nx
-  script:
     - yarn install
+  script:
     - nx run design-tokens:build
     - nx run styles:build
     - nx run icons:build
