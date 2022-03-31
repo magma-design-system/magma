@@ -62,6 +62,7 @@ stages:
       - projects/styles/dist
       - projects/icons/dist
       - projects/stencil/dist
+      - projects/stencil/assets/svg/mi
       - $BUILD_DIR/readme.md
   rules:
     - if: $CI_COMMIT_BRANCH == "pipeline"

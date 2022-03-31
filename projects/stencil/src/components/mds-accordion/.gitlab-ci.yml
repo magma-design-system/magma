@@ -17,8 +17,8 @@ accordion-stencil-test:
   dependencies: [accordion-build, accordion-isolate]
 
 accordion-publish-test:
-  extends: [ .base-publish-test, .base-accordion ]
-  dependencies: [ accordion-build, accordion-isolate ]
+  extends: [.base-publish-test, .base-accordion]
+  dependencies: [accordion-build, accordion-isolate]
 
 # PUBLISH
 accordion-publish:
