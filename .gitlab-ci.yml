@@ -36,7 +36,7 @@ stages:
     BUILD_DIR: projects/stencil/src/components/$COMPONENT
     WORK_DIR: projects/stencil/.build/$COMPONENT
   before_script:
-    - npm install -g nx yarn
+    - npm install -g nx yarn --force
     - yarn install
   script:
     - nx run design-tokens:build
@@ -93,9 +93,11 @@ stages:
 .base-publish-test:
   extends: .base-build
   stage: test
+  variables:
+    PACK_NAME: maggioli-design-system-${COMPONENT}-*.tgz
   script:
     - cd $WORK_DIR
-    - npm pack && npm install maggioli-design-system-${COMPONENT}-*.tgz && npm publish --access public --dry-run
+    - npm pack && npm install $PACK_NAME && npm publish --access public --dry-run
   rules:
     - if: $CI_PIPELINE_SOURCE == "merge_request_event" || $CI_COMMIT_BRANCH == "pipeline"
       changes: [ "*", "${BUILD_DIR}/**/*" ]
