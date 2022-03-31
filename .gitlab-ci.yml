@@ -36,7 +36,7 @@ stages:
     BUILD_DIR: projects/stencil/src/components/$COMPONENT
     WORK_DIR: projects/stencil/.build/$COMPONENT
   before_script:
-    - npm install -g nx yarn --force
+    - npm install -g --force nx yarn
     - yarn install
   script:
     - nx run design-tokens:build
