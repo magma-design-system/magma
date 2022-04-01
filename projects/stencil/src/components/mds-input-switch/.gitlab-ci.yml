@@ -1,0 +1,26 @@
+.base-input-switch:
+  variables:
+    COMPONENT: mds-input-switch
+
+# BUILD
+input-switch-build:
+  extends: [.base-build, .base-input-switch]
+
+# ISOLATE
+input-switch-isolate:
+  extends: [.base-isolate, .base-input-switch]
+  dependencies: [input-switch-build]
+
+# TEST
+input-switch-stencil-test:
+  extends: [.base-stencil-test, .base-input-switch]
+  dependencies: [input-switch-build, input-switch-isolate]
+
+input-switch-publish-test:
+  extends: [.base-publish-test, .base-input-switch]
+  dependencies: [input-switch-build, input-switch-isolate]
+
+# PUBLISH
+input-switch-publish:
+  extends: [.base-publish, .base-input-switch]
+  dependencies: [input-switch-build, input-switch-isolate]

@@ -1,0 +1,26 @@
+.base-spinner-bar:
+  variables:
+    COMPONENT: mds-spinner-bar
+
+# BUILD
+spinner-bar-build:
+  extends: [.base-build, .base-spinner-bar]
+
+# ISOLATE
+spinner-bar-isolate:
+  extends: [.base-isolate, .base-spinner-bar]
+  dependencies: [spinner-bar-build]
+
+# TEST
+spinner-bar-stencil-test:
+  extends: [.base-stencil-test, .base-spinner-bar]
+  dependencies: [spinner-bar-build, spinner-bar-isolate]
+
+spinner-bar-publish-test:
+  extends: [.base-publish-test, .base-spinner-bar]
+  dependencies: [spinner-bar-build, spinner-bar-isolate]
+
+# PUBLISH
+spinner-bar-publish:
+  extends: [.base-publish, .base-spinner-bar]
+  dependencies: [spinner-bar-build, spinner-bar-isolate]

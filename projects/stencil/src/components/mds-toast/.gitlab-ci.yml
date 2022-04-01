@@ -1,0 +1,26 @@
+.base-toast:
+  variables:
+    COMPONENT: mds-toast
+
+# BUILD
+toast-build:
+  extends: [.base-build, .base-toast]
+
+# ISOLATE
+toast-isolate:
+  extends: [.base-isolate, .base-toast]
+  dependencies: [toast-build]
+
+# TEST
+toast-stencil-test:
+  extends: [.base-stencil-test, .base-toast]
+  dependencies: [toast-build, toast-isolate]
+
+toast-publish-test:
+  extends: [.base-publish-test, .base-toast]
+  dependencies: [toast-build, toast-isolate]
+
+# PUBLISH
+toast-publish:
+  extends: [.base-publish, .base-toast]
+  dependencies: [toast-build, toast-isolate]

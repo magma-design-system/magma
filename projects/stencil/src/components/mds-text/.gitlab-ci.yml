@@ -1,0 +1,26 @@
+.base-text:
+  variables:
+    COMPONENT: mds-text
+
+# BUILD
+text-build:
+  extends: [.base-build, .base-text]
+
+# ISOLATE
+text-isolate:
+  extends: [.base-isolate, .base-text]
+  dependencies: [text-build]
+
+# TEST
+text-stencil-test:
+  extends: [.base-stencil-test, .base-text]
+  dependencies: [text-build, text-isolate]
+
+text-publish-test:
+  extends: [.base-publish-test, .base-text]
+  dependencies: [text-build, text-isolate]
+
+# PUBLISH
+text-publish:
+  extends: [.base-publish, .base-text]
+  dependencies: [text-build, text-isolate]

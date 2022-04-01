@@ -1,0 +1,26 @@
+.base-note:
+  variables:
+    COMPONENT: mds-note
+
+# BUILD
+note-build:
+  extends: [.base-build, .base-note]
+
+# ISOLATE
+note-isolate:
+  extends: [.base-isolate, .base-note]
+  dependencies: [note-build]
+
+# TEST
+note-stencil-test:
+  extends: [.base-stencil-test, .base-note]
+  dependencies: [note-build, note-isolate]
+
+note-publish-test:
+  extends: [.base-publish-test, .base-note]
+  dependencies: [note-build, note-isolate]
+
+# PUBLISH
+note-publish:
+  extends: [.base-publish, .base-note]
+  dependencies: [note-build, note-isolate]

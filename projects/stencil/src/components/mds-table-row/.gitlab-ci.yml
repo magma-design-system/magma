@@ -1,0 +1,26 @@
+.base-table-row:
+  variables:
+    COMPONENT: mds-table-row
+
+# BUILD
+table-row-build:
+  extends: [.base-build, .base-table-row]
+
+# ISOLATE
+table-row-isolate:
+  extends: [.base-isolate, .base-table-row]
+  dependencies: [table-row-build]
+
+# TEST
+table-row-stencil-test:
+  extends: [.base-stencil-test, .base-table-row]
+  dependencies: [table-row-build, table-row-isolate]
+
+table-row-publish-test:
+  extends: [.base-publish-test, .base-table-row]
+  dependencies: [table-row-build, table-row-isolate]
+
+# PUBLISH
+table-row-publish:
+  extends: [.base-publish, .base-table-row]
+  dependencies: [table-row-build, table-row-isolate]

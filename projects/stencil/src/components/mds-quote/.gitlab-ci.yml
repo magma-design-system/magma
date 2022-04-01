@@ -1,0 +1,26 @@
+.base-quote:
+  variables:
+    COMPONENT: mds-quote
+
+# BUILD
+quote-build:
+  extends: [.base-build, .base-quote]
+
+# ISOLATE
+quote-isolate:
+  extends: [.base-isolate, .base-quote]
+  dependencies: [quote-build]
+
+# TEST
+quote-stencil-test:
+  extends: [.base-stencil-test, .base-quote]
+  dependencies: [quote-build, quote-isolate]
+
+quote-publish-test:
+  extends: [.base-publish-test, .base-quote]
+  dependencies: [quote-build, quote-isolate]
+
+# PUBLISH
+quote-publish:
+  extends: [.base-publish, .base-quote]
+  dependencies: [quote-build, quote-isolate]

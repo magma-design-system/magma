@@ -1,0 +1,26 @@
+.base-video-wall:
+  variables:
+    COMPONENT: mds-video-wall
+
+# BUILD
+video-wall-build:
+  extends: [.base-build, .base-video-wall]
+
+# ISOLATE
+video-wall-isolate:
+  extends: [.base-isolate, .base-video-wall]
+  dependencies: [video-wall-build]
+
+# TEST
+video-wall-stencil-test:
+  extends: [.base-stencil-test, .base-video-wall]
+  dependencies: [video-wall-build, video-wall-isolate]
+
+video-wall-publish-test:
+  extends: [.base-publish-test, .base-video-wall]
+  dependencies: [video-wall-build, video-wall-isolate]
+
+# PUBLISH
+video-wall-publish:
+  extends: [.base-publish, .base-video-wall]
+  dependencies: [video-wall-build, video-wall-isolate]

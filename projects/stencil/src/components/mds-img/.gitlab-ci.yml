@@ -1,0 +1,26 @@
+.base-img:
+  variables:
+    COMPONENT: mds-img
+
+# BUILD
+img-build:
+  extends: [.base-build, .base-img]
+
+# ISOLATE
+img-isolate:
+  extends: [.base-isolate, .base-img]
+  dependencies: [img-build]
+
+# TEST
+img-stencil-test:
+  extends: [.base-stencil-test, .base-img]
+  dependencies: [img-build, img-isolate]
+
+img-publish-test:
+  extends: [.base-publish-test, .base-img]
+  dependencies: [img-build, img-isolate]
+
+# PUBLISH
+img-publish:
+  extends: [.base-publish, .base-img]
+  dependencies: [img-build, img-isolate]

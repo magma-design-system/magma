@@ -1,0 +1,26 @@
+.base-modal:
+  variables:
+    COMPONENT: mds-modal
+
+# BUILD
+modal-build:
+  extends: [.base-build, .base-modal]
+
+# ISOLATE
+modal-isolate:
+  extends: [.base-isolate, .base-modal]
+  dependencies: [modal-build]
+
+# TEST
+modal-stencil-test:
+  extends: [.base-stencil-test, .base-modal]
+  dependencies: [modal-build, modal-isolate]
+
+modal-publish-test:
+  extends: [.base-publish-test, .base-modal]
+  dependencies: [modal-build, modal-isolate]
+
+# PUBLISH
+modal-publish:
+  extends: [.base-publish, .base-modal]
+  dependencies: [modal-build, modal-isolate]
