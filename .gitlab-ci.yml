@@ -69,7 +69,9 @@ stages:
       - $BUILD_DIR/readme.md
   rules:
     - if: $CI_COMMIT_BRANCH == "pipeline"
-      changes: ["*", "${BUILD_DIR}/**/*"]
+      changes:
+        - *
+        - ${BUILD_DIR}/**/*"
 
 .base-isolate:
   extends: .base-build
@@ -92,7 +94,9 @@ stages:
   allow_failure: true # TODO: fix test, ora falliscono
   rules:
     - if: $CI_PIPELINE_SOURCE == "merge_request_event" || $CI_COMMIT_BRANCH == "pipeline"
-      changes: ["*", "${BUILD_DIR}/**/*"]
+      changes:
+        - *
+        - ${BUILD_DIR}/**/*"
 
 .base-publish-test:
   extends: .base-build
@@ -104,7 +108,9 @@ stages:
     - npm pack && npm install $PACK_NAME && npm publish --access public --dry-run
   rules:
     - if: $CI_PIPELINE_SOURCE == "merge_request_event" || $CI_COMMIT_BRANCH == "pipeline"
-      changes: [ "*", "${BUILD_DIR}/**/*" ]
+      changes:
+        - *
+        - ${BUILD_DIR}/**/*"
 
 .base-publish:
   extends: .base-build
@@ -114,7 +120,9 @@ stages:
     - npm publish --access public
   rules:
     - if: $CI_COMMIT_BRANCH == "main"
-      changes: ["*", "${BUILD_DIR}/**/*"]
+      changes:
+        - *
+        - ${BUILD_DIR}/**/*"
 
 include:
   - '/projects/stencil/src/components/mds-accordion/.gitlab-ci.yml'
