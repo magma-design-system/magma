@@ -37,7 +37,10 @@ stages:
     WORK_DIR: projects/stencil/.build/$COMPONENT
   before_script:
     - npm install -g --force nx yarn
-    - yarn install
+    - |
+      if [[ ! -d node_modules ]]; then
+        yarn install
+      fi
   script:
     - nx run design-tokens:build
     - nx run styles:build
