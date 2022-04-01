@@ -24,4 +24,3 @@ accordion-publish-test:
 accordion-publish:
   extends: [.base-publish, .base-accordion]
   dependencies: [accordion-build, accordion-isolate]
-

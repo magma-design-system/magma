@@ -61,7 +61,7 @@ stages:
   rules:
     - if: $CI_COMMIT_BRANCH == "pipeline"
       changes:
-        - ${BUILD_DIR}/*
+        - $BUILD_DIR/**/*
 
 .base-isolate:
   extends: .base-build
@@ -85,7 +85,7 @@ stages:
   rules:
     - if: $CI_PIPELINE_SOURCE == "merge_request_event" || $CI_COMMIT_BRANCH == "pipeline"
       changes:
-        - ${BUILD_DIR}/*
+        - $BUILD_DIR/**/*
 
 .base-publish-test:
   extends: .base-build
@@ -98,7 +98,7 @@ stages:
   rules:
     - if: $CI_PIPELINE_SOURCE == "merge_request_event" || $CI_COMMIT_BRANCH == "pipeline"
       changes:
-        - ${BUILD_DIR}/*
+        - $BUILD_DIR/**/*
 
 .base-publish:
   extends: .base-build
@@ -109,7 +109,7 @@ stages:
   rules:
     - if: $CI_COMMIT_BRANCH == "main"
       changes:
-        - ${BUILD_DIR}/*
+        - $BUILD_DIR/**/*
 
 include:
   - '/projects/stencil/src/components/mds-accordion/.gitlab-ci.yml'
