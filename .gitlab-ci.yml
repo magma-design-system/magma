@@ -1,12 +1,3 @@
-workflow:
-  rules:
-    - if: '$CI_COMMIT_BRANCH && $CI_OPEN_MERGE_REQUESTS && $CI_PIPELINE_SOURCE == "push"'
-      when: never
-    - if: '$CI_PIPELINE_SOURCE == "merge_request_event"'
-    - if: '$CI_COMMIT_BRANCH && $CI_OPEN_MERGE_REQUESTS'
-      when: never
-    - if: '$CI_COMMIT_BRANCH'
-
 variables:
   # The GIT_DEPTH option makes the project clone process in each job a bit faster, pulling only the current commit, not the whole Git history.
   GIT_DEPTH: "1"
