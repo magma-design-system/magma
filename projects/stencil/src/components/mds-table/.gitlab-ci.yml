@@ -24,3 +24,4 @@ table-publish-test:
 table-publish:
   extends: [.base-publish, .base-table]
   dependencies: [table-build, table-isolate]
+

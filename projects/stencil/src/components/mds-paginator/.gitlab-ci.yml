@@ -24,3 +24,4 @@ paginator-publish-test:
 paginator-publish:
   extends: [.base-publish, .base-paginator]
   dependencies: [paginator-build, paginator-isolate]
+

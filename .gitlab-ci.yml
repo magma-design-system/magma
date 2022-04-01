@@ -24,8 +24,7 @@ stages:
   stage: build
   variables:
     COMPONENT: to_be_extended
-    BUILD_DIR: projects/stencil/src/components/$COMPONENT
-    WORK_DIR: projects/stencil/.build/$COMPONENT
+    BUILD_DIR: projects/stencil/.build/$COMPONENT
   before_script:
     - npm install -g --force nx yarn
     - |
@@ -57,7 +56,7 @@ stages:
       - projects/icons/dist
       - projects/stencil/dist
       - projects/stencil/assets/svg/mi
-      - $BUILD_DIR/readme.md
+      - projects/stencil/src/components/$COMPONENT/readme.md
   rules:
     - if: $CI_COMMIT_BRANCH == "pipeline"
       changes:
@@ -72,7 +71,7 @@ stages:
     name: $COMPONENT-stencil-build
     expire_in: 1 day
     paths:
-      - $WORK_DIR
+      - $BUILD_DIR
 
 .base-stencil-test:
   extends: .base-build
@@ -85,7 +84,7 @@ stages:
   rules:
     - if: $CI_PIPELINE_SOURCE == "merge_request_event" || $CI_COMMIT_BRANCH == "pipeline"
       changes:
-        - $BUILD_DIR/**/*
+        - projects/stencil/src/components/$COMPONENT/**/*
 
 .base-publish-test:
   extends: .base-build
@@ -93,23 +92,23 @@ stages:
   variables:
     PACK_NAME: maggioli-design-system-${COMPONENT}-*.tgz
   script:
-    - cd $WORK_DIR
+    - cd $BUILD_DIR
     - npm pack && npm install $PACK_NAME && npm publish --access public --dry-run
   rules:
     - if: $CI_PIPELINE_SOURCE == "merge_request_event" || $CI_COMMIT_BRANCH == "pipeline"
       changes:
-        - $BUILD_DIR/**/*
+        - projects/stencil/src/components/$COMPONENT/**/*
 
 .base-publish:
   extends: .base-build
   stage: publish
   script:
-    - cd $WORK_DIR
+    - cd $BUILD_DIR
     - npm publish --access public
   rules:
     - if: $CI_COMMIT_BRANCH == "main"
       changes:
-        - $BUILD_DIR/**/*
+        - projects/stencil/src/components/$COMPONENT/**/*
 
 include:
   - '/projects/stencil/src/components/mds-accordion/.gitlab-ci.yml'
