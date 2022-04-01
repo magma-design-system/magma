@@ -4,7 +4,7 @@
   rules:
     - if: $CI_COMMIT_BRANCH == "pipeline"
       changes:
-        - $BUILD_DIR/**/*
+        - projects/stencil/src/components/$COMPONENT/**/*
 
 # BUILD
 accordion-build:
