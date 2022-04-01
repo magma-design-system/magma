@@ -1,10 +1,6 @@
 .base-accordion:
   variables:
     COMPONENT: mds-accordion
-  rules:
-    - if: $CI_COMMIT_BRANCH == "pipeline"
-      changes:
-        - projects/stencil/src/components/$COMPONENT/**/*
 
 # BUILD
 accordion-build:
