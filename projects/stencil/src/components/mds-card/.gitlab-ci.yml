@@ -1,0 +1,26 @@
+.base-card:
+  variables:
+    COMPONENT: mds-card
+
+# BUILD
+card-build:
+  extends: [.base-build, .base-card]
+
+# ISOLATE
+card-isolate:
+  extends: [.base-isolate, .base-card]
+  dependencies: [card-build]
+
+# TEST
+card-stencil-test:
+  extends: [.base-stencil-test, .base-card]
+  dependencies: [card-build, card-isolate]
+
+card-publish-test:
+  extends: [.base-publish-test, .base-card]
+  dependencies: [card-build, card-isolate]
+
+# PUBLISH
+card-publish:
+  extends: [.base-publish, .base-card]
+  dependencies: [card-build, card-isolate]

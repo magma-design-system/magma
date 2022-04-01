@@ -1,0 +1,26 @@
+.base-details:
+  variables:
+    COMPONENT: mds-details
+
+# BUILD
+details-build:
+  extends: [.base-build, .base-details]
+
+# ISOLATE
+details-isolate:
+  extends: [.base-isolate, .base-details]
+  dependencies: [details-build]
+
+# TEST
+details-stencil-test:
+  extends: [.base-stencil-test, .base-details]
+  dependencies: [details-build, details-isolate]
+
+details-publish-test:
+  extends: [.base-publish-test, .base-details]
+  dependencies: [details-build, details-isolate]
+
+# PUBLISH
+details-publish:
+  extends: [.base-publish, .base-details]
+  dependencies: [details-build, details-isolate]

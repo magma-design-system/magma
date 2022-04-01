@@ -1,0 +1,26 @@
+.base-entity:
+  variables:
+    COMPONENT: mds-entity
+
+# BUILD
+entity-build:
+  extends: [.base-build, .base-entity]
+
+# ISOLATE
+entity-isolate:
+  extends: [.base-isolate, .base-entity]
+  dependencies: [entity-build]
+
+# TEST
+entity-stencil-test:
+  extends: [.base-stencil-test, .base-entity]
+  dependencies: [entity-build, entity-isolate]
+
+entity-publish-test:
+  extends: [.base-publish-test, .base-entity]
+  dependencies: [entity-build, entity-isolate]
+
+# PUBLISH
+entity-publish:
+  extends: [.base-publish, .base-entity]
+  dependencies: [entity-build, entity-isolate]

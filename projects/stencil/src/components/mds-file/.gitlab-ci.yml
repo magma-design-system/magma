@@ -1,0 +1,26 @@
+.base-file:
+  variables:
+    COMPONENT: mds-file
+
+# BUILD
+file-build:
+  extends: [.base-build, .base-file]
+
+# ISOLATE
+file-isolate:
+  extends: [.base-isolate, .base-file]
+  dependencies: [file-build]
+
+# TEST
+file-stencil-test:
+  extends: [.base-stencil-test, .base-file]
+  dependencies: [file-build, file-isolate]
+
+file-publish-test:
+  extends: [.base-publish-test, .base-file]
+  dependencies: [file-build, file-isolate]
+
+# PUBLISH
+file-publish:
+  extends: [.base-publish, .base-file]
+  dependencies: [file-build, file-isolate]

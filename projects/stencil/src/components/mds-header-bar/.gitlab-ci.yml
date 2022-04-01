@@ -1,0 +1,26 @@
+.base-header-bar:
+  variables:
+    COMPONENT: mds-header-bar
+
+# BUILD
+header-bar-build:
+  extends: [.base-build, .base-header-bar]
+
+# ISOLATE
+header-bar-isolate:
+  extends: [.base-isolate, .base-header-bar]
+  dependencies: [header-bar-build]
+
+# TEST
+header-bar-stencil-test:
+  extends: [.base-stencil-test, .base-header-bar]
+  dependencies: [header-bar-build, header-bar-isolate]
+
+header-bar-publish-test:
+  extends: [.base-publish-test, .base-header-bar]
+  dependencies: [header-bar-build, header-bar-isolate]
+
+# PUBLISH
+header-bar-publish:
+  extends: [.base-publish, .base-header-bar]
+  dependencies: [header-bar-build, header-bar-isolate]

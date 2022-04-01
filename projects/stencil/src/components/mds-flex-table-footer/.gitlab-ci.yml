@@ -1,0 +1,26 @@
+.base-flex-table-footer:
+  variables:
+    COMPONENT: mds-flex-table-footer
+
+# BUILD
+flex-table-footer-build:
+  extends: [.base-build, .base-flex-table-footer]
+
+# ISOLATE
+flex-table-footer-isolate:
+  extends: [.base-isolate, .base-flex-table-footer]
+  dependencies: [flex-table-footer-build]
+
+# TEST
+flex-table-footer-stencil-test:
+  extends: [.base-stencil-test, .base-flex-table-footer]
+  dependencies: [flex-table-footer-build, flex-table-footer-isolate]
+
+flex-table-footer-publish-test:
+  extends: [.base-publish-test, .base-flex-table-footer]
+  dependencies: [flex-table-footer-build, flex-table-footer-isolate]
+
+# PUBLISH
+flex-table-footer-publish:
+  extends: [.base-publish, .base-flex-table-footer]
+  dependencies: [flex-table-footer-build, flex-table-footer-isolate]
