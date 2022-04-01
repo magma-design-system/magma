@@ -1,6 +1,10 @@
 .base-accordion:
   variables:
     COMPONENT: mds-accordion
+  rules:
+    - if: $CI_COMMIT_BRANCH == "pipeline"
+      changes:
+        - $BUILD_DIR/**/*
 
 # BUILD
 accordion-build:
