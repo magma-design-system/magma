@@ -70,7 +70,6 @@ stages:
   rules:
     - if: $CI_COMMIT_BRANCH == "pipeline"
       changes:
-        - *
         - ${BUILD_DIR}/**/*
 
 .base-isolate:
@@ -95,7 +94,6 @@ stages:
   rules:
     - if: $CI_PIPELINE_SOURCE == "merge_request_event" || $CI_COMMIT_BRANCH == "pipeline"
       changes:
-        - *
         - ${BUILD_DIR}/**/*
 
 .base-publish-test:
@@ -109,7 +107,6 @@ stages:
   rules:
     - if: $CI_PIPELINE_SOURCE == "merge_request_event" || $CI_COMMIT_BRANCH == "pipeline"
       changes:
-        - *
         - ${BUILD_DIR}/**/*
 
 .base-publish:
@@ -121,7 +118,6 @@ stages:
   rules:
     - if: $CI_COMMIT_BRANCH == "main"
       changes:
-        - *
         - ${BUILD_DIR}/**/*
 
 include:
