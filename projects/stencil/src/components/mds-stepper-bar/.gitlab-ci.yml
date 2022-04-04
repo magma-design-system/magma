@@ -1,26 +1,26 @@
-.base-spinner-bar:
+.base-stepper-bar:
   variables:
-    COMPONENT: mds-spinner-bar
+    COMPONENT: mds-stepper-bar
 
 # BUILD
-spinner-bar-build:
-  extends: [.base-build, .base-spinner-bar]
+stepper-bar-build:
+  extends: [.base-build, .base-stepper-bar]
 
 # ISOLATE
-spinner-bar-isolate:
-  extends: [.base-isolate, .base-spinner-bar]
-  dependencies: [spinner-bar-build]
+stepper-bar-isolate:
+  extends: [.base-isolate, .base-stepper-bar]
+  dependencies: [stepper-bar-build]
 
 # TEST
-spinner-bar-stencil-test:
-  extends: [.base-stencil-test, .base-spinner-bar]
-  dependencies: [spinner-bar-build, spinner-bar-isolate]
+stepper-bar-stencil-test:
+  extends: [.base-stencil-test, .base-stepper-bar]
+  dependencies: [stepper-bar-build, stepper-bar-isolate]
 
-spinner-bar-publish-test:
-  extends: [.base-publish-test, .base-spinner-bar]
-  dependencies: [spinner-bar-build, spinner-bar-isolate]
+stepper-bar-publish-test:
+  extends: [.base-publish-test, .base-stepper-bar]
+  dependencies: [stepper-bar-build, stepper-bar-isolate]
 
 # PUBLISH
-spinner-bar-publish:
-  extends: [.base-publish, .base-spinner-bar]
-  dependencies: [spinner-bar-build, spinner-bar-isolate]
+stepper-bar-publish:
+  extends: [.base-publish, .base-stepper-bar]
+  dependencies: [stepper-bar-build, stepper-bar-isolate]
