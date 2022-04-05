@@ -28,3 +28,4 @@ node_modules/
 projects/**/package-lock.json
 projects/**/yarn.lock
 www/
+!yarn.lock
