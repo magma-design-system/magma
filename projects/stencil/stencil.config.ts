@@ -1,4 +1,4 @@
-import alias from '@rollup/plugin-alias';
+import alias from '@rollup/plugin-alias'
 import autoprefixer from 'autoprefixer'
 import path from 'path'
 import tailwind from 'tailwindcss'
@@ -62,5 +62,7 @@ export const config: Config = {
     coveragePathIgnorePatterns: ['<rootDir>/.build/', '<rootDir>/template/', '<rootDir>/node_modules/'],
     modulePathIgnorePatterns: ['<rootDir>/.build/', '<rootDir>/template/', '<rootDir>/node_modules/'],
     transformIgnorePatterns: ['<rootDir>/.build/', '<rootDir>/template/', '<rootDir>/node_modules/'],
+    moduleNameMapper: { "@icon/(.*)": "<rootDir>/assets/svg/$1" },
+    transform: { "^.+\\.svg$": "jest-transformer-svg" },
   }
 }
