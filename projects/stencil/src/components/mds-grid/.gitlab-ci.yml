@@ -24,3 +24,4 @@ grid-publish-test:
 grid-publish:
   extends: [.base-publish, .base-grid]
   dependencies: [grid-build, grid-isolate]
+
