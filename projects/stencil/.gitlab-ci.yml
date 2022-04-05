@@ -18,7 +18,10 @@
     - nx run icons:build
     - nx run stencil:build
   cache:
-    key: $COMPONENT-cache
+    key:
+      files:
+        - yarn.lock
+      prefix: $CI_PROJECT_NAME
     paths:
       - node_modules
       - projects/design-tokens/node_modules
