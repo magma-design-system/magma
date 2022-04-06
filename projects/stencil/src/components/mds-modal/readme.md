@@ -1,0 +1,38 @@
+# mds-modal
+
+
+
+<!-- Auto Generated Below -->
+
+
+## Properties
+
+| Property   | Attribute  | Description                                          | Type                                                 | Default     |
+| ---------- | ---------- | ---------------------------------------------------- | ---------------------------------------------------- | ----------- |
+| `opened`   | `opened`   | Specifies if the modal is opened or not              | `boolean`                                            | `undefined` |
+| `position` | `position` | Specifies the animation position of the modal window | `"bottom" \| "center" \| "left" \| "right" \| "top"` | `null`      |
+
+
+## Events
+
+| Event   | Description                  | Type                |
+| ------- | ---------------------------- | ------------------- |
+| `close` | Emits when a modal is closed | `CustomEvent<void>` |
+
+
+## Dependencies
+
+### Used by
+
+ - [mds-header](../mds-header)
+
+### Graph
+```mermaid
+graph TD;
+  mds-header --> mds-modal
+  style mds-modal fill:#f9f,stroke:#333,stroke-width:4px
+```
+
+----------------------------------------------
+
+Built with love @ **Maggioli Informatica / R&D Department**
