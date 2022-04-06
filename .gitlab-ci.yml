@@ -18,5 +18,41 @@ stages:
   - deploy:storybook # TODO
   - deploy:website # TODO
 
+.push-ds-base:
+  stage: publish
+  variables:
+    CI_IMAGE_NAME: designsystem
+    CI_IMAGE_TAG: $CI_REGISTRY/$CI_IMAGE_NAME:${CI_COMMIT_SHORT_SHA}
+  script:
+    - echo $CI_REGISTRY_PSW | docker login -u $CI_REGISTRY_USR --password-stdin https://$CI_REGISTRY
+    - docker build -t $CI_IMAGE_TAG .
+    - docker push $CI_IMAGE_TAG
+
+.push-ds-prod:
+  extends: .push-ds-base
+  rules:
+    - if: $CI_COMMIT_BRANCH == "master"
+
+.deploy-ds-base:
+  stage: deploy:website
+  image: maggiolieditore.azurecr.io/alpine-ssh-envsubst
+  variables:
+    DEPLOY_FOLDER: $DEPLOY_FOLDER
+  script:
+    - chmod +x .deploy/deploy.sh
+    - .deploy/deploy.sh
+  allow_failure: false
+
+.deploy-prod:
+  extends: .deploy-ds-base
+  variables:
+    SERVER: $CI_SERVER_IP
+    SSH_PRIV_KEY: $CI_SSH_PRIV_KEY
+    SSH_USER: $CI_SSH_USER
+    ENV: prod
+  rules:
+    - if: $CI_COMMIT_BRANCH == "master"
+
+
 include:
   - '/projects/stencil/.gitlab-ci.yml'
