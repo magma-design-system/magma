@@ -27,6 +27,10 @@ export class MdsIcon {
     IconsSetService.setSvgPath(path)
   }
 
+  /**
+   * Set the path to the directory of svg files
+   * @param svgPath path to the directory of svg files
+   */
   @Method()
   async setSvgPath (svgPath: string): Promise<void> {
     IconsSetService.setSvgPath(svgPath)
