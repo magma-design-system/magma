@@ -71,6 +71,7 @@
         - projects/stencil/*
         - projects/stencil/src/components/$COMPONENT/**/*
 
+
 .base-publish-test:
   extends: .base-build
   stage: test
