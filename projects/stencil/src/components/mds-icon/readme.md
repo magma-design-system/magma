@@ -38,6 +38,22 @@ const mdsIconGet = async () => {
 mdsIconGet()
 ```
 
+### Via `setSvgPathStatic` static class function
+
+Last way to set it is by calling the static function present in the class. This is done after the `defineCustomElements()` call
+
+```javascript
+import { mds_icon } from '@maggioli-design-system/mds-icon/dist/esm/mds-icon.entry'
+
+const mdsIconGet = async () => {
+  await customElements.whenDefined('mds-icon')
+
+  mds_icon.setSvgPathStatic('/assets/img/svg/')
+}
+
+mdsIconGet()
+```
+
 <!-- Auto Generated Below -->
 
 
