@@ -1,0 +1,32 @@
+# mds-video-wall
+
+
+
+<!-- Auto Generated Below -->
+
+
+## Properties
+
+| Property   | Attribute  | Description                                                                                                                                          | Type                                               | Default     |
+| ---------- | ---------- | ---------------------------------------------------------------------------------------------------------------------------------------------------- | -------------------------------------------------- | ----------- |
+| `autoplay` | `autoplay` | Specifies that the video will start playing as soon as it is ready                                                                                   | `boolean`                                          | `true`      |
+| `loop`     | `loop`     | Specifies that the video will start over again, every time it is finished                                                                            | `boolean`                                          | `true`      |
+| `muted`    | `muted`    | Specifies that the audio output of the video should be muted                                                                                         | `boolean`                                          | `true`      |
+| `noise`    | `noise`    | Specifies if the video has a noise overlay effect                                                                                                    | `"classic" \| "none" \| "sharp" \| "soft" \| "tv"` | `'none'`    |
+| `poster`   | `poster`   | Specifies an image to be shown while the video is downloading                                                                                        | `string`                                           | `undefined` |
+| `preload`  | `preload`  | Specifies if and how the author thinks the video should be loaded when the page loads. Note: The preload attribute is ignored if autoplay is present | `"auto" \| "metadata" \| "none"`                   | `'auto'`    |
+| `src`      | `src`      | Specifies the URL of the video file                                                                                                                  | `string`                                           | `undefined` |
+
+
+## CSS Custom Properties
+
+| Name                       | Description                                        |
+| -------------------------- | -------------------------------------------------- |
+| `--aspect-ratio`           | Sets the aspect-ratio of the component             |
+| `--noise-background-color` | Sets the background-color of the noise when active |
+| `--video-fit`              | Sets the object-fit of the video stream            |
+
+
+----------------------------------------------
+
+Built with love @ **Maggioli Informatica / R&D Department**

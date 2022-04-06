@@ -1,0 +1,36 @@
+# mds-progress
+
+
+
+<!-- Auto Generated Below -->
+
+
+## Properties
+
+| Property    | Attribute   | Description                                                            | Type                                                                            | Default        |
+| ----------- | ----------- | ---------------------------------------------------------------------- | ------------------------------------------------------------------------------- | -------------- |
+| `direction` | `direction` | Specifies the direction of the progress bar, if horizonatl or vertical | `"horizontal" \| "vertical"`                                                    | `'horizontal'` |
+| `progress`  | `progress`  | A value between 0 and 1 that rapresents the status progress            | `number`                                                                        | `0`            |
+| `variant`   | `variant`   | Sets the theme variant colors                                          | `"dark" \| "error" \| "info" \| "light" \| "primary" \| "success" \| "warning"` | `'dark'`       |
+
+
+## Dependencies
+
+### Used by
+
+ - [mds-accordion-timer-item](../mds-accordion-timer-item)
+ - [mds-benchmark-bar](../mds-benchmark-bar)
+ - [mds-stepper-bar-item](../mds-stepper-bar-item)
+
+### Graph
+```mermaid
+graph TD;
+  mds-accordion-timer-item --> mds-progress
+  mds-benchmark-bar --> mds-progress
+  mds-stepper-bar-item --> mds-progress
+  style mds-progress fill:#f9f,stroke:#333,stroke-width:4px
+```
+
+----------------------------------------------
+
+Built with love @ **Maggioli Informatica / R&D Department**

@@ -1,0 +1,24 @@
+# mds-accordion-timer
+
+
+
+<!-- Auto Generated Below -->
+
+
+## Properties
+
+| Property   | Attribute  | Description                                    | Type     | Default |
+| ---------- | ---------- | ---------------------------------------------- | -------- | ------- |
+| `duration` | `duration` | Sets the duration of the single accordion item | `number` | `10000` |
+
+
+## Events
+
+| Event           | Description                                | Type                  |
+| --------------- | ------------------------------------------ | --------------------- |
+| `itemActivated` | Emits when the accordion changes it's item | `CustomEvent<number>` |
+
+
+----------------------------------------------
+
+Built with love @ **Maggioli Informatica / R&D Department**
