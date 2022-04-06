@@ -40,7 +40,6 @@
       - projects/icons/dist
       - projects/stencil/dist
       - projects/stencil/assets/svg/mi
-      - projects/stencil/src/components/$COMPONENT/readme.md
   rules:
     - if: $CI_COMMIT_BRANCH == "pipeline"
       changes:

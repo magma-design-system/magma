@@ -53,6 +53,5 @@ stages:
   rules:
     - if: $CI_COMMIT_BRANCH == "master"
 
-
 include:
   - '/projects/stencil/.gitlab-ci.yml'
