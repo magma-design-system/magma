@@ -24,3 +24,4 @@ button-publish-test:
 button-publish:
   extends: [.base-publish, .base-button]
   dependencies: [button-build, button-isolate]
+

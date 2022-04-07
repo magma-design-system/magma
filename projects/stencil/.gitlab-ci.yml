@@ -17,6 +17,7 @@
     - nx run styles:build
     - nx run icons:build
     - nx run stencil:build
+    - ls projects/stencil/assets/svg
   cache:
     key:
       files:
@@ -39,11 +40,10 @@
       - projects/styles/dist
       - projects/icons/dist
       - projects/stencil/dist
-      - projects/stencil/assets/svg/mi
+      - projects/stencil/assets/svg
   rules:
     - if: $CI_COMMIT_BRANCH == "pipeline"
       changes:
-        - projects/stencil/*
         - projects/stencil/src/components/$COMPONENT/**/*
 
 .base-isolate:
@@ -68,7 +68,6 @@
   rules:
     - if: $CI_PIPELINE_SOURCE == "merge_request_event" || $CI_COMMIT_BRANCH == "pipeline"
       changes:
-        - projects/stencil/*
         - projects/stencil/src/components/$COMPONENT/**/*
 
 
@@ -83,7 +82,6 @@
   rules:
     - if: $CI_PIPELINE_SOURCE == "merge_request_event" || $CI_COMMIT_BRANCH == "pipeline"
       changes:
-        - projects/stencil/*
         - projects/stencil/src/components/$COMPONENT/**/*
 
 .base-publish:
