@@ -66,7 +66,7 @@
     - cd projects/stencil
     - npm run test
   rules:
-    - if: $CI_PIPELINE_SOURCE == "merge_request_event" || || $CI_COMMIT_BRANCH =~ /^(dev|main|pipeline)$/
+    - if: $CI_PIPELINE_SOURCE == "merge_request_event" || $CI_COMMIT_BRANCH =~ /^(dev|main|pipeline)$/
       changes:
         - projects/stencil/*
         - projects/stencil/src/components/$COMPONENT/**/*
