@@ -42,8 +42,9 @@
       - projects/stencil/dist
       - projects/stencil/assets/svg
   rules:
-    - if: $CI_COMMIT_BRANCH == "pipeline"
+    - if: $CI_COMMIT_BRANCH =~ /^(dev|main|pipeline)$/
       changes:
+        - projects/stencil/*
         - projects/stencil/src/components/$COMPONENT/**/*
 
 .base-isolate:
@@ -63,13 +64,12 @@
   stage: test
   script:
     - cd projects/stencil
-    - npm run test # TODO: trovare modo per eseguire test solo per il componente modificato, ora vengono eseguiti i test su tutti i componenti
-  allow_failure: true # TODO: fix test, ora falliscono
+    - npm run test
   rules:
-    - if: $CI_PIPELINE_SOURCE == "merge_request_event" || $CI_COMMIT_BRANCH == "pipeline"
+    - if: $CI_PIPELINE_SOURCE == "merge_request_event" || || $CI_COMMIT_BRANCH =~ /^(dev|main|pipeline)$/
       changes:
+        - projects/stencil/*
         - projects/stencil/src/components/$COMPONENT/**/*
-
 
 .base-publish-test:
   extends: .base-build
@@ -80,8 +80,9 @@
     - cd $BUILD_DIR
     - npm pack && npm install $PACK_NAME && npm publish --access public --dry-run
   rules:
-    - if: $CI_PIPELINE_SOURCE == "merge_request_event" || $CI_COMMIT_BRANCH == "pipeline"
+    - if: $CI_PIPELINE_SOURCE == "merge_request_event" || $CI_COMMIT_BRANCH =~ /^(dev|main|pipeline)$/
       changes:
+        - projects/stencil/*
         - projects/stencil/src/components/$COMPONENT/**/*
 
 .base-publish:
@@ -166,4 +167,3 @@ include:
   - '/projects/stencil/src/components/mds-url-view/.gitlab-ci.yml'
   - '/projects/stencil/src/components/mds-usage/.gitlab-ci.yml'
   - '/projects/stencil/src/components/mds-video-wall/.gitlab-ci.yml'
-
