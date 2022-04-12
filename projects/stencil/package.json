@@ -40,7 +40,7 @@
     "@maggioli-design-system/icons": "^1.40.0",
     "@maggioli-design-system/identity": "^1.9.0",
     "@maggioli-design-system/styles": "^6.5.3",
-    "@stencil/core": "^2.14.2",
+    "@stencil/core": "^2.15.0",
     "idb-keyval": "6.1.0"
   },
   "license": "MIT",
