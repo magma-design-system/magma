@@ -15,4 +15,4 @@ stepper-bar-publish-test:
 # PUBLISH
 stepper-bar-publish:
   extends: [.base-publish, .base-stepper-bar]
-  dependencies: [stepper-bar-build, stepper-bar-isolate]
+  dependencies: [base-build, stepper-bar-isolate]
