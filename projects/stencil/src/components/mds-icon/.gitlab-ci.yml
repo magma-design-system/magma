@@ -2,25 +2,17 @@
   variables:
     COMPONENT: mds-icon
 
-# BUILD
-icon-build:
-  extends: [.base-build, .base-icon]
-
 # ISOLATE
 icon-isolate:
   extends: [.base-isolate, .base-icon]
-  dependencies: [icon-build]
+  dependencies: [base-build]
 
 # TEST
-icon-stencil-test:
-  extends: [.base-stencil-test, .base-icon]
-  dependencies: [icon-build, icon-isolate]
-
 icon-publish-test:
   extends: [.base-publish-test, .base-icon]
-  dependencies: [icon-build, icon-isolate]
+  dependencies: [base-build, icon-isolate]
 
 # PUBLISH
 icon-publish:
   extends: [.base-publish, .base-icon]
-  dependencies: [icon-build, icon-isolate]
+  dependencies: [base-build, icon-isolate]

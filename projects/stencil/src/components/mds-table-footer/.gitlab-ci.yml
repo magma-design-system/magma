@@ -2,25 +2,17 @@
   variables:
     COMPONENT: mds-table-footer
 
-# BUILD
-table-footer-build:
-  extends: [.base-build, .base-table-footer]
-
 # ISOLATE
 table-footer-isolate:
   extends: [.base-isolate, .base-table-footer]
-  dependencies: [table-footer-build]
+  dependencies: [base-build]
 
 # TEST
-table-footer-stencil-test:
-  extends: [.base-stencil-test, .base-table-footer]
-  dependencies: [table-footer-build, table-footer-isolate]
-
 table-footer-publish-test:
   extends: [.base-publish-test, .base-table-footer]
-  dependencies: [table-footer-build, table-footer-isolate]
+  dependencies: [base-build, table-footer-isolate]
 
 # PUBLISH
 table-footer-publish:
   extends: [.base-publish, .base-table-footer]
-  dependencies: [table-footer-build, table-footer-isolate]
+  dependencies: [base-build, table-footer-isolate]

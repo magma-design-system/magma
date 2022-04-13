@@ -2,25 +2,17 @@
   variables:
     COMPONENT: mds-input-button
 
-# BUILD
-input-button-build:
-  extends: [.base-build, .base-input-button]
-
 # ISOLATE
 input-button-isolate:
   extends: [.base-isolate, .base-input-button]
-  dependencies: [input-button-build]
+  dependencies: [base-build]
 
 # TEST
-input-button-stencil-test:
-  extends: [.base-stencil-test, .base-input-button]
-  dependencies: [input-button-build, input-button-isolate]
-
 input-button-publish-test:
   extends: [.base-publish-test, .base-input-button]
-  dependencies: [input-button-build, input-button-isolate]
+  dependencies: [base-build, input-button-isolate]
 
 # PUBLISH
 input-button-publish:
   extends: [.base-publish, .base-input-button]
-  dependencies: [input-button-build, input-button-isolate]
+  dependencies: [base-build, input-button-isolate]

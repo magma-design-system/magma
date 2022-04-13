@@ -2,25 +2,17 @@
   variables:
     COMPONENT: mds-stepper-bar-item
 
-# BUILD
-stepper-bar-item-build:
-  extends: [.base-build, .base-stepper-bar-item]
-
 # ISOLATE
 stepper-bar-item-isolate:
   extends: [.base-isolate, .base-stepper-bar-item]
-  dependencies: [stepper-bar-item-build]
+  dependencies: [base-build]
 
 # TEST
-stepper-bar-item-stencil-test:
-  extends: [.base-stencil-test, .base-stepper-bar-item]
-  dependencies: [stepper-bar-item-build, stepper-bar-item-isolate]
-
 stepper-bar-item-publish-test:
   extends: [.base-publish-test, .base-stepper-bar-item]
-  dependencies: [stepper-bar-item-build, stepper-bar-item-isolate]
+  dependencies: [base-build, stepper-bar-item-isolate]
 
 # PUBLISH
 stepper-bar-item-publish:
   extends: [.base-publish, .base-stepper-bar-item]
-  dependencies: [stepper-bar-item-build, stepper-bar-item-isolate]
+  dependencies: [base-build, stepper-bar-item-isolate]

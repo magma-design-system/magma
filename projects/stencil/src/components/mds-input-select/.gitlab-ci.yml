@@ -2,25 +2,17 @@
   variables:
     COMPONENT: mds-input-select
 
-# BUILD
-input-select-build:
-  extends: [.base-build, .base-input-select]
-
 # ISOLATE
 input-select-isolate:
   extends: [.base-isolate, .base-input-select]
-  dependencies: [input-select-build]
+  dependencies: [base-build]
 
 # TEST
-input-select-stencil-test:
-  extends: [.base-stencil-test, .base-input-select]
-  dependencies: [input-select-build, input-select-isolate]
-
 input-select-publish-test:
   extends: [.base-publish-test, .base-input-select]
-  dependencies: [input-select-build, input-select-isolate]
+  dependencies: [base-build, input-select-isolate]
 
 # PUBLISH
 input-select-publish:
   extends: [.base-publish, .base-input-select]
-  dependencies: [input-select-build, input-select-isolate]
+  dependencies: [base-build, input-select-isolate]

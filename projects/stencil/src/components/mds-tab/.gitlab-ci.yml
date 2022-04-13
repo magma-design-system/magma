@@ -2,25 +2,17 @@
   variables:
     COMPONENT: mds-tab
 
-# BUILD
-tab-build:
-  extends: [.base-build, .base-tab]
-
 # ISOLATE
 tab-isolate:
   extends: [.base-isolate, .base-tab]
-  dependencies: [tab-build]
+  dependencies: [base-build]
 
 # TEST
-tab-stencil-test:
-  extends: [.base-stencil-test, .base-tab]
-  dependencies: [tab-build, tab-isolate]
-
 tab-publish-test:
   extends: [.base-publish-test, .base-tab]
-  dependencies: [tab-build, tab-isolate]
+  dependencies: [base-build, tab-isolate]
 
 # PUBLISH
 tab-publish:
   extends: [.base-publish, .base-tab]
-  dependencies: [tab-build, tab-isolate]
+  dependencies: [base-build, tab-isolate]

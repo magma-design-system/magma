@@ -2,25 +2,17 @@
   variables:
     COMPONENT: mds-horizontal-scroll
 
-# BUILD
-horizontal-scroll-build:
-  extends: [.base-build, .base-horizontal-scroll]
-
 # ISOLATE
 horizontal-scroll-isolate:
   extends: [.base-isolate, .base-horizontal-scroll]
-  dependencies: [horizontal-scroll-build]
+  dependencies: [base-build]
 
 # TEST
-horizontal-scroll-stencil-test:
-  extends: [.base-stencil-test, .base-horizontal-scroll]
-  dependencies: [horizontal-scroll-build, horizontal-scroll-isolate]
-
 horizontal-scroll-publish-test:
   extends: [.base-publish-test, .base-horizontal-scroll]
-  dependencies: [horizontal-scroll-build, horizontal-scroll-isolate]
+  dependencies: [base-build, horizontal-scroll-isolate]
 
 # PUBLISH
 horizontal-scroll-publish:
   extends: [.base-publish, .base-horizontal-scroll]
-  dependencies: [horizontal-scroll-build, horizontal-scroll-isolate]
+  dependencies: [base-build, horizontal-scroll-isolate]

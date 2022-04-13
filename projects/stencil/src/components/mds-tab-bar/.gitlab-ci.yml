@@ -2,25 +2,17 @@
   variables:
     COMPONENT: mds-tab-bar
 
-# BUILD
-tab-bar-build:
-  extends: [.base-build, .base-tab-bar]
-
 # ISOLATE
 tab-bar-isolate:
   extends: [.base-isolate, .base-tab-bar]
-  dependencies: [tab-bar-build]
+  dependencies: [base-build]
 
 # TEST
-tab-bar-stencil-test:
-  extends: [.base-stencil-test, .base-tab-bar]
-  dependencies: [tab-bar-build, tab-bar-isolate]
-
 tab-bar-publish-test:
   extends: [.base-publish-test, .base-tab-bar]
-  dependencies: [tab-bar-build, tab-bar-isolate]
+  dependencies: [base-build, tab-bar-isolate]
 
 # PUBLISH
 tab-bar-publish:
   extends: [.base-publish, .base-tab-bar]
-  dependencies: [tab-bar-build, tab-bar-isolate]
+  dependencies: [base-build, tab-bar-isolate]

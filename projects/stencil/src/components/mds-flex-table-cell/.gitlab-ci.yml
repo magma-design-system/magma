@@ -2,25 +2,17 @@
   variables:
     COMPONENT: mds-flex-table-cell
 
-# BUILD
-flex-table-cell-build:
-  extends: [.base-build, .base-flex-table-cell]
-
 # ISOLATE
 flex-table-cell-isolate:
   extends: [.base-isolate, .base-flex-table-cell]
-  dependencies: [flex-table-cell-build]
+  dependencies: [base-build]
 
 # TEST
-flex-table-cell-stencil-test:
-  extends: [.base-stencil-test, .base-flex-table-cell]
-  dependencies: [flex-table-cell-build, flex-table-cell-isolate]
-
 flex-table-cell-publish-test:
   extends: [.base-publish-test, .base-flex-table-cell]
-  dependencies: [flex-table-cell-build, flex-table-cell-isolate]
+  dependencies: [base-build, flex-table-cell-isolate]
 
 # PUBLISH
 flex-table-cell-publish:
   extends: [.base-publish, .base-flex-table-cell]
-  dependencies: [flex-table-cell-build, flex-table-cell-isolate]
+  dependencies: [base-build, flex-table-cell-isolate]

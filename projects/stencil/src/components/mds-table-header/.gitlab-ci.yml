@@ -2,25 +2,17 @@
   variables:
     COMPONENT: mds-table-header
 
-# BUILD
-table-header-build:
-  extends: [.base-build, .base-table-header]
-
 # ISOLATE
 table-header-isolate:
   extends: [.base-isolate, .base-table-header]
-  dependencies: [table-header-build]
+  dependencies: [base-build]
 
 # TEST
-table-header-stencil-test:
-  extends: [.base-stencil-test, .base-table-header]
-  dependencies: [table-header-build, table-header-isolate]
-
 table-header-publish-test:
   extends: [.base-publish-test, .base-table-header]
-  dependencies: [table-header-build, table-header-isolate]
+  dependencies: [base-build, table-header-isolate]
 
 # PUBLISH
 table-header-publish:
   extends: [.base-publish, .base-table-header]
-  dependencies: [table-header-build, table-header-isolate]
+  dependencies: [base-build, table-header-isolate]

@@ -2,25 +2,17 @@
   variables:
     COMPONENT: mds-input-range
 
-# BUILD
-input-range-build:
-  extends: [.base-build, .base-input-range]
-
 # ISOLATE
 input-range-isolate:
   extends: [.base-isolate, .base-input-range]
-  dependencies: [input-range-build]
+  dependencies: [base-build]
 
 # TEST
-input-range-stencil-test:
-  extends: [.base-stencil-test, .base-input-range]
-  dependencies: [input-range-build, input-range-isolate]
-
 input-range-publish-test:
   extends: [.base-publish-test, .base-input-range]
-  dependencies: [input-range-build, input-range-isolate]
+  dependencies: [base-build, input-range-isolate]
 
 # PUBLISH
 input-range-publish:
   extends: [.base-publish, .base-input-range]
-  dependencies: [input-range-build, input-range-isolate]
+  dependencies: [base-build, input-range-isolate]

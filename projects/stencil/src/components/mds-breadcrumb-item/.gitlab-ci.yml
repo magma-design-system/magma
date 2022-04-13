@@ -2,25 +2,17 @@
   variables:
     COMPONENT: mds-breadcrumb-item
 
-# BUILD
-breadcrumb-item-build:
-  extends: [.base-build, .base-breadcrumb-item]
-
 # ISOLATE
 breadcrumb-item-isolate:
   extends: [.base-isolate, .base-breadcrumb-item]
-  dependencies: [breadcrumb-item-build]
+  dependencies: [base-build]
 
 # TEST
-breadcrumb-item-stencil-test:
-  extends: [.base-stencil-test, .base-breadcrumb-item]
-  dependencies: [breadcrumb-item-build, breadcrumb-item-isolate]
-
 breadcrumb-item-publish-test:
   extends: [.base-publish-test, .base-breadcrumb-item]
-  dependencies: [breadcrumb-item-build, breadcrumb-item-isolate]
+  dependencies: [base-build, breadcrumb-item-isolate]
 
 # PUBLISH
 breadcrumb-item-publish:
   extends: [.base-publish, .base-breadcrumb-item]
-  dependencies: [breadcrumb-item-build, breadcrumb-item-isolate]
+  dependencies: [base-build, breadcrumb-item-isolate]

@@ -2,25 +2,17 @@
   variables:
     COMPONENT: mds-avatar
 
-# BUILD
-avatar-build:
-  extends: [.base-build, .base-avatar]
-
 # ISOLATE
 avatar-isolate:
   extends: [.base-isolate, .base-avatar]
-  dependencies: [avatar-build]
+  dependencies: [base-build]
 
 # TEST
-avatar-stencil-test:
-  extends: [.base-stencil-test, .base-avatar]
-  dependencies: [avatar-build, avatar-isolate]
-
 avatar-publish-test:
   extends: [.base-publish-test, .base-avatar]
-  dependencies: [avatar-build, avatar-isolate]
+  dependencies: [base-build, avatar-isolate]
 
 # PUBLISH
 avatar-publish:
   extends: [.base-publish, .base-avatar]
-  dependencies: [avatar-build, avatar-isolate]
+  dependencies: [base-build, avatar-isolate]

@@ -2,25 +2,17 @@
   variables:
     COMPONENT: mds-form
 
-# BUILD
-form-build:
-  extends: [.base-build, .base-form]
-
 # ISOLATE
 form-isolate:
   extends: [.base-isolate, .base-form]
-  dependencies: [form-build]
+  dependencies: [base-build]
 
 # TEST
-form-stencil-test:
-  extends: [.base-stencil-test, .base-form]
-  dependencies: [form-build, form-isolate]
-
 form-publish-test:
   extends: [.base-publish-test, .base-form]
-  dependencies: [form-build, form-isolate]
+  dependencies: [base-build, form-isolate]
 
 # PUBLISH
 form-publish:
   extends: [.base-publish, .base-form]
-  dependencies: [form-build, form-isolate]
+  dependencies: [base-build, form-isolate]

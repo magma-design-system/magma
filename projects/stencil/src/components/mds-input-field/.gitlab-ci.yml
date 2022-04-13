@@ -2,25 +2,17 @@
   variables:
     COMPONENT: mds-input-field
 
-# BUILD
-input-field-build:
-  extends: [.base-build, .base-input-field]
-
 # ISOLATE
 input-field-isolate:
   extends: [.base-isolate, .base-input-field]
-  dependencies: [input-field-build]
+  dependencies: [base-build]
 
 # TEST
-input-field-stencil-test:
-  extends: [.base-stencil-test, .base-input-field]
-  dependencies: [input-field-build, input-field-isolate]
-
 input-field-publish-test:
   extends: [.base-publish-test, .base-input-field]
-  dependencies: [input-field-build, input-field-isolate]
+  dependencies: [base-build, input-field-isolate]
 
 # PUBLISH
 input-field-publish:
   extends: [.base-publish, .base-input-field]
-  dependencies: [input-field-build, input-field-isolate]
+  dependencies: [base-build, input-field-isolate]

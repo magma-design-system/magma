@@ -2,25 +2,17 @@
   variables:
     COMPONENT: mds-grid
 
-# BUILD
-grid-build:
-  extends: [.base-build, .base-grid]
-
 # ISOLATE
 grid-isolate:
   extends: [.base-isolate, .base-grid]
-  dependencies: [grid-build]
+  dependencies: [base-build]
 
 # TEST
-grid-stencil-test:
-  extends: [.base-stencil-test, .base-grid]
-  dependencies: [grid-build, grid-isolate]
-
 grid-publish-test:
   extends: [.base-publish-test, .base-grid]
-  dependencies: [grid-build, grid-isolate]
+  dependencies: [base-build, grid-isolate]
 
 # PUBLISH
 grid-publish:
   extends: [.base-publish, .base-grid]
-  dependencies: [grid-build, grid-isolate]
+  dependencies: [base-build, grid-isolate]

@@ -2,25 +2,17 @@
   variables:
     COMPONENT: mds-table-body
 
-# BUILD
-table-body-build:
-  extends: [.base-build, .base-table-body]
-
 # ISOLATE
 table-body-isolate:
   extends: [.base-isolate, .base-table-body]
-  dependencies: [table-body-build]
+  dependencies: [base-build]
 
 # TEST
-table-body-stencil-test:
-  extends: [.base-stencil-test, .base-table-body]
-  dependencies: [table-body-build, table-body-isolate]
-
 table-body-publish-test:
   extends: [.base-publish-test, .base-table-body]
-  dependencies: [table-body-build, table-body-isolate]
+  dependencies: [base-build, table-body-isolate]
 
 # PUBLISH
 table-body-publish:
   extends: [.base-publish, .base-table-body]
-  dependencies: [table-body-build, table-body-isolate]
+  dependencies: [base-build, table-body-isolate]

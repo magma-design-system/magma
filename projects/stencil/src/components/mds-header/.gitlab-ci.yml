@@ -2,25 +2,17 @@
   variables:
     COMPONENT: mds-header
 
-# BUILD
-header-build:
-  extends: [.base-build, .base-header]
-
 # ISOLATE
 header-isolate:
   extends: [.base-isolate, .base-header]
-  dependencies: [header-build]
+  dependencies: [base-build]
 
 # TEST
-header-stencil-test:
-  extends: [.base-stencil-test, .base-header]
-  dependencies: [header-build, header-isolate]
-
 header-publish-test:
   extends: [.base-publish-test, .base-header]
-  dependencies: [header-build, header-isolate]
+  dependencies: [base-build, header-isolate]
 
 # PUBLISH
 header-publish:
   extends: [.base-publish, .base-header]
-  dependencies: [header-build, header-isolate]
+  dependencies: [base-build, header-isolate]

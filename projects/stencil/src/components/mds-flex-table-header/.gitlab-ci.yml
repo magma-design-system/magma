@@ -2,25 +2,17 @@
   variables:
     COMPONENT: mds-flex-table-header
 
-# BUILD
-flex-table-header-build:
-  extends: [.base-build, .base-flex-table-header]
-
 # ISOLATE
 flex-table-header-isolate:
   extends: [.base-isolate, .base-flex-table-header]
-  dependencies: [flex-table-header-build]
+  dependencies: [base-build]
 
 # TEST
-flex-table-header-stencil-test:
-  extends: [.base-stencil-test, .base-flex-table-header]
-  dependencies: [flex-table-header-build, flex-table-header-isolate]
-
 flex-table-header-publish-test:
   extends: [.base-publish-test, .base-flex-table-header]
-  dependencies: [flex-table-header-build, flex-table-header-isolate]
+  dependencies: [base-build, flex-table-header-isolate]
 
 # PUBLISH
 flex-table-header-publish:
   extends: [.base-publish, .base-flex-table-header]
-  dependencies: [flex-table-header-build, flex-table-header-isolate]
+  dependencies: [base-build, flex-table-header-isolate]

@@ -2,25 +2,17 @@
   variables:
     COMPONENT: mds-badge
 
-# BUILD
-badge-build:
-  extends: [.base-build, .base-badge]
-
 # ISOLATE
 badge-isolate:
   extends: [.base-isolate, .base-badge]
-  dependencies: [badge-build]
+  dependencies: [base-build]
 
 # TEST
-badge-stencil-test:
-  extends: [.base-stencil-test, .base-badge]
-  dependencies: [badge-build, badge-isolate]
-
 badge-publish-test:
   extends: [.base-publish-test, .base-badge]
-  dependencies: [badge-build, badge-isolate]
+  dependencies: [base-build, badge-isolate]
 
 # PUBLISH
 badge-publish:
   extends: [.base-publish, .base-badge]
-  dependencies: [badge-build, badge-isolate]
+  dependencies: [base-build, badge-isolate]
