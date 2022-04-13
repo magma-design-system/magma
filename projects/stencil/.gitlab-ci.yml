@@ -55,6 +55,11 @@ base-build:
     expire_in: 1 day
     paths:
       - $BUILD_DIR
+  rules:
+    - if: $CI_PIPELINE_SOURCE == "merge_request_event" || $CI_COMMIT_BRANCH =~ /^(dev|main|pipeline)$/
+      changes:
+        - projects/stencil/*
+        - projects/stencil/src/components/$COMPONENT/**/*
 
 base-stencil-test:
   extends: base-build
