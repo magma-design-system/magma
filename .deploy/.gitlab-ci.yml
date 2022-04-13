@@ -1,5 +1,5 @@
 # DEPLOY STORYBOOK
-push-storybook:
+.push-storybook:
   stage: publish
   services:
     - docker:dind
@@ -17,6 +17,7 @@ push-storybook:
 .deploy-storybook-base:
   stage: deploy:storybook
   image: maggiolieditore.azurecr.io/alpine-ssh-envsubst
+  needs: [push-storybook]
   variables:
     DEPLOY_FOLDER: $DEPLOY_FOLDER
     SERVER: $CI_SERVER_IP
