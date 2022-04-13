@@ -1,4 +1,46 @@
-# BASE
+# BASE JOBS
+.base-isolate:
+  extends: base-build
+  stage: build:isolate
+  script:
+    - nx run stencil:publish.isolate.component --component=$COMPONENT
+  artifacts:
+    name: $COMPONENT-stencil-build
+    expire_in: 1 day
+    paths:
+      - $BUILD_DIR
+  rules:
+    - if: $CI_PIPELINE_SOURCE == "merge_request_event" || $CI_COMMIT_BRANCH =~ /^(dev|main|pipeline)$/
+      changes:
+        - projects/stencil/*
+        - projects/stencil/src/components/$COMPONENT/**/*
+
+.base-publish-test:
+  extends: base-build
+  stage: test
+  variables:
+    PACK_NAME: maggioli-design-system-${COMPONENT}-*.tgz
+  script:
+    - cd $BUILD_DIR
+    - npm pack && npm install $PACK_NAME && npm publish --access public --dry-run
+  rules:
+    - if: $CI_PIPELINE_SOURCE == "merge_request_event" || $CI_COMMIT_BRANCH =~ /^(main|pipeline)$/
+      changes:
+        - projects/stencil/*
+        - projects/stencil/src/components/$COMPONENT/**/*
+
+.base-publish:
+  extends: base-build
+  stage: publish
+  script:
+    - cd $BUILD_DIR
+    - npm publish --access public
+  rules:
+    - if: $CI_COMMIT_BRANCH == "main"
+      changes:
+        - projects/stencil/src/components/$COMPONENT/**/*
+
+# COMMON STENCIL BUILD
 base-build:
   image: node:16.13
   stage: build
@@ -41,26 +83,11 @@ base-build:
       - projects/stencil/dist
       - projects/stencil/assets/svg
   rules:
-    - if: $CI_COMMIT_BRANCH =~ /^(dev|main|pipeline)$/
+    - if: $CI_PIPELINE_SOURCE == "merge_request_event" || $CI_COMMIT_BRANCH =~ /^(dev|main|pipeline)$/
       changes:
         - projects/stencil/**/*
 
-.base-isolate:
-  extends: base-build
-  stage: build:isolate
-  script:
-    - nx run stencil:publish.isolate.component --component=$COMPONENT
-  artifacts:
-    name: $COMPONENT-stencil-build
-    expire_in: 1 day
-    paths:
-      - $BUILD_DIR
-  rules:
-    - if: $CI_PIPELINE_SOURCE == "merge_request_event" || $CI_COMMIT_BRANCH =~ /^(dev|main|pipeline)$/
-      changes:
-        - projects/stencil/*
-        - projects/stencil/src/components/$COMPONENT/**/*
-
+# COMMON STENCIL TEST
 base-stencil-test:
   extends: base-build
   image: atools/chrome-headless:java11-node16-latest
@@ -72,31 +99,6 @@ base-stencil-test:
     - if: $CI_PIPELINE_SOURCE == "merge_request_event" || $CI_COMMIT_BRANCH =~ /^(dev|main|pipeline)$/
       changes:
         - projects/stencil/**/*
-
-.base-publish-test:
-  extends: base-build
-  stage: test
-  variables:
-    PACK_NAME: maggioli-design-system-${COMPONENT}-*.tgz
-  script:
-    - cd $BUILD_DIR
-    - npm pack && npm install $PACK_NAME && npm publish --access public --dry-run
-  rules:
-    - if: $CI_PIPELINE_SOURCE == "merge_request_event" || $CI_COMMIT_BRANCH =~ /^(dev|main|pipeline)$/
-      changes:
-        - projects/stencil/*
-        - projects/stencil/src/components/$COMPONENT/**/*
-
-.base-publish:
-  extends: base-build
-  stage: publish
-  script:
-    - cd $BUILD_DIR
-    - npm publish --access public
-  rules:
-    - if: $CI_COMMIT_BRANCH == "main"
-      changes:
-        - projects/stencil/src/components/$COMPONENT/**/*
 
 include:
   - '/projects/stencil/src/components/mds-accordion/.gitlab-ci.yml'
