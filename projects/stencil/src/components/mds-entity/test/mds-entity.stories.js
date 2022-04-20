@@ -1,5 +1,6 @@
 import React from 'react'
 import MdsEntity from '@component/mds-entity/mds-entity'
+import { iconsDictionary } from '@dictionary/icon'
 
 export default {
   title: 'UI / Entity',
@@ -12,10 +13,12 @@ export default {
     icon: {
       type: { name: 'string' },
       description: 'Specifies the icon to be displayed if src propery is not used',
+      options: iconsDictionary,
+      control: { type: 'select' },
     },
     initials: {
       type: { name: 'string' },
-      description: 'The user\'s inizials displayed if there\'s no image available',
+      description: 'The user\'s inizials displayed if there\'s no image available and icon is not set',
     },
     src: {
       type: { name: 'string' },

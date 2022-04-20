@@ -26,7 +26,7 @@ export class MdsEntity {
   @Prop() readonly src?: string
 
   /**
-   * The user's inizials displayed if there's no image available
+   * The user's inizials displayed if there's no image available and icon is not set
    */
   @Prop() readonly initials?: string
 
