@@ -163,3 +163,35 @@ icon.args = {
   icon: 'mi/round/email',
   placeholder: 'Status input field',
 }
+
+const FormIntegration = (args) => (
+  <form className="flex flex-col gap-y-2" id="mds-icon-fi" name="mds-icon-fi">
+    <mds-input {...args}></mds-input>
+    <mds-button class="w-min" type="button" onClick={() => {
+      const input = document.querySelector('input[name="inputto"]')
+      const form = document.querySelector('form');
+      const mdsInput = document.querySelector('mds-input');
+
+      console.log('Input', input)
+      console.log('Form', form)
+      console.log('Form elements', form.elements)
+      console.log('MdsInput', mdsInput)
+
+      mdsInput.getInputElement().then((inputElement) => {
+        console.log('MdsInput input element', inputElement)
+      })
+
+      input.addEventListener('input', function(e) { console.error('Input', e.target.value)})
+      input.addEventListener('change', function(e) { console.warn('Change', e.target.value)})
+      mdsInput.addEventListener('changeEvent', function(e) { console.info('MdsInput ChangeEvent', e.detail.value) })
+
+      form.addEventListener('submit', function(e) { e.preventDefault(), console.info('Submitted', e)})
+    }}>Trigger listener</mds-button>
+  </form>
+)
+
+export const formIntegration = FormIntegration.bind({})
+formIntegration.args = {
+  placeholder: 'Mi integro col form!',
+  name: 'inputto',
+}
