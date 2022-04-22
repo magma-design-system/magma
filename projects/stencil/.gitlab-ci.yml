@@ -38,7 +38,6 @@
     - echo "//registry.npmjs.org/:_authToken=$NODE_AUTH_TOKEN" >> .npmrc
   script:
     - cd $BUILD_DIR
-    - npm login --scope=@maggioli-design-system
     - npm publish
   rules:
     - if: $CI_COMMIT_BRANCH == "main"
