@@ -2,6 +2,22 @@
 @tailwind components;
 @tailwind utilities;
 
+/*
+* @prop --selection-background: Sets the background-color of the text when the text is selected
+* @prop --selection-color: Sets the color of the text when the text is selected
+*/
+
+:host {
+
+  --selection-background: theme('colors.brand-maggioli-08');
+  --selection-color: theme('colors.brand-maggioli-03');
+}
+
+:host::selection {
+  background-color: var(--selection-background);
+  color: var(--selection-color);
+}
+
 :host ( .text-primary-h1 ) {
   @apply text-primary-h1;
 }
