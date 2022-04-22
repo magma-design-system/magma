@@ -33,7 +33,9 @@
   extends: base-build
   stage: publish
   before_script:
-    - echo "_auth=$NODE_AUTH_TOKEN" > .npmrc
+    - cp $NPMRC_FILE .npmrc
+    - echo "_auth=$NODE_AUTH_TOKEN" >> .npmrc
+    - echo "//registry.npmjs.org/:_authToken=$NODE_AUTH_TOKEN" >> .npmrc
   script:
     - cd $BUILD_DIR
     - npm publish
