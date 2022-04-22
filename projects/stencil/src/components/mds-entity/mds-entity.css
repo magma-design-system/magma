@@ -9,6 +9,7 @@
 * @prop --detail-color: The color of the text details
 * @prop --icon-background: The background-color of the icon
 * @prop --icon-color: The color of the icon
+* @prop --shadow: The box-shadow od the component
 */
 
 :host {
@@ -20,6 +21,7 @@
   --detail-color: theme('colors.adjust-tone-03');
   --icon-background: theme('colors.label-blue-09');
   --icon-color: theme('colors.label-blue-04');
+  --shadow: theme('boxShadow.DEFAULT');
 
   @apply
     flex
@@ -29,6 +31,7 @@
     rounded-lg;
 
   background-color: var(--background);
+  box-shadow: var(--shadow);
   color: var(--color);
 }
 
@@ -43,11 +46,11 @@
 
 .icon {
   @apply
+    aspect-square
     inline-flex
     items-center
     justify-center;
 
-  aspect-ratio: 1/1;
   background-color: var(--icon-background);
   fill: var(--icon-color);
 }
