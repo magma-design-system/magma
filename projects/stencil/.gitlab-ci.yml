@@ -22,7 +22,7 @@
     PACK_NAME: maggioli-design-system-${COMPONENT}-*.tgz
   script:
     - cd $BUILD_DIR
-    - npm pack && npm install $PACK_NAME && npm publish --access public --dry-run
+    - npm pack && npm install $PACK_NAME && npm publish --dry-run
   rules:
     - if: $CI_PIPELINE_SOURCE == "merge_request_event" || $CI_COMMIT_BRANCH =~ /^(main|pipeline)$/
       changes:
@@ -32,9 +32,11 @@
 .base-publish:
   extends: base-build
   stage: publish
+  before_script:
+    - echo "_auth=$NODE_AUTH_TOKEN" > .npmrc
   script:
     - cd $BUILD_DIR
-    - npm publish --access public
+    - npm publish
   rules:
     - if: $CI_COMMIT_BRANCH == "main"
       changes:
