@@ -1,63 +1,137 @@
 <!--
-  Provide a general summary of the issue
+  🔴 Required
+  Provide a general summary of the issue.
+
+  Example:
+  I would like to fix CSS custom properties to the web component `mds-text`
+  to let other components be able to style text selection, which is not possible right now.
 -->
 
 ## Issue impact
 
 <!--
-  Leave only the items affected and delete the others
+  🔴 Required
+  Leave only the items affected and delete the others.
+  If for some reason you don't find the project/tools/environment you are talking about, please feel free to add it.
 -->
 
-Impacts the following Design System projects:
+Impacts the following Design System project:
 
 - Design Tokens
 - Docs
 - Icons
 - Identity
-- React (deprecated)
+- ~~React~~ (deprecated)
 - Stencil (web components)
 - Styles
 - SVG Icons
 
 Impacts the following Design System tools/environments:
 
-- Gitlab
 - CI (Continuous Integration)
+- Figma
+- Gitlab
 
-## Expected Behavior
-
-<!--
-  Tell us what should happen
--->
-
-## Current Behavior
+## Expected behavior
 
 <!--
-  Tell us what happens instead of the expected behavior
+  🔴 Required
+  Tell us what should happen and how is expected to behave.
+
+  Example:
+  The component should let access to `--selection-background` and `--selection-color`
+  CSS custom properties, but it seem it's not working.
 -->
 
-## Possible Solution
-<!-- Not obligatory, but suggest a fix/reason for the bug, -->
-
-## Steps to Reproduce
+## Current behavior
 
 <!--
-  Provide a link to a live example, or an unambiguous set of steps to
-  reproduce this bug. Include code to reproduce, if relevant
+  🔴 Required
+  Tell us what happens instead of the expected behavior.
+
+  Example:
+  If I set `--selection-background` or `--selection-color`,
+  it's just not setting the color or background color when the text is selected.
 -->
 
-1.
-2.
-3.
+## Possible solution
 
-## Context (Environment)
 <!--
-  How has this issue affected you? What are you trying to accomplish?
-  Providing context helps us come up with a solution that is most useful in the real world
+  🟢 Optional
+  Suggest a fix/reason for the bug.
+
+  Example:
+  It seems to missing `::selection` pseudo-element applied to `:host`.
+
+  Missing code:
+
+  ```css
+  :host::selection {
+    background-color: var(--selection-background);
+    color: var(--selection-color);
+  }
+  ```
 -->
 
-## Detailed Description
-<!-- Provide a detailed description of the change or addition you are proposing -->
+## Steps to reproduce
 
-## Possible Implementation
-<!-- Not obligatory, but suggest an idea for implementing addition or change -->
+<!--
+  🔴 Required
+  Provide a link to a live example, or an unambiguous set of steps to reproduce this bug.
+  Include code to reproduce, if relevant.
+
+  Example:
+  1. Pull the repo, and remember to be on branch `dev`;
+  2. Run the command `nx run stencil:storybook.start` to start the environment;
+  3. Go to the [mds-text test][sb-test] to reach the test;
+  4. Try to select the text.
+
+  [sb-test]: http://localhost:6006/...
+-->
+
+## Context (environment)
+
+<!--
+  🟡 Recommended
+  How has this issue affected you?
+  What are you trying to accomplish?
+  Providing context helps us come up with a solution that is most useful in the real world.
+
+  Example:
+  I've tried to custom text selection color in my project but it seem to not working correctly:
+
+  ```css
+  .my-note mds-text {
+    --selection-background: var(--label-yellow-09);
+    --selection-color: var(--label-yellow-02);
+    color: var(--label-yellow-03);
+  }
+  ```
+-->
+
+## Detailed addition
+
+<!--
+  🟡 Recommended
+  Provide a description of the change or the addition you are proposing.
+
+  Example:
+  I just would like to add the CSS which is missing as mentioned above.
+-->
+
+## Possible implementation
+
+<!--
+  🟢 Optional
+  Suggest an idea for implementing addition or change.
+
+  Example:
+  I think something like this shoud be enough:
+
+  ```css
+  :host::selection {
+    background-color: var(--selection-background);
+    color: var(--selection-color);
+  }
+  ```
+-->
