@@ -9,6 +9,18 @@ const COMPONENTS_PATH = `${PROJECT_PATH}/src/components`
 
 import { createTempProjectInstance, compilePackage } from './lib.mjs'
 
+var componentNameArgument = ""
+var nonInteractive = false
+
+if (process.argv.length === 3){
+  componentNameArgument = process.argv[2].split("=")[1]
+  nonInteractive = true
+  console.log(
+    chalk.red(`Non-interactive Mode: using ${componentNameArgument} component name.`),
+  )
+}
+
+
 async function main () {
   console.log(
     `This script will ${chalk.green(
@@ -16,10 +28,12 @@ async function main () {
     )} a stencil component and will create package.json if missing into a an isolated stencil project, ready to be published.`,
   )
 
-  const continueTask = await ask('Continue?', { options: ['Y', 'n', ''] })
+  if (!nonInteractive){
+    const continueTask = await ask('Continue?', { options: ['Y', 'n', ''] })
 
-  if (continueTask === 'n') {
-    return
+    if (continueTask === 'n') {
+      return
+    }
   }
 
   await askComponentName()
@@ -28,8 +42,13 @@ async function main () {
 }
 
 async function askComponentName () {
-  const inputName = await ask('Component name mds-')
-  const componentName = `mds-${inputName}`
+  var componentName = ""
+
+  if (!nonInteractive){
+    const inputName = await ask('Component name mds-')
+    componentName = `mds-${inputName}`
+  } else
+    componentName = componentNameArgument
 
   const exist = await checkComponentExistance(componentName)
 
@@ -37,7 +56,10 @@ async function askComponentName () {
     console.log(
       chalk.red(`Component ${componentName} does not exist, please try again.`),
     )
-    await askComponentName()
+    if (!nonInteractive)
+      await askComponentName(componentName)
+    else
+      return
   } else {
     const built = await checkComponentWasBuilt(componentName)
 

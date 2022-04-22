@@ -1,0 +1,18 @@
+.base-usage:
+  variables:
+    COMPONENT: mds-usage
+
+# ISOLATE
+usage-isolate:
+  extends: [.base-isolate, .base-usage]
+  dependencies: [base-build]
+
+# TEST
+usage-publish-test:
+  extends: [.base-publish-test, .base-usage]
+  dependencies: [base-build, usage-isolate]
+
+# PUBLISH
+usage-publish:
+  extends: [.base-publish, .base-usage]
+  dependencies: [base-build, usage-isolate]

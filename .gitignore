@@ -28,4 +28,5 @@ node_modules/
 projects/**/package-lock.json
 projects/**/yarn.lock
 www/
+**/dependency-check-report.xml
 !yarn.lock

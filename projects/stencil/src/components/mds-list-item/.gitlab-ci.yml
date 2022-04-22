@@ -1,0 +1,18 @@
+.base-list-item:
+  variables:
+    COMPONENT: mds-list-item
+
+# ISOLATE
+list-item-isolate:
+  extends: [.base-isolate, .base-list-item]
+  dependencies: [base-build]
+
+# TEST
+list-item-publish-test:
+  extends: [.base-publish-test, .base-list-item]
+  dependencies: [base-build, list-item-isolate]
+
+# PUBLISH
+list-item-publish:
+  extends: [.base-publish, .base-list-item]
+  dependencies: [base-build, list-item-isolate]

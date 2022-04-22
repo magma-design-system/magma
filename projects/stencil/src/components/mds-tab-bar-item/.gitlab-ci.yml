@@ -1,0 +1,18 @@
+.base-tab-bar-item:
+  variables:
+    COMPONENT: mds-tab-bar-item
+
+# ISOLATE
+tab-bar-item-isolate:
+  extends: [.base-isolate, .base-tab-bar-item]
+  dependencies: [base-build]
+
+# TEST
+tab-bar-item-publish-test:
+  extends: [.base-publish-test, .base-tab-bar-item]
+  dependencies: [base-build, tab-bar-item-isolate]
+
+# PUBLISH
+tab-bar-item-publish:
+  extends: [.base-publish, .base-tab-bar-item]
+  dependencies: [base-build, tab-bar-item-isolate]

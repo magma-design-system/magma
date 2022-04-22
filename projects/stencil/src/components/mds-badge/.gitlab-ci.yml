@@ -1,0 +1,18 @@
+.base-badge:
+  variables:
+    COMPONENT: mds-badge
+
+# ISOLATE
+badge-isolate:
+  extends: [.base-isolate, .base-badge]
+  dependencies: [base-build]
+
+# TEST
+badge-publish-test:
+  extends: [.base-publish-test, .base-badge]
+  dependencies: [base-build, badge-isolate]
+
+# PUBLISH
+badge-publish:
+  extends: [.base-publish, .base-badge]
+  dependencies: [base-build, badge-isolate]

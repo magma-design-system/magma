@@ -1,0 +1,18 @@
+.base-icon:
+  variables:
+    COMPONENT: mds-icon
+
+# ISOLATE
+icon-isolate:
+  extends: [.base-isolate, .base-icon]
+  dependencies: [base-build]
+
+# TEST
+icon-publish-test:
+  extends: [.base-publish-test, .base-icon]
+  dependencies: [base-build, icon-isolate]
+
+# PUBLISH
+icon-publish:
+  extends: [.base-publish, .base-icon]
+  dependencies: [base-build, icon-isolate]

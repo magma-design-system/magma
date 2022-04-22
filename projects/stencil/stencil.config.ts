@@ -52,6 +52,11 @@ export const config: Config = {
     inlineSvg(),
   ],
   testing: {
+    /**
+     * Gitlab CI doesn't allow sandbox, therefor this parameters must be passed to your Headless Chrome
+     * before it can run your tests
+     */
+    browserArgs: ['--no-sandbox', '--disable-setuid-sandbox'],
     testPathIgnorePatterns: ['<rootDir>/.build/', '<rootDir>/template/', '<rootDir>/node_modules/'],
     watchPathIgnorePatterns: ['<rootDir>/.build/', '<rootDir>/template/', '<rootDir>/node_modules/'],
     coveragePathIgnorePatterns: ['<rootDir>/.build/', '<rootDir>/template/', '<rootDir>/node_modules/'],

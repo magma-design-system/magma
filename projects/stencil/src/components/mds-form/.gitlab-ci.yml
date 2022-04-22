@@ -1,0 +1,18 @@
+.base-form:
+  variables:
+    COMPONENT: mds-form
+
+# ISOLATE
+form-isolate:
+  extends: [.base-isolate, .base-form]
+  dependencies: [base-build]
+
+# TEST
+form-publish-test:
+  extends: [.base-publish-test, .base-form]
+  dependencies: [base-build, form-isolate]
+
+# PUBLISH
+form-publish:
+  extends: [.base-publish, .base-form]
+  dependencies: [base-build, form-isolate]

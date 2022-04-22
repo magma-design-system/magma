@@ -1,0 +1,18 @@
+.base-progress:
+  variables:
+    COMPONENT: mds-progress
+
+# ISOLATE
+progress-isolate:
+  extends: [.base-isolate, .base-progress]
+  dependencies: [base-build]
+
+# TEST
+progress-publish-test:
+  extends: [.base-publish-test, .base-progress]
+  dependencies: [base-build, progress-isolate]
+
+# PUBLISH
+progress-publish:
+  extends: [.base-publish, .base-progress]
+  dependencies: [base-build, progress-isolate]

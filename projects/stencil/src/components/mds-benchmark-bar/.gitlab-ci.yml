@@ -1,0 +1,18 @@
+.base-benchmark-bar:
+  variables:
+    COMPONENT: mds-benchmark-bar
+
+# ISOLATE
+benchmark-bar-isolate:
+  extends: [.base-isolate, .base-benchmark-bar]
+  dependencies: [base-build]
+
+# TEST
+benchmark-bar-publish-test:
+  extends: [.base-publish-test, .base-benchmark-bar]
+  dependencies: [base-build, benchmark-bar-isolate]
+
+# PUBLISH
+benchmark-bar-publish:
+  extends: [.base-publish, .base-benchmark-bar]
+  dependencies: [base-build, benchmark-bar-isolate]
