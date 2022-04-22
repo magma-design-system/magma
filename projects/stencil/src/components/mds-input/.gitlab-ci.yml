@@ -1,0 +1,18 @@
+.base-input:
+  variables:
+    COMPONENT: mds-input
+
+# ISOLATE
+input-isolate:
+  extends: [.base-isolate, .base-input]
+  dependencies: [base-build]
+
+# TEST
+input-publish-test:
+  extends: [.base-publish-test, .base-input]
+  dependencies: [base-build, input-isolate]
+
+# PUBLISH
+input-publish:
+  extends: [.base-publish, .base-input]
+  dependencies: [base-build, input-isolate]

@@ -1,0 +1,18 @@
+.base-flex-table-cell:
+  variables:
+    COMPONENT: mds-flex-table-cell
+
+# ISOLATE
+flex-table-cell-isolate:
+  extends: [.base-isolate, .base-flex-table-cell]
+  dependencies: [base-build]
+
+# TEST
+flex-table-cell-publish-test:
+  extends: [.base-publish-test, .base-flex-table-cell]
+  dependencies: [base-build, flex-table-cell-isolate]
+
+# PUBLISH
+flex-table-cell-publish:
+  extends: [.base-publish, .base-flex-table-cell]
+  dependencies: [base-build, flex-table-cell-isolate]

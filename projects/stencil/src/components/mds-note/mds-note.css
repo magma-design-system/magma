@@ -1,18 +1,22 @@
 @tailwind utilities;
 @import '../../tailwind/components.css';
 
-:host {
+/*
+* @prop --background: Sets the background-color of the component
+* @prop --color: Sets the text color of the component
+* @prop --fold-size: Sets the size of the fold decoration at the bottom right of the component
+* @prop --selection-background: Sets the selection text background-color of the component
+* @prop --selection-color: Sets the selection text color of the component
+* @prop --shadow: Sets the box-shadow of the component
+*/
 
-  /*
-  * @prop --background: Sets the background-color of the component
-  * @prop --color: Sets the text color of the component
-  * @prop --fold-size: Sets the size of the fold decoration at the bottom right of the component
-  * @prop --shadow: Sets the box-shadow of the component
-  */
+:host {
 
   --background: theme('colors.label-yellow-10');
   --color: theme('colors.label-yellow-02');
   --fold-size: 40px;
+  --selection-background: theme('colors.label-yellow-09');
+  --selection-color: theme('colors.label-yellow-02');
   --shadow: theme('boxShadow.DEFAULT');
 
   @apply
@@ -30,11 +34,11 @@
   color: var(--color);
 }
 
-:host ( .mds-note--close-outside ) {
-  @apply pr-12;
+:host ( [deletable]:not([deletable=false]) ) {
+  @apply pr-16;
 }
 
-:host ( .mds-note--close-outside ) .close {
+:host ( [deletable]:not([deletable=false]) ) .close {
   @apply
     absolute
     right-4
@@ -48,22 +52,25 @@
     border-solid
     bottom-0
     h-0
+    opacity-40
     right-0
     w-0;
 
-  border-color: transparent transparent var(--background) transparent;
+  border-color: transparent transparent theme('colors.tone-neutral-10') transparent;
   border-width: 0 0 var(--fold-size) var(--fold-size);
-  filter: drop-shadow(0 0 var(--fold-size) rgba(0, 0, 0, 0.5));
+  filter: drop-shadow(0 0 var(--fold-size) var(--color));
 }
 
 .close {
   @apply
     bg-transparent
     cursor-pointer
-    hover:bg-adjust-tone
+    hover:bg-adjust-tone/50
     p-1
     rounded-full
     transition-cosmetic;
+
+  fill: var(--color);
 }
 
 .title {

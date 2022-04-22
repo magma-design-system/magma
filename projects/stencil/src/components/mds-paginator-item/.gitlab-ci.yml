@@ -1,0 +1,18 @@
+.base-paginator-item:
+  variables:
+    COMPONENT: mds-paginator-item
+
+# ISOLATE
+paginator-item-isolate:
+  extends: [.base-isolate, .base-paginator-item]
+  dependencies: [base-build]
+
+# TEST
+paginator-item-publish-test:
+  extends: [.base-publish-test, .base-paginator-item]
+  dependencies: [base-build, paginator-item-isolate]
+
+# PUBLISH
+paginator-item-publish:
+  extends: [.base-publish, .base-paginator-item]
+  dependencies: [base-build, paginator-item-isolate]

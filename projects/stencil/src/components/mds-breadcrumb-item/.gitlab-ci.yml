@@ -1,0 +1,18 @@
+.base-breadcrumb-item:
+  variables:
+    COMPONENT: mds-breadcrumb-item
+
+# ISOLATE
+breadcrumb-item-isolate:
+  extends: [.base-isolate, .base-breadcrumb-item]
+  dependencies: [base-build]
+
+# TEST
+breadcrumb-item-publish-test:
+  extends: [.base-publish-test, .base-breadcrumb-item]
+  dependencies: [base-build, breadcrumb-item-isolate]
+
+# PUBLISH
+breadcrumb-item-publish:
+  extends: [.base-publish, .base-breadcrumb-item]
+  dependencies: [base-build, breadcrumb-item-isolate]

@@ -1,0 +1,18 @@
+.base-grid:
+  variables:
+    COMPONENT: mds-grid
+
+# ISOLATE
+grid-isolate:
+  extends: [.base-isolate, .base-grid]
+  dependencies: [base-build]
+
+# TEST
+grid-publish-test:
+  extends: [.base-publish-test, .base-grid]
+  dependencies: [base-build, grid-isolate]
+
+# PUBLISH
+grid-publish:
+  extends: [.base-publish, .base-grid]
+  dependencies: [base-build, grid-isolate]

@@ -1,0 +1,18 @@
+.base-modal:
+  variables:
+    COMPONENT: mds-modal
+
+# ISOLATE
+modal-isolate:
+  extends: [.base-isolate, .base-modal]
+  dependencies: [base-build]
+
+# TEST
+modal-publish-test:
+  extends: [.base-publish-test, .base-modal]
+  dependencies: [base-build, modal-isolate]
+
+# PUBLISH
+modal-publish:
+  extends: [.base-publish, .base-modal]
+  dependencies: [base-build, modal-isolate]

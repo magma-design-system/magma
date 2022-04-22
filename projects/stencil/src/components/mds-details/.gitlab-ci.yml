@@ -1,0 +1,18 @@
+.base-details:
+  variables:
+    COMPONENT: mds-details
+
+# ISOLATE
+details-isolate:
+  extends: [.base-isolate, .base-details]
+  dependencies: [base-build]
+
+# TEST
+details-publish-test:
+  extends: [.base-publish-test, .base-details]
+  dependencies: [base-build, details-isolate]
+
+# PUBLISH
+details-publish:
+  extends: [.base-publish, .base-details]
+  dependencies: [base-build, details-isolate]

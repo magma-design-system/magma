@@ -1,0 +1,18 @@
+.base-tag:
+  variables:
+    COMPONENT: mds-tag
+
+# ISOLATE
+tag-isolate:
+  extends: [.base-isolate, .base-tag]
+  dependencies: [base-build]
+
+# TEST
+tag-publish-test:
+  extends: [.base-publish-test, .base-tag]
+  dependencies: [base-build, tag-isolate]
+
+# PUBLISH
+tag-publish:
+  extends: [.base-publish, .base-tag]
+  dependencies: [base-build, tag-isolate]
