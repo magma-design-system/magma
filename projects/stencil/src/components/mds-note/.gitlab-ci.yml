@@ -16,4 +16,3 @@ note-publish-test:
 note-publish:
   extends: [.base-publish, .base-note]
   dependencies: [base-build, note-isolate]
-
