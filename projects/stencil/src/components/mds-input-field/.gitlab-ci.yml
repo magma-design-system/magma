@@ -1,0 +1,18 @@
+.base-input-field:
+  variables:
+    COMPONENT: mds-input-field
+
+# ISOLATE
+input-field-isolate:
+  extends: [.base-isolate, .base-input-field]
+  dependencies: [base-build]
+
+# TEST
+input-field-publish-test:
+  extends: [.base-publish-test, .base-input-field]
+  dependencies: [base-build, input-field-isolate]
+
+# PUBLISH
+input-field-publish:
+  extends: [.base-publish, .base-input-field]
+  dependencies: [base-build, input-field-isolate]

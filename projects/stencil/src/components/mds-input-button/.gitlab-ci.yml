@@ -1,0 +1,18 @@
+.base-input-button:
+  variables:
+    COMPONENT: mds-input-button
+
+# ISOLATE
+input-button-isolate:
+  extends: [.base-isolate, .base-input-button]
+  dependencies: [base-build]
+
+# TEST
+input-button-publish-test:
+  extends: [.base-publish-test, .base-input-button]
+  dependencies: [base-build, input-button-isolate]
+
+# PUBLISH
+input-button-publish:
+  extends: [.base-publish, .base-input-button]
+  dependencies: [base-build, input-button-isolate]

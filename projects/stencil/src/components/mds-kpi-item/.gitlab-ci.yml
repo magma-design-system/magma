@@ -1,0 +1,18 @@
+.base-kpi-item:
+  variables:
+    COMPONENT: mds-kpi-item
+
+# ISOLATE
+kpi-item-isolate:
+  extends: [.base-isolate, .base-kpi-item]
+  dependencies: [base-build]
+
+# TEST
+kpi-item-publish-test:
+  extends: [.base-publish-test, .base-kpi-item]
+  dependencies: [base-build, kpi-item-isolate]
+
+# PUBLISH
+kpi-item-publish:
+  extends: [.base-publish, .base-kpi-item]
+  dependencies: [base-build, kpi-item-isolate]

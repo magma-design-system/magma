@@ -1,0 +1,18 @@
+.base-hr:
+  variables:
+    COMPONENT: mds-hr
+
+# ISOLATE
+hr-isolate:
+  extends: [.base-isolate, .base-hr]
+  dependencies: [base-build]
+
+# TEST
+hr-publish-test:
+  extends: [.base-publish-test, .base-hr]
+  dependencies: [base-build, hr-isolate]
+
+# PUBLISH
+hr-publish:
+  extends: [.base-publish, .base-hr]
+  dependencies: [base-build, hr-isolate]

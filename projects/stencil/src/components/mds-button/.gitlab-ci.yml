@@ -1,0 +1,19 @@
+.base-button:
+  variables:
+    COMPONENT: mds-button
+
+# ISOLATE
+button-isolate:
+  extends: [.base-isolate, .base-button]
+  dependencies: [base-build]
+
+# TEST
+button-publish-test:
+  extends: [.base-publish-test, .base-button]
+  dependencies: [base-build, button-isolate]
+
+# PUBLISH
+button-publish:
+  extends: [.base-publish, .base-button]
+  dependencies: [base-build, button-isolate]
+

@@ -2,7 +2,7 @@ version: '3.1'
 
 services:
   stage_designsystem:
-    image: maggiolieditore.azurecr.io/desingsystem:${CI_COMMIT_SHORT_SHA}
+    image: maggiolieditore.azurecr.io/designsystem:${CI_COMMIT_SHORT_SHA}
     restart: always
     container_name: stage_designsystem
     ports:

@@ -1,0 +1,18 @@
+.base-horizontal-scroll:
+  variables:
+    COMPONENT: mds-horizontal-scroll
+
+# ISOLATE
+horizontal-scroll-isolate:
+  extends: [.base-isolate, .base-horizontal-scroll]
+  dependencies: [base-build]
+
+# TEST
+horizontal-scroll-publish-test:
+  extends: [.base-publish-test, .base-horizontal-scroll]
+  dependencies: [base-build, horizontal-scroll-isolate]
+
+# PUBLISH
+horizontal-scroll-publish:
+  extends: [.base-publish, .base-horizontal-scroll]
+  dependencies: [base-build, horizontal-scroll-isolate]

@@ -1,0 +1,18 @@
+.base-banner:
+  variables:
+    COMPONENT: mds-banner
+
+# ISOLATE
+banner-isolate:
+  extends: [.base-isolate, .base-banner]
+  dependencies: [base-build]
+
+# TEST
+banner-publish-test:
+  extends: [.base-publish-test, .base-banner]
+  dependencies: [base-build, banner-isolate]
+
+# PUBLISH
+banner-publish:
+  extends: [.base-publish, .base-banner]
+  dependencies: [base-build, banner-isolate]

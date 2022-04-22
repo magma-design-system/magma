@@ -1,0 +1,33 @@
+# DEPLOY STORYBOOK
+.push-storybook:
+  stage: publish
+  services:
+    - docker:dind
+  variables:
+    DOCKER_HOST: 'tcp://docker:2375'
+    CI_IMAGE_NAME: designsystem
+    CI_IMAGE_TAG: $CI_REGISTRY/$CI_IMAGE_NAME:${CI_COMMIT_SHORT_SHA}
+  script:
+    - echo $CI_REGISTRY_PSW | docker login -u $CI_REGISTRY_USR --password-stdin https://$CI_REGISTRY
+    - docker build -t $CI_IMAGE_TAG .
+    - docker push $CI_IMAGE_TAG
+  rules:
+    - if: $CI_COMMIT_BRANCH == "dev"
+
+.deploy-storybook-base:
+  stage: deploy:storybook
+  image: maggiolieditore.azurecr.io/alpine-ssh-envsubst
+  needs: [push-storybook]
+  variables:
+    DEPLOY_FOLDER: $DEPLOY_FOLDER
+    SERVER: $CI_SERVER_IP
+    SSH_PRIV_KEY: $CI_SSH_PRIV_KEY
+    SSH_USER: $CI_SSH_USER
+    ENV: prod
+  script:
+    - chmod +x .deploy/deploy.sh
+    - .deploy/deploy.sh
+  rules:
+    - if: $CI_COMMIT_BRANCH == "dev"
+
+# DEPLOY WEBSITE TODO

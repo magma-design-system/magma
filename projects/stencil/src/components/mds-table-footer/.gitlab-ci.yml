@@ -1,0 +1,18 @@
+.base-table-footer:
+  variables:
+    COMPONENT: mds-table-footer
+
+# ISOLATE
+table-footer-isolate:
+  extends: [.base-isolate, .base-table-footer]
+  dependencies: [base-build]
+
+# TEST
+table-footer-publish-test:
+  extends: [.base-publish-test, .base-table-footer]
+  dependencies: [base-build, table-footer-isolate]
+
+# PUBLISH
+table-footer-publish:
+  extends: [.base-publish, .base-table-footer]
+  dependencies: [base-build, table-footer-isolate]

@@ -2,7 +2,7 @@ version: '3.1'
 
 services:
   designsystem:
-    image: maggiolieditore.azurecr.io/desingsystem:${CI_COMMIT_SHORT_SHA}
+    image: maggiolieditore.azurecr.io/designsystem:${CI_COMMIT_SHORT_SHA}
     restart: always
     container_name: designsystem
     expose:
@@ -10,8 +10,8 @@ services:
     environment:
       - VIRTUAL_HOST=design-system.maggiolicloud.it
       - CERT_NAME=shared
-    
-networks: 
-  default: 
-    external: 
+
+networks:
+  default:
+    external:
       name: nginx-proxy
