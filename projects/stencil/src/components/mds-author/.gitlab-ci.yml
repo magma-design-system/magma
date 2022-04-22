@@ -1,0 +1,18 @@
+.base-author:
+  variables:
+    COMPONENT: mds-author
+
+# ISOLATE
+author-isolate:
+  extends: [.base-isolate, .base-author]
+  dependencies: [base-build]
+
+# TEST
+author-publish-test:
+  extends: [.base-publish-test, .base-author]
+  dependencies: [base-build, author-isolate]
+
+# PUBLISH
+author-publish:
+  extends: [.base-publish, .base-author]
+  dependencies: [base-build, author-isolate]

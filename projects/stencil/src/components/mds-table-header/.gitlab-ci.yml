@@ -1,0 +1,18 @@
+.base-table-header:
+  variables:
+    COMPONENT: mds-table-header
+
+# ISOLATE
+table-header-isolate:
+  extends: [.base-isolate, .base-table-header]
+  dependencies: [base-build]
+
+# TEST
+table-header-publish-test:
+  extends: [.base-publish-test, .base-table-header]
+  dependencies: [base-build, table-header-isolate]
+
+# PUBLISH
+table-header-publish:
+  extends: [.base-publish, .base-table-header]
+  dependencies: [base-build, table-header-isolate]

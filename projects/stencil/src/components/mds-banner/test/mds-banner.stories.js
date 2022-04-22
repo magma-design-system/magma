@@ -98,7 +98,7 @@ Headline.args = {
 
 export const Icon = Template.bind({})
 Icon.args = {
-  icon: 'warning',
+  icon: 'mi/baseline/warning',
 }
 
 export const Deletable = Template.bind({})
@@ -111,14 +111,14 @@ export const Actions = TemplateActions.bind({})
 export const Variant = TemplateVariantDefault.bind({})
 Variant.args = {
   headline: 'Impostazioni account',
-  icon: 'info',
+  icon: 'mi/baseline/info',
   deletable: true,
 }
 
 export const VariantDark = TemplateVariantDark.bind({})
 VariantDark.args = {
   headline: 'Impostazioni account',
-  icon: 'info',
+  icon: 'mi/baseline/info',
   deletable: true,
   variant: 'dark',
 }
@@ -126,7 +126,7 @@ VariantDark.args = {
 export const VariantLight = TemplateVariantLight.bind({})
 VariantLight.args = {
   headline: 'Impostazioni account',
-  icon: 'info',
+  icon: 'mi/baseline/info',
   deletable: true,
   variant: 'light',
 }
@@ -135,6 +135,6 @@ export const VariantStatusWarning = TemplateVariantStatus.bind({})
 VariantStatusWarning.args = {
   deletable: true,
   headline: 'Attenzione',
-  icon: 'warning',
+  icon: 'mi/baseline/warning',
   variant: 'warning',
 }

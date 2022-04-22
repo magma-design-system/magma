@@ -1,0 +1,18 @@
+.base-flex-table-header:
+  variables:
+    COMPONENT: mds-flex-table-header
+
+# ISOLATE
+flex-table-header-isolate:
+  extends: [.base-isolate, .base-flex-table-header]
+  dependencies: [base-build]
+
+# TEST
+flex-table-header-publish-test:
+  extends: [.base-publish-test, .base-flex-table-header]
+  dependencies: [base-build, flex-table-header-isolate]
+
+# PUBLISH
+flex-table-header-publish:
+  extends: [.base-publish, .base-flex-table-header]
+  dependencies: [base-build, flex-table-header-isolate]

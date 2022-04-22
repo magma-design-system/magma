@@ -1,0 +1,18 @@
+.base-tab:
+  variables:
+    COMPONENT: mds-tab
+
+# ISOLATE
+tab-isolate:
+  extends: [.base-isolate, .base-tab]
+  dependencies: [base-build]
+
+# TEST
+tab-publish-test:
+  extends: [.base-publish-test, .base-tab]
+  dependencies: [base-build, tab-isolate]
+
+# PUBLISH
+tab-publish:
+  extends: [.base-publish, .base-tab]
+  dependencies: [base-build, tab-isolate]

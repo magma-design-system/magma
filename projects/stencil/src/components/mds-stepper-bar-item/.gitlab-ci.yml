@@ -1,0 +1,18 @@
+.base-stepper-bar-item:
+  variables:
+    COMPONENT: mds-stepper-bar-item
+
+# ISOLATE
+stepper-bar-item-isolate:
+  extends: [.base-isolate, .base-stepper-bar-item]
+  dependencies: [base-build]
+
+# TEST
+stepper-bar-item-publish-test:
+  extends: [.base-publish-test, .base-stepper-bar-item]
+  dependencies: [base-build, stepper-bar-item-isolate]
+
+# PUBLISH
+stepper-bar-item-publish:
+  extends: [.base-publish, .base-stepper-bar-item]
+  dependencies: [base-build, stepper-bar-item-isolate]

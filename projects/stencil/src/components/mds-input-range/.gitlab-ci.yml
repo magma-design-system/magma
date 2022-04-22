@@ -1,0 +1,18 @@
+.base-input-range:
+  variables:
+    COMPONENT: mds-input-range
+
+# ISOLATE
+input-range-isolate:
+  extends: [.base-isolate, .base-input-range]
+  dependencies: [base-build]
+
+# TEST
+input-range-publish-test:
+  extends: [.base-publish-test, .base-input-range]
+  dependencies: [base-build, input-range-isolate]
+
+# PUBLISH
+input-range-publish:
+  extends: [.base-publish, .base-input-range]
+  dependencies: [base-build, input-range-isolate]

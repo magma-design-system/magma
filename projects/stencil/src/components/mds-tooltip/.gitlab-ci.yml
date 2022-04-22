@@ -1,0 +1,18 @@
+.base-tooltip:
+  variables:
+    COMPONENT: mds-tooltip
+
+# ISOLATE
+tooltip-isolate:
+  extends: [.base-isolate, .base-tooltip]
+  dependencies: [base-build]
+
+# TEST
+tooltip-publish-test:
+  extends: [.base-publish-test, .base-tooltip]
+  dependencies: [base-build, tooltip-isolate]
+
+# PUBLISH
+tooltip-publish:
+  extends: [.base-publish, .base-tooltip]
+  dependencies: [base-build, tooltip-isolate]

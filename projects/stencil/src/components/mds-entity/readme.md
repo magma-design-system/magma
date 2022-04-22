@@ -26,6 +26,7 @@
 | `--detail-color`      | The color of the text details             |
 | `--icon-background`   | The background-color of the icon          |
 | `--icon-color`        | The color of the icon                     |
+| `--shadow`            | The box-shadow od the component           |
 
 
 ## Dependencies
