@@ -1,4 +1,11 @@
 <!--
+  ℹ️ Some infos
+  🔴 Required:    If you skip this step, the issue could be ignored or closed prematurely.
+  🟡 Recommended: Very important infos to let core team gain time on understanding the issue/merge request.
+  🟢 Optional:    Some additional information to be more complete.
+-->
+
+<!--
   🔴 Required
   Provide a general summary of the proposal.
 
@@ -14,7 +21,7 @@ Impacts the following Design System projects:
 <!--
   🔴 Required
   Leave only the items affected and delete the others.
-  If for some reason you don't find the project/tools/environment you are talking about, please feel free to add it.
+  If for some reason you don't find the project/environment/tool you are talking about, please open an issue (feature) to suggest its addition.
 -->
 
 - Design Tokens
@@ -26,7 +33,7 @@ Impacts the following Design System projects:
 - Styles
 - SVG Icons
 
-Impacts the following Design System tools/environments:
+Impacts the following Design System environment/tool:
 
 - CI (Continuous Integration)
 - Figma

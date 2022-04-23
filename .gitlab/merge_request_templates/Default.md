@@ -1,4 +1,17 @@
 <!--
+  ℹ️ Some infos
+  🔴 Required:    If you skip this step, the issue could be ignored or closed prematurely.
+  🟡 Recommended: Very important infos to let core team gain time on understanding the issue/merge request.
+  🟢 Optional:    Some additional information to be more complete.
+
+  🚧 Warning 🚧
+  This project ONLY accepts merge requests related to open issues.
+  If you are suggesting a new feature or change, please discuss it in an issue first.
+  If fixing a bug, there should be an issue describing it with steps to reproduce.
+  https://gitlab.com/maggiolispa/ricerca-sviluppo-new-media/design-system/-/issues/new
+-->
+
+<!--
   🔴 Required
   Provide a general summary of your changes.
 
@@ -32,15 +45,38 @@
   ```
 -->
 
-## Related issue
-<!-- This project only accepts pull requests related to open issues -->
-<!-- If suggesting a new feature or change, please discuss it in an issue first -->
-<!-- If fixing a bug, there should be an issue describing it with steps to reproduce -->
-<!-- Please link to the issue here: -->
+## Related issues
+
+<!--
+  🔴 Required
+  Please link to it's main issue here.
+
+  Example:
+  **Main issue:** https://gitlab.com/maggiolispa/ricerca-sviluppo-new-media/design-system/-/issues/44
+
+  🟢 Optional
+  If you know that the change fixes other open issues besides the main one, report them here.
+
+  Example:
+  Other related issues:
+
+  1. https://gitlab.com/maggiolispa/ricerca-sviluppo-new-media/design-system/-/issues/44
+  2. https://gitlab.com/maggiolispa/ricerca-sviluppo-new-media/design-system/-/issues/44
+  3. https://gitlab.com/maggiolispa/ricerca-sviluppo-new-media/design-system/-/issues/44
+-->
 
 ## Motivation and context
-<!-- Why is this change required? What problem does it solve? -->
-<!-- If it fixes an open issue, please link to the issue here. -->
+
+<!--
+  🟡 Recommended
+  Why is this change required?
+  What problem does it solve?
+
+  Example:
+  This change is required due to the possibility to custom text selection colors from outside `mds-text`.
+
+  Currently `mds-text` not supports custom text selection colors, i/we've added come CSS custom properties that solve this limitation.
+-->
 
 ## How has this been tested?
 
@@ -50,7 +86,7 @@
   Include details of your testing environment, and the tests you ran to see how your change affects other areas of the code, etc.
 
   Example:
-  Now from the outside you can override text selection colors:
+  Now you can override text selection colors from the outside:
 
   ```html
   <style>
@@ -66,6 +102,9 @@
 ## Screenshots
 
 <!--
-  🔴 Required if it's a style change or addition
-  🟢 Optional if it hasn't a relevant visual change.
+  🟡 Recommended
+  If it's a style change or addition.
+
+  🟢 Optional
+  If it hasn't a relevant visual change. Feel free to add some screeshot if you'd like to be more clear.
 -->
