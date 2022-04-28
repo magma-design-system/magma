@@ -16,8 +16,8 @@
     "build-css-tokens": "run-for-every-file --src ./css-tokens/ --dest dist/scss/ --file '**/*.json' --not-file '**/*.scss' --run 'json-to-scss {{src-file}} {{dest}}{{file-name-ext}}'",
     "build-palette": "node leonardo.mjs",
     "build-style-dictionary": "node build.js",
-    "clean": "rm -rf dist",
-    "postbuild": "cp -rf properties ./dist/properties && cp -rf css-tokens ./dist/css-tokens"
+    "clean": "npx ts-node scripts/clean.ts",
+    "postbuild": "npx ts-node scripts/postbuild.ts"
   },
   "main": "dist/js/tailwind-colors-css-vars.js",
   "files": [
@@ -30,7 +30,8 @@
     "js-beautify": "1.14.0",
     "json-to-scss": "^1.6.2",
     "run-for-every-file": "^1.1.0",
-    "style-dictionary": "^3.0.3"
+    "style-dictionary": "^3.0.3",
+    "ts-node": "^10.7.0"
   },
   "repository": {
     "type": "git",
