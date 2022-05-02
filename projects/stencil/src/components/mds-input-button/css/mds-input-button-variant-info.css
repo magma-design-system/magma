@@ -40,14 +40,14 @@
 :host ( [variant=info][tone=ghost] ) {
 
   --background: transparent;
-  --border-color: theme('colors.status-info-07');
+  --border-color: theme('colors.status-info-04');
   --color: theme('colors.status-info-03');
 }
 
 :host ( [variant=info][tone=ghost]:hover ) {
 
   --background: transparent;
-  --border-color: theme('colors.status-info-06');
+  --border-color: theme('colors.status-info-04');
   --color: theme('colors.status-info-02');
 }
 

@@ -25,7 +25,7 @@
 | `--background`   | Sets the background-color of the component |
 | `--border-color` | Sets the border-color of the component     |
 | `--color`        | Sets the text color of the component       |
-| `--icon-color`   | Sets the color of the component's icon     |
+| `--icon-color`   | Sets the icon color of the component       |
 | `--radius`       | Sets the border-radius of the component    |
 
 
