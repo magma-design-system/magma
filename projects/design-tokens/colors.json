@@ -1,43 +1,14 @@
 {
   "colors": [
-    {
-      "color": "#94a3b8",
-      "name": "tone.slate",
-      "seed": { "light": "#FFFFFF", "dark": "#000000" },
-      "ratios": "tone",
-      "export": "tones"
-    },
-    {
-      "color": "#9ca3af",
-      "name": "tone.grey",
-      "seed": { "light": "#FFFFFF", "dark": "#000000" },
-      "ratios": "tone",
-      "export": "tones"
-    },
-    {
-      "color": "#a1a1aa",
-      "name": "tone.zinc",
-      "seed": { "light": "#FFFFFF", "dark": "#000000" },
-      "ratios": "tone",
-      "export": "tones"
-    },
-    {
-      "color": "#a3a3a3",
-      "name": "tone.neutral",
-      "seed": { "light": "#FFFFFF", "dark": "#000000" },
-      "ratios": "tone",
-      "export": "tones"
-    },
-    {
-      "color": "#a8a29e",
-      "name": "tone.stone",
-      "seed": { "light": "#FFFFFF", "dark": "#000000" },
-      "ratios": "tone",
-      "export": "tones"
-    },
+    { "color": "#94a3b8", "export": "tones", "name": "tone.slate", "ratios": "tone", "seed": { "light": "#FFFFFF", "dark": "#000000" } },
+    { "color": "#9ca3af", "export": "tones", "name": "tone.grey", "ratios": "tone", "seed": { "light": "#FFFFFF", "dark": "#000000" } },
+    { "color": "#a1a1aa", "export": "tones", "name": "tone.zinc", "ratios": "tone", "seed": { "light": "#FFFFFF", "dark": "#000000" } },
+    { "color": "#a3a3a3", "export": "tones", "name": "tone.neutral", "ratios": "tone", "seed": { "light": "#FFFFFF", "dark": "#000000" } },
+    { "color": "#a8a29e", "export": "tones", "name": "tone.stone", "ratios": "tone", "seed": { "light": "#FFFFFF", "dark": "#000000" } },
+
     { "color": "#00379E", "export": "brand", "name": "brand.maggioli", "colorspace": "HSL", "smooth": true },
     { "color": "#597CB9", "export": "brand-synbee", "name": "brand.synbee-eolo" },
-    { "color": "#597CB9", "export": "brand-synbee", "name": "brand.synbee-eolo-large", "ratios": "original" },
+    { "color": "#597CB9", "export": "brand-synbee", "name": "brand.synbee-eolo-v1", "ratios": "original" },
     { "color": "#FFCF30", "export": "brand-synbee", "name": "brand.synbee" },
     { "color": "#FFFFFF", "export": "brand-synbee", "name": "adjust.tone", "ratios": "original", "seed": { "light": "#FFFFFF", "dark": "#000000" } },
     { "color": "#ED7C63", "disabled": true, "name": "brand.argo" },
