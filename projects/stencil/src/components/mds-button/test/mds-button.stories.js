@@ -55,9 +55,6 @@ const TemplateIcon = args =>
   <mds-button {...args}/>
 
 export const Default = Template.bind({})
-Default.args = {
-  icon: 'mdi/home-group',
-}
 
 export const Variant = Template.bind({})
 Variant.args = {
@@ -77,11 +74,11 @@ Size.args = {
 
 export const icon = TemplateIcon.bind({})
 icon.args = {
-  icon: 'mdi/home-group',
+  icon: 'mi/baseline/eco',
 }
 
 export const iconPosition = Template.bind({})
 iconPosition.args = {
   'icon-position': 'right',
-  icon: 'mdi/home-group',
+  icon: 'mi/baseline/eco',
 }

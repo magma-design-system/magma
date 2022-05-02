@@ -8,7 +8,7 @@
   * @prop --background: Sets the background-color of the component
   * @prop --border-color: Sets the border-color of the component
   * @prop --color: Sets the text color of the component
-  * @prop --icon-color: Sets the color of the component's icon
+  * @prop --icon-color: Sets the icon color of the component
   * @prop --radius: Sets the border-radius of the component
   */
 
@@ -36,6 +36,7 @@
   background-color: var(--background);
   border-color: var(--border-color) !important;
   border-radius: var(--radius, theme('borderRadius.lg'));
+  border-style: solid;
   border-width: theme('borderWidth.2') !important;
   color: var(--color);
 }
