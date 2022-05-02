@@ -21,7 +21,7 @@ import { ThemeStatusVariantType } from '../../types/variant'
 @Component({
   tag: 'mds-input',
   styleUrl: 'mds-input.css',
-  shadow: true,
+  scoped: true,
 })
 
 export class MdsInput {
