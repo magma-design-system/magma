@@ -39,6 +39,18 @@ Impacts the following Design System tool/environment:
 - Figma
 - Gitlab
 
+<!--
+  🟡 Recommended
+  If present, provide a project related to the issue.
+
+  Example:
+  Impacts the following Maggioli products:
+
+  - [Synbee][https://gitlab.com/maggiolispa/ricerca-sviluppo-bari/synerbee]
+  - [Periodici Maggioli][https://gitlab.com/maggiolispa/ricerca-sviluppo-new-media/periodici-maggioli]
+  - Other project
+-->
+
 ## Expected behavior
 
 <!--
@@ -90,10 +102,16 @@ Impacts the following Design System tool/environment:
   Example:
   1. Pull the repo, and remember to be on branch `dev`;
   2. Run the command `nx run stencil:storybook.start` to start the environment;
-  3. Go to the [mds-text test][sb-test] to reach the test;
+  3. Go to the [component storybook test][storybook] to reach it;
   4. Try to select the text.
 
-  [sb-test]: http://localhost:6006/...
+  Example IT:
+  1. Pulla il repository, ricorda di essere sul branch `dev`;
+  2. Lancia `nx run stencil:storybook.start` per avviare l'ambiente;
+  3. Vai al [test del componente][storybook];
+  4. Prova a selezionare il testo.
+
+  [storybook]: http://localhost:6006/?path=/story/ui-text--default
 -->
 
 ## Context (environment)
