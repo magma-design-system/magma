@@ -21,10 +21,10 @@
 
 ## CSS Custom Properties
 
-| Name                  | Description                                                    |
-| --------------------- | -------------------------------------------------------------- |
-| `--helper-icon-color` | Sets the box-shadow of the component when the mouse is over it |
-| `--icon-color`        | Sets the box-shadow of the component when the mouse is over it |
+| Name                  | Description                                         |
+| --------------------- | --------------------------------------------------- |
+| `--helper-icon-color` | Sets icon color of the helper icon of the component |
+| `--icon-color`        | Sets the icon color the component                   |
 
 
 ----------------------------------------------
