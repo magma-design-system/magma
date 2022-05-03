@@ -36,4 +36,5 @@ const Template = ({ layout, ...args }) =>
 export const Default = Template.bind({})
 Default.args = {
   class: 'w-[350px]',
+  layout: 'flex justify-center',
 }
