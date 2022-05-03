@@ -28,15 +28,15 @@ export class MdsDropdown {
 
     const middleware = []
     if (this.autoPlacement) {
-      middleware.push(autoPlacement)
+      middleware.push(autoPlacement())
     }
 
     if (!this.autoPlacement && this.flip) {
-      middleware.push(flip)
+      middleware.push(flip())
     }
 
     if (this.shift) {
-      middleware.push(shift)
+      middleware.push(shift())
     }
 
     computePosition(this.caller, this.host, {
