@@ -4,9 +4,9 @@ import chalk from 'chalk'
 import path from 'path'
 import sharp from 'sharp'
 import svgDim from 'svg-dimensions'
-import { cp, copyFile, mkdir, readFile, readdir, stat } from 'fs/promises'
-import { createWriteStream, PathLike, constants } from 'fs'
-const { COPYFILE_FICLONE } = constants
+import { mkdir, readFile, readdir, stat } from 'fs/promises'
+import { createWriteStream, PathLike } from 'fs'
+import { copy } from 'fs-extra'
 import { DIST_DIR } from './meta'
 
 let itemsTotal = 0
@@ -227,8 +227,7 @@ walk(RESOURCES_PATH, (error: string, results: string[]) => {
     ]
     const itemFilename = item.replace('.svg', '')
 
-
-    copyFile(RESOURCES_PATH, DIST_DIR)
+    copy(RESOURCES_PATH + item, DIST_DIR + path.sep + item)
       .then(() => {
         exportPDF(itemFilename)
         sizes.forEach(sizeItem => {
