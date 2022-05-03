@@ -4,8 +4,9 @@ import chalk from 'chalk'
 import path from 'path'
 import sharp from 'sharp'
 import svgDim from 'svg-dimensions'
-import { cp, mkdir, readFile, readdir, stat } from 'fs/promises'
-import { createWriteStream, PathLike, exists } from 'fs'
+import { cp, copyFile, mkdir, readFile, readdir, stat } from 'fs/promises'
+import { createWriteStream, PathLike, constants } from 'fs'
+const { COPYFILE_FICLONE } = constants
 import { DIST_DIR } from './meta'
 
 let itemsTotal = 0
@@ -226,27 +227,17 @@ walk(RESOURCES_PATH, (error: string, results: string[]) => {
     ]
     const itemFilename = item.replace('.svg', '')
 
-    exists(DIST_DIR, (exists: Boolean) => {
-      if (!exists) {
-        throw Error(chalk.red(`${path.basename(DIST_DIR)} does not exist.`))
-      }
-      exportPDF(itemFilename)
-      sizes.forEach(sizeItem => {
-        exportPNG(itemFilename, sizeItem)
-        exportWEBP(itemFilename, sizeItem)
-      })
-    })
 
-    // cp(RESOURCES_PATH, DIST_DIR, { recursive: true, force: true })
-    //   .then(() => {
-    //     exportPDF(itemFilename)
-    //     sizes.forEach(sizeItem => {
-    //       exportPNG(itemFilename, sizeItem)
-    //       exportWEBP(itemFilename, sizeItem)
-    //     })
-    //   })
-    //   .catch(error => {
-    //     throw Error(chalk.red(error))
-    //   })
+    copyFile(RESOURCES_PATH, DIST_DIR)
+      .then(() => {
+        exportPDF(itemFilename)
+        sizes.forEach(sizeItem => {
+          exportPNG(itemFilename, sizeItem)
+          exportWEBP(itemFilename, sizeItem)
+        })
+      })
+      .catch(error => {
+        throw Error(chalk.red(error))
+      })
   })
 })
