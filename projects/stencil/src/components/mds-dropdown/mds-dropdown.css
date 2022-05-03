@@ -1,0 +1,15 @@
+@tailwind utilities;
+
+:host {
+
+  --shadow: theme('boxShadow.lg');
+
+  @apply
+    bg-tone-neutral
+    gap-4
+    grid
+    p-6
+    rounded-lg;
+
+  box-shadow: var(--shadow);
+}
