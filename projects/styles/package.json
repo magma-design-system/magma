@@ -5,10 +5,8 @@
   "main": "./tailwind.config.js",
   "scripts": {
     "build": "npm run clean && npm run copy && npm run tailwind.build",
-    "clean": "rm -rf dist || true && mkdir -p dist/css dist/tailwind",
-    "copy": "npm run copy.tailwind && npm run copy.css",
-    "copy.tailwind": "cp -rf tailwind dist",
-    "copy.css": "cp -rf ../design-tokens/dist/css/*.css ./dist/css/.",
+    "clean": "npx ts-node scripts/clean.ts",
+    "copy": "npx ts-node scripts/copy.ts",
     "tailwind.base": "tailwindcss -i ./css/base.css -o ./dist/css/base.css",
     "tailwind.build": "npm run tailwind.base && npm run tailwind.typography",
     "tailwind.typography": "tailwindcss -i ./css/typography.css -o ./dist/css/typography.css"
