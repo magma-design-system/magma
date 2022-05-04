@@ -17,6 +17,7 @@
     "eslint-plugin-react": "^7.26.1",
     "husky": "^7.0.4",
     "jest": "^27.0.0",
+    "chalk": "^4.1.1",
     "lint-staged": "^11.2.6",
     "prettier": "^2.4.1",
     "standard": "^16.0.4",
