@@ -21,7 +21,7 @@
       "root": "projects/react",
       "type": "library",
       "tags": ["type:lib"],
-      "implicitDependencies": ["icons", "styles"]
+      "implicitDependencies": ["icons", "identity", "styles"]
     },
     "stencil": {
       "root": "projects/stencil",
