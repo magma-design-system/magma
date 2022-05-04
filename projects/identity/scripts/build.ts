@@ -15,24 +15,21 @@ let itemsCurrent = 0
 const RESOURCES_PATH = path.join(__dirname, '../resources/')
 
 interface LogData {
-  current: number,
   filename: string,
   filetype: string,
   resolution: string,
   size?: number,
-  total: number,
 }
 
 const logFile = ({
-  current,
   filename,
   filetype,
   resolution,
   size,
-  total,
 }: LogData) => {
+  itemsCurrent = itemsCurrent + 1
   console.log(`
-Progress: ${(current / total * 100).toFixed(1)}%
+Progress: ${(itemsCurrent / itemsTotal * 100).toFixed(1)}% ${chalk.grey(`${itemsCurrent}/${itemsTotal} (approximated)`)}
 Filename: ${chalk.red(filename)}
 Filesize: ${chalk.yellow(size ? formatBytes(size) : 'N/A')}
 Resolution: ${chalk.green(resolution)}
@@ -105,8 +102,6 @@ const walk = (dir: PathLike, callback: Function) => {
 }
 
 const exportPNG = async (item: string, size: number) => {
-  console.log('exportPNG')
-  itemsTotal = itemsTotal + 1
   const density = 72 * size / 16 // https://github.com/lovell/sharp/issues/729
   const filetype = 'png'
 
@@ -115,14 +110,11 @@ const exportPNG = async (item: string, size: number) => {
     .png()
     .toFile(path.join(DIST_DIR, `${item}-${size}w.${filetype}`))
     .then(info => {
-      itemsCurrent = itemsCurrent + 1
       logFile({
-        current: itemsCurrent,
         filetype,
         filename: formatFilename(item, size, filetype),
         resolution: formatResolution(info.width, info.height),
         size: info.size,
-        total: itemsTotal,
       })
     })
     .catch(error => {
@@ -131,8 +123,6 @@ const exportPNG = async (item: string, size: number) => {
 }
 
 const exportWEBP = async (item: string, size: number) => {
-  console.log('exportWEBP')
-  itemsTotal = itemsTotal + 1
   const density = 72 * size / 16
   const filetype = 'webp'
 
@@ -141,14 +131,11 @@ const exportWEBP = async (item: string, size: number) => {
     .png()
     .toFile(path.join(DIST_DIR, `${item}-${size}w.${filetype}`))
     .then(info => {
-      itemsCurrent = itemsCurrent + 1
       logFile({
-        current: itemsCurrent,
         filetype,
         filename: formatFilename(item, size, filetype),
         resolution: formatResolution(info.width, info.height),
         size: info.size,
-        total: itemsTotal,
       })
     })
     .catch(error => {
@@ -157,8 +144,6 @@ const exportWEBP = async (item: string, size: number) => {
 }
 
 const exportPDF = async (item: string) => {
-  console.log('exportPDF')
-  itemsTotal = itemsTotal + 1
   const sourceFile = resource(item)
   const filetype = 'pdf'
 
@@ -175,13 +160,10 @@ const exportPDF = async (item: string) => {
         SVGtoPDF(doc, data, 0, 0, { assumePt: true })
         const stream = createWriteStream(path.join(DIST_DIR, `${item}.${filetype}`))
         stream.on('finish', () => {
-          itemsCurrent = itemsCurrent + 1
           logFile({
-            current: itemsCurrent,
             filetype,
             filename: `${item}.${filetype}`,
             resolution: formatResolution(width, height),
-            total: itemsTotal,
           })
           doc.pipe(stream)
           doc.end()
@@ -191,6 +173,14 @@ const exportPDF = async (item: string) => {
     .catch(error => {
       throw Error(chalk.red(error))
     })
+}
+
+const countItems = (sizes: number[]) => {
+  sizes.forEach(() => {
+    itemsTotal = itemsTotal + 2
+  })
+
+  itemsTotal = itemsTotal + 1
 }
 
 walk(RESOURCES_PATH, (error: string, results: string[]) => {
@@ -219,21 +209,23 @@ walk(RESOURCES_PATH, (error: string, results: string[]) => {
       })
   })
 
-  cleanResults.forEach(item => {
+  cleanResults.forEach((item: string) => {
     const sizes = [
       256,
       512,
       1024,
     ]
+
     const itemFilename = item.replace('.svg', '')
 
-    copy(RESOURCES_PATH + item, DIST_DIR + path.sep + item)
+    copy(path.join(RESOURCES_PATH, item), path.join(DIST_DIR, item))
       .then(() => {
-        exportPDF(itemFilename)
+        countItems(sizes)
         sizes.forEach(sizeItem => {
           exportPNG(itemFilename, sizeItem)
           exportWEBP(itemFilename, sizeItem)
         })
+        exportPDF(itemFilename)
       })
       .catch(error => {
         throw Error(chalk.red(error))
