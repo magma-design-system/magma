@@ -40,14 +40,14 @@
 :host ( [variant=primary][tone=ghost] ) {
 
   --background: transparent;
-  --border-color: theme('colors.brand-maggioli-07');
+  --border-color: theme('colors.brand-maggioli-04');
   --color: theme('colors.brand-maggioli-03');
 }
 
 :host ( [variant=primary][tone=ghost]:hover ) {
 
   --background: transparent;
-  --border-color: theme('colors.brand-maggioli-06');
+  --border-color: theme('colors.brand-maggioli-04');
   --color: theme('colors.brand-maggioli-02');
 }
 

@@ -1,5 +1,8 @@
 # mds-input
 
+## Form interaction
+
+This component is `scoped` and not `shadowed`, so the inner `input` element interacts natively with `form` element.
 
 
 <!-- Auto Generated Below -->

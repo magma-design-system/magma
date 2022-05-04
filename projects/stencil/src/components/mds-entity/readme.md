@@ -7,12 +7,12 @@
 
 ## Properties
 
-| Property    | Attribute   | Description                                                     | Type      | Default     |
-| ----------- | ----------- | --------------------------------------------------------------- | --------- | ----------- |
-| `deletable` | `deletable` | Shows the cross icon to perform cancel/delete action on element | `boolean` | `undefined` |
-| `icon`      | `icon`      | Specifies the icon to be displayed if src propery is not used   | `string`  | `undefined` |
-| `initials`  | `initials`  | The user's inizials displayed if there's no image available     | `string`  | `undefined` |
-| `src`       | `src`       | Specifies the path to the image                                 | `string`  | `undefined` |
+| Property    | Attribute   | Description                                                                     | Type      | Default     |
+| ----------- | ----------- | ------------------------------------------------------------------------------- | --------- | ----------- |
+| `deletable` | `deletable` | Shows the cross icon to perform cancel/delete action on element                 | `boolean` | `undefined` |
+| `icon`      | `icon`      | Specifies the icon to be displayed if src propery is not used                   | `string`  | `undefined` |
+| `initials`  | `initials`  | The user's inizials displayed if there's no image available and icon is not set | `string`  | `undefined` |
+| `src`       | `src`       | Specifies the path to the image                                                 | `string`  | `undefined` |
 
 
 ## CSS Custom Properties
@@ -26,6 +26,7 @@
 | `--detail-color`      | The color of the text details             |
 | `--icon-background`   | The background-color of the icon          |
 | `--icon-color`        | The color of the icon                     |
+| `--shadow`            | The box-shadow od the component           |
 
 
 ## Dependencies

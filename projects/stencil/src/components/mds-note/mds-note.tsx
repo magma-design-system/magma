@@ -1,6 +1,5 @@
 import { Component, Element, Event, EventEmitter, Host, h, Prop } from '@stencil/core'
 import { LabelVariantType } from '../../types/variant'
-import clsx from 'clsx'
 import miBaselineClose from '@icon/mi/baseline/close.svg'
 
 @Component({
@@ -10,7 +9,6 @@ import miBaselineClose from '@icon/mi/baseline/close.svg'
 })
 export class MdsNote {
 
-  private hasTitle: boolean
   @Element() private hostElement: HTMLMdsNoteElement
 
   /**
@@ -34,20 +32,11 @@ export class MdsNote {
    */
   @Event() clickClose: EventEmitter<HTMLMdsNoteElement>
 
-  componentWillLoad (): void {
-    this.hasTitle = this.hostElement.querySelector('[slot="title"]') !== null
-  }
-
   render () {
     return (
-      <Host class={clsx(!this.hasTitle && this.deletable && 'mds-note--close-outside')}>
-        { this.hasTitle &&
-          <div class="title">
-            <slot name="title"/>
-            { this.deletable && <i innerHTML={miBaselineClose} class="svg close" onClick={ this.onClickClose.bind(this) }/> }
-          </div>
-        }
-        { !this.hasTitle && this.deletable && <i innerHTML={miBaselineClose} class="svg close" onClick={ this.onClickClose.bind(this) }/> }
+      <Host>
+        { this.deletable && <i innerHTML={miBaselineClose} class="svg close" onClick={ this.onClickClose.bind(this) }/> }
+        <slot name="title"/>
         <slot/>
         <div class="fold"/>
       </Host>
