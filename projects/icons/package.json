@@ -12,9 +12,7 @@
     "postbuild": "node ./tools/setup-package-font.js",
     "clean": "rm -rf ./dist",
     "prebuild": "npm run clean",
-    "start": "./bin/font-icons.js",
-    "test": "jest --coverage",
-    "test-build": "npm run clean && npm start test.json svg -- --website"
+    "start": "./bin/font-icons.js"
   },
   "dependencies": {
     "@maggioli-design-system/svg-icons": "^2.6.0",
