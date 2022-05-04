@@ -1,70 +1,35 @@
-# COMMON STENCIL BUILD
-base-stencil-build:
+# DESIGN TOKENS BUILD
+design-tokens-build:
   extends: .base-build
-  variables:
-    COMPONENT: to_be_extended
-    BUILD_DIR: projects/stencil/.build/$COMPONENT
   script:
     - nx run design-tokens:build
-    - nx run styles:build
-    - nx run icons:build
-    - nx run stencil:build
   rules:
     - if: $CI_PIPELINE_SOURCE == "merge_request_event" || $CI_COMMIT_BRANCH =~ /^(dev|main|pipeline)$/
       changes:
-        - projects/stencil/**/*
+        - projects/design-tokens/**/*
 
-# BASE ISOLATE
-.base-isolate:
-  extends: base-stencil-build
-  stage: build:isolate
-  script:
-    - nx run stencil:publish.isolate.component --component=$COMPONENT
-  artifacts:
-    name: $COMPONENT-stencil-build
-    expire_in: 1 day
-    paths:
-      - $BUILD_DIR
-  rules:
-    - if: $CI_PIPELINE_SOURCE == "merge_request_event" || $CI_COMMIT_BRANCH =~ /^(dev|main|pipeline)$/
-      changes:
-        - projects/stencil/src/components/$COMPONENT/**/*
-
-# COMMON STENCIL TEST
-base-stencil-test:
-  extends: base-stencil-build
-  image: atools/chrome-headless:java11-node16-latest
-  stage: test
-  script:
-    - cd projects/stencil
-    - npm run test
-  rules:
-    - if: $CI_PIPELINE_SOURCE == "merge_request_event" || $CI_COMMIT_BRANCH =~ /^(dev|main|pipeline)$/
-      changes:
-        - projects/stencil/**/*
-
-# BASE STENCIL PUBLISH TEST
-.base-stencil-publish-test:
+# DESIGN TOKENS PUBLISH TEST
+design-tokens-publish-test:
   extends: .base-publish-test
   stage: test
   variables:
-    BUILD_DIR: projects/stencil/.build/$COMPONENT
-    PACK_NAME: maggioli-design-system-${COMPONENT}-*.tgz
+    BUILD_DIR: projects/design-tokens
+    PACK_NAME: maggioli-design-system-design-tokens-*.tgz
   rules:
     - if: $CI_PIPELINE_SOURCE == "merge_request_event" || $CI_COMMIT_BRANCH =~ /^(main|pipeline)$/
       changes:
-        - projects/stencil/src/components/$COMPONENT/**/*
+        - projects/design-tokens/**/*
 
-# BASE STENCIL PUBLISH
-.base-stencil-publish:
+# DESIGN TOKENS PUBLISH
+design-tokens-publish:
   extends: .base-publish
   stage: publish
   variables:
-    BUILD_DIR: projects/stencil/.build/$COMPONENT
+    BUILD_DIR: projects/design-tokens
   rules:
     - if: $CI_COMMIT_BRANCH == "main"
       changes:
-        - projects/stencil/src/components/$COMPONENT/**/*
+        - projects/design-tokens/**/*
 
 include:
   - '/projects/stencil/src/components/mds-accordion/.gitlab-ci.yml'

@@ -31,7 +31,7 @@ base-stencil-build:
         - projects/stencil/src/components/$COMPONENT/**/*
 
 # COMMON STENCIL TEST
-base-stencil-test:
+stencil-test:
   extends: base-stencil-build
   image: atools/chrome-headless:java11-node16-latest
   stage: test
