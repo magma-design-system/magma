@@ -1,104 +1,32 @@
-# DESIGN TOKENS BUILD
-design-tokens-build:
+# ICONS BUILD
+icons-build:
   extends: .base-build
   script:
-    - nx run design-tokens:build
+    - nx run icons:build
   rules:
     - if: $CI_PIPELINE_SOURCE == "merge_request_event" || $CI_COMMIT_BRANCH =~ /^(dev|main|pipeline)$/
       changes:
-        - projects/design-tokens/**/*
+        - projects/icons/**/*
 
-# DESIGN TOKENS PUBLISH TEST
-design-tokens-publish-test:
+# ICONS PUBLISH TEST
+icons-publish-test:
   extends: .base-publish-test
   stage: test
   variables:
-    BUILD_DIR: projects/design-tokens
-    PACK_NAME: maggioli-design-system-design-tokens-*.tgz
+    BUILD_DIR: projects/icons
+    PACK_NAME: maggioli-design-system-icons-*.tgz
   rules:
     - if: $CI_PIPELINE_SOURCE == "merge_request_event" || $CI_COMMIT_BRANCH =~ /^(main|pipeline)$/
       changes:
-        - projects/design-tokens/**/*
+        - projects/icons/**/*
 
-# DESIGN TOKENS PUBLISH
-design-tokens-publish:
+# ICONS PUBLISH
+icons-publish:
   extends: .base-publish
   stage: publish
   variables:
-    BUILD_DIR: projects/design-tokens
+    BUILD_DIR: projects/icons
   rules:
     - if: $CI_COMMIT_BRANCH == "main"
       changes:
-        - projects/design-tokens/**/*
-
-include:
-  - '/projects/stencil/src/components/mds-accordion/.gitlab-ci.yml'
-  - '/projects/stencil/src/components/mds-accordion-item/.gitlab-ci.yml'
-  - '/projects/stencil/src/components/mds-accordion-timer/.gitlab-ci.yml'
-  - '/projects/stencil/src/components/mds-accordion-timer-item/.gitlab-ci.yml'
-  - '/projects/stencil/src/components/mds-author/.gitlab-ci.yml'
-  - '/projects/stencil/src/components/mds-avatar/.gitlab-ci.yml'
-  - '/projects/stencil/src/components/mds-badge/.gitlab-ci.yml'
-  - '/projects/stencil/src/components/mds-banner/.gitlab-ci.yml'
-  - '/projects/stencil/src/components/mds-benchmark-bar/.gitlab-ci.yml'
-  - '/projects/stencil/src/components/mds-bibliography/.gitlab-ci.yml'
-  - '/projects/stencil/src/components/mds-breadcrumb/.gitlab-ci.yml'
-  - '/projects/stencil/src/components/mds-breadcrumb-item/.gitlab-ci.yml'
-  - '/projects/stencil/src/components/mds-button/.gitlab-ci.yml'
-  - '/projects/stencil/src/components/mds-card/.gitlab-ci.yml'
-  - '/projects/stencil/src/components/mds-details/.gitlab-ci.yml'
-  - '/projects/stencil/src/components/mds-entity/.gitlab-ci.yml'
-  - '/projects/stencil/src/components/mds-file/.gitlab-ci.yml'
-  - '/projects/stencil/src/components/mds-flex-table/.gitlab-ci.yml'
-  - '/projects/stencil/src/components/mds-flex-table-body/.gitlab-ci.yml'
-  - '/projects/stencil/src/components/mds-flex-table-cell/.gitlab-ci.yml'
-  - '/projects/stencil/src/components/mds-flex-table-footer/.gitlab-ci.yml'
-  - '/projects/stencil/src/components/mds-flex-table-header/.gitlab-ci.yml'
-  - '/projects/stencil/src/components/mds-flex-table-row/.gitlab-ci.yml'
-  - '/projects/stencil/src/components/mds-form/.gitlab-ci.yml'
-  - '/projects/stencil/src/components/mds-grid/.gitlab-ci.yml'
-  - '/projects/stencil/src/components/mds-header/.gitlab-ci.yml'
-  - '/projects/stencil/src/components/mds-header-bar/.gitlab-ci.yml'
-  - '/projects/stencil/src/components/mds-horizontal-scroll/.gitlab-ci.yml'
-  - '/projects/stencil/src/components/mds-hr/.gitlab-ci.yml'
-  - '/projects/stencil/src/components/mds-icon/.gitlab-ci.yml'
-  - '/projects/stencil/src/components/mds-img/.gitlab-ci.yml'
-  - '/projects/stencil/src/components/mds-input/.gitlab-ci.yml'
-  - '/projects/stencil/src/components/mds-input-button/.gitlab-ci.yml'
-  - '/projects/stencil/src/components/mds-input-field/.gitlab-ci.yml'
-  - '/projects/stencil/src/components/mds-input-range/.gitlab-ci.yml'
-  - '/projects/stencil/src/components/mds-input-select/.gitlab-ci.yml'
-  - '/projects/stencil/src/components/mds-input-switch/.gitlab-ci.yml'
-  - '/projects/stencil/src/components/mds-input-switch-group/.gitlab-ci.yml'
-  - '/projects/stencil/src/components/mds-kpi/.gitlab-ci.yml'
-  - '/projects/stencil/src/components/mds-kpi-item/.gitlab-ci.yml'
-  - '/projects/stencil/src/components/mds-list/.gitlab-ci.yml'
-  - '/projects/stencil/src/components/mds-list-item/.gitlab-ci.yml'
-  - '/projects/stencil/src/components/mds-modal/.gitlab-ci.yml'
-  - '/projects/stencil/src/components/mds-note/.gitlab-ci.yml'
-  - '/projects/stencil/src/components/mds-notification/.gitlab-ci.yml'
-  - '/projects/stencil/src/components/mds-paginator/.gitlab-ci.yml'
-  - '/projects/stencil/src/components/mds-paginator-item/.gitlab-ci.yml'
-  - '/projects/stencil/src/components/mds-progress/.gitlab-ci.yml'
-  - '/projects/stencil/src/components/mds-quote/.gitlab-ci.yml'
-  - '/projects/stencil/src/components/mds-row/.gitlab-ci.yml'
-  - '/projects/stencil/src/components/mds-spinner/.gitlab-ci.yml'
-  - '/projects/stencil/src/components/mds-stepper-bar/.gitlab-ci.yml'
-  - '/projects/stencil/src/components/mds-stepper-bar-item/.gitlab-ci.yml'
-  - '/projects/stencil/src/components/mds-tab/.gitlab-ci.yml'
-  - '/projects/stencil/src/components/mds-tab-bar/.gitlab-ci.yml'
-  - '/projects/stencil/src/components/mds-tab-bar-item/.gitlab-ci.yml'
-  - '/projects/stencil/src/components/mds-tab-item/.gitlab-ci.yml'
-  - '/projects/stencil/src/components/mds-table/.gitlab-ci.yml'
-  - '/projects/stencil/src/components/mds-table-body/.gitlab-ci.yml'
-  - '/projects/stencil/src/components/mds-table-cell/.gitlab-ci.yml'
-  - '/projects/stencil/src/components/mds-table-footer/.gitlab-ci.yml'
-  - '/projects/stencil/src/components/mds-table-header/.gitlab-ci.yml'
-  - '/projects/stencil/src/components/mds-table-row/.gitlab-ci.yml'
-  - '/projects/stencil/src/components/mds-tag/.gitlab-ci.yml'
-  - '/projects/stencil/src/components/mds-text/.gitlab-ci.yml'
-  - '/projects/stencil/src/components/mds-toast/.gitlab-ci.yml'
-  - '/projects/stencil/src/components/mds-tooltip/.gitlab-ci.yml'
-  - '/projects/stencil/src/components/mds-url-view/.gitlab-ci.yml'
-  - '/projects/stencil/src/components/mds-usage/.gitlab-ci.yml'
-  - '/projects/stencil/src/components/mds-video-wall/.gitlab-ci.yml'
+        - projects/icons/**/*
