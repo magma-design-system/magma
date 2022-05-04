@@ -1,5 +1,5 @@
 import { Component, Host, h, Element, Prop } from '@stencil/core'
-import { computePosition, autoPlacement, flip, shift } from '@floating-ui/dom'
+import { computePosition, autoPlacement, flip, shift, offset } from '@floating-ui/dom'
 import { FloatingUIPlacement, FloatingUIStrategy } from '../../types/floating-ui'
 
 
@@ -24,9 +24,14 @@ export class MdsDropdown {
 
     console.log('callerOnClick')
 
+    if (this.visible) {
+      this.visible = false
+      return
+    }
+
     this.visible = true
 
-    const middleware = []
+    const middleware = [ offset(10) ]
     if (this.autoPlacement) {
       middleware.push(autoPlacement())
     }
@@ -43,6 +48,11 @@ export class MdsDropdown {
       middleware,
       placement: this.placement,
       strategy: this.strategy,
+    }).then(({ x, y }) => {
+      Object.assign(this.host.style, {
+        left: `${x}px`,
+        top: `${y}px`,
+      })
     })
   }
 
