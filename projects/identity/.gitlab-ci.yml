@@ -1,0 +1,32 @@
+# IDENTITY BUILD
+identity-build:
+  extends: .base-build
+  script:
+    - nx run icons:build
+  rules:
+    - if: $CI_PIPELINE_SOURCE == "merge_request_event" || $CI_COMMIT_BRANCH =~ /^(dev|main|pipeline)$/
+      changes:
+        - projects/identity/**/*
+
+# IDENTITY PUBLISH TEST
+identity-publish-test:
+  extends: .base-publish-test
+  stage: test
+  variables:
+    BUILD_DIR: projects/identity
+    PACK_NAME: maggioli-design-system-identity-*.tgz
+  rules:
+    - if: $CI_PIPELINE_SOURCE == "merge_request_event" || $CI_COMMIT_BRANCH =~ /^(main|pipeline)$/
+      changes:
+        - projects/identity/**/*
+
+# IDENTITY PUBLISH
+identity-publish:
+  extends: .base-publish
+  stage: publish
+  variables:
+    BUILD_DIR: projects/identity
+  rules:
+    - if: $CI_COMMIT_BRANCH == "main"
+      changes:
+        - projects/identity/**/*
