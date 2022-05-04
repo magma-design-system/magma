@@ -1,6 +1,5 @@
 # Maggioli Design System
 
-
 #### design-tokens
 
 Design Tokens generates properties for colors and other type of agnostic tokens targeted on specific plaforms, like web, Android or iOS formats.

@@ -86,5 +86,10 @@ stages:
     - npm publish
 
 include:
+  - '/projects/design-tokens/.gitlab-ci.yml'
+  - '/projects/icons/.gitlab-ci.yml'
+  - '/projects/identity/.gitlab-ci.yml'
   - '/projects/stencil/.gitlab-ci.yml'
+  - '/projects/styles/.gitlab-ci.yml'
+  - '/projects/svg-icons/.gitlab-ci.yml'
   - '/.deploy/.gitlab-ci.yml'
