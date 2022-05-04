@@ -5,14 +5,14 @@
 # ISOLATE
 badge-isolate:
   extends: [.base-isolate, .base-badge]
-  dependencies: [base-build]
+  dependencies: [base-stencil-build]
 
 # TEST
 badge-publish-test:
-  extends: [.base-publish-test, .base-badge]
-  dependencies: [base-build, badge-isolate]
+  extends: [.base-stencil-publish-test, .base-badge]
+  dependencies: [base-stencil-build, badge-isolate]
 
 # PUBLISH
 badge-publish:
-  extends: [.base-publish, .base-badge]
-  dependencies: [base-build, badge-isolate]
+  extends: [.base-stencil-publish, .base-badge]
+  dependencies: [base-stencil-build, badge-isolate]

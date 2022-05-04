@@ -5,14 +5,14 @@
 # ISOLATE
 input-button-isolate:
   extends: [.base-isolate, .base-input-button]
-  dependencies: [base-build]
+  dependencies: [base-stencil-build]
 
 # TEST
 input-button-publish-test:
-  extends: [.base-publish-test, .base-input-button]
-  dependencies: [base-build, input-button-isolate]
+  extends: [.base-stencil-publish-test, .base-input-button]
+  dependencies: [base-stencil-build, input-button-isolate]
 
 # PUBLISH
 input-button-publish:
-  extends: [.base-publish, .base-input-button]
-  dependencies: [base-build, input-button-isolate]
+  extends: [.base-stencil-publish, .base-input-button]
+  dependencies: [base-stencil-build, input-button-isolate]

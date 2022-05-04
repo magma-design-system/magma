@@ -5,14 +5,14 @@
 # ISOLATE
 modal-isolate:
   extends: [.base-isolate, .base-modal]
-  dependencies: [base-build]
+  dependencies: [base-stencil-build]
 
 # TEST
 modal-publish-test:
-  extends: [.base-publish-test, .base-modal]
-  dependencies: [base-build, modal-isolate]
+  extends: [.base-stencil-publish-test, .base-modal]
+  dependencies: [base-stencil-build, modal-isolate]
 
 # PUBLISH
 modal-publish:
-  extends: [.base-publish, .base-modal]
-  dependencies: [base-build, modal-isolate]
+  extends: [.base-stencil-publish, .base-modal]
+  dependencies: [base-stencil-build, modal-isolate]

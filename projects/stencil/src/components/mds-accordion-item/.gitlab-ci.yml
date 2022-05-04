@@ -5,14 +5,14 @@
 # ISOLATE
 accordion-item-isolate:
   extends: [.base-isolate, .base-accordion-item]
-  dependencies: [base-build]
+  dependencies: [base-stencil-build]
 
 # TEST
 accordion-item-publish-test:
-  extends: [.base-publish-test, .base-accordion-item]
-  dependencies: [base-build, accordion-item-isolate]
+  extends: [.base-stencil-publish-test, .base-accordion-item]
+  dependencies: [base-stencil-build, accordion-item-isolate]
 
 # PUBLISH
 accordion-item-publish:
-  extends: [.base-publish, .base-accordion-item]
-  dependencies: [base-build, accordion-item-isolate]
+  extends: [.base-stencil-publish, .base-accordion-item]
+  dependencies: [base-stencil-build, accordion-item-isolate]

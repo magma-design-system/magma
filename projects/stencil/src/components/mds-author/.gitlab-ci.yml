@@ -5,14 +5,14 @@
 # ISOLATE
 author-isolate:
   extends: [.base-isolate, .base-author]
-  dependencies: [base-build]
+  dependencies: [base-stencil-build]
 
 # TEST
 author-publish-test:
-  extends: [.base-publish-test, .base-author]
-  dependencies: [base-build, author-isolate]
+  extends: [.base-stencil-publish-test, .base-author]
+  dependencies: [base-stencil-build, author-isolate]
 
 # PUBLISH
 author-publish:
-  extends: [.base-publish, .base-author]
-  dependencies: [base-build, author-isolate]
+  extends: [.base-stencil-publish, .base-author]
+  dependencies: [base-stencil-build, author-isolate]

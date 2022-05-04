@@ -5,14 +5,14 @@
 # ISOLATE
 grid-isolate:
   extends: [.base-isolate, .base-grid]
-  dependencies: [base-build]
+  dependencies: [base-stencil-build]
 
 # TEST
 grid-publish-test:
-  extends: [.base-publish-test, .base-grid]
-  dependencies: [base-build, grid-isolate]
+  extends: [.base-stencil-publish-test, .base-grid]
+  dependencies: [base-stencil-build, grid-isolate]
 
 # PUBLISH
 grid-publish:
-  extends: [.base-publish, .base-grid]
-  dependencies: [base-build, grid-isolate]
+  extends: [.base-stencil-publish, .base-grid]
+  dependencies: [base-stencil-build, grid-isolate]

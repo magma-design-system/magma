@@ -5,14 +5,14 @@
 # ISOLATE
 tooltip-isolate:
   extends: [.base-isolate, .base-tooltip]
-  dependencies: [base-build]
+  dependencies: [base-stencil-build]
 
 # TEST
 tooltip-publish-test:
-  extends: [.base-publish-test, .base-tooltip]
-  dependencies: [base-build, tooltip-isolate]
+  extends: [.base-stencil-publish-test, .base-tooltip]
+  dependencies: [base-stencil-build, tooltip-isolate]
 
 # PUBLISH
 tooltip-publish:
-  extends: [.base-publish, .base-tooltip]
-  dependencies: [base-build, tooltip-isolate]
+  extends: [.base-stencil-publish, .base-tooltip]
+  dependencies: [base-stencil-build, tooltip-isolate]

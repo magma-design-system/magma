@@ -5,14 +5,14 @@
 # ISOLATE
 quote-isolate:
   extends: [.base-isolate, .base-quote]
-  dependencies: [base-build]
+  dependencies: [base-stencil-build]
 
 # TEST
 quote-publish-test:
-  extends: [.base-publish-test, .base-quote]
-  dependencies: [base-build, quote-isolate]
+  extends: [.base-stencil-publish-test, .base-quote]
+  dependencies: [base-stencil-build, quote-isolate]
 
 # PUBLISH
 quote-publish:
-  extends: [.base-publish, .base-quote]
-  dependencies: [base-build, quote-isolate]
+  extends: [.base-stencil-publish, .base-quote]
+  dependencies: [base-stencil-build, quote-isolate]

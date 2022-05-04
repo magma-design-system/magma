@@ -5,15 +5,15 @@
 # ISOLATE
 button-isolate:
   extends: [.base-isolate, .base-button]
-  dependencies: [base-build]
+  dependencies: [base-stencil-build]
 
 # TEST
 button-publish-test:
-  extends: [.base-publish-test, .base-button]
-  dependencies: [base-build, button-isolate]
+  extends: [.base-stencil-publish-test, .base-button]
+  dependencies: [base-stencil-build, button-isolate]
 
 # PUBLISH
 button-publish:
-  extends: [.base-publish, .base-button]
-  dependencies: [base-build, button-isolate]
+  extends: [.base-stencil-publish, .base-button]
+  dependencies: [base-stencil-build, button-isolate]
 

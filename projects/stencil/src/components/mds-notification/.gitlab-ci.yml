@@ -5,14 +5,14 @@
 # ISOLATE
 notification-isolate:
   extends: [.base-isolate, .base-notification]
-  dependencies: [base-build]
+  dependencies: [base-stencil-build]
 
 # TEST
 notification-publish-test:
-  extends: [.base-publish-test, .base-notification]
-  dependencies: [base-build, notification-isolate]
+  extends: [.base-stencil-publish-test, .base-notification]
+  dependencies: [base-stencil-build, notification-isolate]
 
 # PUBLISH
 notification-publish:
-  extends: [.base-publish, .base-notification]
-  dependencies: [base-build, notification-isolate]
+  extends: [.base-stencil-publish, .base-notification]
+  dependencies: [base-stencil-build, notification-isolate]

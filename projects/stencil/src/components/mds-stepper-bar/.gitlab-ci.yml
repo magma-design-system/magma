@@ -5,15 +5,15 @@
 # ISOLATE
 stepper-bar-isolate:
   extends: [.base-isolate, .base-stepper-bar]
-  dependencies: [base-build]
+  dependencies: [base-stencil-build]
 
 # TEST
 stepper-bar-publish-test:
-  extends: [.base-publish-test, .base-stepper-bar]
-  dependencies: [base-build, stepper-bar-isolate]
+  extends: [.base-stencil-publish-test, .base-stepper-bar]
+  dependencies: [base-stencil-build, stepper-bar-isolate]
 
 # PUBLISH
 stepper-bar-publish:
-  extends: [.base-publish, .base-stepper-bar]
-  dependencies: [base-build, stepper-bar-isolate]
+  extends: [.base-stencil-publish, .base-stepper-bar]
+  dependencies: [base-stencil-build, stepper-bar-isolate]
 
