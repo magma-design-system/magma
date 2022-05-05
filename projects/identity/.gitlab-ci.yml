@@ -2,7 +2,7 @@
 identity-build:
   extends: .base-build
   script:
-    - nx run icons:build
+    - nx run identity:build
   rules:
     - if: $CI_PIPELINE_SOURCE == "merge_request_event" || $CI_COMMIT_BRANCH =~ /^(dev|main|pipeline)$/
       changes:
