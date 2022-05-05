@@ -10,7 +10,7 @@ const createDirectoryTree = () => {
   const jsonData = JSON.stringify(tree, null, 2)
   writeFile('dist/directory-tree.json', jsonData, { encoding: 'utf8' })
     .then(() => {
-      console.log(`Files inventory directory-tree.json ${chalk.green('successfully')} created.`)
+      console.log(`Inventory ${chalk.green('directory-tree.json')} created ${chalk.green('successfully')}`)
     })
     .catch(error => {
       throw Error(chalk.red(error))
