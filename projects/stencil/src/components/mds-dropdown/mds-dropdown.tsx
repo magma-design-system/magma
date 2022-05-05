@@ -47,7 +47,8 @@ export class MdsDropdown {
     computePosition(this.caller, this.host, {
       middleware,
       placement: this.placement,
-      strategy: this.strategy,
+      // For flip mode to work properly strategy should be absolute?
+      // strategy: this.strategy,
     }).then(({ x, y }) => {
       Object.assign(this.host.style, {
         left: `${x}px`,
