@@ -2,13 +2,14 @@
 
 :host {
 
-  --shadow: theme('boxShadow.lg');
+  --shadow: theme('boxShadow.sharp-lg');
 
   @apply
-    absolute
     bg-tone-neutral
+    box-border
     duration-300
     ease-out
+    fixed
     gap-4
     grid
     opacity-0
@@ -24,4 +25,9 @@
   @apply
     opacity-100
     pointer-events-auto;
+}
+
+:host ([background])::backdrop {
+  @apply
+    bg-tone-neutral-03/30;
 }

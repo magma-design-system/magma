@@ -6,6 +6,10 @@ export default {
   title: 'UI / Dropdown',
   component: MdsDropdown,
   argTypes: {
+    background: {
+      type: { name: 'boolean' },
+      description: 'Specifies if the component is opened',
+    },
     opened: {
       type: { name: 'boolean' },
       description: 'Specifies if the component is opened',
@@ -42,8 +46,22 @@ Default.args = {
 export const Shiftable = Template.bind({})
 Shiftable.args = {
   class: 'w-[350px]',
-  layout: 'flex',
+  layout: 'flex justify-end',
   shift: true,
+}
+
+export const autoPlacement = Template.bind({})
+autoPlacement.args = {
+  class: 'w-[350px]',
+  layout: 'flex justify-end',
+  autoPlacement: true,
+}
+
+export const Background = Template.bind({})
+Background.args = {
+  class: 'w-[350px]',
+  layout: 'flex justify-center',
+  background: true,
 }
 
 export const Flippable = Template.bind({})
