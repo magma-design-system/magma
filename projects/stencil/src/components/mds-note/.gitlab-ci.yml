@@ -5,15 +5,15 @@
 # ISOLATE
 note-isolate:
   extends: [.base-isolate, .base-note]
-  dependencies: [base-build]
+  dependencies: [base-stencil-build]
 
 # TEST
 note-publish-test:
-  extends: [.base-publish-test, .base-note]
-  dependencies: [base-build, note-isolate]
+  extends: [.base-stencil-publish-test, .base-note]
+  dependencies: [base-stencil-build, note-isolate]
 
 # PUBLISH
 note-publish:
-  extends: [.base-publish, .base-note]
-  dependencies: [base-build, note-isolate]
+  extends: [.base-stencil-publish, .base-note]
+  dependencies: [base-stencil-build, note-isolate]
 

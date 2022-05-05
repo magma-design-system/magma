@@ -1,0 +1,39 @@
+# ICONS BUILD
+icons-build:
+  extends: .base-build
+  script:
+    - nx run icons:build
+  artifacts:
+    name: stencil-build
+    expire_in: 1 day
+    paths:
+      - projects/icons/dist
+  rules:
+    - if: $CI_PIPELINE_SOURCE == "merge_request_event" || $CI_COMMIT_BRANCH =~ /^(dev|main|pipeline)$/
+      changes:
+        - projects/icons/**/*
+
+# ICONS PUBLISH TEST
+icons-publish-test:
+  extends: .base-publish-test
+  dependencies: [icons-build]
+  stage: test
+  variables:
+    BUILD_DIR: projects/icons
+    PACK_NAME: maggioli-design-system-icons-*.tgz
+  rules:
+    - if: $CI_PIPELINE_SOURCE == "merge_request_event" || $CI_COMMIT_BRANCH =~ /^(main|pipeline)$/
+      changes:
+        - projects/icons/**/*
+
+# ICONS PUBLISH
+icons-publish:
+  extends: .base-publish
+  dependencies: [icons-build]
+  stage: publish
+  variables:
+    BUILD_DIR: projects/icons
+  rules:
+    - if: $CI_COMMIT_BRANCH == "main"
+      changes:
+        - projects/icons/**/*

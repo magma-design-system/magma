@@ -5,14 +5,14 @@
 # ISOLATE
 accordion-timer-item-isolate:
   extends: [.base-isolate, .base-accordion-timer-item]
-  dependencies: [base-build]
+  dependencies: [base-stencil-build]
 
 # TEST
 accordion-timer-item-publish-test:
-  extends: [.base-publish-test, .base-accordion-timer-item]
-  dependencies: [base-build, accordion-timer-item-isolate]
+  extends: [.base-stencil-publish-test, .base-accordion-timer-item]
+  dependencies: [base-stencil-build, accordion-timer-item-isolate]
 
 # PUBLISH
 accordion-timer-item-publish:
-  extends: [.base-publish, .base-accordion-timer-item]
-  dependencies: [base-build, accordion-timer-item-isolate]
+  extends: [.base-stencil-publish, .base-accordion-timer-item]
+  dependencies: [base-stencil-build, accordion-timer-item-isolate]

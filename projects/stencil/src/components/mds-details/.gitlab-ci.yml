@@ -5,14 +5,14 @@
 # ISOLATE
 details-isolate:
   extends: [.base-isolate, .base-details]
-  dependencies: [base-build]
+  dependencies: [base-stencil-build]
 
 # TEST
 details-publish-test:
-  extends: [.base-publish-test, .base-details]
-  dependencies: [base-build, details-isolate]
+  extends: [.base-stencil-publish-test, .base-details]
+  dependencies: [base-stencil-build, details-isolate]
 
 # PUBLISH
 details-publish:
-  extends: [.base-publish, .base-details]
-  dependencies: [base-build, details-isolate]
+  extends: [.base-stencil-publish, .base-details]
+  dependencies: [base-stencil-build, details-isolate]

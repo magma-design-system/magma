@@ -5,14 +5,14 @@
 # ISOLATE
 banner-isolate:
   extends: [.base-isolate, .base-banner]
-  dependencies: [base-build]
+  dependencies: [base-stencil-build]
 
 # TEST
 banner-publish-test:
-  extends: [.base-publish-test, .base-banner]
-  dependencies: [base-build, banner-isolate]
+  extends: [.base-stencil-publish-test, .base-banner]
+  dependencies: [base-stencil-build, banner-isolate]
 
 # PUBLISH
 banner-publish:
-  extends: [.base-publish, .base-banner]
-  dependencies: [base-build, banner-isolate]
+  extends: [.base-stencil-publish, .base-banner]
+  dependencies: [base-stencil-build, banner-isolate]

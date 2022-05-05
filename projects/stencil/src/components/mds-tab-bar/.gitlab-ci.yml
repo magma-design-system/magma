@@ -5,14 +5,14 @@
 # ISOLATE
 tab-bar-isolate:
   extends: [.base-isolate, .base-tab-bar]
-  dependencies: [base-build]
+  dependencies: [base-stencil-build]
 
 # TEST
 tab-bar-publish-test:
-  extends: [.base-publish-test, .base-tab-bar]
-  dependencies: [base-build, tab-bar-isolate]
+  extends: [.base-stencil-publish-test, .base-tab-bar]
+  dependencies: [base-stencil-build, tab-bar-isolate]
 
 # PUBLISH
 tab-bar-publish:
-  extends: [.base-publish, .base-tab-bar]
-  dependencies: [base-build, tab-bar-isolate]
+  extends: [.base-stencil-publish, .base-tab-bar]
+  dependencies: [base-stencil-build, tab-bar-isolate]

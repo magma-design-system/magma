@@ -27,6 +27,59 @@ stages:
   - deploy:storybook # TODO
   - deploy:website # TODO
 
+# BASE BUILD
+.base-build:
+  image: node:16.13
+  stage: build
+  before_script:
+    - npm install -g --force nx yarn
+    - |
+      if [[ ! -d node_modules ]]; then
+        yarn install
+      fi
+  cache:
+    key:
+      files:
+        - yarn.lock
+      prefix: $CI_PROJECT_NAME
+    paths:
+      - node_modules
+      - projects/design-tokens/node_modules
+      - projects/styles/node_modules
+      - projects/icons/node_modules
+      - projects/stencil/node_modules
+      - projects/identity/node_modules
+    policy: pull-push
+
+# BASE PUBLISH TEST
+.base-publish-test:
+  extends: .base-build
+  stage: test
+  variables:
+    PACK_NAME: to_be_extended
+    BUILD_DIR: to_be_extended
+  script:
+    - cd $BUILD_DIR
+    - npm pack && npm install $PACK_NAME && npm publish --dry-run
+
+# BASE PUBLISH
+.base-publish:
+  extends: .base-build
+  stage: publish
+  variables:
+    BUILD_DIR: to_be_extended
+  script:
+    - cd $BUILD_DIR
+    - cp $NPMRC_FILE .npmrc
+    - echo "_auth=$NODE_AUTH_TOKEN" >> .npmrc
+    - echo "//registry.npmjs.org/:_authToken=$NODE_AUTH_TOKEN" >> .npmrc
+    - npm publish
+
 include:
+  - '/projects/design-tokens/.gitlab-ci.yml'
+  - '/projects/icons/.gitlab-ci.yml'
+  - '/projects/identity/.gitlab-ci.yml'
   - '/projects/stencil/.gitlab-ci.yml'
+  - '/projects/styles/.gitlab-ci.yml'
+  - '/projects/svg-icons/.gitlab-ci.yml'
   - '/.deploy/.gitlab-ci.yml'

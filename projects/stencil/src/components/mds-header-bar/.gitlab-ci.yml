@@ -5,14 +5,14 @@
 # ISOLATE
 header-bar-isolate:
   extends: [.base-isolate, .base-header-bar]
-  dependencies: [base-build]
+  dependencies: [base-stencil-build]
 
 # TEST
 header-bar-publish-test:
-  extends: [.base-publish-test, .base-header-bar]
-  dependencies: [base-build, header-bar-isolate]
+  extends: [.base-stencil-publish-test, .base-header-bar]
+  dependencies: [base-stencil-build, header-bar-isolate]
 
 # PUBLISH
 header-bar-publish:
-  extends: [.base-publish, .base-header-bar]
-  dependencies: [base-build, header-bar-isolate]
+  extends: [.base-stencil-publish, .base-header-bar]
+  dependencies: [base-stencil-build, header-bar-isolate]

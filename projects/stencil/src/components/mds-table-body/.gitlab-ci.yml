@@ -5,14 +5,14 @@
 # ISOLATE
 table-body-isolate:
   extends: [.base-isolate, .base-table-body]
-  dependencies: [base-build]
+  dependencies: [base-stencil-build]
 
 # TEST
 table-body-publish-test:
-  extends: [.base-publish-test, .base-table-body]
-  dependencies: [base-build, table-body-isolate]
+  extends: [.base-stencil-publish-test, .base-table-body]
+  dependencies: [base-stencil-build, table-body-isolate]
 
 # PUBLISH
 table-body-publish:
-  extends: [.base-publish, .base-table-body]
-  dependencies: [base-build, table-body-isolate]
+  extends: [.base-stencil-publish, .base-table-body]
+  dependencies: [base-stencil-build, table-body-isolate]

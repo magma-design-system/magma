@@ -5,14 +5,14 @@
 # ISOLATE
 icon-isolate:
   extends: [.base-isolate, .base-icon]
-  dependencies: [base-build]
+  dependencies: [base-stencil-build]
 
 # TEST
 icon-publish-test:
-  extends: [.base-publish-test, .base-icon]
-  dependencies: [base-build, icon-isolate]
+  extends: [.base-stencil-publish-test, .base-icon]
+  dependencies: [base-stencil-build, icon-isolate]
 
 # PUBLISH
 icon-publish:
-  extends: [.base-publish, .base-icon]
-  dependencies: [base-build, icon-isolate]
+  extends: [.base-stencil-publish, .base-icon]
+  dependencies: [base-stencil-build, icon-isolate]

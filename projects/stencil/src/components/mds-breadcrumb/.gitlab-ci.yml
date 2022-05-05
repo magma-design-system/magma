@@ -5,14 +5,14 @@
 # ISOLATE
 breadcrumb-isolate:
   extends: [.base-isolate, .base-breadcrumb]
-  dependencies: [base-build]
+  dependencies: [base-stencil-build]
 
 # TEST
 breadcrumb-publish-test:
-  extends: [.base-publish-test, .base-breadcrumb]
-  dependencies: [base-build, breadcrumb-isolate]
+  extends: [.base-stencil-publish-test, .base-breadcrumb]
+  dependencies: [base-stencil-build, breadcrumb-isolate]
 
 # PUBLISH
 breadcrumb-publish:
-  extends: [.base-publish, .base-breadcrumb]
-  dependencies: [base-build, breadcrumb-isolate]
+  extends: [.base-stencil-publish, .base-breadcrumb]
+  dependencies: [base-stencil-build, breadcrumb-isolate]

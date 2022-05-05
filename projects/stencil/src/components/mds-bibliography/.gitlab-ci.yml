@@ -5,14 +5,14 @@
 # ISOLATE
 bibliography-isolate:
   extends: [.base-isolate, .base-bibliography]
-  dependencies: [base-build]
+  dependencies: [base-stencil-build]
 
 # TEST
 bibliography-publish-test:
-  extends: [.base-publish-test, .base-bibliography]
-  dependencies: [base-build, bibliography-isolate]
+  extends: [.base-stencil-publish-test, .base-bibliography]
+  dependencies: [base-stencil-build, bibliography-isolate]
 
 # PUBLISH
 bibliography-publish:
-  extends: [.base-publish, .base-bibliography]
-  dependencies: [base-build, bibliography-isolate]
+  extends: [.base-stencil-publish, .base-bibliography]
+  dependencies: [base-stencil-build, bibliography-isolate]

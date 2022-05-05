@@ -1,0 +1,43 @@
+# STYLES BUILD
+styles-build:
+  extends: .base-build
+  script:
+    - nx run design-tokens:build
+    - nx run styles:build
+  artifacts:
+    name: styles-build
+    expire_in: 1 day
+    paths:
+      - projects/design-tokens/dist
+      - projects/design-tokens/config
+      - projects/design-tokens/properties
+      - projects/styles/dist
+  rules:
+    - if: $CI_PIPELINE_SOURCE == "merge_request_event" || $CI_COMMIT_BRANCH =~ /^(dev|main|pipeline)$/
+      changes:
+        - projects/styles/**/*
+
+# STYLES PUBLISH TEST
+styles-publish-test:
+  extends: .base-publish-test
+  dependencies: [styles-build]
+  stage: test
+  variables:
+    BUILD_DIR: projects/styles
+    PACK_NAME: maggioli-design-system-styles-*.tgz
+  rules:
+    - if: $CI_PIPELINE_SOURCE == "merge_request_event" || $CI_COMMIT_BRANCH =~ /^(main|pipeline)$/
+      changes:
+        - projects/styles/**/*
+
+# STYLES PUBLISH
+styles-publish:
+  extends: .base-publish
+  dependencies: [styles-build]
+  stage: publish
+  variables:
+    BUILD_DIR: projects/styles
+  rules:
+    - if: $CI_COMMIT_BRANCH == "main"
+      changes:
+        - projects/styles/**/*
