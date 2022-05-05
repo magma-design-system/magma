@@ -3,6 +3,11 @@ icons-build:
   extends: .base-build
   script:
     - nx run icons:build
+  artifacts:
+    name: stencil-build
+    expire_in: 1 day
+    paths:
+      - projects/icons/dist
   rules:
     - if: $CI_PIPELINE_SOURCE == "merge_request_event" || $CI_COMMIT_BRANCH =~ /^(dev|main|pipeline)$/
       changes:
@@ -11,6 +16,7 @@ icons-build:
 # ICONS PUBLISH TEST
 icons-publish-test:
   extends: .base-publish-test
+  dependencies: [icons-build]
   stage: test
   variables:
     BUILD_DIR: projects/icons
@@ -23,6 +29,7 @@ icons-publish-test:
 # ICONS PUBLISH
 icons-publish:
   extends: .base-publish
+  dependencies: [icons-build]
   stage: publish
   variables:
     BUILD_DIR: projects/icons

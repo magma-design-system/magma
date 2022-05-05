@@ -3,6 +3,13 @@ design-tokens-build:
   extends: .base-build
   script:
     - nx run design-tokens:build
+  artifacts:
+    name: design-tokens-build
+    expire_in: 1 day
+    paths:
+      - projects/design-tokens/dist
+      - projects/design-tokens/config
+      - projects/design-tokens/properties
   rules:
     - if: $CI_PIPELINE_SOURCE == "merge_request_event" || $CI_COMMIT_BRANCH =~ /^(dev|main|pipeline)$/
       changes:
@@ -11,6 +18,7 @@ design-tokens-build:
 # DESIGN TOKENS PUBLISH TEST
 design-tokens-publish-test:
   extends: .base-publish-test
+  dependencies: [design-tokens-build]
   stage: test
   variables:
     BUILD_DIR: projects/design-tokens
@@ -23,6 +31,7 @@ design-tokens-publish-test:
 # DESIGN TOKENS PUBLISH
 design-tokens-publish:
   extends: .base-publish
+  dependencies: [design-tokens-build]
   stage: publish
   variables:
     BUILD_DIR: projects/design-tokens

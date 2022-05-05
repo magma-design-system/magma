@@ -9,6 +9,17 @@ base-stencil-build:
     - nx run styles:build
     - nx run icons:build
     - nx run stencil:build
+  artifacts:
+    name: stencil-build
+    expire_in: 1 day
+    paths:
+      - projects/design-tokens/dist
+      - projects/design-tokens/config
+      - projects/design-tokens/properties
+      - projects/styles/dist
+      - projects/icons/dist
+      - projects/stencil/dist
+      - projects/stencil/assets/svg
   rules:
     - if: $CI_PIPELINE_SOURCE == "merge_request_event" || $CI_COMMIT_BRANCH =~ /^(dev|main|pipeline)$/
       changes:
@@ -46,6 +57,7 @@ stencil-test:
 # BASE STENCIL PUBLISH TEST
 .base-stencil-publish-test:
   extends: .base-publish-test
+  dependencies: [base-stencil-build]
   stage: test
   variables:
     BUILD_DIR: projects/stencil/.build/$COMPONENT
@@ -58,6 +70,7 @@ stencil-test:
 # BASE STENCIL PUBLISH
 .base-stencil-publish:
   extends: .base-publish
+  dependencies: [base-stencil-build]
   stage: publish
   variables:
     BUILD_DIR: projects/stencil/.build/$COMPONENT

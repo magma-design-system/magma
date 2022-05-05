@@ -48,18 +48,8 @@ stages:
       - projects/styles/node_modules
       - projects/icons/node_modules
       - projects/stencil/node_modules
+      - projects/identity/node_modules
     policy: pull-push
-  artifacts:
-    name: design-system-build
-    expire_in: 1 day
-    paths:
-      - projects/design-tokens/dist
-      - projects/design-tokens/config
-      - projects/design-tokens/properties
-      - projects/styles/dist
-      - projects/icons/dist
-      - projects/stencil/dist
-      - projects/stencil/assets/svg
 
 # BASE PUBLISH TEST
 .base-publish-test:
