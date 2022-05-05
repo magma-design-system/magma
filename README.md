@@ -30,10 +30,8 @@ yarn install
 
 ### Build all
 
-Warning, this will take 1 hour (90% of the time by `identity`)
-
 ```
-nx run-many --all --target=build --skip-nx-cache
+nx run-many --target=build --all --skip-nx-cache
 ```
 
 ### Build single project
