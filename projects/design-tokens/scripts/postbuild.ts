@@ -9,7 +9,7 @@ const TOKENS_DIR = path.resolve(__dirname, '../css-tokens')
 const copyDir = async (src: string, dest: string) => {
   await copy(src, path.join(dest, path.basename(src)))
     .then(() => {
-      console.log(`Directory ${chalk.green(path.basename(src))} was ${chalk.green('successfully')} copied`)
+      console.log(`Directory ${chalk.green(path.basename(src))} copied ${chalk.green('successfully')}`)
     }).catch(error => {
       throw Error(chalk.red(error))
     })
