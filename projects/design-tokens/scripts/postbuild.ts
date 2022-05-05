@@ -1,10 +1,7 @@
 import chalk from 'chalk'
 import path from 'path'
-import { DIST_DIR } from './meta'
+import { DIST_DIR, CSS_TOKENS_DIR, PROPS_DIR } from './meta'
 import { copy } from 'fs-extra'
-
-const PROPS_DIR = path.resolve(__dirname, '../properties')
-const TOKENS_DIR = path.resolve(__dirname, '../css-tokens')
 
 const copyDir = async (src: string, dest: string) => {
   await copy(src, path.join(dest, path.basename(src)))
@@ -15,5 +12,5 @@ const copyDir = async (src: string, dest: string) => {
     })
 }
 
-copyDir(PROPS_DIR, path.join(DIST_DIR, path.basename(PROPS_DIR)))
-copyDir(TOKENS_DIR, path.join(DIST_DIR, path.basename(TOKENS_DIR)))
+copyDir(PROPS_DIR, DIST_DIR)
+copyDir(CSS_TOKENS_DIR, DIST_DIR)

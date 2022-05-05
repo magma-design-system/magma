@@ -43,7 +43,7 @@ const saveAsJs = ({ source, varName, destination }: { source: string, varName: s
       `
       const jsString = beautify(jsData, beautifyConfig)
 
-      writeFile(path.resolve(__dirname, destination), jsString)
+      writeFile(destination, jsString)
         .then(() => {
           console.log(`Token ${chalk.green(path.basename(source))} exported ${chalk.green('successfully')}`)
         })
