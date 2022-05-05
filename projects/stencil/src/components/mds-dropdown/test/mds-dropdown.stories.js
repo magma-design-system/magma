@@ -38,3 +38,17 @@ Default.args = {
   class: 'w-[350px]',
   layout: 'flex justify-center',
 }
+
+export const Shiftable = Template.bind({})
+Shiftable.args = {
+  class: 'w-[350px]',
+  layout: 'flex',
+  shift: true,
+}
+
+export const Flippable = Template.bind({})
+Flippable.args = {
+  class: 'w-[350px]',
+  layout: 'flex h-[200vh] justify-center items-center',
+  flip: true,
+}
