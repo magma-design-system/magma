@@ -15,7 +15,7 @@ push-storybook:
   rules:
     - if: $CI_COMMIT_BRANCH =~ /^(dev|pipeline)$/
 
-.deploy-storybook-base:
+deploy-storybook-base:
   stage: deploy:storybook
   image: maggiolieditore.azurecr.io/alpine-ssh-envsubst
   dependencies: [push-storybook]
