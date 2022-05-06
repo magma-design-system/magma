@@ -19,11 +19,30 @@ base-stencil-build:
       - projects/styles/dist
       - projects/icons/dist
       - projects/stencil/dist
-      - projects/stencil/assets/svg
+      - projects/stencil/src/fixtures/icons.json
+      - projects/stencil/assets
   rules:
     - if: $CI_PIPELINE_SOURCE == "merge_request_event" || $CI_COMMIT_BRANCH =~ /^(dev|main|pipeline)$/
       changes:
         - projects/stencil/**/*
+
+stencil-storybook-build:
+  extends: .base-build
+  stage: build:storybook
+  dependencies: [base-stencil-build]
+  needs: [base-stencil-build]
+  script:
+    - nx run stencil:storybook.build
+  artifacts:
+    name: stencil-storybook-build
+    expire_in: 1 day
+    paths:
+      - projects/stencil/dist-storybook
+  rules:
+    - if: $CI_COMMIT_BRANCH =~ /^(dev|pipeline)$/
+      changes:
+        - projects/stencil/**/*
+        - .deploy/**/*
 
 # BASE ISOLATE
 .base-isolate:

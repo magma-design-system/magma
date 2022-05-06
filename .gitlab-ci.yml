@@ -22,9 +22,10 @@ default:
 stages:
   - build
   - build:isolate
+  - build:storybook
   - test
   - publish
-  - deploy:storybook # TODO
+  - deploy:storybook
   - deploy:website # TODO
 
 # BASE BUILD
