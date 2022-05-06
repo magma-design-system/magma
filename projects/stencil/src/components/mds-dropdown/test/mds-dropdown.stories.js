@@ -1,18 +1,46 @@
 import React from 'react'
 import MdsDropdown from '@component/mds-dropdown/mds-dropdown'
 import clsx from 'clsx'
+import {
+  floatingUIPlacementDictionary,
+  floatingUIStrategyDictionary,
+} from '@dictionary/floating-ui'
 
 export default {
   title: 'UI / Dropdown',
   component: MdsDropdown,
   argTypes: {
-    background: {
+    arrow: {
       type: { name: 'boolean' },
-      description: 'Specifies if the component is opened',
+      description: 'If set, the component will have an arrow pointing to the caller',
     },
-    opened: {
+    autoPlacement: {
       type: { name: 'boolean' },
-      description: 'Specifies if the component is opened',
+      description: 'If set, the component will be placed automatically near it’s caller',
+    },
+    flip: {
+      type: { name: 'boolean' },
+      description: 'Specifies the placement of the component if no space is available where it is placed',
+    },
+    placement: {
+      type: { name: 'string' },
+      description: 'Specifies where the component should be placed relative to the caller',
+      options: floatingUIPlacementDictionary,
+      control: { type: 'select' },
+    },
+    shift: {
+      type: { name: 'boolean' },
+      description: 'If set, the component will be kept inside the viewport',
+    },
+    strategy: {
+      type: { name: 'string' },
+      description: 'Sets the CSS position strategy of the component',
+      options: floatingUIStrategyDictionary,
+      control: { type: 'select' },
+    },
+    visible: {
+      type: { name: 'boolean' },
+      description: 'Specifies if the component is visible',
     },
   },
 }
@@ -40,6 +68,13 @@ const Template = ({ layout, ...args }) =>
 export const Default = Template.bind({})
 Default.args = {
   class: 'w-[350px]',
+  layout: 'flex justify-center',
+}
+
+export const Arrow = Template.bind({})
+Arrow.args = {
+  class: 'w-[350px]',
+  arrow: true,
   layout: 'flex justify-center',
 }
 

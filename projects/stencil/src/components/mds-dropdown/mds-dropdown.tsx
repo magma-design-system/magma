@@ -1,7 +1,7 @@
 import { Component, Host, h, Element, Prop } from '@stencil/core'
-import { computePosition, autoUpdate, autoPlacement, flip, shift, offset } from '@floating-ui/dom'
+import { arrow, autoPlacement, autoUpdate, computePosition, flip, shift } from '@floating-ui/dom'
 import { FloatingUIPlacement, FloatingUIStrategy } from '../../types/floating-ui'
-
+import arrowSvg from './assets/arrow.svg'
 
 @Component({
   tag: 'mds-dropdown',
@@ -11,14 +11,45 @@ import { FloatingUIPlacement, FloatingUIStrategy } from '../../types/floating-ui
 export class MdsDropdown {
 
   private caller: HTMLElement
+  private arrowElement: HTMLElement
   @Element() private host: HTMLMdsDropdownElement
 
-  @Prop() readonly placement?: FloatingUIPlacement = 'bottom'
-  @Prop() readonly strategy?: FloatingUIStrategy = 'fixed'
+  /**
+   * If set, the component will have an arrow pointing to the caller.
+   */
+  @Prop() readonly arrow? = true
+
+  /**
+   * If set, the component will be placed automatically near it's caller.
+   */
   @Prop() readonly autoPlacement? = false
-  @Prop() readonly background? = false
+
+  // TODO: check if ::backdrop works
+  // @Prop() readonly background? = false
+
+  /**
+   * Specifies the placement of the component if no space is available where it is placed.
+   */
   @Prop() readonly flip? = false
+
+  /**
+   * Specifies where the component should be placed relative to the caller.
+   */
+  @Prop() readonly placement?: FloatingUIPlacement = 'bottom'
+
+  /**
+   * If set, the component will be kept inside the viewport.
+   */
   @Prop() readonly shift? = true
+
+  /**
+   * Sets the CSS position strategy of the component.
+   */
+  @Prop() readonly strategy?: FloatingUIStrategy = 'fixed'
+
+  /**
+   * Specifies the visibility of the component.
+   */
   @Prop({ mutable: true, reflect: true }) visible = false
 
   private callerOnClick = ():void => {
@@ -45,6 +76,13 @@ export class MdsDropdown {
     if (this.shift) {
       middleware.push(shift())
     }
+
+    if (this.arrow) {
+      middleware.push(arrow({
+        element: this.arrowElement,
+      }))
+    }
+
     computePosition(this.caller, this.host, {
       middleware,
       placement: this.placement,
@@ -58,8 +96,15 @@ export class MdsDropdown {
   }
 
   componentDidLoad ():void {
+    this.arrowElement = this.host.querySelector('.arrow')
+
+    console.log(this.arrowElement)
     this.caller = document.querySelector(`[for='${this.host.getAttribute('id')}']`)
     this.caller.addEventListener('click', this.callerOnClick.bind(this))
+  }
+
+  componentDidUpdate (): void {
+    console.log('componentDidUpdate')
   }
 
   componentDidRender (): void {
@@ -69,6 +114,7 @@ export class MdsDropdown {
   render () {
     return (
       <Host>
+        <div class="arrow" innerHTML={arrowSvg}/>
         <slot/>
       </Host>
     )
