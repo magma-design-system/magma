@@ -18,7 +18,7 @@ base-stencil-build:
       - projects/design-tokens/properties
       - projects/styles/dist
       - projects/icons/dist
-      - projects/stencil/dist
+      - projects/stencil/fixtures/icons.json
       - projects/stencil/assets/svg
   rules:
     - if: $CI_PIPELINE_SOURCE == "merge_request_event" || $CI_COMMIT_BRANCH =~ /^(dev|main|pipeline)$/
