@@ -1,32 +1,33 @@
 # DEPLOY STORYBOOK
-.push-storybook:
+push-storybook:
   stage: publish
+  dependencies: [stencil-storybook-build]
   services:
     - docker:dind
   variables:
     DOCKER_HOST: 'tcp://docker:2375'
-    CI_IMAGE_NAME: designsystem
+    CI_IMAGE_NAME: magma-storybook
     CI_IMAGE_TAG: $CI_REGISTRY/$CI_IMAGE_NAME:${CI_COMMIT_SHORT_SHA}
   script:
     - echo $CI_REGISTRY_PSW | docker login -u $CI_REGISTRY_USR --password-stdin https://$CI_REGISTRY
-    - docker build -t $CI_IMAGE_TAG .
+    - docker build -t $CI_IMAGE_TAG -f Dockerfile-storybook .
     - docker push $CI_IMAGE_TAG
   rules:
-    - if: $CI_COMMIT_BRANCH == "dev"
+    - if: $CI_COMMIT_BRANCH =~ /^(dev|pipeline)$/
 
 .deploy-storybook-base:
   stage: deploy:storybook
   image: maggiolieditore.azurecr.io/alpine-ssh-envsubst
-  needs: [push-storybook]
+  dependencies: [push-storybook]
   variables:
-    DEPLOY_FOLDER: $DEPLOY_FOLDER
+    DEPLOY_FOLDER: $DEPLOY_FOLDER_STORYBOOK
     SERVER: $CI_SERVER_IP
     SSH_PRIV_KEY: $CI_SSH_PRIV_KEY
     SSH_USER: $CI_SSH_USER
     ENV: prod
   script:
-    - chmod +x .deploy/deploy.sh
-    - .deploy/deploy.sh
+    - chmod +x .deploy/deploy-storybook.sh
+    - .deploy/deploy-storybook.sh
   rules:
     - if: $CI_COMMIT_BRANCH == "dev"
 
