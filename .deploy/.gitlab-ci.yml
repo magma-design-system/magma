@@ -14,6 +14,9 @@ push-storybook:
     - docker push $CI_IMAGE_TAG
   rules:
     - if: $CI_COMMIT_BRANCH =~ /^(dev|pipeline)$/
+      changes:
+        - projects/stencil/**/*
+        - .deploy/**/*
 
 deploy-storybook-base:
   stage: deploy:storybook
@@ -30,5 +33,8 @@ deploy-storybook-base:
     - .deploy/deploy-storybook.sh
   rules:
     - if: $CI_COMMIT_BRANCH == "dev"
+      changes:
+        - projects/stencil/**/*
+        - .deploy/**/*
 
 # DEPLOY WEBSITE TODO
