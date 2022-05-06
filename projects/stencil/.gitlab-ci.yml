@@ -18,6 +18,7 @@ base-stencil-build:
       - projects/design-tokens/properties
       - projects/styles/dist
       - projects/icons/dist
+      - projects/stencil/dist
       - projects/stencil/fixtures/icons.json
       - projects/stencil/assets
   rules:
