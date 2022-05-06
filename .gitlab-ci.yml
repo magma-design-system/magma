@@ -22,6 +22,7 @@ default:
 stages:
   - build
   - build:isolate
+  - build:storybook
   - test
   - publish
   - deploy:storybook # TODO
