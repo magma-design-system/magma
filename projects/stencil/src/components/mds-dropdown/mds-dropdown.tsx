@@ -191,6 +191,16 @@ export class MdsDropdown {
     }
   }
 
+  @Watch('arrowPadding')
+  arrowPaddingChanged (): void {
+    this.updatePosition()
+  }
+
+  @Watch('autoPlacement')
+  autoPlacementChanged (): void {
+    this.updatePosition()
+  }
+
   @Watch('backdrop')
   backdropChanged (newValue: boolean): void {
     if (newValue) {
@@ -198,6 +208,36 @@ export class MdsDropdown {
       return
     }
     this.detachBackdrop()
+  }
+
+  @Watch('flip')
+  flipChanged (): void {
+    this.updatePosition()
+  }
+
+  @Watch('offset')
+  offsetChanged (): void {
+    this.updatePosition()
+  }
+
+  @Watch('placement')
+  placementChanged (): void {
+    this.updatePosition()
+  }
+
+  @Watch('shift')
+  shiftChanged (): void {
+    this.updatePosition()
+  }
+
+  @Watch('shiftPadding')
+  shiftPaddingChanged (): void {
+    this.updatePosition()
+  }
+
+  @Watch('strategy')
+  strategyChanged (): void {
+    this.updatePosition()
   }
 
   @Watch('visible')
