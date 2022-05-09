@@ -2,7 +2,6 @@
 
 :host {
 
-  --arrow-distance: theme('spacing.6');
   --backdrop: theme('colors.label-amaranth-03');
   --background: theme('colors.tone-neutral');
   --drop-shadow: drop-shadow(0 10px 8px rgba(0, 0, 0, 0.04)) drop-shadow(0 4px 3px rgba(0, 0, 0, 0.1)) drop-shadow(0 0 1px rgba(0, 0, 0, 0.1));
@@ -54,8 +53,4 @@
 :host ( [arrow]:not([arrow=false])[visible]:not([visible=false]) ) .arrow {
   transform: scale(1);
   transition-timing-function: theme('transitionTimingFunction.out-quart');
-}
-
-:host ( [arrow]:not([arrow=false]) ) {
-  margin: var(--arrow-distance) 0;
 }

@@ -1,5 +1,5 @@
 import { Component, Element, Event, EventEmitter, Host, Listen, Prop, h, Watch } from '@stencil/core'
-import { arrow, autoPlacement, autoUpdate, computePosition, flip, shift } from '@floating-ui/dom'
+import { arrow, autoPlacement, autoUpdate, computePosition, flip, offset, shift } from '@floating-ui/dom'
 import { FloatingUIPlacement, FloatingUIStrategy } from '../../types/floating-ui'
 import arrowSvg from './assets/arrow.svg'
 
@@ -43,6 +43,11 @@ export class MdsDropdown {
    * Specifies the placement of the component if no space is available where it is placed.
    */
   @Prop() readonly flip? = false
+
+  /**
+   * Sets distance between the dropdown and the caller.
+   */
+  @Prop() readonly offset = 24
 
   /**
    * Specifies where the component should be placed relative to the caller.
@@ -138,8 +143,14 @@ export class MdsDropdown {
       middleware.push(autoPlacement())
     }
 
+    if (this.offset) {
+      middleware.push(offset(this.offset))
+    }
+
     if (!this.autoPlacement && this.flip) {
-      middleware.push(flip({ padding: 8 }))
+      middleware.push(flip({
+        padding: this.shiftPadding,
+      }))
     }
 
     if (this.shift) {

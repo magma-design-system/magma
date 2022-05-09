@@ -30,6 +30,10 @@ export default {
       type: { name: 'boolean' },
       description: 'Specifies the placement of the component if no space is available where it is placed',
     },
+    offset: {
+      type: { name: 'number' },
+      description: 'Sets distance between the dropdown and the caller',
+    },
     placement: {
       type: { name: 'string' },
       description: 'Specifies where the component should be placed relative to the caller',
