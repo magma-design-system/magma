@@ -1,4 +1,4 @@
-import { Component, Host, h, Element, Prop } from '@stencil/core'
+import { Component, Element, Event, EventEmitter, Host, Listen, Prop, h, Watch } from '@stencil/core'
 import { arrow, autoPlacement, autoUpdate, computePosition, flip, shift } from '@floating-ui/dom'
 import { FloatingUIPlacement, FloatingUIStrategy } from '../../types/floating-ui'
 import arrowSvg from './assets/arrow.svg'
@@ -11,7 +11,11 @@ import arrowSvg from './assets/arrow.svg'
 export class MdsDropdown {
 
   private caller: HTMLElement
-  private arrowElement: HTMLElement
+  private arrowEl: HTMLElement
+  private backdropEl: HTMLElement
+  private backdropDuration = 2000
+  private backdropTimer: NodeJS.Timeout
+  private cleanupAutoUpdate: () => void
   @Element() private host: HTMLMdsDropdownElement
 
   /**
@@ -24,8 +28,10 @@ export class MdsDropdown {
    */
   @Prop() readonly autoPlacement? = false
 
-  // TODO: check if ::backdrop works
-  // @Prop() readonly background? = false
+  /**
+   * Specifies if the component has a backdrop background
+   */
+  @Prop() readonly backdrop? = false
 
   /**
    * Specifies the placement of the component if no space is available where it is placed.
@@ -52,15 +58,82 @@ export class MdsDropdown {
    */
   @Prop({ mutable: true, reflect: true }) visible = false
 
-  private callerOnClick = ():void => {
-    console.log('callerOnClick')
+  /**
+   * Emits when a modal is closed
+   */
+  @Event({ bubbles: true, composed: true }) closeDropdown: EventEmitter<void>
+
+  private handleCloseDropdown = (e:Event = null): void => {
+    if (!this.visible) {
+      return
+    }
+
+    if (!this.host.contains(e.target as HTMLElement) && e.target as HTMLElement !== this.caller) {
+      this.closeDropdown.emit()
+    }
+  }
+
+  @Listen('closeDropdown', { target: 'document' })
+  onCloseListener (): void {
+    this.handleVisibility(false)
+  }
+
+  private handleVisibility = (visibility: boolean = null): void => {
+
+    if (visibility !== null) {
+      this.visible = visibility
+      return
+    }
 
     if (this.visible) {
       this.visible = false
       return
     }
+
     this.visible = true
     this.updatePosition()
+  }
+
+  @Watch('visible')
+  visibleChanged (newValue: boolean): void {
+    if (!this.backdrop) {
+      return
+    }
+    if (newValue) {
+      this.attachBackdrop()
+      return
+    }
+    this.detachBackdrop()
+  }
+
+  private attachBackdrop (): void {
+    this.backdropEl = document.createElement('div')
+    this.backdropEl.style.backgroundColor = 'rgba(0, 0, 0, 0)'
+    this.backdropEl.style.inset = '0'
+    this.backdropEl.style.pointerEvents = 'none'
+    this.backdropEl.style.position = 'fixed'
+    this.backdropEl.style.transition = `background-color ${this.backdropDuration / 10000}s ease-out`
+    this.backdropEl.style.zIndex = (Number(this.host.style.zIndex) - 1).toString()
+
+    document.body.appendChild(this.backdropEl)
+
+    clearTimeout(this.backdropTimer)
+    this.backdropTimer = setTimeout(() => {
+      this.backdropEl.style.backgroundColor = 'rgba(0, 0, 0, 0.2)'
+    }, 1)
+  }
+
+  private detachBackdrop (): void {
+    this.backdropEl.style.backgroundColor = 'rgba(0, 0, 0, 0)'
+
+    clearTimeout(this.backdropTimer)
+    this.backdropTimer = setTimeout(() => {
+      this.backdropEl.remove()
+    }, this.backdropDuration)
+  }
+
+  private callerOnClick = ():void => {
+    this.handleVisibility()
   }
 
   private updatePosition = ():void => {
@@ -79,7 +152,7 @@ export class MdsDropdown {
 
     if (this.arrow) {
       middleware.push(arrow({
-        element: this.arrowElement,
+        element: this.arrowEl,
       }))
     }
 
@@ -87,18 +160,19 @@ export class MdsDropdown {
       middleware,
       placement: this.placement,
       strategy: this.strategy,
-    }).then(({ x, y }) => {
+    }).then(({ x, y, middlewareData }) => {
       Object.assign(this.host.style, {
         left: `${x}px`,
         top: `${y}px`,
       })
+
+      // const { x as xArrow, y as yArrow } = middlewareData.arrow
     })
   }
 
   componentDidLoad ():void {
-    this.arrowElement = this.host.querySelector('.arrow')
-
-    console.log(this.arrowElement)
+    this.arrowEl = this.host.shadowRoot.querySelector('.arrow')
+    document.addEventListener('click', this.handleCloseDropdown)
     this.caller = document.querySelector(`[for='${this.host.getAttribute('id')}']`)
     this.caller.addEventListener('click', this.callerOnClick.bind(this))
   }
@@ -108,7 +182,9 @@ export class MdsDropdown {
   }
 
   componentDidRender (): void {
-    autoUpdate(this.caller, this.host, this.updatePosition)
+    if (!this.cleanupAutoUpdate) {
+      this.cleanupAutoUpdate = autoUpdate(this.caller, this.host, this.updatePosition)
+    }
   }
 
   render () {

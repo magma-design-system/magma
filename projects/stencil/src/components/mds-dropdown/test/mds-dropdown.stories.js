@@ -18,6 +18,10 @@ export default {
       type: { name: 'boolean' },
       description: 'If set, the component will be placed automatically near it’s caller',
     },
+    backdrop: {
+      type: { name: 'boolean' },
+      description: 'Specifies if the component has a backdrop background',
+    },
     flip: {
       type: { name: 'boolean' },
       description: 'Specifies the placement of the component if no space is available where it is placed',
@@ -78,6 +82,14 @@ Arrow.args = {
   layout: 'flex justify-center',
 }
 
+
+export const Backdrop = Template.bind({})
+Backdrop.args = {
+  class: 'w-[350px]',
+  backdrop: true,
+  layout: 'flex justify-center',
+}
+
 export const Shiftable = Template.bind({})
 Shiftable.args = {
   class: 'w-[350px]',
@@ -90,13 +102,6 @@ autoPlacement.args = {
   class: 'w-[350px]',
   layout: 'flex justify-end',
   autoPlacement: true,
-}
-
-export const Background = Template.bind({})
-Background.args = {
-  class: 'w-[350px]',
-  layout: 'flex justify-center',
-  background: true,
 }
 
 export const Flippable = Template.bind({})
