@@ -12,6 +12,8 @@ export class MdsDropdown {
 
   private caller: HTMLElement
   private arrowEl: HTMLElement
+  private arrowPadding = 24
+  private shiftPadding = 24
   private backdropEl: HTMLElement
   private backdropDuration = 2000
   private backdropTimer: NodeJS.Timeout
@@ -79,31 +81,16 @@ export class MdsDropdown {
   }
 
   private handleVisibility = (visibility: boolean = null): void => {
-
     if (visibility !== null) {
       this.visible = visibility
       return
     }
-
     if (this.visible) {
       this.visible = false
       return
     }
-
     this.visible = true
     this.updatePosition()
-  }
-
-  @Watch('visible')
-  visibleChanged (newValue: boolean): void {
-    if (!this.backdrop) {
-      return
-    }
-    if (newValue) {
-      this.attachBackdrop()
-      return
-    }
-    this.detachBackdrop()
   }
 
   private attachBackdrop (): void {
@@ -147,12 +134,15 @@ export class MdsDropdown {
     }
 
     if (this.shift) {
-      middleware.push(shift())
+      middleware.push(shift({
+        padding: this.shiftPadding,
+      }))
     }
 
     if (this.arrow) {
       middleware.push(arrow({
         element: this.arrowEl,
+        padding: this.arrowPadding,
       }))
     }
 
@@ -166,25 +156,57 @@ export class MdsDropdown {
         top: `${y}px`,
       })
 
-      // const { x as xArrow, y as yArrow } = middlewareData.arrow
+      const { arrow } = middlewareData
+      Object.assign(this.arrowEl.style, {
+        left: arrow.x !== null ? `${arrow.x}px` : '',
+        top: arrow.y !== null ? `${arrow.y}px` : '',
+      })
     })
   }
 
-  componentDidLoad ():void {
-    this.arrowEl = this.host.shadowRoot.querySelector('.arrow')
-    document.addEventListener('click', this.handleCloseDropdown)
-    this.caller = document.querySelector(`[for='${this.host.getAttribute('id')}']`)
-    this.caller.addEventListener('click', this.callerOnClick.bind(this))
+  @Watch('arrow')
+  arrowChanged (newValue: boolean): void {
+    if (newValue) {
+      this.updatePosition()
+    }
   }
 
-  componentDidUpdate (): void {
-    console.log('componentDidUpdate')
+  @Watch('backdrop')
+  backdropChanged (newValue: boolean): void {
+    if (newValue) {
+      this.attachBackdrop()
+      return
+    }
+    this.detachBackdrop()
+  }
+
+  @Watch('visible')
+  visibleChanged (newValue: boolean): void {
+    if (!this.backdrop) {
+      return
+    }
+    if (newValue) {
+      this.attachBackdrop()
+      return
+    }
+    this.detachBackdrop()
+  }
+
+  componentDidLoad ():void {
+    document.addEventListener('click', this.handleCloseDropdown)
+    this.arrowEl = this.host.shadowRoot.querySelector('.arrow')
+    this.caller = document.querySelector(`[for='${this.host.getAttribute('id')}']`)
+    this.caller.addEventListener('click', this.callerOnClick.bind(this))
   }
 
   componentDidRender (): void {
     if (!this.cleanupAutoUpdate) {
       this.cleanupAutoUpdate = autoUpdate(this.caller, this.host, this.updatePosition)
     }
+  }
+
+  disconnectedCallback (): void {
+    this.cleanupAutoUpdate = null
   }
 
   render () {

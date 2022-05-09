@@ -71,13 +71,13 @@ const Template = ({ layout, ...args }) =>
 
 export const Default = Template.bind({})
 Default.args = {
-  class: 'w-[350px]',
+  class: 'max-w-[350px] w-full',
   layout: 'flex justify-center',
 }
 
 export const Arrow = Template.bind({})
 Arrow.args = {
-  class: 'w-[350px]',
+  class: 'max-w-[350px] w-full',
   arrow: true,
   layout: 'flex justify-center',
 }
@@ -85,28 +85,28 @@ Arrow.args = {
 
 export const Backdrop = Template.bind({})
 Backdrop.args = {
-  class: 'w-[350px]',
+  class: 'max-w-[350px] w-full',
   backdrop: true,
   layout: 'flex justify-center',
 }
 
 export const Shiftable = Template.bind({})
 Shiftable.args = {
-  class: 'w-[350px]',
+  class: 'max-w-[350px] w-full',
   layout: 'flex justify-end',
   shift: true,
 }
 
 export const autoPlacement = Template.bind({})
 autoPlacement.args = {
-  class: 'w-[350px]',
+  class: 'max-w-[350px] w-full',
   layout: 'flex justify-end',
   autoPlacement: true,
 }
 
 export const Flippable = Template.bind({})
 Flippable.args = {
-  class: 'w-[350px]',
+  class: 'max-w-[350px] w-full',
   layout: 'flex h-[200vh] justify-center items-center',
   flip: true,
 }
