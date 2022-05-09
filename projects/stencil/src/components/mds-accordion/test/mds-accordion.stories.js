@@ -1,8 +1,15 @@
 import React from 'react'
 import MdsAccordion from '@component/mds-accordion/mds-accordion'
+import { version } from '../package.json'
+
+let title = 'UI / Accordion'
+
+if (version) {
+  title += ` v${version}`
+}
 
 export default {
-  title: 'UI / Accordion',
+  title,
   component: MdsAccordion,
   argTypes: {
     multiple: {

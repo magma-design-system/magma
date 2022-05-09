@@ -2,9 +2,16 @@ import React from 'react'
 import MdsTag from '@component/mds-tag/mds-tag'
 import { typographyDictionary } from '@dictionary/typography'
 import { themeFullVariantDictionary, toneSimpleVariantDictionary } from '@dictionary/variant'
+import { version } from '../package.json'
+
+let title = 'UI / Tag'
+
+if (version) {
+  title += ` v${version}`
+}
 
 export default {
-  title: 'UI / Tag',
+  title,
   component: MdsTag,
   argTypes: {
     deletable: {
