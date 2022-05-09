@@ -10,20 +10,24 @@ import arrowSvg from './assets/arrow.svg'
 })
 export class MdsDropdown {
 
-  private caller: HTMLElement
   private arrowEl: HTMLElement
-  private arrowPadding = 24
-  private shiftPadding = 24
-  private backdropEl: HTMLElement
   private backdropDuration = 2000
+  private backdropEl: HTMLElement
   private backdropTimer: NodeJS.Timeout
+  private caller: HTMLElement
   private cleanupAutoUpdate: () => void
+
   @Element() private host: HTMLMdsDropdownElement
 
   /**
    * If set, the component will have an arrow pointing to the caller.
    */
   @Prop() readonly arrow? = true
+
+  /**
+   * Sets the distance between arrow and dropdown margins.
+   */
+  @Prop() readonly arrowPadding = 24
 
   /**
    * If set, the component will be placed automatically near it's caller.
@@ -49,6 +53,11 @@ export class MdsDropdown {
    * If set, the component will be kept inside the viewport.
    */
   @Prop() readonly shift? = true
+
+  /**
+   * Sets a safe area distance between the dropdown and the body.
+   */
+  @Prop() readonly shiftPadding = 24
 
   /**
    * Sets the CSS position strategy of the component.

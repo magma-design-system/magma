@@ -14,6 +14,10 @@ export default {
       type: { name: 'boolean' },
       description: 'If set, the component will have an arrow pointing to the caller',
     },
+    arrowPadding: {
+      type: { name: 'number' },
+      description: 'Sets the distance between arrow and dropdown margins',
+    },
     autoPlacement: {
       type: { name: 'boolean' },
       description: 'If set, the component will be placed automatically near it’s caller',
@@ -35,6 +39,10 @@ export default {
     shift: {
       type: { name: 'boolean' },
       description: 'If set, the component will be kept inside the viewport',
+    },
+    shiftPadding: {
+      type: { name: 'number' },
+      description: 'Sets a safe area distance between the dropdown and the body',
     },
     strategy: {
       type: { name: 'string' },
