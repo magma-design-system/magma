@@ -8,8 +8,8 @@
   --drop-shadow: drop-shadow(0 10px 8px rgba(0, 0, 0, 0.04)) drop-shadow(0 4px 3px rgba(0, 0, 0, 0.1)) drop-shadow(0 0 1px rgba(0, 0, 0, 0.1));
   --duration: 0.5s;
   --ease: theme('transitionTimingFunction.out-expo');
-  --transform-from: translateY(-3%);
-  --transform-to: translate(0, 0);
+  --transform-from: scale(0.9) translateY(-3%);
+  --transform-to: scale(1) translate(0, 0);
 
   @apply
     box-border
@@ -19,13 +19,13 @@
     opacity-0
     p-6
     pointer-events-none
-    rounded-lg
-    transition-cosmetic;
+    rounded-lg;
 
   background-color: var(--background);
   filter: var(--drop-shadow);
   transform: var(--transform-from);
   transition-duration: var(--duration);
+  transition-property: bottom left opacity right top transform;
   transition-timing-function: var(--ease);
 }
 
@@ -40,20 +40,24 @@
 .arrow {
   @apply
     -top-4
-    absolute
+    fixed
     flex
-    transition-transform;
+    transition-all;
 
   fill: var(--background-arrow);
-  fill: red;
-  transform: scale(0);
-  transform-origin: bottom center;
+  transform-origin: center center;
   transition-duration: var(--duration);
-  transition-timing-function: theme('transitionTimingFunction.out-expo');
+  transition-property: bottom left right top transform;
 }
 
 :host ( [arrow]:not([arrow=false])[visible]:not([visible=false]) ) .arrow {
-  fill: green;
-  transform: scale(1);
   transition-timing-function: theme('transitionTimingFunction.out-quart');
+}
+
+:host ( [arrow]:not([arrow=false]):not([visible]):not([visible=true]) ) .arrow {
+  transition-timing-function: theme('transitionTimingFunction.out-expo');
+}
+
+::slotted ( * ) {
+  @apply relative z-10;
 }

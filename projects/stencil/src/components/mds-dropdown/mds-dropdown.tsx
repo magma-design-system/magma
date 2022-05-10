@@ -1,5 +1,5 @@
 import { Component, Element, Event, EventEmitter, Host, Listen, Prop, h, Watch } from '@stencil/core'
-import { arrow, autoPlacement, autoUpdate, computePosition, flip, offset, shift } from '@floating-ui/dom'
+import { arrow, autoPlacement, autoUpdate, computePosition, flip, MiddlewareData, offset, shift } from '@floating-ui/dom'
 import { FloatingUIPlacement, FloatingUIStrategy } from '../../types/floating-ui'
 import arrowSvg from './assets/arrow.svg'
 
@@ -137,6 +137,44 @@ export class MdsDropdown {
     this.handleVisibility()
   }
 
+  private arrowInset = (middleware: MiddlewareData , arrowPosition: string): { bottom?: string, left?: string, right?: string, top?: string } => {
+    const { arrow } = middleware
+    const inset = { bottom:'', left: '', right: '', top: '' }
+
+    if (arrow === undefined) {
+      return {}
+    }
+
+    switch (arrowPosition) {
+      case 'top':
+        inset.left = arrow.x != null ? `${arrow.x}px` : ''
+        inset.top = arrow.y != null ? `${arrow.y}px` : ''
+        break;
+      case 'bottom':
+        inset.left = arrow.x != null ? `${arrow.x}px` : ''
+        inset.top = '100%'
+        break;
+      default:
+        break;
+    }
+    return inset
+  }
+
+  private arrowTransform = (arrowPosition: string): { transform: string } => {
+    let transformProps = this.arrow && this.visible ? 'scale(1)' : 'scale(0)'
+    switch (arrowPosition) {
+      case 'top':
+        transformProps = `rotate(0deg) ${transformProps} translateY(0)`
+        break;
+      case 'bottom':
+        transformProps = `rotate(180deg) ${transformProps} translateY(-100%)`
+        break;
+      default:
+        break;
+    }
+    return { transform: transformProps }
+  }
+
   private updatePosition = ():void => {
     const middleware = []
     if (this.autoPlacement) {
@@ -177,8 +215,7 @@ export class MdsDropdown {
         top: `${y}px`,
       })
 
-      const { arrow } = middlewareData
-
+      const arrowStyle = {}
       const arrowPosition = {
         top: 'bottom',
         right: 'left',
@@ -186,37 +223,10 @@ export class MdsDropdown {
         left: 'right',
       }[placement.split('-')[0]]
 
-      console.log(arrow)
-
-      if (arrow === undefined) {
-        Object.assign(this.arrowEl.style, {
-          transformOrigin: `${placement} center`,
-          transform: 'scale(0)',
-        })
-        return
-      }
-
-      if (arrowPosition === 'top') {
-        Object.assign(this.arrowEl.style, {
-          bottom: '',
-          left: arrow.x != null ? `${arrow.x}px` : '',
-          right: '',
-          top: arrow.y != null ? `${arrow.y}px` : '',
-          transformOrigin: `${placement} center`,
-          transform: 'rotate(0deg) scale(1) translateY(0)',
-        })
-      }
-
-      if (arrowPosition === 'bottom') {
-        Object.assign(this.arrowEl.style, {
-          bottom: '',
-          left: arrow.x != null ? `${arrow.x}px` : '',
-          right: '',
-          top: '100%',
-          transformOrigin: `${placement} center`,
-          transform: 'rotate(180deg) scale(1) translateY(-100%)',
-        })
-      }
+      Object.assign(arrowStyle, this.arrowTransform(arrowPosition))
+      Object.assign(arrowStyle, this.arrowInset(middlewareData, arrowPosition))
+      Object.assign(arrowStyle, { transformOrigin: `${placement} center` })
+      Object.assign(this.arrowEl.style, arrowStyle)
     })
   }
 
