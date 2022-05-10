@@ -24,9 +24,7 @@
   background-color: var(--background);
   filter: var(--drop-shadow);
   transform: var(--transform-from);
-  transition-duration: var(--duration);
-  transition-property: bottom left opacity right top transform;
-  transition-timing-function: var(--ease);
+  transition: bottom 0s ease left 0s ease opacity var(--duration) var(--ease) right 0s ease top 0s ease transform var(--duration) var(--ease);
 }
 
 :host ( [visible]:not([visible=false]) ) {
@@ -35,6 +33,12 @@
     pointer-events-auto;
 
   transform: var(--transform-to);
+}
+
+:host ( [smooth]:not([smooth=false]) ) {
+  transition-duration: var(--duration);
+  transition-property: bottom left opacity right top transform;
+  transition-timing-function: var(--ease);
 }
 
 .arrow {
@@ -59,5 +63,7 @@
 }
 
 ::slotted ( * ) {
-  @apply relative z-10;
+  @apply
+    relative
+    z-10;
 }

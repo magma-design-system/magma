@@ -48,6 +48,10 @@ export default {
       type: { name: 'number' },
       description: 'Sets a safe area distance between the dropdown and the body',
     },
+    smooth: {
+      type: { name: 'boolean' },
+      description: 'If set, the component will follow the caller smoothly',
+    },
     strategy: {
       type: { name: 'string' },
       description: 'Sets the CSS position strategy of the component',

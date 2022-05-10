@@ -60,6 +60,11 @@ export class MdsDropdown {
   @Prop() readonly shift? = true
 
   /**
+   * If set, the component will follow the caller smoothly.
+   */
+  @Prop() readonly smooth? = true
+
+  /**
    * Sets a safe area distance between the dropdown and the body.
    */
   @Prop() readonly shiftPadding = 24
@@ -145,14 +150,24 @@ export class MdsDropdown {
       return {}
     }
 
+
+
     switch (arrowPosition) {
-      case 'top':
-        inset.left = arrow.x != null ? `${arrow.x}px` : ''
-        inset.top = arrow.y != null ? `${arrow.y}px` : ''
-        break;
       case 'bottom':
         inset.left = arrow.x != null ? `${arrow.x}px` : ''
         inset.top = '100%'
+        break;
+      case 'left':
+        inset.left = '0'
+        inset.top = arrow.y != null ? `${arrow.y}px` : ''
+        break;
+      case 'right':
+        inset.left = '100%'
+        inset.top = arrow.y != null ? `${arrow.y}px` : ''
+        break;
+      case 'top':
+        inset.left = arrow.x != null ? `${arrow.x}px` : ''
+        inset.top = arrow.y != null ? `${arrow.y}px` : ''
         break;
       default:
         break;
@@ -163,11 +178,17 @@ export class MdsDropdown {
   private arrowTransform = (arrowPosition: string): { transform: string } => {
     let transformProps = this.arrow && this.visible ? 'scale(1)' : 'scale(0)'
     switch (arrowPosition) {
-      case 'top':
-        transformProps = `rotate(0deg) ${transformProps} translateY(0)`
-        break;
       case 'bottom':
         transformProps = `rotate(180deg) ${transformProps} translateY(-100%)`
+        break;
+      case 'left':
+        transformProps = `rotate(-90deg) ${transformProps} translateY(calc(-150% + 1px))`
+        break;
+      case 'right':
+        transformProps = `rotate(90deg) ${transformProps} ${this.arrow && this.visible ? 'translateY(50%)' : 'translateY(250%)'}`
+        break;
+      case 'top':
+        transformProps = `rotate(0deg) ${transformProps} translateY(0)`
         break;
       default:
         break;
@@ -225,7 +246,7 @@ export class MdsDropdown {
 
       Object.assign(arrowStyle, this.arrowTransform(arrowPosition))
       Object.assign(arrowStyle, this.arrowInset(middlewareData, arrowPosition))
-      Object.assign(arrowStyle, { transformOrigin: `${placement} center` })
+      // Object.assign(arrowStyle, { transformOrigin: `${placement} center` })
       Object.assign(this.arrowEl.style, arrowStyle)
     })
   }
