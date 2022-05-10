@@ -45,6 +45,7 @@
     transition-transform;
 
   fill: var(--background-arrow);
+  fill: red;
   transform: scale(0);
   transform-origin: bottom center;
   transition-duration: var(--duration);
@@ -52,6 +53,7 @@
 }
 
 :host ( [arrow]:not([arrow=false])[visible]:not([visible=false]) ) .arrow {
+  fill: green;
   transform: scale(1);
   transition-timing-function: theme('transitionTimingFunction.out-quart');
 }

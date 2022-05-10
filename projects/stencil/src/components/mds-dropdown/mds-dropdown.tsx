@@ -170,25 +170,59 @@ export class MdsDropdown {
       middleware,
       placement: this.placement,
       strategy: this.strategy,
-    }).then(({ x, y, middlewareData }) => {
+    }).then(({ x, y, placement, middlewareData }) => {
+
       Object.assign(this.host.style, {
         left: `${x}px`,
         top: `${y}px`,
       })
 
       const { arrow } = middlewareData
-      Object.assign(this.arrowEl.style, {
-        left: arrow.x !== null ? `${arrow.x}px` : '',
-        top: arrow.y !== null ? `${arrow.y}px` : '',
-      })
+
+      const arrowPosition = {
+        top: 'bottom',
+        right: 'left',
+        bottom: 'top',
+        left: 'right',
+      }[placement.split('-')[0]]
+
+      console.log(arrow)
+
+      if (arrow === undefined) {
+        Object.assign(this.arrowEl.style, {
+          transformOrigin: `${placement} center`,
+          transform: 'scale(0)',
+        })
+        return
+      }
+
+      if (arrowPosition === 'top') {
+        Object.assign(this.arrowEl.style, {
+          bottom: '',
+          left: arrow.x != null ? `${arrow.x}px` : '',
+          right: '',
+          top: arrow.y != null ? `${arrow.y}px` : '',
+          transformOrigin: `${placement} center`,
+          transform: 'rotate(0deg) scale(1) translateY(0)',
+        })
+      }
+
+      if (arrowPosition === 'bottom') {
+        Object.assign(this.arrowEl.style, {
+          bottom: '',
+          left: arrow.x != null ? `${arrow.x}px` : '',
+          right: '',
+          top: '100%',
+          transformOrigin: `${placement} center`,
+          transform: 'rotate(180deg) scale(1) translateY(-100%)',
+        })
+      }
     })
   }
 
   @Watch('arrow')
-  arrowChanged (newValue: boolean): void {
-    if (newValue) {
-      this.updatePosition()
-    }
+  arrowChanged (): void {
+    this.updatePosition()
   }
 
   @Watch('arrowPadding')
@@ -203,6 +237,10 @@ export class MdsDropdown {
 
   @Watch('backdrop')
   backdropChanged (newValue: boolean): void {
+    if (!this.visible) {
+      return
+    }
+
     if (newValue) {
       this.attachBackdrop()
       return
@@ -242,6 +280,7 @@ export class MdsDropdown {
 
   @Watch('visible')
   visibleChanged (newValue: boolean): void {
+    this.updatePosition()
     if (!this.backdrop) {
       return
     }
