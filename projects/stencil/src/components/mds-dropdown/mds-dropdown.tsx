@@ -135,6 +135,9 @@ export class MdsDropdown {
   }
 
   private detachBackdrop (): void {
+    if (!this.backdropEl) {
+      return
+    }
     this.backdropEl.style.backgroundColor = 'transparent'
     clearTimeout(this.backdropTimer)
     this.backdropTimer = setTimeout(() => {
@@ -288,11 +291,9 @@ export class MdsDropdown {
 
   @Watch('backdrop')
   backdropChanged (newValue: boolean): void {
-    console.log(newValue)
     if (!this.visible) {
       return
     }
-
     if (newValue) {
       this.attachBackdrop()
       return
@@ -359,10 +360,6 @@ export class MdsDropdown {
     Array.from(document.getElementsByClassName(this.backdropId)).forEach((element: HTMLElement) => {
       element.remove()
     })
-
-    if (this.backdrop) {
-      this.attachBackdrop()
-    }
   }
 
   componentDidRender (): void {
