@@ -65,7 +65,7 @@ export class MdsDropdown {
   /**
    * Sets a safe area distance between the dropdown and the viewport.
    */
-  @Prop() readonly shiftPadding?: number
+  @Prop() readonly shiftPadding = 24
 
   /**
    * If set, the component will follow the caller smoothly, visible when the page scrolls.
@@ -116,9 +116,6 @@ export class MdsDropdown {
   }
 
   private attachBackdrop (): void {
-
-    console.log(document.body.querySelector(this.backdropId))
-
     if (!this.backdropEl) {
       this.backdropEl = document.createElement('div')
       this.backdropEl.style.backgroundColor = 'rgba(0, 0, 0, 0)'
@@ -291,6 +288,7 @@ export class MdsDropdown {
 
   @Watch('backdrop')
   backdropChanged (newValue: boolean): void {
+    console.log(newValue)
     if (!this.visible) {
       return
     }
@@ -357,6 +355,14 @@ export class MdsDropdown {
     this.arrowEl = this.host.shadowRoot.querySelector('.arrow')
     this.caller = document.querySelector(`[for='${this.host.getAttribute('id')}']`)
     this.caller.addEventListener('click', this.callerOnClick.bind(this))
+
+    Array.from(document.getElementsByClassName(this.backdropId)).forEach((element: HTMLElement) => {
+      element.remove()
+    })
+
+    if (this.backdrop) {
+      this.attachBackdrop()
+    }
   }
 
   componentDidRender (): void {

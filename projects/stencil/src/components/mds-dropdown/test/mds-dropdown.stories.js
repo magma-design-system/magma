@@ -14,11 +14,11 @@ export default {
       type: { name: 'boolean' },
       description: 'If set, the component will have an arrow pointing to the caller',
     },
-    arrowPadding: {
+    'arrow-padding': {
       type: { name: 'number' },
-      description: 'Sets the distance between arrow and dropdown margins',
+      description: 'Sets the distance between the arrow and dropdown margins',
     },
-    autoPlacement: {
+    'auto-placement': {
       type: { name: 'boolean' },
       description: 'If set, the component will be placed automatically near it’s caller',
     },
@@ -44,7 +44,7 @@ export default {
       type: { name: 'boolean' },
       description: 'If set, the component will be kept inside the viewport',
     },
-    shiftPadding: {
+    'shift-padding': {
       type: { name: 'number' },
       description: 'Sets a safe area distance between the dropdown and the body',
     },
@@ -95,7 +95,21 @@ export const Arrow = Template.bind({})
 Arrow.args = {
   class: 'max-w-[350px] w-full',
   arrow: true,
-  layout: 'flex justify-center',
+  backdrop: true,
+  'shift-padding': 32,
+  layout: 'flex justify-start',
+  visible: true,
+}
+
+export const ArrowPadding = Template.bind({})
+ArrowPadding.args = {
+  class: 'max-w-[350px] w-full',
+  arrow: true,
+  backdrop: true,
+  'arrow-padding': 50,
+  'shift-padding': 32,
+  layout: 'flex justify-start',
+  visible: true,
 }
 
 
