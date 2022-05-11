@@ -50,7 +50,7 @@ export default {
     },
     smooth: {
       type: { name: 'boolean' },
-      description: 'If set, the component will follow the caller smoothly',
+      description: 'If set, the component will follow the caller smoothly, visible when the page scrolls',
     },
     strategy: {
       type: { name: 'string' },

@@ -1,8 +1,12 @@
 @tailwind utilities;
 
-:host {
+/* :root {
 
   --backdrop: theme('colors.label-amaranth-03');
+} */
+
+:host {
+
   --background-arrow: var(--background);
   --background: theme('colors.tone-neutral');
   --drop-shadow: drop-shadow(0 10px 8px rgba(0, 0, 0, 0.04)) drop-shadow(0 4px 3px rgba(0, 0, 0, 0.1)) drop-shadow(0 0 1px rgba(0, 0, 0, 0.1));
@@ -24,7 +28,9 @@
   background-color: var(--background);
   filter: var(--drop-shadow);
   transform: var(--transform-from);
-  transition: bottom 0s ease left 0s ease opacity var(--duration) var(--ease) right 0s ease top 0s ease transform var(--duration) var(--ease);
+  transition-duration: var(--duration);
+  transition-property: opacity transform transform-origin;
+  transition-timing-function: var(--ease);
 }
 
 :host ( [visible]:not([visible=false]) ) {
@@ -36,9 +42,7 @@
 }
 
 :host ( [smooth]:not([smooth=false]) ) {
-  transition-duration: var(--duration);
-  transition-property: bottom left opacity right top transform;
-  transition-timing-function: var(--ease);
+  transition-property: bottom left opacity right top transform transform-origin;
 }
 
 .arrow {
@@ -46,12 +50,12 @@
     -top-4
     fixed
     flex
+    pointer-events-none
     transition-all;
 
   fill: var(--background-arrow);
-  transform-origin: center center;
   transition-duration: var(--duration);
-  transition-property: bottom left right top transform;
+  transition-property: bottom left right top transform transform-origin;
 }
 
 :host ( [arrow]:not([arrow=false])[visible]:not([visible=false]) ) .arrow {

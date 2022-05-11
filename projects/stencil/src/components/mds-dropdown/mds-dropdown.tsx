@@ -11,8 +11,11 @@ import arrowSvg from './assets/arrow.svg'
 export class MdsDropdown {
 
   private arrowEl: HTMLElement
+  private backdropBackground = 'rgba(0, 0, 0, 0.1)'
+  private backdropCustomPropBackground = '--backdrop'
   private backdropDuration = 2000
   private backdropEl: HTMLElement
+  private backdropId = 'mds-dropdown-backdrop'
   private backdropTimer: NodeJS.Timeout
   private caller: HTMLElement
   private cleanupAutoUpdate: () => void
@@ -60,14 +63,14 @@ export class MdsDropdown {
   @Prop() readonly shift? = true
 
   /**
-   * If set, the component will follow the caller smoothly.
+   * Sets a safe area distance between the dropdown and the viewport.
    */
-  @Prop() readonly smooth? = true
+  @Prop() readonly shiftPadding?: number
 
   /**
-   * Sets a safe area distance between the dropdown and the body.
+   * If set, the component will follow the caller smoothly, visible when the page scrolls.
    */
-  @Prop() readonly shiftPadding = 24
+  @Prop() readonly smooth? = true
 
   /**
    * Sets the CSS position strategy of the component.
@@ -113,28 +116,33 @@ export class MdsDropdown {
   }
 
   private attachBackdrop (): void {
-    this.backdropEl = document.createElement('div')
-    this.backdropEl.style.backgroundColor = 'rgba(0, 0, 0, 0)'
-    this.backdropEl.style.inset = '0'
-    this.backdropEl.style.pointerEvents = 'none'
-    this.backdropEl.style.position = 'fixed'
-    this.backdropEl.style.transition = `background-color ${this.backdropDuration / 10000}s ease-out`
-    this.backdropEl.style.zIndex = (Number(this.host.style.zIndex) - 1).toString()
 
-    document.body.appendChild(this.backdropEl)
+    console.log(document.body.querySelector(this.backdropId))
+
+    if (!this.backdropEl) {
+      this.backdropEl = document.createElement('div')
+      this.backdropEl.style.backgroundColor = 'rgba(0, 0, 0, 0)'
+      this.backdropEl.className = this.backdropId
+      this.backdropEl.style.inset = '0'
+      this.backdropEl.style.pointerEvents = 'none'
+      this.backdropEl.style.position = 'fixed'
+      this.backdropEl.style.transition = `background-color ${this.backdropDuration / 10000}s ease-out`
+      this.backdropEl.style.zIndex = (Number(this.host.style.zIndex) - 1).toString()
+      document.body.appendChild(this.backdropEl)
+    }
 
     clearTimeout(this.backdropTimer)
     this.backdropTimer = setTimeout(() => {
-      this.backdropEl.style.backgroundColor = 'rgba(0, 0, 0, 0.2)'
+      this.backdropEl.style.backgroundColor = this.backdropBackground
     }, 1)
   }
 
   private detachBackdrop (): void {
-    this.backdropEl.style.backgroundColor = 'rgba(0, 0, 0, 0)'
-
+    this.backdropEl.style.backgroundColor = 'transparent'
     clearTimeout(this.backdropTimer)
     this.backdropTimer = setTimeout(() => {
       this.backdropEl.remove()
+      this.backdropEl = null
     }, this.backdropDuration)
   }
 
@@ -150,15 +158,13 @@ export class MdsDropdown {
       return {}
     }
 
-
-
     switch (arrowPosition) {
       case 'bottom':
         inset.left = arrow.x != null ? `${arrow.x}px` : ''
         inset.top = '100%'
         break;
       case 'left':
-        inset.left = '0'
+        inset.right = '100%'
         inset.top = arrow.y != null ? `${arrow.y}px` : ''
         break;
       case 'right':
@@ -179,16 +185,16 @@ export class MdsDropdown {
     let transformProps = this.arrow && this.visible ? 'scale(1)' : 'scale(0)'
     switch (arrowPosition) {
       case 'bottom':
-        transformProps = `rotate(180deg) ${transformProps} translateY(-100%)`
+        transformProps = `rotate(180deg) ${transformProps} translate(0, -100%)`
         break;
       case 'left':
-        transformProps = `rotate(-90deg) ${transformProps} translateY(calc(-150% + 1px))`
+        transformProps = `rotate(-90deg) ${transformProps} translate(50%, -50%)`
         break;
       case 'right':
-        transformProps = `rotate(90deg) ${transformProps} ${this.arrow && this.visible ? 'translateY(50%)' : 'translateY(250%)'}`
+        transformProps = `rotate(90deg) ${transformProps} translate(-50%, -50%)`
         break;
       case 'top':
-        transformProps = `rotate(0deg) ${transformProps} translateY(0)`
+        transformProps = `rotate(0deg) ${transformProps} translate(0, 0)`
         break;
       default:
         break;
@@ -196,8 +202,29 @@ export class MdsDropdown {
     return { transform: transformProps }
   }
 
+  private arrowTransformOrigin = (arrowPosition: string): { transformOrigin: string } => {
+    switch (arrowPosition) {
+      case 'bottom':
+        return { transformOrigin: 'center top' }
+      case 'left':
+        return { transformOrigin: 'right center' }
+      case 'right':
+        return { transformOrigin: 'left center' }
+      case 'top':
+        return { transformOrigin: 'center bottom' }
+      default:
+        return { transformOrigin: 'center top' }
+    }
+  }
+
   private updatePosition = ():void => {
     const middleware = []
+    const config: { padding?: number } = {}
+
+    if (this.shiftPadding) {
+      config.padding = this.shiftPadding
+    }
+
     if (this.autoPlacement) {
       middleware.push(autoPlacement())
     }
@@ -207,15 +234,11 @@ export class MdsDropdown {
     }
 
     if (!this.autoPlacement && this.flip) {
-      middleware.push(flip({
-        padding: this.shiftPadding,
-      }))
+      middleware.push(flip(config))
     }
 
     if (this.shift) {
-      middleware.push(shift({
-        padding: this.shiftPadding,
-      }))
+      middleware.push(shift(config))
     }
 
     if (this.arrow) {
@@ -246,7 +269,7 @@ export class MdsDropdown {
 
       Object.assign(arrowStyle, this.arrowTransform(arrowPosition))
       Object.assign(arrowStyle, this.arrowInset(middlewareData, arrowPosition))
-      // Object.assign(arrowStyle, { transformOrigin: `${placement} center` })
+      Object.assign(arrowStyle, this.arrowTransformOrigin(arrowPosition))
       Object.assign(this.arrowEl.style, arrowStyle)
     })
   }
@@ -322,7 +345,14 @@ export class MdsDropdown {
     this.detachBackdrop()
   }
 
-  componentDidLoad ():void {
+  componentWillLoad (): void {
+    const backdropCustomProp = getComputedStyle(document.documentElement,null).getPropertyValue(this.backdropCustomPropBackground)
+    if (backdropCustomProp !== '') {
+      this.backdropBackground = `var(${this.backdropCustomPropBackground})`
+    }
+  }
+
+  componentDidLoad (): void {
     document.addEventListener('click', this.handleCloseDropdown)
     this.arrowEl = this.host.shadowRoot.querySelector('.arrow')
     this.caller = document.querySelector(`[for='${this.host.getAttribute('id')}']`)
