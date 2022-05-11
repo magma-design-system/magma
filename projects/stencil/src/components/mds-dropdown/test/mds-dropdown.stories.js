@@ -112,31 +112,84 @@ ArrowPadding.args = {
   visible: true,
 }
 
+export const AutoPlacement = Template.bind({})
+AutoPlacement.args = {
+  class: 'max-w-[350px] w-full',
+  'auto-placement': true,
+  layout: 'flex justify-end',
+  visible: true,
+}
 
 export const Backdrop = Template.bind({})
 Backdrop.args = {
   class: 'max-w-[350px] w-full',
   backdrop: true,
   layout: 'flex justify-center',
+  visible: false,
 }
 
-export const Shiftable = Template.bind({})
-Shiftable.args = {
-  class: 'max-w-[350px] w-full',
-  layout: 'flex justify-end',
-  shift: true,
-}
-
-export const autoPlacement = Template.bind({})
-autoPlacement.args = {
-  class: 'max-w-[350px] w-full',
-  layout: 'flex justify-end',
-  autoPlacement: true,
-}
-
-export const Flippable = Template.bind({})
-Flippable.args = {
+export const Flip = Template.bind({})
+Flip.args = {
   class: 'max-w-[350px] w-full',
   layout: 'flex h-[200vh] justify-center items-center',
   flip: true,
+  visible: true,
+}
+
+export const Offset = Template.bind({})
+Offset.args = {
+  class: 'max-w-[350px] w-full',
+  layout: 'flex justify-center items-center',
+  offset: 50,
+  backdrop: true,
+  visible: true,
+}
+
+export const Placement = Template.bind({})
+Placement.args = {
+  class: 'max-w-[350px] w-full',
+  layout: 'flex justify-center items-center',
+  placement: 'right-start',
+  backdrop: true,
+  visible: true,
+}
+
+export const Shift = Template.bind({})
+Shift.args = {
+  class: 'max-w-[350px] w-full',
+  layout: 'flex justify-end',
+  shift: true,
+  visible: true,
+}
+
+export const ShiftPadding = Template.bind({})
+ShiftPadding.args = {
+  class: 'max-w-[350px] w-full',
+  layout: 'flex justify-end',
+  shift: true,
+  'shift-padding': 50,
+  visible: true,
+}
+
+export const Smooth = Template.bind({})
+Smooth.args = {
+  class: 'max-w-[350px] w-full',
+  layout: 'flex justify-start h-[100vh] mt-[25vh]',
+  smooth: true,
+  visible: true,
+}
+
+export const Strategy = Template.bind({})
+Strategy.args = {
+  class: 'max-w-[350px] w-full',
+  layout: 'flex justify-start',
+  strategy: 'absolute',
+  visible: true,
+}
+
+export const Visible = Template.bind({})
+Visible.args = {
+  class: 'max-w-[350px] w-full',
+  layout: 'flex justify-start',
+  visible: false,
 }
