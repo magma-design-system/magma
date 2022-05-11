@@ -29,7 +29,7 @@
   filter: var(--drop-shadow);
   transform: var(--transform-from);
   transition-duration: var(--duration);
-  transition-property: opacity transform transform-origin;
+  transition-property: opacity, transform, transform-origin;
   transition-timing-function: var(--ease);
 }
 
@@ -42,7 +42,7 @@
 }
 
 :host ( [smooth]:not([smooth=false]) ) {
-  transition-property: bottom left opacity right top transform transform-origin;
+  transition-property: bottom, left, opacity, right, top, transform, transform-origin;
 }
 
 .arrow {
@@ -50,12 +50,11 @@
     -top-4
     fixed
     flex
-    pointer-events-none
-    transition-all;
+    pointer-events-none;
 
   fill: var(--background-arrow);
   transition-duration: var(--duration);
-  transition-property: bottom left right top transform transform-origin;
+  transition-property: bottom, left, right, top, transform, transform-origin;
 }
 
 :host ( [arrow]:not([arrow=false])[visible]:not([visible=false]) ) .arrow {
