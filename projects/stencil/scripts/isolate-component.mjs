@@ -7,7 +7,7 @@ import { fileURLToPath } from 'url'
 const PROJECT_PATH = resolve(dirname(fileURLToPath(import.meta.url)), '../')
 const COMPONENTS_PATH = `${PROJECT_PATH}/src/components`
 
-import { createTempProjectInstance, compilePackage } from './lib.mjs'
+import { createTempProjectInstance, compilePackage, compileGitlabCI } from './lib.mjs'
 
 var componentNameArgument = ""
 var nonInteractive = false
@@ -74,6 +74,7 @@ async function askComponentName () {
 
     console.log(`Isolating component ${chalk.green('%s')}`, componentName)
     await compilePackage(componentName)
+    await compileGitlabCI(componentName)
     await createTempProjectInstance(componentName)
   }
 }
