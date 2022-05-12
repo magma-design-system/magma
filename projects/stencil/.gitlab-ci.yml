@@ -19,7 +19,7 @@ base-stencil-build:
       - projects/styles/dist
       - projects/icons/dist
       - projects/stencil/dist
-      - projects/stencil/src/fixtures/icons.json
+      - projects/stencil/src/fixtures
       - projects/stencil/assets
   rules:
     - if: $CI_PIPELINE_SOURCE == "merge_request_event" || $CI_COMMIT_BRANCH =~ /^(dev|main|pipeline)$/
@@ -65,6 +65,7 @@ stencil-test:
   extends: base-stencil-build
   image: atools/chrome-headless:java11-node16-latest
   stage: test
+  dependencies: [base-stencil-build]
   script:
     - cd projects/stencil
     - npm run test
