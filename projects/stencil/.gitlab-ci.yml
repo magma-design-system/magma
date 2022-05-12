@@ -115,6 +115,7 @@ include:
   - '/projects/stencil/src/components/mds-button/.gitlab-ci.yml'
   - '/projects/stencil/src/components/mds-card/.gitlab-ci.yml'
   - '/projects/stencil/src/components/mds-details/.gitlab-ci.yml'
+  - '/projects/stencil/src/components/mds-dropdown/.gitlab-ci.yml'
   - '/projects/stencil/src/components/mds-entity/.gitlab-ci.yml'
   - '/projects/stencil/src/components/mds-file/.gitlab-ci.yml'
   - '/projects/stencil/src/components/mds-flex-table/.gitlab-ci.yml'
