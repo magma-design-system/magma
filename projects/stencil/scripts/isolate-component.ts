@@ -1,6 +1,6 @@
 import chalk from 'chalk'
 import { ask } from 'stdio'
-import { createTempProjectInstance, compilePackage } from './lib'
+import { createTempProjectInstance, compilePackage, compileTemplateFile } from './lib'
 import { stat } from 'fs/promises'
 import { COMPONENTS_DIR } from './meta'
 
@@ -53,6 +53,7 @@ const askComponentName = async () => {
 
     console.log(`Isolating component ${chalk.green('%s')}`, componentName)
     await compilePackage(componentName)
+    await compileTemplateFile(componentName, '.gitlab-ci.yml')
     await createTempProjectInstance(componentName)
   }
 }

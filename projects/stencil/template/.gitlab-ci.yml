@@ -1,0 +1,18 @@
+.base-{{ componentName }}:
+  variables:
+    COMPONENT: mds-{{ componentName }}
+
+# ISOLATE
+{{ componentName }}-isolate:
+  extends: [.base-isolate, .base-{{ componentName }}]
+  dependencies: [base-build]
+
+# TEST
+{{ componentName }}-publish-test:
+  extends: [.base-publish-test, .base-{{ componentName }}]
+  dependencies: [base-build, {{ componentName }}-isolate]
+
+# PUBLISH
+{{ componentName }}-publish:
+  extends: [.base-publish, .base-{{ componentName }}]
+  dependencies: [base-build, {{ componentName }}-isolate]

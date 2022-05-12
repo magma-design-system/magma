@@ -45,6 +45,36 @@ const createPackage = async (componentName: string): Promise<void> => {
     })
 }
 
+const compileTemplateFile = async (componentName: string, fileName: string): Promise<void> => {
+  const exists = !!( await stat(join(COMPONENTS_DIR, componentName, fileName))
+    .catch(error => {
+      throw Error(chalk.red(error))
+    })
+  )
+
+  if (exists) {
+    console.log(`File ${fileName} ${chalk.yellow('previously created')}, skipping it.`)
+    return
+  }
+
+  await createTemplateFile(componentName, fileName)
+}
+
+const createTemplateFile = async (componentName: string, fileName: string): Promise<void> => {
+  const packageTemplate = await readFile(join(TEMPLATES_DIR, fileName)).catch(error => { throw Error(chalk.red(error)) })
+
+  const template = Handlebars.compile(packageTemplate.toString())
+  const templateCompiled = template({ componentName: componentName.replace('mds-', '') })
+
+  await writeFile(join(COMPONENTS_DIR, componentName, fileName), templateCompiled, 'utf8')
+    .then(() => {
+      console.log(`File ${fileName} has been ${chalk.green('successfully')} saved.`)
+    })
+    .catch(error => {
+      throw Error(chalk.red(error))
+    })
+}
+
 const scaffoldStencil = async (componentName: string): Promise<void> => {
   const fileName = 'stencil.config.ts'
   const stencilTemplate = await readFile(join(TEMPLATES_DIR, fileName)).catch(error => { throw Error(chalk.red(error)) })
@@ -89,4 +119,5 @@ const createTempProjectInstance = async (componentName: string): Promise<void> =
 export {
   createTempProjectInstance,
   compilePackage,
+  compileTemplateFile,
 }
