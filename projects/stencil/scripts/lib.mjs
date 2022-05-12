@@ -22,6 +22,40 @@ const compilePackage = async componentName => {
   await createPackage(componentName)
 }
 
+const compileGitlabCI = async componentName => {
+  const exists = !!(await stat(
+    new URL(`${COMPONENTS_PATH}/${componentName}/.gitlab-ci.yml`, import.meta.url),
+  ).catch(() => null))
+  if (exists) {
+    console.log(
+      `File .gitlab-ci.yml ${chalk.yellow('previously created')}, skipping it.`,
+    )
+    return
+  }
+  await createGitlabCI(componentName)
+}
+
+const createGitlabCI = async componentName => {
+  const fileName = '.gitlab-ci.yml'
+  const templateFile = await readFile(
+    new URL(`${TEMPLATES_PATH}/${fileName}`, import.meta.url),
+  )
+  const template = Handlebars.compile(templateFile.toString())
+  const templateCompiled = template({ componentName: componentName.replace('mds-', '') })
+  await writeFile(
+    `${COMPONENTS_PATH}/${componentName}/${fileName}`,
+    templateCompiled,
+    'utf8',
+    err => {
+      if (err) {
+        console.log(`An error occured while writing ${fileName} file.`)
+        return console.log(err)
+      }
+    },
+  )
+  console.log(`Config ${fileName} for component ${chalk.green(componentName)} has been saved successfully.`)
+}
+
 const createPackage = async componentName => {
   const packageData = JSON.parse(
     await readFile(new URL(`${PROJECT_PATH}/package.json`, import.meta.url)),
@@ -82,7 +116,6 @@ const scaffoldStencil = async componentName => {
   console.log(`Config ${fileName} for component ${chalk.green(componentName)} has been saved successfully.`)
 }
 
-
 const createTempProjectInstance = async componentName => {
   const ISOLATED_PATH = `${TEMP_PROJECT_PATH}/${componentName}`
   // TODO catch error
@@ -132,4 +165,5 @@ const createTempProjectInstance = async componentName => {
 export {
   createTempProjectInstance,
   compilePackage,
+  compileGitlabCI,
 }
