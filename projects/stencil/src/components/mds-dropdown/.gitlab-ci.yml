@@ -16,3 +16,4 @@ dropdown-publish-test:
 dropdown-publish:
   extends: [.base-stencil-publish, .base-dropdown]
   dependencies: [base-stencil-build, dropdown-isolate]
+
