@@ -25,7 +25,7 @@
     "publish.isolate.all": "node ./scripts/isolate-all.mjs",
     "publish.isolate.clean": "rimraf .build",
     "publish.isolate.component": "node ./scripts/isolate-component.mjs",
-    "storybook.build": "build-storybook -o ./dist-storybook",
+    "storybook.build": "npm run build && build-storybook -o ./dist-storybook",
     "storybook.start": "npm run build && start-storybook -p 6006 --no-manager-cache",
     "test": "npm run test.e2e",
     "test.e2e": "stencil test --spec --e2e",
