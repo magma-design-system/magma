@@ -65,6 +65,7 @@ stencil-test:
   extends: base-stencil-build
   image: atools/chrome-headless:java11-node16-latest
   stage: test
+  dependencies: [base-stencil-build]
   script:
     - cd projects/stencil
     - npm run test
