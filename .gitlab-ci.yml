@@ -61,7 +61,7 @@ stages:
     BUILD_DIR: to_be_extended
   script:
     - cd $BUILD_DIR
-    - npm pack && npm install $PACK_NAME && npm publish --dry-run
+    - npm pack && npm install $PACK_NAME && npm publish --access public --dry-run
 
 # BASE PUBLISH
 .base-publish:
@@ -74,7 +74,7 @@ stages:
     - cp $NPMRC_FILE .npmrc
     - echo "_auth=$NODE_AUTH_TOKEN" >> .npmrc
     - echo "//registry.npmjs.org/:_authToken=$NODE_AUTH_TOKEN" >> .npmrc
-    - npm publish
+    - npm publish --access public
 
 include:
   - '/projects/design-tokens/.gitlab-ci.yml'
