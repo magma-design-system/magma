@@ -36,11 +36,11 @@
     "test.regression.review": "npm run build && loki test --port 6006 --requireReference --chromeEnableAnimations=false"
   },
   "dependencies": {
-    "@maggioli-design-system/design-tokens": "^6.4.1",
+    "@maggioli-design-system/design-tokens": "^7.0.0",
     "@maggioli-design-system/icons": "^1.40.0",
-    "@maggioli-design-system/identity": "^1.9.0",
+    "@maggioli-design-system/identity": "^1.9.1",
     "@maggioli-design-system/styles": "^6.5.3",
-    "@stencil/core": "^2.15.1",
+    "@stencil/core": "^2.15.2",
     "idb-keyval": "6.1.0"
   },
   "license": "MIT",
