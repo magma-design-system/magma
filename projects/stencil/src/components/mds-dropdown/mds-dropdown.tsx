@@ -48,6 +48,11 @@ export class MdsDropdown {
   @Prop() readonly flip? = false
 
   /**
+   * Specifies the id of the caller element.
+   */
+  @Prop() readonly target!:string
+
+  /**
    * Sets distance between the dropdown and the caller.
    */
   @Prop() readonly offset = 24
@@ -349,17 +354,19 @@ export class MdsDropdown {
     if (backdropCustomProp !== '') {
       this.backdropBackground = `var(${this.backdropCustomPropBackground})`
     }
+
+    Array.from(document.getElementsByClassName(this.backdropId)).forEach((element: HTMLElement) => {
+      element.remove()
+    })
   }
 
   componentDidLoad (): void {
     document.addEventListener('click', this.handleCloseDropdown)
     this.arrowEl = this.host.shadowRoot.querySelector('.arrow')
-    this.caller = document.querySelector(`[for='${this.host.getAttribute('id')}']`)
+    this.caller = document.getElementById(this.target)
     this.caller.addEventListener('click', this.callerOnClick.bind(this))
 
-    Array.from(document.getElementsByClassName(this.backdropId)).forEach((element: HTMLElement) => {
-      element.remove()
-    })
+    this.backdropChanged(this.backdrop)
   }
 
   componentDidRender (): void {
