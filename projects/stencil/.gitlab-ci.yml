@@ -21,6 +21,8 @@ base-stencil-build:
       - projects/stencil/dist
       - projects/stencil/src/fixtures
       - projects/stencil/assets
+  cache:
+    policy: pull-push
   rules:
     - if: $CI_PIPELINE_SOURCE == "merge_request_event" || $CI_COMMIT_BRANCH =~ /^(dev|main|pipeline)$/
       changes:
@@ -55,6 +57,8 @@ stencil-storybook-build:
     expire_in: 1 day
     paths:
       - $BUILD_DIR
+  cache:
+    policy: pull
   rules:
     - if: $CI_PIPELINE_SOURCE == "merge_request_event" || $CI_COMMIT_BRANCH =~ /^(dev|main|pipeline)$/
       changes:
@@ -66,9 +70,12 @@ stencil-test:
   image: atools/chrome-headless:java11-node16-latest
   stage: test
   dependencies: [base-stencil-build]
-  script:
+  before_script:
     - cd projects/stencil
+  script:
     - npm run test
+  cache:
+    policy: pull
   rules:
     - if: $CI_PIPELINE_SOURCE == "merge_request_event" || $CI_COMMIT_BRANCH =~ /^(dev|main|pipeline)$/
       changes:
