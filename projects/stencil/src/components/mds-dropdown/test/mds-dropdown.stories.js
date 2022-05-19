@@ -85,6 +85,14 @@ const Template = ({ layout, ...args }) =>
     </mds-dropdown>
   </div>
 
+export const NoTarget = () =>
+  <div>
+    <mds-button id="dropdown-trigger">Trigger</mds-button>
+    <mds-dropdown>
+      <mds-text>Ciao</mds-text>
+    </mds-dropdown>
+  </div>
+
 export const Default = Template.bind({})
 Default.args = {
   class: 'max-w-[350px] w-full',
