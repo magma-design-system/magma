@@ -164,24 +164,24 @@ export class MdsDropdown {
     }
 
     switch (arrowPosition) {
-      case 'bottom':
-        inset.left = arrow.x != null ? `${arrow.x}px` : ''
-        inset.top = '100%'
-        break;
-      case 'left':
-        inset.right = '100%'
-        inset.top = arrow.y != null ? `${arrow.y}px` : ''
-        break;
-      case 'right':
-        inset.left = '100%'
-        inset.top = arrow.y != null ? `${arrow.y}px` : ''
-        break;
-      case 'top':
-        inset.left = arrow.x != null ? `${arrow.x}px` : ''
-        inset.top = arrow.y != null ? `${arrow.y}px` : ''
-        break;
-      default:
-        break;
+    case 'bottom':
+      inset.left = arrow.x !== null ? `${arrow.x}px` : ''
+      inset.top = '100%'
+      break
+    case 'left':
+      inset.right = '100%'
+      inset.top = arrow.y !== null ? `${arrow.y}px` : ''
+      break
+    case 'right':
+      inset.left = '100%'
+      inset.top = arrow.y !== null ? `${arrow.y}px` : ''
+      break
+    case 'top':
+      inset.left = arrow.x !== null ? `${arrow.x}px` : ''
+      inset.top = arrow.y !== null ? `${arrow.y}px` : ''
+      break
+    default:
+      break
     }
     return inset
   }
@@ -189,36 +189,36 @@ export class MdsDropdown {
   private arrowTransform = (arrowPosition: string): { transform: string } => {
     let transformProps = this.arrow && this.visible ? 'scale(1)' : 'scale(0)'
     switch (arrowPosition) {
-      case 'bottom':
-        transformProps = `rotate(180deg) ${transformProps} translate(0, -100%)`
-        break;
-      case 'left':
-        transformProps = `rotate(-90deg) ${transformProps} translate(50%, -50%)`
-        break;
-      case 'right':
-        transformProps = `rotate(90deg) ${transformProps} translate(-50%, -50%)`
-        break;
-      case 'top':
-        transformProps = `rotate(0deg) ${transformProps} translate(0, 0)`
-        break;
-      default:
-        break;
+    case 'bottom':
+      transformProps = `rotate(180deg) ${transformProps} translate(0, -100%)`
+      break
+    case 'left':
+      transformProps = `rotate(-90deg) ${transformProps} translate(50%, -50%)`
+      break
+    case 'right':
+      transformProps = `rotate(90deg) ${transformProps} translate(-50%, -50%)`
+      break
+    case 'top':
+      transformProps = `rotate(0deg) ${transformProps} translate(0, 0)`
+      break
+    default:
+      break
     }
     return { transform: transformProps }
   }
 
   private arrowTransformOrigin = (arrowPosition: string): { transformOrigin: string } => {
     switch (arrowPosition) {
-      case 'bottom':
-        return { transformOrigin: 'center top' }
-      case 'left':
-        return { transformOrigin: 'right center' }
-      case 'right':
-        return { transformOrigin: 'left center' }
-      case 'top':
-        return { transformOrigin: 'center bottom' }
-      default:
-        return { transformOrigin: 'center top' }
+    case 'bottom':
+      return { transformOrigin: 'center top' }
+    case 'left':
+      return { transformOrigin: 'right center' }
+    case 'right':
+      return { transformOrigin: 'left center' }
+    case 'top':
+      return { transformOrigin: 'center bottom' }
+    default:
+      return { transformOrigin: 'center top' }
     }
   }
 

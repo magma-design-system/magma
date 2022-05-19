@@ -19,11 +19,12 @@
   ],
   "scripts": {
     "build": "rm src/components.d.ts || true && stencil build --docs-readme",
-    "prepublishOnly": "npm run build"
+    "prepublishOnly": "npm run build",
+    "test": "stencil test --spec --e2e"
   },
   "dependencies": {
     "@maggioli-design-system/styles": "^6.5.3",
-    "@stencil/core": "^2.15.1",
+    "@stencil/core": "^2.15.2",
     "typeface-karla": "^1.1.13",
     "typeface-roboto": "^1.1.13"
   },

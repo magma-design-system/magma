@@ -19,12 +19,12 @@
   ],
   "scripts": {
     "build": "rm src/components.d.ts || true && stencil build --docs-readme",
-    "test": "stencil test --spec --e2e",
-    "prepublishOnly": "npm run build"
+    "prepublishOnly": "npm run build",
+    "test": "stencil test --spec --e2e"
   },
   "dependencies": {
     "@maggioli-design-system/mds-accordion-item": "^2.0.0",
-    "@stencil/core": "^2.14.2"
+    "@stencil/core": "^2.15.2"
   },
   "license": "MIT",
   "author": {

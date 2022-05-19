@@ -19,11 +19,10 @@
   ],
   "scripts": {
     "build": "rm src/components.d.ts || true && stencil build --docs-readme",
-    "prepublishOnly": "npm run build",
-    "test": "stencil test --spec --e2e"
+    "prepublishOnly": "npm run build"
   },
   "dependencies": {
-    "@floating-ui/dom": "^0.4.5",
+    "@floating-ui/dom": "^0.5.0",
     "@stencil/core": "^2.15.1"
   },
   "license": "MIT",

@@ -22,8 +22,8 @@
     "prepublishOnly": "npm run build"
   },
   "dependencies": {
-    "@maggioli-design-system/mds-icon": "^1.0.5",
-    "@maggioli-design-system/mds-text": "^1.2.1",
+    "@maggioli-design-system/mds-icon": "^2.0.1",
+    "@maggioli-design-system/mds-text": "^1.4.0",
     "@stencil/core": "^2.12.0"
   },
   "license": "MIT",
