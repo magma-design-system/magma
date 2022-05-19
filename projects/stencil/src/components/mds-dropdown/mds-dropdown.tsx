@@ -155,7 +155,7 @@ export class MdsDropdown {
     this.handleVisibility()
   }
 
-  private arrowInset = (middleware: MiddlewareData , arrowPosition: string): { bottom?: string, left?: string, right?: string, top?: string } => {
+  private arrowInset = (middleware: MiddlewareData, arrowPosition: string): { bottom?: string, left?: string, right?: string, top?: string } => {
     const { arrow } = middleware
     const inset = { bottom:'', left: '', right: '', top: '' }
 
@@ -350,7 +350,7 @@ export class MdsDropdown {
   }
 
   componentWillLoad (): void {
-    const backdropCustomProp = getComputedStyle(document.documentElement,null).getPropertyValue(this.backdropCustomPropBackground)
+    const backdropCustomProp = getComputedStyle(document.documentElement, null).getPropertyValue(this.backdropCustomPropBackground)
     if (backdropCustomProp !== '') {
       this.backdropBackground = `var(${this.backdropCustomPropBackground})`
     }
