@@ -20,7 +20,10 @@ defineCustomElements();
 const mdsIconGet = async () => {
   await customElements.whenDefined('mds-icon')
 
-  mds_icon.setSvgPathStatic('/svg/')
+  const pathName = window.location.pathname.replace('/iframe.html', '')
+  const svgPath = pathName.charAt(pathName.length - 1) === '/' ? `${pathName}svg/` : `${pathName}/svg/`
+
+  mds_icon.setSvgPathStatic(svgPath)
   // MdsIcon.setSvgPathStatic('/svg/') // non va, why?
 }
 
