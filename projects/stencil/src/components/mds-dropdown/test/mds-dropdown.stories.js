@@ -67,8 +67,8 @@ export default {
 
 const Template = ({ layout, ...args }) =>
   <div className={clsx(layout)}>
-    <mds-button for="my-dropdown">Show Fred</mds-button>
-    <mds-dropdown id="my-dropdown" {...args}>
+    <mds-button id="my-dropdown">Show Fred</mds-button>
+    <mds-dropdown target="my-dropdown" {...args}>
       <mds-author class="text-adjust-tone-04">
         <mds-avatar initials="fb" src="./fred-brooks-zoom.webp" slot="avatar" class="w-20 bg-brand-maggioli-06"/>
         <mds-text typography="h6" class="text-adjust-tone-02">Fred Brooks</mds-text>
@@ -82,6 +82,14 @@ const Template = ({ layout, ...args }) =>
       <mds-button class="justify-start" icon="mi/baseline/info" variant="dark" tone="quiet">User infos</mds-button>
       <mds-button class="justify-start" icon="mi/baseline/settings" variant="dark" tone="quiet">Account</mds-button>
       <mds-button class="justify-start" icon="mi/baseline/logout" variant="dark" tone="quiet">Exit</mds-button>
+    </mds-dropdown>
+  </div>
+
+export const NoTarget = () =>
+  <div>
+    <mds-button id="dropdown-trigger">Trigger</mds-button>
+    <mds-dropdown>
+      <mds-text>Ciao</mds-text>
     </mds-dropdown>
   </div>
 

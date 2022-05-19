@@ -10,6 +10,8 @@ design-tokens-build:
       - projects/design-tokens/dist
       - projects/design-tokens/config
       - projects/design-tokens/properties
+  cache:
+    policy: pull-push
   rules:
     - if: $CI_PIPELINE_SOURCE == "merge_request_event" || $CI_COMMIT_BRANCH =~ /^(dev|main|pipeline)$/
       changes:

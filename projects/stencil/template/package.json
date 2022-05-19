@@ -19,6 +19,7 @@
   ],
   "scripts": {
     "build": "rm src/components.d.ts || true && stencil build --docs-readme",
+    "prepublishOnly": "npm run build",
     "test": "stencil test --spec --e2e"
   },
   "dependencies": {{{ dependencies }}},

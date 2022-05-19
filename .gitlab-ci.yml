@@ -50,7 +50,7 @@ stages:
       - projects/icons/node_modules
       - projects/stencil/node_modules
       - projects/identity/node_modules
-    policy: pull-push
+    policy: pull
 
 # BASE PUBLISH TEST
 .base-publish-test:
