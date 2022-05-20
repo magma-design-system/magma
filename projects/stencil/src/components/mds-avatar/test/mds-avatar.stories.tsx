@@ -1,3 +1,4 @@
+import { h } from '@stencil/core'
 import { lokiDisabled } from '@test/loki-disabled'
 
 export default {
@@ -15,7 +16,7 @@ export default {
 }
 
 const Template = args =>
-  <div className="w-24">
+  <div class="w-24">
     <mds-avatar {...args}/>
   </div>
 

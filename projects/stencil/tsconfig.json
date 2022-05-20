@@ -32,7 +32,6 @@
   "include": [
     "src",
     "scripts",
-    "node_modules/@stencil/core/internal/stencil-ext-modules.d.ts"
   ],
   "exclude": [
     "dist",
