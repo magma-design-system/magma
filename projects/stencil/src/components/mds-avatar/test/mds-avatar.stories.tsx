@@ -1,11 +1,9 @@
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
-import { ComponentStory } from '@storybook/react'
-import MdsAvatar from '@component/mds-avatar/mds-avatar'
+/* eslint-disable @typescript-eslint/no-unused-vars */
+import React from 'react'
 import { lokiDisabled } from '@test/loki-disabled'
 
 export default {
   title: 'UI / Avatar',
-  component: MdsAvatar,
   argTypes: {
     initials: {
       type: { name: 'string' },
@@ -18,7 +16,7 @@ export default {
   },
 }
 
-const Template: ComponentStory<MdsAvatar> = args =>
+const Template = args =>
   <div className="w-24">
     <mds-avatar {...args}/>
   </div>
