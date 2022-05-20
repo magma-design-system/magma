@@ -13,6 +13,8 @@ const alias = {
   '@variant': path.resolve(__dirname, '../src/variants/'),
 }
 
+const TsConfigPathsPlugin = requrie("tsconfig-paths-webpack-plugin")
+
 module.exports = {
   core: {
     builder: 'webpack5',
@@ -68,6 +70,15 @@ module.exports = {
     })
 
     config.resolve.fallback = { path: false }
+
+    config.resolve.plugins = config.resolve.plugins || []
+
+    config.resolve.plugins.push(
+      new TsConfigPathsPlugin({
+        configFile: path.resolve(__dirname, "../tsconfig.json")
+      })
+    )
+
     return config
   },
 }
