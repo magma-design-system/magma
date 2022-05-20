@@ -1,5 +1,3 @@
-/* eslint-disable @typescript-eslint/no-unused-vars */
-import React from 'react'
 import { lokiDisabled } from '@test/loki-disabled'
 
 export default {

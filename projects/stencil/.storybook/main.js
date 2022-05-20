@@ -13,7 +13,7 @@ const alias = {
   '@variant': path.resolve(__dirname, '../src/variants/'),
 }
 
-const TsConfigPathsPlugin = requrie("tsconfig-paths-webpack-plugin")
+const TsConfigPathsPlugin = require("tsconfig-paths-webpack-plugin")
 
 module.exports = {
   core: {
