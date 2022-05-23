@@ -22,8 +22,8 @@
   },
   "dependencies": {
     "@maggioli-design-system/mds-table-row": "^1.4.0",
-    "@stencil/core": "^2.14.0"
-},
+    "@stencil/core": "^2.15.2"
+  },
   "license": "MIT",
   "author": {
     "name": "Vittorio Vittori",
@@ -41,5 +41,5 @@
       "email": "vittorio.vittori@maggioli.it",
       "role": "UX UI Designer"
     }
-]
+  ]
 }

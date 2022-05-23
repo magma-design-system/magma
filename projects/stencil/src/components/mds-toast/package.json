@@ -1,7 +1,7 @@
 {
-  "name": "@maggioli-design-system/mds-icon",
-  "version": "2.0.1",
-  "description": "mds-icon is a web-component from Maggioli Design System Magma, built with StencilJS, TypeScript, Storybook. It's based on the web-component standard and it's designed to be agnostic from the JavaScirpt framework you are using.",
+  "name": "@maggioli-design-system/mds-toast",
+  "version": "1.0.0",
+  "description": "mds-toast is a web-component from Maggioli Design System Magma, built with StencilJS, TypeScript, Storybook. It's based on the web-component standard and it's designed to be agnostic from the JavaScirpt framework you are using.",
   "main": "dist/index.cjs.js",
   "module": "dist/index.js",
   "es2015": "dist/esm/index.mjs",
@@ -9,7 +9,7 @@
   "types": "dist/types/components.d.ts",
   "collection": "dist/collection/collection-manifest.json",
   "collection:main": "dist/collection/index.js",
-  "unpkg": "dist/mds-icon/mds-icon.esm.js",
+  "unpkg": "dist/mds-toast/mds-toast.esm.js",
   "files": [
     "dist/",
     "loader/",
@@ -22,8 +22,7 @@
     "prepublishOnly": "npm run build"
   },
   "dependencies": {
-    "@stencil/core": "^2.15.2",
-    "idb-keyval": "6.1.0"
+    "@stencil/core": "^2.15.2"
   },
   "license": "MIT",
   "author": {
@@ -35,16 +34,6 @@
     {
       "name": "Andrea Pruccoli",
       "email": "andrea.pruccoli@maggioli.it",
-      "role": "Software Engineer"
-    },
-    {
-      "name": "Federico Ciani",
-      "email": "federico.ciani@maggioli.it",
-      "role": "UX UI Designer"
-    },
-    {
-      "name": "Stefano Pascazi",
-      "email": "stefano.pascazi@maggioli.it",
       "role": "Software Engineer"
     },
     {

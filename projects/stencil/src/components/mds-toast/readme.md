@@ -28,6 +28,7 @@
 | -------------- | ------------------------------------------ |
 | `--background` | Sets the background-color of the component |
 | `--color`      | Sets the text color of the component       |
+| `--icon-color` | Sets the text color of the component       |
 | `--shadow`     | Sets the box-shadow of the component       |
 
 

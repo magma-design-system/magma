@@ -22,25 +22,25 @@
     "prepublishOnly": "npm run build"
   },
   "dependencies": {
-    "@maggioli-design-system/mds-tab-bar-item": "^2.0.0",
-    "@stencil/core": "^2.15.1"
+    "@maggioli-design-system/mds-tab-bar-item": "^2.0.1",
+    "@stencil/core": "^2.15.2"
   },
   "license": "MIT",
   "author": {
     "name": "Vittorio Vittori",
     "email": "vittorio.vittori@maggioli.it",
     "url": "http://vit.to"
-},
+  },
   "contributors": [
     {
-        "name": "Andrea Pruccoli",
-        "email": "andrea.pruccoli@maggioli.it",
-        "role": "Software Engineer"
+      "name": "Andrea Pruccoli",
+      "email": "andrea.pruccoli@maggioli.it",
+      "role": "Software Engineer"
     },
     {
-        "name": "Vittorio Vittori",
-        "email": "vittorio.vittori@maggioli.it",
-        "role": "UX UI Designer"
+      "name": "Vittorio Vittori",
+      "email": "vittorio.vittori@maggioli.it",
+      "role": "UX UI Designer"
     }
-]
+  ]
 }
