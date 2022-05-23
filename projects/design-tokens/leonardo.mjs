@@ -81,46 +81,46 @@ const formatColor = (theme, colorName, colorValue, scaffold, seed, colorMode) =>
   return palette
 }
 
-const url = color => {
-  const colorRatios = color.ratios !== undefined ? ratios[color.ratios] : ratios.default
-  const query = [
-    `?colorKeys=%23${color.color.substring(1)}`,
-    '&base=ffffff',
-    `&ratios=${colorRatios.join('%2C')}`,
-    `&mode=${color.colorspace !== undefined ? color.colorspace : colorspace}`,
-  ]
-  return `https://leonardocolor.io/${query.join('')}`
-}
+// const url = color => {
+//   const colorRatios = color.ratios !== undefined ? ratios[color.ratios] : ratios.default
+//   const query = [
+//     `?colorKeys=%23${color.color.substring(1)}`,
+//     '&base=ffffff',
+//     `&ratios=${colorRatios.join('%2C')}`,
+//     `&mode=${color.colorspace !== undefined ? color.colorspace : colorspace}`,
+//   ]
+//   return `https://leonardocolor.io/${query.join('')}`
+// }
 
-const generatePaletteURL = () => {
+// const generatePaletteURL = () => {
 
-  console.log(chalk.yellow('\nGenerating @adobe/leonardo URL palettes'))
+//   console.log(chalk.yellow('\nGenerating @adobe/leonardo URL palettes'))
 
-  const palette = {
-    color: {},
-  }
-  colors.forEach(element => {
-    const groupIndex = 0
-    const nameIndex = 1
-    const group = element.name.split('.')[groupIndex]
-    const name = element.name.split('.')[nameIndex]
+//   const palette = {
+//     color: {},
+//   }
+//   colors.forEach(element => {
+//     const groupIndex = 0
+//     const nameIndex = 1
+//     const group = element.name.split('.')[groupIndex]
+//     const name = element.name.split('.')[nameIndex]
 
-    if (element.disabled === undefined) {
-      element.disabled = false
-    }
+//     if (element.disabled === undefined) {
+//       element.disabled = false
+//     }
 
-    if (!element.disabled) {
+//     if (!element.disabled) {
 
-      if (!Object.prototype.hasOwnProperty.call(palette.color, group)) {
-        palette.color[group] = {}
-      }
+//       if (!Object.prototype.hasOwnProperty.call(palette.color, group)) {
+//         palette.color[group] = {}
+//       }
 
-      if (!Object.prototype.hasOwnProperty.call(palette.color[group], name)) {
-        console.log(`${chalk.blue('Palette ' + name)}: ${url(element)}`)
-      }
-    }
-  })
-}
+//       if (!Object.prototype.hasOwnProperty.call(palette.color[group], name)) {
+//         console.log(`${chalk.blue('Palette ' + name)}: ${url(element)}`)
+//       }
+//     }
+//   })
+// }
 
 const exportPalettes = async palettes => {
 
@@ -260,7 +260,7 @@ const build = async () => {
     themeDark: themeDark.contrastColors,
   })
 
-  generatePaletteURL()
+  // generatePaletteURL()
   console.log('')
   console.log(chalk.green('Design tokens color palette generated successfully.'))
 }
