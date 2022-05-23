@@ -27,6 +27,7 @@ base-stencil-build:
     - if: $CI_PIPELINE_SOURCE == "merge_request_event" || $CI_COMMIT_BRANCH =~ /^(dev|main|pipeline)$/
       changes:
         - projects/stencil/**/*
+        - .deploy/**/*
 
 stencil-storybook-build:
   extends: .base-build
