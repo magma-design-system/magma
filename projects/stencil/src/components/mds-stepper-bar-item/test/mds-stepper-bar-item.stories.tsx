@@ -34,7 +34,7 @@ export default {
 }
 
 const Template = args =>
-  <mds-stepper-bar select="0">
+  <mds-stepper-bar select={0}>
     <mds-stepper-bar-item icon-checked="mi/baseline/done" icon="mi/baseline/agriculture" text="First"/>
     <mds-stepper-bar-item icon-checked="mi/baseline/done" icon="mi/baseline/adobe" text="Second"/>
     <mds-stepper-bar-item icon-checked="mi/baseline/done" {...args}/>
@@ -43,7 +43,7 @@ const Template = args =>
   </mds-stepper-bar>
 
 const TemplateChecked = args =>
-  <mds-stepper-bar select="3">
+  <mds-stepper-bar select={3}>
     <mds-stepper-bar-item checked icon="mi/baseline/agriculture" icon-checked={args['icon-checked']} text="First"/>
     <mds-stepper-bar-item checked icon="mi/baseline/adobe" icon-checked={args['icon-checked']} text="Second"/>
     <mds-stepper-bar-item {...args}/>

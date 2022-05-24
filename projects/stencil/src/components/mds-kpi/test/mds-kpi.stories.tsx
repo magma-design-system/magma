@@ -16,27 +16,27 @@ export default {
 
 const Template = args =>
   <mds-kpi {...args}>
-    <mds-kpi-item value="75" description="Allenatori">
+    <mds-kpi-item value={75} description="Allenatori">
       <div slot="icon" class="bg-label-sky-09 fill-label-sky-04 p-6 pb-3 w-full flex justify-center items-center">
         <mds-icon name="mi/round/groups" class="w-12"/>
       </div>
     </mds-kpi-item>
-    <mds-kpi-item value="123" description="Arbitri">
+    <mds-kpi-item value={123} description="Arbitri">
       <div slot="icon" class="bg-label-sky-09 fill-label-sky-04 p-6 pb-3 w-full flex justify-center items-center">
         <mds-icon name="mi/round/groups" class="w-12"/>
       </div>
     </mds-kpi-item>
-    <mds-kpi-item value="48" description="Tifosi">
+    <mds-kpi-item value={48} description="Tifosi">
       <div slot="icon" class="bg-label-sky-09 fill-label-sky-04 p-6 pb-3 w-full flex justify-center items-center">
         <mds-icon name="mi/round/groups" class="w-12"/>
       </div>
     </mds-kpi-item>
-    <mds-kpi-item value="188" description="Stadi">
+    <mds-kpi-item value={188} description="Stadi">
       <div slot="icon" class="bg-label-sky-09 fill-label-sky-04 p-6 pb-3 w-full flex justify-center items-center">
         <mds-icon name="mi/round/groups" class="w-12"/>
       </div>
     </mds-kpi-item>
-    <mds-kpi-item value="3" description="Giocatori">
+    <mds-kpi-item value={3} description="Giocatori">
       <div slot="icon" class="bg-label-sky-09 fill-label-sky-04 p-6 pb-3 w-full flex justify-center items-center">
         <mds-icon name="mi/round/groups" class="w-12"/>
       </div>
@@ -57,27 +57,27 @@ const TemplateScroll = args =>
       </div>
     </div>
     <mds-kpi {...args}>
-      <mds-kpi-item value="451" description="Progetti">
+      <mds-kpi-item value={451} description="Progetti">
         <div slot="icon" class="bg-label-sky-10 fill-label-sky-04 p-6 pb-3 w-full flex justify-center items-center">
           <mds-icon name="mi/baseline/groups" class="w-12"/>
         </div>
       </mds-kpi-item>
-      <mds-kpi-item value="385" description="Manager">
+      <mds-kpi-item value={385} description="Manager">
         <div slot="icon" class="bg-label-sky-10 fill-label-sky-04 p-6 pb-3 w-full flex justify-center items-center">
           <mds-icon name="mi/baseline/groups" class="w-12"/>
         </div>
       </mds-kpi-item>
-      <mds-kpi-item value="196" description="Case">
+      <mds-kpi-item value={196} description="Case">
         <div slot="icon" class="bg-label-sky-10 fill-label-sky-04 p-6 pb-3 w-full flex justify-center items-center">
           <mds-icon name="mi/baseline/groups" class="w-12"/>
         </div>
       </mds-kpi-item>
-      <mds-kpi-item value="67" description="Automobili">
+      <mds-kpi-item value={67} description="Automobili">
         <div slot="icon" class="bg-label-sky-10 fill-label-sky-04 p-6 pb-3 w-full flex justify-center items-center">
           <mds-icon name="mi/baseline/groups" class="w-12"/>
         </div>
       </mds-kpi-item>
-      <mds-kpi-item value="22" description="Formaggi">
+      <mds-kpi-item value={22} description="Formaggi">
         <div slot="icon" class="bg-label-sky-10 fill-label-sky-04 p-6 pb-3 w-full flex justify-center items-center">
           <mds-icon name="mi/baseline/groups" class="w-12"/>
         </div>
