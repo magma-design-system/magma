@@ -2,17 +2,7 @@
 # yarn lockfile v1
 
 
-"@adobe/leonardo-contrast-colors@1.0.0-alpha.12":
-  version "1.0.0-alpha.12"
-  resolved "https://registry.yarnpkg.com/@adobe/leonardo-contrast-colors/-/leonardo-contrast-colors-1.0.0-alpha.12.tgz#08a659a178dafed3846293772206cc191106b5ce"
-  integrity sha512-wHVIaPFIkWG6ZkiTdlNxtudcJIZM0QjNtH2MTnSVLH8pvwzgIRNWssWsHiuaTm7UfSodzrMOSbtQBa/Krstfig==
-  dependencies:
-    chroma-js "^2.1.2"
-    ciebase "^0.1.1"
-    ciecam02 "^0.4.6"
-    hsluv "^0.1.0"
-
-"@adobe/leonardo-contrast-colors@^1.0.0-alpha.8":
+"@adobe/leonardo-contrast-colors@1.0.0-alpha.13", "@adobe/leonardo-contrast-colors@^1.0.0-alpha.8":
   version "1.0.0-alpha.13"
   resolved "https://registry.yarnpkg.com/@adobe/leonardo-contrast-colors/-/leonardo-contrast-colors-1.0.0-alpha.13.tgz#f391b623e32a7b6a01cbe4019c038ec2a14ed4be"
   integrity sha512-n+nl/UAbabHDMfkjKgaSB9qRciympqHgGszRP6dDcpCb5wPxu9C50k+NK1uLsHYsh8nYJTFeJ8dPXXPbr9e5aA==
@@ -1955,6 +1945,11 @@
   version "6.6.96"
   resolved "https://registry.yarnpkg.com/@mdi/svg/-/svg-6.6.96.tgz#8525356f2a0b14fb3c4bc12437e1ef91d986c6c0"
   integrity sha512-Ni1WtA+DZFOW7JcROhlZMQj8KLn66PyGPvqmyQx8/gC5ZwV8bUID4lN65d1/pMcph8wqZZOTPWOJz5F96Y82oQ==
+
+"@mdi/svg@^6.7.96":
+  version "6.7.96"
+  resolved "https://registry.yarnpkg.com/@mdi/svg/-/svg-6.7.96.tgz#f4d90fba050969c9f23c83da3e3844d7020fc878"
+  integrity sha512-2XAWrD2D2oseW1hLv3ZvndHb8w1pne84RUkw5oc5nqe/US1HE+9vfj9pGHFIar3/QhvRXh2JqX05adEbYbEAZg==
 
 "@mdx-js/loader@^1.6.22":
   version "1.6.22"
@@ -5864,9 +5859,9 @@ can-use-dom@^0.1.0:
   integrity sha1-IsxKNKCrxDlQ9CxkEQJKP2NmtFo=
 
 caniuse-lite@^1.0.30001109, caniuse-lite@^1.0.30001332, caniuse-lite@^1.0.30001335:
-  version "1.0.30001340"
-  resolved "https://registry.yarnpkg.com/caniuse-lite/-/caniuse-lite-1.0.30001340.tgz#029a2f8bfc025d4820fafbfaa6259fd7778340c7"
-  integrity sha512-jUNz+a9blQTQVu4uFcn17uAD8IDizPzQkIKh3LCJfg9BkyIqExYYdyc/ZSlWUSKb8iYiXxKsxbv4zYSvkqjrxw==
+  version "1.0.30001342"
+  resolved "https://registry.npmjs.org/caniuse-lite/-/caniuse-lite-1.0.30001342.tgz"
+  integrity sha512-bn6sOCu7L7jcbBbyNhLg0qzXdJ/PMbybZTH/BA6Roet9wxYRm6Tr9D0s0uhLkOZ6MSG+QU6txUgdpr3MXIVqjA==
 
 capital-case@^1.0.4:
   version "1.0.4"
@@ -6065,7 +6060,7 @@ chownr@^2.0.0:
   resolved "https://registry.yarnpkg.com/chownr/-/chownr-2.0.0.tgz#15bfbe53d2eab4cf70f18a8cd68ebe5b3cb1dece"
   integrity sha512-bIomtDF5KGpdogkLd9VspvFzk9KfpyyGlS8YFVZl7TGPBHL5snIOnxeshwVgPteQ9b4Eydl+pVbIyE1DcvCWgQ==
 
-chroma-js@^2.1.2, chroma-js@^2.4.2:
+chroma-js@^2.4.2:
   version "2.4.2"
   resolved "https://registry.yarnpkg.com/chroma-js/-/chroma-js-2.4.2.tgz#dffc214ed0c11fa8eefca2c36651d8e57cbfb2b0"
   integrity sha512-U9eDw6+wt7V8z5NncY2jJfZa+hUH8XEj8FQHgFJTrUFnJfXYf4Ml4adI2vXZOjqRDpFWtYVWypDfZwnJ+HIR4A==
@@ -15852,7 +15847,7 @@ source-map-support@^0.4.15:
   dependencies:
     source-map "^0.5.6"
 
-source-map-support@^0.5.16, source-map-support@^0.5.17, source-map-support@^0.5.21, source-map-support@^0.5.6, source-map-support@~0.5.12, source-map-support@~0.5.20:
+source-map-support@^0.5.16, source-map-support@^0.5.21, source-map-support@^0.5.6, source-map-support@~0.5.12, source-map-support@~0.5.20:
   version "0.5.21"
   resolved "https://registry.yarnpkg.com/source-map-support/-/source-map-support-0.5.21.tgz#04fe7c7f9e1ed2d662233c28cb2b35b9f63f6e4f"
   integrity sha512-uBHU3L3czsIyYXKX88fdrGovxdSCoTGDRZ6SYXtSRxLZUzHg5P/66Ht6uoUlHu9EZod+inXhKo3qQgwXUT/y1w==
@@ -16309,7 +16304,7 @@ strip-json-comments@~2.0.1:
   resolved "https://registry.yarnpkg.com/strip-json-comments/-/strip-json-comments-2.0.1.tgz#3c531942e908c2697c0ec344858c286c7ca0a60a"
   integrity sha1-PFMZQukIwml8DsNEhYwobHygpgo=
 
-style-dictionary@^3.0.3:
+style-dictionary@^3.7.0:
   version "3.7.0"
   resolved "https://registry.yarnpkg.com/style-dictionary/-/style-dictionary-3.7.0.tgz#02f4b17232cbb1142a3fdc09a17dfb08aafde3b0"
   integrity sha512-BL4AQS5kNDBXbFHWJhlCve6+ojnHgHkiwhf2nNByU698elXWdyK5b27OprphT4q0/tJ52zB+lodhqxIxbNOajQ==
@@ -17259,18 +17254,6 @@ ts-node@^10.7.0:
     diff "^4.0.1"
     make-error "^1.1.1"
     v8-compile-cache-lib "^3.0.0"
-    yn "3.1.1"
-
-ts-node@^9.1.1:
-  version "9.1.1"
-  resolved "https://registry.yarnpkg.com/ts-node/-/ts-node-9.1.1.tgz#51a9a450a3e959401bda5f004a72d54b936d376d"
-  integrity sha512-hPlt7ZACERQGf03M253ytLY3dHbGNGrAq9qIHWUY9XHYl1z7wYngSr3OQ5xmui8o2AaxsONxIzjafLUiWBo1Fg==
-  dependencies:
-    arg "^4.1.0"
-    create-require "^1.1.0"
-    diff "^4.0.1"
-    make-error "^1.1.1"
-    source-map-support "^0.5.17"
     yn "3.1.1"
 
 ts-pnp@^1.1.6:

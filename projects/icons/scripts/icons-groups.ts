@@ -124,7 +124,7 @@ class LocalDirectory {
   static async subDirectories (): Promise<string[]> {
     return LocalDirectory._subDirectories
   }
-  static _subDirectories = []
+  static _subDirectories: string[] = []
 
   /**
    * Search the requested icon in the local directory
@@ -157,7 +157,7 @@ class LocalDirectory {
 /**
  * Ritorna un array con i path delle sottocartelle rispetto alla cartella passata in input
  */
-async function subDirectories (source: string): Promise<string[]> {
+const subDirectories = async (source: string): Promise<string[]> => {
   return (await fs.readdir(source, { withFileTypes: true }))
     .filter(dirent => dirent.isDirectory())
     .map(dirent => `${source}/${dirent.name}`)
@@ -166,7 +166,7 @@ async function subDirectories (source: string): Promise<string[]> {
 /**
  * Get icon helper to simplify groups functions
  */
-async function iconGroupGetHelper (iconGroup: string, directories: string[], iconName: string, filename: string): Promise<string> {
+const iconGroupGetHelper = async (iconGroup: string, directories: string[], iconName: string, filename: string): Promise<string> => {
   const hidePath = path.resolve(__dirname, '../../../')
   for (const directory of directories) {
     const path = await searchFileInDirectory(directory, filename)
@@ -181,7 +181,7 @@ async function iconGroupGetHelper (iconGroup: string, directories: string[], ico
 /**
  * List icons helper to simplify groups functions
  */
-async function iconGroupListHelper (iconGroup: string, directories: string[], fileTemplate?: RegExp): Promise<string[]> {
+const iconGroupListHelper = async (iconGroup: string, directories: string[], fileTemplate?: RegExp): Promise<string[]> => {
   return Promise.all(directories.map(async dir => (await listFilesInDirectory(dir, fileTemplate)).map(filename => path.join(dir, filename))))
     .then(matrix => matrix.flat())
 }
@@ -189,7 +189,7 @@ async function iconGroupListHelper (iconGroup: string, directories: string[], fi
 /**
  * List all files in a directory
  */
-async function listFilesInDirectory (directory: string, fileTemplate?: RegExp): Promise<string[]> {
+const listFilesInDirectory = async (directory: string, fileTemplate?: RegExp): Promise<string[]> => {
   return fs.readdir(directory)
     .catch(() => [])
     .then(files => (fileTemplate ? files.filter(file => file.match(fileTemplate)) : files))
@@ -198,7 +198,7 @@ async function listFilesInDirectory (directory: string, fileTemplate?: RegExp): 
 /**
  * Search a file in a directory and return its path, if found
  */
-async function searchFileInDirectory (directory: string, filename: string): Promise<string | void> {
+const searchFileInDirectory = async (directory: string, filename: string): Promise<string | void> => {
   const files = await listFilesInDirectory(directory)
 
   if (files.includes(filename)) return path.join(directory, filename)
@@ -211,20 +211,6 @@ const ICON_GROUPS = {
   mdi: { getPath: MaterialCommunity.getPath, listPath: MaterialCommunity.listPath, getIconName: MaterialCommunity.getIconName },
 }
 
-/**
- * Given the path of an icon, it returns the icon group name
- * @param path path of an icon
- * @return {Promise<string>}
- */
-async function pathToIconsGroup (path: string): Promise<string> {
-  for (const [key, value] of ICON_GROUPS) {
-    const subdirectories = await value.subDirectories()
-    if (subdirectories.find((dir: string) => path.startsWith(dir))) {
-      return key
-    }
-  }
-  throw new Error(`Could not find an icons group for path ${path}`)
+export {
+  ICON_GROUPS,
 }
-
-exports.ICON_GROUPS = ICON_GROUPS
-exports.pathToIconsGroup = pathToIconsGroup

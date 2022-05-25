@@ -8,11 +8,11 @@
     "/resources/*.json"
   ],
   "scripts": {
-    "build": "node ./lib/font-icons.js dictionary.json -- --website",
-    "postbuild": "node ./tools/setup-package-font.js",
-    "clean": "npx ts-node scripts/clean.ts",
-    "prebuild": "npm run clean",
-    "start": "./bin/font-icons.js"
+    "build": "npx ts-node --skipProject ./scripts/font-icons.ts dictionary.json -- --website",
+    "postbuild": "npx ts-node --skipProject ./scripts/setup-package-font.ts",
+    "clean": "npx ts-node --skipProject scripts/clean.ts",
+    "prebuild": "npx ts-node --skipProject ./scripts/clean.ts",
+    "start": "npx ts-node --skipProject ./scripts/font-icons.ts"
   },
   "dependencies": {
     "@maggioli-design-system/svg-icons": "^2.7.0",
