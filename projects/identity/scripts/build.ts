@@ -61,7 +61,8 @@ const formatBytes = (bytes: number, decimals = 2) => {
   return parseFloat((bytes / Math.pow(k, i)).toFixed(dm)) + sizes[i]
 }
 
-const walk = (dir: PathLike, callback: Function) => {
+// eslint-disable-next-line @typescript-eslint/ban-types
+const walk = (dir: PathLike, callback: Function ) => {
   let results: string[] = []
 
   readdir(dir)
@@ -73,7 +74,7 @@ const walk = (dir: PathLike, callback: Function) => {
         const filePath = path.resolve(dir.toString(), file)
         stat(filePath).then(stat => {
           if (stat && stat.isDirectory()) {
-            walk(filePath, (error: string, result: []) => {
+            walk(filePath, (error: string, result: string[]) => {
 
               if (error) {
                 throw Error(chalk.red(error))
@@ -192,13 +193,13 @@ walk(RESOURCES_PATH, (error: string, results: string[]) => {
 
   results.forEach((item: string) => {
     if (item.indexOf('.svg') !== -1) {
-      cleanResults.push(item.split('resources/')[1])
+      cleanResults.push(path.join(path.basename(path.parse(item).dir),  path.parse(item).base))
     }
   })
 
   const paths: string[] = []
-  cleanResults.forEach(item => {
-    paths.push(item.split('/')[0])
+  cleanResults.forEach((item: string) => {
+    paths.push(path.parse(item).dir)
   })
 
   const cleanPaths = removeDuplicates(paths)
