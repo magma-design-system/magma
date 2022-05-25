@@ -1,11 +1,20 @@
 import svgtofont from 'svgtofont'
 import fs from 'fs/promises'
-import { readFileSync } from 'fs'
+import { PathLike, readFileSync } from 'fs'
 import path from 'path'
 import chalk from 'chalk'
 import { ICON_GROUPS } from './icons-groups'
 import { ORIGINAL_DIR, DIST_DIR } from './meta'
 import { SvgToFontOptions } from 'svgtofont'
+
+interface BuildFontOptions {
+  svgPath: string,
+  relativeOutputPath: string,
+  outputPath: string,
+  cssPath: string,
+  fontName: string,
+  website: boolean,
+}
 
 const BUILD_SVG_DIR = path.join(DIST_DIR, 'svg')
 const BUILD_FONTS_DIR = path.join(DIST_DIR, 'fonts')
@@ -53,20 +62,18 @@ const main = (parameters: string[]): void => {
     })
 }
 
-main(process.argv.slice(2))
-
-const createNaturalNames = (inputData) => {
-  const naturalInputData = {}
+const createNaturalNames = (inputData: Map<string, string>) => {
+  const naturalInputData = new Map<string, string>()
   for (const icon of [ ...new Set(Object.values(inputData)) ]) {
-    naturalInputData[icon.toString().split('/')[1].replace(/_/gm, '-')] = icon
+    naturalInputData.set(icon.toString().split('/')[1].replace(/_/gm, '-'), icon)
   }
   return Promise.resolve(naturalInputData)
 }
 
-const splitCSSEncoded = (cssBuffer, fontFacePath, classesPath) => {
+const splitCSSEncoded = (cssBuffer: Buffer, fontFacePath: PathLike | fs.FileHandle, classesPath: PathLike | fs.FileHandle) => {
   const cssAscii = cssBuffer.toString('ascii')
   const regex = /@font-face \{.|[^\}]*\}$/m
-  const [ fontFaceAscii ] = cssAscii.match(regex)
+  const [ fontFaceAscii ] = cssAscii.match(regex) || []
   const cssSelectorsAscii = cssAscii.replace(regex, '')
   return Promise.all([
     fs.writeFile(fontFacePath, fontFaceAscii),
@@ -74,7 +81,7 @@ const splitCSSEncoded = (cssBuffer, fontFacePath, classesPath) => {
   ])
 }
 
-const buildCSSEncoded = (buildFontsDir, buildPathDir, fontName) => {
+const buildCSSEncoded = (buildFontsDir: string, buildPathDir: string, fontName: string) => {
   const BASE64_PATH_DIR = path.resolve(buildPathDir, 'base64')
   const fontPath = path.resolve(buildFontsDir, `${fontName}.ttf`)
   const cssPath = path.resolve(buildPathDir, `${fontName}.css`)
@@ -92,7 +99,7 @@ const buildCSSEncoded = (buildFontsDir, buildPathDir, fontName) => {
     .then(() => Promise.all([fontBase64$, cssAscii$]))
     .then(([ fontBase64, cssAscii]) => {
       const regex = /src:(.|[\r\n][^\}])*/m
-      const [ stringToReplace ] = cssAscii.match(regex)
+      const [ stringToReplace ] = cssAscii.match(regex) || []
       return Promise.resolve(cssAscii.replace(stringToReplace, `src: url(data:font/truetype;charset=utf-8;base64,${fontBase64});`))
     })
     .then(cssString => fs.writeFile(newCssPath, cssString))
@@ -109,7 +116,7 @@ const buildCSSEncoded = (buildFontsDir, buildPathDir, fontName) => {
  * Crea la cartella di lavoro per la build
  * @return {Promise<void>}
  */
-const createBuildDirective = async (buildSvgDir: any): Promise<void> => {
+const createBuildDirective = async (buildSvgDir: string): Promise<void> => {
   return fs.mkdir(buildSvgDir, { recursive: true })
     .then(() => console.debug('Build directive created in', buildSvgDir.split('/design-system')[1]))
     .catch(error => {
@@ -124,7 +131,7 @@ const createBuildDirective = async (buildSvgDir: any): Promise<void> => {
  * @param inputData {Object.<string, string>} Mappa con l'icona desiderata come valore e il nome dell'icona come chiave
  * @returns {Promise<void[]>} Una promise da attendere perché termini la copia
  */
-const iconsToDictionary = async (buildPathDir: string, inputData: any): Promise<void[]> => {
+const iconsToDictionary = async (buildPathDir: string, inputData: Map<string, string>) => {
   return fs.writeFile(path.resolve(buildPathDir, 'dictionary.json'), JSON.stringify(inputData, null, 2))
     .then(() => {
       console.info('Dictionary creation success')
@@ -141,11 +148,11 @@ const iconsToDictionary = async (buildPathDir: string, inputData: any): Promise<
  * @param inputData {Object.<string, string>} Mappa con l'icona desiderata come valore e il nome dell'icona come chiave
  * @returns {Promise<void[]>} Una promise da attendere perché termini la copia
  */
-const iconsToTempFolder = async (buildSvgDir: string, inputData): Promise<void | any[]> => {
+const iconsToTempFolder = async (buildSvgDir: string, inputData: Map<string, string>) => {
   const promises = []
   for (const [key, value] of Object.entries(inputData)) {
     const icon = iconSelectorToObject(value.toString())
-    const sourcePathPromise = ICON_GROUPS[icon.group].getPath(icon.name)
+    const sourcePathPromise = ICON_GROUPS[icon.group as keyof typeof ICON_GROUPS].getPath(icon.name)
     const destinationPath = path.join(buildSvgDir, `${key}.svg`)
 
     const promise = sourcePathPromise.then(sourcePath => {
@@ -199,14 +206,14 @@ const iconSelectorToObject = (iconSelector: string): {name: string, group: strin
  * @param {BuildFontOptions} options Configurazione del font
  * @return {Promise<void>}
  */
-const buildFont = (options): Promise<void> => {
+const buildFont = (options: BuildFontOptions): Promise<void> => {
   const _options = getSvgToFontOptions(options)
   const scssFileName = `${options.outputPath}/${options.fontName}.scss`
   return svgtofont(_options)
     .then(() => addPrefixToAssetsUrlInScss(scssFileName, options.cssPath)) // defaultValue == cssPath
 }
 
-function addPrefixToAssetsUrlInScss (scssFileName, cssPath = '') {
+function addPrefixToAssetsUrlInScss (scssFileName: PathLike, cssPath = '') {
   return fs.readFile(scssFileName)
     .then(scssText => {
       const variableName = '$font-icons-base-url'
@@ -216,7 +223,7 @@ function addPrefixToAssetsUrlInScss (scssFileName, cssPath = '') {
     .then(scssText => fs.writeFile(scssFileName, scssText))
 }
 
-const getSvgToFontOptions = ({ svgPath, relativeOutputPath, cssPath, fontName, website }): SvgToFontOptions => {
+const getSvgToFontOptions = ({ svgPath, relativeOutputPath, cssPath, fontName, website }: BuildFontOptions): SvgToFontOptions => {
   return {
     src: svgPath,
     dist: `${relativeOutputPath}/${cssPath.split('/')[0]}`, // font, website and typescript files
@@ -231,21 +238,21 @@ const getSvgToFontOptions = ({ svgPath, relativeOutputPath, cssPath, fontName, w
     svgicons2svgfont: {
       fontHeight: 1000,
       normalize: true,
-      log: () => {},
+      // log: () => {},
     },
     typescript: true,
-    website: !website ? null : {
+    website: !website ? undefined : {
       links: [],
       title: '@maggioli-design-system/icons',
       description: 'Maggioli Design System Icons is an icon font package based on Google Material Design Icons and Material Design Icons community icons.',
       logo: '',
-      favicon: null,
+      favicon: undefined,
       footerInfo: 'Gruppo Maggioli, tutti i diritti riservati.',
     },
   }
 }
 
-const organizeFiles = (buildFontsDir, buildPathDir) => {
+const organizeFiles = (buildFontsDir: string, buildPathDir: string) => {
   // Moving out of "fonts" folder files witch aren't fonts
   const isFontFile = /\.(ttf|woff|woff2|eot|svg)$/i
   return fs.readdir(buildFontsDir)
@@ -254,3 +261,5 @@ const organizeFiles = (buildFontsDir, buildPathDir) => {
       file => fs.rename(path.join(buildFontsDir, file), path.join(buildPathDir, file)),
     )))
 }
+
+main(process.argv.slice(2))

@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-non-null-assertion */
 
 import chalk from 'chalk'
 import fs from 'fs/promises'
@@ -29,14 +30,14 @@ class Maggioli {
    */
   static async listPath (): Promise<string[]> {
     const subdirectories = await Maggioli.subDirectories()
-    return iconGroupListHelper('maggioli', subdirectories, Maggioli.FILE_NAME_REGEX)
+    return iconGroupListHelper(subdirectories, Maggioli.FILE_NAME_REGEX)
   }
 
   /**
    * Given the path of an icon or just the file name, it returns the icon name
    */
   static getIconName (path: string): string {
-    return path.split('/').slice(-1)[0].match(Maggioli.FILE_NAME_REGEX)[1]
+    return path.split('/').slice(-1)[0].match(Maggioli.FILE_NAME_REGEX)![1]
   }
 }
 
@@ -66,14 +67,14 @@ class Material {
    */
   static async listPath (): Promise<string[]> {
     const subdirectories = await Material.subDirectories()
-    return iconGroupListHelper('material', subdirectories, Material.FILE_NAME_REGEX)
+    return iconGroupListHelper(subdirectories, Material.FILE_NAME_REGEX)
   }
 
   /**
    * Given the path of an icon or just the file name, it returns the icon name
    */
   static getIconName (path: string): string {
-    return path.split('/').slice(-1)[0].match(Material.FILE_NAME_REGEX)[1]
+    return path.split('/').slice(-1)[0].match(Material.FILE_NAME_REGEX)![1]
   }
 }
 
@@ -104,14 +105,14 @@ class MaterialCommunity {
    */
   static async listPath (): Promise<string[]> {
     const subdirectories = await MaterialCommunity.subDirectories()
-    return iconGroupListHelper('mdi', subdirectories, MaterialCommunity.FILE_NAME_REGEX)
+    return iconGroupListHelper(subdirectories, MaterialCommunity.FILE_NAME_REGEX)
   }
 
   /**
    * Given the path of an icon or just the file name, it returns the icon name
    */
   static getIconName (path: string): string {
-    return path.split('/').slice(-1)[0].match(MaterialCommunity.FILE_NAME_REGEX)[1]
+    return path.split('/').slice(-1)[0].match(MaterialCommunity.FILE_NAME_REGEX)![1]
   }
 }
 
@@ -133,7 +134,7 @@ class LocalDirectory {
     const subdirectories = await LocalDirectory.subDirectories()
     const filename = `${iconName}.svg`
 
-    return iconGroupGetHelper(null, subdirectories, iconName, filename)
+    return iconGroupGetHelper('', subdirectories, iconName, filename)
   }
 
   /**
@@ -142,7 +143,7 @@ class LocalDirectory {
    */
   static async listPath (): Promise<string[]> {
     const subdirectories = await LocalDirectory.subDirectories()
-    return iconGroupListHelper(null, subdirectories)
+    return iconGroupListHelper(subdirectories)
   }
 
   /**
@@ -150,7 +151,7 @@ class LocalDirectory {
    */
   static getIconName (path: string): string | boolean {
     if (!path.includes('/')) return false
-    return path.match(LocalDirectory.FILE_NAME_REGEX)[1]
+    return path.match(LocalDirectory.FILE_NAME_REGEX)![1]
   }
 }
 
@@ -181,7 +182,7 @@ const iconGroupGetHelper = async (iconGroup: string, directories: string[], icon
 /**
  * List icons helper to simplify groups functions
  */
-const iconGroupListHelper = async (iconGroup: string, directories: string[], fileTemplate?: RegExp): Promise<string[]> => {
+const iconGroupListHelper = async (directories: string[], fileTemplate?: RegExp): Promise<string[]> => {
   return Promise.all(directories.map(async dir => (await listFilesInDirectory(dir, fileTemplate)).map(filename => path.join(dir, filename))))
     .then(matrix => matrix.flat())
 }
