@@ -165,12 +165,7 @@ const iconsToDictionary = async (buildPathDir: string, inputData: Map<string, st
     })
 }
 
-/**
- * Copia tutte le icone richieste in una cartella di build
- * @param inputData {Object.<string, string>} Mappa con l'icona desiderata come valore e il nome dell'icona come chiave
- * @returns {Promise<void[]>} Una promise da attendere perché termini la copia
- */
-const iconsToTempFolder = async (buildSvgDir: string, inputData: Map<string, string>) => {
+const iconsToTempFolder = async (buildSvgDir: string, inputData: Map<string, string>): Promise<void | void[]> => {
   const promises = []
   for (const [key, value] of Object.entries(inputData)) {
     const icon = iconSelectorToObject(value.toString())
