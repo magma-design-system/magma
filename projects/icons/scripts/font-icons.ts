@@ -1,11 +1,19 @@
-import svgtofont from 'svgtofont'
+import svgtofont, { SvgToFontOptions } from 'svgtofont'
 import fs from 'fs/promises'
 import { PathLike, readFileSync } from 'fs'
 import path from 'path'
 import chalk from 'chalk'
 import { ICON_GROUPS } from './icons-groups'
 import { ORIGINAL_DIR, DIST_DIR } from './meta'
-import { SvgToFontOptions } from 'svgtofont'
+
+interface BuildFontOptions {
+  svgPath: string,
+  relativeOutputPath: string,
+  outputPath: string,
+  cssPath: string,
+  fontName: string,
+  website: boolean,
+}
 
 interface BuildFontOptions {
   svgPath: string,
@@ -35,11 +43,23 @@ const main = (parameters: string[]): void => {
 
   ICON_GROUPS.localDirectory.subDirectories.push(...localDirectories)
 
-  const regexp = new RegExp('(font-icons-cli|icons)\/')
+  const regexp = new RegExp(`(font-icons-cli|icons)\\${path.sep}`)
 
   const fontName = 'mgg-icons'
-  const options = { svgPath: BUILD_SVG_DIR, outputPath: DIST_DIR, relativeOutputPath: DIST_DIR.split(regexp)[2], cssPath: 'fonts/', fontName, website: shouldCreateWebsite }
-  const optionsNatural = { ...options, svgPath: BUILD_ORIGINAL_SVG_DIR, outputPath: ORIGINAL_DIR, relativeOutputPath: ORIGINAL_DIR.split(regexp)[2] }
+  const options = {
+    cssPath: `fonts${path.sep}`,
+    fontName,
+    outputPath: DIST_DIR,
+    relativeOutputPath: DIST_DIR.split(regexp)[2],
+    svgPath: BUILD_SVG_DIR,
+    website: shouldCreateWebsite,
+  }
+  const optionsNatural = {
+    ...options,
+    outputPath: ORIGINAL_DIR,
+    relativeOutputPath: ORIGINAL_DIR.split(regexp)[2],
+    svgPath: BUILD_ORIGINAL_SVG_DIR,
+  }
 
   console.log('Options', options)
   console.log('Options natural', optionsNatural)
@@ -105,7 +125,7 @@ const buildCSSEncoded = (buildFontsDir: string, buildPathDir: string, fontName: 
     .then(cssString => fs.writeFile(newCssPath, cssString))
     .then(() => fs.readFile(newCssPath))
     .then(cssBuffer => splitCSSEncoded(cssBuffer, newCssFontFacePath, newCssClassesPath))
-    .then(() => console.debug('Build CSS Encoded created in ', newCssPath.split('/design-system')[1]))
+    .then(() => console.debug('Build CSS Encoded created ' + chalk.green('successfully') + ' in ', chalk.green(newCssPath.split('projects')[1])))
     .catch(error => {
       console.error('Build CSS Encoded failed.', error)
       return Promise.reject(error)
@@ -118,7 +138,9 @@ const buildCSSEncoded = (buildFontsDir: string, buildPathDir: string, fontName: 
  */
 const createBuildDirective = async (buildSvgDir: string): Promise<void> => {
   return fs.mkdir(buildSvgDir, { recursive: true })
-    .then(() => console.debug('Build directive created in', buildSvgDir.split('/design-system')[1]))
+    .then(() => {
+      console.debug('Build directive created ' + chalk.green('successfully') + ' in ', chalk.green(buildSvgDir.split('projects')[1]))
+    })
     .catch(error => {
       console.error('Build directive creation failed.', error)
       return Promise.reject(error)
@@ -192,23 +214,9 @@ const iconSelectorToObject = (iconSelector: string): {name: string, group: strin
   }
 }
 
-/**
- * BuildFontOptions
- * @typedef {Object} BuildFontOptions
- * @property {string} svgPath - Path della cartella contenente gli svg da includere nel font.
- * @property {string} outputPath - Path della cartella in cui creare i font e il sito di presentazione.
- * @property {string} fontName - Indicates whether the Wisdom component is present.
- */
-
-/**
- * Crea il font in tutti i formati supportati da svgtofont.
- * Crea anche un sito statico in cui visionare le icone.
- * @param {BuildFontOptions} options Configurazione del font
- * @return {Promise<void>}
- */
-const buildFont = (options: BuildFontOptions): Promise<void> => {
+const buildFont = async (options: BuildFontOptions): Promise<void> => {
   const _options = getSvgToFontOptions(options)
-  const scssFileName = `${options.outputPath}/${options.fontName}.scss`
+  const scssFileName = path.join(options.outputPath, `${options.fontName}.scss`)
   return svgtofont(_options)
     .then(() => addPrefixToAssetsUrlInScss(scssFileName, options.cssPath)) // defaultValue == cssPath
 }
@@ -217,8 +225,8 @@ function addPrefixToAssetsUrlInScss (scssFileName: PathLike, cssPath = '') {
   return fs.readFile(scssFileName)
     .then(scssText => {
       const variableName = '$font-icons-base-url'
-      return `${variableName}: '${cssPath}' !default;\n\n${scssText}`
-        .replace(new RegExp(`url\\(('|")${cssPath}`, 'g'), `url(${variableName} + $1`)
+      return `${variableName}: '${path.basename(cssPath)}/' !default;\n\n${scssText}`
+        .replace(new RegExp(`url\\(('|")${path.basename(cssPath)}`, 'g'), `url(${variableName} + $1`)
     })
     .then(scssText => fs.writeFile(scssFileName, scssText))
 }
@@ -226,7 +234,7 @@ function addPrefixToAssetsUrlInScss (scssFileName: PathLike, cssPath = '') {
 const getSvgToFontOptions = ({ svgPath, relativeOutputPath, cssPath, fontName, website }: BuildFontOptions): SvgToFontOptions => {
   return {
     src: svgPath,
-    dist: `${relativeOutputPath}/${cssPath.split('/')[0]}`, // font, website and typescript files
+    dist: path.join(relativeOutputPath, path.basename(cssPath)),
     fontName, // font name
     classNamePrefix: fontName,
     css: {
