@@ -1,0 +1,524 @@
+Input file: dictionary.json
+A website with all the icons will be created.
+Options {
+  svgPath: '/home/nicola/git/design-system/projects/icons/dist/svg',
+  outputPath: '/home/nicola/git/design-system/projects/icons/dist',
+  relativeOutputPath: 'dist',
+  cssPath: 'fonts/',
+  fontName: 'mgg-icons',
+  website: true
+}
+Options natural {
+  svgPath: '/home/nicola/git/design-system/projects/icons/dist/original/svg',
+  outputPath: '/home/nicola/git/design-system/projects/icons/dist/original',
+  relativeOutputPath: 'dist/original',
+  cssPath: 'fonts/',
+  fontName: 'mgg-icons',
+  website: true
+}
+Build directive created in /projects/icons/dist/svg
+/home/nicola/git/design-system/projects/icons/dist/svg/accessibility.svg
+/home/nicola/git/design-system/projects/icons/dist/svg/account-details.svg
+/home/nicola/git/design-system/projects/icons/dist/svg/action-archive.svg
+/home/nicola/git/design-system/projects/icons/dist/svg/action-back.svg
+/home/nicola/git/design-system/projects/icons/dist/svg/action-backspace.svg
+/home/nicola/git/design-system/projects/icons/dist/svg/action-breadcrumb.svg
+/home/nicola/git/design-system/projects/icons/dist/svg/action-calc.svg
+/home/nicola/git/design-system/projects/icons/dist/svg/action-clear.svg
+/home/nicola/git/design-system/projects/icons/dist/svg/action-close.svg
+/home/nicola/git/design-system/projects/icons/dist/svg/action-close-circle.svg
+/home/nicola/git/design-system/projects/icons/dist/svg/action-compress-horizontal.svg
+/home/nicola/git/design-system/projects/icons/dist/svg/action-compress-vertical.svg
+/home/nicola/git/design-system/projects/icons/dist/svg/action-copy.svg
+/home/nicola/git/design-system/projects/icons/dist/svg/action-copy-paste.svg
+/home/nicola/git/design-system/projects/icons/dist/svg/action-customize.svg
+/home/nicola/git/design-system/projects/icons/dist/svg/action-download.svg
+/home/nicola/git/design-system/projects/icons/dist/svg/action-drag.svg
+/home/nicola/git/design-system/projects/icons/dist/svg/action-drop-down.svg
+/home/nicola/git/design-system/projects/icons/dist/svg/action-drop-up.svg
+/home/nicola/git/design-system/projects/icons/dist/svg/action-email-send.svg
+/home/nicola/git/design-system/projects/icons/dist/svg/action-expand-horizontal.svg
+/home/nicola/git/design-system/projects/icons/dist/svg/action-expand-vertical.svg
+/home/nicola/git/design-system/projects/icons/dist/svg/action-export.svg
+/home/nicola/git/design-system/projects/icons/dist/svg/action-feeling-lucky.svg
+/home/nicola/git/design-system/projects/icons/dist/svg/action-fit-horizontal.svg
+/home/nicola/git/design-system/projects/icons/dist/svg/action-fit-vertical.svg
+/home/nicola/git/design-system/projects/icons/dist/svg/action-forward.svg
+/home/nicola/git/design-system/projects/icons/dist/svg/action-hide-down-side.svg
+/home/nicola/git/design-system/projects/icons/dist/svg/action-hide-left-side.svg
+/home/nicola/git/design-system/projects/icons/dist/svg/action-hide-right-side.svg
+/home/nicola/git/design-system/projects/icons/dist/svg/action-hide-sidebar-left.svg
+/home/nicola/git/design-system/projects/icons/dist/svg/action-hide-sidebar-right.svg
+/home/nicola/git/design-system/projects/icons/dist/svg/action-import.svg
+/home/nicola/git/design-system/projects/icons/dist/svg/action-link-off.svg
+/home/nicola/git/design-system/projects/icons/dist/svg/action-link-on.svg
+/home/nicola/git/design-system/projects/icons/dist/svg/action-lock.svg
+/home/nicola/git/design-system/projects/icons/dist/svg/action-logout.svg
+/home/nicola/git/design-system/projects/icons/dist/svg/action-magic-wand.svg
+/home/nicola/git/design-system/projects/icons/dist/svg/action-multiselect.svg
+/home/nicola/git/design-system/projects/icons/dist/svg/action-multiselect-off.svg
+/home/nicola/git/design-system/projects/icons/dist/svg/action-open-predective-link.svg
+/home/nicola/git/design-system/projects/icons/dist/svg/action-paste.svg
+/home/nicola/git/design-system/projects/icons/dist/svg/action-phone.svg
+/home/nicola/git/design-system/projects/icons/dist/svg/action-print.svg
+/home/nicola/git/design-system/projects/icons/dist/svg/action-print-preview.svg
+/home/nicola/git/design-system/projects/icons/dist/svg/action-print-settings.svg
+/home/nicola/git/design-system/projects/icons/dist/svg/action-process.svg
+/home/nicola/git/design-system/projects/icons/dist/svg/action-redo.svg
+/home/nicola/git/design-system/projects/icons/dist/svg/action-refresh.svg
+/home/nicola/git/design-system/projects/icons/dist/svg/action-replay.svg
+/home/nicola/git/design-system/projects/icons/dist/svg/action-reply.svg
+/home/nicola/git/design-system/projects/icons/dist/svg/action-reply-all.svg
+/home/nicola/git/design-system/projects/icons/dist/svg/action-rotate-left.svg
+/home/nicola/git/design-system/projects/icons/dist/svg/action-rotate-right.svg
+/home/nicola/git/design-system/projects/icons/dist/svg/action-send.svg
+/home/nicola/git/design-system/projects/icons/dist/svg/action-show-down-side.svg
+/home/nicola/git/design-system/projects/icons/dist/svg/action-show-left-side.svg
+/home/nicola/git/design-system/projects/icons/dist/svg/action-show-right-side.svg
+/home/nicola/git/design-system/projects/icons/dist/svg/action-show-sidebar-left.svg
+/home/nicola/git/design-system/projects/icons/dist/svg/action-show-sidebar-right.svg
+/home/nicola/git/design-system/projects/icons/dist/svg/action-sort-asc.svg
+/home/nicola/git/design-system/projects/icons/dist/svg/action-sort-desc.svg
+/home/nicola/git/design-system/projects/icons/dist/svg/action-sort-set.svg
+/home/nicola/git/design-system/projects/icons/dist/svg/action-undo.svg
+/home/nicola/git/design-system/projects/icons/dist/svg/action-unlock.svg
+/home/nicola/git/design-system/projects/icons/dist/svg/action-upload.svg
+/home/nicola/git/design-system/projects/icons/dist/svg/action-view-detail.svg
+/home/nicola/git/design-system/projects/icons/dist/svg/action-visibility-off.svg
+/home/nicola/git/design-system/projects/icons/dist/svg/action-visibility-on.svg
+/home/nicola/git/design-system/projects/icons/dist/svg/action-zoom-in.svg
+/home/nicola/git/design-system/projects/icons/dist/svg/action-zoom-out.svg
+/home/nicola/git/design-system/projects/icons/dist/svg/activity-coffee-break.svg
+/home/nicola/git/design-system/projects/icons/dist/svg/activity-lunch.svg
+/home/nicola/git/design-system/projects/icons/dist/svg/add-chart.svg
+/home/nicola/git/design-system/projects/icons/dist/svg/additional-contents.svg
+/home/nicola/git/design-system/projects/icons/dist/svg/adv.svg
+/home/nicola/git/design-system/projects/icons/dist/svg/adv-denied.svg
+/home/nicola/git/design-system/projects/icons/dist/svg/avatar-placeholder-user.svg
+/home/nicola/git/design-system/projects/icons/dist/svg/avatar-placeholder-user-group.svg
+/home/nicola/git/design-system/projects/icons/dist/svg/bank.svg
+/home/nicola/git/design-system/projects/icons/dist/svg/book-open-page-variant.svg
+/home/nicola/git/design-system/projects/icons/dist/svg/building-area.svg
+/home/nicola/git/design-system/projects/icons/dist/svg/calculator.svg
+/home/nicola/git/design-system/projects/icons/dist/svg/calendar-alert.svg
+/home/nicola/git/design-system/projects/icons/dist/svg/calendar-clock.svg
+/home/nicola/git/design-system/projects/icons/dist/svg/calendar-text.svg
+/home/nicola/git/design-system/projects/icons/dist/svg/call.svg
+/home/nicola/git/design-system/projects/icons/dist/svg/camera.svg
+/home/nicola/git/design-system/projects/icons/dist/svg/cards-view.svg
+/home/nicola/git/design-system/projects/icons/dist/svg/check-circle.svg
+/home/nicola/git/design-system/projects/icons/dist/svg/check-circle-outline.svg
+/home/nicola/git/design-system/projects/icons/dist/svg/clock-outline.svg
+/home/nicola/git/design-system/projects/icons/dist/svg/close-circle.svg
+/home/nicola/git/design-system/projects/icons/dist/svg/code-barcode.svg
+/home/nicola/git/design-system/projects/icons/dist/svg/code-isbn.svg
+/home/nicola/git/design-system/projects/icons/dist/svg/code-qr.svg
+/home/nicola/git/design-system/projects/icons/dist/svg/columns-view.svg
+/home/nicola/git/design-system/projects/icons/dist/svg/connection.svg
+/home/nicola/git/design-system/projects/icons/dist/svg/construction.svg
+/home/nicola/git/design-system/projects/icons/dist/svg/control-panel.svg
+/home/nicola/git/design-system/projects/icons/dist/svg/credit-card.svg
+/home/nicola/git/design-system/projects/icons/dist/svg/crud-cancel.svg
+/home/nicola/git/design-system/projects/icons/dist/svg/crud-create.svg
+/home/nicola/git/design-system/projects/icons/dist/svg/crud-delete.svg
+/home/nicola/git/design-system/projects/icons/dist/svg/crud-edit.svg
+/home/nicola/git/design-system/projects/icons/dist/svg/crud-rename.svg
+/home/nicola/git/design-system/projects/icons/dist/svg/crud-reset.svg
+/home/nicola/git/design-system/projects/icons/dist/svg/crud-save.svg
+/home/nicola/git/design-system/projects/icons/dist/svg/dashboard.svg
+/home/nicola/git/design-system/projects/icons/dist/svg/dashboard-customize.svg
+/home/nicola/git/design-system/projects/icons/dist/svg/data-activity-log.svg
+/home/nicola/git/design-system/projects/icons/dist/svg/data-add.svg
+/home/nicola/git/design-system/projects/icons/dist/svg/data-analytics.svg
+/home/nicola/git/design-system/projects/icons/dist/svg/data-bar-chart.svg
+/home/nicola/git/design-system/projects/icons/dist/svg/data-category.svg
+/home/nicola/git/design-system/projects/icons/dist/svg/data-drafts.svg
+/home/nicola/git/design-system/projects/icons/dist/svg/data-entrance.svg
+/home/nicola/git/design-system/projects/icons/dist/svg/data-exit.svg
+/home/nicola/git/design-system/projects/icons/dist/svg/data-export.svg
+/home/nicola/git/design-system/projects/icons/dist/svg/data-favorite.svg
+/home/nicola/git/design-system/projects/icons/dist/svg/data-favorite-alt.svg
+/home/nicola/git/design-system/projects/icons/dist/svg/data-favorite-item-alt.svg
+/home/nicola/git/design-system/projects/icons/dist/svg/data-favorite-list.svg
+/home/nicola/git/design-system/projects/icons/dist/svg/data-favorite-list-alt.svg
+/home/nicola/git/design-system/projects/icons/dist/svg/data-favorite-off.svg
+/home/nicola/git/design-system/projects/icons/dist/svg/data-filtered.svg
+/home/nicola/git/design-system/projects/icons/dist/svg/data-history.svg
+/home/nicola/git/design-system/projects/icons/dist/svg/data-inbox.svg
+/home/nicola/git/design-system/projects/icons/dist/svg/data-internal.svg
+/home/nicola/git/design-system/projects/icons/dist/svg/data-like.svg
+/home/nicola/git/design-system/projects/icons/dist/svg/data-like-off.svg
+/home/nicola/git/design-system/projects/icons/dist/svg/data-outgoing.svg
+/home/nicola/git/design-system/projects/icons/dist/svg/data-percent.svg
+/home/nicola/git/design-system/projects/icons/dist/svg/data-search.svg
+/home/nicola/git/design-system/projects/icons/dist/svg/data-send.svg
+/home/nicola/git/design-system/projects/icons/dist/svg/data-share.svg
+/home/nicola/git/design-system/projects/icons/dist/svg/data-unfavorite.svg
+/home/nicola/git/design-system/projects/icons/dist/svg/data-unfiltered.svg
+/home/nicola/git/design-system/projects/icons/dist/svg/data-view.svg
+/home/nicola/git/design-system/projects/icons/dist/svg/database.svg
+/home/nicola/git/design-system/projects/icons/dist/svg/deal.svg
+/home/nicola/git/design-system/projects/icons/dist/svg/declaration.svg
+/home/nicola/git/design-system/projects/icons/dist/svg/design-component.svg
+/home/nicola/git/design-system/projects/icons/dist/svg/design-crop.svg
+/home/nicola/git/design-system/projects/icons/dist/svg/design-measure.svg
+/home/nicola/git/design-system/projects/icons/dist/svg/design-palette.svg
+/home/nicola/git/design-system/projects/icons/dist/svg/design-typography.svg
+/home/nicola/git/design-system/projects/icons/dist/svg/dev-markup.svg
+/home/nicola/git/design-system/projects/icons/dist/svg/dev-mode.svg
+/home/nicola/git/design-system/projects/icons/dist/svg/dev-terminal.svg
+/home/nicola/git/design-system/projects/icons/dist/svg/document.svg
+/home/nicola/git/design-system/projects/icons/dist/svg/document-book.svg
+/home/nicola/git/design-system/projects/icons/dist/svg/document-email.svg
+/home/nicola/git/design-system/projects/icons/dist/svg/document-note.svg
+/home/nicola/git/design-system/projects/icons/dist/svg/document-spreadsheet.svg
+/home/nicola/git/design-system/projects/icons/dist/svg/document-text.svg
+/home/nicola/git/design-system/projects/icons/dist/svg/document-web.svg
+/home/nicola/git/design-system/projects/icons/dist/svg/emoticon-happy.svg
+/home/nicola/git/design-system/projects/icons/dist/svg/emoticon-neutral.svg
+/home/nicola/git/design-system/projects/icons/dist/svg/emoticon-sad.svg
+/home/nicola/git/design-system/projects/icons/dist/svg/euro.svg
+/home/nicola/git/design-system/projects/icons/dist/svg/file-archive.svg
+/home/nicola/git/design-system/projects/icons/dist/svg/file-attachment.svg
+/home/nicola/git/design-system/projects/icons/dist/svg/file-download.svg
+/home/nicola/git/design-system/projects/icons/dist/svg/file-email.svg
+/home/nicola/git/design-system/projects/icons/dist/svg/file-executable.svg
+/home/nicola/git/design-system/projects/icons/dist/svg/file-folder.svg
+/home/nicola/git/design-system/projects/icons/dist/svg/file-folder-open.svg
+/home/nicola/git/design-system/projects/icons/dist/svg/file-folder-sync.svg
+/home/nicola/git/design-system/projects/icons/dist/svg/file-import.svg
+/home/nicola/git/design-system/projects/icons/dist/svg/file-lock.svg
+/home/nicola/git/design-system/projects/icons/dist/svg/file-multiple.svg
+/home/nicola/git/design-system/projects/icons/dist/svg/file-restore-outline.svg
+/home/nicola/git/design-system/projects/icons/dist/svg/file-settings.svg
+/home/nicola/git/design-system/projects/icons/dist/svg/file-sub.svg
+/home/nicola/git/design-system/projects/icons/dist/svg/file-type-calc.svg
+/home/nicola/git/design-system/projects/icons/dist/svg/file-type-chart.svg
+/home/nicola/git/design-system/projects/icons/dist/svg/file-type-code.svg
+/home/nicola/git/design-system/projects/icons/dist/svg/file-type-data.svg
+/home/nicola/git/design-system/projects/icons/dist/svg/file-type-document.svg
+/home/nicola/git/design-system/projects/icons/dist/svg/file-type-img.svg
+/home/nicola/git/design-system/projects/icons/dist/svg/file-type-odt.svg
+/home/nicola/git/design-system/projects/icons/dist/svg/file-type-pdf.svg
+/home/nicola/git/design-system/projects/icons/dist/svg/file-type-rtf.svg
+/home/nicola/git/design-system/projects/icons/dist/svg/file-type-signature.svg
+/home/nicola/git/design-system/projects/icons/dist/svg/file-type-vector.svg
+/home/nicola/git/design-system/projects/icons/dist/svg/file-type-word.svg
+/home/nicola/git/design-system/projects/icons/dist/svg/file-unlock.svg
+/home/nicola/git/design-system/projects/icons/dist/svg/file-upload.svg
+/home/nicola/git/design-system/projects/icons/dist/svg/finance-contactless.svg
+/home/nicola/git/design-system/projects/icons/dist/svg/finance-euro-currency.svg
+/home/nicola/git/design-system/projects/icons/dist/svg/finance-pie-chart.svg
+/home/nicola/git/design-system/projects/icons/dist/svg/finance-savings.svg
+/home/nicola/git/design-system/projects/icons/dist/svg/finance-wallet.svg
+/home/nicola/git/design-system/projects/icons/dist/svg/flag-checkered.svg
+/home/nicola/git/design-system/projects/icons/dist/svg/folder-remove.svg
+/home/nicola/git/design-system/projects/icons/dist/svg/form-checkbox-checked.svg
+/home/nicola/git/design-system/projects/icons/dist/svg/form-checkbox-checked-clean.svg
+/home/nicola/git/design-system/projects/icons/dist/svg/form-checkbox-indeterminate.svg
+/home/nicola/git/design-system/projects/icons/dist/svg/form-checkbox-unchecked.svg
+/home/nicola/git/design-system/projects/icons/dist/svg/form-dropdown.svg
+/home/nicola/git/design-system/projects/icons/dist/svg/form-radio-checked.svg
+/home/nicola/git/design-system/projects/icons/dist/svg/form-radio-unchecked.svg
+/home/nicola/git/design-system/projects/icons/dist/svg/format-color-fill.svg
+/home/nicola/git/design-system/projects/icons/dist/svg/format-list-bulleted.svg
+/home/nicola/git/design-system/projects/icons/dist/svg/format-quote-close.svg
+/home/nicola/git/design-system/projects/icons/dist/svg/format-quote-open.svg
+/home/nicola/git/design-system/projects/icons/dist/svg/forward.svg
+/home/nicola/git/design-system/projects/icons/dist/svg/fullscreen-off.svg
+/home/nicola/git/design-system/projects/icons/dist/svg/fullscreen-on.svg
+/home/nicola/git/design-system/projects/icons/dist/svg/gantt.svg
+/home/nicola/git/design-system/projects/icons/dist/svg/ground-property.svg
+/home/nicola/git/design-system/projects/icons/dist/svg/handyman.svg
+/home/nicola/git/design-system/projects/icons/dist/svg/head-question.svg
+/home/nicola/git/design-system/projects/icons/dist/svg/health-mask.svg
+/home/nicola/git/design-system/projects/icons/dist/svg/heart.svg
+/home/nicola/git/design-system/projects/icons/dist/svg/heart-outline.svg
+/home/nicola/git/design-system/projects/icons/dist/svg/help.svg
+/home/nicola/git/design-system/projects/icons/dist/svg/help-support.svg
+/home/nicola/git/design-system/projects/icons/dist/svg/historic-unusable-property.svg
+/home/nicola/git/design-system/projects/icons/dist/svg/historical-property.svg
+/home/nicola/git/design-system/projects/icons/dist/svg/hive.svg
+/home/nicola/git/design-system/projects/icons/dist/svg/home-group.svg
+/home/nicola/git/design-system/projects/icons/dist/svg/home-heart.svg
+/home/nicola/git/design-system/projects/icons/dist/svg/import.svg
+/home/nicola/git/design-system/projects/icons/dist/svg/input-calendar.svg
+/home/nicola/git/design-system/projects/icons/dist/svg/input-tags.svg
+/home/nicola/git/design-system/projects/icons/dist/svg/input-time.svg
+/home/nicola/git/design-system/projects/icons/dist/svg/internationalization.svg
+/home/nicola/git/design-system/projects/icons/dist/svg/jobs-farmer.svg
+/home/nicola/git/design-system/projects/icons/dist/svg/label-important.svg
+/home/nicola/git/design-system/projects/icons/dist/svg/land-registry.svg
+/home/nicola/git/design-system/projects/icons/dist/svg/list-dot.svg
+/home/nicola/git/design-system/projects/icons/dist/svg/lock.svg
+/home/nicola/git/design-system/projects/icons/dist/svg/logo-girasole-camuno.svg
+/home/nicola/git/design-system/projects/icons/dist/svg/logo-gpl.svg
+/home/nicola/git/design-system/projects/icons/dist/svg/logo-ilibro.svg
+/home/nicola/git/design-system/projects/icons/dist/svg/main-property.svg
+/home/nicola/git/design-system/projects/icons/dist/svg/map-city.svg
+/home/nicola/git/design-system/projects/icons/dist/svg/map-directions.svg
+/home/nicola/git/design-system/projects/icons/dist/svg/map-marker.svg
+/home/nicola/git/design-system/projects/icons/dist/svg/map-marker-off.svg
+/home/nicola/git/design-system/projects/icons/dist/svg/map-pin.svg
+/home/nicola/git/design-system/projects/icons/dist/svg/map-venue.svg
+/home/nicola/git/design-system/projects/icons/dist/svg/media-audio.svg
+/home/nicola/git/design-system/projects/icons/dist/svg/media-image.svg
+/home/nicola/git/design-system/projects/icons/dist/svg/media-video.svg
+/home/nicola/git/design-system/projects/icons/dist/svg/menu-main.svg
+/home/nicola/git/design-system/projects/icons/dist/svg/menu-more.svg
+/home/nicola/git/design-system/projects/icons/dist/svg/menu-more-horizontal.svg
+/home/nicola/git/design-system/projects/icons/dist/svg/message.svg
+/home/nicola/git/design-system/projects/icons/dist/svg/move-row-down.svg
+/home/nicola/git/design-system/projects/icons/dist/svg/move-row-up.svg
+/home/nicola/git/design-system/projects/icons/dist/svg/navigate-external-link.svg
+/home/nicola/git/design-system/projects/icons/dist/svg/navigate-internal-link.svg
+/home/nicola/git/design-system/projects/icons/dist/svg/navigation-hide.svg
+/home/nicola/git/design-system/projects/icons/dist/svg/navigation-show.svg
+/home/nicola/git/design-system/projects/icons/dist/svg/new-release.svg
+/home/nicola/git/design-system/projects/icons/dist/svg/note-add.svg
+/home/nicola/git/design-system/projects/icons/dist/svg/notifications.svg
+/home/nicola/git/design-system/projects/icons/dist/svg/office.svg
+/home/nicola/git/design-system/projects/icons/dist/svg/order-return-down_left-to_right.svg
+/home/nicola/git/design-system/projects/icons/dist/svg/order-return-down_left-to_up.svg
+/home/nicola/git/design-system/projects/icons/dist/svg/order-return-down_right-to_left.svg
+/home/nicola/git/design-system/projects/icons/dist/svg/order-return-down_right-to_up.svg
+/home/nicola/git/design-system/projects/icons/dist/svg/order-return-up_left-to_down.svg
+/home/nicola/git/design-system/projects/icons/dist/svg/order-return-up_left-to_right.svg
+/home/nicola/git/design-system/projects/icons/dist/svg/order-return-up_right-to_down.svg
+/home/nicola/git/design-system/projects/icons/dist/svg/order-return-up_right-to_left.svg
+/home/nicola/git/design-system/projects/icons/dist/svg/order-zigzag-down_left-to_right.svg
+/home/nicola/git/design-system/projects/icons/dist/svg/order-zigzag-down_left-to_up.svg
+/home/nicola/git/design-system/projects/icons/dist/svg/order-zigzag-down_right-to_left.svg
+/home/nicola/git/design-system/projects/icons/dist/svg/order-zigzag-down_right-to_up.svg
+/home/nicola/git/design-system/projects/icons/dist/svg/order-zigzag-up_left-to_down.svg
+/home/nicola/git/design-system/projects/icons/dist/svg/order-zigzag-up_left-to_right.svg
+/home/nicola/git/design-system/projects/icons/dist/svg/order-zigzag-up_right-to_down.svg
+/home/nicola/git/design-system/projects/icons/dist/svg/order-zigzag-up_right-to_left.svg
+/home/nicola/git/design-system/projects/icons/dist/svg/other-properties.svg
+/home/nicola/git/design-system/projects/icons/dist/svg/paginator-first.svg
+/home/nicola/git/design-system/projects/icons/dist/svg/paginator-last.svg
+/home/nicola/git/design-system/projects/icons/dist/svg/paginator-next.svg
+/home/nicola/git/design-system/projects/icons/dist/svg/paginator-previous.svg
+/home/nicola/git/design-system/projects/icons/dist/svg/payments.svg
+/home/nicola/git/design-system/projects/icons/dist/svg/peripheral-hard-drive.svg
+/home/nicola/git/design-system/projects/icons/dist/svg/peripheral-headset.svg
+/home/nicola/git/design-system/projects/icons/dist/svg/peripheral-headset-mic.svg
+/home/nicola/git/design-system/projects/icons/dist/svg/peripheral-keyboard.svg
+/home/nicola/git/design-system/projects/icons/dist/svg/peripheral-sim.svg
+/home/nicola/git/design-system/projects/icons/dist/svg/person-add.svg
+/home/nicola/git/design-system/projects/icons/dist/svg/person-remove.svg
+/home/nicola/git/design-system/projects/icons/dist/svg/pertinence-property.svg
+/home/nicola/git/design-system/projects/icons/dist/svg/pin.svg
+/home/nicola/git/design-system/projects/icons/dist/svg/places-apartment.svg
+/home/nicola/git/design-system/projects/icons/dist/svg/places-billboard.svg
+/home/nicola/git/design-system/projects/icons/dist/svg/places-farm.svg
+/home/nicola/git/design-system/projects/icons/dist/svg/places-holiday-beach.svg
+/home/nicola/git/design-system/projects/icons/dist/svg/places-home.svg
+/home/nicola/git/design-system/projects/icons/dist/svg/places-institute.svg
+/home/nicola/git/design-system/projects/icons/dist/svg/places-multiple.svg
+/home/nicola/git/design-system/projects/icons/dist/svg/places-park.svg
+/home/nicola/git/design-system/projects/icons/dist/svg/places-spa.svg
+/home/nicola/git/design-system/projects/icons/dist/svg/places-store.svg
+/home/nicola/git/design-system/projects/icons/dist/svg/places-store-access-denied.svg
+/home/nicola/git/design-system/projects/icons/dist/svg/plumbing.svg
+/home/nicola/git/design-system/projects/icons/dist/svg/privileges.svg
+/home/nicola/git/design-system/projects/icons/dist/svg/rating-empty.svg
+/home/nicola/git/design-system/projects/icons/dist/svg/rating-full.svg
+/home/nicola/git/design-system/projects/icons/dist/svg/rating-half.svg
+/home/nicola/git/design-system/projects/icons/dist/svg/read-only.svg
+/home/nicola/git/design-system/projects/icons/dist/svg/recycle.svg
+/home/nicola/git/design-system/projects/icons/dist/svg/remove-circle.svg
+/home/nicola/git/design-system/projects/icons/dist/svg/remove-circle-outline.svg
+/home/nicola/git/design-system/projects/icons/dist/svg/role-admin.svg
+/home/nicola/git/design-system/projects/icons/dist/svg/role-editor.svg
+/home/nicola/git/design-system/projects/icons/dist/svg/role-owner.svg
+/home/nicola/git/design-system/projects/icons/dist/svg/role-subscriber.svg
+/home/nicola/git/design-system/projects/icons/dist/svg/rule.svg
+/home/nicola/git/design-system/projects/icons/dist/svg/rural-property.svg
+/home/nicola/git/design-system/projects/icons/dist/svg/save.svg
+/home/nicola/git/design-system/projects/icons/dist/svg/school.svg
+/home/nicola/git/design-system/projects/icons/dist/svg/security-code.svg
+/home/nicola/git/design-system/projects/icons/dist/svg/security-fingerprint.svg
+/home/nicola/git/design-system/projects/icons/dist/svg/security-password.svg
+/home/nicola/git/design-system/projects/icons/dist/svg/send-progress.svg
+/home/nicola/git/design-system/projects/icons/dist/svg/sent.svg
+/home/nicola/git/design-system/projects/icons/dist/svg/sentiment-dissatisfied.svg
+/home/nicola/git/design-system/projects/icons/dist/svg/sentiment-neutral.svg
+/home/nicola/git/design-system/projects/icons/dist/svg/sentiment-satisfied.svg
+/home/nicola/git/design-system/projects/icons/dist/svg/settings.svg
+/home/nicola/git/design-system/projects/icons/dist/svg/share.svg
+/home/nicola/git/design-system/projects/icons/dist/svg/share-alt.svg
+/home/nicola/git/design-system/projects/icons/dist/svg/shop-cart.svg
+/home/nicola/git/design-system/projects/icons/dist/svg/shop-cart-empty.svg
+/home/nicola/git/design-system/projects/icons/dist/svg/shop-store.svg
+/home/nicola/git/design-system/projects/icons/dist/svg/signature.svg
+/home/nicola/git/design-system/projects/icons/dist/svg/signpost.svg
+/home/nicola/git/design-system/projects/icons/dist/svg/skip-forward.svg
+/home/nicola/git/design-system/projects/icons/dist/svg/sort.svg
+/home/nicola/git/design-system/projects/icons/dist/svg/sort-as.svg
+/home/nicola/git/design-system/projects/icons/dist/svg/sort-desc.svg
+/home/nicola/git/design-system/projects/icons/dist/svg/source-web.svg
+/home/nicola/git/design-system/projects/icons/dist/svg/status-error.svg
+/home/nicola/git/design-system/projects/icons/dist/svg/status-error-outline.svg
+/home/nicola/git/design-system/projects/icons/dist/svg/status-false.svg
+/home/nicola/git/design-system/projects/icons/dist/svg/status-info.svg
+/home/nicola/git/design-system/projects/icons/dist/svg/status-null.svg
+/home/nicola/git/design-system/projects/icons/dist/svg/status-pending.svg
+/home/nicola/git/design-system/projects/icons/dist/svg/status-success.svg
+/home/nicola/git/design-system/projects/icons/dist/svg/status-true.svg
+/home/nicola/git/design-system/projects/icons/dist/svg/status-warning.svg
+/home/nicola/git/design-system/projects/icons/dist/svg/status-warning-outline.svg
+/home/nicola/git/design-system/projects/icons/dist/svg/sticky-note.svg
+/home/nicola/git/design-system/projects/icons/dist/svg/summary.svg
+/home/nicola/git/design-system/projects/icons/dist/svg/tab.svg
+/home/nicola/git/design-system/projects/icons/dist/svg/table-view.svg
+/home/nicola/git/design-system/projects/icons/dist/svg/tag.svg
+/home/nicola/git/design-system/projects/icons/dist/svg/talk-conversation.svg
+/home/nicola/git/design-system/projects/icons/dist/svg/text-description.svg
+/home/nicola/git/design-system/projects/icons/dist/svg/text-extract.svg
+/home/nicola/git/design-system/projects/icons/dist/svg/text-title.svg
+/home/nicola/git/design-system/projects/icons/dist/svg/time-calendar.svg
+/home/nicola/git/design-system/projects/icons/dist/svg/timer.svg
+/home/nicola/git/design-system/projects/icons/dist/svg/timer-outline.svg
+/home/nicola/git/design-system/projects/icons/dist/svg/tips.svg
+/home/nicola/git/design-system/projects/icons/dist/svg/todo.svg
+/home/nicola/git/design-system/projects/icons/dist/svg/todo-list.svg
+/home/nicola/git/design-system/projects/icons/dist/svg/todo_completed.svg
+/home/nicola/git/design-system/projects/icons/dist/svg/todo_completed_but_executable.svg
+/home/nicola/git/design-system/projects/icons/dist/svg/todo_incharge_by_me.svg
+/home/nicola/git/design-system/projects/icons/dist/svg/todo_incharge_of_others.svg
+/home/nicola/git/design-system/projects/icons/dist/svg/todo_incoming_declined.svg
+/home/nicola/git/design-system/projects/icons/dist/svg/todo_incoming_take_incharge.svg
+/home/nicola/git/design-system/projects/icons/dist/svg/todo_inevaluation.svg
+/home/nicola/git/design-system/projects/icons/dist/svg/todo_inevaluation_to_others.svg
+/home/nicola/git/design-system/projects/icons/dist/svg/todo_running_completed.svg
+/home/nicola/git/design-system/projects/icons/dist/svg/touchpoint.svg
+/home/nicola/git/design-system/projects/icons/dist/svg/touchpoint-laptop.svg
+/home/nicola/git/design-system/projects/icons/dist/svg/touchpoint-smartphone.svg
+/home/nicola/git/design-system/projects/icons/dist/svg/touchpoint-tablet.svg
+/home/nicola/git/design-system/projects/icons/dist/svg/touchpoint-tv.svg
+/home/nicola/git/design-system/projects/icons/dist/svg/touchpoint-watch.svg
+/home/nicola/git/design-system/projects/icons/dist/svg/travel-car.svg
+/home/nicola/git/design-system/projects/icons/dist/svg/tree-view.svg
+/home/nicola/git/design-system/projects/icons/dist/svg/tributes.svg
+/home/nicola/git/design-system/projects/icons/dist/svg/unusable-property.svg
+/home/nicola/git/design-system/projects/icons/dist/svg/updated.svg
+/home/nicola/git/design-system/projects/icons/dist/svg/user.svg
+/home/nicola/git/design-system/projects/icons/dist/svg/user-accessibility.svg
+/home/nicola/git/design-system/projects/icons/dist/svg/user-dead.svg
+/home/nicola/git/design-system/projects/icons/dist/svg/user-department.svg
+/home/nicola/git/design-system/projects/icons/dist/svg/user-details.svg
+/home/nicola/git/design-system/projects/icons/dist/svg/user-job.svg
+/home/nicola/git/design-system/projects/icons/dist/svg/user-location.svg
+/home/nicola/git/design-system/projects/icons/dist/svg/user-mention.svg
+/home/nicola/git/design-system/projects/icons/dist/svg/user-offline.svg
+/home/nicola/git/design-system/projects/icons/dist/svg/user-online.svg
+/home/nicola/git/design-system/projects/icons/dist/svg/user-privileges.svg
+/home/nicola/git/design-system/projects/icons/dist/svg/user-roles.svg
+/home/nicola/git/design-system/projects/icons/dist/svg/user-search.svg
+/home/nicola/git/design-system/projects/icons/dist/svg/user-team.svg
+/home/nicola/git/design-system/projects/icons/dist/svg/vehicle-agriculture.svg
+/home/nicola/git/design-system/projects/icons/dist/svg/vehicle-car.svg
+/home/nicola/git/design-system/projects/icons/dist/svg/vehicle-excavator.svg
+/home/nicola/git/design-system/projects/icons/dist/svg/vehicle-moped.svg
+/home/nicola/git/design-system/projects/icons/dist/svg/vehicle-motorcycle.svg
+/home/nicola/git/design-system/projects/icons/dist/svg/vehicle-trailer.svg
+/home/nicola/git/design-system/projects/icons/dist/svg/view-comfy.svg
+/home/nicola/git/design-system/projects/icons/dist/svg/view-side-by-side.svg
+/home/nicola/git/design-system/projects/icons/dist/svg/wallet.svg
+/home/nicola/git/design-system/projects/icons/dist/svg/weather.svg
+/home/nicola/git/design-system/projects/icons/dist/svg/weather-sun.svg
+/home/nicola/git/design-system/projects/icons/dist/svg/weight-lifter.svg
+/home/nicola/git/design-system/projects/icons/dist/svg/work-project.svg
+/home/nicola/git/design-system/projects/icons/dist/svg/work-project-outline.svg
+/home/nicola/git/design-system/projects/icons/dist/svg/workspace.svg
+/home/nicola/git/design-system/projects/icons/dist/svg/write-only.svg
+/home/nicola/git/design-system/projects/icons/dist/svg/zen-mode.svg
+
+SVG files copied
+Dictionary creation success
+{
+  src: '/home/nicola/git/design-system/projects/icons/dist/svg',
+  dist: 'dist/fonts',
+  fontName: 'mgg-icons',
+  classNamePrefix: 'mgg-icons',
+  css: { fontSize: '24px', cssPath: 'fonts/', output: 'dist' },
+  svgicons2svgfont: { fontHeight: 1000, normalize: true },
+  typescript: true,
+  website: {
+    links: [],
+    title: '@maggioli-design-system/icons',
+    description: 'Maggioli Design System Icons is an icon font package based on Google Material Design Icons and Material Design Icons community icons.',
+    logo: '',
+    favicon: undefined,
+    footerInfo: 'Gruppo Maggioli, tutti i diritti riservati.'
+  }
+}
+Font created
+SUCCESS SVG font successfully created!
+  ╰┈▶ dist/fonts/mgg-icons.svg
+SUCCESS TTF font successfully created!
+  ╰┈▶ dist/fonts/mgg-icons.ttf
+SUCCESS EOT font successfully created!
+  ╰┈▶ dist/fonts/mgg-icons.eot
+SUCCESS WOFF font successfully created!
+  ╰┈▶ dist/fonts/mgg-icons.woff
+SUCCESS WOFF2 font successfully created!
+  ╰┈▶ dist/fonts/mgg-icons.woff2
+SUCCESS Svg Symbol font successfully created!
+  ╰┈▶ dist/fonts/mgg-icons.symbol.svg
+SUCCESS Created dist/fonts/mgg-icons.less
+SUCCESS Created dist/fonts/mgg-icons.module.less
+SUCCESS Created dist/fonts/mgg-icons.css
+SUCCESS Created dist/fonts/mgg-icons.styl
+SUCCESS Created dist/fonts/mgg-icons.scss
+SUCCESS Created dist/fonts/mgg-icons.d.ts
+SUCCESS Created dist/fonts/index.html
+SUCCESS Created dist/fonts/unicode.html
+SUCCESS Created dist/fonts/unicode.html
+Build CSS Encoded created in  /projects/icons/dist/base64/mgg-icons.css
+BUild Original
+Build directive created in /projects/icons/dist/original/svg
+Dictionary creation success
+SVG files copied
+Build Font againg
+{
+  src: '/home/nicola/git/design-system/projects/icons/dist/original/svg',
+  dist: 'dist/original/fonts',
+  fontName: 'mgg-icons',
+  classNamePrefix: 'mgg-icons',
+  css: { fontSize: '24px', cssPath: 'fonts/', output: 'dist/original' },
+  svgicons2svgfont: { fontHeight: 1000, normalize: true },
+  typescript: true,
+  website: {
+    links: [],
+    title: '@maggioli-design-system/icons',
+    description: 'Maggioli Design System Icons is an icon font package based on Google Material Design Icons and Material Design Icons community icons.',
+    logo: '',
+    favicon: undefined,
+    footerInfo: 'Gruppo Maggioli, tutti i diritti riservati.'
+  }
+}
+Font created
+SUCCESS SVG font successfully created!
+  ╰┈▶ dist/original/fonts/mgg-icons.svg
+SUCCESS TTF font successfully created!
+  ╰┈▶ dist/original/fonts/mgg-icons.ttf
+SUCCESS EOT font successfully created!
+  ╰┈▶ dist/original/fonts/mgg-icons.eot
+SUCCESS WOFF font successfully created!
+  ╰┈▶ dist/original/fonts/mgg-icons.woff
+SvgToFont:CLI:ERR: Error: Could not convert the given font.
+    at /home/nicola/git/design-system/node_modules/svgtofont/src/utils.ts:207:40
+    at new Promise (<anonymous>)
+    at createWOFF2 (/home/nicola/git/design-system/node_modules/svgtofont/src/utils.ts:205:10)
+    at exports.default (/home/nicola/git/design-system/node_modules/svgtofont/src/index.ts:233:22)
+    at processTicksAndRejections (node:internal/process/task_queues:96:5)
+[2K[1G[2m$ npx ts-node --skipProject ./scripts/setup-package-font.ts[22m
+[2K[1GDone in 6.49s.
+
+
+
+ >  NX   Successfully ran target build for project icons
+
+

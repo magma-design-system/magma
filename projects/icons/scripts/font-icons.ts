@@ -167,7 +167,8 @@ const iconsToDictionary = async (buildPathDir: string, inputData: Map<string, st
 
 const iconsToTempFolder = async (buildSvgDir: string, inputData: Map<string, string>): Promise<void | void[]> => {
   const promises = []
-  for (const [key, value] of Object.entries(inputData)) {
+  const entries = Object.entries(inputData).length === 0 ? inputData.entries() : Object.entries(inputData)
+  for (const [key, value] of entries) {
     const icon = iconSelectorToObject(value.toString())
     const sourcePathPromise = ICON_GROUPS[icon.group as keyof typeof ICON_GROUPS].getPath(icon.name)
     const destinationPath = path.join(buildSvgDir, `${key}.svg`)
