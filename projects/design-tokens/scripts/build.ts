@@ -3,6 +3,7 @@ import chalk from 'chalk'
 import path from 'path'
 import { DIST_DIR, CSS_TOKENS_DIR } from './meta'
 import { readFile, writeFile } from 'fs/promises'
+import { logFileActionDone } from '../../../scripts/log'
 
 const beautifyConfig = {
   indent_size: 2,
@@ -45,7 +46,12 @@ const saveAsJs = ({ source, varName, destination }: { source: string, varName: s
 
       writeFile(destination, jsString)
         .then(() => {
-          console.log(`Token ${chalk.green(path.basename(source))} exported ${chalk.green('successfully')}`)
+          logFileActionDone({
+            entity: 'token',
+            source,
+            action: 'exported',
+            destination,
+          })
         })
         .catch(error => {
           throw Error(chalk.red(error))
