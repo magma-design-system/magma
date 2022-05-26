@@ -6,11 +6,11 @@ This component is intented to be used only with svg files. In order to properly 
 
 ### Via `sessionStorage` (recommended)
 
-The simplest way to instruct the component is using `window.sessionStorage('mdsIconPath', <path-to-svg-directory>)`.
+The simplest way to instruct the component is using `window.sessionStorage('mdsIconSvgPath', <path-to-svg-directory>)`.
 For example, if your svg directory is located in `assets/img/svg`, you should put the following code in your application
 
 ```javascript
-window.sessionStorage('mdsIconPath', 'assets/img/svg/');
+window.sessionStorage('mdsIconSvgPath', 'assets/img/svg/');
 ```
 
 The path to the directory is based on how the `assets` are handled by the framework you are using.
