@@ -49,7 +49,7 @@ const saveAsJs = ({ source, varName, destination }: { source: string, varName: s
           logFileActionDone({
             entity: 'token',
             source,
-            action: 'exported',
+            actionDone: 'exported',
             destination,
           })
         })

@@ -3,11 +3,12 @@ import path from 'path'
 import { DIST_DIR } from './meta'
 import { rm } from 'fs/promises'
 import { mkdir } from 'fs-extra'
+import { logDirectoryDeleted, logDirectoryCreated } from '../../../scripts/log'
 
 const createDirectory = async (dir: string) => {
   mkdir(dir, { recursive: true })
     .then(() => {
-      console.log(`Directory ${chalk.green(path.basename(dir))} was ${chalk.greenBright('created')} ${chalk.green('successfully')} ${chalk.gray('(or skipped if already exists)')}`)
+      logDirectoryCreated(dir, DIST_DIR)
     })
     .catch(error => {
       throw Error(chalk.red(error))
@@ -16,7 +17,7 @@ const createDirectory = async (dir: string) => {
 
 rm(DIST_DIR, { force: true, recursive: true })
   .then(() => {
-    console.log(`Directory ${chalk.green(path.basename(DIST_DIR))} was ${chalk.redBright('deleted')} ${chalk.green('successfully')} ${chalk.gray('(or skipped if missing)')}`)
+    logDirectoryDeleted(DIST_DIR)
     createDirectory(path.join(DIST_DIR, 'css'))
     createDirectory(path.join(DIST_DIR, 'tailwind'))
   }).catch(error => {

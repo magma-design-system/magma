@@ -3,6 +3,7 @@ import chalk from 'chalk'
 import { copyFile, cp, mkdir, readFile, rename, stat, writeFile } from 'fs/promises'
 import { join } from 'path'
 import { PROJECT_DIR, COMPONENTS_DIR } from './meta'
+import { logFileSavedTo } from '../../../scripts/log'
 
 const TEMPLATES_DIR = join(PROJECT_DIR, 'template')
 const TEMP_PROJECT_DIR = join(PROJECT_DIR, '.build')
@@ -38,7 +39,7 @@ const createPackage = async (componentName: string): Promise<void> => {
 
   await writeFile(join(COMPONENTS_DIR, componentName, 'package.json'), packageModule, 'utf8')
     .then(() => {
-      console.log(`File package.json has been ${chalk.green('successfully')} saved.`)
+      logFileSavedTo('package.json', COMPONENTS_DIR)
     })
     .catch(error => {
       throw Error(chalk.red(error))
@@ -68,7 +69,7 @@ const createTemplateFile = async (componentName: string, fileName: string): Prom
 
   await writeFile(join(COMPONENTS_DIR, componentName, fileName), templateCompiled, 'utf8')
     .then(() => {
-      console.log(`File ${fileName} has been ${chalk.green('successfully')} saved.`)
+      logFileSavedTo(fileName, COMPONENTS_DIR)
     })
     .catch(error => {
       throw Error(chalk.red(error))
@@ -86,7 +87,7 @@ const scaffoldStencil = async (componentName: string): Promise<void> => {
 
   await writeFile(join(TEMP_PROJECT_DIR, componentName, fileName), stencilConfig, 'utf8')
     .then(() => {
-      console.log(`Config ${chalk.green(fileName)} for component ${chalk.green(componentName)} successfully saved`)
+      logFileSavedTo(fileName, componentName)
     })
     .catch(error => {
       throw Error(chalk.red(error))

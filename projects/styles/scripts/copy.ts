@@ -2,11 +2,12 @@ import chalk from 'chalk'
 import path from 'path'
 import { DIST_DIR } from './meta'
 import { copy } from 'fs-extra'
+import { logDirectoryCopied } from '../../../scripts/log'
 
 const copyDirectory = async (src: string, dest: string) => {
   copy(path.join(src), dest)
     .then(() => {
-      console.log(`Directory ${chalk.green(src)} was ${chalk.greenBright('copied')} ${chalk.green('successfully')} ${chalk.gray('(or skipped if already exists)')}`)
+      logDirectoryCopied(src, dest)
     })
     .catch(error => {
       throw Error(chalk.red(error))

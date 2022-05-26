@@ -193,7 +193,7 @@ walk(RESOURCES_PATH, (error: string, results: string[]) => {
 
   results.forEach((item: string) => {
     if (item.indexOf('.svg') !== -1) {
-      cleanResults.push(path.join(path.basename(path.parse(item).dir),  path.parse(item).base))
+      cleanResults.push(path.join(path.basename(path.parse(item).dir), path.parse(item).base))
     }
   })
 

@@ -4,6 +4,7 @@ import { PathLike, readFileSync } from 'fs'
 import path from 'path'
 import chalk from 'chalk'
 import { ICON_GROUPS } from './icons-groups'
+import { logFileActionDone, logDirectoryCreated, logFileSavedTo } from '../../../scripts/log'
 import { ORIGINAL_DIR, DIST_DIR } from './meta'
 
 interface BuildFontOptions {
@@ -35,9 +36,6 @@ const main = (parameters: string[]): void => {
   const customParams = restParams.filter(IS_PARAM)
   const localDirectories = restParams.filter((param: string) => !IS_PARAM(param))
   const shouldCreateWebsite = customParams.includes('--website') || false
-  console.debug('Input file:', inputFileParameter)
-  if (shouldCreateWebsite) console.debug('A website with all the icons will be created.')
-
   const inputFilePath = path.join(process.cwd(), inputFileParameter)
   const inputData = JSON.parse(readFileSync(inputFilePath, 'utf-8'))
 
@@ -61,9 +59,6 @@ const main = (parameters: string[]): void => {
     svgPath: BUILD_ORIGINAL_SVG_DIR,
   }
 
-  console.log('Options', options)
-  console.log('Options natural', optionsNatural)
-
   createBuildDirective(BUILD_SVG_DIR)
     .then(() => iconsToTempFolder(BUILD_SVG_DIR, inputData))
     .then(() => iconsToDictionary(DIST_DIR, inputData))
@@ -78,7 +73,7 @@ const main = (parameters: string[]): void => {
     .then(() => buildCSSEncoded(BUILD_ORIGINAL_FONTS_DIR, ORIGINAL_DIR, fontName))
     .then(() => organizeFiles(BUILD_ORIGINAL_FONTS_DIR, ORIGINAL_DIR))
     .catch(err => {
-      err ? console.error('Error:', err) : console.error('Something gone wrong... Aborted.')
+      throw Error(chalk.red(err))
     })
 }
 
@@ -125,10 +120,16 @@ const buildCSSEncoded = (buildFontsDir: string, buildPathDir: string, fontName: 
     .then(cssString => fs.writeFile(newCssPath, cssString))
     .then(() => fs.readFile(newCssPath))
     .then(cssBuffer => splitCSSEncoded(cssBuffer, newCssFontFacePath, newCssClassesPath))
-    .then(() => console.debug('Build CSS Encoded created ' + chalk.green('successfully') + ' in ', chalk.green(newCssPath.split('projects')[1])))
+    .then(() => {
+      logFileActionDone({
+        entity: 'CSS',
+        source: 'Buffer',
+        actionDone: 'encoded',
+        destination: newCssPath,
+      })
+    })
     .catch(error => {
-      console.error('Build CSS Encoded failed.', error)
-      return Promise.reject(error)
+      throw Error(chalk.red(error))
     })
 }
 
@@ -139,11 +140,10 @@ const buildCSSEncoded = (buildFontsDir: string, buildPathDir: string, fontName: 
 const createBuildDirective = async (buildSvgDir: string): Promise<void> => {
   return fs.mkdir(buildSvgDir, { recursive: true })
     .then(() => {
-      console.debug('Build directive created ' + chalk.green('successfully') + ' in ', chalk.green(buildSvgDir.split('projects')[1]))
+      logDirectoryCreated(buildSvgDir)
     })
     .catch(error => {
-      console.error('Build directive creation failed.', error)
-      return Promise.reject(error)
+      throw Error(chalk.red(error))
     })
 }
 
@@ -156,12 +156,11 @@ const createBuildDirective = async (buildSvgDir: string): Promise<void> => {
 const iconsToDictionary = async (buildPathDir: string, inputData: Map<string, string>) => {
   return fs.writeFile(path.resolve(buildPathDir, 'dictionary.json'), JSON.stringify(inputData, null, 2))
     .then(() => {
-      console.info('Dictionary creation success')
+      logFileSavedTo('dictionary.json', buildPathDir)
       return Promise.resolve(inputData)
     })
     .catch(error => {
-      console.error('Dictionary creation failed.', error)
-      return Promise.reject(error)
+      throw Error(chalk.red(error))
     })
 }
 
@@ -174,11 +173,9 @@ const iconsToTempFolder = async (buildSvgDir: string, inputData: Map<string, str
     const destinationPath = path.join(buildSvgDir, `${key}.svg`)
 
     const promise = sourcePathPromise.then(sourcePath => {
-      // console.debug('Copying', sourcePath, '->', destinationPath)
       fs.copyFile(sourcePath, destinationPath)
         .catch(error => {
-          console.error('Icons copy to temp folder error.', error)
-          return Promise.reject(error)
+          throw Error(chalk.red(error))
         })
     })
     promises.push(promise)
@@ -186,12 +183,15 @@ const iconsToTempFolder = async (buildSvgDir: string, inputData: Map<string, str
 
   return Promise.all(promises)
     .then(copyResult => {
-      console.log('SVG files copied')
+      logFileActionDone({
+        entity: 'SVG files',
+        actionDone: 'copied',
+        destination: buildSvgDir,
+      })
       return copyResult
     })
     .catch(error => {
-      console.error(`${chalk.red('One or more icons not found')}`)
-      Promise.reject(error)
+      throw Error(chalk.red(error))
     })
 }
 

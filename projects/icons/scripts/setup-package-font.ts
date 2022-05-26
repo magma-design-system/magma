@@ -14,7 +14,6 @@ const main = () => {
   const isFontFile = /\.(ttf|woff|woff2|eot|svg)$/i
   const files = fs.readdirSync(fontsDir).filter(filename => !isFontFile.test(filename))
   for (const file of files) {
-    console.log(file)
     fs.renameSync(join(fontsDir, file), join(DIST_DIR, file))
   }
 }

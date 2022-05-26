@@ -3,6 +3,7 @@ import { ask } from 'stdio'
 import { createTempProjectInstance, compilePackage, compileTemplateFile } from './lib'
 import { stat } from 'fs/promises'
 import { COMPONENTS_DIR } from './meta'
+import { logStatus } from '../../../scripts/log'
 
 let componentNameArgument = ''
 let nonInteractive = false
@@ -50,8 +51,10 @@ const askComponentName = async () => {
       console.log(`Component ${componentName} ${chalk.redBright('build error')}`)
       return
     }
-
-    console.log(`Isolating component ${chalk.green('%s')}`, componentName)
+    logStatus({
+      actionDoing: 'Isolating',
+      subject: componentName,
+    })
     await compilePackage(componentName)
     await compileTemplateFile(componentName, '.gitlab-ci.yml')
     await createTempProjectInstance(componentName)

@@ -4,6 +4,7 @@ import { ask } from 'stdio'
 import { dirname } from 'path'
 import { createTempProjectInstance } from './lib'
 import { COMPONENTS_DIR } from './meta'
+import { logStatus } from '../../../scripts/log'
 
 const isolateAll = async () => {
   dirTree(COMPONENTS_DIR, {
@@ -11,7 +12,10 @@ const isolateAll = async () => {
   },
   async (_item: dirTree.DirectoryTree, itemPath: string) => {
     const componentName = dirname(itemPath)
-    console.log(`Isolating component ${chalk.green('%s')}`, componentName)
+    logStatus({
+      actionDoing: 'Isolating',
+      subject: componentName,
+    })
     await createTempProjectInstance(componentName)
   })
 }
@@ -20,7 +24,7 @@ const main = async () => {
   console.log(
     `This script will ${chalk.green(
       'isolate ALL',
-    )} stencil components with package.json already created into a set of isolated stencil projects, ready to be published.`,
+    )} stencil components with package.json already created into a set of isolated separate projects, ready to be individually published.`,
   )
   const continueTask = await ask('Continue?', { options: ['Y', 'n', ''] })
 

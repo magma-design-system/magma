@@ -3,6 +3,7 @@
 import chalk from 'chalk'
 import fs from 'fs/promises'
 import path from 'path'
+import { logStatus } from '../../../scripts/log'
 
 class Maggioli {
   static ICONS_DIR = `${path.dirname(require.resolve('@maggioli-design-system/svg-icons/package.json'))}/svg`
@@ -168,12 +169,16 @@ const subDirectories = async (source: string): Promise<string[]> => {
  * Get icon helper to simplify groups functions
  */
 const iconGroupGetHelper = async (iconGroup: string, directories: string[], iconName: string, filename: string): Promise<string> => {
-  const hidePath = path.resolve(__dirname, '../../../')
   for (const directory of directories) {
-    const path = await searchFileInDirectory(directory, filename)
-    if (path) {
-      console.log(`${chalk.green('Found:')} ${iconGroup}/${iconName}  >  ${path.replace(hidePath, '')}`)
-      return path
+    const fullPath = await searchFileInDirectory(directory, filename)
+    logStatus({
+      actionDoing: 'checking',
+      subject: iconName,
+      status: 'match',
+      match: path.basename(filename),
+    })
+    if (fullPath) {
+      return fullPath
     }
   }
   throw new Error(`${chalk.red('Icon not found:')} ${iconGroup ? iconGroup + '/' : ''}${iconName}, searched as ${filename}`)
@@ -192,8 +197,10 @@ const iconGroupListHelper = async (directories: string[], fileTemplate?: RegExp)
  */
 const listFilesInDirectory = async (directory: string, fileTemplate?: RegExp): Promise<string[]> => {
   return fs.readdir(directory)
-    .catch(() => [])
     .then(files => (fileTemplate ? files.filter(file => file.match(fileTemplate)) : files))
+    .catch(err => {
+      throw Error(chalk.red(err))
+    })
 }
 
 /**
@@ -201,7 +208,6 @@ const listFilesInDirectory = async (directory: string, fileTemplate?: RegExp): P
  */
 const searchFileInDirectory = async (directory: string, filename: string): Promise<string | void> => {
   const files = await listFilesInDirectory(directory)
-
   if (files.includes(filename)) return path.join(directory, filename)
 }
 
