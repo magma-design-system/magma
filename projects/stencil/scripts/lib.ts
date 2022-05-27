@@ -37,7 +37,7 @@ const createPackage = async (componentName: string): Promise<void> => {
   }
   const packageModule = template(data)
 
-  await writeFile(join(COMPONENTS_DIR, componentName, 'package.json'), packageModule, 'utf8')
+  await writeFile(join(COMPONENTS_DIR, componentName, 'package.json'), packageModule, { encoding: 'utf8' })
     .then(() => {
       logFileSavedTo('package.json', COMPONENTS_DIR)
     })
@@ -67,7 +67,7 @@ const createTemplateFile = async (componentName: string, fileName: string): Prom
   const template = Handlebars.compile(packageTemplate.toString())
   const templateCompiled = template({ componentName: componentName.replace('mds-', '') })
 
-  await writeFile(join(COMPONENTS_DIR, componentName, fileName), templateCompiled, 'utf8')
+  await writeFile(join(COMPONENTS_DIR, componentName, fileName), templateCompiled, { encoding: 'utf8' })
     .then(() => {
       logFileSavedTo(fileName, COMPONENTS_DIR)
     })
@@ -85,7 +85,7 @@ const scaffoldStencil = async (componentName: string): Promise<void> => {
   }
   const stencilConfig = template(data)
 
-  await writeFile(join(TEMP_PROJECT_DIR, componentName, fileName), stencilConfig, 'utf8')
+  await writeFile(join(TEMP_PROJECT_DIR, componentName, fileName), stencilConfig, { encoding: 'utf8' })
     .then(() => {
       logFileSavedTo(fileName, componentName)
     })

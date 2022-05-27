@@ -19,8 +19,8 @@ const checkComponentWasBuilt = async (componentName: string) => {
 const checkComponentExistance = async (componentName: string) => {
   return await stat(`${COMPONENTS_DIR}/${componentName}`)
     .then(statInfo => statInfo.isDirectory())
-    .catch(error => {
-      throw Error(chalk.red(error))
+    .catch(_error => {
+      // will be noticed at line 40
     })
 }
 
@@ -37,7 +37,7 @@ const askComponentName = async () => {
   const exist = await checkComponentExistance(componentName)
 
   if (!exist) {
-    console.log(`Component ${componentName} ${chalk.red('not found')}`)
+    console.log(`Component ${componentName} ${chalk.red('not found')}, create it with ${chalk.blue('nx run stencil:generate')} first or enter another component name.`)
 
     if (!nonInteractive) {
       await askComponentName()
