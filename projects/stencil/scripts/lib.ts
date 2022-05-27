@@ -10,8 +10,8 @@ const TEMP_PROJECT_DIR = join(PROJECT_DIR, '.build')
 
 const compilePackage = async (componentName: string): Promise<void> => {
   const exists = !!( await stat(join(COMPONENTS_DIR, componentName, 'package.json'))
-    .catch(error => {
-      throw Error(chalk.red(error))
+    .catch(() => {
+      return false
     })
   )
 
