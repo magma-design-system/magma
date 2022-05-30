@@ -1,81 +1,16 @@
-# BASE JOBS
-.base-isolate:
-  extends: base-build
-  stage: build:isolate
-  script:
-    - nx run stencil:publish.isolate.component --component=$COMPONENT
-  artifacts:
-    name: $COMPONENT-stencil-build
-    expire_in: 1 day
-    paths:
-      - $BUILD_DIR
-  rules:
-    - if: $CI_PIPELINE_SOURCE == "merge_request_event" || $CI_COMMIT_BRANCH =~ /^(dev|main|pipeline)$/
-      changes:
-        - projects/stencil/*
-        - projects/stencil/src/components/$COMPONENT/**/*
-
-.base-publish-test:
-  extends: base-build
-  stage: test
-  variables:
-    PACK_NAME: maggioli-design-system-${COMPONENT}-*.tgz
-  script:
-    - cd $BUILD_DIR
-    - npm pack && npm install $PACK_NAME && npm publish --dry-run
-  rules:
-    - if: $CI_PIPELINE_SOURCE == "merge_request_event" || $CI_COMMIT_BRANCH =~ /^(main|pipeline)$/
-      changes:
-        - projects/stencil/*
-        - projects/stencil/src/components/$COMPONENT/**/*
-
-.base-publish:
-  extends: base-build
-  stage: publish
-  script:
-    - cd $BUILD_DIR
-    - cp $NPMRC_FILE .npmrc
-    - echo "_auth=$NODE_AUTH_TOKEN" >> .npmrc
-    - echo "//registry.npmjs.org/:_authToken=$NODE_AUTH_TOKEN" >> .npmrc
-    - npm publish
-  rules:
-    - if: $CI_COMMIT_BRANCH == "main"
-      changes:
-        - projects/stencil/src/components/$COMPONENT/**/*
-
 # COMMON STENCIL BUILD
-base-build:
-  image: node:16.13
-  stage: build
+base-stencil-build:
+  extends: .base-build
   variables:
     COMPONENT: to_be_extended
     BUILD_DIR: projects/stencil/.build/$COMPONENT
-  before_script:
-    - npm install -g --force nx yarn
-    - |
-      if [[ ! -d node_modules ]]; then
-        yarn install
-      fi
   script:
     - nx run design-tokens:build
     - nx run styles:build
     - nx run icons:build
     - nx run stencil:build
-    - ls projects/stencil/assets/svg
-  cache:
-    key:
-      files:
-        - yarn.lock
-      prefix: $CI_PROJECT_NAME
-    paths:
-      - node_modules
-      - projects/design-tokens/node_modules
-      - projects/styles/node_modules
-      - projects/icons/node_modules
-      - projects/stencil/node_modules
-    policy: pull-push
   artifacts:
-    name: $COMPONENT-build
+    name: stencil-build
     expire_in: 1 day
     paths:
       - projects/design-tokens/dist
@@ -84,24 +19,93 @@ base-build:
       - projects/styles/dist
       - projects/icons/dist
       - projects/stencil/dist
-      - projects/stencil/assets/svg
+      - projects/stencil/src/fixtures
+      - projects/stencil/assets
+  cache:
+    policy: pull-push
+  rules:
+    - if: $CI_PIPELINE_SOURCE == "merge_request_event" || $CI_COMMIT_BRANCH =~ /^(dev|main|pipeline)$/
+      changes:
+        - projects/stencil/**/*
+        - .deploy/**/*
+
+stencil-storybook-build:
+  extends: .base-build
+  stage: build:storybook
+  dependencies: [base-stencil-build]
+  needs: [base-stencil-build]
+  script:
+    - nx run stencil:storybook.build
+  artifacts:
+    name: stencil-storybook-build
+    expire_in: 1 day
+    paths:
+      - projects/stencil/dist-storybook
+  rules:
+    - if: $CI_COMMIT_BRANCH =~ /^(dev|pipeline)$/
+      changes:
+        - projects/stencil/**/*
+        - .deploy/**/*
+
+# BASE ISOLATE
+.base-isolate:
+  extends: base-stencil-build
+  stage: build:isolate
+  script:
+    - nx run stencil:publish.isolate.component --component=$COMPONENT
+  artifacts:
+    name: $COMPONENT-stencil-build
+    expire_in: 1 day
+    paths:
+      - $BUILD_DIR
+  cache:
+    policy: pull
+  rules:
+    - if: $CI_PIPELINE_SOURCE == "merge_request_event" || $CI_COMMIT_BRANCH =~ /^(dev|main|pipeline)$/
+      changes:
+        - projects/stencil/src/components/$COMPONENT/**/*
+
+# COMMON STENCIL TEST
+stencil-test:
+  extends: base-stencil-build
+  image: atools/chrome-headless:java11-node16-latest
+  stage: test
+  dependencies: [base-stencil-build]
+  before_script:
+    - cd projects/stencil
+  script:
+    - npm run test
+  cache:
+    policy: pull
   rules:
     - if: $CI_PIPELINE_SOURCE == "merge_request_event" || $CI_COMMIT_BRANCH =~ /^(dev|main|pipeline)$/
       changes:
         - projects/stencil/**/*
 
-# COMMON STENCIL TEST
-base-stencil-test:
-  extends: base-build
-  image: atools/chrome-headless:java11-node16-latest
+# BASE STENCIL PUBLISH TEST
+.base-stencil-publish-test:
+  extends: .base-publish-test
+  dependencies: [base-stencil-build]
   stage: test
-  script:
-    - cd projects/stencil
-    - npm run test
+  variables:
+    BUILD_DIR: projects/stencil/.build/$COMPONENT
+    PACK_NAME: maggioli-design-system-${COMPONENT}-*.tgz
   rules:
-    - if: $CI_PIPELINE_SOURCE == "merge_request_event" || $CI_COMMIT_BRANCH =~ /^(dev|main|pipeline)$/
+    - if: $CI_PIPELINE_SOURCE == "merge_request_event" || $CI_COMMIT_BRANCH =~ /^(main|pipeline)$/
       changes:
-        - projects/stencil/**/*
+        - projects/stencil/src/components/$COMPONENT/**/*
+
+# BASE STENCIL PUBLISH
+.base-stencil-publish:
+  extends: .base-publish
+  dependencies: [base-stencil-build]
+  stage: publish
+  variables:
+    BUILD_DIR: projects/stencil/.build/$COMPONENT
+  rules:
+    - if: $CI_COMMIT_BRANCH == "main"
+      changes:
+        - projects/stencil/src/components/$COMPONENT/**/*
 
 include:
   - '/projects/stencil/src/components/mds-accordion/.gitlab-ci.yml'
@@ -114,11 +118,12 @@ include:
   - '/projects/stencil/src/components/mds-banner/.gitlab-ci.yml'
   - '/projects/stencil/src/components/mds-benchmark-bar/.gitlab-ci.yml'
   - '/projects/stencil/src/components/mds-bibliography/.gitlab-ci.yml'
-  - '/projects/stencil/src/components/mds-breadcrumb/.gitlab-ci.yml'
-  - '/projects/stencil/src/components/mds-breadcrumb-item/.gitlab-ci.yml'
+  # - '/projects/stencil/src/components/mds-breadcrumb/.gitlab-ci.yml'
+  # - '/projects/stencil/src/components/mds-breadcrumb-item/.gitlab-ci.yml'
   - '/projects/stencil/src/components/mds-button/.gitlab-ci.yml'
   - '/projects/stencil/src/components/mds-card/.gitlab-ci.yml'
   - '/projects/stencil/src/components/mds-details/.gitlab-ci.yml'
+  - '/projects/stencil/src/components/mds-dropdown/.gitlab-ci.yml'
   - '/projects/stencil/src/components/mds-entity/.gitlab-ci.yml'
   - '/projects/stencil/src/components/mds-file/.gitlab-ci.yml'
   - '/projects/stencil/src/components/mds-flex-table/.gitlab-ci.yml'
@@ -127,34 +132,34 @@ include:
   - '/projects/stencil/src/components/mds-flex-table-footer/.gitlab-ci.yml'
   - '/projects/stencil/src/components/mds-flex-table-header/.gitlab-ci.yml'
   - '/projects/stencil/src/components/mds-flex-table-row/.gitlab-ci.yml'
-  - '/projects/stencil/src/components/mds-form/.gitlab-ci.yml'
+  # - '/projects/stencil/src/components/mds-form/.gitlab-ci.yml'
   - '/projects/stencil/src/components/mds-grid/.gitlab-ci.yml'
   - '/projects/stencil/src/components/mds-header/.gitlab-ci.yml'
   - '/projects/stencil/src/components/mds-header-bar/.gitlab-ci.yml'
-  - '/projects/stencil/src/components/mds-horizontal-scroll/.gitlab-ci.yml'
+  # - '/projects/stencil/src/components/mds-horizontal-scroll/.gitlab-ci.yml'
   - '/projects/stencil/src/components/mds-hr/.gitlab-ci.yml'
   - '/projects/stencil/src/components/mds-icon/.gitlab-ci.yml'
   - '/projects/stencil/src/components/mds-img/.gitlab-ci.yml'
   - '/projects/stencil/src/components/mds-input/.gitlab-ci.yml'
   - '/projects/stencil/src/components/mds-input-button/.gitlab-ci.yml'
-  - '/projects/stencil/src/components/mds-input-field/.gitlab-ci.yml'
-  - '/projects/stencil/src/components/mds-input-range/.gitlab-ci.yml'
-  - '/projects/stencil/src/components/mds-input-select/.gitlab-ci.yml'
-  - '/projects/stencil/src/components/mds-input-switch/.gitlab-ci.yml'
-  - '/projects/stencil/src/components/mds-input-switch-group/.gitlab-ci.yml'
-  - '/projects/stencil/src/components/mds-kpi/.gitlab-ci.yml'
-  - '/projects/stencil/src/components/mds-kpi-item/.gitlab-ci.yml'
+  # - '/projects/stencil/src/components/mds-input-field/.gitlab-ci.yml'
+  # - '/projects/stencil/src/components/mds-input-range/.gitlab-ci.yml'
+  # - '/projects/stencil/src/components/mds-input-select/.gitlab-ci.yml'
+  # - '/projects/stencil/src/components/mds-input-switch/.gitlab-ci.yml'
+  # - '/projects/stencil/src/components/mds-input-switch-group/.gitlab-ci.yml'
+  # - '/projects/stencil/src/components/mds-kpi/.gitlab-ci.yml'
+  # - '/projects/stencil/src/components/mds-kpi-item/.gitlab-ci.yml'
   - '/projects/stencil/src/components/mds-list/.gitlab-ci.yml'
   - '/projects/stencil/src/components/mds-list-item/.gitlab-ci.yml'
   - '/projects/stencil/src/components/mds-modal/.gitlab-ci.yml'
   - '/projects/stencil/src/components/mds-note/.gitlab-ci.yml'
-  - '/projects/stencil/src/components/mds-notification/.gitlab-ci.yml'
-  - '/projects/stencil/src/components/mds-paginator/.gitlab-ci.yml'
-  - '/projects/stencil/src/components/mds-paginator-item/.gitlab-ci.yml'
+  # - '/projects/stencil/src/components/mds-notification/.gitlab-ci.yml'
+  # - '/projects/stencil/src/components/mds-paginator/.gitlab-ci.yml'
+  # - '/projects/stencil/src/components/mds-paginator-item/.gitlab-ci.yml'
   - '/projects/stencil/src/components/mds-progress/.gitlab-ci.yml'
   - '/projects/stencil/src/components/mds-quote/.gitlab-ci.yml'
   - '/projects/stencil/src/components/mds-row/.gitlab-ci.yml'
-  - '/projects/stencil/src/components/mds-spinner/.gitlab-ci.yml'
+  # - '/projects/stencil/src/components/mds-spinner/.gitlab-ci.yml'
   - '/projects/stencil/src/components/mds-stepper-bar/.gitlab-ci.yml'
   - '/projects/stencil/src/components/mds-stepper-bar-item/.gitlab-ci.yml'
   - '/projects/stencil/src/components/mds-tab/.gitlab-ci.yml'
@@ -167,10 +172,10 @@ include:
   - '/projects/stencil/src/components/mds-table-footer/.gitlab-ci.yml'
   - '/projects/stencil/src/components/mds-table-header/.gitlab-ci.yml'
   - '/projects/stencil/src/components/mds-table-row/.gitlab-ci.yml'
-  - '/projects/stencil/src/components/mds-tag/.gitlab-ci.yml'
+  # - '/projects/stencil/src/components/mds-tag/.gitlab-ci.yml'
   - '/projects/stencil/src/components/mds-text/.gitlab-ci.yml'
   - '/projects/stencil/src/components/mds-toast/.gitlab-ci.yml'
   - '/projects/stencil/src/components/mds-tooltip/.gitlab-ci.yml'
   - '/projects/stencil/src/components/mds-url-view/.gitlab-ci.yml'
   - '/projects/stencil/src/components/mds-usage/.gitlab-ci.yml'
-  - '/projects/stencil/src/components/mds-video-wall/.gitlab-ci.yml'
+  # - '/projects/stencil/src/components/mds-video-wall/.gitlab-ci.yml'

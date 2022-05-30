@@ -19,12 +19,13 @@
   ],
   "scripts": {
     "build": "rm src/components.d.ts || true && stencil build --docs-readme",
-    "prepublishOnly": "npm run build"
+    "prepublishOnly": "npm run build",
+    "test": "stencil test --spec --e2e"
   },
   "dependencies": {
-    "@maggioli-design-system/mds-text": "^1.2.1",
-    "@maggioli-design-system/mds-img": "^1.0.2",
-    "@stencil/core": "^2.12.1"
+    "@maggioli-design-system/mds-text": "^1.4.0",
+    "@maggioli-design-system/mds-img": "^1.0.3",
+    "@stencil/core": "^2.15.2"
 },
   "license": "MIT",
   "author": {

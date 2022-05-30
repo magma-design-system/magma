@@ -5,14 +5,14 @@
 # ISOLATE
 card-isolate:
   extends: [.base-isolate, .base-card]
-  dependencies: [base-build]
+  dependencies: [base-stencil-build]
 
 # TEST
 card-publish-test:
-  extends: [.base-publish-test, .base-card]
-  dependencies: [base-build, card-isolate]
+  extends: [.base-stencil-publish-test, .base-card]
+  dependencies: [base-stencil-build, card-isolate]
 
 # PUBLISH
 card-publish:
-  extends: [.base-publish, .base-card]
-  dependencies: [base-build, card-isolate]
+  extends: [.base-stencil-publish, .base-card]
+  dependencies: [base-stencil-build, card-isolate]

@@ -5,14 +5,14 @@
 # ISOLATE
 img-isolate:
   extends: [.base-isolate, .base-img]
-  dependencies: [base-build]
+  dependencies: [base-stencil-build]
 
 # TEST
 img-publish-test:
-  extends: [.base-publish-test, .base-img]
-  dependencies: [base-build, img-isolate]
+  extends: [.base-stencil-publish-test, .base-img]
+  dependencies: [base-stencil-build, img-isolate]
 
 # PUBLISH
 img-publish:
-  extends: [.base-publish, .base-img]
-  dependencies: [base-build, img-isolate]
+  extends: [.base-stencil-publish, .base-img]
+  dependencies: [base-stencil-build, img-isolate]

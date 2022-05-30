@@ -1,0 +1,22 @@
+# SVG-ICONS PUBLISH TEST
+svg-icons-publish-test:
+  extends: .base-publish-test
+  stage: test
+  variables:
+    BUILD_DIR: projects/svg-icons
+    PACK_NAME: maggioli-design-system-svg-icons-*.tgz
+  rules:
+    - if: $CI_PIPELINE_SOURCE == "merge_request_event" || $CI_COMMIT_BRANCH =~ /^(main|pipeline)$/
+      changes:
+        - projects/svg-icons/**/*
+
+# SVG-ICONS PUBLISH
+svg-icons-publish:
+  extends: .base-publish
+  stage: publish
+  variables:
+    BUILD_DIR: projects/svg-icons
+  rules:
+    - if: $CI_COMMIT_BRANCH == "main"
+      changes:
+        - projects/svg-icons/**/*

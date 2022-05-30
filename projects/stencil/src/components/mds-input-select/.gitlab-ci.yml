@@ -5,14 +5,14 @@
 # ISOLATE
 input-select-isolate:
   extends: [.base-isolate, .base-input-select]
-  dependencies: [base-build]
+  dependencies: [base-stencil-build]
 
 # TEST
 input-select-publish-test:
-  extends: [.base-publish-test, .base-input-select]
-  dependencies: [base-build, input-select-isolate]
+  extends: [.base-stencil-publish-test, .base-input-select]
+  dependencies: [base-stencil-build, input-select-isolate]
 
 # PUBLISH
 input-select-publish:
-  extends: [.base-publish, .base-input-select]
-  dependencies: [base-build, input-select-isolate]
+  extends: [.base-stencil-publish, .base-input-select]
+  dependencies: [base-stencil-build, input-select-isolate]

@@ -5,14 +5,14 @@
 # ISOLATE
 spinner-isolate:
   extends: [.base-isolate, .base-spinner]
-  dependencies: [base-build]
+  dependencies: [base-stencil-build]
 
 # TEST
 spinner-publish-test:
-  extends: [.base-publish-test, .base-spinner]
-  dependencies: [base-build, spinner-isolate]
+  extends: [.base-stencil-publish-test, .base-spinner]
+  dependencies: [base-stencil-build, spinner-isolate]
 
 # PUBLISH
 spinner-publish:
-  extends: [.base-publish, .base-spinner]
-  dependencies: [base-build, spinner-isolate]
+  extends: [.base-stencil-publish, .base-spinner]
+  dependencies: [base-stencil-build, spinner-isolate]

@@ -28,6 +28,7 @@ log.txt
 node_modules/
 projects/**/package-lock.json
 projects/**/yarn.lock
+projects/stencil/assets/svg
 www/
 **/dependency-check-report.xml
 !yarn.lock

@@ -5,14 +5,14 @@
 # ISOLATE
 progress-isolate:
   extends: [.base-isolate, .base-progress]
-  dependencies: [base-build]
+  dependencies: [base-stencil-build]
 
 # TEST
 progress-publish-test:
-  extends: [.base-publish-test, .base-progress]
-  dependencies: [base-build, progress-isolate]
+  extends: [.base-stencil-publish-test, .base-progress]
+  dependencies: [base-stencil-build, progress-isolate]
 
 # PUBLISH
 progress-publish:
-  extends: [.base-publish, .base-progress]
-  dependencies: [base-build, progress-isolate]
+  extends: [.base-stencil-publish, .base-progress]
+  dependencies: [base-stencil-build, progress-isolate]

@@ -5,14 +5,14 @@
 # ISOLATE
 input-range-isolate:
   extends: [.base-isolate, .base-input-range]
-  dependencies: [base-build]
+  dependencies: [base-stencil-build]
 
 # TEST
 input-range-publish-test:
-  extends: [.base-publish-test, .base-input-range]
-  dependencies: [base-build, input-range-isolate]
+  extends: [.base-stencil-publish-test, .base-input-range]
+  dependencies: [base-stencil-build, input-range-isolate]
 
 # PUBLISH
 input-range-publish:
-  extends: [.base-publish, .base-input-range]
-  dependencies: [base-build, input-range-isolate]
+  extends: [.base-stencil-publish, .base-input-range]
+  dependencies: [base-stencil-build, input-range-isolate]

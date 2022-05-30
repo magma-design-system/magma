@@ -5,15 +5,15 @@
 # ISOLATE
 table-isolate:
   extends: [.base-isolate, .base-table]
-  dependencies: [base-build]
+  dependencies: [base-stencil-build]
 
 # TEST
 table-publish-test:
-  extends: [.base-publish-test, .base-table]
-  dependencies: [base-build, table-isolate]
+  extends: [.base-stencil-publish-test, .base-table]
+  dependencies: [base-stencil-build, table-isolate]
 
 # PUBLISH
 table-publish:
-  extends: [.base-publish, .base-table]
-  dependencies: [base-build, table-isolate]
+  extends: [.base-stencil-publish, .base-table]
+  dependencies: [base-stencil-build, table-isolate]
 

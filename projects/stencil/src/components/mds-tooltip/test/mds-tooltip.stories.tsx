@@ -1,0 +1,69 @@
+import { tooltipPositionDictionary } from '../meta/dictionary'
+import { themeLuminanceVariantDictionary } from '@dictionary/variant'
+import { h } from '@stencil/core'
+
+export default {
+  title: 'UI / Tooltip',
+  argTypes: {
+    delay: {
+      description: 'Specifies the delay when the tooltip will trigger',
+      type: { name: 'number' },
+    },
+    for: {
+      type: { name: 'string' },
+      description: 'Specifies the id selector of the element will trigger the tooltip',
+    },
+    position: {
+      type: { name: 'string' },
+      description: 'Specifies the position of the tooltip relative to the trigger element',
+      options: tooltipPositionDictionary,
+      control: { type: 'select' },
+    },
+    variant: {
+      type: { name: 'string' },
+      description: 'Specifies the color variant for the element',
+      options: themeLuminanceVariantDictionary,
+      control: { type: 'select' },
+    },
+  },
+}
+
+const Template = args =>
+  <div class="flex items-center justify-center w-screen h-screen -mx-4 -my-4 bg-adjust-tone-18">
+    <mds-button id={args.for}>Registrati</mds-button>
+    <mds-tooltip {...args}>
+      Clicca il pulsante regitsrati per registrarti
+    </mds-tooltip>
+  </div>
+
+const TemplateBig = args =>
+  <div class="flex items-center justify-center w-screen h-screen -mx-4 -my-4 bg-adjust-tone-18">
+    <mds-button id={args.for}>Registrati</mds-button>
+    <mds-tooltip {...args}>
+      Clicca il pulsante regitsrati per registrarti
+    </mds-tooltip>
+  </div>
+
+export const Default = Template.bind({})
+Default.args = {
+  for: 'button-id',
+}
+
+export const delay = Template.bind({})
+delay.args = {
+  delay: 500,
+  for: 'button-id',
+}
+
+export const position = TemplateBig.bind({})
+position.args = {
+  for: 'button-id',
+  position: 'left',
+}
+
+export const variant = Template.bind({})
+variant.args = {
+  delay: 500,
+  for: 'button-id',
+  variant: 'light',
+}

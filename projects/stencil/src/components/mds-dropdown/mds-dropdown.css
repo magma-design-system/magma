@@ -1,0 +1,72 @@
+@tailwind utilities;
+
+/* :root {
+
+  --backdrop: theme('colors.label-amaranth-03');
+} */
+
+:host {
+
+  --background-arrow: var(--background);
+  --background: theme('colors.tone-neutral');
+  --drop-shadow: drop-shadow(0 10px 8px rgba(0, 0, 0, 0.04)) drop-shadow(0 4px 3px rgba(0, 0, 0, 0.1)) drop-shadow(0 0 1px rgba(0, 0, 0, 0.1));
+  --duration: 0.5s;
+  --ease: theme('transitionTimingFunction.out-expo');
+  --transform-from: scale(0.9) translateY(-3%);
+  --transform-to: scale(1) translate(0, 0);
+
+  @apply
+    box-border
+    fixed
+    gap-4
+    grid
+    opacity-0
+    p-6
+    pointer-events-none
+    rounded-lg;
+
+  background-color: var(--background);
+  filter: var(--drop-shadow);
+  transform: var(--transform-from);
+  transition-duration: var(--duration);
+  transition-property: opacity, transform, transform-origin;
+  transition-timing-function: var(--ease);
+}
+
+:host ( [visible]:not([visible=false]) ) {
+  @apply
+    opacity-100
+    pointer-events-auto;
+
+  transform: var(--transform-to);
+}
+
+:host ( [smooth]:not([smooth=false]) ) {
+  transition-property: bottom, left, opacity, right, top, transform, transform-origin;
+}
+
+.arrow {
+  @apply
+    -top-4
+    fixed
+    flex
+    pointer-events-none;
+
+  fill: var(--background-arrow);
+  transition-duration: var(--duration);
+  transition-property: bottom, left, right, top, transform, transform-origin;
+}
+
+:host ( [arrow]:not([arrow=false])[visible]:not([visible=false]) ) .arrow {
+  transition-timing-function: theme('transitionTimingFunction.out-quart');
+}
+
+:host ( [arrow]:not([arrow=false]):not([visible]):not([visible=true]) ) .arrow {
+  transition-timing-function: theme('transitionTimingFunction.out-expo');
+}
+
+::slotted ( * ) {
+  @apply
+    relative
+    z-10;
+}

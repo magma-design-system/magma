@@ -5,14 +5,14 @@
 # ISOLATE
 benchmark-bar-isolate:
   extends: [.base-isolate, .base-benchmark-bar]
-  dependencies: [base-build]
+  dependencies: [base-stencil-build]
 
 # TEST
 benchmark-bar-publish-test:
-  extends: [.base-publish-test, .base-benchmark-bar]
-  dependencies: [base-build, benchmark-bar-isolate]
+  extends: [.base-stencil-publish-test, .base-benchmark-bar]
+  dependencies: [base-stencil-build, benchmark-bar-isolate]
 
 # PUBLISH
 benchmark-bar-publish:
-  extends: [.base-publish, .base-benchmark-bar]
-  dependencies: [base-build, benchmark-bar-isolate]
+  extends: [.base-stencil-publish, .base-benchmark-bar]
+  dependencies: [base-stencil-build, benchmark-bar-isolate]

@@ -5,14 +5,14 @@
 # ISOLATE
 avatar-isolate:
   extends: [.base-isolate, .base-avatar]
-  dependencies: [base-build]
+  dependencies: [base-stencil-build]
 
 # TEST
 avatar-publish-test:
-  extends: [.base-publish-test, .base-avatar]
-  dependencies: [base-build, avatar-isolate]
+  extends: [.base-stencil-publish-test, .base-avatar]
+  dependencies: [base-stencil-build, avatar-isolate]
 
 # PUBLISH
 avatar-publish:
-  extends: [.base-publish, .base-avatar]
-  dependencies: [base-build, avatar-isolate]
+  extends: [.base-stencil-publish, .base-avatar]
+  dependencies: [base-stencil-build, avatar-isolate]

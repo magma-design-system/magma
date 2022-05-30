@@ -5,14 +5,14 @@
 # ISOLATE
 video-wall-isolate:
   extends: [.base-isolate, .base-video-wall]
-  dependencies: [base-build]
+  dependencies: [base-stencil-build]
 
 # TEST
 video-wall-publish-test:
-  extends: [.base-publish-test, .base-video-wall]
-  dependencies: [base-build, video-wall-isolate]
+  extends: [.base-stencil-publish-test, .base-video-wall]
+  dependencies: [base-stencil-build, video-wall-isolate]
 
 # PUBLISH
 video-wall-publish:
-  extends: [.base-publish, .base-video-wall]
-  dependencies: [base-build, video-wall-isolate]
+  extends: [.base-stencil-publish, .base-video-wall]
+  dependencies: [base-stencil-build, video-wall-isolate]

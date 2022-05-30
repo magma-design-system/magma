@@ -5,14 +5,14 @@
 # ISOLATE
 input-switch-group-isolate:
   extends: [.base-isolate, .base-input-switch-group]
-  dependencies: [base-build]
+  dependencies: [base-stencil-build]
 
 # TEST
 input-switch-group-publish-test:
-  extends: [.base-publish-test, .base-input-switch-group]
-  dependencies: [base-build, input-switch-group-isolate]
+  extends: [.base-stencil-publish-test, .base-input-switch-group]
+  dependencies: [base-stencil-build, input-switch-group-isolate]
 
 # PUBLISH
 input-switch-group-publish:
-  extends: [.base-publish, .base-input-switch-group]
-  dependencies: [base-build, input-switch-group-isolate]
+  extends: [.base-stencil-publish, .base-input-switch-group]
+  dependencies: [base-stencil-build, input-switch-group-isolate]

@@ -5,14 +5,14 @@
 # ISOLATE
 {{ componentName }}-isolate:
   extends: [.base-isolate, .base-{{ componentName }}]
-  dependencies: [base-build]
+  dependencies: [base-stencil-build]
 
 # TEST
 {{ componentName }}-publish-test:
-  extends: [.base-publish-test, .base-{{ componentName }}]
-  dependencies: [base-build, {{ componentName }}-isolate]
+  extends: [.base-stencil-publish-test, .base-{{ componentName }}]
+  dependencies: [base-stencil-build, {{ componentName }}-isolate]
 
 # PUBLISH
 {{ componentName }}-publish:
-  extends: [.base-publish, .base-{{ componentName }}]
-  dependencies: [base-build, {{ componentName }}-isolate]
+  extends: [.base-stencil-publish, .base-{{ componentName }}]
+  dependencies: [base-stencil-build, {{ componentName }}-isolate]

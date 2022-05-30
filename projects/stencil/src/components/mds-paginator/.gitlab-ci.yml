@@ -5,15 +5,15 @@
 # ISOLATE
 paginator-isolate:
   extends: [.base-isolate, .base-paginator]
-  dependencies: [base-build]
+  dependencies: [base-stencil-build]
 
 # TEST
 paginator-publish-test:
-  extends: [.base-publish-test, .base-paginator]
-  dependencies: [base-build, paginator-isolate]
+  extends: [.base-stencil-publish-test, .base-paginator]
+  dependencies: [base-stencil-build, paginator-isolate]
 
 # PUBLISH
 paginator-publish:
-  extends: [.base-publish, .base-paginator]
-  dependencies: [base-build, paginator-isolate]
+  extends: [.base-stencil-publish, .base-paginator]
+  dependencies: [base-stencil-build, paginator-isolate]
 

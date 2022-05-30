@@ -5,14 +5,14 @@
 # ISOLATE
 tag-isolate:
   extends: [.base-isolate, .base-tag]
-  dependencies: [base-build]
+  dependencies: [base-stencil-build]
 
 # TEST
 tag-publish-test:
-  extends: [.base-publish-test, .base-tag]
-  dependencies: [base-build, tag-isolate]
+  extends: [.base-stencil-publish-test, .base-tag]
+  dependencies: [base-stencil-build, tag-isolate]
 
 # PUBLISH
 tag-publish:
-  extends: [.base-publish, .base-tag]
-  dependencies: [base-build, tag-isolate]
+  extends: [.base-stencil-publish, .base-tag]
+  dependencies: [base-stencil-build, tag-isolate]

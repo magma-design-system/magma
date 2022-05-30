@@ -13,6 +13,8 @@ const alias = {
   '@variant': path.resolve(__dirname, '../src/variants/'),
 }
 
+const TsConfigPathsPlugin = require("tsconfig-paths-webpack-plugin")
+
 module.exports = {
   core: {
     builder: 'webpack5',
@@ -20,7 +22,6 @@ module.exports = {
   stories: [
     '../src/**/*.stories.mdx',
     '../src/**/*.stories.@(js|jsx|ts|tsx)',
-    '../src/**/*.stories.js',
   ],
   staticDirs: [
     '../assets',
@@ -69,6 +70,15 @@ module.exports = {
     })
 
     config.resolve.fallback = { path: false }
+
+    config.resolve.plugins = config.resolve.plugins || []
+
+    config.resolve.plugins.push(
+      new TsConfigPathsPlugin({
+        configFile: path.resolve(__dirname, "../tsconfig.json")
+      })
+    )
+
     return config
   },
 }

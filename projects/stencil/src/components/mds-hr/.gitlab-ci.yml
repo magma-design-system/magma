@@ -5,14 +5,14 @@
 # ISOLATE
 hr-isolate:
   extends: [.base-isolate, .base-hr]
-  dependencies: [base-build]
+  dependencies: [base-stencil-build]
 
 # TEST
 hr-publish-test:
-  extends: [.base-publish-test, .base-hr]
-  dependencies: [base-build, hr-isolate]
+  extends: [.base-stencil-publish-test, .base-hr]
+  dependencies: [base-stencil-build, hr-isolate]
 
 # PUBLISH
 hr-publish:
-  extends: [.base-publish, .base-hr]
-  dependencies: [base-build, hr-isolate]
+  extends: [.base-stencil-publish, .base-hr]
+  dependencies: [base-stencil-build, hr-isolate]
