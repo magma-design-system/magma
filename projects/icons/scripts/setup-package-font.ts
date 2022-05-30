@@ -1,9 +1,8 @@
-const fs = require('fs')
-const { join } = require('path')
-const { BUILD_PATH_DIR } = require('../lib/utils.js')
-const DIST_DIR = BUILD_PATH_DIR
+import fs from 'fs'
+import { join } from 'path'
+import { DIST_DIR } from './meta'
 
-function main () {
+const main = () => {
 
   // Output folder
   if (!fs.existsSync(DIST_DIR)) {
@@ -15,7 +14,6 @@ function main () {
   const isFontFile = /\.(ttf|woff|woff2|eot|svg)$/i
   const files = fs.readdirSync(fontsDir).filter(filename => !isFontFile.test(filename))
   for (const file of files) {
-    console.log(file)
     fs.renameSync(join(fontsDir, file), join(DIST_DIR, file))
   }
 }

@@ -3,7 +3,7 @@ const StyleDictionary = require('style-dictionary')
 const fs = require('fs')
 const path = require('path')
 const hexRgb = require('hex-rgb')
-const { sortKeys } = require('../../lib.js')
+const { sortKeys } = require('../lib.js')
 
 const templatePath = path.resolve(__dirname, './js-module-tailwind-config.hbs')
 

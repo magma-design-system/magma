@@ -1,6 +1,9 @@
-const fs = require('fs').promises
-const path = require('path')
-const chalk = require('chalk')
+/* eslint-disable @typescript-eslint/no-non-null-assertion */
+
+import chalk from 'chalk'
+import fs from 'fs/promises'
+import path from 'path'
+import { logStatus } from '../../../scripts/log'
 
 class Maggioli {
   static ICONS_DIR = `${path.dirname(require.resolve('@maggioli-design-system/svg-icons/package.json'))}/svg`
@@ -8,18 +11,15 @@ class Maggioli {
 
   /**
    * List of paths of subdirectories (possibly) with icons
-   * @return {Promise<string[]>}
    */
-  static async subDirectories () {
+  static async subDirectories (): Promise<string[]> {
     return [this.ICONS_DIR]
   }
 
   /**
    * Search the requested icon in Maggioli icons
-   * @param iconName {string} name of the icon
-   * @return {Promise<string>}
    */
-  static async getPath (iconName) {
+  static async getPath (iconName: string): Promise<string> {
     const subdirectories = await Maggioli.subDirectories()
     const filename = `${iconName}.svg`
 
@@ -28,20 +28,17 @@ class Maggioli {
 
   /**
    * Search all the Maggioli icons
-   * @return {Promise<string[]>} Paths of all the Maggioli icons
    */
-  static async listPath () {
+  static async listPath (): Promise<string[]> {
     const subdirectories = await Maggioli.subDirectories()
-    return iconGroupListHelper('maggioli', subdirectories, Maggioli.FILE_NAME_REGEX)
+    return iconGroupListHelper(subdirectories, Maggioli.FILE_NAME_REGEX)
   }
 
   /**
    * Given the path of an icon or just the file name, it returns the icon name
-   * @param path the path of an icon or just the file name
-   * @return {string} The icon name
    */
-  static getIconName (path) {
-    return path.split('/').slice(-1)[0].match(Maggioli.FILE_NAME_REGEX)[1]
+  static getIconName (path: string): string {
+    return path.split('/').slice(-1)[0].match(Maggioli.FILE_NAME_REGEX)![1]
   }
 }
 
@@ -51,18 +48,15 @@ class Material {
 
   /**
    * List of paths of subdirectories (possibly) with icons
-   * @return {Promise<string[]>}
    */
-  static async subDirectories () {
+  static async subDirectories (): Promise<string[]> {
     return subDirectories(this.ICONS_DIR)
   }
 
   /**
    * Search the requested icon in Material icons
-   * @param iconName {string}
-   * @return {Promise<string>}
    */
-  static async getPath (iconName) {
+  static async getPath (iconName: string): Promise<string> {
     const subdirectories = await Material.subDirectories()
     const filename = `ic_${iconName}_24px.svg`
 
@@ -71,20 +65,17 @@ class Material {
 
   /**
    * Search all the Material icons
-   * @return {Promise<string[]>} Paths of all the Material icons
    */
-  static async listPath () {
+  static async listPath (): Promise<string[]> {
     const subdirectories = await Material.subDirectories()
-    return iconGroupListHelper('material', subdirectories, Material.FILE_NAME_REGEX)
+    return iconGroupListHelper(subdirectories, Material.FILE_NAME_REGEX)
   }
 
   /**
    * Given the path of an icon or just the file name, it returns the icon name
-   * @param path the path of an icon or just the file name
-   * @return {string} The icon name
    */
-  static getIconName (path) {
-    return path.split('/').slice(-1)[0].match(Material.FILE_NAME_REGEX)[1]
+  static getIconName (path: string): string {
+    return path.split('/').slice(-1)[0].match(Material.FILE_NAME_REGEX)![1]
   }
 }
 
@@ -94,18 +85,16 @@ class MaterialCommunity {
 
   /**
    * List of paths of subdirectories (possibly) with icons
-   * @return {Promise<string[]>}
    */
-  static async subDirectories () {
+  static async subDirectories (): Promise<string[]> {
     return [this.ICONS_DIR]
   }
 
   /**
    * Search the requested icon in Material Design Icons Community
    * @param iconName {string} name of the icon
-   * @return {Promise<string>}
    */
-  static async getPath (iconName) {
+  static async getPath (iconName: string): Promise<string> {
     const subdirectories = await MaterialCommunity.subDirectories()
     const filename = `${iconName}.svg`
 
@@ -114,20 +103,17 @@ class MaterialCommunity {
 
   /**
    * Search all the Maggioli icons
-   * @return {Promise<string[]>} Paths of all the Material Design Icons Community icons
    */
-  static async listPath () {
+  static async listPath (): Promise<string[]> {
     const subdirectories = await MaterialCommunity.subDirectories()
-    return iconGroupListHelper('mdi', subdirectories, MaterialCommunity.FILE_NAME_REGEX)
+    return iconGroupListHelper(subdirectories, MaterialCommunity.FILE_NAME_REGEX)
   }
 
   /**
    * Given the path of an icon or just the file name, it returns the icon name
-   * @param path the path of an icon or just the file name
-   * @return {string} The icon name
    */
-  static getIconName (path) {
-    return path.split('/').slice(-1)[0].match(MaterialCommunity.FILE_NAME_REGEX)[1]
+  static getIconName (path: string): string {
+    return path.split('/').slice(-1)[0].match(MaterialCommunity.FILE_NAME_REGEX)![1]
   }
 }
 
@@ -136,51 +122,44 @@ class LocalDirectory {
 
   /**
    * List of paths of subdirectories (possibly) with icons
-   * @return {Promise<string[]>}
    */
-  static async subDirectories () {
+  static async subDirectories (): Promise<string[]> {
     return LocalDirectory._subDirectories
   }
-  static _subDirectories = []
+  static _subDirectories: string[] = []
 
   /**
    * Search the requested icon in the local directory
-   * @param iconName {string} name of the icon
-   * @return {Promise<string>}
    */
-  static async getPath (iconName) {
+  static async getPath (iconName: string): Promise<string> {
     const subdirectories = await LocalDirectory.subDirectories()
     const filename = `${iconName}.svg`
 
-    return iconGroupGetHelper(null, subdirectories, iconName, filename)
+    return iconGroupGetHelper('', subdirectories, iconName, filename)
   }
 
   /**
    * Search all the local icons
    * @return {Promise<string[]>} Paths of all the local icons
    */
-  static async listPath () {
+  static async listPath (): Promise<string[]> {
     const subdirectories = await LocalDirectory.subDirectories()
-    return iconGroupListHelper(null, subdirectories)
+    return iconGroupListHelper(subdirectories)
   }
 
   /**
    * Given the path of an icon or just the file name, it returns the icon name
-   * @param path the path of an icon or just the file name
-   * @return {string} The icon name
    */
-  static getIconName (path) {
+  static getIconName (path: string): string | boolean {
     if (!path.includes('/')) return false
-    return path.match(LocalDirectory.FILE_NAME_REGEX)[1]
+    return path.match(LocalDirectory.FILE_NAME_REGEX)![1]
   }
 }
 
 /**
  * Ritorna un array con i path delle sottocartelle rispetto alla cartella passata in input
- * @param source {string} Path di una cartella
- * @return {Promise<string[]>} Array di path delle sottocartelle
  */
-async function subDirectories (source) {
+const subDirectories = async (source: string): Promise<string[]> => {
   return (await fs.readdir(source, { withFileTypes: true }))
     .filter(dirent => dirent.isDirectory())
     .map(dirent => `${source}/${dirent.name}`)
@@ -188,20 +167,18 @@ async function subDirectories (source) {
 
 /**
  * Get icon helper to simplify groups functions
- * @param iconGroup {string} name of the group
- * @param directories {string[]} paths of the directories where the function should search
- * @param iconName {string} name of the icon
- * @param filename {string} file to search
- * @return {Promise<string>} path of the icon
- * @throws Throws error if the icon is not found
  */
-async function iconGroupGetHelper (iconGroup, directories, iconName, filename) {
-  const hidePath = path.resolve(__dirname, '../../../')
+const iconGroupGetHelper = async (iconGroup: string, directories: string[], iconName: string, filename: string): Promise<string> => {
   for (const directory of directories) {
-    const path = await searchFileInDirectory(directory, filename)
-    if (path) {
-      console.log(`${chalk.green('Found:')} ${iconGroup}/${iconName}  >  ${path.replace(hidePath, '')}`)
-      return path
+    const fullPath = await searchFileInDirectory(directory, filename)
+    logStatus({
+      actionDoing: 'checking',
+      subject: iconName,
+      status: 'match',
+      match: path.basename(filename),
+    })
+    if (fullPath) {
+      return fullPath
     }
   }
   throw new Error(`${chalk.red('Icon not found:')} ${iconGroup ? iconGroup + '/' : ''}${iconName}, searched as ${filename}`)
@@ -209,37 +186,28 @@ async function iconGroupGetHelper (iconGroup, directories, iconName, filename) {
 
 /**
  * List icons helper to simplify groups functions
- * @param {string} iconGroup name of the group
- * @param {string[]} directories paths of the directories where the function should search
- * @param {RegExp} [fileTemplate] template to filter the files. Optional.
- * @return {Promise<string[]>} paths of the icons
  */
-async function iconGroupListHelper (iconGroup, directories, fileTemplate) {
+const iconGroupListHelper = async (directories: string[], fileTemplate?: RegExp): Promise<string[]> => {
   return Promise.all(directories.map(async dir => (await listFilesInDirectory(dir, fileTemplate)).map(filename => path.join(dir, filename))))
     .then(matrix => matrix.flat())
 }
 
 /**
  * List all files in a directory
- * @param directory {string}
- * @param {RegExp} [fileTemplate] template to filter the files. Optional.
- * @return {Promise<string[]>}
  */
-async function listFilesInDirectory (directory, fileTemplate) {
+const listFilesInDirectory = async (directory: string, fileTemplate?: RegExp): Promise<string[]> => {
   return fs.readdir(directory)
-    .catch(() => [])
     .then(files => (fileTemplate ? files.filter(file => file.match(fileTemplate)) : files))
+    .catch(err => {
+      throw Error(chalk.red(err))
+    })
 }
 
 /**
  * Search a file in a directory and return its path, if found
- * @param directory {string} Path of the directory where the function should search
- * @param filename {string} Name of the file to search
- * @return {Promise<string|void>} Return the path of the file if found
  */
-async function searchFileInDirectory (directory, filename) {
+const searchFileInDirectory = async (directory: string, filename: string): Promise<string | void> => {
   const files = await listFilesInDirectory(directory)
-
   if (files.includes(filename)) return path.join(directory, filename)
 }
 
@@ -250,20 +218,6 @@ const ICON_GROUPS = {
   mdi: { getPath: MaterialCommunity.getPath, listPath: MaterialCommunity.listPath, getIconName: MaterialCommunity.getIconName },
 }
 
-/**
- * Given the path of an icon, it returns the icon group name
- * @param path path of an icon
- * @return {Promise<string>}
- */
-async function pathToIconsGroup (path) {
-  for (const [key, value] of ICON_GROUPS) {
-    const subdirectories = await value.subDirectories()
-    if (subdirectories.find(dir => path.startsWith(dir))) {
-      return key
-    }
-  }
-  throw new Error(`Could not find an icons group for path ${path}`)
+export {
+  ICON_GROUPS,
 }
-
-exports.ICON_GROUPS = ICON_GROUPS
-exports.pathToIconsGroup = pathToIconsGroup
