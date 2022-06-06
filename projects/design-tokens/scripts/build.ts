@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-var-requires */
 const beautify = require('js-beautify').js
 import chalk from 'chalk'
 import path from 'path'
