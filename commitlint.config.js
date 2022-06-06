@@ -47,12 +47,16 @@ module.exports = {
           const { scope } = parsed
           const { type } = parsed
 
-          if ((type === 'revert' || type === 'style') && scope !== null)
-          {
-            return [false, 'Your scope should be empty when type is style or revert']
+          if (type === 'revert' && scope !== null) {
+            return [false, 'Your scope should be empty when type is revert']
           }
-          if (type !== 'style' && type !== 'revert' && !scope) {
-            return [false, 'Your scope should not be empty unless the type is style or revert']
+
+          if (type === 'style' && scope === 'styles') {
+            return [false, 'Scope styles shouldn\'t use style type for CSS styles, it\'s better to use fix or change']
+          }
+
+          if (type === 'style' && (scope !== 'design-tokens' || scope !== 'docs' || scope !== 'react' || scope !== 'stencil')) {
+            return [false, `Type style should be used in projects designed to support CSS, are you sure there is CSS inside scope ${scope}? Permitted scopes are design-tokens, docs, react, and stencil.`]
           }
 
           return r
