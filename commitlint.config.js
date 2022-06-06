@@ -23,22 +23,23 @@ module.exports = {
     'custom-scope-enum': [2,
       'always',
       [
-        'angular',
+        'design-tokens',
         'docs',
-        'font-icons-cli',
-        'mgg-icons',
-        'react',
-        'styles',
-        'tokens',
-        'web-component',
+        'icons',
+        'identity',
         'magma',
+        'react',
+        'stencil',
+        'styles',
+        'svg-icons',
       ],
     ],
   },
   plugins: [
     {
       rules: {
-        'custom-scope-enum': (parsed, when, value ) => {
+        'custom-scope-enum': (parsed, when, value) => {
+          // eslint-disable-next-line @typescript-eslint/no-var-requires
           const defaultScopeEnum = require('@commitlint/rules/lib/scope-enum')
 
           const r = defaultScopeEnum.scopeEnum(parsed, when, value)
