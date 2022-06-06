@@ -34,10 +34,7 @@ stages:
   stage: build
   before_script:
     - npm install -g --force nx yarn
-    - |
-      if [[ ! -d node_modules ]]; then
-        yarn install
-      fi
+    - yarn install
   cache:
     key:
       files:

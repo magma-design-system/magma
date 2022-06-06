@@ -9,6 +9,7 @@ base-stencil-build:
     - nx run styles:build
     - nx run icons:build
     - nx run stencil:build
+    - nx run stencil:build.icons
   artifacts:
     name: stencil-build
     expire_in: 1 day
@@ -21,10 +22,13 @@ base-stencil-build:
       - projects/stencil/dist
       - projects/stencil/src/fixtures
       - projects/stencil/assets
+  cache:
+    policy: pull-push
   rules:
     - if: $CI_PIPELINE_SOURCE == "merge_request_event" || $CI_COMMIT_BRANCH =~ /^(dev|main|pipeline)$/
       changes:
         - projects/stencil/**/*
+        - .deploy/**/*
 
 stencil-storybook-build:
   extends: .base-build
@@ -55,6 +59,8 @@ stencil-storybook-build:
     expire_in: 1 day
     paths:
       - $BUILD_DIR
+  cache:
+    policy: pull
   rules:
     - if: $CI_PIPELINE_SOURCE == "merge_request_event" || $CI_COMMIT_BRANCH =~ /^(dev|main|pipeline)$/
       changes:
@@ -66,9 +72,12 @@ stencil-test:
   image: atools/chrome-headless:java11-node16-latest
   stage: test
   dependencies: [base-stencil-build]
-  script:
+  before_script:
     - cd projects/stencil
+  script:
     - npm run test
+  cache:
+    policy: pull
   rules:
     - if: $CI_PIPELINE_SOURCE == "merge_request_event" || $CI_COMMIT_BRANCH =~ /^(dev|main|pipeline)$/
       changes:
@@ -110,8 +119,8 @@ include:
   - '/projects/stencil/src/components/mds-banner/.gitlab-ci.yml'
   - '/projects/stencil/src/components/mds-benchmark-bar/.gitlab-ci.yml'
   - '/projects/stencil/src/components/mds-bibliography/.gitlab-ci.yml'
-  - '/projects/stencil/src/components/mds-breadcrumb/.gitlab-ci.yml'
-  - '/projects/stencil/src/components/mds-breadcrumb-item/.gitlab-ci.yml'
+  # - '/projects/stencil/src/components/mds-breadcrumb/.gitlab-ci.yml'
+  # - '/projects/stencil/src/components/mds-breadcrumb-item/.gitlab-ci.yml'
   - '/projects/stencil/src/components/mds-button/.gitlab-ci.yml'
   - '/projects/stencil/src/components/mds-card/.gitlab-ci.yml'
   - '/projects/stencil/src/components/mds-details/.gitlab-ci.yml'
@@ -124,34 +133,34 @@ include:
   - '/projects/stencil/src/components/mds-flex-table-footer/.gitlab-ci.yml'
   - '/projects/stencil/src/components/mds-flex-table-header/.gitlab-ci.yml'
   - '/projects/stencil/src/components/mds-flex-table-row/.gitlab-ci.yml'
-  - '/projects/stencil/src/components/mds-form/.gitlab-ci.yml'
+  # - '/projects/stencil/src/components/mds-form/.gitlab-ci.yml'
   - '/projects/stencil/src/components/mds-grid/.gitlab-ci.yml'
   - '/projects/stencil/src/components/mds-header/.gitlab-ci.yml'
   - '/projects/stencil/src/components/mds-header-bar/.gitlab-ci.yml'
-  - '/projects/stencil/src/components/mds-horizontal-scroll/.gitlab-ci.yml'
+  # - '/projects/stencil/src/components/mds-horizontal-scroll/.gitlab-ci.yml'
   - '/projects/stencil/src/components/mds-hr/.gitlab-ci.yml'
   - '/projects/stencil/src/components/mds-icon/.gitlab-ci.yml'
   - '/projects/stencil/src/components/mds-img/.gitlab-ci.yml'
   - '/projects/stencil/src/components/mds-input/.gitlab-ci.yml'
   - '/projects/stencil/src/components/mds-input-button/.gitlab-ci.yml'
-  - '/projects/stencil/src/components/mds-input-field/.gitlab-ci.yml'
-  - '/projects/stencil/src/components/mds-input-range/.gitlab-ci.yml'
-  - '/projects/stencil/src/components/mds-input-select/.gitlab-ci.yml'
-  - '/projects/stencil/src/components/mds-input-switch/.gitlab-ci.yml'
-  - '/projects/stencil/src/components/mds-input-switch-group/.gitlab-ci.yml'
-  - '/projects/stencil/src/components/mds-kpi/.gitlab-ci.yml'
-  - '/projects/stencil/src/components/mds-kpi-item/.gitlab-ci.yml'
+  # - '/projects/stencil/src/components/mds-input-field/.gitlab-ci.yml'
+  # - '/projects/stencil/src/components/mds-input-range/.gitlab-ci.yml'
+  # - '/projects/stencil/src/components/mds-input-select/.gitlab-ci.yml'
+  # - '/projects/stencil/src/components/mds-input-switch/.gitlab-ci.yml'
+  # - '/projects/stencil/src/components/mds-input-switch-group/.gitlab-ci.yml'
+  # - '/projects/stencil/src/components/mds-kpi/.gitlab-ci.yml'
+  # - '/projects/stencil/src/components/mds-kpi-item/.gitlab-ci.yml'
   - '/projects/stencil/src/components/mds-list/.gitlab-ci.yml'
   - '/projects/stencil/src/components/mds-list-item/.gitlab-ci.yml'
   - '/projects/stencil/src/components/mds-modal/.gitlab-ci.yml'
   - '/projects/stencil/src/components/mds-note/.gitlab-ci.yml'
-  - '/projects/stencil/src/components/mds-notification/.gitlab-ci.yml'
-  - '/projects/stencil/src/components/mds-paginator/.gitlab-ci.yml'
-  - '/projects/stencil/src/components/mds-paginator-item/.gitlab-ci.yml'
+  # - '/projects/stencil/src/components/mds-notification/.gitlab-ci.yml'
+  # - '/projects/stencil/src/components/mds-paginator/.gitlab-ci.yml'
+  # - '/projects/stencil/src/components/mds-paginator-item/.gitlab-ci.yml'
   - '/projects/stencil/src/components/mds-progress/.gitlab-ci.yml'
   - '/projects/stencil/src/components/mds-quote/.gitlab-ci.yml'
   - '/projects/stencil/src/components/mds-row/.gitlab-ci.yml'
-  - '/projects/stencil/src/components/mds-spinner/.gitlab-ci.yml'
+  # - '/projects/stencil/src/components/mds-spinner/.gitlab-ci.yml'
   - '/projects/stencil/src/components/mds-stepper-bar/.gitlab-ci.yml'
   - '/projects/stencil/src/components/mds-stepper-bar-item/.gitlab-ci.yml'
   - '/projects/stencil/src/components/mds-tab/.gitlab-ci.yml'
@@ -164,10 +173,10 @@ include:
   - '/projects/stencil/src/components/mds-table-footer/.gitlab-ci.yml'
   - '/projects/stencil/src/components/mds-table-header/.gitlab-ci.yml'
   - '/projects/stencil/src/components/mds-table-row/.gitlab-ci.yml'
-  - '/projects/stencil/src/components/mds-tag/.gitlab-ci.yml'
+  # - '/projects/stencil/src/components/mds-tag/.gitlab-ci.yml'
   - '/projects/stencil/src/components/mds-text/.gitlab-ci.yml'
   - '/projects/stencil/src/components/mds-toast/.gitlab-ci.yml'
   - '/projects/stencil/src/components/mds-tooltip/.gitlab-ci.yml'
   - '/projects/stencil/src/components/mds-url-view/.gitlab-ci.yml'
   - '/projects/stencil/src/components/mds-usage/.gitlab-ci.yml'
-  - '/projects/stencil/src/components/mds-video-wall/.gitlab-ci.yml'
+  # - '/projects/stencil/src/components/mds-video-wall/.gitlab-ci.yml'

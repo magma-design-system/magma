@@ -1,4 +1,6 @@
+!yarn.lock
 $RECYCLE.BIN/
+**/dependency-check-report.xml
 *.lock
 *.log
 *.sublime-project
@@ -27,6 +29,6 @@ log.txt
 node_modules/
 projects/**/package-lock.json
 projects/**/yarn.lock
+projects/scripts/**/*.js
+projects/stencil/assets/svg
 www/
-**/dependency-check-report.xml
-!yarn.lock

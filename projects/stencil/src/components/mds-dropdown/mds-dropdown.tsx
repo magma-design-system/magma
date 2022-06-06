@@ -48,6 +48,11 @@ export class MdsDropdown {
   @Prop() readonly flip? = false
 
   /**
+   * Specifies the id of the caller element.
+   */
+  @Prop() readonly target!:string
+
+  /**
    * Sets distance between the dropdown and the caller.
    */
   @Prop() readonly offset = 24
@@ -150,7 +155,7 @@ export class MdsDropdown {
     this.handleVisibility()
   }
 
-  private arrowInset = (middleware: MiddlewareData , arrowPosition: string): { bottom?: string, left?: string, right?: string, top?: string } => {
+  private arrowInset = (middleware: MiddlewareData, arrowPosition: string): { bottom?: string, left?: string, right?: string, top?: string } => {
     const { arrow } = middleware
     const inset = { bottom:'', left: '', right: '', top: '' }
 
@@ -159,24 +164,24 @@ export class MdsDropdown {
     }
 
     switch (arrowPosition) {
-      case 'bottom':
-        inset.left = arrow.x != null ? `${arrow.x}px` : ''
-        inset.top = '100%'
-        break;
-      case 'left':
-        inset.right = '100%'
-        inset.top = arrow.y != null ? `${arrow.y}px` : ''
-        break;
-      case 'right':
-        inset.left = '100%'
-        inset.top = arrow.y != null ? `${arrow.y}px` : ''
-        break;
-      case 'top':
-        inset.left = arrow.x != null ? `${arrow.x}px` : ''
-        inset.top = arrow.y != null ? `${arrow.y}px` : ''
-        break;
-      default:
-        break;
+    case 'bottom':
+      inset.left = arrow.x !== null ? `${arrow.x}px` : ''
+      inset.top = '100%'
+      break
+    case 'left':
+      inset.right = '100%'
+      inset.top = arrow.y !== null ? `${arrow.y}px` : ''
+      break
+    case 'right':
+      inset.left = '100%'
+      inset.top = arrow.y !== null ? `${arrow.y}px` : ''
+      break
+    case 'top':
+      inset.left = arrow.x !== null ? `${arrow.x}px` : ''
+      inset.top = arrow.y !== null ? `${arrow.y}px` : ''
+      break
+    default:
+      break
     }
     return inset
   }
@@ -184,36 +189,36 @@ export class MdsDropdown {
   private arrowTransform = (arrowPosition: string): { transform: string } => {
     let transformProps = this.arrow && this.visible ? 'scale(1)' : 'scale(0)'
     switch (arrowPosition) {
-      case 'bottom':
-        transformProps = `rotate(180deg) ${transformProps} translate(0, -100%)`
-        break;
-      case 'left':
-        transformProps = `rotate(-90deg) ${transformProps} translate(50%, -50%)`
-        break;
-      case 'right':
-        transformProps = `rotate(90deg) ${transformProps} translate(-50%, -50%)`
-        break;
-      case 'top':
-        transformProps = `rotate(0deg) ${transformProps} translate(0, 0)`
-        break;
-      default:
-        break;
+    case 'bottom':
+      transformProps = `rotate(180deg) ${transformProps} translate(0, -100%)`
+      break
+    case 'left':
+      transformProps = `rotate(-90deg) ${transformProps} translate(50%, -50%)`
+      break
+    case 'right':
+      transformProps = `rotate(90deg) ${transformProps} translate(-50%, -50%)`
+      break
+    case 'top':
+      transformProps = `rotate(0deg) ${transformProps} translate(0, 0)`
+      break
+    default:
+      break
     }
     return { transform: transformProps }
   }
 
   private arrowTransformOrigin = (arrowPosition: string): { transformOrigin: string } => {
     switch (arrowPosition) {
-      case 'bottom':
-        return { transformOrigin: 'center top' }
-      case 'left':
-        return { transformOrigin: 'right center' }
-      case 'right':
-        return { transformOrigin: 'left center' }
-      case 'top':
-        return { transformOrigin: 'center bottom' }
-      default:
-        return { transformOrigin: 'center top' }
+    case 'bottom':
+      return { transformOrigin: 'center top' }
+    case 'left':
+      return { transformOrigin: 'right center' }
+    case 'right':
+      return { transformOrigin: 'left center' }
+    case 'top':
+      return { transformOrigin: 'center bottom' }
+    default:
+      return { transformOrigin: 'center top' }
     }
   }
 
@@ -345,21 +350,23 @@ export class MdsDropdown {
   }
 
   componentWillLoad (): void {
-    const backdropCustomProp = getComputedStyle(document.documentElement,null).getPropertyValue(this.backdropCustomPropBackground)
+    const backdropCustomProp = getComputedStyle(document.documentElement, null).getPropertyValue(this.backdropCustomPropBackground)
     if (backdropCustomProp !== '') {
       this.backdropBackground = `var(${this.backdropCustomPropBackground})`
     }
+
+    Array.from(document.getElementsByClassName(this.backdropId)).forEach((element: HTMLElement) => {
+      element.remove()
+    })
   }
 
   componentDidLoad (): void {
     document.addEventListener('click', this.handleCloseDropdown)
     this.arrowEl = this.host.shadowRoot.querySelector('.arrow')
-    this.caller = document.querySelector(`[for='${this.host.getAttribute('id')}']`)
+    this.caller = document.getElementById(this.target)
     this.caller.addEventListener('click', this.callerOnClick.bind(this))
 
-    Array.from(document.getElementsByClassName(this.backdropId)).forEach((element: HTMLElement) => {
-      element.remove()
-    })
+    this.backdropChanged(this.backdrop)
   }
 
   componentDidRender (): void {

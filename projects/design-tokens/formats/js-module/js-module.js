@@ -2,7 +2,7 @@ const Handlebars = require('handlebars')
 const StyleDictionary = require('style-dictionary')
 const fs = require('fs')
 const path = require('path')
-const { sortKeys } = require('../../lib.js')
+const { sortKeys } = require('../lib.js')
 
 const templatePath = path.resolve(__dirname, './js-module.hbs')
 

@@ -23,7 +23,7 @@
   },
   "dependencies": {
     "@maggioli-design-system/mds-list-item": "^2.0.0",
-    "@stencil/core": "^2.14.2"
+    "@stencil/core": "^2.15.2"
   },
   "license": "MIT",
   "author": {
