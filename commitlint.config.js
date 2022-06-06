@@ -12,6 +12,7 @@ module.exports = {
         'doc',
         'feat',
         'fix',
+        'merge',
         'perf',
         'refact',
         'revert',
