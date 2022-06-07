@@ -52,7 +52,7 @@
   Please link to it's main issue here.
 
   Example:
-  **Main issue:** https://gitlab.com/maggiolispa/ricerca-sviluppo-new-media/design-system/-/issues/44
+  **Main issue:** #44
 
   🟢 Optional
   If you know that the change fixes other open issues besides the main one, report them here.
@@ -60,9 +60,9 @@
   Example:
   Other related issues:
 
-  1. https://gitlab.com/maggiolispa/ricerca-sviluppo-new-media/design-system/-/issues/44
-  2. https://gitlab.com/maggiolispa/ricerca-sviluppo-new-media/design-system/-/issues/44
-  3. https://gitlab.com/maggiolispa/ricerca-sviluppo-new-media/design-system/-/issues/44
+  1. #44
+  2. #45
+  3. #46
 -->
 
 ## Motivation and context
