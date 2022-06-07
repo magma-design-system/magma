@@ -33,7 +33,7 @@ stages:
   image: node:16.13
   stage: build
   before_script:
-    - apt update && apt install jq
+    - apt update && apt install jq -y
     - npm install -g --force nx yarn
     - yarn install
   cache:
