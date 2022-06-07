@@ -1,9 +1,7 @@
 # mds-accordion
 
 
-
 <!-- Auto Generated Below -->
-
 
 ## Properties
 
