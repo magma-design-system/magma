@@ -61,9 +61,12 @@ stages:
     - cd $BUILD_DIR
     - export LATEST_PUBLISHED_V=`npm search @maggioli-design-system/${COMPONENT} --json | jq ".[0].version"`
     - export TO_BE_PUBLISHED_V=`cat package.json | jq ".version"`
+    - echo "VERSION TO BE PUBLISHED ${TO_BE_PUBLISHED_V}"
+    - echo "LATEST PUBLISHED VERSION ${LATEST_PUBLISHED_V}"
     - |
       if [ "$LATEST_PUBLISHED_V" = "$TO_BE_PUBLISHED_V" ]; then
-        exit -1
+        echo "${LATEST_PUBLISHED_V} == ${TO_BE_PUBLISHED_V} : cannot publish!"
+        exit 1
       else
         npm pack && npm install $PACK_NAME && npm publish --access public --dry-run
       fi
