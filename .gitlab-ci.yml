@@ -30,7 +30,7 @@ stages:
 
 # BASE BUILD
 .base-build:
-  image: node:16.13
+  image: node:18.3
   stage: build
   before_script:
     - apt update && apt install jq -y
