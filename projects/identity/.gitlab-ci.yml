@@ -20,6 +20,7 @@ identity-publish-test:
   stage: test
   variables:
     BUILD_DIR: projects/identity
+    COMPONENT: identity
     PACK_NAME: maggioli-design-system-identity-*.tgz
   rules:
     - if: $CI_PIPELINE_SOURCE == "merge_request_event" || $CI_COMMIT_BRANCH =~ /^(main|pipeline)$/

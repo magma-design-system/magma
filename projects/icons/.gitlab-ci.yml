@@ -22,6 +22,7 @@ icons-publish-test:
   stage: test
   variables:
     BUILD_DIR: projects/icons
+    COMPONENT: icons
     PACK_NAME: maggioli-design-system-icons-*.tgz
   rules:
     - if: $CI_PIPELINE_SOURCE == "merge_request_event" || $CI_COMMIT_BRANCH =~ /^(main|pipeline)$/

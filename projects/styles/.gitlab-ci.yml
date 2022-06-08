@@ -26,6 +26,7 @@ styles-publish-test:
   stage: test
   variables:
     BUILD_DIR: projects/styles
+    COMPONENT: styles
     PACK_NAME: maggioli-design-system-styles-*.tgz
   rules:
     - if: $CI_PIPELINE_SOURCE == "merge_request_event" || $CI_COMMIT_BRANCH =~ /^(main|pipeline)$/
