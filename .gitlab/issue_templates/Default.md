@@ -9,8 +9,6 @@
   Available values: 1, 2, 3, 5, 8 (if 9+ you should consider to split in multiple issues)
 -->
 
--->
-
 <!--
   🔴 Required
   Provide a general summary of the issue.
