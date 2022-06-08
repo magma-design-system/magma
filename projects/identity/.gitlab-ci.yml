@@ -13,6 +13,7 @@ identity-build:
       changes:
         - projects/identity/**/*
 
+
 # IDENTITY PUBLISH TEST
 identity-publish-test:
   extends: .base-publish-test

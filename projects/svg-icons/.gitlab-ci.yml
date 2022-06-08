@@ -11,6 +11,7 @@ svg-icons-publish-test:
       changes:
         - projects/svg-icons/**/*
 
+
 # SVG-ICONS PUBLISH
 svg-icons-publish:
   extends: .base-publish

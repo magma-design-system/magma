@@ -15,6 +15,7 @@ icons-build:
       changes:
         - projects/icons/**/*
 
+
 # ICONS PUBLISH TEST
 icons-publish-test:
   extends: .base-publish-test
