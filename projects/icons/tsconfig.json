@@ -1,0 +1,26 @@
+{
+  "skipLibCheck": true,
+  "compilerOptions": {
+    "allowSyntheticDefaultImports": true,
+    "allowUnreachableCode": false,
+    "declaration": false,
+    "noImplicitAny": true,
+    "experimentalDecorators": true,
+    "lib": [
+      "es2017"
+    ],
+    "moduleResolution": "node",
+    "module": "esnext",
+    "target": "es2017",
+    "noUnusedLocals": true,
+    "noUnusedParameters": true,
+    "resolveJsonModule": false
+  },
+  "include": [
+    "scripts"
+  ],
+  "exclude": [
+    "dist",
+    "node_modules",
+  ]
+}

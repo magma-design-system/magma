@@ -17,6 +17,7 @@ design-tokens-build:
       changes:
         - projects/design-tokens/**/*
 
+
 # DESIGN TOKENS PUBLISH TEST
 design-tokens-publish-test:
   extends: .base-publish-test
@@ -24,6 +25,7 @@ design-tokens-publish-test:
   stage: test
   variables:
     BUILD_DIR: projects/design-tokens
+    COMPONENT: design-tokens
     PACK_NAME: maggioli-design-system-design-tokens-*.tgz
   rules:
     - if: $CI_PIPELINE_SOURCE == "merge_request_event" || $CI_COMMIT_BRANCH =~ /^(main|pipeline)$/

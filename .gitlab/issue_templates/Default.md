@@ -3,6 +3,10 @@
   🔴 Required:    If you skip this step, the issue could be ignored or closed prematurely.
   🟡 Recommended: Very important infos to let core team gain time on understanding the issue/merge request.
   🟢 Optional:    Some additional information to be more complete.
+
+  🏋🏻‍♂️ Weight
+  Measure the issue weight by the days you think you need to complete it:
+  Available values: 1, 2, 3, 5, 8 (if 9+ you should consider to split in multiple issues)
 -->
 
 <!--
@@ -111,7 +115,7 @@ Impacts the following Design System tool/environment:
   3. Vai al [test del componente][storybook];
   4. Prova a selezionare il testo.
 
-  [storybook]: http://localhost:6006/?path=/story/ui-text--default
+  [storybook]: http://magma.maggiolicloud.it/storybook/?path=/story/ui-text--default
 -->
 
 ## Context (environment)

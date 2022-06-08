@@ -3,6 +3,10 @@
   🔴 Required:    If you skip this step, the issue could be ignored or closed prematurely.
   🟡 Recommended: Very important infos to let core team gain time on understanding the issue/merge request.
   🟢 Optional:    Some additional information to be more complete.
+
+  🏋🏻‍♂️ Weight
+  Measure the issue weight by the days you think you need to complete it:
+  Available values: 1, 2, 3, 5, 8 (if 9+ you should consider to split in multiple issues)
 -->
 
 <!--
@@ -38,6 +42,18 @@ Impacts the following Design System environment/tool:
 - CI (Continuous Integration)
 - Figma
 - Gitlab
+
+<!--
+  🟡 Recommended
+  If present, provide a project related to the issue.
+
+  Example:
+  Impacts the following Maggioli products:
+
+  - [Synbee][https://gitlab.com/maggiolispa/ricerca-sviluppo-bari/synerbee]
+  - [Periodici Maggioli][https://gitlab.com/maggiolispa/ricerca-sviluppo-new-media/periodici-maggioli]
+  - Other project
+-->
 
 
 ## Related problem
@@ -83,11 +99,9 @@ Impacts the following Design System environment/tool:
   Example:
   I'm not the only one which is encountering the problem:
 
-  1. [Issue 38][i38] - Text selection not working inside `mds-calendar` component
-  2. [Issue 45][i45] - Cannot apply text selection from outside
+  1. #38 - Text selection not working inside `mds-calendar` component
+  2. #45 - Cannot apply text selection from outside
 
-  [i38]: https://gitlab.com/maggiolispa/ricerca-sviluppo-new-media/design-system/-/issues/38
-  [i45]: https://gitlab.com/maggiolispa/ricerca-sviluppo-new-media/design-system/-/issues/45
 -->
 
 ## Detailed description

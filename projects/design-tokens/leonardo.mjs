@@ -81,52 +81,9 @@ const formatColor = (theme, colorName, colorValue, scaffold, seed, colorMode) =>
   return palette
 }
 
-const url = color => {
-  const colorRatios = color.ratios !== undefined ? ratios[color.ratios] : ratios.default
-  const query = [
-    `?colorKeys=%23${color.color.substring(1)}`,
-    '&base=ffffff',
-    `&ratios=${colorRatios.join('%2C')}`,
-    `&mode=${color.colorspace !== undefined ? color.colorspace : colorspace}`,
-  ]
-  return `https://leonardocolor.io/${query.join('')}`
-}
-
-const generatePaletteURL = () => {
-
-  console.log(chalk.yellow('\nGenerating @adobe/leonardo URL palettes'))
-
-  const palette = {
-    color: {},
-  }
-  colors.forEach(element => {
-    const groupIndex = 0
-    const nameIndex = 1
-    const group = element.name.split('.')[groupIndex]
-    const name = element.name.split('.')[nameIndex]
-
-    if (element.disabled === undefined) {
-      element.disabled = false
-    }
-
-    if (!element.disabled) {
-
-      if (!Object.prototype.hasOwnProperty.call(palette.color, group)) {
-        palette.color[group] = {}
-      }
-
-      if (!Object.prototype.hasOwnProperty.call(palette.color[group], name)) {
-        console.log(`${chalk.blue('Palette ' + name)}: ${url(element)}`)
-      }
-    }
-  })
-}
-
 const exportPalettes = async palettes => {
 
-  const configTemplate = await readFile(
-    new URL(`${TEMPLATES_PATH}/config.json`, import.meta.url),
-  )
+  const configTemplate = await readFile(resolve(`${TEMPLATES_PATH}/config.json`))
   const template = Handlebars.compile(configTemplate.toString())
 
   for (const palette of Object.keys(palettes)) {
@@ -134,25 +91,21 @@ const exportPalettes = async palettes => {
 
     console.log(`Exporting ${chalk.yellow('color palette')} ${palette}`)
 
-    await mkdir(new URL(`${COLOR_PATH}`, import.meta.url), { recursive: true })
-    await writeFile(new URL(`${COLOR_PATH}/${palette}.json`, import.meta.url), jsonPalette, 'utf8', err => {
+    await mkdir(COLOR_PATH, { recursive: true })
+    await writeFile(resolve(`${COLOR_PATH}/${palette}.json`), jsonPalette, 'utf8', err => {
       if (err) {
         console.log(chalk.red('An error occured while writing JSON Object to File.'))
         console.log(chalk.red(err))
       }
     })
 
-    await mkdir(new URL(`${CONFIG_PATH}`, import.meta.url), { recursive: true })
+    await mkdir(CONFIG_PATH, { recursive: true })
     const data = {
       fileName: palette,
     }
     const compiledConfig = template(data)
 
-    await writeFile(
-      new URL(
-        `${CONFIG_PATH}/${palette}.json`,
-        import.meta.url,
-      ),
+    await writeFile(resolve(`${CONFIG_PATH}/${palette}.json`),
       compiledConfig,
       'utf8',
       err => {
@@ -223,8 +176,8 @@ const formatPalette = async opts => {
 
   console.log('Exporting whole color palette')
 
-  await mkdir(new URL(`${COLOR_PATH}`, import.meta.url), { recursive: true })
-  await writeFile(new URL(`${COLOR_PATH}/base.json`, import.meta.url), jsonPalette, 'utf8', err => {
+  await mkdir(COLOR_PATH, { recursive: true })
+  await writeFile(resolve(`${COLOR_PATH}/base.json`), jsonPalette, 'utf8', err => {
     if (err) {
       console.log(chalk.red('An error occured while writing JSON Object to File.'))
       console.log(chalk.red(err))
@@ -260,7 +213,6 @@ const build = async () => {
     themeDark: themeDark.contrastColors,
   })
 
-  generatePaletteURL()
   console.log('')
   console.log(chalk.green('Design tokens color palette generated successfully.'))
 }

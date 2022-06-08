@@ -9,6 +9,7 @@ base-stencil-build:
     - nx run styles:build
     - nx run icons:build
     - nx run stencil:build
+    - nx run stencil:build.icons
   artifacts:
     name: stencil-build
     expire_in: 1 day
