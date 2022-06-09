@@ -17,7 +17,6 @@ design-tokens-build:
       changes:
         - projects/design-tokens/**/*
 
-
 # DESIGN TOKENS PUBLISH TEST
 design-tokens-publish-test:
   extends: .base-publish-test
@@ -42,4 +41,4 @@ design-tokens-publish:
   rules:
     - if: $CI_COMMIT_BRANCH == "main"
       changes:
-        - projects/design-tokens/**/*
+        - projects/design-tokens/package.json

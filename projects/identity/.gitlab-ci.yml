@@ -13,7 +13,6 @@ identity-build:
       changes:
         - projects/identity/**/*
 
-
 # IDENTITY PUBLISH TEST
 identity-publish-test:
   extends: .base-publish-test
@@ -38,4 +37,4 @@ identity-publish:
   rules:
     - if: $CI_COMMIT_BRANCH == "main"
       changes:
-        - projects/identity/**/*
+        - projects/identity/package.json

@@ -64,7 +64,7 @@ stencil-storybook-build:
   rules:
     - if: $CI_PIPELINE_SOURCE == "merge_request_event" || $CI_COMMIT_BRANCH =~ /^(dev|main|pipeline)$/
       changes:
-        - projects/stencil/src/components/$COMPONENT/**/*
+        - projects/stencil/src/components/$COMPONENT/package.json
 
 # COMMON STENCIL TEST
 stencil-test:
@@ -94,7 +94,7 @@ stencil-test:
   rules:
     - if: $CI_PIPELINE_SOURCE == "merge_request_event" || $CI_COMMIT_BRANCH =~ /^(main|pipeline)$/
       changes:
-        - projects/stencil/src/components/$COMPONENT/**/*
+        - projects/stencil/src/components/$COMPONENT/package.json
 
 # BASE STENCIL PUBLISH
 .base-stencil-publish:
@@ -106,7 +106,7 @@ stencil-test:
   rules:
     - if: $CI_COMMIT_BRANCH == "main"
       changes:
-        - projects/stencil/src/components/$COMPONENT/**/*
+        - projects/stencil/src/components/$COMPONENT/**/package.json
 
 include:
   - '/projects/stencil/src/components/mds-accordion/.gitlab-ci.yml'

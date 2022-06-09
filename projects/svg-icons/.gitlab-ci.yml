@@ -11,7 +11,6 @@ svg-icons-publish-test:
       changes:
         - projects/svg-icons/**/*
 
-
 # SVG-ICONS PUBLISH
 svg-icons-publish:
   extends: .base-publish
@@ -21,4 +20,4 @@ svg-icons-publish:
   rules:
     - if: $CI_COMMIT_BRANCH == "main"
       changes:
-        - projects/svg-icons/**/*
+        - projects/svg-icons/package.json

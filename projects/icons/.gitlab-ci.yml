@@ -15,7 +15,6 @@ icons-build:
       changes:
         - projects/icons/**/*
 
-
 # ICONS PUBLISH TEST
 icons-publish-test:
   extends: .base-publish-test
@@ -40,4 +39,4 @@ icons-publish:
   rules:
     - if: $CI_COMMIT_BRANCH == "main"
       changes:
-        - projects/icons/**/*
+        - projects/icons/package.json

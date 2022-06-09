@@ -19,7 +19,6 @@ styles-build:
       changes:
         - projects/styles/**/*
 
-
 # STYLES PUBLISH TEST
 styles-publish-test:
   extends: .base-publish-test
@@ -44,4 +43,4 @@ styles-publish:
   rules:
     - if: $CI_COMMIT_BRANCH == "main"
       changes:
-        - projects/styles/**/*
+        - projects/styles/package.json
