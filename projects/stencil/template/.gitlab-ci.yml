@@ -16,3 +16,4 @@
 {{ componentName }}-publish:
   extends: [.base-stencil-publish, .base-{{ componentName }}]
   dependencies: [base-stencil-build, {{ componentName }}-isolate]
+  needs: [base-stencil-build, {{ componentName }}-isolate, {{ componentName }}-publish-test]
