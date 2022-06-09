@@ -31,12 +31,13 @@ styles-publish-test:
   rules:
     - if: $CI_PIPELINE_SOURCE == "merge_request_event" || $CI_COMMIT_BRANCH =~ /^(main|pipeline)$/
       changes:
-        - projects/styles/**/*
+        - projects/styles/package.json
 
 # STYLES PUBLISH
 styles-publish:
   extends: .base-publish
   dependencies: [styles-build]
+  needs: [styles-publish-test]
   stage: publish
   variables:
     BUILD_DIR: projects/styles

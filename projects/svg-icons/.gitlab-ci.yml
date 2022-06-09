@@ -9,12 +9,13 @@ svg-icons-publish-test:
   rules:
     - if: $CI_PIPELINE_SOURCE == "merge_request_event" || $CI_COMMIT_BRANCH =~ /^(main|pipeline)$/
       changes:
-        - projects/svg-icons/**/*
+        - projects/svg-icons/package.json
 
 # SVG-ICONS PUBLISH
 svg-icons-publish:
   extends: .base-publish
   stage: publish
+  needs: [svg-icons-publish-test]
   variables:
     BUILD_DIR: projects/svg-icons
   rules:
