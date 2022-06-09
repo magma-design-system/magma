@@ -109,7 +109,7 @@ export class MdsBibliography {
     } else {
       formattedFirstName = ` ${firstName.substring( 0, 1 )}.`
     }
-    return `${lastName},${formattedFirstName}`
+    return `${lastName}${lastName ? ',' : ''}${formattedFirstName}`
   }
 
   private fullNameMLA = ( firstName: string, lastName: string ): string => {
@@ -122,17 +122,16 @@ export class MdsBibliography {
     } else {
       formattedFirstName = firstName
     }
-    return `${lastName}, ${formattedFirstName}`
+    return `${lastName}${lastName ? ',' : ''} ${formattedFirstName}`
   }
 
   private formatAuthors = ( author: string ): FormattedAuthor => {
     const authorName = author.replace( new RegExp( '"', 'g' ), '\'' )
     const splitNames = new RegExp( /([A-Za-z ]{2,})/g )
-    const fullName = authorName.match( splitNames )
-
+    const fullName = authorName.match( splitNames ) ?? authorName
     if ( fullName.length > 1 ) {
       const firstName = fullName[ 0 ].trim()
-      const lastName = fullName[ 1 ].trim()
+      const lastName = fullName[ 1 ] ? fullName[ 1 ].trim() : ''
       return {
         apa: this.fullNameAPA( firstName, lastName ),
         firstName,
@@ -143,7 +142,7 @@ export class MdsBibliography {
     }
 
     const firstName = fullName[ 0 ].split( ' ' )[ 0 ].trim()
-    const lastName = fullName[ 0 ].split( ' ' )[ 1 ].trim()
+    const lastName = fullName[ 0 ].split( ' ' )[ 1 ] ? fullName[ 0 ].split( ' ' )[ 1 ].trim() : ''
     return {
       apa: this.fullNameAPA( firstName, lastName ),
       firstName,
