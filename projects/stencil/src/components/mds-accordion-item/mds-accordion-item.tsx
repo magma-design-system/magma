@@ -39,12 +39,12 @@ export class MdsAccordionItem {
   render () {
     return (
       <Host>
-        <mds-grid class="header" onClick={ this.toggle }>
+        <div class="header" onClick={ this.toggle }>
           <mds-text typography={ this.typography }>{ this.description }</mds-text>
           <mds-text class="icon-button" typography={ this.typography }>
             <i class="svg icon" innerHTML={miBaselineKeyboardArrowUp}/>
           </mds-text>
-        </mds-grid>
+        </div>
         <div class="contents">
           <slot/>
         </div>
