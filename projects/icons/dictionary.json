@@ -384,6 +384,7 @@
   "sort-as": "mdi/sort-ascending",
   "sort-desc": "mdi/sort-descending",
   "source-web": "material/explore",
+  "stamp": "maggioli/stamp",
   "status-error": "material/error",
   "status-error-outline": "material/error_outline",
   "status-false": "material/highlight_off",
