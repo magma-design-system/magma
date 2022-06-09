@@ -30,12 +30,15 @@ stages:
 
 # BASE BUILD
 .base-build:
-  image: node:18.1
+  image: node:18.3
   stage: build
   before_script:
     - apt update && apt install jq -y
     - npm install -g --force nx yarn
-    - yarn install
+    - |
+      if [[ ! -d node_modules ]]; then
+        yarn install --frozen-lockfile --prefer-offline --force
+      fi
   cache:
     key:
       files:
@@ -79,7 +82,9 @@ stages:
     BUILD_DIR: to_be_extended
   script:
     - cd $BUILD_DIR
-    - cp $NPMRC_FILE .npmrc
+    - npm config set registry "https://registry.npmjs.com/:_authToken=$NPM_TOKEN"
+    - npm config set engine-strict "true"
+    - npm config set always-auth "true"
     - npm publish --access public
 
 include:
