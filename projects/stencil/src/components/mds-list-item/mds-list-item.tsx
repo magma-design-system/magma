@@ -1,5 +1,5 @@
 import { Component, Host, h, Prop } from '@stencil/core'
-import { TypographySecondaryType } from '../../types/typography'
+import { TypographyInfoType, TypographyReadType, TypographyVariants } from '../../types/typography'
 
 @Component({
   tag: 'mds-list-item',
@@ -11,7 +11,12 @@ export class MdsListItem {
   /**
    * Specifies the typography of the element
    */
-  @Prop() readonly typography: TypographySecondaryType = 'detail'
+  @Prop() readonly typography: TypographyInfoType | TypographyReadType = 'detail'
+
+  /**
+   * Specifies the variant for `typography`
+   */
+  @Prop() readonly variant?: TypographyVariants
 
   /**
    * Specifies the typography of the element
@@ -22,7 +27,7 @@ export class MdsListItem {
     return (
       <Host>
         <mds-icon name={this.icon} part="icon"/>
-        <mds-text typography={this.typography} part="text"><slot></slot></mds-text>
+        <mds-text typography={this.typography} variant={this.variant} part="text"><slot></slot></mds-text>
       </Host>
     )
   }

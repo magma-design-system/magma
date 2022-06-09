@@ -18,6 +18,80 @@
   color: var(--selection-color);
 }
 
+/* New classes definition */
+:host ( .text-mono-code ) {
+  @apply text-mono-code;
+}
+
+:host ( .text-mono-hack ) {
+  @apply text-mono-hack;
+}
+
+:host ( .text-title-h1 ) {
+  @apply text-title-h1;
+}
+
+:host ( .text-title-h2 ) {
+  @apply text-title-h2;
+}
+
+:host ( .text-title-h3 ) {
+  @apply text-title-h3;
+}
+
+:host ( .text-title-h4 ) {
+  @apply text-title-h4;
+}
+
+:host ( .text-title-h5 ) {
+  @apply text-title-h5;
+}
+
+:host ( .text-title-h6 ) {
+  @apply text-title-h6;
+}
+
+:host ( .text-title-action ) {
+  @apply text-title-action;
+}
+
+:host ( .text-info-paragraph ) {
+  @apply text-info-paragraph;
+}
+
+:host ( .text-info-detail ) {
+  @apply text-info-detail;
+}
+
+:host ( .text-info-caption ) {
+  @apply text-info-caption;
+}
+
+:host ( .text-info-label ) {
+  @apply text-info-label;
+}
+
+:host ( .text-info-tip ) {
+  @apply text-info-tip;
+}
+
+:host ( .text-info-option ) {
+  @apply text-info-option;
+}
+
+:host ( .text-read-paragraph ) {
+  @apply text-read-paragraph;
+}
+
+:host ( .text-read-detail ) {
+  @apply text-read-detail;
+}
+
+:host ( .text-read-caption ) {
+  @apply text-read-caption;
+}
+
+/* Old classes definition for backward compatibility */
 :host ( .text-primary-h1 ) {
   @apply text-primary-h1;
 }
@@ -68,14 +142,6 @@
 
 :host ( .text-secondary-option ) {
   @apply text-secondary-option;
-}
-
-:host ( .text-mono-code ) {
-  @apply text-mono-code;
-}
-
-:host ( .text-mono-hack ) {
-  @apply text-mono-hack;
 }
 
 .text {
