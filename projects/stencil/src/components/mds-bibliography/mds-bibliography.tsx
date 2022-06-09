@@ -1,12 +1,12 @@
 import { Component, Host, h, Prop } from '@stencil/core'
 import { BibliographyFormatType, BibliographyRelationshipType } from './meta/types'
-import { TypographySecondaryType } from '../../types/typography'
+import { TypographyInfoType, TypographyReadType, TypographyVariants } from '../../types/typography'
 import { FormattedAuthor } from './meta/interface'
-@Component({
+@Component( {
   tag: 'mds-bibliography',
   styleUrl: 'mds-bibliography.css',
   shadow: true,
-})
+} )
 export class MdsBibliography {
 
   private separator = {
@@ -57,14 +57,19 @@ export class MdsBibliography {
   /**
    * Specifies the font typography of the element
    */
-  @Prop() readonly typography: TypographySecondaryType = 'detail'
+  @Prop() readonly typography: TypographyInfoType | TypographyReadType = 'detail'
+
+  /**
+   * Specifies the variant for `typography`
+   */
+  @Prop() readonly variant?: TypographyVariants
 
   /**
    * Specifies the URL of the bibliography
    */
   @Prop() readonly url?: string
 
-  private monthName = (index: number) => {
+  private monthName = ( index: number ) => {
     const names = [
       'Gennaio',
       'Febbraio',
@@ -79,142 +84,141 @@ export class MdsBibliography {
       'Novembre',
       'Dicembre',
     ]
-    return names[index]
+    return names[ index ]
   }
 
-  private dateFormatAPA = (date: string): string => {
+  private dateFormatAPA = ( date: string ): string => {
     // 2001, August 2
-    const dateData = new Date(date)
-    return `${dateData.getFullYear()}${dateData.getMonth() !== null ? `, ${this.monthName(dateData.getMonth())}` : ''}${dateData.getDate() !== null ? ` ${dateData.getDate()}` : ''}`
+    const dateData = new Date( date )
+    return `${dateData.getFullYear()}${dateData.getMonth() !== null ? `, ${this.monthName( dateData.getMonth() )}` : ''}${dateData.getDate() !== null ? ` ${dateData.getDate()}` : ''}`
   }
 
-  private dateFormatMLA = (date: string): string => {
+  private dateFormatMLA = ( date: string ): string => {
     // 21 July 1986
-    const dateData = new Date(date)
-    return `${dateData.getDate() !== null ? ` ${dateData.getDate()}` : ''} ${this.monthName(dateData.getMonth())} ${dateData.getFullYear()}`
+    const dateData = new Date( date )
+    return `${dateData.getDate() !== null ? ` ${dateData.getDate()}` : ''} ${this.monthName( dateData.getMonth() )} ${dateData.getFullYear()}`
   }
 
-  private fullNameAPA = (firstName: string, lastName: string): string => {
+  private fullNameAPA = ( firstName: string, lastName: string ): string => {
     let formattedFirstName = ''
-    if (firstName.includes(' ')) {
-      const splitName = new RegExp(/(\w{1,})/, 'g')
-      firstName.match(splitName).forEach((word: string) => {
-        formattedFirstName = `${formattedFirstName} ${word.substring(0, 1)}.`
-      })
+    if ( firstName.includes( ' ' ) ) {
+      const splitName = new RegExp( /(\w{1,})/, 'g' )
+      firstName.match( splitName ).forEach( ( word: string ) => {
+        formattedFirstName = `${formattedFirstName} ${word.substring( 0, 1 )}.`
+      } )
     } else {
-      formattedFirstName = ` ${firstName.substring(0, 1)}.`
+      formattedFirstName = ` ${firstName.substring( 0, 1 )}.`
     }
-    return `${lastName},${formattedFirstName}`
+    return `${lastName}${lastName ? ',' : ''}${formattedFirstName}`
   }
 
-  private fullNameMLA = (firstName: string, lastName: string): string => {
+  private fullNameMLA = ( firstName: string, lastName: string ): string => {
     let formattedFirstName = ''
-    if (firstName.includes(' ')) {
-      const splitName = new RegExp(/(\w{1,})/, 'g')
-      firstName.match(splitName).forEach((word: string, index: number) => {
-        formattedFirstName = index === 0 ? word : `${formattedFirstName} ${word.substring(0, 1)}.`
-      })
+    if ( firstName.includes( ' ' ) ) {
+      const splitName = new RegExp( /(\w{1,})/, 'g' )
+      firstName.match( splitName ).forEach( ( word: string, index: number ) => {
+        formattedFirstName = index === 0 ? word : `${formattedFirstName} ${word.substring( 0, 1 )}.`
+      } )
     } else {
       formattedFirstName = firstName
     }
-    return `${lastName}, ${formattedFirstName}`
+    return `${lastName}${lastName ? ',' : ''} ${formattedFirstName}`
   }
 
-  private formatAuthors = (author: string): FormattedAuthor => {
-    const authorName = author.replace(new RegExp('"', 'g'), '\'')
-    const splitNames = new RegExp(/([A-Za-z ]{2,})/g)
-    const fullName = authorName.match(splitNames)
-
-    if (fullName.length > 1) {
-      const firstName = fullName[0].trim()
-      const lastName = fullName[1].trim()
+  private formatAuthors = ( author: string ): FormattedAuthor => {
+    const authorName = author.replace( new RegExp( '"', 'g' ), '\'' )
+    const splitNames = new RegExp( /([A-Za-z ]{2,})/g )
+    const fullName = authorName.match( splitNames ) ?? authorName
+    if ( fullName.length > 1 ) {
+      const firstName = fullName[ 0 ].trim()
+      const lastName = fullName[ 1 ] ? fullName[ 1 ].trim() : ''
       return {
-        apa: this.fullNameAPA(firstName, lastName),
+        apa: this.fullNameAPA( firstName, lastName ),
         firstName,
         lastName,
-        mla: this.fullNameMLA(firstName, lastName),
-        turabian: this.fullNameMLA(firstName, lastName),
+        mla: this.fullNameMLA( firstName, lastName ),
+        turabian: this.fullNameMLA( firstName, lastName ),
       }
     }
 
-    const firstName = fullName[0].split(' ')[0].trim()
-    const lastName = fullName[0].split(' ')[1].trim()
+    const firstName = fullName[ 0 ].split( ' ' )[ 0 ].trim()
+    const lastName = fullName[ 0 ].split( ' ' )[ 1 ] ? fullName[ 0 ].split( ' ' )[ 1 ].trim() : ''
     return {
-      apa: this.fullNameAPA(firstName, lastName),
+      apa: this.fullNameAPA( firstName, lastName ),
       firstName,
       lastName,
-      mla: this.fullNameMLA(firstName, lastName),
-      turabian: this.fullNameMLA(firstName, lastName),
+      mla: this.fullNameMLA( firstName, lastName ),
+      turabian: this.fullNameMLA( firstName, lastName ),
     }
   }
 
-  private normalizeAuthors = (authors: string):FormattedAuthor[] => {
+  private normalizeAuthors = ( authors: string ): FormattedAuthor[] => {
 
     const authorsList: FormattedAuthor[] = []
-    if (authors.includes(',')) {
-      const authorsRawList = authors.split(',')
-      authorsRawList.forEach((author: string) => {
-        authorsList.push(this.formatAuthors(author))
-      })
+    if ( authors.includes( ',' ) ) {
+      const authorsRawList = authors.split( ',' )
+      authorsRawList.forEach( ( author: string ) => {
+        authorsList.push( this.formatAuthors( author ) )
+      } )
       return authorsList
     }
 
-    authorsList.push(this.formatAuthors(authors))
+    authorsList.push( this.formatAuthors( authors ) )
 
     return authorsList
   }
 
-  private showAuthors = (authors: FormattedAuthor[]): string => {
+  private showAuthors = ( authors: FormattedAuthor[] ): string => {
 
     let authorsList = ''
-    authors.forEach((author, index: number) => {
-      authorsList = index === 0 ? author[this.format] : `${authorsList}, ${this.separator[this.format]} ${author[this.format]}`
-    })
+    authors.forEach( ( author, index: number ) => {
+      authorsList = index === 0 ? author[ this.format ] : `${authorsList}, ${this.separator[ this.format ]} ${author[ this.format ]}`
+    } )
     return authorsList
   }
 
   render () {
     return (
       <Host>
-        <mds-text typography={this.typography}>
-          { this.author && <span>{ this.showAuthors(this.normalizeAuthors(this.author)) }</span> }
-          { this.format === 'mla' &&
+        <mds-text typography={this.typography} variant={this.variant}>
+          {this.author && <span>{this.showAuthors( this.normalizeAuthors( this.author ) )}</span>}
+          {this.format === 'mla' &&
             <span>
-              { this.name && ' ' }
-              { this.name &&
+              {this.name && ' '}
+              {this.name &&
                 this.url !== null
-                ? <a class="link" href={this.url} target="_blank" rel={this.rel}><b><i>{ this.name }.</i></b></a>
-                : <b><i>{ this.name }.</i></b>
+                ? <a class="link" href={this.url} target="_blank" rel={this.rel}><b><i>{this.name}.</i></b></a>
+                : <b><i>{this.name}.</i></b>
               }
-              { this.location && <span> { this.location }{ this.publisher !== undefined ? ':' : '.' }</span> }
-              { this.publisher && <span> { this.publisher }{ this.date !== undefined ? ',' : '.' }</span> }
-              { this.date && <time dateTime={this.date}> { this.dateFormatMLA(this.date) }.</time> }
+              {this.location && <span> {this.location}{this.publisher !== undefined ? ':' : '.'}</span>}
+              {this.publisher && <span> {this.publisher}{this.date !== undefined ? ',' : '.'}</span>}
+              {this.date && <time dateTime={this.date}> {this.dateFormatMLA( this.date )}.</time>}
             </span>
           }
-          { this.format === 'apa' &&
+          {this.format === 'apa' &&
             <span>
-              { this.date && <time dateTime={this.date}> ({ this.dateFormatAPA(this.date) }).</time> }
-              { this.name && ' ' }
-              { this.name &&
+              {this.date && <time dateTime={this.date}> ({this.dateFormatAPA( this.date )}).</time>}
+              {this.name && ' '}
+              {this.name &&
                 this.url !== null
-                ? <a class="link" href={this.url} target="_blank" rel={this.rel}><b><i> { this.name }.</i></b></a>
-                : <b><i> { this.name }.</i></b>
+                ? <a class="link" href={this.url} target="_blank" rel={this.rel}><b><i> {this.name}.</i></b></a>
+                : <b><i> {this.name}.</i></b>
               }
-              { this.location && <span> { this.location }{ this.publisher !== undefined ? ':' : '.' }</span> }
-              { this.publisher && <span> { this.publisher }.</span> }
+              {this.location && <span> {this.location}{this.publisher !== undefined ? ':' : '.'}</span>}
+              {this.publisher && <span> {this.publisher}.</span>}
             </span>
           }
-          { this.format === 'turabian' &&
+          {this.format === 'turabian' &&
             <span>
-              { this.name && ' ' }
-              { this.name &&
+              {this.name && ' '}
+              {this.name &&
                 this.url !== null
-                ? <a class="link" href={this.url} target="_blank" rel={this.rel}><b><i> { this.name }.</i></b></a>
-                : <b><i> { this.name }.</i></b>
+                ? <a class="link" href={this.url} target="_blank" rel={this.rel}><b><i> {this.name}.</i></b></a>
+                : <b><i> {this.name}.</i></b>
               }
-              { this.location && <span> { this.location }{ this.publisher !== undefined ? ':' : ',' }</span> }
-              { this.publisher && <span> { this.publisher }{ this.date !== undefined ? ',' : '.' }</span> }
-              { this.date && <time dateTime={this.date}> { this.dateFormatMLA(this.date) }.</time> }
+              {this.location && <span> {this.location}{this.publisher !== undefined ? ':' : ','}</span>}
+              {this.publisher && <span> {this.publisher}{this.date !== undefined ? ',' : '.'}</span>}
+              {this.date && <time dateTime={this.date}> {this.dateFormatMLA( this.date )}.</time>}
             </span>
           }
         </mds-text>
