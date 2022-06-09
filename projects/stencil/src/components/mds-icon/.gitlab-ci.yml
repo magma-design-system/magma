@@ -16,3 +16,4 @@ icon-publish-test:
 icon-publish:
   extends: [.base-stencil-publish, .base-icon]
   dependencies: [base-stencil-build, icon-isolate]
+  needs: [base-stencil-build, icon-isolate, icon-publish-test]

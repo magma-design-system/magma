@@ -16,3 +16,4 @@ header-bar-publish-test:
 header-bar-publish:
   extends: [.base-stencil-publish, .base-header-bar]
   dependencies: [base-stencil-build, header-bar-isolate]
+  needs: [base-stencil-build, header-bar-isolate, header-bar-publish-test]

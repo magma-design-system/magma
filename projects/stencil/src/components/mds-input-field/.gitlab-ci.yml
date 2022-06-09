@@ -16,3 +16,4 @@ input-field-publish-test:
 input-field-publish:
   extends: [.base-stencil-publish, .base-input-field]
   dependencies: [base-stencil-build, input-field-isolate]
+  needs: [base-stencil-build, input-field-isolate, input-field-publish-test]

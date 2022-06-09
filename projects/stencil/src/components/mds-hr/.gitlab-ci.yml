@@ -16,3 +16,4 @@ hr-publish-test:
 hr-publish:
   extends: [.base-stencil-publish, .base-hr]
   dependencies: [base-stencil-build, hr-isolate]
+  needs: [base-stencil-build, hr-isolate, hr-publish-test]

@@ -16,3 +16,4 @@ img-publish-test:
 img-publish:
   extends: [.base-stencil-publish, .base-img]
   dependencies: [base-stencil-build, img-isolate]
+  needs: [base-stencil-build, img-isolate, img-publish-test]

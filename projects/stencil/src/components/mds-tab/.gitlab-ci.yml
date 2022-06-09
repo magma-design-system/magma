@@ -16,3 +16,4 @@ tab-publish-test:
 tab-publish:
   extends: [.base-stencil-publish, .base-tab]
   dependencies: [base-stencil-build, tab-isolate]
+  needs: [base-stencil-build, tab-isolate, tab-publish-test]

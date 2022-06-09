@@ -16,3 +16,4 @@ text-publish-test:
 text-publish:
   extends: [.base-stencil-publish, .base-text]
   dependencies: [base-stencil-build, text-isolate]
+  needs: [base-stencil-build, text-isolate, text-publish-test]

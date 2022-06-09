@@ -16,3 +16,4 @@ video-wall-publish-test:
 video-wall-publish:
   extends: [.base-stencil-publish, .base-video-wall]
   dependencies: [base-stencil-build, video-wall-isolate]
+  needs: [base-stencil-build, video-wall-isolate, video-wall-publish-test]

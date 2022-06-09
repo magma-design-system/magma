@@ -16,3 +16,4 @@ kpi-publish-test:
 kpi-publish:
   extends: [.base-stencil-publish, .base-kpi]
   dependencies: [base-stencil-build, kpi-isolate]
+  needs: [base-stencil-build, kpi-isolate, kpi-publish-test]

@@ -16,3 +16,4 @@ details-publish-test:
 details-publish:
   extends: [.base-stencil-publish, .base-details]
   dependencies: [base-stencil-build, details-isolate]
+  needs: [base-stencil-build, details-isolate, details-publish-test]

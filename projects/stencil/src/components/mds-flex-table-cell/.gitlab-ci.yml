@@ -16,3 +16,4 @@ flex-table-cell-publish-test:
 flex-table-cell-publish:
   extends: [.base-stencil-publish, .base-flex-table-cell]
   dependencies: [base-stencil-build, flex-table-cell-isolate]
+  needs: [base-stencil-build, flex-table-cell-isolate, flex-table-cell-publish-test]

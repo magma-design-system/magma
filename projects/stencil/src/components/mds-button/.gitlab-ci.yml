@@ -16,4 +16,4 @@ button-publish-test:
 button-publish:
   extends: [.base-stencil-publish, .base-button]
   dependencies: [base-stencil-build, button-isolate]
-
+  needs: [base-stencil-build, button-isolate, button-publish-test]

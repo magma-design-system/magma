@@ -16,3 +16,4 @@ tooltip-publish-test:
 tooltip-publish:
   extends: [.base-stencil-publish, .base-tooltip]
   dependencies: [base-stencil-build, tooltip-isolate]
+  needs: [base-stencil-build, tooltip-isolate, tooltip-publish-test]
