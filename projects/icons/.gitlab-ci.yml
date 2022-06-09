@@ -32,8 +32,8 @@ icons-publish-test:
 # ICONS PUBLISH
 icons-publish:
   extends: .base-publish
-  dependencies: [icons-build, icons-build]
-  needs: [icons-publish-test]
+  dependencies: [icons-build]
+  needs: [icons-publish-test, icons-build]
   stage: publish
   variables:
     BUILD_DIR: projects/icons
