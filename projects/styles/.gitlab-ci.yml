@@ -37,7 +37,7 @@ styles-publish-test:
 styles-publish:
   extends: .base-publish
   dependencies: [styles-build]
-  needs: [styles-publish-test]
+  needs: [styles-publish-test, styles-build]
   stage: publish
   variables:
     BUILD_DIR: projects/styles

@@ -31,7 +31,7 @@ identity-publish-test:
 identity-publish:
   extends: .base-publish
   dependencies: [identity-build]
-  needs: [identity-publish-test]
+  needs: [identity-publish-test, identity-build]
   stage: publish
   variables:
     BUILD_DIR: projects/identity

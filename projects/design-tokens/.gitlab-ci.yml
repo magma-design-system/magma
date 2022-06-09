@@ -35,7 +35,7 @@ design-tokens-publish-test:
 design-tokens-publish:
   extends: .base-publish
   dependencies: [design-tokens-build]
-  needs: [design-tokens-publish-test]
+  needs: [design-tokens-publish-test, design-tokens-build]
   stage: publish
   variables:
     BUILD_DIR: projects/design-tokens
