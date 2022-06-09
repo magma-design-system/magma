@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-var-requires */
 const { readdirSync } = require('fs')
 const path = require('path')
 
@@ -49,7 +50,6 @@ module.exports = {
     {
       rules: {
         'custom-scope-enum': (parsed, when, value) => {
-          // eslint-disable-next-line @typescript-eslint/no-var-requires
           const defaultScopeEnum = require('@commitlint/rules/lib/scope-enum')
 
           const r = defaultScopeEnum.scopeEnum(parsed, when, value)
