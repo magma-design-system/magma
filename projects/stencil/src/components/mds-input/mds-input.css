@@ -64,6 +64,7 @@ textarea.input {
     duration-300
     ease-out-expo;
 
+  --variant-color: 10, 80, 212;
   --ring: 0 0 0 3px rgba(var(--variant-color), 1);
   --shadow: 0 4px 6px -1px rgba(var(--variant-color), 0.1), 0 2px 4px -1px rgba(var(--variant-color), 0.06);
 
