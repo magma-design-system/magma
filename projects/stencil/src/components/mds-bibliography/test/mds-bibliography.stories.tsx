@@ -1,6 +1,6 @@
 import { h } from '@stencil/core'
 import { bibliographyFormatDictionary, bibliographyRelationshipDictionary } from '../meta/dictionary'
-import { typographySecondaryDictionary } from '@dictionary/typography'
+import { typographySecondaryDictionary, typographyVariationsDictionary } from '@dictionary/typography'
 
 export default {
   title: 'UI / Bibliography',
@@ -42,6 +42,11 @@ export default {
       type: { name: 'string' },
       description: 'Specifies the font typography of the element',
       options: typographySecondaryDictionary,
+      control: { type: 'select' },
+    },
+    variant: {
+      description: 'Specifies the variant for `typography`',
+      options: typographyVariationsDictionary,
       control: { type: 'select' },
     },
     url: {

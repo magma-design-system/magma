@@ -3,7 +3,7 @@ import clsx from 'clsx'
 import { InputSwitchType, InputSwitchSizeType } from './meta/types'
 import { inputSwitchIconVariant } from './meta/variants'
 import { InputValueType } from '../../types/input-value-type'
-import { TypographySecondaryType } from '../../types/typography'
+import { TypographyInfoType, TypographyReadType, TypographyVariants } from '../../types/typography'
 
 @Component({
   tag: 'mds-input-switch',
@@ -58,7 +58,12 @@ export class MdsInputSwitch {
   /**
    * Specifies the font typography of the element
    */
-  @Prop() readonly typography?: TypographySecondaryType = 'detail'
+  @Prop() readonly typography?: TypographyInfoType | TypographyReadType = 'detail'
+
+  /**
+   * Specifies the variant for `typography`
+   */
+  @Prop() readonly variant?: TypographyVariants
 
   /**
    * Specifies the value of the input element
@@ -116,16 +121,16 @@ export class MdsInputSwitch {
           </label>
           :
           <label htmlFor="field" class="label-icon">
-            <mds-text class="icon-typography-unchecked" tag="div" typography={this.typography}>
+            <mds-text class="icon-typography-unchecked" tag="div" typography={this.typography} variant={this.variant}>
               <mds-icon class="icon-unchecked" name={iconUnchecked}/>
             </mds-text>
-            <mds-text class="icon-typography-checked" tag="div" typography={this.typography}>
+            <mds-text class="icon-typography-checked" tag="div" typography={this.typography} variant={this.variant}>
               <mds-icon class="icon-checked" name={clsx(this.indeterminate ? iconIndeterminate : iconCheckedUser)}/>
             </mds-text>
           </label>
         }
         <label htmlFor="field" class="label-text">
-          <mds-text typography={this.typography}>
+          <mds-text typography={this.typography} variant={this.variant}>
             <slot></slot>
           </mds-text>
         </label>
