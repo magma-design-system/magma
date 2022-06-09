@@ -1,4 +1,157 @@
 @layer components {
+
+  /* New classes definition */
+  .text-title-h1 {
+    @apply
+      antialiased
+      font-extrabold
+      font-title
+      text-5xl
+      tracking-tight;
+  }
+
+  .text-title-h2 {
+    @apply
+      antialiased
+      font-extrabold
+      font-title
+      text-4xl
+      tracking-tight;
+  }
+
+  .text-title-h3 {
+    @apply
+      antialiased
+      font-extrabold
+      font-title
+      text-3xl
+      tracking-tight;
+  }
+
+  .text-title-h4 {
+    @apply
+      antialiased
+      font-bold
+      font-title
+      text-2xl
+      tracking-tight;
+  }
+
+  .text-title-h5 {
+    @apply
+      antialiased
+      font-bold
+      font-title
+      text-xl
+      tracking-tight;
+  }
+
+  .text-title-h6 {
+    @apply
+      antialiased
+      font-bold
+      font-title
+      text-base
+      tracking-tight;
+  }
+
+  .text-title-action {
+    @apply
+      antialiased
+      font-bold
+      font-title
+      leading-relaxed
+      text-sm;
+  }
+
+  .text-info-paragraph {
+    @apply
+      antialiased
+      font-info
+      leading-8
+      text-xl;
+  }
+
+  .text-info-detail {
+    @apply
+      antialiased
+      font-info
+      text-base;
+  }
+
+  .text-info-caption {
+    @apply
+      antialiased
+      font-info
+      text-sm;
+  }
+
+  .text-info-label {
+    @apply
+      antialiased
+      font-bold
+      font-info
+      text-xs
+      uppercase;
+  }
+
+  .text-info-option {
+    @apply
+      antialiased
+      font-bold
+      font-info
+      leading-none
+      text-xxs
+      tracking-tight
+      uppercase;
+  }
+
+  .text-info-tip {
+    @apply
+      antialiased
+      font-info
+      text-xs;
+  }
+
+  .text-read-paragraph {
+    @apply
+      antialiased
+      font-read
+      leading-8
+      text-xl;
+  }
+
+  .text-read-detail {
+    @apply
+      antialiased
+      font-read
+      text-base;
+  }
+
+  .text-read-caption {
+    @apply
+      antialiased
+      font-read
+      text-sm;
+  }
+
+  .text-mono-code {
+    @apply
+      antialiased
+      font-mono
+      leading-relaxed
+      text-base;
+  }
+
+  .text-mono-hack {
+    @apply
+      antialiased
+      font-mono
+      leading-relaxed
+      text-sm;
+  }
+
+  /* Old classes definition for backward compatibility */
   .text-primary-h1 {
     @apply
       antialiased
@@ -111,19 +264,4 @@
       text-xs;
   }
 
-  .text-mono-code {
-    @apply
-      antialiased
-      font-mono
-      leading-relaxed
-      text-base;
-  }
-
-  .text-mono-hack {
-    @apply
-      antialiased
-      font-mono
-      leading-relaxed
-      text-sm;
-  }
 }

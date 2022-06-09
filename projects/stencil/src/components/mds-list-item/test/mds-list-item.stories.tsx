@@ -1,4 +1,4 @@
-import { typographySecondaryDictionary } from '@dictionary/typography'
+import { typographySecondaryDictionary, typographyVariationsDictionary } from '@dictionary/typography'
 import { iconsDictionary } from '@dictionary/icon'
 import { h } from '@stencil/core'
 
@@ -15,6 +15,11 @@ export default {
       type: { name: 'string', required: false },
       description: 'Specifies the typography of the element',
       options: typographySecondaryDictionary,
+      control: { type: 'select' },
+    },
+    variant: {
+      description: 'Specifies the variant for `typography`',
+      options: typographyVariationsDictionary,
       control: { type: 'select' },
     },
   },
