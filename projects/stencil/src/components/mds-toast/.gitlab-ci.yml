@@ -16,3 +16,4 @@ toast-publish-test:
 toast-publish:
   extends: [.base-stencil-publish, .base-toast]
   dependencies: [base-stencil-build, toast-isolate]
+  needs: [base-stencil-build, toast-isolate, toast-publish-test]

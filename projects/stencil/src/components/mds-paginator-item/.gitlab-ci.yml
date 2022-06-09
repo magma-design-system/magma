@@ -16,3 +16,4 @@ paginator-item-publish-test:
 paginator-item-publish:
   extends: [.base-stencil-publish, .base-paginator-item]
   dependencies: [base-stencil-build, paginator-item-isolate]
+  needs: [base-stencil-build, paginator-item-isolate, paginator-item-publish-test]

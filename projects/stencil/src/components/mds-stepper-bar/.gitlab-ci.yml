@@ -16,4 +16,4 @@ stepper-bar-publish-test:
 stepper-bar-publish:
   extends: [.base-stencil-publish, .base-stepper-bar]
   dependencies: [base-stencil-build, stepper-bar-isolate]
-
+  needs: [base-stencil-build, stepper-bar-isolate, stepper-bar-publish-test]

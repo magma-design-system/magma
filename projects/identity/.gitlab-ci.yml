@@ -13,7 +13,6 @@ identity-build:
       changes:
         - projects/identity/**/*
 
-
 # IDENTITY PUBLISH TEST
 identity-publish-test:
   extends: .base-publish-test
@@ -26,16 +25,17 @@ identity-publish-test:
   rules:
     - if: $CI_PIPELINE_SOURCE == "merge_request_event" || $CI_COMMIT_BRANCH =~ /^(main|pipeline)$/
       changes:
-        - projects/identity/**/*
+        - projects/identity/package.json
 
 # IDENTITY PUBLISH
 identity-publish:
   extends: .base-publish
   dependencies: [identity-build]
+  needs: [identity-publish-test, identity-build]
   stage: publish
   variables:
     BUILD_DIR: projects/identity
   rules:
     - if: $CI_COMMIT_BRANCH == "main"
       changes:
-        - projects/identity/**/*
+        - projects/identity/package.json

@@ -16,3 +16,4 @@ table-body-publish-test:
 table-body-publish:
   extends: [.base-stencil-publish, .base-table-body]
   dependencies: [base-stencil-build, table-body-isolate]
+  needs: [base-stencil-build, table-body-isolate, table-body-publish-test]

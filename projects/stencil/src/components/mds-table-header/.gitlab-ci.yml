@@ -16,3 +16,4 @@ table-header-publish-test:
 table-header-publish:
   extends: [.base-stencil-publish, .base-table-header]
   dependencies: [base-stencil-build, table-header-isolate]
+  needs: [base-stencil-build, table-header-isolate, table-header-publish-test]

@@ -16,3 +16,4 @@ url-view-publish-test:
 url-view-publish:
   extends: [.base-stencil-publish, .base-url-view]
   dependencies: [base-stencil-build, url-view-isolate]
+  needs: [base-stencil-build, url-view-isolate, url-view-publish-test]

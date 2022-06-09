@@ -16,3 +16,4 @@ progress-publish-test:
 progress-publish:
   extends: [.base-stencil-publish, .base-progress]
   dependencies: [base-stencil-build, progress-isolate]
+  needs: [base-stencil-build, progress-isolate, progress-publish-test]

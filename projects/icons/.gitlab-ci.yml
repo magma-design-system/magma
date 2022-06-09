@@ -15,7 +15,6 @@ icons-build:
       changes:
         - projects/icons/**/*
 
-
 # ICONS PUBLISH TEST
 icons-publish-test:
   extends: .base-publish-test
@@ -28,16 +27,17 @@ icons-publish-test:
   rules:
     - if: $CI_PIPELINE_SOURCE == "merge_request_event" || $CI_COMMIT_BRANCH =~ /^(main|pipeline)$/
       changes:
-        - projects/icons/**/*
+        - projects/icons/package.json
 
 # ICONS PUBLISH
 icons-publish:
   extends: .base-publish
   dependencies: [icons-build]
+  needs: [icons-publish-test, icons-build]
   stage: publish
   variables:
     BUILD_DIR: projects/icons
   rules:
     - if: $CI_COMMIT_BRANCH == "main"
       changes:
-        - projects/icons/**/*
+        - projects/icons/package.json

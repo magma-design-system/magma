@@ -35,7 +35,10 @@ stages:
   before_script:
     - apt update && apt install jq -y
     - npm install -g --force nx yarn
-    - yarn install
+    - |
+      if [[ ! -d node_modules ]]; then
+        yarn install --frozen-lockfile --prefer-offline --force
+      fi
   cache:
     key:
       files:
@@ -79,9 +82,10 @@ stages:
     BUILD_DIR: to_be_extended
   script:
     - cd $BUILD_DIR
-    - cp $NPMRC_FILE .npmrc
-    - echo "_auth=$NODE_AUTH_TOKEN" >> .npmrc
-    - echo "//registry.npmjs.org/:_authToken=$NODE_AUTH_TOKEN" >> .npmrc
+    - npm config set engine-strict "true"
+    - npm config set always-auth "true"
+    - npm config set _auth $NPM_TOKEN
+    - npm config set //registry.npmjs.org/:_authToken $NPM_TOKEN
     - npm publish --access public
 
 include:

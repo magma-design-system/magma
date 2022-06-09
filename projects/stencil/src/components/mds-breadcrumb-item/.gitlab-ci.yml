@@ -16,3 +16,4 @@ breadcrumb-item-publish-test:
 breadcrumb-item-publish:
   extends: [.base-stencil-publish, .base-breadcrumb-item]
   dependencies: [base-stencil-build, breadcrumb-item-isolate]
+  needs: [base-stencil-build, breadcrumb-item-isolate, breadcrumb-item-publish-test]

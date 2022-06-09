@@ -48,8 +48,8 @@ const createPackage = async (componentName: string): Promise<void> => {
 
 const compileTemplateFile = async (componentName: string, fileName: string): Promise<void> => {
   const exists = !!( await stat(join(COMPONENTS_DIR, componentName, fileName))
-    .catch(error => {
-      throw Error(chalk.red(error))
+    .catch(() => {
+      return false
     })
   )
 

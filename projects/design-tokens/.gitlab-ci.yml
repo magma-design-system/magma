@@ -17,7 +17,6 @@ design-tokens-build:
       changes:
         - projects/design-tokens/**/*
 
-
 # DESIGN TOKENS PUBLISH TEST
 design-tokens-publish-test:
   extends: .base-publish-test
@@ -30,16 +29,17 @@ design-tokens-publish-test:
   rules:
     - if: $CI_PIPELINE_SOURCE == "merge_request_event" || $CI_COMMIT_BRANCH =~ /^(main|pipeline)$/
       changes:
-        - projects/design-tokens/**/*
+        - projects/design-tokens/package.json
 
 # DESIGN TOKENS PUBLISH
 design-tokens-publish:
   extends: .base-publish
   dependencies: [design-tokens-build]
+  needs: [design-tokens-publish-test, design-tokens-build]
   stage: publish
   variables:
     BUILD_DIR: projects/design-tokens
   rules:
     - if: $CI_COMMIT_BRANCH == "main"
       changes:
-        - projects/design-tokens/**/*
+        - projects/design-tokens/package.json
