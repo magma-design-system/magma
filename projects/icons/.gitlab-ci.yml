@@ -38,6 +38,6 @@ icons-publish:
   variables:
     BUILD_DIR: projects/icons
   rules:
-    - if: $CI_COMMIT_BRANCH =~ /^(main|pipeline)$/
+    - if: $CI_COMMIT_BRANCH == "main"
       changes:
         - projects/icons/package.json

@@ -36,6 +36,6 @@ identity-publish:
   variables:
     BUILD_DIR: projects/identity
   rules:
-    - if: $CI_COMMIT_BRANCH =~ /^(main|pipeline)$/
+    - if: $CI_COMMIT_BRANCH == "main"
       changes:
         - projects/identity/package.json
