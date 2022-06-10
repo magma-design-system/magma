@@ -100,7 +100,10 @@
   }
 
   .track-total {
-    @apply flex w-full overflow-hidden;
+    @apply
+      flex
+      overflow-hidden
+      w-full;
 
     background-color: var(--track-background);
     border-radius: var(--track-size);

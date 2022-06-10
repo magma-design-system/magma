@@ -5,13 +5,17 @@
 @tailwind utilities;
 
 /**
-  * @prop --background: Sets the background-color of the component
-  */
+* @prop --background: Sets the background-color of the component
+* @prop --shadow: Sets the box-shadow of the component‘s input
+*/
 
 :host {
 
-  --background: theme('colors.adjust-tone');
   --icon-color: theme('colors.adjust-tone');
+  --background: theme('colors.adjust-tone');
+  --variant-color: 0, 0, 0;
+  --ring: 0 0 0 1px rgba(var(--variant-color), 0.1);
+  --shadow: 0 1px 3px 0 rgba(var(--variant-color), 0.1), 0 1px 2px 0 rgba(var(--variant-color), 0.06);
 
   @apply
     flex
@@ -31,11 +35,7 @@
     overflow-hidden
     px-4
     py-3
-    ring-1
-    ring-adjust-tone-02
-    ring-opacity-10
     rounded-lg
-    shadow
     text-adjust-tone-02
     text-secondary-detail
     transition-cosmetic
@@ -43,6 +43,7 @@
     w-full;
 
   background-color: var(--background);
+  box-shadow: var(--ring), var(--shadow);
 }
 
 textarea.input:active {
@@ -59,13 +60,15 @@ textarea.input {
 .input:focus {
   @apply
     outline-none
-    shadow-md
-    shadow-brand-maggioli-04/50
-    ring
-    ring-brand-maggioli-04
     transition-cosmetic
     duration-300
     ease-out-expo;
+
+  --variant-color: 10, 80, 212;
+  --ring: 0 0 0 3px rgba(var(--variant-color), 1);
+  --shadow: 0 4px 6px -1px rgba(var(--variant-color), 0.1), 0 2px 4px -1px rgba(var(--variant-color), 0.06);
+
+  box-shadow: var(--ring), var(--shadow);
 }
 
 .input:disabled {

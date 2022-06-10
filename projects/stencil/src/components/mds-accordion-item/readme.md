@@ -33,13 +33,11 @@
 
 ### Depends on
 
-- [mds-grid](../mds-grid)
 - [mds-text](../mds-text)
 
 ### Graph
 ```mermaid
 graph TD;
-  mds-accordion-item --> mds-grid
   mds-accordion-item --> mds-text
   style mds-accordion-item fill:#f9f,stroke:#333,stroke-width:4px
 ```
