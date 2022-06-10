@@ -16,3 +16,4 @@ file-publish-test:
 file-publish:
   extends: [.base-stencil-publish, .base-file]
   dependencies: [base-stencil-build, file-isolate]
+  needs: [base-stencil-build, file-isolate, file-publish-test]

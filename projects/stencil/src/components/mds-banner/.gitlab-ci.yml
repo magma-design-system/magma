@@ -16,3 +16,4 @@ banner-publish-test:
 banner-publish:
   extends: [.base-stencil-publish, .base-banner]
   dependencies: [base-stencil-build, banner-isolate]
+  needs: [base-stencil-build, banner-isolate, banner-publish-test]

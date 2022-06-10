@@ -16,3 +16,4 @@ card-publish-test:
 card-publish:
   extends: [.base-stencil-publish, .base-card]
   dependencies: [base-stencil-build, card-isolate]
+  needs: [base-stencil-build, card-isolate, card-publish-test]

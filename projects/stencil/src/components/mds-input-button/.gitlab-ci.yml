@@ -16,3 +16,4 @@ input-button-publish-test:
 input-button-publish:
   extends: [.base-stencil-publish, .base-input-button]
   dependencies: [base-stencil-build, input-button-isolate]
+  needs: [base-stencil-build, input-button-isolate, input-button-publish-test]

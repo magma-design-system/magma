@@ -16,3 +16,4 @@ bibliography-publish-test:
 bibliography-publish:
   extends: [.base-stencil-publish, .base-bibliography]
   dependencies: [base-stencil-build, bibliography-isolate]
+  needs: [base-stencil-build, bibliography-isolate, bibliography-publish-test]

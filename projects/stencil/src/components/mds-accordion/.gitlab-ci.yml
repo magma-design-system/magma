@@ -16,3 +16,4 @@ accordion-publish-test:
 accordion-publish:
   extends: [.base-stencil-publish, .base-accordion]
   dependencies: [base-stencil-build, accordion-isolate]
+  needs: [base-stencil-build, accordion-isolate, accordion-publish-test]

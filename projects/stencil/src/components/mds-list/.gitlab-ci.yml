@@ -16,3 +16,4 @@ list-publish-test:
 list-publish:
   extends: [.base-stencil-publish, .base-list]
   dependencies: [base-stencil-build, list-isolate]
+  needs: [base-stencil-build, list-isolate, list-publish-test]

@@ -20,6 +20,7 @@
     "clean": "npx ts-node --skipProject ./scripts/clean.ts",
     "lint": "npm run lint.ts && npm run lint.css",
     "generate": "stencil generate",
+    "gitlab-ci-yml-regenerate": "npx ts-node --skipProject ./scripts/gitlab-ci-yml-regenerate.ts",
     "lint.css": "stylelint --config ./.stylelintrc.json 'src/**/*.css'",
     "lint.ts": "eslint --config ./.eslintrc.json src/**/*.{ts,tsx}",
     "publish.isolate.all": "npx ts-node --skipProject ./scripts/isolate-all.ts",

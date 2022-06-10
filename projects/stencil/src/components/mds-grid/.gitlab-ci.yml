@@ -16,3 +16,4 @@ grid-publish-test:
 grid-publish:
   extends: [.base-stencil-publish, .base-grid]
   dependencies: [base-stencil-build, grid-isolate]
+  needs: [base-stencil-build, grid-isolate, grid-publish-test]
