@@ -37,10 +37,8 @@
   ],
   "read": [
     "Merryweather",
-    "'Times'",
+    "Times",
     "'Times New Roman'",
-    "'Noto Serif'",
-    "'FreeSerif'",
     "serif"
   ],
   "mono": [
