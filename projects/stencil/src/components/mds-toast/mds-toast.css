@@ -10,9 +10,9 @@
 
 :host {
 
-  --color: theme('colors.adjust-tone');
-  --icon-color: theme('colors.adjust-tone');
-  --background: theme('colors.adjust-tone-02');
+  --color: theme('colors.tone-neutral');
+  --icon-color: theme('colors.tone-neutral');
+  --background: theme('colors.tone-neutral-02');
   --shadow: theme('boxShadow.xl');
 
   @apply
