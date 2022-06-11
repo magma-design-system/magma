@@ -10,7 +10,7 @@
     table-cell
     transition-colors;
 
-  background-color: var(--background, theme('colors.adjust-tone'));
+  background-color: var(--background, theme('colors.tone-neutral'));
   border-top: var(--border-top, 0);
   padding: var(--cell-padding, 0);
 }
