@@ -74,6 +74,9 @@ Set the path to the directory of svg files
 
 Type: `Promise<void>`
 
+
+
+
 ## Dependencies
 
 ### Used by
