@@ -37,10 +37,10 @@
   },
   "dependencies": {
     "@maggioli-design-system/design-tokens": "^7.0.0",
-    "@maggioli-design-system/icons": "^1.40.0",
-    "@maggioli-design-system/identity": "^1.9.1",
-    "@maggioli-design-system/styles": "^6.5.3",
-    "@stencil/core": "^2.15.2",
+    "@maggioli-design-system/icons": "^1.43.1",
+    "@maggioli-design-system/identity": "^1.10.1",
+    "@maggioli-design-system/styles": "^7.0.0",
+    "@stencil/core": "^2.16.1",
     "idb-keyval": "6.1.0"
   },
   "license": "MIT",
