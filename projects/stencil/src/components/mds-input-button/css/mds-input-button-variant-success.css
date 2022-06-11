@@ -4,7 +4,7 @@
 :host ( [variant=success][tone=strong] ) {
 
   --background: theme('colors.status-success-05');
-  --color: theme('colors.adjust-tone');
+  --color: theme('colors.tone-neutral');
 }
 
 :host ( [variant=success]:hover ),
@@ -28,7 +28,7 @@
 :host ( [variant=success][tone=weak]:hover ) {
 
   --background: theme('colors.status-success-05');
-  --color: theme('colors.adjust-tone');
+  --color: theme('colors.tone-neutral');
 }
 
 :host ( [variant=success][tone=weak][active] ) {
