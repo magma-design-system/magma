@@ -14,9 +14,10 @@
 
 :host {
 
-  --description-color: theme('colors.adjust-tone-04');
+  --description-color: theme('colors.tone-neutral-04');
   --info-padding: theme('spacing.4');
-  --value-color: theme('colors.adjust-tone-02');
+  --value-color: theme('colors.tone-neutral-02');
+  --duration: 1s;
 
   @apply
     gap-0
@@ -24,7 +25,7 @@
     overflow-hidden
     rounded-2xl;
 
-  background-color: var(--background-color, theme('colors.adjust-tone'));
+  background-color: var(--background-color, theme('colors.tone-neutral'));
   box-shadow: var(--shadow, theme('boxShadow.lg'));
 }
 
@@ -49,6 +50,8 @@
   color: var(--value-color);
   counter-set: num var(--value);
   transition: --value 1s; /* stylelint-disable-line custom-property-no-missing-var-function */
+
+  /* transition: --value var(--duration); stylelint-disable-line custom-property-no-missing-var-function */
 }
 
 .value::after {
