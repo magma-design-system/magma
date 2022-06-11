@@ -10,8 +10,8 @@
 
 :host {
 
-  --background: theme('colors.adjust-tone');
-  --icon-color: theme('colors.adjust-tone');
+  --background: theme('colors.tone-neutral');
+  --icon-color: theme('colors.tone-neutral');
 
   @apply
     flex
@@ -32,11 +32,11 @@
     px-4
     py-3
     ring-1
-    ring-adjust-tone-02
+    ring-tone-neutral-02
     ring-opacity-10
     rounded-lg
     shadow
-    text-adjust-tone-02
+    text-tone-neutral-02
     text-secondary-detail
     transition-cosmetic
     min-h-12
@@ -69,13 +69,13 @@ textarea.input {
 }
 
 .input:disabled {
-  @apply bg-adjust-tone-10;
+  @apply bg-tone-neutral-10;
 }
 
 .input:disabled,
 .input:disabled::placeholder {
   @apply
-    text-adjust-tone-05;
+    text-tone-neutral-05;
 }
 
 .input.has-icon {
@@ -94,7 +94,7 @@ textarea.input {
     right-1
     rounded-full
     px-2
-    text-adjust-tone
+    text-tone-neutral
     text-center
     transition-cosmetic;
 
@@ -110,14 +110,14 @@ textarea.input {
 .required {
   @apply
     bg-status-error-05
-    text-adjust-tone
+    text-tone-neutral
     text-opacity-0
     p-0
     w-3;
 }
 
 .disabled {
-  @apply bg-adjust-tone-05;
+  @apply bg-tone-neutral-05;
 }
 
 .input:focus + .required {

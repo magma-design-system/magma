@@ -9,7 +9,7 @@
 :host ( [variant=info] ) .tip-variant {
   @apply
     bg-status-info-06
-    text-adjust-tone;
+    text-tone-neutral;
 }
 
 :host ( [variant=info] ) .icon {
@@ -25,7 +25,7 @@
 :host ( [variant=success] ) .tip-variant {
   @apply
     bg-status-success-06
-    text-adjust-tone;
+    text-tone-neutral;
 }
 
 :host ( [variant=success] ) .icon {
@@ -41,7 +41,7 @@
 :host ( [variant=warning] ) .tip-variant {
   @apply
     bg-status-warning-06
-    text-adjust-tone;
+    text-tone-neutral;
 }
 
 :host ( [variant=warning] ) .icon {
@@ -57,7 +57,7 @@
 :host ( [variant=error] ) .tip-variant {
   @apply
     bg-status-error-06
-    text-adjust-tone;
+    text-tone-neutral;
 }
 
 :host ( [variant=error] ) .icon {
