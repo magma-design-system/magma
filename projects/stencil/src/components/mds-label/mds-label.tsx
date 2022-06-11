@@ -5,13 +5,13 @@ import clsx from 'clsx'
 import miBaselineClose from '@icon/mi/baseline/close.svg'
 
 @Component({
-  tag: 'mds-tag',
-  styleUrl: 'mds-tag.css',
+  tag: 'mds-label',
+  styleUrl: 'mds-label.css',
   shadow: true,
 })
-export class MdsTag {
+export class MdsLabel {
 
-  @Element() private element: HTMLMdsTagElement
+  @Element() private element: HTMLMdsLabelElement
 
   /**
    * Sets the theme variant colors
@@ -47,7 +47,7 @@ export class MdsTag {
   /**
    * Emits when the label has to be cancelled
    */
-  @Event() clickClose: EventEmitter<HTMLMdsTagElement>
+  @Event() clickClose: EventEmitter<HTMLMdsLabelElement>
 
   render () {
     return (

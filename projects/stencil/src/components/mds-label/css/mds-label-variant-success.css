@@ -6,6 +6,8 @@
   --background: theme('colors.status-success-04');
   --color: theme('colors.status-success-10');
   --icon-color: theme('colors.status-success-10');
+  --selection-background: theme('colors.status-success-08');
+  --selection-color: theme('colors.status-success-02');
 }
 
 :host ( [variant=success][tone=weak] ) {
@@ -13,6 +15,8 @@
   --background: theme('colors.status-success-08');
   --color: theme('colors.status-success-02');
   --icon-color: theme('colors.status-success-02');
+  --selection-background: theme('colors.status-success-06');
+  --selection-color: theme('colors.status-success-10');
 }
 
 :host ( [variant=success][tone=quiet] ) {
@@ -20,4 +24,6 @@
   --background: theme('colors.status-success-09');
   --color: theme('colors.status-success-04');
   --icon-color: theme('colors.status-success-04');
+  --selection-background: theme('colors.status-success-05');
+  --selection-color: theme('colors.status-success-09');
 }

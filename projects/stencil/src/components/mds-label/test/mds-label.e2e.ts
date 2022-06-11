@@ -1,11 +1,11 @@
 import { newE2EPage } from '@stencil/core/testing'
 
-describe('mds-tag', () => {
+describe('mds-label', () => {
   it('renders', async () => {
     const page = await newE2EPage()
-    await page.setContent('<mds-tag></mds-tag>')
+    await page.setContent('<mds-label></mds-label>')
 
-    const element = await page.find('mds-tag')
+    const element = await page.find('mds-label')
     // expect(element).toHaveClass('hydrated')
     expect(true).toBe(true)
   })

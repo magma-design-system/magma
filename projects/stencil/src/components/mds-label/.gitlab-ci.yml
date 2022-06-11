@@ -1,0 +1,19 @@
+.base-label:
+  variables:
+    COMPONENT: mds-label
+
+# ISOLATE
+label-isolate:
+  extends: [.base-isolate, .base-label]
+  dependencies: [base-stencil-build]
+
+# TEST
+label-publish-test:
+  extends: [.base-stencil-publish-test, .base-label]
+  dependencies: [base-stencil-build, label-isolate]
+
+# PUBLISH
+label-publish:
+  extends: [.base-stencil-publish, .base-label]
+  dependencies: [base-stencil-build, label-isolate]
+  needs: [base-stencil-build, label-isolate, label-publish-test]

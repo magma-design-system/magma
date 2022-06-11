@@ -1,18 +1,18 @@
 import { newSpecPage } from '@stencil/core/testing'
-import { MdsTag } from '../mds-tag'
+import { MdsLabel } from '../mds-label'
 
-describe('mds-tag', () => {
+describe('mds-label', () => {
   it('renders', async () => {
     const page = await newSpecPage({
-      components: [MdsTag],
-      html: '<mds-tag></mds-tag>',
+      components: [MdsLabel],
+      html: '<mds-label></mds-label>',
     })
     // expect(page.root).toEqualHtml(`
-    //   <mds-tag>
+    //   <mds-label>
     //     <mock:shadow-root>
     //       <slot></slot>
     //     </mock:shadow-root>
-    //   </mds-tag>
+    //   </mds-label>
     // `)
     expect(true).toBe(true)
   })

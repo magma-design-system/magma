@@ -6,6 +6,8 @@
   --background: theme('colors.status-info-04');
   --color: theme('colors.status-info-10');
   --icon-color: theme('colors.status-info-10');
+  --selection-background: theme('colors.status-info-08');
+  --selection-color: theme('colors.status-info-02');
 }
 
 :host ( [variant=info][tone=weak] ) {
@@ -13,6 +15,8 @@
   --background: theme('colors.status-info-08');
   --color: theme('colors.status-info-02');
   --icon-color: theme('colors.status-info-02');
+  --selection-background: theme('colors.status-info-06');
+  --selection-color: theme('colors.status-info-10');
 }
 
 :host ( [variant=info][tone=quiet] ) {
@@ -20,4 +24,6 @@
   --background: theme('colors.status-info-09');
   --color: theme('colors.status-info-04');
   --icon-color: theme('colors.status-info-04');
+  --selection-background: theme('colors.status-info-05');
+  --selection-color: theme('colors.status-info-09');
 }

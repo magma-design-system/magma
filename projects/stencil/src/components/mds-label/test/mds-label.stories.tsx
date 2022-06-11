@@ -4,7 +4,7 @@ import { themeFullVariantDictionary, toneSimpleVariantDictionary } from '@dictio
 import { h } from '@stencil/core'
 
 export default {
-  title: 'UI / Tag',
+  title: 'UI / Label',
   argTypes: {
     deletable: {
       type: { name: 'boolean' },
@@ -35,7 +35,7 @@ export default {
   },
 }
 const Template = args =>
-  <mds-tag {...args}>Tag con un testo piuttosto lungo</mds-tag>
+  <mds-label {...args}>Label con un testo piuttosto lungo</mds-label>
 
 export const Default = Template.bind({})
 
@@ -57,8 +57,8 @@ onClickClose.args = {
 }
 
 export const tailwindRadius = args =>
-  <mds-tag class="rounded-3xl bg-label-lime-09 text-label-lime-02" {...args}>Limone</mds-tag>
+  <mds-label class="rounded-3xl bg-label-lime-09 text-label-lime-02" {...args}>Limone</mds-label>
 
 export const tailwindColor = args =>
-  <mds-tag class="bg-label-blue-09 text-label-blue-02" {...args}>Sale</mds-tag>
+  <mds-label class="bg-label-blue-09 text-label-blue-02" {...args}>Sale</mds-label>
 

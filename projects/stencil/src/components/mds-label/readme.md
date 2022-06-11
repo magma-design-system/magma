@@ -1,4 +1,4 @@
-# mds-tag
+# mds-label
 
 
 
@@ -18,9 +18,9 @@
 
 ## Events
 
-| Event        | Description                              | Type                             |
-| ------------ | ---------------------------------------- | -------------------------------- |
-| `clickClose` | Emits when the label has to be cancelled | `CustomEvent<HTMLMdsTagElement>` |
+| Event        | Description                              | Type                               |
+| ------------ | ---------------------------------------- | ---------------------------------- |
+| `clickClose` | Emits when the label has to be cancelled | `CustomEvent<HTMLMdsLabelElement>` |
 
 
 ## CSS Custom Properties
@@ -42,8 +42,8 @@
 ### Graph
 ```mermaid
 graph TD;
-  mds-tag --> mds-text
-  style mds-tag fill:#f9f,stroke:#333,stroke-width:4px
+  mds-label --> mds-text
+  style mds-label fill:#f9f,stroke:#333,stroke-width:4px
 ```
 
 ----------------------------------------------
