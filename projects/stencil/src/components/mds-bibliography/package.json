@@ -23,8 +23,9 @@
     "test": "stencil test --spec --e2e"
   },
   "dependencies": {
-    "@maggioli-design-system/mds-text": "^1.4.0",
-    "@stencil/core": "^2.15.2"
+    "@maggioli-design-system/mds-text": "^2.0.0",
+    "@maggioli-design-system/styles": "^7.0.0",
+    "@stencil/core": "^2.16.1"
 },
   "license": "MIT",
   "author": {
