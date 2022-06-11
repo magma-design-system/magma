@@ -18,20 +18,20 @@
 
 :host {
 
-  --color: theme('colors.adjust-tone-03');
+  --color: theme('colors.tone-neutral-03');
   --duaration: 250ms;
   --icon-background-checked: theme('colors.status-success-05');
   --icon-background-current: theme('colors.brand-maggioli-04');
-  --icon-background: var(--progress-background, theme('colors.adjust-tone-08'));
+  --icon-background: var(--progress-background, theme('colors.tone-neutral-08'));
   --icon-color-checked: theme('colors.status-success-10');
-  --icon-color-current: theme('colors.adjust-tone');
-  --icon-color: theme('colors.adjust-tone-04');
+  --icon-color-current: theme('colors.tone-neutral');
+  --icon-color: theme('colors.tone-neutral-04');
   --icon-ring-color: var(--icon-background-current);
-  --icon-ring-separator-color: theme('colors.adjust-tone');
+  --icon-ring-separator-color: theme('colors.tone-neutral');
   --icon-ring-separator-size: 0.375rem;
   --icon-ring-size: theme('height.1');
   --min-width: 180px;
-  --progress-background: theme('colors.adjust-tone-08');
+  --progress-background: theme('colors.tone-neutral-08');
   --progress-color: theme('colors.status-success-04');
   --progress-thickness: theme('height.2');
 
@@ -142,5 +142,5 @@
   @apply
     pointer-events-none
     rounded-full
-    text-adjust-tone-04;
+    text-tone-neutral-04;
 }
