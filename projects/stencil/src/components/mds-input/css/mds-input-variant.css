@@ -1,9 +1,8 @@
 @tailwind utilities;
 
-:host ( [variant=info] ) .input:focus {
-  @apply
-    ring-status-info-06
-    shadow-status-info-06/50;
+:host ( [variant=info] ) {
+
+  --variant-color: 30, 174, 221; /* status-info-06 */
 }
 
 :host ( [variant=info] ) .tip-variant {
@@ -16,10 +15,9 @@
   @apply text-status-info-06;
 }
 
-:host ( [variant=success] ) .input:focus {
-  @apply
-    ring-status-success-06
-    shadow-status-success-06/50;
+:host ( [variant=success] ) {
+
+  --variant-color: 32, 184, 111; /* status-success-06 */
 }
 
 :host ( [variant=success] ) .tip-variant {
@@ -32,10 +30,9 @@
   @apply text-status-success-06;
 }
 
-:host ( [variant=warning] ) .input:focus {
-  @apply
-    ring-status-warning-06
-    shadow-status-warning-06/50;
+:host ( [variant=warning] ) {
+
+  --variant-color: 204, 153, 0; /* status-warning-06 */
 }
 
 :host ( [variant=warning] ) .tip-variant {
@@ -48,10 +45,9 @@
   @apply text-status-warning-06;
 }
 
-:host ( [variant=error] ) .input:focus {
-  @apply
-    ring-status-error-06
-    shadow-status-error-06/50;
+:host ( [variant=error] ) {
+
+  --variant-color: 158, 21, 18; /* status-error-06 */
 }
 
 :host ( [variant=error] ) .tip-variant {

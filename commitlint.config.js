@@ -1,3 +1,14 @@
+/* eslint-disable @typescript-eslint/no-var-requires */
+const { readdirSync } = require('fs')
+const path = require('path')
+
+const getDirs = source =>
+  readdirSync(source, { withFileTypes: true })
+    .filter(dirent => dirent.isDirectory())
+    .map(dirent => dirent.name)
+
+const webComponents = getDirs(path.resolve(__dirname, 'projects/stencil/src/components'))
+
 module.exports = {
   extends: ['@commitlint/config-conventional'],
   rules: {
@@ -32,14 +43,13 @@ module.exports = {
         'stencil',
         'styles',
         'svg-icons',
-      ],
+      ].concat(webComponents),
     ],
   },
   plugins: [
     {
       rules: {
         'custom-scope-enum': (parsed, when, value) => {
-          // eslint-disable-next-line @typescript-eslint/no-var-requires
           const defaultScopeEnum = require('@commitlint/rules/lib/scope-enum')
 
           const r = defaultScopeEnum.scopeEnum(parsed, when, value)

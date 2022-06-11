@@ -70,9 +70,10 @@ Type: `Promise<void>`
 
 ## CSS Custom Properties
 
-| Name           | Description                                |
-| -------------- | ------------------------------------------ |
-| `--background` | Sets the background-color of the component |
+| Name           | Description                                  |
+| -------------- | -------------------------------------------- |
+| `--background` | Sets the background-color of the component   |
+| `--shadow`     | Sets the box-shadow of the component‘s input |
 
 
 ## Dependencies

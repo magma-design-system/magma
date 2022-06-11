@@ -96,7 +96,6 @@
 .icon-unchecked {
   @apply
     opacity-100
-    transform
     transition-cosmetic;
 
   fill: var(--icon-color-unchecked);
@@ -106,7 +105,6 @@
 
 .icon-checked {
   @apply
-    transform
     transition-cosmetic;
 
   fill: var(--icon-color-checked);
@@ -149,7 +147,6 @@
     cursor-pointer
     ease-linear
     rounded-full
-    shadow
     transition-cosmetic;
 
   animation-duration: calc(var(--duration) * 1.5);
@@ -159,6 +156,7 @@
   animation-play-state: paused;
   animation-timing-function: var(--animation-timing-function);
   background-color: var(--switch-toggle-color-checked);
+  box-shadow: theme('boxShadow.DEFAULT');
   height: var(--switch-toggle-size);
   width: var(--switch-toggle-size);
 }
@@ -173,13 +171,6 @@
 .field:checked + .label-icon .icon-checked {
   transform: scale(theme('scale.100'));
   transition-duration: calc(var(--duration) * 1.5);
-}
-
-.field:focus + .label-icon .icon-checked,
-.field:focus + .label-icon .icon-unchecked {
-  @apply
-    ring
-    rounded-md;
 }
 
 .field:disabled + .label-icon .icon-unchecked {
