@@ -8,7 +8,7 @@
 :host {
 
   --border-width: 2px;
-  --background: theme('colors.adjust-tone');
+  --background: theme('colors.tone-neutral');
 
   @apply grid;
 
