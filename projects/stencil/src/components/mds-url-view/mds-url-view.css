@@ -10,8 +10,8 @@
 
 :host {
 
-  --background: theme('colors.adjust-tone-10');
-  --color: theme('colors.adjust-tone-02');
+  --background: theme('colors.tone-neutral-10');
+  --color: theme('colors.tone-neutral-02');
   --radius: theme('borderRadius.md');
   --header-shadow: theme('boxShadow.sharp-sm');
   --shadow: theme('boxShadow.lg');
@@ -26,7 +26,7 @@
 
 .window {
   @apply
-    bg-adjust-tone-09
+    bg-tone-neutral-09
     flex
     flex-col
     flex-grow
