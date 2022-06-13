@@ -223,6 +223,8 @@ export class MdsDropdown {
   }
 
   private updatePosition = ():void => {
+    if (!this.caller) return
+
     const middleware = []
     const config: { padding?: number } = {}
 
@@ -364,6 +366,9 @@ export class MdsDropdown {
     document.addEventListener('click', this.handleCloseDropdown)
     this.arrowEl = this.host.shadowRoot.querySelector('.arrow')
     this.caller = document.getElementById(this.target)
+
+    if (!this.caller) return
+
     this.caller.addEventListener('click', this.callerOnClick.bind(this))
 
     this.backdropChanged(this.backdrop)
