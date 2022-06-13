@@ -23,7 +23,7 @@
     "test": "stencil test --spec --e2e"
   },
   "dependencies": {
-    "@maggioli-design-system/mds-accordion-item": "^2.1.0",
+    "@maggioli-design-system/mds-accordion-item": "^2.0.1",
     "@stencil/core": "^2.16.1"
   },
   "license": "MIT",
