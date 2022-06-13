@@ -1,0 +1,7 @@
+:root {
+
+  --backdrop: rgba(0, 0, 0, 0.1);
+  --backdrop-blur: 4px;
+  --overlay: rgba(0, 0, 0, 0.5);
+  --overlay-blur: 4px;
+}
