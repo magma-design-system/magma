@@ -15,6 +15,11 @@ export class MdsAccordion {
    */
   @Prop() multiple?: boolean
 
+  /**
+   * Specifies if an item could be closed by user
+   */
+  @Prop() readonly closable? = true
+
   private queryItems = ():NodeListOf<HTMLMdsAccordionItemElement> =>
     this.element.querySelectorAll<HTMLMdsAccordionItemElement>('mds-accordion-item')
 
@@ -37,7 +42,7 @@ export class MdsAccordion {
       })
       return
     }
-    items.forEach((item, key) => item.opened = `item-${key}` === event.detail.id && event.detail.opened)
+    items.forEach((item, key) => item.opened = `item-${key}` === event.detail.id && (event.detail.opened || !this.closable))
   }
 
   render () {

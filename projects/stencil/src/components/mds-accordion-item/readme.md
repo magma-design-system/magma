@@ -9,7 +9,6 @@
 
 | Property                   | Attribute     | Description                                                      | Type                                                       | Default     |
 | -------------------------- | ------------- | ---------------------------------------------------------------- | ---------------------------------------------------------- | ----------- |
-| `closable`                 | `closable`    | Specifies if an item could be closed by user                     | `boolean`                                                  | `true`      |
 | `description` _(required)_ | `description` | Specifies the title shown when the accordion is closed or opened | `string`                                                   | `undefined` |
 | `opened`                   | `opened`      | Specifies if the accordion item is opened or not                 | `boolean`                                                  | `undefined` |
 | `typography`               | `typography`  | Specifies the typography of the element                          | `"action" \| "h1" \| "h2" \| "h3" \| "h4" \| "h5" \| "h6"` | `'h5'`      |

@@ -27,14 +27,7 @@ export class MdsAccordionItem {
    */
   @Prop() readonly description!: string
 
-  /**
-   * Specifies if an item could be closed by user
-   */
-  @Prop() readonly closable? = true
-
   private toggle = () => {
-    if (this.opened && !this.closable) return
-
     this.opened = !this.opened
     this.openedEvent.emit({ id: this.element.id, opened: this.opened })
   }

@@ -31,12 +31,6 @@ Default.args = {
   description: 'Blipbug',
 }
 
-export const NotClosable = Template.bind({})
-NotClosable.args = {
-  description: 'Blipbug',
-  closable: false,
-}
-
 export const opened = Template.bind({})
 opened.args = {
   opened: true,
