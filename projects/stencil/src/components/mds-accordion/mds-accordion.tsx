@@ -1,4 +1,5 @@
 import { Component, Element, Host, h, Prop, Listen } from '@stencil/core'
+import { AccordionClickedEvent } from './meta/interface'
 
 @Component({
   tag: 'mds-accordion',
@@ -23,7 +24,7 @@ export class MdsAccordion {
   }
 
   @Listen('openedEvent')
-  changeEventHandler (event: CustomEvent<string>): void {
+  changeEventHandler (event: CustomEvent<AccordionClickedEvent>): void {
     const items = this.queryItems()
     if (this.multiple) {
       const list = []
@@ -36,7 +37,7 @@ export class MdsAccordion {
       })
       return
     }
-    items.forEach((item, key) => item.opened = `item-${key}` === event.detail)
+    items.forEach((item, key) => item.opened = `item-${key}` === event.detail.id && event.detail.opened)
   }
 
   render () {
