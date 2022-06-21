@@ -17,3 +17,8 @@ flex-table-body-publish:
   extends: [.base-stencil-publish, .base-flex-table-body]
   dependencies: [base-stencil-build, flex-table-body-isolate]
   needs: [base-stencil-build, flex-table-body-isolate, flex-table-body-publish-test]
+
+# INSTALL TEST
+flex-table-body-install-test:
+  extends: [.base-stencil-install-test, .base-flex-table-body]
+  dependencies: [flex-table-body-publish, flex-table-body-isolate]

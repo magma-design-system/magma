@@ -17,3 +17,8 @@ stepper-bar-item-publish:
   extends: [.base-stencil-publish, .base-stepper-bar-item]
   dependencies: [base-stencil-build, stepper-bar-item-isolate]
   needs: [base-stencil-build, stepper-bar-item-isolate, stepper-bar-item-publish-test]
+
+# INSTALL TEST
+stepper-bar-item-install-test:
+  extends: [.base-stencil-install-test, .base-stepper-bar-item]
+  dependencies: [stepper-bar-item-publish, stepper-bar-item-isolate]

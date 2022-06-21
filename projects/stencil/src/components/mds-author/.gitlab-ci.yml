@@ -17,3 +17,8 @@ author-publish:
   extends: [.base-stencil-publish, .base-author]
   dependencies: [base-stencil-build, author-isolate]
   needs: [base-stencil-build, author-isolate, author-publish-test]
+
+# INSTALL TEST
+author-install-test:
+  extends: [.base-stencil-install-test, .base-author]
+  dependencies: [author-publish, author-isolate]

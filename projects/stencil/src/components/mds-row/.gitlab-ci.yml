@@ -17,3 +17,8 @@ row-publish:
   extends: [.base-stencil-publish, .base-row]
   dependencies: [base-stencil-build, row-isolate]
   needs: [base-stencil-build, row-isolate, row-publish-test]
+
+# INSTALL TEST
+row-install-test:
+  extends: [.base-stencil-install-test, .base-row]
+  dependencies: [row-publish, row-isolate]

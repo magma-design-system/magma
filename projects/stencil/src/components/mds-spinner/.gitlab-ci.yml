@@ -17,3 +17,8 @@ spinner-publish:
   extends: [.base-stencil-publish, .base-spinner]
   dependencies: [base-stencil-build, spinner-isolate]
   needs: [base-stencil-build, spinner-isolate, spinner-publish-test]
+
+# INSTALL TEST
+spinner-install-test:
+  extends: [.base-stencil-install-test, .base-spinner]
+  dependencies: [spinner-publish, spinner-isolate]

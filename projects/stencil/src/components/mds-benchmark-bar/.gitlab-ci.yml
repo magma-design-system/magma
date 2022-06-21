@@ -17,3 +17,8 @@ benchmark-bar-publish:
   extends: [.base-stencil-publish, .base-benchmark-bar]
   dependencies: [base-stencil-build, benchmark-bar-isolate]
   needs: [base-stencil-build, benchmark-bar-isolate, benchmark-bar-publish-test]
+
+# INSTALL TEST
+benchmark-bar-install-test:
+  extends: [.base-stencil-install-test, .base-benchmark-bar]
+  dependencies: [benchmark-bar-publish, benchmark-bar-isolate]

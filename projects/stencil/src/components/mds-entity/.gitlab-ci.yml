@@ -17,3 +17,8 @@ entity-publish:
   extends: [.base-stencil-publish, .base-entity]
   dependencies: [base-stencil-build, entity-isolate]
   needs: [base-stencil-build, entity-isolate, entity-publish-test]
+
+# INSTALL TEST
+entity-install-test:
+  extends: [.base-stencil-install-test, .base-entity]
+  dependencies: [entity-publish, entity-isolate]

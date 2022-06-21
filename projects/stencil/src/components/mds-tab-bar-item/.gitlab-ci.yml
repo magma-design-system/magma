@@ -17,3 +17,8 @@ tab-bar-item-publish:
   extends: [.base-stencil-publish, .base-tab-bar-item]
   dependencies: [base-stencil-build, tab-bar-item-isolate]
   needs: [base-stencil-build, tab-bar-item-isolate, tab-bar-item-publish-test]
+
+# INSTALL TEST
+tab-bar-item-install-test:
+  extends: [.base-stencil-install-test, .base-tab-bar-item]
+  dependencies: [tab-bar-item-publish, tab-bar-item-isolate]
