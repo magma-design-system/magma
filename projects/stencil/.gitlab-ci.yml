@@ -108,7 +108,7 @@ stencil-test:
 
 # BASE STENCIL PUBLISH TEST
 .base-stencil-install-test:
-  extends: .base-publish-test
+  extends: .base-install-test
   variables:
     BUILD_DIR: projects/stencil/.build/$COMPONENT
     PACK_NAME: maggioli-design-system-${COMPONENT}-*.tgz

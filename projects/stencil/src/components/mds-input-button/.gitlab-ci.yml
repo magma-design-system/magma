@@ -22,3 +22,4 @@ input-button-publish:
 input-button-install-test:
   extends: [.base-stencil-install-test, .base-input-button]
   dependencies: [input-button-publish, input-button-isolate]
+

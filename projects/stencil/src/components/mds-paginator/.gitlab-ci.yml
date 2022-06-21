@@ -22,3 +22,4 @@ paginator-publish:
 paginator-install-test:
   extends: [.base-stencil-install-test, .base-paginator]
   dependencies: [paginator-publish, paginator-isolate]
+

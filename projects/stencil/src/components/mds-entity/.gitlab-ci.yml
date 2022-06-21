@@ -22,3 +22,4 @@ entity-publish:
 entity-install-test:
   extends: [.base-stencil-install-test, .base-entity]
   dependencies: [entity-publish, entity-isolate]
+

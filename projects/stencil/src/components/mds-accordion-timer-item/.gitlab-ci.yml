@@ -22,3 +22,4 @@ accordion-timer-item-publish:
 accordion-timer-item-install-test:
   extends: [.base-stencil-install-test, .base-accordion-timer-item]
   dependencies: [accordion-timer-item-publish, accordion-timer-item-isolate]
+

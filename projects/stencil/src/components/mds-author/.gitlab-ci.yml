@@ -22,3 +22,4 @@ author-publish:
 author-install-test:
   extends: [.base-stencil-install-test, .base-author]
   dependencies: [author-publish, author-isolate]
+

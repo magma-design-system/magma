@@ -22,3 +22,4 @@ input-publish:
 input-install-test:
   extends: [.base-stencil-install-test, .base-input]
   dependencies: [input-publish, input-isolate]
+

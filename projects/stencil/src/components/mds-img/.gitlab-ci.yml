@@ -22,3 +22,4 @@ img-publish:
 img-install-test:
   extends: [.base-stencil-install-test, .base-img]
   dependencies: [img-publish, img-isolate]
+

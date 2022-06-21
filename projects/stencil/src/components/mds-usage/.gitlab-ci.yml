@@ -22,3 +22,4 @@ usage-publish:
 usage-install-test:
   extends: [.base-stencil-install-test, .base-usage]
   dependencies: [usage-publish, usage-isolate]
+

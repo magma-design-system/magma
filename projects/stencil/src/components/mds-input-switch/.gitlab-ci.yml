@@ -22,3 +22,4 @@ input-switch-publish:
 input-switch-install-test:
   extends: [.base-stencil-install-test, .base-input-switch]
   dependencies: [input-switch-publish, input-switch-isolate]
+

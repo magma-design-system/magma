@@ -22,3 +22,4 @@ form-publish:
 form-install-test:
   extends: [.base-stencil-install-test, .base-form]
   dependencies: [form-publish, form-isolate]
+

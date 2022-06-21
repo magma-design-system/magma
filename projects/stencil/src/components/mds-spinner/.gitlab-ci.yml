@@ -22,3 +22,4 @@ spinner-publish:
 spinner-install-test:
   extends: [.base-stencil-install-test, .base-spinner]
   dependencies: [spinner-publish, spinner-isolate]
+

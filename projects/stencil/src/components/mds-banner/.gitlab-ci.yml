@@ -22,3 +22,4 @@ banner-publish:
 banner-install-test:
   extends: [.base-stencil-install-test, .base-banner]
   dependencies: [banner-publish, banner-isolate]
+

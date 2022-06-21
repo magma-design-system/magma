@@ -22,3 +22,4 @@ benchmark-bar-publish:
 benchmark-bar-install-test:
   extends: [.base-stencil-install-test, .base-benchmark-bar]
   dependencies: [benchmark-bar-publish, benchmark-bar-isolate]
+

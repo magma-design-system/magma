@@ -22,3 +22,4 @@ header-publish:
 header-install-test:
   extends: [.base-stencil-install-test, .base-header]
   dependencies: [header-publish, header-isolate]
+

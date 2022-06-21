@@ -22,3 +22,4 @@ accordion-item-publish:
 accordion-item-install-test:
   extends: [.base-stencil-install-test, .base-accordion-item]
   dependencies: [accordion-item-publish, accordion-item-isolate]
+

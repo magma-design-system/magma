@@ -22,3 +22,4 @@ text-publish:
 text-install-test:
   extends: [.base-stencil-install-test, .base-text]
   dependencies: [text-publish, text-isolate]
+

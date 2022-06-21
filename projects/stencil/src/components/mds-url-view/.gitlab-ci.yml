@@ -22,3 +22,4 @@ url-view-publish:
 url-view-install-test:
   extends: [.base-stencil-install-test, .base-url-view]
   dependencies: [url-view-publish, url-view-isolate]
+

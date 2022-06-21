@@ -22,3 +22,4 @@ list-item-publish:
 list-item-install-test:
   extends: [.base-stencil-install-test, .base-list-item]
   dependencies: [list-item-publish, list-item-isolate]
+

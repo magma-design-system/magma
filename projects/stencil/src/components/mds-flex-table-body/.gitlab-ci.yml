@@ -22,3 +22,4 @@ flex-table-body-publish:
 flex-table-body-install-test:
   extends: [.base-stencil-install-test, .base-flex-table-body]
   dependencies: [flex-table-body-publish, flex-table-body-isolate]
+

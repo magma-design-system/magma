@@ -22,3 +22,4 @@ quote-publish:
 quote-install-test:
   extends: [.base-stencil-install-test, .base-quote]
   dependencies: [quote-publish, quote-isolate]
+

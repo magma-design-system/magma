@@ -22,3 +22,4 @@ flex-table-publish:
 flex-table-install-test:
   extends: [.base-stencil-install-test, .base-flex-table]
   dependencies: [flex-table-publish, flex-table-isolate]
+

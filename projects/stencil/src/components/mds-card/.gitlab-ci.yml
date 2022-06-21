@@ -22,3 +22,4 @@ card-publish:
 card-install-test:
   extends: [.base-stencil-install-test, .base-card]
   dependencies: [card-publish, card-isolate]
+

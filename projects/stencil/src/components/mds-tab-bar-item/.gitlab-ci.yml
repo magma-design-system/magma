@@ -22,3 +22,4 @@ tab-bar-item-publish:
 tab-bar-item-install-test:
   extends: [.base-stencil-install-test, .base-tab-bar-item]
   dependencies: [tab-bar-item-publish, tab-bar-item-isolate]
+

@@ -22,3 +22,4 @@ stepper-bar-publish:
 stepper-bar-install-test:
   extends: [.base-stencil-install-test, .base-stepper-bar]
   dependencies: [stepper-bar-publish, stepper-bar-isolate]
+

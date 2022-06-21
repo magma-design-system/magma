@@ -22,3 +22,4 @@ input-select-publish:
 input-select-install-test:
   extends: [.base-stencil-install-test, .base-input-select]
   dependencies: [input-select-publish, input-select-isolate]
+

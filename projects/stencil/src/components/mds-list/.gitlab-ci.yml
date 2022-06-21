@@ -22,3 +22,4 @@ list-publish:
 list-install-test:
   extends: [.base-stencil-install-test, .base-list]
   dependencies: [list-publish, list-isolate]
+

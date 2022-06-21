@@ -22,3 +22,4 @@ bibliography-publish:
 bibliography-install-test:
   extends: [.base-stencil-install-test, .base-bibliography]
   dependencies: [bibliography-publish, bibliography-isolate]
+

@@ -22,3 +22,4 @@ input-field-publish:
 input-field-install-test:
   extends: [.base-stencil-install-test, .base-input-field]
   dependencies: [input-field-publish, input-field-isolate]
+

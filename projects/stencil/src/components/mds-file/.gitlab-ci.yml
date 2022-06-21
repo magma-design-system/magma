@@ -22,3 +22,4 @@ file-publish:
 file-install-test:
   extends: [.base-stencil-install-test, .base-file]
   dependencies: [file-publish, file-isolate]
+

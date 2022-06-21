@@ -22,3 +22,4 @@
 {{ componentName }}-install-test:
   extends: [.base-stencil-install-test, .base-{{ componentName }}]
   dependencies: [{{ componentName }}-publish, {{ componentName }}-isolate]
+
