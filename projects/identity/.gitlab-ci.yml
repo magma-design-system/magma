@@ -21,7 +21,6 @@ identity-publish-test:
   variables:
     BUILD_DIR: projects/identity
     COMPONENT: identity
-    PACK_NAME: maggioli-design-system-identity-*.tgz
   rules:
     - if: $CI_PIPELINE_SOURCE == "merge_request_event" || $CI_COMMIT_BRANCH =~ /^(main|pipeline)$/
       changes:
@@ -35,6 +34,18 @@ identity-publish:
   stage: publish
   variables:
     BUILD_DIR: projects/identity
+  rules:
+    - if: $CI_COMMIT_BRANCH == "main"
+      changes:
+        - projects/identity/package.json
+
+# IDENTITY INSTALL TEST
+identity-install-test:
+  extends: .base-install-test
+  dependencies: [identity-build, identity-publish]
+  variables:
+    BUILD_DIR: projects/identity
+    PACK_NAME: maggioli-design-system-identity-*.tgz
   rules:
     - if: $CI_COMMIT_BRANCH == "main"
       changes:

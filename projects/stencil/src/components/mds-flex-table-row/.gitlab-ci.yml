@@ -17,3 +17,9 @@ flex-table-row-publish:
   extends: [.base-stencil-publish, .base-flex-table-row]
   dependencies: [base-stencil-build, flex-table-row-isolate]
   needs: [base-stencil-build, flex-table-row-isolate, flex-table-row-publish-test]
+
+# INSTALL TEST
+flex-table-row-install-test:
+  extends: [.base-stencil-install-test, .base-flex-table-row]
+  dependencies: [flex-table-row-publish, flex-table-row-isolate]
+
