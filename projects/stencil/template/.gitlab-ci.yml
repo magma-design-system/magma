@@ -17,3 +17,8 @@
   extends: [.base-stencil-publish, .base-{{ componentName }}]
   dependencies: [base-stencil-build, {{ componentName }}-isolate]
   needs: [base-stencil-build, {{ componentName }}-isolate, {{ componentName }}-publish-test]
+
+# INSTALL TEST
+{{ componentName }}-install-test:
+  extends: [.base-stencil-install-test, .base-{{ componentName }}]
+  dependencies: [{{ componentName }}-publish, {{ componentName }}-isolate]
