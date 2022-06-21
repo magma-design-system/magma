@@ -17,3 +17,9 @@ accordion-timer-item-publish:
   extends: [.base-stencil-publish, .base-accordion-timer-item]
   dependencies: [base-stencil-build, accordion-timer-item-isolate]
   needs: [base-stencil-build, accordion-timer-item-isolate, accordion-timer-item-publish-test]
+
+# INSTALL TEST
+accordion-timer-item-install-test:
+  extends: [.base-stencil-install-test, .base-accordion-timer-item]
+  dependencies: [accordion-timer-item-publish, accordion-timer-item-isolate]
+

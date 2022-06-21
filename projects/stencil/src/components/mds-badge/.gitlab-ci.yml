@@ -17,3 +17,9 @@ badge-publish:
   extends: [.base-stencil-publish, .base-badge]
   dependencies: [base-stencil-build, badge-isolate]
   needs: [base-stencil-build, badge-isolate, badge-publish-test]
+
+# INSTALL TEST
+badge-install-test:
+  extends: [.base-stencil-install-test, .base-badge]
+  dependencies: [badge-publish, badge-isolate]
+
