@@ -1,24 +1,48 @@
 {
-    "primary": [
-      "Roboto",
-      "-apple-system",
-      "BlinkMacSystemFont",
-      "'San Francisco'",
-      "'Segoe UI'",
-      "'Helvetica Neue'",
-      "sans-serif"
-    ],
-    "secondary": [
-      "Karla",
-      "-apple-system",
-      "BlinkMacSystemFont",
-      "'San Francisco'",
-      "'Segoe UI'",
-      "'Helvetica Neue'",
-      "sans-serif"
-    ],
-    "mono": [
-      "'Roboto Mono'",
-      "monospace"
-    ]
+  "primary": [
+    "Roboto",
+    "-apple-system",
+    "BlinkMacSystemFont",
+    "'San Francisco'",
+    "'Segoe UI'",
+    "'Helvetica Neue'",
+    "sans-serif"
+  ],
+  "secondary": [
+    "Karla",
+    "-apple-system",
+    "BlinkMacSystemFont",
+    "'San Francisco'",
+    "'Segoe UI'",
+    "'Helvetica Neue'",
+    "sans-serif"
+  ],
+  "title": [
+    "Roboto",
+    "-apple-system",
+    "BlinkMacSystemFont",
+    "'San Francisco'",
+    "'Segoe UI'",
+    "'Helvetica Neue'",
+    "sans-serif"
+  ],
+  "info": [
+    "Karla",
+    "-apple-system",
+    "BlinkMacSystemFont",
+    "'San Francisco'",
+    "'Segoe UI'",
+    "'Helvetica Neue'",
+    "sans-serif"
+  ],
+  "read": [
+    "'Merriweather'",
+    "Times",
+    "'Times New Roman'",
+    "serif"
+  ],
+  "mono": [
+    "'Roboto Mono'",
+    "monospace"
+  ]
 }
