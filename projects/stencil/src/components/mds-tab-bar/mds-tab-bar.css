@@ -6,7 +6,7 @@
 
 :host {
 
-  --background: theme('colors.adjust-tone');
+  --background: theme('colors.tone-neutral');
   --shadow: theme('boxShadow.sharp-sm');
 
   @apply

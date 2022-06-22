@@ -19,14 +19,14 @@
 
 :host {
 
-  --background-disabled: theme('colors.adjust-tone-09');
-  --background-hover: theme('colors.adjust-tone-08');
+  --background-disabled: theme('colors.tone-neutral-09');
+  --background-hover: theme('colors.tone-neutral-08');
   --background-selected: theme('colors.brand-maggioli-03');
-  --background: theme('colors.adjust-tone-09');
-  --color-disabled: theme('colors.adjust-tone-06');
-  --color-hover: theme('colors.adjust-tone-02');
-  --color-selected: theme('colors.adjust-tone');
-  --color: theme('colors.adjust-tone-02');
+  --background: theme('colors.tone-neutral-09');
+  --color-disabled: theme('colors.tone-neutral-06');
+  --color-hover: theme('colors.tone-neutral-02');
+  --color-selected: theme('colors.tone-neutral');
+  --color: theme('colors.tone-neutral-02');
   --radius: 200px;
   --shadow-disabled: none;
   --shadow-hover: none;

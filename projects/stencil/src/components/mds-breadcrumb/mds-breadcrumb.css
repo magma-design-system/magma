@@ -14,14 +14,14 @@
 
 :host {
 
-  --arrow-back-color-hover: theme('colors.adjust-tone-02');
-  --arrow-back-color: theme('colors.adjust-tone-02');
-  --arrow-depth-color: theme('colors.adjust-tone-07');
+  --arrow-back-color-hover: theme('colors.tone-neutral-02');
+  --arrow-back-color: theme('colors.tone-neutral-02');
+  --arrow-depth-color: theme('colors.tone-neutral-07');
   --button-background-hover: theme('colors.label-blue-09');
   --button-background: transparent;
   --button-color-hover: theme('colors.brand-maggioli-04');
-  --button-color: theme('colors.adjust-tone-02');
-  --current-button-color: theme('colors.adjust-tone-05');
+  --button-color: theme('colors.tone-neutral-02');
+  --current-button-color: theme('colors.tone-neutral-05');
 
   @apply
     flex

@@ -12,5 +12,5 @@
 
   --background: transparent;
 
-  border-bottom: var(--border-width, theme('borderWidth.2')) solid var(--section-border-color, theme('colors.adjust-tone-07'));
+  border-bottom: var(--border-width, theme('borderWidth.2')) solid var(--section-border-color, theme('colors.tone-neutral-07'));
 }

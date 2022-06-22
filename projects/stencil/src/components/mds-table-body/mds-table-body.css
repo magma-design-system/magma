@@ -16,5 +16,5 @@
 }
 
 :host ( [interactive]:hover ) {
-  background-color: var(--background-hover, theme('colors.adjust-tone-10'));
+  background-color: var(--background-hover, theme('colors.tone-neutral-10'));
 }

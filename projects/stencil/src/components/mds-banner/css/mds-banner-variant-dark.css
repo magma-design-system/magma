@@ -3,30 +3,30 @@
 :host ( [variant=dark] ),
 :host ( [variant=dark][tone=strong] ) {
 
-  --background: theme('colors.adjust-tone-01');
-  --color: theme('colors.adjust-tone-08');
-  --icon-color: theme('colors.adjust-tone-07');
+  --background: theme('colors.tone-neutral-01');
+  --color: theme('colors.tone-neutral-08');
+  --icon-color: theme('colors.tone-neutral-07');
   --shadow: theme('boxShadow.sharp-lg');
 }
 
 :host ( [variant=dark][tone=weak] ) {
 
-  --background: theme('colors.adjust-tone-03');
-  --color: theme('colors.adjust-tone-09');
-  --icon-color: theme('colors.adjust-tone-07');
+  --background: theme('colors.tone-neutral-03');
+  --color: theme('colors.tone-neutral-09');
+  --icon-color: theme('colors.tone-neutral-07');
   --shadow: theme('boxShadow.sharp-sm');
 }
 
 :host ( [variant=dark][tone=ghost] ) {
 
-  --color: theme('colors.adjust-tone-05');
-  --icon-color: theme('colors.adjust-tone-04');
+  --color: theme('colors.tone-neutral-05');
+  --icon-color: theme('colors.tone-neutral-04');
   --shadow: none;
 }
 
 :host ( [variant=dark][tone=quiet] ) {
 
   --background: transparent;
-  --color: theme('colors.adjust-tone-04');
+  --color: theme('colors.tone-neutral-04');
   --shadow: none;
 }

@@ -1,123 +1,72 @@
 @tailwind utilities;
 
-/**
-  * @prop --arrow-size: Specifies the size of the arrow decoration
-  * @prop --background: Specifies the background-color of the component
-  * @prop --color: Specifies the text color of the component
-  * @prop --drop-shadow: Specifies the drop-shadow filter of the component (not box-shadow)
-  * @prop --max-width: Specifies the max-width of the component
-  * @prop --transition-intro: Specifies the transition animation effect of the component when is triggered
-  * @prop --transition-outro: Specifies the transition animation effect of the component when is closed
-  */
+/* :root {
+
+  --backdrop: theme('colors.label-amaranth-03');
+} */
 
 :host {
 
-  --arrow-size: theme('spacing[1.5]');
-  --drop-shadow: drop-shadow(theme('dropShadow.2xl'));
-  --max-width: 300px;
-  --transition-intro: theme('transitionTimingFunction.out-expo') theme('transitionDuration.300');
-  --transition-outro: theme('transitionTimingFunction.in-quint') theme('transitionDuration.300');
+  --background-arrow: var(--background);
+  --background: theme('colors.tone-neutral');
+  --drop-shadow: drop-shadow(0 10px 8px rgba(0, 0, 0, 0.04)) drop-shadow(0 4px 3px rgba(0, 0, 0, 0.1)) drop-shadow(0 0 1px rgba(0, 0, 0, 0.1));
+  --duration: 0.5s;
+  --ease: theme('transitionTimingFunction.out-expo');
+  --transform-from: scale(0.9) translateY(-3%);
+  --transform-to: scale(1) translate(0, 0);
 
   @apply
+    box-border
     fixed
+    gap-4
+    grid
     opacity-0
-    hidden
-    p-3
-    pointer-events-none;
+    p-4
+    pointer-events-none
+    rounded-lg;
 
+  background-color: var(--background);
   filter: var(--drop-shadow);
-  transition: visbility 0s, opacity var(--transition-outro) 0.1s, transform var(--transition-outro) 0.1s;
+  transform: var(--transform-from);
+  transition-duration: var(--duration);
+  transition-property: opacity, transform, transform-origin;
+  transition-timing-function: var(--ease);
 }
 
-:host ( .mds-tooltip--bottom ) {
-  transform: perspective(600px) rotateX(-20deg) translateY(30px);
-  transform-origin: 50% 0;
-}
-
-:host ( .mds-tooltip--top ) {
-  transform: perspective(600px) rotateX(20deg) translateY(-30px);
-  transform-origin: 50% 100%;
-}
-
-:host ( .mds-tooltip--right ) {
-  transform: perspective(600px) rotateY(-20deg) translateX(30px);
-  transform-origin: 0 50%;
-}
-
-:host ( .mds-tooltip--left ) {
-  transform: perspective(600px) rotateY(20deg) translateX(-30px);
-  transform-origin: 100% 50%;
-}
-
-:host ( .mds-tooltip--hidden.hydrated ) {
+:host ( [visible]:not([visible=false]) ) {
   @apply
-    flex
-    opacity-0;
+    opacity-100
+    pointer-events-auto;
 
-  visibility: hidden;
+  transform: var(--transform-to);
 }
 
-:host ( .mds-tooltip--visible ) {
-  @apply
-    flex
-    opacity-100;
-
-  transform: perspective(600px) rotateY(0) translateX(0);
-  transition: visbility 0s, opacity var(--transition-intro) 0.1s, transform var(--transition-intro) 0.1s;
-  visibility: visible;
-}
-
-.balloon {
-  @apply
-    px-4
-    py-2
-    relative;
-
-  background-color: var(--background, theme('colors.adjust-tone-01'));
-  border-radius: var(--radius, theme('borderRadius.DEFAULT'));
-  color: var(--color, theme('colors.adjust-tone'));
-  max-width: var(--max-width);
+:host ( [smooth]:not([smooth=false]) ) {
+  transition-property: bottom, left, opacity, right, top, transform, transform-origin;
 }
 
 .arrow {
   @apply
-    absolute
-    border-solid
-    border-transparent
-    h-0
-    w-0;
+    -top-[9px]
+    fixed
+    flex
+    pointer-events-none;
+
+  fill: var(--background-arrow);
+  transition-duration: var(--duration);
+  transition-property: bottom, left, right, top, transform, transform-origin;
 }
 
-.arrow--bottom {
-  border-color: transparent transparent var(--background, theme('colors.adjust-tone-01')) transparent;
-  border-width: 0 var(--arrow-size) var(--arrow-size) var(--arrow-size);
-  left: calc(50% - calc(var(--arrow-size) / 2));
-  top: 0;
-  transform: translate(0, -100%);
+:host ( [arrow]:not([arrow=false])[visible]:not([visible=false]) ) .arrow {
+  transition-timing-function: theme('transitionTimingFunction.out-quart');
 }
 
-.arrow--top {
-  border-color: var(--background, theme('colors.adjust-tone-01')) transparent transparent transparent;
-  border-width: var(--arrow-size) var(--arrow-size) 0 var(--arrow-size);
-  bottom: 0;
-  left: calc(50% - calc(var(--arrow-size) / 2));
-  transform: translate(0, 100%);
+:host ( [arrow]:not([arrow=false]):not([visible]):not([visible=true]) ) .arrow {
+  transition-timing-function: theme('transitionTimingFunction.out-expo');
 }
 
-.arrow--right {
-  border-color: transparent var(--background, theme('colors.adjust-tone-01')) transparent transparent;
-  border-width: calc(var(--arrow-size) / 1.5) var(--arrow-size) calc(var(--arrow-size) / 1.5) 0;
-  left: 0;
-  top: calc(50% - calc(var(--arrow-size) / 2));
-  transform: translate(-100%, 0);
+::slotted ( * ) {
+  @apply
+    relative
+    z-10;
 }
-
-.arrow--left {
-  border-color: transparent transparent transparent var(--background, theme('colors.adjust-tone-01'));
-  border-width: calc(var(--arrow-size) / 1.5) 0 calc(var(--arrow-size) / 1.5) var(--arrow-size);
-  right: 0;
-  top: calc(50% - calc(var(--arrow-size) / 2));
-  transform: translate(100%, 0);
-}
-
-@import './css/mds-tooltip-variants.css';

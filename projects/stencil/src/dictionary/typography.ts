@@ -45,10 +45,17 @@ const typographySmallerDictionary = [
   'tip',
 ]
 
+const typographyTooltipDictionary = [
+  'caption',
+  'detail',
+  'tip',
+]
+
 export {
   typographyDictionary,
   typographyMonoDictionary,
   typographyPrimaryDictionary,
   typographySecondaryDictionary,
   typographySmallerDictionary,
+  typographyTooltipDictionary,
 }

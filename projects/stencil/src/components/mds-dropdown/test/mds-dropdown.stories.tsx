@@ -66,9 +66,9 @@ const Template = ({ layout, ...args }) =>
   <div class={layout}>
     <mds-button id="my-dropdown">Show Fred</mds-button>
     <mds-dropdown target="my-dropdown" {...args}>
-      <mds-author class="text-adjust-tone-04">
+      <mds-author class="text-tone-neutral-04">
         <mds-avatar initials="fb" src="./fred-brooks-zoom.webp" slot="avatar" class="w-20 bg-brand-maggioli-06"/>
-        <mds-text typography="h6" class="text-adjust-tone-02">Fred Brooks</mds-text>
+        <mds-text typography="h6" class="text-tone-neutral-02">Fred Brooks</mds-text>
         <mds-text typography="caption">Software engineer</mds-text>
         <mds-text typography="caption">IT</mds-text>
       </mds-author>

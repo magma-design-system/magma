@@ -9,7 +9,7 @@
   @apply
     flex
     relative
-    text-adjust-tone-02
+    text-tone-neutral-02
     text-secondary-detail;
 
   --variant-color: 0, 0, 0;
@@ -20,7 +20,7 @@
 .input {
   @apply
     appearance-none
-    bg-adjust-tone
+    bg-tone-neutral
     border-none
     border-transparent
     box-border
@@ -35,7 +35,7 @@
     pr-12
     py-3
     rounded-lg
-    text-adjust-tone-05
+    text-tone-neutral-05
     text-secondary-detail
     transition-cosmetic
     w-full;
@@ -56,7 +56,7 @@
 }
 
 .input--selected {
-  @apply text-adjust-tone-02;
+  @apply text-tone-neutral-02;
 }
 
 .icon-container {
@@ -82,6 +82,6 @@
 .input:focus + .icon-container .icon,
 .input:hover + .icon-container .icon {
   @apply
-    bg-adjust-tone-09
+    bg-tone-neutral-09
     fill-brand-maggioli-02;
 }
