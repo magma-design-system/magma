@@ -12,13 +12,13 @@
   --shadow: theme('boxShadow.sharp');
 
   @apply
-    bg-adjust-tone
+    bg-tone-neutral
     cursor-pointer
     inline-flex
     items-stretch
     overflow-hidden
     rounded-md
-    text-adjust-tone-04
+    text-tone-neutral-04
     transition-shadow
     w-full;
 
@@ -95,6 +95,6 @@
 .description {
   @apply
     min-w-0
-    text-adjust-tone-05
+    text-tone-neutral-05
     truncate;
 }

@@ -10,7 +10,7 @@
 
 :host {
 
-  --background: theme('colors.adjust-tone-08');
+  --background: theme('colors.tone-neutral-08');
   --color: theme('colors.brand-maggioli-03');
   --duration: 500ms;
   --radius: theme('borderRadius.lg');

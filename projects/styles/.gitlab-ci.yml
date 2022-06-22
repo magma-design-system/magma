@@ -45,3 +45,15 @@ styles-publish:
     - if: $CI_COMMIT_BRANCH == "main"
       changes:
         - projects/styles/package.json
+
+# STYLES INSTALL TEST
+styles-install-test:
+  extends: .base-install-test
+  dependencies: [styles-build, styles-publish]
+  variables:
+    BUILD_DIR: projects/styles
+    PACK_NAME: maggioli-design-system-styles-*.tgz
+  rules:
+    - if: $CI_COMMIT_BRANCH == "main"
+      changes:
+        - projects/styles/package.json

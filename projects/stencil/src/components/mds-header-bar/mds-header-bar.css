@@ -9,12 +9,12 @@
 
 :host {
 
-  --background: theme('colors.adjust-tone');
-  --color: theme('colors.adjust-tone-02');
+  --background: theme('colors.tone-neutral');
+  --color: theme('colors.tone-neutral-02');
   --shadow: theme('boxShadow.sharp-md');
 
   @apply
-    bg-adjust-tone
+    bg-tone-neutral
     duration-500
     ease-out-expo
     fixed

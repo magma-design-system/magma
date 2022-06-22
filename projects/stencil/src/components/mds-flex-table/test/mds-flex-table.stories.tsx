@@ -40,7 +40,7 @@ const Template = args =>
     </mds-flex-table-body>
     {/* Template in mds-flex-table-footer è uno @State e non una @Prop? Sentire con Vitto */}
     <mds-flex-table-footer template="1fr">
-      <mds-flex-table-cell><mds-text typography="caption" class="text-adjust-tone-04">Lista utenti storici Nintendo</mds-text></mds-flex-table-cell>
+      <mds-flex-table-cell><mds-text typography="caption" class="text-tone-neutral-04">Lista utenti storici Nintendo</mds-text></mds-flex-table-cell>
     </mds-flex-table-footer>
   </mds-flex-table>
 

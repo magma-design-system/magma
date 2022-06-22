@@ -2,14 +2,14 @@
 
 :host ( [variant=light] ) {
 
-  --background: theme('colors.adjust-tone');
-  --color: theme('colors.adjust-tone-02');
+  --background: theme('colors.tone-neutral');
+  --color: theme('colors.tone-neutral-02');
   --drop-shadow: drop-shadow(theme('dropShadow.DEFAULT.0')) drop-shadow(theme('dropShadow.DEFAULT.1'));
 }
 
 :host ( [variant=dark] ) {
 
-  --background: theme('colors.adjust-tone-01');
-  --color: theme('colors.adjust-tone');
+  --background: theme('colors.tone-neutral-01');
+  --color: theme('colors.tone-neutral');
   --drop-shadow: drop-shadow(theme('dropShadow.2xl'));
 }

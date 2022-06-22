@@ -39,3 +39,8 @@ export type TypographySmallerType =
 export type TypographyMonoType =
   | 'code'
   | 'hack'
+
+export type TypographyTooltipType =
+  | 'caption'
+  | 'detail'
+  | 'tip'

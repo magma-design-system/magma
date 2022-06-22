@@ -17,3 +17,9 @@ input-select-publish:
   extends: [.base-stencil-publish, .base-input-select]
   dependencies: [base-stencil-build, input-select-isolate]
   needs: [base-stencil-build, input-select-isolate, input-select-publish-test]
+
+# INSTALL TEST
+input-select-install-test:
+  extends: [.base-stencil-install-test, .base-input-select]
+  dependencies: [input-select-publish, input-select-isolate]
+

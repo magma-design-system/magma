@@ -6,9 +6,9 @@ const fileFormatsVariant = {
     variant: 'amaranth',
   },
   attachment: {
-    color: 'fill-adjust-tone-04 text-adjust-tone-04',
+    color: 'fill-tone-neutral-04 text-tone-neutral-04',
     icon: 'mi/baseline/attach-file',
-    iconBackground: 'bg-adjust-tone-10',
+    iconBackground: 'bg-tone-neutral-10',
     variant: 'dark',
   },
   audio: {

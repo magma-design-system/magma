@@ -12,7 +12,7 @@
     border-b
     table-row;
 
-  border-bottom: var(--border-width, theme('borderWidth.2')) solid var(--border-color, theme('colors.adjust-tone-09'));
+  border-bottom: var(--border-width, theme('borderWidth.2')) solid var(--border-color, theme('colors.tone-neutral-09'));
 }
 
 :host ( :first-child ) {
@@ -30,5 +30,5 @@
 
 :host ( [interactive]:hover ) {
 
-  --background: var(--background-row-hover, theme('colors.adjust-tone'));
+  --background: var(--background-row-hover, theme('colors.tone-neutral'));
 }

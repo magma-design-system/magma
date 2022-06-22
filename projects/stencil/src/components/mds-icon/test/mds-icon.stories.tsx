@@ -27,3 +27,5 @@ ExternalSVG.args = {
   name: 'https://clayto.com/icons/font-awesome/solid/carrot.svg',
   class: 'fill-label-green-06',
 }
+
+export const NoIcon = Template.bind({})

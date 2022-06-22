@@ -17,3 +17,9 @@ input-switch-group-publish:
   extends: [.base-stencil-publish, .base-input-switch-group]
   dependencies: [base-stencil-build, input-switch-group-isolate]
   needs: [base-stencil-build, input-switch-group-isolate, input-switch-group-publish-test]
+
+# INSTALL TEST
+input-switch-group-install-test:
+  extends: [.base-stencil-install-test, .base-input-switch-group]
+  dependencies: [input-switch-group-publish, input-switch-group-isolate]
+

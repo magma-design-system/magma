@@ -62,7 +62,7 @@
 
 :host {
   @apply
-    bg-adjust-tone-01
+    bg-tone-neutral-01
     bg-opacity-0
     duration-700
     ease-in-out-expo
@@ -105,7 +105,7 @@
     cursor-pointer
     duration-500
     ease-in-out-quart
-    fill-adjust-tone-10
+    fill-tone-neutral-10
     h-9
     opacity-0
     origin-center
@@ -124,7 +124,7 @@
     h-full
     overflow-auto;
 
-  background-color: var(--window-background, theme('colors.adjust-tone'));
+  background-color: var(--window-background, theme('colors.tone-neutral'));
   box-shadow: var(--window-shadow, theme('boxShadow.2xl'));
   grid-template-rows: 1fr;
 
