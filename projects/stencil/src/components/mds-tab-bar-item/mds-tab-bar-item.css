@@ -11,7 +11,7 @@
 
   --background: transparent;
   --background-selected: var(--background);
-  --color: theme('colors.adjust-tone-06');
+  --color: theme('colors.tone-neutral-06');
   --color-selected: theme('colors.brand-maggioli-04');
 
   @apply

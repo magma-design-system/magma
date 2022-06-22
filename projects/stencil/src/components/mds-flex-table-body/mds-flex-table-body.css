@@ -8,7 +8,7 @@
     overflow-auto
     transition-colors;
 
-  background-color: var(--background, theme('colors.adjust-tone'));
+  background-color: var(--background, theme('colors.tone-neutral'));
   border-radius: var(--radius, 0);
   box-shadow: var(--shadow, none);
   scroll-snap-type: y mandatory;
@@ -16,5 +16,5 @@
 
 :host ( [interactive]:hover ) {
 
-  --background: var(--background-hover, theme('colors.adjust-tone-10'));
+  --background: var(--background-hover, theme('colors.tone-neutral-10'));
 }

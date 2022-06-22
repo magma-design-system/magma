@@ -1,0 +1,81 @@
+@tailwind components;
+@tailwind utilities;
+@import '../../tailwind/components.css';
+
+/**
+* @prop --background: Sets the background-color of the component
+* @prop --color: Sets the text color of the component
+* @prop --icon-color: Sets the color of the icon
+* @prop --radius: Sets the border radius of the component
+*/
+
+:host {
+
+  --background: theme('colors.label-yellow-09');
+  --color: theme('colors.label-yellow-02');
+  --icon-color: var(--color);
+  --radius: theme('borderRadius.md');
+  --selection-background: theme('colors.label-yellow-08');
+  --selection-color: theme('colors.label-yellow-02');
+
+  @apply
+    flex
+    items-stretch
+    overflow-hidden
+    pl-3;
+
+  background-color: var(--background);
+  border-radius: var(--radius);
+  color: var(--color);
+  fill: var(--icon-color);
+}
+
+:host::selection {
+  background-color: var(--selection-background);
+  color: var(--selection-color);
+}
+
+.text {
+  @apply
+    block
+    flex-grow
+    min-w-0
+    py-1
+    self-center;
+}
+
+.text:last-child {
+  @apply pr-3;
+}
+
+.close {
+  @apply
+    bg-tone-neutral
+    bg-opacity-30
+    cursor-pointer
+    flex
+    shrink-0
+    hover:bg-opacity-50
+    items-center
+    ml-1
+    px-1.5
+    text-inherit
+    transition-colors;
+}
+
+@import './css/mds-label-variant-amaranth.css';
+@import './css/mds-label-variant-aqua.css';
+@import './css/mds-label-variant-blue.css';
+@import './css/mds-label-variant-dark.css';
+@import './css/mds-label-variant-error.css';
+@import './css/mds-label-variant-green.css';
+@import './css/mds-label-variant-info.css';
+@import './css/mds-label-variant-light.css';
+@import './css/mds-label-variant-lime.css';
+@import './css/mds-label-variant-orange.css';
+@import './css/mds-label-variant-orchid.css';
+@import './css/mds-label-variant-sky.css';
+@import './css/mds-label-variant-success.css';
+@import './css/mds-label-variant-violet.css';
+@import './css/mds-label-variant-warning.css';
+@import './css/mds-label-variant-yellow.css';

@@ -1,0 +1,29 @@
+@tailwind utilities;
+
+:host ( [variant=lime] ),
+:host ( [variant=lime][tone=strong] ) {
+
+  --background: theme('colors.label-lime-04');
+  --color: theme('colors.label-lime-10');
+  --icon-color: theme('colors.label-lime-10');
+  --selection-background: theme('colors.label-lime-08');
+  --selection-color: theme('colors.label-lime-02');
+}
+
+:host ( [variant=lime][tone=weak] ) {
+
+  --background: theme('colors.label-lime-08');
+  --color: theme('colors.label-lime-02');
+  --icon-color: theme('colors.label-lime-02');
+  --selection-background: theme('colors.label-lime-06');
+  --selection-color: theme('colors.label-lime-10');
+}
+
+:host ( [variant=lime][tone=quiet] ) {
+
+  --background: theme('colors.label-lime-09');
+  --color: theme('colors.label-lime-04');
+  --icon-color: theme('colors.label-lime-04');
+  --selection-background: theme('colors.label-lime-05');
+  --selection-color: theme('colors.label-lime-09');
+}

@@ -1,6 +1,6 @@
 {
   "name": "@maggioli-design-system/mds-file",
-  "version": "2.0.0",
+  "version": "3.0.0",
   "description": "mds-file is a web-component from Maggioli Design System Magma, built with StencilJS, TypeScript, Storybook. It's based on the web-component standard and it's designed to be agnostic from the JavaScirpt framework you are using.",
   "main": "dist/index.cjs.js",
   "module": "dist/index.js",
@@ -22,9 +22,10 @@
     "prepublishOnly": "npm run build"
   },
   "dependencies": {
-    "@maggioli-design-system/mds-badge": "^1.1.2",
+    "@maggioli-design-system/mds-badge": "^2.0.0",
     "@maggioli-design-system/mds-icon": "^2.0.1",
-    "@stencil/core": "^2.15.2"
+    "@maggioli-design-system/styles": "^7.0.0",
+    "@stencil/core": "^2.16.1"
   },
   "license": "MIT",
   "author": {

@@ -11,7 +11,7 @@
 
   --color: inherit;
   --text-decoration-hover: inherit;
-  --text-decoration: theme('colors.adjust-tone-06');
+  --text-decoration: theme('colors.tone-neutral-06');
 }
 
 .link {

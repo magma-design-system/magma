@@ -17,3 +17,9 @@ accordion-publish:
   extends: [.base-stencil-publish, .base-accordion]
   dependencies: [base-stencil-build, accordion-isolate]
   needs: [base-stencil-build, accordion-isolate, accordion-publish-test]
+
+# INSTALL TEST
+accordion-install-test:
+  extends: [.base-stencil-install-test, .base-accordion]
+  needs: [accordion-publish]
+

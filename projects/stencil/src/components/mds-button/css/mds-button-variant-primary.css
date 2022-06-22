@@ -4,7 +4,7 @@
 :host ( [variant=primary][tone=strong] ) {
 
   --background: theme('colors.brand-maggioli-03');
-  --color: theme('colors.adjust-tone');
+  --color: theme('colors.tone-neutral');
 }
 
 :host ( [variant=primary]:hover ),
@@ -28,7 +28,7 @@
 :host ( [variant=primary][tone=weak]:hover ) {
 
   --background: theme('colors.brand-maggioli-05');
-  --color: theme('colors.adjust-tone');
+  --color: theme('colors.tone-neutral');
 }
 
 :host ( [variant=primary][tone=weak][active] ) {

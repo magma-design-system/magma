@@ -17,3 +17,9 @@ notification-publish:
   extends: [.base-stencil-publish, .base-notification]
   dependencies: [base-stencil-build, notification-isolate]
   needs: [base-stencil-build, notification-isolate, notification-publish-test]
+
+# INSTALL TEST
+notification-install-test:
+  extends: [.base-stencil-install-test, .base-notification]
+  needs: [notification-publish]
+
