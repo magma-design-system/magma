@@ -46,10 +46,9 @@ design-tokens-publish:
 # DESIGN INSTALL TEST
 design-tokens-install-test:
   extends: .base-install-test
-  dependencies: [design-tokens-build, design-tokens-publish]
+  needs: [design-tokens-publish]
   variables:
-    BUILD_DIR: projects/design-tokens
-    PACK_NAME: maggioli-design-system-design-tokens-*.tgz
+    COMPONENT: design-tokens
   rules:
     - if: $CI_COMMIT_BRANCH == "main"
       changes:

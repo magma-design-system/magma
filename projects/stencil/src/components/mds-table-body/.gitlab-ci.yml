@@ -21,5 +21,5 @@ table-body-publish:
 # INSTALL TEST
 table-body-install-test:
   extends: [.base-stencil-install-test, .base-table-body]
-  dependencies: [table-body-publish, table-body-isolate]
+  needs: [table-body-publish]
 

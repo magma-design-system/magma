@@ -21,5 +21,5 @@ details-publish:
 # INSTALL TEST
 details-install-test:
   extends: [.base-stencil-install-test, .base-details]
-  dependencies: [details-publish, details-isolate]
+  needs: [details-publish]
 

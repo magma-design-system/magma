@@ -21,5 +21,5 @@ table-header-publish:
 # INSTALL TEST
 table-header-install-test:
   extends: [.base-stencil-install-test, .base-table-header]
-  dependencies: [table-header-publish, table-header-isolate]
+  needs: [table-header-publish]
 

@@ -21,5 +21,5 @@ breadcrumb-item-publish:
 # INSTALL TEST
 breadcrumb-item-install-test:
   extends: [.base-stencil-install-test, .base-breadcrumb-item]
-  dependencies: [breadcrumb-item-publish, breadcrumb-item-isolate]
+  needs: [breadcrumb-item-publish]
 

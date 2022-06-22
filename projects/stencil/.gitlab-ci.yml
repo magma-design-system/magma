@@ -110,8 +110,7 @@ stencil-test:
 .base-stencil-install-test:
   extends: .base-install-test
   variables:
-    BUILD_DIR: projects/stencil/.build/$COMPONENT
-    PACK_NAME: maggioli-design-system-${COMPONENT}-*.tgz
+    COMPONENT: to_be_extended
   rules:
     - if: $CI_COMMIT_BRANCH == "main"
       changes:
