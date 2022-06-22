@@ -21,5 +21,5 @@ flex-table-footer-publish:
 # INSTALL TEST
 flex-table-footer-install-test:
   extends: [.base-stencil-install-test, .base-flex-table-footer]
-  dependencies: [flex-table-footer-publish, flex-table-footer-isolate]
+  needs: [flex-table-footer-publish]
 

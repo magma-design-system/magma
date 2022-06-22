@@ -58,6 +58,7 @@ class IconsSetController {
       del(`loader_${url}`)
       return false
     } catch (e) {
+      console.error('isCacheAvailable error', e)
       return false
     }
   }
@@ -71,7 +72,7 @@ class IconsSetController {
       }))
 
     } catch (e) {
-      console.error(e)
+      console.error('setCache error', e)
     }
   }
 
@@ -87,6 +88,7 @@ class IconsSetController {
       if (!response.ok) {
         throw Error(`Request for '${src}' returned ${response.status} (${response.statusText})`)
       }
+
       const body = await response.text()
       const bodyLower = body.toLowerCase().trim()
 
@@ -100,7 +102,7 @@ class IconsSetController {
 
       return body
     } catch (e) {
-      console.error(e)
+      console.error('fetchSvg error', e)
       return ''
     }
   }

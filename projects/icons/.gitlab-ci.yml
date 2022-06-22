@@ -41,3 +41,14 @@ icons-publish:
     - if: $CI_COMMIT_BRANCH == "main"
       changes:
         - projects/icons/package.json
+
+# ICONS INSTALL TEST
+icons-install-test:
+  extends: .base-install-test
+  needs: [icons-publish]
+  variables:
+    COMPONENT: icons
+  rules:
+    - if: $CI_COMMIT_BRANCH == "main"
+      changes:
+        - projects/icons/package.json

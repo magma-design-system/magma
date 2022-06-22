@@ -21,5 +21,5 @@ grid-publish:
 # INSTALL TEST
 grid-install-test:
   extends: [.base-stencil-install-test, .base-grid]
-  dependencies: [grid-publish, grid-isolate]
+  needs: [grid-publish]
 

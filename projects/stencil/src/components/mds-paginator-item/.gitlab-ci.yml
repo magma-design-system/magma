@@ -21,5 +21,5 @@ paginator-item-publish:
 # INSTALL TEST
 paginator-item-install-test:
   extends: [.base-stencil-install-test, .base-paginator-item]
-  dependencies: [paginator-item-publish, paginator-item-isolate]
+  needs: [paginator-item-publish]
 

@@ -49,10 +49,9 @@ styles-publish:
 # STYLES INSTALL TEST
 styles-install-test:
   extends: .base-install-test
-  dependencies: [styles-build, styles-publish]
+  needs: [styles-publish]
   variables:
-    BUILD_DIR: projects/styles
-    PACK_NAME: maggioli-design-system-styles-*.tgz
+    COMPONENT: styles
   rules:
     - if: $CI_COMMIT_BRANCH == "main"
       changes:

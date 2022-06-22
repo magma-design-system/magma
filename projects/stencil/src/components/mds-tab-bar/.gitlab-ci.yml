@@ -21,5 +21,5 @@ tab-bar-publish:
 # INSTALL TEST
 tab-bar-install-test:
   extends: [.base-stencil-install-test, .base-tab-bar]
-  dependencies: [tab-bar-publish, tab-bar-isolate]
+  needs: [tab-bar-publish]
 

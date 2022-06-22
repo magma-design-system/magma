@@ -79,11 +79,10 @@ stages:
   extends: .base-build
   stage: test:install
   variables:
-    PACK_NAME: to_be_extended
-    BUILD_DIR: to_be_extended
+    COMPONENT: to_be_extended
   script:
-    - cd $BUILD_DIR
-    - npm pack && npm install --prefix ./ $PACK_NAME
+    - export LATEST_PUBLISHED_V=`npm search @maggioli-design-system/${COMPONENT} --json | jq ".[0].version"`
+    - npm install "@maggioli-design-system/${COMPONENT}@${LATEST_PUBLISHED_V}"
 
 # BASE PUBLISH
 .base-publish:

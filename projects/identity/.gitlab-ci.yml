@@ -42,10 +42,9 @@ identity-publish:
 # IDENTITY INSTALL TEST
 identity-install-test:
   extends: .base-install-test
-  dependencies: [identity-build, identity-publish]
+  needs: [identity-publish]
   variables:
-    BUILD_DIR: projects/identity
-    PACK_NAME: maggioli-design-system-identity-*.tgz
+    COMPONENT: identity
   rules:
     - if: $CI_COMMIT_BRANCH == "main"
       changes:
