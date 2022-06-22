@@ -178,7 +178,7 @@ export class MdsDropdown {
       break
     case 'top':
       inset.left = arrow.x !== null ? `${arrow.x}px` : ''
-      inset.top = arrow.y !== null ? `${arrow.y}px` : ''
+      inset.top = null
       break
     default:
       break
