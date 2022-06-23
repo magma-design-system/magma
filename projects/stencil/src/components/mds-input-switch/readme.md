@@ -19,6 +19,7 @@
 | `type`          | `type`          | Specifies switch type: switch (default), checkbox and radio                                                        | `"checkbox" \| "radio" \| "switch"`                                    | `'switch'`  |
 | `typography`    | `typography`    | Specifies the font typography of the element                                                                       | `"caption" \| "detail" \| "label" \| "option" \| "paragraph" \| "tip"` | `'detail'`  |
 | `value`         | `value`         | Specifies the value of the input element                                                                           | `number \| string`                                                     | `''`        |
+| `variant`       | `variant`       | Specifies the variant for `typography`                                                                             | `"info" \| "mono" \| "primary" \| "read" \| "secondary" \| "title"`    | `undefined` |
 
 
 ## Events

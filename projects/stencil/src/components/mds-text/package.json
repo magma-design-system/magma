@@ -23,11 +23,15 @@
     "test": "stencil test --spec --e2e"
   },
   "dependencies": {
-    "@maggioli-design-system/styles": "^7.0.0",
+    "@maggioli-design-system/styles": "^7.1.0",
     "@stencil/core": "^2.16.1",
     "clsx": "^1.1.1",
     "typeface-karla": "^1.1.13",
+    "typeface-merriweather": "^1.1.13",
     "typeface-roboto": "^1.1.13"
+  },
+  "config": {
+    "publishOnLocalRegistry" : true
   },
   "license": "MIT",
   "author": {
@@ -50,6 +54,11 @@
       "name": "Vittorio Vittori",
       "email": "vittorio.vittori@maggioli.it",
       "role": "UX UI Designer"
+    },
+    {
+      "name": "Daniele Tardia",
+      "email": "daniele.tardia@hibo.it",
+      "role": "Senior Developer"
     }
   ]
 }

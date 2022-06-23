@@ -17,3 +17,9 @@ dropdown-publish:
   extends: [.base-stencil-publish, .base-dropdown]
   dependencies: [base-stencil-build, dropdown-isolate]
   needs: [base-stencil-build, dropdown-isolate, dropdown-publish-test]
+
+# INSTALL TEST
+dropdown-install-test:
+  extends: [.base-stencil-install-test, .base-dropdown]
+  needs: [dropdown-publish]
+

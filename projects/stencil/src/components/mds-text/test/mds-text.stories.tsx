@@ -1,4 +1,4 @@
-import { typographyDictionary } from '@dictionary/typography'
+import { typographyDictionary, typographyVariationsDictionary } from '@dictionary/typography'
 import { h } from '@stencil/core'
 import { tagsDictionary } from '../meta/dictionary'
 
@@ -13,6 +13,11 @@ export default {
     typography: {
       description: 'Specifies the font typography of the element',
       options: typographyDictionary,
+      control: { type: 'select' },
+    },
+    variant: {
+      description: 'Specifies the variant for `typography`',
+      options: typographyVariationsDictionary,
       control: { type: 'select' },
     },
   },
@@ -62,9 +67,21 @@ Paragraph.args = {
   typography: 'paragraph',
 }
 
+export const ParagraphReadVariant = Template.bind({})
+ParagraphReadVariant.args = {
+  typography: 'paragraph',
+  variant: 'read',
+}
+
 export const Detail = Template.bind({})
 Detail.args = {
   typography: 'detail',
+}
+
+export const DetailReadVariant = Template.bind({})
+DetailReadVariant.args = {
+  typography: 'detail',
+  variant: 'read',
 }
 
 export const Caption = Template.bind({})
@@ -72,9 +89,22 @@ Caption.args = {
   typography: 'caption',
 }
 
+export const CaptionReadVariant = Template.bind({})
+CaptionReadVariant.args = {
+  typography: 'caption',
+  variant: 'read',
+}
+
 export const Label = Template.bind({})
 Label.args = {
   typography: 'label',
+}
+
+// TODO: only for test purpose - remove it
+export const LabelReadVariant = Template.bind({})
+LabelReadVariant.args = {
+  typography: 'label',
+  variant: 'read',
 }
 
 export const Option = Template.bind({})

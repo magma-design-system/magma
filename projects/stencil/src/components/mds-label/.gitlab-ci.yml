@@ -17,3 +17,9 @@ label-publish:
   extends: [.base-stencil-publish, .base-label]
   dependencies: [base-stencil-build, label-isolate]
   needs: [base-stencil-build, label-isolate, label-publish-test]
+
+# INSTALL TEST
+label-install-test:
+  extends: [.base-stencil-install-test, .base-label]
+  needs: [label-publish]
+

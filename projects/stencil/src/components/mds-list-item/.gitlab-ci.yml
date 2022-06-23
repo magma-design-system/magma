@@ -17,3 +17,9 @@ list-item-publish:
   extends: [.base-stencil-publish, .base-list-item]
   dependencies: [base-stencil-build, list-item-isolate]
   needs: [base-stencil-build, list-item-isolate, list-item-publish-test]
+
+# INSTALL TEST
+list-item-install-test:
+  extends: [.base-stencil-install-test, .base-list-item]
+  needs: [list-item-publish]
+

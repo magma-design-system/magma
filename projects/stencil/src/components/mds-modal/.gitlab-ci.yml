@@ -17,3 +17,9 @@ modal-publish:
   extends: [.base-stencil-publish, .base-modal]
   dependencies: [base-stencil-build, modal-isolate]
   needs: [base-stencil-build, modal-isolate, modal-publish-test]
+
+# INSTALL TEST
+modal-install-test:
+  extends: [.base-stencil-install-test, .base-modal]
+  needs: [modal-publish]
+
