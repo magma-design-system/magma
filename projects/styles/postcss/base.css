@@ -12,7 +12,6 @@
   }
 */
 
-@import '../css/globals.css';
 @import 'tailwindcss/components';
 @import '../tailwind/typography.css';
 @import 'tailwindcss/utilities';
@@ -29,9 +28,9 @@ html {
 body {
   @apply
     antialiased
-    font-secondary
+    font-info
     text-adjust-tone-04
-    text-secondary-detail;
+    text-info-detail;
 
   -moz-osx-font-smoothing: grayscale;
   -webkit-font-smoothing: antialiased;
@@ -46,7 +45,7 @@ select {
   @apply
     antialiased
     font-medium
-    font-primary
+    font-title
     leading-relaxed;
 }
 
