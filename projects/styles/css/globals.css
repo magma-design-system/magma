@@ -1,7 +1,11 @@
 :root {
 
-  --backdrop: rgba(0, 0, 0, 0.1);
+  --backdrop: rgba(var(--backdrop-color) / var(--backdrop-opacity));
+  --backdrop-color: 0 0 0;
+  --backdrop-opacity: 0.1;
   --backdrop-blur: 4px;
-  --overlay: rgba(0, 0, 0, 0.5);
-  --overlay-blur: 4px;
+  --overlay: rgba(var(--overlay-color) / var(--overlay-opacity));
+  --overlay-color: var(--backdrop-color);
+  --overlay-opacity: 0.5;
+  --overlay-blur: var(--backdrop-blur);
 }

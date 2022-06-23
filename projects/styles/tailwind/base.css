@@ -11,7 +11,7 @@ body {
   @apply
     antialiased
     font-secondary
-    text-adjust-tone-04
+    text-adjust-tone-02
     typography-secondary-detail;
 
   -moz-osx-font-smoothing: grayscale;
