@@ -1,3 +1,22 @@
+/*!
+  This file requires postcss and eventually postcss-cli to build this tailwind css file.
+  You should use these postcss plugins in the postcss.config.js file:
+
+  module.exports = {
+    plugins: [
+      require('postcss-import'),
+      require('tailwindcss/nesting'),
+      require('tailwindcss'),
+      require('autoprefixer'),
+    ],
+  }
+*/
+
+@import '../css/globals.css';
+@import 'tailwindcss/components';
+@import '../tailwind/typography.css';
+@import 'tailwindcss/utilities';
+
 html {
   scroll-behavior: smooth;
 }
@@ -12,12 +31,12 @@ body {
     antialiased
     font-secondary
     text-adjust-tone-04
-    text-base;
+    text-secondary-detail;
 
   -moz-osx-font-smoothing: grayscale;
   -webkit-font-smoothing: antialiased;
   -webkit-tap-highlight-color: transparent;
-  text-rendering: optimizeLegibility;
+  text-rendering: optimizelegibility;
   text-size-adjust: 100%;
 }
 

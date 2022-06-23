@@ -7,9 +7,9 @@
     "build": "npm run clean && npm run copy && npm run tailwind.build",
     "clean": "npx ts-node scripts/clean.ts",
     "copy": "npx ts-node scripts/copy.ts",
-    "tailwind.base": "tailwindcss -i ./css/base.css -o ./dist/css/base.css",
+    "tailwind.base": "postcss ./postcss/base.css -o ./dist/css/reset.css",
     "tailwind.build": "npm run tailwind.base && npm run tailwind.typography",
-    "tailwind.typography": "tailwindcss -i ./css/typography.css -o ./dist/css/typography.css"
+    "tailwind.typography": "postcss ./postcss/typography.css -o ./dist/css/typography.css"
   },
   "files": [
     "/postcss.config.js",
@@ -48,8 +48,9 @@
   },
   "devDependencies": {
     "autoprefixer": "^10.4.7",
+    "postcss-cli": "^9.1.0",
     "postcss": "^8.4.13",
     "postcss-import": "^14.0.7",
-    "tailwindcss": "^3.0.24"
+    "tailwindcss": "^3.1.2"
   }
 }

@@ -1,6 +1,7 @@
 @layer components {
 
   /* New classes definition */
+
   .text-title-h1 {
     @apply
       antialiased
@@ -152,6 +153,7 @@
   }
 
   /* Old classes definition for backward compatibility */
+
   .text-primary-h1 {
     @apply
       antialiased
@@ -161,7 +163,7 @@
       tracking-tight;
   }
 
-  .text-primary-h2 {
+  .typography-primary-h2 {
     @apply
       antialiased
       font-extrabold
@@ -170,7 +172,7 @@
       tracking-tight;
   }
 
-  .text-primary-h3 {
+  .typography-primary-h3 {
     @apply
       antialiased
       font-extrabold
@@ -179,7 +181,7 @@
       tracking-tight;
   }
 
-  .text-primary-h4 {
+  .typography-primary-h4 {
     @apply
       antialiased
       font-bold
@@ -188,7 +190,7 @@
       tracking-tight;
   }
 
-  .text-primary-h5 {
+  .typography-primary-h5 {
     @apply
       antialiased
       font-bold
@@ -197,7 +199,7 @@
       tracking-tight;
   }
 
-  .text-primary-h6 {
+  .typography-primary-h6 {
     @apply
       antialiased
       font-bold
@@ -206,7 +208,7 @@
       tracking-tight;
   }
 
-  .text-primary-action {
+  .typography-primary-action {
     @apply
       antialiased
       font-bold
@@ -215,7 +217,7 @@
       text-sm;
   }
 
-  .text-secondary-paragraph {
+  .typography-secondary-paragraph {
     @apply
       antialiased
       font-secondary
@@ -223,21 +225,21 @@
       text-xl;
   }
 
-  .text-secondary-detail {
+  .typography-secondary-detail {
     @apply
       antialiased
       font-secondary
       text-base;
   }
 
-  .text-secondary-caption {
+  .typography-secondary-caption {
     @apply
       antialiased
       font-secondary
       text-sm;
   }
 
-  .text-secondary-label {
+  .typography-secondary-label {
     @apply
       antialiased
       font-bold
@@ -246,7 +248,7 @@
       uppercase;
   }
 
-  .text-secondary-option {
+  .typography-secondary-option {
     @apply
       antialiased
       font-bold
@@ -257,11 +259,10 @@
       uppercase;
   }
 
-  .text-secondary-tip {
+  .typography-secondary-tip {
     @apply
       antialiased
       font-secondary
       text-xs;
   }
-
 }

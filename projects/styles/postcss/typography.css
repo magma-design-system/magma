@@ -1,0 +1,62 @@
+@import 'tailwindcss/components';
+@import '../tailwind/typography.css';
+
+.text-primary-h1 {
+  @apply typography-primary-h1;
+}
+
+.text-primary-h2 {
+  @apply typography-primary-h2;
+}
+
+.text-primary-h3 {
+  @apply typography-primary-h3;
+}
+
+.text-primary-h4 {
+  @apply typography-primary-h4;
+}
+
+.text-primary-h5 {
+  @apply typography-primary-h5;
+}
+
+.text-primary-h6 {
+  @apply typography-primary-h6;
+}
+
+.text-primary-action {
+  @apply typography-primary-action;
+}
+
+.text-secondary-paragraph {
+  @apply typography-secondary-paragraph;
+}
+
+.text-secondary-detail {
+  @apply typography-secondary-detail;
+}
+
+.text-secondary-caption {
+  @apply typography-secondary-caption;
+}
+
+.text-secondary-label {
+  @apply typography-secondary-label;
+}
+
+.text-secondary-option {
+  @apply typography-secondary-option;
+}
+
+.text-secondary-tip {
+  @apply typography-secondary-tip;
+}
+
+.text-mono-code {
+  @apply typography-mono-code;
+}
+
+.text-mono-hack {
+  @apply typography-mono-hack;
+}
