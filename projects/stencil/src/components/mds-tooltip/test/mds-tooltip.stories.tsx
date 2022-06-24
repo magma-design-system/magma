@@ -77,7 +77,7 @@ export const NoTarget = () =>
   <div>
     <mds-button id="tooltip-trigger">Trigger</mds-button>
     {/* Intended the error here */}
-    <mds-tooltip>
+    <mds-tooltip target="tooltip-trigger">
       Follow mouse?
     </mds-tooltip>
   </div>
