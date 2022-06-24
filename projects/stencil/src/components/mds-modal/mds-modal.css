@@ -2,6 +2,11 @@
 @tailwind utilities;
 @import '../../tailwind/components.css';
 
+/*
+* @prop --overlay-color: Set the overlay color of the background when the component is opened, this property can be inherited from `globals.css` in `styles^8.0.0`.
+* @prop --overlay-opacity: Set the overlay color opacity of the background when the component is opened, this property can be inherited from `globals.css` in `styles^8.0.0`.
+*/
+
 @layer components {
   .animate-bottom,
   .animate-center,
@@ -61,9 +66,8 @@
 }
 
 :host {
+
   @apply
-    bg-tone-neutral-01
-    bg-opacity-0
     duration-700
     ease-in-out-expo
     fixed
@@ -73,6 +77,7 @@
     justify-center
     pointer-events-none;
 
+  background-color: rgba(var(--overlay-color, 0 0 0) / 0);
   perspective: 600px;
 }
 
@@ -94,9 +99,10 @@
 :host ( .animate-right-opened ),
 :host ( .animate-top-opened ) {
   @apply
-    bg-opacity-50
     duration-500
     pointer-events-auto;
+
+  background-color: rgba(var(--overlay-color, 0 0 0) / var(--overlay-opacity, 0.5));
 }
 
 .close {
