@@ -7,18 +7,11 @@
 * @prop --selection-color: Sets the color of the text when the text is selected
 */
 
-:host {
-
-  --selection-background: theme('colors.label-sky-08');
-  --selection-color: theme('colors.label-sky-01');
+.text::selection {
+  background-color: var(--selection-background, theme('colors.label-sky-09'));
+  color: var(--selection-color, theme('colors.label-sky-01'));
 }
 
-:host::selection {
-  background-color: var(--selection-background);
-  color: var(--selection-color);
-}
-
-/* New classes definition */
 :host ( .text-mono-code ) {
   @apply text-mono-code;
 }
@@ -89,59 +82,6 @@
 
 :host ( .text-read-caption ) {
   @apply text-read-caption;
-}
-
-/* Old classes definition for backward compatibility */
-:host ( .text-primary-h1 ) {
-  @apply text-primary-h1;
-}
-
-:host ( .text-primary-h2 ) {
-  @apply text-primary-h2;
-}
-
-:host ( .text-primary-h3 ) {
-  @apply text-primary-h3;
-}
-
-:host ( .text-primary-h4 ) {
-  @apply text-primary-h4;
-}
-
-:host ( .text-primary-h5 ) {
-  @apply text-primary-h5;
-}
-
-:host ( .text-primary-h6 ) {
-  @apply text-primary-h6;
-}
-
-:host ( .text-primary-action ) {
-  @apply text-primary-action;
-}
-
-:host ( .text-secondary-paragraph ) {
-  @apply text-secondary-paragraph;
-}
-
-:host ( .text-secondary-detail ) {
-  @apply text-secondary-detail;
-}
-
-:host ( .text-secondary-caption ) {
-  @apply text-secondary-caption;
-}
-
-:host ( .text-secondary-label ) {
-  @apply text-secondary-label;
-}
-
-:host ( .text-secondary-tip ) {
-  @apply text-secondary-tip;
-}
-
-:host ( .text-secondary-option ) {
-  @apply text-secondary-option;
 }
 
 .text {
