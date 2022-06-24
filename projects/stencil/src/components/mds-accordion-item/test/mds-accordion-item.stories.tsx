@@ -1,5 +1,5 @@
 import { h } from '@stencil/core'
-import { typographyPrimaryDictionary } from '@dictionary/typography'
+import { typographyReadDictionary } from '@dictionary/typography'
 
 export default {
   title: 'UI / Accordion / Accordion Item',
@@ -15,7 +15,7 @@ export default {
     typography: {
       type: { name: 'string' },
       description: 'Specifies the typography of the element',
-      options: typographyPrimaryDictionary,
+      options: typographyReadDictionary,
       control: { type: 'select' },
     },
   },

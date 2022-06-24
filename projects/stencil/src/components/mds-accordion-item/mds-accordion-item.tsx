@@ -1,5 +1,5 @@
 import { Component, Host, h, Prop, Element, Event, EventEmitter } from '@stencil/core'
-import { TypographyPrimaryType } from '../../types/typography'
+import { TypographyTitleType } from '../../types/typography'
 import miBaselineKeyboardArrowUp from '@icon/mi/baseline/keyboard-arrow-up.svg'
 
 @Component({
@@ -14,7 +14,7 @@ export class MdsAccordionItem {
   /**
    * Specifies the typography of the element
    */
-  @Prop() readonly typography?: TypographyPrimaryType = 'h5'
+  @Prop() readonly typography?: TypographyTitleType = 'h5'
 
   /**
    * Specifies if the accordion item is opened or not
