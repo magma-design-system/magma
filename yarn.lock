@@ -2133,11 +2133,6 @@
   resolved "https://registry.npmjs.org/@maggioli-design-system/design-tokens/-/design-tokens-4.2.1.tgz#05e8c12e0b95f06402404951d4e3bbf50ca80b65"
   integrity sha512-pC2XO3aDG4zDItYRszoNKCy2d7UR+sXkL+RhQ109mpCyfCQz5unvydlkiimvpQgHJGBdr7A3v+WiD4AYiEcwIQ==
 
-"@maggioli-design-system/design-tokens@^7.1.0":
-  version "7.0.0"
-  resolved "https://registry.npmjs.org/@maggioli-design-system/design-tokens/-/design-tokens-7.0.0.tgz#3a796c4c5fed57f6731dd227ab5df9aebd8e927e"
-  integrity sha512-XeToZQxweXcP97C6QnW6iBExtQX/m1US0efFB7Nmw+oJc4arRC0i+QjOBzacHp88jVjNCBFwRYXUpVm2XOBYhg==
-
 "@maggioli-design-system/styles@^3.10.1":
   version "3.11.0"
   resolved "https://registry.npmjs.org/@maggioli-design-system/styles/-/styles-3.11.0.tgz#8daac639f7e7fd49673ce6ce53f2ab72c42fcfae"

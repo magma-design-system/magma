@@ -33,7 +33,7 @@
     "block-opening-brace-newline-before": null,
     "block-opening-brace-space-after": null,
     "block-opening-brace-space-before": "always",
-    "color-function-notation": "legacy",
+    "color-function-notation": "modern",
     "color-hex-case": "upper",
     "color-hex-length": "long",
     "color-named": "never",
