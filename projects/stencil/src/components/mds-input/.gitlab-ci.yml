@@ -17,3 +17,9 @@ input-publish:
   extends: [.base-stencil-publish, .base-input]
   dependencies: [base-stencil-build, input-isolate]
   needs: [base-stencil-build, input-isolate, input-publish-test]
+
+# INSTALL TEST
+input-install-test:
+  extends: [.base-stencil-install-test, .base-input]
+  needs: [input-publish]
+

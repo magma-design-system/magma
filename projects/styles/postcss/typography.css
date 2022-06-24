@@ -1,0 +1,74 @@
+@import 'tailwindcss/components';
+@import '../tailwind/typography.css';
+
+.typography-title-h1 {
+  @apply text-title-h1;
+}
+
+.typography-title-h2 {
+  @apply text-title-h2;
+}
+
+.typography-title-h3 {
+  @apply text-title-h3;
+}
+
+.typography-title-h4 {
+  @apply text-title-h4;
+}
+
+.typography-title-h5 {
+  @apply text-title-h5;
+}
+
+.typography-title-h6 {
+  @apply text-title-h6;
+}
+
+.typography-title-action {
+  @apply text-title-action;
+}
+
+.typography-info-paragraph {
+  @apply text-info-paragraph;
+}
+
+.typography-info-detail {
+  @apply text-info-detail;
+}
+
+.typography-info-caption {
+  @apply text-info-caption;
+}
+
+.typography-info-label {
+  @apply text-info-label;
+}
+
+.typography-info-option {
+  @apply text-info-option;
+}
+
+.typography-info-tip {
+  @apply text-info-tip;
+}
+
+.typography-read-paragraph {
+  @apply text-read-paragraph;
+}
+
+.typography-read-detail {
+  @apply text-read-detail;
+}
+
+.typography-read-caption {
+  @apply text-read-caption;
+}
+
+.typography-mono-code {
+  @apply text-mono-code;
+}
+
+.typography-mono-hack {
+  @apply text-mono-hack;
+}

@@ -36,13 +36,12 @@
     "test.regression.review": "npm run build && loki test --port 6006 --requireReference --chromeEnableAnimations=false"
   },
   "dependencies": {
-    "@maggioli-design-system/design-tokens": "^7.0.0",
-    "@maggioli-design-system/icons": "^1.40.0",
-    "@maggioli-design-system/identity": "^1.9.1",
-    "@maggioli-design-system/styles": "^6.5.3",
-    "@stencil/core": "^2.16.1",
+    "@maggioli-design-system/design-tokens": "^8.0.0",
+    "@maggioli-design-system/identity": "^1.11.0",
+    "@maggioli-design-system/styles": "^8.0.0",
+    "@stencil/core": "^2.17.0",
     "clsx": "^1.1.1",
-    "idb-keyval": "6.1.0"
+    "idb-keyval": "6.2.0"
   },
   "license": "MIT",
   "devDependencies": {
@@ -83,7 +82,7 @@
     "stdio": "^2.1.1",
     "stencil-inline-svg": "^1.1.0",
     "style-loader": "^3.3.1",
-    "tailwindcss": "^3.1.0",
+    "tailwindcss": "^3.1.4",
     "tsconfig-paths-webpack-plugin": "^3.5.2"
   },
   "author": {
@@ -101,6 +100,11 @@
       "name": "Vittorio Vittori",
       "email": "vittorio.vittori@maggioli.it",
       "role": "UX UI Designer"
+    },
+    {
+      "name": "Daniele Tardia",
+      "email": "daniele.tardia@hibo.it",
+      "role": "Senior Developer"
     }
   ]
 }

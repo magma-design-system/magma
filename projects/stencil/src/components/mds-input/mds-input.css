@@ -11,8 +11,8 @@
 
 :host {
 
-  --icon-color: theme('colors.adjust-tone');
-  --background: theme('colors.adjust-tone');
+  --icon-color: theme('colors.tone-neutral');
+  --background: theme('colors.tone-neutral');
   --variant-color: 0, 0, 0;
   --ring: 0 0 0 1px rgba(var(--variant-color), 0.1);
   --shadow: 0 1px 3px 0 rgba(var(--variant-color), 0.1), 0 1px 2px 0 rgba(var(--variant-color), 0.06);
@@ -20,7 +20,7 @@
   @apply
     flex
     relative
-    text-secondary-detail;
+    text-info-detail;
 }
 
 .input {
@@ -36,8 +36,8 @@
     px-4
     py-3
     rounded-lg
-    text-adjust-tone-02
-    text-secondary-detail
+    text-tone-neutral-02
+    text-info-detail
     transition-cosmetic
     min-h-12
     w-full;
@@ -72,13 +72,13 @@ textarea.input {
 }
 
 .input:disabled {
-  @apply bg-adjust-tone-10;
+  @apply bg-tone-neutral-10;
 }
 
 .input:disabled,
 .input:disabled::placeholder {
   @apply
-    text-adjust-tone-05;
+    text-tone-neutral-05;
 }
 
 .input.has-icon {
@@ -97,7 +97,7 @@ textarea.input {
     right-1
     rounded-full
     px-2
-    text-adjust-tone
+    text-tone-neutral
     text-center
     transition-cosmetic;
 
@@ -113,14 +113,14 @@ textarea.input {
 .required {
   @apply
     bg-status-error-05
-    text-adjust-tone
+    text-tone-neutral
     text-opacity-0
     p-0
     w-3;
 }
 
 .disabled {
-  @apply bg-adjust-tone-05;
+  @apply bg-tone-neutral-05;
 }
 
 .input:focus + .required {

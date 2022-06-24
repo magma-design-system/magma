@@ -15,7 +15,13 @@ export type TypographyType =
   | 'paragraph'
   | 'tip'
 
-export type TypographyPrimaryType =
+export type TypographyVariants =
+  | 'title'
+  | 'info'
+  | 'read'
+  | 'mono'
+
+export type TypographyTitleType =
   | 'action'
   | 'h1'
   | 'h2'
@@ -24,13 +30,18 @@ export type TypographyPrimaryType =
   | 'h5'
   | 'h6'
 
-export type TypographySecondaryType =
+export type TypographyInfoType =
   | 'caption'
   | 'detail'
   | 'label'
   | 'option'
   | 'paragraph'
   | 'tip'
+
+export type TypographyReadType =
+  | 'caption'
+  | 'detail'
+  | 'paragraph'
 
 export type TypographySmallerType =
   | 'tip'
@@ -39,3 +50,8 @@ export type TypographySmallerType =
 export type TypographyMonoType =
   | 'code'
   | 'hack'
+
+export type TypographyTooltipType =
+  | 'caption'
+  | 'detail'
+  | 'tip'

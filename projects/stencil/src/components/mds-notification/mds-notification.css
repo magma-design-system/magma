@@ -3,37 +3,77 @@
 :host {
 
   /*
-  * @prop --background: Sets the background-color of the component
   * @prop --color: Sets the text color of the component
+  * @prop --dot-background: Sets the background-color of the component
+  * @prop --dot-padding: Sets the size of the component
   * @prop --size: Sets the size of the component
   */
 
-  --background: theme('colors.status-error-05');
-  --color: theme('colors.adjust-tone');
+  --color: theme('colors.tone-neutral');
+  --dot-background: theme('colors.status-error-05');
+  --dot-padding: theme('spacing.2');
   --size: theme('spacing.5');
-  --translate: translate(calc(var(--size) / 2), calc(var(--size) / -2));
+  --ring-size: 2px;
+  --ring-color: theme('colors.tone-neutral');
+  --translate-offset-x: -1.75;
+  --translate-offset-y: -2;
+  --translate: translate(calc(var(--size) / var(--translate-offset-x)), calc(var(--size) / var(--translate-offset-y)));
 
   @apply
+    bottom-full
     duration-300
-    ease-out-cubic
+    ease-in-cubic
+    fixed
     inline-flex
     items-center
-    justify-center
+    justify-end
+    opacity-0
     pointer-events-none
-    px-1
+    right-full
     rounded-full
-    transition-transform;
+    transition-cosmetic
+    z-10;
 
-  background-color: var(--background);
   color: var(--color);
   height: var(--size);
-  min-width: var(--size);
+  transform: var(--translate) scale(0);
+  transform-origin: calc(100% - calc(var(--size) / 2)) 50%;
+  width: var(--size);
+}
+
+:host ( [visible=false] ) {
+  @apply
+    ease-in-cubic
+    opacity-100;
+
+  transform: var(--translate) scale(0);
+}
+
+:host ( [visible]:not([visible=false]) ) {
+  @apply
+    ease-out-cubic
+    opacity-100;
+
   transform: var(--translate) scale(1);
 }
 
-:host ( .mds-notification--hidden ) {
+.dot {
   @apply
-    ease-in-cubic;
+    duration-300
+    inline-flex
+    items-center
+    rounded-full
+    transition-cosmetic;
 
-  transform: var(--translate) scale(0);
+  background-color: var(--dot-background);
+  box-shadow: 0 0 0 var(--ring-size) var(--ring-color);
+  line-height: var(--size);
+  padding-left: var(--dot-padding);
+  padding-right: var(--dot-padding);
+  width: min-content;
+}
+
+.spacer {
+  height: var(--size);
+  width: calc(var(--size) - calc(var(--dot-padding) * 2));
 }

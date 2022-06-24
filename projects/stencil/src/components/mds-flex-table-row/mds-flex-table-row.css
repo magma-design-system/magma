@@ -8,7 +8,7 @@
     snap-start
     transition-colors;
 
-  border-bottom-color: var(--border-color, theme('colors.adjust-tone-09'));
+  border-bottom-color: var(--border-color, theme('colors.tone-neutral-09'));
   border-bottom-style: solid;
 }
 
@@ -17,5 +17,5 @@
 }
 
 :host ( [interactive]:hover ) {
-  background-color: var(--background-row-hover, theme('colors.adjust-tone')) !important;
+  background-color: var(--background-row-hover, theme('colors.tone-neutral')) !important;
 }

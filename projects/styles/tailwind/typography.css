@@ -1,114 +1,136 @@
 @layer components {
-  .text-primary-h1 {
+  .text-title-h1 {
     @apply
       antialiased
       font-extrabold
-      font-primary
+      font-title
       text-5xl
       tracking-tight;
   }
 
-  .text-primary-h2 {
+  .text-title-h2 {
     @apply
       antialiased
       font-extrabold
-      font-primary
+      font-title
       text-4xl
       tracking-tight;
   }
 
-  .text-primary-h3 {
+  .text-title-h3 {
     @apply
       antialiased
       font-extrabold
-      font-primary
+      font-title
       text-3xl
       tracking-tight;
   }
 
-  .text-primary-h4 {
+  .text-title-h4 {
     @apply
       antialiased
       font-bold
-      font-primary
+      font-title
       text-2xl
       tracking-tight;
   }
 
-  .text-primary-h5 {
+  .text-title-h5 {
     @apply
       antialiased
       font-bold
-      font-primary
+      font-title
       text-xl
       tracking-tight;
   }
 
-  .text-primary-h6 {
+  .text-title-h6 {
     @apply
       antialiased
       font-bold
-      font-primary
+      font-title
       text-base
       tracking-tight;
   }
 
-  .text-primary-action {
+  .text-title-action {
     @apply
       antialiased
       font-bold
-      font-primary
+      font-title
       leading-relaxed
       text-sm;
   }
 
-  .text-secondary-paragraph {
+  .text-info-paragraph {
     @apply
       antialiased
-      font-secondary
+      font-info
       leading-8
       text-xl;
   }
 
-  .text-secondary-detail {
+  .text-info-detail {
     @apply
       antialiased
-      font-secondary
+      font-info
       text-base;
   }
 
-  .text-secondary-caption {
+  .text-info-caption {
     @apply
       antialiased
-      font-secondary
+      font-info
       text-sm;
   }
 
-  .text-secondary-label {
+  .text-info-label {
     @apply
       antialiased
       font-bold
-      font-secondary
+      font-info
       text-xs
       uppercase;
   }
 
-  .text-secondary-option {
+  .text-info-option {
     @apply
       antialiased
       font-bold
-      font-secondary
+      font-info
       leading-none
       text-xxs
       tracking-tight
       uppercase;
   }
 
-  .text-secondary-tip {
+  .text-info-tip {
     @apply
       antialiased
-      font-secondary
+      font-info
       text-xs;
+  }
+
+  .text-read-paragraph {
+    @apply
+      antialiased
+      font-read
+      leading-8
+      text-xl;
+  }
+
+  .text-read-detail {
+    @apply
+      antialiased
+      font-read
+      text-base;
+  }
+
+  .text-read-caption {
+    @apply
+      antialiased
+      font-read
+      text-sm;
   }
 
   .text-mono-code {

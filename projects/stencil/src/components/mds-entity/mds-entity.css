@@ -14,11 +14,11 @@
 
 :host {
 
-  --background: theme('colors.adjust-tone');
-  --color: theme('colors.adjust-tone-02');
+  --background: theme('colors.tone-neutral');
+  --color: theme('colors.tone-neutral-02');
   --delete-background: theme('colors.status-error-09');
   --delete-color: theme('colors.status-error-04');
-  --detail-color: theme('colors.adjust-tone-03');
+  --detail-color: theme('colors.tone-neutral-03');
   --icon-background: theme('colors.label-blue-09');
   --icon-color: theme('colors.label-blue-04');
   --shadow: theme('boxShadow.DEFAULT');

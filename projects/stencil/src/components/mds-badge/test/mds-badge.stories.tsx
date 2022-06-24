@@ -1,5 +1,5 @@
 import { h } from '@stencil/core'
-import { typographySecondaryDictionary } from '@dictionary/typography'
+import { typographyInfoDictionary, typographyVariationsDictionary } from '@dictionary/typography'
 import { themeFullVariantDictionary, toneSimpleVariantDictionary } from '@dictionary/variant'
 
 export default {
@@ -15,7 +15,12 @@ export default {
       type: { name: 'string' },
       control: { type: 'select' },
       description: 'Specifies the font typography of the element',
-      options: typographySecondaryDictionary,
+      options: typographyInfoDictionary,
+    },
+    'typography-variant': {
+      description: 'Specifies the variant for `typography`',
+      options: typographyVariationsDictionary,
+      control: { type: 'select' },
     },
     variant: {
       type: { name: 'string' },
@@ -29,7 +34,7 @@ export default {
 const Template = args =>
   <mds-badge {...args}>bovaro del bernese</mds-badge>
 
-export const Default = Template.bind({})
+export const Default = Template.bind( {} )
 Default.args = {
   tone: 'strong',
   variant: 'violet',

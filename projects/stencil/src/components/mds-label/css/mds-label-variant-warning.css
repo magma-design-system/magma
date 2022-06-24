@@ -1,0 +1,29 @@
+@tailwind utilities;
+
+:host ( [variant=warning] ),
+:host ( [variant=warning][tone=strong] ) {
+
+  --background: theme('colors.status-warning-04');
+  --color: theme('colors.status-warning-10');
+  --icon-color: theme('colors.status-warning-10');
+  --selection-background: theme('colors.status-warning-08');
+  --selection-color: theme('colors.status-warning-02');
+}
+
+:host ( [variant=warning][tone=weak] ) {
+
+  --background: theme('colors.status-warning-08');
+  --color: theme('colors.status-warning-02');
+  --icon-color: theme('colors.status-warning-02');
+  --selection-background: theme('colors.status-warning-06');
+  --selection-color: theme('colors.status-warning-10');
+}
+
+:host ( [variant=warning][tone=quiet] ) {
+
+  --background: theme('colors.status-warning-09');
+  --color: theme('colors.status-warning-04');
+  --icon-color: theme('colors.status-warning-04');
+  --selection-background: theme('colors.status-warning-05');
+  --selection-color: theme('colors.status-warning-09');
+}
