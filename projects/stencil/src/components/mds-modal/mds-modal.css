@@ -5,6 +5,8 @@
 /*
 * @prop --overlay-color: Set the overlay color of the background when the component is opened, this property can be inherited from `globals.css` in `styles^8.0.0`.
 * @prop --overlay-opacity: Set the overlay color opacity of the background when the component is opened, this property can be inherited from `globals.css` in `styles^8.0.0`.
+* @prop --window-background: Set the background color of the window when the component is opened
+* @prop --window-shadow: Set the box-shadow of the window when the component is opened
 */
 
 @layer components {
@@ -66,6 +68,11 @@
 }
 
 :host {
+
+  --overlay-color: var(--overlay-color, 0 0 0);
+  --overlay-opacity: var(--overlay-opacity, 0.5);
+  --window-background: theme('colors.tone-neutral');
+  --window-shadow: theme('boxShadow.2xl');
 
   @apply
     duration-700
@@ -130,11 +137,9 @@
     h-full
     overflow-auto;
 
-  background-color: var(--window-background, theme('colors.tone-neutral'));
-  box-shadow: var(--window-shadow, theme('boxShadow.2xl'));
+  background-color: var(--window-background);
+  box-shadow: var(--window-shadow);
   grid-template-rows: 1fr;
-
-  /* grid-template-rows: var(--grid-template-rows, auto 1fr auto); */
   max-width: calc(100vw - 80px);
 }
 
