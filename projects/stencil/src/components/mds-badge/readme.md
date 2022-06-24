@@ -11,7 +11,7 @@
 | ------------------- | -------------------- | --------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ----------- |
 | `tone`              | `tone`               | Sets the tone of the color variant      | `"quiet" \| "strong" \| "weak"`                                                                                                                                                    | `'weak'`    |
 | `typography`        | `typography`         | Specifies the typography of the element | `"caption" \| "detail" \| "label" \| "option" \| "paragraph" \| "tip"`                                                                                                             | `'option'`  |
-| `typographyVariant` | `typography-variant` | Specifies the variant for `typography`  | `"info" \| "mono" \| "primary" \| "read" \| "secondary" \| "title"`                                                                                                                | `undefined` |
+| `typographyVariant` | `typography-variant` | Specifies the variant for `typography`  | `"info" \| "mono" \| "read" \| "title"`                                                                                                                                            | `undefined` |
 | `variant`           | `variant`            | Sets the theme variant colors           | `"amaranth" \| "aqua" \| "blue" \| "dark" \| "error" \| "green" \| "info" \| "light" \| "lime" \| "orange" \| "orchid" \| "sky" \| "success" \| "violet" \| "warning" \| "yellow"` | `'green'`   |
 
 
