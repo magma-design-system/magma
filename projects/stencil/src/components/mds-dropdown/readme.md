@@ -33,15 +33,15 @@
 
 ## CSS Custom Properties
 
-| Name                 | Description                                                                                                                    |
-| -------------------- | ------------------------------------------------------------------------------------------------------------------------------ |
-| `--background`       | Sets the background-color of the dropdown.                                                                                     |
-| `--background-arrow` | Sets the fill color of the arrow.                                                                                              |
-| `--drop-shadow`      | drop-shadow(0 10px 8px rgba(0, 0, 0, 0.04)) drop-shadow(0 4px 3px rgba(0, 0, 0, 0.1)) drop-shadow(0 0 1px rgba(0, 0, 0, 0.1)); |
-| `--duration`         | 0.5s;                                                                                                                          |
-| `--ease`             | theme('transitionTimingFunction.out-expo');                                                                                    |
-| `--transform-from`   | scale(0.9) translateY(-3%);                                                                                                    |
-| `--transform-to`     | scale(1) translate(0, 0);                                                                                                      |
+| Name                 | Description                                        |
+| -------------------- | -------------------------------------------------- |
+| `--background`       | Sets the background-color of the dropdown.         |
+| `--background-arrow` | Sets the fill color of the arrow.                  |
+| `--drop-shadow`      | Sets the drop-shadow of the dropdown.              |
+| `--duration`         | Sets the duration of the dropdown animation.       |
+| `--ease`             | Sets the easing of the dropdown animation.         |
+| `--transform-from`   | Sets the from animation transform of the dropdown. |
+| `--transform-to`     | Sets the to animation transform of the dropdown.   |
 
 
 ----------------------------------------------

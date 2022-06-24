@@ -3,11 +3,11 @@
 /**
   * @prop --background-arrow: Sets the fill color of the arrow.
   * @prop --background: Sets the background-color of the dropdown.
-  * @prop --drop-shadow: drop-shadow(0 10px 8px rgba(0, 0, 0, 0.04)) drop-shadow(0 4px 3px rgba(0, 0, 0, 0.1)) drop-shadow(0 0 1px rgba(0, 0, 0, 0.1));
-  * @prop --duration: 0.5s;
-  * @prop --ease: theme('transitionTimingFunction.out-expo');
-  * @prop --transform-from: scale(0.9) translateY(-3%);
-  * @prop --transform-to: scale(1) translate(0, 0);
+  * @prop --drop-shadow: Sets the drop-shadow of the dropdown.
+  * @prop --duration: Sets the duration of the dropdown animation.
+  * @prop --ease: Sets the easing of the dropdown animation.
+  * @prop --transform-from: Sets the from animation transform of the dropdown.
+  * @prop --transform-to: Sets the to animation transform of the dropdown.
   */
 
 :host {
