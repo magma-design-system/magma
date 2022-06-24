@@ -25,7 +25,7 @@ export class MdsTooltip {
   /**
    * Sets the distance between arrow and tooltip margins.
    */
-  @Prop() readonly arrowPadding = 24
+  private arrowPadding = 4
 
   /**
    * If set, the component will be placed automatically near it's caller.
@@ -35,7 +35,7 @@ export class MdsTooltip {
   /**
    * Specifies the placement of the component if no space is available where it is placed.
    */
-  @Prop() readonly flip? = false
+  @Prop() readonly flip? = true
 
   /**
    * Specifies the id of the caller element.
@@ -45,7 +45,7 @@ export class MdsTooltip {
   /**
    * Sets distance between the tooltip and the caller.
    */
-  @Prop() readonly offset = 24
+  @Prop() readonly offset = 12
 
   /**
    * Specifies where the component should be placed relative to the caller.
@@ -55,7 +55,7 @@ export class MdsTooltip {
   /**
    * Specifies the font typography of the element
    */
-  @Prop() readonly typography: TypographyTooltipType = 'caption'
+  @Prop() readonly typography: TypographyTooltipType = 'tip'
 
   /**
    * If set, the component will be kept inside the viewport.
@@ -65,12 +65,7 @@ export class MdsTooltip {
   /**
    * Sets a safe area distance between the tooltip and the viewport.
    */
-  @Prop() readonly shiftPadding = 24
-
-  /**
-   * If set, the component will follow the caller smoothly, visible when the page scrolls.
-   */
-  @Prop() readonly smooth? = true
+  @Prop() readonly shiftPadding = 12
 
   /**
    * Sets the CSS position strategy of the component.
@@ -118,7 +113,7 @@ export class MdsTooltip {
       break
     case 'top':
       inset.left = arrow.x !== null ? `${arrow.x}px` : ''
-      inset.top = arrow.y !== null ? `${arrow.y}px` : ''
+      inset.top = null
       break
     default:
       break
@@ -224,11 +219,6 @@ export class MdsTooltip {
     this.updatePosition()
   }
 
-  @Watch('arrowPadding')
-  arrowPaddingChanged (): void {
-    this.updatePosition()
-  }
-
   @Watch('autoPlacement')
   autoPlacementChanged (): void {
     this.updatePosition()
@@ -290,7 +280,7 @@ export class MdsTooltip {
     return (
       <Host>
         <div class="arrow" innerHTML={arrowSvg}/>
-        <mds-text typography={this.typography}>
+        <mds-text class="text" typography={this.typography}>
           <slot/>
         </mds-text>
       </Host>
