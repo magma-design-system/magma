@@ -11,8 +11,8 @@ import arrowSvg from './assets/arrow.svg'
 export class MdsDropdown {
 
   private arrowEl: HTMLElement
-  private backdropBackground = 'rgba(0, 0, 0, 0.1)'
-  private backdropCustomPropBackground = '--backdrop'
+  private backdropBackgroundVisible = 'rgba(var(--backdrop-color, 0 0 0) / var(--backdrop-opacity, 0.1))'
+  private backdropBackgroundHidden = 'rgba(var(--backdrop-color, 0 0 0) / 0)'
   private backdropDuration = 2000
   private backdropEl: HTMLElement
   private backdropId = 'mds-dropdown-backdrop'
@@ -123,7 +123,7 @@ export class MdsDropdown {
   private attachBackdrop (): void {
     if (!this.backdropEl) {
       this.backdropEl = document.createElement('div')
-      this.backdropEl.style.backgroundColor = 'rgba(0, 0, 0, 0)'
+      this.backdropEl.style.backgroundColor = this.backdropBackgroundHidden
       this.backdropEl.className = this.backdropId
       this.backdropEl.style.inset = '0'
       this.backdropEl.style.pointerEvents = 'none'
@@ -135,7 +135,7 @@ export class MdsDropdown {
 
     clearTimeout(this.backdropTimer)
     this.backdropTimer = setTimeout(() => {
-      this.backdropEl.style.backgroundColor = this.backdropBackground
+      this.backdropEl.style.backgroundColor = this.backdropBackgroundVisible
     }, 1)
   }
 
@@ -178,7 +178,7 @@ export class MdsDropdown {
       break
     case 'top':
       inset.left = arrow.x !== null ? `${arrow.x}px` : ''
-      inset.top = arrow.y !== null ? `${arrow.y}px` : ''
+      inset.top = null
       break
     default:
       break
@@ -223,6 +223,8 @@ export class MdsDropdown {
   }
 
   private updatePosition = ():void => {
+    if (!this.caller) return
+
     const middleware = []
     const config: { padding?: number } = {}
 
@@ -350,11 +352,6 @@ export class MdsDropdown {
   }
 
   componentWillLoad (): void {
-    const backdropCustomProp = getComputedStyle(document.documentElement, null).getPropertyValue(this.backdropCustomPropBackground)
-    if (backdropCustomProp !== '') {
-      this.backdropBackground = `var(${this.backdropCustomPropBackground})`
-    }
-
     Array.from(document.getElementsByClassName(this.backdropId)).forEach((element: HTMLElement) => {
       element.remove()
     })
@@ -364,6 +361,9 @@ export class MdsDropdown {
     document.addEventListener('click', this.handleCloseDropdown)
     this.arrowEl = this.host.shadowRoot.querySelector('.arrow')
     this.caller = document.getElementById(this.target)
+
+    if (!this.caller) return
+
     this.caller.addEventListener('click', this.callerOnClick.bind(this))
 
     this.backdropChanged(this.backdrop)

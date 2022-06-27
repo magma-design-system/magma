@@ -3,7 +3,6 @@ const typographyDefaultsVariant = {
     tag: 'span',
     selector: {
       default: 'text-title-action',
-      primary: 'text-primary-action',
       title: 'text-title-action',
     },
   },
@@ -11,7 +10,6 @@ const typographyDefaultsVariant = {
     tag: 'span',
     selector: {
       default: 'text-info-caption',
-      secondary: 'text-secondary-caption',
       info: 'text-info-caption',
       read: 'text-read-caption',
     },
@@ -27,7 +25,6 @@ const typographyDefaultsVariant = {
     tag: 'p',
     selector: {
       default: 'text-info-detail',
-      secondary: 'text-secondary-detail',
       info: 'text-info-detail',
       read: 'text-read-detail',
     },
@@ -36,7 +33,6 @@ const typographyDefaultsVariant = {
     tag: 'h1',
     selector: {
       default: 'text-title-h1',
-      primary: 'text-primary-h1',
       title: 'text-title-h1',
     },
   },
@@ -44,7 +40,6 @@ const typographyDefaultsVariant = {
     tag: 'h2',
     selector: {
       default: 'text-title-h2',
-      primary: 'text-primary-h2',
       title: 'text-title-h2',
     },
   },
@@ -52,7 +47,6 @@ const typographyDefaultsVariant = {
     tag: 'h3',
     selector: {
       default: 'text-title-h3',
-      primary: 'text-primary-h3',
       title: 'text-title-h3',
     },
   },
@@ -60,7 +54,6 @@ const typographyDefaultsVariant = {
     tag: 'h4',
     selector: {
       default: 'text-title-h4',
-      primary: 'text-primary-h4',
       title: 'text-title-h4',
     },
   },
@@ -68,7 +61,6 @@ const typographyDefaultsVariant = {
     tag: 'h5',
     selector: {
       default: 'text-title-h5',
-      primary: 'text-primary-h5',
       title: 'text-title-h5',
     },
   },
@@ -76,7 +68,6 @@ const typographyDefaultsVariant = {
     tag: 'h6',
     selector: {
       default: 'text-title-h6',
-      primary: 'text-primary-h6',
       title: 'text-title-h6',
     },
   },
@@ -91,7 +82,6 @@ const typographyDefaultsVariant = {
     tag: 'label',
     selector: {
       default: 'text-info-label',
-      secondary: 'text-secondary-label',
       info: 'text-info-label',
     },
   },
@@ -99,7 +89,6 @@ const typographyDefaultsVariant = {
     tag: 'label',
     selector: {
       default: 'text-info-option',
-      secondary: 'text-secondary-option',
       info: 'text-info-option',
     },
   },
@@ -116,7 +105,6 @@ const typographyDefaultsVariant = {
     tag: 'span',
     selector: {
       default: 'text-info-tip',
-      secondary: 'text-secondary-tip',
       info: 'text-info-tip',
     },
   },

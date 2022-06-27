@@ -2,8 +2,8 @@ import { E2EPage, newE2EPage } from '@stencil/core/testing'
 import { TypographyType } from '@type/typography'
 
 describe('mds-text', () => {
-  const primaryTypes = ['h1', 'h2', 'h3', 'h4', 'h5', 'h6', 'action']
-  const secondaryTypes = ['paragraph', 'detail', 'caption', 'label', 'option', 'tip']
+  const titleTypes = ['h1', 'h2', 'h3', 'h4', 'h5', 'h6', 'action']
+  const infoTypes = ['paragraph', 'detail', 'caption', 'label', 'option', 'tip']
   const monoTypes = ['code', 'hack']
   const textContent = 'Test text'
   let page: E2EPage
@@ -16,20 +16,20 @@ describe('mds-text', () => {
   it('renders default', async () => {
     const element = await page.find('mds-text')
     expect(element).toHaveClass('hydrated')
-    expect(element).toHaveClass('text-secondary-detail')
+    expect(element).toHaveClass('text-info-detail')
     expect(element.textContent).toEqual(textContent)
   })
 
-  it.each(primaryTypes)('renders primary %s', async (typography: TypographyType) => {
+  it.each(titleTypes)('renders title %s', async (typography: TypographyType) => {
     await setTypography(page, typography)
     const element = await page.find('mds-text')
-    expect(element).toHaveClass(`text-primary-${typography}`)
+    expect(element).toHaveClass(`text-title-${typography}`)
   })
 
-  it.each(secondaryTypes)('renders secondary %s', async (typography: TypographyType) => {
+  it.each(infoTypes)('renders info %s', async (typography: TypographyType) => {
     await setTypography(page, typography)
     const element = await page.find('mds-text')
-    expect(element).toHaveClass(`text-secondary-${typography}`)
+    expect(element).toHaveClass(`text-info-${typography}`)
   })
 
   it.each(monoTypes)('renders mono %s', async (typography: TypographyType) => {

@@ -1,6 +1,6 @@
 import { Component, Host, h, Prop, State, Event, EventEmitter, Watch } from '@stencil/core'
 import clsx from 'clsx'
-import { TypographyPrimaryType } from '../../types/typography'
+import { TypographyTitleType } from '../../types/typography'
 
 @Component({
   tag: 'mds-accordion-timer-item',
@@ -14,7 +14,7 @@ export class MdsAccordionTimerItem {
   /**
    * Specifies the typography of the element
    */
-  @Prop() readonly typography?: TypographyPrimaryType = 'h5'
+  @Prop() readonly typography?: TypographyTitleType = 'h5'
 
   /**
    * Specifies if the accordion item is opened or not

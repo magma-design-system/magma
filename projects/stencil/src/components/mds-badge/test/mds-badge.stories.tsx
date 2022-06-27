@@ -1,5 +1,5 @@
 import { h } from '@stencil/core'
-import { typographySecondaryDictionary, typographyVariationsDictionary } from '@dictionary/typography'
+import { typographyInfoDictionary, typographyVariationsDictionary } from '@dictionary/typography'
 import { themeFullVariantDictionary, toneSimpleVariantDictionary } from '@dictionary/variant'
 
 export default {
@@ -15,7 +15,7 @@ export default {
       type: { name: 'string' },
       control: { type: 'select' },
       description: 'Specifies the font typography of the element',
-      options: typographySecondaryDictionary,
+      options: typographyInfoDictionary,
     },
     'typography-variant': {
       description: 'Specifies the variant for `typography`',

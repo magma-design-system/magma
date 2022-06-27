@@ -11,7 +11,7 @@
 | ------------ | ------------ | --------------------------------------- | ---------------------------------------------------------------------- | ------------ |
 | `icon`       | `icon`       | Specifies the typography of the element | `string`                                                               | `'list-dot'` |
 | `typography` | `typography` | Specifies the typography of the element | `"caption" \| "detail" \| "label" \| "option" \| "paragraph" \| "tip"` | `'detail'`   |
-| `variant`    | `variant`    | Specifies the variant for `typography`  | `"info" \| "mono" \| "primary" \| "read" \| "secondary" \| "title"`    | `undefined`  |
+| `variant`    | `variant`    | Specifies the variant for `typography`  | `"info" \| "mono" \| "read" \| "title"`                                | `undefined`  |
 
 
 ## Shadow Parts

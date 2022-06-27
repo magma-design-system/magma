@@ -1,22 +1,4 @@
 {
-  "primary": [
-    "Roboto",
-    "-apple-system",
-    "BlinkMacSystemFont",
-    "'San Francisco'",
-    "'Segoe UI'",
-    "'Helvetica Neue'",
-    "sans-serif"
-  ],
-  "secondary": [
-    "Karla",
-    "-apple-system",
-    "BlinkMacSystemFont",
-    "'San Francisco'",
-    "'Segoe UI'",
-    "'Helvetica Neue'",
-    "sans-serif"
-  ],
   "title": [
     "Roboto",
     "-apple-system",

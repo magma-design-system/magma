@@ -1,4 +1,4 @@
-import { typographyPrimaryDictionary } from '@dictionary/typography'
+import { typographyReadDictionary } from '@dictionary/typography'
 import { h } from '@stencil/core'
 import { lokiDisabled } from '@test/loki-disabled'
 
@@ -21,7 +21,7 @@ export default {
     typography: {
       type: { name: 'string' },
       description: 'Specifies the typography of the element',
-      options: typographyPrimaryDictionary,
+      options: typographyReadDictionary,
       control: { type: 'select' },
     },
   },

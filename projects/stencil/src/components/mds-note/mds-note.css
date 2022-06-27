@@ -15,8 +15,8 @@
   --background: theme('colors.label-yellow-10');
   --color: theme('colors.label-yellow-02');
   --fold-size: 40px;
-  --selection-background: theme('colors.label-yellow-09');
-  --selection-color: theme('colors.label-yellow-02');
+  --selection-background: var(--mds-selection-background, theme('colors.label-yellow-09'));
+  --selection-color: var(--mds-selection-color, theme('colors.label-yellow-02'));
   --shadow: theme('boxShadow.DEFAULT');
 
   @apply
