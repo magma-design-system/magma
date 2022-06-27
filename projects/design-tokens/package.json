@@ -1,6 +1,6 @@
 {
   "name": "@maggioli-design-system/design-tokens",
-  "version": "7.0.0",
+  "version": "8.0.0",
   "description": "This is the Design Token library of Maggioli Design System, here you'll find all the visual data used around the libraries.",
   "author": "Vittorio Vittori",
   "contributors": [
@@ -8,6 +8,11 @@
       "name": "Vittorio Vittori",
       "email": "vittorio.vittori@maggioli.it",
       "role": "UX UI Designer"
+    },
+    {
+      "name": "Daniele Tardia",
+      "email": "daniele.tardia@hibo.it",
+      "role": "Senior Developer"
     }
   ],
   "license": "ISC",

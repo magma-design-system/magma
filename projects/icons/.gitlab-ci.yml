@@ -23,7 +23,6 @@ icons-publish-test:
   variables:
     BUILD_DIR: projects/icons
     COMPONENT: icons
-    PACK_NAME: maggioli-design-system-icons-*.tgz
   rules:
     - if: $CI_PIPELINE_SOURCE == "merge_request_event" || $CI_COMMIT_BRANCH =~ /^(main|pipeline)$/
       changes:
@@ -47,7 +46,9 @@ icons-install-test:
   extends: .base-install-test
   needs: [icons-publish]
   variables:
+    BUILD_DIR: projects/icons
     COMPONENT: icons
+    PACK_NAME: maggioli-design-system-icons-*.tgz
   rules:
     - if: $CI_COMMIT_BRANCH == "main"
       changes:

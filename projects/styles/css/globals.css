@@ -1,0 +1,13 @@
+:root {
+
+  --backdrop-blur: 4px;
+  --backdrop-color: 0 0 0;
+  --backdrop-opacity: 0.1;
+  --backdrop: rgba(var(--backdrop-color) / var(--backdrop-opacity));
+  --overlay-blur: var(--backdrop-blur);
+  --overlay-color: var(--backdrop-color);
+  --overlay-opacity: 0.5;
+  --overlay: rgba(var(--overlay-color) / var(--overlay-opacity));
+  --selection-background: theme('colors.label-sky-09');
+  --selection-color: theme('colors.label-sky-01');
+}

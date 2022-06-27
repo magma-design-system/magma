@@ -10,3 +10,20 @@ These are the styles used by components libraries like `@maggioli-design-system/
 ```
 npm install @maggioli-design-system/styles@latest
 ```
+
+---
+
+### Structure
+
+#### Folder `postcss`
+
+Here you add CSS that should be buit with postcss, which is stored inside `dist/css`.
+
+#### Folder `css`
+
+Here you add static CSS that should be stored inside `dist/css`.
+
+#### Folder `tailwind`
+
+Here you add Tailwind CSS that should be stored inside `dist/tailwind`, this folder is used when you use tailwind also in your product.
+

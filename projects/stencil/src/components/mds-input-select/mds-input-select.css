@@ -10,7 +10,7 @@
     flex
     relative
     text-tone-neutral-02
-    text-secondary-detail;
+    text-info-detail;
 
   --variant-color: 0, 0, 0;
   --ring: 0 0 0 1px rgba(var(--variant-color), 0.1);
@@ -36,7 +36,7 @@
     py-3
     rounded-lg
     text-tone-neutral-05
-    text-secondary-detail
+    text-info-detail
     transition-cosmetic
     w-full;
 

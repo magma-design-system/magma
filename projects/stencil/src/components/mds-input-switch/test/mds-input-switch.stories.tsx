@@ -1,4 +1,4 @@
-import { typographySecondaryDictionary } from '@dictionary/typography'
+import { typographyInfoDictionary, typographyVariationsDictionary } from '@dictionary/typography'
 import { inputSwitchSizeDictionary } from '../meta/dictionary'
 import { iconsDictionary } from '@dictionary/icon'
 import { h } from '@stencil/core'
@@ -41,8 +41,13 @@ export default {
     typography: {
       control: { type: 'select' },
       description: 'Specifies the font typography of the element',
-      options: typographySecondaryDictionary,
+      options: typographyInfoDictionary,
       type: { name: 'string' },
+    },
+    variant: {
+      description: 'Specifies the variant for `typography`',
+      options: typographyVariationsDictionary,
+      control: { type: 'select' },
     },
     type: {
       control: { type: 'select' },

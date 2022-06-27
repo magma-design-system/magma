@@ -20,7 +20,7 @@
   @apply
     flex
     relative
-    text-secondary-detail;
+    text-info-detail;
 }
 
 .input {
@@ -37,7 +37,7 @@
     py-3
     rounded-lg
     text-tone-neutral-02
-    text-secondary-detail
+    text-info-detail
     transition-cosmetic
     min-h-12
     w-full;

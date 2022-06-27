@@ -1,4 +1,4 @@
-import { typographyPrimaryDictionary } from '@dictionary/typography'
+import { typographyReadDictionary } from '@dictionary/typography'
 import { h } from '@stencil/core'
 
 export default {
@@ -6,7 +6,7 @@ export default {
   argTypes: {
     typography: {
       description: 'Specifies the font typography of the element',
-      options: typographyPrimaryDictionary,
+      options: typographyReadDictionary,
       control: { type: 'select' },
     },
   },
