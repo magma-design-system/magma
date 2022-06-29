@@ -28,6 +28,7 @@
 | -------------------- | ------------------------------------------------- |
 | `--background`       | Sets the background-color of the tooltip.         |
 | `--background-arrow` | Sets the fill color of the arrow.                 |
+| `--delay`            | Sets the delay of the tooltip.                    |
 | `--drop-shadow`      | Sets the drop-shadow of the tooltip.              |
 | `--duration`         | Sets the duration of the tooltip animation.       |
 | `--ease`             | Sets the easing of the tooltip animation.         |
