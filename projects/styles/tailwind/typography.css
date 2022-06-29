@@ -2,7 +2,7 @@
   .text-title-h1 {
     @apply
       antialiased
-      font-extrabold
+      font-black
       font-title
       text-5xl
       tracking-tight;
@@ -11,7 +11,7 @@
   .text-title-h2 {
     @apply
       antialiased
-      font-extrabold
+      font-black
       font-title
       text-4xl
       tracking-tight;
@@ -20,7 +20,7 @@
   .text-title-h3 {
     @apply
       antialiased
-      font-extrabold
+      font-black
       font-title
       text-3xl
       tracking-tight;
