@@ -36,6 +36,8 @@
         "*.jsx"
       ],
       "rules": {
+        "@typescript-eslint/no-var-requires": "off",
+        "@typescript-eslint/no-empty-function": "off",
         "react/no-find-dom-node": "warn",
         "react/no-string-refs": "warn",
         "react/jsx-uses-vars": "warn",
