@@ -10,9 +10,9 @@ html {
 body {
   @apply
     antialiased
-    font-secondary
-    text-adjust-tone-02
-    typography-secondary-detail;
+    font-info
+    text-tone-neutral-02
+    typography-info-detail;
 
   -moz-osx-font-smoothing: grayscale;
   -webkit-font-smoothing: antialiased;
@@ -32,7 +32,7 @@ select {
   @apply
     antialiased
     font-medium
-    font-primary
+    font-title
     leading-relaxed;
 }
 
