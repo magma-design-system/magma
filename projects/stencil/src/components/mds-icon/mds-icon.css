@@ -10,9 +10,16 @@
     w-6;
 }
 
-svg {
+.icon {
   @apply
-    aspect-square
-    h-full
+    inline-flex
+    items-center
+    justify-center
+    not-italic;
+}
+
+.icon svg {
+  @apply
+    h-auto
     w-full;
 }

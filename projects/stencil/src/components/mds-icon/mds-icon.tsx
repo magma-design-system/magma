@@ -8,6 +8,8 @@ import { IconsSetService } from './services/icons-set.service'
 })
 export class MdsIcon {
 
+  @State() svgHTML: string
+
   /**
    * The name of the icon.
    */
@@ -42,14 +44,14 @@ export class MdsIcon {
     if (!this.name) return Promise.resolve()
     const svgPath = IconsSetService.getSvgPath() || window.sessionStorage.getItem(MdsIcon._svgPathKey)
     this._iconHref = svgPath && !this.name.startsWith('http') ? window.location.origin.concat(svgPath.concat(this.name).concat('.svg')) : this.name
-    const svgHTML = await IconsSetService.fetchSvg(this._iconHref)
-
-    if (svgHTML !== '') this.hostElement.shadowRoot.innerHTML = svgHTML
+    this.svgHTML = await IconsSetService.fetchSvg(this._iconHref)
   }
 
   render () {
     return (
-      <Host></Host>
+      <Host>
+        { this.svgHTML && <i class="icon" innerHTML={this.svgHTML} /> }
+      </Host>
     )
   }
 }
