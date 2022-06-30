@@ -1,69 +1,149 @@
-import { tooltipPositionDictionary } from '../meta/dictionary'
-import { themeLuminanceVariantDictionary } from '@dictionary/variant'
+import {
+  floatingUIPlacementDictionary,
+  floatingUIStrategyDictionary,
+} from '@dictionary/floating-ui'
 import { h } from '@stencil/core'
+import { typographyTooltipDictionary } from '@dictionary/typography'
 
 export default {
   title: 'UI / Tooltip',
   argTypes: {
+    arrow: {
+      type: { name: 'boolean' },
+      description: 'If set, the component will have an arrow pointing to the caller',
+    },
+    'auto-placement': {
+      type: { name: 'boolean' },
+      description: 'If set, the component will be placed automatically near it’s caller',
+    },
     delay: {
-      description: 'Specifies the delay when the tooltip will trigger',
       type: { name: 'number' },
+      description: 'Sets the delay time when the tooltip is triggered',
     },
-    for: {
-      type: { name: 'string' },
-      description: 'Specifies the id selector of the element will trigger the tooltip',
+    flip: {
+      type: { name: 'boolean' },
+      description: 'Specifies the placement of the component if no space is available where it is placed',
     },
-    position: {
+    offset: {
+      type: { name: 'number' },
+      description: 'Sets distance between the tooltip and the caller',
+    },
+    placement: {
       type: { name: 'string' },
-      description: 'Specifies the position of the tooltip relative to the trigger element',
-      options: tooltipPositionDictionary,
+      description: 'Specifies where the component should be placed relative to the caller',
+      options: floatingUIPlacementDictionary,
       control: { type: 'select' },
     },
-    variant: {
-      type: { name: 'string' },
-      description: 'Specifies the color variant for the element',
-      options: themeLuminanceVariantDictionary,
+    typography: {
+      description: 'Specifies the font typography of the element',
+      options: typographyTooltipDictionary,
       control: { type: 'select' },
+    },
+    shift: {
+      type: { name: 'boolean' },
+      description: 'If set, the component will be kept inside the viewport',
+    },
+    'shift-padding': {
+      type: { name: 'number' },
+      description: 'Sets a safe area distance between the tooltip and the body',
+    },
+    strategy: {
+      type: { name: 'string' },
+      description: 'Sets the CSS position strategy of the component',
+      options: floatingUIStrategyDictionary,
+      control: { type: 'select' },
+    },
+    visible: {
+      type: { name: 'boolean' },
+      description: 'Specifies if the component is visible',
     },
   },
 }
 
-const Template = args =>
-  <div class="flex items-center justify-center w-screen h-screen -mx-4 -my-4 bg-adjust-tone-18">
-    <mds-button id={args.for}>Registrati</mds-button>
-    <mds-tooltip {...args}>
-      Clicca il pulsante regitsrati per registrarti
+const Template = ({ layout, ...args }) =>
+  <div class={layout}>
+    <mds-button id="my-tooltip">Show Fred</mds-button>
+    <mds-tooltip target="my-tooltip" {...args}>
+      This is a tooltip comment.
     </mds-tooltip>
   </div>
 
-const TemplateBig = args =>
-  <div class="flex items-center justify-center w-screen h-screen -mx-4 -my-4 bg-adjust-tone-18">
-    <mds-button id={args.for}>Registrati</mds-button>
-    <mds-tooltip {...args}>
-      Clicca il pulsante regitsrati per registrarti
+// eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types
+export const NoTarget = () =>
+  <div>
+    <mds-button id="tooltip-trigger">Trigger</mds-button>
+    {/* Intended the error here */}
+    <mds-tooltip target="tooltip-trigger">
+      Follow mouse?
     </mds-tooltip>
   </div>
 
 export const Default = Template.bind({})
 Default.args = {
-  for: 'button-id',
+  layout: 'flex justify-center',
 }
 
-export const delay = Template.bind({})
-delay.args = {
-  delay: 500,
-  for: 'button-id',
+export const Arrow = Template.bind({})
+Arrow.args = {
+  arrow: true,
+  'shift-padding': 32,
+  layout: 'flex justify-start',
+  visible: true,
 }
 
-export const position = TemplateBig.bind({})
-position.args = {
-  for: 'button-id',
-  position: 'left',
+export const AutoPlacement = Template.bind({})
+AutoPlacement.args = {
+  'auto-placement': true,
+  layout: 'flex justify-end',
+  visible: true,
 }
 
-export const variant = Template.bind({})
-variant.args = {
-  delay: 500,
-  for: 'button-id',
-  variant: 'light',
+export const Flip = Template.bind({})
+Flip.args = {
+  layout: 'flex h-[200vh] justify-center items-center',
+  flip: true,
+  visible: true,
+}
+
+export const Offset = Template.bind({})
+Offset.args = {
+  layout: 'flex justify-center items-center',
+  offset: 50,
+  visible: true,
+}
+
+export const Placement = Template.bind({})
+Placement.args = {
+  'auto-placement': false,
+  layout: 'flex justify-center items-center',
+  placement: 'right-start',
+  visible: true,
+}
+
+export const Shift = Template.bind({})
+Shift.args = {
+  layout: 'flex justify-end',
+  shift: true,
+  visible: true,
+}
+
+export const ShiftPadding = Template.bind({})
+ShiftPadding.args = {
+  layout: 'flex justify-end',
+  shift: true,
+  'shift-padding': 50,
+  visible: true,
+}
+
+export const Strategy = Template.bind({})
+Strategy.args = {
+  layout: 'flex justify-start',
+  strategy: 'absolute',
+  visible: true,
+}
+
+export const Visible = Template.bind({})
+Visible.args = {
+  layout: 'flex justify-start',
+  visible: false,
 }

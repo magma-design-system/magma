@@ -31,6 +31,19 @@
 | `closeDropdown` | Emits when a modal is closed | `CustomEvent<void>` |
 
 
+## CSS Custom Properties
+
+| Name                 | Description                                        |
+| -------------------- | -------------------------------------------------- |
+| `--background`       | Sets the background-color of the dropdown.         |
+| `--background-arrow` | Sets the fill color of the arrow.                  |
+| `--drop-shadow`      | Sets the drop-shadow of the dropdown.              |
+| `--duration`         | Sets the duration of the dropdown animation.       |
+| `--ease`             | Sets the easing of the dropdown animation.         |
+| `--transform-from`   | Sets the from animation transform of the dropdown. |
+| `--transform-to`     | Sets the to animation transform of the dropdown.   |
+
+
 ----------------------------------------------
 
 Built with love @ **Maggioli Informatica / R&D Department**

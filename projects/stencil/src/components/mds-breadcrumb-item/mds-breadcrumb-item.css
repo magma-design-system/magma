@@ -16,7 +16,7 @@
 :host( :last-child ) .text {
   @apply pointer-events-none;
 
-  color: var(--current-button-color, theme('colors.adjust-tone-05'));
+  color: var(--current-button-color, theme('colors.tone-neutral-05'));
 }
 
 .text {
@@ -29,7 +29,7 @@
     whitespace-nowrap;
 
   background-color: var(--button-background, transparent);
-  color: var(--button-color, theme('colors.adjust-tone-02'));
+  color: var(--button-color, theme('colors.tone-neutral-02'));
 }
 
 .text:hover {
@@ -44,5 +44,5 @@
 .icon {
   @apply pointer-events-none;
 
-  color: var(--arrow-depth-color, theme('colors.adjust-tone-07'));
+  color: var(--arrow-depth-color, theme('colors.tone-neutral-07'));
 }

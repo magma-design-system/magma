@@ -1,9 +1,14 @@
 @tailwind utilities;
 
-/* :root {
-
-  --backdrop: theme('colors.label-amaranth-03');
-} */
+/**
+  * @prop --background-arrow: Sets the fill color of the arrow.
+  * @prop --background: Sets the background-color of the dropdown.
+  * @prop --drop-shadow: Sets the drop-shadow of the dropdown.
+  * @prop --duration: Sets the duration of the dropdown animation.
+  * @prop --ease: Sets the easing of the dropdown animation.
+  * @prop --transform-from: Sets the from animation transform of the dropdown.
+  * @prop --transform-to: Sets the to animation transform of the dropdown.
+  */
 
 :host {
 

@@ -15,6 +15,7 @@ export class MdsKpiItem {
 
   private setValue = () => {
     if (this.isIntersecting) {
+      console.log(this.value)
       this.actualValue = this.value.toString()
     }
   }
@@ -23,7 +24,9 @@ export class MdsKpiItem {
     this.hasIcon = this.hostElement.querySelector('[slot="icon"]') !== null
     this.observer = new window.IntersectionObserver(([entry]) => {
       this.isIntersecting = entry.isIntersecting
-      this.setValue()
+      if (this.actualValue !== this.value.toString()) {
+        this.setValue()
+      }
     }, {
       root: null,
       threshold: 0.5, // set offset 0.1 means trigger if atleast 10% of element in viewport

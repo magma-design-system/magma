@@ -5,7 +5,6 @@ svg-icons-publish-test:
   variables:
     BUILD_DIR: projects/svg-icons
     COMPONENT: svg-icons
-    PACK_NAME: maggioli-design-system-svg-icons-*.tgz
   rules:
     - if: $CI_PIPELINE_SOURCE == "merge_request_event" || $CI_COMMIT_BRANCH =~ /^(main|pipeline)$/
       changes:
@@ -18,6 +17,19 @@ svg-icons-publish:
   needs: [svg-icons-publish-test]
   variables:
     BUILD_DIR: projects/svg-icons
+  rules:
+    - if: $CI_COMMIT_BRANCH == "main"
+      changes:
+        - projects/svg-icons/package.json
+
+# SVG-ICONS INSTALL TEST
+svg-icons-install-test:
+  extends: .base-install-test
+  needs: [svg-icons-publish]
+  variables:
+    COMPONENT: svg-icons
+    BUILD_DIR: projects/svg-icons
+    PACK_NAME: maggioli-design-system-svg-icons-*.tgz
   rules:
     - if: $CI_COMMIT_BRANCH == "main"
       changes:

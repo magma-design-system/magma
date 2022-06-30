@@ -1,5 +1,5 @@
 import { Component, Host, h, Prop } from '@stencil/core'
-import { TypographyPrimaryType } from '../../types/typography'
+import { TypographyTitleType } from '../../types/typography'
 @Component({
   tag: 'mds-quote',
   styleUrl: 'mds-quote.css',
@@ -10,7 +10,7 @@ export class MdsQuote {
   /**
    * Specifies the font typography of the element
    */
-  @Prop() readonly typography: TypographyPrimaryType = 'h3'
+  @Prop() readonly typography: TypographyTitleType = 'h3'
 
   render () {
     return (

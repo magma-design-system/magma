@@ -2,6 +2,13 @@
 @tailwind utilities;
 @import '../../tailwind/components.css';
 
+/*
+* @prop --overlay-color: Set the overlay color of the background when the component is opened, this property can be inherited from `globals.css` in `styles^8.0.0`.
+* @prop --overlay-opacity: Set the overlay color opacity of the background when the component is opened, this property can be inherited from `globals.css` in `styles^8.0.0`.
+* @prop --window-background: Set the background color of the window when the component is opened
+* @prop --window-shadow: Set the box-shadow of the window when the component is opened
+*/
+
 @layer components {
   .animate-bottom,
   .animate-center,
@@ -61,9 +68,13 @@
 }
 
 :host {
+
+  --overlay-color: var(--overlay-color, 0 0 0);
+  --overlay-opacity: var(--overlay-opacity, 0.5);
+  --window-background: theme('colors.tone-neutral');
+  --window-shadow: theme('boxShadow.2xl');
+
   @apply
-    bg-adjust-tone-01
-    bg-opacity-0
     duration-700
     ease-in-out-expo
     fixed
@@ -73,6 +84,7 @@
     justify-center
     pointer-events-none;
 
+  background-color: rgba(var(--overlay-color, 0 0 0) / 0);
   perspective: 600px;
 }
 
@@ -94,9 +106,10 @@
 :host ( .animate-right-opened ),
 :host ( .animate-top-opened ) {
   @apply
-    bg-opacity-50
     duration-500
     pointer-events-auto;
+
+  background-color: rgba(var(--overlay-color, 0 0 0) / var(--overlay-opacity, 0.5));
 }
 
 .close {
@@ -105,7 +118,7 @@
     cursor-pointer
     duration-500
     ease-in-out-quart
-    fill-adjust-tone-10
+    fill-tone-neutral-10
     h-9
     opacity-0
     origin-center
@@ -124,11 +137,9 @@
     h-full
     overflow-auto;
 
-  background-color: var(--window-background, theme('colors.adjust-tone'));
-  box-shadow: var(--window-shadow, theme('boxShadow.2xl'));
+  background-color: var(--window-background);
+  box-shadow: var(--window-shadow);
   grid-template-rows: 1fr;
-
-  /* grid-template-rows: var(--grid-template-rows, auto 1fr auto); */
   max-width: calc(100vw - 80px);
 }
 

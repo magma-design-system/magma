@@ -39,6 +39,7 @@ export class MdsIcon {
 
   @Watch('name')
   async updateIconHref (): Promise<void> {
+    if (!this.name) return Promise.resolve()
     const svgPath = IconsSetService.getSvgPath() || window.sessionStorage.getItem(MdsIcon._svgPathKey)
     this._iconHref = svgPath && !this.name.startsWith('http') ? window.location.origin.concat(svgPath.concat(this.name).concat('.svg')) : this.name
     const svgHTML = await IconsSetService.fetchSvg(this._iconHref)
