@@ -16,9 +16,9 @@
 
 ## Events
 
-| Event         | Description                        | Type                  |
-| ------------- | ---------------------------------- | --------------------- |
-| `openedEvent` | Emits when the accordion is opened | `CustomEvent<string>` |
+| Event         | Description                        | Type                                 |
+| ------------- | ---------------------------------- | ------------------------------------ |
+| `openedEvent` | Emits when the accordion is opened | `CustomEvent<AccordionClickedEvent>` |
 
 
 ## CSS Custom Properties

@@ -30,7 +30,11 @@ const Template = args =>
   </mds-accordion>
 
 export const Default = Template.bind({})
-// console.log(Default)
+
+export const ItemNotClosable = Template.bind({})
+ItemNotClosable.args = {
+  closable: false,
+}
 
 export const Multiple = Template.bind({})
 Multiple.args = {
