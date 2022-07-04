@@ -62,7 +62,7 @@ stages:
     BUILD_DIR: to_be_extended
   script:
     - cd $BUILD_DIR
-    - export LATEST_PUBLISHED_V=`npm search @maggioli-design-system/${COMPONENT} --json | jq ".[0].version"`
+    - export LATEST_PUBLISHED_V=\"`npm view @maggioli-design-system/${COMPONENT} dist-tags.latest`\"
     - export TO_BE_PUBLISHED_V=`cat package.json | jq ".version"`
     - echo "VERSION TO BE PUBLISHED ${TO_BE_PUBLISHED_V}"
     - echo "LATEST PUBLISHED VERSION ${LATEST_PUBLISHED_V}"
