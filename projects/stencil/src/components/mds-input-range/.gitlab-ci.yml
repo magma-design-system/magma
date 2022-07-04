@@ -21,5 +21,5 @@ input-range-publish:
 # INSTALL TEST
 input-range-install-test:
   extends: [.base-stencil-install-test, .base-input-range]
-  needs: [input-range-publish]
-
+  dependencies: [base-stencil-build, input-range-isolate]
+  needs: [base-stencil-build, input-range-isolate, input-range-publish]
