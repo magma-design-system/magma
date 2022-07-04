@@ -21,5 +21,5 @@ flex-table-header-publish:
 # INSTALL TEST
 flex-table-header-install-test:
   extends: [.base-stencil-install-test, .base-flex-table-header]
-  needs: [flex-table-header-publish]
-
+  dependencies: [base-stencil-build, flex-table-header-isolate]
+  needs: [base-stencil-build, flex-table-header-isolate, flex-table-header-publish]

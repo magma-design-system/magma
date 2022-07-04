@@ -21,5 +21,5 @@ list-publish:
 # INSTALL TEST
 list-install-test:
   extends: [.base-stencil-install-test, .base-list]
-  needs: [list-publish]
-
+  dependencies: [base-stencil-build, list-isolate]
+  needs: [base-stencil-build, list-isolate, list-publish]

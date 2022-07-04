@@ -21,5 +21,5 @@ input-switch-group-publish:
 # INSTALL TEST
 input-switch-group-install-test:
   extends: [.base-stencil-install-test, .base-input-switch-group]
-  needs: [input-switch-group-publish]
-
+  dependencies: [base-stencil-build, input-switch-group-isolate]
+  needs: [base-stencil-build, input-switch-group-isolate, input-switch-group-publish]

@@ -21,5 +21,5 @@ label-publish:
 # INSTALL TEST
 label-install-test:
   extends: [.base-stencil-install-test, .base-label]
-  needs: [label-publish]
-
+  dependencies: [base-stencil-build, label-isolate]
+  needs: [base-stencil-build, label-isolate, label-publish]

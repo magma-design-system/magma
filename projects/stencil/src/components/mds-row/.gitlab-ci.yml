@@ -21,5 +21,5 @@ row-publish:
 # INSTALL TEST
 row-install-test:
   extends: [.base-stencil-install-test, .base-row]
-  needs: [row-publish]
-
+  dependencies: [base-stencil-build, row-isolate]
+  needs: [base-stencil-build, row-isolate, row-publish]

@@ -21,5 +21,5 @@ kpi-item-publish:
 # INSTALL TEST
 kpi-item-install-test:
   extends: [.base-stencil-install-test, .base-kpi-item]
-  needs: [kpi-item-publish]
-
+  dependencies: [base-stencil-build, kpi-item-isolate]
+  needs: [base-stencil-build, kpi-item-isolate, kpi-item-publish]
