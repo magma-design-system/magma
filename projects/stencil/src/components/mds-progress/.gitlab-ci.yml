@@ -21,5 +21,5 @@ progress-publish:
 # INSTALL TEST
 progress-install-test:
   extends: [.base-stencil-install-test, .base-progress]
-  needs: [progress-publish]
-
+  dependencies: [base-stencil-build, progress-isolate]
+  needs: [base-stencil-build, progress-isolate, progress-publish]

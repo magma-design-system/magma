@@ -21,5 +21,5 @@ button-publish:
 # INSTALL TEST
 button-install-test:
   extends: [.base-stencil-install-test, .base-button]
-  needs: [button-publish]
-
+  dependencies: [base-stencil-build, button-isolate]
+  needs: [base-stencil-build, button-isolate, button-publish]

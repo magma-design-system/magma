@@ -21,5 +21,5 @@ hr-publish:
 # INSTALL TEST
 hr-install-test:
   extends: [.base-stencil-install-test, .base-hr]
-  needs: [hr-publish]
-
+  dependencies: [base-stencil-build, hr-isolate]
+  needs: [base-stencil-build, hr-isolate, hr-publish]

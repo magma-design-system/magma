@@ -21,5 +21,5 @@ table-footer-publish:
 # INSTALL TEST
 table-footer-install-test:
   extends: [.base-stencil-install-test, .base-table-footer]
-  needs: [table-footer-publish]
-
+  dependencies: [base-stencil-build, table-footer-isolate]
+  needs: [base-stencil-build, table-footer-isolate, table-footer-publish]

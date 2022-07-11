@@ -21,5 +21,5 @@ header-bar-publish:
 # INSTALL TEST
 header-bar-install-test:
   extends: [.base-stencil-install-test, .base-header-bar]
-  needs: [header-bar-publish]
-
+  dependencies: [base-stencil-build, header-bar-isolate]
+  needs: [base-stencil-build, header-bar-isolate, header-bar-publish]

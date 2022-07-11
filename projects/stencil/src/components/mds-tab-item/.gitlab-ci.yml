@@ -21,5 +21,5 @@ tab-item-publish:
 # INSTALL TEST
 tab-item-install-test:
   extends: [.base-stencil-install-test, .base-tab-item]
-  needs: [tab-item-publish]
-
+  dependencies: [base-stencil-build, tab-item-isolate]
+  needs: [base-stencil-build, tab-item-isolate, tab-item-publish]

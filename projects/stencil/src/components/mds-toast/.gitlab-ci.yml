@@ -21,5 +21,5 @@ toast-publish:
 # INSTALL TEST
 toast-install-test:
   extends: [.base-stencil-install-test, .base-toast]
-  needs: [toast-publish]
-
+  dependencies: [base-stencil-build, toast-isolate]
+  needs: [base-stencil-build, toast-isolate, toast-publish]

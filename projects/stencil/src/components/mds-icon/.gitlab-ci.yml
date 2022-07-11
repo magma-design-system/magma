@@ -21,5 +21,5 @@ icon-publish:
 # INSTALL TEST
 icon-install-test:
   extends: [.base-stencil-install-test, .base-icon]
-  needs: [icon-publish]
-
+  dependencies: [base-stencil-build, icon-isolate]
+  needs: [base-stencil-build, icon-isolate, icon-publish]

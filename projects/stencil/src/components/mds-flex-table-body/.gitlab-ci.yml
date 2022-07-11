@@ -21,5 +21,5 @@ flex-table-body-publish:
 # INSTALL TEST
 flex-table-body-install-test:
   extends: [.base-stencil-install-test, .base-flex-table-body]
-  needs: [flex-table-body-publish]
-
+  dependencies: [base-stencil-build, flex-table-body-isolate]
+  needs: [base-stencil-build, flex-table-body-isolate, flex-table-body-publish]

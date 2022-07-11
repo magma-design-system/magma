@@ -21,5 +21,5 @@ banner-publish:
 # INSTALL TEST
 banner-install-test:
   extends: [.base-stencil-install-test, .base-banner]
-  needs: [banner-publish]
-
+  dependencies: [base-stencil-build, banner-isolate]
+  needs: [base-stencil-build, banner-isolate, banner-publish]

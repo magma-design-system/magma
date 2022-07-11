@@ -21,5 +21,5 @@ avatar-publish:
 # INSTALL TEST
 avatar-install-test:
   extends: [.base-stencil-install-test, .base-avatar]
-  needs: [avatar-publish]
-
+  dependencies: [base-stencil-build, avatar-isolate]
+  needs: [base-stencil-build, avatar-isolate, avatar-publish]
