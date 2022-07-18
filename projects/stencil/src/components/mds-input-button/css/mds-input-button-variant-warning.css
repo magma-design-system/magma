@@ -4,7 +4,7 @@
 :host ( [variant=warning][tone=strong] ) {
 
   --background: theme('colors.status-warning-05');
-  --color: theme('colors.adjust-tone');
+  --color: theme('colors.tone-neutral');
 }
 
 :host ( [variant=warning]:hover ),
@@ -28,7 +28,7 @@
 :host ( [variant=warning][tone=weak]:hover ) {
 
   --background: theme('colors.status-warning-05');
-  --color: theme('colors.adjust-tone');
+  --color: theme('colors.tone-neutral');
 }
 
 :host ( [variant=warning][tone=weak][active] ) {

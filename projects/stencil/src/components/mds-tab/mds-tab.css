@@ -15,13 +15,13 @@
 
 :host {
 
-  --background: theme('colors.adjust-tone-09');
+  --background: theme('colors.tone-neutral-09');
   --button-background-hover: transparent;
-  --button-background-selected: theme('colors.adjust-tone');
+  --button-background-selected: theme('colors.tone-neutral');
   --button-background: transparent;
-  --button-color-hover: theme('colors.adjust-tone-02');
-  --button-color-selected: theme('colors.adjust-tone-02');
-  --button-color: theme('colors.adjust-tone-04');
+  --button-color-hover: theme('colors.tone-neutral-02');
+  --button-color-selected: theme('colors.tone-neutral-02');
+  --button-color: theme('colors.tone-neutral-04');
   --button-radius: theme('spacing.2');
   --button-shadow-selected: theme('boxShadow.DEFAULT');
   --radius: theme('spacing.4');

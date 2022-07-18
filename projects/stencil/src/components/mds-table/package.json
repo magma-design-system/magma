@@ -1,6 +1,6 @@
 {
   "name": "@maggioli-design-system/mds-table",
-  "version": "1.3.0",
+  "version": "2.0.1",
   "description": "mds-table is a web-component from Maggioli Design System Magma, built with StencilJS, TypeScript, Storybook. It's based on the web-component standard and it's designed to be agnostic from the JavaScirpt framework you are using.",
   "main": "dist/index.cjs.js",
   "module": "dist/index.js",
@@ -19,13 +19,16 @@
   ],
   "scripts": {
     "build": "rm src/components.d.ts || true && stencil build --docs-readme",
-    "prepublishOnly": "npm run build"
+    "prepublishOnly": "npm run build",
+    "test": "stencil test --spec --e2e"
   },
   "dependencies": {
-    "@maggioli-design-system/mds-table-body": "^1.3.0",
-    "@maggioli-design-system/mds-table-footer": "^1.1.0",
-    "@maggioli-design-system/mds-table-header": "^1.1.0",
-    "@stencil/core": "^2.14.0"
+    "@maggioli-design-system/mds-table-body": "^2.0.1",
+    "@maggioli-design-system/mds-table-footer": "^2.0.1",
+    "@maggioli-design-system/mds-table-header": "^2.0.1",
+    "@maggioli-design-system/styles": "^8.0.0",
+    "@stencil/core": "^2.17.0",
+    "clsx": "^1.1.1"
   },
   "license": "MIT",
   "author": {

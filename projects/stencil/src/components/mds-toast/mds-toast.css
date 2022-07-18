@@ -4,14 +4,15 @@
 /**
 * @prop --background: Sets the background-color of the component
 * @prop --color: Sets the text color of the component
+* @prop --icon-color: Sets the text color of the component
 * @prop --shadow: Sets the box-shadow of the component
 */
 
 :host {
 
-  --color: theme('colors.adjust-tone');
-  --icon-color: theme('colors.adjust-tone');
-  --background: theme('colors.adjust-tone-02');
+  --color: theme('colors.tone-neutral');
+  --icon-color: theme('colors.tone-neutral');
+  --background: theme('colors.tone-neutral-02');
   --shadow: theme('boxShadow.xl');
 
   @apply
@@ -54,13 +55,15 @@
 }
 
 .actions {
-  @apply flex gap-2;
+  @apply
+    flex
+    gap-2;
 }
 
 ::slotted ( [slot=icon] ) {
   @apply transition-colors;
 
-  color: var(--icon-color);
+  fill: var(--icon-color);
 }
 
 @import './css/mds-toast-variant-dark.css';

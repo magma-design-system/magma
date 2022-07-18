@@ -14,8 +14,8 @@
   --scrollbar-radius: 0;
   --scrollbar-margin: 0;
   --scrollbar-size: theme('spacing.2');
-  --scrollbar-thumb-background: rgba(var(--adjust-tone-02), theme('opacity.30'));
-  --scrollbar-track-background: rgba(var(--adjust-tone-06), theme('opacity.30'));
+  --scrollbar-thumb-background: rgba(var(--tone-neutral-02), theme('opacity.30'));
+  --scrollbar-track-background: rgba(var(--tone-neutral-06), theme('opacity.30'));
 
   @apply
     flex

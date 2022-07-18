@@ -31,19 +31,19 @@
   --duration: 300ms;
   --icon-color-checked-disabled: theme('colors.brand-maggioli-04');
   --icon-color-checked: theme('colors.brand-maggioli-04');
-  --icon-color-indeterminate-disabled: theme('colors.adjust-tone-05');
-  --icon-color-indeterminate: theme('colors.adjust-tone-05');
-  --icon-color-unchecked-disabled: theme('colors.adjust-tone-06');
-  --icon-color-unchecked: theme('colors.adjust-tone-06');
+  --icon-color-indeterminate-disabled: theme('colors.tone-neutral-05');
+  --icon-color-indeterminate: theme('colors.tone-neutral-05');
+  --icon-color-unchecked-disabled: theme('colors.tone-neutral-06');
+  --icon-color-unchecked: theme('colors.tone-neutral-06');
   --switch-color-checked: theme('colors.brand-maggioli-04');
-  --switch-color-disabled-checked: theme('colors.adjust-tone-06');
-  --switch-color-disabled-unchecked: theme('colors.adjust-tone-08');
-  --switch-color-unchecked: theme('colors.adjust-tone-07');
+  --switch-color-disabled-checked: theme('colors.tone-neutral-06');
+  --switch-color-disabled-unchecked: theme('colors.tone-neutral-08');
+  --switch-color-unchecked: theme('colors.tone-neutral-07');
   --switch-padding: theme('spacing.1');
-  --switch-toggle-color-checked: theme('colors.adjust-tone');
-  --switch-toggle-color-disabled-checked: theme('colors.adjust-tone');
-  --switch-toggle-color-disabled-unchecked: theme('colors.adjust-tone-09');
-  --switch-toggle-color-unchecked: theme('colors.adjust-tone-10');
+  --switch-toggle-color-checked: theme('colors.tone-neutral');
+  --switch-toggle-color-disabled-checked: theme('colors.tone-neutral');
+  --switch-toggle-color-disabled-unchecked: theme('colors.tone-neutral-09');
+  --switch-toggle-color-unchecked: theme('colors.tone-neutral-10');
   --switch-toggle-size: theme('spacing.6');
 
   @apply
@@ -96,7 +96,6 @@
 .icon-unchecked {
   @apply
     opacity-100
-    transform
     transition-cosmetic;
 
   fill: var(--icon-color-unchecked);
@@ -106,7 +105,6 @@
 
 .icon-checked {
   @apply
-    transform
     transition-cosmetic;
 
   fill: var(--icon-color-checked);
@@ -149,7 +147,6 @@
     cursor-pointer
     ease-linear
     rounded-full
-    shadow
     transition-cosmetic;
 
   animation-duration: calc(var(--duration) * 1.5);
@@ -159,6 +156,7 @@
   animation-play-state: paused;
   animation-timing-function: var(--animation-timing-function);
   background-color: var(--switch-toggle-color-checked);
+  box-shadow: theme('boxShadow.DEFAULT');
   height: var(--switch-toggle-size);
   width: var(--switch-toggle-size);
 }
@@ -173,13 +171,6 @@
 .field:checked + .label-icon .icon-checked {
   transform: scale(theme('scale.100'));
   transition-duration: calc(var(--duration) * 1.5);
-}
-
-.field:focus + .label-icon .icon-checked,
-.field:focus + .label-icon .icon-unchecked {
-  @apply
-    ring
-    rounded-md;
 }
 
 .field:disabled + .label-icon .icon-unchecked {

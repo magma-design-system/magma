@@ -16,3 +16,10 @@ usage-publish-test:
 usage-publish:
   extends: [.base-stencil-publish, .base-usage]
   dependencies: [base-stencil-build, usage-isolate]
+  needs: [base-stencil-build, usage-isolate, usage-publish-test]
+
+# INSTALL TEST
+usage-install-test:
+  extends: [.base-stencil-install-test, .base-usage]
+  dependencies: [base-stencil-build, usage-isolate]
+  needs: [base-stencil-build, usage-isolate, usage-publish]

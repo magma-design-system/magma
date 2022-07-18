@@ -10,7 +10,7 @@
 
   --shadow: theme('boxShadow.md');
   --radius: theme('borderRadius.xl');
-  --background: theme('colors.adjust-tone');
+  --background: theme('colors.tone-neutral');
 
   @apply
     auto-rows-max

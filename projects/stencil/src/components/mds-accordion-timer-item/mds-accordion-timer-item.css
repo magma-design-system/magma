@@ -16,12 +16,12 @@
     relative
     transition-cosmetic;
 
-  color: var(--color, theme('colors.adjust-tone-02'));
+  color: var(--color, theme('colors.tone-neutral-02'));
 }
 
 :host ( :hover:not(.active) ) .progress-bar {
 
-  --background-active: theme('colors.adjust-tone-07');
+  --background-active: theme('colors.tone-neutral-07');
 }
 
 .row {

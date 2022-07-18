@@ -3,10 +3,16 @@ import { defineCustomElements } from '../dist/esm/loader'
 import 'loki/configure-react'
 
 import 'normalize.css'
-import '@maggioli-design-system/design-tokens/dist/css/colors-rgb.css'
-import '@maggioli-design-system/icons/dist/original/base64/mgg-icons-font-face.css'
-import 'typeface-karla'
-import 'typeface-roboto'
+import '@maggioli-design-system/styles/dist/css/colors-rgb.css'
+import '@maggioli-design-system/styles/dist/css/globals.css'
+import '@maggioli-design-system/styles/dist/css/reset.css'
+import '@maggioli-design-system/styles/dist/css/base.css'
+import '@fontsource/karla/400.css'
+import '@fontsource/karla/700.css'
+import '@fontsource/merriweather/400.css'
+import '@fontsource/merriweather/700.css'
+import '@fontsource/roboto/700.css'
+import '@fontsource/roboto/900.css'
 import './tailwind.css'
 import './iconsauce.css'
 
@@ -20,7 +26,10 @@ defineCustomElements();
 const mdsIconGet = async () => {
   await customElements.whenDefined('mds-icon')
 
-  mds_icon.setSvgPathStatic('/svg/')
+  const pathName = window.location.pathname.replace('/iframe.html', '')
+  const svgPath = pathName.charAt(pathName.length - 1) === '/' ? `${pathName}svg/` : `${pathName}/svg/`
+
+  mds_icon.setSvgPathStatic(svgPath)
   // MdsIcon.setSvgPathStatic('/svg/') // non va, why?
 }
 

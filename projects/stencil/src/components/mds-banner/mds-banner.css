@@ -13,9 +13,9 @@
     * @prop --icon-color: Sets the close icon fill color of the component
     */
 
-  --background: theme('colors.adjust-tone-10');
-  --color: theme('colors.adjust-tone-02');
-  --icon-color: theme('colors.adjust-tone-04');
+  --background: theme('colors.tone-neutral-10');
+  --color: theme('colors.tone-neutral-02');
+  --icon-color: theme('colors.tone-neutral-04');
   --radius: theme('borderRadius.lg');
   --shadow: none;
 
@@ -89,7 +89,7 @@
 
 .close-icon {
   @apply
-    bg-adjust-tone-05/0
+    bg-tone-neutral-05/0
     cursor-pointer
     p-1
     rounded-md
@@ -99,7 +99,7 @@
 }
 
 .close-icon:hover {
-  @apply bg-adjust-tone-05/20;
+  @apply bg-tone-neutral-05/20;
 }
 
 .icon {

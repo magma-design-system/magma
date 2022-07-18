@@ -16,3 +16,10 @@ video-wall-publish-test:
 video-wall-publish:
   extends: [.base-stencil-publish, .base-video-wall]
   dependencies: [base-stencil-build, video-wall-isolate]
+  needs: [base-stencil-build, video-wall-isolate, video-wall-publish-test]
+
+# INSTALL TEST
+video-wall-install-test:
+  extends: [.base-stencil-install-test, .base-video-wall]
+  dependencies: [base-stencil-build, video-wall-isolate]
+  needs: [base-stencil-build, video-wall-isolate, video-wall-publish]

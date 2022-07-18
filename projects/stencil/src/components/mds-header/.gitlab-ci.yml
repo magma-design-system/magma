@@ -16,3 +16,10 @@ header-publish-test:
 header-publish:
   extends: [.base-stencil-publish, .base-header]
   dependencies: [base-stencil-build, header-isolate]
+  needs: [base-stencil-build, header-isolate, header-publish-test]
+
+# INSTALL TEST
+header-install-test:
+  extends: [.base-stencil-install-test, .base-header]
+  dependencies: [base-stencil-build, header-isolate]
+  needs: [base-stencil-build, header-isolate, header-publish]

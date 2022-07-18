@@ -16,3 +16,10 @@ quote-publish-test:
 quote-publish:
   extends: [.base-stencil-publish, .base-quote]
   dependencies: [base-stencil-build, quote-isolate]
+  needs: [base-stencil-build, quote-isolate, quote-publish-test]
+
+# INSTALL TEST
+quote-install-test:
+  extends: [.base-stencil-install-test, .base-quote]
+  dependencies: [base-stencil-build, quote-isolate]
+  needs: [base-stencil-build, quote-isolate, quote-publish]

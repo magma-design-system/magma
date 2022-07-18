@@ -16,12 +16,19 @@ const typographyDictionary = [
   'tip',
 ]
 
+const typographyVariationsDictionary = [
+  'title',
+  'info',
+  'read',
+  'mono',
+]
+
 const typographyMonoDictionary = [
   'code',
   'hack',
 ]
 
-const typographyPrimaryDictionary = [
+const typographyTitleDictionary = [
   'action',
   'h1',
   'h2',
@@ -31,7 +38,7 @@ const typographyPrimaryDictionary = [
   'h6',
 ]
 
-const typographySecondaryDictionary = [
+const typographyInfoDictionary = [
   'caption',
   'detail',
   'label',
@@ -40,15 +47,30 @@ const typographySecondaryDictionary = [
   'tip',
 ]
 
+const typographyReadDictionary = [
+  'caption',
+  'detail',
+  'paragraph',
+]
+
 const typographySmallerDictionary = [
   'option',
   'tip',
 ]
 
+const typographyTooltipDictionary = [
+  'caption',
+  'detail',
+  'tip',
+]
+
 export {
   typographyDictionary,
+  typographyVariationsDictionary,
   typographyMonoDictionary,
-  typographyPrimaryDictionary,
-  typographySecondaryDictionary,
+  typographyTitleDictionary,
+  typographyInfoDictionary,
+  typographyReadDictionary,
   typographySmallerDictionary,
+  typographyTooltipDictionary,
 }

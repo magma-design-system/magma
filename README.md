@@ -30,10 +30,8 @@ yarn install
 
 ### Build all
 
-Warning, this will take 1 hour (90% of the time by `identity`)
-
 ```
-nx run-many --all --target=build --skip-nx-cache
+nx run-many --target=build --all --skip-nx-cache
 ```
 
 ### Build single project
@@ -50,7 +48,7 @@ If you want to test your nx build without cache, use `--skip-nx-cache` to avoid 
 Then you can run for every project:
 
 ```
-npx nx run stencil:storybook.start --skip-nx-cache
+nx run stencil:storybook.start --skip-nx-cache
 ```
 
 ## Development

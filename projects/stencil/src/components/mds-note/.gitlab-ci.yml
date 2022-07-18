@@ -16,4 +16,10 @@ note-publish-test:
 note-publish:
   extends: [.base-stencil-publish, .base-note]
   dependencies: [base-stencil-build, note-isolate]
+  needs: [base-stencil-build, note-isolate, note-publish-test]
 
+# INSTALL TEST
+note-install-test:
+  extends: [.base-stencil-install-test, .base-note]
+  dependencies: [base-stencil-build, note-isolate]
+  needs: [base-stencil-build, note-isolate, note-publish]

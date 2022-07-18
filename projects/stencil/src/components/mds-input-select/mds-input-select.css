@@ -9,14 +9,18 @@
   @apply
     flex
     relative
-    text-adjust-tone-02
-    text-secondary-detail;
+    text-tone-neutral-02
+    text-info-detail;
+
+  --variant-color: 0, 0, 0;
+  --ring: 0 0 0 1px rgba(var(--variant-color), 0.1);
+  --shadow: 0 1px 3px 0 rgba(var(--variant-color), 0.1), 0 1px 2px 0 rgba(var(--variant-color), 0.06);
 }
 
 .input {
   @apply
     appearance-none
-    bg-adjust-tone
+    bg-tone-neutral
     border-none
     border-transparent
     box-border
@@ -30,15 +34,13 @@
     pl-4
     pr-12
     py-3
-    ring-1
-    ring-adjust-tone-02
-    ring-opacity-10
     rounded-lg
-    shadow
-    text-adjust-tone-05
-    text-secondary-detail
+    text-tone-neutral-05
+    text-info-detail
     transition-cosmetic
     w-full;
+
+  box-shadow: var(--ring), var(--shadow);
 }
 
 .input:focus {
@@ -46,14 +48,15 @@
     duration-300
     ease-out-expo
     outline-none
-    ring
-    ring-brand-maggioli-04
-    shadow-sharp-lg
     transition-cosmetic;
+
+  --variant-color: 10, 80, 212;
+  --ring: 0 0 0 3px rgba(var(--variant-color), 1);
+  --shadow: 0 4px 6px -1px rgba(var(--variant-color), 0.1), 0 2px 4px -1px rgba(var(--variant-color), 0.06);
 }
 
 .input--selected {
-  @apply text-adjust-tone-02;
+  @apply text-tone-neutral-02;
 }
 
 .icon-container {
@@ -79,6 +82,6 @@
 .input:focus + .icon-container .icon,
 .input:hover + .icon-container .icon {
   @apply
-    bg-adjust-tone-09
+    bg-tone-neutral-09
     fill-brand-maggioli-02;
 }

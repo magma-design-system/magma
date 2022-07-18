@@ -16,3 +16,10 @@ horizontal-scroll-publish-test:
 horizontal-scroll-publish:
   extends: [.base-stencil-publish, .base-horizontal-scroll]
   dependencies: [base-stencil-build, horizontal-scroll-isolate]
+  needs: [base-stencil-build, horizontal-scroll-isolate, horizontal-scroll-publish-test]
+
+# INSTALL TEST
+horizontal-scroll-install-test:
+  extends: [.base-stencil-install-test, .base-horizontal-scroll]
+  dependencies: [base-stencil-build, horizontal-scroll-isolate]
+  needs: [base-stencil-build, horizontal-scroll-isolate, horizontal-scroll-publish]

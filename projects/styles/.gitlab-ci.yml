@@ -12,6 +12,8 @@ styles-build:
       - projects/design-tokens/config
       - projects/design-tokens/properties
       - projects/styles/dist
+  cache:
+    policy: pull-push
   rules:
     - if: $CI_PIPELINE_SOURCE == "merge_request_event" || $CI_COMMIT_BRANCH =~ /^(dev|main|pipeline)$/
       changes:
@@ -24,20 +26,35 @@ styles-publish-test:
   stage: test
   variables:
     BUILD_DIR: projects/styles
+    COMPONENT: styles
     PACK_NAME: maggioli-design-system-styles-*.tgz
   rules:
     - if: $CI_PIPELINE_SOURCE == "merge_request_event" || $CI_COMMIT_BRANCH =~ /^(main|pipeline)$/
       changes:
-        - projects/styles/**/*
+        - projects/styles/package.json
 
 # STYLES PUBLISH
 styles-publish:
   extends: .base-publish
   dependencies: [styles-build]
+  needs: [styles-publish-test, styles-build]
   stage: publish
   variables:
     BUILD_DIR: projects/styles
   rules:
     - if: $CI_COMMIT_BRANCH == "main"
       changes:
-        - projects/styles/**/*
+        - projects/styles/package.json
+
+# STYLES INSTALL TEST
+styles-install-test:
+  extends: .base-install-test
+  needs: [styles-publish]
+  variables:
+    BUILD_DIR: projects/styles
+    COMPONENT: styles
+    PACK_NAME: maggioli-design-system-styles-*.tgz
+  rules:
+    - if: $CI_COMMIT_BRANCH == "main"
+      changes:
+        - projects/styles/package.json

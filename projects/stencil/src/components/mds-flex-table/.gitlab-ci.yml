@@ -16,3 +16,10 @@ flex-table-publish-test:
 flex-table-publish:
   extends: [.base-stencil-publish, .base-flex-table]
   dependencies: [base-stencil-build, flex-table-isolate]
+  needs: [base-stencil-build, flex-table-isolate, flex-table-publish-test]
+
+# INSTALL TEST
+flex-table-install-test:
+  extends: [.base-stencil-install-test, .base-flex-table]
+  dependencies: [base-stencil-build, flex-table-isolate]
+  needs: [base-stencil-build, flex-table-isolate, flex-table-publish]

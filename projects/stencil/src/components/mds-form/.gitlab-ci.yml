@@ -16,3 +16,10 @@ form-publish-test:
 form-publish:
   extends: [.base-stencil-publish, .base-form]
   dependencies: [base-stencil-build, form-isolate]
+  needs: [base-stencil-build, form-isolate, form-publish-test]
+
+# INSTALL TEST
+form-install-test:
+  extends: [.base-stencil-install-test, .base-form]
+  dependencies: [base-stencil-build, form-isolate]
+  needs: [base-stencil-build, form-isolate, form-publish]

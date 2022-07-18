@@ -9,7 +9,7 @@
 
 :host {
 
-  --background-color-pending: theme('colors.adjust-tone-08');
+  --background-color-pending: theme('colors.tone-neutral-08');
   --background-color-placeholder: theme('colors.brand-maggioli-04');
   --radius: theme('borderRadius.full');
   --color-placeholder: theme('colors.brand-maggioli-10');

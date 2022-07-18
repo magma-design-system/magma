@@ -3,29 +3,29 @@
 :host ( [variant=light] ),
 :host ( [variant=light][tone=strong] ) {
 
-  --background: theme('colors.adjust-tone');
-  --color: theme('colors.adjust-tone-02');
-  --icon-color: theme('colors.adjust-tone-05');
+  --background: theme('colors.tone-neutral');
+  --color: theme('colors.tone-neutral-02');
+  --icon-color: theme('colors.tone-neutral-05');
   --shadow: theme('boxShadow.sharp-lg');
 }
 
 :host ( [variant=light][tone=weak] ) {
 
-  --background: theme('colors.adjust-tone');
-  --color: theme('colors.adjust-tone-02');
-  --icon-color: theme('colors.adjust-tone-05');
+  --background: theme('colors.tone-neutral');
+  --color: theme('colors.tone-neutral-02');
+  --icon-color: theme('colors.tone-neutral-05');
   --shadow: theme('boxShadow.sharp-sm');
 }
 
 :host ( [variant=light][tone=ghost] ) {
 
-  --color: theme('colors.adjust-tone-02');
+  --color: theme('colors.tone-neutral-02');
   --shadow: none;
 }
 
 :host ( [variant=light][tone=quiet] ) {
 
   --background: transparent;
-  --color: theme('colors.adjust-tone-10');
+  --color: theme('colors.tone-neutral-10');
   --shadow: none;
 }

@@ -1,17 +1,16 @@
 {
   "name": "@maggioli-design-system/styles",
-  "version": "6.5.4",
+  "version": "8.1.1",
   "description": "This module contains SCSS and CSS styles used by Maggioli Design System, it also makes available a Tailwind config based on Maggioli design tokens.",
   "main": "./tailwind.config.js",
   "scripts": {
     "build": "npm run clean && npm run copy && npm run tailwind.build",
-    "clean": "rm -rf dist || true && mkdir -p dist/css dist/tailwind",
-    "copy": "npm run copy.tailwind && npm run copy.css",
-    "copy.tailwind": "cp -rf tailwind dist",
-    "copy.css": "cp -rf ../design-tokens/dist/css/*.css ./dist/css/.",
-    "tailwind.base": "tailwindcss -i ./css/base.css -o ./dist/css/base.css",
-    "tailwind.build": "npm run tailwind.base && npm run tailwind.typography",
-    "tailwind.typography": "tailwindcss -i ./css/typography.css -o ./dist/css/typography.css"
+    "clean": "npx ts-node scripts/clean.ts",
+    "copy": "npx ts-node scripts/copy.ts",
+    "tailwind.base": "postcss ./postcss/base.css -o ./dist/css/base.css",
+    "tailwind.reset": "postcss ./postcss/reset.css -o ./dist/css/reset.css",
+    "tailwind.build": "npm run tailwind.base && npm run tailwind.reset && npm run tailwind.typography",
+    "tailwind.typography": "postcss ./postcss/typography.css -o ./dist/css/typography.css"
   },
   "files": [
     "/postcss.config.js",
@@ -33,19 +32,29 @@
       "name": "Vittorio Vittori",
       "email": "vittorio.vittori@maggioli.it",
       "role": "UX UI Designer"
+    },
+    {
+      "name": "Daniele Tardia",
+      "email": "daniele.tardia@hibo.it",
+      "role": "Senior Developer"
     }
   ],
   "license": "ISC",
   "dependencies": {
-    "@maggioli-design-system/design-tokens": "^6.4.1",
+    "@fontsource/karla": "^4.5.8",
+    "@fontsource/merriweather": "^4.5.12",
+    "@fontsource/roboto": "^4.5.7",
+    "@maggioli-design-system/design-tokens": "^8.0.0",
     "normalize.css": "^8.0.1",
     "typeface-karla": "^1.1.13",
+    "typeface-merriweather": "^1.1.13",
     "typeface-roboto": "^1.1.13"
   },
   "devDependencies": {
-    "autoprefixer": "^10.4.2",
-    "postcss": "^8.4.6",
-    "postcss-import": "^14.0.2",
-    "tailwindcss": "^3.0.22"
+    "autoprefixer": "^10.4.7",
+    "postcss-cli": "^9.1.0",
+    "postcss": "^8.4.13",
+    "postcss-import": "^14.0.7",
+    "tailwindcss": "^3.1.4"
   }
 }

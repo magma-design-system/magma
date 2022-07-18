@@ -16,3 +16,10 @@ table-footer-publish-test:
 table-footer-publish:
   extends: [.base-stencil-publish, .base-table-footer]
   dependencies: [base-stencil-build, table-footer-isolate]
+  needs: [base-stencil-build, table-footer-isolate, table-footer-publish-test]
+
+# INSTALL TEST
+table-footer-install-test:
+  extends: [.base-stencil-install-test, .base-table-footer]
+  dependencies: [base-stencil-build, table-footer-isolate]
+  needs: [base-stencil-build, table-footer-isolate, table-footer-publish]

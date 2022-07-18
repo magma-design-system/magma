@@ -9,8 +9,8 @@
 
 :host {
 
-  --color: theme('colors.adjust-tone-02');
-  --border-color: theme('colors.adjust-tone-08');
+  --color: theme('colors.tone-neutral-02');
+  --border-color: theme('colors.tone-neutral-08');
 
   @apply
     duration-500
@@ -55,7 +55,8 @@
   @apply
     auto-cols-min
     cursor-pointer
-    gap-4;
+    gap-4
+    grid;
 
   grid-template-columns: 1fr auto;
 }
@@ -91,11 +92,11 @@
   @apply
     duration-500
     ease-out-expo
-    transform
-    rotate-180
     transition-transform;
+
+  transform: rotate(180deg);
 }
 
 :host( [opened] ) .icon {
-  @apply rotate-0;
+  transform: rotate(0deg);
 }

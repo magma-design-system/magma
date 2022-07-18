@@ -9,14 +9,21 @@ html {
 
 body {
   @apply
-    text-adjust-tone-04
-    text-secondary-detail;
+    antialiased
+    font-info
+    text-tone-neutral-02
+    text-info-detail;
 
   -moz-osx-font-smoothing: grayscale;
   -webkit-font-smoothing: antialiased;
   -webkit-tap-highlight-color: transparent;
-  text-rendering: optimizeLegibility;
+  text-rendering: optimizelegibility;
   text-size-adjust: 100%;
+}
+
+::selection {
+  background-color: var(--selection-background, theme('colors.label-sky-09'));
+  color: var(--selection-color, theme('colors.label-sky-01'));
 }
 
 button,
@@ -25,7 +32,7 @@ select {
   @apply
     antialiased
     font-medium
-    font-primary
+    font-title
     leading-relaxed;
 }
 
@@ -86,10 +93,4 @@ h5,
 h6,
 p {
   @apply m-0;
-}
-
-::selection {
-  @apply
-    bg-brand-maggioli-09
-    text-brand-maggioli-02;
 }

@@ -16,3 +16,10 @@ bibliography-publish-test:
 bibliography-publish:
   extends: [.base-stencil-publish, .base-bibliography]
   dependencies: [base-stencil-build, bibliography-isolate]
+  needs: [base-stencil-build, bibliography-isolate, bibliography-publish-test]
+
+# INSTALL TEST
+bibliography-install-test:
+  extends: [.base-stencil-install-test, .base-bibliography]
+  dependencies: [base-stencil-build, bibliography-isolate]
+  needs: [base-stencil-build, bibliography-isolate, bibliography-publish]

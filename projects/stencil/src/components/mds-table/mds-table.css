@@ -14,13 +14,13 @@
 
 :host {
 
-  --background-hover: theme('colors.adjust-tone');
-  --background-row-hover: theme('colors.adjust-tone-10');
-  --background: theme('colors.adjust-tone');
-  --border-color: theme('colors.adjust-tone-09');
+  --background-hover: theme('colors.tone-neutral');
+  --background-row-hover: theme('colors.tone-neutral-10');
+  --background: theme('colors.tone-neutral');
+  --border-color: theme('colors.tone-neutral-09');
   --border-width: theme('borderWidth.2');
   --cell-padding: theme('spacing.4');
-  --section-border-color: theme('colors.adjust-tone-07');
+  --section-border-color: theme('colors.tone-neutral-07');
   --radius: theme('borderRadius.none');
   --shadow: theme('boxShadow.none');
 

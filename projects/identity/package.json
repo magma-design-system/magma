@@ -1,15 +1,15 @@
 {
   "name": "@maggioli-design-system/identity",
-  "version": "1.9.1",
+  "version": "1.11.0",
   "description": "Maggioli brand identity assets",
   "files": [
     "/dist/**/*"
   ],
   "scripts": {
-    "assets": "node build.js",
+    "assets": "npx ts-node scripts/build.ts",
     "build": "npm run clean && npm run assets && npm run dir-tree",
-    "clean": "rm -rf dist",
-    "dir-tree": "node dir-tree.js"
+    "clean": "npx ts-node scripts/clean.ts",
+    "dir-tree": "npx ts-node scripts/dir-tree.ts"
   },
   "keywords": [
     "asset",
@@ -31,12 +31,18 @@
   },
   "license": "ISC",
   "devDependencies": {
+    "@types/pdfkit": "^0.12.6",
+    "@types/sharp": "^0.30.2",
+    "@types/svg-to-pdfkit": "^0.1.0",
     "chalk": "^4.1.1",
     "directory-tree": "^2.2.9",
-    "pdfkit": "^0.11.0",
-    "sharp": "^0.27.1",
-    "shelljs": "^0.8.4",
+    "pdfkit": "^0.13.0",
+    "sharp": "^0.30.4",
     "svg-dimensions": "^1.0.2",
     "svg-to-pdfkit": "^0.1.8"
   }
 }
+
+
+
+

@@ -1,0 +1,25 @@
+.base-dropdown:
+  variables:
+    COMPONENT: mds-dropdown
+
+# ISOLATE
+dropdown-isolate:
+  extends: [.base-isolate, .base-dropdown]
+  dependencies: [base-stencil-build]
+
+# TEST
+dropdown-publish-test:
+  extends: [.base-stencil-publish-test, .base-dropdown]
+  dependencies: [base-stencil-build, dropdown-isolate]
+
+# PUBLISH
+dropdown-publish:
+  extends: [.base-stencil-publish, .base-dropdown]
+  dependencies: [base-stencil-build, dropdown-isolate]
+  needs: [base-stencil-build, dropdown-isolate, dropdown-publish-test]
+
+# INSTALL TEST
+dropdown-install-test:
+  extends: [.base-stencil-install-test, .base-dropdown]
+  dependencies: [base-stencil-build, dropdown-isolate]
+  needs: [base-stencil-build, dropdown-isolate, dropdown-publish]

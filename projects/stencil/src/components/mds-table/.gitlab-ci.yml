@@ -16,4 +16,10 @@ table-publish-test:
 table-publish:
   extends: [.base-stencil-publish, .base-table]
   dependencies: [base-stencil-build, table-isolate]
+  needs: [base-stencil-build, table-isolate, table-publish-test]
 
+# INSTALL TEST
+table-install-test:
+  extends: [.base-stencil-install-test, .base-table]
+  dependencies: [base-stencil-build, table-isolate]
+  needs: [base-stencil-build, table-isolate, table-publish]

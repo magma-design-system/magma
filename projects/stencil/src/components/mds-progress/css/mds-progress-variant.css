@@ -2,14 +2,14 @@
 
 :host ( [variant=dark] ) {
 
-  --color: theme('colors.adjust-tone-04');
-  --background: theme('colors.adjust-tone-08');
+  --color: theme('colors.tone-neutral-04');
+  --background: theme('colors.tone-neutral-08');
 }
 
 :host ( [variant=light] ) {
 
-  --color: theme('colors.adjust-tone');
-  --background: theme('colors.adjust-tone-05');
+  --color: theme('colors.tone-neutral');
+  --background: theme('colors.tone-neutral-05');
 }
 
 :host ( [variant=error] ) {
@@ -39,5 +39,5 @@
 :host ( [variant=primary] ) {
 
   --color: theme('colors.brand-maggioli-03');
-  --background: theme('colors.adjust-tone-08');
+  --background: theme('colors.tone-neutral-08');
 }

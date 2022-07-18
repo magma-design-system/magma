@@ -25,18 +25,20 @@ stages:
   - build:storybook
   - test
   - publish
+  - test:install
   - deploy:storybook
   - deploy:website # TODO
 
 # BASE BUILD
 .base-build:
-  image: node:16.13
+  image: node:18.3
   stage: build
   before_script:
+    - apt update && apt install jq -y
     - npm install -g --force nx yarn
     - |
       if [[ ! -d node_modules ]]; then
-        yarn install
+        yarn install --frozen-lockfile --prefer-offline --force
       fi
   cache:
     key:
@@ -57,11 +59,32 @@ stages:
   extends: .base-build
   stage: test
   variables:
-    PACK_NAME: to_be_extended
     BUILD_DIR: to_be_extended
   script:
     - cd $BUILD_DIR
-    - npm pack && npm install $PACK_NAME && npm publish --dry-run
+    - export LATEST_PUBLISHED_V=\"`npm view @maggioli-design-system/${COMPONENT} dist-tags.latest`\"
+    - export TO_BE_PUBLISHED_V=`cat package.json | jq ".version"`
+    - echo "VERSION TO BE PUBLISHED ${TO_BE_PUBLISHED_V}"
+    - echo "LATEST PUBLISHED VERSION ${LATEST_PUBLISHED_V}"
+    - |
+      if [ "$LATEST_PUBLISHED_V" = "$TO_BE_PUBLISHED_V" ]; then
+        echo "${LATEST_PUBLISHED_V} == ${TO_BE_PUBLISHED_V} : cannot publish!"
+        exit 1
+      else
+        npm publish --access public --dry-run
+      fi
+
+# BASE INSTALL TEST
+.base-install-test:
+  extends: .base-build
+  stage: test:install
+  variables:
+    COMPONENT: to_be_extended
+    BUILD_DIR: to_be_extended
+    PACK_NAME: to_be_extended
+  script:
+    - cd $BUILD_DIR
+    - npm pack && npm install --prefix ./ $PACK_NAME
 
 # BASE PUBLISH
 .base-publish:
@@ -71,10 +94,11 @@ stages:
     BUILD_DIR: to_be_extended
   script:
     - cd $BUILD_DIR
-    - cp $NPMRC_FILE .npmrc
-    - echo "_auth=$NODE_AUTH_TOKEN" >> .npmrc
-    - echo "//registry.npmjs.org/:_authToken=$NODE_AUTH_TOKEN" >> .npmrc
-    - npm publish
+    - npm config set engine-strict "true"
+    - npm config set always-auth "true"
+    - npm config set _auth $NPM_TOKEN
+    - npm config set //registry.npmjs.org/:_authToken $NPM_TOKEN
+    - npm publish --access public
 
 include:
   - '/projects/design-tokens/.gitlab-ci.yml'
