@@ -47,6 +47,11 @@ export class MdsInputRange {
     this.changeEvent.emit(this.value)
   }
 
+  @Watch('value')
+  valueChanged (): void {
+    this.calculateProgress()
+  }
+
   @Watch('min')
   minChanged (): void {
     this.calculateProgress()
