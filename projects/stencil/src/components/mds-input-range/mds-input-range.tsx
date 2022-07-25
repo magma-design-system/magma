@@ -42,9 +42,14 @@ export class MdsInputRange {
   }
 
   private onInput = (e: Event) => {
-    this.value = e.target.value
+    this.value = parseInt((e.target as HTMLInputElement).value, 10)
     this.calculateProgress()
     this.changeEvent.emit(this.value)
+  }
+
+  @Watch('value')
+  valueChanged (): void {
+    this.calculateProgress()
   }
 
   @Watch('min')
