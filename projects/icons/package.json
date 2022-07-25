@@ -16,7 +16,8 @@
   },
   "dependencies": {
     "@maggioli-design-system/svg-icons": "^2.8.0",
-    "@mdi/svg": "^6.7.96",
+    "@material-icons/svg": "^1.0.30",
+    "@mdi/svg": "^7.0.96",
     "material-design-icons-updated": "^7.0.0"
   },
   "devDependencies": {
