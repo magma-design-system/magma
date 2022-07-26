@@ -94,8 +94,8 @@ class MaterialIconsSvg {
    * Search the requested icon in Material icons
    */
   static async getPath (iconName: string): Promise<string> {
-    const subdirectories = await MaterialIconsSvg.subDirectories()
-    const filename = `${iconName}/baseline.svg`
+    const subdirectories = (await MaterialIconsSvg.subDirectories()).filter(path => path.match(iconName) !== null)
+    const filename = 'baseline.svg'
     return iconGroupGetHelper('material-icons-svg', subdirectories, iconName, filename)
   }
 
@@ -206,8 +206,6 @@ const subDirectories = async (source: string): Promise<string[]> => {
  */
 const iconGroupGetHelper = async (iconGroup: string, directories: string[], iconName: string, filename: string): Promise<string> => {
   for (const directory of directories) {
-    console.log('---')
-    console.log(directory, filename)
     const fullPath = await searchFileInDirectory(directory, filename)
     logStatus({
       actionDoing: 'checking',
