@@ -79,7 +79,7 @@ class Material {
   }
 }
 
-class MaterialIconsUpdated {
+class MaterialIconsSvg {
   static ICONS_DIR = `${path.dirname(require.resolve('@material-icons/svg/package.json'))}/svg`
   static FILE_NAME_REGEX = /^([\w\-_]+)\/baseline\.svg$/
 
@@ -94,24 +94,24 @@ class MaterialIconsUpdated {
    * Search the requested icon in Material icons
    */
   static async getPath (iconName: string): Promise<string> {
-    const subdirectories = await MaterialIconsUpdated.subDirectories()
+    const subdirectories = await MaterialIconsSvg.subDirectories()
     const filename = `${iconName}/baseline.svg`
-    return iconGroupGetHelper('material-icons-updated', subdirectories, iconName, filename)
+    return iconGroupGetHelper('material-icons-svg', subdirectories, iconName, filename)
   }
 
   /**
    * Search all the Material icons
    */
   static async listPath (): Promise<string[]> {
-    const subdirectories = await MaterialIconsUpdated.subDirectories()
-    return iconGroupListHelper(subdirectories, MaterialIconsUpdated.FILE_NAME_REGEX)
+    const subdirectories = await MaterialIconsSvg.subDirectories()
+    return iconGroupListHelper(subdirectories, MaterialIconsSvg.FILE_NAME_REGEX)
   }
 
   /**
    * Given the path of an icon or just the file name, it returns the icon name
    */
   static getIconName (path: string): string {
-    return path.split('/').slice(-1)[0].match(MaterialIconsUpdated.FILE_NAME_REGEX)![1]
+    return path.split('/').slice(-1)[0].match(MaterialIconsSvg.FILE_NAME_REGEX)![1]
   }
 }
 
@@ -206,6 +206,8 @@ const subDirectories = async (source: string): Promise<string[]> => {
  */
 const iconGroupGetHelper = async (iconGroup: string, directories: string[], iconName: string, filename: string): Promise<string> => {
   for (const directory of directories) {
+    console.log('---')
+    console.log(directory, filename)
     const fullPath = await searchFileInDirectory(directory, filename)
     logStatus({
       actionDoing: 'checking',
@@ -251,7 +253,7 @@ const ICON_GROUPS = {
   localDirectory: { getPath: LocalDirectory.getPath, listPath: LocalDirectory.listPath, getIconName: LocalDirectory.getIconName, subDirectories: LocalDirectory._subDirectories },
   maggioli: { getPath: Maggioli.getPath, listPath: Maggioli.listPath, getIconName: Maggioli.getIconName },
   material: { getPath: Material.getPath, listPath: Material.listPath, getIconName: Material.getIconName },
-  'material-icons-updated': { getPath: MaterialIconsUpdated.getPath, listPath: MaterialIconsUpdated.listPath, getIconName: MaterialIconsUpdated.getIconName },
+  'material-icons-svg': { getPath: MaterialIconsSvg.getPath, listPath: MaterialIconsSvg.listPath, getIconName: MaterialIconsSvg.getIconName },
   mdi: { getPath: MaterialCommunity.getPath, listPath: MaterialCommunity.listPath, getIconName: MaterialCommunity.getIconName },
 }
 
