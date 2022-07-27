@@ -22,7 +22,7 @@
   "action-drag": "material/drag_handle",
   "action-drop-down": "material/arrow_drop_down_circle",
   "action-drop-up": "mdi/arrow-up-drop-circle",
-  "action-email-send": "mdi/email-send",
+  "action-email-send": "mdi/email-arrow-right",
   "action-expand-horizontal": "mdi/unfold-more-vertical",
   "action-expand-vertical": "material/unfold_more",
   "action-export": "material/ios_share",
