@@ -2148,7 +2148,7 @@
     typeface-karla "1.1.13"
     typeface-roboto "1.1.13"
 
-"@maggioli-design-system/svg-icons@^2.6.3", "@maggioli-design-system/svg-icons@^2.8.0":
+"@maggioli-design-system/svg-icons@^2.6.3":
   version "2.10.1"
   resolved "https://registry.npmjs.org/@maggioli-design-system/svg-icons/-/svg-icons-2.10.1.tgz#3c86d5b738407a7fe756877aa87baf7b4d2d5f8d"
   integrity sha512-F8gr6zRdYMXO0wPqgCaaqaBzmxMo7bvz84ULUyFcUHWNizj2iwkv9QhRZsf2Y/gL2bX+X6QcULDJGp/NcWbd+Q==
