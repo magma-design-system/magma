@@ -94,7 +94,8 @@ class MaterialIconsSvg {
    * Search the requested icon in Material icons
    */
   static async getPath (iconName: string): Promise<string> {
-    const subdirectories = (await MaterialIconsSvg.subDirectories()).filter(path => path.match(iconName) !== null)
+    const pattern = new RegExp('\/' + iconName)
+    const subdirectories = (await MaterialIconsSvg.subDirectories()).filter(path => path.match(pattern) !== null)
     const filename = 'baseline.svg'
     return iconGroupGetHelper('material-icons-svg', subdirectories, iconName, filename)
   }
@@ -207,6 +208,7 @@ const subDirectories = async (source: string): Promise<string[]> => {
 const iconGroupGetHelper = async (iconGroup: string, directories: string[], iconName: string, filename: string): Promise<string> => {
   for (const directory of directories) {
     const fullPath = await searchFileInDirectory(directory, filename)
+    console.log(filename)
     logStatus({
       actionDoing: 'checking',
       subject: iconName,
@@ -244,6 +246,11 @@ const listFilesInDirectory = async (directory: string, fileTemplate?: RegExp): P
  */
 const searchFileInDirectory = async (directory: string, filename: string): Promise<string | void> => {
   const files = await listFilesInDirectory(directory)
+  // if (filename.match(/hive/)){
+  //   console.log('FILENAME', filename)
+  //   console.log('FILES')
+  //   console.log(files)
+  // }
   if (files.includes(filename)) return path.join(directory, filename)
 }
 
