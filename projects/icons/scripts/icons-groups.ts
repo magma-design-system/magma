@@ -79,6 +79,43 @@ class Material {
   }
 }
 
+class MaterialIconsSvg {
+  static ICONS_DIR = `${path.dirname(require.resolve('@material-icons/svg/package.json'))}/svg`
+  static FILE_NAME_REGEX = /^([\w\-_]+)\/baseline\.svg$/
+
+  /**
+   * List of paths of subdirectories (possibly) with icons
+   */
+  static async subDirectories (): Promise<string[]> {
+    return subDirectories(this.ICONS_DIR)
+  }
+
+  /**
+   * Search the requested icon in Material icons
+   */
+  static async getPath (iconName: string): Promise<string> {
+    const pattern = new RegExp('\/' + iconName)
+    const subdirectories = (await MaterialIconsSvg.subDirectories()).filter(path => path.match(pattern) !== null)
+    const filename = 'baseline.svg'
+    return iconGroupGetHelper('material-icons-svg', subdirectories, iconName, filename)
+  }
+
+  /**
+   * Search all the Material icons
+   */
+  static async listPath (): Promise<string[]> {
+    const subdirectories = await MaterialIconsSvg.subDirectories()
+    return iconGroupListHelper(subdirectories, MaterialIconsSvg.FILE_NAME_REGEX)
+  }
+
+  /**
+   * Given the path of an icon or just the file name, it returns the icon name
+   */
+  static getIconName (path: string): string {
+    return path.split('/').slice(-1)[0].match(MaterialIconsSvg.FILE_NAME_REGEX)![1]
+  }
+}
+
 class MaterialCommunity {
   static ICONS_DIR = `${path.dirname(require.resolve('@mdi/svg/package.json'))}/svg`
   static FILE_NAME_REGEX = /^([\w-]+)\.svg$/
@@ -215,6 +252,7 @@ const ICON_GROUPS = {
   localDirectory: { getPath: LocalDirectory.getPath, listPath: LocalDirectory.listPath, getIconName: LocalDirectory.getIconName, subDirectories: LocalDirectory._subDirectories },
   maggioli: { getPath: Maggioli.getPath, listPath: Maggioli.listPath, getIconName: Maggioli.getIconName },
   material: { getPath: Material.getPath, listPath: Material.listPath, getIconName: Material.getIconName },
+  'material-icons-svg': { getPath: MaterialIconsSvg.getPath, listPath: MaterialIconsSvg.listPath, getIconName: MaterialIconsSvg.getIconName },
   mdi: { getPath: MaterialCommunity.getPath, listPath: MaterialCommunity.listPath, getIconName: MaterialCommunity.getIconName },
 }
 
