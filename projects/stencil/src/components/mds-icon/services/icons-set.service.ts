@@ -4,9 +4,19 @@ class IconsSetController {
   private _svgPath: string
   private _iconsSets: Map<string, MdsIconSet> = new Map()
 
+  public readonly _svgPathKey = 'mdsIconSvgPath'
+
+  private readonly _svgPathUpdate = 'mdsIconSvgPathUpdate'
+
   private readonly cacheExp = 60 * 60 * 1000 * 24
 
   private memoryCache = {}
+
+  private listeners: (() => void)[] = []
+
+  constructor () {
+    this.setUpListener()
+  }
 
   addIconSet (name: string, path: string, resolveIconName: IconNameResolverFn): boolean {
     let resolveFunction = resolveIconName
@@ -34,10 +44,15 @@ class IconsSetController {
 
   setSvgPath (svgPath: string): void {
     this._svgPath = svgPath
+    window.dispatchEvent(new Event(this._svgPathUpdate))
   }
 
   getSvgPath (): string {
     return this._svgPath
+  }
+
+  registerListener (callback: () => void): void {
+    this.listeners.push(callback)
   }
 
   // Try to retrieve svg from cache
@@ -74,6 +89,12 @@ class IconsSetController {
     } catch (e) {
       console.error('setCache error', e)
     }
+  }
+
+  private setUpListener (): void {
+    window.addEventListener(this._svgPathUpdate, () => {
+      for (const listener of this.listeners) listener()
+    })
   }
 
   async fetchSvg (src: string): Promise<string> {

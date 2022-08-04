@@ -14,7 +14,7 @@ export default {
 }
 
 const Template = args =>
-  <mds-icon {...args}/>
+  <mds-icon {...args} />
 
 export const Default = Template.bind({})
 Default.args = {
@@ -29,3 +29,26 @@ ExternalSVG.args = {
 }
 
 export const NoIcon = Template.bind({})
+
+const ButtonTemplate = args =>
+  <div>
+    <button onClick={() => {
+      const pathName = window.location.pathname.replace('/iframe.html', '')
+      const svgPath = pathName.charAt(pathName.length - 1) === '/' ? `${pathName}svg/` : `${pathName}/svg/`
+      window.sessionStorage.setItem('mdsIconSvgPath', svgPath)
+      window.dispatchEvent(new CustomEvent('mdsIconSvgPathUpdate'))
+    }}>Cliccami</button><br />
+    <mds-icon {...args}></mds-icon><br />
+    <mds-icon {...args}></mds-icon><br />
+    <mds-icon {...args}></mds-icon><br />
+    <mds-icon {...args}></mds-icon><br />
+    <mds-icon {...args}></mds-icon><br />
+    <mds-icon {...args}></mds-icon><br />
+    <mds-icon {...args}></mds-icon>
+  </div>
+
+export const StorageTest = ButtonTemplate.bind({})
+StorageTest.args = {
+  name: 'mdi/alien',
+  class: 'fill-label-green-05',
+}

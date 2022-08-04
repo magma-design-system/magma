@@ -19,10 +19,9 @@ export class MdsIcon {
 
   @Element() hostElement: HTMLMdsIconElement
 
-  static readonly _svgPathKey = 'mdsIconSvgPath'
-
   componentWillLoad (): void {
     this.updateIconHref()
+    IconsSetService.registerListener(() => this.updateIconHref())
   }
 
   static setSvgPathStatic (path: string): void {
@@ -36,13 +35,12 @@ export class MdsIcon {
   @Method()
   async setSvgPath (svgPath: string): Promise<void> {
     IconsSetService.setSvgPath(svgPath)
-    this.updateIconHref()
   }
 
   @Watch('name')
   async updateIconHref (): Promise<void> {
     if (!this.name) return Promise.resolve()
-    const svgPath = IconsSetService.getSvgPath() || window.sessionStorage.getItem(MdsIcon._svgPathKey)
+    const svgPath = IconsSetService.getSvgPath() || window.sessionStorage.getItem(IconsSetService._svgPathKey)
     this._iconHref = svgPath && !this.name.startsWith('http') ? window.location.origin.concat(svgPath.concat(this.name).concat('.svg')) : this.name
     this.svgHTML = await IconsSetService.fetchSvg(this._iconHref)
   }
