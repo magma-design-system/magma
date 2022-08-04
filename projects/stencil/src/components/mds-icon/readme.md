@@ -54,6 +54,20 @@ const mdsIconGet = async () => {
 mdsIconGet()
 ```
 
+## Force icon update
+
+In some cases it may happens that when setting the path to where the SVG are located, icons still fail to load them.
+
+This may be caused by the instatiation of `mds-icon` component happening before the setting of the directory path.
+
+To force the update of the icons, after you have called `window.sessionStorage` or the `mds-icon` functions, you can dispatch a global event from the window with the key `mdsIconSvgPathUpdate`
+
+```javascript
+window.dispatchEvent(new CustomEvent('mdsIconSvgPathUpdate'))
+```
+
+Once done this, the icons component already instantiated will be notified of the update and try to reload the icons.
+
 <!-- Auto Generated Below -->
 
 
