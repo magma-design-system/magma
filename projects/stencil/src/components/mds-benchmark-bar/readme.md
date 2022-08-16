@@ -7,11 +7,12 @@
 
 ## Properties
 
-| Property     | Attribute    | Description                                             | Type                                                                            | Default   |
-| ------------ | ------------ | ------------------------------------------------------- | ------------------------------------------------------------------------------- | --------- |
-| `typography` | `typography` | The typography of the component                         | `"label" \| "option"`                                                           | `'label'` |
-| `value`      | `value`      | A value between 0 and 100 that rapresents the benchmark | `number`                                                                        | `0`       |
-| `variant`    | `variant`    | Sets the theme variant colors                           | `"dark" \| "error" \| "info" \| "light" \| "primary" \| "success" \| "warning"` | `'dark'`  |
+| Property     | Attribute    | Description                                             | Type                                                                            | Default     |
+| ------------ | ------------ | ------------------------------------------------------- | ------------------------------------------------------------------------------- | ----------- |
+| `alias`      | `alias`      | An alias to custom how value is represented             | `string`                                                                        | `undefined` |
+| `typography` | `typography` | The typography of the component                         | `"label" \| "option"`                                                           | `'label'`   |
+| `value`      | `value`      | A value between 0 and 100 that rapresents the benchmark | `number`                                                                        | `0`         |
+| `variant`    | `variant`    | Sets the theme variant colors                           | `"dark" \| "error" \| "info" \| "light" \| "primary" \| "success" \| "warning"` | `'dark'`    |
 
 
 ## Dependencies
