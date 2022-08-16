@@ -38,8 +38,8 @@
   "dependencies": {
     "@maggioli-design-system/design-tokens": "^8.0.0",
     "@maggioli-design-system/identity": "^1.11.0",
-    "@maggioli-design-system/styles": "^8.0.0",
-    "@stencil/core": "^2.17.0",
+    "@maggioli-design-system/styles": "^8.1.1",
+    "@stencil/core": "^2.17.3",
     "clsx": "^1.1.1",
     "idb-keyval": "6.2.0"
   },

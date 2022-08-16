@@ -18,6 +18,13 @@
 | `variant`      | `variant`       | Specifies the color variant for the button                            | `"dark" \| "error" \| "info" \| "light" \| "primary" \| "success" \| "warning"` | `'primary'` |
 
 
+## Shadow Parts
+
+| Part      | Description |
+| --------- | ----------- |
+| `"label"` |             |
+
+
 ## CSS Custom Properties
 
 | Name             | Description                                |

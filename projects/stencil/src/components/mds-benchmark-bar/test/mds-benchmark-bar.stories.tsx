@@ -5,6 +5,10 @@ import { benchmarkBarTypographyDictionary } from '../meta/dictionary'
 export default {
   title: 'UI / Benchmark Bar',
   argTypes: {
+    alias: {
+      type: { name: 'string' },
+      description: 'An alias to custom how value is represented',
+    },
     typography: {
       type: { name: 'string' },
       description: 'Sets the theme variant colors',
@@ -33,6 +37,12 @@ const Template = args =>
 export const Default = Template.bind({})
 Default.args = {
   value: 30,
+}
+
+export const Alias = Template.bind({})
+Alias.args = {
+  value: 33,
+  alias: '1 of 3 tasks',
 }
 
 export const Typography = Template.bind({})

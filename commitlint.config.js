@@ -35,7 +35,6 @@ module.exports = {
       'always',
       [
         'design-tokens',
-        'docs',
         'icons',
         'identity',
         'magma',
@@ -65,8 +64,8 @@ module.exports = {
             return [false, 'Scope styles shouldn\'t use style type for CSS styles, it\'s better to use fix or change']
           }
 
-          if (type === 'style' && (scope !== 'design-tokens' || scope !== 'docs' || scope !== 'react' || scope !== 'stencil')) {
-            return [false, `Type style should be used in projects designed to support CSS, are you sure there is CSS inside scope ${scope}? Permitted scopes are design-tokens, docs, react, and stencil.`]
+          if (type === 'style' && (scope === 'icons' || scope === 'identity' || scope === 'magma' || scope === 'svg-icons')) {
+            return [false, `Type style should be used in projects designed to support CSS, are you sure there is CSS inside scope ${scope}?`]
           }
 
           return r

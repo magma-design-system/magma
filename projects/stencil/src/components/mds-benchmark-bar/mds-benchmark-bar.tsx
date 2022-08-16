@@ -10,6 +10,11 @@ import { BenchmarkBarTypographyType } from './meta/types'
 export class MdsBenchmarkBar {
 
   /**
+   * An alias to custom how value is represented
+   */
+  @Prop() readonly alias?: string
+
+  /**
    * The typography of the component
    */
   @Prop() readonly typography?: BenchmarkBarTypographyType = 'label'
@@ -29,7 +34,7 @@ export class MdsBenchmarkBar {
       <Host>
         <div class="infos">
           <mds-text typography={ this.typography } class="label"><slot/></mds-text>
-          <mds-text typography={ this.typography } class="value">{this.value}</mds-text>
+          <mds-text typography={ this.typography } class="value">{ this.alias ?? this.value }</mds-text>
         </div>
         <mds-progress class="progress" variant={this.variant} progress={this.value / 100}/>
       </Host>
