@@ -59,29 +59,16 @@ export class MdsBanner {
 
   render () {
     return (
-      <Host class={clsx(
-        this.actions && 'has-actions',
-      )}>
-        { this.headline !== undefined
-          &&
-          <header class="header">
-            { this.icon && <mds-icon name={ this.icon } class="icon"/> }
-            <mds-text typography="h6" class="headline">{ this.headline }</mds-text>
-            { this.deletable && <i class="svg close-icon" innerHTML={miBaselineClose} onClick={this.closeBanner} /> }
-          </header>
-        }
-        <div class={clsx(
-          'content',
-          this.headline === undefined && this.deletable && 'content--has-icon-isolated',
-        )}>
-          { this.headline === undefined && this.deletable
-            &&
-            <i class="svg close-icon close-icon--isolated" innerHTML={miBaselineClose} onClick={this.closeBanner} />
-          }
-          { this.headline === undefined && this.icon && <mds-icon name={ this.icon } class="icon"/> }
-          <div class="text">
-            <slot/>
+      <Host>
+        <div class="body">
+          { this.icon && <mds-icon name={ this.icon } class="icon"/> }
+          <div class="content">
+            { this.headline && <mds-text typography="h6" class="headline">{ this.headline }</mds-text> }
+            <div class="text">
+              <slot/>
+            </div>
           </div>
+          { this.deletable && <i class="svg close-icon" innerHTML={miBaselineClose} onClick={this.closeBanner} />}
         </div>
         { this.actions
           &&
