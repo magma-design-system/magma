@@ -1,4 +1,4 @@
-import { Component, Host, h } from '@stencil/core'
+import { Component, Host, h, Element } from '@stencil/core'
 
 @Component({
   tag: 'mds-author',
@@ -7,12 +7,21 @@ import { Component, Host, h } from '@stencil/core'
 })
 export class MdsAuthor {
 
+  private hasAvatar: boolean
+  @Element() hostElement: HTMLMdsAuthorElement
+
+  componentWillLoad (): void {
+    this.hasAvatar = this.hostElement.querySelector('[slot="avatar"]') !== null
+  }
+
   render () {
     return (
       <Host>
-        <div class="avatar">
-          <slot name="avatar"/>
-        </div>
+        { this.hasAvatar &&
+          <div class="avatar">
+            <slot name="avatar"/>
+          </div>
+        }
         <div class="info">
           <slot/>
         </div>
