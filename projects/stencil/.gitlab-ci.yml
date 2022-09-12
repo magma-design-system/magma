@@ -189,4 +189,3 @@ include:
   - '/projects/stencil/src/components/mds-url-view/.gitlab-ci.yml'
   - '/projects/stencil/src/components/mds-usage/.gitlab-ci.yml'
   - '/projects/stencil/src/components/mds-video-wall/.gitlab-ci.yml'
-  
