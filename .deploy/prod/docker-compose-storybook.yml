@@ -9,7 +9,7 @@ services:
       - "443"
     environment:
       - VIRTUAL_HOST=magma.maggiolicloud.it
-      - LETSENCRYPT_HOST=magma.maggiolicloud.it
+      - CERT_NAME=shared
 
 networks:
   default:
