@@ -16,8 +16,14 @@ const logDirectoryDeleted = (directory: PathLike) => {
   console.log(`Directory ${chalk.yellow(path.basename(directory.toString()))} successfully ${chalk.red('deleted')} ${chalk.gray('(or skipped if missing)')}`)
 }
 
-const logFileSavedTo = (file: PathLike, destination?: PathLike) => {
-  console.log(`File ${chalk.yellow(path.basename(file.toString().trim()))} successfully ${chalk.green('saved')} ${destination ? 'in ' + chalk.yellow(path.basename(destination.toString().trim())) : ''}`)
+const logFileSavedTo = async (file: PathLike, destination?: PathLike) => {
+  const cleanFile = path.basename(file.toString().trim())
+  if (destination) {
+    const cleanDestination = path.basename(path.dirname(destination.toString().trim()))
+    console.log(`File ${chalk.yellow(cleanFile)} successfully ${chalk.green('saved')} in ${chalk.yellow(cleanDestination)}`)
+  } else {
+    console.log(`File ${chalk.yellow(cleanFile)} successfully ${chalk.green('saved')}`)
+  }
 }
 
 interface FileActionDoneOptions {
@@ -39,7 +45,7 @@ interface StatusOptions {
 }
 
 const logStatus = (args: StatusOptions) => {
-  console.log(`${capitalize(args.actionDoing)} if ${args.subject ? chalk.yellow(args.subject) : ''} ${args.status ? args.status : ''} ${args.match ? chalk.yellow(args.match) : ''}`)
+  console.log(`${capitalize(args.actionDoing)} in ${args.subject ? chalk.yellow(args.subject) : ''} ${args.status ? args.status : ''} ${args.match ? chalk.yellow(args.match) : ''}`)
 }
 
 export {
