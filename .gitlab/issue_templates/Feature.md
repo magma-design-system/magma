@@ -20,41 +20,44 @@
 
 ## Proposal impact
 
-Impacts the following Design System projects:
-
 <!--
   🔴 Required
   Leave only the items affected and delete the others.
   If for some reason you don't find the project/environment/tool you are talking about, please open an issue (feature) to suggest its addition.
 -->
 
-- Design Tokens
-- Docs
-- Icons
-- Identity
-- ~~React~~ (deprecated)
-- Stencil (web components)
-- Styles
-- SVG Icons
+Impacts the following Magma Design System project:
 
-Impacts the following Design System environment/tool:
+- [Design Tokens][design-tokens]
+- [Icons][icons]
+- [Identity][identity]
+- [~~React~~ (deprecated)][react]
+- [Stencil (web components)][stencil]
+- [Styles][styles]
+- [SVG Icons][svg-icons]
 
-- CI (Continuous Integration)
-- Figma
-- Gitlab
+Impacts the following Design System tool/environment:
+
+- [CI (Continuous Integration)][ci]
+- [Figma][figma]
+- [Gitlab][gitlab]
 
 <!--
   🟡 Recommended
   If present, provide a project related to the issue.
 
   Example:
-  Impacts the following Maggioli products:
+Impacts the following Maggioli products:
 
-  - [Synbee][https://gitlab.com/maggiolispa/ricerca-sviluppo-bari/synerbee]
-  - [Periodici Maggioli][https://gitlab.com/maggiolispa/ricerca-sviluppo-new-media/periodici-maggioli]
-  - Other project
+- [Biblioteca Digitale][prd-bib-dig]
+- [Magma Docs][magma-docs]
+- [Periodici Maggioli][prd-per-mag]
+- [Quiz App][prd-quiz]
+- [R&D Days][prd-rnd-days]
+- [SistemaPA][prd-sis-pa]
+- [Synbee][prd-synbee]
+
 -->
-
 
 ## Related problem
 
@@ -137,3 +140,24 @@ Impacts the following Design System environment/tool:
   }
   ```
 -->
+
+<!-- 🚧 DO NOT REMOVE 🚧 -->
+
+[ci]: https://gitlab.com/maggiolispa/ricerca-sviluppo-new-media/design-system/-/pipelines
+[design-tokens]: https://gitlab.com/maggiolispa/ricerca-sviluppo-new-media/design-system/-/tree/dev/projects/design-tokens
+[figma-web-components]: https://www.figma.com/file/evxGyMuj9309w6BZXXz4Ls/Magma-%2F-Web-Component
+[figma]: https://www.figma.com/files/team/945687796790515562
+[gitlab]: https://gitlab.com/
+[icons]: https://gitlab.com/maggiolispa/ricerca-sviluppo-new-media/design-system/-/tree/dev/projects/icons
+[identity]: https://gitlab.com/maggiolispa/ricerca-sviluppo-new-media/design-system/-/tree/dev/projects/identity
+[magma-docs]: https://gitlab.com/maggiolispa/ricerca-sviluppo-new-media/magma/docs
+[prd-bib-dig]: https://gitlab.com/maggiolispa/ricerca-sviluppo-new-media/bibliotecadigitale.maggioli.it
+[prd-per-mag]: https://gitlab.com/maggiolispa/ricerca-sviluppo-new-media/periodici-maggioli
+[prd-quiz]: https://gitlab.com/maggiolispa/ricerca-sviluppo-new-media/quiz-app-client
+[prd-rnd-days]: https://gitlab.com/maggiolispa/ricerca-sviluppo-new-media/rnd-days
+[prd-sis-pa]: https://gitlab.com/maggiolispa/ricerca-sviluppo-new-media/wordpress/sistemapa
+[prd-synbee]: https://gitlab.com/maggiolispa/ricerca-sviluppo-bari/synerbee
+[react]: https://gitlab.com/maggiolispa/ricerca-sviluppo-new-media/design-system/-/tree/dev/projects/react
+[stencil]: https://gitlab.com/maggiolispa/ricerca-sviluppo-new-media/design-system/-/tree/dev/projects/stencil
+[styles]: https://gitlab.com/maggiolispa/ricerca-sviluppo-new-media/design-system/-/tree/dev/projects/styles
+[svg-icons]: https://gitlab.com/maggiolispa/ricerca-sviluppo-new-media/design-system/-/tree/dev/projects/svg-icons
