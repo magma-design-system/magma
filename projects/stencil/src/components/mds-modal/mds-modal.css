@@ -68,7 +68,6 @@
 }
 
 :host {
-
   --overlay-color: var(--overlay-color, 0 0 0);
   --overlay-opacity: var(--overlay-opacity, 0.5);
   --window-background: theme('colors.tone-neutral');
@@ -86,6 +85,7 @@
 
   background-color: rgba(var(--overlay-color, 0 0 0) / 0);
   perspective: 600px;
+  z-index: var(--modal-z-index, 1000);
 }
 
 :host ( [position=top] ) {
