@@ -1,18 +1,7 @@
 @tailwind utilities;
 @import '../../tailwind/components.css';
 
-/*
-* @prop --background: Sets the background-color of the component
-* @prop --color: Sets the color of the component text
-* @prop --shadow: Sets the box-shadow od the header
-*/
-
 :host {
-
-  --background: theme('colors.tone-neutral');
-  --color: theme('colors.tone-neutral-02');
-  --shadow: theme('boxShadow.sharp-md');
-
   @apply
     bg-tone-neutral
     duration-500
@@ -26,14 +15,14 @@
     right-0
     top-0;
 
-  background-color: var(--background);
-  box-shadow: var(--shadow);
+  background-color: theme('colors.tone-neutral');
+  box-shadow: theme('boxShadow.sharp-md');
 }
 
 .logo {
   @apply flex;
 
-  color: var(--color);
+  color: inherit;
 }
 
 .contents {
@@ -59,5 +48,5 @@
     desktop:hidden
     w-8;
 
-  color: var(--color);
+  fill: inherit;
 }
