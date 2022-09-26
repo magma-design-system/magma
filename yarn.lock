@@ -2451,11 +2451,7 @@
   dependencies:
     "@sinonjs/commons" "^1.7.0"
 
-<<<<<<< HEAD
 "@stencil/core@^2.18.0":
-=======
-"@stencil/core@^2.17.3":
->>>>>>> dev
   version "2.18.0"
   resolved "https://registry.npmjs.org/@stencil/core/-/core-2.18.0.tgz#2556b0f8d1fb6f2c06c3fb22de495d59ca7daf05"
   integrity sha512-NLEY8Jq59smyiivBAxHKipsp9YkkW/K/Vm90zAyXQqukb12i2SFucWHJ1Ik7ropVlhmMVvigyxXgRfQ9quIqtg==
