@@ -45,7 +45,7 @@ export class MdsHeaderBar {
             </nav>
           }
           { this.hasNav &&
-            <i class="svg icon" innerHTML={miRoundMenu} onClick={ this.open } />
+            <i class="svg icon" innerHTML={ miRoundMenu } onClick={ this.open } />
           }
         </div>
       </Host>
