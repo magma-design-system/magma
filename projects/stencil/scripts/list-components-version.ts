@@ -1,6 +1,7 @@
 import { COMPONENTS_DIR, SRC_DIR } from './meta'
 import { readdir, readFile, stat, writeFile } from 'fs/promises'
 import path from 'path'
+import { logFileSavedTo } from '../../../scripts/log'
 
 const componentsVersionFilePath = path.resolve(SRC_DIR, 'storybook/components-version.json')
 const componentsVersion: { [key: string]: string } = {}
@@ -22,12 +23,11 @@ const listComponentsVersion = async (dir: string) => {
 }
 
 const main = async () => {
-  console.log('Scanning components')
   await listComponentsVersion(COMPONENTS_DIR)
-  console.log('Process finished', componentsVersion)
-  console.log('Writing to file')
   await writeFile(componentsVersionFilePath, JSON.stringify(componentsVersion, null, 2))
-    .then(() => console.log('File write success'))
+    .then(() => {
+      logFileSavedTo(componentsVersionFilePath, componentsVersionFilePath)
+    })
     .catch(err => console.error('File write error', err))
 }
 

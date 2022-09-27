@@ -9,7 +9,7 @@ export class MdsHeader {
 
   private hasNav: boolean
   @Element() hostElement: HTMLMdsHeaderElement
-  @State() isOpened:boolean
+  @State() isOpened: boolean
 
   /**
    * Emits when the component is closed
@@ -36,7 +36,7 @@ export class MdsHeader {
         <slot/>
         { this.hasNav &&
           <div class="nav">
-            <mds-modal opened={ this.isOpened } onClose={ this.close }>
+            <mds-modal class="modal" opened={ this.isOpened } onClose={ this.close }>
               <slot name="nav-mobile"/>
             </mds-modal>
           </div>

@@ -4,6 +4,7 @@
   * @prop --background: Sets the background-color of the component
   * @prop --color-icon: Sets the color of the icon toggler
   * @prop --color: Sets the text color of the header and the mobile toggler icon
+  * @prop --modal-z-index: Sets the z-index of the modal
   * @prop --shadow: Sets the box-shadow od the header
   */
 
@@ -11,6 +12,7 @@
 
   --background: theme('colors.tone-neutral');
   --color: theme('colors.tone-neutral-02');
+  --modal-z-index: var(--modal-z-index, 1000);
   --shadow: theme('boxShadow.sharp-md');
 }
 
@@ -19,4 +21,8 @@
     desktop:hidden
     flex
     items-center;
+}
+
+.modal {
+  z-index: var(--modal-z-index);
 }
