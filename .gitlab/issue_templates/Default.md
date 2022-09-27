@@ -9,21 +9,19 @@
   Available values: 1, 2, 3, 5, 8 (if 9+ you should consider to split in multiple issues)
 -->
 
-<!--
-  🔴 Required
-  Provide a general summary of the issue.
+<!-- 🔴 Required
+Provide a general summary of the issue.
 
-  Example:
-  I would like to fix CSS custom properties to the web component `mds-text`
-  to let other components be able to style text selection, which is not possible right now.
+Example:
+I would like to fix CSS custom properties to the web component `mds-text`
+to let other components be able to style text selection, which is not possible right now.
 -->
 
 ## Issue impact
 
-<!--
-  🔴 Required
-  Leave only the items affected and delete the others.
-  If for some reason you don't find the project/environment/tool you are talking about, please open an issue (feature) to suggest its addition.
+<!--   🔴 Required
+Leave only the items affected and delete the others.
+If for some reason you don't find the project/environment/tool you are talking about, please open an issue (feature) to suggest its addition.
 -->
 
 Impacts the following Magma Design System project:
@@ -42,11 +40,10 @@ Impacts the following Design System tool/environment:
 - [Figma][figma]
 - [Gitlab][gitlab]
 
-<!--
-  🟡 Recommended
-  If present, provide a project related to the issue.
+<!-- 🟡 Recommended
+If present, provide a project related to the issue.
 
-  Example:
+Example:
 Impacts the following Maggioli products:
 
 - [Biblioteca Digitale][prd-bib-dig]
@@ -56,117 +53,101 @@ Impacts the following Maggioli products:
 - [R&D Days][prd-rnd-days]
 - [SistemaPA][prd-sis-pa]
 - [Synbee][prd-synbee]
-
 -->
 
 ## Expected behavior
 
-<!--
-  🔴 Required
-  Tell us what should happen and how is expected to behave.
+<!-- 🔴 Required
+Tell us what should happen and how is expected to behave.
 
-  Example:
-  The component should let access to `--selection-background` and `--selection-color`
-  CSS custom properties, but it seem it's not working.
+Example:
+The component should let access to `--selection-background` and `--selection-color`
+CSS custom properties, but it seem it's not working.
 -->
 
 ## Current behavior
 
-<!--
-  🔴 Required
-  Tell us what happens instead of the expected behavior.
+<!-- 🔴 Required
+Tell us what happens instead of the expected behavior.
 
-  Example:
-  If I set `--selection-background` or `--selection-color`,
-  it's just not setting the color or background color when the text is selected.
+Example:
+If I set `--selection-background` or `--selection-color`,
+it's just not setting the color or background color when the text is selected.
 -->
 
 ## Possible solution
 
-<!--
-  🟢 Optional
-  Suggest a fix/reason for the bug.
+<!-- 🟢 Optional
+Suggest a fix/reason for the bug.
 
-  Example:
-  It seems to missing `::selection` pseudo-element applied to `:host`.
+Example:
+It seems to missing `::selection` pseudo-element applied to `:host`.
 
-  Missing code:
+Missing code:
 
-  ```css
-  :host::selection {
-    background-color: var(--selection-background);
-    color: var(--selection-color);
-  }
-  ```
+```css
+:host::selection {
+  background-color: var(--selection-background);
+  color: var(--selection-color);
+}
+```
 -->
 
 ## Steps to reproduce
 
-<!--
-  🔴 Required
-  Provide a link to a live example, or an unambiguous set of steps to reproduce this bug.
-  Include code to reproduce, if relevant.
+<!-- 🔴 Required
+Provide a link to a live example, or an unambiguous set of steps to reproduce this bug.
+Include code to reproduce, if relevant.
 
-  Example:
-  1. Pull the repo, and remember to be on branch `dev`;
-  2. Run the command `nx run stencil:storybook.start` to start the environment;
-  3. Go to the [component storybook test][storybook] to reach it;
-  4. Try to select the text.
-
-  Example IT:
-  1. Pulla il repository, ricorda di essere sul branch `dev`;
-  2. Lancia `nx run stencil:storybook.start` per avviare l'ambiente;
-  3. Vai al [test del componente][storybook];
-  4. Prova a selezionare il testo.
-
-  [storybook]: http://magma.maggiolicloud.it/storybook/?path=/story/ui-text--default
+Example:
+1. Pull the repo, and remember to be on branch `dev`;
+2. Run the command `nx run stencil:storybook.start` to start the environment;
+3. Go to the [component storybook test][storybook] to reach it;
+4. Try to select the text.
 -->
 
 ## Context (environment)
 
-<!--
-  🟡 Recommended
-  How has this issue affected you?
-  What are you trying to accomplish?
-  Providing context helps us come up with a solution that is most useful in the real world.
+<!-- 🟡 Recommended
+How has this issue affected you?
+What are you trying to accomplish?
+Providing context helps us come up with a solution that is most useful in the real world.
 
-  Example:
-  I've tried to custom text selection color in my project but it seem to not working correctly:
+Example:
+I've tried to custom text selection color in my project but it seem to not working correctly:
 
-  ```css
-  .my-note mds-text {
-    --selection-background: var(--label-yellow-09);
-    --selection-color: var(--label-yellow-02);
-    color: var(--label-yellow-03);
-  }
-  ```
+```css
+.my-note mds-text {
+  --selection-background: var(--label-yellow-09);
+  --selection-color: var(--label-yellow-02);
+  color: var(--label-yellow-03);
+}
+```
 -->
 
 ## Detailed addition
 
-<!--
-  🟡 Recommended
-  Provide a description of the change or the addition you are proposing.
+<!-- 🟡 Recommended
+Provide a description of the change or the addition you are proposing.
 
-  Example:
-  I just would like to add the CSS which is missing as mentioned above.
+Example:
+I just would like to add the CSS which is missing as mentioned above.
 -->
 
 ## Possible implementation
 
-<!--
-  🟢 Optional
-  Suggest an idea for implementing addition or change.
+<!-- 🟢 Optional
+Suggest an idea for implementing addition or change.
 
-  Example:
-  I think something like this shoud be enough:
+Example:
+I think something like this shoud be enough:
 
-  ```css
-  :host::selection {
-    background-color: var(--selection-background);
-    color: var(--selection-color);
-  }
-  ```
+```css
+:host::selection {
+  background-color: var(--selection-background);
+  color: var(--selection-color);
+}
+```
 -->
 
 <!-- 🚧 DO NOT REMOVE 🚧 -->
@@ -187,5 +168,6 @@ Impacts the following Maggioli products:
 [prd-synbee]: https://gitlab.com/maggiolispa/ricerca-sviluppo-bari/synerbee
 [react]: https://gitlab.com/maggiolispa/ricerca-sviluppo-new-media/design-system/-/tree/dev/projects/react
 [stencil]: https://gitlab.com/maggiolispa/ricerca-sviluppo-new-media/design-system/-/tree/dev/projects/stencil
+[storybook]: https://magma.maggiolicloud.it/storybook/
 [styles]: https://gitlab.com/maggiolispa/ricerca-sviluppo-new-media/design-system/-/tree/dev/projects/styles
 [svg-icons]: https://gitlab.com/maggiolispa/ricerca-sviluppo-new-media/design-system/-/tree/dev/projects/svg-icons

@@ -7,21 +7,17 @@
   🏋🏻‍♂️ Weight
   Measure the issue weight by the days you think you need to complete it:
   Available values: 1, 2, 3, 5, 8 (if 9+ you should consider to split in multiple issues)
--->
 
-<!--
-  ℹ️ Some infos
-  Please, try to respect there naming convention:
-
+  📐 Rules
+  Please, try to respect the naming convention:
   Issue name: WCAG mds-[component-name] (Es: WCAG mds-avatar)
   Branch name: [issue-id]-wcag-mds-[component-name] (Es: 130-wcag-mds-avatar)
 -->
 
 ## Component infos
 
-<!--
-  🔴 Required
-  Provide the name and the url of the component which needs to support WCAG.
+<!-- 🔴 Required
+Provide the name and the url of the component which needs to support WCAG.
 -->
 
 | Component name | Infos |
@@ -36,13 +32,12 @@ Links provide links to additional guidance.
 
 #### 1. Writing
 
-<!--
-  🔴 Required
-  Provide a list of the WCAG guidelines that the component should support.
+<!-- 🔴 Required
+Provide a list of the WCAG guidelines that the component should support.
 
-  If a checklist item is not applicable, make a line through it:
-  - [ ] Provide informative, unique page titles
-  becomes
+If a checklist item is not applicable, make a line through it:
+- [ ] Provide informative, unique page titles
+becomes
 - [~] Provide informative, unique page titles
 -->
 
@@ -56,14 +51,13 @@ Links provide links to additional guidance.
 
 #### 2. Designing
 
-<!--
-  🔴 Required
-  Provide a list of the WCAG guidelines that the component should support.
+<!-- 🔴 Required
+Provide a list of the WCAG guidelines that the component should support.
 
-  If a checklist item is not applicable, make a line through it:
-  - [ ] Provide sufficient contrast between foreground and background
-  becomes
-  - [~] Provide sufficient contrast between foreground and background
+If a checklist item is not applicable, make a line through it:
+- [ ] Provide sufficient contrast between foreground and background
+becomes
+- [~] Provide sufficient contrast between foreground and background
 -->
 
 - [ ] [Provide sufficient contrast between foreground and background](https://www.w3.org/WAI/tips/designing/#provide-sufficient-contrast-between-foreground-and-background)
@@ -79,14 +73,13 @@ Links provide links to additional guidance.
 
 #### 3. Developing
 
-<!--
-  🔴 Required
-  Provide a list of the WCAG guidelines that the component should support.
+<!-- 🔴 Required
+Provide a list of the WCAG guidelines that the component should support.
 
-  If a checklist item is not applicable, make a line through it:
-  - [ ] Associate a label with every form control
-  becomes
-  [~] Associate a label with every form control
+If a checklist item is not applicable, make a line through it:
+- [ ] Associate a label with every form control
+becomes
+[~] Associate a label with every form control
 -->
 
 - [ ] [Associate a label with every form control](https://www.w3.org/WAI/tips/designing/#associate-a-label-with-every-form-control)
