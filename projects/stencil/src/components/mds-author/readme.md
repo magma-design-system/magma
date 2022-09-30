@@ -42,7 +42,7 @@ You can check browser support at [this page](https://stenciljs.com/docs/browser-
 </mds-author>
 ```
 
-You can try it out on the components' playground [site](https://magma.maggiolicloud.it/storybook/?path=/story/ui-author--default)!
+You can try it out on the component's playground [site](https://magma.maggiolicloud.it/storybook/?path=/story/ui-author--default)!
 
 <!-- Auto Generated Below -->
 
