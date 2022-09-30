@@ -2,11 +2,8 @@ import Handlebars from 'handlebars'
 import chalk from 'chalk'
 import { copyFile, cp, mkdir, readFile, rename, stat, writeFile } from 'fs/promises'
 import { join } from 'path'
-import { PROJECT_DIR, COMPONENTS_DIR } from './meta'
+import { PROJECT_DIR, COMPONENTS_DIR, TEMPLATES_DIR, TEMP_PROJECT_DIR } from './meta'
 import { logFileSavedTo } from '../../../scripts/log'
-
-const TEMPLATES_DIR = join(PROJECT_DIR, 'template')
-const TEMP_PROJECT_DIR = join(PROJECT_DIR, '.build')
 
 const compilePackage = async (componentName: string): Promise<void> => {
   const exists = !!( await stat(join(COMPONENTS_DIR, componentName, 'package.json'))
@@ -117,7 +114,23 @@ const createTempProjectInstance = async (componentName: string): Promise<void> =
   await rename(join(ISOLATED_PATH, 'src/components', componentName, 'readme.md'), join(ISOLATED_PATH, 'readme.md')).catch(error => { throw Error(chalk.red(error)) })
 }
 
+const checkComponentWasBuilt = async (componentName: string): Promise<boolean> => {
+  return await stat(`${COMPONENTS_DIR}/${componentName}/readme.md`)
+    .then(statInfo => statInfo.isFile())
+    .catch(error => {
+      throw Error(chalk.red(error))
+    })
+}
+
+const checkComponentExistance = async (componentName: string): Promise<boolean> => {
+  return await stat(`${COMPONENTS_DIR}/${componentName}`)
+    .then(statInfo => statInfo.isDirectory())
+    .catch(() => false)
+}
+
 export {
+  checkComponentExistance,
+  checkComponentWasBuilt,
   createTempProjectInstance,
   compilePackage,
   compileTemplateFile,

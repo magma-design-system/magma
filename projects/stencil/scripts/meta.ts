@@ -1,4 +1,4 @@
-import path from 'path'
+import path, { join } from 'path'
 const PROJECT_DIR = path.resolve(__dirname, '../')
 const BUILD_DIR = path.resolve(PROJECT_DIR, '.build')
 const DIST_DIR = path.resolve(PROJECT_DIR, 'dist')
@@ -11,6 +11,9 @@ const COMPONENTS_DIR = path.resolve(SRC_DIR, 'components')
 const TEST_REGRESSION_DIR = path.resolve(PROJECT_DIR, '.loki')
 const WWW_DIR = path.resolve(PROJECT_DIR, 'www')
 
+const TEMPLATES_DIR = join(PROJECT_DIR, 'template')
+const TEMP_PROJECT_DIR = join(PROJECT_DIR, '.build')
+
 export {
   BUILD_DIR,
   COMPONENTS_DIR,
@@ -21,6 +24,8 @@ export {
   LOADER_DIR,
   PROJECT_DIR,
   SRC_DIR,
+  TEMP_PROJECT_DIR,
+  TEMPLATES_DIR,
   TEST_REGRESSION_DIR,
   WWW_DIR,
 }

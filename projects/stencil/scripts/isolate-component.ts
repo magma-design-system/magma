@@ -1,30 +1,12 @@
 import chalk from 'chalk'
 import { ask } from 'stdio'
-import { createTempProjectInstance, compilePackage, compileTemplateFile } from './lib'
-import { stat } from 'fs/promises'
-import { COMPONENTS_DIR } from './meta'
+import { createTempProjectInstance, compilePackage, compileTemplateFile, checkComponentExistance, checkComponentWasBuilt } from './lib'
 import { logStatus } from '../../../scripts/log'
 
 let componentNameArgument = ''
 let nonInteractive = false
 
-const checkComponentWasBuilt = async (componentName: string) => {
-  return await stat(`${COMPONENTS_DIR}/${componentName}/readme.md`)
-    .then(statInfo => statInfo.isFile())
-    .catch(error => {
-      throw Error(chalk.red(error))
-    })
-}
-
-const checkComponentExistance = async (componentName: string) => {
-  return await stat(`${COMPONENTS_DIR}/${componentName}`)
-    .then(statInfo => statInfo.isDirectory())
-    .catch(_error => {
-      // will be noticed at line 40
-    })
-}
-
-const askComponentName = async () => {
+const isolateComponent = async () => {
   let componentName = ''
 
   if (!nonInteractive){
@@ -40,7 +22,7 @@ const askComponentName = async () => {
     console.log(`Component ${componentName} ${chalk.red('not found')}, create it with ${chalk.blue('nx run stencil:generate')} first or enter another component name.`)
 
     if (!nonInteractive) {
-      await askComponentName()
+      await isolateComponent()
     } else {
       return
     }
@@ -76,7 +58,7 @@ const main = async () => {
       return
     }
   }
-  await askComponentName()
+  await isolateComponent()
 }
 
 main()
