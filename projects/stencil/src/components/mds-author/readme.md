@@ -1,6 +1,48 @@
 # mds-author
 
+# Install
 
+Install the component via `npm` by running the following command
+
+```bash
+npm install @maggioli-design-system/mds-author
+```
+
+# Import
+
+Import the component in your project via `typescript` like the following
+
+```typescript
+import { defineCustomElements as dceMdsAuthor } from '@maggioli-design-system/mds-author/loader'
+
+dceMdsAuthor()
+```
+
+If you need to support older browsers (i.e. IE or early version of Edge), you can wrap the `defineCustomElements` in another utility awailable in the same package
+
+```typescript
+import { applyPolyfills as apMdsAuthor, defineCustomElements as dceMdsAuthor } from '@maggioli-design-system/mds-author/loader'
+
+apMdsAuthor().then(dceMdsAuthor())
+```
+
+You can check browser support at [this page](https://stenciljs.com/docs/browser-support).
+
+# How To
+
+## Use in HTML
+
+`MdsAuthor` accepts a specific slot named `avatar` which is used to display an element on the left side (usually an image, or the initials of the author if no `src` is provided), while accepts multiple slots to be displayed on the right side for author's name and description. An example follow:
+
+```html
+<mds-author>
+  <mds-avatar slot="avatar" initials="jd" src="<some-url>"></mds-avatar>
+  <mds-text typography="h6">John Doe</mds-text>
+  <mds-text typography="caption">Associated professor</mds-text>
+</mds-author>
+```
+
+You can try it out on the components' playground [site](https://magma.maggiolicloud.it/storybook/?path=/story/ui-author--default)!
 
 <!-- Auto Generated Below -->
 
