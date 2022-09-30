@@ -22,6 +22,7 @@ Import the component in your project via `TypeScript` as follows:
 
 ```typescript
 import { defineCustomElements as dceMdsAuthor } from '@maggioli-design-system/mds-author/loader'
+
 dceMdsAuthor()
 ```
 
@@ -29,6 +30,7 @@ If you need to support older browsers (i.e. IE or early version of Edge), you ca
 
 ```typescript
 import { applyPolyfills as apMdsAuthor, defineCustomElements as dceMdsAuthor } from '@maggioli-design-system/mds-author/loader'
+
 apMdsAuthor().then(dceMdsAuthor())
 ```
 
@@ -37,11 +39,12 @@ Use alias for `defineCustomElements` method to initialize multiple web component
 ```typescript
 import { defineCustomElements as dceMdsComponentOne } from '@maggioli-design-system/mds-component-one/loader'
 import { defineCustomElements as dceMdsComponentTwo } from '@maggioli-design-system/mds-component-two/loader'
+
 dceMdsComponentOne()
 dceMdsComponentTwo()
 ```
 
-You can check how browser support woorks at [this page][stencil-browser-support].
+You can check how browser support works at [this page][stencil-browser-support].
 
 ---
 
