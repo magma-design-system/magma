@@ -1,3 +1,5 @@
+<!-- Start script-generated Magma Docs -->
+
 # Install
 
 Install the component via `npm` by running the following command
@@ -66,3 +68,5 @@ You can try it out on the component's [Storybook website][storybook]!
 
 [storybook]: https://magma.maggiolicloud.it/storybook/?path=/story/ui-author--default
 [stencil-browser-support]: https://stenciljs.com/docs/browser-support
+
+<!-- End script-generated Magma Docs -->
