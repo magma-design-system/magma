@@ -9,6 +9,7 @@ import { COMPONENTS_DIR, TEMPLATES_DIR } from './meta'
 
 const stencilComment = '\n<!-- Auto Generated Below -->'
 const magmaComment = '<!-- Start script-generated Magma Docs -->'
+const componentNamePrefix = 'mds-'
 
 const capitalizeWord = (componentName: string) => componentName.replace('-', ' ').split(' ').map((word: string) => `${word[0].toUpperCase()}${word.slice(1, word.length)}`).join('')
 
@@ -27,6 +28,7 @@ const overwriteDoc = async (componentName: string) => {
   const data = {
     componentName,
     capitalizedComponentName: capitalizeWord(componentName),
+    componentNameWithNoPrefix: componentName.split(componentNamePrefix)[1],
   }
 
   const template = Handlebars.compile(readmeTemplate.toString())
@@ -38,7 +40,7 @@ const overwriteDoc = async (componentName: string) => {
 
 const main = async () => {
   const inputName = await ask('Component name mds-')
-  const componentName = `mds-${inputName}`
+  const componentName = `${componentNamePrefix}${inputName}`
 
   const exist = await checkComponentExistance(componentName)
 
