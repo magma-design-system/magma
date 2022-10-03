@@ -73,7 +73,7 @@ The component accepts the following attributes:
 
 You can try it out on the component's [Storybook website][storybook]!
 
-[storybook]: https://magma.maggiolicloud.it/storybook/?path=/story/ui-author--default
+[storybook]: https://magma.maggiolicloud.it/storybook/?path=/story/ui-notification--default
 [stencil-browser-support]: https://stenciljs.com/docs/browser-support
 
 <!-- End script-generated Magma Docs -->
