@@ -34,7 +34,7 @@
       "files": [
         {
           "format": "css/vars",
-          "destination": "colors.css"
+          "destination": "colors-hex.css"
         },
         {
           "format": "css/vars-rgb-channels",
