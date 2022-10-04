@@ -19,12 +19,20 @@ yarn add @maggioli-design-system/mds-notification
 
 # Import
 
-Import the component in your project via `TypeScript` as follows:
+Import the components in your project via `TypeScript` as follows:
 
 ```typescript
 import { defineCustomElements as dceMdsNotification } from '@maggioli-design-system/mds-notification/loader'
 
 dceMdsNotification()
+```
+
+`MdsNotification` depends on `MdsText`, so you will have to import it as well:
+
+```typescript
+import { defineCustomElements as dceMdsText } from '@maggioli-design-system/mds-text/loader'
+
+dceMdsText()
 ```
 
 You will have to import also the css style from `@maggioli-design-system` as follows:
