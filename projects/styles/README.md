@@ -125,7 +125,7 @@ import '@fontsource/karla/700.css'
 import '@fontsource/merriweather/400.css'
 import '@fontsource/merriweather/700.css'
 import '@fontsource/roboto/700.css'
-import '@fontsource/roboto/800.css'
+import '@fontsource/roboto/900.css'
 ```
 
 #### CSS
