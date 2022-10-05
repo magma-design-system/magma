@@ -68,6 +68,7 @@ You can try it out on the component's [Storybook website][storybook]!
 
 <!-- Auto Generated Below -->
 
----
+
+----------------------------------------------
 
 Built with love @ **Maggioli Informatica / R&D Department**
