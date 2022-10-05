@@ -17,7 +17,7 @@ This package works also with yarn:
 yarn add @maggioli-design-system/mds-notification
 ```
 
-# Import
+#### Import
 
 Import the components in your project via `TypeScript` as follows:
 

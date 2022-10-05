@@ -14,7 +14,7 @@ This package works also with yarn:
 yarn add @maggioli-design-system/{{componentName}}
 ```
 
-# Import
+### Import
 
 Import the component in your project via `TypeScript` as follows:
 
