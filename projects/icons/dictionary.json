@@ -162,6 +162,7 @@
   "data-unfiltered": "mdi/filter-off",
   "data-view": "material/list",
   "database": "mdi/database",
+  "dataset": "maggioli/dataset",
   "deal": "mdi/handshake",
   "declaration": "maggioli/document-rename",
   "denied": "material/do_not_disturb",
@@ -182,8 +183,10 @@
   "document-text": "material/description",
   "document-web": "material/web",
   "document": "material/insert_drive_file",
+  "drafts": "material/drafts",
   "electronic-document": "maggioli/electronic-document",
   "email-open-check": "maggioli/email-open-check",
+  "email-open-off": "maggioli/email-open-off",
   "emoticon-happy": "mdi/emoticon-happy",
   "emoticon-neutral": "mdi/emoticon-neutral",
   "emoticon-sad": "mdi/emoticon-sad",
@@ -475,5 +478,4 @@
   "workspace": "material/workspaces",
   "write-only": "material/drive_file_rename_outline",
   "zen-mode": "material/self_improvement"
-
 }
