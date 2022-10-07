@@ -18,7 +18,7 @@ export class MdsImg {
   /**
    * Specifies an alternate text for an image
    */
-  @Prop() alt?: string
+  @Prop({ mutable: true, reflect: true }) alt?: string
 
   /**
    * Specifies the aspect ratio of the image, useful to render all images of a list with the same proportions.
@@ -106,6 +106,19 @@ export class MdsImg {
   private onSuccess = (ev: Event) => {
     const image = ev.target as HTMLImageElement
     this.loadSuccess.emit(image)
+  }
+
+  private autoAltName (): string {
+    if (this.src) {
+      const index = this.src.lastIndexOf('/') + 1
+      return this.src.substr(index)
+    }
+  }
+
+  componentWillLoad ():void {
+    if (!this.alt) {
+      this.alt = this.autoAltName()
+    }
   }
 
   render () {

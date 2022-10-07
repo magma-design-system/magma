@@ -71,6 +71,12 @@ Default.args = {
   src: URLs[0],
 }
 
+export const altText = Template.bind({})
+altText.args = {
+  alt: 'This is an alternative text',
+  src: URLs[0],
+}
+
 export const aspectRatio = Template.bind({})
 aspectRatio.args = {
   'aspect-ratio': aspectRatios[5],
