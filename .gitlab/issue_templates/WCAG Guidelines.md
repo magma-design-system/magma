@@ -82,22 +82,37 @@ becomes
 [~] Associate a label with every form control
 -->
 
-- [ ] [Associate a label with every form control](https://www.w3.org/WAI/tips/designing/#associate-a-label-with-every-form-control)
-- [ ] [Include alternative text for images](https://www.w3.org/WAI/tips/designing/#include-alternative-text-for-images)
-- [ ] [Identify page language and language changes](https://www.w3.org/WAI/tips/designing/#identify-page-language-and-language-changes)
-- [ ] [Use mark-up to convey meaning and structure](https://www.w3.org/WAI/tips/designing/#use-mark-up-to-convey-meaning-and-structure)
-- [ ] [Help users avoid and correct mistakes](https://www.w3.org/WAI/tips/designing/#help-users-avoid-and-correct-mistakes)
-- [ ] [Reflect the reading order in the code order](https://www.w3.org/WAI/tips/designing/#reflect-the-reading-order-in-the-code-order)
-- [ ] [Write code that adapts to the user’s technology](https://www.w3.org/WAI/tips/designing/#write-code-that-adapts-to-the-users-technology)
-- [ ] [Provide meaning for non-standard interactive elements](https://www.w3.org/WAI/tips/designing/#provide-meaning-for-non-standard-interactive-elements)
-- [ ] [Ensure that all interactive elements are keyboard accessible](https://www.w3.org/WAI/tips/designing/#ensure-that-all-interactive-elements-are-keyboard-accessible)
-- [~] [Avoid CAPTCHA where possible](https://www.w3.org/WAI/tips/designing/#avoid-captcha-where-possible)
+- [ ] [Associate a label with every form control](https://www.w3.org/WAI/tips/developing/#associate-a-label-with-every-form-control)
+- [ ] [Include alternative text for images](https://www.w3.org/WAI/tips/developing/#include-alternative-text-for-images)
+- [ ] [Identify page language and language changes](https://www.w3.org/WAI/tips/developing/#identify-page-language-and-language-changes)
+- [ ] [Use mark-up to convey meaning and structure](https://www.w3.org/WAI/tips/developing/#use-mark-up-to-convey-meaning-and-structure)
+- [ ] [Help users avoid and correct mistakes](https://www.w3.org/WAI/tips/developing/#help-users-avoid-and-correct-mistakes)
+- [ ] [Reflect the reading order in the code order](https://www.w3.org/WAI/tips/developing/#reflect-the-reading-order-in-the-code-order)
+- [ ] [Write code that adapts to the user’s technology](https://www.w3.org/WAI/tips/developing/#write-code-that-adapts-to-the-users-technology)
+- [ ] [Provide meaning for non-standard interactive elements](https://www.w3.org/WAI/tips/developing/#provide-meaning-for-non-standard-interactive-elements)
+- [ ] [Ensure that all interactive elements are keyboard accessible](https://www.w3.org/WAI/tips/developing/#ensure-that-all-interactive-elements-are-keyboard-accessible)
+- [~] [Avoid CAPTCHA where possible](https://www.w3.org/WAI/tips/developing/#avoid-captcha-where-possible)
 
 #### 4. ARIA support
 
 Remember, [no ARIA is better than bad ARIA](https://www.w3.org/WAI/ARIA/apg/practices/read-me-first/), if you need to use ARIA, make sure you understand the [ARIA roles, states, and properties](https://www.w3.org/TR/wai-aria-1.1/#roles_states_props) and [ARIA design patterns](https://www.w3.org/TR/wai-aria-practices-1.1/).
 
 Find the best [pattern](https://www.w3.org/WAI/ARIA/apg/patterns/) for the component you are building, and make sure you understand the [ARIA roles, states, and properties](https://www.w3.org/TR/wai-aria-1.1/#roles_states_props) that are used in the pattern.
+
+Here is an [Index of ARIA design patterns examples](https://w3c.github.io/aria-practices/examples/).
+
+
+A pratical list of ARIA examples based on the video [WAI-ARIA: le sue potenzialità e le strategie per evitare errori](https://www.youtube.com/watch?v=DAkwSvrIX9o) (in Italian):
+
+
+- [ ] [Notifications](https://youtu.be/DAkwSvrIX9o?t=790)
+- [ ] [Breadcrumbs](https://youtu.be/DAkwSvrIX9o?t=904)
+- [ ] Modal windows [example 1](https://youtu.be/DAkwSvrIX9o?t=1068), [example 2](https://youtu.be/-ZO3QVgs-sk?t=617)
+- [ ] [Opened, closed state](https://youtu.be/DAkwSvrIX9o?t=1356)
+- [ ] [Dropdown menu](https://youtu.be/DAkwSvrIX9o?t=1624)
+- [ ] Tabs [example 1](https://youtu.be/DAkwSvrIX9o?t=1725), [example 2](https://youtu.be/-ZO3QVgs-sk?t=428)
+
+
 
 ---
 
