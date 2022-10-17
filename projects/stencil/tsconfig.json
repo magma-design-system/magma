@@ -19,6 +19,7 @@
     "resolveJsonModule": true,
     "baseUrl": ".",
     "paths": {
+      "@common/*": ["src/common/*"],
       "@component/*": ["dist/collection/components/*"],
       "@dictionary/*": ["src/dictionary/*"],
       "@fixture/*": ["src/fixtures/*"],
