@@ -82,3 +82,44 @@ aspectRatio.args = {
   'aspect-ratio': aspectRatios[5],
   src: URLs[2],
 }
+
+const TemplateAriaLabelled = args =>
+  <div role="img" aria-labelledby="image-label" class="flex flex-col items-center gap-6">
+    <mds-img {...args}/>
+    <mds-text id="image-label" typography='caption'>
+      Example image with 640 x 480 pixels of resolution.
+    </mds-text>
+  </div>
+
+export const ARIALabelled = TemplateAriaLabelled.bind({})
+ARIALabelled.args = {
+  src: URLs[3],
+}
+
+const TemplateAriaLabelledBackground = args =>
+  <div class="flex flex-col items-center gap-6">
+    <mds-img {...args} aria-labelledby="image-label"/>
+    <mds-text id="image-label" typography='caption'>
+      Example image with 640 x 480 pixels of resolution.
+    </mds-text>
+  </div>
+
+export const ARIALabelledBackgroundImage = TemplateAriaLabelledBackground.bind({})
+ARIALabelledBackgroundImage.args = {
+  src: URLs[3],
+  'aspect-ratio': aspectRatios[5],
+}
+
+
+const TemplateAriaDescription = args =>
+  <div role="img" aria-describedby="image-description" class="flex flex-col items-center gap-6">
+    <mds-img {...args}/>
+    <mds-text id="image-description" typography='caption'>
+      This image shows an empty preview with the resolution of 640 x 480 pixels, the source image is from placeholder.com.
+    </mds-text>
+  </div>
+
+export const ARIADescription = TemplateAriaDescription.bind({})
+ARIADescription.args = {
+  src: URLs[3],
+}
