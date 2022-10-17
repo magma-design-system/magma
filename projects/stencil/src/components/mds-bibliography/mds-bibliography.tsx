@@ -24,7 +24,7 @@ export class MdsBibliography {
    * Specifies a single or mupltiple authors, this field expect a string or an array of strings.
    * First name and Last name: "Jhon Doe",
    * you can wrap first name or last name to crop them correctly: "'Jhon Arthur' Doe", "'Jhon Arthur' 'Doe Jhonson'",
-   * and for multiple authors ["'Jhon Arthur' 'Doe Jhonson'", "Mike Collins", "Erik 'Ross Anderson'"],
+   * and for multiple authors "'Jhon Arthur' 'Doe Jhonson', 'Mike Collins', Erik 'Ross Anderson'",
    * you can use single or double quotation marks for composite names
    */
   @Prop() readonly author?: string

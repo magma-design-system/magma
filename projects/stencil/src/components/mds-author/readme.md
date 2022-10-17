@@ -1,6 +1,5 @@
 # mds-author
 
----
 
 # Installation
 

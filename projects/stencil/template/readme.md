@@ -14,7 +14,7 @@ This package works also with yarn:
 yarn add @maggioli-design-system/{{componentName}}
 ```
 
-# Import
+### Import
 
 Import the component in your project via `TypeScript` as follows:
 
@@ -66,7 +66,8 @@ You can check how browser support works at [this page][stencil-browser-support].
 
 You can try it out on the component's [Storybook website][storybook]!
 
-[storybook]: https://magma.maggiolicloud.it/storybook/?path=/story/ui-author--default
+<!-- TODO set correct storybook link, `ui` may need to be changed into something else -->
+[storybook]: https://magma.maggiolicloud.it/storybook/?path=/story/ui-{{componentNameWithNoPrefix}}--default
 [stencil-browser-support]: https://stenciljs.com/docs/browser-support
 
 <!-- End script-generated Magma Docs -->
