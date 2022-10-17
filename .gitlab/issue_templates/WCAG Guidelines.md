@@ -104,7 +104,6 @@ Here is an [Index of ARIA design patterns examples](https://w3c.github.io/aria-p
 
 A pratical list of ARIA examples based on the video [WAI-ARIA: le sue potenzialità e le strategie per evitare errori](https://www.youtube.com/watch?v=DAkwSvrIX9o) (in Italian):
 
-
 - [ ] [Notifications](https://youtu.be/DAkwSvrIX9o?t=790)
 - [ ] [Breadcrumbs](https://youtu.be/DAkwSvrIX9o?t=904)
 - [ ] Modal windows [example 1](https://youtu.be/DAkwSvrIX9o?t=1068), [example 2](https://youtu.be/-ZO3QVgs-sk?t=617)
