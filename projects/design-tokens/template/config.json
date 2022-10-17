@@ -9,7 +9,7 @@
       "files": [
         {
           "format": "css/vars",
-          "destination": "colors-{{fileName}}.css"
+          "destination": "colors-hex-{{fileName}}.css"
         },
         {
           "format": "css/vars-rgb-channels",

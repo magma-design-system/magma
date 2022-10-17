@@ -24,7 +24,7 @@ Generated at {{ date }}
   {{/each}}
 }
 
-:root .dark-mode {
+:root.dark-mode {
   {{#each properties as | groups |}}
     {{#each groups as | names |}}
       {{#each names as | lightModes |}}
@@ -45,7 +45,7 @@ Generated at {{ date }}
 }
 
 @media (prefers-color-scheme: dark) {
-  :root .dark-mode-os {
+  :root.system-mode {
     {{#each properties as | groups |}}
       {{#each groups as | names |}}
         {{#each names as | lightModes |}}
