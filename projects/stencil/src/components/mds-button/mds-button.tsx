@@ -10,6 +10,7 @@ import { buttonSizeTypographyVariant } from './meta/variants'
 import { TypographyType } from '../../types/typography'
 import { ToneVariantType } from '../../types/variant'
 import clsx from 'clsx'
+import { setAttributeIfEmpty, unslugName } from '@common/aria'
 
 @Component({
   tag: 'mds-button',
@@ -70,14 +71,21 @@ export class MdsButton {
     this.hasText = this.hostElement.innerHTML !== ''
   }
 
+  componentDidLoad ():void {
+    if (!this.hasText) {
+      setAttributeIfEmpty(this.hostElement, 'title', unslugName(this.icon))
+      setAttributeIfEmpty(this.hostElement, 'aria-label', this.hostElement.getAttribute('title'))
+    }
+  }
+
   render () {
     this.typography = buttonSizeTypographyVariant[this.size] as TypographyType
 
     return (
-      <Host class={clsx(!this.hasText && 'no-text')} onMouseDown={this.mouseDown} onMouseUp={this.mouseUp} onMouseOut={this.mouseUp}>
-        { this.icon && this.iconPosition === 'left' && <mds-icon class="icon" name={this.icon} /> }
+      <Host class={clsx(!this.hasText && 'no-text')} role="button" onMouseDown={this.mouseDown} onMouseUp={this.mouseUp} onMouseOut={this.mouseUp}>
+        { this.icon && this.iconPosition === 'left' && <mds-icon aria-hidden="true" class="icon" name={this.icon} /> }
         { this.hasText && <mds-text class="text" part="label" typography={this.typography}><slot /></mds-text> }
-        { this.icon && this.iconPosition === 'right' && <mds-icon class="icon" name={this.icon} /> }
+        { this.icon && this.iconPosition === 'right' && <mds-icon aria-hidden="true" class="icon" name={this.icon} /> }
       </Host>
     )
   }
