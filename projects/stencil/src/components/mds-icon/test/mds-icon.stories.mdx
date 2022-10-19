@@ -1,0 +1,24 @@
+import { Canvas, Meta, Story } from '@storybook/addon-docs';
+
+import MdsIcon from '@component/mds-icon/mds-icon'
+
+<Meta title="Design / Icon / ARIA" component={MdsIcon} />
+
+# ARIA
+
+- [Accessible SVG icons](https://css-tricks.com/accessible-svg-icons/)
+- [Accessible SVGs](https://css-tricks.com/accessible-svgs/#aa-icons)
+
+Always remember to set the ARIA attributes when appropriate:
+
+```html
+<mds-icon name="airplane" aria-label="Now we have an airplane!"/>
+```
+
+Remove them when not needed:
+
+```html
+<a href="#" title="Go to the homepage">
+  <mds-icon name="home" aria-hidden="true"/>
+</a>
+```

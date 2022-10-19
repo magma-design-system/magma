@@ -48,7 +48,7 @@ export class MdsIcon {
   render () {
     return (
       <Host>
-        { this.svgHTML && <i class="icon" innerHTML={this.svgHTML} /> }
+        { this.svgHTML && <i aria-hidden="true" class="icon" innerHTML={this.svgHTML} /> }
       </Host>
     )
   }
