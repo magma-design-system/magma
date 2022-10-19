@@ -72,7 +72,7 @@ export class MdsButton {
   }
 
   componentDidLoad ():void {
-    if (!this.hasText) {
+    if (!this.hasText && this.icon) {
       setAttributeIfEmpty(this.hostElement, 'title', unslugName(this.icon))
       setAttributeIfEmpty(this.hostElement, 'aria-label', this.hostElement.getAttribute('title'))
     }

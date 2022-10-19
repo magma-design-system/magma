@@ -69,6 +69,7 @@
     "css-loader": "^6.5.1",
     "directory-tree": "^3.0.1",
     "handlebars": "^4.7.7",
+    "tsconfig-paths-jest": "^0.0.1",
     "jest-transformer-svg": "1.0.2",
     "loki": "^0.28.1",
     "postcss": "^8.4.5",
