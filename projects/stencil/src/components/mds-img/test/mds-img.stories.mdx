@@ -1,0 +1,52 @@
+import { Canvas, Meta, Story } from '@storybook/addon-docs';
+
+import MdsImg from '@component/mds-img/mds-img'
+
+<Meta title="UI / Image / ARIA / Infos" component={MdsImg} />
+
+## ARIA
+
+- [Elements containig role img](https://dequeuniversity.com/rules/axe/3.5/role-img-alt)
+
+Always remember to set the ARIA attributes when appropriate:
+
+```html
+<mds-img aria-label="Image with 640 x 480 pixels of resolution." src="/path/to/image.png"/>
+```
+
+When a label is visible:
+
+```html
+<div class="flex flex-col items-center gap-6">
+  <mds-img aria-labelledby="image-label" src="/path/to/image.png"/>
+  <mds-text id="image-label" typography='caption' aria-hidden="true">
+    Background image with 640 x 480 pixels of resolution.
+  </mds-text>
+</div>
+```
+
+Attribute `aria-describedby` are longer than labels, they should be added in element wrappers:
+
+```html
+<div role="img" aria-describedby="image-description" class="flex flex-col items-center gap-6">
+  <mds-img src="/path/to/image.png"/>
+  <mds-text id="image-description" typography='caption'>
+    Descriptions are more verbose explanations. This image shows an empty preview with the resolution of 640 x 480 pixels, the source image is from placeholder.com.
+  </mds-text>
+</div>
+```
+
+The component `mds-button` will automatically set the `aria-label` attribute when the `title` attribute is set.
+
+## Forms
+
+Remember to set the role to `submit` to make the component behave as a submit button:
+
+```html
+<form>
+  ...
+  <mds-button role="submit" icon="mi/baseline/save">
+    Salva informazioni
+  </mds-button>
+</form>
+```

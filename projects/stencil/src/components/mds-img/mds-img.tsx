@@ -5,7 +5,7 @@ import {
 } from './meta/types'
 
 import { LoadingType } from '../../types/loading'
-import { setAttributeIfEmpty, hashValue } from '@common/aria'
+import { setAttributeIfEmpty } from '@common/aria'
 
 @Component({
   tag: 'mds-img',
@@ -139,17 +139,18 @@ export class MdsImg {
     if (this.aspectRatio !== undefined) {
       return (
         <Host
+          aria-label={this.alt}
           role="img"
-          alt={this.alt}
           style={{ ...this.getAspectRatio(), backgroundImage: `url(${this.src})`, width: '100%' }}
         />
       )
     }
 
     return (
-      <Host>
+      <Host aria-label={this.alt} role="img">
         <img
           alt={this.alt}
+          aria-hidden="true"
           height={this.height}
           loading={this.loading}
           onError={this.onError}
