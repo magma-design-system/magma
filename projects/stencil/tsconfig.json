@@ -17,7 +17,7 @@
     "jsx": "react",
     "jsxFactory": "h",
     "resolveJsonModule": true,
-    "baseUrl": ".",
+    "baseUrl": "./",
     "paths": {
       "@common/*": ["src/common/*"],
       "@component/*": ["dist/collection/components/*"],
