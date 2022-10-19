@@ -151,7 +151,7 @@ include:
   - '/projects/stencil/src/components/mds-icon/.gitlab-ci.yml'
   - '/projects/stencil/src/components/mds-img/.gitlab-ci.yml'
   - '/projects/stencil/src/components/mds-input/.gitlab-ci.yml'
-  - '/projects/stencil/src/components/mds-input-button/.gitlab-ci.yml'
+  # - '/projects/stencil/src/components/mds-input-button/.gitlab-ci.yml'
   # - '/projects/stencil/src/components/mds-input-field/.gitlab-ci.yml'
   # - '/projects/stencil/src/components/mds-input-range/.gitlab-ci.yml'
   # - '/projects/stencil/src/components/mds-input-select/.gitlab-ci.yml'
@@ -189,4 +189,4 @@ include:
   - '/projects/stencil/src/components/mds-url-view/.gitlab-ci.yml'
   - '/projects/stencil/src/components/mds-usage/.gitlab-ci.yml'
   - '/projects/stencil/src/components/mds-video-wall/.gitlab-ci.yml'
-  
+
