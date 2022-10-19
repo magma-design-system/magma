@@ -6,6 +6,10 @@ const hash = (s: string): string => {
   return h.toString()
 }
 
+const unslugName = (name: string): string => {
+  return name.split('/').slice(-1).pop().replace(/-/g, ' ')
+}
+
 const setAttributeIfEmpty = (element: HTMLElement, attribute: string, value: string): string => {
   if (element.hasAttribute(attribute)) {
     return element.getAttribute(attribute)
@@ -17,6 +21,7 @@ const setAttributeIfEmpty = (element: HTMLElement, attribute: string, value: str
 const hashValue = (value: string): string => `${value}-${hash(value)}`
 
 export {
+  unslugName,
   setAttributeIfEmpty,
   hashValue,
 }
