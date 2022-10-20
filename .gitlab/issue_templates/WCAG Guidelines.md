@@ -99,9 +99,19 @@ Remember, [no ARIA is better than bad ARIA](https://www.w3.org/WAI/ARIA/apg/prac
 
 Find the best [pattern](https://www.w3.org/WAI/ARIA/apg/patterns/) for the component you are building, and make sure you understand the [ARIA roles, states, and properties](https://www.w3.org/TR/wai-aria-1.1/#roles_states_props) that are used in the pattern.
 
-Introduction to [WAI-ARIA: le sue potenzialità e le strategie per evitare errori](https://www.youtube.com/watch?v=DAkwSvrIX9o) (video in Italian)
+Here is an [Index of ARIA design patterns examples](https://w3c.github.io/aria-practices/examples/).
 
-Here is  an [Index of ARIA design patterns examples](https://w3c.github.io/aria-practices/examples/).
+
+A pratical list of ARIA examples based on the video [WAI-ARIA: le sue potenzialità e le strategie per evitare errori](https://www.youtube.com/watch?v=DAkwSvrIX9o) (in Italian):
+
+- [ ] [Notifications](https://youtu.be/DAkwSvrIX9o?t=790)
+- [ ] [Breadcrumbs](https://youtu.be/DAkwSvrIX9o?t=904)
+- [ ] Modal windows [example 1](https://youtu.be/DAkwSvrIX9o?t=1068), [example 2](https://youtu.be/-ZO3QVgs-sk?t=617)
+- [ ] [Opened, closed state](https://youtu.be/DAkwSvrIX9o?t=1356)
+- [ ] [Dropdown menu](https://youtu.be/DAkwSvrIX9o?t=1624)
+- [ ] Tabs [example 1](https://youtu.be/DAkwSvrIX9o?t=1725), [example 2](https://youtu.be/-ZO3QVgs-sk?t=428)
+
+
 
 ---
 

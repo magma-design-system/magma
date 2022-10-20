@@ -72,6 +72,7 @@ Size.args = {
 export const icon = TemplateIcon.bind({})
 icon.args = {
   icon: 'mi/baseline/eco',
+  title: 'Pianta un albero',
 }
 
 export const iconPosition = Template.bind({})

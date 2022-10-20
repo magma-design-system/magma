@@ -6,6 +6,12 @@ import { Config } from '@stencil/core'
 import { inlineSvg } from 'stencil-inline-svg'
 import { postcss } from '@stencil/postcss'
 
+// https://github.com/ionic-team/stencil/issues/1307
+// still not working
+// import tsconfigPathsJest from 'tsconfig-paths-jest'
+// import tsconfig from './tsconfig.json'
+// console.log(tsconfig)
+
 const packageName = 'magma-components'
 const srcDir = './src'
 
@@ -57,12 +63,23 @@ export const config: Config = {
      * before it can run your tests
      */
     browserArgs: ['--no-sandbox', '--disable-setuid-sandbox'],
-    testPathIgnorePatterns: ['<rootDir>/.build/', '<rootDir>/template/', '<rootDir>/node_modules/'],
-    watchPathIgnorePatterns: ['<rootDir>/.build/', '<rootDir>/template/', '<rootDir>/node_modules/'],
     coveragePathIgnorePatterns: ['<rootDir>/.build/', '<rootDir>/template/', '<rootDir>/node_modules/'],
+    // moduleNameMapper: tsconfigPathsJest(tsconfig),
+    moduleNameMapper: {
+      '@common/(.*)': '<rootDir>src/common/$1',
+      '@component/(.*)': '<rootDir>dist/collection/components/$1',
+      '@dictionary/(.*)': '<rootDir>src/dictionary/$1',
+      '@fixture/(.*)': '<rootDir>src/fixtures/$1',
+      '@icon/(.*)': '<rootDir>assets/svg/$1',
+      '@placeholder': 'https://via.placeholder.com',
+      '@test/(.*)': '<rootDir>src/test/$1',
+      '@type/(.*)': '<rootDir>src/types/$1',
+      '@variant/(.*)': '<rootDir>src/variants/$1',
+    },
     modulePathIgnorePatterns: ['<rootDir>/.build/', '<rootDir>/template/', '<rootDir>/node_modules/'],
-    transformIgnorePatterns: ['<rootDir>/.build/', '<rootDir>/template/', '<rootDir>/node_modules/'],
-    moduleNameMapper: { "@icon/(.*)": "<rootDir>/assets/svg/$1" },
+    testPathIgnorePatterns: ['<rootDir>/.build/', '<rootDir>/template/', '<rootDir>/node_modules/'],
     transform: { "^.+\\.svg$": "jest-transformer-svg" },
+    transformIgnorePatterns: ['<rootDir>/.build/', '<rootDir>/template/', '<rootDir>/node_modules/'],
+    watchPathIgnorePatterns: ['<rootDir>/.build/', '<rootDir>/template/', '<rootDir>/node_modules/'],
   }
 }

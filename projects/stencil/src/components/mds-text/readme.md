@@ -29,7 +29,6 @@
  - [mds-button](../mds-button)
  - [mds-file](../mds-file)
  - [mds-input](../mds-input)
- - [mds-input-button](../mds-input-button)
  - [mds-input-field](../mds-input-field)
  - [mds-input-range](../mds-input-range)
  - [mds-input-switch](../mds-input-switch)
@@ -60,7 +59,6 @@ graph TD;
   mds-button --> mds-text
   mds-file --> mds-text
   mds-input --> mds-text
-  mds-input-button --> mds-text
   mds-input-field --> mds-text
   mds-input-range --> mds-text
   mds-input-switch --> mds-text

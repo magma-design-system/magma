@@ -1,10 +1,11 @@
-import { Component, Event, EventEmitter, Host, h, Prop } from '@stencil/core'
+import { Component, Element, Event, EventEmitter, Host, h, Prop } from '@stencil/core'
 import {
   CrossoriginType,
   ReferrerpolicyType,
 } from './meta/types'
 
 import { LoadingType } from '../../types/loading'
+import { setAttributeIfEmpty } from '@common/aria'
 
 @Component({
   tag: 'mds-img',
@@ -14,6 +15,8 @@ import { LoadingType } from '../../types/loading'
 export class MdsImg {
 
   private aspectRatioModern = false
+  @Element() private host: HTMLMdsImgElement
+  private image: HTMLImageElement
 
   /**
    * Specifies an alternate text for an image
@@ -94,8 +97,8 @@ export class MdsImg {
   @Event() loadError: EventEmitter<HTMLImageElement>
 
   private onError = (ev: Event) => {
-    const image = ev.target as HTMLImageElement
-    this.loadError.emit(image)
+    this.image = ev.target as HTMLImageElement
+    this.loadError.emit(this.image)
   }
 
   /**
@@ -104,8 +107,8 @@ export class MdsImg {
   @Event() loadSuccess: EventEmitter<HTMLImageElement>
 
   private onSuccess = (ev: Event) => {
-    const image = ev.target as HTMLImageElement
-    this.loadSuccess.emit(image)
+    this.image = ev.target as HTMLImageElement
+    this.loadSuccess.emit(this.image)
   }
 
   private autoAltName (): string {
@@ -116,28 +119,40 @@ export class MdsImg {
   }
 
   componentWillLoad ():void {
+    this.image = this.host.querySelector<HTMLImageElement>('img')
     if (!this.alt) {
       this.alt = this.autoAltName()
     }
+  }
+
+  private setAriaAttributes (): void {
+    if (this.aspectRatio !== undefined) {
+      setAttributeIfEmpty(this.host, 'aria-label', this.alt)
+    }
+  }
+
+  componentDidLoad (): void {
+    this.setAriaAttributes()
   }
 
   render () {
     if (this.aspectRatio !== undefined) {
       return (
         <Host
-          style={{ ...this.getAspectRatio(), backgroundImage: `url(${this.src})` }}
+          aria-label={this.alt}
+          role="img"
+          style={{ ...this.getAspectRatio(), backgroundImage: `url(${this.src})`, width: '100%' }}
         />
       )
     }
 
     return (
-      <Host>
+      <Host aria-label={this.alt} role="img">
         <img
           alt={this.alt}
-          // crossorigin={this.crossorigin}
+          aria-hidden="true"
           height={this.height}
           loading={this.loading}
-          // referrerpolicy={this.referrerpolicy}
           onError={this.onError}
           onLoad={this.onSuccess}
           sizes={this.sizes}

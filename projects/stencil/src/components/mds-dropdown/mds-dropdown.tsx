@@ -2,6 +2,7 @@ import { Component, Element, Event, EventEmitter, Host, Listen, Prop, h, Watch }
 import { arrow, autoPlacement, autoUpdate, computePosition, flip, MiddlewareData, offset, shift } from '@floating-ui/dom'
 import { FloatingUIPlacement, FloatingUIStrategy } from '../../types/floating-ui'
 import arrowSvg from './assets/arrow.svg'
+import { setAttributeIfEmpty, hashValue } from '@common/aria'
 
 @Component({
   tag: 'mds-dropdown',
@@ -357,10 +358,20 @@ export class MdsDropdown {
     })
   }
 
+  private setAriaAttributes (): void {
+    const hostId = setAttributeIfEmpty(this.host, 'id', hashValue(this.target))
+    setAttributeIfEmpty(this.caller, 'aria-haspopup', 'true')
+    setAttributeIfEmpty(this.caller, 'aria-controls', hostId)
+    setAttributeIfEmpty(this.host, 'role', 'menu')
+    setAttributeIfEmpty(this.host, 'aria-labelledby', this.target)
+  }
+
   componentDidLoad (): void {
     document.addEventListener('click', this.handleCloseDropdown)
     this.arrowEl = this.host.shadowRoot.querySelector('.arrow')
     this.caller = document.getElementById(this.target)
+
+    this.setAriaAttributes()
 
     if (!this.caller) return
 
