@@ -115,6 +115,7 @@ A pratical list of ARIA examples based on the video [WAI-ARIA: le sue potenziali
 #### 5. Automatic behavior
 
 - [ ] [Converting divs into accessible pseudo-buttons](https://benfrain.com/converting-divs-into-accessible-pseudo-buttons/)
+- [ ] [Progress bar name](https://accessibilityinsights.io/info-examples/web/aria-progressbar-name/)
 
 ---
 
