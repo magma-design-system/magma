@@ -19,27 +19,24 @@
   @apply
     flex
     overflow-hidden
-    transition-colors;
+    transition-colors
+    w-full;
 
   background-color: var(--background);
   border-radius: var(--radius);
   height: var(--thickness);
-}
-
-:host ( [direction="horizontal"] ) {
-  @apply w-full;
-
-  height: var(--thickness);
   min-width: var(--thickness);
 }
 
-:host ( [direction="vertical"] ) {
+:host ( [direction=vertical] ) {
   @apply
     h-full
-    min-h-8
-    flex-col;
+    flex-col
+    w-auto;
 
+  height: unset;
   width: var(--thickness);
+  min-height: var(--thickness);
 }
 
 .progress {
