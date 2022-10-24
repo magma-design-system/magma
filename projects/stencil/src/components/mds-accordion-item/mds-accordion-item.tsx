@@ -40,13 +40,15 @@ export class MdsAccordionItem {
   render () {
     return (
       <Host>
-        <div class="header" onClick={ this.toggle }>
-          <mds-text typography={ this.typography }>{ this.description }</mds-text>
-          <mds-text class="icon-button" typography={ this.typography }>
+        <button aria-controls="contents" aria-expanded={ this.opened ? 'true' : 'false' } class="action" id="action" onClick={ this.toggle } role="button" tabindex="0">
+          <mds-text typography={ this.typography }>
+            { this.description }
+          </mds-text>
+          <mds-text aria-hidden="true" class="icon-button" typography={ this.typography }>
             <i class="svg icon" innerHTML={miBaselineKeyboardArrowUp}/>
           </mds-text>
-        </div>
-        <div class="contents">
+        </button>
+        <div aria-labelledby="action" class="contents" id="contents" role="region">
           <slot/>
         </div>
       </Host>
