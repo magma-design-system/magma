@@ -1,5 +1,4 @@
 import { Component, Host, h, Prop, State, Event, EventEmitter, Watch } from '@stencil/core'
-import clsx from 'clsx'
 import { TypographyTitleType } from '../../types/typography'
 
 @Component({
@@ -81,14 +80,14 @@ export class MdsAccordionTimerItem {
 
   render () {
     return (
-      <Host class={ clsx(this.isActive && 'active') } onMouseEnter={ this.mouseEnter } onMouseLeave={ this.mouseLeave }>
+      <Host onMouseEnter={ this.mouseEnter } onMouseLeave={ this.mouseLeave }>
         <div class="row">
           <mds-progress class="progress-bar" progress={this.progress} direction="vertical"/>
           <div class="accordion">
-            <div class="header" onClick={ this.toggle }>
+            <button class="action" onClick={ this.toggle }>
               <mds-text typography={ this.typography }>{ this.description }</mds-text>
-            </div>
-            <div class={ clsx('contents', this.isActive && 'contents--opened') }>
+            </button>
+            <div class="contents">
               <slot/>
             </div>
           </div>

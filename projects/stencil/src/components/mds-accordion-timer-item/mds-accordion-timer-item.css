@@ -1,12 +1,16 @@
 @tailwind utilities;
 
 /**
-  * @prop --background-active: Sets the background-color of the progress bar when the item is selected
+  * @prop --progress-bar-color: Sets the color of the progress bar when the item is selected
+  * @prop --progress-bar-background: Sets the background-color of the progress bar when the item is selected
   * @prop --color: Sets the text color of the component
-  * @prop --thickness: Sets thickness of the progress bar
+  * @prop --progress-bar-thickness: Sets thickness of the progress bar
   */
 
 :host {
+  --progress-bar-color: theme('colors.tone-neutral-03');
+  --progress-bar-background: theme('colors.tone-neutral-08');
+  --progress-bar-thickness: theme('width.1');
 
   @apply
     duration-500
@@ -17,11 +21,6 @@
     transition-cosmetic;
 
   color: var(--color, theme('colors.tone-neutral-02'));
-}
-
-:host ( :hover:not(.active) ) .progress-bar {
-
-  --background-active: theme('colors.tone-neutral-07');
 }
 
 .row {
@@ -37,14 +36,21 @@
 .progress-bar {
   @apply shrink-0;
 
-  --thickness: theme('width.1');
+  --color: var(--progress-bar-color);
+  --background: var(--progress-bar-background);
+  --thickness: var(--progress-bar-thickness);
 }
 
-.header {
-  @apply cursor-pointer;
+.action {
+  @apply
+    bg-transparent
+    border-none
+    cursor-pointer
+    p-0
+    text-left;
 }
 
-:host ( .active ) .header {
+:host ( [active] ) .action {
   @apply cursor-auto;
 }
 
@@ -61,7 +67,7 @@
     transition-cosmetic;
 }
 
-.contents--opened {
+:host ( [active] ) .contents {
   @apply
     h-auto
     opacity-100

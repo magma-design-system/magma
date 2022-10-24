@@ -27,11 +27,12 @@
 
 ## CSS Custom Properties
 
-| Name                  | Description                                                             |
-| --------------------- | ----------------------------------------------------------------------- |
-| `--background-active` | Sets the background-color of the progress bar when the item is selected |
-| `--color`             | Sets the text color of the component                                    |
-| `--thickness`         | Sets thickness of the progress bar                                      |
+| Name                        | Description                                                             |
+| --------------------------- | ----------------------------------------------------------------------- |
+| `--color`                   | Sets the text color of the component                                    |
+| `--progress-bar-background` | Sets the background-color of the progress bar when the item is selected |
+| `--progress-bar-color`      | Sets the color of the progress bar when the item is selected            |
+| `--progress-bar-thickness`  | Sets thickness of the progress bar                                      |
 
 
 ## Dependencies
