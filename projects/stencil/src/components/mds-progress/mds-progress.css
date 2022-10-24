@@ -26,14 +26,14 @@
   height: var(--thickness);
 }
 
-:host ( .horizontal ) {
+:host ( [direction="horizontal"] ) {
   @apply w-full;
 
   height: var(--thickness);
   min-width: var(--thickness);
 }
 
-:host ( .vertical ) {
+:host ( [direction="vertical"] ) {
   @apply
     h-full
     min-h-8
