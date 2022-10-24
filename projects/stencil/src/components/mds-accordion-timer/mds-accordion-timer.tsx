@@ -152,7 +152,7 @@ export class MdsAccordionTimer {
   render () {
     return (
       <Host>
-        <slot></slot>
+        <slot/>
       </Host>
     )
   }
