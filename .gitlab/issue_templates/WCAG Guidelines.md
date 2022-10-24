@@ -41,13 +41,13 @@ becomes
 - [~] Provide informative, unique page titles
 -->
 
-- [ ] [Provide informative, unique page titles](https://www.w3.org/WAI/tips/writing/#provide-informative-unique-page-titles)
-- [ ] [Use headings to convey meaning and structure](https://www.w3.org/WAI/tips/writing/#use-headings-to-convey-meaning-and-structure)
-- [ ] [Make link text meaningful](https://www.w3.org/WAI/tips/writing/#make-link-text-meaningful)
-- [ ] [Write meaningful text alternatives for images](https://www.w3.org/WAI/tips/writing/#write-meaningful-text-alternatives-for-images)
-- [ ] [Create transcripts and captions for multimedia](https://www.w3.org/WAI/tips/writing/#create-transcripts-and-captions-for-multimedia)
-- [ ] [Provide clear instructions](https://www.w3.org/WAI/tips/writing/#provide-clear-instructions)
-- [ ] [Keep content clear and concise](https://www.w3.org/WAI/tips/writing/#keep-content-clear-and-concise)
+- [~] [Provide informative, unique page titles](https://www.w3.org/WAI/tips/writing/#provide-informative-unique-page-titles)
+- [~] [Use headings to convey meaning and structure](https://www.w3.org/WAI/tips/writing/#use-headings-to-convey-meaning-and-structure)
+- [~] [Make link text meaningful](https://www.w3.org/WAI/tips/writing/#make-link-text-meaningful)
+- [~] [Write meaningful text alternatives for images](https://www.w3.org/WAI/tips/writing/#write-meaningful-text-alternatives-for-images)
+- [~] [Create transcripts and captions for multimedia](https://www.w3.org/WAI/tips/writing/#create-transcripts-and-captions-for-multimedia)
+- [~] [Provide clear instructions](https://www.w3.org/WAI/tips/writing/#provide-clear-instructions)
+- [~] [Keep content clear and concise](https://www.w3.org/WAI/tips/writing/#keep-content-clear-and-concise)
 
 #### 2. Designing
 
@@ -63,13 +63,13 @@ becomes
 - [ ] [Provide sufficient contrast between foreground and background](https://www.w3.org/WAI/tips/designing/#provide-sufficient-contrast-between-foreground-and-background)
 - [ ] [Don’t use color alone to convey information](https://www.w3.org/WAI/tips/designing/#dont-use-color-alone-to-convey-information)
 - [ ] [Ensure that interactive elements are easy to identify](https://www.w3.org/WAI/tips/designing/#ensure-that-interactive-elements-are-easy-to-identify)
-- [ ] [Provide clear and consistent navigation options](https://www.w3.org/WAI/tips/designing/#provide-clear-and-consistent-navigation-options)
-- [ ] [Ensure that form elements include clearly associated labels](https://www.w3.org/WAI/tips/designing/#ensure-that-form-elements-include-clearly-associated-labels)
+- [~] [Provide clear and consistent navigation options](https://www.w3.org/WAI/tips/designing/#provide-clear-and-consistent-navigation-options)
+- [~] [Ensure that form elements include clearly associated labels](https://www.w3.org/WAI/tips/designing/#ensure-that-form-elements-include-clearly-associated-labels)
 - [ ] [Provide easily identifiable feedback](https://www.w3.org/WAI/tips/designing/#provide-easily-identifiable-feedback)
 - [ ] [Use headings and spacing to group related content](https://www.w3.org/WAI/tips/designing/#use-headings-and-spacing-to-group-related-content)
-- [ ] [Create designs for different viewport sizes](https://www.w3.org/WAI/tips/designing/#create-designs-for-different-viewport-sizes)
-- [ ] [Include image and media alternatives in your design](https://www.w3.org/WAI/tips/designing/#include-image-and-media-alternatives-in-your-design)
-- [ ] [Provide controls for content that starts automatically](https://www.w3.org/WAI/tips/designing/#provide-controls-for-content-that-starts-automatically)
+- [~] [Create designs for different viewport sizes](https://www.w3.org/WAI/tips/designing/#create-designs-for-different-viewport-sizes)
+- [~] [Include image and media alternatives in your design](https://www.w3.org/WAI/tips/designing/#include-image-and-media-alternatives-in-your-design)
+- [~] [Provide controls for content that starts automatically](https://www.w3.org/WAI/tips/designing/#provide-controls-for-content-that-starts-automatically)
 
 #### 3. Developing
 
@@ -82,11 +82,11 @@ becomes
 [~] Associate a label with every form control
 -->
 
-- [ ] [Associate a label with every form control](https://www.w3.org/WAI/tips/developing/#associate-a-label-with-every-form-control)
-- [ ] [Include alternative text for images](https://www.w3.org/WAI/tips/developing/#include-alternative-text-for-images)
-- [ ] [Identify page language and language changes](https://www.w3.org/WAI/tips/developing/#identify-page-language-and-language-changes)
-- [ ] [Use mark-up to convey meaning and structure](https://www.w3.org/WAI/tips/developing/#use-mark-up-to-convey-meaning-and-structure)
-- [ ] [Help users avoid and correct mistakes](https://www.w3.org/WAI/tips/developing/#help-users-avoid-and-correct-mistakes)
+- [~] [Associate a label with every form control](https://www.w3.org/WAI/tips/developing/#associate-a-label-with-every-form-control)
+- [~] [Include alternative text for images](https://www.w3.org/WAI/tips/developing/#include-alternative-text-for-images)
+- [~] [Identify page language and language changes](https://www.w3.org/WAI/tips/developing/#identify-page-language-and-language-changes)
+- [ ] [Use markup to convey meaning and structure](https://www.w3.org/WAI/tips/developing/#use-mark-up-to-convey-meaning-and-structure)
+- [~] [Help users avoid and correct mistakes](https://www.w3.org/WAI/tips/developing/#help-users-avoid-and-correct-mistakes)
 - [ ] [Reflect the reading order in the code order](https://www.w3.org/WAI/tips/developing/#reflect-the-reading-order-in-the-code-order)
 - [ ] [Write code that adapts to the user’s technology](https://www.w3.org/WAI/tips/developing/#write-code-that-adapts-to-the-users-technology)
 - [ ] [Provide meaning for non-standard interactive elements](https://www.w3.org/WAI/tips/developing/#provide-meaning-for-non-standard-interactive-elements)
@@ -112,6 +112,9 @@ A pratical list of ARIA examples based on the video [WAI-ARIA: le sue potenziali
 - [ ] Tabs [example 1](https://youtu.be/DAkwSvrIX9o?t=1725), [example 2](https://youtu.be/-ZO3QVgs-sk?t=428)
 
 
+#### 5. Automatic behavior
+
+- [ ] [Converting divs into accessible pseudo-buttons](https://benfrain.com/converting-divs-into-accessible-pseudo-buttons/)
 
 ---
 
