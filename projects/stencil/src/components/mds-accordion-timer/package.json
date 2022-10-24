@@ -1,12 +1,13 @@
 {
   "name": "@maggioli-design-system/mds-accordion-timer",
-  "version": "2.0.1",
+  "version": "2.1.0",
   "description": "mds-accordion-timer is a web-component from Maggioli Design System Magma, built with StencilJS, TypeScript, Storybook. It's based on the web-component standard and it's designed to be agnostic from the JavaScirpt framework you are using.",
   "main": "dist/index.cjs.js",
   "module": "dist/index.js",
   "es2015": "dist/esm/index.mjs",
   "es2017": "dist/esm/index.mjs",
-"types": "dist/types/components.d.ts",  "collection": "dist/collection/collection-manifest.json",
+  "types": "dist/types/components.d.ts",
+  "collection": "dist/collection/collection-manifest.json",
   "collection:main": "dist/collection/index.js",
   "unpkg": "dist/mds-accordion-timer/mds-accordion-timer.esm.js",
   "files": [
@@ -22,9 +23,9 @@
     "test": "stencil test --spec --e2e"
   },
   "dependencies": {
-    "@maggioli-design-system/mds-accordion-timer-item": "^2.0.1",
-    "@maggioli-design-system/styles": "^8.0.0",
-    "@stencil/core": "^2.17.0"
+    "@maggioli-design-system/mds-accordion-timer-item": "^2.1.0",
+    "@maggioli-design-system/styles": "^9.0.0",
+    "@stencil/core": "^2.18.1"
   },
   "license": "MIT",
   "author": {
