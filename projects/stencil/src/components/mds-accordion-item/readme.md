@@ -23,10 +23,10 @@
 
 ## CSS Custom Properties
 
-| Name             | Description                                          |
-| ---------------- | ---------------------------------------------------- |
-| `--border-color` | Sets the color of the border that separates elements |
-| `--color`        | Sets the text-color of the element                   |
+| Name                  | Description                                            |
+| --------------------- | ------------------------------------------------------ |
+| `--color`             | Sets the text-color of the element                     |
+| `--description-color` | Sets the color of the always visible title description |
 
 
 ## Dependencies
