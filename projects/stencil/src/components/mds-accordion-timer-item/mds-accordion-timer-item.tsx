@@ -1,5 +1,6 @@
-import { Component, Host, h, Prop, State, Event, EventEmitter, Watch } from '@stencil/core'
+import { Component, Host, h, Prop, State, Element, Event, EventEmitter, Watch } from '@stencil/core'
 import { TypographyTitleType } from '../../types/typography'
+// import { DirectionType } from '../mds-progress/meta/types'
 
 @Component({
   tag: 'mds-accordion-timer-item',
@@ -8,7 +9,9 @@ import { TypographyTitleType } from '../../types/typography'
 })
 export class MdsAccordionTimerItem {
 
-  @State() isActive:boolean
+  // @Element() private element: HTMLMdsAccordionTimerItemElement
+
+  // @State() isActive:boolean
 
   /**
    * Specifies the typography of the element
@@ -35,25 +38,29 @@ export class MdsAccordionTimerItem {
    */
   @Prop() readonly uuid?: number = 0
 
-  componentWillLoad (): void {
-    this.isActive = this.active
-  }
+  // componentWillLoad (): void {
+  //   this.isActive = this.active
+  // }
+
+  // componentDidLoad (): void {
+  //   this.element.shadowRoot.querySelector<HTMLMdsProgressElement>('mds-progress').setAttribute('direction', 'vertical')
+  // }
 
   private toggle = () => {
-    if (!this.isActive) {
-      this.isActive = true
+    if (!this.active) {
+      // this.isActive = true
       this.clickActive.emit(this.description)
     }
   }
 
   private mouseEnter = () => {
-    if (this.isActive) {
+    if (this.active) {
       this.mouseEnterActive.emit(this.description)
     }
   }
 
   private mouseLeave = () => {
-    if (this.isActive) {
+    if (this.active) {
       this.mouseLeaveActive.emit(this.description)
     }
   }
@@ -73,21 +80,21 @@ export class MdsAccordionTimerItem {
    */
   @Event() mouseLeaveActive: EventEmitter<string>
 
-  @Watch('active')
-  validateOpened (newValue: boolean): void {
-    this.isActive = newValue
-  }
+  // @Watch('active')
+  // activeChanged (newValue: boolean): void {
+  //   this.isActive = newValue
+  // }
 
   render () {
     return (
       <Host onMouseEnter={ this.mouseEnter } onMouseLeave={ this.mouseLeave }>
         <div class="row">
-          <mds-progress class="progress-bar" progress={this.progress} direction="vertical"/>
+          <mds-progress class="progress-bar" progress={ Number(this.progress.toFixed(2)) } direction="vertical"/>
           <div class="accordion">
-            <button class="action" onClick={ this.toggle }>
+            <button aria-controls="contents" aria-expanded={ this.active ? 'true' : 'false' } class="action" id="action" onClick={ this.toggle } role="button" tabindex="0">
               <mds-text typography={ this.typography }>{ this.description }</mds-text>
             </button>
-            <div class="contents">
+            <div class="contents" id="contents">
               <slot/>
             </div>
           </div>
