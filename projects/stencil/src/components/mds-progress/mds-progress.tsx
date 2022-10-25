@@ -20,7 +20,7 @@ export class MdsProgress {
   /**
    * Specifies the direction of the progress bar, if horizonatl or vertical
    */
-  @Prop() readonly direction?: DirectionType = 'horizontal'
+  @Prop({ reflect: true }) readonly direction?: DirectionType = 'horizontal'
 
   /**
    * Sets the theme variant colors
