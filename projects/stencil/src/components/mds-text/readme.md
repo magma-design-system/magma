@@ -27,6 +27,7 @@
  - [mds-bibliography](../mds-bibliography)
  - [mds-breadcrumb-item](../mds-breadcrumb-item)
  - [mds-button](../mds-button)
+ - [mds-chip](../mds-chip)
  - [mds-file](../mds-file)
  - [mds-input](../mds-input)
  - [mds-input-field](../mds-input-field)
@@ -57,6 +58,7 @@ graph TD;
   mds-bibliography --> mds-text
   mds-breadcrumb-item --> mds-text
   mds-button --> mds-text
+  mds-chip --> mds-text
   mds-file --> mds-text
   mds-input --> mds-text
   mds-input-field --> mds-text

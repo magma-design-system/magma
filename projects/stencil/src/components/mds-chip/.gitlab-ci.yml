@@ -1,0 +1,25 @@
+.base-chip:
+  variables:
+    COMPONENT: mds-chip
+
+# ISOLATE
+chip-isolate:
+  extends: [.base-isolate, .base-chip]
+  dependencies: [base-stencil-build]
+
+# TEST
+chip-publish-test:
+  extends: [.base-stencil-publish-test, .base-chip]
+  dependencies: [base-stencil-build, chip-isolate]
+
+# PUBLISH
+chip-publish:
+  extends: [.base-stencil-publish, .base-chip]
+  dependencies: [base-stencil-build, chip-isolate]
+  needs: [base-stencil-build, chip-isolate, chip-publish-test]
+
+# INSTALL TEST
+chip-install-test:
+  extends: [.base-stencil-install-test, .base-chip]
+  dependencies: [base-stencil-build, chip-isolate]
+  needs: [base-stencil-build, chip-isolate, chip-publish]
