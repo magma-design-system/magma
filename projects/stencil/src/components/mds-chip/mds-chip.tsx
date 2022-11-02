@@ -91,7 +91,6 @@ export class MdsChip {
       this.addActionAttributes()
       return
     }
-
     this.removeActionAttributes()
   }
 

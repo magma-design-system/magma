@@ -30,16 +30,21 @@ export default {
 }
 
 const Template = args =>
-  <mds-chip {...args}
-    onLabelClick={(e: MouseEvent) => { console.log('onLabelClick', e) }}
-    onDelete={(e: MouseEvent) => { console.log('onDelete', e) }}
-  />
+  <mds-chip {...args} onDelete={(e: MouseEvent) => { console.log('onDelete', e) }} onLabelClick={(e: MouseEvent) => { console.log('onLabelClick', e) }}/>
 
 export const Default = Template.bind( {} )
 Default.args = {
   deletable: true,
   clickable: true,
+  onLabelClick: (e: MouseEvent) => { console.log('onLabelClick', e) },
+  onDelete: (e: MouseEvent) => { console.log('onDelete', e) },
   label: 'Bovaro del Bernese',
   icon: 'mi/baseline/eco',
 }
+
+// https://design.baloise.dev/?path=/story/components-button--button-states
+// https://github.com/baloise/design-system/tree/master/packages/components
+
+// Default.addEventListener('onLabelClick', (e: MouseEvent) => { console.log('onLabelClick', e) })
+// Default.addEventListener('onDelete', (e: MouseEvent) => { console.log('onDelete', e) })
 
