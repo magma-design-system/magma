@@ -4,6 +4,7 @@
   --backdrop-color: 0 0 0;
   --backdrop-opacity: 0.1;
   --backdrop: rgba(var(--backdrop-color) / var(--backdrop-opacity));
+  --disabled-opacity: 0.5;
   --modal-z-index: 1000;
   --overlay-blur: var(--backdrop-blur);
   --overlay-color: var(--backdrop-color);
