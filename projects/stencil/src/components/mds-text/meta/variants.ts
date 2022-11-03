@@ -102,7 +102,7 @@ const typographyDefaultsVariant = {
     },
   },
   tip: {
-    tag: 'span',
+    tag: 'div',
     selector: {
       default: 'text-info-tip',
       info: 'text-info-tip',

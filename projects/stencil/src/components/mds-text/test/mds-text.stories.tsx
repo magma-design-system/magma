@@ -10,6 +10,10 @@ export default {
       options: tagsDictionary,
       control: { type: 'select' },
     },
+    truncate: {
+      type: { name: 'boolean' },
+      description: 'Specifies if the text shoud be truncated or should behave as a normal text',
+    },
     typography: {
       description: 'Specifies the font typography of the element',
       options: typographyDictionary,
@@ -27,102 +31,100 @@ const Template = args =>
 
 export const Default = Template.bind({})
 
-export const H1 = Template.bind({})
-H1.args = {
-  typography: 'h1',
+export const Truncate = Template.bind({})
+Truncate.args = {
+  truncate: true,
 }
 
-export const H2 = Template.bind({})
-H2.args = {
-  typography: 'h2',
-}
-
-export const H3 = Template.bind({})
-H3.args = {
-  typography: 'h3',
-}
-
-export const H4 = Template.bind({})
-H4.args = {
-  typography: 'h4',
-}
-
-export const H5 = Template.bind({})
-H5.args = {
-  typography: 'h5',
-}
-
-export const H6 = Template.bind({})
-H6.args = {
-  typography: 'h6',
-}
-
-export const Action = Template.bind({})
-Action.args = {
+export const VariantTitleAction = Template.bind({})
+VariantTitleAction.args = {
   typography: 'action',
 }
 
-export const Paragraph = Template.bind({})
-Paragraph.args = {
-  typography: 'paragraph',
+export const VariantTitleH1 = Template.bind({})
+VariantTitleH1.args = {
+  typography: 'h1',
 }
 
-export const ParagraphReadVariant = Template.bind({})
-ParagraphReadVariant.args = {
-  typography: 'paragraph',
-  variant: 'read',
+export const VariantTitleH2 = Template.bind({})
+VariantTitleH2.args = {
+  typography: 'h2',
 }
 
-export const Detail = Template.bind({})
-Detail.args = {
-  typography: 'detail',
+export const VariantTitleH3 = Template.bind({})
+VariantTitleH3.args = {
+  typography: 'h3',
 }
 
-export const DetailReadVariant = Template.bind({})
-DetailReadVariant.args = {
-  typography: 'detail',
-  variant: 'read',
+export const VariantTitleH4 = Template.bind({})
+VariantTitleH4.args = {
+  typography: 'h4',
 }
 
-export const Caption = Template.bind({})
-Caption.args = {
+export const VariantTitleH5 = Template.bind({})
+VariantTitleH5.args = {
+  typography: 'h5',
+}
+
+export const VariantTitleH6 = Template.bind({})
+VariantTitleH6.args = {
+  typography: 'h6',
+}
+
+export const VariantInfoCaption = Template.bind({})
+VariantInfoCaption.args = {
   typography: 'caption',
 }
 
-export const CaptionReadVariant = Template.bind({})
-CaptionReadVariant.args = {
-  typography: 'caption',
-  variant: 'read',
+export const VariantInfoDetail = Template.bind({})
+VariantInfoDetail.args = {
+  typography: 'detail',
 }
 
-export const Label = Template.bind({})
-Label.args = {
+export const VariantInfoLabel = Template.bind({})
+VariantInfoLabel.args = {
   typography: 'label',
 }
 
-// TODO: only for test purpose - remove it
-export const LabelReadVariant = Template.bind({})
-LabelReadVariant.args = {
-  typography: 'label',
-  variant: 'read',
-}
-
-export const Option = Template.bind({})
-Option.args = {
+export const VariantInfoOption = Template.bind({})
+VariantInfoOption.args = {
   typography: 'option',
 }
 
-export const Tip = Template.bind({})
-Tip.args = {
+export const VariantInfoParagraph = Template.bind({})
+VariantInfoParagraph.args = {
+  typography: 'paragraph',
+}
+
+export const VariantInfoTip = Template.bind({})
+VariantInfoTip.args = {
   typography: 'tip',
 }
 
-export const Code = Template.bind({})
-Code.args = {
+export const VariantReadCaption = Template.bind({})
+VariantReadCaption.args = {
+  typography: 'caption',
+  variant: 'read',
+}
+
+export const VariantReadDetail = Template.bind({})
+VariantReadDetail.args = {
+  typography: 'detail',
+  variant: 'read',
+}
+
+export const VariantReadParagraph = Template.bind({})
+VariantReadParagraph.args = {
+  typography: 'paragraph',
+  variant: 'read',
+}
+
+export const VariantMonoCode = Template.bind({})
+VariantMonoCode.args = {
   typography: 'code',
 }
 
-export const Hack = Template.bind({})
-Hack.args = {
+export const VariantMonoHack = Template.bind({})
+VariantMonoHack.args = {
   typography: 'hack',
 }
