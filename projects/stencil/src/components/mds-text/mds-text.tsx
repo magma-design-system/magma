@@ -30,7 +30,6 @@ export class MdsText {
    */
   @Prop({ reflect: true }) readonly variant?: TypographyVariants
 
-
   render () {
     const { tag } = typographyDefaultsVariant[ this.typography ]
     this.tag = this.tag ?? tag as TypographyTagType
