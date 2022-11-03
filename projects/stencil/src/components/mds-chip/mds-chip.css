@@ -13,15 +13,25 @@
   --icon-color: theme('colors.tone-neutral');
 
   @apply
-    inline-flex
+    duration-150
+    ease-in-out
     gap-1.5
+    inline-flex
     items-center
     justify-center
     p-1.5
     rounded-full;
 
+  transition-property: background-color, border-color, box-shadow, color, opacity;
   background-color: var(--background);
   color: var(--color);
+}
+
+
+:host ( [disabled]:not([disabled=false]) ) {
+  @apply pointer-events-none;
+
+  opacity: var(--disabled-opacity, 0.5);
 }
 
 :host ( [clickable]:not([clickable=false]) ) .label {
