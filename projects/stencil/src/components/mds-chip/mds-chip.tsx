@@ -102,7 +102,7 @@ export class MdsChip {
             <mds-icon class="icon" name={this.icon} />
           </div>
         }
-        <mds-text class="label" tabindex="0" typography="caption">
+        <mds-text class="label" tabindex="0" typography="caption" truncate={true}>
           { this.label }
         </mds-text>
         { this.deletable && <i aria-label={ this.deleteLabel } class="svg delete" innerHTML={miBaselineCancel} onClick={this.onDeleteHandler.bind(this)} role="button" tabindex="0" title={ `${this.deleteLabel} ${this.label}` }/> }

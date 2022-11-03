@@ -34,15 +34,18 @@
   opacity: var(--disabled-opacity, 0.5);
 }
 
-:host ( [clickable]:not([clickable=false]) ) .label {
+.label {
   @apply
-    cursor-pointer
     duration-200
     ease-out
-    underline;
+    flex-grow;
 
-  transition-property: color, text-decoration-color;
   text-decoration-color: transparent;
+  transition-property: color, text-decoration-color;
+}
+
+:host ( [clickable]:not([clickable=false]) ) .label {
+  @apply cursor-pointer underline;
 }
 
 :host ( [clickable]:not([clickable=false]) ) .label:hover {
@@ -50,13 +53,13 @@
 }
 
 .label:last-child {
-  @apply
-    pr-2;
+  @apply pr-2;
 }
 
 .icon-area {
   @apply
     flex
+    flex-shrink-0
     h-6
     items-center
     justify-center
@@ -77,6 +80,7 @@
 .delete {
   @apply
     cursor-pointer
+    flex-shrink-0
     h-6
     rounded-full
     transition-colors
