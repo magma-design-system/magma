@@ -33,7 +33,9 @@ export class MdsBadge {
   render () {
     return (
       <Host>
-        <mds-text typography={this.typography} variant={this.typographyVariant}><slot></slot></mds-text>
+        <mds-text tag="span" typography={this.typography} variant={this.typographyVariant}>
+          <slot/>
+        </mds-text>
       </Host>
     )
   }
