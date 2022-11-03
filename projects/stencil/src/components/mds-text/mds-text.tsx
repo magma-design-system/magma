@@ -18,7 +18,7 @@ export class MdsText {
   /**
    * Specifies if the text shoud be truncated or should behave as a normal text
    */
-  @Prop() readonly truncate?: boolean
+  @Prop({ reflect: true }) readonly truncate?: boolean
 
   /**
    * Specifies the font typography of the element

@@ -8,20 +8,14 @@
 */
 
 :host {
-  @apply flex;
+  @apply
+    flex
+    min-w-0;
 }
 
-.crop-text::selection,
 .text::selection {
   background-color: var(--selection-background, theme('colors.label-sky-09'));
   color: var(--selection-color, theme('colors.label-sky-01'));
-}
-
-.crop-text {
-  @apply
-    flex-grow
-    min-w-0
-    truncate;
 }
 
 .text {
@@ -166,6 +160,13 @@
 
 :host ( [truncate]:not([truncate=false]) ) {
   @apply flex;
+}
+
+:host ( [truncate]:not([truncate=false]) ) .text {
+  @apply
+    flex-grow
+    min-w-0
+    truncate;
 }
 
 abbr,
