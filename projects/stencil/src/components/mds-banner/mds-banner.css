@@ -67,10 +67,12 @@
   @apply
     bg-tone-neutral-05/0
     cursor-pointer
+    duration-200
+    ease-out
+    focusable
     p-1
     rounded-md
-    shrink-0
-    focusable;
+    shrink-0;
 
   transition-property: background-color, fill, outline, outline-offset;
   fill: var(--color);
