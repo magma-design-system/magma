@@ -1,5 +1,6 @@
 
 import { h } from '@stencil/core'
+import { useState } from 'react'
 import { modalPositionDictionary } from '../meta/dictionary'
 
 export default {
@@ -58,5 +59,24 @@ const CustomTemplate = args =>
     </mds-banner>
   </mds-modal>
 
+const AriaTemplate = () => {
+  // Click not working with reader
+  const [opened, setOpened] = useState(false)
+  window.addEventListener('close', () => { setOpened(false) })
+  return <div>
+    <mds-button onClick={() => setOpened(true) }>Apri modale</mds-button>
+    <mds-modal opened={opened} onClose={() => setOpened(false)}>
+      <mds-banner slot="window" class="max-w-xl mx-6" deletable headline="Action required">
+        <mds-text typography="detail">
+          As a multi-brand design system, our components need to be flexible enough for any one of our brands to use them for multiple use cases. To achieve this, we ensure that all of the brands are involved in the specification stage, giving us more confidence that we’re future-proofing our components as more brands adopt NewsKit.
+        </mds-text>
+        <mds-button slot="actions" variant="dark" tone="quiet" onClick={() => setOpened(false) }>Cancel</mds-button>
+        <mds-button slot="actions" variant="primary">Confirm</mds-button>
+      </mds-banner>
+    </mds-modal>
+  </div>
+}
+
 export const Default = Template.bind({})
 export const CustomWindow = CustomTemplate.bind({})
+export const ARIATest = AriaTemplate.bind({})
