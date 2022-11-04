@@ -6,6 +6,10 @@
   --backdrop: rgba(var(--backdrop-color) / var(--backdrop-opacity));
   --disabled-opacity: 0.5;
   --modal-z-index: 1000;
+  --outline-blur-offset: 6px;
+  --outline-blur: 2px solid transparent;
+  --outline-focus-offset: 2px;
+  --outline-focus: 2px solid theme('colors.tone-neutral-05');
   --overlay-blur: var(--backdrop-blur);
   --overlay-color: var(--backdrop-color);
   --overlay-opacity: 0.5;

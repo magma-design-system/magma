@@ -1,0 +1,14 @@
+@tailwind components;
+
+@layer components {
+  .focusable {
+    outline-offset: var(--outline-blur-offset, 6px);
+    outline: var(--outline-blur, 2px solid transparent);
+    transition-property: background-color, border-color, box-shadow, color, transform, outline, outline-offset;
+  }
+
+  .focusable:focus {
+    outline-offset: var(--outline-focus-offset, 2px);
+    outline: var(--outline-focus, 2px solid theme('colors.label-amaranth-05'));
+  }
+}
