@@ -43,8 +43,8 @@
   transition-property: background-color, border-color, box-shadow, color, transform, outline, outline-offset;
 }
 
-:host( :focus ) {
-  outline: var(--outline-focus, 2px solid theme('colors.label-amaranth-05'));
+:host( :focus-visible ) {
+  outline: var(--outline-focus, 2px solid theme('colors.label-sky-05'));
   outline-offset: var(--outline-focus-offset, 2px);
 }
 
