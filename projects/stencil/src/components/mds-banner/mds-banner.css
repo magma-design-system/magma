@@ -1,3 +1,5 @@
+@import '~@maggioli-design-system/styles/dist/tailwind/components.css';
+
 @tailwind utilities;
 @tailwind components;
 
@@ -68,8 +70,9 @@
     p-1
     rounded-md
     shrink-0
-    transition-colors;
+    focusable;
 
+  transition-property: background-color, fill, outline, outline-offset;
   fill: var(--color);
 }
 
