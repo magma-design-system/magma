@@ -22,7 +22,7 @@ export class MdsButton {
   private typography?: TypographyType
   private hasText?: boolean
 
-  @Element() hostElement: HTMLMdsButtonElement
+  @Element() host: HTMLMdsButtonElement
 
   /**
    * The icon displayed in the button
@@ -68,21 +68,41 @@ export class MdsButton {
   }
 
   componentWillLoad ():void {
-    this.hasText = this.hostElement.innerHTML !== ''
+    this.hasText = this.host.innerHTML !== ''
   }
 
   componentDidLoad ():void {
+    this.addKeyboardSpaceListener()
     if (!this.hasText && this.icon) {
-      setAttributeIfEmpty(this.hostElement, 'title', unslugName(this.icon))
-      setAttributeIfEmpty(this.hostElement, 'aria-label', this.hostElement.getAttribute('title'))
+      setAttributeIfEmpty(this.host, 'title', unslugName(this.icon))
+      setAttributeIfEmpty(this.host, 'aria-label', this.host.getAttribute('title'))
     }
+  }
+
+  private checkKeyboardSpace = (event: KeyboardEvent): void => {
+    if (event.code === 'Space') {
+      // this.close.emit()
+      // trigger click event
+    }
+  }
+
+  private addKeyboardSpaceListener (): void {
+    this.host.addEventListener('keydown', this.checkKeyboardSpace.bind(this))
+  }
+
+  private removeKeyboardSpaceListener (): void {
+    this.host.removeEventListener('keydown', this.checkKeyboardSpace.bind(this))
+  }
+
+  disconnectedCallback (): void {
+    this.removeKeyboardSpaceListener()
   }
 
   render () {
     this.typography = buttonSizeTypographyVariant[this.size] as TypographyType
 
     return (
-      <Host class={clsx(!this.hasText && 'no-text')} role="button" onMouseDown={this.mouseDown} onMouseUp={this.mouseUp} onMouseOut={this.mouseUp}>
+      <Host class={clsx(!this.hasText && 'no-text')} onMouseDown={this.mouseDown} onMouseUp={this.mouseUp} onMouseOut={this.mouseUp} tabindex="0" role="button">
         { this.icon && this.iconPosition === 'left' && <mds-icon aria-hidden="true" class="icon" name={this.icon} /> }
         { this.hasText && <mds-text class="text" part="label" typography={this.typography}><slot /></mds-text> }
         { this.icon && this.iconPosition === 'right' && <mds-icon aria-hidden="true" class="icon" name={this.icon} /> }
