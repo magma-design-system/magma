@@ -5,12 +5,12 @@ import {
   ButtonSizeType,
   ButtonIconPositionType,
   ButtonVariantType,
-} from '@type/button'
+} from '../../types/button'
 import { buttonSizeTypographyVariant } from './meta/variants'
-import { TypographyType } from '@type/typography'
-import { ToneVariantType } from '@type/variant'
+import { TypographyType } from '../../types/typography'
+import { ToneVariantType } from '../../types/variant'
 import clsx from 'clsx'
-import { setAttributeIfEmpty, unslugName } from '@common/aria'
+import { setAttributeIfEmpty, unslugName } from '../../common/aria'
 
 @Component({
   tag: 'mds-button',
