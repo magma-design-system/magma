@@ -5,10 +5,10 @@ import {
   ButtonSizeType,
   ButtonIconPositionType,
   ButtonVariantType,
-} from '../../types/button'
+} from '@type/button'
 import { buttonSizeTypographyVariant } from './meta/variants'
-import { TypographyType } from '../../types/typography'
-import { ToneVariantType } from '../../types/variant'
+import { TypographyType } from '@type/typography'
+import { ToneVariantType } from '@type/variant'
 import clsx from 'clsx'
 import { setAttributeIfEmpty, unslugName } from '@common/aria'
 
