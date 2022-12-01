@@ -114,6 +114,7 @@
   .text-read-paragraph {
     @apply
       antialiased
+      font-light
       font-read
       leading-8
       text-xl;
@@ -122,6 +123,7 @@
   .text-read-detail {
     @apply
       antialiased
+      font-light
       font-read
       text-base;
   }
