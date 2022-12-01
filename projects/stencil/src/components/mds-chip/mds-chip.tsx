@@ -3,7 +3,6 @@ import miBaselineCancel from '@icon/mi/baseline/cancel.svg'
 import { setAttributeIfEmpty } from '@common/aria'
 import { MdsChipEvent } from './meta/interface'
 
-
 @Component({
   tag: 'mds-chip',
   styleUrl: 'mds-chip.css',
@@ -13,6 +12,7 @@ export class MdsChip {
 
   @Element() host: HTMLMdsChipElement
   private labelAction: HTMLElement
+  private iconElement: HTMLElement
 
   /**
    * Adds ARIA support to the element if has interaction
@@ -25,7 +25,7 @@ export class MdsChip {
   @Prop() readonly deletable?: boolean
 
   /**
-   * Shows the cross icon to perform cancel/delete action on element
+   * Sets the cross icon accessibility label to perform cancel/delete action on element
    */
   @Prop() readonly deleteLabel? = 'Rimuovi'
 
@@ -56,8 +56,13 @@ export class MdsChip {
 
   componentDidLoad ():void {
     this.labelAction = this.host.shadowRoot.querySelector('.label')
+    this.iconElement = this.host.shadowRoot.querySelector('.svg svg')
     if (this.clickable) {
       this.addActionAttributes()
+    }
+
+    if (this.deletable) {
+      this.addDeleteAttributes()
     }
   }
 
@@ -70,6 +75,10 @@ export class MdsChip {
   private addActionAttributes (): void {
     setAttributeIfEmpty(this.labelAction, 'role', 'button')
     this.labelAction.addEventListener('click', this.onLabelClickHandler.bind(this))
+  }
+
+  private addDeleteAttributes (): void {
+    setAttributeIfEmpty(this.iconElement, 'aria-hidden', 'true')
   }
 
   private removeActionAttributes (): void {
@@ -94,9 +103,16 @@ export class MdsChip {
     this.removeActionAttributes()
   }
 
+  @Watch('deletable')
+  deletableChanged (newValue: boolean): void {
+    if (newValue) {
+      this.addDeleteAttributes()
+    }
+  }
+
   render () {
     return (
-      <Host>
+      <Host aria-disabled={this.disabled ? 'true' : 'false'}>
         { this.icon &&
           <div aria-hidden="true" class="icon-area">
             <mds-icon class="icon" name={this.icon} />
