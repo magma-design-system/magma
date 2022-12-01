@@ -4,6 +4,10 @@ import { h } from '@stencil/core'
 export default {
   title: 'UI / Usage',
   argTypes: {
+    alias: {
+      description: 'Specifies the alias of the usage phrase on the top of the component.',
+      type: { name: 'string' },
+    },
     variant: {
       control: { type: 'select' },
       description: 'Specifies whether a browser should load an iframe immediately or to defer loading of images until some conditions are met.',

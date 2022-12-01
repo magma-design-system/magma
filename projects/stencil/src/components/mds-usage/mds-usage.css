@@ -7,31 +7,68 @@
 
 :host {
 
-  --border-width: 2px;
-  --background: theme('colors.tone-neutral');
+  --background: theme('colors.status-info-10');
+  --badge-background: theme('colors.status-info-06');
+  --badge-color: theme('colors.status-info-10');
 
-  @apply grid;
-
-  background-color: var(--background);
-}
-
-.header {
-  @apply
-    border-0
-    border-solid
-    flex
-    gap-2
-    items-center
-    p-6
-    pb-4;
-
-  border-top-width: var(--border-width);
-}
-
-.content {
   @apply
     gap-4
     grid
     p-6
-    pt-0;
+    relative
+    rounded-xl;
+
+  background-color: var(--background);
+  grid-auto-rows: min-content;
+  grid-template-columns: minmax(0px, 100%);
+}
+
+.header {
+  @apply
+    absolute
+    flex
+    h-0
+    inset-x-0
+    items-center
+    justify-center
+    px-6
+    top-0;
+}
+
+.icon {
+  @apply shrink-0;
+}
+
+.badge {
+  @apply
+    flex
+    gap-2
+    px-4
+    py-1
+    rounded-full;
+
+  background-color: var(--badge-background);
+  color: var(--badge-color);
+  fill: var(--badge-color);
+}
+
+:host ( [variant=do] ) {
+
+  --background: theme('colors.status-success-10');
+  --badge-background: theme('colors.status-success-06');
+  --badge-color: theme('colors.status-success-10');
+}
+
+:host ( [variant=dont] ) {
+
+  --background: theme('colors.status-error-10');
+  --badge-background: theme('colors.status-error-06');
+  --badge-color: theme('colors.status-error-10');
+}
+
+:host ( [variant=warn] ) {
+
+  --background: theme('colors.status-warning-10');
+  --badge-background: theme('colors.status-warning-08');
+  --badge-color: theme('colors.status-warning-01');
 }

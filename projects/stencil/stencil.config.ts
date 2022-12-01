@@ -52,7 +52,14 @@ export const config: Config = {
     }),
     alias({
       entries: [
+        { find: /^@common\/(.*)+$/, replacement: path.resolve(__dirname, './src/common/$1') },
+        { find: /^@component\/(.*)+$/, replacement: path.resolve(__dirname, './dist/collection/components/$1') },
+        { find: /^@dictionary\/(.*)+$/, replacement: path.resolve(__dirname, './src/dictionary/$1') },
+        { find: /^@fixture\/(.*)+$/, replacement: path.resolve(__dirname, './src/fixtures/$1') },
         { find: /^@icon\/([a-zA-Z-\/]+)\.svg$/, replacement: path.resolve(__dirname, './assets/svg/$1.svg') },
+        { find: /^@test\/(.*)+$/, replacement: path.resolve(__dirname, './src/test/$1') },
+        { find: /^@type\/(.*)+$/, replacement: path.resolve(__dirname, './src/types/$1') },
+        { find: /^@variant\/(.*)+$/, replacement: path.resolve(__dirname, './src/variants/$1') },
       ]
     }),
     inlineSvg(),
