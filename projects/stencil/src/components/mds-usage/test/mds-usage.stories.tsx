@@ -28,4 +28,12 @@ const Template = args =>
   </mds-usage>
 
 export const Default = Template.bind({})
+export const Alias = Template.bind({})
+Alias.args = {
+  alias: 'Custom alias',
+}
+export const Variant = Template.bind({})
+Variant.args = {
+  variant: 'dont',
+}
 
