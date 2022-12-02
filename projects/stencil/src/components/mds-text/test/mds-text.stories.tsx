@@ -119,12 +119,14 @@ VariantReadParagraph.args = {
   variant: 'read',
 }
 
-export const VariantMonoCode = Template.bind({})
-VariantMonoCode.args = {
-  typography: 'code',
+export const VariantCodeSnippet = Template.bind({})
+VariantCodeSnippet.args = {
+  tag: 'div',
+  typography: 'snippet',
 }
 
-export const VariantMonoHack = Template.bind({})
-VariantMonoHack.args = {
+export const VariantCodeHack = Template.bind({})
+VariantCodeHack.args = {
+  tag: 'div',
   typography: 'hack',
 }

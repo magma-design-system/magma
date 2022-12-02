@@ -22,12 +22,12 @@
   display: inherit;
 }
 
-:host ( [typography=code] ) {
-  @apply text-mono-code;
+:host ( [typography=snippet] ) {
+  @apply text-code-snippet;
 }
 
 :host ( [typography=hack] ) {
-  @apply text-mono-hack;
+  @apply text-code-hack;
 }
 
 :host ( [typography=h1] ) {

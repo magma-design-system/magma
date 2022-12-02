@@ -1,7 +1,7 @@
 export type TypographyType =
   | 'action'
   | 'caption'
-  | 'code'
+  | 'snippet'
   | 'detail'
   | 'h1'
   | 'h2'
@@ -19,7 +19,7 @@ export type TypographyVariants =
   | 'title'
   | 'info'
   | 'read'
-  | 'mono'
+  | 'code'
 
 export type TypographyTitleType =
   | 'action'
@@ -48,7 +48,7 @@ export type TypographySmallerType =
   | 'option'
 
 export type TypographyMonoType =
-  | 'code'
+  | 'snippet'
   | 'hack'
 
 export type TypographyTooltipType =

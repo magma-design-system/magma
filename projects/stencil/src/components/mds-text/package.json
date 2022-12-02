@@ -26,8 +26,8 @@
     "@fontsource/karla": "^4.5.10",
     "@fontsource/merriweather": "^4.5.14",
     "@fontsource/roboto": "^4.5.8",
-    "@maggioli-design-system/styles": "^9.0.0",
-    "@stencil/core": "^2.18.1",
+    "@maggioli-design-system/styles": "^10.0.0",
+    "@stencil/core": "^2.19.3",
     "clsx": "^1.2.1"
   },
   "config": {

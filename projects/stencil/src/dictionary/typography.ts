@@ -1,7 +1,7 @@
 const typographyDictionary = [
   'action',
   'caption',
-  'code',
+  'snippet',
   'detail',
   'h1',
   'h2',
@@ -20,11 +20,11 @@ const typographyVariationsDictionary = [
   'title',
   'info',
   'read',
-  'mono',
+  'code',
 ]
 
 const typographyMonoDictionary = [
-  'code',
+  'snippet',
   'hack',
 ]
 
