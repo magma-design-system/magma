@@ -23,7 +23,7 @@
     "'Times New Roman'",
     "serif"
   ],
-  "mono": [
+  "code": [
     "'Roboto Mono'",
     "monospace"
   ]
