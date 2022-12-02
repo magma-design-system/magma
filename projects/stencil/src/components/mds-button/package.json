@@ -1,6 +1,6 @@
 {
   "name": "@maggioli-design-system/mds-button",
-  "version": "3.3.0",
+  "version": "3.3.1",
   "description": "mds-button is a web-component from Maggioli Design System Magma, built with StencilJS, TypeScript, Storybook. It's based on the web-component standard and it's designed to be agnostic from the JavaScirpt framework you are using.",
   "main": "dist/index.cjs.js",
   "module": "dist/index.js",
@@ -23,11 +23,11 @@
     "test": "stencil test --spec --e2e"
   },
   "dependencies": {
-    "@maggioli-design-system/mds-icon": "^2.0.4",
-    "@maggioli-design-system/mds-text": "^2.0.2",
-    "@maggioli-design-system/styles": "^9.0.0",
+    "@maggioli-design-system/mds-icon": "^2.1.2",
+    "@maggioli-design-system/mds-text": "^3.0.0",
+    "@maggioli-design-system/styles": "^10.0.0",
     "@stencil/core": "^2.19.3",
-    "clsx": "^1.1.1"
+    "clsx": "^1.2.1"
   },
   "license": "MIT",
   "author": {
