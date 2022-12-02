@@ -1,6 +1,6 @@
 {
   "name": "@maggioli-design-system/mds-entity",
-  "version": "3.1.0",
+  "version": "3.1.1",
   "description": "mds-entity is a web-component from Maggioli Design System Magma, built with StencilJS, TypeScript, Storybook. It's based on the web-component standard and it's designed to be agnostic from the JavaScirpt framework you are using.",
   "main": "dist/index.cjs.js",
   "module": "dist/index.js",
@@ -22,10 +22,10 @@
     "prepublishOnly": "npm run build"
   },
   "dependencies": {
-    "@maggioli-design-system/mds-avatar": "^2.0.1",
-    "@maggioli-design-system/mds-icon": "^2.0.4",
-    "@maggioli-design-system/styles": "^8.0.0",
-    "@stencil/core": "^2.17.0"
+    "@maggioli-design-system/mds-avatar": "^2.0.2",
+    "@maggioli-design-system/mds-icon": "^2.1.2",
+    "@maggioli-design-system/styles": "^10.0.0",
+    "@stencil/core": "^2.19.3"
   },
   "license": "MIT",
   "author": {
