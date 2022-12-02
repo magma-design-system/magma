@@ -25,8 +25,8 @@
   "dependencies": {
     "@maggioli-design-system/mds-icon": "^2.0.4",
     "@maggioli-design-system/mds-text": "^2.0.2",
-    "@maggioli-design-system/styles": "^8.0.0",
-    "@stencil/core": "^2.17.0",
+    "@maggioli-design-system/styles": "^9.0.0",
+    "@stencil/core": "^2.19.3",
     "clsx": "^1.1.1"
   },
   "license": "MIT",
