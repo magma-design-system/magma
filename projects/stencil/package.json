@@ -38,10 +38,10 @@
     "test.regression.review": "npm run build && loki test --port 6006 --requireReference --chromeEnableAnimations=false"
   },
   "dependencies": {
-    "@maggioli-design-system/design-tokens": "^9.0.0",
+    "@maggioli-design-system/design-tokens": "^10.0.0",
     "@maggioli-design-system/identity": "^1.12.0",
-    "@maggioli-design-system/styles": "^9.1.0",
-    "@stencil/core": "^2.19.2",
+    "@maggioli-design-system/styles": "^10.0.0",
+    "@stencil/core": "^2.19.3",
     "clsx": "^1.2.1",
     "idb-keyval": "6.2.0"
   },
