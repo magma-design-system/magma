@@ -52,14 +52,13 @@ export const config: Config = {
     }),
     alias({
       entries: [
-        { find: /^@common\/(.*)+$/, replacement: path.resolve(__dirname, './src/common/$1') },
-        { find: /^@component\/(.*)+$/, replacement: path.resolve(__dirname, './dist/collection/components/$1') },
-        { find: /^@dictionary\/(.*)+$/, replacement: path.resolve(__dirname, './src/dictionary/$1') },
-        { find: /^@fixture\/(.*)+$/, replacement: path.resolve(__dirname, './src/fixtures/$1') },
+        { find: /^@common\/(.*)+$/, replacement: path.resolve('.', './src/common/$1') },
+        { find: /^@component\/(.*)+$/, replacement: path.resolve('.', './dist/collection/components/$1') },
+        { find: /^@dictionary\/(.*)+$/, replacement: path.resolve('.', './src/dictionary/$1') },
+        { find: /^@fixture\/(.*)+$/, replacement: path.resolve('.', './src/fixtures/$1') },
         { find: /^@icon\/([a-zA-Z-\/]+)\.svg$/, replacement: path.resolve(__dirname, './assets/svg/$1.svg') },
-        { find: /^@test\/(.*)+$/, replacement: path.resolve(__dirname, './src/test/$1') },
-        { find: /^@type\/(.*)+$/, replacement: path.resolve(__dirname, './src/types/$1') },
-        { find: /^@variant\/(.*)+$/, replacement: path.resolve(__dirname, './src/variants/$1') },
+        { find: /^@test\/(.*)+$/, replacement: path.resolve('.', './src/test/$1') },
+        { find: /^@type\/(.*)+$/, replacement: path.resolve('.', './src/types/$1') },
       ]
     }),
     inlineSvg(),
@@ -81,7 +80,6 @@ export const config: Config = {
       '@placeholder': 'https://via.placeholder.com',
       '@test/(.*)': '<rootDir>src/test/$1',
       '@type/(.*)': '<rootDir>src/types/$1',
-      '@variant/(.*)': '<rootDir>src/variants/$1',
     },
     modulePathIgnorePatterns: ['<rootDir>/.build/', '<rootDir>/template/', '<rootDir>/node_modules/'],
     testPathIgnorePatterns: ['<rootDir>/.build/', '<rootDir>/template/', '<rootDir>/node_modules/'],

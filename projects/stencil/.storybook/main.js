@@ -10,7 +10,6 @@ const alias = {
   '@placeholder': 'https://via.placeholder.com',
   '@test': path.resolve(__dirname, '../src/test/'),
   '@type': path.resolve(__dirname, '../src/types/'),
-  '@variant': path.resolve(__dirname, '../src/variants/'),
 }
 
 const TsConfigPathsPlugin = require("tsconfig-paths-webpack-plugin")

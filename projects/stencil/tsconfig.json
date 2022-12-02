@@ -28,7 +28,6 @@
       "@placeholder": ["https://via.placeholder.com"],
       "@test/*": ["src/test/*"],
       "@type/*": ["src/types/*"],
-      "@variant/*": ["src/variants/*"],
     }
   },
   "include": [
