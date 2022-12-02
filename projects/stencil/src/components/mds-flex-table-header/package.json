@@ -22,8 +22,8 @@
     "prepublishOnly": "npm run build"
   },
   "dependencies": {
-    "@maggioli-design-system/mds-flex-table-cell": "^1.1.1",
-    "@stencil/core": "^2.17.0"
+    "@maggioli-design-system/mds-flex-table-cell": "^1.1.2",
+    "@stencil/core": "^2.19.3"
   },
   "license": "MIT",
   "author": {
