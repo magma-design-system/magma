@@ -65,10 +65,10 @@
   @apply text-read-caption;
 }
 
-.typography-mono-code {
-  @apply text-mono-code;
+.typography-code-snippet {
+  @apply text-code-snippet;
 }
 
-.typography-mono-hack {
-  @apply text-mono-hack;
+.typography-code-hack {
+  @apply text-code-hack;
 }

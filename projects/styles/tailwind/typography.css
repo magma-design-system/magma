@@ -135,18 +135,18 @@
       text-sm;
   }
 
-  .text-mono-code {
+  .text-code-snippet {
     @apply
       antialiased
-      font-mono
+      font-code
       leading-relaxed
       text-base;
   }
 
-  .text-mono-hack {
+  .text-code-hack {
     @apply
       antialiased
-      font-mono
+      font-code
       leading-relaxed
       text-sm;
   }
