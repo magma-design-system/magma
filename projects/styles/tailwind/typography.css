@@ -56,7 +56,7 @@
   .text-title-action {
     @apply
       antialiased
-      font-bold
+      font-medium
       font-title
       leading-relaxed
       text-sm;
