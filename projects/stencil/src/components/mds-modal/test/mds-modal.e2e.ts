@@ -19,7 +19,7 @@ describe('mds-modal', () => {
     expect(element).not.toHaveAttribute('opened')
 
     expect(element.shadowRoot).toEqualHtml(`
-      <div class="window">
+      <div class="window" role="dialog">
         <slot></slot>
       </div>
       <i class="close svg">
@@ -39,7 +39,7 @@ describe('mds-modal', () => {
     expect(element.getAttribute('opened')).not.toBe('false')
 
     expect(element.shadowRoot).toEqualHtml(`
-      <div class="window">
+      <div class="window" role="dialog">
         <slot></slot>
       </div>
       <i class="close svg">
