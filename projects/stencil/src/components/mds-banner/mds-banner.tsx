@@ -25,6 +25,11 @@ export class MdsBanner {
   @Prop({ reflect: true }) readonly tone?: ToneSimpleVariantType = 'weak'
 
   /**
+   * Sets the cross icon accessibility label to perform close action on element
+   */
+  @Prop() readonly closeLabel? = 'Annulla'
+
+  /**
    * Shows the cross icon to perform cancel/delete action on element
    */
   @Prop() readonly deletable?: boolean
@@ -61,14 +66,14 @@ export class MdsBanner {
     return (
       <Host>
         <div class="body">
-          { this.icon && <mds-icon name={ this.icon } class="icon"/> }
+          { this.icon && <mds-icon class="icon" name={this.icon}/> }
           <div class="content">
-            { this.headline && <mds-text typography="h6" class="headline">{ this.headline }</mds-text> }
+            { this.headline && <mds-text class="headline" typography="h6">{ this.headline }</mds-text> }
             <div class="text">
               <slot/>
             </div>
           </div>
-          { this.deletable && <i class="svg close-icon" innerHTML={miBaselineClose} onClick={this.closeBanner} />}
+          { this.deletable && <i class="svg close-icon" innerHTML={miBaselineClose} onClick={this.closeBanner} role="button" tabindex="0" title={this.closeLabel}/>}
         </div>
         { this.actions
           &&

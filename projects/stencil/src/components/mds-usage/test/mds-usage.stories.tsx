@@ -4,6 +4,10 @@ import { h } from '@stencil/core'
 export default {
   title: 'UI / Usage',
   argTypes: {
+    alias: {
+      description: 'Specifies the alias of the usage phrase on the top of the component.',
+      type: { name: 'string' },
+    },
     variant: {
       control: { type: 'select' },
       description: 'Specifies whether a browser should load an iframe immediately or to defer loading of images until some conditions are met.',
@@ -24,4 +28,12 @@ const Template = args =>
   </mds-usage>
 
 export const Default = Template.bind({})
+export const Alias = Template.bind({})
+Alias.args = {
+  alias: 'Custom alias',
+}
+export const Variant = Template.bind({})
+Variant.args = {
+  variant: 'dont',
+}
 

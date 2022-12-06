@@ -1,6 +1,7 @@
 const usageDictionary = [
   'do',
   'dont',
+  'info',
   'warn',
 ]
 

@@ -13,6 +13,10 @@ export default {
       type: { name: 'string' },
       description: 'The title on the top of the banner',
     },
+    closeLabel: {
+      type: { name: 'string' },
+      description: 'Sets the cross icon accessibility label to perform close action on element',
+    },
     icon: {
       type: { name: 'string', required: true },
       description: 'The name of the icon set. The icon set is strictly realted to @maggioli-design-system/icons',

@@ -41,6 +41,11 @@ export class MdsModal {
     if (this.position === null) {
       this.position = 'right'
     }
+
+    if (this.window) {
+      const modal = this.hostElement.querySelector('[slot="window"]')
+      modal.setAttribute('role', 'modal')
+    }
   }
 
   componentWillRender (): void {
@@ -55,6 +60,17 @@ export class MdsModal {
       this.hostElement.classList.add(this.animationName(this.animationState))
       window.clearTimeout(this.animationDeelay)
     }, 500)
+
+    if (this.opened) {
+      this.addKeyboardEscapeListener()
+      return
+    }
+
+    this.removeKeyboardEscapeListener()
+  }
+
+  disconnectedCallback (): void {
+    this.removeKeyboardEscapeListener()
   }
 
   private animationName = (customState: string = null, customPosition: string = null): string => {
@@ -69,10 +85,31 @@ export class MdsModal {
     this.hostElement.classList.remove(this.animationName('outro', oldValue))
   }
 
+  private checkKeyboardEscape = (event: KeyboardEvent): void => {
+    if (event.code === 'Escape') {
+      this.close.emit()
+    }
+  }
+
+  private addKeyboardEscapeListener (): void {
+    window.addEventListener('keydown', this.checkKeyboardEscape.bind(this))
+  }
+
+  private removeKeyboardEscapeListener (): void {
+    window.removeEventListener('keydown', this.checkKeyboardEscape.bind(this))
+  }
+
   @Watch('opened')
   openedChange (newValue: boolean): void {
     this.stateOpened = newValue
     window.clearTimeout(this.animationDeelay)
+
+    if (newValue) {
+      this.addKeyboardEscapeListener()
+      return
+    }
+
+    this.removeKeyboardEscapeListener()
   }
 
   /**
@@ -97,14 +134,12 @@ export class MdsModal {
 
   render () {
     return (
-      <Host class={clsx(
-        this.stateOpened && this.animationName('opened'),
-      )} onClick={(e: Event) => { this.closeModal(e) }}>
+      <Host aria-modal={clsx(this.opened ? 'true' : 'false' )} class={clsx(this.stateOpened && this.animationName('opened'))} onClick={(e: Event) => { this.closeModal(e) }}>
         { this.window
           ?
           <slot name="window"/>
           :
-          <div class={clsx('window', (this.top || this.bottom) && `window-${this.top ? '-top' : ''}${this.bottom ? '-bottom' : ''}`)}>
+          <div class={clsx('window', (this.top || this.bottom) && `window-${this.top ? '-top' : ''}${this.bottom ? '-bottom' : ''}`)} role="dialog">
             { this.top &&
               <slot name="top"/>
             }

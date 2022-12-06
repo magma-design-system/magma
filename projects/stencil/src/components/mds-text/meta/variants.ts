@@ -14,13 +14,6 @@ const typographyDefaultsVariant = {
       read: 'text-read-caption',
     },
   },
-  code: {
-    tag: 'code',
-    selector: {
-      default: 'text-mono-code',
-      mono: 'text-mono-code',
-    },
-  },
   detail: {
     tag: 'p',
     selector: {
@@ -74,8 +67,8 @@ const typographyDefaultsVariant = {
   hack: {
     tag: 'code',
     selector: {
-      default: 'text-mono-hack',
-      mono: 'text-mono-hack',
+      default: 'text-code-hack',
+      mono: 'text-code-hack',
     },
   },
   label: {
@@ -101,8 +94,15 @@ const typographyDefaultsVariant = {
       read: 'text-read-paragraph',
     },
   },
+  snippet: {
+    tag: 'code',
+    selector: {
+      default: 'text-code-snippet',
+      mono: 'text-code-snippet',
+    },
+  },
   tip: {
-    tag: 'span',
+    tag: 'div',
     selector: {
       default: 'text-info-tip',
       info: 'text-info-tip',

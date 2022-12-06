@@ -22,8 +22,11 @@ export default {
   },
 }
 
-const Template = args =>
-  <div className={clsx('grid gap-6 p-6 bg-tone-neutral transition-colors text-tone-neutral-03', args.darkMode)}>
+const Template = args => {
+  var html = document.getElementsByTagName('html')[0]
+  html.setAttribute('class', `hydrated ${args.darkMode}`)
+
+  return <div className={clsx('grid gap-6 p-6 bg-tone-neutral transition-colors text-tone-neutral-03', args.darkMode)}>
     <mds-grid class="gap-2">
       <mds-text>To use Dark Mode, You just need to add <mds-text typography="code">dark-mode</mds-text> or <mds-text typography="code">dark-mode-os</mds-text> to your body.</mds-text>
       <mds-text>Selector <mds-text typography="code">dark-mode</mds-text> will simply set Dark Mode for colors.</mds-text>
@@ -80,6 +83,7 @@ const Template = args =>
       <div><mds-badge variant="orange" tone="quiet">Samoiedo</mds-badge></div>
     </mds-grid>
   </div>
+}
 
 export const DarkMode = Template.bind({})
 DarkMode.args = {

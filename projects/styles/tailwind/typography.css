@@ -56,7 +56,7 @@
   .text-title-action {
     @apply
       antialiased
-      font-bold
+      font-medium
       font-title
       leading-relaxed
       text-sm;
@@ -114,6 +114,7 @@
   .text-read-paragraph {
     @apply
       antialiased
+      font-light
       font-read
       leading-8
       text-xl;
@@ -122,6 +123,7 @@
   .text-read-detail {
     @apply
       antialiased
+      font-light
       font-read
       text-base;
   }
@@ -133,18 +135,18 @@
       text-sm;
   }
 
-  .text-mono-code {
+  .text-code-snippet {
     @apply
       antialiased
-      font-mono
+      font-code
       leading-relaxed
       text-base;
   }
 
-  .text-mono-hack {
+  .text-code-hack {
     @apply
       antialiased
-      font-mono
+      font-code
       leading-relaxed
       text-sm;
   }

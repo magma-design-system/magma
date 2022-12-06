@@ -1,0 +1,38 @@
+import { Canvas, Meta, Story } from '@storybook/addon-docs';
+
+import MdsButton from '@component/mds-button/mds-button'
+
+<Meta title="UI / Banner / Best practices" component={MdsButton} />
+
+## ARIA
+
+- [Modal Dialog Example](https://www.w3.org/WAI/ARIA/apg/example-index/dialog-modal/dialog)
+
+Always remember to set the ARIA attributes when appropriate:
+
+```html
+<mds-button icon="mi/round/airplanemode-active" title="Inizia" aria-label="Inizia processo di acquisto del biglietto aereo" onClick={...}/>
+```
+
+Don't use them when not needed:
+
+```html
+<mds-button icon="mi/round/airplanemode-active" onClick={...}>
+  Inizia processo di acquisto del biglietto aereo
+</mds-button>
+```
+
+The component `mds-button` will automatically set the `aria-label` attribute when the `title` attribute is set.
+
+## Forms
+
+Remember to set the role to `submit` to make the component behave as a submit button:
+
+```html
+<form>
+  ...
+  <mds-button role="submit" icon="mi/baseline/save">
+    Salva informazioni
+  </mds-button>
+</form>
+```

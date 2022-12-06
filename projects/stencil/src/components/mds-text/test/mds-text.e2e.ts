@@ -4,8 +4,13 @@ import { TypographyType } from '@type/typography'
 describe('mds-text', () => {
   const titleTypes = ['h1', 'h2', 'h3', 'h4', 'h5', 'h6', 'action']
   const infoTypes = ['paragraph', 'detail', 'caption', 'label', 'option', 'tip']
-  const monoTypes = ['code', 'hack']
+  const monoTypes = ['snippet', 'hack']
+  const typographies = [ ...titleTypes, ...infoTypes, ...monoTypes]
+
+  const readVariants = ['detail', 'caption', 'paragraph']
+
   const textContent = 'Test text'
+
   let page: E2EPage
 
   beforeEach(async () => {
@@ -16,31 +21,35 @@ describe('mds-text', () => {
   it('renders default', async () => {
     const element = await page.find('mds-text')
     expect(element).toHaveClass('hydrated')
-    expect(element).toHaveClass('text-info-detail')
+    expect(element).toEqualAttribute('typography', 'detail')
     expect(element.textContent).toEqual(textContent)
   })
 
-  it.each(titleTypes)('renders title %s', async (typography: TypographyType) => {
+  it.each(typographies)('renders typography %s', async (typography: TypographyType) => {
     await setTypography(page, typography)
     const element = await page.find('mds-text')
-    expect(element).toHaveClass(`text-title-${typography}`)
+    expect(element).toEqualAttribute('typography', typography)
   })
 
-  it.each(infoTypes)('renders info %s', async (typography: TypographyType) => {
-    await setTypography(page, typography)
+  it.each(readVariants)('renders typography %s in variant read', async (typography: TypographyType) => {
+    await setTypographyRead(page, typography)
     const element = await page.find('mds-text')
-    expect(element).toHaveClass(`text-info-${typography}`)
-  })
-
-  it.each(monoTypes)('renders mono %s', async (typography: TypographyType) => {
-    await setTypography(page, typography)
-    const element = await page.find('mds-text')
-    expect(element).toHaveClass(`text-mono-${typography}`)
+    expect(element).toEqualAttribute('typography', typography)
+    expect(element).toEqualAttribute('variant', 'read')
   })
 
   async function setTypography (page: E2EPage, typography: TypographyType): Promise<void> {
     await page.$eval('mds-text', (elem: HTMLMdsTextElement, typography: TypographyType) => {
       elem.typography = typography
+    }, typography)
+
+    return page.waitForChanges()
+  }
+
+  async function setTypographyRead (page: E2EPage, typography: TypographyType): Promise<void> {
+    await page.$eval('mds-text', (elem: HTMLMdsTextElement, typography: TypographyType) => {
+      elem.typography = typography
+      elem.variant = 'read'
     }, typography)
 
     return page.waitForChanges()

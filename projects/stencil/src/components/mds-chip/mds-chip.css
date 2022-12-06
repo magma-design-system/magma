@@ -1,0 +1,99 @@
+@tailwind components;
+@tailwind utilities;
+@import '../../tailwind/components.css';
+
+:host {
+  --background: theme('colors.tone-neutral-09');
+  --color: theme('colors.tone-neutral-04');
+  --delete-icon-color-hover: theme('colors.status-error-06');
+  --delete-icon-color: theme('colors.tone-neutral-04');
+  --icon-background-hover: var(--icon-background);
+  --icon-background: theme('colors.brand-maggioli-07');
+  --icon-color-hover: var(--icon-color);
+  --icon-color: theme('colors.tone-neutral');
+
+  @apply
+    duration-150
+    ease-in-out
+    gap-1.5
+    h-9
+    inline-flex
+    items-center
+    justify-center
+    p-1.5
+    rounded-full;
+
+  transition-property: background-color, border-color, box-shadow, color, opacity;
+  background-color: var(--background);
+  color: var(--color);
+}
+
+
+:host ( [disabled]:not([disabled=false]) ) {
+  @apply pointer-events-none;
+
+  opacity: var(--disabled-opacity, 0.5);
+}
+
+.label {
+  @apply
+    duration-200
+    ease-out
+    flex-grow;
+
+  text-decoration-color: transparent;
+  transition-property: color, text-decoration-color;
+}
+
+:host ( [clickable]:not([clickable=false]) ) .label {
+  @apply cursor-pointer underline;
+}
+
+:host ( [clickable]:not([clickable=false]) ) .label:hover {
+  text-decoration-color: unset;
+}
+
+.label:first-child {
+  @apply pl-2;
+}
+
+.label:last-child {
+  @apply pr-2;
+}
+
+.icon-area {
+  @apply
+    flex
+    flex-shrink-0
+    h-6
+    items-center
+    justify-center
+    rounded-full
+    w-6;
+
+  background-color: var(--icon-background);
+}
+
+.icon {
+  @apply
+    h-4
+    w-4;
+
+  fill: var(--icon-color);
+}
+
+.delete {
+  @apply
+    cursor-pointer
+    flex-shrink-0
+    h-6
+    rounded-full
+    transition-colors
+    w-6;
+
+  fill: var(--delete-icon-color);
+}
+
+.delete:hover {
+  fill: var(--delete-icon-color-hover);
+}

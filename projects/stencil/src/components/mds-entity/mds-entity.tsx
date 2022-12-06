@@ -1,4 +1,4 @@
-import { Component, Element, Host, h, Prop } from '@stencil/core'
+import { Component, Element, Event, EventEmitter, Host, h, Prop } from '@stencil/core'
 import miBaselineClose from '@icon/mi/baseline/close.svg'
 @Component({
   tag: 'mds-entity',
@@ -16,6 +16,11 @@ export class MdsEntity {
   @Prop() readonly deletable?: boolean
 
   /**
+   * Shows the cross icon to perform cancel/delete action on element
+   */
+  @Prop() readonly deleteLabel? = 'Rimuovi'
+
+  /**
    * Specifies the icon to be displayed if src propery is not used
    */
   @Prop() readonly icon?: string
@@ -30,8 +35,17 @@ export class MdsEntity {
    */
   @Prop() readonly initials?: string
 
+  /**
+   * Emits when the component's delete button is clicked
+   */
+  @Event() delete: EventEmitter<void>
+
   componentWillLoad (): void {
     this.details = this.hostElement.querySelector('[slot="detail"]') !== null
+  }
+
+  private onDeleteHandler (): void {
+    this.delete.emit()
   }
 
   render () {
@@ -54,8 +68,8 @@ export class MdsEntity {
           }
         </div>
         { this.deletable &&
-          <div class="delete">
-            <i class="svg" innerHTML={miBaselineClose}/>
+          <div class="delete" onClick={ this.onDeleteHandler.bind(this) } role="button" tabindex="0" title={ this.deleteLabel }>
+            <i aria-hidden="true" class="svg" innerHTML={miBaselineClose}/>
           </div>
         }
       </Host>

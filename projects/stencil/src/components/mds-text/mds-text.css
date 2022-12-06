@@ -7,155 +7,166 @@
 * @prop --selection-color: Sets the color of the text when the text is selected
 */
 
+:host {
+  @apply
+    flex
+    min-w-0;
+}
+
 .text::selection {
   background-color: var(--selection-background, theme('colors.label-sky-09'));
   color: var(--selection-color, theme('colors.label-sky-01'));
 }
 
-:host ( .text-mono-code ) {
-  @apply text-mono-code;
+.text {
+  display: inherit;
 }
 
-:host ( .text-mono-hack ) {
-  @apply text-mono-hack;
+:host ( [typography=snippet] ) {
+  @apply text-code-snippet;
 }
 
-:host ( .text-title-h1 ) {
+:host ( [typography=hack] ) {
+  @apply text-code-hack;
+}
+
+:host ( [typography=h1] ) {
   @apply text-title-h1;
 }
 
-:host ( .text-title-h2 ) {
+:host ( [typography=h2] ) {
   @apply text-title-h2;
 }
 
-:host ( .text-title-h3 ) {
+:host ( [typography=h3] ) {
   @apply text-title-h3;
 }
 
-:host ( .text-title-h4 ) {
+:host ( [typography=h4] ) {
   @apply text-title-h4;
 }
 
-:host ( .text-title-h5 ) {
+:host ( [typography=h5] ) {
   @apply text-title-h5;
 }
 
-:host ( .text-title-h6 ) {
+:host ( [typography=h6] ) {
   @apply text-title-h6;
 }
 
-:host ( .text-title-action ) {
+:host ( [typography=action] ) {
   @apply text-title-action;
 }
 
-:host ( .text-info-paragraph ) {
+:host ( [typography=paragraph] ) {
   @apply text-info-paragraph;
 }
 
-:host ( .text-info-detail ) {
+:host ( [typography=detail] ) {
   @apply text-info-detail;
 }
 
-:host ( .text-info-caption ) {
+:host( [typography=caption] ) {
   @apply text-info-caption;
 }
 
-:host ( .text-info-label ) {
+:host ( [typography=label] ) {
   @apply text-info-label;
 }
 
-:host ( .text-info-tip ) {
+:host ( [typography=tip] ) {
   @apply text-info-tip;
 }
 
-:host ( .text-info-option ) {
+:host ( [typography=option] ) {
   @apply text-info-option;
 }
 
-:host ( .text-read-paragraph ) {
+:host ( [typography=paragraph][variant=read] ) {
   @apply text-read-paragraph;
 }
 
-:host ( .text-read-detail ) {
+:host ( [typography=detail][variant=read] ) {
   @apply text-read-detail;
 }
 
-:host ( .text-read-caption ) {
+:host ( [typography=caption][variant=read] ) {
   @apply text-read-caption;
 }
 
-.text {
-  display: inherit;
-  font-family: inherit;
-  font-size: inherit;
-  font-weight: inherit;
-  line-height: inherit;
-}
-
-:host ( .article ),
-:host ( .blockquote ),
-:host ( .dd ),
-:host ( .details ),
-:host ( .div ),
-:host ( .dl ),
-:host ( .dt ),
-:host ( .figcaption ),
-:host ( .h1 ),
-:host ( .h2 ),
-:host ( .h3 ),
-:host ( .h4 ),
-:host ( .h5 ),
-:host ( .h6 ),
-:host ( .label ),
-:host ( .legend ),
-:host ( .li ),
-:host ( .ol ),
-:host ( .p ),
-:host ( .pre ),
-:host ( .summary ),
-:host ( .ul ) {
+:host ( [tag=article] ),
+:host ( [tag=blockquote] ),
+:host ( [tag=dd] ),
+:host ( [tag=details] ),
+:host ( [tag=div] ),
+:host ( [tag=dl] ),
+:host ( [tag=dt] ),
+:host ( [tag=figcaption] ),
+:host ( [tag=h1] ),
+:host ( [tag=h2] ),
+:host ( [tag=h3] ),
+:host ( [tag=h4] ),
+:host ( [tag=h5] ),
+:host ( [tag=h6] ),
+:host ( [tag=label] ),
+:host ( [tag=legend] ),
+:host ( [tag=li] ),
+:host ( [tag=ol] ),
+:host ( [tag=p] ),
+:host ( [tag=pre] ),
+:host ( [tag=summary] ),
+:host ( [tag=ul] ) {
   @apply block;
 }
 
-:host ( .abbr ),
-:host ( .address ),
-:host ( .b ),
-:host ( .bdo ),
-:host ( .cite ),
-:host ( .code ),
-:host ( .del ),
-:host ( .dfn ),
-:host ( .em ),
-:host ( .i ),
-:host ( .ins ),
-:host ( .kbd ),
-:host ( .mark ),
-:host ( .q ),
-:host ( .rb ),
-:host ( .rt ),
-:host ( .ruby ),
-:host ( .s ),
-:host ( .samp ),
-:host ( .small ),
-:host ( .span ),
-:host ( .strong ),
-:host ( .sub ),
-:host ( .sup ),
-:host ( .time ),
-:host ( .u ),
-:host ( .var ) {
+:host ( [tag=abbr] ),
+:host ( [tag=address] ),
+:host ( [tag=b] ),
+:host ( [tag=bdo] ),
+:host ( [tag=cite] ),
+:host ( [tag=code] ),
+:host ( [tag=del] ),
+:host ( [tag=dfn] ),
+:host ( [tag=em] ),
+:host ( [tag=i] ),
+:host ( [tag=ins] ),
+:host ( [tag=kbd] ),
+:host ( [tag=mark] ),
+:host ( [tag=q] ),
+:host ( [tag=rb] ),
+:host ( [tag=rt] ),
+:host ( [tag=ruby] ),
+:host ( [tag=s] ),
+:host ( [tag=samp] ),
+:host ( [tag=small] ),
+:host ( [tag=span] ),
+:host ( [tag=strong] ),
+:host ( [tag=sub] ),
+:host ( [tag=sup] ),
+:host ( [tag=time] ),
+:host ( [tag=u] ),
+:host ( [tag=var] ) {
   @apply inline;
-
-  line-height: inherit;
 }
 
-:host ( .code ) {
+:host ( [tag=code] ) {
   @apply
     bg-tone-neutral-09
     px-1
     rounded
     text-tone-neutral-03
     transition-colors;
+}
+
+:host ( [truncate]:not([truncate=false]) ) {
+  @apply flex;
+}
+
+:host ( [truncate]:not([truncate=false]) ) .text {
+  @apply
+    flex-grow
+    min-w-0
+    truncate;
 }
 
 abbr,
@@ -208,6 +219,10 @@ u,
 ul,
 var,
 wbr {
+  font-family: inherit;
+  font-size: inherit;
+  font-weight: inherit;
+  line-height: inherit;
   margin: 0;
   overflow: inherit;
   text-overflow: inherit;

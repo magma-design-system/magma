@@ -1,0 +1,30 @@
+import { Canvas, Meta, Story } from '@storybook/addon-docs';
+
+import MdsButton from '@component/mds-button/mds-button'
+
+<Meta title="UI / Entity / Best practices" component={MdsButton} />
+
+## ARIA
+
+- [ARIA button role](https://developer.mozilla.org/en-US/docs/Web/Accessibility/ARIA/Roles/button_role)
+- [Building Accessible Buttons with ARIA: A11y Support Series](https://www.deque.com/blog/accessible-aria-buttons/)
+
+Always remember to set the ARIA attributes when appropriate:
+
+```html
+<mds-entity aria-label="Personaggio">
+  <mds-text aria-label="Nome" typography="h6">Mario Rossi</mds-text>
+  <mds-badge aria-label="Carattere" slot="detail" variant="orange" tone="quiet">Buono</mds-badge>
+  <mds-text aria-label="Email" slot="detail" typography="caption">mario@nintendo.com</mds-text>
+</mds-entity>
+```
+
+If the element is `deletable`, don't set `onClick` actions on `host` element since it would brake ARIA support.
+
+```html
+<mds-entity deletable onDelete={() => { ... }}>
+  <mds-text aria-label="Nome" typography="h6" onClick="{() => { ... }}">Mario Rossi</mds-text>
+  <mds-badge aria-label="Carattere" slot="detail" variant="orange" tone="quiet">Buono</mds-badge>
+  <mds-text aria-label="Email" slot="detail" typography="caption">mario@nintendo.com</mds-text>
+</mds-entity>
+```

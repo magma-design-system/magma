@@ -13,28 +13,31 @@ export class MdsText {
   /**
    * Specifies the HTML tag of the element
    */
-  @Prop() readonly tag?: TypographyTagType
+  @Prop({ mutable: true, reflect: true }) tag?: TypographyTagType
+
+  /**
+   * Specifies if the text shoud be truncated or should behave as a normal text
+   */
+  @Prop({ reflect: true }) readonly truncate?: boolean
 
   /**
    * Specifies the font typography of the element
    */
-  @Prop() readonly typography: TypographyType = 'detail'
+  @Prop({ reflect: true }) readonly typography?: TypographyType = 'detail'
 
   /**
    * Specifies the variant for `typography`
    */
-  @Prop() readonly variant?: TypographyVariants
-
+  @Prop({ reflect: true }) readonly variant?: TypographyVariants
 
   render () {
-    const Tag = this.tag !== undefined ? this.tag : typographyDefaultsVariant[ this.typography ].tag
-    const { selector } = typographyDefaultsVariant[ this.typography ]
-    const selectorVariant = this.variant === undefined || !selector[ this.variant ] ? selector.default : selector[ this.variant ]
+    const { tag } = typographyDefaultsVariant[ this.typography ]
+    this.tag = this.tag ?? tag as TypographyTagType
     return (
-      <Host class={clsx( selectorVariant, Tag )}>
-        <Tag class="text">
+      <Host>
+        <this.tag class={clsx(this.truncate ? 'truncate' : 'text')}>
           <slot />
-        </Tag>
+        </this.tag>
       </Host>
     )
   }
