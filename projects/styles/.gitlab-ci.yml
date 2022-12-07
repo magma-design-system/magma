@@ -4,6 +4,19 @@ styles-build:
   script:
     - nx run design-tokens:build
     - nx run styles:build
+    - ls
+    - ls ./projects/design-tokens
+    - ls ./projects/styles
+    - |
+      if [[ ! -d ./projects/styles/dist/ ]]; then
+        echo "STYLES DIST DOES NOT EXIST"
+        exit 128
+      fi
+    - |
+      if [[ ! -d ./projects/design-tokens/dist/ ]]; then
+        echo "DESIGN-TOKENS DIST DOES NOT EXIST"
+        exit 128
+      fi
   artifacts:
     name: styles-build
     expire_in: 1 day
