@@ -1,0 +1,25 @@
+.base-filter:
+  variables:
+    COMPONENT: mds-filter
+
+# ISOLATE
+filter-isolate:
+  extends: [.base-isolate, .base-filter]
+  dependencies: [base-stencil-build]
+
+# TEST
+filter-publish-test:
+  extends: [.base-stencil-publish-test, .base-filter]
+  dependencies: [base-stencil-build, filter-isolate]
+
+# PUBLISH
+filter-publish:
+  extends: [.base-stencil-publish, .base-filter]
+  dependencies: [base-stencil-build, filter-isolate]
+  needs: [base-stencil-build, filter-isolate, filter-publish-test]
+
+# INSTALL TEST
+filter-install-test:
+  extends: [.base-stencil-install-test, .base-filter]
+  dependencies: [base-stencil-build, filter-isolate]
+  needs: [base-stencil-build, filter-isolate, filter-publish]
