@@ -1,0 +1,27 @@
+@tailwind components;
+@tailwind utilities;
+
+:host {
+  @apply
+    auto-rows-min
+    gap-1
+    grid;
+}
+
+.items {
+  @apply
+    bg-tone-neutral-10
+    flex
+    gap-2
+    p-2
+    rounded-full
+    transition-colors;
+}
+
+.label {
+  @apply px-6;
+}
+
+.active {
+  @apply bg-tone-neutral-09;
+}
