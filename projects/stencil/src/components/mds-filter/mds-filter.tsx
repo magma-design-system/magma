@@ -19,7 +19,7 @@ export class MdsFilter {
   @Prop() label?: string
 
   /**
-   * Choose if multiple siblings can be opened simultaneously
+   * Sets if the filter group can filter multiple filters simultaneously
    */
   @Prop() multiple?: boolean
 
