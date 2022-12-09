@@ -1,0 +1,22 @@
+@tailwind components;
+@tailwind utilities;
+
+:host {
+  @apply
+    cursor-pointer
+    flex
+    px-4
+    py-2
+    rounded-full
+    text-tone-neutral-03
+    transition-colors;
+}
+
+:host ( [active]:not([active=false]) ),
+:host ( :hover ) {
+  @apply bg-tone-neutral;
+}
+
+:host ( [active]:not([active=false]) ) {
+  @apply text-tone-neutral-01;
+}
