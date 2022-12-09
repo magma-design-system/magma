@@ -7,6 +7,10 @@ export default {
       type: { name: 'string' },
       description: 'Sets the label of the filter',
     },
+    multiple: {
+      type: { name: 'boolean' },
+      description: 'Sets if the filter group can filter multiple filters simultaneously',
+    },
   },
 }
 
