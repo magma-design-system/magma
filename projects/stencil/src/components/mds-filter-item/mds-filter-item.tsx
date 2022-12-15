@@ -20,6 +20,11 @@ export class MdsFilterItem {
    */
   @Prop() label!: string
 
+  /**
+   * Sets the value of the component to be used with forms
+   */
+  @Prop({ reflect: true }) value!: string
+
   private toggle = () => {
     this.active = !this.active
     this.activeEvent.emit({ id: this.element.id, active: this.active })
