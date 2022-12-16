@@ -1,0 +1,44 @@
+@tailwind components;
+@tailwind utilities;
+
+/**
+* @prop --items-background-active: Sets the background-color of the items row area when a filter is active
+* @prop --items-background: Sets the background-color of the items row area
+* @prop --items-gap: Sets the gap between items
+* @prop --items-padding: Sets the padding of the items row area
+* @prop --items-radius: Sets the border-radius of the items row area
+* @prop --label-padding: Sets the padding of the label
+*/
+
+:host {
+  --items-background-active: theme('colors.tone-neutral-09');
+  --items-background: theme('colors.tone-neutral-10');
+  --items-gap: theme('spacing.2');
+  --items-padding: theme('spacing.2');
+  --items-radius: theme('borderRadius.full');
+  --label-padding: 0 theme('spacing.6');
+
+  @apply
+    auto-rows-min
+    gap-1
+    grid;
+}
+
+.items {
+  @apply
+    flex
+    transition-colors;
+
+  background-color: var(--items-background);
+  border-radius: var(--items-radius);
+  gap: var(--items-gap);
+  padding: var(--items-padding);
+}
+
+.label {
+  padding: var(--label-padding);
+}
+
+.active {
+  background-color: var(--items-background-active);
+}

@@ -29,7 +29,7 @@ export class MdsAccordion {
   }
 
   @Listen('openedEvent')
-  changeEventHandler (event: CustomEvent<AccordionClickedEvent>): void {
+  openedEventHandler (event: CustomEvent<AccordionClickedEvent>): void {
     const items = this.queryItems()
     if (this.multiple) {
       const list = []
