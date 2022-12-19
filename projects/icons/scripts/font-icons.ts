@@ -115,7 +115,8 @@ const buildCSSEncoded = (buildFontsDir: string, buildPathDir: string, fontName: 
     .then(() => Promise.all([fontBase64$, cssAscii$]))
     .then(([ fontBase64, cssAscii]) => {
       const regex = /src:(.|[\r\n][^\}])*/m
-      const [ stringToReplace ] = cssAscii.match(regex) || []
+      const [ stringToReplaceTemp ] = cssAscii.match(regex) || []
+      const stringToReplace = stringToReplaceTemp ?? ''
       return Promise.resolve(cssAscii.replace(stringToReplace, `src: url(data:font/truetype;charset=utf-8;base64,${fontBase64});`))
     })
     .then(cssString => fs.writeFile(newCssPath, cssString))
