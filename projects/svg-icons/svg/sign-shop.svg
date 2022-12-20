@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24">
+  <g id="icn_flat" data-name="icn flat">
+    <path d="M4.75,4.67V2.5h-1.5V21.5h1.5V6.17h2.25v-1.5h-2.25Zm15,1.5v-1.5h-5v3.5h-5.25v-2h4.25v-1.5h-5.75v3.5h-1.5s0,7.75,0,7.75h11.75v-7.75h-2v-2h3.5Z"/>
+  </g>
+  <g id="border">
+    <rect width="24" height="24" fill="none"/>
+  </g>
+</svg>
