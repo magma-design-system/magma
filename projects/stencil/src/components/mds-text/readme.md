@@ -30,6 +30,8 @@
  - [mds-button](../mds-button)
  - [mds-chip](../mds-chip)
  - [mds-file](../mds-file)
+ - [mds-filter](../mds-filter)
+ - [mds-filter-item](../mds-filter-item)
  - [mds-input](../mds-input)
  - [mds-input-field](../mds-input-field)
  - [mds-input-range](../mds-input-range)
@@ -61,6 +63,8 @@ graph TD;
   mds-button --> mds-text
   mds-chip --> mds-text
   mds-file --> mds-text
+  mds-filter --> mds-text
+  mds-filter-item --> mds-text
   mds-input --> mds-text
   mds-input-field --> mds-text
   mds-input-range --> mds-text
