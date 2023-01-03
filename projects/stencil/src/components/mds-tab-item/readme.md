@@ -7,14 +7,13 @@
 
 ## Properties
 
-| Property        | Attribute       | Description                                                             | Type                                     | Default     |
-| --------------- | --------------- | ----------------------------------------------------------------------- | ---------------------------------------- | ----------- |
-| `icon`          | `icon`          | The icon displayed in the tab item                                      | `string`                                 | `undefined` |
-| `iconPosition`  | `icon-position` | Specifies the horizontal position of the icon displayed in the tab item | `"left" \| "right"`                      | `'left'`    |
-| `notifications` | `notifications` | Specifies a notification badge when is set, to it's top-right position  | `number`                                 | `undefined` |
-| `selected`      | `selected`      | Specifies if the tab item is selected or not                            | `boolean`                                | `undefined` |
-| `size`          | `size`          | Specifies the size for the tab item                                     | `"lg" \| "md" \| "sm" \| "xl"`           | `'md'`      |
-| `type`          | `type`          | The type of the tab item element                                        | `"a" \| "button" \| "reset" \| "submit"` | `'submit'`  |
+| Property       | Attribute       | Description                                                             | Type                                     | Default     |
+| -------------- | --------------- | ----------------------------------------------------------------------- | ---------------------------------------- | ----------- |
+| `icon`         | `icon`          | The icon displayed in the tab item                                      | `string`                                 | `undefined` |
+| `iconPosition` | `icon-position` | Specifies the horizontal position of the icon displayed in the tab item | `"left" \| "right"`                      | `'left'`    |
+| `selected`     | `selected`      | Specifies if the tab item is selected or not                            | `boolean`                                | `undefined` |
+| `size`         | `size`          | Specifies the size for the tab item                                     | `"lg" \| "md" \| "sm" \| "xl"`           | `'md'`      |
+| `type`         | `type`          | The type of the tab item element                                        | `"a" \| "button" \| "reset" \| "submit"` | `'submit'`  |
 
 
 ## Events
@@ -26,24 +25,16 @@
 
 ## CSS Custom Properties
 
-| Name                                             | Description                                              |
-| ------------------------------------------------ | -------------------------------------------------------- |
-| `--mds-tab-item-background`                      | Sets the background color of the component               |
-| `--mds-tab-item-background-hover`                | Sets the background when the mouse is over the component |
-| `--mds-tab-item-background-selected`             | Sets the background when the component is selected       |
-| `--mds-tab-item-color`                           | Sets the color of the component                          |
-| `--mds-tab-item-color-hover`                     | Sets the color when the mouse is over the component      |
-| `--mds-tab-item-color-selected`                  | Sets the color when the component is selected            |
-| `--mds-tab-item-notification-color`              | Sets the text color of the component                     |
-| `--mds-tab-item-notification-dot-background`     | Sets the background-color of the component               |
-| `--mds-tab-item-notification-dot-padding`        | Sets the size of the component                           |
-| `--mds-tab-item-notification-ring-color`         | Sets the border color of ring around the notification    |
-| `--mds-tab-item-notification-ring-size`          | Sets the border size of ring around the notification     |
-| `--mds-tab-item-notification-size`               | Sets the size of the component                           |
-| `--mds-tab-item-notification-translate-offset-x` | Sets offset x positioning of the notification            |
-| `--mds-tab-item-notification-translate-offset-y` | Sets offset y positioning of the notification            |
-| `--mds-tab-item-radius`                          | Sets the border-radius of the component                  |
-| `--mds-tab-item-shadow-selected`                 | Sets the box-shadow when the component is selected       |
+| Name                                 | Description                                              |
+| ------------------------------------ | -------------------------------------------------------- |
+| `--mds-tab-item-background`          | Sets the background color of the component               |
+| `--mds-tab-item-background-hover`    | Sets the background when the mouse is over the component |
+| `--mds-tab-item-background-selected` | Sets the background when the component is selected       |
+| `--mds-tab-item-color`               | Sets the color of the component                          |
+| `--mds-tab-item-color-hover`         | Sets the color when the mouse is over the component      |
+| `--mds-tab-item-color-selected`      | Sets the color when the component is selected            |
+| `--mds-tab-item-radius`              | Sets the border-radius of the component                  |
+| `--mds-tab-item-shadow-selected`     | Sets the box-shadow when the component is selected       |
 
 
 ## Dependencies

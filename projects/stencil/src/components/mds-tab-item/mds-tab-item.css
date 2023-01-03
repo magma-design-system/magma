@@ -27,22 +27,23 @@
 .button {
   @apply flex-grow;
 
-  background-color: var(--mds-tab-item-background);
-  border-radius: var(--mds-tab-item-radius);
-  color: var(--mds-tab-item-color);
-  fill: var(--mds-tab-item-color);
+  --mds-button-background: var(--mds-tab-item-background);
+  --mds-button-color: var(--mds-tab-item-color);
+  --mds-button-icon-color: var(--mds-tab-item-color);
+  --mds-button-radius: var(--mds-tab-item-radius);
 }
 
 .button:hover {
-  background-color: var(--mds-tab-item-background-hover);
-  color: var(--mds-tab-item-color-hover);
+  --mds-button-background: var(--mds-tab-item-background-hover);
+  --mds-button-color: var(--mds-tab-item-color-hover);
+  --mds-button-icon-color: var(--mds-tab-item-color-hover);
 }
 
 .button--selected:hover,
 .button--selected {
   @apply pointer-events-none;
 
-  background-color: var(--mds-tab-item-background-selected);
+  --mds-button-background: var(--mds-tab-item-background-selected);
+  --mds-button-color: var(--mds-tab-item-color-selected);
   box-shadow: var(--mds-tab-item-shadow-selected);
-  color: var(--mds-tab-item-color-selected);
 }
