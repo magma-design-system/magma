@@ -62,6 +62,7 @@
 .dot {
   @apply
     absolute
+    box-content
     duration-300
     inline-flex
     items-center
@@ -78,6 +79,10 @@
 }
 
 .spacer {
+  @apply
+    box-content
+    inline-flex;
+
   height: var(--size);
   width: var(--min-width);
 }

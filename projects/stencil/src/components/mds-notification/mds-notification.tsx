@@ -28,8 +28,12 @@ export class MdsNotification {
    */
   @Prop({ mutable: true, reflect: true }) visible?: boolean = null
 
+  /**
+   * Specifies the position strategy of the notification
+   */
+  @Prop({ reflect: true }) strategy?: FloatingUIStrategy = 'fixed'
+
   private placement?: FloatingUIPlacement = 'right-start'
-  private strategy?: FloatingUIStrategy = 'fixed'
 
   private updatePosition = ():void => {
     const middleware = []

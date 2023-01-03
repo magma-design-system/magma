@@ -1,8 +1,17 @@
+import {
+  floatingUIStrategyDictionary,
+} from '@dictionary/floating-ui'
 import { h } from '@stencil/core'
 
 export default {
   title: 'UI / Notification',
   argTypes: {
+    strategy: {
+      type: { name: 'string' },
+      description: 'Specifies the position strategy of the notification',
+      options: floatingUIStrategyDictionary,
+      control: { type: 'select' },
+    },
     value: {
       description: 'Specifies the number of notifications to display',
       type: { name: 'number' },
