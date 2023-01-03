@@ -15,7 +15,11 @@ export class MdsTab {
 
   componentWillLoad ():void {
     const items = this.queryItems()
-    items.forEach((item, key) => item.id = `item-${key}`)
+    items.forEach((item, key) => {
+      if (!item.id) {
+        item.id = `mds-tab-item-${key}`
+      }
+    })
   }
 
   private scrollTabs = (): void => {
@@ -28,7 +32,7 @@ export class MdsTab {
   changeEventHandler (event: CustomEvent<string>): void {
     const items = this.element.querySelectorAll<HTMLMdsTabItemElement>('mds-tab-item')
     items.forEach((item, key) => {
-      if (`item-${key}` === event.detail) {
+      if (item.id === event.detail) {
         item.selected = true
         this.currentItem = key
         this.scrollTabs()
@@ -41,7 +45,7 @@ export class MdsTab {
   render () {
     return (
       <Host>
-        <slot name="tab-item"/>
+        <slot/>
       </Host>
     )
   }
