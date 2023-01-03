@@ -1,6 +1,6 @@
 import { Component, Element, Host, h, Prop } from '@stencil/core'
 import { autoUpdate, computePosition, offset, shift } from '@floating-ui/dom'
-import { FloatingUIPlacement, FloatingUIStrategy } from '../../types/floating-ui'
+import { FloatingUIPlacement, FloatingUIStrategy } from '@type/floating-ui'
 
 @Component({
   tag: 'mds-notification',
@@ -16,7 +16,7 @@ export class MdsNotification {
   /**
    * Specifies the id of the caller element.
    */
-  @Prop() readonly target!:string
+  @Prop() readonly target!: string
 
   /**
    * Specifies number of notifications to display, if it set to 0, the element will be hidden
