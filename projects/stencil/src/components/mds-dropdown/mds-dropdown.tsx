@@ -1,6 +1,6 @@
 import { Component, Element, Event, EventEmitter, Host, Listen, Prop, h, Watch } from '@stencil/core'
 import { arrow, autoPlacement, autoUpdate, computePosition, flip, MiddlewareData, offset, shift } from '@floating-ui/dom'
-import { FloatingUIPlacement, FloatingUIStrategy } from '../../types/floating-ui'
+import { FloatingUIPlacement, FloatingUIStrategy } from '@type/floating-ui'
 import arrowSvg from './assets/arrow.svg'
 import { setAttributeIfEmpty, hashValue } from '@common/aria'
 
