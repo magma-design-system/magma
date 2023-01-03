@@ -11,13 +11,14 @@
 
   --color: theme('colors.tone-neutral');
   --dot-background: theme('colors.status-error-05');
-  --dot-padding: theme('spacing.2');
+  --dot-padding: 0.375rem;
   --size: theme('spacing.5');
   --ring-size: 2px;
   --ring-color: theme('colors.tone-neutral');
   --translate-offset-x: -1.75;
   --translate-offset-y: -2;
   --translate: translate(calc(var(--size) / var(--translate-offset-x)), calc(var(--size) / var(--translate-offset-y)));
+  --min-width: calc(var(--size) - calc(var(--dot-padding) * 2));
 
   @apply
     bottom-full
@@ -36,8 +37,9 @@
 
   color: var(--color);
   height: var(--size);
-  transform: var(--translate) scale(0);
+  min-width: min-content;
   transform-origin: calc(100% - calc(var(--size) / 2)) 50%;
+  transform: var(--translate) scale(0);
   width: var(--size);
 }
 
@@ -59,21 +61,23 @@
 
 .dot {
   @apply
+    absolute
     duration-300
     inline-flex
     items-center
+    justify-center
     rounded-full
     transition-cosmetic;
 
   background-color: var(--dot-background);
   box-shadow: 0 0 0 var(--ring-size) var(--ring-color);
   line-height: var(--size);
+  min-width: var(--min-width);
   padding-left: var(--dot-padding);
   padding-right: var(--dot-padding);
-  width: min-content;
 }
 
 .spacer {
   height: var(--size);
-  width: calc(var(--size) - calc(var(--dot-padding) * 2));
+  width: var(--min-width);
 }
