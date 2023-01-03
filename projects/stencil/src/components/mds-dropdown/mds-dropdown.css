@@ -1,24 +1,24 @@
 @tailwind utilities;
 
 /**
-  * @prop --background-arrow: Sets the fill color of the arrow.
-  * @prop --background: Sets the background-color of the dropdown.
-  * @prop --drop-shadow: Sets the drop-shadow of the dropdown.
-  * @prop --duration: Sets the duration of the dropdown animation.
-  * @prop --ease: Sets the easing of the dropdown animation.
-  * @prop --transform-from: Sets the from animation transform of the dropdown.
-  * @prop --transform-to: Sets the to animation transform of the dropdown.
+  * @prop --mds-dropdown-arrow-background: Sets the fill color of the arrow.
+  * @prop --mds-dropdown-background: Sets the background-color of the dropdown.
+  * @prop --mds-dropdown-drop-shadow: Sets the drop-shadow of the dropdown.
+  * @prop --mds-dropdown-duration: Sets the duration of the dropdown animation.
+  * @prop --mds-dropdown-ease: Sets the easing of the dropdown animation.
+  * @prop --mds-dropdown-transform-from: Sets the from animation transform of the dropdown.
+  * @prop --mds-dropdown-transform-to: Sets the to animation transform of the dropdown.
   */
 
 :host {
 
-  --background-arrow: var(--background);
-  --background: theme('colors.tone-neutral');
-  --drop-shadow: drop-shadow(0 10px 8px rgba(0, 0, 0, 0.04)) drop-shadow(0 4px 3px rgba(0, 0, 0, 0.1)) drop-shadow(0 0 1px rgba(0, 0, 0, 0.1));
-  --duration: 0.5s;
-  --ease: theme('transitionTimingFunction.out-expo');
-  --transform-from: scale(0.9) translateY(-3%);
-  --transform-to: scale(1) translate(0, 0);
+  --mds-dropdown-arrow-background: var(--mds-dropdown-background);
+  --mds-dropdown-background: theme('colors.tone-neutral');
+  --mds-dropdown-drop-shadow: drop-shadow(0 10px 8px rgba(0, 0, 0, 0.04)) drop-shadow(0 4px 3px rgba(0, 0, 0, 0.1)) drop-shadow(0 0 1px rgba(0, 0, 0, 0.1));
+  --mds-dropdown-duration: 0.5s;
+  --mds-dropdown-ease: theme('transitionTimingFunction.out-expo');
+  --mds-dropdown-transform-from: scale(0.9) translateY(-3%);
+  --mds-dropdown-transform-to: scale(1) translate(0, 0);
 
   @apply
     box-border
@@ -30,12 +30,12 @@
     pointer-events-none
     rounded-lg;
 
-  background-color: var(--background);
-  filter: var(--drop-shadow);
-  transform: var(--transform-from);
-  transition-duration: var(--duration);
+  background-color: var(--mds-dropdown-background);
+  filter: var(--mds-dropdown-drop-shadow);
+  transform: var(--mds-dropdown-transform-from);
+  transition-duration: var(--mds-dropdown-duration);
   transition-property: opacity, transform, transform-origin;
-  transition-timing-function: var(--ease);
+  transition-timing-function: var(--mds-dropdown-ease);
 }
 
 :host ( [visible]:not([visible=false]) ) {
@@ -43,7 +43,7 @@
     opacity-100
     pointer-events-auto;
 
-  transform: var(--transform-to);
+  transform: var(--mds-dropdown-transform-to);
 }
 
 :host ( [smooth]:not([smooth=false]) ) {
@@ -57,8 +57,8 @@
     flex
     pointer-events-none;
 
-  fill: var(--background-arrow);
-  transition-duration: var(--duration);
+  fill: var(--mds-dropdown-arrow-background);
+  transition-duration: var(--mds-dropdown-duration);
   transition-property: bottom, left, right, top, transform, transform-origin;
 }
 

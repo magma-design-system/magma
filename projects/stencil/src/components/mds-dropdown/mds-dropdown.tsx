@@ -26,37 +26,37 @@ export class MdsDropdown {
   /**
    * If set, the component will have an arrow pointing to the caller.
    */
-  @Prop() readonly arrow? = true
+  @Prop() readonly arrow?: boolean = true
 
   /**
    * Sets the distance between arrow and dropdown margins.
    */
-  @Prop() readonly arrowPadding = 24
+  @Prop() readonly arrowPadding?: number = 24
 
   /**
    * If set, the component will be placed automatically near it's caller.
    */
-  @Prop() readonly autoPlacement? = false
+  @Prop() readonly autoPlacement?: boolean = false
 
   /**
    * Specifies if the component has a backdrop background
    */
-  @Prop() readonly backdrop? = false
+  @Prop() readonly backdrop?: boolean = false
 
   /**
    * Specifies the placement of the component if no space is available where it is placed.
    */
-  @Prop() readonly flip? = false
+  @Prop() readonly flip?: boolean = false
 
   /**
    * Specifies the id of the caller element.
    */
-  @Prop() readonly target!:string
+  @Prop() readonly target!: string
 
   /**
    * Sets distance between the dropdown and the caller.
    */
-  @Prop() readonly offset = 24
+  @Prop() readonly offset?: number = 24
 
   /**
    * Specifies where the component should be placed relative to the caller.
@@ -66,17 +66,17 @@ export class MdsDropdown {
   /**
    * If set, the component will be kept inside the viewport.
    */
-  @Prop() readonly shift? = true
+  @Prop() readonly shift?: boolean = true
 
   /**
    * Sets a safe area distance between the dropdown and the viewport.
    */
-  @Prop() readonly shiftPadding = 24
+  @Prop() readonly shiftPadding?: number = 24
 
   /**
    * If set, the component will follow the caller smoothly, visible when the page scrolls.
    */
-  @Prop() readonly smooth? = true
+  @Prop() readonly smooth?: boolean = true
 
   /**
    * Sets the CSS position strategy of the component.
@@ -86,7 +86,7 @@ export class MdsDropdown {
   /**
    * Specifies the visibility of the component.
    */
-  @Prop({ mutable: true, reflect: true }) visible = false
+  @Prop({ mutable: true, reflect: true }) visible?: boolean = false
 
   /**
    * Emits when a modal is closed
