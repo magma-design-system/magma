@@ -24,16 +24,16 @@
 
 ## CSS Custom Properties
 
-| Name                 | Description                                       |
-| -------------------- | ------------------------------------------------- |
-| `--background`       | Sets the background-color of the tooltip.         |
-| `--background-arrow` | Sets the fill color of the arrow.                 |
-| `--delay`            | Sets the delay of the tooltip.                    |
-| `--drop-shadow`      | Sets the drop-shadow of the tooltip.              |
-| `--duration`         | Sets the duration of the tooltip animation.       |
-| `--ease`             | Sets the easing of the tooltip animation.         |
-| `--transform-from`   | Sets the from animation transform of the tooltip. |
-| `--transform-to`     | Sets the to animation transform of the tooltip.   |
+| Name                             | Description                                       |
+| -------------------------------- | ------------------------------------------------- |
+| `--mds-tooltip-arrow-background` | Sets the fill color of the arrow.                 |
+| `--mds-tooltip-background`       | Sets the background-color of the tooltip.         |
+| `--mds-tooltip-delay`            | Sets the delay of the tooltip.                    |
+| `--mds-tooltip-drop-shadow`      | Sets the drop-shadow of the tooltip.              |
+| `--mds-tooltip-duration`         | Sets the duration of the tooltip animation.       |
+| `--mds-tooltip-ease`             | Sets the easing of the tooltip animation.         |
+| `--mds-tooltip-transform-from`   | Sets the from animation transform of the tooltip. |
+| `--mds-tooltip-transform-to`     | Sets the to animation transform of the tooltip.   |
 
 
 ## Dependencies

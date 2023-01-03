@@ -1,26 +1,27 @@
 @tailwind utilities;
 
 /**
-  * @prop --background-arrow: Sets the fill color of the arrow.
-  * @prop --background: Sets the background-color of the tooltip.
-  * @prop --delay: Sets the delay of the tooltip.
-  * @prop --drop-shadow: Sets the drop-shadow of the tooltip.
-  * @prop --duration: Sets the duration of the tooltip animation.
-  * @prop --ease: Sets the easing of the tooltip animation.
-  * @prop --transform-from: Sets the from animation transform of the tooltip.
-  * @prop --transform-to: Sets the to animation transform of the tooltip.
-  */
+* @prop --mds-tooltip-arrow-background: Sets the fill color of the arrow.
+* @prop --mds-tooltip-background: Sets the background-color of the tooltip.
+* @prop --mds-tooltip-delay: Sets the delay of the tooltip.
+* @prop --mds-tooltip-drop-shadow: Sets the drop-shadow of the tooltip.
+* @prop --mds-tooltip-duration: Sets the duration of the tooltip animation.
+* @prop --mds-tooltip-ease: Sets the easing of the tooltip animation.
+* @prop --mds-tooltip-transform-from: Sets the from animation transform of the tooltip.
+* @prop --mds-tooltip-transform-to: Sets the to animation transform of the tooltip.
+*/
 
 :host {
 
-  --background-arrow: var(--background);
-  --background: theme('colors.tone-neutral');
-  --delay: 1s;
-  --drop-shadow: drop-shadow(0 10px 8px rgba(0, 0, 0, 0.04)) drop-shadow(0 4px 3px rgba(0, 0, 0, 0.1)) drop-shadow(0 0 1px rgba(0, 0, 0, 0.1));
-  --duration: 0.5s;
-  --ease: theme('transitionTimingFunction.out-expo');
-  --transform-from: scale(0.9) translateY(-3%);
-  --transform-to: scale(1) translate(0, 0);
+  --mds-tooltip-arrow-background: var(--mds-tooltip-background);
+  --mds-tooltip-background: theme('colors.tone-neutral');
+  --mds-tooltip-delay: 1s;
+  --mds-tooltip-drop-shadow: drop-shadow(0 10px 8px rgba(0, 0, 0, 0.04)) drop-shadow(0 4px 3px rgba(0, 0, 0, 0.1)) drop-shadow(0 0 1px rgba(0, 0, 0, 0.1));
+  --mds-tooltip-duration: 0.5s;
+  --mds-tooltip-ease: theme('transitionTimingFunction.out-expo');
+  --mds-tooltip-dot-padding: theme('spacing.1');
+  --mds-tooltip-transform-from: scale(0.9) translateY(-3%);
+  --mds-tooltip-transform-to: scale(1) translate(0, 0);
 
   @apply
     box-border
@@ -33,13 +34,13 @@
     py-0
     rounded;
 
-  background-color: var(--background);
-  filter: var(--drop-shadow);
-  transform: var(--transform-from);
+  background-color: var(--mds-tooltip-background);
+  filter: var(--mds-tooltip-drop-shadow);
+  transform: var(--mds-tooltip-transform-from);
   transition-delay: 0;
-  transition-duration: var(--duration);
+  transition-duration: var(--mds-tooltip-duration);
   transition-property: opacity, transform, transform-origin;
-  transition-timing-function: var(--ease);
+  transition-timing-function: var(--mds-tooltip-ease);
   width: fit-content;
 }
 
@@ -48,12 +49,13 @@
     opacity-100
     pointer-events-auto;
 
-  transform: var(--transform-to);
-  transition-delay: var(--delay);
+  transform: var(--mds-tooltip-transform-to);
+  transition-delay: var(--mds-tooltip-delay);
 }
 
 .text {
-  display: inline-flex;
+  @apply inline-flex;
+  padding: var(--mds-tooltip-dot-padding);
 }
 
 .arrow {
@@ -62,9 +64,10 @@
     -z-10
     fixed
     flex
-    pointer-events-none;
+    pointer-events-none
+    transition-cosmetic;
 
-  fill: var(--background-arrow);
+  fill: var(--mds-tooltip-arrow-background);
 }
 
 ::slotted ( * ) {

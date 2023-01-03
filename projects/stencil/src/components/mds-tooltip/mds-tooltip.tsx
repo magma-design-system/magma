@@ -1,7 +1,7 @@
 import { Component, Element, Host, Prop, h, Watch } from '@stencil/core'
 import { arrow, autoPlacement, autoUpdate, computePosition, flip, MiddlewareData, offset, shift } from '@floating-ui/dom'
-import { FloatingUIPlacement, FloatingUIStrategy } from '../../types/floating-ui'
-import { TypographyTooltipType } from '../../types/typography'
+import { FloatingUIPlacement, FloatingUIStrategy } from '@type/floating-ui'
+import { TypographyTooltipType } from '@type/typography'
 import arrowSvg from './assets/arrow.svg'
 
 @Component({
@@ -20,32 +20,32 @@ export class MdsTooltip {
   /**
    * If set, the component will have an arrow pointing to the caller.
    */
-  @Prop() readonly arrow? = true
+  @Prop() readonly arrow?: boolean = true
 
   /**
    * Sets the distance between arrow and tooltip margins.
    */
-  private arrowPadding = 4
+  private arrowPadding?: number = 4
 
   /**
    * If set, the component will be placed automatically near it's caller.
    */
-  @Prop() readonly autoPlacement? = true
+  @Prop() readonly autoPlacement?: boolean = true
 
   /**
    * Specifies the placement of the component if no space is available where it is placed.
    */
-  @Prop() readonly flip? = true
+  @Prop() readonly flip?: boolean = true
 
   /**
    * Specifies the id of the caller element.
    */
-  @Prop() readonly target!:string
+  @Prop() readonly target!: string
 
   /**
    * Sets distance between the tooltip and the caller.
    */
-  @Prop() readonly offset = 12
+  @Prop() readonly offset: number = 12
 
   /**
    * Specifies where the component should be placed relative to the caller.
@@ -60,12 +60,12 @@ export class MdsTooltip {
   /**
    * If set, the component will be kept inside the viewport.
    */
-  @Prop() readonly shift? = true
+  @Prop() readonly shift?: boolean = true
 
   /**
    * Sets a safe area distance between the tooltip and the viewport.
    */
-  @Prop() readonly shiftPadding = 12
+  @Prop() readonly shiftPadding: number = 12
 
   /**
    * Sets the CSS position strategy of the component.
@@ -75,7 +75,7 @@ export class MdsTooltip {
   /**
    * Specifies the visibility of the component.
    */
-  @Prop({ mutable: true, reflect: true }) visible? = false
+  @Prop({ mutable: true, reflect: true }) visible?: boolean = false
 
   private handleVisibility = (visibility: boolean = null): void => {
     if (visibility !== null) {
