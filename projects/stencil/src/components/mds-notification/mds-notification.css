@@ -2,16 +2,16 @@
 
 :host {
 
-  /*
-  * @prop --mds-notification-color: Sets the text color of the component
-  * @prop --mds-notification-dot-background: Sets the background-color of the component
-  * @prop --mds-notification-dot-padding: Sets the size of the component
-  * @prop --mds-notification-size: Sets the size of the component
-  * @prop --mds-notification-ring-size: Sets the border size of ring around the notification
-  * @prop --mds-notification-ring-color: Sets the border color of ring around the notification
-  * @prop --mds-notification-translate-offset-x: Sets offset x positioning of the notification
-  * @prop --mds-notification-translate-offset-y: Sets offset y positioning of the notification
-  */
+/*
+* @prop --mds-notification-color: Sets the text color of the component
+* @prop --mds-notification-dot-background: Sets the background-color of the component
+* @prop --mds-notification-dot-padding: Sets the size of the component
+* @prop --mds-notification-size: Sets the size of the component
+* @prop --mds-notification-ring-size: Sets the border size of ring around the notification
+* @prop --mds-notification-ring-color: Sets the border color of ring around the notification
+* @prop --mds-notification-translate-offset-x: Sets offset x positioning of the notification
+* @prop --mds-notification-translate-offset-y: Sets offset y positioning of the notification
+*/
 
   --mds-notification-color: theme('colors.tone-neutral');
   --mds-notification-dot-background: theme('colors.status-error-05');
