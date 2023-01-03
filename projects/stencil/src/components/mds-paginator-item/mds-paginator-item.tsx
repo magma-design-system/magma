@@ -11,17 +11,17 @@ export class MdsPaginatorItem {
   /**
    * Specifies the icon used inside the paginator item
    */
-  @Prop() readonly icon?:string
+  @Prop() readonly icon?: string
 
   /**
    * Specifies if the item is active or not, is handled from the parent paginator
    */
-  @Prop({ reflect: true }) readonly active?:boolean
+  @Prop({ reflect: true }) readonly active?: boolean
 
   /**
    * Specifies if the item is disabled or not, is handled from the parent paginator
    */
-  @Prop({ reflect: true }) readonly disabled?:boolean
+  @Prop({ reflect: true }) readonly disabled?: boolean
 
   render () {
     return (
