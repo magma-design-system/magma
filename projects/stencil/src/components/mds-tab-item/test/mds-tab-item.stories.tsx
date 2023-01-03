@@ -14,10 +14,6 @@ export default {
       options: iconsDictionary,
       control: { type: 'select' },
     },
-    notifications: {
-      type: { name: 'number' },
-      description: 'Specifies a notification badge when is set, to it\'s top-right position',
-    },
     'icon-position': {
       type: { name: 'string' },
       control: { type: 'select' },

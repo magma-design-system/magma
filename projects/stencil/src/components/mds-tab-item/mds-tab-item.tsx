@@ -27,11 +27,6 @@ export class MdsTabItem {
   @Prop() readonly icon?: string
 
   /**
-   * Specifies a notification badge when is set, to it's top-right position
-   */
-  @Prop() readonly notifications?: number
-
-  /**
    * Specifies the horizontal position of the icon displayed in the tab item
    */
   @Prop() readonly iconPosition?: ButtonIconPositionType = 'left'
