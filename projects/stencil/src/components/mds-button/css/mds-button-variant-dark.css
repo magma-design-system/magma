@@ -1,73 +1,73 @@
 :host ( [variant=dark] ),
 :host ( [variant=dark][tone=strong] ) {
 
-  --background: theme('colors.tone-neutral-04');
-  --color: theme('colors.tone-neutral');
+  --mds-button-background: theme('colors.tone-neutral-04');
+  --mds-button-color: theme('colors.tone-neutral');
 }
 
 :host ( [variant=dark]:hover ),
 :host ( [variant=dark][tone=strong]:hover ) {
 
-  --background: theme('colors.tone-neutral-05');
+  --mds-button-background: theme('colors.tone-neutral-05');
 }
 
 :host ( [variant=dark][active] ),
 :host ( [variant=dark][tone=strong][active] ) {
 
-  --background: theme('colors.tone-neutral-03');
+  --mds-button-background: theme('colors.tone-neutral-03');
 }
 
 :host ( [variant=dark][tone=weak] ) {
 
-  --background: theme('colors.tone-neutral-05');
-  --color: theme('colors.tone-neutral');
+  --mds-button-background: theme('colors.tone-neutral-05');
+  --mds-button-color: theme('colors.tone-neutral');
 }
 
 :host ( [variant=dark][tone=weak]:hover ) {
 
-  --background: theme('colors.tone-neutral-06');
+  --mds-button-background: theme('colors.tone-neutral-06');
 }
 
 :host ( [variant=dark][tone=weak][active] ) {
 
-  --background: theme('colors.tone-neutral-04');
+  --mds-button-background: theme('colors.tone-neutral-04');
 }
 
 :host ( [variant=dark][tone=ghost] ) {
 
-  --background: transparent;
-  --border-color: theme('colors.tone-neutral-03');
-  --color: theme('colors.tone-neutral-03');
+  --mds-button-background: transparent;
+  --mds-button-border-color: theme('colors.tone-neutral-03');
+  --mds-button-color: theme('colors.tone-neutral-03');
 }
 
 :host ( [variant=dark][tone=ghost]:hover ) {
 
-  --background: transparent;
-  --border-color: theme('colors.tone-neutral-04');
-  --color: theme('colors.tone-neutral-04');
+  --mds-button-background: transparent;
+  --mds-button-border-color: theme('colors.tone-neutral-04');
+  --mds-button-color: theme('colors.tone-neutral-04');
 }
 
 :host ( [variant=dark][tone=ghost][active] ) {
 
-  --background: transparent;
-  --border-color: theme('colors.tone-neutral-02');
-  --color: theme('colors.tone-neutral-02');
+  --mds-button-background: transparent;
+  --mds-button-border-color: theme('colors.tone-neutral-02');
+  --mds-button-color: theme('colors.tone-neutral-02');
 }
 
 :host ( [variant=dark][tone=quiet] ) {
 
-  --background: transparent;
-  --color: theme('colors.tone-neutral-02');
+  --mds-button-background: transparent;
+  --mds-button-color: theme('colors.tone-neutral-02');
 }
 
 :host ( [variant=dark][tone=quiet]:hover ) {
 
-  --background: transparent;
-  --color: theme('colors.tone-neutral-04');
+  --mds-button-background: transparent;
+  --mds-button-color: theme('colors.tone-neutral-04');
 }
 
 :host ( [variant=dark][tone=quiet][active] ) {
 
-  --background: transparent;
-  --color: theme('colors.tone-neutral-02');
+  --mds-button-background: transparent;
+  --mds-button-color: theme('colors.tone-neutral-02');
 }
