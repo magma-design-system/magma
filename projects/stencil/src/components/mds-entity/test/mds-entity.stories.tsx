@@ -4,10 +4,6 @@ import { iconsDictionary } from '@dictionary/icon'
 export default {
   title: 'UI / Entity',
   argTypes: {
-    deletable: {
-      type: { name: 'boolean' },
-      description: 'Shows the cross icon to perform cancel/delete action on element',
-    },
     icon: {
       type: { name: 'string' },
       description: 'Specifies the icon to be displayed if src propery is not used',
@@ -30,6 +26,8 @@ const Template = args =>
     <mds-text aria-label="Nome" typography="h6">Mario Rossi</mds-text>
     <mds-badge aria-label="Carattere" slot="detail" variant="orange" tone="quiet">buono</mds-badge>
     <mds-text aria-label="Email" slot="detail" typography="caption">mario@nintendo.com</mds-text>
+    <mds-button slot="action" icon="mdi/replay" variant="primary" tone="strong" title="Restore"/>
+    <mds-button slot="action" icon="mdi/delete" variant="error" tone="strong" title="Delete"/>
   </mds-entity>
 
 const TemplateWario = args =>
@@ -37,12 +35,14 @@ const TemplateWario = args =>
     <mds-text aria-label="Nome" typography="h6">Wario</mds-text>
     <mds-badge aria-label="Carattere" slot="detail" variant="violet" tone="quiet">cattivo</mds-badge>
     <mds-text aria-label="Email" slot="detail" typography="caption">wario@nintendo.com</mds-text>
+    <mds-button slot="action" icon="mdi/email" variant="primary" tone="strong" title="Mail Wario"/>
   </mds-entity>
 
 const TemplateLocation = args =>
   <mds-entity {...args} aria-label="Luogo">
     <mds-text aria-label="Nome" typography="h6">Maggioli Headquarters</mds-text>
     <mds-text aria-label="Strada" slot="detail" typography="caption">Via Pinelli 64, Santarcangelo di Romanga, Italy</mds-text>
+    <mds-button slot="action" icon="mdi/map-marker" variant="primary" tone="strong" title="Go to Google Maps"/>
   </mds-entity>
 
 export const Default = Template.bind({})
