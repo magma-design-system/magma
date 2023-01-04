@@ -1,18 +1,18 @@
 @tailwind utilities;
 
 /**
-* @prop --background-color-pending: The background-color when an image is loading
-* @prop --background-color-placeholder: The background-color of the placeholder icon
-* @prop --radius: The border-radius of the element
-* @prop --color-placeholder: The color of the placeholder icon
+* @prop --mds-avatar-background-color-pending: The background-color when an image is loading
+* @prop --mds-avatar-background-color-placeholder: The background-color of the placeholder icon
+* @prop --mds-avatar-radius: The border-radius of the element
+* @prop --mds-avatar-color-placeholder: The color of the placeholder icon
 */
 
 :host {
 
-  --background-color-pending: theme('colors.tone-neutral-08');
-  --background-color-placeholder: theme('colors.brand-maggioli-04');
-  --radius: theme('borderRadius.full');
-  --color-placeholder: theme('colors.brand-maggioli-10');
+  --mds-avatar-background-color-pending: theme('colors.tone-neutral-08');
+  --mds-avatar-background-color-placeholder: theme('colors.brand-maggioli-04');
+  --mds-avatar-color-placeholder: theme('colors.brand-maggioli-10');
+  --mds-avatar-radius: theme('borderRadius.full');
 
   @apply
     inline-flex
@@ -20,7 +20,7 @@
     w-full;
 
   aspect-ratio: 1/1;
-  border-radius: var(--radius);
+  border-radius: var(--mds-avatar-radius);
 }
 
 .avatar {
@@ -36,7 +36,7 @@
 }
 
 .avatar.pending {
-  background-color: var(--background-color-pending);
+  background-color: var(--mds-avatar-background-color-pending);
 }
 
 .avatar.loaded {
@@ -47,17 +47,17 @@
 .avatar.initials {
   @apply
     flex
-    items-center
-    justify-center
-    p-4;
+    items-stretch
+    justify-items-stretch;
 }
 
 .avatar.fallback {
-  background-color: var(--background-color-placeholder);
+  padding: 20%;
+  background-color: var(--mds-avatar-background-color-placeholder);
 }
 
 .avatar.initials {
-  @apply p-0;
+  padding: 30% 25% 25%;
 }
 
 .image {
@@ -70,15 +70,31 @@
     w-full;
 
   aspect-ratio: 1/1;
-  background-color: var(--color-placeholder);
+  background-color: var(--mds-avatar-color-placeholder);
   mask-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' height='24' viewBox='0 0 24 24' width='24'%3E%3Cpath d='M0 0h24v24H0z' fill='none'/%3E%3Cpath d='M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z'/%3E%3C/svg%3E");
   mask-size: cover;
 }
 
 .initials-text {
-  @apply uppercase;
+  @apply
+    flex
+    h-full
+    items-center
+    justify-center
+    uppercase
+    w-full;
 
-  color: var(--color-placeholder);
+  color: var(--mds-avatar-color-placeholder);
+}
+
+.fit {
+  @apply
+    inline-block
+    duration-200
+    ease-in-out
+    whitespace-nowrap;
+
+  transition-property: font-size;
 }
 
 .icon {
@@ -86,5 +102,5 @@
     h-full
     w-full;
 
-  color: var(--color-placeholder);
+  color: var(--mds-avatar-color-placeholder);
 }
