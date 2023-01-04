@@ -3,29 +3,33 @@
 :host ( [variant=primary] ),
 :host ( [variant=primary][tone=strong] ) {
 
-  --background: theme('colors.tone-neutral');
-  --color: theme('colors.tone-neutral-02');
-  --icon-color: theme('colors.brand-maggioli-05');
-  --shadow: theme('boxShadow.sharp-lg');
+  --mds-banner-background: theme('colors.tone-neutral');
+  --mds-banner-close-icon-hover-background: theme('colors.brand-maggioli-09');
+  --mds-banner-color: theme('colors.tone-neutral-02');
+  --mds-banner-icon-color: theme('colors.brand-maggioli-05');
+  --mds-banner-shadow: theme('boxShadow.sharp-lg');
 }
 
 :host ( [variant=primary][tone=weak] ) {
 
-  --background: theme('colors.tone-neutral');
-  --color: theme('colors.tone-neutral-02');
-  --icon-color: theme('colors.brand-maggioli-05');
-  --shadow: theme('boxShadow.sharp-sm');
+  --mds-banner-background: theme('colors.tone-neutral');
+  --mds-banner-close-icon-hover-background: theme('colors.brand-maggioli-10');
+  --mds-banner-color: theme('colors.tone-neutral-02');
+  --mds-banner-icon-color: theme('colors.brand-maggioli-05');
+  --mds-banner-shadow: theme('boxShadow.sharp-sm');
 }
 
 :host ( [variant=primary][tone=ghost] ) {
 
-  --color: theme('colors.tone-neutral-02');
-  --shadow: none;
+  --mds-banner-color: theme('colors.tone-neutral-02');
+  --mds-banner-close-icon-hover-background: theme('colors.brand-maggioli-10');
+  --mds-banner-shadow: none;
 }
 
 :host ( [variant=primary][tone=quiet] ) {
 
-  --background: transparent;
-  --color: theme('colors.tone-neutral-10');
-  --shadow: none;
+  --mds-banner-background: transparent;
+  --mds-banner-close-icon-hover-background: transparent;
+  --mds-banner-color: theme('colors.tone-neutral-10');
+  --mds-banner-shadow: none;
 }

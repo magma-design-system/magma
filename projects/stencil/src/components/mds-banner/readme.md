@@ -26,13 +26,14 @@
 
 ## CSS Custom Properties
 
-| Name           | Description                                     |
-| -------------- | ----------------------------------------------- |
-| `--background` | Sets the background-color of the component      |
-| `--color`      | Sets the text color of the component            |
-| `--icon-color` | Sets the close icon fill color of the component |
-| `--radius`     | Sets the border-radius of the component         |
-| `--shadow`     | Sets the box-shadow of the component            |
+| Name                                       | Description                                                           |
+| ------------------------------------------ | --------------------------------------------------------------------- |
+| `--mds-banner-background`                  | Sets the background-color of the component                            |
+| `--mds-banner-close-icon-hover-background` | Sets the background color of the close icon when the mouse is over it |
+| `--mds-banner-color`                       | Sets the text color of the component                                  |
+| `--mds-banner-icon-color`                  | Sets the close icon fill color of the component                       |
+| `--mds-banner-radius`                      | Sets the border-radius of the component                               |
+| `--mds-banner-shadow`                      | Sets the box-shadow of the component                                  |
 
 
 ## Dependencies
