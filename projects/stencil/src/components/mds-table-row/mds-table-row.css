@@ -1,28 +1,10 @@
 @tailwind utilities;
 
-/**
-* @prop --background-row-hover: The cell background-color when the mouse go over the table row element
-* @prop --radius: The radius of the table (header and footer excluded)
-*/
-
 :host {
   @apply table-row;
 }
 
-:host ( :first-child ) {
-
-  --radius-top-left: var(--radius, theme('borderRadius.lg'));
-  --radius-top-right: var(--radius, theme('borderRadius.lg'));
-}
-
-:host ( :last-child ) {
-  @apply border-transparent;
-
-  --radius-bottom-left: var(--radius, theme('borderRadius.lg'));
-  --radius-bottom-right: var(--radius, theme('borderRadius.lg'));
-}
-
 :host ( [interactive]:hover ) {
 
-  --background: var(--background-row-hover, theme('colors.tone-neutral'));
+  --mds-table-cell-background: var(--mds-table-cell-background-hover, theme('colors.tone-neutral'));
 }

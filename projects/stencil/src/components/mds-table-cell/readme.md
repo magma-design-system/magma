@@ -7,10 +7,13 @@
 
 ## CSS Custom Properties
 
-| Name             | Description                                 |
-| ---------------- | ------------------------------------------- |
-| `--background`   | The cell background-color of the table body |
-| `--cell-padding` | The cell padding used on table cell         |
+| Name                                | Description                                                      |
+| ----------------------------------- | ---------------------------------------------------------------- |
+| `--mds-table-cell-background`       | The background-color of the table cell                           |
+| `--mds-table-cell-background-hover` | The background-color of the table cell when the mouse is over it |
+| `--mds-table-cell-border-color`     | The border-color of the table cell                               |
+| `--mds-table-cell-border-width`     | The border-width of the table cell                               |
+| `--mds-table-cell-padding`          | The padding of the table cell                                    |
 
 
 ----------------------------------------------

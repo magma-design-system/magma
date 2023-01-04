@@ -1,28 +1,19 @@
 @tailwind utilities;
 
 /**
-* @prop --background: The cell background-color of the table body
-* @prop --cell-padding: The cell padding used on table cell
+* @prop --mds-table-cell-background-hover: The background-color of the table cell when the mouse is over it
+* @prop --mds-table-cell-background: The background-color of the table cell
+* @prop --mds-table-cell-border-color: The border-color of the table cell
+* @prop --mds-table-cell-border-width: The border-width of the table cell
+* @prop --mds-table-cell-padding: The padding of the table cell
 */
 
 :host {
-  @apply
-    table-cell
-    transition-colors;
+  @apply table-cell;
 
-  background-color: var(--background, theme('colors.tone-neutral'));
-  border-bottom: var(--border-width, theme('borderWidth.2')) solid var(--border-color, theme('colors.tone-neutral-09')) !important;
-  border-top: var(--border-width, theme('borderWidth.2')) solid transparent !important;
-  padding: var(--cell-padding, 0);
+  background-color: var(--mds-table-cell-background, theme('colors.tone-neutral'));
+  border-bottom: var(--mds-table-cell-border-width, theme('borderWidth.2')) solid var(--mds-table-cell-border-color, theme('colors.tone-neutral-09')) !important;
+  border-top: var(--mds-table-cell-border-width, theme('borderWidth.2')) solid transparent !important;
+  padding: var(--mds-table-cell-padding, 0);
 
-}
-
-:host( :first-child ) {
-  border-bottom-left-radius: var(--radius, 0);
-  border-top-left-radius: var(--radius, 0);
-}
-
-:host( :last-child ) {
-  border-bottom-right-radius: var(--radius, 0);
-  border-top-right-radius: var(--radius, 0);
 }
