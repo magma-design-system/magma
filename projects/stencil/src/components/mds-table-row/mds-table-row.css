@@ -2,17 +2,11 @@
 
 /**
 * @prop --background-row-hover: The cell background-color when the mouse go over the table row element
-* @prop --border-color: The border color between table rows
-* @prop --border-width: The border width between table rows
 * @prop --radius: The radius of the table (header and footer excluded)
 */
 
 :host {
-  @apply
-    border-b
-    table-row;
-
-  border-bottom: var(--border-width, theme('borderWidth.2')) solid var(--border-color, theme('colors.tone-neutral-09'));
+  @apply table-row;
 }
 
 :host ( :first-child ) {

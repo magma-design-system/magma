@@ -11,16 +11,18 @@
     transition-colors;
 
   background-color: var(--background, theme('colors.tone-neutral'));
-  border-top: var(--border-top, 0);
+  border-bottom: var(--border-width, theme('borderWidth.2')) solid var(--border-color, theme('colors.tone-neutral-09')) !important;
+  border-top: var(--border-width, theme('borderWidth.2')) solid transparent !important;
   padding: var(--cell-padding, 0);
+
 }
 
 :host( :first-child ) {
-  border-bottom-left-radius: var(--radius-bottom-left, 0);
-  border-top-left-radius: var(--radius-top-left, 0);
+  border-bottom-left-radius: var(--radius, 0);
+  border-top-left-radius: var(--radius, 0);
 }
 
 :host( :last-child ) {
-  border-bottom-right-radius: var(--radius-bottom-right, 0);
-  border-top-right-radius: var(--radius-top-right, 0);
+  border-bottom-right-radius: var(--radius, 0);
+  border-top-right-radius: var(--radius, 0);
 }

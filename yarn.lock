@@ -2475,10 +2475,10 @@
   dependencies:
     "@sinonjs/commons" "^1.7.0"
 
-"@stencil/core@^2.19.3":
-  version "2.19.3"
-  resolved "https://registry.npmjs.org/@stencil/core/-/core-2.19.3.tgz#34a35d11982070801300d984ab8cbf9353fac698"
-  integrity sha512-rb6pBWTfD5xDg5M/uEJUeclatE/tqBE3zCCNrEB47AtdkNCzC9fOikdzCYbpdAEpU6GvC60REFr0bd8QFUjn3Q==
+"@stencil/core@^2.20.0":
+  version "2.20.0"
+  resolved "https://registry.npmjs.org/@stencil/core/-/core-2.20.0.tgz#0e68b5b42e727233803291eb0367ab2b53f7f1f3"
+  integrity sha512-ka+eOW+dNteXIfLCRipNbbAlBEQjqJ2fkx3fxzlKgnNHEQMdZiuIjlWt63KzvOJStNeuADdQXo89BB1dC2VRUw==
 
 "@stencil/eslint-plugin@^0.4.0":
   version "0.4.0"
@@ -9500,6 +9500,11 @@ find-up@^5.0.0:
   dependencies:
     locate-path "^6.0.0"
     path-exists "^4.0.0"
+
+fitty@^2.3.6:
+  version "2.3.6"
+  resolved "https://registry.npmjs.org/fitty/-/fitty-2.3.6.tgz#1dc2f3fbf6ffd4766b4fdd8b3d55a0cb01334ed1"
+  integrity sha512-ENp/+MqqYmXBGHC0dlltCX75+5zL5m0uiIGCgYdoThao99BrJpNYzEh3xrvhiy4b7O5X82CQT7dPTiB53H6stw==
 
 flat-cache@^3.0.4:
   version "3.0.4"
