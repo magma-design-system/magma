@@ -89,6 +89,11 @@ export class MdsDropdown {
   @Prop({ mutable: true, reflect: true }) visible?: boolean = false
 
   /**
+   * Specifies the visibility of the component.
+   */
+  @Prop() readonly zIndex?: number = 1000
+
+  /**
    * Emits when a modal is closed
    */
   @Event({ bubbles: true, composed: true }) closeDropdown: EventEmitter<void>
@@ -130,7 +135,7 @@ export class MdsDropdown {
       this.backdropEl.style.pointerEvents = 'none'
       this.backdropEl.style.position = 'fixed'
       this.backdropEl.style.transition = `background-color ${this.backdropDuration / 10000}s ease-out`
-      this.backdropEl.style.zIndex = (Number(this.host.style.zIndex) - 1).toString()
+      this.backdropEl.style.zIndex = (this.zIndex - 1).toString()
       document.body.appendChild(this.backdropEl)
     }
 
@@ -352,10 +357,16 @@ export class MdsDropdown {
     this.detachBackdrop()
   }
 
+  @Watch('zIndex')
+  zIndexChanged (newValue: number): void {
+    this.host.style.setProperty('z-index', newValue.toString())
+  }
+
   componentWillLoad (): void {
     Array.from(document.getElementsByClassName(this.backdropId)).forEach((element: HTMLElement) => {
       element.remove()
     })
+    this.zIndexChanged(this.zIndex)
   }
 
   private setAriaAttributes (): void {
@@ -373,11 +384,13 @@ export class MdsDropdown {
 
     this.setAriaAttributes()
 
-    if (!this.caller) return
+    if (!this.caller) {
+      return
+    }
 
     this.caller.addEventListener('click', this.callerOnClick.bind(this))
-
     this.backdropChanged(this.backdrop)
+    this.updatePosition()
   }
 
   componentDidRender (): void {

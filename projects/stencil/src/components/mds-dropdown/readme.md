@@ -22,6 +22,7 @@
 | `strategy`            | `strategy`       | Sets the CSS position strategy of the component.                                      | `"absolute" \| "fixed"`                                                                                                                                              | `'fixed'`   |
 | `target` _(required)_ | `target`         | Specifies the id of the caller element.                                               | `string`                                                                                                                                                             | `undefined` |
 | `visible`             | `visible`        | Specifies the visibility of the component.                                            | `boolean`                                                                                                                                                            | `false`     |
+| `zIndex`              | `z-index`        | Specifies the visibility of the component.                                            | `number`                                                                                                                                                             | `1000`      |
 
 
 ## Events
