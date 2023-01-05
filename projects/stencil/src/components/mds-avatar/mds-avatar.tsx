@@ -54,7 +54,7 @@ export class MdsAvatar {
   }
 
   private checkInitials = (value: string): void => {
-    if (value !== undefined && value !== '') {
+    if (value !== undefined && value !== '' && !this.src) {
       this.hasInitials = true
       if (!this.fittyInitialized) {
         this.addFontResize()
