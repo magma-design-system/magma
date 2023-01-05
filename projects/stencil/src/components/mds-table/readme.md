@@ -21,17 +21,18 @@
 
 ## CSS Custom Properties
 
-| Name                     | Description                                                                          |
-| ------------------------ | ------------------------------------------------------------------------------------ |
-| `--background`           | The cell background-color of the table body                                          |
-| `--background-hover`     | The background-color of the table body when the mouse go over the table body element |
-| `--background-row-hover` | The cell background-color when the mouse go over the table row element               |
-| `--border-color`         | The border color between table rows                                                  |
-| `--border-width`         | The border width between table rows                                                  |
-| `--cell-padding`         | The cell padding used on table cell                                                  |
-| `--radius`               | The radius of the table (header and footer excluded)                                 |
-| `--section-border-color` | The border bottom color of table header and footer                                   |
-| `--shadow`               | The box-shadow used on the table (header and footer excluded)                        |
+| Name                                | Description                                                      |
+| ----------------------------------- | ---------------------------------------------------------------- |
+| `--mds-table-background`            | The background-color of the table                                |
+| `--mds-table-body-background`       | The background-color of the table body                           |
+| `--mds-table-body-background-hover` | The background-color of the table body when the mouse is over it |
+| `--mds-table-border-color`          | The border-color of the table                                    |
+| `--mds-table-border-width`          | The border-width of the table                                    |
+| `--mds-table-cell-background`       | The background-color of the table cell                           |
+| `--mds-table-cell-background-hover` | The background-color of the table cell when the mouse is over it |
+| `--mds-table-cell-border-color`     | The border-color of the table cell                               |
+| `--mds-table-cell-border-width`     | The border-width of the table cell                               |
+| `--mds-table-cell-padding`          | The padding of the table cell                                    |
 
 
 ----------------------------------------------

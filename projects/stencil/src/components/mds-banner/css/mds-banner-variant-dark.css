@@ -3,30 +3,34 @@
 :host ( [variant=dark] ),
 :host ( [variant=dark][tone=strong] ) {
 
-  --background: theme('colors.tone-neutral-01');
-  --color: theme('colors.tone-neutral-08');
-  --icon-color: theme('colors.tone-neutral-07');
-  --shadow: theme('boxShadow.sharp-lg');
+  --mds-banner-background: theme('colors.tone-neutral-01');
+  --mds-banner-close-icon-hover-background: theme('colors.tone-neutral-03');
+  --mds-banner-color: theme('colors.tone-neutral-08');
+  --mds-banner-icon-color: theme('colors.tone-neutral-07');
+  --mds-banner-shadow: theme('boxShadow.sharp-lg');
 }
 
 :host ( [variant=dark][tone=weak] ) {
 
-  --background: theme('colors.tone-neutral-03');
-  --color: theme('colors.tone-neutral-09');
-  --icon-color: theme('colors.tone-neutral-07');
-  --shadow: theme('boxShadow.sharp-sm');
+  --mds-banner-background: theme('colors.tone-neutral-03');
+  --mds-banner-close-icon-hover-background: theme('colors.tone-neutral-05');
+  --mds-banner-color: theme('colors.tone-neutral-09');
+  --mds-banner-icon-color: theme('colors.tone-neutral-07');
+  --mds-banner-shadow: theme('boxShadow.sharp-sm');
 }
 
 :host ( [variant=dark][tone=ghost] ) {
 
-  --color: theme('colors.tone-neutral-05');
-  --icon-color: theme('colors.tone-neutral-04');
-  --shadow: none;
+  --mds-banner-color: theme('colors.tone-neutral-05');
+  --mds-banner-close-icon-hover-background: theme('colors.tone-neutral-03');
+  --mds-banner-icon-color: theme('colors.tone-neutral-04');
+  --mds-banner-shadow: none;
 }
 
 :host ( [variant=dark][tone=quiet] ) {
 
-  --background: transparent;
-  --color: theme('colors.tone-neutral-04');
-  --shadow: none;
+  --mds-banner-background: transparent;
+  --mds-banner-close-icon-hover-background: transparent;
+  --mds-banner-color: theme('colors.tone-neutral-04');
+  --mds-banner-shadow: none;
 }

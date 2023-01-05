@@ -15,12 +15,12 @@
 
 ## CSS Custom Properties
 
-| Name                             | Description                                   |
-| -------------------------------- | --------------------------------------------- |
-| `--background-color-pending`     | The background-color when an image is loading |
-| `--background-color-placeholder` | The background-color of the placeholder icon  |
-| `--color-placeholder`            | The color of the placeholder icon             |
-| `--radius`                       | The border-radius of the element              |
+| Name                                        | Description                                   |
+| ------------------------------------------- | --------------------------------------------- |
+| `--mds-avatar-background-color-pending`     | The background-color when an image is loading |
+| `--mds-avatar-background-color-placeholder` | The background-color of the placeholder icon  |
+| `--mds-avatar-color-placeholder`            | The color of the placeholder icon             |
+| `--mds-avatar-radius`                       | The border-radius of the element              |
 
 
 ## Dependencies

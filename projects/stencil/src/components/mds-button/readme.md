@@ -27,13 +27,13 @@
 
 ## CSS Custom Properties
 
-| Name             | Description                                |
-| ---------------- | ------------------------------------------ |
-| `--background`   | Sets the background-color of the component |
-| `--border-color` | Sets the border-color of the component     |
-| `--color`        | Sets the text color of the component       |
-| `--icon-color`   | Sets the icon color of the component       |
-| `--radius`       | Sets the border-radius of the component    |
+| Name                        | Description                                |
+| --------------------------- | ------------------------------------------ |
+| `--mds-button-background`   | Sets the background-color of the component |
+| `--mds-button-border-color` | Sets the border-color of the component     |
+| `--mds-button-color`        | Sets the text color of the component       |
+| `--mds-button-icon-color`   | Sets the icon color of the component       |
+| `--mds-button-radius`       | Sets the border-radius of the component    |
 
 
 ## Dependencies

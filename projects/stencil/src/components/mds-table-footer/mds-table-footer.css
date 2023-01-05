@@ -1,15 +1,14 @@
 @tailwind utilities;
 
-/**
-* @prop --section-border-color: The border color of the table header and footer
-* @prop --border-width: The border width between table rows
-*/
-
 :host {
   @apply
     overflow-hidden
     table-row;
 
-  --background: transparent;
-  --border-top: var(--border-width, theme('borderWidth.2')) solid var(--section-border-color, theme('colors.tone-neutral-07'));
+  --mds-table-cell-background: transparent;
+  border-top: var(--mds-table-cell-border-width, theme('borderWidth.2')) solid var(--mds-table-cell-border-color, theme('colors.tone-neutral-07'));
+}
+
+::slotted (mds-table-cell) {
+  --mds-table-cell-border-color: transparent;
 }

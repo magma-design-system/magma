@@ -12,12 +12,12 @@ export class MdsPaginator {
   /**
    * Specifies the number of total pages to be handled
    */
-  @Prop() readonly pages? = 0
+  @Prop() readonly pages?: number = 0
 
   /**
    * Specifies the current page selected in the paginator
    */
-  @Prop({ mutable: true, reflect: true }) currentPage? = 1
+  @Prop({ mutable: true, reflect: true }) currentPage?: number = 1
 
   componentDidLoad (): void {
     setTimeout(() => {

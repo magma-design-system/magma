@@ -1,12 +1,12 @@
 @tailwind utilities;
 
 /*
-* @prop --background: Sets the background-color of the pages area and the item
+* @prop --mds-paginator-background: Sets the background-color of the pages area and the item
 */
 
 :host {
 
-  --background: theme('colors.tone-neutral-09');
+  --mds-paginator-background: theme('colors.tone-neutral-09');
 
   @apply
     flex
@@ -25,7 +25,7 @@
     rounded-full
     scroll-smooth;
 
-  background-color: var(--background);
+  background-color: var(--mds-paginator-background);
   gap: 2px;
 
   /* scroll-snap-type: x mandatory; */

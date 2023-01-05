@@ -138,7 +138,7 @@ Backdrop.args = {
 export const Flip = Template.bind({})
 Flip.args = {
   class: 'max-w-[350px] w-full',
-  layout: 'flex h-[200vh] justify-center items-center',
+  layout: 'flex h-[150vh] justify-center items-center',
   flip: true,
   visible: true,
 }

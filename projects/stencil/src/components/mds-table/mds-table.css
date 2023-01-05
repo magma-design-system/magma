@@ -1,31 +1,39 @@
 @tailwind utilities;
 
 /**
-* @prop --background-hover: The background-color of the table body when the mouse go over the table body element
-* @prop --background-row-hover: The cell background-color when the mouse go over the table row element
-* @prop --background: The cell background-color of the table body
-* @prop --border-color: The border color between table rows
-* @prop --border-width: The border width between table rows
-* @prop --cell-padding: The cell padding used on table cell
-* @prop --section-border-color: The border bottom color of table header and footer
-* @prop --radius: The radius of the table (header and footer excluded)
-* @prop --shadow: The box-shadow used on the table (header and footer excluded)
+* @prop --mds-table-background: The background-color of the table
+* @prop --mds-table-body-background-hover: The background-color of the table body when the mouse is over it
+* @prop --mds-table-body-background: The background-color of the table body
+* @prop --mds-table-border-color: The border-color of the table
+* @prop --mds-table-border-width: The border-width of the table
+* @prop --mds-table-cell-background-hover: The background-color of the table cell when the mouse is over it
+* @prop --mds-table-cell-background: The background-color of the table cell
+* @prop --mds-table-cell-border-color: The border-color of the table cell
+* @prop --mds-table-cell-border-width: The border-width of the table cell
+* @prop --mds-table-cell-padding: The padding of the table cell
 */
 
 :host {
 
-  --background-hover: theme('colors.tone-neutral');
-  --background-row-hover: theme('colors.tone-neutral-10');
-  --background: theme('colors.tone-neutral');
-  --border-color: theme('colors.tone-neutral-09');
-  --border-width: theme('borderWidth.2');
-  --cell-padding: theme('spacing.4');
-  --section-border-color: theme('colors.tone-neutral-07');
-  --radius: theme('borderRadius.none');
-  --shadow: theme('boxShadow.none');
+  --mds-table-background: theme('colors.tone-neutral');
+  --mds-table-body-background-hover: theme('colors.tone-neutral-10');
+  --mds-table-body-background: var(--mds-table-background);
+  --mds-table-border-color: theme('colors.tone-neutral-08');
+  --mds-table-border-width: 2px;
+  --mds-table-cell-background-hover: theme('colors.tone-neutral');
+  --mds-table-cell-background: transparent;
+  --mds-table-cell-border-color: theme('colors.tone-neutral-08');
+  --mds-table-cell-border-width: var(--mds-table-border-width);
+  --mds-table-cell-padding: theme('spacing.4');
 
   @apply
-    flex;
+    flex
+    rounded-2xl
+    overflow-auto;
+
+  background-color: var(--mds-table-background);
+  border-color: var(--mds-table-border-color);
+  border: var(--mds-table-border-width) solid var(--mds-table-border-color) !important;
 }
 
 .table {

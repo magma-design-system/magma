@@ -14,11 +14,10 @@
 
 ## CSS Custom Properties
 
-| Name                 | Description                                                                          |
-| -------------------- | ------------------------------------------------------------------------------------ |
-| `--background-hover` | The background-color of the table body when the mouse go over the table body element |
-| `--radius`           | The radius of the table (header and footer excluded)                                 |
-| `--shadow`           | The box-shadow used on the table (header and footer excluded)                        |
+| Name                                | Description                                                      |
+| ----------------------------------- | ---------------------------------------------------------------- |
+| `--mds-table-body-background`       | The background-color of the table body                           |
+| `--mds-table-body-background-hover` | The background-color of the table body when the mouse is over it |
 
 
 ----------------------------------------------

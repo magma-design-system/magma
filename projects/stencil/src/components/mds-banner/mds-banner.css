@@ -5,33 +5,34 @@
 
 @import '../../tailwind/components.css';
 
-:host {
+/**
+* @prop --mds-banner-background: Sets the background-color of the component
+* @prop --mds-banner-color: Sets the text color of the component
+* @prop --mds-banner-close-icon-hover-background: Sets the background color of the close icon when the mouse is over it
+* @prop --mds-banner-icon-color: Sets the close icon fill color of the component
+* @prop --mds-banner-radius: Sets the border-radius of the component
+* @prop --mds-banner-shadow: Sets the box-shadow of the component
+*/
 
-  /**
-    * @prop --background: Sets the background-color of the component
-    * @prop --color: Sets the text color of the component
-    * @prop --icon-color: Sets the close icon fill color of the component
-    * @prop --radius: Sets the border-radius of the component
-    * @prop --shadow: Sets the box-shadow of the component
-    */
-
-  --background: theme('colors.tone-neutral-10');
-  --color: theme('colors.tone-neutral-02');
-  --gap: theme('spacing.4');
-  --icon-color: theme('colors.tone-neutral-04');
-  --radius: theme('borderRadius.lg');
-  --shadow: none;
+  :host {
+  --mds-banner-background: theme('colors.tone-neutral-10');
+  --mds-banner-close-icon-hover-background: theme('colors.tone-neutral-09');
+  --mds-banner-color: theme('colors.tone-neutral-02');
+  --mds-banner-gap: theme('spacing.4');
+  --mds-banner-icon-color: theme('colors.tone-neutral-04');
+  --mds-banner-radius: theme('borderRadius.lg');
+  --mds-banner-shadow: none;
 
   @apply
     grid
     p-6
     transition-cosmetic;
 
-  background-color: var(--background);
-  border-radius: var(--radius);
-  box-shadow: var(--shadow);
-  color: var(--color);
-  gap: var(--gap);
+  background-color: var(--mds-banner-background);
+  border-radius: var(--mds-banner-radius);
+  box-shadow: var(--mds-banner-shadow);
+  color: var(--mds-banner-color);
+  gap: var(--mds-banner-gap);
 }
 
 .body {
@@ -40,7 +41,7 @@
     items-start
     justify-between;
 
-  gap: var(--gap);
+  gap: var(--mds-banner-gap);
 }
 
 .content {
@@ -51,7 +52,7 @@
     flex-grow
     justify-center;
 
-  gap: var(--gap);
+  gap: var(--mds-banner-gap);
 }
 
 .actions {
@@ -60,12 +61,12 @@
     flex-wrap
     justify-end;
 
-  gap: var(--gap);
+  gap: var(--mds-banner-gap);
 }
 
 .close-icon {
   @apply
-    bg-tone-neutral-05/0
+    -m-1
     cursor-pointer
     duration-200
     ease-out
@@ -75,18 +76,19 @@
     shrink-0;
 
   transition-property: background-color, fill, outline, outline-offset;
-  fill: var(--color);
+  fill: var(--mds-banner-color);
+  background-color: transparent;
 }
 
 .close-icon:hover {
-  @apply bg-tone-neutral-05/20;
+  background-color: var(--mds-banner-close-icon-hover-background);
 }
 
 .icon {
   @apply
     shrink-0;
 
-  fill: var(--icon-color);
+  fill: var(--mds-banner-icon-color);
 }
 
 .text {
@@ -94,7 +96,7 @@
     grid
     grow;
 
-  gap: var(--gap);
+  gap: var(--mds-banner-gap);
 }
 
 @import './css/mds-banner-variant-dark.css';

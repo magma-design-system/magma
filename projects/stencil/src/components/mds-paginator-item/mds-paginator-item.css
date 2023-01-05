@@ -1,38 +1,38 @@
 @tailwind utilities;
 
 /*
-  * @prop --background-disabled: Sets the background-color of the item when is disabled
-  * @prop --background-hover: Sets the background-color of the item when the mouse is over it
-  * @prop --background-selected: Sets the background-color of the item when is selected
-  * @prop --background: Sets the background-color of the pages area and the item
-  * @prop --color-disabled: Sets the color of the item when is disabled
-  * @prop --color-hover: Sets the text color of the item when the mouse is over it
-  * @prop --color-selected: Sets the text color of the item when is selected
-  * @prop --color: Sets the text color of the component
-  * @prop --radius: Sets the border-radius of the component
-  * @prop --shadow-disabled: Sets the box-shadow of the item when is disabled
-  * @prop --shadow-hover: Sets the box-shadow of the item when the mouse is over it
-  * @prop --shadow-selected: Sets the box-shadow of the item when is selected
-  * @prop --shadow: Sets the box-shadow of the component
-  * @prop --size: Sets the height and the min-width of the paginator item
+  * @prop --mds-paginator-item-background-disabled: Sets the background-color of the item when is disabled
+  * @prop --mds-paginator-item-background-hover: Sets the background-color of the item when the mouse is over it
+  * @prop --mds-paginator-item-background-selected: Sets the background-color of the item when is selected
+  * @prop --mds-paginator-item-background: Sets the background-color of the pages area and the item
+  * @prop --mds-paginator-item-color-disabled: Sets the color of the item when is disabled
+  * @prop --mds-paginator-item-color-hover: Sets the text color of the item when the mouse is over it
+  * @prop --mds-paginator-item-color-selected: Sets the text color of the item when is selected
+  * @prop --mds-paginator-item-color: Sets the text color of the component
+  * @prop --mds-paginator-item-radius: Sets the border-radius of the component
+  * @prop --mds-paginator-item-shadow-disabled: Sets the box-shadow of the item when is disabled
+  * @prop --mds-paginator-item-shadow-hover: Sets the box-shadow of the item when the mouse is over it
+  * @prop --mds-paginator-item-shadow-selected: Sets the box-shadow of the item when is selected
+  * @prop --mds-paginator-item-shadow: Sets the box-shadow of the component
+  * @prop --mds-paginator-item-size: Sets the height and the min-width of the paginator item
   */
 
 :host {
 
-  --background-disabled: theme('colors.tone-neutral-09');
-  --background-hover: theme('colors.tone-neutral-08');
-  --background-selected: theme('colors.brand-maggioli-03');
-  --background: theme('colors.tone-neutral-09');
-  --color-disabled: theme('colors.tone-neutral-06');
-  --color-hover: theme('colors.tone-neutral-02');
-  --color-selected: theme('colors.tone-neutral');
-  --color: theme('colors.tone-neutral-02');
-  --radius: 200px;
-  --shadow-disabled: none;
-  --shadow-hover: none;
-  --shadow-selected: theme('boxShadow.sharp-md');
-  --shadow: none;
-  --size: theme('spacing.9');
+  --mds-paginator-item-background-disabled: theme('colors.tone-neutral-09');
+  --mds-paginator-item-background-hover: theme('colors.tone-neutral-08');
+  --mds-paginator-item-background-selected: theme('colors.brand-maggioli-03');
+  --mds-paginator-item-background: theme('colors.tone-neutral-09');
+  --mds-paginator-item-color-disabled: theme('colors.tone-neutral-06');
+  --mds-paginator-item-color-hover: theme('colors.tone-neutral-02');
+  --mds-paginator-item-color-selected: theme('colors.tone-neutral');
+  --mds-paginator-item-color: theme('colors.tone-neutral-02');
+  --mds-paginator-item-radius: 200px;
+  --mds-paginator-item-shadow-disabled: none;
+  --mds-paginator-item-shadow-hover: none;
+  --mds-paginator-item-shadow-selected: theme('boxShadow.sharp-md');
+  --mds-paginator-item-shadow: none;
+  --mds-paginator-item-size: theme('spacing.9');
 
   @apply
     box-border
@@ -45,37 +45,37 @@
     shrink-0
     transition-colors;
 
-  background-color: var(--background);
-  border-radius: var(--radius);
-  box-shadow: var(--shadow);
-  color: var(--color);
-  height: var(--size);
-  min-width: var(--size);
+  background-color: var(--mds-paginator-item-background);
+  border-radius: var(--mds-paginator-item-radius);
+  box-shadow: var(--mds-paginator-item-shadow);
+  color: var(--mds-paginator-item-color);
+  height: var(--mds-paginator-item-size);
+  min-width: var(--mds-paginator-item-size);
 }
 
 :host( :hover ) {
-  background-color: var(--background-hover);
-  box-shadow: var(--shadow-hover);
-  color: var(--color-hover);
-  fill: var(--color-hover);
+  background-color: var(--mds-paginator-item-background-hover);
+  box-shadow: var(--mds-paginator-item-shadow-hover);
+  color: var(--mds-paginator-item-color-hover);
+  fill: var(--mds-paginator-item-color-hover);
 }
 
 :host ( [active]) {
   @apply pointer-events-none;
 
-  background-color: var(--background-selected);
-  box-shadow: var(--shadow-selected);
-  color: var(--color-selected);
-  fill: var(--color-selected);
+  background-color: var(--mds-paginator-item-background-selected);
+  box-shadow: var(--mds-paginator-item-shadow-selected);
+  color: var(--mds-paginator-item-color-selected);
+  fill: var(--mds-paginator-item-color-selected);
 }
 
 :host ( [disabled]) {
   @apply pointer-events-none;
 
-  background-color: var(--background-disabled);
-  box-shadow: var(--shadow-disabled);
-  color: var(--color-disabled);
-  fill: var(--color-disabled);
+  background-color: var(--mds-paginator-item-background-disabled);
+  box-shadow: var(--mds-paginator-item-shadow-disabled);
+  color: var(--mds-paginator-item-color-disabled);
+  fill: var(--mds-paginator-item-color-disabled);
 }
 
 .icon {

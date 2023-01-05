@@ -9,23 +9,23 @@ export default {
   title: 'UI / Tab / Tab Item',
   argTypes: {
     icon: {
-      type: { name: 'string', required: true },
+      type: { name: 'string' },
       description: 'The icon displayed in the tab item',
       options: iconsDictionary,
       control: { type: 'select' },
     },
     'icon-position': {
-      type: { name: 'string', required: false },
+      type: { name: 'string' },
       control: { type: 'select' },
       description: 'Specifies the horizontal position of the icon displayed in the tab item',
       options: buttonIconPositionDictionary,
     },
     selected: {
-      type: { name: 'boolean', required: false },
+      type: { name: 'boolean' },
       description: 'Specifies if the tab item is selected or not',
     },
     size: {
-      type: { name: 'string', required: false },
+      type: { name: 'string' },
       control: { type: 'select' },
       description: 'Specifies the size for the tab item',
       options: buttonSizeDictionary,

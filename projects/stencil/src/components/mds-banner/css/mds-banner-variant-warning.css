@@ -3,26 +3,29 @@
 :host ( [variant=warning] ),
 :host ( [variant=warning][tone=strong] ) {
 
-  --background: theme('colors.status-warning-09');
-  --color: theme('colors.status-warning-02');
-  --icon-color: theme('colors.status-warning-05');
-  --shadow: none;
+  --mds-banner-background: theme('colors.status-warning-09');
+  --mds-banner-close-icon-hover-background: theme('colors.status-warning-08');
+  --mds-banner-color: theme('colors.status-warning-02');
+  --mds-banner-icon-color: theme('colors.status-warning-05');
+  --mds-banner-shadow: none;
 }
 
 :host ( [variant=warning][tone=weak] ) {
 
-  --background: theme('colors.status-warning-10');
-  --color: theme('colors.status-warning-03');
-  --icon-color: theme('colors.status-warning-06');
-  --shadow: none;
+  --mds-banner-background: theme('colors.status-warning-10');
+  --mds-banner-close-icon-hover-background: theme('colors.status-warning-08');
+  --mds-banner-color: theme('colors.status-warning-03');
+  --mds-banner-icon-color: theme('colors.status-warning-06');
+  --mds-banner-shadow: none;
 }
 
 :host ( [variant=warning][tone=quiet] ) {
 
-  --background: transparent;
-  --color: theme('colors.status-warning-03');
-  --icon-color: theme('colors.status-warning-06');
-  --shadow: none;
+  --mds-banner-background: transparent;
+  --mds-banner-close-icon-hover-background: theme('colors.status-warning-09');
+  --mds-banner-color: theme('colors.status-warning-03');
+  --mds-banner-icon-color: theme('colors.status-warning-06');
+  --mds-banner-shadow: none;
 }
 
 :host ( [variant=warning][tone=quiet] ) .separator {

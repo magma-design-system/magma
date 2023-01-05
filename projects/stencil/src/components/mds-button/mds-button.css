@@ -5,20 +5,24 @@
 @tailwind utilities;
 
 /**
-  * @prop --background: Sets the background-color of the component
-  * @prop --border-color: Sets the border-color of the component
-  * @prop --color: Sets the text color of the component
-  * @prop --icon-color: Sets the icon color of the component
-  * @prop --radius: Sets the border-radius of the component
+  * @prop --mds-button-background: Sets the background-color of the component
+  * @prop --mds-button-border-color: Sets the border-color of the component
+  * @prop --mds-button-color: Sets the text color of the component
+  * @prop --mds-button-icon-color: Sets the icon color of the component
+  * @prop --mds-button-radius: Sets the border-radius of the component
   */
 
 :host {
 
-  --background: theme('colors.brand-maggioli-02');
-  --border-color: transparent;
-  --color: theme('colors.tone-neutral');
-  --icon-color: var(--color);
-  --radius: theme('borderRadius.lg');
+  --mds-button-background: theme('colors.brand-maggioli-02');
+  --mds-button-border-color: transparent;
+  --mds-button-color: theme('colors.tone-neutral');
+  --mds-button-icon-color: var(--mds-button-color);
+  --mds-button-outline-blur-offset: var(--outline-blur-offset, 6px);
+  --mds-button-outline-blur: var(--outline-blur, 2px solid transparent);
+  --mds-button-outline-focus-offset: var(--outline-focus-offset, 2px);
+  --mds-button-outline-focus: var(--outline-focus, 2px solid theme('colors.label-sky-05'));
+  --mds-button-radius: theme('borderRadius.lg');
 
   @apply
     box-border
@@ -32,20 +36,20 @@
     px-6
     py-2;
 
-  background-color: var(--background);
-  border-color: var(--border-color) !important;
-  border-radius: var(--radius, theme('borderRadius.lg'));
+  background-color: var(--mds-button-background);
+  border-color: var(--mds-button-border-color) !important;
+  border-radius: var(--mds-button-radius, theme('borderRadius.lg'));
   border-style: solid;
   border-width: theme('borderWidth.2') !important;
-  color: var(--color);
-  outline-offset: var(--outline-blur-offset, 6px);
-  outline: var(--outline-blur, 2px solid transparent);
+  color: var(--mds-button-color);
+  outline-offset: var(--mds-button-outline-blur-offset);
+  outline: var(--mds-button-outline-blur);
   transition-property: background-color, border-color, box-shadow, color, transform, outline, outline-offset;
 }
 
 :host( :focus-visible ) {
-  outline: var(--outline-focus, 2px solid theme('colors.label-sky-05'));
-  outline-offset: var(--outline-focus-offset, 2px);
+  outline: var(--mds-button-outline-focus);
+  outline-offset: var(--mds-button-outline-focus-offset);
 }
 
 .text {
@@ -66,7 +70,7 @@
     justify-center
     transition-colors;
 
-  fill: var(--icon-color);
+  fill: var(--mds-button-icon-color);
 }
 
 @import './css/mds-button-variant-primary.css';

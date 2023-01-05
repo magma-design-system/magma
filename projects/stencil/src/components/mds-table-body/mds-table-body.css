@@ -1,20 +1,20 @@
 @tailwind utilities;
 
 /**
-* @prop --background-hover: The background-color of the table body when the mouse go over the table body element
-* @prop --radius: The radius of the table (header and footer excluded)
-* @prop --shadow: The box-shadow used on the table (header and footer excluded)
+* @prop --mds-table-body-background-hover: The background-color of the table body when the mouse is over it
+* @prop --mds-table-body-background: The background-color of the table body
 */
 
 :host {
 
-  @apply table-row-group;
+  @apply
+    table-row-group
+    transition-colors;
 
-  border-radius: var(--radius);
-  box-shadow: var(--shadow, theme('boxShadow.none'));
+  background-color: var(--mds-table-body-background, theme('colors.tone-neutral'));
   overflow: hidden;
 }
 
 :host ( [interactive]:hover ) {
-  background-color: var(--background-hover, theme('colors.tone-neutral-10'));
+  --mds-table-body-background: var(--mds-table-body-background-hover, theme('colors.tone-neutral-10'));
 }

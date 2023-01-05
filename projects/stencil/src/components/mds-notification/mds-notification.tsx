@@ -1,6 +1,6 @@
 import { Component, Element, Host, h, Prop } from '@stencil/core'
 import { autoUpdate, computePosition, offset, shift } from '@floating-ui/dom'
-import { FloatingUIPlacement, FloatingUIStrategy } from '../../types/floating-ui'
+import { FloatingUIPlacement, FloatingUIStrategy } from '@type/floating-ui'
 
 @Component({
   tag: 'mds-notification',
@@ -16,7 +16,7 @@ export class MdsNotification {
   /**
    * Specifies the id of the caller element.
    */
-  @Prop() readonly target!:string
+  @Prop() readonly target!: string
 
   /**
    * Specifies number of notifications to display, if it set to 0, the element will be hidden
@@ -28,8 +28,12 @@ export class MdsNotification {
    */
   @Prop({ mutable: true, reflect: true }) visible?: boolean = null
 
+  /**
+   * Specifies the position strategy of the notification
+   */
+  @Prop({ reflect: true }) strategy?: FloatingUIStrategy = 'fixed'
+
   private placement?: FloatingUIPlacement = 'right-start'
-  private strategy?: FloatingUIStrategy = 'fixed'
 
   private updatePosition = ():void => {
     const middleware = []

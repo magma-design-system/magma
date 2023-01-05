@@ -1,42 +1,33 @@
 @tailwind utilities;
-@import '../../tailwind/components.css';
 
 /**
-* @prop --background: The background-color of the entity
-* @prop --color: The color of the entity name
-* @prop --delete-background-hover: The background-color of the delete action when hovered
-* @prop --delete-background: The background-color of the delete action
-* @prop --delete-color-hover: The icon color of the delete action when hovered
-* @prop --delete-color: The icon color of the delete action
-* @prop --detail-color: The color of the text details
-* @prop --icon-background: The background-color of the icon
-* @prop --icon-color: The color of the icon
-* @prop --shadow: The box-shadow od the component
+* @prop --mds-entity-background: The background-color of the entity
+* @prop --mds-entity-color: The color of the entity name
+* @prop --mds-entity-detail-color: The color of the text details
+* @prop --mds-entity-icon-background: The background-color of the icon
+* @prop --mds-entity-icon-color: The color of the icon
+* @prop --mds-entity-shadow: The box-shadow od the component
 */
 
 :host {
 
-  --background: theme('colors.tone-neutral');
-  --color: theme('colors.tone-neutral-02');
-  --delete-background-hover: theme('colors.status-error-09');
-  --delete-background: theme('colors.tone-neutral-09');
-  --delete-color-hover: theme('colors.status-error-04');
-  --delete-color: theme('colors.tone-neutral-04');
-  --detail-color: theme('colors.tone-neutral-03');
-  --icon-background: theme('colors.label-blue-09');
-  --icon-color: theme('colors.label-blue-04');
-  --shadow: theme('boxShadow.DEFAULT');
+  --mds-entity-background: theme('colors.tone-neutral');
+  --mds-entity-color: theme('colors.tone-neutral-02');
+  --mds-entity-detail-color: theme('colors.tone-neutral-03');
+  --mds-entity-icon-background: theme('colors.label-blue-09');
+  --mds-entity-icon-color: theme('colors.label-blue-04');
+  --mds-entity-shadow: theme('boxShadow.DEFAULT');
 
   @apply
     flex
     gap-2
-    items-center
+    items-stretch
     p-2
     rounded-lg;
 
-  background-color: var(--background);
-  box-shadow: var(--shadow);
-  color: var(--color);
+  background-color: var(--mds-entity-background);
+  box-shadow: var(--mds-entity-shadow);
+  color: var(--mds-entity-color);
 }
 
 .avatar,
@@ -55,27 +46,8 @@
     items-center
     justify-center;
 
-  background-color: var(--icon-background);
-  fill: var(--icon-color);
-}
-
-.delete {
-  @apply
-    cursor-pointer
-    inline-flex
-    items-center
-    justify-center
-    rounded-full
-    transition-colors;
-
-  aspect-ratio: 1/1;
-  background-color: var(--delete-background);
-  fill: var(--delete-color);
-}
-
-.delete:hover {
-  background-color: var(--delete-background-hover);
-  fill: var(--delete-color-hover);
+  background-color: var(--mds-entity-icon-background);
+  fill: var(--mds-entity-icon-color);
 }
 
 .infos {
@@ -94,7 +66,21 @@
     gap-1
     items-center;
 
-  color: var(--detail-color);
+  color: var(--mds-entity-detail-color);
+}
+
+.actions {
+  @apply
+    flex
+    gap-2
+    items-center;
+}
+
+::slotted ( [slot="action"] ) {
+  @apply
+    aspect-square
+    h-auto
+    w-11;
 }
 
 ::slotted ( * ) {

@@ -1,27 +1,49 @@
 @tailwind utilities;
 
-mds-tab-item {
+/**
+* @prop --mds-tab-item-background-hover: Sets the background when the mouse is over the component
+* @prop --mds-tab-item-background-selected: Sets the background when the component is selected
+* @prop --mds-tab-item-background: Sets the background color of the component
+* @prop --mds-tab-item-color-hover: Sets the color when the mouse is over the component
+* @prop --mds-tab-item-color-selected: Sets the color when the component is selected
+* @prop --mds-tab-item-color: Sets the color of the component
+* @prop --mds-tab-item-radius: Sets the border-radius of the component
+* @prop --mds-tab-item-shadow-selected: Sets the box-shadow when the component is selected
+*/
+
+:host {
+  --mds-tab-item-background-hover: transparent;
+  --mds-tab-item-background-selected: theme('colors.tone-neutral');
+  --mds-tab-item-background: transparent;
+  --mds-tab-item-color-hover: theme('colors.tone-neutral-02');
+  --mds-tab-item-color-selected: theme('colors.tone-neutral-02');
+  --mds-tab-item-color: theme('colors.tone-neutral-04');
+  --mds-tab-item-radius: theme('spacing.2');
+  --mds-tab-item-shadow-selected: theme('boxShadow.DEFAULT');
+
   @apply flex;
 }
 
 .button {
   @apply flex-grow;
 
-  background-color: var(--button-background, transparent);
-  border-radius: var(--button-radius, theme('spacing.2'));
-  color: var(--button-color, theme('colors.tone-neutral-04'));
+  --mds-button-background: var(--mds-tab-item-background);
+  --mds-button-color: var(--mds-tab-item-color);
+  --mds-button-icon-color: var(--mds-tab-item-color);
+  --mds-button-radius: var(--mds-tab-item-radius);
 }
 
 .button:hover {
-  background-color: var(--button-background-hover, transparent);
-  color: var(--button-color-hover, theme('colors.tone-neutral-02'));
+  --mds-button-background: var(--mds-tab-item-background-hover);
+  --mds-button-color: var(--mds-tab-item-color-hover);
+  --mds-button-icon-color: var(--mds-tab-item-color-hover);
 }
 
 .button--selected:hover,
 .button--selected {
   @apply pointer-events-none;
 
-  background-color: var(--button-background-selected, theme('colors.tone-neutral'));
-  box-shadow: var(--button-shadow-selected, theme('boxShadow.DEFAULT'));
-  color: var(--button-color-selected, theme('colors.tone-neutral-02'));
+  --mds-button-background: var(--mds-tab-item-background-selected);
+  --mds-button-color: var(--mds-tab-item-color-selected);
+  box-shadow: var(--mds-tab-item-shadow-selected);
 }

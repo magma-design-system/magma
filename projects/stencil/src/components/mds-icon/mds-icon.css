@@ -15,7 +15,8 @@
     inline-flex
     items-center
     justify-center
-    not-italic;
+    not-italic
+    w-full;
 }
 
 .icon svg {

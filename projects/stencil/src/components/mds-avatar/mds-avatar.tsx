@@ -1,6 +1,10 @@
-import { Component, Host, h, State, Prop, Watch } from '@stencil/core'
+import { Component, Element, Host, h, State, Prop, Watch } from '@stencil/core'
 import clsx from 'clsx'
 import { avatarVariant } from './meta/variants'
+
+// From https://github.com/rikschennink/fitty/issues/76#issuecomment-1008750034
+// eslint-disable-next-line @typescript-eslint/no-var-requires
+const fitty = require('fitty/dist/fitty.min.js')
 
 @Component({
   tag: 'mds-avatar',
@@ -9,9 +13,14 @@ import { avatarVariant } from './meta/variants'
 })
 export class MdsAvatar {
 
+  @Element() private element: HTMLMdsAvatarElement
   @State() placeholder = false
   @State() loaded = false
   @State() hasInitials = false
+
+  private observer: ResizeObserver
+  private fittyElements
+  private fittyInitialized = false
 
   /**
    * Specifies the path to the image
@@ -21,18 +30,48 @@ export class MdsAvatar {
   /**
    * The user's inizials displayed if there's no image available
    */
-  @Prop() readonly initials?: string
+  @Prop({ mutable:true, reflect: true }) readonly initials?: string
 
-  private checkInitials = (value: string): void => {
-    if (value !== undefined && value !== '') {
-      this.hasInitials = true
+  private addFontResize = (): void => {
+    console.log('addFontResize')
+    const initialsElement = this.element.shadowRoot.querySelector('.fit')
+    if (initialsElement === null) {
       return
     }
-
-    this.hasInitials = false
+    if (!this.observer) {
+      this.fittyElements = fitty(initialsElement as HTMLElement, { minSize: 10 })
+      this.observer = new ResizeObserver(entries => {
+        entries.forEach(() => {
+          this.fittyElements.fit()
+        })
+      })
+    }
+    this.observer.observe(this.element)
+    this.fittyInitialized = true
   }
 
-  componentWillLoad (): void {
+  private removeFontResize = (): void => {
+    console.log('removeFontResize')
+    this.fittyInitialized = false
+    this.observer.unobserve(this.element)
+  }
+
+  private checkInitials = (value: string): void => {
+    if (value !== undefined && value !== '' && !this.src) {
+      this.hasInitials = true
+      if (!this.fittyInitialized) {
+        this.addFontResize()
+      }
+      return
+    }
+    this.hasInitials = false
+    if (this.fittyInitialized) {
+      this.removeFontResize()
+    }
+    this.fittyInitialized = false
+  }
+
+  componentDidRender (): void {
     this.checkInitials(this.initials)
   }
 
@@ -65,9 +104,9 @@ export class MdsAvatar {
           backgroundColor,
         )}>
           { this.placeholder
-            ? <div class={clsx(this.hasInitials ? 'initials-text' : 'fallback-image')}>
-              { this.hasInitials && <mds-text typography="h5">{ this.initials.substring(0, 2) }</mds-text> }
-            </div>
+            ? <mds-text typography="h5" class={clsx( this.hasInitials ? 'initials-text' : 'fallback-image')}>
+              { this.hasInitials && <span class="fit">{ this.initials.substring(0, 2) }</span> }
+            </mds-text>
             : <mds-img
               class="image"
               loading="lazy"

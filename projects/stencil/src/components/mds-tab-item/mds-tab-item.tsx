@@ -1,15 +1,15 @@
 import { Component, Host, h, Element, Prop, State, Event, EventEmitter, Watch } from '@stencil/core'
 import clsx from 'clsx'
-
 import {
   ButtonIconPositionType,
   ButtonType,
   ButtonSizeType,
-} from '../../types/button'
+} from '@type/button'
+
 @Component({
   tag: 'mds-tab-item',
   styleUrl: 'mds-tab-item.css',
-  shadow: false,
+  shadow: true,
 })
 export class MdsTabItem {
 
@@ -60,7 +60,7 @@ export class MdsTabItem {
 
   render () {
     return (
-      <Host slot="tab-item" onClick={this.toggle}>
+      <Host onClick={this.toggle}>
         <mds-button class={clsx('button', this.selected && 'button--selected')}
           icon={this.icon}
           iconPosition={this.iconPosition}

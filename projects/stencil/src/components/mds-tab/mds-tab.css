@@ -1,30 +1,14 @@
 @tailwind utilities;
 
 /*
-  * @prop --background: Sets the background-color of the component
-  * @prop --button-background-hover: Sets the background-color of the button when the mouse is over it
-  * @prop --button-background-selected: Sets the background-color of the button when it's selected
-  * @prop --button-background: Sets the background-color of the button
-  * @prop --button-color-hover: Sets the text color of the button when the mouse is over it
-  * @prop --button-color-selected: Sets the text color of the button when it's selected
-  * @prop --button-color: Sets the text color of the button
-  * @prop --button-radius: Sets the border-radius of the button
-  * @prop --button-shadow-selected: Sets the box-shadow of the button when it's selected
-  * @prop --radius: Sets the border-radius of the button when the mouse is over it
+  * @prop --mds-tab-background: Sets the background-color of the component
+  * @prop --mds-tab-radius: Sets the border-radius of the button when the mouse is over it
   */
 
 :host {
 
-  --background: theme('colors.tone-neutral-09');
-  --button-background-hover: transparent;
-  --button-background-selected: theme('colors.tone-neutral');
-  --button-background: transparent;
-  --button-color-hover: theme('colors.tone-neutral-02');
-  --button-color-selected: theme('colors.tone-neutral-02');
-  --button-color: theme('colors.tone-neutral-04');
-  --button-radius: theme('spacing.2');
-  --button-shadow-selected: theme('boxShadow.DEFAULT');
-  --radius: theme('spacing.4');
+  --mds-tab-background: theme('colors.tone-neutral-09');
+  --mds-tab-radius: theme('spacing.4');
 
   @apply
     flex
@@ -32,8 +16,8 @@
     overflow-auto
     p-2;
 
-  background-color: var(--background);
-  border-radius: var(--radius);
+  background-color: var(--mds-tab-background);
+  border-radius: var(--mds-tab-radius);
   -webkit-overflow-scrolling: touch;
   -ms-overflow-style: none;
   scroll-behavior: smooth;

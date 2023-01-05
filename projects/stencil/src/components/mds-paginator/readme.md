@@ -10,7 +10,7 @@
 | Property      | Attribute      | Description                                          | Type     | Default |
 | ------------- | -------------- | ---------------------------------------------------- | -------- | ------- |
 | `currentPage` | `current-page` | Specifies the current page selected in the paginator | `number` | `1`     |
-| `pages`       | `pages`        | Specifies the number of total pages to be handled    | `0`      | `0`     |
+| `pages`       | `pages`        | Specifies the number of total pages to be handled    | `number` | `0`     |
 
 
 ## Events
