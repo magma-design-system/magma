@@ -54,3 +54,10 @@ Static.args = {
   value: 7,
   visible: true,
 }
+
+export const Max = Template.bind({})
+Max.args = {
+  value: 15,
+  max: 9,
+  visible: true,
+}

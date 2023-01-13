@@ -91,12 +91,13 @@ You can try it out on the component's [Storybook website][storybook]!
 
 ## Properties
 
-| Property   | Attribute  | Description                                                                              | Type                                | Default   |
-| ---------- | ---------- | ---------------------------------------------------------------------------------------- | ----------------------------------- | --------- |
-| `strategy` | `strategy` | Specifies the position strategy of the notification                                      | `"absolute" \| "fixed" \| "static"` | `'fixed'` |
-| `target`   | `target`   | Specifies the id of the caller element.                                                  | `string`                            | `null`    |
-| `value`    | `value`    | Specifies number of notifications to display, if it set to 0, the element will be hidden | `number`                            | `null`    |
-| `visible`  | `visible`  | Specifies if the notification is visible                                                 | `boolean`                           | `null`    |
+| Property   | Attribute  | Description                                                                                                                                        | Type                                | Default     |
+| ---------- | ---------- | -------------------------------------------------------------------------------------------------------------------------------------------------- | ----------------------------------- | ----------- |
+| `max`      | `max`      | Specifies the maximum number that can be seen, assuming that the number is for example 9 and that this is exceeded with 15, the component shows +9 | `number`                            | `undefined` |
+| `strategy` | `strategy` | Specifies the position strategy of the notification                                                                                                | `"absolute" \| "fixed" \| "static"` | `'fixed'`   |
+| `target`   | `target`   | Specifies the id of the caller element.                                                                                                            | `string`                            | `null`      |
+| `value`    | `value`    | Specifies number of notifications to display, if it set to 0, the element will be hidden                                                           | `number`                            | `null`      |
+| `visible`  | `visible`  | Specifies if the notification is visible                                                                                                           | `boolean`                           | `null`      |
 
 
 ## Dependencies

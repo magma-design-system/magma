@@ -34,6 +34,11 @@ export class MdsNotification {
    */
   @Prop({ reflect: true }) strategy?: StrategyType = 'fixed'
 
+  /**
+   * Specifies the maximum number that can be seen, assuming that the number is for example 9 and that this is exceeded with 15, the component shows +9
+   */
+  @Prop({ reflect: true }) max?: number
+
   private placement?: FloatingUIPlacement = 'right-start'
 
   private updatePosition = ():void => {
@@ -54,6 +59,16 @@ export class MdsNotification {
         top: `${y}px`,
       })
     })
+  }
+
+  private clean = (value: number):string => {
+    if (this.max) {
+      if (value > this.max) {
+        return `+${Number(this.max).toLocaleString()}`
+      }
+    }
+
+    return Number(value).toLocaleString()
   }
 
   componentDidLoad (): void {
@@ -91,7 +106,7 @@ export class MdsNotification {
     return (
       <Host>
         <mds-text typography="caption" class="dot">
-          { this.value ? Number(this.value).toLocaleString() : <span class="spacer"/> }
+          { this.value ? this.clean(this.value) : <span class="spacer"/> }
         </mds-text>
       </Host>
     )
