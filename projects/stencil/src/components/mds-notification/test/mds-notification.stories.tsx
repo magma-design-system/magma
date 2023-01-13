@@ -40,6 +40,7 @@ export const Default = Template.bind({})
 export const Value = Template.bind({})
 Value.args = {
   value: 7,
+  visible: true,
 }
 
 export const NoValue = Template.bind({})
@@ -50,4 +51,6 @@ NoValue.args = {
 export const Static = TemplateStatic.bind({})
 Static.args = {
   strategy: 'static',
+  value: 7,
+  visible: true,
 }
