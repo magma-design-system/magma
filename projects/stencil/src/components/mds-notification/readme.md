@@ -91,12 +91,12 @@ You can try it out on the component's [Storybook website][storybook]!
 
 ## Properties
 
-| Property              | Attribute  | Description                                                                              | Type                    | Default     |
-| --------------------- | ---------- | ---------------------------------------------------------------------------------------- | ----------------------- | ----------- |
-| `strategy`            | `strategy` | Specifies the position strategy of the notification                                      | `"absolute" \| "fixed"` | `'fixed'`   |
-| `target` _(required)_ | `target`   | Specifies the id of the caller element.                                                  | `string`                | `undefined` |
-| `value`               | `value`    | Specifies number of notifications to display, if it set to 0, the element will be hidden | `number`                | `null`      |
-| `visible`             | `visible`  | Specifies if the notification is visible                                                 | `boolean`               | `null`      |
+| Property   | Attribute  | Description                                                                              | Type                                | Default   |
+| ---------- | ---------- | ---------------------------------------------------------------------------------------- | ----------------------------------- | --------- |
+| `strategy` | `strategy` | Specifies the position strategy of the notification                                      | `"absolute" \| "fixed" \| "static"` | `'fixed'` |
+| `target`   | `target`   | Specifies the id of the caller element.                                                  | `string`                            | `null`    |
+| `value`    | `value`    | Specifies number of notifications to display, if it set to 0, the element will be hidden | `number`                            | `null`    |
+| `visible`  | `visible`  | Specifies if the notification is visible                                                 | `boolean`                           | `null`    |
 
 
 ## Dependencies

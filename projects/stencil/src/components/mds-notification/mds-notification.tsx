@@ -1,6 +1,7 @@
-import { Component, Element, Host, h, Prop } from '@stencil/core'
+import { Component, Element, Host, h, Prop, Watch } from '@stencil/core'
 import { autoUpdate, computePosition, offset, shift } from '@floating-ui/dom'
 import { FloatingUIPlacement, FloatingUIStrategy } from '@type/floating-ui'
+import { StrategyType } from './meta/types'
 
 @Component({
   tag: 'mds-notification',
@@ -16,7 +17,7 @@ export class MdsNotification {
   /**
    * Specifies the id of the caller element.
    */
-  @Prop() readonly target!: string
+  @Prop() readonly target?: string = null
 
   /**
    * Specifies number of notifications to display, if it set to 0, the element will be hidden
@@ -31,12 +32,13 @@ export class MdsNotification {
   /**
    * Specifies the position strategy of the notification
    */
-  @Prop({ reflect: true }) strategy?: FloatingUIStrategy = 'fixed'
+  @Prop({ reflect: true }) strategy?: StrategyType = 'fixed'
 
   private placement?: FloatingUIPlacement = 'right-start'
 
   private updatePosition = ():void => {
     const middleware = []
+    const strategySelected: FloatingUIStrategy = this.strategy === 'static' ? 'absolute' : 'fixed'
 
     middleware.push(offset(0))
     middleware.push(shift({ padding: 0 }))
@@ -44,7 +46,7 @@ export class MdsNotification {
     computePosition(this.caller, this.host, {
       middleware,
       placement: this.placement,
-      strategy: this.strategy,
+      strategy: strategySelected,
     }).then(({ x, y }) => {
 
       Object.assign(this.host.style, {
@@ -59,6 +61,14 @@ export class MdsNotification {
   }
 
   componentDidRender (): void {
+    if (this.strategy === 'static') {
+      return
+    }
+
+    if (this.target === null) {
+      return
+    }
+
     if (!this.cleanupAutoUpdate) {
       setTimeout(() => {
         this.cleanupAutoUpdate = autoUpdate(this.caller, this.host, this.updatePosition)
@@ -68,6 +78,13 @@ export class MdsNotification {
 
   disconnectedCallback (): void {
     this.cleanupAutoUpdate = null
+  }
+
+  @Watch('strategy')
+  strategyHandler (newValue: string): void {
+    if (newValue === 'static') {
+      this.cleanupAutoUpdate = null
+    }
   }
 
   render () {
