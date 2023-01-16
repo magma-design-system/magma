@@ -29,6 +29,12 @@
       "tags": ["type:lib"],
       "implicitDependencies": ["design-tokens", "icons", "styles"]
     },
+    "lit": {
+      "root": "projects/lit",
+      "type": "library",
+      "tags": ["type:lib"],
+      "implicitDependencies": ["design-tokens", "icons", "styles"]
+    },
     "styles": {
       "root": "projects/styles",
       "type": "library",
