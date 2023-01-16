@@ -83,6 +83,8 @@
   "add-chart": "material/addchart",
   "add-document-settings": "maggioli/add-document-settings",
   "additional-contents": "maggioli/additional-contents",
+  "address-book-off": "maggioli/address-book-off",
+  "address-book-on": "maggioli/address-book-on",
   "adv-denied": "maggioli/adv-denied",
   "adv": "material/campaign",
   "alarm": "material/alarm",
