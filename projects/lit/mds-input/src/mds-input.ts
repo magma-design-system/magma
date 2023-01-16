@@ -256,6 +256,7 @@ export class MdsInput extends LitElement {
       input = html`
         <input
           class=${clsx('input', this.icon && 'has-icon')}
+          list=${this.datalist ? 'datalist' : ''}
           .max=${this.max}
           .maxlength=${this.maxlength}
           .min=${this.min}
