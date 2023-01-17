@@ -31,7 +31,15 @@ const TemplateStatic = args =>
   <div>
     <mds-button class="fixed bottom-20 right-20" id="my-button" icon="mdi/email">
       Incoming messages
-      <mds-notification slot="notification" {...args}/>
+      <mds-notification style={{ '--mds-notification-ring-size': '0' }} slot="notification" {...args}/>
+    </mds-button>
+  </div>
+
+const TemplateStaticPositioning = args =>
+  <div>
+    <mds-button class="fixed bottom-20 right-20" id="my-button" icon="mdi/email">
+      Incoming messages
+      <mds-notification class="absolute -top-3 -right-2 translate-1/2" slot="notification" {...args}/>
     </mds-button>
   </div>
 
@@ -50,8 +58,15 @@ NoValue.args = {
 
 export const Static = TemplateStatic.bind({})
 Static.args = {
-  strategy: 'static',
+  strategy: 'disabled',
   value: 7,
+  visible: true,
+}
+
+export const StaticPositioning = TemplateStaticPositioning.bind({})
+StaticPositioning.args = {
+  strategy: 'disabled',
+  value: 31,
   visible: true,
 }
 

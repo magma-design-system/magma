@@ -43,7 +43,7 @@ export class MdsNotification {
 
   private updatePosition = ():void => {
     const middleware = []
-    const strategySelected: FloatingUIStrategy = this.strategy === 'static' ? 'absolute' : 'fixed'
+    const strategySelected: FloatingUIStrategy = this.strategy === 'disabled' ? 'absolute' : 'fixed'
 
     middleware.push(offset(0))
     middleware.push(shift({ padding: 0 }))
@@ -76,7 +76,7 @@ export class MdsNotification {
   }
 
   componentDidRender (): void {
-    if (this.strategy === 'static') {
+    if (this.strategy === 'disabled') {
       return
     }
 
