@@ -81,7 +81,7 @@ export default {
       control: { type: 'select' },
       description: 'Sets the variant of the input field',
     },
-    'variant-tip': {
+    tip: {
       type: { name: 'string' },
       description: 'Sets the message of the variant of the input field',
     },
@@ -170,7 +170,7 @@ variant.args = {
   placeholder: 'Placeholder text...',
   variant: 'error',
   value: 'Input field text',
-  'variant-tip': 'errore',
+  tip: 'errore',
   message: 'This is a field with a message',
 }
 

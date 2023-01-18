@@ -1,25 +1,21 @@
 @tailwind utilities;
 
-:host ( [variant=info] ) .message-window {
-  @apply
-    bg-status-info-09
-    text-status-info-02;
+:host[variant=info] {
+  --mds-input-field-message-color: theme('colors.status-info-02');
+  --mds-input-field-message-background: theme('colors.status-info-09');
 }
 
-:host ( [variant=success] ) .message-window {
-  @apply
-    bg-status-success-09
-    text-status-success-02;
+:host ( [variant=success] ) {
+  --mds-input-field-message-color: theme('colors.status-success-02');
+  --mds-input-field-message-background: theme('colors.status-success-09');
 }
 
-:host ( [variant=warning] ) .message-window {
-  @apply
-    bg-status-warning-09
-    text-status-warning-02;
+:host ( [variant=warning] ) {
+  --mds-input-field-message-color: theme('colors.status-warning-02');
+  --mds-input-field-message-background: theme('colors.status-warning-09');
 }
 
-:host ( [variant=error] ) .message-window {
-  @apply
-    bg-status-error-09
-    text-status-error-02;
+:host ( [variant=error] ) {
+  --mds-input-field-message-color: theme('colors.status-error-02');
+  --mds-input-field-message-background: theme('colors.status-error-09');
 }
