@@ -21,7 +21,7 @@ import { ThemeStatusVariantType } from '../../types/variant'
 @Component({
   tag: 'mds-input',
   styleUrl: 'mds-input.css',
-  scoped: true,
+  shadow: true,
 })
 
 export class MdsInput {
@@ -114,9 +114,9 @@ export class MdsInput {
   @Prop({ reflect: true }) readonly variant?: ThemeStatusVariantType
 
   /**
-   * Sets the word(s) of the variant of the input field
+   * Sets the word(s) of the tip of the input field
    */
-  @Prop() readonly variantTip?: string
+  @Prop() readonly tip?: string
 
   /**
    * Specifies the interval between legal numbers in an input field
@@ -126,7 +126,7 @@ export class MdsInput {
   /**
    * Specifies the type of input element
    */
-  @Prop() readonly type: InputTextType = 'text'
+  @Prop() readonly type?: InputTextType = 'text'
 
   /**
    * Specifies the value of the input element
@@ -276,10 +276,10 @@ export class MdsInput {
             value={value}
           />
         }
-        { this.required && <mds-text typography="option" class="tip top-1 required">Obbligatorio</mds-text> }
         { this.disabled && <mds-text typography="option" class="tip top-1 disabled">Disabilitato</mds-text> }
-        { this.readonly && <mds-text typography="option" class="tip top-1 read-only">Sola lettura</mds-text> }
-        { this.variant && this.variantTip && <mds-text typography="option" class="tip-variant bottom-1">{ this.variantTip }</mds-text> }
+        { this.readonly && !this.disabled && <mds-text typography="option" class="tip top-1 read-only">Sola lettura</mds-text> }
+        { this.required && !this.disabled && !this.readonly && <mds-text typography="option" class="tip top-1 required">Obbligatorio</mds-text> }
+        { this.tip && <mds-text typography="option" class={clsx('tip bottom-1', this.variant && 'tip-variant')}>{ this.tip }</mds-text> }
         { this.datalist &&
           <datalist id="datalist" class="datalist">
             { this.datalist.forEach(element => {

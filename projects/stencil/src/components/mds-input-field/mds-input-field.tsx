@@ -262,14 +262,14 @@ export class MdsInputField {
   /**
    * Display the variant of a message at the bottom of the input text field
    */
-  @Prop() variantTip?: string
+  @Prop() tip?: string
 
   render () {
     const value = this.getValue()
     return (
       <Host>
         { this.label && <mds-text class="label" typography="label">{ this.label }</mds-text> }
-        <div class={clsx('message-window', this.variant && 'message-window--opened')}>
+        <div class={clsx('message-window', this.variant && this.message && 'message-window--opened')}>
           <mds-input
             autocomplete={this.autocomplete}
             autofocus={this.autofocus}
@@ -291,7 +291,7 @@ export class MdsInputField {
             ref={ input => (this.nativeInput = input)}
             required={this.required}
             variant={this.variant}
-            variantTip={this.variantTip}
+            tip={this.tip}
             step={this.step}
             tabIndex={this.tabindex}
             type={this.type}
