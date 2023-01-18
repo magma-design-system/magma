@@ -5,10 +5,32 @@
     <link rel="icon" type="image/svg+xml" href="/vite.svg" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Vite + Lit + TS</title>
-    <link rel="stylesheet" href="./src/index.css" />
     <script type="module" src="/src/mds-input.ts"></script>
   </head>
   <body>
-    <mds-input placeholder="scrivi qualcosa"></mds-input>
+    <mds-input class="first" type="text" placeholder="Type something"></mds-input>
+    <!-- <mds-input class="first" type="text" datalist='["ciao", "mamma"]' placeholder="Seleziona dalla lista"></mds-input> -->
+
+    <!-- <hr>
+
+    <mds-input placeholder="scrivi qualcosa" type="textarea"></mds-input>
+
+    <hr>
+
+    <mds-input placeholder="scrivi qualcosa" tabindex="1"></mds-input> -->
+
   </body>
+  <script>
+    const el = document.querySelector('.first')
+
+    // el.setAttribute('datalist', '["ciao", "mamma"]')
+
+    el.addEventListener('input-change-event', (data) => {
+      console.log('input-change-event on first class input', data)
+    })
+
+    el.addEventListener('change-event', (data) => {
+      console.log('change-event on first class input', data)
+    })
+  </script>
 </html>

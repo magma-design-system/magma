@@ -1,5 +1,5 @@
 import { LitElement, css, html } from 'lit'
-import { customElement, property, query } from 'lit/decorators.js'
+import { customElement, property, query, state } from 'lit/decorators.js'
 import clsx from 'clsx'
 
 type InputValueType =
@@ -90,7 +90,7 @@ export class MdsInput extends LitElement {
 
   private internals = this.attachInternals()
 
-  private tabindex?: number
+  private _value?: InputValueType
 
   static styles = css``
 
@@ -108,7 +108,11 @@ export class MdsInput extends LitElement {
    * A list of search terms to be searched from the input field,
    * it should be used with type="search" input.
    */
-  @property() readonly datalist?: string[]
+  @property({ type: Array, hasChanged: (value, oldValue) => {
+    console.log('OldValue', oldValue)
+    console.log('Actual value', value)
+    return true
+  } }) readonly datalist?: string | string[]
 
   /**
    * If true, the element is displayed as disabled
@@ -131,7 +135,7 @@ export class MdsInput extends LitElement {
    * Specifies the maximum number of characters allowed in an element
    * use it with input type="number"
    */
-  @property() readonly maxlength?: number
+  @property() readonly maxlength?: number = undefined
 
   /**
    * Specifies the minimum value
@@ -191,91 +195,118 @@ export class MdsInput extends LitElement {
    */
   @property() readonly type: InputTextType = 'text'
 
+  // Using custom setter / getter because I need to fire the change-event when the property actually change
   /**
    * Specifies the value of the input element
    */
-  @property({ reflect: true }) value?: InputValueType
+  @property({ reflect: true })
+  get value () { return this._value }
+
+  set value (val: InputValueType) {
+    const oldValue = this._value
+    this._value = val
+    this.dispatchEvent(new CustomEvent('change-event', { bubbles: true, detail: { message: this._value } }))
+    this.requestUpdate('value', oldValue)
+  }
+
+  @state() private tabindex?: number
 
   @query('.input') private nativeInput?: HTMLInputElement | HTMLTextAreaElement
+
+  connectedCallback (): void {
+    super.connectedCallback()
+    const host = this.shadowRoot?.host as HTMLElement
+    const tabindex = host.getAttribute('tabindex')
+    if (host.hasAttribute('tabindex') && tabindex !== null) {
+      this.tabindex = parseInt(tabindex)
+      host.removeAttribute('tabindex')
+    }
+  }
 
   private getValue (): string {
     return typeof this.value === 'number' ? this.value.toString() : (this.value || '').toString()
   }
 
   private onInput = (ev: InputEvent) => {
-    // const input = ev.target as HTMLInputElement | HTMLTextAreaElement | false
-    // if (input) {
-    //   this.value = input.value || ''
-    // }
-    // this.keyDownEvent.emit(ev as KeyboardEvent)
-    console.log('Fubbe ad esserci un input', (ev.target as HTMLInputElement | HTMLTextAreaElement).value)
+    const input = ev.target as HTMLInputElement | HTMLTextAreaElement | false
+    if (input) {
+      this.value = input.value || ''
+    }
+    const event = new CustomEvent('input-change-event', { bubbles: true, detail: { message: ev } })
+    this.dispatchEvent(event)
   }
 
   private onBlur = () => {
     // this.hasFocus = false
-    // this.blurEvent.emit()
-    console.log('Fubbe ad esserci un blur')
+    this.dispatchEvent(new CustomEvent('blur-event', { bubbles: true }))
   }
 
   private onFocus = (ev: Event) => {
-    // const input = ev.target as HTMLInputElement | HTMLTextAreaElement
+    const input = ev.target as HTMLInputElement | HTMLTextAreaElement
     // this.hasFocus = true
-    // this.focusEvent.emit()
-    // if (this.readonly) {
-    //   // setTimeout to avoid Safari 14.1.2
-    //   // to unselect text when mouse is clicked slowly
-    //   setTimeout(() => {
-    //     input.select()
-    //   }, 10)
-    // }
-    console.log('Fubbe ad esserci un focus', ev, this.nativeInput)
+    this.dispatchEvent(new CustomEvent('focus-event', { bubbles: true }))
+    if (this.readonly) {
+      // setTimeout to avoid Safari 14.1.2
+      // to unselect text when mouse is clicked slowly
+      setTimeout(() => {
+        input.select()
+      }, 10)
+    }
   }
 
+  /* TODO
+    - maxLength is always set to 0 even when null
+    - .list is not accepted in strict mode
+    - datalist cannot be tested as doesn't parse array input (???)
+  */
   private buildInput (value: string) {
     let input
     if (this.type === 'textarea') {
       input = html`
         <textarea
-          class=${clsx('input', this.icon && 'has-icon')}
-          .value=${value}
-          .maxlength=${this.maxlength}
-          .minlength=${this.minlength}
-          .name=${this.name}
-          .placeholder=${this.placeholder || ''}
-          .tabindex=${this.tabindex}
-          ?autofocus=${this.autofocus}
-          ?disabled=${this.disabled}
-          ?readonly=${this.readonly}
-          ?required=${this.required}
-          @blur=${this.onBlur}
-          @focus=${this.onFocus}
-          @input=${this.onInput}>
+          class="${clsx('input', this.icon && 'has-icon')}"
+          .value="${value}"
+          .maxLength="${this.maxlength}"
+          .minLength="${this.minlength}"
+          .name="${this.name}"
+          .placeholder="${this.placeholder || ''}"
+          .tabIndex="${this.tabindex}"
+          ?autoFocus="${this.autofocus}"
+          ?disabled="${this.disabled}"
+          ?readOnly="${this.readonly}"
+          ?required="${this.required}"
+          @blur="${this.onBlur}"
+          @focus="${this.onFocus}"
+          @input="${this.onInput}">
         </textarea>
       `
     } else {
+      /* TODO reintegrare:
+        - .list="${this.datalist ? 'datalist' : ''}"
+        - .maxLength="${this.maxlength}"
+      */
       input = html`
         <input
-          class=${clsx('input', this.icon && 'has-icon')}
-          list=${this.datalist ? 'datalist' : ''}
-          .max=${this.max}
-          .maxlength=${this.maxlength}
-          .min=${this.min}
-          .minlength=${this.minlength}
-          .name=${this.name}
-          .type=${this.type}
-          .pattern=${this.pattern}
+          class="${clsx('input', this.icon && 'has-icon')}"
+          list="${this.datalist ? 'datalist' : ''}"
+          .autoComplete="${this.autocomplete}"
+          .max="${this.max}"
+          .min="${this.min}"
+          .minLength="${this.minlength}"
+          .name="${this.name}"
+          .type="${this.type}"
+          .pattern="${this.pattern}"
           .placeholder=${this.placeholder || ''}
-          .step=${this.step}
-          .tabindex=${this.tabindex}
-          .value=${value}
-          ?autocomplete=${this.autocomplete}
-          ?autofocus=${this.autofocus}
-          ?disabled=${this.disabled}
-          ?readonly=${this.readonly}
-          ?required=${this.required}
-          @blur=${this.onBlur}
-          @focus=${this.onFocus}
-          @input=${this.onInput}
+          .step="${this.step}"
+          .tabIndex="${this.tabindex}"
+          .value="${value}"
+          ?autoFocus="${this.autofocus}"
+          ?disabled="${this.disabled}"
+          ?readOnly="${this.readonly}"
+          ?required="${this.required}"
+          @blur="${this.onBlur}"
+          @focus="${this.onFocus}"
+          @input="${this.onInput}"
         />
       `
     }
@@ -283,9 +314,23 @@ export class MdsInput extends LitElement {
     return input
   }
 
+  private buildDatalist() {
+    if (!this.datalist || (this.datalist.length && this.datalist.length === 0)) return html``
+
+    const datalist = Array.isArray(this.datalist) ? this.datalist : JSON.parse(this.datalist)
+
+    return html`
+      <datalist id="datalist" class="datalist">
+        ${datalist.map((element: string) => html`<option value="${element}" />`)}
+      </datalist>
+    `
+  }
+
   render () {
     const value = this.getValue()
     const input = this.buildInput(value)
+    const datalist = this.buildDatalist()
+
     return html`
       ${input}
       ${this.required ? html`
@@ -300,15 +345,9 @@ export class MdsInput extends LitElement {
       ${this.variant && this.variantTip ? html`
         <mds-text typography="option" class="tip-variant bottom-1">${this.variantTip}</mds-text>
       ` : ''}
-      ${this.datalist ? html`
-        <datalist id="datalist" class="datalist">
-          ${this.datalist.map(element => {
-            html`<option value=${element} />`
-          })}
-        </datalist>
-      ` : ''}
+      ${datalist}
       ${this.icon ? html`
-        <mds-icon class=${clsx('icon', this.variant)} name=${this.icon}/>
+        <mds-icon class="${clsx('icon', this.variant)}" name="${this.icon}"/>
       ` : ''}
     `
   }
