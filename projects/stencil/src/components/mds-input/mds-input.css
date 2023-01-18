@@ -5,18 +5,22 @@
 @tailwind utilities;
 
 /**
-* @prop --background: Sets the background-color of the component
-* @prop --shadow: Sets the box-shadow of the component's input
+* @prop --mds-input-background: Sets the background-color of the component
+* @prop --mds-input-icon-color: Sets the icon color of the component
+* @prop --mds-input-ring: Sets the box-shadow of the component's input
+* @prop --mds-input-shadow: Sets the box-shadow of the component's input
+* @prop --mds-input-tip-background: Sets the background color of the tip message at the bottom right of the component
+* @prop --mds-input-variant-color: Sets the variant colors of the component
 */
 
 :host {
 
-  --background: theme('colors.tone-neutral');
-  --icon-color: var(--variant-color);
-  --tip-color: 84, 84, 84;
-  --ring: 0 0 0 1px rgba(var(--variant-color), 0.1);
-  --shadow: 0 1px 3px 0 rgba(var(--variant-color), 0.1), 0 1px 2px 0 rgba(var(--variant-color), 0.06);
-  --variant-color: 0, 0, 0;
+  --mds-input-background: theme('colors.tone-neutral');
+  --mds-input-icon-color: var(--mds-input-variant-color);
+  --mds-input-tip-background: 84, 84, 84;
+  --mds-input-ring: 0 0 0 1px rgba(var(--mds-input-variant-color), 0.1);
+  --mds-input-shadow: 0 1px 3px 0 rgba(var(--mds-input-variant-color), 0.1), 0 1px 2px 0 rgba(var(--mds-input-variant-color), 0.06);
+  --mds-input-variant-color: 0, 0, 0;
 
   @apply
     flex
@@ -43,8 +47,8 @@
     min-h-12
     w-full;
 
-  background-color: var(--background);
-  box-shadow: var(--ring), var(--shadow);
+  background-color: var(--mds-input-background);
+  box-shadow: var(--mds-input-ring), var(--mds-input-shadow);
 }
 
 textarea.input:active {
@@ -65,8 +69,8 @@ textarea.input {
     duration-300
     ease-out-expo;
 
-  --ring: 0 0 0 3px rgba(var(--variant-color), 1);
-  --shadow: 0 4px 6px -1px rgba(var(--variant-color), 0.1), 0 2px 4px -1px rgba(var(--variant-color), 0.06);
+  --mds-input-ring: 0 0 0 3px rgba(var(--mds-input-variant-color), 1);
+  --mds-input-shadow: 0 4px 6px -1px rgba(var(--mds-input-variant-color), 0.1), 0 2px 4px -1px rgba(var(--mds-input-variant-color), 0.06);
 }
 
 .input:disabled {
@@ -99,11 +103,11 @@ textarea.input {
     transition-cosmetic;
 
   line-height: theme('spacing.3');
-  background-color: rgb(var(--tip-color));
+  background-color: rgb(var(--mds-input-tip-background));
 }
 
 .tip-variant {
-  --tip-color: var(--icon-color);
+  --mds-input-tip-background: var(--mds-input-icon-color);
 }
 
 .read-only {
@@ -137,7 +141,7 @@ textarea.input {
     left-3
     top-3;
 
-  fill: rgb(var(--icon-color));
+  fill: rgb(var(--mds-input-icon-color));
 }
 
 @import './css/mds-input-variant.css';

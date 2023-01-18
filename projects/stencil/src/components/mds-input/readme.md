@@ -70,10 +70,14 @@ Type: `Promise<void>`
 
 ## CSS Custom Properties
 
-| Name           | Description                                  |
-| -------------- | -------------------------------------------- |
-| `--background` | Sets the background-color of the component   |
-| `--shadow`     | Sets the box-shadow of the component's input |
+| Name                         | Description                                                                       |
+| ---------------------------- | --------------------------------------------------------------------------------- |
+| `--mds-input-background`     | Sets the background-color of the component                                        |
+| `--mds-input-icon-color`     | Sets the icon color of the component                                              |
+| `--mds-input-ring`           | Sets the box-shadow of the component's input                                      |
+| `--mds-input-shadow`         | Sets the box-shadow of the component's input                                      |
+| `--mds-input-tip-background` | Sets the background color of the tip message at the bottom right of the component |
+| `--mds-input-variant-color`  | Sets the variant colors of the component                                          |
 
 
 ## Dependencies
