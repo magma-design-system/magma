@@ -6,16 +6,17 @@
 
 /**
 * @prop --background: Sets the background-color of the component
-* @prop --shadow: Sets the box-shadow of the component‘s input
+* @prop --shadow: Sets the box-shadow of the component's input
 */
 
 :host {
 
-  --icon-color: theme('colors.tone-neutral');
   --background: theme('colors.tone-neutral');
-  --variant-color: 0, 0, 0;
+  --icon-color: var(--variant-color);
+  --tip-color: 84, 84, 84;
   --ring: 0 0 0 1px rgba(var(--variant-color), 0.1);
   --shadow: 0 1px 3px 0 rgba(var(--variant-color), 0.1), 0 1px 2px 0 rgba(var(--variant-color), 0.06);
+  --variant-color: 0, 0, 0;
 
   @apply
     flex
@@ -64,11 +65,8 @@ textarea.input {
     duration-300
     ease-out-expo;
 
-  --variant-color: 10, 80, 212;
   --ring: 0 0 0 3px rgba(var(--variant-color), 1);
   --shadow: 0 4px 6px -1px rgba(var(--variant-color), 0.1), 0 2px 4px -1px rgba(var(--variant-color), 0.06);
-
-  box-shadow: var(--ring), var(--shadow);
 }
 
 .input:disabled {
@@ -85,8 +83,7 @@ textarea.input {
   @apply pl-11;
 }
 
-.tip,
-.tip-variant {
+.tip {
   @apply
     absolute
     duration-300
@@ -102,6 +99,11 @@ textarea.input {
     transition-cosmetic;
 
   line-height: theme('spacing.3');
+  background-color: rgb(var(--tip-color));
+}
+
+.tip-variant {
+  --tip-color: var(--icon-color);
 }
 
 .read-only {
@@ -135,7 +137,7 @@ textarea.input {
     left-3
     top-3;
 
-  fill: theme('colors.brand-maggioli-04');
+  fill: rgb(var(--icon-color));
 }
 
 @import './css/mds-input-variant.css';
