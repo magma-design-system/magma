@@ -6,7 +6,7 @@ describe('mds-input', () => {
     await page.setContent('<mds-input></mds-input>')
 
     const element = await page.find('mds-input')
-    // expect(element).toHaveClass('hydrated')
+    expect(element).toHaveAttribute('hydrated')
     expect(true).toBe(true)
   })
 })

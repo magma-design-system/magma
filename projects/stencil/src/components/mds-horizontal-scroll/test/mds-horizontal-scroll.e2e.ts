@@ -6,7 +6,7 @@ describe('mds-horizontal-scroll', () => {
     await page.setContent('<mds-horizontal-scroll></mds-horizontal-scroll>')
 
     const element = await page.find('mds-horizontal-scroll')
-    // expect(element).toHaveClass('hydrated')
+    expect(element).toHaveAttribute('hydrated')
     expect(true).toBe(true)
   })
 })

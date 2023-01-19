@@ -17,6 +17,9 @@ const srcDir = './src'
 
 export const config: Config = {
   namespace: packageName,
+  hydratedFlag: {
+    selector: 'attribute',
+  },
   taskQueue: 'async',
   srcDir,
   buildEs5: true,
