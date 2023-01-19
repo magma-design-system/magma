@@ -142,7 +142,7 @@ export class MdsInput extends LitElement {
    * use it with input type="number" or type="date"
    * Example: min="-3", min="1988-04-15"
    */
-  @property() readonly min?: string
+  @property() readonly min?: number
 
   /**
    * Specifies the minimum number of characters allowed in an element
@@ -217,7 +217,7 @@ export class MdsInput extends LitElement {
     super.connectedCallback()
     const host = this.shadowRoot?.host as HTMLElement
     const tabindex = host.getAttribute('tabindex')
-    if (host.hasAttribute('tabindex') && tabindex !== null) {
+    if (host.hasAttribute('tabindex') && tabindex !== null && tabindex !== undefined) {
       this.tabindex = parseInt(tabindex)
       host.removeAttribute('tabindex')
     }
@@ -282,7 +282,7 @@ export class MdsInput extends LitElement {
       `
     } else {
       /* TODO reintegrare:
-        - .list="${this.datalist ? 'datalist' : ''}"
+        - .list="${this.datalist ? 'datalist' : ''}", al momento è sempre impostato list
         - .maxLength="${this.maxlength}"
       */
       input = html`
@@ -314,7 +314,7 @@ export class MdsInput extends LitElement {
     return input
   }
 
-  private buildDatalist() {
+  private buildDatalist () {
     if (!this.datalist || (this.datalist.length && this.datalist.length === 0)) return html``
 
     const datalist = Array.isArray(this.datalist) ? this.datalist : JSON.parse(this.datalist)
