@@ -20,7 +20,7 @@ describe('mds-text', () => {
 
   it('renders default', async () => {
     const element = await page.find('mds-text')
-    expect(element).toHaveClass('hydrated')
+    expect(element).toHaveAttribute('hydrated')
     expect(element).toEqualAttribute('typography', 'detail')
     expect(element.textContent).toEqual(textContent)
   })

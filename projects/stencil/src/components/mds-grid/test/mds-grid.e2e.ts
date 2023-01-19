@@ -6,7 +6,7 @@ describe('mds-grid', () => {
     await page.setContent('<mds-grid></mds-grid>')
 
     const element = await page.find('mds-grid')
-    // expect(element).toHaveClass('hydrated')
+    expect(element).toHaveAttribute('hydrated')
     expect(true).toBe(true)
   })
 })

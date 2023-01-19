@@ -6,7 +6,7 @@ describe('mds-accordion', () => {
     await page.setContent('<mds-accordion></mds-accordion>')
 
     const element = await page.find('mds-accordion')
-    // // expect(element).toHaveClass('hydrated')
+    expect(element).toHaveAttribute('hydrated')
     expect(true).toBe(true)
   })
 })

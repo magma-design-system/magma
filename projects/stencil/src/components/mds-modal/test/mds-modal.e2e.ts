@@ -9,9 +9,8 @@ describe('mds-modal', () => {
 
     // La riga seguente non è valida perché `animate-right-intro` viene impostato in `componentDidRender`
     // e quindi appena instanziato non è presente come classe
-    // expect(element).toHaveClasses(['animate-right', 'hydrated', 'animate-right-intro'])
-    expect(element).toHaveClasses(['animate-right', 'hydrated'])
-
+    expect(element).toHaveClass('animate-right')
+    expect(element).toHaveAttribute('hydrated')
     expect(element).toHaveAttribute('position')
 
     expect(element.getAttribute('position')).toBe('right')

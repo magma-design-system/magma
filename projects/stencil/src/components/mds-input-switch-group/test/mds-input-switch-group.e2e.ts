@@ -6,7 +6,7 @@ describe('mds-input-switch-group', () => {
     await page.setContent('<mds-input-switch-group></mds-input-switch-group>')
 
     const element = await page.find('mds-input-switch-group')
-    // expect(element).toHaveClass('hydrated')
+    expect(element).toHaveAttribute('hydrated')
     expect(true).toBe(true)
   })
 })
