@@ -14,16 +14,16 @@
 
 ## CSS Custom Properties
 
-| Name                        | Description                                                       |
-| --------------------------- | ----------------------------------------------------------------- |
-| `--arrow-back-color`        | Sets the color of arrow back icon                                 |
-| `--arrow-back-color-hover`  | Sets the color of arrow back icon when the mouse is over it       |
-| `--arrow-depth-color`       | Sets the color of arrow depth icon                                |
-| `--button-background`       | Sets the background-color of the button item                      |
-| `--button-background-hover` | Sets the background-color of the button when the mouse is over it |
-| `--button-color`            | Sets the text color of the button                                 |
-| `--button-color-hover`      | Sets the text color of the button when the mouse is over it       |
-| `--current-button-color`    | Sets the text color of the current depth button                   |
+| Name                                       | Description                                                       |
+| ------------------------------------------ | ----------------------------------------------------------------- |
+| `--arrow-back-color`                       | Sets the color of arrow back icon                                 |
+| `--arrow-back-color-hover`                 | Sets the color of arrow back icon when the mouse is over it       |
+| `--arrow-depth-color`                      | Sets the color of arrow depth icon                                |
+| `--mds-breadcrumb-button-background`       | Sets the background-color of the button item                      |
+| `--mds-breadcrumb-button-background-hover` | Sets the background-color of the button when the mouse is over it |
+| `--mds-breadcrumb-button-color`            | Sets the text color of the button                                 |
+| `--mds-breadcrumb-button-color-hover`      | Sets the text color of the button when the mouse is over it       |
+| `--mds-breadcrumb-current-button-color`    | Sets the text color of the current depth button                   |
 
 
 ----------------------------------------------
