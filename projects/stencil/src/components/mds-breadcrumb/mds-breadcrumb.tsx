@@ -1,4 +1,4 @@
-import { Component, Element, Listen, Host, h, Prop } from '@stencil/core'
+import { Component, Element, Event, EventEmitter, Listen, Host, h, Prop } from '@stencil/core'
 import miBaselineArrowBack from '@icon/mi/baseline/arrow-back.svg'
 import { BreadcrumbClickedEvent } from './meta/interface'
 
@@ -16,6 +16,11 @@ export class MdsBreadcrumb {
    * Choose to display or not the back arrow button
    */
   @Prop() readonly back?: boolean = true
+
+  /**
+   * Emits when the breadcrumb is changed
+   */
+  @Event() changedEvent: EventEmitter<BreadcrumbClickedEvent>
 
   private queryItems = ():NodeListOf<HTMLMdsBreadcrumbItemElement> =>
     this.element.querySelectorAll<HTMLMdsBreadcrumbItemElement>('mds-breadcrumb-item')
@@ -42,6 +47,7 @@ export class MdsBreadcrumb {
       }
     })
     this.updateBackButton(activeId)
+    this.onChanged(activeId)
   }
 
   private togglePrevious = (): void => {
@@ -57,6 +63,7 @@ export class MdsBreadcrumb {
       }
     })
     this.updateBackButton(activeId)
+    this.onChanged(activeId)
   }
 
   private updateBackButton = (id: number): void => {
@@ -65,6 +72,10 @@ export class MdsBreadcrumb {
       return
     }
     this.backButton.classList.remove('disabled')
+  }
+
+  private onChanged = (id: number): void => {
+    this.changedEvent.emit({ id: id.toString() })
   }
 
   render () {

@@ -12,6 +12,13 @@
 | `back`   | `back`    | Choose to display or not the back arrow button | `boolean` | `true`  |
 
 
+## Events
+
+| Event          | Description                          | Type                                  |
+| -------------- | ------------------------------------ | ------------------------------------- |
+| `changedEvent` | Emits when the breadcrumb is changed | `CustomEvent<BreadcrumbClickedEvent>` |
+
+
 ## CSS Custom Properties
 
 | Name                                       | Description                                                       |
