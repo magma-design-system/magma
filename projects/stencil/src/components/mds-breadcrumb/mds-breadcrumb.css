@@ -2,15 +2,17 @@
 @import '../../tailwind/components.css';
 
 /**
-  * @prop --arrow-back-color-hover: Sets the color of arrow back icon when the mouse is over it
-  * @prop --arrow-back-color: Sets the color of arrow back icon
-  * @prop --arrow-depth-color: Sets the color of arrow depth icon
-  * @prop --mds-breadcrumb-button-background-hover: Sets the background-color of the button when the mouse is over it
-  * @prop --mds-breadcrumb-button-background: Sets the background-color of the button item
-  * @prop --mds-breadcrumb-button-color-hover: Sets the text color of the button when the mouse is over it
-  * @prop --mds-breadcrumb-button-color: Sets the text color of the button
-  * @prop --mds-breadcrumb-current-button-color: Sets the text color of the current depth button
-  */
+* @prop --mds-breadcrumb-arrow-depth-color: Sets the color of the arrow icon that separates buttons
+* @prop --mds-breadcrumb-button-background-current: Sets the background color of the button when it's active
+* @prop --mds-breadcrumb-button-background-disabled: Sets the background color of the button when it's disabled, is used for arrow button
+* @prop --mds-breadcrumb-button-background-hover: Sets the background color of the button when the mouse is over it
+* @prop --mds-breadcrumb-button-background: Sets the background color of the button
+* @prop --mds-breadcrumb-button-color-current: Sets the text color of the button when it's active
+* @prop --mds-breadcrumb-button-color-disabled: Sets the text color of the button when it's disabled, is used for arrow button
+* @prop --mds-breadcrumb-button-color-hover: Sets the text color of the button when the mouse is over it
+* @prop --mds-breadcrumb-button-color: Sets the text color of the button
+* @prop --mds-breadcrumb-current-button-color: Sets the text color of the current depth button
+*/
 
 :host {
 
