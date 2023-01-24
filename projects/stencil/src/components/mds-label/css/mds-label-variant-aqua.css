@@ -3,27 +3,27 @@
 :host ( [variant=aqua] ),
 :host ( [variant=aqua][tone=strong] ) {
 
-  --background: theme('colors.label-aqua-04');
-  --color: theme('colors.label-aqua-10');
-  --icon-color: theme('colors.label-aqua-10');
-  --selection-background: theme('colors.label-aqua-08');
-  --selection-color: theme('colors.label-aqua-02');
+  --mds-label-background: theme('colors.label-aqua-04');
+  --mds-label-color: theme('colors.label-aqua-10');
+  --mds-label-icon-color: theme('colors.label-aqua-10');
+  --mds-label-selection-background: theme('colors.label-aqua-08');
+  --mds-label-selection-color: theme('colors.label-aqua-02');
 }
 
 :host ( [variant=aqua][tone=weak] ) {
 
-  --background: theme('colors.label-aqua-08');
-  --color: theme('colors.label-aqua-02');
-  --icon-color: theme('colors.label-aqua-02');
-  --selection-background: theme('colors.label-aqua-06');
-  --selection-color: theme('colors.label-aqua-10');
+  --mds-label-background: theme('colors.label-aqua-08');
+  --mds-label-color: theme('colors.label-aqua-02');
+  --mds-label-icon-color: theme('colors.label-aqua-02');
+  --mds-label-selection-background: theme('colors.label-aqua-06');
+  --mds-label-selection-color: theme('colors.label-aqua-10');
 }
 
 :host ( [variant=aqua][tone=quiet] ) {
 
-  --background: theme('colors.label-aqua-09');
-  --color: theme('colors.label-aqua-04');
-  --icon-color: theme('colors.label-aqua-04');
-  --selection-background: theme('colors.label-aqua-05');
-  --selection-color: theme('colors.label-aqua-09');
+  --mds-label-background: theme('colors.label-aqua-09');
+  --mds-label-color: theme('colors.label-aqua-04');
+  --mds-label-icon-color: theme('colors.label-aqua-04');
+  --mds-label-selection-background: theme('colors.label-aqua-05');
+  --mds-label-selection-color: theme('colors.label-aqua-09');
 }

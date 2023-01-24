@@ -3,27 +3,27 @@
 :host ( [variant=dark] ),
 :host ( [variant=dark][tone=strong] ) {
 
-  --background: theme('colors.tone-neutral-02');
-  --color: theme('colors.tone-neutral-09');
-  --icon-color: theme('colors.tone-neutral-09');
-  --selection-background: theme('colors.tone-neutral-08');
-  --selection-color: theme('colors.tone-neutral-02');
+  --mds-label-background: theme('colors.tone-neutral-02');
+  --mds-label-color: theme('colors.tone-neutral-09');
+  --mds-label-icon-color: theme('colors.tone-neutral-09');
+  --mds-label-selection-background: theme('colors.tone-neutral-08');
+  --mds-label-selection-color: theme('colors.tone-neutral-02');
 }
 
 :host ( [variant=dark][tone=weak] ) {
 
-  --background: theme('colors.tone-neutral-08');
-  --color: theme('colors.tone-neutral-02');
-  --icon-color: theme('colors.tone-neutral-02');
-  --selection-background: theme('colors.tone-neutral-06');
-  --selection-color: theme('colors.tone-neutral-10');
+  --mds-label-background: theme('colors.tone-neutral-08');
+  --mds-label-color: theme('colors.tone-neutral-02');
+  --mds-label-icon-color: theme('colors.tone-neutral-02');
+  --mds-label-selection-background: theme('colors.tone-neutral-06');
+  --mds-label-selection-color: theme('colors.tone-neutral-10');
 }
 
 :host ( [variant=dark][tone=quiet] ) {
 
-  --background: theme('colors.tone-neutral-09');
-  --color: theme('colors.tone-neutral-04');
-  --icon-color: theme('colors.tone-neutral-04');
-  --selection-background: theme('colors.tone-neutral-05');
-  --selection-color: theme('colors.tone-neutral-09');
+  --mds-label-background: theme('colors.tone-neutral-09');
+  --mds-label-color: theme('colors.tone-neutral-04');
+  --mds-label-icon-color: theme('colors.tone-neutral-04');
+  --mds-label-selection-background: theme('colors.tone-neutral-05');
+  --mds-label-selection-color: theme('colors.tone-neutral-09');
 }

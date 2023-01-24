@@ -3,19 +3,22 @@
 @tailwind utilities;
 
 /*
-* @prop --selection-background: Sets the background-color of the text when the text is selected
-* @prop --selection-color: Sets the color of the text when the text is selected
+* @prop --mds-text-selection-background: Sets the background-color of the text when the text is selected
+* @prop --mds-text-selection-color: Sets the color of the text when the text is selected
 */
 
 :host {
+  --mds-text-selection-background: theme('colors.label-sky-09');
+  --mds-text-selection-color: theme('colors.label-sky-01');
+
   @apply
     flex
     min-w-0;
 }
 
 .text::selection {
-  background-color: var(--selection-background, theme('colors.label-sky-09'));
-  color: var(--selection-color, theme('colors.label-sky-01'));
+  background-color: var(--mds-text-selection-background);
+  color: var(--mds-text-selection-color);
 }
 
 .text {

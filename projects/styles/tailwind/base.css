@@ -22,8 +22,8 @@ body {
 }
 
 ::selection {
-  background-color: var(--selection-background, theme('colors.label-sky-09'));
-  color: var(--selection-color, theme('colors.label-sky-01'));
+  background-color: var(--magma-selection-background, theme('colors.label-sky-09'));
+  color: var(--magma-selection-color, theme('colors.label-sky-01'));
 }
 
 button,

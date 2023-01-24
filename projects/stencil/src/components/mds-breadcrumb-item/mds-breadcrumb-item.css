@@ -24,10 +24,10 @@
   --mds-breadcrumb-item-button-color-current: var(--mds-breadcrumb-button-color-current, theme('colors.tone-neutral-01'));
   --mds-breadcrumb-item-button-color-hover: var(--mds-breadcrumb-button-color-hover, theme('colors.tone-neutral-02'));
   --mds-breadcrumb-item-button-color: var(--mds-breadcrumb-button-color, theme('colors.tone-neutral-02'));
-  --mds-breadcrumb-item-outline-blur-offset: var(--outline-blur-offset, 6px);
-  --mds-breadcrumb-item-outline-blur: var(--outline-blur, 2px solid transparent);
-  --mds-breadcrumb-item-outline-focus-offset: var(--outline-focus-offset, 2px);
-  --mds-breadcrumb-item-outline-focus: var(--outline-focus, 2px solid theme('colors.label-sky-05'));
+  --mds-breadcrumb-item-outline-blur-offset: var(--magma-outline-blur-offset, 6px);
+  --mds-breadcrumb-item-outline-blur: var(--magma-outline-blur, 2px solid transparent);
+  --mds-breadcrumb-item-outline-focus-offset: var(--magma-outline-focus-offset, 2px);
+  --mds-breadcrumb-item-outline-focus: var(--magma-outline-focus, 2px solid theme('colors.label-sky-05'));
 
   @apply
     flex
