@@ -1,19 +1,19 @@
 :root {
-
-  --backdrop-blur: 4px;
-  --backdrop-color: 0 0 0;
-  --backdrop-opacity: 0.1;
-  --backdrop: rgba(var(--backdrop-color) / var(--backdrop-opacity));
-  --disabled-opacity: 0.5;
-  --modal-z-index: 1000;
-  --outline-blur-offset: 6px;
-  --outline-blur: 2px solid transparent;
-  --outline-focus-offset: 2px;
-  --outline-focus: 2px solid theme('colors.tone-neutral-05');
-  --overlay-blur: var(--backdrop-blur);
-  --overlay-color: var(--backdrop-color);
-  --overlay-opacity: 0.5;
-  --overlay: rgba(var(--overlay-color) / var(--overlay-opacity));
-  --selection-background: theme('colors.label-sky-09');
-  --selection-color: theme('colors.label-sky-01');
+  --magma-backdrop-blur: 4px;
+  --magma-backdrop-color: 0 0 0;
+  --magma-backdrop-opacity: 0.1;
+  --magma-backdrop: rgba(var(--magma-backdrop-color) / var(--magma-backdrop-opacity));
+  --magma-disabled-opacity: 0.5;
+  --magma-header-z-index: 1000;
+  --magma-modal-z-index: 2000;
+  --magma-outline-blur-offset: 6px;
+  --magma-outline-blur: 2px solid transparent;
+  --magma-outline-focus-offset: 2px;
+  --magma-outline-focus: 2px solid theme('colors.tone-neutral-05');
+  --magma-overlay-blur: var(--magma-backdrop-blur);
+  --magma-overlay-color: var(--magma-backdrop-color);
+  --magma-overlay-opacity: 0.5;
+  --magma-overlay: rgba(var(--magma-overlay-color) / var(--magma-overlay-opacity));
+  --magma-selection-background: rgb(var(--label-sky-09));
+  --magma-selection-color: rgb(var(--label-sky-01));
 }
