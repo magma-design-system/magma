@@ -1,23 +1,20 @@
 @tailwind utilities;
 
 /*
-  * @prop --background: Sets the background-color of the component
-  * @prop --icon-color: Sets the color of the icon toggler
-  * @prop --color: Sets the text color of the header and the mobile toggler icon
-  * @prop --modal-z-index: Sets the z-index of the modal
-  * @prop --shadow: Sets the box-shadow od the header
-  */
+* @prop --mds-header-icon-color: Sets the color of the icon toggler
+* @prop --mds-header-color: Sets the text color of the header and the mobile toggler icon
+* @prop --mds-header-z-index: Sets the z-index of the modal
+*/
 
 :host {
 
-  --background: theme('colors.tone-neutral');
-  --color: theme('colors.tone-neutral-02');
-  --icon-color: var(--color);
-  --modal-z-index: var(--modal-z-index, 1000);
-  --shadow: theme('boxShadow.sharp-md');
+  --mds-header-color: theme('colors.tone-neutral-02');
+  --mds-header-icon-color: var(--mds-header-color, theme('colors.tone-neutral-02'));
+  --mds-header-z-index: var(--magma-header-z-index, 2000);
 
-  color: var(--color);
-  fill: var(--icon-color);
+  color: var(--mds-header-color);
+  fill: var(--mds-header-icon-color);
+  z-index: var(--mds-header-z-index);
 }
 
 .nav {
@@ -28,5 +25,5 @@
 }
 
 .modal {
-  z-index: var(--modal-z-index);
+  z-index: var(--mds-header-z-index);
 }
