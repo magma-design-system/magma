@@ -12,8 +12,8 @@ import { setAttributeIfEmpty, hashValue } from '@common/aria'
 export class MdsDropdown {
 
   private arrowEl: HTMLElement
-  private backdropBackgroundVisible = 'rgba(var(--backdrop-color, 0 0 0) / var(--backdrop-opacity, 0.1))'
-  private backdropBackgroundHidden = 'rgba(var(--backdrop-color, 0 0 0) / 0)'
+  private backdropBackgroundVisible = 'rgba(var(--magma-backdrop-color, 0 0 0) / var(--magma-backdrop-opacity, 0.1))'
+  private backdropBackgroundHidden = 'rgba(var(--magma-backdrop-color, 0 0 0) / 0)'
   private backdropDuration = 2000
   private backdropEl: HTMLElement
   private backdropId = 'mds-dropdown-backdrop'
