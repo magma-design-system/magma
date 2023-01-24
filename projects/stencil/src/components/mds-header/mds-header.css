@@ -14,6 +14,7 @@
 
   color: var(--mds-header-color);
   fill: var(--mds-header-icon-color);
+  position: relative;
   z-index: var(--mds-header-z-index);
 }
 
