@@ -1,0 +1,194 @@
+@import '@maggioli-design-system/styles/dist/tailwind/typography.css';
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:host {
+
+  --icon-color: theme('colors.tone-neutral');
+  --background: theme('colors.tone-neutral');
+  --variant-color: 0, 0, 0;
+  --ring: 0 0 0 1px rgba(var(--variant-color), 0.1);
+  --shadow: 0 1px 3px 0 rgba(var(--variant-color), 0.1), 0 1px 2px 0 rgba(var(--variant-color), 0.06);
+
+  @apply
+    flex
+    relative
+    text-info-detail;
+}
+
+.input {
+  @apply
+    border-none
+    border-transparent
+    box-border
+    duration-300
+    ease-out-expo
+    m-0
+    text-ellipsis
+    overflow-hidden
+    px-4
+    py-3
+    rounded-lg
+    text-tone-neutral-02
+    text-info-detail
+    transition-cosmetic
+    min-h-12
+    w-full;
+
+  background-color: var(--background);
+  box-shadow: var(--ring), var(--shadow);
+}
+
+textarea.input:active {
+  @apply transition-none;
+}
+
+textarea.input {
+  @apply
+    max-h-64
+    min-h-24
+    rounded-br-none;
+}
+
+.input:focus {
+  @apply
+    outline-none
+    transition-cosmetic
+    duration-300
+    ease-out-expo;
+
+  --variant-color: 10, 80, 212;
+  --ring: 0 0 0 3px rgba(var(--variant-color), 1);
+  --shadow: 0 4px 6px -1px rgba(var(--variant-color), 0.1), 0 2px 4px -1px rgba(var(--variant-color), 0.06);
+
+  box-shadow: var(--ring), var(--shadow);
+}
+
+.input:disabled {
+  @apply bg-tone-neutral-10;
+}
+
+.input:disabled,
+.input:disabled::placeholder {
+  @apply
+    text-tone-neutral-05;
+}
+
+.input.has-icon {
+  @apply pl-11;
+}
+
+.tip,
+.tip-variant {
+  @apply
+    absolute
+    duration-300
+    ease-out-expo
+    h-3
+    justify-center
+    pointer-events-none
+    right-1
+    rounded-full
+    px-2
+    text-tone-neutral
+    text-center
+    transition-cosmetic;
+
+  line-height: theme('spacing.3');
+}
+
+.read-only {
+  @apply
+    bg-status-info-05
+    text-status-info-09;
+}
+
+.required {
+  @apply
+    bg-status-error-05
+    text-tone-neutral
+    text-opacity-0
+    p-0
+    w-3;
+}
+
+.disabled {
+  @apply bg-tone-neutral-05;
+}
+
+.input:focus + .required {
+  @apply
+    text-opacity-100
+    w-24;
+}
+
+.icon {
+  @apply
+    absolute
+    left-3
+    top-3;
+
+  fill: theme('colors.brand-maggioli-04');
+}
+
+:host ( [variant=info] ) {
+
+  --variant-color: 30, 174, 221; /* status-info-06 */
+}
+
+:host ( [variant=info] ) .tip-variant {
+  @apply
+    bg-status-info-06
+    text-tone-neutral;
+}
+
+:host ( [variant=info] ) .icon {
+  @apply text-status-info-06;
+}
+
+:host ( [variant=success] ) {
+
+  --variant-color: 32, 184, 111; /* status-success-06 */
+}
+
+:host ( [variant=success] ) .tip-variant {
+  @apply
+    bg-status-success-06
+    text-tone-neutral;
+}
+
+:host ( [variant=success] ) .icon {
+  @apply text-status-success-06;
+}
+
+:host ( [variant=warning] ) {
+
+  --variant-color: 204, 153, 0; /* status-warning-06 */
+}
+
+:host ( [variant=warning] ) .tip-variant {
+  @apply
+    bg-status-warning-06
+    text-tone-neutral;
+}
+
+:host ( [variant=warning] ) .icon {
+  @apply text-status-warning-06;
+}
+
+:host ( [variant=error] ) {
+
+  --variant-color: 158, 21, 18; /* status-error-06 */
+}
+
+:host ( [variant=error] ) .tip-variant {
+  @apply
+    bg-status-error-06
+    text-tone-neutral;
+}
+
+:host ( [variant=error] ) .icon {
+  @apply text-status-error-06;
+}

@@ -1,6 +1,7 @@
-import { LitElement, css, html } from 'lit'
+import { LitElement, html, unsafeCSS } from 'lit'
 import { customElement, property, query, state } from 'lit/decorators.js'
 import clsx from 'clsx'
+import globalStyles from './global.css?inline'
 
 type InputValueType =
   | null
@@ -88,11 +89,13 @@ export class MdsInput extends LitElement {
 
   static formAssociated = true
 
+  static styles = [
+    unsafeCSS(globalStyles),
+  ]
+
   private internals = this.attachInternals()
 
   private _value?: InputValueType
-
-  static styles = css``
 
   /**
    * Specifies whether the element should have autocomplete enabled
@@ -221,6 +224,7 @@ export class MdsInput extends LitElement {
       this.tabindex = parseInt(tabindex)
       host.removeAttribute('tabindex')
     }
+    console.log('globalStyles', globalStyles)
   }
 
   private getValue (): string {
