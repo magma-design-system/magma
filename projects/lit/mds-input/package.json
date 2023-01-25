@@ -1,13 +1,13 @@
 {
-  "name": "mds-input",
+  "name": "@maggioli-design-system/mds-input",
   "private": true,
   "version": "0.0.0",
   "type": "module",
-  "main": "dist/my-element.es.js",
+  "main": "dist/mds-input.es.js",
   "exports": {
-    ".": "./dist/my-element.es.js"
+    ".": "./dist/mds-input.es.js"
   },
-  "types": "types/my-element.d.ts",
+  "types": "types/mds-input.d.ts",
   "files": [
     "dist",
     "types"
@@ -18,6 +18,8 @@
   },
   "dependencies": {
     "@maggioli-design-system/styles": "^10.0.1",
+    "@maggioli-design-system/mds-text": "^3.2.0",
+    "@maggioli-design-system/mds-icon": "^2.2.0",
     "lit": "^2.4.1"
   },
   "devDependencies": {

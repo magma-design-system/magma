@@ -93,7 +93,7 @@ export class MdsInput extends LitElement {
     unsafeCSS(globalStyles),
   ]
 
-  private internals = this.attachInternals()
+  private internals
 
   private _value?: InputValueType
 
@@ -216,6 +216,11 @@ export class MdsInput extends LitElement {
 
   @query('.input') private nativeInput?: HTMLInputElement | HTMLTextAreaElement
 
+  constructor () {
+    super()
+    this.internals = this.attachInternals()
+  }
+
   connectedCallback (): void {
     super.connectedCallback()
     const host = this.shadowRoot?.host as HTMLElement
@@ -225,6 +230,8 @@ export class MdsInput extends LitElement {
       host.removeAttribute('tabindex')
     }
     console.log('globalStyles', globalStyles)
+    console.log('Internals', this.internals)
+    console.log('NativeInput', this.nativeInput)
   }
 
   private getValue (): string {
