@@ -32,3 +32,4 @@ projects/**/yarn.lock
 projects/scripts/**/*.js
 projects/stencil/assets/svg
 www/
+projects/lit/*/types
