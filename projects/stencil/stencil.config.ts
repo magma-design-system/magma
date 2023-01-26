@@ -22,6 +22,7 @@ export const config: Config = {
   },
   taskQueue: 'async',
   srcDir,
+  sourceMap: false,
   buildEs5: true,
   outputTargets: [
     {
@@ -30,6 +31,7 @@ export const config: Config = {
     },
     {
       type: 'dist-custom-elements',
+      generateTypeDeclarations: true,
     },
     {
       type: 'docs-readme',
