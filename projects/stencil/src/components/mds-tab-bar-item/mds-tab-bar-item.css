@@ -32,7 +32,7 @@
   fill: var(--color);
 }
 
-:host( [selected] ) {
+:host ( [selected]:not([selected=false]) ) {
   background-color: var(--background-selected);
   color: var(--color-selected);
   fill: var(--color-selected);
