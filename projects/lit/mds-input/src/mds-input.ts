@@ -1,5 +1,5 @@
 import { LitElement, html, unsafeCSS } from 'lit'
-import { customElement, property, query, state } from 'lit/decorators.js'
+import { customElement, property, state } from 'lit/decorators.js'
 import clsx from 'clsx'
 import globalStyles from './global.css?inline'
 
@@ -214,8 +214,6 @@ export class MdsInput extends LitElement {
 
   @state() private tabindex?: number
 
-  @query('.input') private nativeInput?: HTMLInputElement | HTMLTextAreaElement
-
   constructor () {
     super()
     this.internals = this.attachInternals()
@@ -229,9 +227,7 @@ export class MdsInput extends LitElement {
       this.tabindex = parseInt(tabindex)
       host.removeAttribute('tabindex')
     }
-    console.log('globalStyles', globalStyles)
     console.log('Internals', this.internals)
-    console.log('NativeInput', this.nativeInput)
   }
 
   private getValue (): string {
@@ -271,6 +267,7 @@ export class MdsInput extends LitElement {
     - datalist cannot be tested as doesn't parse array input (???)
   */
   private buildInput (value: string) {
+    console.log('this', this)
     let input
     if (this.type === 'textarea') {
       input = html`
@@ -299,7 +296,7 @@ export class MdsInput extends LitElement {
       input = html`
         <input
           class="${clsx('input', this.icon && 'has-icon')}"
-          list="${this.datalist ? 'datalist' : ''}"
+          list="${this.datalist ? 'datalist' : undefined}"
           .autoComplete="${this.autocomplete}"
           .max="${this.max}"
           .min="${this.min}"

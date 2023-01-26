@@ -3,9 +3,9 @@
   "private": true,
   "version": "0.0.0",
   "type": "module",
-  "main": "dist/mds-input.es.js",
+  "main": "dist/mds-input.js",
   "exports": {
-    ".": "./dist/mds-input.es.js"
+    ".": "./dist/mds-input.js"
   },
   "types": "types/mds-input.d.ts",
   "files": [
