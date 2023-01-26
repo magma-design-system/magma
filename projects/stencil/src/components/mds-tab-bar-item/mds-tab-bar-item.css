@@ -1,18 +1,18 @@
 @tailwind utilities;
 
 /*
-* @prop --background-selected: Sets the background-color of the component when it's selected
-* @prop --background: Sets the background-color of the component
-* @prop --color-selected: Sets the text color of the component when it's selected
-* @prop --color: Sets the text color of the component
+* @prop --mds-tab-bar-item-background-selected: Sets the background-color of the component when it's selected
+* @prop --mds-tab-bar-item-background: Sets the background-color of the component
+* @prop --mds-tab-bar-item-color-selected: Sets the text color of the component when it's selected
+* @prop --mds-tab-bar-item-color: Sets the text color of the component
 */
 
 :host {
 
-  --background: transparent;
-  --background-selected: var(--background);
-  --color: theme('colors.tone-neutral-06');
-  --color-selected: theme('colors.brand-maggioli-04');
+  --mds-tab-bar-item-background: transparent;
+  --mds-tab-bar-item-background-selected: var(--mds-tab-bar-item-background);
+  --mds-tab-bar-item-color: theme('colors.tone-neutral-06');
+  --mds-tab-bar-item-color-selected: theme('colors.brand-maggioli-04');
 
   @apply
     basis-0
@@ -27,13 +27,13 @@
     text-center
     transition-colors;
 
-  background-color: var(--background);
-  color: var(--color);
-  fill: var(--color);
+  background-color: var(--mds-tab-bar-item-background);
+  color: var(--mds-tab-bar-item-color);
+  fill: var(--mds-tab-bar-item-color);
 }
 
 :host ( [selected]:not([selected=false]) ) {
-  background-color: var(--background-selected);
-  color: var(--color-selected);
-  fill: var(--color-selected);
+  background-color: var(--mds-tab-bar-item-background-selected);
+  color: var(--mds-tab-bar-item-color-selected);
+  fill: var(--mds-tab-bar-item-color-selected);
 }
