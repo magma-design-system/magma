@@ -1,4 +1,4 @@
-import { LitElement, html, unsafeCSS } from 'lit'
+import { LitElement, html, unsafeCSS, nothing } from 'lit'
 import { customElement, property, state } from 'lit/decorators.js'
 import clsx from 'clsx'
 import globalStyles from './global.css?inline'
@@ -100,12 +100,12 @@ export class MdsInput extends LitElement {
   /**
    * Specifies whether the element should have autocomplete enabled
    */
-  @property() readonly autocomplete?: AutocompleteType = 'off'
+  @property({ type: String }) readonly autocomplete?: AutocompleteType = 'off'
 
   /**
    * Specifies that the element should automatically get focus when the page loads
    */
-  @property() readonly autofocus: boolean = false
+  @property({ type: Boolean }) readonly autofocus: boolean = false
 
   /**
    * A list of search terms to be searched from the input field,
@@ -120,63 +120,63 @@ export class MdsInput extends LitElement {
   /**
    * If true, the element is displayed as disabled
    */
-  @property() readonly disabled?: boolean = false
+  @property({ type: Boolean }) readonly disabled?: boolean = false
 
   /**
    * An icon displayed at the right of the input
    */
-  @property() readonly icon?: string
+  @property({ type: String }) readonly icon?: string
 
   /**
    * Specifies the maximum value
    * use it with input type="number" or type="date"
    * Example: max="180", max="2046-12-04"
    */
-  @property() readonly max?: number
+  @property({ type: Number }) readonly max?: number
 
   /**
    * Specifies the maximum number of characters allowed in an element
    * use it with input type="number"
    */
-  @property() readonly maxlength?: number = undefined
+  @property({ type: Number }) readonly maxlength?: number = undefined
 
   /**
    * Specifies the minimum value
    * use it with input type="number" or type="date"
    * Example: min="-3", min="1988-04-15"
    */
-  @property() readonly min?: number
+  @property({ type: Number }) readonly min?: number
 
   /**
    * Specifies the minimum number of characters allowed in an element
    * use it with input type="number"
    */
-  @property() readonly minlength?: number
+  @property({ type: Number }) readonly minlength?: number
 
   /**
    * Is needed to reference the form data after the form is submitted
    */
-  @property() readonly name?: string
+  @property({ type: String }) readonly name?: string
 
   /**
    * Specifies a regular expression that element\'s value is checked against
    */
-  @property() readonly pattern?: string
+  @property({ type: String }) readonly pattern?: string
 
   /**
    * Specifies a short hint that describes the expected value of the element
    */
-  @property() readonly placeholder?: string
+  @property({ type: String }) readonly placeholder?: string
 
   /**
    * Specifies that the element is read-only
    */
-  @property() readonly readonly?: boolean = false
+  @property({ type: Boolean }) readonly readonly?: boolean = false
 
   /**
    * Specifies that the element must be filled out before submitting the form
    */
-  @property() readonly required?: boolean = false
+  @property({ type: Boolean }) readonly required?: boolean = false
 
   /**
    * Sets the variant of the input field
@@ -186,17 +186,17 @@ export class MdsInput extends LitElement {
   /**
    * Sets the word(s) of the variant of the input field
    */
-  @property() readonly variantTip?: string
+  @property({ type: String }) readonly variantTip?: string
 
   /**
    * Specifies the interval between legal numbers in an input field
    */
-  @property() readonly step?: string
+  @property({ type: Number }) readonly step?: number
 
   /**
    * Specifies the type of input element
    */
-  @property() readonly type: InputTextType = 'text'
+  @property({ type: String }) readonly type: InputTextType = 'text'
 
   // Using custom setter / getter because I need to fire the change-event when the property actually change
   /**
@@ -227,7 +227,6 @@ export class MdsInput extends LitElement {
       this.tabindex = parseInt(tabindex)
       host.removeAttribute('tabindex')
     }
-    console.log('Internals', this.internals)
   }
 
   private getValue (): string {
@@ -261,60 +260,51 @@ export class MdsInput extends LitElement {
     }
   }
 
-  /* TODO
-    - maxLength is always set to 0 even when null
-    - .list is not accepted in strict mode
-    - datalist cannot be tested as doesn't parse array input (???)
-  */
   private buildInput (value: string) {
-    console.log('this', this)
     let input
     if (this.type === 'textarea') {
       input = html`
         <textarea
-          class="${clsx('input', this.icon && 'has-icon')}"
-          .value="${value}"
-          .maxLength="${this.maxlength}"
-          .minLength="${this.minlength}"
-          .name="${this.name}"
-          .placeholder="${this.placeholder || ''}"
-          .tabIndex="${this.tabindex}"
-          ?autoFocus="${this.autofocus}"
-          ?disabled="${this.disabled}"
-          ?readOnly="${this.readonly}"
-          ?required="${this.required}"
-          @blur="${this.onBlur}"
-          @focus="${this.onFocus}"
-          @input="${this.onInput}">
+          class=${clsx('input', this.icon && 'has-icon') ?? nothing}
+          .value=${value ?? nothing}
+          .maxLength=${this.maxlength ?? nothing}
+          .minLength=${this.minlength ?? nothing}
+          .name=${this.name ?? nothing}
+          .placeholder=${this.placeholder ?? nothing}
+          .tabIndex=${this.tabindex ?? nothing}
+          ?autoFocus=${this.autofocus ?? nothing}
+          ?disabled=${this.disabled ?? nothing}
+          ?readOnly=${this.readonly ?? nothing}
+          ?required=${this.required ?? nothing}
+          @blur=${this.onBlur ?? nothing}
+          @focus=${this.onFocus ?? nothing}
+          @input=${this.onInput ?? nothing}>
         </textarea>
       `
     } else {
-      /* TODO reintegrare:
-        - .list="${this.datalist ? 'datalist' : ''}", al momento è sempre impostato list
-        - .maxLength="${this.maxlength}"
-      */
       input = html`
         <input
-          class="${clsx('input', this.icon && 'has-icon')}"
-          list="${this.datalist ? 'datalist' : undefined}"
-          .autoComplete="${this.autocomplete}"
-          .max="${this.max}"
-          .min="${this.min}"
-          .minLength="${this.minlength}"
-          .name="${this.name}"
-          .type="${this.type}"
-          .pattern="${this.pattern}"
-          .placeholder=${this.placeholder || ''}
-          .step="${this.step}"
-          .tabIndex="${this.tabindex}"
-          .value="${value}"
-          ?autoFocus="${this.autofocus}"
-          ?disabled="${this.disabled}"
-          ?readOnly="${this.readonly}"
-          ?required="${this.required}"
-          @blur="${this.onBlur}"
-          @focus="${this.onFocus}"
-          @input="${this.onInput}"
+          class=${clsx('input', this.icon && 'has-icon')}
+          list=${this.datalist ? 'datalist' : nothing}
+          .autoComplete=${this.autocomplete ?? nothing}
+          .max=${this.max ?? nothing}
+          .maxLength=${this.maxlength ?? nothing}
+          .min=${this.min ?? nothing}
+          .minLength=${this.minlength ?? nothing}
+          .name=${this.name ?? nothing}
+          .type=${this.type ?? nothing}
+          .pattern=${this.pattern ?? nothing}
+          .placeholder=${this.placeholder ?? nothing}
+          .step=${this.step ?? nothing}
+          .tabIndex=${this.tabindex ?? nothing}
+          .value=${value ?? nothing}
+          ?autoFocus=${this.autofocus ?? nothing}
+          ?disabled=${this.disabled ?? nothing}
+          ?readOnly=${this.readonly ?? nothing}
+          ?required=${this.required ?? nothing}
+          @blur=${this.onBlur ?? nothing}
+          @focus=${this.onFocus ?? nothing}
+          @input=${this.onInput ?? nothing}
         />
       `
     }
