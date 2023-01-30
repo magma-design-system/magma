@@ -221,6 +221,10 @@ export class MdsInput extends LitElement {
     this.internals = this.attachInternals()
   }
 
+  updated () {
+    this.manageRequired(null)
+  }
+
   connectedCallback (): void {
     super.connectedCallback()
     const host = this.shadowRoot?.host as HTMLElement
@@ -237,16 +241,16 @@ export class MdsInput extends LitElement {
 
   private onInput = (ev: InputEvent) => {
     const input = ev.target as HTMLInputElement | HTMLTextAreaElement
-    if (input) {
-      this.value = input.value || ''
-    }
+    // if (input) {
+    //   this.value = input.value || ''
+    // }
     this.internals.setFormValue(input.value)
     this.manageRequired(input.value)
     const event = new CustomEvent('input-change-event', { bubbles: true, detail: { message: ev } })
     this.dispatchEvent(event)
   }
 
-  private manageRequired (data: string) {
+  private manageRequired (data: string | null) {
     if (!data && this.required) {
       this.internals.setValidity(
         {
