@@ -1,5 +1,5 @@
 import { LitElement, html, unsafeCSS, nothing } from 'lit'
-import { customElement, property, state } from 'lit/decorators.js'
+import { customElement, property, query, state } from 'lit/decorators.js'
 import clsx from 'clsx'
 import globalStyles from './global.css?inline'
 
@@ -214,6 +214,8 @@ export class MdsInput extends LitElement {
 
   @state() private tabindex?: number
 
+  @query('.input') inputElement: HTMLElement | HTMLTextAreaElement | undefined
+
   constructor () {
     super()
     this.internals = this.attachInternals()
@@ -234,12 +236,28 @@ export class MdsInput extends LitElement {
   }
 
   private onInput = (ev: InputEvent) => {
-    const input = ev.target as HTMLInputElement | HTMLTextAreaElement | false
+    const input = ev.target as HTMLInputElement | HTMLTextAreaElement
     if (input) {
       this.value = input.value || ''
     }
+    this.internals.setFormValue(input.value)
+    this.manageRequired(input.value)
     const event = new CustomEvent('input-change-event', { bubbles: true, detail: { message: ev } })
     this.dispatchEvent(event)
+  }
+
+  private manageRequired (data: string) {
+    if (!data && this.required) {
+      this.internals.setValidity(
+        {
+          valueMissing: true,
+        },
+        'Il campo è obbligatorio',
+        this.inputElement,
+      )
+    } else {
+      this.internals.setValidity({})
+    }
   }
 
   private onBlur = () => {
