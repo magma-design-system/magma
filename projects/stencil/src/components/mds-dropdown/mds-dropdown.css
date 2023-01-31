@@ -8,6 +8,7 @@
   * @prop --mds-dropdown-ease: Sets the easing of the dropdown animation.
   * @prop --mds-dropdown-transform-from: Sets the from animation transform of the dropdown.
   * @prop --mds-dropdown-transform-to: Sets the to animation transform of the dropdown.
+  * @prop --mds-dropdown-z-index: Sets the z-index of the component.
   */
 
 :host {
@@ -19,6 +20,7 @@
   --mds-dropdown-ease: theme('transitionTimingFunction.out-expo');
   --mds-dropdown-transform-from: scale(0.9) translateY(-3%);
   --mds-dropdown-transform-to: scale(1) translate(0, 0);
+  --mds-dropdown-z-index: var(--magma-dropdown-z-index, 3000);
 
   @apply
     box-border
@@ -36,6 +38,7 @@
   transition-duration: var(--mds-dropdown-duration);
   transition-property: opacity, transform, transform-origin;
   transition-timing-function: var(--mds-dropdown-ease);
+  z-index: var(--mds-dropdown-z-index);
 }
 
 :host ( [visible]:not([visible=false]) ) {

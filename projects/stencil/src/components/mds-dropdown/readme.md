@@ -43,6 +43,7 @@
 | `--mds-dropdown-ease`             | Sets the easing of the dropdown animation.         |
 | `--mds-dropdown-transform-from`   | Sets the from animation transform of the dropdown. |
 | `--mds-dropdown-transform-to`     | Sets the to animation transform of the dropdown.   |
+| `--mds-dropdown-z-index`          | Sets the z-index of the component.                 |
 
 
 ----------------------------------------------
