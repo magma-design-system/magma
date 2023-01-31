@@ -76,8 +76,11 @@ export class MdsButton {
   componentDidLoad ():void {
     this.addKeyboardSpaceListener()
     if (!this.hasText && this.icon) {
-      setAttributeIfEmpty(this.host, 'title', unslugName(this.icon))
-      setAttributeIfEmpty(this.host, 'aria-label', this.host.getAttribute('title'))
+      const iconTitle = unslugName(this.icon)
+      if (!this.host.hasAttribute('aria-label')) {
+        setAttributeIfEmpty(this.host, 'title', iconTitle)
+      }
+      setAttributeIfEmpty(this.host, 'aria-label', iconTitle)
     }
   }
 

@@ -9,6 +9,7 @@
 * @prop --mds-tooltip-ease: Sets the easing of the tooltip animation.
 * @prop --mds-tooltip-transform-from: Sets the from animation transform of the tooltip.
 * @prop --mds-tooltip-transform-to: Sets the to animation transform of the tooltip.
+* @prop --mds-tooltip-z-index: Sets the z-index of the component.
 */
 
 :host {
@@ -22,6 +23,7 @@
   --mds-tooltip-dot-padding: theme('spacing.1');
   --mds-tooltip-transform-from: scale(0.9) translateY(-3%);
   --mds-tooltip-transform-to: scale(1) translate(0, 0);
+  --mds-tooltip-z-index: var(--magma-tooltip-z-index, 4000);
 
   @apply
     box-border
@@ -42,6 +44,7 @@
   transition-property: opacity, transform, transform-origin;
   transition-timing-function: var(--mds-tooltip-ease);
   width: fit-content;
+  z-index: var(--mds-tooltip-z-index);
 }
 
 :host ( [visible]:not([visible=false]) ) {

@@ -34,6 +34,7 @@
 | `--mds-tooltip-ease`             | Sets the easing of the tooltip animation.         |
 | `--mds-tooltip-transform-from`   | Sets the from animation transform of the tooltip. |
 | `--mds-tooltip-transform-to`     | Sets the to animation transform of the tooltip.   |
+| `--mds-tooltip-z-index`          | Sets the z-index of the component.                |
 
 
 ## Dependencies
