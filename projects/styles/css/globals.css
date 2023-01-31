@@ -4,6 +4,7 @@
   --magma-backdrop-opacity: 0.1;
   --magma-backdrop: rgba(var(--magma-backdrop-color) / var(--magma-backdrop-opacity));
   --magma-disabled-opacity: 0.5;
+  --magma-dropdown-z-index: 3000;
   --magma-header-z-index: 1000;
   --magma-modal-z-index: 2000;
   --magma-outline-blur-offset: 6px;
@@ -16,4 +17,5 @@
   --magma-overlay: rgba(var(--magma-overlay-color) / var(--magma-overlay-opacity));
   --magma-selection-background: rgb(var(--label-sky-09));
   --magma-selection-color: rgb(var(--label-sky-01));
+  --magma-tooltip-z-index: 4000;
 }
