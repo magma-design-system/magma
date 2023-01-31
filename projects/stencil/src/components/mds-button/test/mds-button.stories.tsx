@@ -75,6 +75,12 @@ icon.args = {
   title: 'Pianta un albero',
 }
 
+export const iconARIATitle = TemplateIcon.bind({})
+iconARIATitle.args = {
+  icon: 'mi/baseline/eco',
+  'aria-label': 'Pianta un albero',
+}
+
 export const iconPosition = Template.bind({})
 iconPosition.args = {
   'icon-position': 'right',
