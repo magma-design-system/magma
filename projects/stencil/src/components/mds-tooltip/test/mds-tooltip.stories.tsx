@@ -71,7 +71,7 @@ const Template = ({ layout, ...args }) =>
 const TemplateCustomContents = ({ layout, ...args }) =>
   <div class={layout}>
     <mds-button id="my-tooltip">Show Fred</mds-button>
-    <mds-tooltip target="my-tooltip" {...args}>
+    <mds-tooltip target="my-tooltip" {...args} style={{ '--mds-tooltip-delay': '0.25s' }}>
       <mds-author class="text-tone-neutral-04 p-2">
         <mds-avatar initials="fb" src="./fred-brooks-zoom.webp" slot="avatar" class="w-14 bg-brand-maggioli-06"/>
         <mds-text typography="h6" class="text-tone-neutral-02">Fred Brooks</mds-text>
