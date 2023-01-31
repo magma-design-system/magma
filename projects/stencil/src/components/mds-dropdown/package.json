@@ -24,7 +24,7 @@
   "dependencies": {
     "@floating-ui/dom": "^1.1.1",
     "@maggioli-design-system/styles": "^11.1.0",
-    "@stencil/core": "^3.0.0"
+    "@stencil/core": "^2.22.2"
   },
   "license": "MIT",
   "author": {
