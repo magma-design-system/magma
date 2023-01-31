@@ -68,6 +68,19 @@ const Template = ({ layout, ...args }) =>
     </mds-tooltip>
   </div>
 
+const TemplateCustomContents = ({ layout, ...args }) =>
+  <div class={layout}>
+    <mds-button id="my-tooltip">Show Fred</mds-button>
+    <mds-tooltip target="my-tooltip" {...args}>
+      <mds-author class="text-tone-neutral-04 p-2">
+        <mds-avatar initials="fb" src="./fred-brooks-zoom.webp" slot="avatar" class="w-14 bg-brand-maggioli-06"/>
+        <mds-text typography="h6" class="text-tone-neutral-02">Fred Brooks</mds-text>
+        <mds-text typography="caption">Software engineer</mds-text>
+        <mds-text typography="caption">IT</mds-text>
+      </mds-author>
+    </mds-tooltip>
+  </div>
+
 // eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types
 export const NoTarget = () =>
   <div>
@@ -80,6 +93,11 @@ export const NoTarget = () =>
 
 export const Default = Template.bind({})
 Default.args = {
+  layout: 'flex justify-center',
+}
+
+export const customContents = TemplateCustomContents.bind({})
+customContents.args = {
   layout: 'flex justify-center',
 }
 
