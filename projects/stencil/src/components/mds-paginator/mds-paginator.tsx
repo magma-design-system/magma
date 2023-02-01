@@ -55,7 +55,9 @@ export class MdsPaginator {
       return
     }
     this.currentPage = selectedPage
-    this.scrollPage()
+    if (this.pages > 2) {
+      this.scrollPage()
+    }
     this.pageChangedEvent.emit(this.currentPage)
   }
 
@@ -69,7 +71,7 @@ export class MdsPaginator {
             { Array.from(Array(this.pages - 2).keys()).map( i => <mds-paginator-item key={i} active={this.currentPage === i + 2} onClick={() => this.goToPage(i + 2)}>{ i + 2 }</mds-paginator-item>) }
           </div>
         }
-        { this.pages && <mds-paginator-item active={this.currentPage === this.pages} onClick={() => this.goToPage(this.pages)}>{ this.pages }</mds-paginator-item>}
+        { this.pages > 1 && <mds-paginator-item active={this.currentPage === this.pages} onClick={() => this.goToPage(this.pages)}>{ this.pages }</mds-paginator-item>}
         <mds-paginator-item icon="mi/baseline/arrow-forward" disabled={this.currentPage === this.pages} onClick={() => this.goToPage(this.currentPage + 1)}/>
       </Host>
     )
