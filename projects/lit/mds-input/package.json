@@ -10,7 +10,8 @@
   "types": "types/mds-input.d.ts",
   "files": [
     "dist",
-    "types"
+    "types",
+    "readme.md"
   ],
   "scripts": {
     "dev": "vite",
