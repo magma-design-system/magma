@@ -95,8 +95,6 @@ export class MdsInput extends LitElement {
 
   private internals
 
-  private _value?: InputValueType
-
   /**
    * Specifies whether the element should have autocomplete enabled
    */
@@ -199,18 +197,11 @@ export class MdsInput extends LitElement {
   @property({ type: String }) readonly type: InputTextType = 'text'
 
   // Using custom setter / getter because I need to fire the change-event when the property actually change
+  // TODO: the event must be emitted when the value change inside the component, not from outside
   /**
    * Specifies the value of the input element
    */
-  @property({ reflect: true })
-  get value () { return this._value }
-
-  set value (val: InputValueType) {
-    const oldValue = this._value
-    this._value = val
-    this.dispatchEvent(new CustomEvent('change-event', { bubbles: true, detail: { message: this._value } }))
-    this.requestUpdate('value', oldValue)
-  }
+  @property({ reflect: true, type: String }) value: InputValueType
 
   @state() private tabindex?: number
 
@@ -241,12 +232,13 @@ export class MdsInput extends LitElement {
 
   private onInput = (ev: InputEvent) => {
     const input = ev.target as HTMLInputElement | HTMLTextAreaElement
-    // if (input) {
-    //   this.value = input.value || ''
-    // }
-    this.internals.setFormValue(input.value)
-    this.manageRequired(input.value)
-    const event = new CustomEvent('input-change-event', { bubbles: true, detail: { message: ev } })
+    if (input) {
+      this.value = input.value || ''
+    }
+    this.internals.setFormValue(this.value as string)
+    this.manageRequired(this.value as string)
+    this.dispatchEvent(new CustomEvent('changeEvent', { bubbles: true, detail: { value: this.value } }))
+    const event = new CustomEvent('inputEvent', { bubbles: true, detail: { value: ev } })
     this.dispatchEvent(event)
   }
 
@@ -266,13 +258,13 @@ export class MdsInput extends LitElement {
 
   private onBlur = () => {
     // this.hasFocus = false
-    this.dispatchEvent(new CustomEvent('blur-event', { bubbles: true }))
+    this.dispatchEvent(new CustomEvent('blurEvent', { bubbles: true }))
   }
 
   private onFocus = (ev: Event) => {
     const input = ev.target as HTMLInputElement | HTMLTextAreaElement
     // this.hasFocus = true
-    this.dispatchEvent(new CustomEvent('focus-event', { bubbles: true }))
+    this.dispatchEvent(new CustomEvent('focusEvent', { bubbles: true }))
     if (this.readonly) {
       // setTimeout to avoid Safari 14.1.2
       // to unselect text when mouse is clicked slowly
