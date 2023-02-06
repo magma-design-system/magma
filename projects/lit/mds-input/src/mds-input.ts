@@ -197,7 +197,6 @@ export class MdsInput extends LitElement {
   @property({ type: String }) readonly type: InputTextType = 'text'
 
   // Using custom setter / getter because I need to fire the change-event when the property actually change
-  // TODO: the event must be emitted when the value change inside the component, not from outside
   /**
    * Specifies the value of the input element
    */
