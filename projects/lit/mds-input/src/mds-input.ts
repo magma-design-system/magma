@@ -211,7 +211,7 @@ export class MdsInput extends LitElement {
     this.internals = this.attachInternals()
   }
 
-  updated () {
+  firstUpdated () {
     this.manageRequired(null)
   }
 
