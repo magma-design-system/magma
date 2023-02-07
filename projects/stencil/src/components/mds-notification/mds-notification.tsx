@@ -71,16 +71,12 @@ export class MdsNotification {
     return Number(value).toLocaleString()
   }
 
-  componentDidLoad (): void {
+  componentDidRender (): void {
     this.caller = document.getElementById(this.target)
   }
 
-  componentDidRender (): void {
+  componentDidLoad (): void {
     if (this.strategy === 'disabled') {
-      return
-    }
-
-    if (this.target === null) {
       return
     }
 
