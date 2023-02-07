@@ -259,14 +259,14 @@ export class MdsTooltip {
     this.updatePosition()
   }
 
-  componentDidLoad (): void {
+  componentDidRender (): void {
     this.arrowEl = this.host.shadowRoot.querySelector('.arrow')
     this.caller = document.getElementById(this.target)
     this.caller.addEventListener('mouseleave', this.handleVisibility.bind(this, false))
     this.caller.addEventListener('mouseenter', this.handleVisibility.bind(this, true))
   }
 
-  componentDidRender (): void {
+  componentDidLoad (): void {
     if (!this.cleanupAutoUpdate) {
       this.cleanupAutoUpdate = autoUpdate(this.caller, this.host, this.updatePosition)
     }
