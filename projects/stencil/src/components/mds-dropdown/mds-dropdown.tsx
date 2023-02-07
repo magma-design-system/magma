@@ -377,7 +377,7 @@ export class MdsDropdown {
     setAttributeIfEmpty(this.host, 'aria-labelledby', this.target)
   }
 
-  componentDidLoad (): void {
+  componentDidRender (): void {
     document.addEventListener('click', this.handleCloseDropdown)
     this.arrowEl = this.host.shadowRoot.querySelector('.arrow')
     this.caller = document.getElementById(this.target)
@@ -393,7 +393,7 @@ export class MdsDropdown {
     this.updatePosition()
   }
 
-  componentDidRender (): void {
+  componentDidLoad (): void {
     if (!this.cleanupAutoUpdate) {
       this.cleanupAutoUpdate = autoUpdate(this.caller, this.host, this.updatePosition)
     }

@@ -33,7 +33,6 @@ export class MdsAvatar {
   @Prop({ mutable:true, reflect: true }) readonly initials?: string
 
   private addFontResize = (): void => {
-    console.log('addFontResize')
     const initialsElement = this.element.shadowRoot.querySelector('.fit')
     if (initialsElement === null) {
       return
@@ -51,7 +50,6 @@ export class MdsAvatar {
   }
 
   private removeFontResize = (): void => {
-    console.log('removeFontResize')
     this.fittyInitialized = false
     this.observer.unobserve(this.element)
   }
