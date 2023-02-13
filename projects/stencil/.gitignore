@@ -13,6 +13,7 @@
 /src/components/**/tsconfig.json
 /src/components/**/types
 /src/fixtures/icons.json
+/src/fixtures/iconsauce.json
 /src/stencil.config.ts
 /src/storybook/components-version.json
 /www
