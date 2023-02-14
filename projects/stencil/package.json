@@ -15,7 +15,7 @@
     "loader/"
   ],
   "scripts": {
-    "build": "npm run clean && npm run build.icons && npm run build.fixtures && stencil build --docs-readme",
+    "build": "npm run clean && npm run build.fixtures && npm run build.icons && stencil build --docs-readme",
     "build.icons": "iconsauce --verbose --config ./.storybook/iconsauce.config.js --output-dictionary ./src/fixtures/icons.json --output-svg ./assets/svg",
     "build.fixtures": "npx ts-node --skipProject ./scripts/fixtures.ts",
     "clean": "npx ts-node --skipProject ./scripts/clean.ts",

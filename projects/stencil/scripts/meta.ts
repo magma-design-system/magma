@@ -1,9 +1,11 @@
 import { resolve, join } from 'path'
 const PROJECT_DIR = resolve(__dirname, '../')
+const DIST_STORYBOOK_CACHE_DIR = resolve(__dirname, '../node_modules/.cache/storybook')
 const PROJECT_SVG_ICONS_DIR = resolve(__dirname, '../../svg-icons')
 const SVG_ICONS_DIST_DIR = resolve(PROJECT_SVG_ICONS_DIR, 'dist')
 const BUILD_DIR = resolve(PROJECT_DIR, '.build')
 const DIST_DIR = resolve(PROJECT_DIR, 'dist')
+const DIST_STORYBOOK_ICONS_DIR = resolve(PROJECT_DIR, 'assets/svg')
 const DIST_STORYBOOK_DIR = resolve(PROJECT_DIR, 'dist-storybook')
 const FIXTURES_DIR = resolve(PROJECT_DIR, 'src/fixtures')
 const ICONSAUCE_DIR = resolve(PROJECT_DIR, '.iconsauce')
@@ -19,6 +21,8 @@ const TEMP_PROJECT_DIR = join(PROJECT_DIR, '.build')
 export {
   BUILD_DIR,
   COMPONENTS_DIR,
+  DIST_STORYBOOK_ICONS_DIR,
+  DIST_STORYBOOK_CACHE_DIR,
   DIST_DIR,
   SVG_ICONS_DIST_DIR,
   DIST_STORYBOOK_DIR,
