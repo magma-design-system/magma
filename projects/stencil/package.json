@@ -29,7 +29,7 @@
     "publish.isolate.all": "npx ts-node --skipProject ./scripts/isolate-all.ts",
     "publish.isolate.component": "npx ts-node --skipProject ./scripts/isolate-component.ts",
     "storybook.version": "npx ts-node --skipProject ./scripts/list-components-version.ts",
-    "storybook.build": "npm run storybook.version && build-storybook -o ./dist-storybook",
+    "storybook.build": "npm run storybook.version && npm run build.icons.prepare && build-storybook -o ./dist-storybook",
     "storybook.start": "npm run build && npm run storybook.version && start-storybook -p 6006 --no-manager-cache",
     "test": "npm run test.e2e",
     "test.e2e": "stencil test --spec --e2e",
