@@ -4,7 +4,8 @@ import { DIST_DIR, ICONS_DIR } from './meta'
 import { PathLike } from 'fs'
 import { basename, join } from 'path'
 import { logFileSavedTo } from '../../../scripts/log'
-import { writeFile, mkdir } from 'fs/promises'
+import { mkdir } from 'fs-extra'
+import { writeFile } from 'fs/promises'
 
 const DICTIONARY_FILENAME = 'iconsauce.json'
 
@@ -29,7 +30,7 @@ const buildDictionary = async (): Promise<void> => {
   const icons = await dumpIconsauceIcons()
   const jsonDictionary = JSON.stringify(icons, null, 4)
 
-  await mkdir(DIST_DIR)
+  await mkdir(DIST_DIR, { recursive: true })
     .catch(error => {
       throw Error(chalk.red(error))
     })
