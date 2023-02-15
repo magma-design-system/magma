@@ -7,11 +7,12 @@
 
 ## Properties
 
-| Property             | Attribute | Description                                           | Type      | Default     |
-| -------------------- | --------- | ----------------------------------------------------- | --------- | ----------- |
-| `active`             | `active`  | Sets the component to active state                    | `boolean` | `undefined` |
-| `label` _(required)_ | `label`   | Sets the label of the filter item                     | `string`  | `undefined` |
-| `value` _(required)_ | `value`   | Sets the value of the component to be used with forms | `string`  | `undefined` |
+| Property | Attribute | Description                                           | Type      | Default     |
+| -------- | --------- | ----------------------------------------------------- | --------- | ----------- |
+| `active` | `active`  | Sets the component to active state                    | `boolean` | `undefined` |
+| `icon`   | `icon`    | Sets the icon of the filter item                      | `string`  | `undefined` |
+| `label`  | `label`   | Sets the label of the filter item                     | `string`  | `undefined` |
+| `value`  | `value`   | Sets the value of the component to be used with forms | `string`  | `undefined` |
 
 
 ## Events
@@ -23,14 +24,21 @@
 
 ## Dependencies
 
+### Used by
+
+ - [mds-filter](../mds-filter)
+
 ### Depends on
 
+- [mds-icon](../mds-icon)
 - [mds-text](../mds-text)
 
 ### Graph
 ```mermaid
 graph TD;
+  mds-filter-item --> mds-icon
   mds-filter-item --> mds-text
+  mds-filter --> mds-filter-item
   style mds-filter-item fill:#f9f,stroke:#333,stroke-width:4px
 ```
 

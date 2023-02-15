@@ -1,5 +1,5 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<svg id="mgg-icone" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24">
-  <rect x="0" width="24" height="24" fill="none"/>
-  <path d="M7.75,2.75V7.75H2.75v13.5h13.5v-5h5V2.75H7.75Zm12,12h-5v5H4.25V9.25h5V4.25h10.5V14.75Zm-5-5.54h-4.05v-1.5h5.55v5.55h-1.5v-4.05Zm-5.53,5.53h4.05v1.5H7.72v-5.55h1.5v4.05Z"/>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+  <path
+    d="M7.75,2.75V7.75H2.75v13.5h13.5v-5h5V2.75H7.75Zm12,12h-5v5H4.25V9.25h5V4.25h10.5V14.75Zm-5-5.54h-4.05v-1.5h5.55v5.55h-1.5v-4.05Zm-5.53,5.53h4.05v1.5H7.72v-5.55h1.5v4.05Z"
+  />
 </svg>

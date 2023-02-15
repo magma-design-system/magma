@@ -15,6 +15,10 @@ export default {
       type: { name: 'boolean' },
       description: 'Sets if the filter group can filter multiple filters simultaneously',
     },
+    reset: {
+      type: { name: 'boolean' },
+      description: 'Shows a reset button if one or more filters are active',
+    },
   },
 }
 
@@ -34,6 +38,12 @@ export const autoReset = Template.bind({})
 autoReset.args = {
   multiple: true,
   'auto-reset': true,
+}
+
+export const reset = Template.bind({})
+reset.args = {
+  multiple: true,
+  reset: true,
 }
 
 export const Multiple = Template.bind({})

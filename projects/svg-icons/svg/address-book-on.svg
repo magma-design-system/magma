@@ -1,13 +1,5 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24">
-  <g id="icn_Flat" data-name="icn Flat">
-    <path d="m17.13,2.5H5v2.75h2v2h-2v3.75h2v2h-2v3.5h2v2h-2v3h12.13c1.03,0,1.87-.84,1.87-1.87V4.37c0-1.03-.84-1.87-1.87-1.87Zm-4.38,4.5c1.1,0,2,.9,2,2s-.9,2-2,2-2-.9-2-2,.9-2,2-2Zm0,8.5l-3.5.02s0-.01,0-.02c0-1.92,1.58-3.5,3.5-3.5s3.5,1.58,3.5,3.5h-3.5ZM5,5.25v2h-2v-2h2Zm0,5.75v2h-2v-2h2Zm0,5.5v2h-2v-2h2Z"/>
-  </g>
-  <g id="border">
-    <rect width="24" height="24" fill="none"/>
-    <rect width="24" height="24" fill="none"/>
-    <rect x="-14" y="14" width="24" height="24" fill="none"/>
-    <rect y="14" width="24" height="24" fill="none"/>
-    <rect y="14" width="24" height="24" fill="none"/>
-  </g>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+  <path
+    d="m17.13,2.5H5v2.75h2v2h-2v3.75h2v2h-2v3.5h2v2h-2v3h12.13c1.03,0,1.87-.84,1.87-1.87V4.37c0-1.03-.84-1.87-1.87-1.87Zm-4.38,4.5c1.1,0,2,.9,2,2s-.9,2-2,2-2-.9-2-2,.9-2,2-2Zm0,8.5l-3.5.02s0-.01,0-.02c0-1.92,1.58-3.5,3.5-3.5s3.5,1.58,3.5,3.5h-3.5ZM5,5.25v2h-2v-2h2Zm0,5.75v2h-2v-2h2Zm0,5.5v2h-2v-2h2Z"
+  />
 </svg>
