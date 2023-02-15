@@ -54,7 +54,6 @@ export class MdsFilter {
       }
     })
     this.active = active
-    // this.scrollTabs()
   }
 
   private checkAutoReset = ():void => {
