@@ -18,12 +18,17 @@ export class MdsFilterItem {
   /**
    * Sets the label of the filter item
    */
-  @Prop() label!: string
+  @Prop({ reflect: true }) label: string
+
+  /**
+   * Sets the icon of the filter item
+   */
+  @Prop({ reflect: true }) icon?: string
 
   /**
    * Sets the value of the component to be used with forms
    */
-  @Prop({ reflect: true }) value!: string
+  @Prop({ reflect: true }) value: string
 
   private toggle = () => {
     this.active = !this.active
@@ -36,7 +41,8 @@ export class MdsFilterItem {
 
   render () {
     return (
-      <Host tabindex="0" role="button" aria-label={ this.label } onClick={ this.toggle }>
+      <Host tabindex="0" role="button" aria-label={ this.label ?? this.icon } onClick={ this.toggle }>
+        { this.icon && <mds-icon aria-hidden="true" name={this.icon} /> }
         { this.label && <mds-text aria-hidden="true" variant="info" typography="caption">{ this.label }</mds-text> }
       </Host>
     )
