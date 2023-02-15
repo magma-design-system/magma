@@ -2,21 +2,21 @@
 @tailwind utilities;
 
 /**
-* @prop --items-background-active: Sets the background-color of the items row area when a filter is active
-* @prop --items-background: Sets the background-color of the items row area
-* @prop --items-gap: Sets the gap between items
-* @prop --items-padding: Sets the padding of the items row area
-* @prop --items-radius: Sets the border-radius of the items row area
-* @prop --label-padding: Sets the padding of the label
+* @prop --mds-filter-items-background-active: Sets the background-color of the items row area when a filter is active
+* @prop --mds-filter-items-background: Sets the background-color of the items row area
+* @prop --mds-filter-items-gap: Sets the gap between items
+* @prop --mds-filter-items-padding: Sets the padding of the items row area
+* @prop --mds-filter-items-radius: Sets the border-radius of the items row area
+* @prop --mds-filter-label-padding: Sets the padding of the label
 */
 
 :host {
-  --items-background-active: theme('colors.tone-neutral-09');
-  --items-background: theme('colors.tone-neutral-10');
-  --items-gap: theme('spacing.2');
-  --items-padding: theme('spacing.2');
-  --items-radius: theme('borderRadius.full');
-  --label-padding: 0 theme('spacing.6');
+  --mds-filter-items-background-active: theme('colors.tone-neutral-09');
+  --mds-filter-items-background: theme('colors.tone-neutral-10');
+  --mds-filter-items-gap: theme('spacing.2');
+  --mds-filter-items-padding: theme('spacing.2');
+  --mds-filter-items-radius: theme('borderRadius.full');
+  --mds-filter-label-padding: 0 theme('spacing.6');
 
   @apply
     auto-rows-min
@@ -24,21 +24,48 @@
     grid;
 }
 
+.reset {
+  @apply
+    flex
+    flex-grow
+    justify-end;
+}
+
+.reset-button {
+  @apply
+    scale-0
+    transition-transform;
+}
+
+.reset-button-opened {
+  @apply scale-100;
+}
+
 .items {
   @apply
     flex
+    overflow-auto
     transition-colors;
 
-  background-color: var(--items-background);
-  border-radius: var(--items-radius);
-  gap: var(--items-gap);
-  padding: var(--items-padding);
+  -ms-overflow-style: none;
+  -webkit-overflow-scrolling: touch;
+  background-color: var(--mds-filter-items-background);
+  border-radius: var(--mds-filter-items-radius);
+  gap: var(--mds-filter-items-gap);
+  padding: var(--mds-filter-items-padding);
+  scroll-behavior: smooth;
+  scroll-snap-type: x mandatory;
+  scrollbar-width: none;
+}
+
+.items::-webkit-scrollbar {
+  display: none;
 }
 
 .label {
-  padding: var(--label-padding);
+  padding: var(--mds-filter-label-padding);
 }
 
 .active {
-  background-color: var(--items-background-active);
+  background-color: var(--mds-filter-items-background-active);
 }

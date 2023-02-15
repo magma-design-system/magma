@@ -12,6 +12,7 @@
 | `autoReset` | `auto-reset` | Sets an automatic reset of active filters if all filters are triggered | `boolean` | `undefined` |
 | `label`     | `label`      | Sets the label of the filter group                                     | `string`  | `undefined` |
 | `multiple`  | `multiple`   | Sets if the filter group can filter multiple filters simultaneously    | `boolean` | `undefined` |
+| `reset`     | `reset`      | Shows a reset button if one or more filters are active                 | `boolean` | `undefined` |
 
 
 ## Events
@@ -23,14 +24,14 @@
 
 ## CSS Custom Properties
 
-| Name                        | Description                                                             |
-| --------------------------- | ----------------------------------------------------------------------- |
-| `--items-background`        | Sets the background-color of the items row area                         |
-| `--items-background-active` | Sets the background-color of the items row area when a filter is active |
-| `--items-gap`               | Sets the gap between items                                              |
-| `--items-padding`           | Sets the padding of the items row area                                  |
-| `--items-radius`            | Sets the border-radius of the items row area                            |
-| `--label-padding`           | Sets the padding of the label                                           |
+| Name                                   | Description                                                             |
+| -------------------------------------- | ----------------------------------------------------------------------- |
+| `--mds-filter-items-background`        | Sets the background-color of the items row area                         |
+| `--mds-filter-items-background-active` | Sets the background-color of the items row area when a filter is active |
+| `--mds-filter-items-gap`               | Sets the gap between items                                              |
+| `--mds-filter-items-padding`           | Sets the padding of the items row area                                  |
+| `--mds-filter-items-radius`            | Sets the border-radius of the items row area                            |
+| `--mds-filter-label-padding`           | Sets the padding of the label                                           |
 
 
 ## Dependencies
@@ -38,11 +39,15 @@
 ### Depends on
 
 - [mds-text](../mds-text)
+- [mds-filter-item](../mds-filter-item)
 
 ### Graph
 ```mermaid
 graph TD;
   mds-filter --> mds-text
+  mds-filter --> mds-filter-item
+  mds-filter-item --> mds-icon
+  mds-filter-item --> mds-text
   style mds-filter fill:#f9f,stroke:#333,stroke-width:4px
 ```
 
