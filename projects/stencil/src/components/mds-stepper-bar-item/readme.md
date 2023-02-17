@@ -26,6 +26,25 @@
 | `currentEvent` | Emits when the accordion is current | `CustomEvent<string>` |
 
 
+## CSS Custom Properties
+
+| Name                        | Description                                                         |
+| --------------------------- | ------------------------------------------------------------------- |
+| `--color`                   | Sets the color of the text                                          |
+| `--duaration`               | Sets the duration of the animation                                  |
+| `--icon-background`         | Sets the background-color of the icon                               |
+| `--icon-background-checked` | Sets the background-color of the icon when the component is checked |
+| `--icon-background-current` | Sets the background-color of the icon when the component is current |
+| `--icon-color`              | Sets the color of the icon                                          |
+| `--icon-color-checked`      | Sets the color of the icon when the component is checked            |
+| `--icon-color-current`      | Sets the color of the icon when the component is current            |
+| `--icon-ring-size`          | Sets the size of the icon circle when the component is current      |
+| `--min-width`               | Sets the minimum width of the component                             |
+| `--progress-background`     | Sets the background color of the progress bar                       |
+| `--progress-color`          | Sets the color of the progress bar                                  |
+| `--progress-thickness`      | Sets the thickness of the progress bar                              |
+
+
 ## Dependencies
 
 ### Depends on
