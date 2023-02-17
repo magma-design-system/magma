@@ -21,6 +21,16 @@
 | `selectedEvent` | Emits when the component is selected | `CustomEvent<string>` |
 
 
+## CSS Custom Properties
+
+| Name                                     | Description                                                   |
+| ---------------------------------------- | ------------------------------------------------------------- |
+| `--mds-tab-bar-item-background`          | Sets the background-color of the component                    |
+| `--mds-tab-bar-item-background-selected` | Sets the background-color of the component when it's selected |
+| `--mds-tab-bar-item-color`               | Sets the text color of the component                          |
+| `--mds-tab-bar-item-color-selected`      | Sets the text color of the component when it's selected       |
+
+
 ## Dependencies
 
 ### Depends on
