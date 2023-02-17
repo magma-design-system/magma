@@ -2,13 +2,13 @@
 @tailwind utilities;
 @import '../../tailwind/components.css';
 
-/*
-* @prop --mds-modal-overlay-color: Set the overlay color of the background when the component is opened, this property can be inherited from `globals.css` in `styles^8.0.0`.
-* @prop --mds-modal-overlay-opacity: Set the overlay color opacity of the background when the component is opened, this property can be inherited from `globals.css` in `styles^8.0.0`.
-* @prop --mds-modal-window-background: Set the background color of the window
-* @prop --mds-modal-window-overflow: Set the background color of the window
-* @prop --mds-modal-window-shadow: Set the oveflow of the window
-* @prop --mds-modal-z-index: Set the z-index of the window when the component is opened
+/**
+  * @prop --mds-modal-overlay-color: Set the overlay color of the background when the component is opened, this property can be inherited from `globals.css` in `styles^8.0.0`.
+  * @prop --mds-modal-overlay-opacity: Set the overlay color opacity of the background when the component is opened, this property can be inherited from `globals.css` in `styles^8.0.0`.
+  * @prop --mds-modal-window-background: Set the background color of the window
+  * @prop --mds-modal-window-overflow: Set the background color of the window
+  * @prop --mds-modal-window-shadow: Set the oveflow of the window
+  * @prop --mds-modal-z-index: Set the z-index of the window when the component is opened
 */
 
 @layer components {
