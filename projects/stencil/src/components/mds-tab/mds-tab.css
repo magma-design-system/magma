@@ -1,9 +1,9 @@
 @tailwind utilities;
 
-/*
+/**
   * @prop --mds-tab-background: Sets the background-color of the component
   * @prop --mds-tab-radius: Sets the border-radius of the button when the mouse is over it
-  */
+*/
 
 :host {
 
