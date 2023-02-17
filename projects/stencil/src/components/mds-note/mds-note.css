@@ -1,7 +1,7 @@
 @tailwind utilities;
 @import '../../tailwind/components.css';
 
-/*
+/**
 * @prop --mds-note-background: Sets the background-color of the component
 * @prop --mds-note-color: Sets the text color of the component
 * @prop --mds-note-fold-size: Sets the size of the fold decoration at the bottom right of the component
