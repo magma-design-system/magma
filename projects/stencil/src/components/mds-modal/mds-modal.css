@@ -5,8 +5,9 @@
 /*
 * @prop --mds-modal-overlay-color: Set the overlay color of the background when the component is opened, this property can be inherited from `globals.css` in `styles^8.0.0`.
 * @prop --mds-modal-overlay-opacity: Set the overlay color opacity of the background when the component is opened, this property can be inherited from `globals.css` in `styles^8.0.0`.
-* @prop --mds-modal-window-background: Set the background color of the window when the component is opened
-* @prop --mds-modal-window-shadow: Set the box-shadow of the window when the component is opened
+* @prop --mds-modal-window-background: Set the background color of the window
+* @prop --mds-modal-window-overflow: Set the background color of the window
+* @prop --mds-modal-window-shadow: Set the oveflow of the window
 * @prop --mds-modal-z-index: Set the z-index of the window when the component is opened
 */
 
@@ -72,6 +73,7 @@
   --mds-modal-overlay-color: var(--magma-overlay-color, 0 0 0);
   --mds-modal-overlay-opacity: var(--magma-overlay-opacity, 0.5);
   --mds-modal-window-background: theme('colors.tone-neutral');
+  --mds-modal-window-overflow: auto;
   --mds-modal-window-shadow: theme('boxShadow.2xl');
   --mds-modal-z-index: var(--magma-modal-z-index);
 
@@ -136,13 +138,13 @@
   @apply
     gap-0
     grid
-    h-full
-    overflow-auto;
+    h-full;
 
   background-color: var(--mds-modal-window-background);
   box-shadow: var(--mds-modal-window-shadow);
   grid-template-rows: 1fr;
   max-width: calc(100vw - 80px);
+  overflow: var(--mds-modal-window-overflow);
 }
 
 .window--top {
