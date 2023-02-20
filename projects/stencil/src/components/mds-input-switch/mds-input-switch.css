@@ -2,7 +2,7 @@
 @tailwind components;
 @tailwind utilities;
 
-/*
+/**
 * @prop --animation-timing-adjust: Set the size multiplier when the switch toggle is resizing by animation
 * @prop --animation-timing-function: Set the timing function of the animation
 * @prop --duration: Set the duration of the animation

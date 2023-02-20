@@ -1,6 +1,6 @@
 @tailwind utilities;
 
-/*
+/**
 * @prop --background: Sets the background-color of the component
 * @prop --color: Sets the background-color of the progress
 * @prop --duration: Sets the duration of the progress bar animation

@@ -1,6 +1,6 @@
 @tailwind utilities;
 
-/*
+/**
   * @prop --mds-paginator-item-background-disabled: Sets the background-color of the item when is disabled
   * @prop --mds-paginator-item-background-hover: Sets the background-color of the item when the mouse is over it
   * @prop --mds-paginator-item-background-selected: Sets the background-color of the item when is selected

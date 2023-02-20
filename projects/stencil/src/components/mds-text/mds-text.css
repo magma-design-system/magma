@@ -2,7 +2,7 @@
 @tailwind components;
 @tailwind utilities;
 
-/*
+/**
 * @prop --mds-text-selection-background: Sets the background-color of the text when the text is selected
 * @prop --mds-text-selection-color: Sets the color of the text when the text is selected
 */

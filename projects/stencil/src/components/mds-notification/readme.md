@@ -100,6 +100,20 @@ You can try it out on the component's [Storybook website][storybook]!
 | `visible`  | `visible`  | Specifies if the notification is visible                                                                                                           | `boolean`                             | `null`      |
 
 
+## CSS Custom Properties
+
+| Name                                    | Description                                           |
+| --------------------------------------- | ----------------------------------------------------- |
+| `--mds-notification-color`              | Sets the text color of the component                  |
+| `--mds-notification-dot-background`     | Sets the background-color of the component            |
+| `--mds-notification-dot-padding`        | Sets the size of the component                        |
+| `--mds-notification-ring-color`         | Sets the border color of ring around the notification |
+| `--mds-notification-ring-size`          | Sets the border size of ring around the notification  |
+| `--mds-notification-size`               | Sets the size of the component                        |
+| `--mds-notification-translate-offset-x` | Sets offset x positioning of the notification         |
+| `--mds-notification-translate-offset-y` | Sets offset y positioning of the notification         |
+
+
 ## Dependencies
 
 ### Depends on

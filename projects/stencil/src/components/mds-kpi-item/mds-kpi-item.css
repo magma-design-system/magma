@@ -1,6 +1,6 @@
 @tailwind utilities;
 
-/*
+/**
 * @prop --description-color: Set the color of the description text
 * @prop --info-padding: Set the padding of the info text
 * @prop --value-color: Set the color of the value text
