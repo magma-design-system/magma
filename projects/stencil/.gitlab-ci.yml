@@ -8,7 +8,7 @@ base-stencil-build:
     - nx run design-tokens:build
     - nx run styles:build
     - nx run icons:build
-    - nx run build.fixtures
+    - nx run stencil:build.fixtures
     - nx run stencil:build.icons
     - nx run stencil:build
   artifacts:
