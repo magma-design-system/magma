@@ -2,6 +2,7 @@ import { Component, Element, Event, EventEmitter, Host, h, Prop, Watch } from '@
 import miBaselineCancel from '@icon/mi/baseline/cancel.svg'
 import { setAttributeIfEmpty } from '@common/aria'
 import { MdsChipEvent } from './meta/interface'
+import { addKeyboardListener, removeKeyboardListener } from '@common/keyboard'
 
 @Component({
   tag: 'mds-chip',
@@ -69,12 +70,14 @@ export class MdsChip {
   disconnectedCallback ():void {
     if (this.clickable) {
       this.labelAction.removeEventListener('click', this.onLabelClickHandler.bind(this))
+      removeKeyboardListener(this.labelAction)
     }
   }
 
   private addActionAttributes (): void {
     setAttributeIfEmpty(this.labelAction, 'role', 'button')
     this.labelAction.addEventListener('click', this.onLabelClickHandler.bind(this))
+    addKeyboardListener(this.labelAction)
   }
 
   private addDeleteAttributes (): void {
@@ -84,6 +87,7 @@ export class MdsChip {
   private removeActionAttributes (): void {
     this.labelAction.removeAttribute('role')
     this.labelAction.removeEventListener('click', this.onLabelClickHandler)
+    removeKeyboardListener(this.labelAction)
   }
 
   private onLabelClickHandler (event: Event): void {
@@ -118,10 +122,10 @@ export class MdsChip {
             <mds-icon class="icon" name={this.icon} />
           </div>
         }
-        <mds-text class="label" tabindex="0" typography="caption" truncate={true}>
+        <mds-text class="label focusable" tabindex="0" typography="caption" truncate={true}>
           { this.label }
         </mds-text>
-        { this.deletable && <i class="svg delete" innerHTML={miBaselineCancel} onClick={this.onDeleteHandler.bind(this)} role="button" tabindex="0" title={ `${this.deleteLabel} ${this.label}` }/> }
+        { this.deletable && <i class="svg delete focusable" innerHTML={miBaselineCancel} onClick={this.onDeleteHandler.bind(this)} role="button" tabindex="0" title={ `${this.deleteLabel} ${this.label}` }/> }
       </Host>
     )
   }
