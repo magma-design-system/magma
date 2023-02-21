@@ -1,4 +1,4 @@
-import { Component, Host, h, Prop, State, Element, Event, EventEmitter, Watch } from '@stencil/core'
+import { Component, Host, h, Prop, Event, EventEmitter } from '@stencil/core'
 import { TypographyTitleType } from '../../types/typography'
 // import { DirectionType } from '../mds-progress/meta/types'
 
@@ -8,10 +8,6 @@ import { TypographyTitleType } from '../../types/typography'
   shadow: true,
 })
 export class MdsAccordionTimerItem {
-
-  // @Element() private element: HTMLMdsAccordionTimerItemElement
-
-  // @State() isActive:boolean
 
   /**
    * Specifies the typography of the element
@@ -37,14 +33,6 @@ export class MdsAccordionTimerItem {
    * Used automatically by MdsAccordionTimer wrapper to handle it's siblings
    */
   @Prop() readonly uuid?: number = 0
-
-  // componentWillLoad (): void {
-  //   this.isActive = this.active
-  // }
-
-  // componentDidLoad (): void {
-  //   this.element.shadowRoot.querySelector<HTMLMdsProgressElement>('mds-progress').setAttribute('direction', 'vertical')
-  // }
 
   private toggle = () => {
     if (!this.active) {
@@ -80,18 +68,13 @@ export class MdsAccordionTimerItem {
    */
   @Event() mouseLeaveActive: EventEmitter<string>
 
-  // @Watch('active')
-  // activeChanged (newValue: boolean): void {
-  //   this.isActive = newValue
-  // }
-
   render () {
     return (
       <Host onMouseEnter={ this.mouseEnter } onMouseLeave={ this.mouseLeave }>
         <div class="row">
           <mds-progress class="progress-bar" progress={ Number(this.progress.toFixed(2)) } direction="vertical"/>
           <div class="accordion">
-            <button aria-controls="contents" aria-expanded={ this.active ? 'true' : 'false' } class="action" id="action" onClick={ this.toggle } role="button" tabindex="0">
+            <button aria-controls="contents" aria-expanded={ this.active ? 'true' : 'false' } class="action focusable" id="action" onClick={ this.toggle } role="button" tabindex="0">
               <mds-text typography={ this.typography }>{ this.description }</mds-text>
             </button>
             <div class="contents" id="contents">

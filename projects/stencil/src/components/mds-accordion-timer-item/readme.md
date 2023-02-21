@@ -27,12 +27,12 @@
 
 ## CSS Custom Properties
 
-| Name                        | Description                                                             |
-| --------------------------- | ----------------------------------------------------------------------- |
-| `--color`                   | Sets the text color of the component                                    |
-| `--progress-bar-background` | Sets the background-color of the progress bar when the item is selected |
-| `--progress-bar-color`      | Sets the color of the progress bar when the item is selected            |
-| `--progress-bar-thickness`  | Sets thickness of the progress bar                                      |
+| Name                                                 | Description                                                             |
+| ---------------------------------------------------- | ----------------------------------------------------------------------- |
+| `--mds-accordion-timer-item-color`                   | Sets the text color of the component                                    |
+| `--mds-accordion-timer-item-progress-bar-background` | Sets the background-color of the progress bar when the item is selected |
+| `--mds-accordion-timer-item-progress-bar-color`      | Sets the color of the progress bar when the item is selected            |
+| `--mds-accordion-timer-item-progress-bar-thickness`  | Sets thickness of the progress bar                                      |
 
 
 ## Dependencies
