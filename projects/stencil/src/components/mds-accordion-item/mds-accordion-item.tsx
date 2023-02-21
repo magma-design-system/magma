@@ -1,5 +1,5 @@
 import { Component, Host, h, Prop, Element, Event, EventEmitter } from '@stencil/core'
-import { TypographyTitleType } from '../../types/typography'
+import { TypographyTitleType } from '@type/typography'
 import miBaselineKeyboardArrowUp from '@icon/mi/baseline/keyboard-arrow-up.svg'
 import { AccordionClickedEvent } from '../mds-accordion/meta/interface'
 
@@ -40,7 +40,7 @@ export class MdsAccordionItem {
   render () {
     return (
       <Host>
-        <button aria-controls="contents" aria-expanded={ this.opened ? 'true' : 'false' } class="action" id="action" onClick={ this.toggle } role="button" tabindex="0">
+        <button aria-controls="contents" aria-expanded={ this.opened ? 'true' : 'false' } class="action focusable" id="action" onClick={ this.toggle } role="button" tabindex="0">
           <mds-text typography={ this.typography }>
             { this.description }
           </mds-text>

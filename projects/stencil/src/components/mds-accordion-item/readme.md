@@ -23,10 +23,10 @@
 
 ## CSS Custom Properties
 
-| Name                  | Description                                            |
-| --------------------- | ------------------------------------------------------ |
-| `--color`             | Sets the text-color of the element                     |
-| `--description-color` | Sets the color of the always visible title description |
+| Name                                     | Description                                            |
+| ---------------------------------------- | ------------------------------------------------------ |
+| `--mds-accordion-item-color`             | Sets the text-color of the element                     |
+| `--mds-accordion-item-description-color` | Sets the color of the always visible title description |
 
 
 ## Dependencies
