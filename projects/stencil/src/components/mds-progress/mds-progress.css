@@ -1,20 +1,20 @@
 @tailwind utilities;
 
 /**
-* @prop --background: Sets the background-color of the component
-* @prop --color: Sets the background-color of the progress
-* @prop --duration: Sets the duration of the progress bar animation
-* @prop --radius: Sets the border-radius of the component
-* @prop --thickness: Sets the thickness of the progress bar
+* @prop --mds-progress-background: Sets the background-color of the component
+* @prop --mds-progress-color: Sets the background-color of the progress
+* @prop --mds-progress-duration: Sets the duration of the progress bar animation
+* @prop --mds-progress-radius: Sets the border-radius of the component
+* @prop --mds-progress-thickness: Sets the thickness of the progress bar
 */
 
 :host {
 
-  --background: theme('colors.tone-neutral-08');
-  --color: theme('colors.brand-maggioli-03');
-  --duration: 500ms;
-  --radius: theme('borderRadius.lg');
-  --thickness: theme('height.2');
+  --mds-progress-background: theme('colors.tone-neutral-08');
+  --mds-progress-color: theme('colors.brand-maggioli-03');
+  --mds-progress-duration: 500ms;
+  --mds-progress-radius: theme('borderRadius.lg');
+  --mds-progress-thickness: theme('height.2');
 
   @apply
     flex
@@ -22,10 +22,10 @@
     transition-colors
     w-full;
 
-  background-color: var(--background);
-  border-radius: var(--radius);
-  height: var(--thickness);
-  min-width: var(--thickness);
+  background-color: var(--mds-progress-background);
+  border-radius: var(--mds-progress-radius);
+  height: var(--mds-progress-thickness);
+  min-width: var(--mds-progress-thickness);
 }
 
 :host ( [direction=vertical] ) {
@@ -35,16 +35,16 @@
     w-auto;
 
   height: unset;
-  width: var(--thickness);
-  min-height: var(--thickness);
+  width: var(--mds-progress-thickness);
+  min-height: var(--mds-progress-thickness);
 }
 
 .progress {
   @apply ease-out-expo;
 
-  background-color: var(--color);
-  border-radius: var(--radius);
-  transition-duration: var(--duration);
+  background-color: var(--mds-progress-color);
+  border-radius: var(--mds-progress-radius);
+  transition-duration: var(--mds-progress-duration);
   transition-property: background-color, flex-grow;
 }
 
