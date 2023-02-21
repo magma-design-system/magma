@@ -25,12 +25,13 @@
 
 ## CSS Custom Properties
 
-| Name           | Description                                |
-| -------------- | ------------------------------------------ |
-| `--background` | Sets the background-color of the component |
-| `--color`      | Sets the text color of the component       |
-| `--icon-color` | Sets the color of the icon                 |
-| `--radius`     | Sets the border radius of the component    |
+| Name                               | Description                                     |
+| ---------------------------------- | ----------------------------------------------- |
+| `--mds-label-background`           | Sets the background-color of the component      |
+| `--mds-label-color`                | Sets the text color of the component            |
+| `--mds-label-icon-color`           | Sets the color of the icon                      |
+| `--mds-label-selection-background` | Sets the selection background color of the text |
+| `--mds-label-selection-color`      | Sets the selection color of the text            |
 
 
 ## Dependencies

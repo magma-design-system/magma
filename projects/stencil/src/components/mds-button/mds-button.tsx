@@ -21,6 +21,7 @@ export class MdsButton {
 
   private typography?: TypographyType
   private hasText?: boolean
+  private hasNotification?: boolean
 
   @Element() host: HTMLMdsButtonElement
 
@@ -68,14 +69,18 @@ export class MdsButton {
   }
 
   componentWillLoad ():void {
+    this.hasNotification = this.host.querySelector('[slot="notification"]') !== null
     this.hasText = this.host.innerHTML !== ''
   }
 
   componentDidLoad ():void {
     this.addKeyboardSpaceListener()
     if (!this.hasText && this.icon) {
-      setAttributeIfEmpty(this.host, 'title', unslugName(this.icon))
-      setAttributeIfEmpty(this.host, 'aria-label', this.host.getAttribute('title'))
+      const iconTitle = unslugName(this.icon)
+      if (!this.host.hasAttribute('aria-label')) {
+        setAttributeIfEmpty(this.host, 'title', iconTitle)
+      }
+      setAttributeIfEmpty(this.host, 'aria-label', iconTitle)
     }
   }
 
@@ -105,6 +110,7 @@ export class MdsButton {
       <Host class={clsx(!this.hasText && 'no-text')} onMouseDown={this.mouseDown} onMouseUp={this.mouseUp} onMouseOut={this.mouseUp} tabindex="0" role="button">
         { this.icon && this.iconPosition === 'left' && <mds-icon aria-hidden="true" class="icon" name={this.icon} /> }
         { this.hasText && <mds-text class="text" part="label" typography={this.typography}><slot /></mds-text> }
+        { this.hasNotification && <slot name="notification"/> }
         { this.icon && this.iconPosition === 'right' && <mds-icon aria-hidden="true" class="icon" name={this.icon} /> }
       </Host>
     )

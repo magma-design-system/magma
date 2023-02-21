@@ -76,9 +76,9 @@ const Template = ({ layout, ...args }) =>
         Frederick Phillips "Fred" Brooks Jr. (born April 19, 1931) is an American computer architect, software engineer, and computer scientist.
       </mds-text>
       <mds-hr class="h-[2px] bg-tone-neutral-08"/>
-      <mds-button class="justify-start" icon="mi/baseline/info" variant="dark" tone="quiet">User infos</mds-button>
-      <mds-button class="justify-start" icon="mi/baseline/settings" variant="dark" tone="quiet">Account</mds-button>
-      <mds-button class="justify-start" icon="mi/baseline/logout" variant="dark" tone="quiet">Exit</mds-button>
+      <mds-button class="justify-start px-0" icon="mi/baseline/info" variant="dark" tone="quiet">User infos</mds-button>
+      <mds-button class="justify-start px-0" icon="mi/baseline/settings" variant="dark" tone="quiet">Account</mds-button>
+      <mds-button class="justify-start px-0" icon="mi/baseline/logout" variant="dark" tone="quiet">Exit</mds-button>
     </mds-dropdown>
   </div>
 

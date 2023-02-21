@@ -1,22 +1,51 @@
 @tailwind utilities;
 @import '../../tailwind/components.css';
 
+/**
+* @prop --mds-breadcrumb-item-arrow-depth-color: Sets the color of the arrow icon that separates buttons
+* @prop --mds-breadcrumb-item-button-background-current: Sets the background color of the button when it's active
+* @prop --mds-breadcrumb-item-button-background-hover: Sets the background color of the button when the mouse is over it
+* @prop --mds-breadcrumb-item-button-background: Sets the background color of the button
+* @prop --mds-breadcrumb-item-button-color-current: Sets the text color of the button when it's active
+* @prop --mds-breadcrumb-item-button-color-hover: Sets the text color of the button when the mouse is over it
+* @prop --mds-breadcrumb-item-button-color: Sets the text color of the button
+* @prop --mds-breadcrumb-item-outline-blur-offset: Sets the blur offset color when the button is blurred via keyboard
+* @prop --mds-breadcrumb-item-outline-blur: Sets the blur color when the button is blurred via keyboard
+* @prop --mds-breadcrumb-item-outline-focus-offset: Sets the focus offset color when the button is focused via keyboard
+* @prop --mds-breadcrumb-item-outline-focus: Sets the focus color when the button is focused via keyboard
+*/
+
 :host {
+
+  --mds-breadcrumb-item-arrow-depth-color: var(--mds-breadcrumb-arrow-depth-color, theme('colors.tone-neutral-04'));
+  --mds-breadcrumb-item-button-background-current: var(--mds-breadcrumb-button-background-current, theme('colors.tone-neutral-09'));
+  --mds-breadcrumb-item-button-background-hover: var(--mds-breadcrumb-button-background-hover, theme('colors.tone-neutral-10'));
+  --mds-breadcrumb-item-button-background: var(--mds-breadcrumb-button-background, transparent);
+  --mds-breadcrumb-item-button-color-current: var(--mds-breadcrumb-button-color-current, theme('colors.tone-neutral-01'));
+  --mds-breadcrumb-item-button-color-hover: var(--mds-breadcrumb-button-color-hover, theme('colors.tone-neutral-02'));
+  --mds-breadcrumb-item-button-color: var(--mds-breadcrumb-button-color, theme('colors.tone-neutral-02'));
+  --mds-breadcrumb-item-outline-blur-offset: var(--magma-outline-blur-offset, 6px);
+  --mds-breadcrumb-item-outline-blur: var(--magma-outline-blur, 2px solid transparent);
+  --mds-breadcrumb-item-outline-focus-offset: var(--magma-outline-focus-offset, 2px);
+  --mds-breadcrumb-item-outline-focus: var(--magma-outline-focus, 2px solid theme('colors.label-sky-05'));
+
   @apply
     flex
-    shrink-0
     gap-0
-    items-center;
+    items-center
+    shrink-0;
+
+  outline-offset: var(--mds-breadcrumb-item-outline-blur-offset);
+  outline: var(--mds-breadcrumb-item-outline-blur);
+}
+
+:host( :focus-visible ) {
+  --mds-breadcrumb-item-outline-blur-offset: var(--mds-breadcrumb-item-outline-focus-offset);
+  --mds-breadcrumb-item-outline-blur: var(--mds-breadcrumb-item-outline-focus);
 }
 
 :host( :last-child ) .icon {
   @apply hidden;
-}
-
-:host( :last-child ) .text {
-  @apply pointer-events-none;
-
-  color: var(--current-button-color, theme('colors.tone-neutral-05'));
 }
 
 .text {
@@ -28,13 +57,20 @@
     transition-colors
     whitespace-nowrap;
 
-  background-color: var(--button-background, transparent);
-  color: var(--button-color, theme('colors.tone-neutral-02'));
+  background-color: var(--mds-breadcrumb-item-button-background);
+  color: var(--mds-breadcrumb-item-button-color);
 }
 
 .text:hover {
-  background-color: var(--button-background-hover, theme('colors.brand-maggioli-09'));
-  color: var(--button-color-hover, theme('colors.brand-maggioli-04'));
+  --mds-breadcrumb-item-button-background: var(--mds-breadcrumb-item-button-background-hover);
+  --mds-breadcrumb-item-button-color: var(--mds-breadcrumb-item-button-color-hover);
+}
+
+:host ( [active]:not([active=false]) ) {
+  @apply pointer-events-none;
+
+  --mds-breadcrumb-item-button-background: var(--mds-breadcrumb-item-button-background-current);
+  --mds-breadcrumb-item-button-color: var(--mds-breadcrumb-item-button-color-current);
 }
 
 .text::first-letter {
@@ -44,5 +80,5 @@
 .icon {
   @apply pointer-events-none;
 
-  color: var(--arrow-depth-color, theme('colors.tone-neutral-07'));
+  color: var(--mds-breadcrumb-item-arrow-depth-color);
 }

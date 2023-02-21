@@ -4,12 +4,24 @@
 :host {
   @apply
     cursor-pointer
+    fill-tone-neutral-03
     flex
+    gap-1
+    items-center
+    justify-center
     px-4
     py-2
     rounded-full
     text-tone-neutral-03
-    transition-colors;
+    transition-colors
+    whitespace-nowrap;
+}
+
+:host ( [icon]:not([label]) ) {
+  @apply
+    h-9
+    p-0
+    w-9;
 }
 
 :host ( [active]:not([active=false]) ),

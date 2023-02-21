@@ -1,6 +1,6 @@
 @tailwind utilities;
 
-/*
+/**
   * @prop --color: Sets the color of the text
   * @prop --duaration: Sets the duration of the animation
   * @prop --icon-background-checked: Sets the background-color of the icon when the component is checked

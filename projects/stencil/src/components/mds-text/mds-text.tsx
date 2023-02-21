@@ -2,7 +2,6 @@ import { Component, Host, Prop, h } from '@stencil/core'
 import { TypographyTagType } from './meta/types'
 import { TypographyType, TypographyVariants } from '../../types/typography'
 import { typographyDefaultsVariant } from './meta/variants'
-import clsx from 'clsx'
 
 @Component( {
   tag: 'mds-text',
@@ -35,7 +34,7 @@ export class MdsText {
     this.tag = this.tag ?? tag as TypographyTagType
     return (
       <Host>
-        <this.tag class={clsx(this.truncate ? 'truncate' : 'text')}>
+        <this.tag class="text">
           <slot />
         </this.tag>
       </Host>

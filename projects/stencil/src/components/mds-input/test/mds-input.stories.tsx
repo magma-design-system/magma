@@ -80,7 +80,7 @@ export default {
       control: { type: 'select' },
       description: 'Sets the variant of the input field',
     },
-    'variant-tip': {
+    tip: {
       type: { name: 'string' },
       description: 'Sets the message of the variant of the input field',
     },
@@ -143,11 +143,17 @@ readOnly.args = {
   value: 'This is a read only field',
 }
 
-export const status = Template.bind({})
-status.args = {
-  status: 'error',
+export const variant = Template.bind({})
+variant.args = {
+  variant: 'error',
   placeholder: 'Status input field',
-  'status-tip': 'errore',
+  tip: 'errore',
+}
+
+export const tip = Template.bind({})
+tip.args = {
+  placeholder: 'Scrivi qualcosa...',
+  tip: 'input',
 }
 
 export const search = Template.bind({})

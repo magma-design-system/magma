@@ -17,8 +17,12 @@ const srcDir = './src'
 
 export const config: Config = {
   namespace: packageName,
+  hydratedFlag: {
+    selector: 'attribute',
+  },
   taskQueue: 'async',
   srcDir,
+  sourceMap: false,
   buildEs5: true,
   outputTargets: [
     {
@@ -27,6 +31,7 @@ export const config: Config = {
     },
     {
       type: 'dist-custom-elements',
+      generateTypeDeclarations: true,
     },
     {
       type: 'docs-readme',

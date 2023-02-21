@@ -1,6 +1,6 @@
 {
   "name": "@maggioli-design-system/mds-text",
-  "version": "3.0.0",
+  "version": "3.2.1",
   "description": "mds-text is a web-component from Maggioli Design System Magma, built with StencilJS, TypeScript, Storybook. It's based on the web-component standard and it's designed to be agnostic from the JavaScirpt framework you are using.",
   "main": "dist/index.cjs.js",
   "module": "dist/index.js",
@@ -23,15 +23,15 @@
     "test": "stencil test --spec --e2e"
   },
   "dependencies": {
-    "@fontsource/karla": "^4.5.10",
+    "@fontsource/karla": "^4.5.11",
     "@fontsource/merriweather": "^4.5.14",
     "@fontsource/roboto": "^4.5.8",
-    "@maggioli-design-system/styles": "^10.0.0",
-    "@stencil/core": "^2.19.3",
+    "@maggioli-design-system/styles": "^11.0.0",
+    "@stencil/core": "^2.22.2",
     "clsx": "^1.2.1"
   },
   "config": {
-    "publishOnLocalRegistry" : true
+    "publishOnLocalRegistry": true
   },
   "license": "MIT",
   "author": {

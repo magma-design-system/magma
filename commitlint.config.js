@@ -23,6 +23,7 @@ module.exports = {
         'doc',
         'feat',
         'fix',
+        'hotfix',
         'merge',
         'perf',
         'refact',

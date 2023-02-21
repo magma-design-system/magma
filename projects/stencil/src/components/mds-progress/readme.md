@@ -15,6 +15,17 @@
 | `variant`   | `variant`   | Sets the theme variant colors                                          | `"dark" \| "error" \| "info" \| "light" \| "primary" \| "success" \| "warning"` | `'dark'`                                  |
 
 
+## CSS Custom Properties
+
+| Name           | Description                                     |
+| -------------- | ----------------------------------------------- |
+| `--background` | Sets the background-color of the component      |
+| `--color`      | Sets the background-color of the progress       |
+| `--duration`   | Sets the duration of the progress bar animation |
+| `--radius`     | Sets the border-radius of the component         |
+| `--thickness`  | Sets the thickness of the progress bar          |
+
+
 ## Dependencies
 
 ### Used by

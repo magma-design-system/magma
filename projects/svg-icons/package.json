@@ -1,8 +1,18 @@
 {
   "name": "@maggioli-design-system/svg-icons",
-  "version": "3.6.0",
+  "version": "3.8.1",
   "description": "Maggioli Design System Icons is an icon font package based on Google Material Design Icons and Material Design Icons community icons.",
   "main": "./index.js",
+  "scripts": {
+    "build": "npm run clean && npm run dictionary && npm run svg",
+    "svg": "svgo -f ./svg -o ./dist/svg",
+    "clean": "npx ts-node --skipProject scripts/clean.ts",
+    "dictionary": "npx ts-node --skipProject scripts/iconsauce.ts"
+  },
+  "devDependencies": {
+    "fast-glob": "^3.2.12",
+    "svgo": "^3.0.2"
+  },
   "repository": {
     "type": "git",
     "url": "https://git.maggioli.it/ricerca-sviluppo-new-media/design-system.git"
@@ -22,7 +32,8 @@
     {
       "name": "Gioele Masini",
       "role": "Software Engineer"
-    },{
+    },
+    {
       "name": "Vittorio Vittori",
       "email": "vittorio.vittori@maggioli.it",
       "role": "UX UI Designer"

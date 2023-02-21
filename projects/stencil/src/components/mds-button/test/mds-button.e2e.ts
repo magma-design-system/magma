@@ -6,7 +6,7 @@ describe('mds-button', () => {
     await page.setContent('<mds-button></mds-button>')
 
     const element = await page.find('mds-button')
-    // expect(element).toHaveClass('hydrated')
+    expect(element).toHaveAttribute('hydrated')
     expect(true).toBe(true)
   })
 })

@@ -3,27 +3,27 @@
 :host ( [variant=error] ),
 :host ( [variant=error][tone=strong] ) {
 
-  --background: theme('colors.status-error-04');
-  --color: theme('colors.status-error-10');
-  --icon-color: theme('colors.status-error-10');
-  --selection-background: theme('colors.status-error-08');
-  --selection-color: theme('colors.status-error-02');
+  --mds-label-background: theme('colors.status-error-04');
+  --mds-label-color: theme('colors.status-error-10');
+  --mds-label-icon-color: theme('colors.status-error-10');
+  --mds-label-selection-background: theme('colors.status-error-08');
+  --mds-label-selection-color: theme('colors.status-error-02');
 }
 
 :host ( [variant=error][tone=weak] ) {
 
-  --background: theme('colors.status-error-08');
-  --color: theme('colors.status-error-02');
-  --icon-color: theme('colors.status-error-02');
-  --selection-background: theme('colors.status-error-06');
-  --selection-color: theme('colors.status-error-10');
+  --mds-label-background: theme('colors.status-error-08');
+  --mds-label-color: theme('colors.status-error-02');
+  --mds-label-icon-color: theme('colors.status-error-02');
+  --mds-label-selection-background: theme('colors.status-error-06');
+  --mds-label-selection-color: theme('colors.status-error-10');
 }
 
 :host ( [variant=error][tone=quiet] ) {
 
-  --background: theme('colors.status-error-09');
-  --color: theme('colors.status-error-04');
-  --icon-color: theme('colors.status-error-04');
-  --selection-background: theme('colors.status-error-05');
-  --selection-color: theme('colors.status-error-09');
+  --mds-label-background: theme('colors.status-error-09');
+  --mds-label-color: theme('colors.status-error-04');
+  --mds-label-icon-color: theme('colors.status-error-04');
+  --mds-label-selection-background: theme('colors.status-error-05');
+  --mds-label-selection-color: theme('colors.status-error-09');
 }

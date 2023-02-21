@@ -8,8 +8,9 @@ base-stencil-build:
     - nx run design-tokens:build
     - nx run styles:build
     - nx run icons:build
-    - nx run stencil:build
+    - nx run stencil:build.fixtures
     - nx run stencil:build.icons
+    - nx run stencil:build
   artifacts:
     name: stencil-build
     expire_in: 1 day
@@ -118,8 +119,6 @@ stencil-test:
         - projects/stencil/src/components/$COMPONENT/package.json
 
 include:
-  # - '/projects/stencil/src/components/mds-breadcrumb-item/.gitlab-ci.yml'
-  # - '/projects/stencil/src/components/mds-breadcrumb/.gitlab-ci.yml'
   # - '/projects/stencil/src/components/mds-form/.gitlab-ci.yml'
   # - '/projects/stencil/src/components/mds-input-field/.gitlab-ci.yml'
   # - '/projects/stencil/src/components/mds-input-range/.gitlab-ci.yml'
@@ -138,6 +137,8 @@ include:
   - '/projects/stencil/src/components/mds-banner/.gitlab-ci.yml'
   - '/projects/stencil/src/components/mds-benchmark-bar/.gitlab-ci.yml'
   - '/projects/stencil/src/components/mds-bibliography/.gitlab-ci.yml'
+  - '/projects/stencil/src/components/mds-breadcrumb-item/.gitlab-ci.yml'
+  - '/projects/stencil/src/components/mds-breadcrumb/.gitlab-ci.yml'
   - '/projects/stencil/src/components/mds-button/.gitlab-ci.yml'
   - '/projects/stencil/src/components/mds-card/.gitlab-ci.yml'
   - '/projects/stencil/src/components/mds-chip/.gitlab-ci.yml'
@@ -145,8 +146,8 @@ include:
   - '/projects/stencil/src/components/mds-dropdown/.gitlab-ci.yml'
   - '/projects/stencil/src/components/mds-entity/.gitlab-ci.yml'
   - '/projects/stencil/src/components/mds-file/.gitlab-ci.yml'
-  - '/projects/stencil/src/components/mds-filter/.gitlab-ci.yml'
   - '/projects/stencil/src/components/mds-filter-item/.gitlab-ci.yml'
+  - '/projects/stencil/src/components/mds-filter/.gitlab-ci.yml'
   - '/projects/stencil/src/components/mds-flex-table-body/.gitlab-ci.yml'
   - '/projects/stencil/src/components/mds-flex-table-cell/.gitlab-ci.yml'
   - '/projects/stencil/src/components/mds-flex-table-footer/.gitlab-ci.yml'
@@ -191,4 +192,3 @@ include:
   - '/projects/stencil/src/components/mds-url-view/.gitlab-ci.yml'
   - '/projects/stencil/src/components/mds-usage/.gitlab-ci.yml'
   - '/projects/stencil/src/components/mds-video-wall/.gitlab-ci.yml'
-

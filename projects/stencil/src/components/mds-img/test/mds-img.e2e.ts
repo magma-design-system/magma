@@ -6,7 +6,7 @@ describe('mds-img', () => {
     await page.setContent('<mds-img></mds-img>')
 
     const element = await page.find('mds-img')
-    // expect(element).toHaveClass('hydrated')
+    expect(element).toHaveAttribute('hydrated')
     expect(true).toBe(true)
   })
 })

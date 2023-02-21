@@ -2,26 +2,30 @@
 @import '../../tailwind/components.css';
 
 /**
-  * @prop --arrow-back-color-hover: Sets the color of arrow back icon when the mouse is over it
-  * @prop --arrow-back-color: Sets the color of arrow back icon
-  * @prop --arrow-depth-color: Sets the color of arrow depth icon
-  * @prop --button-background-hover: Sets the background-color of the button when the mouse is over it
-  * @prop --button-background: Sets the background-color of the button item
-  * @prop --button-color-hover: Sets the text color of the button when the mouse is over it
-  * @prop --button-color: Sets the text color of the button
-  * @prop --current-button-color: Sets the text color of the current depth button
-  */
+* @prop --mds-breadcrumb-arrow-depth-color: Sets the color of the arrow icon that separates buttons
+* @prop --mds-breadcrumb-button-background-current: Sets the background color of the button when it's active
+* @prop --mds-breadcrumb-button-background-disabled: Sets the background color of the button when it's disabled, is used for arrow button
+* @prop --mds-breadcrumb-button-background-hover: Sets the background color of the button when the mouse is over it
+* @prop --mds-breadcrumb-button-background: Sets the background color of the button
+* @prop --mds-breadcrumb-button-color-current: Sets the text color of the button when it's active
+* @prop --mds-breadcrumb-button-color-disabled: Sets the text color of the button when it's disabled, is used for arrow button
+* @prop --mds-breadcrumb-button-color-hover: Sets the text color of the button when the mouse is over it
+* @prop --mds-breadcrumb-button-color: Sets the text color of the button
+* @prop --mds-breadcrumb-current-button-color: Sets the text color of the current depth button
+*/
 
 :host {
 
-  --arrow-back-color-hover: theme('colors.tone-neutral-02');
-  --arrow-back-color: theme('colors.tone-neutral-02');
-  --arrow-depth-color: theme('colors.tone-neutral-07');
-  --button-background-hover: theme('colors.label-blue-09');
-  --button-background: transparent;
-  --button-color-hover: theme('colors.brand-maggioli-04');
-  --button-color: theme('colors.tone-neutral-02');
-  --current-button-color: theme('colors.tone-neutral-05');
+  --mds-breadcrumb-arrow-depth-color: theme('colors.tone-neutral-04');
+  --mds-breadcrumb-button-background-current: theme('colors.tone-neutral-09');
+  --mds-breadcrumb-button-background-disabled: transparent;
+  --mds-breadcrumb-button-background-hover: theme('colors.tone-neutral-10');
+  --mds-breadcrumb-button-background: transparent;
+  --mds-breadcrumb-button-color-current: theme('colors.tone-neutral-01');
+  --mds-breadcrumb-button-color-disabled: theme('colors.tone-neutral-06');
+  --mds-breadcrumb-button-color-hover: theme('colors.tone-neutral-02');
+  --mds-breadcrumb-button-color: theme('colors.tone-neutral-02');
+  --mds-breadcrumb-current-button-color: theme('colors.tone-neutral-05');
 
   @apply
     flex
@@ -44,19 +48,27 @@
   @apply
     cursor-pointer
     flex
-    shrink-0
     h-8
     items-center
     justify-center
+    mr-1
     rounded-full
+    shrink-0
     transition-colors
     w-8;
 
-  background-color: var(--button-background);
-  color: var(--button-color);
+  background-color: var(--mds-breadcrumb-button-background);
+  fill: var(--mds-breadcrumb-button-color);
 }
 
 .back:hover {
-  background-color: var(--button-background-hover);
-  color: var(--button-color-hover);
+  --mds-breadcrumb-button-background: var(--mds-breadcrumb-button-background-hover);
+  --mds-breadcrumb-button-color: var(--mds-breadcrumb-button-color-hover);
+}
+
+.disabled {
+  @apply pointer-events-none;
+
+  --mds-breadcrumb-button-background: var(--mds-breadcrumb-button-background-disabled);
+  --mds-breadcrumb-button-color: var(--mds-breadcrumb-button-color-disabled);
 }

@@ -6,13 +6,13 @@
       duration-200
       ease-out;
 
-    outline-offset: var(--outline-blur-offset, 6px);
-    outline: var(--outline-blur, 2px solid transparent);
+    outline-offset: var(--magma-outline-blur-offset, 6px);
+    outline: var(--magma-outline-blur, 2px solid transparent);
     transition-property: background-color, border-color, box-shadow, color, fill, outline, outline-offset, transform;
   }
 
   .focusable:focus-visible {
-    outline-offset: var(--outline-focus-offset, 2px);
-    outline: var(--outline-focus, 2px solid theme('colors.label-sky-05'));
+    outline-offset: var(--magma-outline-focus-offset, 2px);
+    outline: var(--magma-outline-focus, 2px solid theme('colors.label-sky-05'));
   }
 }
