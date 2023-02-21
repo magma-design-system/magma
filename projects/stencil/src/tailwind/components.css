@@ -1,4 +1,6 @@
 @tailwind components;
+@import '../../../styles/tailwind/components.css';
+
 
 @layer components {
   .svg {
