@@ -24,7 +24,7 @@
   },
   "dependencies": {
     "@maggioli-design-system/mds-accordion-timer-item": "^2.2.0",
-    "@maggioli-design-system/styles": "^11.1.0",
+    "@maggioli-design-system/styles": "^11.2.0",
     "@stencil/core": "^2.22.2"
   },
   "license": "MIT",
