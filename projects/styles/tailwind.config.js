@@ -75,12 +75,12 @@ module.exports = {
         1: '1fr',
       },
       gridTemplateColumns: {
-        'fit-sm': 'repeat(auto-fit, minmax(10rem, 1fr))',
-        fit: 'repeat(auto-fit, minmax(12.5rem, 1fr))',
-        'fit-md': 'repeat(auto-fit, minmax(15rem, 1fr))',
         'fit-lg': 'repeat(auto-fit, minmax(17.5rem, 1fr))',
+        'fit-md': 'repeat(auto-fit, minmax(15rem, 1fr))',
+        'fit-sm': 'repeat(auto-fit, minmax(10rem, 1fr))',
         'fit-xl': 'repeat(auto-fit, minmax(20rem, 1fr))',
-        full: '100%',
+        fit: 'repeat(auto-fit, minmax(12.5rem, 1fr))',
+        full: 'grid-template-columns: repeat(minmax(1px, 100%))',
       },
       maxWidth: {
         '1/4': '25%',
