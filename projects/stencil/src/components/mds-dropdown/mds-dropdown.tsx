@@ -3,6 +3,7 @@ import { arrow, autoPlacement, autoUpdate, computePosition, flip, MiddlewareData
 import { FloatingUIPlacement, FloatingUIStrategy } from '@type/floating-ui'
 import arrowSvg from './assets/arrow.svg'
 import { setAttributeIfEmpty, hashValue } from '@common/aria'
+import { addKeyboardListener, removeKeyboardListener, addKeyboardEscapeListener, removeKeyboardEscapeListener } from '@common/keyboard'
 
 @Component({
   tag: 'mds-dropdown',
@@ -377,7 +378,7 @@ export class MdsDropdown {
     setAttributeIfEmpty(this.host, 'aria-labelledby', this.target)
   }
 
-  componentDidRender (): void {
+  componentDidLoad (): void {
     document.addEventListener('click', this.handleCloseDropdown)
     this.arrowEl = this.host.shadowRoot.querySelector('.arrow')
     this.caller = document.getElementById(this.target)
@@ -389,17 +390,20 @@ export class MdsDropdown {
     }
 
     this.caller.addEventListener('click', this.callerOnClick.bind(this))
+    addKeyboardListener(this.caller)
+    addKeyboardEscapeListener(() => this.handleVisibility(false))
+
     this.backdropChanged(this.backdrop)
     this.updatePosition()
-  }
 
-  componentDidLoad (): void {
     if (!this.cleanupAutoUpdate) {
       this.cleanupAutoUpdate = autoUpdate(this.caller, this.host, this.updatePosition)
     }
   }
 
   disconnectedCallback (): void {
+    removeKeyboardListener(this.caller)
+    removeKeyboardEscapeListener()
     this.cleanupAutoUpdate = null
   }
 
