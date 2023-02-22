@@ -26,16 +26,8 @@ const Template = args =>
     <mds-text aria-label="Nome" typography="h6">Mario Rossi</mds-text>
     <mds-badge aria-label="Carattere" slot="detail" variant="orange" tone="quiet">buono</mds-badge>
     <mds-text aria-label="Email" slot="detail" typography="caption">mario@nintendo.com</mds-text>
-    <mds-button slot="action" icon="mdi/replay" variant="primary" tone="strong" title="Restore"/>
-    <mds-button slot="action" icon="mdi/delete" variant="error" tone="strong" title="Delete"/>
-  </mds-entity>
-
-const TemplateWario = args =>
-  <mds-entity {...args} aria-label="Personaggio">
-    <mds-text aria-label="Nome" typography="h6">Wario</mds-text>
-    <mds-badge aria-label="Carattere" slot="detail" variant="violet" tone="quiet">cattivo</mds-badge>
-    <mds-text aria-label="Email" slot="detail" typography="caption">wario@nintendo.com</mds-text>
-    <mds-button slot="action" icon="mdi/email" variant="primary" tone="strong" title="Mail Wario"/>
+    <mds-button onClick={() => { console.log('Restore') }} slot="action" icon="mdi/replay" variant="primary" tone="strong" title="Restore"/>
+    <mds-button onClick={() => { console.log('Delete') }} slot="action" icon="mdi/delete" variant="error" tone="strong" title="Delete"/>
   </mds-entity>
 
 const TemplateLocation = args =>
@@ -48,12 +40,6 @@ const TemplateLocation = args =>
 export const Default = Template.bind({})
 Default.args = {
   src: './avatar-mario-01.png',
-}
-
-export const Deletable = TemplateWario.bind({})
-Deletable.args = {
-  deletable: true,
-  src: './avatar-wario-03.jpg',
 }
 
 export const Icon = TemplateLocation.bind({})
