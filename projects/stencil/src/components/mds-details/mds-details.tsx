@@ -1,6 +1,7 @@
-import { Component, Host, h, Prop, State, Event, Watch, EventEmitter } from '@stencil/core'
+import { Component, Element, Event, EventEmitter, Host, Prop, State, Watch, h } from '@stencil/core'
 import clsx from 'clsx'
 import miBaselineKeyboardArrowDown from '@icon/mi/baseline/keyboard-arrow-down.svg'
+import { addKeyboardListener, removeKeyboardListener } from '@common/keyboard'
 
 @Component({
   tag: 'mds-details',
@@ -9,6 +10,7 @@ import miBaselineKeyboardArrowDown from '@icon/mi/baseline/keyboard-arrow-down.s
 })
 export class MdsDetails {
 
+  @Element() private host: HTMLMdsDetailsElement
   @State() isOpened: boolean
 
   /**
@@ -30,6 +32,16 @@ export class MdsDetails {
     this.isOpened = this.opened
   }
 
+  componentDidLoad (): void {
+    const header = this.host.shadowRoot.querySelector('.header') as HTMLElement
+    addKeyboardListener(header)
+  }
+
+  disconnectedCallback (): void {
+    const header = this.host.shadowRoot.querySelector('.header') as HTMLElement
+    removeKeyboardListener(header)
+  }
+
   private toggle = () => {
     this.isOpened = !this.isOpened
     if (this.isOpened) {
@@ -44,12 +56,14 @@ export class MdsDetails {
           <slot name="icon"/>
         </div>
         <div class="contents">
-          <header class="header">
-            <div class="title" onClick={ this.toggle }>
-              <slot name="title"/>
-            </div>
-            <i onClick={ this.toggle } class={clsx('svg helper-icon', this.isOpened && 'opened')} innerHTML={miBaselineKeyboardArrowDown}/>
-          </header>
+          <div>
+            <header class="header focusable" tabindex="0" onClick={ this.toggle }>
+              <div class="title">
+                <slot name="title"/>
+              </div>
+              <i class={clsx('svg helper-icon', this.isOpened && 'opened')} innerHTML={miBaselineKeyboardArrowDown}/>
+            </header>
+          </div>
           <div class={clsx('details', this.isOpened && 'opened')}>
             <slot/>
             <div class="actions">

@@ -43,7 +43,7 @@
 
 .header {
   @apply
-    flex
+    inline-flex
     gap-2
     items-start;
 }
