@@ -122,9 +122,14 @@ export class MdsChip {
             <mds-icon class="icon" name={this.icon} />
           </div>
         }
-        <mds-text class="label focusable" tabindex="0" typography="caption" truncate={true}>
-          { this.label }
-        </mds-text>
+        { this.clickable
+          ? <mds-text class="label focusable" tabindex="0" typography="caption" truncate={true}>
+            { this.label }
+          </mds-text>
+          : <mds-text class="label" typography="caption" truncate={true}>
+            { this.label }
+          </mds-text>
+        }
         { this.deletable && <i class="svg delete focusable" innerHTML={miBaselineCancel} onClick={this.onDeleteHandler.bind(this)} role="button" tabindex="0" title={ `${this.deleteLabel} ${this.label}` }/> }
       </Host>
     )
