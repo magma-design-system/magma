@@ -2,6 +2,7 @@ import { Component, Element, Event, EventEmitter, Host, h, Listen, Prop, Watch, 
 import clsx from 'clsx'
 import { ModalPositionType, ModalAnimationStateType } from './meta/types'
 import miBaselineClose from '@icon/mi/baseline/close.svg'
+import { addKeyboardEscapeListener, removeKeyboardEscapeListener } from '@common/keyboard'
 
 @Component({
   tag: 'mds-modal',
@@ -62,15 +63,15 @@ export class MdsModal {
     }, 500)
 
     if (this.opened) {
-      this.addKeyboardEscapeListener()
+      addKeyboardEscapeListener(() => this.close.emit())
       return
     }
 
-    this.removeKeyboardEscapeListener()
+    removeKeyboardEscapeListener()
   }
 
   disconnectedCallback (): void {
-    this.removeKeyboardEscapeListener()
+    removeKeyboardEscapeListener()
   }
 
   private animationName = (customState: string = null, customPosition: string = null): string => {
@@ -85,31 +86,16 @@ export class MdsModal {
     this.hostElement.classList.remove(this.animationName('outro', oldValue))
   }
 
-  private checkKeyboardEscape = (event: KeyboardEvent): void => {
-    if (event.code === 'Escape') {
-      this.close.emit()
-    }
-  }
-
-  private addKeyboardEscapeListener (): void {
-    window.addEventListener('keydown', this.checkKeyboardEscape.bind(this))
-  }
-
-  private removeKeyboardEscapeListener (): void {
-    window.removeEventListener('keydown', this.checkKeyboardEscape.bind(this))
-  }
-
   @Watch('opened')
   openedChange (newValue: boolean): void {
     this.stateOpened = newValue
     window.clearTimeout(this.animationDeelay)
 
     if (newValue) {
-      this.addKeyboardEscapeListener()
+      addKeyboardEscapeListener(() => this.close.emit())
       return
     }
-
-    this.removeKeyboardEscapeListener()
+    removeKeyboardEscapeListener()
   }
 
   /**
