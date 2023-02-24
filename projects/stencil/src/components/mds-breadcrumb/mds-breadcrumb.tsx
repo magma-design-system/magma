@@ -1,6 +1,7 @@
 import { Component, Element, Event, EventEmitter, Listen, Host, h, Prop } from '@stencil/core'
 import miBaselineArrowBack from '@icon/mi/baseline/arrow-back.svg'
 import { BreadcrumbClickedEvent } from './meta/interface'
+import { KeyboardManager } from '@common/keyboard-manager'
 
 @Component({
   tag: 'mds-breadcrumb',
@@ -11,6 +12,7 @@ export class MdsBreadcrumb {
 
   @Element() private element: HTMLMdsBreadcrumbElement
   private backButton: HTMLDivElement
+  private kb = new KeyboardManager()
 
   /**
    * Choose to display or not the back arrow button
@@ -32,6 +34,18 @@ export class MdsBreadcrumb {
     const item = this.element.querySelector<HTMLMdsBreadcrumbItemElement>('mds-breadcrumb-item[active]')
     if (!item || item.id === 'item-0' ) {
       this.updateBackButton(0)
+    }
+
+    if (this.back) {
+      const backElement = this.element.shadowRoot.querySelector('.back') as HTMLElement
+      this.kb.addElement(backElement)
+      this.kb.attachClickBehavior()
+    }
+  }
+
+  disconnectedCallback (): void {
+    if (this.back) {
+      this.kb.detachClickBehavior()
     }
   }
 
@@ -62,6 +76,11 @@ export class MdsBreadcrumb {
         activeId = key
       }
     })
+
+    if (activeId === 0) {
+      return
+    }
+
     this.updateBackButton(activeId)
     this.onChanged(activeId)
   }
@@ -82,11 +101,11 @@ export class MdsBreadcrumb {
     return (
       <Host>
         { this.back &&
-          <div class="back" onClick={ this.togglePrevious }>
+          <div tabindex="0" class="back focusable" onClick={ this.togglePrevious }>
             <i class="svg icon" innerHTML={miBaselineArrowBack}/>
           </div>
         }
-        <slot name="breadcrumb-item"/>
+        <slot/>
       </Host>
     )
   }
