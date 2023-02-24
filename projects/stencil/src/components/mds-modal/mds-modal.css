@@ -126,11 +126,12 @@
     h-9
     opacity-0
     origin-center
+    rounded-full
     text-4xl
     top-0
-    transition-cosmetic
     w-9;
 
+  transition-property: opacity, outline, outline-offset, transform;
   transform: translate(0, 24px) rotate(90deg);
 }
 
