@@ -1,7 +1,7 @@
 import { Component, Element, Event, EventEmitter, Host, Prop, State, Watch, h } from '@stencil/core'
 import clsx from 'clsx'
 import miBaselineKeyboardArrowDown from '@icon/mi/baseline/keyboard-arrow-down.svg'
-import { addKeyboardListener, removeKeyboardListener } from '@common/keyboard'
+import { KeyboardManager } from '@common/keyboard-manager'
 
 @Component({
   tag: 'mds-details',
@@ -12,6 +12,7 @@ export class MdsDetails {
 
   @Element() private host: HTMLMdsDetailsElement
   @State() isOpened: boolean
+  private km = new KeyboardManager()
 
   /**
    * Specifies if the component is opened
@@ -34,12 +35,12 @@ export class MdsDetails {
 
   componentDidLoad (): void {
     const header = this.host.shadowRoot.querySelector('.header') as HTMLElement
-    addKeyboardListener(header)
+    this.km.addElement(header)
+    this.km.attachClickBehavior()
   }
 
   disconnectedCallback (): void {
-    const header = this.host.shadowRoot.querySelector('.header') as HTMLElement
-    removeKeyboardListener(header)
+    this.km.detachClickBehavior()
   }
 
   private toggle = () => {
