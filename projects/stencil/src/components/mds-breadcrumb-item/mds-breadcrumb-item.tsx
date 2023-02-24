@@ -1,6 +1,7 @@
 import { Component, Element, Event, EventEmitter, Host, h, Prop } from '@stencil/core'
 import miBaselineNavigateNext from '@icon/mi/baseline/navigate-next.svg'
 import { BreadcrumbClickedEvent } from '../mds-breadcrumb/meta/interface'
+import { KeyboardManager } from '@common/keyboard-manager'
 
 @Component({
   tag: 'mds-breadcrumb-item',
@@ -10,6 +11,7 @@ import { BreadcrumbClickedEvent } from '../mds-breadcrumb/meta/interface'
 export class MdsBreadcrumbItem {
 
   @Element() private element: HTMLMdsBreadcrumbItemElement
+  private km = new KeyboardManager()
 
   /**
    * Choose to display or not the back arrow button
@@ -26,13 +28,23 @@ export class MdsBreadcrumbItem {
    */
   @Event() activedEvent: EventEmitter<BreadcrumbClickedEvent>
 
+  componentDidLoad ():void {
+    const textElement = this.element.shadowRoot.querySelector('.text') as HTMLElement
+    this.km.addElement(textElement)
+    this.km.attachClickBehavior()
+  }
+
+  disconnectedCallback (): void {
+    this.km.detachClickBehavior()
+  }
+
   render () {
     return (
-      <Host slot="breadcrumb-item" tabindex="0" onClick={ this.toggle }>
-        <mds-text class="text" typography="detail">
+      <Host>
+        <mds-text tabindex="0" onClick={ this.toggle } class="text focusable" typography="detail">
           <slot/>
         </mds-text>
-        <i class="svg icon" innerHTML={miBaselineNavigateNext}/>
+        <i aria-hidden="true" class="svg icon" innerHTML={miBaselineNavigateNext}/>
       </Host>
     )
   }

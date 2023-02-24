@@ -1,3 +1,4 @@
+@tailwind components;
 @tailwind utilities;
 @import '../../tailwind/components.css';
 
@@ -24,24 +25,21 @@
   --mds-breadcrumb-item-button-color-current: var(--mds-breadcrumb-button-color-current, theme('colors.tone-neutral-01'));
   --mds-breadcrumb-item-button-color-hover: var(--mds-breadcrumb-button-color-hover, theme('colors.tone-neutral-02'));
   --mds-breadcrumb-item-button-color: var(--mds-breadcrumb-button-color, theme('colors.tone-neutral-02'));
-  --mds-breadcrumb-item-outline-blur-offset: var(--magma-outline-blur-offset, 6px);
-  --mds-breadcrumb-item-outline-blur: var(--magma-outline-blur, 2px solid transparent);
-  --mds-breadcrumb-item-outline-focus-offset: var(--magma-outline-focus-offset, 2px);
-  --mds-breadcrumb-item-outline-focus: var(--magma-outline-focus, 2px solid theme('colors.label-sky-05'));
 
   @apply
+    duration-200
+    ease-out
     flex
+    focus-off
     gap-0
     items-center
     shrink-0;
 
-  outline-offset: var(--mds-breadcrumb-item-outline-blur-offset);
-  outline: var(--mds-breadcrumb-item-outline-blur);
+  transition-property: box-shadow, outline, outline-offset;
 }
 
-:host( :focus-visible ) {
-  --mds-breadcrumb-item-outline-blur-offset: var(--mds-breadcrumb-item-outline-focus-offset);
-  --mds-breadcrumb-item-outline-blur: var(--mds-breadcrumb-item-outline-focus);
+:host (:focus-visible) {
+  @apply focus-on;
 }
 
 :host( :last-child ) .icon {
@@ -54,7 +52,6 @@
     px-4
     py-1
     rounded-full
-    transition-colors
     whitespace-nowrap;
 
   background-color: var(--mds-breadcrumb-item-button-background);
