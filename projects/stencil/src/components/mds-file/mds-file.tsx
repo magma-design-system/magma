@@ -78,7 +78,7 @@ export class MdsFile {
     const { format, description } = this.getExtensionInfos()
     const { variant, color, icon, iconBackground } = fileFormatsVariant[format]
     return (
-      <Host>
+      <Host tabindex="0">
         <div class={`preview ${color} ${iconBackground}`}>
           { this.preview !== undefined
             ? <div class="image-preview" style={{ backgroundImage: `url(${this.preview})` }}></div>

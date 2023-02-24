@@ -1,32 +1,32 @@
 @tailwind components;
 @tailwind utilities;
-
-/**
-* @prop --shadow-hover: Sets the box-shadow of the component when the mouse is over it
-* @prop --shadow: Sets the box-shadow of the component
-*/
+@import '../../tailwind/components.css';
 
 :host {
-
-  --shadow-hover: theme('boxShadow.sharp-md');
-  --shadow: theme('boxShadow.sharp');
 
   @apply
     bg-tone-neutral
     cursor-pointer
+    duration-200
+    ease-out
+    focus-off
     inline-flex
     items-stretch
     overflow-hidden
     rounded-md
     text-tone-neutral-04
-    transition-shadow
     w-full;
 
-  box-shadow: var(--shadow);
+  transition-property: box-shadow, outline, outline-offset;
+  box-shadow: theme('boxShadow.sharp');
+}
+
+:host (:focus-visible) {
+  @apply focus-on;
 }
 
 :host( :hover ) {
-  box-shadow: var(--shadow-hover);
+  box-shadow: theme('boxShadow.sharp-md');
 }
 
 .preview {

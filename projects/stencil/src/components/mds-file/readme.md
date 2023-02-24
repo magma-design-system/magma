@@ -15,14 +15,6 @@
 | `suffix`      | `suffix`      | Overrides the automatic filetype recongition by forcing the suffix to one of the available formats choosen                 | `"html" \| "svg" \| "default" \| "json" \| "ts" \| "7z" \| "ace" \| "ai" \| "db" \| "dmg" \| "doc" \| "docm" \| "docx" \| "eml" \| "eps" \| "exe" \| "flac" \| "gif" \| "htm" \| "jpe" \| "jpeg" \| "jpg" \| "js" \| "jsx" \| "m2v" \| "mp2" \| "mp3" \| "mp4" \| "mp4v" \| "mpeg" \| "mpg" \| "mpg4" \| "mpga" \| "odp" \| "ods" \| "odt" \| "pdf" \| "php" \| "png" \| "ppt" \| "rar" \| "rtf" \| "sass" \| "shtml" \| "tar" \| "txt" \| "wav" \| "xar" \| "xls" \| "xlsx" \| "zip"` | `undefined` |
 
 
-## CSS Custom Properties
-
-| Name             | Description                                                    |
-| ---------------- | -------------------------------------------------------------- |
-| `--shadow`       | Sets the box-shadow of the component                           |
-| `--shadow-hover` | Sets the box-shadow of the component when the mouse is over it |
-
-
 ## Dependencies
 
 ### Depends on
