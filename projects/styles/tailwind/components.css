@@ -1,18 +1,34 @@
 @tailwind components;
 
 @layer components {
-  .focusable {
+  .focus-off,
+  .focusable,
+  .focusable-light,
+  .focusable-light-off {
     @apply
       duration-200
       ease-out;
 
-    outline-offset: var(--magma-outline-blur-offset, 6px);
-    outline: var(--magma-outline-blur, 2px solid transparent);
+    outline-offset: var(--magma-outline-blur-offset);
+    outline: var(--magma-outline-blur);
     transition-property: background-color, border-color, box-shadow, color, fill, outline, outline-offset, transform;
   }
 
+  .focus-on,
+  .focusable-light:focus-visible,
   .focusable:focus-visible {
-    outline-offset: var(--magma-outline-focus-offset, 2px);
-    outline: var(--magma-outline-focus, 2px solid theme('colors.label-sky-05'));
+    --magma-outline-blur-offset: var(--magma-outline-focus-offset);
+    --magma-outline-blur: var(--magma-outline-focus);
+  }
+
+  .focus-light-on,
+  .focusable-light:focus-visible {
+    --magma-outline-blur: 2px solid theme('colors.tone-neutral');
+  }
+
+  .hide-scrollbar {
+    -webkit-overflow-scrolling: touch;
+    -ms-overflow-style: none;
+    scrollbar-width: none;
   }
 }

@@ -7,11 +7,11 @@
   --magma-dropdown-z-index: 3000;
   --magma-header-z-index: 1000;
   --magma-modal-z-index: 2000;
-  --magma-tooltip-z-index: 4000;
   --magma-outline-blur-offset: 6px;
   --magma-outline-blur: 2px solid transparent;
   --magma-outline-focus-offset: 2px;
   --magma-outline-focus: 2px solid theme('colors.tone-neutral-05');
+  --magma-tooltip-z-index: 4000;
   --magma-overlay-blur: var(--magma-backdrop-blur);
   --magma-overlay-color: var(--magma-backdrop-color);
   --magma-overlay-opacity: 0.5;
