@@ -1,4 +1,6 @@
+@tailwind components;
 @tailwind utilities;
+@import '../../tailwind/components.css';
 
 /**
   * @prop --mds-paginator-item-background-disabled: Sets the background-color of the item when is disabled
@@ -22,7 +24,7 @@
   --mds-paginator-item-background-disabled: theme('colors.tone-neutral-09');
   --mds-paginator-item-background-hover: theme('colors.tone-neutral-08');
   --mds-paginator-item-background-selected: theme('colors.brand-maggioli-03');
-  --mds-paginator-item-background: theme('colors.tone-neutral-09');
+  --mds-paginator-item-background: transparent;
   --mds-paginator-item-color-disabled: theme('colors.tone-neutral-06');
   --mds-paginator-item-color-hover: theme('colors.tone-neutral-02');
   --mds-paginator-item-color-selected: theme('colors.tone-neutral');
@@ -37,13 +39,15 @@
   @apply
     box-border
     cursor-pointer
+    duration-200
+    ease-out
+    focus-off
     inline-flex
     items-center
     justify-center
     px-3
     select-none
-    shrink-0
-    transition-colors;
+    shrink-0;
 
   background-color: var(--mds-paginator-item-background);
   border-radius: var(--mds-paginator-item-radius);
@@ -51,6 +55,11 @@
   color: var(--mds-paginator-item-color);
   height: var(--mds-paginator-item-size);
   min-width: var(--mds-paginator-item-size);
+  transition: background-color, box-shadow, color, outline, outline-offset;
+}
+
+:host( :focus-visible ) {
+  @apply focus-on;
 }
 
 :host( :hover ) {
@@ -58,6 +67,10 @@
   box-shadow: var(--mds-paginator-item-shadow-hover);
   color: var(--mds-paginator-item-color-hover);
   fill: var(--mds-paginator-item-color-hover);
+}
+
+:host ( [icon]) {
+  @apply p-0;
 }
 
 :host ( [active]) {
