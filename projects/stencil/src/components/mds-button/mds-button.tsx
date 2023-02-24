@@ -11,7 +11,7 @@ import { TypographyType } from '@type/typography'
 import { ToneVariantType } from '@type/variant'
 import clsx from 'clsx'
 import { setAttributeIfEmpty, unslugName } from '@common/aria'
-import { addKeyboardListener, removeKeyboardListener } from '@common/keyboard'
+import { KeyboardManager } from '@common/keyboard-manager'
 
 @Component({
   tag: 'mds-button',
@@ -23,6 +23,7 @@ export class MdsButton {
   private typography?: TypographyType
   private hasText?: boolean
   private hasNotification?: boolean
+  private km = new KeyboardManager()
 
   @Element() host: HTMLMdsButtonElement
 
@@ -75,7 +76,9 @@ export class MdsButton {
   }
 
   componentDidLoad ():void {
-    addKeyboardListener(this.host)
+    this.km.addElement(this.host)
+    this.km.attachClickBehavior()
+
     if (!this.hasText && this.icon) {
       const iconTitle = unslugName(this.icon)
       if (!this.host.hasAttribute('aria-label')) {
@@ -86,7 +89,7 @@ export class MdsButton {
   }
 
   disconnectedCallback (): void {
-    removeKeyboardListener(this.host)
+    this.km.detachClickBehavior()
   }
 
   render () {

@@ -4,6 +4,8 @@
 @tailwind components;
 @tailwind utilities;
 
+@import '../../tailwind/components.css';
+
 /**
   * @prop --mds-button-background: Sets the background-color of the component
   * @prop --mds-button-border-color: Sets the border-color of the component
@@ -29,6 +31,7 @@
     cursor-pointer
     duration-200
     ease-out
+    focus-off
     gap-2
     inline-flex
     items-center
@@ -43,14 +46,11 @@
   border-style: solid;
   border-width: theme('borderWidth.2') !important;
   color: var(--mds-button-color);
-  outline-offset: var(--mds-button-outline-blur-offset);
-  outline: var(--mds-button-outline-blur);
   transition-property: background-color, border-color, box-shadow, color, transform, outline, outline-offset;
 }
 
-:host( :focus-visible ) {
-  outline: var(--mds-button-outline-focus);
-  outline-offset: var(--mds-button-outline-focus-offset);
+:host (:focus-visible) {
+  @apply focus-on;
 }
 
 .text {
