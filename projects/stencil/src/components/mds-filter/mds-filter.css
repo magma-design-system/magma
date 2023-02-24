@@ -1,5 +1,6 @@
 @tailwind components;
 @tailwind utilities;
+@import '../../tailwind/components.css';
 
 /**
 * @prop --mds-filter-items-background-active: Sets the background-color of the items row area when a filter is active
@@ -44,18 +45,16 @@
 .items {
   @apply
     flex
+    hide-scrollbar
     overflow-auto
+    scroll-smooth
     transition-colors;
 
-  -ms-overflow-style: none;
-  -webkit-overflow-scrolling: touch;
   background-color: var(--mds-filter-items-background);
   border-radius: var(--mds-filter-items-radius);
   gap: var(--mds-filter-items-gap);
   padding: var(--mds-filter-items-padding);
-  scroll-behavior: smooth;
   scroll-snap-type: x mandatory;
-  scrollbar-width: none;
 }
 
 .items::-webkit-scrollbar {
