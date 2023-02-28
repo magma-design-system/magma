@@ -1,7 +1,8 @@
-import { Component, Element, Event, EventEmitter, Host, Prop, State, Watch, h } from '@stencil/core'
-import { TypographyType } from '../../types/typography'
 import clsx from 'clsx'
+import { Component, Element, Event, EventEmitter, Host, Prop, State, Watch, h } from '@stencil/core'
+import { KeyboardManager } from '@common/keyboard-manager'
 import { MdsBadge } from '../mds-badge/mds-badge'
+import { TypographyType } from '@type/typography'
 
 @Component({
   tag: 'mds-stepper-bar-item',
@@ -10,7 +11,9 @@ import { MdsBadge } from '../mds-badge/mds-badge'
 })
 export class MdsStepperBarItem {
 
-  @Element() private element: HTMLMdsStepperBarItemElement
+  @Element() private host: HTMLMdsStepperBarItemElement
+  private km = new KeyboardManager()
+
 
   @State() isChecked: boolean
   @State() isCurrent: boolean
@@ -59,7 +62,17 @@ export class MdsStepperBarItem {
   componentWillLoad (): void {
     this.isCurrent = this.current
     this.isChecked = this.checked
-    this.index = [...Array.from(this.element.parentElement.childNodes)].indexOf(this.element)
+    this.index = [...Array.from(this.host.parentElement.childNodes)].indexOf(this.host)
+  }
+
+  componentDidLoad = (): void => {
+    const header = this.host.shadowRoot.querySelector('header')
+    this.km.addElement(header)
+    this.km.attachClickBehavior()
+  }
+
+  disconnectedCallback = (): void => {
+    this.km.detachClickBehavior()
   }
 
   @Watch('checked')
@@ -75,7 +88,7 @@ export class MdsStepperBarItem {
   private toggle = () => {
     this.isCurrent = true
     if (this.isCurrent) {
-      this.currentEvent.emit(this.element.id)
+      this.currentEvent.emit(this.host.id)
     }
   }
 
@@ -96,12 +109,12 @@ export class MdsStepperBarItem {
 
   render () {
     return (
-      <Host onClick={ this.toggle }>
-        <header class="header">
+      <Host>
+        <header class="header focusable" onClick={ this.toggle } tabindex="0">
           <mds-icon class="icon" name={ clsx(this.isChecked && !this.isCurrent ? this.iconChecked : this.icon) }/>
           <mds-progress class="progress" progress={ this.isChecked ? 1 : 0 }/>
         </header>
-        <div class="infos">
+        <div class="infos" onClick={ this.toggle }>
           { this.step && <mds-text class="step" typography="option">step { this.index + 1 }</mds-text> }
           { this.text && <mds-text class="text" typography={ this.typography }>{ this.text }</mds-text> }
           { this.badge && <div>{ this.showBadge() }</div> }

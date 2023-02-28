@@ -1,43 +1,44 @@
+@tailwind components;
 @tailwind utilities;
+@import '../../tailwind/components.css';
 
 /**
-  * @prop --color: Sets the color of the text
-  * @prop --duaration: Sets the duration of the animation
-  * @prop --icon-background-checked: Sets the background-color of the icon when the component is checked
-  * @prop --icon-background-current: Sets the background-color of the icon when the component is current
-  * @prop --icon-background: Sets the background-color of the icon
-  * @prop --icon-color-checked: Sets the color of the icon when the component is checked
-  * @prop --icon-color-current: Sets the color of the icon when the component is current
-  * @prop --icon-color: Sets the color of the icon
-  * @prop --icon-ring-size: Sets the size of the icon circle when the component is current
-  * @prop --min-width: Sets the minimum width of the component
-  * @prop --progress-background: Sets the background color of the progress bar
-  * @prop --progress-color: Sets the color of the progress bar
-  * @prop --progress-thickness: Sets the thickness of the progress bar
+  * @prop --mds-stepper-bar-item-color: Sets the color of the text
+  * @prop --mds-stepper-bar-item-duaration: Sets the duration of the animation
+  * @prop --mds-stepper-bar-item-icon-background-checked: Sets the background-color of the icon when the component is checked
+  * @prop --mds-stepper-bar-item-icon-background-current: Sets the background-color of the icon when the component is current
+  * @prop --mds-stepper-bar-item-icon-background: Sets the background-color of the icon
+  * @prop --mds-stepper-bar-item-icon-color-checked: Sets the color of the icon when the component is checked
+  * @prop --mds-stepper-bar-item-icon-color-current: Sets the color of the icon when the component is current
+  * @prop --mds-stepper-bar-item-icon-color: Sets the color of the icon
+  * @prop --mds-stepper-bar-item-icon-ring-size: Sets the size of the icon circle when the component is current
+  * @prop --mds-stepper-bar-item-min-width: Sets the minimum width of the component
+  * @prop --mds-stepper-bar-item-progress-background: Sets the background color of the progress bar
+  * @prop --mds-stepper-bar-item-progress-color: Sets the color of the progress bar
+  * @prop --mds-stepper-bar-item-progress-thickness: Sets the thickness of the progress bar
   */
 
 :host {
 
-  --color: theme('colors.tone-neutral-03');
-  --duaration: 250ms;
-  --icon-background-checked: theme('colors.status-success-05');
-  --icon-background-current: theme('colors.brand-maggioli-04');
-  --icon-background: var(--progress-background, theme('colors.tone-neutral-08'));
-  --icon-color-checked: theme('colors.status-success-10');
-  --icon-color-current: theme('colors.tone-neutral');
-  --icon-color: theme('colors.tone-neutral-04');
-  --icon-ring-color: var(--icon-background-current);
-  --icon-ring-separator-color: theme('colors.tone-neutral');
-  --icon-ring-separator-size: 0.375rem;
-  --icon-ring-size: theme('height.1');
-  --min-width: 180px;
-  --progress-background: theme('colors.tone-neutral-08');
-  --progress-color: theme('colors.status-success-04');
-  --progress-thickness: theme('height.2');
+  --mds-stepper-bar-item-color: theme('colors.tone-neutral-03');
+  --mds-stepper-bar-item-duaration: 250ms;
+  --mds-stepper-bar-item-icon-background-checked: theme('colors.status-success-05');
+  --mds-stepper-bar-item-icon-background-current: theme('colors.brand-maggioli-04');
+  --mds-stepper-bar-item-icon-background: var(--mds-stepper-bar-item-progress-background, theme('colors.tone-neutral-08'));
+  --mds-stepper-bar-item-icon-color-checked: theme('colors.status-success-10');
+  --mds-stepper-bar-item-icon-color-current: theme('colors.tone-neutral');
+  --mds-stepper-bar-item-icon-color: theme('colors.tone-neutral-04');
+  --mds-stepper-bar-item-icon-ring-color: var(--mds-stepper-bar-item-icon-background-current);
+  --mds-stepper-bar-item-icon-ring-separator-color: theme('colors.tone-neutral');
+  --mds-stepper-bar-item-icon-ring-separator-size: 0.375rem;
+  --mds-stepper-bar-item-icon-ring-size: theme('height.1');
+  --mds-stepper-bar-item-min-width: 180px;
+  --mds-stepper-bar-item-progress-background: theme('colors.tone-neutral-08');
+  --mds-stepper-bar-item-progress-color: theme('colors.status-success-04');
+  --mds-stepper-bar-item-progress-thickness: theme('height.2');
 
   @apply
     basis-0
-    cursor-pointer
     flex
     flex-col
     gap-4
@@ -47,9 +48,10 @@
     shrink-0
     snap-center;
 
-  min-width: var(--min-width);
-  padding-left: calc(var(--icon-ring-size) + var(--icon-ring-separator-size));
-  padding-top: calc(var(--icon-ring-size) + var(--icon-ring-separator-size));
+  transition-property: outline, outline-offset;
+  min-width: var(--mds-stepper-bar-item-min-width);
+  padding-left: calc(var(--mds-stepper-bar-item-icon-ring-size) + var(--mds-stepper-bar-item-icon-ring-separator-size));
+  padding-top: calc(var(--mds-stepper-bar-item-icon-ring-size) + var(--mds-stepper-bar-item-icon-ring-separator-size));
 }
 
 :host ( :last-of-type ) {
@@ -62,32 +64,38 @@
 
 :host ( [ checked ] ) .icon {
 
-  --icon-background: var(--icon-background-checked);
-  --icon-color: var(--icon-color-checked);
+  --mds-stepper-bar-item-icon-background: var(--mds-stepper-bar-item-icon-background-checked);
+  --mds-stepper-bar-item-icon-color: var(--mds-stepper-bar-item-icon-color-checked);
 
   transition-delay: 0ms;
 }
 
 :host ( [ current ] ) .icon {
 
-  --icon-background: var(--icon-background-current);
-  --icon-color: var(--icon-color-current);
+  --mds-stepper-bar-item-icon-background: var(--mds-stepper-bar-item-icon-background-current);
+  --mds-stepper-bar-item-icon-color: var(--mds-stepper-bar-item-icon-color-current);
 
-  box-shadow: 0 0 0 var(--icon-ring-size) var(--icon-ring-color), 0 0 0 var(--icon-ring-separator-size) var(--icon-ring-separator-color);
-  transition-delay: calc(var(--duaration) / 2);
+  box-shadow: 0 0 0 var(--mds-stepper-bar-item-icon-ring-size) var(--mds-stepper-bar-item-icon-ring-color), 0 0 0 var(--mds-stepper-bar-item-icon-ring-separator-size) var(--mds-stepper-bar-item-icon-ring-separator-color);
+  transition-delay: calc(var(--mds-stepper-bar-item-duaration) / 2);
 }
 
 :host ( :not([ checked ]) ) .icon,
 :host ( :not([ current ]) ) .icon {
 
-  --icon-ring-color: var(--icon-background);
+  --mds-stepper-bar-item-icon-ring-color: var(--mds-stepper-bar-item-icon-background);
 }
 
 .header {
   @apply
+    cursor-pointer
+    duration-200
+    ease-out
     flex
     items-center
+    rounded-md
     w-full;
+
+  transition-property: outline, outline-offset;
 }
 
 .icon {
@@ -99,27 +107,28 @@
     shrink-0
     transition-cosmetic;
 
-  background-color: var(--icon-background);
-  box-shadow: 0 0 0 0 var(--icon-ring-color), 0 0 0 0 var(--icon-ring-separator-color);
-  fill: var(--icon-color);
-  transition-duration: var(--duaration);
+  background-color: var(--mds-stepper-bar-item-icon-background);
+  box-shadow: 0 0 0 0 var(--mds-stepper-bar-item-icon-ring-color), 0 0 0 0 var(--mds-stepper-bar-item-icon-ring-separator-color);
+  fill: var(--mds-stepper-bar-item-icon-color);
+  transition-duration: var(--mds-stepper-bar-item-duaration);
 }
 
 .progress {
 
-  --background: var(--progress-background);
-  --color: var(--progress-color);
-  --thickness: var(--progress-thickness);
+  --mds-stepper-bar-item-background: var(--mds-stepper-bar-item-progress-background);
+  --mds-stepper-bar-item-color: var(--mds-stepper-bar-item-progress-color);
+  --mds-stepper-bar-item-thickness: var(--mds-stepper-bar-item-progress-thickness);
 
   @apply
     -ml-1
     grow;
 
-  margin-right: calc(calc(calc(var(--icon-ring-size) + var(--icon-ring-separator-size)) * -1) - theme('spacing.1'));
+  margin-right: calc(calc(calc(var(--mds-stepper-bar-item-icon-ring-size) + var(--mds-stepper-bar-item-icon-ring-separator-size)) * -1) - theme('spacing.1'));
 }
 
 .infos {
   @apply
+    cursor-pointer
     gap-1
     grid
     pl-1;
@@ -128,8 +137,8 @@
 .text {
   @apply pointer-events-none transition-cosmetic;
 
-  color: var(--color);
-  transition-duration: var(--duaration);
+  color: var(--mds-stepper-bar-item-color);
+  transition-duration: var(--mds-stepper-bar-item-duaration);
 }
 
 .badge {
