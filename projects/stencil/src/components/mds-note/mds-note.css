@@ -55,6 +55,7 @@
     bottom-0
     h-0
     opacity-40
+    pointer-events-none
     right-0
     w-0;
 
@@ -67,11 +68,13 @@
   @apply
     bg-transparent
     cursor-pointer
+    duration-200
+    ease-out
     hover:bg-tone-neutral/50
     p-1
-    rounded-full
-    transition-cosmetic;
+    rounded-full;
 
+  transition-property: background-color, fill, outline, outline-offset;
   fill: var(--mds-note-color);
 }
 
