@@ -35,7 +35,7 @@ export class MdsAccordionItem {
   /**
    * Emits when the accordion is opened
    */
-  @Event() openedEvent: EventEmitter<AccordionClickedEvent>
+  @Event({ eventName: 'opened' }) openedEvent: EventEmitter<AccordionClickedEvent>
 
   render () {
     return (
