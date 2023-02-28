@@ -23,12 +23,12 @@
 
 ## CSS Custom Properties
 
-| Name           | Description                                |
-| -------------- | ------------------------------------------ |
-| `--background` | Sets the background-color of the component |
-| `--color`      | Sets the text color of the component       |
-| `--radius`     | Sets the border-radius of the component    |
-| `--shadow`     | Sets the box-shadow of the component       |
+| Name                        | Description                                |
+| --------------------------- | ------------------------------------------ |
+| `--mds-url-view-background` | Sets the background-color of the component |
+| `--mds-url-view-color`      | Sets the text color of the component       |
+| `--mds-url-view-radius`     | Sets the border-radius of the component    |
+| `--mds-url-view-shadow`     | Sets the box-shadow of the component       |
 
 
 ## Dependencies

@@ -2,19 +2,19 @@
 @import '../../tailwind/components.css';
 
 /**
-* @prop --background: Sets the background-color of the component
-* @prop --color: Sets the text color of the component
-* @prop --radius: Sets the border-radius of the component
-* @prop --shadow: Sets the box-shadow of the component
+* @prop --mds-url-view-background: Sets the background-color of the component
+* @prop --mds-url-view-color: Sets the text color of the component
+* @prop --mds-url-view-radius: Sets the border-radius of the component
+* @prop --mds-url-view-shadow: Sets the box-shadow of the component
 */
 
 :host {
 
-  --background: theme('colors.tone-neutral-10');
-  --color: theme('colors.tone-neutral-02');
-  --radius: theme('borderRadius.md');
-  --header-shadow: theme('boxShadow.sharp-sm');
-  --shadow: theme('boxShadow.lg');
+  --mds-url-view-background: theme('colors.tone-neutral-10');
+  --mds-url-view-color: theme('colors.tone-neutral-02');
+  --mds-url-view-radius: theme('borderRadius.md');
+  --mds-url-view-header-shadow: theme('boxShadow.sharp-sm');
+  --mds-url-view-shadow: theme('boxShadow.lg');
 
   @apply
     box-border
@@ -33,9 +33,9 @@
     overflow-hidden
     w-full;
 
-  background-color: var(--background);
-  border-radius: var(--radius);
-  box-shadow: var(--shadow);
+  background-color: var(--mds-url-view-background);
+  border-radius: var(--mds-url-view-radius);
+  box-shadow: var(--mds-url-view-shadow);
 }
 
 .header {
@@ -48,9 +48,9 @@
     relative
     shrink-0;
 
-  background-color: var(--background);
-  box-shadow: var(--header-shadow);
-  color: var(--color);
+  background-color: var(--mds-url-view-background);
+  box-shadow: var(--mds-url-view-header-shadow);
+  color: var(--mds-url-view-color);
 }
 
 .title {
@@ -62,13 +62,15 @@
 }
 
 .browser-icon {
-  fill: var(--color);
+  fill: var(--mds-url-view-color);
 }
 
 .close {
-  @apply cursor-pointer;
+  @apply
+    cursor-pointer
+    rounded-md;
 
-  fill: var(--color);
+  fill: var(--mds-url-view-color);
 }
 
 .iframe {
