@@ -1,4 +1,4 @@
-import { typographyInfoDictionary, typographyVariationsDictionary } from '@dictionary/typography'
+import { typographyInfoDictionary, typographyReadingVariationsDictionary } from '@dictionary/typography'
 import { iconsDictionary } from '@dictionary/icon'
 import { h } from '@stencil/core'
 
@@ -19,7 +19,7 @@ export default {
     },
     variant: {
       description: 'Specifies the variant for `typography`',
-      options: typographyVariationsDictionary,
+      options: typographyReadingVariationsDictionary,
       control: { type: 'select' },
     },
   },
