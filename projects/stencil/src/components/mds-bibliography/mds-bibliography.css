@@ -17,11 +17,13 @@
 }
 
 .link {
-  @apply duration-200;
+  @apply
+    duration-200
+    rounded;
 
   color: var(--mds-bibliography-color);
   text-decoration-color: var(--mds-bibliography-text-decoration);
-  transition-property: text-decoration, color;
+  transition-property: text-decoration, color, outline, outline-offset;
 }
 
 .link:hover {
