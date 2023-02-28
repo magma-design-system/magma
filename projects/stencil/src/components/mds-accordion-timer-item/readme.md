@@ -20,9 +20,9 @@
 
 | Event              | Description                                      | Type                  |
 | ------------------ | ------------------------------------------------ | --------------------- |
-| `clickActive`      | Emits when the accordion is clicked by the mouse | `CustomEvent<string>` |
-| `mouseEnterActive` | Emits when the accordion is hovered by the mouse | `CustomEvent<string>` |
-| `mouseLeaveActive` | Emits when the accordion is hovered by the mouse | `CustomEvent<string>` |
+| `activeClicked`    | Emits when the accordion is clicked by the mouse | `CustomEvent<string>` |
+| `activeMouseEnter` | Emits when the accordion is hovered by the mouse | `CustomEvent<string>` |
+| `activeMouseLeave` | Emits when the accordion is hovered by the mouse | `CustomEvent<string>` |
 
 
 ## CSS Custom Properties

@@ -36,7 +36,6 @@ export class MdsAccordionTimerItem {
 
   private toggle = () => {
     if (!this.active) {
-      // this.isActive = true
       this.clickActive.emit(this.description)
     }
   }
@@ -56,17 +55,17 @@ export class MdsAccordionTimerItem {
   /**
    * Emits when the accordion is clicked by the mouse
    */
-  @Event() clickActive: EventEmitter<string>
+  @Event({ eventName: 'activeClicked' }) clickActive: EventEmitter<string>
 
   /**
    * Emits when the accordion is hovered by the mouse
    */
-  @Event() mouseEnterActive: EventEmitter<string>
+  @Event({ eventName: 'activeMouseEnter' }) mouseEnterActive: EventEmitter<string>
 
   /**
    * Emits when the accordion is hovered by the mouse
    */
-  @Event() mouseLeaveActive: EventEmitter<string>
+  @Event({ eventName: 'activeMouseLeave' }) mouseLeaveActive: EventEmitter<string>
 
   render () {
     return (
