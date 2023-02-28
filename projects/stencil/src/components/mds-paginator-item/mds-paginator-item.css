@@ -55,7 +55,7 @@
   color: var(--mds-paginator-item-color);
   height: var(--mds-paginator-item-size);
   min-width: var(--mds-paginator-item-size);
-  transition: background-color, box-shadow, color, outline, outline-offset;
+  transition-property: background-color, box-shadow, color, outline, outline-offset;
 }
 
 :host( :focus-visible ) {
