@@ -1,6 +1,6 @@
+@import '../../tailwind/components.css';
 @tailwind components;
 @tailwind utilities;
-@import '../../tailwind/components.css';
 
 /**
   * @prop --mds-accordion-timer-item-progress-bar-color: Sets the color of the progress bar when the item is selected
