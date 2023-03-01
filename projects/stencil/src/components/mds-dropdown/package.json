@@ -23,7 +23,7 @@
   },
   "dependencies": {
     "@floating-ui/dom": "^1.2.1",
-    "@maggioli-design-system/styles": "^11.2.0",
+    "@maggioli-design-system/styles": "^11.2.1",
     "@stencil/core": "^2.22.2"
   },
   "license": "MIT",
