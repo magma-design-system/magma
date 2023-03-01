@@ -1,4 +1,4 @@
-import { Component, Element, Event, EventEmitter, Host, Prop, h } from '@stencil/core'
+import { Component, Element, Event, EventEmitter, Host, Prop, h, Watch } from '@stencil/core'
 import { ToneSimpleVariantType, ThemeVariantType } from '../../types/variant'
 import miBaselineClose from '@icon/mi/baseline/close.svg'
 import { KeyboardManager } from '@common/keyboard-manager'
@@ -45,14 +45,26 @@ export class MdsBanner {
    */
   @Prop() readonly icon?: string
 
+  private deletableHandler = (): void => {
+    if (this.deletable) {
+      const closeIcon = this.host.shadowRoot.querySelector('.close-icon') as HTMLElement
+      this.km.addElement(closeIcon)
+      this.km.attachClickBehavior()
+      return
+    }
+    this.km.detachClickBehavior()
+  }
+
   componentWillLoad (): void {
     this.actions = this.host.querySelector('[slot="actions"]') !== null
   }
 
   componentDidLoad (): void {
-    const closeIcon = this.host.shadowRoot.querySelector('.close-icon')
-    this.km.addElement(closeIcon as HTMLElement)
-    this.km.attachClickBehavior()
+    this.deletableHandler()
+  }
+
+  componentDidUpdate (): void {
+    this.deletableHandler()
   }
 
   disconnectedCallback (): void {
