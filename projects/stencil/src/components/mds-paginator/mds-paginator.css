@@ -1,6 +1,6 @@
+@import '../../tailwind/components.css';
 @tailwind components;
 @tailwind utilities;
-@import '../../tailwind/components.css';
 /**
 * @prop --mds-paginator-background: Sets the background-color of the pages area and the item
 */
