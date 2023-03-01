@@ -11,7 +11,6 @@ import { KeyboardManager } from '@common/keyboard-manager'
 export class MdsBreadcrumb {
 
   @Element() private element: HTMLMdsBreadcrumbElement
-  private backButton: HTMLDivElement
   private kb = new KeyboardManager()
 
   /**
@@ -27,10 +26,21 @@ export class MdsBreadcrumb {
   private queryItems = ():NodeListOf<HTMLMdsBreadcrumbItemElement> =>
     this.element.querySelectorAll<HTMLMdsBreadcrumbItemElement>('mds-breadcrumb-item')
 
+  private updateBackButton = (id: number): void => {
+    const backElement = this.element.shadowRoot.querySelector('.back') as HTMLElement
+    if (id === 0) {
+      backElement.classList.add('disabled')
+      this.kb.detachClickBehavior()
+      return
+    }
+    backElement.classList.remove('disabled')
+    this.kb.attachClickBehavior()
+  }
+
   componentDidLoad ():void {
     const items = this.queryItems()
     items.forEach((item, key) => item.id = `item-${key}`)
-    this.backButton = this.element.shadowRoot.querySelector<HTMLDivElement>('.back')
+
     const item = this.element.querySelector<HTMLMdsBreadcrumbItemElement>('mds-breadcrumb-item[active]')
     if (!item || item.id === 'item-0' ) {
       this.updateBackButton(0)
@@ -43,10 +53,18 @@ export class MdsBreadcrumb {
     }
   }
 
-  disconnectedCallback (): void {
+  componentDidUpdate (): void {
     if (this.back) {
-      this.kb.detachClickBehavior()
+      const backElement = this.element.shadowRoot.querySelector('.back') as HTMLElement
+      this.kb.addElement(backElement)
+      this.kb.attachClickBehavior()
+      return
     }
+    this.kb.detachClickBehavior()
+  }
+
+  disconnectedCallback (): void {
+    this.kb.detachClickBehavior()
   }
 
   @Listen('activedEvent')
@@ -77,20 +95,8 @@ export class MdsBreadcrumb {
       }
     })
 
-    if (activeId === 0) {
-      return
-    }
-
     this.updateBackButton(activeId)
     this.onChanged(activeId)
-  }
-
-  private updateBackButton = (id: number): void => {
-    if (id === 0) {
-      this.backButton.classList.add('disabled')
-      return
-    }
-    this.backButton.classList.remove('disabled')
   }
 
   private onChanged = (id: number): void => {
