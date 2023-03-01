@@ -1,5 +1,6 @@
-@tailwind utilities;
 @import '../../tailwind/components.css';
+@tailwind components;
+@tailwind utilities;
 
 /**
 * @prop --mds-note-background: Sets the background-color of the component
