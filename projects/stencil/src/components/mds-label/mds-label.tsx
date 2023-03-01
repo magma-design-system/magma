@@ -1,4 +1,4 @@
-import { Component, Element, Event, EventEmitter, Host, h, Prop } from '@stencil/core'
+import { Component, Element, Event, EventEmitter, Host, h, Prop, Watch } from '@stencil/core'
 import { TypographyType } from '../../types/typography'
 import { ThemeFullVariantType, ToneSimpleVariantType } from '../../types/variant'
 import clsx from 'clsx'
@@ -57,9 +57,22 @@ export class MdsLabel {
    */
   @Event({ eventName: 'delete' }) deleteEvent: EventEmitter<HTMLMdsLabelElement>
 
+  private handleKeyboard = (): void => {
+    if (this.deletable) {
+      const close = this.host.shadowRoot.querySelector('.close') as HTMLElement
+      this.km.addElement(close)
+      this.km.attachClickBehavior()
+      return
+    }
+    this.km.detachClickBehavior()
+  }
+
   componentDidLoad ():void {
-    this.km.addElement(this.host)
-    this.km.attachClickBehavior()
+    this.handleKeyboard()
+  }
+
+  componentDidUpdate (): void {
+    this.handleKeyboard()
   }
 
   disconnectedCallback (): void {
