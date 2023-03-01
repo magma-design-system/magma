@@ -1,6 +1,6 @@
-@tailwind utilities;
-@tailwind components;
 @import '../../tailwind/components.css';
+@tailwind components;
+@tailwind utilities;
 
 /**
 * @prop --mds-list-item-icon-margin: Sets the margin of the component's icon
