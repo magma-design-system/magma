@@ -1,6 +1,6 @@
+@import '../../tailwind/components.css';
 @tailwind components;
 @tailwind utilities;
-@import '../../tailwind/components.css';
 
 :host {
   --mds-chip-background: theme('colors.tone-neutral-09');
