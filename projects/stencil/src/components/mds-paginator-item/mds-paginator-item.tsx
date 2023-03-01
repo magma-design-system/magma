@@ -31,6 +31,15 @@ export class MdsPaginatorItem {
     this.km.attachClickBehavior()
   }
 
+  componentDidUpdate = (): void => {
+    if (!this.disabled && !this.active) {
+      this.km.attachClickBehavior()
+      return
+    }
+
+    this.km.detachClickBehavior()
+  }
+
   disconnectedCallback = (): void => {
     this.km.detachClickBehavior()
   }
