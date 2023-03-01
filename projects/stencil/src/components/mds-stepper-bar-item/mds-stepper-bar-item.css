@@ -1,6 +1,6 @@
+@import '../../tailwind/components.css';
 @tailwind components;
 @tailwind utilities;
-@import '../../tailwind/components.css';
 
 /**
   * @prop --mds-stepper-bar-item-color: Sets the color of the text
