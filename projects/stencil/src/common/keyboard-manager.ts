@@ -19,11 +19,15 @@ export class KeyboardManager {
   }
 
   attachClickBehavior = (name = 'element'): void => {
-    this.elements[name].addEventListener('keydown', this.handleClickBehaviorDispatchEvent)
+    if (this.elements[name]) {
+      this.elements[name].addEventListener('keydown', this.handleClickBehaviorDispatchEvent)
+    }
   }
 
   detachClickBehavior = (name = 'element'): void => {
-    this.elements[name].removeEventListener('keydown', this.handleClickBehaviorDispatchEvent)
+    if (this.elements[name]) {
+      this.elements[name].removeEventListener('keydown', this.handleClickBehaviorDispatchEvent)
+    }
   }
 
   attachEscapeBehavior = (callBack: () => void): void => {
