@@ -1,6 +1,6 @@
+@import '../../tailwind/components.css';
 @tailwind components;
 @tailwind utilities;
-@import '../../tailwind/components.css';
 
 /**
   * @prop --mds-modal-overlay-color: Set the overlay color of the background when the component is opened, this property can be inherited from `globals.css` in `styles^8.0.0`.
