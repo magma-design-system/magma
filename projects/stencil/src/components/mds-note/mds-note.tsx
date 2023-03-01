@@ -24,9 +24,7 @@ export class MdsNote {
    */
   @Prop({ reflect: true }) readonly variant?: LabelVariantType = 'yellow'
 
-  private onClickClose = (ev: Event) => {
-    ev.stopPropagation()
-    ev.preventDefault()
+  private onClickClose = () => {
     this.clickClose.emit(this.host)
   }
 
@@ -38,6 +36,16 @@ export class MdsNote {
   componentDidLoad ():void {
     this.km.addElement(this.host)
     this.km.attachClickBehavior()
+  }
+
+  componentDidUpdate ():void {
+    if (this.deletable) {
+      this.km.addElement(this.host)
+      this.km.attachClickBehavior()
+      return
+    }
+
+    this.km.detachClickBehavior()
   }
 
   disconnectedCallback (): void {
