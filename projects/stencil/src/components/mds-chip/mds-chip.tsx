@@ -1,4 +1,4 @@
-import { Component, Element, Event, EventEmitter, Host, h, Prop, Watch } from '@stencil/core'
+import { Component, Element, Event, EventEmitter, Host, h, Prop } from '@stencil/core'
 import miBaselineCancel from '@icon/mi/baseline/cancel.svg'
 import { setAttributeIfEmpty } from '@common/aria'
 import { MdsChipEvent } from './meta/interface'
@@ -12,8 +12,6 @@ import { KeyboardManager } from '@common/keyboard-manager'
 export class MdsChip {
 
   @Element() host: HTMLMdsChipElement
-  private labelAction: HTMLElement
-  private iconElement: HTMLElement
   private km = new KeyboardManager()
 
   /**
@@ -49,58 +47,12 @@ export class MdsChip {
   /**
    * Emits when the component's label is clicked
    */
-  @Event() labelClick: EventEmitter<MdsChipEvent>
+  @Event({ eventName: 'labelClicked' }) labelClick: EventEmitter<MdsChipEvent>
 
   /**
    * Emits when the component's delete button is clicked
    */
   @Event() delete: EventEmitter<MdsChipEvent>
-
-  componentDidLoad ():void {
-    this.labelAction = this.host.shadowRoot.querySelector('.label')
-    this.iconElement = this.host.shadowRoot.querySelector('.svg svg')
-    this.km.addElement(this.labelAction, 'label')
-    this.km.addElement(this.iconElement, 'close')
-
-    if (this.clickable) {
-      this.addActionBehavior()
-    }
-
-    if (this.deletable) {
-      this.addDeleteBehavior()
-    }
-  }
-
-  disconnectedCallback ():void {
-    if (this.clickable) {
-      this.removeActionBehavior()
-    }
-
-    if (this.deletable) {
-      this.removeDeleteBehavior()
-    }
-  }
-
-  private addActionBehavior (): void {
-    setAttributeIfEmpty(this.labelAction, 'role', 'button')
-    this.labelAction.addEventListener('click', this.onLabelClickHandler.bind(this))
-    this.km.attachClickBehavior('label')
-  }
-
-  private addDeleteBehavior (): void {
-    setAttributeIfEmpty(this.iconElement, 'aria-hidden', 'true')
-    this.km.attachClickBehavior('close')
-  }
-
-  private removeActionBehavior (): void {
-    this.labelAction.removeAttribute('role')
-    this.labelAction.removeEventListener('click', this.onLabelClickHandler.bind(this))
-    this.km.detachClickBehavior('label')
-  }
-
-  private removeDeleteBehavior (): void {
-    this.km.detachClickBehavior('close')
-  }
 
   private onLabelClickHandler (event: Event): void {
     this.labelClick.emit({ event, element: this.host })
@@ -110,20 +62,71 @@ export class MdsChip {
     this.delete.emit({ event, element: this.host })
   }
 
-  @Watch('clickable')
-  clickableChanged (newValue: boolean): void {
-    if (newValue) {
-      this.addActionBehavior()
+  private handleClickableKeyboard = (): void => {
+    if (this.clickable) {
+      const label = this.host.shadowRoot.querySelector('.label') as HTMLElement
+      this.km.addElement(label, 'label')
+      this.km.attachClickBehavior('label')
       return
     }
-    this.removeActionBehavior()
+    this.km.detachClickBehavior('label')
   }
 
-  @Watch('deletable')
-  deletableChanged (newValue: boolean): void {
-    if (newValue) {
-      this.addDeleteBehavior()
+  private handleDeletableKeyboard = (): void => {
+    if (this.deletable) {
+      const deleteElement = this.host.shadowRoot.querySelector('.delete') as HTMLElement
+      this.km.addElement(deleteElement, 'delete')
+      this.km.attachClickBehavior('delete')
+      return
     }
+    this.km.detachClickBehavior('delete')
+  }
+
+  private handleClickableElement = (): void => {
+    const label = this.host.shadowRoot.querySelector('.label') as HTMLElement
+    if (!label) {
+      return
+    }
+    if (this.clickable) {
+      setAttributeIfEmpty(label, 'role', 'button')
+      label.addEventListener('click', this.onLabelClickHandler.bind(this))
+      return
+    }
+    label.removeAttribute('role')
+    label.removeEventListener('click', this.onLabelClickHandler.bind(this))
+  }
+
+  private handleDeletableElement = (): void => {
+    const deleteElement = this.host.shadowRoot.querySelector('.delete') as HTMLElement
+    if (!deleteElement) {
+      return
+    }
+    if (this.deletable) {
+      setAttributeIfEmpty(deleteElement, 'aria-hidden', 'true')
+      deleteElement.addEventListener('click', this.onDeleteHandler.bind(this))
+      return
+    }
+    deleteElement.removeAttribute('aria-hidden')
+    deleteElement.removeEventListener('click', this.onDeleteHandler.bind(this))
+  }
+
+  componentDidLoad ():void {
+    this.handleClickableElement()
+    this.handleClickableKeyboard()
+    this.handleDeletableElement()
+    this.handleDeletableKeyboard()
+  }
+
+  componentDidUpdate ():void {
+    this.handleClickableElement()
+    this.handleClickableKeyboard()
+    this.handleDeletableElement()
+    this.handleDeletableKeyboard()
+  }
+
+  disconnectedCallback ():void {
+    this.km.detachClickBehavior('label')
+    this.km.detachClickBehavior('delete')
   }
 
   render () {
