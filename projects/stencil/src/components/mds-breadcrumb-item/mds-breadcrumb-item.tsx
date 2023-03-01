@@ -34,6 +34,14 @@ export class MdsBreadcrumbItem {
     this.km.attachClickBehavior()
   }
 
+  componentDidUpdate ():void {
+    if (this.active) {
+      this.km.detachClickBehavior()
+      return
+    }
+    this.km.attachClickBehavior()
+  }
+
   disconnectedCallback (): void {
     this.km.detachClickBehavior()
   }
