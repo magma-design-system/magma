@@ -20,40 +20,49 @@ to let other components be able to style text selection, which is not possible r
 ## Issue impact
 
 <!--   🔴 Required
-Leave only the items affected and delete the others.
-If for some reason you don't find the project/environment/tool you are talking about, please open an issue (feature) to suggest its addition.
+Check with [x] the items affected and leave [~] to the others.
+If for some reason you don't find the project/environment/tool you are talking about, add it and please, open an issue (feature) to suggest its addition.
 -->
 
-Impacts the following Magma Design System project:
+This issue could be a:
 
-- [Design Tokens][design-tokens]
-- [Icons][icons]
-- [Identity][identity]
-- [~~React~~ (deprecated)][react]
-- [Stencil (web components)][stencil]
-- [Styles][styles]
-- [SVG Icons][svg-icons]
+- [~] Breaking change
+- [x] Minor
+- [~] Patch
 
-Impacts the following Design System tool/environment:
+<details>
+  <summary>Impacts the following Magma Design System project</summary>
 
-- [CI (Continuous Integration)][ci]
-- [Figma][figma]
-- [Gitlab][gitlab]
+- [~] Design tokens [link][design-tokens]
+- [~] Icons [link][icons]
+- [~] identity [link][identity]
+- [~] ~~React~~ (deprecated) [link][react]
+- [x] Stencil (web components) [link][stencil]
+- [x] Lit (web components) [link][stencil]
+- [~] Styles [link][styles]
+- [~] SVG icons [link][svg-icons]
+</details>
 
-<!-- 🟡 Recommended
-If present, provide a project related to the issue.
+<details>
+  <summary>Impacts the following Maggioli products</summary>
 
-Example:
-Impacts the following Maggioli products:
+- [x] All products
+- [~] Biblioteca Digitale [link][prd-bib-dig]
+- [~] Magma Docs [link][magma-docs]
+- [~] Periodici Maggioli [link][prd-per-mag]
+- [~] Quiz App [link][prd-quiz]
+- [~] R&D Days [link][prd-rnd-days]
+- [~] SistemaPA [link][prd-sis-pa]
+- [~] Synbee [link][prd-synbee]
+</details>
 
-- [Biblioteca Digitale][prd-bib-dig]
-- [Magma Docs][magma-docs]
-- [Periodici Maggioli][prd-per-mag]
-- [Quiz App][prd-quiz]
-- [R&D Days][prd-rnd-days]
-- [SistemaPA][prd-sis-pa]
-- [Synbee][prd-synbee]
--->
+<details>
+  <summary>Impacts the following Design System tools / environments</summary>
+
+- [~] Continuous Integration (CI) [link][ci]
+- [~] Figma [link][figma]
+- [~] GitLab [link][gitlab]
+</details>
 
 ## Expected behavior
 
@@ -168,6 +177,7 @@ I think something like this shoud be enough:
 [prd-synbee]: https://gitlab.com/maggiolispa/ricerca-sviluppo-bari/synerbee
 [react]: https://gitlab.com/maggiolispa/ricerca-sviluppo-new-media/design-system/-/tree/dev/projects/react
 [stencil]: https://gitlab.com/maggiolispa/ricerca-sviluppo-new-media/design-system/-/tree/dev/projects/stencil
+[lit]: https://gitlab.com/maggiolispa/ricerca-sviluppo-new-media/design-system/-/tree/dev/projects/lit
 [storybook]: https://magma.maggiolicloud.it/storybook/
 [styles]: https://gitlab.com/maggiolispa/ricerca-sviluppo-new-media/design-system/-/tree/dev/projects/styles
 [svg-icons]: https://gitlab.com/maggiolispa/ricerca-sviluppo-new-media/design-system/-/tree/dev/projects/svg-icons
