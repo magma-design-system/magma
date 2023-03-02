@@ -132,11 +132,11 @@ You can try it out on the component's [Storybook website][storybook]!
 
 ## CSS Custom Properties
 
-| Name                      | Description                                                          |
-| ------------------------- | -------------------------------------------------------------------- |
-| `--color`                 | Sets the text color of the component                                 |
-| `--text-decoration`       | Sets the text decoration color of the link                           |
-| `--text-decoration-hover` | Sets the text decoration color of the link when the mouse is over it |
+| Name                                       | Description                                                          |
+| ------------------------------------------ | -------------------------------------------------------------------- |
+| `--mds-bibliography-color`                 | Sets the text color of the component                                 |
+| `--mds-bibliography-text-decoration`       | Sets the text decoration color of the link                           |
+| `--mds-bibliography-text-decoration-hover` | Sets the text decoration color of the link when the mouse is over it |
 
 
 ## Dependencies

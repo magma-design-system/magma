@@ -1,18 +1,18 @@
+@import '../../tailwind/components.css';
 @tailwind components;
 @tailwind utilities;
-@import '../../tailwind/components.css';
 
 /**
-* @prop --color: Sets the text-color of the element
-* @prop --color: Sets the text-color of the element
-* @prop --description-color: Sets the color of the always visible title description
+* @prop --mds-accordion-item-color: Sets the text-color of the element
+* @prop --mds-accordion-item-color: Sets the text-color of the element
+* @prop --mds-accordion-item-description-color: Sets the color of the always visible title description
 */
 
 :host {
 
-  --border-color: theme('colors.tone-neutral-08');
-  --color: theme('colors.tone-neutral-03');
-  --description-color: theme('colors.tone-neutral-02');
+  --mds-accordion-item-border-color: theme('colors.tone-neutral-08');
+  --mds-accordion-item-color: theme('colors.tone-neutral-03');
+  --mds-accordion-item-description-color: theme('colors.tone-neutral-02');
 
   @apply
     duration-500
@@ -24,8 +24,8 @@
 
   border-bottom: solid 2px transparent !important;
   border-top: solid 2px transparent !important;
-  color: var(--color);
-  fill: var(--color);
+  color: var(--mds-accordion-item-color);
+  fill: var(--mds-accordion-item-color);
   margin-bottom: -2px;
 }
 
@@ -34,8 +34,8 @@
     my-4
     py-8;
 
-  border-bottom: solid 2px var(--border-color) !important;
-  border-top: solid 2px var(--border-color) !important;
+  border-bottom: solid 2px var(--mds-accordion-item-border-color) !important;
+  border-top: solid 2px var(--mds-accordion-item-border-color) !important;
 }
 
 :host( .sibling[opened] ) {
@@ -61,9 +61,10 @@
     gap-4
     grid
     p-0
+    rounded-lg
     text-left;
 
-  color: var(--description-color);
+  color: var(--mds-accordion-item-description-color);
   grid-template-columns: 1fr auto;
 }
 
@@ -100,7 +101,7 @@
     ease-out-expo
     transition-transform;
 
-  fill: var(--color);
+  fill: var(--mds-accordion-item-color);
   transform: rotate(180deg);
 }
 

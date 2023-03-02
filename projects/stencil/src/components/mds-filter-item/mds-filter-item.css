@@ -1,10 +1,14 @@
+@import '../../tailwind/components.css';
 @tailwind components;
 @tailwind utilities;
 
 :host {
   @apply
     cursor-pointer
+    duration-200
+    ease-out
     fill-tone-neutral-03
+    focus-off
     flex
     gap-1
     items-center
@@ -13,8 +17,13 @@
     py-2
     rounded-full
     text-tone-neutral-03
-    transition-colors
     whitespace-nowrap;
+
+  transition-property: background-color, color, outline, outline-offset;
+}
+
+:host (:focus-visible) {
+  @apply focus-on;
 }
 
 :host ( [icon]:not([label]) ) {

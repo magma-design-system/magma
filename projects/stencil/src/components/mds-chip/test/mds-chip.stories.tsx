@@ -1,10 +1,5 @@
 import { h } from '@stencil/core'
-// import { h } from 'jsx-dom'
 import { iconsDictionary } from '@dictionary/icon'
-
-// deletable
-// disabled
-// icon
 
 export default {
   title: 'UI / Chip',
@@ -58,11 +53,10 @@ clickable.args = {
   label: 'Hover me to interact',
 }
 
-// https://design.baloise.dev/?path=/story/components-button--button-states
-// https://github.com/baloise/design-system/tree/master/packages/components
-
-
-// https://dev.to/ofhouse/enhance-your-stencil-web-components-in-storybook-with-knobs-actions-and-jsx-54m4
-// "@babel/plugin-syntax-jsx": "^7.18.6",
-// "@babel/plugin-transform-react-jsx": "^7.19.0",
-// "jsx-dom": "^8.0.3",
+export const fullyInteractive = Template.bind({})
+fullyInteractive.args = {
+  clickable: true,
+  deletable: true,
+  icon: 'mi/baseline/downhill-skiing',
+  label: 'Downhill skiing',
+}

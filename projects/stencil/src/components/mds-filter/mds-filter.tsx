@@ -48,7 +48,7 @@ export class MdsFilter {
   private checkActivation = ():void => {
     const items = this.queryItems()
     let active = false
-    items.forEach((item, key) => {
+    items.forEach(item => {
       if (item.active) {
         active = true
       }

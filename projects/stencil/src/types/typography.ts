@@ -21,6 +21,10 @@ export type TypographyVariants =
   | 'read'
   | 'code'
 
+export type TypographyReadingVariants =
+  | 'info'
+  | 'read'
+
 export type TypographyTitleType =
   | 'action'
   | 'h1'

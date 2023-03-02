@@ -1,5 +1,6 @@
 import { Component, Element, Event, EventEmitter, Host, h, Prop } from '@stencil/core'
 import { FilterClickedEvent } from '../mds-filter/meta/interface'
+import { KeyboardManager } from '@common/keyboard-manager'
 
 @Component({
   tag: 'mds-filter-item',
@@ -9,6 +10,7 @@ import { FilterClickedEvent } from '../mds-filter/meta/interface'
 export class MdsFilterItem {
 
   @Element() private element: HTMLMdsFilterItemElement
+  private km = new KeyboardManager()
 
   /**
    * Sets the component to active state
@@ -34,10 +36,20 @@ export class MdsFilterItem {
     this.active = !this.active
     this.activeEvent.emit({ id: this.element.id, active: this.active })
   }
+
   /**
    * Emits when the element is active
    */
   @Event() activeEvent: EventEmitter<FilterClickedEvent>
+
+  componentDidLoad = (): void => {
+    this.km.addElement(this.element)
+    this.km.attachClickBehavior()
+  }
+
+  disconnectedCallback = (): void => {
+    this.km.detachClickBehavior()
+  }
 
   render () {
     return (

@@ -3,6 +3,7 @@ import { arrow, autoPlacement, autoUpdate, computePosition, flip, MiddlewareData
 import { FloatingUIPlacement, FloatingUIStrategy } from '@type/floating-ui'
 import arrowSvg from './assets/arrow.svg'
 import { setAttributeIfEmpty, hashValue } from '@common/aria'
+import { KeyboardManager } from '@common/keyboard-manager'
 
 @Component({
   tag: 'mds-dropdown',
@@ -20,6 +21,7 @@ export class MdsDropdown {
   private backdropTimer: NodeJS.Timeout
   private caller: HTMLElement
   private cleanupAutoUpdate: () => void
+  private km = new KeyboardManager()
 
   @Element() private host: HTMLMdsDropdownElement
 
@@ -377,7 +379,7 @@ export class MdsDropdown {
     setAttributeIfEmpty(this.host, 'aria-labelledby', this.target)
   }
 
-  componentDidRender (): void {
+  componentDidLoad (): void {
     document.addEventListener('click', this.handleCloseDropdown)
     this.arrowEl = this.host.shadowRoot.querySelector('.arrow')
     this.caller = document.getElementById(this.target)
@@ -389,17 +391,19 @@ export class MdsDropdown {
     }
 
     this.caller.addEventListener('click', this.callerOnClick.bind(this))
+    this.km.addElement(this.host)
+    this.km.attachEscapeBehavior(() => this.handleVisibility(false))
+
     this.backdropChanged(this.backdrop)
     this.updatePosition()
-  }
 
-  componentDidLoad (): void {
     if (!this.cleanupAutoUpdate) {
       this.cleanupAutoUpdate = autoUpdate(this.caller, this.host, this.updatePosition)
     }
   }
 
   disconnectedCallback (): void {
+    this.km.detachEscapeBehavior()
     this.cleanupAutoUpdate = null
   }
 

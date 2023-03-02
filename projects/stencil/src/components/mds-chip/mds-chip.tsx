@@ -1,7 +1,8 @@
-import { Component, Element, Event, EventEmitter, Host, h, Prop, Watch } from '@stencil/core'
+import { Component, Element, Event, EventEmitter, Host, h, Prop } from '@stencil/core'
 import miBaselineCancel from '@icon/mi/baseline/cancel.svg'
 import { setAttributeIfEmpty } from '@common/aria'
 import { MdsChipEvent } from './meta/interface'
+import { KeyboardManager } from '@common/keyboard-manager'
 
 @Component({
   tag: 'mds-chip',
@@ -11,8 +12,7 @@ import { MdsChipEvent } from './meta/interface'
 export class MdsChip {
 
   @Element() host: HTMLMdsChipElement
-  private labelAction: HTMLElement
-  private iconElement: HTMLElement
+  private km = new KeyboardManager()
 
   /**
    * Adds ARIA support to the element if has interaction
@@ -47,44 +47,12 @@ export class MdsChip {
   /**
    * Emits when the component's label is clicked
    */
-  @Event() labelClick: EventEmitter<MdsChipEvent>
+  @Event({ eventName: 'labelClicked' }) labelClick: EventEmitter<MdsChipEvent>
 
   /**
    * Emits when the component's delete button is clicked
    */
   @Event() delete: EventEmitter<MdsChipEvent>
-
-  componentDidLoad ():void {
-    this.labelAction = this.host.shadowRoot.querySelector('.label')
-    this.iconElement = this.host.shadowRoot.querySelector('.svg svg')
-    if (this.clickable) {
-      this.addActionAttributes()
-    }
-
-    if (this.deletable) {
-      this.addDeleteAttributes()
-    }
-  }
-
-  disconnectedCallback ():void {
-    if (this.clickable) {
-      this.labelAction.removeEventListener('click', this.onLabelClickHandler.bind(this))
-    }
-  }
-
-  private addActionAttributes (): void {
-    setAttributeIfEmpty(this.labelAction, 'role', 'button')
-    this.labelAction.addEventListener('click', this.onLabelClickHandler.bind(this))
-  }
-
-  private addDeleteAttributes (): void {
-    setAttributeIfEmpty(this.iconElement, 'aria-hidden', 'true')
-  }
-
-  private removeActionAttributes (): void {
-    this.labelAction.removeAttribute('role')
-    this.labelAction.removeEventListener('click', this.onLabelClickHandler)
-  }
 
   private onLabelClickHandler (event: Event): void {
     this.labelClick.emit({ event, element: this.host })
@@ -94,20 +62,71 @@ export class MdsChip {
     this.delete.emit({ event, element: this.host })
   }
 
-  @Watch('clickable')
-  clickableChanged (newValue: boolean): void {
-    if (newValue) {
-      this.addActionAttributes()
+  private handleClickableKeyboard = (): void => {
+    if (this.clickable) {
+      const label = this.host.shadowRoot.querySelector('.label') as HTMLElement
+      this.km.addElement(label, 'label')
+      this.km.attachClickBehavior('label')
       return
     }
-    this.removeActionAttributes()
+    this.km.detachClickBehavior('label')
   }
 
-  @Watch('deletable')
-  deletableChanged (newValue: boolean): void {
-    if (newValue) {
-      this.addDeleteAttributes()
+  private handleDeletableKeyboard = (): void => {
+    if (this.deletable) {
+      const deleteElement = this.host.shadowRoot.querySelector('.delete') as HTMLElement
+      this.km.addElement(deleteElement, 'delete')
+      this.km.attachClickBehavior('delete')
+      return
     }
+    this.km.detachClickBehavior('delete')
+  }
+
+  private handleClickableElement = (): void => {
+    const label = this.host.shadowRoot.querySelector('.label') as HTMLElement
+    if (!label) {
+      return
+    }
+    if (this.clickable) {
+      setAttributeIfEmpty(label, 'role', 'button')
+      label.addEventListener('click', this.onLabelClickHandler.bind(this))
+      return
+    }
+    label.removeAttribute('role')
+    label.removeEventListener('click', this.onLabelClickHandler.bind(this))
+  }
+
+  private handleDeletableElement = (): void => {
+    const deleteElement = this.host.shadowRoot.querySelector('.delete') as HTMLElement
+    if (!deleteElement) {
+      return
+    }
+    if (this.deletable) {
+      setAttributeIfEmpty(deleteElement, 'aria-hidden', 'true')
+      deleteElement.addEventListener('click', this.onDeleteHandler.bind(this))
+      return
+    }
+    deleteElement.removeAttribute('aria-hidden')
+    deleteElement.removeEventListener('click', this.onDeleteHandler.bind(this))
+  }
+
+  componentDidLoad ():void {
+    this.handleClickableElement()
+    this.handleClickableKeyboard()
+    this.handleDeletableElement()
+    this.handleDeletableKeyboard()
+  }
+
+  componentDidUpdate ():void {
+    this.handleClickableElement()
+    this.handleClickableKeyboard()
+    this.handleDeletableElement()
+    this.handleDeletableKeyboard()
+  }
+
+  disconnectedCallback ():void {
+    this.km.detachClickBehavior('label')
+    this.km.detachClickBehavior('delete')
   }
 
   render () {
@@ -118,10 +137,15 @@ export class MdsChip {
             <mds-icon class="icon" name={this.icon} />
           </div>
         }
-        <mds-text class="label" tabindex="0" typography="caption" truncate={true}>
-          { this.label }
-        </mds-text>
-        { this.deletable && <i class="svg delete" innerHTML={miBaselineCancel} onClick={this.onDeleteHandler.bind(this)} role="button" tabindex="0" title={ `${this.deleteLabel} ${this.label}` }/> }
+        { this.clickable
+          ? <mds-text class="label focusable" tabindex="0" typography="caption" truncate={true}>
+            { this.label }
+          </mds-text>
+          : <mds-text class="label" typography="caption" truncate={true}>
+            { this.label }
+          </mds-text>
+        }
+        { this.deletable && <i class="svg delete focusable" innerHTML={miBaselineCancel} onClick={this.onDeleteHandler.bind(this)} role="button" tabindex="0" title={ `${this.deleteLabel} ${this.label}` }/> }
       </Host>
     )
   }

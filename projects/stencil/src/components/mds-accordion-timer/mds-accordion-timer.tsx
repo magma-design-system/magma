@@ -120,7 +120,7 @@ export class MdsAccordionTimer {
     this.time = null
   }
 
-  @Listen('clickActive')
+  @Listen('activeClicked')
   onClickActive (event: CustomEvent<string>): void {
     if (event.detail === this.activeItem.description) {
       return
@@ -137,12 +137,12 @@ export class MdsAccordionTimer {
     this.pauseTimer()
   }
 
-  @Listen('mouseEnterActive')
+  @Listen('activeMouseEnter')
   onMouseEnterActive (): void {
     this.pauseTimer()
   }
 
-  @Listen('mouseLeaveActive')
+  @Listen('activeMouseLeave')
   onMouseLeaveActive (): void {
     if (this.timeChecker === null) {
       this.playTimer()

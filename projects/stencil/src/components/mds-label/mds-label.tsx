@@ -3,6 +3,7 @@ import { TypographyType } from '../../types/typography'
 import { ThemeFullVariantType, ToneSimpleVariantType } from '../../types/variant'
 import clsx from 'clsx'
 import miBaselineClose from '@icon/mi/baseline/close.svg'
+import { KeyboardManager } from '@common/keyboard-manager'
 
 @Component({
   tag: 'mds-label',
@@ -11,17 +12,24 @@ import miBaselineClose from '@icon/mi/baseline/close.svg'
 })
 export class MdsLabel {
 
-  @Element() private element: HTMLMdsLabelElement
+  @Element() private host: HTMLMdsLabelElement
+  private km = new KeyboardManager()
+
+
+  /**
+   * Specifies the ARIA label for remove element
+   */
+  @Prop() readonly labelAction?: string = 'Rimuovi'
 
   /**
    * Sets the theme variant colors
    */
-  @Prop({ reflect: true }) variant?: ThemeFullVariantType = 'sky'
+  @Prop({ reflect: true }) readonly variant?: ThemeFullVariantType = 'sky'
 
   /**
    * Sets the tone of the color variant
    */
-  @Prop({ reflect: true }) tone?: ToneSimpleVariantType = 'quiet'
+  @Prop({ reflect: true }) readonly tone?: ToneSimpleVariantType = 'quiet'
 
   /**
    * Truncates text inside the label or displays it in multiline if needed
@@ -38,16 +46,38 @@ export class MdsLabel {
    */
   @Prop() readonly deletable?: boolean = false
 
-  private onClickClose = (ev: Event) => {
+  private onClickDelete = (ev: Event) => {
     ev.stopPropagation()
     ev.preventDefault()
-    this.clickClose.emit(this.element)
+    this.deleteEvent.emit(this.host)
   }
 
   /**
    * Emits when the label has to be cancelled
    */
-  @Event() clickClose: EventEmitter<HTMLMdsLabelElement>
+  @Event({ eventName: 'delete' }) deleteEvent: EventEmitter<HTMLMdsLabelElement>
+
+  private handleKeyboard = (): void => {
+    if (this.deletable) {
+      const close = this.host.shadowRoot.querySelector('.close') as HTMLElement
+      this.km.addElement(close)
+      this.km.attachClickBehavior()
+      return
+    }
+    this.km.detachClickBehavior()
+  }
+
+  componentDidLoad ():void {
+    this.handleKeyboard()
+  }
+
+  componentDidUpdate (): void {
+    this.handleKeyboard()
+  }
+
+  disconnectedCallback (): void {
+    this.km.detachClickBehavior()
+  }
 
   render () {
     return (
@@ -55,7 +85,7 @@ export class MdsLabel {
         <mds-text typography={this.typography} class={clsx('text', this.truncate && 'truncate')}>
           <slot/>
         </mds-text>
-        { this.deletable && <i innerHTML={miBaselineClose} class="svg close" onClick={ this.onClickClose.bind(this) }/> }
+        { this.deletable && <i class="svg close focusable" innerHTML={miBaselineClose} tabindex="0" onClick={ this.onClickDelete.bind(this) } role="button" title={this.labelAction}/> }
       </Host>
     )
   }

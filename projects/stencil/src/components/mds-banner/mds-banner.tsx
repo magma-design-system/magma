@@ -1,7 +1,7 @@
 import { Component, Element, Event, EventEmitter, Host, Prop, h } from '@stencil/core'
 import { ToneSimpleVariantType, ThemeVariantType } from '../../types/variant'
-import clsx from 'clsx'
 import miBaselineClose from '@icon/mi/baseline/close.svg'
+import { KeyboardManager } from '@common/keyboard-manager'
 
 @Component({
   tag: 'mds-banner',
@@ -11,8 +11,9 @@ import miBaselineClose from '@icon/mi/baseline/close.svg'
 export class MdsBanner {
 
   private actions: boolean
+  private km = new KeyboardManager()
 
-  @Element() hostElement: HTMLMdsBannerElement
+  @Element() host: HTMLMdsBannerElement
 
   /**
    * Sets the theme variant colors
@@ -44,8 +45,30 @@ export class MdsBanner {
    */
   @Prop() readonly icon?: string
 
+  private deletableHandler = (): void => {
+    if (this.deletable) {
+      const closeIcon = this.host.shadowRoot.querySelector('.close-icon') as HTMLElement
+      this.km.addElement(closeIcon)
+      this.km.attachClickBehavior()
+      return
+    }
+    this.km.detachClickBehavior()
+  }
+
   componentWillLoad (): void {
-    this.actions = this.hostElement.querySelector('[slot="actions"]') !== null
+    this.actions = this.host.querySelector('[slot="actions"]') !== null
+  }
+
+  componentDidLoad (): void {
+    this.deletableHandler()
+  }
+
+  componentDidUpdate (): void {
+    this.deletableHandler()
+  }
+
+  disconnectedCallback (): void {
+    this.km.detachClickBehavior()
   }
 
   /**
@@ -73,7 +96,7 @@ export class MdsBanner {
               <slot/>
             </div>
           </div>
-          { this.deletable && <i class="svg close-icon" innerHTML={miBaselineClose} onClick={this.closeBanner} role="button" tabindex="0" title={this.closeLabel}/>}
+          { this.deletable && <i class="svg close-icon focusable" innerHTML={miBaselineClose} onClick={this.closeBanner} role="button" tabindex="0" title={this.closeLabel}/>}
         </div>
         { this.actions
           &&

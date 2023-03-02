@@ -1,5 +1,5 @@
-import { Component, Host, h, Prop } from '@stencil/core'
-import clsx from 'clsx'
+import { Component, Host, h, Prop, Element } from '@stencil/core'
+import { KeyboardManager } from '@common/keyboard-manager'
 
 @Component({
   tag: 'mds-paginator-item',
@@ -8,10 +8,13 @@ import clsx from 'clsx'
 })
 export class MdsPaginatorItem {
 
+  @Element() host: HTMLMdsPaginatorItemElement
+  private km = new KeyboardManager()
+
   /**
    * Specifies the icon used inside the paginator item
    */
-  @Prop() readonly icon?: string
+  @Prop({ reflect: true }) readonly icon?: string
 
   /**
    * Specifies if the item is active or not, is handled from the parent paginator
@@ -23,13 +26,27 @@ export class MdsPaginatorItem {
    */
   @Prop({ reflect: true }) readonly disabled?: boolean
 
+  componentDidLoad = (): void => {
+    this.km.addElement(this.host)
+    this.km.attachClickBehavior()
+  }
+
+  componentDidUpdate = (): void => {
+    if (!this.disabled && !this.active) {
+      this.km.attachClickBehavior()
+      return
+    }
+
+    this.km.detachClickBehavior()
+  }
+
+  disconnectedCallback = (): void => {
+    this.km.detachClickBehavior()
+  }
+
   render () {
     return (
-      <Host class={clsx(
-        this.active && 'active',
-        this.disabled && 'disabled',
-        this.icon && 'icon',
-      )}>
+      <Host tabindex="0">
         { this.icon !== undefined
           ? <mds-icon name={this.icon}/>
           : <mds-text class="text" typography="detail">

@@ -1,6 +1,6 @@
+@import '../../tailwind/components.css';
 @tailwind components;
 @tailwind utilities;
-@import '../../tailwind/components.css';
 
 /**
   * @prop --mds-modal-overlay-color: Set the overlay color of the background when the component is opened, this property can be inherited from `globals.css` in `styles^8.0.0`.
@@ -126,11 +126,12 @@
     h-9
     opacity-0
     origin-center
+    rounded-full
     text-4xl
     top-0
-    transition-cosmetic
     w-9;
 
+  transition-property: opacity, outline, outline-offset, transform;
   transform: translate(0, 24px) rotate(90deg);
 }
 

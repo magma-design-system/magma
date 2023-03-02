@@ -17,13 +17,13 @@
 
 ## CSS Custom Properties
 
-| Name           | Description                                     |
-| -------------- | ----------------------------------------------- |
-| `--background` | Sets the background-color of the component      |
-| `--color`      | Sets the background-color of the progress       |
-| `--duration`   | Sets the duration of the progress bar animation |
-| `--radius`     | Sets the border-radius of the component         |
-| `--thickness`  | Sets the thickness of the progress bar          |
+| Name                        | Description                                     |
+| --------------------------- | ----------------------------------------------- |
+| `--mds-progress-background` | Sets the background-color of the component      |
+| `--mds-progress-color`      | Sets the background-color of the progress       |
+| `--mds-progress-duration`   | Sets the duration of the progress bar animation |
+| `--mds-progress-radius`     | Sets the border-radius of the component         |
+| `--mds-progress-thickness`  | Sets the thickness of the progress bar          |
 
 
 ## Dependencies

@@ -5,12 +5,13 @@ import {
   ButtonSizeType,
   ButtonIconPositionType,
   ButtonVariantType,
-} from '../../types/button' // TODO change folder types to type
+} from '@type/button' // TODO change folder types to type
 import { buttonSizeTypographyVariant } from './meta/variants'
-import { TypographyType } from '../../types/typography'
-import { ToneVariantType } from '../../types/variant'
+import { TypographyType } from '@type/typography'
+import { ToneVariantType } from '@type/variant'
 import clsx from 'clsx'
 import { setAttributeIfEmpty, unslugName } from '@common/aria'
+import { KeyboardManager } from '@common/keyboard-manager'
 
 @Component({
   tag: 'mds-button',
@@ -22,6 +23,7 @@ export class MdsButton {
   private typography?: TypographyType
   private hasText?: boolean
   private hasNotification?: boolean
+  private km = new KeyboardManager()
 
   @Element() host: HTMLMdsButtonElement
 
@@ -74,7 +76,9 @@ export class MdsButton {
   }
 
   componentDidLoad ():void {
-    this.addKeyboardSpaceListener()
+    this.km.addElement(this.host)
+    this.km.attachClickBehavior()
+
     if (!this.hasText && this.icon) {
       const iconTitle = unslugName(this.icon)
       if (!this.host.hasAttribute('aria-label')) {
@@ -84,23 +88,8 @@ export class MdsButton {
     }
   }
 
-  private checkKeyboardSpace = (event: KeyboardEvent): void => {
-    if (event.code === 'Space') {
-      // this.close.emit()
-      // trigger click event
-    }
-  }
-
-  private addKeyboardSpaceListener (): void {
-    this.host.addEventListener('keydown', this.checkKeyboardSpace.bind(this))
-  }
-
-  private removeKeyboardSpaceListener (): void {
-    this.host.removeEventListener('keydown', this.checkKeyboardSpace.bind(this))
-  }
-
   disconnectedCallback (): void {
-    this.removeKeyboardSpaceListener()
+    this.km.detachClickBehavior()
   }
 
   render () {

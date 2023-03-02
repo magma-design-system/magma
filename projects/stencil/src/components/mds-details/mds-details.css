@@ -1,5 +1,6 @@
-@tailwind utilities;
 @import '../../tailwind/components.css';
+@tailwind components;
+@tailwind utilities;
 
 /**
 * @prop --icon-color: Sets the icon color the component
@@ -43,7 +44,7 @@
 
 .header {
   @apply
-    flex
+    inline-flex
     gap-2
     items-start;
 }
