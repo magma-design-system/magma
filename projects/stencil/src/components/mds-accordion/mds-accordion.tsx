@@ -13,12 +13,12 @@ export class MdsAccordion {
   /**
    * Choose if multiple siblings can be opened simultaneously
    */
-  @Prop() multiple?: boolean
+  @Prop() readonly multiple?: boolean = false
 
   /**
-   * Specifies if an item could be closed by user
+   * Specifies if an item can be closed by user
    */
-  @Prop() readonly closable? = true
+  @Prop() readonly closable?: boolean = true
 
   private queryItems = ():NodeListOf<HTMLMdsAccordionItemElement> =>
     this.element.querySelectorAll<HTMLMdsAccordionItemElement>('mds-accordion-item')
