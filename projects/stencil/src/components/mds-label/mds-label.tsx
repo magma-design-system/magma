@@ -1,4 +1,4 @@
-import { Component, Element, Event, EventEmitter, Host, h, Prop, Watch } from '@stencil/core'
+import { Component, Element, Event, EventEmitter, Host, h, Prop } from '@stencil/core'
 import { TypographyType } from '../../types/typography'
 import { ThemeFullVariantType, ToneSimpleVariantType } from '../../types/variant'
 import clsx from 'clsx'
