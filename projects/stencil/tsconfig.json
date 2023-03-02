@@ -3,22 +3,22 @@
   "compilerOptions": {
     "allowSyntheticDefaultImports": true,
     "allowUnreachableCode": false,
+    "baseUrl": ".",
     "declaration": false,
     "experimentalDecorators": true,
     "lib": [
       "dom",
       "es2017"
     ],
-    "moduleResolution": "node",
-    "module": "esnext",
-    "target": "es2017",
-    "noUnusedLocals": true,
-    "noUnusedParameters": true,
+    "esModuleInterop": true,
     "jsx": "react",
     "jsxFactory": "h",
+    "module": "esnext",
+    "moduleResolution": "node",
+    "noUnusedLocals": true,
+    "noUnusedParameters": true,
     "resolveJsonModule": true,
-    "esModuleInterop": true,
-    "baseUrl": ".",
+    "target": "es2017",
     "paths": {
       "@common/*": ["src/common/*"],
       "@component/*": ["dist/collection/components/*"],
@@ -27,18 +27,18 @@
       "@icon/*": ["assets/svg/*"],
       "@placeholder": ["https://via.placeholder.com"],
       "@test/*": ["src/test/*"],
-      "@type/*": ["src/types/*"],
+      "@type/*": ["src/types/*"]
     }
   },
   "include": [
-    "src",
     "scripts",
+    "src"
   ],
   "exclude": [
     "dist",
     "loader",
     "node_modules",
     "template",
-    "www",
+    "www"
   ]
 }
