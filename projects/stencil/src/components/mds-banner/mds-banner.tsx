@@ -1,4 +1,4 @@
-import { Component, Element, Event, EventEmitter, Host, Prop, h, Watch } from '@stencil/core'
+import { Component, Element, Event, EventEmitter, Host, Prop, h } from '@stencil/core'
 import { ToneSimpleVariantType, ThemeVariantType } from '../../types/variant'
 import miBaselineClose from '@icon/mi/baseline/close.svg'
 import { KeyboardManager } from '@common/keyboard-manager'
