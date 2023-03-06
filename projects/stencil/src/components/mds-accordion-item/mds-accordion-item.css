@@ -3,7 +3,7 @@
 @tailwind utilities;
 
 /**
-* @prop --mds-accordion-item-color: Sets the text-color of the element
+* @prop --mds-accordion-item-border-color: Sets the border-color of the element
 * @prop --mds-accordion-item-color: Sets the text-color of the element
 * @prop --mds-accordion-item-description-color: Sets the color of the always visible title description
 */
