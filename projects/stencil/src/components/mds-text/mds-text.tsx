@@ -1,6 +1,6 @@
 import { Component, Host, Prop, h } from '@stencil/core'
 import { TypographyTagType } from './meta/types'
-import { TypographyType, TypographyVariants } from '../../types/typography'
+import { TypographyType, TypographyVariants } from '@type/typography'
 import { typographyDefaultsVariant } from './meta/variants'
 
 @Component( {
