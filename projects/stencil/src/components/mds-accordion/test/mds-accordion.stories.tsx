@@ -3,6 +3,10 @@ import { h } from '@stencil/core'
 export default {
   title: 'UI / Accordion',
   argTypes: {
+    closable: {
+      type: { name: 'boolean' },
+      description: 'Specifies if an item can be closed by user',
+    },
     multiple: {
       type: { name: 'boolean' },
       description: 'Choose if multiple siblings can be opened simultaneously',
