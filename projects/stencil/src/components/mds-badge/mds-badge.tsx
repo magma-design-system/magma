@@ -1,6 +1,6 @@
 import { Component, Host, h, Prop } from '@stencil/core'
-import { TypographyInfoType, TypographyReadType, TypographyVariants } from '../../types/typography'
-import { ThemeFullVariantType, ToneSimpleVariantType } from '../../types/variant'
+import { TypographyInfoType, TypographyReadType, TypographyVariants } from '@type/typography'
+import { ThemeFullVariantType, ToneSimpleVariantType } from '@type/variant'
 
 @Component( {
   tag: 'mds-badge',
