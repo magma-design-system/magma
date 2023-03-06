@@ -9,20 +9,20 @@
 
 | Property                   | Attribute     | Description                                                             | Type                                                       | Default     |
 | -------------------------- | ------------- | ----------------------------------------------------------------------- | ---------------------------------------------------------- | ----------- |
-| `active`                   | `active`      | Specifies if the accordion item is opened or not                        | `boolean`                                                  | `undefined` |
 | `description` _(required)_ | `description` | Specifies the title shown when the accordion is closed or opened        | `string`                                                   | `undefined` |
 | `progress`                 | `progress`    | A value between 0 and 100 that rapresents the status progress           | `number`                                                   | `0`         |
+| `selected`                 | `selected`    | Specifies if the accordion item is opened or not                        | `boolean`                                                  | `undefined` |
 | `typography`               | `typography`  | Specifies the typography of the element                                 | `"action" \| "h1" \| "h2" \| "h3" \| "h4" \| "h5" \| "h6"` | `'h5'`      |
 | `uuid`                     | `uuid`        | Used automatically by MdsAccordionTimer wrapper to handle it's siblings | `number`                                                   | `0`         |
 
 
 ## Events
 
-| Event              | Description                                      | Type                  |
-| ------------------ | ------------------------------------------------ | --------------------- |
-| `activeClicked`    | Emits when the accordion is clicked by the mouse | `CustomEvent<string>` |
-| `activeMouseEnter` | Emits when the accordion is hovered by the mouse | `CustomEvent<string>` |
-| `activeMouseLeave` | Emits when the accordion is hovered by the mouse | `CustomEvent<string>` |
+| Event                 | Description                                      | Type                  |
+| --------------------- | ------------------------------------------------ | --------------------- |
+| `mdsClickSelect`      | Emits when the accordion is clicked by the mouse | `CustomEvent<string>` |
+| `mdsMouseEnterSelect` | Emits when the accordion is hovered by the mouse | `CustomEvent<string>` |
+| `mdsMouseLeaveSelect` | Emits when the accordion is hovered by the mouse | `CustomEvent<string>` |
 
 
 ## CSS Custom Properties
