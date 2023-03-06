@@ -22,7 +22,7 @@ export class MdsDetails {
   /**
    * Emits when the component is opened
    */
-  @Event() openedEvent: EventEmitter<void>
+  @Event({ eventName: 'mdsChange' }) changedEvent: EventEmitter<boolean>
 
   @Watch('opened')
   validateOpened (newValue: boolean): void {
@@ -45,9 +45,7 @@ export class MdsDetails {
 
   private toggle = () => {
     this.isOpened = !this.isOpened
-    if (this.isOpened) {
-      this.openedEvent.emit()
-    }
+    this.changedEvent.emit(this.isOpened)
   }
 
   render () {
