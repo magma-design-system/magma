@@ -14,9 +14,9 @@
 
 ## Events
 
-| Event          | Description                          | Type                                  |
-| -------------- | ------------------------------------ | ------------------------------------- |
-| `changedEvent` | Emits when the breadcrumb is changed | `CustomEvent<BreadcrumbClickedEvent>` |
+| Event       | Description                          | Type                                  |
+| ----------- | ------------------------------------ | ------------------------------------- |
+| `mdsChange` | Emits when the breadcrumb is changed | `CustomEvent<BreadcrumbClickedEvent>` |
 
 
 ## CSS Custom Properties
