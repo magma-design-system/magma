@@ -47,19 +47,19 @@ export class MdsChip {
   /**
    * Emits when the component's label is clicked
    */
-  @Event({ eventName: 'labelClicked' }) labelClick: EventEmitter<MdsChipEvent>
+  @Event({ eventName: 'mdsClickLabel' }) clickLabelEvent: EventEmitter<MdsChipEvent>
 
   /**
    * Emits when the component's delete button is clicked
    */
-  @Event() delete: EventEmitter<MdsChipEvent>
+  @Event({ eventName: 'mdsDelete' }) deleteEvent: EventEmitter<MdsChipEvent>
 
-  private onLabelClickHandler (event: Event): void {
-    this.labelClick.emit({ event, element: this.host })
+  private onClickLabelHandler (event: Event): void {
+    this.clickLabelEvent.emit({ event, element: this.host })
   }
 
   private onDeleteHandler (event: Event): void {
-    this.delete.emit({ event, element: this.host })
+    this.deleteEvent.emit({ event, element: this.host })
   }
 
   private handleClickableKeyboard = (): void => {
@@ -89,11 +89,11 @@ export class MdsChip {
     }
     if (this.clickable) {
       setAttributeIfEmpty(label, 'role', 'button')
-      label.addEventListener('click', this.onLabelClickHandler.bind(this))
+      label.addEventListener('click', this.onClickLabelHandler.bind(this))
       return
     }
     label.removeAttribute('role')
-    label.removeEventListener('click', this.onLabelClickHandler.bind(this))
+    label.removeEventListener('click', this.onClickLabelHandler.bind(this))
   }
 
   private handleDeletableElement = (): void => {

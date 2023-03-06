@@ -19,10 +19,10 @@
 
 ## Events
 
-| Event          | Description                                         | Type                        |
-| -------------- | --------------------------------------------------- | --------------------------- |
-| `delete`       | Emits when the component's delete button is clicked | `CustomEvent<MdsChipEvent>` |
-| `labelClicked` | Emits when the component's label is clicked         | `CustomEvent<MdsChipEvent>` |
+| Event           | Description                                         | Type                        |
+| --------------- | --------------------------------------------------- | --------------------------- |
+| `mdsClickLabel` | Emits when the component's label is clicked         | `CustomEvent<MdsChipEvent>` |
+| `mdsDelete`     | Emits when the component's delete button is clicked | `CustomEvent<MdsChipEvent>` |
 
 
 ## Dependencies
