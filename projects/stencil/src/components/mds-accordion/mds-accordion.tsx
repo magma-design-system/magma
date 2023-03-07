@@ -28,7 +28,7 @@ export class MdsAccordion {
     items.forEach((item, key) => item.id = `item-${key}`)
   }
 
-  @Listen('mdsOpen')
+  @Listen('mdsAccordionItemOpen')
   openedEventHandler (event: CustomEvent<AccordionClickedEvent>): void {
     const items = this.queryItems()
     if (this.multiple) {
