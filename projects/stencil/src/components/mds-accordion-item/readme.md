@@ -16,9 +16,9 @@
 
 ## Events
 
-| Event     | Description                        | Type                                 |
-| --------- | ---------------------------------- | ------------------------------------ |
-| `mdsOpen` | Emits when the accordion is opened | `CustomEvent<AccordionClickedEvent>` |
+| Event                  | Description                        | Type                                 |
+| ---------------------- | ---------------------------------- | ------------------------------------ |
+| `mdsAccordionItemOpen` | Emits when the accordion is opened | `CustomEvent<AccordionClickedEvent>` |
 
 
 ## CSS Custom Properties
