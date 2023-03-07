@@ -16,9 +16,9 @@
 
 ## Events
 
-| Event   | Description                       | Type                |
-| ------- | --------------------------------- | ------------------- |
-| `close` | Emits when the url view is closed | `CustomEvent<void>` |
+| Event             | Description                       | Type                |
+| ----------------- | --------------------------------- | ------------------- |
+| `mdsUrlViewClose` | Emits when the url view is closed | `CustomEvent<void>` |
 
 
 ## CSS Custom Properties
