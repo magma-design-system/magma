@@ -14,9 +14,9 @@
 
 ## Events
 
-| Event       | Description                        | Type                   |
-| ----------- | ---------------------------------- | ---------------------- |
-| `mdsChange` | Emits when the component is opened | `CustomEvent<boolean>` |
+| Event              | Description                        | Type                   |
+| ------------------ | ---------------------------------- | ---------------------- |
+| `mdsDetailsChange` | Emits when the component is opened | `CustomEvent<boolean>` |
 
 
 ## CSS Custom Properties

@@ -22,7 +22,7 @@ export class MdsDetails {
   /**
    * Emits when the component is opened
    */
-  @Event({ eventName: 'mdsChange' }) changedEvent: EventEmitter<boolean>
+  @Event({ eventName: 'mdsDetailsChange' }) changedEvent: EventEmitter<boolean>
 
   @Watch('opened')
   validateOpened (newValue: boolean): void {
