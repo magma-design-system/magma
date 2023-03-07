@@ -28,7 +28,7 @@ export class MdsPaginator {
   /**
    * Emits when a page is changed
    */
-  @Event() pageChangedEvent: EventEmitter<number>
+  @Event({ eventName: 'mdsPaginatorChange' }) pageChangedEvent: EventEmitter<number>
 
   private scrollPage = (): void => {
     const elementIndex = this.currentPage - 2
