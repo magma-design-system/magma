@@ -1,7 +1,7 @@
-import { Component, Event, EventEmitter, Host, Prop, h, State } from '@stencil/core'
 import clsx from 'clsx'
-import { InputValue } from '../../interface/input-value'
 import miBaselineKeyboardArrowDown from '@icon/mi/baseline/keyboard-arrow-down.svg'
+import { Component, Event, EventEmitter, Host, Prop, h, State } from '@stencil/core'
+import { InputValue } from '@interface/input-value'
 
 @Component({
   tag: 'mds-input-select',
@@ -30,22 +30,22 @@ export class MdsInputSelect {
   /**
    * Emits an InputChangeEventDetail when the value of the input element changes
    */
-  @Event() changeEvent: EventEmitter<InputValue>
+  @Event({ eventName: 'mdsInputSelectChange' }) changeEvent: EventEmitter<InputValue>
 
   /**
     * Emits a KeyboardEvent when a keboard key is pressed on the focused input element
     */
-  @Event() keyDownEvent: EventEmitter<KeyboardEvent>
+  @Event({ eventName: 'mdsInputSelectKeydown' }) keyDownEvent: EventEmitter<KeyboardEvent>
 
   /**
     * Emits a void event when input element is blurred
     */
-  @Event() blurEvent: EventEmitter<void>
+  @Event({ eventName: 'mdsInputSelectBlur' }) blurEvent: EventEmitter<void>
 
   /**
     * Emits a void event when input element is focused
     */
-  @Event() focusEvent: EventEmitter<void>
+  @Event({ eventName: 'mdsInputSelectFocus' }) focusEvent: EventEmitter<void>
 
   private onInput = (ev: Event) => {
     const input = ev.target as HTMLSelectElement | false
