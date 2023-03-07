@@ -25,6 +25,7 @@
       "@dictionary/*": ["src/dictionary/*"],
       "@fixture/*": ["src/fixtures/*"],
       "@icon/*": ["assets/svg/*"],
+      "@interface/*": ["src/interface/*"],
       "@placeholder": ["https://via.placeholder.com"],
       "@test/*": ["src/test/*"],
       "@type/*": ["src/types/*"]
