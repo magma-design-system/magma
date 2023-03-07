@@ -47,3 +47,8 @@ const Template = args =>
   </mds-table>
 
 export const Default = Template.bind({})
+
+export const interactive = Template.bind({})
+interactive.args = {
+  interactive: true,
+}

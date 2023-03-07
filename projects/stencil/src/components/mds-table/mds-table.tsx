@@ -1,5 +1,5 @@
-import { Component, Event, EventEmitter, Host, h, Prop, Watch } from '@stencil/core'
 import clsx from 'clsx'
+import { Component, Host, h, Prop, Event, EventEmitter, Watch } from '@stencil/core'
 
 @Component({
   tag: 'mds-table',
@@ -16,15 +16,15 @@ export class MdsTable {
   /**
    * Dispatces when interactive property changes
    */
-  @Event({ composed: true }) tableInteractive: EventEmitter<boolean>
-
-  componentDidLoad ():void {
-    this.tableInteractive.emit(this.interactive)
-  }
+  @Event({ bubbles: true, composed: true, eventName: 'mdsTableInteractiveChange' }) interactiveEvent: EventEmitter<boolean>
 
   @Watch('interactive')
   onTableInteractive (): void {
-    this.tableInteractive.emit(this.interactive)
+    this.interactiveEvent.emit(this.interactive)
+  }
+
+  componentDidLoad = (): void => {
+    this.interactiveEvent.emit(this.interactive)
   }
 
   render () {
