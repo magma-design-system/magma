@@ -1,5 +1,5 @@
-import { Component, Element, Event, EventEmitter, Host, h, Listen, Prop, State } from '@stencil/core'
 import clsx from 'clsx'
+import { Component, Element, Event, EventEmitter, Host, h, Listen, Prop, State } from '@stencil/core'
 import { FilterClickedEvent } from '../mds-filter/meta/interface'
 
 @Component({
@@ -12,8 +12,8 @@ export class MdsFilter {
   @Element() private element: HTMLMdsFilterElement
 
   @State() active?: boolean
-  @State() itemsActive = 0
-  private lastItemActive: number
+  @State() itemsSelected = 0
+  private lastSelectedItem: number
 
   /**
    * Sets an automatic reset of active filters if all filters are triggered
@@ -40,16 +40,16 @@ export class MdsFilter {
 
   private scrollTabs = (): void => {
     const items = this.queryItems()
-    const tabItem = items[this.lastItemActive]
+    const tabItem = items[this.lastSelectedItem]
     const itemsContainer = this.element.shadowRoot.querySelector<HTMLElement>('.items')
     itemsContainer.scrollLeft = tabItem.offsetLeft - itemsContainer.offsetLeft - (itemsContainer.offsetWidth / 2) + (tabItem.offsetWidth / 2)
   }
 
-  private checkActivation = ():void => {
+  private checkSelectedItem = ():void => {
     const items = this.queryItems()
     let active = false
     items.forEach(item => {
-      if (item.active) {
+      if (item.selected) {
         active = true
       }
     })
@@ -66,7 +66,7 @@ export class MdsFilter {
   private resetItems = ():void => {
     const items = this.queryItems()
     items.forEach(item => {
-      item.active = false
+      item.selected = false
       item.classList.remove('sibling')
     })
     this.active = false
@@ -76,7 +76,7 @@ export class MdsFilter {
     const items = this.queryItems()
     const list = []
     items.forEach(item => {
-      if (item.active) {
+      if (item.selected) {
         list.push(item.value)
       }
     })
@@ -88,31 +88,32 @@ export class MdsFilter {
     items.forEach((item, key) => {
       item.id = `item-${key}`
     })
-    this.checkActivation()
+    this.checkSelectedItem()
   }
 
-  @Listen('activeEvent')
+  @Listen('mdsFilterItemSelect')
   activeEventHandler (event: CustomEvent<FilterClickedEvent>): void {
-    this.lastItemActive = Number(event.detail.id ? event.detail.id.replace('item-', '') : 0)
+    console.log('mdsSelect', event)
+    this.lastSelectedItem = Number(event.detail.id ? event.detail.id.replace('item-', '') : 0)
     this.scrollTabs()
 
     const items = this.queryItems()
     if (this.multiple) {
-      let itemsActive = 0
+      let itemsSelected = 0
       const list = []
       items.forEach((item, key) => {
-        item.active ? list.push(item) : list.push(null)
-        if (item.active) {
-          itemsActive += 1
+        item.selected ? list.push(item) : list.push(null)
+        if (item.selected) {
+          itemsSelected += 1
         }
         item.classList.remove('sibling')
         if (list.length > 1 && list[key - 1] !== null) {
           item.classList.add('sibling')
         }
       })
-      this.itemsActive = itemsActive
-      this.checkActivation()
-      if (this.itemsActive === items.length) {
+      this.itemsSelected = itemsSelected
+      this.checkSelectedItem()
+      if (this.itemsSelected === items.length) {
         this.checkAutoReset()
       }
       this.changedEvent.emit(this.itemsValues())
@@ -120,16 +121,16 @@ export class MdsFilter {
     }
 
     items.forEach((item, key) => {
-      item.active = `item-${key}` === event.detail.id && (event.detail.active)
+      item.selected = `item-${key}` === event.detail.id && (event.detail.selected)
     })
-    this.checkActivation()
+    this.checkSelectedItem()
     this.changedEvent.emit(this.itemsValues())
   }
 
   /**
    * Emits when the one of the children is changed
    */
-  @Event() changedEvent: EventEmitter<string>
+  @Event({ eventName: 'mdsFilterChange' }) changedEvent: EventEmitter<string>
 
   render () {
     return (
@@ -138,7 +139,7 @@ export class MdsFilter {
         <div class={clsx('items', this.active && 'active')}>
           <slot/>
           { this.reset && <div class={clsx('reset', this.active && 'reset-opened')}>
-            <mds-filter-item active={this.active} class={clsx('reset-button', this.active && 'reset-button-opened')} icon="mi/baseline/close" onClick={this.resetItems}/>
+            <mds-filter-item selected={this.active} class={clsx('reset-button', this.active && 'reset-button-opened')} icon="mi/baseline/close" onClick={this.resetItems}/>
           </div> }
         </div>
       </Host>

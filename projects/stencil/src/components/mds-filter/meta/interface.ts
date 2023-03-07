@@ -1,4 +1,4 @@
 export interface FilterClickedEvent {
   id: string;
-  active: boolean;
+  selected: boolean;
 }
