@@ -59,17 +59,17 @@ export class MdsAccordionTimerItem {
   /**
    * Emits when the accordion is clicked by the mouse
    */
-  @Event({ eventName: 'mdsClickSelect' }) clickSelectEvent: EventEmitter<string>
+  @Event({ eventName: 'mdsAccordionTimerItemClickSelect' }) clickSelectEvent: EventEmitter<string>
 
   /**
    * Emits when the accordion is hovered by the mouse
    */
-  @Event({ eventName: 'mdsMouseEnterSelect' }) selectedMouseEnterEvent: EventEmitter<string>
+  @Event({ eventName: 'mdsAccordionTimerItemMouseEnterSelect' }) selectedMouseEnterEvent: EventEmitter<string>
 
   /**
    * Emits when the accordion is hovered by the mouse
    */
-  @Event({ eventName: 'mdsMouseLeaveSelect' }) selectedMouseLeaveEvent: EventEmitter<string>
+  @Event({ eventName: 'mdsAccordionTimerItemMouseLeaveSelect' }) selectedMouseLeaveEvent: EventEmitter<string>
 
   render () {
     return (

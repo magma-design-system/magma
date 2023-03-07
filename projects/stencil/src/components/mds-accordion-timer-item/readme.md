@@ -18,11 +18,11 @@
 
 ## Events
 
-| Event                 | Description                                      | Type                  |
-| --------------------- | ------------------------------------------------ | --------------------- |
-| `mdsClickSelect`      | Emits when the accordion is clicked by the mouse | `CustomEvent<string>` |
-| `mdsMouseEnterSelect` | Emits when the accordion is hovered by the mouse | `CustomEvent<string>` |
-| `mdsMouseLeaveSelect` | Emits when the accordion is hovered by the mouse | `CustomEvent<string>` |
+| Event                                   | Description                                      | Type                  |
+| --------------------------------------- | ------------------------------------------------ | --------------------- |
+| `mdsAccordionTimerItemClickSelect`      | Emits when the accordion is clicked by the mouse | `CustomEvent<string>` |
+| `mdsAccordionTimerItemMouseEnterSelect` | Emits when the accordion is hovered by the mouse | `CustomEvent<string>` |
+| `mdsAccordionTimerItemMouseLeaveSelect` | Emits when the accordion is hovered by the mouse | `CustomEvent<string>` |
 
 
 ## CSS Custom Properties
