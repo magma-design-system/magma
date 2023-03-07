@@ -14,7 +14,7 @@
     </script>
   </head>
   <body>
-    <mds-input class="first" type="text" placeholder="Type something" required></mds-input>
+    <!-- <mds-input class="first" type="text" placeholder="Type something" required></mds-input> -->
     <!-- <hr> -->
     <!-- <mds-input class="first" type="text" datalist='["ciao", "mamma"]' placeholder="Seleziona dalla lista"></mds-input> -->
 
@@ -26,26 +26,26 @@
 
     <!-- <mds-input placeholder="scrivi qualcosa" tabindex="1"></mds-input> -->
 
-    <!-- <form>
+    <form>
       <mds-input type="text" placeholder="Nome" name="nome" required></mds-input>
       <mds-input type="text" placeholder="Cognome" name="cognome"></mds-input>
       <mds-input type="number" placeholder="Età" name="eta" min="0" required></mds-input>
 
       <input type="submit" />
-    </form> -->
+    </form>
 
   </body>
   <script>
-    const el = document.querySelector('.first')
+    // const el = document.querySelector('.first')
 
     // // el.setAttribute('datalist', '["ciao", "mamma"]')
 
-    el.addEventListener('inputEvent', (data) => {
-      console.log('inputEvent on first class input', data)
-    })
+    // el.addEventListener('inputEvent', (data) => {
+    //   console.log('inputEvent on first class input', data)
+    // })
 
-    el.addEventListener('changeEvent', (data) => {
-      console.log('changeEvent on first class input', data)
-    })
+    // el.addEventListener('changeEvent', (data) => {
+    //   console.log('changeEvent on first class input', data)
+    // })
   </script>
 </html>

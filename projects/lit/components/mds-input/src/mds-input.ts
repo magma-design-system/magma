@@ -1,5 +1,5 @@
 import { LitElement, html, unsafeCSS, nothing } from 'lit'
-import { customElement, property, query, state } from 'lit/decorators.js'
+import { customElement, property, query, state } from 'lit/decorators'
 import clsx from 'clsx'
 import globalStyles from './global.css?inline'
 
@@ -274,9 +274,8 @@ export class MdsInput extends LitElement {
   }
 
   private buildInput (value: string) {
-    let input
     if (this.type === 'textarea') {
-      input = html`
+      return html`
         <textarea
           class=${clsx('input', this.icon && 'has-icon') ?? nothing}
           .value=${value ?? nothing}
@@ -294,35 +293,33 @@ export class MdsInput extends LitElement {
           @input=${this.onInput ?? nothing}>
         </textarea>
       `
-    } else {
-      input = html`
-        <input
-          class=${clsx('input', this.icon && 'has-icon')}
-          list=${this.datalist ? 'datalist' : nothing}
-          .autoComplete=${this.autocomplete ?? nothing}
-          .max=${this.max ?? nothing}
-          .maxLength=${this.maxlength ?? nothing}
-          .min=${this.min ?? nothing}
-          .minLength=${this.minlength ?? nothing}
-          .name=${this.name ?? nothing}
-          .type=${this.type ?? nothing}
-          .pattern=${this.pattern ?? nothing}
-          .placeholder=${this.placeholder ?? nothing}
-          .step=${this.step ?? nothing}
-          .tabIndex=${this.tabindex ?? nothing}
-          .value=${value ?? nothing}
-          ?autoFocus=${this.autofocus ?? nothing}
-          ?disabled=${this.disabled ?? nothing}
-          ?readOnly=${this.readonly ?? nothing}
-          ?required=${this.required ?? nothing}
-          @blur=${this.onBlur ?? nothing}
-          @focus=${this.onFocus ?? nothing}
-          @input=${this.onInput ?? nothing}
-        />
-      `
     }
 
-    return input
+    return html`
+      <input
+        class=${clsx('input', this.icon && 'has-icon')}
+        list=${this.datalist ? 'datalist' : nothing}
+        .autoComplete=${this.autocomplete ?? nothing}
+        .max=${this.max ?? nothing}
+        .maxLength=${this.maxlength ?? nothing}
+        .min=${this.min ?? nothing}
+        .minLength=${this.minlength ?? nothing}
+        .name=${this.name ?? nothing}
+        .type=${this.type ?? nothing}
+        .pattern=${this.pattern ?? nothing}
+        .placeholder=${this.placeholder ?? nothing}
+        .step=${this.step ?? nothing}
+        .tabIndex=${this.tabindex ?? nothing}
+        .value=${value ?? nothing}
+        ?autoFocus=${this.autofocus ?? nothing}
+        ?disabled=${this.disabled ?? nothing}
+        ?readOnly=${this.readonly ?? nothing}
+        ?required=${this.required ?? nothing}
+        @blur=${this.onBlur ?? nothing}
+        @focus=${this.onFocus ?? nothing}
+        @input=${this.onInput ?? nothing}
+      />
+    `
   }
 
   private buildDatalist () {
