@@ -33,7 +33,7 @@ export class MdsInputRange {
   /**
    * Emits when the input range is changed
    */
-  @Event() changeEvent: EventEmitter<number>
+  @Event({ eventName: 'mdsInputRangeChange' }) changeEvent: EventEmitter<number>
 
   private calculateProgress = () => {
     const total = Math.abs(this.min) + Math.abs(this.max)
