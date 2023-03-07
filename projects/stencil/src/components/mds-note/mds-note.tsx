@@ -1,8 +1,7 @@
-import { Component, Element, Event, EventEmitter, Host, h, Prop } from '@stencil/core'
-import { LabelVariantType } from '../../types/variant'
 import miBaselineClose from '@icon/mi/baseline/close.svg'
+import { Component, Element, Event, EventEmitter, Host, h, Prop } from '@stencil/core'
 import { KeyboardManager } from '@common/keyboard-manager'
-
+import { LabelVariantType } from '@type/variant'
 
 @Component({
   tag: 'mds-note',
@@ -25,13 +24,13 @@ export class MdsNote {
   @Prop({ reflect: true }) readonly variant?: LabelVariantType = 'yellow'
 
   private onClickClose = () => {
-    this.clickClose.emit(this.host)
+    this.deleteEvent.emit(this.host)
   }
 
   /**
    * Emits when the note has to be cancelled
    */
-  @Event({ eventName: 'close' }) clickClose: EventEmitter<HTMLMdsNoteElement>
+  @Event({ eventName: 'mdsNoteDelete' }) deleteEvent: EventEmitter<HTMLMdsNoteElement>
 
   componentDidLoad ():void {
     this.km.addElement(this.host)
