@@ -8,7 +8,7 @@ export class MdsTableBody {
 
   @Prop({ mutable: true, reflect: true }) interactive:boolean
 
-  @Listen('tableInteractive', { target: 'body' })
+  @Listen('mdsTableInteractiveChange', { target: 'document' })
   tableInteractiveHandler (event: CustomEvent<boolean>): void {
     this.interactive = event.detail
   }
