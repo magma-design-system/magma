@@ -23,8 +23,8 @@ export class MdsFlexTableFooter {
     })
   }
 
-  @Listen('flexTableTemplateChanged', { target: 'body' })
-  tableInteractiveHandler (event: CustomEvent<string>): void {
+  @Listen('mdsFlexTableTemplateChange', { target: 'document' })
+  templateChangeHandler (event: CustomEvent<string>): void {
     this.template = event.detail
     this.setTemplate()
   }

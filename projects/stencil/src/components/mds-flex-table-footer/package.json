@@ -1,6 +1,6 @@
 {
   "name": "@maggioli-design-system/mds-flex-table-footer",
-  "version": "1.2.0",
+  "version": "2.0.0",
   "description": "mds-flex-table-footer is a web-component from Maggioli Design System Magma, built with StencilJS, TypeScript, Storybook. It's based on the web-component standard and it's designed to be agnostic from the JavaScirpt framework you are using.",
   "main": "dist/index.cjs.js",
   "module": "dist/index.js",
@@ -22,8 +22,8 @@
     "prepublishOnly": "npm run build"
   },
   "dependencies": {
-    "@maggioli-design-system/mds-flex-table-cell": "^1.2.0",
-    "@stencil/core": "^2.22.1"
+    "@maggioli-design-system/mds-flex-table-cell": "^1.3.0",
+    "@stencil/core": "^2.22.2"
   },
   "license": "MIT",
   "author": {
