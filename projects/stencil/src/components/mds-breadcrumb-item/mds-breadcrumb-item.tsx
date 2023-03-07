@@ -21,7 +21,7 @@ export class MdsBreadcrumbItem {
   /**
    * Emits when the breadcrumb is active
    */
-  @Event({ eventName: 'mdsSelect' }) selectedEvent: EventEmitter<BreadcrumbClickedEvent>
+  @Event({ eventName: 'mdsBreadcrumbItemSelect' }) selectedEvent: EventEmitter<BreadcrumbClickedEvent>
 
   private toggle = () => {
     this.selected = !this.selected
