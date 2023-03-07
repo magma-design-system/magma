@@ -21,7 +21,7 @@ export class MdsBreadcrumb {
   /**
    * Emits when the breadcrumb is changed
    */
-  @Event({ eventName: 'mdsChange' }) changedEvent: EventEmitter<BreadcrumbClickedEvent>
+  @Event({ eventName: 'mdsBreadcrumbChange' }) changedEvent: EventEmitter<BreadcrumbClickedEvent>
 
   private queryItems = ():NodeListOf<HTMLMdsBreadcrumbItemElement> =>
     this.element.querySelectorAll<HTMLMdsBreadcrumbItemElement>('mds-breadcrumb-item')
@@ -67,7 +67,7 @@ export class MdsBreadcrumb {
     this.kb.detachClickBehavior()
   }
 
-  @Listen('mdsSelect')
+  @Listen('mdsBreadcrumbItemSelect')
   activedEventHandler (event: CustomEvent<BreadcrumbClickedEvent>): void {
     const items = this.queryItems()
     let selectedId = 0
