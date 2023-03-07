@@ -14,9 +14,9 @@
 
 ## Events
 
-| Event       | Description                                | Type                  |
-| ----------- | ------------------------------------------ | --------------------- |
-| `mdsChange` | Emits when the accordion changes it's item | `CustomEvent<number>` |
+| Event                     | Description                                | Type                  |
+| ------------------------- | ------------------------------------------ | --------------------- |
+| `mdsAccordionTimerChange` | Emits when the accordion changes it's item | `CustomEvent<number>` |
 
 
 ----------------------------------------------

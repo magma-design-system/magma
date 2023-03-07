@@ -25,7 +25,7 @@ export class MdsAccordionTimer {
   /**
    * Emits when the accordion changes it's item
    */
-  @Event({ eventName: 'mdsChange' }) changeEvent: EventEmitter<number>
+  @Event({ eventName: 'mdsAccordionTimerChange' }) changeEvent: EventEmitter<number>
 
   componentDidLoad (): void {
     this.children = this.element.querySelectorAll<HTMLMdsAccordionTimerItemElement>('mds-accordion-timer-item')
@@ -120,7 +120,7 @@ export class MdsAccordionTimer {
     this.time = null
   }
 
-  @Listen('mdsClickSelect')
+  @Listen('mdsAccordionTimerItemClickSelect')
   onClickActive (event: CustomEvent<string>): void {
     if (this.selectedItem && event.detail === this.selectedItem.description) {
       return
@@ -137,12 +137,12 @@ export class MdsAccordionTimer {
     this.pauseTimer()
   }
 
-  @Listen('mdsMouseEnterSelect')
+  @Listen('mdsAccordionTimerItemMouseEnterSelect')
   onMouseEnterSelect (): void {
     this.pauseTimer()
   }
 
-  @Listen('mdsMouseLeaveSelect')
+  @Listen('mdsAccordionTimerItemMouseLeaveSelect')
   onMouseLeaveSelect (): void {
     if (this.timeChecker === null) {
       this.playTimer()
