@@ -28,7 +28,7 @@ export class MdsTab {
     this.element.scrollLeft = tabItem.offsetLeft - this.element.offsetLeft - (this.element.offsetWidth / 2) + (tabItem.offsetWidth / 2)
   }
 
-  @Listen('selectedEvent')
+  @Listen('mdsTabItemSelect')
   changeEventHandler (event: CustomEvent<string>): void {
     const items = this.element.querySelectorAll<HTMLMdsTabItemElement>('mds-tab-item')
     items.forEach((item, key) => {
