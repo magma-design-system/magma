@@ -4,7 +4,7 @@ import {
   ReferrerpolicyType,
 } from './meta/types'
 
-import { LoadingType } from '../../types/loading'
+import { LoadingType } from '@type/loading'
 import { setAttributeIfEmpty } from '@common/aria'
 
 @Component({
@@ -92,23 +92,23 @@ export class MdsImg {
   }
 
   /**
-   * Emits when the accordion changes it's item
+   * Emits when the image is not loaded
    */
-  @Event() loadError: EventEmitter<HTMLImageElement>
+  @Event({ eventName: 'mdsImgLoadError' }) loadErrorEvent: EventEmitter<HTMLImageElement>
 
   private onError = (ev: Event) => {
     this.image = ev.target as HTMLImageElement
-    this.loadError.emit(this.image)
+    this.loadErrorEvent.emit(this.image)
   }
 
   /**
-   * Emits when the accordion changes it's item
+   * Emits when the image is successfully loaded
    */
-  @Event() loadSuccess: EventEmitter<HTMLImageElement>
+  @Event({ eventName: 'mdsImgLoadSuccess' }) loadSuccessEvent: EventEmitter<HTMLImageElement>
 
   private onSuccess = (ev: Event) => {
     this.image = ev.target as HTMLImageElement
-    this.loadSuccess.emit(this.image)
+    this.loadSuccessEvent.emit(this.image)
   }
 
   private autoAltName (): string {
