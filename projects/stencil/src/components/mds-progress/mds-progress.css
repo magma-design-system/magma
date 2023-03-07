@@ -12,7 +12,7 @@
 
   --mds-progress-background: theme('colors.tone-neutral-08');
   --mds-progress-color: theme('colors.brand-maggioli-03');
-  --mds-progress-duration: 500ms;
+  --mds-progress-duration: 750ms;
   --mds-progress-radius: theme('borderRadius.lg');
   --mds-progress-thickness: theme('height.2');
 
@@ -35,8 +35,8 @@
     w-auto;
 
   height: unset;
-  width: var(--mds-progress-thickness);
   min-height: var(--mds-progress-thickness);
+  width: var(--mds-progress-thickness);
 }
 
 .progress {
