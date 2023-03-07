@@ -1,8 +1,8 @@
-import { Component, Element, Event, EventEmitter, Host, h, Listen, Prop, Watch, State } from '@stencil/core'
 import clsx from 'clsx'
-import { ModalPositionType, ModalAnimationStateType } from './meta/types'
 import miBaselineClose from '@icon/mi/baseline/close.svg'
+import { Component, Element, Event, EventEmitter, Host, h, Listen, Prop, Watch, State } from '@stencil/core'
 import { KeyboardManager } from '@common/keyboard-manager'
+import { ModalPositionType, ModalAnimationStateType } from './meta/types'
 
 @Component({
   tag: 'mds-modal',
@@ -67,7 +67,7 @@ export class MdsModal {
   componentDidLoad = (): void => {
     this.km.addElement(this.host, 'host')
     this.km.addElement(this.host.shadowRoot.querySelector('.close'), 'close')
-    this.km.attachEscapeBehavior(() => this.close.emit())
+    this.km.attachEscapeBehavior(() => this.closeEvent.emit())
     this.km.attachClickBehavior('close')
   }
 
@@ -97,7 +97,7 @@ export class MdsModal {
   /**
    * Emits when a modal is closed
    */
-  @Event({ bubbles: true, composed: true }) close: EventEmitter<void>
+  @Event({ bubbles: true, composed: true, eventName: 'mdsModalClose' }) closeEvent: EventEmitter<void>
 
   private closeModal = (e:Event = null): void => {
     if ((e.target as HTMLElement)?.localName !== 'mds-modal') {
@@ -105,12 +105,17 @@ export class MdsModal {
     }
     this.opened = e.target !== e.currentTarget
     if (!this.opened) {
-      this.close.emit()
+      this.closeEvent.emit()
     }
   }
 
-  @Listen('close', { target: 'document' })
-  onCloseListener (): void {
+  @Listen('mdsModalClose', { target: 'document' })
+  onModalCloseListener (): void {
+    this.opened = false
+  }
+
+  @Listen('mdsBannerClose', { target: 'document' })
+  onBannerCloseListener (): void {
     this.opened = false
   }
 
