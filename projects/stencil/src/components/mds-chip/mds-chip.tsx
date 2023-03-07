@@ -47,12 +47,12 @@ export class MdsChip {
   /**
    * Emits when the component's label is clicked
    */
-  @Event({ eventName: 'mdsClickLabel' }) clickLabelEvent: EventEmitter<MdsChipEvent>
+  @Event({ eventName: 'mdsChipClickLabel' }) clickLabelEvent: EventEmitter<MdsChipEvent>
 
   /**
    * Emits when the component's delete button is clicked
    */
-  @Event({ eventName: 'mdsDelete' }) deleteEvent: EventEmitter<MdsChipEvent>
+  @Event({ eventName: 'mdsChipDelete' }) deleteEvent: EventEmitter<MdsChipEvent>
 
   private onClickLabelHandler (event: Event): void {
     this.clickLabelEvent.emit({ event, element: this.host })
