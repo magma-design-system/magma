@@ -14,18 +14,18 @@ export class MdsHeader {
   /**
    * Emits when the component is closed
    */
-  @Event({ bubbles: true, composed: true }) headerClosed: EventEmitter<void>
+  @Event({ bubbles: true, composed: true, eventName: 'mdsHeaderClose' }) closedEvent: EventEmitter<void>
 
   private close = () => {
     this.isOpened = false
-    this.headerClosed.emit()
+    this.closedEvent.emit()
   }
 
   componentWillLoad (): void {
     this.hasNav = this.hostElement.querySelector('[slot="nav-mobile"]') !== null
   }
 
-  @Listen('headerOpened', { target: 'document' })
+  @Listen('mdsHeaderBarOpen', { target: 'document' })
   onModalOpenedHandler (): void {
     this.isOpened = true
   }
@@ -36,7 +36,7 @@ export class MdsHeader {
         <slot/>
         { this.hasNav &&
           <div class="nav">
-            <mds-modal class="modal" opened={ this.isOpened } onClose={ this.close }>
+            <mds-modal class="modal" opened={ this.isOpened } onMdsModalClose={ this.close }>
               <slot name="nav-mobile"/>
             </mds-modal>
           </div>
