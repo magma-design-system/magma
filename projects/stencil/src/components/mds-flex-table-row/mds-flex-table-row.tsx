@@ -23,13 +23,13 @@ export class MdsFlexTableRow {
     })
   }
 
-  @Listen('flexTableTemplateChanged', { target: 'body' })
+  @Listen('mdsFlexTableTemplateChange', { target: 'document' })
   tableTemplateHandler (event: CustomEvent<string>): void {
     this.template = event.detail
     this.setTemplate()
   }
 
-  @Listen('flexTableInteractive', { target: 'body' })
+  @Listen('mdsFlexTableInteractive', { target: 'document' })
   tableInteractiveHandler (event: CustomEvent<boolean>): void {
     this.interactive = event.detail
   }
