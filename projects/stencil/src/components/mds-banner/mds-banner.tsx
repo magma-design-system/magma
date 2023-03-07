@@ -74,7 +74,7 @@ export class MdsBanner {
   /**
    * Emits when the url view is closed
    */
-  @Event({ bubbles: true, composed: true, eventName: 'mdsClose' }) closeEvent: EventEmitter<void>
+  @Event({ bubbles: true, composed: true, eventName: 'mdsBannerClose' }) closeEvent: EventEmitter<void>
 
   private closeBanner = (): void => {
     this.closeEvent.emit()
