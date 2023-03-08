@@ -1,6 +1,5 @@
 import { Component, Host, h, Prop, Event, EventEmitter } from '@stencil/core'
 import { TypographyTitleType } from '@type/typography'
-// import { DirectionType } from '../mds-progress/meta/types'
 
 @Component({
   tag: 'mds-accordion-timer-item',
