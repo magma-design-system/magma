@@ -64,7 +64,7 @@ export const config: Config = {
         { find: /^@icon\/([a-zA-Z-\/]+)\.svg$/, replacement: path.resolve(__dirname, './assets/svg/$1.svg') },
         { find: /^@interface\/(.*)+$/, replacement: path.resolve('.', './src/interface/$1') },
         { find: /^@test\/(.*)+$/, replacement: path.resolve('.', './src/test/$1') },
-        { find: /^@type\/(.*)+$/, replacement: path.resolve('.', './src/types/$1') },
+        { find: /^@type\/(.*)+$/, replacement: path.resolve('.', './src/type/$1') },
       ]
     }),
     inlineSvg(),
