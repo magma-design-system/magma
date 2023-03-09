@@ -1,10 +1,6 @@
 @tailwind components;
 @tailwind utilities;
 
-/**
-  * @prop --mds-hr-background: Sets the background-color of the component
-  */
-
 :host {
   @apply
     border-0
@@ -13,5 +9,5 @@
     rounded
     w-full;
 
-  background-color: var(--mds-hr-background, theme('colors.tone-neutral-08'));
+  background-color: theme('colors.tone-neutral-08');
 }
