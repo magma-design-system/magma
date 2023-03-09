@@ -2,7 +2,7 @@ import { Component, Host, h, Prop } from '@stencil/core'
 import { ExtensionSuffixType } from './meta/types'
 import { fileFormatsVariant } from './meta/variants'
 import { fileExtensionsDictionary } from './meta/dictionary'
-import { ThemeFullVariantType } from '../../types/variant'
+import { ThemeFullVariantType } from '@type/variant'
 
 @Component({
   tag: 'mds-file',

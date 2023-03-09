@@ -4,7 +4,7 @@ import { h } from '@stencil/core'
 export default {
   title: 'UI / Stepper Bar / Stepper Bar Item',
   argTypes: {
-    checked: {
+    selected: {
       type: { name: 'boolean' },
       description: 'Specifies if the component is checked or not',
     },
@@ -42,10 +42,10 @@ const Template = args =>
     <mds-stepper-bar-item icon-checked="mi/baseline/done" icon="mdi/baseball" text="Fifth"/>
   </mds-stepper-bar>
 
-const TemplateChecked = args =>
+const TemplateSelected = args =>
   <mds-stepper-bar select={3}>
-    <mds-stepper-bar-item checked icon="mi/baseline/agriculture" icon-checked={args['icon-checked']} text="First"/>
-    <mds-stepper-bar-item checked icon="mi/baseline/adobe" icon-checked={args['icon-checked']} text="Second"/>
+    <mds-stepper-bar-item selected icon="mi/baseline/agriculture" icon-checked={args['icon-checked']} text="First"/>
+    <mds-stepper-bar-item selected icon="mi/baseline/adobe" icon-checked={args['icon-checked']} text="Second"/>
     <mds-stepper-bar-item {...args}/>
     <mds-stepper-bar-item icon="mi/baseline/css" text="Forth"/>
     <mds-stepper-bar-item icon="mi/baseline/local-activity" text="Fifth"/>
@@ -64,10 +64,10 @@ Default.args = {
   ...defaultArgs,
 }
 
-export const checked = Template.bind({})
-checked.args = {
+export const selected = Template.bind({})
+selected.args = {
   ...defaultArgs,
-  checked: true,
+  selected: true,
 }
 
 export const current = Template.bind({})
@@ -76,10 +76,10 @@ current.args = {
   current: true,
 }
 
-export const iconChecked = TemplateChecked.bind({})
+export const iconChecked = TemplateSelected.bind({})
 iconChecked.args = {
   ...defaultArgs,
-  checked: true,
+  selected: true,
   'icon-checked': 'mi/baseline/done',
 }
 

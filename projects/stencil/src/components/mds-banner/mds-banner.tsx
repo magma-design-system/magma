@@ -1,5 +1,5 @@
 import { Component, Element, Event, EventEmitter, Host, Prop, h } from '@stencil/core'
-import { ToneSimpleVariantType, ThemeVariantType } from '../../types/variant'
+import { ToneSimpleVariantType, ThemeVariantType } from '@type/variant'
 import miBaselineClose from '@icon/mi/baseline/close.svg'
 import { KeyboardManager } from '@common/keyboard-manager'
 
@@ -74,10 +74,10 @@ export class MdsBanner {
   /**
    * Emits when the url view is closed
    */
-  @Event({ bubbles: true, composed: true }) close: EventEmitter<void>
+  @Event({ bubbles: true, composed: true, eventName: 'mdsBannerClose' }) closeEvent: EventEmitter<void>
 
   private closeBanner = (): void => {
-    this.close.emit()
+    this.closeEvent.emit()
   }
 
   /**

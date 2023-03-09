@@ -1,5 +1,5 @@
 import { Component, Element, Event, EventEmitter, Host, h, Prop, State, Watch } from '@stencil/core'
-import { TypographySmallerType } from '../../types/typography'
+import { TypographySmallerType } from '@type/typography'
 
 @Component({
   tag: 'mds-tab-bar-item',
@@ -37,7 +37,7 @@ export class MdsTabBarItem {
   /**
    * Emits when the component is selected
    */
-  @Event() selectedEvent: EventEmitter<string>
+  @Event({ eventName: 'mdsTabBarItemSelect' }) selectedEvent: EventEmitter<string>
 
   @Watch('selected')
   validateSelected (newValue: boolean): void {

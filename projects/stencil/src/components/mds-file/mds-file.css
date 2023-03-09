@@ -17,8 +17,8 @@
     text-tone-neutral-04
     w-full;
 
-  transition-property: box-shadow, outline, outline-offset;
   box-shadow: theme('boxShadow.sharp');
+  transition-property: box-shadow, outline, outline-offset;
 }
 
 :host (:focus-visible) {

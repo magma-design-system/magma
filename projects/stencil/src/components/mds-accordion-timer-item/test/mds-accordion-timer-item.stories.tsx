@@ -9,9 +9,9 @@ export default {
       type: { name: 'string' },
       description: 'Specifies the title shown when the accordion is closed or opened',
     },
-    active: {
+    selected: {
       type: { name: 'boolean' },
-      description: 'Specifies if the accordion item is opened or not',
+      description: 'Specifies if the accordion item is selected or not',
     },
     progress: {
       control: { type: 'range', step: 0.01, min: 0, max: 1 },

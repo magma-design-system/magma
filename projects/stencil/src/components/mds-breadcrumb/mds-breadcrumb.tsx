@@ -21,7 +21,7 @@ export class MdsBreadcrumb {
   /**
    * Emits when the breadcrumb is changed
    */
-  @Event() changedEvent: EventEmitter<BreadcrumbClickedEvent>
+  @Event({ eventName: 'mdsBreadcrumbChange' }) changedEvent: EventEmitter<BreadcrumbClickedEvent>
 
   private queryItems = ():NodeListOf<HTMLMdsBreadcrumbItemElement> =>
     this.element.querySelectorAll<HTMLMdsBreadcrumbItemElement>('mds-breadcrumb-item')
@@ -41,7 +41,7 @@ export class MdsBreadcrumb {
     const items = this.queryItems()
     items.forEach((item, key) => item.id = `item-${key}`)
 
-    const item = this.element.querySelector<HTMLMdsBreadcrumbItemElement>('mds-breadcrumb-item[active]')
+    const item = this.element.querySelector<HTMLMdsBreadcrumbItemElement>('mds-breadcrumb-item[selected]')
     if (!item || item.id === 'item-0' ) {
       this.updateBackButton(0)
     }
@@ -67,36 +67,36 @@ export class MdsBreadcrumb {
     this.kb.detachClickBehavior()
   }
 
-  @Listen('activedEvent')
+  @Listen('mdsBreadcrumbItemSelect')
   activedEventHandler (event: CustomEvent<BreadcrumbClickedEvent>): void {
     const items = this.queryItems()
-    let activeId = 0
+    let selectedId = 0
 
     items.forEach((item, key) => {
-      item.active = `item-${key}` === event.detail.id && (event.detail.active)
-      if (item.active) {
-        activeId = key
+      item.selected = `item-${key}` === event.detail.id && (event.detail.selected)
+      if (item.selected) {
+        selectedId = key
       }
     })
-    this.updateBackButton(activeId)
-    this.onChanged(activeId)
+    this.updateBackButton(selectedId)
+    this.onChanged(selectedId)
   }
 
   private togglePrevious = (): void => {
-    const item = this.element.querySelector<HTMLMdsBreadcrumbItemElement>('mds-breadcrumb-item[active]')
+    const item = this.element.querySelector<HTMLMdsBreadcrumbItemElement>('mds-breadcrumb-item[selected]')
     const id = Number(item.id.replace('item-', ''))
     const items = this.queryItems()
-    let activeId = 0
+    let selectedId = 0
 
     items.forEach((item, key) => {
-      item.active = key === id - 1
-      if (item.active) {
-        activeId = key
+      item.selected = key === id - 1
+      if (item.selected) {
+        selectedId = key
       }
     })
 
-    this.updateBackButton(activeId)
-    this.onChanged(activeId)
+    this.updateBackButton(selectedId)
+    this.onChanged(selectedId)
   }
 
   private onChanged = (id: number): void => {

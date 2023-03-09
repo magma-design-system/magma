@@ -12,10 +12,10 @@ import {
 } from '@stencil/core'
 
 import clsx from 'clsx'
-import { AutocompleteType } from '../../types/autocomplete'
-import { InputTextType } from '../../types/input-text-type'
-import { InputValue } from '../../interface/input-value'
-import { ThemeStatusVariantType } from '../../types/variant'
+import { AutocompleteType } from '@type/autocomplete'
+import { InputTextType } from '@type/input-text-type'
+import { InputValue } from '@interface/input-value'
+import { ThemeStatusVariantType } from '@type/variant'
 import { ValidationModelType } from './meta/types'
 import { modelValidator } from './meta/validators'
 
@@ -129,22 +129,22 @@ export class MdsInputField {
   /**
    * Emits an InputValue when the value of the input element changes
    */
-  @Event() changeEvent!: EventEmitter<InputValue>
+  @Event({ eventName: 'mdsInputFieldChange' }) changeEvent!: EventEmitter<InputValue>
 
   /**
    * Emits a KeyboardEvent when a keboard key is pressed on the focused input element
    */
-  @Event() keyDownEvent!: EventEmitter<KeyboardEvent>
+  @Event({ eventName: 'mdsInputFieldKeydown' }) keyDownEvent!: EventEmitter<KeyboardEvent>
 
   /**
    * Emits a void event when input element is blurred
    */
-  @Event() blurEvent!: EventEmitter<void>
+  @Event({ eventName: 'mdsInputFieldBlur' }) blurEvent!: EventEmitter<void>
 
   /**
    * Emits a void event when input element is focused
    */
-  @Event() focusEvent!: EventEmitter<void>
+  @Event({ eventName: 'mdsInputFieldFocus' }) focusEvent!: EventEmitter<void>
 
   componentWillLoad (): void {
     // If the mds-input has a tabindex attribute we get the value

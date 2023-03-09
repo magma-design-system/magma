@@ -15,7 +15,6 @@ export class MdsFlexTableHeader {
   @State() template?: string
 
   private setTemplate = () => {
-
     this.el.querySelectorAll('mds-flex-table-cell').forEach((element, index) => {
       const flexGrowTemplates: Array<string> = this.template.split(' ')
       /* eslint-disable dot-notation */
@@ -23,8 +22,8 @@ export class MdsFlexTableHeader {
     })
   }
 
-  @Listen('flexTableTemplateChanged', { target: 'body' })
-  tableInteractiveHandler (event: CustomEvent<string>): void {
+  @Listen('mdsFlexTableTemplateChange', { target: 'document' })
+  templateChangeHandler (event: CustomEvent<string>): void {
     this.template = event.detail
     this.setTemplate()
   }

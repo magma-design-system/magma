@@ -20,14 +20,14 @@ export class MdsHeaderBar {
   /**
    * Emits when the component is opened
    */
-  @Event({ bubbles: true, composed: true }) headerOpened: EventEmitter<void>
+  @Event({ bubbles: true, composed: true, eventName: 'mdsHeaderBarOpen' }) openedEvent: EventEmitter<void>
 
   private open = () => {
     this.isOpened = true
-    this.headerOpened.emit()
+    this.openedEvent.emit()
   }
 
-  @Listen('headerClosed', { target: 'document' })
+  @Listen('mdsHeaderClose', { target: 'document' })
   closedHandler (): void {
     this.isOpened = false
   }

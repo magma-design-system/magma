@@ -17,9 +17,9 @@
 
 ## Events
 
-| Event         | Description                           | Type                  |
-| ------------- | ------------------------------------- | --------------------- |
-| `changeEvent` | Emits when the input range is changed | `CustomEvent<number>` |
+| Event                 | Description                           | Type                  |
+| --------------------- | ------------------------------------- | --------------------- |
+| `mdsInputRangeChange` | Emits when the input range is changed | `CustomEvent<number>` |
 
 
 ## CSS Custom Properties

@@ -17,7 +17,7 @@ export class MdsTabBar {
     items.forEach((item, key) => item.id = `item-${key}`)
   }
 
-  @Listen('selectedEvent')
+  @Listen('mdsTabBarItemSelect')
   changeEventHandler (event: CustomEvent<string>): void {
     const items = this.queryItems()
     items.forEach((item, key) => item.selected = `item-${key}` === event.detail)

@@ -15,9 +15,9 @@
 
 ## Events
 
-| Event   | Description                             | Type                              |
-| ------- | --------------------------------------- | --------------------------------- |
-| `close` | Emits when the note has to be cancelled | `CustomEvent<HTMLMdsNoteElement>` |
+| Event           | Description                             | Type                              |
+| --------------- | --------------------------------------- | --------------------------------- |
+| `mdsNoteDelete` | Emits when the note has to be cancelled | `CustomEvent<HTMLMdsNoteElement>` |
 
 
 ## CSS Custom Properties

@@ -14,19 +14,19 @@ export class MdsBreadcrumbItem {
   private km = new KeyboardManager()
 
   /**
-   * Choose to display or not the back arrow button
+   * Choose if the component is selected or not
    */
-  @Prop({ mutable: true, reflect: true }) active?: boolean
-
-  private toggle = () => {
-    this.active = !this.active
-    this.activedEvent.emit({ id: this.element.id, active: this.active })
-  }
+  @Prop({ mutable: true, reflect: true }) selected?: boolean
 
   /**
    * Emits when the breadcrumb is active
    */
-  @Event() activedEvent: EventEmitter<BreadcrumbClickedEvent>
+  @Event({ eventName: 'mdsBreadcrumbItemSelect' }) selectedEvent: EventEmitter<BreadcrumbClickedEvent>
+
+  private toggle = () => {
+    this.selected = !this.selected
+    this.selectedEvent.emit({ id: this.element.id, selected: this.selected })
+  }
 
   componentDidLoad ():void {
     const textElement = this.element.shadowRoot.querySelector('.text') as HTMLElement
@@ -35,7 +35,7 @@ export class MdsBreadcrumbItem {
   }
 
   componentDidUpdate ():void {
-    if (this.active) {
+    if (this.selected) {
       this.km.detachClickBehavior()
       return
     }

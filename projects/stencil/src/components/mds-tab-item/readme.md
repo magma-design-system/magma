@@ -18,9 +18,9 @@
 
 ## Events
 
-| Event           | Description                         | Type                  |
-| --------------- | ----------------------------------- | --------------------- |
-| `selectedEvent` | Emits when the tab item is selected | `CustomEvent<string>` |
+| Event              | Description                         | Type                  |
+| ------------------ | ----------------------------------- | --------------------- |
+| `mdsTabItemSelect` | Emits when the tab item is selected | `CustomEvent<string>` |
 
 
 ## CSS Custom Properties

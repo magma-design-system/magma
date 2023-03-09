@@ -1,7 +1,7 @@
-import { Component, Host, h, Prop, Element, Event, EventEmitter } from '@stencil/core'
-import { TypographyTitleType } from '@type/typography'
 import miBaselineKeyboardArrowUp from '@icon/mi/baseline/keyboard-arrow-up.svg'
 import { AccordionClickedEvent } from '../mds-accordion/meta/interface'
+import { Component, Host, h, Prop, Element, Event, EventEmitter } from '@stencil/core'
+import { TypographyTitleType } from '@type/typography'
 
 @Component({
   tag: 'mds-accordion-item',
@@ -35,7 +35,7 @@ export class MdsAccordionItem {
   /**
    * Emits when the accordion is opened
    */
-  @Event({ eventName: 'opened' }) openedEvent: EventEmitter<AccordionClickedEvent>
+  @Event({ eventName: 'mdsAccordionItemOpen' }) openedEvent: EventEmitter<AccordionClickedEvent>
 
   render () {
     return (

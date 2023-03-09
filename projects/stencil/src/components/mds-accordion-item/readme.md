@@ -16,15 +16,16 @@
 
 ## Events
 
-| Event    | Description                        | Type                                 |
-| -------- | ---------------------------------- | ------------------------------------ |
-| `opened` | Emits when the accordion is opened | `CustomEvent<AccordionClickedEvent>` |
+| Event                  | Description                        | Type                                 |
+| ---------------------- | ---------------------------------- | ------------------------------------ |
+| `mdsAccordionItemOpen` | Emits when the accordion is opened | `CustomEvent<AccordionClickedEvent>` |
 
 
 ## CSS Custom Properties
 
 | Name                                     | Description                                            |
 | ---------------------------------------- | ------------------------------------------------------ |
+| `--mds-accordion-item-border-color`      | Sets the border-color of the element                   |
 | `--mds-accordion-item-color`             | Sets the text-color of the element                     |
 | `--mds-accordion-item-description-color` | Sets the color of the always visible title description |
 

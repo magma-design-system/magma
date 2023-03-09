@@ -24,9 +24,9 @@
 
 ## Events
 
-| Event         | Description                  | Type                                                    |
-| ------------- | ---------------------------- | ------------------------------------------------------- |
-| `valueChange` | Emits when the value changes | `CustomEvent<{ name: string; value: InputValueType; }>` |
+| Event                  | Description                  | Type                                                    |
+| ---------------------- | ---------------------------- | ------------------------------------------------------- |
+| `mdsInputSwitchChange` | Emits when the value changes | `CustomEvent<{ name: string; value: InputValueType; }>` |
 
 
 ## CSS Custom Properties

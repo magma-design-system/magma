@@ -1,8 +1,8 @@
-import { Component, Element, Event, EventEmitter, Host, h, Prop } from '@stencil/core'
-import { LoadingType } from '../../types/loading'
-import miBaselineExplore from '@icon/mi/baseline/explore.svg'
 import miBaselineClose from '@icon/mi/baseline/close.svg'
+import miBaselineExplore from '@icon/mi/baseline/explore.svg'
+import { Component, Element, Event, EventEmitter, Host, h, Prop } from '@stencil/core'
 import { KeyboardManager } from '@common/keyboard-manager'
+import { LoadingType } from '@type/loading'
 
 @Component({
   tag: 'mds-url-view',
@@ -38,10 +38,10 @@ export class MdsUrlView {
   /**
    * Emits when the url view is closed
    */
-  @Event({ bubbles: true, composed: true }) close: EventEmitter<void>
+  @Event({ bubbles: true, composed: true, eventName: 'mdsUrlViewClose' }) closeEvent: EventEmitter<void>
 
   private closeUrlView = (): void => {
-    this.close.emit()
+    this.closeEvent.emit()
   }
 
   componentDidLoad = (): void => {

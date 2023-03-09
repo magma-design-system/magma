@@ -35,12 +35,12 @@ This component is `scoped` and not `shadowed`, so the inner `input` element inte
 
 ## Events
 
-| Event          | Description                                                                      | Type                         |
-| -------------- | -------------------------------------------------------------------------------- | ---------------------------- |
-| `blurEvent`    | Emits a void event when input element is blurred                                 | `CustomEvent<void>`          |
-| `changeEvent`  | Emits an InputChangeEventDetail when the value of the input element changes      | `CustomEvent<InputValue>`    |
-| `focusEvent`   | Emits a void event when input element is focused                                 | `CustomEvent<void>`          |
-| `keyDownEvent` | Emits a KeyboardEvent when a keboard key is pressed on the focused input element | `CustomEvent<KeyboardEvent>` |
+| Event             | Description                                                                      | Type                         |
+| ----------------- | -------------------------------------------------------------------------------- | ---------------------------- |
+| `mdsInputBlur`    | Emits a void event when input element is blurred                                 | `CustomEvent<void>`          |
+| `mdsInputChange`  | Emits an InputChangeEventDetail when the value of the input element changes      | `CustomEvent<InputValue>`    |
+| `mdsInputFocus`   | Emits a void event when input element is focused                                 | `CustomEvent<void>`          |
+| `mdsInputKeydown` | Emits a KeyboardEvent when a keboard key is pressed on the focused input element | `CustomEvent<KeyboardEvent>` |
 
 
 ## Methods

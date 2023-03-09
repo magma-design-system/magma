@@ -34,12 +34,12 @@
 
 ## Events
 
-| Event          | Description                                                                      | Type                         |
-| -------------- | -------------------------------------------------------------------------------- | ---------------------------- |
-| `blurEvent`    | Emits a void event when input element is blurred                                 | `CustomEvent<void>`          |
-| `changeEvent`  | Emits an InputValue when the value of the input element changes                  | `CustomEvent<InputValue>`    |
-| `focusEvent`   | Emits a void event when input element is focused                                 | `CustomEvent<void>`          |
-| `keyDownEvent` | Emits a KeyboardEvent when a keboard key is pressed on the focused input element | `CustomEvent<KeyboardEvent>` |
+| Event                  | Description                                                                      | Type                         |
+| ---------------------- | -------------------------------------------------------------------------------- | ---------------------------- |
+| `mdsInputFieldBlur`    | Emits a void event when input element is blurred                                 | `CustomEvent<void>`          |
+| `mdsInputFieldChange`  | Emits an InputValue when the value of the input element changes                  | `CustomEvent<InputValue>`    |
+| `mdsInputFieldFocus`   | Emits a void event when input element is focused                                 | `CustomEvent<void>`          |
+| `mdsInputFieldKeydown` | Emits a KeyboardEvent when a keboard key is pressed on the focused input element | `CustomEvent<KeyboardEvent>` |
 
 
 ## Methods

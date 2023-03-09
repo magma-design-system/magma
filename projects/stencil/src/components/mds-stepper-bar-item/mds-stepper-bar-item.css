@@ -5,10 +5,10 @@
 /**
   * @prop --mds-stepper-bar-item-color: Sets the color of the text
   * @prop --mds-stepper-bar-item-duaration: Sets the duration of the animation
-  * @prop --mds-stepper-bar-item-icon-background-checked: Sets the background-color of the icon when the component is checked
+  * @prop --mds-stepper-bar-item-icon-background-selected: Sets the background-color of the icon when the component is selected
   * @prop --mds-stepper-bar-item-icon-background-current: Sets the background-color of the icon when the component is current
   * @prop --mds-stepper-bar-item-icon-background: Sets the background-color of the icon
-  * @prop --mds-stepper-bar-item-icon-color-checked: Sets the color of the icon when the component is checked
+  * @prop --mds-stepper-bar-item-icon-color-selected: Sets the color of the icon when the component is selected
   * @prop --mds-stepper-bar-item-icon-color-current: Sets the color of the icon when the component is current
   * @prop --mds-stepper-bar-item-icon-color: Sets the color of the icon
   * @prop --mds-stepper-bar-item-icon-ring-size: Sets the size of the icon circle when the component is current
@@ -22,10 +22,10 @@
 
   --mds-stepper-bar-item-color: theme('colors.tone-neutral-03');
   --mds-stepper-bar-item-duaration: 250ms;
-  --mds-stepper-bar-item-icon-background-checked: theme('colors.status-success-05');
+  --mds-stepper-bar-item-icon-background-selected: theme('colors.status-success-05');
   --mds-stepper-bar-item-icon-background-current: theme('colors.brand-maggioli-04');
   --mds-stepper-bar-item-icon-background: var(--mds-stepper-bar-item-progress-background, theme('colors.tone-neutral-08'));
-  --mds-stepper-bar-item-icon-color-checked: theme('colors.status-success-10');
+  --mds-stepper-bar-item-icon-color-selected: theme('colors.status-success-10');
   --mds-stepper-bar-item-icon-color-current: theme('colors.tone-neutral');
   --mds-stepper-bar-item-icon-color: theme('colors.tone-neutral-04');
   --mds-stepper-bar-item-icon-ring-color: var(--mds-stepper-bar-item-icon-background-current);
@@ -48,10 +48,10 @@
     shrink-0
     snap-center;
 
-  transition-property: outline, outline-offset;
   min-width: var(--mds-stepper-bar-item-min-width);
   padding-left: calc(var(--mds-stepper-bar-item-icon-ring-size) + var(--mds-stepper-bar-item-icon-ring-separator-size));
   padding-top: calc(var(--mds-stepper-bar-item-icon-ring-size) + var(--mds-stepper-bar-item-icon-ring-separator-size));
+  transition-property: outline, outline-offset;
 }
 
 :host ( :last-of-type ) {
@@ -62,10 +62,10 @@
   @apply hidden;
 }
 
-:host ( [ checked ] ) .icon {
+:host ( [ selected ] ) .icon {
 
-  --mds-stepper-bar-item-icon-background: var(--mds-stepper-bar-item-icon-background-checked);
-  --mds-stepper-bar-item-icon-color: var(--mds-stepper-bar-item-icon-color-checked);
+  --mds-stepper-bar-item-icon-background: var(--mds-stepper-bar-item-icon-background-selected);
+  --mds-stepper-bar-item-icon-color: var(--mds-stepper-bar-item-icon-color-selected);
 
   transition-delay: 0ms;
 }
@@ -79,7 +79,7 @@
   transition-delay: calc(var(--mds-stepper-bar-item-duaration) / 2);
 }
 
-:host ( :not([ checked ]) ) .icon,
+:host ( :not([ selected ]) ) .icon,
 :host ( :not([ current ]) ) .icon {
 
   --mds-stepper-bar-item-icon-ring-color: var(--mds-stepper-bar-item-icon-background);
@@ -135,7 +135,9 @@
 }
 
 .text {
-  @apply pointer-events-none transition-cosmetic;
+  @apply
+    pointer-events-none
+    transition-cosmetic;
 
   color: var(--mds-stepper-bar-item-color);
   transition-duration: var(--mds-stepper-bar-item-duaration);

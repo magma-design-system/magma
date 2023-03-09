@@ -5,7 +5,7 @@ import {
   ButtonSizeType,
   ButtonIconPositionType,
   ButtonVariantType,
-} from '@type/button' // TODO change folder types to type
+} from '@type/button'
 import { buttonSizeTypographyVariant } from './meta/variants'
 import { TypographyType } from '@type/typography'
 import { ToneVariantType } from '@type/variant'

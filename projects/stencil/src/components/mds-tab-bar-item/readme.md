@@ -16,9 +16,9 @@
 
 ## Events
 
-| Event           | Description                          | Type                  |
-| --------------- | ------------------------------------ | --------------------- |
-| `selectedEvent` | Emits when the component is selected | `CustomEvent<string>` |
+| Event                 | Description                          | Type                  |
+| --------------------- | ------------------------------------ | --------------------- |
+| `mdsTabBarItemSelect` | Emits when the component is selected | `CustomEvent<string>` |
 
 
 ## CSS Custom Properties

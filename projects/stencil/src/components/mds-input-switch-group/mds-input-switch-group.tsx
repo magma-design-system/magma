@@ -1,5 +1,5 @@
 import { Component, Host, h, Listen, Prop, Element } from '@stencil/core'
-import { InputValueType } from '../../types/input-value-type'
+import { InputValueType } from '@type/input-value-type'
 
 @Component({
   tag: 'mds-input-switch-group',
@@ -15,7 +15,7 @@ export class MdsInputSwitchGroup {
 
   @Element() private element: HTMLMdsInputSwitchGroupElement
 
-  @Listen('valueChange')
+  @Listen('mdsInputSwitchChange')
   onValueChange (event: CustomEvent<{ name: string, value: InputValueType }>): void {
     const radios = this.element.querySelectorAll<HTMLMdsInputSwitchElement>(`mds-input-switch[name="${this.name}"]`)
     this.validateRadios(radios, event.detail.value)

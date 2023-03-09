@@ -19,9 +19,9 @@
 
 ## Events
 
-| Event    | Description                              | Type                               |
-| -------- | ---------------------------------------- | ---------------------------------- |
-| `delete` | Emits when the label has to be cancelled | `CustomEvent<HTMLMdsLabelElement>` |
+| Event            | Description                              | Type                               |
+| ---------------- | ---------------------------------------- | ---------------------------------- |
+| `mdsLabelDelete` | Emits when the label has to be cancelled | `CustomEvent<HTMLMdsLabelElement>` |
 
 
 ## CSS Custom Properties

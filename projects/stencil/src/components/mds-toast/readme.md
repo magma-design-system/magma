@@ -15,9 +15,9 @@
 
 ## Events
 
-| Event                | Description                        | Type                |
-| -------------------- | ---------------------------------- | ------------------- |
-| `timerFinishedEvent` | Emits when the accordion is opened | `CustomEvent<void>` |
+| Event           | Description                        | Type                |
+| --------------- | ---------------------------------- | ------------------- |
+| `mdsToastClose` | Emits when the accordion is opened | `CustomEvent<void>` |
 
 
 ## CSS Custom Properties

@@ -10,6 +10,7 @@
   */
 
 :host {
+
   --mds-accordion-timer-item-progress-bar-color: theme('colors.tone-neutral-03');
   --mds-accordion-timer-item-progress-bar-background: theme('colors.tone-neutral-08');
   --mds-accordion-timer-item-progress-bar-thickness: theme('width.1');
@@ -53,7 +54,7 @@
     text-left;
 }
 
-:host ( [active] ) .action {
+:host ( [selected] ) .action {
   @apply cursor-auto;
 }
 
@@ -70,7 +71,7 @@
     transition-cosmetic;
 }
 
-:host ( [active] ) .contents {
+:host ( [selected] ) .contents {
   @apply
     h-auto
     opacity-100

@@ -1,5 +1,6 @@
 import { Component, Host, h, Prop } from '@stencil/core'
-import { TypographyTitleType } from '../../types/typography'
+import { TypographyTitleType } from '@type/typography'
+
 @Component({
   tag: 'mds-quote',
   styleUrl: 'mds-quote.css',

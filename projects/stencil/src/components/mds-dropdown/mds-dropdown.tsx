@@ -98,7 +98,7 @@ export class MdsDropdown {
   /**
    * Emits when a modal is closed
    */
-  @Event({ bubbles: true, composed: true }) closeDropdown: EventEmitter<void>
+  @Event({ bubbles: true, composed: true, eventName: 'mdsDropdownVisible' }) visibleEvent: EventEmitter<void>
 
   private handleCloseDropdown = (e:Event = null): void => {
     if (!this.visible) {
@@ -106,11 +106,11 @@ export class MdsDropdown {
     }
 
     if (!this.host.contains(e.target as HTMLElement) && e.target as HTMLElement !== this.caller) {
-      this.closeDropdown.emit()
+      this.visibleEvent.emit()
     }
   }
 
-  @Listen('closeDropdown', { target: 'document' })
+  @Listen('mdsDropdownVisible', { target: 'document' })
   onCloseListener (): void {
     this.handleVisibility(false)
   }

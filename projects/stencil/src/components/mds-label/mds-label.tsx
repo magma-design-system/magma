@@ -1,9 +1,9 @@
-import { Component, Element, Event, EventEmitter, Host, h, Prop } from '@stencil/core'
-import { TypographyType } from '../../types/typography'
-import { ThemeFullVariantType, ToneSimpleVariantType } from '../../types/variant'
 import clsx from 'clsx'
 import miBaselineClose from '@icon/mi/baseline/close.svg'
+import { Component, Element, Event, EventEmitter, Host, h, Prop } from '@stencil/core'
 import { KeyboardManager } from '@common/keyboard-manager'
+import { ThemeFullVariantType, ToneSimpleVariantType } from '@type/variant'
+import { TypographyType } from '@type/typography'
 
 @Component({
   tag: 'mds-label',
@@ -49,13 +49,13 @@ export class MdsLabel {
   private onClickDelete = (ev: Event) => {
     ev.stopPropagation()
     ev.preventDefault()
-    this.deleteEvent.emit(this.host)
+    this.deletedEvent.emit(this.host)
   }
 
   /**
    * Emits when the label has to be cancelled
    */
-  @Event({ eventName: 'delete' }) deleteEvent: EventEmitter<HTMLMdsLabelElement>
+  @Event({ eventName: 'mdsLabelDelete' }) deletedEvent: EventEmitter<HTMLMdsLabelElement>
 
   private handleKeyboard = (): void => {
     if (this.deletable) {

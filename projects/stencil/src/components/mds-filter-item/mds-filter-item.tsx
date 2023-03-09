@@ -15,7 +15,7 @@ export class MdsFilterItem {
   /**
    * Sets the component to active state
    */
-  @Prop({ mutable: true, reflect: true }) active?: boolean
+  @Prop({ mutable: true, reflect: true }) selected?: boolean
 
   /**
    * Sets the label of the filter item
@@ -33,14 +33,15 @@ export class MdsFilterItem {
   @Prop({ reflect: true }) value: string
 
   private toggle = () => {
-    this.active = !this.active
-    this.activeEvent.emit({ id: this.element.id, active: this.active })
+    this.selected = !this.selected
+    console.log('selected', this.selected)
+    this.selectedEvent.emit({ id: this.element.id, selected: this.selected })
   }
 
   /**
    * Emits when the element is active
    */
-  @Event() activeEvent: EventEmitter<FilterClickedEvent>
+  @Event({ eventName: 'mdsFilterItemSelect' }) selectedEvent: EventEmitter<FilterClickedEvent>
 
   componentDidLoad = (): void => {
     this.km.addElement(this.element)

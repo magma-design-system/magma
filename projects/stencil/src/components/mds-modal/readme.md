@@ -15,9 +15,9 @@
 
 ## Events
 
-| Event   | Description                  | Type                |
-| ------- | ---------------------------- | ------------------- |
-| `close` | Emits when a modal is closed | `CustomEvent<void>` |
+| Event           | Description                  | Type                |
+| --------------- | ---------------------------- | ------------------- |
+| `mdsModalClose` | Emits when a modal is closed | `CustomEvent<void>` |
 
 
 ## CSS Custom Properties

@@ -1,9 +1,10 @@
 # mds-flex-table
 
+This component is **deprecated** in favor of [mds-table][mds-table].
 
+[mds-table]: https://www.npmjs.com/package/@maggioli-design-system/mds-table
 
 <!-- Auto Generated Below -->
-
 
 ## Properties
 
@@ -12,14 +13,12 @@
 | `interactive` | `interactive` | Specifies if the table row are higlighted on mouseover event | `boolean` | `undefined` |
 | `template`    | `template`    | Specifies the template for flex children elements            | `string`  | `undefined` |
 
-
 ## Events
 
-| Event                      | Description                                 | Type                   |
-| -------------------------- | ------------------------------------------- | ---------------------- |
-| `flexTableInteractive`     | Dispatces when interactive property changes | `CustomEvent<boolean>` |
-| `flexTableTemplateChanged` | Dispatces when template property changes    | `CustomEvent<string>`  |
-
+| Event                           | Description                                 | Type                   |
+| ------------------------------- | ------------------------------------------- | ---------------------- |
+| `mdsFlexTableInteractiveChange` | Dispatces when interactive property changes | `CustomEvent<boolean>` |
+| `mdsFlexTableTemplateChange`    | Dispatces when template property changes    | `CustomEvent<string>`  |
 
 ## CSS Custom Properties
 
@@ -34,7 +33,6 @@
 | `--radius`               | The radius of the table (header and footer excluded)                                 |
 | `--shadow`               | The box-shadow used on the table (header and footer excluded)                        |
 
-
-----------------------------------------------
+---
 
 Built with love @ **Maggioli Informatica / R&D Department**

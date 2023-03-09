@@ -24,8 +24,8 @@
     items-stretch
     pl-3;
 
-  border-radius: var(--mds-label-radius);
   background-color: var(--mds-label-background);
+  border-radius: var(--mds-label-radius);
   color: var(--mds-label-color);
   fill: var(--mds-label-icon-color);
 }

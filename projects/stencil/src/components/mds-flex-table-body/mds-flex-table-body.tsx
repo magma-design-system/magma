@@ -9,7 +9,7 @@ export class MdsFlexTableBody {
 
   @Prop({ mutable: true, reflect: true }) interactive?: boolean
 
-  @Listen('flexTableInteractive', { target: 'body' })
+  @Listen('mdsFlexTableInteractive', { target: 'document' })
   tableInteractiveHandler (event: CustomEvent<boolean>): void {
     this.interactive = event.detail
   }

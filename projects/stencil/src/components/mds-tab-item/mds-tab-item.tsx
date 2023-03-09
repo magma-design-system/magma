@@ -1,10 +1,6 @@
-import { Component, Host, h, Element, Prop, State, Event, EventEmitter, Watch } from '@stencil/core'
 import clsx from 'clsx'
-import {
-  ButtonIconPositionType,
-  ButtonType,
-  ButtonSizeType,
-} from '@type/button'
+import { ButtonIconPositionType, ButtonType, ButtonSizeType } from '@type/button'
+import { Component, Host, h, Element, Prop, State, Event, EventEmitter, Watch } from '@stencil/core'
 
 @Component({
   tag: 'mds-tab-item',
@@ -51,7 +47,7 @@ export class MdsTabItem {
   /**
    * Emits when the tab item is selected
    */
-  @Event() selectedEvent: EventEmitter<string>
+  @Event({ eventName: 'mdsTabItemSelect' }) selectedEvent: EventEmitter<string>
 
   @Watch('selected')
   validateActive (newValue: boolean): void {

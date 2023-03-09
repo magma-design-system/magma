@@ -2,8 +2,8 @@ import { Component, Host, h, Prop, Event, EventEmitter, State } from '@stencil/c
 import clsx from 'clsx'
 import { InputSwitchType, InputSwitchSizeType } from './meta/types'
 import { inputSwitchIconVariant } from './meta/variants'
-import { InputValueType } from '../../types/input-value-type'
-import { TypographyInfoType, TypographyReadType, TypographyVariants } from '../../types/typography'
+import { InputValueType } from '@type/input-value-type'
+import { TypographyInfoType, TypographyReadType, TypographyVariants } from '@type/typography'
 
 @Component({
   tag: 'mds-input-switch',
@@ -73,13 +73,13 @@ export class MdsInputSwitch {
   /**
    * Emits when the value changes
    */
-  @Event() valueChange: EventEmitter<{ name: string, value: InputValueType }>
+  @Event({ eventName: 'mdsInputSwitchChange' }) changeEvent: EventEmitter<{ name: string, value: InputValueType }>
 
   private handleInputOnChange = (e: Event): void => {
     const { value } = (e.target as HTMLInputElement)
     e.preventDefault()
     e.stopPropagation()
-    this.valueChange.emit({ name: this.name, value })
+    this.changeEvent.emit({ name: this.name, value })
   }
 
   private handleDirty = (): void => {

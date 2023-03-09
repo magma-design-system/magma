@@ -7,19 +7,19 @@
 
 ## Properties
 
-| Property | Attribute | Description                                           | Type      | Default     |
-| -------- | --------- | ----------------------------------------------------- | --------- | ----------- |
-| `active` | `active`  | Sets the component to active state                    | `boolean` | `undefined` |
-| `icon`   | `icon`    | Sets the icon of the filter item                      | `string`  | `undefined` |
-| `label`  | `label`   | Sets the label of the filter item                     | `string`  | `undefined` |
-| `value`  | `value`   | Sets the value of the component to be used with forms | `string`  | `undefined` |
+| Property   | Attribute  | Description                                           | Type      | Default     |
+| ---------- | ---------- | ----------------------------------------------------- | --------- | ----------- |
+| `icon`     | `icon`     | Sets the icon of the filter item                      | `string`  | `undefined` |
+| `label`    | `label`    | Sets the label of the filter item                     | `string`  | `undefined` |
+| `selected` | `selected` | Sets the component to active state                    | `boolean` | `undefined` |
+| `value`    | `value`    | Sets the value of the component to be used with forms | `string`  | `undefined` |
 
 
 ## Events
 
-| Event         | Description                      | Type                              |
-| ------------- | -------------------------------- | --------------------------------- |
-| `activeEvent` | Emits when the element is active | `CustomEvent<FilterClickedEvent>` |
+| Event                 | Description                      | Type                              |
+| --------------------- | -------------------------------- | --------------------------------- |
+| `mdsFilterItemSelect` | Emits when the element is active | `CustomEvent<FilterClickedEvent>` |
 
 
 ## Dependencies

@@ -33,11 +33,11 @@
     w-9;
 }
 
-:host ( [active]:not([active=false]) ),
+:host ( [selected]:not([selected=false]) ),
 :host ( :hover ) {
   @apply bg-tone-neutral;
 }
 
-:host ( [active]:not([active=false]) ) {
+:host ( [selected]:not([selected=false]) ) {
   @apply text-tone-neutral-01;
 }

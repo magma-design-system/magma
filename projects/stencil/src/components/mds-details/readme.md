@@ -14,17 +14,17 @@
 
 ## Events
 
-| Event         | Description                        | Type                |
-| ------------- | ---------------------------------- | ------------------- |
-| `openedEvent` | Emits when the component is opened | `CustomEvent<void>` |
+| Event              | Description                        | Type                   |
+| ------------------ | ---------------------------------- | ---------------------- |
+| `mdsDetailsChange` | Emits when the component is opened | `CustomEvent<boolean>` |
 
 
 ## CSS Custom Properties
 
-| Name                  | Description                                         |
-| --------------------- | --------------------------------------------------- |
-| `--helper-icon-color` | Sets icon color of the helper icon of the component |
-| `--icon-color`        | Sets the icon color the component                   |
+| Name                              | Description                                         |
+| --------------------------------- | --------------------------------------------------- |
+| `--mds-details-helper-icon-color` | Sets icon color of the helper icon of the component |
+| `--mds-details-icon-color`        | Sets the icon color the component                   |
 
 
 ----------------------------------------------

@@ -15,7 +15,7 @@ export class MdsStepperBarItem {
   private km = new KeyboardManager()
 
 
-  @State() isChecked: boolean
+  @State() isSelected: boolean
   @State() isCurrent: boolean
   @State() index: number
 
@@ -47,12 +47,12 @@ export class MdsStepperBarItem {
   /**
    * Specifies if the component is checked or not
    */
-  @Prop({ reflect: true }) readonly checked?: boolean
+  @Prop({ reflect: true }) readonly selected?: boolean = false
 
   /**
    * Specifies if the component is the current or not
    */
-  @Prop({ mutable: true, reflect: true }) current?: boolean
+  @Prop({ mutable: true, reflect: true }) current?: boolean = false
 
   /**
    * Specifies the typography of the element
@@ -61,7 +61,7 @@ export class MdsStepperBarItem {
 
   componentWillLoad (): void {
     this.isCurrent = this.current
-    this.isChecked = this.checked
+    this.isSelected = this.selected
     this.index = [...Array.from(this.host.parentElement.childNodes)].indexOf(this.host)
   }
 
@@ -75,25 +75,23 @@ export class MdsStepperBarItem {
     this.km.detachClickBehavior()
   }
 
-  @Watch('checked')
-  checkChecked (newValue: boolean): void {
-    this.isChecked = newValue
+  @Watch('selected')
+  selectedHandler (newValue: boolean): void {
+    this.isSelected = newValue
   }
 
   @Watch('current')
-  checkCurrent (newValue: boolean): void {
+  currentHandler (newValue: boolean): void {
     this.isCurrent = newValue
   }
 
   private toggle = () => {
     this.isCurrent = true
-    if (this.isCurrent) {
-      this.currentEvent.emit(this.host.id)
-    }
+    this.selectedEvent.emit(this.host.id)
   }
 
   private showBadge = (): MdsBadge => {
-    if (this.isChecked) {
+    if (this.isSelected) {
       return <mds-badge class="badge" variant="success" tone="weak" typography="option">Completato</mds-badge>
     }
     if (this.isCurrent) {
@@ -103,16 +101,16 @@ export class MdsStepperBarItem {
   }
 
   /**
-   * Emits when the accordion is current
+   * Emits when the accordion is selected
    */
-  @Event() currentEvent: EventEmitter<string>
+  @Event({ eventName: 'mdsStepperBarItemSelect' }) selectedEvent: EventEmitter<string>
 
   render () {
     return (
       <Host>
         <header class="header focusable" onClick={ this.toggle } tabindex="0">
-          <mds-icon class="icon" name={ clsx(this.isChecked && !this.isCurrent ? this.iconChecked : this.icon) }/>
-          <mds-progress class="progress" progress={ this.isChecked ? 1 : 0 }/>
+          <mds-icon class="icon" name={ clsx(this.isSelected && !this.isCurrent ? this.iconChecked : this.icon) }/>
+          <mds-progress class="progress" progress={ this.isSelected ? 1 : 0 }/>
         </header>
         <div class="infos" onClick={ this.toggle }>
           { this.step && <mds-text class="step" typography="option">step { this.index + 1 }</mds-text> }

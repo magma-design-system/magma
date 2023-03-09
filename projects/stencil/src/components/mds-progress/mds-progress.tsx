@@ -1,6 +1,6 @@
 import { Component, Element, Host, h, Prop, Watch, State } from '@stencil/core'
 import { DirectionType } from './meta/types'
-import { ThemeVariantType } from '../../types/variant'
+import { ThemeVariantType } from '@type/variant'
 
 @Component({
   tag: 'mds-progress',

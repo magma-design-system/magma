@@ -21,26 +21,26 @@ export class MdsFlexTable {
   /**
    * Dispatces when interactive property changes
    */
-  @Event({ composed: true }) flexTableInteractive: EventEmitter<boolean>
+  @Event({ composed: true, eventName: 'mdsFlexTableInteractiveChange' }) interactiveEvent: EventEmitter<boolean>
 
   /**
    * Dispatces when template property changes
    */
-  @Event({ composed: true }) flexTableTemplateChanged: EventEmitter<string>
+  @Event({ composed: true, eventName: 'mdsFlexTableTemplateChange' }) templateChangedEvent: EventEmitter<string>
 
   @Watch('interactive')
   onTableInteractive (): void {
-    this.flexTableInteractive.emit(this.interactive)
+    this.interactiveEvent.emit(this.interactive)
   }
 
   @Watch('template')
   onTemplateChanged (): void {
-    this.flexTableTemplateChanged.emit(this.template)
+    this.templateChangedEvent.emit(this.template)
   }
 
   componentDidLoad ():void {
-    this.flexTableInteractive.emit(this.interactive)
-    this.flexTableTemplateChanged.emit(this.template)
+    this.interactiveEvent.emit(this.interactive)
+    this.templateChangedEvent.emit(this.template)
   }
 
   render () {

@@ -27,9 +27,9 @@
 
 ## Events
 
-| Event           | Description                  | Type                |
-| --------------- | ---------------------------- | ------------------- |
-| `closeDropdown` | Emits when a modal is closed | `CustomEvent<void>` |
+| Event                | Description                  | Type                |
+| -------------------- | ---------------------------- | ------------------- |
+| `mdsDropdownVisible` | Emits when a modal is closed | `CustomEvent<void>` |
 
 
 ## CSS Custom Properties

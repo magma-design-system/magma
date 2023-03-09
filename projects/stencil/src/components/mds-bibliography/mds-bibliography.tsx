@@ -1,14 +1,14 @@
 import { Component, Host, h, Prop } from '@stencil/core'
 import { BibliographyFormatType, BibliographyRelationshipType } from './meta/types'
-import { TypographyInfoType, TypographyReadType, TypographyVariants } from '../../types/typography'
+import { TypographyInfoType, TypographyReadType, TypographyVariants } from '@type/typography'
 import { FormattedAuthor } from './meta/interface'
+
 @Component( {
   tag: 'mds-bibliography',
   styleUrl: 'mds-bibliography.css',
   shadow: true,
 } )
 export class MdsBibliography {
-
   private separator = {
     apa: '&',
     mla: 'e',
