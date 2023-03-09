@@ -11,7 +11,7 @@ export class MdsAccordion {
   @Element() private element: HTMLMdsAccordionElement
 
   /**
-   * Choose if multiple siblings can be opened simultaneously
+   * Choose if multiple siblings can be selected simultaneously
    */
   @Prop() readonly multiple?: boolean = false
 
@@ -29,12 +29,12 @@ export class MdsAccordion {
   }
 
   @Listen('mdsAccordionItemOpen')
-  openedEventHandler (event: CustomEvent<AccordionClickedEvent>): void {
+  selectedEventHandler (event: CustomEvent<AccordionClickedEvent>): void {
     const items = this.queryItems()
     if (this.multiple) {
       const list = []
       items.forEach((item, key) => {
-        item.opened ? list.push(item) : list.push(null)
+        item.selected ? list.push(item) : list.push(null)
         item.classList.remove('sibling')
         if (list.length > 1 && list[key - 1] !== null) {
           item.classList.add('sibling')
@@ -42,7 +42,7 @@ export class MdsAccordion {
       })
       return
     }
-    items.forEach((item, key) => item.opened = `item-${key}` === event.detail.id && (event.detail.opened || !this.closable))
+    items.forEach((item, key) => item.selected = `item-${key}` === event.detail.id && (event.detail.selected || !this.closable))
   }
 
   render () {
