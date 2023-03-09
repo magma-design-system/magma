@@ -65,13 +65,13 @@ export class MdsPaginator {
     return (
       <Host>
         <mds-paginator-item icon="mi/baseline/arrow-back" disabled={this.currentPage === 1} onClick={() => this.goToPage(this.currentPage - 1)}/>
-        { this.pages > 0 && <mds-paginator-item active={this.currentPage === 1} onClick={() => this.goToPage(1)}>1</mds-paginator-item>}
+        { this.pages > 0 && <mds-paginator-item selected={this.currentPage === 1} onClick={() => this.goToPage(1)}>1</mds-paginator-item>}
         { this.pages > 2 &&
           <div class="pages">
-            { Array.from(Array(this.pages - 2).keys()).map( i => <mds-paginator-item key={i} active={this.currentPage === i + 2} onClick={() => this.goToPage(i + 2)}>{ i + 2 }</mds-paginator-item>) }
+            { Array.from(Array(this.pages - 2).keys()).map( i => <mds-paginator-item key={i} selected={this.currentPage === i + 2} onClick={() => this.goToPage(i + 2)}>{ i + 2 }</mds-paginator-item>) }
           </div>
         }
-        { this.pages > 1 && <mds-paginator-item active={this.currentPage === this.pages} onClick={() => this.goToPage(this.pages)}>{ this.pages }</mds-paginator-item>}
+        { this.pages > 1 && <mds-paginator-item selected={this.currentPage === this.pages} onClick={() => this.goToPage(this.pages)}>{ this.pages }</mds-paginator-item>}
         <mds-paginator-item icon="mi/baseline/arrow-forward" disabled={this.currentPage === this.pages} onClick={() => this.goToPage(this.currentPage + 1)}/>
       </Host>
     )
