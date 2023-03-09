@@ -11,7 +11,7 @@
 | ---------- | ---------- | ----------------------------------------------------- | --------- | ----------- |
 | `icon`     | `icon`     | Sets the icon of the filter item                      | `string`  | `undefined` |
 | `label`    | `label`    | Sets the label of the filter item                     | `string`  | `undefined` |
-| `selected` | `selected` | Sets the component to active state                    | `boolean` | `undefined` |
+| `selected` | `selected` | Sets the component to selected state                  | `boolean` | `undefined` |
 | `value`    | `value`    | Sets the value of the component to be used with forms | `string`  | `undefined` |
 
 
