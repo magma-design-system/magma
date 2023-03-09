@@ -18,29 +18,29 @@ export class MdsAccordionItem {
   @Prop() readonly typography?: TypographyTitleType = 'h5'
 
   /**
-   * Specifies if the accordion item is opened or not
+   * Specifies if the accordion item is selected or not
    */
-  @Prop({ mutable: true, reflect: true }) opened?: boolean
+  @Prop({ mutable: true, reflect: true }) selected?: boolean
 
   /**
-   * Specifies the title shown when the accordion is closed or opened
+   * Specifies the title shown when the accordion is closed or selected
    */
   @Prop() readonly description!: string
 
   private toggle = () => {
-    this.opened = !this.opened
-    this.openedEvent.emit({ id: this.element.id, opened: this.opened })
+    this.selected = !this.selected
+    this.selectedEvent.emit({ id: this.element.id, selected: this.selected })
   }
 
   /**
-   * Emits when the accordion is opened
+   * Emits when the accordion is selected
    */
-  @Event({ eventName: 'mdsAccordionItemOpen' }) openedEvent: EventEmitter<AccordionClickedEvent>
+  @Event({ eventName: 'mdsAccordionItemSelect' }) selectedEvent: EventEmitter<AccordionClickedEvent>
 
   render () {
     return (
       <Host>
-        <button aria-controls="contents" aria-expanded={ this.opened ? 'true' : 'false' } class="action focusable" id="action" onClick={ this.toggle } role="button" tabindex="0">
+        <button aria-controls="contents" aria-expanded={ this.selected ? 'true' : 'false' } class="action focusable" id="action" onClick={ this.toggle } role="button" tabindex="0">
           <mds-text typography={ this.typography }>
             { this.description }
           </mds-text>

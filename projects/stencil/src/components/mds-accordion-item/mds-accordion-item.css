@@ -29,7 +29,7 @@
   margin-bottom: -2px;
 }
 
-:host( [opened] ) {
+:host( [selected] ) {
   @apply
     my-4
     py-8;
@@ -38,19 +38,21 @@
   border-top: solid 2px var(--mds-accordion-item-border-color) !important;
 }
 
-:host( .sibling[opened] ) {
+:host( .sibling[selected] ) {
   @apply -mt-[1.125rem];
 
   border-top-color: transparent !important;
 }
 
-:host( [opened]:first-child ) {
+:host( [selected]:first-child ) {
   @apply mt-0;
+
   border-top-color: transparent !important;
 }
 
-:host( [opened]:last-child ) {
+:host( [selected]:last-child ) {
   @apply mb-0;
+
   border-bottom-color: transparent !important;
 }
 
@@ -90,7 +92,7 @@
     transition-cosmetic;
 }
 
-:host( [opened] ) .contents {
+:host( [selected] ) .contents {
   @apply
     h-auto
     opacity-100
@@ -107,6 +109,6 @@
   transform: rotate(180deg);
 }
 
-:host( [opened] ) .icon {
+:host( [selected] ) .icon {
   transform: rotate(0deg);
 }

@@ -8,7 +8,7 @@ export default {
       type: { name: 'string' },
       description: 'Specifies the title shown when the accordion is closed or opened',
     },
-    opened: {
+    selected: {
       type: { name: 'boolean' },
       description: 'Specifies if the accordion item is opened or not',
     },
@@ -31,8 +31,8 @@ Default.args = {
   description: 'Blipbug',
 }
 
-export const opened = Template.bind({})
-opened.args = {
-  opened: true,
+export const selected = Template.bind({})
+selected.args = {
+  selected: true,
   description: 'Blipbug',
 }

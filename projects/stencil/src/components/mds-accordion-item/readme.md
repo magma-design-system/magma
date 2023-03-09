@@ -10,15 +10,15 @@
 | Property                   | Attribute     | Description                                                      | Type                                                       | Default     |
 | -------------------------- | ------------- | ---------------------------------------------------------------- | ---------------------------------------------------------- | ----------- |
 | `description` _(required)_ | `description` | Specifies the title shown when the accordion is closed or opened | `string`                                                   | `undefined` |
-| `opened`                   | `opened`      | Specifies if the accordion item is opened or not                 | `boolean`                                                  | `undefined` |
+| `selected`                 | `selected`    | Specifies if the accordion item is selected or not               | `boolean`                                                  | `undefined` |
 | `typography`               | `typography`  | Specifies the typography of the element                          | `"action" \| "h1" \| "h2" \| "h3" \| "h4" \| "h5" \| "h6"` | `'h5'`      |
 
 
 ## Events
 
-| Event                  | Description                        | Type                                 |
-| ---------------------- | ---------------------------------- | ------------------------------------ |
-| `mdsAccordionItemOpen` | Emits when the accordion is opened | `CustomEvent<AccordionClickedEvent>` |
+| Event                    | Description                          | Type                                 |
+| ------------------------ | ------------------------------------ | ------------------------------------ |
+| `mdsAccordionItemSelect` | Emits when the accordion is selected | `CustomEvent<AccordionClickedEvent>` |
 
 
 ## CSS Custom Properties
