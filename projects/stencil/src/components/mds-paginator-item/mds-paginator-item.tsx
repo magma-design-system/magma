@@ -17,9 +17,9 @@ export class MdsPaginatorItem {
   @Prop({ reflect: true }) readonly icon?: string
 
   /**
-   * Specifies if the item is active or not, is handled from the parent paginator
+   * Specifies if the item is selected or not, is handled from the parent paginator
    */
-  @Prop({ reflect: true }) readonly active?: boolean
+  @Prop({ reflect: true }) readonly selected?: boolean
 
   /**
    * Specifies if the item is disabled or not, is handled from the parent paginator
@@ -32,7 +32,7 @@ export class MdsPaginatorItem {
   }
 
   componentDidUpdate = (): void => {
-    if (!this.disabled && !this.active) {
+    if (!this.disabled && !this.selected) {
       this.km.attachClickBehavior()
       return
     }
