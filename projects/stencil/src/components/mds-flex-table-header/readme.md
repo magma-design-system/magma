@@ -6,6 +6,7 @@ This component is **deprecated** in favor of [mds-table][mds-table].
 
 <!-- Auto Generated Below -->
 
----
+
+----------------------------------------------
 
 Built with love @ **Maggioli Informatica / R&D Department**

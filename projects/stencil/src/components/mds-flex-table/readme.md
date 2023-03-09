@@ -6,6 +6,7 @@ This component is **deprecated** in favor of [mds-table][mds-table].
 
 <!-- Auto Generated Below -->
 
+
 ## Properties
 
 | Property      | Attribute     | Description                                                  | Type      | Default     |
@@ -13,12 +14,14 @@ This component is **deprecated** in favor of [mds-table][mds-table].
 | `interactive` | `interactive` | Specifies if the table row are higlighted on mouseover event | `boolean` | `undefined` |
 | `template`    | `template`    | Specifies the template for flex children elements            | `string`  | `undefined` |
 
+
 ## Events
 
 | Event                           | Description                                 | Type                   |
 | ------------------------------- | ------------------------------------------- | ---------------------- |
 | `mdsFlexTableInteractiveChange` | Dispatces when interactive property changes | `CustomEvent<boolean>` |
 | `mdsFlexTableTemplateChange`    | Dispatces when template property changes    | `CustomEvent<string>`  |
+
 
 ## CSS Custom Properties
 
@@ -33,6 +36,7 @@ This component is **deprecated** in favor of [mds-table][mds-table].
 | `--radius`               | The radius of the table (header and footer excluded)                                 |
 | `--shadow`               | The box-shadow used on the table (header and footer excluded)                        |
 
----
+
+----------------------------------------------
 
 Built with love @ **Maggioli Informatica / R&D Department**

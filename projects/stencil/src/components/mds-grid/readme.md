@@ -13,6 +13,7 @@ This component is **deprecated** as it is enough to use plain HTML with the help
 
 <!-- Auto Generated Below -->
 
----
+
+----------------------------------------------
 
 Built with love @ **Maggioli Informatica / R&D Department**
