@@ -13,7 +13,7 @@ export class MdsFilterItem {
   private km = new KeyboardManager()
 
   /**
-   * Sets the component to active state
+   * Sets the component to selected state
    */
   @Prop({ mutable: true, reflect: true }) selected?: boolean
 

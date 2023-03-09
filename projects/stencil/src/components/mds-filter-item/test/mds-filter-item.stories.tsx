@@ -3,9 +3,9 @@ import { h } from '@stencil/core'
 export default {
   title: 'UI / Filter / Filter item',
   argTypes: {
-    active: {
+    selected: {
       type: { name: 'boolean' },
-      description: 'Sets the component to active state',
+      description: 'Sets the component to selected state',
     },
     label: {
       type: { name: 'string' },
@@ -28,8 +28,8 @@ Default.args = {
   label: 'Filter label',
 }
 
-export const Active = Template.bind({})
-Active.args = {
+export const selected = Template.bind({})
+selected.args = {
   label: 'Filter label',
-  active: true,
+  selected: true,
 }
