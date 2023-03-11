@@ -3,7 +3,7 @@
 const path = require('path')
 
 const alias = {
-  '@component': path.resolve(__dirname, '../dist/collection/components'),
+  '@component-dist': path.resolve(__dirname, '../dist/collection/components'),
   '@dictionary': path.resolve(__dirname, '../src/dictionary/'),
   '@fixture': path.resolve(__dirname, '../src/fixtures/'),
   '@icon': path.resolve(__dirname, '../assets/svg/'),

@@ -58,7 +58,8 @@ export const config: Config = {
     alias({
       entries: [
         { find: /^@common\/(.*)+$/, replacement: path.resolve('.', './src/common/$1') },
-        { find: /^@component\/(.*)+$/, replacement: path.resolve('.', './dist/collection/components/$1') },
+        { find: /^@component-dist\/(.*)+$/, replacement: path.resolve('.', './dist/collection/components/$1') },
+        { find: /^@component\/(.*)+$/, replacement: path.resolve('.', './src/components/$1') },
         { find: /^@dictionary\/(.*)+$/, replacement: path.resolve('.', './src/dictionary/$1') },
         { find: /^@fixture\/(.*)+$/, replacement: path.resolve('.', './src/fixtures/$1') },
         { find: /^@icon\/([a-zA-Z-\/]+)\.svg$/, replacement: path.resolve(__dirname, './assets/svg/$1.svg') },
@@ -79,7 +80,7 @@ export const config: Config = {
     // moduleNameMapper: tsconfigPathsJest(tsconfig),
     moduleNameMapper: {
       '@common/(.*)': '<rootDir>src/common/$1',
-      '@component/(.*)': '<rootDir>dist/collection/components/$1',
+      '@component-dist/(.*)': '<rootDir>dist/collection/components/$1',
       '@dictionary/(.*)': '<rootDir>src/dictionary/$1',
       '@fixture/(.*)': '<rootDir>src/fixtures/$1',
       '@icon/(.*)': '<rootDir>assets/svg/$1',

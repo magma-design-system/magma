@@ -21,7 +21,8 @@
     "target": "es2017",
     "paths": {
       "@common/*": ["src/common/*"],
-      "@component/*": ["dist/collection/components/*"],
+      "@component-dist/*": ["dist/collection/components/*"],
+      "@component/*": ["src/components/*"],
       "@dictionary/*": ["src/dictionary/*"],
       "@fixture/*": ["src/fixtures/*"],
       "@icon/*": ["assets/svg/*"],
