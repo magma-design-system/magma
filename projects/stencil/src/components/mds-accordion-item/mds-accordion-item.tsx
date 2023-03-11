@@ -18,24 +18,42 @@ export class MdsAccordionItem {
   @Prop() readonly typography?: TypographyTitleType = 'h5'
 
   /**
-   * Specifies if the accordion item is selected or not
+   * Specifies if the component item is selected or not
    */
   @Prop({ mutable: true, reflect: true }) selected?: boolean
 
   /**
-   * Specifies the title shown when the accordion is closed or selected
+   * Specifies the title shown when the component is closed or selected
    */
   @Prop() readonly description!: string
 
   private toggle = () => {
     this.selected = !this.selected
-    this.selectedEvent.emit({ id: this.element.id, selected: this.selected })
+
+    this.changedEvent.emit({ id: this.element.id, selected: this.selected })
+
+    if (this.selected) {
+      this.selectedEvent.emit({ id: this.element.id, selected: this.selected })
+      return
+    }
+
+    this.unselectedEvent.emit({ id: this.element.id, selected: this.selected })
   }
 
   /**
-   * Emits when the accordion is selected
+   * Emits when the component is selected
    */
   @Event({ eventName: 'mdsAccordionItemSelect' }) selectedEvent: EventEmitter<AccordionClickedEvent>
+
+  /**
+   * Emits when the component is unselected
+   */
+  @Event({ eventName: 'mdsAccordionItemUnselect' }) unselectedEvent: EventEmitter<AccordionClickedEvent>
+
+  /**
+   * Emits when the component attribute selected is changed
+   */
+  @Event({ eventName: 'mdsAccordionItemChange' }) changedEvent: EventEmitter<AccordionClickedEvent>
 
   render () {
     return (
