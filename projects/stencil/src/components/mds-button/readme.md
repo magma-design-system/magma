@@ -10,6 +10,8 @@
 | Property       | Attribute       | Description                                                           | Type                                                                            | Default     |
 | -------------- | --------------- | --------------------------------------------------------------------- | ------------------------------------------------------------------------------- | ----------- |
 | `active`       | `active`        | Specifies if the button is active or not                              | `boolean`                                                                       | `undefined` |
+| `await`        | `await`         | Specifies if the button is awaiting for a response                    | `boolean`                                                                       | `undefined` |
+| `disabled`     | `disabled`      | Specifies if the component is disabled or not                         | `boolean`                                                                       | `undefined` |
 | `icon`         | `icon`          | The icon displayed in the button                                      | `string`                                                                        | `undefined` |
 | `iconPosition` | `icon-position` | Specifies the horizontal position of the icon displayed in the button | `"left" \| "right"`                                                             | `'left'`    |
 | `size`         | `size`          | Specifies the size for the button                                     | `"lg" \| "md" \| "sm" \| "xl"`                                                  | `'md'`      |

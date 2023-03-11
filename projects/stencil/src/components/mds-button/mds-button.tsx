@@ -1,17 +1,12 @@
-import { Component, Host, Element, h, Prop } from '@stencil/core'
-
-import {
-  ButtonType,
-  ButtonSizeType,
-  ButtonIconPositionType,
-  ButtonVariantType,
-} from '@type/button'
-import { buttonSizeTypographyVariant } from './meta/variants'
-import { TypographyType } from '@type/typography'
-import { ToneVariantType } from '@type/variant'
 import clsx from 'clsx'
-import { setAttributeIfEmpty, unslugName } from '@common/aria'
+import { ButtonType, ButtonSizeType, ButtonIconPositionType, ButtonVariantType } from '@type/button'
+import { Component, Host, Element, h, Prop, Watch } from '@stencil/core'
 import { KeyboardManager } from '@common/keyboard-manager'
+import { ToneVariantType } from '@type/variant'
+import { TypographyType } from '@type/typography'
+import { buttonSizeTypographyVariant } from './meta/variants'
+import { setAttributeIfEmpty, unslugName } from '@common/aria'
+import awaitIcon from './asset/await.svg'
 
 @Component({
   tag: 'mds-button',
@@ -62,6 +57,35 @@ export class MdsButton {
    */
   @Prop({ mutable: true, reflect: true }) active: boolean
 
+  /**
+   * Specifies if the component is disabled or not
+   */
+  @Prop({ reflect: true }) readonly disabled: boolean
+
+  /**
+   * Specifies if the button is awaiting for a response
+   */
+  @Prop({ reflect: true }) readonly await: boolean
+
+  @Watch('disabled')
+  disabledChanged (newValue: boolean): void {
+    if (newValue) {
+      this.km.attachClickBehavior()
+      return
+    }
+    this.km.detachClickBehavior()
+  }
+
+  @Watch('await')
+  awaitChanged (newValue: boolean): void {
+    this.host.setAttribute('aria-busy', newValue.toString())
+    if (newValue) {
+      this.km.attachClickBehavior()
+      return
+    }
+    this.km.detachClickBehavior()
+  }
+
   private mouseDown = () => {
     this.active = true
   }
@@ -77,7 +101,10 @@ export class MdsButton {
 
   componentDidLoad ():void {
     this.km.addElement(this.host)
-    this.km.attachClickBehavior()
+    if (!this.await) {
+      this.km.attachClickBehavior()
+    }
+    this.host.setAttribute('aria-busy', this.await.toString())
 
     if (!this.hasText && this.icon) {
       const iconTitle = unslugName(this.icon)
@@ -97,6 +124,9 @@ export class MdsButton {
 
     return (
       <Host class={clsx(!this.hasText && 'no-text')} onMouseDown={this.mouseDown} onMouseUp={this.mouseUp} onMouseOut={this.mouseUp} tabindex="0" role="button">
+        <div class="await" aria-hidden="true">
+          <i class="await-icon" innerHTML={awaitIcon}/>
+        </div>
         { this.icon && this.iconPosition === 'left' && <mds-icon aria-hidden="true" class="icon" name={this.icon} /> }
         { this.hasText && <mds-text class="text" part="label" typography={this.typography}><slot /></mds-text> }
         { this.hasNotification && <slot name="notification"/> }

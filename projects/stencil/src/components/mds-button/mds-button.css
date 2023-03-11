@@ -9,6 +9,7 @@
   * @prop --mds-button-border-color: Sets the border-color of the component
   * @prop --mds-button-color: Sets the text color of the component
   * @prop --mds-button-icon-color: Sets the icon color of the component
+  * @prop --mds-button-gap: Sets the distance betwen element inside the components, use it instead of setting gap property directly.
   * @prop --mds-button-radius: Sets the border-radius of the component
   */
 
@@ -18,11 +19,13 @@
   --mds-button-border-color: transparent;
   --mds-button-color: theme('colors.tone-neutral');
   --mds-button-icon-color: var(--mds-button-color);
+  --mds-button-gap: theme('spacing.2');
   --mds-button-outline-blur-offset: var(--magma-outline-blur-offset, 6px);
   --mds-button-outline-blur: var(--magma-outline-blur, 2px solid transparent);
   --mds-button-outline-focus-offset: var(--magma-outline-focus-offset, 2px);
   --mds-button-outline-focus: var(--magma-outline-focus, 2px solid theme('colors.label-sky-05'));
   --mds-button-radius: theme('borderRadius.lg');
+  --mds-button-await-color: theme('colors.tone-neutral');
 
   @apply
     box-border
@@ -30,7 +33,6 @@
     duration-200
     ease-out
     focus-off
-    gap-2
     inline-flex
     items-center
     justify-center
@@ -40,10 +42,11 @@
 
   background-color: var(--mds-button-background);
   border-color: var(--mds-button-border-color) !important;
-  border-radius: var(--mds-button-radius, theme('borderRadius.lg'));
+  border-radius: var(--mds-button-radius);
   border-style: solid;
   border-width: theme('borderWidth.2') !important;
   color: var(--mds-button-color);
+  gap: var(--mds-button-gap);
   transition-property: background-color, border-color, box-shadow, color, transform, outline, outline-offset;
 }
 
@@ -70,6 +73,60 @@
     transition-colors;
 
   fill: var(--mds-button-icon-color);
+}
+
+:host ([disabled]:not([disabled=false])) {
+  @apply
+    opacity-50
+    pointer-events-none;
+}
+
+.await {
+  @apply
+    duration-300
+    ease-out
+    flex
+    h-6
+    items-center
+    justify-center
+    mr-0
+    opacity-0
+    scale-0
+    shrink-0
+    w-0;
+
+  margin-right: calc(-1 * var(--mds-button-gap));
+  transition-property: margin-right, opacity, transform, width;
+}
+
+.await-icon {
+  @apply
+    animate-spin
+    duration-300
+    ease-out
+    h-6
+    shrink-0
+    w-6;
+
+  animation-play-state: paused;
+  stroke: var(--mds-button-await-color);
+  transition-property: stroke;
+}
+
+:host ([await]:not([await=false])) {
+  @apply pointer-events-none;
+}
+
+:host ([await]:not([await=false])) .await {
+  @apply
+    mr-0
+    opacity-100
+    scale-100
+    w-6;
+}
+
+:host ([await]:not([await=false])) .await-icon {
+  animation-play-state: running;
 }
 
 @import './css/mds-button-variant-primary.css';
