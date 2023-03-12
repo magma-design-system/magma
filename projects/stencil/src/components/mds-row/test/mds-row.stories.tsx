@@ -2,7 +2,7 @@
 import { h } from '@stencil/core'
 
 export default {
-  title: 'Layout / Row',
+  title: 'Deprecated / Layout / Row',
 }
 
 export const Default = () =>
