@@ -1,7 +1,7 @@
 import { h } from '@stencil/core'
 
 export default {
-  title: 'Layout / Grid',
+  title: 'Deprecated / Layout / Grid',
 }
 
 // eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types
