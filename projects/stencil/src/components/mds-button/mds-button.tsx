@@ -6,7 +6,7 @@ import { ToneVariantType } from '@type/variant'
 import { TypographyType } from '@type/typography'
 import { buttonSizeTypographyVariant } from './meta/variants'
 import { setAttributeIfEmpty, unslugName } from '@common/aria'
-import awaitIcon from './asset/await.svg'
+import awaitIcon from './asset/await-rounded.svg'
 
 @Component({
   tag: 'mds-button',
