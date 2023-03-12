@@ -104,7 +104,7 @@ export class MdsButton {
     if (!this.await) {
       this.km.attachClickBehavior()
     }
-    this.host.setAttribute('aria-busy', this.await.toString())
+    this.host.setAttribute('aria-busy', this.await ? 'true' : 'false')
 
     if (!this.hasText && this.icon) {
       const iconTitle = unslugName(this.icon)
