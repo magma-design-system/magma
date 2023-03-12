@@ -1,7 +1,7 @@
 import { h } from '@stencil/core'
 
 export default {
-  title: 'Layout / Table (Flex)',
+  title: 'Deprecated / Layout / Table (Flex)',
   argTypes: {
     interactive: {
       description: 'Specifies if the table row are higlighted on mouseover event',
