@@ -39,7 +39,7 @@ const Template = args =>
       </mds-flex-table-row>
     </mds-flex-table-body>
     {/* Template in mds-flex-table-footer è uno @State e non una @Prop? Sentire con Vitto */}
-    <mds-flex-table-footer template="1fr">
+    <mds-flex-table-footer>
       <mds-flex-table-cell><mds-text typography="caption" class="text-tone-neutral-04">Lista utenti storici Nintendo</mds-text></mds-flex-table-cell>
     </mds-flex-table-footer>
   </mds-flex-table>
@@ -78,7 +78,7 @@ const TemplateManyItems = args =>
         <mds-flex-table-cell><mds-text>Toad Fungi</mds-text></mds-flex-table-cell>
       </mds-flex-table-row>
     </mds-flex-table-body>
-    <mds-flex-table-footer template="1fr">
+    <mds-flex-table-footer>
       <mds-flex-table-cell>
         <mds-text typography="caption">
           { args._scroll
