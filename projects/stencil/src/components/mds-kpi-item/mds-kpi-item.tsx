@@ -15,7 +15,6 @@ export class MdsKpiItem {
 
   private setValue = () => {
     if (this.isIntersecting) {
-      console.log(this.value)
       this.actualValue = this.value.toString()
     }
   }
