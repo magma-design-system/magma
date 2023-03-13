@@ -1,5 +1,6 @@
 import { Component, Host, h, Prop, Event, EventEmitter } from '@stencil/core'
 import { TypographyTitleType } from '@type/typography'
+import { MdsAccordionTimerItemEventDetail } from './meta/event-detail'
 
 @Component({
   tag: 'mds-accordion-timer-item',
@@ -39,36 +40,36 @@ export class MdsAccordionTimerItem {
    */
   private toggle = () => {
     if (!this.selected) {
-      this.clickSelectEvent.emit(this.description)
+      this.clickSelectEvent.emit({ selected: this.selected })
     }
   }
 
   private mouseEnter = () => {
     if (this.selected) {
-      this.selectedMouseEnterEvent.emit(this.description)
+      this.selectedMouseEnterEvent.emit({ selected: this.selected })
     }
   }
 
   private mouseLeave = () => {
     if (this.selected) {
-      this.selectedMouseLeaveEvent.emit(this.description)
+      this.selectedMouseLeaveEvent.emit({ selected: this.selected })
     }
   }
 
   /**
    * Emits when the accordion is clicked by the mouse
    */
-  @Event({ eventName: 'mdsAccordionTimerItemClickSelect' }) clickSelectEvent: EventEmitter<string>
+  @Event({ eventName: 'mdsAccordionTimerItemClickSelect' }) clickSelectEvent: EventEmitter<MdsAccordionTimerItemEventDetail>
 
   /**
    * Emits when the accordion is hovered by the mouse
    */
-  @Event({ eventName: 'mdsAccordionTimerItemMouseEnterSelect' }) selectedMouseEnterEvent: EventEmitter<string>
+  @Event({ eventName: 'mdsAccordionTimerItemMouseEnterSelect' }) selectedMouseEnterEvent: EventEmitter<MdsAccordionTimerItemEventDetail>
 
   /**
    * Emits when the accordion is hovered by the mouse
    */
-  @Event({ eventName: 'mdsAccordionTimerItemMouseLeaveSelect' }) selectedMouseLeaveEvent: EventEmitter<string>
+  @Event({ eventName: 'mdsAccordionTimerItemMouseLeaveSelect' }) selectedMouseLeaveEvent: EventEmitter<MdsAccordionTimerItemEventDetail>
 
   render () {
     return (
