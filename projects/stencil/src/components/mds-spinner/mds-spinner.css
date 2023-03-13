@@ -1,81 +1,51 @@
 @tailwind utilities;
 
 /**
-  * @prop --background: Sets the background-color of the component
-  * @prop --color: Sets the color of the icon
-  * @prop --duration: Sets the duration of the icon animation
-  * @prop --size: Sets the size of the component
+  * @prop --mds-spinner-duration: Sets the duration of the icon animation
   */
 
 :host {
 
-  --background: transparent;
-  --color: theme('colors.brand-maggioli-03');
-  --duration: 1.25s;
-  --size: 58px;
+  --mds-spinner-duration: 0.725s;
 
   @apply
+    duration-300
+    ease-in-out-quart
+    h-12
     inline-flex
-    relative
-    rounded-full;
+    items-center
+    justify-center
+    text-brand-maggioli-03
+    w-12;
 
-  background-color: var(--background);
-  height: var(--size);
-  width: var(--size);
+  transform: scale(0);
+  transition-property: transform;
 }
 
-.wifi-wave {
+:host ([running]:not([running=false])) {
   @apply
-    absolute
-    inset-0;
+    duration-700
+    ease-in-out-expo;
+
+  transform: scale(1);
 }
 
-.wifi-wave path {
-  fill: var(--color);
-  transform-origin: 50% 50%;
+.await-icon {
+  @apply
+    animate-spin
+    aspect-square
+    duration-300
+    ease-out
+    flex
+    shrink-0
+    w-full;
+
+  animation-duration: var(--mds-spinner-duration);
+  animation-play-state: paused;
+  stroke: currentcolor;
+  transition-property: stroke;
 }
 
-.wifi-wave--large {
-  animation: rotate var(--duration) ease-in-out calc(var(--duration) / 7) infinite;
-  height: var(--size);
-  width: var(--size);
-  z-index: 1;
-}
-
-.wifi-wave--medium {
-
-  --scale: 0.7242;
-  --offset: calc(calc(var(--size) / 2) - calc(var(--size) * var(--scale) / 2));
-
-  animation: rotate var(--duration) ease-in-out calc(var(--duration) / 10) infinite;
-  height: calc(var(--size) * var(--scale));
-  inset: var(--offset);
-  width: calc(var(--size) * var(--scale));
-  z-index: 2;
-}
-
-.wifi-wave--small {
-
-  --scale: 0.4485;
-  --offset: calc(calc(var(--size) / 2) - calc(var(--size) * var(--scale) / 2));
-
-  animation: rotate var(--duration) ease-in-out infinite;
-  height: calc(var(--size) * var(--scale));
-  inset: var(--offset);
-  width: calc(var(--size) * var(--scale));
-  z-index: 3;
-}
-
-@keyframes rotate {
-  0% {
-    transform: rotate(0deg);
-  }
-
-  75% {
-    transform: rotate(360deg);
-  }
-
-  100% {
-    transform: rotate(360deg);
-  }
+:host ([running]:not([running=false])) .await-icon {
+  animation-play-state: running;
 }

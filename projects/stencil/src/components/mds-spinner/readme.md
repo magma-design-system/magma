@@ -5,15 +5,32 @@
 <!-- Auto Generated Below -->
 
 
+## Properties
+
+| Property  | Attribute | Description                                                                         | Type      | Default |
+| --------- | --------- | ----------------------------------------------------------------------------------- | --------- | ------- |
+| `running` | `running` | Specifies if the animation is running or not, it's required for performance reasons | `boolean` | `false` |
+
+
 ## CSS Custom Properties
 
-| Name           | Description                                |
-| -------------- | ------------------------------------------ |
-| `--background` | Sets the background-color of the component |
-| `--color`      | Sets the color of the icon                 |
-| `--duration`   | Sets the duration of the icon animation    |
-| `--size`       | Sets the size of the component             |
+| Name                     | Description                             |
+| ------------------------ | --------------------------------------- |
+| `--mds-spinner-duration` | Sets the duration of the icon animation |
 
+
+## Dependencies
+
+### Used by
+
+ - [mds-button](../mds-button)
+
+### Graph
+```mermaid
+graph TD;
+  mds-button --> mds-spinner
+  style mds-spinner fill:#f9f,stroke:#333,stroke-width:4px
+```
 
 ----------------------------------------------
 
