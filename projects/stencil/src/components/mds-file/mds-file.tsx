@@ -1,8 +1,9 @@
-import { Component, Host, h, Prop } from '@stencil/core'
+import { Component, Element, Event, EventEmitter, Host, h, Prop } from '@stencil/core'
 import { ExtensionSuffixType } from './meta/types'
-import { fileFormatsVariant } from './meta/variants'
-import { fileExtensionsDictionary } from './meta/dictionary'
+import { MdsFileEventDetail } from './meta/event-detail'
 import { ThemeFullVariantType } from '@type/variant'
+import { fileExtensionsDictionary } from './meta/dictionary'
+import { fileFormatsVariant } from './meta/variants'
 
 @Component({
   tag: 'mds-file',
@@ -10,6 +11,8 @@ import { ThemeFullVariantType } from '@type/variant'
   shadow: true,
 })
 export class MdsFile {
+
+  @Element() private host: HTMLMdsFileElement
 
   /**
    * Overrides the automatic filetype recongition by forcing the suffix to one of the available formats choosen
@@ -30,6 +33,11 @@ export class MdsFile {
    * The image preview src if available of a file, useful if you have a logo to display, or a smaller version of a bigger image
    */
   @Prop() readonly preview?: string
+
+  /**
+   * Emits when the component is clicked, returning file infos
+   */
+  @Event({ eventName: 'mdsFileDownload' }) downloadedEvent: EventEmitter<MdsFileEventDetail>
 
   private sanitizeFilename = () => {
     if (this.filename === undefined ) {
@@ -57,7 +65,7 @@ export class MdsFile {
     return filename
   }
 
-  private getSuffix = () => {
+  private getSuffix = (): string => {
     const suffix = this.sanitizeSuffix()
     const filename = this.sanitizeFilename()
     if (this.suffix !== null && this.suffix !== undefined) {
@@ -74,11 +82,16 @@ export class MdsFile {
     return fileExtensionsDictionary[suffix] !== undefined ? fileExtensionsDictionary[suffix] : fileExtensionsDictionary.default
   }
 
+  private handleOnClick = (): void => {
+    const { format, description } = this.getExtensionInfos()
+    this.downloadedEvent.emit({ description: this.description ?? description, extension: this.getSuffix(), filename: this.filename, target: this.host, type: format })
+  }
+
   render () {
     const { format, description } = this.getExtensionInfos()
     const { variant, color, icon, iconBackground } = fileFormatsVariant[format]
     return (
-      <Host tabindex="0">
+      <Host tabindex="0" onClick={this.handleOnClick}>
         <div class={`preview ${color} ${iconBackground}`}>
           { this.preview !== undefined
             ? <div class="image-preview" style={{ backgroundImage: `url(${this.preview})` }}></div>

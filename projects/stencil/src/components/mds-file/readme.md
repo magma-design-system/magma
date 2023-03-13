@@ -15,6 +15,13 @@
 | `suffix`      | `suffix`      | Overrides the automatic filetype recongition by forcing the suffix to one of the available formats choosen                 | `"json" \| "default" \| "html" \| "svg" \| "ts" \| "7z" \| "ace" \| "ai" \| "db" \| "dmg" \| "doc" \| "docm" \| "docx" \| "eml" \| "eps" \| "exe" \| "flac" \| "gif" \| "htm" \| "jpe" \| "jpeg" \| "jpg" \| "js" \| "jsx" \| "m2v" \| "mp2" \| "mp3" \| "mp4" \| "mp4v" \| "mpeg" \| "mpg" \| "mpg4" \| "mpga" \| "odp" \| "ods" \| "odt" \| "pdf" \| "php" \| "png" \| "ppt" \| "rar" \| "rtf" \| "sass" \| "shtml" \| "tar" \| "txt" \| "wav" \| "xar" \| "xls" \| "xlsx" \| "zip"` | `undefined` |
 
 
+## Events
+
+| Event             | Description                                               | Type                              |
+| ----------------- | --------------------------------------------------------- | --------------------------------- |
+| `mdsFileDownload` | Emits when the component is clicked, returning file infos | `CustomEvent<MdsFileEventDetail>` |
+
+
 ## Dependencies
 
 ### Depends on
