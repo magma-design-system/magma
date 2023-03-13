@@ -29,14 +29,15 @@
 
 ## CSS Custom Properties
 
-| Name                        | Description                                                                                              |
-| --------------------------- | -------------------------------------------------------------------------------------------------------- |
-| `--mds-button-background`   | Sets the background-color of the component                                                               |
-| `--mds-button-border-color` | Sets the border-color of the component                                                                   |
-| `--mds-button-color`        | Sets the text color of the component                                                                     |
-| `--mds-button-gap`          | Sets the distance betwen element inside the components, use it instead of setting gap property directly. |
-| `--mds-button-icon-color`   | Sets the icon color of the component                                                                     |
-| `--mds-button-radius`       | Sets the border-radius of the component                                                                  |
+| Name                          | Description                                                                                              |
+| ----------------------------- | -------------------------------------------------------------------------------------------------------- |
+| `--mds-button-await-duration` | Sets the duration of the rotation of the spinner await component                                         |
+| `--mds-button-background`     | Sets the background-color of the component                                                               |
+| `--mds-button-border-color`   | Sets the border-color of the component                                                                   |
+| `--mds-button-color`          | Sets the text color of the component                                                                     |
+| `--mds-button-gap`            | Sets the distance betwen element inside the components, use it instead of setting gap property directly. |
+| `--mds-button-icon-color`     | Sets the icon color of the component                                                                     |
+| `--mds-button-radius`         | Sets the border-radius of the component                                                                  |
 
 
 ## Dependencies
@@ -47,12 +48,14 @@
 
 ### Depends on
 
+- [mds-spinner](../mds-spinner)
 - [mds-icon](../mds-icon)
 - [mds-text](../mds-text)
 
 ### Graph
 ```mermaid
 graph TD;
+  mds-button --> mds-spinner
   mds-button --> mds-icon
   mds-button --> mds-text
   mds-tab-item --> mds-button

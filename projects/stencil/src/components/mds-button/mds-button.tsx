@@ -6,7 +6,6 @@ import { ToneVariantType } from '@type/variant'
 import { TypographyType } from '@type/typography'
 import { buttonSizeTypographyVariant } from './meta/variants'
 import { setAttributeIfEmpty, unslugName } from '@common/aria'
-import awaitIcon from './asset/await-rounded.svg'
 
 @Component({
   tag: 'mds-button',
@@ -124,8 +123,8 @@ export class MdsButton {
 
     return (
       <Host class={clsx(!this.hasText && 'no-text')} onMouseDown={this.mouseDown} onMouseUp={this.mouseUp} onMouseOut={this.mouseUp} tabindex="0" role="button">
-        <div class="await" aria-hidden="true">
-          <i class="await-icon" innerHTML={awaitIcon}/>
+        <div class="await">
+          <mds-spinner running={this.await}/>
         </div>
         { this.icon && this.iconPosition === 'left' && <mds-icon aria-hidden="true" class="icon" name={this.icon} /> }
         { this.hasText && <mds-text class="text" part="label" typography={this.typography}><slot /></mds-text> }
