@@ -25,7 +25,7 @@ export class MdsAccordionTimer {
   /**
    * Emits when the accordion changes it's item
    */
-  @Event({ eventName: 'mdsAccordionTimerChange' }) changeEvent: EventEmitter<number>
+  @Event({ eventName: 'mdsAccordionTimerChange' }) changeEvent: EventEmitter<void>
 
   componentDidLoad (): void {
     this.children = this.element.querySelectorAll<HTMLMdsAccordionTimerItemElement>('mds-accordion-timer-item')
@@ -85,7 +85,7 @@ export class MdsAccordionTimer {
       if (key === uuid) {
         item.selected = true
         this.selectedItem = item
-        this.changeEvent.emit(uuid)
+        this.changeEvent.emit()
       } else {
         item.selected = false
       }
