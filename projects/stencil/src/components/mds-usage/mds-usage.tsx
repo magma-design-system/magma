@@ -1,8 +1,8 @@
+import clsx from 'clsx'
 import { Component, Element, Host, h, Prop } from '@stencil/core'
+import { UsageType } from './meta/types'
 import { setAttributeIfEmpty } from '@common/aria'
 import { usageVariant } from './meta/variants'
-import { UsageType } from './meta/types'
-import clsx from 'clsx'
 
 @Component({
   tag: 'mds-usage',
