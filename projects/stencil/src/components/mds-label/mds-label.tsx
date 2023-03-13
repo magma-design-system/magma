@@ -49,13 +49,13 @@ export class MdsLabel {
   private onClickDelete = (ev: Event) => {
     ev.stopPropagation()
     ev.preventDefault()
-    this.deletedEvent.emit(this.host)
+    this.deletedEvent.emit()
   }
 
   /**
    * Emits when the label has to be cancelled
    */
-  @Event({ eventName: 'mdsLabelDelete' }) deletedEvent: EventEmitter<HTMLMdsLabelElement>
+  @Event({ eventName: 'mdsLabelDelete' }) deletedEvent: EventEmitter<void>
 
   private handleKeyboard = (): void => {
     if (this.deletable) {
