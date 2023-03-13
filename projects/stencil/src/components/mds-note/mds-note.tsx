@@ -24,13 +24,13 @@ export class MdsNote {
   @Prop({ reflect: true }) readonly variant?: LabelVariantType = 'yellow'
 
   private onClickClose = () => {
-    this.deleteEvent.emit(this.host)
+    this.deleteEvent.emit()
   }
 
   /**
    * Emits when the note has to be cancelled
    */
-  @Event({ eventName: 'mdsNoteDelete' }) deleteEvent: EventEmitter<HTMLMdsNoteElement>
+  @Event({ eventName: 'mdsNoteDelete' }) deleteEvent: EventEmitter<void>
 
   componentDidLoad ():void {
     this.km.addElement(this.host)
