@@ -1,6 +1,6 @@
 import { Component, Element, Event, EventEmitter, Host, h, Prop } from '@stencil/core'
 import miBaselineNavigateNext from '@icon/mi/baseline/navigate-next.svg'
-import { BreadcrumbClickedEvent } from '../mds-breadcrumb/meta/interface'
+import { MdsBreadcrumbItemEventDetail } from './meta/event-detail'
 import { KeyboardManager } from '@common/keyboard-manager'
 
 @Component({
@@ -21,7 +21,7 @@ export class MdsBreadcrumbItem {
   /**
    * Emits when the breadcrumb is active
    */
-  @Event({ eventName: 'mdsBreadcrumbItemSelect' }) selectedEvent: EventEmitter<BreadcrumbClickedEvent>
+  @Event({ eventName: 'mdsBreadcrumbItemSelect' }) selectedEvent: EventEmitter<MdsBreadcrumbItemEventDetail>
 
   private toggle = () => {
     this.selected = !this.selected
