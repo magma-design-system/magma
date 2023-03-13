@@ -9,16 +9,18 @@
 
 | Property                   | Attribute     | Description                                                        | Type                                                       | Default     |
 | -------------------------- | ------------- | ------------------------------------------------------------------ | ---------------------------------------------------------- | ----------- |
-| `description` _(required)_ | `description` | Specifies the title shown when the accordion is closed or selected | `string`                                                   | `undefined` |
-| `selected`                 | `selected`    | Specifies if the accordion item is selected or not                 | `boolean`                                                  | `undefined` |
+| `description` _(required)_ | `description` | Specifies the title shown when the component is closed or selected | `string`                                                   | `undefined` |
+| `selected`                 | `selected`    | Specifies if the component item is selected or not                 | `boolean`                                                  | `undefined` |
 | `typography`               | `typography`  | Specifies the typography of the element                            | `"action" \| "h1" \| "h2" \| "h3" \| "h4" \| "h5" \| "h6"` | `'h5'`      |
 
 
 ## Events
 
-| Event                    | Description                          | Type                                 |
-| ------------------------ | ------------------------------------ | ------------------------------------ |
-| `mdsAccordionItemSelect` | Emits when the accordion is selected | `CustomEvent<AccordionClickedEvent>` |
+| Event                      | Description                                            | Type                                       |
+| -------------------------- | ------------------------------------------------------ | ------------------------------------------ |
+| `mdsAccordionItemChange`   | Emits when the component attribute selected is changed | `CustomEvent<MdsAccordionItemEventDetail>` |
+| `mdsAccordionItemSelect`   | Emits when the component is selected                   | `CustomEvent<MdsAccordionItemEventDetail>` |
+| `mdsAccordionItemUnselect` | Emits when the component is unselected                 | `CustomEvent<MdsAccordionItemEventDetail>` |
 
 
 ## CSS Custom Properties

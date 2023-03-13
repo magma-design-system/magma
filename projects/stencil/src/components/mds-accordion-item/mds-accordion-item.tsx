@@ -1,6 +1,6 @@
 import miBaselineKeyboardArrowUp from '@icon/mi/baseline/keyboard-arrow-up.svg'
-import { AccordionClickedEvent } from '../mds-accordion/meta/interface'
 import { Component, Host, h, Prop, Element, Event, EventEmitter } from '@stencil/core'
+import { MdsAccordionItemEventDetail } from './meta/event-detail'
 import { TypographyTitleType } from '@type/typography'
 
 @Component({
@@ -43,17 +43,17 @@ export class MdsAccordionItem {
   /**
    * Emits when the component is selected
    */
-  @Event({ eventName: 'mdsAccordionItemSelect' }) selectedEvent: EventEmitter<AccordionClickedEvent>
+  @Event({ eventName: 'mdsAccordionItemSelect' }) selectedEvent: EventEmitter<MdsAccordionItemEventDetail>
 
   /**
    * Emits when the component is unselected
    */
-  @Event({ eventName: 'mdsAccordionItemUnselect' }) unselectedEvent: EventEmitter<AccordionClickedEvent>
+  @Event({ eventName: 'mdsAccordionItemUnselect' }) unselectedEvent: EventEmitter<MdsAccordionItemEventDetail>
 
   /**
    * Emits when the component attribute selected is changed
    */
-  @Event({ eventName: 'mdsAccordionItemChange' }) changedEvent: EventEmitter<AccordionClickedEvent>
+  @Event({ eventName: 'mdsAccordionItemChange' }) changedEvent: EventEmitter<MdsAccordionItemEventDetail>
 
   render () {
     return (
