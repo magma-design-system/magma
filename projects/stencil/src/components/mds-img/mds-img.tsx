@@ -1,10 +1,7 @@
 import { Component, Element, Event, EventEmitter, Host, h, Prop } from '@stencil/core'
-import {
-  CrossoriginType,
-  ReferrerpolicyType,
-} from './meta/types'
-
+import { CrossoriginType, ReferrerpolicyType } from './meta/types'
 import { LoadingType } from '@type/loading'
+import { MdsImgEventDetail } from './meta/event-detail'
 import { setAttributeIfEmpty } from '@common/aria'
 
 @Component({
@@ -94,27 +91,27 @@ export class MdsImg {
   /**
    * Emits when the image is not loaded
    */
-  @Event({ eventName: 'mdsImgLoadError' }) loadErrorEvent: EventEmitter<HTMLImageElement>
+  @Event({ eventName: 'mdsImgLoadError' }) loadErrorEvent: EventEmitter<MdsImgEventDetail>
 
   private onError = (ev: Event) => {
     this.image = ev.target as HTMLImageElement
-    this.loadErrorEvent.emit(this.image)
+    this.loadErrorEvent.emit({ image: this.image })
   }
 
   /**
    * Emits when the image is successfully loaded
    */
-  @Event({ eventName: 'mdsImgLoadSuccess' }) loadSuccessEvent: EventEmitter<HTMLImageElement>
+  @Event({ eventName: 'mdsImgLoadSuccess' }) loadSuccessEvent: EventEmitter<MdsImgEventDetail>
 
   private onSuccess = (ev: Event) => {
     this.image = ev.target as HTMLImageElement
-    this.loadSuccessEvent.emit(this.image)
+    this.loadSuccessEvent.emit({ image: this.image })
   }
 
   private autoAltName (): string {
     if (this.src) {
       const index = this.src.lastIndexOf('/') + 1
-      return this.src.substr(index)
+      return this.src.substring(index)
     }
   }
 

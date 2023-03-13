@@ -23,10 +23,10 @@
 
 ## Events
 
-| Event               | Description                                 | Type                            |
-| ------------------- | ------------------------------------------- | ------------------------------- |
-| `mdsImgLoadError`   | Emits when the image is not loaded          | `CustomEvent<HTMLImageElement>` |
-| `mdsImgLoadSuccess` | Emits when the image is successfully loaded | `CustomEvent<HTMLImageElement>` |
+| Event               | Description                                 | Type                             |
+| ------------------- | ------------------------------------------- | -------------------------------- |
+| `mdsImgLoadError`   | Emits when the image is not loaded          | `CustomEvent<MdsImgEventDetail>` |
+| `mdsImgLoadSuccess` | Emits when the image is successfully loaded | `CustomEvent<MdsImgEventDetail>` |
 
 
 ## Dependencies
