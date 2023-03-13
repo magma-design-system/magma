@@ -1,6 +1,7 @@
 import { Component, Element, Event, EventEmitter, Listen, Host, h, Prop } from '@stencil/core'
 import miBaselineArrowBack from '@icon/mi/baseline/arrow-back.svg'
-import { BreadcrumbClickedEvent } from './meta/interface'
+import { MdsBreadcrumbEventDetail } from './meta/event-detail'
+import { MdsBreadcrumbItemEventDetail } from '@component/mds-breadcrumb-item/meta/event-detail'
 import { KeyboardManager } from '@common/keyboard-manager'
 
 @Component({
@@ -21,7 +22,7 @@ export class MdsBreadcrumb {
   /**
    * Emits when the breadcrumb is changed
    */
-  @Event({ eventName: 'mdsBreadcrumbChange' }) changedEvent: EventEmitter<BreadcrumbClickedEvent>
+  @Event({ eventName: 'mdsBreadcrumbChange' }) changedEvent: EventEmitter<MdsBreadcrumbEventDetail>
 
   private queryItems = ():NodeListOf<HTMLMdsBreadcrumbItemElement> =>
     this.element.querySelectorAll<HTMLMdsBreadcrumbItemElement>('mds-breadcrumb-item')
@@ -68,7 +69,7 @@ export class MdsBreadcrumb {
   }
 
   @Listen('mdsBreadcrumbItemSelect')
-  activedEventHandler (event: CustomEvent<BreadcrumbClickedEvent>): void {
+  activedEventHandler (event: CustomEvent<MdsBreadcrumbItemEventDetail>): void {
     const items = this.queryItems()
     let selectedId = 0
 
@@ -79,7 +80,7 @@ export class MdsBreadcrumb {
       }
     })
     this.updateBackButton(selectedId)
-    this.onChanged(selectedId)
+    this.onChanged(selectedId, event.target as HTMLMdsBreadcrumbItemElement)
   }
 
   private togglePrevious = (): void => {
@@ -96,11 +97,11 @@ export class MdsBreadcrumb {
     })
 
     this.updateBackButton(selectedId)
-    this.onChanged(selectedId)
+    this.onChanged(selectedId, item)
   }
 
-  private onChanged = (id: number): void => {
-    this.changedEvent.emit({ id: id.toString() })
+  private onChanged = (id: number, caller: HTMLMdsBreadcrumbItemElement): void => {
+    this.changedEvent.emit({ id: id.toString(), caller })
   }
 
   render () {
