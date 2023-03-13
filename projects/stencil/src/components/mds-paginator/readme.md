@@ -15,9 +15,9 @@
 
 ## Events
 
-| Event                | Description                  | Type                  |
-| -------------------- | ---------------------------- | --------------------- |
-| `mdsPaginatorChange` | Emits when a page is changed | `CustomEvent<number>` |
+| Event                | Description                  | Type                                   |
+| -------------------- | ---------------------------- | -------------------------------------- |
+| `mdsPaginatorChange` | Emits when a page is changed | `CustomEvent<MdsPaginatorEventDetail>` |
 
 
 ## CSS Custom Properties
