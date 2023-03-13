@@ -17,9 +17,9 @@
 
 ## Events
 
-| Event             | Description                                   | Type                  |
-| ----------------- | --------------------------------------------- | --------------------- |
-| `mdsFilterChange` | Emits when the one of the children is changed | `CustomEvent<string>` |
+| Event             | Description                                   | Type                                |
+| ----------------- | --------------------------------------------- | ----------------------------------- |
+| `mdsFilterChange` | Emits when the one of the children is changed | `CustomEvent<MdsFilterEventDetail>` |
 
 
 ## CSS Custom Properties

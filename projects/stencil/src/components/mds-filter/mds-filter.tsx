@@ -1,6 +1,7 @@
 import clsx from 'clsx'
 import { Component, Element, Event, EventEmitter, Host, h, Listen, Prop, State } from '@stencil/core'
-import { FilterClickedEvent } from '../mds-filter/meta/interface'
+import { MdsFilterEventDetail } from './meta/event-detail'
+import { MdsFilterItemEventDetail } from '@component/mds-filter-item/meta/event-detail'
 
 @Component({
   tag: 'mds-filter',
@@ -92,12 +93,12 @@ export class MdsFilter {
   }
 
   @Listen('mdsFilterItemSelect')
-  activeEventHandler (event: CustomEvent<FilterClickedEvent>): void {
-    console.log('mdsSelect', event)
+  activeEventHandler (event: CustomEvent<MdsFilterItemEventDetail>): void {
     this.lastSelectedItem = Number(event.detail.id ? event.detail.id.replace('item-', '') : 0)
     this.scrollTabs()
 
     const items = this.queryItems()
+
     if (this.multiple) {
       let itemsSelected = 0
       const list = []
@@ -116,7 +117,7 @@ export class MdsFilter {
       if (this.itemsSelected === items.length) {
         this.checkAutoReset()
       }
-      this.changedEvent.emit(this.itemsValues())
+      this.changedEvent.emit({ children: items, value: this.itemsValues() })
       return
     }
 
@@ -124,13 +125,13 @@ export class MdsFilter {
       item.selected = `item-${key}` === event.detail.id && (event.detail.selected)
     })
     this.checkSelectedItem()
-    this.changedEvent.emit(this.itemsValues())
+    this.changedEvent.emit({ children: items, value: this.itemsValues() })
   }
 
   /**
    * Emits when the one of the children is changed
    */
-  @Event({ eventName: 'mdsFilterChange' }) changedEvent: EventEmitter<string>
+  @Event({ eventName: 'mdsFilterChange' }) changedEvent: EventEmitter<MdsFilterEventDetail>
 
   render () {
     return (
