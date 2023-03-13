@@ -1,4 +1,5 @@
 import { Component, Element, Host, h, State, Event, EventEmitter, Listen } from '@stencil/core'
+import { MdsHeaderEventDetail } from './meta/event-detail'
 
 @Component({
   tag: 'mds-header',
@@ -8,21 +9,25 @@ import { Component, Element, Host, h, State, Event, EventEmitter, Listen } from 
 export class MdsHeader {
 
   private hasNav: boolean
-  @Element() hostElement: HTMLMdsHeaderElement
+  @Element() host: HTMLMdsHeaderElement
   @State() isOpened: boolean
 
   /**
    * Emits when the component is closed
    */
-  @Event({ bubbles: true, composed: true, eventName: 'mdsHeaderClose' }) closedEvent: EventEmitter<void>
+  @Event({ bubbles: true, composed: true, eventName: 'mdsHeaderClose' }) closedEvent: EventEmitter<MdsHeaderEventDetail>
+
+  private bar = ():HTMLMdsHeaderBarElement|null => {
+    return this.host.querySelector('[slot="nav-mobile"]')
+  }
 
   private close = () => {
     this.isOpened = false
-    this.closedEvent.emit()
+    this.closedEvent.emit({ bar: this.bar() })
   }
 
   componentWillLoad (): void {
-    this.hasNav = this.hostElement.querySelector('[slot="nav-mobile"]') !== null
+    this.hasNav = this.bar() !== null
   }
 
   @Listen('mdsHeaderBarOpen', { target: 'document' })
