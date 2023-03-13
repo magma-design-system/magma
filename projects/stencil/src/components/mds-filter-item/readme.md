@@ -17,9 +17,9 @@
 
 ## Events
 
-| Event                 | Description                      | Type                              |
-| --------------------- | -------------------------------- | --------------------------------- |
-| `mdsFilterItemSelect` | Emits when the element is active | `CustomEvent<FilterClickedEvent>` |
+| Event                 | Description                      | Type                                    |
+| --------------------- | -------------------------------- | --------------------------------------- |
+| `mdsFilterItemSelect` | Emits when the element is active | `CustomEvent<MdsFilterItemEventDetail>` |
 
 
 ## Dependencies
