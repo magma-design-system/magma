@@ -1,5 +1,5 @@
 import { LitElement, html, unsafeCSS, nothing } from 'lit'
-import { customElement, property, query, state } from 'lit/decorators'
+import { customElement, property, query, state } from 'lit/decorators.js'
 import clsx from 'clsx'
 import globalStyles from './global.css?inline'
 
