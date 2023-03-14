@@ -3,6 +3,7 @@ import { Component, Element, Event, EventEmitter, Host, Prop, State, Watch, h } 
 import { KeyboardManager } from '@common/keyboard-manager'
 import { MdsBadge } from '../mds-badge/mds-badge'
 import { TypographyType } from '@type/typography'
+import { MdsStepperBarItemEventDetail } from './meta/event-detail'
 
 @Component({
   tag: 'mds-stepper-bar-item',
@@ -55,6 +56,11 @@ export class MdsStepperBarItem {
   @Prop({ mutable: true, reflect: true }) current?: boolean = false
 
   /**
+   * Specifies the value the component will return mdsStepperBarItemSelect event
+   */
+  @Prop({ reflect: true }) value?: string
+
+  /**
    * Specifies the typography of the element
    */
   @Prop() readonly typography?: TypographyType = 'h6'
@@ -87,7 +93,7 @@ export class MdsStepperBarItem {
 
   private toggle = () => {
     this.isCurrent = true
-    this.selectedEvent.emit(this.host.id)
+    this.selectedEvent.emit({ value: this.value })
   }
 
   private showBadge = (): MdsBadge => {
@@ -103,7 +109,7 @@ export class MdsStepperBarItem {
   /**
    * Emits when the accordion is selected
    */
-  @Event({ eventName: 'mdsStepperBarItemSelect' }) selectedEvent: EventEmitter<string>
+  @Event({ eventName: 'mdsStepperBarItemSelect' }) selectedEvent: EventEmitter<MdsStepperBarItemEventDetail>
 
   render () {
     return (

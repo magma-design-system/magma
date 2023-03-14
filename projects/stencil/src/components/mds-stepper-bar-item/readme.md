@@ -17,13 +17,14 @@
 | `step`              | `step`         | Specifies if the step is displayed                                                    | `boolean`                                                                                                                                                 | `undefined` |
 | `text` _(required)_ | `text`         | Specifies a short description of the component                                        | `string`                                                                                                                                                  | `undefined` |
 | `typography`        | `typography`   | Specifies the typography of the element                                               | `"action" \| "caption" \| "detail" \| "h1" \| "h2" \| "h3" \| "h4" \| "h5" \| "h6" \| "hack" \| "label" \| "option" \| "paragraph" \| "snippet" \| "tip"` | `'h6'`      |
+| `value`             | `value`        | Specifies the value the component will return mdsStepperBarItemSelect event           | `string`                                                                                                                                                  | `undefined` |
 
 
 ## Events
 
-| Event                     | Description                          | Type                  |
-| ------------------------- | ------------------------------------ | --------------------- |
-| `mdsStepperBarItemSelect` | Emits when the accordion is selected | `CustomEvent<string>` |
+| Event                     | Description                          | Type                                        |
+| ------------------------- | ------------------------------------ | ------------------------------------------- |
+| `mdsStepperBarItemSelect` | Emits when the accordion is selected | `CustomEvent<MdsStepperBarItemEventDetail>` |
 
 
 ## CSS Custom Properties

@@ -10,6 +10,14 @@ import {
 export default {
   title: 'UI / Button',
   argTypes: {
+    await: {
+      type: { name: 'boolean' },
+      description: 'Specifies if the component is awaiting to load a response',
+    },
+    disabled: {
+      type: { name: 'boolean' },
+      description: 'Specifies if the component is disabled or not',
+    },
     icon: {
       type: { name: 'string' },
       description: 'The name of the icon set. The icon set is strictly realted to @maggioli-design-system/icons',
@@ -48,6 +56,11 @@ const Template = args =>
     Conferma azione
   </mds-button>
 
+const TemplateAwait = args =>
+  <mds-button {...args}>
+    Salvataggio in corso...
+  </mds-button>
+
 const TemplateKeyboard = args =>
   <div class="bg-tone-grey-10 p-6 grid gap-6">
     <mds-text>Focus this button with tab before press enter.</mds-text>
@@ -60,6 +73,17 @@ const TemplateIcon = args =>
   <mds-button {...args}/>
 
 export const Default = Template.bind({})
+
+export const Await = TemplateAwait.bind({})
+Await.args = {
+  tone: 'weak',
+  await: true,
+}
+
+export const Disabled = Template.bind({})
+Disabled.args = {
+  disabled: true,
+}
 
 export const Variant = Template.bind({})
 Variant.args = {

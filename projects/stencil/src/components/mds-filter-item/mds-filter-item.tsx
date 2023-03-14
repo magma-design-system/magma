@@ -1,5 +1,5 @@
 import { Component, Element, Event, EventEmitter, Host, h, Prop } from '@stencil/core'
-import { FilterClickedEvent } from '../mds-filter/meta/interface'
+import { MdsFilterItemEventDetail } from './meta/event-detail'
 import { KeyboardManager } from '@common/keyboard-manager'
 
 @Component({
@@ -34,14 +34,13 @@ export class MdsFilterItem {
 
   private toggle = () => {
     this.selected = !this.selected
-    console.log('selected', this.selected)
     this.selectedEvent.emit({ id: this.element.id, selected: this.selected })
   }
 
   /**
    * Emits when the element is active
    */
-  @Event({ eventName: 'mdsFilterItemSelect' }) selectedEvent: EventEmitter<FilterClickedEvent>
+  @Event({ eventName: 'mdsFilterItemSelect' }) selectedEvent: EventEmitter<MdsFilterItemEventDetail>
 
   componentDidLoad = (): void => {
     this.km.addElement(this.element)

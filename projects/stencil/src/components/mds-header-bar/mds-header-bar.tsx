@@ -9,12 +9,12 @@ import miRoundMenu from '@icon/mi/round/menu.svg'
 export class MdsHeaderBar {
 
   private hasNav: boolean
-  @Element() hostElement: HTMLMdsHeaderBarElement
+  @Element() host: HTMLMdsHeaderBarElement
 
   @State() isOpened:boolean
 
   componentWillLoad (): void {
-    this.hasNav = this.hostElement.querySelector('[slot="nav"]') !== null
+    this.hasNav = this.host.querySelector('[slot="nav"]') !== null
   }
 
   /**

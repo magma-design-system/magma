@@ -70,6 +70,7 @@
 }
 
 :host {
+
   --mds-modal-overlay-color: var(--magma-overlay-color, 0 0 0);
   --mds-modal-overlay-opacity: var(--magma-overlay-opacity, 0.5);
   --mds-modal-window-background: theme('colors.tone-neutral');
@@ -131,8 +132,8 @@
     top-0
     w-9;
 
-  transition-property: opacity, outline, outline-offset, transform;
   transform: translate(0, 24px) rotate(90deg);
+  transition-property: opacity, outline, outline-offset, transform;
 }
 
 .window {

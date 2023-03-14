@@ -5,6 +5,13 @@
 <!-- Auto Generated Below -->
 
 
+## Events
+
+| Event          | Description                      | Type                             |
+| -------------- | -------------------------------- | -------------------------------- |
+| `mdsTabChange` | Emits when a children is changed | `CustomEvent<MdsTabEventDetail>` |
+
+
 ## CSS Custom Properties
 
 | Name                   | Description                                                    |

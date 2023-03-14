@@ -62,6 +62,7 @@
 }
 
 .back:hover {
+
   --mds-breadcrumb-button-background: var(--mds-breadcrumb-button-background-hover);
   --mds-breadcrumb-button-color: var(--mds-breadcrumb-button-color-hover);
 }

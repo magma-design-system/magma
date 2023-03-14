@@ -1,4 +1,5 @@
 import { Component, Element, Event, EventEmitter, Host, Listen, Prop, State, Watch, h } from '@stencil/core'
+import { MdsStepperBarEventDetail } from './meta/event-detail'
 
 @Component({
   tag: 'mds-stepper-bar',
@@ -33,11 +34,15 @@ export class MdsStepperBar {
   private setCurrent = (index = 1): void => {
     this.items = this.queryItems()
     this.currentItem = index - 1
+    const values = []
     this.items.forEach((item, key) => {
       if (this.linear) {
         item.selected = false
         if (key < this.currentItem) {
           item.selected = true
+          if (item.value) {
+            values.push(item.value)
+          }
         }
       }
       item.current = false
@@ -47,7 +52,7 @@ export class MdsStepperBar {
       }
     })
 
-    this.itemChangedEvent.emit(this.currentItem)
+    this.changedEvent.emit({ value: values.toString(), step: this.currentItem })
     this.scrollItems()
     this.setCurrentContent()
   }
@@ -65,7 +70,7 @@ export class MdsStepperBar {
   /**
    * Emits when a step is changed
    */
-  @Event({ eventName: 'mdsStepperBarChange' }) itemChangedEvent: EventEmitter<number>
+  @Event({ eventName: 'mdsStepperBarChange' }) changedEvent: EventEmitter<MdsStepperBarEventDetail>
 
   private scrollItems = (): void => {
     const itemsElement = this.element.shadowRoot.querySelector<HTMLDivElement>('.items')

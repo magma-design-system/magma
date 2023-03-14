@@ -1,6 +1,6 @@
-import { Canvas, Meta, Story } from '@storybook/addon-docs';
+import { Canvas, Meta, Story } from "@storybook/addon-docs";
 
-import MdsIcon from '@component/mds-icon/mds-icon'
+import MdsIcon from "@component-dist/mds-icon/mds-icon";
 
 <Meta title="Design / Icon / ARIA" component={MdsIcon} />
 
@@ -12,13 +12,13 @@ import MdsIcon from '@component/mds-icon/mds-icon'
 Always remember to set the ARIA attributes when appropriate:
 
 ```html
-<mds-icon name="airplane" aria-label="Now we have an airplane!"/>
+<mds-icon name="airplane" aria-label="Now we have an airplane!" />
 ```
 
 Remove them when not needed:
 
 ```html
 <a href="#" title="Go to the homepage">
-  <mds-icon name="home" aria-hidden="true"/>
+  <mds-icon name="home" aria-hidden="true" />
 </a>
 ```

@@ -7,9 +7,9 @@
 
 ## Events
 
-| Event            | Description                        | Type                |
-| ---------------- | ---------------------------------- | ------------------- |
-| `mdsHeaderClose` | Emits when the component is closed | `CustomEvent<void>` |
+| Event            | Description                        | Type                                |
+| ---------------- | ---------------------------------- | ----------------------------------- |
+| `mdsHeaderClose` | Emits when the component is closed | `CustomEvent<MdsHeaderEventDetail>` |
 
 
 ## CSS Custom Properties

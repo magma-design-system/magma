@@ -1,4 +1,5 @@
 import { Component, Element, Event, EventEmitter, Host, h, Prop } from '@stencil/core'
+import { MdsPaginatorEventDetail } from './meta/event-detail'
 
 @Component({
   tag: 'mds-paginator',
@@ -21,14 +22,14 @@ export class MdsPaginator {
 
   componentDidLoad (): void {
     setTimeout(() => {
-      this.goToPage(this.currentPage)
+      this.goToPage(this.currentPage, null)
     }, 10)
   }
 
   /**
    * Emits when a page is changed
    */
-  @Event({ eventName: 'mdsPaginatorChange' }) pageChangedEvent: EventEmitter<number>
+  @Event({ eventName: 'mdsPaginatorChange' }) pageChangedEvent: EventEmitter<MdsPaginatorEventDetail>
 
   private scrollPage = (): void => {
     const elementIndex = this.currentPage - 2
@@ -50,7 +51,7 @@ export class MdsPaginator {
     pagesElement.scrollLeft = pageItem.offsetLeft - pagesElement.offsetLeft - (pagesElement.offsetWidth / 2) + (pageItem.offsetWidth / 2)
   }
 
-  private goToPage = (selectedPage: number): void => {
+  private goToPage = (selectedPage: number, caller?: HTMLMdsPaginatorItemElement): void => {
     if (selectedPage < 1 || selectedPage > this.pages) {
       return
     }
@@ -58,21 +59,21 @@ export class MdsPaginator {
     if (this.pages > 2) {
       this.scrollPage()
     }
-    this.pageChangedEvent.emit(this.currentPage)
+    this.pageChangedEvent.emit({ page: this.currentPage, caller })
   }
 
   render () {
     return (
       <Host>
-        <mds-paginator-item icon="mi/baseline/arrow-back" disabled={this.currentPage === 1} onClick={() => this.goToPage(this.currentPage - 1)}/>
-        { this.pages > 0 && <mds-paginator-item selected={this.currentPage === 1} onClick={() => this.goToPage(1)}>1</mds-paginator-item>}
+        <mds-paginator-item icon="mi/baseline/arrow-back" disabled={this.currentPage === 1} onClick={ev => this.goToPage(this.currentPage - 1, ev.target as HTMLMdsPaginatorItemElement)}/>
+        { this.pages > 0 && <mds-paginator-item selected={this.currentPage === 1} onClick={ev => this.goToPage(1, ev.target as HTMLMdsPaginatorItemElement)}>1</mds-paginator-item>}
         { this.pages > 2 &&
           <div class="pages">
-            { Array.from(Array(this.pages - 2).keys()).map( i => <mds-paginator-item key={i} selected={this.currentPage === i + 2} onClick={() => this.goToPage(i + 2)}>{ i + 2 }</mds-paginator-item>) }
+            { Array.from(Array(this.pages - 2).keys()).map( i => <mds-paginator-item key={i} selected={this.currentPage === i + 2} onClick={ev => this.goToPage(i + 2, ev.target as HTMLMdsPaginatorItemElement)}>{ i + 2 }</mds-paginator-item>) }
           </div>
         }
-        { this.pages > 1 && <mds-paginator-item selected={this.currentPage === this.pages} onClick={() => this.goToPage(this.pages)}>{ this.pages }</mds-paginator-item>}
-        <mds-paginator-item icon="mi/baseline/arrow-forward" disabled={this.currentPage === this.pages} onClick={() => this.goToPage(this.currentPage + 1)}/>
+        { this.pages > 1 && <mds-paginator-item selected={this.currentPage === this.pages} onClick={ev => this.goToPage(this.pages, ev.target as HTMLMdsPaginatorItemElement)}>{ this.pages }</mds-paginator-item>}
+        <mds-paginator-item icon="mi/baseline/arrow-forward" disabled={this.currentPage === this.pages} onClick={ev => this.goToPage(this.currentPage + 1, ev.target as HTMLMdsPaginatorItemElement)}/>
       </Host>
     )
   }

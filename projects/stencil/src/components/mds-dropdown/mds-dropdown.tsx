@@ -1,9 +1,10 @@
-import { Component, Element, Event, EventEmitter, Host, Listen, Prop, h, Watch } from '@stencil/core'
-import { arrow, autoPlacement, autoUpdate, computePosition, flip, MiddlewareData, offset, shift } from '@floating-ui/dom'
-import { FloatingUIPlacement, FloatingUIStrategy } from '@type/floating-ui'
 import arrowSvg from './assets/arrow.svg'
-import { setAttributeIfEmpty, hashValue } from '@common/aria'
+import { Component, Element, Event, EventEmitter, Host, Prop, h, Watch } from '@stencil/core'
+import { FloatingUIPlacement, FloatingUIStrategy } from '@type/floating-ui'
 import { KeyboardManager } from '@common/keyboard-manager'
+import { arrow, autoPlacement, autoUpdate, computePosition, flip, MiddlewareData, offset, shift } from '@floating-ui/dom'
+import { setAttributeIfEmpty, hashValue } from '@common/aria'
+import { MdsDropdownEventDetail } from './meta/event-detail'
 
 @Component({
   tag: 'mds-dropdown',
@@ -96,35 +97,51 @@ export class MdsDropdown {
   @Prop() readonly zIndex?: number = 1000
 
   /**
-   * Emits when a modal is closed
+   * Emits when a modal is visible
    */
-  @Event({ bubbles: true, composed: true, eventName: 'mdsDropdownVisible' }) visibleEvent: EventEmitter<void>
+  @Event({ eventName: 'mdsDropdownVisible' }) visibleEvent: EventEmitter<MdsDropdownEventDetail>
+
+  /**
+   * Emits when a modal is hidden
+   */
+  @Event({ eventName: 'mdsDropdownHide' }) hiddenEvent: EventEmitter<MdsDropdownEventDetail>
+
+  /**
+   * Emits when a modal is visible or hidden
+   */
+  @Event({ eventName: 'mdsDropdownChange' }) changedEvent: EventEmitter<MdsDropdownEventDetail>
 
   private handleCloseDropdown = (e:Event = null): void => {
     if (!this.visible) {
       return
     }
-
     if (!this.host.contains(e.target as HTMLElement) && e.target as HTMLElement !== this.caller) {
-      this.visibleEvent.emit()
+      this.handleVisibility(false)
     }
-  }
-
-  @Listen('mdsDropdownVisible', { target: 'document' })
-  onCloseListener (): void {
-    this.handleVisibility(false)
   }
 
   private handleVisibility = (visibility: boolean = null): void => {
     if (visibility !== null) {
       this.visible = visibility
+      this.changedEvent.emit({ caller: this.caller, visible: this.visible })
+      if (this.visible) {
+        this.visibleEvent.emit({ caller: this.caller, visible: true })
+        return
+      }
+      this.hiddenEvent.emit({ caller: this.caller, visible: false })
       return
     }
+
     if (this.visible) {
       this.visible = false
+      this.changedEvent.emit({ caller: this.caller, visible: this.visible })
+      this.hiddenEvent.emit({ caller: this.caller, visible: false })
       return
     }
+
     this.visible = true
+    this.changedEvent.emit({ caller: this.caller, visible: this.visible })
+    this.visibleEvent.emit({ caller: this.caller, visible: true })
     this.updatePosition()
   }
 

@@ -1,6 +1,6 @@
-import { Canvas, Meta, Story } from '@storybook/addon-docs';
+import { Canvas, Meta, Story } from "@storybook/addon-docs";
 
-import MdsButton from '@component/mds-button/mds-button'
+import MdsButton from "@component-dist/mds-button/mds-button";
 
 <Meta title="UI / Entity / Best practices" component={MdsButton} />
 
@@ -14,8 +14,12 @@ Always remember to set the ARIA attributes when appropriate:
 ```html
 <mds-entity aria-label="Personaggio">
   <mds-text aria-label="Nome" typography="h6">Mario Rossi</mds-text>
-  <mds-badge aria-label="Carattere" slot="detail" variant="orange" tone="quiet">Buono</mds-badge>
-  <mds-text aria-label="Email" slot="detail" typography="caption">mario@nintendo.com</mds-text>
+  <mds-badge aria-label="Carattere" slot="detail" variant="orange" tone="quiet"
+    >Buono</mds-badge
+  >
+  <mds-text aria-label="Email" slot="detail" typography="caption"
+    >mario@nintendo.com</mds-text
+  >
 </mds-entity>
 ```
 
