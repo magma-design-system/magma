@@ -1,6 +1,6 @@
+@import '../../tailwind/components.css';
 @tailwind components;
 @tailwind utilities;
-@import '../../tailwind/components.css';
 
 :host {
   --mds-chip-background: theme('colors.tone-neutral-09');
@@ -40,10 +40,11 @@
   @apply
     duration-200
     ease-out
+    rounded-full
     flex-grow;
 
   text-decoration-color: transparent;
-  transition-property: color, text-decoration-color;
+  transition-property: color, text-decoration-color, outline, outline-offset;
 }
 
 :host ( [clickable]:not([clickable=false]) ) .label {
@@ -89,10 +90,10 @@
     flex-shrink-0
     h-6
     rounded-full
-    transition-colors
     w-6;
 
   fill: var(--mds-chip-delete-icon-color);
+  transition-property: fill, outline, outline-offset;
 }
 
 .delete:hover {

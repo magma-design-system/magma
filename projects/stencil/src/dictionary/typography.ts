@@ -23,6 +23,11 @@ const typographyVariationsDictionary = [
   'code',
 ]
 
+const typographyReadingVariationsDictionary = [
+  'info',
+  'read',
+]
+
 const typographyMonoDictionary = [
   'snippet',
   'hack',
@@ -66,11 +71,12 @@ const typographyTooltipDictionary = [
 
 export {
   typographyDictionary,
-  typographyVariationsDictionary,
-  typographyMonoDictionary,
-  typographyTitleDictionary,
   typographyInfoDictionary,
+  typographyReadingVariationsDictionary,
+  typographyMonoDictionary,
   typographyReadDictionary,
   typographySmallerDictionary,
+  typographyTitleDictionary,
   typographyTooltipDictionary,
+  typographyVariationsDictionary,
 }

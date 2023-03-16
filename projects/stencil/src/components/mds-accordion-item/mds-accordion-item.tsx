@@ -1,7 +1,7 @@
-import { Component, Host, h, Prop, Element, Event, EventEmitter } from '@stencil/core'
-import { TypographyTitleType } from '../../types/typography'
 import miBaselineKeyboardArrowUp from '@icon/mi/baseline/keyboard-arrow-up.svg'
-import { AccordionClickedEvent } from '../mds-accordion/meta/interface'
+import { Component, Host, h, Prop, Element, Event, EventEmitter } from '@stencil/core'
+import { MdsAccordionItemEventDetail } from './meta/event-detail'
+import { TypographyTitleType } from '@type/typography'
 
 @Component({
   tag: 'mds-accordion-item',
@@ -18,29 +18,47 @@ export class MdsAccordionItem {
   @Prop() readonly typography?: TypographyTitleType = 'h5'
 
   /**
-   * Specifies if the accordion item is opened or not
+   * Specifies if the component item is selected or not
    */
-  @Prop({ mutable: true, reflect: true }) opened?: boolean
+  @Prop({ mutable: true, reflect: true }) selected?: boolean
 
   /**
-   * Specifies the title shown when the accordion is closed or opened
+   * Specifies the title shown when the component is closed or selected
    */
   @Prop() readonly description!: string
 
   private toggle = () => {
-    this.opened = !this.opened
-    this.openedEvent.emit({ id: this.element.id, opened: this.opened })
+    this.selected = !this.selected
+
+    this.changedEvent.emit({ id: this.element.id, selected: this.selected })
+
+    if (this.selected) {
+      this.selectedEvent.emit({ id: this.element.id, selected: this.selected })
+      return
+    }
+
+    this.unselectedEvent.emit({ id: this.element.id, selected: this.selected })
   }
 
   /**
-   * Emits when the accordion is opened
+   * Emits when the component is selected
    */
-  @Event() openedEvent: EventEmitter<AccordionClickedEvent>
+  @Event({ eventName: 'mdsAccordionItemSelect' }) selectedEvent: EventEmitter<MdsAccordionItemEventDetail>
+
+  /**
+   * Emits when the component is unselected
+   */
+  @Event({ eventName: 'mdsAccordionItemUnselect' }) unselectedEvent: EventEmitter<MdsAccordionItemEventDetail>
+
+  /**
+   * Emits when the component attribute selected is changed
+   */
+  @Event({ eventName: 'mdsAccordionItemChange' }) changedEvent: EventEmitter<MdsAccordionItemEventDetail>
 
   render () {
     return (
       <Host>
-        <button aria-controls="contents" aria-expanded={ this.opened ? 'true' : 'false' } class="action" id="action" onClick={ this.toggle } role="button" tabindex="0">
+        <button aria-controls="contents" aria-expanded={ this.selected ? 'true' : 'false' } class="action focusable" id="action" onClick={ this.toggle } role="button" tabindex="0">
           <mds-text typography={ this.typography }>
             { this.description }
           </mds-text>

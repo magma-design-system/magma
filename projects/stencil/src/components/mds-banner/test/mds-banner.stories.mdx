@@ -1,6 +1,6 @@
-import { Canvas, Meta, Story } from '@storybook/addon-docs';
+import { Canvas, Meta, Story } from "@storybook/addon-docs";
 
-import MdsButton from '@component/mds-button/mds-button'
+import MdsButton from "@component-dist/mds-button/mds-button";
 
 <Meta title="UI / Banner / Best practices" component={MdsButton} />
 
@@ -11,13 +11,18 @@ import MdsButton from '@component/mds-button/mds-button'
 Always remember to set the ARIA attributes when appropriate:
 
 ```html
-<mds-button icon="mi/round/airplanemode-active" title="Inizia" aria-label="Inizia processo di acquisto del biglietto aereo" onClick={...}/>
+<mds-button
+  icon="mi/round/airplanemode-active"
+  title="Inizia"
+  aria-label="Inizia processo di acquisto del biglietto aereo"
+  onClick="{...}"
+/>
 ```
 
 Don't use them when not needed:
 
 ```html
-<mds-button icon="mi/round/airplanemode-active" onClick={...}>
+<mds-button icon="mi/round/airplanemode-active" onClick="{...}">
   Inizia processo di acquisto del biglietto aereo
 </mds-button>
 ```

@@ -1,7 +1,8 @@
-import { Component, Event, EventEmitter, Host, h, Prop } from '@stencil/core'
-import { LoadingType } from '../../types/loading'
-import miBaselineExplore from '@icon/mi/baseline/explore.svg'
 import miBaselineClose from '@icon/mi/baseline/close.svg'
+import miBaselineExplore from '@icon/mi/baseline/explore.svg'
+import { Component, Element, Event, EventEmitter, Host, h, Prop } from '@stencil/core'
+import { KeyboardManager } from '@common/keyboard-manager'
+import { LoadingType } from '@type/loading'
 
 @Component({
   tag: 'mds-url-view',
@@ -9,6 +10,9 @@ import miBaselineClose from '@icon/mi/baseline/close.svg'
   shadow: true,
 })
 export class MdsUrlView {
+
+  @Element() host: HTMLMdsUrlViewElement
+  private km = new KeyboardManager()
 
   /**
    * Specifies if domain is visible on header
@@ -34,10 +38,20 @@ export class MdsUrlView {
   /**
    * Emits when the url view is closed
    */
-  @Event({ bubbles: true, composed: true }) close: EventEmitter<void>
+  @Event({ bubbles: true, composed: true, eventName: 'mdsUrlViewClose' }) closeEvent: EventEmitter<void>
 
   private closeUrlView = (): void => {
-    this.close.emit()
+    this.closeEvent.emit()
+  }
+
+  componentDidLoad = (): void => {
+    const close = this.host.shadowRoot.querySelector('.close') as HTMLElement
+    this.km.addElement(close)
+    this.km.attachClickBehavior()
+  }
+
+  disconnectedCallback = (): void => {
+    this.km.detachClickBehavior()
   }
 
   render () {
@@ -49,7 +63,7 @@ export class MdsUrlView {
             { this.domain && <mds-text class="title" typography="caption">
               { this.urlDomain(this.src) }
             </mds-text> }
-            <i class="svg close" innerHTML={miBaselineClose} onClick={this.closeUrlView}/>
+            <i class="svg close focusable" innerHTML={miBaselineClose} onClick={this.closeUrlView} tabindex="0"/>
           </header>
           <iframe class="iframe" src={ this.src }/>
         </div>

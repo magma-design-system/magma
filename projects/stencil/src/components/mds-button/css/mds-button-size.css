@@ -15,6 +15,10 @@
   @apply font-medium;
 }
 
+:host ( [size=sm][await]:not([await=false]) ) .await {
+  @apply scale-75;
+}
+
 :host ( [size=md] ) {
   @apply
     h-9

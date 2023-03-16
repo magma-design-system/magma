@@ -10,6 +10,8 @@
 | Property       | Attribute       | Description                                                           | Type                                                                            | Default     |
 | -------------- | --------------- | --------------------------------------------------------------------- | ------------------------------------------------------------------------------- | ----------- |
 | `active`       | `active`        | Specifies if the button is active or not                              | `boolean`                                                                       | `undefined` |
+| `await`        | `await`         | Specifies if the button is awaiting for a response                    | `boolean`                                                                       | `undefined` |
+| `disabled`     | `disabled`      | Specifies if the component is disabled or not                         | `boolean`                                                                       | `undefined` |
 | `icon`         | `icon`          | The icon displayed in the button                                      | `string`                                                                        | `undefined` |
 | `iconPosition` | `icon-position` | Specifies the horizontal position of the icon displayed in the button | `"left" \| "right"`                                                             | `'left'`    |
 | `size`         | `size`          | Specifies the size for the button                                     | `"lg" \| "md" \| "sm" \| "xl"`                                                  | `'md'`      |
@@ -27,13 +29,15 @@
 
 ## CSS Custom Properties
 
-| Name                        | Description                                |
-| --------------------------- | ------------------------------------------ |
-| `--mds-button-background`   | Sets the background-color of the component |
-| `--mds-button-border-color` | Sets the border-color of the component     |
-| `--mds-button-color`        | Sets the text color of the component       |
-| `--mds-button-icon-color`   | Sets the icon color of the component       |
-| `--mds-button-radius`       | Sets the border-radius of the component    |
+| Name                          | Description                                                                                              |
+| ----------------------------- | -------------------------------------------------------------------------------------------------------- |
+| `--mds-button-await-duration` | Sets the duration of the rotation of the spinner await component                                         |
+| `--mds-button-background`     | Sets the background-color of the component                                                               |
+| `--mds-button-border-color`   | Sets the border-color of the component                                                                   |
+| `--mds-button-color`          | Sets the text color of the component                                                                     |
+| `--mds-button-gap`            | Sets the distance betwen element inside the components, use it instead of setting gap property directly. |
+| `--mds-button-icon-color`     | Sets the icon color of the component                                                                     |
+| `--mds-button-radius`         | Sets the border-radius of the component                                                                  |
 
 
 ## Dependencies
@@ -44,12 +48,14 @@
 
 ### Depends on
 
+- [mds-spinner](../mds-spinner)
 - [mds-icon](../mds-icon)
 - [mds-text](../mds-text)
 
 ### Graph
 ```mermaid
 graph TD;
+  mds-button --> mds-spinner
   mds-button --> mds-icon
   mds-button --> mds-text
   mds-tab-item --> mds-button

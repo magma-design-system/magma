@@ -1,22 +1,26 @@
+@import '../../tailwind/components.css';
 @import '~@maggioli-design-system/styles/dist/tailwind/typography.css';
-
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
 /**
+  * @prop --mds-button-await-duration: Sets the duration of the rotation of the spinner await component
   * @prop --mds-button-background: Sets the background-color of the component
   * @prop --mds-button-border-color: Sets the border-color of the component
   * @prop --mds-button-color: Sets the text color of the component
+  * @prop --mds-button-gap: Sets the distance betwen element inside the components, use it instead of setting gap property directly.
   * @prop --mds-button-icon-color: Sets the icon color of the component
   * @prop --mds-button-radius: Sets the border-radius of the component
   */
 
 :host {
 
+  --mds-button-await-duration: 0.725s;
   --mds-button-background: theme('colors.brand-maggioli-02');
   --mds-button-border-color: transparent;
   --mds-button-color: theme('colors.tone-neutral');
+  --mds-button-gap: theme('spacing.2');
   --mds-button-icon-color: var(--mds-button-color);
   --mds-button-outline-blur-offset: var(--magma-outline-blur-offset, 6px);
   --mds-button-outline-blur: var(--magma-outline-blur, 2px solid transparent);
@@ -29,7 +33,7 @@
     cursor-pointer
     duration-200
     ease-out
-    gap-2
+    focus-off
     inline-flex
     items-center
     justify-center
@@ -39,18 +43,16 @@
 
   background-color: var(--mds-button-background);
   border-color: var(--mds-button-border-color) !important;
-  border-radius: var(--mds-button-radius, theme('borderRadius.lg'));
+  border-radius: var(--mds-button-radius);
   border-style: solid;
   border-width: theme('borderWidth.2') !important;
   color: var(--mds-button-color);
-  outline-offset: var(--mds-button-outline-blur-offset);
-  outline: var(--mds-button-outline-blur);
+  gap: var(--mds-button-gap);
   transition-property: background-color, border-color, box-shadow, color, transform, outline, outline-offset;
 }
 
-:host( :focus-visible ) {
-  outline: var(--mds-button-outline-focus);
-  outline-offset: var(--mds-button-outline-focus-offset);
+:host (:focus-visible) {
+  @apply focus-on;
 }
 
 .text {
@@ -72,6 +74,48 @@
     transition-colors;
 
   fill: var(--mds-button-icon-color);
+}
+
+:host ([disabled]:not([disabled=false])) {
+  @apply
+    opacity-50
+    pointer-events-none;
+}
+
+.await {
+  @apply
+    duration-300
+    ease-in-out
+    h-6
+    w-6;
+
+  margin-right: calc(calc(-1 * var(--mds-button-gap)) - 1.5rem);
+  transition-property: margin-right;
+}
+
+mds-spinner {
+  @apply
+    h-6
+    w-6;
+
+  --mds-spinner-duration: var(--mds-button-await-duration);
+
+  color: currentcolor;
+}
+
+:host (:not([await])) mds-spinner,
+:host ([await=false]) mds-spinner {
+  @apply
+    duration-200
+    ease-out;
+}
+
+:host ([await]:not([await=false])) .await {
+  @apply mr-0;
+}
+
+:host ([await]:not([await=false])) {
+  @apply pointer-events-none;
 }
 
 @import './css/mds-button-variant-primary.css';

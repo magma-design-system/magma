@@ -1,5 +1,6 @@
 import { Component, Host, h, Prop } from '@stencil/core'
-import { TypographyInfoType, TypographyReadType, TypographyVariants } from '../../types/typography'
+import { TypographyInfoType, TypographyReadType, TypographyReadingVariants } from '@type/typography'
+import mggListDot from '@icon/mgg/list-dot.svg'
 
 @Component({
   tag: 'mds-list-item',
@@ -11,23 +12,28 @@ export class MdsListItem {
   /**
    * Specifies the typography of the element
    */
-  @Prop() readonly typography: TypographyInfoType | TypographyReadType = 'detail'
+  @Prop({ reflect: true }) readonly typography: TypographyInfoType | TypographyReadType = 'detail'
 
   /**
    * Specifies the variant for `typography`
    */
-  @Prop() readonly variant?: TypographyVariants
+  @Prop() readonly variant?: TypographyReadingVariants = 'info'
 
   /**
    * Specifies the typography of the element
    */
-  @Prop() readonly icon: string = 'list-dot'
+  @Prop() readonly icon?: string = null
 
   render () {
     return (
       <Host>
-        <mds-icon name={this.icon} part="icon"/>
-        <mds-text typography={this.typography} variant={this.variant} part="text"><slot></slot></mds-text>
+        { this.icon
+          ? <mds-icon class="icon" name={this.icon} part="icon"/>
+          : <i class="svg icon" innerHTML={mggListDot} part="icon"/>
+        }
+        <mds-text tag="span" typography={this.typography} variant={this.variant} part="text">
+          <slot/>
+        </mds-text>
       </Host>
     )
   }

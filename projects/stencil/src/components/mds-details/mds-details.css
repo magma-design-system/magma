@@ -1,15 +1,16 @@
-@tailwind utilities;
 @import '../../tailwind/components.css';
+@tailwind components;
+@tailwind utilities;
 
 /**
-* @prop --icon-color: Sets the icon color the component
-* @prop --helper-icon-color: Sets icon color of the helper icon of the component
+* @prop --mds-details-icon-color: Sets the icon color the component
+* @prop --mds-details-helper-icon-color: Sets icon color of the helper icon of the component
 */
 
 :host {
 
-  --icon-color: theme('colors.brand-maggioli-04');
-  --helper-icon-color: theme('colors.tone-neutral-03');
+  --mds-details-icon-color: theme('colors.brand-maggioli-04');
+  --mds-details-helper-icon-color: theme('colors.tone-neutral-03');
 
   @apply
     flex
@@ -43,7 +44,7 @@
 
 .header {
   @apply
-    flex
+    inline-flex
     gap-2
     items-start;
 }
@@ -51,7 +52,7 @@
 .icon {
   @apply cursor-pointer;
 
-  fill: var(--icon-color);
+  fill: var(--mds-details-icon-color);
 }
 
 .title {
@@ -66,7 +67,7 @@
     duration-300
     transition-transform;
 
-  fill: var(--helper-icon-color);
+  fill: var(--mds-details-helper-icon-color);
 }
 
 .helper-icon.opened {

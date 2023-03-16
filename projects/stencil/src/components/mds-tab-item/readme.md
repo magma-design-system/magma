@@ -18,9 +18,9 @@
 
 ## Events
 
-| Event           | Description                         | Type                  |
-| --------------- | ----------------------------------- | --------------------- |
-| `selectedEvent` | Emits when the tab item is selected | `CustomEvent<string>` |
+| Event              | Description                         | Type                  |
+| ------------------ | ----------------------------------- | --------------------- |
+| `mdsTabItemSelect` | Emits when the tab item is selected | `CustomEvent<string>` |
 
 
 ## CSS Custom Properties
@@ -47,6 +47,7 @@
 ```mermaid
 graph TD;
   mds-tab-item --> mds-button
+  mds-button --> mds-spinner
   mds-button --> mds-icon
   mds-button --> mds-text
   style mds-tab-item fill:#f9f,stroke:#333,stroke-width:4px

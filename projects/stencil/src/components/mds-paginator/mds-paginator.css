@@ -1,3 +1,5 @@
+@import '../../tailwind/components.css';
+@tailwind components;
 @tailwind utilities;
 
 /**
@@ -18,22 +20,16 @@
   @apply
     flex
     flex-shrink
+    hide-scrollbar
     items-center
-    overflow-auto
     mx-2
+    overflow-auto
     p-2
     rounded-full
     scroll-smooth;
 
   background-color: var(--mds-paginator-background);
   gap: 2px;
-
-  /* scroll-snap-type: x mandatory; */
-}
-
-:host () .pages {
-  -ms-overflow-style: none;
-  scrollbar-width: none;
 }
 
 .pages::-webkit-scrollbar {

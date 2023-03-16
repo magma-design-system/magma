@@ -1,5 +1,5 @@
 import { Component, Host, h, Prop } from '@stencil/core'
-import { ThemeVariantType } from '../../types/variant'
+import { ThemeVariantType } from '@type/variant'
 import { BenchmarkBarTypographyType } from './meta/types'
 
 @Component({

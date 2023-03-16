@@ -1,5 +1,5 @@
 import { Component, Element, Event, EventEmitter, Host, h, Prop, Watch } from '@stencil/core'
-import { ToneMinimalVariantType, ThemeLuminanceVariantType } from '../../types/variant'
+import { ToneMinimalVariantType, ThemeLuminanceVariantType } from '@type/variant'
 import clsx from 'clsx'
 
 @Component({
@@ -40,7 +40,7 @@ export class MdsToast {
   /**
    * Emits when the accordion is opened
    */
-  @Event() timerFinishedEvent: EventEmitter<void>
+  @Event({ eventName: 'mdsToastClose' }) closedEvent: EventEmitter<void>
 
   private reloadTimeListeners = (visible: boolean):void => {
     if (!visible) {
@@ -60,7 +60,7 @@ export class MdsToast {
       this.visible = false
       this.timerToastDismiss = window.setInterval(() => {
         // this is used to wait the toast to finish the outro animation
-        this.timerFinishedEvent.emit()
+        this.closedEvent.emit()
         window.clearInterval(this.timerToastDismiss)
         this.timerToastDismiss = null
       }, this.dismissAnimationDuration)

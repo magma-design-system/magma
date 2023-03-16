@@ -1,6 +1,6 @@
-import { Component, Host, h, Prop, State, Element, Event, EventEmitter, Watch } from '@stencil/core'
-import { TypographyTitleType } from '../../types/typography'
-// import { DirectionType } from '../mds-progress/meta/types'
+import { Component, Host, h, Prop, Event, EventEmitter } from '@stencil/core'
+import { TypographyTitleType } from '@type/typography'
+import { MdsAccordionTimerItemEventDetail } from './meta/event-detail'
 
 @Component({
   tag: 'mds-accordion-timer-item',
@@ -8,10 +8,6 @@ import { TypographyTitleType } from '../../types/typography'
   shadow: true,
 })
 export class MdsAccordionTimerItem {
-
-  // @Element() private element: HTMLMdsAccordionTimerItemElement
-
-  // @State() isActive:boolean
 
   /**
    * Specifies the typography of the element
@@ -21,7 +17,7 @@ export class MdsAccordionTimerItem {
   /**
    * Specifies if the accordion item is opened or not
    */
-  @Prop({ reflect: true }) readonly active?: boolean
+  @Prop({ reflect: true }) readonly selected?: boolean
 
   /**
    * Specifies the title shown when the accordion is closed or opened
@@ -38,52 +34,42 @@ export class MdsAccordionTimerItem {
    */
   @Prop() readonly uuid?: number = 0
 
-  // componentWillLoad (): void {
-  //   this.isActive = this.active
-  // }
-
-  // componentDidLoad (): void {
-  //   this.element.shadowRoot.querySelector<HTMLMdsProgressElement>('mds-progress').setAttribute('direction', 'vertical')
-  // }
-
+  /**
+   * Event throws only once the element is active,
+   * to fire it again it need to be a different item
+   */
   private toggle = () => {
-    if (!this.active) {
-      // this.isActive = true
-      this.clickActive.emit(this.description)
+    if (!this.selected) {
+      this.clickSelectEvent.emit({ selected: this.selected })
     }
   }
 
   private mouseEnter = () => {
-    if (this.active) {
-      this.mouseEnterActive.emit(this.description)
+    if (this.selected) {
+      this.selectedMouseEnterEvent.emit({ selected: this.selected })
     }
   }
 
   private mouseLeave = () => {
-    if (this.active) {
-      this.mouseLeaveActive.emit(this.description)
+    if (this.selected) {
+      this.selectedMouseLeaveEvent.emit({ selected: this.selected })
     }
   }
 
   /**
    * Emits when the accordion is clicked by the mouse
    */
-  @Event() clickActive: EventEmitter<string>
+  @Event({ eventName: 'mdsAccordionTimerItemClickSelect' }) clickSelectEvent: EventEmitter<MdsAccordionTimerItemEventDetail>
 
   /**
    * Emits when the accordion is hovered by the mouse
    */
-  @Event() mouseEnterActive: EventEmitter<string>
+  @Event({ eventName: 'mdsAccordionTimerItemMouseEnterSelect' }) selectedMouseEnterEvent: EventEmitter<MdsAccordionTimerItemEventDetail>
 
   /**
    * Emits when the accordion is hovered by the mouse
    */
-  @Event() mouseLeaveActive: EventEmitter<string>
-
-  // @Watch('active')
-  // activeChanged (newValue: boolean): void {
-  //   this.isActive = newValue
-  // }
+  @Event({ eventName: 'mdsAccordionTimerItemMouseLeaveSelect' }) selectedMouseLeaveEvent: EventEmitter<MdsAccordionTimerItemEventDetail>
 
   render () {
     return (
@@ -91,7 +77,7 @@ export class MdsAccordionTimerItem {
         <div class="row">
           <mds-progress class="progress-bar" progress={ Number(this.progress.toFixed(2)) } direction="vertical"/>
           <div class="accordion">
-            <button aria-controls="contents" aria-expanded={ this.active ? 'true' : 'false' } class="action" id="action" onClick={ this.toggle } role="button" tabindex="0">
+            <button aria-controls="contents" aria-expanded={ this.selected ? 'true' : 'false' } class="action focusable" id="action" onClick={ this.toggle } role="button" tabindex="0">
               <mds-text typography={ this.typography }>{ this.description }</mds-text>
             </button>
             <div class="contents" id="contents">

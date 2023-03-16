@@ -1,3 +1,4 @@
+@import '../../tailwind/components.css';
 @tailwind components;
 @tailwind utilities;
 
@@ -11,6 +12,7 @@
 */
 
 :host {
+
   --mds-filter-items-background-active: theme('colors.tone-neutral-09');
   --mds-filter-items-background: theme('colors.tone-neutral-10');
   --mds-filter-items-gap: theme('spacing.2');
@@ -44,18 +46,16 @@
 .items {
   @apply
     flex
+    hide-scrollbar
     overflow-auto
+    scroll-smooth
     transition-colors;
 
-  -ms-overflow-style: none;
-  -webkit-overflow-scrolling: touch;
   background-color: var(--mds-filter-items-background);
   border-radius: var(--mds-filter-items-radius);
   gap: var(--mds-filter-items-gap);
   padding: var(--mds-filter-items-padding);
-  scroll-behavior: smooth;
   scroll-snap-type: x mandatory;
-  scrollbar-width: none;
 }
 
 .items::-webkit-scrollbar {

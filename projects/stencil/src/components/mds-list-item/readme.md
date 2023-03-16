@@ -7,11 +7,11 @@
 
 ## Properties
 
-| Property     | Attribute    | Description                             | Type                                                                   | Default      |
-| ------------ | ------------ | --------------------------------------- | ---------------------------------------------------------------------- | ------------ |
-| `icon`       | `icon`       | Specifies the typography of the element | `string`                                                               | `'list-dot'` |
-| `typography` | `typography` | Specifies the typography of the element | `"caption" \| "detail" \| "label" \| "option" \| "paragraph" \| "tip"` | `'detail'`   |
-| `variant`    | `variant`    | Specifies the variant for `typography`  | `"code" \| "info" \| "read" \| "title"`                                | `undefined`  |
+| Property     | Attribute    | Description                             | Type                                                                   | Default    |
+| ------------ | ------------ | --------------------------------------- | ---------------------------------------------------------------------- | ---------- |
+| `icon`       | `icon`       | Specifies the typography of the element | `string`                                                               | `null`     |
+| `typography` | `typography` | Specifies the typography of the element | `"caption" \| "detail" \| "label" \| "option" \| "paragraph" \| "tip"` | `'detail'` |
+| `variant`    | `variant`    | Specifies the variant for `typography`  | `"info" \| "read"`                                                     | `'info'`   |
 
 
 ## Shadow Parts
@@ -20,6 +20,13 @@
 | -------- | ----------- |
 | `"icon"` |             |
 | `"text"` |             |
+
+
+## CSS Custom Properties
+
+| Name                          | Description                             |
+| ----------------------------- | --------------------------------------- |
+| `--mds-list-item-icon-margin` | Sets the margin of the component's icon |
 
 
 ## Dependencies

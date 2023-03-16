@@ -1,6 +1,6 @@
+@import '../../tailwind/components.css';
 @tailwind components;
 @tailwind utilities;
-@import '../../tailwind/components.css';
 
 /**
 * @prop --mds-label-background: Sets the background-color of the component
@@ -15,17 +15,17 @@
   --mds-label-background: theme('colors.label-yellow-09');
   --mds-label-color: theme('colors.label-yellow-02');
   --mds-label-icon-color: var(--mds-label-color);
-  --mds-label-selection-background: theme('colors.label-yellow-08');
-  --mds-label-selection-color: theme('colors.label-yellow-02');
+  --mds-label-radius: theme('spacing[1.5]');
+  --mds-label-selection-background: var(--magma-selection-background, theme('colors.label-yellow-09'));
+  --mds-label-selection-color: var(--magma-selection-color, theme('colors.label-yellow-02'));
 
   @apply
     flex
     items-stretch
-    overflow-hidden
-    rounded-md
     pl-3;
 
   background-color: var(--mds-label-background);
+  border-radius: var(--mds-label-radius);
   color: var(--mds-label-color);
   fill: var(--mds-label-icon-color);
 }
@@ -42,6 +42,9 @@
     min-w-0
     py-1
     self-center;
+
+  --mds-text-selection-background: var(--mds-label-selection-background);
+  --mds-text-selection-color: var(--mds-label-selection-color);
 }
 
 .text:last-child {
@@ -50,17 +53,21 @@
 
 .close {
   @apply
-    bg-tone-neutral
     bg-opacity-30
+    bg-tone-neutral
     cursor-pointer
     flex
-    shrink-0
     hover:bg-opacity-50
     items-center
     ml-1
     px-1.5
+    rounded-r-md
+    shrink-0
     text-inherit
     transition-colors;
+
+  border-radius: 0 var(--mds-label-radius) var(--mds-label-radius) 0;
+  transition-property: outline, outline-offset;
 }
 
 @import './css/mds-label-variant-amaranth.css';

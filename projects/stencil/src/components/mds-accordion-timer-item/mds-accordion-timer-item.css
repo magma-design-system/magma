@@ -1,16 +1,19 @@
+@import '../../tailwind/components.css';
+@tailwind components;
 @tailwind utilities;
 
 /**
-  * @prop --progress-bar-color: Sets the color of the progress bar when the item is selected
-  * @prop --progress-bar-background: Sets the background-color of the progress bar when the item is selected
-  * @prop --color: Sets the text color of the component
-  * @prop --progress-bar-thickness: Sets thickness of the progress bar
+  * @prop --mds-accordion-timer-item-progress-bar-color: Sets the color of the progress bar when the item is selected
+  * @prop --mds-accordion-timer-item-progress-bar-background: Sets the background-color of the progress bar when the item is selected
+  * @prop --mds-accordion-timer-item-color: Sets the text color of the component
+  * @prop --mds-accordion-timer-item-progress-bar-thickness: Sets thickness of the progress bar
   */
 
 :host {
-  --progress-bar-color: theme('colors.tone-neutral-03');
-  --progress-bar-background: theme('colors.tone-neutral-08');
-  --progress-bar-thickness: theme('width.1');
+
+  --mds-accordion-timer-item-progress-bar-color: theme('colors.tone-neutral-03');
+  --mds-accordion-timer-item-progress-bar-background: theme('colors.tone-neutral-08');
+  --mds-accordion-timer-item-progress-bar-thickness: theme('width.1');
 
   @apply
     duration-500
@@ -20,7 +23,7 @@
     relative
     transition-cosmetic;
 
-  color: var(--color, theme('colors.tone-neutral-02'));
+  color: var(--mds-accordion-timer-item-color, theme('colors.tone-neutral-02'));
 }
 
 .row {
@@ -36,9 +39,9 @@
 .progress-bar {
   @apply shrink-0;
 
-  --color: var(--progress-bar-color);
-  --background: var(--progress-bar-background);
-  --thickness: var(--progress-bar-thickness);
+  --mds-progress-color: var(--mds-accordion-timer-item-progress-bar-color);
+  --mds-progress-background: var(--mds-accordion-timer-item-progress-bar-background);
+  --mds-progress-thickness: var(--mds-accordion-timer-item-progress-bar-thickness);
 }
 
 .action {
@@ -47,10 +50,11 @@
     border-none
     cursor-pointer
     p-0
+    rounded-xl
     text-left;
 }
 
-:host ( [active] ) .action {
+:host ( [selected] ) .action {
   @apply cursor-auto;
 }
 
@@ -67,7 +71,7 @@
     transition-cosmetic;
 }
 
-:host ( [active] ) .contents {
+:host ( [selected] ) .contents {
   @apply
     h-auto
     opacity-100

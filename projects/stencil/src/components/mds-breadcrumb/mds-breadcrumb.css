@@ -1,5 +1,6 @@
-@tailwind utilities;
 @import '../../tailwind/components.css';
+@tailwind components;
+@tailwind utilities;
 
 /**
 * @prop --mds-breadcrumb-arrow-depth-color: Sets the color of the arrow icon that separates buttons
@@ -30,14 +31,14 @@
   @apply
     flex
     gap-0
+    hide-scrollbar
     items-center
     overflow-auto
+    p-2
+    scroll-smooth
     w-full;
 
-  -webkit-overflow-scrolling: touch;
-  -ms-overflow-style: none;
   scroll-snap-type: x mandatory;
-  scrollbar-width: none;
 }
 
 :host::-webkit-scrollbar {
@@ -54,7 +55,6 @@
     mr-1
     rounded-full
     shrink-0
-    transition-colors
     w-8;
 
   background-color: var(--mds-breadcrumb-button-background);
@@ -62,6 +62,7 @@
 }
 
 .back:hover {
+
   --mds-breadcrumb-button-background: var(--mds-breadcrumb-button-background-hover);
   --mds-breadcrumb-button-color: var(--mds-breadcrumb-button-color-hover);
 }

@@ -1,8 +1,10 @@
-import { Component, Element, Event, EventEmitter, Host, Listen, Prop, h, Watch } from '@stencil/core'
-import { arrow, autoPlacement, autoUpdate, computePosition, flip, MiddlewareData, offset, shift } from '@floating-ui/dom'
-import { FloatingUIPlacement, FloatingUIStrategy } from '@type/floating-ui'
 import arrowSvg from './assets/arrow.svg'
+import { Component, Element, Event, EventEmitter, Host, Prop, h, Watch } from '@stencil/core'
+import { FloatingUIPlacement, FloatingUIStrategy } from '@type/floating-ui'
+import { KeyboardManager } from '@common/keyboard-manager'
+import { arrow, autoPlacement, autoUpdate, computePosition, flip, MiddlewareData, offset, shift } from '@floating-ui/dom'
 import { setAttributeIfEmpty, hashValue } from '@common/aria'
+import { MdsDropdownEventDetail } from './meta/event-detail'
 
 @Component({
   tag: 'mds-dropdown',
@@ -20,6 +22,7 @@ export class MdsDropdown {
   private backdropTimer: NodeJS.Timeout
   private caller: HTMLElement
   private cleanupAutoUpdate: () => void
+  private km = new KeyboardManager()
 
   @Element() private host: HTMLMdsDropdownElement
 
@@ -94,35 +97,51 @@ export class MdsDropdown {
   @Prop() readonly zIndex?: number = 1000
 
   /**
-   * Emits when a modal is closed
+   * Emits when a modal is visible
    */
-  @Event({ bubbles: true, composed: true }) closeDropdown: EventEmitter<void>
+  @Event({ eventName: 'mdsDropdownVisible' }) visibleEvent: EventEmitter<MdsDropdownEventDetail>
+
+  /**
+   * Emits when a modal is hidden
+   */
+  @Event({ eventName: 'mdsDropdownHide' }) hiddenEvent: EventEmitter<MdsDropdownEventDetail>
+
+  /**
+   * Emits when a modal is visible or hidden
+   */
+  @Event({ eventName: 'mdsDropdownChange' }) changedEvent: EventEmitter<MdsDropdownEventDetail>
 
   private handleCloseDropdown = (e:Event = null): void => {
     if (!this.visible) {
       return
     }
-
     if (!this.host.contains(e.target as HTMLElement) && e.target as HTMLElement !== this.caller) {
-      this.closeDropdown.emit()
+      this.handleVisibility(false)
     }
-  }
-
-  @Listen('closeDropdown', { target: 'document' })
-  onCloseListener (): void {
-    this.handleVisibility(false)
   }
 
   private handleVisibility = (visibility: boolean = null): void => {
     if (visibility !== null) {
       this.visible = visibility
+      this.changedEvent.emit({ caller: this.caller, visible: this.visible })
+      if (this.visible) {
+        this.visibleEvent.emit({ caller: this.caller, visible: true })
+        return
+      }
+      this.hiddenEvent.emit({ caller: this.caller, visible: false })
       return
     }
+
     if (this.visible) {
       this.visible = false
+      this.changedEvent.emit({ caller: this.caller, visible: this.visible })
+      this.hiddenEvent.emit({ caller: this.caller, visible: false })
       return
     }
+
     this.visible = true
+    this.changedEvent.emit({ caller: this.caller, visible: this.visible })
+    this.visibleEvent.emit({ caller: this.caller, visible: true })
     this.updatePosition()
   }
 
@@ -377,7 +396,7 @@ export class MdsDropdown {
     setAttributeIfEmpty(this.host, 'aria-labelledby', this.target)
   }
 
-  componentDidRender (): void {
+  componentDidLoad (): void {
     document.addEventListener('click', this.handleCloseDropdown)
     this.arrowEl = this.host.shadowRoot.querySelector('.arrow')
     this.caller = document.getElementById(this.target)
@@ -389,17 +408,19 @@ export class MdsDropdown {
     }
 
     this.caller.addEventListener('click', this.callerOnClick.bind(this))
+    this.km.addElement(this.host)
+    this.km.attachEscapeBehavior(() => this.handleVisibility(false))
+
     this.backdropChanged(this.backdrop)
     this.updatePosition()
-  }
 
-  componentDidLoad (): void {
     if (!this.cleanupAutoUpdate) {
       this.cleanupAutoUpdate = autoUpdate(this.caller, this.host, this.updatePosition)
     }
   }
 
   disconnectedCallback (): void {
+    this.km.detachEscapeBehavior()
     this.cleanupAutoUpdate = null
   }
 

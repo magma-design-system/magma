@@ -15,9 +15,9 @@
 
 ## Events
 
-| Event              | Description                  | Type                  |
-| ------------------ | ---------------------------- | --------------------- |
-| `itemChangedEvent` | Emits when a step is changed | `CustomEvent<number>` |
+| Event                 | Description                  | Type                                    |
+| --------------------- | ---------------------------- | --------------------------------------- |
+| `mdsStepperBarChange` | Emits when a step is changed | `CustomEvent<MdsStepperBarEventDetail>` |
 
 
 ----------------------------------------------

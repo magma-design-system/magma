@@ -1,6 +1,7 @@
-import { Component, Element, Event, EventEmitter, Host, h, Prop } from '@stencil/core'
-import { LabelVariantType } from '../../types/variant'
 import miBaselineClose from '@icon/mi/baseline/close.svg'
+import { Component, Element, Event, EventEmitter, Host, h, Prop } from '@stencil/core'
+import { KeyboardManager } from '@common/keyboard-manager'
+import { LabelVariantType } from '@type/variant'
 
 @Component({
   tag: 'mds-note',
@@ -9,7 +10,8 @@ import miBaselineClose from '@icon/mi/baseline/close.svg'
 })
 export class MdsNote {
 
-  @Element() private hostElement: HTMLMdsNoteElement
+  @Element() private host: HTMLMdsNoteElement
+  private km = new KeyboardManager()
 
   /**
    * Enables the cross icon to perform cancel/delete action on element
@@ -19,23 +21,40 @@ export class MdsNote {
   /**
    * Specifies the color variant for the element
    */
-  @Prop() readonly variant?: LabelVariantType = 'yellow'
+  @Prop({ reflect: true }) readonly variant?: LabelVariantType = 'yellow'
 
-  private onClickClose = (ev: Event) => {
-    ev.stopPropagation()
-    ev.preventDefault()
-    this.clickClose.emit(this.hostElement)
+  private onClickClose = () => {
+    this.deleteEvent.emit()
   }
 
   /**
    * Emits when the note has to be cancelled
    */
-  @Event() clickClose: EventEmitter<HTMLMdsNoteElement>
+  @Event({ eventName: 'mdsNoteDelete' }) deleteEvent: EventEmitter<void>
+
+  componentDidLoad ():void {
+    this.km.addElement(this.host)
+    this.km.attachClickBehavior()
+  }
+
+  componentDidUpdate ():void {
+    if (this.deletable) {
+      this.km.addElement(this.host)
+      this.km.attachClickBehavior()
+      return
+    }
+
+    this.km.detachClickBehavior()
+  }
+
+  disconnectedCallback (): void {
+    this.km.detachClickBehavior()
+  }
 
   render () {
     return (
       <Host>
-        { this.deletable && <i innerHTML={miBaselineClose} class="svg close" onClick={ this.onClickClose.bind(this) }/> }
+        { this.deletable && <i tabindex="0" role="button" title="Rimuovi" innerHTML={miBaselineClose} class="svg close focusable" onClick={ this.onClickClose.bind(this) }/> }
         <slot name="title"/>
         <slot/>
         <div class="fold"/>

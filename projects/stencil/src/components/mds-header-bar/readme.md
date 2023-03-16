@@ -7,9 +7,9 @@
 
 ## Events
 
-| Event          | Description                        | Type                |
-| -------------- | ---------------------------------- | ------------------- |
-| `headerOpened` | Emits when the component is opened | `CustomEvent<void>` |
+| Event              | Description                        | Type                |
+| ------------------ | ---------------------------------- | ------------------- |
+| `mdsHeaderBarOpen` | Emits when the component is opened | `CustomEvent<void>` |
 
 
 ----------------------------------------------

@@ -1,5 +1,5 @@
 import React from 'react'
-import MdsBadge from '@component/mds-badge/mds-badge'
+import MdsBadge from '@component-dist/mds-badge/mds-badge'
 import { typographySecondaryDictionary } from '@dictionary/typography'
 import { themeFullVariantDictionary, toneSimpleVariantDictionary } from '@dictionary/variant'
 import clsx from 'clsx'

@@ -9,9 +9,9 @@ export default {
       type: { name: 'string' },
       description: 'Specifies the title shown when the accordion is closed or opened',
     },
-    active: {
+    selected: {
       type: { name: 'boolean' },
-      description: 'Specifies if the accordion item is opened or not',
+      description: 'Specifies if the accordion item is selected or not',
     },
     progress: {
       control: { type: 'range', step: 0.01, min: 0, max: 1 },
@@ -39,19 +39,19 @@ Default.args = {
   description: 'Blipbug',
 }
 
-export const Active = Template.bind({})
-Active.args = {
-  active: true,
+export const selected = Template.bind({})
+selected.args = {
+  selected: true,
   description: 'Blipbug',
 }
 
 export const Progress = Template.bind({})
 Progress.args = {
-  active: true,
+  selected: true,
   description: 'Blipbug',
   progress: 0.5,
 }
 
 Default.story = lokiDisabled
-Active.story = lokiDisabled
+selected.story = lokiDisabled
 Progress.story = lokiDisabled

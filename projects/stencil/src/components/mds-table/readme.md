@@ -14,9 +14,9 @@
 
 ## Events
 
-| Event              | Description                                 | Type                   |
-| ------------------ | ------------------------------------------- | ---------------------- |
-| `tableInteractive` | Dispatces when interactive property changes | `CustomEvent<boolean>` |
+| Event                       | Description                                 | Type                   |
+| --------------------------- | ------------------------------------------- | ---------------------- |
+| `mdsTableInteractiveChange` | Dispatces when interactive property changes | `CustomEvent<boolean>` |
 
 
 ## CSS Custom Properties

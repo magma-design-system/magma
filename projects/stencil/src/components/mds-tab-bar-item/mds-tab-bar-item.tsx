@@ -1,5 +1,5 @@
-import { Component, Element, Event, EventEmitter, Host, h, Prop, State, Watch } from '@stencil/core'
-import { TypographySmallerType } from '../../types/typography'
+import { Component, Event, EventEmitter, Host, h, Prop, State, Watch } from '@stencil/core'
+import { TypographySmallerType } from '@type/typography'
 
 @Component({
   tag: 'mds-tab-bar-item',
@@ -8,7 +8,6 @@ import { TypographySmallerType } from '../../types/typography'
 })
 export class MdsTabBarItem {
 
-  @Element() private element: HTMLMdsTabBarItemElement
   @State() isSelected:boolean
 
   @Prop() readonly icon?: string
@@ -30,14 +29,14 @@ export class MdsTabBarItem {
   private select = () => {
     this.isSelected = !this.isSelected
     if (this.isSelected) {
-      this.selectedEvent.emit(this.element.id)
+      this.selectedEvent.emit()
     }
   }
 
   /**
    * Emits when the component is selected
    */
-  @Event() selectedEvent: EventEmitter<string>
+  @Event({ eventName: 'mdsTabBarItemSelect' }) selectedEvent: EventEmitter<void>
 
   @Watch('selected')
   validateSelected (newValue: boolean): void {

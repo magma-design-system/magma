@@ -1,4 +1,5 @@
-import { Component, Element, Host, Listen, h, State, Prop, Watch, Event, EventEmitter } from '@stencil/core'
+import { Component, Element, Event, EventEmitter, Host, Listen, Prop, State, Watch, h } from '@stencil/core'
+import { MdsStepperBarEventDetail } from './meta/event-detail'
 
 @Component({
   tag: 'mds-stepper-bar',
@@ -33,11 +34,15 @@ export class MdsStepperBar {
   private setCurrent = (index = 1): void => {
     this.items = this.queryItems()
     this.currentItem = index - 1
+    const values = []
     this.items.forEach((item, key) => {
       if (this.linear) {
-        item.checked = false
+        item.selected = false
         if (key < this.currentItem) {
-          item.checked = true
+          item.selected = true
+          if (item.value) {
+            values.push(item.value)
+          }
         }
       }
       item.current = false
@@ -47,7 +52,7 @@ export class MdsStepperBar {
       }
     })
 
-    this.itemChangedEvent.emit(this.currentItem)
+    this.changedEvent.emit({ value: values.toString(), step: this.currentItem })
     this.scrollItems()
     this.setCurrentContent()
   }
@@ -65,7 +70,7 @@ export class MdsStepperBar {
   /**
    * Emits when a step is changed
    */
-  @Event() itemChangedEvent: EventEmitter<number>
+  @Event({ eventName: 'mdsStepperBarChange' }) changedEvent: EventEmitter<MdsStepperBarEventDetail>
 
   private scrollItems = (): void => {
     const itemsElement = this.element.shadowRoot.querySelector<HTMLDivElement>('.items')
@@ -96,7 +101,6 @@ export class MdsStepperBar {
 
   componentDidLoad (): void {
     setTimeout(() => {
-      console.log('componentDidLoad')
       this.setCurrent(this.select)
     }, 10)
   }
@@ -106,11 +110,11 @@ export class MdsStepperBar {
     this.setCurrent(newValue)
   }
 
-  @Listen('currentEvent')
+  @Listen('mdsStepperBarItemSelect')
   changeEventHandler (event: CustomEvent<string>): void {
     this.items = this.queryItems()
     this.items.forEach((item, key) => {
-      item.current = false
+      item.selected = false
       if (`item-${key}` === event.detail) {
         item.current = true
         this.currentItem = key

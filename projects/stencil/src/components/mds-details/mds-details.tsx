@@ -1,6 +1,7 @@
-import { Component, Host, h, Prop, State, Event, Watch, EventEmitter } from '@stencil/core'
+import { Component, Element, Event, EventEmitter, Host, Prop, State, Watch, h } from '@stencil/core'
 import clsx from 'clsx'
 import miBaselineKeyboardArrowDown from '@icon/mi/baseline/keyboard-arrow-down.svg'
+import { KeyboardManager } from '@common/keyboard-manager'
 
 @Component({
   tag: 'mds-details',
@@ -9,7 +10,9 @@ import miBaselineKeyboardArrowDown from '@icon/mi/baseline/keyboard-arrow-down.s
 })
 export class MdsDetails {
 
+  @Element() private host: HTMLMdsDetailsElement
   @State() isOpened: boolean
+  private km = new KeyboardManager()
 
   /**
    * Specifies if the component is opened
@@ -19,7 +22,7 @@ export class MdsDetails {
   /**
    * Emits when the component is opened
    */
-  @Event() openedEvent: EventEmitter<void>
+  @Event({ eventName: 'mdsDetailsChange' }) changedEvent: EventEmitter<boolean>
 
   @Watch('opened')
   validateOpened (newValue: boolean): void {
@@ -30,11 +33,19 @@ export class MdsDetails {
     this.isOpened = this.opened
   }
 
+  componentDidLoad (): void {
+    const header = this.host.shadowRoot.querySelector('.header') as HTMLElement
+    this.km.addElement(header)
+    this.km.attachClickBehavior()
+  }
+
+  disconnectedCallback (): void {
+    this.km.detachClickBehavior()
+  }
+
   private toggle = () => {
     this.isOpened = !this.isOpened
-    if (this.isOpened) {
-      this.openedEvent.emit()
-    }
+    this.changedEvent.emit(this.isOpened)
   }
 
   render () {
@@ -44,12 +55,14 @@ export class MdsDetails {
           <slot name="icon"/>
         </div>
         <div class="contents">
-          <header class="header">
-            <div class="title" onClick={ this.toggle }>
-              <slot name="title"/>
-            </div>
-            <i onClick={ this.toggle } class={clsx('svg helper-icon', this.isOpened && 'opened')} innerHTML={miBaselineKeyboardArrowDown}/>
-          </header>
+          <div>
+            <header class="header focusable" tabindex="0" onClick={ this.toggle }>
+              <div class="title">
+                <slot name="title"/>
+              </div>
+              <i class={clsx('svg helper-icon', this.isOpened && 'opened')} innerHTML={miBaselineKeyboardArrowDown}/>
+            </header>
+          </div>
           <div class={clsx('details', this.isOpened && 'opened')}>
             <slot/>
             <div class="actions">

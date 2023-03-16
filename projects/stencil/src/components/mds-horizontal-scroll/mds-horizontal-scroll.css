@@ -1,21 +1,21 @@
 @tailwind utilities;
 
 /**
-  * @prop --background: Sets the background-color of the component
-  * @prop --scrollbar-radius: Sets the border-radius of the browser scroll bar (if supported)
-  * @prop --scrollbar-margin: Sets the margin of the browser scroll bar (if supported)
-  * @prop --scrollbar-size: Sets the height and width of the browser scroll bar (if supported)
-  * @prop --scrollbar-thumb-background: Sets the background-color of the browser scroll bar thumb (if supported)
-  * @prop --scrollbar-track-background: Sets the background-color of the browser scroll bar track (if supported)
+  * @prop --mds-horizontal-scroll-background: Sets the background-color of the component
+  * @prop --mds-horizontal-scroll-scrollbar-radius: Sets the border-radius of the browser scroll bar (if supported)
+  * @prop --mds-horizontal-scroll-scrollbar-margin: Sets the margin of the browser scroll bar (if supported)
+  * @prop --mds-horizontal-scroll-scrollbar-size: Sets the height and width of the browser scroll bar (if supported)
+  * @prop --mds-horizontal-scroll-scrollbar-thumb-background: Sets the background-color of the browser scroll bar thumb (if supported)
+  * @prop --mds-horizontal-scroll-scrollbar-track-background: Sets the background-color of the browser scroll bar track (if supported)
   */
 
 :host {
 
-  --scrollbar-radius: 0;
-  --scrollbar-margin: 0;
-  --scrollbar-size: theme('spacing.2');
-  --scrollbar-thumb-background: rgba(var(--tone-neutral-02), theme('opacity.30'));
-  --scrollbar-track-background: rgba(var(--tone-neutral-06), theme('opacity.30'));
+  --mds-horizontal-scroll-scrollbar-radius: 0;
+  --mds-horizontal-scroll-scrollbar-margin: 0;
+  --mds-horizontal-scroll-scrollbar-size: theme('spacing.2');
+  --mds-horizontal-scroll-scrollbar-thumb-background: rgba(var(--tone-neutral-02), theme('opacity.30'));
+  --mds-horizontal-scroll-scrollbar-track-background: rgba(var(--tone-neutral-06), theme('opacity.30'));
 
   @apply
     flex
@@ -28,48 +28,48 @@
   scroll-snap-type: x mandatory;
 }
 
-:host ( .scroll--hide-scrollbar ) {
+:host ( .scroll--mds-horizontal-scroll-hide-scrollbar ) {
   -webkit-overflow-scrolling: touch;
   -ms-overflow-style: none;
   scrollbar-width: none;
 }
 
-:host( .scroll--hide-scrollbar )::-webkit-scrollbar {
+:host( .scroll--mds-horizontal-scroll-hide-scrollbar )::-webkit-scrollbar {
   display: none;
 }
 
-:host( .scroll--show-scrollbar )::-webkit-scrollbar {
-  height: var(--scrollbar-size);
-  width: var(--scrollbar-size);
+:host( .scroll--mds-horizontal-scroll-show-scrollbar )::-webkit-scrollbar {
+  height: var(--mds-horizontal-scroll-scrollbar-size);
+  width: var(--mds-horizontal-scroll-scrollbar-size);
 }
 
-:host( .scroll--show-scrollbar )::-webkit-scrollbar-track {
-  background-color: var(--scrollbar-track-background);
-  border-radius: var(--scrollbar-radius);
-  margin-block: var(--scrollbar-margin);
-  margin-inline: var(--scrollbar-margin);
+:host( .scroll--mds-horizontal-scroll-show-scrollbar )::-webkit-scrollbar-track {
+  background-color: var(--mds-horizontal-scroll-scrollbar-track-background);
+  border-radius: var(--mds-horizontal-scroll-scrollbar-radius);
+  margin-block: var(--mds-horizontal-scroll-scrollbar-margin);
+  margin-inline: var(--mds-horizontal-scroll-scrollbar-margin);
 }
 
-:host( .scroll--show-scrollbar )::-webkit-scrollbar-thumb {
-  background-color: var(--scrollbar-thumb-background);
-  border-radius: var(--scrollbar-radius);
+:host( .scroll--mds-horizontal-scroll-show-scrollbar )::-webkit-scrollbar-thumb {
+  background-color: var(--mds-horizontal-scroll-scrollbar-thumb-background);
+  border-radius: var(--mds-horizontal-scroll-scrollbar-radius);
 }
 
 @supports (scrollbar-color: transparent transparent) {
   :host {
-    scrollbar-color: var(--scrollbar-thumb-background) var(--scrollbar-track-background);
+    scrollbar-color: var(--mds-horizontal-scroll-scrollbar-thumb-background) var(--mds-horizontal-scroll-scrollbar-track-background);
     scrollbar-width: thin;
   }
 }
 
-:host( .scroll--align-start ) > ::slotted ( * ) {
+:host( .scroll--mds-horizontal-scroll-align-start ) > ::slotted ( * ) {
   @apply snap-start;
 }
 
-:host( .scroll--align-center ) > ::slotted ( * ) {
+:host( .scroll--mds-horizontal-scroll-align-center ) > ::slotted ( * ) {
   @apply snap-center;
 }
 
-:host( .scroll--align-end ) > ::slotted ( * ) {
+:host( .scroll--mds-horizontal-scroll-align-end ) > ::slotted ( * ) {
   @apply snap-end;
 }

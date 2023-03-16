@@ -1,9 +1,9 @@
+@import '~@maggioli-design-system/styles/dist/tailwind/typography.css';
+@import '../../tailwind/components.css';
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
-@import '~@maggioli-design-system/styles/dist/tailwind/typography.css';
-@import '../../tailwind/components.css';
 
 :host {
   @apply

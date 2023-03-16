@@ -1,3 +1,5 @@
+@import '../../tailwind/components.css';
+@tailwind components;
 @tailwind utilities;
 
 /**
@@ -13,16 +15,14 @@
   @apply
     flex
     gap-2
+    hide-scrollbar
     overflow-auto
-    p-2;
+    p-2
+    scroll-smooth;
 
   background-color: var(--mds-tab-background);
   border-radius: var(--mds-tab-radius);
-  -webkit-overflow-scrolling: touch;
-  -ms-overflow-style: none;
-  scroll-behavior: smooth;
   scroll-snap-type: x mandatory;
-  scrollbar-width: none;
 }
 
 :host::-webkit-scrollbar {

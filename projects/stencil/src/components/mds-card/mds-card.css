@@ -1,24 +1,14 @@
 @tailwind utilities;
 
-/**
-  * @prop --background: Sets the background-color of the component
-  * @prop --radius: Sets the border-radius of the component
-  * @prop --shadow: Sets the box-shadow of the component
-  */
-
 :host {
-
-  --shadow: theme('boxShadow.md');
-  --radius: theme('borderRadius.xl');
-  --background: theme('colors.tone-neutral');
 
   @apply
     auto-rows-max
     grid
     overflow-hidden
+    rounded-lg
+    bg-tone-neutral
     p-4;
 
-  background-color: var(--background);
-  border-radius: var(--radius);
-  box-shadow: var(--shadow);
+  box-shadow: theme('boxShadow.sharp-md');
 }

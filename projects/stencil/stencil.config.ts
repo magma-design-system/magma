@@ -58,12 +58,14 @@ export const config: Config = {
     alias({
       entries: [
         { find: /^@common\/(.*)+$/, replacement: path.resolve('.', './src/common/$1') },
-        { find: /^@component\/(.*)+$/, replacement: path.resolve('.', './dist/collection/components/$1') },
+        { find: /^@component-dist\/(.*)+$/, replacement: path.resolve('.', './dist/collection/components/$1') },
+        { find: /^@component\/(.*)+$/, replacement: path.resolve('.', './src/components/$1') },
         { find: /^@dictionary\/(.*)+$/, replacement: path.resolve('.', './src/dictionary/$1') },
         { find: /^@fixture\/(.*)+$/, replacement: path.resolve('.', './src/fixtures/$1') },
         { find: /^@icon\/([a-zA-Z-\/]+)\.svg$/, replacement: path.resolve(__dirname, './assets/svg/$1.svg') },
+        { find: /^@interface\/(.*)+$/, replacement: path.resolve('.', './src/interface/$1') },
         { find: /^@test\/(.*)+$/, replacement: path.resolve('.', './src/test/$1') },
-        { find: /^@type\/(.*)+$/, replacement: path.resolve('.', './src/types/$1') },
+        { find: /^@type\/(.*)+$/, replacement: path.resolve('.', './src/type/$1') },
       ]
     }),
     inlineSvg(),
@@ -78,7 +80,7 @@ export const config: Config = {
     // moduleNameMapper: tsconfigPathsJest(tsconfig),
     moduleNameMapper: {
       '@common/(.*)': '<rootDir>src/common/$1',
-      '@component/(.*)': '<rootDir>dist/collection/components/$1',
+      '@component-dist/(.*)': '<rootDir>dist/collection/components/$1',
       '@dictionary/(.*)': '<rootDir>src/dictionary/$1',
       '@fixture/(.*)': '<rootDir>src/fixtures/$1',
       '@icon/(.*)': '<rootDir>assets/svg/$1',

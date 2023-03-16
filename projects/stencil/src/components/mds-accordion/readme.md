@@ -6,10 +6,17 @@
 
 ## Properties
 
-| Property   | Attribute  | Description                                              | Type      | Default     |
-| ---------- | ---------- | -------------------------------------------------------- | --------- | ----------- |
-| `closable` | `closable` | Specifies if an item could be closed by user             | `boolean` | `true`      |
-| `multiple` | `multiple` | Choose if multiple siblings can be opened simultaneously | `boolean` | `undefined` |
+| Property   | Attribute  | Description                                                | Type      | Default |
+| ---------- | ---------- | ---------------------------------------------------------- | --------- | ------- |
+| `closable` | `closable` | Specifies if an item can be closed by user                 | `boolean` | `true`  |
+| `multiple` | `multiple` | Choose if multiple siblings can be selected simultaneously | `boolean` | `false` |
+
+
+## Events
+
+| Event                | Description                                            | Type                                   |
+| -------------------- | ------------------------------------------------------ | -------------------------------------- |
+| `mdsAccordionChange` | Emits when the component attribute selected is changed | `CustomEvent<MdsAccordionEventDetail>` |
 
 
 ----------------------------------------------

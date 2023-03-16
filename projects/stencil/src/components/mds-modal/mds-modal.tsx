@@ -1,7 +1,8 @@
-import { Component, Element, Event, EventEmitter, Host, h, Listen, Prop, Watch, State } from '@stencil/core'
 import clsx from 'clsx'
-import { ModalPositionType, ModalAnimationStateType } from './meta/types'
 import miBaselineClose from '@icon/mi/baseline/close.svg'
+import { Component, Element, Event, EventEmitter, Host, h, Listen, Prop, Watch, State } from '@stencil/core'
+import { KeyboardManager } from '@common/keyboard-manager'
+import { ModalPositionType, ModalAnimationStateType } from './meta/types'
 
 @Component({
   tag: 'mds-modal',
@@ -15,8 +16,9 @@ export class MdsModal {
   private top: boolean = null
   private bottom: boolean = null
   private animationState: ModalAnimationStateType = 'intro'
+  private km = new KeyboardManager()
   @State() stateOpened: boolean
-  @Element() hostElement: HTMLMdsModalElement
+  @Element() host: HTMLMdsModalElement
 
   /**
    * Specifies if the modal is opened or not
@@ -29,9 +31,9 @@ export class MdsModal {
   @Prop({ reflect: true, mutable: true }) position?: ModalPositionType = null
 
   componentWillLoad (): void {
-    this.bottom = this.hostElement.querySelector('[slot="bottom"]') !== null
-    this.top = this.hostElement.querySelector('[slot="top"]') !== null
-    this.window = this.hostElement.querySelector('[slot="window"]') !== null
+    this.bottom = this.host.querySelector('[slot="bottom"]') !== null
+    this.top = this.host.querySelector('[slot="top"]') !== null
+    this.window = this.host.querySelector('[slot="window"]') !== null
     this.stateOpened = this.opened
 
     if (this.window && this.position === null) {
@@ -43,34 +45,35 @@ export class MdsModal {
     }
 
     if (this.window) {
-      const modal = this.hostElement.querySelector('[slot="window"]')
+      const modal = this.host.querySelector('[slot="window"]')
       modal.setAttribute('role', 'modal')
     }
   }
 
   componentWillRender (): void {
     this.animationState = this.opened ? 'intro' : 'outro'
-    this.hostElement.classList.add(this.animationName())
+    this.host.classList.add(this.animationName())
   }
 
   componentDidRender (): void {
     this.animationDeelay = window.setTimeout(() => {
       this.animationState = this.animationState === 'intro' ? 'outro' : 'intro'
-      this.hostElement.classList.remove(this.animationName(this.animationState === 'intro' ? 'outro' : 'intro'))
-      this.hostElement.classList.add(this.animationName(this.animationState))
+      this.host.classList.remove(this.animationName(this.animationState === 'intro' ? 'outro' : 'intro'))
+      this.host.classList.add(this.animationName(this.animationState))
       window.clearTimeout(this.animationDeelay)
     }, 500)
+  }
 
-    if (this.opened) {
-      this.addKeyboardEscapeListener()
-      return
-    }
-
-    this.removeKeyboardEscapeListener()
+  componentDidLoad = (): void => {
+    this.km.addElement(this.host, 'host')
+    this.km.addElement(this.host.shadowRoot.querySelector('.close'), 'close')
+    this.km.attachEscapeBehavior(() => this.closeEvent.emit())
+    this.km.attachClickBehavior('close')
   }
 
   disconnectedCallback (): void {
-    this.removeKeyboardEscapeListener()
+    this.km.detachEscapeBehavior()
+    this.km.detachClickBehavior('close')
   }
 
   private animationName = (customState: string = null, customPosition: string = null): string => {
@@ -80,42 +83,21 @@ export class MdsModal {
   @Watch('position')
   positionChange (_newValue: string, oldValue: string): void {
     window.clearTimeout(this.animationDeelay)
-    this.hostElement.classList.remove(this.animationName(null, oldValue))
-    this.hostElement.classList.remove(this.animationName('intro', oldValue))
-    this.hostElement.classList.remove(this.animationName('outro', oldValue))
-  }
-
-  private checkKeyboardEscape = (event: KeyboardEvent): void => {
-    if (event.code === 'Escape') {
-      this.close.emit()
-    }
-  }
-
-  private addKeyboardEscapeListener (): void {
-    window.addEventListener('keydown', this.checkKeyboardEscape.bind(this))
-  }
-
-  private removeKeyboardEscapeListener (): void {
-    window.removeEventListener('keydown', this.checkKeyboardEscape.bind(this))
+    this.host.classList.remove(this.animationName(null, oldValue))
+    this.host.classList.remove(this.animationName('intro', oldValue))
+    this.host.classList.remove(this.animationName('outro', oldValue))
   }
 
   @Watch('opened')
   openedChange (newValue: boolean): void {
     this.stateOpened = newValue
     window.clearTimeout(this.animationDeelay)
-
-    if (newValue) {
-      this.addKeyboardEscapeListener()
-      return
-    }
-
-    this.removeKeyboardEscapeListener()
   }
 
   /**
    * Emits when a modal is closed
    */
-  @Event({ bubbles: true, composed: true }) close: EventEmitter<void>
+  @Event({ bubbles: true, composed: true, eventName: 'mdsModalClose' }) closeEvent: EventEmitter<void>
 
   private closeModal = (e:Event = null): void => {
     if ((e.target as HTMLElement)?.localName !== 'mds-modal') {
@@ -123,12 +105,17 @@ export class MdsModal {
     }
     this.opened = e.target !== e.currentTarget
     if (!this.opened) {
-      this.close.emit()
+      this.closeEvent.emit()
     }
   }
 
-  @Listen('close', { target: 'document' })
-  onCloseListener (): void {
+  @Listen('mdsModalClose', { target: 'document' })
+  onModalCloseListener (): void {
+    this.opened = false
+  }
+
+  @Listen('mdsBannerClose', { target: 'document' })
+  onBannerCloseListener (): void {
     this.opened = false
   }
 
@@ -149,7 +136,7 @@ export class MdsModal {
             }
           </div>
         }
-        { !this.window && <i innerHTML={miBaselineClose} class="svg close"/> }
+        { !this.window && <i innerHTML={miBaselineClose} tabindex="0" onClick={(e: Event) => { this.closeModal(e) }} class="svg close focusable-light"/> }
       </Host>
     )
   }

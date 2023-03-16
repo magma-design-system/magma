@@ -16,5 +16,6 @@
 }
 
 :host ( [interactive]:hover ) {
+
   --mds-table-body-background: var(--mds-table-body-background-hover, theme('colors.tone-neutral-10'));
 }

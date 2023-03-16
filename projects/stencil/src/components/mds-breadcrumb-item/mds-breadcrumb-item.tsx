@@ -1,6 +1,7 @@
 import { Component, Element, Event, EventEmitter, Host, h, Prop } from '@stencil/core'
 import miBaselineNavigateNext from '@icon/mi/baseline/navigate-next.svg'
-import { BreadcrumbClickedEvent } from '../mds-breadcrumb/meta/interface'
+import { MdsBreadcrumbItemEventDetail } from './meta/event-detail'
+import { KeyboardManager } from '@common/keyboard-manager'
 
 @Component({
   tag: 'mds-breadcrumb-item',
@@ -10,29 +11,48 @@ import { BreadcrumbClickedEvent } from '../mds-breadcrumb/meta/interface'
 export class MdsBreadcrumbItem {
 
   @Element() private element: HTMLMdsBreadcrumbItemElement
+  private km = new KeyboardManager()
 
   /**
-   * Choose to display or not the back arrow button
+   * Choose if the component is selected or not
    */
-  @Prop({ mutable: true, reflect: true }) active?: boolean
-
-  private toggle = () => {
-    this.active = !this.active
-    this.activedEvent.emit({ id: this.element.id, active: this.active })
-  }
+  @Prop({ mutable: true, reflect: true }) selected?: boolean
 
   /**
    * Emits when the breadcrumb is active
    */
-  @Event() activedEvent: EventEmitter<BreadcrumbClickedEvent>
+  @Event({ eventName: 'mdsBreadcrumbItemSelect' }) selectedEvent: EventEmitter<MdsBreadcrumbItemEventDetail>
+
+  private toggle = () => {
+    this.selected = !this.selected
+    this.selectedEvent.emit({ id: this.element.id, selected: this.selected })
+  }
+
+  componentDidLoad ():void {
+    const textElement = this.element.shadowRoot.querySelector('.text') as HTMLElement
+    this.km.addElement(textElement)
+    this.km.attachClickBehavior()
+  }
+
+  componentDidUpdate ():void {
+    if (this.selected) {
+      this.km.detachClickBehavior()
+      return
+    }
+    this.km.attachClickBehavior()
+  }
+
+  disconnectedCallback (): void {
+    this.km.detachClickBehavior()
+  }
 
   render () {
     return (
-      <Host slot="breadcrumb-item" tabindex="0" onClick={ this.toggle }>
-        <mds-text class="text" typography="detail">
+      <Host>
+        <mds-text tabindex="0" onClick={ this.toggle } class="text focusable" typography="detail">
           <slot/>
         </mds-text>
-        <i class="svg icon" innerHTML={miBaselineNavigateNext}/>
+        <i aria-hidden="true" class="svg icon" innerHTML={miBaselineNavigateNext}/>
       </Host>
     )
   }
