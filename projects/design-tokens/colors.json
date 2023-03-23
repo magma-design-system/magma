@@ -7,9 +7,10 @@
     { "color": "#a8a29e", "export": "tones", "name": "tone.stone", "ratios": "tone", "seed": { "light": "#FFFFFF", "dark": "#000000" } },
 
     { "color": "#00379E", "export": "brand", "name": "brand.maggioli", "colorspace": "HSL", "smooth": true },
+    { "color": "#0f4ad5", "export": "brand", "name": "brand.maggioli-editore", "colorspace": "HSL", "smooth": true },
     { "color": "#597CB9", "export": "brand-synbee", "name": "brand.synbee-eolo" },
     { "color": "#597CB9", "export": "brand-synbee", "name": "brand.synbee-eolo-v1", "ratios": "original" },
-    { "color": "#FFCF30", "export": "brand-synbee", "name": "brand.synbee" },
+    { "color": "#FFC300", "export": "brand-synbee", "name": "brand.synbee" },
     { "color": "#FFFFFF", "export": "brand-synbee", "name": "adjust.tone", "ratios": "original", "seed": { "light": "#FFFFFF", "dark": "#000000" } },
     { "color": "#ED7C63", "disabled": true, "name": "brand.argo" },
     { "color": "#01495C", "disabled": true, "name": "brand.la-polizia-locale" },
