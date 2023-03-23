@@ -1,7 +1,9 @@
+/* eslint-disable @typescript-eslint/no-var-requires */
 const { palette } = require('@maggioli-design-system/design-tokens')
 const mediaQueries = require('@maggioli-design-system/design-tokens/dist/js/media').media
 const { fontFamily } = require('@maggioli-design-system/design-tokens/dist/js/font-family')
 const { ease } = require('@maggioli-design-system/design-tokens/dist/js/ease')
+const { gap } = require('@maggioli-design-system/design-tokens/dist/js/gap')
 
 const minSize = {
   4: '1rem',
@@ -70,6 +72,9 @@ module.exports = {
       },
       fontSize: {
         xxs: '0.625rem',
+      },
+      gap: {
+        ...gap,
       },
       gridAutoRows: {
         1: '1fr',
