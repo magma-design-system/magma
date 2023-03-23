@@ -69,14 +69,21 @@ saveAsJs({
   varName: 'ease',
 })
 
-saveAsJs({
-  destination: path.join(DIST_DIR, 'js/media.js'),
-  source: path.join(CSS_TOKENS_DIR, 'media.json'),
-  varName: 'media',
-})
 
 saveAsJs({
   destination: path.join(DIST_DIR, 'js/font-family.js'),
   source: path.join(CSS_TOKENS_DIR, 'font-family.json'),
   varName: 'fontFamily',
+})
+
+saveAsJs({
+  destination: path.join(DIST_DIR, 'js/gap.js'),
+  source: path.join(CSS_TOKENS_DIR, 'gap.json'),
+  varName: 'gap',
+})
+
+saveAsJs({
+  destination: path.join(DIST_DIR, 'js/media.js'),
+  source: path.join(CSS_TOKENS_DIR, 'media.json'),
+  varName: 'media',
 })
