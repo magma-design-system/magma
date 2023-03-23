@@ -1,6 +1,6 @@
 {
   "name": "@maggioli-design-system/identity",
-  "version": "1.12.0",
+  "version": "2.0.0",
   "description": "Maggioli brand identity assets",
   "files": [
     "/dist/**/*"
@@ -39,7 +39,8 @@
     "pdfkit": "^0.13.0",
     "sharp": "^0.30.4",
     "svg-dimensions": "^1.0.2",
-    "svg-to-pdfkit": "^0.1.8"
+    "svg-to-pdfkit": "^0.1.8",
+    "svgo": "^3.0.2"
   }
 }
 

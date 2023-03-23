@@ -1,8 +1,10 @@
 {
   "compilerOptions": {
     "moduleResolution": "node",
-    "target": "es6",
+    "target": "es2022",
     "esModuleInterop": true,
   },
-  "include": ["./types"]
+  "include": [
+    "./types"
+  ]
 }

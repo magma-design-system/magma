@@ -9,20 +9,22 @@ import { createWriteStream, PathLike } from 'fs'
 import { copy } from 'fs-extra'
 import { DIST_DIR } from './meta'
 
-let itemsTotal = 0
-let itemsCurrent = 0
-
-const RESOURCES_PATH = path.join(__dirname, '../resources/')
-
 interface LogData {
-  filename: string,
+  filepath: string,
   filetype: string,
+  filename?: string,
   resolution: string,
   size?: number,
 }
 
+let itemsTotal = 0
+let itemsCurrent = 0
+const filesList:LogData[] = []
+
+const RESOURCES_PATH = path.join(__dirname, '../resources/')
+
 const logFile = ({
-  filename,
+  filepath,
   filetype,
   resolution,
   size,
@@ -30,10 +32,20 @@ const logFile = ({
   itemsCurrent = itemsCurrent + 1
   console.log(`
 Progress: ${(itemsCurrent / itemsTotal * 100).toFixed(1)}% ${chalk.grey(`${itemsCurrent}/${itemsTotal} (approximated)`)}
-Filename: ${chalk.red(filename)}
+Filepath: ${chalk.red(filepath)}
 Filesize: ${chalk.yellow(size ? formatBytes(size) : 'N/A')}
 Resolution: ${chalk.green(resolution)}
 Format: ${chalk.blue(filetype.toUpperCase())}`)
+
+  const data = {
+    filename: path.basename(filepath),
+    filepath,
+    filetype: filetype.toUpperCase(),
+    resolution,
+    size: size ? formatBytes(size) : 'N/A',
+  }
+
+  filesList.push(data as unknown as LogData)
 }
 
 const resource = (item: string): string =>
@@ -62,7 +74,7 @@ const formatBytes = (bytes: number, decimals = 2) => {
 }
 
 // eslint-disable-next-line @typescript-eslint/ban-types
-const walk = (dir: PathLike, callback: Function ) => {
+const walk = async (dir: PathLike, callback: Function ) => {
   let results: string[] = []
 
   readdir(dir)
@@ -105,15 +117,16 @@ const walk = (dir: PathLike, callback: Function ) => {
 const exportPNG = async (item: string, size: number) => {
   const density = 72 * size / 16 // https://github.com/lovell/sharp/issues/729
   const filetype = 'png'
+  const filePath = path.join(DIST_DIR, formatFilename(item, size, filetype))
 
   sharp(resource(item), { density, limitInputPixels: false })
     .resize(size)
     .png()
-    .toFile(path.join(DIST_DIR, `${item}-${size}w.${filetype}`))
+    .toFile(filePath)
     .then(info => {
       logFile({
         filetype,
-        filename: formatFilename(item, size, filetype),
+        filepath: formatFilename(item, size, filetype),
         resolution: formatResolution(info.width, info.height),
         size: info.size,
       })
@@ -126,15 +139,16 @@ const exportPNG = async (item: string, size: number) => {
 const exportWEBP = async (item: string, size: number) => {
   const density = 72 * size / 16
   const filetype = 'webp'
+  const filePath = path.join(DIST_DIR, formatFilename(item, size, filetype))
 
   sharp(resource(item), { density, limitInputPixels: false })
     .resize(size)
     .png()
-    .toFile(path.join(DIST_DIR, `${item}-${size}w.${filetype}`))
+    .toFile(filePath)
     .then(info => {
       logFile({
         filetype,
-        filename: formatFilename(item, size, filetype),
+        filepath: formatFilename(item, size, filetype),
         resolution: formatResolution(info.width, info.height),
         size: info.size,
       })
@@ -147,6 +161,7 @@ const exportWEBP = async (item: string, size: number) => {
 const exportPDF = async (item: string) => {
   const sourceFile = resource(item)
   const filetype = 'pdf'
+  const filePath = path.join(DIST_DIR, `${item}.${filetype}`)
 
   readFile(sourceFile, { encoding: 'utf8' })
     .then(data => {
@@ -158,17 +173,17 @@ const exportPDF = async (item: string) => {
         const doc = new PDFDocument({
           size: [ width, height ],
         })
-        SVGtoPDF(doc, data, 0, 0, { assumePt: true })
-        const stream = createWriteStream(path.join(DIST_DIR, `${item}.${filetype}`))
+        const stream = createWriteStream(filePath)
         stream.on('finish', () => {
           logFile({
             filetype,
-            filename: `${item}.${filetype}`,
+            filepath: `${item}.${filetype}`,
             resolution: formatResolution(width, height),
           })
-          doc.pipe(stream)
-          doc.end()
         })
+        SVGtoPDF(doc, data, 0, 0, { assumePt: true })
+        doc.pipe(stream)
+        doc.end()
       })
     })
     .catch(error => {
@@ -193,7 +208,7 @@ walk(RESOURCES_PATH, (error: string, results: string[]) => {
 
   results.forEach((item: string) => {
     if (item.indexOf('.svg') !== -1) {
-      cleanResults.push(path.join(path.basename(path.parse(item).dir), path.parse(item).base))
+      cleanResults.push(item.replace(RESOURCES_PATH, ''))
     }
   })
 
