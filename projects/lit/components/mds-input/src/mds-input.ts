@@ -3,13 +3,13 @@ import { customElement, property, query, state } from 'lit/decorators.js'
 import clsx from 'clsx'
 import globalStyles from './global.css?inline'
 
-type InputValueType =
+export type InputValueType =
   | null
   | number
   | string
   | undefined
 
-type InputTextType =
+export type InputTextType =
   | 'date'
   | 'email'
   | 'number'
@@ -21,7 +21,7 @@ type InputTextType =
   | 'time'
   | 'url'
 
-type AutocompleteType =
+export type AutocompleteType =
   | 'additional-name'
   | 'address'
   | 'address-level1'
@@ -78,7 +78,7 @@ type AutocompleteType =
   | 'url'
   | 'username'
 
-type ThemeStatusVariantType =
+export type ThemeStatusVariantType =
   | 'error'
   | 'info'
   | 'success'
