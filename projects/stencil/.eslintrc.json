@@ -2,10 +2,6 @@
   "extends": [
     "plugin:@typescript-eslint/recommended"
   ],
-  "parserOptions": {
-    "project": "tsconfig.json",
-    "tsconfigRootDir": "./projects/stencil/"
-  },
   "ignorePatterns": [
     "**/*.config.js",
     "**/*.stories.js",
@@ -16,8 +12,7 @@
   ],
   "overrides": [
     {
-      "files":[
-        "./**/*.mjs",
+      "files": [
         "./**/*.tsx",
         "./**/*.ts"
       ],
@@ -25,7 +20,9 @@
         "@typescript-eslint/explicit-module-boundary-types": [
           "error",
           {
-            "allowedNames": ["render"]
+            "allowedNames": [
+              "render"
+            ]
           }
         ],
         "@typescript-eslint/prefer-nullish-coalescing": "error",
