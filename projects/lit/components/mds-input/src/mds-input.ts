@@ -204,7 +204,7 @@ export class MdsInput extends LitElement {
 
   @state() private tabindex?: number
 
-  @query('.input') inputElement: HTMLElement | HTMLTextAreaElement | undefined
+  @query('.input') inputElement: HTMLInputElement | HTMLTextAreaElement | undefined
 
   constructor () {
     super()
@@ -212,7 +212,7 @@ export class MdsInput extends LitElement {
   }
 
   firstUpdated () {
-    this.manageRequired(null)
+    this.handleValidation(null)
   }
 
   connectedCallback (): void {
@@ -235,24 +235,25 @@ export class MdsInput extends LitElement {
       this.value = input.value || ''
     }
     this.internals.setFormValue(this.value as string)
-    this.manageRequired(this.value as string)
+    this.handleValidation(this.value as string)
     this.dispatchEvent(new CustomEvent('changeEvent', { bubbles: true, detail: { value: this.value } }))
     const event = new CustomEvent('inputEvent', { bubbles: true, detail: { value: ev } })
     this.dispatchEvent(event)
   }
 
-  private manageRequired (data: string | null) {
-    if (!data && this.required) {
-      this.internals.setValidity(
-        {
-          valueMissing: true,
-        },
-        'Il campo è obbligatorio',
-        this.inputElement,
-      )
-    } else {
-      this.internals.setValidity({})
-    }
+  private handleValidation (data: string | null) {
+    if (this.inputElement) this.internals.setValidity(this.inputElement.validity, this.inputElement.validationMessage, this.inputElement)
+    // if (!data && this.required) {
+    //   this.internals.setValidity(
+    //     {
+    //       valueMissing: true,
+    //     },
+    //     'Il campo è obbligatorio',
+    //     this.inputElement,
+    //   )
+    // } else {
+    //   this.internals.setValidity({})
+    // }
   }
 
   private onBlur = () => {

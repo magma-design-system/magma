@@ -30,6 +30,10 @@
       <mds-input type="text" placeholder="Nome" name="nome" required></mds-input>
       <mds-input type="text" placeholder="Cognome" name="cognome"></mds-input>
       <mds-input type="number" placeholder="Età" name="eta" min="0" required></mds-input>
+      <mds-input type="email" placeholder="E-mail" name="email"></mds-input>
+      <mds-input type="time" name="orario" required></mds-input>
+      <mds-input type="url" name="rodrigo" required></mds-input>
+      <mds-input type="textarea" name="plova" required></mds-input>
 
       <input type="submit" />
     </form>
@@ -47,5 +51,12 @@
     // el.addEventListener('changeEvent', (data) => {
     //   console.log('changeEvent on first class input', data)
     // })
+    const form = document.querySelector('form');
+
+    form.addEventListener('submit', (event) => {
+      event.preventDefault();
+
+      console.log(form.reportValidity())
+    })
   </script>
 </html>
