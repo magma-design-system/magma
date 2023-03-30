@@ -335,6 +335,23 @@ export class MdsInput extends LitElement {
     `
   }
 
+  // add the following methods to make your Custom Element participate // in form validation
+  get validity () {
+    return this.internals.validity;
+  }
+  get validationMessage () {
+    return this.internals.validationMessage;
+  }
+  get willValidate () {
+    return this.internals.willValidate;
+  }
+  checkValidity () {
+    return this.internals.checkValidity();
+  }
+  reportValidity () {
+    return this.internals.reportValidity();
+  }
+
   render () {
     const value = this.getValue()
     const input = this.buildInput(value)
