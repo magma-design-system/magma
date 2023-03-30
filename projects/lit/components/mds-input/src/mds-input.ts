@@ -235,25 +235,25 @@ export class MdsInput extends LitElement {
       this.value = input.value || ''
     }
     this.internals.setFormValue(this.value as string)
-    this.handleValidation(this.value as string)
+    // this.handleValidation(this.value as string)
+    this.internals.setValidity(input.validity, input.validationMessage, input)
     this.dispatchEvent(new CustomEvent('changeEvent', { bubbles: true, detail: { value: this.value } }))
     const event = new CustomEvent('inputEvent', { bubbles: true, detail: { value: ev } })
     this.dispatchEvent(event)
   }
 
   private handleValidation (data: string | null) {
-    if (this.inputElement) this.internals.setValidity(this.inputElement.validity, this.inputElement.validationMessage, this.inputElement)
-    // if (!data && this.required) {
-    //   this.internals.setValidity(
-    //     {
-    //       valueMissing: true,
-    //     },
-    //     'Il campo è obbligatorio',
-    //     this.inputElement,
-    //   )
-    // } else {
-    //   this.internals.setValidity({})
-    // }
+    if (!data && this.required) {
+      this.internals.setValidity(
+        {
+          valueMissing: true,
+        },
+        'Il campo è obbligatorio',
+        this.inputElement,
+      )
+    } else {
+      this.internals.setValidity({})
+    }
   }
 
   private onBlur = () => {
