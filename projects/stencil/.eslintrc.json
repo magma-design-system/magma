@@ -34,6 +34,9 @@
           }
         ],
         "react/jsx-no-bind": "off"
+      },
+      "parserOptions": {
+        "project": ["./tsconfig.json"]
       }
     }
   ]
