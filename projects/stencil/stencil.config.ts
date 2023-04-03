@@ -38,6 +38,10 @@ export const config: Config = {
       footer: 'Built with love @ **Maggioli Informatica / R&D Department**',
     },
     {
+      type: 'docs-json',
+      file: 'dist/documentation.json',
+    },
+    {
       type: 'www',
       serviceWorker: null,
     },

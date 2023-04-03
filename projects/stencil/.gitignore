@@ -5,6 +5,7 @@
 /dist
 /dist-storybook
 /loader
+/magma-components
 /src/components.d.ts
 /src/components/**/components.d.ts
 /src/components/**/src
