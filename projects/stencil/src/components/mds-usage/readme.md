@@ -7,10 +7,10 @@
 
 ## Properties
 
-| Property  | Attribute | Description                                                         | Type                                 | Default     |
-| --------- | --------- | ------------------------------------------------------------------- | ------------------------------------ | ----------- |
-| `alias`   | `alias`   | Specifies the alias of the usage phrase on the top of the component | `string`                             | `undefined` |
-| `variant` | `variant` | Specifies the delay when the tooltip will trigger                   | `"do" \| "dont" \| "info" \| "warn"` | `'info'`    |
+| Property  | Attribute | Description                                                         | Type                                              | Default     |
+| --------- | --------- | ------------------------------------------------------------------- | ------------------------------------------------- | ----------- |
+| `alias`   | `alias`   | Specifies the alias of the usage phrase on the top of the component | `string \| undefined`                             | `undefined` |
+| `variant` | `variant` | Specifies the delay when the tooltip will trigger                   | `"do" \| "dont" \| "info" \| "warn" \| undefined` | `'info'`    |
 
 
 ## CSS Custom Properties

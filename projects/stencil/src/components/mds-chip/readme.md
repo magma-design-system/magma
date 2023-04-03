@@ -7,14 +7,14 @@
 
 ## Properties
 
-| Property             | Attribute      | Description                                                                        | Type        | Default     |
-| -------------------- | -------------- | ---------------------------------------------------------------------------------- | ----------- | ----------- |
-| `clickable`          | `clickable`    | Adds ARIA support to the element if has interaction                                | `boolean`   | `undefined` |
-| `deletable`          | `deletable`    | Shows the cross icon to perform cancel/delete action on element                    | `boolean`   | `undefined` |
-| `deleteLabel`        | `delete-label` | Sets the cross icon accessibility label to perform cancel/delete action on element | `"Rimuovi"` | `'Rimuovi'` |
-| `disabled`           | `disabled`     | Shows the cross icon to perform cancel/delete action on element                    | `boolean`   | `false`     |
-| `icon`               | `icon`         | The icon displayed to the left of the component's label                            | `string`    | `undefined` |
-| `label` _(required)_ | `label`        | The label displayed to the right of the component's icon                           | `string`    | `undefined` |
+| Property             | Attribute      | Description                                                                        | Type                     | Default     |
+| -------------------- | -------------- | ---------------------------------------------------------------------------------- | ------------------------ | ----------- |
+| `clickable`          | `clickable`    | Adds ARIA support to the element if has interaction                                | `boolean \| undefined`   | `undefined` |
+| `deletable`          | `deletable`    | Shows the cross icon to perform cancel/delete action on element                    | `boolean \| undefined`   | `undefined` |
+| `deleteLabel`        | `delete-label` | Sets the cross icon accessibility label to perform cancel/delete action on element | `"Rimuovi" \| undefined` | `'Rimuovi'` |
+| `disabled`           | `disabled`     | Shows the cross icon to perform cancel/delete action on element                    | `boolean \| undefined`   | `false`     |
+| `icon`               | `icon`         | The icon displayed to the left of the component's label                            | `string \| undefined`    | `undefined` |
+| `label` _(required)_ | `label`        | The label displayed to the right of the component's icon                           | `string`                 | `undefined` |
 
 
 ## Events

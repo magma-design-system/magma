@@ -9,9 +9,9 @@ This component is **deprecated** in favor of [mds-table][mds-table].
 
 ## Properties
 
-| Property      | Attribute     | Description | Type      | Default     |
-| ------------- | ------------- | ----------- | --------- | ----------- |
-| `interactive` | `interactive` |             | `boolean` | `undefined` |
+| Property      | Attribute     | Description | Type                   | Default     |
+| ------------- | ------------- | ----------- | ---------------------- | ----------- |
+| `interactive` | `interactive` |             | `boolean \| undefined` | `undefined` |
 
 
 ----------------------------------------------

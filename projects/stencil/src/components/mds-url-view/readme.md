@@ -7,11 +7,11 @@
 
 ## Properties
 
-| Property              | Attribute | Description                                                                                                                | Type                | Default     |
-| --------------------- | --------- | -------------------------------------------------------------------------------------------------------------------------- | ------------------- | ----------- |
-| `domain` _(required)_ | `domain`  | Specifies if domain is visible on header                                                                                   | `boolean`           | `undefined` |
-| `loading`             | `loading` | Specifies whether a browser should load an iframe immediately or to defer loading of images until some conditions are met. | `"eager" \| "lazy"` | `'lazy'`    |
-| `src` _(required)_    | `src`     | Specifies the URL to the web page                                                                                          | `string`            | `undefined` |
+| Property              | Attribute | Description                                                                                                                | Type                             | Default     |
+| --------------------- | --------- | -------------------------------------------------------------------------------------------------------------------------- | -------------------------------- | ----------- |
+| `domain` _(required)_ | `domain`  | Specifies if domain is visible on header                                                                                   | `boolean`                        | `undefined` |
+| `loading`             | `loading` | Specifies whether a browser should load an iframe immediately or to defer loading of images until some conditions are met. | `"eager" \| "lazy" \| undefined` | `'lazy'`    |
+| `src` _(required)_    | `src`     | Specifies the URL to the web page                                                                                          | `string`                         | `undefined` |
 
 
 ## Events

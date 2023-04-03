@@ -9,9 +9,9 @@ This component is **deprecated** in favor of [mds-table][mds-table].
 
 ## Properties
 
-| Property   | Attribute   | Description                                       | Type     | Default |
-| ---------- | ----------- | ------------------------------------------------- | -------- | ------- |
-| `flexGrow` | `flex-grow` | Specifies the template for flex children elements | `string` | `'1'`   |
+| Property   | Attribute   | Description                                       | Type                  | Default |
+| ---------- | ----------- | ------------------------------------------------- | --------------------- | ------- |
+| `flexGrow` | `flex-grow` | Specifies the template for flex children elements | `string \| undefined` | `'1'`   |
 
 
 ----------------------------------------------

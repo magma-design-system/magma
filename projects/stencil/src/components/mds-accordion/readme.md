@@ -6,10 +6,10 @@
 
 ## Properties
 
-| Property   | Attribute  | Description                                                | Type      | Default |
-| ---------- | ---------- | ---------------------------------------------------------- | --------- | ------- |
-| `closable` | `closable` | Specifies if an item can be closed by user                 | `boolean` | `true`  |
-| `multiple` | `multiple` | Choose if multiple siblings can be selected simultaneously | `boolean` | `false` |
+| Property   | Attribute  | Description                                                | Type                   | Default |
+| ---------- | ---------- | ---------------------------------------------------------- | ---------------------- | ------- |
+| `closable` | `closable` | Specifies if an item can be closed by user                 | `boolean \| undefined` | `true`  |
+| `multiple` | `multiple` | Choose if multiple siblings can be selected simultaneously | `boolean \| undefined` | `false` |
 
 
 ## Events

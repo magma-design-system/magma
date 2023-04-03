@@ -7,9 +7,9 @@
 
 ## Properties
 
-| Property | Attribute | Description                          | Type      | Default     |
-| -------- | --------- | ------------------------------------ | --------- | ----------- |
-| `opened` | `opened`  | Specifies if the component is opened | `boolean` | `undefined` |
+| Property | Attribute | Description                          | Type                   | Default     |
+| -------- | --------- | ------------------------------------ | ---------------------- | ----------- |
+| `opened` | `opened`  | Specifies if the component is opened | `boolean \| undefined` | `undefined` |
 
 
 ## Events

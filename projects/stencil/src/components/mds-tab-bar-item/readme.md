@@ -7,11 +7,11 @@
 
 ## Properties
 
-| Property     | Attribute    | Description                                   | Type                | Default     |
-| ------------ | ------------ | --------------------------------------------- | ------------------- | ----------- |
-| `icon`       | `icon`       |                                               | `string`            | `undefined` |
-| `selected`   | `selected`   | Specifies if the component is selected or not | `boolean`           | `undefined` |
-| `typography` | `typography` | Specifies the typography of the element       | `"option" \| "tip"` | `'tip'`     |
+| Property     | Attribute    | Description                                   | Type                             | Default     |
+| ------------ | ------------ | --------------------------------------------- | -------------------------------- | ----------- |
+| `icon`       | `icon`       |                                               | `string \| undefined`            | `undefined` |
+| `selected`   | `selected`   | Specifies if the component is selected or not | `boolean \| undefined`           | `undefined` |
+| `typography` | `typography` | Specifies the typography of the element       | `"option" \| "tip" \| undefined` | `'tip'`     |
 
 
 ## Events

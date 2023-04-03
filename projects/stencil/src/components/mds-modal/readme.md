@@ -7,10 +7,10 @@
 
 ## Properties
 
-| Property   | Attribute  | Description                                          | Type                                                 | Default     |
-| ---------- | ---------- | ---------------------------------------------------- | ---------------------------------------------------- | ----------- |
-| `opened`   | `opened`   | Specifies if the modal is opened or not              | `boolean`                                            | `undefined` |
-| `position` | `position` | Specifies the animation position of the modal window | `"bottom" \| "center" \| "left" \| "right" \| "top"` | `null`      |
+| Property   | Attribute  | Description                                          | Type                                                              | Default     |
+| ---------- | ---------- | ---------------------------------------------------- | ----------------------------------------------------------------- | ----------- |
+| `opened`   | `opened`   | Specifies if the modal is opened or not              | `boolean \| undefined`                                            | `undefined` |
+| `position` | `position` | Specifies the animation position of the modal window | `"bottom" \| "center" \| "left" \| "right" \| "top" \| undefined` | `null`      |
 
 
 ## Events

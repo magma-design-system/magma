@@ -7,12 +7,12 @@
 
 ## Properties
 
-| Property | Attribute | Description                                                                                                                                      | Type     | Default |
-| -------- | --------- | ------------------------------------------------------------------------------------------------------------------------------------------------ | -------- | ------- |
-| `max`    | `max`     | The greatest value in the range of permitted values                                                                                              | `number` | `100`   |
-| `min`    | `min`     | The lowest value in the range of permitted values                                                                                                | `number` | `0`     |
-| `step`   | `step`    | The step attribute is a number that specifies the granularity that the value must adhere to, or the special value any, which is described below. | `number` | `1`     |
-| `value`  | `value`   | The value attribute contains a number which contains a representation of the selected number.                                                    | `number` | `50`    |
+| Property | Attribute | Description                                                                                                                                      | Type                  | Default |
+| -------- | --------- | ------------------------------------------------------------------------------------------------------------------------------------------------ | --------------------- | ------- |
+| `max`    | `max`     | The greatest value in the range of permitted values                                                                                              | `number \| undefined` | `100`   |
+| `min`    | `min`     | The lowest value in the range of permitted values                                                                                                | `number \| undefined` | `0`     |
+| `step`   | `step`    | The step attribute is a number that specifies the granularity that the value must adhere to, or the special value any, which is described below. | `number \| undefined` | `1`     |
+| `value`  | `value`   | The value attribute contains a number which contains a representation of the selected number.                                                    | `number \| undefined` | `50`    |
 
 
 ## Events

@@ -9,10 +9,10 @@ This component is **deprecated** in favor of [mds-table][mds-table].
 
 ## Properties
 
-| Property      | Attribute     | Description                                                  | Type      | Default     |
-| ------------- | ------------- | ------------------------------------------------------------ | --------- | ----------- |
-| `interactive` | `interactive` | Specifies if the table row are higlighted on mouseover event | `boolean` | `undefined` |
-| `template`    | `template`    | Specifies the template for flex children elements            | `string`  | `undefined` |
+| Property      | Attribute     | Description                                                  | Type                   | Default     |
+| ------------- | ------------- | ------------------------------------------------------------ | ---------------------- | ----------- |
+| `interactive` | `interactive` | Specifies if the table row are higlighted on mouseover event | `boolean \| undefined` | `undefined` |
+| `template`    | `template`    | Specifies the template for flex children elements            | `string \| undefined`  | `undefined` |
 
 
 ## Events

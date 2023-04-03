@@ -7,11 +7,11 @@
 
 ## Properties
 
-| Property   | Attribute  | Description                                                                     | Type     | Default     |
-| ---------- | ---------- | ------------------------------------------------------------------------------- | -------- | ----------- |
-| `icon`     | `icon`     | Specifies the icon to be displayed if src propery is not used                   | `string` | `undefined` |
-| `initials` | `initials` | The user's inizials displayed if there's no image available and icon is not set | `string` | `undefined` |
-| `src`      | `src`      | Specifies the path to the image                                                 | `string` | `undefined` |
+| Property   | Attribute  | Description                                                                     | Type                  | Default     |
+| ---------- | ---------- | ------------------------------------------------------------------------------- | --------------------- | ----------- |
+| `icon`     | `icon`     | Specifies the icon to be displayed if src propery is not used                   | `string \| undefined` | `undefined` |
+| `initials` | `initials` | The user's inizials displayed if there's no image available and icon is not set | `string \| undefined` | `undefined` |
+| `src`      | `src`      | Specifies the path to the image                                                 | `string \| undefined` | `undefined` |
 
 
 ## CSS Custom Properties

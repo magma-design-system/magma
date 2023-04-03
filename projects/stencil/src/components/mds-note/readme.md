@@ -7,10 +7,10 @@
 
 ## Properties
 
-| Property    | Attribute   | Description                                                       | Type                                                                                                           | Default    |
-| ----------- | ----------- | ----------------------------------------------------------------- | -------------------------------------------------------------------------------------------------------------- | ---------- |
-| `deletable` | `deletable` | Enables the cross icon to perform cancel/delete action on element | `boolean`                                                                                                      | `false`    |
-| `variant`   | `variant`   | Specifies the color variant for the element                       | `"amaranth" \| "aqua" \| "blue" \| "green" \| "lime" \| "orange" \| "orchid" \| "sky" \| "violet" \| "yellow"` | `'yellow'` |
+| Property    | Attribute   | Description                                                       | Type                                                                                                                        | Default    |
+| ----------- | ----------- | ----------------------------------------------------------------- | --------------------------------------------------------------------------------------------------------------------------- | ---------- |
+| `deletable` | `deletable` | Enables the cross icon to perform cancel/delete action on element | `boolean \| undefined`                                                                                                      | `false`    |
+| `variant`   | `variant`   | Specifies the color variant for the element                       | `"amaranth" \| "aqua" \| "blue" \| "green" \| "lime" \| "orange" \| "orchid" \| "sky" \| "violet" \| "yellow" \| undefined` | `'yellow'` |
 
 
 ## Events

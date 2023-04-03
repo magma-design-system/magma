@@ -7,10 +7,10 @@
 
 ## Properties
 
-| Property   | Attribute  | Description                                                 | Type     | Default     |
-| ---------- | ---------- | ----------------------------------------------------------- | -------- | ----------- |
-| `initials` | `initials` | The user's inizials displayed if there's no image available | `string` | `undefined` |
-| `src`      | `src`      | Specifies the path to the image                             | `string` | `undefined` |
+| Property   | Attribute  | Description                                                 | Type                  | Default     |
+| ---------- | ---------- | ----------------------------------------------------------- | --------------------- | ----------- |
+| `initials` | `initials` | The user's inizials displayed if there's no image available | `string \| undefined` | `undefined` |
+| `src`      | `src`      | Specifies the path to the image                             | `string \| undefined` | `undefined` |
 
 
 ## CSS Custom Properties

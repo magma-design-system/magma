@@ -7,12 +7,12 @@
 
 ## Properties
 
-| Property    | Attribute    | Description                                                            | Type      | Default     |
-| ----------- | ------------ | ---------------------------------------------------------------------- | --------- | ----------- |
-| `autoReset` | `auto-reset` | Sets an automatic reset of active filters if all filters are triggered | `boolean` | `undefined` |
-| `label`     | `label`      | Sets the label of the filter group                                     | `string`  | `undefined` |
-| `multiple`  | `multiple`   | Sets if the filter group can filter multiple filters simultaneously    | `boolean` | `undefined` |
-| `reset`     | `reset`      | Shows a reset button if one or more filters are active                 | `boolean` | `undefined` |
+| Property    | Attribute    | Description                                                            | Type                   | Default     |
+| ----------- | ------------ | ---------------------------------------------------------------------- | ---------------------- | ----------- |
+| `autoReset` | `auto-reset` | Sets an automatic reset of active filters if all filters are triggered | `boolean \| undefined` | `undefined` |
+| `label`     | `label`      | Sets the label of the filter group                                     | `string \| undefined`  | `undefined` |
+| `multiple`  | `multiple`   | Sets if the filter group can filter multiple filters simultaneously    | `boolean \| undefined` | `undefined` |
+| `reset`     | `reset`      | Shows a reset button if one or more filters are active                 | `boolean \| undefined` | `undefined` |
 
 
 ## Events
