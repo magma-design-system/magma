@@ -4,6 +4,17 @@ import { PathLike } from 'fs'
 
 const capitalize = (s: string) => s.replace(/./, c => c.toUpperCase())
 
+const dontUseWithNX = (exit?: number): void => {
+  if (process.env.NX_CLI_SET) {
+    console.log(' ')
+    console.log(`${chalk.bold(chalk.bgRed(' DO NOT USE this with NX '))}`)
+    console.log('Prompt messages are not shown for some reason')
+    console.log(`Use it with ${chalk.bold('npm')} or ${chalk.bold('yarn')} instead`)
+    console.log(' ')
+    process.exit(exit ?? 1)
+  }
+}
+
 const logDirectoryCopied = (directory: PathLike, destination: PathLike) => {
   console.log(`Directory ${chalk.yellow(path.basename(directory.toString()))} successfully ${chalk.blue('copied')} in ${chalk.yellow(path.basename(destination.toString()))}`)
 }
@@ -55,4 +66,5 @@ export {
   logFileActionDone,
   logStatus,
   logFileSavedTo,
+  dontUseWithNX,
 }
