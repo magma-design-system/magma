@@ -7,9 +7,9 @@
 
 ## Properties
 
-| Property   | Attribute  | Description                                    | Type                  | Default |
-| ---------- | ---------- | ---------------------------------------------- | --------------------- | ------- |
-| `duration` | `duration` | Sets the duration of the single accordion item | `number \| undefined` | `10000` |
+| Property   | Attribute  | Description                                    | Type     | Default |
+| ---------- | ---------- | ---------------------------------------------- | -------- | ------- |
+| `duration` | `duration` | Sets the duration of the single accordion item | `number` | `10000` |
 
 
 ## Events

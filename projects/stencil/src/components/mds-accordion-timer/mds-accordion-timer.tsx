@@ -1,3 +1,4 @@
+import { MdsAccordionTimerItemEventDetail } from '@component/mds-accordion-timer-item/meta/event-detail'
 import { Component, Host, Element, Event, EventEmitter, h, Prop, Listen, State } from '@stencil/core'
 
 @Component({
@@ -20,7 +21,7 @@ export class MdsAccordionTimer {
   /**
    * Sets the duration of the single accordion item
    */
-  @Prop() duration?: number = 10000
+  @Prop() duration = 10000
 
   /**
    * Emits when the accordion changes it's item
@@ -44,8 +45,7 @@ export class MdsAccordionTimer {
   private clearIntervals = (): void => {
     window.clearInterval(this.timer)
     window.clearInterval(this.timeChecker)
-    this.timer = null
-    this.timeChecker = null
+    this.timeChecker = 0
   }
 
   disconnectedCallback (): void {
@@ -117,22 +117,14 @@ export class MdsAccordionTimer {
 
   private stopTimer = (): void => {
     this.clearIntervals()
-    this.time = null
   }
 
   @Listen('mdsAccordionTimerItemClickSelect')
-  onClickActive (event: CustomEvent<string>): void {
-    if (this.selectedItem && event.detail === this.selectedItem.description) {
-      return
+  onClickActive (event: CustomEvent<MdsAccordionTimerItemEventDetail>): void {
+    if (this.selectedItem) {
+      this.selectedItem.progress = 0
     }
-    let selectedUuid: number
-    this.children.forEach(item => {
-      item.progress = 0
-      if (item.description === event.detail) {
-        selectedUuid = item.uuid
-      }
-    })
-    this.setSelectedItem(selectedUuid)
+    this.setSelectedItem(event.detail.uuid)
     this.startTimer()
     this.pauseTimer()
   }
@@ -144,7 +136,7 @@ export class MdsAccordionTimer {
 
   @Listen('mdsAccordionTimerItemMouseLeaveSelect')
   onMouseLeaveSelect (): void {
-    if (this.timeChecker === null) {
+    if (this.timeChecker === 0) {
       this.playTimer()
     }
   }
