@@ -56,7 +56,6 @@
   "include": [
     "scripts",
     "src",
-    "stencil.config.ts",
   ],
   "exclude": [
     "dist",

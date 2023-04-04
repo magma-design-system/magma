@@ -70,7 +70,7 @@ export const config: Config = {
         { find: /^@interface\/(.*)+$/, replacement: path.resolve('.', './src/interface/$1') },
         { find: /^@test\/(.*)+$/, replacement: path.resolve('.', './src/test/$1') },
         { find: /^@type\/(.*)+$/, replacement: path.resolve('.', './src/type/$1') },
-      ]
+      ],
     }),
     inlineSvg(),
   ],
@@ -94,8 +94,8 @@ export const config: Config = {
     },
     modulePathIgnorePatterns: ['<rootDir>/.build/', '<rootDir>/template/', '<rootDir>/node_modules/'],
     testPathIgnorePatterns: ['<rootDir>/.build/', '<rootDir>/template/', '<rootDir>/node_modules/'],
-    transform: { "^.+\\.svg$": "jest-transformer-svg" },
+    transform: { '^.+\\.svg$': 'jest-transformer-svg' },
     transformIgnorePatterns: ['<rootDir>/.build/', '<rootDir>/template/', '<rootDir>/node_modules/'],
     watchPathIgnorePatterns: ['<rootDir>/.build/', '<rootDir>/template/', '<rootDir>/node_modules/'],
-  }
+  },
 }

@@ -14,8 +14,10 @@
     {
       "files": [
         "./**/*.tsx",
-        "./**/*.ts"
+        "./**/*.ts",
+        "./*.config.ts"
       ],
+      "excludedFiles": ["./stencil.config.ts"],
       "rules": {
         "@typescript-eslint/explicit-module-boundary-types": [
           "error",
