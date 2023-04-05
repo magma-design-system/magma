@@ -2,7 +2,7 @@ import arrowSvg from './assets/arrow.svg'
 import { Component, Element, Event, EventEmitter, Host, Prop, h, Watch } from '@stencil/core'
 import { FloatingUIPlacement, FloatingUIStrategy } from '@type/floating-ui'
 import { KeyboardManager } from '@common/keyboard-manager'
-import { arrow, autoPlacement, autoUpdate, computePosition, flip, MiddlewareData, offset, shift } from '@floating-ui/dom'
+import { arrow, autoPlacement, autoUpdate, computePosition, flip, Middleware, MiddlewareData, offset, shift } from '@floating-ui/dom'
 import { setAttributeIfEmpty, hashValue } from '@common/aria'
 import { MdsDropdownEventDetail } from './meta/event-detail'
 
@@ -29,27 +29,27 @@ export class MdsDropdown {
   /**
    * If set, the component will have an arrow pointing to the caller.
    */
-  @Prop() readonly arrow?: boolean = true
+  @Prop() readonly arrow: boolean = true
 
   /**
    * Sets the distance between arrow and dropdown margins.
    */
-  @Prop() readonly arrowPadding?: number = 24
+  @Prop() readonly arrowPadding: number = 24
 
   /**
    * If set, the component will be placed automatically near it's caller.
    */
-  @Prop() readonly autoPlacement?: boolean = false
+  @Prop() readonly autoPlacement: boolean = false
 
   /**
    * Specifies if the component has a backdrop background
    */
-  @Prop() readonly backdrop?: boolean = false
+  @Prop() readonly backdrop: boolean = false
 
   /**
    * Specifies the placement of the component if no space is available where it is placed.
    */
-  @Prop() readonly flip?: boolean = false
+  @Prop() readonly flip: boolean = false
 
   /**
    * Specifies the id of the caller element.
@@ -59,42 +59,42 @@ export class MdsDropdown {
   /**
    * Sets distance between the dropdown and the caller.
    */
-  @Prop() readonly offset?: number = 24
+  @Prop() readonly offset: number = 24
 
   /**
    * Specifies where the component should be placed relative to the caller.
    */
-  @Prop() readonly placement?: FloatingUIPlacement = 'bottom'
+  @Prop() readonly placement: FloatingUIPlacement = 'bottom'
 
   /**
    * If set, the component will be kept inside the viewport.
    */
-  @Prop() readonly shift?: boolean = true
+  @Prop() readonly shift: boolean = true
 
   /**
    * Sets a safe area distance between the dropdown and the viewport.
    */
-  @Prop() readonly shiftPadding?: number = 24
+  @Prop() readonly shiftPadding: number = 24
 
   /**
    * If set, the component will follow the caller smoothly, visible when the page scrolls.
    */
-  @Prop() readonly smooth?: boolean = true
+  @Prop() readonly smooth: boolean = true
 
   /**
    * Sets the CSS position strategy of the component.
    */
-  @Prop() readonly strategy?: FloatingUIStrategy = 'fixed'
+  @Prop() readonly strategy: FloatingUIStrategy = 'fixed'
 
   /**
    * Specifies the visibility of the component.
    */
-  @Prop({ mutable: true, reflect: true }) visible?: boolean = false
+  @Prop({ mutable: true, reflect: true }) visible = false
 
   /**
    * Specifies the visibility of the component.
    */
-  @Prop() readonly zIndex?: number = 1000
+  @Prop() readonly zIndex: number = 1000
 
   /**
    * Emits when a modal is visible
@@ -111,7 +111,7 @@ export class MdsDropdown {
    */
   @Event({ eventName: 'mdsDropdownChange' }) changedEvent: EventEmitter<MdsDropdownEventDetail>
 
-  private handleCloseDropdown = (e:Event = null): void => {
+  private handleCloseDropdown = (e:Event): void => {
     if (!this.visible) {
       return
     }
@@ -120,28 +120,14 @@ export class MdsDropdown {
     }
   }
 
-  private handleVisibility = (visibility: boolean = null): void => {
-    if (visibility !== null) {
-      this.visible = visibility
-      this.changedEvent.emit({ caller: this.caller, visible: this.visible })
-      if (this.visible) {
-        this.visibleEvent.emit({ caller: this.caller, visible: true })
-        return
-      }
-      this.hiddenEvent.emit({ caller: this.caller, visible: false })
-      return
-    }
-
-    if (this.visible) {
-      this.visible = false
-      this.changedEvent.emit({ caller: this.caller, visible: this.visible })
-      this.hiddenEvent.emit({ caller: this.caller, visible: false })
-      return
-    }
-
-    this.visible = true
+  private handleVisibility = (visibility: boolean): void => {
+    this.visible = visibility
     this.changedEvent.emit({ caller: this.caller, visible: this.visible })
-    this.visibleEvent.emit({ caller: this.caller, visible: true })
+    if (this.visible) {
+      this.visibleEvent.emit({ caller: this.caller, visible: true })
+      return
+    }
+    this.hiddenEvent.emit({ caller: this.caller, visible: false })
     this.updatePosition()
   }
 
@@ -155,8 +141,8 @@ export class MdsDropdown {
       this.backdropEl.style.position = 'fixed'
       this.backdropEl.style.transition = `background-color ${this.backdropDuration / 10000}s ease-out`
       this.backdropEl.style.zIndex = (this.zIndex - 1).toString()
-      document.body.appendChild(this.backdropEl)
     }
+    document.body.appendChild(this.backdropEl)
 
     clearTimeout(this.backdropTimer)
     this.backdropTimer = setTimeout(() => {
@@ -172,12 +158,11 @@ export class MdsDropdown {
     clearTimeout(this.backdropTimer)
     this.backdropTimer = setTimeout(() => {
       this.backdropEl.remove()
-      this.backdropEl = null
     }, this.backdropDuration)
   }
 
   private callerOnClick = ():void => {
-    this.handleVisibility()
+    this.handleVisibility(!this.visible)
   }
 
   private arrowInset = (middleware: MiddlewareData, arrowPosition: string): { bottom?: string, left?: string, right?: string, top?: string } => {
@@ -203,7 +188,7 @@ export class MdsDropdown {
       break
     case 'top':
       inset.left = arrow.x !== null ? `${arrow.x}px` : ''
-      inset.top = null
+      inset.top = ''
       break
     default:
       break
@@ -250,7 +235,7 @@ export class MdsDropdown {
   private updatePosition = ():void => {
     if (!this.caller) return
 
-    const middleware = []
+    const middleware: Middleware[] = new Array<Middleware>()
     const config: { padding?: number } = {}
 
     if (this.shiftPadding) {
@@ -299,10 +284,12 @@ export class MdsDropdown {
         left: 'right',
       }[placement.split('-')[0]]
 
-      Object.assign(arrowStyle, this.arrowTransform(arrowPosition))
-      Object.assign(arrowStyle, this.arrowInset(middlewareData, arrowPosition))
-      Object.assign(arrowStyle, this.arrowTransformOrigin(arrowPosition))
-      Object.assign(this.arrowEl.style, arrowStyle)
+      if (arrowPosition) {
+        Object.assign(arrowStyle, this.arrowTransform(arrowPosition))
+        Object.assign(arrowStyle, this.arrowInset(middlewareData, arrowPosition))
+        Object.assign(arrowStyle, this.arrowTransformOrigin(arrowPosition))
+        Object.assign(this.arrowEl.style, arrowStyle)
+      }
     })
   }
 
@@ -398,14 +385,15 @@ export class MdsDropdown {
 
   componentDidLoad (): void {
     document.addEventListener('click', this.handleCloseDropdown)
-    this.arrowEl = this.host.shadowRoot.querySelector('.arrow')
-    this.caller = document.getElementById(this.target)
+    this.arrowEl = this.host.shadowRoot?.querySelector('.arrow') as HTMLElement
+    const caller = document.getElementById(this.target)
 
-    this.setAriaAttributes()
-
-    if (!this.caller) {
+    if (!caller) {
       return
     }
+
+    this.caller = caller
+    this.setAriaAttributes()
 
     this.caller.addEventListener('click', this.callerOnClick.bind(this))
     this.km.addElement(this.host)
@@ -421,7 +409,7 @@ export class MdsDropdown {
 
   disconnectedCallback (): void {
     this.km.detachEscapeBehavior()
-    this.cleanupAutoUpdate = null
+    this.cleanupAutoUpdate = () => {return}
   }
 
   render () {
