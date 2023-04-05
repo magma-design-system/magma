@@ -39,7 +39,7 @@ export class MdsAccordion {
     const items = this.queryItems()
     const selectedItem: number[] = []
     if (this.multiple) {
-      const list = []
+      const list: (HTMLMdsAccordionItemElement | null)[] = []
       items.forEach((item, key) => {
         item.selected ? list.push(item) : list.push(null)
         if (item.selected) {
