@@ -194,7 +194,7 @@ const build = async () => {
     palette.push(color(element))
   })
 
-  const backgroundColor = getBackgroundColor(colors, 'adjust.tone')
+  const backgroundColor = getBackgroundColor(colors, 'tone.neutral')
 
   const themeLight = new Theme({
     colors: palette,

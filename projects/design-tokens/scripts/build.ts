@@ -11,9 +11,10 @@ const beautifyConfig = {
   space_in_empty_paren: true,
 }
 
-let StyleDictionary, StyleDictionaryBrand, StyleDictionaryBrandSynbee, StyleDictionaryLabel, StyleDictionaryStatus, StyleDictionaryTones
+let StyleDictionary, StyleDictionaryBrand, StyleDictionaryBrandSynbee, StyleDictionarySynbeeV1, StyleDictionaryLabel, StyleDictionaryStatus, StyleDictionaryTones
 StyleDictionary = require('../formats/js-module/js-module').extend('./config.json')
 StyleDictionary = require('../formats/js-module-tailwind-config/js-module-tailwind-config').extend('./config.json')
+StyleDictionary = require('../formats/coolors/coolors').extend('./config.json')
 StyleDictionary = require('../formats/css-vars/css-vars').extend('./config.json')
 StyleDictionary = require('../formats/css-vars-rgb-channels/css-vars-rgb-channels').extend('./config.json')
 StyleDictionary.buildAllPlatforms()
@@ -32,6 +33,10 @@ StyleDictionaryLabel.buildAllPlatforms()
 StyleDictionaryStatus = require('../formats/css-vars/css-vars').extend('./config/status.json')
 StyleDictionaryStatus = require('../formats/css-vars-rgb-channels/css-vars-rgb-channels').extend('./config/status.json')
 StyleDictionaryStatus.buildAllPlatforms()
+
+StyleDictionarySynbeeV1 = require('../formats/css-vars/css-vars').extend('./config/synbee-v1.json')
+StyleDictionarySynbeeV1 = require('../formats/css-vars-rgb-channels/css-vars-rgb-channels').extend('./config/synbee-v1.json')
+StyleDictionarySynbeeV1.buildAllPlatforms()
 
 const saveAsJs = ({ source, varName, destination }: { source: string, varName: string, destination: string }) => {
   readFile(path.resolve(__dirname, source))
