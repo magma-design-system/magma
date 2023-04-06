@@ -49,7 +49,7 @@ export class MdsButton {
   /**
    * Specifies the size for the button
    */
-  @Prop({ reflect: true }) readonly size?: ButtonSizeType = 'md'
+  @Prop({ reflect: true }) readonly size: ButtonSizeType = 'md'
 
   /**
    * Specifies if the button is active or not
