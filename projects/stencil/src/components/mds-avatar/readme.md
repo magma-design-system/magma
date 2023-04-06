@@ -9,7 +9,7 @@
 
 | Property   | Attribute  | Description                                                 | Type                  | Default     |
 | ---------- | ---------- | ----------------------------------------------------------- | --------------------- | ----------- |
-| `initials` | `initials` | The user's inizials displayed if there's no image available | `string \| undefined` | `undefined` |
+| `initials` | `initials` | The user's inizials displayed if there's no image available | `string`              | `''`        |
 | `src`      | `src`      | Specifies the path to the image                             | `string \| undefined` | `undefined` |
 
 
