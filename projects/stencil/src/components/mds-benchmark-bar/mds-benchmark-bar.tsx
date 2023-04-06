@@ -22,7 +22,7 @@ export class MdsBenchmarkBar {
   /**
    * A value between 0 and 100 that rapresents the benchmark
    */
-  @Prop() readonly value?: number = 0
+  @Prop() readonly value: number = 0
 
   /**
    * Sets the theme variant colors
