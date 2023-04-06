@@ -11,7 +11,7 @@
 | ------------ | ------------ | ------------------------------------------------------- | -------------------------------------------------------------------------------------------- | ----------- |
 | `alias`      | `alias`      | An alias to custom how value is represented             | `string \| undefined`                                                                        | `undefined` |
 | `typography` | `typography` | The typography of the component                         | `"label" \| "option" \| undefined`                                                           | `'label'`   |
-| `value`      | `value`      | A value between 0 and 100 that rapresents the benchmark | `number \| undefined`                                                                        | `0`         |
+| `value`      | `value`      | A value between 0 and 100 that rapresents the benchmark | `number`                                                                                     | `0`         |
 | `variant`    | `variant`    | Sets the theme variant colors                           | `"dark" \| "error" \| "info" \| "light" \| "primary" \| "success" \| "warning" \| undefined` | `'dark'`    |
 
 
