@@ -4,23 +4,31 @@ import { iconsDictionary } from '@dictionary/icon'
 export default {
   title: 'UI / Chip',
   argTypes: {
+    clickable: {
+      type: { name: 'boolean' },
+      description: 'Adds ARIA support to the element if has interaction',
+    },
+    deletable: {
+      type: { name: 'boolean' },
+      description: 'Shows the cross icon to perform cancel/delete action on element',
+    },
+    disabled: {
+      type: { name: 'boolean' },
+      description: 'Sets the component disabled status',
+    },
     icon: {
       type: { name: 'string' },
       description: 'The name of the icon.',
       options: iconsDictionary,
       control: { type: 'select' },
     },
-    clickable: {
-      type: { name: 'boolean' },
-      description: 'Sets the tone of the color variant',
+    label: {
+      type: { name: 'string' },
+      description: 'The label displayed to the right of the component\'s icon',
     },
-    deletable: {
+    selected: {
       type: { name: 'boolean' },
-      description: 'Sets the tone of the color variant',
-    },
-    disabled: {
-      type: { name: 'boolean' },
-      description: 'Sets the tone of the color variant',
+      description: 'Sets the component selected',
     },
   },
 }

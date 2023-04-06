@@ -12,6 +12,7 @@
   --mds-chip-icon-color-hover: var(--mds-chip-icon-color);
   --mds-chip-icon-color: theme('colors.tone-neutral');
   --mds-chip-opacity-disabled: var(--opacity-disabled, 0.5);
+  --mds-chip-backgroud-selected: theme('colors.tone-neutral-08');
 
   @apply
     duration-150
@@ -36,6 +37,10 @@
   opacity: var(--mds-chip-opacity-disabled);
 }
 
+:host ( [selected]:not([selected=false]) ) {
+  --mds-chip-background: var(--mds-chip-backgroud-selected);
+}
+
 .label {
   @apply
     duration-200
@@ -51,7 +56,7 @@
   @apply cursor-pointer underline;
 }
 
-:host ( [clickable]:not([clickable=false]) ) .label:hover {
+:host ( componentDidUpdate[clickable]:not([clickable=false]) ) .label:hover {
   text-decoration-color: unset;
 }
 
