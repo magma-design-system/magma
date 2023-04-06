@@ -17,6 +17,17 @@
       ]
     },
 
+    "json": {
+      "transformGroup": "js",
+      "buildPath": "dist/json/",
+      "files": [
+        {
+          "destination": "coolors.json",
+          "format": "json/coolors"
+        }
+      ]
+    },
+
     "scss": {
       "transformGroup": "scss",
       "buildPath": "dist/scss/",
@@ -51,6 +62,7 @@
         "format": "android/colors"
       }]
     },
+
     "ios": {
       "transformGroup": "ios",
       "buildPath": "dist/ios/",
