@@ -28,7 +28,8 @@ export class MdsBreadcrumb {
     this.element.querySelectorAll<HTMLMdsBreadcrumbItemElement>('mds-breadcrumb-item')
 
   private updateBackButton = (id: number): void => {
-    const backElement = this.element.shadowRoot.querySelector('.back') as HTMLElement
+    if (!this.back) return
+    const backElement = this.element.shadowRoot?.querySelector('.back') as HTMLElement
     if (id === 0) {
       backElement.classList.add('disabled')
       this.kb.detachClickBehavior()
@@ -48,7 +49,7 @@ export class MdsBreadcrumb {
     }
 
     if (this.back) {
-      const backElement = this.element.shadowRoot.querySelector('.back') as HTMLElement
+      const backElement = this.element.shadowRoot?.querySelector('.back') as HTMLElement
       this.kb.addElement(backElement)
       this.kb.attachClickBehavior()
     }
@@ -56,7 +57,7 @@ export class MdsBreadcrumb {
 
   componentDidUpdate (): void {
     if (this.back) {
-      const backElement = this.element.shadowRoot.querySelector('.back') as HTMLElement
+      const backElement = this.element.shadowRoot?.querySelector('.back') as HTMLElement
       this.kb.addElement(backElement)
       this.kb.attachClickBehavior()
       return
@@ -85,6 +86,7 @@ export class MdsBreadcrumb {
 
   private togglePrevious = (): void => {
     const item = this.element.querySelector<HTMLMdsBreadcrumbItemElement>('mds-breadcrumb-item[selected]')
+    if (!item) return
     const id = Number(item.id.replace('item-', ''))
     const items = this.queryItems()
     let selectedId = 0

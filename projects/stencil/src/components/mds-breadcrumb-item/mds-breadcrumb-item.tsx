@@ -29,7 +29,7 @@ export class MdsBreadcrumbItem {
   }
 
   componentDidLoad ():void {
-    const textElement = this.element.shadowRoot.querySelector('.text') as HTMLElement
+    const textElement = this.element.shadowRoot?.querySelector('.text') as HTMLElement
     this.km.addElement(textElement)
     this.km.attachClickBehavior()
   }
