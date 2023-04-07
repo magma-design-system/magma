@@ -12,12 +12,12 @@ export class MdsInputRange {
   /**
    * The greatest value in the range of permitted values
    */
-  @Prop() readonly max?: number = 100
+  @Prop() readonly max: number = 100
 
   /**
    * The lowest value in the range of permitted values
    */
-  @Prop() readonly min?: number = 0
+  @Prop() readonly min: number = 0
 
   /**
    * The step attribute is a number that specifies the granularity that
@@ -28,7 +28,7 @@ export class MdsInputRange {
   /**
    * The value attribute contains a number which contains a representation of the selected number.
    */
-  @Prop({ mutable: true, reflect: true }) value?: number = 50
+  @Prop({ mutable: true, reflect: true }) value = 50
 
   /**
    * Emits when the input range is changed
