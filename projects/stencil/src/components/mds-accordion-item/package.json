@@ -40,9 +40,14 @@
       "role": "Software Engineer"
     },
     {
+      "name": "Nicola Tamburini",
+      "email": "nicola.tamburini@maggioli.it",
+      "role": "Software Engineer"
+    },
+    {
       "name": "Vittorio Vittori",
       "email": "vittorio.vittori@maggioli.it",
-      "role": "UX UI Designer"
+      "role": "Product Designer"
     }
   ]
 }
