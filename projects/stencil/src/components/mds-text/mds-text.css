@@ -1,4 +1,4 @@
-@import '~@maggioli-design-system/styles/dist/tailwind/typography.css';
+@import url('~@maggioli-design-system/styles/dist/tailwind/typography.css');
 @tailwind components;
 @tailwind utilities;
 
@@ -8,6 +8,7 @@
 */
 
 :host {
+
   --mds-text-selection-background: theme('colors.label-sky-09');
   --mds-text-selection-color: theme('colors.label-sky-01');
 
@@ -25,134 +26,134 @@
   display: inherit;
 }
 
-:host ( [typography=snippet] ) {
+:host( [typography="snippet"] ) {
   @apply text-code-snippet;
 }
 
-:host ( [typography=hack] ) {
+:host( [typography="hack"] ) {
   @apply text-code-hack;
 }
 
-:host ( [typography=h1] ) {
+:host( [typography="h1"] ) {
   @apply text-title-h1;
 }
 
-:host ( [typography=h2] ) {
+:host( [typography="h2"] ) {
   @apply text-title-h2;
 }
 
-:host ( [typography=h3] ) {
+:host( [typography="h3"] ) {
   @apply text-title-h3;
 }
 
-:host ( [typography=h4] ) {
+:host( [typography="h4"] ) {
   @apply text-title-h4;
 }
 
-:host ( [typography=h5] ) {
+:host( [typography="h5"] ) {
   @apply text-title-h5;
 }
 
-:host ( [typography=h6] ) {
+:host( [typography="h6"] ) {
   @apply text-title-h6;
 }
 
-:host ( [typography=action] ) {
+:host( [typography="action"] ) {
   @apply text-title-action;
 }
 
-:host ( [typography=paragraph] ) {
+:host( [typography="paragraph"] ) {
   @apply text-info-paragraph;
 }
 
-:host ( [typography=detail] ) {
+:host( [typography="detail"] ) {
   @apply text-info-detail;
 }
 
-:host( [typography=caption] ) {
+:host( [typography="caption"] ) {
   @apply text-info-caption;
 }
 
-:host ( [typography=label] ) {
+:host( [typography="label"] ) {
   @apply text-info-label;
 }
 
-:host ( [typography=tip] ) {
+:host( [typography="tip"] ) {
   @apply text-info-tip;
 }
 
-:host ( [typography=option] ) {
+:host( [typography="option"] ) {
   @apply text-info-option;
 }
 
-:host ( [typography=paragraph][variant=read] ) {
+:host( [typography="paragraph"][variant="read"] ) {
   @apply text-read-paragraph;
 }
 
-:host ( [typography=detail][variant=read] ) {
+:host( [typography="detail"][variant="read"] ) {
   @apply text-read-detail;
 }
 
-:host ( [typography=caption][variant=read] ) {
+:host( [typography="caption"][variant="read"] ) {
   @apply text-read-caption;
 }
 
-:host ( [tag=article] ),
-:host ( [tag=blockquote] ),
-:host ( [tag=dd] ),
-:host ( [tag=details] ),
-:host ( [tag=div] ),
-:host ( [tag=dl] ),
-:host ( [tag=dt] ),
-:host ( [tag=figcaption] ),
-:host ( [tag=h1] ),
-:host ( [tag=h2] ),
-:host ( [tag=h3] ),
-:host ( [tag=h4] ),
-:host ( [tag=h5] ),
-:host ( [tag=h6] ),
-:host ( [tag=label] ),
-:host ( [tag=legend] ),
-:host ( [tag=li] ),
-:host ( [tag=ol] ),
-:host ( [tag=p] ),
-:host ( [tag=pre] ),
-:host ( [tag=summary] ),
-:host ( [tag=ul] ) {
+:host( [tag="article"] ),
+:host( [tag="blockquote"] ),
+:host( [tag="dd"] ),
+:host( [tag="details"] ),
+:host( [tag="div"] ),
+:host( [tag="dl"] ),
+:host( [tag="dt"] ),
+:host( [tag="figcaption"] ),
+:host( [tag="h1"] ),
+:host( [tag="h2"] ),
+:host( [tag="h3"] ),
+:host( [tag="h4"] ),
+:host( [tag="h5"] ),
+:host( [tag="h6"] ),
+:host( [tag="label"] ),
+:host( [tag="legend"] ),
+:host( [tag="li"] ),
+:host( [tag="ol"] ),
+:host( [tag="p"] ),
+:host( [tag="pre"] ),
+:host( [tag="summary"] ),
+:host( [tag="ul"] ) {
   @apply block;
 }
 
-:host ( [tag=abbr] ),
-:host ( [tag=address] ),
-:host ( [tag=b] ),
-:host ( [tag=bdo] ),
-:host ( [tag=cite] ),
-:host ( [tag=code] ),
-:host ( [tag=del] ),
-:host ( [tag=dfn] ),
-:host ( [tag=em] ),
-:host ( [tag=i] ),
-:host ( [tag=ins] ),
-:host ( [tag=kbd] ),
-:host ( [tag=mark] ),
-:host ( [tag=q] ),
-:host ( [tag=rb] ),
-:host ( [tag=rt] ),
-:host ( [tag=ruby] ),
-:host ( [tag=s] ),
-:host ( [tag=samp] ),
-:host ( [tag=small] ),
-:host ( [tag=span] ),
-:host ( [tag=strong] ),
-:host ( [tag=sub] ),
-:host ( [tag=sup] ),
-:host ( [tag=time] ),
-:host ( [tag=u] ),
-:host ( [tag=var] ) {
+:host( [tag="abbr"] ),
+:host( [tag="address"] ),
+:host( [tag="b"] ),
+:host( [tag="bdo"] ),
+:host( [tag="cite"] ),
+:host( [tag="code"] ),
+:host( [tag="del"] ),
+:host( [tag="dfn"] ),
+:host( [tag="em"] ),
+:host( [tag="i"] ),
+:host( [tag="ins"] ),
+:host( [tag="kbd"] ),
+:host( [tag="mark"] ),
+:host( [tag="q"] ),
+:host( [tag="rb"] ),
+:host( [tag="rt"] ),
+:host( [tag="ruby"] ),
+:host( [tag="s"] ),
+:host( [tag="samp"] ),
+:host( [tag="small"] ),
+:host( [tag="span"] ),
+:host( [tag="strong"] ),
+:host( [tag="sub"] ),
+:host( [tag="sup"] ),
+:host( [tag="time"] ),
+:host( [tag="u"] ),
+:host( [tag="var"] ) {
   @apply inline;
 }
 
-:host ( [tag=code] ) {
+:host( [tag="code"] ) {
   @apply
     bg-tone-neutral-09
     px-1
@@ -161,11 +162,11 @@
     transition-colors;
 }
 
-:host ( [truncate]:not([truncate=false]) ) {
+:host( [truncate]:not([truncate="false"]) ) {
   @apply flex;
 }
 
-:host ( [truncate]:not([truncate=false]) ) .text {
+:host( [truncate]:not([truncate="false"]) ) .text {
   @apply
     flex-grow
     min-w-0
