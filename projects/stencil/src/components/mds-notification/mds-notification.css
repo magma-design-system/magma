@@ -2,7 +2,7 @@
 
 :host {
 
-/**
+  /**
 * @prop --mds-notification-color: Sets the text color of the component
 * @prop --mds-notification-dot-background: Sets the background-color of the component
 * @prop --mds-notification-dot-padding: Sets the size of the component
@@ -74,8 +74,8 @@
   width: var(--mds-notification-min-width);
 }
 
-:host ( [visible=false][strategy=absolute] ),
-:host ( [visible=false][strategy=fixed] ) {
+:host( [visible="false"][strategy="absolute"] ),
+:host( [visible="false"][strategy="fixed"] ) {
   @apply
     ease-in-cubic
     opacity-100;
@@ -83,10 +83,10 @@
   transform: var(--mds-notification-translate) scale(0);
 }
 
-:host ( [visible][strategy=absolute] ),
-:host ( [visible][strategy=fixed] ),
-:host ( [strategy=absolute]:not([visible=false]) ),
-:host ( [strategy=fixed]:not([visible=false]) ) {
+:host( [visible][strategy="absolute"] ),
+:host( [visible][strategy="fixed"] ),
+:host( [strategy="absolute"]:not([visible="false"]) ),
+:host( [strategy="fixed"]:not([visible="false"]) ) {
   @apply
     ease-out-cubic
     opacity-100;
@@ -94,22 +94,22 @@
   transform: var(--mds-notification-translate) scale(1);
 }
 
-:host ( [strategy=absolute] ) {
+:host( [strategy="absolute"] ) {
   @apply absolute;
 }
 
-:host ( [strategy=fixed] ) {
+:host( [strategy="fixed"] ) {
   @apply fixed;
 }
 
-:host ( [strategy=disabled] ),
-:host ( :not([target]) ) {
+:host( [strategy="disabled"] ),
+:host( :not([target]) ) {
   @apply static opacity-100;
 
   transform: scale(1);
 }
 
-:host ( [strategy=static] ) .dot,
-:host ( :not([target]) ) .dot {
+:host( [strategy="static"] ) .dot,
+:host( :not([target]) ) .dot {
   @apply static;
 }
