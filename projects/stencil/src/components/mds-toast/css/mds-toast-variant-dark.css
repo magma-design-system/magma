@@ -1,7 +1,7 @@
 @tailwind utilities;
 
-:host ( [variant=dark] ),
-:host ( [variant=dark][tone=strong] ) {
+:host( [variant="dark"] ),
+:host( [variant="dark"][tone="strong"] ) {
 
   --background: theme('colors.tone-neutral-02');
   --color: theme('colors.tone-neutral-09');
@@ -9,7 +9,7 @@
   --icon-color: theme('colors.tone-neutral-09');
 }
 
-:host ( [variant=dark][tone=weak] ) {
+:host( [variant="dark"][tone="weak"] ) {
 
   --background: theme('colors.tone-neutral-03');
   --color: theme('colors.tone-neutral-10');
