@@ -73,7 +73,7 @@ export class MdsModal {
   }
 
   private animationName = (customState = '', customPosition = ''): string => {
-    return `animate-${customPosition !== '' ? customPosition : this.position}${customState !== '' ? '-' + customState : ''}`
+    return `to-${customPosition !== '' ? customPosition : this.position}${customState !== '' ? '-' + customState : ''}`
   }
 
   @Watch('position')

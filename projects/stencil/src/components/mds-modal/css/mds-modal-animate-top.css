@@ -1,28 +1,28 @@
-:host ( .animate-top ) {
+:host ( .to-top ) {
   @apply
     justify-center
     mobile:p-4
     p-8;
 }
 
-:host ( .animate-top ) .window,
-:host ( .animate-top ) > ::slotted ( [slot=window] ) {
+:host ( .to-top ) .window,
+:host ( .to-top ) > ::slotted ( [slot=window] ) {
   @apply animate-top;
 }
 
-:host ( .animate-top-intro ) .window,
-:host ( .animate-top-intro ) > ::slotted ( [slot=window] ) {
+:host ( .to-top-intro ) .window,
+:host ( .to-top-intro ) > ::slotted ( [slot=window] ) {
   @apply animate-top-intro;
 }
 
-:host ( .animate-top-opened.animate-top-outro ) .window,
-:host ( .animate-top-opened.animate-top-outro ) > ::slotted ( [slot=window] ),
-:host ( .animate-top-opened ) .window,
-:host ( .animate-top-opened ) > ::slotted ( [slot=window] ) {
+:host ( .to-top-opened.to-top-outro ) .window,
+:host ( .to-top-opened.to-top-outro ) > ::slotted ( [slot=window] ),
+:host ( .to-top-opened ) .window,
+:host ( .to-top-opened ) > ::slotted ( [slot=window] ) {
   @apply animate-top-opened;
 }
 
-:host ( .animate-top-outro ) .window,
-:host ( .animate-top-outro ) > ::slotted ( [slot=window] ) {
+:host ( .to-top-outro ) .window,
+:host ( .to-top-outro ) > ::slotted ( [slot=window] ) {
   @apply animate-top-outro;
 }
