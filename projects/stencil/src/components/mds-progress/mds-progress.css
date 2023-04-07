@@ -28,7 +28,7 @@
   min-width: var(--mds-progress-thickness);
 }
 
-:host ( [direction=vertical] ) {
+:host( [direction="vertical"] ) {
   @apply
     h-full
     flex-col
@@ -48,4 +48,4 @@
   transition-property: background-color, flex-grow;
 }
 
-@import './css/mds-progress-variant.css';
+@import url('./css/mds-progress-variant.css');
