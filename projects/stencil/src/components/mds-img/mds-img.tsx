@@ -18,14 +18,14 @@ export class MdsImg {
   /**
    * Specifies an alternate text for an image
    */
-  @Prop({ mutable: true, reflect: true }) alt?: string
+  @Prop({ mutable: true, reflect: true }) alt = ''
 
   /**
    * Specifies the aspect ratio of the image, useful to render all images of a list with the same proportions.
    * When defined, mds-img will render the Host element with background-image instead of wrapping ad img element.
    * This will drop all atributes useful for img elements only: alt, crossorigin, height, loading, referrerpolicy, sizes, src, srcset, width
    */
-  @Prop() readonly aspectRatio?: string
+  @Prop() readonly aspectRatio: string = ''
 
   /**
    * Allow images from third-party sites that allow
@@ -113,17 +113,18 @@ export class MdsImg {
       const index = this.src.lastIndexOf('/') + 1
       return this.src.substring(index)
     }
+    return ''
   }
 
   componentWillLoad ():void {
-    this.image = this.host.querySelector<HTMLImageElement>('img')
+    this.image = this.host.querySelector<HTMLImageElement>('img') as HTMLImageElement
     if (!this.alt) {
       this.alt = this.autoAltName()
     }
   }
 
   private setAriaAttributes (): void {
-    if (this.aspectRatio !== undefined) {
+    if (this.aspectRatio !== '') {
       setAttributeIfEmpty(this.host, 'aria-label', this.alt)
     }
   }
@@ -133,7 +134,7 @@ export class MdsImg {
   }
 
   render () {
-    if (this.aspectRatio !== undefined) {
+    if (this.aspectRatio !== '') {
       return (
         <Host
           aria-label={this.alt}
