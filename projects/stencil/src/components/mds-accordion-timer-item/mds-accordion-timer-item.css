@@ -1,4 +1,4 @@
-@import '../../tailwind/components.css';
+@import url('../../tailwind/components.css');
 @tailwind components;
 @tailwind utilities;
 
@@ -54,7 +54,7 @@
     text-left;
 }
 
-:host ( [selected] ) .action {
+:host( [selected] ) .action {
   @apply cursor-auto;
 }
 
@@ -71,7 +71,7 @@
     transition-cosmetic;
 }
 
-:host ( [selected] ) .contents {
+:host( [selected] ) .contents {
   @apply
     h-auto
     opacity-100
