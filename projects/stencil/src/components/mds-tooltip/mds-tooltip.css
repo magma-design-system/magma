@@ -17,7 +17,7 @@
   --mds-tooltip-arrow-background: var(--mds-tooltip-background);
   --mds-tooltip-background: theme('colors.tone-neutral');
   --mds-tooltip-delay: 1s;
-  --mds-tooltip-drop-shadow: drop-shadow(0 10px 8px rgba(0, 0, 0, 0.04)) drop-shadow(0 4px 3px rgba(0, 0, 0, 0.1)) drop-shadow(0 0 1px rgba(0, 0, 0, 0.1));
+  --mds-tooltip-drop-shadow: drop-shadow(0 10px 8px rgb(0 0 0 / 0.04)) drop-shadow(0 4px 3px rgb(0 0 0 / 0.1)) drop-shadow(0 0 1px rgb(0 0 0 / 0.1));
   --mds-tooltip-duration: 0.5s;
   --mds-tooltip-ease: theme('transitionTimingFunction.out-expo');
   --mds-tooltip-dot-padding: theme('spacing.1');
@@ -47,7 +47,7 @@
   z-index: var(--mds-tooltip-z-index);
 }
 
-:host ( [visible]:not([visible=false]) ) {
+:host( [visible]:not([visible="false"]) ) {
   @apply
     opacity-100
     pointer-events-auto;
@@ -58,6 +58,7 @@
 
 .text {
   @apply inline-flex;
+
   padding: var(--mds-tooltip-dot-padding);
 }
 
@@ -73,7 +74,7 @@
   fill: var(--mds-tooltip-arrow-background);
 }
 
-::slotted ( * ) {
+::slotted( * ) {
   @apply
     relative
     z-10;
