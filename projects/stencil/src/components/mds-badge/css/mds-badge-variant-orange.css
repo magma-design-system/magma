@@ -1,19 +1,19 @@
 @tailwind utilities;
 
-:host ( [variant=orange] ),
-:host ( [variant=orange][tone=strong] ) {
+:host( [variant="orange"] ),
+:host( [variant="orange"][tone="strong"] ) {
 
   --background: theme('colors.label-orange-05');
   --color: theme('colors.label-orange-10');
 }
 
-:host ( [variant=orange][tone=weak] ) {
+:host( [variant="orange"][tone="weak"] ) {
 
   --background: theme('colors.label-orange-08');
   --color: theme('colors.label-orange-02');
 }
 
-:host ( [variant=orange][tone=quiet] ) {
+:host( [variant="orange"][tone="quiet"] ) {
 
   --background: theme('colors.label-orange-09');
   --color: theme('colors.label-orange-04');
