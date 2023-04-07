@@ -22,7 +22,7 @@
   transition-property: transform;
 }
 
-:host ([running]:not([running=false])) {
+:host([running]:not([running="false"])) {
   @apply
     duration-700
     ease-in-out-expo;
@@ -46,6 +46,6 @@
   transition-property: stroke;
 }
 
-:host ([running]:not([running=false])) .await-icon {
+:host([running]:not([running="false"])) .await-icon {
   animation-play-state: running;
 }
