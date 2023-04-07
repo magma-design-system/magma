@@ -1,5 +1,5 @@
-@import '../../tailwind/components.css';
-@import '~@maggioli-design-system/styles/dist/tailwind/typography.css';
+@import url('../../tailwind/components.css');
+@import url('~@maggioli-design-system/styles/dist/tailwind/typography.css');
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
@@ -51,7 +51,7 @@
   transition-property: background-color, border-color, box-shadow, color, transform, outline, outline-offset;
 }
 
-:host (:focus-visible) {
+:host(:focus-visible) {
   @apply focus-on;
 }
 
@@ -76,7 +76,7 @@
   fill: var(--mds-button-icon-color);
 }
 
-:host ([disabled]:not([disabled=false])) {
+:host([disabled]:not([disabled="false"])) {
   @apply
     opacity-50
     pointer-events-none;
@@ -103,26 +103,26 @@ mds-spinner {
   color: currentcolor;
 }
 
-:host (:not([await])) mds-spinner,
-:host ([await=false]) mds-spinner {
+:host(:not([await])) mds-spinner,
+:host([await="false"]) mds-spinner {
   @apply
     duration-200
     ease-out;
 }
 
-:host ([await]:not([await=false])) .await {
+:host([await]:not([await="false"])) .await {
   @apply mr-0;
 }
 
-:host ([await]:not([await=false])) {
+:host([await]:not([await="false"])) {
   @apply pointer-events-none;
 }
 
-@import './css/mds-button-variant-primary.css';
-@import './css/mds-button-variant-dark.css';
-@import './css/mds-button-variant-light.css';
-@import './css/mds-button-variant-error.css';
-@import './css/mds-button-variant-warning.css';
-@import './css/mds-button-variant-info.css';
-@import './css/mds-button-variant-success.css';
-@import './css/mds-button-size.css';
+@import url('./css/mds-button-variant-primary.css');
+@import url('./css/mds-button-variant-dark.css');
+@import url('./css/mds-button-variant-light.css');
+@import url('./css/mds-button-variant-error.css');
+@import url('./css/mds-button-variant-warning.css');
+@import url('./css/mds-button-variant-info.css');
+@import url('./css/mds-button-variant-success.css');
+@import url('./css/mds-button-size.css');
