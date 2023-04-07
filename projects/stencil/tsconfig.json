@@ -55,7 +55,7 @@
   },
   "include": [
     "scripts",
-    "src",
+    "src"
   ],
   "exclude": [
     "dist",
