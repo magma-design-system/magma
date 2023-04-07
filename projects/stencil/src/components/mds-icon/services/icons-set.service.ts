@@ -58,7 +58,7 @@ class IconsSetController {
   // Try to retrieve svg from cache
   private isCacheAvailable = async (url: string) => {
     try {
-      const loaderItem: string = await get(`loader_${url}`)
+      const loaderItem = await get(`loader_${url}`)
 
       if (!loaderItem) {
         return false
