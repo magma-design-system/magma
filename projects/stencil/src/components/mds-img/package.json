@@ -22,7 +22,7 @@
     "prepublishOnly": "npm run build"
   },
   "dependencies": {
-    "@stencil/core": "^2.22.2"
+    "@stencil/core": "^2.22.3"
   },
   "license": "MIT",
   "author": {
@@ -37,9 +37,14 @@
       "role": "Software Engineer"
     },
     {
+      "name": "Nicola Tamburini",
+      "email": "nicola.tamburini@maggioli.it",
+      "role": "Software Engineer"
+    },
+    {
       "name": "Vittorio Vittori",
       "email": "vittorio.vittori@maggioli.it",
-      "role": "UX UI Designer"
+      "role": "Product Designer"
     }
   ]
 }
