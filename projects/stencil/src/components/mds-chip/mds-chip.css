@@ -1,8 +1,9 @@
-@import '../../tailwind/components.css';
+@import url('../../tailwind/components.css');
 @tailwind components;
 @tailwind utilities;
 
 :host {
+
   --mds-chip-background: theme('colors.tone-neutral-09');
   --mds-chip-color: theme('colors.tone-neutral-04');
   --mds-chip-delete-icon-color-hover: theme('colors.status-error-06');
@@ -31,13 +32,14 @@
 }
 
 
-:host ( [disabled]:not([disabled=false]) ) {
+:host( [disabled]:not([disabled="false"]) ) {
   @apply pointer-events-none;
 
   opacity: var(--mds-chip-opacity-disabled);
 }
 
-:host ( [selected]:not([selected=false]) ) {
+:host( [selected]:not([selected="false"]) ) {
+
   --mds-chip-background: var(--mds-chip-backgroud-selected);
 }
 
@@ -52,11 +54,11 @@
   transition-property: color, text-decoration-color, outline, outline-offset;
 }
 
-:host ( [clickable]:not([clickable=false]) ) .label {
+:host( [clickable]:not([clickable="false"]) ) .label {
   @apply cursor-pointer underline;
 }
 
-:host ( componentDidUpdate[clickable]:not([clickable=false]) ) .label:hover {
+:host( componentdidupdate[clickable]:not([clickable="false"]) ) .label:hover {
   text-decoration-color: unset;
 }
 
