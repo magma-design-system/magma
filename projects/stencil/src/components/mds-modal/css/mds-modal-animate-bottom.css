@@ -1,28 +1,28 @@
-:host ( .to-bottom ) {
+:host( .to-bottom ) {
   @apply
     justify-center
     mobile:p-4
     p-8;
 }
 
-:host ( .to-bottom ) .window,
-:host ( .to-bottom ) > ::slotted ( [slot=window] ) {
-  @apply animate-bottom;
+:host( .to-bottom ) .window,
+:host( .to-bottom ) > ::slotted( [slot="window"] ) {
+  @apply animate;
 }
 
-:host ( .to-bottom-intro ) .window,
-:host ( .to-bottom-intro ) > ::slotted ( [slot=window] ) {
+:host( .to-bottom-intro ) .window,
+:host( .to-bottom-intro ) > ::slotted( [slot="window"] ) {
   @apply animate-bottom-intro;
 }
 
-:host ( .to-bottom-opened.to-bottom-outro ) .window,
-:host ( .to-bottom-opened.to-bottom-outro ) > ::slotted ( [slot=window] ),
-:host ( .to-bottom-opened ) .window,
-:host ( .to-bottom-opened ) > ::slotted ( [slot=window] ) {
+:host( .to-bottom-opened.to-bottom-outro ) .window,
+:host( .to-bottom-opened.to-bottom-outro ) > ::slotted( [slot="window"] ),
+:host( .to-bottom-opened ) .window,
+:host( .to-bottom-opened ) > ::slotted( [slot="window"] ) {
   @apply animate-bottom-opened;
 }
 
-:host ( .to-bottom-outro ) .window,
-:host ( .to-bottom-outro ) > ::slotted ( [slot=window] ) {
+:host( .to-bottom-outro ) .window,
+:host( .to-bottom-outro ) > ::slotted( [slot="window"] ) {
   @apply animate-bottom-outro;
 }

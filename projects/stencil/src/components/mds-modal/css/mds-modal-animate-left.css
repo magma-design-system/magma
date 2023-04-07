@@ -1,41 +1,41 @@
-:host ( .to-left ) {
+:host( .to-left ) {
   @apply justify-start;
 }
 
-:host ( .to-left ) .window,
-:host ( .to-left ) > ::slotted ( [slot=window] ) {
-  @apply animate-left;
+:host( .to-left ) .window,
+:host( .to-left ) > ::slotted( [slot="window"] ) {
+  @apply animate;
 }
 
-:host ( .to-left-intro ) .window,
-:host ( .to-left-intro ) > ::slotted ( [slot=window] ) {
+:host( .to-left-intro ) .window,
+:host( .to-left-intro ) > ::slotted( [slot="window"] ) {
   @apply animate-left-intro;
 }
 
-:host ( .to-left-opened.to-left-outro ) .window,
-:host ( .to-left-opened.to-left-outro ) > ::slotted ( [slot=window] ),
-:host ( .to-left-opened ) .window,
-:host ( .to-left-opened ) > ::slotted ( [slot=window] ) {
+:host( .to-left-opened.to-left-outro ) .window,
+:host( .to-left-opened.to-left-outro ) > ::slotted( [slot="window"] ),
+:host( .to-left-opened ) .window,
+:host( .to-left-opened ) > ::slotted( [slot="window"] ) {
   @apply animate-left-opened;
 }
 
-:host ( .to-left-opened ) .close,
-:host ( .to-left-opened.to-left-outro ) .close {
+:host( .to-left-opened ) .close,
+:host( .to-left-opened.to-left-outro ) .close {
   @apply opacity-100;
 
   transform: translate(-24px, 24px) rotate(0);
 }
 
-:host ( .to-left-outro ) .window,
-:host ( .to-left-outro ) > ::slotted ( [slot=window] ) {
+:host( .to-left-outro ) .window,
+:host( .to-left-outro ) > ::slotted( [slot="window"] ) {
   @apply animate-left-outro;
 }
 
-:host ( .to-left-outro ) .close {
+:host( .to-left-outro ) .close {
   transform: translate(24px, 24px) rotate(-90deg);
 }
 
-:host ( .to-left ) .close {
+:host( .to-left ) .close {
   @apply right-0;
 
   transform: translate(36px, 24px) rotate(90deg);

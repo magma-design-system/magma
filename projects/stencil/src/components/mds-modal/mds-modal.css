@@ -1,5 +1,6 @@
-@import url('../../tailwind/components.css');
-@import url('./css/components.css');
+/* stylelint-disable */
+@import '../../tailwind/components.css';
+@import './css/components.css';
 
 @tailwind components;
 @tailwind utilities;
@@ -34,26 +35,26 @@
 
   background-color: rgba(var(--mds-modal-overlay-color) / 0);
   perspective: 600px;
-  z-index: var(--z-index, 1000);
+  z-index: var(--mds-modal-z-index, 1000);
 }
 
-:host ( [position=top] ) {
+:host( [position=top] ) {
   @apply
     items-start
     justify-center;
 }
 
-:host ( [position=bottom] ) {
+:host( [position=bottom] ) {
   @apply
     items-end
     justify-center;
 }
 
-:host ( .to-bottom-opened ),
-:host ( .to-center-opened ),
-:host ( .to-left-opened ),
-:host ( .to-right-opened ),
-:host ( .to-top-opened ) {
+:host( .to-bottom-opened ),
+:host( .to-center-opened ),
+:host( .to-left-opened ),
+:host( .to-right-opened ),
+:host( .to-top-opened ) {
   @apply
     duration-500
     pointer-events-auto;
@@ -105,8 +106,9 @@
   grid-template-rows: auto 1fr auto;
 }
 
-@import url('./css/mds-modal-animate-bottom.css');
-@import url('./css/mds-modal-animate-center.css');
-@import url('./css/mds-modal-animate-left.css');
-@import url('./css/mds-modal-animate-right.css');
-@import url('./css/mds-modal-animate-top.css');
+@import './css/mds-modal-animate-bottom.css';
+@import './css/mds-modal-animate-center.css';
+@import './css/mds-modal-animate-left.css';
+@import './css/mds-modal-animate-right.css';
+@import './css/mds-modal-animate-top.css';
+

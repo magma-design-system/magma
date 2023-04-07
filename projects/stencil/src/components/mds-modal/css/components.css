@@ -1,9 +1,8 @@
 @tailwind components;
+@tailwind utilities;
 
 @layer components {
-  .animate-bottom,
-  .animate-center,
-  .animate-top {
+  .animate {
     @apply
       duration-500
       ease-in-out-expo
@@ -29,15 +28,6 @@
   .animate-center-outro,
   .animate-top-outro {
     transform: rotateX(-22deg) scale(0.5) translateY(-40%);
-  }
-
-  .animate-left,
-  .animate-right {
-    @apply
-      duration-500
-      opacity-0
-      ease-in-out-expo
-      transition-cosmetic;
   }
 
   .animate-right-intro,
