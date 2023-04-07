@@ -9,7 +9,7 @@
 
 | Property      | Attribute     | Description                                                             | Type                                    | Default     |
 | ------------- | ------------- | ----------------------------------------------------------------------- | --------------------------------------- | ----------- |
-| `options`     | `options`     | Specifies a short hint that describes the expected value of the element | `string \| undefined`                   | `undefined` |
+| `options`     | `options`     | Specifies a short hint that describes the expected value of the element | `string`                                | `''`        |
 | `placeholder` | `placeholder` | Specifies a short hint that describes the expected value of the element | `string \| undefined`                   | `undefined` |
 | `value`       | `value`       | Specifies the value of the element                                      | `null \| number \| string \| undefined` | `''`        |
 
