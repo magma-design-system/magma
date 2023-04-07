@@ -1,4 +1,4 @@
-@import '../../tailwind/components.css';
+@import url('../../tailwind/components.css');
 @tailwind components;
 @tailwind utilities;
 
@@ -54,15 +54,15 @@
   transition-property: outline, outline-offset;
 }
 
-:host ( :last-of-type ) {
+:host( :last-of-type ) {
   @apply basis-1;
 }
 
-:host ( :last-of-type ) .progress {
+:host( :last-of-type ) .progress {
   @apply hidden;
 }
 
-:host ( [ selected ] ) .icon {
+:host( [ selected ] ) .icon {
 
   --mds-stepper-bar-item-icon-background: var(--mds-stepper-bar-item-icon-background-selected);
   --mds-stepper-bar-item-icon-color: var(--mds-stepper-bar-item-icon-color-selected);
@@ -70,7 +70,7 @@
   transition-delay: 0ms;
 }
 
-:host ( [ current ] ) .icon {
+:host( [ current ] ) .icon {
 
   --mds-stepper-bar-item-icon-background: var(--mds-stepper-bar-item-icon-background-current);
   --mds-stepper-bar-item-icon-color: var(--mds-stepper-bar-item-icon-color-current);
@@ -79,8 +79,8 @@
   transition-delay: calc(var(--mds-stepper-bar-item-duaration) / 2);
 }
 
-:host ( :not([ selected ]) ) .icon,
-:host ( :not([ current ]) ) .icon {
+:host( :not([ selected ]) ) .icon,
+:host( :not([ current ]) ) .icon {
 
   --mds-stepper-bar-item-icon-ring-color: var(--mds-stepper-bar-item-icon-background);
 }
