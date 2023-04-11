@@ -13,16 +13,16 @@ export class MdsPaginator {
   /**
    * Specifies the number of total pages to be handled
    */
-  @Prop() readonly pages?: number = 0
+  @Prop() readonly pages: number = 0
 
   /**
    * Specifies the current page selected in the paginator
    */
-  @Prop({ mutable: true, reflect: true }) currentPage?: number = 1
+  @Prop({ mutable: true, reflect: true }) currentPage = 1
 
   componentDidLoad (): void {
     setTimeout(() => {
-      this.goToPage(this.currentPage, null)
+      this.goToPage(this.currentPage)
     }, 10)
   }
 
@@ -33,8 +33,10 @@ export class MdsPaginator {
 
   private scrollPage = (): void => {
     const elementIndex = this.currentPage - 2
-    const pagesElement = this.element.shadowRoot.querySelector<HTMLDivElement>('.pages')
-    const pagesItems = pagesElement.querySelectorAll<HTMLMdsPaginatorItemElement>('mds-paginator-item')
+    const pagesElement = this.element.shadowRoot?.querySelector<HTMLDivElement>('.pages')
+    const pagesItems = pagesElement?.querySelectorAll<HTMLMdsPaginatorItemElement>('mds-paginator-item')
+
+    if (!pagesElement || !pagesItems) return
 
     if (elementIndex < 0) {
       pagesElement.scrollLeft = 0
