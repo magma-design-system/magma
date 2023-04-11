@@ -34,7 +34,7 @@ export class MdsStepperBar {
   private setCurrent = (index = 1): void => {
     this.items = this.queryItems()
     this.currentItem = index - 1
-    const values = []
+    const values = new Array<string>()
     this.items.forEach((item, key) => {
       if (this.linear) {
         item.selected = false
@@ -73,9 +73,11 @@ export class MdsStepperBar {
   @Event({ eventName: 'mdsStepperBarChange' }) changedEvent: EventEmitter<MdsStepperBarEventDetail>
 
   private scrollItems = (): void => {
-    const itemsElement = this.element.shadowRoot.querySelector<HTMLDivElement>('.items')
+    const itemsElement = this.element.shadowRoot?.querySelector<HTMLDivElement>('.items')
     const pagesItems = this.queryItems()
     const elementIndex = this.minmax(this.currentItem, 0, this.items.length - 1)
+
+    if (!itemsElement) throw Error('No mds-stepper-bar-items found')
 
     if (elementIndex <= 0) {
       itemsElement.scrollLeft = 0
