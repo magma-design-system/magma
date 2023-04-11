@@ -83,8 +83,8 @@
   transform: var(--mds-notification-translate) scale(0);
 }
 
-:host( [visible][strategy="absolute"] ),
-:host( [visible][strategy="fixed"] ),
+:host( [visible="true"][strategy="absolute"] ),
+:host( [visible="true"][strategy="fixed"] ),
 :host( [strategy="absolute"]:not([visible="false"]) ),
 :host( [strategy="fixed"]:not([visible="false"]) ) {
   @apply
