@@ -48,12 +48,12 @@ export class MdsStepperBarItem {
   /**
    * Specifies if the component is checked or not
    */
-  @Prop({ reflect: true }) readonly selected?: boolean = false
+  @Prop({ reflect: true }) readonly selected: boolean = false
 
   /**
    * Specifies if the component is the current or not
    */
-  @Prop({ mutable: true, reflect: true }) current?: boolean = false
+  @Prop({ mutable: true, reflect: true }) current = false
 
   /**
    * Specifies the value the component will return mdsStepperBarItemSelect event
@@ -68,11 +68,12 @@ export class MdsStepperBarItem {
   componentWillLoad (): void {
     this.isCurrent = this.current
     this.isSelected = this.selected
-    this.index = [...Array.from(this.host.parentElement.childNodes)].indexOf(this.host)
+    const parent = this.host.parentElement
+    if (parent) this.index = [...Array.from(parent.childNodes)].indexOf(this.host)
   }
 
   componentDidLoad = (): void => {
-    const header = this.host.shadowRoot.querySelector('header')
+    const header = this.host.shadowRoot?.querySelector('header') as HTMLElement
     this.km.addElement(header)
     this.km.attachClickBehavior()
   }
@@ -93,7 +94,7 @@ export class MdsStepperBarItem {
 
   private toggle = () => {
     this.isCurrent = true
-    this.selectedEvent.emit({ value: this.value })
+    this.selectedEvent.emit({ value: this.value ?? '' })
   }
 
   private showBadge = (): MdsBadge => {
