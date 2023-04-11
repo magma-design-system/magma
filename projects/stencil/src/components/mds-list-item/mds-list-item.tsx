@@ -20,9 +20,9 @@ export class MdsListItem {
   @Prop() readonly variant?: TypographyReadingVariants = 'info'
 
   /**
-   * Specifies the typography of the element
+   * Specifies the icon displayed in the element
    */
-  @Prop() readonly icon?: string = null
+  @Prop() readonly icon?: string
 
   render () {
     return (

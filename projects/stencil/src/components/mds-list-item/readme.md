@@ -7,11 +7,11 @@
 
 ## Properties
 
-| Property     | Attribute    | Description                             | Type                                                                   | Default    |
-| ------------ | ------------ | --------------------------------------- | ---------------------------------------------------------------------- | ---------- |
-| `icon`       | `icon`       | Specifies the typography of the element | `string \| undefined`                                                  | `null`     |
-| `typography` | `typography` | Specifies the typography of the element | `"caption" \| "detail" \| "label" \| "option" \| "paragraph" \| "tip"` | `'detail'` |
-| `variant`    | `variant`    | Specifies the variant for `typography`  | `"info" \| "read" \| undefined`                                        | `'info'`   |
+| Property     | Attribute    | Description                                 | Type                                                                   | Default     |
+| ------------ | ------------ | ------------------------------------------- | ---------------------------------------------------------------------- | ----------- |
+| `icon`       | `icon`       | Specifies the icon displayed in the element | `string \| undefined`                                                  | `undefined` |
+| `typography` | `typography` | Specifies the typography of the element     | `"caption" \| "detail" \| "label" \| "option" \| "paragraph" \| "tip"` | `'detail'`  |
+| `variant`    | `variant`    | Specifies the variant for `typography`      | `"info" \| "read" \| undefined`                                        | `'info'`    |
 
 
 ## Shadow Parts
