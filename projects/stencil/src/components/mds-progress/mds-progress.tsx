@@ -10,12 +10,12 @@ import { ThemeVariantType } from '@type/variant'
 export class MdsProgress {
   @Element() private element: HTMLMdsAccordionTimerElement
   @State() currentStep: string
-  private stepsList = []
+  private stepsList = new Array<string>()
 
   /**
    * A value between 0 and 1 that rapresents the status progress
    */
-  @Prop() readonly progress?: number = 0
+  @Prop() readonly progress: number = 0
 
   /**
    * Specifies the direction of the progress bar, if horizonatl or vertical
@@ -25,12 +25,12 @@ export class MdsProgress {
   /**
    * Sets the theme variant colors
    */
-  @Prop({ reflect: true }) readonly variant?: ThemeVariantType = 'dark'
+  @Prop({ reflect: true }) readonly variant: ThemeVariantType = 'primary'
 
   /**
    * Sets the steps that can be pronounced by accessibility technologies
    */
-  @Prop() readonly steps?: string = 'Inizio,Un quarto,Metà,Tre quarti,Fine'
+  @Prop() readonly steps: string = 'Inizio,Un quarto,Metà,Tre quarti,Fine'
 
   componentWillLoad (): void {
     this.stepsList = this.steps.split(',')
