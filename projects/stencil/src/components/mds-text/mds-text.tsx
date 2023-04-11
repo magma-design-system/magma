@@ -22,7 +22,7 @@ export class MdsText {
   /**
    * Specifies the font typography of the element
    */
-  @Prop({ reflect: true }) readonly typography?: TypographyType = 'detail'
+  @Prop({ reflect: true }) readonly typography: TypographyType = 'detail'
 
   /**
    * Specifies the variant for `typography`
@@ -30,7 +30,7 @@ export class MdsText {
   @Prop({ reflect: true }) readonly variant?: TypographyVariants
 
   render () {
-    const { tag } = typographyDefaultsVariant[ this.typography ]
+    const { tag } = typographyDefaultsVariant[this.typography]
     this.tag = this.tag ?? tag as TypographyTagType
     return (
       <Host>

@@ -7,12 +7,12 @@
 
 ## Properties
 
-| Property     | Attribute    | Description                                                                | Type                                                                                                                                                                   | Default     |
-| ------------ | ------------ | -------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ----------- |
-| `tag`        | `tag`        | Specifies the HTML tag of the element                                      | `TypographyTagType \| undefined`                                                                                                                                       | `undefined` |
-| `truncate`   | `truncate`   | Specifies if the text shoud be truncated or should behave as a normal text | `boolean \| undefined`                                                                                                                                                 | `undefined` |
-| `typography` | `typography` | Specifies the font typography of the element                               | `"action" \| "caption" \| "detail" \| "h1" \| "h2" \| "h3" \| "h4" \| "h5" \| "h6" \| "hack" \| "label" \| "option" \| "paragraph" \| "snippet" \| "tip" \| undefined` | `'detail'`  |
-| `variant`    | `variant`    | Specifies the variant for `typography`                                     | `"code" \| "info" \| "read" \| "title" \| undefined`                                                                                                                   | `undefined` |
+| Property     | Attribute    | Description                                                                | Type                                                                                                                                                      | Default     |
+| ------------ | ------------ | -------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------- | ----------- |
+| `tag`        | `tag`        | Specifies the HTML tag of the element                                      | `TypographyTagType \| undefined`                                                                                                                          | `undefined` |
+| `truncate`   | `truncate`   | Specifies if the text shoud be truncated or should behave as a normal text | `boolean \| undefined`                                                                                                                                    | `undefined` |
+| `typography` | `typography` | Specifies the font typography of the element                               | `"action" \| "caption" \| "detail" \| "h1" \| "h2" \| "h3" \| "h4" \| "h5" \| "h6" \| "hack" \| "label" \| "option" \| "paragraph" \| "snippet" \| "tip"` | `'detail'`  |
+| `variant`    | `variant`    | Specifies the variant for `typography`                                     | `"code" \| "info" \| "read" \| "title" \| undefined`                                                                                                      | `undefined` |
 
 
 ## CSS Custom Properties
