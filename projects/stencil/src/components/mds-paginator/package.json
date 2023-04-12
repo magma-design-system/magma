@@ -1,6 +1,6 @@
 {
   "name": "@maggioli-design-system/mds-paginator",
-  "version": "3.1.0",
+  "version": "3.2.0",
   "description": "mds-paginator is a web-component from Maggioli Design System Magma, built with StencilJS, TypeScript, Storybook. It's based on the web-component standard and it's designed to be agnostic from the JavaScirpt framework you are using.",
   "main": "dist/index.cjs.js",
   "module": "dist/index.js",
@@ -23,8 +23,8 @@
     "test": "stencil test --spec --e2e"
   },
   "dependencies": {
-    "@maggioli-design-system/mds-paginator-item": "^2.2.0",
-    "@maggioli-design-system/styles": "^11.2.1",
+    "@maggioli-design-system/mds-paginator-item": "^2.3.0",
+    "@maggioli-design-system/styles": "^11.4.0",
     "@stencil/core": "^2.22.3"
   },
   "license": "MIT",
