@@ -1,6 +1,5 @@
 import clsx from 'clsx'
 import { Component, Element, Event, EventEmitter, Host, Prop, State, Watch, h } from '@stencil/core'
-import { KeyboardManager } from '@common/keyboard-manager'
 import { MdsBadge } from '../mds-badge/mds-badge'
 import { TypographyType } from '@type/typography'
 import { MdsStepperBarItemEventDetail } from './meta/event-detail'
@@ -13,10 +12,8 @@ import { MdsStepperBarItemEventDetail } from './meta/event-detail'
 export class MdsStepperBarItem {
 
   @Element() private host: HTMLMdsStepperBarItemElement
-  private km = new KeyboardManager()
 
-
-  @State() isSelected: boolean
+  @State() isDone: boolean
   @State() isCurrent: boolean
   @State() index: number
 
@@ -48,7 +45,7 @@ export class MdsStepperBarItem {
   /**
    * Specifies if the component is checked or not
    */
-  @Prop({ reflect: true }) readonly selected: boolean = false
+  @Prop({ reflect: true }) readonly done: boolean = false
 
   /**
    * Specifies if the component is the current or not
@@ -67,24 +64,14 @@ export class MdsStepperBarItem {
 
   componentWillLoad (): void {
     this.isCurrent = this.current
-    this.isSelected = this.selected
+    this.isDone = this.done
     const parent = this.host.parentElement
     if (parent) this.index = [...Array.from(parent.childNodes)].indexOf(this.host)
   }
 
-  componentDidLoad = (): void => {
-    const header = this.host.shadowRoot?.querySelector('header') as HTMLElement
-    this.km.addElement(header)
-    this.km.attachClickBehavior()
-  }
-
-  disconnectedCallback = (): void => {
-    this.km.detachClickBehavior()
-  }
-
-  @Watch('selected')
+  @Watch('done')
   selectedHandler (newValue: boolean): void {
-    this.isSelected = newValue
+    this.isDone = newValue
   }
 
   @Watch('current')
@@ -92,13 +79,8 @@ export class MdsStepperBarItem {
     this.isCurrent = newValue
   }
 
-  private toggle = () => {
-    this.isCurrent = true
-    this.selectedEvent.emit({ value: this.value ?? '' })
-  }
-
   private showBadge = (): MdsBadge => {
-    if (this.isSelected) {
+    if (this.isDone) {
       return <mds-badge class="badge" variant="success" tone="weak" typography="option">Completato</mds-badge>
     }
     if (this.isCurrent) {
@@ -110,16 +92,16 @@ export class MdsStepperBarItem {
   /**
    * Emits when the accordion is selected
    */
-  @Event({ eventName: 'mdsStepperBarItemSelect' }) selectedEvent: EventEmitter<MdsStepperBarItemEventDetail>
+  @Event({ eventName: 'mdsStepperBarItemDone' }) doneEvent: EventEmitter<MdsStepperBarItemEventDetail>
 
   render () {
     return (
       <Host>
-        <header class="header focusable" onClick={ this.toggle } tabindex="0">
-          <mds-icon class="icon" name={ clsx(this.isSelected && !this.isCurrent ? this.iconChecked : this.icon) }/>
-          <mds-progress class="progress" progress={ this.isSelected ? 1 : 0 }/>
+        <header class="header" tabindex="0">
+          <mds-icon class="icon" name={ clsx(this.isDone && !this.isCurrent ? this.iconChecked : this.icon) }/>
+          <mds-progress class="progress" progress={ this.isDone ? 1 : 0 }/>
         </header>
-        <div class="infos" onClick={ this.toggle }>
+        <div class="infos">
           { this.step && <mds-text class="step" typography="option">step { this.index + 1 }</mds-text> }
           { this.text && <mds-text class="text" typography={ this.typography }>{ this.text }</mds-text> }
           { this.badge && <div>{ this.showBadge() }</div> }

@@ -1,10 +1,11 @@
+import { iconsDictionary, mggIconsDictionary } from '@dictionary/icon'
 import { typographyInfoDictionary } from '@dictionary/typography'
 import { h } from '@stencil/core'
 
 export default {
   title: 'UI / Stepper Bar / Stepper Bar Item',
   argTypes: {
-    selected: {
+    done: {
       type: { name: 'boolean' },
       description: 'Specifies if the component is checked or not',
     },
@@ -15,10 +16,14 @@ export default {
     icon: {
       type: { name: 'string' },
       description: 'Specifies the icon displayed of the component when is not checked or the current item',
+      options: mggIconsDictionary.concat(iconsDictionary),
+      control: { type: 'select' },
     },
     'icon-checked': {
       type: { name: 'string' },
       description: 'Specifies the icon displayed of the component when is checked',
+      options: mggIconsDictionary.concat(iconsDictionary),
+      control: { type: 'select' },
     },
     text: {
       type: { name: 'string' },
@@ -34,7 +39,7 @@ export default {
 }
 
 const Template = args =>
-  <mds-stepper-bar select={0}>
+  <mds-stepper-bar items-done={0}>
     <mds-stepper-bar-item icon-checked="mi/baseline/done" icon="mi/baseline/agriculture" text="First"/>
     <mds-stepper-bar-item icon-checked="mi/baseline/done" icon="mi/baseline/adobe" text="Second"/>
     <mds-stepper-bar-item icon-checked="mi/baseline/done" {...args}/>
@@ -42,10 +47,10 @@ const Template = args =>
     <mds-stepper-bar-item icon-checked="mi/baseline/done" icon="mdi/baseball" text="Fifth"/>
   </mds-stepper-bar>
 
-const TemplateSelected = args =>
-  <mds-stepper-bar select={3}>
-    <mds-stepper-bar-item selected icon="mi/baseline/agriculture" icon-checked={args['icon-checked']} text="First"/>
-    <mds-stepper-bar-item selected icon="mi/baseline/adobe" icon-checked={args['icon-checked']} text="Second"/>
+const TemplateDone = args =>
+  <mds-stepper-bar items-done={3}>
+    <mds-stepper-bar-item done icon="mi/baseline/agriculture" icon-checked={args['icon-checked']} text="First"/>
+    <mds-stepper-bar-item done icon="mi/baseline/adobe" icon-checked={args['icon-checked']} text="Second"/>
     <mds-stepper-bar-item {...args}/>
     <mds-stepper-bar-item icon="mi/baseline/css" text="Forth"/>
     <mds-stepper-bar-item icon="mi/baseline/local-activity" text="Fifth"/>
@@ -64,22 +69,22 @@ Default.args = {
   ...defaultArgs,
 }
 
-export const selected = Template.bind({})
-selected.args = {
+export const done = TemplateDone.bind({})
+done.args = {
   ...defaultArgs,
-  selected: true,
+  done: true,
 }
 
-export const current = Template.bind({})
+export const current = TemplateDone.bind({})
 current.args = {
   ...defaultArgs,
   current: true,
 }
 
-export const iconChecked = TemplateSelected.bind({})
+export const iconChecked = TemplateDone.bind({})
 iconChecked.args = {
   ...defaultArgs,
-  selected: true,
+  done: true,
   'icon-checked': 'mi/baseline/done',
 }
 
