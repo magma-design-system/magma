@@ -11,6 +11,7 @@
   --mds-chip-icon-background-hover: var(--mds-chip-icon-background);
   --mds-chip-icon-background: theme('colors.brand-maggioli-07');
   --mds-chip-icon-color-hover: var(--mds-chip-icon-color);
+  --mds-chip-icon-background-selected: theme('colors.brand-maggioli-06');
   --mds-chip-icon-color: theme('colors.tone-neutral');
   --mds-chip-opacity-disabled: var(--opacity-disabled, 0.5);
   --mds-chip-backgroud-selected: theme('colors.tone-neutral-08');
@@ -41,6 +42,7 @@
 :host( [selected]:not([selected="false"]) ) {
 
   --mds-chip-background: var(--mds-chip-backgroud-selected);
+  --mds-chip-icon-background: var(--mds-chip-icon-background-selected);
 }
 
 .label {
@@ -58,7 +60,7 @@
   @apply cursor-pointer underline;
 }
 
-:host( componentdidupdate[clickable]:not([clickable="false"]) ) .label:hover {
+:host( [clickable]:not([clickable="false"]) ) .label:hover {
   text-decoration-color: unset;
 }
 
@@ -81,6 +83,8 @@
     w-6;
 
   background-color: var(--mds-chip-icon-background);
+  transition-duration: inherit;
+  transition-timing-function: inherit;
 }
 
 .icon {

@@ -41,6 +41,14 @@ const Template = args =>
 export const Default = Template.bind({})
 Default.args = {
   label: 'Bovaro del Bernese',
+  icon: 'mi/baseline/pets',
+}
+
+export const selected = Template.bind({})
+selected.args = {
+  label: 'Bovaro del Bernese',
+  icon: 'mi/baseline/pets',
+  selected: true,
 }
 
 export const Icon = Template.bind({})
