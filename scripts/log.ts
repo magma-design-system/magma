@@ -4,7 +4,7 @@ import { PathLike } from 'fs'
 
 const capitalize = (s: string) => s.replace(/./, c => c.toUpperCase())
 
-const dontUseWithNX = (exit = 1): void => {
+const dontUseWithNX = (exit = false): void => {
   if (process.env.NX_CLI_SET) {
     console.log(' ')
     console.log(`${chalk.bold(chalk.bgRed(' DO NOT USE this with NX '))}`)
@@ -12,7 +12,9 @@ const dontUseWithNX = (exit = 1): void => {
     console.log('For infos: https://github.com/nrwl/nx/issues/15924')
     console.log(`Use it with ${chalk.bold('npm')} or ${chalk.bold('yarn')} instead`)
     console.log(' ')
-    process.exit(exit ?? 1)
+    if (exit) {
+      process.exit(0)
+    }
   }
 }
 
