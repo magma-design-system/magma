@@ -17,7 +17,7 @@ export class MdsInputSwitch {
    * Sets or returns whether a checkbox should automatically
    * get focus when the page loads
    */
-  @Prop() readonly autofocus?: boolean
+  @Prop() readonly autofocus: boolean
 
   /**
    * Specifies that an <input> element should be pre-selected
