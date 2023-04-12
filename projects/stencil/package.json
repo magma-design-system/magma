@@ -66,7 +66,6 @@
     "@storybook/manager-webpack5": "^6.5.13",
     "@storybook/react": "^6.5.17-alpha.0",
     "@storybook/storybook-deployer": "^2.8.10",
-    "@types/jest": "^27.0.3",
     "@types/prompt": "^1.1.5",
     "@types/tapable": "^2.2.2",
     "autoprefixer": "^10.4.0",
