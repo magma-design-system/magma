@@ -2491,7 +2491,7 @@
   dependencies:
     "@sinonjs/commons" "^2.0.0"
 
-"@stencil/core@^2.22.2":
+"@stencil/core@^2.22.3":
   version "2.22.3"
   resolved "https://registry.npmjs.org/@stencil/core/-/core-2.22.3.tgz#83987e20bba855c450f6d6780e3a20192603f13f"
   integrity sha512-kmVA0M/HojwsfkeHsifvHVIYe4l5tin7J5+DLgtl8h6WWfiMClND5K3ifCXXI2ETDNKiEk21p6jql3Fx9o2rng==
