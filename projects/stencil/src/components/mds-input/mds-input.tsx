@@ -39,7 +39,7 @@ export class MdsInput {
   /**
    * Specifies that the element should automatically get focus when the page loads
    */
-  @Prop() readonly autofocus?: boolean = false
+  @Prop() readonly autofocus: boolean = false
 
   /**
    * A list of search terms to be searched from the input field,
