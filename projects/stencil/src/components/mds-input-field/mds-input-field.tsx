@@ -43,7 +43,7 @@ export class MdsInputField {
   /**
    * Specifies that the element should automatically get focus when the page loads
    */
-  @Prop() autofocus?: boolean = false
+  @Prop() autofocus = false
 
   /**
    * If true, the element is displayed as disabled
