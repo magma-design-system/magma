@@ -87,7 +87,7 @@ export const NoTarget = () =>
   <div>
     <mds-button id="dropdown-trigger">Trigger</mds-button>
     {/* Intended the error here */}
-    <mds-dropdown>
+    <mds-dropdown target=''>
       <mds-text>Ciao</mds-text>
     </mds-dropdown>
   </div>

@@ -19,7 +19,7 @@ export default {
 }
 
 const Template = args =>
-  <div className="inline-flex">
+  <div class="inline-flex">
     <mds-filter-item {...args}/>
   </div>
 
