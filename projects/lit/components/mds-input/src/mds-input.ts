@@ -202,8 +202,10 @@ export class MdsInput extends LitElement {
    */
   @property({ reflect: true, type: String }) value: InputValueType
 
+  // TODO: write doc
   @state() private tabindex?: number
 
+  // TODO: write doc
   @query('.input') inputElement: HTMLInputElement | HTMLTextAreaElement | undefined
 
   constructor () {
@@ -335,21 +337,35 @@ export class MdsInput extends LitElement {
     `
   }
 
-  // add the following methods to make your Custom Element participate // in form validation
+  // add the following methods to make your Custom Element participate
+  // in form validation
   get validity () {
-    return this.internals.validity;
+    return this.internals.validity
   }
+
   get validationMessage () {
-    return this.internals.validationMessage;
+    return this.internals.validationMessage
   }
+
   get willValidate () {
-    return this.internals.willValidate;
+    return this.internals.willValidate
   }
+
   checkValidity () {
-    return this.internals.checkValidity();
+    return this.internals.checkValidity()
   }
+
   reportValidity () {
-    return this.internals.reportValidity();
+    return this.internals.reportValidity()
+  }
+
+  formResetCallback () {
+    if (!this.inputElement) return
+
+    this.internals.setFormValue('')
+    this.inputElement.value = ''
+
+    this.dispatchEvent(new CustomEvent('inputResetEvent', { bubbles: true, detail: { input: this.inputElement } }))
   }
 
   render () {
