@@ -1,0 +1,319 @@
+{
+  "timestamp": "2023-04-12T19:51:01",
+  "compiler": {
+    "name": "@stencil/core",
+    "version": "2.22.3",
+    "typescriptVersion": "4.9.4"
+  },
+  "components": [
+    {
+      "filePath": "./src/components/mds-button/mds-button.tsx",
+      "encapsulation": "shadow",
+      "tag": "mds-button",
+      "readme": "# mds-button\n\n\n",
+      "docs": "",
+      "docsTags": [],
+      "usage": {},
+      "props": [
+        {
+          "name": "active",
+          "type": "boolean",
+          "mutable": true,
+          "attr": "active",
+          "reflectToAttr": true,
+          "docs": "Specifies if the button is active or not",
+          "docsTags": [],
+          "values": [
+            {
+              "type": "boolean"
+            }
+          ],
+          "optional": false,
+          "required": false
+        },
+        {
+          "name": "await",
+          "type": "boolean",
+          "mutable": false,
+          "attr": "await",
+          "reflectToAttr": true,
+          "docs": "Specifies if the button is awaiting for a response",
+          "docsTags": [],
+          "values": [
+            {
+              "type": "boolean"
+            }
+          ],
+          "optional": false,
+          "required": false
+        },
+        {
+          "name": "disabled",
+          "type": "boolean",
+          "mutable": false,
+          "attr": "disabled",
+          "reflectToAttr": true,
+          "docs": "Specifies if the component is disabled or not",
+          "docsTags": [],
+          "values": [
+            {
+              "type": "boolean"
+            }
+          ],
+          "optional": false,
+          "required": false
+        },
+        {
+          "name": "icon",
+          "type": "string | undefined",
+          "mutable": false,
+          "attr": "icon",
+          "reflectToAttr": false,
+          "docs": "The icon displayed in the button",
+          "docsTags": [],
+          "values": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "undefined"
+            }
+          ],
+          "optional": true,
+          "required": false
+        },
+        {
+          "name": "iconPosition",
+          "type": "\"left\" | \"right\" | undefined",
+          "mutable": false,
+          "attr": "icon-position",
+          "reflectToAttr": false,
+          "docs": "Specifies the horizontal position of the icon displayed in the button",
+          "docsTags": [],
+          "default": "'left'",
+          "values": [
+            {
+              "value": "left",
+              "type": "string"
+            },
+            {
+              "value": "right",
+              "type": "string"
+            },
+            {
+              "type": "undefined"
+            }
+          ],
+          "optional": true,
+          "required": false
+        },
+        {
+          "name": "size",
+          "type": "\"lg\" | \"md\" | \"sm\" | \"xl\"",
+          "mutable": false,
+          "attr": "size",
+          "reflectToAttr": true,
+          "docs": "Specifies the size for the button",
+          "docsTags": [],
+          "default": "'md'",
+          "values": [
+            {
+              "value": "lg",
+              "type": "string"
+            },
+            {
+              "value": "md",
+              "type": "string"
+            },
+            {
+              "value": "sm",
+              "type": "string"
+            },
+            {
+              "value": "xl",
+              "type": "string"
+            }
+          ],
+          "optional": false,
+          "required": false
+        },
+        {
+          "name": "tone",
+          "type": "\"ghost\" | \"quiet\" | \"strong\" | \"weak\" | undefined",
+          "mutable": false,
+          "attr": "tone",
+          "reflectToAttr": true,
+          "docs": "Specifies the tone variant for the button",
+          "docsTags": [],
+          "default": "'strong'",
+          "values": [
+            {
+              "value": "ghost",
+              "type": "string"
+            },
+            {
+              "value": "quiet",
+              "type": "string"
+            },
+            {
+              "value": "strong",
+              "type": "string"
+            },
+            {
+              "value": "weak",
+              "type": "string"
+            },
+            {
+              "type": "undefined"
+            }
+          ],
+          "optional": true,
+          "required": false
+        },
+        {
+          "name": "type",
+          "type": "\"a\" | \"button\" | \"reset\" | \"submit\" | undefined",
+          "mutable": false,
+          "attr": "type",
+          "reflectToAttr": false,
+          "docs": "The type of the button element",
+          "docsTags": [],
+          "default": "'submit'",
+          "values": [
+            {
+              "value": "a",
+              "type": "string"
+            },
+            {
+              "value": "button",
+              "type": "string"
+            },
+            {
+              "value": "reset",
+              "type": "string"
+            },
+            {
+              "value": "submit",
+              "type": "string"
+            },
+            {
+              "type": "undefined"
+            }
+          ],
+          "optional": true,
+          "required": false
+        },
+        {
+          "name": "variant",
+          "type": "\"dark\" | \"error\" | \"info\" | \"light\" | \"primary\" | \"success\" | \"warning\" | undefined",
+          "mutable": false,
+          "attr": "variant",
+          "reflectToAttr": true,
+          "docs": "Specifies the color variant for the button",
+          "docsTags": [],
+          "default": "'primary'",
+          "values": [
+            {
+              "value": "dark",
+              "type": "string"
+            },
+            {
+              "value": "error",
+              "type": "string"
+            },
+            {
+              "value": "info",
+              "type": "string"
+            },
+            {
+              "value": "light",
+              "type": "string"
+            },
+            {
+              "value": "primary",
+              "type": "string"
+            },
+            {
+              "value": "success",
+              "type": "string"
+            },
+            {
+              "value": "warning",
+              "type": "string"
+            },
+            {
+              "type": "undefined"
+            }
+          ],
+          "optional": true,
+          "required": false
+        }
+      ],
+      "methods": [],
+      "events": [],
+      "listeners": [],
+      "styles": [
+        {
+          "name": "--mds-button-await-duration",
+          "annotation": "prop",
+          "docs": "Sets the duration of the rotation of the spinner await component"
+        },
+        {
+          "name": "--mds-button-background",
+          "annotation": "prop",
+          "docs": "Sets the background-color of the component"
+        },
+        {
+          "name": "--mds-button-border-color",
+          "annotation": "prop",
+          "docs": "Sets the border-color of the component"
+        },
+        {
+          "name": "--mds-button-color",
+          "annotation": "prop",
+          "docs": "Sets the text color of the component"
+        },
+        {
+          "name": "--mds-button-gap",
+          "annotation": "prop",
+          "docs": "Sets the distance betwen element inside the components, use it instead of setting gap property directly."
+        },
+        {
+          "name": "--mds-button-icon-color",
+          "annotation": "prop",
+          "docs": "Sets the icon color of the component"
+        },
+        {
+          "name": "--mds-button-radius",
+          "annotation": "prop",
+          "docs": "Sets the border-radius of the component"
+        }
+      ],
+      "slots": [],
+      "parts": [
+        {
+          "name": "label",
+          "docs": ""
+        }
+      ],
+      "dependents": [
+        "mds-tab-item"
+      ],
+      "dependencies": [
+        "mds-spinner",
+        "mds-icon",
+        "mds-text"
+      ],
+      "dependencyGraph": {
+        "mds-button": [
+          "mds-spinner",
+          "mds-icon",
+          "mds-text"
+        ],
+        "mds-tab-item": [
+          "mds-button"
+        ]
+      }
+    }
+  ]
+}

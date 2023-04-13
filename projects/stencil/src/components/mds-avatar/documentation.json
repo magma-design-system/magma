@@ -1,0 +1,100 @@
+{
+  "timestamp": "2023-04-12T19:51:01",
+  "compiler": {
+    "name": "@stencil/core",
+    "version": "2.22.3",
+    "typescriptVersion": "4.9.4"
+  },
+  "components": [
+    {
+      "filePath": "./src/components/mds-avatar/mds-avatar.tsx",
+      "encapsulation": "shadow",
+      "tag": "mds-avatar",
+      "readme": "# mds-avatar\n\n\n",
+      "docs": "",
+      "docsTags": [],
+      "usage": {},
+      "props": [
+        {
+          "name": "initials",
+          "type": "string",
+          "mutable": true,
+          "attr": "initials",
+          "reflectToAttr": true,
+          "docs": "The user's inizials displayed if there's no image available",
+          "docsTags": [],
+          "default": "''",
+          "values": [
+            {
+              "type": "string"
+            }
+          ],
+          "optional": false,
+          "required": false
+        },
+        {
+          "name": "src",
+          "type": "string | undefined",
+          "mutable": false,
+          "attr": "src",
+          "reflectToAttr": false,
+          "docs": "Specifies the path to the image",
+          "docsTags": [],
+          "values": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "undefined"
+            }
+          ],
+          "optional": true,
+          "required": false
+        }
+      ],
+      "methods": [],
+      "events": [],
+      "listeners": [],
+      "styles": [
+        {
+          "name": "--mds-avatar-background-color-pending",
+          "annotation": "prop",
+          "docs": "The background-color when an image is loading"
+        },
+        {
+          "name": "--mds-avatar-background-color-placeholder",
+          "annotation": "prop",
+          "docs": "The background-color of the placeholder icon"
+        },
+        {
+          "name": "--mds-avatar-color-placeholder",
+          "annotation": "prop",
+          "docs": "The color of the placeholder icon"
+        },
+        {
+          "name": "--mds-avatar-radius",
+          "annotation": "prop",
+          "docs": "The border-radius of the element"
+        }
+      ],
+      "slots": [],
+      "parts": [],
+      "dependents": [
+        "mds-entity"
+      ],
+      "dependencies": [
+        "mds-text",
+        "mds-img"
+      ],
+      "dependencyGraph": {
+        "mds-avatar": [
+          "mds-text",
+          "mds-img"
+        ],
+        "mds-entity": [
+          "mds-avatar"
+        ]
+      }
+    }
+  ]
+}

@@ -1,0 +1,284 @@
+{
+  "timestamp": "2023-04-12T19:51:01",
+  "compiler": {
+    "name": "@stencil/core",
+    "version": "2.22.3",
+    "typescriptVersion": "4.9.4"
+  },
+  "components": [
+    {
+      "filePath": "./src/components/mds-bibliography/mds-bibliography.tsx",
+      "encapsulation": "shadow",
+      "tag": "mds-bibliography",
+      "readme": "# mds-bibliography\n\n\n<!-- Start script-generated Magma Docs -->\n\n# Install\n\nInstall the component via `npm` by running the following command\n\n```bash\nnpm install @maggioli-design-system/mds-bibliography\n```\n\nThis package works also with yarn:\n\n```bash\nyarn add @maggioli-design-system/mds-bibliography\n```\n\n#### Import\n\nImport the component in your project via `TypeScript` as follows:\n\n```typescript\nimport { defineCustomElements as dceMdsBibliography } from '@maggioli-design-system/mds-bibliography/loader'\n\ndceMdsBibliography()\n```\n\n`MdsBibliography` depends on `MdsText`, so you will have to import it as well:\n\n```typescript\nimport { defineCustomElements as dceMdsText } from '@maggioli-design-system/mds-text/loader'\n\ndceMdsText()\n```\n\nIf you need to support older browsers (i.e. IE or early version of Edge), you can wrap the `defineCustomElements` in another utility awailable in the same package:\n\n```typescript\nimport { applyPolyfills as apMdsBibliography, defineCustomElements as dceMdsBibliography } from '@maggioli-design-system/mds-bibliography/loader'\n\napMdsBibliography().then(dceMdsBibliography())\n```\n\nUse alias for `defineCustomElements` method to initialize multiple web components in the same place:\n\n```typescript\nimport { defineCustomElements as dceMdsComponentOne } from '@maggioli-design-system/mds-component-one/loader'\nimport { defineCustomElements as dceMdsComponentTwo } from '@maggioli-design-system/mds-component-two/loader'\n\ndceMdsComponentOne()\ndceMdsComponentTwo()\n```\n\nYou can check how browser support works at [this page][stencil-browser-support].\n\n# Integration\n\n<!-- This section is useful to describe usages and configurations -->\n\n#### How to use it in HTML\n\n<!-- Add information about HTML usage here -->\n`MdsBibliography` accepts the following attributes:\n- `author`: specifies a single or multiple authors, accepts a string or an array of strings\n- `date`: specifies the date of the bibliography\n- `format`: specifies the bibliography format\n- `location`: specifies the location of the bibliography\n- `name`: specifies the name of the bibliography\n- `publisher`: specifies the publisher of the bibliography\n- `rel`: specifies relationship between the current document and the URL\n- `typography`: specifies the font typography of the element\n- `url`: specifies the URL of the bibliography\n- `variant`: specifies the variant for `typography`\n\n```html\n<mds-bibliography\n  author=\"John Doe\"\n  date=\"2022-10-04\"\n  location=\"London\"\n  name=\"Meet John Doe\"\n  publisher=\"Maggioli Editore\"\n  url=\"https://www.maggioli.com\"\n  variant=\"read\"\n></mds-bibliography>\n```\n\nWrap first name or last name to crop them correctly:\n\n```\nauthor=\"'Jhon Arthur' Doe\"\nauthor=\"'Jhon Arthur' 'Doe Jhonson'\"\n```\n\nFor multiple authors, you can separate the names using comma, and can still wrap first/last name to crop them:\n\n```\nauthor=\"'Jhon Arthur' 'Doe Jhonson', Mike Collins, Erik 'Ross Anderson'\"\n```\n\nYou can use single or double quotation marks for composite names.\n\nIf needed, you can customize the color of the text, the `url` text and the color of the `url` text when overed overriding the value of the [`CSS custom properties`](#css-custom-properties) listed below\n\nYou can try it out on the component's [Storybook website][storybook]!\n\n<!-- TODO set correct storybook link, `ui` may need to be changed into something else -->\n[storybook]: https://magma.maggiolicloud.it/storybook/?path=/story/ui-bibliography--default\n[stencil-browser-support]: https://stenciljs.com/docs/browser-support\n\n<!-- End script-generated Magma Docs -->\n",
+      "docs": "<!-- Start script-generated Magma Docs -->",
+      "docsTags": [],
+      "usage": {},
+      "props": [
+        {
+          "name": "author",
+          "type": "string | undefined",
+          "mutable": false,
+          "attr": "author",
+          "reflectToAttr": false,
+          "docs": "Specifies a single or mupltiple authors, this field expect a string or an array of strings.\nFirst name and Last name: \"Jhon Doe\",\nyou can wrap first name or last name to crop them correctly: \"'Jhon Arthur' Doe\", \"'Jhon Arthur' 'Doe Jhonson'\",\nand for multiple authors \"'Jhon Arthur' 'Doe Jhonson', 'Mike Collins', Erik 'Ross Anderson'\",\nyou can use single or double quotation marks for composite names",
+          "docsTags": [],
+          "values": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "undefined"
+            }
+          ],
+          "optional": true,
+          "required": false
+        },
+        {
+          "name": "date",
+          "type": "string | undefined",
+          "mutable": false,
+          "attr": "date",
+          "reflectToAttr": false,
+          "docs": "Specifies the date of the bibliography",
+          "docsTags": [],
+          "values": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "undefined"
+            }
+          ],
+          "optional": true,
+          "required": false
+        },
+        {
+          "name": "format",
+          "type": "\"apa\" | \"mla\" | \"turabian\"",
+          "mutable": false,
+          "attr": "format",
+          "reflectToAttr": false,
+          "docs": "Specifies the bibliography format to rapresent the bibliography content",
+          "docsTags": [],
+          "default": "'apa'",
+          "values": [
+            {
+              "value": "apa",
+              "type": "string"
+            },
+            {
+              "value": "mla",
+              "type": "string"
+            },
+            {
+              "value": "turabian",
+              "type": "string"
+            }
+          ],
+          "optional": false,
+          "required": false
+        },
+        {
+          "name": "location",
+          "type": "string | undefined",
+          "mutable": false,
+          "attr": "location",
+          "reflectToAttr": false,
+          "docs": "Specifies the location of the bibliography",
+          "docsTags": [],
+          "values": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "undefined"
+            }
+          ],
+          "optional": true,
+          "required": false
+        },
+        {
+          "name": "name",
+          "type": "string | undefined",
+          "mutable": false,
+          "attr": "name",
+          "reflectToAttr": false,
+          "docs": "Specifies the name of the bibliography",
+          "docsTags": [],
+          "values": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "undefined"
+            }
+          ],
+          "optional": true,
+          "required": false
+        },
+        {
+          "name": "publisher",
+          "type": "string | undefined",
+          "mutable": false,
+          "attr": "publisher",
+          "reflectToAttr": false,
+          "docs": "Specifies the publisher of the bibliography",
+          "docsTags": [],
+          "values": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "undefined"
+            }
+          ],
+          "optional": true,
+          "required": false
+        },
+        {
+          "name": "rel",
+          "type": "\"author\" | \"external\"",
+          "mutable": false,
+          "attr": "rel",
+          "reflectToAttr": false,
+          "docs": "Specifies relationship between the current document and the URL",
+          "docsTags": [],
+          "default": "'external'",
+          "values": [
+            {
+              "value": "author",
+              "type": "string"
+            },
+            {
+              "value": "external",
+              "type": "string"
+            }
+          ],
+          "optional": false,
+          "required": false
+        },
+        {
+          "name": "typography",
+          "type": "\"caption\" | \"detail\" | \"label\" | \"option\" | \"paragraph\" | \"tip\"",
+          "mutable": false,
+          "attr": "typography",
+          "reflectToAttr": false,
+          "docs": "Specifies the font typography of the element",
+          "docsTags": [],
+          "default": "'detail'",
+          "values": [
+            {
+              "value": "caption",
+              "type": "string"
+            },
+            {
+              "value": "detail",
+              "type": "string"
+            },
+            {
+              "value": "label",
+              "type": "string"
+            },
+            {
+              "value": "option",
+              "type": "string"
+            },
+            {
+              "value": "paragraph",
+              "type": "string"
+            },
+            {
+              "value": "tip",
+              "type": "string"
+            }
+          ],
+          "optional": false,
+          "required": false
+        },
+        {
+          "name": "url",
+          "type": "string | undefined",
+          "mutable": false,
+          "attr": "url",
+          "reflectToAttr": false,
+          "docs": "Specifies the URL of the bibliography",
+          "docsTags": [],
+          "values": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "undefined"
+            }
+          ],
+          "optional": true,
+          "required": false
+        },
+        {
+          "name": "variant",
+          "type": "\"code\" | \"info\" | \"read\" | \"title\" | undefined",
+          "mutable": false,
+          "attr": "variant",
+          "reflectToAttr": false,
+          "docs": "Specifies the variant for `typography`",
+          "docsTags": [],
+          "values": [
+            {
+              "value": "code",
+              "type": "string"
+            },
+            {
+              "value": "info",
+              "type": "string"
+            },
+            {
+              "value": "read",
+              "type": "string"
+            },
+            {
+              "value": "title",
+              "type": "string"
+            },
+            {
+              "type": "undefined"
+            }
+          ],
+          "optional": true,
+          "required": false
+        }
+      ],
+      "methods": [],
+      "events": [],
+      "listeners": [],
+      "styles": [
+        {
+          "name": "--mds-bibliography-color",
+          "annotation": "prop",
+          "docs": "Sets the text color of the component"
+        },
+        {
+          "name": "--mds-bibliography-text-decoration",
+          "annotation": "prop",
+          "docs": "Sets the text decoration color of the link"
+        },
+        {
+          "name": "--mds-bibliography-text-decoration-hover",
+          "annotation": "prop",
+          "docs": "Sets the text decoration color of the link when the mouse is over it"
+        }
+      ],
+      "slots": [],
+      "parts": [],
+      "dependents": [],
+      "dependencies": [
+        "mds-text"
+      ],
+      "dependencyGraph": {
+        "mds-bibliography": [
+          "mds-text"
+        ]
+      }
+    }
+  ]
+}

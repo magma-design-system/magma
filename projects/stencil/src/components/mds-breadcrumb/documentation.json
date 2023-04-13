@@ -1,0 +1,117 @@
+{
+  "timestamp": "2023-04-12T19:51:01",
+  "compiler": {
+    "name": "@stencil/core",
+    "version": "2.22.3",
+    "typescriptVersion": "4.9.4"
+  },
+  "components": [
+    {
+      "filePath": "./src/components/mds-breadcrumb/mds-breadcrumb.tsx",
+      "encapsulation": "shadow",
+      "tag": "mds-breadcrumb",
+      "readme": "# mds-breadcrumb\n\n\n",
+      "docs": "",
+      "docsTags": [],
+      "usage": {},
+      "props": [
+        {
+          "name": "back",
+          "type": "boolean | undefined",
+          "mutable": false,
+          "attr": "back",
+          "reflectToAttr": false,
+          "docs": "Choose to display or not the back arrow button",
+          "docsTags": [],
+          "default": "true",
+          "values": [
+            {
+              "type": "boolean"
+            },
+            {
+              "type": "undefined"
+            }
+          ],
+          "optional": true,
+          "required": false
+        }
+      ],
+      "methods": [],
+      "events": [
+        {
+          "event": "mdsBreadcrumbChange",
+          "detail": "MdsBreadcrumbEventDetail",
+          "bubbles": true,
+          "cancelable": true,
+          "composed": true,
+          "docs": "Emits when the breadcrumb is changed",
+          "docsTags": []
+        }
+      ],
+      "listeners": [
+        {
+          "event": "mdsBreadcrumbItemSelect",
+          "capture": false,
+          "passive": false
+        }
+      ],
+      "styles": [
+        {
+          "name": "--mds-breadcrumb-arrow-depth-color",
+          "annotation": "prop",
+          "docs": "Sets the color of the arrow icon that separates buttons"
+        },
+        {
+          "name": "--mds-breadcrumb-button-background",
+          "annotation": "prop",
+          "docs": "Sets the background color of the button"
+        },
+        {
+          "name": "--mds-breadcrumb-button-background-current",
+          "annotation": "prop",
+          "docs": "Sets the background color of the button when it's active"
+        },
+        {
+          "name": "--mds-breadcrumb-button-background-disabled",
+          "annotation": "prop",
+          "docs": "Sets the background color of the button when it's disabled, is used for arrow button"
+        },
+        {
+          "name": "--mds-breadcrumb-button-background-hover",
+          "annotation": "prop",
+          "docs": "Sets the background color of the button when the mouse is over it"
+        },
+        {
+          "name": "--mds-breadcrumb-button-color",
+          "annotation": "prop",
+          "docs": "Sets the text color of the button"
+        },
+        {
+          "name": "--mds-breadcrumb-button-color-current",
+          "annotation": "prop",
+          "docs": "Sets the text color of the button when it's active"
+        },
+        {
+          "name": "--mds-breadcrumb-button-color-disabled",
+          "annotation": "prop",
+          "docs": "Sets the text color of the button when it's disabled, is used for arrow button"
+        },
+        {
+          "name": "--mds-breadcrumb-button-color-hover",
+          "annotation": "prop",
+          "docs": "Sets the text color of the button when the mouse is over it"
+        },
+        {
+          "name": "--mds-breadcrumb-current-button-color",
+          "annotation": "prop",
+          "docs": "Sets the text color of the current depth button"
+        }
+      ],
+      "slots": [],
+      "parts": [],
+      "dependents": [],
+      "dependencies": [],
+      "dependencyGraph": {}
+    }
+  ]
+}

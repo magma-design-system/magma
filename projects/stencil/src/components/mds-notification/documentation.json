@@ -1,0 +1,172 @@
+{
+  "timestamp": "2023-04-12T19:51:01",
+  "compiler": {
+    "name": "@stencil/core",
+    "version": "2.22.3",
+    "typescriptVersion": "4.9.4"
+  },
+  "components": [
+    {
+      "filePath": "./src/components/mds-notification/mds-notification.tsx",
+      "encapsulation": "shadow",
+      "tag": "mds-notification",
+      "readme": "# mds-notification\n\n\n<!-- Start script-generated Magma Docs -->\n\n# Install\n\nInstall the component via `npm` by running the following command\n\n```bash\nnpm install @maggioli-design-system/mds-notification\n```\n\nThis package works also with yarn:\n\n```bash\nyarn add @maggioli-design-system/mds-notification\n```\n\n#### Import\n\nImport the components in your project via `TypeScript` as follows:\n\n```typescript\nimport { defineCustomElements as dceMdsNotification } from '@maggioli-design-system/mds-notification/loader'\n\ndceMdsNotification()\n```\n\n`MdsNotification` depends on `MdsText`, so you will have to import it as well:\n\n```typescript\nimport { defineCustomElements as dceMdsText } from '@maggioli-design-system/mds-text/loader'\n\ndceMdsText()\n```\n\nYou will have to import also the css style from `@maggioli-design-system` as follows:\n\n```css\n@import '~@maggioli-design-system/styles/dist/css/colors-rgb.css`\n```\n\nIf you need to support older browsers (i.e. IE or early version of Edge), you can wrap the `defineCustomElements` in another utility awailable in the same package:\n\n```typescript\nimport { applyPolyfills as apMdsNotification, defineCustomElements as dceMdsNotification } from '@maggioli-design-system/mds-notification/loader'\n\napMdsNotification().then(dceMdsNotification())\n```\n\nUse alias for `defineCustomElements` method to initialize multiple web components in the same place:\n\n```typescript\nimport { defineCustomElements as dceMdsComponentOne } from '@maggioli-design-system/mds-component-one/loader'\nimport { defineCustomElements as dceMdsComponentTwo } from '@maggioli-design-system/mds-component-two/loader'\n\ndceMdsComponentOne()\ndceMdsComponentTwo()\n```\n\nYou can check how browser support works at [this page][stencil-browser-support].\n\n# Integration\n\n<!-- This section is useful to describe usages and configurations -->\n\n#### How to use it in HTML\n\n`MdsNotification` is meant to be used to support another HTML component (like an icon or a button) to notify the user of pending notifications.\n\nThe component accepts the following attributes:\n- `target`: (mandatory) specifies the id of the element to which is attached\n- `value`: specifies the number of notification to display (if set to the element will be hidden)\n- `visible`: specifies if the notification should be visible or not\n\n```html\n<mds-notification target='my-button' value=22 visible=true></mds-notification>\n<button id='my-button'>Click here!</button>\n```\n\nYou can try it out on the component's [Storybook website][storybook]!\n\n[storybook]: https://magma.maggiolicloud.it/storybook/?path=/story/ui-notification--default\n[stencil-browser-support]: https://stenciljs.com/docs/browser-support\n\n<!-- End script-generated Magma Docs -->\n",
+      "docs": "<!-- Start script-generated Magma Docs -->",
+      "docsTags": [],
+      "usage": {},
+      "props": [
+        {
+          "name": "max",
+          "type": "number | undefined",
+          "mutable": false,
+          "attr": "max",
+          "reflectToAttr": true,
+          "docs": "Specifies the maximum number that can be seen, assuming that the number is for example 9 and that this is exceeded with 15, the component shows +9",
+          "docsTags": [],
+          "values": [
+            {
+              "type": "number"
+            },
+            {
+              "type": "undefined"
+            }
+          ],
+          "optional": true,
+          "required": false
+        },
+        {
+          "name": "strategy",
+          "type": "\"absolute\" | \"disabled\" | \"fixed\"",
+          "mutable": false,
+          "attr": "strategy",
+          "reflectToAttr": true,
+          "docs": "Specifies the position strategy of the notification",
+          "docsTags": [],
+          "default": "'fixed'",
+          "values": [
+            {
+              "value": "absolute",
+              "type": "string"
+            },
+            {
+              "value": "disabled",
+              "type": "string"
+            },
+            {
+              "value": "fixed",
+              "type": "string"
+            }
+          ],
+          "optional": false,
+          "required": false
+        },
+        {
+          "name": "target",
+          "type": "string",
+          "mutable": false,
+          "attr": "target",
+          "reflectToAttr": false,
+          "docs": "Specifies the id of the caller element.",
+          "docsTags": [],
+          "values": [
+            {
+              "type": "string"
+            }
+          ],
+          "optional": false,
+          "required": true
+        },
+        {
+          "name": "value",
+          "type": "number",
+          "mutable": true,
+          "attr": "value",
+          "reflectToAttr": true,
+          "docs": "Specifies number of notifications to display, if it set to 0, the element will be hidden",
+          "docsTags": [],
+          "default": "0",
+          "values": [
+            {
+              "type": "number"
+            }
+          ],
+          "optional": false,
+          "required": false
+        },
+        {
+          "name": "visible",
+          "type": "boolean",
+          "mutable": true,
+          "attr": "visible",
+          "reflectToAttr": true,
+          "docs": "Specifies if the notification is visible",
+          "docsTags": [],
+          "default": "true",
+          "values": [
+            {
+              "type": "boolean"
+            }
+          ],
+          "optional": false,
+          "required": false
+        }
+      ],
+      "methods": [],
+      "events": [],
+      "listeners": [],
+      "styles": [
+        {
+          "name": "--mds-notification-color",
+          "annotation": "prop",
+          "docs": "Sets the text color of the component"
+        },
+        {
+          "name": "--mds-notification-dot-background",
+          "annotation": "prop",
+          "docs": "Sets the background-color of the component"
+        },
+        {
+          "name": "--mds-notification-dot-padding",
+          "annotation": "prop",
+          "docs": "Sets the size of the component"
+        },
+        {
+          "name": "--mds-notification-ring-color",
+          "annotation": "prop",
+          "docs": "Sets the border color of ring around the notification"
+        },
+        {
+          "name": "--mds-notification-ring-size",
+          "annotation": "prop",
+          "docs": "Sets the border size of ring around the notification"
+        },
+        {
+          "name": "--mds-notification-size",
+          "annotation": "prop",
+          "docs": "Sets the size of the component"
+        },
+        {
+          "name": "--mds-notification-translate-offset-x",
+          "annotation": "prop",
+          "docs": "Sets offset x positioning of the notification"
+        },
+        {
+          "name": "--mds-notification-translate-offset-y",
+          "annotation": "prop",
+          "docs": "Sets offset y positioning of the notification"
+        }
+      ],
+      "slots": [],
+      "parts": [],
+      "dependents": [],
+      "dependencies": [
+        "mds-text"
+      ],
+      "dependencyGraph": {
+        "mds-notification": [
+          "mds-text"
+        ]
+      }
+    }
+  ]
+}

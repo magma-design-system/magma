@@ -1,0 +1,335 @@
+{
+  "timestamp": "2023-04-12T19:51:01",
+  "compiler": {
+    "name": "@stencil/core",
+    "version": "2.22.3",
+    "typescriptVersion": "4.9.4"
+  },
+  "components": [
+    {
+      "filePath": "./src/components/mds-stepper-bar-item/mds-stepper-bar-item.tsx",
+      "encapsulation": "shadow",
+      "tag": "mds-stepper-bar-item",
+      "readme": "# mds-stepper-bar-item\n\n\n",
+      "docs": "",
+      "docsTags": [],
+      "usage": {},
+      "props": [
+        {
+          "name": "badge",
+          "type": "boolean",
+          "mutable": true,
+          "attr": "badge",
+          "reflectToAttr": true,
+          "docs": "Specifies if the badge status is displayed",
+          "docsTags": [],
+          "values": [
+            {
+              "type": "boolean"
+            }
+          ],
+          "optional": false,
+          "required": false
+        },
+        {
+          "name": "current",
+          "type": "boolean",
+          "mutable": true,
+          "attr": "current",
+          "reflectToAttr": true,
+          "docs": "Specifies if the component is the current or not",
+          "docsTags": [],
+          "default": "false",
+          "values": [
+            {
+              "type": "boolean"
+            }
+          ],
+          "optional": false,
+          "required": false
+        },
+        {
+          "name": "done",
+          "type": "boolean",
+          "mutable": false,
+          "attr": "done",
+          "reflectToAttr": true,
+          "docs": "Specifies if the component is checked or not",
+          "docsTags": [],
+          "default": "false",
+          "values": [
+            {
+              "type": "boolean"
+            }
+          ],
+          "optional": false,
+          "required": false
+        },
+        {
+          "name": "icon",
+          "type": "string",
+          "mutable": false,
+          "attr": "icon",
+          "reflectToAttr": false,
+          "docs": "Specifies the icon displayed of the component when is not checked or the current item",
+          "docsTags": [],
+          "values": [
+            {
+              "type": "string"
+            }
+          ],
+          "optional": false,
+          "required": true
+        },
+        {
+          "name": "iconChecked",
+          "type": "string | undefined",
+          "mutable": false,
+          "attr": "icon-checked",
+          "reflectToAttr": false,
+          "docs": "Specifies the icon displayed of the component when is checked",
+          "docsTags": [],
+          "default": "this.icon",
+          "values": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "undefined"
+            }
+          ],
+          "optional": true,
+          "required": false
+        },
+        {
+          "name": "step",
+          "type": "boolean",
+          "mutable": false,
+          "attr": "step",
+          "reflectToAttr": false,
+          "docs": "Specifies if the step is displayed",
+          "docsTags": [],
+          "values": [
+            {
+              "type": "boolean"
+            }
+          ],
+          "optional": false,
+          "required": false
+        },
+        {
+          "name": "text",
+          "type": "string",
+          "mutable": false,
+          "attr": "text",
+          "reflectToAttr": false,
+          "docs": "Specifies a short description of the component",
+          "docsTags": [],
+          "values": [
+            {
+              "type": "string"
+            }
+          ],
+          "optional": false,
+          "required": true
+        },
+        {
+          "name": "typography",
+          "type": "\"action\" | \"caption\" | \"detail\" | \"h1\" | \"h2\" | \"h3\" | \"h4\" | \"h5\" | \"h6\" | \"hack\" | \"label\" | \"option\" | \"paragraph\" | \"snippet\" | \"tip\" | undefined",
+          "mutable": false,
+          "attr": "typography",
+          "reflectToAttr": false,
+          "docs": "Specifies the typography of the element",
+          "docsTags": [],
+          "default": "'h6'",
+          "values": [
+            {
+              "value": "action",
+              "type": "string"
+            },
+            {
+              "value": "caption",
+              "type": "string"
+            },
+            {
+              "value": "detail",
+              "type": "string"
+            },
+            {
+              "value": "h1",
+              "type": "string"
+            },
+            {
+              "value": "h2",
+              "type": "string"
+            },
+            {
+              "value": "h3",
+              "type": "string"
+            },
+            {
+              "value": "h4",
+              "type": "string"
+            },
+            {
+              "value": "h5",
+              "type": "string"
+            },
+            {
+              "value": "h6",
+              "type": "string"
+            },
+            {
+              "value": "hack",
+              "type": "string"
+            },
+            {
+              "value": "label",
+              "type": "string"
+            },
+            {
+              "value": "option",
+              "type": "string"
+            },
+            {
+              "value": "paragraph",
+              "type": "string"
+            },
+            {
+              "value": "snippet",
+              "type": "string"
+            },
+            {
+              "value": "tip",
+              "type": "string"
+            },
+            {
+              "type": "undefined"
+            }
+          ],
+          "optional": true,
+          "required": false
+        },
+        {
+          "name": "value",
+          "type": "string | undefined",
+          "mutable": false,
+          "attr": "value",
+          "reflectToAttr": true,
+          "docs": "Specifies the value the component will return mdsStepperBarItemSelect event",
+          "docsTags": [],
+          "values": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "undefined"
+            }
+          ],
+          "optional": true,
+          "required": false
+        }
+      ],
+      "methods": [],
+      "events": [
+        {
+          "event": "mdsStepperBarItemDone",
+          "detail": "MdsStepperBarItemEventDetail",
+          "bubbles": true,
+          "cancelable": true,
+          "composed": true,
+          "docs": "Emits when the accordion is selected",
+          "docsTags": []
+        }
+      ],
+      "listeners": [],
+      "styles": [
+        {
+          "name": "--mds-stepper-bar-item-color",
+          "annotation": "prop",
+          "docs": "Sets the color of the text"
+        },
+        {
+          "name": "--mds-stepper-bar-item-duaration",
+          "annotation": "prop",
+          "docs": "Sets the duration of the animation"
+        },
+        {
+          "name": "--mds-stepper-bar-item-icon-background",
+          "annotation": "prop",
+          "docs": "Sets the background-color of the icon"
+        },
+        {
+          "name": "--mds-stepper-bar-item-icon-background-current",
+          "annotation": "prop",
+          "docs": "Sets the background-color of the icon when the component is current"
+        },
+        {
+          "name": "--mds-stepper-bar-item-icon-background-done",
+          "annotation": "prop",
+          "docs": "Sets the background-color of the icon when the component is done"
+        },
+        {
+          "name": "--mds-stepper-bar-item-icon-color",
+          "annotation": "prop",
+          "docs": "Sets the color of the icon"
+        },
+        {
+          "name": "--mds-stepper-bar-item-icon-color-current",
+          "annotation": "prop",
+          "docs": "Sets the color of the icon when the component is current"
+        },
+        {
+          "name": "--mds-stepper-bar-item-icon-color-done",
+          "annotation": "prop",
+          "docs": "Sets the color of the icon when the component is done"
+        },
+        {
+          "name": "--mds-stepper-bar-item-icon-ring-size",
+          "annotation": "prop",
+          "docs": "Sets the size of the icon circle when the component is current"
+        },
+        {
+          "name": "--mds-stepper-bar-item-min-width",
+          "annotation": "prop",
+          "docs": "Sets the minimum width of the component"
+        },
+        {
+          "name": "--mds-stepper-bar-item-progress-background",
+          "annotation": "prop",
+          "docs": "Sets the background color of the progress bar"
+        },
+        {
+          "name": "--mds-stepper-bar-item-progress-color",
+          "annotation": "prop",
+          "docs": "Sets the color of the progress bar"
+        },
+        {
+          "name": "--mds-stepper-bar-item-progress-thickness",
+          "annotation": "prop",
+          "docs": "Sets the thickness of the progress bar"
+        }
+      ],
+      "slots": [],
+      "parts": [],
+      "dependents": [],
+      "dependencies": [
+        "mds-badge",
+        "mds-icon",
+        "mds-progress",
+        "mds-text"
+      ],
+      "dependencyGraph": {
+        "mds-stepper-bar-item": [
+          "mds-badge",
+          "mds-icon",
+          "mds-progress",
+          "mds-text"
+        ],
+        "mds-badge": [
+          "mds-text"
+        ]
+      }
+    }
+  ]
+}

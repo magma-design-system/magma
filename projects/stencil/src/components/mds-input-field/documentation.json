@@ -1,0 +1,574 @@
+{
+  "timestamp": "2023-04-12T19:51:01",
+  "compiler": {
+    "name": "@stencil/core",
+    "version": "2.22.3",
+    "typescriptVersion": "4.9.4"
+  },
+  "components": [
+    {
+      "filePath": "./src/components/mds-input-field/mds-input-field.tsx",
+      "encapsulation": "shadow",
+      "tag": "mds-input-field",
+      "readme": "# mds-input-field\n\n\n",
+      "docs": "",
+      "docsTags": [],
+      "usage": {},
+      "props": [
+        {
+          "name": "autocomplete",
+          "type": "AutocompleteType | undefined",
+          "mutable": false,
+          "attr": "autocomplete",
+          "reflectToAttr": false,
+          "docs": "Specifies whether the element should have autocomplete enabled",
+          "docsTags": [],
+          "default": "'off'",
+          "values": [
+            {
+              "type": "AutocompleteType"
+            },
+            {
+              "type": "undefined"
+            }
+          ],
+          "optional": true,
+          "required": false
+        },
+        {
+          "name": "autofocus",
+          "type": "boolean",
+          "mutable": false,
+          "attr": "autofocus",
+          "reflectToAttr": false,
+          "docs": "Specifies that the element should automatically get focus when the page loads",
+          "docsTags": [],
+          "default": "false",
+          "values": [
+            {
+              "type": "boolean"
+            }
+          ],
+          "optional": false,
+          "required": false
+        },
+        {
+          "name": "disabled",
+          "type": "boolean | undefined",
+          "mutable": false,
+          "attr": "disabled",
+          "reflectToAttr": false,
+          "docs": "If true, the element is displayed as disabled",
+          "docsTags": [],
+          "default": "false",
+          "values": [
+            {
+              "type": "boolean"
+            },
+            {
+              "type": "undefined"
+            }
+          ],
+          "optional": true,
+          "required": false
+        },
+        {
+          "name": "icon",
+          "type": "string | undefined",
+          "mutable": false,
+          "attr": "icon",
+          "reflectToAttr": false,
+          "docs": "An icon displayed at the right of the input",
+          "docsTags": [],
+          "values": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "undefined"
+            }
+          ],
+          "optional": true,
+          "required": false
+        },
+        {
+          "name": "label",
+          "type": "string | undefined",
+          "mutable": false,
+          "attr": "label",
+          "reflectToAttr": false,
+          "docs": "Display a text on the top of the input text field",
+          "docsTags": [],
+          "values": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "undefined"
+            }
+          ],
+          "optional": true,
+          "required": false
+        },
+        {
+          "name": "max",
+          "type": "number | undefined",
+          "mutable": false,
+          "attr": "max",
+          "reflectToAttr": false,
+          "docs": "Specifies the maximum value\nuse it with input type=\"number\" or type=\"date\"\nExample: max=\"180\", max=\"2046-12-04\"",
+          "docsTags": [],
+          "values": [
+            {
+              "type": "number"
+            },
+            {
+              "type": "undefined"
+            }
+          ],
+          "optional": true,
+          "required": false
+        },
+        {
+          "name": "maxlength",
+          "type": "number | undefined",
+          "mutable": false,
+          "attr": "maxlength",
+          "reflectToAttr": false,
+          "docs": "Specifies the maximum number of characters allowed in an element\nuse it with input type=\"number\"",
+          "docsTags": [],
+          "values": [
+            {
+              "type": "number"
+            },
+            {
+              "type": "undefined"
+            }
+          ],
+          "optional": true,
+          "required": false
+        },
+        {
+          "name": "message",
+          "type": "string | undefined",
+          "mutable": false,
+          "attr": "message",
+          "reflectToAttr": false,
+          "docs": "Display a message at the bottom of the input text field",
+          "docsTags": [],
+          "values": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "undefined"
+            }
+          ],
+          "optional": true,
+          "required": false
+        },
+        {
+          "name": "min",
+          "type": "string | undefined",
+          "mutable": false,
+          "attr": "min",
+          "reflectToAttr": false,
+          "docs": "Specifies the minimum value\nuse it with input type=\"number\" or type=\"date\"\nExample: min=\"-3\", min=\"1988-04-15\"",
+          "docsTags": [],
+          "values": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "undefined"
+            }
+          ],
+          "optional": true,
+          "required": false
+        },
+        {
+          "name": "minlength",
+          "type": "number | undefined",
+          "mutable": false,
+          "attr": "minlength",
+          "reflectToAttr": false,
+          "docs": "Specifies the minimum number of characters allowed in an element\nuse it with input type=\"number\"",
+          "docsTags": [],
+          "values": [
+            {
+              "type": "number"
+            },
+            {
+              "type": "undefined"
+            }
+          ],
+          "optional": true,
+          "required": false
+        },
+        {
+          "name": "name",
+          "type": "string | undefined",
+          "mutable": false,
+          "attr": "name",
+          "reflectToAttr": false,
+          "docs": "Is needed to reference the form data after the form is submitted",
+          "docsTags": [],
+          "values": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "undefined"
+            }
+          ],
+          "optional": true,
+          "required": false
+        },
+        {
+          "name": "pattern",
+          "type": "string | undefined",
+          "mutable": false,
+          "attr": "pattern",
+          "reflectToAttr": false,
+          "docs": "Specifies a regular expression that element\\'s value is checked against",
+          "docsTags": [],
+          "values": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "undefined"
+            }
+          ],
+          "optional": true,
+          "required": false
+        },
+        {
+          "name": "placeholder",
+          "type": "string",
+          "mutable": false,
+          "attr": "placeholder",
+          "reflectToAttr": false,
+          "docs": "Specifies a short hint that describes the expected value of the element",
+          "docsTags": [],
+          "default": "''",
+          "values": [
+            {
+              "type": "string"
+            }
+          ],
+          "optional": false,
+          "required": false
+        },
+        {
+          "name": "readonly",
+          "type": "boolean | undefined",
+          "mutable": false,
+          "attr": "readonly",
+          "reflectToAttr": false,
+          "docs": "Specifies that the element is read-only",
+          "docsTags": [],
+          "default": "false",
+          "values": [
+            {
+              "type": "boolean"
+            },
+            {
+              "type": "undefined"
+            }
+          ],
+          "optional": true,
+          "required": false
+        },
+        {
+          "name": "required",
+          "type": "boolean | undefined",
+          "mutable": false,
+          "attr": "required",
+          "reflectToAttr": false,
+          "docs": "Specifies that the element must be filled out before submitting the form",
+          "docsTags": [],
+          "default": "false",
+          "values": [
+            {
+              "type": "boolean"
+            },
+            {
+              "type": "undefined"
+            }
+          ],
+          "optional": true,
+          "required": false
+        },
+        {
+          "name": "step",
+          "type": "string | undefined",
+          "mutable": false,
+          "attr": "step",
+          "reflectToAttr": false,
+          "docs": "Specifies the interval between legal numbers in an input field",
+          "docsTags": [],
+          "values": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "undefined"
+            }
+          ],
+          "optional": true,
+          "required": false
+        },
+        {
+          "name": "tip",
+          "type": "string | undefined",
+          "mutable": false,
+          "attr": "tip",
+          "reflectToAttr": false,
+          "docs": "Display the variant of a message at the bottom of the input text field",
+          "docsTags": [],
+          "values": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "undefined"
+            }
+          ],
+          "optional": true,
+          "required": false
+        },
+        {
+          "name": "type",
+          "type": "\"date\" | \"email\" | \"number\" | \"password\" | \"search\" | \"tel\" | \"text\" | \"textarea\" | \"time\" | \"url\"",
+          "mutable": false,
+          "attr": "type",
+          "reflectToAttr": false,
+          "docs": "Specifies the type of input element",
+          "docsTags": [],
+          "default": "'text'",
+          "values": [
+            {
+              "value": "date",
+              "type": "string"
+            },
+            {
+              "value": "email",
+              "type": "string"
+            },
+            {
+              "value": "number",
+              "type": "string"
+            },
+            {
+              "value": "password",
+              "type": "string"
+            },
+            {
+              "value": "search",
+              "type": "string"
+            },
+            {
+              "value": "tel",
+              "type": "string"
+            },
+            {
+              "value": "text",
+              "type": "string"
+            },
+            {
+              "value": "textarea",
+              "type": "string"
+            },
+            {
+              "value": "time",
+              "type": "string"
+            },
+            {
+              "value": "url",
+              "type": "string"
+            }
+          ],
+          "optional": false,
+          "required": false
+        },
+        {
+          "name": "validate",
+          "type": "\"cf\" | \"email\" | \"isbn\" | \"piva\" | undefined",
+          "mutable": false,
+          "attr": "validate",
+          "reflectToAttr": false,
+          "docs": "Specifies the type of model data to be automatically validated",
+          "docsTags": [],
+          "values": [
+            {
+              "value": "cf",
+              "type": "string"
+            },
+            {
+              "value": "email",
+              "type": "string"
+            },
+            {
+              "value": "isbn",
+              "type": "string"
+            },
+            {
+              "value": "piva",
+              "type": "string"
+            },
+            {
+              "type": "undefined"
+            }
+          ],
+          "optional": true,
+          "required": false
+        },
+        {
+          "name": "value",
+          "type": "number | string",
+          "mutable": false,
+          "attr": "value",
+          "reflectToAttr": false,
+          "docs": "Specifies the value of the input element",
+          "docsTags": [],
+          "default": "''",
+          "values": [
+            {
+              "type": "number"
+            },
+            {
+              "type": "string"
+            }
+          ],
+          "optional": false,
+          "required": false
+        },
+        {
+          "name": "variant",
+          "type": "\"error\" | \"info\" | \"success\" | \"warning\" | undefined",
+          "mutable": false,
+          "attr": "variant",
+          "reflectToAttr": false,
+          "docs": "Display the variant of a message at the bottom of the input text field",
+          "docsTags": [],
+          "values": [
+            {
+              "value": "error",
+              "type": "string"
+            },
+            {
+              "value": "info",
+              "type": "string"
+            },
+            {
+              "value": "success",
+              "type": "string"
+            },
+            {
+              "value": "warning",
+              "type": "string"
+            },
+            {
+              "type": "undefined"
+            }
+          ],
+          "optional": true,
+          "required": false
+        }
+      ],
+      "methods": [
+        {
+          "name": "getInputElement",
+          "returns": {
+            "type": "Promise<HTMLMdsInputElement>",
+            "docs": ""
+          },
+          "signature": "getInputElement() => Promise<HTMLMdsInputElement>",
+          "parameters": [],
+          "docs": "Returns the native `<input>` element used under the hood.",
+          "docsTags": []
+        },
+        {
+          "name": "setFocus",
+          "returns": {
+            "type": "Promise<void>",
+            "docs": ""
+          },
+          "signature": "setFocus() => Promise<void>",
+          "parameters": [],
+          "docs": "Sets focus on the specified `my-input`.\nUse this method instead\nof the global `input.focus()`.",
+          "docsTags": []
+        }
+      ],
+      "events": [
+        {
+          "event": "mdsInputFieldBlur",
+          "detail": "void",
+          "bubbles": true,
+          "cancelable": true,
+          "composed": true,
+          "docs": "Emits a void event when input element is blurred",
+          "docsTags": []
+        },
+        {
+          "event": "mdsInputFieldChange",
+          "detail": "InputValue",
+          "bubbles": true,
+          "cancelable": true,
+          "composed": true,
+          "docs": "Emits an InputValue when the value of the input element changes",
+          "docsTags": []
+        },
+        {
+          "event": "mdsInputFieldFocus",
+          "detail": "void",
+          "bubbles": true,
+          "cancelable": true,
+          "composed": true,
+          "docs": "Emits a void event when input element is focused",
+          "docsTags": []
+        },
+        {
+          "event": "mdsInputFieldKeydown",
+          "detail": "KeyboardEvent",
+          "bubbles": true,
+          "cancelable": true,
+          "composed": true,
+          "docs": "Emits a KeyboardEvent when a keboard key is pressed on the focused input element",
+          "docsTags": []
+        }
+      ],
+      "listeners": [],
+      "styles": [
+        {
+          "name": "--mds-input-field-message-background",
+          "annotation": "prop",
+          "docs": "Sets the message background color of the component, will be visible only if there is a text defined by `tip` component attribute"
+        },
+        {
+          "name": "--mds-input-field-message-color",
+          "annotation": "prop",
+          "docs": "Sets the message text color of the component"
+        }
+      ],
+      "slots": [],
+      "parts": [],
+      "dependents": [],
+      "dependencies": [
+        "mds-text",
+        "mds-input"
+      ],
+      "dependencyGraph": {
+        "mds-input-field": [
+          "mds-text",
+          "mds-input"
+        ],
+        "mds-input": [
+          "mds-text",
+          "mds-icon"
+        ]
+      }
+    }
+  ]
+}

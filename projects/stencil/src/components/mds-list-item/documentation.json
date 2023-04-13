@@ -1,0 +1,135 @@
+{
+  "timestamp": "2023-04-12T19:51:01",
+  "compiler": {
+    "name": "@stencil/core",
+    "version": "2.22.3",
+    "typescriptVersion": "4.9.4"
+  },
+  "components": [
+    {
+      "filePath": "./src/components/mds-list-item/mds-list-item.tsx",
+      "encapsulation": "shadow",
+      "tag": "mds-list-item",
+      "readme": "# mds-list-item\n\n\n",
+      "docs": "",
+      "docsTags": [],
+      "usage": {},
+      "props": [
+        {
+          "name": "icon",
+          "type": "string | undefined",
+          "mutable": false,
+          "attr": "icon",
+          "reflectToAttr": false,
+          "docs": "Specifies the icon displayed in the element",
+          "docsTags": [],
+          "values": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "undefined"
+            }
+          ],
+          "optional": true,
+          "required": false
+        },
+        {
+          "name": "typography",
+          "type": "\"caption\" | \"detail\" | \"label\" | \"option\" | \"paragraph\" | \"tip\"",
+          "mutable": false,
+          "attr": "typography",
+          "reflectToAttr": true,
+          "docs": "Specifies the typography of the element",
+          "docsTags": [],
+          "default": "'detail'",
+          "values": [
+            {
+              "value": "caption",
+              "type": "string"
+            },
+            {
+              "value": "detail",
+              "type": "string"
+            },
+            {
+              "value": "label",
+              "type": "string"
+            },
+            {
+              "value": "option",
+              "type": "string"
+            },
+            {
+              "value": "paragraph",
+              "type": "string"
+            },
+            {
+              "value": "tip",
+              "type": "string"
+            }
+          ],
+          "optional": false,
+          "required": false
+        },
+        {
+          "name": "variant",
+          "type": "\"info\" | \"read\" | undefined",
+          "mutable": false,
+          "attr": "variant",
+          "reflectToAttr": false,
+          "docs": "Specifies the variant for `typography`",
+          "docsTags": [],
+          "default": "'info'",
+          "values": [
+            {
+              "value": "info",
+              "type": "string"
+            },
+            {
+              "value": "read",
+              "type": "string"
+            },
+            {
+              "type": "undefined"
+            }
+          ],
+          "optional": true,
+          "required": false
+        }
+      ],
+      "methods": [],
+      "events": [],
+      "listeners": [],
+      "styles": [
+        {
+          "name": "--mds-list-item-icon-margin",
+          "annotation": "prop",
+          "docs": "Sets the margin of the component's icon"
+        }
+      ],
+      "slots": [],
+      "parts": [
+        {
+          "name": "icon",
+          "docs": ""
+        },
+        {
+          "name": "text",
+          "docs": ""
+        }
+      ],
+      "dependents": [],
+      "dependencies": [
+        "mds-icon",
+        "mds-text"
+      ],
+      "dependencyGraph": {
+        "mds-list-item": [
+          "mds-icon",
+          "mds-text"
+        ]
+      }
+    }
+  ]
+}

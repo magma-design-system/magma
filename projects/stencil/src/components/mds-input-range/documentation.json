@@ -1,0 +1,143 @@
+{
+  "timestamp": "2023-04-12T19:51:01",
+  "compiler": {
+    "name": "@stencil/core",
+    "version": "2.22.3",
+    "typescriptVersion": "4.9.4"
+  },
+  "components": [
+    {
+      "filePath": "./src/components/mds-input-range/mds-input-range.tsx",
+      "encapsulation": "shadow",
+      "tag": "mds-input-range",
+      "readme": "# mds-input-range\n\n\n",
+      "docs": "",
+      "docsTags": [],
+      "usage": {},
+      "props": [
+        {
+          "name": "max",
+          "type": "number",
+          "mutable": false,
+          "attr": "max",
+          "reflectToAttr": false,
+          "docs": "The greatest value in the range of permitted values",
+          "docsTags": [],
+          "default": "100",
+          "values": [
+            {
+              "type": "number"
+            }
+          ],
+          "optional": false,
+          "required": false
+        },
+        {
+          "name": "min",
+          "type": "number",
+          "mutable": false,
+          "attr": "min",
+          "reflectToAttr": false,
+          "docs": "The lowest value in the range of permitted values",
+          "docsTags": [],
+          "default": "0",
+          "values": [
+            {
+              "type": "number"
+            }
+          ],
+          "optional": false,
+          "required": false
+        },
+        {
+          "name": "step",
+          "type": "number | undefined",
+          "mutable": false,
+          "attr": "step",
+          "reflectToAttr": false,
+          "docs": "The step attribute is a number that specifies the granularity that\nthe value must adhere to, or the special value any, which is described below.",
+          "docsTags": [],
+          "default": "1",
+          "values": [
+            {
+              "type": "number"
+            },
+            {
+              "type": "undefined"
+            }
+          ],
+          "optional": true,
+          "required": false
+        },
+        {
+          "name": "value",
+          "type": "number",
+          "mutable": true,
+          "attr": "value",
+          "reflectToAttr": true,
+          "docs": "The value attribute contains a number which contains a representation of the selected number.",
+          "docsTags": [],
+          "default": "50",
+          "values": [
+            {
+              "type": "number"
+            }
+          ],
+          "optional": false,
+          "required": false
+        }
+      ],
+      "methods": [],
+      "events": [
+        {
+          "event": "mdsInputRangeChange",
+          "detail": "number",
+          "bubbles": true,
+          "cancelable": true,
+          "composed": true,
+          "docs": "Emits when the input range is changed",
+          "docsTags": []
+        }
+      ],
+      "listeners": [],
+      "styles": [
+        {
+          "name": "--thumb-background",
+          "annotation": "prop",
+          "docs": ""
+        },
+        {
+          "name": "--thumb-size",
+          "annotation": "prop",
+          "docs": "Sets the thumb width and height of the component"
+        },
+        {
+          "name": "--track-background",
+          "annotation": "prop",
+          "docs": ""
+        },
+        {
+          "name": "--track-progress-background",
+          "annotation": "prop",
+          "docs": ""
+        },
+        {
+          "name": "--track-size",
+          "annotation": "prop",
+          "docs": ""
+        }
+      ],
+      "slots": [],
+      "parts": [],
+      "dependents": [],
+      "dependencies": [
+        "mds-text"
+      ],
+      "dependencyGraph": {
+        "mds-input-range": [
+          "mds-text"
+        ]
+      }
+    }
+  ]
+}

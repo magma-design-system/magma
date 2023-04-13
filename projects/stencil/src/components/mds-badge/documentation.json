@@ -1,0 +1,241 @@
+{
+  "timestamp": "2023-04-12T19:51:01",
+  "compiler": {
+    "name": "@stencil/core",
+    "version": "2.22.3",
+    "typescriptVersion": "4.9.4"
+  },
+  "components": [
+    {
+      "filePath": "./src/components/mds-badge/mds-badge.tsx",
+      "encapsulation": "shadow",
+      "tag": "mds-badge",
+      "readme": "# mds-badge\n\n\n",
+      "docs": "",
+      "docsTags": [],
+      "usage": {},
+      "props": [
+        {
+          "name": "tone",
+          "type": "\"quiet\" | \"strong\" | \"weak\" | undefined",
+          "mutable": false,
+          "attr": "tone",
+          "reflectToAttr": true,
+          "docs": "Sets the tone of the color variant",
+          "docsTags": [],
+          "default": "'weak'",
+          "values": [
+            {
+              "value": "quiet",
+              "type": "string"
+            },
+            {
+              "value": "strong",
+              "type": "string"
+            },
+            {
+              "value": "weak",
+              "type": "string"
+            },
+            {
+              "type": "undefined"
+            }
+          ],
+          "optional": true,
+          "required": false
+        },
+        {
+          "name": "typography",
+          "type": "\"caption\" | \"detail\" | \"label\" | \"option\" | \"paragraph\" | \"tip\"",
+          "mutable": false,
+          "attr": "typography",
+          "reflectToAttr": false,
+          "docs": "Specifies the typography of the element",
+          "docsTags": [],
+          "default": "'option'",
+          "values": [
+            {
+              "value": "caption",
+              "type": "string"
+            },
+            {
+              "value": "detail",
+              "type": "string"
+            },
+            {
+              "value": "label",
+              "type": "string"
+            },
+            {
+              "value": "option",
+              "type": "string"
+            },
+            {
+              "value": "paragraph",
+              "type": "string"
+            },
+            {
+              "value": "tip",
+              "type": "string"
+            }
+          ],
+          "optional": false,
+          "required": false
+        },
+        {
+          "name": "typographyVariant",
+          "type": "\"code\" | \"info\" | \"read\" | \"title\" | undefined",
+          "mutable": false,
+          "attr": "typography-variant",
+          "reflectToAttr": false,
+          "docs": "Specifies the variant for `typography`",
+          "docsTags": [],
+          "values": [
+            {
+              "value": "code",
+              "type": "string"
+            },
+            {
+              "value": "info",
+              "type": "string"
+            },
+            {
+              "value": "read",
+              "type": "string"
+            },
+            {
+              "value": "title",
+              "type": "string"
+            },
+            {
+              "type": "undefined"
+            }
+          ],
+          "optional": true,
+          "required": false
+        },
+        {
+          "name": "variant",
+          "type": "\"amaranth\" | \"aqua\" | \"blue\" | \"dark\" | \"error\" | \"green\" | \"info\" | \"light\" | \"lime\" | \"orange\" | \"orchid\" | \"sky\" | \"success\" | \"violet\" | \"warning\" | \"yellow\" | undefined",
+          "mutable": false,
+          "attr": "variant",
+          "reflectToAttr": true,
+          "docs": "Sets the theme variant colors",
+          "docsTags": [],
+          "default": "'green'",
+          "values": [
+            {
+              "value": "amaranth",
+              "type": "string"
+            },
+            {
+              "value": "aqua",
+              "type": "string"
+            },
+            {
+              "value": "blue",
+              "type": "string"
+            },
+            {
+              "value": "dark",
+              "type": "string"
+            },
+            {
+              "value": "error",
+              "type": "string"
+            },
+            {
+              "value": "green",
+              "type": "string"
+            },
+            {
+              "value": "info",
+              "type": "string"
+            },
+            {
+              "value": "light",
+              "type": "string"
+            },
+            {
+              "value": "lime",
+              "type": "string"
+            },
+            {
+              "value": "orange",
+              "type": "string"
+            },
+            {
+              "value": "orchid",
+              "type": "string"
+            },
+            {
+              "value": "sky",
+              "type": "string"
+            },
+            {
+              "value": "success",
+              "type": "string"
+            },
+            {
+              "value": "violet",
+              "type": "string"
+            },
+            {
+              "value": "warning",
+              "type": "string"
+            },
+            {
+              "value": "yellow",
+              "type": "string"
+            },
+            {
+              "type": "undefined"
+            }
+          ],
+          "optional": true,
+          "required": false
+        }
+      ],
+      "methods": [],
+      "events": [],
+      "listeners": [],
+      "styles": [
+        {
+          "name": "--background",
+          "annotation": "prop",
+          "docs": "Sets the background-color of the component"
+        },
+        {
+          "name": "--color",
+          "annotation": "prop",
+          "docs": "Sets the text color of the component"
+        },
+        {
+          "name": "--radius",
+          "annotation": "prop",
+          "docs": "Sets the border-radius of the component"
+        }
+      ],
+      "slots": [],
+      "parts": [],
+      "dependents": [
+        "mds-file",
+        "mds-stepper-bar-item"
+      ],
+      "dependencies": [
+        "mds-text"
+      ],
+      "dependencyGraph": {
+        "mds-badge": [
+          "mds-text"
+        ],
+        "mds-file": [
+          "mds-badge"
+        ],
+        "mds-stepper-bar-item": [
+          "mds-badge"
+        ]
+      }
+    }
+  ]
+}

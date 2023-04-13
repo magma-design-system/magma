@@ -1,0 +1,129 @@
+{
+  "timestamp": "2023-04-12T19:51:01",
+  "compiler": {
+    "name": "@stencil/core",
+    "version": "2.22.3",
+    "typescriptVersion": "4.9.4"
+  },
+  "components": [
+    {
+      "filePath": "./src/components/mds-input-select/mds-input-select.tsx",
+      "encapsulation": "shadow",
+      "tag": "mds-input-select",
+      "readme": "# mds-input-select\n\n\n",
+      "docs": "",
+      "docsTags": [],
+      "usage": {},
+      "props": [
+        {
+          "name": "options",
+          "type": "string",
+          "mutable": false,
+          "attr": "options",
+          "reflectToAttr": false,
+          "docs": "Specifies a short hint that describes the expected value of the element",
+          "docsTags": [],
+          "default": "''",
+          "values": [
+            {
+              "type": "string"
+            }
+          ],
+          "optional": false,
+          "required": false
+        },
+        {
+          "name": "placeholder",
+          "type": "string | undefined",
+          "mutable": false,
+          "attr": "placeholder",
+          "reflectToAttr": false,
+          "docs": "Specifies a short hint that describes the expected value of the element",
+          "docsTags": [],
+          "values": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "undefined"
+            }
+          ],
+          "optional": true,
+          "required": false
+        },
+        {
+          "name": "value",
+          "type": "null | number | string | undefined",
+          "mutable": false,
+          "attr": "value",
+          "reflectToAttr": false,
+          "docs": "Specifies the value of the element",
+          "docsTags": [],
+          "default": "''",
+          "values": [
+            {
+              "type": "null"
+            },
+            {
+              "type": "number"
+            },
+            {
+              "type": "string"
+            },
+            {
+              "type": "undefined"
+            }
+          ],
+          "optional": true,
+          "required": false
+        }
+      ],
+      "methods": [],
+      "events": [
+        {
+          "event": "mdsInputSelectBlur",
+          "detail": "void",
+          "bubbles": true,
+          "cancelable": true,
+          "composed": true,
+          "docs": "Emits a void event when input element is blurred",
+          "docsTags": []
+        },
+        {
+          "event": "mdsInputSelectChange",
+          "detail": "InputValue",
+          "bubbles": true,
+          "cancelable": true,
+          "composed": true,
+          "docs": "Emits an InputChangeEventDetail when the value of the input element changes",
+          "docsTags": []
+        },
+        {
+          "event": "mdsInputSelectFocus",
+          "detail": "void",
+          "bubbles": true,
+          "cancelable": true,
+          "composed": true,
+          "docs": "Emits a void event when input element is focused",
+          "docsTags": []
+        },
+        {
+          "event": "mdsInputSelectKeydown",
+          "detail": "KeyboardEvent",
+          "bubbles": true,
+          "cancelable": true,
+          "composed": true,
+          "docs": "Emits a KeyboardEvent when a keboard key is pressed on the focused input element",
+          "docsTags": []
+        }
+      ],
+      "listeners": [],
+      "styles": [],
+      "slots": [],
+      "parts": [],
+      "dependents": [],
+      "dependencies": [],
+      "dependencyGraph": {}
+    }
+  ]
+}

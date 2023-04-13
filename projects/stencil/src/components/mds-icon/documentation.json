@@ -1,0 +1,117 @@
+{
+  "timestamp": "2023-04-12T19:51:01",
+  "compiler": {
+    "name": "@stencil/core",
+    "version": "2.22.3",
+    "typescriptVersion": "4.9.4"
+  },
+  "components": [
+    {
+      "filePath": "./src/components/mds-icon/mds-icon.tsx",
+      "encapsulation": "shadow",
+      "tag": "mds-icon",
+      "readme": "# mds-icon\n\n## How to use\n\nThis component is intented to be used only with svg files. In order to properly work, you need  to tell the component the path to the svg file directory.\n\n### Via `sessionStorage` (recommended)\n\nThe simplest way to instruct the component is using `window.sessionStorage('mdsIconSvgPath', <path-to-svg-directory>)`.\nFor example, if your svg directory is located in `assets/img/svg`, you should put the following code in your application\n\n```javascript\nwindow.sessionStorage('mdsIconSvgPath', 'assets/img/svg/');\n```\n\nThe path to the directory is based on how the `assets` are handled by the framework you are using.\n\n### Via `setSvgPath` stencil method\n\nAnother way would be, after you have called `defineCustomElements()` of this component, to instantiate a temporary MdsIcon DOM node element to call the `setSvgPath` class method\n\n```javascript\nconst mdsIconGet = async () => {\n  // Wait for the web component to be defined\n  await customElements.whenDefined('mds-icon')\n  // Create an instance of mds-icon\n  const mdsIcon = document.createElement('mds-icon')\n  // Append element to body\n  document.body.appendChild(mdsIcon)\n  // Check for method existance and set svg directory path\n  if ('setSvgPath' in mdsIcon) {\n    mdsIcon.setSvgPath('/assets/img/svg/')\n  }\n  // Remove element from body\n  document.body.removeChild(mdsIcon)\n}\n\nmdsIconGet()\n```\n\n### Via `setSvgPathStatic` static class function\n\nLast way to set it is by calling the static function present in the class. This is done after the `defineCustomElements()` call\n\n```javascript\nimport { mds_icon } from '@maggioli-design-system/mds-icon/dist/esm/mds-icon.entry'\n\nconst mdsIconGet = async () => {\n  await customElements.whenDefined('mds-icon')\n\n  mds_icon.setSvgPathStatic('/assets/img/svg/')\n}\n\nmdsIconGet()\n```\n\n## Force icon update\n\nIn some cases it may happens that when setting the path to where the SVG are located, icons still fail to load them.\n\nThis may be caused by the instatiation of `mds-icon` component happening before the setting of the directory path.\n\nTo force the update of the icons, after you have called `window.sessionStorage` or the `mds-icon` functions, you can dispatch a global event from the window with the key `mdsIconSvgPathUpdate`\n\n```javascript\nwindow.dispatchEvent(new CustomEvent('mdsIconSvgPathUpdate'))\n```\n\nOnce done this, the icons component already instantiated will be notified of the update and try to reload the icons.\n",
+      "docs": "",
+      "docsTags": [],
+      "usage": {},
+      "props": [
+        {
+          "name": "name",
+          "type": "string",
+          "mutable": false,
+          "attr": "name",
+          "reflectToAttr": true,
+          "docs": "The name of the icon.",
+          "docsTags": [],
+          "values": [
+            {
+              "type": "string"
+            }
+          ],
+          "optional": false,
+          "required": true
+        }
+      ],
+      "methods": [
+        {
+          "name": "setSvgPath",
+          "returns": {
+            "type": "Promise<void>",
+            "docs": ""
+          },
+          "signature": "setSvgPath(svgPath: string) => Promise<void>",
+          "parameters": [],
+          "docs": "Set the path to the directory of svg files",
+          "docsTags": [
+            {
+              "name": "param",
+              "text": "svgPath path to the directory of svg files"
+            }
+          ]
+        }
+      ],
+      "events": [],
+      "listeners": [],
+      "styles": [],
+      "slots": [],
+      "parts": [],
+      "dependents": [
+        "mds-banner",
+        "mds-button",
+        "mds-chip",
+        "mds-entity",
+        "mds-file",
+        "mds-filter-item",
+        "mds-input",
+        "mds-input-switch",
+        "mds-list-item",
+        "mds-paginator-item",
+        "mds-stepper-bar-item",
+        "mds-tab-bar-item",
+        "mds-usage"
+      ],
+      "dependencies": [],
+      "dependencyGraph": {
+        "mds-banner": [
+          "mds-icon"
+        ],
+        "mds-button": [
+          "mds-icon"
+        ],
+        "mds-chip": [
+          "mds-icon"
+        ],
+        "mds-entity": [
+          "mds-icon"
+        ],
+        "mds-file": [
+          "mds-icon"
+        ],
+        "mds-filter-item": [
+          "mds-icon"
+        ],
+        "mds-input": [
+          "mds-icon"
+        ],
+        "mds-input-switch": [
+          "mds-icon"
+        ],
+        "mds-list-item": [
+          "mds-icon"
+        ],
+        "mds-paginator-item": [
+          "mds-icon"
+        ],
+        "mds-stepper-bar-item": [
+          "mds-icon"
+        ],
+        "mds-tab-bar-item": [
+          "mds-icon"
+        ],
+        "mds-usage": [
+          "mds-icon"
+        ]
+      }
+    }
+  ]
+}

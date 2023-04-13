@@ -1,0 +1,386 @@
+{
+  "timestamp": "2023-04-12T19:51:01",
+  "compiler": {
+    "name": "@stencil/core",
+    "version": "2.22.3",
+    "typescriptVersion": "4.9.4"
+  },
+  "components": [
+    {
+      "filePath": "./src/components/mds-dropdown/mds-dropdown.tsx",
+      "encapsulation": "shadow",
+      "tag": "mds-dropdown",
+      "readme": "# mds-dropdown\n\n\n",
+      "docs": "",
+      "docsTags": [],
+      "usage": {},
+      "props": [
+        {
+          "name": "arrow",
+          "type": "boolean",
+          "mutable": false,
+          "attr": "arrow",
+          "reflectToAttr": false,
+          "docs": "If set, the component will have an arrow pointing to the caller.",
+          "docsTags": [],
+          "default": "true",
+          "values": [
+            {
+              "type": "boolean"
+            }
+          ],
+          "optional": false,
+          "required": false
+        },
+        {
+          "name": "arrowPadding",
+          "type": "number",
+          "mutable": false,
+          "attr": "arrow-padding",
+          "reflectToAttr": false,
+          "docs": "Sets the distance between arrow and dropdown margins.",
+          "docsTags": [],
+          "default": "24",
+          "values": [
+            {
+              "type": "number"
+            }
+          ],
+          "optional": false,
+          "required": false
+        },
+        {
+          "name": "autoPlacement",
+          "type": "boolean",
+          "mutable": false,
+          "attr": "auto-placement",
+          "reflectToAttr": false,
+          "docs": "If set, the component will be placed automatically near it's caller.",
+          "docsTags": [],
+          "default": "false",
+          "values": [
+            {
+              "type": "boolean"
+            }
+          ],
+          "optional": false,
+          "required": false
+        },
+        {
+          "name": "backdrop",
+          "type": "boolean",
+          "mutable": false,
+          "attr": "backdrop",
+          "reflectToAttr": false,
+          "docs": "Specifies if the component has a backdrop background",
+          "docsTags": [],
+          "default": "false",
+          "values": [
+            {
+              "type": "boolean"
+            }
+          ],
+          "optional": false,
+          "required": false
+        },
+        {
+          "name": "flip",
+          "type": "boolean",
+          "mutable": false,
+          "attr": "flip",
+          "reflectToAttr": false,
+          "docs": "Specifies the placement of the component if no space is available where it is placed.",
+          "docsTags": [],
+          "default": "false",
+          "values": [
+            {
+              "type": "boolean"
+            }
+          ],
+          "optional": false,
+          "required": false
+        },
+        {
+          "name": "offset",
+          "type": "number",
+          "mutable": false,
+          "attr": "offset",
+          "reflectToAttr": false,
+          "docs": "Sets distance between the dropdown and the caller.",
+          "docsTags": [],
+          "default": "24",
+          "values": [
+            {
+              "type": "number"
+            }
+          ],
+          "optional": false,
+          "required": false
+        },
+        {
+          "name": "placement",
+          "type": "\"bottom\" | \"bottom-end\" | \"bottom-start\" | \"left\" | \"left-end\" | \"left-start\" | \"right\" | \"right-end\" | \"right-start\" | \"top\" | \"top-end\" | \"top-start\"",
+          "mutable": false,
+          "attr": "placement",
+          "reflectToAttr": false,
+          "docs": "Specifies where the component should be placed relative to the caller.",
+          "docsTags": [],
+          "default": "'bottom'",
+          "values": [
+            {
+              "value": "bottom",
+              "type": "string"
+            },
+            {
+              "value": "bottom-end",
+              "type": "string"
+            },
+            {
+              "value": "bottom-start",
+              "type": "string"
+            },
+            {
+              "value": "left",
+              "type": "string"
+            },
+            {
+              "value": "left-end",
+              "type": "string"
+            },
+            {
+              "value": "left-start",
+              "type": "string"
+            },
+            {
+              "value": "right",
+              "type": "string"
+            },
+            {
+              "value": "right-end",
+              "type": "string"
+            },
+            {
+              "value": "right-start",
+              "type": "string"
+            },
+            {
+              "value": "top",
+              "type": "string"
+            },
+            {
+              "value": "top-end",
+              "type": "string"
+            },
+            {
+              "value": "top-start",
+              "type": "string"
+            }
+          ],
+          "optional": false,
+          "required": false
+        },
+        {
+          "name": "shift",
+          "type": "boolean",
+          "mutable": false,
+          "attr": "shift",
+          "reflectToAttr": false,
+          "docs": "If set, the component will be kept inside the viewport.",
+          "docsTags": [],
+          "default": "true",
+          "values": [
+            {
+              "type": "boolean"
+            }
+          ],
+          "optional": false,
+          "required": false
+        },
+        {
+          "name": "shiftPadding",
+          "type": "number",
+          "mutable": false,
+          "attr": "shift-padding",
+          "reflectToAttr": false,
+          "docs": "Sets a safe area distance between the dropdown and the viewport.",
+          "docsTags": [],
+          "default": "24",
+          "values": [
+            {
+              "type": "number"
+            }
+          ],
+          "optional": false,
+          "required": false
+        },
+        {
+          "name": "smooth",
+          "type": "boolean",
+          "mutable": false,
+          "attr": "smooth",
+          "reflectToAttr": false,
+          "docs": "If set, the component will follow the caller smoothly, visible when the page scrolls.",
+          "docsTags": [],
+          "default": "true",
+          "values": [
+            {
+              "type": "boolean"
+            }
+          ],
+          "optional": false,
+          "required": false
+        },
+        {
+          "name": "strategy",
+          "type": "\"absolute\" | \"fixed\"",
+          "mutable": false,
+          "attr": "strategy",
+          "reflectToAttr": false,
+          "docs": "Sets the CSS position strategy of the component.",
+          "docsTags": [],
+          "default": "'fixed'",
+          "values": [
+            {
+              "value": "absolute",
+              "type": "string"
+            },
+            {
+              "value": "fixed",
+              "type": "string"
+            }
+          ],
+          "optional": false,
+          "required": false
+        },
+        {
+          "name": "target",
+          "type": "string",
+          "mutable": false,
+          "attr": "target",
+          "reflectToAttr": false,
+          "docs": "Specifies the id of the caller element.",
+          "docsTags": [],
+          "values": [
+            {
+              "type": "string"
+            }
+          ],
+          "optional": false,
+          "required": true
+        },
+        {
+          "name": "visible",
+          "type": "boolean",
+          "mutable": true,
+          "attr": "visible",
+          "reflectToAttr": true,
+          "docs": "Specifies the visibility of the component.",
+          "docsTags": [],
+          "default": "false",
+          "values": [
+            {
+              "type": "boolean"
+            }
+          ],
+          "optional": false,
+          "required": false
+        },
+        {
+          "name": "zIndex",
+          "type": "number",
+          "mutable": false,
+          "attr": "z-index",
+          "reflectToAttr": false,
+          "docs": "Specifies the visibility of the component.",
+          "docsTags": [],
+          "default": "1000",
+          "values": [
+            {
+              "type": "number"
+            }
+          ],
+          "optional": false,
+          "required": false
+        }
+      ],
+      "methods": [],
+      "events": [
+        {
+          "event": "mdsDropdownChange",
+          "detail": "MdsDropdownEventDetail",
+          "bubbles": true,
+          "cancelable": true,
+          "composed": true,
+          "docs": "Emits when a modal is visible or hidden",
+          "docsTags": []
+        },
+        {
+          "event": "mdsDropdownHide",
+          "detail": "MdsDropdownEventDetail",
+          "bubbles": true,
+          "cancelable": true,
+          "composed": true,
+          "docs": "Emits when a modal is hidden",
+          "docsTags": []
+        },
+        {
+          "event": "mdsDropdownVisible",
+          "detail": "MdsDropdownEventDetail",
+          "bubbles": true,
+          "cancelable": true,
+          "composed": true,
+          "docs": "Emits when a modal is visible",
+          "docsTags": []
+        }
+      ],
+      "listeners": [],
+      "styles": [
+        {
+          "name": "--mds-dropdown-arrow-background",
+          "annotation": "prop",
+          "docs": "Sets the fill color of the arrow."
+        },
+        {
+          "name": "--mds-dropdown-background",
+          "annotation": "prop",
+          "docs": "Sets the background-color of the dropdown."
+        },
+        {
+          "name": "--mds-dropdown-drop-shadow",
+          "annotation": "prop",
+          "docs": "Sets the drop-shadow of the dropdown."
+        },
+        {
+          "name": "--mds-dropdown-duration",
+          "annotation": "prop",
+          "docs": "Sets the duration of the dropdown animation."
+        },
+        {
+          "name": "--mds-dropdown-ease",
+          "annotation": "prop",
+          "docs": "Sets the easing of the dropdown animation."
+        },
+        {
+          "name": "--mds-dropdown-transform-from",
+          "annotation": "prop",
+          "docs": "Sets the from animation transform of the dropdown."
+        },
+        {
+          "name": "--mds-dropdown-transform-to",
+          "annotation": "prop",
+          "docs": "Sets the to animation transform of the dropdown."
+        },
+        {
+          "name": "--mds-dropdown-z-index",
+          "annotation": "prop",
+          "docs": "Sets the z-index of the component."
+        }
+      ],
+      "slots": [],
+      "parts": [],
+      "dependents": [],
+      "dependencies": [],
+      "dependencyGraph": {}
+    }
+  ]
+}

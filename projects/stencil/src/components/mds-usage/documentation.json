@@ -1,0 +1,98 @@
+{
+  "timestamp": "2023-04-12T19:51:01",
+  "compiler": {
+    "name": "@stencil/core",
+    "version": "2.22.3",
+    "typescriptVersion": "4.9.4"
+  },
+  "components": [
+    {
+      "filePath": "./src/components/mds-usage/mds-usage.tsx",
+      "encapsulation": "shadow",
+      "tag": "mds-usage",
+      "readme": "# mds-usage\n\n\n",
+      "docs": "",
+      "docsTags": [],
+      "usage": {},
+      "props": [
+        {
+          "name": "alias",
+          "type": "string | undefined",
+          "mutable": false,
+          "attr": "alias",
+          "reflectToAttr": false,
+          "docs": "Specifies the alias of the usage phrase on the top of the component",
+          "docsTags": [],
+          "values": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "undefined"
+            }
+          ],
+          "optional": true,
+          "required": false
+        },
+        {
+          "name": "variant",
+          "type": "\"do\" | \"dont\" | \"info\" | \"warn\"",
+          "mutable": false,
+          "attr": "variant",
+          "reflectToAttr": false,
+          "docs": "Specifies the delay when the tooltip will trigger",
+          "docsTags": [],
+          "default": "'info'",
+          "values": [
+            {
+              "value": "do",
+              "type": "string"
+            },
+            {
+              "value": "dont",
+              "type": "string"
+            },
+            {
+              "value": "info",
+              "type": "string"
+            },
+            {
+              "value": "warn",
+              "type": "string"
+            }
+          ],
+          "optional": false,
+          "required": false
+        }
+      ],
+      "methods": [],
+      "events": [],
+      "listeners": [],
+      "styles": [
+        {
+          "name": "--background",
+          "annotation": "prop",
+          "docs": "Sets the background-color of the component"
+        },
+        {
+          "name": "--border-width",
+          "annotation": "prop",
+          "docs": "Sets the colored border-size of the component"
+        }
+      ],
+      "slots": [],
+      "parts": [],
+      "dependents": [],
+      "dependencies": [
+        "mds-icon",
+        "mds-text"
+      ],
+      "dependencyGraph": {
+        "mds-usage": [
+          "mds-icon",
+          "mds-text"
+        ]
+      }
+    }
+  ]
+}

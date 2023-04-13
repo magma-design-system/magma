@@ -1,0 +1,130 @@
+{
+  "timestamp": "2023-04-12T19:51:01",
+  "compiler": {
+    "name": "@stencil/core",
+    "version": "2.22.3",
+    "typescriptVersion": "4.9.4"
+  },
+  "components": [
+    {
+      "filePath": "./src/components/mds-entity/mds-entity.tsx",
+      "encapsulation": "shadow",
+      "tag": "mds-entity",
+      "readme": "# mds-entity\n\n\n",
+      "docs": "",
+      "docsTags": [],
+      "usage": {},
+      "props": [
+        {
+          "name": "icon",
+          "type": "string | undefined",
+          "mutable": false,
+          "attr": "icon",
+          "reflectToAttr": false,
+          "docs": "Specifies the icon to be displayed if src propery is not used",
+          "docsTags": [],
+          "values": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "undefined"
+            }
+          ],
+          "optional": true,
+          "required": false
+        },
+        {
+          "name": "initials",
+          "type": "string | undefined",
+          "mutable": false,
+          "attr": "initials",
+          "reflectToAttr": false,
+          "docs": "The user's inizials displayed if there's no image available and icon is not set",
+          "docsTags": [],
+          "values": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "undefined"
+            }
+          ],
+          "optional": true,
+          "required": false
+        },
+        {
+          "name": "src",
+          "type": "string | undefined",
+          "mutable": false,
+          "attr": "src",
+          "reflectToAttr": false,
+          "docs": "Specifies the path to the image",
+          "docsTags": [],
+          "values": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "undefined"
+            }
+          ],
+          "optional": true,
+          "required": false
+        }
+      ],
+      "methods": [],
+      "events": [],
+      "listeners": [],
+      "styles": [
+        {
+          "name": "--mds-entity-background",
+          "annotation": "prop",
+          "docs": "The background-color of the entity"
+        },
+        {
+          "name": "--mds-entity-color",
+          "annotation": "prop",
+          "docs": "The color of the entity name"
+        },
+        {
+          "name": "--mds-entity-detail-color",
+          "annotation": "prop",
+          "docs": "The color of the text details"
+        },
+        {
+          "name": "--mds-entity-icon-background",
+          "annotation": "prop",
+          "docs": "The background-color of the icon"
+        },
+        {
+          "name": "--mds-entity-icon-color",
+          "annotation": "prop",
+          "docs": "The color of the icon"
+        },
+        {
+          "name": "--mds-entity-shadow",
+          "annotation": "prop",
+          "docs": "The box-shadow od the component"
+        }
+      ],
+      "slots": [],
+      "parts": [],
+      "dependents": [],
+      "dependencies": [
+        "mds-avatar",
+        "mds-icon"
+      ],
+      "dependencyGraph": {
+        "mds-entity": [
+          "mds-avatar",
+          "mds-icon"
+        ],
+        "mds-avatar": [
+          "mds-text",
+          "mds-img"
+        ]
+      }
+    }
+  ]
+}

@@ -1,0 +1,233 @@
+{
+  "timestamp": "2023-04-12T19:51:01",
+  "compiler": {
+    "name": "@stencil/core",
+    "version": "2.22.3",
+    "typescriptVersion": "4.9.4"
+  },
+  "components": [
+    {
+      "filePath": "./src/components/mds-form/mds-form.tsx",
+      "encapsulation": "shadow",
+      "tag": "mds-form",
+      "readme": "# mds-form\n\n\n",
+      "docs": "",
+      "docsTags": [],
+      "usage": {},
+      "props": [
+        {
+          "name": "acceptcharset",
+          "type": "\"8859-1\" | \"ansi\" | \"ascii\" | \"utf-8\" | undefined",
+          "mutable": false,
+          "attr": "acceptcharset",
+          "reflectToAttr": false,
+          "docs": "Specifies the character encodings that are to be used for the form submission",
+          "docsTags": [],
+          "values": [
+            {
+              "value": "8859-1",
+              "type": "string"
+            },
+            {
+              "value": "ansi",
+              "type": "string"
+            },
+            {
+              "value": "ascii",
+              "type": "string"
+            },
+            {
+              "value": "utf-8",
+              "type": "string"
+            },
+            {
+              "type": "undefined"
+            }
+          ],
+          "optional": true,
+          "required": false
+        },
+        {
+          "name": "action",
+          "type": "string | undefined",
+          "mutable": false,
+          "attr": "action",
+          "reflectToAttr": false,
+          "docs": "Specifies where to send the form-data when a form is submitted",
+          "docsTags": [],
+          "values": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "undefined"
+            }
+          ],
+          "optional": true,
+          "required": false
+        },
+        {
+          "name": "autocomplete",
+          "type": "\"off\" | \"on\" | undefined",
+          "mutable": false,
+          "attr": "autocomplete",
+          "reflectToAttr": false,
+          "docs": "Specifies whether a form should have autocomplete on or off",
+          "docsTags": [],
+          "values": [
+            {
+              "value": "off",
+              "type": "string"
+            },
+            {
+              "value": "on",
+              "type": "string"
+            },
+            {
+              "type": "undefined"
+            }
+          ],
+          "optional": true,
+          "required": false
+        },
+        {
+          "name": "class",
+          "type": "string | undefined",
+          "mutable": false,
+          "attr": "class",
+          "reflectToAttr": false,
+          "docs": "Specifies one or more classnames for an element (refers to a class in a style sheet)",
+          "docsTags": [],
+          "values": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "undefined"
+            }
+          ],
+          "optional": true,
+          "required": false
+        },
+        {
+          "name": "enctype",
+          "type": "\"application/x-www-form-urlencoded\" | \"multipart/form-data\" | \"text/plain\" | undefined",
+          "mutable": false,
+          "attr": "enctype",
+          "reflectToAttr": false,
+          "docs": "Specifies how the form-data should be encoded when submitting it to the server (only for method=\"post\")",
+          "docsTags": [],
+          "values": [
+            {
+              "value": "application/x-www-form-urlencoded",
+              "type": "string"
+            },
+            {
+              "value": "multipart/form-data",
+              "type": "string"
+            },
+            {
+              "value": "text/plain",
+              "type": "string"
+            },
+            {
+              "type": "undefined"
+            }
+          ],
+          "optional": true,
+          "required": false
+        },
+        {
+          "name": "method",
+          "type": "\"get\" | \"post\" | undefined",
+          "mutable": false,
+          "attr": "method",
+          "reflectToAttr": false,
+          "docs": "Specifies the HTTP method to use when sending form-data",
+          "docsTags": [],
+          "values": [
+            {
+              "value": "get",
+              "type": "string"
+            },
+            {
+              "value": "post",
+              "type": "string"
+            },
+            {
+              "type": "undefined"
+            }
+          ],
+          "optional": true,
+          "required": false
+        },
+        {
+          "name": "name",
+          "type": "string | undefined",
+          "mutable": false,
+          "attr": "name",
+          "reflectToAttr": false,
+          "docs": "Specifies the name of the form",
+          "docsTags": [],
+          "values": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "undefined"
+            }
+          ],
+          "optional": true,
+          "required": false
+        },
+        {
+          "name": "novalidate",
+          "type": "boolean | undefined",
+          "mutable": false,
+          "attr": "novalidate",
+          "reflectToAttr": false,
+          "docs": "Specifies that the form should not be validated when submitted",
+          "docsTags": [],
+          "values": [
+            {
+              "type": "boolean"
+            },
+            {
+              "type": "undefined"
+            }
+          ],
+          "optional": true,
+          "required": false
+        },
+        {
+          "name": "target",
+          "type": "string | undefined",
+          "mutable": false,
+          "attr": "target",
+          "reflectToAttr": false,
+          "docs": "Specifies a name or a keyword that indicates where to display the response that is received after submitting the form.\nPossible values are _blank, _self, _parent, _top or a custom frame name",
+          "docsTags": [],
+          "values": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "undefined"
+            }
+          ],
+          "optional": true,
+          "required": false
+        }
+      ],
+      "methods": [],
+      "events": [],
+      "listeners": [],
+      "styles": [],
+      "slots": [],
+      "parts": [],
+      "dependents": [],
+      "dependencies": [],
+      "dependencyGraph": {}
+    }
+  ]
+}

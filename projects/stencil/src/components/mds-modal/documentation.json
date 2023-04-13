@@ -1,0 +1,144 @@
+{
+  "timestamp": "2023-04-12T19:51:01",
+  "compiler": {
+    "name": "@stencil/core",
+    "version": "2.22.3",
+    "typescriptVersion": "4.9.4"
+  },
+  "components": [
+    {
+      "filePath": "./src/components/mds-modal/mds-modal.tsx",
+      "encapsulation": "shadow",
+      "tag": "mds-modal",
+      "readme": "# mds-modal\n\n\n",
+      "docs": "",
+      "docsTags": [],
+      "usage": {},
+      "props": [
+        {
+          "name": "opened",
+          "type": "boolean",
+          "mutable": true,
+          "attr": "opened",
+          "reflectToAttr": true,
+          "docs": "Specifies if the modal is opened or not",
+          "docsTags": [],
+          "default": "false",
+          "values": [
+            {
+              "type": "boolean"
+            }
+          ],
+          "optional": false,
+          "required": false
+        },
+        {
+          "name": "position",
+          "type": "\"bottom\" | \"center\" | \"left\" | \"right\" | \"top\" | undefined",
+          "mutable": true,
+          "attr": "position",
+          "reflectToAttr": true,
+          "docs": "Specifies the animation position of the modal window",
+          "docsTags": [],
+          "default": "'center'",
+          "values": [
+            {
+              "value": "bottom",
+              "type": "string"
+            },
+            {
+              "value": "center",
+              "type": "string"
+            },
+            {
+              "value": "left",
+              "type": "string"
+            },
+            {
+              "value": "right",
+              "type": "string"
+            },
+            {
+              "value": "top",
+              "type": "string"
+            },
+            {
+              "type": "undefined"
+            }
+          ],
+          "optional": true,
+          "required": false
+        }
+      ],
+      "methods": [],
+      "events": [
+        {
+          "event": "mdsModalClose",
+          "detail": "void",
+          "bubbles": true,
+          "cancelable": true,
+          "composed": true,
+          "docs": "Emits when a modal is closed",
+          "docsTags": []
+        }
+      ],
+      "listeners": [
+        {
+          "event": "mdsModalClose",
+          "target": "document",
+          "capture": false,
+          "passive": false
+        },
+        {
+          "event": "mdsBannerClose",
+          "target": "document",
+          "capture": false,
+          "passive": false
+        }
+      ],
+      "styles": [
+        {
+          "name": "--mds-modal-overlay-color",
+          "annotation": "prop",
+          "docs": "Set the overlay color of the background when the component is opened, this property can be inherited from `globals.css` in `styles^8.0.0`."
+        },
+        {
+          "name": "--mds-modal-overlay-opacity",
+          "annotation": "prop",
+          "docs": "Set the overlay color opacity of the background when the component is opened, this property can be inherited from `globals.css` in `styles^8.0.0`."
+        },
+        {
+          "name": "--mds-modal-window-background",
+          "annotation": "prop",
+          "docs": "Set the background color of the window"
+        },
+        {
+          "name": "--mds-modal-window-overflow",
+          "annotation": "prop",
+          "docs": "Set the overflow of the window"
+        },
+        {
+          "name": "--mds-modal-window-shadow",
+          "annotation": "prop",
+          "docs": "Set the box shadow of the window"
+        },
+        {
+          "name": "--mds-modal-z-index",
+          "annotation": "prop",
+          "docs": "Set the z-index of the window when the component is opened"
+        }
+      ],
+      "slots": [],
+      "parts": [],
+      "dependents": [
+        "mds-header"
+      ],
+      "dependencies": [],
+      "dependencyGraph": {
+        "mds-header": [
+          "mds-modal"
+        ]
+      }
+    }
+  ]
+}

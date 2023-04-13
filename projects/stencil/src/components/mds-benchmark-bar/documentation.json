@@ -1,0 +1,144 @@
+{
+  "timestamp": "2023-04-12T19:51:01",
+  "compiler": {
+    "name": "@stencil/core",
+    "version": "2.22.3",
+    "typescriptVersion": "4.9.4"
+  },
+  "components": [
+    {
+      "filePath": "./src/components/mds-benchmark-bar/mds-benchmark-bar.tsx",
+      "encapsulation": "shadow",
+      "tag": "mds-benchmark-bar",
+      "readme": "# mds-benchmark-bar\n\n\n",
+      "docs": "",
+      "docsTags": [],
+      "usage": {},
+      "props": [
+        {
+          "name": "alias",
+          "type": "string | undefined",
+          "mutable": false,
+          "attr": "alias",
+          "reflectToAttr": false,
+          "docs": "An alias to custom how value is represented",
+          "docsTags": [],
+          "values": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "undefined"
+            }
+          ],
+          "optional": true,
+          "required": false
+        },
+        {
+          "name": "typography",
+          "type": "\"label\" | \"option\" | undefined",
+          "mutable": false,
+          "attr": "typography",
+          "reflectToAttr": false,
+          "docs": "The typography of the component",
+          "docsTags": [],
+          "default": "'label'",
+          "values": [
+            {
+              "value": "label",
+              "type": "string"
+            },
+            {
+              "value": "option",
+              "type": "string"
+            },
+            {
+              "type": "undefined"
+            }
+          ],
+          "optional": true,
+          "required": false
+        },
+        {
+          "name": "value",
+          "type": "number",
+          "mutable": false,
+          "attr": "value",
+          "reflectToAttr": false,
+          "docs": "A value between 0 and 100 that rapresents the benchmark",
+          "docsTags": [],
+          "default": "0",
+          "values": [
+            {
+              "type": "number"
+            }
+          ],
+          "optional": false,
+          "required": false
+        },
+        {
+          "name": "variant",
+          "type": "\"dark\" | \"error\" | \"info\" | \"light\" | \"primary\" | \"success\" | \"warning\" | undefined",
+          "mutable": false,
+          "attr": "variant",
+          "reflectToAttr": true,
+          "docs": "Sets the theme variant colors",
+          "docsTags": [],
+          "default": "'dark'",
+          "values": [
+            {
+              "value": "dark",
+              "type": "string"
+            },
+            {
+              "value": "error",
+              "type": "string"
+            },
+            {
+              "value": "info",
+              "type": "string"
+            },
+            {
+              "value": "light",
+              "type": "string"
+            },
+            {
+              "value": "primary",
+              "type": "string"
+            },
+            {
+              "value": "success",
+              "type": "string"
+            },
+            {
+              "value": "warning",
+              "type": "string"
+            },
+            {
+              "type": "undefined"
+            }
+          ],
+          "optional": true,
+          "required": false
+        }
+      ],
+      "methods": [],
+      "events": [],
+      "listeners": [],
+      "styles": [],
+      "slots": [],
+      "parts": [],
+      "dependents": [],
+      "dependencies": [
+        "mds-text",
+        "mds-progress"
+      ],
+      "dependencyGraph": {
+        "mds-benchmark-bar": [
+          "mds-text",
+          "mds-progress"
+        ]
+      }
+    }
+  ]
+}

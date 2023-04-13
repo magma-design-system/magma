@@ -1,0 +1,171 @@
+{
+  "timestamp": "2023-04-12T19:51:01",
+  "compiler": {
+    "name": "@stencil/core",
+    "version": "2.22.3",
+    "typescriptVersion": "4.9.4"
+  },
+  "components": [
+    {
+      "filePath": "./src/components/mds-progress/mds-progress.tsx",
+      "encapsulation": "shadow",
+      "tag": "mds-progress",
+      "readme": "# mds-progress\n\n\n",
+      "docs": "",
+      "docsTags": [],
+      "usage": {},
+      "props": [
+        {
+          "name": "direction",
+          "type": "\"horizontal\" | \"vertical\" | undefined",
+          "mutable": false,
+          "attr": "direction",
+          "reflectToAttr": true,
+          "docs": "Specifies the direction of the progress bar, if horizonatl or vertical",
+          "docsTags": [],
+          "default": "'horizontal'",
+          "values": [
+            {
+              "value": "horizontal",
+              "type": "string"
+            },
+            {
+              "value": "vertical",
+              "type": "string"
+            },
+            {
+              "type": "undefined"
+            }
+          ],
+          "optional": true,
+          "required": false
+        },
+        {
+          "name": "progress",
+          "type": "number",
+          "mutable": false,
+          "attr": "progress",
+          "reflectToAttr": false,
+          "docs": "A value between 0 and 1 that rapresents the status progress",
+          "docsTags": [],
+          "default": "0",
+          "values": [
+            {
+              "type": "number"
+            }
+          ],
+          "optional": false,
+          "required": false
+        },
+        {
+          "name": "steps",
+          "type": "string",
+          "mutable": false,
+          "attr": "steps",
+          "reflectToAttr": false,
+          "docs": "Sets the steps that can be pronounced by accessibility technologies",
+          "docsTags": [],
+          "default": "'Inizio,Un quarto,Metà,Tre quarti,Fine'",
+          "values": [
+            {
+              "type": "string"
+            }
+          ],
+          "optional": false,
+          "required": false
+        },
+        {
+          "name": "variant",
+          "type": "\"dark\" | \"error\" | \"info\" | \"light\" | \"primary\" | \"success\" | \"warning\"",
+          "mutable": false,
+          "attr": "variant",
+          "reflectToAttr": true,
+          "docs": "Sets the theme variant colors",
+          "docsTags": [],
+          "default": "'primary'",
+          "values": [
+            {
+              "value": "dark",
+              "type": "string"
+            },
+            {
+              "value": "error",
+              "type": "string"
+            },
+            {
+              "value": "info",
+              "type": "string"
+            },
+            {
+              "value": "light",
+              "type": "string"
+            },
+            {
+              "value": "primary",
+              "type": "string"
+            },
+            {
+              "value": "success",
+              "type": "string"
+            },
+            {
+              "value": "warning",
+              "type": "string"
+            }
+          ],
+          "optional": false,
+          "required": false
+        }
+      ],
+      "methods": [],
+      "events": [],
+      "listeners": [],
+      "styles": [
+        {
+          "name": "--mds-progress-background",
+          "annotation": "prop",
+          "docs": "Sets the background-color of the component"
+        },
+        {
+          "name": "--mds-progress-color",
+          "annotation": "prop",
+          "docs": "Sets the background-color of the progress"
+        },
+        {
+          "name": "--mds-progress-duration",
+          "annotation": "prop",
+          "docs": "Sets the duration of the progress bar animation"
+        },
+        {
+          "name": "--mds-progress-radius",
+          "annotation": "prop",
+          "docs": "Sets the border-radius of the component"
+        },
+        {
+          "name": "--mds-progress-thickness",
+          "annotation": "prop",
+          "docs": "Sets the thickness of the progress bar"
+        }
+      ],
+      "slots": [],
+      "parts": [],
+      "dependents": [
+        "mds-accordion-timer-item",
+        "mds-benchmark-bar",
+        "mds-stepper-bar-item"
+      ],
+      "dependencies": [],
+      "dependencyGraph": {
+        "mds-accordion-timer-item": [
+          "mds-progress"
+        ],
+        "mds-benchmark-bar": [
+          "mds-progress"
+        ],
+        "mds-stepper-bar-item": [
+          "mds-progress"
+        ]
+      }
+    }
+  ]
+}

@@ -1,0 +1,29 @@
+{
+  "timestamp": "2023-04-12T19:51:01",
+  "compiler": {
+    "name": "@stencil/core",
+    "version": "2.22.3",
+    "typescriptVersion": "4.9.4"
+  },
+  "components": [
+    {
+      "filePath": "./src/components/mds-author/mds-author.tsx",
+      "encapsulation": "shadow",
+      "tag": "mds-author",
+      "readme": "# mds-author\n\n\n# Installation\n\nInstall the component via `npm` by running the following command:\n\n```bash\nnpm i @maggioli-design-system/mds-author\n```\n\nThis package works also with yarn:\n\n```bash\nyarn add @maggioli-design-system/mds-author\n```\n\n#### Import\n\nImport the component in your project via `TypeScript` as follows:\n\n```typescript\nimport { defineCustomElements as dceMdsAuthor } from '@maggioli-design-system/mds-author/loader'\n\ndceMdsAuthor()\n```\n\nIf you need to support older browsers (i.e. IE or early version of Edge), you can wrap the `defineCustomElements` in another utility available in the same package:\n\n```typescript\nimport { applyPolyfills as apMdsAuthor, defineCustomElements as dceMdsAuthor } from '@maggioli-design-system/mds-author/loader'\n\napMdsAuthor().then(dceMdsAuthor())\n```\n\nUse alias for `defineCustomElements` method to initialize multiple web components in the same place:\n\n```typescript\nimport { defineCustomElements as dceMdsComponentOne } from '@maggioli-design-system/mds-component-one/loader'\nimport { defineCustomElements as dceMdsComponentTwo } from '@maggioli-design-system/mds-component-two/loader'\n\ndceMdsComponentOne()\ndceMdsComponentTwo()\n```\n\nYou can check how browser support works at [this page][stencil-browser-support].\n\n---\n\n# Integration\n\n#### How to use it in HTML\n\n`MdsAuthor` accepts a specific slot named `avatar` which is used to display an element on the left side (usually an image, or the initials of the author if no `src` is provided), while accepts multiple slots to be displayed on the right side for author's name and description. An example follow:\n\n```html\n<mds-author>\n  <mds-avatar slot=\"avatar\" initials=\"jd\" src=\"<some-url>\"></mds-avatar>\n  <mds-text typography=\"h6\">John Doe</mds-text>\n  <mds-text typography=\"caption\">Associated professor</mds-text>\n</mds-author>\n```\n\nYou can try it out on the component's [Storybook website][storybook]!\n\n[storybook]: https://magma.maggiolicloud.it/storybook/?path=/story/ui-author--default\n[stencil-browser-support]: https://stenciljs.com/docs/browser-support\n",
+      "docs": "",
+      "docsTags": [],
+      "usage": {},
+      "props": [],
+      "methods": [],
+      "events": [],
+      "listeners": [],
+      "styles": [],
+      "slots": [],
+      "parts": [],
+      "dependents": [],
+      "dependencies": [],
+      "dependencyGraph": {}
+    }
+  ]
+}

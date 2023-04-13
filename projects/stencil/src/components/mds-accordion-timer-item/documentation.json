@@ -1,0 +1,196 @@
+{
+  "timestamp": "2023-04-12T19:51:01",
+  "compiler": {
+    "name": "@stencil/core",
+    "version": "2.22.3",
+    "typescriptVersion": "4.9.4"
+  },
+  "components": [
+    {
+      "filePath": "./src/components/mds-accordion-timer-item/mds-accordion-timer-item.tsx",
+      "encapsulation": "shadow",
+      "tag": "mds-accordion-timer-item",
+      "readme": "# mds-accordion-timer-item\n\n\n",
+      "docs": "",
+      "docsTags": [],
+      "usage": {},
+      "props": [
+        {
+          "name": "description",
+          "type": "string",
+          "mutable": false,
+          "attr": "description",
+          "reflectToAttr": false,
+          "docs": "Specifies the title shown when the accordion is closed or opened",
+          "docsTags": [],
+          "values": [
+            {
+              "type": "string"
+            }
+          ],
+          "optional": false,
+          "required": true
+        },
+        {
+          "name": "progress",
+          "type": "number",
+          "mutable": false,
+          "attr": "progress",
+          "reflectToAttr": false,
+          "docs": "A value between 0 and 100 that rapresents the status progress",
+          "docsTags": [],
+          "default": "0",
+          "values": [
+            {
+              "type": "number"
+            }
+          ],
+          "optional": false,
+          "required": false
+        },
+        {
+          "name": "selected",
+          "type": "boolean",
+          "mutable": false,
+          "attr": "selected",
+          "reflectToAttr": true,
+          "docs": "Specifies if the accordion item is opened or not",
+          "docsTags": [],
+          "default": "false",
+          "values": [
+            {
+              "type": "boolean"
+            }
+          ],
+          "optional": false,
+          "required": false
+        },
+        {
+          "name": "typography",
+          "type": "\"action\" | \"h1\" | \"h2\" | \"h3\" | \"h4\" | \"h5\" | \"h6\"",
+          "mutable": false,
+          "attr": "typography",
+          "reflectToAttr": false,
+          "docs": "Specifies the typography of the element",
+          "docsTags": [],
+          "default": "'h5'",
+          "values": [
+            {
+              "value": "action",
+              "type": "string"
+            },
+            {
+              "value": "h1",
+              "type": "string"
+            },
+            {
+              "value": "h2",
+              "type": "string"
+            },
+            {
+              "value": "h3",
+              "type": "string"
+            },
+            {
+              "value": "h4",
+              "type": "string"
+            },
+            {
+              "value": "h5",
+              "type": "string"
+            },
+            {
+              "value": "h6",
+              "type": "string"
+            }
+          ],
+          "optional": false,
+          "required": false
+        },
+        {
+          "name": "uuid",
+          "type": "number",
+          "mutable": false,
+          "attr": "uuid",
+          "reflectToAttr": false,
+          "docs": "Used automatically by MdsAccordionTimer wrapper to handle it's siblings",
+          "docsTags": [],
+          "default": "0",
+          "values": [
+            {
+              "type": "number"
+            }
+          ],
+          "optional": false,
+          "required": false
+        }
+      ],
+      "methods": [],
+      "events": [
+        {
+          "event": "mdsAccordionTimerItemClickSelect",
+          "detail": "MdsAccordionTimerItemEventDetail",
+          "bubbles": true,
+          "cancelable": true,
+          "composed": true,
+          "docs": "Emits when the accordion is clicked by the mouse",
+          "docsTags": []
+        },
+        {
+          "event": "mdsAccordionTimerItemMouseEnterSelect",
+          "detail": "MdsAccordionTimerItemEventDetail",
+          "bubbles": true,
+          "cancelable": true,
+          "composed": true,
+          "docs": "Emits when the accordion is hovered by the mouse",
+          "docsTags": []
+        },
+        {
+          "event": "mdsAccordionTimerItemMouseLeaveSelect",
+          "detail": "MdsAccordionTimerItemEventDetail",
+          "bubbles": true,
+          "cancelable": true,
+          "composed": true,
+          "docs": "Emits when the accordion is hovered by the mouse",
+          "docsTags": []
+        }
+      ],
+      "listeners": [],
+      "styles": [
+        {
+          "name": "--mds-accordion-timer-item-color",
+          "annotation": "prop",
+          "docs": "Sets the text color of the component"
+        },
+        {
+          "name": "--mds-accordion-timer-item-progress-bar-background",
+          "annotation": "prop",
+          "docs": "Sets the background-color of the progress bar when the item is selected"
+        },
+        {
+          "name": "--mds-accordion-timer-item-progress-bar-color",
+          "annotation": "prop",
+          "docs": "Sets the color of the progress bar when the item is selected"
+        },
+        {
+          "name": "--mds-accordion-timer-item-progress-bar-thickness",
+          "annotation": "prop",
+          "docs": "Sets thickness of the progress bar"
+        }
+      ],
+      "slots": [],
+      "parts": [],
+      "dependents": [],
+      "dependencies": [
+        "mds-progress",
+        "mds-text"
+      ],
+      "dependencyGraph": {
+        "mds-accordion-timer-item": [
+          "mds-progress",
+          "mds-text"
+        ]
+      }
+    }
+  ]
+}

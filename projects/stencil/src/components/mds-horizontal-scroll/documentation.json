@@ -1,0 +1,113 @@
+{
+  "timestamp": "2023-04-12T19:51:01",
+  "compiler": {
+    "name": "@stencil/core",
+    "version": "2.22.3",
+    "typescriptVersion": "4.9.4"
+  },
+  "components": [
+    {
+      "filePath": "./src/components/mds-horizontal-scroll/mds-horizontal-scroll.tsx",
+      "encapsulation": "shadow",
+      "tag": "mds-horizontal-scroll",
+      "readme": "# mds-horizontal-scroll\n\n\n",
+      "docs": "",
+      "docsTags": [],
+      "usage": {},
+      "props": [
+        {
+          "name": "scrollbar",
+          "type": "boolean | undefined",
+          "mutable": false,
+          "attr": "scrollbar",
+          "reflectToAttr": false,
+          "docs": "Specifies the box’s snap position as an alignment of its snap area",
+          "docsTags": [],
+          "values": [
+            {
+              "type": "boolean"
+            },
+            {
+              "type": "undefined"
+            }
+          ],
+          "optional": true,
+          "required": false
+        },
+        {
+          "name": "snap",
+          "type": "\"center\" | \"end\" | \"none\" | \"start\" | undefined",
+          "mutable": false,
+          "attr": "snap",
+          "reflectToAttr": false,
+          "docs": "Specifies the box’s snap position as an alignment of its snap area",
+          "docsTags": [],
+          "default": "'start'",
+          "values": [
+            {
+              "value": "center",
+              "type": "string"
+            },
+            {
+              "value": "end",
+              "type": "string"
+            },
+            {
+              "value": "none",
+              "type": "string"
+            },
+            {
+              "value": "start",
+              "type": "string"
+            },
+            {
+              "type": "undefined"
+            }
+          ],
+          "optional": true,
+          "required": false
+        }
+      ],
+      "methods": [],
+      "events": [],
+      "listeners": [],
+      "styles": [
+        {
+          "name": "--mds-horizontal-scroll-background",
+          "annotation": "prop",
+          "docs": "Sets the background-color of the component"
+        },
+        {
+          "name": "--mds-horizontal-scroll-scrollbar-margin",
+          "annotation": "prop",
+          "docs": "Sets the margin of the browser scroll bar (if supported)"
+        },
+        {
+          "name": "--mds-horizontal-scroll-scrollbar-radius",
+          "annotation": "prop",
+          "docs": "Sets the border-radius of the browser scroll bar (if supported)"
+        },
+        {
+          "name": "--mds-horizontal-scroll-scrollbar-size",
+          "annotation": "prop",
+          "docs": "Sets the height and width of the browser scroll bar (if supported)"
+        },
+        {
+          "name": "--mds-horizontal-scroll-scrollbar-thumb-background",
+          "annotation": "prop",
+          "docs": "Sets the background-color of the browser scroll bar thumb (if supported)"
+        },
+        {
+          "name": "--mds-horizontal-scroll-scrollbar-track-background",
+          "annotation": "prop",
+          "docs": "Sets the background-color of the browser scroll bar track (if supported)"
+        }
+      ],
+      "slots": [],
+      "parts": [],
+      "dependents": [],
+      "dependencies": [],
+      "dependencyGraph": {}
+    }
+  ]
+}
