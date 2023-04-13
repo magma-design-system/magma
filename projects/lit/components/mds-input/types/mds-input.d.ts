@@ -107,6 +107,7 @@ export declare class MdsInput extends LitElement {
     get willValidate(): boolean;
     checkValidity(): boolean;
     reportValidity(): boolean;
+    formResetCallback(): void;
     render(): import("lit-html").TemplateResult<1>;
 }
 declare global {
