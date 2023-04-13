@@ -6,12 +6,14 @@ import { logStatus, dontUseWithNX } from '../../../scripts/log'
 let componentNameArgument = ''
 let nonInteractive = false
 
-dontUseWithNX()
-
 if (process.argv.length === 3) {
   componentNameArgument = process.argv[2].split('=')[1]
   nonInteractive = true
   console.log(`${chalk.yellow('Non-interactive mode')} using ${componentNameArgument} component name`)
+}
+
+if (!nonInteractive) {
+  dontUseWithNX()
 }
 
 const isolateComponent = async () => {
