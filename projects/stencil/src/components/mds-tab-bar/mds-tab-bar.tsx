@@ -20,17 +20,16 @@ export class MdsTabBar {
 
   componentWillLoad ():void {
     const items = this.queryItems()
-    items.forEach((item, key) => item.id = `item-${key}`)
+    items.forEach((item, key) => item.id = `mds-tab-bar-item-${key}`)
   }
 
   @Listen('mdsTabBarItemSelect')
   changeEventHandler (event: CustomEvent<string>): void {
     const items = this.queryItems()
     items.forEach((item, key) => {
-      item.selected = `item-${key}` === event.detail
+      item.selected = `mds-tab-bar-item-${key}` === event.detail
       if (item.selected) {
         this.changedEvent.emit({ index: key })
-        return
       }
     })
   }

@@ -47,7 +47,7 @@ export class MdsBanner {
 
   private deletableHandler = (): void => {
     if (this.deletable) {
-      const closeIcon = this.host.shadowRoot.querySelector('.close-icon') as HTMLElement
+      const closeIcon = this.host.shadowRoot?.querySelector('.close-icon') as HTMLElement
       this.km.addElement(closeIcon)
       this.km.attachClickBehavior()
       return

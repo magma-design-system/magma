@@ -20,11 +20,11 @@
     z-10;
 }
 
-:host ( [linear=true] ) ::slotted ( mds-stepper-bar-item ),
-:host ( [linear] ) ::slotted ( mds-stepper-bar-item ) {
+:host( [linear="true"] ) ::slotted( mds-stepper-bar-item ),
+:host( [linear] ) ::slotted( mds-stepper-bar-item ) {
   @apply pointer-events-none;
 }
 
-:host ( [linear=false] ) ::slotted ( mds-stepper-bar-item ) {
+:host( [linear="false"] ) ::slotted( mds-stepper-bar-item ) {
   @apply pointer-events-auto;
 }

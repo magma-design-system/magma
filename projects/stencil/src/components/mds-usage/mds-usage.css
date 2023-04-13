@@ -20,7 +20,7 @@
 
   background-color: var(--background);
   grid-auto-rows: min-content;
-  grid-template-columns: minmax(0px, 100%);
+  grid-template-columns: minmax(0, 100%);
 }
 
 .header {
@@ -52,21 +52,21 @@
   fill: var(--badge-color);
 }
 
-:host ( [variant=do] ) {
+:host( [variant="do"] ) {
 
   --background: theme('colors.status-success-10');
   --badge-background: theme('colors.status-success-06');
   --badge-color: theme('colors.status-success-10');
 }
 
-:host ( [variant=dont] ) {
+:host( [variant="dont"] ) {
 
   --background: theme('colors.status-error-10');
   --badge-background: theme('colors.status-error-06');
   --badge-color: theme('colors.status-error-10');
 }
 
-:host ( [variant=warn] ) {
+:host( [variant="warn"] ) {
 
   --background: theme('colors.status-warning-10');
   --badge-background: theme('colors.status-warning-08');

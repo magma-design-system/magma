@@ -38,7 +38,7 @@ export class KeyboardManager {
   }
 
   detachEscapeBehavior = (): void => {
-    this.escapeCallback = null
+    this.escapeCallback = () => {return}
     if (typeof window !== undefined) {
       window.removeEventListener('keydown', this.handleEscapeBehaviorDispatchEvent.bind(this))
     }

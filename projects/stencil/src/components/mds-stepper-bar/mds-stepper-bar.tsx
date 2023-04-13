@@ -13,38 +13,32 @@ export class MdsStepperBar {
   @Element() private element: HTMLMdsStepperBarElement
 
   /**
-   * Sets if the component should handle checked elements from the first to the last child or not
+   * Sets the current item to the given index: 0 is none done, 1 is the first item done, last number + 1 is all items done
    */
-  @Prop() readonly linear = true
-
-  /**
-   * Sets the current item to the given index: 0 is none selected, 1 is the first item selected, last number + 1 is all items checked
-   */
-  @Prop() readonly select: number = 1
+  @Prop() readonly itemsDone: number = 1
 
   private queryItems = (): NodeListOf<HTMLMdsStepperBarItemElement> =>
     this.element.querySelectorAll<HTMLMdsStepperBarItemElement>('mds-stepper-bar-item')
 
-  private queryContents = (): NodeListOf<HTMLElement> =>
-    this.element.querySelectorAll<HTMLElement>('[slot="content"]')
+  // private queryContents = (): NodeListOf<HTMLElement> =>
+  //   this.element.querySelectorAll<HTMLElement>('[slot="content"]')
 
   private minmax = (value: number, min: number, max: number): number =>
     Math.min(Math.max(value, min), max)
 
-  private setCurrent = (index = 1): void => {
+  private setCurrent = (index): void => {
     this.items = this.queryItems()
     this.currentItem = index - 1
-    const values = []
+    const values = new Array<string>()
     this.items.forEach((item, key) => {
-      if (this.linear) {
-        item.selected = false
-        if (key < this.currentItem) {
-          item.selected = true
-          if (item.value) {
-            values.push(item.value)
-          }
+      item.done = false
+      if (key < this.currentItem) {
+        item.done = true
+        if (item.value) {
+          values.push(item.value)
         }
       }
+
       item.current = false
       if (key === this.currentItem) {
         item.current = true
@@ -58,13 +52,10 @@ export class MdsStepperBar {
   }
 
   private setCurrentContent = (): void => {
-    const contents = this.queryContents()
-    contents.forEach((item, key) => {
-      item.style.display = 'none'
-      if (key === this.currentItem) {
-        item.removeAttribute('style')
-      }
-    })
+    const item = this.element.querySelector(`#mds-stepper-bar-item-${this.currentItem}`)
+    const content = this.element.shadowRoot?.querySelector('.content') as HTMLElement
+    content.innerHTML = ''
+    if (item && item.innerHTML) content.innerHTML = item.innerHTML
   }
 
   /**
@@ -73,9 +64,11 @@ export class MdsStepperBar {
   @Event({ eventName: 'mdsStepperBarChange' }) changedEvent: EventEmitter<MdsStepperBarEventDetail>
 
   private scrollItems = (): void => {
-    const itemsElement = this.element.shadowRoot.querySelector<HTMLDivElement>('.items')
+    const itemsElement = this.element.shadowRoot?.querySelector<HTMLDivElement>('.items')
     const pagesItems = this.queryItems()
     const elementIndex = this.minmax(this.currentItem, 0, this.items.length - 1)
+
+    if (!itemsElement) throw Error('No mds-stepper-bar-items found')
 
     if (elementIndex <= 0) {
       itemsElement.scrollLeft = 0
@@ -94,28 +87,28 @@ export class MdsStepperBar {
 
   componentWillLoad (): void {
     this.items = this.queryItems()
-    this.items.forEach((item, key) => item.id = `item-${key}`)
-    const contents = this.queryContents()
-    contents.forEach(item => item.style.display = 'none')
+    this.items.forEach((item, key) => {
+      item.id = `mds-stepper-bar-item-${key}`
+    })
   }
 
   componentDidLoad (): void {
     setTimeout(() => {
-      this.setCurrent(this.select)
+      this.setCurrent(this.itemsDone)
     }, 10)
   }
 
-  @Watch('select')
-  itemSelected (newValue: number): void {
+  @Watch('itemsDone')
+  itemDone (newValue: number): void {
     this.setCurrent(newValue)
   }
 
-  @Listen('mdsStepperBarItemSelect')
+  @Listen('mdsStepperBarItemDone')
   changeEventHandler (event: CustomEvent<string>): void {
     this.items = this.queryItems()
     this.items.forEach((item, key) => {
-      item.selected = false
-      if (`item-${key}` === event.detail) {
+      item.done = false
+      if (`mds-stepper-bar-item-${key}` === event.detail) {
         item.current = true
         this.currentItem = key
       }
@@ -128,8 +121,7 @@ export class MdsStepperBar {
         <div class="items">
           <slot/>
         </div>
-        <div class="contents">
-          <slot name="content"/>
+        <div class="content">
         </div>
       </Host>
     )

@@ -82,7 +82,7 @@ export class MdsToast {
 
   @Watch('duration')
   durationChanged (): void {
-    this.reloadTimeListeners(this.visible)
+    this.reloadTimeListeners(!!this.visible)
   }
 
   render () {

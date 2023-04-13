@@ -1,6 +1,6 @@
 import chalk from 'chalk'
 import path from 'path'
-import { BUILD_DIR, DIST_DIR, DIST_STORYBOOK_ICONS_DIR, DIST_STORYBOOK_DIR, DIST_STORYBOOK_CACHE_DIR, ICONSAUCE_DIR, LOADER_DIR, SRC_DIR, WWW_DIR } from './meta'
+import { BUILD_DIR, DIST_DIR, DIST_STORYBOOK_ICONS_DIR, DIST_STORYBOOK_DIR, ICONSAUCE_DIR, LOADER_DIR, SRC_DIR, WWW_DIR } from './meta'
 import { remove } from 'fs-extra'
 import { logDirectoryDeleted } from '../../../scripts/log'
 

@@ -7,18 +7,18 @@
 
 ## Properties
 
-| Property     | Attribute    | Description                                   | Type                | Default     |
-| ------------ | ------------ | --------------------------------------------- | ------------------- | ----------- |
-| `icon`       | `icon`       |                                               | `string`            | `undefined` |
-| `selected`   | `selected`   | Specifies if the component is selected or not | `boolean`           | `undefined` |
-| `typography` | `typography` | Specifies the typography of the element       | `"option" \| "tip"` | `'tip'`     |
+| Property     | Attribute    | Description                                   | Type                             | Default     |
+| ------------ | ------------ | --------------------------------------------- | -------------------------------- | ----------- |
+| `icon`       | `icon`       |                                               | `string`                         | `''`        |
+| `selected`   | `selected`   | Specifies if the component is selected or not | `boolean`                        | `undefined` |
+| `typography` | `typography` | Specifies the typography of the element       | `"option" \| "tip" \| undefined` | `'tip'`     |
 
 
 ## Events
 
-| Event                 | Description                          | Type                |
-| --------------------- | ------------------------------------ | ------------------- |
-| `mdsTabBarItemSelect` | Emits when the component is selected | `CustomEvent<void>` |
+| Event                 | Description                          | Type                  |
+| --------------------- | ------------------------------------ | --------------------- |
+| `mdsTabBarItemSelect` | Emits when the component is selected | `CustomEvent<string>` |
 
 
 ## CSS Custom Properties

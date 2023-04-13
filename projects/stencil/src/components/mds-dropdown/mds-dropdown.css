@@ -15,7 +15,7 @@
 
   --mds-dropdown-arrow-background: var(--mds-dropdown-background);
   --mds-dropdown-background: theme('colors.tone-neutral');
-  --mds-dropdown-drop-shadow: drop-shadow(0 10px 8px rgba(0, 0, 0, 0.04)) drop-shadow(0 4px 3px rgba(0, 0, 0, 0.1)) drop-shadow(0 0 1px rgba(0, 0, 0, 0.1));
+  --mds-dropdown-drop-shadow: drop-shadow(0 10px 8px rgb(0 0 0 / 0.04)) drop-shadow(0 4px 3px rgb(0 0 0 / 0.1)) drop-shadow(0 0 1px rgb(0 0 0 / 0.1));
   --mds-dropdown-duration: 0.5s;
   --mds-dropdown-ease: theme('transitionTimingFunction.out-expo');
   --mds-dropdown-transform-from: scale(0.9) translateY(-3%);
@@ -41,7 +41,7 @@
   z-index: var(--mds-dropdown-z-index);
 }
 
-:host ( [visible]:not([visible=false]) ) {
+:host( [visible]:not([visible="false"]) ) {
   @apply
     opacity-100
     pointer-events-auto;
@@ -49,7 +49,7 @@
   transform: var(--mds-dropdown-transform-to);
 }
 
-:host ( [smooth]:not([smooth=false]) ) {
+:host( [smooth]:not([smooth="false"]) ) {
   transition-property: bottom, left, opacity, right, top, transform, transform-origin;
 }
 
@@ -65,15 +65,15 @@
   transition-property: bottom, left, right, top, transform, transform-origin;
 }
 
-:host ( [arrow]:not([arrow=false])[visible]:not([visible=false]) ) .arrow {
+:host( [arrow]:not([arrow="false"])[visible]:not([visible="false"]) ) .arrow {
   transition-timing-function: theme('transitionTimingFunction.out-quart');
 }
 
-:host ( [arrow]:not([arrow=false]):not([visible]):not([visible=true]) ) .arrow {
+:host( [arrow]:not([arrow="false"], [visible], [visible="true"])) .arrow {
   transition-timing-function: theme('transitionTimingFunction.out-expo');
 }
 
-::slotted ( * ) {
+::slotted( * ) {
   @apply
     relative
     z-10;

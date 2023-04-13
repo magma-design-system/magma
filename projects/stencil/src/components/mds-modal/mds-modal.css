@@ -1,4 +1,7 @@
+/* stylelint-disable */
 @import '../../tailwind/components.css';
+@import './css/components.css';
+
 @tailwind components;
 @tailwind utilities;
 
@@ -10,64 +13,6 @@
   * @prop --mds-modal-window-shadow: Set the box shadow of the window
   * @prop --mds-modal-z-index: Set the z-index of the window when the component is opened
 */
-
-@layer components {
-  .animate-bottom,
-  .animate-center,
-  .animate-top {
-    @apply
-      duration-500
-      ease-in-out-expo
-      opacity-0
-      transition-cosmetic;
-  }
-
-  .animate-bottom-intro,
-  .animate-center-intro,
-  .animate-top-intro {
-    transform: rotateX(-22deg) scale(0.5) translateY(40%);
-  }
-
-  .animate-bottom-opened,
-  .animate-center-opened,
-  .animate-top-opened {
-    @apply opacity-100;
-
-    transform: rotateX(0) scale(1) translateY(0);
-  }
-
-  .animate-bottom-outro,
-  .animate-center-outro,
-  .animate-top-outro {
-    transform: rotateX(-22deg) scale(0.5) translateY(-40%);
-  }
-
-  .animate-left,
-  .animate-right {
-    @apply
-      duration-500
-      opacity-0
-      ease-in-out-expo
-      transition-cosmetic;
-  }
-
-  .animate-right-intro,
-  .animate-right-outro {
-    transform: translateX(calc(100% + 50px));
-  }
-
-  .animate-right-opened,
-  .animate-left-opened {
-    @apply opacity-100;
-
-    transform: translateX(0);
-  }
-
-  .animate-left-intro,
-  .animate-left-outro {
-    transform: translateX(calc(-100% - 50px));
-  }
-}
 
 :host {
 
@@ -90,26 +35,26 @@
 
   background-color: rgba(var(--mds-modal-overlay-color) / 0);
   perspective: 600px;
-  z-index: var(--z-index, 1000);
+  z-index: var(--mds-modal-z-index, 1000);
 }
 
-:host ( [position=top] ) {
+:host( [position=top] ) {
   @apply
     items-start
     justify-center;
 }
 
-:host ( [position=bottom] ) {
+:host( [position=bottom] ) {
   @apply
     items-end
     justify-center;
 }
 
-:host ( .animate-bottom-opened ),
-:host ( .animate-center-opened ),
-:host ( .animate-left-opened ),
-:host ( .animate-right-opened ),
-:host ( .animate-top-opened ) {
+:host( .to-bottom-opened ),
+:host( .to-center-opened ),
+:host( .to-left-opened ),
+:host( .to-right-opened ),
+:host( .to-top-opened ) {
   @apply
     duration-500
     pointer-events-auto;
@@ -166,3 +111,4 @@
 @import './css/mds-modal-animate-left.css';
 @import './css/mds-modal-animate-right.css';
 @import './css/mds-modal-animate-top.css';
+

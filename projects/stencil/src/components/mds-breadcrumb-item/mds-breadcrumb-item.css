@@ -1,4 +1,4 @@
-@import '../../tailwind/components.css';
+@import url('../../tailwind/components.css');
 @tailwind components;
 @tailwind utilities;
 
@@ -38,7 +38,7 @@
   transition-property: box-shadow, outline, outline-offset;
 }
 
-:host (:focus-visible) {
+:host(:focus-visible) {
   @apply focus-on;
 }
 
@@ -64,7 +64,7 @@
   --mds-breadcrumb-item-button-color: var(--mds-breadcrumb-item-button-color-hover);
 }
 
-:host ( [selected]:not([selected=false]) ) {
+:host( [selected]:not([selected="false"]) ) {
   @apply pointer-events-none;
 
   --mds-breadcrumb-item-button-background: var(--mds-breadcrumb-item-button-background-selected);

@@ -44,7 +44,7 @@ export class MdsFile {
       throw console.error('Attribute "filename" is undefined.')
     }
     if (this.filename.includes('/')) {
-      return this.filename.split('/').pop()
+      return this.filename.split('/').pop() ?? ''
     }
     return this.filename
   }
@@ -52,7 +52,7 @@ export class MdsFile {
   private sanitizeSuffix = () => {
     const filename = this.sanitizeFilename()
     if (filename.includes('.')) {
-      return filename.split('.').pop()
+      return filename.split('.').pop() ?? ''
     }
     return filename
   }
@@ -60,7 +60,7 @@ export class MdsFile {
   private getName = () => {
     const filename = this.sanitizeFilename()
     if (filename.includes('.')) {
-      return filename.split('.')[0]
+      return filename.split('.')[0] ?? ''
     }
     return filename
   }
@@ -74,11 +74,11 @@ export class MdsFile {
     if (suffix !== filename) {
       return suffix
     }
-    return null
+    return 'default'
   }
 
   private getExtensionInfos = () => {
-    const suffix = this.getSuffix() !== null ? this.getSuffix().toLowerCase() : 'default'
+    const suffix = this.getSuffix().toLocaleLowerCase()
     return fileExtensionsDictionary[suffix] !== undefined ? fileExtensionsDictionary[suffix] : fileExtensionsDictionary.default
   }
 
@@ -105,7 +105,7 @@ export class MdsFile {
           </div>
           <div class="detail">
             { this.getSuffix() && <mds-badge variant={variant as ThemeFullVariantType} tone="quiet" class="suffix">{ this.getSuffix() }</mds-badge> }
-            <mds-text typography="caption" class="description" title={ this.description || description }>{ this.description || description }</mds-text>
+            <mds-text typography="caption" class="description" title={ this.description ?? description }>{ this.description ?? description }</mds-text>
           </div>
         </div>
       </Host>

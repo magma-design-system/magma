@@ -7,14 +7,14 @@
 
 ## Properties
 
-| Property     | Attribute     | Description                                                                | Type                                                                            | Default     |
-| ------------ | ------------- | -------------------------------------------------------------------------- | ------------------------------------------------------------------------------- | ----------- |
-| `closeLabel` | `close-label` | Sets the cross icon accessibility label to perform close action on element | `"Annulla"`                                                                     | `'Annulla'` |
-| `deletable`  | `deletable`   | Shows the cross icon to perform cancel/delete action on element            | `boolean`                                                                       | `undefined` |
-| `headline`   | `headline`    | The title on the top of the banner                                         | `string`                                                                        | `undefined` |
-| `icon`       | `icon`        | An icon displayed at the top left of the banner                            | `string`                                                                        | `undefined` |
-| `tone`       | `tone`        | Sets the tone of the color variant                                         | `"quiet" \| "strong" \| "weak"`                                                 | `'weak'`    |
-| `variant`    | `variant`     | Sets the theme variant colors                                              | `"dark" \| "error" \| "info" \| "light" \| "primary" \| "success" \| "warning"` | `'light'`   |
+| Property     | Attribute     | Description                                                                | Type                                                                                         | Default     |
+| ------------ | ------------- | -------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------- | ----------- |
+| `closeLabel` | `close-label` | Sets the cross icon accessibility label to perform close action on element | `"Annulla" \| undefined`                                                                     | `'Annulla'` |
+| `deletable`  | `deletable`   | Shows the cross icon to perform cancel/delete action on element            | `boolean \| undefined`                                                                       | `undefined` |
+| `headline`   | `headline`    | The title on the top of the banner                                         | `string \| undefined`                                                                        | `undefined` |
+| `icon`       | `icon`        | An icon displayed at the top left of the banner                            | `string \| undefined`                                                                        | `undefined` |
+| `tone`       | `tone`        | Sets the tone of the color variant                                         | `"quiet" \| "strong" \| "weak" \| undefined`                                                 | `'weak'`    |
+| `variant`    | `variant`     | Sets the theme variant colors                                              | `"dark" \| "error" \| "info" \| "light" \| "primary" \| "success" \| "warning" \| undefined` | `'light'`   |
 
 
 ## Events

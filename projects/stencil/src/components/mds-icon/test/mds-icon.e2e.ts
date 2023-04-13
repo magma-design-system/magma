@@ -37,7 +37,7 @@ describe('mds-icon', () => {
     await page.setContent('<mds-icon></mds-icon>')
     await page.waitForChanges()
 
-    const element: HTMLMdsIconElement = page.body.querySelector('mds-icon')
+    const element:HTMLMdsIconElement = page.body.querySelector('mds-icon') as HTMLMdsIconElement
     element.setSvgPath('assets/svg/')
 
     await page.waitForChanges()
@@ -55,7 +55,7 @@ describe('mds-icon', () => {
     const mdsicon = page.body.querySelector('mds-icon')
     expect(mdsicon).not.toBeNull()
 
-    const svg = mdsicon.shadowRoot.querySelector('svg')
+    const svg = mdsicon?.shadowRoot?.querySelector('svg')
     expect(svg).not.toBeNull()
   })
 
@@ -66,7 +66,7 @@ describe('mds-icon', () => {
     const mdsicon = page.body.querySelector('mds-icon')
     expect(mdsicon).not.toBeNull()
 
-    const svg = mdsicon.shadowRoot.querySelector('svg')
+    const svg = mdsicon?.shadowRoot?.querySelector('svg')
     expect(svg).toBeNull()
   })
 })

@@ -12,12 +12,12 @@ import { TypographyInfoType, TypographyReadType, TypographyVariants } from '@typ
 })
 export class MdsInputSwitch {
 
-  @State() dirty: boolean = null
+  @State() dirty = false
   /**
    * Sets or returns whether a checkbox should automatically
    * get focus when the page loads
    */
-  @Prop() readonly autofocus?: boolean
+  @Prop() readonly autofocus: boolean
 
   /**
    * Specifies that an <input> element should be pre-selected
@@ -33,27 +33,27 @@ export class MdsInputSwitch {
   /**
    * The checked icon displayed
    */
-  @Prop() readonly icon?: string = null
+  @Prop() readonly icon: string = ''
 
   /**
    * Sets or returns the indeterminate state of the checkbox
    */
-  @Prop() readonly indeterminate?: boolean
+  @Prop() readonly indeterminate: boolean = false
 
   /**
    * Specifies the name of an <input> element
    */
-  @Prop() readonly name?: string
+  @Prop() readonly name: string = ''
 
   /**
    * Specifies the size for the switch toggle, it works only if attribute 'type' is set to 'switch'
    */
-  @Prop({ reflect: true }) readonly size?: InputSwitchSizeType = 'md'
+  @Prop({ reflect: true }) readonly size: InputSwitchSizeType = 'md'
 
   /**
    * Specifies switch type: switch (default), checkbox and radio
    */
-  @Prop() readonly type?: InputSwitchType = 'switch'
+  @Prop() readonly type: InputSwitchType = 'switch'
 
   /**
    * Specifies the font typography of the element
@@ -89,8 +89,7 @@ export class MdsInputSwitch {
   render () {
 
     const { iconChecked, iconUnchecked, iconIndeterminate } = inputSwitchIconVariant[this.type]
-    const iconCheckedUser = this.icon !== null ? this.icon : iconChecked
-
+    const iconCheckedUser = this.icon !== '' ? this.icon : iconChecked
     return (
       <Host
         class={clsx(
@@ -110,11 +109,11 @@ export class MdsInputSwitch {
           name={this.name}
           onChange={event => this.handleInputOnChange(event)}
           type={this.type === 'switch' ? 'checkbox' : this.type }
-          value={this.value}
+          value={this.value ?? undefined}
         />
         { this.type === 'switch'
           ?
-          <label htmlFor="field" class={clsx(this.dirty !== null && 'dirty', 'switch-container')}>
+          <label htmlFor="field" class={clsx(this.dirty !== false && 'dirty', 'switch-container')}>
             <div class="switch">
               <div class="switch-toggle"/>
             </div>

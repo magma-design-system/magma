@@ -1,7 +1,7 @@
 @tailwind utilities;
 
-:host ( [variant=info] ),
-:host ( [variant=info][tone=strong] ) {
+:host( [variant="info"] ),
+:host( [variant="info"][tone="strong"] ) {
 
   --mds-banner-background: theme('colors.status-info-09');
   --mds-banner-close-icon-hover-background: theme('colors.status-info-08');
@@ -10,7 +10,7 @@
   --mds-banner-shadow: none;
 }
 
-:host ( [variant=info][tone=weak] ) {
+:host( [variant="info"][tone="weak"] ) {
 
   --mds-banner-background: theme('colors.status-info-10');
   --mds-banner-close-icon-hover-background: theme('colors.status-info-08');
@@ -19,7 +19,7 @@
   --mds-banner-shadow: none;
 }
 
-:host ( [variant=info][tone=quiet] ) {
+:host( [variant="info"][tone="quiet"] ) {
 
   --mds-banner-background: transparent;
   --mds-banner-close-icon-hover-background: theme('colors.status-info-09');
@@ -28,6 +28,6 @@
   --mds-banner-shadow: none;
 }
 
-:host ( [variant=info][tone=quiet] ) .separator {
+:host( [variant="info"][tone="quiet"] ) .separator {
   @apply hidden;
 }

@@ -1,5 +1,5 @@
-import { newSpecPage } from '@stencil/core/testing'
-import { MdsUrlView } from '../mds-url-view'
+// import { newSpecPage } from '@stencil/core/testing'
+// import { MdsUrlView } from '../mds-url-view'
 
 describe('mds-url-view', () => {
   it('renders', async () => {

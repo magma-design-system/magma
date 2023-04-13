@@ -1,4 +1,4 @@
-import { InputValueType } from '../../../types/input-value-type'
+import { InputValueType } from '@type/input-value-type'
 
 export interface InputValue {
   value: InputValueType

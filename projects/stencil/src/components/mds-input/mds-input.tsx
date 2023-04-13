@@ -39,7 +39,7 @@ export class MdsInput {
   /**
    * Specifies that the element should automatically get focus when the page loads
    */
-  @Prop() readonly autofocus?: boolean = false
+  @Prop() readonly autofocus: boolean = false
 
   /**
    * A list of search terms to be searched from the input field,
@@ -96,7 +96,7 @@ export class MdsInput {
   /**
    * Specifies a short hint that describes the expected value of the element
    */
-  @Prop() readonly placeholder?: string
+  @Prop() readonly placeholder: string = ''
 
   /**
    * Specifies that the element is read-only
@@ -169,7 +169,7 @@ export class MdsInput {
    */
   @Watch('value')
   protected valueChanged ():void {
-    this.changeEvent.emit({ value: this.value === null ? this.value : this.value.toString() })
+    this.changeEvent.emit({ value: this.value })
   }
 
   /**
@@ -179,7 +179,7 @@ export class MdsInput {
    */
   @Method()
   async setFocus ():Promise<void> {
-    if (this.nativeInput !== null) {
+    if (this.nativeInput) {
       this.nativeInput.focus()
     }
   }
@@ -194,13 +194,13 @@ export class MdsInput {
   }
 
   private getValue (): string {
-    return typeof this.value === 'number' ? this.value.toString() : (this.value || '').toString()
+    return typeof this.value === 'number' ? this.value.toString() : this.value ?? ''
   }
 
   private onInput = (ev: Event) => {
     const input = ev.target as HTMLInputElement | HTMLTextAreaElement | false
     if (input) {
-      this.value = input.value || ''
+      this.value = input.value
     }
     this.keyDownEvent.emit(ev as KeyboardEvent)
   }
@@ -241,7 +241,7 @@ export class MdsInput {
             onBlur={this.onBlur}
             onFocus={this.onFocus}
             onInput={this.onInput}
-            placeholder={this.placeholder || ''}
+            placeholder={this.placeholder}
             readOnly={this.readonly}
             ref={ input => (this.nativeInput = input)}
             required={this.required}
@@ -266,7 +266,7 @@ export class MdsInput {
             onInput={this.onInput}
             pattern={this.pattern}
             list={this.datalist && 'datalist'}
-            placeholder={this.placeholder || ''}
+            placeholder={this.placeholder}
             readOnly={this.readonly}
             ref={ input => (this.nativeInput = input)}
             required={this.required}

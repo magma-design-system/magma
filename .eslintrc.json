@@ -13,8 +13,7 @@
   "parser": "@typescript-eslint/parser",
   "parserOptions": {
     "ecmaVersion": 12,
-    "sourceType": "module",
-    "extraFileExtensions": [ ".mjs" ]
+    "sourceType": "module"
   },
   "plugins": [
     "@typescript-eslint"

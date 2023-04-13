@@ -7,9 +7,9 @@
     "clean": "npx ts-node scripts/clean.ts",
     "build": "npm run clean && webpack --config webpack.config.js",
     "build-storybook": "npm run clean && build-storybook --debug-webpack --loglevel verbose",
-    "lint": "npm run lint-js && npm run lint-sass",
-    "lint-js": "eslint src/**/*.{js,jsx} --fix",
-    "lint-sass": "stylelint --config ./.stylelintrc.json 'src/**/*.scss' --fix",
+    "lint": "npm run lint.js && npm run lint.sass",
+    "lint.js": "eslint src/**/*.{js,jsx} --fix",
+    "lint.sass": "stylelint --config ./.stylelintrc.json 'src/**/*.scss' --fix",
     "start": "npm run clean && start-storybook -p 7177",
     "start-debug": "npm run clean && start-storybook --debug-webpack -p 7177"
   },

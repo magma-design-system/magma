@@ -76,14 +76,14 @@
     items-center;
 }
 
-::slotted ( [slot="action"] ) {
+::slotted( [slot="action"] ) {
   @apply
     aspect-square
     h-auto
     w-11;
 }
 
-::slotted ( * ) {
+::slotted( * ) {
   @apply
     truncate
     whitespace-nowrap;

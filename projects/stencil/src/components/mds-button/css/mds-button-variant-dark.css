@@ -1,72 +1,72 @@
-:host ( [variant=dark] ),
-:host ( [variant=dark][tone=strong] ) {
+:host( [variant="dark"] ),
+:host( [variant="dark"][tone="strong"] ) {
 
   --mds-button-background: theme('colors.tone-neutral-04');
   --mds-button-color: theme('colors.tone-neutral');
 }
 
-:host ( [variant=dark]:hover ),
-:host ( [variant=dark][tone=strong]:hover ) {
+:host( [variant="dark"]:hover ),
+:host( [variant="dark"][tone="strong"]:hover ) {
 
   --mds-button-background: theme('colors.tone-neutral-05');
 }
 
-:host ( [variant=dark][active] ),
-:host ( [variant=dark][tone=strong][active] ) {
+:host( [variant="dark"][active] ),
+:host( [variant="dark"][tone="strong"][active] ) {
 
   --mds-button-background: theme('colors.tone-neutral-03');
 }
 
-:host ( [variant=dark][tone=weak] ) {
+:host( [variant="dark"][tone="weak"] ) {
 
   --mds-button-background: theme('colors.tone-neutral-05');
   --mds-button-color: theme('colors.tone-neutral');
 }
 
-:host ( [variant=dark][tone=weak]:hover ) {
+:host( [variant="dark"][tone="weak"]:hover ) {
 
   --mds-button-background: theme('colors.tone-neutral-06');
 }
 
-:host ( [variant=dark][tone=weak][active] ) {
+:host( [variant="dark"][tone="weak"][active] ) {
 
   --mds-button-background: theme('colors.tone-neutral-04');
 }
 
-:host ( [variant=dark][tone=ghost] ) {
+:host( [variant="dark"][tone="ghost"] ) {
 
   --mds-button-background: transparent;
   --mds-button-border-color: theme('colors.tone-neutral-03');
   --mds-button-color: theme('colors.tone-neutral-03');
 }
 
-:host ( [variant=dark][tone=ghost]:hover ) {
+:host( [variant="dark"][tone="ghost"]:hover ) {
 
   --mds-button-background: transparent;
   --mds-button-border-color: theme('colors.tone-neutral-04');
   --mds-button-color: theme('colors.tone-neutral-04');
 }
 
-:host ( [variant=dark][tone=ghost][active] ) {
+:host( [variant="dark"][tone="ghost"][active] ) {
 
   --mds-button-background: transparent;
   --mds-button-border-color: theme('colors.tone-neutral-02');
   --mds-button-color: theme('colors.tone-neutral-02');
 }
 
-:host ( [variant=dark][tone=quiet] ) {
+:host( [variant="dark"][tone="quiet"] ) {
 
   --mds-button-background: transparent;
   --mds-button-color: theme('colors.tone-neutral-02');
 }
 
-:host ( [variant=dark][tone=quiet]:hover ) {
+:host( [variant="dark"][tone="quiet"]:hover ) {
 
   --mds-button-background: transparent;
   --mds-button-color: theme('colors.tone-neutral-04');
 }
 
-:host ( [variant=dark][tone=quiet][active] ) {
+:host( [variant="dark"][tone="quiet"][active] ) {
 
   --mds-button-background: transparent;
   --mds-button-color: theme('colors.tone-neutral-02');

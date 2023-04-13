@@ -7,9 +7,9 @@
 
 ## Properties
 
-| Property | Attribute | Description                                    | Type      | Default |
-| -------- | --------- | ---------------------------------------------- | --------- | ------- |
-| `back`   | `back`    | Choose to display or not the back arrow button | `boolean` | `true`  |
+| Property | Attribute | Description                                    | Type                   | Default |
+| -------- | --------- | ---------------------------------------------- | ---------------------- | ------- |
+| `back`   | `back`    | Choose to display or not the back arrow button | `boolean \| undefined` | `true`  |
 
 
 ## Events

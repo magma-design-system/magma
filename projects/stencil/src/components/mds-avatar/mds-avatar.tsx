@@ -30,10 +30,10 @@ export class MdsAvatar {
   /**
    * The user's inizials displayed if there's no image available
    */
-  @Prop({ mutable:true, reflect: true }) readonly initials?: string
+  @Prop({ mutable:true, reflect: true }) readonly initials: string = ''
 
   private addFontResize = (): void => {
-    const initialsElement = this.element.shadowRoot.querySelector('.fit')
+    const initialsElement = this.element.shadowRoot?.querySelector('.fit')
     if (initialsElement === null) {
       return
     }
@@ -55,7 +55,7 @@ export class MdsAvatar {
   }
 
   private checkInitials = (value: string): void => {
-    if (value !== undefined && value !== '' && !this.src) {
+    if (value !== '' && !this.src) {
       this.hasInitials = true
       if (!this.fittyInitialized) {
         this.addFontResize()
@@ -108,8 +108,8 @@ export class MdsAvatar {
             : <mds-img
               class="image"
               loading="lazy"
-              onLoadError={ () => { this.loaded = true; this.placeholder = true } }
-              onLoadSuccess={ () => { this.loaded = true } }
+              onMdsImgLoadError={ () => { this.loaded = true; this.placeholder = true } }
+              onMdsImgLoadSuccess={ () => { this.loaded = true } }
               src={ this.src }
             />
           }

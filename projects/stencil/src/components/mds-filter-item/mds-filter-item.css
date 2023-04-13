@@ -1,4 +1,4 @@
-@import '../../tailwind/components.css';
+@import url('../../tailwind/components.css');
 @tailwind components;
 @tailwind utilities;
 
@@ -22,22 +22,22 @@
   transition-property: background-color, color, outline, outline-offset;
 }
 
-:host (:focus-visible) {
+:host(:focus-visible) {
   @apply focus-on;
 }
 
-:host ( [icon]:not([label]) ) {
+:host( [icon]:not([label]) ) {
   @apply
     h-9
     p-0
     w-9;
 }
 
-:host ( [selected]:not([selected=false]) ),
-:host ( :hover ) {
+:host( [selected]:not([selected="false"]) ),
+:host( :hover ) {
   @apply bg-tone-neutral;
 }
 
-:host ( [selected]:not([selected=false]) ) {
+:host( [selected]:not([selected="false"]) ) {
   @apply text-tone-neutral-01;
 }

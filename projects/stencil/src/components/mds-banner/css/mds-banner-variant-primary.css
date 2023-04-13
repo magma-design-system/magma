@@ -1,7 +1,7 @@
 @tailwind utilities;
 
-:host ( [variant=primary] ),
-:host ( [variant=primary][tone=strong] ) {
+:host( [variant="primary"] ),
+:host( [variant="primary"][tone="strong"] ) {
 
   --mds-banner-background: theme('colors.tone-neutral');
   --mds-banner-close-icon-hover-background: theme('colors.brand-maggioli-09');
@@ -10,7 +10,7 @@
   --mds-banner-shadow: theme('boxShadow.sharp-lg');
 }
 
-:host ( [variant=primary][tone=weak] ) {
+:host( [variant="primary"][tone="weak"] ) {
 
   --mds-banner-background: theme('colors.tone-neutral');
   --mds-banner-close-icon-hover-background: theme('colors.brand-maggioli-10');
@@ -19,14 +19,14 @@
   --mds-banner-shadow: theme('boxShadow.sharp-sm');
 }
 
-:host ( [variant=primary][tone=ghost] ) {
+:host( [variant="primary"][tone="ghost"] ) {
 
   --mds-banner-color: theme('colors.tone-neutral-02');
   --mds-banner-close-icon-hover-background: theme('colors.brand-maggioli-10');
   --mds-banner-shadow: none;
 }
 
-:host ( [variant=primary][tone=quiet] ) {
+:host( [variant="primary"][tone="quiet"] ) {
 
   --mds-banner-background: transparent;
   --mds-banner-close-icon-hover-background: transparent;

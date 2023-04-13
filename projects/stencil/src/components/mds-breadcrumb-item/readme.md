@@ -7,9 +7,9 @@
 
 ## Properties
 
-| Property   | Attribute  | Description                                | Type      | Default     |
-| ---------- | ---------- | ------------------------------------------ | --------- | ----------- |
-| `selected` | `selected` | Choose if the component is selected or not | `boolean` | `undefined` |
+| Property   | Attribute  | Description                                | Type                   | Default     |
+| ---------- | ---------- | ------------------------------------------ | ---------------------- | ----------- |
+| `selected` | `selected` | Choose if the component is selected or not | `boolean \| undefined` | `undefined` |
 
 
 ## Events

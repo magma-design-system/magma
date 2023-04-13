@@ -1,5 +1,5 @@
 import { Component, Element, Host, h, Prop, Watch } from '@stencil/core'
-import { autoUpdate, computePosition, offset, shift } from '@floating-ui/dom'
+import { autoUpdate, computePosition, Middleware, offset, shift } from '@floating-ui/dom'
 import { FloatingUIPlacement, FloatingUIStrategy } from '@type/floating-ui'
 import { StrategyType } from './meta/types'
 
@@ -17,22 +17,22 @@ export class MdsNotification {
   /**
    * Specifies the id of the caller element.
    */
-  @Prop() readonly target?: string = null
+  @Prop() readonly target!: string
 
   /**
    * Specifies number of notifications to display, if it set to 0, the element will be hidden
    */
-  @Prop({ mutable: true, reflect: true }) value?: number = null
+  @Prop({ mutable: true, reflect: true }) value = 0
 
   /**
    * Specifies if the notification is visible
    */
-  @Prop({ mutable: true, reflect: true }) visible?: boolean = null
+  @Prop({ mutable: true, reflect: true }) visible = true
 
   /**
    * Specifies the position strategy of the notification
    */
-  @Prop({ reflect: true }) strategy?: StrategyType = 'fixed'
+  @Prop({ reflect: true }) strategy: StrategyType = 'fixed'
 
   /**
    * Specifies the maximum number that can be seen, assuming that the number is for example 9 and that this is exceeded with 15, the component shows +9
@@ -42,7 +42,7 @@ export class MdsNotification {
   private placement?: FloatingUIPlacement = 'right-start'
 
   private updatePosition = ():void => {
-    const middleware = []
+    const middleware = new Array<Middleware>()
     const strategySelected: FloatingUIStrategy = this.strategy === 'disabled' ? 'absolute' : 'fixed'
 
     middleware.push(offset(0))
@@ -72,7 +72,9 @@ export class MdsNotification {
   }
 
   componentDidRender (): void {
-    this.caller = document.getElementById(this.target)
+    const c = document.getElementById(this.target)
+    if (!c) throw new Error('No valid target found')
+    this.caller = c
   }
 
   componentDidLoad (): void {
@@ -88,13 +90,13 @@ export class MdsNotification {
   }
 
   disconnectedCallback (): void {
-    this.cleanupAutoUpdate = null
+    this.cleanupAutoUpdate = () => {return}
   }
 
   @Watch('strategy')
   strategyHandler (newValue: string): void {
     if (newValue === 'static') {
-      this.cleanupAutoUpdate = null
+      this.cleanupAutoUpdate = () => {return}
     }
   }
 
