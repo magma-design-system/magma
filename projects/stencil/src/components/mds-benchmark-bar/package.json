@@ -12,6 +12,7 @@
   "unpkg": "dist/mds-benchmark-bar/mds-benchmark-bar.esm.js",
   "files": [
     "dist/",
+    "documentation.json",
     "loader/",
     "readme.md",
     "src/",

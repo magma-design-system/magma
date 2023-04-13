@@ -12,6 +12,7 @@
   "unpkg": "dist/mds-input/mds-input.esm.js",
   "files": [
     "dist/",
+    "documentation.json",
     "loader/",
     "readme.md",
     "src/",

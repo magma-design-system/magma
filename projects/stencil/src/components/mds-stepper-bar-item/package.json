@@ -12,6 +12,7 @@
   "unpkg": "dist/mds-stepper-bar-item/mds-stepper-bar-item.esm.js",
   "files": [
     "dist/",
+    "documentation.json",
     "loader/",
     "readme.md",
     "src/",

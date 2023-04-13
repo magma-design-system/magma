@@ -12,6 +12,7 @@
   "unpkg": "dist/mds-header/mds-header.esm.js",
   "files": [
     "dist/",
+    "documentation.json",
     "loader/",
     "readme.md",
     "src/",

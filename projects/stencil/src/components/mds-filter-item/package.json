@@ -12,6 +12,7 @@
   "unpkg": "dist/mds-filter-item/mds-filter-item.esm.js",
   "files": [
     "dist/",
+    "documentation.json",
     "loader/",
     "readme.md",
     "src/",

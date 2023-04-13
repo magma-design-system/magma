@@ -12,6 +12,7 @@
   "unpkg": "dist/mds-avatar/mds-avatar.esm.js",
   "files": [
     "dist/",
+    "documentation.json",
     "loader/",
     "readme.md",
     "src/",

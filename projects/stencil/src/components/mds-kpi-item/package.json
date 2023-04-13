@@ -12,6 +12,7 @@
   "unpkg": "dist/mds-kpi-item/mds-kpi-item.esm.js",
   "files": [
     "dist/",
+    "documentation.json",
     "loader/",
     "readme.md",
     "src/",

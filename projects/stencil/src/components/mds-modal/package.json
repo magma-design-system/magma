@@ -12,6 +12,7 @@
   "unpkg": "dist/mds-modal/mds-modal.esm.js",
   "files": [
     "dist/",
+    "documentation.json",
     "loader/",
     "readme.md",
     "src/",

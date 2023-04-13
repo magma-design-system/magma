@@ -6,11 +6,13 @@
   "module": "dist/index.js",
   "es2015": "dist/esm/index.mjs",
   "es2017": "dist/esm/index.mjs",
-"types": "dist/types/components.d.ts",  "collection": "dist/collection/collection-manifest.json",
+  "types": "dist/types/components.d.ts",
+  "collection": "dist/collection/collection-manifest.json",
   "collection:main": "dist/collection/index.js",
   "unpkg": "dist/mds-table-body/mds-table-body.esm.js",
   "files": [
     "dist/",
+    "documentation.json",
     "loader/",
     "readme.md",
     "src/",
@@ -30,7 +32,7 @@
     "name": "Vittorio Vittori",
     "email": "vittorio.vittori@maggioli.it",
     "url": "https://vitto.github.io/vit.to/"
-},
+  },
   "contributors": [
     {
       "name": "Andrea Pruccoli",

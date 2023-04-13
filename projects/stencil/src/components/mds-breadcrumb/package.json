@@ -12,6 +12,7 @@
   "unpkg": "dist/mds-breadcrumb/mds-breadcrumb.esm.js",
   "files": [
     "dist/",
+    "documentation.json",
     "loader/",
     "readme.md",
     "src/",

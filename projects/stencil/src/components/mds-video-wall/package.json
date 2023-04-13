@@ -12,6 +12,7 @@
   "unpkg": "dist/mds-video-wall/mds-video-wall.esm.js",
   "files": [
     "dist/",
+    "documentation.json",
     "loader/",
     "readme.md",
     "src/",

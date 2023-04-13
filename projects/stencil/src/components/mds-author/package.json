@@ -12,6 +12,7 @@
   "unpkg": "dist/mds-author/mds-author.esm.js",
   "files": [
     "dist/",
+    "documentation.json",
     "loader/",
     "readme.md",
     "src/",
@@ -51,4 +52,3 @@
     }
   ]
 }
-

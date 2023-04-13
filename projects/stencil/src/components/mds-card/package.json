@@ -12,6 +12,7 @@
   "unpkg": "dist/mds-card/mds-card.esm.js",
   "files": [
     "dist/",
+    "documentation.json",
     "loader/",
     "readme.md",
     "src/",

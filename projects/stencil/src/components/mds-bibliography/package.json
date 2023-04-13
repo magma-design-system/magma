@@ -12,6 +12,7 @@
   "unpkg": "dist/mds-bibliography/mds-bibliography.esm.js",
   "files": [
     "dist/",
+    "documentation.json",
     "loader/",
     "readme.md",
     "src/",

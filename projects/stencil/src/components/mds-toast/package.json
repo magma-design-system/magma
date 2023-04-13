@@ -12,6 +12,7 @@
   "unpkg": "dist/mds-toast/mds-toast.esm.js",
   "files": [
     "dist/",
+    "documentation.json",
     "loader/",
     "readme.md",
     "src/",

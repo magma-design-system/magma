@@ -12,6 +12,7 @@
   "unpkg": "dist/mds-accordion-timer/mds-accordion-timer.esm.js",
   "files": [
     "dist/",
+    "documentation.json",
     "loader/",
     "readme.md",
     "src/",

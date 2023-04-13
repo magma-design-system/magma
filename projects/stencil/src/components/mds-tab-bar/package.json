@@ -12,6 +12,7 @@
   "unpkg": "dist/mds-tab-bar/mds-tab-bar.esm.js",
   "files": [
     "dist/",
+    "documentation.json",
     "loader/",
     "readme.md",
     "src/",

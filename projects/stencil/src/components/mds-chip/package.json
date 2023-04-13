@@ -12,6 +12,7 @@
   "unpkg": "dist/mds-chip/mds-chip.esm.js",
   "files": [
     "dist/",
+    "documentation.json",
     "loader/",
     "readme.md",
     "src/",

@@ -12,6 +12,7 @@
   "unpkg": "dist/mds-usage/mds-usage.esm.js",
   "files": [
     "dist/",
+    "documentation.json",
     "loader/",
     "readme.md",
     "src/",

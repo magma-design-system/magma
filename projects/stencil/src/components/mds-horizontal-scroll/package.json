@@ -12,6 +12,7 @@
   "unpkg": "dist/mds-horizontal-scroll/mds-horizontal-scroll.esm.js",
   "files": [
     "dist/",
+    "documentation.json",
     "loader/",
     "readme.md",
     "src/",

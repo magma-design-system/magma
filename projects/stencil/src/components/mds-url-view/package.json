@@ -12,6 +12,7 @@
   "unpkg": "dist/mds-url-view/mds-url-view.esm.js",
   "files": [
     "dist/",
+    "documentation.json",
     "loader/",
     "readme.md",
     "src/",

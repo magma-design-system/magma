@@ -12,6 +12,7 @@
   "unpkg": "dist/mds-label/mds-label.esm.js",
   "files": [
     "dist/",
+    "documentation.json",
     "loader/",
     "readme.md",
     "src/",

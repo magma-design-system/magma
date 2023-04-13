@@ -12,6 +12,7 @@
   "unpkg": "dist/mds-table/mds-table.esm.js",
   "files": [
     "dist/",
+    "documentation.json",
     "loader/",
     "readme.md",
     "src/",

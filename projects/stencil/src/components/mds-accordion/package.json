@@ -12,6 +12,7 @@
   "unpkg": "dist/mds-accordion/mds-accordion.esm.js",
   "files": [
     "dist/",
+    "documentation.json",
     "loader/",
     "readme.md",
     "src/",

@@ -12,6 +12,7 @@
   "unpkg": "dist/mds-table-footer/mds-table-footer.esm.js",
   "files": [
     "dist/",
+    "documentation.json",
     "loader/",
     "readme.md",
     "src/",

@@ -12,6 +12,7 @@
   "unpkg": "dist/mds-notification/mds-notification.esm.js",
   "files": [
     "dist/",
+    "documentation.json",
     "loader/",
     "readme.md",
     "src/",

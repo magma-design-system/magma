@@ -12,6 +12,7 @@
   "unpkg": "dist/mds-entity/mds-entity.esm.js",
   "files": [
     "dist/",
+    "documentation.json",
     "loader/",
     "readme.md",
     "src/",

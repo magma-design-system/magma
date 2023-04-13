@@ -12,6 +12,7 @@
   "unpkg": "dist/mds-banner/mds-banner.esm.js",
   "files": [
     "dist/",
+    "documentation.json",
     "loader/",
     "readme.md",
     "src/",
