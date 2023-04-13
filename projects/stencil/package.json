@@ -15,8 +15,8 @@
     "loader/"
   ],
   "scripts": {
-    "build.watch": "stencil build --watch --docs-readme",
-    "build": "npm run clean && npm run build.fixtures && npm run build.icons && stencil build --docs-readme",
+    "build.watch": "stencil build --watch",
+    "build": "npm run clean && npm run build.fixtures && npm run build.icons && stencil build --docs-readme --docs-json && publish.isolate.docs-json",
     "build.icons.prepare": "nx run svg-icons:dictionary",
     "build.icons": "iconsauce --verbose --config ./.storybook/iconsauce.config.js --output-dictionary ./src/fixtures/icons.json --output-svg ./assets/svg",
     "build.fixtures": "npm run build.icons.prepare && npx ts-node --skipProject ./scripts/fixtures.ts",
@@ -29,6 +29,7 @@
     "lint.ts": "eslint --config ./.eslintrc.json src/**/*.{ts,tsx}",
     "publish.isolate.all": "npx ts-node --skipProject ./scripts/isolate-all.ts",
     "publish.isolate.component": "npx ts-node --skipProject ./scripts/isolate-component.ts",
+    "publish.isolate.docs-json": "npx ts-node --skipProject ./scripts/isolate-docs-json.ts",
     "storybook.version": "npx ts-node --skipProject ./scripts/list-components-version.ts",
     "storybook.build": "npm run storybook.version && npm run build.icons.prepare && build-storybook -o ./dist-storybook",
     "storybook.start": "npm run build.watch & npm run storybook.version && start-storybook -p 6006 --no-manager-cache",
