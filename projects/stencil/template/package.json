@@ -23,23 +23,8 @@
     "prepublishOnly": "npm run build",
     "test": "stencil test --spec --e2e"
   },
-  "dependencies": {
-    {
-      { dependencies
-      }
-    }
-  },
+  "dependencies": {{{ dependencies }}},
   "license": "MIT",
-  "author": {
-    {
-      { author
-      }
-    }
-  },
-  "contributors": {
-    {
-      { contributors
-      }
-    }
-  }
+  "author": {{{ author }}},
+  "contributors": {{{ contributors }}}
 }
