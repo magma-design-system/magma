@@ -1,11 +1,11 @@
-const Handlebars = require('handlebars')
-const StyleDictionary = require('style-dictionary')
-const fs = require('fs')
-const hexRgb = require('hex-rgb')
-const path = require('path')
+import Handlebars from 'handlebars'
+import StyleDictionary from 'style-dictionary'
+import fs from 'fs'
+import hexRgb from 'hex-rgb'
+import path from 'path'
+import { FormatterArguments } from 'style-dictionary/types/Format'
 
-const templatePath = path.resolve(__dirname, './css-vars-rgb-channels.hbs')
-
+const templatePath = path.resolve(__dirname, './template.hbs')
 const template = Handlebars.compile(fs.readFileSync(templatePath).toString())
 
 Handlebars.registerHelper('leadZero', value => {
@@ -23,7 +23,7 @@ Handlebars.registerHelper('ifEquals', (arg1, arg2, options) => {
 
 StyleDictionary.registerFormat({
   name: 'css/vars-rgb-channels',
-  formatter: (dictionary, platform) => {
+  formatter: ({ dictionary, platform }: FormatterArguments) => {
     return template({
       properties: dictionary.properties,
       date: new Date().toUTCString(),
@@ -32,4 +32,4 @@ StyleDictionary.registerFormat({
   },
 })
 
-module.exports = StyleDictionary
+export default StyleDictionary

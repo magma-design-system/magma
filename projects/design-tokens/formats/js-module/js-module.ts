@@ -1,11 +1,11 @@
-const Handlebars = require('handlebars')
-const StyleDictionary = require('style-dictionary')
-const fs = require('fs')
-const path = require('path')
-const { sortKeys } = require('../lib.js')
+import Handlebars from 'handlebars'
+import StyleDictionary from 'style-dictionary'
+import fs from 'fs'
+import path from 'path'
+import { FormatterArguments } from 'style-dictionary/types/Format'
+import { sortKeys } from '../lib'
 
-const templatePath = path.resolve(__dirname, './js-module.hbs')
-
+const templatePath = path.resolve(__dirname, './template.hbs')
 const template = Handlebars.compile(fs.readFileSync(templatePath).toString())
 
 Handlebars.registerHelper('leadZero', value => {
@@ -18,7 +18,7 @@ Handlebars.registerHelper('ifEquals', (arg1, arg2, options) => {
 
 StyleDictionary.registerFormat({
   name: 'js/module',
-  formatter: (dictionary, platform) => {
+  formatter: ({ dictionary, platform }: FormatterArguments) => {
     return template({
       properties: sortKeys(dictionary.properties),
       date: new Date().toUTCString(),
@@ -27,4 +27,4 @@ StyleDictionary.registerFormat({
   },
 })
 
-module.exports = StyleDictionary
+export default StyleDictionary

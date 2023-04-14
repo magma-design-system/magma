@@ -6,36 +6,41 @@ import { DIST_DIR, CSS_TOKENS_DIR } from './meta'
 import { readFile, writeFile } from 'fs/promises'
 import { logFileActionDone } from '../../../scripts/log'
 
+import jsModule from '../formats/js-module/js-module'
+import jsModuleTailwindConfig from '../formats/js-module-tailwind-config/js-module-tailwind-config'
+import dartColors from '../formats/dart-colors/dart-colors'
+import cssVarsRgb from '../formats/css-vars-rgb/css-vars-rgb'
+import cssVarsHex from '../formats/css-vars-hex/css-vars-hex'
+
 const beautifyConfig = {
   indent_size: 2,
   space_in_empty_paren: true,
 }
 
 let StyleDictionary, StyleDictionaryBrand, StyleDictionaryBrandSynbee, StyleDictionarySynbeeV1, StyleDictionaryLabel, StyleDictionaryStatus, StyleDictionaryTones
-StyleDictionary = require('../formats/js-module/js-module').extend('./config.json')
-StyleDictionary = require('../formats/js-module-tailwind-config/js-module-tailwind-config').extend('./config.json')
-StyleDictionary = require('../formats/coolors/coolors').extend('./config.json')
-StyleDictionary = require('../formats/css-vars/css-vars').extend('./config.json')
-StyleDictionary = require('../formats/css-vars-rgb-channels/css-vars-rgb-channels').extend('./config.json')
+StyleDictionary = jsModule.extend('./config.json')
+StyleDictionary = jsModuleTailwindConfig.extend('./config.json')
+StyleDictionary = dartColors.extend('./config.json')
+StyleDictionary = cssVarsRgb.extend('./config.json')
+StyleDictionary = cssVarsHex.extend('./config.json')
 StyleDictionary.buildAllPlatforms()
-StyleDictionaryTones = require('../formats/css-vars/css-vars').extend('./config/tones.json')
-StyleDictionaryTones = require('../formats/css-vars-rgb-channels/css-vars-rgb-channels').extend('./config/tones.json')
+StyleDictionaryTones = cssVarsHex.extend('./config/tones.json')
+StyleDictionaryTones = cssVarsRgb.extend('./config/tones.json')
 StyleDictionaryTones.buildAllPlatforms()
-StyleDictionaryBrand = require('../formats/css-vars/css-vars').extend('./config/brand.json')
-StyleDictionaryBrand = require('../formats/css-vars-rgb-channels/css-vars-rgb-channels').extend('./config/brand.json')
+StyleDictionaryBrand = cssVarsHex.extend('./config/brand.json')
+StyleDictionaryBrand = cssVarsRgb.extend('./config/brand.json')
 StyleDictionaryBrand.buildAllPlatforms()
-StyleDictionaryBrandSynbee = require('../formats/css-vars/css-vars').extend('./config/brand-synbee.json')
-StyleDictionaryBrandSynbee = require('../formats/css-vars-rgb-channels/css-vars-rgb-channels').extend('./config/brand-synbee.json')
+StyleDictionaryBrandSynbee = cssVarsHex.extend('./config/brand-synbee.json')
+StyleDictionaryBrandSynbee = cssVarsRgb.extend('./config/brand-synbee.json')
 StyleDictionaryBrandSynbee.buildAllPlatforms()
-StyleDictionaryLabel = require('../formats/css-vars/css-vars').extend('./config/label.json')
-StyleDictionaryLabel = require('../formats/css-vars-rgb-channels/css-vars-rgb-channels').extend('./config/label.json')
+StyleDictionaryLabel = cssVarsHex.extend('./config/label.json')
+StyleDictionaryLabel = cssVarsRgb.extend('./config/label.json')
 StyleDictionaryLabel.buildAllPlatforms()
-StyleDictionaryStatus = require('../formats/css-vars/css-vars').extend('./config/status.json')
-StyleDictionaryStatus = require('../formats/css-vars-rgb-channels/css-vars-rgb-channels').extend('./config/status.json')
+StyleDictionaryStatus = cssVarsHex.extend('./config/status.json')
+StyleDictionaryStatus = cssVarsRgb.extend('./config/status.json')
 StyleDictionaryStatus.buildAllPlatforms()
-
-StyleDictionarySynbeeV1 = require('../formats/css-vars/css-vars').extend('./config/synbee-v1.json')
-StyleDictionarySynbeeV1 = require('../formats/css-vars-rgb-channels/css-vars-rgb-channels').extend('./config/synbee-v1.json')
+StyleDictionarySynbeeV1 = cssVarsHex.extend('./config/synbee-v1.json')
+StyleDictionarySynbeeV1 = cssVarsRgb.extend('./config/synbee-v1.json')
 StyleDictionarySynbeeV1.buildAllPlatforms()
 
 const saveAsJs = ({ source, varName, destination }: { source: string, varName: string, destination: string }) => {

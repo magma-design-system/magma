@@ -1,4 +1,4 @@
-const sortKeys = object => {
+const sortKeys = (object: any) => {
   if (typeof object !== 'object' || object instanceof Array) {
     return object
   }
@@ -11,4 +11,6 @@ const sortKeys = object => {
   return newObject
 }
 
-exports.sortKeys = sortKeys
+export {
+  sortKeys,
+}

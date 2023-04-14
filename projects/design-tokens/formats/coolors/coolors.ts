@@ -1,14 +1,13 @@
-const Handlebars = require('handlebars')
-const StyleDictionary = require('style-dictionary')
-const fs = require('fs')
-const path = require('path')
+import Handlebars from 'handlebars'
+import StyleDictionary from 'style-dictionary'
+import fs from 'fs'
+import path from 'path'
+import { FormatterArguments } from 'style-dictionary/types/Format'
 
 const templatePath = path.resolve(__dirname, './template.hbs')
-
 const template = Handlebars.compile(fs.readFileSync(templatePath).toString())
 
 Handlebars.registerHelper('coolorizeName', options => {
-  console.log(options.fn(this))
   if (typeof options.fn(this) !== 'string') {
     return options.fn(this)
   }
@@ -32,7 +31,7 @@ Handlebars.registerHelper('ifEquals', (arg1, arg2, options) => {
 
 StyleDictionary.registerFormat({
   name: 'json/coolors',
-  formatter: (dictionary, platform) => {
+  formatter: ({ dictionary, platform }: FormatterArguments) => {
     return template({
       properties: dictionary.properties,
       date: new Date().toUTCString(),
@@ -41,4 +40,4 @@ StyleDictionary.registerFormat({
   },
 })
 
-module.exports = StyleDictionary
+export default StyleDictionary
