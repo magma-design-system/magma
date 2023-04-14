@@ -17,6 +17,17 @@
       ]
     },
 
+    "dart": {
+      "transformGroup": "js",
+      "buildPath": "dist/dart/",
+      "files": [
+        {
+          "destination": "colors.dart",
+          "format": "dart/colors"
+        }
+      ]
+    },
+
     "json": {
       "transformGroup": "js",
       "buildPath": "dist/json/",

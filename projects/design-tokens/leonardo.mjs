@@ -152,18 +152,19 @@ const formatPalette = async opts => {
       }
 
       if (element.export !== undefined) {
-        if (exportGroups[element.export] === undefined) {
-          exportGroups[element.export] = {}
-          exportGroups[element.export].color = {}
-        }
-        if (exportGroups[element.export].color[group] === undefined) {
-          exportGroups[element.export].color[group] = {}
-        }
-
-        exportGroups[element.export].color[group][name] = {
-          light: palette.color[group][name].light,
-          dark: palette.color[group][name].dark,
-        }
+        element.export.forEach(exportElement => {
+          if (exportGroups[exportElement] === undefined) {
+            exportGroups[exportElement] = {}
+            exportGroups[exportElement].color = {}
+          }
+          if (exportGroups[exportElement].color[group] === undefined) {
+            exportGroups[exportElement].color[group] = {}
+          }
+          exportGroups[exportElement].color[group][name] = {
+            light: palette.color[group][name].light,
+            dark: palette.color[group][name].dark,
+          }
+        })
       }
     }
   })
