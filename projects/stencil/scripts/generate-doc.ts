@@ -4,7 +4,7 @@ import { COMPONENTS_DIR, TEMPLATES_DIR } from './meta'
 import { ask } from 'stdio'
 import { checkComponentExistance, checkComponentWasBuilt } from './lib'
 import { join } from 'path'
-import { logStatus } from '@script/log'
+import { logStatus } from '../../../scripts/log'
 import { readFile, writeFile } from 'fs/promises'
 
 const stencilComment = '\n<!-- Auto Generated Below -->'
