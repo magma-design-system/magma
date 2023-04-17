@@ -58,7 +58,7 @@
       antialiased
       font-medium
       font-title
-      leading-relaxed
+      leading-6
       text-sm;
   }
 
@@ -139,7 +139,6 @@
     @apply
       antialiased
       font-code
-      leading-relaxed
       text-base;
   }
 
@@ -147,7 +146,7 @@
     @apply
       antialiased
       font-code
-      leading-relaxed
+      leading-6
       text-sm;
   }
 }
