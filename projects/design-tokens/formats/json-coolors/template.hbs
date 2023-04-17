@@ -29,9 +29,9 @@
           {{#ifEquals @key 'dark'}}
             {{#each palettes as | palette |}}
               {{#ifEquals @key 'color'}}
-      "{{@../../../key}}-{{@../../key}}": "{{palette.value}}"{{#unless @../../../../../last}},{{/unless}}
+      "{{#coolorizeName}}{{@../../../key}}-{{@../../key}}{{/coolorizeName}}": "{{palette.value}}"{{#unless @last}},{{/unless}}
               {{else}}
-      "{{@../../../key}}-{{@../../key}}-{{leadZero @key}}": "{{palette.value}}"{{#unless @../../../../../last}},{{/unless}}
+      "{{#coolorizeName}}{{@../../../key}}-{{@../../key}}-{{leadZero @key}}{{/coolorizeName}}": "{{palette.value}}"{{#unless @last}},{{/unless}}
               {{/ifEquals}}
             {{/each}}
           {{/ifEquals}}

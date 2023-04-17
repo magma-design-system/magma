@@ -11,22 +11,30 @@ import jsModuleTailwindConfig from '../formats/js-module-tailwind-config/js-modu
 import dartColors from '../formats/dart-colors/dart-colors'
 import cssVarsRgb from '../formats/css-vars-rgb/css-vars-rgb'
 import cssVarsHex from '../formats/css-vars-hex/css-vars-hex'
+import jsonCoolors from '../formats/json-coolors/json-coolors'
 
 const beautifyConfig = {
   indent_size: 2,
   space_in_empty_paren: true,
 }
 
-let StyleDictionary, StyleDictionaryBrand, StyleDictionaryBrandSynbee, StyleDictionarySynbeeV1, StyleDictionaryLabel, StyleDictionaryStatus, StyleDictionaryTones
+let StyleDictionary, StyleDictionaryDefault, StyleDictionaryBrand, StyleDictionaryBrandSynbee, StyleDictionarySynbeeV1, StyleDictionaryLabel, StyleDictionaryStatus, StyleDictionaryTones
 StyleDictionary = jsModule.extend('./config.json')
 StyleDictionary = jsModuleTailwindConfig.extend('./config.json')
 StyleDictionary = dartColors.extend('./config.json')
 StyleDictionary = cssVarsRgb.extend('./config.json')
 StyleDictionary = cssVarsHex.extend('./config.json')
+StyleDictionary = jsonCoolors.extend('./config.json')
 StyleDictionary.buildAllPlatforms()
 StyleDictionaryTones = cssVarsHex.extend('./config/tones.json')
 StyleDictionaryTones = cssVarsRgb.extend('./config/tones.json')
 StyleDictionaryTones.buildAllPlatforms()
+
+StyleDictionaryDefault = cssVarsHex.extend('./config/default.json')
+StyleDictionaryDefault = dartColors.extend('./config/default.json')
+StyleDictionaryDefault = cssVarsRgb.extend('./config/default.json')
+StyleDictionaryDefault.buildAllPlatforms()
+
 StyleDictionaryBrand = cssVarsHex.extend('./config/brand.json')
 StyleDictionaryBrand = cssVarsRgb.extend('./config/brand.json')
 StyleDictionaryBrand.buildAllPlatforms()

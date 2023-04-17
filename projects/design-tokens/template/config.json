@@ -16,6 +16,16 @@
           "destination": "colors-rgb-{{fileName}}.css"
         }
       ]
+    },
+    "dart": {
+      "transformGroup": "js",
+      "buildPath": "dist/dart/",
+      "files": [
+        {
+          "destination": "colors-{{fileName}}.dart",
+          "format": "dart/colors"
+        }
+      ]
     }
   }
 }
