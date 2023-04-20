@@ -141,9 +141,11 @@
     ],
     "variants": {
       "paragraph": {
-        "fontSize": "20px",
-        "fontWeight": 300,
-        "lineHeight": "32px"
+        "properties": {
+          "fontSize": "20px",
+          "fontWeight": 300,
+          "lineHeight": "32px"
+        }
       },
       "detail": {
         "properties": {
