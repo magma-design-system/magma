@@ -26,7 +26,7 @@
     "generate.doc": "npx ts-node --skipProject ./scripts/generate-doc.ts",
     "gitlab-ci-yml-regenerate": "npx ts-node --skipProject ./scripts/gitlab-ci-yml-regenerate.ts",
     "lint.css": "stylelint --config ./.stylelintrc.json 'src/**/*.css'",
-    "lint.ts": "eslint --config ./.eslintrc.json src/**/*.{ts,tsx}",
+    "lint.ts": "eslint --config ./.eslintrc.js src/**/*.{ts,tsx}",
     "publish.isolate.all": "npx ts-node --skipProject ./scripts/isolate-all.ts",
     "publish.isolate.component": "npm run publish.isolate.docs-json && npx ts-node --skipProject ./scripts/isolate-component.ts",
     "publish.isolate.docs-json": "npx ts-node --skipProject ./scripts/isolate-docs-json.ts",
