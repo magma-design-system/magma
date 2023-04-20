@@ -1,7 +1,7 @@
 @tailwind utilities;
 
-:host ( [variant=success] ),
-:host ( [variant=success][tone=strong] ) {
+:host( [variant="success"] ),
+:host( [variant="success"][tone="strong"] ) {
 
   --background: theme('colors.status-success-09');
   --color: theme('colors.status-success-02');
@@ -9,7 +9,7 @@
   --icon-color: theme('colors.status-success-05');
 }
 
-:host ( [variant=success][tone=weak] ) {
+:host( [variant="success"][tone="weak"] ) {
 
   --background: theme('colors.status-success-10');
   --color: theme('colors.status-success-03');

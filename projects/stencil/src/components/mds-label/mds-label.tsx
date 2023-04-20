@@ -24,27 +24,27 @@ export class MdsLabel {
   /**
    * Sets the theme variant colors
    */
-  @Prop({ reflect: true }) readonly variant?: ThemeFullVariantType = 'sky'
+  @Prop({ reflect: true }) readonly variant: ThemeFullVariantType = 'sky'
 
   /**
    * Sets the tone of the color variant
    */
-  @Prop({ reflect: true }) readonly tone?: ToneSimpleVariantType = 'quiet'
+  @Prop({ reflect: true }) readonly tone: ToneSimpleVariantType = 'quiet'
 
   /**
    * Truncates text inside the label or displays it in multiline if needed
    */
-  @Prop() readonly truncate?: boolean = true
+  @Prop() readonly truncate: boolean = true
 
   /**
    * Specifies the typography of the element
    */
-  @Prop() readonly typography?: TypographyType = 'caption'
+  @Prop() readonly typography: TypographyType = 'caption'
 
   /**
    * Enables the cross icon to perform cancel/delete action on element
    */
-  @Prop() readonly deletable?: boolean = false
+  @Prop() readonly deletable: boolean = false
 
   private onClickDelete = (ev: Event) => {
     ev.stopPropagation()
@@ -59,7 +59,7 @@ export class MdsLabel {
 
   private handleKeyboard = (): void => {
     if (this.deletable) {
-      const close = this.host.shadowRoot.querySelector('.close') as HTMLElement
+      const close = this.host.shadowRoot?.querySelector('.close') as HTMLElement
       this.km.addElement(close)
       this.km.attachClickBehavior()
       return

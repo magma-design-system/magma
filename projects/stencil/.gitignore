@@ -5,8 +5,10 @@
 /dist
 /dist-storybook
 /loader
+/magma-components
 /src/components.d.ts
 /src/components/**/components.d.ts
+/src/components/**/documentation.json
 /src/components/**/src
 /src/components/**/stencil.config.ts
 /src/components/**/tailwind.config.js

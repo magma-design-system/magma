@@ -1,5 +1,5 @@
 import { Component, Element, Host, Prop, h, Watch } from '@stencil/core'
-import { arrow, autoPlacement, autoUpdate, computePosition, flip, MiddlewareData, offset, shift } from '@floating-ui/dom'
+import { arrow, autoPlacement, autoUpdate, computePosition, flip, Middleware, MiddlewareData, offset, shift } from '@floating-ui/dom'
 import { FloatingUIPlacement, FloatingUIStrategy } from '@type/floating-ui'
 import { TypographyTooltipType } from '@type/typography'
 import arrowSvg from './assets/arrow.svg'
@@ -35,7 +35,7 @@ export class MdsTooltip {
   /**
    * Specifies the placement of the component if no space is available where it is placed.
    */
-  @Prop() readonly flip?: boolean = true
+  @Prop() readonly flip: boolean = false
 
   /**
    * Specifies the id of the caller element.
@@ -75,19 +75,11 @@ export class MdsTooltip {
   /**
    * Specifies the visibility of the component.
    */
-  @Prop({ mutable: true, reflect: true }) visible?: boolean = false
+  @Prop({ mutable: true, reflect: true }) visible = false
 
-  private handleVisibility = (visibility: boolean = null): void => {
-    if (visibility !== null) {
-      this.visible = visibility
-      return
-    }
-    if (this.visible) {
-      this.visible = false
-      return
-    }
-    this.visible = true
-    this.updatePosition()
+  private handleVisibility = (visibility: boolean): void => {
+    this.visible = visibility
+    if (this.visible) this.updatePosition()
   }
 
   private arrowInset = (middleware: MiddlewareData, arrowPosition: string): { bottom?: string, left?: string, right?: string, top?: string } => {
@@ -113,7 +105,6 @@ export class MdsTooltip {
       break
     case 'top':
       inset.left = arrow.x !== null ? `${arrow.x}px` : ''
-      inset.top = null
       break
     default:
       break
@@ -158,7 +149,7 @@ export class MdsTooltip {
   }
 
   private updatePosition = ():void => {
-    const middleware = []
+    const middleware = new Array<Middleware>()
     const config: { padding?: number } = {}
 
     if (this.shiftPadding) {
@@ -207,10 +198,12 @@ export class MdsTooltip {
         left: 'right',
       }[placement.split('-')[0]]
 
-      Object.assign(arrowStyle, this.arrowTransform(arrowPosition))
-      Object.assign(arrowStyle, this.arrowInset(middlewareData, arrowPosition))
-      Object.assign(arrowStyle, this.arrowTransformOrigin(arrowPosition))
-      Object.assign(this.arrowEl.style, arrowStyle)
+      if (arrowPosition){
+        Object.assign(arrowStyle, this.arrowTransform(arrowPosition))
+        Object.assign(arrowStyle, this.arrowInset(middlewareData, arrowPosition))
+        Object.assign(arrowStyle, this.arrowTransformOrigin(arrowPosition))
+        Object.assign(this.arrowEl.style, arrowStyle)
+      }
     })
   }
 
@@ -260,10 +253,13 @@ export class MdsTooltip {
   }
 
   componentDidRender (): void {
-    this.arrowEl = this.host.shadowRoot.querySelector('.arrow')
-    this.caller = document.getElementById(this.target)
-    this.caller.addEventListener('mouseleave', this.handleVisibility.bind(this, false))
-    this.caller.addEventListener('mouseenter', this.handleVisibility.bind(this, true))
+    this.arrowEl = this.host.shadowRoot?.querySelector('.arrow') as HTMLElement
+    const caller = document.getElementById(this.target)
+    if (caller) {
+      this.caller = caller
+      this.caller.addEventListener('mouseleave', this.handleVisibility.bind(this, false))
+      this.caller.addEventListener('mouseenter', this.handleVisibility.bind(this, true))
+    }
   }
 
   componentDidLoad (): void {
@@ -273,7 +269,7 @@ export class MdsTooltip {
   }
 
   disconnectedCallback (): void {
-    this.cleanupAutoUpdate = null
+    this.cleanupAutoUpdate = () => {return}
   }
 
   render () {

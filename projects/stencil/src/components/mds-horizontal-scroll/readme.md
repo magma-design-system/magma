@@ -7,10 +7,10 @@
 
 ## Properties
 
-| Property    | Attribute   | Description                                                        | Type                                     | Default     |
-| ----------- | ----------- | ------------------------------------------------------------------ | ---------------------------------------- | ----------- |
-| `scrollbar` | `scrollbar` | Specifies the box’s snap position as an alignment of its snap area | `boolean`                                | `undefined` |
-| `snap`      | `snap`      | Specifies the box’s snap position as an alignment of its snap area | `"center" \| "end" \| "none" \| "start"` | `'start'`   |
+| Property    | Attribute   | Description                                                        | Type                                                  | Default     |
+| ----------- | ----------- | ------------------------------------------------------------------ | ----------------------------------------------------- | ----------- |
+| `scrollbar` | `scrollbar` | Specifies the box’s snap position as an alignment of its snap area | `boolean \| undefined`                                | `undefined` |
+| `snap`      | `snap`      | Specifies the box’s snap position as an alignment of its snap area | `"center" \| "end" \| "none" \| "start" \| undefined` | `'start'`   |
 
 
 ## CSS Custom Properties

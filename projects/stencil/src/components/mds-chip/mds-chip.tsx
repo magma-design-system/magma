@@ -30,7 +30,7 @@ export class MdsChip {
   @Prop() readonly deleteLabel? = 'Rimuovi'
 
   /**
-   * Shows the cross icon to perform cancel/delete action on element
+   * Sets the component disabled status
    */
   @Prop() readonly disabled?: boolean = false
 
@@ -43,6 +43,11 @@ export class MdsChip {
    * The label displayed to the right of the component's icon
    */
   @Prop() readonly label!: string
+
+  /**
+   * Sets the component selected
+   */
+  @Prop({ reflect: true }) selected = false
 
   /**
    * Emits when the component's label is clicked
@@ -64,7 +69,7 @@ export class MdsChip {
 
   private handleClickableKeyboard = (): void => {
     if (this.clickable) {
-      const label = this.host.shadowRoot.querySelector('.label') as HTMLElement
+      const label = this.host.shadowRoot?.querySelector('.label') as HTMLElement
       this.km.addElement(label, 'label')
       this.km.attachClickBehavior('label')
       return
@@ -74,7 +79,7 @@ export class MdsChip {
 
   private handleDeletableKeyboard = (): void => {
     if (this.deletable) {
-      const deleteElement = this.host.shadowRoot.querySelector('.delete') as HTMLElement
+      const deleteElement = this.host.shadowRoot?.querySelector('.delete') as HTMLElement
       this.km.addElement(deleteElement, 'delete')
       this.km.attachClickBehavior('delete')
       return
@@ -83,7 +88,7 @@ export class MdsChip {
   }
 
   private handleClickableElement = (): void => {
-    const label = this.host.shadowRoot.querySelector('.label') as HTMLElement
+    const label = this.host.shadowRoot?.querySelector('.label') as HTMLElement
     if (!label) {
       return
     }
@@ -97,7 +102,7 @@ export class MdsChip {
   }
 
   private handleDeletableElement = (): void => {
-    const deleteElement = this.host.shadowRoot.querySelector('.delete') as HTMLElement
+    const deleteElement = this.host.shadowRoot?.querySelector('.delete') as HTMLElement
     if (!deleteElement) {
       return
     }

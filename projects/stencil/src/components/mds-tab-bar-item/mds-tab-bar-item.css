@@ -32,7 +32,7 @@
   fill: var(--mds-tab-bar-item-color);
 }
 
-:host ( [selected]:not([selected=false]) ) {
+:host( [selected]:not([selected="false"]) ) {
   background-color: var(--mds-tab-bar-item-background-selected);
   color: var(--mds-tab-bar-item-color-selected);
   fill: var(--mds-tab-bar-item-color-selected);

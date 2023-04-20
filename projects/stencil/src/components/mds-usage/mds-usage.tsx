@@ -16,7 +16,7 @@ export class MdsUsage {
   /**
    * Specifies the delay when the tooltip will trigger
    */
-  @Prop() readonly variant?: UsageType = 'info'
+  @Prop() readonly variant: UsageType = 'info'
 
   /**
    * Specifies the alias of the usage phrase on the top of the component

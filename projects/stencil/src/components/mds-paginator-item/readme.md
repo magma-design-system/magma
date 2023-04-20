@@ -7,11 +7,11 @@
 
 ## Properties
 
-| Property   | Attribute  | Description                                                                    | Type      | Default     |
-| ---------- | ---------- | ------------------------------------------------------------------------------ | --------- | ----------- |
-| `disabled` | `disabled` | Specifies if the item is disabled or not, is handled from the parent paginator | `boolean` | `undefined` |
-| `icon`     | `icon`     | Specifies the icon used inside the paginator item                              | `string`  | `undefined` |
-| `selected` | `selected` | Specifies if the item is selected or not, is handled from the parent paginator | `boolean` | `undefined` |
+| Property   | Attribute  | Description                                                                    | Type                   | Default     |
+| ---------- | ---------- | ------------------------------------------------------------------------------ | ---------------------- | ----------- |
+| `disabled` | `disabled` | Specifies if the item is disabled or not, is handled from the parent paginator | `boolean \| undefined` | `undefined` |
+| `icon`     | `icon`     | Specifies the icon used inside the paginator item                              | `string \| undefined`  | `undefined` |
+| `selected` | `selected` | Specifies if the item is selected or not, is handled from the parent paginator | `boolean \| undefined` | `undefined` |
 
 
 ## CSS Custom Properties

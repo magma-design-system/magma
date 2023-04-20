@@ -1,14 +1,14 @@
-@import '../../tailwind/components.css';
+@import url('../../tailwind/components.css');
 @tailwind components;
 @tailwind utilities;
 
 /**
   * @prop --mds-stepper-bar-item-color: Sets the color of the text
   * @prop --mds-stepper-bar-item-duaration: Sets the duration of the animation
-  * @prop --mds-stepper-bar-item-icon-background-selected: Sets the background-color of the icon when the component is selected
+  * @prop --mds-stepper-bar-item-icon-background-done: Sets the background-color of the icon when the component is done
   * @prop --mds-stepper-bar-item-icon-background-current: Sets the background-color of the icon when the component is current
   * @prop --mds-stepper-bar-item-icon-background: Sets the background-color of the icon
-  * @prop --mds-stepper-bar-item-icon-color-selected: Sets the color of the icon when the component is selected
+  * @prop --mds-stepper-bar-item-icon-color-done: Sets the color of the icon when the component is done
   * @prop --mds-stepper-bar-item-icon-color-current: Sets the color of the icon when the component is current
   * @prop --mds-stepper-bar-item-icon-color: Sets the color of the icon
   * @prop --mds-stepper-bar-item-icon-ring-size: Sets the size of the icon circle when the component is current
@@ -22,10 +22,10 @@
 
   --mds-stepper-bar-item-color: theme('colors.tone-neutral-03');
   --mds-stepper-bar-item-duaration: 250ms;
-  --mds-stepper-bar-item-icon-background-selected: theme('colors.status-success-05');
+  --mds-stepper-bar-item-icon-background-done: theme('colors.status-success-05');
   --mds-stepper-bar-item-icon-background-current: theme('colors.brand-maggioli-04');
   --mds-stepper-bar-item-icon-background: var(--mds-stepper-bar-item-progress-background, theme('colors.tone-neutral-08'));
-  --mds-stepper-bar-item-icon-color-selected: theme('colors.status-success-10');
+  --mds-stepper-bar-item-icon-color-done: theme('colors.status-success-10');
   --mds-stepper-bar-item-icon-color-current: theme('colors.tone-neutral');
   --mds-stepper-bar-item-icon-color: theme('colors.tone-neutral-04');
   --mds-stepper-bar-item-icon-ring-color: var(--mds-stepper-bar-item-icon-background-current);
@@ -54,23 +54,23 @@
   transition-property: outline, outline-offset;
 }
 
-:host ( :last-of-type ) {
+:host( :last-of-type ) {
   @apply basis-1;
 }
 
-:host ( :last-of-type ) .progress {
+:host( :last-of-type ) .progress {
   @apply hidden;
 }
 
-:host ( [ selected ] ) .icon {
+:host( [ done ] ) .icon {
 
-  --mds-stepper-bar-item-icon-background: var(--mds-stepper-bar-item-icon-background-selected);
-  --mds-stepper-bar-item-icon-color: var(--mds-stepper-bar-item-icon-color-selected);
+  --mds-stepper-bar-item-icon-background: var(--mds-stepper-bar-item-icon-background-done);
+  --mds-stepper-bar-item-icon-color: var(--mds-stepper-bar-item-icon-color-done);
 
   transition-delay: 0ms;
 }
 
-:host ( [ current ] ) .icon {
+:host( [ current ] ) .icon {
 
   --mds-stepper-bar-item-icon-background: var(--mds-stepper-bar-item-icon-background-current);
   --mds-stepper-bar-item-icon-color: var(--mds-stepper-bar-item-icon-color-current);
@@ -79,15 +79,14 @@
   transition-delay: calc(var(--mds-stepper-bar-item-duaration) / 2);
 }
 
-:host ( :not([ selected ]) ) .icon,
-:host ( :not([ current ]) ) .icon {
+:host( :not([ done ]) ) .icon,
+:host( :not([ current ]) ) .icon {
 
   --mds-stepper-bar-item-icon-ring-color: var(--mds-stepper-bar-item-icon-background);
 }
 
 .header {
   @apply
-    cursor-pointer
     duration-200
     ease-out
     flex
@@ -128,7 +127,6 @@
 
 .infos {
   @apply
-    cursor-pointer
     gap-1
     grid
     pl-1;

@@ -1,8 +1,9 @@
-@import '../../tailwind/components.css';
+@import url('../../tailwind/components.css');
 @tailwind components;
 @tailwind utilities;
 
 :host {
+
   --mds-chip-background: theme('colors.tone-neutral-09');
   --mds-chip-color: theme('colors.tone-neutral-04');
   --mds-chip-delete-icon-color-hover: theme('colors.status-error-06');
@@ -10,8 +11,10 @@
   --mds-chip-icon-background-hover: var(--mds-chip-icon-background);
   --mds-chip-icon-background: theme('colors.brand-maggioli-07');
   --mds-chip-icon-color-hover: var(--mds-chip-icon-color);
+  --mds-chip-icon-background-selected: theme('colors.brand-maggioli-06');
   --mds-chip-icon-color: theme('colors.tone-neutral');
   --mds-chip-opacity-disabled: var(--opacity-disabled, 0.5);
+  --mds-chip-backgroud-selected: theme('colors.tone-neutral-08');
 
   @apply
     duration-150
@@ -30,10 +33,16 @@
 }
 
 
-:host ( [disabled]:not([disabled=false]) ) {
+:host( [disabled]:not([disabled="false"]) ) {
   @apply pointer-events-none;
 
   opacity: var(--mds-chip-opacity-disabled);
+}
+
+:host( [selected]:not([selected="false"]) ) {
+
+  --mds-chip-background: var(--mds-chip-backgroud-selected);
+  --mds-chip-icon-background: var(--mds-chip-icon-background-selected);
 }
 
 .label {
@@ -47,11 +56,11 @@
   transition-property: color, text-decoration-color, outline, outline-offset;
 }
 
-:host ( [clickable]:not([clickable=false]) ) .label {
+:host( [clickable]:not([clickable="false"]) ) .label {
   @apply cursor-pointer underline;
 }
 
-:host ( [clickable]:not([clickable=false]) ) .label:hover {
+:host( [clickable]:not([clickable="false"]) ) .label:hover {
   text-decoration-color: unset;
 }
 
@@ -74,6 +83,8 @@
     w-6;
 
   background-color: var(--mds-chip-icon-background);
+  transition-duration: inherit;
+  transition-timing-function: inherit;
 }
 
 .icon {

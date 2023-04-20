@@ -1,8 +1,0 @@
-@tailwind utilities;
-
-:host {
-  @apply
-    auto-rows-max
-    gap-4
-    grid;
-}

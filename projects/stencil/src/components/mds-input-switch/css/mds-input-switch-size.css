@@ -1,16 +1,16 @@
-:host ( [size=sm] ) {
+:host( [size="sm"] ) {
 
   --switch-toggle-size: theme('spacing.5');
   --switch-padding: theme('spacing.1');
 }
 
-:host ( [size=md] ) {
+:host( [size="md"] ) {
 
   --switch-toggle-size: theme('spacing.6');
   --switch-padding: theme('spacing.1');
 }
 
-:host ( [size=lg] ) {
+:host( [size="lg"] ) {
 
   --switch-toggle-size: theme('spacing.7');
   --switch-padding: theme('spacing.1');

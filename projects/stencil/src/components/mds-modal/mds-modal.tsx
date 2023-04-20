@@ -12,9 +12,9 @@ import { ModalPositionType, ModalAnimationStateType } from './meta/types'
 export class MdsModal {
 
   private animationDeelay
-  private window: boolean = null
-  private top: boolean = null
-  private bottom: boolean = null
+  private window = false
+  private top = false
+  private bottom = false
   private animationState: ModalAnimationStateType = 'intro'
   private km = new KeyboardManager()
   @State() stateOpened: boolean
@@ -23,12 +23,12 @@ export class MdsModal {
   /**
    * Specifies if the modal is opened or not
    */
-  @Prop({ reflect: true, mutable: true }) opened?: boolean
+  @Prop({ reflect: true, mutable: true }) opened = false
 
   /**
    * Specifies the animation position of the modal window
    */
-  @Prop({ reflect: true, mutable: true }) position?: ModalPositionType = null
+  @Prop({ reflect: true, mutable: true }) position?: ModalPositionType = 'center'
 
   componentWillLoad (): void {
     this.bottom = this.host.querySelector('[slot="bottom"]') !== null
@@ -36,17 +36,12 @@ export class MdsModal {
     this.window = this.host.querySelector('[slot="window"]') !== null
     this.stateOpened = this.opened
 
-    if (this.window && this.position === null) {
-      this.position = 'center'
-    }
-
-    if (this.position === null) {
+    if (!this.window) {
       this.position = 'right'
     }
 
     if (this.window) {
-      const modal = this.host.querySelector('[slot="window"]')
-      modal.setAttribute('role', 'modal')
+      this.host.querySelector('[slot="window"]')?.setAttribute('role', 'modal')
     }
   }
 
@@ -66,7 +61,8 @@ export class MdsModal {
 
   componentDidLoad = (): void => {
     this.km.addElement(this.host, 'host')
-    this.km.addElement(this.host.shadowRoot.querySelector('.close'), 'close')
+    const close = this.host.shadowRoot?.querySelector('.close')
+    if (close) this.km.addElement(close as HTMLElement, 'close')
     this.km.attachEscapeBehavior(() => this.closeEvent.emit())
     this.km.attachClickBehavior('close')
   }
@@ -76,14 +72,14 @@ export class MdsModal {
     this.km.detachClickBehavior('close')
   }
 
-  private animationName = (customState: string = null, customPosition: string = null): string => {
-    return `animate-${customPosition !== null ? customPosition : this.position}${customState !== null ? '-' + customState : ''}`
+  private animationName = (customState = '', customPosition = ''): string => {
+    return `to-${customPosition !== '' ? customPosition : this.position}${customState !== '' ? '-' + customState : ''}`
   }
 
   @Watch('position')
   positionChange (_newValue: string, oldValue: string): void {
     window.clearTimeout(this.animationDeelay)
-    this.host.classList.remove(this.animationName(null, oldValue))
+    this.host.classList.remove(this.animationName('', oldValue))
     this.host.classList.remove(this.animationName('intro', oldValue))
     this.host.classList.remove(this.animationName('outro', oldValue))
   }
@@ -99,7 +95,7 @@ export class MdsModal {
    */
   @Event({ bubbles: true, composed: true, eventName: 'mdsModalClose' }) closeEvent: EventEmitter<void>
 
-  private closeModal = (e:Event = null): void => {
+  private closeModal = (e:Event): void => {
     if ((e.target as HTMLElement)?.localName !== 'mds-modal') {
       return
     }
@@ -123,10 +119,8 @@ export class MdsModal {
     return (
       <Host aria-modal={clsx(this.opened ? 'true' : 'false' )} class={clsx(this.stateOpened && this.animationName('opened'))} onClick={(e: Event) => { this.closeModal(e) }}>
         { this.window
-          ?
-          <slot name="window"/>
-          :
-          <div class={clsx('window', (this.top || this.bottom) && `window-${this.top ? '-top' : ''}${this.bottom ? '-bottom' : ''}`)} role="dialog">
+          ? <slot name="window"/>
+          : <div class={clsx('window', (this.top || this.bottom) && `window-${this.top ? '-top' : ''}${this.bottom ? '-bottom' : ''}`)} role="dialog">
             { this.top &&
               <slot name="top"/>
             }

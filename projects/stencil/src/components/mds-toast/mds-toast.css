@@ -60,15 +60,15 @@
     gap-2;
 }
 
-::slotted ( [slot=icon] ) {
+::slotted( [slot="icon"] ) {
   @apply transition-colors;
 
   fill: var(--icon-color);
 }
 
-@import './css/mds-toast-variant-dark.css';
-@import './css/mds-toast-variant-error.css';
-@import './css/mds-toast-variant-info.css';
-@import './css/mds-toast-variant-light.css';
-@import './css/mds-toast-variant-success.css';
-@import './css/mds-toast-variant-warning.css';
+@import url('./css/mds-toast-variant-dark.css');
+@import url('./css/mds-toast-variant-error.css');
+@import url('./css/mds-toast-variant-info.css');
+@import url('./css/mds-toast-variant-light.css');
+@import url('./css/mds-toast-variant-success.css');
+@import url('./css/mds-toast-variant-warning.css');

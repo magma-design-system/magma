@@ -1,76 +1,76 @@
 @tailwind utilities;
 
-:host ( [variant=warning] ),
-:host ( [variant=warning][tone=strong] ) {
+:host( [variant="warning"] ),
+:host( [variant="warning"][tone="strong"] ) {
 
   --mds-button-background: theme('colors.status-warning-05');
   --mds-button-color: theme('colors.tone-neutral');
 }
 
-:host ( [variant=warning]:hover ),
-:host ( [variant=warning][tone=strong]:hover ) {
+:host( [variant="warning"]:hover ),
+:host( [variant="warning"][tone="strong"]:hover ) {
 
   --mds-button-background: theme('colors.status-warning-04');
 }
 
-:host ( [variant=warning][active] ),
-:host ( [variant=warning][tone=strong][active] ) {
+:host( [variant="warning"][active] ),
+:host( [variant="warning"][tone="strong"][active] ) {
 
   --mds-button-background: theme('colors.status-warning-06');
 }
 
-:host ( [variant=warning][tone=weak] ) {
+:host( [variant="warning"][tone="weak"] ) {
 
   --mds-button-background: theme('colors.status-warning-06');
   --mds-button-color: theme('colors.status-warning-10');
 }
 
-:host ( [variant=warning][tone=weak]:hover ) {
+:host( [variant="warning"][tone="weak"]:hover ) {
 
   --mds-button-background: theme('colors.status-warning-05');
   --mds-button-color: theme('colors.tone-neutral');
 }
 
-:host ( [variant=warning][tone=weak][active] ) {
+:host( [variant="warning"][tone="weak"][active] ) {
 
   --mds-button-background: theme('colors.status-warning-07');
   --mds-button-color: theme('colors.status-warning-10');
 }
 
-:host ( [variant=warning][tone=ghost] ) {
+:host( [variant="warning"][tone="ghost"] ) {
 
   --mds-button-background: transparent;
   --mds-button-border-color: theme('colors.status-warning-04');
   --mds-button-color: theme('colors.status-warning-03');
 }
 
-:host ( [variant=warning][tone=ghost]:hover ) {
+:host( [variant="warning"][tone="ghost"]:hover ) {
 
   --mds-button-background: transparent;
   --mds-button-border-color: theme('colors.status-warning-04');
   --mds-button-color: theme('colors.status-warning-02');
 }
 
-:host ( [variant=warning][tone=ghost][active] ) {
+:host( [variant="warning"][tone="ghost"][active] ) {
 
   --mds-button-background: transparent;
   --mds-button-border-color: theme('colors.status-warning-05');
   --mds-button-color: theme('colors.status-warning-03');
 }
 
-:host ( [variant=warning][tone=quiet] ) {
+:host( [variant="warning"][tone="quiet"] ) {
 
   --mds-button-background: transparent;
   --mds-button-color: theme('colors.status-warning-02');
 }
 
-:host ( [variant=warning][tone=quiet]:hover ) {
+:host( [variant="warning"][tone="quiet"]:hover ) {
 
   --mds-button-background: transparent;
   --mds-button-color: theme('colors.status-warning-04');
 }
 
-:host ( [variant=warning][tone=quiet][active] ) {
+:host( [variant="warning"][tone="quiet"][active] ) {
 
   --mds-button-background: transparent;
   --mds-button-color: theme('colors.status-warning-01');

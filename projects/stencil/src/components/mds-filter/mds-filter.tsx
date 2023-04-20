@@ -42,8 +42,10 @@ export class MdsFilter {
   private scrollTabs = (): void => {
     const items = this.queryItems()
     const tabItem = items[this.lastSelectedItem]
-    const itemsContainer = this.element.shadowRoot.querySelector<HTMLElement>('.items')
-    itemsContainer.scrollLeft = tabItem.offsetLeft - itemsContainer.offsetLeft - (itemsContainer.offsetWidth / 2) + (tabItem.offsetWidth / 2)
+    const itemsContainer = this.element.shadowRoot?.querySelector<HTMLElement>('.items')
+    if (itemsContainer) {
+      itemsContainer.scrollLeft = tabItem.offsetLeft - itemsContainer.offsetLeft - (itemsContainer.offsetWidth / 2) + (tabItem.offsetWidth / 2)
+    }
   }
 
   private checkSelectedItem = ():void => {
@@ -75,7 +77,7 @@ export class MdsFilter {
 
   private itemsValues = ():string => {
     const items = this.queryItems()
-    const list = []
+    const list: string[] = []
     items.forEach(item => {
       if (item.selected) {
         list.push(item.value)
@@ -101,7 +103,7 @@ export class MdsFilter {
 
     if (this.multiple) {
       let itemsSelected = 0
-      const list = []
+      const list: (HTMLMdsFilterItemElement | null)[] = []
       items.forEach((item, key) => {
         item.selected ? list.push(item) : list.push(null)
         if (item.selected) {

@@ -17,8 +17,8 @@ export class MdsHeader {
    */
   @Event({ bubbles: true, composed: true, eventName: 'mdsHeaderClose' }) closedEvent: EventEmitter<MdsHeaderEventDetail>
 
-  private bar = ():HTMLMdsHeaderBarElement|null => {
-    return this.host.querySelector('[slot="nav-mobile"]')
+  private bar = ():HTMLMdsHeaderBarElement => {
+    return this.host.querySelector('[slot="nav-mobile"]') as HTMLMdsHeaderBarElement
   }
 
   private close = () => {

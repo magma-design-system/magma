@@ -1,21 +1,14 @@
 {
   "repo": [
-    "https://stylelint.io/user-guide/rules/list",
-    "https://github.com/kristerkari/stylelint-scss"
+    "https://stylelint.io/user-guide/rules/list"
   ],
-  "extends": ["../../.stylelintrc.json"],
-  "plugins": [
-    "stylelint-order"
+  "extends": [
+    "../../.stylelintrc.json"
   ],
   "ignoreFiles": [
     "**/dist/*.css",
     "**/*.js",
     "**/*.jsx",
     "**/*.svg"
-  ],
-  "rules": {
-    "at-rule-name-space-after": null,
-    "color-function-notation": null,
-    "selector-type-no-unknown": null
-  }
+  ]
 }

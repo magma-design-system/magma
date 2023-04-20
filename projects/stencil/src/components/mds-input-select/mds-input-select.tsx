@@ -20,7 +20,7 @@ export class MdsInputSelect {
   /**
    * Specifies a short hint that describes the expected value of the element
    */
-  @Prop() readonly options?: string
+  @Prop() readonly options: string = ''
 
   /**
    * Specifies the value of the element

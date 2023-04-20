@@ -1,6 +1,6 @@
 {
   "name": "@maggioli-design-system/mds-chip",
-  "version": "2.0.0",
+  "version": "2.1.0",
   "description": "mds-chip is a web-component from Maggioli Design System Magma, built with StencilJS, TypeScript, Storybook. It's based on the web-component standard and it's designed to be agnostic from the JavaScirpt framework you are using.",
   "main": "dist/index.cjs.js",
   "module": "dist/index.js",
@@ -12,6 +12,7 @@
   "unpkg": "dist/mds-chip/mds-chip.esm.js",
   "files": [
     "dist/",
+    "documentation.json",
     "loader/",
     "readme.md",
     "src/",
@@ -23,10 +24,10 @@
     "test": "stencil test --spec --e2e"
   },
   "dependencies": {
-    "@maggioli-design-system/mds-icon": "^2.3.0",
-    "@maggioli-design-system/mds-text": "^3.2.2",
-    "@maggioli-design-system/styles": "^11.2.1",
-    "@stencil/core": "^2.22.2"
+    "@maggioli-design-system/mds-icon": "^2.4.0",
+    "@maggioli-design-system/mds-text": "^3.3.0",
+    "@maggioli-design-system/styles": "^11.4.0",
+    "@stencil/core": "^2.22.3"
   },
   "license": "MIT",
   "author": {
@@ -41,11 +42,6 @@
       "role": "Software Engineer"
     },
     {
-      "name": "Vittorio Vittori",
-      "email": "vittorio.vittori@maggioli.it",
-      "role": "UX UI Designer"
-    },
-    {
       "name": "Daniele Tardia",
       "email": "daniele.tardia@hibo.it",
       "role": "Software Engineer"
@@ -53,7 +49,17 @@
     {
       "name": "Luca Pernechele",
       "email": "luca.pernechele@hibo.it",
-      "role": "UX UI Designer"
+      "role": "Product Designer"
+    },
+    {
+      "name": "Nicola Tamburini",
+      "email": "nicola.tamburini@maggioli.it",
+      "role": "Software Engineer"
+    },
+    {
+      "name": "Vittorio Vittori",
+      "email": "vittorio.vittori@maggioli.it",
+      "role": "Product Designer"
     }
   ]
 }

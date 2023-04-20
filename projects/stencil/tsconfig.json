@@ -20,17 +20,38 @@
     "resolveJsonModule": true,
     "target": "es2017",
     "paths": {
-      "@common/*": ["src/common/*"],
-      "@component-dist/*": ["dist/collection/components/*"],
-      "@component/*": ["src/components/*"],
-      "@dictionary/*": ["src/dictionary/*"],
-      "@fixture/*": ["src/fixtures/*"],
-      "@icon/*": ["assets/svg/*"],
-      "@interface/*": ["src/interface/*"],
-      "@placeholder": ["https://via.placeholder.com"],
-      "@test/*": ["src/test/*"],
-      "@type/*": ["src/type/*"]
-    }
+      "@common/*": [
+        "src/common/*"
+      ],
+      "@component-dist/*": [
+        "dist/collection/components/*"
+      ],
+      "@component/*": [
+        "src/components/*"
+      ],
+      "@dictionary/*": [
+        "src/dictionary/*"
+      ],
+      "@fixture/*": [
+        "src/fixtures/*"
+      ],
+      "@icon/*": [
+        "assets/svg/*"
+      ],
+      "@interface/*": [
+        "src/interface/*"
+      ],
+      "@placeholder": [
+        "https://via.placeholder.com"
+      ],
+      "@test/*": [
+        "src/test/*"
+      ],
+      "@type/*": [
+        "src/type/*"
+      ]
+    },
+    "strictNullChecks": true
   },
   "include": [
     "scripts",

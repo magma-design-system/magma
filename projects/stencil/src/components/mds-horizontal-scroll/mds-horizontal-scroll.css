@@ -14,8 +14,8 @@
   --mds-horizontal-scroll-scrollbar-radius: 0;
   --mds-horizontal-scroll-scrollbar-margin: 0;
   --mds-horizontal-scroll-scrollbar-size: theme('spacing.2');
-  --mds-horizontal-scroll-scrollbar-thumb-background: rgba(var(--tone-neutral-02), theme('opacity.30'));
-  --mds-horizontal-scroll-scrollbar-track-background: rgba(var(--tone-neutral-06), theme('opacity.30'));
+  --mds-horizontal-scroll-scrollbar-thumb-background: rgb(var(--tone-neutral-02) theme('opacity.30'));
+  --mds-horizontal-scroll-scrollbar-track-background: rgb(var(--tone-neutral-06) theme('opacity.30'));
 
   @apply
     flex
@@ -28,7 +28,7 @@
   scroll-snap-type: x mandatory;
 }
 
-:host ( .scroll--mds-horizontal-scroll-hide-scrollbar ) {
+:host( .scroll--mds-horizontal-scroll-hide-scrollbar ) {
   -webkit-overflow-scrolling: touch;
   -ms-overflow-style: none;
   scrollbar-width: none;
@@ -62,14 +62,14 @@
   }
 }
 
-:host( .scroll--mds-horizontal-scroll-align-start ) > ::slotted ( * ) {
+:host( .scroll--mds-horizontal-scroll-align-start ) > ::slotted( * ) {
   @apply snap-start;
 }
 
-:host( .scroll--mds-horizontal-scroll-align-center ) > ::slotted ( * ) {
+:host( .scroll--mds-horizontal-scroll-align-center ) > ::slotted( * ) {
   @apply snap-center;
 }
 
-:host( .scroll--mds-horizontal-scroll-align-end ) > ::slotted ( * ) {
+:host( .scroll--mds-horizontal-scroll-align-end ) > ::slotted( * ) {
   @apply snap-end;
 }

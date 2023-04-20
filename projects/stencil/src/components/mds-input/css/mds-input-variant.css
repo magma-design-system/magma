@@ -1,58 +1,59 @@
 @tailwind utilities;
 
 :host {
+
   --mds-input-icon-color: 10, 80, 212; /* brand-maggioli-03 */
   --mds-input-variant-color: 0, 0, 0;
 }
 
-:host ( :focus ) {
+:host( :focus ) {
 
   --mds-input-variant-color: 31, 101, 232; /* brand-maggioli-04 */
 }
 
-:host ( [variant=info] ) {
+:host( [variant="info"] ) {
 
   --mds-input-icon-color: 25, 143, 182; /* status-info-05 */
   --mds-input-variant-color: 0, 0, 0;
 }
 
-:host ( [variant=info]:focus ) {
+:host( [variant="info"]:focus ) {
 
   --mds-input-icon-color: 21, 119, 151; /* status-info-04 */
   --mds-input-variant-color: 25, 143, 182; /* status-info-05 */
 }
 
-:host ( [variant=success] ) {
+:host( [variant="success"] ) {
 
   --mds-input-icon-color: 26, 151, 91; /* status-success-05 */
   --mds-input-variant-color: 0, 0, 0;
 }
 
-:host ( [variant=success]:focus ) {
+:host( [variant="success"]:focus ) {
 
   --mds-input-icon-color: 22, 125, 76; /* status-success-04 */
   --mds-input-variant-color: 26, 151, 91; /* status-success-05 */
 }
 
-:host ( [variant=warning] ) {
+:host( [variant="warning"] ) {
 
   --mds-input-icon-color: 168, 126, 0; /* status-warning-05 */
   --mds-input-variant-color: 0, 0, 0;
 }
 
-:host ( [variant=warning]:focus ) {
+:host( [variant="warning"]:focus ) {
 
   --mds-input-icon-color: 139, 104, 0; /* status-warning-04 */
   --mds-input-variant-color: 168, 126, 0; /* status-warning-05 */
 }
 
-:host ( [variant=error] ) {
+:host( [variant="error"] ) {
 
   --mds-input-icon-color: 234, 77, 73; /* status-error-05 */
   --mds-input-variant-color: 0, 0, 0;
 }
 
-:host ( [variant=error]:focus ) {
+:host( [variant="error"]:focus ) {
 
   --mds-input-icon-color: 215, 29, 25; /* status-error-04 */
   --mds-input-variant-color: 234, 77, 73; /* status-error-05 */

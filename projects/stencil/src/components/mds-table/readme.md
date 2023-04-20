@@ -7,9 +7,9 @@
 
 ## Properties
 
-| Property      | Attribute     | Description                                                  | Type      | Default     |
-| ------------- | ------------- | ------------------------------------------------------------ | --------- | ----------- |
-| `interactive` | `interactive` | Specifies if the table row are higlighted on mouseover event | `boolean` | `undefined` |
+| Property      | Attribute     | Description                                                  | Type                   | Default     |
+| ------------- | ------------- | ------------------------------------------------------------ | ---------------------- | ----------- |
+| `interactive` | `interactive` | Specifies if the table row are higlighted on mouseover event | `boolean \| undefined` | `undefined` |
 
 
 ## Events

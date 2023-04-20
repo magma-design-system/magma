@@ -7,10 +7,9 @@
 
 ## Properties
 
-| Property | Attribute | Description                                                                                                                      | Type      | Default |
-| -------- | --------- | -------------------------------------------------------------------------------------------------------------------------------- | --------- | ------- |
-| `linear` | `linear`  | Sets if the component should handle checked elements from the first to the last child or not                                     | `boolean` | `true`  |
-| `select` | `select`  | Sets the current item to the given index: 0 is none selected, 1 is the first item selected, last number + 1 is all items checked | `number`  | `1`     |
+| Property    | Attribute    | Description                                                                                                           | Type     | Default |
+| ----------- | ------------ | --------------------------------------------------------------------------------------------------------------------- | -------- | ------- |
+| `itemsDone` | `items-done` | Sets the current item to the given index: 0 is none done, 1 is the first item done, last number + 1 is all items done | `number` | `1`     |
 
 
 ## Events

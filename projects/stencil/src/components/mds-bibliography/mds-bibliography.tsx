@@ -18,7 +18,7 @@ export class MdsBibliography {
   /**
    * Specifies the bibliography format to rapresent the bibliography content
    */
-  @Prop() readonly format?: BibliographyFormatType = 'apa'
+  @Prop() readonly format: BibliographyFormatType = 'apa'
 
   /**
    * Specifies a single or mupltiple authors, this field expect a string or an array of strings.
@@ -87,23 +87,27 @@ export class MdsBibliography {
     return names[ index ]
   }
 
-  private dateFormatAPA = ( date: string ): string => {
-    // 2001, August 2
-    const dateData = new Date( date )
-    return `${dateData.getFullYear()}${dateData.getMonth() !== null ? `, ${this.monthName( dateData.getMonth() )}` : ''}${dateData.getDate() !== null ? ` ${dateData.getDate()}` : ''}`
+  private getDate = (data: string) => {return new Date( isNaN(Number(data)) ? data : parseInt(data) )}
+
+  private dateFormatAPA = (date: string): string => {
+    // 2001, August
+    const dateData = this.getDate(date)
+    if (dateData.toString() === 'Invalid Date') return ''
+    return `${dateData.getFullYear()}, ${this.monthName(dateData.getMonth())} ${dateData.getDate()}`
   }
 
-  private dateFormatMLA = ( date: string ): string => {
+  private dateFormatMLA = (date: string): string => {
     // 21 July 1986
-    const dateData = new Date( date )
-    return `${dateData.getDate() !== null ? ` ${dateData.getDate()}` : ''} ${this.monthName( dateData.getMonth() )} ${dateData.getFullYear()}`
+    const dateData = this.getDate(date)
+    if (dateData.toString() === 'Invalid Date') return ''
+    return `${dateData.getDate()} ${this.monthName(dateData.getMonth())} ${dateData.getFullYear()}`
   }
 
   private fullNameAPA = ( firstName: string, lastName: string ): string => {
     let formattedFirstName = ''
     if ( firstName.includes( ' ' ) ) {
-      const splitName = new RegExp( /(\w{1,})/, 'g' )
-      firstName.match( splitName ).forEach( ( word: string ) => {
+      const splitName = new RegExp( /(\w+)/, 'g' )
+      firstName.match( splitName )?.forEach( ( word: string ) => {
         formattedFirstName = `${formattedFirstName} ${word.substring( 0, 1 )}.`
       } )
     } else {
@@ -115,8 +119,8 @@ export class MdsBibliography {
   private fullNameMLA = ( firstName: string, lastName: string ): string => {
     let formattedFirstName = ''
     if ( firstName.includes( ' ' ) ) {
-      const splitName = new RegExp( /(\w{1,})/, 'g' )
-      firstName.match( splitName ).forEach( ( word: string, index: number ) => {
+      const splitName = new RegExp( /(\w+)/, 'g' )
+      firstName.match( splitName )?.forEach( ( word: string, index: number ) => {
         formattedFirstName = index === 0 ? word : `${formattedFirstName} ${word.substring( 0, 1 )}.`
       } )
     } else {
@@ -126,7 +130,7 @@ export class MdsBibliography {
   }
 
   private formatAuthors = ( author: string ): FormattedAuthor => {
-    const authorName = author.replace( new RegExp( '"', 'g' ), '\'' )
+    const authorName = author.replace( /"/g, '\'' )
     const splitNames = new RegExp( /([A-Za-z ]{2,})/g )
     const fullName = authorName.match( splitNames ) ?? authorName
     if ( fullName.length > 1 ) {

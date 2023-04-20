@@ -1,10 +1,20 @@
 import chalk from 'chalk'
 import { ask } from 'stdio'
 import { createTempProjectInstance, compilePackage, compileTemplateFile, checkComponentExistance, checkComponentWasBuilt } from './lib'
-import { logStatus } from '../../../scripts/log'
+import { logStatus, dontUseWithNX } from '../../../scripts/log'
 
 let componentNameArgument = ''
 let nonInteractive = false
+
+if (process.argv.length === 3) {
+  componentNameArgument = process.argv[2].split('=')[1]
+  nonInteractive = true
+  console.log(`${chalk.yellow('Non-interactive mode')} using ${componentNameArgument} component name`)
+}
+
+if (!nonInteractive) {
+  dontUseWithNX()
+}
 
 const isolateComponent = async () => {
   let componentName = ''
@@ -43,16 +53,10 @@ const isolateComponent = async () => {
   }
 }
 
-if (process.argv.length === 3) {
-  componentNameArgument = process.argv[2].split('=')[1]
-  nonInteractive = true
-  console.log(`${chalk.yellow('Non-interactive mode')} using ${componentNameArgument} component name`)
-}
-
-const main = async () => {
+const main = async (): Promise<void> => {
   console.log(`This script will ${chalk.green('isolate')} a stencil component and will create package.json if missing into a an isolated stencil project, ready to be published`)
 
-  if (!nonInteractive){
+  if (!nonInteractive) {
     const continueTask = await ask('Continue?', { options: ['Y', 'n', ''] })
     if (continueTask === 'n') {
       return

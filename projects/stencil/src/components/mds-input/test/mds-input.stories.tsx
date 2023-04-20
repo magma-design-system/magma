@@ -169,13 +169,13 @@ icon.args = {
   placeholder: 'Status input field',
 }
 
-const FormIntegration = (args: never) => (
+const FormIntegration = (args: any) => (
   <form class="flex flex-col gap-y-2" id="mds-icon-fi" name="mds-icon-fi">
     <mds-input {...args}></mds-input>
     <mds-button class="w-min" type="button" onClick={() => {
-      const input = document.querySelector('input[name="inputto"]')
-      const form = document.querySelector('form')
-      const mdsInput = document.querySelector('mds-input')
+      const input = document.querySelector('input[name="inputto"]') as HTMLInputElement
+      const form = document.querySelector('form') as HTMLFormElement
+      const mdsInput = document.querySelector('mds-input') as HTMLMdsInputElement
 
       console.log('Input', input)
       console.log('Form', form)

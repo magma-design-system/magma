@@ -17,7 +17,7 @@ export class MdsDetails {
   /**
    * Specifies if the component is opened
    */
-  @Prop({ mutable: true, reflect: true }) opened?: boolean
+  @Prop({ mutable: true, reflect: true }) opened = false
 
   /**
    * Emits when the component is opened
@@ -34,7 +34,7 @@ export class MdsDetails {
   }
 
   componentDidLoad (): void {
-    const header = this.host.shadowRoot.querySelector('.header') as HTMLElement
+    const header = this.host.shadowRoot?.querySelector('.header') as HTMLElement
     this.km.addElement(header)
     this.km.attachClickBehavior()
   }

@@ -1,7 +1,7 @@
 @tailwind utilities;
 
-:host ( [variant=orchid] ),
-:host ( [variant=orchid][tone=strong] ) {
+:host( [variant="orchid"] ),
+:host( [variant="orchid"][tone="strong"] ) {
 
   --mds-label-background: theme('colors.label-orchid-04');
   --mds-label-color: theme('colors.label-orchid-10');
@@ -10,7 +10,7 @@
   --mds-label-selection-color: theme('colors.label-orchid-02');
 }
 
-:host ( [variant=orchid][tone=weak] ) {
+:host( [variant="orchid"][tone="weak"] ) {
 
   --mds-label-background: theme('colors.label-orchid-08');
   --mds-label-color: theme('colors.label-orchid-02');
@@ -19,7 +19,7 @@
   --mds-label-selection-color: theme('colors.label-orchid-10');
 }
 
-:host ( [variant=orchid][tone=quiet] ) {
+:host( [variant="orchid"][tone="quiet"] ) {
 
   --mds-label-background: theme('colors.label-orchid-09');
   --mds-label-color: theme('colors.label-orchid-04');

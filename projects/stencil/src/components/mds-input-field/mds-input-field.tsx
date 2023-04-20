@@ -43,7 +43,7 @@ export class MdsInputField {
   /**
    * Specifies that the element should automatically get focus when the page loads
    */
-  @Prop() autofocus?: boolean = false
+  @Prop() autofocus = false
 
   /**
    * If true, the element is displayed as disabled
@@ -94,7 +94,7 @@ export class MdsInputField {
   /**
    * Specifies a short hint that describes the expected value of the element
    */
-  @Prop() placeholder?: string
+  @Prop() placeholder = ''
 
   /**
    * Specifies that the element is read-only
@@ -124,7 +124,7 @@ export class MdsInputField {
   /**
    * Specifies the value of the input element
    */
-  @Prop() value?: string | number | null = ''
+  @Prop() value: string | number = ''
 
   /**
    * Emits an InputValue when the value of the input element changes
@@ -162,7 +162,7 @@ export class MdsInputField {
    */
   @Watch('value')
   protected valueChanged ():void {
-    this.changeEvent.emit({ value: this.value === null ? this.value : this.value.toString() })
+    this.changeEvent.emit({ value: this.value })
     // this.cleanValue = this.value
     // console.log(this.cleanValue)
   }
@@ -174,7 +174,7 @@ export class MdsInputField {
    */
   @Method()
   async setFocus ():Promise<void> {
-    if (this.nativeInput !== null) {
+    if (this.nativeInput) {
       this.nativeInput.focus()
     }
   }
@@ -189,28 +189,31 @@ export class MdsInputField {
   }
 
   private getValue (): string {
-    return typeof this.value === 'number' ? this.value.toString() : (this.value || '').toString()
+    return typeof this.value === 'number' ? this.value.toString() : (this.value ?? '')
   }
 
   private mask (value: string | number | null = '' ): string | number | null {
     let i = -1
-    const v = value.toString()
-    const { mask } = modelValidator[this.validate]
-    let maskedChars: string
+    const v = value?.toString()
+    if (this.validate && v) {
+      const { mask } = modelValidator[this.validate]
+      let maskedChars: string
 
-    return mask.replace(/#/g, () => {
-      i += 1
-      console.log(v.length, i, v[ i ])
-      console.log(`'${mask[i]}'`)
-      maskedChars = v[ i ] !== undefined ? v[ i ] : ''
-      return maskedChars
-    })
+      return mask.replace(/#/g, () => {
+        i += 1
+        console.log(v.length, i, v[ i ])
+        console.log(`'${mask[i]}'`)
+        maskedChars = v[ i ] !== undefined ? v[ i ] : ''
+        return maskedChars
+      })
+    }
+    return null
   }
 
   private onInput = (ev: Event) => {
     const input = ev.target as HTMLInputElement | false
     if (input) {
-      this.value = input.value || ''
+      this.value = input.value
     }
     this.keyDownEvent.emit(ev as KeyboardEvent)
 
@@ -286,7 +289,7 @@ export class MdsInputField {
             onFocus={this.onFocus}
             onInput={this.onInput}
             pattern={this.pattern}
-            placeholder={this.placeholder || ''}
+            placeholder={this.placeholder}
             readonly={this.readonly}
             ref={ input => (this.nativeInput = input)}
             required={this.required}

@@ -1,19 +1,19 @@
 @tailwind utilities;
 
-:host ( [variant=error] ),
-:host ( [variant=error][tone=strong] ) {
+:host( [variant="error"] ),
+:host( [variant="error"][tone="strong"] ) {
 
   --background: theme('colors.status-error-05');
   --color: theme('colors.status-error-10');
 }
 
-:host ( [variant=error][tone=weak] ) {
+:host( [variant="error"][tone="weak"] ) {
 
   --background: theme('colors.status-error-08');
   --color: theme('colors.status-error-02');
 }
 
-:host ( [variant=error][tone=quiet] ) {
+:host( [variant="error"][tone="quiet"] ) {
 
   --background: theme('colors.status-error-09');
   --color: theme('colors.status-error-04');

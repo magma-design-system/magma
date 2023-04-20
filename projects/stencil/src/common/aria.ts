@@ -7,12 +7,12 @@ const hash = (s: string): string => {
 }
 
 const unslugName = (name: string): string => {
-  return name.split('/').slice(-1).pop().replace(/-/g, ' ')
+  return name.split('/')?.slice(-1).pop()?.replace(/-/g, ' ') ?? name
 }
 
 const setAttributeIfEmpty = (element: HTMLElement, attribute: string, value: string): string => {
   if (element.hasAttribute(attribute)) {
-    return element.getAttribute(attribute)
+    return element.getAttribute(attribute) ?? ''
   }
   element.setAttribute(attribute, value)
   return value

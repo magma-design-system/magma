@@ -1,4 +1,4 @@
-@import '../../tailwind/components.css';
+@import url('../../tailwind/components.css');
 @tailwind components;
 @tailwind utilities;
 
@@ -32,16 +32,17 @@
   color: var(--mds-note-color);
 }
 
-:host ::slotted ( mds-text ) {
+:host ::slotted( mds-text ) {
+
   --mds-text-selection-background: var(--mds-note-selection-background);
   --mds-text-selection-color: var(--mds-note-selection-color);
 }
 
-:host ( [deletable]:not([deletable=false]) ) {
+:host( [deletable]:not([deletable="false"]) ) {
   @apply pr-16;
 }
 
-:host ( [deletable]:not([deletable=false]) ) .close {
+:host( [deletable]:not([deletable="false"]) ) .close {
   @apply
     absolute
     right-4
@@ -90,4 +91,4 @@
   @apply ml-auto;
 }
 
-@import './css/mds-note-variants.css';
+@import url('./css/mds-note-variants.css');
