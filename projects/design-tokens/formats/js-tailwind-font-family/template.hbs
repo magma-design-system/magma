@@ -6,10 +6,16 @@ Generated at {{ date }}
 
 const fontFamily = {
 {{#each properties as | fonts |}}
-  {{#each fonts as | family |}}
-    {{#each family as | fontFamily |}}
+  {{#each fonts as | p |}}
+    {{#each p as | fontFamily |}}
       {{#each fontFamily as | names |}}
-  {{@../key}}: [{{ names.value }}]
+      {{#if names.value }}
+  "{{@../../key}}": [
+        {{#each names.value as | fontName |}}
+    "{{getSafeFontName fontName }}",
+        {{/each}}
+  ],
+      {{/if}}
       {{/each}}
     {{/each}}
   {{/each}}
@@ -18,37 +24,4 @@ const fontFamily = {
 
 module.exports = {
   fontFamily,
-}
-
-// -----------------------------------------------------------------------
-
-const fontFamily = {
-  "title": [
-    "Roboto",
-    "-apple-system",
-    "BlinkMacSystemFont",
-    "'San Francisco'",
-    "'Segoe UI'",
-    "'Helvetica Neue'",
-    "sans-serif"
-  ],
-  "info": [
-    "Karla",
-    "-apple-system",
-    "BlinkMacSystemFont",
-    "'San Francisco'",
-    "'Segoe UI'",
-    "'Helvetica Neue'",
-    "sans-serif"
-  ],
-  "read": [
-    "'Merriweather'",
-    "Times",
-    "'Times New Roman'",
-    "serif"
-  ],
-  "code": [
-    "'Roboto Mono'",
-    "monospace"
-  ]
 }
