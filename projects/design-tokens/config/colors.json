@@ -12,7 +12,7 @@
           "format": "js/module"
         },{
           "destination": "tailwind-colors-css-vars.js",
-          "format": "js/module-tailwind-colors"
+          "format": "js/tailwind-colors"
         }
       ]
     },

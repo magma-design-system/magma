@@ -5,9 +5,10 @@ import path from 'path'
 import { DIST_DIR, CSS_TOKENS_DIR } from './meta'
 import { readFile, writeFile } from 'fs/promises'
 import { logFileActionDone } from '../../../scripts/log'
-
+import StyleDictionary from 'style-dictionary/types'
 import jsModule from '../formats/js/js'
 import jsModuleTailwindColors from '../formats/js-tailwind-colors/js-tailwind-colors'
+import jsTailwindFontFamily from '../formats/js-tailwind-font-family/js-tailwind-font-family'
 import dartColors from '../formats/dart-colors/dart-colors'
 import cssVarsRgb from '../formats/css-vars-rgb/css-vars-rgb'
 import cssVarsHex from '../formats/css-vars-hex/css-vars-hex'
@@ -18,23 +19,31 @@ const beautifyConfig = {
   space_in_empty_paren: true,
 }
 
-let StyleDictionary, StyleDictionaryDefault, StyleDictionaryBrand, StyleDictionaryBrandSynbee, StyleDictionarySynbeeV1, StyleDictionaryLabel, StyleDictionaryStatus, StyleDictionaryTones
-StyleDictionary = jsModule.extend('./config/colors.json')
-StyleDictionary = jsModuleTailwindColors.extend('./config/colors.json')
-StyleDictionary = dartColors.extend('./config/colors.json')
-StyleDictionary = cssVarsRgb.extend('./config/colors.json')
-StyleDictionary = cssVarsHex.extend('./config/colors.json')
-StyleDictionary = jsonCoolors.extend('./config/colors.json')
-StyleDictionary.buildAllPlatforms()
+let StyleDictionaryColors: StyleDictionary.Core,
+  StyleDictionaryBrand: StyleDictionary.Core,
+  StyleDictionaryBrandSynbee: StyleDictionary.Core,
+  StyleDictionaryDefault: StyleDictionary.Core,
+  StyleDictionaryFontFamily: StyleDictionary.Core,
+  StyleDictionaryLabel: StyleDictionary.Core,
+  StyleDictionaryStatus: StyleDictionary.Core,
+  StyleDictionarySynbeeV1: StyleDictionary.Core,
+  StyleDictionaryTones: StyleDictionary.Core
+
+StyleDictionaryColors = jsModule.extend('./config/colors.json')
+StyleDictionaryColors = jsModuleTailwindColors.extend('./config/colors.json')
+StyleDictionaryColors = dartColors.extend('./config/colors.json')
+StyleDictionaryColors = cssVarsRgb.extend('./config/colors.json')
+StyleDictionaryColors = cssVarsHex.extend('./config/colors.json')
+StyleDictionaryColors = jsonCoolors.extend('./config/colors.json')
+StyleDictionaryColors.buildAllPlatforms()
+
 StyleDictionaryTones = cssVarsHex.extend('./config/generated/tones.json')
 StyleDictionaryTones = cssVarsRgb.extend('./config/generated/tones.json')
 StyleDictionaryTones.buildAllPlatforms()
-
 StyleDictionaryDefault = cssVarsHex.extend('./config/generated/default.json')
 StyleDictionaryDefault = dartColors.extend('./config/generated/default.json')
 StyleDictionaryDefault = cssVarsRgb.extend('./config/generated/default.json')
 StyleDictionaryDefault.buildAllPlatforms()
-
 StyleDictionaryBrand = cssVarsHex.extend('./config/generated/brand.json')
 StyleDictionaryBrand = cssVarsRgb.extend('./config/generated/brand.json')
 StyleDictionaryBrand.buildAllPlatforms()
@@ -50,6 +59,9 @@ StyleDictionaryStatus.buildAllPlatforms()
 StyleDictionarySynbeeV1 = cssVarsHex.extend('./config/generated/synbee-v1.json')
 StyleDictionarySynbeeV1 = cssVarsRgb.extend('./config/generated/synbee-v1.json')
 StyleDictionarySynbeeV1.buildAllPlatforms()
+
+StyleDictionaryFontFamily = jsTailwindFontFamily.extend('./config/font-family.json')
+StyleDictionaryFontFamily.buildAllPlatforms()
 
 const saveAsJs = ({ source, varName, destination }: { source: string, varName: string, destination: string }) => {
   readFile(path.resolve(__dirname, source))
@@ -88,11 +100,11 @@ saveAsJs({
 })
 
 
-saveAsJs({
-  destination: path.join(DIST_DIR, 'js/font-family.js'),
-  source: path.join(CSS_TOKENS_DIR, 'font-family.json'),
-  varName: 'fontFamily',
-})
+// saveAsJs({
+//   destination: path.join(DIST_DIR, 'js/font-family.js'),
+//   source: path.join(CSS_TOKENS_DIR, 'font-family.json'),
+//   varName: 'fontFamily',
+// })
 
 saveAsJs({
   destination: path.join(DIST_DIR, 'js/gap.js'),

@@ -1,0 +1,17 @@
+{
+  "source": [
+    "properties/font/*.json"
+  ],
+  "platforms": {
+    "js": {
+      "transformGroup": "js",
+      "buildPath": "dist/js/",
+      "files": [
+        {
+          "destination": "tailwind-font-family-vars.js",
+          "format": "js/tailwind-font-family"
+        }
+      ]
+    }
+  }
+}
