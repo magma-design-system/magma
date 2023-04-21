@@ -25,7 +25,6 @@ Handlebars.registerHelper('ifEquals', (arg1, arg2, options) => {
 StyleDictionary.registerFormat({
   name: 'js/tailwind-colors',
   formatter: ({ dictionary, platform }: FormatterArguments) => {
-    console.log(JSON.stringify(dictionary.properties, null, 2))
     return template({
       properties: dictionary.properties,
       date: new Date().toUTCString(),

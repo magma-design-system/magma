@@ -7,17 +7,11 @@ Generated at {{ date }}
 const fontFamily = {
 {{#each properties as | fonts |}}
   {{#each fonts as | groups |}}
-    {{#each groups as | fontFamily |}}
-      {{#each fontFamily as | names |}}
-      {{#if names.value }}
-  "{{@../../key}}": [
-        {{#each names.value as | fontName |}}
-    "{{getSafeFontName fontName }}",
-        {{/each}}
-  ],
-      {{/if}}
-      {{/each}}
+  "{{@key}}": [
+    {{#each groups.fontFamily.value}}
+    "{{ getSafeFontName this }}",
     {{/each}}
+  ],
   {{/each}}
 {{/each}}
 }

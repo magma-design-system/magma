@@ -7,21 +7,15 @@ Generated at {{ date }}
 const fontFamily = {
 {{#each properties as | fonts |}}
   {{#each fonts as | groups |}}
-    {{#each groups as | fontFamily |}}
-      {{#each fontFamily as | variants |}}
-  "{{@../../key}}-{{@key}}":
-        {{#each variants as | fontStyle |}}
-          {{#if fontStyle.value }}
-            {{#ifEquals @key 'fontSize' }}
-    [ "{{fontStyle.value}}", {
-            {{/ifEquals}}
-      {{#ifEquals @key 'color'}}
-        "{{@key}}": "{{fontStyle.value}}",
-      {{/ifEquals}}
-          {{/if}}
-        {{/each}}
-    }]
+    {{#each groups.variants as | variants |}}
+    "{{@../key}}-{{@key}}": ['{{variants.fontSize.value}}', {
+      {{#each variants as | rules |}}
+        {{#ifEquals @key 'fontSize'}}
+        {{else}}
+      {{@key}}: '{{rules.value}}',
+        {{/ifEquals}}
       {{/each}}
+    }],
     {{/each}}
   {{/each}}
 {{/each}}
