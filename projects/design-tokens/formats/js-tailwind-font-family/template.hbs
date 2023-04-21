@@ -6,8 +6,8 @@ Generated at {{ date }}
 
 const fontFamily = {
 {{#each properties as | fonts |}}
-  {{#each fonts as | p |}}
-    {{#each p as | fontFamily |}}
+  {{#each fonts as | groups |}}
+    {{#each groups as | fontFamily |}}
       {{#each fontFamily as | names |}}
       {{#if names.value }}
   "{{@../../key}}": [

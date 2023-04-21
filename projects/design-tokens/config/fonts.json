@@ -8,8 +8,11 @@
       "buildPath": "dist/js/",
       "files": [
         {
-          "destination": "tailwind-font-family-vars.js",
+          "destination": "tailwind-font-family.js",
           "format": "js/tailwind-font-family"
+        },{
+          "destination": "tailwind-font-size.js",
+          "format": "js/tailwind-font-size"
         }
       ]
     }

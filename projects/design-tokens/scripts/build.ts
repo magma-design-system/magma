@@ -9,6 +9,7 @@ import StyleDictionary from 'style-dictionary/types'
 import jsModule from '../formats/js/js'
 import jsModuleTailwindColors from '../formats/js-tailwind-colors/js-tailwind-colors'
 import jsTailwindFontFamily from '../formats/js-tailwind-font-family/js-tailwind-font-family'
+import jsTailwindFontSize from '../formats/js-tailwind-font-size/js-tailwind-font-size'
 import dartColors from '../formats/dart-colors/dart-colors'
 import cssVarsRgb from '../formats/css-vars-rgb/css-vars-rgb'
 import cssVarsHex from '../formats/css-vars-hex/css-vars-hex'
@@ -23,7 +24,6 @@ let StyleDictionaryColors: StyleDictionary.Core,
   StyleDictionaryBrand: StyleDictionary.Core,
   StyleDictionaryBrandSynbee: StyleDictionary.Core,
   StyleDictionaryDefault: StyleDictionary.Core,
-  StyleDictionaryFontFamily: StyleDictionary.Core,
   StyleDictionaryLabel: StyleDictionary.Core,
   StyleDictionaryStatus: StyleDictionary.Core,
   StyleDictionarySynbeeV1: StyleDictionary.Core,
@@ -60,7 +60,8 @@ StyleDictionarySynbeeV1 = cssVarsHex.extend('./config/generated/synbee-v1.json')
 StyleDictionarySynbeeV1 = cssVarsRgb.extend('./config/generated/synbee-v1.json')
 StyleDictionarySynbeeV1.buildAllPlatforms()
 
-StyleDictionaryFontFamily = jsTailwindFontFamily.extend('./config/font-family.json')
+let StyleDictionaryFontFamily: StyleDictionary.Core = jsTailwindFontFamily.extend('./config/fonts.json')
+StyleDictionaryFontFamily = jsTailwindFontSize.extend('./config/fonts.json')
 StyleDictionaryFontFamily.buildAllPlatforms()
 
 const saveAsJs = ({ source, varName, destination }: { source: string, varName: string, destination: string }) => {
