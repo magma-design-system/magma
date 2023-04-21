@@ -23,7 +23,7 @@ Handlebars.registerHelper('ifEquals', (arg1, arg2, options) => {
 })
 
 StyleDictionary.registerFormat({
-  name: 'js/module-tailwind-config',
+  name: 'js/module-tailwind-colors',
   formatter: ({ dictionary, platform }: FormatterArguments) => {
     return template({
       properties: dictionary.properties,

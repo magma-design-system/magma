@@ -71,6 +71,11 @@ module.exports = {
         'sharp-sm': '0 0 1px 1px rgba(0, 0, 0, 0.06), 0 1px 2px 0 rgba(0, 0, 0, 0.05)',
       },
       fontSize: {
+        'info-option': ['1.5rem', {
+          lineHeight: '2rem',
+          letterSpacing: '-0.01em',
+          fontWeight: '500',
+        }],
         xxs: '0.625rem',
       },
       gap: {

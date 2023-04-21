@@ -7,7 +7,7 @@ import { readFile, writeFile } from 'fs/promises'
 import { logFileActionDone } from '../../../scripts/log'
 
 import jsModule from '../formats/js-module/js-module'
-import jsModuleTailwindConfig from '../formats/js-module-tailwind-config/js-module-tailwind-config'
+import jsModuleTailwindColors from '../formats/js-module-tailwind-colors/js-module-tailwind-colors'
 import dartColors from '../formats/dart-colors/dart-colors'
 import cssVarsRgb from '../formats/css-vars-rgb/css-vars-rgb'
 import cssVarsHex from '../formats/css-vars-hex/css-vars-hex'
@@ -20,7 +20,7 @@ const beautifyConfig = {
 
 let StyleDictionary, StyleDictionaryDefault, StyleDictionaryBrand, StyleDictionaryBrandSynbee, StyleDictionarySynbeeV1, StyleDictionaryLabel, StyleDictionaryStatus, StyleDictionaryTones
 StyleDictionary = jsModule.extend('./config.json')
-StyleDictionary = jsModuleTailwindConfig.extend('./config.json')
+StyleDictionary = jsModuleTailwindColors.extend('./config.json')
 StyleDictionary = dartColors.extend('./config.json')
 StyleDictionary = cssVarsRgb.extend('./config.json')
 StyleDictionary = cssVarsHex.extend('./config.json')

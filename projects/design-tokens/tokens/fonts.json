@@ -16,12 +16,6 @@
           "fontWeight": 900,
           "letterSpacing": "-0.4px",
           "lineHeight": "48px"
-        },
-        "media": {
-          "mobile": {
-            "fontSize": "42px",
-            "lineHeight": "42px"
-          }
         }
       },
       "h2": {
