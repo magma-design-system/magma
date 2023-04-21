@@ -4,11 +4,11 @@ Do not edit directly
 Generated at {{ date }}
 */
 
-const fontFamily = {
+const fontSize = {
 {{#each properties as | fonts |}}
   {{#each fonts as | groups |}}
     {{#each groups.variants as | variants |}}
-    "{{@../key}}-{{@key}}": ['{{variants.fontSize.value}}', {
+    "size-{{@../key}}-{{@key}}": ['{{variants.fontSize.value}}', {
       {{#each variants as | rules |}}
         {{#ifEquals @key 'fontSize'}}
         {{else}}
@@ -22,5 +22,5 @@ const fontFamily = {
 }
 
 module.exports = {
-  fontFamily,
+  fontSize,
 }

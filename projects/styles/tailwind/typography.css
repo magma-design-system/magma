@@ -29,8 +29,9 @@
   .text-title-h4 {
     @apply
       antialiased
-      font-bold
       font-title
+      text-size-title-h4
+      font-bold
       text-2xl
       tracking-tight;
   }
