@@ -18,6 +18,12 @@ const pixelToEm = (value: string, defaultPixelSize = 16): string => {
   return Number((pixels / defaultPixelSize).toFixed(4)).toString() + 'em'
 }
 
+const pixelToScale = (valueA: string, valueB: string): string => {
+  const valueNumberA = Number(valueA.replace('px', ''))
+  const valueNumberB = Number(valueB.replace('px', ''))
+  return Number((valueNumberA / valueNumberB).toFixed(4)).toString()
+}
+
 const ifTailwindFontSizeProp = (property: string, options: HelperOptions) => {
   switch (property) {
   case 'fontSize': {
@@ -56,5 +62,6 @@ export {
   ifEquals,
   ifTailwindFontSizeProp,
   safeString,
+  pixelToScale,
   tailwindFontSize,
 }
