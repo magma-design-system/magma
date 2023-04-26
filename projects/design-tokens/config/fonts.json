@@ -15,6 +15,16 @@
           "format": "js/tailwind-font-size"
         }
       ]
+    },
+    "flutter": {
+      "transformGroup": "flutter",
+      "buildPath": "dist/flutter/",
+      "files": [
+        {
+          "destination": "flutter-font.dart",
+          "format": "flutter/font"
+        }
+      ]
     }
   }
 }

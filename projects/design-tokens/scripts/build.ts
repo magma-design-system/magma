@@ -14,6 +14,7 @@ import dartColors from '../formats/dart-colors/dart-colors'
 import cssVarsRgb from '../formats/css-vars-rgb/css-vars-rgb'
 import cssVarsHex from '../formats/css-vars-hex/css-vars-hex'
 import jsonCoolors from '../formats/json-coolors/json-coolors'
+import flutterFont from '../formats/flutter-font/flutter-font'
 
 const beautifyConfig = {
   indent_size: 2,
@@ -62,6 +63,7 @@ StyleDictionarySynbeeV1.buildAllPlatforms()
 
 let StyleDictionaryFontFamily: StyleDictionary.Core = jsTailwindFontFamily.extend('./config/fonts.json')
 StyleDictionaryFontFamily = jsTailwindFontSize.extend('./config/fonts.json')
+StyleDictionaryFontFamily = flutterFont.extend('./config/fonts.json')
 StyleDictionaryFontFamily.buildAllPlatforms()
 
 const saveAsJs = ({ source, varName, destination }: { source: string, varName: string, destination: string }) => {
