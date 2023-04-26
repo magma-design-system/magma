@@ -1,0 +1,15 @@
+:root {
+
+  /* TODO: move it into design tokens */
+  --magma-theme-default-01-primary-action: var(--brand-maggioli-03);
+  --magma-theme-default-01-primary-brand: var(--magma-theme-default-01-primary-action);
+  --magma-theme-default-01-primary-icon: var(--magma-theme-default-01-primary-action);
+  --magma-theme-default-02-primary-text: var(--tone-neutral-01);
+  --magma-theme-default-03-secondary-action: var(--tone-neutral-03);
+  --magma-theme-default-03-secondary-icon: var(--magma-theme-default-03-secondary-action);
+  --magma-theme-default-03-secondary-text: var(--magma-theme-default-03-secondary-action);
+  --magma-theme-default-04-primary-decoration: var(--tone-neutral-06);
+  --magma-theme-default-05-secondary-decoration: var(--tone-neutral-08);
+  --magma-theme-default-06-secondary-background: var(--tone-neutral-10);
+  --magma-theme-default-07-primary-background: var(--tone-neutral);
+}
