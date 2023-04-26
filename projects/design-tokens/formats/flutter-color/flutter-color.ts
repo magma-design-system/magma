@@ -40,7 +40,7 @@ Handlebars.registerHelper('rgbChannel', value => {
 })
 
 StyleDictionary.registerFormat({
-  name: 'dart/colors',
+  name: 'flutter/color',
   formatter: ({ dictionary, platform }: FormatterArguments) => {
     return template({
       properties: dictionary.properties,

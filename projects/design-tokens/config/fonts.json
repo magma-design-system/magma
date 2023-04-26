@@ -21,7 +21,7 @@
       "buildPath": "dist/flutter/",
       "files": [
         {
-          "destination": "flutter-font.dart",
+          "destination": "fonts.dart",
           "format": "flutter/font"
         }
       ]

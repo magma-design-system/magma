@@ -6,15 +6,15 @@ import { DIST_DIR, CSS_TOKENS_DIR } from './meta'
 import { readFile, writeFile } from 'fs/promises'
 import { logFileActionDone } from '../../../scripts/log'
 import StyleDictionary from 'style-dictionary/types'
+import cssVarsHex from '../formats/css-vars-hex/css-vars-hex'
+import cssVarsRgb from '../formats/css-vars-rgb/css-vars-rgb'
+import flutterColor from '../formats/flutter-color/flutter-color'
+import flutterFont from '../formats/flutter-font/flutter-font'
 import jsModule from '../formats/js/js'
 import jsModuleTailwindColors from '../formats/js-tailwind-colors/js-tailwind-colors'
 import jsTailwindFontFamily from '../formats/js-tailwind-font-family/js-tailwind-font-family'
 import jsTailwindFontSize from '../formats/js-tailwind-font-size/js-tailwind-font-size'
-import dartColors from '../formats/dart-colors/dart-colors'
-import cssVarsRgb from '../formats/css-vars-rgb/css-vars-rgb'
-import cssVarsHex from '../formats/css-vars-hex/css-vars-hex'
 import jsonCoolors from '../formats/json-coolors/json-coolors'
-import flutterFont from '../formats/flutter-font/flutter-font'
 
 const beautifyConfig = {
   indent_size: 2,
@@ -32,7 +32,7 @@ let StyleDictionaryColors: StyleDictionary.Core,
 
 StyleDictionaryColors = jsModule.extend('./config/colors.json')
 StyleDictionaryColors = jsModuleTailwindColors.extend('./config/colors.json')
-StyleDictionaryColors = dartColors.extend('./config/colors.json')
+StyleDictionaryColors = flutterColor.extend('./config/colors.json')
 StyleDictionaryColors = cssVarsRgb.extend('./config/colors.json')
 StyleDictionaryColors = cssVarsHex.extend('./config/colors.json')
 StyleDictionaryColors = jsonCoolors.extend('./config/colors.json')
@@ -42,7 +42,7 @@ StyleDictionaryTones = cssVarsHex.extend('./config/generated/tones.json')
 StyleDictionaryTones = cssVarsRgb.extend('./config/generated/tones.json')
 StyleDictionaryTones.buildAllPlatforms()
 StyleDictionaryDefault = cssVarsHex.extend('./config/generated/default.json')
-StyleDictionaryDefault = dartColors.extend('./config/generated/default.json')
+StyleDictionaryDefault = flutterColor.extend('./config/generated/default.json')
 StyleDictionaryDefault = cssVarsRgb.extend('./config/generated/default.json')
 StyleDictionaryDefault.buildAllPlatforms()
 StyleDictionaryBrand = cssVarsHex.extend('./config/generated/brand.json')

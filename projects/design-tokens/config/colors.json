@@ -23,7 +23,7 @@
       "files": [
         {
           "destination": "colors.dart",
-          "format": "dart/colors"
+          "format": "flutter/color"
         }
       ]
     },
