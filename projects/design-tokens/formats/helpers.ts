@@ -1,7 +1,7 @@
 import Handlebars, { HelperOptions, SafeString } from 'handlebars'
 
-const ifEquals = (arg1: string, arg2: string, options: HelperOptions) => {
-  return (arg1 === arg2) ? options.fn(this) : options.inverse(this)
+const ifEquals = (valueA: string, valueB: string, options: HelperOptions) => {
+  return (valueA === valueB) ? options.fn(this) : options.inverse(this)
 }
 
 const safeString = (value: string): SafeString => {
