@@ -9,7 +9,7 @@ const fontFamily = {
   {{#each fonts as | groups |}}
   "{{@key}}": [
     {{#each groups.fontFamily.value}}
-    "{{ getSafeFontName this }}",
+    "{{ safeString this }}",
     {{/each}}
   ],
   {{/each}}

@@ -3,8 +3,6 @@ import StyleDictionary from 'style-dictionary'
 import fs from 'fs'
 import path from 'path'
 import { FormatterArguments } from 'style-dictionary/types/Format'
-// import { sortKeys } from '../lib'
-
 import { tailwindFontSize, ifEquals, safeString, ifTailwindFontSizeProp } from '../helpers'
 
 const templatePath = path.resolve(__dirname, './template.hbs')

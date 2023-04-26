@@ -1,4 +1,50 @@
 import Handlebars, { HelperOptions, SafeString } from 'handlebars'
+import hexRgb from 'hex-rgb'
+
+const humanCase = (separator = '-', options: HelperOptions) => {
+  if (typeof options.fn(this) !== 'string') {
+    return options.fn(this)
+  }
+  const value = options.fn(this)
+  const arr = value.split(separator)
+
+  for (let i = 0; i < arr.length; i ++) {
+    arr[i] = arr[i].charAt(0).toUpperCase() + arr[i].slice(1)
+  }
+
+  return arr.join(' ')
+}
+
+const firstArrayElement = (value: string) => {
+  return new Handlebars.SafeString((value.replace(/"|'/g, '').split(',')[0]))
+}
+
+const pascalCase = (options: HelperOptions) => {
+  if (typeof options.fn(this) !== 'string') {
+    return options.fn(this)
+  }
+  const value = options.fn(this)
+  const arr = value.split('-')
+
+  for (let i = 0; i < arr.length; i ++) {
+    if (i === 0) {
+      arr[i] = arr[i].charAt(0).toLowerCase() + arr[i].slice(1)
+    } else {
+      arr[i] = arr[i].charAt(0).toUpperCase() + arr[i].slice(1)
+    }
+  }
+
+  return arr.join('')
+}
+
+const rgbChannel = (value: string) => {
+  const color = hexRgb(value)
+  return `${color.red}, ${color.green}, ${color.blue}`
+}
+
+const leadZero = (value: string) => {
+  return Number(value) < 10 ? `0${value}` : value
+}
 
 const ifEquals = (valueA: string, valueB: string, options: HelperOptions) => {
   return (valueA === valueB) ? options.fn(this) : options.inverse(this)
@@ -59,9 +105,14 @@ const tailwindFontSize = (property: string, value: string): string => {
 }
 
 export {
+  firstArrayElement,
+  humanCase,
   ifEquals,
   ifTailwindFontSizeProp,
-  safeString,
+  leadZero,
+  pascalCase,
   pixelToScale,
+  rgbChannel,
+  safeString,
   tailwindFontSize,
 }
