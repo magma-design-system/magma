@@ -19,7 +19,7 @@
 
     "dart": {
       "transformGroup": "js",
-      "buildPath": "dist/dart/",
+      "buildPath": "dist/flutter/",
       "files": [
         {
           "destination": "colors.dart",
