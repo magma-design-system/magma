@@ -44,7 +44,7 @@ Handlebars.registerHelper('getSafeFontName', value => {
 })
 
 Handlebars.registerHelper('getFirstFont', value => {
-  return new Handlebars.SafeString((value.replace('"', '').split(',')[0]))
+  return new Handlebars.SafeString((value.replace(/"|'/g, '').split(',')[0]))
 })
 
 Handlebars.registerHelper('getArrayFontName', value => {
