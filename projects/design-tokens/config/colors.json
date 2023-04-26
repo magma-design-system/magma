@@ -1,6 +1,7 @@
 {
   "source": [
-    "properties/color/base.json"
+    "properties/color/generated/base.json",
+    "properties/color/themes.json"
   ],
   "platforms": {
     "js": {

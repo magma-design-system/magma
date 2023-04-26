@@ -8,7 +8,7 @@ import Handlebars from 'handlebars'
 
 const TOKENS_DIR = resolve('./tokens')
 const PROJECT_PATH = resolve(dirname(fileURLToPath(import.meta.url)), './')
-const COLOR_PATH = `${PROJECT_PATH}/properties/color`
+const COLOR_PATH = `${PROJECT_PATH}/properties/color/generated`
 const CONFIG_PATH = `${PROJECT_PATH}/config/generated`
 const TEMPLATES_PATH = `${PROJECT_PATH}/template`
 

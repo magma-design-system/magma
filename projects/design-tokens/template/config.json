@@ -1,6 +1,6 @@
 {
   "source": [
-    "properties/color/{{fileName}}.json"
+    "properties/color/generated/{{fileName}}.json"
   ],
   "platforms": {
     "css": {
