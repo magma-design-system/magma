@@ -76,20 +76,12 @@ const pixelToScale = (valueA: string, valueB: string): string => {
 }
 
 const ifTailwindFontSizeProp = (property: string, options: HelperOptions) => {
-  switch (property) {
-  case 'fontSize': {
-    return options.fn(this)
-  }
-  case 'lineHeight': {
-    return options.fn(this)
-  }
-  case 'letterSpacing': {
-    return options.fn(this)
-  }
-  default: {
-    return options.inverse(this)
-  }
-  }
+  const attributes = [
+    'fontSize',
+    'letterSpacing',
+    'lineHeight',
+  ]
+  return attributes.includes(property) ? options.fn(this) : options.inverse(this)
 }
 
 const tailwindFontSize = (property: string, value: string): string => {
