@@ -21,11 +21,13 @@ class TextStyles {
       fontFamily: "{{getFirstFont groups.fontFamily.value}}",
       fontFamilyFallBack: <String>[{{getArrayFontName groups.fontFamily.value}}],
       {{#each variants as | rules |}}
-      {{#ifEquals @key 'lineHeight'}}
+      {{#ifDartTextStyleProp @key}}
+        {{#ifEquals @key 'lineHeight'}}
       height: {{rules.value}}
-      {{else}}
+        {{else}}
       {{@key}}: {{ rules.value}}
-      {{/ifEquals}}
+        {{/ifEquals}}
+      {{/ifDartTextStyleProp}}
       {{/each}}
   );
     {{/each}}

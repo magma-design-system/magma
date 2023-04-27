@@ -23,7 +23,7 @@
         "content/flutter/literal",
         "asset/flutter/literal",
         "font/flutter/literal",
-        "flutter/ToDouble",
+        "flutter/toDouble",
         "flutter/fontWeight"
       ],
       "buildPath": "dist/flutter/",

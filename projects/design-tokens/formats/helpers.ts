@@ -109,40 +109,20 @@ const tailwindFontSize = (property: string, value: string): string => {
   }
 }
 
-const dartTextStyleAttribute = (property: string): string => {
-  switch (property) {
-  case 'lineHeight': {
-    return 'height'
-  }
-  default: {
-    return property
-  }
-  }
-}
-
-const dartTextStyle = (property: string, value: string): string|number => {
-  switch (property) {
-  case 'fontSize': {
-    return Number(stripText(value, 'px'))
-  }
-  case 'lineHeight': {
-    return Number(stripText(value, 'px'))
-  }
-  case 'fontWeight': {
-    return `FontWeight.w${value}`
-  }
-  case 'letterSpacing': {
-    return Number(stripText(value, 'px'))
-  }
-  default: {
-    return value
-  }
-  }
+const ifDartTextStyleProp = (property: string, options: HelperOptions) => {
+  const attributes = [
+    'fontFamily',
+    'fontFamilyFallBack',
+    'fontSize',
+    'letterSpacing',
+    'lineHeight',
+    'fontWeight',
+  ]
+  return attributes.includes(property) ? options.fn(this) : options.inverse(this)
 }
 
 export {
-  dartTextStyle,
-  dartTextStyleAttribute,
+  ifDartTextStyleProp,
   firstArrayElement,
   humanCase,
   ifEquals,
