@@ -1,0 +1,24 @@
+{
+  "font": {
+    "code": {
+      "fontFamily": {
+        "value": [
+          "'Roboto Mono'",
+          "monospace"
+        ]
+      },
+      "variants": {
+        "snippet": {
+          "fontSize": { "value": "16px" },
+          "fontWeight": { "value": 400 },
+          "lineHeight": { "value": "24px" }
+        },
+        "hack": {
+          "fontSize": { "value": "14px" },
+          "fontWeight": { "value": 400 },
+          "lineHeight": { "value": "24px" }
+        }
+      }
+    }
+  }
+}

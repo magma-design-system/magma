@@ -1,6 +1,6 @@
 {
   "source": [
-    "properties/font/*.json"
+    "properties/font/default.json"
   ],
   "platforms": {
     "js": {

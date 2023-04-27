@@ -2,7 +2,7 @@
 const beautify = require('js-beautify').js
 import chalk from 'chalk'
 import path from 'path'
-import { DIST_DIR, CSS_TOKENS_DIR } from './meta'
+import { DIST_DIR, TOKENS_DIR } from './meta'
 import { readFile, writeFile } from 'fs/promises'
 import { logFileActionDone } from '../../../scripts/log'
 import StyleDictionary from 'style-dictionary/types'
@@ -98,25 +98,19 @@ const saveAsJs = ({ source, varName, destination }: { source: string, varName: s
 
 saveAsJs({
   destination: path.join(DIST_DIR, 'js/ease.js'),
-  source: path.join(CSS_TOKENS_DIR, 'ease.json'),
+  source: path.join(TOKENS_DIR, 'css/ease.json'),
   varName: 'ease',
 })
 
 
-// saveAsJs({
-//   destination: path.join(DIST_DIR, 'js/font-family.js'),
-//   source: path.join(CSS_TOKENS_DIR, 'font-family.json'),
-//   varName: 'fontFamily',
-// })
-
 saveAsJs({
   destination: path.join(DIST_DIR, 'js/gap.js'),
-  source: path.join(CSS_TOKENS_DIR, 'gap.json'),
+  source: path.join(TOKENS_DIR, 'css/gap.json'),
   varName: 'gap',
 })
 
 saveAsJs({
   destination: path.join(DIST_DIR, 'js/media.js'),
-  source: path.join(CSS_TOKENS_DIR, 'media.json'),
+  source: path.join(TOKENS_DIR, 'css/media.json'),
   varName: 'media',
 })

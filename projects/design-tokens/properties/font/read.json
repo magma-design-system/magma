@@ -1,0 +1,31 @@
+{
+  "font": {
+    "read": {
+      "fontFamily": {
+        "value": [
+          "'Merriweather'",
+          "Times",
+          "'Times New Roman'",
+          "serif"
+        ]
+      },
+      "variants": {
+        "paragraph": {
+          "fontSize": { "value": "20px" },
+          "fontWeight": { "value": 300 },
+          "lineHeight": { "value": "32px" }
+        },
+        "detail": {
+          "fontSize": { "value": "16px" },
+          "fontWeight": { "value": 300 },
+          "lineHeight": { "value": "24px" }
+        },
+        "caption": {
+          "fontSize": { "value": "14px" },
+          "fontWeight": { "value": 400 },
+          "lineHeight": { "value": "20px" }
+        }
+      }
+    }
+  }
+}

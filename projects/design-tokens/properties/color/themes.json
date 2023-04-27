@@ -1,24 +1,26 @@
 {
   "color": {
-    "theme-default": {
-      "light": {
-        "01-primary-action": {
-          "comment": "color.brand.maggioli.light.3",
-          "value": "#000fff"
+    "theme": {
+      "default": {
+        "light": {
+          "01-primary-action": {
+            "comment": "color.brand.maggioli.light.3",
+            "value": "#000fff"
+          },
+          "01-primary-brand": {
+            "comment": "color.theme-default.light.01-primary-action",
+            "value": "#000fff"
+          }
         },
-        "01-primary-brand": {
-          "comment": "color.theme-default.light.01-primary-action",
-          "value": "#000fff"
-        }
-      },
-      "dark": {
-        "01-primary-action": {
-          "comment": "color.brand.maggioli.dark.3",
-          "value": "#000fff"
-        },
-        "01-primary-brand": {
-          "comment": "color.theme-default.dark.01-primary-action",
-          "value": "#000fff"
+        "dark": {
+          "01-primary-action": {
+            "comment": "color.brand.maggioli.dark.3",
+            "value": "#000fff"
+          },
+          "01-primary-brand": {
+            "comment": "color.theme-default.dark.01-primary-action",
+            "value": "#000fff"
+          }
         }
       }
     }
