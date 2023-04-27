@@ -54,6 +54,10 @@ const safeString = (value: string): SafeString => {
   return new Handlebars.SafeString(value)
 }
 
+const stripText = (value: string, stripReplacer: string): string => {
+  return value.replace(stripReplacer, '')
+}
+
 const pixelToRem = (value: string, defaultPixelSize = 16): string => {
   const pixels = Number(value.replace('px', ''))
   return Number((pixels / defaultPixelSize).toFixed(4)).toString() + 'rem'
@@ -104,7 +108,40 @@ const tailwindFontSize = (property: string, value: string): string => {
   }
 }
 
+const dartTextStyleAttribute = (property: string): string => {
+  switch (property) {
+  case 'lineHeight': {
+    return 'height'
+  }
+  default: {
+    return property
+  }
+  }
+}
+
+const dartTextStyle = (property: string, value: string): string|number => {
+  switch (property) {
+  case 'fontSize': {
+    return Number(stripText(value, 'px'))
+  }
+  case 'lineHeight': {
+    return Number(stripText(value, 'px'))
+  }
+  case 'fontWeight': {
+    return `FontWeight.w${value}`
+  }
+  case 'letterSpacing': {
+    return Number(stripText(value, 'px'))
+  }
+  default: {
+    return value
+  }
+  }
+}
+
 export {
+  dartTextStyle,
+  dartTextStyleAttribute,
   firstArrayElement,
   humanCase,
   ifEquals,
@@ -114,5 +151,6 @@ export {
   pixelToScale,
   rgbChannel,
   safeString,
+  stripText,
   tailwindFontSize,
 }

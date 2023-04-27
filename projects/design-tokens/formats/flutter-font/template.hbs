@@ -21,7 +21,7 @@ class TextStyles {
       fontFamily: "{{getFirstFont groups.fontFamily.value}}",
       fontFamilyFallBack: <String>[{{getArrayFontName groups.fontFamily.value}}],
       {{#each variants as | rules |}}
-      {{@key}}: {{safeString rules.value}},
+      {{@key}}: {{dartTextStyle @key rules.value}}
       {{/each}}
   );
     {{/each}}

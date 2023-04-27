@@ -1,6 +1,11 @@
 {
   "source": [
-    "properties/color/generated/{{fileName}}.json"
+    {{#ifEquals fileName 'default'}}
+    "properties/color/generated/{{../fileName}}.json",
+    "properties/color/themes.json"
+    {{else}}
+    "properties/color/generated/{{../fileName}}.json"
+    {{/ifEquals}}
   ],
   "platforms": {
     "css": {

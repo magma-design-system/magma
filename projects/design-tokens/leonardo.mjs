@@ -17,6 +17,10 @@ const { colors, colorspace, ratios, smooth } = JSON.parse(colorsRawData)
 
 const output = 'HEX'
 
+const ifEquals = (valueA, valueB, options) => {
+  return (valueA === valueB) ? options.fn(this) : options.inverse(this)
+}
+
 const getBackgroundColor = (colors, name) => {
   let filteredColor = null
   colors.forEach(color => {
@@ -84,7 +88,8 @@ const formatColor = (theme, colorName, colorValue, scaffold, seed, colorMode) =>
 
 const exportPalettes = async palettes => {
 
-  const configTemplate = await readFile(resolve(`${TEMPLATES_PATH}/config.json`))
+  const configTemplate = await readFile(resolve(`${TEMPLATES_PATH}/config.hbs`))
+  Handlebars.registerHelper('ifEquals', ifEquals)
   const template = Handlebars.compile(configTemplate.toString())
 
   for (const palette of Object.keys(palettes)) {
