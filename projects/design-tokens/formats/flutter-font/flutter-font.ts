@@ -16,7 +16,31 @@ Handlebars.registerHelper('rgbChannel', rgbChannel)
 Handlebars.registerHelper('safeString', safeString)
 Handlebars.registerHelper('dartTextStyle', dartTextStyle)
 Handlebars.registerHelper('getArrayFontName', value => {
+  if (Array.isArray(value)) return value
   return new Handlebars.SafeString((value).replaceAll('\'', '').replaceAll(',', '","'))
+})
+
+StyleDictionary.registerTransform({
+  name: 'flutter/ToDouble',
+  type: 'value',
+  matcher: token => {
+    const attribute = ['lineHeight', 'fontSize', 'letterSpacing']
+    return attribute.includes(token.attributes?.state ?? '')
+  },
+  transformer: function (token) {
+    return parseFloat(token.original.value)
+  },
+})
+
+StyleDictionary.registerTransform({
+  name: 'flutter/fontWeight',
+  type: 'value',
+  matcher: token => {
+    return token.attributes?.state === 'fontWeight'
+  },
+  transformer: function (token) {
+    return `FontWeight.w${token.original.value}`
+  },
 })
 
 StyleDictionary.registerFormat({
@@ -30,4 +54,17 @@ StyleDictionary.registerFormat({
   },
 })
 
+// const format = {
+//   name: 'flutter/font',
+//   formatter: ({ dictionary, platform }: FormatterArguments) => {
+//     fs.writeFile('temp', JSON.stringify(dictionary.properties, null, 2), error => console.log(error))
+//     return template({
+//       properties: dictionary.properties,
+//       date: new Date().toUTCString(),
+//       options: platform,
+//     })
+//   },
+// }
+
+// export default format
 export default StyleDictionary

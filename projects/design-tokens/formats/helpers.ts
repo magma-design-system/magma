@@ -16,6 +16,7 @@ const humanCase = (separator = '-', options: HelperOptions) => {
 }
 
 const firstArrayElement = (value: string) => {
+  if (Array.isArray(value)) return value[0]
   return new Handlebars.SafeString((value.replace(/"|'/g, '').split(',')[0]))
 }
 

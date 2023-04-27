@@ -17,7 +17,15 @@
       ]
     },
     "flutter": {
-      "transformGroup": "flutter",
+      "transforms": [
+        "attribute/cti",
+        "name/cti/camel",
+        "content/flutter/literal",
+        "asset/flutter/literal",
+        "font/flutter/literal",
+        "flutter/ToDouble",
+        "flutter/fontWeight"
+      ],
       "buildPath": "dist/flutter/",
       "files": [
         {
