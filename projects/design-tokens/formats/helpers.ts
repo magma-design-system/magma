@@ -114,9 +114,9 @@ const ifDartTextStyleProp = (property: string, options: HelperOptions) => {
 }
 
 export {
-  ifDartTextStyleProp,
   firstArrayElement,
   humanCase,
+  ifDartTextStyleProp,
   ifEquals,
   ifTailwindFontSizeProp,
   leadZero,
