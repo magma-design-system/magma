@@ -1,0 +1,29 @@
+{
+  "skipLibCheck": true,
+  "compilerOptions": {
+    "allowSyntheticDefaultImports": true,
+    "allowUnreachableCode": false,
+    "baseUrl": ".",
+    "declaration": false,
+    "experimentalDecorators": true,
+    "lib": ["ES2020", "DOM", "DOM.Iterable"],
+    "esModuleInterop": true,
+    "module": "esnext",
+    "moduleResolution": "node",
+    "noUnusedLocals": true,
+    "noUnusedParameters": true,
+    "resolveJsonModule": true,
+    "target": "ES2020",
+    "strictNullChecks": true
+  },
+  "include": [
+    "components",
+    "wrapper"
+  ],
+  "exclude": [
+    "components/**/dist",
+    "components/**/node_modules",
+    "wrapper/dist",
+    "wrapper/node_modules"
+  ]
+}
