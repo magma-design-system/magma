@@ -1,0 +1,155 @@
+{
+  "font": {
+    "title": {
+      "fontFamily": {
+        "value": [
+          "Roboto",
+          "-apple-system",
+          "BlinkMacSystemFont",
+          "'San Francisco'",
+          "'Segoe UI'",
+          "'Helvetica Neue'",
+          "sans-serif"
+        ]
+      },
+      "variants": {
+        "h1": {
+          "fontSize": { "value": "48px" },
+          "fontWeight": { "value": 900 },
+          "letterSpacing": { "value": "-0.4px" },
+          "lineHeight": { "value": "48px" }
+        },
+        "h2": {
+          "fontSize": { "value": "36px" },
+          "fontWeight": { "value": 900 },
+          "letterSpacing": { "value": "-0.4px" },
+          "lineHeight": { "value": "40px" }
+        },
+        "h3": {
+          "fontSize": { "value": "30px" },
+          "fontWeight": { "value": 900 },
+          "letterSpacing": { "value": "-0.4px" },
+          "lineHeight": { "value": "36px" }
+        },
+        "h4": {
+          "fontSize": { "value": "24px" },
+          "fontWeight": { "value": 700 },
+          "letterSpacing": { "value": "-0.4px" },
+          "lineHeight": { "value": "32px" }
+        },
+        "h5": {
+          "fontSize": { "value": "20px" },
+          "fontWeight": { "value": 700 },
+          "letterSpacing": { "value": "-0.4px" },
+          "lineHeight": { "value": "28px" }
+        },
+        "h6": {
+          "fontSize": { "value": "16px" },
+          "fontWeight": { "value": 700 },
+          "letterSpacing": { "value": "-0.4px" },
+          "lineHeight": { "value": "24px" }
+        },
+        "action": {
+          "fontSize": { "value": "14px" },
+          "fontWeight": { "value": 500 },
+          "lineHeight": { "value": "24px" }
+        }
+      }
+    },
+    "info": {
+      "fontFamily": {
+        "value": [
+          "Karla",
+          "-apple-system",
+          "BlinkMacSystemFont",
+          "'San Francisco'",
+          "'Segoe UI'",
+          "'Helvetica Neue'",
+          "sans-serif"
+        ]
+      },
+      "variants": {
+        "paragraph": {
+          "fontSize": { "value": "20px" },
+          "fontWeight": { "value": 400 },
+          "lineHeight": { "value": "32px" }
+        },
+        "detail": {
+          "fontSize": { "value": "16px" },
+          "fontWeight": { "value": 400 },
+          "lineHeight": { "value": "24px" }
+        },
+        "caption": {
+          "fontSize": { "value": "14px" },
+          "fontWeight": { "value": 400 },
+          "lineHeight": { "value": "20px" }
+        },
+        "label": {
+          "fontSize": { "value": "12px" },
+          "fontWeight": { "value": 700 },
+          "lineHeight": { "value": "16px" },
+          "textTransform": { "value": "uppercase" }
+        },
+        "option": {
+          "fontSize": { "value": "10px" },
+          "fontWeight": { "value": 700 },
+          "letterSpacing": { "value": "-0.4px" },
+          "lineHeight": { "value": "10px" },
+          "textTransform": { "value": "uppercase" }
+        },
+        "tip": {
+          "fontSize": { "value": "12px" },
+          "fontWeight": { "value": 400 },
+          "lineHeight": { "value": "16px" }
+        }
+      }
+    },
+    "read": {
+      "fontFamily": {
+        "value": [
+          "'Merriweather'",
+          "Times",
+          "'Times New Roman'",
+          "serif"
+        ]
+      },
+      "variants": {
+        "paragraph": {
+          "fontSize": { "value": "20px" },
+          "fontWeight": { "value": 300 },
+          "lineHeight": { "value": "32px" }
+        },
+        "detail": {
+          "fontSize": { "value": "16px" },
+          "fontWeight": { "value": 300 },
+          "lineHeight": { "value": "24px" }
+        },
+        "caption": {
+          "fontSize": { "value": "14px" },
+          "fontWeight": { "value": 400 },
+          "lineHeight": { "value": "20px" }
+        }
+      }
+    },
+    "code": {
+      "fontFamily": {
+        "value": [
+          "'Roboto Mono'",
+          "monospace"
+        ]
+      },
+      "variants": {
+        "snippet": {
+          "fontSize": { "value": "16px" },
+          "fontWeight": { "value": 400 },
+          "lineHeight": { "value": "24px" }
+        },
+        "hack": {
+          "fontSize": { "value": "14px" },
+          "fontWeight": { "value": 400 },
+          "lineHeight": { "value": "20px" }
+        }
+      }
+    }
+  }
+}

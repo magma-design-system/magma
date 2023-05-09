@@ -2,41 +2,69 @@
 const beautify = require('js-beautify').js
 import chalk from 'chalk'
 import path from 'path'
-import { DIST_DIR, CSS_TOKENS_DIR } from './meta'
+import { DIST_DIR, TOKENS_DIR } from './meta'
 import { readFile, writeFile } from 'fs/promises'
 import { logFileActionDone } from '../../../scripts/log'
+import StyleDictionary from 'style-dictionary/types'
+import cssVarsHex from '../formats/css-vars-hex/css-vars-hex'
+import cssVarsRgb from '../formats/css-vars-rgb/css-vars-rgb'
+import flutterColor from '../formats/flutter-color/flutter-color'
+import flutterFont from '../formats/flutter-font/flutter-font'
+import jsModule from '../formats/js/js'
+import jsModuleTailwindColors from '../formats/js-tailwind-colors/js-tailwind-colors'
+import jsTailwindFontFamily from '../formats/js-tailwind-font-family/js-tailwind-font-family'
+import jsTailwindFontSize from '../formats/js-tailwind-font-size/js-tailwind-font-size'
+import jsonCoolors from '../formats/json-coolors/json-coolors'
 
 const beautifyConfig = {
   indent_size: 2,
   space_in_empty_paren: true,
 }
 
-let StyleDictionary, StyleDictionaryBrand, StyleDictionaryBrandSynbee, StyleDictionarySynbeeV1, StyleDictionaryLabel, StyleDictionaryStatus, StyleDictionaryTones
-StyleDictionary = require('../formats/js-module/js-module').extend('./config.json')
-StyleDictionary = require('../formats/js-module-tailwind-config/js-module-tailwind-config').extend('./config.json')
-StyleDictionary = require('../formats/coolors/coolors').extend('./config.json')
-StyleDictionary = require('../formats/css-vars/css-vars').extend('./config.json')
-StyleDictionary = require('../formats/css-vars-rgb-channels/css-vars-rgb-channels').extend('./config.json')
-StyleDictionary.buildAllPlatforms()
-StyleDictionaryTones = require('../formats/css-vars/css-vars').extend('./config/tones.json')
-StyleDictionaryTones = require('../formats/css-vars-rgb-channels/css-vars-rgb-channels').extend('./config/tones.json')
-StyleDictionaryTones.buildAllPlatforms()
-StyleDictionaryBrand = require('../formats/css-vars/css-vars').extend('./config/brand.json')
-StyleDictionaryBrand = require('../formats/css-vars-rgb-channels/css-vars-rgb-channels').extend('./config/brand.json')
-StyleDictionaryBrand.buildAllPlatforms()
-StyleDictionaryBrandSynbee = require('../formats/css-vars/css-vars').extend('./config/brand-synbee.json')
-StyleDictionaryBrandSynbee = require('../formats/css-vars-rgb-channels/css-vars-rgb-channels').extend('./config/brand-synbee.json')
-StyleDictionaryBrandSynbee.buildAllPlatforms()
-StyleDictionaryLabel = require('../formats/css-vars/css-vars').extend('./config/label.json')
-StyleDictionaryLabel = require('../formats/css-vars-rgb-channels/css-vars-rgb-channels').extend('./config/label.json')
-StyleDictionaryLabel.buildAllPlatforms()
-StyleDictionaryStatus = require('../formats/css-vars/css-vars').extend('./config/status.json')
-StyleDictionaryStatus = require('../formats/css-vars-rgb-channels/css-vars-rgb-channels').extend('./config/status.json')
-StyleDictionaryStatus.buildAllPlatforms()
+let StyleDictionaryColors: StyleDictionary.Core,
+  StyleDictionaryBrand: StyleDictionary.Core,
+  StyleDictionaryBrandSynbee: StyleDictionary.Core,
+  StyleDictionaryDefault: StyleDictionary.Core,
+  StyleDictionaryLabel: StyleDictionary.Core,
+  StyleDictionaryStatus: StyleDictionary.Core,
+  StyleDictionarySynbeeV1: StyleDictionary.Core,
+  StyleDictionaryTones: StyleDictionary.Core
 
-StyleDictionarySynbeeV1 = require('../formats/css-vars/css-vars').extend('./config/synbee-v1.json')
-StyleDictionarySynbeeV1 = require('../formats/css-vars-rgb-channels/css-vars-rgb-channels').extend('./config/synbee-v1.json')
+StyleDictionaryColors = jsModule.extend('./config/colors.json')
+StyleDictionaryColors = jsModuleTailwindColors.extend('./config/colors.json')
+StyleDictionaryColors = flutterColor.extend('./config/colors.json')
+StyleDictionaryColors = cssVarsRgb.extend('./config/colors.json')
+StyleDictionaryColors = cssVarsHex.extend('./config/colors.json')
+StyleDictionaryColors = jsonCoolors.extend('./config/colors.json')
+StyleDictionaryColors.buildAllPlatforms()
+
+StyleDictionaryTones = cssVarsHex.extend('./config/generated/tones.json')
+StyleDictionaryTones = cssVarsRgb.extend('./config/generated/tones.json')
+StyleDictionaryTones.buildAllPlatforms()
+StyleDictionaryDefault = cssVarsHex.extend('./config/generated/default.json')
+StyleDictionaryDefault = flutterColor.extend('./config/generated/default.json')
+StyleDictionaryDefault = cssVarsRgb.extend('./config/generated/default.json')
+StyleDictionaryDefault.buildAllPlatforms()
+StyleDictionaryBrand = cssVarsHex.extend('./config/generated/brand.json')
+StyleDictionaryBrand = cssVarsRgb.extend('./config/generated/brand.json')
+StyleDictionaryBrand.buildAllPlatforms()
+StyleDictionaryBrandSynbee = cssVarsHex.extend('./config/generated/brand-synbee.json')
+StyleDictionaryBrandSynbee = cssVarsRgb.extend('./config/generated/brand-synbee.json')
+StyleDictionaryBrandSynbee.buildAllPlatforms()
+StyleDictionaryLabel = cssVarsHex.extend('./config/generated/label.json')
+StyleDictionaryLabel = cssVarsRgb.extend('./config/generated/label.json')
+StyleDictionaryLabel.buildAllPlatforms()
+StyleDictionaryStatus = cssVarsHex.extend('./config/generated/status.json')
+StyleDictionaryStatus = cssVarsRgb.extend('./config/generated/status.json')
+StyleDictionaryStatus.buildAllPlatforms()
+StyleDictionarySynbeeV1 = cssVarsHex.extend('./config/generated/synbee-v1.json')
+StyleDictionarySynbeeV1 = cssVarsRgb.extend('./config/generated/synbee-v1.json')
 StyleDictionarySynbeeV1.buildAllPlatforms()
+
+let StyleDictionaryFontFamily: StyleDictionary.Core = jsTailwindFontFamily.extend('./config/fonts.json')
+StyleDictionaryFontFamily = jsTailwindFontSize.extend('./config/fonts.json')
+StyleDictionaryFontFamily = flutterFont.extend('./config/fonts.json')
+StyleDictionaryFontFamily.buildAllPlatforms()
 
 const saveAsJs = ({ source, varName, destination }: { source: string, varName: string, destination: string }) => {
   readFile(path.resolve(__dirname, source))
@@ -70,25 +98,19 @@ const saveAsJs = ({ source, varName, destination }: { source: string, varName: s
 
 saveAsJs({
   destination: path.join(DIST_DIR, 'js/ease.js'),
-  source: path.join(CSS_TOKENS_DIR, 'ease.json'),
+  source: path.join(TOKENS_DIR, 'css/ease.json'),
   varName: 'ease',
 })
 
 
 saveAsJs({
-  destination: path.join(DIST_DIR, 'js/font-family.js'),
-  source: path.join(CSS_TOKENS_DIR, 'font-family.json'),
-  varName: 'fontFamily',
-})
-
-saveAsJs({
   destination: path.join(DIST_DIR, 'js/gap.js'),
-  source: path.join(CSS_TOKENS_DIR, 'gap.json'),
+  source: path.join(TOKENS_DIR, 'css/gap.json'),
   varName: 'gap',
 })
 
 saveAsJs({
   destination: path.join(DIST_DIR, 'js/media.js'),
-  source: path.join(CSS_TOKENS_DIR, 'media.json'),
+  source: path.join(TOKENS_DIR, 'css/media.json'),
   varName: 'media',
 })

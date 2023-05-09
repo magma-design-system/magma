@@ -4,8 +4,7 @@
       antialiased
       font-black
       font-title
-      text-5xl
-      tracking-tight;
+      text-size-title-h1;
   }
 
   .text-title-h2 {
@@ -13,8 +12,7 @@
       antialiased
       font-black
       font-title
-      text-4xl
-      tracking-tight;
+      text-size-title-h2;
   }
 
   .text-title-h3 {
@@ -22,8 +20,7 @@
       antialiased
       font-black
       font-title
-      text-3xl
-      tracking-tight;
+      text-size-title-h3;
   }
 
   .text-title-h4 {
@@ -31,8 +28,7 @@
       antialiased
       font-bold
       font-title
-      text-2xl
-      tracking-tight;
+      text-size-title-h4;
   }
 
   .text-title-h5 {
@@ -40,8 +36,7 @@
       antialiased
       font-bold
       font-title
-      text-xl
-      tracking-tight;
+      text-size-title-h5;
   }
 
   .text-title-h6 {
@@ -49,8 +44,7 @@
       antialiased
       font-bold
       font-title
-      text-base
-      tracking-tight;
+      text-size-title-h6;
   }
 
   .text-title-action {
@@ -58,30 +52,28 @@
       antialiased
       font-medium
       font-title
-      leading-relaxed
-      text-sm;
+      text-size-title-action;
   }
 
   .text-info-paragraph {
     @apply
       antialiased
       font-info
-      leading-8
-      text-xl;
+      text-size-info-paragraph;
   }
 
   .text-info-detail {
     @apply
       antialiased
       font-info
-      text-base;
+      text-size-info-detail;
   }
 
   .text-info-caption {
     @apply
       antialiased
       font-info
-      text-sm;
+      text-size-info-caption;
   }
 
   .text-info-label {
@@ -89,7 +81,7 @@
       antialiased
       font-bold
       font-info
-      text-xs
+      text-size-info-label
       uppercase;
   }
 
@@ -98,9 +90,7 @@
       antialiased
       font-bold
       font-info
-      leading-none
-      text-xxs
-      tracking-tight
+      text-size-info-option
       uppercase;
   }
 
@@ -108,7 +98,7 @@
     @apply
       antialiased
       font-info
-      text-xs;
+      text-size-info-tip;
   }
 
   .text-read-paragraph {
@@ -116,8 +106,7 @@
       antialiased
       font-light
       font-read
-      leading-8
-      text-xl;
+      text-size-read-paragraph;
   }
 
   .text-read-detail {
@@ -125,29 +114,27 @@
       antialiased
       font-light
       font-read
-      text-base;
+      text-size-read-detail;
   }
 
   .text-read-caption {
     @apply
       antialiased
       font-read
-      text-sm;
+      text-size-read-caption;
   }
 
   .text-code-snippet {
     @apply
       antialiased
       font-code
-      leading-relaxed
-      text-base;
+      text-size-code-snippet;
   }
 
   .text-code-hack {
     @apply
       antialiased
       font-code
-      leading-relaxed
-      text-sm;
+      text-size-code-hack;
   }
 }
