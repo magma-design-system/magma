@@ -72,7 +72,7 @@
         "paragraph": {
           "fontSize": { "value": "20px" },
           "fontWeight": { "value": 400 },
-          "lineHeight": { "value": "28px" }
+          "lineHeight": { "value": "32px" }
         },
         "detail": {
           "fontSize": { "value": "16px" },
@@ -100,7 +100,6 @@
         "tip": {
           "fontSize": { "value": "12px" },
           "fontWeight": { "value": 400 },
-          "letterSpacing": { "value": "-0.4px" },
           "lineHeight": { "value": "16px" }
         }
       }
@@ -148,7 +147,7 @@
         "hack": {
           "fontSize": { "value": "14px" },
           "fontWeight": { "value": 400 },
-          "lineHeight": { "value": "24px" }
+          "lineHeight": { "value": "20px" }
         }
       }
     }
