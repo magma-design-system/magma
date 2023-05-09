@@ -11,8 +11,8 @@ body {
   @apply
     antialiased
     font-info
-    text-tone-neutral-02
-    text-info-detail;
+    text-info-detail
+    text-theme-default-03-secondary-text;
 
   -moz-osx-font-smoothing: grayscale;
   -webkit-font-smoothing: antialiased;
@@ -29,11 +29,7 @@ body {
 button,
 optgroup,
 select {
-  @apply
-    antialiased
-    font-medium
-    font-title
-    leading-relaxed;
+  @apply text-title-action;
 }
 
 input,
@@ -51,7 +47,7 @@ strong {
 }
 
 a {
-  @apply text-brand-maggioli-03;
+  @apply text-theme-default-02-primary-text;
 
   font-family: inherit;
   font-size: inherit;

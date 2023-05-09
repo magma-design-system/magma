@@ -17,12 +17,14 @@
   .focus-on,
   .focusable-light:focus-visible,
   .focusable:focus-visible {
+
     --magma-outline-blur-offset: var(--magma-outline-focus-offset);
     --magma-outline-blur: var(--magma-outline-focus);
   }
 
   .focus-light-on,
   .focusable-light:focus-visible {
+
     --magma-outline-blur: 2px solid theme('colors.tone-neutral');
   }
 
