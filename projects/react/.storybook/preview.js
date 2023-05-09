@@ -8,7 +8,7 @@ import 'typeface-roboto'
 
 import './storybook.scss'
 
-import media from '@maggioli-design-system/design-tokens/dist/css-tokens/media.json'
+import media from '@maggioli-design-system/design-tokens/dist/json/css/media.json'
 import palette from '@maggioli-design-system/design-tokens/dist/properties/color/base.json'
 const paletteColors = palette.color
 
