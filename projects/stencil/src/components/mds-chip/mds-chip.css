@@ -15,6 +15,8 @@
   --mds-chip-icon-color: theme('colors.tone-neutral');
   --mds-chip-opacity-disabled: var(--opacity-disabled, 0.5);
   --mds-chip-backgroud-selected: theme('colors.tone-neutral-08');
+  --mds-chip-color-selected: theme('colors.tone-neutral-01');
+  --mds-chip-icon-color-selected: theme('colors.tone-neutral');
 
   @apply
     duration-150
@@ -40,8 +42,9 @@
 }
 
 :host( [selected]:not([selected="false"]) ) {
-
+  --mds-chip-color: var(--mds-chip-color-selected);
   --mds-chip-background: var(--mds-chip-backgroud-selected);
+  --mds-chip-icon-color: var(--mds-chip-icon-color-selected);
   --mds-chip-icon-background: var(--mds-chip-icon-background-selected);
 }
 
