@@ -5,12 +5,13 @@
 
 ## Properties
 
-| Property   | Attribute  | Description                                                                                                                                                  | Type                              | Default     |
-| ---------- | ---------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------ | --------------------------------- | ----------- |
-| `duration` | `duration` | If set, specifies the visibility duration in milliseconds of the element inside the viewport, when the time is up the visible property will be set to false. | `number \| undefined`             | `5000`      |
-| `tone`     | `tone`     | Sets the tone of the color variant                                                                                                                           | `"strong" \| "weak" \| undefined` | `'strong'`  |
-| `variant`  | `variant`  | Sets the theme variant colors                                                                                                                                | `"dark" \| "light" \| undefined`  | `'light'`   |
-| `visible`  | `visible`  | Specifies if toast is visible at the bottom or not                                                                                                           | `boolean \| undefined`            | `undefined` |
+| Property   | Attribute  | Description                                                                                                                                                  | Type                                                                                              | Default           |
+| ---------- | ---------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------------------- | ----------------- |
+| `duration` | `duration` | If set, specifies the visibility duration in milliseconds of the element inside the viewport, when the time is up the visible property will be set to false. | `number \| undefined`                                                                             | `5000`            |
+| `position` | `position` | Sets position of toast                                                                                                                                       | `"bottom-center" \| "bottom-left" \| "bottom-right" \| "top-center" \| "top-left" \| "top-right"` | `'bottom-center'` |
+| `tone`     | `tone`     | Sets the tone of the color variant                                                                                                                           | `"strong" \| "weak" \| undefined`                                                                 | `'strong'`        |
+| `variant`  | `variant`  | Sets the theme variant colors                                                                                                                                | `"dark" \| "light" \| undefined`                                                                  | `'light'`         |
+| `visible`  | `visible`  | Specifies if toast is visible at the bottom or not                                                                                                           | `boolean \| undefined`                                                                            | `undefined`       |
 
 
 ## Events

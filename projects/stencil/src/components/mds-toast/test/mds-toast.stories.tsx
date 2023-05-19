@@ -1,5 +1,6 @@
 import { themeVariantDictionary, toneMinimalVariantDictionary } from '@dictionary/variant'
 import { h } from '@stencil/core'
+import { toastPositionDictionary } from '../meta/dictionary'
 
 export default {
   title: 'UI / Toast',
@@ -7,6 +8,12 @@ export default {
     duration: {
       description: 'If set, specifies the visibility duration in milliseconds of the element inside the viewport, when the time is up the visible property will be set to false',
       type: { name: 'number', required: false },
+    },
+    position: {
+      type: { name: 'string', required: false },
+      description: 'Sets position of the toast',
+      options: toastPositionDictionary,
+      control: { type: 'select' },
     },
     tone: {
       type: { name: 'string', required: false },
