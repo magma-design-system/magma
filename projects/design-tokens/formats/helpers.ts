@@ -104,7 +104,7 @@ const tailwindFontSize = (property: string, value: string): string => {
 const ifDartTextStyleProp = (property: string, options: HelperOptions) => {
   const attributes = [
     'fontFamily',
-    'fontFamilyFallBack',
+    'fontFamilyFallback',
     'fontSize',
     'letterSpacing',
     'lineHeight',

@@ -1,9 +1,10 @@
-import Handlebars from 'handlebars'
+import Handlebars, { HelperOptions } from 'handlebars'
 import StyleDictionary from 'style-dictionary'
 import fs from 'fs'
 import path from 'path'
 import { FormatterArguments } from 'style-dictionary/types/Format'
 import { firstArrayElement, ifEquals, leadZero, pascalCase, rgbChannel, safeString, ifDartTextStyleProp } from '../helpers'
+import { ifFlutterTextThemeVariant, flutterTextThemeVariant } from './helpers'
 
 const templatePath = path.resolve(__dirname, './template.hbs')
 const template = Handlebars.compile(fs.readFileSync(templatePath).toString())
@@ -19,6 +20,8 @@ Handlebars.registerHelper('getArrayFontName', value => {
   if (Array.isArray(value)) return value
   return new Handlebars.SafeString((value).replaceAll('\'', '').replaceAll(',', '","'))
 })
+Handlebars.registerHelper('ifFlutterTextThemeVariant', ifFlutterTextThemeVariant)
+Handlebars.registerHelper('flutterTextThemeVariant', flutterTextThemeVariant)
 
 StyleDictionary.registerTransform({
   name: 'flutter/toDouble',
