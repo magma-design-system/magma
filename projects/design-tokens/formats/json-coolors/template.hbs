@@ -21,23 +21,25 @@
     {{/each}}
   {{/each}}
   ],
-  "dark": {
+  "dark": [
   {{#each properties as | groups |}}
     {{#each groups as | names |}}
       {{#each names as | lightModes |}}
+      {
         {{#each lightModes as | palettes |}}
           {{#ifEquals @key 'dark'}}
             {{#each palettes as | palette |}}
               {{#ifEquals @key 'color'}}
-      "{{#coolorizeName '-'}}{{@../../../key}}-{{@../../key}}{{/coolorizeName}}": "{{palette.value}}"{{#unless @last}},{{/unless}}
+        "{{#coolorizeName '-'}}{{@../../../key}}-{{@../../key}}{{/coolorizeName}}": "{{palette.value}}"{{#unless @last}},{{/unless}}
               {{else}}
-      "{{#coolorizeName '-'}}{{@../../../key}}-{{@../../key}}-{{leadZero @key}}{{/coolorizeName}}": "{{palette.value}}"{{#unless @last}},{{/unless}}
+        "{{#coolorizeName '-'}}{{@../../../key}}-{{@../../key}}-{{leadZero @key}}{{/coolorizeName}}": "{{palette.value}}"{{#unless @last}},{{/unless}}
               {{/ifEquals}}
             {{/each}}
           {{/ifEquals}}
         {{/each}}
+      }{{#unless @../last}},{{/unless}}
       {{/each}}
     {{/each}}
   {{/each}}
-  }
+  ],
 }
