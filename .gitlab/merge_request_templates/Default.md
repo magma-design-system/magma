@@ -45,26 +45,6 @@
   ```
 -->
 
-## Related issues
-
-<!--
-  🔴 Required
-  Please link to it's main issue here.
-
-  Example:
-  **Main issue:** #44
-
-  🟢 Optional
-  If you know that the change fixes other open issues besides the main one, report them here.
-
-  Example:
-  Other related issues:
-
-  1. #44
-  2. #45
-  3. #46
--->
-
 ## Motivation and context
 
 <!--
@@ -107,4 +87,24 @@
 
   🟢 Optional
   If it hasn't a relevant visual change. Feel free to add some screeshot if you'd like to be more clear.
+-->
+
+## Related issues
+
+<!--
+  🔴 Required
+  Please link to it's main issue here.
+
+  Example:
+  Closes: #44
+
+  🟢 Optional
+  If you know that the change fixes other open issues besides the main one, report them here.
+
+  Example:
+  Other related issues:
+
+  1. #44
+  2. #45
+  3. #46
 -->
