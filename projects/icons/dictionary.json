@@ -1,4 +1,4 @@
- { 
+{ 
   "accessibility": "material/accessibility_new",
   "account-details": "mdi/account-details",
   "action-approval": "material/approval",
@@ -103,6 +103,7 @@
   "calendar-text": "mdi/calendar-text",
   "call": "material/call",
   "camera": "material/camera",
+  "cancelled-sheet":"maggioli/cancelled-sheet",
   "car-license": "maggioli/car-license",
   "card-stamping": "maggioli/card-stamping",
   "cards-view": "material/view_module",
@@ -534,4 +535,5 @@
   "workspace": "material/workspaces",
   "write-only": "material/drive_file_rename_outline",
   "zen-mode": "material/self_improvement"
+ 
 }
