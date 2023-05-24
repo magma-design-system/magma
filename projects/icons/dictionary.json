@@ -1,5 +1,5 @@
 { 
-  "accessibility": "material/accessibility_new",
+ "accessibility": "material/accessibility_new",
   "account-details": "mdi/account-details",
   "action-approval": "material/approval",
   "action-archive": "material/archive",
@@ -340,7 +340,7 @@
   "navigation-hide": "material/keyboard_arrow_up",
   "navigation-show": "material/keyboard_arrow_down",
   "new-release": "material/fiber_new",
-  "not-Instrumental-d-buildings": "maggioli/not-Instrumental-d-buildings",
+  "not-instrumental-d-buildings": "maggioli/not-instrumental-d-buildings",
   "not-sent-yet": "maggioli/not-sent-yet",
   "note-add": "material/note_add",
   "notifications": "material/notifications",
@@ -363,6 +363,7 @@
   "order-zigzag-up_right-to_left": "maggioli/order-zigzag-up-right-to-left",
   "other-properties-off": "maggioli/other-properties-off",
   "other-properties": "maggioli/other-properties",
+  "other-residential-buildings": "maggioli/other-residential-buildings",
   "paginator-first": "material/first_page",
   "paginator-last": "material/last_page",
   "paginator-next": "material/navigate_next",
@@ -497,6 +498,7 @@
   "travel-car": "material/directions_car",
   "tree-view": "material/account_tree",
   "trending-down": "maggioli/trending-down",
+  "tribute": "maggioli/tribute",
   "tributes": "maggioli/tributes",
   "unusable-property": "maggioli/inagibile",
   "updated": "material/cloud_done",
@@ -535,5 +537,5 @@
   "workspace": "material/workspaces",
   "write-only": "material/drive_file_rename_outline",
   "zen-mode": "material/self_improvement"
- 
+
 }
