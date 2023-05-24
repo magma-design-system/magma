@@ -110,12 +110,16 @@ interface MdsInputArgs {
   placeholder?: string;
   required?: boolean;
   type: InputTextType;
+  icon?: string;
+  disabled?: boolean;
 }
 
 const Template = (args: MdsInputArgs) =>
   html`<mds-input
     .placeholder=${args.placeholder ?? nothing}
     .type=${args.type}
+    .icon=${args.icon ?? nothing}
+    ?disabled=${args.disabled ?? nothing}
     ?required=${args.required ?? nothing}
   ></mds-input>`
 
