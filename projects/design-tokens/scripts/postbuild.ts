@@ -13,5 +13,5 @@ const copyDir = async (src: string, dest: string) => {
     })
 }
 
-copyDir(PROPS_DIR, DIST_DIR)
-copyDir(CSS_TOKENS_DIR, DIST_DIR)
+copyDir(PROPS_DIR, path.join(DIST_DIR, 'style-dictionary'))
+copyDir(CSS_TOKENS_DIR, path.join(DIST_DIR, 'json'))

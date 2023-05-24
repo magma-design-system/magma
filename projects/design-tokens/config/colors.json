@@ -1,6 +1,7 @@
 {
   "source": [
-    "properties/color/base.json"
+    "properties/color/generated/base.json",
+    "properties/color/themes.json"
   ],
   "platforms": {
     "js": {
@@ -12,7 +13,18 @@
           "format": "js/module"
         },{
           "destination": "tailwind-colors-css-vars.js",
-          "format": "js/module-tailwind-config"
+          "format": "js/tailwind-colors"
+        }
+      ]
+    },
+
+    "dart": {
+      "transformGroup": "js",
+      "buildPath": "dist/flutter/",
+      "files": [
+        {
+          "destination": "colors.dart",
+          "format": "flutter/color"
         }
       ]
     },

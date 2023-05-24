@@ -124,6 +124,8 @@ import '@fontsource/karla/400.css'
 import '@fontsource/karla/700.css'
 import '@fontsource/merriweather/400.css'
 import '@fontsource/merriweather/700.css'
+import '@fontsource/roboto-mono/400.css'
+import '@fontsource/roboto/500.css'
 import '@fontsource/roboto/700.css'
 import '@fontsource/roboto/900.css'
 ```
@@ -137,6 +139,8 @@ Importing fonts in CSS:
 @import '@fontsource/karla/700.css';
 @import '@fontsource/merriweather/400.css';
 @import '@fontsource/merriweather/700.css';
+@import '@fontsource/roboto-mono/400.css';
+@import '@fontsource/roboto/500.css';
 @import '@fontsource/roboto/700.css';
 @import '@fontsource/roboto/900.css';
 ```
@@ -158,7 +162,8 @@ The `dist` folder contains the following files:
 | `css` | plain css | `typography.css` |
 | `css` | tailwind or web components | `colors-rgb-*.css` |
 | `tailwind` | tailwind | `base.css` |
-| `tailwind` | tailwind | `typography.css` |
+| `tailwind` | tailwind components | `components.css` |
+| `tailwind` | tailwind typography components | `typography.css` |
 
 [mds]: https://magma.maggiolicloud.it/
 [fontsource-var-fonts]: https://fontsource.org/docs/variable-fonts

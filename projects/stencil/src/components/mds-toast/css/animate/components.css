@@ -1,0 +1,35 @@
+@tailwind components;
+@tailwind utilities;
+
+@layer components {
+  .animate-intro {
+    @apply
+      duration-500
+      ease-in-out-expo
+      transition-cosmetic;
+  }
+
+  .animate-outro {
+    @apply
+      duration-300
+      ease-in-cubic
+      transition-cosmetic;
+  }
+
+  .animate-bottom-intro {
+    transform: translate(0, calc(theme('translate.4') * -1));
+  }
+
+  .animate-bottom-outro {
+    transform: translate(0, calc(theme('translate.full') + theme('translate.2')));
+  }
+
+  /* TODO */
+  .animate-top-intro {
+    transform: translate(0, calc(theme('translate.4')));
+  }
+
+  .animate-top-outro {
+    transform: translate(0, calc(-1 * theme('translate.full') - theme('translate.4')));
+  }
+}

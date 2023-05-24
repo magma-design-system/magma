@@ -1,0 +1,36 @@
+{
+  "source": [
+    {{#ifEquals fileName 'default'}}
+    "properties/color/generated/{{../fileName}}.json",
+    "properties/color/themes.json"
+    {{else}}
+    "properties/color/generated/{{../fileName}}.json"
+    {{/ifEquals}}
+  ],
+  "platforms": {
+    "css": {
+      "transformGroup": "css",
+      "buildPath": "dist/css/",
+      "files": [
+        {
+          "format": "css/vars",
+          "destination": "colors-hex-{{fileName}}.css"
+        },
+        {
+          "format": "css/vars-rgb-channels",
+          "destination": "colors-rgb-{{fileName}}.css"
+        }
+      ]
+    },
+    "dart": {
+      "transformGroup": "js",
+      "buildPath": "dist/flutter/",
+      "files": [
+        {
+          "destination": "colors-{{fileName}}.dart",
+          "format": "flutter/color"
+        }
+      ]
+    }
+  }
+}

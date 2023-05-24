@@ -20,7 +20,7 @@ import './tailwind.css'
 import './iconsauce.css'
 
 import devices from './devices.json'
-import media from '@maggioli-design-system/design-tokens/dist/css-tokens/media.json'
+import media from '@maggioli-design-system/design-tokens/dist/json/css/media.json'
 import { mds_icon } from '../dist/esm/mds-icon.entry'
 
 defineCustomElements();

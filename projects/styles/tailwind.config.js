@@ -1,7 +1,8 @@
 /* eslint-disable @typescript-eslint/no-var-requires */
 const { palette } = require('@maggioli-design-system/design-tokens')
 const mediaQueries = require('@maggioli-design-system/design-tokens/dist/js/media').media
-const { fontFamily } = require('@maggioli-design-system/design-tokens/dist/js/font-family')
+const { fontFamily } = require('@maggioli-design-system/design-tokens/dist/js/tailwind-font-family')
+const { fontSize } = require('@maggioli-design-system/design-tokens/dist/js/tailwind-font-size')
 const { ease } = require('@maggioli-design-system/design-tokens/dist/js/ease')
 const { gap } = require('@maggioli-design-system/design-tokens/dist/js/gap')
 
@@ -71,6 +72,7 @@ module.exports = {
         'sharp-sm': '0 0 1px 1px rgba(0, 0, 0, 0.06), 0 1px 2px 0 rgba(0, 0, 0, 0.05)',
       },
       fontSize: {
+        ...fontSize,
         xxs: '0.625rem',
       },
       gap: {

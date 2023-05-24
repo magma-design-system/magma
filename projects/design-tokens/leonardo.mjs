@@ -6,15 +6,20 @@ import { dirname, resolve } from 'path'
 import { fileURLToPath } from 'url'
 import Handlebars from 'handlebars'
 
+const TOKENS_DIR = resolve('./tokens')
 const PROJECT_PATH = resolve(dirname(fileURLToPath(import.meta.url)), './')
-const COLOR_PATH = `${PROJECT_PATH}/properties/color`
-const CONFIG_PATH = `${PROJECT_PATH}/config`
+const COLOR_PATH = `${PROJECT_PATH}/properties/color/generated`
+const CONFIG_PATH = `${PROJECT_PATH}/config/generated`
 const TEMPLATES_PATH = `${PROJECT_PATH}/template`
 
-const colorsRawData = readFileSync('colors.json')
+const colorsRawData = readFileSync(resolve(TOKENS_DIR, 'colors.json'))
 const { colors, colorspace, ratios, smooth } = JSON.parse(colorsRawData)
 
 const output = 'HEX'
+
+const ifEquals = (valueA, valueB, options) => {
+  return (valueA === valueB) ? options.fn(this) : options.inverse(this)
+}
 
 const getBackgroundColor = (colors, name) => {
   let filteredColor = null
@@ -83,7 +88,8 @@ const formatColor = (theme, colorName, colorValue, scaffold, seed, colorMode) =>
 
 const exportPalettes = async palettes => {
 
-  const configTemplate = await readFile(resolve(`${TEMPLATES_PATH}/config.json`))
+  const configTemplate = await readFile(resolve(`${TEMPLATES_PATH}/config.hbs`))
+  Handlebars.registerHelper('ifEquals', ifEquals)
   const template = Handlebars.compile(configTemplate.toString())
 
   for (const palette of Object.keys(palettes)) {
@@ -152,18 +158,19 @@ const formatPalette = async opts => {
       }
 
       if (element.export !== undefined) {
-        if (exportGroups[element.export] === undefined) {
-          exportGroups[element.export] = {}
-          exportGroups[element.export].color = {}
-        }
-        if (exportGroups[element.export].color[group] === undefined) {
-          exportGroups[element.export].color[group] = {}
-        }
-
-        exportGroups[element.export].color[group][name] = {
-          light: palette.color[group][name].light,
-          dark: palette.color[group][name].dark,
-        }
+        element.export.forEach(exportElement => {
+          if (exportGroups[exportElement] === undefined) {
+            exportGroups[exportElement] = {}
+            exportGroups[exportElement].color = {}
+          }
+          if (exportGroups[exportElement].color[group] === undefined) {
+            exportGroups[exportElement].color[group] = {}
+          }
+          exportGroups[exportElement].color[group][name] = {
+            light: palette.color[group][name].light,
+            dark: palette.color[group][name].dark,
+          }
+        })
       }
     }
   })
