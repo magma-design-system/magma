@@ -5,7 +5,8 @@ import { themeStatusVariantDictionary } from '../../../../../stencil/src/diction
 import { inputTextTypeDictionary } from '../../../../../stencil/src/dictionary/input-text-type'
 
 import '../mds-input'
-import { InputTextType } from '../mds-input'
+import { AutocompleteType, InputTextType, ThemeStatusVariantType } from '../mds-input'
+import clsx from 'clsx'
 
 export default {
   title: 'Form / Input',
@@ -83,21 +84,25 @@ export default {
       description:
         'Specifies the interval between legal numbers in an input field',
     },
-    variant: {
-      type: { name: 'string' },
-      options: themeStatusVariantDictionary,
-      control: { type: 'select' },
-      description: 'Sets the variant of the input field',
+    tabindex: {
+      type: { name: 'number' },
+      description: 'Sets the tabindex of this element',
     },
     tip: {
       type: { name: 'string' },
-      description: 'Sets the message of the variant of the input field',
+      description: 'Sets the message of the tip of the input field',
     },
     type: {
       type: { name: 'string', required: true },
       description: 'Specifies the type of element',
       options: inputTextTypeDictionary,
       control: { type: 'select' },
+    },
+    variant: {
+      type: { name: 'string' },
+      options: themeStatusVariantDictionary,
+      control: { type: 'select' },
+      description: 'Sets the variant of the input field',
     },
     value: {
       type: { name: 'string' },
@@ -108,20 +113,55 @@ export default {
 
 interface MdsInputArgs {
   placeholder?: string;
-  required?: boolean;
   type: InputTextType;
-  icon?: string;
+  required?: boolean;
+  autocomplete?: AutocompleteType;
+  autofocus?: boolean;
+  datalist?: string[];
   disabled?: boolean;
+  icon?: string;
+  max?: number;
+  maxLength?: number;
+  min?: number;
+  minLength?: number;
+  name?: string;
+  pattern?: string;
+  readOnly?: boolean;
+  step?: string;
+  variant?: ThemeStatusVariantType;
+  tip?: string;
+  value?: string;
+  tabindex?: number;
 }
 
 const Template = (args: MdsInputArgs) =>
   html`<mds-input
+    class=${clsx('input', args.icon && 'has-icon')}
+    list=${args.datalist ? 'datalist' : nothing}
+    .autoComplete=${args.autocomplete ?? nothing}
+    .max=${args.max ?? nothing}
+    .maxLength=${args.maxLength ?? nothing}
+    .min=${args.min ?? nothing}
+    .minLength=${args.minLength ?? nothing}
+    .name=${args.name ?? nothing}
+    .type=${args.type ?? nothing}
+    .pattern=${args.pattern ?? nothing}
     .placeholder=${args.placeholder ?? nothing}
-    .type=${args.type}
-    .icon=${args.icon ?? nothing}
+    .step=${args.step ?? nothing}
+    .tabindex=${args.tabindex ?? nothing}
+    .tip=${args.tip ?? nothing}
+    .value=${args.value ?? nothing}
+    .variant=${args.variant ?? nothing}
+    ?autoFocus=${args.autofocus ?? nothing}
     ?disabled=${args.disabled ?? nothing}
+    ?readOnly=${args.readOnly ?? nothing}
     ?required=${args.required ?? nothing}
-  ></mds-input>`
+  ></mds-input>
+  ${args.datalist && args.datalist.length > 0 ? html`
+    <datalist id="datalist" class="datalist">
+      ${args.datalist.map((element: string) => html`<option value="${element}" />`)}
+    </datalist>
+  ` : ''}`
 
 export const Default = Template.bind({})
 Default.args = {

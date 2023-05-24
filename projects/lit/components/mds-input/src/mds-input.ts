@@ -182,9 +182,9 @@ export class MdsInput extends LitElement {
   @property({ reflect: true }) readonly variant?: ThemeStatusVariantType
 
   /**
-   * Sets the word(s) of the variant of the input field
+   * Sets the word(s) of the tip of the input field
    */
-  @property({ type: String }) readonly variantTip?: string
+  @property({ type: String }) readonly tip?: string
 
   /**
    * Specifies the interval between legal numbers in an input field
@@ -228,13 +228,13 @@ export class MdsInput extends LitElement {
   }
 
   private getValue (): string {
-    return typeof this.value === 'number' ? this.value.toString() : (this.value || '').toString()
+    return typeof this.value === 'number' ? this.value.toString() : (this.value ?? '').toString()
   }
 
   private onInput = (ev: InputEvent) => {
     const input = ev.target as HTMLInputElement | HTMLTextAreaElement
     if (input) {
-      this.value = input.value || ''
+      this.value = input.value ?? ''
     }
     this.internals.setFormValue(this.value as string)
     // this.handleValidation(this.value as string)
@@ -375,7 +375,7 @@ export class MdsInput extends LitElement {
 
     return html`
       ${input}
-      ${this.required ? html`
+      ${this.required && !this.readonly ? html`
         <mds-text typography="option" class="tip top-1 required">Obbligatorio</mds-text>
       ` : ''}
       ${this.disabled ? html`
@@ -384,8 +384,8 @@ export class MdsInput extends LitElement {
       ${this.readonly ? html`
         <mds-text typography="option" class="tip top-1 read-only">Sola lettura</mds-text>
       ` : ''}
-      ${this.variant && this.variantTip ? html`
-        <mds-text typography="option" class="tip-variant bottom-1">${this.variantTip}</mds-text>
+      ${this.tip ? html`
+        <mds-text typography="option" class=${clsx('tip bottom-1', this.variant && 'tip-variant')}>${this.tip}</mds-text>
       ` : ''}
       ${datalist}
       ${this.icon ? html`

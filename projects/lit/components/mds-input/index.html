@@ -14,6 +14,8 @@
     </script>
   </head>
   <body>
+    <mds-input type="text" placeholder="Type something" variant="success" tip="ALORA?"></mds-input>
+
     <!-- <mds-input class="first" type="text" placeholder="Type something" required></mds-input> -->
     <!-- <hr> -->
     <!-- <mds-input class="first" type="text" datalist='["ciao", "mamma"]' placeholder="Seleziona dalla lista"></mds-input> -->
@@ -26,7 +28,7 @@
 
     <!-- <mds-input placeholder="scrivi qualcosa" tabindex="1"></mds-input> -->
 
-    <form>
+    <!-- <form>
       <input type="text">
       <mds-input type="text" placeholder="Nome" name="nome" required></mds-input>
       <mds-input type="text" placeholder="Cognome" name="cognome"></mds-input>
@@ -38,7 +40,7 @@
 
       <input type="submit" />
       <input type="reset" />
-    </form>
+    </form> -->
 
   </body>
   <script>
@@ -53,12 +55,12 @@
     // el.addEventListener('changeEvent', (data) => {
     //   console.log('changeEvent on first class input', data)
     // })
-    const form = document.querySelector('form');
+    // const form = document.querySelector('form');
 
-    form.addEventListener('submit', (event) => {
-      event.preventDefault();
+    // form.addEventListener('submit', (event) => {
+    //   event.preventDefault();
 
-      console.log(form.reportValidity())
-    })
+    //   console.log(form.reportValidity())
+    // })
   </script>
 </html>
