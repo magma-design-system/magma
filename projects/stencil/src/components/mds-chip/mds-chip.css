@@ -17,6 +17,8 @@
   --mds-chip-backgroud-selected: theme('colors.tone-neutral-08');
   --mds-chip-color-selected: theme('colors.tone-neutral-01');
   --mds-chip-icon-color-selected: theme('colors.tone-neutral');
+  --mds-chip-delete-icon-color-hover-selected: theme('colors.status-error-06');
+  --mds-chip-delete-icon-color-selected: theme('colors.tone-neutral-05');
 
   @apply
     duration-150
@@ -46,6 +48,8 @@
   --mds-chip-background: var(--mds-chip-backgroud-selected);
   --mds-chip-icon-color: var(--mds-chip-icon-color-selected);
   --mds-chip-icon-background: var(--mds-chip-icon-background-selected);
+  --mds-chip-delete-icon-color-hover: var(--mds-chip-delete-icon-color-hover-selected);
+  --mds-chip-delete-icon-color: var(--mds-chip-delete-icon-color-selected);
 }
 
 .label {
