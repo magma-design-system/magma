@@ -60,6 +60,7 @@ export class MdsTabItem {
         <mds-button class={clsx('button', this.selected && 'button--selected')}
           icon={this.icon}
           iconPosition={this.iconPosition}
+          part="button"
           size={this.size}
           type={this.type}
         >
