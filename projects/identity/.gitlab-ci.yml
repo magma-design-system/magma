@@ -1,6 +1,15 @@
+# IDENTITY CACHE
+.identity-cache:
+  cache:
+    key:
+      files:
+        - yarn.lock
+      prefix: "${CI_PROJECT_NAME}-identity"
+    policy: pull
+
 # IDENTITY BUILD
 identity-build:
-  extends: .base-build
+  extends: [.base-build, .identity-cache]
   script:
     - nx run identity:build
   artifacts:
@@ -8,6 +17,8 @@ identity-build:
     expire_in: 1 day
     paths:
       - projects/identity/dist
+  cache:
+    policy: pull-push
   rules:
     - if: $CI_PIPELINE_SOURCE == "merge_request_event" || $CI_COMMIT_BRANCH =~ /^(dev|main|pipeline)$/
       changes:
@@ -15,7 +26,7 @@ identity-build:
 
 # IDENTITY PUBLISH TEST
 identity-publish-test:
-  extends: .base-publish-test
+  extends: [.base-publish-test, .identity-cache]
   dependencies: [identity-build]
   stage: test
   variables:
@@ -28,7 +39,7 @@ identity-publish-test:
 
 # IDENTITY PUBLISH
 identity-publish:
-  extends: .base-publish
+  extends: [.base-publish, .identity-cache]
   dependencies: [identity-build]
   needs: [identity-publish-test, identity-build]
   stage: publish
@@ -41,7 +52,7 @@ identity-publish:
 
 # IDENTITY INSTALL TEST
 identity-install-test:
-  extends: .base-install-test
+  extends: [.base-install-test, .identity-cache]
   needs: [identity-publish]
   variables:
     BUILD_DIR: projects/identity

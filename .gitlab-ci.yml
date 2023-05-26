@@ -41,10 +41,6 @@ stages:
         yarn install --frozen-lockfile --prefer-offline --force
       fi
   cache:
-    key:
-      files:
-        - yarn.lock
-      prefix: $CI_PROJECT_NAME
     paths:
       - node_modules
       - projects/design-tokens/node_modules
@@ -73,6 +69,8 @@ stages:
       else
         npm publish --access public --dry-run
       fi
+  cache:
+    policy: pull
 
 # BASE INSTALL TEST
 .base-install-test:
@@ -85,6 +83,8 @@ stages:
   script:
     - cd $BUILD_DIR
     - npm pack && npm install --prefix ./ $PACK_NAME
+  cache:
+    policy: pull
 
 # BASE PUBLISH
 .base-publish:
@@ -99,6 +99,8 @@ stages:
     - npm config set _auth $NPM_TOKEN
     - npm config set //registry.npmjs.org/:_authToken $NPM_TOKEN
     - npm publish --access public
+  cache:
+    policy: pull
 
 include:
   - '/projects/design-tokens/.gitlab-ci.yml'

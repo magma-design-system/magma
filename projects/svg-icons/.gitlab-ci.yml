@@ -1,6 +1,15 @@
+# SVG ICONS CACHE
+.svg-icons-cache:
+  cache:
+    key:
+      files:
+        - yarn.lock
+      prefix: "${CI_PROJECT_NAME}-svg-icons"
+    policy: pull
+
 # SVG-ICONS PUBLISH TEST
 svg-icons-publish-test:
-  extends: .base-publish-test
+  extends: [.base-publish-test, .svg-icons-cache]
   stage: test
   variables:
     BUILD_DIR: projects/svg-icons
@@ -12,7 +21,7 @@ svg-icons-publish-test:
 
 # SVG-ICONS PUBLISH
 svg-icons-publish:
-  extends: .base-publish
+  extends: [.base-publish, .svg-icons-cache]
   stage: publish
   needs: [svg-icons-publish-test]
   variables:
@@ -24,7 +33,7 @@ svg-icons-publish:
 
 # SVG-ICONS INSTALL TEST
 svg-icons-install-test:
-  extends: .base-install-test
+  extends: [.base-install-test, .svg-icons-cache]
   needs: [svg-icons-publish]
   variables:
     COMPONENT: svg-icons
