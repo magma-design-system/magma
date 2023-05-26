@@ -1,7 +1,7 @@
 import { Component, Element, Event, EventEmitter, Host, h, Prop, Watch } from '@stencil/core'
 import { ToneMinimalVariantType, ThemeLuminanceVariantType } from '@type/variant'
 import clsx from 'clsx'
-
+import { ToastPosition } from './meta/types'
 @Component({
   tag: 'mds-toast',
   styleUrl: 'mds-toast.css',
@@ -37,6 +37,10 @@ export class MdsToast {
    */
   @Prop({ reflect: true }) readonly tone?: ToneMinimalVariantType = 'strong'
 
+  /**
+   * Sets position of toast
+   */
+  @Prop({ reflect: true, mutable: true }) readonly position: ToastPosition = 'bottom-center'
   /**
    * Emits when the accordion is opened
    */
@@ -88,7 +92,7 @@ export class MdsToast {
   render () {
     return (
       <Host>
-        <div class={clsx('dialog', this.visible && 'dialog--visible')}>
+        <div class={clsx('dialog', this.position && `to-${this.position}`, this.visible && 'dialog--visible')}>
           <slot name="icon" />
           { this.hasText &&
             <mds-text typography="caption">
