@@ -36,11 +36,14 @@
     items-center
     mx-4
     p-4
-    pointer-events-none
     rounded-xl;
 
   background-color: var(--background);
   box-shadow: var(--shadow);
+}
+
+:host( [visible]:not([visible="false"])) {
+  @apply pointer-events-auto;
 }
 
 /* TOP position */
