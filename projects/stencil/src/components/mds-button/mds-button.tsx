@@ -124,7 +124,7 @@ export class MdsButton {
     return (
       <Host class={clsx(!this.hasText && 'no-text')} onMouseDown={this.mouseDown} onMouseUp={this.mouseUp} onMouseOut={this.mouseUp} tabindex="0" role="button">
         <div class="await">
-          <mds-spinner running={this.await}/>
+          <mds-spinner class="spinner" running={this.await}/>
         </div>
         { this.icon && this.iconPosition === 'left' && <mds-icon aria-hidden="true" class="icon" name={this.icon} /> }
         { this.hasText && <mds-text class="text" part="label" typography={this.typography}><slot /></mds-text> }

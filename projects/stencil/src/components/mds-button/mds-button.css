@@ -93,7 +93,7 @@
   transition-property: margin-right;
 }
 
-mds-spinner {
+.spinner {
   @apply
     h-6
     w-6;
@@ -103,8 +103,8 @@ mds-spinner {
   color: currentcolor;
 }
 
-:host(:not([await])) mds-spinner,
-:host([await="false"]) mds-spinner {
+:host(:not([await])) .spinner,
+:host([await="false"]) .spinner {
   @apply
     duration-200
     ease-out;
