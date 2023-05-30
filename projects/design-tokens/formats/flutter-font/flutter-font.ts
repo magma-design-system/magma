@@ -1,4 +1,4 @@
-import Handlebars, { HelperOptions } from 'handlebars'
+import Handlebars from 'handlebars'
 import StyleDictionary from 'style-dictionary'
 import fs from 'fs'
 import path from 'path'
