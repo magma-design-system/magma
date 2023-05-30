@@ -109,11 +109,7 @@ export class MdsInput extends LitElement {
    * A list of search terms to be searched from the input field,
    * it should be used with type="search" input.
    */
-  @property({ type: Array, hasChanged: (value, oldValue) => {
-    console.log('OldValue', oldValue)
-    console.log('Actual value', value)
-    return true
-  } }) readonly datalist?: string | string[]
+  @property({ type: Array }) readonly datalist?: string | string[]
 
   /**
    * If true, the element is displayed as disabled
@@ -194,7 +190,7 @@ export class MdsInput extends LitElement {
   /**
    * Specifies the type of input element
    */
-  @property({ type: String }) readonly type: InputTextType = 'text'
+  @property({ type: String }) readonly type?: InputTextType = 'text'
 
   // Using custom setter / getter because I need to fire the change-event when the property actually change
   /**
@@ -239,8 +235,8 @@ export class MdsInput extends LitElement {
     this.internals.setFormValue(this.value as string)
     // this.handleValidation(this.value as string)
     this.internals.setValidity(input.validity, input.validationMessage, input)
-    this.dispatchEvent(new CustomEvent('changeEvent', { bubbles: true, detail: { value: this.value } }))
-    const event = new CustomEvent('inputEvent', { bubbles: true, detail: { value: ev } })
+    this.dispatchEvent(new CustomEvent('mdsInputChange', { bubbles: true, detail: { value: this.value } }))
+    const event = new CustomEvent('mdsInputKeydown', { bubbles: true, detail: { value: ev } })
     this.dispatchEvent(event)
   }
 
@@ -260,13 +256,13 @@ export class MdsInput extends LitElement {
 
   private onBlur = () => {
     // this.hasFocus = false
-    this.dispatchEvent(new CustomEvent('blurEvent', { bubbles: true }))
+    this.dispatchEvent(new CustomEvent('mdsInputBlur', { bubbles: true }))
   }
 
   private onFocus = (ev: Event) => {
     const input = ev.target as HTMLInputElement | HTMLTextAreaElement
     // this.hasFocus = true
-    this.dispatchEvent(new CustomEvent('focusEvent', { bubbles: true }))
+    this.dispatchEvent(new CustomEvent('mdsInputFocus', { bubbles: true }))
     if (this.readonly) {
       // setTimeout to avoid Safari 14.1.2
       // to unselect text when mouse is clicked slowly
@@ -365,7 +361,7 @@ export class MdsInput extends LitElement {
     this.internals.setFormValue('')
     this.inputElement.value = ''
 
-    this.dispatchEvent(new CustomEvent('inputResetEvent', { bubbles: true, detail: { input: this.inputElement } }))
+    this.dispatchEvent(new CustomEvent('mdsInputReset', { bubbles: true, detail: { input: this.inputElement } }))
   }
 
   render () {
