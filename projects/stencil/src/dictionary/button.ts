@@ -15,6 +15,11 @@ const buttonToneVariantDictionary = [
   'quiet',
 ]
 
+const buttonTargetDictionary = [
+  'blank',
+  'self',
+]
+
 const buttonSizeDictionary = [
   'sm',
   'md',
@@ -28,8 +33,9 @@ const buttonIconPositionDictionary = [
 ]
 
 export {
+  buttonIconPositionDictionary,
   buttonSizeDictionary,
+  buttonTargetDictionary,
   buttonToneVariantDictionary,
   buttonVariantDictionary,
-  buttonIconPositionDictionary,
 }

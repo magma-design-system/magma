@@ -15,7 +15,7 @@ export class MdsTabItem {
   /**
    * Specifies if the tab item is selected or not
    */
-  @Prop() readonly selected?: boolean
+  @Prop({ reflect: true }) readonly selected?: boolean
 
   /**
    * The icon displayed in the tab item

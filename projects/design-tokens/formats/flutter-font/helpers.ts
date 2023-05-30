@@ -14,26 +14,26 @@ const ifFlutterTextThemeVariant = (property: string, options: HelperOptions) => 
 
 const flutterTextThemeVariant = (options: HelperOptions) => {
   const propertyMap = {
-    h1: 'displayLarge',
-    h2: 'displayMedium',
-    h3: 'displaySmall',
-    h4: 'headlineLarge',
-    h5: 'headlineMedium',
-    h6: 'headlineSmall',
-    action: 'labelLarge',
-    infoDetail: 'bodyMedium',
-    infoDetailBold: 'titleMedium',
-    infoCaption: 'bodySmall',
-    infoCaptionBold: 'titleSmall',
-    infoLabel: 'labelMedium',
-    infoOption: 'labelSmall',
-    readParagraph: 'bodyLarge',
-    readParagraphBold: 'titleLarge',
+    'title-h1': 'displayLarge',
+    'title-h2': 'displayMedium',
+    'title-h3': 'displaySmall',
+    'title-h4': 'headlineLarge',
+    'title-h5': 'headlineMedium',
+    'title-h6': 'headlineSmall',
+    'title-action': 'labelLarge',
+    'info-detail': 'bodyMedium',
+    // 'info-detail-bold': 'titleMedium',
+    'info-caption': 'bodySmall',
+    // 'info-caption-bold': 'titleSmall',
+    'info-label': 'labelMedium',
+    'info-option': 'labelSmall',
+    'read-paragraph': 'bodyLarge',
+    // 'read-paragraph-bold': 'titleLarge',
   }
 
-  console.log(options.data.key)
-
-  return 'franco'
+  console.log(options.fn(this))
+  // propertyMap[options.data.key]
+  return ''
 }
 
 export {

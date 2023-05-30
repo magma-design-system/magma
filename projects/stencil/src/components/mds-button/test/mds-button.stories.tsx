@@ -4,6 +4,7 @@ import {
   buttonVariantDictionary,
   buttonSizeDictionary,
   buttonToneVariantDictionary,
+  buttonTargetDictionary,
   buttonIconPositionDictionary,
 } from '@dictionary/button'
 
@@ -17,6 +18,10 @@ export default {
     disabled: {
       type: { name: 'boolean' },
       description: 'Specifies if the component is disabled or not',
+    },
+    href: {
+      type: { name: 'string' },
+      description: 'Specifies the URL target of the button',
     },
     icon: {
       type: { name: 'string' },
@@ -34,6 +39,12 @@ export default {
       type: { name: 'string' },
       description: 'Specifies the size of the button',
       options: buttonSizeDictionary,
+      control: { type: 'select' },
+    },
+    target: {
+      type: { name: 'string' },
+      options: buttonTargetDictionary,
+      description: 'Specifies the target of the URL, if self or blank',
       control: { type: 'select' },
     },
     tone: {
@@ -122,4 +133,15 @@ iconPosition.args = {
 export const keyboardPress = TemplateKeyboard.bind({})
 keyboardPress.args = {
   onClick: () => { alert('Button clicked') },
+}
+
+export const href = Template.bind({})
+href.args = {
+  href: 'http://www.maggioli.it',
+}
+
+export const target = Template.bind({})
+target.args = {
+  href: 'http://www.maggioli.it',
+  target: 'blank',
 }
