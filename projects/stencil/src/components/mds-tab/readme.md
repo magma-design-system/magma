@@ -12,12 +12,12 @@
 | `mdsTabChange` | Emits when a children is changed | `CustomEvent<MdsTabEventDetail>` |
 
 
-## CSS Custom Properties
+## Shadow Parts
 
-| Name                   | Description                                                    |
-| ---------------------- | -------------------------------------------------------------- |
-| `--mds-tab-background` | Sets the background-color of the component                     |
-| `--mds-tab-radius`     | Sets the border-radius of the button when the mouse is over it |
+| Part         | Description |
+| ------------ | ----------- |
+| `"contents"` |             |
+| `"tabs"`     |             |
 
 
 ----------------------------------------------

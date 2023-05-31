@@ -1,5 +1,6 @@
 import { Component, Element, Event, EventEmitter, Host, Listen, h } from '@stencil/core'
 import { MdsTabEventDetail } from './meta/event-detail'
+import { cssDurationToMilliseconds } from '@common/unit'
 
 @Component({
   tag: 'mds-tab',
@@ -10,6 +11,7 @@ export class MdsTab {
 
   @Element() private element: HTMLMdsTabElement
   private currentItem: number
+  private switchAnimationDuration: number
 
   /**
    * Emits when a children is changed
@@ -19,13 +21,45 @@ export class MdsTab {
   private queryItems = ():NodeListOf<HTMLMdsTabItemElement> =>
     this.element.querySelectorAll<HTMLMdsTabItemElement>('mds-tab-item')
 
+  private attachContents = (): void => {
+    const items = this.element.querySelectorAll('mds-tab-item')
+    const contents = this.element.shadowRoot?.querySelector('.contents') as HTMLElement
+    contents.innerHTML = ''
+    if (items) {
+      items.forEach((el: Element) => {
+        const wrapper = document.createElement('div')
+        wrapper.classList.add('content')
+        wrapper.innerHTML = el.innerHTML
+        contents.appendChild(wrapper)
+      })
+    }
+  }
+
+  private switchContent = (): void => {
+    console.log(this.currentItem)
+
+  }
+
   componentWillLoad ():void {
     const items = this.queryItems()
     items.forEach((item, key) => {
       if (!item.id) {
         item.id = `mds-tab-item-${key}`
       }
+      if (item.selected) {
+        this.currentItem = key
+      }
     })
+  }
+
+  componentDidLoad ():void {
+    this.attachContents()
+    this.switchContent()
+  }
+
+  componentDidUpdate ():void {
+    const elementStyles = window.getComputedStyle(this.element)
+    this.switchAnimationDuration = cssDurationToMilliseconds(elementStyles.getPropertyValue('--mds-tab-duration'))
   }
 
   private scrollTabs = (): void => {
@@ -47,12 +81,16 @@ export class MdsTab {
         item.selected = false
       }
     })
+    this.switchContent()
   }
 
   render () {
     return (
       <Host>
-        <slot/>
+        <div class="tabs" part="tabs">
+          <slot/>
+        </div>
+        <div class="contents" part="contents"></div>
       </Host>
     )
   }
