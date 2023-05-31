@@ -51,6 +51,9 @@ module.exports = {
     './src/**/*.{js,jsx}',
   ],
   darkMode: ['class', '.dark-mode'],
+  corePlugins: {
+    preflight: false,
+  },
   theme: {
     colors: {
       transparent: 'transparent',
