@@ -8,7 +8,7 @@ const fontSize = {
 {{#each properties as | fonts |}}
   {{#each fonts as | groups |}}
     {{#each groups.variants as | variants |}}
-    "size-{{@../key}}-{{@key}}": ['{{#tailwindFontSize 'fontSize' variants.fontSize.value}}{{/tailwindFontSize}}', {
+    "size-{{@../key}}-{{@key}}": ['{{variants.fontSize.value}}', {
       {{#each variants as | rules |}}
         {{#ifTailwindFontSizeProp @key}}
       {{@key}}: '{{#tailwindFontSize @key rules.value}}{{/tailwindFontSize}}',
