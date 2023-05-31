@@ -30,6 +30,26 @@ class TextStyles {
       {{/ifDartTextStyleProp}}
       {{/each}}
   );
+      {{#each groups.variants as | variants |}}
+        {{#if variants.variants}}
+          {{#each variants.variants as | fontVariants |}}
+            key: {{@key}}
+  static const TextStyle {{#pascalCase}}{{@../../key}}-{{@../key}}-{{@key}}{{/pascalCase}} = TextStyle(
+      fontFamily: "{{getFirstFont groups.fontFamily.value}}",
+      fontFamilyFallback: <String>[{{getArrayFontName groups.fontFamily.value}}],
+      {{#each variants as | rules |}}
+        {{#ifDartTextStyleProp @../key}}
+          {{#ifEquals @../key 'lineHeight'}}
+      height: {{rules.value}},
+          {{else}}
+      {{@key}}: {{ rules.value}},
+          {{/ifEquals}}
+        {{/ifDartTextStyleProp}}
+      {{/each}}
+  );
+          {{/each}}
+        {{/if}}
+      {{/each}}
     {{/each}}
   {{/each}}
 {{/each}}

@@ -22,13 +22,13 @@ const flutterTextThemeVariant = (options: HelperOptions) => {
     'title-h6': 'headlineSmall',
     'title-action': 'labelLarge',
     'info-detail': 'bodyMedium',
-    // 'info-detail-bold': 'titleMedium',
+    'info-detail-bold': 'titleMedium',
     'info-caption': 'bodySmall',
-    // 'info-caption-bold': 'titleSmall',
+    'info-caption-bold': 'titleSmall',
     'info-label': 'labelMedium',
     'info-option': 'labelSmall',
     'read-paragraph': 'bodyLarge',
-    // 'read-paragraph-bold': 'titleLarge',
+    'read-paragraph-bold': 'titleLarge',
   }
 
   console.log(options.fn(this))
