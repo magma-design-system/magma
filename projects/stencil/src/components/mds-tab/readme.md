@@ -5,6 +5,13 @@
 <!-- Auto Generated Below -->
 
 
+## Properties
+
+| Property    | Attribute   | Description                                  | Type                     | Default     |
+| ----------- | ----------- | -------------------------------------------- | ------------------------ | ----------- |
+| `direction` | `direction` | Sets the direction where tab contents swipes | `"natural" \| "reverse"` | `'natural'` |
+
+
 ## Events
 
 | Event          | Description                      | Type                             |
@@ -18,6 +25,13 @@
 | ------------ | ----------- |
 | `"contents"` |             |
 | `"tabs"`     |             |
+
+
+## CSS Custom Properties
+
+| Name                 | Description                                                                         |
+| -------------------- | ----------------------------------------------------------------------------------- |
+| `--mds-tab-duration` | Sets the animation duration when the component switch from a content to another one |
 
 
 ----------------------------------------------
