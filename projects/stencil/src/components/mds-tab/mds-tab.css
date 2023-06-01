@@ -50,15 +50,19 @@
 
 .contents--touch {
   @apply
+    flex
     gap-6
     hide-scrollbar
-    overflow-auto;
+    items-start
+    overflow-x-auto
+    overflow-y-hidden;
 
   scroll-snap-type: x mandatory;
 }
 
 .content {
   @apply
+    basis-0
     min-w-full
     snap-start
     w-full;

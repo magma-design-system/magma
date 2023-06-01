@@ -17,6 +17,11 @@ export class MdsTab {
   private cssAnimationDuration: number
   private contentsHeightTimeout: NodeJS.Timeout
   private moveItemsTimeout: NodeJS.Timeout
+  private lastKnownContentsScrollX: number
+  private contents: HTMLElement
+  private tabs: HTMLElement
+  private ticking: boolean
+  private content: NodeListOf<HTMLElement>
 
   /**
    * Sets component's contents to be swappable on mobile devices, this will result in forcing direction attribute to be se to 'natural'
@@ -37,52 +42,49 @@ export class MdsTab {
     this.element.querySelectorAll<HTMLMdsTabItemElement>('mds-tab-item')
 
   private attachContents = (): void => {
-    const items = this.element.querySelectorAll('mds-tab-item')
-    const contents = this.element.shadowRoot?.querySelector('.contents') as HTMLElement
-    contents.innerHTML = ''
+    const items = this.queryItems()
+    this.contents = this.element.shadowRoot?.querySelector('.contents') as HTMLElement
+    this.contents.innerHTML = ''
     if (items) {
       items.forEach((el: Element) => {
         const wrapper = document.createElement('div')
         wrapper.classList.add('content')
         wrapper.innerHTML = el.innerHTML
-        contents.appendChild(wrapper)
+        this.contents.appendChild(wrapper)
       })
+      this.content = this.element.shadowRoot?.querySelectorAll('.content') as NodeListOf<HTMLElement>
       this.checkTouchContent()
     }
   }
 
   private checkTouchContent = (): void => {
-    const content = this.element.shadowRoot?.querySelectorAll('.content') as NodeListOf<HTMLElement>
     if (!this.touch) {
-      content.forEach((el: Element) => {
+      this.content.forEach((el: Element) => {
         el.classList.add('content--absolute')
       })
       return
     }
 
-    content.forEach((el: Element) => {
+    this.content.forEach((el: Element) => {
       el.classList.remove('content--absolute')
     })
   }
 
   private getCurrentItemHeight = (): number => {
-    const content = this.element.shadowRoot?.querySelectorAll('.content') as NodeListOf<HTMLElement>
-    return (content[this.currentItem] as HTMLElement).offsetHeight
+    return (this.content[this.currentItem] as HTMLElement).offsetHeight
   }
 
   private setContentsHeight = (height: number): void => {
-    const contents = this.element.shadowRoot?.querySelector('.contents') as HTMLElement
-    const content = this.element.shadowRoot?.querySelectorAll('.content') as NodeListOf<HTMLElement>
 
-    contents.style.setProperty('--mds-tab-contents-height', `${contents.offsetHeight}px`)
+    this.contents.style.setProperty('--mds-tab-contents-height', `${this.contents.offsetHeight}px`)
     setTimeout(() => {
-      contents.style.setProperty('--mds-tab-contents-height', `${height}px`)
+      this.contents.style.setProperty('--mds-tab-contents-height', `${height}px`)
     }, 1)
 
     if (this.previousItem >= 0) {
-      content[this.previousItem].classList.add('content--absolute')
+      this.content[this.previousItem].classList.add('content--absolute')
     }
-    content[this.currentItem].classList.remove('content--absolute')
+    this.content[this.currentItem].classList.remove('content--absolute')
 
     this.contentsHeightTimeout = setTimeout(() => {
       this.resetHeight()
@@ -91,12 +93,11 @@ export class MdsTab {
 
   private moveItems = (nextItemDirection: 'left'|'right'): void => {
     const prevItemDirection = nextItemDirection === 'left' ? 'right' : 'left'
-    const content = this.element.shadowRoot?.querySelectorAll('.content') as NodeListOf<HTMLElement>
 
     if (this.previousItem >= 0) {
-      content[this.previousItem].classList.add(`content--animate-to-${prevItemDirection}`)
+      this.content[this.previousItem].classList.add(`content--animate-to-${prevItemDirection}`)
     }
-    content[this.currentItem].classList.add(`content--animate-from-${nextItemDirection}`)
+    this.content[this.currentItem].classList.add(`content--animate-from-${nextItemDirection}`)
 
     this.moveItemsTimeout = setTimeout(() => {
       this.resetAnimations()
@@ -104,18 +105,15 @@ export class MdsTab {
   }
 
   private resetHeight = (): void => {
-    const contents = this.element.shadowRoot?.querySelector('.contents') as HTMLElement
-    const content = this.element.shadowRoot?.querySelectorAll('.content') as NodeListOf<HTMLElement>
-    contents.style.setProperty('--mds-tab-contents-height', 'auto')
-    content[this.currentItem].classList.remove('content--absolute')
+    this.contents.style.setProperty('--mds-tab-contents-height', 'auto')
+    this.content[this.currentItem].classList.remove('content--absolute')
     if (this.previousItem >= 0) {
-      content[this.previousItem].classList.remove('content--hidden')
+      this.content[this.previousItem].classList.remove('content--hidden')
     }
   }
 
   private resetAnimations = (): void => {
-    const content = this.element.shadowRoot?.querySelectorAll('.content') as NodeListOf<HTMLElement>
-    content.forEach((el: HTMLElement) => {
+    this.content.forEach((el: HTMLElement) => {
       el.classList.remove('content--animate-to-left')
       el.classList.remove('content--animate-to-right')
       el.classList.remove('content--animate-from-left')
@@ -156,6 +154,7 @@ export class MdsTab {
   }
 
   componentDidLoad ():void {
+    this.tabs = this.element.shadowRoot?.querySelector('.tabs') as HTMLElement
     this.attachContents()
     this.handleTouchAttribute()
   }
@@ -166,9 +165,50 @@ export class MdsTab {
   }
 
   private scrollTabs = (): void => {
+    console.log('scrollTabs')
     const items = this.queryItems()
     const tabItem = items[this.currentItem]
-    this.element.scrollLeft = tabItem.offsetLeft - this.element.offsetLeft - (this.element.offsetWidth / 2) + (tabItem.offsetWidth / 2)
+    this.tabs.scrollLeft = tabItem.offsetLeft - this.tabs.offsetLeft - (this.tabs.offsetWidth / 2) + (tabItem.offsetWidth / 2)
+  }
+
+  private selectTabItemFromScroll = (scrollItem: number): void => {
+    const items = this.queryItems()
+    if (scrollItem !== this.currentItem) {
+      this.scrollTabs()
+    }
+    items.forEach((item, key) => {
+      if (key === scrollItem) {
+        item.selected = true
+        this.currentItem = key
+      } else {
+        item.selected = false
+      }
+    })
+  }
+
+  private findCurrentItem = (): void => {
+    const contentBox = this.content[0].getBoundingClientRect()
+    if (!this.ticking) {
+      window.requestAnimationFrame(() => {
+        this.lastKnownContentsScrollX = Math.abs(contentBox.left - this.contents.offsetLeft)
+        const foundItem = Math.round(this.lastKnownContentsScrollX * this.content.length / (contentBox.width * this.content.length))
+        this.selectTabItemFromScroll(foundItem)
+        this.ticking = false
+      })
+      this.ticking = true
+    }
+  }
+
+  private scrollToContent = (): void => {
+    const contentBox = this.content[0].getBoundingClientRect()
+    console.log('scrollToContent', - (contentBox.width * this.currentItem))
+    this.contents.scrollLeft = - (contentBox.width * this.currentItem)
+
+    this.contents.addEventListener('scrollend', () => {
+      console.log('scrollend')
+      const contentBox = this.content[this.currentItem].getBoundingClientRect()
+      this.contents.style.setProperty('--mds-tab-contents-height', `${contentBox.height}px`)
+    })
   }
 
   @Watch('touch')
@@ -176,16 +216,18 @@ export class MdsTab {
     if (!this.touch) {
       this.updateCSSCustomProps()
       this.swipeContent()
+      this.contents.removeEventListener('scroll', this.findCurrentItem.bind(this))
       return
     }
 
+    this.contents.addEventListener('scroll', this.findCurrentItem.bind(this))
     this.direction = 'natural'
     this.checkTouchContent()
   }
 
   @Listen('mdsTabItemSelect')
   changeEventHandler (event: CustomEvent<string>): void {
-    const items = this.element.querySelectorAll<HTMLMdsTabItemElement>('mds-tab-item')
+    const items = this.queryItems()
 
     if (!this.touch) {
       clearTimeout(this.contentsHeightTimeout)
@@ -212,7 +254,10 @@ export class MdsTab {
     })
     if (!this.touch) {
       this.swipeContent()
+      return
     }
+
+    this.scrollToContent()
   }
 
   render () {
