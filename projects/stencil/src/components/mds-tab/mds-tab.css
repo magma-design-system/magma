@@ -9,7 +9,6 @@
 :host {
 
   --mds-tab-duration: .75s;
-  --mds-tab-contents-overflow: hidden;
   --mds-tab-timing-function: theme('transitionTimingFunction.in-out-expo');
   --mds-tab-fadeout-opacity: 1;
 
@@ -41,15 +40,28 @@
 
   @apply
     flex
+    items-start
+    overflow-hidden
     relative;
 
   height: var(--mds-tab-contents-height);
-  overflow: var(--mds-tab-contents-overflow);
   transition: height var(--mds-tab-duration) var(--mds-tab-timing-function);
 }
 
+.contents--touch {
+  @apply
+    gap-6
+    hide-scrollbar
+    overflow-auto;
+
+  scroll-snap-type: x mandatory;
+}
+
 .content {
-  @apply w-full;
+  @apply
+    min-w-full
+    snap-start
+    w-full;
 
   animation-duration: var(--mds-tab-duration);
   animation-timing-function: var(--mds-tab-timing-function);

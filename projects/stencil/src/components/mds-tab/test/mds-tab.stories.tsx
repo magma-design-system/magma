@@ -10,6 +10,10 @@ export default {
       options: directionDictionary,
       control: { type: 'select' },
     },
+    touch: {
+      type: { name: 'boolean' },
+      description: 'Sets component\'s contents to be swappable on mobile devices, this will result in forcing direction attribute to be set to \'natural\'',
+    },
   },
 }
 
@@ -18,7 +22,7 @@ const Template = args =>
     <mds-tab {...args}>
       <mds-notification strategy="absolute" target="button" value={14} visible={true}/>
       <mds-tab-item selected class="mobile:flex-1" label="First Blood">
-        <div class="py-6 grid grid-cols-[1fr_2fr] gap-6">
+        <div class="py-6 grid tablet:grid-cols-[1fr_2fr] gap-6">
           <mds-img class="rounded-lg" src='./movie-first-blood.jpg'/>
           <div class="grid gap-1 auto-rows-min">
             <mds-text typography='h4'>First Blood</mds-text>
@@ -29,8 +33,12 @@ const Template = args =>
         </div>
       </mds-tab-item>
       <mds-tab-item icon="mdi/alien" id="button" class="mobile:flex-1" label="Double Impact">
-        <div class="py-6 grid grid-cols-[1fr_2fr] gap-6">
-          <mds-img class="rounded-lg" src='./movie-double-impact.jpg'/>
+        <div class="py-6 grid tablet:grid-cols-[1fr_2fr] gap-6">
+          <div class="auto-rows-min grid gap-2">
+            <mds-img class="rounded-lg" src='./movie-double-impact.jpg'/>
+            <mds-img class="rounded-lg" src='./movie-double-impact-shot-01.jpg'/>
+            <mds-img class="rounded-lg" src='./movie-double-impact-shot-02.jpg'/>
+          </div>
           <div class="grid gap-1 auto-rows-min">
             <mds-text typography='h4'>Double Impact</mds-text>
             <mds-text>
@@ -40,8 +48,11 @@ const Template = args =>
         </div>
       </mds-tab-item>
       <mds-tab-item class="mobile:flex-1" label="The Third Man">
-        <div class="py-6 grid grid-cols-[1fr_2fr] gap-6">
-          <mds-img class="rounded-lg" src='./movie-the-third-man.jpg'/>
+        <div class="py-6 grid tablet:grid-cols-[1fr_2fr] gap-6">
+          <div class="auto-rows-min grid gap-2">
+            <mds-img class="rounded-lg" src='./movie-the-third-man.jpg'/>
+            <mds-img class="rounded-lg" src='./movie-the-third-man-shot.jpg'/>
+          </div>
           <div class="grid gap-1 auto-rows-min">
             <mds-text typography='h4'>The Third Man</mds-text>
             <mds-text>
@@ -59,3 +70,7 @@ const Template = args =>
   </div>
 
 export const Default = Template.bind({})
+export const Touch = Template.bind({})
+Touch.args = {
+  touch: true,
+}

@@ -1,7 +1,8 @@
-import { Component, Element, Event, EventEmitter, Host, Listen, h, Prop } from '@stencil/core'
+import clsx from 'clsx'
+import { Component, Element, Event, EventEmitter, Host, Listen, h, Prop, Watch } from '@stencil/core'
+import { DirectionType } from './meta/type'
 import { MdsTabEventDetail } from './meta/event-detail'
 import { cssDurationToMilliseconds } from '@common/unit'
-import { DirectionType } from './meta/type'
 
 @Component({
   tag: 'mds-tab',
@@ -18,9 +19,14 @@ export class MdsTab {
   private moveItemsTimeout: NodeJS.Timeout
 
   /**
+   * Sets component's contents to be swappable on mobile devices, this will result in forcing direction attribute to be se to 'natural'
+   */
+  @Prop({ reflect: true }) readonly touch: boolean = false
+
+  /**
    * Sets the direction where tab contents swipes
    */
-  @Prop({ reflect: true }) readonly direction: DirectionType = 'natural'
+  @Prop({ mutable: true, reflect: true }) direction: DirectionType = 'natural'
 
   /**
    * Emits when a children is changed
@@ -38,11 +44,25 @@ export class MdsTab {
       items.forEach((el: Element) => {
         const wrapper = document.createElement('div')
         wrapper.classList.add('content')
-        wrapper.classList.add('content--absolute')
         wrapper.innerHTML = el.innerHTML
         contents.appendChild(wrapper)
       })
+      this.checkTouchContent()
     }
+  }
+
+  private checkTouchContent = (): void => {
+    const content = this.element.shadowRoot?.querySelectorAll('.content') as NodeListOf<HTMLElement>
+    if (!this.touch) {
+      content.forEach((el: Element) => {
+        el.classList.add('content--absolute')
+      })
+      return
+    }
+
+    content.forEach((el: Element) => {
+      el.classList.remove('content--absolute')
+    })
   }
 
   private getCurrentItemHeight = (): number => {
@@ -136,9 +156,8 @@ export class MdsTab {
   }
 
   componentDidLoad ():void {
-    this.updateCSSCustomProps()
     this.attachContents()
-    this.swipeContent()
+    this.handleTouchAttribute()
   }
 
   private updateCSSCustomProps ():void {
@@ -152,14 +171,28 @@ export class MdsTab {
     this.element.scrollLeft = tabItem.offsetLeft - this.element.offsetLeft - (this.element.offsetWidth / 2) + (tabItem.offsetWidth / 2)
   }
 
+  @Watch('touch')
+  handleTouchAttribute (): void {
+    if (!this.touch) {
+      this.updateCSSCustomProps()
+      this.swipeContent()
+      return
+    }
+
+    this.direction = 'natural'
+    this.checkTouchContent()
+  }
+
   @Listen('mdsTabItemSelect')
   changeEventHandler (event: CustomEvent<string>): void {
     const items = this.element.querySelectorAll<HTMLMdsTabItemElement>('mds-tab-item')
 
-    clearTimeout(this.contentsHeightTimeout)
-    clearTimeout(this.moveItemsTimeout)
-    this.resetAnimations()
-    this.resetHeight()
+    if (!this.touch) {
+      clearTimeout(this.contentsHeightTimeout)
+      clearTimeout(this.moveItemsTimeout)
+      this.resetAnimations()
+      this.resetHeight()
+    }
 
     items.forEach((item, key) => {
       if (item.selected) {
@@ -177,7 +210,9 @@ export class MdsTab {
         item.selected = false
       }
     })
-    this.swipeContent()
+    if (!this.touch) {
+      this.swipeContent()
+    }
   }
 
   render () {
@@ -186,7 +221,7 @@ export class MdsTab {
         <div class="tabs" part="tabs">
           <slot/>
         </div>
-        <div class="contents" part="contents"></div>
+        <div class={clsx('contents', this.touch && 'contents--touch')} part="contents"></div>
       </Host>
     )
   }

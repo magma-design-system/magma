@@ -1,3 +1,5 @@
+@import url('../../tailwind/components.css');
+@tailwind components;
 @tailwind utilities;
 
 /**
@@ -29,9 +31,7 @@
 }
 
 :host( .scroll--mds-horizontal-scroll-hide-scrollbar ) {
-  -webkit-overflow-scrolling: touch;
-  -ms-overflow-style: none;
-  scrollbar-width: none;
+  @apply hide-scrollbar;
 }
 
 :host( .scroll--mds-horizontal-scroll-hide-scrollbar )::-webkit-scrollbar {
