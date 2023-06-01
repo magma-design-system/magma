@@ -25,7 +25,7 @@
   .focus-light-on,
   .focusable-light:focus-visible {
 
-    --magma-outline-blur: 2px solid theme('colors.tone-neutral');
+    --magma-outline-blur: 2px solid rgb(var(--tone-neutral));
   }
 
   .hide-scrollbar {

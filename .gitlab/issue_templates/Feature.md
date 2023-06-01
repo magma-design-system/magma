@@ -19,6 +19,12 @@ to let other components be able to style text selection, which is not possible r
 
 ## Proposal impact
 
+This feature should be a:
+
+- [~] Breaking change
+- [x] Minor
+- [~] Patch
+
 <!-- 🔴 Required
 Leave only the items affected and delete the others.
 If for some reason you don't find the project/environment/tool you are talking about, please open an issue (feature) to suggest its addition.
@@ -31,30 +37,28 @@ Impacts the following Magma Design System project:
 - [Identity][identity]
 - [~~React~~ (deprecated)][react]
 - [Stencil (web components)][stencil]
+- [Lit (web components)][stencil]
 - [Styles][styles]
 - [SVG Icons][svg-icons]
 
-Impacts the following Design System tool/environment:
+Impacts the following tool/environment:
 
 - [CI (Continuous Integration)][ci]
 - [Figma][figma]
 - [Gitlab][gitlab]
 
-<!-- 🟡 Recommended
-If present, provide a project related to the issue.
-
-Example:
 Impacts the following Maggioli products:
 
+- All products
 - [Biblioteca Digitale][prd-bib-dig]
 - [Magma Docs][magma-docs]
+- Mindy
 - [Periodici Maggioli][prd-per-mag]
 - [Quiz App][prd-quiz]
 - [R&D Days][prd-rnd-days]
-- [SistemaPA][prd-sis-pa]
+- SicraSearch
 - [Synbee][prd-synbee]
 
--->
 
 ## Related problem
 
@@ -145,7 +149,6 @@ Something like this would do the trick:
 [prd-per-mag]: https://gitlab.com/maggiolispa/ricerca-sviluppo-new-media/periodici-maggioli
 [prd-quiz]: https://gitlab.com/maggiolispa/ricerca-sviluppo-new-media/quiz-app-client
 [prd-rnd-days]: https://gitlab.com/maggiolispa/ricerca-sviluppo-new-media/rnd-days
-[prd-sis-pa]: https://gitlab.com/maggiolispa/ricerca-sviluppo-new-media/wordpress/sistemapa
 [prd-synbee]: https://gitlab.com/maggiolispa/ricerca-sviluppo-bari/synerbee
 [react]: https://gitlab.com/maggiolispa/ricerca-sviluppo-new-media/design-system/-/tree/dev/projects/react
 [stencil]: https://gitlab.com/maggiolispa/ricerca-sviluppo-new-media/design-system/-/tree/dev/projects/stencil

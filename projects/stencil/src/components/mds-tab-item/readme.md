@@ -23,6 +23,13 @@
 | `mdsTabItemSelect` | Emits when the tab item is selected | `CustomEvent<string>` |
 
 
+## Shadow Parts
+
+| Part       | Description |
+| ---------- | ----------- |
+| `"button"` |             |
+
+
 ## CSS Custom Properties
 
 | Name                                 | Description                                              |

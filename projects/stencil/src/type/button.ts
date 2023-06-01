@@ -4,6 +4,10 @@ export type ButtonType =
   | 'reset'
   | 'submit'
 
+export type ButtonTargetType =
+  |'self'
+  |'blank'
+
 export type ButtonSizeType =
   | 'sm'
   | 'md'

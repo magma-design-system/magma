@@ -15,7 +15,7 @@ export class MdsTabItem {
   /**
    * Specifies if the tab item is selected or not
    */
-  @Prop() readonly selected?: boolean
+  @Prop({ reflect: true }) readonly selected?: boolean
 
   /**
    * The icon displayed in the tab item
@@ -60,6 +60,7 @@ export class MdsTabItem {
         <mds-button class={clsx('button', this.selected && 'button--selected')}
           icon={this.icon}
           iconPosition={this.iconPosition}
+          part="button"
           size={this.size}
           type={this.type}
         >

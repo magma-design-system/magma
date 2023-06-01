@@ -34,24 +34,32 @@ export class MdsAccordion {
     items.forEach((item, key) => item.id = `item-${key}`)
   }
 
-  private changedChildrenHandler = (event: CustomEvent<MdsAccordionItemEventDetail>): void => {
-    console.log(event)
-    const items = this.queryItems()
-    const selectedItem: number[] = []
-    if (this.multiple) {
-      const list: (HTMLMdsAccordionItemElement | null)[] = []
-      items.forEach((item, key) => {
-        item.selected ? list.push(item) : list.push(null)
-        if (item.selected) {
-          selectedItem.push(key)
-        }
-        item.classList.remove('sibling')
-        if (list.length > 1 && list[key - 1] !== null) {
-          item.classList.add('sibling')
-        }
-      })
+  componentDidRender ():void {
+    this.selectMultipleItems()
+  }
 
-      this.changedEvent.emit({ children: items, selected: selectedItem.toString() })
+  private selectMultipleItems = (): void => {
+    const items = this.queryItems()
+    const list: (HTMLMdsAccordionItemElement | null)[] = []
+    const selectedItem: number[] = []
+    items.forEach((item, key) => {
+      item.selected ? list.push(item) : list.push(null)
+      if (item.selected) {
+        selectedItem.push(key)
+      }
+      item.classList.remove('sibling')
+      if (list.length > 1 && list[key - 1] !== null) {
+        item.classList.add('sibling')
+      }
+    })
+    this.changedEvent.emit({ children: items, selected: selectedItem.toString() })
+  }
+
+  private changedChildrenHandler = (event: CustomEvent<MdsAccordionItemEventDetail>): void => {
+    const items = this.queryItems()
+
+    if (this.multiple) {
+      this.selectMultipleItems()
       return
     }
 
