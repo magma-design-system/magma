@@ -42,10 +42,10 @@
     relative;
 
   background-color: var(--mds-button-background);
-  border-color: var(--mds-button-border-color) !important;
+  border-color: var(--mds-button-border-color);
   border-radius: var(--mds-button-radius);
   border-style: solid;
-  border-width: theme('borderWidth.2') !important;
+  border-width: theme('borderWidth.2');
   color: var(--mds-button-color);
   gap: var(--mds-button-gap);
   transition-property: background-color, border-color, box-shadow, color, transform, outline, outline-offset;

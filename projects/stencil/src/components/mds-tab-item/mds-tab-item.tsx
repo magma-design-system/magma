@@ -13,6 +13,11 @@ export class MdsTabItem {
   @State() isSelected: boolean
 
   /**
+   * Specifies the tab button item label
+   */
+  @Prop() readonly label?: string
+
+  /**
    * Specifies if the tab item is selected or not
    */
   @Prop({ reflect: true }) readonly selected?: boolean
@@ -64,8 +69,9 @@ export class MdsTabItem {
           size={this.size}
           type={this.type}
         >
-          <slot/>
+          {this.label}
         </mds-button>
+        <div hidden><slot/></div>
       </Host>
     )
   }
