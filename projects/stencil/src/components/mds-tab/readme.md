@@ -5,6 +5,14 @@
 <!-- Auto Generated Below -->
 
 
+## Properties
+
+| Property    | Attribute   | Description                                                                                                                        | Type                     | Default     |
+| ----------- | ----------- | ---------------------------------------------------------------------------------------------------------------------------------- | ------------------------ | ----------- |
+| `direction` | `direction` | Sets the direction where tab contents swipes                                                                                       | `"natural" \| "reverse"` | `'natural'` |
+| `strategy`  | `strategy`  | Sets component's contents to be swappable on mobile devices, this will result in forcing direction attribute to be se to 'natural' | `"default" \| "scroll"`  | `'default'` |
+
+
 ## Events
 
 | Event          | Description                      | Type                             |
@@ -12,12 +20,19 @@
 | `mdsTabChange` | Emits when a children is changed | `CustomEvent<MdsTabEventDetail>` |
 
 
+## Shadow Parts
+
+| Part         | Description |
+| ------------ | ----------- |
+| `"contents"` |             |
+| `"tabs"`     |             |
+
+
 ## CSS Custom Properties
 
-| Name                   | Description                                                    |
-| ---------------------- | -------------------------------------------------------------- |
-| `--mds-tab-background` | Sets the background-color of the component                     |
-| `--mds-tab-radius`     | Sets the border-radius of the button when the mouse is over it |
+| Name                 | Description                                                                         |
+| -------------------- | ----------------------------------------------------------------------------------- |
+| `--mds-tab-duration` | Sets the animation duration when the component switch from a content to another one |
 
 
 ----------------------------------------------

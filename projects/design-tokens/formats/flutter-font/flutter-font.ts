@@ -4,7 +4,7 @@ import fs from 'fs'
 import path from 'path'
 import { FormatterArguments } from 'style-dictionary/types/Format'
 import { firstArrayElement, ifEquals, leadZero, pascalCase, rgbChannel, safeString, ifDartTextStyleProp } from '../helpers'
-import { ifFlutterTextThemeVariant, flutterTextThemeVariant } from './helpers'
+import { ifFlutterTextThemeVariant, flutterTextThemeVariant, ifFlutterCompatible } from './helpers'
 
 const templatePath = path.resolve(__dirname, './template.hbs')
 const template = Handlebars.compile(fs.readFileSync(templatePath).toString())
@@ -22,6 +22,7 @@ Handlebars.registerHelper('getArrayFontName', value => {
 })
 Handlebars.registerHelper('ifFlutterTextThemeVariant', ifFlutterTextThemeVariant)
 Handlebars.registerHelper('flutterTextThemeVariant', flutterTextThemeVariant)
+Handlebars.registerHelper('ifFlutterCompatible', ifFlutterCompatible)
 
 StyleDictionary.registerTransform({
   name: 'flutter/toDouble',
