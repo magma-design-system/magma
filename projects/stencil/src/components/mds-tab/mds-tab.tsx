@@ -156,7 +156,9 @@ export class MdsTab {
   componentDidLoad ():void {
     this.tabs = this.element.shadowRoot?.querySelector('.tabs') as HTMLElement
     this.attachContents()
-    this.handleStrategyAttribute()
+    if (this.content.length > 0) {
+      this.handleStrategyAttribute()
+    }
   }
 
   disconnectedCallback (): void {
