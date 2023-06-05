@@ -42,7 +42,8 @@
     flex
     items-start
     overflow-hidden
-    relative;
+    relative
+    scroll-smooth;
 
   height: var(--mds-tab-contents-height);
   transition: height var(--mds-tab-duration) var(--mds-tab-timing-function);

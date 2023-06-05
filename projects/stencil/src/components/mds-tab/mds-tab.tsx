@@ -165,21 +165,19 @@ export class MdsTab {
   }
 
   private scrollTabs = (): void => {
-    console.log('scrollTabs')
     const items = this.queryItems()
     const tabItem = items[this.currentItem]
     this.tabs.scrollLeft = tabItem.offsetLeft - this.tabs.offsetLeft - (this.tabs.offsetWidth / 2) + (tabItem.offsetWidth / 2)
   }
 
-  private selectTabItemFromScroll = (scrollItem: number): void => {
+  private selectTabItem = (scrollItem: number): void => {
     const items = this.queryItems()
-    if (scrollItem !== this.currentItem) {
-      this.scrollTabs()
-    }
     items.forEach((item, key) => {
       if (key === scrollItem) {
         item.selected = true
+        this.changedEvent.emit({ id: key })
         this.currentItem = key
+        this.scrollTabs()
       } else {
         item.selected = false
       }
@@ -192,7 +190,9 @@ export class MdsTab {
       window.requestAnimationFrame(() => {
         this.lastKnownContentsScrollX = Math.abs(contentBox.left - this.contents.offsetLeft)
         const foundItem = Math.round(this.lastKnownContentsScrollX * this.content.length / (contentBox.width * this.content.length))
-        this.selectTabItemFromScroll(foundItem)
+        if (foundItem !== this.currentItem) {
+          this.selectTabItem(foundItem)
+        }
         this.ticking = false
       })
       this.ticking = true
@@ -201,11 +201,9 @@ export class MdsTab {
 
   private scrollToContent = (): void => {
     const contentBox = this.content[0].getBoundingClientRect()
-    console.log('scrollToContent', - (contentBox.width * this.currentItem))
-    this.contents.scrollLeft = - (contentBox.width * this.currentItem)
+    this.contents.scrollLeft = contentBox.width * this.currentItem
 
     this.contents.addEventListener('scrollend', () => {
-      console.log('scrollend')
       const contentBox = this.content[this.currentItem].getBoundingClientRect()
       this.contents.style.setProperty('--mds-tab-contents-height', `${contentBox.height}px`)
     })
@@ -242,16 +240,16 @@ export class MdsTab {
       }
     })
 
+    // since the external developer can define a custom id
+    // we must find the key from event.detail
     items.forEach((item, key) => {
       if (item.id === event.detail) {
-        item.selected = true
-        this.changedEvent.emit({ id: key })
-        this.currentItem = key
-        this.scrollTabs()
+        this.selectTabItem(key)
       } else {
         item.selected = false
       }
     })
+
     if (!this.touch) {
       this.swipeContent()
       return
