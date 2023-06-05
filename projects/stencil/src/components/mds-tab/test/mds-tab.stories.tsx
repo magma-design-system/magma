@@ -1,5 +1,5 @@
 import { h } from '@stencil/core'
-import { directionDictionary } from '../meta/dictionary'
+import { directionDictionary, strategyDictionary } from '../meta/dictionary'
 
 export default {
   title: 'UI / Tab',
@@ -10,9 +10,11 @@ export default {
       options: directionDictionary,
       control: { type: 'select' },
     },
-    touch: {
-      type: { name: 'boolean' },
+    strategy: {
+      type: { name: 'string' },
       description: 'Sets component\'s contents to be swappable on mobile devices, this will result in forcing direction attribute to be set to \'natural\'',
+      options: strategyDictionary,
+      control: { type: 'select' },
     },
   },
 }
@@ -70,7 +72,11 @@ const Template = args =>
   </div>
 
 export const Default = Template.bind({})
-export const Touch = Template.bind({})
-Touch.args = {
-  touch: true,
+export const Direction = Template.bind({})
+Direction.args = {
+  direction: 'reverse',
+}
+export const Strategy = Template.bind({})
+Strategy.args = {
+  strategy: 'scroll',
 }

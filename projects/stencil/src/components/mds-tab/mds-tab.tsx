@@ -1,6 +1,6 @@
 import clsx from 'clsx'
 import { Component, Element, Event, EventEmitter, Host, Listen, h, Prop, Watch } from '@stencil/core'
-import { DirectionType } from './meta/type'
+import { DirectionType, StrategyType } from './meta/type'
 import { MdsTabEventDetail } from './meta/event-detail'
 import { cssDurationToMilliseconds } from '@common/unit'
 
@@ -26,7 +26,7 @@ export class MdsTab {
   /**
    * Sets component's contents to be swappable on mobile devices, this will result in forcing direction attribute to be se to 'natural'
    */
-  @Prop({ reflect: true }) readonly touch: boolean = false
+  @Prop({ reflect: true }) readonly strategy: StrategyType = 'default'
 
   /**
    * Sets the direction where tab contents swipes
@@ -53,12 +53,12 @@ export class MdsTab {
         this.contents.appendChild(wrapper)
       })
       this.content = this.element.shadowRoot?.querySelectorAll('.content') as NodeListOf<HTMLElement>
-      this.checkTouchContent()
+      this.checkStrategyContent()
     }
   }
 
-  private checkTouchContent = (): void => {
-    if (!this.touch) {
+  private checkStrategyContent = (): void => {
+    if (this.strategy === 'default') {
       this.content.forEach((el: Element) => {
         el.classList.add('content--absolute')
       })
@@ -156,7 +156,7 @@ export class MdsTab {
   componentDidLoad ():void {
     this.tabs = this.element.shadowRoot?.querySelector('.tabs') as HTMLElement
     this.attachContents()
-    this.handleTouchAttribute()
+    this.handleStrategyAttribute()
   }
 
   disconnectedCallback (): void {
@@ -215,9 +215,9 @@ export class MdsTab {
     this.contents.scrollLeft = contentBox.width * this.currentItem
   }
 
-  @Watch('touch')
-  handleTouchAttribute (): void {
-    if (!this.touch) {
+  @Watch('strategy')
+  handleStrategyAttribute (): void {
+    if (this.strategy === 'default') {
       this.updateCSSCustomProps()
       this.swipeContent()
       this.contents.removeEventListener('scrollend', this.changeHeightOnScrollEnd.bind(this))
@@ -228,14 +228,14 @@ export class MdsTab {
     this.contents.addEventListener('scrollend', this.changeHeightOnScrollEnd.bind(this))
     this.contents.addEventListener('scroll', this.findCurrentItem.bind(this))
     this.direction = 'natural'
-    this.checkTouchContent()
+    this.checkStrategyContent()
   }
 
   @Listen('mdsTabItemSelect')
   changeEventHandler (event: CustomEvent<string>): void {
     const items = this.queryItems()
 
-    if (!this.touch) {
+    if (this.strategy === 'default') {
       clearTimeout(this.contentsHeightTimeout)
       clearTimeout(this.moveItemsTimeout)
       this.resetAnimations()
@@ -258,7 +258,7 @@ export class MdsTab {
       }
     })
 
-    if (!this.touch) {
+    if (this.strategy === 'default') {
       this.swipeContent()
       return
     }
@@ -272,7 +272,7 @@ export class MdsTab {
         <div class="tabs" part="tabs">
           <slot/>
         </div>
-        <div class={clsx('contents', this.touch && 'contents--touch')} part="contents"></div>
+        <div class={clsx('contents', this.strategy === 'scroll' && 'contents--scroll')} part="contents"></div>
       </Host>
     )
   }

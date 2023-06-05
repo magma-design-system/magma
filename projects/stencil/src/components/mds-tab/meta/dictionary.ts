@@ -3,6 +3,12 @@ const directionDictionary = [
   'reverse',
 ]
 
+const strategyDictionary = [
+  'default',
+  'scroll',
+]
+
 export {
   directionDictionary,
+  strategyDictionary,
 }
