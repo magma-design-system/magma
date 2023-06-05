@@ -159,6 +159,11 @@ export class MdsTab {
     this.handleTouchAttribute()
   }
 
+  disconnectedCallback (): void {
+    this.contents.removeEventListener('scrollend', this.changeHeightOnScrollEnd.bind(this))
+    this.contents.removeEventListener('scroll', this.findCurrentItem.bind(this))
+  }
+
   private updateCSSCustomProps ():void {
     const elementStyles = window.getComputedStyle(this.element)
     this.cssAnimationDuration = cssDurationToMilliseconds(elementStyles.getPropertyValue('--mds-tab-duration'))
@@ -199,14 +204,15 @@ export class MdsTab {
     }
   }
 
+  private changeHeightOnScrollEnd = (): void => {
+    console.log('scrollend')
+    const contentBox = this.content[this.currentItem].getBoundingClientRect()
+    this.contents.style.setProperty('--mds-tab-contents-height', `${contentBox.height}px`)
+  }
+
   private scrollToContent = (): void => {
     const contentBox = this.content[0].getBoundingClientRect()
     this.contents.scrollLeft = contentBox.width * this.currentItem
-
-    this.contents.addEventListener('scrollend', () => {
-      const contentBox = this.content[this.currentItem].getBoundingClientRect()
-      this.contents.style.setProperty('--mds-tab-contents-height', `${contentBox.height}px`)
-    })
   }
 
   @Watch('touch')
@@ -214,10 +220,12 @@ export class MdsTab {
     if (!this.touch) {
       this.updateCSSCustomProps()
       this.swipeContent()
+      this.contents.removeEventListener('scrollend', this.changeHeightOnScrollEnd.bind(this))
       this.contents.removeEventListener('scroll', this.findCurrentItem.bind(this))
       return
     }
 
+    this.contents.addEventListener('scrollend', this.changeHeightOnScrollEnd.bind(this))
     this.contents.addEventListener('scroll', this.findCurrentItem.bind(this))
     this.direction = 'natural'
     this.checkTouchContent()
