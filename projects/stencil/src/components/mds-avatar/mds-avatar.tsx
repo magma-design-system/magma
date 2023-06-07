@@ -1,10 +1,7 @@
 import { Component, Element, Host, h, State, Prop, Watch } from '@stencil/core'
 import clsx from 'clsx'
 import { avatarVariant } from './meta/variants'
-
-// From https://github.com/rikschennink/fitty/issues/76#issuecomment-1008750034
-// eslint-disable-next-line @typescript-eslint/no-var-requires
-const fitty = require('fitty/dist/fitty.min.js')
+import fitty from 'fitty'
 
 @Component({
   tag: 'mds-avatar',
