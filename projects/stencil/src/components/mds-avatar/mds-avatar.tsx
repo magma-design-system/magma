@@ -1,7 +1,7 @@
 import { Component, Element, Host, h, State, Prop, Watch } from '@stencil/core'
 import clsx from 'clsx'
 import { avatarVariant } from './meta/variants'
-import fitty from 'fitty'
+import fitty from 'fitty/dist/fitty.min.js'
 
 @Component({
   tag: 'mds-avatar',
