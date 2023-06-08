@@ -1,4 +1,6 @@
-{ 
+
+{
+  "accessibility": "material/accessibility_new",
   "account-details": "mdi/account-details",
   "action-approval": "material/approval",
   "action-archive": "material/archive",
@@ -538,6 +540,5 @@
   "work-project": "material/work",
   "workspace": "material/workspaces",
   "write-only": "material/drive_file_rename_outline",
-  "zen-mode": "material/self_improvement",
- "accessibility": "material/accessibility_new"
-}
+  "zen-mode": "material/self_improvement"
+ }
