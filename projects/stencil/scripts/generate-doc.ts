@@ -4,8 +4,10 @@ import { COMPONENTS_DIR, TEMPLATES_DIR } from './meta'
 import { ask } from 'stdio'
 import { checkComponentExistance, checkComponentWasBuilt } from './lib'
 import { join } from 'path'
-import { logStatus } from '../../../scripts/log'
+import { dontUseWithNX, logStatus } from '../../../scripts/log'
 import { readFile, writeFile } from 'fs/promises'
+
+dontUseWithNX()
 
 const stencilComment = '\n<!-- Auto Generated Below -->'
 const magmaComment = '<!-- Start script-generated Magma Docs -->'

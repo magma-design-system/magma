@@ -71,3 +71,4 @@ You can try it out on the component's [Storybook website][storybook]!
 [stencil-browser-support]: https://stenciljs.com/docs/browser-support
 
 <!-- End script-generated Magma Docs -->
+---
