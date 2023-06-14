@@ -11,20 +11,17 @@ const alias = {
   '@type': path.resolve(__dirname, '../src/types/')
 };
 const TsConfigPathsPlugin = require("tsconfig-paths-webpack-plugin");
-module.exports = {
-  stories: ['../src/**/*.stories.mdx', '../src/**/*.stories.@(js|jsx|ts|tsx)'],
-  staticDirs: ['../assets', '../dist'],
-  addons: ['@storybook/addon-essentials', '@storybook/addon-links', '@storybook/addon-notes', {
-    name: '@storybook/addon-postcss',
+const stories = ['../src/**/*.stories.mdx', '../src/**/*.stories.@(js|jsx|ts|tsx)']
+const staticDirs = ['../assets', '../dist']
+const addons = ['@storybook/addon-essentials', '@storybook/addon-links', '@storybook/addon-notes', {
+    name: '@storybook/addon-styling',
     options: {
-      postcssLoaderOptions: {
+      postCss: {
         implementation: require('postcss')
       }
     }
-  }, '@storybook/addon-mdx-gfm'],
-  webpackFinal: async (config, {
-    configType
-  }) => {
+  }, '@storybook/addon-mdx-gfm']
+const  webpackFinal = async (config, { configType }) => {
     // `configType` has a value of 'DEVELOPMENT' or 'PRODUCTION'
     // You can change the configuration based on that.
     // 'PRODUCTION' is used when building the static version of storybook.
@@ -53,12 +50,17 @@ module.exports = {
       configFile: path.resolve(__dirname, "../tsconfig.json")
     }));
     return config;
-  },
-  framework: {
-    name: '@storybook/react-webpack5',
-    options: {}
-  },
-  docs: {
-    autodocs: true
   }
-};
+const framework = { name: '@storybook/react-webpack5', options: {} }
+const docs = { autodocs: true }
+
+const config = {
+  stories,
+  staticDirs,
+  addons,
+  webpackFinal,
+  framework,
+  docs
+}
+
+export default config;

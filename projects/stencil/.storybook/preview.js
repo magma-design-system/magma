@@ -81,7 +81,7 @@ viewportKeys.forEach(viewportKeys => {
   viewports[viewportKeys] = decorateViewport(viewportKeys, media[viewportKeys])
 })
 
-export const parameters = {
+const parameters = {
   actions: { argTypesRegex: '^on[A-Z].*' },
   viewport: {
     devices,
@@ -89,10 +89,17 @@ export const parameters = {
   },
 }
 
-export const decorators = [
+const decorators = [
   (Story) => (
     <div className="p-4">
       <Story />
     </div>
   ),
 ];
+
+const preview = {
+  parameters,
+  decorators,
+}
+
+export default preview
