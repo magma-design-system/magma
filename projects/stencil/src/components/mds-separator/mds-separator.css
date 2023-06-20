@@ -1,0 +1,10 @@
+@tailwind utilities;
+
+:host {
+  @apply
+    flex
+    rounded-full
+    h-[1px];
+
+  background-color: var(--theme-default-05-secondary-decoration, theme('colors.tone-neutral-08'));
+}
