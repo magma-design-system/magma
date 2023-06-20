@@ -1,9 +1,9 @@
-.base-text:
+.base-separator:
   variables:
     COMPONENT: mds-separator
 
 # ISOLATE
-text-isolate:
+separator-isolate:
   extends: [.base-isolate, .base-separator]
   dependencies: [base-stencil-build]
 
