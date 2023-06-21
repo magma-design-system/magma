@@ -23,13 +23,23 @@
 | `mdsAccordionItemUnselect` | Emits when the component is unselected                 | `CustomEvent<MdsAccordionItemEventDetail>` |
 
 
+## Shadow Parts
+
+| Part         | Description |
+| ------------ | ----------- |
+| `"contents"` |             |
+
+
 ## CSS Custom Properties
 
-| Name                                     | Description                                            |
-| ---------------------------------------- | ------------------------------------------------------ |
-| `--mds-accordion-item-border-color`      | Sets the border-color of the element                   |
-| `--mds-accordion-item-color`             | Sets the text-color of the element                     |
-| `--mds-accordion-item-description-color` | Sets the color of the always visible title description |
+| Name                                      | Description                                                               |
+| ----------------------------------------- | ------------------------------------------------------------------------- |
+| `--mds-accordion-item-border-color`       | Sets the border-color of the component                                    |
+| `--mds-accordion-item-color`              | Sets the text-color of the component                                      |
+| `--mds-accordion-item-description-color`  | Sets the color of the always visible title description                    |
+| `--mds-accordion-item-duration`           | Sets the transition duration of the close/open animation of the component |
+| `--mds-accordion-item-padding-selected`   | Sets the vertical padding of the component when it's selected             |
+| `--mds-accordion-item-padding-unselected` | Sets the vertical padding of the component when it's unselected           |
 
 
 ## Dependencies
