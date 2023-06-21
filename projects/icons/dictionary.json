@@ -1,6 +1,4 @@
-
-{
-  "accessibility": "material/accessibility_new",
+{ "accessibility": "material/accessibility_new",
   "account-details": "mdi/account-details",
   "action-approval": "material/approval",
   "action-archive": "material/archive",
@@ -89,6 +87,7 @@
   "adv-denied": "maggioli/adv-denied",
   "adv": "material/campaign",
   "alarm": "material/alarm",
+  "auto-awesome-motion": "maggioli/auto-awesome-motion",
   "avatar-placeholder-user-group": "material/supervised_user_circle",
   "avatar-placeholder-user": "material/account_circle",
   "backpack": "material/backpack",
