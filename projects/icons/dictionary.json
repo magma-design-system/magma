@@ -114,6 +114,7 @@
   "church": "mdi/church",
   "citizenship": "maggioli/citizenship",
   "city-bin": "maggioli/city-bin",
+  "classic-permission": "maggioli/classic-permission",
   "clock-outline": "mdi/clock-outline",
   "close-circle": "mdi/close-circle",
   "code-barcode": "mdi/barcode",
@@ -420,6 +421,7 @@
   "role-editor": "material/verified_user",
   "role-owner": "mdi/crown",
   "role-subscriber": "material/face",
+  "roles-permission": "maggioli/roles-permission",
   "rubber-stamp": "maggioli/rubber-stamp",
   "rule": "material/rule",
   "rural-property": "material-icons-svg/agriculture",
@@ -464,6 +466,7 @@
   "status-warning": "material/warning",
   "sticky-note": "material/sticky_note_2",
   "stuck-codes": "maggioli/stuck-codes",
+  "subtractive-permission": "maggioli/subtractive-permission",
   "summary": "material/receipt_long",
   "tab": "material/tab",
   "table-view": "material/table_view",
@@ -541,5 +544,4 @@
   "workspace": "material/workspaces",
   "write-only": "material/drive_file_rename_outline",
   "zen-mode": "material/self_improvement"
-
 }
