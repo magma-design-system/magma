@@ -15,6 +15,7 @@ $RECYCLE.BIN/
 .directory/
 .env/
 .idea/
+.nova/
 .react/
 .sass-cache/
 .stencil/
