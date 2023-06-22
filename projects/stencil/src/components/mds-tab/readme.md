@@ -28,6 +28,13 @@
 | `"tabs"`     |             |
 
 
+## CSS Custom Properties
+
+| Name                 | Description                                                                         |
+| -------------------- | ----------------------------------------------------------------------------------- |
+| `--mds-tab-duration` | Sets the animation duration when the component switch from a content to another one |
+
+
 ----------------------------------------------
 
 Built with love @ **Maggioli Informatica / R&D Department**
