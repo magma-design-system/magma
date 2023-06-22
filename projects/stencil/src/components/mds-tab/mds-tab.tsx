@@ -47,13 +47,12 @@ export class MdsTab {
     const contentsShadow = this.contents.attachShadow({ mode: 'open', slotAssignment: 'manual' })
     const slot = document.createElement('slot')
     contentsShadow.append(slot)
-    // this.element.shadowRoot.slotAssignment = owRoot?.querySelector('slot[name=contents]') as HTMLSlotElement
     const w : HTMLDivElement[] = []
     if (items) {
       items.forEach((el: Element) => {
         const wrapper = document.createElement('div')
         wrapper.classList.add('content')
-        wrapper.innerHTML = el.innerHTML
+        el.childNodes.forEach(node => wrapper.appendChild(node.cloneNode(true)))
         this.contents.appendChild(wrapper)
         w.push(wrapper)
       })
