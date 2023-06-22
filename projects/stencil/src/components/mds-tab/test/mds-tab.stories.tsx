@@ -19,6 +19,21 @@ export default {
   },
 }
 
+const TemplateEmpty = args =>
+  <div class="grid gap-6">
+    <mds-tab {...args}>
+      <mds-notification strategy="absolute" target="button" value={14} visible={true} />
+      <mds-tab-item selected class="mobile:flex-1" label="First Blood"></mds-tab-item>
+      <mds-tab-item icon="mdi/alien" id="button" class="mobile:flex-1" label="Double Impact"></mds-tab-item>
+      <mds-tab-item class="mobile:flex-1" label="The Third Man"></mds-tab-item>
+    </mds-tab>
+    <mds-hr />
+    <div class="grid gap-1">
+      <mds-text typography='h3'>Bottom content</mds-text>
+      <mds-text>This content is outside the mds-tab component.</mds-text>
+    </div>
+  </div>
+
 const Template = args =>
   <div class="grid gap-6">
     <mds-tab {...args}>
@@ -80,3 +95,6 @@ export const Strategy = Template.bind({})
 Strategy.args = {
   strategy: 'scroll',
 }
+
+export const ManualTabContents = TemplateEmpty.bind({})
+
