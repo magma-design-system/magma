@@ -19,8 +19,8 @@
   --mds-accordion-item-color: var(--mds-accordion-color, theme('colors.tone-neutral-03'));
   --mds-accordion-item-description-color: var(--mds-accordion-description-color, theme('colors.tone-neutral-02'));
   --mds-accordion-item-duration: var(--mds-accordion-duration, 300ms);
-  --mds-accordion-item-padding-selected: var(--mds-accordion-padding-selected, theme('spacing.8'));
-  --mds-accordion-item-padding-unselected: var(--mds-accordion-padding-unselected, theme('spacing.4'));
+  --mds-accordion-item-padding-selected: var(--mds-accordion-padding-selected, theme('spacing.4') 0 theme('spacing.8') 0);
+  --mds-accordion-item-padding-unselected: var(--mds-accordion-padding-unselected, theme('spacing.4') 0 theme('spacing.4') 0);
 
   @apply
     duration-500
@@ -33,8 +33,7 @@
   border-top: solid var(--mds-accordion-item-border-width) transparent;
   color: var(--mds-accordion-item-color);
   fill: var(--mds-accordion-item-color);
-  padding-top: var(--mds-accordion-item-padding-unselected);
-  padding-bottom: var(--mds-accordion-item-padding-unselected);
+  padding: var(--mds-accordion-item-padding-unselected);
   margin-top: calc(-1 * var(--mds-accordion-item-border-width));
 }
 
@@ -43,8 +42,7 @@
 }
 
 :host( [selected] ) {
-  padding-top: var(--mds-accordion-item-padding-selected);
-  padding-bottom: var(--mds-accordion-item-padding-selected);
+  padding: var(--mds-accordion-item-padding-selected);
   border-bottom: solid var(--mds-accordion-item-border-width) var(--mds-accordion-item-border-color);
   border-top: solid var(--mds-accordion-item-border-width) var(--mds-accordion-item-border-color);
 }
