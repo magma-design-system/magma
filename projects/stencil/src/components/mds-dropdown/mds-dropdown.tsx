@@ -1,9 +1,10 @@
-import arrowSvg from './assets/arrow.svg'
-import { Component, Element, Event, EventEmitter, Host, Prop, h, Watch } from '@stencil/core'
-import { FloatingUIPlacement, FloatingUIStrategy } from '@type/floating-ui'
+import { hashValue, setAttributeIfEmpty } from '@common/aria'
 import { KeyboardManager } from '@common/keyboard-manager'
-import { arrow, autoPlacement, autoUpdate, computePosition, flip, Middleware, MiddlewareData, offset, shift } from '@floating-ui/dom'
-import { setAttributeIfEmpty, hashValue } from '@common/aria'
+import { cssDurationToMilliseconds } from '@common/unit'
+import { Middleware, MiddlewareData, arrow, autoPlacement, autoUpdate, computePosition, flip, offset, shift } from '@floating-ui/dom'
+import { Component, Element, Event, EventEmitter, Host, Prop, Watch, h } from '@stencil/core'
+import { FloatingUIPlacement, FloatingUIStrategy } from '@type/floating-ui'
+import arrowSvg from './assets/arrow.svg'
 import { MdsDropdownEventDetail } from './meta/event-detail'
 
 @Component({
@@ -16,7 +17,8 @@ export class MdsDropdown {
   private arrowEl: HTMLElement
   private backdropBackgroundVisible = 'rgba(var(--magma-backdrop-color, 0 0 0) / var(--magma-backdrop-opacity, 0.1))'
   private backdropBackgroundHidden = 'rgba(var(--magma-backdrop-color, 0 0 0) / 0)'
-  private backdropDuration = 2000
+  private cssBackdropDuration: string
+  private cssBackdropZIndex: string
   private backdropEl: HTMLElement
   private backdropId = 'mds-dropdown-backdrop'
   private backdropTimer: NodeJS.Timeout
@@ -94,7 +96,7 @@ export class MdsDropdown {
   /**
    * Specifies the visibility of the component.
    */
-  @Prop() readonly zIndex: number = 1000
+  @Prop() readonly zIndex: number
 
   /**
    * Emits when a modal is visible
@@ -111,7 +113,7 @@ export class MdsDropdown {
    */
   @Event({ eventName: 'mdsDropdownChange' }) changedEvent: EventEmitter<MdsDropdownEventDetail>
 
-  private handleCloseDropdown = (e:Event): void => {
+  private handleCloseDropdown = (e: Event): void => {
     if (!this.visible) {
       return
     }
@@ -139,8 +141,9 @@ export class MdsDropdown {
       this.backdropEl.style.inset = '0'
       this.backdropEl.style.pointerEvents = 'none'
       this.backdropEl.style.position = 'fixed'
-      this.backdropEl.style.transition = `background-color ${this.backdropDuration / 10000}s ease-out`
-      this.backdropEl.style.zIndex = (this.zIndex - 1).toString()
+      this.backdropEl.style.transition = `background-color ${this.cssBackdropDuration} ease-out`
+      this.backdropEl.style.zIndex = this.cssBackdropZIndex
+      console.log('backdrop-z-index', this.cssBackdropZIndex)
     }
     document.body.appendChild(this.backdropEl)
 
@@ -158,16 +161,16 @@ export class MdsDropdown {
     clearTimeout(this.backdropTimer)
     this.backdropTimer = setTimeout(() => {
       this.backdropEl.remove()
-    }, this.backdropDuration)
+    }, cssDurationToMilliseconds(this.cssBackdropDuration))
   }
 
-  private callerOnClick = ():void => {
+  private callerOnClick = (): void => {
     this.handleVisibility(!this.visible)
   }
 
   private arrowInset = (middleware: MiddlewareData, arrowPosition: string): { bottom?: string, left?: string, right?: string, top?: string } => {
     const { arrow } = middleware
-    const inset = { bottom:'', left: '', right: '', top: '' }
+    const inset = { bottom: '', left: '', right: '', top: '' }
 
     if (arrow === undefined) {
       return {}
@@ -232,7 +235,7 @@ export class MdsDropdown {
     }
   }
 
-  private updatePosition = ():void => {
+  private updatePosition = (): void => {
     if (!this.caller) return
 
     const middleware: Middleware[] = new Array<Middleware>()
@@ -365,7 +368,15 @@ export class MdsDropdown {
 
   @Watch('zIndex')
   zIndexChanged (newValue: number): void {
-    this.host.style.setProperty('z-index', newValue.toString())
+    if (newValue) {
+      this.host.style.setProperty('z-index', newValue.toString())
+    }
+  }
+
+  private updateCSSCustomProps = (): void => {
+    const elementStyles = window.getComputedStyle(this.host)
+    this.cssBackdropDuration = elementStyles.getPropertyValue('--mds-dropdown-backdrop-duration')
+    this.cssBackdropZIndex = elementStyles.getPropertyValue('--mds-dropdown-backdrop-z-index')
   }
 
   componentWillLoad (): void {
@@ -384,6 +395,7 @@ export class MdsDropdown {
   }
 
   componentDidLoad (): void {
+    this.updateCSSCustomProps()
     document.addEventListener('click', this.handleCloseDropdown)
     this.arrowEl = this.host.shadowRoot?.querySelector('.arrow') as HTMLElement
     const caller = document.getElementById(this.target)
@@ -408,15 +420,16 @@ export class MdsDropdown {
   }
 
   disconnectedCallback (): void {
+    this.detachBackdrop()
     this.km.detachEscapeBehavior()
-    this.cleanupAutoUpdate = () => {return}
+    this.cleanupAutoUpdate = () => { return }
   }
 
   render () {
     return (
       <Host>
-        <div class="arrow" innerHTML={arrowSvg}/>
-        <slot/>
+        <div class="arrow" innerHTML={arrowSvg} />
+        <slot />
       </Host>
     )
   }
