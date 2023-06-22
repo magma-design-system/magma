@@ -18,8 +18,8 @@
   --mds-accordion-color: theme('colors.tone-neutral-03');
   --mds-accordion-description-color: theme('colors.tone-neutral-02');
   --mds-accordion-duration: 300ms;
-  --mds-accordion-padding-selected: theme('spacing.8');
-  --mds-accordion-padding-unselected: theme('spacing.4');
+  --mds-accordion-padding-selected: theme('spacing.4') 0 theme('spacing.8') 0;
+  --mds-accordion-padding-unselected: theme('spacing.4') 0;
 
   @apply grid;
 }

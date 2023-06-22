@@ -34,6 +34,10 @@ export class MdsAccordion {
     items.forEach((item, key) => item.id = `item-${key}`)
   }
 
+  componentDidRender (): void {
+    console.log('componentDidRender')
+  }
+
   private selectMultipleItems = (): void => {
     const items = this.queryItems()
     const list: (HTMLMdsAccordionItemElement | null)[] = []
