@@ -44,17 +44,21 @@ export class MdsTab {
   private attachContents = (): void => {
     const items = this.queryItems()
     this.contents = this.element.shadowRoot?.querySelector('.contents') as HTMLElement
-    // this.element.shadowRoot.slotAssignment = 'manual'
-    // const slotContents = this.element.shadowRoot?.querySelector('slot[name=contents]') as HTMLSlotElement
+    const contentsShadow = this.contents.attachShadow({ mode: 'open', slotAssignment: 'manual' })
+    const slot = document.createElement('slot')
+    contentsShadow.append(slot)
+    // this.element.shadowRoot.slotAssignment = owRoot?.querySelector('slot[name=contents]') as HTMLSlotElement
+    const w : HTMLDivElement[] = []
     if (items) {
       items.forEach((el: Element) => {
         const wrapper = document.createElement('div')
         wrapper.classList.add('content')
         wrapper.innerHTML = el.innerHTML
-        wrapper.slot = 'contents'
-        // slotContents.assign(wrapper)
         this.contents.appendChild(wrapper)
+        w.push(wrapper)
       })
+      slot.assign(...w)
+
       this.content = this.element.shadowRoot?.querySelectorAll('.content') as NodeListOf<HTMLElement>
       this.checkStrategyContent()
     }
@@ -278,7 +282,6 @@ export class MdsTab {
           <slot />
         </div>
         <div class={clsx('contents', this.strategy === 'scroll' && 'contents--scroll')} part="contents">
-          <slot name="contents" />
         </div>
       </Host>
     )
