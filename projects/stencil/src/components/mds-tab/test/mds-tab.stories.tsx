@@ -39,7 +39,7 @@ const Template = args =>
     <mds-tab {...args}>
       <mds-notification strategy="absolute" target="button" value={14} visible={true} />
       <mds-tab-item selected class="mobile:flex-1" label="First Blood">
-        <div class="py-6 grid tablet:grid-cols-[1fr_2fr] gap-6 bg-label-amaranth-03">
+        <div class="py-6 px-2 grid tablet:grid-cols-[1fr_2fr] gap-6">
           <mds-img class="rounded-lg" src='./movie-first-blood.jpg' />
           <div class="grid gap-1 auto-rows-min">
             <mds-text typography='h4'>First Blood</mds-text>
@@ -50,7 +50,7 @@ const Template = args =>
         </div>
       </mds-tab-item>
       <mds-tab-item icon="mdi/alien" id="button" class="mobile:flex-1" label="Double Impact">
-        <div class="py-6 grid tablet:grid-cols-[1fr_2fr] gap-6">
+        <div class="py-6 px-2 grid tablet:grid-cols-[1fr_2fr] gap-6">
           <div class="auto-rows-min grid gap-2">
             <mds-img class="rounded-lg" src='./movie-double-impact.jpg' />
             <mds-img class="rounded-lg" src='./movie-double-impact-shot-01.jpg' />
@@ -65,7 +65,7 @@ const Template = args =>
         </div>
       </mds-tab-item>
       <mds-tab-item class="mobile:flex-1" label="The Third Man">
-        <div class="py-6 grid tablet:grid-cols-[1fr_2fr] gap-6">
+        <div class="py-6 px-2 grid tablet:grid-cols-[1fr_2fr] gap-6">
           <div class="auto-rows-min grid gap-2">
             <mds-img class="rounded-lg" src='./movie-the-third-man.jpg' />
             <mds-img class="rounded-lg" src='./movie-the-third-man-shot.jpg' />
