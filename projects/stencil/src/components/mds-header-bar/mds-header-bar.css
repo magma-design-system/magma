@@ -39,8 +39,11 @@
 .nav {
   @apply
     gap-4
-    inline-flex
-    tablet-max:hidden;
+    inline-flex;
+}
+
+.nav--hide-on-mobile {
+  @apply tablet-max:hidden;
 }
 
 .icon {

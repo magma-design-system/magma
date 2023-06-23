@@ -1,4 +1,5 @@
-{ "accessibility": "material/accessibility_new",
+{
+  "accessibility": "material/accessibility_new",
   "account-details": "mdi/account-details",
   "action-approval": "material/approval",
   "action-archive": "material/archive",
@@ -274,6 +275,9 @@
   "fullscreen-on": "material/fullscreen",
   "gantt": "mdi/chart-gantt",
   "ground-property": "maggioli/field",
+  "group-assigned-automatically-system": "maggioli/group-assigned-automatically-system",
+  "group-ceased": "maggioli/group-ceased",
+  "group-inherited": "maggioli/group-inherited",
   "handyman": "material/handyman",
   "head-question": "mdi/head-question",
   "health-mask": "material/masks",
@@ -519,6 +523,7 @@
   "user-privileges": "mdi/account-key",
   "user-roles": "material/theater_comedy",
   "user-search": "material/person_search",
+  "user-signed-out": "maggioli/user-signed-out",
   "user-team": "material/group",
   "user": "material/person",
   "vehicle-agriculture": "material/agriculture",
@@ -540,4 +545,4 @@
   "workspace": "material/workspaces",
   "write-only": "material/drive_file_rename_outline",
   "zen-mode": "material/self_improvement"
- }
+}

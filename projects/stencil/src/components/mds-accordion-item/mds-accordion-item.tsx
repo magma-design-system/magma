@@ -1,7 +1,7 @@
 import miBaselineKeyboardArrowUp from '@icon/mi/baseline/keyboard-arrow-up.svg'
-import { Component, Host, h, Prop, Element, Event, EventEmitter } from '@stencil/core'
-import { MdsAccordionItemEventDetail } from './meta/event-detail'
+import { Component, Element, Event, EventEmitter, Host, Prop, h } from '@stencil/core'
 import { TypographyTitleType } from '@type/typography'
+import { MdsAccordionItemEventDetail } from './meta/event-detail'
 
 @Component({
   tag: 'mds-accordion-item',
@@ -58,16 +58,18 @@ export class MdsAccordionItem {
   render () {
     return (
       <Host>
-        <button aria-controls="contents" aria-expanded={ this.selected ? 'true' : 'false' } class="action focusable" id="action" onClick={ this.toggle } role="button" tabindex="0">
-          <mds-text typography={ this.typography }>
-            { this.description }
+        <button aria-controls="contents" aria-expanded={this.selected ? 'true' : 'false'} class="action focusable" id="action" onClick={this.toggle} role="button" tabindex="0">
+          <mds-text typography={this.typography}>
+            {this.description}
           </mds-text>
-          <mds-text aria-hidden="true" class="icon-button" typography={ this.typography }>
-            <i class="svg icon" innerHTML={miBaselineKeyboardArrowUp}/>
+          <mds-text aria-hidden="true" class="icon-button" typography={this.typography}>
+            <i class="svg icon" innerHTML={miBaselineKeyboardArrowUp} />
           </mds-text>
         </button>
-        <div aria-labelledby="action" class="contents" id="contents" role="region">
-          <slot/>
+        <div class="contents" id="contents">
+          <div aria-labelledby="action" class="contents-expander" part="contents" role="region">
+            <slot />
+          </div>
         </div>
       </Host>
     )

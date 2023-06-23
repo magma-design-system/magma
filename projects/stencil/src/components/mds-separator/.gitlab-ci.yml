@@ -1,0 +1,25 @@
+.base-separator:
+  variables:
+    COMPONENT: mds-separator
+
+# ISOLATE
+separator-isolate:
+  extends: [.base-isolate, .base-separator]
+  dependencies: [base-stencil-build]
+
+# TEST
+separator-publish-test:
+  extends: [.base-stencil-publish-test, .base-separator]
+  dependencies: [base-stencil-build, separator-isolate]
+
+# PUBLISH
+separator-publish:
+  extends: [.base-stencil-publish, .base-separator]
+  dependencies: [base-stencil-build, separator-isolate]
+  needs: [base-stencil-build, separator-isolate, separator-publish-test]
+
+# INSTALL TEST
+separator-install-test:
+  extends: [.base-stencil-install-test, .base-separator]
+  dependencies: [base-stencil-build, separator-isolate]
+  needs: [base-stencil-build, separator-isolate, separator-publish]

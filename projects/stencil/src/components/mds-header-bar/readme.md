@@ -5,6 +5,13 @@
 <!-- Auto Generated Below -->
 
 
+## Properties
+
+| Property     | Attribute     | Description                                                                                                 | Type      | Default |
+| ------------ | ------------- | ----------------------------------------------------------------------------------------------------------- | --------- | ------- |
+| `mobileMenu` | `mobile-menu` | Sets the visibility of the hamburger menu for mobile behaviour, it's automatically set by mds-header parent | `boolean` | `true`  |
+
+
 ## Events
 
 | Event              | Description                        | Type                |

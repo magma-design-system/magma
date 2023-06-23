@@ -19,6 +19,18 @@
 | `mdsAccordionChange` | Emits when the component attribute selected is changed | `CustomEvent<MdsAccordionEventDetail>` |
 
 
+## CSS Custom Properties
+
+| Name                                 | Description                                                                                           |
+| ------------------------------------ | ----------------------------------------------------------------------------------------------------- |
+| `--mds-accordion-border-color`       | Sets the border-color of the component children mds-accordion-item                                    |
+| `--mds-accordion-color`              | Sets the text-color of the component children mds-accordion-item                                      |
+| `--mds-accordion-description-color`  | Sets the color of the always visible title description                                                |
+| `--mds-accordion-duration`           | Sets the transition duration of the close/open animation of the component children mds-accordion-item |
+| `--mds-accordion-padding-selected`   | Sets the vertical padding of the component children mds-accordion-item when it's selected             |
+| `--mds-accordion-padding-unselected` | Sets the vertical padding of the component children mds-accordion-item when it's unselected           |
+
+
 ----------------------------------------------
 
 Built with love @ **Maggioli Informatica / R&D Department**

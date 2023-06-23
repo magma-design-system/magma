@@ -1,8 +1,8 @@
-import clsx from 'clsx'
-import { Component, Element, Event, EventEmitter, Host, Listen, h, Prop, Watch } from '@stencil/core'
-import { DirectionType, StrategyType } from './meta/type'
-import { MdsTabEventDetail } from './meta/event-detail'
 import { cssDurationToMilliseconds } from '@common/unit'
+import { Component, Element, Event, EventEmitter, Host, Listen, Prop, Watch, h } from '@stencil/core'
+import clsx from 'clsx'
+import { MdsTabEventDetail } from './meta/event-detail'
+import { DirectionType, StrategyType } from './meta/type'
 
 @Component({
   tag: 'mds-tab',
@@ -38,20 +38,26 @@ export class MdsTab {
    */
   @Event({ eventName: 'mdsTabChange' }) changedEvent: EventEmitter<MdsTabEventDetail>
 
-  private queryItems = ():NodeListOf<HTMLMdsTabItemElement> =>
+  private queryItems = (): NodeListOf<HTMLMdsTabItemElement> =>
     this.element.querySelectorAll<HTMLMdsTabItemElement>('mds-tab-item')
 
   private attachContents = (): void => {
     const items = this.queryItems()
     this.contents = this.element.shadowRoot?.querySelector('.contents') as HTMLElement
-    this.contents.innerHTML = ''
+    const contentsShadow = this.contents.attachShadow({ mode: 'open', slotAssignment: 'manual' })
+    const slot = document.createElement('slot')
+    contentsShadow.append(slot)
+    const w : HTMLDivElement[] = []
     if (items) {
       items.forEach((el: Element) => {
         const wrapper = document.createElement('div')
         wrapper.classList.add('content')
-        wrapper.innerHTML = el.innerHTML
+        el.childNodes.forEach(node => wrapper.appendChild(node.cloneNode(true)))
         this.contents.appendChild(wrapper)
+        w.push(wrapper)
       })
+      slot.assign(...w)
+
       this.content = this.element.shadowRoot?.querySelectorAll('.content') as NodeListOf<HTMLElement>
       this.checkStrategyContent()
     }
@@ -91,7 +97,7 @@ export class MdsTab {
     }, this.cssAnimationDuration)
   }
 
-  private moveItems = (nextItemDirection: 'left'|'right'): void => {
+  private moveItems = (nextItemDirection: 'left' | 'right'): void => {
     const prevItemDirection = nextItemDirection === 'left' ? 'right' : 'left'
 
     if (this.previousItem >= 0) {
@@ -141,7 +147,7 @@ export class MdsTab {
     this.moveItems('left')
   }
 
-  componentWillLoad ():void {
+  componentWillLoad (): void {
     const items = this.queryItems()
     items.forEach((item, key) => {
       if (!item.id) {
@@ -153,7 +159,7 @@ export class MdsTab {
     })
   }
 
-  componentDidLoad ():void {
+  componentDidLoad (): void {
     this.tabs = this.element.shadowRoot?.querySelector('.tabs') as HTMLElement
     this.attachContents()
     if (this.content.length > 0) {
@@ -166,7 +172,7 @@ export class MdsTab {
     this.contents.removeEventListener('scroll', this.findCurrentItem.bind(this))
   }
 
-  private updateCSSCustomProps ():void {
+  private updateCSSCustomProps (): void {
     const elementStyles = window.getComputedStyle(this.element)
     this.cssAnimationDuration = cssDurationToMilliseconds(elementStyles.getPropertyValue('--mds-tab-duration'))
   }
@@ -272,9 +278,10 @@ export class MdsTab {
     return (
       <Host>
         <div class="tabs" part="tabs">
-          <slot/>
+          <slot />
         </div>
-        <div class={clsx('contents', this.strategy === 'scroll' && 'contents--scroll')} part="contents"></div>
+        <div class={clsx('contents', this.strategy === 'scroll' && 'contents--scroll')} part="contents">
+        </div>
       </Host>
     )
   }
