@@ -71,6 +71,22 @@ Affected problems:
 | `mdsDropdownVisible` | Emits when a modal is visible           | `CustomEvent<MdsDropdownEventDetail>` |
 
 
+## CSS Custom Properties
+
+| Name                               | Description                                                                 |
+| ---------------------------------- | --------------------------------------------------------------------------- |
+| `--mds-dropdown-arrow-background`  | Sets the fill color of the arrow.                                           |
+| `--mds-dropdown-backdrop-duration` | Sets the transition duration of the backdrop, used by component's code too. |
+| `--mds-dropdown-backdrop-z-indx`   | Sets the backdrop z-index, used by component's code too.                    |
+| `--mds-dropdown-background`        | Sets the background-color of the dropdown.                                  |
+| `--mds-dropdown-drop-shadow`       | Sets the drop-shadow of the dropdown.                                       |
+| `--mds-dropdown-duration`          | Sets the duration of the dropdown animation.                                |
+| `--mds-dropdown-ease`              | Sets the easing of the dropdown animation.                                  |
+| `--mds-dropdown-transform-from`    | Sets the from animation transform of the dropdown.                          |
+| `--mds-dropdown-transform-to`      | Sets the to animation transform of the dropdown.                            |
+| `--mds-dropdown-z-index`           | Sets the z-index of the component.                                          |
+
+
 ----------------------------------------------
 
 Built with love @ **Maggioli Informatica / R&D Department**
