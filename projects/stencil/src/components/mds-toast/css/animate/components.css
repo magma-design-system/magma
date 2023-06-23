@@ -11,9 +11,10 @@
 
   .animate-outro {
     @apply
-      duration-300
       ease-in-cubic
       transition-cosmetic;
+
+    transition-duration: var(--mds-toast-duration, 300ms);
   }
 
   .animate-bottom-intro {

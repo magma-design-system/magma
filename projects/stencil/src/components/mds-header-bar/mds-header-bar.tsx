@@ -1,5 +1,6 @@
-import { Component, Element, Event, EventEmitter, Host, Listen, State, h } from '@stencil/core'
 import miRoundMenu from '@icon/mi/round/menu.svg'
+import { Component, Element, Event, EventEmitter, Host, Listen, Prop, State, h } from '@stencil/core'
+import clsx from 'clsx'
 
 @Component({
   tag: 'mds-header-bar',
@@ -10,8 +11,12 @@ export class MdsHeaderBar {
 
   private hasNav: boolean
   @Element() host: HTMLMdsHeaderBarElement
+  @State() isOpened: boolean
 
-  @State() isOpened:boolean
+  /**
+   * Sets the visibility of the hamburger menu for mobile behaviour, it's automatically set by mds-header parent
+   */
+  @Prop({ mutable: true, reflect: true }) mobileMenu = true
 
   componentWillLoad (): void {
     this.hasNav = this.host.querySelector('[slot="nav"]') !== null
@@ -37,15 +42,15 @@ export class MdsHeaderBar {
       <Host>
         <div class="contents">
           <div class="logo">
-            <slot/>
+            <slot />
           </div>
-          { this.hasNav &&
-            <nav class="nav">
-              <slot name="nav"/>
+          {this.hasNav &&
+            <nav class={clsx('nav', this.mobileMenu && 'nav--hide-on-mobile')}>
+              <slot name="nav" />
             </nav>
           }
-          { this.hasNav &&
-            <i class="svg icon" innerHTML={ miRoundMenu } onClick={ this.open } />
+          {this.mobileMenu &&
+            <i class="svg icon" innerHTML={miRoundMenu} onClick={this.open} />
           }
         </div>
       </Host>

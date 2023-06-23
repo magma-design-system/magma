@@ -67,7 +67,7 @@ const Template = ({ layout, ...args }) =>
     <mds-button id="my-dropdown">Show Fred</mds-button>
     <mds-dropdown target="my-dropdown" {...args}>
       <mds-author class="text-tone-neutral-04">
-        <mds-avatar aria-describedby="A protrait of Frederick Phillips Brooks Jr." initials="fb" src="./fred-brooks-zoom.webp" slot="avatar" class="w-20 bg-brand-maggioli-06"/>
+        <mds-avatar aria-describedby="A protrait of Frederick Phillips Brooks Jr." initials="fb" src="./fred-brooks-zoom.webp" slot="avatar" class="w-20 bg-brand-maggioli-06" />
         <mds-text typography="h6" class="text-tone-neutral-02">Fred Brooks</mds-text>
         <mds-text typography="caption">Software engineer</mds-text>
         <mds-text typography="caption">IT</mds-text>
@@ -75,7 +75,7 @@ const Template = ({ layout, ...args }) =>
       <mds-text typography="detail" class="text-tone-neutral-04">
         Frederick Phillips "Fred" Brooks Jr. (born April 19, 1931) is an American computer architect, software engineer, and computer scientist.
       </mds-text>
-      <mds-hr class="h-[2px] bg-tone-neutral-08"/>
+      <mds-hr class="h-[2px] bg-tone-neutral-08" />
       <mds-button class="justify-start px-0" icon="mi/baseline/info" variant="dark" tone="quiet">User infos</mds-button>
       <mds-button class="justify-start px-0" icon="mi/baseline/settings" variant="dark" tone="quiet">Account</mds-button>
       <mds-button class="justify-start px-0" icon="mi/baseline/logout" variant="dark" tone="quiet">Exit</mds-button>
@@ -89,6 +89,47 @@ export const NoTarget = () =>
     {/* Intended the error here */}
     <mds-dropdown target=''>
       <mds-text>Ciao</mds-text>
+    </mds-dropdown>
+  </div>
+
+const TemplateNested = ({ layout, ...args }) =>
+  <div>
+    <mds-header>
+      <mds-header-bar>
+        <div class="flex gap-2 items-center">
+          <mds-img
+            class="w-10"
+            src="./logo-gruppo-maggioli.svg"
+          />
+          <div class="mb-1">
+            <mds-text typography="h6">
+              Gruppo Maggioli
+            </mds-text>
+            <mds-text
+              class="text-tone-neutral-04"
+              typography="option"
+            >
+              Header by RD Team
+            </mds-text>
+          </div>
+        </div>
+        <mds-button slot="nav" id="my-dropdown">Show Fred</mds-button>
+      </mds-header-bar>
+    </mds-header>
+    <mds-dropdown target="my-dropdown" class="max-w-[350px]" {...args}>
+      <mds-author class="text-tone-neutral-04">
+        <mds-avatar aria-describedby="A protrait of Frederick Phillips Brooks Jr." initials="fb" src="./fred-brooks-zoom.webp" slot="avatar" class="w-20 bg-brand-maggioli-06" />
+        <mds-text typography="h6" class="text-tone-neutral-02">Fred Brooks</mds-text>
+        <mds-text typography="caption">Software engineer</mds-text>
+        <mds-text typography="caption">IT</mds-text>
+      </mds-author>
+      <mds-text typography="detail" class="text-tone-neutral-04">
+        Frederick Phillips "Fred" Brooks Jr. (born April 19, 1931) is an American computer architect, software engineer, and computer scientist.
+      </mds-text>
+      <mds-hr class="h-[2px] bg-tone-neutral-08" />
+      <mds-button class="justify-start px-0" icon="mi/baseline/info" variant="dark" tone="quiet">User infos</mds-button>
+      <mds-button class="justify-start px-0" icon="mi/baseline/settings" variant="dark" tone="quiet">Account</mds-button>
+      <mds-button class="justify-start px-0" icon="mi/baseline/logout" variant="dark" tone="quiet">Exit</mds-button>
     </mds-dropdown>
   </div>
 
@@ -194,9 +235,8 @@ Strategy.args = {
   visible: true,
 }
 
-export const Visible = Template.bind({})
-Visible.args = {
-  class: 'max-w-[350px] w-full',
-  layout: 'flex justify-start',
-  visible: false,
+export const NestedBestPractice = TemplateNested.bind({})
+
+NestedBestPractice.args = {
+  backdrop: true,
 }

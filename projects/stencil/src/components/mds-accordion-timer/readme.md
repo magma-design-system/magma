@@ -19,6 +19,17 @@
 | `mdsAccordionTimerChange` | Emits when the accordion changes it's item | `CustomEvent<void>` |
 
 
+## CSS Custom Properties
+
+| Name                                            | Description                                                                                 |
+| ----------------------------------------------- | ------------------------------------------------------------------------------------------- |
+| `--mds-accordion-timer-color`                   | Sets the text color of the component mds-accordion-timer-item                               |
+| `--mds-accordion-timer-duration`                | Sets the transition duration of open/close animation of the mds-accordion-timer-item        |
+| `--mds-accordion-timer-progress-bar-background` | Sets the background-color of the progress bar when the mds-accordion-timer-item is selected |
+| `--mds-accordion-timer-progress-bar-color`      | Sets the color of the progress bar when the mds-accordion-timer-item is selected            |
+| `--mds-accordion-timer-progress-bar-thickness`  | Sets thickness of the progress bar of the mds-accordion-timer-item                          |
+
+
 ----------------------------------------------
 
 Built with love @ **Maggioli Informatica / R&D Department**

@@ -1,6 +1,6 @@
+import { Component, Element, Event, EventEmitter, Host, Prop, State, Watch, h } from '@stencil/core'
+import { ButtonIconPositionType, ButtonSizeType, ButtonType } from '@type/button'
 import clsx from 'clsx'
-import { ButtonIconPositionType, ButtonType, ButtonSizeType } from '@type/button'
-import { Component, Host, h, Element, Prop, State, Event, EventEmitter, Watch } from '@stencil/core'
 
 @Component({
   tag: 'mds-tab-item',
@@ -71,7 +71,7 @@ export class MdsTabItem {
         >
           {this.label}
         </mds-button>
-        <div hidden><slot/></div>
+        <div hidden><slot /></div>
       </Host>
     )
   }
