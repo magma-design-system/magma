@@ -1,22 +1,7 @@
 import { h } from '@stencil/core'
-import { directionDictionary, strategyDictionary } from '../meta/dictionary'
 
 export default {
   title: 'UI / Tab',
-  argTypes: {
-    direction: {
-      type: { name: 'string' },
-      description: 'Sets the direction where tab contents swipes',
-      options: directionDictionary,
-      control: { type: 'select' },
-    },
-    strategy: {
-      type: { name: 'string' },
-      description: 'Sets component\'s contents to be swappable on mobile devices, this will result in forcing direction attribute to be set to \'natural\'',
-      options: strategyDictionary,
-      control: { type: 'select' },
-    },
-  },
 }
 
 const TemplateEmpty = args =>
@@ -88,14 +73,6 @@ const Template = args =>
   </div>
 
 export const Default = Template.bind({})
-export const Direction = Template.bind({})
-Direction.args = {
-  direction: 'reverse',
-}
-export const Strategy = Template.bind({})
-Strategy.args = {
-  strategy: 'scroll',
-}
 
 export const ManualTabContents = TemplateEmpty.bind({})
 
