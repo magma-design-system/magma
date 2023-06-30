@@ -10,21 +10,20 @@ export class MdsTab {
 
   @Element() private element: HTMLMdsTabElement
   private currentItem: number
-  private lastKnownContentsScrollX: number
-  private contents: HTMLElement
   private tabs: HTMLElement
-  private ticking: boolean
   private tabItems: NodeListOf<HTMLMdsTabItemElement>
-  private tabContents: NodeListOf<HTMLElement>
+  private contentItems: NodeListOf<HTMLElement>
 
   /**
    * Emits when a children is changed
    */
   @Event({ eventName: 'mdsTabChange' }) changedEvent: EventEmitter<MdsTabEventDetail>
 
+  private queryContentItems = (): NodeListOf<HTMLElement> =>
+    this.element.querySelectorAll<HTMLElement>('[slot=content]')
+
   componentWillLoad (): void {
     this.tabItems = this.element.querySelectorAll<HTMLMdsTabItemElement>('mds-tab-item')
-    this.tabContents = this.element.querySelectorAll<HTMLElement>('[slot=content]')
 
     this.tabItems.forEach((item, key) => {
       if (!item.id) {
@@ -38,17 +37,7 @@ export class MdsTab {
 
   componentDidLoad (): void {
     this.tabs = this.element.shadowRoot?.querySelector('.tabs') as HTMLElement
-    this.contents = this.element.shadowRoot?.querySelector('.contents') as HTMLElement
-    console.log(this.contents)
-    if (this.tabContents.length > 0) {
-      this.contents.addEventListener('scrollend', this.changeHeightOnScrollEnd.bind(this))
-      this.contents.addEventListener('scroll', this.findCurrentItem.bind(this))
-    }
-  }
-
-  disconnectedCallback (): void {
-    this.contents.removeEventListener('scrollend', this.changeHeightOnScrollEnd.bind(this))
-    this.contents.removeEventListener('scroll', this.findCurrentItem.bind(this))
+    this.contentItems = this.queryContentItems()
   }
 
   private scrollTabs = (): void => {
@@ -69,36 +58,20 @@ export class MdsTab {
     })
   }
 
-  private findCurrentItem = (): void => {
-    const contentBox = this.tabContents[0].getBoundingClientRect()
-    if (!this.ticking) {
-      window.requestAnimationFrame(() => {
-        this.lastKnownContentsScrollX = Math.abs(contentBox.left - this.contents.offsetLeft)
-        const foundItem = Math.round(this.lastKnownContentsScrollX * this.tabContents.length / (contentBox.width * this.tabContents.length))
-        if (foundItem !== this.currentItem) {
-          this.selectTabItem(foundItem)
-        }
-        this.ticking = false
-      })
-      this.ticking = true
-    }
-  }
-
-  private changeHeightOnScrollEnd = (): void => {
-    const contentBox = this.tabContents[this.currentItem].getBoundingClientRect()
-    this.contents.style.setProperty('--mds-tab-contents-height', `${contentBox.height}px`)
-  }
-
-  private scrollToContent = (): void => {
-    const contentBox = this.tabContents[0].getBoundingClientRect()
-    this.contents.scrollLeft = contentBox.width * this.currentItem
+  private selectContentItem = (): void => {
+    this.contentItems.forEach((item: HTMLElement, index: number) => {
+      item.classList.add('hidden')
+      if (index === this.currentItem) {
+        item.classList.remove('hidden')
+      }
+    })
   }
 
   @Listen('mdsTabItemSelect')
   changeEventHandler (event: CustomEvent<string>): void {
     // since the external developer can define a custom id
     // we must find the key from event.detail
-    this.tabItems.forEach((item, key) => {
+    this.tabItems.forEach((item, key: number) => {
       if (item.id === event.detail) {
         this.selectTabItem(key)
       } else {
@@ -106,7 +79,7 @@ export class MdsTab {
       }
     })
 
-    this.scrollToContent()
+    this.selectContentItem()
   }
 
   render () {

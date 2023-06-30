@@ -43,8 +43,8 @@
     gap-6
     hide-scrollbar
     items-start
-    overflow-y-hidden
     overflow-x-auto
+    overflow-y-hidden
     relative
     scroll-smooth;
 
