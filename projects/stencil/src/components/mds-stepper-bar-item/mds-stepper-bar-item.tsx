@@ -1,7 +1,7 @@
-import clsx from 'clsx'
 import { Component, Element, Event, EventEmitter, Host, Prop, State, Watch, h } from '@stencil/core'
-import { MdsBadge } from '../mds-badge/mds-badge'
 import { TypographyType } from '@type/typography'
+import clsx from 'clsx'
+import { MdsBadge } from '../mds-badge/mds-badge'
 import { MdsStepperBarItemEventDetail } from './meta/event-detail'
 
 @Component({
@@ -20,7 +20,7 @@ export class MdsStepperBarItem {
   /**
    * Specifies a short description of the component
    */
-  @Prop() readonly text!: string
+  @Prop() readonly label!: string
 
   /**
    * Specifies if the step is displayed
@@ -103,7 +103,7 @@ export class MdsStepperBarItem {
         </header>
         <div class="infos">
           { this.step && <mds-text class="step" typography="option">step { this.index + 1 }</mds-text> }
-          { this.text && <mds-text class="text" typography={ this.typography }>{ this.text }</mds-text> }
+          { this.label && <mds-text class="text" typography={ this.typography }>{ this.label }</mds-text> }
           { this.badge && <div>{ this.showBadge() }</div> }
         </div>
       </Host>
