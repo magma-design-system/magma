@@ -31,6 +31,10 @@ const  webpackFinal = async (config, { configType }) => {
       ...alias
     };
     config.module.rules.push({
+      test: /\.stories.tsx$/,
+      exclude: /node_modules/,
+      loader: 'babel-loader'
+    }, {
       test: /\.css$/,
       use: [{
         loader: 'postcss-loader',

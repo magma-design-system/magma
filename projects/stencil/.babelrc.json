@@ -8,7 +8,15 @@
           "chrome": 100
         }
       }
-    ]
+    ],
+    [
+      "@babel/preset-typescript",
+      {
+        "isTSX": true,
+        "allExtensions": true
+      }
+    ],
+    "@babel/preset-react"
   ],
-  "plugins": []
+  "plugins": ["@babel/plugin-syntax-jsx"]
 }
