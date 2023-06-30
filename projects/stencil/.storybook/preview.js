@@ -1,6 +1,7 @@
 import { defineCustomElements } from '../dist/esm/loader'
 
-import 'loki/configure-react'
+// disable for storybook 7.x
+// import 'loki/configure-react'
 
 import 'normalize.css'
 import '@maggioli-design-system/styles/dist/css/colors-rgb.css'

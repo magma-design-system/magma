@@ -1,5 +1,4 @@
 // https://www.mokkapps.de/blog/run-build-and-deploy-stencil-and-storybook-from-one-repository
-
 const path = require('path');
 const alias = {
   '@component-dist': path.resolve(__dirname, '../dist/collection/components'),
@@ -13,14 +12,15 @@ const alias = {
 const TsConfigPathsPlugin = require("tsconfig-paths-webpack-plugin");
 const stories = ['../src/**/*.stories.mdx', '../src/**/*.stories.@(js|jsx|ts|tsx)']
 const staticDirs = ['../assets', '../dist']
-const addons = ['@storybook/addon-essentials', '@storybook/addon-links', '@storybook/addon-notes', {
+const addons = ['@storybook/addon-essentials', {
     name: '@storybook/addon-styling',
     options: {
       postCss: {
         implementation: require('postcss')
       }
-    }
-  }, '@storybook/addon-mdx-gfm']
+    },
+  },
+]
 const  webpackFinal = async (config, { configType }) => {
     // `configType` has a value of 'DEVELOPMENT' or 'PRODUCTION'
     // You can change the configuration based on that.
@@ -30,10 +30,25 @@ const  webpackFinal = async (config, { configType }) => {
       ...config.resolve.alias,
       ...alias
     };
-    config.module.rules.push({
+    config.module.rules.push(
+      {
+        test: /\.ts$/,
+        use: 'ts-loader',
+        exclude: /node_modules/,
+      },
+      {
       test: /\.stories.tsx$/,
       exclude: /node_modules/,
-      loader: 'babel-loader'
+      use: [
+        {
+          loader: 'babel-loader',
+          options: {
+            sourceType: 'unambiguous',
+            babelrc: false,
+            presets: [['@babel/preset-react',{"runtime": "automatic"}], '@babel/preset-typescript']
+          }
+        }
+      ]
     }, {
       test: /\.css$/,
       use: [{
