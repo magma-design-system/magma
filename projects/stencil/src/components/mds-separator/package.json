@@ -1,7 +1,7 @@
 {
-  "name": "@maggioli-design-system/mds-header",
-  "version": "5.3.0",
-  "description": "mds-header is a web-component from Maggioli Design System Magma, built with StencilJS, TypeScript, Storybook. It's based on the web-component standard and it's designed to be agnostic from the JavaScirpt framework you are using.",
+  "name": "@maggioli-design-system/mds-separator",
+  "version": "1.0.0",
+  "description": "mds-separator is a web-component from Maggioli Design System Magma, built with StencilJS, TypeScript, Storybook. It's based on the web-component standard and it's designed to be agnostic from the JavaScirpt framework you are using.",
   "main": "dist/index.cjs.js",
   "module": "dist/index.js",
   "es2015": "dist/esm/index.mjs",
@@ -9,7 +9,7 @@
   "types": "dist/types/components.d.ts",
   "collection": "dist/collection/collection-manifest.json",
   "collection:main": "dist/collection/index.js",
-  "unpkg": "dist/mds-header/mds-header.esm.js",
+  "unpkg": "dist/mds-separator/mds-separator.esm.js",
   "files": [
     "dist/",
     "documentation.json",
@@ -20,12 +20,11 @@
   ],
   "scripts": {
     "build": "rm src/components.d.ts || true && stencil build --docs-readme",
-    "prepublishOnly": "npm run build"
+    "prepublishOnly": "npm run build",
+    "test": "stencil test --spec --e2e"
   },
   "dependencies": {
-    "@maggioli-design-system/mds-header-bar": "^5.3.0",
-    "@maggioli-design-system/mds-modal": "^4.2.0",
-    "@maggioli-design-system/styles": "^11.6.0",
+    "@maggioli-design-system/styles": "^11.5.2",
     "@stencil/core": "^2.22.3"
   },
   "license": "MIT",
@@ -39,6 +38,11 @@
       "name": "Andrea Pruccoli",
       "email": "andrea.pruccoli@maggioli.it",
       "role": "Software Engineer"
+    },
+    {
+      "name": "Daniele Tardia",
+      "email": "daniele.tardia@hibo.it",
+      "role": "Senior Developer"
     },
     {
       "name": "Nicola Tamburini",

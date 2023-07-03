@@ -3,16 +3,16 @@
 :host( [variant="light"] ),
 :host( [variant="light"][tone="strong"] ) {
 
-  --background: theme('colors.tone-neutral');
-  --color: theme('colors.tone-neutral-02');
-  --shadow: theme('boxShadow.sharp-lg');
-  --icon-color: theme('colors.tone-neutral-03');
+  --mds-toast-background: theme('colors.tone-neutral');
+  --mds-toast-color: theme('colors.tone-neutral-02');
+  --mds-toast-shadow: theme('boxShadow.sharp-lg');
+  --mds-toast-icon-color: theme('colors.tone-neutral-03');
 }
 
 :host( [variant="light"][tone="weak"] ) {
 
-  --background: theme('colors.tone-neutral');
-  --color: theme('colors.tone-neutral-02');
-  --shadow: theme('boxShadow.sharp-sm');
-  --icon-color: theme('colors.tone-neutral-04');
+  --mds-toast-background: theme('colors.tone-neutral');
+  --mds-toast-color: theme('colors.tone-neutral-02');
+  --mds-toast-shadow: theme('boxShadow.sharp-sm');
+  --mds-toast-icon-color: theme('colors.tone-neutral-04');
 }

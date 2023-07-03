@@ -30,6 +30,7 @@
 | Name                                                 | Description                                                             |
 | ---------------------------------------------------- | ----------------------------------------------------------------------- |
 | `--mds-accordion-timer-item-color`                   | Sets the text color of the component                                    |
+| `--mds-accordion-timer-item-duration`                | Sets the transition duration of open/close animation                    |
 | `--mds-accordion-timer-item-progress-bar-background` | Sets the background-color of the progress bar when the item is selected |
 | `--mds-accordion-timer-item-progress-bar-color`      | Sets the color of the progress bar when the item is selected            |
 | `--mds-accordion-timer-item-progress-bar-thickness`  | Sets thickness of the progress bar                                      |

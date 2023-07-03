@@ -4,18 +4,21 @@
 @tailwind utilities;
 
 /**
-* @prop --background: Sets the background-color of the component
-* @prop --color: Sets the text color of the component
-* @prop --icon-color: Sets the text color of the component
-* @prop --shadow: Sets the box-shadow of the component
+* @prop --mds-toast-background: Sets the background-color of the component
+* @prop --mds-toast-color: Sets the text color of the component
+* @prop --mds-toast-duration: Sets the animation duration of the component, used also by component's logic
+* @prop --mds-toast-icon-color: Sets the text color of the component
+* @prop --mds-toast-shadow: Sets the box-shadow of the component
 */
 
 :host {
 
-  --color: theme('colors.tone-neutral');
-  --icon-color: theme('colors.tone-neutral');
-  --background: theme('colors.tone-neutral-02');
-  --shadow: theme('boxShadow.xl');
+  --mds-toast-background: theme('colors.tone-neutral-02');
+  --mds-toast-color: theme('colors.tone-neutral');
+  --mds-toast-duration: 300ms;
+  --mds-toast-icon-color: theme('colors.tone-neutral');
+  --mds-toast-shadow: theme('boxShadow.xl');
+  --mds-toast-width: auto;
 
   @apply
     fixed
@@ -24,29 +27,32 @@
     left-0
     right-0;
 
-  color: var(--color);
+  color: var(--mds-toast-color);
 }
 
 .dialog {
   @apply
-    duration-300
     ease-in-cubic
     gap-4
     inline-flex
     items-center
+    max-w-full
     mx-4
     p-4
+    pointer-events-none
     rounded-xl;
 
-  background-color: var(--background);
-  box-shadow: var(--shadow);
+  background-color: var(--mds-toast-background);
+  box-shadow: var(--mds-toast-shadow);
+  transition-duration: var(--mds-toast-duration);
+  width: var(--mds-toast-width);
 }
 
-:host( [visible]:not([visible="false"])) {
+:host( [visible]:not([visible="false"])) .dialog {
   @apply pointer-events-auto;
 }
 
-/* TOP position */
+
 :host([position^="top"]) {
   @apply top-0;
 }
@@ -63,7 +69,7 @@
   @apply justify-end;
 }
 
-/* BOTTOM position */
+
 :host([position^="bottom"]) {
   @apply bottom-0;
 }
@@ -87,9 +93,11 @@
 }
 
 ::slotted( [slot="icon"] ) {
-  @apply transition-colors;
+  @apply
+    shrink-0
+    transition-colors;
 
-  fill: var(--icon-color);
+  fill: var(--mds-toast-icon-color);
 }
 
 @import url('./css/variant/mds-toast-variant-dark.css');
@@ -98,6 +106,5 @@
 @import url('./css/variant/mds-toast-variant-light.css');
 @import url('./css/variant/mds-toast-variant-success.css');
 @import url('./css/variant/mds-toast-variant-warning.css');
-
 @import url('./css/animate/mds-toast-animate-top.css');
 @import url('./css/animate/mds-toast-animate-bottom.css');

@@ -1,4 +1,4 @@
-import { Component, Element, Host, h, State, Event, EventEmitter, Listen } from '@stencil/core'
+import { Component, Element, Event, EventEmitter, Host, Listen, State, h } from '@stencil/core'
 import { MdsHeaderEventDetail } from './meta/event-detail'
 
 @Component({
@@ -8,8 +8,8 @@ import { MdsHeaderEventDetail } from './meta/event-detail'
 })
 export class MdsHeader {
 
-  private hasNav: boolean
   @Element() host: HTMLMdsHeaderElement
+  @State() hasNav: boolean
   @State() isOpened: boolean
 
   /**
@@ -17,17 +17,23 @@ export class MdsHeader {
    */
   @Event({ bubbles: true, composed: true, eventName: 'mdsHeaderClose' }) closedEvent: EventEmitter<MdsHeaderEventDetail>
 
-  private bar = ():HTMLMdsHeaderBarElement => {
-    return this.host.querySelector('[slot="nav-mobile"]') as HTMLMdsHeaderBarElement
+  private mobileMenu = (): HTMLElement => {
+    return this.host.querySelector('[slot="nav-mobile"]') as HTMLElement
+  }
+
+  private headerBar = (): HTMLMdsHeaderBarElement => {
+    return this.host.querySelector('mds-header-bar') as HTMLMdsHeaderBarElement
   }
 
   private close = () => {
     this.isOpened = false
-    this.closedEvent.emit({ bar: this.bar() })
+    this.closedEvent.emit({ bar: this.headerBar() })
   }
 
-  componentWillLoad (): void {
-    this.hasNav = this.bar() !== null
+  componentDidLoad (): void {
+    this.hasNav = this.mobileMenu() !== null
+    const headerBar = this.headerBar()
+    headerBar.setAttribute('mobile-menu', this.hasNav.toString())
   }
 
   @Listen('mdsHeaderBarOpen', { target: 'document' })
@@ -38,11 +44,11 @@ export class MdsHeader {
   render () {
     return (
       <Host>
-        <slot/>
-        { this.hasNav &&
+        <slot />
+        {this.hasNav &&
           <div class="nav">
-            <mds-modal class="modal" opened={ this.isOpened } onMdsModalClose={ this.close }>
-              <slot name="nav-mobile"/>
+            <mds-modal class="modal" opened={this.isOpened} onMdsModalClose={this.close}>
+              <slot name="nav-mobile" />
             </mds-modal>
           </div>
         }

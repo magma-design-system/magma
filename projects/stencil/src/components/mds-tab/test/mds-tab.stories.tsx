@@ -19,13 +19,28 @@ export default {
   },
 }
 
+const TemplateEmpty = args =>
+  <div class="grid gap-6">
+    <mds-tab {...args}>
+      <mds-notification strategy="absolute" target="button" value={14} visible={true} />
+      <mds-tab-item selected class="mobile:flex-1" label="First Blood"></mds-tab-item>
+      <mds-tab-item icon="mdi/alien" id="button" class="mobile:flex-1" label="Double Impact"></mds-tab-item>
+      <mds-tab-item class="mobile:flex-1" label="The Third Man"></mds-tab-item>
+    </mds-tab>
+    <mds-hr />
+    <div class="grid gap-1">
+      <mds-text typography='h3'>Bottom content</mds-text>
+      <mds-text>This content is outside the mds-tab component.</mds-text>
+    </div>
+  </div>
+
 const Template = args =>
   <div class="grid gap-6">
     <mds-tab {...args}>
-      <mds-notification strategy="absolute" target="button" value={14} visible={true}/>
+      <mds-notification strategy="absolute" target="button" value={14} visible={true} />
       <mds-tab-item selected class="mobile:flex-1" label="First Blood">
-        <div class="py-6 grid tablet:grid-cols-[1fr_2fr] gap-6">
-          <mds-img class="rounded-lg" src='./movie-first-blood.jpg'/>
+        <div class="py-6 px-2 grid tablet:grid-cols-[1fr_2fr] gap-6">
+          <mds-img class="rounded-lg" src='./movie-first-blood.jpg' />
           <div class="grid gap-1 auto-rows-min">
             <mds-text typography='h4'>First Blood</mds-text>
             <mds-text>
@@ -35,11 +50,11 @@ const Template = args =>
         </div>
       </mds-tab-item>
       <mds-tab-item icon="mdi/alien" id="button" class="mobile:flex-1" label="Double Impact">
-        <div class="py-6 grid tablet:grid-cols-[1fr_2fr] gap-6">
+        <div class="py-6 px-2 grid tablet:grid-cols-[1fr_2fr] gap-6">
           <div class="auto-rows-min grid gap-2">
-            <mds-img class="rounded-lg" src='./movie-double-impact.jpg'/>
-            <mds-img class="rounded-lg" src='./movie-double-impact-shot-01.jpg'/>
-            <mds-img class="rounded-lg" src='./movie-double-impact-shot-02.jpg'/>
+            <mds-img class="rounded-lg" src='./movie-double-impact.jpg' />
+            <mds-img class="rounded-lg" src='./movie-double-impact-shot-01.jpg' />
+            <mds-img class="rounded-lg" src='./movie-double-impact-shot-02.jpg' />
           </div>
           <div class="grid gap-1 auto-rows-min">
             <mds-text typography='h4'>Double Impact</mds-text>
@@ -50,10 +65,10 @@ const Template = args =>
         </div>
       </mds-tab-item>
       <mds-tab-item class="mobile:flex-1" label="The Third Man">
-        <div class="py-6 grid tablet:grid-cols-[1fr_2fr] gap-6">
+        <div class="py-6 px-2 grid tablet:grid-cols-[1fr_2fr] gap-6">
           <div class="auto-rows-min grid gap-2">
-            <mds-img class="rounded-lg" src='./movie-the-third-man.jpg'/>
-            <mds-img class="rounded-lg" src='./movie-the-third-man-shot.jpg'/>
+            <mds-img class="rounded-lg" src='./movie-the-third-man.jpg' />
+            <mds-img class="rounded-lg" src='./movie-the-third-man-shot.jpg' />
           </div>
           <div class="grid gap-1 auto-rows-min">
             <mds-text typography='h4'>The Third Man</mds-text>
@@ -64,7 +79,7 @@ const Template = args =>
         </div>
       </mds-tab-item>
     </mds-tab>
-    <mds-hr/>
+    <mds-hr />
     <div class="grid gap-1">
       <mds-text typography='h3'>Bottom content</mds-text>
       <mds-text>This content is outside the mds-tab component.</mds-text>
@@ -80,3 +95,6 @@ export const Strategy = Template.bind({})
 Strategy.args = {
   strategy: 'scroll',
 }
+
+export const ManualTabContents = TemplateEmpty.bind({})
+

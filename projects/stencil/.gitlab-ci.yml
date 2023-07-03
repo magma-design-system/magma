@@ -165,6 +165,7 @@ include:
   - '/projects/stencil/src/components/mds-paginator/.gitlab-ci.yml'
   - '/projects/stencil/src/components/mds-progress/.gitlab-ci.yml'
   - '/projects/stencil/src/components/mds-quote/.gitlab-ci.yml'
+  - '/projects/stencil/src/components/mds-separator/.gitlab-ci.yml'
   - '/projects/stencil/src/components/mds-spinner/.gitlab-ci.yml'
   - '/projects/stencil/src/components/mds-stepper-bar-item/.gitlab-ci.yml'
   - '/projects/stencil/src/components/mds-stepper-bar/.gitlab-ci.yml'
