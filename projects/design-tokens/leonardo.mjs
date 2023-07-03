@@ -1,10 +1,10 @@
-import { Theme, Color, BackgroundColor } from '@adobe/leonardo-contrast-colors'
-import { readFileSync } from 'fs'
+import { BackgroundColor, Color, Theme } from '@adobe/leonardo-contrast-colors'
 import chalk from 'chalk'
-import { writeFile, mkdir, readFile } from 'fs/promises'
+import { readFileSync } from 'fs'
+import { mkdir, readFile, writeFile } from 'fs/promises'
+import Handlebars from 'handlebars'
 import { dirname, resolve } from 'path'
 import { fileURLToPath } from 'url'
-import Handlebars from 'handlebars'
 
 const TOKENS_DIR = resolve('./tokens')
 const PROJECT_PATH = resolve(dirname(fileURLToPath(import.meta.url)), './')
