@@ -12,6 +12,9 @@
 */
 
 :host {
+
+  @apply flex;
+
   --mds-tab-item-background-hover: transparent;
   --mds-tab-item-background-selected: theme('colors.tone-neutral');
   --mds-tab-item-background: transparent;
@@ -21,10 +24,10 @@
   --mds-tab-item-radius: theme('spacing.2');
   --mds-tab-item-shadow-selected: theme('boxShadow.DEFAULT');
 
-  @apply flex;
 }
 
 .button {
+
   @apply flex-grow;
 
   --mds-button-background: var(--mds-tab-item-background);
@@ -34,6 +37,7 @@
 }
 
 .button:hover {
+
   --mds-button-background: var(--mds-tab-item-background-hover);
   --mds-button-color: var(--mds-tab-item-color-hover);
   --mds-button-icon-color: var(--mds-tab-item-color-hover);
@@ -45,5 +49,6 @@
 
   --mds-button-background: var(--mds-tab-item-background-selected);
   --mds-button-color: var(--mds-tab-item-color-selected);
+
   box-shadow: var(--mds-tab-item-shadow-selected);
 }

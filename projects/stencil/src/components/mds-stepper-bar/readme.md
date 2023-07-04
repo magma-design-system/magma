@@ -19,6 +19,13 @@
 | `mdsStepperBarChange` | Emits when a step is changed | `CustomEvent<MdsStepperBarEventDetail>` |
 
 
+## Shadow Parts
+
+| Part         | Description |
+| ------------ | ----------- |
+| `"contents"` |             |
+
+
 ----------------------------------------------
 
 Built with love @ **Maggioli Informatica / R&D Department**

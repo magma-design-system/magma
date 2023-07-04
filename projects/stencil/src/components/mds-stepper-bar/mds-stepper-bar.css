@@ -28,3 +28,17 @@
 :host( [linear="false"] ) ::slotted( mds-stepper-bar-item ) {
   @apply pointer-events-auto;
 }
+
+
+.contents {
+  @apply
+    flex
+    w-full
+    flex-col
+    opacity-0
+    transition-opacity;
+}
+
+:host( [hydrated] ) .contents {
+  opacity: 1;
+}

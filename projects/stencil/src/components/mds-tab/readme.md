@@ -5,14 +5,6 @@
 <!-- Auto Generated Below -->
 
 
-## Properties
-
-| Property    | Attribute   | Description                                                                                                                        | Type                     | Default     |
-| ----------- | ----------- | ---------------------------------------------------------------------------------------------------------------------------------- | ------------------------ | ----------- |
-| `direction` | `direction` | Sets the direction where tab contents swipes                                                                                       | `"natural" \| "reverse"` | `'natural'` |
-| `strategy`  | `strategy`  | Sets component's contents to be swappable on mobile devices, this will result in forcing direction attribute to be se to 'natural' | `"default" \| "scroll"`  | `'default'` |
-
-
 ## Events
 
 | Event          | Description                      | Type                             |

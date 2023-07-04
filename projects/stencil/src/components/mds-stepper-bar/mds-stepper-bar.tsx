@@ -9,6 +9,7 @@ import { MdsStepperBarEventDetail } from './meta/event-detail'
 export class MdsStepperBar {
 
   private items: NodeListOf<HTMLMdsStepperBarItemElement>
+  private contentItems: NodeListOf<HTMLElement>
   @State() currentItem = 0
   @Element() private element: HTMLMdsStepperBarElement
 
@@ -19,6 +20,9 @@ export class MdsStepperBar {
 
   private queryItems = (): NodeListOf<HTMLMdsStepperBarItemElement> =>
     this.element.querySelectorAll<HTMLMdsStepperBarItemElement>('mds-stepper-bar-item')
+
+  private queryContentItems = (): NodeListOf<HTMLElement> =>
+    this.element.querySelectorAll<HTMLElement>('[slot=content]')
 
   // private queryContents = (): NodeListOf<HTMLElement> =>
   //   this.element.querySelectorAll<HTMLElement>('[slot="content"]')
@@ -52,10 +56,12 @@ export class MdsStepperBar {
   }
 
   private setCurrentContent = (): void => {
-    const item = this.element.querySelector(`#mds-stepper-bar-item-${this.currentItem}`)
-    const content = this.element.shadowRoot?.querySelector('.content') as HTMLElement
-    content.innerHTML = ''
-    if (item && item.innerHTML) content.innerHTML = item.innerHTML
+    this.contentItems.forEach((item: HTMLElement, index: number) => {
+      item.classList.add('hidden')
+      if (index === this.currentItem) {
+        item.classList.remove('hidden')
+      }
+    })
   }
 
   /**
@@ -93,9 +99,8 @@ export class MdsStepperBar {
   }
 
   componentDidLoad (): void {
-    setTimeout(() => {
-      this.setCurrent(this.itemsDone)
-    }, 10)
+    this.contentItems = this.queryContentItems()
+    this.setCurrent(this.itemsDone)
   }
 
   @Watch('itemsDone')
@@ -121,7 +126,8 @@ export class MdsStepperBar {
         <div class="items">
           <slot/>
         </div>
-        <div class="content">
+        <div class="contents" part="contents">
+          <slot name="content"/>
         </div>
       </Host>
     )
