@@ -21,6 +21,7 @@ base-stencil-build:
       - projects/styles/dist
       - projects/icons/dist
       - projects/stencil/dist
+      - projects/stencil/src/component.d.ts
       - projects/stencil/src/fixtures
       - projects/stencil/assets
   cache:
