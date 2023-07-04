@@ -300,6 +300,9 @@
   "input-tags": "material/local_offer",
   "input-time": "material/schedule",
   "instrumental-buildings": "maggioli/instrumental-buildings",
+  "internationalization-add": "maggioli/internationalization-add",
+  "internationalization-check": "maggioli/internationalization-check",
+  "internationalization-delete": "maggioli/internationalization-delete",
   "internationalization": "material/language",
   "jobs-farmer": "maggioli/farmer",
   "judge-hammer": "mdi/gavel",
@@ -372,6 +375,7 @@
   "paginator-last": "material/last_page",
   "paginator-next": "material/navigate_next",
   "paginator-previous": "material/navigate_before",
+  "pagopa": "maggioli/pagopa",
   "partial-wall": "maggioli/partial-wall",
   "payment-settings": "maggioli/payment-settings",
   "payments": "material/payments",
@@ -543,5 +547,5 @@
   "work-project": "material/work",
   "workspace": "material/workspaces",
   "write-only": "material/drive_file_rename_outline",
-  "zen-mode": "material/self_improvement"
-}
+   "zen-mode": "material/self_improvement"
+  }
