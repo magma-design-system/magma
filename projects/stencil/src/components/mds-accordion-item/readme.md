@@ -7,11 +7,11 @@
 
 ## Properties
 
-| Property                   | Attribute     | Description                                                        | Type                                                                    | Default     |
-| -------------------------- | ------------- | ------------------------------------------------------------------ | ----------------------------------------------------------------------- | ----------- |
-| `description` _(required)_ | `description` | Specifies the title shown when the component is closed or selected | `string`                                                                | `undefined` |
-| `selected`                 | `selected`    | Specifies if the component item is selected or not                 | `boolean \| undefined`                                                  | `undefined` |
-| `typography`               | `typography`  | Specifies the typography of the element                            | `"action" \| "h1" \| "h2" \| "h3" \| "h4" \| "h5" \| "h6" \| undefined` | `'h5'`      |
+| Property             | Attribute    | Description                                                        | Type                                                                    | Default     |
+| -------------------- | ------------ | ------------------------------------------------------------------ | ----------------------------------------------------------------------- | ----------- |
+| `label` _(required)_ | `label`      | Specifies the title shown when the component is closed or selected | `string`                                                                | `undefined` |
+| `selected`           | `selected`   | Specifies if the component item is selected or not                 | `boolean \| undefined`                                                  | `undefined` |
+| `typography`         | `typography` | Specifies the typography of the element                            | `"action" \| "h1" \| "h2" \| "h3" \| "h4" \| "h5" \| "h6" \| undefined` | `'h5'`      |
 
 
 ## Events
@@ -28,6 +28,7 @@
 | Part         | Description |
 | ------------ | ----------- |
 | `"contents"` |             |
+| `"label"`    |             |
 
 
 ## CSS Custom Properties
