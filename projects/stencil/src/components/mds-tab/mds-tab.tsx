@@ -9,7 +9,7 @@ import { MdsTabEventDetail } from './meta/event-detail'
 export class MdsTab {
 
   @Element() private element: HTMLMdsTabElement
-  private currentItem: number
+  private currentItem = -1
   private tabs: HTMLElement
   private tabItems: NodeListOf<HTMLMdsTabItemElement>
   private contentItems: NodeListOf<HTMLElement>
@@ -38,6 +38,7 @@ export class MdsTab {
   componentDidLoad (): void {
     this.tabs = this.element.shadowRoot?.querySelector('.tabs') as HTMLElement
     this.contentItems = this.queryContentItems()
+    this.selectContentItem()
   }
 
   private scrollTabs = (): void => {

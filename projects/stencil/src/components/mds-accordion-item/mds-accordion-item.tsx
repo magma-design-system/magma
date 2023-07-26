@@ -25,7 +25,7 @@ export class MdsAccordionItem {
   /**
    * Specifies the title shown when the component is closed or selected
    */
-  @Prop() readonly description!: string
+  @Prop() readonly label!: string
 
   private toggle = () => {
     this.selected = !this.selected
@@ -59,8 +59,8 @@ export class MdsAccordionItem {
     return (
       <Host>
         <button aria-controls="contents" aria-expanded={this.selected ? 'true' : 'false'} class="action focusable" id="action" onClick={this.toggle} role="button" tabindex="0">
-          <mds-text typography={this.typography}>
-            {this.description}
+          <mds-text part="label" typography={this.typography}>
+            {this.label}
           </mds-text>
           <mds-text aria-hidden="true" class="icon-button" typography={this.typography}>
             <i class="svg icon" innerHTML={miBaselineKeyboardArrowUp} />
