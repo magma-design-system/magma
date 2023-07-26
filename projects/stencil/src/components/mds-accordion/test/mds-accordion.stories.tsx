@@ -5,11 +5,11 @@ export default {
   argTypes: {
     closable: {
       type: { name: 'boolean' },
-      description: 'Specifies if an item can be closed by user',
+      label: 'Specifies if an item can be closed by user',
     },
     multiple: {
       type: { name: 'boolean' },
-      description: 'Choose if multiple siblings can be opened simultaneously',
+      label: 'Choose if multiple siblings can be opened simultaneously',
     },
   },
 }

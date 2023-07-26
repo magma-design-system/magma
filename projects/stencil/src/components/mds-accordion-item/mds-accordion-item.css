@@ -1,4 +1,4 @@
-@import '../../tailwind/components.css';
+@import url('../../tailwind/components.css');
 @tailwind components;
 @tailwind utilities;
 
@@ -72,7 +72,7 @@
     text-left;
 
   color: var(--mds-accordion-item-description-color);
-  grid-template-columns: 1fr auto;
+  grid-template-columns: auto 24px;
 }
 
 .icon-button {
