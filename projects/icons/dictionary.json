@@ -88,6 +88,13 @@
   "adv-denied": "maggioli/adv-denied",
   "adv": "material/campaign",
   "alarm": "material/alarm",
+  "assignments-accept-rejection": "maggioli/assignments-accept-rejection",
+  "assignments-acceptance-accepted": "maggioli/assignments-acceptance-accepted",
+  "assignments-assignment": "maggioli/assignments-assignment",
+  "assignments-competence": "maggioli/assignments-competence",
+  "assignments-completed": "maggioli/assignments-completed",
+  "assignments-rejected": "maggioli/assignments-rejected",
+  "assignments-sorted": "maggioli/assignments-sorted",
   "auto-awesome-motion": "maggioli/auto-awesome-motion",
   "avatar-placeholder-user-group": "material/supervised_user_circle",
   "avatar-placeholder-user": "material/account_circle",
@@ -548,5 +555,6 @@
   "work-project": "material/work",
   "workspace": "material/workspaces",
   "write-only": "material/drive_file_rename_outline",
-   "zen-mode": "material/self_improvement"
+  "zen-mode": "material/self_improvement"
   }
+
