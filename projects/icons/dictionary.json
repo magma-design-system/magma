@@ -192,6 +192,8 @@
   "dev-terminal": "maggioli/terminal",
   "document-book": "material/menu_book",
   "document-email": "material/email",
+  "document-euro": "maggioli/document-euro",
+  "document-less": "maggioli/document-less",
   "document-magic": "maggioli/document-magic",
   "document-note": "material/sticky_note_2",
   "document-rename": "maggioli/document-rename",
@@ -548,5 +550,6 @@
   "work-project": "material/work",
   "workspace": "material/workspaces",
   "write-only": "material/drive_file_rename_outline",
-   "zen-mode": "material/self_improvement"
+  "zen-mode": "material/self_improvement"
   }
+
