@@ -1,0 +1,11 @@
+@tailwind utilities;
+
+:host {
+
+  @apply
+    flex
+    gap-4
+    justify-between;
+
+  box-shadow: theme('boxShadow.sharp-md');
+}
