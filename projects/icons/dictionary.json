@@ -79,6 +79,7 @@
   "action-zoom-in": "material/zoom_in",
   "action-zoom-out": "material/zoom_out",
   "activity-coffee-break": "material/local_cafe",
+  "activity-list": "maggioli/activity-list",
   "activity-lunch": "material/local_dining",
   "add-chart": "material/addchart",
   "add-document-settings": "maggioli/add-document-settings",
