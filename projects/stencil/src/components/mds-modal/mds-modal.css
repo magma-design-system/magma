@@ -34,6 +34,7 @@
     pointer-events-none;
 
   background-color: rgba(var(--mds-modal-overlay-color) / 0);
+  fill: theme('colors.tone-neutral');
   perspective: 600px;
   z-index: var(--mds-modal-z-index, 1000);
 }
@@ -68,7 +69,6 @@
     cursor-pointer
     duration-500
     ease-in-out-quart
-    fill-tone-neutral-10
     h-9
     opacity-0
     origin-center
@@ -77,6 +77,7 @@
     top-0
     w-9;
 
+  fill: inherit;
   transform: translate(0, 24px) rotate(90deg);
   transition-property: opacity, outline, outline-offset, transform;
 }

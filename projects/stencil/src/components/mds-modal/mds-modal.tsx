@@ -17,6 +17,7 @@ export class MdsModal {
   private bottom = false
   private animationState: ModalAnimationStateType = 'intro'
   private km = new KeyboardManager()
+
   @State() stateOpened: boolean
   @Element() host: HTMLMdsModalElement
 
@@ -120,7 +121,7 @@ export class MdsModal {
       <Host aria-modal={clsx(this.opened ? 'true' : 'false' )} class={clsx(this.stateOpened && this.animationName('opened'))} onClick={(e: Event) => { this.closeModal(e) }}>
         { this.window
           ? <slot name="window"/>
-          : <div class={clsx('window', (this.top || this.bottom) && `window-${this.top ? '-top' : ''}${this.bottom ? '-bottom' : ''}`)} role="dialog">
+          : <div class={clsx('window', (this.top || this.bottom) && `window-${this.top ? '-top' : ''}${this.bottom ? '-bottom' : ''}`)} role="dialog" part="window">
             { this.top &&
               <slot name="top"/>
             }
