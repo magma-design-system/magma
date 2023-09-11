@@ -5,7 +5,8 @@
   @apply
     flex
     gap-4
-    justify-between;
+    items-center
+    justify-between
+    p-4;
 
-  box-shadow: theme('boxShadow.sharp-md');
 }

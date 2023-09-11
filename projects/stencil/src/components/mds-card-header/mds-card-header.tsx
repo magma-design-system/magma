@@ -1,4 +1,4 @@
-import { Component, Host, h } from '@stencil/core'
+import { Component, Host, h, Element } from '@stencil/core'
 
 @Component({
   tag: 'mds-card-header',
@@ -7,10 +7,20 @@ import { Component, Host, h } from '@stencil/core'
 })
 export class MdsCardHeader {
 
+  @Element() private hostElement: HTMLMdsCardElement
+  private actions: boolean
+
+  componentWillLoad (): void {
+    this.actions = this.hostElement.querySelector('[slot="action"]') !== null
+  }
+
   render () {
     return (
       <Host slot="header">
         <slot/>
+        { this.actions && <div class="actions">
+          <slot name="action"/>
+        </div> }
       </Host>
     )
   }
