@@ -7,8 +7,7 @@
     grid
     overflow-hidden
     rounded-lg
-    bg-tone-neutral
-    p-4;
+    bg-tone-neutral;
 
   box-shadow: theme('boxShadow.sharp-md');
 }

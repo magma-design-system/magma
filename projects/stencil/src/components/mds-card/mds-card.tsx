@@ -10,7 +10,10 @@ export class MdsCard {
   render () {
     return (
       <Host>
-        <slot></slot>
+        <div class="header">
+          <slot name="header"/>
+        </div>
+        <slot/>
       </Host>
     )
   }
