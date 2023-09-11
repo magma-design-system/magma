@@ -10,6 +10,7 @@
 
   --mds-header-color: theme('colors.tone-neutral-02');
   --mds-header-icon-color: var(--mds-header-color, theme('colors.tone-neutral-02'));
+  --mds-header-modal-icon-color: var(--mds-header-icon-color);
   --mds-header-z-index: var(--magma-header-z-index, 1000);
 
   color: var(--mds-header-color);
@@ -26,5 +27,6 @@
 }
 
 .modal {
+  fill: var(--mds-header-modal-icon-color);
   z-index: var(--mds-header-z-index);
 }
