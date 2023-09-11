@@ -20,6 +20,13 @@
 | `mdsModalClose` | Emits when a modal is closed | `CustomEvent<void>` |
 
 
+## Shadow Parts
+
+| Part       | Description |
+| ---------- | ----------- |
+| `"window"` |             |
+
+
 ## CSS Custom Properties
 
 | Name                            | Description                                                                                                                                        |
