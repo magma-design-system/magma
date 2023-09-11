@@ -9,6 +9,7 @@
     { "color": "#00379E", "export": ["brand", "default"], "name": "brand.maggioli", "colorspace": "HSL", "smooth": true },
     { "color": "#0f4ad5", "export": ["brand"], "name": "brand.maggioli-editore", "colorspace": "HSL", "smooth": true },
     { "color": "#036278", "export": ["brand"], "name": "brand.mindy", "colorspace": "HSL", "smooth": true },
+    { "color": "#CBA26B", "export": ["brand"], "name": "brand.rnd", "colorspace": "HSL", "smooth": true },
 
     { "color": "#23B2E1", "export": ["status", "default"], "name": "status.info", "colorspace": "OKLCH" },
     { "color": "#21BF73", "export": ["status", "default"], "name": "status.success", "colorspace": "OKLCH" },
