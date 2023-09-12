@@ -1,14 +1,19 @@
 @tailwind utilities;
 
 :host {
+
   @apply
     bg-center
     bg-cover
     bg-no-repeat
     flex
     overflow-hidden;
+
+  object-fit: fill;
 }
 
 img {
   @apply w-full;
+
+  object-fit: inherit;
 }
