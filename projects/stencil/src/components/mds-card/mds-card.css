@@ -3,11 +3,50 @@
 :host {
 
   @apply
-    auto-rows-max
+    bg-tone-neutral
     grid
     overflow-hidden
-    rounded-lg
-    bg-tone-neutral;
+    rounded-lg;
 
   box-shadow: theme('boxShadow.sharp-md');
+  grid-template-rows: min-content 1fr min-content;
+  grid-template-columns: 1fr 2fr;
+  grid-template-areas:
+    "media header"
+    "media content"
+    "media footer";
 }
+
+.media,
+::slotted([slot="media"]) {
+  @apply bg-label-blue-09;
+
+  grid-area: media;
+}
+
+::slotted([slot="media"]) {
+  object-fit: cover;
+}
+
+.header,
+::slotted([slot="header"]) {
+  @apply bg-label-violet-09;
+
+  grid-area: header;
+}
+
+.content,
+::slotted([slot="content"]) {
+  @apply bg-label-yellow-09;
+
+  grid-area: content;
+}
+
+.footer,
+::slotted([slot="footer"]) {
+  @apply bg-label-green-09;
+
+  grid-area: footer;
+}
+
+

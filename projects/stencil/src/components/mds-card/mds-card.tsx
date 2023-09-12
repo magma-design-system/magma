@@ -10,10 +10,23 @@ export class MdsCard {
   render () {
     return (
       <Host>
-        <div class="header">
+        {/* <div class="media" part="media">
+          <slot name="media"/>
+        </div>
+        <div class="header" part="header">
           <slot name="header"/>
         </div>
-        <slot/>
+        <div class="content" part="content">
+          <slot/>
+        </div>
+        <div class="footer" part="footer">
+          <slot name="footer"/>
+        </div> */}
+
+        <slot name="media"/>
+        <slot name="header"/>
+        <slot name="content"/>
+        <slot name="footer"/>
       </Host>
     )
   }
