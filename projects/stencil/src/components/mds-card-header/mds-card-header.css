@@ -5,6 +5,7 @@
   @apply
     flex
     gap-4
+    grow
     items-center
     justify-between
     p-4;

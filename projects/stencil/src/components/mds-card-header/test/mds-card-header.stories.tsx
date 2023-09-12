@@ -14,7 +14,12 @@ const Template = args =>
           <mds-text typography="caption">Management designer</mds-text>
         </div>
       </div>
-      <mds-button icon="mi/round/more-vert" variant="light"></mds-button>
+      <mds-button id="action-example" icon="mi/round/more-vert" variant="light"></mds-button>
+      <mds-dropdown target="action-example" class="max-w-[350px] p-2 gap-1">
+        <mds-button variant="light" class="justify-start">Modifica account</mds-button>
+        <mds-button variant="light" class="justify-start">Elimina</mds-button>
+        <mds-button variant="light" class="justify-start">Esci dalla sessione</mds-button>
+      </mds-dropdown>
     </mds-card-header>
   </mds-card>
 
