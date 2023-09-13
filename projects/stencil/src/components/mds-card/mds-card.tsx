@@ -1,4 +1,5 @@
-import { Component, Host, h } from '@stencil/core'
+import { Component, Element, Host, h, State, Prop } from '@stencil/core'
+import clsx from 'clsx'
 
 @Component({
   tag: 'mds-card',
@@ -7,26 +8,39 @@ import { Component, Host, h } from '@stencil/core'
 })
 export class MdsCard {
 
+  @Element() private host: HTMLMdsCardElement
+  @State() layout: string
+
+  /**
+   * Enables automatic responsive behavior based on container queries
+   */
+  @Prop({ reflect: true }) readonly autoGrid = true
+
+  componentDidLoad (): void {
+    this.layout = ''
+    if (this.host.querySelector('[slot="media"]') !== null) {
+      this.layout += 'm'
+    }
+    if (this.host.querySelector('[slot="header"]') !== null) {
+      this.layout += 'h'
+    }
+    if (this.host.querySelector('[slot="content"]') !== null) {
+      this.layout += 'c'
+    }
+    if (this.host.querySelector('[slot="footer"]') !== null) {
+      this.layout += 'f'
+    }
+  }
+
   render () {
     return (
       <Host>
-        {/* <div class="media" part="media">
+        <div class={clsx('layout', this.layout && `layout--${this.layout}`, !this.autoGrid ? 'layout--disabled' : '')} part="container">
           <slot name="media"/>
-        </div>
-        <div class="header" part="header">
           <slot name="header"/>
-        </div>
-        <div class="content" part="content">
-          <slot/>
-        </div>
-        <div class="footer" part="footer">
+          <slot name="content"/>
           <slot name="footer"/>
-        </div> */}
-
-        <slot name="media"/>
-        <slot name="header"/>
-        <slot name="content"/>
-        <slot name="footer"/>
+        </div>
       </Host>
     )
   }
