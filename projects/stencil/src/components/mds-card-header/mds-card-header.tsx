@@ -7,7 +7,7 @@ import { Component, Host, h, Element } from '@stencil/core'
 })
 export class MdsCardHeader {
 
-  @Element() private hostElement: HTMLMdsCardElement
+  @Element() private hostElement: HTMLMdsCardHeaderElement
   private actions: boolean
 
   componentWillLoad (): void {
