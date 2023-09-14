@@ -32,6 +32,13 @@ export class MdsCard {
     }
   }
 
+  /**
+  * @slot media - Add a media element, used for images or videos, it's responsive behaviour based on container queries is handled with `auto-grid` enabled
+  * @slot header - slot for header, it's responsive behaviour based on container queries is handled with `auto-grid` enabled
+  * @slot content - slot for content, it's responsive behaviour based on container queries is handled with `auto-grid` enabled
+  * @slot footer - slot for footer, it's responsive behaviour based on container queries is handled with `auto-grid` enabled
+  */
+
   render () {
     return (
       <Host>
