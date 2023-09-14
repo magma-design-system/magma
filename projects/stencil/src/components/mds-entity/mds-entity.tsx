@@ -1,4 +1,9 @@
 import { Component, Element, Host, h, Prop } from '@stencil/core'
+
+/**
+ * @slot detail - TODOSLOT
+ * @slot action - TODOSLOT
+ */
 @Component({
   tag: 'mds-entity',
   styleUrl: 'mds-entity.css',

@@ -1,6 +1,9 @@
 import { Component, Host, h, Prop } from '@stencil/core'
 import { TypographyTitleType } from '@type/typography'
 
+/**
+ * @slot author - TODOSLOT
+ */
 @Component({
   tag: 'mds-quote',
   styleUrl: 'mds-quote.css',

@@ -3,6 +3,11 @@ import clsx from 'clsx'
 import miBaselineKeyboardArrowDown from '@icon/mi/baseline/keyboard-arrow-down.svg'
 import { KeyboardManager } from '@common/keyboard-manager'
 
+/**
+ * @slot icon - TODOSLOT
+ * @slot title - TODOSLOT
+ * @slot action - TODOSLOT
+ */
 @Component({
   tag: 'mds-details',
   styleUrl: 'mds-details.css',

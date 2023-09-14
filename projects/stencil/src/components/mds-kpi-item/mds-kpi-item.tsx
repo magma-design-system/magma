@@ -1,5 +1,8 @@
 import { Component, Element, Host, Prop, h, State } from '@stencil/core'
 
+/**
+ * @slot icon - TODOSLOT
+ */
 @Component({
   tag: 'mds-kpi-item',
   styleUrl: 'mds-kpi-item.css',

@@ -3,6 +3,9 @@ import { Component, Element, Event, EventEmitter, Host, h, Prop } from '@stencil
 import { KeyboardManager } from '@common/keyboard-manager'
 import { LabelVariantType } from '@type/variant'
 
+/**
+ * @slot title - TODOSLOT
+ */
 @Component({
   tag: 'mds-note',
   styleUrl: 'mds-note.css',

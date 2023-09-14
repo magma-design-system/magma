@@ -4,6 +4,11 @@ import { Component, Element, Event, EventEmitter, Host, h, Listen, Prop, Watch, 
 import { KeyboardManager } from '@common/keyboard-manager'
 import { ModalPositionType, ModalAnimationStateType } from './meta/types'
 
+/**
+ * @slot window - TODOSLOT
+ * @slot top - TODOSLOT
+ * @slot bottom - TODOSLOT
+ */
 @Component({
   tag: 'mds-modal',
   styleUrl: 'mds-modal.css',

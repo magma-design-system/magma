@@ -2,6 +2,9 @@ import { Component, Element, Host, h, Prop } from '@stencil/core'
 import clsx from 'clsx'
 import { NoiseType, PreloadType } from './meta/types'
 
+/**
+ * @slot content - TODOSLOT
+ */
 @Component({
   tag: 'mds-video-wall',
   styleUrl: 'mds-video-wall.css',

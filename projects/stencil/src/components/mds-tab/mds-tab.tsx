@@ -1,6 +1,9 @@
 import { Component, Element, Event, EventEmitter, Host, Listen, h } from '@stencil/core'
 import { MdsTabEventDetail } from './meta/event-detail'
 
+/**
+ * @slot content - TODOSLOT
+ */
 @Component({
   tag: 'mds-tab',
   styleUrl: 'mds-tab.css',

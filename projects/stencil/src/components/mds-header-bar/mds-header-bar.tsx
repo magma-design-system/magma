@@ -2,6 +2,9 @@ import miRoundMenu from '@icon/mi/round/menu.svg'
 import { Component, Element, Event, EventEmitter, Host, Listen, Prop, State, h } from '@stencil/core'
 import clsx from 'clsx'
 
+/**
+ * @slot nav - TODOSLOT
+ */
 @Component({
   tag: 'mds-header-bar',
   styleUrl: 'mds-header-bar.css',

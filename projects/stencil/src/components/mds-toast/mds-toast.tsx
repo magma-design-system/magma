@@ -4,6 +4,10 @@ import { ThemeLuminanceVariantType, ToneMinimalVariantType } from '@type/variant
 import clsx from 'clsx'
 import { ToastPosition } from './meta/types'
 
+/**
+ * @slot icon - TODOSLOT
+ * @slot action - TODOSLOT
+ */
 @Component({
   tag: 'mds-toast',
   styleUrl: 'mds-toast.css',

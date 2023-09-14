@@ -7,6 +7,9 @@ import { TypographyType } from '@type/typography'
 import { buttonSizeTypographyVariant } from './meta/variants'
 import { setAttributeIfEmpty, unslugName } from '@common/aria'
 
+/**
+ * @slot notification - TODOSLOT
+ */
 @Component({
   tag: 'mds-button',
   styleUrl: 'mds-button.css',

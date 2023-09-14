@@ -1,6 +1,9 @@
 import { Component, Element, Event, EventEmitter, Host, Listen, State, h } from '@stencil/core'
 import { MdsHeaderEventDetail } from './meta/event-detail'
 
+/**
+ * @slot nav-mobile - TODOSLOT
+ */
 @Component({
   tag: 'mds-header',
   styleUrl: 'mds-header.css',

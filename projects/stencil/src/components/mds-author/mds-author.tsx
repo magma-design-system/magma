@@ -1,5 +1,8 @@
 import { Component, Host, h, Element } from '@stencil/core'
 
+/**
+ * @slot avatar - TODOSLOT
+ */
 @Component({
   tag: 'mds-author',
   styleUrl: 'mds-author.css',
