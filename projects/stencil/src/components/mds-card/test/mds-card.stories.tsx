@@ -23,7 +23,7 @@ const FullCardTemplate = args =>
     <mds-card {...args}>
       <mds-card-header>
         <div class="flex gap-4 items-center">
-          <mds-avatar class="w-11" initials='mc'></mds-avatar>
+          <mds-avatar class="w-11 min-w-11" initials='mc'></mds-avatar>
           <div class="flex gap-0 flex-col">
             <mds-text typography="h6">Mauro Coletta</mds-text>
             <mds-text typography="caption">Management designer</mds-text>
@@ -54,7 +54,7 @@ const CustomSlotsTemplate = args =>
     <mds-card {...args}>
       <div slot="header" class="flex gap-4 items-center justify-between px-4 py-4">
         <div class="flex gap-4 items-center">
-          <mds-avatar class="w-11" initials='mc'></mds-avatar>
+          <mds-avatar class="w-11 min-w-11" initials='mc'></mds-avatar>
           <div class="flex gap-0 flex-col">
             <mds-text typography="h6">Mauro Coletta</mds-text>
             <mds-text typography="caption">Management designer</mds-text>
@@ -77,9 +77,245 @@ const CustomSlotsTemplate = args =>
     </mds-dropdown>
   </div>
 
+const LayoutHMCFTemplate = args =>
+  <mds-card {...args}>
+    <mds-card-header>
+      <div class="flex gap-4 items-center">
+        <mds-avatar class="w-11 min-w-11" initials='mc'></mds-avatar>
+        <div class="flex gap-0 flex-col">
+          <mds-text typography="h6">Mauro Coletta</mds-text>
+          <mds-text typography="caption">Management designer</mds-text>
+        </div>
+      </div>
+      <mds-button icon="mi/round/more-vert" variant="light"></mds-button>
+    </mds-card-header>
+    <mds-card-media>
+      <mds-img src={URLs[0]} class="object-cover"></mds-img>
+    </mds-card-media>
+    <mds-card-content>
+      Lorem ipsum dolor sit amet, consectetur adipiscing elit. Proin quis elementum lorem. Phasellus vel quam leo. Ut eget finibus libero. Integer sed odio hendrerit diam maximus blandit ac malesuada odio.
+    </mds-card-content>
+    <mds-card-footer>
+      <mds-button variant="dark" tone="quiet">Cancel</mds-button>
+      <mds-button>Contact</mds-button>
+    </mds-card-footer>
+  </mds-card>
+
+const LayoutHMCTemplate = args =>
+  <mds-card {...args}>
+    <mds-card-header>
+      <div class="flex gap-4 items-center">
+        <mds-avatar class="w-11 min-w-11" initials='mc'></mds-avatar>
+        <div class="flex gap-0 flex-col">
+          <mds-text typography="h6">Mauro Coletta</mds-text>
+          <mds-text typography="caption">Management designer</mds-text>
+        </div>
+      </div>
+      <mds-button icon="mi/round/more-vert" variant="light"></mds-button>
+    </mds-card-header>
+    <mds-card-media>
+      <mds-img src={URLs[0]} class="object-cover"></mds-img>
+    </mds-card-media>
+    <mds-card-content>
+      Lorem ipsum dolor sit amet, consectetur adipiscing elit. Proin quis elementum lorem. Phasellus vel quam leo. Ut eget finibus libero. Integer sed odio hendrerit diam maximus blandit ac malesuada odio.
+    </mds-card-content>
+  </mds-card>
+
+const LayoutHMFTemplate = args =>
+  <mds-card {...args}>
+    <mds-card-header>
+      <div class="flex gap-4 items-center">
+        <mds-avatar class="w-11 min-w-11" initials='mc'></mds-avatar>
+        <div class="flex gap-0 flex-col">
+          <mds-text typography="h6">Mauro Coletta</mds-text>
+          <mds-text typography="caption">Management designer</mds-text>
+        </div>
+      </div>
+      <mds-button icon="mi/round/more-vert" variant="light"></mds-button>
+    </mds-card-header>
+    <mds-card-media>
+      <mds-img src={URLs[0]} class="object-cover"></mds-img>
+    </mds-card-media>
+    <mds-card-footer>
+      <mds-button variant="dark" tone="quiet">Cancel</mds-button>
+      <mds-button>Contact</mds-button>
+    </mds-card-footer>
+  </mds-card>
+
+const LayoutHCFTemplate = args =>
+  <mds-card {...args}>
+    <mds-card-header>
+      <div class="flex gap-4 items-center">
+        <mds-avatar class="w-11 min-w-11" initials='mc'></mds-avatar>
+        <div class="flex gap-0 flex-col">
+          <mds-text typography="h6">Mauro Coletta</mds-text>
+          <mds-text typography="caption">Management designer</mds-text>
+        </div>
+      </div>
+      <mds-button icon="mi/round/more-vert" variant="light"></mds-button>
+    </mds-card-header>
+    <mds-card-content class="py-0">
+      Lorem ipsum dolor sit amet, consectetur adipiscing elit. Proin quis elementum lorem. Phasellus vel quam leo. Ut eget finibus libero. Integer sed odio hendrerit diam maximus blandit ac malesuada odio.
+    </mds-card-content>
+    <mds-card-footer>
+      <mds-button variant="dark" tone="quiet">Cancel</mds-button>
+      <mds-button>Contact</mds-button>
+    </mds-card-footer>
+  </mds-card>
+
+const LayoutMCFTemplate = args =>
+  <mds-card {...args}>
+    <mds-card-media>
+      <mds-img src={URLs[0]} class="object-cover"></mds-img>
+    </mds-card-media>
+    <mds-card-content>
+      Lorem ipsum dolor sit amet, consectetur adipiscing elit. Proin quis elementum lorem. Phasellus vel quam leo. Ut eget finibus libero. Integer sed odio hendrerit diam maximus blandit ac malesuada odio.
+    </mds-card-content>
+    <mds-card-footer class="pt-0">
+      <mds-button variant="dark" tone="quiet">Cancel</mds-button>
+      <mds-button>Contact</mds-button>
+    </mds-card-footer>
+  </mds-card>
+
+const LayoutHCTemplate = args =>
+  <mds-card {...args}>
+    <mds-card-header>
+      <div class="flex gap-4 items-center">
+        <mds-avatar class="w-11 min-w-11" initials='mc'></mds-avatar>
+        <div class="flex gap-0 flex-col">
+          <mds-text typography="h6">Mauro Coletta</mds-text>
+          <mds-text typography="caption">Management designer</mds-text>
+        </div>
+      </div>
+      <mds-button icon="mi/round/more-vert" variant="light"></mds-button>
+    </mds-card-header>
+    <mds-card-content class="pt-0">
+      Lorem ipsum dolor sit amet, consectetur adipiscing elit. Proin quis elementum lorem. Phasellus vel quam leo. Ut eget finibus libero. Integer sed odio hendrerit diam maximus blandit ac malesuada odio.
+    </mds-card-content>
+  </mds-card>
+
+const LayoutMCTemplate = args =>
+  <mds-card {...args}>
+    <mds-card-media>
+      <mds-img src={URLs[0]} class="object-cover"></mds-img>
+    </mds-card-media>
+    <mds-card-content>
+      Lorem ipsum dolor sit amet, consectetur adipiscing elit. Proin quis elementum lorem. Phasellus vel quam leo. Ut eget finibus libero. Integer sed odio hendrerit diam maximus blandit ac malesuada odio.
+    </mds-card-content>
+  </mds-card>
+
+const LayoutMFTemplate = args =>
+  <mds-card {...args}>
+    <mds-card-media>
+      <mds-img src={URLs[0]} class="object-cover"></mds-img>
+    </mds-card-media>
+    <mds-card-footer>
+      <mds-button variant="dark" tone="quiet">Cancel</mds-button>
+      <mds-button>Contact</mds-button>
+    </mds-card-footer>
+  </mds-card>
+
+const LayoutHMTemplate = args =>
+  <mds-card {...args}>
+    <mds-card-header>
+      <div class="flex gap-4 items-center">
+        <mds-avatar class="w-11 min-w-11" initials='mc'></mds-avatar>
+        <div class="flex gap-0 flex-col">
+          <mds-text typography="h6">Mauro Coletta</mds-text>
+          <mds-text typography="caption">Management designer</mds-text>
+        </div>
+      </div>
+      <mds-button icon="mi/round/more-vert" variant="light"></mds-button>
+    </mds-card-header>
+    <mds-card-media>
+      <mds-img src={URLs[0]} class="object-cover"></mds-img>
+    </mds-card-media>
+  </mds-card>
+
+const LayoutCFTemplate = args =>
+  <mds-card {...args}>
+    <mds-card-content>
+      Lorem ipsum dolor sit amet, consectetur adipiscing elit. Proin quis elementum lorem. Phasellus vel quam leo. Ut eget finibus libero. Integer sed odio hendrerit diam maximus blandit ac malesuada odio.
+    </mds-card-content>
+    <mds-card-footer class="pt-0">
+      <mds-button variant="dark" tone="quiet">Cancel</mds-button>
+      <mds-button>Contact</mds-button>
+    </mds-card-footer>
+  </mds-card>
+
+const LayoutHFTemplate = args =>
+  <mds-card {...args}>
+    <mds-card-header>
+      <div class="flex gap-4 items-center">
+        <mds-avatar class="w-11 min-w-11" initials='mc'></mds-avatar>
+        <div class="flex gap-0 flex-col">
+          <mds-text typography="h6">Mauro Coletta</mds-text>
+          <mds-text typography="caption">Management designer</mds-text>
+        </div>
+      </div>
+      <mds-button icon="mi/round/more-vert" variant="light"></mds-button>
+    </mds-card-header>
+    <mds-card-footer class="pt-0">
+      <mds-button variant="dark" tone="quiet">Cancel</mds-button>
+      <mds-button>Contact</mds-button>
+    </mds-card-footer>
+  </mds-card>
+
+const LayoutMTemplate = args =>
+  <mds-card {...args}>
+    <mds-card-media>
+      <mds-img src={URLs[0]} class="object-cover"></mds-img>
+    </mds-card-media>
+  </mds-card>
+
+const LayoutHTemplate = args =>
+  <mds-card {...args}>
+    <mds-card-header>
+      <div class="flex gap-4 items-center">
+        <mds-avatar class="w-11 min-w-11" initials='mc'></mds-avatar>
+        <div class="flex gap-0 flex-col">
+          <mds-text typography="h6">Mauro Coletta</mds-text>
+          <mds-text typography="caption">Management designer</mds-text>
+        </div>
+      </div>
+      <mds-button icon="mi/round/more-vert" variant="light"></mds-button>
+    </mds-card-header>
+  </mds-card>
+
+const LayoutCTemplate = args =>
+  <mds-card {...args}>
+    <mds-card-content>
+      Lorem ipsum dolor sit amet, consectetur adipiscing elit. Proin quis elementum lorem. Phasellus vel quam leo. Ut eget finibus libero. Integer sed odio hendrerit diam maximus blandit ac malesuada odio.
+    </mds-card-content>
+  </mds-card>
+
+const LayoutFTemplate = args =>
+  <mds-card {...args}>
+    <mds-card-footer>
+      <mds-button variant="dark" tone="quiet">Cancel</mds-button>
+      <mds-button>Contact</mds-button>
+    </mds-card-footer>
+  </mds-card>
+
 export const Default = Template.bind({})
 export const FullCard = FullCardTemplate.bind({})
 export const FullCardCustomSlots = CustomSlotsTemplate.bind({})
 FullCardCustomSlots.args = {
   'auto-grid': false,
 }
+
+export const LayoutHeaderMediaContentFooter = LayoutHMCFTemplate.bind({})
+export const LayoutHeaderMediaContent = LayoutHMCTemplate.bind({})
+export const LayoutHeaderMediaFooter = LayoutHMFTemplate.bind({})
+export const LayoutHeaderContentFooter = LayoutHCFTemplate.bind({})
+export const LayoutHeaderContent = LayoutHCTemplate.bind({})
+export const LayoutHeaderMedia = LayoutHMTemplate.bind({})
+export const LayoutHeaderFooter = LayoutHFTemplate.bind({})
+export const LayoutMediaContentFooter = LayoutMCFTemplate.bind({})
+export const LayoutMediaContent = LayoutMCTemplate.bind({})
+export const LayoutMediaFooter = LayoutMFTemplate.bind({})
+export const LayoutContentFooter = LayoutCFTemplate.bind({})
+export const LayoutHeader = LayoutHTemplate.bind({})
+export const LayoutMedia = LayoutMTemplate.bind({})
+export const LayoutContent = LayoutCTemplate.bind({})
+export const LayoutFooter = LayoutFTemplate.bind({})
