@@ -23,7 +23,7 @@
     "prepublishOnly": "npm run build"
   },
   "dependencies": {
-    "@stencil/core": "^2.22.3"
+    "@stencil/core": "3.0.0"
   },
   "license": "MIT",
   "author": {

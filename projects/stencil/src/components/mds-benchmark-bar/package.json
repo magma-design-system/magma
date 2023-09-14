@@ -26,7 +26,7 @@
   "dependencies": {
     "@maggioli-design-system/mds-progress": "^2.5.0",
     "@maggioli-design-system/styles": "^11.4.0",
-    "@stencil/core": "^2.22.3"
+    "@stencil/core": "3.0.0"
   },
   "license": "MIT",
   "author": {

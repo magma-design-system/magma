@@ -1749,25 +1749,25 @@
   dependencies:
     "@floating-ui/core" "^1.3.1"
 
-"@fontsource/karla@^4.5.11":
-  version "4.5.11"
-  resolved "https://registry.npmjs.org/@fontsource/karla/-/karla-4.5.11.tgz#5434a77cf11b467046b13ed80be4140c87c42353"
-  integrity sha512-MpH+rW8V5v/mqEwoIrUTmGimY+GIyU5P23DmzYxWcTotosRLGWrg7XOjN4DtkpZuEv2LzHHZxOuFWbjRWL9JfQ==
+"@fontsource/karla@^5.0.11":
+  version "5.0.12"
+  resolved "https://registry.npmjs.org/@fontsource/karla/-/karla-5.0.12.tgz#88c96c20f2641370d86b88191cebe77077588ff9"
+  integrity sha512-I6bF4aFU0m3LFvdyZZJSyP5OeGq2BWsMQm4I9EpzI7MDgEPAJZtxC7SLcArVEVHj5oB2FU/reigskdDI2QwscQ==
 
-"@fontsource/merriweather@^4.5.14":
-  version "4.5.14"
-  resolved "https://registry.npmjs.org/@fontsource/merriweather/-/merriweather-4.5.14.tgz#17b634fe3892e25f345954fe34df252730b96080"
-  integrity sha512-kDMIAokOvE9bYf+CDmEWzV3xtR8cRJlw/BipjhxqD9MIRZfU348cZ8xhHhmPXmxRiEjZLor4xxHXqps7eCvGQg==
+"@fontsource/merriweather@^5.0.8":
+  version "5.0.8"
+  resolved "https://registry.npmjs.org/@fontsource/merriweather/-/merriweather-5.0.8.tgz#057ecbcd55fcd6592e4ce3254645075299916823"
+  integrity sha512-4vvR6psdKcGzaFCQL8fGCqMI/mOLKD+mhmUe3iQilx/4VFkIcF7wswWHZ7KCPeF24edX8yd0QXX0DQ1CenMrYA==
 
-"@fontsource/roboto-mono@^4.5.10":
-  version "4.5.10"
-  resolved "https://registry.npmjs.org/@fontsource/roboto-mono/-/roboto-mono-4.5.10.tgz#197fc2d5fa9c25fd7ad9dcccb2705663f2409850"
-  integrity sha512-KrJdmkqz6DszT2wV/bbhXef4r0hV3B0vw2mAqei8A2kRnvq+gcJLmmIeQ94vu9VEXrUQzos5M9lH1TAAXpRphw==
+"@fontsource/roboto-mono@^5.0.8":
+  version "5.0.8"
+  resolved "https://registry.npmjs.org/@fontsource/roboto-mono/-/roboto-mono-5.0.8.tgz#9b3df61f884f46e12d3eca46e75517fde58da68e"
+  integrity sha512-vjnNX8zQCSp4HadUJ3gpZiizCsK/ROjgGMpd4bcRxuyiTNGGMaznmKbhqdyVeFVap1sX8h2Qu380awaotey/mQ==
 
-"@fontsource/roboto@^4.5.8":
-  version "4.5.8"
-  resolved "https://registry.npmjs.org/@fontsource/roboto/-/roboto-4.5.8.tgz#56347764786079838faf43f0eeda22dd7328437f"
-  integrity sha512-CnD7zLItIzt86q4Sj3kZUiLcBk1dSk81qcqgMGaZe7SQ1P8hFNxhMl5AZthK1zrDM5m74VVhaOpuMGIL4gagaA==
+"@fontsource/roboto@^5.0.8":
+  version "5.0.8"
+  resolved "https://registry.npmjs.org/@fontsource/roboto/-/roboto-5.0.8.tgz#613b477a56f21b5705db1a67e995c033ef317f76"
+  integrity sha512-XxPltXs5R31D6UZeLIV1td3wTXU3jzd3f2DLsXI8tytMGBkIsGcc9sIyiupRtA8y73HAhuSCeweOoBqf6DbWCA==
 
 "@gar/promisify@^1.0.1":
   version "1.1.3"
@@ -2422,10 +2422,10 @@
   dependencies:
     "@sinonjs/commons" "^1.7.0"
 
-"@stencil/core@^2.22.3":
-  version "2.22.3"
-  resolved "https://registry.npmjs.org/@stencil/core/-/core-2.22.3.tgz#83987e20bba855c450f6d6780e3a20192603f13f"
-  integrity sha512-kmVA0M/HojwsfkeHsifvHVIYe4l5tin7J5+DLgtl8h6WWfiMClND5K3ifCXXI2ETDNKiEk21p6jql3Fx9o2rng==
+"@stencil/core@3.0.0":
+  version "3.0.0"
+  resolved "https://registry.npmjs.org/@stencil/core/-/core-3.0.0.tgz#2fba3143c77d2e0d619dbffb1a5c938f7a4b7615"
+  integrity sha512-MYhrOlnzAtBUJH0FEggaP2pwm5GUvkB4wYRpZZFtUzGXAPamvrsreUf8QsGe0C4NdFdk8NlUauFxEEGE3z1+Sw==
 
 "@stencil/eslint-plugin@^0.4.0":
   version "0.4.0"
