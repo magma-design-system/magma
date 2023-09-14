@@ -6,6 +6,6 @@ describe('mds-card-content', () => {
     await page.setContent('<mds-card-content></mds-card-content>')
 
     const element = await page.find('mds-card-content')
-    expect(element).toHaveClass('hydrated')
+    expect(element).toHaveAttribute('hydrated')
   })
 })
