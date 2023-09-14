@@ -21,6 +21,7 @@ export const config: Config = {
     selector: 'attribute',
   },
   taskQueue: 'async',
+  transformAliasedImportPaths: false,
   srcDir,
   sourceMap: false,
   buildEs5: true,

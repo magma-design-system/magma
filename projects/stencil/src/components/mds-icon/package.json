@@ -24,7 +24,7 @@
   },
   "dependencies": {
     "@maggioli-design-system/styles": "^11.4.0",
-    "@stencil/core": "3.0.0",
+    "@stencil/core": "4.2.0",
     "idb-keyval": "^6.2.0"
   },
   "license": "MIT",

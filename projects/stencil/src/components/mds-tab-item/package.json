@@ -26,7 +26,7 @@
   "dependencies": {
     "@maggioli-design-system/mds-button": "^4.7.0",
     "@maggioli-design-system/styles": "^11.6.0",
-    "@stencil/core": "3.0.0",
+    "@stencil/core": "4.2.0",
     "clsx": "^1.2.1"
   },
   "license": "MIT",
