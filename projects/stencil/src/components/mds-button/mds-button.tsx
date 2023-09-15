@@ -7,9 +7,6 @@ import { TypographyType } from '@type/typography'
 import { buttonSizeTypographyVariant } from './meta/variants'
 import { setAttributeIfEmpty, unslugName } from '@common/aria'
 
-/**
- * @slot notification - TODOSLOT
- */
 @Component({
   tag: 'mds-button',
   styleUrl: 'mds-button.css',
@@ -148,6 +145,11 @@ export class MdsButton {
   disconnectedCallback (): void {
     this.km.detachClickBehavior()
   }
+
+  /**
+ * @slot default - The label of the component
+ * @slot notification - Put the notification element here
+ */
 
   render () {
     this.typography = buttonSizeTypographyVariant[this.size] as TypographyType

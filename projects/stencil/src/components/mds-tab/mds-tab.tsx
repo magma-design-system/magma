@@ -1,9 +1,6 @@
 import { Component, Element, Event, EventEmitter, Host, Listen, h } from '@stencil/core'
 import { MdsTabEventDetail } from './meta/event-detail'
 
-/**
- * @slot content - TODOSLOT
- */
 @Component({
   tag: 'mds-tab',
   styleUrl: 'mds-tab.css',
@@ -85,6 +82,11 @@ export class MdsTab {
 
     this.selectContentItem()
   }
+
+  /**
+ * @slot default - Add mds-tab-item here
+ * @slot content - Add contents here, one for every mds-tab-item added
+ */
 
   render () {
     return (

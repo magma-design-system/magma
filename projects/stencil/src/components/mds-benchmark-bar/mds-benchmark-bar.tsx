@@ -29,6 +29,10 @@ export class MdsBenchmarkBar {
    */
   @Prop({ reflect: true }) readonly variant?: ThemeVariantType = 'dark'
 
+  /**
+ * @slot default - Add text string here, avoid elements
+ */
+
   render () {
     return (
       <Host>

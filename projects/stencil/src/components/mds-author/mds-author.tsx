@@ -1,7 +1,8 @@
 import { Component, Host, h, Element } from '@stencil/core'
 
 /**
- * @slot avatar - TODOSLOT
+ * @slot default - Insert author information, name, role or other useful author infos.
+ * @slot avatar - Insert the avatar image.
  */
 @Component({
   tag: 'mds-author',

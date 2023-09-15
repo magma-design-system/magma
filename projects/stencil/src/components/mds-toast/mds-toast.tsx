@@ -4,10 +4,6 @@ import { ThemeLuminanceVariantType, ToneMinimalVariantType } from '@type/variant
 import clsx from 'clsx'
 import { ToastPosition } from './meta/types'
 
-/**
- * @slot icon - TODOSLOT
- * @slot action - TODOSLOT
- */
 @Component({
   tag: 'mds-toast',
   styleUrl: 'mds-toast.css',
@@ -103,6 +99,12 @@ export class MdsToast {
   durationChanged (): void {
     this.reloadTimeListeners(!!this.visible)
   }
+
+  /**
+ * @slot defaut - Add text string here, avoid to add elements
+ * @slot icon - Add an element which represent an icon like mds-icon component
+ * @slot action - Put actions here, it's strongly recommended to add no more two actions
+ */
 
   render () {
     return (

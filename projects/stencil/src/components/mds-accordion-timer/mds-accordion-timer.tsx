@@ -141,6 +141,10 @@ export class MdsAccordionTimer {
     }
   }
 
+  /**
+ * @slot default - Add mds-accordion-timer-item here
+ */
+
   render () {
     return (
       <Host>

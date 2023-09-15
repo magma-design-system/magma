@@ -44,6 +44,10 @@ export class MdsTabBarItem {
     this.isSelected = newValue
   }
 
+  /**
+ * @slot default - Put text string here, avoid elements
+ */
+
   render () {
     return (
       <Host onClick={ this.select }>

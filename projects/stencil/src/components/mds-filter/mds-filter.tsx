@@ -135,6 +135,10 @@ export class MdsFilter {
    */
   @Event({ eventName: 'mdsFilterChange' }) changedEvent: EventEmitter<MdsFilterEventDetail>
 
+  /**
+ * @slot default - Put mds-filter-item elements here
+ */
+
   render () {
     return (
       <Host aria-label={ this.label }>

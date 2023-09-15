@@ -44,6 +44,10 @@ export class MdsPaginatorItem {
     this.km.detachClickBehavior()
   }
 
+  /**
+ * @slot default - Put text string here, avoid elements
+ */
+
   render () {
     return (
       <Host tabindex="0">

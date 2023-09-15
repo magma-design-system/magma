@@ -7,6 +7,10 @@ import { Component, Host, h } from '@stencil/core'
 })
 export class MdsTableCell {
 
+  /**
+ * @slot default - Put elements or text strings here
+ */
+
   render () {
     return (
       <Host>

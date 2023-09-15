@@ -13,6 +13,10 @@ export class MdsTableBody {
     this.interactive = event.detail
   }
 
+  /**
+ * @slot default - Put mds-table-row here
+ */
+
   render () {
     return (
       <Host role="rowgroup">

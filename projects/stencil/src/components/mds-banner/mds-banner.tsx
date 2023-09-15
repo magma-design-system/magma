@@ -3,9 +3,6 @@ import { ToneSimpleVariantType, ThemeVariantType } from '@type/variant'
 import miBaselineClose from '@icon/mi/baseline/close.svg'
 import { KeyboardManager } from '@common/keyboard-manager'
 
-/**
- * @slot actions - TODOSLOT
- */
 @Component({
   tag: 'mds-banner',
   styleUrl: 'mds-banner.css',

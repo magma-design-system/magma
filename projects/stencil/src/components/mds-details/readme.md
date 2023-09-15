@@ -19,6 +19,13 @@
 | `mdsDetailsChange` | Emits when the component is opened | `CustomEvent<boolean>` |
 
 
+## Shadow Parts
+
+| Part         | Description |
+| ------------ | ----------- |
+| `"contents"` |             |
+
+
 ## CSS Custom Properties
 
 | Name                              | Description                                         |

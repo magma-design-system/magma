@@ -77,6 +77,10 @@ export class MdsAccordion {
     this.changedChildrenHandler(event)
   }
 
+  /**
+ * @slot default - Add mds-accordion-items here
+ */
+
   render () {
     return (
       <Host>

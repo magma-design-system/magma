@@ -8,6 +8,11 @@ import { Component, Host, h } from '@stencil/core'
 
 export class MdsList {
 
+
+  /**
+ * @slot default - Put mds-list-item here
+ */
+
   render () {
     return (
       <Host>

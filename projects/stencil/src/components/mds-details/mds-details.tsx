@@ -3,11 +3,6 @@ import clsx from 'clsx'
 import miBaselineKeyboardArrowDown from '@icon/mi/baseline/keyboard-arrow-down.svg'
 import { KeyboardManager } from '@common/keyboard-manager'
 
-/**
- * @slot icon - TODOSLOT
- * @slot title - TODOSLOT
- * @slot action - TODOSLOT
- */
 @Component({
   tag: 'mds-details',
   styleUrl: 'mds-details.css',
@@ -53,6 +48,13 @@ export class MdsDetails {
     this.changedEvent.emit(this.isOpened)
   }
 
+  /**
+ * @slot default - Put contents inside the details, shown when the component is opened
+ * @slot action - Put actions inside the details, shown when the component is opened
+ * @slot icon - The icon on the left of the component
+ * @slot title - The title to the right of the left icon
+ */
+
   render () {
     return (
       <Host>
@@ -69,9 +71,11 @@ export class MdsDetails {
             </header>
           </div>
           <div class={clsx('details', this.isOpened && 'opened')}>
-            <slot/>
-            <div class="actions">
-              <slot name="action"/>
+            <div class="contents-expander" part="contents">
+              <slot/>
+              <div class="actions">
+                <slot name="action"/>
+              </div>
             </div>
           </div>
         </div>

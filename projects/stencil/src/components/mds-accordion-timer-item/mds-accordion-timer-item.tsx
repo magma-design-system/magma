@@ -73,6 +73,9 @@ export class MdsAccordionTimerItem {
    */
   @Event({ eventName: 'mdsAccordionTimerItemMouseLeaveSelect' }) selectedMouseLeaveEvent: EventEmitter<MdsAccordionTimerItemEventDetail>
 
+  /**
+ * @slot default - Add mds-accordion-timer-item here
+ */
   render () {
     return (
       <Host onMouseEnter={this.mouseEnter} onMouseLeave={this.mouseLeave}>

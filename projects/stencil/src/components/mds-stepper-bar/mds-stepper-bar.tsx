@@ -1,9 +1,6 @@
 import { Component, Element, Event, EventEmitter, Host, Listen, Prop, State, Watch, h } from '@stencil/core'
 import { MdsStepperBarEventDetail } from './meta/event-detail'
 
-/**
- * @slot content - TODOSLOT
- */
 @Component({
   tag: 'mds-stepper-bar',
   styleUrl: 'mds-stepper-bar.css',
@@ -122,6 +119,11 @@ export class MdsStepperBar {
       }
     })
   }
+
+  /**
+ * @slot default - Put mds-stepper-bar-item here
+ * @slot content - Add contents here, one for every mds-stepper-bar-item added
+ */
 
   render () {
     return (

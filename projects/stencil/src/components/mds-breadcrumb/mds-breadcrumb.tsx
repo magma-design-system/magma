@@ -106,6 +106,10 @@ export class MdsBreadcrumb {
     this.changedEvent.emit({ id: id.toString(), caller })
   }
 
+  /**
+ * @slot default - Add mds-breadcrumb-item components here
+ */
+
   render () {
     return (
       <Host>

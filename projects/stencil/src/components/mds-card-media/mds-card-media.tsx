@@ -7,6 +7,11 @@ import { Component, Host, h } from '@stencil/core'
 })
 export class MdsCardMedia {
 
+  /**
+ * @slot default - Add mds-img or other kind of media elemnts here
+ * @slot content - Add contents here, which will be shown in front of the media element
+ */
+
   render () {
     return (
       <Host slot="media">

@@ -2,9 +2,7 @@ import miRoundMenu from '@icon/mi/round/menu.svg'
 import { Component, Element, Event, EventEmitter, Host, Listen, Prop, State, h } from '@stencil/core'
 import clsx from 'clsx'
 
-/**
- * @slot nav - TODOSLOT
- */
+
 @Component({
   tag: 'mds-header-bar',
   styleUrl: 'mds-header-bar.css',
@@ -39,6 +37,11 @@ export class MdsHeaderBar {
   closedHandler (): void {
     this.isOpened = false
   }
+
+  /**
+ * @slot default - Put contents, like logo and a small description shown on the left of the component
+ * @slot nav - Put the actions shown when the component is on desktop mode
+ */
 
   render () {
     return (

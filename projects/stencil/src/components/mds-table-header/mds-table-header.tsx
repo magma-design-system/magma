@@ -7,6 +7,10 @@ import { Component, Host, h } from '@stencil/core'
 })
 export class MdsTableHeader {
 
+  /**
+ * @slot default - Put mds-table-row here
+ */
+
   render () {
     return (
       <Host role="row">

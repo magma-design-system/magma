@@ -27,6 +27,10 @@ export class MdsTable {
     this.interactiveEvent.emit(this.interactive)
   }
 
+  /**
+ * @slot default - Put mds-table-header, mds-table-body, mds-table-footer here
+ */
+
   render () {
     return (
       <Host>

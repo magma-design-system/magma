@@ -46,6 +46,10 @@ export class MdsBreadcrumbItem {
     this.km.detachClickBehavior()
   }
 
+  /**
+ * @slot default - Add mds-breadcrumb-item components here
+ */
+
   render () {
     return (
       <Host>

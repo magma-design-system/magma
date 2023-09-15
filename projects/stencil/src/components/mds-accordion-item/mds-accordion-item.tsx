@@ -55,6 +55,10 @@ export class MdsAccordionItem {
    */
   @Event({ eventName: 'mdsAccordionItemChange' }) changedEvent: EventEmitter<MdsAccordionItemEventDetail>
 
+  /**
+ * @slot default - Contents here
+ */
+
   render () {
     return (
       <Host>

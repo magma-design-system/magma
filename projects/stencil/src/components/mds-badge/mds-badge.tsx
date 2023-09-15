@@ -29,6 +29,9 @@ export class MdsBadge {
    */
   @Prop() readonly typographyVariant?: TypographyVariants
 
+  /**
+ * @slot default - Add text string here, avoid elements
+ */
 
   render () {
     return (

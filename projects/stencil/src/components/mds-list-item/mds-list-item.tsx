@@ -24,6 +24,10 @@ export class MdsListItem {
    */
   @Prop() readonly icon?: string
 
+  /**
+ * @slot default - Put text string here, avoid elements
+ */
+
   render () {
     return (
       <Host>

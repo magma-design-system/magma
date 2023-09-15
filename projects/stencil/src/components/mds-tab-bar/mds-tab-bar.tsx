@@ -34,6 +34,10 @@ export class MdsTabBar {
     })
   }
 
+  /**
+ * @slot default - Put mds-tab-bar-item here
+ */
+
   render () {
     return (
       <Host>

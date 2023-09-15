@@ -7,6 +7,10 @@ import { Component, Host, h } from '@stencil/core'
 })
 export class MdsCardFooter {
 
+  /**
+ * @slot default - Add contents here
+ */
+
   render () {
     return (
       <Host slot="footer">

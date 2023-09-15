@@ -13,6 +13,10 @@ export class MdsTableRow {
     this.interactive = event.detail
   }
 
+  /**
+ * @slot default - Put mds-table-cell here
+ */
+
   render () {
     return (
       <Host role="row">

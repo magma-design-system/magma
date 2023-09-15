@@ -4,11 +4,6 @@ import { Component, Element, Event, EventEmitter, Host, h, Listen, Prop, Watch, 
 import { KeyboardManager } from '@common/keyboard-manager'
 import { ModalPositionType, ModalAnimationStateType } from './meta/types'
 
-/**
- * @slot window - TODOSLOT
- * @slot top - TODOSLOT
- * @slot bottom - TODOSLOT
- */
 @Component({
   tag: 'mds-modal',
   styleUrl: 'mds-modal.css',
@@ -120,6 +115,13 @@ export class MdsModal {
   onBannerCloseListener (): void {
     this.opened = false
   }
+
+  /**
+ * @slot default - Put contents here, managed with a modal window
+ * @slot bottom - Put footer contents here if you need to automatically add bottom informations
+ * @slot top - Put header contents here if you need to automatically add bottom informations
+ * @slot window - If you need to use directly a window element and skip automatic layout
+ */
 
   render () {
     return (

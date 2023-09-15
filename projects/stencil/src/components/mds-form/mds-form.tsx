@@ -60,6 +60,10 @@ export class MdsForm {
    */
   @Prop() readonly target?: string
 
+  /**
+ * @slot default - Put form elements here
+ */
+
   render () {
     return (
       <Host>

@@ -20,6 +20,10 @@ export class MdsHorizontalScroll {
    */
   @Prop() readonly scrollbar?: boolean
 
+  /**
+ * @slot default - Put elements here
+ */
+
   render () {
     return (
       <Host class={clsx(

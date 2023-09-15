@@ -425,6 +425,10 @@ export class MdsDropdown {
     this.cleanupAutoUpdate = () => { return }
   }
 
+  /**
+ * @slot default - Put contents here, shown when the component is opened
+ */
+
   render () {
     return (
       <Host>

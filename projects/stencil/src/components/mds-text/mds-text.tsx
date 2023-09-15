@@ -29,6 +29,10 @@ export class MdsText {
    */
   @Prop({ reflect: true }) readonly variant?: TypographyVariants
 
+  /**
+ * @slot default - Put text strings here, avoid elements
+ */
+
   render () {
     const { tag } = typographyDefaultsVariant[this.typography]
     this.tag = this.tag ?? tag as TypographyTagType

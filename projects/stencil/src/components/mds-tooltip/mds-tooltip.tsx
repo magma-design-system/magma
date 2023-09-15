@@ -272,6 +272,10 @@ export class MdsTooltip {
     this.cleanupAutoUpdate = () => {return}
   }
 
+  /**
+ * @slot default - Put text strings here, avoid elements
+ */
+
   render () {
     return (
       <Host>

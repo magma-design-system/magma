@@ -69,6 +69,14 @@ You can try it out on the component's [Storybook website][storybook]!
 <!-- Auto Generated Below -->
 
 
+## Slots
+
+| Slot        | Description                                                         |
+| ----------- | ------------------------------------------------------------------- |
+| `"avatar"`  | Insert the avatar image.                                            |
+| `"default"` | Insert author information, name, role or other useful author infos. |
+
+
 ----------------------------------------------
 
 Built with love @ **Maggioli Informatica / R&D Department**

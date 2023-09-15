@@ -14,6 +14,13 @@
 | `value` _(required)_       | `value`       | Specifies the number to be displayed in the KPI element      | `number`              | `undefined` |
 
 
+## Slots
+
+| Slot     | Description                         |
+| -------- | ----------------------------------- |
+| `"icon"` | Put the icon shown on the component |
+
+
 ## CSS Custom Properties
 
 | Name                  | Description                           |

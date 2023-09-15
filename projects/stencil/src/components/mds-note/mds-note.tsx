@@ -3,9 +3,6 @@ import { Component, Element, Event, EventEmitter, Host, h, Prop } from '@stencil
 import { KeyboardManager } from '@common/keyboard-manager'
 import { LabelVariantType } from '@type/variant'
 
-/**
- * @slot title - TODOSLOT
- */
 @Component({
   tag: 'mds-note',
   styleUrl: 'mds-note.css',
@@ -53,6 +50,11 @@ export class MdsNote {
   disconnectedCallback (): void {
     this.km.detachClickBehavior()
   }
+
+  /**
+ * @slot default - Put contents here
+ * @slot title - Add a note title here
+ */
 
   render () {
     return (

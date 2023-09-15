@@ -25,6 +25,10 @@ export class MdsInputSwitchGroup {
     radios.forEach(radio => radio.checked = radio.value === value)
   }
 
+  /**
+ * @slot default - Put mds-input-switch elements here
+ */
+
   render () {
     return (
       <Host>

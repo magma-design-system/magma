@@ -14,6 +14,11 @@ export class MdsCardHeader {
     this.actions = this.hostElement.querySelector('[slot="action"]') !== null
   }
 
+  /**
+ * @slot default - Add contents here
+ * @slot action - Add actions elements here
+ */
+
   render () {
     return (
       <Host slot="header">
