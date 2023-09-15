@@ -22,6 +22,15 @@
 | `"default"` | Add `text string` to this slot, **avoid** to add `HTML elements` or `components` here. |
 
 
+## CSS Custom Properties
+
+| Name           | Description                                |
+| -------------- | ------------------------------------------ |
+| `--background` | Sets the background-color of the component |
+| `--color`      | Sets the text color of the component       |
+| `--radius`     | Sets the border-radius of the component    |
+
+
 ## Dependencies
 
 ### Used by

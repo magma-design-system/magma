@@ -20,6 +20,14 @@
 | `"default"` | Add `text string`, `HTML elements` or `components` to this slot. |
 
 
+## CSS Custom Properties
+
+| Name             | Description                                   |
+| ---------------- | --------------------------------------------- |
+| `--background`   | Sets the background-color of the component    |
+| `--border-width` | Sets the colored border-size of the component |
+
+
 ## Dependencies
 
 ### Depends on
