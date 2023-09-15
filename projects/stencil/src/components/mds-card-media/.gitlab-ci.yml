@@ -1,0 +1,25 @@
+.base-card-media:
+  variables:
+    COMPONENT: mds-card-media
+
+# ISOLATE
+card-media-isolate:
+  extends: [.base-isolate, .base-card-media]
+  dependencies: [base-stencil-build]
+
+# TEST
+card-media-publish-test:
+  extends: [.base-stencil-publish-test, .base-card-media]
+  dependencies: [base-stencil-build, card-media-isolate]
+
+# PUBLISH
+card-media-publish:
+  extends: [.base-stencil-publish, .base-card-media]
+  dependencies: [base-stencil-build, card-media-isolate]
+  needs: [base-stencil-build, card-media-isolate, card-media-publish-test]
+
+# INSTALL TEST
+card-media-install-test:
+  extends: [.base-stencil-install-test, .base-card-media]
+  dependencies: [base-stencil-build, card-media-isolate]
+  needs: [base-stencil-build, card-media-isolate, card-media-publish]

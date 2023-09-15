@@ -22,24 +22,19 @@
 | `variant`      | `variant`       | Specifies the color variant for the button                            | `"dark" \| "error" \| "info" \| "light" \| "primary" \| "success" \| "warning" \| undefined` | `'primary'` |
 
 
+## Slots
+
+| Slot             | Description                                                                                   |
+| ---------------- | --------------------------------------------------------------------------------------------- |
+| `"default"`      | Add `text string` to this slot, **avoid** to add `HTML elements` or `components` here.        |
+| `"notification"` | Add `HTML elements` or `components`, it is **recommended** to use `mds-notification` element. |
+
+
 ## Shadow Parts
 
 | Part      | Description |
 | --------- | ----------- |
 | `"label"` |             |
-
-
-## CSS Custom Properties
-
-| Name                          | Description                                                                                              |
-| ----------------------------- | -------------------------------------------------------------------------------------------------------- |
-| `--mds-button-await-duration` | Sets the duration of the rotation of the spinner await component                                         |
-| `--mds-button-background`     | Sets the background-color of the component                                                               |
-| `--mds-button-border-color`   | Sets the border-color of the component                                                                   |
-| `--mds-button-color`          | Sets the text color of the component                                                                     |
-| `--mds-button-gap`            | Sets the distance betwen element inside the components, use it instead of setting gap property directly. |
-| `--mds-button-icon-color`     | Sets the icon color of the component                                                                     |
-| `--mds-button-radius`         | Sets the border-radius of the component                                                                  |
 
 
 ## Dependencies

@@ -1,0 +1,23 @@
+@tailwind utilities;
+
+:host {
+  @apply
+    bg-tone-neutral-09
+    grid
+    relative;
+}
+
+.content {
+  @apply
+    absolute
+    flex
+    gap-2
+    inset-0
+    items-end
+    justify-center
+    p-4;
+}
+
+.img {
+  object-fit: contain;
+}

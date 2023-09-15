@@ -1,6 +1,10 @@
 import { Component, Event, EventEmitter, Element, Host, h, Listen } from '@stencil/core'
 import { MdsTabBarEventDetail } from './meta/event-detail'
 
+/**
+ * @slot default - Add `mds-tab-bar-item` element/s.
+ */
+
 @Component({
   tag: 'mds-tab-bar',
   styleUrl: 'mds-tab-bar.css',

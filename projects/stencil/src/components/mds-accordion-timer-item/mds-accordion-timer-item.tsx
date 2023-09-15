@@ -2,6 +2,10 @@ import { Component, Event, EventEmitter, Host, Prop, h } from '@stencil/core'
 import { TypographyTitleType } from '@type/typography'
 import { MdsAccordionTimerItemEventDetail } from './meta/event-detail'
 
+/**
+ * @slot default - Add contents like `text string`, `HTML elements` or `components` to this slot.
+ */
+
 @Component({
   tag: 'mds-accordion-timer-item',
   styleUrl: 'mds-accordion-timer-item.css',

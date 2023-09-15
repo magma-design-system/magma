@@ -14,16 +14,13 @@
 | `src`      | `src`      | Specifies the path to the image                                                 | `string \| undefined` | `undefined` |
 
 
-## CSS Custom Properties
+## Slots
 
-| Name                           | Description                        |
-| ------------------------------ | ---------------------------------- |
-| `--mds-entity-background`      | The background-color of the entity |
-| `--mds-entity-color`           | The color of the entity name       |
-| `--mds-entity-detail-color`    | The color of the text details      |
-| `--mds-entity-icon-background` | The background-color of the icon   |
-| `--mds-entity-icon-color`      | The color of the icon              |
-| `--mds-entity-shadow`          | The box-shadow od the component    |
+| Slot        | Description                                                                             |
+| ----------- | --------------------------------------------------------------------------------------- |
+| `"action"`  | Add `HTML elements` or `components`, it is **recommended** to use `mds-button` element. |
+| `"default"` | Add `text string`, `HTML elements` or `components` to this slot.                        |
+| `"default"` | Add `text string`, `HTML elements` or `components` to this slot.                        |
 
 
 ## Dependencies

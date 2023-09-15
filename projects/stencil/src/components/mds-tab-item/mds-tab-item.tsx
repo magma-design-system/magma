@@ -2,6 +2,10 @@ import { Component, Element, Event, EventEmitter, Host, Prop, State, Watch, h } 
 import { ButtonIconPositionType, ButtonSizeType, ButtonType } from '@type/button'
 import clsx from 'clsx'
 
+/**
+ * @slot default - Put text string here, avoid elements
+ */
+
 @Component({
   tag: 'mds-tab-item',
   styleUrl: 'mds-tab-item.css',

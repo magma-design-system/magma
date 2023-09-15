@@ -12,12 +12,11 @@
 | `interactive` | `interactive` |             | `boolean` | `undefined` |
 
 
-## CSS Custom Properties
+## Slots
 
-| Name                                | Description                                                      |
-| ----------------------------------- | ---------------------------------------------------------------- |
-| `--mds-table-body-background`       | The background-color of the table body                           |
-| `--mds-table-body-background-hover` | The background-color of the table body when the mouse is over it |
+| Slot        | Description                    |
+| ----------- | ------------------------------ |
+| `"default"` | Put `mds-table-row` element/s. |
 
 
 ----------------------------------------------

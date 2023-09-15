@@ -1,4 +1,11 @@
 import { Component, Element, Host, h, Prop } from '@stencil/core'
+
+/**
+ * @slot default - Add `text string`, `HTML elements` or `components` to this slot.
+ * @slot default - Add `text string`, `HTML elements` or `components` to this slot.
+ * @slot action - Add `HTML elements` or `components`, it is **recommended** to use `mds-button` element.
+ */
+
 @Component({
   tag: 'mds-entity',
   styleUrl: 'mds-entity.css',

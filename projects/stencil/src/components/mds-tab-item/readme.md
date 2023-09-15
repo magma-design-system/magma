@@ -23,6 +23,13 @@
 | `mdsTabItemSelect` | Emits when the tab item is selected | `CustomEvent<string>` |
 
 
+## Slots
+
+| Slot        | Description                          |
+| ----------- | ------------------------------------ |
+| `"default"` | Put text string here, avoid elements |
+
+
 ## Shadow Parts
 
 | Part       | Description |
