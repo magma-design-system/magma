@@ -13,12 +13,11 @@
 | `variant` | `variant` | Specifies the delay when the tooltip will trigger                   | `"do" \| "dont" \| "info" \| "warn"` | `'info'`    |
 
 
-## CSS Custom Properties
+## Slots
 
-| Name             | Description                                   |
-| ---------------- | --------------------------------------------- |
-| `--background`   | Sets the background-color of the component    |
-| `--border-width` | Sets the colored border-size of the component |
+| Slot        | Description                                                      |
+| ----------- | ---------------------------------------------------------------- |
+| `"default"` | Add `text string`, `HTML elements` or `components` to this slot. |
 
 
 ## Dependencies

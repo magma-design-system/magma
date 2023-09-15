@@ -18,13 +18,12 @@
 | `src`      | `src`      | Specifies the URL of the video file                                                                                                                  | `string \| undefined`                                           | `undefined` |
 
 
-## CSS Custom Properties
+## Slots
 
-| Name                       | Description                                        |
-| -------------------------- | -------------------------------------------------- |
-| `--aspect-ratio`           | Sets the aspect-ratio of the component             |
-| `--noise-background-color` | Sets the background-color of the noise when active |
-| `--video-fit`              | Sets the object-fit of the video stream            |
+| Slot        | Description                                                                                      |
+| ----------- | ------------------------------------------------------------------------------------------------ |
+| `"content"` | Add video content overlay here, add `text string`, `HTML elements` or `components` to this slot. |
+| `"default"` | Write browser support missing message here.                                                      |
 
 
 ----------------------------------------------

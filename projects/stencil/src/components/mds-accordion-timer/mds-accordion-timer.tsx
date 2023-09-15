@@ -1,6 +1,10 @@
 import { MdsAccordionTimerItemEventDetail } from '@component/mds-accordion-timer-item/meta/event-detail'
 import { Component, Host, Element, Event, EventEmitter, h, Prop, Listen, State } from '@stencil/core'
 
+/**
+ * @slot default - Add `mds-accordion-timer-item` element/s.
+ */
+
 @Component({
   tag: 'mds-accordion-timer',
   styleUrl: 'mds-accordion-timer.css',

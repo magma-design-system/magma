@@ -1,0 +1,25 @@
+.base-card-footer:
+  variables:
+    COMPONENT: mds-card-footer
+
+# ISOLATE
+card-footer-isolate:
+  extends: [.base-isolate, .base-card-footer]
+  dependencies: [base-stencil-build]
+
+# TEST
+card-footer-publish-test:
+  extends: [.base-stencil-publish-test, .base-card-footer]
+  dependencies: [base-stencil-build, card-footer-isolate]
+
+# PUBLISH
+card-footer-publish:
+  extends: [.base-stencil-publish, .base-card-footer]
+  dependencies: [base-stencil-build, card-footer-isolate]
+  needs: [base-stencil-build, card-footer-isolate, card-footer-publish-test]
+
+# INSTALL TEST
+card-footer-install-test:
+  extends: [.base-stencil-install-test, .base-card-footer]
+  dependencies: [base-stencil-build, card-footer-isolate]
+  needs: [base-stencil-build, card-footer-isolate, card-footer-publish]

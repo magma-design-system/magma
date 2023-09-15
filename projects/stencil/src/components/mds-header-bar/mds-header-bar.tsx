@@ -2,6 +2,11 @@ import miRoundMenu from '@icon/mi/round/menu.svg'
 import { Component, Element, Event, EventEmitter, Host, Listen, Prop, State, h } from '@stencil/core'
 import clsx from 'clsx'
 
+/**
+ * @slot default - Put contents, like logo and a small description shown on the left of the component. Add `text string`, `HTML elements` or `components` to this slot.
+ * @slot nav - Put the actions shown when the component is on desktop mode. Add `HTML elements` or `components`, it is **recommended** to use `mds-button` element.
+ */
+
 @Component({
   tag: 'mds-header-bar',
   styleUrl: 'mds-header-bar.css',

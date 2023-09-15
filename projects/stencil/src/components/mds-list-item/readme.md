@@ -14,19 +14,19 @@
 | `variant`    | `variant`    | Specifies the variant for `typography`      | `"info" \| "read" \| undefined`                                        | `'info'`    |
 
 
+## Slots
+
+| Slot        | Description                                                                            |
+| ----------- | -------------------------------------------------------------------------------------- |
+| `"default"` | Add `text string` to this slot, **avoid** to add `HTML elements` or `components` here. |
+
+
 ## Shadow Parts
 
 | Part     | Description |
 | -------- | ----------- |
 | `"icon"` |             |
 | `"text"` |             |
-
-
-## CSS Custom Properties
-
-| Name                          | Description                             |
-| ----------------------------- | --------------------------------------- |
-| `--mds-list-item-icon-margin` | Sets the margin of the component's icon |
 
 
 ## Dependencies

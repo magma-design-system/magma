@@ -29,6 +29,13 @@
 | `mdsImgLoadSuccess` | Emits when the image is successfully loaded | `CustomEvent<MdsImgEventDetail>` |
 
 
+## Shadow Parts
+
+| Part      | Description |
+| --------- | ----------- |
+| `"media"` |             |
+
+
 ## Dependencies
 
 ### Used by

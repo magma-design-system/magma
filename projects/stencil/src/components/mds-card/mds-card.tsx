@@ -1,4 +1,12 @@
-import { Component, Host, h } from '@stencil/core'
+import { Component, Element, Host, h, State, Prop } from '@stencil/core'
+import clsx from 'clsx'
+
+/**
+  * @slot media - Add `HTML elements` or `components`Add `HTML elements` or `components`, it is **recommended** to use `mds-img` element or other component to represent media contents, used for images or videos, it's responsive behaviour based on container queries is handled with `auto-grid` enabled
+  * @slot header - Add `HTML elements` or `components`, it's responsive behaviour based on container queries is handled with `auto-grid` enabled
+  * @slot content - Add `HTML elements` or `components`, it's responsive behaviour based on container queries is handled with `auto-grid` enabled
+  * @slot footer - Add `HTML elements` or `components`, it's responsive behaviour based on container queries is handled with `auto-grid` enabled
+  */
 
 @Component({
   tag: 'mds-card',
@@ -7,10 +15,39 @@ import { Component, Host, h } from '@stencil/core'
 })
 export class MdsCard {
 
+  @Element() private host: HTMLMdsCardElement
+  @State() layout: string
+
+  /**
+   * Enables automatic responsive behavior based on container queries
+   */
+  @Prop({ reflect: true }) readonly autoGrid = true
+
+  componentDidLoad (): void {
+    this.layout = ''
+    if (this.host.querySelector('[slot="media"]') !== null) {
+      this.layout += 'm'
+    }
+    if (this.host.querySelector('[slot="header"]') !== null) {
+      this.layout += 'h'
+    }
+    if (this.host.querySelector('[slot="content"]') !== null) {
+      this.layout += 'c'
+    }
+    if (this.host.querySelector('[slot="footer"]') !== null) {
+      this.layout += 'f'
+    }
+  }
+
   render () {
     return (
       <Host>
-        <slot></slot>
+        <div class={clsx('layout', this.layout && `layout--${this.layout}`, !this.autoGrid ? 'layout--disabled' : '')} part="container">
+          <slot name="media"/>
+          <slot name="header"/>
+          <slot name="content"/>
+          <slot name="footer"/>
+        </div>
       </Host>
     )
   }

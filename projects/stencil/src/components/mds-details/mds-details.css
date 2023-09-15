@@ -1,4 +1,4 @@
-@import '../../tailwind/components.css';
+@import url('../../tailwind/components.css');
 @tailwind components;
 @tailwind utilities;
 
@@ -9,6 +9,7 @@
 
 :host {
 
+  --mds-details-duration: 300ms;
   --mds-details-icon-color: theme('colors.brand-maggioli-04');
   --mds-details-helper-icon-color: theme('colors.tone-neutral-03');
 
@@ -26,20 +27,30 @@
   @apply
     gap-4
     grid
-    h-0
     opacity-0
     overflow-hidden
     pointer-events-none
-    pt-0
-    transition-cosmetic;
+    pt-0;
+
+  transition-duration: var(--mds-details-duration);
+  transition-property: grid-template-rows opacity padding;
+  grid-template-rows: 0fr;
+}
+
+.contents-expander {
+  @apply
+    gap-4
+    grid
+    min-h-0;
 }
 
 .details.opened {
   @apply
-    h-auto
     opacity-100
     pointer-events-auto
     pt-4;
+
+  grid-template-rows: 1fr;
 }
 
 .header {

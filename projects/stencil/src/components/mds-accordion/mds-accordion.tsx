@@ -2,6 +2,10 @@ import { MdsAccordionItemEventDetail } from '@component/mds-accordion-item/meta/
 import { Component, Element, Event, EventEmitter, Host, Listen, Prop, h } from '@stencil/core'
 import { MdsAccordionEventDetail } from './meta/event-detail'
 
+/**
+ * @slot default - Add `mds-accordion-item` element/s.
+ */
+
 @Component({
   tag: 'mds-accordion',
   styleUrl: 'mds-accordion.css',

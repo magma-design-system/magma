@@ -14,13 +14,11 @@
 | `value` _(required)_       | `value`       | Specifies the number to be displayed in the KPI element      | `number`              | `undefined` |
 
 
-## CSS Custom Properties
+## Slots
 
-| Name                  | Description                           |
-| --------------------- | ------------------------------------- |
-| `--description-color` | Set the color of the description text |
-| `--info-padding`      | Set the padding of the info text      |
-| `--value-color`       | Set the color of the value text       |
+| Slot     | Description                                                                                                       |
+| -------- | ----------------------------------------------------------------------------------------------------------------- |
+| `"icon"` | Insert an icon image, it can be `HTML elements` or `components`, it is **recommended** to add `mds-icon` element. |
 
 
 ## Dependencies

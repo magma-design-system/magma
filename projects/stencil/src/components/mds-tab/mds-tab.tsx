@@ -1,6 +1,11 @@
 import { Component, Element, Event, EventEmitter, Host, Listen, h } from '@stencil/core'
 import { MdsTabEventDetail } from './meta/event-detail'
 
+/**
+ * @slot default - Add `mds-tab-item` element/s.
+ * @slot content - Add `HTML elements` or `components`, one per mds-tab-item added.
+ */
+
 @Component({
   tag: 'mds-tab',
   styleUrl: 'mds-tab.css',

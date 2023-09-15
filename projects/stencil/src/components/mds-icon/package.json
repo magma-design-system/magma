@@ -1,6 +1,6 @@
 {
   "name": "@maggioli-design-system/mds-icon",
-  "version": "2.4.0",
+  "version": "2.5.0",
   "description": "mds-icon is a web-component from Maggioli Design System Magma, built with StencilJS, TypeScript, Storybook. It's based on the web-component standard and it's designed to be agnostic from the JavaScirpt framework you are using.",
   "main": "dist/index.cjs.js",
   "module": "dist/index.js",
@@ -23,9 +23,9 @@
     "prepublishOnly": "npm run build"
   },
   "dependencies": {
-    "@maggioli-design-system/styles": "^11.4.0",
-    "@stencil/core": "^2.22.3",
-    "idb-keyval": "^6.2.0"
+    "@maggioli-design-system/styles": "^11.7.0",
+    "@stencil/core": "^4.2.1",
+    "idb-keyval": "^6.2.1"
   },
   "license": "MIT",
   "author": {

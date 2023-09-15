@@ -4,6 +4,10 @@ import { FloatingUIPlacement, FloatingUIStrategy } from '@type/floating-ui'
 import { TypographyTooltipType } from '@type/typography'
 import arrowSvg from './assets/arrow.svg'
 
+/**
+ * @slot default - Add `text string` to this slot, **avoid** to add `HTML elements` or `components` here.
+ */
+
 @Component({
   tag: 'mds-tooltip',
   styleUrl: 'mds-tooltip.css',

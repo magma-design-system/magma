@@ -15,13 +15,11 @@
 | `variant`           | `variant`            | Sets the theme variant colors           | `"amaranth" \| "aqua" \| "blue" \| "dark" \| "error" \| "green" \| "info" \| "light" \| "lime" \| "orange" \| "orchid" \| "sky" \| "success" \| "violet" \| "warning" \| "yellow" \| undefined` | `'green'`   |
 
 
-## CSS Custom Properties
+## Slots
 
-| Name           | Description                                |
-| -------------- | ------------------------------------------ |
-| `--background` | Sets the background-color of the component |
-| `--color`      | Sets the text color of the component       |
-| `--radius`     | Sets the border-radius of the component    |
+| Slot        | Description                                                                            |
+| ----------- | -------------------------------------------------------------------------------------- |
+| `"default"` | Add `text string` to this slot, **avoid** to add `HTML elements` or `components` here. |
 
 
 ## Dependencies

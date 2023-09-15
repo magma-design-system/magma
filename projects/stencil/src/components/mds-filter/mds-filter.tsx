@@ -3,6 +3,10 @@ import { Component, Element, Event, EventEmitter, Host, h, Listen, Prop, State }
 import { MdsFilterEventDetail } from './meta/event-detail'
 import { MdsFilterItemEventDetail } from '@component/mds-filter-item/meta/event-detail'
 
+/**
+ * @slot default - Add `mds-filter-item` element/s.
+ */
+
 @Component({
   tag: 'mds-filter',
   styleUrl: 'mds-filter.css',

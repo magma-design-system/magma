@@ -1,6 +1,10 @@
 import { Component, Host, h, Prop, Element } from '@stencil/core'
 import { KeyboardManager } from '@common/keyboard-manager'
 
+/**
+ * @slot default - Add `text string` to this slot, **avoid** to add `HTML elements` or `components` here.
+ */
+
 @Component({
   tag: 'mds-paginator-item',
   styleUrl: 'mds-paginator-item.css',

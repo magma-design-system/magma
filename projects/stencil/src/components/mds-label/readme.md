@@ -24,15 +24,11 @@
 | `mdsLabelDelete` | Emits when the label has to be cancelled | `CustomEvent<void>` |
 
 
-## CSS Custom Properties
+## Slots
 
-| Name                               | Description                                     |
-| ---------------------------------- | ----------------------------------------------- |
-| `--mds-label-background`           | Sets the background-color of the component      |
-| `--mds-label-color`                | Sets the text color of the component            |
-| `--mds-label-icon-color`           | Sets the color of the icon                      |
-| `--mds-label-selection-background` | Sets the selection background color of the text |
-| `--mds-label-selection-color`      | Sets the selection color of the text            |
+| Slot        | Description                                                                            |
+| ----------- | -------------------------------------------------------------------------------------- |
+| `"default"` | Add `text string` to this slot, **avoid** to add `HTML elements` or `components` here. |
 
 
 ## Dependencies

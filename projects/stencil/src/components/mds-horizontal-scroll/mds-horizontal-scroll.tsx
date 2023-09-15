@@ -1,7 +1,10 @@
 import { Component, Host, h, Prop } from '@stencil/core'
 import clsx from 'clsx'
-
 import { SnapType } from './meta/types'
+
+/**
+ * @slot default - Add `text string`, `HTML elements` or `components` to this slot.
+ */
 
 @Component({
   tag: 'mds-horizontal-scroll',

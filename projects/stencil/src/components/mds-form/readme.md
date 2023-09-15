@@ -20,6 +20,13 @@
 | `target`        | `target`        | Specifies a name or a keyword that indicates where to display the response that is received after submitting the form. Possible values are _blank, _self, _parent, _top or a custom frame name | `string \| undefined`                                                                       | `undefined` |
 
 
+## Slots
+
+| Slot        | Description                                                      |
+| ----------- | ---------------------------------------------------------------- |
+| `"default"` | Add `text string`, `HTML elements` or `components` to this slot. |
+
+
 ----------------------------------------------
 
 Built with love @ **Maggioli Informatica / R&D Department**

@@ -21,15 +21,13 @@
 | `mdsToastClose` | Emits when the accordion is opened | `CustomEvent<void>` |
 
 
-## CSS Custom Properties
+## Slots
 
-| Name                     | Description                                                                  |
-| ------------------------ | ---------------------------------------------------------------------------- |
-| `--mds-toast-background` | Sets the background-color of the component                                   |
-| `--mds-toast-color`      | Sets the text color of the component                                         |
-| `--mds-toast-duration`   | Sets the animation duration of the component, used also by component's logic |
-| `--mds-toast-icon-color` | Sets the text color of the component                                         |
-| `--mds-toast-shadow`     | Sets the box-shadow of the component                                         |
+| Slot        | Description                                                                                                       |
+| ----------- | ----------------------------------------------------------------------------------------------------------------- |
+| `"action"`  | Add `HTML elements` or `components`, it is **recommended** to use `mds-button` element.                           |
+| `"default"` | Add `text string` to this slot, **avoid** to add `HTML elements` or `components` here.                            |
+| `"icon"`    | Insert an icon image, it can be `HTML elements` or `components`, it is **recommended** to add `mds-icon` element. |
 
 
 ## Dependencies

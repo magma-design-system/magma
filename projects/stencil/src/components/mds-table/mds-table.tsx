@@ -1,6 +1,10 @@
 import clsx from 'clsx'
 import { Component, Host, h, Prop, Event, EventEmitter, Watch } from '@stencil/core'
 
+/**
+ * @slot default - Put `mds-table-header`, `mds-table-body`, `mds-table-footer` element/s.
+ */
+
 @Component({
   tag: 'mds-table',
   styleUrl: 'mds-table.css',

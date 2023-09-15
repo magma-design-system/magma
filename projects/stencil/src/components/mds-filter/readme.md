@@ -22,16 +22,11 @@
 | `mdsFilterChange` | Emits when the one of the children is changed | `CustomEvent<MdsFilterEventDetail>` |
 
 
-## CSS Custom Properties
+## Slots
 
-| Name                                   | Description                                                             |
-| -------------------------------------- | ----------------------------------------------------------------------- |
-| `--mds-filter-items-background`        | Sets the background-color of the items row area                         |
-| `--mds-filter-items-background-active` | Sets the background-color of the items row area when a filter is active |
-| `--mds-filter-items-gap`               | Sets the gap between items                                              |
-| `--mds-filter-items-padding`           | Sets the padding of the items row area                                  |
-| `--mds-filter-items-radius`            | Sets the border-radius of the items row area                            |
-| `--mds-filter-label-padding`           | Sets the padding of the label                                           |
+| Slot        | Description                      |
+| ----------- | -------------------------------- |
+| `"default"` | Add `mds-filter-item` element/s. |
 
 
 ## Dependencies
