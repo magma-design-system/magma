@@ -25,8 +25,8 @@
   "dependencies": {
     "@maggioli-design-system/mds-progress": "^2.4.0",
     "@maggioli-design-system/mds-stepper-bar-item": "^5.0.0",
-    "@maggioli-design-system/styles": "^11.6.0",
-    "@stencil/core": "^2.22.3"
+    "@maggioli-design-system/styles": "^11.7.0",
+    "@stencil/core": "^4.2.1"
   },
   "license": "MIT",
   "author": {

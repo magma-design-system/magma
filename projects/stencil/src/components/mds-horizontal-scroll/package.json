@@ -24,8 +24,8 @@
     "test": "stencil test --spec --e2e"
   },
   "dependencies": {
-    "@maggioli-design-system/styles": "^11.4.0",
-    "@stencil/core": "^2.22.3",
+    "@maggioli-design-system/styles": "^11.7.0",
+    "@stencil/core": "^4.2.1",
     "clsx": "^1.2.1"
   },
   "license": "MIT",

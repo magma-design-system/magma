@@ -25,8 +25,8 @@
   },
   "dependencies": {
     "@maggioli-design-system/mds-filter-item": "^2.2.0",
-    "@maggioli-design-system/styles": "^11.4.0",
-    "@stencil/core": "^2.22.3"
+    "@maggioli-design-system/styles": "^11.7.0",
+    "@stencil/core": "^4.2.1"
   },
   "license": "MIT",
   "author": {
