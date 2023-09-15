@@ -7,6 +7,10 @@ import { FloatingUIPlacement, FloatingUIStrategy } from '@type/floating-ui'
 import arrowSvg from './assets/arrow.svg'
 import { MdsDropdownEventDetail } from './meta/event-detail'
 
+/**
+ * @slot default - Add `text string`, `HTML elements` or `components` to this slot, elements will be shown when the component is triggered.
+ */
+
 @Component({
   tag: 'mds-dropdown',
   styleUrl: 'mds-dropdown.css',
@@ -424,10 +428,6 @@ export class MdsDropdown {
     this.km.detachEscapeBehavior()
     this.cleanupAutoUpdate = () => { return }
   }
-
-  /**
- * @slot default - Put contents here, shown when the component is opened
- */
 
   render () {
     return (

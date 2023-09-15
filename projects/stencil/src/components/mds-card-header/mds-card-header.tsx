@@ -1,5 +1,10 @@
 import { Component, Host, h, Element } from '@stencil/core'
 
+/**
+ * @slot default - Add `text string`, `HTML elements` or `components` to this slot.
+ * @slot action - Add `HTML elements` or `components`, it is **recommended** to use `mds-button` element.
+ */
+
 @Component({
   tag: 'mds-card-header',
   styleUrl: 'mds-card-header.css',
@@ -13,11 +18,6 @@ export class MdsCardHeader {
   componentWillLoad (): void {
     this.actions = this.hostElement.querySelector('[slot="action"]') !== null
   }
-
-  /**
- * @slot default - Add contents here
- * @slot action - Add actions elements here
- */
 
   render () {
     return (

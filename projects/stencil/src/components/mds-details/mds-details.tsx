@@ -3,6 +3,13 @@ import clsx from 'clsx'
 import miBaselineKeyboardArrowDown from '@icon/mi/baseline/keyboard-arrow-down.svg'
 import { KeyboardManager } from '@common/keyboard-manager'
 
+/**
+ * @slot default - Add `text string`, `HTML elements` or `components` to this slot.
+ * @slot action - Add `HTML elements` or `components`, it is **recommended** to use `mds-button` element.
+ * @slot icon - Insert an icon image, it can be `HTML elements` or `components`, it is **recommended** to add `mds-icon` element.
+ * @slot title - Add a `text string`, `HTML elements` or `components`, it is **recommended** to use `mds-text` element.
+ */
+
 @Component({
   tag: 'mds-details',
   styleUrl: 'mds-details.css',
@@ -47,13 +54,6 @@ export class MdsDetails {
     this.isOpened = !this.isOpened
     this.changedEvent.emit(this.isOpened)
   }
-
-  /**
- * @slot default - Put contents inside the details, shown when the component is opened
- * @slot action - Put actions inside the details, shown when the component is opened
- * @slot icon - The icon on the left of the component
- * @slot title - The title to the right of the left icon
- */
 
   render () {
     return (

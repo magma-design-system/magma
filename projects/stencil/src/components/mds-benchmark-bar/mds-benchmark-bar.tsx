@@ -2,6 +2,10 @@ import { Component, Host, h, Prop } from '@stencil/core'
 import { ThemeVariantType } from '@type/variant'
 import { BenchmarkBarTypographyType } from './meta/types'
 
+/**
+ * @slot default - Add `text string` to this slot, **avoid** to add `HTML elements` or `components` here.
+ */
+
 @Component({
   tag: 'mds-benchmark-bar',
   styleUrl: 'mds-benchmark-bar.css',
@@ -28,10 +32,6 @@ export class MdsBenchmarkBar {
    * Sets the theme variant colors
    */
   @Prop({ reflect: true }) readonly variant?: ThemeVariantType = 'dark'
-
-  /**
- * @slot default - Add text string here, avoid elements
- */
 
   render () {
     return (

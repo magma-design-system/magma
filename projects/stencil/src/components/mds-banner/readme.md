@@ -24,16 +24,12 @@
 | `mdsBannerClose` | Emits when the url view is closed | `CustomEvent<void>` |
 
 
-## CSS Custom Properties
+## Slots
 
-| Name                                       | Description                                                           |
-| ------------------------------------------ | --------------------------------------------------------------------- |
-| `--mds-banner-background`                  | Sets the background-color of the component                            |
-| `--mds-banner-close-icon-hover-background` | Sets the background color of the close icon when the mouse is over it |
-| `--mds-banner-color`                       | Sets the text color of the component                                  |
-| `--mds-banner-icon-color`                  | Sets the close icon fill color of the component                       |
-| `--mds-banner-radius`                      | Sets the border-radius of the component                               |
-| `--mds-banner-shadow`                      | Sets the box-shadow of the component                                  |
+| Slot        | Description                                                                             |
+| ----------- | --------------------------------------------------------------------------------------- |
+| `"action"`  | Add `HTML elements` or `components`, it is **recommended** to use `mds-button` element. |
+| `"default"` | Add `text string`, `HTML elements` or `components` to this slot.                        |
 
 
 ## Dependencies

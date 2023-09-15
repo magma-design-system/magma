@@ -1,8 +1,9 @@
 import { Component, Element, Host, Prop, h, State } from '@stencil/core'
 
 /**
- * @slot icon - Put the icon shown on the component
+ * @slot icon - Insert an icon image, it can be `HTML elements` or `components`, it is **recommended** to add `mds-icon` element.
  */
+
 @Component({
   tag: 'mds-kpi-item',
   styleUrl: 'mds-kpi-item.css',

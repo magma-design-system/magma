@@ -1,7 +1,10 @@
 import { Component, Host, h, Prop } from '@stencil/core'
 import clsx from 'clsx'
-
 import { SnapType } from './meta/types'
+
+/**
+ * @slot default - Add `text string`, `HTML elements` or `components` to this slot.
+ */
 
 @Component({
   tag: 'mds-horizontal-scroll',
@@ -19,10 +22,6 @@ export class MdsHorizontalScroll {
    * Specifies the box’s snap position as an alignment of its snap area
    */
   @Prop() readonly scrollbar?: boolean
-
-  /**
- * @slot default - Put elements here
- */
 
   render () {
     return (

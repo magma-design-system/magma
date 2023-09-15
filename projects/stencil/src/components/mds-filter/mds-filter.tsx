@@ -3,6 +3,10 @@ import { Component, Element, Event, EventEmitter, Host, h, Listen, Prop, State }
 import { MdsFilterEventDetail } from './meta/event-detail'
 import { MdsFilterItemEventDetail } from '@component/mds-filter-item/meta/event-detail'
 
+/**
+ * @slot default - Add `mds-filter-item` element/s.
+ */
+
 @Component({
   tag: 'mds-filter',
   styleUrl: 'mds-filter.css',
@@ -134,10 +138,6 @@ export class MdsFilter {
    * Emits when the one of the children is changed
    */
   @Event({ eventName: 'mdsFilterChange' }) changedEvent: EventEmitter<MdsFilterEventDetail>
-
-  /**
- * @slot default - Put mds-filter-item elements here
- */
 
   render () {
     return (

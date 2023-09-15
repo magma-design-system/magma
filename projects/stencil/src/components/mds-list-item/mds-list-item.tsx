@@ -2,6 +2,10 @@ import { Component, Host, h, Prop } from '@stencil/core'
 import { TypographyInfoType, TypographyReadType, TypographyReadingVariants } from '@type/typography'
 import mggListDot from '@icon/mgg/list-dot.svg'
 
+/**
+ * @slot default - Add `text string` to this slot, **avoid** to add `HTML elements` or `components` here.
+ */
+
 @Component({
   tag: 'mds-list-item',
   styleUrl: 'mds-list-item.css',
@@ -23,10 +27,6 @@ export class MdsListItem {
    * Specifies the icon displayed in the element
    */
   @Prop() readonly icon?: string
-
-  /**
- * @slot default - Put text string here, avoid elements
- */
 
   render () {
     return (

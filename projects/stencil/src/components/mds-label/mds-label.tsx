@@ -5,6 +5,10 @@ import { KeyboardManager } from '@common/keyboard-manager'
 import { ThemeFullVariantType, ToneSimpleVariantType } from '@type/variant'
 import { TypographyType } from '@type/typography'
 
+/**
+ * @slot default - Add `text string` to this slot, **avoid** to add `HTML elements` or `components` here.
+ */
+
 @Component({
   tag: 'mds-label',
   styleUrl: 'mds-label.css',
@@ -78,10 +82,6 @@ export class MdsLabel {
   disconnectedCallback (): void {
     this.km.detachClickBehavior()
   }
-
-  /**
- * @slot default - Put text string here, avoid elements
- */
 
   render () {
     return (

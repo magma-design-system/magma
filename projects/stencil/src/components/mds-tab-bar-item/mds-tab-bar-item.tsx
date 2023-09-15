@@ -1,6 +1,10 @@
 import { Component, Element, Event, EventEmitter, Host, h, Prop, State, Watch } from '@stencil/core'
 import { TypographySmallerType } from '@type/typography'
 
+/**
+ * @slot default - Add `text string` to this slot, **avoid** to add `HTML elements` or `components` here.
+ */
+
 @Component({
   tag: 'mds-tab-bar-item',
   styleUrl: 'mds-tab-bar-item.css',
@@ -43,10 +47,6 @@ export class MdsTabBarItem {
   validateSelected (newValue: boolean): void {
     this.isSelected = newValue
   }
-
-  /**
- * @slot default - Put text string here, avoid elements
- */
 
   render () {
     return (

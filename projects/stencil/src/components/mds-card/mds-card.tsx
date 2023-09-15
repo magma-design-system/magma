@@ -1,6 +1,13 @@
 import { Component, Element, Host, h, State, Prop } from '@stencil/core'
 import clsx from 'clsx'
 
+/**
+  * @slot media - Add `HTML elements` or `components`Add `HTML elements` or `components`, it is **recommended** to use `mds-img` element or other component to represent media contents, used for images or videos, it's responsive behaviour based on container queries is handled with `auto-grid` enabled
+  * @slot header - Add `HTML elements` or `components`, it's responsive behaviour based on container queries is handled with `auto-grid` enabled
+  * @slot content - Add `HTML elements` or `components`, it's responsive behaviour based on container queries is handled with `auto-grid` enabled
+  * @slot footer - Add `HTML elements` or `components`, it's responsive behaviour based on container queries is handled with `auto-grid` enabled
+  */
+
 @Component({
   tag: 'mds-card',
   styleUrl: 'mds-card.css',
@@ -31,13 +38,6 @@ export class MdsCard {
       this.layout += 'f'
     }
   }
-
-  /**
-  * @slot media - Add a media element, used for images or videos, it's responsive behaviour based on container queries is handled with `auto-grid` enabled
-  * @slot header - slot for header, it's responsive behaviour based on container queries is handled with `auto-grid` enabled
-  * @slot content - slot for content, it's responsive behaviour based on container queries is handled with `auto-grid` enabled
-  * @slot footer - slot for footer, it's responsive behaviour based on container queries is handled with `auto-grid` enabled
-  */
 
   render () {
     return (

@@ -4,6 +4,10 @@ import { MdsBreadcrumbEventDetail } from './meta/event-detail'
 import { MdsBreadcrumbItemEventDetail } from '@component/mds-breadcrumb-item/meta/event-detail'
 import { KeyboardManager } from '@common/keyboard-manager'
 
+/**
+ * @slot default - Add `mds-breadcrumb-item` element/s.
+ */
+
 @Component({
   tag: 'mds-breadcrumb',
   styleUrl: 'mds-breadcrumb.css',
@@ -105,10 +109,6 @@ export class MdsBreadcrumb {
   private onChanged = (id: number, caller: HTMLMdsBreadcrumbItemElement): void => {
     this.changedEvent.emit({ id: id.toString(), caller })
   }
-
-  /**
- * @slot default - Add mds-breadcrumb-item components here
- */
 
   render () {
     return (

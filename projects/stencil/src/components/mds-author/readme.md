@@ -71,10 +71,10 @@ You can try it out on the component's [Storybook website][storybook]!
 
 ## Slots
 
-| Slot        | Description                                                         |
-| ----------- | ------------------------------------------------------------------- |
-| `"avatar"`  | Insert the avatar image.                                            |
-| `"default"` | Insert author information, name, role or other useful author infos. |
+| Slot        | Description                                                                                                                          |
+| ----------- | ------------------------------------------------------------------------------------------------------------------------------------ |
+| `"avatar"`  | Insert an avatar image, it is **recommended** to add `mds-avatar` element.                                                           |
+| `"default"` | Add `text string`, `HTML elements` or `components` to this slot. Insert author information, name, role or other useful author infos. |
 
 
 ----------------------------------------------

@@ -1,5 +1,11 @@
 import { Component, Element, Host, h, Prop } from '@stencil/core'
 
+/**
+ * @slot default - Add `text string`, `HTML elements` or `components` to this slot.
+ * @slot default - Add `text string`, `HTML elements` or `components` to this slot.
+ * @slot action - Add `HTML elements` or `components`, it is **recommended** to use `mds-button` element.
+ */
+
 @Component({
   tag: 'mds-entity',
   styleUrl: 'mds-entity.css',
@@ -30,12 +36,6 @@ export class MdsEntity {
     this.details = this.hostElement.querySelector('[slot="detail"]') !== null
     this.actions = this.hostElement.querySelector('[slot="action"]') !== null
   }
-
-  /**
- * @slot default - Put the entity title here, it represent what is this entity
- * @slot detail - Put additional information here, supposed to support the entity definition
- * @slot action - Insert one or more actions here, it is strongly recommended not to use more than 2 actions
- */
 
   render () {
     return (

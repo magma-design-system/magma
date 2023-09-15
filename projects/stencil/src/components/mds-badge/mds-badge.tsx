@@ -2,6 +2,10 @@ import { Component, Host, h, Prop } from '@stencil/core'
 import { TypographyInfoType, TypographyReadType, TypographyVariants } from '@type/typography'
 import { ThemeFullVariantType, ToneSimpleVariantType } from '@type/variant'
 
+/**
+ * @slot default - Add `text string` to this slot, **avoid** to add `HTML elements` or `components` here.
+ */
+
 @Component( {
   tag: 'mds-badge',
   styleUrl: 'mds-badge.css',
@@ -28,10 +32,6 @@ export class MdsBadge {
    * Specifies the variant for `typography`
    */
   @Prop() readonly typographyVariant?: TypographyVariants
-
-  /**
- * @slot default - Add text string here, avoid elements
- */
 
   render () {
     return (

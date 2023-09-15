@@ -3,6 +3,10 @@ import { Component, Element, Event, EventEmitter, Host, Prop, h } from '@stencil
 import { TypographyTitleType } from '@type/typography'
 import { MdsAccordionItemEventDetail } from './meta/event-detail'
 
+/**
+ * @slot default - Add contents like `text string`, `HTML elements` or `components` to this slot.
+ */
+
 @Component({
   tag: 'mds-accordion-item',
   styleUrl: 'mds-accordion-item.css',
@@ -54,10 +58,6 @@ export class MdsAccordionItem {
    * Emits when the component attribute selected is changed
    */
   @Event({ eventName: 'mdsAccordionItemChange' }) changedEvent: EventEmitter<MdsAccordionItemEventDetail>
-
-  /**
- * @slot default - Contents here
- */
 
   render () {
     return (

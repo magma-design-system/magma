@@ -1,4 +1,9 @@
 import { Component, Listen, Host, h, Prop } from '@stencil/core'
+
+/**
+ * @slot default - Put `mds-table-row` element/s.
+ */
+
 @Component({
   tag: 'mds-table-body',
   styleUrl: 'mds-table-body.css',
@@ -12,10 +17,6 @@ export class MdsTableBody {
   tableInteractiveHandler (event: CustomEvent<boolean>): void {
     this.interactive = event.detail
   }
-
-  /**
- * @slot default - Put mds-table-row here
- */
 
   render () {
     return (

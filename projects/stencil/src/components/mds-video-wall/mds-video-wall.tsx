@@ -2,6 +2,11 @@ import { Component, Element, Host, h, Prop } from '@stencil/core'
 import clsx from 'clsx'
 import { NoiseType, PreloadType } from './meta/types'
 
+/**
+ * @slot default - Write browser support missing message here.
+ * @slot content - Add video content overlay here, add `text string`, `HTML elements` or `components` to this slot.
+ */
+
 @Component({
   tag: 'mds-video-wall',
   styleUrl: 'mds-video-wall.css',
@@ -50,11 +55,6 @@ export class MdsVideoWall {
   componentWillLoad (): void {
     this.hasContent = this.hostElement.querySelector('[slot="content"]') !== null
   }
-
-  /**
- * @slot default - Put browser support missing message here
- * @slot content - Add video content overlay here
- */
 
   render () {
     return (

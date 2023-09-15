@@ -1,6 +1,11 @@
 import { Component, Host, h, Prop } from '@stencil/core'
 import { TypographyTitleType } from '@type/typography'
 
+/**
+ * @slot default - Add `text string`, `HTML elements` or `components` to this slot.
+ * @slot author - Add `text string`, `HTML elements` or `components` to this slot.
+ */
+
 @Component({
   tag: 'mds-quote',
   styleUrl: 'mds-quote.css',
@@ -12,11 +17,6 @@ export class MdsQuote {
    * Specifies the font typography of the element
    */
   @Prop() readonly typography: TypographyTitleType = 'h3'
-
-  /**
- * @slot default - Add quote here
- * @slot author - Add author name here
- */
 
   render () {
     return (

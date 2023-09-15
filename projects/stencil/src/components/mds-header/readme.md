@@ -12,13 +12,12 @@
 | `mdsHeaderClose` | Emits when the component is closed | `CustomEvent<MdsHeaderEventDetail>` |
 
 
-## CSS Custom Properties
+## Slots
 
-| Name                      | Description                                                   |
-| ------------------------- | ------------------------------------------------------------- |
-| `--mds-header-color`      | Sets the text color of the header and the mobile toggler icon |
-| `--mds-header-icon-color` | Sets the color of the icon toggler                            |
-| `--mds-header-z-index`    | Sets the z-index of the modal                                 |
+| Slot           | Description                                                                                                                        |
+| -------------- | ---------------------------------------------------------------------------------------------------------------------------------- |
+| `"default"`    | Add `mds-header-bar` element/s.                                                                                                    |
+| `"nav-mobile"` | Put actions and other contents that will be shown as mobile menu. Add `text string`, `HTML elements` or `components` to this slot. |
 
 
 ## Dependencies

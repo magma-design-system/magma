@@ -1,15 +1,15 @@
 import { Component, Host, h } from '@stencil/core'
 
+/**
+ * @slot default - Add `mds-table-row` element/s.
+ */
+
 @Component({
   tag: 'mds-table-header',
   styleUrl: 'mds-table-header.css',
   shadow: true,
 })
 export class MdsTableHeader {
-
-  /**
- * @slot default - Put mds-table-row here
- */
 
   render () {
     return (

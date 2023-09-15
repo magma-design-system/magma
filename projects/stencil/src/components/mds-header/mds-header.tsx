@@ -1,6 +1,11 @@
 import { Component, Element, Event, EventEmitter, Host, Listen, State, h } from '@stencil/core'
 import { MdsHeaderEventDetail } from './meta/event-detail'
 
+/**
+ * @slot default - Add `mds-header-bar` element/s.
+ * @slot nav-mobile - Put actions and other contents that will be shown as mobile menu. Add `text string`, `HTML elements` or `components` to this slot.
+ */
+
 @Component({
   tag: 'mds-header',
   styleUrl: 'mds-header.css',
@@ -40,11 +45,6 @@ export class MdsHeader {
   onModalOpenedHandler (): void {
     this.isOpened = true
   }
-
-  /**
- * @slot default - Put the mds-header-bar component here, or an element used as an header bar
- * @slot nav-mobile - Put actions and other contents that will be shown as mobile menu
- */
 
   render () {
     return (

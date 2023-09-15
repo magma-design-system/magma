@@ -1,11 +1,14 @@
 import { Component, Host, h, Prop } from '@stencil/core'
-
 import {
   CharacterSetType,
   EnctypeType,
   FormAutocompleteType,
   FormMethodType,
 } from './meta/types'
+
+/**
+ * @slot default - Add `text string`, `HTML elements` or `components` to this slot.
+ */
 
 @Component({
   tag: 'mds-form',
@@ -59,10 +62,6 @@ export class MdsForm {
    * Possible values are _blank, _self, _parent, _top or a custom frame name
    */
   @Prop() readonly target?: string
-
-  /**
- * @slot default - Put form elements here
- */
 
   render () {
     return (

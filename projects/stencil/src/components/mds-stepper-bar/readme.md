@@ -19,6 +19,14 @@
 | `mdsStepperBarChange` | Emits when a step is changed | `CustomEvent<MdsStepperBarEventDetail>` |
 
 
+## Slots
+
+| Slot        | Description                                                             |
+| ----------- | ----------------------------------------------------------------------- |
+| `"content"` | Add `HTML elements` or `components`, one per mds-stepper-bar-item added |
+| `"default"` | Add `mds-tepper-bar-item` element/s.                                    |
+
+
 ## Shadow Parts
 
 | Part         | Description |
