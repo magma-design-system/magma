@@ -21,6 +21,26 @@
 | `"default"` | Add `text string` to this slot, **avoid** to add `HTML elements` or `components` here. |
 
 
+## CSS Custom Properties
+
+| Name                                       | Description                                                     |
+| ------------------------------------------ | --------------------------------------------------------------- |
+| `--mds-paginator-item-background`          | Sets the background-color of the pages area and the item        |
+| `--mds-paginator-item-background-disabled` | Sets the background-color of the item when is disabled          |
+| `--mds-paginator-item-background-hover`    | Sets the background-color of the item when the mouse is over it |
+| `--mds-paginator-item-background-selected` | Sets the background-color of the item when is selected          |
+| `--mds-paginator-item-color`               | Sets the text color of the component                            |
+| `--mds-paginator-item-color-disabled`      | Sets the color of the item when is disabled                     |
+| `--mds-paginator-item-color-hover`         | Sets the text color of the item when the mouse is over it       |
+| `--mds-paginator-item-color-selected`      | Sets the text color of the item when is selected                |
+| `--mds-paginator-item-radius`              | Sets the border-radius of the component                         |
+| `--mds-paginator-item-shadow`              | Sets the box-shadow of the component                            |
+| `--mds-paginator-item-shadow-disabled`     | Sets the box-shadow of the item when is disabled                |
+| `--mds-paginator-item-shadow-hover`        | Sets the box-shadow of the item when the mouse is over it       |
+| `--mds-paginator-item-shadow-selected`     | Sets the box-shadow of the item when is selected                |
+| `--mds-paginator-item-size`                | Sets the height and the min-width of the paginator item         |
+
+
 ## Dependencies
 
 ### Used by

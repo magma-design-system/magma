@@ -22,6 +22,14 @@
 | `"default"` | Add `text string` to this slot, **avoid** to add `HTML elements` or `components` here. |
 
 
+## CSS Custom Properties
+
+| Name                              | Description                                                     |
+| --------------------------------- | --------------------------------------------------------------- |
+| `--mds-text-selection-background` | Sets the background-color of the text when the text is selected |
+| `--mds-text-selection-color`      | Sets the color of the text when the text is selected            |
+
+
 ## Dependencies
 
 ### Used by

@@ -26,6 +26,15 @@
 | `"default"` | Write browser support missing message here.                                                      |
 
 
+## CSS Custom Properties
+
+| Name                       | Description                                        |
+| -------------------------- | -------------------------------------------------- |
+| `--aspect-ratio`           | Sets the aspect-ratio of the component             |
+| `--noise-background-color` | Sets the background-color of the noise when active |
+| `--video-fit`              | Sets the object-fit of the video stream            |
+
+
 ----------------------------------------------
 
 Built with love @ **Maggioli Informatica / R&D Department**

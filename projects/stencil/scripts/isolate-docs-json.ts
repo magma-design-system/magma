@@ -19,13 +19,14 @@ const writeJsonFile = async (path: PathLike, jsonData: JsonDocs) => {
 }
 
 const main = async () => {
-  const { timestamp, compiler, components } = JSON.parse(await readFile(JSON_DOCS_DIR, { encoding: 'utf8' }))
+  const { timestamp, compiler, components, typeLibrary } = JSON.parse(await readFile(JSON_DOCS_DIR, { encoding: 'utf8' }))
   components.forEach(async (element: JsonDocsComponent) => {
     const componentDir = join(COMPONENTS_DIR, element.tag, DOCUMENTATION_FILENAME)
     const componentDoc: JsonDocs = {
       timestamp,
       compiler,
       components: [element],
+      typeLibrary,
     }
     await writeJsonFile(componentDir, componentDoc)
   })
