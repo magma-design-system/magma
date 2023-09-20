@@ -1,0 +1,40 @@
+@tailwind utilities;
+
+:host {
+
+  --mds-price-table-list-hr-color: rgb(var(--theme-default-04-primary-decoration));
+
+  @apply
+    bg-label-green-10
+    gap-6
+    grid
+    p-6
+    rounded-xl;
+}
+
+
+.hr {
+  @apply h-[1px];
+
+  background-color: var(--mds-price-table-list-hr-color);
+}
+
+
+header {
+  @apply
+    gap-2
+    grid;
+}
+
+main {
+  @apply
+    gap-3
+    grid;
+}
+
+footer {
+  @apply
+    gap-4
+    grid;
+}
+
