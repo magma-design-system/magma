@@ -1,0 +1,37 @@
+@import url('../../tailwind/components.css');
+@tailwind components;
+@tailwind utilities;
+
+:host {
+
+  --mds-price-table-list-item-supported-icon-color: theme('colors.label-green-06');
+  --mds-price-table-list-item-unsupported-icon-color: rgb(var(--theme-default-04-primary-decoration));
+
+  @apply
+    flex
+    gap-1
+    items-start;
+}
+
+.text {
+  @apply grow;
+}
+
+.icon-container {
+  @apply shrink-0;
+}
+
+.icon {
+  @apply
+    duration-500
+    ease-out-expo
+    h-6
+    transition-colors
+    w-6;
+
+  fill: var(--mds-price-table-list-item-unsupported-icon-color);
+}
+
+:host([supported]:not([supported="false"])) .icon {
+  fill: var(--mds-price-table-list-item-supported-icon-color);
+}
