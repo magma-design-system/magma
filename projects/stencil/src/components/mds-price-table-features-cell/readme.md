@@ -7,17 +7,19 @@
 
 ## Properties
 
-| Property    | Attribute   | Description                                     | Type                                                   | Default  |
-| ----------- | ----------- | ----------------------------------------------- | ------------------------------------------------------ | -------- |
-| `supported` | `supported` | Specifies the support type which is represented | `"custom" \| "false" \| "text" \| "true" \| undefined` | `'true'` |
+| Property    | Attribute   | Description                                        | Type                                                   | Default     |
+| ----------- | ----------- | -------------------------------------------------- | ------------------------------------------------------ | ----------- |
+| `supported` | `supported` | Specifies the support type which is represented    | `"custom" \| "false" \| "text" \| "true" \| undefined` | `'true'`    |
+| `tip`       | `tip`       | Specifies if the element has a tooltip description | `string \| undefined`                                  | `undefined` |
 
 
 ## Shadow Parts
 
-| Part     | Description |
-| -------- | ----------- |
-| `"icon"` |             |
-| `"text"` |             |
+| Part        | Description |
+| ----------- | ----------- |
+| `"icon"`    |             |
+| `"text"`    |             |
+| `"tooltip"` |             |
 
 
 ## CSS Custom Properties
@@ -38,11 +40,14 @@
 ### Depends on
 
 - [mds-text](../mds-text)
+- [mds-tooltip](../mds-tooltip)
 
 ### Graph
 ```mermaid
 graph TD;
   mds-price-table-features-cell --> mds-text
+  mds-price-table-features-cell --> mds-tooltip
+  mds-tooltip --> mds-text
   mds-price-table-features-row --> mds-price-table-features-cell
   style mds-price-table-features-cell fill:#f9f,stroke:#333,stroke-width:4px
 ```
