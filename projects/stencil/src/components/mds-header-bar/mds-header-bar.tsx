@@ -1,10 +1,16 @@
 import miRoundMenu from '@icon/mi/round/menu.svg'
 import { Component, Element, Event, EventEmitter, Host, Listen, Prop, State, h } from '@stencil/core'
-import clsx from 'clsx'
+import { MenuType } from './meta/types'
 
 /**
  * @slot default - Put contents, like logo and a small description shown on the left of the component. Add `text string`, `HTML elements` or `components` to this slot.
  * @slot nav - Put the actions shown when the component is on desktop mode. Add `HTML elements` or `components`, it is **recommended** to use `mds-button` element.
+ */
+
+/**
+ * @part actions - Selects the element which wraps `nav` and `hamburger` parts
+ * @part nav - Selects the `nav` element that contains the horizontal menu
+ * @part hamburger - Selects the `hamburger` menu action element
  */
 
 @Component({
@@ -19,9 +25,14 @@ export class MdsHeaderBar {
   @State() isOpened: boolean
 
   /**
-   * Sets the visibility of the hamburger menu for mobile behaviour, it's automatically set by mds-header parent
+   * Sets the visibility type of the hamburger menu
    */
-  @Prop({ mutable: true, reflect: true }) mobileMenu = true
+  @Prop({ reflect: true }) menu: MenuType = 'mobile'
+
+  /**
+   * Sets the visibility type of the navigation menu
+   */
+  @Prop({ reflect: true }) nav: MenuType = 'desktop'
 
   componentWillLoad (): void {
     this.hasNav = this.host.querySelector('[slot="nav"]') !== null
@@ -49,14 +60,16 @@ export class MdsHeaderBar {
           <div class="logo">
             <slot />
           </div>
-          {this.hasNav &&
-            <nav class={clsx('nav', this.mobileMenu && 'nav--hide-on-mobile')}>
-              <slot name="nav" />
-            </nav>
-          }
-          {this.mobileMenu &&
-            <i class="svg icon" innerHTML={miRoundMenu} onClick={this.open} />
-          }
+          <div class="actions" part="actions">
+            {this.nav !== 'none' && this.hasNav &&
+              <nav class="nav" part="nav">
+                <slot name="nav" />
+              </nav>
+            }
+            {this.menu !== 'none' &&
+              <i class="menu svg" innerHTML={miRoundMenu} onClick={this.open} part="hamburger" />
+            }
+          </div>
         </div>
       </Host>
     )
