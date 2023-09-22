@@ -18,12 +18,12 @@
 
 ### Depends on
 
-- [mds-hr](../mds-hr)
+- [mds-separator](../mds-separator)
 
 ### Graph
 ```mermaid
 graph TD;
-  mds-price-table-list --> mds-hr
+  mds-price-table-list --> mds-separator
   style mds-price-table-list fill:#f9f,stroke:#333,stroke-width:4px
 ```
 

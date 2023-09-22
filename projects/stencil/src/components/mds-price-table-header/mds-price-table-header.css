@@ -1,0 +1,10 @@
+@tailwind utilities;
+
+:host {
+
+  @apply
+    gap-6
+    grid;
+
+  grid-template-columns: repeat(auto-fit, minmax(1px, 1fr));
+}

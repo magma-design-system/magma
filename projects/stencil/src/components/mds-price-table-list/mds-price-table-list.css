@@ -2,7 +2,7 @@
 
 :host {
 
-  --mds-price-table-list-hr-color: rgb(var(--theme-default-04-primary-decoration));
+  --mds-price-table-list-separator-color: rgb(var(--theme-default-04-primary-decoration));
 
   @apply
     bg-label-green-10
@@ -13,10 +13,8 @@
 }
 
 
-.hr {
-  @apply h-[1px];
-
-  background-color: var(--mds-price-table-list-hr-color);
+.separator {
+  background-color: var(--mds-price-table-list-separator-color);
 }
 
 

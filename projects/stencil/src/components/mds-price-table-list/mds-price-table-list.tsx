@@ -1,4 +1,4 @@
-import { Component, Host, h } from '@stencil/core'
+import { Component, Host, h, Element, State } from '@stencil/core'
 
 @Component({
   tag: 'mds-price-table-list',
@@ -7,16 +7,25 @@ import { Component, Host, h } from '@stencil/core'
 })
 export class MdsPriceTableList {
 
+  @State() hasItems: boolean
+  @Element() hostElement: HTMLMdsPriceTableListElement
+
+  componentDidRender (): void {
+    this.hasItems = this.hostElement.querySelectorAll('[slot="item"]').length > 0
+  }
+
   render () {
     return (
       <Host>
         <header part="header">
           <slot name="header"/>
         </header>
-        <mds-hr class="hr"></mds-hr>
-        <main part="content">
-          <slot name="item"/>
-        </main>
+        { this.hasItems && <mds-separator class="separator"></mds-separator> }
+        { this.hasItems &&
+          <main part="content">
+            <slot name="item"/>
+          </main>
+        }
         <footer part="footer">
           <slot name="price"/>
           <slot name="action"/>

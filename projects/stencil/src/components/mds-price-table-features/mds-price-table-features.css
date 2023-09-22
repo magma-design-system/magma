@@ -1,0 +1,40 @@
+@tailwind utilities;
+
+/**
+  * @prop --mds-price-table-features-padding: Sets the cell padding of the children components
+  */
+
+:host {
+
+  --mds-price-table-features-padding: theme('spacing.3');
+
+  @apply
+    flex
+    w-full;
+}
+
+.table-wrapper {
+  @apply
+    scroll-mx-6
+    w-full;
+}
+
+table {
+  @apply
+    border-collapse
+    min-w-full
+    table-fixed;
+}
+
+header {
+  @apply
+    border-0
+    border-b
+    border-b-theme-default-04-primary-decoration
+    border-solid
+    w-full;
+
+  padding: var(--mds-price-table-features-padding);
+  padding-left: 0;
+  padding-right: 0;
+}

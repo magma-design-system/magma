@@ -1,0 +1,22 @@
+@tailwind utilities;
+
+/**
+  * @prop --mds-price-table-features-row-cell-padding: Sets the cell padding of the component
+  */
+
+:host {
+
+  @apply table-row;
+}
+
+.text {
+  @apply transition-transform;
+}
+
+:host(:hover) {
+  @apply bg-tone-neutral-10;
+}
+
+:host(:hover) .text {
+  @apply translate-x-2;
+}
