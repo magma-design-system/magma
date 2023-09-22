@@ -3,12 +3,9 @@ import { MdsHeaderEventDetail } from './meta/event-detail'
 import { MenuType } from '../mds-header-bar/meta/types'
 
 /**
+ * @part menu - The container element of the modal
  * @slot default - Add `mds-header-bar` element/s.
  * @slot menu - Put actions and other contents that will be shown as mobile menu. Add `text string`, `HTML elements` or `components` to this slot.
- */
-
-/**
- * @part menu - The container element of the modal
  */
 
 @Component({
