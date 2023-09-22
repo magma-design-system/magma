@@ -46,6 +46,10 @@
 
 ## Dependencies
 
+### Used by
+
+ - [mds-price-table-features-cell](../mds-price-table-features-cell)
+
 ### Depends on
 
 - [mds-text](../mds-text)
@@ -54,6 +58,7 @@
 ```mermaid
 graph TD;
   mds-tooltip --> mds-text
+  mds-price-table-features-cell --> mds-tooltip
   style mds-tooltip fill:#f9f,stroke:#333,stroke-width:4px
 ```
 
