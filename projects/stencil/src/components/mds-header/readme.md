@@ -5,6 +5,14 @@
 <!-- Auto Generated Below -->
 
 
+## Properties
+
+| Property | Attribute | Description                                                       | Type                                       | Default     |
+| -------- | --------- | ----------------------------------------------------------------- | ------------------------------------------ | ----------- |
+| `menu`   | `menu`    | Sets the visibility type of the hamburger menu of mds-header-bar  | `"all" \| "desktop" \| "mobile" \| "none"` | `'mobile'`  |
+| `nav`    | `nav`     | Sets the visibility type of the navigation menu of mds-header-bar | `"all" \| "desktop" \| "mobile" \| "none"` | `'desktop'` |
+
+
 ## Events
 
 | Event            | Description                        | Type                                |
@@ -12,12 +20,11 @@
 | `mdsHeaderClose` | Emits when the component is closed | `CustomEvent<MdsHeaderEventDetail>` |
 
 
-## Slots
+## Shadow Parts
 
-| Slot           | Description                                                                                                                        |
-| -------------- | ---------------------------------------------------------------------------------------------------------------------------------- |
-| `"default"`    | Add `mds-header-bar` element/s.                                                                                                    |
-| `"nav-mobile"` | Put actions and other contents that will be shown as mobile menu. Add `text string`, `HTML elements` or `components` to this slot. |
+| Part     | Description                        |
+| -------- | ---------------------------------- |
+| `"menu"` | The container element of the modal |
 
 
 ## CSS Custom Properties
