@@ -1,0 +1,38 @@
+@import url('../../tailwind/components.css');
+@tailwind components;
+@tailwind utilities;
+
+mds-help {
+
+  --mds-help-tooltip-width: fit-content;
+  --mds-help-tooltip-max-width: 280px;
+  --mds-help-tooltip-delay: 0.25s;
+
+  @apply
+    cursor-help
+    fill-current
+    ml-1
+    inline-flex
+    justify-start;
+}
+
+i {
+  @apply svg;
+}
+
+mds-help mds-tooltip {
+
+  --mds-tooltip-delay: var(--mds-help-tooltip-delay);
+
+  max-width: var(--mds-help-tooltip-max-width);
+  width: var(--mds-help-tooltip-width);
+
+}
+
+mds-icon,
+i {
+  @apply
+    fill-inherit
+    h-4
+    w-4;
+}
