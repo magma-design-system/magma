@@ -16,7 +16,6 @@ export class MdsPriceTableFeaturesRow {
    */
   @Prop() readonly label?: string
 
-
   componentDidRender (): void {
     this.horizontalCells = this.host.querySelectorAll('mds-price-table-features-cell')
     this.cellPercWidth = Number(100 / (this.horizontalCells.length + 1)).toFixed(4) + '%'
@@ -29,7 +28,7 @@ export class MdsPriceTableFeaturesRow {
     return (
       <Host>
         { this.label &&
-        <mds-price-table-features-cell supported="custom" style={{ width: this.cellPercWidth }}>
+        <mds-price-table-features-cell class="label" supported="custom" style={{ width: this.cellPercWidth }}>
           <mds-text class="text" typography="detail">
             { this.label }
           </mds-text>

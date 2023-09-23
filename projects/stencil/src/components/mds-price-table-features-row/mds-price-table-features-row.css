@@ -20,3 +20,7 @@
 :host(:hover) .text {
   @apply translate-x-2;
 }
+
+:host() .label {
+  @apply px-0;
+}

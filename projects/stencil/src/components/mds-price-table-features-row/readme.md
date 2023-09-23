@@ -32,8 +32,6 @@ graph TD;
   mds-price-table-features-row --> mds-price-table-features-cell
   mds-price-table-features-row --> mds-text
   mds-price-table-features-cell --> mds-text
-  mds-price-table-features-cell --> mds-tooltip
-  mds-tooltip --> mds-text
   style mds-price-table-features-row fill:#f9f,stroke:#333,stroke-width:4px
 ```
 
