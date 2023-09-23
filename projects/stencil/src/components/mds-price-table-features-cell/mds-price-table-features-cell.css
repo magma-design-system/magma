@@ -1,5 +1,3 @@
-@import url('../../tailwind/components.css');
-@tailwind components;
 @tailwind utilities;
 
 /**
@@ -26,15 +24,12 @@
 }
 
 .icon {
-  @apply w-6;
+  @apply
+  flex
+  h-6
+  w-6;
 
   fill: var(--icon-fill-color);
-}
-
-.tooltip-icon {
-  @apply
-    fill-current
-    w-2;
 }
 
 .icon--supported {
@@ -47,6 +42,6 @@
   --icon-fill-color: var(--mds-price-table-features-cell-icon-unsupported-color);
 }
 
-:host([supported="custom"]) {
+/* :host([supported="custom"]) {
   @apply px-0;
-}
+} */
