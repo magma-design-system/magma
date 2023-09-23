@@ -1,6 +1,13 @@
 # mds-tooltip
 
+Basic example:
 
+```html
+<mds-button id="my-tooltip">Show Fred</mds-button>
+<mds-tooltip target="#my-tooltip">
+  This is a tooltip comment.
+</mds-tooltip>
+```
 
 <!-- Auto Generated Below -->
 
@@ -48,7 +55,7 @@
 
 ### Used by
 
- - [mds-price-table-features-cell](../mds-price-table-features-cell)
+ - [mds-help](../mds-help)
 
 ### Depends on
 
@@ -58,7 +65,7 @@
 ```mermaid
 graph TD;
   mds-tooltip --> mds-text
-  mds-price-table-features-cell --> mds-tooltip
+  mds-help --> mds-tooltip
   style mds-tooltip fill:#f9f,stroke:#333,stroke-width:4px
 ```
 

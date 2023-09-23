@@ -44,7 +44,7 @@ export class MdsTooltip {
   /**
    * Specifies the id of the caller element.
    */
-  @Prop() readonly target!: string
+  @Prop({ reflect: true }) readonly target!: string
 
   /**
    * Sets distance between the tooltip and the caller.
@@ -258,12 +258,20 @@ export class MdsTooltip {
 
   componentDidRender (): void {
     this.arrowEl = this.host.shadowRoot?.querySelector('.arrow') as HTMLElement
-    const caller = document.getElementById(this.target)
+    // https://stackoverflow.com/a/68964329/185921
+    console.log('componentDidRender', this.target)
+    console.log(document.querySelector(this.target))
+    console.log(document.getElementById(this.target))
+
+    const caller = document.querySelector(this.target) as HTMLElement
+
     if (caller) {
       this.caller = caller
       this.caller.addEventListener('mouseleave', this.handleVisibility.bind(this, false))
       this.caller.addEventListener('mouseenter', this.handleVisibility.bind(this, true))
+      return
     }
+    console.error('Warning: attribute `target` is undefined.')
   }
 
   componentDidLoad (): void {
