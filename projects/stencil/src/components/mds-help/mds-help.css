@@ -14,6 +14,8 @@ mds-help {
     ml-1
     inline-flex
     justify-start;
+
+  position: relative;
 }
 
 i {

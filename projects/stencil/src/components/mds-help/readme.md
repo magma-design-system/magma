@@ -7,9 +7,18 @@ This component does not have shadow DOM enabled.
 
 ## Properties
 
-| Property | Attribute | Description               | Type     | Default                     |
-| -------- | --------- | ------------------------- | -------- | --------------------------- |
-| `icon`   | `icon`    | Set the name of the icon. | `string` | `'mi/outline/help-outline'` |
+| Property        | Attribute        | Description                                                            | Type                                                                                                                                                                              | Default                     |
+| --------------- | ---------------- | ---------------------------------------------------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | --------------------------- |
+| `autoPlacement` | `auto-placement` | If set, the component will be placed automatically near it's caller.   | `boolean \| undefined`                                                                                                                                                            | `true`                      |
+| `icon`          | `icon`           | Set the name of the icon.                                              | `string`                                                                                                                                                                          | `'mi/outline/help-outline'` |
+| `placement`     | `placement`      | Specifies where the component should be placed relative to the caller. | `"bottom" \| "bottom-end" \| "bottom-start" \| "left" \| "left-end" \| "left-start" \| "right" \| "right-end" \| "right-start" \| "top" \| "top-end" \| "top-start" \| undefined` | `'top'`                     |
+
+
+## Slots
+
+| Slot        | Description                                                                |
+| ----------- | -------------------------------------------------------------------------- |
+| `"default"` | Add `text string` to this slot, **avoid** `HTML elements` or `components`. |
 
 
 ## Dependencies
