@@ -16,32 +16,41 @@ const Template = args =>
           <mds-button slot="action" variant="dark">Inizia</mds-button>
         </mds-price-table-list>
         <mds-price-table-features>
-          <mds-price-table-features-row label="Base features">
-            <mds-price-table-features-cell supported="true"></mds-price-table-features-cell>
+          <mds-price-table-features-row>
+            <mds-price-table-features-cell type="label">Base features</mds-price-table-features-cell>
+            <mds-price-table-features-cell type="supported"></mds-price-table-features-cell>
           </mds-price-table-features-row>
-          <mds-price-table-features-row label="Users">
-            <mds-price-table-features-cell supported="text">10</mds-price-table-features-cell>
+          <mds-price-table-features-row>
+            <mds-price-table-features-cell type="label">Users</mds-price-table-features-cell>
+            <mds-price-table-features-cell type="text">10</mds-price-table-features-cell>
           </mds-price-table-features-row>
-          <mds-price-table-features-row label="User data">
-            <mds-price-table-features-cell supported="text">10GB</mds-price-table-features-cell>
+          <mds-price-table-features-row>
+            <mds-price-table-features-cell type="label">User data</mds-price-table-features-cell>
+            <mds-price-table-features-cell type="text">10GB</mds-price-table-features-cell>
           </mds-price-table-features-row>
-          <mds-price-table-features-row label="Customer support">
-            <mds-price-table-features-cell supported="true"></mds-price-table-features-cell>
+          <mds-price-table-features-row>
+            <mds-price-table-features-cell type="label">Customer support</mds-price-table-features-cell>
+            <mds-price-table-features-cell type="supported"></mds-price-table-features-cell>
           </mds-price-table-features-row>
-          <mds-price-table-features-row label="Automated functionalities">
-            <mds-price-table-features-cell supported="false"></mds-price-table-features-cell>
+          <mds-price-table-features-row>
+            <mds-price-table-features-cell type="label">Automated functionalities</mds-price-table-features-cell>
+            <mds-price-table-features-cell type="unsupported"></mds-price-table-features-cell>
           </mds-price-table-features-row>
-          <mds-price-table-features-row label="Analytics">
-            <mds-price-table-features-cell supported="true"></mds-price-table-features-cell>
+          <mds-price-table-features-row>
+            <mds-price-table-features-cell type="label">Analytics</mds-price-table-features-cell>
+            <mds-price-table-features-cell type="supported"></mds-price-table-features-cell>
           </mds-price-table-features-row>
-          <mds-price-table-features-row label="Export reports">
-            <mds-price-table-features-cell supported="false"></mds-price-table-features-cell>
+          <mds-price-table-features-row>
+            <mds-price-table-features-cell type="label">Export reports</mds-price-table-features-cell>
+            <mds-price-table-features-cell type="unsupported"></mds-price-table-features-cell>
           </mds-price-table-features-row>
-          <mds-price-table-features-row label="Reports snapshots">
-            <mds-price-table-features-cell supported="false"></mds-price-table-features-cell>
+          <mds-price-table-features-row>
+            <mds-price-table-features-cell type="label">Reports snapshots</mds-price-table-features-cell>
+            <mds-price-table-features-cell type="unsupported"></mds-price-table-features-cell>
           </mds-price-table-features-row>
-          <mds-price-table-features-row label="Advanced reports">
-            <mds-price-table-features-cell supported="false"></mds-price-table-features-cell>
+          <mds-price-table-features-row>
+            <mds-price-table-features-cell type="label">Advanced reports</mds-price-table-features-cell>
+            <mds-price-table-features-cell type="unsupported"></mds-price-table-features-cell>
           </mds-price-table-features-row>
         </mds-price-table-features>
       </mds-price-table>
@@ -53,32 +62,41 @@ const Template = args =>
           <mds-button slot="action" variant="dark">Inizia</mds-button>
         </mds-price-table-list>
         <mds-price-table-features>
-          <mds-price-table-features-row label="Base features">
-            <mds-price-table-features-cell supported="true"></mds-price-table-features-cell>
+          <mds-price-table-features-row>
+            <mds-price-table-features-cell type="label">Base features</mds-price-table-features-cell>
+            <mds-price-table-features-cell type="supported"></mds-price-table-features-cell>
           </mds-price-table-features-row>
-          <mds-price-table-features-row label="Users">
-            <mds-price-table-features-cell supported="text">20</mds-price-table-features-cell>
+          <mds-price-table-features-row>
+            <mds-price-table-features-cell type="label">Users</mds-price-table-features-cell>
+            <mds-price-table-features-cell type="text">20</mds-price-table-features-cell>
           </mds-price-table-features-row>
-          <mds-price-table-features-row label="User data">
-            <mds-price-table-features-cell supported="text">20GB</mds-price-table-features-cell>
+          <mds-price-table-features-row>
+            <mds-price-table-features-cell type="label">User data</mds-price-table-features-cell>
+            <mds-price-table-features-cell type="text">20GB</mds-price-table-features-cell>
           </mds-price-table-features-row>
-          <mds-price-table-features-row label="Customer support">
-            <mds-price-table-features-cell supported="true"></mds-price-table-features-cell>
+          <mds-price-table-features-row>
+            <mds-price-table-features-cell type="label">Customer support</mds-price-table-features-cell>
+            <mds-price-table-features-cell type="supported"></mds-price-table-features-cell>
           </mds-price-table-features-row>
-          <mds-price-table-features-row label="Automated functionalities">
-            <mds-price-table-features-cell supported="true"></mds-price-table-features-cell>
+          <mds-price-table-features-row>
+            <mds-price-table-features-cell type="label">Automated functionalities</mds-price-table-features-cell>
+            <mds-price-table-features-cell type="supported"></mds-price-table-features-cell>
           </mds-price-table-features-row>
-          <mds-price-table-features-row label="Analytics">
-            <mds-price-table-features-cell supported="true"></mds-price-table-features-cell>
+          <mds-price-table-features-row>
+            <mds-price-table-features-cell type="label">Analytics</mds-price-table-features-cell>
+            <mds-price-table-features-cell type="supported"></mds-price-table-features-cell>
           </mds-price-table-features-row>
-          <mds-price-table-features-row label="Export reports">
-            <mds-price-table-features-cell supported="true"></mds-price-table-features-cell>
+          <mds-price-table-features-row>
+            <mds-price-table-features-cell type="label">Export reports</mds-price-table-features-cell>
+            <mds-price-table-features-cell type="supported"></mds-price-table-features-cell>
           </mds-price-table-features-row>
-          <mds-price-table-features-row label="Reports snapshots">
-            <mds-price-table-features-cell supported="true"></mds-price-table-features-cell>
+          <mds-price-table-features-row>
+            <mds-price-table-features-cell type="label">Reports snapshots</mds-price-table-features-cell>
+            <mds-price-table-features-cell type="supported"></mds-price-table-features-cell>
           </mds-price-table-features-row>
-          <mds-price-table-features-row label="Advanced reports">
-            <mds-price-table-features-cell supported="false"></mds-price-table-features-cell>
+          <mds-price-table-features-row>
+            <mds-price-table-features-cell type="label">Advanced reports</mds-price-table-features-cell>
+            <mds-price-table-features-cell type="unsupported"></mds-price-table-features-cell>
           </mds-price-table-features-row>
         </mds-price-table-features>
       </mds-price-table>
@@ -90,32 +108,41 @@ const Template = args =>
           <mds-button slot="action" variant="dark">Inizia</mds-button>
         </mds-price-table-list>
         <mds-price-table-features>
-          <mds-price-table-features-row label="Base features">
-            <mds-price-table-features-cell supported="true"></mds-price-table-features-cell>
+          <mds-price-table-features-row>
+            <mds-price-table-features-cell type="label">Base features</mds-price-table-features-cell>
+            <mds-price-table-features-cell type="supported"></mds-price-table-features-cell>
           </mds-price-table-features-row>
-          <mds-price-table-features-row label="Users">
-            <mds-price-table-features-cell supported="text">Unlimited</mds-price-table-features-cell>
+          <mds-price-table-features-row>
+            <mds-price-table-features-cell type="label">Users</mds-price-table-features-cell>
+            <mds-price-table-features-cell type="text">Unlimited</mds-price-table-features-cell>
           </mds-price-table-features-row>
-          <mds-price-table-features-row label="User data">
-            <mds-price-table-features-cell supported="text">1TB</mds-price-table-features-cell>
+          <mds-price-table-features-row>
+            <mds-price-table-features-cell type="label">User data</mds-price-table-features-cell>
+            <mds-price-table-features-cell type="text">1TB</mds-price-table-features-cell>
           </mds-price-table-features-row>
-          <mds-price-table-features-row label="Customer support">
-            <mds-price-table-features-cell supported="true"></mds-price-table-features-cell>
+          <mds-price-table-features-row>
+            <mds-price-table-features-cell type="label">Customer support</mds-price-table-features-cell>
+            <mds-price-table-features-cell type="supported"></mds-price-table-features-cell>
           </mds-price-table-features-row>
-          <mds-price-table-features-row label="Automated functionalities">
-            <mds-price-table-features-cell supported="true"></mds-price-table-features-cell>
+          <mds-price-table-features-row>
+            <mds-price-table-features-cell type="label">Automated functionalities</mds-price-table-features-cell>
+            <mds-price-table-features-cell type="supported"></mds-price-table-features-cell>
           </mds-price-table-features-row>
-          <mds-price-table-features-row label="Analytics">
-            <mds-price-table-features-cell supported="true"></mds-price-table-features-cell>
+          <mds-price-table-features-row>
+            <mds-price-table-features-cell type="label">Analytics</mds-price-table-features-cell>
+            <mds-price-table-features-cell type="supported"></mds-price-table-features-cell>
           </mds-price-table-features-row>
-          <mds-price-table-features-row label="Export reports">
-            <mds-price-table-features-cell supported="true"></mds-price-table-features-cell>
+          <mds-price-table-features-row>
+            <mds-price-table-features-cell type="label">Export reports</mds-price-table-features-cell>
+            <mds-price-table-features-cell type="supported"></mds-price-table-features-cell>
           </mds-price-table-features-row>
-          <mds-price-table-features-row label="Reports snapshots">
-            <mds-price-table-features-cell supported="true"></mds-price-table-features-cell>
+          <mds-price-table-features-row>
+            <mds-price-table-features-cell type="label">Reports snapshots</mds-price-table-features-cell>
+            <mds-price-table-features-cell type="supported"></mds-price-table-features-cell>
           </mds-price-table-features-row>
-          <mds-price-table-features-row label="Advanced reports">
-            <mds-price-table-features-cell supported="true"></mds-price-table-features-cell>
+          <mds-price-table-features-row>
+            <mds-price-table-features-cell type="label">Advanced reports</mds-price-table-features-cell>
+            <mds-price-table-features-cell type="supported"></mds-price-table-features-cell>
           </mds-price-table-features-row>
         </mds-price-table-features>
       </mds-price-table>
@@ -143,50 +170,65 @@ const Template = args =>
         </mds-price-table-list>
       </mds-price-table-header>
       <mds-price-table-features {...args}>
-        <mds-price-table-features-row label="Base features">
-          <mds-price-table-features-cell supported="true"></mds-price-table-features-cell>
-          <mds-price-table-features-cell supported="true"></mds-price-table-features-cell>
-          <mds-price-table-features-cell supported="true"></mds-price-table-features-cell>
+        <mds-price-table-features-row>
+          <mds-price-table-features-cell type="label">
+            Base features
+            <mds-help>The base features are: Login, Logout and Register.</mds-help>
+          </mds-price-table-features-cell>
+          <mds-price-table-features-cell type="supported"></mds-price-table-features-cell>
+          <mds-price-table-features-cell type="supported"></mds-price-table-features-cell>
+          <mds-price-table-features-cell type="supported"></mds-price-table-features-cell>
         </mds-price-table-features-row>
-        <mds-price-table-features-row label="Users">
-          <mds-price-table-features-cell supported="text">10</mds-price-table-features-cell>
-          <mds-price-table-features-cell supported="text">20</mds-price-table-features-cell>
-          <mds-price-table-features-cell supported="text">Unlimited</mds-price-table-features-cell>
+        <mds-price-table-features-row>
+          <mds-price-table-features-cell type="label">Users</mds-price-table-features-cell>
+          <mds-price-table-features-cell type="text">10</mds-price-table-features-cell>
+          <mds-price-table-features-cell type="text">20</mds-price-table-features-cell>
+          <mds-price-table-features-cell type="text">
+            Unlimited
+            <mds-help>Aw, c'mon... You know it's impossible.</mds-help>
+          </mds-price-table-features-cell>
         </mds-price-table-features-row>
-        <mds-price-table-features-row label="User data">
-          <mds-price-table-features-cell supported="text">10GB</mds-price-table-features-cell>
-          <mds-price-table-features-cell supported="text">20GB</mds-price-table-features-cell>
-          <mds-price-table-features-cell supported="text">1TB</mds-price-table-features-cell>
+        <mds-price-table-features-row>
+          <mds-price-table-features-cell type="label">User data</mds-price-table-features-cell>
+          <mds-price-table-features-cell type="text">10GB</mds-price-table-features-cell>
+          <mds-price-table-features-cell type="text">20GB</mds-price-table-features-cell>
+          <mds-price-table-features-cell type="text">1TB</mds-price-table-features-cell>
         </mds-price-table-features-row>
-        <mds-price-table-features-row label="Customer support">
-          <mds-price-table-features-cell supported="true"></mds-price-table-features-cell>
-          <mds-price-table-features-cell supported="true"></mds-price-table-features-cell>
-          <mds-price-table-features-cell supported="true"></mds-price-table-features-cell>
+        <mds-price-table-features-row>
+          <mds-price-table-features-cell type="label">Customer support</mds-price-table-features-cell>
+          <mds-price-table-features-cell type="supported"></mds-price-table-features-cell>
+          <mds-price-table-features-cell type="supported"></mds-price-table-features-cell>
+          <mds-price-table-features-cell type="supported"></mds-price-table-features-cell>
         </mds-price-table-features-row>
-        <mds-price-table-features-row label="Automated functionalities">
-          <mds-price-table-features-cell supported="false"></mds-price-table-features-cell>
-          <mds-price-table-features-cell supported="true"></mds-price-table-features-cell>
-          <mds-price-table-features-cell supported="true"></mds-price-table-features-cell>
+        <mds-price-table-features-row>
+          <mds-price-table-features-cell type="label">Automated functionalities</mds-price-table-features-cell>
+          <mds-price-table-features-cell type="unsupported"></mds-price-table-features-cell>
+          <mds-price-table-features-cell type="supported"></mds-price-table-features-cell>
+          <mds-price-table-features-cell type="supported"></mds-price-table-features-cell>
         </mds-price-table-features-row>
-        <mds-price-table-features-row label="Analytics">
-          <mds-price-table-features-cell supported="true"></mds-price-table-features-cell>
-          <mds-price-table-features-cell supported="true"></mds-price-table-features-cell>
-          <mds-price-table-features-cell supported="true"></mds-price-table-features-cell>
+        <mds-price-table-features-row>
+          <mds-price-table-features-cell type="label">Analytics</mds-price-table-features-cell>
+          <mds-price-table-features-cell type="supported"></mds-price-table-features-cell>
+          <mds-price-table-features-cell type="supported"></mds-price-table-features-cell>
+          <mds-price-table-features-cell type="supported"></mds-price-table-features-cell>
         </mds-price-table-features-row>
-        <mds-price-table-features-row label="Export reports">
-          <mds-price-table-features-cell supported="false"></mds-price-table-features-cell>
-          <mds-price-table-features-cell supported="true"></mds-price-table-features-cell>
-          <mds-price-table-features-cell supported="true"></mds-price-table-features-cell>
+        <mds-price-table-features-row>
+          <mds-price-table-features-cell type="label">Export reports</mds-price-table-features-cell>
+          <mds-price-table-features-cell type="unsupported"></mds-price-table-features-cell>
+          <mds-price-table-features-cell type="supported"></mds-price-table-features-cell>
+          <mds-price-table-features-cell type="supported"></mds-price-table-features-cell>
         </mds-price-table-features-row>
-        <mds-price-table-features-row label="Reports snapshots">
-          <mds-price-table-features-cell supported="false"></mds-price-table-features-cell>
-          <mds-price-table-features-cell supported="true"></mds-price-table-features-cell>
-          <mds-price-table-features-cell supported="true"></mds-price-table-features-cell>
+        <mds-price-table-features-row>
+          <mds-price-table-features-cell type="label">Reports snapshots</mds-price-table-features-cell>
+          <mds-price-table-features-cell type="unsupported"></mds-price-table-features-cell>
+          <mds-price-table-features-cell type="supported"></mds-price-table-features-cell>
+          <mds-price-table-features-cell type="supported"></mds-price-table-features-cell>
         </mds-price-table-features-row>
-        <mds-price-table-features-row label="Advanced reports">
-          <mds-price-table-features-cell supported="false"></mds-price-table-features-cell>
-          <mds-price-table-features-cell supported="false"></mds-price-table-features-cell>
-          <mds-price-table-features-cell supported="true"></mds-price-table-features-cell>
+        <mds-price-table-features-row>
+          <mds-price-table-features-cell type="label">Advanced reports</mds-price-table-features-cell>
+          <mds-price-table-features-cell type="unsupported"></mds-price-table-features-cell>
+          <mds-price-table-features-cell type="unsupported"></mds-price-table-features-cell>
+          <mds-price-table-features-cell type="supported"></mds-price-table-features-cell>
         </mds-price-table-features-row>
       </mds-price-table-features>
     </mds-price-table>
