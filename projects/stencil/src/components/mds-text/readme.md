@@ -58,7 +58,6 @@
  - [mds-paginator-item](../mds-paginator-item)
  - [mds-price-table-features](../mds-price-table-features)
  - [mds-price-table-features-cell](../mds-price-table-features-cell)
- - [mds-price-table-features-row](../mds-price-table-features-row)
  - [mds-price-table-list-item](../mds-price-table-list-item)
  - [mds-quote](../mds-quote)
  - [mds-stepper-bar-item](../mds-stepper-bar-item)
@@ -95,7 +94,6 @@ graph TD;
   mds-paginator-item --> mds-text
   mds-price-table-features --> mds-text
   mds-price-table-features-cell --> mds-text
-  mds-price-table-features-row --> mds-text
   mds-price-table-list-item --> mds-text
   mds-quote --> mds-text
   mds-stepper-bar-item --> mds-text
