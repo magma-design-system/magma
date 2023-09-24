@@ -34,7 +34,7 @@ export class MdsTooltip {
   /**
    * If set, the component will be placed automatically near it's caller.
    */
-  @Prop() readonly autoPlacement?: boolean = true
+  @Prop({ reflect: true }) readonly autoPlacement?: boolean = true
 
   /**
    * Specifies the placement of the component if no space is available where it is placed.
@@ -54,7 +54,7 @@ export class MdsTooltip {
   /**
    * Specifies where the component should be placed relative to the caller.
    */
-  @Prop() readonly placement?: FloatingUIPlacement = 'top'
+  @Prop({ reflect: true }) readonly placement?: FloatingUIPlacement = 'top'
 
   /**
    * Specifies the font typography of the element
@@ -74,7 +74,7 @@ export class MdsTooltip {
   /**
    * Sets the CSS position strategy of the component.
    */
-  @Prop() readonly strategy?: FloatingUIStrategy = 'fixed'
+  @Prop({ reflect: true }) readonly strategy?: FloatingUIStrategy = 'fixed'
 
   /**
    * Specifies the visibility of the component.
