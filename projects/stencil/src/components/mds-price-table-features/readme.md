@@ -12,18 +12,18 @@
 | `label`  | `label`   | Sets a header title for the entire table | `string \| undefined` | `undefined` |
 
 
+## Slots
+
+| Slot        | Description                                              |
+| ----------- | -------------------------------------------------------- |
+| `"default"` | Expects to slot `mds-price-table-features-row` component |
+
+
 ## Shadow Parts
 
-| Part       | Description |
-| ---------- | ----------- |
-| `"header"` |             |
-
-
-## CSS Custom Properties
-
-| Name                                 | Description                                      |
-| ------------------------------------ | ------------------------------------------------ |
-| `--mds-price-table-features-padding` | Sets the cell padding of the children components |
+| Part       | Description                                    |
+| ---------- | ---------------------------------------------- |
+| `"header"` | Selects the HTML element wrapper of label text |
 
 
 ## Dependencies

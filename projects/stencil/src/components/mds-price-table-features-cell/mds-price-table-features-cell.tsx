@@ -1,7 +1,13 @@
 import { Component, Host, h, Prop } from '@stencil/core'
-import { SupportedType } from './meta/types'
+import { PriceTableFeaturesCellType } from './meta/types'
 import miBaselineCheckCircle from '@icon/mi/baseline/check-circle.svg'
 import miBaselineHorizontalRule from '@icon/mi/baseline/horizontal-rule.svg'
+
+/**
+ * @part icon - Selects the HTML element of the icon when `type` attribute when is `supported` or `unsupported`.
+ * @part text - Selects the HTML element wrapper of text when `type` attribute when is `text`.
+ * @slot default - Add `text string`, `HTML elements` or `components` to this slot.
+ */
 
 @Component({
   tag: 'mds-price-table-features-cell',
@@ -13,23 +19,26 @@ export class MdsPriceTableFeaturesCell {
   /**
    * Specifies the support type which is represented
    */
-  @Prop({ reflect: true }) supported?: SupportedType = 'true'
+  @Prop({ reflect: true }) type?: PriceTableFeaturesCellType = 'text'
 
   render () {
     return (
       <Host>
-        { this.supported === 'true' &&
+        { this.type === 'supported' &&
           <i class="svg icon icon--supported" innerHTML={miBaselineCheckCircle} part="icon"/>
         }
-        { this.supported === 'false' &&
+        { this.type === 'unsupported' &&
           <i class="svg icon icon--unsupported" innerHTML={miBaselineHorizontalRule} part="icon"/>
         }
-        { this.supported === 'text' &&
+        { this.type === 'text' &&
           <mds-text part="text" typography="detail">
             <slot/>
           </mds-text>
         }
-        { this.supported === 'custom' &&
+        { this.type === 'custom' &&
+          <slot/>
+        }
+        { this.type === 'label' &&
           <slot/>
         }
       </Host>

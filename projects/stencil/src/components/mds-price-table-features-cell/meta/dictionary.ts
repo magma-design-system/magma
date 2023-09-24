@@ -1,10 +1,11 @@
-const supportedDictionary = [
+const priceTableFeaturesCellTypeDictionary = [
   'custom',
-  'false',
+  'label',
+  'supported',
   'text',
-  'true',
+  'unsupported',
 ]
 
 export {
-  supportedDictionary,
+  priceTableFeaturesCellTypeDictionary,
 }

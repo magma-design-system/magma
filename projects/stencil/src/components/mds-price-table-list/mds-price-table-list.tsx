@@ -33,7 +33,7 @@ export class MdsPriceTableList {
         { this.hasItems && <mds-separator class="separator"></mds-separator> }
         { this.hasItems &&
           <main part="content">
-            <slot/>
+            <slot name="item"/>
           </main>
         }
         <footer part="footer">

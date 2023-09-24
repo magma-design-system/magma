@@ -18,7 +18,10 @@ const TemplateFull = args =>
     <mds-text typography="detail" slot="header">Piano adatto a liberi professionisti con studi di piccole dimensioni.</mds-text>
     <mds-price-table-list-item supported>Basic features</mds-price-table-list-item>
     <mds-price-table-list-item supported>10 Users</mds-price-table-list-item>
-    <mds-price-table-list-item supported>20GB disk space per user</mds-price-table-list-item>
+    <mds-price-table-list-item supported>
+      20GB disk space per user
+      <mds-help>Sometimes it won't work</mds-help>
+    </mds-price-table-list-item>
     <mds-price-table-list-item supported>Chat support</mds-price-table-list-item>
     <mds-price-table-list-item supported>Automated flows</mds-price-table-list-item>
     <mds-price-table-list-item>Analytics</mds-price-table-list-item>

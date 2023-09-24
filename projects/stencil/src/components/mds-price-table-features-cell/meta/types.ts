@@ -1,6 +1,7 @@
-export type SupportedType =
+export type PriceTableFeaturesCellType =
   | 'custom'
-  | 'false'
+  | 'label'
+  | 'supported'
   | 'text'
-  | 'true'
+  | 'unsupported'
 
