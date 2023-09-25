@@ -25,16 +25,16 @@
   @apply
     duration-500
     ease-out-expo
-    grid
-    relative
     transition-cosmetic;
 
   border-bottom: solid var(--mds-accordion-item-border-width) transparent;
   border-top: solid var(--mds-accordion-item-border-width) transparent;
   color: var(--mds-accordion-item-color);
+  display: grid;
   fill: var(--mds-accordion-item-color);
-  padding: var(--mds-accordion-item-padding-unselected);
   margin-top: calc(-1 * var(--mds-accordion-item-border-width));
+  padding: var(--mds-accordion-item-padding-unselected);
+  position: relative;
 }
 
 :host(:first-child) {
@@ -61,37 +61,37 @@
 
 .action {
   @apply
-    auto-cols-min
-    bg-transparent
-    border-none
-    cursor-pointer
     gap-4
-    grid
-    p-0
-    rounded-lg
-    text-left;
+    rounded-lg;
 
+  background-color: transparent;
+  border: 0;
   color: var(--mds-accordion-item-description-color);
+  cursor: pointer;
+  display: grid;
+  grid-auto-columns: min-content;
   grid-template-columns: auto 24px;
+  padding: 0;
+  text-align: left;
 }
 
 .icon-button {
-  @apply
-    block
-    font-normal;
+  @apply font-normal;
+
+  display: block;
 }
 
 .contents {
   @apply
     ease-in-out-expo
-    gap-4
-    grid
-    min-h-0
-    opacity-0
-    overflow-hidden
-    pt-0;
+    gap-4;
 
+  display: grid;
   grid-template-rows: 0fr;
+  min-height: 0;
+  opacity: 0;
+  overflow: hidden;
+  padding-top: 0;
   transition-duration: var(--mds-accordion-item-duration);
   transition-property: grid-template-rows opacity padding;
 }
@@ -101,11 +101,10 @@
 }
 
 :host( [selected] ) .contents {
-  @apply
-    opacity-100
-    pt-4;
+  @apply pt-4;
 
   grid-template-rows: 1fr;
+  opacity: 1;
 }
 
 .icon {
