@@ -258,11 +258,8 @@ export class MdsTooltip {
 
   componentDidRender (): void {
     this.arrowEl = this.host.shadowRoot?.querySelector('.arrow') as HTMLElement
-    // https://stackoverflow.com/a/68964329/185921
-    console.log('componentDidRender', this.target)
-    console.log(document.querySelector(this.target))
-    console.log(document.getElementById(this.target))
 
+    // https://stackoverflow.com/a/68964329/185921
     const caller = document.querySelector(this.target) as HTMLElement
 
     if (caller) {
