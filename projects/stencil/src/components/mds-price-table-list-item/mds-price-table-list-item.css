@@ -7,18 +7,18 @@
   --mds-price-table-list-item-supported-icon-color: theme('colors.label-green-06');
   --mds-price-table-list-item-unsupported-icon-color: rgb(var(--theme-default-04-primary-decoration));
 
-  @apply
-    flex
-    gap-1
-    items-start;
+  @apply gap-1;
+
+  align-items: flex-start;
+  display: flex;
 }
 
 .text {
-  @apply grow;
+  flex-grow: 1;
 }
 
 .icon-container {
-  @apply shrink-0;
+  flex-shrink: 0;
 }
 
 .icon {

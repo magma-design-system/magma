@@ -12,23 +12,18 @@
   --mds-price-table-features-cell-icon-supported-color: theme('colors.label-green-06');
   --mds-price-table-features-cell-icon-unsupported-color: theme('colors.tone-neutral-07');
 
-  @apply
-    align-top
-    border-0
-    border-b
-    border-b-theme-default-05-secondary-decoration
-    border-solid
-    table-cell;
-
+  border-bottom: 1px solid theme('colors.theme-default-05-secondary-decoration');
+  display: table-cell;
   padding: var(--mds-price-table-features-cell-padding);
+  vertical-align: top;
 }
 
 .icon {
   @apply
-  flex
-  h-6
-  w-6;
+    h-6
+    w-6;
 
+  display: flex;
   fill: var(--icon-fill-color);
 }
 

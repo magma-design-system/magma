@@ -2,9 +2,8 @@
 
 :host {
 
-  @apply
-    gap-6
-    grid;
+  @apply gap-6;
 
+  display: grid;
   grid-template-columns: repeat(auto-fit, minmax(1px, 1fr));
 }

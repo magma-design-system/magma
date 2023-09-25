@@ -8,33 +8,25 @@
 
   --mds-price-table-features-padding: theme('spacing.3');
 
-  @apply
-    flex
-    w-full;
+  display: flex;
+  width: 100%;
 }
 
 .table-wrapper {
-  @apply
-    scroll-mx-6
-    w-full;
+  @apply scroll-mx-6;
+
+  width: 100%;
 }
 
 table {
-  @apply
-    border-collapse
-    min-w-full
-    table-fixed;
+  border-collapse: collapse;
+  min-width: 100%;
+  table-layout: fixed;
 }
 
 header {
-  @apply
-    border-0
-    border-b
-    border-b-theme-default-04-primary-decoration
-    border-solid
-    w-full;
-
-  padding: var(--mds-price-table-features-padding);
-  padding-left: 0;
-  padding-right: 0;
+  border-bottom: 1px solid theme('colors.theme-default-04-primary-decoration');
+  padding-left: var(--mds-price-table-features-padding);
+  padding-right: var(--mds-price-table-features-padding);
+  width: 100%;
 }

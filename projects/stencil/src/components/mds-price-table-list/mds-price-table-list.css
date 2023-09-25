@@ -2,14 +2,15 @@
 
 :host {
 
-  --mds-price-table-list-separator-color: rgb(var(--theme-default-04-primary-decoration));
+  --mds-price-table-list-separator-color: theme('colors.theme-default-04-primary-decoration');
 
   @apply
-    bg-label-green-10
     gap-6
-    grid
     p-6
     rounded-xl;
+
+  background-color: theme('colors.label-green-10');
+  display: grid;
 }
 
 
@@ -19,20 +20,20 @@
 
 
 header {
-  @apply
-    gap-2
-    grid;
+  @apply gap-2;
+
+  display: grid;
 }
 
 main {
-  @apply
-    gap-3
-    grid;
+  @apply gap-3;
+
+  display: grid;
 }
 
 footer {
-  @apply
-    gap-4
-    grid;
+  @apply gap-4;
+
+  display: grid;
 }
 

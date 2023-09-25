@@ -1,12 +1,11 @@
 @tailwind utilities;
 
 :host {
-
-  @apply table-row;
+  display: table-row;
 }
 
 :host(:hover) {
-  @apply bg-tone-neutral-10;
+  background-color: theme('colors.tone-neutral-10');
 }
 
 :host > ::slotted([type="label"]) {
