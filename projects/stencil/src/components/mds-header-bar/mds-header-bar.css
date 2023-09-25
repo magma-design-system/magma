@@ -1,4 +1,4 @@
-@import '../../tailwind/components.css';
+@import url('../../tailwind/components.css');
 @tailwind components;
 @tailwind utilities;
 
@@ -36,21 +36,44 @@
     max-w-screen-wide;
 }
 
+.actions {
+  @apply
+    flex
+    gap-6;
+}
+
 .nav {
   @apply
     gap-4
-    inline-flex;
+    inline-flex
+    shrink-0;
 }
 
-.nav--hide-on-mobile {
-  @apply tablet-max:hidden;
-}
-
-.icon {
+.menu-icon {
   @apply
     cursor-pointer
-    desktop:hidden
+    shrink-0
     w-8;
 
   fill: inherit;
+}
+
+.menu {
+  background-color: transparent;
+  padding: 0;
+}
+
+:host([menu="desktop"]) .menu,
+:host([nav="desktop"]) .nav {
+  @apply tablet-max:hidden;
+}
+
+:host([menu="mobile"]) .menu,
+:host([nav="mobile"]) .nav {
+  @apply desktop:hidden;
+}
+
+:host([menu="none"]) .menu,
+:host([nav="none"]) .nav {
+  @apply hidden;
 }

@@ -1,0 +1,42 @@
+@tailwind utilities;
+
+/**
+  * @prop --mds-price-table-features-cell-padding: Sets the cell padding of the component
+  * @prop --mds-price-table-features-cell-icon-supported-color: Sets the border-color of the component
+  * @prop --mds-price-table-features-cell-icon-unsupported-color: Sets the border-width of the separators of the component
+  */
+
+:host {
+
+  --mds-price-table-features-cell-padding: var(--mds-price-table-features-padding, theme('spacing.3'));
+  --mds-price-table-features-cell-icon-supported-color: theme('colors.label-green-06');
+  --mds-price-table-features-cell-icon-unsupported-color: theme('colors.tone-neutral-07');
+
+  border-bottom: 1px solid theme('colors.theme-default-05-secondary-decoration');
+  display: table-cell;
+  padding: var(--mds-price-table-features-cell-padding);
+  vertical-align: top;
+}
+
+.icon {
+  @apply
+    h-6
+    w-6;
+
+  display: flex;
+  fill: var(--icon-fill-color);
+}
+
+.icon--supported {
+
+  --icon-fill-color: var(--mds-price-table-features-cell-icon-supported-color);
+}
+
+.icon--unsupported {
+
+  --icon-fill-color: var(--mds-price-table-features-cell-icon-unsupported-color);
+}
+
+/* :host([supported="custom"]) {
+  @apply px-0;
+} */

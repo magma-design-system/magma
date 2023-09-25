@@ -1,0 +1,42 @@
+# mds-help
+
+This component does not have shadow DOM enabled.
+
+<!-- Auto Generated Below -->
+
+
+## Properties
+
+| Property        | Attribute        | Description                                                            | Type                                                                                                                                                                              | Default                     |
+| --------------- | ---------------- | ---------------------------------------------------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | --------------------------- |
+| `autoPlacement` | `auto-placement` | If set, the component will be placed automatically near it's caller.   | `boolean \| undefined`                                                                                                                                                            | `true`                      |
+| `icon`          | `icon`           | Set the name of the icon.                                              | `string`                                                                                                                                                                          | `'mi/outline/help-outline'` |
+| `placement`     | `placement`      | Specifies where the component should be placed relative to the caller. | `"bottom" \| "bottom-end" \| "bottom-start" \| "left" \| "left-end" \| "left-start" \| "right" \| "right-end" \| "right-start" \| "top" \| "top-end" \| "top-start" \| undefined` | `'top'`                     |
+
+
+## Slots
+
+| Slot        | Description                                                                |
+| ----------- | -------------------------------------------------------------------------- |
+| `"default"` | Add `text string` to this slot, **avoid** `HTML elements` or `components`. |
+
+
+## Dependencies
+
+### Depends on
+
+- [mds-icon](../mds-icon)
+- [mds-tooltip](../mds-tooltip)
+
+### Graph
+```mermaid
+graph TD;
+  mds-help --> mds-icon
+  mds-help --> mds-tooltip
+  mds-tooltip --> mds-text
+  style mds-help fill:#f9f,stroke:#333,stroke-width:4px
+```
+
+----------------------------------------------
+
+Built with love @ **Maggioli Informatica / R&D Department**

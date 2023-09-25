@@ -1,0 +1,25 @@
+.base-price-table-header:
+  variables:
+    COMPONENT: mds-price-table-header
+
+# ISOLATE
+price-table-header-isolate:
+  extends: [.base-isolate, .base-price-table-header]
+  dependencies: [base-stencil-build]
+
+# TEST
+price-table-header-publish-test:
+  extends: [.base-stencil-publish-test, .base-price-table-header]
+  dependencies: [base-stencil-build, price-table-header-isolate]
+
+# PUBLISH
+price-table-header-publish:
+  extends: [.base-stencil-publish, .base-price-table-header]
+  dependencies: [base-stencil-build, price-table-header-isolate]
+  needs: [base-stencil-build, price-table-header-isolate, price-table-header-publish-test]
+
+# INSTALL TEST
+price-table-header-install-test:
+  extends: [.base-stencil-install-test, .base-price-table-header]
+  dependencies: [base-stencil-build, price-table-header-isolate]
+  needs: [base-stencil-build, price-table-header-isolate, price-table-header-publish]

@@ -34,7 +34,7 @@ export class MdsTooltip {
   /**
    * If set, the component will be placed automatically near it's caller.
    */
-  @Prop() readonly autoPlacement?: boolean = true
+  @Prop({ reflect: true }) readonly autoPlacement?: boolean = true
 
   /**
    * Specifies the placement of the component if no space is available where it is placed.
@@ -44,7 +44,7 @@ export class MdsTooltip {
   /**
    * Specifies the id of the caller element.
    */
-  @Prop() readonly target!: string
+  @Prop({ reflect: true }) readonly target!: string
 
   /**
    * Sets distance between the tooltip and the caller.
@@ -54,7 +54,7 @@ export class MdsTooltip {
   /**
    * Specifies where the component should be placed relative to the caller.
    */
-  @Prop() readonly placement?: FloatingUIPlacement = 'top'
+  @Prop({ reflect: true }) readonly placement?: FloatingUIPlacement = 'top'
 
   /**
    * Specifies the font typography of the element
@@ -74,7 +74,7 @@ export class MdsTooltip {
   /**
    * Sets the CSS position strategy of the component.
    */
-  @Prop() readonly strategy?: FloatingUIStrategy = 'fixed'
+  @Prop({ reflect: true }) readonly strategy?: FloatingUIStrategy = 'fixed'
 
   /**
    * Specifies the visibility of the component.
@@ -258,12 +258,17 @@ export class MdsTooltip {
 
   componentDidRender (): void {
     this.arrowEl = this.host.shadowRoot?.querySelector('.arrow') as HTMLElement
-    const caller = document.getElementById(this.target)
+
+    // https://stackoverflow.com/a/68964329/185921
+    const caller = document.querySelector(this.target) as HTMLElement
+
     if (caller) {
       this.caller = caller
       this.caller.addEventListener('mouseleave', this.handleVisibility.bind(this, false))
       this.caller.addEventListener('mouseenter', this.handleVisibility.bind(this, true))
+      return
     }
+    console.error('Warning: attribute `target` is undefined.')
   }
 
   componentDidLoad (): void {

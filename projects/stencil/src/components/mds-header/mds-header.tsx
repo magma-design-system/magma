@@ -1,9 +1,11 @@
-import { Component, Element, Event, EventEmitter, Host, Listen, State, h } from '@stencil/core'
+import { Component, Element, Event, EventEmitter, Host, Listen, State, h, Prop, Watch } from '@stencil/core'
 import { MdsHeaderEventDetail } from './meta/event-detail'
+import { MenuType } from '../mds-header-bar/meta/types'
 
 /**
+ * @part menu - The container element of the modal
  * @slot default - Add `mds-header-bar` element/s.
- * @slot nav-mobile - Put actions and other contents that will be shown as mobile menu. Add `text string`, `HTML elements` or `components` to this slot.
+ * @slot menu - Put actions and other contents that will be shown as mobile menu. Add `text string`, `HTML elements` or `components` to this slot.
  */
 
 @Component({
@@ -14,8 +16,18 @@ import { MdsHeaderEventDetail } from './meta/event-detail'
 export class MdsHeader {
 
   @Element() host: HTMLMdsHeaderElement
-  @State() hasNav: boolean
+  @State() hasMenu: boolean
   @State() isOpened: boolean
+
+  /**
+   * Sets the visibility type of the hamburger menu of mds-header-bar
+   */
+  @Prop({ reflect: true }) menu: MenuType = 'mobile'
+
+  /**
+   * Sets the visibility type of the navigation menu of mds-header-bar
+   */
+  @Prop({ reflect: true }) nav: MenuType = 'desktop'
 
   /**
    * Emits when the component is closed
@@ -23,7 +35,7 @@ export class MdsHeader {
   @Event({ bubbles: true, composed: true, eventName: 'mdsHeaderClose' }) closedEvent: EventEmitter<MdsHeaderEventDetail>
 
   private mobileMenu = (): HTMLElement => {
-    return this.host.querySelector('[slot="nav-mobile"]') as HTMLElement
+    return this.host.querySelector('[slot="menu"]') as HTMLElement
   }
 
   private headerBar = (): HTMLMdsHeaderBarElement => {
@@ -36,9 +48,12 @@ export class MdsHeader {
   }
 
   componentDidLoad (): void {
-    this.hasNav = this.mobileMenu() !== null
+    this.hasMenu = this.mobileMenu() !== null
+    if (this.hasMenu) {
+      return
+    }
     const headerBar = this.headerBar()
-    headerBar.setAttribute('mobile-menu', this.hasNav.toString())
+    headerBar.setAttribute('menu', 'none')
   }
 
   @Listen('mdsHeaderBarOpen', { target: 'document' })
@@ -46,14 +61,26 @@ export class MdsHeader {
     this.isOpened = true
   }
 
+  @Watch('menu')
+  onMenuChangedHandler (newValue: MenuType): void {
+    const headerBar = this.headerBar()
+    headerBar.setAttribute('menu', newValue)
+  }
+
+  @Watch('nav')
+  onNavChangedHandler (newValue: MenuType): void {
+    const headerBar = this.headerBar()
+    headerBar.setAttribute('nav', newValue)
+  }
+
   render () {
     return (
       <Host>
         <slot />
-        {this.hasNav &&
-          <div class="nav">
+        {this.hasMenu &&
+          <div class="menu" part="menu">
             <mds-modal class="modal" opened={this.isOpened} onMdsModalClose={this.close}>
-              <slot name="nav-mobile" />
+              <slot name="menu" />
             </mds-modal>
           </div>
         }

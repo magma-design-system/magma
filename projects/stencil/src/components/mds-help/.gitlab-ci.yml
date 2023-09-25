@@ -1,0 +1,25 @@
+.base-help:
+  variables:
+    COMPONENT: mds-help
+
+# ISOLATE
+help-isolate:
+  extends: [.base-isolate, .base-help]
+  dependencies: [base-stencil-build]
+
+# TEST
+help-publish-test:
+  extends: [.base-stencil-publish-test, .base-help]
+  dependencies: [base-stencil-build, help-isolate]
+
+# PUBLISH
+help-publish:
+  extends: [.base-stencil-publish, .base-help]
+  dependencies: [base-stencil-build, help-isolate]
+  needs: [base-stencil-build, help-isolate, help-publish-test]
+
+# INSTALL TEST
+help-install-test:
+  extends: [.base-stencil-install-test, .base-help]
+  dependencies: [base-stencil-build, help-isolate]
+  needs: [base-stencil-build, help-isolate, help-publish]

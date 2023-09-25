@@ -1,0 +1,25 @@
+.base-price-table-list-item:
+  variables:
+    COMPONENT: mds-price-table-list-item
+
+# ISOLATE
+price-table-list-item-isolate:
+  extends: [.base-isolate, .base-price-table-list-item]
+  dependencies: [base-stencil-build]
+
+# TEST
+price-table-list-item-publish-test:
+  extends: [.base-stencil-publish-test, .base-price-table-list-item]
+  dependencies: [base-stencil-build, price-table-list-item-isolate]
+
+# PUBLISH
+price-table-list-item-publish:
+  extends: [.base-stencil-publish, .base-price-table-list-item]
+  dependencies: [base-stencil-build, price-table-list-item-isolate]
+  needs: [base-stencil-build, price-table-list-item-isolate, price-table-list-item-publish-test]
+
+# INSTALL TEST
+price-table-list-item-install-test:
+  extends: [.base-stencil-install-test, .base-price-table-list-item]
+  dependencies: [base-stencil-build, price-table-list-item-isolate]
+  needs: [base-stencil-build, price-table-list-item-isolate, price-table-list-item-publish]
