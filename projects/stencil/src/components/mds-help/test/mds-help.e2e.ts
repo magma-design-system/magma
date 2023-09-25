@@ -6,6 +6,6 @@ describe('mds-help', () => {
     await page.setContent('<mds-help></mds-help>')
 
     const element = await page.find('mds-help')
-    expect(element).toHaveClass('hydrated')
+    expect(element).toHaveAttribute('hydrated')
   })
 })

@@ -6,6 +6,6 @@ describe('mds-price-table-list-item', () => {
     await page.setContent('<mds-price-table-list-item></mds-price-table-list-item>')
 
     const element = await page.find('mds-price-table-list-item')
-    expect(element).toHaveClass('hydrated')
+    expect(element).toHaveAttribute('hydrated')
   })
 })
