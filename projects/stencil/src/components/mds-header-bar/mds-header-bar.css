@@ -49,13 +49,18 @@
     shrink-0;
 }
 
-.menu {
+.menu-icon {
   @apply
     cursor-pointer
     shrink-0
     w-8;
 
   fill: inherit;
+}
+
+.menu {
+  background-color: transparent;
+  padding: 0;
 }
 
 :host([menu="desktop"]) .menu,
