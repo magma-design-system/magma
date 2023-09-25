@@ -71,6 +71,6 @@ describe('mds-modal', () => {
 
     await page.waitForChanges()
 
-    expect(element).not.toHaveAttribute('opened')
+    expect(element).not.toHaveClass('opened')
   })
 })
