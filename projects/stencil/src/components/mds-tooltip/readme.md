@@ -46,10 +46,6 @@
 
 ## Dependencies
 
-### Used by
-
- - [mds-help](../mds-help)
-
 ### Depends on
 
 - [mds-text](../mds-text)
@@ -58,7 +54,6 @@
 ```mermaid
 graph TD;
   mds-tooltip --> mds-text
-  mds-help --> mds-tooltip
   style mds-tooltip fill:#f9f,stroke:#333,stroke-width:4px
 ```
 

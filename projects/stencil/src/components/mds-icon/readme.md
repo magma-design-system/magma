@@ -101,7 +101,6 @@ Type: `Promise<void>`
  - [mds-entity](../mds-entity)
  - [mds-file](../mds-file)
  - [mds-filter-item](../mds-filter-item)
- - [mds-help](../mds-help)
  - [mds-input](../mds-input)
  - [mds-input-switch](../mds-input-switch)
  - [mds-list-item](../mds-list-item)
@@ -119,7 +118,6 @@ graph TD;
   mds-entity --> mds-icon
   mds-file --> mds-icon
   mds-filter-item --> mds-icon
-  mds-help --> mds-icon
   mds-input --> mds-icon
   mds-input-switch --> mds-icon
   mds-list-item --> mds-icon

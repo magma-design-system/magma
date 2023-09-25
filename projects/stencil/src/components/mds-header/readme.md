@@ -5,14 +5,6 @@
 <!-- Auto Generated Below -->
 
 
-## Properties
-
-| Property | Attribute | Description                                                       | Type                                       | Default     |
-| -------- | --------- | ----------------------------------------------------------------- | ------------------------------------------ | ----------- |
-| `menu`   | `menu`    | Sets the visibility type of the hamburger menu of mds-header-bar  | `"all" \| "desktop" \| "mobile" \| "none"` | `'mobile'`  |
-| `nav`    | `nav`     | Sets the visibility type of the navigation menu of mds-header-bar | `"all" \| "desktop" \| "mobile" \| "none"` | `'desktop'` |
-
-
 ## Events
 
 | Event            | Description                        | Type                                |
@@ -22,17 +14,10 @@
 
 ## Slots
 
-| Slot        | Description                                                                                                                        |
-| ----------- | ---------------------------------------------------------------------------------------------------------------------------------- |
-| `"default"` | Add `mds-header-bar` element/s.                                                                                                    |
-| `"menu"`    | Put actions and other contents that will be shown as mobile menu. Add `text string`, `HTML elements` or `components` to this slot. |
-
-
-## Shadow Parts
-
-| Part     | Description                        |
-| -------- | ---------------------------------- |
-| `"menu"` | The container element of the modal |
+| Slot           | Description                                                                                                                        |
+| -------------- | ---------------------------------------------------------------------------------------------------------------------------------- |
+| `"default"`    | Add `mds-header-bar` element/s.                                                                                                    |
+| `"nav-mobile"` | Put actions and other contents that will be shown as mobile menu. Add `text string`, `HTML elements` or `components` to this slot. |
 
 
 ## CSS Custom Properties
