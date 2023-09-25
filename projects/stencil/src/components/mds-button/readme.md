@@ -54,6 +54,7 @@
 
 ### Used by
 
+ - [mds-header-bar](../mds-header-bar)
  - [mds-tab-item](../mds-tab-item)
 
 ### Depends on
@@ -68,6 +69,7 @@ graph TD;
   mds-button --> mds-spinner
   mds-button --> mds-icon
   mds-button --> mds-text
+  mds-header-bar --> mds-button
   mds-tab-item --> mds-button
   style mds-button fill:#f9f,stroke:#333,stroke-width:4px
 ```

@@ -26,6 +26,13 @@
 | `"header"` | Selects the HTML element wrapper of label text |
 
 
+## CSS Custom Properties
+
+| Name                                 | Description                                      |
+| ------------------------------------ | ------------------------------------------------ |
+| `--mds-price-table-features-padding` | Sets the cell padding of the children components |
+
+
 ## Dependencies
 
 ### Depends on
