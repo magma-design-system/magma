@@ -23,7 +23,7 @@ const setAttributeIfEmpty = (element: HTMLElement, attribute: string, value: str
 const hashValue = (value: string): string => `${value}-${hash(value)}`
 
 const hashRandomValue = (value?: string): string => {
-  const randomValue = randomInt(10000)
+  const randomValue = randomInt(1000000)
   if (value) {
     return `${value}-${hash(randomValue.toString())}`
   }
