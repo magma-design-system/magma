@@ -1,8 +1,5 @@
-import React from 'react'
-import MdsBadge from '@component-dist/mds-badge/mds-badge'
-import { typographySecondaryDictionary } from '@dictionary/typography'
-import { themeFullVariantDictionary, toneSimpleVariantDictionary } from '@dictionary/variant'
 import clsx from 'clsx'
+import { h } from '@stencil/core'
 
 const darkModeDictionary = [
   'none',
@@ -12,7 +9,6 @@ const darkModeDictionary = [
 
 export default {
   title: 'Miscellaneous',
-  component: MdsBadge,
   argTypes: {
     darkMode: {
       type: { name: 'string' },
@@ -23,16 +19,16 @@ export default {
 }
 
 const Template = args => {
-  var html = document.getElementsByTagName('html')[0]
+  const html = document.getElementsByTagName('html')[0]
   html.setAttribute('class', `hydrated ${args.darkMode}`)
 
-  return <div className={clsx('grid gap-6 p-6 bg-tone-neutral transition-colors text-tone-neutral-03', args.darkMode)}>
-    <mds-grid class="gap-2">
-      <mds-text>To use Dark Mode, You just need to add <mds-text typography="code">dark-mode</mds-text> or <mds-text typography="code">dark-mode-os</mds-text> to your body.</mds-text>
-      <mds-text>Selector <mds-text typography="code">dark-mode</mds-text> will simply set Dark Mode for colors.</mds-text>
-      <mds-text>Selector <mds-text typography="code">dark-mode-os</mds-text> will set Dark Mode if your OS is set to Dark Mode and your browser supports it.</mds-text>
-    </mds-grid>
-    <mds-grid class="grid-cols-3 min-w-min">
+  return <div class={clsx('grid gap-6 p-6 bg-tone-neutral transition-colors text-tone-neutral-03', args.darkMode)}>
+    <div class="gap-2">
+      <mds-text>To use Dark Mode, You just need to add <mds-text typography="snippet">dark-mode</mds-text> or <mds-text typography="snippet">dark-mode-os</mds-text> to your body.</mds-text>
+      <mds-text>Selector <mds-text typography="snippet">dark-mode</mds-text> will simply set Dark Mode for colors.</mds-text>
+      <mds-text>Selector <mds-text typography="snippet">dark-mode-os</mds-text> will set Dark Mode if your OS is set to Dark Mode and your browser supports it.</mds-text>
+    </div>
+    <div class="grid grid-cols-3 min-w-min">
       <div><mds-badge variant="dark" tone="strong">Bovaro del Bernese</mds-badge></div>
       <div><mds-badge variant="dark" tone="weak">Bovaro del Bernese</mds-badge></div>
       <div><mds-badge variant="dark" tone="quiet">Bovaro del Bernese</mds-badge></div>
@@ -81,12 +77,12 @@ const Template = args => {
       <div><mds-badge variant="orange" tone="strong">Samoiedo</mds-badge></div>
       <div><mds-badge variant="orange" tone="weak">Samoiedo</mds-badge></div>
       <div><mds-badge variant="orange" tone="quiet">Samoiedo</mds-badge></div>
-    </mds-grid>
+    </div>
   </div>
 }
 
 export const DarkMode = Template.bind({})
 DarkMode.args = {
-  darkMode: 'color-mode--none'
+  darkMode: 'color-mode--none',
 }
 
