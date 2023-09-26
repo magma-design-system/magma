@@ -1,30 +1,27 @@
 @tailwind utilities;
 
 :host {
-  @apply
-    inline-flex
-    gap-4
-    items-center;
+  @apply gap-4;
+
+  align-items: center;
+  display: inline-flex;
 }
 
 .avatar {
-  @apply
-    shrink-0
-    select-none;
+  flex-shrink: 0;
+  user-select: none;
 }
 
 .info {
-  @apply
-    flex-grow
-    grid
-    min-w-0;
+  display: grid;
+  flex-grow: 1;
+  min-width: 0;
 }
 
 @container (max-width: 200px) {
   :host {
-    @apply
-      flex-col
-      justify-center
-      text-center;
+    flex-direction: column;
+    justify-content: center;
+    text-align: center;
   }
 }

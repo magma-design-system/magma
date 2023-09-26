@@ -29,16 +29,17 @@
   --mds-breadcrumb-current-button-color: theme('colors.tone-neutral-05');
 
   @apply
-    flex
     gap-0
     hide-scrollbar
-    items-center
-    overflow-auto
-    p-2
-    scroll-smooth
-    w-full;
+    p-2;
 
+  align-items: center;
+  display: flex;
+  overflow: auto;
+  scroll-behavior: smooth;
   scroll-snap-type: x mandatory;
+  width: 100%;
+
 }
 
 :host::-webkit-scrollbar {
@@ -47,18 +48,18 @@
 
 .back {
   @apply
-    cursor-pointer
-    flex
     h-8
-    items-center
-    justify-center
     mr-1
     rounded-full
-    shrink-0
     w-8;
 
+  align-items: center;
   background-color: var(--mds-breadcrumb-button-background);
+  cursor: pointer;
+  display: flex;
   fill: var(--mds-breadcrumb-button-color);
+  flex-shrink: 0;
+  justify-content: center;
 }
 
 .back:hover {
@@ -68,8 +69,9 @@
 }
 
 .disabled {
-  @apply pointer-events-none;
 
   --mds-breadcrumb-button-background: var(--mds-breadcrumb-button-background-disabled);
   --mds-breadcrumb-button-color: var(--mds-breadcrumb-button-color-disabled);
+
+  pointer-events: none;
 }

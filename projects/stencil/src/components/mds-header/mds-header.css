@@ -20,9 +20,8 @@
 }
 
 .menu {
-  @apply
-    flex
-    items-center;
+  align-items: center;
+  display: flex;
 }
 
 .modal {
@@ -39,5 +38,5 @@
 }
 
 :host([menu="none"]) .menu {
-  @apply hidden;
+  display: none;
 }

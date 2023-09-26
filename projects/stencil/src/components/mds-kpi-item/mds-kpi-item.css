@@ -1,9 +1,9 @@
 @tailwind utilities;
 
 /**
-* @prop --description-color: Set the color of the description text
-* @prop --info-padding: Set the padding of the info text
-* @prop --value-color: Set the color of the value text
+* @prop --mds-kpi-item-description-color: Set the color of the description text
+* @prop --mds-kpi-item-info-padding: Set the padding of the info text
+* @prop --mds-kpi-item-value-color: Set the color of the value text
 */
 
 @property --value {
@@ -14,44 +14,42 @@
 
 :host {
 
-  --description-color: theme('colors.tone-neutral-04');
-  --info-padding: theme('spacing.4');
-  --value-color: theme('colors.tone-neutral-02');
-  --duration: 1s;
+  --mds-kpi-item-description-color: theme('colors.tone-neutral-04');
+  --mds-kpi-item-info-padding: theme('spacing.4');
+  --mds-kpi-item-value-color: theme('colors.tone-neutral-02');
+  --mds-kpi-item-duration: 1s;
 
   @apply
     gap-0
-    grid
-    overflow-hidden
     rounded-2xl;
 
   background-color: var(--background-color, theme('colors.tone-neutral'));
   box-shadow: var(--shadow, theme('boxShadow.lg'));
+  display: grid;
+  overflow: hidden;
 }
 
 .icon {
-  @apply
-    flex
-    items-start
-    justify-center;
+  align-items: flex-start;
+  display: flex;
+  justify-content: center;
 }
 
 .info {
-  @apply
-    gap-0
-    grid
-    justify-center
-    text-center;
+  @apply gap-0;
 
-  padding: var(--info-padding);
+  display: grid;
+  justify-content: center;
+  padding: var(--mds-kpi-item-info-padding);
+  text-align: center;
 }
 
 .value {
-  color: var(--value-color);
+  color: var(--mds-kpi-item-value-color);
   counter-set: num var(--value);
   transition: --value 1s; /* stylelint-disable-line custom-property-no-missing-var-function */
 
-  /* transition: --value var(--duration); stylelint-disable-line custom-property-no-missing-var-function */
+  /* transition: --value var(--mds-kpi-item-duration); stylelint-disable-line custom-property-no-missing-var-function */
 }
 
 .value::after {
@@ -59,5 +57,5 @@
 }
 
 .description {
-  color: var(--description-color);
+  color: var(--mds-kpi-item-description-color);
 }

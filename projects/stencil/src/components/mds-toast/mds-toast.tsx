@@ -26,7 +26,7 @@ export class MdsToast {
   @Element() hostElement: HTMLMdsToastElement
 
   /**
-   * If set, specifies the visibility duration in milliseconds of the element inside the viewport, when the time is up the visible property will be set to false.
+   * If set, specifies the visibility duration in milliseconds of the element inside the viewport, when the time is up the visible property will be set to false. If the duration is set to 0 the component will still visible until intentionally closed by user.
    */
   @Prop({ mutable: true, reflect: true }) readonly duration?: number = 5000
 
@@ -60,6 +60,9 @@ export class MdsToast {
   }
 
   private reloadTimeListeners = (visible: boolean): void => {
+    if (!this.duration) {
+      return
+    }
     if (!visible) {
       return
     }
@@ -87,6 +90,9 @@ export class MdsToast {
   componentWillLoad (): void {
     this.hasText = this.hostElement.innerHTML !== ''
     this.actions = this.hostElement.querySelector('[slot="action"]') !== null
+    if (!this.duration) {
+      return
+    }
     if (this.visible) {
       this.addTimeListener()
     }

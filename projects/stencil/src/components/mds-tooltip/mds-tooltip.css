@@ -10,7 +10,7 @@
   * @prop --mds-tooltip-transform-from: Sets the from animation transform of the tooltip.
   * @prop --mds-tooltip-transform-to: Sets the to animation transform of the tooltip.
   * @prop --mds-tooltip-z-index: Sets the z-index of the component.
-*/
+  */
 
 :host {
 
@@ -46,6 +46,14 @@
   transition-timing-function: var(--mds-tooltip-ease);
   width: fit-content;
   z-index: var(--mds-tooltip-z-index);
+}
+
+:host( [strategy="absolute"] ) {
+  position: absolute;
+}
+
+:host( [strategy="fixed"] ) {
+  position: fixed;
 }
 
 :host( [visible]:not([visible="false"]) ) {

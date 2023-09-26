@@ -1,25 +1,26 @@
-@import url('../../tailwind/components.css');
+@import '../../tailwind/components.css';
 @tailwind components;
 @tailwind utilities;
 
 :host {
   @apply
-    cursor-pointer
     duration-200
     ease-out
-    fill-tone-neutral-03
     focus-off
-    flex
     gap-1
-    items-center
-    justify-center
     px-4
     py-2
     rounded-full
-    text-tone-neutral-03
     whitespace-nowrap;
 
+  align-items: center;
+  color: theme('colors.tone-neutral-03');
+  cursor: pointer;
+  display: flex;
+  fill: theme('colors.tone-neutral-03');
+  justify-content: center;
   transition-property: background-color, color, outline, outline-offset;
+  white-space: nowrap;
 }
 
 :host(:focus-visible) {
@@ -35,9 +36,9 @@
 
 :host( [selected]:not([selected="false"]) ),
 :host( :hover ) {
-  @apply bg-tone-neutral;
+  background-color: theme('colors.tone-neutral');
 }
 
 :host( [selected]:not([selected="false"]) ) {
-  @apply text-tone-neutral-01;
+  color: theme('colors.tone-neutral-01');
 }

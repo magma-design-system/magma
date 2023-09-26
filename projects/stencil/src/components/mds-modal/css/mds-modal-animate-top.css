@@ -1,8 +1,9 @@
 :host( .to-top ) {
   @apply
-    justify-center
     mobile:p-4
     p-8;
+
+  justify-content: center;
 }
 
 :host( .to-top ) .window,

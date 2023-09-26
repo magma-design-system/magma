@@ -1,5 +1,5 @@
 :host( .to-left ) {
-  @apply justify-start;
+  justify-content: flex-start;
 }
 
 :host( .to-left ) .window,

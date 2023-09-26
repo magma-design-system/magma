@@ -1,4 +1,4 @@
-@import url('../../tailwind/components.css');
+@import '../../tailwind/components.css';
 @tailwind components;
 @tailwind utilities;
 
@@ -12,23 +12,24 @@
   --mds-tab-duration: .75s;
   --mds-tab-timing-function: theme('transitionTimingFunction.in-out-expo');
 
-  @apply grid;
+  display: grid;
 }
 
 .tabs {
 
   @apply
-    box-content
-    flex
     gap-2
     hide-scrollbar
-    overflow-auto
-    p-2
-    scroll-smooth;
+    p-2;
 
   background-color: rgb(var(--theme-default-06-secondary-background));
   border-radius: theme('borderRadius.xl');
+  box-sizing: border-box;
+  display: flex;
+  overflow: auto;
+  scroll-behavior: smooth;
   scroll-snap-type: x mandatory;
+
 }
 
 .tabs::-webkit-scrollbar {
@@ -40,42 +41,42 @@
   --mds-tab-contents-height: auto;
 
   @apply
-    box-content
-    flex
     gap-6
-    hide-scrollbar
-    items-start
-    overflow-x-auto
-    overflow-y-hidden
-    relative
-    scroll-smooth;
+    hide-scrollbar;
 
+  align-items: flex-start;
+  box-sizing: border-box;
+  display: flex;
   height: var(--mds-tab-contents-height);
+  overflow-x: auto;
+  overflow-y: hidden;
+  position: relative;
+  scroll-behavior: smooth;
   scroll-snap-type: x mandatory;
   transition: height var(--mds-tab-duration) var(--mds-tab-timing-function);
 }
 
 ::slotted( [slot="content"] ) {
   @apply
-    basis-0
     min-w-full
-    snap-start
     w-full;
 
-
   animation-duration: var(--mds-tab-duration);
-  animation-timing-function: var(--mds-tab-timing-function);
   animation-fill-mode: forwards;
+  animation-timing-function: var(--mds-tab-timing-function);
+  flex-basis: 0;
+  scroll-snap-align: start;
 }
 
 :host( [strategy="default"] ) ::slotted( [slot="content"] ) {
   @apply
-    absolute
     left-0
-    bg-label-blue-06
     opacity-0
-    pointer-events-none
     right-0
     top-0;
+
+  background-color: theme('colors.label-blue-06');
+  pointer-events: none;
+  position: absolute;
 }
 

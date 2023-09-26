@@ -29,6 +29,13 @@
 | `"default"` | Add `text string` to this slot, **avoid** to add `HTML elements` or `components` here. |
 
 
+## Shadow Parts
+
+| Part     | Description |
+| -------- | ----------- |
+| `"text"` |             |
+
+
 ## CSS Custom Properties
 
 | Name                             | Description                                       |

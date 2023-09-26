@@ -12,12 +12,12 @@
     duration-300
     ease-in-out-quart
     h-12
-    inline-flex
-    items-center
-    justify-center
-    text-brand-maggioli-03
     w-12;
 
+  align-items: center;
+  color: theme('colors.brand-maggioli-03');
+  display: inline-flex;
+  justify-content: center;
   transform: scale(0);
   transition-property: transform;
 }
@@ -36,12 +36,12 @@
     aspect-square
     duration-300
     ease-out
-    flex
-    shrink-0
     w-full;
 
   animation-duration: var(--mds-spinner-duration);
   animation-play-state: paused;
+  display: flex;
+  flex-shrink: 0;
   stroke: currentcolor;
   transition-property: stroke;
 }

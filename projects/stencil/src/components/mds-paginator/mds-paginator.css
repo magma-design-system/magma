@@ -10,26 +10,26 @@
 
   --mds-paginator-background: theme('colors.tone-neutral-09');
 
-  @apply
-    flex
-    gap-1
-    items-center;
+  @apply gap-1;
+
+  align-items: center;
+  display: flex;
 }
 
 .pages {
   @apply
-    flex
-    flex-shrink
     hide-scrollbar
-    items-center
     mx-2
-    overflow-auto
     p-2
-    rounded-full
-    scroll-smooth;
+    rounded-full;
 
+  align-items: center;
   background-color: var(--mds-paginator-background);
+  display: flex;
+  flex-shrink: 1;
   gap: 2px;
+  overflow: auto;
+  scroll-behavior: smooth;
 }
 
 .pages::-webkit-scrollbar {

@@ -1,17 +1,17 @@
 @tailwind utilities;
 
-:host {
+/**
+  * @prop --mds-notification-color: Sets the text color of the component
+  * @prop --mds-notification-dot-background: Sets the background-color of the component
+  * @prop --mds-notification-dot-padding: Sets the size of the component
+  * @prop --mds-notification-size: Sets the size of the component
+  * @prop --mds-notification-ring-size: Sets the border size of ring around the notification
+  * @prop --mds-notification-ring-color: Sets the border color of ring around the notification
+  * @prop --mds-notification-translate-offset-x: Sets offset x positioning of the notification
+  * @prop --mds-notification-translate-offset-y: Sets offset y positioning of the notification
+  */
 
-  /**
-* @prop --mds-notification-color: Sets the text color of the component
-* @prop --mds-notification-dot-background: Sets the background-color of the component
-* @prop --mds-notification-dot-padding: Sets the size of the component
-* @prop --mds-notification-size: Sets the size of the component
-* @prop --mds-notification-ring-size: Sets the border size of ring around the notification
-* @prop --mds-notification-ring-color: Sets the border color of ring around the notification
-* @prop --mds-notification-translate-offset-x: Sets offset x positioning of the notification
-* @prop --mds-notification-translate-offset-y: Sets offset y positioning of the notification
-*/
+:host {
 
   --mds-notification-color: theme('colors.tone-neutral');
   --mds-notification-dot-background: theme('colors.status-error-05');
@@ -28,48 +28,46 @@
     bottom-full
     duration-300
     ease-in-cubic
-    inline-flex
-    items-center
-    justify-end
     opacity-0
-    pointer-events-none
     right-full
     rounded-full
     transition-cosmetic
     z-10;
 
+  align-items: center;
   color: var(--mds-notification-color);
+  display: inline-flex;
   height: var(--mds-notification-size);
+  justify-content: flex-end;
   min-width: min-content;
-  transform-origin: calc(100% - calc(var(--mds-notification-size) / 2)) 50%;
+  pointer-events: none;
   transform: var(--mds-notification-translate) scale(0);
+  transform-origin: calc(100% - calc(var(--mds-notification-size) / 2)) 50%;
   width: var(--mds-notification-size);
 }
 
 .dot {
   @apply
-    absolute
-    box-content
     duration-300
-    inline-flex
-    items-center
-    justify-center
     rounded-full
     transition-cosmetic;
 
+  align-items: center;
   background-color: var(--mds-notification-dot-background);
   box-shadow: 0 0 0 var(--mds-notification-ring-size) var(--mds-notification-ring-color);
+  box-sizing: border-box;
+  display: inline-flex;
+  justify-content: center;
   line-height: var(--mds-notification-size);
   min-width: var(--mds-notification-min-width);
   padding-left: var(--mds-notification-dot-padding);
   padding-right: var(--mds-notification-dot-padding);
+  position: absolute;
 }
 
 .spacer {
-  @apply
-    box-content
-    inline-flex;
-
+  box-sizing: border-box;
+  display: inline-flex;
   height: var(--mds-notification-size);
   width: var(--mds-notification-min-width);
 }
@@ -95,21 +93,22 @@
 }
 
 :host( [strategy="absolute"] ) {
-  @apply absolute;
+  position: absolute;
 }
 
 :host( [strategy="fixed"] ) {
-  @apply fixed;
+  position: fixed;
 }
 
 :host( [strategy="disabled"] ),
 :host( :not([target]) ) {
-  @apply static opacity-100;
+  @apply opacity-100;
 
+  position: static;
   transform: scale(1);
 }
 
 :host( [strategy="static"] ) .dot,
 :host( :not([target]) ) .dot {
-  @apply static;
+  position: static;
 }

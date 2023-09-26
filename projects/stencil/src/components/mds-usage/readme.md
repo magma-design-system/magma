@@ -22,10 +22,10 @@
 
 ## CSS Custom Properties
 
-| Name             | Description                                   |
-| ---------------- | --------------------------------------------- |
-| `--background`   | Sets the background-color of the component    |
-| `--border-width` | Sets the colored border-size of the component |
+| Name                       | Description                                   |
+| -------------------------- | --------------------------------------------- |
+| `--mds-usage-background`   | Sets the background-color of the component    |
+| `--mds-usage-border-width` | Sets the colored border-size of the component |
 
 
 ## Dependencies

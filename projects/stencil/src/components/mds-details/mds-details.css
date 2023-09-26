@@ -1,11 +1,11 @@
-@import url('../../tailwind/components.css');
+@import '../../tailwind/components.css';
 @tailwind components;
 @tailwind utilities;
 
 /**
-* @prop --mds-details-icon-color: Sets the icon color the component
-* @prop --mds-details-helper-icon-color: Sets icon color of the helper icon of the component
-*/
+  * @prop --mds-details-icon-color: Sets the icon color the component
+  * @prop --mds-details-helper-icon-color: Sets icon color of the helper icon of the component
+  */
 
 :host {
 
@@ -13,80 +13,78 @@
   --mds-details-icon-color: theme('colors.brand-maggioli-04');
   --mds-details-helper-icon-color: theme('colors.tone-neutral-03');
 
-  @apply
-    flex
-    gap-2
-    items-start;
+  @apply gap-2;
+
+  align-items: flex-start;
+  display: flex;
 }
 
 .contents {
-  @apply grid;
+  display: grid;
 }
 
 .details {
   @apply
     gap-4
-    grid
     opacity-0
-    overflow-hidden
-    pointer-events-none
     pt-0;
 
+  display: grid;
+  grid-template-rows: 0fr;
+  overflow: hidden;
+  pointer-events: none;
   transition-duration: var(--mds-details-duration);
   transition-property: grid-template-rows opacity padding;
-  grid-template-rows: 0fr;
 }
 
 .contents-expander {
-  @apply
-    gap-4
-    grid
-    min-h-0;
+  @apply gap-4;
+
+  display: grid;
+  min-height: 0;
 }
 
 .details.opened {
-  @apply
-    opacity-100
-    pointer-events-auto
-    pt-4;
+  @apply pt-4;
 
   grid-template-rows: 1fr;
+  opacity: 1;
+  pointer-events: auto;
 }
 
 .header {
-  @apply
-    inline-flex
-    gap-2
-    items-start;
+  @apply gap-2;
+
+  align-items: center;
+  display: inline-flex;
 }
 
 .icon {
-  @apply cursor-pointer;
-
+  cursor: pointer;
   fill: var(--mds-details-icon-color);
 }
 
 .title {
-  @apply cursor-pointer;
+  cursor: pointer;
 }
 
 .helper-icon {
   @apply
-    cursor-pointer
-    flex-shrink-0
-    rotate-0
     duration-300
     transition-transform;
 
+  cursor: pointer;
   fill: var(--mds-details-helper-icon-color);
+  flex-shrink: 0;
+  rotate: 0deg;
 }
 
 .helper-icon.opened {
-  @apply rotate-180;
+  rotate: 180deg;
 }
 
 .actions {
-  @apply
-    flex
-    gap-4;
+  @apply gap-4;
+
+  display: flex;
 }

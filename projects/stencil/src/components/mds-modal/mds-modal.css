@@ -12,7 +12,7 @@
   * @prop --mds-modal-window-overflow: Set the overflow of the window
   * @prop --mds-modal-window-shadow: Set the box shadow of the window
   * @prop --mds-modal-z-index: Set the z-index of the window when the component is opened
-*/
+  */
 
 :host {
 
@@ -25,30 +25,28 @@
 
   @apply
     duration-700
-    ease-in-out-expo
-    fixed
-    flex
-    inset-0
-    items-center
-    justify-center
-    pointer-events-none;
+    ease-in-out-expo;
 
+  align-items: center;
   background-color: rgba(var(--mds-modal-overlay-color) / 0);
+  display: flex;
   fill: theme('colors.tone-neutral');
+  inset: 0;
+  justify-content: center;
   perspective: 600px;
+  pointer-events: none;
+  position: fixed;
   z-index: var(--mds-modal-z-index, 1000);
 }
 
 :host( [position=top] ) {
-  @apply
-    items-start
-    justify-center;
+  align-items: flex-start;
+  justify-content: center;
 }
 
 :host( [position=bottom] ) {
-  @apply
-    items-end
-    justify-center;
+  align-items: flex-end;
+  justify-content: center;
 }
 
 :host( .to-bottom-opened ),
@@ -56,28 +54,27 @@
 :host( .to-left-opened ),
 :host( .to-right-opened ),
 :host( .to-top-opened ) {
-  @apply
-    duration-500
-    pointer-events-auto;
+  @apply duration-500;
 
   background-color: rgba(var(--mds-modal-overlay-color) / var(--mds-modal-overlay-opacity));
+  pointer-events: auto;
 }
 
 .close {
   @apply
-    absolute
-    cursor-pointer
     duration-500
     ease-in-out-quart
     h-9
     opacity-0
-    origin-center
     rounded-full
     text-4xl
     top-0
     w-9;
 
+  cursor: pointer;
   fill: inherit;
+  position: absolute;
+  transform-origin: center;
   transform: translate(0, 24px) rotate(90deg);
   transition-property: opacity, outline, outline-offset, transform;
 }
@@ -85,11 +82,11 @@
 .window {
   @apply
     gap-0
-    grid
     h-full;
 
   background-color: var(--mds-modal-window-background);
   box-shadow: var(--mds-modal-window-shadow);
+  display: grid;
   grid-template-rows: 1fr;
   max-width: calc(100vw - 80px);
   overflow: var(--mds-modal-window-overflow);
