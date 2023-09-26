@@ -95,7 +95,7 @@ stages:
   script:
     - cd $BUILD_DIR
     - npm config set engine-strict "true"
-#    - npm config set always-auth "true"
+    - npm config set always-auth "true"
     - npm config set _auth $NPM_TOKEN
     - npm config set //registry.npmjs.org/:_authToken $NPM_TOKEN
     - npm publish --access public
