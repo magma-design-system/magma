@@ -1,7 +1,6 @@
 // https://www.mokkapps.de/blog/run-build-and-deploy-stencil-and-storybook-from-one-repository
 const path = require('path');
 const alias = {
-  '@component-dist': path.resolve(__dirname, '../dist/collection/components'),
   '@dictionary': path.resolve(__dirname, '../src/dictionary/'),
   '@fixture': path.resolve(__dirname, '../src/fixtures/'),
   '@icon': path.resolve(__dirname, '../assets/svg/'),
