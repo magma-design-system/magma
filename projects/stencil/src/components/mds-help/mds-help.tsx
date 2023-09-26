@@ -42,7 +42,7 @@ export class MdsHelp {
           ? <mds-icon id={this.id} name={ this.icon }></mds-icon>
           : <i id={this.id} innerHTML={miOutlineHelp}/>
         }
-        <mds-tooltip placement={this.placement} autoPlacement={this.autoPlacement} strategy="absolute" target={'#' + this.id}>
+        <mds-tooltip placement={this.placement} autoPlacement={this.autoPlacement} strategy="fixed" target={'#' + this.id}>
           <slot/>
         </mds-tooltip>
       </Host>

@@ -30,8 +30,8 @@
 
 | Name                                      | Description                                        |
 | ----------------------------------------- | -------------------------------------------------- |
-| `--mds-video-wall-aspect-ratio`           | Sets the aspect-ratio of the component             |
 | `--mds-video-wall-noise-background-color` | Sets the background-color of the noise when active |
+| `--mds-video-wall-noise-background-size`  | Sets the background-color of the noise when active |
 | `--mds-video-wall-video-fit`              | Sets the object-fit of the video stream            |
 
 

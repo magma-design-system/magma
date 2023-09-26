@@ -4,6 +4,10 @@
   display: inline-flex
 }
 
+.open-quote {
+  flex-shrink: 0;
+}
+
 .quote {
   @apply gap-4;
 

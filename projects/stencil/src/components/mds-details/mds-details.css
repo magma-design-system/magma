@@ -15,7 +15,7 @@
 
   @apply gap-2;
 
-  align-items: center;
+  align-items: flex-start;
   display: flex;
 }
 

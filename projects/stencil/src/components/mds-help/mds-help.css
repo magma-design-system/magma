@@ -14,6 +14,7 @@ mds-help {
   display: inline-flex;
   fill: currentcolor;
   justify-content: flex-start;
+  overflow: visible;
   position: relative;
 }
 
@@ -26,8 +27,20 @@ mds-help mds-tooltip {
   --mds-tooltip-delay: var(--mds-help-tooltip-delay);
 
   max-width: var(--mds-help-tooltip-max-width);
-  width: var(--mds-help-tooltip-width);
+  min-width: var(--mds-help-tooltip-width);
 
+}
+
+mds-help mds-tooltip::part(text) {
+  max-width: var(--mds-help-tooltip-max-width);
+  min-width: var(--mds-help-tooltip-width);
+  width: var(--mds-help-tooltip-width);
+}
+
+:host mds-tooltip::part(text) {
+  max-width: var(--mds-help-tooltip-max-width);
+  min-width: var(--mds-help-tooltip-width);
+  width: var(--mds-help-tooltip-width);
 }
 
 mds-icon,
