@@ -1,4 +1,4 @@
-@import url('../../tailwind/components.css');
+@import '../../tailwind/components.css';
 @tailwind components;
 @tailwind utilities;
 
@@ -37,20 +37,19 @@
   --mds-stepper-bar-item-progress-color: theme('colors.status-success-04');
   --mds-stepper-bar-item-progress-thickness: theme('height.2');
 
-  @apply
-    basis-0
-    flex
-    flex-col
-    gap-4
-    grow
-    items-start
-    relative
-    shrink-0
-    snap-center;
+  @apply gap-4;
 
+  align-items: flex-start;
+  display: flex;
+  flex-basis: 0;
+  flex-direction: column;
+  flex-grow: 1;
+  flex-shrink: 0;
   min-width: var(--mds-stepper-bar-item-min-width);
   padding-left: calc(var(--mds-stepper-bar-item-icon-ring-size) + var(--mds-stepper-bar-item-icon-ring-separator-size));
   padding-top: calc(var(--mds-stepper-bar-item-icon-ring-size) + var(--mds-stepper-bar-item-icon-ring-separator-size));
+  position: relative;
+  scroll-snap-align: center;
   transition-property: outline, outline-offset;
 }
 
@@ -59,7 +58,7 @@
 }
 
 :host( :last-of-type ) .progress {
-  @apply hidden;
+  display: hidden;
 }
 
 :host( [ done ] ) .icon {
@@ -89,26 +88,26 @@
   @apply
     duration-200
     ease-out
-    flex
-    items-center
     rounded-md
     w-full;
 
+  align-items: center;
+  display: flex;
   transition-property: outline, outline-offset;
 }
 
 .icon {
   @apply
-    flex
     p-2
-    relative
     rounded-full
-    shrink-0
     transition-cosmetic;
 
   background-color: var(--mds-stepper-bar-item-icon-background);
   box-shadow: 0 0 0 0 var(--mds-stepper-bar-item-icon-ring-color), 0 0 0 0 var(--mds-stepper-bar-item-icon-ring-separator-color);
+  display: flex;
   fill: var(--mds-stepper-bar-item-icon-color);
+  flex-shrink: 0;
+  position: relative;
   transition-duration: var(--mds-stepper-bar-item-duaration);
 }
 
@@ -118,38 +117,37 @@
   --mds-stepper-bar-item-color: var(--mds-stepper-bar-item-progress-color);
   --mds-stepper-bar-item-thickness: var(--mds-stepper-bar-item-progress-thickness);
 
-  @apply
-    -ml-1
-    grow;
+  @apply -ml-1;
 
+  flex-grow: 1;
   margin-right: calc(calc(calc(var(--mds-stepper-bar-item-icon-ring-size) + var(--mds-stepper-bar-item-icon-ring-separator-size)) * -1) - theme('spacing.1'));
 }
 
 .infos {
   @apply
     gap-1
-    grid
     pl-1;
+
+  display: grid;
 }
 
 .text {
-  @apply
-    pointer-events-none
-    transition-cosmetic;
+  @apply transition-cosmetic;
 
   color: var(--mds-stepper-bar-item-color);
+  pointer-events: none;
   transition-duration: var(--mds-stepper-bar-item-duaration);
 }
 
 .badge {
-  @apply
-    pointer-events-none
-    rounded-full;
+  @apply rounded-full;
+
+  pointer-events: none;
 }
 
 .step {
-  @apply
-    pointer-events-none
-    rounded-full
-    text-tone-neutral-04;
+  @apply rounded-full;
+
+  color: theme('colors.tone-neutral-04');
+  pointer-events: none;
 }

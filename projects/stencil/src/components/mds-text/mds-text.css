@@ -1,4 +1,4 @@
-@import url('~@maggioli-design-system/styles/dist/tailwind/typography.css');
+@import '~@maggioli-design-system/styles/dist/tailwind/typography.css';
 @tailwind components;
 @tailwind utilities;
 
@@ -12,9 +12,8 @@
   --mds-text-selection-background: theme('colors.label-sky-09');
   --mds-text-selection-color: theme('colors.label-sky-01');
 
-  @apply
-    flex
-    min-w-0;
+  display: flex;
+  min-width: 0;
 }
 
 .text::selection {
@@ -120,7 +119,7 @@
 :host( [tag="pre"] ),
 :host( [tag="summary"] ),
 :host( [tag="ul"] ) {
-  @apply block;
+  display: block;
 }
 
 :host( [tag="abbr"] ),
@@ -150,27 +149,28 @@
 :host( [tag="time"] ),
 :host( [tag="u"] ),
 :host( [tag="var"] ) {
-  @apply inline;
+  display: inline;
 }
 
 :host( [tag="code"] ) {
   @apply
-    bg-tone-neutral-09
     px-1
     rounded
-    text-tone-neutral-03
     transition-colors;
+
+  background-color: theme('colors.tone-neutral-09');
+  color: theme('colors.tone-neutral-03');
 }
 
 :host( [truncate]:not([truncate="false"]) ) {
-  @apply flex;
+  display: flex;
 }
 
 :host( [truncate]:not([truncate="false"]) ) .text {
-  @apply
-    flex-grow
-    min-w-0
-    truncate;
+  @apply truncate;
+
+  flex-grow: 1;
+  min-width: 0;
 }
 
 abbr,

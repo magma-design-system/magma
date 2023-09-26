@@ -9,11 +9,12 @@
 */
 
 :host {
-  @apply inline;
 
   --mds-bibliography-color: inherit;
   --mds-bibliography-text-decoration-hover: inherit;
   --mds-bibliography-text-decoration: theme('colors.tone-neutral-06');
+
+  display: inline;
 }
 
 .link {

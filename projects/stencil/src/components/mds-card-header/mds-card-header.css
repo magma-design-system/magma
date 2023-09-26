@@ -3,12 +3,12 @@
 :host {
 
   @apply
-  flex
-  gap-4
-  grow
-  items-center
-  justify-between
-  p-4;
+    gap-4
+    p-4;
 
+  align-items: center;
+  display: flex;
+  flex-grow: 1;
+  justify-content: space-between;
   padding: theme('spacing.4');
 }

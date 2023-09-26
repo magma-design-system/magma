@@ -1,11 +1,11 @@
-@tailwind components;
 @tailwind utilities;
 
 :host {
   @apply
     gap-4
-    grid
     pl-4;
+
+  display: grid;
 }
 
 ul {

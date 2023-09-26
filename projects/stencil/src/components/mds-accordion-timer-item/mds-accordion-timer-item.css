@@ -20,57 +20,58 @@
   @apply
     duration-500
     ease-out-expo
-    grid
     py-4
-    relative
     transition-cosmetic;
 
   color: var(--mds-accordion-timer-item-color, theme('colors.tone-neutral-02'));
+  display: grid;
+  position: relative;
 }
 
 .row {
-  @apply
-    flex
-    gap-4;
+  @apply gap-4;
+
+  display: flex;
 }
 
 .accordion {
-  @apply grid;
+  display: grid;
 }
 
 .progress-bar {
-  @apply shrink-0;
 
   --mds-progress-color: var(--mds-accordion-timer-item-progress-bar-color);
   --mds-progress-background: var(--mds-accordion-timer-item-progress-bar-background);
   --mds-progress-thickness: var(--mds-accordion-timer-item-progress-bar-thickness);
+
+  flex-shrink: 0;
 }
 
 .action {
-  @apply
-    bg-transparent
-    border-none
-    cursor-pointer
-    p-0
-    rounded-xl
-    text-left;
+  @apply rounded-xl;
+
+  background-color: transparent;
+  border: 0;
+  cursor: pointer;
+  padding: 0;
+  text-align: left;
 }
 
 :host( [selected] ) .action {
-  @apply cursor-auto;
+  cursor: auto;
 }
 
 .contents {
   @apply
     ease-in-out-expo
-    gap-4
-    grid
-    min-h-0
-    opacity-0
-    overflow-hidden
-    pt-0;
+    gap-4;
 
+  display: grid;
   grid-template-rows: 0fr;
+  min-height: 0;
+  opacity: 0;
+  overflow: hidden;
+  padding-top: 0;
   transition-duration: var(--mds-accordion-timer-item-duration);
   transition-property: grid-template-rows opacity padding;
 }

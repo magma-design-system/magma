@@ -1,4 +1,4 @@
-@import url('../../tailwind/components.css');
+@import '../../tailwind/components.css';
 @tailwind components;
 @tailwind utilities;
 
@@ -20,13 +20,12 @@
   --mds-horizontal-scroll-scrollbar-track-background: rgb(var(--tone-neutral-06) theme('opacity.30'));
 
   @apply
-    flex
     gap-2
-    overflow-auto
     scroll-px-2
-    snap-x
     w-full;
 
+  display: flex;
+  overflow: auto;
   scroll-snap-type: x mandatory;
 }
 
@@ -63,13 +62,13 @@
 }
 
 :host( .scroll--mds-horizontal-scroll-align-start ) > ::slotted( * ) {
-  @apply snap-start;
+  scroll-snap-align: start;
 }
 
 :host( .scroll--mds-horizontal-scroll-align-center ) > ::slotted( * ) {
-  @apply snap-center;
+  scroll-snap-align: center;
 }
 
 :host( .scroll--mds-horizontal-scroll-align-end ) > ::slotted( * ) {
-  @apply snap-end;
+  scroll-snap-align: end;
 }

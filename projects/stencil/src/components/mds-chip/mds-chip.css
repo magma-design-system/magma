@@ -1,4 +1,4 @@
-@import url('../../tailwind/components.css');
+@import '../../tailwind/components.css';
 @tailwind components;
 @tailwind utilities;
 
@@ -25,25 +25,25 @@
     ease-in-out
     gap-1.5
     h-9
-    inline-flex
-    items-center
-    justify-center
     p-1.5
     rounded-full;
 
-  transition-property: background-color, border-color, box-shadow, color, opacity;
+  align-items: center;
   background-color: var(--mds-chip-background);
   color: var(--mds-chip-color);
+  display: inline-flex;
+  justify-content: center;
+  transition-property: background-color, border-color, box-shadow, color, opacity;
 }
 
 
 :host( [disabled]:not([disabled="false"]) ) {
-  @apply pointer-events-none;
-
   opacity: var(--mds-chip-opacity-disabled);
+  pointer-events: none;
 }
 
 :host( [selected]:not([selected="false"]) ) {
+
   --mds-chip-color: var(--mds-chip-color-selected);
   --mds-chip-background: var(--mds-chip-backgroud-selected);
   --mds-chip-icon-color: var(--mds-chip-icon-color-selected);
@@ -56,15 +56,16 @@
   @apply
     duration-200
     ease-out
-    rounded-full
-    flex-grow;
+    rounded-full;
 
+  flex-grow: 1;
   text-decoration-color: transparent;
   transition-property: color, text-decoration-color, outline, outline-offset;
 }
 
 :host( [clickable]:not([clickable="false"]) ) .label {
-  @apply cursor-pointer underline;
+  cursor: pointer;
+  text-decoration: underline;
 }
 
 :host( [clickable]:not([clickable="false"]) ) .label:hover {
@@ -81,15 +82,15 @@
 
 .icon-area {
   @apply
-    flex
-    flex-shrink-0
     h-6
-    items-center
     justify-center
     rounded-full
     w-6;
 
+  align-items: center;
   background-color: var(--mds-chip-icon-background);
+  display: flex;
+  flex-shrink: 0;
   transition-duration: inherit;
   transition-timing-function: inherit;
 }
@@ -104,13 +105,13 @@
 
 .delete {
   @apply
-    cursor-pointer
-    flex-shrink-0
     h-6
     rounded-full
     w-6;
 
+  cursor: pointer;
   fill: var(--mds-chip-delete-icon-color);
+  flex-shrink: 0;
   transition-property: fill, outline, outline-offset;
 }
 

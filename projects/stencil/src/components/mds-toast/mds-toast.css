@@ -4,12 +4,12 @@
 @tailwind utilities;
 
 /**
-* @prop --mds-toast-background: Sets the background-color of the component
-* @prop --mds-toast-color: Sets the text color of the component
-* @prop --mds-toast-duration: Sets the animation duration of the component, used also by component's logic
-* @prop --mds-toast-icon-color: Sets the text color of the component
-* @prop --mds-toast-shadow: Sets the box-shadow of the component
-*/
+  * @prop --mds-toast-background: Sets the background-color of the component
+  * @prop --mds-toast-color: Sets the text color of the component
+  * @prop --mds-toast-duration: Sets the animation duration of the component, used also by component's logic
+  * @prop --mds-toast-icon-color: Sets the text color of the component
+  * @prop --mds-toast-shadow: Sets the box-shadow of the component
+  */
 
 :host {
 
@@ -21,35 +21,35 @@
   --mds-toast-width: auto;
 
   @apply
-    fixed
-    flex
-    pointer-events-none
     left-0
     right-0;
 
   color: var(--mds-toast-color);
+  display: flex;
+  pointer-events: none;
+  position: fixed;
 }
 
 .dialog {
   @apply
     ease-in-cubic
     gap-4
-    inline-flex
-    items-center
     max-w-full
     mx-4
     p-4
-    pointer-events-none
     rounded-xl;
 
+  align-items: center;
   background-color: var(--mds-toast-background);
   box-shadow: var(--mds-toast-shadow);
+  display: inline-flex;
+  pointer-events: none;
   transition-duration: var(--mds-toast-duration);
   width: var(--mds-toast-width);
 }
 
 :host( [visible]:not([visible="false"])) .dialog {
-  @apply pointer-events-auto;
+  pointer-events: auto;
 }
 
 
@@ -58,15 +58,15 @@
 }
 
 :host([position="top-left"]) {
-  @apply justify-start;
+  justify-content: flex-start;
 }
 
 :host([position="top-center"]) {
-  @apply justify-center;
+  justify-content: center;
 }
 
 :host([position="top-right"]) {
-  @apply justify-end;
+  justify-content: flex-end;
 }
 
 
@@ -75,36 +75,35 @@
 }
 
 :host([position="bottom-left"]) {
-  @apply justify-start
+  justify-content: flex-start
 }
 
 :host([position="bottom-center"]) {
-  @apply justify-center
+  justify-content: center;
 }
 
 :host([position="bottom-right"]) {
-  @apply justify-end;
+  justify-content: flex-end;
 }
 
 .actions {
-  @apply
-    flex
-    gap-2;
+  @apply gap-2;
+
+  display: flex;
 }
 
 ::slotted( [slot="icon"] ) {
-  @apply
-    shrink-0
-    transition-colors;
+  @apply transition-colors;
 
   fill: var(--mds-toast-icon-color);
+  flex-shrink: 0;
 }
 
-@import url('./css/variant/mds-toast-variant-dark.css');
-@import url('./css/variant/mds-toast-variant-error.css');
-@import url('./css/variant/mds-toast-variant-info.css');
-@import url('./css/variant/mds-toast-variant-light.css');
-@import url('./css/variant/mds-toast-variant-success.css');
-@import url('./css/variant/mds-toast-variant-warning.css');
-@import url('./css/animate/mds-toast-animate-top.css');
-@import url('./css/animate/mds-toast-animate-bottom.css');
+@import './css/variant/mds-toast-variant-dark.css';
+@import './css/variant/mds-toast-variant-error.css';
+@import './css/variant/mds-toast-variant-info.css';
+@import './css/variant/mds-toast-variant-light.css';
+@import './css/variant/mds-toast-variant-success.css';
+@import './css/variant/mds-toast-variant-warning.css';
+@import './css/animate/mds-toast-animate-top.css';
+@import './css/animate/mds-toast-animate-bottom.css';

@@ -1,14 +1,14 @@
-@import url('../../tailwind/components.css');
+@import '../../tailwind/components.css';
 @tailwind components;
 @tailwind utilities;
 
 /**
-* @prop --mds-note-background: Sets the background-color of the component
-* @prop --mds-note-color: Sets the text color of the component
-* @prop --mds-note-fold-size: Sets the size of the fold decoration at the bottom right of the component
-* @prop --mds-note-selection-background: Sets the selection text background-color of the component
-* @prop --mds-note-selection-color: Sets the selection text color of the component
-*/
+  * @prop --mds-note-background: Sets the background-color of the component
+  * @prop --mds-note-color: Sets the text color of the component
+  * @prop --mds-note-fold-size: Sets the size of the fold decoration at the bottom right of the component
+  * @prop --mds-note-selection-background: Sets the selection text background-color of the component
+  * @prop --mds-note-selection-color: Sets the selection text color of the component
+  */
 
 :host {
 
@@ -21,15 +21,15 @@
   @apply
     duration-300
     gap-2
-    grid
-    overflow-hidden
     p-6
-    relative
     rounded
     transition-colors;
 
   background-color: var(--mds-note-background);
   color: var(--mds-note-color);
+  display: grid;
+  overflow: hidden;
+  position: relative;
 }
 
 :host ::slotted( mds-text ) {
@@ -44,51 +44,52 @@
 
 :host( [deletable]:not([deletable="false"]) ) .close {
   @apply
-    absolute
     right-4
     top-4;
+
+  position: absolute;
 }
 
 .fold {
   @apply
-    absolute
-    block
-    border-solid
-    bottom-0
     h-0
     opacity-40
-    pointer-events-none
-    right-0
     w-0;
 
   border-color: transparent transparent theme('colors.tone-neutral-10') transparent;
+  border-style: solid;
   border-width: 0 0 var(--mds-note-fold-size) var(--mds-note-fold-size);
+  bottom: 0;
+  display: block;
   filter: drop-shadow(0 0 var(--mds-note-fold-size) var(--mds-note-color));
+  pointer-events: none;
+  position: absolute;
+  right: 0;
 }
 
 .close {
   @apply
-    bg-transparent
-    cursor-pointer
     duration-200
     ease-out
     hover:bg-tone-neutral/50
     p-1
     rounded-full;
 
-  transition-property: background-color, fill, outline, outline-offset;
+  background-color: transparent;
+  cursor: pointer;
   fill: var(--mds-note-color);
+  transition-property: background-color, fill, outline, outline-offset;
 }
 
 .title {
-  @apply
-    flex
-    gap-4
-    items-start;
+  @apply gap-4;
+
+  align-items: flex-start;
+  display: flex;
 }
 
 .title .close {
-  @apply ml-auto;
+  margin-left: auto;
 }
 
-@import url('./css/mds-note-variants.css');
+@import './css/mds-note-variants.css';

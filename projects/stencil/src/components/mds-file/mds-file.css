@@ -1,24 +1,24 @@
-@import url('../../tailwind/components.css');
+@import '../../tailwind/components.css';
 @tailwind components;
 @tailwind utilities;
 
 :host {
 
   @apply
-    bg-tone-neutral
-    cursor-pointer
     duration-200
     ease-out
     focus-off
-    inline-flex
-    items-stretch
-    overflow-hidden
-    rounded-md
-    text-tone-neutral-04
-    w-full;
+    rounded-md;
 
+  align-items: stretch;
+  background-color: theme('colors.tone-neutral');
   box-shadow: theme('boxShadow.sharp');
+  color: theme('colors.tone-neutral-04');
+  cursor: pointer;
+  display: inline-flex;
+  overflow: hidden;
   transition-property: box-shadow, outline, outline-offset;
+  width: 100%;
 }
 
 :host(:focus-visible) {
@@ -31,41 +31,44 @@
 
 .preview {
   @apply
-    flex
-    shrink-0
-    items-center
-    justify-center
-    relative
     transition-colors
     w-14;
+
+  align-items: center;
+  display: flex;
+  flex-shrink: 0;
+  justify-content: center;
+  position: relative;
 }
 
 .image-preview {
   @apply
-    absolute
-    bg-center
-    bg-contain
-    bg-no-repeat
     bottom-3
     left-3
     right-3
     top-3;
+
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: contain;
+  position: absolute;
 }
 
 .info {
   @apply
-    flex
-    flex-col
-    flex-grow
     min-w-0
     px-3
     py-2;
+
+  display: flex;
+  flex-direction: column;
+  flex-grow: 1;
 }
 
 .filename {
-  @apply
-    flex
-    min-w-0;
+  @apply min-w-0;
+
+  display: flex;
 }
 
 .name {
@@ -75,26 +78,27 @@
 }
 
 .extension {
-  @apply shrink-0;
+  flex-shrink: 0;
 }
 
 .detail {
   @apply
-    flex
     gap-2
-    items-center
     min-w-0;
+
+  align-items: center;
+  display: flex;
 }
 
 .suffix {
-  @apply
-    shrink-0
-    pointer-events-none;
+  flex-shrink: 0;
+  pointer-events: none;
 }
 
 .description {
   @apply
     min-w-0
-    text-tone-neutral-05
     truncate;
+
+  color: theme('colors.tone-neutral-05');
 }

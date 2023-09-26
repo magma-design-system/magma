@@ -1,16 +1,20 @@
 @tailwind utilities;
 
 :host {
-  @apply inline-flex;
+  display: inline-flex
+}
+
+.open-quote {
+  flex-shrink: 0;
 }
 
 .quote {
-  @apply
-    gap-4
-    grid
-    select-all;
+  @apply gap-4;
+
+  display: grid;
+  user-select: all;
 }
 
 span {
-  @apply select-none;
+  user-select: none;
 }

@@ -44,14 +44,14 @@ Description.args = {
   filename: filesList[2],
 }
 
-export const filesWithoutExtension = Template.bind({})
-filesWithoutExtension.args = {
+export const FilesWithoutExtension = Template.bind({})
+FilesWithoutExtension.args = {
   filename: filesList[0],
   suffix: 'pdf',
 }
 
-export const preview = Template.bind({})
-preview.args = {
+export const Preview = Template.bind({})
+Preview.args = {
   filename: filesList[5],
-  preview: 'https://via.placeholder.com/64x64',
+  preview: './icon-newspaper-02.png',
 }

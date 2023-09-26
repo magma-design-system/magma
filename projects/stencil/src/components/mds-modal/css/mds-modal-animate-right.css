@@ -1,5 +1,5 @@
 :host( .to-right ) {
-  @apply justify-end;
+  justify-content: flex-end;
 }
 
 :host( .to-right ) .window,

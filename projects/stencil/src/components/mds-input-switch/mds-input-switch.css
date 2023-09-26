@@ -3,26 +3,26 @@
 @tailwind utilities;
 
 /**
-* @prop --animation-timing-adjust: Set the size multiplier when the switch toggle is resizing by animation
-* @prop --animation-timing-function: Set the timing function of the animation
-* @prop --duration: Set the duration of the animation
-* @prop --icon-color-checked-disabled: Set the color of the icon when the switch is disabled and checked
-* @prop --icon-color-checked: Set the color of the icon when the switch is checked
-* @prop --icon-color-indeterminate-disabled: Set the color of the icon when the switch is disabled and indeterminate
-* @prop --icon-color-indeterminate: Set the color of the icon when the switch is indeterminate
-* @prop --icon-color-unchecked-disabled: Set the color of the icon when the switch is disabled and unchecked
-* @prop --icon-color-unchecked: Set the color of the icon when the switch is unchecked
-* @prop --switch-color-checked: Set the color of the switch when the switch is checked
-* @prop --switch-color-disabled-checked: Set the color of the switch when the switch is disabled and checked
-* @prop --switch-color-disabled-unchecked: Set the color of the switch when the switch is disabled and unchecked
-* @prop --switch-color-unchecked: Set the color of the switch when the switch is unchecked
-* @prop --switch-padding: Set the padding of the switch toggle's container
-* @prop --switch-toggle-color-checked: Set the color of the switch toggle when the switch is checked
-* @prop --switch-toggle-color-disabled-checked: Set the color of the switch toggle when the switch is disabled and checked
-* @prop --switch-toggle-color-disabled-unchecked: Set the color of the switch toggle when the switch is disabled and unchecked
-* @prop --switch-toggle-color-unchecked: Set the color of the switch toggle when the switch is unchecked
-* @prop --switch-toggle-size: Sets the size of the switch toggle
-*/
+  * @prop --animation-timing-adjust: Set the size multiplier when the switch toggle is resizing by animation
+  * @prop --animation-timing-function: Set the timing function of the animation
+  * @prop --duration: Set the duration of the animation
+  * @prop --icon-color-checked-disabled: Set the color of the icon when the switch is disabled and checked
+  * @prop --icon-color-checked: Set the color of the icon when the switch is checked
+  * @prop --icon-color-indeterminate-disabled: Set the color of the icon when the switch is disabled and indeterminate
+  * @prop --icon-color-indeterminate: Set the color of the icon when the switch is indeterminate
+  * @prop --icon-color-unchecked-disabled: Set the color of the icon when the switch is disabled and unchecked
+  * @prop --icon-color-unchecked: Set the color of the icon when the switch is unchecked
+  * @prop --switch-color-checked: Set the color of the switch when the switch is checked
+  * @prop --switch-color-disabled-checked: Set the color of the switch when the switch is disabled and checked
+  * @prop --switch-color-disabled-unchecked: Set the color of the switch when the switch is disabled and unchecked
+  * @prop --switch-color-unchecked: Set the color of the switch when the switch is unchecked
+  * @prop --switch-padding: Set the padding of the switch toggle's container
+  * @prop --switch-toggle-color-checked: Set the color of the switch toggle when the switch is checked
+  * @prop --switch-toggle-color-disabled-checked: Set the color of the switch toggle when the switch is disabled and checked
+  * @prop --switch-toggle-color-disabled-unchecked: Set the color of the switch toggle when the switch is disabled and unchecked
+  * @prop --switch-toggle-color-unchecked: Set the color of the switch toggle when the switch is unchecked
+  * @prop --switch-toggle-size: Sets the size of the switch toggle
+  */
 
 :host {
 

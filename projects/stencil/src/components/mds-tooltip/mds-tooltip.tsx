@@ -285,7 +285,7 @@ export class MdsTooltip {
     return (
       <Host>
         <div class="arrow" innerHTML={arrowSvg}/>
-        <mds-text class="text" typography={this.typography}>
+        <mds-text class="text" typography={this.typography} part="text">
           <slot/>
         </mds-text>
       </Host>

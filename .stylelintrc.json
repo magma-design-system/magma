@@ -3,7 +3,9 @@
     "https://stylelint.io/user-guide/rules/list"
   ],
   "extends": [
-    "stylelint-config-standard"
+    "stylelint-config-standard",
+    "stylelint-config-recess-order",
+    "stylelint-order"
   ],
   "ignoreFiles": [
     "**/*.js",
@@ -46,6 +48,7 @@
     "function-url-quotes": "always",
     "function-url-scheme-disallowed-list": [ "ftp://", "file://" ],
     "hue-degree-notation": "number",
+    "import-notation": "url",
     "keyframe-declaration-no-important": true,
     "keyframes-name-pattern": null,
     "length-zero-no-unit": true,
@@ -59,6 +62,9 @@
     "no-invalid-position-at-import-rule": null,
     "no-unknown-animations": true,
     "number-max-precision": [ 3, { "ignoreUnits": [ "%", "" ] } ],
+    "order/order": [ "custom-properties", "declarations" ],
+    "order/properties-order": null,
+    "order/properties-alphabetical-order": true,
     "property-disallowed-list": [ "background" ],
     "property-no-unknown": true,
     "property-no-vendor-prefix": [ true, { "ignoreProperties": [ "-webkit-overflow-scrolling" ] } ],

@@ -10,5 +10,8 @@
     "**/*.js",
     "**/*.jsx",
     "**/*.svg"
-  ]
+  ],
+  "rules": {
+    "import-notation": "string"
+  }
 }

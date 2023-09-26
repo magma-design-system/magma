@@ -29,19 +29,11 @@
 | `"default"` | Add `text string` to this slot, **avoid** to add `HTML elements` or `components` here. |
 
 
-## CSS Custom Properties
+## Shadow Parts
 
-| Name                             | Description                                       |
-| -------------------------------- | ------------------------------------------------- |
-| `--mds-tooltip-arrow-background` | Sets the fill color of the arrow.                 |
-| `--mds-tooltip-background`       | Sets the background-color of the tooltip.         |
-| `--mds-tooltip-delay`            | Sets the delay of the tooltip.                    |
-| `--mds-tooltip-drop-shadow`      | Sets the drop-shadow of the tooltip.              |
-| `--mds-tooltip-duration`         | Sets the duration of the tooltip animation.       |
-| `--mds-tooltip-ease`             | Sets the easing of the tooltip animation.         |
-| `--mds-tooltip-transform-from`   | Sets the from animation transform of the tooltip. |
-| `--mds-tooltip-transform-to`     | Sets the to animation transform of the tooltip.   |
-| `--mds-tooltip-z-index`          | Sets the z-index of the component.                |
+| Part     | Description |
+| -------- | ----------- |
+| `"text"` |             |
 
 
 ## Dependencies

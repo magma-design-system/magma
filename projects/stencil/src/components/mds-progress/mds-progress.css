@@ -16,24 +16,19 @@
   --mds-progress-radius: theme('borderRadius.lg');
   --mds-progress-thickness: theme('height.2');
 
-  @apply
-    flex
-    overflow-hidden
-    transition-colors
-    w-full;
+  @apply transition-colors;
 
   background-color: var(--mds-progress-background);
   border-radius: var(--mds-progress-radius);
+  display: flex;
   height: var(--mds-progress-thickness);
   min-width: var(--mds-progress-thickness);
+  overflow: hidden;
+  width: 100%;
 }
 
 :host( [direction="vertical"] ) {
-  @apply
-    h-full
-    flex-col
-    w-auto;
-
+  flex-direction: column;
   height: unset;
   min-height: var(--mds-progress-thickness);
   width: var(--mds-progress-thickness);
@@ -48,4 +43,4 @@
   transition-property: background-color, flex-grow;
 }
 
-@import url('./css/mds-progress-variant.css');
+@import './css/mds-progress-variant.css';

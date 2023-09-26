@@ -3,13 +3,13 @@
 @tailwind utilities;
 
 /**
-* @prop --mds-filter-items-background-active: Sets the background-color of the items row area when a filter is active
-* @prop --mds-filter-items-background: Sets the background-color of the items row area
-* @prop --mds-filter-items-gap: Sets the gap between items
-* @prop --mds-filter-items-padding: Sets the padding of the items row area
-* @prop --mds-filter-items-radius: Sets the border-radius of the items row area
-* @prop --mds-filter-label-padding: Sets the padding of the label
-*/
+  * @prop --mds-filter-items-background-active: Sets the background-color of the items row area when a filter is active
+  * @prop --mds-filter-items-background: Sets the background-color of the items row area
+  * @prop --mds-filter-items-gap: Sets the gap between items
+  * @prop --mds-filter-items-padding: Sets the padding of the items row area
+  * @prop --mds-filter-items-radius: Sets the border-radius of the items row area
+  * @prop --mds-filter-label-padding: Sets the padding of the label
+  */
 
 :host {
 
@@ -20,41 +20,40 @@
   --mds-filter-items-radius: theme('borderRadius.full');
   --mds-filter-label-padding: 0 theme('spacing.6');
 
-  @apply
-    auto-rows-min
-    gap-1
-    grid;
+  @apply gap-1;
+
+  display: grid;
+  grid-auto-rows: min-content;
 }
 
 .reset {
-  @apply
-    flex
-    flex-grow
-    justify-end;
+  display: flex;
+  flex-grow: 1;
+  justify-content: flex-end;
 }
 
 .reset-button {
-  @apply
-    scale-0
-    transition-transform;
+  @apply transition-transform;
+
+  scale: 0;
 }
 
 .reset-button-opened {
-  @apply scale-100;
+  scale: 1;
 }
 
 .items {
   @apply
-    flex
     hide-scrollbar
-    overflow-auto
-    scroll-smooth
     transition-colors;
 
   background-color: var(--mds-filter-items-background);
   border-radius: var(--mds-filter-items-radius);
+  display: flex;
   gap: var(--mds-filter-items-gap);
+  overflow: auto;
   padding: var(--mds-filter-items-padding);
+  scroll-behavior: smooth;
   scroll-snap-type: x mandatory;
 }
 
