@@ -3,11 +3,11 @@
 
 :host {
   @apply
-    border-0
-    flex
     h-1
     rounded
     w-full;
 
   background-color: theme('colors.tone-neutral-08');
+  border: 0;
+  display: flex;
 }

@@ -18,48 +18,48 @@
   --mds-url-view-shadow: theme('boxShadow.lg');
 
   @apply
-    box-border
-    flex
-    flex-col
     h-screen
     p-4;
+
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
 }
 
 .window {
-  @apply
-    bg-tone-neutral-09
-    flex
-    flex-col
-    flex-grow
-    overflow-hidden
-    w-full;
+  @apply w-full;
 
   background-color: var(--mds-url-view-background);
   border-radius: var(--mds-url-view-radius);
   box-shadow: var(--mds-url-view-shadow);
+  display: flex;
+  flex-direction: column;
+  flex-grow: 1;
+  overflow: hidden;
 }
 
 .header {
   @apply
-    flex
     gap-2
-    items-center
-    justify-between
-    p-2
-    relative
-    shrink-0;
+    p-2;
 
+  align-items: center;
   background-color: var(--mds-url-view-background);
   box-shadow: var(--mds-url-view-header-shadow);
   color: var(--mds-url-view-color);
+  display: flex;
+  flex-shrink: 0;
+  justify-content: space-between;
+  position: relative;
 }
 
 .title {
   @apply
-    flex-grow
     min-w-0
-    text-center
     truncate;
+
+  flex-grow: 1;
+  text-align: center;
 }
 
 .browser-icon {
@@ -67,18 +67,16 @@
 }
 
 .close {
-  @apply
-    cursor-pointer
-    rounded-md;
+  @apply rounded-md;
 
+  cursor: pointer;
   fill: var(--mds-url-view-color);
 }
 
 .iframe {
-  @apply
-    border-0
-    flex-grow
-    m-0
-    p-0
-    w-full;
+  border: 0;
+  flex-grow: 1;
+  margin: 0;
+  padding: 0;
+  width: 100%;
 }

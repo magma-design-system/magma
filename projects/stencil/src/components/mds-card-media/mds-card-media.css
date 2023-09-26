@@ -1,21 +1,21 @@
 @tailwind utilities;
 
 :host {
-  @apply
-    bg-tone-neutral-09
-    grid
-    relative;
+  background-color: theme('colors.tone-neutral-09');
+  display: grid;
+  position: relative;
 }
 
 .content {
   @apply
-    absolute
-    flex
     gap-2
-    inset-0
-    items-end
-    justify-center
     p-4;
+
+  align-items: flex-end;
+  display: flex;
+  inset: 0;
+  justify-content: center;
+  position: absolute;
 }
 
 .img {

@@ -36,7 +36,3 @@
 
   --icon-fill-color: var(--mds-price-table-features-cell-icon-unsupported-color);
 }
-
-/* :host([supported="custom"]) {
-  @apply px-0;
-} */

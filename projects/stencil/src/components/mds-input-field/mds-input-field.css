@@ -2,18 +2,19 @@
 @tailwind utilities;
 
 /**
-* @prop --mds-input-field-message-color: Sets the message text color of the component
-* @prop --mds-input-field-message-background: Sets the message background color of the component, will be visible only if there is a text defined by `tip` component attribute
-*/
+  * @prop --mds-input-field-message-color: Sets the message text color of the component
+  * @prop --mds-input-field-message-background: Sets the message background color of the component, will be visible only if there is a text defined by `tip` component attribute
+  */
 
 :host {
+
   --mds-input-field-message-color: theme('colors.tone-neutral-03');
   --mds-input-field-message-background: transparent;
 
-  @apply
-    grid
-    gap-2
-    text-tone-neutral-02;
+  @apply gap-2;
+
+  color: theme('colors.tone-neutral-02');
+  display: grid;
 }
 
 .message-window {
@@ -21,13 +22,13 @@
     duration-300
     ease-out-expo
     gap-2
-    grid
     p-0
     rounded-xl
     transition-cosmetic;
 
   background-color: var(--mds-input-field-message-background);
   color: var(--mds-input-field-message-color);
+  display: grid;
 }
 
 .message-window--opened {

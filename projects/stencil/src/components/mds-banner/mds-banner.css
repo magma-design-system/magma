@@ -4,15 +4,16 @@
 
 
 /**
-* @prop --mds-banner-background: Sets the background-color of the component
-* @prop --mds-banner-color: Sets the text color of the component
-* @prop --mds-banner-close-icon-hover-background: Sets the background color of the close icon when the mouse is over it
-* @prop --mds-banner-icon-color: Sets the close icon fill color of the component
-* @prop --mds-banner-radius: Sets the border-radius of the component
-* @prop --mds-banner-shadow: Sets the box-shadow of the component
-*/
+  * @prop --mds-banner-background: Sets the background-color of the component
+  * @prop --mds-banner-color: Sets the text color of the component
+  * @prop --mds-banner-close-icon-hover-background: Sets the background color of the close icon when the mouse is over it
+  * @prop --mds-banner-icon-color: Sets the close icon fill color of the component
+  * @prop --mds-banner-radius: Sets the border-radius of the component
+  * @prop --mds-banner-shadow: Sets the box-shadow of the component
+  */
 
   :host {
+
   --mds-banner-background: theme('colors.tone-neutral-10');
   --mds-banner-close-icon-hover-background: theme('colors.tone-neutral-09');
   --mds-banner-color: theme('colors.tone-neutral-02');
@@ -22,7 +23,6 @@
   --mds-banner-shadow: none;
 
   @apply
-    grid
     p-6
     transition-cosmetic;
 
@@ -30,52 +30,47 @@
   border-radius: var(--mds-banner-radius);
   box-shadow: var(--mds-banner-shadow);
   color: var(--mds-banner-color);
+  display: grid;
   gap: var(--mds-banner-gap);
 }
 
 .body {
-  @apply
-    flex
-    items-start
-    justify-between;
-
+  align-items: flex-start;
+  display: flex;
   gap: var(--mds-banner-gap);
+  justify-content: space-between;
 }
 
 .content {
-  @apply
-    box-border
-    flex
-    flex-col
-    flex-grow
-    justify-center;
-
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  flex-grow: 1;
   gap: var(--mds-banner-gap);
+  justify-content: center;
 }
 
 .actions {
-  @apply
-    flex
-    flex-wrap
-    justify-end;
-
+  display: flex;
+  flex-wrap: wrap;
   gap: var(--mds-banner-gap);
+  justify-content: flex-end;
 }
 
 .close-icon {
   @apply
     -m-1
-    cursor-pointer
     duration-200
     ease-out
     focusable
     p-1
-    rounded-md
-    shrink-0;
+    rounded-md;
 
-  transition-property: background-color, fill, outline, outline-offset;
-  fill: var(--mds-banner-color);
   background-color: transparent;
+  cursor: pointer;
+  fill: var(--mds-banner-color);
+  flex-shrink: 0;
+  transition-property: background-color, fill, outline, outline-offset;
 }
 
 .close-icon:hover {
@@ -83,17 +78,13 @@
 }
 
 .icon {
-  @apply
-    shrink-0;
-
   fill: var(--mds-banner-icon-color);
+  flex-shrink: 0;
 }
 
 .text {
-  @apply
-    grid
-    grow;
-
+  display: grid;
+  flex-grow: 1;
   gap: var(--mds-banner-gap);
 }
 

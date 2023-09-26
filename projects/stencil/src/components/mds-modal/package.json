@@ -25,8 +25,8 @@
   },
   "dependencies": {
     "@maggioli-design-system/styles": "^11.7.0",
-    "@stencil/core": "^4.2.1",
-    "clsx": "^1.2.1"
+    "@stencil/core": "^4.3.0",
+    "clsx": "^2.0.0"
   },
   "license": "MIT",
   "author": {

@@ -1,42 +1,44 @@
 @tailwind utilities;
 
 :host {
-  @apply
-    gap-6
-    grid
-    relative;
+  @apply gap-6;
+
+  display: grid;
+  position: relative;
 }
 
 .items {
   @apply
-    flex
     gap-0
-    grow
-    overflow-auto
-    relative
-    snap-x
-    scroll-smooth
     w-full
     z-10;
+
+  display: flex;
+  flex-grow: 1;
+  overflow: auto;
+  position: relative;
+  scroll-behavior: smooth;
+  scroll-snap-type: x mandatory;
 }
 
 :host( [linear="true"] ) ::slotted( mds-stepper-bar-item ),
 :host( [linear] ) ::slotted( mds-stepper-bar-item ) {
-  @apply pointer-events-none;
+  pointer-events: none;
 }
 
 :host( [linear="false"] ) ::slotted( mds-stepper-bar-item ) {
-  @apply pointer-events-auto;
+  pointer-events: auto;
 }
 
 
 .contents {
   @apply
-    flex
     w-full
-    flex-col
     opacity-0
     transition-opacity;
+
+  display: flex;
+  flex-direction: column;
 }
 
 :host( [hydrated] ) .contents {

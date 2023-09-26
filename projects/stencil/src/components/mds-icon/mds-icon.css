@@ -4,23 +4,23 @@
 :host {
   @apply
     aspect-square
-    inline-flex
-    items-center
-    justify-center
     w-6;
+
+  align-items: center;
+  display: inline-flex;
+  justify-content: center;
 }
 
 .icon {
-  @apply
-    inline-flex
-    items-center
-    justify-center
-    not-italic
-    w-full;
+  align-items: center;
+  display: inline-flex;
+  font-style: normal;
+  justify-content: center;
+  width: 100%;
+
 }
 
 .icon svg {
-  @apply
-    h-auto
-    w-full;
+  height: auto;
+  width: 100%;
 }

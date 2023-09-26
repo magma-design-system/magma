@@ -5,16 +5,15 @@
   --mds-card-gap: 0;
   --mds-card-padding: 0;
 
-  @apply
-    bg-tone-neutral
-    grid
-    overflow-hidden
-    rounded-2xl;
+  @apply rounded-2xl;
 
-  container-type: inline-size;
-  container-name: mds-card;
-  min-height: theme('spacing.4');
+  background-color: theme('colors.tone-neutral');
   box-shadow: theme('boxShadow.sharp-md');
+  container-name: mds-card;
+  container-type: inline-size;
+  display: grid;
+  min-height: theme('spacing.4');
+  overflow: hidden;
 }
 
 .layout:not(.layout--disabled) ::slotted([slot="media"]) {
@@ -34,10 +33,9 @@
 }
 
 .layout {
-  @apply
-    grid
-    p-4;
+  @apply p-4;
 
+  display: grid;
   gap: var(--mds-card-gap);
   grid-template-columns: minmax(0, 100%);
   padding: var(--mds-card-padding);

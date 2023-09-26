@@ -13,16 +13,16 @@
   --color: theme('colors.label-sky-03');
 
   @apply
-    inline-flex
-    items-center
-    min-w-min
     px-2
     py-1
     transition-colors;
 
+  align-items: center;
   background-color: var(--background);
   border-radius: var(--radius);
   color: var(--color);
+  display: inline-flex;
+  min-width: min-content;
 }
 
 @import './css/mds-badge-variant-amaranth.css';

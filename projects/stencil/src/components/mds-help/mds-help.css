@@ -1,4 +1,4 @@
-@import url('../../tailwind/components.css');
+@import '../../tailwind/components.css';
 @tailwind components;
 @tailwind utilities;
 
@@ -8,13 +8,12 @@ mds-help {
   --mds-help-tooltip-max-width: 280px;
   --mds-help-tooltip-delay: 0.25s;
 
-  @apply
-    cursor-help
-    fill-current
-    ml-1
-    inline-flex
-    justify-start;
+  @apply ml-1;
 
+  cursor: help;
+  display: inline-flex;
+  fill: currentcolor;
+  justify-content: flex-start;
   position: relative;
 }
 
@@ -34,7 +33,8 @@ mds-help mds-tooltip {
 mds-icon,
 i {
   @apply
-    fill-inherit
     h-4
     w-4;
+
+  fill: inherit;
 }

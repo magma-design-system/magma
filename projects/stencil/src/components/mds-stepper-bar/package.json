@@ -1,6 +1,6 @@
 {
   "name": "@maggioli-design-system/mds-stepper-bar",
-  "version": "5.1.0",
+  "version": "5.1.1",
   "description": "mds-stepper-bar is a web-component from Maggioli Design System Magma, built with StencilJS, TypeScript, Storybook. It's based on the web-component standard and it's designed to be agnostic from the JavaScirpt framework you are using.",
   "main": "dist/index.cjs.js",
   "module": "dist/index.js",
@@ -23,10 +23,10 @@
     "prepublishOnly": "npm run build"
   },
   "dependencies": {
-    "@maggioli-design-system/mds-progress": "^2.6.0",
-    "@maggioli-design-system/mds-stepper-bar-item": "^5.1.0",
+    "@maggioli-design-system/mds-progress": "^2.6.1",
+    "@maggioli-design-system/mds-stepper-bar-item": "^5.1.1",
     "@maggioli-design-system/styles": "^11.7.0",
-    "@stencil/core": "^4.2.1"
+    "@stencil/core": "^4.3.0"
   },
   "license": "MIT",
   "author": {

@@ -1,61 +1,57 @@
-@import url('../../tailwind/components.css');
+@import '../../tailwind/components.css';
 @tailwind components;
 @tailwind utilities;
 
 :host {
   @apply
-    bg-tone-neutral
     duration-500
     ease-out-expo
-    fixed
-    flex
-    justify-center
-    left-0
     px-6
-    py-4
-    right-0
-    top-0;
+    py-4;
 
   background-color: theme('colors.tone-neutral');
   box-shadow: theme('boxShadow.sharp-md');
+  display: flex;
+  inset: 0 0 auto;
+  justify-content: center;
+  position: fixed;
 }
 
 .logo {
-  @apply flex;
-
   color: inherit;
+  display: flex;
 }
 
 .contents {
   @apply
-    flex
-    flex-grow
     gap-4
-    items-center
-    justify-between
     max-w-screen-wide;
+
+  align-items: center;
+  display: flex;
+  flex-grow: 1;
+  justify-content: space-between;
 }
 
 .actions {
-  @apply
-    flex
-    gap-6;
+  @apply gap-6;
+
+  display: flex;
 }
 
 .nav {
-  @apply
-    gap-4
-    inline-flex
-    shrink-0;
+  @apply gap-4;
+
+  display: inline-flex;
+  flex-shrink: 0;
 }
 
 .menu-icon {
-  @apply
-    cursor-pointer
-    shrink-0
-    w-8;
+  @apply w-8;
 
+  cursor: pointer;
   fill: inherit;
+  flex-shrink: 0;
 }
 
 .menu {
@@ -75,5 +71,5 @@
 
 :host([menu="none"]) .menu,
 :host([nav="none"]) .nav {
-  @apply hidden;
+  display: none;
 }

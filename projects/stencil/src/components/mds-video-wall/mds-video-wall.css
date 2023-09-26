@@ -1,33 +1,30 @@
 @tailwind utilities;
 
 /**
-  * @prop --aspect-ratio: Sets the aspect-ratio of the component
-  * @prop --noise-background-color: Sets the background-color of the noise when active
-  * @prop --video-fit: Sets the object-fit of the video stream
+  * @prop --mds-video-wall-aspect-ratio: Sets the aspect-ratio of the component
+  * @prop --mds-video-wall-noise-background-color: Sets the background-color of the noise when active
+  * @prop --mds-video-wall-video-fit: Sets the object-fit of the video stream
   */
 
 :host {
 
-  --video-fit: cover;
-  --noise-background-color: rgba(var(--brand-maggioli-03), 0.8);
+  --background-color: theme('colors.brand-maggioli-03'), 0.8;
+  --mds-video-wall-video-fit: cover;
+  --mds-video-wall-noise-background-color: rgba(var(--background-color));
 
-  @apply
-    bg-tone-neutral-02
-    flex
-    relative;
-
-  aspect-ratio: var(--aspect-ratio, auto);
+  aspect-ratio: var(--mds-video-wall-aspect-ratio, auto);
+  background-color: theme('colors.tone-neutral-02');
+  display: flex;
+  position: relative;
 }
 
 .content {
-  @apply
-    flex
-    h-full
-    items-center
-    justify-center
-    relative
-    w-full;
-
+  align-items: center;
+  display: flex;
+  height: 100%;
+  justify-content: center;
+  position: relative;
+  width: 100%;
   z-index: 3;
 }
 
@@ -41,12 +38,12 @@ video,
 }
 
 video {
-  object-fit: var(--video-fit);
+  object-fit: var(--mds-video-wall-video-fit);
   z-index: 1;
 }
 
 .noise {
-  background-color: var(--noise-background-color);
+  background-color: var(--mds-video-wall-noise-background-color);
   z-index: 2;
 }
 

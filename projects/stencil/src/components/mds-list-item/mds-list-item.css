@@ -1,4 +1,4 @@
-@import url('../../tailwind/components.css');
+@import '../../tailwind/components.css';
 @tailwind components;
 @tailwind utilities;
 
@@ -10,11 +10,11 @@
 
   --mds-list-item-icon-margin: 0 theme('spacing.2') 0 0;
 
-  @apply
-    flex
-    items-start
-    justify-start
-    w-full;
+  @apply w-full;
+
+  align-items: flex-start;
+  display: flex;
+  justify-content: flex-start;
 }
 
 .icon {

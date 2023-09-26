@@ -1,4 +1,4 @@
-@import url('../../tailwind/components.css');
+@import '../../tailwind/components.css';
 @tailwind components;
 @tailwind utilities;
 
@@ -37,25 +37,25 @@
   --mds-paginator-item-size: theme('spacing.9');
 
   @apply
-    box-border
-    cursor-pointer
     duration-200
     ease-out
     focus-off
-    inline-flex
-    items-center
-    justify-center
-    px-3
-    select-none
-    shrink-0;
+    px-3;
 
+  align-items: center;
   background-color: var(--mds-paginator-item-background);
   border-radius: var(--mds-paginator-item-radius);
   box-shadow: var(--mds-paginator-item-shadow);
+  box-sizing: border-box;
   color: var(--mds-paginator-item-color);
+  cursor: pointer;
+  display: inline-flex;
+  flex-shrink: 0;
   height: var(--mds-paginator-item-size);
+  justify-content: center;
   min-width: var(--mds-paginator-item-size);
   transition-property: background-color, box-shadow, color, outline, outline-offset;
+  user-select: none;
 }
 
 :host( :focus-visible ) {
@@ -74,21 +74,19 @@
 }
 
 :host( [selected] ) {
-  @apply pointer-events-none;
-
   background-color: var(--mds-paginator-item-background-selected);
   box-shadow: var(--mds-paginator-item-shadow-selected);
   color: var(--mds-paginator-item-color-selected);
   fill: var(--mds-paginator-item-color-selected);
+  pointer-events: none;
 }
 
 :host( [disabled] ) {
-  @apply pointer-events-none;
-
   background-color: var(--mds-paginator-item-background-disabled);
   box-shadow: var(--mds-paginator-item-shadow-disabled);
   color: var(--mds-paginator-item-color-disabled);
   fill: var(--mds-paginator-item-color-disabled);
+  pointer-events: none;
 }
 
 .icon {
