@@ -50,10 +50,10 @@ export class MdsHeader {
   componentDidLoad (): void {
     this.hasMenu = this.mobileMenu() !== null
     if (this.hasMenu) {
+      this.onMenuChangedHandler(this.menu)
       return
     }
-    const headerBar = this.headerBar()
-    headerBar.setAttribute('menu', 'none')
+    this.onMenuChangedHandler('none')
   }
 
   @Listen('mdsHeaderBarOpen', { target: 'document' })
