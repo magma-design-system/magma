@@ -9,8 +9,7 @@ import { readFile, writeFile } from 'fs/promises'
 
 dontUseWithNX()
 
-const stencilComment = '\n
-<!-- Auto Generated Below --> '
+const stencilComment = '\n<!-- Auto Generated Below --> '
 const magmaComment = '<!-- Start script-generated Magma Docs -->'
 const componentNamePrefix = 'mds-'
 
