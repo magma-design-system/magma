@@ -27,7 +27,6 @@ Impacts the following Maggioli products:
 - Sicra
 
 
-
 <!-- 🚧 DO NOT REMOVE 🚧 -->
 
 [ci]: https://gitlab.com/maggiolispa/ricerca-sviluppo-new-media/design-system/-/pipelines
