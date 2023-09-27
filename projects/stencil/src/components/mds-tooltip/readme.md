@@ -1,6 +1,22 @@
 # mds-tooltip
 
+### Version 4.0.0 breaking change
 
+You can now use a query selector to taget a trigger element:
+
+```html
+<span class="trigger-element">Hello world</span>
+<mds-tooltip target=".trigger-element"></mds-tooltip>
+```
+
+Up until version `3.x.x` you were forced to use an id selector:
+
+```html
+<span id="trigger-element">Hello world</span>
+<mds-tooltip target="trigger-element"></mds-tooltip>
+```
+
+This is a web-component from Maggioli Design System [Magma](https://magma.maggiolicloud.it), built with StencilJS, TypeScript, Storybook. It's based on the web-component standard and it's designed to be agnostic from the JavaScirpt framework you are using.
 
 <!-- Auto Generated Below -->
 
