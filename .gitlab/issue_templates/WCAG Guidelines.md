@@ -134,7 +134,6 @@ You can find the [Web Accessibility evaluation tools list here][wael], we report
 [a11y-color]: https://color.a11y.com/?wc3
 [wcag-scan]: https://www.boia.org/w3c-tools-services-a11y
 
-
 <!-- 🚧 DO NOT REMOVE 🚧 -->
 
 [ci]: https://gitlab.com/maggiolispa/ricerca-sviluppo-new-media/design-system/-/pipelines

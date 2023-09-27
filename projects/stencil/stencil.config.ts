@@ -36,7 +36,7 @@ export const config: Config = {
     },
     {
       type: 'docs-readme',
-      footer: 'Built with love @ **Maggioli Informatica / R&D Department**',
+      footer: 'Built with love @ [Gruppo Maggioli](https://www.maggioli.com) from [R&D Department](https://www.maggioli.com/it-it/chi-siamo/ricerca-sviluppo)',
     },
     {
       type: 'docs-json',
