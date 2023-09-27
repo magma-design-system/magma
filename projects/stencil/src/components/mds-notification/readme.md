@@ -86,6 +86,8 @@ You can try it out on the component's [Storybook website][storybook]!
 
 <!-- End script-generated Magma Docs -->
 
+This is a web-component from Maggioli Design System [Magma](https://magma.maggiolicloud.it), built with StencilJS, TypeScript, Storybook. It's based on the web-component standard and it's designed to be agnostic from the JavaScirpt framework you are using.
+
 <!-- Auto Generated Below -->
 
 
