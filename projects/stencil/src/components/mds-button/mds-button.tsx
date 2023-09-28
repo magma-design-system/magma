@@ -27,6 +27,11 @@ export class MdsButton {
   @Element() host: HTMLMdsButtonElement
 
   /**
+   * Specifies if the component is focused when is loaded on the viewport
+   */
+  @Prop() readonly autoFocus: boolean
+
+  /**
    * The icon displayed in the button
    */
   @Prop() readonly icon?: string
@@ -144,6 +149,10 @@ export class MdsButton {
         setAttributeIfEmpty(this.host, 'title', iconTitle)
       }
       setAttributeIfEmpty(this.host, 'aria-label', iconTitle)
+    }
+
+    if (this.autoFocus) {
+      this.host.focus()
     }
   }
 
