@@ -11,6 +11,10 @@ import {
 export default {
   title: 'UI / Button',
   argTypes: {
+    'auto-focus': {
+      type: { name: 'boolean' },
+      description: 'Specifies if the component is focused when is loaded on the viewport',
+    },
     await: {
       type: { name: 'boolean' },
       description: 'Specifies if the component is awaiting to load a response',
@@ -84,6 +88,11 @@ const TemplateIcon = args =>
   <mds-button {...args}/>
 
 export const Default = Template.bind({})
+
+export const AutoFocus = Template.bind({})
+AutoFocus.args = {
+  'auto-focus': true,
+}
 
 export const Await = TemplateAwait.bind({})
 Await.args = {
