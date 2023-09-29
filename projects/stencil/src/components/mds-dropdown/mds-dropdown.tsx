@@ -147,7 +147,6 @@ export class MdsDropdown {
       this.backdropEl.style.position = 'fixed'
       this.backdropEl.style.transition = `background-color ${this.cssBackdropDuration} ease-out`
       this.backdropEl.style.zIndex = this.cssBackdropZIndex
-      console.log('backdrop-z-index', this.cssBackdropZIndex)
     }
     document.body.appendChild(this.backdropEl)
 

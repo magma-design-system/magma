@@ -5,7 +5,7 @@ export class MdsIconSet {
    * Run the icon set's name resolver to turn an icon name into an icon path, id, etc.
    */
   resolveIconName (iconName: string): string {
-    console.log(`resolveIconName - iconName: ${iconName} | name: ${this.name} | path: ${this.path}`)
+    // console.log(`resolveIconName - iconName: ${iconName} | name: ${this.name} | path: ${this.path}`)
     return this._resolveIconName(iconName, this.name, this.path)
   }
 
