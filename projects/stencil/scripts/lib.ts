@@ -13,7 +13,7 @@ const compilePackage = async (componentName: string): Promise<void> => {
   )
 
   if (exists) {
-    console.log(`File package.json ${chalk.yellow('previously created')}, skipping it.`)
+    console.warn(`File package.json ${chalk.yellow('previously created')}, skipping it.`)
     return
   }
 
@@ -51,7 +51,7 @@ const compileTemplateFile = async (componentName: string, fileName: string): Pro
   )
 
   if (exists) {
-    console.log(`File ${fileName} ${chalk.yellow('previously created')}, skipping it.`)
+    console.warn(`File ${fileName} ${chalk.yellow('previously created')}, skipping it.`)
     return
   }
 

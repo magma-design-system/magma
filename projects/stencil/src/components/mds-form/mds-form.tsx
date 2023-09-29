@@ -76,7 +76,7 @@ export class MdsForm {
           name={this.name}
           novalidate={this.novalidate}
           target={this.target}
-          onSubmit={(e: Event):void => { console.log(e) }}
+          onSubmit={(e: Event):void => { /* console.log(e) */ }}
         >
           <slot/>
         </form>

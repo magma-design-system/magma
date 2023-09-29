@@ -21,7 +21,7 @@ const InfoFlash = () =>
 
 const jsCode =
 `const test = () => {
-  console.log('this is a test')
+  console.info('this is a test')
 }`
 
 export const basicUsage = () =>

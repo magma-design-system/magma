@@ -6,18 +6,18 @@ module.exports = {
     excludedFiles: ['./stencil.config.ts'],
     rules: {
       '@typescript-eslint/explicit-module-boundary-types': ['error', {
-        allowedNames: ['render']
+        allowedNames: ['render'],
       }],
       '@typescript-eslint/prefer-nullish-coalescing': 'error',
       '@typescript-eslint/no-non-null-assertion': 'error',
       '@typescript-eslint/no-unused-vars': ['warn', {
-        varsIgnorePattern: '^h$'
+        varsIgnorePattern: '^h$',
       }],
-      'react/jsx-no-bind': 'off'
+      'react/jsx-no-bind': 'off',
     },
     parserOptions: {
       project: ['./tsconfig.json'],
-      tsconfigRootDir: __dirname
-    }
-  }]
-};
+      tsconfigRootDir: __dirname,
+    },
+  }],
+}

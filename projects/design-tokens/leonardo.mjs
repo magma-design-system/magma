@@ -95,13 +95,13 @@ const exportPalettes = async palettes => {
   for (const palette of Object.keys(palettes)) {
     const jsonPalette = JSON.stringify(palettes[palette], null, 2)
 
-    console.log(`Exporting ${chalk.yellow('color palette')} ${palette}`)
+    console.info(`Exporting ${chalk.yellow('color palette')} ${palette}`)
 
     await mkdir(COLOR_PATH, { recursive: true })
     await writeFile(resolve(`${COLOR_PATH}/${palette}.json`), jsonPalette, 'utf8', err => {
       if (err) {
-        console.log(chalk.red('An error occured while writing JSON Object to File.'))
-        console.log(chalk.red(err))
+        console.error(chalk.red('An error occured while writing JSON Object to File.'))
+        console.error(chalk.red(err))
       }
     })
 
@@ -116,8 +116,8 @@ const exportPalettes = async palettes => {
       'utf8',
       err => {
         if (err) {
-          console.log('An error occured while writing JSON Object file.')
-          return console.log(err)
+          console.error('An error occured while writing JSON Object file.')
+          return console.error(err)
         }
       },
     )
@@ -125,7 +125,7 @@ const exportPalettes = async palettes => {
 }
 
 const formatPalette = async opts => {
-  console.log('Formatting color palette to JSON format')
+  console.info('Formatting color palette to JSON format')
 
   const palette = {
     color: {},
@@ -146,11 +146,11 @@ const formatPalette = async opts => {
     if (!element.disabled) {
 
       if (!Object.prototype.hasOwnProperty.call(palette.color, group)) {
-        console.log(`Creating ${chalk.magenta('group')} ${group}`)
+        console.info(`Creating ${chalk.magenta('group')} ${group}`)
         palette.color[group] = {}
       }
       if (!Object.prototype.hasOwnProperty.call(palette.color[group], name)) {
-        console.log(`Creating ${chalk.blue('color')} ${name}`)
+        console.info(`Creating ${chalk.blue('color')} ${name}`)
         palette.color[group][name] = {
           light: formatColor(opts.themeLight, `${group}.${name}`, element.color, element.scaffold, element.seed, 'light'),
           dark: formatColor(opts.themeDark, `${group}.${name}`, element.color, element.scaffold, element.seed, 'dark'),
@@ -181,20 +181,20 @@ const formatPalette = async opts => {
 
   const jsonPalette = JSON.stringify(palette, null, 2)
 
-  console.log('Exporting whole color palette')
+  console.info('Exporting whole color palette')
 
   await mkdir(COLOR_PATH, { recursive: true })
   await writeFile(resolve(`${COLOR_PATH}/base.json`), jsonPalette, 'utf8', err => {
     if (err) {
-      console.log(chalk.red('An error occured while writing JSON Object to File.'))
-      console.log(chalk.red(err))
+      console.error(chalk.red('An error occured while writing JSON Object to File.'))
+      console.error(chalk.red(err))
     }
   })
 }
 
 const build = async () => {
 
-  console.log(chalk.yellow('Generating color palette'))
+  console.info(chalk.yellow('Generating color palette'))
 
   const palette = []
   colors.forEach(element => {
@@ -220,8 +220,8 @@ const build = async () => {
     themeDark: themeDark.contrastColors,
   })
 
-  console.log('')
-  console.log(chalk.green('Design tokens color palette generated successfully.'))
+  console.info('')
+  console.info(chalk.green('Design tokens color palette generated successfully.'))
 }
 
 build()
