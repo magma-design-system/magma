@@ -30,7 +30,7 @@ const logFile = ({
   size,
 }: LogData) => {
   itemsCurrent = itemsCurrent + 1
-  console.log(`
+  console.info(`
 Progress: ${(itemsCurrent / itemsTotal * 100).toFixed(1)}% ${chalk.grey(`${itemsCurrent}/${itemsTotal} (approximated)`)}
 Filepath: ${chalk.red(filepath)}
 Filesize: ${chalk.yellow(size ? formatBytes(size) : 'N/A')}

@@ -13,7 +13,7 @@ const cleanDir = async (dir: string) => {
     })
 }
 
-console.log('Cleaning regression tests')
+console.info('Cleaning regression tests')
 cleanDir(join(TEST_REGRESSION_DIR, 'current'))
 cleanDir(join(TEST_REGRESSION_DIR, 'difference'))
 cleanDir(join(TEST_REGRESSION_DIR, 'reference'))

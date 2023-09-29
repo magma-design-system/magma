@@ -12,7 +12,7 @@ const cleanDir = async (dir: string) => {
   logDirectoryDeleted(dir)
 }
 
-console.log('Cleaning build')
+console.info('Cleaning build')
 cleanDir(BUILD_DIR)
 cleanDir(DIST_DIR)
 cleanDir(DIST_STORYBOOK_ICONS_DIR)

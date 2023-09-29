@@ -21,7 +21,7 @@ const isolateAll = async () => {
 }
 
 const main = async () => {
-  console.log(
+  console.info(
     `This script will ${chalk.green(
       'isolate ALL',
     )} stencil components with package.json already created into a set of isolated separate projects, ready to be individually published.`,

@@ -201,8 +201,8 @@ export class MdsInputField {
 
       return mask.replace(/#/g, () => {
         i += 1
-        console.log(v.length, i, v[ i ])
-        console.log(`'${mask[i]}'`)
+        // console.log(v.length, i, v[ i ])
+        // console.log(`'${mask[i]}'`)
         maskedChars = v[ i ] !== undefined ? v[ i ] : ''
         return maskedChars
       })

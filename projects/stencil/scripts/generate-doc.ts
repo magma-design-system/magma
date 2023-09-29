@@ -23,7 +23,7 @@ const overwriteDoc = async (componentName: string) => {
   const oldDoc = readme.toString()
 
   if (oldDoc.indexOf(magmaComment) !== -1) {
-    console.log(chalk.red('Documentation already generated for this component'))
+    console.info(chalk.red('Documentation already generated for this component'))
     return
   }
 
@@ -37,7 +37,7 @@ const overwriteDoc = async (componentName: string) => {
   const datas = template(data)
   const newDoc = oldDoc.split(stencilComment).join(`${datas}${stencilComment}`)
 
-  await writeFile(componentDocPath, newDoc, { encoding: 'utf8' }).then(() => console.log('File overwrite')).catch(error => { throw new Error(chalk.red(error)) })
+  await writeFile(componentDocPath, newDoc, { encoding: 'utf8' }).then(() => console.info('File overwrite')).catch(error => { throw new Error(chalk.red(error)) })
 }
 
 const main = async () => {
@@ -47,14 +47,14 @@ const main = async () => {
   const exist = await checkComponentExistance(componentName)
 
   if (!exist) {
-    console.log(`Component ${componentName} ${chalk.red('not found')}, create it with ${chalk.blue('nx run stencil:generate')} first or enter another component name.`)
+    console.info(`Component ${componentName} ${chalk.red('not found')}, create it with ${chalk.blue('nx run stencil:generate')} first or enter another component name.`)
     return
   }
 
   const built = await checkComponentWasBuilt(componentName)
 
   if (!built) {
-    console.log(`Component ${componentName} ${chalk.redBright('build error')}`)
+    console.info(`Component ${componentName} ${chalk.redBright('build error')}`)
     return
   }
 
