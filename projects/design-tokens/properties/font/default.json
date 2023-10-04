@@ -72,17 +72,32 @@
         "paragraph": {
           "fontSize": { "value": "20px" },
           "fontWeight": { "value": 400 },
-          "lineHeight": { "value": "32px" }
+          "lineHeight": { "value": "32px" },
+          "variants": {
+            "bold": {
+              "fontWeight": { "value": 700 }
+            }
+          }
         },
         "detail": {
           "fontSize": { "value": "16px" },
           "fontWeight": { "value": 400 },
-          "lineHeight": { "value": "24px" }
+          "lineHeight": { "value": "24px" },
+          "variants": {
+            "bold": {
+              "fontWeight": { "value": 700 }
+            }
+          }
         },
         "caption": {
           "fontSize": { "value": "14px" },
           "fontWeight": { "value": 400 },
-          "lineHeight": { "value": "20px" }
+          "lineHeight": { "value": "20px" },
+          "variants": {
+            "bold": {
+              "fontWeight": { "value": 700 }
+            }
+          }
         },
         "label": {
           "fontSize": { "value": "12px" },
@@ -117,17 +132,32 @@
         "paragraph": {
           "fontSize": { "value": "20px" },
           "fontWeight": { "value": 300 },
-          "lineHeight": { "value": "32px" }
+          "lineHeight": { "value": "32px" },
+          "variants": {
+            "bold": {
+              "fontWeight": { "value": 700 }
+            }
+          }
         },
         "detail": {
           "fontSize": { "value": "16px" },
           "fontWeight": { "value": 300 },
-          "lineHeight": { "value": "24px" }
+          "lineHeight": { "value": "24px" },
+          "variants": {
+            "bold": {
+              "fontWeight": { "value": 700 }
+            }
+          }
         },
         "caption": {
           "fontSize": { "value": "14px" },
           "fontWeight": { "value": 400 },
-          "lineHeight": { "value": "20px" }
+          "lineHeight": { "value": "20px" },
+          "variants": {
+            "bold": {
+              "fontWeight": { "value": 700 }
+            }
+          }
         }
       }
     },

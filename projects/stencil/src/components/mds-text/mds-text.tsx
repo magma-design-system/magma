@@ -3,6 +3,10 @@ import { TypographyTagType } from './meta/types'
 import { TypographyType, TypographyVariants } from '@type/typography'
 import { typographyDefaultsVariant } from './meta/variants'
 
+/**
+ * @slot default - Add `text string` to this slot, **avoid** to add `HTML elements` or `components` here.
+ */
+
 @Component( {
   tag: 'mds-text',
   styleUrl: 'mds-text.css',

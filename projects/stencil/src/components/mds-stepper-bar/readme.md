@@ -19,6 +19,21 @@
 | `mdsStepperBarChange` | Emits when a step is changed | `CustomEvent<MdsStepperBarEventDetail>` |
 
 
+## Slots
+
+| Slot        | Description                                                             |
+| ----------- | ----------------------------------------------------------------------- |
+| `"content"` | Add `HTML elements` or `components`, one per mds-stepper-bar-item added |
+| `"default"` | Add `mds-tepper-bar-item` element/s.                                    |
+
+
+## Shadow Parts
+
+| Part         | Description |
+| ------------ | ----------- |
+| `"contents"` |             |
+
+
 ----------------------------------------------
 
-Built with love @ **Maggioli Informatica / R&D Department**
+Built with love @ [Gruppo Maggioli](https://www.maggioli.com) from [R&D Department](https://www.maggioli.com/it-it/chi-siamo/ricerca-sviluppo)

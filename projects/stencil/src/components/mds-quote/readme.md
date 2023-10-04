@@ -12,6 +12,14 @@
 | `typography` | `typography` | Specifies the font typography of the element | `"action" \| "h1" \| "h2" \| "h3" \| "h4" \| "h5" \| "h6"` | `'h3'`  |
 
 
+## Slots
+
+| Slot        | Description                                                      |
+| ----------- | ---------------------------------------------------------------- |
+| `"author"`  | Add `text string`, `HTML elements` or `components` to this slot. |
+| `"default"` | Add `text string`, `HTML elements` or `components` to this slot. |
+
+
 ## Dependencies
 
 ### Depends on
@@ -27,4 +35,4 @@ graph TD;
 
 ----------------------------------------------
 
-Built with love @ **Maggioli Informatica / R&D Department**
+Built with love @ [Gruppo Maggioli](https://www.maggioli.com) from [R&D Department](https://www.maggioli.com/it-it/chi-siamo/ricerca-sviluppo)

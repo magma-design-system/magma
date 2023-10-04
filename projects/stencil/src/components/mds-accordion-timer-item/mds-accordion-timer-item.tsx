@@ -1,6 +1,10 @@
-import { Component, Host, h, Prop, Event, EventEmitter } from '@stencil/core'
+import { Component, Event, EventEmitter, Host, Prop, h } from '@stencil/core'
 import { TypographyTitleType } from '@type/typography'
 import { MdsAccordionTimerItemEventDetail } from './meta/event-detail'
+
+/**
+ * @slot default - Add contents like `text string`, `HTML elements` or `components` to this slot.
+ */
 
 @Component({
   tag: 'mds-accordion-timer-item',
@@ -75,15 +79,17 @@ export class MdsAccordionTimerItem {
 
   render () {
     return (
-      <Host onMouseEnter={ this.mouseEnter } onMouseLeave={ this.mouseLeave }>
+      <Host onMouseEnter={this.mouseEnter} onMouseLeave={this.mouseLeave}>
         <div class="row">
-          <mds-progress class="progress-bar" progress={ Number(this.progress?.toFixed(2)) } direction="vertical"/>
+          <mds-progress class="progress-bar" progress={Number(this.progress?.toFixed(2))} direction="vertical" />
           <div class="accordion">
-            <button aria-controls="contents" aria-expanded={ this.selected ? 'true' : 'false' } class="action focusable" id="action" onClick={ this.toggle } role="button" tabindex="0">
-              <mds-text typography={ this.typography }>{ this.description }</mds-text>
+            <button aria-controls="contents" aria-expanded={this.selected ? 'true' : 'false'} class="action focusable" id="action" onClick={this.toggle} role="button" tabindex="0">
+              <mds-text typography={this.typography}>{this.description}</mds-text>
             </button>
             <div class="contents" id="contents">
-              <slot/>
+              <div class="contents-expander">
+                <slot />
+              </div>
             </div>
           </div>
         </div>

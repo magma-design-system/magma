@@ -6,6 +6,8 @@ const hash = (s: string): string => {
   return h.toString()
 }
 
+const randomInt = (max: number): number => Math.floor(Math.random() * max)
+
 const unslugName = (name: string): string => {
   return name.split('/')?.slice(-1).pop()?.replace(/-/g, ' ') ?? name
 }
@@ -20,8 +22,18 @@ const setAttributeIfEmpty = (element: HTMLElement, attribute: string, value: str
 
 const hashValue = (value: string): string => `${value}-${hash(value)}`
 
+const hashRandomValue = (value?: string): string => {
+  const randomValue = randomInt(1000000)
+  if (value) {
+    return `${value}-${hash(randomValue.toString())}`
+  }
+
+  return hash(randomValue.toString())
+}
+
 export {
   unslugName,
   setAttributeIfEmpty,
+  hashRandomValue,
   hashValue,
 }

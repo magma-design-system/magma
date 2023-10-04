@@ -1,6 +1,11 @@
 import { Component, Element, Event, EventEmitter, Host, Listen, h } from '@stencil/core'
 import { MdsTabEventDetail } from './meta/event-detail'
 
+/**
+ * @slot default - Add `mds-tab-item` element/s.
+ * @slot content - Add `HTML elements` or `components`, one per mds-tab-item added.
+ */
+
 @Component({
   tag: 'mds-tab',
   styleUrl: 'mds-tab.css',
@@ -9,36 +14,46 @@ import { MdsTabEventDetail } from './meta/event-detail'
 export class MdsTab {
 
   @Element() private element: HTMLMdsTabElement
-  private currentItem: number
+  private currentItem = -1
+  private tabs: HTMLElement
+  private tabItems: NodeListOf<HTMLMdsTabItemElement>
+  private contentItems: NodeListOf<HTMLElement>
 
   /**
    * Emits when a children is changed
    */
   @Event({ eventName: 'mdsTabChange' }) changedEvent: EventEmitter<MdsTabEventDetail>
 
-  private queryItems = ():NodeListOf<HTMLMdsTabItemElement> =>
-    this.element.querySelectorAll<HTMLMdsTabItemElement>('mds-tab-item')
+  private queryContentItems = (): NodeListOf<HTMLElement> =>
+    this.element.querySelectorAll<HTMLElement>('[slot=content]')
 
-  componentWillLoad ():void {
-    const items = this.queryItems()
-    items.forEach((item, key) => {
+  componentWillLoad (): void {
+    this.tabItems = this.element.querySelectorAll<HTMLMdsTabItemElement>('mds-tab-item')
+
+    this.tabItems.forEach((item, key) => {
       if (!item.id) {
         item.id = `mds-tab-item-${key}`
+      }
+      if (item.selected) {
+        this.currentItem = key
       }
     })
   }
 
-  private scrollTabs = (): void => {
-    const items = this.queryItems()
-    const tabItem = items[this.currentItem]
-    this.element.scrollLeft = tabItem.offsetLeft - this.element.offsetLeft - (this.element.offsetWidth / 2) + (tabItem.offsetWidth / 2)
+  componentDidLoad (): void {
+    this.tabs = this.element.shadowRoot?.querySelector('.tabs') as HTMLElement
+    this.contentItems = this.queryContentItems()
+    this.selectContentItem()
   }
 
-  @Listen('mdsTabItemSelect')
-  changeEventHandler (event: CustomEvent<string>): void {
-    const items = this.element.querySelectorAll<HTMLMdsTabItemElement>('mds-tab-item')
-    items.forEach((item, key) => {
-      if (item.id === event.detail) {
+  private scrollTabs = (): void => {
+    const tabItem = this.tabItems[this.currentItem]
+    this.tabs.scrollLeft = tabItem.offsetLeft - this.tabs.offsetLeft - (this.tabs.offsetWidth / 2) + (tabItem.offsetWidth / 2)
+  }
+
+  private selectTabItem = (scrollItem: number): void => {
+    this.tabItems.forEach((item, key) => {
+      if (key === scrollItem) {
         item.selected = true
         this.changedEvent.emit({ id: key })
         this.currentItem = key
@@ -49,10 +64,39 @@ export class MdsTab {
     })
   }
 
+  private selectContentItem = (): void => {
+    this.contentItems.forEach((item: HTMLElement, index: number) => {
+      item.classList.add('hidden')
+      if (index === this.currentItem) {
+        item.classList.remove('hidden')
+      }
+    })
+  }
+
+  @Listen('mdsTabItemSelect')
+  changeEventHandler (event: CustomEvent<string>): void {
+    // since the external developer can define a custom id
+    // we must find the key from event.detail
+    this.tabItems.forEach((item, key: number) => {
+      if (item.id === event.detail) {
+        this.selectTabItem(key)
+      } else {
+        item.selected = false
+      }
+    })
+
+    this.selectContentItem()
+  }
+
   render () {
     return (
       <Host>
-        <slot/>
+        <div class="tabs" part="tabs">
+          <slot />
+        </div>
+        <div class="contents" part="contents">
+          <slot name="content"/>
+        </div>
       </Host>
     )
   }

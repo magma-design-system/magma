@@ -6,11 +6,11 @@ This component is intented to be used only with svg files. In order to properly 
 
 ### Via `sessionStorage` (recommended)
 
-The simplest way to instruct the component is using `window.sessionStorage('mdsIconSvgPath', <path-to-svg-directory>)`.
+The simplest way to instruct the component is using `window.sessionStorage.setItem('mdsIconSvgPath', <path-to-svg-directory>)`.
 For example, if your svg directory is located in `assets/img/svg`, you should put the following code in your application
 
 ```javascript
-window.sessionStorage('mdsIconSvgPath', 'assets/img/svg/');
+window.sessionStorage.setItem('mdsIconSvgPath', 'assets/img/svg/');
 ```
 
 The path to the directory is based on how the `assets` are handled by the framework you are using.
@@ -101,6 +101,7 @@ Type: `Promise<void>`
  - [mds-entity](../mds-entity)
  - [mds-file](../mds-file)
  - [mds-filter-item](../mds-filter-item)
+ - [mds-help](../mds-help)
  - [mds-input](../mds-input)
  - [mds-input-switch](../mds-input-switch)
  - [mds-list-item](../mds-list-item)
@@ -118,6 +119,7 @@ graph TD;
   mds-entity --> mds-icon
   mds-file --> mds-icon
   mds-filter-item --> mds-icon
+  mds-help --> mds-icon
   mds-input --> mds-icon
   mds-input-switch --> mds-icon
   mds-list-item --> mds-icon
@@ -130,4 +132,4 @@ graph TD;
 
 ----------------------------------------------
 
-Built with love @ **Maggioli Informatica / R&D Department**
+Built with love @ [Gruppo Maggioli](https://www.maggioli.com) from [R&D Department](https://www.maggioli.com/it-it/chi-siamo/ricerca-sviluppo)

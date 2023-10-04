@@ -4,12 +4,17 @@ import {
   buttonVariantDictionary,
   buttonSizeDictionary,
   buttonToneVariantDictionary,
+  buttonTargetDictionary,
   buttonIconPositionDictionary,
 } from '@dictionary/button'
 
 export default {
   title: 'UI / Button',
   argTypes: {
+    'auto-focus': {
+      type: { name: 'boolean' },
+      description: 'Specifies if the component is focused when is loaded on the viewport',
+    },
     await: {
       type: { name: 'boolean' },
       description: 'Specifies if the component is awaiting to load a response',
@@ -17,6 +22,10 @@ export default {
     disabled: {
       type: { name: 'boolean' },
       description: 'Specifies if the component is disabled or not',
+    },
+    href: {
+      type: { name: 'string' },
+      description: 'Specifies the URL target of the button',
     },
     icon: {
       type: { name: 'string' },
@@ -34,6 +43,12 @@ export default {
       type: { name: 'string' },
       description: 'Specifies the size of the button',
       options: buttonSizeDictionary,
+      control: { type: 'select' },
+    },
+    target: {
+      type: { name: 'string' },
+      options: buttonTargetDictionary,
+      description: 'Specifies the target of the URL, if self or blank',
       control: { type: 'select' },
     },
     tone: {
@@ -74,6 +89,11 @@ const TemplateIcon = args =>
 
 export const Default = Template.bind({})
 
+export const AutoFocus = Template.bind({})
+AutoFocus.args = {
+  'auto-focus': true,
+}
+
 export const Await = TemplateAwait.bind({})
 Await.args = {
   tone: 'weak',
@@ -101,25 +121,36 @@ Size.args = {
   size: 'sm',
 }
 
-export const icon = TemplateIcon.bind({})
-icon.args = {
+export const Icon = TemplateIcon.bind({})
+Icon.args = {
   icon: 'mi/baseline/eco',
   title: 'Pianta un albero',
 }
 
-export const iconARIATitle = TemplateIcon.bind({})
-iconARIATitle.args = {
+export const IconARIATitle = TemplateIcon.bind({})
+IconARIATitle.args = {
   icon: 'mi/baseline/eco',
   'aria-label': 'Pianta un albero',
 }
 
-export const iconPosition = Template.bind({})
-iconPosition.args = {
+export const IconPosition = Template.bind({})
+IconPosition.args = {
   'icon-position': 'right',
   icon: 'mi/baseline/eco',
 }
 
-export const keyboardPress = TemplateKeyboard.bind({})
-keyboardPress.args = {
+export const KeyboardPress = TemplateKeyboard.bind({})
+KeyboardPress.args = {
   onClick: () => { alert('Button clicked') },
+}
+
+export const Href = Template.bind({})
+Href.args = {
+  href: 'http://www.maggioli.it',
+}
+
+export const Target = Template.bind({})
+Target.args = {
+  href: 'http://www.maggioli.it',
+  target: 'blank',
 }

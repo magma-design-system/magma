@@ -158,6 +158,7 @@
     ],
     "eqeqeq": "warn",
     "no-case-declarations": "warn",
+    "no-console": ["error", { "allow": ["info", "error", "warn"] }],
     "no-nested-ternary": "error",
     "no-unneeded-ternary": "error",
     "no-mixed-operators": [

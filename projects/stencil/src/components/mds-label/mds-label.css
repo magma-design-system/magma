@@ -3,12 +3,12 @@
 @tailwind utilities;
 
 /**
-* @prop --mds-label-background: Sets the background-color of the component
-* @prop --mds-label-color: Sets the text color of the component
-* @prop --mds-label-icon-color: Sets the color of the icon
-* @prop --mds-label-selection-background: Sets the selection background color of the text
-* @prop --mds-label-selection-color: Sets the selection color of the text
-*/
+  * @prop --mds-label-background: Sets the background-color of the component
+  * @prop --mds-label-color: Sets the text color of the component
+  * @prop --mds-label-icon-color: Sets the color of the icon
+  * @prop --mds-label-selection-background: Sets the selection background color of the text
+  * @prop --mds-label-selection-color: Sets the selection color of the text
+  */
 
 :host {
 
@@ -20,13 +20,14 @@
   --mds-label-selection-color: var(--magma-selection-color, theme('colors.label-yellow-02'));
 
   @apply
-    flex
     items-stretch
     pl-3;
 
+  align-items: stretch;
   background-color: var(--mds-label-background);
   border-radius: var(--mds-label-radius);
   color: var(--mds-label-color);
+  display: flex;
   fill: var(--mds-label-icon-color);
 }
 
@@ -37,14 +38,15 @@
 
 .text {
   @apply
-    block
-    flex-grow
     min-w-0
-    py-1
-    self-center;
+    py-1;
 
   --mds-text-selection-background: var(--mds-label-selection-background);
   --mds-text-selection-color: var(--mds-label-selection-color);
+
+  align-self: center;
+  display: block;
+  flex-grow: 1;
 }
 
 .text:last-child {
@@ -55,18 +57,18 @@
   @apply
     bg-opacity-30
     bg-tone-neutral
-    cursor-pointer
-    flex
     hover:bg-opacity-50
-    items-center
     ml-1
     px-1.5
     rounded-r-md
-    shrink-0
-    text-inherit
     transition-colors;
 
+  align-items: center;
   border-radius: 0 var(--mds-label-radius) var(--mds-label-radius) 0;
+  color: inherit;
+  cursor: pointer;
+  display: flex;
+  flex-shrink: 0;
   transition-property: outline, outline-offset;
 }
 

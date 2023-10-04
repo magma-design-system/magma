@@ -17,54 +17,49 @@ I would like to fix CSS custom properties to the web component `mds-text`
 to let other components be able to style text selection, which is not possible right now.
 -->
 
-## Issue impact
+## Proposal impact
 
-<!--   🔴 Required
-Check with [x] the items affected and leave [~] to the others.
-If for some reason you don't find the project/environment/tool you are talking about, add it and please, open an issue (feature) to suggest its addition.
--->
-
-This issue could be a:
+This feature should be a:
 
 - [~] Breaking change
-- [x] Minor
-- [~] Patch
+- [~] Minor
+- [x] Patch
 
-<details>
-  <summary>Impacts the following Magma Design System project</summary>
+<!-- 🔴 Required
+Leave only the items affected and delete the others.
+If for some reason you don't find the project/environment/tool you are talking about, please open an issue (feature) to suggest its addition.
+-->
 
-- [~] Design tokens [link][design-tokens]
-- [~] Icons [link][icons]
-- [~] identity [link][identity]
-- [~] ~~React~~ (deprecated) [link][react]
-- [x] Stencil (web components) [link][stencil]
-- [x] Lit (web components) [link][stencil]
-- [~] Styles [link][styles]
-- [~] SVG icons [link][svg-icons]
-</details>
+Impacts the following Magma Design System project:
 
-<details>
-  <summary>Impacts the following Maggioli products</summary>
+- [Design Tokens][design-tokens]
+- [Icons][icons]
+- [Identity][identity]
+- [~~React~~ (deprecated)][react]
+- [Stencil (web components)][stencil]
+- [Lit (web components)][stencil]
+- [Styles][styles]
+- [SVG Icons][svg-icons]
 
-- [x] All products
-- [~] Biblioteca Digitale [link][prd-bib-dig]
-- [~] Magma Docs [link][magma-docs]
-- [~] Periodici Maggioli [link][prd-per-mag]
-- [~] Quiz App [link][prd-quiz]
-- [~] R&D Days [link][prd-rnd-days]
-- [~] SistemaPA [link][prd-sis-pa]
-- [~] Synbee [link][prd-synbee]
-</details>
+Impacts the following tool/environment:
 
-<details>
-  <summary>Impacts the following Design System tools / environments</summary>
+- [CI (Continuous Integration)][ci]
+- [Figma][figma]
+- [Gitlab][gitlab]
 
-- [~] Continuous Integration (CI) [link][ci]
-- [~] Figma [link][figma]
-- [~] GitLab [link][gitlab]
-</details>
+Impacts the following Maggioli products:
 
-## Expected behavior
+- All products
+- [Biblioteca Digitale][prd-bib-dig]
+- [Magma Docs][magma-docs]
+- Mindy
+- [Periodici Maggioli][prd-per-mag]
+- [Quiz App][prd-quiz]
+- [R&D Days][prd-rnd-days]
+- SicraSearch
+- [Synbee][prd-synbee]
+
+## Expected behaviour
 
 <!-- 🔴 Required
 Tell us what should happen and how is expected to behave.
@@ -74,10 +69,10 @@ The component should let access to `--selection-background` and `--selection-col
 CSS custom properties, but it seem it's not working.
 -->
 
-## Current behavior
+## Current behaviour
 
 <!-- 🔴 Required
-Tell us what happens instead of the expected behavior.
+Tell us what happens instead of the expected behaviour.
 
 Example:
 If I set `--selection-background` or `--selection-color`,
@@ -173,7 +168,6 @@ I think something like this shoud be enough:
 [prd-per-mag]: https://gitlab.com/maggiolispa/ricerca-sviluppo-new-media/periodici-maggioli
 [prd-quiz]: https://gitlab.com/maggiolispa/ricerca-sviluppo-new-media/quiz-app-client
 [prd-rnd-days]: https://gitlab.com/maggiolispa/ricerca-sviluppo-new-media/rnd-days
-[prd-sis-pa]: https://gitlab.com/maggiolispa/ricerca-sviluppo-new-media/wordpress/sistemapa
 [prd-synbee]: https://gitlab.com/maggiolispa/ricerca-sviluppo-bari/synerbee
 [react]: https://gitlab.com/maggiolispa/ricerca-sviluppo-new-media/design-system/-/tree/dev/projects/react
 [stencil]: https://gitlab.com/maggiolispa/ricerca-sviluppo-new-media/design-system/-/tree/dev/projects/stencil

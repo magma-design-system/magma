@@ -23,6 +23,20 @@
 | `mdsTabItemSelect` | Emits when the tab item is selected | `CustomEvent<string>` |
 
 
+## Slots
+
+| Slot        | Description                          |
+| ----------- | ------------------------------------ |
+| `"default"` | Put text string here, avoid elements |
+
+
+## Shadow Parts
+
+| Part       | Description |
+| ---------- | ----------- |
+| `"button"` |             |
+
+
 ## CSS Custom Properties
 
 | Name                                 | Description                                              |
@@ -55,4 +69,4 @@ graph TD;
 
 ----------------------------------------------
 
-Built with love @ **Maggioli Informatica / R&D Department**
+Built with love @ [Gruppo Maggioli](https://www.maggioli.com) from [R&D Department](https://www.maggioli.com/it-it/chi-siamo/ricerca-sviluppo)

@@ -1,5 +1,5 @@
-@import url('../../tailwind/components.css');
-@import url('~@maggioli-design-system/styles/dist/tailwind/typography.css');
+@import '../../tailwind/components.css';
+@import '~@maggioli-design-system/styles/dist/tailwind/typography.css';
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
@@ -29,25 +29,25 @@
   --mds-button-radius: theme('borderRadius.lg');
 
   @apply
-    box-border
-    cursor-pointer
     duration-200
     ease-out
     focus-off
-    inline-flex
-    items-center
-    justify-center
     px-6
-    py-2
-    relative;
+    py-2;
 
+  align-items: center;
   background-color: var(--mds-button-background);
-  border-color: var(--mds-button-border-color) !important;
+  border-color: var(--mds-button-border-color);
   border-radius: var(--mds-button-radius);
   border-style: solid;
-  border-width: theme('borderWidth.2') !important;
+  border-width: theme('borderWidth.2');
+  box-sizing: border-box;
   color: var(--mds-button-color);
+  cursor: pointer;
+  display: inline-flex;
   gap: var(--mds-button-gap);
+  justify-content: center;
+  position: relative;
   transition-property: background-color, border-color, box-shadow, color, transform, outline, outline-offset;
 }
 
@@ -56,30 +56,29 @@
 }
 
 .text {
-  @apply
-    min-w-0
-    select-none
-    truncate;
+  @apply truncate;
+
+  min-width: 0;
+  user-select: none;
 }
 
 .text::first-letter {
-  @apply uppercase;
+  text-transform: uppercase;
 }
 
 .icon {
-  @apply
-    inline-flex
-    items-center
-    justify-center
-    transition-colors;
+  @apply transition-colors;
 
+  align-items: center;
+  display: inline-flex;
   fill: var(--mds-button-icon-color);
+  justify-content: center;
 }
 
 :host([disabled]:not([disabled="false"])) {
-  @apply
-    opacity-50
-    pointer-events-none;
+  @apply opacity-50;
+
+  pointer-events: none;
 }
 
 .await {
@@ -93,7 +92,7 @@
   transition-property: margin-right;
 }
 
-mds-spinner {
+.spinner {
   @apply
     h-6
     w-6;
@@ -103,8 +102,8 @@ mds-spinner {
   color: currentcolor;
 }
 
-:host(:not([await])) mds-spinner,
-:host([await="false"]) mds-spinner {
+:host(:not([await])) .spinner,
+:host([await="false"]) .spinner {
   @apply
     duration-200
     ease-out;
@@ -115,14 +114,14 @@ mds-spinner {
 }
 
 :host([await]:not([await="false"])) {
-  @apply pointer-events-none;
+  pointer-events: none;
 }
 
-@import url('./css/mds-button-variant-primary.css');
-@import url('./css/mds-button-variant-dark.css');
-@import url('./css/mds-button-variant-light.css');
-@import url('./css/mds-button-variant-error.css');
-@import url('./css/mds-button-variant-warning.css');
-@import url('./css/mds-button-variant-info.css');
-@import url('./css/mds-button-variant-success.css');
-@import url('./css/mds-button-size.css');
+@import './css/mds-button-variant-primary.css';
+@import './css/mds-button-variant-dark.css';
+@import './css/mds-button-variant-light.css';
+@import './css/mds-button-variant-error.css';
+@import './css/mds-button-variant-warning.css';
+@import './css/mds-button-variant-info.css';
+@import './css/mds-button-variant-success.css';
+@import './css/mds-button-size.css';

@@ -1,46 +1,23 @@
 module.exports = {
-  extends: [
-    'plugin:@typescript-eslint/recommended',
-  ],
-  ignorePatterns: [
-    '**/*.config.js',
-    '**/*.stories.js',
-    './.build',
-    './dist',
-    './src/componnts.d.ts',
-    './template',
-  ],
-  overrides: [
-    {
-      files: [
-        './**/*.tsx',
-        './**/*.ts',
-        './*.config.ts',
-      ],
-      excludedFiles: ['./stencil.config.ts'],
-      rules: {
-        '@typescript-eslint/explicit-module-boundary-types': [
-          'error',
-          {
-            allowedNames: [
-              'render',
-            ],
-          },
-        ],
-        '@typescript-eslint/prefer-nullish-coalescing': 'error',
-        '@typescript-eslint/no-non-null-assertion': 'error',
-        '@typescript-eslint/no-unused-vars': [
-          'warn',
-          {
-            varsIgnorePattern: '^h$',
-          },
-        ],
-        'react/jsx-no-bind': 'off',
-      },
-      parserOptions: {
-        project: ['./tsconfig.json'],
-        tsconfigRootDir: __dirname,
-      },
+  extends: ['plugin:@typescript-eslint/recommended', 'plugin:storybook/recommended'],
+  ignorePatterns: ['**/*.config.js', '**/*.stories.js', './.build', './dist', './src/componnts.d.ts', './template'],
+  overrides: [{
+    files: ['./**/*.tsx', './**/*.ts', './*.config.ts'],
+    excludedFiles: ['./stencil.config.ts'],
+    rules: {
+      '@typescript-eslint/explicit-module-boundary-types': ['error', {
+        allowedNames: ['render'],
+      }],
+      '@typescript-eslint/prefer-nullish-coalescing': 'error',
+      '@typescript-eslint/no-non-null-assertion': 'error',
+      '@typescript-eslint/no-unused-vars': ['warn', {
+        varsIgnorePattern: '^h$',
+      }],
+      'react/jsx-no-bind': 'off',
     },
-  ],
+    parserOptions: {
+      project: ['./tsconfig.json'],
+      tsconfigRootDir: __dirname,
+    },
+  }],
 }

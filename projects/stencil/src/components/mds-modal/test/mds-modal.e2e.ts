@@ -18,7 +18,7 @@ describe('mds-modal', () => {
     expect(element).not.toHaveAttribute('opened')
 
     expect(element.shadowRoot).toEqualHtml(`
-      <div class="window" role="dialog">
+      <div class="window" part="window" role="dialog">
         <slot></slot>
       </div>
       <i class="close focusable-light svg" tabindex="0">
@@ -38,7 +38,7 @@ describe('mds-modal', () => {
     expect(element.getAttribute('opened')).not.toBe('false')
 
     expect(element.shadowRoot).toEqualHtml(`
-      <div class="window" role="dialog">
+      <div class="window" part="window" role="dialog">
         <slot></slot>
       </div>
       <i class="close focusable-light svg" tabindex="0">
@@ -71,6 +71,6 @@ describe('mds-modal', () => {
 
     await page.waitForChanges()
 
-    expect(element).not.toHaveAttribute('opened')
+    expect(element).not.toHaveClass('opened')
   })
 })

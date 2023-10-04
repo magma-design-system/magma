@@ -1,11 +1,16 @@
 import clsx from 'clsx'
-import { ButtonType, ButtonSizeType, ButtonIconPositionType, ButtonVariantType } from '@type/button'
+import { ButtonIconPositionType, ButtonSizeType, ButtonTargetType, ButtonType, ButtonVariantType } from '@type/button'
 import { Component, Host, Element, h, Prop, Watch } from '@stencil/core'
 import { KeyboardManager } from '@common/keyboard-manager'
 import { ToneVariantType } from '@type/variant'
 import { TypographyType } from '@type/typography'
 import { buttonSizeTypographyVariant } from './meta/variants'
 import { setAttributeIfEmpty, unslugName } from '@common/aria'
+
+/**
+ * @slot default - Add `text string` to this slot, **avoid** to add `HTML elements` or `components` here.
+ * @slot notification - Add `HTML elements` or `components`, it is **recommended** to use `mds-notification` element.
+ */
 
 @Component({
   tag: 'mds-button',
@@ -20,6 +25,11 @@ export class MdsButton {
   private km = new KeyboardManager()
 
   @Element() host: HTMLMdsButtonElement
+
+  /**
+   * Specifies if the component is focused when is loaded on the viewport
+   */
+  @Prop() readonly autoFocus: boolean
 
   /**
    * The icon displayed in the button
@@ -66,6 +76,16 @@ export class MdsButton {
    */
   @Prop({ reflect: true }) readonly await: boolean
 
+  /**
+   * Specifies the URL target of the button
+   */
+  @Prop({ reflect: true }) readonly href?: string
+
+  /**
+   * Specifies the target of the URL, if self or blank
+   */
+  @Prop() readonly target: ButtonTargetType = 'self'
+
   @Watch('disabled')
   disabledChanged (newValue: boolean): void {
     if (newValue) {
@@ -93,9 +113,27 @@ export class MdsButton {
     this.active = false
   }
 
+  private redirectBlank = () => {
+    const a = document.createElement('a')
+    a.target = '_blank'
+    a.href = this.href ?? ''
+    a.click()
+  }
+
   componentWillLoad ():void {
     this.hasNotification = this.host.querySelector('[slot="notification"]') !== null
     this.hasText = this.host.innerHTML !== ''
+
+    if (this.href) {
+      this.host.addEventListener('click', (e: MouseEvent) => {
+        e.preventDefault()
+        if (this.target === 'blank') {
+          this.redirectBlank()
+          return
+        }
+        window.location.href = this.href ?? '' // TypeScript 5.0.2 bug: if (this.href) not checked
+      })
+    }
   }
 
   componentDidLoad ():void {
@@ -112,6 +150,10 @@ export class MdsButton {
       }
       setAttributeIfEmpty(this.host, 'aria-label', iconTitle)
     }
+
+    if (this.autoFocus) {
+      this.host.focus()
+    }
   }
 
   disconnectedCallback (): void {
@@ -124,7 +166,7 @@ export class MdsButton {
     return (
       <Host class={clsx(!this.hasText && 'no-text')} onMouseDown={this.mouseDown} onMouseUp={this.mouseUp} onMouseOut={this.mouseUp} tabindex="0" role="button">
         <div class="await">
-          <mds-spinner running={this.await}/>
+          <mds-spinner class="spinner" running={this.await}/>
         </div>
         { this.icon && this.iconPosition === 'left' && <mds-icon aria-hidden="true" class="icon" name={this.icon} /> }
         { this.hasText && <mds-text class="text" part="label" typography={this.typography}><slot /></mds-text> }

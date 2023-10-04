@@ -12,14 +12,30 @@
 | `mdsTabChange` | Emits when a children is changed | `CustomEvent<MdsTabEventDetail>` |
 
 
+## Slots
+
+| Slot        | Description                                                      |
+| ----------- | ---------------------------------------------------------------- |
+| `"content"` | Add `HTML elements` or `components`, one per mds-tab-item added. |
+| `"default"` | Add `mds-tab-item` element/s.                                    |
+
+
+## Shadow Parts
+
+| Part         | Description |
+| ------------ | ----------- |
+| `"contents"` |             |
+| `"tabs"`     |             |
+
+
 ## CSS Custom Properties
 
-| Name                   | Description                                                    |
-| ---------------------- | -------------------------------------------------------------- |
-| `--mds-tab-background` | Sets the background-color of the component                     |
-| `--mds-tab-radius`     | Sets the border-radius of the button when the mouse is over it |
+| Name                        | Description                                                                                                                      |
+| --------------------------- | -------------------------------------------------------------------------------------------------------------------------------- |
+| `--mds-tab-duration`        | Sets the animation duration on how the contents height is resized when the component switch from a content to another one        |
+| `--mds-tab-timing-function` | Sets the animation timing function on how the contents height is resized when the component switch from a content to another one |
 
 
 ----------------------------------------------
 
-Built with love @ **Maggioli Informatica / R&D Department**
+Built with love @ [Gruppo Maggioli](https://www.maggioli.com) from [R&D Department](https://www.maggioli.com/it-it/chi-siamo/ricerca-sviluppo)

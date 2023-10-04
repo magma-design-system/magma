@@ -14,6 +14,15 @@
 | `src`      | `src`      | Specifies the path to the image                                                 | `string \| undefined` | `undefined` |
 
 
+## Slots
+
+| Slot        | Description                                                                             |
+| ----------- | --------------------------------------------------------------------------------------- |
+| `"action"`  | Add `HTML elements` or `components`, it is **recommended** to use `mds-button` element. |
+| `"default"` | Add `text string`, `HTML elements` or `components` to this slot.                        |
+| `"default"` | Add `text string`, `HTML elements` or `components` to this slot.                        |
+
+
 ## CSS Custom Properties
 
 | Name                           | Description                        |
@@ -45,4 +54,4 @@ graph TD;
 
 ----------------------------------------------
 
-Built with love @ **Maggioli Informatica / R&D Department**
+Built with love @ [Gruppo Maggioli](https://www.maggioli.com) from [R&D Department](https://www.maggioli.com/it-it/chi-siamo/ricerca-sviluppo)

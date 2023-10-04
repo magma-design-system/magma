@@ -1,17 +1,16 @@
 @tailwind utilities;
 
 /**
-* @prop --mds-table-body-background-hover: The background-color of the table body when the mouse is over it
-* @prop --mds-table-body-background: The background-color of the table body
-*/
+  * @prop --mds-table-body-background-hover: The background-color of the table body when the mouse is over it
+  * @prop --mds-table-body-background: The background-color of the table body
+  */
 
 :host {
 
-  @apply
-    table-row-group
-    transition-colors;
+  @apply transition-colors;
 
   background-color: var(--mds-table-body-background, theme('colors.tone-neutral'));
+  display: table-row-group;
   overflow: hidden;
 }
 

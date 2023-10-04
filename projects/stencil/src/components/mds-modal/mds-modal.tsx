@@ -4,6 +4,13 @@ import { Component, Element, Event, EventEmitter, Host, h, Listen, Prop, Watch, 
 import { KeyboardManager } from '@common/keyboard-manager'
 import { ModalPositionType, ModalAnimationStateType } from './meta/types'
 
+/**
+ * @slot default - Contents that will be placed in the center of the window. Add `text string`, `HTML elements` or `components` to this slot.
+ * @slot bottom - Contents that will be placed on bottom of the window. Add `text string`, `HTML elements` or `components` to this slot.
+ * @slot top - Contents that will be placed on top of the window. Add `text string`, `HTML elements` or `components` to this slot.
+ * @slot window - Use directly a window component if you need it. Add `text string`, `HTML elements` or `components` to this slot.
+ */
+
 @Component({
   tag: 'mds-modal',
   styleUrl: 'mds-modal.css',
@@ -17,6 +24,7 @@ export class MdsModal {
   private bottom = false
   private animationState: ModalAnimationStateType = 'intro'
   private km = new KeyboardManager()
+
   @State() stateOpened: boolean
   @Element() host: HTMLMdsModalElement
 
@@ -120,7 +128,7 @@ export class MdsModal {
       <Host aria-modal={clsx(this.opened ? 'true' : 'false' )} class={clsx(this.stateOpened && this.animationName('opened'))} onClick={(e: Event) => { this.closeModal(e) }}>
         { this.window
           ? <slot name="window"/>
-          : <div class={clsx('window', (this.top || this.bottom) && `window-${this.top ? '-top' : ''}${this.bottom ? '-bottom' : ''}`)} role="dialog">
+          : <div class={clsx('window', (this.top || this.bottom) && `window-${this.top ? '-top' : ''}${this.bottom ? '-bottom' : ''}`)} role="dialog" part="window">
             { this.top &&
               <slot name="top"/>
             }

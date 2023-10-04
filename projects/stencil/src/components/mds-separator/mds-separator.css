@@ -1,0 +1,13 @@
+@tailwind utilities;
+
+:host {
+
+  --mds-separator-background: rgb(var(--theme-default-05-secondary-decoration));
+
+  @apply
+    rounded-full
+    h-[1px];
+
+  background-color: var(--mds-separator-background, theme('colors.tone-neutral-08'));
+  display: flex;
+}

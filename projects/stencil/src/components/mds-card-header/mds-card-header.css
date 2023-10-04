@@ -1,0 +1,14 @@
+@tailwind utilities;
+
+:host {
+
+  @apply
+    gap-4
+    p-4;
+
+  align-items: center;
+  display: flex;
+  flex-grow: 1;
+  justify-content: space-between;
+  padding: theme('spacing.4');
+}

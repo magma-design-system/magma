@@ -4,6 +4,10 @@ import { UsageType } from './meta/types'
 import { setAttributeIfEmpty } from '@common/aria'
 import { usageVariant } from './meta/variants'
 
+/**
+ * @slot default - Add `text string`, `HTML elements` or `components` to this slot.
+ */
+
 @Component({
   tag: 'mds-usage',
   styleUrl: 'mds-usage.css',

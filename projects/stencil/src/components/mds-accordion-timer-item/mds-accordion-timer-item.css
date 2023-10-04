@@ -3,77 +3,87 @@
 @tailwind utilities;
 
 /**
-  * @prop --mds-accordion-timer-item-progress-bar-color: Sets the color of the progress bar when the item is selected
-  * @prop --mds-accordion-timer-item-progress-bar-background: Sets the background-color of the progress bar when the item is selected
-  * @prop --mds-accordion-timer-item-color: Sets the text color of the component
-  * @prop --mds-accordion-timer-item-progress-bar-thickness: Sets thickness of the progress bar
-  */
+* @prop --mds-accordion-timer-item-progress-bar-color: Sets the color of the progress bar when the item is selected
+* @prop --mds-accordion-timer-item-progress-bar-background: Sets the background-color of the progress bar when the item is selected
+* @prop --mds-accordion-timer-item-color: Sets the text color of the component
+* @prop --mds-accordion-timer-item-progress-bar-thickness: Sets thickness of the progress bar
+* @prop --mds-accordion-timer-item-duration: Sets the transition duration of open/close animation
+*/
 
 :host {
 
-  --mds-accordion-timer-item-progress-bar-color: theme('colors.tone-neutral-03');
-  --mds-accordion-timer-item-progress-bar-background: theme('colors.tone-neutral-08');
-  --mds-accordion-timer-item-progress-bar-thickness: theme('width.1');
+  --mds-accordion-timer-item-progress-bar-color: var(--mds-accordion-timer-progress-bar-color, theme('colors.tone-neutral-03'));
+  --mds-accordion-timer-item-progress-bar-background: var(--mds-accordion-timer-progress-bar-background, theme('colors.tone-neutral-08'));
+  --mds-accordion-timer-item-progress-bar-thickness: var(--mds-accordion-timer-progress-bar-thickness, theme('width.1'));
+  --mds-accordion-timer-item-duration: var(--mds-accordion-timer-duration, 500ms);
 
   @apply
     duration-500
     ease-out-expo
-    grid
     py-4
-    relative
     transition-cosmetic;
 
   color: var(--mds-accordion-timer-item-color, theme('colors.tone-neutral-02'));
+  display: grid;
+  position: relative;
 }
 
 .row {
-  @apply
-    flex
-    gap-4;
+  @apply gap-4;
+
+  display: flex;
 }
 
 .accordion {
-  @apply grid;
+  display: grid;
 }
 
 .progress-bar {
-  @apply shrink-0;
 
   --mds-progress-color: var(--mds-accordion-timer-item-progress-bar-color);
   --mds-progress-background: var(--mds-accordion-timer-item-progress-bar-background);
   --mds-progress-thickness: var(--mds-accordion-timer-item-progress-bar-thickness);
+
+  flex-shrink: 0;
 }
 
 .action {
-  @apply
-    bg-transparent
-    border-none
-    cursor-pointer
-    p-0
-    rounded-xl
-    text-left;
+  @apply rounded-xl;
+
+  background-color: transparent;
+  border: 0;
+  cursor: pointer;
+  padding: 0;
+  text-align: left;
 }
 
 :host( [selected] ) .action {
-  @apply cursor-auto;
+  cursor: auto;
 }
 
 .contents {
   @apply
-    duration-300
-    ease-out-quad
-    gap-4
-    grid
-    h-0
-    opacity-0
-    overflow-hidden
-    pt-0
-    transition-cosmetic;
+    ease-in-out-expo
+    gap-4;
+
+  display: grid;
+  grid-template-rows: 0fr;
+  min-height: 0;
+  opacity: 0;
+  overflow: hidden;
+  padding-top: 0;
+  transition-duration: var(--mds-accordion-timer-item-duration);
+  transition-property: grid-template-rows opacity padding;
+}
+
+.contents-expander {
+  min-height: 0;
 }
 
 :host( [selected] ) .contents {
   @apply
-    h-auto
     opacity-100
     pt-4;
+
+  grid-template-rows: 1fr;
 }

@@ -20,5 +20,5 @@ const Template = args =>
 export const Default = Template.bind({})
 Default.args = {
   name: 'pinello',
-  onSubmit: (e: any) => { console.log(e) },
+  onSubmit: (e: any) => { console.info(e) },
 }

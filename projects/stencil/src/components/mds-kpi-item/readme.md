@@ -14,13 +14,20 @@
 | `value` _(required)_       | `value`       | Specifies the number to be displayed in the KPI element      | `number`              | `undefined` |
 
 
+## Slots
+
+| Slot     | Description                                                                                                       |
+| -------- | ----------------------------------------------------------------------------------------------------------------- |
+| `"icon"` | Insert an icon image, it can be `HTML elements` or `components`, it is **recommended** to add `mds-icon` element. |
+
+
 ## CSS Custom Properties
 
-| Name                  | Description                           |
-| --------------------- | ------------------------------------- |
-| `--description-color` | Set the color of the description text |
-| `--info-padding`      | Set the padding of the info text      |
-| `--value-color`       | Set the color of the value text       |
+| Name                               | Description                           |
+| ---------------------------------- | ------------------------------------- |
+| `--mds-kpi-item-description-color` | Set the color of the description text |
+| `--mds-kpi-item-info-padding`      | Set the padding of the info text      |
+| `--mds-kpi-item-value-color`       | Set the color of the value text       |
 
 
 ## Dependencies
@@ -38,4 +45,4 @@ graph TD;
 
 ----------------------------------------------
 
-Built with love @ **Maggioli Informatica / R&D Department**
+Built with love @ [Gruppo Maggioli](https://www.maggioli.com) from [R&D Department](https://www.maggioli.com/it-it/chi-siamo/ricerca-sviluppo)

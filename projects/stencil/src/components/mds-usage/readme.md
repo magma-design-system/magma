@@ -13,12 +13,19 @@
 | `variant` | `variant` | Specifies the delay when the tooltip will trigger                   | `"do" \| "dont" \| "info" \| "warn"` | `'info'`    |
 
 
+## Slots
+
+| Slot        | Description                                                      |
+| ----------- | ---------------------------------------------------------------- |
+| `"default"` | Add `text string`, `HTML elements` or `components` to this slot. |
+
+
 ## CSS Custom Properties
 
-| Name             | Description                                   |
-| ---------------- | --------------------------------------------- |
-| `--background`   | Sets the background-color of the component    |
-| `--border-width` | Sets the colored border-size of the component |
+| Name                       | Description                                   |
+| -------------------------- | --------------------------------------------- |
+| `--mds-usage-background`   | Sets the background-color of the component    |
+| `--mds-usage-border-width` | Sets the colored border-size of the component |
 
 
 ## Dependencies
@@ -38,4 +45,4 @@ graph TD;
 
 ----------------------------------------------
 
-Built with love @ **Maggioli Informatica / R&D Department**
+Built with love @ [Gruppo Maggioli](https://www.maggioli.com) from [R&D Department](https://www.maggioli.com/it-it/chi-siamo/ricerca-sviluppo)

@@ -1,0 +1,39 @@
+@tailwind utilities;
+
+:host {
+
+  --mds-price-table-list-separator-color: theme('colors.theme-default-04-primary-decoration');
+
+  @apply
+    gap-6
+    p-6
+    rounded-xl;
+
+  background-color: theme('colors.label-green-10');
+  display: grid;
+}
+
+
+.separator {
+  background-color: var(--mds-price-table-list-separator-color);
+}
+
+
+header {
+  @apply gap-2;
+
+  display: grid;
+}
+
+main {
+  @apply gap-3;
+
+  display: grid;
+}
+
+footer {
+  @apply gap-4;
+
+  display: grid;
+}
+

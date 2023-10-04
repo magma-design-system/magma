@@ -1,26 +1,38 @@
 import { h } from '@stencil/core'
+import { menuDictionary, navDictionary } from '../../mds-header-bar/meta/dictionary'
 
 export default {
   title: 'UI / Header',
-  argTypes: {},
+  argTypes: {
+    menu: {
+      description: 'Sets the visibility type of the hamburger menu of mds-header-bar',
+      options: menuDictionary,
+      control: { type: 'select' },
+    },
+    nav: {
+      description: 'Sets the visibility type of the navigation menu of mds-header-bar',
+      options: navDictionary,
+      control: { type: 'select' },
+    },
+  },
 }
 
 const Template = args =>
   <mds-header {...args}>
     <mds-header-bar>
       <div class="flex gap-2 items-center">
-        <mds-img class="w-10" src="./logo-gruppo-maggioli.svg"/>
+        <mds-img class="w-10" src="./logo-gruppo-maggioli.svg" />
         <div class="mb-1">
-          <mds-text typography="h6">Gruppo Maggioli</mds-text>
-          <mds-text typography="option" class="text-tone-neutral-04">Header by RD Team</mds-text>
+          <mds-text typography="h6">Mobile menu</mds-text>
+          <mds-text typography="option" class="text-tone-neutral-04">Shows up under 1024px</mds-text>
         </div>
       </div>
       <mds-button slot="nav" variant="dark" tone="ghost">Accedi</mds-button>
       <mds-button slot="nav" icon="mi/round/person">Registrati</mds-button>
     </mds-header-bar>
-    <div slot="nav-mobile">
+    <div slot="menu">
       <div class="flex gap-2 items-center p-6 border-b border-tone-neutral-09">
-        <mds-img class="w-10" src="./logo-gruppo-maggioli.svg"/>
+        <mds-img class="w-10" src="./logo-gruppo-maggioli.svg" />
         <div class="mb-1">
           <mds-text typography="h6">Gruppo Maggioli</mds-text>
           <mds-text typography="option" class="text-tone-neutral-04">Header by RD Team</mds-text>
