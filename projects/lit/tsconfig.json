@@ -14,7 +14,19 @@
     "noUnusedParameters": true,
     "resolveJsonModule": true,
     "target": "ES2020",
-    "strictNullChecks": true
+    "strictNullChecks": true,
+    "paths": {
+      "@common/*": ["common/*"],
+      "@component/*": ["components/*"],
+      "@placeholder": ["https://via.placeholder.com"],
+      "@stencil-common/*": ["../stencil/src/common/*"],
+      "@stencil-component/*": ["../stencil/src/components/*"],
+      "@stencil-dictionary/*": ["../stencil/src/dictionary/*"],
+      "@stencil-fixture/*": ["../stencil/src/fixtures/*"],
+      "@stencil-icon/*": ["../stencil/assets/svg/*"],
+      "@stencil-interface/*": ["../stencil/src/interface/*"],
+      "@stencil-type/*": ["../stencil/src/type/*"]
+    },
   },
   "include": [
     "components",

@@ -1,0 +1,10 @@
+declare const themeVariantDictionary: string[];
+declare const themeLuminanceVariantDictionary: string[];
+declare const themeStatusVariantDictionary: string[];
+declare const themeFullVariantDictionary: string[];
+declare const themeLabelVariantDictionary: string[];
+declare const toneVariantDictionary: string[];
+declare const toneActionVariantDictionary: string[];
+declare const toneSimpleVariantDictionary: string[];
+declare const toneMinimalVariantDictionary: string[];
+export { themeFullVariantDictionary, themeLabelVariantDictionary, themeLuminanceVariantDictionary, themeStatusVariantDictionary, themeVariantDictionary, toneActionVariantDictionary, toneMinimalVariantDictionary, toneSimpleVariantDictionary, toneVariantDictionary, };

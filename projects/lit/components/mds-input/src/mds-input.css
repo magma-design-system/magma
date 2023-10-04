@@ -1,0 +1,197 @@
+@import '@maggioli-design-system/styles/dist/tailwind/typography.css';
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/**
+  * @prop --mds-input-background: Sets the background-color of the component
+  * @prop --mds-input-icon-color: Sets the icon color of the component
+  * @prop --mds-input-ring: Sets the box-shadow of the component's input
+  * @prop --mds-input-shadow: Sets the box-shadow of the component's input
+  * @prop --mds-input-tip-background: Sets the background color of the tip message at the bottom right of the component
+  * @prop --mds-input-variant-color: Sets the variant colors of the component
+  */
+
+:host {
+
+  --mds-input-background: theme('colors.tone-neutral');
+  --mds-input-icon-color: var(--mds-input-variant-color);
+  --mds-input-tip-background: 84 84 84;
+  --mds-input-ring: 0 0 0 1px rgb(var(--mds-input-variant-color) / 0.1);
+  --mds-input-shadow: 0 1px 3px 0 rgb(var(--mds-input-variant-color) / 0.1), 0 1px 2px 0 rgb(var(--mds-input-variant-color) 0.06);
+  --mds-input-variant-color: 0 0 0;
+
+  @apply text-info-detail;
+
+  display: flex;
+  position: relative;
+}
+
+.input {
+
+  @apply
+    duration-300
+    ease-out-expo
+    m-0
+    px-4
+    py-3
+    rounded-lg
+    text-info-detail
+    transition-cosmetic;
+
+    background-color: var(--mds-input-background);
+    border: 0;
+    box-shadow: var(--mds-input-ring), var(--mds-input-shadow);
+    box-sizing: border-box;
+    color: theme('colors.tone-neutral-02');
+    min-height: 3rem;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    width: 100%;
+}
+
+textarea.input:active {
+  transition-property: none;
+}
+
+textarea.input {
+  @apply
+    max-h-64
+    min-h-24
+    rounded-br-none;
+}
+
+.input:focus {
+  @apply
+    outline-none
+    transition-cosmetic
+    duration-300
+    ease-out-expo;
+
+    --mds-input-ring: 0 0 0 3px rgb(var(--mds-input-variant-color) / 1);
+    --mds-input-shadow: 0 4px 6px -1px rgb(var(--mds-input-variant-color) / 0.1), 0 2px 4px -1px rgb(var(--mds-input-variant-color) / 0.06);
+  }
+
+.input:disabled {
+  background-color: theme('colors.tone-neutral-10');
+}
+
+.input:disabled,
+.input:disabled::placeholder {
+  color: theme('colors.tone-neutral-05');
+}
+
+.input.has-icon {
+  @apply pl-11;
+}
+
+.tip {
+  @apply
+    duration-300
+    ease-out-expo
+    h-3
+    right-1
+    rounded-full
+    px-2
+    transition-cosmetic;
+
+  background-color: rgb(var(--mds-input-tip-background));
+  color: theme('colors.tone-neutral');
+  justify-content: center;
+  line-height: theme('spacing.3');
+  pointer-events: none;
+  position: absolute;
+  text-align: center;
+}
+
+.tip-variant {
+
+  --mds-input-tip-background: var(--mds-input-icon-color);
+}
+
+.read-only {
+  background-color: theme('colors.status-info-05');
+  color: theme('colors.status-info-09');
+}
+
+.required {
+  @apply
+    p-0
+    w-3;
+
+  background-color: theme('colors.status-error-05');
+  color: theme('colors.status-error-05');
+}
+
+.disabled {
+  @apply bg-tone-neutral-05;
+}
+
+.input:focus + .required {
+  @apply w-24;
+
+  color: theme('colors.tone-neutral');
+}
+
+.icon {
+  @apply
+    left-3
+    top-3;
+
+  fill: rgb(var(--mds-input-icon-color));
+  position: absolute;
+}
+
+:host( :focus ) {
+
+  --mds-input-variant-color: 31 101 232; /* brand-maggioli-04 */
+}
+
+:host( [variant="info"] ) {
+
+  --mds-input-icon-color: 25 143 182; /* status-info-05 */
+  --mds-input-variant-color: 0 0 0;
+}
+
+:host( [variant="info"]:focus ) {
+
+  --mds-input-icon-color: 21 119 151; /* status-info-04 */
+  --mds-input-variant-color: 25 143 182; /* status-info-05 */
+}
+
+:host( [variant="success"] ) {
+
+  --mds-input-icon-color: 26 151 91; /* status-success-05 */
+  --mds-input-variant-color: 0 0 0;
+}
+
+:host( [variant="success"]:focus ) {
+
+  --mds-input-icon-color: 22 125 76; /* status-success-04 */
+  --mds-input-variant-color: 26 151 91; /* status-success-05 */
+}
+
+:host( [variant="warning"] ) {
+
+  --mds-input-icon-color: 168 126 0; /* status-warning-05 */
+  --mds-input-variant-color: 0 0 0;
+}
+
+:host( [variant="warning"]:focus ) {
+
+  --mds-input-icon-color: 139 104 0; /* status-warning-04 */
+  --mds-input-variant-color: 168 126 0; /* status-warning-05 */
+}
+
+:host( [variant="error"] ) {
+
+  --mds-input-icon-color: 234 77 73; /* status-error-05 */
+  --mds-input-variant-color: 0 0 0;
+}
+
+:host( [variant="error"]:focus ) {
+
+  --mds-input-icon-color: 215 29 25; /* status-error-04 */
+  --mds-input-variant-color: 234 77 73; /* status-error-05 */
+}

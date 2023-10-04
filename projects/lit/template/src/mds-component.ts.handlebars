@@ -3,9 +3,14 @@ import globalStyles from './mds-input.css?inline'
 import { AutocompleteType } from '@stencil-type/autocomplete'
 import { InputTextType } from '@stencil-type/input-text-type'
 import { InputValueType } from '@stencil-type/input-value-type'
-import { ThemeStatusVariantType } from '@stencil-type/variant'
 import { LitElement, html, unsafeCSS, nothing } from 'lit'
 import { customElement, property, query, state } from 'lit/decorators.js'
+
+export type ThemeStatusVariantType =
+  | 'error'
+  | 'info'
+  | 'success'
+  | 'warning'
 
 @customElement('mds-input')
 export class MdsInput extends LitElement {

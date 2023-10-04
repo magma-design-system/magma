@@ -3,11 +3,38 @@
   "version": "1.0.0",
   "description": "Lit form-related web-components library for the Maggioli Design System",
   "scripts": {
+    "storybook.start": "storybook dev -p 6007",
+    "generate": "npx ts-node --skipProject ./scripts/generate-component.ts",
+    "generate-lit": "yarn create vite my-vue-app --template vue",
     "lint-ts": "eslint --config ./.eslintrc.js components/**/*.ts"
   },
   "dependencies": {
-    "eslint-plugin-lit": "^1.8.3",
-    "eslint-plugin-wc": "^1.5.0"
+    "@babel/core": "^7.23.0",
+    "@maggioli-design-system/mds-icon": "^2.5.2",
+    "@maggioli-design-system/mds-text": "^3.4.2",
+    "@maggioli-design-system/styles": "^11.7.0",
+    "@storybook/addon-actions": "^7.4.6",
+    "@storybook/addon-essentials": "^7.4.6",
+    "@storybook/addon-links": "^7.4.6",
+    "@storybook/builder-vite": "^7.4.6",
+    "@storybook/web-components": "^7.4.6",
+    "@storybook/web-components-vite": "^7.4.6",
+    "autoprefixer": "^10.4.14",
+    "babel-loader": "^8.3.0",
+    "clsx": "^2.0.0",
+    "eslint-plugin-lit": "^1.9.1",
+    "eslint-plugin-wc": "^2.0.4",
+    "handlebars": "^4.7.8",
+    "lit": "^2.8.0",
+    "lit-html": "^2.8.0",
+    "postcss": "^8.4.31",
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0",
+    "storybook": "^7.4.6",
+    "tailwindcss": "^3.3.3",
+    "ts-node": "^10.9.1",
+    "typescript": "^5.2.2",
+    "vite": "^4.4.11"
   },
   "keywords": [
     "web-component",
@@ -18,5 +45,12 @@
     "name": "Andrea Pruccoli",
     "email": "andrea.pruccoli@maggioli.it"
   },
+  "contributors": [
+    {
+      "name": "Vittorio Vittori",
+      "email": "vittorio.vittori@maggioli.it",
+      "role": "Product Designer"
+    }
+  ],
   "license": "MIT"
 }
