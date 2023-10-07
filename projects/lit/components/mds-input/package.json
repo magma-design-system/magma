@@ -14,7 +14,7 @@
     "readme.md"
   ],
   "scripts": {
-    "dev": "vite",
+    "dev": "tsc && vite --watch build",
     "build": "tsc && vite build"
   },
   "dependencies": {

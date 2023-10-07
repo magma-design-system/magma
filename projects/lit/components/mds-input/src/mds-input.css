@@ -19,7 +19,7 @@
   --mds-input-icon-color: var(--mds-input-variant-color);
   --mds-input-tip-background: 84 84 84;
   --mds-input-ring: 0 0 0 1px rgb(var(--mds-input-variant-color) / 0.1);
-  --mds-input-shadow: 0 1px 3px 0 rgb(var(--mds-input-variant-color) / 0.1), 0 1px 2px 0 rgb(var(--mds-input-variant-color) 0.06);
+  --mds-input-shadow: 0 1px 3px 0 rgb(var(--mds-input-variant-color) / 0.1), 0 1px 2px 0 rgb(var(--mds-input-variant-color) / 0.06);
   --mds-input-variant-color: 0 0 0;
 
   @apply text-info-detail;
@@ -69,9 +69,9 @@ textarea.input {
     duration-300
     ease-out-expo;
 
-    --mds-input-ring: 0 0 0 3px rgb(var(--mds-input-variant-color) / 1);
-    --mds-input-shadow: 0 4px 6px -1px rgb(var(--mds-input-variant-color) / 0.1), 0 2px 4px -1px rgb(var(--mds-input-variant-color) / 0.06);
-  }
+  --mds-input-ring: 0 0 0 3px rgb(var(--mds-input-variant-color) / 1);
+  --mds-input-shadow: 0 4px 6px -1px rgb(var(--mds-input-variant-color) / 0.1), 0 2px 4px -1px rgb(var(--mds-input-variant-color) / 0.06);
+}
 
 .input:disabled {
   background-color: theme('colors.tone-neutral-10');
@@ -121,7 +121,7 @@ textarea.input {
     w-3;
 
   background-color: theme('colors.status-error-05');
-  color: theme('colors.status-error-05');
+  color: theme('colors.tone-neutral');
 }
 
 .disabled {

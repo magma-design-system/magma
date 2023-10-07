@@ -251,7 +251,7 @@ export class MdsInput extends LitElement {
 
     return html`
       <datalist id="datalist" class="datalist">
-        ${datalist.map((element: string) => html`<option value="${element}" />`)}
+        ${datalist.map((element: string) => html`<option value="${element}"></option>`)}
       </datalist>
     `
   }
@@ -293,6 +293,7 @@ export class MdsInput extends LitElement {
     const datalist = this.buildDatalist()
 
     return html`
+      <mds-text typography="option">prova di testo</mds-text>
       ${input}
       ${this.required && !this.readonly ? html`
         <mds-text typography="option" class="tip top-1 required">Obbligatorio</mds-text>
@@ -308,7 +309,7 @@ export class MdsInput extends LitElement {
       ` : ''}
       ${datalist}
       ${this.icon ? html`
-        <mds-icon class="${clsx('icon', this.variant)}" name="${this.icon}"/>
+        <mds-icon class="${clsx('icon', this.variant)}" name="${this.icon}"></mds-icon>
       ` : ''}
     `
   }
