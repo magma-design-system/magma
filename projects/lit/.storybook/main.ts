@@ -1,7 +1,8 @@
-const { mergeConfig } = require('vite')
-const { resolve } = require('path')
+import { mergeConfig, UserConfig } from 'vite'
+import { resolve } from 'path'
+import type { StorybookConfig } from '@storybook/web-components-vite';
 
-module.exports = {
+const config: StorybookConfig = {
   stories: [
     '../components/mds-*/src/**/*.stories.@(js|jsx|ts|tsx)'
   ],
@@ -17,17 +18,22 @@ module.exports = {
     options: {}
   },
   features: {
-    storyStoreV7: true
+    storyStoreV7: false
   },
   async viteFinal(config, {
     configType
   }) {
     return mergeConfig(config, {
+      optimizeDeps: {
+        include: ['doctrine'], // https://github.com/storybookjs/storybook/issues/21523
+        disabled: true,
+      },
       resolve: {
         alias: {
           '@component/*': resolve(__dirname, '../components/*'),
           '@placeholder': resolve(__dirname, 'https://via.placeholder.com'),
           '@stencil-common/*': resolve(__dirname, '../../stencil/src/common/*'),
+          '@stencil-dist/*': resolve(__dirname, '../../stencil/dist/*'),
           '@stencil-component/*': resolve(__dirname, '../../stencil/src/components/*'),
           '@stencil-dictionary': resolve(__dirname, '../../stencil/src/dictionary/'),
           '@stencil-fixture/*': resolve(__dirname, '../../stencil/src/fixtures/*'),
@@ -40,5 +46,11 @@ module.exports = {
   },
   docs: {
     autodocs: true
-  }
+  },
+  staticDirs : [
+    resolve(__dirname, '../../stencil/assets'),
+    resolve(__dirname, '../../stencil/dist'),
+  ],
 }
+
+export default config

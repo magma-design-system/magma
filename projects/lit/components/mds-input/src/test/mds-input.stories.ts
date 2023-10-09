@@ -9,8 +9,6 @@ import { ThemeStatusVariantType } from '@stencil-type/variant'
 
 import '../../dist/mds-input'
 
-import clsx from 'clsx'
-
 export default {
   title: 'Form / Input',
   argTypes: {
@@ -139,9 +137,9 @@ interface MdsInputArgs {
 
 const Template = (args: MdsInputArgs) =>
   html`<mds-input
-    class=${clsx('input', args.icon && 'has-icon')}
     list=${args.datalist ? 'datalist' : nothing}
     .autoComplete=${args.autocomplete ?? nothing}
+    .icon=${args.icon ?? nothing}
     .max=${args.max ?? nothing}
     .maxLength=${args.maxLength ?? nothing}
     .min=${args.min ?? nothing}
@@ -159,12 +157,7 @@ const Template = (args: MdsInputArgs) =>
     ?disabled=${args.disabled ?? nothing}
     ?readOnly=${args.readOnly ?? nothing}
     ?required=${args.required ?? nothing}
-  ></mds-input>
-  ${args.datalist && args.datalist.length > 0 ? html`
-    <datalist id="datalist" class="datalist">
-      ${args.datalist.map((element: string) => html`<option value="${element}" />`)}
-    </datalist>
-  ` : ''}`
+  ></mds-input>`
 
 export const Default = Template.bind({})
 // Default.args = {

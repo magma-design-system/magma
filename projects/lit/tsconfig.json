@@ -22,6 +22,7 @@
       "@stencil-common/*": ["../stencil/src/common/*"],
       "@stencil-component/*": ["../stencil/src/components/*"],
       "@stencil-dictionary/*": ["../stencil/src/dictionary/*"],
+      "@stencil-dist/*": ["../stencil/dist/*"],
       "@stencil-fixture/*": ["../stencil/src/fixtures/*"],
       "@stencil-icon/*": ["../stencil/assets/svg/*"],
       "@stencil-interface/*": ["../stencil/src/interface/*"],

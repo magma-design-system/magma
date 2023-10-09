@@ -3,7 +3,7 @@
   "version": "1.0.0",
   "description": "Lit form-related web-components library for the Maggioli Design System",
   "scripts": {
-    "storybook.start": "storybook dev -p 6007",
+    "storybook.start": "nx run stencil:build && storybook dev -p 6007",
     "generate": "npx ts-node --skipProject ./scripts/generate-component.ts",
     "generate-lit": "yarn create vite my-vue-app --template vue",
     "lint-ts": "eslint --config ./.eslintrc.js components/**/*.ts"
