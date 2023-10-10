@@ -1,0 +1,11 @@
+{
+  "root": false,
+  "extends": [
+    "../../.eslintrc.json"
+  ],
+  "rules": {
+    "no-unused-vars": "off",
+    "no-plusplus": "off",
+    "prefer-destructuring":"off"
+  }
+}
