@@ -59,8 +59,11 @@ interface Variable {
   codeSyntax?: CodeSyntax;
 }
 
+const capitalizeFirstLetter = (value: string): string =>
+  value.charAt(0).toUpperCase() + value.slice(1)
 
-function generateFigmaTokens (nameCollection: string, tokens) {
+
+const generateFigmaTokens = (nameCollection: string, tokens) => {
   const lightMode = 'light'
   const darkMode = 'dark'
 
@@ -82,7 +85,7 @@ function generateFigmaTokens (nameCollection: string, tokens) {
   writeFile(`${DIST_DIR}/json/figma-${nameCollection.toLocaleLowerCase().replace(/\s/g, '-')}.json`, JSON.stringify(collection))
 }
 
-function buildVariables (tokens): Map<string, Variable> {
+const buildVariables = (tokens): Map<string, Variable> => {
   const variables: Map<string, Variable> = new Map()
 
   /**
@@ -110,8 +113,11 @@ function buildVariables (tokens): Map<string, Variable> {
     Object.entries(group[1]).forEach(name => {
       Object.entries(name[1]).forEach(lightMode => {
         Object.entries(lightMode[1]).forEach(palette => {
-          const paletteId = palette[0]
-          const paletteUID = `${group[0]}:${name[0]}:${paletteId}`
+          let paletteId: string|number = palette[0]
+          if (!isNaN(parseInt(paletteId)) && parseInt(paletteId) < 10) {
+            paletteId = `0${paletteId}`
+          }
+          const paletteUID = `${capitalizeFirstLetter(group[0])}:${capitalizeFirstLetter(name[0])}:${paletteId}`
 
           const colorRGB = hexToRgbA(palette[1].value)
           if (!variables.get(paletteUID)) {
@@ -145,7 +151,7 @@ function buildVariables (tokens): Map<string, Variable> {
   return variables
 }
 
-function hexToRgbA (hex: string): Color {
+const hexToRgbA = (hex: string): Color => {
   let c
   if (/^#([A-Fa-f0-9]{3}){1,2}$/.test(hex)) {
     c = hex.substring(1).split('')
