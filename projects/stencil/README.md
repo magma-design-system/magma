@@ -90,3 +90,14 @@ nx run stencil:test.regression.clean
 ---
 
 
+### Updating package version
+
+```
+nx run stencil:update.version {major | minor | patch} {component | all}
+```
+
+### Update component dependencies
+
+```
+nx run stencil:update.dependencies {component | all}
+```
