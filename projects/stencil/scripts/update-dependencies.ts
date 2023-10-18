@@ -55,6 +55,9 @@ function updateComponentDependencies (nameComponent: string) {
       // rewrite file only if dependencies have been updated
       if (updated){
         writeFile(componentPackage, `${JSON.stringify(json, null, 2)}\n`)
+        console.log(`${nameComponent}: updated dependencies`)
+      } else {
+        console.log(`${nameComponent}: already with updated dependencies, nothing to do`)
       }
     })
 }
@@ -70,8 +73,9 @@ function getMDSDependenciesPackageWithVersion (json: any): Map<string, string> {
 }
 
 async function main () {
-  const component = process.argv[2] ?? 'all'
-  if (component === 'all') {
+  const component = process.argv.slice(2)
+
+  if (component[0] === 'all') {
     const continueTask = await ask('Continue to update ALL components?', { options: ['Y', 'n', ''] })
 
     if (continueTask === 'n') {
@@ -86,7 +90,7 @@ async function main () {
         })
     })
   } else {
-    updateComponentDependencies(component)
+    component.forEach(updateComponentDependencies)
   }
 }
 main()

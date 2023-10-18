@@ -18,13 +18,14 @@ function update (version: string, component: string) {
 }
 
 function main () {
-  const [,, v, component = 'all'] = process.argv
+  const [,, v, ...component] = process.argv
 
   if (!v) {
     console.log('verificare la versione inserita')
     return 1
   }
-  if (component === 'all') {
+  console.log(component)
+  if (component[0] === 'all') {
     readdir(COMPONENTS_DIR, { withFileTypes: true }).then(dirs => {
       dirs
         .filter(dir => dir.isDirectory())
@@ -33,7 +34,7 @@ function main () {
         })
     })
   } else {
-    update(v, component)
+    component.forEach(c => update(v, c))
   }
 }
 main()
