@@ -96,8 +96,85 @@ nx run stencil:test.regression.clean
 nx run stencil:update.version {major | minor | patch} {component | all}
 ```
 
+Assuming we have a `mds-foo` to default version `1.0.0`, if you run:
+
+```
+nx run stencil:update.version major mds-foo
+```
+
+Will become:
+
+```json
+{
+  "name": "@maggioli-design-system/mds-foo",
+  "version": "2.0.0"
+}
+```
+
+Assuming we have a `mds-foo` to default version `1.0.0`, if you run:
+
+```
+nx run stencil:update.version minor mds-foo
+```
+
+Will become:
+
+```json
+{
+  "name": "@maggioli-design-system/mds-foo",
+  "version": "1.1.0"
+}
+```
+
+Assuming we have a `mds-foo` to default version `1.0.0`, if you run:
+
+```
+nx run stencil:update.version patch mds-foo
+```
+
+Will become:
+
+```json
+{
+  "name": "@maggioli-design-system/mds-foo",
+  "version": "1.0.1"
+}
+```
+
 ### Update component dependencies
 
 ```
 nx run stencil:update.dependencies {component | all}
+```
+
+Assuming we have a `mds-foo` to default version `1.0.0`, with two dependencies to be updated to `mds-dep-1@1.3.1` and `mds-dep-2@1.1.2`, if you run:
+
+```
+nx run stencil:update.dependencies mds-foo
+```
+
+Old dependencies:
+
+```json
+{
+  "name": "@maggioli-design-system/mds-foo",
+  "version": "1.0.0",
+  "dependencies": {
+    "@maggioli-design-system/mds-dep-1": "^1.2.0",
+    "@maggioli-design-system/mds-dep-2": "^1.0.0"
+  }
+}
+```
+
+Will be updated to:
+
+```json
+{
+  "name": "@maggioli-design-system/mds-foo",
+  "version": "1.0.0",
+  "dependencies": {
+    "@maggioli-design-system/mds-dep-1": "^1.3.1",
+    "@maggioli-design-system/mds-dep-2": "^1.1.2"
+  }
+}
 ```
