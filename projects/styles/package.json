@@ -41,18 +41,18 @@
   ],
   "license": "ISC",
   "dependencies": {
-    "@fontsource/karla": "^5.0.11",
-    "@fontsource/merriweather": "^5.0.8",
-    "@fontsource/roboto": "^5.0.8",
-    "@fontsource/roboto-mono": "^5.0.8",
-    "@maggioli-design-system/design-tokens": "^10.7.0",
-    "normalize.css": "^8.0.1"
+    "@fontsource/karla": "5.0.15",
+    "@fontsource/merriweather": "5.0.8",
+    "@fontsource/roboto": "5.0.8",
+    "@fontsource/roboto-mono": "5.0.13",
+    "@maggioli-design-system/design-tokens": "10.7.0",
+    "normalize.css": "8.0.1"
   },
   "devDependencies": {
-    "autoprefixer": "^10.4.13",
-    "postcss-cli": "^10.1.0",
-    "postcss": "^8.4.19",
-    "postcss-import": "^15.0.1",
-    "tailwindcss": "^3.2.4"
+    "autoprefixer": "10.4.16",
+    "postcss-cli": "10.1.0",
+    "postcss": "8.4.31",
+    "postcss-import": "15.1.0",
+    "tailwindcss": "3.3.3"
   }
 }

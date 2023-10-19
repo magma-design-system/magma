@@ -35,7 +35,7 @@ export default {
 
 const Template = args =>
   <mds-chip {...args}
-    onDelete={() => { console.log('onDelete') }}
+    onDelete={() => { console.info('onDelete') }}
   />
 
 export const Default = Template.bind({})

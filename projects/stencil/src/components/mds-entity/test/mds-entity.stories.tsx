@@ -26,8 +26,8 @@ const Template = args =>
     <mds-text aria-label="Nome" typography="h6">Mario Rossi</mds-text>
     <mds-badge aria-label="Carattere" slot="detail" variant="orange" tone="quiet">buono</mds-badge>
     <mds-text aria-label="Email" slot="detail" typography="caption">mario@nintendo.com</mds-text>
-    <mds-button onClick={() => { console.log('Restore') }} slot="action" icon="mdi/replay" variant="primary" tone="strong" title="Restore"/>
-    <mds-button onClick={() => { console.log('Delete') }} slot="action" icon="mdi/delete" variant="error" tone="strong" title="Delete"/>
+    <mds-button onClick={() => { console.info('Restore') }} slot="action" icon="mdi/replay" variant="primary" tone="strong" title="Restore"/>
+    <mds-button onClick={() => { console.info('Delete') }} slot="action" icon="mdi/delete" variant="error" tone="strong" title="Delete"/>
   </mds-entity>
 
 const TemplateLocation = args =>

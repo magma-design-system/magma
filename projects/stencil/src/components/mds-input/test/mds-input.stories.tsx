@@ -177,13 +177,13 @@ const FormIntegration = (args: any) => (
       const form = document.querySelector('form') as HTMLFormElement
       const mdsInput = document.querySelector('mds-input') as HTMLMdsInputElement
 
-      console.log('Input', input)
-      console.log('Form', form)
-      console.log('Form elements', form.elements)
-      console.log('MdsInput', mdsInput)
+      console.info('Input', input)
+      console.info('Form', form)
+      console.info('Form elements', form.elements)
+      console.info('MdsInput', mdsInput)
 
       mdsInput.getInputElement().then((inputElement: HTMLInputElement) => {
-        console.log('MdsInput input element', inputElement)
+        console.info('MdsInput input element', inputElement)
       })
 
       input.addEventListener('input', (e: Event) => { console.error('Input', (e.target as HTMLInputElement).value)})
