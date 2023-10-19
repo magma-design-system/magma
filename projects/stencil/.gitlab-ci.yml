@@ -1,15 +1,6 @@
-# STENCIL CACHE
-.stencil-cache:
-  cache:
-    key:
-      files:
-        - yarn.lock
-      prefix: "${CI_PROJECT_NAME}-stencil"
-    policy: pull
-
 # COMMON STENCIL BUILD
 base-stencil-build:
-  extends: [.base-build, .stencil-cache]
+  extends: [.base-build]
   variables:
     COMPONENT: to_be_extended
     BUILD_DIR: projects/stencil/.build/$COMPONENT
@@ -42,7 +33,7 @@ base-stencil-build:
         - .deploy/**/*
 
 stencil-storybook-build:
-  extends: [.base-build, .stencil-cache]
+  extends: [.base-build]
   stage: build:storybook
   dependencies: [base-stencil-build]
   needs: [base-stencil-build]
@@ -98,7 +89,7 @@ stencil-test:
 
 # BASE STENCIL PUBLISH TEST
 .base-stencil-publish-test:
-  extends: [.base-publish-test, .stencil-cache]
+  extends: [.base-publish-test]
   stage: test
   variables:
     BUILD_DIR: projects/stencil/.build/$COMPONENT
@@ -109,7 +100,7 @@ stencil-test:
 
 # BASE STENCIL PUBLISH
 .base-stencil-publish:
-  extends: [.base-publish, .stencil-cache]
+  extends: [.base-publish]
   dependencies: [base-stencil-build]
   stage: publish
   variables:
@@ -121,7 +112,7 @@ stencil-test:
 
 # BASE STENCIL PUBLISH TEST
 .base-stencil-install-test:
-  extends: [.base-install-test, .stencil-cache]
+  extends: [.base-install-test]
   variables:
     BUILD_DIR: projects/stencil/.build/$COMPONENT
     PACK_NAME: maggioli-design-system-${COMPONENT}-*.tgz

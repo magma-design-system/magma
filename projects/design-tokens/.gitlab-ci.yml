@@ -1,15 +1,6 @@
-# DESIGN TOKENS CACHE
-.design-tokens-cache:
-  cache:
-    key:
-      files:
-        - yarn.lock
-      prefix: "${CI_PROJECT_NAME}-design-tokens"
-    policy: pull
-
 # DESIGN TOKENS BUILD
 design-tokens-build:
-  extends: [.base-build, .design-tokens-cache]
+  extends: [.base-build]
   script:
     - nx run design-tokens:build
   artifacts:
@@ -28,7 +19,7 @@ design-tokens-build:
 
 # DESIGN TOKENS PUBLISH TEST
 design-tokens-publish-test:
-  extends: [.base-publish-test, .design-tokens-cache]
+  extends: [.base-publish-test]
   dependencies: [design-tokens-build]
   stage: test
   variables:
@@ -41,7 +32,7 @@ design-tokens-publish-test:
 
 # DESIGN TOKENS PUBLISH
 design-tokens-publish:
-  extends: [.base-publish, .design-tokens-cache]
+  extends: [.base-publish]
   dependencies: [design-tokens-build]
   needs: [design-tokens-publish-test, design-tokens-build]
   stage: publish
@@ -54,7 +45,7 @@ design-tokens-publish:
 
 # DESIGN INSTALL TEST
 design-tokens-install-test:
-  extends: [.base-install-test, .design-tokens-cache]
+  extends: [.base-install-test]
   needs: [design-tokens-publish]
   variables:
     BUILD_DIR: projects/design-tokens

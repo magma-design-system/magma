@@ -1,15 +1,6 @@
-# ICONS CACHE
-.icons-cache:
-  cache:
-    key:
-      files:
-        - yarn.lock
-      prefix: "${CI_PROJECT_NAME}-icons"
-    policy: pull
-
 # ICONS BUILD
 icons-build:
-  extends: [.base-build, .icons-cache]
+  extends: [.base-build]
   script:
     - nx run icons:build
   artifacts:
@@ -26,7 +17,7 @@ icons-build:
 
 # ICONS PUBLISH TEST
 icons-publish-test:
-  extends: [.base-publish-test, .icons-cache]
+  extends: [.base-publish-test]
   dependencies: [icons-build]
   stage: test
   variables:
@@ -39,7 +30,7 @@ icons-publish-test:
 
 # ICONS PUBLISH
 icons-publish:
-  extends: [.base-publish, .icons-cache]
+  extends: [.base-publish]
   dependencies: [icons-build]
   needs: [icons-publish-test, icons-build]
   stage: publish
@@ -52,7 +43,7 @@ icons-publish:
 
 # ICONS INSTALL TEST
 icons-install-test:
-  extends: [.base-install-test, .icons-cache]
+  extends: [.base-install-test]
   needs: [icons-publish]
   variables:
     BUILD_DIR: projects/icons

@@ -1,31 +1,9 @@
-# STYLES CACHE
-.styles-cache:
-  cache:
-    key:
-      files:
-        - yarn.lock
-      prefix: "${CI_PROJECT_NAME}-styles"
-    policy: pull
-
 # STYLES BUILD
 styles-build:
-  extends: [.base-build, .styles-cache]
+  extends: [.base-build]
   script:
     - nx run design-tokens:build
     - nx run styles:build
-    - ls
-    - ls ./projects/design-tokens
-    - ls ./projects/styles
-    - |
-      if [[ ! -d ./projects/styles/dist/ ]]; then
-        echo "STYLES DIST DOES NOT EXIST"
-        exit 128
-      fi
-    - |
-      if [[ ! -d ./projects/design-tokens/dist/ ]]; then
-        echo "DESIGN-TOKENS DIST DOES NOT EXIST"
-        exit 128
-      fi
   artifacts:
     name: styles-build
     expire_in: 1 day
@@ -43,7 +21,7 @@ styles-build:
 
 # STYLES PUBLISH TEST
 styles-publish-test:
-  extends: [.base-publish-test, .styles-cache]
+  extends: [.base-publish-test]
   dependencies: [styles-build]
   stage: test
   variables:
@@ -57,7 +35,7 @@ styles-publish-test:
 
 # STYLES PUBLISH
 styles-publish:
-  extends: [.base-publish, .styles-cache]
+  extends: [.base-publish]
   dependencies: [styles-build]
   needs: [styles-publish-test, styles-build]
   stage: publish
@@ -70,7 +48,7 @@ styles-publish:
 
 # STYLES INSTALL TEST
 styles-install-test:
-  extends: [.base-install-test, .styles-cache]
+  extends: [.base-install-test]
   needs: [styles-publish]
   variables:
     BUILD_DIR: projects/styles
