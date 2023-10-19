@@ -20,6 +20,23 @@
 | `mdsModalClose` | Emits when a modal is closed | `CustomEvent<void>` |
 
 
+## Slots
+
+| Slot        | Description                                                                                                                |
+| ----------- | -------------------------------------------------------------------------------------------------------------------------- |
+| `"bottom"`  | Contents that will be placed on bottom of the window. Add `text string`, `HTML elements` or `components` to this slot.     |
+| `"default"` | Contents that will be placed in the center of the window. Add `text string`, `HTML elements` or `components` to this slot. |
+| `"top"`     | Contents that will be placed on top of the window. Add `text string`, `HTML elements` or `components` to this slot.        |
+| `"window"`  | Use directly a window component if you need it. Add `text string`, `HTML elements` or `components` to this slot.           |
+
+
+## Shadow Parts
+
+| Part       | Description |
+| ---------- | ----------- |
+| `"window"` |             |
+
+
 ## CSS Custom Properties
 
 | Name                            | Description                                                                                                                                        |
@@ -47,4 +64,4 @@ graph TD;
 
 ----------------------------------------------
 
-Built with love @ **Maggioli Informatica / R&D Department**
+Built with love @ [Gruppo Maggioli](https://www.maggioli.com) from [R&D Department](https://www.maggioli.com/it-it/chi-siamo/ricerca-sviluppo)

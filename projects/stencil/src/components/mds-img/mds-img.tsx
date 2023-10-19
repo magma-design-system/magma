@@ -153,6 +153,7 @@ export class MdsImg {
           loading={this.loading}
           onError={this.onError}
           onLoad={this.onSuccess}
+          part="media"
           sizes={this.sizes}
           src={this.src}
           srcset={this.srcset}

@@ -4,6 +4,10 @@ import { MdsBreadcrumbEventDetail } from './meta/event-detail'
 import { MdsBreadcrumbItemEventDetail } from '@component/mds-breadcrumb-item/meta/event-detail'
 import { KeyboardManager } from '@common/keyboard-manager'
 
+/**
+ * @slot default - Add `mds-breadcrumb-item` element/s.
+ */
+
 @Component({
   tag: 'mds-breadcrumb',
   styleUrl: 'mds-breadcrumb.css',

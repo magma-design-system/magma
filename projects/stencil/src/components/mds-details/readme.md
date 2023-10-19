@@ -19,6 +19,23 @@
 | `mdsDetailsChange` | Emits when the component is opened | `CustomEvent<boolean>` |
 
 
+## Slots
+
+| Slot        | Description                                                                                                       |
+| ----------- | ----------------------------------------------------------------------------------------------------------------- |
+| `"action"`  | Add `HTML elements` or `components`, it is **recommended** to use `mds-button` element.                           |
+| `"default"` | Add `text string`, `HTML elements` or `components` to this slot.                                                  |
+| `"icon"`    | Insert an icon image, it can be `HTML elements` or `components`, it is **recommended** to add `mds-icon` element. |
+| `"title"`   | Add a `text string`, `HTML elements` or `components`, it is **recommended** to use `mds-text` element.            |
+
+
+## Shadow Parts
+
+| Part         | Description |
+| ------------ | ----------- |
+| `"contents"` |             |
+
+
 ## CSS Custom Properties
 
 | Name                              | Description                                         |
@@ -29,4 +46,4 @@
 
 ----------------------------------------------
 
-Built with love @ **Maggioli Informatica / R&D Department**
+Built with love @ [Gruppo Maggioli](https://www.maggioli.com) from [R&D Department](https://www.maggioli.com/it-it/chi-siamo/ricerca-sviluppo)

@@ -23,9 +23,6 @@
       "@common/*": [
         "src/common/*"
       ],
-      "@component-dist/*": [
-        "dist/collection/components/*"
-      ],
       "@component/*": [
         "src/components/*"
       ],

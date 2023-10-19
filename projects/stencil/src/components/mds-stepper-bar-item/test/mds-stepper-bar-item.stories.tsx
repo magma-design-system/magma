@@ -40,20 +40,20 @@ export default {
 
 const Template = args =>
   <mds-stepper-bar items-done={0}>
-    <mds-stepper-bar-item icon-checked="mi/baseline/done" icon="mi/baseline/agriculture" text="First"/>
-    <mds-stepper-bar-item icon-checked="mi/baseline/done" icon="mi/baseline/adobe" text="Second"/>
+    <mds-stepper-bar-item icon-checked="mi/baseline/done" icon="mi/baseline/agriculture" label="First"/>
+    <mds-stepper-bar-item icon-checked="mi/baseline/done" icon="mi/baseline/adobe" label="Second"/>
     <mds-stepper-bar-item icon-checked="mi/baseline/done" {...args}/>
-    <mds-stepper-bar-item icon-checked="mi/baseline/done" icon="mi/baseline/css" text="Forth"/>
-    <mds-stepper-bar-item icon-checked="mi/baseline/done" icon="mdi/baseball" text="Fifth"/>
+    <mds-stepper-bar-item icon-checked="mi/baseline/done" icon="mi/baseline/css" label="Forth"/>
+    <mds-stepper-bar-item icon-checked="mi/baseline/done" icon="mdi/baseball" label="Fifth"/>
   </mds-stepper-bar>
 
 const TemplateDone = args =>
   <mds-stepper-bar items-done={3}>
-    <mds-stepper-bar-item done icon="mi/baseline/agriculture" icon-checked={args['icon-checked']} text="First"/>
-    <mds-stepper-bar-item done icon="mi/baseline/adobe" icon-checked={args['icon-checked']} text="Second"/>
+    <mds-stepper-bar-item done icon="mi/baseline/agriculture" icon-checked={args['icon-checked']} label="First"/>
+    <mds-stepper-bar-item done icon="mi/baseline/adobe" icon-checked={args['icon-checked']} label="Second"/>
     <mds-stepper-bar-item {...args}/>
-    <mds-stepper-bar-item icon="mi/baseline/css" text="Forth"/>
-    <mds-stepper-bar-item icon="mi/baseline/local-activity" text="Fifth"/>
+    <mds-stepper-bar-item icon="mi/baseline/css" label="Forth"/>
+    <mds-stepper-bar-item icon="mi/baseline/local-activity" label="Fifth"/>
   </mds-stepper-bar>
 
 // mi_baseline_local-activity
@@ -61,7 +61,7 @@ const TemplateDone = args =>
 
 const defaultArgs = {
   icon: 'mi/baseline/book',
-  text: 'Third',
+  label: 'Third',
 }
 
 export const Default = Template.bind({})

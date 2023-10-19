@@ -5,19 +5,19 @@
 <!-- Auto Generated Below -->
 
 
-## Properties
-
-| Property    | Attribute   | Description                                                                                                                        | Type                     | Default     |
-| ----------- | ----------- | ---------------------------------------------------------------------------------------------------------------------------------- | ------------------------ | ----------- |
-| `direction` | `direction` | Sets the direction where tab contents swipes                                                                                       | `"natural" \| "reverse"` | `'natural'` |
-| `strategy`  | `strategy`  | Sets component's contents to be swappable on mobile devices, this will result in forcing direction attribute to be se to 'natural' | `"default" \| "scroll"`  | `'default'` |
-
-
 ## Events
 
 | Event          | Description                      | Type                             |
 | -------------- | -------------------------------- | -------------------------------- |
 | `mdsTabChange` | Emits when a children is changed | `CustomEvent<MdsTabEventDetail>` |
+
+
+## Slots
+
+| Slot        | Description                                                      |
+| ----------- | ---------------------------------------------------------------- |
+| `"content"` | Add `HTML elements` or `components`, one per mds-tab-item added. |
+| `"default"` | Add `mds-tab-item` element/s.                                    |
 
 
 ## Shadow Parts
@@ -30,11 +30,12 @@
 
 ## CSS Custom Properties
 
-| Name                 | Description                                                                         |
-| -------------------- | ----------------------------------------------------------------------------------- |
-| `--mds-tab-duration` | Sets the animation duration when the component switch from a content to another one |
+| Name                        | Description                                                                                                                      |
+| --------------------------- | -------------------------------------------------------------------------------------------------------------------------------- |
+| `--mds-tab-duration`        | Sets the animation duration on how the contents height is resized when the component switch from a content to another one        |
+| `--mds-tab-timing-function` | Sets the animation timing function on how the contents height is resized when the component switch from a content to another one |
 
 
 ----------------------------------------------
 
-Built with love @ **Maggioli Informatica / R&D Department**
+Built with love @ [Gruppo Maggioli](https://www.maggioli.com) from [R&D Department](https://www.maggioli.com/it-it/chi-siamo/ricerca-sviluppo)

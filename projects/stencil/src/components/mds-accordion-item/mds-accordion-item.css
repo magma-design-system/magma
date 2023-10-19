@@ -1,102 +1,110 @@
-@import '../../tailwind/components.css';
+@import url('../../tailwind/components.css');
 @tailwind components;
 @tailwind utilities;
 
 /**
-* @prop --mds-accordion-item-border-color: Sets the border-color of the element
-* @prop --mds-accordion-item-color: Sets the text-color of the element
+* @prop --mds-accordion-item-border-color: Sets the border-color of the component
+* @prop --mds-accordion-item-border-width: Sets the border-width of the separators of the component
+* @prop --mds-accordion-item-color: Sets the text-color of the component
 * @prop --mds-accordion-item-description-color: Sets the color of the always visible title description
+* @prop --mds-accordion-item-duration: Sets the transition duration of the close/open animation of the component
+* @prop --mds-accordion-item-padding-selected: Sets the vertical padding of the component when it's selected
+* @prop --mds-accordion-item-padding-unselected: Sets the vertical padding of the component when it's unselected
 */
 
 :host {
 
-  --mds-accordion-item-border-color: theme('colors.tone-neutral-08');
-  --mds-accordion-item-color: theme('colors.tone-neutral-03');
-  --mds-accordion-item-description-color: theme('colors.tone-neutral-02');
+  --mds-accordion-item-border-color: var(--mds-accordion-border-color, theme('colors.tone-neutral-08'));
+  --mds-accordion-item-border-width: var(--mds-accordion-border-width, 2px);
+  --mds-accordion-item-color: var(--mds-accordion-color, theme('colors.tone-neutral-03'));
+  --mds-accordion-item-description-color: var(--mds-accordion-description-color, theme('colors.tone-neutral-02'));
+  --mds-accordion-item-duration: var(--mds-accordion-duration, 300ms);
+  --mds-accordion-item-padding-selected: var(--mds-accordion-padding-selected, theme('spacing.4') 0 theme('spacing.8') 0);
+  --mds-accordion-item-padding-unselected: var(--mds-accordion-padding-unselected, theme('spacing.4') 0 theme('spacing.4') 0);
 
   @apply
     duration-500
     ease-out-expo
-    grid
-    py-4
-    relative
     transition-cosmetic;
 
-  border-bottom: solid 2px transparent !important;
-  border-top: solid 2px transparent !important;
+  border-bottom: solid var(--mds-accordion-item-border-width) transparent;
+  border-top: solid var(--mds-accordion-item-border-width) transparent;
   color: var(--mds-accordion-item-color);
+  display: grid;
   fill: var(--mds-accordion-item-color);
-  margin-bottom: -2px;
+  margin-top: calc(-1 * var(--mds-accordion-item-border-width));
+  padding: var(--mds-accordion-item-padding-unselected);
+  position: relative;
+}
+
+:host(:first-child) {
+  margin-top: 0;
 }
 
 :host( [selected] ) {
-  @apply
-    my-4
-    py-8;
-
-  border-bottom: solid 2px var(--mds-accordion-item-border-color) !important;
-  border-top: solid 2px var(--mds-accordion-item-border-color) !important;
-}
-
-:host( .sibling[selected] ) {
-  @apply -mt-[1.125rem];
-
-  border-top-color: transparent !important;
+  padding: var(--mds-accordion-item-padding-selected);
+  border-bottom: solid var(--mds-accordion-item-border-width) var(--mds-accordion-item-border-color);
+  border-top: solid var(--mds-accordion-item-border-width) var(--mds-accordion-item-border-color);
 }
 
 :host( [selected]:first-child ) {
   @apply mt-0;
 
-  border-top-color: transparent !important;
+  border-top-color: transparent;
 }
 
 :host( [selected]:last-child ) {
   @apply mb-0;
 
-  border-bottom-color: transparent !important;
+  border-bottom-color: transparent;
 }
 
 .action {
   @apply
-    auto-cols-min
-    bg-transparent
-    border-none
-    cursor-pointer
     gap-4
-    grid
-    p-0
-    rounded-lg
-    text-left;
+    rounded-lg;
 
+  background-color: transparent;
+  border: 0;
   color: var(--mds-accordion-item-description-color);
-  grid-template-columns: 1fr auto;
+  cursor: pointer;
+  display: grid;
+  grid-auto-columns: min-content;
+  grid-template-columns: auto 24px;
+  padding: 0;
+  text-align: left;
 }
 
 .icon-button {
-  @apply
-    block
-    font-normal;
+  @apply font-normal;
+
+  display: block;
 }
 
 .contents {
   @apply
-    duration-300
-    ease-out-quad
-    gap-4
-    flex
-    flex-col
-    h-0
-    opacity-0
-    overflow-hidden
-    pt-0
-    transition-cosmetic;
+    ease-in-out-expo
+    gap-4;
+
+  display: grid;
+  grid-template-rows: 0fr;
+  min-height: 0;
+  opacity: 0;
+  overflow: hidden;
+  padding-top: 0;
+  transition-duration: var(--mds-accordion-item-duration);
+  transition-property: grid-template-rows opacity padding;
+}
+
+.contents-expander {
+  min-height: 0;
 }
 
 :host( [selected] ) .contents {
-  @apply
-    h-auto
-    opacity-100
-    pt-4;
+  @apply pt-4;
+
+  grid-template-rows: 1fr;
+  opacity: 1;
 }
 
 .icon {

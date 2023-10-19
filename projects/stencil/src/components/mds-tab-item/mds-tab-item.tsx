@@ -1,6 +1,10 @@
+import { Component, Element, Event, EventEmitter, Host, Prop, State, Watch, h } from '@stencil/core'
+import { ButtonIconPositionType, ButtonSizeType, ButtonType } from '@type/button'
 import clsx from 'clsx'
-import { ButtonIconPositionType, ButtonType, ButtonSizeType } from '@type/button'
-import { Component, Host, h, Element, Prop, State, Event, EventEmitter, Watch } from '@stencil/core'
+
+/**
+ * @slot default - Put text string here, avoid elements
+ */
 
 @Component({
   tag: 'mds-tab-item',
@@ -11,11 +15,6 @@ export class MdsTabItem {
 
   @Element() private element: HTMLMdsTabItemElement
   @State() isSelected: boolean
-
-  /**
-   * Specifies the tab button item label
-   */
-  @Prop() readonly label?: string
 
   /**
    * Specifies if the tab item is selected or not
@@ -69,9 +68,8 @@ export class MdsTabItem {
           size={this.size}
           type={this.type}
         >
-          {this.label}
+          <slot/>
         </mds-button>
-        <div hidden><slot/></div>
       </Host>
     )
   }

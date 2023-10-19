@@ -3,6 +3,11 @@ import { Component, Element, Event, EventEmitter, Host, h, Prop } from '@stencil
 import { KeyboardManager } from '@common/keyboard-manager'
 import { LabelVariantType } from '@type/variant'
 
+/**
+ * @slot default - Add `text string`, `HTML elements` or `components` to this slot.
+ * @slot title - Add `text string`, `HTML elements` or `components` to this slot.
+ */
+
 @Component({
   tag: 'mds-note',
   styleUrl: 'mds-note.css',

@@ -1,0 +1,11 @@
+@tailwind utilities;
+
+:host {
+
+  @apply
+  gap-4
+  p-4;
+
+  display: grid;
+  grid-template-columns: minmax(1fr, 100%);
+}

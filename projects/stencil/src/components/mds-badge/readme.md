@@ -15,6 +15,13 @@
 | `variant`           | `variant`            | Sets the theme variant colors           | `"amaranth" \| "aqua" \| "blue" \| "dark" \| "error" \| "green" \| "info" \| "light" \| "lime" \| "orange" \| "orchid" \| "sky" \| "success" \| "violet" \| "warning" \| "yellow" \| undefined` | `'green'`   |
 
 
+## Slots
+
+| Slot        | Description                                                                            |
+| ----------- | -------------------------------------------------------------------------------------- |
+| `"default"` | Add `text string` to this slot, **avoid** to add `HTML elements` or `components` here. |
+
+
 ## CSS Custom Properties
 
 | Name           | Description                                |
@@ -46,4 +53,4 @@ graph TD;
 
 ----------------------------------------------
 
-Built with love @ **Maggioli Informatica / R&D Department**
+Built with love @ [Gruppo Maggioli](https://www.maggioli.com) from [R&D Department](https://www.maggioli.com/it-it/chi-siamo/ricerca-sviluppo)

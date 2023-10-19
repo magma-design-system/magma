@@ -10,7 +10,7 @@
   * @prop --mds-tooltip-transform-from: Sets the from animation transform of the tooltip.
   * @prop --mds-tooltip-transform-to: Sets the to animation transform of the tooltip.
   * @prop --mds-tooltip-z-index: Sets the z-index of the component.
-*/
+  */
 
 :host {
 
@@ -26,18 +26,19 @@
   --mds-tooltip-z-index: var(--magma-tooltip-z-index, 4000);
 
   @apply
-    box-border
-    fixed
     gap-4
-    grid
-    opacity-0
-    pointer-events-none
     px-2
     py-0
     rounded;
 
   background-color: var(--mds-tooltip-background);
+  box-sizing: border-box;
+  display: grid;
   filter: var(--mds-tooltip-drop-shadow);
+  max-width: 280px;
+  opacity: 0;
+  pointer-events: none;
+  position: fixed;
   transform: var(--mds-tooltip-transform-from);
   transition-delay: 0;
   transition-duration: var(--mds-tooltip-duration);
@@ -47,35 +48,39 @@
   z-index: var(--mds-tooltip-z-index);
 }
 
-:host( [visible]:not([visible="false"]) ) {
-  @apply
-    opacity-100
-    pointer-events-auto;
+:host( [strategy="absolute"] ) {
+  position: absolute;
+}
 
+:host( [strategy="fixed"] ) {
+  position: fixed;
+}
+
+:host( [visible]:not([visible="false"]) ) {
+  opacity: 1;
+  pointer-events: auto;
   transform: var(--mds-tooltip-transform-to);
   transition-delay: var(--mds-tooltip-delay);
 }
 
 .text {
-  @apply inline-flex;
-
+  display: inline-flex;
   padding: var(--mds-tooltip-dot-padding);
 }
 
 .arrow {
-  @apply
-    -top-[9px]
-    -z-10
-    fixed
-    flex
-    pointer-events-none
-    transition-cosmetic;
+  @apply transition-cosmetic;
 
+  display: flex;
   fill: var(--mds-tooltip-arrow-background);
+  pointer-events: none;
+  position: fixed;
+  top: -9px;
+  z-index: -1;
 }
 
 ::slotted( * ) {
-  @apply
-    relative
-    z-10;
+  @apply z-10;
+
+  position: relative;
 }

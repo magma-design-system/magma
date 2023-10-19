@@ -3,24 +3,25 @@
 :host {
   @apply
     gap-1
-    grid
     grid-cols-full;
+
+  display: grid;
 }
 
 .infos {
-  @apply
-    flex
-    gap-1
-    justify-between
-    w-full;
+  @apply gap-1;
+
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
 }
 
 .value {
-  @apply flex-shrink-0;
+  flex-shrink: 0;
 }
 
 .label {
-  @apply
-    min-w-0
-    truncate;
+  @apply truncate;
+
+  min-width: 0;
 }

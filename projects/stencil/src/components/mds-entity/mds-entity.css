@@ -1,13 +1,13 @@
 @tailwind utilities;
 
 /**
-* @prop --mds-entity-background: The background-color of the entity
-* @prop --mds-entity-color: The color of the entity name
-* @prop --mds-entity-detail-color: The color of the text details
-* @prop --mds-entity-icon-background: The background-color of the icon
-* @prop --mds-entity-icon-color: The color of the icon
-* @prop --mds-entity-shadow: The box-shadow od the component
-*/
+  * @prop --mds-entity-background: The background-color of the entity
+  * @prop --mds-entity-color: The color of the entity name
+  * @prop --mds-entity-detail-color: The color of the text details
+  * @prop --mds-entity-icon-background: The background-color of the icon
+  * @prop --mds-entity-icon-color: The color of the icon
+  * @prop --mds-entity-shadow: The box-shadow od the component
+  */
 
 :host {
 
@@ -19,79 +19,81 @@
   --mds-entity-shadow: theme('boxShadow.DEFAULT');
 
   @apply
-    flex
     gap-2
-    items-stretch
     p-2
     rounded-lg;
 
+  align-items: stretch;
   background-color: var(--mds-entity-background);
   box-shadow: var(--mds-entity-shadow);
   color: var(--mds-entity-color);
+  display: flex;
 }
 
 .avatar,
 .delete,
 .icon {
   @apply
-    shrink-0
     rounded
     w-11;
+
+  flex-shrink: 0;
 }
 
 .icon {
-  @apply
-    aspect-square
-    inline-flex
-    items-center
-    justify-center;
+  @apply aspect-square;
 
+  align-items: center;
   background-color: var(--mds-entity-icon-background);
+  display: inline-flex;
   fill: var(--mds-entity-icon-color);
+  justify-content: center;
 }
 
 .infos {
   @apply
-    flex
-    flex-col
-    flex-grow
     gap-0
-    min-w-0
-    whitespace-nowrap;
+    min-w-0;
+
+  display: flex;
+  flex-direction: column;
+  flex-grow: 1;
+  white-space: nowrap;
 }
 
 .details {
-  @apply
-    flex
-    gap-1
-    items-center;
+  @apply gap-1;
 
+  align-items: center;
   color: var(--mds-entity-detail-color);
+  display: flex;
 }
 
 .actions {
-  @apply
-    flex
-    gap-2
-    items-center;
+  @apply gap-2;
+
+  align-items: center;
+  display: flex;
 }
 
 ::slotted( [slot="action"] ) {
   @apply
     aspect-square
-    h-auto
     w-11;
+
+  height: auto;
 }
 
 ::slotted( * ) {
-  @apply
-    truncate
-    whitespace-nowrap;
+  @apply truncate;
+
+  white-space: nowrap;
 }
 
 .title {
   @apply
-    flex
     min-w-0
     truncate;
+
+  display: flex;
 }

@@ -18,15 +18,23 @@
 | `src`      | `src`      | Specifies the URL of the video file                                                                                                                  | `string \| undefined`                                           | `undefined` |
 
 
+## Slots
+
+| Slot        | Description                                                                                      |
+| ----------- | ------------------------------------------------------------------------------------------------ |
+| `"content"` | Add video content overlay here, add `text string`, `HTML elements` or `components` to this slot. |
+| `"default"` | Write browser support missing message here.                                                      |
+
+
 ## CSS Custom Properties
 
-| Name                       | Description                                        |
-| -------------------------- | -------------------------------------------------- |
-| `--aspect-ratio`           | Sets the aspect-ratio of the component             |
-| `--noise-background-color` | Sets the background-color of the noise when active |
-| `--video-fit`              | Sets the object-fit of the video stream            |
+| Name                                      | Description                                        |
+| ----------------------------------------- | -------------------------------------------------- |
+| `--mds-video-wall-noise-background-color` | Sets the background-color of the noise when active |
+| `--mds-video-wall-noise-background-size`  | Sets the background-color of the noise when active |
+| `--mds-video-wall-video-fit`              | Sets the object-fit of the video stream            |
 
 
 ----------------------------------------------
 
-Built with love @ **Maggioli Informatica / R&D Department**
+Built with love @ [Gruppo Maggioli](https://www.maggioli.com) from [R&D Department](https://www.maggioli.com/it-it/chi-siamo/ricerca-sviluppo)

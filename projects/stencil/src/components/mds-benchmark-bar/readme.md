@@ -15,6 +15,13 @@
 | `variant`    | `variant`    | Sets the theme variant colors                           | `"dark" \| "error" \| "info" \| "light" \| "primary" \| "success" \| "warning" \| undefined` | `'dark'`    |
 
 
+## Slots
+
+| Slot        | Description                                                                            |
+| ----------- | -------------------------------------------------------------------------------------- |
+| `"default"` | Add `text string` to this slot, **avoid** to add `HTML elements` or `components` here. |
+
+
 ## Dependencies
 
 ### Depends on
@@ -32,4 +39,4 @@ graph TD;
 
 ----------------------------------------------
 
-Built with love @ **Maggioli Informatica / R&D Department**
+Built with love @ [Gruppo Maggioli](https://www.maggioli.com) from [R&D Department](https://www.maggioli.com/it-it/chi-siamo/ricerca-sviluppo)

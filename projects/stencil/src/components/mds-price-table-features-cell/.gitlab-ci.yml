@@ -1,0 +1,25 @@
+.base-price-table-features-cell:
+  variables:
+    COMPONENT: mds-price-table-features-cell
+
+# ISOLATE
+price-table-features-cell-isolate:
+  extends: [.base-isolate, .base-price-table-features-cell]
+  dependencies: [base-stencil-build]
+
+# TEST
+price-table-features-cell-publish-test:
+  extends: [.base-stencil-publish-test, .base-price-table-features-cell]
+  dependencies: [base-stencil-build, price-table-features-cell-isolate]
+
+# PUBLISH
+price-table-features-cell-publish:
+  extends: [.base-stencil-publish, .base-price-table-features-cell]
+  dependencies: [base-stencil-build, price-table-features-cell-isolate]
+  needs: [base-stencil-build, price-table-features-cell-isolate, price-table-features-cell-publish-test]
+
+# INSTALL TEST
+price-table-features-cell-install-test:
+  extends: [.base-stencil-install-test, .base-price-table-features-cell]
+  dependencies: [base-stencil-build, price-table-features-cell-isolate]
+  needs: [base-stencil-build, price-table-features-cell-isolate, price-table-features-cell-publish]

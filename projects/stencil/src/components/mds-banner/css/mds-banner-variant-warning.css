@@ -29,5 +29,5 @@
 }
 
 :host( [variant="warning"][tone="quiet"] ) .separator {
-  @apply hidden;
+  display: none;
 }

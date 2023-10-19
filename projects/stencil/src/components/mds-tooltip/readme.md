@@ -1,6 +1,20 @@
 # mds-tooltip
 
+### Version 4.0.0 breaking change
 
+You can now use a query selector to taget a trigger element:
+
+```html
+<span class="trigger-element">Hello world</span>
+<mds-tooltip target=".trigger-element"></mds-tooltip>
+```
+
+Up until version `3.x.x` you were forced to use an id selector:
+
+```html
+<span id="trigger-element">Hello world</span>
+<mds-tooltip target="trigger-element"></mds-tooltip>
+```
 
 <!-- Auto Generated Below -->
 
@@ -22,6 +36,20 @@
 | `visible`             | `visible`        | Specifies the visibility of the component.                                            | `boolean`                                                                                                                                                                         | `false`     |
 
 
+## Slots
+
+| Slot        | Description                                                                            |
+| ----------- | -------------------------------------------------------------------------------------- |
+| `"default"` | Add `text string` to this slot, **avoid** to add `HTML elements` or `components` here. |
+
+
+## Shadow Parts
+
+| Part     | Description |
+| -------- | ----------- |
+| `"text"` |             |
+
+
 ## CSS Custom Properties
 
 | Name                             | Description                                       |
@@ -39,6 +67,10 @@
 
 ## Dependencies
 
+### Used by
+
+ - [mds-help](../mds-help)
+
 ### Depends on
 
 - [mds-text](../mds-text)
@@ -47,9 +79,10 @@
 ```mermaid
 graph TD;
   mds-tooltip --> mds-text
+  mds-help --> mds-tooltip
   style mds-tooltip fill:#f9f,stroke:#333,stroke-width:4px
 ```
 
 ----------------------------------------------
 
-Built with love @ **Maggioli Informatica / R&D Department**
+Built with love @ [Gruppo Maggioli](https://www.maggioli.com) from [R&D Department](https://www.maggioli.com/it-it/chi-siamo/ricerca-sviluppo)

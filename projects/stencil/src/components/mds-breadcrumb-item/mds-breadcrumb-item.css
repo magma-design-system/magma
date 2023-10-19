@@ -1,4 +1,4 @@
-@import url('../../tailwind/components.css');
+@import '../../tailwind/components.css';
 @tailwind components;
 @tailwind utilities;
 
@@ -29,13 +29,14 @@
   @apply
     duration-200
     ease-out
-    flex
     focus-off
-    gap-0
-    items-center
-    shrink-0;
+    gap-0;
 
+  align-items: center;
+  display: flex;
+  flex-shrink: 0;
   transition-property: box-shadow, outline, outline-offset;
+
 }
 
 :host(:focus-visible) {
@@ -43,19 +44,19 @@
 }
 
 :host( :last-child ) .icon {
-  @apply hidden;
+  display: none;
 }
 
 .text {
   @apply
-    cursor-pointer
     px-4
     py-1
-    rounded-full
-    whitespace-nowrap;
+    rounded-full;
 
   background-color: var(--mds-breadcrumb-item-button-background);
   color: var(--mds-breadcrumb-item-button-color);
+  cursor: pointer;
+  white-space: nowrap;
 }
 
 .text:hover {
@@ -65,18 +66,19 @@
 }
 
 :host( [selected]:not([selected="false"]) ) {
-  @apply pointer-events-none;
 
   --mds-breadcrumb-item-button-background: var(--mds-breadcrumb-item-button-background-selected);
   --mds-breadcrumb-item-button-color: var(--mds-breadcrumb-item-button-color-selected);
+
+  pointer-events: none;
+
 }
 
 .text::first-letter {
-  @apply uppercase;
+  text-transform: uppercase;
 }
 
 .icon {
-  @apply pointer-events-none;
-
   color: var(--mds-breadcrumb-item-arrow-depth-color);
+  pointer-events: none;
 }

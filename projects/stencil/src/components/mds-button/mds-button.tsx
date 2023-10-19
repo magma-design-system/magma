@@ -7,6 +7,11 @@ import { TypographyType } from '@type/typography'
 import { buttonSizeTypographyVariant } from './meta/variants'
 import { setAttributeIfEmpty, unslugName } from '@common/aria'
 
+/**
+ * @slot default - Add `text string` to this slot, **avoid** to add `HTML elements` or `components` here.
+ * @slot notification - Add `HTML elements` or `components`, it is **recommended** to use `mds-notification` element.
+ */
+
 @Component({
   tag: 'mds-button',
   styleUrl: 'mds-button.css',
@@ -20,6 +25,11 @@ export class MdsButton {
   private km = new KeyboardManager()
 
   @Element() host: HTMLMdsButtonElement
+
+  /**
+   * Specifies if the component is focused when is loaded on the viewport
+   */
+  @Prop() readonly autoFocus: boolean
 
   /**
    * The icon displayed in the button
@@ -139,6 +149,10 @@ export class MdsButton {
         setAttributeIfEmpty(this.host, 'title', iconTitle)
       }
       setAttributeIfEmpty(this.host, 'aria-label', iconTitle)
+    }
+
+    if (this.autoFocus) {
+      this.host.focus()
     }
   }
 

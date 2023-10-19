@@ -1,6 +1,43 @@
 # mds-dropdown
 
+### Best practices of usage
 
+There are many situations where the component should be placed on the surface of the document:
+
+```html
+<body>
+  <mds-dropdown target="ui-content">
+    <mds-text>Dropdown contents</mds-text>
+  </mds-dropdown>
+  <div>
+    <mds-text>Deep contents</mds-text>
+    <div>
+      <mds-text id="ui-content">Deeper contents</mds-text>
+    </div>
+  </div>
+</body>
+```
+
+The next use case couldn't be rendered correctly depending by relative/absolute/etc. positioning and `strategy` attribute mix.
+
+```html
+<body>
+  <div>
+    <mds-text>Deep contents</mds-text>
+    <div>
+      <mds-text id="ui-content">Deeper contents</mds-text>
+      <mds-dropdown target="ui-content">
+        <mds-text>Dropdown contents</mds-text>
+      </mds-dropdown>
+    </div>
+  </div>
+</body>
+```
+
+Affected problems:
+
+- Wrong `backdrop` render
+- Wrong `mds-dropdown` positioning
 
 <!-- Auto Generated Below -->
 
@@ -22,7 +59,7 @@
 | `strategy`            | `strategy`       | Sets the CSS position strategy of the component.                                      | `"absolute" \| "fixed"`                                                                                                                                              | `'fixed'`   |
 | `target` _(required)_ | `target`         | Specifies the id of the caller element.                                               | `string`                                                                                                                                                             | `undefined` |
 | `visible`             | `visible`        | Specifies the visibility of the component.                                            | `boolean`                                                                                                                                                            | `false`     |
-| `zIndex`              | `z-index`        | Specifies the visibility of the component.                                            | `number`                                                                                                                                                             | `1000`      |
+| `zIndex`              | `z-index`        | Specifies the visibility of the component.                                            | `number`                                                                                                                                                             | `undefined` |
 
 
 ## Events
@@ -34,20 +71,29 @@
 | `mdsDropdownVisible` | Emits when a modal is visible           | `CustomEvent<MdsDropdownEventDetail>` |
 
 
+## Slots
+
+| Slot        | Description                                                                                                              |
+| ----------- | ------------------------------------------------------------------------------------------------------------------------ |
+| `"default"` | Add `text string`, `HTML elements` or `components` to this slot, elements will be shown when the component is triggered. |
+
+
 ## CSS Custom Properties
 
-| Name                              | Description                                        |
-| --------------------------------- | -------------------------------------------------- |
-| `--mds-dropdown-arrow-background` | Sets the fill color of the arrow.                  |
-| `--mds-dropdown-background`       | Sets the background-color of the dropdown.         |
-| `--mds-dropdown-drop-shadow`      | Sets the drop-shadow of the dropdown.              |
-| `--mds-dropdown-duration`         | Sets the duration of the dropdown animation.       |
-| `--mds-dropdown-ease`             | Sets the easing of the dropdown animation.         |
-| `--mds-dropdown-transform-from`   | Sets the from animation transform of the dropdown. |
-| `--mds-dropdown-transform-to`     | Sets the to animation transform of the dropdown.   |
-| `--mds-dropdown-z-index`          | Sets the z-index of the component.                 |
+| Name                               | Description                                                                 |
+| ---------------------------------- | --------------------------------------------------------------------------- |
+| `--mds-dropdown-arrow-background`  | Sets the fill color of the arrow.                                           |
+| `--mds-dropdown-backdrop-duration` | Sets the transition duration of the backdrop, used by component's code too. |
+| `--mds-dropdown-backdrop-z-indx`   | Sets the backdrop z-index, used by component's code too.                    |
+| `--mds-dropdown-background`        | Sets the background-color of the dropdown.                                  |
+| `--mds-dropdown-drop-shadow`       | Sets the drop-shadow of the dropdown.                                       |
+| `--mds-dropdown-duration`          | Sets the duration of the dropdown animation.                                |
+| `--mds-dropdown-ease`              | Sets the easing of the dropdown animation.                                  |
+| `--mds-dropdown-transform-from`    | Sets the from animation transform of the dropdown.                          |
+| `--mds-dropdown-transform-to`      | Sets the to animation transform of the dropdown.                            |
+| `--mds-dropdown-z-index`           | Sets the z-index of the component.                                          |
 
 
 ----------------------------------------------
 
-Built with love @ **Maggioli Informatica / R&D Department**
+Built with love @ [Gruppo Maggioli](https://www.maggioli.com) from [R&D Department](https://www.maggioli.com/it-it/chi-siamo/ricerca-sviluppo)

@@ -1,10 +1,10 @@
 @tailwind utilities;
 
 :host {
-  @apply
-    overflow-hidden
-    table-row;
 
   --mds-table-cell-background: transparent;
+
   border-bottom: var(--mds-table-cell-border-width, theme('borderWidth.2')) solid var(--mds-table-cell-border-color, theme('colors.tone-neutral-07'));
+  display: table-row;
+  overflow: hidden;
 }

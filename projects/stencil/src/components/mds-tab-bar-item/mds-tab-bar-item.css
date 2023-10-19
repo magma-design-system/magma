@@ -15,21 +15,21 @@
   --mds-tab-bar-item-color-selected: theme('colors.brand-maggioli-04');
 
   @apply
-    basis-0
-    cursor-pointer
-    flex
-    flex-col
-    flex-grow
-    flex-shrink-0
     gap-1
-    items-center
     p-2
-    text-center
     transition-colors;
 
+  align-items: center;
   background-color: var(--mds-tab-bar-item-background);
   color: var(--mds-tab-bar-item-color);
+  cursor: pointer;
+  display: flex;
   fill: var(--mds-tab-bar-item-color);
+  flex-basis: 0;
+  flex-direction: column;
+  flex-grow: 1;
+  flex-shrink: 0;
+  text-align: center;
 }
 
 :host( [selected]:not([selected="false"]) ) {

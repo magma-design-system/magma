@@ -1,0 +1,23 @@
+@tailwind utilities;
+
+:host {
+  background-color: theme('colors.tone-neutral-09');
+  display: grid;
+  position: relative;
+}
+
+.content {
+  @apply
+    gap-2
+    p-4;
+
+  align-items: flex-end;
+  display: flex;
+  inset: 0;
+  justify-content: center;
+  position: absolute;
+}
+
+.img {
+  object-fit: contain;
+}

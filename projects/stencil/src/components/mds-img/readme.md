@@ -29,6 +29,13 @@
 | `mdsImgLoadSuccess` | Emits when the image is successfully loaded | `CustomEvent<MdsImgEventDetail>` |
 
 
+## Shadow Parts
+
+| Part      | Description |
+| --------- | ----------- |
+| `"media"` |             |
+
+
 ## Dependencies
 
 ### Used by
@@ -44,4 +51,4 @@ graph TD;
 
 ----------------------------------------------
 
-Built with love @ **Maggioli Informatica / R&D Department**
+Built with love @ [Gruppo Maggioli](https://www.maggioli.com) from [R&D Department](https://www.maggioli.com/it-it/chi-siamo/ricerca-sviluppo)

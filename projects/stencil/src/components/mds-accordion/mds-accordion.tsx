@@ -1,6 +1,10 @@
-import { Component, Element, Host, h, Prop, Listen, Event, EventEmitter } from '@stencil/core'
-import { MdsAccordionEventDetail } from './meta/event-detail'
 import { MdsAccordionItemEventDetail } from '@component/mds-accordion-item/meta/event-detail'
+import { Component, Element, Event, EventEmitter, Host, Listen, Prop, h } from '@stencil/core'
+import { MdsAccordionEventDetail } from './meta/event-detail'
+
+/**
+ * @slot default - Add `mds-accordion-item` element/s.
+ */
 
 @Component({
   tag: 'mds-accordion',
@@ -26,16 +30,12 @@ export class MdsAccordion {
    */
   @Event({ eventName: 'mdsAccordionChange' }) changedEvent: EventEmitter<MdsAccordionEventDetail>
 
-  private queryItems = ():NodeListOf<HTMLMdsAccordionItemElement> =>
+  private queryItems = (): NodeListOf<HTMLMdsAccordionItemElement> =>
     this.element.querySelectorAll<HTMLMdsAccordionItemElement>('mds-accordion-item')
 
-  componentWillLoad ():void {
+  componentWillLoad (): void {
     const items = this.queryItems()
     items.forEach((item, key) => item.id = `item-${key}`)
-  }
-
-  componentDidRender ():void {
-    this.selectMultipleItems()
   }
 
   private selectMultipleItems = (): void => {
@@ -46,10 +46,6 @@ export class MdsAccordion {
       item.selected ? list.push(item) : list.push(null)
       if (item.selected) {
         selectedItem.push(key)
-      }
-      item.classList.remove('sibling')
-      if (list.length > 1 && list[key - 1] !== null) {
-        item.classList.add('sibling')
       }
     })
     this.changedEvent.emit({ children: items, selected: selectedItem.toString() })
@@ -84,7 +80,7 @@ export class MdsAccordion {
   render () {
     return (
       <Host>
-        <slot/>
+        <slot />
       </Host>
     )
   }

@@ -21,9 +21,13 @@ export const config: Config = {
     selector: 'attribute',
   },
   taskQueue: 'async',
+  transformAliasedImportPaths: false,
   srcDir,
   sourceMap: false,
   buildEs5: true,
+  extras: {
+    enableImportInjection: true,
+  },
   outputTargets: [
     {
       type: 'dist',
@@ -35,7 +39,7 @@ export const config: Config = {
     },
     {
       type: 'docs-readme',
-      footer: 'Built with love @ **Maggioli Informatica / R&D Department**',
+      footer: 'Built with love @ [Gruppo Maggioli](https://www.maggioli.com) from [R&D Department](https://www.maggioli.com/it-it/chi-siamo/ricerca-sviluppo)',
     },
     {
       type: 'docs-json',
@@ -62,7 +66,6 @@ export const config: Config = {
     alias({
       entries: [
         { find: /^@common\/(.*)+$/, replacement: path.resolve('.', './src/common/$1') },
-        { find: /^@component-dist\/(.*)+$/, replacement: path.resolve('.', './dist/collection/components/$1') },
         { find: /^@component\/(.*)+$/, replacement: path.resolve('.', './src/components/$1') },
         { find: /^@dictionary\/(.*)+$/, replacement: path.resolve('.', './src/dictionary/$1') },
         { find: /^@fixture\/(.*)+$/, replacement: path.resolve('.', './src/fixtures/$1') },
@@ -84,7 +87,6 @@ export const config: Config = {
     // moduleNameMapper: tsconfigPathsJest(tsconfig),
     moduleNameMapper: {
       '@common/(.*)': '<rootDir>src/common/$1',
-      '@component-dist/(.*)': '<rootDir>dist/collection/components/$1',
       '@dictionary/(.*)': '<rootDir>src/dictionary/$1',
       '@fixture/(.*)': '<rootDir>src/fixtures/$1',
       '@icon/(.*)': '<rootDir>assets/svg/$1',
@@ -94,7 +96,7 @@ export const config: Config = {
     },
     modulePathIgnorePatterns: ['<rootDir>/.build/', '<rootDir>/template/', '<rootDir>/node_modules/'],
     testPathIgnorePatterns: ['<rootDir>/.build/', '<rootDir>/template/', '<rootDir>/node_modules/'],
-    transform: { '^.+\\.svg$': 'jest-transformer-svg' },
+    transform: { '^.+\\.svg$': 'jest-transformer-svg', '^.+\\.(ts|tsx|js|jsx|css)$': '@stencil/core/testing/jest-preprocessor' },
     transformIgnorePatterns: ['<rootDir>/.build/', '<rootDir>/template/', '<rootDir>/node_modules/'],
     watchPathIgnorePatterns: ['<rootDir>/.build/', '<rootDir>/template/', '<rootDir>/node_modules/'],
   },

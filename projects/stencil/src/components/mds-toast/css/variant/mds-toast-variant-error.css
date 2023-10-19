@@ -3,16 +3,16 @@
 :host( [variant="error"] ),
 :host( [variant="error"][tone="strong"] ) {
 
-  --background: theme('colors.status-error-09');
-  --color: theme('colors.status-error-02');
-  --shadow: theme('boxShadow.sharp-lg');
-  --icon-color: theme('colors.status-error-05');
+  --mds-toast-background: theme('colors.status-error-09');
+  --mds-toast-color: theme('colors.status-error-02');
+  --mds-toast-shadow: theme('boxShadow.sharp-lg');
+  --mds-toast-icon-color: theme('colors.status-error-05');
 }
 
 :host( [variant="error"][tone="weak"] ) {
 
-  --background: theme('colors.status-error-10');
-  --color: theme('colors.status-error-03');
-  --shadow: theme('boxShadow.sharp-sm');
-  --icon-color: theme('colors.status-error-06');
+  --mds-toast-background: theme('colors.status-error-10');
+  --mds-toast-color: theme('colors.status-error-03');
+  --mds-toast-shadow: theme('boxShadow.sharp-sm');
+  --mds-toast-icon-color: theme('colors.status-error-06');
 }

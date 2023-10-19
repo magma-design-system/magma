@@ -1,10 +1,7 @@
-@tailwind components;
-@tailwind utilities;
-
 :host {
-  @apply grid;
+  display: grid;
 }
 
 form {
-  @apply grid;
+  display: grid;
 }

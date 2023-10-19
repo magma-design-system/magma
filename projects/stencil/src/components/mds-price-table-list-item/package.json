@@ -1,0 +1,59 @@
+{
+  "name": "@maggioli-design-system/mds-price-table-list-item",
+  "version": "1.0.2",
+  "description": "mds-price-table-list-item is a web-component from Magma Design System, built with StencilJS, TypeScript, Storybook. It's based on the web-component standard and it's designed to be agnostic from the JavaScirpt framework you are using.",
+  "main": "dist/index.cjs.js",
+  "module": "dist/index.js",
+  "es2015": "dist/esm/index.mjs",
+  "es2017": "dist/esm/index.mjs",
+  "types": "dist/types/components.d.ts",
+  "collection": "dist/collection/collection-manifest.json",
+  "collection:main": "dist/collection/index.js",
+  "unpkg": "dist/mds-price-table-list-item/mds-price-table-list-item.esm.js",
+  "files": [
+    "dist/",
+    "documentation.json",
+    "loader/",
+    "readme.md",
+    "src/",
+    "www/"
+  ],
+  "scripts": {
+    "build": "rm src/components.d.ts || true && stencil build --docs-readme",
+    "prepublishOnly": "npm run build",
+    "test": "stencil test --spec --e2e"
+  },
+  "dependencies": {
+    "@maggioli-design-system/mds-text": "^3.4.3",
+    "@maggioli-design-system/styles": "^11.7.0",
+    "@stencil/core": "^4.3.0"
+  },
+  "license": "MIT",
+  "author": {
+    "name": "Vittorio Vittori",
+    "email": "vittorio.vittori@maggioli.it",
+    "url": "https://vitto.github.io/vit.to/"
+  },
+  "contributors": [
+    {
+      "name": "Andrea Pruccoli",
+      "email": "andrea.pruccoli@maggioli.it",
+      "role": "Software Engineer"
+    },
+    {
+      "name": "Daniele Tardia",
+      "email": "daniele.tardia@hibo.it",
+      "role": "Senior Developer"
+    },
+    {
+      "name": "Nicola Tamburini",
+      "email": "nicola.tamburini@maggioli.it",
+      "role": "Software Engineer"
+    },
+    {
+      "name": "Vittorio Vittori",
+      "email": "vittorio.vittori@maggioli.it",
+      "role": "Product Designer"
+    }
+  ]
+}

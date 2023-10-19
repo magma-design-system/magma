@@ -14,6 +14,13 @@
 | `variant`    | `variant`    | Specifies the variant for `typography`      | `"info" \| "read" \| undefined`                                        | `'info'`    |
 
 
+## Slots
+
+| Slot        | Description                                                                            |
+| ----------- | -------------------------------------------------------------------------------------- |
+| `"default"` | Add `text string` to this slot, **avoid** to add `HTML elements` or `components` here. |
+
+
 ## Shadow Parts
 
 | Part     | Description |
@@ -46,4 +53,4 @@ graph TD;
 
 ----------------------------------------------
 
-Built with love @ **Maggioli Informatica / R&D Department**
+Built with love @ [Gruppo Maggioli](https://www.maggioli.com) from [R&D Department](https://www.maggioli.com/it-it/chi-siamo/ricerca-sviluppo)

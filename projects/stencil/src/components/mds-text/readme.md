@@ -15,6 +15,13 @@
 | `variant`    | `variant`    | Specifies the variant for `typography`                                     | `"code" \| "info" \| "read" \| "title" \| undefined`                                                                                                      | `undefined` |
 
 
+## Slots
+
+| Slot        | Description                                                                            |
+| ----------- | -------------------------------------------------------------------------------------- |
+| `"default"` | Add `text string` to this slot, **avoid** to add `HTML elements` or `components` here. |
+
+
 ## CSS Custom Properties
 
 | Name                              | Description                                                     |
@@ -49,6 +56,9 @@
  - [mds-list-item](../mds-list-item)
  - [mds-notification](../mds-notification)
  - [mds-paginator-item](../mds-paginator-item)
+ - [mds-price-table-features](../mds-price-table-features)
+ - [mds-price-table-features-cell](../mds-price-table-features-cell)
+ - [mds-price-table-list-item](../mds-price-table-list-item)
  - [mds-quote](../mds-quote)
  - [mds-stepper-bar-item](../mds-stepper-bar-item)
  - [mds-tab-bar-item](../mds-tab-bar-item)
@@ -82,6 +92,9 @@ graph TD;
   mds-list-item --> mds-text
   mds-notification --> mds-text
   mds-paginator-item --> mds-text
+  mds-price-table-features --> mds-text
+  mds-price-table-features-cell --> mds-text
+  mds-price-table-list-item --> mds-text
   mds-quote --> mds-text
   mds-stepper-bar-item --> mds-text
   mds-tab-bar-item --> mds-text
@@ -94,4 +107,4 @@ graph TD;
 
 ----------------------------------------------
 
-Built with love @ **Maggioli Informatica / R&D Department**
+Built with love @ [Gruppo Maggioli](https://www.maggioli.com) from [R&D Department](https://www.maggioli.com/it-it/chi-siamo/ricerca-sviluppo)

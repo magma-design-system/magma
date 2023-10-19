@@ -39,26 +39,26 @@ const Template = args =>
 
 export const Default = Template.bind({})
 
-export const truncate = Template.bind({})
-truncate.args = {
+export const Truncate = Template.bind({})
+Truncate.args = {
   truncate: false,
   class: 'w-32',
 }
 
-export const typography = Template.bind({})
-typography.args = {
+export const Typography = Template.bind({})
+Typography.args = {
   typography: 'label',
 }
 
-export const onClickClose = Template.bind({})
-onClickClose.args = {
+export const OnClickClose = Template.bind({})
+OnClickClose.args = {
   deletable: true,
-  onClickClose: event => { console.log(event, 'hello') },
+  onClickClose: event => { console.info(event, 'hello') },
 }
 
-export const tailwindRadius = args =>
+export const TailwindRadius = args =>
   <mds-label class="rounded-3xl bg-label-lime-09 text-label-lime-02" {...args}>Limone</mds-label>
 
-export const tailwindColor = args =>
+export const TailwindColor = args =>
   <mds-label class="bg-label-blue-09 text-label-blue-02" {...args}>Sale</mds-label>
 

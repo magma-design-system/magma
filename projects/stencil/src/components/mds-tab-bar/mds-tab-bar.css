@@ -1,13 +1,14 @@
 @tailwind utilities;
+
 :host {
   @apply
     bottom-0
-    fixed
-    flex
-    justify-around
     left-0
     right-0;
 
   background-color: theme('colors.tone-neutral');
   box-shadow: theme('boxShadow.sharp-sm');
+  display: flex;
+  justify-content: space-around;
+  position: fixed;
 }

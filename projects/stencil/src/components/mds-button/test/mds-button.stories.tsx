@@ -11,6 +11,10 @@ import {
 export default {
   title: 'UI / Button',
   argTypes: {
+    'auto-focus': {
+      type: { name: 'boolean' },
+      description: 'Specifies if the component is focused when is loaded on the viewport',
+    },
     await: {
       type: { name: 'boolean' },
       description: 'Specifies if the component is awaiting to load a response',
@@ -85,6 +89,11 @@ const TemplateIcon = args =>
 
 export const Default = Template.bind({})
 
+export const AutoFocus = Template.bind({})
+AutoFocus.args = {
+  'auto-focus': true,
+}
+
 export const Await = TemplateAwait.bind({})
 Await.args = {
   tone: 'weak',
@@ -112,36 +121,36 @@ Size.args = {
   size: 'sm',
 }
 
-export const icon = TemplateIcon.bind({})
-icon.args = {
+export const Icon = TemplateIcon.bind({})
+Icon.args = {
   icon: 'mi/baseline/eco',
   title: 'Pianta un albero',
 }
 
-export const iconARIATitle = TemplateIcon.bind({})
-iconARIATitle.args = {
+export const IconARIATitle = TemplateIcon.bind({})
+IconARIATitle.args = {
   icon: 'mi/baseline/eco',
   'aria-label': 'Pianta un albero',
 }
 
-export const iconPosition = Template.bind({})
-iconPosition.args = {
+export const IconPosition = Template.bind({})
+IconPosition.args = {
   'icon-position': 'right',
   icon: 'mi/baseline/eco',
 }
 
-export const keyboardPress = TemplateKeyboard.bind({})
-keyboardPress.args = {
+export const KeyboardPress = TemplateKeyboard.bind({})
+KeyboardPress.args = {
   onClick: () => { alert('Button clicked') },
 }
 
-export const href = Template.bind({})
-href.args = {
+export const Href = Template.bind({})
+Href.args = {
   href: 'http://www.maggioli.it',
 }
 
-export const target = Template.bind({})
-target.args = {
+export const Target = Template.bind({})
+Target.args = {
   href: 'http://www.maggioli.it',
   target: 'blank',
 }

@@ -4,50 +4,72 @@
 
 :host {
   @apply
-    bg-tone-neutral
     duration-500
     ease-out-expo
-    fixed
-    flex
-    justify-center
-    left-0
     px-6
-    py-4
-    right-0
-    top-0;
+    py-4;
 
   background-color: theme('colors.tone-neutral');
   box-shadow: theme('boxShadow.sharp-md');
+  display: flex;
+  inset: 0 0 auto;
+  justify-content: center;
+  position: fixed;
 }
 
 .logo {
-  @apply flex;
-
   color: inherit;
+  display: flex;
 }
 
 .contents {
   @apply
-    flex
-    flex-grow
     gap-4
-    items-center
-    justify-between
     max-w-screen-wide;
+
+  align-items: center;
+  display: flex;
+  flex-grow: 1;
+  justify-content: space-between;
+}
+
+.actions {
+  @apply gap-6;
+
+  display: flex;
 }
 
 .nav {
-  @apply
-    gap-4
-    inline-flex
-    tablet-max:hidden;
+  @apply gap-4;
+
+  display: inline-flex;
+  flex-shrink: 0;
 }
 
-.icon {
-  @apply
-    cursor-pointer
-    desktop:hidden
-    w-8;
+.menu-icon {
+  @apply w-8;
 
+  cursor: pointer;
   fill: inherit;
+  flex-shrink: 0;
+}
+
+.menu {
+  background-color: transparent;
+  padding: 0;
+}
+
+:host([menu="desktop"]) .menu,
+:host([nav="desktop"]) .nav {
+  @apply tablet-max:hidden;
+}
+
+:host([menu="mobile"]) .menu,
+:host([nav="mobile"]) .nav {
+  @apply desktop:hidden;
+}
+
+:host([menu="none"]) .menu,
+:host([nav="none"]) .nav {
+  display: none;
 }

@@ -11,7 +11,6 @@
 | -------------- | --------------- | ----------------------------------------------------------------------- | ----------------------------------------------------- | ----------- |
 | `icon`         | `icon`          | The icon displayed in the tab item                                      | `string \| undefined`                                 | `undefined` |
 | `iconPosition` | `icon-position` | Specifies the horizontal position of the icon displayed in the tab item | `"left" \| "right" \| undefined`                      | `'left'`    |
-| `label`        | `label`         | Specifies the tab button item label                                     | `string \| undefined`                                 | `undefined` |
 | `selected`     | `selected`      | Specifies if the tab item is selected or not                            | `boolean \| undefined`                                | `undefined` |
 | `size`         | `size`          | Specifies the size for the tab item                                     | `"lg" \| "md" \| "sm" \| "xl" \| undefined`           | `'md'`      |
 | `type`         | `type`          | The type of the tab item element                                        | `"a" \| "button" \| "reset" \| "submit" \| undefined` | `'submit'`  |
@@ -22,6 +21,13 @@
 | Event              | Description                         | Type                  |
 | ------------------ | ----------------------------------- | --------------------- |
 | `mdsTabItemSelect` | Emits when the tab item is selected | `CustomEvent<string>` |
+
+
+## Slots
+
+| Slot        | Description                          |
+| ----------- | ------------------------------------ |
+| `"default"` | Put text string here, avoid elements |
 
 
 ## Shadow Parts
@@ -63,4 +69,4 @@ graph TD;
 
 ----------------------------------------------
 
-Built with love @ **Maggioli Informatica / R&D Department**
+Built with love @ [Gruppo Maggioli](https://www.maggioli.com) from [R&D Department](https://www.maggioli.com/it-it/chi-siamo/ricerca-sviluppo)

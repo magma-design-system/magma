@@ -1,0 +1,25 @@
+.base-card-header:
+  variables:
+    COMPONENT: mds-card-header
+
+# ISOLATE
+card-header-isolate:
+  extends: [.base-isolate, .base-card-header]
+  dependencies: [base-stencil-build]
+
+# TEST
+card-header-publish-test:
+  extends: [.base-stencil-publish-test, .base-card-header]
+  dependencies: [base-stencil-build, card-header-isolate]
+
+# PUBLISH
+card-header-publish:
+  extends: [.base-stencil-publish, .base-card-header]
+  dependencies: [base-stencil-build, card-header-isolate]
+  needs: [base-stencil-build, card-header-isolate, card-header-publish-test]
+
+# INSTALL TEST
+card-header-install-test:
+  extends: [.base-stencil-install-test, .base-card-header]
+  dependencies: [base-stencil-build, card-header-isolate]
+  needs: [base-stencil-build, card-header-isolate, card-header-publish]

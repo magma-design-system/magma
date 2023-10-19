@@ -1,0 +1,19 @@
+@tailwind utilities;
+
+:host {
+  display: table-row;
+}
+
+:host(:hover) {
+  background-color: theme('colors.tone-neutral-10');
+}
+
+:host > ::slotted([type="label"]) {
+  @apply transition-transform;
+
+  padding-left: 0;
+}
+
+:host(:hover) > ::slotted([type="label"]) {
+  transform: translate(theme('spacing.2'), 0);
+}

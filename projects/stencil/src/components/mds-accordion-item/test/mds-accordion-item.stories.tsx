@@ -4,7 +4,7 @@ import { typographyReadDictionary } from '@dictionary/typography'
 export default {
   title: 'UI / Accordion / Accordion Item',
   argTypes: {
-    description: {
+    label: {
       type: { name: 'string' },
       description: 'Specifies the title shown when the accordion is closed or opened',
     },
@@ -28,11 +28,11 @@ const Template = args =>
 
 export const Default = Template.bind({})
 Default.args = {
-  description: 'Blipbug',
+  label: 'Blipbug',
 }
 
 export const selected = Template.bind({})
 selected.args = {
   selected: true,
-  description: 'Blipbug',
+  label: 'Blipbug',
 }

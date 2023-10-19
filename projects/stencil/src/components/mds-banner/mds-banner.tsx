@@ -3,6 +3,11 @@ import { ToneSimpleVariantType, ThemeVariantType } from '@type/variant'
 import miBaselineClose from '@icon/mi/baseline/close.svg'
 import { KeyboardManager } from '@common/keyboard-manager'
 
+/**
+ * @slot default - Add `text string`, `HTML elements` or `components` to this slot.
+ * @slot action - Add `HTML elements` or `components`, it is **recommended** to use `mds-button` element.
+ */
+
 @Component({
   tag: 'mds-banner',
   styleUrl: 'mds-banner.css',
@@ -79,11 +84,6 @@ export class MdsBanner {
   private closeBanner = (): void => {
     this.closeEvent.emit()
   }
-
-  /**
-   * @slot default - To put the text inside the component
-   * @slot actions - Will host the bottom action of the component
-   */
 
   render () {
     return (

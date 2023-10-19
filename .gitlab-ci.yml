@@ -31,7 +31,7 @@ stages:
 
 # BASE BUILD
 .base-build:
-  image: node:18.3
+  image: node:18.16
   stage: build
   before_script:
     - apt update && apt install jq -y
@@ -95,8 +95,7 @@ stages:
   script:
     - cd $BUILD_DIR
     - npm config set engine-strict "true"
-    - npm config set always-auth "true"
-    - npm config set _auth $NPM_TOKEN
+    - npm config set //registry.npmjs.org/:_auth $NPM_TOKEN
     - npm config set //registry.npmjs.org/:_authToken $NPM_TOKEN
     - npm publish --access public
   cache:

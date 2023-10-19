@@ -19,6 +19,13 @@
 | `mdsTableInteractiveChange` | Dispatces when interactive property changes | `CustomEvent<boolean>` |
 
 
+## Slots
+
+| Slot        | Description                                                             |
+| ----------- | ----------------------------------------------------------------------- |
+| `"default"` | Put `mds-table-header`, `mds-table-body`, `mds-table-footer` element/s. |
+
+
 ## CSS Custom Properties
 
 | Name                                | Description                                                      |
@@ -37,4 +44,4 @@
 
 ----------------------------------------------
 
-Built with love @ **Maggioli Informatica / R&D Department**
+Built with love @ [Gruppo Maggioli](https://www.maggioli.com) from [R&D Department](https://www.maggioli.com/it-it/chi-siamo/ricerca-sviluppo)

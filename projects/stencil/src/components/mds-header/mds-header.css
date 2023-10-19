@@ -10,6 +10,7 @@
 
   --mds-header-color: theme('colors.tone-neutral-02');
   --mds-header-icon-color: var(--mds-header-color, theme('colors.tone-neutral-02'));
+  --mds-header-modal-icon-color: theme('colors.tone-neutral');
   --mds-header-z-index: var(--magma-header-z-index, 1000);
 
   color: var(--mds-header-color);
@@ -18,13 +19,24 @@
   z-index: var(--mds-header-z-index);
 }
 
-.nav {
-  @apply
-    desktop:hidden
-    flex
-    items-center;
+.menu {
+  align-items: center;
+  display: flex;
 }
 
 .modal {
+  fill: var(--mds-header-modal-icon-color);
   z-index: var(--mds-header-z-index);
+}
+
+:host([menu="desktop"]) .menu {
+  @apply tablet-max:hidden;
+}
+
+:host([menu="mobile"]) .menu {
+  @apply desktop:hidden;
+}
+
+:host([menu="none"]) .menu {
+  display: none;
 }

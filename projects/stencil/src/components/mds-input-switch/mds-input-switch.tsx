@@ -86,6 +86,10 @@ export class MdsInputSwitch {
     this.dirty = true
   }
 
+  /**
+ * @slot default - Put text string or elements here
+ */
+
   render () {
 
     const { iconChecked, iconUnchecked, iconIndeterminate } = inputSwitchIconVariant[this.type]

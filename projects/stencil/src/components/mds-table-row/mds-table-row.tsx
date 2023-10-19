@@ -1,4 +1,9 @@
 import { Component, Host, h, Listen, Prop } from '@stencil/core'
+
+/**
+ * @slot default - Put `mds-table-cell` element/s.
+ */
+
 @Component({
   tag: 'mds-table-row',
   styleUrl: 'mds-table-row.css',

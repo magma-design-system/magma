@@ -22,6 +22,13 @@
 | `mdsFilterChange` | Emits when the one of the children is changed | `CustomEvent<MdsFilterEventDetail>` |
 
 
+## Slots
+
+| Slot        | Description                      |
+| ----------- | -------------------------------- |
+| `"default"` | Add `mds-filter-item` element/s. |
+
+
 ## CSS Custom Properties
 
 | Name                                   | Description                                                             |
@@ -53,4 +60,4 @@ graph TD;
 
 ----------------------------------------------
 
-Built with love @ **Maggioli Informatica / R&D Department**
+Built with love @ [Gruppo Maggioli](https://www.maggioli.com) from [R&D Department](https://www.maggioli.com/it-it/chi-siamo/ricerca-sviluppo)

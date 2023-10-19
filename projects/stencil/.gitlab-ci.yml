@@ -30,6 +30,7 @@ base-stencil-build:
       - projects/styles/dist
       - projects/icons/dist
       - projects/stencil/dist
+      - projects/stencil/src/components.d.ts
       - projects/stencil/src/fixtures
       - projects/stencil/assets
   cache:
@@ -151,6 +152,10 @@ include:
   - '/projects/stencil/src/components/mds-breadcrumb-item/.gitlab-ci.yml'
   - '/projects/stencil/src/components/mds-breadcrumb/.gitlab-ci.yml'
   - '/projects/stencil/src/components/mds-button/.gitlab-ci.yml'
+  - '/projects/stencil/src/components/mds-card-content/.gitlab-ci.yml'
+  - '/projects/stencil/src/components/mds-card-footer/.gitlab-ci.yml'
+  - '/projects/stencil/src/components/mds-card-header/.gitlab-ci.yml'
+  - '/projects/stencil/src/components/mds-card-media/.gitlab-ci.yml'
   - '/projects/stencil/src/components/mds-card/.gitlab-ci.yml'
   - '/projects/stencil/src/components/mds-chip/.gitlab-ci.yml'
   - '/projects/stencil/src/components/mds-details/.gitlab-ci.yml'
@@ -161,6 +166,7 @@ include:
   - '/projects/stencil/src/components/mds-filter/.gitlab-ci.yml'
   - '/projects/stencil/src/components/mds-header-bar/.gitlab-ci.yml'
   - '/projects/stencil/src/components/mds-header/.gitlab-ci.yml'
+  - '/projects/stencil/src/components/mds-help/.gitlab-ci.yml'
   - '/projects/stencil/src/components/mds-horizontal-scroll/.gitlab-ci.yml'
   - '/projects/stencil/src/components/mds-hr/.gitlab-ci.yml'
   - '/projects/stencil/src/components/mds-icon/.gitlab-ci.yml'
@@ -174,8 +180,16 @@ include:
   - '/projects/stencil/src/components/mds-notification/.gitlab-ci.yml'
   - '/projects/stencil/src/components/mds-paginator-item/.gitlab-ci.yml'
   - '/projects/stencil/src/components/mds-paginator/.gitlab-ci.yml'
+  - '/projects/stencil/src/components/mds-price-table-features-cell/.gitlab-ci.yml'
+  - '/projects/stencil/src/components/mds-price-table-features-row/.gitlab-ci.yml'
+  - '/projects/stencil/src/components/mds-price-table-features/.gitlab-ci.yml'
+  - '/projects/stencil/src/components/mds-price-table-header/.gitlab-ci.yml'
+  - '/projects/stencil/src/components/mds-price-table-list-item/.gitlab-ci.yml'
+  - '/projects/stencil/src/components/mds-price-table-list/.gitlab-ci.yml'
+  - '/projects/stencil/src/components/mds-price-table/.gitlab-ci.yml'
   - '/projects/stencil/src/components/mds-progress/.gitlab-ci.yml'
   - '/projects/stencil/src/components/mds-quote/.gitlab-ci.yml'
+  - '/projects/stencil/src/components/mds-separator/.gitlab-ci.yml'
   - '/projects/stencil/src/components/mds-spinner/.gitlab-ci.yml'
   - '/projects/stencil/src/components/mds-stepper-bar-item/.gitlab-ci.yml'
   - '/projects/stencil/src/components/mds-stepper-bar/.gitlab-ci.yml'
@@ -195,3 +209,4 @@ include:
   - '/projects/stencil/src/components/mds-url-view/.gitlab-ci.yml'
   - '/projects/stencil/src/components/mds-usage/.gitlab-ci.yml'
   - '/projects/stencil/src/components/mds-video-wall/.gitlab-ci.yml'
+  - '/projects/stencil/src/components/mds-zero/.gitlab-ci.yml'

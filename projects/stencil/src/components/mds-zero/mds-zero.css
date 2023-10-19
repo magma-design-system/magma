@@ -1,0 +1,44 @@
+@tailwind utilities;
+
+/**
+  * @prop --mds-zero-contents-max-width: Set if the contents has a max width to be centered in the component
+  */
+
+:host {
+
+  --mds-zero-contents-max-width: 400px;
+
+  @apply
+    gap-6
+    p-12
+    mobile:px-6
+    rounded-xl;
+
+  align-items: center;
+  background-color: theme('colors.tone-neutral-10');
+  display: flex;
+  flex-direction: column;
+  justify-items: center;
+}
+
+:host .contents {
+  align-items: center;
+  display: flex;
+  flex-direction: column;
+  justify-items: center;
+  max-width: var(--mds-zero-contents-max-width);
+  text-align: center;
+}
+
+:host .actions {
+  @apply gap-2;
+
+  align-items: center;
+  display: flex;
+  justify-items: center;
+  width: 100%;
+}
+
+:host ::slotted([slot="action"]) {
+  margin: auto;
+}
