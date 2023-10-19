@@ -33,7 +33,7 @@ const config: StorybookConfig = {
           '@stencil-component/*': resolve(__dirname, '../../stencil/src/components/*'),
           '@stencil-dictionary': resolve(__dirname, '../../stencil/src/dictionary/'),
           '@stencil-fixture/*': resolve(__dirname, '../../stencil/src/fixtures/*'),
-          '@stencil-icon/*': resolve(__dirname, '../../stencil/assets/svg/*'),
+          '@stencil-icon/*': resolve(__dirname, '../assets/svg/*'),
           '@stencil-interface/*': resolve(__dirname, '../../stencil/src/interface/*'),
           '@stencil-type/*': resolve(__dirname, '../../stencil/src/type/*'),
         }
@@ -44,8 +44,7 @@ const config: StorybookConfig = {
     autodocs: true
   },
   staticDirs : [
-    resolve(__dirname, '../../stencil/assets'),
-    resolve(__dirname, '../../stencil/dist'),
+    { from: './../../stencil/assets', to: 'assets/' },
   ],
 }
 
