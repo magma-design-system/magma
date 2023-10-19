@@ -39,6 +39,7 @@ stages:
         - yarn.lock
     paths:
       - node_modules
+      - .cache/puppeteer
       - projects/design-tokens/node_modules
       - projects/styles/node_modules
       - projects/icons/node_modules
