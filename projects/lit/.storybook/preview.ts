@@ -74,16 +74,7 @@ apMdsText().then(void dceMdsText())
 // apMdsTooltip().then(void dceMdsTooltip())
 // apMdsUsage().then(void dceMdsUsage())
 
-import { mds_icon } from '@maggioli-design-system/mds-icon/dist/esm/mds-icon.entry'
-
-const mdsIconGet = async () => {
-  await customElements.whenDefined('mds-icon')
-  const pathName = window.location.pathname.replace('/iframe.html', '')
-  const svgPath = pathName.charAt(pathName.length - 1) === '/' ? `${pathName}svg/` : `${pathName}/svg/`
-  mds_icon.setSvgPathStatic(svgPath)
-}
-
-mdsIconGet()
+window.sessionStorage.setItem('mdsIconSvgPath', '/assets/svg/');
 
 export const parameters = {
   actions: { argTypesRegex: "^on[A-Z].*" },
