@@ -1,0 +1,21 @@
+{
+  "source": [
+    "properties/color/tones.json"
+  ],
+  "platforms": {
+    "css": {
+      "transformGroup": "css",
+      "buildPath": "dist/css/",
+      "files": [
+        {
+          "format": "css/vars",
+          "destination": "colors-hex-tones.css"
+        },
+        {
+          "format": "css/vars-rgb-channels",
+          "destination": "colors-rgb-tones.css"
+        }
+      ]
+    }
+  }
+}
