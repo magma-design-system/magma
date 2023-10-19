@@ -50,7 +50,7 @@
   resolved "https://registry.npmjs.org/@babel/compat-data/-/compat-data-7.23.2.tgz#6a12ced93455827037bfb5ed8492820d60fc32cc"
   integrity sha512-0S9TQMmDHlqAZ2ITT95irXKfxN9bncq8ZCoJhun3nHL/lLUxd2NKBJYoNGWH7S0hz6fRQwWlAWn/ILM0C70KZQ==
 
-"@babel/core@7.23.2", "@babel/core@^7.1.0", "@babel/core@^7.11.6", "@babel/core@^7.12.3", "@babel/core@^7.13.16", "@babel/core@^7.22.0", "@babel/core@^7.22.9", "@babel/core@^7.7.2", "@babel/core@^7.7.5", "@babel/core@^7.8.0":
+"@babel/core@7.23.2", "@babel/core@^7.1.0", "@babel/core@^7.11.6", "@babel/core@^7.12.3", "@babel/core@^7.13.16", "@babel/core@^7.22.0", "@babel/core@^7.22.9", "@babel/core@^7.23.0", "@babel/core@^7.7.2", "@babel/core@^7.7.5", "@babel/core@^7.8.0":
   version "7.23.2"
   resolved "https://registry.npmjs.org/@babel/core/-/core-7.23.2.tgz#ed10df0d580fff67c5f3ee70fd22e2e4c90a9f94"
   integrity sha512-n7s51eWdaWZ3vGT2tD4T7J6eJs3QoBXydv7vkUM06Bf1cbVD2Kc2UrkzhiQwobfV7NwOnQXYL7UBJ5VPU+RGoQ==
@@ -1495,12 +1495,12 @@
   resolved "https://registry.npmjs.org/@floating-ui/utils/-/utils-0.1.6.tgz#22958c042e10b67463997bd6ea7115fe28cbcaf9"
   integrity sha512-OfX7E2oUDYxtBvsuS4e/jSn4Q9Qb6DzgeYtsAdkPZ47znpoNsMgZw0+tVijiv3uGNR6dgNlty6r9rzIzHjtd/A==
 
-"@fontsource/karla@5.0.15":
+"@fontsource/karla@5.0.15", "@fontsource/karla@^5.0.12":
   version "5.0.15"
   resolved "https://registry.npmjs.org/@fontsource/karla/-/karla-5.0.15.tgz#1b855e8eaa4751b5591eac7ff379522cd6444b26"
   integrity sha512-74t/kLGzsC9KrMpU9ARAG0BRWGEi/K9aMDuqgmjg9GgrIxezuhirCX1vqtmGg+dzOBgoZYLDhpq/mRAu5wIpAw==
 
-"@fontsource/merriweather@5.0.8":
+"@fontsource/merriweather@5.0.8", "@fontsource/merriweather@^5.0.8":
   version "5.0.8"
   resolved "https://registry.npmjs.org/@fontsource/merriweather/-/merriweather-5.0.8.tgz#057ecbcd55fcd6592e4ce3254645075299916823"
   integrity sha512-4vvR6psdKcGzaFCQL8fGCqMI/mOLKD+mhmUe3iQilx/4VFkIcF7wswWHZ7KCPeF24edX8yd0QXX0DQ1CenMrYA==
@@ -1510,7 +1510,7 @@
   resolved "https://registry.npmjs.org/@fontsource/roboto-mono/-/roboto-mono-5.0.13.tgz#e8293d7493c424e49114de986e6e729a79ee71c8"
   integrity sha512-kBoO+zPWkZuwiwdlFLipEov3fjEe7gB0aii3q/f5+rF9tKe6Rda/w6iW2d/lmBXU02dCSFqR0ncvSkxIsx9zsw==
 
-"@fontsource/roboto@5.0.8":
+"@fontsource/roboto@5.0.8", "@fontsource/roboto@^5.0.8":
   version "5.0.8"
   resolved "https://registry.npmjs.org/@fontsource/roboto/-/roboto-5.0.8.tgz#613b477a56f21b5705db1a67e995c033ef317f76"
   integrity sha512-XxPltXs5R31D6UZeLIV1td3wTXU3jzd3f2DLsXI8tytMGBkIsGcc9sIyiupRtA8y73HAhuSCeweOoBqf6DbWCA==
@@ -1911,10 +1911,31 @@
     "@stencil/core" "^4.3.0"
     idb-keyval "^6.2.1"
 
+"@maggioli-design-system/mds-icon@^2.5.3":
+  version "2.5.3"
+  resolved "https://registry.npmjs.org/@maggioli-design-system/mds-icon/-/mds-icon-2.5.3.tgz#d668454d345019b2319d8ffa191c33962f000d12"
+  integrity sha512-WWbpkQ4Q487XVBTovEaWDEysk0kvu4kG99i+1h+tpsI82btZk3txX2aapS5mooPUSD8CRXEXLRtlFvBB2auIng==
+  dependencies:
+    "@maggioli-design-system/styles" "^11.7.0"
+    "@stencil/core" "^4.3.0"
+    idb-keyval "^6.2.1"
+
 "@maggioli-design-system/mds-text@^3.4.2":
   version "3.4.2"
   resolved "https://registry.npmjs.org/@maggioli-design-system/mds-text/-/mds-text-3.4.2.tgz#15d77a0b98a6c29381bd3c6b377968750f563e29"
   integrity sha512-6TAu4s7QEu13qeR24rydwdLBI6QpU3T4RFhGpz3bPwVeW00IGJY7OAoMtbWCGfqZMt1vQhUhgPfj4uLLBJXKyw==
+  dependencies:
+    "@fontsource/karla" "^5.0.12"
+    "@fontsource/merriweather" "^5.0.8"
+    "@fontsource/roboto" "^5.0.8"
+    "@maggioli-design-system/styles" "^11.7.0"
+    "@stencil/core" "^4.3.0"
+    clsx "^2.0.0"
+
+"@maggioli-design-system/mds-text@^3.4.3":
+  version "3.4.3"
+  resolved "https://registry.npmjs.org/@maggioli-design-system/mds-text/-/mds-text-3.4.3.tgz#553e8649d03233497366e9f9f98055458b49ce12"
+  integrity sha512-HZmxz42JUgnKsbqbKxsMHydSZk3zCyWog6LVyimshVmW4yX+drYlLYV9qINGkCN5PYDxExWDV5Ht+xEmfw2wXQ==
   dependencies:
     "@fontsource/karla" "^5.0.12"
     "@fontsource/merriweather" "^5.0.8"
@@ -2450,7 +2471,7 @@
   dependencies:
     "@sinonjs/commons" "^1.7.0"
 
-"@stencil/core@4.5.0":
+"@stencil/core@4.5.0", "@stencil/core@^4.3.0":
   version "4.5.0"
   resolved "https://registry.npmjs.org/@stencil/core/-/core-4.5.0.tgz#99e2e47985a867c1cba476f9c3632cd2fd06d948"
   integrity sha512-XRbHdb9t4SQzCCbF9qsh0dexvnlArEzCDJl19BJzxzazVBM398SeJUKCBh4p91AZIWveN0gHuZSIGMhLWR7qSA==
@@ -2580,6 +2601,22 @@
     "@storybook/core-events" "7.5.0"
     "@storybook/global" "^5.0.0"
     "@storybook/preview-api" "7.5.0"
+
+"@storybook/addon-links@7.5.0":
+  version "7.5.0"
+  resolved "https://registry.npmjs.org/@storybook/addon-links/-/addon-links-7.5.0.tgz#70ce63874ce2c7307acab5545aa5a1aeb16b6739"
+  integrity sha512-1j0I80k8V1sSGN3faduj9uFk0ThgT4qAYyA/5q2YYA4y6V/K8ywJVOR3nv5j7ueTeBD/gUaoncn+NosusrhRNQ==
+  dependencies:
+    "@storybook/client-logger" "7.5.0"
+    "@storybook/core-events" "7.5.0"
+    "@storybook/csf" "^0.1.0"
+    "@storybook/global" "^5.0.0"
+    "@storybook/manager-api" "7.5.0"
+    "@storybook/preview-api" "7.5.0"
+    "@storybook/router" "7.5.0"
+    "@storybook/types" "7.5.0"
+    prop-types "^15.7.2"
+    ts-dedent "^2.0.0"
 
 "@storybook/addon-measure@7.5.0":
   version "7.5.0"
@@ -2717,6 +2754,28 @@
     fs-extra "^11.1.0"
     process "^0.11.10"
     util "^0.12.4"
+
+"@storybook/builder-vite@7.5.0":
+  version "7.5.0"
+  resolved "https://registry.npmjs.org/@storybook/builder-vite/-/builder-vite-7.5.0.tgz#65de79711e9b95ff3acbbe2b5bbbef45925ee55b"
+  integrity sha512-XqiXECAhIDhUryhcPfWfmrvCA2R9p4cebXdyH5Op17yKQ10Bp+OxDWXZlOY/PHdq2KBVhC8CF3Yp7JXCWk8BHw==
+  dependencies:
+    "@storybook/channels" "7.5.0"
+    "@storybook/client-logger" "7.5.0"
+    "@storybook/core-common" "7.5.0"
+    "@storybook/csf-plugin" "7.5.0"
+    "@storybook/node-logger" "7.5.0"
+    "@storybook/preview" "7.5.0"
+    "@storybook/preview-api" "7.5.0"
+    "@storybook/types" "7.5.0"
+    "@types/find-cache-dir" "^3.2.1"
+    browser-assert "^1.2.1"
+    es-module-lexer "^0.9.3"
+    express "^4.17.3"
+    find-cache-dir "^3.0.0"
+    fs-extra "^11.1.0"
+    magic-string "^0.30.0"
+    rollup "^2.25.0 || ^3.3.0"
 
 "@storybook/builder-webpack5@7.5.0":
   version "7.5.0"
@@ -3049,11 +3108,6 @@
   resolved "https://registry.npmjs.org/@storybook/manager/-/manager-7.5.0.tgz#3736c334ab9041093ee15266f13d89aed8f51350"
   integrity sha512-M4h4b0Y4aZ1sRGaZuJXgvPZHqu7vN/wgWB5yPcSwJqH1+DlPxYXYnPKGERgaEUUVKJV3oWQD2qZ+UpDeTgI5UQ==
 
-"@storybook/manager@7.4.6":
-  version "7.4.6"
-  resolved "https://registry.npmjs.org/@storybook/manager/-/manager-7.4.6.tgz#96acb0ab60e05b74947d7895e04efa557fd8892f"
-  integrity sha512-kA1hUDxpn1i2SO9OinvLvVXDeL4xgJkModp+pbE8IXv4NJWReNq1ecMeQCzPLS3Sil2gnrullQ9uYXsnZ9bxxA==
-
 "@storybook/mdx2-csf@^1.0.0":
   version "1.1.0"
   resolved "https://registry.npmjs.org/@storybook/mdx2-csf/-/mdx2-csf-1.1.0.tgz#97f6df04d0bf616991cc1005a073ac004a7281e5"
@@ -3115,11 +3169,6 @@
   version "7.5.0"
   resolved "https://registry.npmjs.org/@storybook/preview/-/preview-7.5.0.tgz#1931e3d860451ef72849b7e36e2721f1893865af"
   integrity sha512-KPhx43pRgIb6UhqjsF0sUG5c3GG2dwzTzjN1/sj0QbPMghZ3b7xKGrCu6VSlsXoWQtcwisMHETFnowk0Ba/AMg==
-
-"@storybook/preview@7.4.6":
-  version "7.4.6"
-  resolved "https://registry.npmjs.org/@storybook/preview/-/preview-7.4.6.tgz#b0d9f5a843d4c7aea8857f6bc5d7253cc04c7c4b"
-  integrity sha512-2RPXusJ4CTDrIipIKKvbotD7fP0+8VzoFjImunflIrzN9rni+2rq5eMjqlXAaB+77w064zIR4uDUzI9fxsMDeQ==
 
 "@storybook/react-docgen-typescript-plugin@1.0.6--canary.9.0c3f3b7.0":
   version "1.0.6--canary.9.0c3f3b7.0"
@@ -3229,6 +3278,32 @@
     "@types/babel__core" "^7.0.0"
     "@types/express" "^4.7.0"
     file-system-cache "2.3.0"
+
+"@storybook/web-components-vite@7.5.0":
+  version "7.5.0"
+  resolved "https://registry.npmjs.org/@storybook/web-components-vite/-/web-components-vite-7.5.0.tgz#1623601e78fb2a72d5ca3402c23d6d00029178cf"
+  integrity sha512-FZa5pbexnwqI0P2TFOa10vzzoABfsHBLRC0uEWntdxJYJso28xZPHdzuyNLTniOYsi+n5Eyifd3nJ+kmOS4OJg==
+  dependencies:
+    "@storybook/builder-vite" "7.5.0"
+    "@storybook/core-server" "7.5.0"
+    "@storybook/node-logger" "7.5.0"
+    "@storybook/web-components" "7.5.0"
+    magic-string "^0.30.0"
+
+"@storybook/web-components@7.5.0":
+  version "7.5.0"
+  resolved "https://registry.npmjs.org/@storybook/web-components/-/web-components-7.5.0.tgz#7e6a2ab2d0f34d84a154f81fecaa85750897a11e"
+  integrity sha512-fkEEfssthEgvf2DUlGBfj+mtpCgiuiC8BuZqf45ueMm8iYV34EZmPNzTopPHBsm2z8VM3WZDuIFQ1puhLy5+sg==
+  dependencies:
+    "@storybook/client-logger" "7.5.0"
+    "@storybook/core-client" "7.5.0"
+    "@storybook/docs-tools" "7.5.0"
+    "@storybook/global" "^5.0.0"
+    "@storybook/manager-api" "7.5.0"
+    "@storybook/preview-api" "7.5.0"
+    "@storybook/types" "7.5.0"
+    tiny-invariant "^1.3.1"
+    ts-dedent "^2.0.0"
 
 "@swc/core-darwin-arm64@1.3.93":
   version "1.3.93"
@@ -4627,7 +4702,7 @@ atob@^2.1.2:
   resolved "https://registry.npmjs.org/atob/-/atob-2.1.2.tgz#6d9517eb9e030d2436666651e86bd9f6f13533c9"
   integrity sha512-Wm6ukoaOGJi/73p/cl2GvLjTI5JM1k/O14isD73YML8StrH/7/lRFgmg8nICZgD3bZZvjwCGxtMOD3wWNAu8cg==
 
-autoprefixer@10.4.16, autoprefixer@^10.3.6:
+autoprefixer@10.4.16, autoprefixer@^10.3.6, autoprefixer@^10.4.16:
   version "10.4.16"
   resolved "https://registry.npmjs.org/autoprefixer/-/autoprefixer-10.4.16.tgz#fad1411024d8670880bdece3970aa72e3572feb8"
   integrity sha512-7vd3UC6xKp0HLfua5IjZlcXvGAGy7cBAXTg2lyQ/8WpNhd6SiZ8Be+xm3FyBSYJx5GKcpRCzBh7RH4/0dnY+uQ==
@@ -4677,7 +4752,7 @@ babel-jest@^27.5.1:
     graceful-fs "^4.2.9"
     slash "^3.0.0"
 
-babel-loader@9.1.3, babel-loader@^9.0.0:
+babel-loader@9.1.3, babel-loader@^9.0.0, babel-loader@^9.1.3:
   version "9.1.3"
   resolved "https://registry.npmjs.org/babel-loader/-/babel-loader-9.1.3.tgz#3d0e01b4e69760cc694ee306fe16d358aa1c6f9a"
   integrity sha512-xG3ST4DglodGf8qSwv0MdeWLhrDsw/32QMdTO5T1ZIp9gQur0HkCyFs7Awskr10JKXFXwpAhiCuYX5oGXnRGbw==
@@ -5418,7 +5493,7 @@ clone@^2.1.2:
   resolved "https://registry.npmjs.org/clone/-/clone-2.1.2.tgz#1b7f4b9f591f1e8f83670401600345a02887435f"
   integrity sha512-3Pe/CF1Nn94hyhIYpjtiLhdCoEoz0DqQ+988E9gmeEdQZlojxnOb74wctFyuwWQHzqyf9X7C7MG8juUpqBJT8w==
 
-clsx@2.0.0:
+clsx@2.0.0, clsx@^2.0.0:
   version "2.0.0"
   resolved "https://registry.npmjs.org/clsx/-/clsx-2.0.0.tgz#12658f3fd98fafe62075595a5c30e43d18f3d00b"
   integrity sha512-rQ1+kcj+ttHG0MKVGBUXwayCCF1oh39BF5COIpRzuCEv8Mwjv0XucrI2ExNTOn9IlLifGClWQcU9BrZORvtw6Q==
@@ -6779,7 +6854,7 @@ eslint-plugin-import@^2.27.5:
     semver "^6.3.1"
     tsconfig-paths "^3.14.2"
 
-eslint-plugin-lit@^1.9.1:
+eslint-plugin-lit@1.9.1:
   version "1.9.1"
   resolved "https://registry.npmjs.org/eslint-plugin-lit/-/eslint-plugin-lit-1.9.1.tgz#40cdd1f8d1b565eb5e913eab159c88f6f947bb19"
   integrity sha512-XFFVufVxYJwqRB9sLkDXB7SvV1xi9hrC4HRFEdX1h9+iZ3dm4x9uS7EuT9uaXs6zR3DEgcojia1F7pmvWbc4Gg==
@@ -6839,7 +6914,7 @@ eslint-plugin-storybook@0.6.15:
     requireindex "^1.1.0"
     ts-dedent "^2.2.0"
 
-eslint-plugin-wc@^2.0.4:
+eslint-plugin-wc@2.0.4:
   version "2.0.4"
   resolved "https://registry.npmjs.org/eslint-plugin-wc/-/eslint-plugin-wc-2.0.4.tgz#1945abc2ccf484c633d0f1624294ffe91fb78314"
   integrity sha512-ORu7MBv0hXIvq894EJad70m+AvHGbmrDdKT6lcgtCVVhEbuIAyxg0ilfqqqHOmsh8PfcUBeEae3y7CElKvm1KQ==
@@ -9644,14 +9719,14 @@ lit-element@^3.3.0:
     "@lit/reactive-element" "^1.3.0"
     lit-html "^2.8.0"
 
-lit-html@^2.8.0:
+lit-html@2.8.0, lit-html@^2.8.0:
   version "2.8.0"
   resolved "https://registry.npmjs.org/lit-html/-/lit-html-2.8.0.tgz#96456a4bb4ee717b9a7d2f94562a16509d39bffa"
   integrity sha512-o9t+MQM3P4y7M7yNzqAyjp7z+mQGa4NS4CxiyLqFPyFWyc4O+nodLrkrxSaCTrla6M5YOLaT3RpbbqjszB5g3Q==
   dependencies:
     "@types/trusted-types" "^2.0.2"
 
-lit@^2.8.0:
+lit@2.8.0, lit@^2.8.0:
   version "2.8.0"
   resolved "https://registry.npmjs.org/lit/-/lit-2.8.0.tgz#4d838ae03059bf9cafa06e5c61d8acc0081e974e"
   integrity sha512-4Sc3OFX9QHOJaHbmTMk28SYgVxLN3ePDjg7hofEft2zWlehFL3LiAuapWc4U/kYwMYJSh2hTCPZ6/LIC7ii0MA==
@@ -11310,7 +11385,7 @@ postcss-value-parser@^4.0.0, postcss-value-parser@^4.1.0, postcss-value-parser@^
   resolved "https://registry.npmjs.org/postcss-value-parser/-/postcss-value-parser-4.2.0.tgz#723c09920836ba6d3e5af019f92bc0971c02e514"
   integrity sha512-1NNCs6uurfkVbeXG4S8JFT9t19m45ICnif8zWLd5oPSZ50QnwMfK+H3jv408d4jw/7Bttv5axS5IiHoLaVNHeQ==
 
-postcss@8.4.31, postcss@^8.2.14, postcss@^8.4.21, postcss@^8.4.23, postcss@^8.4.28:
+postcss@8.4.31, postcss@^8.2.14, postcss@^8.4.21, postcss@^8.4.23, postcss@^8.4.27, postcss@^8.4.28, postcss@^8.4.31:
   version "8.4.31"
   resolved "https://registry.npmjs.org/postcss/-/postcss-8.4.31.tgz#92b451050a9f914da6755af352bdc0192508656d"
   integrity sha512-PS08Iboia9mts/2ygV3eLpY5ghnUcfLV/EXTOW1E2qYxJKGGBUtNjN76FYHnMs36RmARn41bC0AZmn+rR0OVpQ==
@@ -12223,6 +12298,13 @@ rimraf@~2.6.2:
   integrity sha512-mwqeW5XsA2qAejG46gYdENaxXjx9onRNCfn7L0duuP4hCuTIi/QO7PDK07KJfp1d+izWPrzEJDcSqBa0OZQriA==
   dependencies:
     glob "^7.1.3"
+
+"rollup@^2.25.0 || ^3.3.0", rollup@^3.27.1:
+  version "3.29.4"
+  resolved "https://registry.npmjs.org/rollup/-/rollup-3.29.4.tgz#4d70c0f9834146df8705bfb69a9a19c9e1109981"
+  integrity sha512-oWzmBZwvYrU0iJHtDmhsm662rC15FRXmcjCk1xD771dFDx5jJ02ufAQQTn0etB2emNk4J9EZg/yWKpsn9BWGRw==
+  optionalDependencies:
+    fsevents "~2.3.2"
 
 run-for-every-file@1.1.0:
   version "1.1.0"
@@ -13943,7 +14025,7 @@ typedarray@^0.0.6:
   resolved "https://registry.npmjs.org/typedarray/-/typedarray-0.0.6.tgz#867ac74e3864187b1d3d47d996a78ec5c8830777"
   integrity sha512-/aCDEGatGvZ2BIk+HmLf4ifCJFwvKFNb9/JeZPMulfgFracn9QFcAf5GO8B/mweUjSoblS5In0cWhqpfs/5PQA==
 
-typescript@5.2.2, "typescript@^4.6.4 || ^5.0.0":
+typescript@5.2.2, "typescript@^4.6.4 || ^5.0.0", typescript@^5.2.2:
   version "5.2.2"
   resolved "https://registry.npmjs.org/typescript/-/typescript-5.2.2.tgz#5ebb5e5a5b75f085f22bc3f8460fba308310fa78"
   integrity sha512-mI4WrpHsbCIcwT9cF4FZvr80QUeKvsUsUvKDoR+X/7XHQH98xYD8YHZg7ANtz2GtZt/CBq2QJ0thkGJMHfqc1w==
@@ -14286,6 +14368,17 @@ version-guard@^1.1.1:
   version "1.1.1"
   resolved "https://registry.npmjs.org/version-guard/-/version-guard-1.1.1.tgz#7a6e87a1babff1b43d6a7b0fd239731e278262fa"
   integrity sha512-MGQLX89UxmYHgDvcXyjBI0cbmoW+t/dANDppNPrno64rYr8nH4SHSuElQuSYdXGEs0mUzdQe1BY+FhVPNsAmJQ==
+
+vite@4.5.0:
+  version "4.5.0"
+  resolved "https://registry.npmjs.org/vite/-/vite-4.5.0.tgz#ec406295b4167ac3bc23e26f9c8ff559287cff26"
+  integrity sha512-ulr8rNLA6rkyFAlVWw2q5YJ91v098AFQ2R0PRFwPzREXOUJQPtFUG0t+/ZikhaOCDqFoDhN6/v8Sq0o4araFAw==
+  dependencies:
+    esbuild "^0.18.10"
+    postcss "^8.4.27"
+    rollup "^3.27.1"
+  optionalDependencies:
+    fsevents "~2.3.2"
 
 vite@^4.4.11:
   version "4.4.11"

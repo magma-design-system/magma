@@ -24,10 +24,6 @@ const config: StorybookConfig = {
     configType
   }) {
     return mergeConfig(config, {
-      optimizeDeps: {
-        include: ['doctrine'], // https://github.com/storybookjs/storybook/issues/21523
-        disabled: true,
-      },
       resolve: {
         alias: {
           '@component/*': resolve(__dirname, '../components/*'),
