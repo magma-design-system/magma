@@ -73,7 +73,7 @@ stencil-storybook-build:
 # COMMON STENCIL TEST
 stencil-test:
   extends: base-stencil-build
-  image: atools/chrome-headless:java11-node16-latest
+  image: atools/chrome-headless:java17-nodelts-latest
   stage: test
   dependencies: [base-stencil-build]
   before_script:
