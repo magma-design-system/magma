@@ -6,10 +6,10 @@ Generated at {{ date }}
 
 const getColor = (cssVar, { opacityVariable, opacityValue }) => {
   if (opacityValue !== undefined) {
-    return `rgba(var(--${cssVar}), ${opacityValue})`
+    return `rgb(var(--${cssVar}) / ${opacityValue})`
   }
   if (opacityVariable !== undefined) {
-    return `rgba(var(--${cssVar}), var(${opacityVariable}, 1))`
+    return `rgb(var(--${cssVar}) / var(${opacityVariable}, 1))`
   }
   return `rgb(var(--${cssVar}))`
 }

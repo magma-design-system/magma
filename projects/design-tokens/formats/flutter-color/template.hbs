@@ -20,9 +20,9 @@ class MagmaColorPaletteLight {
           {{#ifEquals @key 'light'}}
             {{#each palettes as | palette |}}
               {{#ifEquals @key 'color'}}
-  static const Color {{#pascalCase}}{{@../../../key}}-{{@../../key}}{{/pascalCase}} = const Color.fromRGBO({{rgbChannel palette.value}}, 1);
+  static const Color {{#pascalCase}}{{@../../../key}}-{{@../../key}}{{/pascalCase}} = const Color.fromRGBO({{rgbCommaSeparatedChannel palette.value}}, 1);
               {{else}}
-  static const Color {{#pascalCase}}{{@../../../key}}-{{@../../key}}-{{leadZero @key}}{{/pascalCase}} = const Color.fromRGBO({{rgbChannel palette.value}}, 1);
+  static const Color {{#pascalCase}}{{@../../../key}}-{{@../../key}}-{{leadZero @key}}{{/pascalCase}} = const Color.fromRGBO({{rgbCommaSeparatedChannel palette.value}}, 1);
               {{/ifEquals}}
             {{/each}}
           {{/ifEquals}}
@@ -41,9 +41,9 @@ class MagmaColorPaletteDark {
           {{#ifEquals @key 'dark'}}
             {{#each palettes as | palette |}}
               {{#ifEquals @key 'color'}}
-  static const Color {{#pascalCase}}{{@../../../key}}-{{@../../key}}{{/pascalCase}} = const Color.fromRGBO({{rgbChannel palette.value}}, 1);
+  static const Color {{#pascalCase}}{{@../../../key}}-{{@../../key}}{{/pascalCase}} = const Color.fromRGBO({{rgbCommaSeparatedChannel palette.value}}, 1);
               {{else}}
-  static const Color {{#pascalCase}}{{@../../../key}}-{{@../../key}}-{{leadZero @key}}{{/pascalCase}} = const Color.fromRGBO({{rgbChannel palette.value}}, 1);
+  static const Color {{#pascalCase}}{{@../../../key}}-{{@../../key}}-{{leadZero @key}}{{/pascalCase}} = const Color.fromRGBO({{rgbCommaSeparatedChannel palette.value}}, 1);
               {{/ifEquals}}
             {{/each}}
           {{/ifEquals}}
