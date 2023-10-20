@@ -42,10 +42,10 @@ function updateComponentDependencies (nameComponent: string) {
       ).then(versions => {
         // versions = [...{package, version}]
         versions.forEach(v => {
-          if (json.dependencies[v.dependencie] !== `^${v.version}`) {
+          if (json.dependencies[v.dependencie] !== `${v.version}`) {
             updated = true
           }
-          json.dependencies[v.dependencie] = `^${v.version}`
+          json.dependencies[v.dependencie] = `${v.version}`
         })
         // new json with updated dependencies
         return { json, updated }

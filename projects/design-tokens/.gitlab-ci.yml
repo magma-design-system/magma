@@ -1,6 +1,6 @@
 # DESIGN TOKENS BUILD
 design-tokens-build:
-  extends: .base-build
+  extends: [.base-build]
   script:
     - nx run design-tokens:build
   artifacts:
@@ -19,7 +19,7 @@ design-tokens-build:
 
 # DESIGN TOKENS PUBLISH TEST
 design-tokens-publish-test:
-  extends: .base-publish-test
+  extends: [.base-publish-test]
   dependencies: [design-tokens-build]
   stage: test
   variables:
@@ -32,7 +32,7 @@ design-tokens-publish-test:
 
 # DESIGN TOKENS PUBLISH
 design-tokens-publish:
-  extends: .base-publish
+  extends: [.base-publish]
   dependencies: [design-tokens-build]
   needs: [design-tokens-publish-test, design-tokens-build]
   stage: publish
@@ -45,7 +45,7 @@ design-tokens-publish:
 
 # DESIGN INSTALL TEST
 design-tokens-install-test:
-  extends: .base-install-test
+  extends: [.base-install-test]
   needs: [design-tokens-publish]
   variables:
     BUILD_DIR: projects/design-tokens

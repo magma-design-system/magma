@@ -38,9 +38,14 @@ const pascalCase = (options: HelperOptions) => {
   return arr.join('')
 }
 
-const rgbChannel = (value: string) => {
+const rgbCommaSeparatedChannel = (value: string) => {
   const color = hexRgb(value)
   return `${color.red}, ${color.green}, ${color.blue}`
+}
+
+const rgbChannel = (value: string) => {
+  const color = hexRgb(value)
+  return `${color.red} ${color.green} ${color.blue}`
 }
 
 const leadZero = (value: string) => {
@@ -119,6 +124,7 @@ export {
   pascalCase,
   pixelToScale,
   rgbChannel,
+  rgbCommaSeparatedChannel,
   safeString,
   stripText,
   tailwindFontSize,
