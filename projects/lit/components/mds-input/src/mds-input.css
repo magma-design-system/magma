@@ -70,7 +70,7 @@ textarea.input {
     ease-out-expo;
 
   --mds-input-ring: 0 0 0 3px rgb(var(--mds-input-variant-color) / 1);
-  --mds-input-shadow: 0 4px 6px -1px rgb(var(--mds-input-variant-color) / 0.1), 0 2px 4px -1px rgb(var(--mds-input-variant-color) / 0.06);
+  --mds-input-shadow: 0 4px 6px 3px rgb(var(--mds-input-variant-color) / 0.1), 0 2px 4px -1px rgb(var(--mds-input-variant-color) / 0.06);
 }
 
 .input:disabled {
@@ -156,7 +156,7 @@ textarea.input {
 
 :host( [variant="info"]:focus ) {
 
-  --mds-input-icon-color: 21 119 151; /* status-info-04 */
+  --mds-input-icon-color: 21 119 151; /* var(--status-info-04) */
   --mds-input-variant-color: 25 143 182; /* status-info-05 */
 }
 

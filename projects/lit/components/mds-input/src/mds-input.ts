@@ -293,7 +293,6 @@ export class MdsInput extends LitElement {
     const datalist = this.buildDatalist()
 
     return html`
-      <mds-text typography="option">prova di testo</mds-text>
       ${input}
       ${this.required && !this.readonly ? html`
         <mds-text typography="option" class="tip top-1 required">Obbligatorio</mds-text>

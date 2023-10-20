@@ -5,22 +5,22 @@
 @tailwind utilities;
 
 /**
-* @prop --mds-input-background: Sets the background-color of the component
-* @prop --mds-input-icon-color: Sets the icon color of the component
-* @prop --mds-input-ring: Sets the box-shadow of the component's input
-* @prop --mds-input-shadow: Sets the box-shadow of the component's input
-* @prop --mds-input-tip-background: Sets the background color of the tip message at the bottom right of the component
-* @prop --mds-input-variant-color: Sets the variant colors of the component
-*/
+  * @prop --mds-input-background: Sets the background-color of the component
+  * @prop --mds-input-icon-color: Sets the icon color of the component
+  * @prop --mds-input-ring: Sets the box-shadow of the component's input
+  * @prop --mds-input-shadow: Sets the box-shadow of the component's input
+  * @prop --mds-input-tip-background: Sets the background color of the tip message at the bottom right of the component
+  * @prop --mds-input-variant-color: Sets the variant colors of the component
+  */
 
 :host {
 
   --mds-input-background: theme('colors.tone-neutral');
   --mds-input-icon-color: var(--mds-input-variant-color);
-  --mds-input-tip-background: 84, 84, 84;
-  --mds-input-ring: 0 0 0 1px rgb(var(--mds-input-variant-color) 0.1);
-  --mds-input-shadow: 0 1px 3px 0 rgb(var(--mds-input-variant-color) 0.1), 0 1px 2px 0 rgb(var(--mds-input-variant-color) 0.06);
-  --mds-input-variant-color: 0, 0, 0;
+  --mds-input-tip-background: 84 84 84;
+  --mds-input-ring: 0 0 0 1px rgb(var(--mds-input-variant-color) / 0.1);
+  --mds-input-shadow: 0 1px 3px 0 rgb(var(--mds-input-variant-color) / 0.1), 0 1px 2px 0 rgb(var(--mds-input-variant-color) / 0.06);
+  --mds-input-variant-color: 0 0 0;
 
   @apply text-info-detail;
 
@@ -29,26 +29,26 @@
 }
 
 .input {
+
   @apply
     duration-300
     ease-out-expo
     m-0
-    text-ellipsis
     px-4
     py-3
     rounded-lg
     text-info-detail
-    transition-cosmetic
-    min-h-12
-    w-full;
+    transition-cosmetic;
 
-  background-color: var(--mds-input-background);
-  border: 0;
-  border-color: transparent;
-  box-shadow: var(--mds-input-ring), var(--mds-input-shadow);
-  box-sizing: border-box;
-  color: theme('colors.tone-neutral-02');
-  overflow: hidden;
+    background-color: var(--mds-input-background);
+    border: 0;
+    box-shadow: var(--mds-input-ring), var(--mds-input-shadow);
+    box-sizing: border-box;
+    color: theme('colors.tone-neutral-02');
+    min-height: 3rem;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    width: 100%;
 }
 
 textarea.input:active {
@@ -69,8 +69,9 @@ textarea.input {
     duration-300
     ease-out-expo;
 
-  --mds-input-ring: 0 0 0 3px rgb(var(--mds-input-variant-color) 1);
-  --mds-input-shadow: 0 4px 6px -1px rgb(var(--mds-input-variant-color) 0.1), 0 2px 4px -1px rgb(var(--mds-input-variant-color) 0.06);
+  --mds-input-ring: 0 0 0 3px rgb(var(--mds-input-variant-color) / 1);
+  --mds-input-shadow: 0 4px 6px 3px rgb(var(--mds-input-variant-color) / 0.1), 0 2px 4px -1px rgb(var(--mds-input-variant-color) / 0.06);
+
 }
 
 .input:disabled {
@@ -112,7 +113,7 @@ textarea.input {
 
 .read-only {
   background-color: theme('colors.status-info-05');
-  color: theme('colors.tone-neutral');
+  color: theme('colors.status-info-09');
 }
 
 .required {
@@ -121,11 +122,11 @@ textarea.input {
     w-3;
 
   background-color: theme('colors.status-error-05');
-  color: transparent;
+  color: theme('colors.tone-neutral');
 }
 
 .disabled {
-  background-color: theme('colors.tone-neutral-05');
+  @apply bg-tone-neutral-05;
 }
 
 .input:focus + .required {
