@@ -35,6 +35,7 @@
     "wrapper"
   ],
   "exclude": [
+    "template",
     "components/**/dist",
     "components/**/node_modules",
     "wrapper/dist",
