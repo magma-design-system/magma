@@ -1,5 +1,5 @@
 import clsx from 'clsx'
-import globalStyles from './mds-input.css?inline'
+import globalStyles from './{{ componentName }}.css?inline'
 import { AutocompleteType } from '@stencil-type/autocomplete'
 import { InputTextType } from '@stencil-type/input-text-type'
 import { InputValueType } from '@stencil-type/input-value-type'
@@ -12,7 +12,7 @@ export type ThemeStatusVariantType =
   | 'success'
   | 'warning'
 
-@customElement('mds-input')
+@customElement('{{ componentName }}')
 export class MdsInput extends LitElement {
 
   static formAssociated = true
@@ -24,107 +24,9 @@ export class MdsInput extends LitElement {
   private internals
 
   /**
-   * Specifies whether the element should have autocomplete enabled
-   */
-  @property({ type: String }) readonly autocomplete?: AutocompleteType = 'off'
-
-  /**
-   * Specifies that the element should automatically get focus when the page loads
-   */
-  @property({ type: Boolean }) readonly autofocus: boolean = false
-
-  /**
-   * A list of search terms to be searched from the input field,
-   * it should be used with type="search" input.
-   */
-  @property({ type: Array }) readonly datalist?: string | string[]
-
-  /**
-   * If true, the element is displayed as disabled
-   */
-  @property({ type: Boolean }) readonly disabled?: boolean = false
-
-  /**
-   * An icon displayed at the right of the input
-   */
-  @property({ type: String }) readonly icon?: string
-
-  /**
-   * Specifies the maximum value
-   * use it with input type="number" or type="date"
-   * Example: max="180", max="2046-12-04"
-   */
-  @property({ type: Number }) readonly max?: number
-
-  /**
-   * Specifies the maximum number of characters allowed in an element
-   * use it with input type="number"
-   */
-  @property({ type: Number }) readonly maxlength?: number = undefined
-
-  /**
-   * Specifies the minimum value
-   * use it with input type="number" or type="date"
-   * Example: min="-3", min="1988-04-15"
-   */
-  @property({ type: Number }) readonly min?: number
-
-  /**
-   * Specifies the minimum number of characters allowed in an element
-   * use it with input type="number"
-   */
-  @property({ type: Number }) readonly minlength?: number
-
-  /**
-   * Is needed to reference the form data after the form is submitted
-   */
-  @property({ type: String }) readonly name?: string
-
-  /**
-   * Specifies a regular expression that element\'s value is checked against
-   */
-  @property({ type: String }) readonly pattern?: string
-
-  /**
    * Specifies a short hint that describes the expected value of the element
    */
   @property({ type: String }) readonly placeholder?: string
-
-  /**
-   * Specifies that the element is read-only
-   */
-  @property({ type: Boolean }) readonly readonly?: boolean = false
-
-  /**
-   * Specifies that the element must be filled out before submitting the form
-   */
-  @property({ type: Boolean }) readonly required?: boolean = false
-
-  /**
-   * Sets the variant of the input field
-   */
-  @property({ reflect: true }) readonly variant?: ThemeStatusVariantType
-
-  /**
-   * Sets the word(s) of the tip of the input field
-   */
-  @property({ type: String }) readonly tip?: string
-
-  /**
-   * Specifies the interval between legal numbers in an input field
-   */
-  @property({ type: Number }) readonly step?: number
-
-  /**
-   * Specifies the type of input element
-   */
-  @property({ type: String }) readonly type?: InputTextType = 'text'
-
-  // Using custom setter / getter because I need to fire the change-event when the property actually change
-  /**
-   * Specifies the value of the input element
-   */
-  @property({ reflect: true, type: String }) value: InputValueType
 
   // TODO: write doc
   @state() private tabindex?: number
@@ -205,19 +107,7 @@ export class MdsInput extends LitElement {
       return html`
         <textarea
           class=${clsx('input', this.icon && 'has-icon') ?? nothing}
-          .value=${value ?? nothing}
-          .maxLength=${this.maxlength ?? nothing}
-          .minLength=${this.minlength ?? nothing}
-          .name=${this.name ?? nothing}
-          .placeholder=${this.placeholder ?? nothing}
-          .tabIndex=${this.tabindex ?? nothing}
-          ?autoFocus=${this.autofocus ?? nothing}
-          ?disabled=${this.disabled ?? nothing}
-          ?readOnly=${this.readonly ?? nothing}
-          ?required=${this.required ?? nothing}
-          @blur=${this.onBlur ?? nothing}
-          @focus=${this.onFocus ?? nothing}
-          @input=${this.onInput ?? nothing}>
+          .placeholder=${this.placeholder ?? nothing}>
         </textarea>
       `
     }
@@ -225,26 +115,7 @@ export class MdsInput extends LitElement {
     return html`
       <input
         class=${clsx('input', this.icon && 'has-icon')}
-        list=${this.datalist ? 'datalist' : nothing}
-        .autoComplete=${this.autocomplete ?? nothing}
-        .max=${this.max ?? nothing}
-        .maxLength=${this.maxlength ?? nothing}
-        .min=${this.min ?? nothing}
-        .minLength=${this.minlength ?? nothing}
-        .name=${this.name ?? nothing}
-        .type=${this.type ?? nothing}
-        .pattern=${this.pattern ?? nothing}
         .placeholder=${this.placeholder ?? nothing}
-        .step=${this.step ?? nothing}
-        .tabIndex=${this.tabindex ?? nothing}
-        .value=${value ?? nothing}
-        ?autoFocus=${this.autofocus ?? nothing}
-        ?disabled=${this.disabled ?? nothing}
-        ?readOnly=${this.readonly ?? nothing}
-        ?required=${this.required ?? nothing}
-        @blur=${this.onBlur ?? nothing}
-        @focus=${this.onFocus ?? nothing}
-        @input=${this.onInput ?? nothing}
       />
     `
   }
@@ -263,6 +134,7 @@ export class MdsInput extends LitElement {
 
   // add the following methods to make your Custom Element participate
   // in form validation
+
   get validity () {
     return this.internals.validity
   }
@@ -321,6 +193,6 @@ export class MdsInput extends LitElement {
 
 declare global {
   interface HTMLElementTagNameMap {
-    'mds-input': MdsInput
+    '{{ componentName }}': MdsInput
   }
 }

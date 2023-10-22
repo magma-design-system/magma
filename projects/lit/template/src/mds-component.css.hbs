@@ -1,0 +1,18 @@
+@import url('@maggioli-design-system/styles/dist/tailwind/typography.css');
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/**
+  * @prop --{{ componentName }}-background: Sets the background-color of the component
+  */
+
+:host {
+
+  --{{ componentName }}-background: theme('colors.tone-neutral');
+
+  @apply p-2;
+
+  display: flex;
+}

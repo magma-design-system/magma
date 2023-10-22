@@ -2,6 +2,14 @@
 
 This project holds the form components developed with `lit`.
 
+### Generate
+
+To create a new lit component, use:
+
+```
+nx run lit:generate --component=mds-component-name
+```
+
 ## Storybook
 
 To run the `storybook` instance navigate to the `wrapper` sub-directory, install dependencies via `npm i` and then run `npm run storybook`.

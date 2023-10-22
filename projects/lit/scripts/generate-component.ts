@@ -1,10 +1,10 @@
 import chalk from 'chalk'
 import { ask } from 'stdio'
-import Handlebars from 'handlebars'
+import { checkComponentExistance, compileTemplateFile, copyTemplateFile } from './lib'
 import { join } from 'path'
-import { copyFile, cp, mkdir, readFile, rename, stat, writeFile } from 'fs/promises'
-import { createComponentInstance, checkComponentExistance } from './lib'
-import { logStatus, logFileSavedTo, dontUseWithNX } from '../../../scripts/log'
+import { mkdir } from 'fs/promises'
+import { COMPONENTS_DIR } from './meta'
+import { dontUseWithNX } from '../../../scripts/log'
 
 let componentNameArgument = ''
 let nonInteractive = true
@@ -18,6 +18,17 @@ if (process.argv.length === 3) {
 
 if (!nonInteractive) {
   dontUseWithNX()
+}
+
+const createComponentInstance = async (componentName: string): Promise<void> => {
+
+  await mkdir(join(COMPONENTS_DIR, componentName), { recursive: true }).catch(error => { throw Error(chalk.red(error)) })
+  await compileTemplateFile(componentName, 'package.json.handlebars', 'package.json')
+  await copyTemplateFile(componentName, 'postcss.config.cjs')
+  await copyTemplateFile(componentName, 'tailwind.config.cjs')
+  await copyTemplateFile(componentName, 'tsconfig.json')
+  await copyTemplateFile(componentName, 'tsconfig.node.json')
+  await copyTemplateFile(componentName, 'vite.config.ts')
 }
 
 const generateComponent = async (): Promise<void> => {
