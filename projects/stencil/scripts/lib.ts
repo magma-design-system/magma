@@ -23,7 +23,7 @@ const compilePackage = async (componentName: string): Promise<void> => {
 const createPackage = async (componentName: string): Promise<void> => {
   const packageFile = await readFile(join(PROJECT_DIR, 'package.json')).catch(error => { throw Error(chalk.red(error)) })
   const packageData = JSON.parse(packageFile.toString())
-  const packageTemplate = await readFile(join(TEMPLATES_DIR, 'package.json')).catch(error => { throw Error(chalk.red(error)) })
+  const packageTemplate = await readFile(join(TEMPLATES_DIR, 'package.json.hbs')).catch(error => { throw Error(chalk.red(error)) })
 
   const template = Handlebars.compile(packageTemplate.toString())
   const data = {
@@ -43,7 +43,7 @@ const createPackage = async (componentName: string): Promise<void> => {
     })
 }
 
-const compileTemplateFile = async (componentName: string, fileName: string): Promise<void> => {
+const compileTemplateFile = async (componentName: string, templateFileName: string, fileName: string): Promise<void> => {
   const exists = !!( await stat(join(COMPONENTS_DIR, componentName, fileName))
     .catch(() => {
       return false
@@ -55,11 +55,11 @@ const compileTemplateFile = async (componentName: string, fileName: string): Pro
     return
   }
 
-  await createTemplateFile(componentName, fileName)
+  await createTemplateFile(componentName, templateFileName, fileName)
 }
 
-const createTemplateFile = async (componentName: string, fileName: string): Promise<void> => {
-  const packageTemplate = await readFile(join(TEMPLATES_DIR, fileName)).catch(error => { throw Error(chalk.red(error)) })
+const createTemplateFile = async (componentName: string, templateFileName: string, fileName: string): Promise<void> => {
+  const packageTemplate = await readFile(join(TEMPLATES_DIR, templateFileName)).catch(error => { throw Error(chalk.red(error)) })
 
   const template = Handlebars.compile(packageTemplate.toString())
   const templateCompiled = template({ componentName: componentName.replace('mds-', '') })
@@ -74,8 +74,9 @@ const createTemplateFile = async (componentName: string, fileName: string): Prom
 }
 
 const scaffoldStencil = async (componentName: string): Promise<void> => {
-  const fileName = 'stencil.config.ts'
-  const stencilTemplate = await readFile(join(TEMPLATES_DIR, fileName)).catch(error => { throw Error(chalk.red(error)) })
+  const fileNameTemplate = 'stencil.config.ts.hbs'
+  const fileName = 'stencil.config.ts.hbs'
+  const stencilTemplate = await readFile(join(TEMPLATES_DIR, fileNameTemplate)).catch(error => { throw Error(chalk.red(error)) })
   const template = Handlebars.compile(stencilTemplate.toString())
   const data = {
     componentName,

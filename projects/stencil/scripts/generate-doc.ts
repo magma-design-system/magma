@@ -18,7 +18,7 @@ const capitalizeWord = (componentName: string) => componentName.replace('-', ' '
 const overwriteDoc = async (componentName: string) => {
   const componentDocPath = join(COMPONENTS_DIR, componentName, 'readme.md')
   const readme = await readFile(componentDocPath).catch(error => { throw new Error(chalk.red(error)) })
-  const readmeTemplate = await readFile(join(TEMPLATES_DIR, 'readme.md')).catch(error => { throw new Error(chalk.red(error)) })
+  const readmeTemplate = await readFile(join(TEMPLATES_DIR, 'readme.md.hbs')).catch(error => { throw new Error(chalk.red(error)) })
 
   const oldDoc = readme.toString()
 
