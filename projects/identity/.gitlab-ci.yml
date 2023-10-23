@@ -1,6 +1,6 @@
 # IDENTITY BUILD
 identity-build:
-  extends: [.base-build]
+  extends: .base-build
   script:
     - nx run identity:build
   artifacts:
@@ -17,7 +17,7 @@ identity-build:
 
 # IDENTITY PUBLISH TEST
 identity-publish-test:
-  extends: [.base-publish-test]
+  extends: .base-publish-test
   dependencies: [identity-build]
   stage: test
   variables:
@@ -30,7 +30,7 @@ identity-publish-test:
 
 # IDENTITY PUBLISH
 identity-publish:
-  extends: [.base-publish]
+  extends: .base-publish
   dependencies: [identity-build]
   needs: [identity-publish-test, identity-build]
   stage: publish
@@ -43,7 +43,7 @@ identity-publish:
 
 # IDENTITY INSTALL TEST
 identity-install-test:
-  extends: [.base-install-test]
+  extends: .base-install-test
   needs: [identity-publish]
   variables:
     BUILD_DIR: projects/identity

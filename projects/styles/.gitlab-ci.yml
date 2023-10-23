@@ -1,6 +1,6 @@
 # STYLES BUILD
 styles-build:
-  extends: [.base-build]
+  extends: .base-build
   script:
     - nx run design-tokens:build
     - nx run styles:build
@@ -21,7 +21,7 @@ styles-build:
 
 # STYLES PUBLISH TEST
 styles-publish-test:
-  extends: [.base-publish-test]
+  extends: .base-publish-test
   dependencies: [styles-build]
   stage: test
   variables:
@@ -35,7 +35,7 @@ styles-publish-test:
 
 # STYLES PUBLISH
 styles-publish:
-  extends: [.base-publish]
+  extends: .base-publish
   dependencies: [styles-build]
   needs: [styles-publish-test, styles-build]
   stage: publish
@@ -48,7 +48,7 @@ styles-publish:
 
 # STYLES INSTALL TEST
 styles-install-test:
-  extends: [.base-install-test]
+  extends: .base-install-test
   needs: [styles-publish]
   variables:
     BUILD_DIR: projects/styles

@@ -91,9 +91,8 @@ stages:
     BUILD_DIR: to_be_extended
   script:
     - cd $BUILD_DIR
-    - npm config set engine-strict "true"
-    - npm config set //registry.npmjs.org/:_auth $NPM_TOKEN
-    - npm config set //registry.npmjs.org/:_authToken $NPM_TOKEN
+    - npm config --global set //registry.npmjs.org/:_auth $NPM_TOKEN
+    - npm config --global set //registry.npmjs.org/:_authToken $NPM_TOKEN
     - npm publish --access public
   cache:
     policy: pull

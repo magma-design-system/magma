@@ -1,6 +1,6 @@
 # SVG-ICONS PUBLISH TEST
 svg-icons-publish-test:
-  extends: [.base-publish-test]
+  extends: .base-publish-test
   stage: test
   variables:
     BUILD_DIR: projects/svg-icons
@@ -12,7 +12,7 @@ svg-icons-publish-test:
 
 # SVG-ICONS PUBLISH
 svg-icons-publish:
-  extends: [.base-publish]
+  extends: .base-publish
   stage: publish
   needs: [svg-icons-publish-test]
   variables:
@@ -24,7 +24,7 @@ svg-icons-publish:
 
 # SVG-ICONS INSTALL TEST
 svg-icons-install-test:
-  extends: [.base-install-test]
+  extends: .base-install-test
   needs: [svg-icons-publish]
   variables:
     COMPONENT: svg-icons
