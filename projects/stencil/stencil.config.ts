@@ -25,6 +25,9 @@ export const config: Config = {
   srcDir,
   sourceMap: false,
   buildEs5: true,
+  extras: {
+    enableImportInjection: true,
+  },
   outputTargets: [
     {
       type: 'dist',

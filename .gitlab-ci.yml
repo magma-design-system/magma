@@ -8,12 +8,8 @@ workflow:
     - if: '$CI_COMMIT_BRANCH'
 
 variables:
-  # The GIT_DEPTH option makes the project clone process in each job a bit faster, pulling only the current commit, not the whole Git history.
   GIT_DEPTH: "1"
-  # overlay2 filesystem for the Docker build, which is faster and less space consuming
   DOCKER_DRIVER: overlay2
-  # Abilita  debug gitlab-ci
-  #CI_DEBUG_TRACE: "true"
 
 default:
   tags:
@@ -27,7 +23,7 @@ stages:
   - publish
   - test:install
   - deploy:storybook
-  - deploy:website # TODO
+  - deploy:website
 
 # BASE BUILD
 .base-build:
@@ -36,17 +32,14 @@ stages:
   before_script:
     - apt update && apt install jq -y
     - npm install -g --force nx yarn
-    - |
-      if [[ ! -d node_modules ]]; then
-        yarn install --frozen-lockfile --prefer-offline --force
-      fi
+    - yarn install --frozen-lockfile --prefer-offline --force
   cache:
     key:
       files:
         - yarn.lock
-      prefix: $CI_PROJECT_NAME
     paths:
       - node_modules
+      - .cache/puppeteer
       - projects/design-tokens/node_modules
       - projects/styles/node_modules
       - projects/icons/node_modules
@@ -73,6 +66,8 @@ stages:
       else
         npm publish --access public --dry-run
       fi
+  cache:
+    policy: pull
 
 # BASE INSTALL TEST
 .base-install-test:
@@ -85,6 +80,8 @@ stages:
   script:
     - cd $BUILD_DIR
     - npm pack && npm install --prefix ./ $PACK_NAME
+  cache:
+    policy: pull
 
 # BASE PUBLISH
 .base-publish:
@@ -94,10 +91,11 @@ stages:
     BUILD_DIR: to_be_extended
   script:
     - cd $BUILD_DIR
-    - npm config set engine-strict "true"
-    - npm config set //registry.npmjs.org/:_auth $NPM_TOKEN
-    - npm config set //registry.npmjs.org/:_authToken $NPM_TOKEN
+    - npm config --global set //registry.npmjs.org/:_auth $NPM_TOKEN
+    - npm config --global set //registry.npmjs.org/:_authToken $NPM_TOKEN
     - npm publish --access public
+  cache:
+    policy: pull
 
 include:
   - '/projects/design-tokens/.gitlab-ci.yml'
