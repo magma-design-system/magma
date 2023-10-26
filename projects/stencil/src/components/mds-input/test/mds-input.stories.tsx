@@ -4,7 +4,8 @@ import { autoCompleteDictionary } from '@dictionary/autocomplete'
 import { inputTextTypeDictionary } from '@dictionary/input-text-type'
 import { iconsDictionary } from '@dictionary/icon'
 import { h } from '@stencil/core'
-import { InputValue } from '../meta/interfaces'
+
+import { MdsInputInterface } from '../mds-input'
 
 // https://developers.google.com/web/updates/2015/06/checkout-faster-with-autofill
 
@@ -97,7 +98,7 @@ export default {
   },
 }
 
-const Template = args =>
+const Template = (args: MdsInputInterface) =>
   <mds-input {...args}></mds-input>
 
 export const Default = Template.bind({})
@@ -105,15 +106,15 @@ Default.args = {
   placeholder: 'Scrivi qualcosa',
 }
 
-export const autoComplete = Template.bind({})
-autoComplete.args = {
+export const AutoComplete = Template.bind({})
+AutoComplete.args = {
   autocomplete: 'address',
   type: 'text',
   placeholder: 'Intestatario carta di credito',
 }
 
-export const autoFocus = Template.bind({})
-autoFocus.args = {
+export const AutoFocus = Template.bind({})
+AutoFocus.args = {
   autofocus: true,
   placeholder: 'Auto focus input text',
 }
@@ -124,8 +125,8 @@ Disabled.args = {
   placeholder: 'Input field with disabled attribute',
 }
 
-export const max = Template.bind({})
-max.args = {
+export const Max = Template.bind({})
+Max.args = {
   max: '3',
   type: 'number',
   value: '2',
@@ -137,66 +138,55 @@ Required.args = {
   placeholder: 'This is a required field',
 }
 
-export const readOnly = Template.bind({})
-readOnly.args = {
+export const ReadOnly = Template.bind({})
+ReadOnly.args = {
   readOnly: true,
   value: 'This is a read only field',
 }
 
-export const variant = Template.bind({})
-variant.args = {
+export const Variant = Template.bind({})
+Variant.args = {
   variant: 'error',
   placeholder: 'Status input field',
   tip: 'errore',
 }
 
-export const tip = Template.bind({})
-tip.args = {
+export const Tip = Template.bind({})
+Tip.args = {
   placeholder: 'Scrivi qualcosa...',
   tip: 'input',
 }
 
-export const search = Template.bind({})
-search.args = {
+export const Search = Template.bind({})
+Search.args = {
   datalist: citiesDictionary,
   type: 'search',
   placeholder: 'Search a city name...',
 }
 
-export const icon = Template.bind({})
-icon.args = {
+export const Icon = Template.bind({})
+Icon.args = {
   icon: 'mi/round/email',
   placeholder: 'Status input field',
 }
 
-const FormIntegration = (args: any) => (
+const FormIntegrationTemplate = (args: MdsInputInterface) => (
   <form class="flex flex-col gap-y-2" id="mds-icon-fi" name="mds-icon-fi">
     <mds-input {...args}></mds-input>
     <mds-button class="w-min" type="button" onClick={() => {
-      const input = document.querySelector('input[name="inputto"]') as HTMLInputElement
+      // const input = document.querySelector('mds-input') as HTMLMdsInputElement
       const form = document.querySelector('form') as HTMLFormElement
-      const mdsInput = document.querySelector('mds-input') as HTMLMdsInputElement
-
-      console.info('Input', input)
-      console.info('Form', form)
-      console.info('Form elements', form.elements)
-      console.info('MdsInput', mdsInput)
-
-      mdsInput.getInputElement().then((inputElement: HTMLInputElement) => {
-        console.info('MdsInput input element', inputElement)
-      })
-
-      input.addEventListener('input', (e: Event) => { console.error('Input', (e.target as HTMLInputElement).value)})
-      input.addEventListener('change', (e: Event) => { console.warn('Change', (e.target as HTMLInputElement).value)})
-      mdsInput.addEventListener('changeEvent', (e: CustomEvent<InputValue>) => { console.info('MdsInput ChangeEvent', e.detail.value) })
-
-      form.addEventListener('submit', (e: Event) => { e.preventDefault(), console.info('Submitted', e)})
-    }}>Trigger listener</mds-button>
+      // const mdsInput = document.querySelector('mds-input') as HTMLMdsInputElement
+      console.info('form', form)
+      form.addEventListener('submit', (e: Event) => {
+        e.preventDefault(), console.info('Submitted', e)})
+    }
+    }>Trigger listener</mds-button>
   </form>
 )
 
-export const formIntegration = FormIntegration.bind({})
-formIntegration.args = {
+export const FormIntegration = FormIntegrationTemplate.bind({})
+FormIntegration.args = {
   placeholder: 'Mi integro col form!',
   name: 'inputto',
 }

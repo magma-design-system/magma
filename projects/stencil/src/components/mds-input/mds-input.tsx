@@ -1,4 +1,5 @@
 import {
+  AttachInternals,
   Component,
   Element,
   Event,
@@ -18,9 +19,33 @@ import { InputTextType } from '@type/input-text-type'
 import { InputValueType } from '@type/input-value-type'
 import { ThemeStatusVariantType } from '@type/variant'
 
+export interface MdsInputInterface {
+  placeholder?: string;
+  type: InputTextType;
+  required?: boolean;
+  autocomplete?: AutocompleteType;
+  autofocus?: boolean;
+  datalist?: string[];
+  disabled?: boolean;
+  icon?: string;
+  max?: string;
+  maxLength?: number;
+  min?: string;
+  minLength?: number;
+  name?: string;
+  pattern?: string;
+  readOnly?: boolean;
+  step?: string;
+  variant?: ThemeStatusVariantType;
+  tip?: string;
+  value?: string;
+  tabindex?: number;
+}
+
 @Component({
   tag: 'mds-input',
   styleUrl: 'mds-input.css',
+  formAssociated: true,
   shadow: true,
 })
 
@@ -30,6 +55,8 @@ export class MdsInput {
   private tabindex?: number
   @Element() el!: HTMLMdsInputElement
   @State() hasFocus = false
+
+  @AttachInternals() internals: ElementInternals
 
   /**
    * Specifies whether the element should have autocomplete enabled
@@ -62,7 +89,7 @@ export class MdsInput {
    * use it with input type="number" or type="date"
    * Example: max="180", max="2046-12-04"
    */
-  @Prop() readonly max?: number
+  @Prop() readonly max?: string
 
   /**
    * Specifies the maximum number of characters allowed in an element
@@ -131,7 +158,8 @@ export class MdsInput {
   /**
    * Specifies the value of the input element
    */
-  @Prop() value?: InputValueType = ''
+  @Prop({ reflect: true }) value?: InputValueType = ''
+  @State() inputValue: string
 
   /**
    * Emits an InputChangeEventDetail when the value of the input element changes
@@ -162,6 +190,9 @@ export class MdsInput {
       this.tabindex = tabindex !== null ? parseInt(tabindex) : undefined
       this.el.removeAttribute('tabindex')
     }
+    if (this.value) {
+      this.internals.setFormValue(this.getValue())
+    }
   }
 
   /**
@@ -170,6 +201,7 @@ export class MdsInput {
   @Watch('value')
   protected valueChanged ():void {
     this.changeEvent.emit({ value: this.value })
+    this.internals.setFormValue(this.getValue())
   }
 
   /**
@@ -200,7 +232,8 @@ export class MdsInput {
   private onInput = (ev: Event) => {
     const input = ev.target as HTMLInputElement | HTMLTextAreaElement | false
     if (input) {
-      this.value = input.value
+      this.inputValue = input.value
+      this.internals.setFormValue(this.inputValue)
     }
     this.keyDownEvent.emit(ev as KeyboardEvent)
   }
@@ -224,7 +257,6 @@ export class MdsInput {
   }
 
   render () {
-    const value = this.getValue()
     return (
       <Host>
         { this.type === 'textarea'
@@ -246,7 +278,7 @@ export class MdsInput {
             ref={ input => (this.nativeInput = input)}
             required={this.required}
             tabIndex={this.tabindex}
-            value={value}>
+            value={this.inputValue}>
           </textarea>
           : <input
             class={clsx(
@@ -273,7 +305,7 @@ export class MdsInput {
             step={this.step}
             tabIndex={this.tabindex}
             type={this.type}
-            value={value}
+            value={this.inputValue}
           />
         }
         { this.disabled && <mds-text typography="option" class="tip top-1 disabled">Disabilitato</mds-text> }

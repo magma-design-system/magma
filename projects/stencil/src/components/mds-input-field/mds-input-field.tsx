@@ -203,7 +203,7 @@ export class MdsInputField {
         i += 1
         // console.log(v.length, i, v[ i ])
         // console.log(`'${mask[i]}'`)
-        maskedChars = v[ i ] !== undefined ? v[ i ] : ''
+        maskedChars = v[ i ] ?? ''
         return maskedChars
       })
     }
