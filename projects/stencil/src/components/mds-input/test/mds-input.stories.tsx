@@ -177,9 +177,11 @@ const FormIntegrationTemplate = (args: MdsInputInterface) => (
       // const input = document.querySelector('mds-input') as HTMLMdsInputElement
       const form = document.querySelector('form') as HTMLFormElement
       // const mdsInput = document.querySelector('mds-input') as HTMLMdsInputElement
-      console.info('form', form)
+      console.info('input:', form['text-field'].value)
       form.addEventListener('submit', (e: Event) => {
-        e.preventDefault(), console.info('Submitted', e)})
+        e.preventDefault()
+        console.info('Submitted', e)
+      })
     }
     }>Trigger listener</mds-button>
   </form>
@@ -187,6 +189,6 @@ const FormIntegrationTemplate = (args: MdsInputInterface) => (
 
 export const FormIntegration = FormIntegrationTemplate.bind({})
 FormIntegration.args = {
-  placeholder: 'Mi integro col form!',
-  name: 'inputto',
+  placeholder: 'Es: Hello world!',
+  name: 'text-field',
 }

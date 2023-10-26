@@ -89,7 +89,7 @@ export class MdsInput {
    * use it with input type="number" or type="date"
    * Example: max="180", max="2046-12-04"
    */
-  @Prop() readonly max?: string
+  @Prop() readonly max?: string | number
 
   /**
    * Specifies the maximum number of characters allowed in an element
@@ -102,7 +102,7 @@ export class MdsInput {
    * use it with input type="number" or type="date"
    * Example: min="-3", min="1988-04-15"
    */
-  @Prop() readonly min?: string
+  @Prop() readonly min?: string | number
 
   /**
    * Specifies the minimum number of characters allowed in an element
