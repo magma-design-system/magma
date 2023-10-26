@@ -60,7 +60,7 @@ export class MdsInputField {
    * use it with input type="number" or type="date"
    * Example: max="180", max="2046-12-04"
    */
-  @Prop() max?: number
+  @Prop() max?: string
 
   /**
    * Specifies the maximum number of characters allowed in an element
@@ -188,9 +188,9 @@ export class MdsInputField {
     return Promise.resolve(this.nativeInput!)
   }
 
-  private getValue (): string {
-    return typeof this.value === 'number' ? this.value.toString() : (this.value ?? '')
-  }
+  // private getValue (): string {
+  //   return typeof this.value === 'number' ? this.value.toString() : (this.value ?? '')
+  // }
 
   private mask (value: string | number | null = '' ): string | number | null {
     let i = -1
@@ -268,7 +268,7 @@ export class MdsInputField {
   @Prop() tip?: string
 
   render () {
-    const value = this.getValue()
+    // const value = this.getValue()
     return (
       <Host>
         { this.label && <mds-text class="label" typography="label">{ this.label }</mds-text> }
@@ -298,7 +298,7 @@ export class MdsInputField {
             step={this.step}
             tabIndex={this.tabindex}
             type={this.type}
-            value={value}
+            // value={value}
           />
           { this.message && <mds-text class="message" typography="caption">{ this.message }</mds-text> }
         </div>

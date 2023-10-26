@@ -89,7 +89,7 @@ export class MdsInput {
    * use it with input type="number" or type="date"
    * Example: max="180", max="2046-12-04"
    */
-  @Prop() readonly max?: string | number
+  @Prop() readonly max?: string
 
   /**
    * Specifies the maximum number of characters allowed in an element
@@ -159,7 +159,6 @@ export class MdsInput {
    * Specifies the value of the input element
    */
   @Prop({ reflect: true }) value?: InputValueType = ''
-  @State() inputValue: string
 
   /**
    * Emits an InputChangeEventDetail when the value of the input element changes
@@ -229,13 +228,13 @@ export class MdsInput {
     return typeof this.value === 'number' ? this.value.toString() : this.value ?? ''
   }
 
-  private onInput = (ev: Event) => {
+  private onInput = (ev: InputEvent) => {
     const input = ev.target as HTMLInputElement | HTMLTextAreaElement | false
     if (input) {
-      this.inputValue = input.value
-      this.internals.setFormValue(this.inputValue)
+      this.value = input.value
+      this.internals.setFormValue(this.getValue())
     }
-    this.keyDownEvent.emit(ev as KeyboardEvent)
+    this.keyDownEvent.emit(ev as Event as KeyboardEvent)
   }
 
   private onBlur = () => {
@@ -278,7 +277,7 @@ export class MdsInput {
             ref={ input => (this.nativeInput = input)}
             required={this.required}
             tabIndex={this.tabindex}
-            value={this.inputValue}>
+            value={this.getValue()}>
           </textarea>
           : <input
             class={clsx(
@@ -305,7 +304,7 @@ export class MdsInput {
             step={this.step}
             tabIndex={this.tabindex}
             type={this.type}
-            value={this.inputValue}
+            value={this.getValue()}
           />
         }
         { this.disabled && <mds-text typography="option" class="tip top-1 disabled">Disabilitato</mds-text> }

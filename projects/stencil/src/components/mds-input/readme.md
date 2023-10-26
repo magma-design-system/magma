@@ -17,7 +17,7 @@ This component is `scoped` and not `shadowed`, so the inner `input` element inte
 | `datalist`     | --             | A list of search terms to be searched from the input field, it should be used with type="search" input.         | `string[] \| undefined`                                                                                                    | `undefined` |
 | `disabled`     | `disabled`     | If true, the element is displayed as disabled                                                                   | `boolean \| undefined`                                                                                                     | `false`     |
 | `icon`         | `icon`         | An icon displayed at the right of the input                                                                     | `string \| undefined`                                                                                                      | `undefined` |
-| `max`          | `max`          | Specifies the maximum value use it with input type="number" or type="date" Example: max="180", max="2046-12-04" | `number \| string \| undefined`                                                                                            | `undefined` |
+| `max`          | `max`          | Specifies the maximum value use it with input type="number" or type="date" Example: max="180", max="2046-12-04" | `string \| undefined`                                                                                                      | `undefined` |
 | `maxlength`    | `maxlength`    | Specifies the maximum number of characters allowed in an element use it with input type="number"                | `number \| undefined`                                                                                                      | `undefined` |
 | `min`          | `min`          | Specifies the minimum value use it with input type="number" or type="date" Example: min="-3", min="1988-04-15"  | `number \| string \| undefined`                                                                                            | `undefined` |
 | `minlength`    | `minlength`    | Specifies the minimum number of characters allowed in an element use it with input type="number"                | `number \| undefined`                                                                                                      | `undefined` |
@@ -66,6 +66,18 @@ of the global `input.focus()`.
 Type: `Promise<void>`
 
 
+
+
+## CSS Custom Properties
+
+| Name                         | Description                                                                       |
+| ---------------------------- | --------------------------------------------------------------------------------- |
+| `--mds-input-background`     | Sets the background-color of the component                                        |
+| `--mds-input-icon-color`     | Sets the icon color of the component                                              |
+| `--mds-input-ring`           | Sets the box-shadow of the component's input                                      |
+| `--mds-input-shadow`         | Sets the box-shadow of the component's input                                      |
+| `--mds-input-tip-background` | Sets the background color of the tip message at the bottom right of the component |
+| `--mds-input-variant-color`  | Sets the variant colors of the component                                          |
 
 
 ## Dependencies

@@ -174,11 +174,9 @@ const FormIntegrationTemplate = (args: MdsInputInterface) => (
   <form class="flex flex-col gap-y-2" id="mds-icon-fi" name="mds-icon-fi">
     <mds-input {...args}></mds-input>
     <mds-button class="w-min" type="button" onClick={() => {
-      // const input = document.querySelector('mds-input') as HTMLMdsInputElement
       const form = document.querySelector('form') as HTMLFormElement
-      // const mdsInput = document.querySelector('mds-input') as HTMLMdsInputElement
       console.info('input:', form['text-field'].value)
-      form.addEventListener('submit', (e: Event) => {
+      form.addEventListener('submit', (e: SubmitEvent) => {
         e.preventDefault()
         console.info('Submitted', e)
       })
