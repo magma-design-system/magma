@@ -29,18 +29,18 @@ This component is `scoped` and not `shadowed`, so the inner `input` element inte
 | `step`         | `step`         | Specifies the interval between legal numbers in an input field                                                  | `string \| undefined`                                                                                                      | `undefined` |
 | `tip`          | `tip`          | Sets the word(s) of the tip of the input field                                                                  | `string \| undefined`                                                                                                      | `undefined` |
 | `type`         | `type`         | Specifies the type of input element                                                                             | `"date" \| "email" \| "number" \| "password" \| "search" \| "tel" \| "text" \| "textarea" \| "time" \| "url" \| undefined` | `'text'`    |
-| `value`        | `value`        | Specifies the value of the input element                                                                        | `null \| number \| string \| undefined`                                                                                    | `''`        |
+| `value`        | `value`        | Specifies the value of the input element                                                                        | `string \| undefined`                                                                                                      | `''`        |
 | `variant`      | `variant`      | Sets the variant of the input field                                                                             | `"error" \| "info" \| "success" \| "warning" \| undefined`                                                                 | `undefined` |
 
 
 ## Events
 
-| Event             | Description                                                                      | Type                         |
-| ----------------- | -------------------------------------------------------------------------------- | ---------------------------- |
-| `mdsInputBlur`    | Emits a void event when input element is blurred                                 | `CustomEvent<void>`          |
-| `mdsInputChange`  | Emits an InputChangeEventDetail when the value of the input element changes      | `CustomEvent<InputValue>`    |
-| `mdsInputFocus`   | Emits a void event when input element is focused                                 | `CustomEvent<void>`          |
-| `mdsInputKeydown` | Emits a KeyboardEvent when a keboard key is pressed on the focused input element | `CustomEvent<KeyboardEvent>` |
+| Event             | Description                                                                      | Type                               |
+| ----------------- | -------------------------------------------------------------------------------- | ---------------------------------- |
+| `mdsInputBlur`    | Emits a void event when input element is blurred                                 | `CustomEvent<void>`                |
+| `mdsInputChange`  | Emits an InputChangeEventDetail when the value of the input element changes      | `CustomEvent<MdsInputEventDetail>` |
+| `mdsInputFocus`   | Emits a void event when input element is focused                                 | `CustomEvent<void>`                |
+| `mdsInputKeydown` | Emits a KeyboardEvent when a keboard key is pressed on the focused input element | `CustomEvent<KeyboardEvent>`       |
 
 
 ## Methods

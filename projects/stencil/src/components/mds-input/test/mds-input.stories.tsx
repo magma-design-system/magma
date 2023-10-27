@@ -171,22 +171,28 @@ Icon.args = {
 }
 
 const FormIntegrationTemplate = (args: MdsInputInterface) => (
-  <form class="flex flex-col gap-y-2" id="mds-icon-fi" name="mds-icon-fi">
-    <mds-input {...args}></mds-input>
-    <mds-button class="w-min" type="button" onClick={() => {
-      const form = document.querySelector('form') as HTMLFormElement
-      console.info('input:', form['text-field'].value)
-      form.addEventListener('submit', (e: SubmitEvent) => {
-        e.preventDefault()
-        console.info('Submitted', e)
-      })
-    }
-    }>Trigger listener</mds-button>
-  </form>
+  <div class="grid gap-6">
+    <form class="grid gap-4" id="mds-icon-fi" name="mds-icon-fi">
+      <mds-input {...args}></mds-input>
+      <mds-button class="w-min" type="button" onClick={() => {
+        const form = document.querySelector('form') as HTMLFormElement
+        const span = document.querySelector('span.input-value') as HTMLSpanElement
+        span.innerText = form['mds-input'].value !== '' ? form['mds-input'].value : 'Empty'
+        form.addEventListener('submit', (e: SubmitEvent) => {
+          e.preventDefault()
+          console.info('Submitted', e)
+        })
+      }
+      }>Check value</mds-button>
+    </form>
+    <mds-text variant="code">
+      Input value taken from form element: <span class="input-value rounded text-tone-neutral-04 bg-tone-neutral-08 px-2">Empty</span>
+    </mds-text>
+  </div>
 )
 
 export const FormIntegration = FormIntegrationTemplate.bind({})
 FormIntegration.args = {
   placeholder: 'Es: Hello world!',
-  name: 'text-field',
+  name: 'mds-input',
 }

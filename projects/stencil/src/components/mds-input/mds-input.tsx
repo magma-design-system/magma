@@ -1,45 +1,31 @@
-import {
-  AttachInternals,
-  Component,
-  Element,
-  Event,
-  EventEmitter,
-  Host,
-  Method,
-  Prop,
-  State,
-  Watch,
-  h,
-} from '@stencil/core'
-
 import clsx from 'clsx'
-import { InputValue } from './meta/interfaces'
+import { AttachInternals, Component, Element, Event, EventEmitter, Host, Method, Prop, State, Watch, h } from '@stencil/core'
 import { AutocompleteType } from '@type/autocomplete'
 import { InputTextType } from '@type/input-text-type'
-import { InputValueType } from '@type/input-value-type'
 import { ThemeStatusVariantType } from '@type/variant'
+import { MdsInputEventDetail } from './meta/event-detail'
 
 export interface MdsInputInterface {
-  placeholder?: string;
-  type: InputTextType;
-  required?: boolean;
-  autocomplete?: AutocompleteType;
-  autofocus?: boolean;
-  datalist?: string[];
-  disabled?: boolean;
-  icon?: string;
-  max?: string;
-  maxLength?: number;
-  min?: string;
-  minLength?: number;
-  name?: string;
-  pattern?: string;
-  readOnly?: boolean;
-  step?: string;
-  variant?: ThemeStatusVariantType;
-  tip?: string;
-  value?: string;
-  tabindex?: number;
+  placeholder?: string
+  type: InputTextType
+  required?: boolean
+  autocomplete?: AutocompleteType
+  autofocus?: boolean
+  datalist?: string[]
+  disabled?: boolean
+  icon?: string
+  max?: string
+  maxLength?: number
+  min?: string
+  minLength?: number
+  name?: string
+  pattern?: string
+  readOnly?: boolean
+  step?: string
+  variant?: ThemeStatusVariantType
+  tip?: string
+  value?: string
+  tabindex?: number
 }
 
 @Component({
@@ -158,12 +144,12 @@ export class MdsInput {
   /**
    * Specifies the value of the input element
    */
-  @Prop({ reflect: true }) value?: InputValueType = ''
+  @Prop({ reflect: true }) value?: string = ''
 
   /**
    * Emits an InputChangeEventDetail when the value of the input element changes
    */
-  @Event({ eventName: 'mdsInputChange' }) changeEvent!: EventEmitter<InputValue>
+  @Event({ eventName: 'mdsInputChange' }) changeEvent!: EventEmitter<MdsInputEventDetail>
 
   /**
    * Emits a KeyboardEvent when a keboard key is pressed on the focused input element
@@ -189,9 +175,7 @@ export class MdsInput {
       this.tabindex = tabindex !== null ? parseInt(tabindex) : undefined
       this.el.removeAttribute('tabindex')
     }
-    if (this.value) {
-      this.internals.setFormValue(this.getValue())
-    }
+    this.internals.setFormValue(this.value ?? null)
   }
 
   /**
@@ -200,7 +184,7 @@ export class MdsInput {
   @Watch('value')
   protected valueChanged ():void {
     this.changeEvent.emit({ value: this.value })
-    this.internals.setFormValue(this.getValue())
+    this.internals.setFormValue(this.value ?? null)
   }
 
   /**
@@ -224,15 +208,11 @@ export class MdsInput {
     return Promise.resolve(this.nativeInput!)
   }
 
-  private getValue (): string {
-    return typeof this.value === 'number' ? this.value.toString() : this.value ?? ''
-  }
-
   private onInput = (ev: InputEvent) => {
     const input = ev.target as HTMLInputElement | HTMLTextAreaElement | false
     if (input) {
       this.value = input.value
-      this.internals.setFormValue(this.getValue())
+      this.internals.setFormValue(this.value)
     }
     this.keyDownEvent.emit(ev as Event as KeyboardEvent)
   }
@@ -277,7 +257,7 @@ export class MdsInput {
             ref={ input => (this.nativeInput = input)}
             required={this.required}
             tabIndex={this.tabindex}
-            value={this.getValue()}>
+            value={this.value}>
           </textarea>
           : <input
             class={clsx(
@@ -304,7 +284,7 @@ export class MdsInput {
             step={this.step}
             tabIndex={this.tabindex}
             type={this.type}
-            value={this.getValue()}
+            value={this.value}
           />
         }
         { this.disabled && <mds-text typography="option" class="tip top-1 disabled">Disabilitato</mds-text> }
