@@ -28,18 +28,18 @@
 | `tip`          | `tip`          | Display the variant of a message at the bottom of the input text field                                          | `string \| undefined`                                                                                         | `undefined` |
 | `type`         | `type`         | Specifies the type of input element                                                                             | `"date" \| "email" \| "number" \| "password" \| "search" \| "tel" \| "text" \| "textarea" \| "time" \| "url"` | `'text'`    |
 | `validate`     | `validate`     | Specifies the type of model data to be automatically validated                                                  | `"cf" \| "email" \| "isbn" \| "piva" \| undefined`                                                            | `undefined` |
-| `value`        | `value`        | Specifies the value of the input element                                                                        | `number \| string`                                                                                            | `''`        |
+| `value`        | `value`        | Specifies the value of the input element                                                                        | `string \| undefined`                                                                                         | `''`        |
 | `variant`      | `variant`      | Display the variant of a message at the bottom of the input text field                                          | `"error" \| "info" \| "success" \| "warning" \| undefined`                                                    | `undefined` |
 
 
 ## Events
 
-| Event                  | Description                                                                      | Type                         |
-| ---------------------- | -------------------------------------------------------------------------------- | ---------------------------- |
-| `mdsInputFieldBlur`    | Emits a void event when input element is blurred                                 | `CustomEvent<void>`          |
-| `mdsInputFieldChange`  | Emits an InputValue when the value of the input element changes                  | `CustomEvent<InputValue>`    |
-| `mdsInputFieldFocus`   | Emits a void event when input element is focused                                 | `CustomEvent<void>`          |
-| `mdsInputFieldKeydown` | Emits a KeyboardEvent when a keboard key is pressed on the focused input element | `CustomEvent<KeyboardEvent>` |
+| Event                  | Description                                                                      | Type                               |
+| ---------------------- | -------------------------------------------------------------------------------- | ---------------------------------- |
+| `mdsInputFieldBlur`    | Emits a void event when input element is blurred                                 | `CustomEvent<void>`                |
+| `mdsInputFieldChange`  | Emits an InputValue when the value of the input element changes                  | `CustomEvent<MdsInputEventDetail>` |
+| `mdsInputFieldFocus`   | Emits a void event when input element is focused                                 | `CustomEvent<void>`                |
+| `mdsInputFieldKeydown` | Emits a KeyboardEvent when a keboard key is pressed on the focused input element | `CustomEvent<KeyboardEvent>`       |
 
 
 ## Methods
@@ -65,14 +65,6 @@ of the global `input.focus()`.
 Type: `Promise<void>`
 
 
-
-
-## CSS Custom Properties
-
-| Name                                   | Description                                                                                                                      |
-| -------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------- |
-| `--mds-input-field-message-background` | Sets the message background color of the component, will be visible only if there is a text defined by `tip` component attribute |
-| `--mds-input-field-message-color`      | Sets the message text color of the component                                                                                     |
 
 
 ## Dependencies

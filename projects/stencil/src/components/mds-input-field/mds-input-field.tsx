@@ -1,27 +1,22 @@
-import {
-  Component,
-  Element,
-  Event,
-  EventEmitter,
-  Host,
-  Method,
-  Prop,
-  State,
-  Watch,
-  h,
-} from '@stencil/core'
-
 import clsx from 'clsx'
+import { AttachInternals, Component, Element, Event, EventEmitter, Host, Method, Prop, State, Watch, h } from '@stencil/core'
 import { AutocompleteType } from '@type/autocomplete'
 import { InputTextType } from '@type/input-text-type'
-import { InputValue } from '@interface/input-value'
+import { MdsInputInterface } from '@component/mds-input/mds-input'
 import { ThemeStatusVariantType } from '@type/variant'
 import { ValidationModelType } from './meta/types'
 import { modelValidator } from './meta/validators'
+import { MdsInputEventDetail } from '@component/mds-input/meta/event-detail'
+
+export interface MdsInputFieldInterface extends MdsInputInterface {
+  label?: string
+  message?: string
+}
 
 @Component({
   tag: 'mds-input-field',
   styleUrl: 'mds-input-field.css',
+  formAssociated: true,
   shadow: true,
 })
 
@@ -32,8 +27,8 @@ export class MdsInputField {
   private tabindex?: number
 
   @Element() el!: HTMLMdsInputFieldElement
-
   @State() hasFocus = false
+  @AttachInternals() internals: ElementInternals
 
   /**
    * Specifies whether the element should have autocomplete enabled
@@ -124,12 +119,12 @@ export class MdsInputField {
   /**
    * Specifies the value of the input element
    */
-  @Prop() value: string | number = ''
+  @Prop({ reflect: true }) value?: string = ''
 
   /**
    * Emits an InputValue when the value of the input element changes
    */
-  @Event({ eventName: 'mdsInputFieldChange' }) changeEvent!: EventEmitter<InputValue>
+  @Event({ eventName: 'mdsInputFieldChange' }) changeEvent!: EventEmitter<MdsInputEventDetail>
 
   /**
    * Emits a KeyboardEvent when a keboard key is pressed on the focused input element
@@ -163,6 +158,7 @@ export class MdsInputField {
   @Watch('value')
   protected valueChanged ():void {
     this.changeEvent.emit({ value: this.value })
+    this.internals.setFormValue(this.value ?? null)
     // this.cleanValue = this.value
     // console.log(this.cleanValue)
   }
@@ -214,6 +210,7 @@ export class MdsInputField {
     const input = ev.target as HTMLInputElement | false
     if (input) {
       this.value = input.value
+      this.internals.setFormValue(this.value ?? null)
     }
     this.keyDownEvent.emit(ev as KeyboardEvent)
 
@@ -298,7 +295,7 @@ export class MdsInputField {
             step={this.step}
             tabIndex={this.tabindex}
             type={this.type}
-            // value={value}
+            value={this.value}
           />
           { this.message && <mds-text class="message" typography="caption">{ this.message }</mds-text> }
         </div>

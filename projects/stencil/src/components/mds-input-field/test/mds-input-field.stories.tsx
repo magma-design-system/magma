@@ -4,6 +4,7 @@ import { inputTextTypeDictionary } from '@dictionary/input-text-type'
 import { iconsDictionary } from '@dictionary/icon'
 import { validationModelDictionary } from '../meta/dictionary'
 import { h } from '@stencil/core'
+import { MdsInputFieldInterface } from '../mds-input-field'
 
 export default {
   title: 'Form / Input / Input Field',
@@ -113,16 +114,16 @@ Default.args = {
   placeholder: 'Scrivi qualcosa',
 }
 
-export const autoComplete = Template.bind({})
-autoComplete.args = {
+export const AutoComplete = Template.bind({})
+AutoComplete.args = {
   label: 'Questo è un label',
   autocomplete: 'address',
   type: 'text',
   placeholder: 'Intestatario carta di credito',
 }
 
-export const autoFocus = Template.bind({})
-autoFocus.args = {
+export const AutoFocus = Template.bind({})
+AutoFocus.args = {
   label: 'Questo è un label',
   autofocus: true,
   placeholder: 'Auto focus input text',
@@ -135,8 +136,8 @@ Disabled.args = {
   placeholder: 'Input field with disabled attribute',
 }
 
-export const max = Template.bind({})
-max.args = {
+export const Max = Template.bind({})
+Max.args = {
   label: 'Questo è un label',
   max: '3',
   type: 'number',
@@ -150,22 +151,22 @@ Required.args = {
   placeholder: 'This is a required field',
 }
 
-export const readOnly = Template.bind({})
-readOnly.args = {
+export const ReadOnly = Template.bind({})
+ReadOnly.args = {
   label: 'Questo è un label',
   readOnly: true,
   value: 'This is a read only field',
 }
 
-export const message = Template.bind({})
-message.args = {
+export const Message = Template.bind({})
+Message.args = {
   label: 'Questo è un label',
   placeholder: 'Placeholder text...',
   message: 'This is a field with a message',
 }
 
-export const variant = Template.bind({})
-variant.args = {
+export const Variant = Template.bind({})
+Variant.args = {
   label: 'Questo è un label',
   placeholder: 'Placeholder text...',
   variant: 'error',
@@ -174,16 +175,44 @@ variant.args = {
   message: 'This is a field with a message',
 }
 
-export const icon = Template.bind({})
-icon.args = {
+export const Icon = Template.bind({})
+Icon.args = {
   icon: 'mi/baseline/check-circle',
   label: 'Questo è un label',
   placeholder: 'This is a field',
 }
 
-export const validate = Template.bind({})
-validate.args = {
+export const Validate = Template.bind({})
+Validate.args = {
   validate: 'cf',
   label: 'inserisci il tuo codice fiscale',
   placeholder: 'Es: MRCRSS83B21D704L',
+}
+
+const FormIntegrationTemplate = (args: MdsInputFieldInterface) => (
+  <div class="grid gap-6">
+    <form class="grid gap-4" id="mds-icon-fi" name="mds-icon-fi">
+      <mds-input-field {...args}></mds-input-field>
+      <mds-button class="w-min" type="button" onClick={() => {
+        const form = document.querySelector('form') as HTMLFormElement
+        const span = document.querySelector('span.input-value') as HTMLSpanElement
+        span.innerText = form['mds-input-field'].value !== '' ? form['mds-input-field'].value : 'Empty'
+        form.addEventListener('submit', (e: SubmitEvent) => {
+          e.preventDefault()
+          console.info('Submitted', e)
+        })
+      }
+      }>Check value</mds-button>
+    </form>
+    <mds-text variant="code">
+      Input value taken from form element: <span class="input-value rounded text-tone-neutral-04 bg-tone-neutral-08 px-2">Empty</span>
+    </mds-text>
+  </div>
+)
+
+export const FormIntegration = FormIntegrationTemplate.bind({})
+FormIntegration.args = {
+  label: 'Write something',
+  placeholder: 'Es: Hello world!',
+  name: 'mds-input-field',
 }
