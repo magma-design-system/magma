@@ -1,3 +1,4 @@
+@import '~@maggioli-design-system/styles/dist/css/animations.css'; /* included for focus effect */
 @import '../../tailwind/components.css';
 @tailwind components;
 @tailwind utilities;
@@ -6,7 +7,7 @@
   @apply
     duration-200
     ease-out
-    focus-off
+    focus-bounce
     gap-1
     px-4
     py-2
@@ -24,7 +25,7 @@
 }
 
 :host(:focus-visible) {
-  @apply focus-on;
+  @apply focus-bounce--focused;
 }
 
 :host( [icon]:not([label]) ) {

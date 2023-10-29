@@ -63,7 +63,7 @@ export class MdsDetails {
         </div>
         <div class="contents">
           <div>
-            <header class="header focusable" tabindex="0" onClick={ this.toggle }>
+            <header class="header focus-bounce" tabindex="0" onClick={ this.toggle }>
               <div class="title">
                 <slot name="title"/>
               </div>

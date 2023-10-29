@@ -59,7 +59,7 @@ export class MdsNote {
   render () {
     return (
       <Host>
-        { this.deletable && <i tabindex="0" role="button" title="Rimuovi" innerHTML={miBaselineClose} class="svg close focusable" onClick={ this.onClickClose.bind(this) }/> }
+        { this.deletable && <i tabindex="0" role="button" title="Rimuovi" innerHTML={miBaselineClose} class="svg close focus-bounce" onClick={ this.onClickClose.bind(this) }/> }
         <slot name="title"/>
         <slot/>
         <div class="fold"/>

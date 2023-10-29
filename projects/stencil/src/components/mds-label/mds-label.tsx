@@ -89,7 +89,7 @@ export class MdsLabel {
         <mds-text typography={this.typography} class={clsx('text', this.truncate && 'truncate')}>
           <slot/>
         </mds-text>
-        { this.deletable && <i class="svg close focusable" innerHTML={miBaselineClose} tabindex="0" onClick={ this.onClickDelete.bind(this) } role="button" title={this.labelAction}/> }
+        { this.deletable && <i class="svg close focus-bounce" innerHTML={miBaselineClose} tabindex="0" onClick={ this.onClickDelete.bind(this) } role="button" title={this.labelAction}/> }
       </Host>
     )
   }

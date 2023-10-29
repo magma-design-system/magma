@@ -62,7 +62,7 @@ export class MdsAccordionItem {
   render () {
     return (
       <Host>
-        <button aria-controls="contents" aria-expanded={this.selected ? 'true' : 'false'} class="action focusable" id="action" onClick={this.toggle} role="button" tabindex="0">
+        <button aria-controls="contents" aria-expanded={this.selected ? 'true' : 'false'} class="action" id="action" onClick={this.toggle} role="button" tabindex="0">
           <mds-text part="label" typography={this.typography}>
             {this.label}
           </mds-text>
