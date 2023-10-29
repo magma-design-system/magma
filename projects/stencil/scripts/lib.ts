@@ -3,7 +3,8 @@ import chalk from 'chalk'
 import { copyFile, cp, mkdir, readFile, rename, stat, writeFile } from 'fs/promises'
 import { join } from 'path'
 import { PROJECT_DIR, COMPONENTS_DIR, TEMPLATES_DIR, TEMP_PROJECT_DIR } from './meta'
-import { logFileSavedTo } from '../../../scripts/log'
+import { logFileSavedTo, logDirectoryDeleted } from '../../../scripts/log'
+import { remove } from 'fs-extra'
 
 const compilePackage = async (componentName: string): Promise<void> => {
   const exists = !!( await stat(join(COMPONENTS_DIR, componentName, 'package.json'))
@@ -131,10 +132,21 @@ const checkComponentExistance = async (componentName: string): Promise<boolean> 
     .catch(() => false)
 }
 
+const cleanDir = async (dir: string): Promise<void> => {
+  return await remove(dir)
+    .catch(error => {
+      throw Error(chalk.red(error))
+    })
+    .then(() => {
+      logDirectoryDeleted(dir)
+    })
+}
+
 export {
   checkComponentExistance,
   checkComponentWasBuilt,
-  createTempProjectInstance,
+  cleanDir,
   compilePackage,
   compileTemplateFile,
+  createTempProjectInstance,
 }
