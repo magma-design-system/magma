@@ -141,7 +141,7 @@ export class MdsInput {
   /**
    * Specifies the type of input element
    */
-  @Prop() readonly type?: InputTextType = 'text'
+  @Prop({ reflect: true }) readonly type?: InputTextType = 'text'
 
   /**
  * Specifies the typography of input element
@@ -293,6 +293,12 @@ export class MdsInput {
             type={this.type}
             value={this.value}
           />
+        }
+        { this.type === 'number'
+          && <div class="counter">
+            <mds-button size="sm" class="counter-button" variant="light" icon="mi/baseline/keyboard-arrow-up" part="counter-button-up"></mds-button>
+            <mds-button size="sm" class="counter-button" variant="light" icon="mi/baseline/keyboard-arrow-down" part="counter-button-down"></mds-button>
+          </div>
         }
         { this.disabled && <mds-text typography="option" class="tip top-1 disabled">Disabilitato</mds-text> }
         { this.readonly && !this.disabled && <mds-text typography="option" class="tip top-1 read-only">Sola lettura</mds-text> }

@@ -1,5 +1,5 @@
 @import '~@maggioli-design-system/styles/dist/tailwind/typography.css';
-
+@import '~@maggioli-design-system/styles/dist/css/animations.css'; /* included for focus effect */
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
@@ -21,8 +21,11 @@
   --mds-input-ring: 0 0 0 1px rgb(var(--mds-input-variant-color) / 0.1);
   --mds-input-shadow: 0 1px 3px 0 rgb(var(--mds-input-variant-color) / 0.1), 0 1px 2px 0 rgb(var(--mds-input-variant-color) / 0.06);
   --mds-input-variant-color: 0 0 0;
+  --mds-input-counter-button-background: theme('colors.tone-neutral');
 
-  @apply text-info-detail;
+  @apply
+    gap-2
+    text-info-detail;
 
   display: flex;
   position: relative;
@@ -57,6 +60,13 @@
     overflow: hidden;
     text-overflow: ellipsis;
     width: 100%;
+}
+
+.input::-webkit-outer-spin-button,
+.input::-webkit-inner-spin-button {
+  appearance: none;
+  display: none;
+  margin: 0;
 }
 
 textarea.input:active {
@@ -130,14 +140,14 @@ textarea.input {
     w-3;
 
   background-color: theme('colors.status-error-05');
-  color: theme('colors.tone-neutral');
+  color: transparent;
 }
 
 .disabled {
   @apply bg-tone-neutral-05;
 }
 
-.input:focus + .required {
+:host(:focus-within) .required {
   @apply w-24;
 
   color: theme('colors.tone-neutral');
@@ -150,6 +160,47 @@ textarea.input {
 
   fill: rgb(var(--mds-input-icon-color));
   position: absolute;
+}
+
+.counter {
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+  height: theme('spacing.6');
+
+  /* position: absolute;
+  right: 0; */
+}
+
+.counter-button {
+  @apply
+    rounded-r-lg
+    w-7;
+
+  background-color: var(--mds-input-counter-button-background);
+  border: 0;
+}
+
+
+.counter-button:first-child {
+  border-bottom-left-radius: 0;
+  border-bottom-right-radius: 0;
+}
+
+.counter-button:last-child {
+  border-top-left-radius: 0;
+  border-top-right-radius: 0;
+}
+
+/* :host( [type="number"] ) .input {
+  @apply pr-8;
+} */
+
+:host( [type="number"] ) .tip,
+:host( [type="number"] ) .read-only,
+:host( [type="number"] ) .required,
+:host( [type="number"] ) .disabled {
+  @apply right-10;
 }
 
 @import './css/mds-input-variant.css';

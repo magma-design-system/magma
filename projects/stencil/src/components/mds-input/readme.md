@@ -69,6 +69,14 @@ Type: `Promise<void>`
 
 
 
+## Shadow Parts
+
+| Part                    | Description |
+| ----------------------- | ----------- |
+| `"counter-button-down"` |             |
+| `"counter-button-up"`   |             |
+
+
 ## CSS Custom Properties
 
 | Name                         | Description                                                                       |
@@ -89,14 +97,19 @@ Type: `Promise<void>`
 
 ### Depends on
 
+- [mds-button](../mds-button)
 - [mds-text](../mds-text)
 - [mds-icon](../mds-icon)
 
 ### Graph
 ```mermaid
 graph TD;
+  mds-input --> mds-button
   mds-input --> mds-text
   mds-input --> mds-icon
+  mds-button --> mds-spinner
+  mds-button --> mds-icon
+  mds-button --> mds-text
   mds-input-field --> mds-input
   style mds-input fill:#f9f,stroke:#333,stroke-width:4px
 ```
