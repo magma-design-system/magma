@@ -69,12 +69,18 @@ const typographyTooltipDictionary = [
   'tip',
 ]
 
+const typographyInputDictionary = [
+  'snippet',
+  'detail',
+]
+
 export {
   typographyDictionary,
   typographyInfoDictionary,
-  typographyReadingVariationsDictionary,
+  typographyInputDictionary,
   typographyMonoDictionary,
   typographyReadDictionary,
+  typographyReadingVariationsDictionary,
   typographySmallerDictionary,
   typographyTitleDictionary,
   typographyTooltipDictionary,

@@ -28,6 +28,14 @@
   position: relative;
 }
 
+:host( [typography="detail"] ) .input {
+  @apply text-info-detail;
+}
+
+:host( [typography="snippet"] ) .input {
+  @apply text-code-snippet;
+}
+
 .input {
 
   @apply

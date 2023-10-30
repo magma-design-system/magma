@@ -2,6 +2,7 @@ import clsx from 'clsx'
 import { AttachInternals, Component, Element, Event, EventEmitter, Host, Method, Prop, State, Watch, h } from '@stencil/core'
 import { AutocompleteType } from '@type/autocomplete'
 import { InputTextType } from '@type/input-text-type'
+import { TypographyInputType } from '@type/typography'
 import { ThemeStatusVariantType } from '@type/variant'
 import { MdsInputEventDetail } from './meta/event-detail'
 
@@ -22,6 +23,7 @@ export interface MdsInputInterface {
   pattern?: string
   readOnly?: boolean
   step?: string
+  typography?: TypographyInputType
   variant?: ThemeStatusVariantType
   tip?: string
   value?: string
@@ -140,6 +142,11 @@ export class MdsInput {
    * Specifies the type of input element
    */
   @Prop() readonly type?: InputTextType = 'text'
+
+  /**
+ * Specifies the typography of input element
+ */
+  @Prop({ reflect: true }) typography: TypographyInputType = 'detail'
 
   /**
    * Specifies the value of the input element

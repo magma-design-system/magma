@@ -27,7 +27,8 @@
 | `step`         | `step`         | Specifies the interval between legal numbers in an input field                                                  | `string \| undefined`                                                                                         | `undefined` |
 | `tip`          | `tip`          | Display the variant of a message at the bottom of the input text field                                          | `string \| undefined`                                                                                         | `undefined` |
 | `type`         | `type`         | Specifies the type of input element                                                                             | `"date" \| "email" \| "number" \| "password" \| "search" \| "tel" \| "text" \| "textarea" \| "time" \| "url"` | `'text'`    |
-| `validate`     | `validate`     | Specifies the type of model data to be automatically validated                                                  | `"cf" \| "email" \| "isbn" \| "piva" \| undefined`                                                            | `undefined` |
+| `typography`   | `typography`   | Specifies the typography of input element                                                                       | `"detail" \| "snippet"`                                                                                       | `'detail'`  |
+| `validate`     | `validate`     | Specifies the type of model data to be automatically validated                                                  | `"cc" \| "cf" \| "email" \| "isbn" \| "piva" \| undefined`                                                    | `undefined` |
 | `value`        | `value`        | Specifies the value of the input element                                                                        | `string \| undefined`                                                                                         | `''`        |
 | `variant`      | `variant`      | Display the variant of a message at the bottom of the input text field                                          | `"error" \| "info" \| "success" \| "warning" \| undefined`                                                    | `undefined` |
 
@@ -65,14 +66,6 @@ of the global `input.focus()`.
 Type: `Promise<void>`
 
 
-
-
-## CSS Custom Properties
-
-| Name                                   | Description                                                                                                                      |
-| -------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------- |
-| `--mds-input-field-message-background` | Sets the message background color of the component, will be visible only if there is a text defined by `tip` component attribute |
-| `--mds-input-field-message-color`      | Sets the message text color of the component                                                                                     |
 
 
 ## Dependencies

@@ -2,6 +2,7 @@ import { autoCompleteDictionary } from '@dictionary/autocomplete'
 import { themeStatusVariantDictionary } from '@dictionary/variant'
 import { inputTextTypeDictionary } from '@dictionary/input-text-type'
 import { iconsDictionary } from '@dictionary/icon'
+import { typographyInputDictionary } from '@dictionary/typography'
 import { validationModelDictionary } from '../meta/dictionary'
 import { h } from '@stencil/core'
 import { MdsInputFieldInterface } from '../mds-input-field'
@@ -15,65 +16,65 @@ export default {
       control: { type: 'select' },
     },
     autofocus: {
-      type: { name: 'boolean', required: false },
+      type: { name: 'boolean' },
       description: 'Specifies that the element should automatically get focus when the page loads',
     },
     disabled: {
-      type: { name: 'boolean', required: false },
+      type: { name: 'boolean' },
       description: 'If true, the element is displayed as disabled',
     },
     icon: {
       control: { type: 'select' },
       description: 'An icon displayed at the right of the input',
       options: iconsDictionary,
-      type: { name: 'string', required: false },
+      type: { name: 'string' },
     },
     label: {
-      type: { name: 'string', required: false },
+      type: { name: 'string' },
       description: 'Display a text on the top of the input text field',
     },
     max: {
-      type: { name: 'number', required: false },
+      type: { name: 'number' },
       description: 'Specifies the maximum value',
     },
     maxLength: {
-      type: { name: 'number', required: false },
+      type: { name: 'number' },
       description: 'Specifies the maximum number of characters allowed in an element',
     },
     message: {
-      type: { name: 'string', required: false },
+      type: { name: 'string' },
       description: 'Display a message at the bottom of the input text field',
     },
     min: {
-      type: { name: 'number', required: false },
+      type: { name: 'number' },
       description: 'Specifies the minimum value',
     },
     minLength: {
-      type: { name: 'number', required: false },
+      type: { name: 'number' },
       description: 'Specifies the minimum number of characters allowed in an element',
     },
     name: {
-      type: { name: 'string', required: false },
+      type: { name: 'string' },
       description: 'Is needed to reference the form data after the form is submitted',
     },
     pattern: {
-      type: { name: 'string', required: false },
+      type: { name: 'string' },
       description: 'Specifies a regular expression that element\'s value is checked against',
     },
     placeholder: {
-      type: { name: 'string', required: false },
+      type: { name: 'string' },
       description: 'Specifies a short hint that describes the expected value of the element',
     },
     readOnly: {
-      type: { name: 'boolean', required: false },
+      type: { name: 'boolean' },
       description: 'Specifies that the element is read-only',
     },
     required: {
-      type: { name: 'boolean', required: false },
+      type: { name: 'boolean' },
       description: 'Specifies that the element must be filled out before submitting the form',
     },
     step: {
-      type: { name: 'string', required: false },
+      type: { name: 'string' },
       description: 'Specifies the interval between legal numbers in an input field',
     },
     variant: {
@@ -87,19 +88,25 @@ export default {
       description: 'Sets the message of the variant of the input field',
     },
     type: {
-      type: { name: 'string', required: true },
+      type: { name: 'string' },
       description: 'Specifies the type of element',
       options: inputTextTypeDictionary,
       control: { type: 'select' },
     },
+    typography: {
+      type: { name: 'string' },
+      description: 'Specifies the typography of element',
+      options: typographyInputDictionary,
+      control: { type: 'select' },
+    },
     validate: {
-      type: { name: 'string', required: true },
+      type: { name: 'string' },
       description: 'Specifies the type of model data to be automatically validated',
       options: validationModelDictionary,
       control: { type: 'select' },
     },
     value: {
-      type: { name: 'string', required: false },
+      type: { name: 'string' },
       description: 'Specifies the value of the element',
     },
   },

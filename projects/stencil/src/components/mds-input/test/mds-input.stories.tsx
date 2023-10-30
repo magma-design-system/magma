@@ -2,6 +2,7 @@ import { citiesDictionary } from '@fixture/cities'
 import { themeStatusVariantDictionary } from '@dictionary/variant'
 import { autoCompleteDictionary } from '@dictionary/autocomplete'
 import { inputTextTypeDictionary } from '@dictionary/input-text-type'
+import { typographyInputDictionary } from '@dictionary/typography'
 import { iconsDictionary } from '@dictionary/icon'
 import { h } from '@stencil/core'
 
@@ -75,25 +76,31 @@ export default {
       type: { name: 'string' },
       description: 'Specifies the interval between legal numbers in an input field',
     },
-    variant: {
-      type: { name: 'string' },
-      options: themeStatusVariantDictionary,
-      control: { type: 'select' },
-      description: 'Sets the variant of the input field',
-    },
     tip: {
       type: { name: 'string' },
       description: 'Sets the message of the variant of the input field',
     },
     type: {
-      type: { name: 'string', required: true },
+      type: { name: 'string' },
       description: 'Specifies the type of element',
       options: inputTextTypeDictionary,
+      control: { type: 'select' },
+    },
+    typography: {
+      type: { name: 'string' },
+      description: 'Specifies the typography of element',
+      options: typographyInputDictionary,
       control: { type: 'select' },
     },
     value: {
       type: { name: 'string' },
       description: 'Specifies the value of the element',
+    },
+    variant: {
+      type: { name: 'string' },
+      options: themeStatusVariantDictionary,
+      control: { type: 'select' },
+      description: 'Sets the variant of the input field',
     },
   },
 }

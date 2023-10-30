@@ -2,11 +2,12 @@ import clsx from 'clsx'
 import { AttachInternals, Component, Element, Event, EventEmitter, Host, Method, Prop, State, Watch, h } from '@stencil/core'
 import { AutocompleteType } from '@type/autocomplete'
 import { InputTextType } from '@type/input-text-type'
+import { MdsInputEventDetail } from '@component/mds-input/meta/event-detail'
 import { MdsInputInterface } from '@component/mds-input/mds-input'
 import { ThemeStatusVariantType } from '@type/variant'
+import { TypographyInputType } from '@type/typography'
 import { ValidationModelType } from './meta/types'
 import { modelValidator } from './meta/validators'
-import { MdsInputEventDetail } from '@component/mds-input/meta/event-detail'
 
 export interface MdsInputFieldInterface extends MdsInputInterface {
   label?: string
@@ -110,6 +111,11 @@ export class MdsInputField {
    * Specifies the type of input element
    */
   @Prop() type: InputTextType = 'text'
+
+  /**
+   * Specifies the typography of input element
+   */
+  @Prop() typography: TypographyInputType = 'detail'
 
   /**
    * Specifies the type of model data to be automatically validated
@@ -290,6 +296,7 @@ export class MdsInputField {
             readonly={this.readonly}
             ref={ input => (this.nativeInput = input)}
             required={this.required}
+            typography={this.typography}
             variant={this.variant}
             tip={this.tip}
             step={this.step}
