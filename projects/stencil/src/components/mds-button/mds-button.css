@@ -52,7 +52,9 @@
 }
 
 :host(:focus-visible) {
-  @apply focus-bounce--focused;
+  @apply
+    focus-bounce--focused
+    z-10;
 }
 
 .text {
