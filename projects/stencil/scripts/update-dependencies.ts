@@ -1,15 +1,21 @@
 /* eslint-disable no-console */
-import { COMPONENTS_DIR } from './meta'
+import { COMPONENTS_DIR, PROJECT_DIR } from './meta'
 import {
   existsSync,
   readFile,
+  readFileSync,
   readdir,
   writeFile,
 } from 'fs-extra'
 import { resolve } from 'path'
 import { ask } from 'stdio'
 
-function updateComponentDependencies (nameComponent: string) {
+interface Dep {
+  dependencie: string,
+  version: string
+}
+
+function updateComponentDependencies (nameComponent: string, stencilDependencies: Dep[]) {
   const componentPackage = resolve(
     COMPONENTS_DIR,
     nameComponent,
@@ -26,6 +32,7 @@ function updateComponentDependencies (nameComponent: string) {
     .then(json => {
       console.log(`check ${nameComponent} package.json`)
       const dependencies = getMDSDependenciesPackageWithVersion(json)
+
       let updated = false
       // read all version of dependencies package in current webcomponet
       return Promise.all(
@@ -39,13 +46,19 @@ function updateComponentDependencies (nameComponent: string) {
               return { dependencie: p, version: data.version }
             }),
         ),
-      ).then(versions => {
-        // versions = [...{package, version}]
-        versions.forEach(v => {
-          if (json.dependencies[v.dependencie] !== `${v.version}`) {
+      ).then(updatedDependencies => {
+        if (stencilDependencies) {
+          updatedDependencies.push(...stencilDependencies)
+        }
+        // updatedDependencies = [...{package, version}]
+        updatedDependencies.forEach(d => {
+          if (json.dependencies[d.dependencie] !== `${d.version}`) {
             updated = true
           }
-          json.dependencies[v.dependencie] = `${v.version}`
+          // check if dependencies exists, it does not add new dependencies if --sync-dep is active
+          if (json.dependencies[d.dependencie]) {
+            json.dependencies[d.dependencie] = `${d.version}`
+          }
         })
         // new json with updated dependencies
         return { json, updated }
@@ -62,6 +75,7 @@ function updateComponentDependencies (nameComponent: string) {
     })
 }
 
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
 function getMDSDependenciesPackageWithVersion (json: any): Map<string, string> {
   const packageWithVersion = new Map<string, string>()
   Object.entries(json.dependencies).forEach(v => {
@@ -72,10 +86,26 @@ function getMDSDependenciesPackageWithVersion (json: any): Map<string, string> {
   return packageWithVersion
 }
 
-async function main () {
-  const component = process.argv.slice(2)
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+function getDependencies (json: any): Dep[] {
+  const packageWithVersion: Dep[] = []
+  Object.entries(json.dependencies).forEach(v => {
+    packageWithVersion.push({ dependencie: v[0], version: v[1] as string })
+  })
+  return packageWithVersion
+}
 
-  if (component[0] === 'all') {
+async function main () {
+  const components = process.argv.filter(arg => !arg.startsWith('--')).slice(2)
+
+  const sync = process.argv.indexOf('--sync-dep') !== -1
+
+  let stencilDependencies: Dep[] = []
+  if (sync) {
+    stencilDependencies = getDependencies(JSON.parse(readFileSync(resolve(PROJECT_DIR, 'package.json'), 'utf-8')))
+  }
+
+  if (components[0] === 'all') {
     const continueTask = await ask('Continue to update ALL components?', { options: ['Y', 'n', ''] })
 
     if (continueTask === 'n') {
@@ -86,11 +116,11 @@ async function main () {
       dirs
         .filter(dir => dir.isDirectory())
         .forEach(dir => {
-          updateComponentDependencies(dir.name)
+          updateComponentDependencies(dir.name, stencilDependencies)
         })
     })
   } else {
-    component.forEach(updateComponentDependencies)
+    components.forEach(component => updateComponentDependencies(component, stencilDependencies))
   }
 }
 main()
