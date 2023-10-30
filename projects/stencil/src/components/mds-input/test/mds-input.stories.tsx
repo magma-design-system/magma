@@ -139,6 +139,13 @@ Max.args = {
   value: '2',
 }
 
+export const Min = Template.bind({})
+Min.args = {
+  min: '3',
+  type: 'number',
+  value: '5',
+}
+
 export const Required = Template.bind({})
 Required.args = {
   required: true,
