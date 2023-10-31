@@ -248,12 +248,24 @@ export class MdsInput {
     }
   }
 
+  private stepUp = () => {
+    if (this.nativeInput) {
+      (this.nativeInput as HTMLInputElement).stepUp()
+    }
+  }
+
+  private stepDown = () => {
+    if (this.nativeInput) {
+      (this.nativeInput as HTMLInputElement).stepDown()
+    }
+  }
+
   render () {
     return (
       <Host>
         { this.type === 'number'
           && this.counterLayout === 'horizontal'
-          && <mds-button size="sm" class="counter-button counter-button--horizontal" variant="light" icon="mi/baseline/keyboard-arrow-down" part="counter-button-down"></mds-button>
+          && <mds-button size="sm" class="counter-button counter-button--horizontal" variant="light" icon="mi/baseline/keyboard-arrow-down" part="counter-button-down" onClick={this.stepDown}></mds-button>
         }
         { this.type === 'textarea'
           ? <textarea
@@ -307,13 +319,13 @@ export class MdsInput {
         { this.type === 'number'
           && this.counterLayout === 'vertical'
           && <div class="counter counter--vertical">
-            <mds-button size="sm" class="counter-button" variant="light" icon="mi/baseline/keyboard-arrow-up" part="counter-button-up"></mds-button>
-            <mds-button size="sm" class="counter-button" variant="light" icon="mi/baseline/keyboard-arrow-down" part="counter-button-down"></mds-button>
+            <mds-button size="sm" class="counter-button" variant="light" icon="mi/baseline/keyboard-arrow-up" part="counter-button-up" onClick={this.stepUp}></mds-button>
+            <mds-button size="sm" class="counter-button" variant="light" icon="mi/baseline/keyboard-arrow-down" part="counter-button-down" onClick={this.stepDown}></mds-button>
           </div>
         }
         { this.type === 'number'
           && this.counterLayout === 'horizontal'
-          && <mds-button size="sm" class="counter-button counter-button--horizontal" variant="light" icon="mi/baseline/keyboard-arrow-up" part="counter-button-up"></mds-button>
+          && <mds-button size="sm" class="counter-button counter-button--horizontal" variant="light" icon="mi/baseline/keyboard-arrow-up" part="counter-button-up" onClick={this.stepUp}></mds-button>
         }
         { this.disabled && <mds-text typography="option" class="tip top-1 disabled">Disabilitato</mds-text> }
         { this.readonly && !this.disabled && <mds-text typography="option" class="tip top-1 read-only">Sola lettura</mds-text> }

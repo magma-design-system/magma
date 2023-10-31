@@ -221,14 +221,12 @@ textarea.input {
   top: 0;
 }
 
-
 .counter-button--horizontal:first-of-type {
   border-bottom-right-radius: 0;
   border-right: var(--mds-input-counter-button-border);
   border-top-right-radius: 0;
   left: 0;
 }
-
 
 .counter-button--horizontal:last-of-type {
   border-bottom-left-radius: 0;
@@ -266,6 +264,5 @@ textarea.input {
     color: transparent;
   }
 }
-
 
 @import './css/mds-input-variant.css';
