@@ -21,7 +21,7 @@
   --mds-input-ring: 0 0 0 1px rgb(var(--mds-input-variant-color) / 0.1);
   --mds-input-shadow: 0 1px 3px 0 rgb(var(--mds-input-variant-color) / 0.1), 0 1px 2px 0 rgb(var(--mds-input-variant-color) / 0.06);
   --mds-input-variant-color: 0 0 0;
-  --mds-input-counter-button-background: theme('colors.tone-neutral');
+  --mds-input-counter-button-color: theme('colors.tone-neutral-04');
 
   @apply
     gap-2
@@ -122,6 +122,7 @@ textarea.input {
   pointer-events: none;
   position: absolute;
   text-align: center;
+  user-select: none;
 }
 
 .tip-variant {
@@ -132,6 +133,7 @@ textarea.input {
 .read-only {
   background-color: theme('colors.status-info-05');
   color: theme('colors.status-info-09');
+  user-select: none;
 }
 
 .required {
@@ -141,10 +143,12 @@ textarea.input {
 
   background-color: theme('colors.status-error-05');
   color: transparent;
+  user-select: none;
 }
 
 .disabled {
-  @apply bg-tone-neutral-05;
+  background-color: theme('colors.tone-neutral-05');
+  user-select: none;
 }
 
 :host(:focus-within) .required {
@@ -163,44 +167,50 @@ textarea.input {
 }
 
 .counter {
+  border-left: 2px solid theme('colors.tone-neutral-09');
   display: flex;
   flex-direction: column;
   gap: 0;
-  height: theme('spacing.6');
-
-  /* position: absolute;
-  right: 0; */
+  position: absolute;
+  right: 0;
 }
 
 .counter-button {
   @apply
+    h-6
     rounded-r-lg
     w-7;
 
-  background-color: var(--mds-input-counter-button-background);
+  background-color: transparent;
   border: 0;
+  fill: var(--mds-input-counter-button-color);
 }
 
+.counter-button:hover {
+  background-color: theme('colors.tone-neutral-09');
+}
 
 .counter-button:first-child {
   border-bottom-left-radius: 0;
   border-bottom-right-radius: 0;
+  border-top-left-radius: 0;
 }
 
 .counter-button:last-child {
+  border-bottom-left-radius: 0;
   border-top-left-radius: 0;
   border-top-right-radius: 0;
 }
 
-/* :host( [type="number"] ) .input {
+:host( [type="number"] ) .input {
   @apply pr-8;
-} */
+}
 
 :host( [type="number"] ) .tip,
 :host( [type="number"] ) .read-only,
 :host( [type="number"] ) .required,
 :host( [type="number"] ) .disabled {
-  @apply right-10;
+  @apply right-9;
 }
 
 @import './css/mds-input-variant.css';

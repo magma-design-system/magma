@@ -279,7 +279,7 @@ export class MdsInputField {
           <mds-input
             autocomplete={this.autocomplete}
             autofocus={this.autofocus}
-            class={clsx(this.validate && modelValidator[this.validate].font)}
+            class={clsx('input', this.validate && modelValidator[this.validate].font)}
             disabled={this.disabled}
             icon={this.icon}
             id="field"
