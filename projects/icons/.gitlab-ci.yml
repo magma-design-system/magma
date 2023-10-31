@@ -1,6 +1,6 @@
 # ICONS BUILD
 icons-build:
-  extends: [.base-build]
+  extends: .base-build
   script:
     - nx run icons:build
   artifacts:
@@ -11,26 +11,26 @@ icons-build:
   cache:
     policy: pull-push
   rules:
-    - if: $CI_PIPELINE_SOURCE == "merge_request_event" || $CI_COMMIT_BRANCH =~ /^(dev|main|pipeline)$/
+    - if: $CI_PIPELINE_SOURCE == "merge_request_event" || $CI_COMMIT_BRANCH =~ /^(dev|main)$/
       changes:
         - projects/icons/**/*
 
 # ICONS PUBLISH TEST
 icons-publish-test:
-  extends: [.base-publish-test]
+  extends: .base-publish-test
   dependencies: [icons-build]
   stage: test
   variables:
     BUILD_DIR: projects/icons
     COMPONENT: icons
   rules:
-    - if: $CI_PIPELINE_SOURCE == "merge_request_event" || $CI_COMMIT_BRANCH =~ /^(main|pipeline)$/
+    - if: $CI_PIPELINE_SOURCE == "merge_request_event" || $CI_COMMIT_BRANCH == "main"
       changes:
         - projects/icons/package.json
 
 # ICONS PUBLISH
 icons-publish:
-  extends: [.base-publish]
+  extends: .base-publish
   dependencies: [icons-build]
   needs: [icons-publish-test, icons-build]
   stage: publish
@@ -43,7 +43,7 @@ icons-publish:
 
 # ICONS INSTALL TEST
 icons-install-test:
-  extends: [.base-install-test]
+  extends: .base-install-test
   needs: [icons-publish]
   variables:
     BUILD_DIR: projects/icons

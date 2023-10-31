@@ -1,6 +1,6 @@
 # IDENTITY BUILD
 identity-build:
-  extends: [.base-build]
+  extends: .base-build
   script:
     - nx run identity:build
   artifacts:
@@ -11,26 +11,26 @@ identity-build:
   cache:
     policy: pull-push
   rules:
-    - if: $CI_PIPELINE_SOURCE == "merge_request_event" || $CI_COMMIT_BRANCH =~ /^(dev|main|pipeline)$/
+    - if: $CI_PIPELINE_SOURCE == "merge_request_event" || $CI_COMMIT_BRANCH =~ /^(dev|main)$/
       changes:
         - projects/identity/**/*
 
 # IDENTITY PUBLISH TEST
 identity-publish-test:
-  extends: [.base-publish-test]
+  extends: .base-publish-test
   dependencies: [identity-build]
   stage: test
   variables:
     BUILD_DIR: projects/identity
     COMPONENT: identity
   rules:
-    - if: $CI_PIPELINE_SOURCE == "merge_request_event" || $CI_COMMIT_BRANCH =~ /^(main|pipeline)$/
+    - if: $CI_PIPELINE_SOURCE == "merge_request_event" || $CI_COMMIT_BRANCH == "main"
       changes:
         - projects/identity/package.json
 
 # IDENTITY PUBLISH
 identity-publish:
-  extends: [.base-publish]
+  extends: .base-publish
   dependencies: [identity-build]
   needs: [identity-publish-test, identity-build]
   stage: publish
@@ -43,7 +43,7 @@ identity-publish:
 
 # IDENTITY INSTALL TEST
 identity-install-test:
-  extends: [.base-install-test]
+  extends: .base-install-test
   needs: [identity-publish]
   variables:
     BUILD_DIR: projects/identity
