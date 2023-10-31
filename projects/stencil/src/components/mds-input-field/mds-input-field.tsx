@@ -44,7 +44,7 @@ export class MdsInputField {
   /**
    * Specifies the layout of the counter button when the input type is set to `number`
    */
-  @Prop() readonly counterLayout?: InputCounterLayoutType = 'horizontal'
+  @Prop() readonly counterLayout?: InputCounterLayoutType = 'vertical'
 
   /**
    * If true, the element is displayed as disabled

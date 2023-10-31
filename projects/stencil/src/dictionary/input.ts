@@ -11,7 +11,14 @@ const inputTextTypeDictionary = [
   'url',
 ]
 
+
+const inputCounterLayoutDictionary = [
+  'horizontal',
+  'vertical',
+]
+
 export {
+  inputCounterLayoutDictionary,
   inputTextTypeDictionary,
 }
 

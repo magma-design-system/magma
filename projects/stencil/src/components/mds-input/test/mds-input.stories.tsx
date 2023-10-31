@@ -1,7 +1,7 @@
 import { citiesDictionary } from '@fixture/cities'
 import { themeStatusVariantDictionary } from '@dictionary/variant'
 import { autoCompleteDictionary } from '@dictionary/autocomplete'
-import { inputTextTypeDictionary } from '@dictionary/input'
+import { inputTextTypeDictionary, inputCounterLayoutDictionary } from '@dictionary/input'
 import { typographyInputDictionary } from '@dictionary/typography'
 import { iconsDictionary } from '@dictionary/icon'
 import { h } from '@stencil/core'
@@ -21,6 +21,11 @@ export default {
     autofocus: {
       type: { name: 'boolean' },
       description: 'Specifies that the element should automatically get focus when the page loads',
+    },
+    'counter-layout': {
+      description: 'Specifies the layout of the counter button when the input type is set to `number`',
+      options: inputCounterLayoutDictionary,
+      control: { type: 'select' },
     },
     datalist: {
       type: { name: 'array' },
@@ -126,10 +131,17 @@ AutoFocus.args = {
   placeholder: 'Auto focus input text',
 }
 
+export const CounterLayout = Template.bind({})
+CounterLayout.args = {
+  'counter-layout': 'horizontal',
+  type: 'number',
+  placeholder: 'Counter layout',
+}
+
 export const Disabled = Template.bind({})
 Disabled.args = {
   disabled: true,
-  placeholder: 'Input field with disabled attribute',
+  placeholder: 'Disabled',
 }
 
 export const Max = Template.bind({})

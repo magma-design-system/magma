@@ -60,7 +60,7 @@ export class MdsInput {
   /**
    * Specifies the layout of the counter button when the input type is set to `number`
    */
-  @Prop() readonly counterLayout?: InputCounterLayoutType = 'horizontal'
+  @Prop() readonly counterLayout?: InputCounterLayoutType = 'vertical'
 
   /**
    * A list of search terms to be searched from the input field,
@@ -251,6 +251,10 @@ export class MdsInput {
   render () {
     return (
       <Host>
+        { this.type === 'number'
+          && this.counterLayout === 'horizontal'
+          && <mds-button size="sm" class="counter-button counter-button--horizontal" variant="light" icon="mi/baseline/keyboard-arrow-down" part="counter-button-down"></mds-button>
+        }
         { this.type === 'textarea'
           ? <textarea
             class={clsx(
@@ -301,10 +305,15 @@ export class MdsInput {
           />
         }
         { this.type === 'number'
-          && <div class="counter">
+          && this.counterLayout === 'vertical'
+          && <div class="counter counter--vertical">
             <mds-button size="sm" class="counter-button" variant="light" icon="mi/baseline/keyboard-arrow-up" part="counter-button-up"></mds-button>
             <mds-button size="sm" class="counter-button" variant="light" icon="mi/baseline/keyboard-arrow-down" part="counter-button-down"></mds-button>
           </div>
+        }
+        { this.type === 'number'
+          && this.counterLayout === 'horizontal'
+          && <mds-button size="sm" class="counter-button counter-button--horizontal" variant="light" icon="mi/baseline/keyboard-arrow-up" part="counter-button-up"></mds-button>
         }
         { this.disabled && <mds-text typography="option" class="tip top-1 disabled">Disabilitato</mds-text> }
         { this.readonly && !this.disabled && <mds-text typography="option" class="tip top-1 read-only">Sola lettura</mds-text> }

@@ -22,11 +22,13 @@
   --mds-input-shadow: 0 1px 3px 0 rgb(var(--mds-input-variant-color) / 0.1), 0 1px 2px 0 rgb(var(--mds-input-variant-color) / 0.06);
   --mds-input-variant-color: 0 0 0;
   --mds-input-counter-button-color: theme('colors.tone-neutral-04');
+  --mds-input-counter-button-border: 2px solid theme('colors.tone-neutral-09');
 
   @apply
     gap-2
     text-info-detail;
 
+  container-type: inline-size;
   display: flex;
   position: relative;
 }
@@ -157,6 +159,13 @@ textarea.input {
   color: theme('colors.tone-neutral');
 }
 
+:host( [value]:not([value=""]) ) .required {
+  @apply w-3;
+
+  background-color: theme('colors.status-success-05');
+  color: transparent;
+}
+
 .icon {
   @apply
     left-3
@@ -167,7 +176,7 @@ textarea.input {
 }
 
 .counter {
-  border-left: 2px solid theme('colors.tone-neutral-09');
+  border-left: var(--mds-input-counter-button-border);
   display: flex;
   flex-direction: column;
   gap: 0;
@@ -178,7 +187,7 @@ textarea.input {
 .counter-button {
   @apply
     h-6
-    rounded-r-lg
+    rounded-lg
     w-7;
 
   background-color: transparent;
@@ -190,20 +199,50 @@ textarea.input {
   background-color: theme('colors.tone-neutral-09');
 }
 
-.counter-button:first-child {
+.counter .counter-button:first-child {
   border-bottom-left-radius: 0;
   border-bottom-right-radius: 0;
   border-top-left-radius: 0;
 }
 
-.counter-button:last-child {
+.counter .counter-button:last-child {
   border-bottom-left-radius: 0;
   border-top-left-radius: 0;
   border-top-right-radius: 0;
 }
 
+.counter-button--horizontal {
+  @apply
+    h-12
+    w-12;
+
+  bottom: 0;
+  position: absolute;
+  top: 0;
+}
+
+
+.counter-button--horizontal:first-of-type {
+  border-bottom-right-radius: 0;
+  border-right: var(--mds-input-counter-button-border);
+  border-top-right-radius: 0;
+  left: 0;
+}
+
+
+.counter-button--horizontal:last-of-type {
+  border-bottom-left-radius: 0;
+  border-left: var(--mds-input-counter-button-border);
+  border-top-left-radius: 0;
+  right: 0;
+}
+
 :host( [type="number"] ) .input {
   @apply pr-8;
+}
+
+:host( [type="number"][counter-layout="horizontal"] ) .input {
+  @apply px-14;
 }
 
 :host( [type="number"] ) .tip,
@@ -212,5 +251,21 @@ textarea.input {
 :host( [type="number"] ) .disabled {
   @apply right-9;
 }
+
+:host( [type="number"][counter-layout="horizontal"] ) .tip,
+:host( [type="number"][counter-layout="horizontal"] ) .read-only,
+:host( [type="number"][counter-layout="horizontal"] ) .required,
+:host( [type="number"][counter-layout="horizontal"] ) .disabled {
+  @apply right-14;
+}
+
+@container (max-width: 210px) {
+  :host(:focus-within) .required {
+    @apply w-3;
+
+    color: transparent;
+  }
+}
+
 
 @import './css/mds-input-variant.css';
