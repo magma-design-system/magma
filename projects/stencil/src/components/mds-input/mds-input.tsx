@@ -157,7 +157,7 @@ export class MdsInput {
   /**
    * Specifies the value of the input element
    */
-  @Prop({ reflect: true }) value?: string = ''
+  @Prop({ mutable:true, reflect: true }) value?: string = ''
 
   /**
    * Emits an InputChangeEventDetail when the value of the input element changes
@@ -251,12 +251,14 @@ export class MdsInput {
   private stepUp = () => {
     if (this.nativeInput && !this.readonly) {
       (this.nativeInput as HTMLInputElement).stepUp()
+      this.value = this.nativeInput.value
     }
   }
 
   private stepDown = () => {
     if (this.nativeInput && !this.readonly) {
       (this.nativeInput as HTMLInputElement).stepDown()
+      this.value = this.nativeInput.value
     }
   }
 
