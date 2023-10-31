@@ -249,13 +249,13 @@ export class MdsInput {
   }
 
   private stepUp = () => {
-    if (this.nativeInput) {
+    if (this.nativeInput && !this.readonly) {
       (this.nativeInput as HTMLInputElement).stepUp()
     }
   }
 
   private stepDown = () => {
-    if (this.nativeInput) {
+    if (this.nativeInput && !this.readonly) {
       (this.nativeInput as HTMLInputElement).stepDown()
     }
   }
