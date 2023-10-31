@@ -4,7 +4,7 @@ icons-build:
   script:
     - nx run icons:build
   artifacts:
-    name: stencil-build
+    name: icons-build
     expire_in: 1 day
     paths:
       - projects/icons/dist
