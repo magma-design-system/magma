@@ -1,7 +1,7 @@
 import clsx from 'clsx'
 import { AttachInternals, Component, Element, Event, EventEmitter, Host, Method, Prop, State, Watch, h } from '@stencil/core'
 import { AutocompleteType } from '@type/autocomplete'
-import { InputTextType } from '@type/input-text-type'
+import { InputTextType, InputCounterLayoutType } from '@type/input'
 import { TypographyInputType } from '@type/typography'
 import { ThemeStatusVariantType } from '@type/variant'
 import { MdsInputEventDetail } from './meta/event-detail'
@@ -12,6 +12,7 @@ export interface MdsInputInterface {
   required?: boolean
   autocomplete?: AutocompleteType
   autofocus?: boolean
+  counterLayout?: InputCounterLayoutType
   datalist?: string[]
   disabled?: boolean
   icon?: string
@@ -55,6 +56,11 @@ export class MdsInput {
    * Specifies that the element should automatically get focus when the page loads
    */
   @Prop() readonly autofocus: boolean = false
+
+  /**
+   * Specifies the layout of the counter button when the input type is set to `number`
+   */
+  @Prop() readonly counterLayout?: InputCounterLayoutType = 'horizontal'
 
   /**
    * A list of search terms to be searched from the input field,

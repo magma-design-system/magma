@@ -1,7 +1,7 @@
 import { citiesDictionary } from '@fixture/cities'
 import { themeStatusVariantDictionary } from '@dictionary/variant'
 import { autoCompleteDictionary } from '@dictionary/autocomplete'
-import { inputTextTypeDictionary } from '@dictionary/input-text-type'
+import { inputTextTypeDictionary } from '@dictionary/input'
 import { typographyInputDictionary } from '@dictionary/typography'
 import { iconsDictionary } from '@dictionary/icon'
 import { h } from '@stencil/core'

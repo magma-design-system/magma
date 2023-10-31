@@ -1,6 +1,6 @@
 import { autoCompleteDictionary } from '@dictionary/autocomplete'
 import { themeStatusVariantDictionary } from '@dictionary/variant'
-import { inputTextTypeDictionary } from '@dictionary/input-text-type'
+import { inputTextTypeDictionary } from '@dictionary/input'
 import { iconsDictionary } from '@dictionary/icon'
 import { typographyInputDictionary } from '@dictionary/typography'
 import { validationModelDictionary } from '../meta/dictionary'
