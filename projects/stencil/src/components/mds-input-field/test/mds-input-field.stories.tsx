@@ -1,6 +1,6 @@
 import { autoCompleteDictionary } from '@dictionary/autocomplete'
 import { themeStatusVariantDictionary } from '@dictionary/variant'
-import { inputTextTypeDictionary } from '@dictionary/input'
+import { inputTextTypeDictionary, inputControlsLayoutDictionary, inputControlsIconDictionary } from '@dictionary/input'
 import { iconsDictionary } from '@dictionary/icon'
 import { typographyInputDictionary } from '@dictionary/typography'
 import { validationModelDictionary } from '../meta/dictionary'
@@ -18,6 +18,16 @@ export default {
     autofocus: {
       type: { name: 'boolean' },
       description: 'Specifies that the element should automatically get focus when the page loads',
+    },
+    'controls-icon': {
+      description: 'Specifies the icon type of the counter button when the input type is set to `number`',
+      options: inputControlsIconDictionary,
+      control: { type: 'select' },
+    },
+    'controls-layout': {
+      description: 'Specifies the layout of the counter button when the input type is set to `number`',
+      options: inputControlsLayoutDictionary,
+      control: { type: 'select' },
     },
     disabled: {
       type: { name: 'boolean' },
@@ -133,14 +143,28 @@ export const AutoFocus = Template.bind({})
 AutoFocus.args = {
   label: 'Questo è un label',
   autofocus: true,
-  placeholder: 'Auto focus input text',
+  placeholder: 'Auto focus',
+}
+
+export const ControlsLayout = Template.bind({})
+ControlsLayout.args = {
+  'controls-layout': 'horizontal',
+  type: 'number',
+  placeholder: 'Controls layout',
+}
+
+export const ControlsIcon = Template.bind({})
+ControlsIcon.args = {
+  'controls-icon': 'arithmetic',
+  type: 'number',
+  placeholder: 'Controls icon',
 }
 
 export const Disabled = Template.bind({})
 Disabled.args = {
   label: 'Questo è un label',
   disabled: true,
-  placeholder: 'Input field with disabled attribute',
+  placeholder: 'Disabled',
 }
 
 export const Max = Template.bind({})

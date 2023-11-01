@@ -12,13 +12,10 @@ import { ThemeStatusVariantType } from '@type/variant'
 import { TypographyInputType } from '@type/typography'
 
 export interface MdsInputInterface {
-  placeholder?: string
-  type: InputTextType
-  required?: boolean
   autocomplete?: AutocompleteType
   autofocus?: boolean
-  controlsLayout?: InputControlsLayoutType
   controlsIcon?: InputControlsIconType
+  controlsLayout?: InputControlsLayoutType
   datalist?: string[]
   disabled?: boolean
   icon?: string
@@ -28,13 +25,16 @@ export interface MdsInputInterface {
   minLength?: number
   name?: string
   pattern?: string
+  placeholder?: string
   readOnly?: boolean
+  required?: boolean
   step?: string
-  typography?: TypographyInputType
-  variant?: ThemeStatusVariantType
-  tip?: string
-  value?: string
   tabindex?: number
+  tip?: string
+  type: InputTextType
+  typography?: TypographyInputType
+  value?: string
+  variant?: ThemeStatusVariantType
 }
 
 @Component({
@@ -66,12 +66,12 @@ export class MdsInput {
   /**
    * Specifies the layout of the counter button when the input type is set to `number`
    */
-  @Prop() readonly controlsLayout?: InputControlsLayoutType = 'vertical'
+  @Prop({ reflect: true }) readonly controlsLayout?: InputControlsLayoutType = 'vertical'
 
   /**
    * Specifies the icon type of the counter button when the input type is set to `number`
    */
-  @Prop() readonly controlsIcon?: InputControlsIconType = 'arrow'
+  @Prop({ reflect: true }) readonly controlsIcon?: InputControlsIconType = 'arrow'
 
   /**
    * A list of search terms to be searched from the input field,
@@ -82,12 +82,12 @@ export class MdsInput {
   /**
    * If true, the element is displayed as disabled
    */
-  @Prop() readonly disabled?: boolean = false
+  @Prop({ reflect: true }) readonly disabled?: boolean = false
 
   /**
    * An icon displayed at the right of the input
    */
-  @Prop() readonly icon?: string
+  @Prop({ reflect: true }) readonly icon?: string
 
   /**
    * Specifies the maximum value
@@ -133,12 +133,12 @@ export class MdsInput {
   /**
    * Specifies that the element is read-only
    */
-  @Prop() readonly readonly?: boolean = false
+  @Prop({ reflect: true }) readonly readonly?: boolean = false
 
   /**
    * Specifies that the element must be filled out before submitting the form
    */
-  @Prop() readonly required?: boolean = false
+  @Prop({ reflect: true }) readonly required?: boolean = false
 
   /**
    * Sets the variant of the input field
@@ -260,14 +260,14 @@ export class MdsInput {
   }
 
   private stepUp = () => {
-    if (this.nativeInput && !this.readonly) {
+    if (this.nativeInput && !this.readonly && !this.disabled) {
       (this.nativeInput as HTMLInputElement).stepUp()
       this.value = this.nativeInput.value
     }
   }
 
   private stepDown = () => {
-    if (this.nativeInput && !this.readonly) {
+    if (this.nativeInput && !this.readonly && !this.disabled) {
       (this.nativeInput as HTMLInputElement).stepDown()
       this.value = this.nativeInput.value
     }
@@ -348,13 +348,13 @@ export class MdsInput {
             <i class="svg counter-button-icon" innerHTML={this.controlsIcon === 'arrow' ? miBaselineArrowUp : miBaselineAdd}/>
           </mds-button>
         }
-        { this.disabled && <mds-text typography="option" class="tip top-1 disabled">Disabilitato</mds-text> }
-        { this.readonly && !this.disabled && <mds-text typography="option" class="tip top-1 read-only">Sola lettura</mds-text> }
-        { this.required && !this.disabled && !this.readonly && <mds-text typography="option" class="tip top-1 required">
+        { this.disabled && <mds-text typography="option" class="tip tip--top disabled">Disabilitato</mds-text> }
+        { this.readonly && !this.disabled && <mds-text typography="option" class="tip tip--top read-only">Sola lettura</mds-text> }
+        { this.required && !this.disabled && !this.readonly && <mds-text typography="option" class="tip tip--top required">
           <span class="tip-text">Obbligatorio</span>
           <span class="tip-icon svg" innerHTML={miBaselineDone}></span>
         </mds-text> }
-        { this.tip && <mds-text typography="option" class={clsx('tip bottom-1', this.variant && 'tip-variant')}>{ this.tip }</mds-text> }
+        { this.tip && <mds-text typography="option" class={clsx('tip tip--bottom', this.variant && 'tip-variant')}>{ this.tip }</mds-text> }
         { this.datalist &&
           <datalist id="datalist" class="datalist">
             { this.datalist.forEach(element => {

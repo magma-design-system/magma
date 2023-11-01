@@ -1,7 +1,7 @@
 import clsx from 'clsx'
 import { AttachInternals, Component, Element, Event, EventEmitter, Host, Method, Prop, State, Watch, h } from '@stencil/core'
 import { AutocompleteType } from '@type/autocomplete'
-import { InputTextType, InputControlsLayoutType } from '@type/input'
+import { InputTextType, InputControlsLayoutType, InputControlsIconType } from '@type/input'
 import { MdsInputEventDetail } from '@component/mds-input/meta/event-detail'
 import { MdsInputInterface } from '@component/mds-input/mds-input'
 import { ThemeStatusVariantType } from '@type/variant'
@@ -44,12 +44,17 @@ export class MdsInputField {
   /**
    * Specifies the layout of the counter button when the input type is set to `number`
    */
-  @Prop() readonly controlsLayout?: InputControlsLayoutType = 'vertical'
+  @Prop({ reflect: true }) readonly controlsLayout?: InputControlsLayoutType = 'vertical'
+
+  /**
+   * Specifies the icon type of the counter button when the input type is set to `number`
+   */
+  @Prop({ reflect: true }) readonly controlsIcon?: InputControlsIconType = 'arrow'
 
   /**
    * If true, the element is displayed as disabled
    */
-  @Prop() disabled?: boolean = false
+  @Prop({ reflect: true }) disabled?: boolean = false
 
   /**
    * An icon displayed at the right of the input
@@ -100,12 +105,12 @@ export class MdsInputField {
   /**
    * Specifies that the element is read-only
    */
-  @Prop() readonly?: boolean = false
+  @Prop({ reflect: true }) readonly?: boolean = false
 
   /**
    * Specifies that the element must be filled out before submitting the form
    */
-  @Prop() required?: boolean = false
+  @Prop({ reflect: true }) required?: boolean = false
 
   /**
    * Specifies the interval between legal numbers in an input field
@@ -115,12 +120,12 @@ export class MdsInputField {
   /**
    * Specifies the type of input element
    */
-  @Prop() type: InputTextType = 'text'
+  @Prop({ reflect: true }) type: InputTextType = 'text'
 
   /**
    * Specifies the typography of input element
    */
-  @Prop() typography: TypographyInputType = 'detail'
+  @Prop({ reflect: true }) typography: TypographyInputType = 'detail'
 
   /**
    * Specifies the type of model data to be automatically validated
@@ -268,7 +273,7 @@ export class MdsInputField {
   /**
    * Display the variant of a message at the bottom of the input text field
    */
-  @Prop() variant?: ThemeStatusVariantType
+  @Prop({ reflect: true }) variant?: ThemeStatusVariantType
 
   /**
    * Display the variant of a message at the bottom of the input text field
@@ -286,6 +291,7 @@ export class MdsInputField {
             autofocus={this.autofocus}
             class={clsx('input', this.validate && modelValidator[this.validate].font)}
             controlsLayout={this.controlsLayout}
+            controlsIcon={this.controlsIcon}
             disabled={this.disabled}
             icon={this.icon}
             id="field"

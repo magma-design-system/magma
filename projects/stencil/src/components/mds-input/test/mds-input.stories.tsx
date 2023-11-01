@@ -22,14 +22,14 @@ export default {
       type: { name: 'boolean' },
       description: 'Specifies that the element should automatically get focus when the page loads',
     },
-    'controls-layout': {
-      description: 'Specifies the layout of the counter button when the input type is set to `number`',
-      options: inputControlsLayoutDictionary,
-      control: { type: 'select' },
-    },
     'controls-icon': {
       description: 'Specifies the icon type of the counter button when the input type is set to `number`',
       options: inputControlsIconDictionary,
+      control: { type: 'select' },
+    },
+    'controls-layout': {
+      description: 'Specifies the layout of the counter button when the input type is set to `number`',
+      options: inputControlsLayoutDictionary,
       control: { type: 'select' },
     },
     datalist: {

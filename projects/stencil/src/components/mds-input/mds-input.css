@@ -144,6 +144,14 @@ textarea.input {
   --mds-input-tip-background: var(--mds-input-icon-color);
 }
 
+.tip--top {
+  top: theme('spacing.1');
+}
+
+.tip--bottom {
+  bottom: theme('spacing.1');
+}
+
 .read-only {
   background-color: theme('colors.status-info-05');
   color: theme('colors.status-info-09');
@@ -165,13 +173,22 @@ textarea.input {
   user-select: none;
 }
 
+:host(:focus-within) .tip--top {
+  border-top-left-radius: 0;
+  border-top-right-radius: 0;
+  transform: translate(calc(theme('spacing.1') * -1), calc(theme('spacing.1') * -1));
+}
+
+:host(:focus-within) .tip--bottom {
+  border-bottom-left-radius: 0;
+  border-bottom-right-radius: 0;
+  transform: translate(calc(theme('spacing.1') * -1), theme('spacing.1'));
+}
+
 :host(:focus-within) .required {
-  @apply
-    rounded-t-none
-    w-24;
+  @apply w-24;
 
   color: theme('colors.tone-neutral');
-  transform: translate(0, calc(theme('spacing.1') * -1));
 }
 
 :host( [value]:not([value=""]) ) .required {
@@ -279,6 +296,17 @@ textarea.input {
   text-align: center;
 }
 
+:host( [type="number"][controls-layout="horizontal"][icon] ) .input {
+  @apply pl-24;
+
+  text-align: left;
+}
+
+
+:host( [type="number"][controls-layout="horizontal"] ) .icon {
+  left: 3.75rem;
+}
+
 :host( [type="number"] ) .tip,
 :host( [type="number"] ) .read-only,
 :host( [type="number"] ) .required,
@@ -292,6 +320,7 @@ textarea.input {
 :host( [type="number"][controls-layout="horizontal"] ) .disabled {
   @apply right-14;
 }
+
 
 @container (max-width: 210px) {
   :host(:focus-within) .required {
