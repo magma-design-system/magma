@@ -12,13 +12,19 @@ const inputTextTypeDictionary = [
 ]
 
 
-const inputCounterLayoutDictionary = [
+const inputControlsLayoutDictionary = [
   'horizontal',
   'vertical',
 ]
 
+const inputControlsIconDictionary = [
+  'arrow',
+  'arithmetic',
+]
+
 export {
-  inputCounterLayoutDictionary,
+  inputControlsIconDictionary,
+  inputControlsLayoutDictionary,
   inputTextTypeDictionary,
 }
 

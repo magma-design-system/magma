@@ -1,6 +1,10 @@
-export type InputCounterLayoutType =
+export type InputControlsLayoutType =
   | 'horizontal'
   | 'vertical'
+
+export type InputControlsIconType =
+  | 'arrow'
+  | 'arithmetic'
 
 export type InputValueType =
   | null

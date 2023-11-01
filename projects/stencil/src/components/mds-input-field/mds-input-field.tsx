@@ -1,7 +1,7 @@
 import clsx from 'clsx'
 import { AttachInternals, Component, Element, Event, EventEmitter, Host, Method, Prop, State, Watch, h } from '@stencil/core'
 import { AutocompleteType } from '@type/autocomplete'
-import { InputTextType, InputCounterLayoutType } from '@type/input'
+import { InputTextType, InputControlsLayoutType } from '@type/input'
 import { MdsInputEventDetail } from '@component/mds-input/meta/event-detail'
 import { MdsInputInterface } from '@component/mds-input/mds-input'
 import { ThemeStatusVariantType } from '@type/variant'
@@ -44,7 +44,7 @@ export class MdsInputField {
   /**
    * Specifies the layout of the counter button when the input type is set to `number`
    */
-  @Prop() readonly counterLayout?: InputCounterLayoutType = 'vertical'
+  @Prop() readonly controlsLayout?: InputControlsLayoutType = 'vertical'
 
   /**
    * If true, the element is displayed as disabled
@@ -285,7 +285,7 @@ export class MdsInputField {
             autocomplete={this.autocomplete}
             autofocus={this.autofocus}
             class={clsx('input', this.validate && modelValidator[this.validate].font)}
-            counterLayout={this.counterLayout}
+            controlsLayout={this.controlsLayout}
             disabled={this.disabled}
             icon={this.icon}
             id="field"

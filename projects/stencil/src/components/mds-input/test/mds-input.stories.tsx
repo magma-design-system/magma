@@ -1,7 +1,7 @@
 import { citiesDictionary } from '@fixture/cities'
 import { themeStatusVariantDictionary } from '@dictionary/variant'
 import { autoCompleteDictionary } from '@dictionary/autocomplete'
-import { inputTextTypeDictionary, inputCounterLayoutDictionary } from '@dictionary/input'
+import { inputTextTypeDictionary, inputControlsLayoutDictionary, inputControlsIconDictionary } from '@dictionary/input'
 import { typographyInputDictionary } from '@dictionary/typography'
 import { iconsDictionary } from '@dictionary/icon'
 import { h } from '@stencil/core'
@@ -22,9 +22,14 @@ export default {
       type: { name: 'boolean' },
       description: 'Specifies that the element should automatically get focus when the page loads',
     },
-    'counter-layout': {
+    'controls-layout': {
       description: 'Specifies the layout of the counter button when the input type is set to `number`',
-      options: inputCounterLayoutDictionary,
+      options: inputControlsLayoutDictionary,
+      control: { type: 'select' },
+    },
+    'controls-icon': {
+      description: 'Specifies the icon type of the counter button when the input type is set to `number`',
+      options: inputControlsIconDictionary,
       control: { type: 'select' },
     },
     datalist: {
@@ -131,11 +136,18 @@ AutoFocus.args = {
   placeholder: 'Auto focus input text',
 }
 
-export const CounterLayout = Template.bind({})
-CounterLayout.args = {
-  'counter-layout': 'horizontal',
+export const ControlsLayout = Template.bind({})
+ControlsLayout.args = {
+  'controls-layout': 'horizontal',
   type: 'number',
-  placeholder: 'Counter layout',
+  placeholder: 'Controls layout',
+}
+
+export const ControlsIcon = Template.bind({})
+ControlsIcon.args = {
+  'controls-icon': 'arithmetic',
+  type: 'number',
+  placeholder: 'Controls icon',
 }
 
 export const Disabled = Template.bind({})

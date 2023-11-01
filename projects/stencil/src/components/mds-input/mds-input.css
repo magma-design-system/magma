@@ -1,5 +1,6 @@
 @import '~@maggioli-design-system/styles/dist/tailwind/typography.css';
 @import '~@maggioli-design-system/styles/dist/css/animations.css'; /* included for focus effect */
+@import '../../tailwind/components.css';
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
@@ -113,7 +114,7 @@ textarea.input {
     ease-out-expo
     h-3
     right-1
-    rounded-full
+    rounded-md
     px-2
     transition-cosmetic;
 
@@ -124,7 +125,18 @@ textarea.input {
   pointer-events: none;
   position: absolute;
   text-align: center;
+  transform: translate(0, 0);
+  transition-property: background-color, border-radius, color, transform, width;
   user-select: none;
+}
+
+.tip-icon {
+  @apply
+    h-3
+    w-3;
+
+  display: none;
+  fill: theme('colors.tone-neutral');
 }
 
 .tip-variant {
@@ -154,9 +166,12 @@ textarea.input {
 }
 
 :host(:focus-within) .required {
-  @apply w-24;
+  @apply
+    rounded-t-none
+    w-24;
 
   color: theme('colors.tone-neutral');
+  transform: translate(0, calc(theme('spacing.1') * -1));
 }
 
 :host( [value]:not([value=""]) ) .required {
@@ -164,6 +179,21 @@ textarea.input {
 
   background-color: theme('colors.status-success-05');
   color: transparent;
+}
+
+
+:host( [value]:not([value=""]) ) .tip-text {
+  display: none;
+}
+
+:host( [value]:not([value=""]) ) .tip-icon {
+  display: flex;
+}
+
+:host([value]:not([value=""]):focus-within) .required {
+  @apply rounded-md;
+
+  transform: translate(0, 0);
 }
 
 .icon {
@@ -187,12 +217,16 @@ textarea.input {
 .counter-button {
   @apply
     h-6
+    p-0
     rounded-lg
     w-7;
 
+  align-items: center;
   background-color: transparent;
   border: 0;
+  display: flex;
   fill: var(--mds-input-counter-button-color);
+  justify-content: center;
 }
 
 .counter-button:hover {
@@ -221,14 +255,14 @@ textarea.input {
   top: 0;
 }
 
-.counter-button--horizontal:first-of-type {
+.counter-button--decrease {
   border-bottom-right-radius: 0;
   border-right: var(--mds-input-counter-button-border);
   border-top-right-radius: 0;
   left: 0;
 }
 
-.counter-button--horizontal:last-of-type {
+.counter-button--increase {
   border-bottom-left-radius: 0;
   border-left: var(--mds-input-counter-button-border);
   border-top-left-radius: 0;
@@ -239,8 +273,10 @@ textarea.input {
   @apply pr-8;
 }
 
-:host( [type="number"][counter-layout="horizontal"] ) .input {
+:host( [type="number"][controls-layout="horizontal"] ) .input {
   @apply px-14;
+
+  text-align: center;
 }
 
 :host( [type="number"] ) .tip,
@@ -250,10 +286,10 @@ textarea.input {
   @apply right-9;
 }
 
-:host( [type="number"][counter-layout="horizontal"] ) .tip,
-:host( [type="number"][counter-layout="horizontal"] ) .read-only,
-:host( [type="number"][counter-layout="horizontal"] ) .required,
-:host( [type="number"][counter-layout="horizontal"] ) .disabled {
+:host( [type="number"][controls-layout="horizontal"] ) .tip,
+:host( [type="number"][controls-layout="horizontal"] ) .read-only,
+:host( [type="number"][controls-layout="horizontal"] ) .required,
+:host( [type="number"][controls-layout="horizontal"] ) .disabled {
   @apply right-14;
 }
 

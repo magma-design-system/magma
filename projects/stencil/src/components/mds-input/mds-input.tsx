@@ -1,10 +1,15 @@
 import clsx from 'clsx'
+import miBaselineAdd from '@icon/mi/baseline/add.svg'
+import miBaselineArrowDown from '@icon/mi/baseline/keyboard-arrow-down.svg'
+import miBaselineArrowUp from '@icon/mi/baseline/keyboard-arrow-up.svg'
+import miBaselineRemove from '@icon/mi/baseline/remove.svg'
+import miBaselineDone from '@icon/mi/baseline/done.svg'
 import { AttachInternals, Component, Element, Event, EventEmitter, Host, Method, Prop, State, Watch, h } from '@stencil/core'
 import { AutocompleteType } from '@type/autocomplete'
-import { InputTextType, InputCounterLayoutType } from '@type/input'
-import { TypographyInputType } from '@type/typography'
-import { ThemeStatusVariantType } from '@type/variant'
+import { InputTextType, InputControlsLayoutType, InputControlsIconType } from '@type/input'
 import { MdsInputEventDetail } from './meta/event-detail'
+import { ThemeStatusVariantType } from '@type/variant'
+import { TypographyInputType } from '@type/typography'
 
 export interface MdsInputInterface {
   placeholder?: string
@@ -12,7 +17,8 @@ export interface MdsInputInterface {
   required?: boolean
   autocomplete?: AutocompleteType
   autofocus?: boolean
-  counterLayout?: InputCounterLayoutType
+  controlsLayout?: InputControlsLayoutType
+  controlsIcon?: InputControlsIconType
   datalist?: string[]
   disabled?: boolean
   icon?: string
@@ -60,7 +66,12 @@ export class MdsInput {
   /**
    * Specifies the layout of the counter button when the input type is set to `number`
    */
-  @Prop() readonly counterLayout?: InputCounterLayoutType = 'vertical'
+  @Prop() readonly controlsLayout?: InputControlsLayoutType = 'vertical'
+
+  /**
+   * Specifies the icon type of the counter button when the input type is set to `number`
+   */
+  @Prop() readonly controlsIcon?: InputControlsIconType = 'arrow'
 
   /**
    * A list of search terms to be searched from the input field,
@@ -266,8 +277,10 @@ export class MdsInput {
     return (
       <Host>
         { this.type === 'number'
-          && this.counterLayout === 'horizontal'
-          && <mds-button size="sm" class="counter-button counter-button--horizontal" variant="light" icon="mi/baseline/keyboard-arrow-down" part="counter-button-down" onClick={this.stepDown}></mds-button>
+          && this.controlsLayout === 'horizontal'
+          && <mds-button class="counter-button counter-button--horizontal counter-button--decrease focus-bounce" onClick={this.stepDown} role="button" tabindex="0" title="Riduci" part="counter-button-decrease">
+            <i class="svg counter-button-icon" innerHTML={this.controlsIcon === 'arrow' ? miBaselineArrowDown : miBaselineRemove}/>
+          </mds-button>
         }
         { this.type === 'textarea'
           ? <textarea
@@ -319,19 +332,28 @@ export class MdsInput {
           />
         }
         { this.type === 'number'
-          && this.counterLayout === 'vertical'
+          && this.controlsLayout === 'vertical'
           && <div class="counter counter--vertical">
-            <mds-button size="sm" class="counter-button" variant="light" icon="mi/baseline/keyboard-arrow-up" part="counter-button-up" onClick={this.stepUp}></mds-button>
-            <mds-button size="sm" class="counter-button" variant="light" icon="mi/baseline/keyboard-arrow-down" part="counter-button-down" onClick={this.stepDown}></mds-button>
+            <mds-button class="counter-button focus-bounce" onClick={this.stepUp} role="button" tabindex="0" title="Aumenta" part="counter-button-increase">
+              <i class="svg counter-button-icon" innerHTML={this.controlsIcon === 'arrow' ? miBaselineArrowUp : miBaselineAdd}/>
+            </mds-button>
+            <mds-button class="counter-button focus-bounce" onClick={this.stepDown} role="button" tabindex="0" title="Riduci" part="counter-button-decrease">
+              <i class="svg counter-button-icon" innerHTML={this.controlsIcon === 'arrow' ? miBaselineArrowDown : miBaselineRemove}/>
+            </mds-button>
           </div>
         }
         { this.type === 'number'
-          && this.counterLayout === 'horizontal'
-          && <mds-button size="sm" class="counter-button counter-button--horizontal" variant="light" icon="mi/baseline/keyboard-arrow-up" part="counter-button-up" onClick={this.stepUp}></mds-button>
+          && this.controlsLayout === 'horizontal'
+          && <mds-button class="counter-button counter-button--horizontal counter-button--increase focus-bounce" onClick={this.stepUp} role="button" tabindex="0" title="Aumenta" part="counter-button-increase">
+            <i class="svg counter-button-icon" innerHTML={this.controlsIcon === 'arrow' ? miBaselineArrowUp : miBaselineAdd}/>
+          </mds-button>
         }
         { this.disabled && <mds-text typography="option" class="tip top-1 disabled">Disabilitato</mds-text> }
         { this.readonly && !this.disabled && <mds-text typography="option" class="tip top-1 read-only">Sola lettura</mds-text> }
-        { this.required && !this.disabled && !this.readonly && <mds-text typography="option" class="tip top-1 required">Obbligatorio</mds-text> }
+        { this.required && !this.disabled && !this.readonly && <mds-text typography="option" class="tip top-1 required">
+          <span class="tip-text">Obbligatorio</span>
+          <span class="tip-icon svg" innerHTML={miBaselineDone}></span>
+        </mds-text> }
         { this.tip && <mds-text typography="option" class={clsx('tip bottom-1', this.variant && 'tip-variant')}>{ this.tip }</mds-text> }
         { this.datalist &&
           <datalist id="datalist" class="datalist">
