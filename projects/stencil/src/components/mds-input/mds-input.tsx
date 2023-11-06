@@ -18,6 +18,7 @@ export interface MdsInputInterface {
   controlsLayout?: InputControlsLayoutType
   datalist?: string[]
   disabled?: boolean
+  disabledLabel?: string
   icon?: string
   max?: string
   maxLength?: number
@@ -27,7 +28,9 @@ export interface MdsInputInterface {
   pattern?: string
   placeholder?: string
   readOnly?: boolean
+  readonlyLabel?: string
   required?: boolean
+  requiredLabel?: string
   step?: string
   tabindex?: number
   tip?: string
@@ -85,6 +88,11 @@ export class MdsInput {
   @Prop({ reflect: true }) readonly disabled?: boolean = false
 
   /**
+ * Specifies the label for the displayed state disabled
+ */
+  @Prop({ reflect: true }) readonly disabledLabel?: string = 'disattivato'
+
+  /**
    * An icon displayed at the right of the input
    */
   @Prop({ reflect: true }) readonly icon?: string
@@ -136,9 +144,19 @@ export class MdsInput {
   @Prop({ reflect: true }) readonly readonly?: boolean = false
 
   /**
+   * Specifies the label for the displayed state read-only
+   */
+  @Prop({ reflect: true }) readonly readonlyLabel?: string = 'sola lettura'
+
+  /**
    * Specifies that the element must be filled out before submitting the form
    */
   @Prop({ reflect: true }) readonly required?: boolean = false
+
+  /**
+   * Specifies the label for the displayed state required
+   */
+  @Prop({ reflect: true }) readonly requiredLabel?: string = 'obbligatorio'
 
   /**
    * Sets the variant of the input field
@@ -348,13 +366,47 @@ export class MdsInput {
             <i class="svg counter-button-icon" innerHTML={this.controlsIcon === 'arrow' ? miBaselineArrowUp : miBaselineAdd}/>
           </mds-button>
         }
-        { this.disabled && <mds-text typography="option" class="tip tip--top disabled">Disabilitato</mds-text> }
-        { this.readonly && !this.disabled && <mds-text typography="option" class="tip tip--top read-only">Sola lettura</mds-text> }
-        { this.required && !this.disabled && !this.readonly && <mds-text typography="option" class="tip tip--top required">
-          <span class="tip-text">Obbligatorio</span>
-          <span class="tip-icon svg" innerHTML={miBaselineDone}></span>
-        </mds-text> }
-        { this.tip && <mds-text typography="option" class={clsx('tip tip--bottom', this.variant && 'tip-variant')}>{ this.tip }</mds-text> }
+        <div class="tip-container tip-container--top">
+          { this.disabled &&
+            <div class="tip tip--expanded tip--disabled">
+              <div class="tip__content">
+                <mds-text typography="option" truncate>
+                  <span class="tip__text">{ this.disabledLabel }</span>
+                </mds-text>
+              </div>
+            </div>
+          }
+          { this.readonly &&
+            <div class="tip tip--expanded tip--read-only">
+              <div class="tip__content">
+                <mds-text typography="option" truncate>
+                  <span class="tip__text">{ this.readonlyLabel }</span>
+                </mds-text>
+              </div>
+            </div>
+          }
+          { this.required &&
+            <div class="tip tip--expand tip--required">
+              <div class="tip__content">
+                <mds-text typography="option" truncate>
+                  <span class="tip__text">{ this.requiredLabel }</span>
+                  <span class="tip__icon svg" innerHTML={miBaselineDone}></span>
+                </mds-text>
+              </div>
+            </div>
+          }
+        </div>
+        <div class="tip-container tip-container--bottom">
+          { this.tip &&
+            <div class="tip tip--expanded tip--variant">
+              <div class="tip__content">
+                <mds-text typography="option" truncate>
+                  <span class="tip__text">{ this.tip }</span>
+                </mds-text>
+              </div>
+            </div>
+          }
+        </div>
         { this.datalist &&
           <datalist id="datalist" class="datalist">
             { this.datalist.forEach(element => {

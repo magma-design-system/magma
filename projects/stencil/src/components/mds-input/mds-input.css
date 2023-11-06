@@ -108,110 +108,7 @@ textarea.input {
   @apply pl-11;
 }
 
-.tip {
-  @apply
-    duration-300
-    ease-out-expo
-    h-3
-    right-1
-    rounded-md
-    px-2
-    transition-cosmetic;
 
-  background-color: rgb(var(--mds-input-tip-background));
-  color: theme('colors.tone-neutral');
-  justify-content: center;
-  line-height: theme('spacing.3');
-  pointer-events: none;
-  position: absolute;
-  text-align: center;
-  transform: translate(0, 0);
-  transition-property: background-color, border-radius, color, transform, width;
-  user-select: none;
-}
-
-.tip-icon {
-  @apply
-    h-3
-    w-3;
-
-  display: none;
-  fill: theme('colors.tone-neutral');
-}
-
-.tip-variant {
-
-  --mds-input-tip-background: var(--mds-input-icon-color);
-}
-
-.tip--top {
-  top: theme('spacing.1');
-}
-
-.tip--bottom {
-  bottom: theme('spacing.1');
-}
-
-.read-only {
-  background-color: theme('colors.status-info-05');
-  color: theme('colors.status-info-09');
-  user-select: none;
-}
-
-.required {
-  @apply
-    p-0
-    w-3;
-
-  background-color: theme('colors.status-error-05');
-  color: transparent;
-  user-select: none;
-}
-
-.disabled {
-  background-color: theme('colors.tone-neutral-05');
-  user-select: none;
-}
-
-:host(:focus-within) .tip--top {
-  border-top-left-radius: 0;
-  border-top-right-radius: 0;
-  transform: translate(calc(theme('spacing.1') * -1), calc(theme('spacing.1') * -1));
-}
-
-:host(:focus-within) .tip--bottom {
-  border-bottom-left-radius: 0;
-  border-bottom-right-radius: 0;
-  transform: translate(calc(theme('spacing.1') * -1), theme('spacing.1'));
-}
-
-:host(:focus-within) .required {
-  @apply w-24;
-
-  color: theme('colors.tone-neutral');
-}
-
-:host( [value]:not([value=""]) ) .required {
-  @apply w-3;
-
-  background-color: theme('colors.status-success-05');
-  color: transparent;
-}
-
-
-:host( [value]:not([value=""]) ) .tip-text {
-  display: none;
-}
-
-:host( [value]:not([value=""]) ) .tip-icon {
-  display: flex;
-}
-
-:host([value]:not([value=""]):focus-within) .required {
-  @apply rounded-md;
-
-  transform: translate(0, 0);
-}
 
 .icon {
   @apply
@@ -307,27 +204,5 @@ textarea.input {
   left: 3.75rem;
 }
 
-:host( [type="number"] ) .tip,
-:host( [type="number"] ) .read-only,
-:host( [type="number"] ) .required,
-:host( [type="number"] ) .disabled {
-  @apply right-9;
-}
-
-:host( [type="number"][controls-layout="horizontal"] ) .tip,
-:host( [type="number"][controls-layout="horizontal"] ) .read-only,
-:host( [type="number"][controls-layout="horizontal"] ) .required,
-:host( [type="number"][controls-layout="horizontal"] ) .disabled {
-  @apply right-14;
-}
-
-
-@container (max-width: 210px) {
-  :host(:focus-within) .required {
-    @apply w-3;
-
-    color: transparent;
-  }
-}
-
 @import './css/mds-input-variant.css';
+@import './css/mds-input-tip.css';
