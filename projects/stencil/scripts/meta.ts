@@ -2,6 +2,7 @@ import { resolve, join } from 'path'
 const PROJECT_DIR = resolve(__dirname, '../')
 const DIST_STORYBOOK_CACHE_DIR = resolve(__dirname, '../node_modules/.cache/storybook')
 const DIST_STORYBOOK_MANAGER_CACHE_DIR = resolve(__dirname, '../node_modules/.cache/sb-manager')
+const DIST_STENCIL_CACHE_DIR = resolve(__dirname, '../.stencil')
 const PROJECT_SVG_ICONS_DIR = resolve(__dirname, '../../svg-icons')
 const SVG_ICONS_DIST_DIR = resolve(PROJECT_SVG_ICONS_DIR, 'dist')
 const BUILD_DIR = resolve(PROJECT_DIR, '.build')
@@ -23,6 +24,7 @@ export {
   BUILD_DIR,
   COMPONENTS_DIR,
   DIST_DIR,
+  DIST_STENCIL_CACHE_DIR,
   DIST_STORYBOOK_CACHE_DIR,
   DIST_STORYBOOK_DIR,
   DIST_STORYBOOK_ICONS_DIR,

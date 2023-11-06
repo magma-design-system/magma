@@ -16,6 +16,7 @@
   ],
   "scripts": {
     "build.watch": "stencil build --watch",
+    "build.watch-no-cache": "stencil build --no-cache --watch",
     "build": "npm run clean && npm run build.fixtures && npm run build.icons && stencil build --prerender --docs-readme --docs-json dist/documentation.json && npm run publish.isolate.docs-json",
     "build.icons.prepare": "nx run svg-icons:dictionary",
     "build.icons": "iconsauce --verbose --config ./.storybook/iconsauce.config.js --output-dictionary ./src/fixtures/icons.json --output-svg ./assets/svg",
@@ -33,6 +34,7 @@
     "storybook.version": "npx ts-node --skipProject ./scripts/list-components-version.ts",
     "storybook.build": "npm run storybook.version && npm run build.icons.prepare && storybook build -o ./dist-storybook",
     "storybook.start": "npm run storybook.clear-cache && npm run build.watch & npm run storybook.version && storybook dev -p 6006",
+    "storybook.start-no-cache": "npm run storybook.clear-cache && npm run build.watch-no-cache & npm run storybook.version && storybook dev -p 6006",
     "storybook.clear-cache": "npx ts-node --skipProject ./scripts/clean-storybook.ts",
     "test": "npm run test.e2e",
     "test.e2e": "stencil test --spec --e2e",
