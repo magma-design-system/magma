@@ -57,6 +57,11 @@ export class MdsInputField {
   @Prop({ reflect: true }) disabled?: boolean = false
 
   /**
+ * Specifies the label for the displayed state disabled
+ */
+  @Prop({ reflect: true }) readonly disabledLabel?: string = 'disattivato'
+
+  /**
    * An icon displayed at the right of the input
    */
   @Prop() icon?: string
@@ -108,9 +113,19 @@ export class MdsInputField {
   @Prop({ reflect: true }) readonly?: boolean = false
 
   /**
+   * Specifies the label for the displayed state read-only
+   */
+  @Prop({ reflect: true }) readonly readonlyLabel?: string = 'sola lettura'
+
+  /**
    * Specifies that the element must be filled out before submitting the form
    */
   @Prop({ reflect: true }) required?: boolean = false
+
+  /**
+   * Specifies the label for the displayed state required
+   */
+  @Prop({ reflect: true }) readonly requiredLabel?: string = 'obbligatorio'
 
   /**
    * Specifies the interval between legal numbers in an input field
