@@ -1,7 +1,0 @@
-{
-  "name": "lit",
-  "$schema": "../../node_modules/nx/schemas/project-schema.json",
-  "type": "library",
-  "tags": ["type:lib"],
-  "implicitDependencies": ["design-tokens", "icons", "stencil", "styles"]
-}
