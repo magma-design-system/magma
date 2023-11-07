@@ -1522,25 +1522,73 @@ export interface MdsUrlViewCustomEvent<T> extends CustomEvent<T> {
     target: HTMLMdsUrlViewElement;
 }
 declare global {
+    interface HTMLMdsAccordionElementEventMap {
+        "mdsAccordionChange": MdsAccordionEventDetail;
+    }
     interface HTMLMdsAccordionElement extends Components.MdsAccordion, HTMLStencilElement {
+        addEventListener<K extends keyof HTMLMdsAccordionElementEventMap>(type: K, listener: (this: HTMLMdsAccordionElement, ev: MdsAccordionCustomEvent<HTMLMdsAccordionElementEventMap[K]>) => any, options?: boolean | AddEventListenerOptions): void;
+        addEventListener<K extends keyof DocumentEventMap>(type: K, listener: (this: Document, ev: DocumentEventMap[K]) => any, options?: boolean | AddEventListenerOptions): void;
+        addEventListener<K extends keyof HTMLElementEventMap>(type: K, listener: (this: HTMLElement, ev: HTMLElementEventMap[K]) => any, options?: boolean | AddEventListenerOptions): void;
+        addEventListener(type: string, listener: EventListenerOrEventListenerObject, options?: boolean | AddEventListenerOptions): void;
+        removeEventListener<K extends keyof HTMLMdsAccordionElementEventMap>(type: K, listener: (this: HTMLMdsAccordionElement, ev: MdsAccordionCustomEvent<HTMLMdsAccordionElementEventMap[K]>) => any, options?: boolean | EventListenerOptions): void;
+        removeEventListener<K extends keyof DocumentEventMap>(type: K, listener: (this: Document, ev: DocumentEventMap[K]) => any, options?: boolean | EventListenerOptions): void;
+        removeEventListener<K extends keyof HTMLElementEventMap>(type: K, listener: (this: HTMLElement, ev: HTMLElementEventMap[K]) => any, options?: boolean | EventListenerOptions): void;
+        removeEventListener(type: string, listener: EventListenerOrEventListenerObject, options?: boolean | EventListenerOptions): void;
     }
     var HTMLMdsAccordionElement: {
         prototype: HTMLMdsAccordionElement;
         new (): HTMLMdsAccordionElement;
     };
+    interface HTMLMdsAccordionItemElementEventMap {
+        "mdsAccordionItemSelect": MdsAccordionItemEventDetail;
+        "mdsAccordionItemUnselect": MdsAccordionItemEventDetail;
+        "mdsAccordionItemChange": MdsAccordionItemEventDetail;
+    }
     interface HTMLMdsAccordionItemElement extends Components.MdsAccordionItem, HTMLStencilElement {
+        addEventListener<K extends keyof HTMLMdsAccordionItemElementEventMap>(type: K, listener: (this: HTMLMdsAccordionItemElement, ev: MdsAccordionItemCustomEvent<HTMLMdsAccordionItemElementEventMap[K]>) => any, options?: boolean | AddEventListenerOptions): void;
+        addEventListener<K extends keyof DocumentEventMap>(type: K, listener: (this: Document, ev: DocumentEventMap[K]) => any, options?: boolean | AddEventListenerOptions): void;
+        addEventListener<K extends keyof HTMLElementEventMap>(type: K, listener: (this: HTMLElement, ev: HTMLElementEventMap[K]) => any, options?: boolean | AddEventListenerOptions): void;
+        addEventListener(type: string, listener: EventListenerOrEventListenerObject, options?: boolean | AddEventListenerOptions): void;
+        removeEventListener<K extends keyof HTMLMdsAccordionItemElementEventMap>(type: K, listener: (this: HTMLMdsAccordionItemElement, ev: MdsAccordionItemCustomEvent<HTMLMdsAccordionItemElementEventMap[K]>) => any, options?: boolean | EventListenerOptions): void;
+        removeEventListener<K extends keyof DocumentEventMap>(type: K, listener: (this: Document, ev: DocumentEventMap[K]) => any, options?: boolean | EventListenerOptions): void;
+        removeEventListener<K extends keyof HTMLElementEventMap>(type: K, listener: (this: HTMLElement, ev: HTMLElementEventMap[K]) => any, options?: boolean | EventListenerOptions): void;
+        removeEventListener(type: string, listener: EventListenerOrEventListenerObject, options?: boolean | EventListenerOptions): void;
     }
     var HTMLMdsAccordionItemElement: {
         prototype: HTMLMdsAccordionItemElement;
         new (): HTMLMdsAccordionItemElement;
     };
+    interface HTMLMdsAccordionTimerElementEventMap {
+        "mdsAccordionTimerChange": void;
+    }
     interface HTMLMdsAccordionTimerElement extends Components.MdsAccordionTimer, HTMLStencilElement {
+        addEventListener<K extends keyof HTMLMdsAccordionTimerElementEventMap>(type: K, listener: (this: HTMLMdsAccordionTimerElement, ev: MdsAccordionTimerCustomEvent<HTMLMdsAccordionTimerElementEventMap[K]>) => any, options?: boolean | AddEventListenerOptions): void;
+        addEventListener<K extends keyof DocumentEventMap>(type: K, listener: (this: Document, ev: DocumentEventMap[K]) => any, options?: boolean | AddEventListenerOptions): void;
+        addEventListener<K extends keyof HTMLElementEventMap>(type: K, listener: (this: HTMLElement, ev: HTMLElementEventMap[K]) => any, options?: boolean | AddEventListenerOptions): void;
+        addEventListener(type: string, listener: EventListenerOrEventListenerObject, options?: boolean | AddEventListenerOptions): void;
+        removeEventListener<K extends keyof HTMLMdsAccordionTimerElementEventMap>(type: K, listener: (this: HTMLMdsAccordionTimerElement, ev: MdsAccordionTimerCustomEvent<HTMLMdsAccordionTimerElementEventMap[K]>) => any, options?: boolean | EventListenerOptions): void;
+        removeEventListener<K extends keyof DocumentEventMap>(type: K, listener: (this: Document, ev: DocumentEventMap[K]) => any, options?: boolean | EventListenerOptions): void;
+        removeEventListener<K extends keyof HTMLElementEventMap>(type: K, listener: (this: HTMLElement, ev: HTMLElementEventMap[K]) => any, options?: boolean | EventListenerOptions): void;
+        removeEventListener(type: string, listener: EventListenerOrEventListenerObject, options?: boolean | EventListenerOptions): void;
     }
     var HTMLMdsAccordionTimerElement: {
         prototype: HTMLMdsAccordionTimerElement;
         new (): HTMLMdsAccordionTimerElement;
     };
+    interface HTMLMdsAccordionTimerItemElementEventMap {
+        "mdsAccordionTimerItemClickSelect": MdsAccordionTimerItemEventDetail;
+        "mdsAccordionTimerItemMouseEnterSelect": MdsAccordionTimerItemEventDetail;
+        "mdsAccordionTimerItemMouseLeaveSelect": MdsAccordionTimerItemEventDetail;
+    }
     interface HTMLMdsAccordionTimerItemElement extends Components.MdsAccordionTimerItem, HTMLStencilElement {
+        addEventListener<K extends keyof HTMLMdsAccordionTimerItemElementEventMap>(type: K, listener: (this: HTMLMdsAccordionTimerItemElement, ev: MdsAccordionTimerItemCustomEvent<HTMLMdsAccordionTimerItemElementEventMap[K]>) => any, options?: boolean | AddEventListenerOptions): void;
+        addEventListener<K extends keyof DocumentEventMap>(type: K, listener: (this: Document, ev: DocumentEventMap[K]) => any, options?: boolean | AddEventListenerOptions): void;
+        addEventListener<K extends keyof HTMLElementEventMap>(type: K, listener: (this: HTMLElement, ev: HTMLElementEventMap[K]) => any, options?: boolean | AddEventListenerOptions): void;
+        addEventListener(type: string, listener: EventListenerOrEventListenerObject, options?: boolean | AddEventListenerOptions): void;
+        removeEventListener<K extends keyof HTMLMdsAccordionTimerItemElementEventMap>(type: K, listener: (this: HTMLMdsAccordionTimerItemElement, ev: MdsAccordionTimerItemCustomEvent<HTMLMdsAccordionTimerItemElementEventMap[K]>) => any, options?: boolean | EventListenerOptions): void;
+        removeEventListener<K extends keyof DocumentEventMap>(type: K, listener: (this: Document, ev: DocumentEventMap[K]) => any, options?: boolean | EventListenerOptions): void;
+        removeEventListener<K extends keyof HTMLElementEventMap>(type: K, listener: (this: HTMLElement, ev: HTMLElementEventMap[K]) => any, options?: boolean | EventListenerOptions): void;
+        removeEventListener(type: string, listener: EventListenerOrEventListenerObject, options?: boolean | EventListenerOptions): void;
     }
     var HTMLMdsAccordionTimerItemElement: {
         prototype: HTMLMdsAccordionTimerItemElement;
@@ -1564,7 +1612,18 @@ declare global {
         prototype: HTMLMdsBadgeElement;
         new (): HTMLMdsBadgeElement;
     };
+    interface HTMLMdsBannerElementEventMap {
+        "mdsBannerClose": void;
+    }
     interface HTMLMdsBannerElement extends Components.MdsBanner, HTMLStencilElement {
+        addEventListener<K extends keyof HTMLMdsBannerElementEventMap>(type: K, listener: (this: HTMLMdsBannerElement, ev: MdsBannerCustomEvent<HTMLMdsBannerElementEventMap[K]>) => any, options?: boolean | AddEventListenerOptions): void;
+        addEventListener<K extends keyof DocumentEventMap>(type: K, listener: (this: Document, ev: DocumentEventMap[K]) => any, options?: boolean | AddEventListenerOptions): void;
+        addEventListener<K extends keyof HTMLElementEventMap>(type: K, listener: (this: HTMLElement, ev: HTMLElementEventMap[K]) => any, options?: boolean | AddEventListenerOptions): void;
+        addEventListener(type: string, listener: EventListenerOrEventListenerObject, options?: boolean | AddEventListenerOptions): void;
+        removeEventListener<K extends keyof HTMLMdsBannerElementEventMap>(type: K, listener: (this: HTMLMdsBannerElement, ev: MdsBannerCustomEvent<HTMLMdsBannerElementEventMap[K]>) => any, options?: boolean | EventListenerOptions): void;
+        removeEventListener<K extends keyof DocumentEventMap>(type: K, listener: (this: Document, ev: DocumentEventMap[K]) => any, options?: boolean | EventListenerOptions): void;
+        removeEventListener<K extends keyof HTMLElementEventMap>(type: K, listener: (this: HTMLElement, ev: HTMLElementEventMap[K]) => any, options?: boolean | EventListenerOptions): void;
+        removeEventListener(type: string, listener: EventListenerOrEventListenerObject, options?: boolean | EventListenerOptions): void;
     }
     var HTMLMdsBannerElement: {
         prototype: HTMLMdsBannerElement;
@@ -1582,13 +1641,35 @@ declare global {
         prototype: HTMLMdsBibliographyElement;
         new (): HTMLMdsBibliographyElement;
     };
+    interface HTMLMdsBreadcrumbElementEventMap {
+        "mdsBreadcrumbChange": MdsBreadcrumbEventDetail;
+    }
     interface HTMLMdsBreadcrumbElement extends Components.MdsBreadcrumb, HTMLStencilElement {
+        addEventListener<K extends keyof HTMLMdsBreadcrumbElementEventMap>(type: K, listener: (this: HTMLMdsBreadcrumbElement, ev: MdsBreadcrumbCustomEvent<HTMLMdsBreadcrumbElementEventMap[K]>) => any, options?: boolean | AddEventListenerOptions): void;
+        addEventListener<K extends keyof DocumentEventMap>(type: K, listener: (this: Document, ev: DocumentEventMap[K]) => any, options?: boolean | AddEventListenerOptions): void;
+        addEventListener<K extends keyof HTMLElementEventMap>(type: K, listener: (this: HTMLElement, ev: HTMLElementEventMap[K]) => any, options?: boolean | AddEventListenerOptions): void;
+        addEventListener(type: string, listener: EventListenerOrEventListenerObject, options?: boolean | AddEventListenerOptions): void;
+        removeEventListener<K extends keyof HTMLMdsBreadcrumbElementEventMap>(type: K, listener: (this: HTMLMdsBreadcrumbElement, ev: MdsBreadcrumbCustomEvent<HTMLMdsBreadcrumbElementEventMap[K]>) => any, options?: boolean | EventListenerOptions): void;
+        removeEventListener<K extends keyof DocumentEventMap>(type: K, listener: (this: Document, ev: DocumentEventMap[K]) => any, options?: boolean | EventListenerOptions): void;
+        removeEventListener<K extends keyof HTMLElementEventMap>(type: K, listener: (this: HTMLElement, ev: HTMLElementEventMap[K]) => any, options?: boolean | EventListenerOptions): void;
+        removeEventListener(type: string, listener: EventListenerOrEventListenerObject, options?: boolean | EventListenerOptions): void;
     }
     var HTMLMdsBreadcrumbElement: {
         prototype: HTMLMdsBreadcrumbElement;
         new (): HTMLMdsBreadcrumbElement;
     };
+    interface HTMLMdsBreadcrumbItemElementEventMap {
+        "mdsBreadcrumbItemSelect": MdsBreadcrumbItemEventDetail;
+    }
     interface HTMLMdsBreadcrumbItemElement extends Components.MdsBreadcrumbItem, HTMLStencilElement {
+        addEventListener<K extends keyof HTMLMdsBreadcrumbItemElementEventMap>(type: K, listener: (this: HTMLMdsBreadcrumbItemElement, ev: MdsBreadcrumbItemCustomEvent<HTMLMdsBreadcrumbItemElementEventMap[K]>) => any, options?: boolean | AddEventListenerOptions): void;
+        addEventListener<K extends keyof DocumentEventMap>(type: K, listener: (this: Document, ev: DocumentEventMap[K]) => any, options?: boolean | AddEventListenerOptions): void;
+        addEventListener<K extends keyof HTMLElementEventMap>(type: K, listener: (this: HTMLElement, ev: HTMLElementEventMap[K]) => any, options?: boolean | AddEventListenerOptions): void;
+        addEventListener(type: string, listener: EventListenerOrEventListenerObject, options?: boolean | AddEventListenerOptions): void;
+        removeEventListener<K extends keyof HTMLMdsBreadcrumbItemElementEventMap>(type: K, listener: (this: HTMLMdsBreadcrumbItemElement, ev: MdsBreadcrumbItemCustomEvent<HTMLMdsBreadcrumbItemElementEventMap[K]>) => any, options?: boolean | EventListenerOptions): void;
+        removeEventListener<K extends keyof DocumentEventMap>(type: K, listener: (this: Document, ev: DocumentEventMap[K]) => any, options?: boolean | EventListenerOptions): void;
+        removeEventListener<K extends keyof HTMLElementEventMap>(type: K, listener: (this: HTMLElement, ev: HTMLElementEventMap[K]) => any, options?: boolean | EventListenerOptions): void;
+        removeEventListener(type: string, listener: EventListenerOrEventListenerObject, options?: boolean | EventListenerOptions): void;
     }
     var HTMLMdsBreadcrumbItemElement: {
         prototype: HTMLMdsBreadcrumbItemElement;
@@ -1630,19 +1711,55 @@ declare global {
         prototype: HTMLMdsCardMediaElement;
         new (): HTMLMdsCardMediaElement;
     };
+    interface HTMLMdsChipElementEventMap {
+        "mdsChipClickLabel": MdsChipEvent;
+        "mdsChipDelete": MdsChipEvent;
+    }
     interface HTMLMdsChipElement extends Components.MdsChip, HTMLStencilElement {
+        addEventListener<K extends keyof HTMLMdsChipElementEventMap>(type: K, listener: (this: HTMLMdsChipElement, ev: MdsChipCustomEvent<HTMLMdsChipElementEventMap[K]>) => any, options?: boolean | AddEventListenerOptions): void;
+        addEventListener<K extends keyof DocumentEventMap>(type: K, listener: (this: Document, ev: DocumentEventMap[K]) => any, options?: boolean | AddEventListenerOptions): void;
+        addEventListener<K extends keyof HTMLElementEventMap>(type: K, listener: (this: HTMLElement, ev: HTMLElementEventMap[K]) => any, options?: boolean | AddEventListenerOptions): void;
+        addEventListener(type: string, listener: EventListenerOrEventListenerObject, options?: boolean | AddEventListenerOptions): void;
+        removeEventListener<K extends keyof HTMLMdsChipElementEventMap>(type: K, listener: (this: HTMLMdsChipElement, ev: MdsChipCustomEvent<HTMLMdsChipElementEventMap[K]>) => any, options?: boolean | EventListenerOptions): void;
+        removeEventListener<K extends keyof DocumentEventMap>(type: K, listener: (this: Document, ev: DocumentEventMap[K]) => any, options?: boolean | EventListenerOptions): void;
+        removeEventListener<K extends keyof HTMLElementEventMap>(type: K, listener: (this: HTMLElement, ev: HTMLElementEventMap[K]) => any, options?: boolean | EventListenerOptions): void;
+        removeEventListener(type: string, listener: EventListenerOrEventListenerObject, options?: boolean | EventListenerOptions): void;
     }
     var HTMLMdsChipElement: {
         prototype: HTMLMdsChipElement;
         new (): HTMLMdsChipElement;
     };
+    interface HTMLMdsDetailsElementEventMap {
+        "mdsDetailsChange": boolean;
+    }
     interface HTMLMdsDetailsElement extends Components.MdsDetails, HTMLStencilElement {
+        addEventListener<K extends keyof HTMLMdsDetailsElementEventMap>(type: K, listener: (this: HTMLMdsDetailsElement, ev: MdsDetailsCustomEvent<HTMLMdsDetailsElementEventMap[K]>) => any, options?: boolean | AddEventListenerOptions): void;
+        addEventListener<K extends keyof DocumentEventMap>(type: K, listener: (this: Document, ev: DocumentEventMap[K]) => any, options?: boolean | AddEventListenerOptions): void;
+        addEventListener<K extends keyof HTMLElementEventMap>(type: K, listener: (this: HTMLElement, ev: HTMLElementEventMap[K]) => any, options?: boolean | AddEventListenerOptions): void;
+        addEventListener(type: string, listener: EventListenerOrEventListenerObject, options?: boolean | AddEventListenerOptions): void;
+        removeEventListener<K extends keyof HTMLMdsDetailsElementEventMap>(type: K, listener: (this: HTMLMdsDetailsElement, ev: MdsDetailsCustomEvent<HTMLMdsDetailsElementEventMap[K]>) => any, options?: boolean | EventListenerOptions): void;
+        removeEventListener<K extends keyof DocumentEventMap>(type: K, listener: (this: Document, ev: DocumentEventMap[K]) => any, options?: boolean | EventListenerOptions): void;
+        removeEventListener<K extends keyof HTMLElementEventMap>(type: K, listener: (this: HTMLElement, ev: HTMLElementEventMap[K]) => any, options?: boolean | EventListenerOptions): void;
+        removeEventListener(type: string, listener: EventListenerOrEventListenerObject, options?: boolean | EventListenerOptions): void;
     }
     var HTMLMdsDetailsElement: {
         prototype: HTMLMdsDetailsElement;
         new (): HTMLMdsDetailsElement;
     };
+    interface HTMLMdsDropdownElementEventMap {
+        "mdsDropdownVisible": MdsDropdownEventDetail;
+        "mdsDropdownHide": MdsDropdownEventDetail;
+        "mdsDropdownChange": MdsDropdownEventDetail;
+    }
     interface HTMLMdsDropdownElement extends Components.MdsDropdown, HTMLStencilElement {
+        addEventListener<K extends keyof HTMLMdsDropdownElementEventMap>(type: K, listener: (this: HTMLMdsDropdownElement, ev: MdsDropdownCustomEvent<HTMLMdsDropdownElementEventMap[K]>) => any, options?: boolean | AddEventListenerOptions): void;
+        addEventListener<K extends keyof DocumentEventMap>(type: K, listener: (this: Document, ev: DocumentEventMap[K]) => any, options?: boolean | AddEventListenerOptions): void;
+        addEventListener<K extends keyof HTMLElementEventMap>(type: K, listener: (this: HTMLElement, ev: HTMLElementEventMap[K]) => any, options?: boolean | AddEventListenerOptions): void;
+        addEventListener(type: string, listener: EventListenerOrEventListenerObject, options?: boolean | AddEventListenerOptions): void;
+        removeEventListener<K extends keyof HTMLMdsDropdownElementEventMap>(type: K, listener: (this: HTMLMdsDropdownElement, ev: MdsDropdownCustomEvent<HTMLMdsDropdownElementEventMap[K]>) => any, options?: boolean | EventListenerOptions): void;
+        removeEventListener<K extends keyof DocumentEventMap>(type: K, listener: (this: Document, ev: DocumentEventMap[K]) => any, options?: boolean | EventListenerOptions): void;
+        removeEventListener<K extends keyof HTMLElementEventMap>(type: K, listener: (this: HTMLElement, ev: HTMLElementEventMap[K]) => any, options?: boolean | EventListenerOptions): void;
+        removeEventListener(type: string, listener: EventListenerOrEventListenerObject, options?: boolean | EventListenerOptions): void;
     }
     var HTMLMdsDropdownElement: {
         prototype: HTMLMdsDropdownElement;
@@ -1654,19 +1771,52 @@ declare global {
         prototype: HTMLMdsEntityElement;
         new (): HTMLMdsEntityElement;
     };
+    interface HTMLMdsFileElementEventMap {
+        "mdsFileDownload": MdsFileEventDetail;
+    }
     interface HTMLMdsFileElement extends Components.MdsFile, HTMLStencilElement {
+        addEventListener<K extends keyof HTMLMdsFileElementEventMap>(type: K, listener: (this: HTMLMdsFileElement, ev: MdsFileCustomEvent<HTMLMdsFileElementEventMap[K]>) => any, options?: boolean | AddEventListenerOptions): void;
+        addEventListener<K extends keyof DocumentEventMap>(type: K, listener: (this: Document, ev: DocumentEventMap[K]) => any, options?: boolean | AddEventListenerOptions): void;
+        addEventListener<K extends keyof HTMLElementEventMap>(type: K, listener: (this: HTMLElement, ev: HTMLElementEventMap[K]) => any, options?: boolean | AddEventListenerOptions): void;
+        addEventListener(type: string, listener: EventListenerOrEventListenerObject, options?: boolean | AddEventListenerOptions): void;
+        removeEventListener<K extends keyof HTMLMdsFileElementEventMap>(type: K, listener: (this: HTMLMdsFileElement, ev: MdsFileCustomEvent<HTMLMdsFileElementEventMap[K]>) => any, options?: boolean | EventListenerOptions): void;
+        removeEventListener<K extends keyof DocumentEventMap>(type: K, listener: (this: Document, ev: DocumentEventMap[K]) => any, options?: boolean | EventListenerOptions): void;
+        removeEventListener<K extends keyof HTMLElementEventMap>(type: K, listener: (this: HTMLElement, ev: HTMLElementEventMap[K]) => any, options?: boolean | EventListenerOptions): void;
+        removeEventListener(type: string, listener: EventListenerOrEventListenerObject, options?: boolean | EventListenerOptions): void;
     }
     var HTMLMdsFileElement: {
         prototype: HTMLMdsFileElement;
         new (): HTMLMdsFileElement;
     };
+    interface HTMLMdsFilterElementEventMap {
+        "mdsFilterChange": MdsFilterEventDetail;
+    }
     interface HTMLMdsFilterElement extends Components.MdsFilter, HTMLStencilElement {
+        addEventListener<K extends keyof HTMLMdsFilterElementEventMap>(type: K, listener: (this: HTMLMdsFilterElement, ev: MdsFilterCustomEvent<HTMLMdsFilterElementEventMap[K]>) => any, options?: boolean | AddEventListenerOptions): void;
+        addEventListener<K extends keyof DocumentEventMap>(type: K, listener: (this: Document, ev: DocumentEventMap[K]) => any, options?: boolean | AddEventListenerOptions): void;
+        addEventListener<K extends keyof HTMLElementEventMap>(type: K, listener: (this: HTMLElement, ev: HTMLElementEventMap[K]) => any, options?: boolean | AddEventListenerOptions): void;
+        addEventListener(type: string, listener: EventListenerOrEventListenerObject, options?: boolean | AddEventListenerOptions): void;
+        removeEventListener<K extends keyof HTMLMdsFilterElementEventMap>(type: K, listener: (this: HTMLMdsFilterElement, ev: MdsFilterCustomEvent<HTMLMdsFilterElementEventMap[K]>) => any, options?: boolean | EventListenerOptions): void;
+        removeEventListener<K extends keyof DocumentEventMap>(type: K, listener: (this: Document, ev: DocumentEventMap[K]) => any, options?: boolean | EventListenerOptions): void;
+        removeEventListener<K extends keyof HTMLElementEventMap>(type: K, listener: (this: HTMLElement, ev: HTMLElementEventMap[K]) => any, options?: boolean | EventListenerOptions): void;
+        removeEventListener(type: string, listener: EventListenerOrEventListenerObject, options?: boolean | EventListenerOptions): void;
     }
     var HTMLMdsFilterElement: {
         prototype: HTMLMdsFilterElement;
         new (): HTMLMdsFilterElement;
     };
+    interface HTMLMdsFilterItemElementEventMap {
+        "mdsFilterItemSelect": MdsFilterItemEventDetail;
+    }
     interface HTMLMdsFilterItemElement extends Components.MdsFilterItem, HTMLStencilElement {
+        addEventListener<K extends keyof HTMLMdsFilterItemElementEventMap>(type: K, listener: (this: HTMLMdsFilterItemElement, ev: MdsFilterItemCustomEvent<HTMLMdsFilterItemElementEventMap[K]>) => any, options?: boolean | AddEventListenerOptions): void;
+        addEventListener<K extends keyof DocumentEventMap>(type: K, listener: (this: Document, ev: DocumentEventMap[K]) => any, options?: boolean | AddEventListenerOptions): void;
+        addEventListener<K extends keyof HTMLElementEventMap>(type: K, listener: (this: HTMLElement, ev: HTMLElementEventMap[K]) => any, options?: boolean | AddEventListenerOptions): void;
+        addEventListener(type: string, listener: EventListenerOrEventListenerObject, options?: boolean | AddEventListenerOptions): void;
+        removeEventListener<K extends keyof HTMLMdsFilterItemElementEventMap>(type: K, listener: (this: HTMLMdsFilterItemElement, ev: MdsFilterItemCustomEvent<HTMLMdsFilterItemElementEventMap[K]>) => any, options?: boolean | EventListenerOptions): void;
+        removeEventListener<K extends keyof DocumentEventMap>(type: K, listener: (this: Document, ev: DocumentEventMap[K]) => any, options?: boolean | EventListenerOptions): void;
+        removeEventListener<K extends keyof HTMLElementEventMap>(type: K, listener: (this: HTMLElement, ev: HTMLElementEventMap[K]) => any, options?: boolean | EventListenerOptions): void;
+        removeEventListener(type: string, listener: EventListenerOrEventListenerObject, options?: boolean | EventListenerOptions): void;
     }
     var HTMLMdsFilterItemElement: {
         prototype: HTMLMdsFilterItemElement;
@@ -1678,13 +1828,35 @@ declare global {
         prototype: HTMLMdsFormElement;
         new (): HTMLMdsFormElement;
     };
+    interface HTMLMdsHeaderElementEventMap {
+        "mdsHeaderClose": MdsHeaderEventDetail;
+    }
     interface HTMLMdsHeaderElement extends Components.MdsHeader, HTMLStencilElement {
+        addEventListener<K extends keyof HTMLMdsHeaderElementEventMap>(type: K, listener: (this: HTMLMdsHeaderElement, ev: MdsHeaderCustomEvent<HTMLMdsHeaderElementEventMap[K]>) => any, options?: boolean | AddEventListenerOptions): void;
+        addEventListener<K extends keyof DocumentEventMap>(type: K, listener: (this: Document, ev: DocumentEventMap[K]) => any, options?: boolean | AddEventListenerOptions): void;
+        addEventListener<K extends keyof HTMLElementEventMap>(type: K, listener: (this: HTMLElement, ev: HTMLElementEventMap[K]) => any, options?: boolean | AddEventListenerOptions): void;
+        addEventListener(type: string, listener: EventListenerOrEventListenerObject, options?: boolean | AddEventListenerOptions): void;
+        removeEventListener<K extends keyof HTMLMdsHeaderElementEventMap>(type: K, listener: (this: HTMLMdsHeaderElement, ev: MdsHeaderCustomEvent<HTMLMdsHeaderElementEventMap[K]>) => any, options?: boolean | EventListenerOptions): void;
+        removeEventListener<K extends keyof DocumentEventMap>(type: K, listener: (this: Document, ev: DocumentEventMap[K]) => any, options?: boolean | EventListenerOptions): void;
+        removeEventListener<K extends keyof HTMLElementEventMap>(type: K, listener: (this: HTMLElement, ev: HTMLElementEventMap[K]) => any, options?: boolean | EventListenerOptions): void;
+        removeEventListener(type: string, listener: EventListenerOrEventListenerObject, options?: boolean | EventListenerOptions): void;
     }
     var HTMLMdsHeaderElement: {
         prototype: HTMLMdsHeaderElement;
         new (): HTMLMdsHeaderElement;
     };
+    interface HTMLMdsHeaderBarElementEventMap {
+        "mdsHeaderBarOpen": void;
+    }
     interface HTMLMdsHeaderBarElement extends Components.MdsHeaderBar, HTMLStencilElement {
+        addEventListener<K extends keyof HTMLMdsHeaderBarElementEventMap>(type: K, listener: (this: HTMLMdsHeaderBarElement, ev: MdsHeaderBarCustomEvent<HTMLMdsHeaderBarElementEventMap[K]>) => any, options?: boolean | AddEventListenerOptions): void;
+        addEventListener<K extends keyof DocumentEventMap>(type: K, listener: (this: Document, ev: DocumentEventMap[K]) => any, options?: boolean | AddEventListenerOptions): void;
+        addEventListener<K extends keyof HTMLElementEventMap>(type: K, listener: (this: HTMLElement, ev: HTMLElementEventMap[K]) => any, options?: boolean | AddEventListenerOptions): void;
+        addEventListener(type: string, listener: EventListenerOrEventListenerObject, options?: boolean | AddEventListenerOptions): void;
+        removeEventListener<K extends keyof HTMLMdsHeaderBarElementEventMap>(type: K, listener: (this: HTMLMdsHeaderBarElement, ev: MdsHeaderBarCustomEvent<HTMLMdsHeaderBarElementEventMap[K]>) => any, options?: boolean | EventListenerOptions): void;
+        removeEventListener<K extends keyof DocumentEventMap>(type: K, listener: (this: Document, ev: DocumentEventMap[K]) => any, options?: boolean | EventListenerOptions): void;
+        removeEventListener<K extends keyof HTMLElementEventMap>(type: K, listener: (this: HTMLElement, ev: HTMLElementEventMap[K]) => any, options?: boolean | EventListenerOptions): void;
+        removeEventListener(type: string, listener: EventListenerOrEventListenerObject, options?: boolean | EventListenerOptions): void;
     }
     var HTMLMdsHeaderBarElement: {
         prototype: HTMLMdsHeaderBarElement;
@@ -1714,37 +1886,113 @@ declare global {
         prototype: HTMLMdsIconElement;
         new (): HTMLMdsIconElement;
     };
+    interface HTMLMdsImgElementEventMap {
+        "mdsImgLoadError": MdsImgEventDetail;
+        "mdsImgLoadSuccess": MdsImgEventDetail;
+    }
     interface HTMLMdsImgElement extends Components.MdsImg, HTMLStencilElement {
+        addEventListener<K extends keyof HTMLMdsImgElementEventMap>(type: K, listener: (this: HTMLMdsImgElement, ev: MdsImgCustomEvent<HTMLMdsImgElementEventMap[K]>) => any, options?: boolean | AddEventListenerOptions): void;
+        addEventListener<K extends keyof DocumentEventMap>(type: K, listener: (this: Document, ev: DocumentEventMap[K]) => any, options?: boolean | AddEventListenerOptions): void;
+        addEventListener<K extends keyof HTMLElementEventMap>(type: K, listener: (this: HTMLElement, ev: HTMLElementEventMap[K]) => any, options?: boolean | AddEventListenerOptions): void;
+        addEventListener(type: string, listener: EventListenerOrEventListenerObject, options?: boolean | AddEventListenerOptions): void;
+        removeEventListener<K extends keyof HTMLMdsImgElementEventMap>(type: K, listener: (this: HTMLMdsImgElement, ev: MdsImgCustomEvent<HTMLMdsImgElementEventMap[K]>) => any, options?: boolean | EventListenerOptions): void;
+        removeEventListener<K extends keyof DocumentEventMap>(type: K, listener: (this: Document, ev: DocumentEventMap[K]) => any, options?: boolean | EventListenerOptions): void;
+        removeEventListener<K extends keyof HTMLElementEventMap>(type: K, listener: (this: HTMLElement, ev: HTMLElementEventMap[K]) => any, options?: boolean | EventListenerOptions): void;
+        removeEventListener(type: string, listener: EventListenerOrEventListenerObject, options?: boolean | EventListenerOptions): void;
     }
     var HTMLMdsImgElement: {
         prototype: HTMLMdsImgElement;
         new (): HTMLMdsImgElement;
     };
+    interface HTMLMdsInputElementEventMap {
+        "mdsInputChange": MdsInputEventDetail;
+        "mdsInputKeydown": KeyboardEvent;
+        "mdsInputBlur": void;
+        "mdsInputFocus": void;
+    }
     interface HTMLMdsInputElement extends Components.MdsInput, HTMLStencilElement {
+        addEventListener<K extends keyof HTMLMdsInputElementEventMap>(type: K, listener: (this: HTMLMdsInputElement, ev: MdsInputCustomEvent<HTMLMdsInputElementEventMap[K]>) => any, options?: boolean | AddEventListenerOptions): void;
+        addEventListener<K extends keyof DocumentEventMap>(type: K, listener: (this: Document, ev: DocumentEventMap[K]) => any, options?: boolean | AddEventListenerOptions): void;
+        addEventListener<K extends keyof HTMLElementEventMap>(type: K, listener: (this: HTMLElement, ev: HTMLElementEventMap[K]) => any, options?: boolean | AddEventListenerOptions): void;
+        addEventListener(type: string, listener: EventListenerOrEventListenerObject, options?: boolean | AddEventListenerOptions): void;
+        removeEventListener<K extends keyof HTMLMdsInputElementEventMap>(type: K, listener: (this: HTMLMdsInputElement, ev: MdsInputCustomEvent<HTMLMdsInputElementEventMap[K]>) => any, options?: boolean | EventListenerOptions): void;
+        removeEventListener<K extends keyof DocumentEventMap>(type: K, listener: (this: Document, ev: DocumentEventMap[K]) => any, options?: boolean | EventListenerOptions): void;
+        removeEventListener<K extends keyof HTMLElementEventMap>(type: K, listener: (this: HTMLElement, ev: HTMLElementEventMap[K]) => any, options?: boolean | EventListenerOptions): void;
+        removeEventListener(type: string, listener: EventListenerOrEventListenerObject, options?: boolean | EventListenerOptions): void;
     }
     var HTMLMdsInputElement: {
         prototype: HTMLMdsInputElement;
         new (): HTMLMdsInputElement;
     };
+    interface HTMLMdsInputFieldElementEventMap {
+        "mdsInputFieldChange": MdsInputEventDetail1;
+        "mdsInputFieldKeydown": KeyboardEvent;
+        "mdsInputFieldBlur": void;
+        "mdsInputFieldFocus": void;
+    }
     interface HTMLMdsInputFieldElement extends Components.MdsInputField, HTMLStencilElement {
+        addEventListener<K extends keyof HTMLMdsInputFieldElementEventMap>(type: K, listener: (this: HTMLMdsInputFieldElement, ev: MdsInputFieldCustomEvent<HTMLMdsInputFieldElementEventMap[K]>) => any, options?: boolean | AddEventListenerOptions): void;
+        addEventListener<K extends keyof DocumentEventMap>(type: K, listener: (this: Document, ev: DocumentEventMap[K]) => any, options?: boolean | AddEventListenerOptions): void;
+        addEventListener<K extends keyof HTMLElementEventMap>(type: K, listener: (this: HTMLElement, ev: HTMLElementEventMap[K]) => any, options?: boolean | AddEventListenerOptions): void;
+        addEventListener(type: string, listener: EventListenerOrEventListenerObject, options?: boolean | AddEventListenerOptions): void;
+        removeEventListener<K extends keyof HTMLMdsInputFieldElementEventMap>(type: K, listener: (this: HTMLMdsInputFieldElement, ev: MdsInputFieldCustomEvent<HTMLMdsInputFieldElementEventMap[K]>) => any, options?: boolean | EventListenerOptions): void;
+        removeEventListener<K extends keyof DocumentEventMap>(type: K, listener: (this: Document, ev: DocumentEventMap[K]) => any, options?: boolean | EventListenerOptions): void;
+        removeEventListener<K extends keyof HTMLElementEventMap>(type: K, listener: (this: HTMLElement, ev: HTMLElementEventMap[K]) => any, options?: boolean | EventListenerOptions): void;
+        removeEventListener(type: string, listener: EventListenerOrEventListenerObject, options?: boolean | EventListenerOptions): void;
     }
     var HTMLMdsInputFieldElement: {
         prototype: HTMLMdsInputFieldElement;
         new (): HTMLMdsInputFieldElement;
     };
+    interface HTMLMdsInputRangeElementEventMap {
+        "mdsInputRangeChange": number;
+    }
     interface HTMLMdsInputRangeElement extends Components.MdsInputRange, HTMLStencilElement {
+        addEventListener<K extends keyof HTMLMdsInputRangeElementEventMap>(type: K, listener: (this: HTMLMdsInputRangeElement, ev: MdsInputRangeCustomEvent<HTMLMdsInputRangeElementEventMap[K]>) => any, options?: boolean | AddEventListenerOptions): void;
+        addEventListener<K extends keyof DocumentEventMap>(type: K, listener: (this: Document, ev: DocumentEventMap[K]) => any, options?: boolean | AddEventListenerOptions): void;
+        addEventListener<K extends keyof HTMLElementEventMap>(type: K, listener: (this: HTMLElement, ev: HTMLElementEventMap[K]) => any, options?: boolean | AddEventListenerOptions): void;
+        addEventListener(type: string, listener: EventListenerOrEventListenerObject, options?: boolean | AddEventListenerOptions): void;
+        removeEventListener<K extends keyof HTMLMdsInputRangeElementEventMap>(type: K, listener: (this: HTMLMdsInputRangeElement, ev: MdsInputRangeCustomEvent<HTMLMdsInputRangeElementEventMap[K]>) => any, options?: boolean | EventListenerOptions): void;
+        removeEventListener<K extends keyof DocumentEventMap>(type: K, listener: (this: Document, ev: DocumentEventMap[K]) => any, options?: boolean | EventListenerOptions): void;
+        removeEventListener<K extends keyof HTMLElementEventMap>(type: K, listener: (this: HTMLElement, ev: HTMLElementEventMap[K]) => any, options?: boolean | EventListenerOptions): void;
+        removeEventListener(type: string, listener: EventListenerOrEventListenerObject, options?: boolean | EventListenerOptions): void;
     }
     var HTMLMdsInputRangeElement: {
         prototype: HTMLMdsInputRangeElement;
         new (): HTMLMdsInputRangeElement;
     };
+    interface HTMLMdsInputSelectElementEventMap {
+        "mdsInputSelectChange": InputValue;
+        "mdsInputSelectKeydown": KeyboardEvent;
+        "mdsInputSelectBlur": void;
+        "mdsInputSelectFocus": void;
+    }
     interface HTMLMdsInputSelectElement extends Components.MdsInputSelect, HTMLStencilElement {
+        addEventListener<K extends keyof HTMLMdsInputSelectElementEventMap>(type: K, listener: (this: HTMLMdsInputSelectElement, ev: MdsInputSelectCustomEvent<HTMLMdsInputSelectElementEventMap[K]>) => any, options?: boolean | AddEventListenerOptions): void;
+        addEventListener<K extends keyof DocumentEventMap>(type: K, listener: (this: Document, ev: DocumentEventMap[K]) => any, options?: boolean | AddEventListenerOptions): void;
+        addEventListener<K extends keyof HTMLElementEventMap>(type: K, listener: (this: HTMLElement, ev: HTMLElementEventMap[K]) => any, options?: boolean | AddEventListenerOptions): void;
+        addEventListener(type: string, listener: EventListenerOrEventListenerObject, options?: boolean | AddEventListenerOptions): void;
+        removeEventListener<K extends keyof HTMLMdsInputSelectElementEventMap>(type: K, listener: (this: HTMLMdsInputSelectElement, ev: MdsInputSelectCustomEvent<HTMLMdsInputSelectElementEventMap[K]>) => any, options?: boolean | EventListenerOptions): void;
+        removeEventListener<K extends keyof DocumentEventMap>(type: K, listener: (this: Document, ev: DocumentEventMap[K]) => any, options?: boolean | EventListenerOptions): void;
+        removeEventListener<K extends keyof HTMLElementEventMap>(type: K, listener: (this: HTMLElement, ev: HTMLElementEventMap[K]) => any, options?: boolean | EventListenerOptions): void;
+        removeEventListener(type: string, listener: EventListenerOrEventListenerObject, options?: boolean | EventListenerOptions): void;
     }
     var HTMLMdsInputSelectElement: {
         prototype: HTMLMdsInputSelectElement;
         new (): HTMLMdsInputSelectElement;
     };
+    interface HTMLMdsInputSwitchElementEventMap {
+        "mdsInputSwitchChange": { name: string, value: InputValueType };
+    }
     interface HTMLMdsInputSwitchElement extends Components.MdsInputSwitch, HTMLStencilElement {
+        addEventListener<K extends keyof HTMLMdsInputSwitchElementEventMap>(type: K, listener: (this: HTMLMdsInputSwitchElement, ev: MdsInputSwitchCustomEvent<HTMLMdsInputSwitchElementEventMap[K]>) => any, options?: boolean | AddEventListenerOptions): void;
+        addEventListener<K extends keyof DocumentEventMap>(type: K, listener: (this: Document, ev: DocumentEventMap[K]) => any, options?: boolean | AddEventListenerOptions): void;
+        addEventListener<K extends keyof HTMLElementEventMap>(type: K, listener: (this: HTMLElement, ev: HTMLElementEventMap[K]) => any, options?: boolean | AddEventListenerOptions): void;
+        addEventListener(type: string, listener: EventListenerOrEventListenerObject, options?: boolean | AddEventListenerOptions): void;
+        removeEventListener<K extends keyof HTMLMdsInputSwitchElementEventMap>(type: K, listener: (this: HTMLMdsInputSwitchElement, ev: MdsInputSwitchCustomEvent<HTMLMdsInputSwitchElementEventMap[K]>) => any, options?: boolean | EventListenerOptions): void;
+        removeEventListener<K extends keyof DocumentEventMap>(type: K, listener: (this: Document, ev: DocumentEventMap[K]) => any, options?: boolean | EventListenerOptions): void;
+        removeEventListener<K extends keyof HTMLElementEventMap>(type: K, listener: (this: HTMLElement, ev: HTMLElementEventMap[K]) => any, options?: boolean | EventListenerOptions): void;
+        removeEventListener(type: string, listener: EventListenerOrEventListenerObject, options?: boolean | EventListenerOptions): void;
     }
     var HTMLMdsInputSwitchElement: {
         prototype: HTMLMdsInputSwitchElement;
@@ -1768,7 +2016,18 @@ declare global {
         prototype: HTMLMdsKpiItemElement;
         new (): HTMLMdsKpiItemElement;
     };
+    interface HTMLMdsLabelElementEventMap {
+        "mdsLabelDelete": void;
+    }
     interface HTMLMdsLabelElement extends Components.MdsLabel, HTMLStencilElement {
+        addEventListener<K extends keyof HTMLMdsLabelElementEventMap>(type: K, listener: (this: HTMLMdsLabelElement, ev: MdsLabelCustomEvent<HTMLMdsLabelElementEventMap[K]>) => any, options?: boolean | AddEventListenerOptions): void;
+        addEventListener<K extends keyof DocumentEventMap>(type: K, listener: (this: Document, ev: DocumentEventMap[K]) => any, options?: boolean | AddEventListenerOptions): void;
+        addEventListener<K extends keyof HTMLElementEventMap>(type: K, listener: (this: HTMLElement, ev: HTMLElementEventMap[K]) => any, options?: boolean | AddEventListenerOptions): void;
+        addEventListener(type: string, listener: EventListenerOrEventListenerObject, options?: boolean | AddEventListenerOptions): void;
+        removeEventListener<K extends keyof HTMLMdsLabelElementEventMap>(type: K, listener: (this: HTMLMdsLabelElement, ev: MdsLabelCustomEvent<HTMLMdsLabelElementEventMap[K]>) => any, options?: boolean | EventListenerOptions): void;
+        removeEventListener<K extends keyof DocumentEventMap>(type: K, listener: (this: Document, ev: DocumentEventMap[K]) => any, options?: boolean | EventListenerOptions): void;
+        removeEventListener<K extends keyof HTMLElementEventMap>(type: K, listener: (this: HTMLElement, ev: HTMLElementEventMap[K]) => any, options?: boolean | EventListenerOptions): void;
+        removeEventListener(type: string, listener: EventListenerOrEventListenerObject, options?: boolean | EventListenerOptions): void;
     }
     var HTMLMdsLabelElement: {
         prototype: HTMLMdsLabelElement;
@@ -1786,13 +2045,35 @@ declare global {
         prototype: HTMLMdsListItemElement;
         new (): HTMLMdsListItemElement;
     };
+    interface HTMLMdsModalElementEventMap {
+        "mdsModalClose": void;
+    }
     interface HTMLMdsModalElement extends Components.MdsModal, HTMLStencilElement {
+        addEventListener<K extends keyof HTMLMdsModalElementEventMap>(type: K, listener: (this: HTMLMdsModalElement, ev: MdsModalCustomEvent<HTMLMdsModalElementEventMap[K]>) => any, options?: boolean | AddEventListenerOptions): void;
+        addEventListener<K extends keyof DocumentEventMap>(type: K, listener: (this: Document, ev: DocumentEventMap[K]) => any, options?: boolean | AddEventListenerOptions): void;
+        addEventListener<K extends keyof HTMLElementEventMap>(type: K, listener: (this: HTMLElement, ev: HTMLElementEventMap[K]) => any, options?: boolean | AddEventListenerOptions): void;
+        addEventListener(type: string, listener: EventListenerOrEventListenerObject, options?: boolean | AddEventListenerOptions): void;
+        removeEventListener<K extends keyof HTMLMdsModalElementEventMap>(type: K, listener: (this: HTMLMdsModalElement, ev: MdsModalCustomEvent<HTMLMdsModalElementEventMap[K]>) => any, options?: boolean | EventListenerOptions): void;
+        removeEventListener<K extends keyof DocumentEventMap>(type: K, listener: (this: Document, ev: DocumentEventMap[K]) => any, options?: boolean | EventListenerOptions): void;
+        removeEventListener<K extends keyof HTMLElementEventMap>(type: K, listener: (this: HTMLElement, ev: HTMLElementEventMap[K]) => any, options?: boolean | EventListenerOptions): void;
+        removeEventListener(type: string, listener: EventListenerOrEventListenerObject, options?: boolean | EventListenerOptions): void;
     }
     var HTMLMdsModalElement: {
         prototype: HTMLMdsModalElement;
         new (): HTMLMdsModalElement;
     };
+    interface HTMLMdsNoteElementEventMap {
+        "mdsNoteDelete": void;
+    }
     interface HTMLMdsNoteElement extends Components.MdsNote, HTMLStencilElement {
+        addEventListener<K extends keyof HTMLMdsNoteElementEventMap>(type: K, listener: (this: HTMLMdsNoteElement, ev: MdsNoteCustomEvent<HTMLMdsNoteElementEventMap[K]>) => any, options?: boolean | AddEventListenerOptions): void;
+        addEventListener<K extends keyof DocumentEventMap>(type: K, listener: (this: Document, ev: DocumentEventMap[K]) => any, options?: boolean | AddEventListenerOptions): void;
+        addEventListener<K extends keyof HTMLElementEventMap>(type: K, listener: (this: HTMLElement, ev: HTMLElementEventMap[K]) => any, options?: boolean | AddEventListenerOptions): void;
+        addEventListener(type: string, listener: EventListenerOrEventListenerObject, options?: boolean | AddEventListenerOptions): void;
+        removeEventListener<K extends keyof HTMLMdsNoteElementEventMap>(type: K, listener: (this: HTMLMdsNoteElement, ev: MdsNoteCustomEvent<HTMLMdsNoteElementEventMap[K]>) => any, options?: boolean | EventListenerOptions): void;
+        removeEventListener<K extends keyof DocumentEventMap>(type: K, listener: (this: Document, ev: DocumentEventMap[K]) => any, options?: boolean | EventListenerOptions): void;
+        removeEventListener<K extends keyof HTMLElementEventMap>(type: K, listener: (this: HTMLElement, ev: HTMLElementEventMap[K]) => any, options?: boolean | EventListenerOptions): void;
+        removeEventListener(type: string, listener: EventListenerOrEventListenerObject, options?: boolean | EventListenerOptions): void;
     }
     var HTMLMdsNoteElement: {
         prototype: HTMLMdsNoteElement;
@@ -1804,7 +2085,18 @@ declare global {
         prototype: HTMLMdsNotificationElement;
         new (): HTMLMdsNotificationElement;
     };
+    interface HTMLMdsPaginatorElementEventMap {
+        "mdsPaginatorChange": MdsPaginatorEventDetail;
+    }
     interface HTMLMdsPaginatorElement extends Components.MdsPaginator, HTMLStencilElement {
+        addEventListener<K extends keyof HTMLMdsPaginatorElementEventMap>(type: K, listener: (this: HTMLMdsPaginatorElement, ev: MdsPaginatorCustomEvent<HTMLMdsPaginatorElementEventMap[K]>) => any, options?: boolean | AddEventListenerOptions): void;
+        addEventListener<K extends keyof DocumentEventMap>(type: K, listener: (this: Document, ev: DocumentEventMap[K]) => any, options?: boolean | AddEventListenerOptions): void;
+        addEventListener<K extends keyof HTMLElementEventMap>(type: K, listener: (this: HTMLElement, ev: HTMLElementEventMap[K]) => any, options?: boolean | AddEventListenerOptions): void;
+        addEventListener(type: string, listener: EventListenerOrEventListenerObject, options?: boolean | AddEventListenerOptions): void;
+        removeEventListener<K extends keyof HTMLMdsPaginatorElementEventMap>(type: K, listener: (this: HTMLMdsPaginatorElement, ev: MdsPaginatorCustomEvent<HTMLMdsPaginatorElementEventMap[K]>) => any, options?: boolean | EventListenerOptions): void;
+        removeEventListener<K extends keyof DocumentEventMap>(type: K, listener: (this: Document, ev: DocumentEventMap[K]) => any, options?: boolean | EventListenerOptions): void;
+        removeEventListener<K extends keyof HTMLElementEventMap>(type: K, listener: (this: HTMLElement, ev: HTMLElementEventMap[K]) => any, options?: boolean | EventListenerOptions): void;
+        removeEventListener(type: string, listener: EventListenerOrEventListenerObject, options?: boolean | EventListenerOptions): void;
     }
     var HTMLMdsPaginatorElement: {
         prototype: HTMLMdsPaginatorElement;
@@ -1882,43 +2174,120 @@ declare global {
         prototype: HTMLMdsSpinnerElement;
         new (): HTMLMdsSpinnerElement;
     };
+    interface HTMLMdsStepperBarElementEventMap {
+        "mdsStepperBarChange": MdsStepperBarEventDetail;
+    }
     interface HTMLMdsStepperBarElement extends Components.MdsStepperBar, HTMLStencilElement {
+        addEventListener<K extends keyof HTMLMdsStepperBarElementEventMap>(type: K, listener: (this: HTMLMdsStepperBarElement, ev: MdsStepperBarCustomEvent<HTMLMdsStepperBarElementEventMap[K]>) => any, options?: boolean | AddEventListenerOptions): void;
+        addEventListener<K extends keyof DocumentEventMap>(type: K, listener: (this: Document, ev: DocumentEventMap[K]) => any, options?: boolean | AddEventListenerOptions): void;
+        addEventListener<K extends keyof HTMLElementEventMap>(type: K, listener: (this: HTMLElement, ev: HTMLElementEventMap[K]) => any, options?: boolean | AddEventListenerOptions): void;
+        addEventListener(type: string, listener: EventListenerOrEventListenerObject, options?: boolean | AddEventListenerOptions): void;
+        removeEventListener<K extends keyof HTMLMdsStepperBarElementEventMap>(type: K, listener: (this: HTMLMdsStepperBarElement, ev: MdsStepperBarCustomEvent<HTMLMdsStepperBarElementEventMap[K]>) => any, options?: boolean | EventListenerOptions): void;
+        removeEventListener<K extends keyof DocumentEventMap>(type: K, listener: (this: Document, ev: DocumentEventMap[K]) => any, options?: boolean | EventListenerOptions): void;
+        removeEventListener<K extends keyof HTMLElementEventMap>(type: K, listener: (this: HTMLElement, ev: HTMLElementEventMap[K]) => any, options?: boolean | EventListenerOptions): void;
+        removeEventListener(type: string, listener: EventListenerOrEventListenerObject, options?: boolean | EventListenerOptions): void;
     }
     var HTMLMdsStepperBarElement: {
         prototype: HTMLMdsStepperBarElement;
         new (): HTMLMdsStepperBarElement;
     };
+    interface HTMLMdsStepperBarItemElementEventMap {
+        "mdsStepperBarItemDone": MdsStepperBarItemEventDetail;
+    }
     interface HTMLMdsStepperBarItemElement extends Components.MdsStepperBarItem, HTMLStencilElement {
+        addEventListener<K extends keyof HTMLMdsStepperBarItemElementEventMap>(type: K, listener: (this: HTMLMdsStepperBarItemElement, ev: MdsStepperBarItemCustomEvent<HTMLMdsStepperBarItemElementEventMap[K]>) => any, options?: boolean | AddEventListenerOptions): void;
+        addEventListener<K extends keyof DocumentEventMap>(type: K, listener: (this: Document, ev: DocumentEventMap[K]) => any, options?: boolean | AddEventListenerOptions): void;
+        addEventListener<K extends keyof HTMLElementEventMap>(type: K, listener: (this: HTMLElement, ev: HTMLElementEventMap[K]) => any, options?: boolean | AddEventListenerOptions): void;
+        addEventListener(type: string, listener: EventListenerOrEventListenerObject, options?: boolean | AddEventListenerOptions): void;
+        removeEventListener<K extends keyof HTMLMdsStepperBarItemElementEventMap>(type: K, listener: (this: HTMLMdsStepperBarItemElement, ev: MdsStepperBarItemCustomEvent<HTMLMdsStepperBarItemElementEventMap[K]>) => any, options?: boolean | EventListenerOptions): void;
+        removeEventListener<K extends keyof DocumentEventMap>(type: K, listener: (this: Document, ev: DocumentEventMap[K]) => any, options?: boolean | EventListenerOptions): void;
+        removeEventListener<K extends keyof HTMLElementEventMap>(type: K, listener: (this: HTMLElement, ev: HTMLElementEventMap[K]) => any, options?: boolean | EventListenerOptions): void;
+        removeEventListener(type: string, listener: EventListenerOrEventListenerObject, options?: boolean | EventListenerOptions): void;
     }
     var HTMLMdsStepperBarItemElement: {
         prototype: HTMLMdsStepperBarItemElement;
         new (): HTMLMdsStepperBarItemElement;
     };
+    interface HTMLMdsTabElementEventMap {
+        "mdsTabChange": MdsTabEventDetail;
+    }
     interface HTMLMdsTabElement extends Components.MdsTab, HTMLStencilElement {
+        addEventListener<K extends keyof HTMLMdsTabElementEventMap>(type: K, listener: (this: HTMLMdsTabElement, ev: MdsTabCustomEvent<HTMLMdsTabElementEventMap[K]>) => any, options?: boolean | AddEventListenerOptions): void;
+        addEventListener<K extends keyof DocumentEventMap>(type: K, listener: (this: Document, ev: DocumentEventMap[K]) => any, options?: boolean | AddEventListenerOptions): void;
+        addEventListener<K extends keyof HTMLElementEventMap>(type: K, listener: (this: HTMLElement, ev: HTMLElementEventMap[K]) => any, options?: boolean | AddEventListenerOptions): void;
+        addEventListener(type: string, listener: EventListenerOrEventListenerObject, options?: boolean | AddEventListenerOptions): void;
+        removeEventListener<K extends keyof HTMLMdsTabElementEventMap>(type: K, listener: (this: HTMLMdsTabElement, ev: MdsTabCustomEvent<HTMLMdsTabElementEventMap[K]>) => any, options?: boolean | EventListenerOptions): void;
+        removeEventListener<K extends keyof DocumentEventMap>(type: K, listener: (this: Document, ev: DocumentEventMap[K]) => any, options?: boolean | EventListenerOptions): void;
+        removeEventListener<K extends keyof HTMLElementEventMap>(type: K, listener: (this: HTMLElement, ev: HTMLElementEventMap[K]) => any, options?: boolean | EventListenerOptions): void;
+        removeEventListener(type: string, listener: EventListenerOrEventListenerObject, options?: boolean | EventListenerOptions): void;
     }
     var HTMLMdsTabElement: {
         prototype: HTMLMdsTabElement;
         new (): HTMLMdsTabElement;
     };
+    interface HTMLMdsTabBarElementEventMap {
+        "mdsTabBarChange": MdsTabBarEventDetail;
+    }
     interface HTMLMdsTabBarElement extends Components.MdsTabBar, HTMLStencilElement {
+        addEventListener<K extends keyof HTMLMdsTabBarElementEventMap>(type: K, listener: (this: HTMLMdsTabBarElement, ev: MdsTabBarCustomEvent<HTMLMdsTabBarElementEventMap[K]>) => any, options?: boolean | AddEventListenerOptions): void;
+        addEventListener<K extends keyof DocumentEventMap>(type: K, listener: (this: Document, ev: DocumentEventMap[K]) => any, options?: boolean | AddEventListenerOptions): void;
+        addEventListener<K extends keyof HTMLElementEventMap>(type: K, listener: (this: HTMLElement, ev: HTMLElementEventMap[K]) => any, options?: boolean | AddEventListenerOptions): void;
+        addEventListener(type: string, listener: EventListenerOrEventListenerObject, options?: boolean | AddEventListenerOptions): void;
+        removeEventListener<K extends keyof HTMLMdsTabBarElementEventMap>(type: K, listener: (this: HTMLMdsTabBarElement, ev: MdsTabBarCustomEvent<HTMLMdsTabBarElementEventMap[K]>) => any, options?: boolean | EventListenerOptions): void;
+        removeEventListener<K extends keyof DocumentEventMap>(type: K, listener: (this: Document, ev: DocumentEventMap[K]) => any, options?: boolean | EventListenerOptions): void;
+        removeEventListener<K extends keyof HTMLElementEventMap>(type: K, listener: (this: HTMLElement, ev: HTMLElementEventMap[K]) => any, options?: boolean | EventListenerOptions): void;
+        removeEventListener(type: string, listener: EventListenerOrEventListenerObject, options?: boolean | EventListenerOptions): void;
     }
     var HTMLMdsTabBarElement: {
         prototype: HTMLMdsTabBarElement;
         new (): HTMLMdsTabBarElement;
     };
+    interface HTMLMdsTabBarItemElementEventMap {
+        "mdsTabBarItemSelect": string;
+    }
     interface HTMLMdsTabBarItemElement extends Components.MdsTabBarItem, HTMLStencilElement {
+        addEventListener<K extends keyof HTMLMdsTabBarItemElementEventMap>(type: K, listener: (this: HTMLMdsTabBarItemElement, ev: MdsTabBarItemCustomEvent<HTMLMdsTabBarItemElementEventMap[K]>) => any, options?: boolean | AddEventListenerOptions): void;
+        addEventListener<K extends keyof DocumentEventMap>(type: K, listener: (this: Document, ev: DocumentEventMap[K]) => any, options?: boolean | AddEventListenerOptions): void;
+        addEventListener<K extends keyof HTMLElementEventMap>(type: K, listener: (this: HTMLElement, ev: HTMLElementEventMap[K]) => any, options?: boolean | AddEventListenerOptions): void;
+        addEventListener(type: string, listener: EventListenerOrEventListenerObject, options?: boolean | AddEventListenerOptions): void;
+        removeEventListener<K extends keyof HTMLMdsTabBarItemElementEventMap>(type: K, listener: (this: HTMLMdsTabBarItemElement, ev: MdsTabBarItemCustomEvent<HTMLMdsTabBarItemElementEventMap[K]>) => any, options?: boolean | EventListenerOptions): void;
+        removeEventListener<K extends keyof DocumentEventMap>(type: K, listener: (this: Document, ev: DocumentEventMap[K]) => any, options?: boolean | EventListenerOptions): void;
+        removeEventListener<K extends keyof HTMLElementEventMap>(type: K, listener: (this: HTMLElement, ev: HTMLElementEventMap[K]) => any, options?: boolean | EventListenerOptions): void;
+        removeEventListener(type: string, listener: EventListenerOrEventListenerObject, options?: boolean | EventListenerOptions): void;
     }
     var HTMLMdsTabBarItemElement: {
         prototype: HTMLMdsTabBarItemElement;
         new (): HTMLMdsTabBarItemElement;
     };
+    interface HTMLMdsTabItemElementEventMap {
+        "mdsTabItemSelect": string;
+    }
     interface HTMLMdsTabItemElement extends Components.MdsTabItem, HTMLStencilElement {
+        addEventListener<K extends keyof HTMLMdsTabItemElementEventMap>(type: K, listener: (this: HTMLMdsTabItemElement, ev: MdsTabItemCustomEvent<HTMLMdsTabItemElementEventMap[K]>) => any, options?: boolean | AddEventListenerOptions): void;
+        addEventListener<K extends keyof DocumentEventMap>(type: K, listener: (this: Document, ev: DocumentEventMap[K]) => any, options?: boolean | AddEventListenerOptions): void;
+        addEventListener<K extends keyof HTMLElementEventMap>(type: K, listener: (this: HTMLElement, ev: HTMLElementEventMap[K]) => any, options?: boolean | AddEventListenerOptions): void;
+        addEventListener(type: string, listener: EventListenerOrEventListenerObject, options?: boolean | AddEventListenerOptions): void;
+        removeEventListener<K extends keyof HTMLMdsTabItemElementEventMap>(type: K, listener: (this: HTMLMdsTabItemElement, ev: MdsTabItemCustomEvent<HTMLMdsTabItemElementEventMap[K]>) => any, options?: boolean | EventListenerOptions): void;
+        removeEventListener<K extends keyof DocumentEventMap>(type: K, listener: (this: Document, ev: DocumentEventMap[K]) => any, options?: boolean | EventListenerOptions): void;
+        removeEventListener<K extends keyof HTMLElementEventMap>(type: K, listener: (this: HTMLElement, ev: HTMLElementEventMap[K]) => any, options?: boolean | EventListenerOptions): void;
+        removeEventListener(type: string, listener: EventListenerOrEventListenerObject, options?: boolean | EventListenerOptions): void;
     }
     var HTMLMdsTabItemElement: {
         prototype: HTMLMdsTabItemElement;
         new (): HTMLMdsTabItemElement;
     };
+    interface HTMLMdsTableElementEventMap {
+        "mdsTableInteractiveChange": boolean;
+    }
     interface HTMLMdsTableElement extends Components.MdsTable, HTMLStencilElement {
+        addEventListener<K extends keyof HTMLMdsTableElementEventMap>(type: K, listener: (this: HTMLMdsTableElement, ev: MdsTableCustomEvent<HTMLMdsTableElementEventMap[K]>) => any, options?: boolean | AddEventListenerOptions): void;
+        addEventListener<K extends keyof DocumentEventMap>(type: K, listener: (this: Document, ev: DocumentEventMap[K]) => any, options?: boolean | AddEventListenerOptions): void;
+        addEventListener<K extends keyof HTMLElementEventMap>(type: K, listener: (this: HTMLElement, ev: HTMLElementEventMap[K]) => any, options?: boolean | AddEventListenerOptions): void;
+        addEventListener(type: string, listener: EventListenerOrEventListenerObject, options?: boolean | AddEventListenerOptions): void;
+        removeEventListener<K extends keyof HTMLMdsTableElementEventMap>(type: K, listener: (this: HTMLMdsTableElement, ev: MdsTableCustomEvent<HTMLMdsTableElementEventMap[K]>) => any, options?: boolean | EventListenerOptions): void;
+        removeEventListener<K extends keyof DocumentEventMap>(type: K, listener: (this: Document, ev: DocumentEventMap[K]) => any, options?: boolean | EventListenerOptions): void;
+        removeEventListener<K extends keyof HTMLElementEventMap>(type: K, listener: (this: HTMLElement, ev: HTMLElementEventMap[K]) => any, options?: boolean | EventListenerOptions): void;
+        removeEventListener(type: string, listener: EventListenerOrEventListenerObject, options?: boolean | EventListenerOptions): void;
     }
     var HTMLMdsTableElement: {
         prototype: HTMLMdsTableElement;
@@ -1960,7 +2329,18 @@ declare global {
         prototype: HTMLMdsTextElement;
         new (): HTMLMdsTextElement;
     };
+    interface HTMLMdsToastElementEventMap {
+        "mdsToastClose": void;
+    }
     interface HTMLMdsToastElement extends Components.MdsToast, HTMLStencilElement {
+        addEventListener<K extends keyof HTMLMdsToastElementEventMap>(type: K, listener: (this: HTMLMdsToastElement, ev: MdsToastCustomEvent<HTMLMdsToastElementEventMap[K]>) => any, options?: boolean | AddEventListenerOptions): void;
+        addEventListener<K extends keyof DocumentEventMap>(type: K, listener: (this: Document, ev: DocumentEventMap[K]) => any, options?: boolean | AddEventListenerOptions): void;
+        addEventListener<K extends keyof HTMLElementEventMap>(type: K, listener: (this: HTMLElement, ev: HTMLElementEventMap[K]) => any, options?: boolean | AddEventListenerOptions): void;
+        addEventListener(type: string, listener: EventListenerOrEventListenerObject, options?: boolean | AddEventListenerOptions): void;
+        removeEventListener<K extends keyof HTMLMdsToastElementEventMap>(type: K, listener: (this: HTMLMdsToastElement, ev: MdsToastCustomEvent<HTMLMdsToastElementEventMap[K]>) => any, options?: boolean | EventListenerOptions): void;
+        removeEventListener<K extends keyof DocumentEventMap>(type: K, listener: (this: Document, ev: DocumentEventMap[K]) => any, options?: boolean | EventListenerOptions): void;
+        removeEventListener<K extends keyof HTMLElementEventMap>(type: K, listener: (this: HTMLElement, ev: HTMLElementEventMap[K]) => any, options?: boolean | EventListenerOptions): void;
+        removeEventListener(type: string, listener: EventListenerOrEventListenerObject, options?: boolean | EventListenerOptions): void;
     }
     var HTMLMdsToastElement: {
         prototype: HTMLMdsToastElement;
@@ -1972,7 +2352,18 @@ declare global {
         prototype: HTMLMdsTooltipElement;
         new (): HTMLMdsTooltipElement;
     };
+    interface HTMLMdsUrlViewElementEventMap {
+        "mdsUrlViewClose": void;
+    }
     interface HTMLMdsUrlViewElement extends Components.MdsUrlView, HTMLStencilElement {
+        addEventListener<K extends keyof HTMLMdsUrlViewElementEventMap>(type: K, listener: (this: HTMLMdsUrlViewElement, ev: MdsUrlViewCustomEvent<HTMLMdsUrlViewElementEventMap[K]>) => any, options?: boolean | AddEventListenerOptions): void;
+        addEventListener<K extends keyof DocumentEventMap>(type: K, listener: (this: Document, ev: DocumentEventMap[K]) => any, options?: boolean | AddEventListenerOptions): void;
+        addEventListener<K extends keyof HTMLElementEventMap>(type: K, listener: (this: HTMLElement, ev: HTMLElementEventMap[K]) => any, options?: boolean | AddEventListenerOptions): void;
+        addEventListener(type: string, listener: EventListenerOrEventListenerObject, options?: boolean | AddEventListenerOptions): void;
+        removeEventListener<K extends keyof HTMLMdsUrlViewElementEventMap>(type: K, listener: (this: HTMLMdsUrlViewElement, ev: MdsUrlViewCustomEvent<HTMLMdsUrlViewElementEventMap[K]>) => any, options?: boolean | EventListenerOptions): void;
+        removeEventListener<K extends keyof DocumentEventMap>(type: K, listener: (this: Document, ev: DocumentEventMap[K]) => any, options?: boolean | EventListenerOptions): void;
+        removeEventListener<K extends keyof HTMLElementEventMap>(type: K, listener: (this: HTMLElement, ev: HTMLElementEventMap[K]) => any, options?: boolean | EventListenerOptions): void;
+        removeEventListener(type: string, listener: EventListenerOrEventListenerObject, options?: boolean | EventListenerOptions): void;
     }
     var HTMLMdsUrlViewElement: {
         prototype: HTMLMdsUrlViewElement;
