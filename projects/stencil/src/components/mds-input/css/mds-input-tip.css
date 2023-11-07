@@ -4,10 +4,12 @@
     duration-300
     ease-out-expo
     gap-1
+    left-1
     right-1
     transition-cosmetic;
 
   display: flex;
+  justify-content: flex-end;
   pointer-events: none;
   position: absolute;
 }
@@ -121,14 +123,9 @@
 }
 
 :host( [type="number"][controls-layout="horizontal"] ) .tip-container {
-  @apply right-14;
-}
-
-@container (max-width: 210px) {
-  :host(:focus-within) .tip--expand {
-    color: transparent;
-    grid-template-columns: 0fr;
-  }
+  @apply
+    left-14
+    right-14;
 }
 
 :host( [value]:not([value=""]) ) .tip--required {

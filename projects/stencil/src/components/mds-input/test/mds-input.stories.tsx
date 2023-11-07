@@ -22,6 +22,14 @@ export default {
       type: { name: 'boolean' },
       description: 'Specifies that the element should automatically get focus when the page loads',
     },
+    'control-decrease-label': {
+      type: { name: 'string' },
+      description: 'Specifies the label for control button decrease for component when type is number',
+    },
+    'control-increase-label': {
+      type: { name: 'string' },
+      description: 'Specifies the label for control button increase for component when type is number',
+    },
     'controls-icon': {
       description: 'Specifies the icon type of the counter button when the input type is set to `number`',
       options: inputControlsIconDictionary,
@@ -160,6 +168,16 @@ ControlsIcon.args = {
   'controls-icon': 'arithmetic',
   type: 'number',
   placeholder: 'Controls icon',
+}
+
+export const ControlsLabels = Template.bind({})
+ControlsLabels.args = {
+  'controls-icon': 'arrow',
+  'controls-layout': 'horizontal',
+  'control-increase-label': 'Alza',
+  'control-decrease-label': 'Abbassa',
+  type: 'number',
+  placeholder: 'Controls labels',
 }
 
 export const Disabled = Template.bind({})

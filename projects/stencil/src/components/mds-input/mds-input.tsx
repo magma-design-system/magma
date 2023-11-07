@@ -14,6 +14,8 @@ import { TypographyInputType } from '@type/typography'
 export interface MdsInputInterface {
   autocomplete?: AutocompleteType
   autofocus?: boolean
+  controlDecreaseLabel?: string
+  controlIncreaseLabel?: string
   controlsIcon?: InputControlsIconType
   controlsLayout?: InputControlsLayoutType
   datalist?: string[]
@@ -75,6 +77,16 @@ export class MdsInput {
    * Specifies the icon type of the counter button when the input type is set to `number`
    */
   @Prop({ reflect: true }) readonly controlsIcon?: InputControlsIconType = 'arrow'
+
+  /**
+   * Specifies the label for control button increase for component when type is number
+   */
+  @Prop({ reflect: true }) readonly controlIncreaseLabel?: string = 'Aumenta'
+
+  /**
+   * Specifies the label for control button decrease for component when type is number
+   */
+  @Prop({ reflect: true }) readonly controlDecreaseLabel?: string = 'Riduci'
 
   /**
    * A list of search terms to be searched from the input field,
@@ -296,7 +308,7 @@ export class MdsInput {
       <Host>
         { this.type === 'number'
           && this.controlsLayout === 'horizontal'
-          && <mds-button class="counter-button counter-button--horizontal counter-button--decrease focus-bounce" onClick={this.stepDown} role="button" tabindex="0" title="Riduci" part="counter-button-decrease">
+          && <mds-button class="counter-button counter-button--horizontal counter-button--decrease focus-bounce" onClick={this.stepDown} role="button" tabindex="0" title={this.controlDecreaseLabel} part="counter-button-decrease">
             <i class="svg counter-button-icon" innerHTML={this.controlsIcon === 'arrow' ? miBaselineArrowDown : miBaselineRemove}/>
           </mds-button>
         }
@@ -352,17 +364,17 @@ export class MdsInput {
         { this.type === 'number'
           && this.controlsLayout === 'vertical'
           && <div class="counter counter--vertical">
-            <mds-button class="counter-button focus-bounce" onClick={this.stepUp} role="button" tabindex="0" title="Aumenta" part="counter-button-increase">
+            <mds-button class="counter-button focus-bounce" onClick={this.stepUp} role="button" tabindex="0" title={this.controlIncreaseLabel} part="counter-button-increase">
               <i class="svg counter-button-icon" innerHTML={this.controlsIcon === 'arrow' ? miBaselineArrowUp : miBaselineAdd}/>
             </mds-button>
-            <mds-button class="counter-button focus-bounce" onClick={this.stepDown} role="button" tabindex="0" title="Riduci" part="counter-button-decrease">
+            <mds-button class="counter-button focus-bounce" onClick={this.stepDown} role="button" tabindex="0" title={this.controlDecreaseLabel} part="counter-button-decrease">
               <i class="svg counter-button-icon" innerHTML={this.controlsIcon === 'arrow' ? miBaselineArrowDown : miBaselineRemove}/>
             </mds-button>
           </div>
         }
         { this.type === 'number'
           && this.controlsLayout === 'horizontal'
-          && <mds-button class="counter-button counter-button--horizontal counter-button--increase focus-bounce" onClick={this.stepUp} role="button" tabindex="0" title="Aumenta" part="counter-button-increase">
+          && <mds-button class="counter-button counter-button--horizontal counter-button--increase focus-bounce" onClick={this.stepUp} role="button" tabindex="0" title={this.controlIncreaseLabel} part="counter-button-increase">
             <i class="svg counter-button-icon" innerHTML={this.controlsIcon === 'arrow' ? miBaselineArrowUp : miBaselineAdd}/>
           </mds-button>
         }
