@@ -76,7 +76,7 @@ const createTemplateFile = async (componentName: string, templateFileName: strin
 
 const scaffoldStencil = async (componentName: string): Promise<void> => {
   const fileNameTemplate = 'stencil.config.ts.hbs'
-  const fileName = 'stencil.config.ts.hbs'
+  const fileName = 'stencil.config.ts'
   const stencilTemplate = await readFile(join(TEMPLATES_DIR, fileNameTemplate)).catch(error => { throw Error(chalk.red(error)) })
   const template = Handlebars.compile(stencilTemplate.toString())
   const data = {
