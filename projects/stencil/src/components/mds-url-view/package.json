@@ -1,6 +1,6 @@
 {
   "name": "@maggioli-design-system/mds-url-view",
-  "version": "4.3.0",
+  "version": "4.4.0",
   "description": "mds-url-view is a web-component from Magma Design System, built with StencilJS, TypeScript, Storybook. It's based on the web-component standard and it's designed to be agnostic from the JavaScirpt framework you are using.",
   "main": "dist/index.cjs.js",
   "module": "dist/index.js",
@@ -25,8 +25,8 @@
   },
   "dependencies": {
     "@maggioli-design-system/mds-text": "3.4.3",
-    "@maggioli-design-system/styles": "^13.0.0",
-    "@stencil/core": "^4.6.0"
+    "@maggioli-design-system/styles": "13.0.0",
+    "@stencil/core": "4.7.1"
   },
   "license": "MIT",
   "author": {
