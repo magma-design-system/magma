@@ -5,7 +5,7 @@
   "main": "./dist/mgg-icons.css",
   "files": [
     "/index.ts",
-    "/dist/*",
+    "/dist/",
     "/resources/*.json"
   ],
   "scripts": {
