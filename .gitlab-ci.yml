@@ -32,7 +32,7 @@ stages:
   before_script:
     - apt update && apt install jq -y
     - npm install -g --force nx yarn
-    - yarn install --frozen-lockfile --prefer-offline --force
+    - yarn install --frozen-lockfile --prefer-offline
   cache:
     key:
       files:
