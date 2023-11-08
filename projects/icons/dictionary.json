@@ -141,6 +141,7 @@
   "crud-create": "material/add",
   "crud-delete": "material/delete",
   "crud-edit": "material/create",
+  "crud-remove": "material/remove",
   "crud-rename": "material/create",
   "crud-reset": "material/clear",
   "crud-save": "material/check",
