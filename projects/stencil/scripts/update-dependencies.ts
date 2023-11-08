@@ -5,7 +5,7 @@ import {
   readFile,
   readFileSync,
   readdir,
-  writeFile,
+  writeFileSync,
 } from 'fs-extra'
 import { resolve } from 'path'
 import { ask } from 'stdio'
@@ -67,7 +67,8 @@ function updateComponentDependencies (nameComponent: string, stencilDependencies
     .then(({ json, updated }) => {
       // rewrite file only if dependencies have been updated
       if (updated){
-        writeFile(componentPackage, `${JSON.stringify(json, null, 2)}\n`)
+        // writeFileSync avoid to read a file before write is completed
+        writeFileSync(componentPackage, `${JSON.stringify(json, null, 2)}\n`)
         console.log(`${nameComponent}: updated dependencies`)
       } else {
         console.log(`${nameComponent}: already with updated dependencies, nothing to do`)
