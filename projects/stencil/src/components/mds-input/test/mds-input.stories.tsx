@@ -1,10 +1,12 @@
 import { citiesDictionary } from '@fixture/cities'
 import { themeStatusVariantDictionary } from '@dictionary/variant'
 import { autoCompleteDictionary } from '@dictionary/autocomplete'
-import { inputTextTypeDictionary } from '@dictionary/input-text-type'
+import { inputTextTypeDictionary, inputControlsLayoutDictionary, inputControlsIconDictionary } from '@dictionary/input'
+import { typographyInputDictionary } from '@dictionary/typography'
 import { iconsDictionary } from '@dictionary/icon'
 import { h } from '@stencil/core'
-import { InputValue } from '../meta/interfaces'
+
+import { MdsInputInterface } from '../mds-input'
 
 // https://developers.google.com/web/updates/2015/06/checkout-faster-with-autofill
 
@@ -20,6 +22,24 @@ export default {
       type: { name: 'boolean' },
       description: 'Specifies that the element should automatically get focus when the page loads',
     },
+    'control-decrease-label': {
+      type: { name: 'string' },
+      description: 'Specifies the label for control button decrease for component when type is number',
+    },
+    'control-increase-label': {
+      type: { name: 'string' },
+      description: 'Specifies the label for control button increase for component when type is number',
+    },
+    'controls-icon': {
+      description: 'Specifies the icon type of the counter button when the input type is set to `number`',
+      options: inputControlsIconDictionary,
+      control: { type: 'select' },
+    },
+    'controls-layout': {
+      description: 'Specifies the layout of the counter button when the input type is set to `number`',
+      options: inputControlsLayoutDictionary,
+      control: { type: 'select' },
+    },
     datalist: {
       type: { name: 'array' },
       description: 'A list of search terms to be searched from the input field, it should be used with type="search" input',
@@ -27,6 +47,10 @@ export default {
     disabled: {
       type: { name: 'boolean' },
       description: 'If true, the element is displayed as disabled',
+    },
+    'disabled-label': {
+      type: { name: 'string' },
+      description: 'The label for disabled state',
     },
     icon: {
       control: { type: 'select' },
@@ -66,13 +90,41 @@ export default {
       type: { name: 'boolean' },
       description: 'Specifies that the element is read-only',
     },
+    'readOnly-label': {
+      type: { name: 'string' },
+      description: 'The label for readonly state',
+    },
     required: {
       type: { name: 'boolean' },
       description: 'Specifies that the element must be filled out before submitting the form',
     },
+    'required-label': {
+      type: { name: 'string' },
+      description: 'The label for required state',
+    },
     step: {
       type: { name: 'string' },
       description: 'Specifies the interval between legal numbers in an input field',
+    },
+    tip: {
+      type: { name: 'string' },
+      description: 'Sets the message of the variant of the input field',
+    },
+    type: {
+      type: { name: 'string' },
+      description: 'Specifies the type of element',
+      options: inputTextTypeDictionary,
+      control: { type: 'select' },
+    },
+    typography: {
+      type: { name: 'string' },
+      description: 'Specifies the typography of element',
+      options: typographyInputDictionary,
+      control: { type: 'select' },
+    },
+    value: {
+      type: { name: 'string' },
+      description: 'Specifies the value of the element',
     },
     variant: {
       type: { name: 'string' },
@@ -80,24 +132,10 @@ export default {
       control: { type: 'select' },
       description: 'Sets the variant of the input field',
     },
-    tip: {
-      type: { name: 'string' },
-      description: 'Sets the message of the variant of the input field',
-    },
-    type: {
-      type: { name: 'string', required: true },
-      description: 'Specifies the type of element',
-      options: inputTextTypeDictionary,
-      control: { type: 'select' },
-    },
-    value: {
-      type: { name: 'string' },
-      description: 'Specifies the value of the element',
-    },
   },
 }
 
-const Template = args =>
+const Template = (args: MdsInputInterface) =>
   <mds-input {...args}></mds-input>
 
 export const Default = Template.bind({})
@@ -105,30 +143,68 @@ Default.args = {
   placeholder: 'Scrivi qualcosa',
 }
 
-export const autoComplete = Template.bind({})
-autoComplete.args = {
+export const AutoComplete = Template.bind({})
+AutoComplete.args = {
   autocomplete: 'address',
   type: 'text',
   placeholder: 'Intestatario carta di credito',
 }
 
-export const autoFocus = Template.bind({})
-autoFocus.args = {
+export const AutoFocus = Template.bind({})
+AutoFocus.args = {
   autofocus: true,
   placeholder: 'Auto focus input text',
+}
+
+export const ControlsLayout = Template.bind({})
+ControlsLayout.args = {
+  'controls-layout': 'horizontal',
+  type: 'number',
+  placeholder: 'Controls layout',
+}
+
+export const ControlsIcon = Template.bind({})
+ControlsIcon.args = {
+  'controls-icon': 'arithmetic',
+  type: 'number',
+  placeholder: 'Controls icon',
+}
+
+export const ControlsLabels = Template.bind({})
+ControlsLabels.args = {
+  'controls-icon': 'arrow',
+  'controls-layout': 'horizontal',
+  'control-increase-label': 'Alza',
+  'control-decrease-label': 'Abbassa',
+  type: 'number',
+  placeholder: 'Controls labels',
 }
 
 export const Disabled = Template.bind({})
 Disabled.args = {
   disabled: true,
-  placeholder: 'Input field with disabled attribute',
+  placeholder: 'Disabled',
 }
 
-export const max = Template.bind({})
-max.args = {
+export const DisabledLabel = Template.bind({})
+DisabledLabel.args = {
+  disabled: true,
+  'disabled-label': 'not active',
+  placeholder: 'Disabled',
+}
+
+export const Max = Template.bind({})
+Max.args = {
   max: '3',
   type: 'number',
   value: '2',
+}
+
+export const Min = Template.bind({})
+Min.args = {
+  min: '3',
+  type: 'number',
+  value: '5',
 }
 
 export const Required = Template.bind({})
@@ -137,66 +213,75 @@ Required.args = {
   placeholder: 'This is a required field',
 }
 
-export const readOnly = Template.bind({})
-readOnly.args = {
-  readOnly: true,
-  value: 'This is a read only field',
+export const RequiredLabel = Template.bind({})
+RequiredLabel.args = {
+  required: true,
+  'required-label': 'unavoidable',
+  placeholder: 'Required label',
 }
 
-export const variant = Template.bind({})
-variant.args = {
+export const ReadOnly = Template.bind({})
+ReadOnly.args = {
+  readOnly: true,
+  value: 'Read only text',
+}
+
+export const ReadOnlyLabel = Template.bind({})
+ReadOnlyLabel.args = {
+  readOnly: true,
+  'readOnly-label': 'just read',
+  value: 'Read only text',
+}
+
+export const Variant = Template.bind({})
+Variant.args = {
   variant: 'error',
   placeholder: 'Status input field',
   tip: 'errore',
 }
 
-export const tip = Template.bind({})
-tip.args = {
+export const Tip = Template.bind({})
+Tip.args = {
   placeholder: 'Scrivi qualcosa...',
   tip: 'input',
 }
 
-export const search = Template.bind({})
-search.args = {
+export const Search = Template.bind({})
+Search.args = {
   datalist: citiesDictionary,
   type: 'search',
   placeholder: 'Search a city name...',
 }
 
-export const icon = Template.bind({})
-icon.args = {
+export const Icon = Template.bind({})
+Icon.args = {
   icon: 'mi/round/email',
   placeholder: 'Status input field',
 }
 
-const FormIntegration = (args: any) => (
-  <form class="flex flex-col gap-y-2" id="mds-icon-fi" name="mds-icon-fi">
-    <mds-input {...args}></mds-input>
-    <mds-button class="w-min" type="button" onClick={() => {
-      const input = document.querySelector('input[name="inputto"]') as HTMLInputElement
-      const form = document.querySelector('form') as HTMLFormElement
-      const mdsInput = document.querySelector('mds-input') as HTMLMdsInputElement
-
-      console.info('Input', input)
-      console.info('Form', form)
-      console.info('Form elements', form.elements)
-      console.info('MdsInput', mdsInput)
-
-      mdsInput.getInputElement().then((inputElement: HTMLInputElement) => {
-        console.info('MdsInput input element', inputElement)
-      })
-
-      input.addEventListener('input', (e: Event) => { console.error('Input', (e.target as HTMLInputElement).value)})
-      input.addEventListener('change', (e: Event) => { console.warn('Change', (e.target as HTMLInputElement).value)})
-      mdsInput.addEventListener('changeEvent', (e: CustomEvent<InputValue>) => { console.info('MdsInput ChangeEvent', e.detail.value) })
-
-      form.addEventListener('submit', (e: Event) => { e.preventDefault(), console.info('Submitted', e)})
-    }}>Trigger listener</mds-button>
-  </form>
+const FormIntegrationTemplate = (args: MdsInputInterface) => (
+  <div class="grid gap-6">
+    <form class="grid gap-4" id="mds-icon-fi" name="mds-icon-fi">
+      <mds-input {...args}></mds-input>
+      <mds-button class="w-min" type="button" role="submit" onClick={() => {
+        const form = document.querySelector('form') as HTMLFormElement
+        const span = document.querySelector('span.input-value') as HTMLSpanElement
+        span.innerText = form['mds-input'].value !== '' ? form['mds-input'].value : 'Empty'
+        form.addEventListener('submit', (e: SubmitEvent) => {
+          e.preventDefault()
+          console.info('Submitted', e)
+        })
+      }
+      }>Check value</mds-button>
+    </form>
+    <mds-text variant="code">
+      Input value taken from form element: <span class="input-value rounded text-tone-neutral-04 bg-tone-neutral-08 px-2">Empty</span>
+    </mds-text>
+  </div>
 )
 
-export const formIntegration = FormIntegration.bind({})
-formIntegration.args = {
-  placeholder: 'Mi integro col form!',
-  name: 'inputto',
+export const FormIntegration = FormIntegrationTemplate.bind({})
+FormIntegration.args = {
+  placeholder: 'Es: Hello world!',
+  name: 'mds-input',
 }

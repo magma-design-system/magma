@@ -47,6 +47,7 @@ export const config: Config = {
     },
     {
       type: 'www',
+      baseUrl: 'http://localhost:6006/',
       serviceWorker: null,
     },
     {

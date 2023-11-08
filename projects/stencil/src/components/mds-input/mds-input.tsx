@@ -1,26 +1,51 @@
-import {
-  Component,
-  Element,
-  Event,
-  EventEmitter,
-  Host,
-  Method,
-  Prop,
-  State,
-  Watch,
-  h,
-} from '@stencil/core'
-
 import clsx from 'clsx'
-import { InputValue } from './meta/interfaces'
+import miBaselineAdd from '@icon/mi/baseline/add.svg'
+import miBaselineArrowDown from '@icon/mi/baseline/keyboard-arrow-down.svg'
+import miBaselineArrowUp from '@icon/mi/baseline/keyboard-arrow-up.svg'
+import miBaselineRemove from '@icon/mi/baseline/remove.svg'
+import miBaselineDone from '@icon/mi/baseline/done.svg'
+import { AttachInternals, Component, Element, Event, EventEmitter, Host, Method, Prop, State, Watch, h } from '@stencil/core'
 import { AutocompleteType } from '@type/autocomplete'
-import { InputTextType } from '@type/input-text-type'
-import { InputValueType } from '@type/input-value-type'
+import { InputTextType, InputControlsLayoutType, InputControlsIconType } from '@type/input'
+import { MdsInputEventDetail } from './meta/event-detail'
 import { ThemeStatusVariantType } from '@type/variant'
+import { TypographyInputType } from '@type/typography'
+
+export interface MdsInputInterface {
+  autocomplete?: AutocompleteType
+  autofocus?: boolean
+  controlDecreaseLabel?: string
+  controlIncreaseLabel?: string
+  controlsIcon?: InputControlsIconType
+  controlsLayout?: InputControlsLayoutType
+  datalist?: string[]
+  disabled?: boolean
+  disabledLabel?: string
+  icon?: string
+  max?: string
+  maxLength?: number
+  min?: string
+  minLength?: number
+  name?: string
+  pattern?: string
+  placeholder?: string
+  readOnly?: boolean
+  readonlyLabel?: string
+  required?: boolean
+  requiredLabel?: string
+  step?: string
+  tabindex?: number
+  tip?: string
+  type: InputTextType
+  typography?: TypographyInputType
+  value?: string
+  variant?: ThemeStatusVariantType
+}
 
 @Component({
   tag: 'mds-input',
   styleUrl: 'mds-input.css',
+  formAssociated: true,
   shadow: true,
 })
 
@@ -30,6 +55,8 @@ export class MdsInput {
   private tabindex?: number
   @Element() el!: HTMLMdsInputElement
   @State() hasFocus = false
+
+  @AttachInternals() internals: ElementInternals
 
   /**
    * Specifies whether the element should have autocomplete enabled
@@ -42,6 +69,26 @@ export class MdsInput {
   @Prop() readonly autofocus: boolean = false
 
   /**
+   * Specifies the layout of the counter button when the input type is set to `number`
+   */
+  @Prop({ reflect: true }) readonly controlsLayout?: InputControlsLayoutType = 'vertical'
+
+  /**
+   * Specifies the icon type of the counter button when the input type is set to `number`
+   */
+  @Prop({ reflect: true }) readonly controlsIcon?: InputControlsIconType = 'arrow'
+
+  /**
+   * Specifies the label for control button increase for component when type is number
+   */
+  @Prop({ reflect: true }) readonly controlIncreaseLabel?: string = 'Aumenta'
+
+  /**
+   * Specifies the label for control button decrease for component when type is number
+   */
+  @Prop({ reflect: true }) readonly controlDecreaseLabel?: string = 'Riduci'
+
+  /**
    * A list of search terms to be searched from the input field,
    * it should be used with type="search" input.
    */
@@ -50,19 +97,24 @@ export class MdsInput {
   /**
    * If true, the element is displayed as disabled
    */
-  @Prop() readonly disabled?: boolean = false
+  @Prop({ reflect: true }) readonly disabled?: boolean = false
+
+  /**
+ * Specifies the label for the displayed state disabled
+ */
+  @Prop({ reflect: true }) readonly disabledLabel?: string = 'disattivato'
 
   /**
    * An icon displayed at the right of the input
    */
-  @Prop() readonly icon?: string
+  @Prop({ reflect: true }) readonly icon?: string
 
   /**
    * Specifies the maximum value
    * use it with input type="number" or type="date"
    * Example: max="180", max="2046-12-04"
    */
-  @Prop() readonly max?: number
+  @Prop() readonly max?: string
 
   /**
    * Specifies the maximum number of characters allowed in an element
@@ -75,7 +127,7 @@ export class MdsInput {
    * use it with input type="number" or type="date"
    * Example: min="-3", min="1988-04-15"
    */
-  @Prop() readonly min?: string
+  @Prop() readonly min?: string | number
 
   /**
    * Specifies the minimum number of characters allowed in an element
@@ -101,12 +153,22 @@ export class MdsInput {
   /**
    * Specifies that the element is read-only
    */
-  @Prop() readonly readonly?: boolean = false
+  @Prop({ reflect: true }) readonly readonly?: boolean = false
+
+  /**
+   * Specifies the label for the displayed state read-only
+   */
+  @Prop({ reflect: true }) readonly readonlyLabel?: string = 'sola lettura'
 
   /**
    * Specifies that the element must be filled out before submitting the form
    */
-  @Prop() readonly required?: boolean = false
+  @Prop({ reflect: true }) readonly required?: boolean = false
+
+  /**
+   * Specifies the label for the displayed state required
+   */
+  @Prop({ reflect: true }) readonly requiredLabel?: string = 'obbligatorio'
 
   /**
    * Sets the variant of the input field
@@ -126,17 +188,22 @@ export class MdsInput {
   /**
    * Specifies the type of input element
    */
-  @Prop() readonly type?: InputTextType = 'text'
+  @Prop({ reflect: true }) readonly type?: InputTextType = 'text'
+
+  /**
+ * Specifies the typography of input element
+ */
+  @Prop({ reflect: true }) typography: TypographyInputType = 'detail'
 
   /**
    * Specifies the value of the input element
    */
-  @Prop() value?: InputValueType = ''
+  @Prop({ mutable:true, reflect: true }) value?: string = ''
 
   /**
    * Emits an InputChangeEventDetail when the value of the input element changes
    */
-  @Event({ eventName: 'mdsInputChange' }) changeEvent!: EventEmitter<InputValue>
+  @Event({ eventName: 'mdsInputChange' }) changeEvent!: EventEmitter<MdsInputEventDetail>
 
   /**
    * Emits a KeyboardEvent when a keboard key is pressed on the focused input element
@@ -162,6 +229,7 @@ export class MdsInput {
       this.tabindex = tabindex !== null ? parseInt(tabindex) : undefined
       this.el.removeAttribute('tabindex')
     }
+    this.internals.setFormValue(this.value ?? null)
   }
 
   /**
@@ -170,6 +238,7 @@ export class MdsInput {
   @Watch('value')
   protected valueChanged ():void {
     this.changeEvent.emit({ value: this.value })
+    this.internals.setFormValue(this.value ?? null)
   }
 
   /**
@@ -193,16 +262,13 @@ export class MdsInput {
     return Promise.resolve(this.nativeInput!)
   }
 
-  private getValue (): string {
-    return typeof this.value === 'number' ? this.value.toString() : this.value ?? ''
-  }
-
-  private onInput = (ev: Event) => {
+  private onInput = (ev: InputEvent) => {
     const input = ev.target as HTMLInputElement | HTMLTextAreaElement | false
     if (input) {
       this.value = input.value
+      this.internals.setFormValue(this.value)
     }
-    this.keyDownEvent.emit(ev as KeyboardEvent)
+    this.keyDownEvent.emit(ev as Event as KeyboardEvent)
   }
 
   private onBlur = () => {
@@ -223,10 +289,29 @@ export class MdsInput {
     }
   }
 
+  private stepUp = () => {
+    if (this.nativeInput && !this.readonly && !this.disabled) {
+      (this.nativeInput as HTMLInputElement).stepUp()
+      this.value = this.nativeInput.value
+    }
+  }
+
+  private stepDown = () => {
+    if (this.nativeInput && !this.readonly && !this.disabled) {
+      (this.nativeInput as HTMLInputElement).stepDown()
+      this.value = this.nativeInput.value
+    }
+  }
+
   render () {
-    const value = this.getValue()
     return (
       <Host>
+        { this.type === 'number'
+          && this.controlsLayout === 'horizontal'
+          && <mds-button class="counter-button counter-button--horizontal counter-button--decrease focus-bounce" onClick={this.stepDown} role="button" tabindex="0" title={this.controlDecreaseLabel} part="counter-button-decrease">
+            <i class="svg counter-button-icon" innerHTML={this.controlsIcon === 'arrow' ? miBaselineArrowDown : miBaselineRemove}/>
+          </mds-button>
+        }
         { this.type === 'textarea'
           ? <textarea
             class={clsx(
@@ -246,7 +331,7 @@ export class MdsInput {
             ref={ input => (this.nativeInput = input)}
             required={this.required}
             tabIndex={this.tabindex}
-            value={value}>
+            value={this.value}>
           </textarea>
           : <input
             class={clsx(
@@ -273,13 +358,67 @@ export class MdsInput {
             step={this.step}
             tabIndex={this.tabindex}
             type={this.type}
-            value={value}
+            value={this.value}
           />
         }
-        { this.disabled && <mds-text typography="option" class="tip top-1 disabled">Disabilitato</mds-text> }
-        { this.readonly && !this.disabled && <mds-text typography="option" class="tip top-1 read-only">Sola lettura</mds-text> }
-        { this.required && !this.disabled && !this.readonly && <mds-text typography="option" class="tip top-1 required">Obbligatorio</mds-text> }
-        { this.tip && <mds-text typography="option" class={clsx('tip bottom-1', this.variant && 'tip-variant')}>{ this.tip }</mds-text> }
+        { this.type === 'number'
+          && this.controlsLayout === 'vertical'
+          && <div class="counter counter--vertical">
+            <mds-button class="counter-button focus-bounce" onClick={this.stepUp} role="button" tabindex="0" title={this.controlIncreaseLabel} part="counter-button-increase">
+              <i class="svg counter-button-icon" innerHTML={this.controlsIcon === 'arrow' ? miBaselineArrowUp : miBaselineAdd}/>
+            </mds-button>
+            <mds-button class="counter-button focus-bounce" onClick={this.stepDown} role="button" tabindex="0" title={this.controlDecreaseLabel} part="counter-button-decrease">
+              <i class="svg counter-button-icon" innerHTML={this.controlsIcon === 'arrow' ? miBaselineArrowDown : miBaselineRemove}/>
+            </mds-button>
+          </div>
+        }
+        { this.type === 'number'
+          && this.controlsLayout === 'horizontal'
+          && <mds-button class="counter-button counter-button--horizontal counter-button--increase focus-bounce" onClick={this.stepUp} role="button" tabindex="0" title={this.controlIncreaseLabel} part="counter-button-increase">
+            <i class="svg counter-button-icon" innerHTML={this.controlsIcon === 'arrow' ? miBaselineArrowUp : miBaselineAdd}/>
+          </mds-button>
+        }
+        <div class="tip-container tip-container--top">
+          { this.disabled &&
+            <div class="tip tip--expanded tip--disabled">
+              <div class="tip__content">
+                <mds-text typography="option" truncate>
+                  <span class="tip__text">{ this.disabledLabel }</span>
+                </mds-text>
+              </div>
+            </div>
+          }
+          { this.readonly &&
+            <div class="tip tip--expanded tip--read-only">
+              <div class="tip__content">
+                <mds-text typography="option" truncate>
+                  <span class="tip__text">{ this.readonlyLabel }</span>
+                </mds-text>
+              </div>
+            </div>
+          }
+          { this.required &&
+            <div class="tip tip--expand tip--required">
+              <div class="tip__content">
+                <mds-text typography="option" truncate>
+                  <span class="tip__text">{ this.requiredLabel }</span>
+                  <span class="tip__icon svg" innerHTML={miBaselineDone}></span>
+                </mds-text>
+              </div>
+            </div>
+          }
+        </div>
+        <div class="tip-container tip-container--bottom">
+          { this.tip &&
+            <div class="tip tip--expanded tip--variant">
+              <div class="tip__content">
+                <mds-text typography="option" truncate>
+                  <span class="tip__text">{ this.tip }</span>
+                </mds-text>
+              </div>
+            </div>
+          }
+        </div>
         { this.datalist &&
           <datalist id="datalist" class="datalist">
             { this.datalist.forEach(element => {

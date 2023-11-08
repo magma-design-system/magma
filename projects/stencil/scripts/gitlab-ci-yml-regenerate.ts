@@ -16,7 +16,7 @@ const checkGitlabCiYmlExist = async (componentName: string) => {
 const regenerateGitlabCiYml = async (componentName: string) => {
   await unlink(`${COMPONENTS_DIR}/${componentName}/${gitlabCiYmlFileName}`)
   console.info(`File for ${componentName} ${chalk.green('successfully')} deleted`)
-  await compileTemplateFile(componentName, gitlabCiYmlFileName)
+  await compileTemplateFile(componentName, `${gitlabCiYmlFileName}.hbs`, gitlabCiYmlFileName)
   console.info(`File for ${componentName} ${chalk.green('successfully')} regenerated`)
 }
 

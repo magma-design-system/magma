@@ -1,14 +1,15 @@
-@import url('../../tailwind/components.css');
+@import '~@maggioli-design-system/styles/dist/css/animations.css'; /* included for focus effect */
+@import '../../tailwind/components.css';
 @tailwind components;
 @tailwind utilities;
 
 /**
-* @prop --mds-accordion-timer-item-progress-bar-color: Sets the color of the progress bar when the item is selected
-* @prop --mds-accordion-timer-item-progress-bar-background: Sets the background-color of the progress bar when the item is selected
-* @prop --mds-accordion-timer-item-color: Sets the text color of the component
-* @prop --mds-accordion-timer-item-progress-bar-thickness: Sets thickness of the progress bar
-* @prop --mds-accordion-timer-item-duration: Sets the transition duration of open/close animation
-*/
+  * @prop --mds-accordion-timer-item-progress-bar-color: Sets the color of the progress bar when the item is selected
+  * @prop --mds-accordion-timer-item-progress-bar-background: Sets the background-color of the progress bar when the item is selected
+  * @prop --mds-accordion-timer-item-color: Sets the text color of the component
+  * @prop --mds-accordion-timer-item-progress-bar-thickness: Sets thickness of the progress bar
+  * @prop --mds-accordion-timer-item-duration: Sets the transition duration of open/close animation
+  */
 
 :host {
 

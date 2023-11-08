@@ -1,54 +1,75 @@
 @import '~@maggioli-design-system/styles/dist/tailwind/typography.css';
-
+@import '~@maggioli-design-system/styles/dist/css/animations.css'; /* included for focus effect */
+@import '../../tailwind/components.css';
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
 /**
-* @prop --mds-input-background: Sets the background-color of the component
-* @prop --mds-input-icon-color: Sets the icon color of the component
-* @prop --mds-input-ring: Sets the box-shadow of the component's input
-* @prop --mds-input-shadow: Sets the box-shadow of the component's input
-* @prop --mds-input-tip-background: Sets the background color of the tip message at the bottom right of the component
-* @prop --mds-input-variant-color: Sets the variant colors of the component
-*/
+  * @prop --mds-input-background: Sets the background-color of the component
+  * @prop --mds-input-icon-color: Sets the icon color of the component
+  * @prop --mds-input-ring: Sets the box-shadow of the component's input
+  * @prop --mds-input-shadow: Sets the box-shadow of the component's input
+  * @prop --mds-input-tip-background: Sets the background color of the tip message at the bottom right of the component
+  * @prop --mds-input-variant-color: Sets the variant colors of the component
+  */
 
 :host {
 
   --mds-input-background: theme('colors.tone-neutral');
   --mds-input-icon-color: var(--mds-input-variant-color);
-  --mds-input-tip-background: 84, 84, 84;
-  --mds-input-ring: 0 0 0 1px rgb(var(--mds-input-variant-color) 0.1);
-  --mds-input-shadow: 0 1px 3px 0 rgb(var(--mds-input-variant-color) 0.1), 0 1px 2px 0 rgb(var(--mds-input-variant-color) 0.06);
-  --mds-input-variant-color: 0, 0, 0;
+  --mds-input-tip-background: 84 84 84;
+  --mds-input-ring: 0 0 0 1px rgb(var(--mds-input-variant-color) / 0.1);
+  --mds-input-shadow: 0 1px 3px 0 rgb(var(--mds-input-variant-color) / 0.1), 0 1px 2px 0 rgb(var(--mds-input-variant-color) / 0.06);
+  --mds-input-variant-color: 0 0 0;
+  --mds-input-controls-color: theme('colors.tone-neutral-04');
+  --mds-input-controls-border: 2px solid theme('colors.tone-neutral-09');
 
-  @apply text-info-detail;
+  @apply
+    gap-2
+    text-info-detail;
 
+  container-type: inline-size;
   display: flex;
   position: relative;
 }
 
+:host( [typography="detail"] ) .input {
+  @apply text-info-detail;
+}
+
+:host( [typography="snippet"] ) .input {
+  @apply text-code-snippet;
+}
+
 .input {
+
   @apply
     duration-300
     ease-out-expo
     m-0
-    text-ellipsis
     px-4
     py-3
     rounded-lg
     text-info-detail
-    transition-cosmetic
-    min-h-12
-    w-full;
+    transition-cosmetic;
 
-  background-color: var(--mds-input-background);
-  border: 0;
-  border-color: transparent;
-  box-shadow: var(--mds-input-ring), var(--mds-input-shadow);
-  box-sizing: border-box;
-  color: theme('colors.tone-neutral-02');
-  overflow: hidden;
+    background-color: var(--mds-input-background);
+    border: 0;
+    box-shadow: var(--mds-input-ring), var(--mds-input-shadow);
+    box-sizing: border-box;
+    color: theme('colors.tone-neutral-02');
+    min-height: 3rem;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    width: 100%;
+}
+
+.input::-webkit-outer-spin-button,
+.input::-webkit-inner-spin-button {
+  appearance: none;
+  display: none;
+  margin: 0;
 }
 
 textarea.input:active {
@@ -69,8 +90,9 @@ textarea.input {
     duration-300
     ease-out-expo;
 
-  --mds-input-ring: 0 0 0 3px rgb(var(--mds-input-variant-color) 1);
-  --mds-input-shadow: 0 4px 6px -1px rgb(var(--mds-input-variant-color) 0.1), 0 2px 4px -1px rgb(var(--mds-input-variant-color) 0.06);
+  --mds-input-ring: 0 0 0 3px rgb(var(--mds-input-variant-color) / 1);
+  --mds-input-shadow: 0 4px 6px 3px rgb(var(--mds-input-variant-color) / 0.1), 0 2px 4px -1px rgb(var(--mds-input-variant-color) / 0.06);
+
 }
 
 .input:disabled {
@@ -86,53 +108,7 @@ textarea.input {
   @apply pl-11;
 }
 
-.tip {
-  @apply
-    duration-300
-    ease-out-expo
-    h-3
-    right-1
-    rounded-full
-    px-2
-    transition-cosmetic;
 
-  background-color: rgb(var(--mds-input-tip-background));
-  color: theme('colors.tone-neutral');
-  justify-content: center;
-  line-height: theme('spacing.3');
-  pointer-events: none;
-  position: absolute;
-  text-align: center;
-}
-
-.tip-variant {
-
-  --mds-input-tip-background: var(--mds-input-icon-color);
-}
-
-.read-only {
-  background-color: theme('colors.status-info-05');
-  color: theme('colors.tone-neutral');
-}
-
-.required {
-  @apply
-    p-0
-    w-3;
-
-  background-color: theme('colors.status-error-05');
-  color: transparent;
-}
-
-.disabled {
-  background-color: theme('colors.tone-neutral-05');
-}
-
-.input:focus + .required {
-  @apply w-24;
-
-  color: theme('colors.tone-neutral');
-}
 
 .icon {
   @apply
@@ -143,4 +119,108 @@ textarea.input {
   position: absolute;
 }
 
+.counter {
+  border-left: var(--mds-input-controls-border);
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+  position: absolute;
+  right: 0;
+}
+
+.counter-button {
+  @apply
+    h-6
+    p-0
+    rounded-lg
+    w-7;
+
+  align-items: center;
+  background-color: transparent;
+  border: 0;
+  display: flex;
+  fill: var(--mds-input-controls-color);
+  justify-content: center;
+}
+
+.counter-button:hover {
+  background-color: theme('colors.tone-neutral-09');
+}
+
+.counter .counter-button:first-child {
+  border-bottom-left-radius: 0;
+  border-bottom-right-radius: 0;
+  border-top-left-radius: 0;
+}
+
+.counter .counter-button:last-child {
+  border-bottom-left-radius: 0;
+  border-top-left-radius: 0;
+  border-top-right-radius: 0;
+}
+
+.counter-button--horizontal {
+  @apply
+    h-12
+    w-12;
+
+  bottom: 0;
+  position: absolute;
+  top: 0;
+}
+
+.counter-button--decrease {
+  border-bottom-right-radius: 0;
+  border-right: var(--mds-input-controls-border);
+  border-top-right-radius: 0;
+  left: 0;
+}
+
+.counter-button--increase {
+  border-bottom-left-radius: 0;
+  border-left: var(--mds-input-controls-border);
+  border-top-left-radius: 0;
+  right: 0;
+}
+
+:host( [type="number"] ) .input {
+  @apply pr-8;
+}
+
+:host( [type="number"][controls-layout="horizontal"] ) .input {
+  @apply px-14;
+
+  text-align: center;
+}
+
+:host( [type="number"][controls-layout="horizontal"][icon] ) .input {
+  @apply pl-24;
+
+  text-align: left;
+}
+
+
+:host( [type="number"][controls-layout="horizontal"] ) .icon {
+  left: 3.75rem;
+}
+
 @import './css/mds-input-variant.css';
+@import './css/mds-input-tip.css';
+
+@container (max-width: 210px) {
+  :host .tip__content,
+  :host(:focus-within) .tip__content {
+    grid-template-columns: 0fr;
+    opacity: 0;
+  }
+
+  :host .tip {
+    padding-left: 0;
+    padding-right: 0;
+  }
+
+  :host {
+
+    --mds-input-background: theme('colors.brand-maggioli-07');
+  }
+}

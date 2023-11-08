@@ -2,7 +2,7 @@ import { Component, Host, h, Prop, Event, EventEmitter, State } from '@stencil/c
 import clsx from 'clsx'
 import { InputSwitchType, InputSwitchSizeType } from './meta/types'
 import { inputSwitchIconVariant } from './meta/variants'
-import { InputValueType } from '@type/input-value-type'
+import { InputValueType } from '@type/input'
 import { TypographyInfoType, TypographyReadType, TypographyVariants } from '@type/typography'
 
 @Component({

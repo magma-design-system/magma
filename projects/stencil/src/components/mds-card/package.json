@@ -1,6 +1,6 @@
 {
   "name": "@maggioli-design-system/mds-card",
-  "version": "4.0.2",
+  "version": "4.1.0",
   "description": "mds-card is a web-component from Magma Design System, built with StencilJS, TypeScript, Storybook. It's based on the web-component standard and it's designed to be agnostic from the JavaScirpt framework you are using.",
   "main": "dist/index.cjs.js",
   "module": "dist/index.js",
@@ -24,13 +24,13 @@
     "test": "stencil test --spec --e2e"
   },
   "dependencies": {
-    "@maggioli-design-system/mds-card-content": "^1.0.2",
-    "@maggioli-design-system/mds-card-footer": "^1.0.2",
-    "@maggioli-design-system/mds-card-header": "^1.0.2",
-    "@maggioli-design-system/mds-card-media": "^1.0.2",
-    "@maggioli-design-system/styles": "^11.7.0",
-    "@stencil/core": "^4.3.0",
-    "clsx": "^2.0.0"
+    "@maggioli-design-system/mds-card-content": "1.0.2",
+    "@maggioli-design-system/mds-card-footer": "1.0.2",
+    "@maggioli-design-system/mds-card-header": "1.0.2",
+    "@maggioli-design-system/mds-card-media": "1.0.2",
+    "@maggioli-design-system/styles": "13.0.0",
+    "@stencil/core": "4.7.1",
+    "clsx": "2.0.0"
   },
   "license": "MIT",
   "author": {

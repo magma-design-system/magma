@@ -1,11 +1,9 @@
 import { defineCustomElements } from '../dist/esm/loader'
 
-// disable for storybook 7.x
-// import 'loki/configure-react'
-
 import 'normalize.css'
 import '@maggioli-design-system/styles/dist/css/colors-rgb.css'
 import '@maggioli-design-system/styles/dist/css/globals.css'
+import '@maggioli-design-system/styles/dist/css/animations.css'
 import '@maggioli-design-system/styles/dist/css/reset.css'
 import '@maggioli-design-system/styles/dist/css/base.css'
 import '@fontsource/karla/400.css'
@@ -22,10 +20,10 @@ import './iconsauce.css'
 
 import devices from './devices.json'
 import media from '@maggioli-design-system/design-tokens/dist/json/css/media.json'
-import { mds_icon } from '../dist/esm/mds-icon.entry'
 
 defineCustomElements();
 
+import { mds_icon } from '../dist/esm/mds-icon.entry'
 // Method 1 - call static function of MdsIcon
 const mdsIconGet = async () => {
   await customElements.whenDefined('mds-icon')

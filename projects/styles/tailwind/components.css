@@ -1,29 +1,46 @@
 @tailwind components;
 
 @layer components {
-  .focus-off,
-  .focusable,
-  .focusable-light,
-  .focusable-light-off {
+  .focus-bounce {
+    animation-duration: var(--magma-outline-animation-duration, 1s);
+    animation-fill-mode: forwards;
+    animation-iteration-count: infinite;
+    animation-name: focus-bounce;
+    animation-play-state: paused;
+    animation-timing-function: theme('transitionTimingFunction.out');
+    outline: var(--magma-outline-blur);
+    transition-duration: 200ms;
+    transition-property: background-color, border-color, box-shadow, color, fill, outline, outline-offset, transform;
+    transition-timing-function: ease-in-out;
+  }
+
+  .focus-bounce--focused,
+  .focus-bounce:focus-visible {
+
+    --magma-outline-blur: var(--magma-outline-focus);
+
+    animation-play-state: running;
+  }
+
+  .focus-zoom {
     @apply
       duration-200
       ease-out;
 
-    outline-offset: var(--magma-outline-blur-offset);
     outline: var(--magma-outline-blur);
+    outline-offset: var(--magma-outline-blur-offset);
     transition-property: background-color, border-color, box-shadow, color, fill, outline, outline-offset, transform;
   }
 
-  .focus-on,
-  .focusable-light:focus-visible,
-  .focusable:focus-visible {
+  .focus-zoom--focused,
+  .focus-zoom:focus-visible {
 
     --magma-outline-blur-offset: var(--magma-outline-focus-offset);
     --magma-outline-blur: var(--magma-outline-focus);
   }
 
-  .focus-light-on,
-  .focusable-light:focus-visible {
+  .focus-zoom--light.focus-zoom--focused,
+  .focus-zoom--light:focus-visible {
 
     --magma-outline-blur: 2px solid rgb(var(--tone-neutral));
   }

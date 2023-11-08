@@ -48,7 +48,7 @@ const isolateComponent = async () => {
       subject: componentName,
     })
     await compilePackage(componentName)
-    await compileTemplateFile(componentName, '.gitlab-ci.yml')
+    await compileTemplateFile(componentName, '.gitlab-ci.yml.hbs', '.gitlab-ci.yml')
     await createTempProjectInstance(componentName)
   }
 }

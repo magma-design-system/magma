@@ -191,7 +191,7 @@ export class MdsBibliography {
               {this.name && ' '}
               {this.name &&
                 this.url !== null
-                ? <a class="link focusable" href={this.url} target="_blank" rel={this.rel}><b><i>{this.name}.</i></b></a>
+                ? <a class="link focus-bounce" href={this.url} target="_blank" rel={this.rel}><b><i>{this.name}.</i></b></a>
                 : <b><i>{this.name}.</i></b>
               }
               {this.location && <span> {this.location}{this.publisher !== undefined ? ':' : '.'}</span>}
@@ -205,7 +205,7 @@ export class MdsBibliography {
               {this.name && ' '}
               {this.name &&
                 this.url !== null
-                ? <a class="link focusable" href={this.url} target="_blank" rel={this.rel}><b><i> {this.name}.</i></b></a>
+                ? <a class="link focus-bounce" href={this.url} target="_blank" rel={this.rel}><b><i> {this.name}.</i></b></a>
                 : <b><i> {this.name}.</i></b>
               }
               {this.location && <span> {this.location}{this.publisher !== undefined ? ':' : '.'}</span>}
@@ -217,7 +217,7 @@ export class MdsBibliography {
               {this.name && ' '}
               {this.name &&
                 this.url !== null
-                ? <a class="link focusable" href={this.url} target="_blank" rel={this.rel}><b><i> {this.name}.</i></b></a>
+                ? <a class="link focus-bounce" href={this.url} target="_blank" rel={this.rel}><b><i> {this.name}.</i></b></a>
                 : <b><i> {this.name}.</i></b>
               }
               {this.location && <span> {this.location}{this.publisher !== undefined ? ':' : ','}</span>}

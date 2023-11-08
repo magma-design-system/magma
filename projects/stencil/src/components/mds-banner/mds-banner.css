@@ -1,3 +1,4 @@
+@import '~@maggioli-design-system/styles/dist/css/animations.css'; /* included for focus effect */
 @import '../../tailwind/components.css';
 @tailwind components;
 @tailwind utilities;
@@ -62,7 +63,7 @@
     -m-1
     duration-200
     ease-out
-    focusable
+    focus-bounce
     p-1
     rounded-md;
 

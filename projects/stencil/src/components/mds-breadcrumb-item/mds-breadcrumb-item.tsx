@@ -53,7 +53,7 @@ export class MdsBreadcrumbItem {
   render () {
     return (
       <Host>
-        <mds-text tabindex="0" onClick={ this.toggle } class="text focusable" typography="detail">
+        <mds-text tabindex="0" onClick={ this.toggle } class="text focus-bounce" typography="detail">
           <slot/>
         </mds-text>
         <i aria-hidden="true" class="svg icon" innerHTML={miBaselineNavigateNext}/>
