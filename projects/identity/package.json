@@ -1,9 +1,9 @@
 {
   "name": "@maggioli-design-system/identity",
-  "version": "2.0.1",
+  "version": "2.0.2",
   "description": "Maggioli brand identity assets",
   "files": [
-    "/dist/**/*"
+    "/dist/"
   ],
   "scripts": {
     "assets": "npx ts-node scripts/build.ts",
