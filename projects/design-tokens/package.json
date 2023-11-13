@@ -1,6 +1,6 @@
 {
   "name": "@maggioli-design-system/design-tokens",
-  "version": "11.0.0",
+  "version": "11.0.1",
   "description": "This is the Design Token library of Maggioli Design System, here you'll find all the visual data used around the libraries.",
   "author": "Vittorio Vittori",
   "contributors": [
@@ -26,7 +26,7 @@
   },
   "main": "dist/js/tailwind-colors-css-vars.js",
   "files": [
-    "/dist/*"
+    "/dist/"
   ],
   "devDependencies": {
     "@adobe/leonardo-contrast-colors": "1.0.0-alpha.13",
