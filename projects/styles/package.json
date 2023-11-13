@@ -1,6 +1,6 @@
 {
   "name": "@maggioli-design-system/styles",
-  "version": "13.0.0",
+  "version": "13.0.1",
   "description": "This module contains SCSS and CSS styles used by Maggioli Design System, it also makes available a Tailwind config based on Maggioli design tokens.",
   "main": "./tailwind.config.js",
   "scripts": {
@@ -15,7 +15,7 @@
   "files": [
     "/postcss.config.js",
     "/tailwind.config.js",
-    "/dist/**/*"
+    "/dist/"
   ],
   "repository": {
     "type": "git",
