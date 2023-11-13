@@ -236,3 +236,13 @@ The command will update the dependecies both found on `stencil` and `mds-foo` on
 ```
 
 So you can update `@stencil/core` based on `stencil/package.json` without add unwanted dependencies to `mds-foo/package.json`.
+
+
+### Update all components with it's dependencies
+
+If for some reason you need to update all components in mass with a patch:
+
+```
+nx run stencil:update.version patch all
+nx run stencil:update.dependencies --sync-dep all
+```

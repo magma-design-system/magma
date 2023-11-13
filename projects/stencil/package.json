@@ -48,10 +48,10 @@
     "update.version": "npx ts-node --skipProject ./scripts/update-version.ts"
   },
   "dependencies": {
-    "@maggioli-design-system/design-tokens": "11.0.0",
+    "@maggioli-design-system/design-tokens": "11.0.1",
     "@maggioli-design-system/identity": "2.0.0",
-    "@maggioli-design-system/styles": "13.0.0",
-    "@stencil/core": "4.7.1",
+    "@maggioli-design-system/styles": "13.0.1",
+    "@stencil/core": "4.7.2",
     "clsx": "2.0.0",
     "fitty": "2.3.7",
     "idb-keyval": "6.2.1"
