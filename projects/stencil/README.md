@@ -89,4 +89,160 @@ nx run stencil:test.regression.clean
 
 ---
 
+## Semi-automatic versioning of the component package.json files
 
+We've added a list of terminal commands to ease the updating processo for all component.
+
+
+### Updating package version
+
+```
+nx run stencil:update.version {major | minor | patch} {component | all}
+```
+
+Assuming we have a `mds-foo` to default version `1.0.0`, if you run:
+
+```
+nx run stencil:update.version major mds-foo
+```
+
+Will become:
+
+```json
+{
+  "name": "@maggioli-design-system/mds-foo",
+  "version": "2.0.0"
+}
+```
+
+Assuming we have a `mds-foo` to default version `1.0.0`, if you run:
+
+```
+nx run stencil:update.version minor mds-foo
+```
+
+Will become:
+
+```json
+{
+  "name": "@maggioli-design-system/mds-foo",
+  "version": "1.1.0"
+}
+```
+
+Assuming we have a `mds-foo` to default version `1.0.0`, if you run:
+
+```
+nx run stencil:update.version patch mds-foo
+```
+
+Will become:
+
+```json
+{
+  "name": "@maggioli-design-system/mds-foo",
+  "version": "1.0.1"
+}
+```
+
+### Update component dependencies
+
+```
+nx run stencil:update.dependencies {component | all}
+```
+
+Assuming we have a `mds-foo` to default version `1.0.0`, with two dependencies to be updated to `mds-dep-1@1.3.1` and `mds-dep-2@1.1.2`, if you run:
+
+```
+nx run stencil:update.dependencies mds-foo
+```
+
+Old dependencies:
+
+```json
+{
+  "name": "@maggioli-design-system/mds-foo",
+  "version": "1.0.0",
+  "dependencies": {
+    "@maggioli-design-system/mds-dep-1": "^1.2.0",
+    "@maggioli-design-system/mds-dep-2": "^1.0.0"
+  }
+}
+```
+
+Will be updated to:
+
+```json
+{
+  "name": "@maggioli-design-system/mds-foo",
+  "version": "1.0.0",
+  "dependencies": {
+    "@maggioli-design-system/mds-dep-1": "^1.3.1",
+    "@maggioli-design-system/mds-dep-2": "^1.1.2"
+  }
+}
+```
+
+### Update component dependencies and core dependencies
+
+The option `--sync-dep` will also update dependencies found also in `stencil/package.json` file.
+
+```
+nx run stencil:update.dependencies --sync-dep mds-foo
+```
+
+This means if you have a component `mds-foo/package.json`:
+
+```json
+{
+  "name": "@maggioli-design-system/mds-foo",
+  "version": "1.0.0",
+  "dependencies": {
+    "@maggioli-design-system/mds-dep-1": "^1.1.2",
+    "@maggioli-design-system/styles": "^11.0.0",
+    "@stencil/core": "^4.2.0"
+  }
+}
+```
+
+And this is `stencil/package.json`:
+
+```json
+{
+  "name": "stencil",
+  "version": "1.0.0",
+  "dependencies": {
+    "clsx": "^2.0.0",
+    "@maggioli-design-system/styles": "^13.0.0",
+    "@stencil/core": "^4.6.0",
+    "fitty": "2.3.7",
+    "idb-keyval": "6.2.1"
+  }
+}
+```
+
+The command will update the dependecies both found on `stencil` and `mds-foo` only:
+
+```json
+{
+  "name": "@maggioli-design-system/mds-foo",
+  "version": "1.0.0",
+  "dependencies": {
+    "@maggioli-design-system/mds-dep-1": "^1.1.2",
+    "@maggioli-design-system/styles": "^13.0.0",
+    "@stencil/core": "^4.6.0"
+  }
+}
+```
+
+So you can update `@stencil/core` based on `stencil/package.json` without add unwanted dependencies to `mds-foo/package.json`.
+
+
+### Update all components with it's dependencies
+
+If for some reason you need to update all components in mass with a patch:
+
+```
+nx run stencil:update.version patch all
+nx run stencil:update.dependencies --sync-dep all
+```

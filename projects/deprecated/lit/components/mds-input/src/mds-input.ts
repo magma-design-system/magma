@@ -1,0 +1,321 @@
+import clsx from 'clsx'
+import globalStyles from './mds-input.css?inline'
+import { AutocompleteType } from '@stencil-type/autocomplete'
+import { InputTextType } from '@stencil-type/input-text-type'
+import { InputValueType } from '@stencil-type/input-value-type'
+import { ThemeStatusVariantType } from '@stencil-type/variant'
+import { LitElement, html, unsafeCSS, nothing } from 'lit'
+import { customElement, property, query, state } from 'lit/decorators.js'
+
+@customElement('mds-input')
+export class MdsInput extends LitElement {
+
+  static formAssociated = true
+
+  static styles = [
+    unsafeCSS(globalStyles),
+  ]
+
+  private internals
+
+  /**
+   * Specifies whether the element should have autocomplete enabled
+   */
+  @property({ type: String }) readonly autocomplete?: AutocompleteType = 'off'
+
+  /**
+   * Specifies that the element should automatically get focus when the page loads
+   */
+  @property({ type: Boolean }) readonly autofocus: boolean = false
+
+  /**
+   * A list of search terms to be searched from the input field,
+   * it should be used with type="search" input.
+   */
+  @property({ type: Array }) readonly datalist?: string | string[]
+
+  /**
+   * If true, the element is displayed as disabled
+   */
+  @property({ type: Boolean }) readonly disabled?: boolean = false
+
+  /**
+   * An icon displayed at the right of the input
+   */
+  @property({ type: String }) readonly icon?: string
+
+  /**
+   * Specifies the maximum value
+   * use it with input type="number" or type="date"
+   * Example: max="180", max="2046-12-04"
+   */
+  @property({ type: Number }) readonly max?: number
+
+  /**
+   * Specifies the maximum number of characters allowed in an element
+   * use it with input type="number"
+   */
+  @property({ type: Number }) readonly maxlength?: number = undefined
+
+  /**
+   * Specifies the minimum value
+   * use it with input type="number" or type="date"
+   * Example: min="-3", min="1988-04-15"
+   */
+  @property({ type: Number }) readonly min?: number
+
+  /**
+   * Specifies the minimum number of characters allowed in an element
+   * use it with input type="number"
+   */
+  @property({ type: Number }) readonly minlength?: number
+
+  /**
+   * Is needed to reference the form data after the form is submitted
+   */
+  @property({ type: String }) readonly name?: string
+
+  /**
+   * Specifies a regular expression that element\'s value is checked against
+   */
+  @property({ type: String }) readonly pattern?: string
+
+  /**
+   * Specifies a short hint that describes the expected value of the element
+   */
+  @property({ type: String }) readonly placeholder?: string
+
+  /**
+   * Specifies that the element is read-only
+   */
+  @property({ type: Boolean }) readonly readonly?: boolean = false
+
+  /**
+   * Specifies that the element must be filled out before submitting the form
+   */
+  @property({ type: Boolean }) readonly required?: boolean = false
+
+  /**
+   * Sets the variant of the input field
+   */
+  @property({ reflect: true }) readonly variant?: ThemeStatusVariantType
+
+  /**
+   * Sets the word(s) of the tip of the input field
+   */
+  @property({ type: String }) readonly tip?: string
+
+  /**
+   * Specifies the interval between legal numbers in an input field
+   */
+  @property({ type: Number }) readonly step?: number
+
+  /**
+   * Specifies the type of input element
+   */
+  @property({ type: String }) readonly type?: InputTextType = 'text'
+
+  // Using custom setter / getter because I need to fire the change-event when the property actually change
+  /**
+   * Specifies the value of the input element
+   */
+  @property({ reflect: true, type: String }) value: InputValueType
+
+  // TODO: write doc
+  @state() private tabindex?: number
+
+  // TODO: write doc
+  @query('.input') inputElement: HTMLInputElement | HTMLTextAreaElement | undefined
+
+  constructor () {
+    super()
+    this.internals = this.attachInternals()
+  }
+
+  firstUpdated () {
+    this.handleValidation(null)
+  }
+
+  connectedCallback (): void {
+    super.connectedCallback()
+    const host = this.shadowRoot?.host as HTMLElement
+    const tabindex = host.getAttribute('tabindex')
+    if (host.hasAttribute('tabindex') && tabindex !== null && tabindex !== undefined) {
+      this.tabindex = parseInt(tabindex)
+      host.removeAttribute('tabindex')
+    }
+  }
+
+  private getValue (): string {
+    return typeof this.value === 'number' ? this.value.toString() : (this.value ?? '').toString()
+  }
+
+  private onInput = (ev: InputEvent) => {
+    const input = ev.target as HTMLInputElement | HTMLTextAreaElement
+    if (input) {
+      this.value = input.value ?? ''
+    }
+    this.internals.setFormValue(this.value as string)
+    // this.handleValidation(this.value as string)
+    this.internals.setValidity(input.validity, input.validationMessage, input)
+    this.dispatchEvent(new CustomEvent('mdsInputChange', { bubbles: true, detail: { value: this.value } }))
+    const event = new CustomEvent('mdsInputKeydown', { bubbles: true, detail: { value: ev } })
+    this.dispatchEvent(event)
+  }
+
+  private handleValidation (data: string | null) {
+    if (!data && this.required) {
+      this.internals.setValidity(
+        {
+          valueMissing: true,
+        },
+        'Il campo è obbligatorio',
+        this.inputElement,
+      )
+    } else {
+      this.internals.setValidity({})
+    }
+  }
+
+  private onBlur = () => {
+    // this.hasFocus = false
+    this.dispatchEvent(new CustomEvent('mdsInputBlur', { bubbles: true }))
+  }
+
+  private onFocus = (ev: Event) => {
+    const input = ev.target as HTMLInputElement | HTMLTextAreaElement
+    // this.hasFocus = true
+    this.dispatchEvent(new CustomEvent('mdsInputFocus', { bubbles: true }))
+    if (this.readonly) {
+      // setTimeout to avoid Safari 14.1.2
+      // to unselect text when mouse is clicked slowly
+      setTimeout(() => {
+        input.select()
+      }, 10)
+    }
+  }
+
+  private buildInput (value: string) {
+    if (this.type === 'textarea') {
+      return html`
+        <textarea
+          class=${clsx('input', this.icon && 'has-icon') ?? nothing}
+          .value=${value ?? nothing}
+          .maxLength=${this.maxlength ?? nothing}
+          .minLength=${this.minlength ?? nothing}
+          .name=${this.name ?? nothing}
+          .placeholder=${this.placeholder ?? nothing}
+          .tabIndex=${this.tabindex ?? nothing}
+          ?autoFocus=${this.autofocus ?? nothing}
+          ?disabled=${this.disabled ?? nothing}
+          ?readOnly=${this.readonly ?? nothing}
+          ?required=${this.required ?? nothing}
+          @blur=${this.onBlur ?? nothing}
+          @focus=${this.onFocus ?? nothing}
+          @input=${this.onInput ?? nothing}>
+        </textarea>
+      `
+    }
+
+    return html`
+      <input
+        class=${clsx('input', this.icon && 'has-icon')}
+        list=${this.datalist ? 'datalist' : nothing}
+        .autoComplete=${this.autocomplete ?? nothing}
+        .max=${this.max ?? nothing}
+        .maxLength=${this.maxlength ?? nothing}
+        .min=${this.min ?? nothing}
+        .minLength=${this.minlength ?? nothing}
+        .name=${this.name ?? nothing}
+        .type=${this.type ?? nothing}
+        .pattern=${this.pattern ?? nothing}
+        .placeholder=${this.placeholder ?? nothing}
+        .step=${this.step ?? nothing}
+        .tabIndex=${this.tabindex ?? nothing}
+        .value=${value ?? nothing}
+        ?autoFocus=${this.autofocus ?? nothing}
+        ?disabled=${this.disabled ?? nothing}
+        ?readOnly=${this.readonly ?? nothing}
+        ?required=${this.required ?? nothing}
+        @blur=${this.onBlur ?? nothing}
+        @focus=${this.onFocus ?? nothing}
+        @input=${this.onInput ?? nothing}
+      />
+    `
+  }
+
+  private buildDatalist () {
+    if (!this.datalist || (this.datalist.length && this.datalist.length === 0)) return html``
+
+    const datalist = Array.isArray(this.datalist) ? this.datalist : JSON.parse(this.datalist)
+
+    return html`
+      <datalist id="datalist" class="datalist">
+        ${datalist.map((element: string) => html`<option value="${element}"></option>`)}
+      </datalist>
+    `
+  }
+
+  // add the following methods to make your Custom Element participate
+  // in form validation
+  get validity () {
+    return this.internals.validity
+  }
+
+  get validationMessage () {
+    return this.internals.validationMessage
+  }
+
+  get willValidate () {
+    return this.internals.willValidate
+  }
+
+  checkValidity () {
+    return this.internals.checkValidity()
+  }
+
+  reportValidity () {
+    return this.internals.reportValidity()
+  }
+
+  formResetCallback () {
+    if (!this.inputElement) return
+
+    this.internals.setFormValue('')
+    this.inputElement.value = ''
+
+    this.dispatchEvent(new CustomEvent('mdsInputReset', { bubbles: true, detail: { input: this.inputElement } }))
+  }
+
+  render () {
+    const value = this.getValue()
+    const input = this.buildInput(value)
+    const datalist = this.buildDatalist()
+
+    return html`
+      ${input}
+      ${this.required && !this.readonly ? html`
+        <mds-text typography="option" class="tip top-1 required">Obbligatorio</mds-text>
+      ` : ''}
+      ${this.disabled ? html`
+        <mds-text typography="option" class="tip top-1 disabled">Disabilitato</mds-text>
+      ` : ''}
+      ${this.readonly ? html`
+        <mds-text typography="option" class="tip top-1 read-only">Sola lettura</mds-text>
+      ` : ''}
+      ${this.tip ? html`
+        <mds-text typography="option" class=${clsx('tip bottom-1', this.variant && 'tip-variant')}>${this.tip}</mds-text>
+      ` : ''}
+      ${datalist}
+      ${this.icon ? html`
+        <mds-icon class="${clsx('icon', this.variant)}" name="${this.icon}"></mds-icon>
+      ` : ''}
+    `
+  }
+}
+
+declare global {
+  interface HTMLElementTagNameMap {
+    'mds-input': MdsInput
+  }
+}

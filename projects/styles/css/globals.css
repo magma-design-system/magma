@@ -9,10 +9,13 @@
   --magma-dropdown-z-index: 4000;
   --magma-header-z-index: 1000;
   --magma-modal-z-index: 2000;
+  --magma-outline-animation-duration: 1.5s;
   --magma-outline-blur-offset: 6px;
-  --magma-outline-blur: 2px solid transparent;
+  --magma-outline-blur-color: transparent;
+  --magma-outline-blur: 2px solid var(--magma-outline-blur-color);
   --magma-outline-focus-offset: 2px;
-  --magma-outline-focus: 2px solid rgb(var(--tone-neutral-05));
+  --magma-outline-focus-color: rgb(var(--tone-neutral-05));
+  --magma-outline-focus: 2px solid var(--magma-outline-focus-color);
   --magma-overlay-blur: var(--magma-backdrop-blur);
   --magma-overlay-color: var(--magma-backdrop-color);
   --magma-overlay-opacity: 0.5;

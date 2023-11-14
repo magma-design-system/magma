@@ -1,6 +1,6 @@
 {
   "name": "@maggioli-design-system/mds-usage",
-  "version": "3.5.1",
+  "version": "3.7.1",
   "description": "mds-usage is a web-component from Magma Design System, built with StencilJS, TypeScript, Storybook. It's based on the web-component standard and it's designed to be agnostic from the JavaScirpt framework you are using.",
   "main": "dist/index.cjs.js",
   "module": "dist/index.js",
@@ -23,10 +23,10 @@
     "prepublishOnly": "npm run build"
   },
   "dependencies": {
-    "@maggioli-design-system/mds-text": "^3.4.2",
-    "@maggioli-design-system/styles": "^11.7.0",
-    "@stencil/core": "^4.3.0",
-    "clsx": "^2.0.0"
+    "@maggioli-design-system/mds-text": "3.6.1",
+    "@maggioli-design-system/styles": "13.0.1",
+    "@stencil/core": "4.7.2",
+    "clsx": "2.0.0"
   },
   "license": "MIT",
   "author": {

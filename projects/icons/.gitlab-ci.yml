@@ -4,14 +4,14 @@ icons-build:
   script:
     - nx run icons:build
   artifacts:
-    name: stencil-build
+    name: icons-build
     expire_in: 1 day
     paths:
       - projects/icons/dist
   cache:
     policy: pull-push
   rules:
-    - if: $CI_PIPELINE_SOURCE == "merge_request_event" || $CI_COMMIT_BRANCH =~ /^(dev|main|pipeline)$/
+    - if: $CI_PIPELINE_SOURCE == "merge_request_event" || $CI_COMMIT_BRANCH =~ /^(dev|main)$/
       changes:
         - projects/icons/**/*
 
@@ -24,7 +24,7 @@ icons-publish-test:
     BUILD_DIR: projects/icons
     COMPONENT: icons
   rules:
-    - if: $CI_PIPELINE_SOURCE == "merge_request_event" || $CI_COMMIT_BRANCH =~ /^(main|pipeline)$/
+    - if: $CI_PIPELINE_SOURCE == "merge_request_event" || $CI_COMMIT_BRANCH == "main"
       changes:
         - projects/icons/package.json
 

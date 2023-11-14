@@ -3,7 +3,8 @@ import chalk from 'chalk'
 import { copyFile, cp, mkdir, readFile, rename, stat, writeFile } from 'fs/promises'
 import { join } from 'path'
 import { PROJECT_DIR, COMPONENTS_DIR, TEMPLATES_DIR, TEMP_PROJECT_DIR } from './meta'
-import { logFileSavedTo } from '../../../scripts/log'
+import { logFileSavedTo, logDirectoryDeleted } from '../../../scripts/log'
+import { remove } from 'fs-extra'
 
 const compilePackage = async (componentName: string): Promise<void> => {
   const exists = !!( await stat(join(COMPONENTS_DIR, componentName, 'package.json'))
@@ -23,7 +24,7 @@ const compilePackage = async (componentName: string): Promise<void> => {
 const createPackage = async (componentName: string): Promise<void> => {
   const packageFile = await readFile(join(PROJECT_DIR, 'package.json')).catch(error => { throw Error(chalk.red(error)) })
   const packageData = JSON.parse(packageFile.toString())
-  const packageTemplate = await readFile(join(TEMPLATES_DIR, 'package.json')).catch(error => { throw Error(chalk.red(error)) })
+  const packageTemplate = await readFile(join(TEMPLATES_DIR, 'package.json.hbs')).catch(error => { throw Error(chalk.red(error)) })
 
   const template = Handlebars.compile(packageTemplate.toString())
   const data = {
@@ -43,7 +44,7 @@ const createPackage = async (componentName: string): Promise<void> => {
     })
 }
 
-const compileTemplateFile = async (componentName: string, fileName: string): Promise<void> => {
+const compileTemplateFile = async (componentName: string, templateFileName: string, fileName: string): Promise<void> => {
   const exists = !!( await stat(join(COMPONENTS_DIR, componentName, fileName))
     .catch(() => {
       return false
@@ -55,11 +56,11 @@ const compileTemplateFile = async (componentName: string, fileName: string): Pro
     return
   }
 
-  await createTemplateFile(componentName, fileName)
+  await createTemplateFile(componentName, templateFileName, fileName)
 }
 
-const createTemplateFile = async (componentName: string, fileName: string): Promise<void> => {
-  const packageTemplate = await readFile(join(TEMPLATES_DIR, fileName)).catch(error => { throw Error(chalk.red(error)) })
+const createTemplateFile = async (componentName: string, templateFileName: string, fileName: string): Promise<void> => {
+  const packageTemplate = await readFile(join(TEMPLATES_DIR, templateFileName)).catch(error => { throw Error(chalk.red(error)) })
 
   const template = Handlebars.compile(packageTemplate.toString())
   const templateCompiled = template({ componentName: componentName.replace('mds-', '') })
@@ -74,8 +75,9 @@ const createTemplateFile = async (componentName: string, fileName: string): Prom
 }
 
 const scaffoldStencil = async (componentName: string): Promise<void> => {
+  const fileNameTemplate = 'stencil.config.ts.hbs'
   const fileName = 'stencil.config.ts'
-  const stencilTemplate = await readFile(join(TEMPLATES_DIR, fileName)).catch(error => { throw Error(chalk.red(error)) })
+  const stencilTemplate = await readFile(join(TEMPLATES_DIR, fileNameTemplate)).catch(error => { throw Error(chalk.red(error)) })
   const template = Handlebars.compile(stencilTemplate.toString())
   const data = {
     componentName,
@@ -130,10 +132,21 @@ const checkComponentExistance = async (componentName: string): Promise<boolean> 
     .catch(() => false)
 }
 
+const cleanDir = async (dir: string): Promise<void> => {
+  return await remove(dir)
+    .catch(error => {
+      throw Error(chalk.red(error))
+    })
+    .then(() => {
+      logDirectoryDeleted(dir)
+    })
+}
+
 export {
   checkComponentExistance,
   checkComponentWasBuilt,
-  createTempProjectInstance,
+  cleanDir,
   compilePackage,
   compileTemplateFile,
+  createTempProjectInstance,
 }

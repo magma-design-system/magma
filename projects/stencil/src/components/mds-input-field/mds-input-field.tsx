@@ -1,27 +1,23 @@
-import {
-  Component,
-  Element,
-  Event,
-  EventEmitter,
-  Host,
-  Method,
-  Prop,
-  State,
-  Watch,
-  h,
-} from '@stencil/core'
-
 import clsx from 'clsx'
+import { AttachInternals, Component, Element, Event, EventEmitter, Host, Method, Prop, State, Watch, h } from '@stencil/core'
 import { AutocompleteType } from '@type/autocomplete'
-import { InputTextType } from '@type/input-text-type'
-import { InputValue } from '@interface/input-value'
+import { InputTextType, InputControlsLayoutType, InputControlsIconType } from '@type/input'
+import { MdsInputEventDetail } from '@component/mds-input/meta/event-detail'
+import { MdsInputInterface } from '@component/mds-input/mds-input'
 import { ThemeStatusVariantType } from '@type/variant'
+import { TypographyInputType } from '@type/typography'
 import { ValidationModelType } from './meta/types'
 import { modelValidator } from './meta/validators'
+
+export interface MdsInputFieldInterface extends MdsInputInterface {
+  label?: string
+  message?: string
+}
 
 @Component({
   tag: 'mds-input-field',
   styleUrl: 'mds-input-field.css',
+  formAssociated: true,
   shadow: true,
 })
 
@@ -32,8 +28,8 @@ export class MdsInputField {
   private tabindex?: number
 
   @Element() el!: HTMLMdsInputFieldElement
-
   @State() hasFocus = false
+  @AttachInternals() internals: ElementInternals
 
   /**
    * Specifies whether the element should have autocomplete enabled
@@ -46,9 +42,24 @@ export class MdsInputField {
   @Prop() autofocus = false
 
   /**
+   * Specifies the layout of the counter button when the input type is set to `number`
+   */
+  @Prop({ reflect: true }) readonly controlsLayout?: InputControlsLayoutType = 'vertical'
+
+  /**
+   * Specifies the icon type of the counter button when the input type is set to `number`
+   */
+  @Prop({ reflect: true }) readonly controlsIcon?: InputControlsIconType = 'arrow'
+
+  /**
    * If true, the element is displayed as disabled
    */
-  @Prop() disabled?: boolean = false
+  @Prop({ reflect: true }) disabled?: boolean = false
+
+  /**
+ * Specifies the label for the displayed state disabled
+ */
+  @Prop({ reflect: true }) readonly disabledLabel?: string = 'disattivato'
 
   /**
    * An icon displayed at the right of the input
@@ -60,7 +71,7 @@ export class MdsInputField {
    * use it with input type="number" or type="date"
    * Example: max="180", max="2046-12-04"
    */
-  @Prop() max?: number
+  @Prop() max?: string
 
   /**
    * Specifies the maximum number of characters allowed in an element
@@ -99,12 +110,22 @@ export class MdsInputField {
   /**
    * Specifies that the element is read-only
    */
-  @Prop() readonly?: boolean = false
+  @Prop({ reflect: true }) readonly?: boolean = false
+
+  /**
+   * Specifies the label for the displayed state read-only
+   */
+  @Prop({ reflect: true }) readonly readonlyLabel?: string = 'sola lettura'
 
   /**
    * Specifies that the element must be filled out before submitting the form
    */
-  @Prop() required?: boolean = false
+  @Prop({ reflect: true }) required?: boolean = false
+
+  /**
+   * Specifies the label for the displayed state required
+   */
+  @Prop({ reflect: true }) readonly requiredLabel?: string = 'obbligatorio'
 
   /**
    * Specifies the interval between legal numbers in an input field
@@ -114,7 +135,12 @@ export class MdsInputField {
   /**
    * Specifies the type of input element
    */
-  @Prop() type: InputTextType = 'text'
+  @Prop({ reflect: true }) type: InputTextType = 'text'
+
+  /**
+   * Specifies the typography of input element
+   */
+  @Prop({ reflect: true }) typography: TypographyInputType = 'detail'
 
   /**
    * Specifies the type of model data to be automatically validated
@@ -124,12 +150,12 @@ export class MdsInputField {
   /**
    * Specifies the value of the input element
    */
-  @Prop() value: string | number = ''
+  @Prop({ reflect: true }) value?: string = ''
 
   /**
    * Emits an InputValue when the value of the input element changes
    */
-  @Event({ eventName: 'mdsInputFieldChange' }) changeEvent!: EventEmitter<InputValue>
+  @Event({ eventName: 'mdsInputFieldChange' }) changeEvent!: EventEmitter<MdsInputEventDetail>
 
   /**
    * Emits a KeyboardEvent when a keboard key is pressed on the focused input element
@@ -163,6 +189,7 @@ export class MdsInputField {
   @Watch('value')
   protected valueChanged ():void {
     this.changeEvent.emit({ value: this.value })
+    this.internals.setFormValue(this.value ?? null)
     // this.cleanValue = this.value
     // console.log(this.cleanValue)
   }
@@ -188,9 +215,9 @@ export class MdsInputField {
     return Promise.resolve(this.nativeInput!)
   }
 
-  private getValue (): string {
-    return typeof this.value === 'number' ? this.value.toString() : (this.value ?? '')
-  }
+  // private getValue (): string {
+  //   return typeof this.value === 'number' ? this.value.toString() : (this.value ?? '')
+  // }
 
   private mask (value: string | number | null = '' ): string | number | null {
     let i = -1
@@ -203,7 +230,7 @@ export class MdsInputField {
         i += 1
         // console.log(v.length, i, v[ i ])
         // console.log(`'${mask[i]}'`)
-        maskedChars = v[ i ] !== undefined ? v[ i ] : ''
+        maskedChars = v[ i ] ?? ''
         return maskedChars
       })
     }
@@ -214,6 +241,7 @@ export class MdsInputField {
     const input = ev.target as HTMLInputElement | false
     if (input) {
       this.value = input.value
+      this.internals.setFormValue(this.value ?? null)
     }
     this.keyDownEvent.emit(ev as KeyboardEvent)
 
@@ -260,7 +288,7 @@ export class MdsInputField {
   /**
    * Display the variant of a message at the bottom of the input text field
    */
-  @Prop() variant?: ThemeStatusVariantType
+  @Prop({ reflect: true }) variant?: ThemeStatusVariantType
 
   /**
    * Display the variant of a message at the bottom of the input text field
@@ -268,7 +296,7 @@ export class MdsInputField {
   @Prop() tip?: string
 
   render () {
-    const value = this.getValue()
+    // const value = this.getValue()
     return (
       <Host>
         { this.label && <mds-text class="label" typography="label">{ this.label }</mds-text> }
@@ -276,7 +304,9 @@ export class MdsInputField {
           <mds-input
             autocomplete={this.autocomplete}
             autofocus={this.autofocus}
-            class={clsx(this.validate && modelValidator[this.validate].font)}
+            class={clsx('input', this.validate && modelValidator[this.validate].font)}
+            controlsLayout={this.controlsLayout}
+            controlsIcon={this.controlsIcon}
             disabled={this.disabled}
             icon={this.icon}
             id="field"
@@ -293,12 +323,13 @@ export class MdsInputField {
             readonly={this.readonly}
             ref={ input => (this.nativeInput = input)}
             required={this.required}
+            typography={this.typography}
             variant={this.variant}
             tip={this.tip}
             step={this.step}
             tabIndex={this.tabindex}
             type={this.type}
-            value={value}
+            value={this.value}
           />
           { this.message && <mds-text class="message" typography="caption">{ this.message }</mds-text> }
         </div>

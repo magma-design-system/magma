@@ -1,13 +1,14 @@
+@import '~@maggioli-design-system/styles/dist/css/animations.css'; /* included for focus effect */
 @import '../../tailwind/components.css';
 @tailwind components;
 @tailwind utilities;
 
 /**
-* @prop --mds-url-view-background: Sets the background-color of the component
-* @prop --mds-url-view-color: Sets the text color of the component
-* @prop --mds-url-view-radius: Sets the border-radius of the component
-* @prop --mds-url-view-shadow: Sets the box-shadow of the component
-*/
+  * @prop --mds-url-view-background: Sets the background-color of the component
+  * @prop --mds-url-view-color: Sets the text color of the component
+  * @prop --mds-url-view-radius: Sets the border-radius of the component
+  * @prop --mds-url-view-shadow: Sets the box-shadow of the component
+  */
 
 :host {
 

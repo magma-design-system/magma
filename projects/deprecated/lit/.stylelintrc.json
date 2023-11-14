@@ -1,0 +1,17 @@
+{
+  "repo": [
+    "https://stylelint.io/user-guide/rules/list"
+  ],
+  "extends": [
+    "../../.stylelintrc.json"
+  ],
+  "ignoreFiles": [
+    "**/dist/*.css",
+    "**/*.js",
+    "**/*.jsx",
+    "**/*.svg"
+  ],
+  "rules": {
+    "import-notation": "string"
+  }
+}

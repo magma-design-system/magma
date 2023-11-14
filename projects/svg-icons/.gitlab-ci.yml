@@ -6,7 +6,7 @@ svg-icons-publish-test:
     BUILD_DIR: projects/svg-icons
     COMPONENT: svg-icons
   rules:
-    - if: $CI_PIPELINE_SOURCE == "merge_request_event" || $CI_COMMIT_BRANCH =~ /^(main|pipeline)$/
+    - if: $CI_PIPELINE_SOURCE == "merge_request_event" || $CI_COMMIT_BRANCH == "main"
       changes:
         - projects/svg-icons/package.json
 

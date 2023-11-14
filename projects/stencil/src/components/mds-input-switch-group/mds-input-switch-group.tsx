@@ -1,5 +1,5 @@
 import { Component, Host, h, Listen, Prop, Element } from '@stencil/core'
-import { InputValueType } from '@type/input-value-type'
+import { InputValueType } from '@type/input'
 
 @Component({
   tag: 'mds-input-switch-group',

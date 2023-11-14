@@ -10,7 +10,7 @@ module.exports = {
       }],
       '@typescript-eslint/prefer-nullish-coalescing': 'error',
       '@typescript-eslint/no-non-null-assertion': 'error',
-      '@typescript-eslint/no-unused-vars': ['warn', {
+      '@typescript-eslint/no-unused-vars': ['error', {
         varsIgnorePattern: '^h$',
       }],
       'react/jsx-no-bind': 'off',

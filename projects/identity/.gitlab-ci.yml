@@ -8,8 +8,10 @@ identity-build:
     expire_in: 1 day
     paths:
       - projects/identity/dist
+  cache:
+    policy: pull-push
   rules:
-    - if: $CI_PIPELINE_SOURCE == "merge_request_event" || $CI_COMMIT_BRANCH =~ /^(dev|main|pipeline)$/
+    - if: $CI_PIPELINE_SOURCE == "merge_request_event" || $CI_COMMIT_BRANCH =~ /^(dev|main)$/
       changes:
         - projects/identity/**/*
 
@@ -22,7 +24,7 @@ identity-publish-test:
     BUILD_DIR: projects/identity
     COMPONENT: identity
   rules:
-    - if: $CI_PIPELINE_SOURCE == "merge_request_event" || $CI_COMMIT_BRANCH =~ /^(main|pipeline)$/
+    - if: $CI_PIPELINE_SOURCE == "merge_request_event" || $CI_COMMIT_BRANCH == "main"
       changes:
         - projects/identity/package.json
 

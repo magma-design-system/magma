@@ -1,4 +1,4 @@
-/* stylelint-disable */
+@import '~@maggioli-design-system/styles/dist/css/animations.css'; /* included for focus effect */
 @import '../../tailwind/components.css';
 @import './css/components.css';
 
@@ -39,12 +39,12 @@
   z-index: var(--mds-modal-z-index, 1000);
 }
 
-:host( [position=top] ) {
+:host( [position="top"] ) {
   align-items: flex-start;
   justify-content: center;
 }
 
-:host( [position=bottom] ) {
+:host( [position="bottom"] ) {
   align-items: flex-end;
   justify-content: center;
 }
@@ -74,8 +74,8 @@
   cursor: pointer;
   fill: inherit;
   position: absolute;
-  transform-origin: center;
   transform: translate(0, 24px) rotate(90deg);
+  transform-origin: center;
   transition-property: opacity, outline, outline-offset, transform;
 }
 

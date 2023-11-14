@@ -114,7 +114,7 @@ export class MdsBreadcrumb {
     return (
       <Host>
         { this.back &&
-          <div tabindex="0" class="back focusable" onClick={ this.togglePrevious }>
+          <div tabindex="0" class="back focus-bounce" onClick={ this.togglePrevious }>
             <i class="svg icon" innerHTML={miBaselineArrowBack}/>
           </div>
         }

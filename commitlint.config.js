@@ -38,6 +38,7 @@ module.exports = {
         'design-tokens',
         'icons',
         'identity',
+        'lit',
         'magma',
         'react',
         'stencil',

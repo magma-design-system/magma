@@ -1,0 +1,44 @@
+{
+  "skipLibCheck": true,
+  "compilerOptions": {
+    "allowSyntheticDefaultImports": true,
+    "allowUnreachableCode": false,
+    "baseUrl": ".",
+    "declaration": false,
+    "experimentalDecorators": true,
+    "lib": ["ES2020", "DOM", "DOM.Iterable"],
+    "esModuleInterop": true,
+    "module": "esnext",
+    "moduleResolution": "node",
+    "noUnusedLocals": true,
+    "noUnusedParameters": true,
+    "resolveJsonModule": true,
+    "target": "ES2020",
+    "strictNullChecks": true,
+    "paths": {
+      "@common/*": ["common/*"],
+      "@component/*": ["components/*"],
+      "@placeholder": ["https://via.placeholder.com"],
+      "@stencil-common/*": ["../stencil/src/common/*"],
+      "@stencil-component/*": ["../stencil/src/components/*"],
+      "@stencil-dictionary/*": ["../stencil/src/dictionary/*"],
+      "@stencil-dist/*": ["../stencil/dist/*"],
+      "@stencil-fixture/*": ["../stencil/src/fixtures/*"],
+      "@stencil-icon/*": ["../stencil/assets/svg/*"],
+      "@stencil-interface/*": ["../stencil/src/interface/*"],
+      "@stencil-type/*": ["../stencil/src/type/*"]
+    },
+  },
+  "include": [
+    "components",
+    "scripts",
+    "wrapper"
+  ],
+  "exclude": [
+    "template",
+    "components/**/dist",
+    "components/**/node_modules",
+    "wrapper/dist",
+    "wrapper/node_modules"
+  ]
+}

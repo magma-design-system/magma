@@ -59,3 +59,7 @@ export type TypographyTooltipType =
   | 'caption'
   | 'detail'
   | 'tip'
+
+export type TypographyInputType =
+  | 'snippet'
+  | 'detail'

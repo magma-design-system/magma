@@ -1,0 +1,198 @@
+import clsx from 'clsx'
+import globalStyles from './{{ componentName }}.css?inline'
+import { AutocompleteType } from '@stencil-type/autocomplete'
+import { InputTextType } from '@stencil-type/input-text-type'
+import { InputValueType } from '@stencil-type/input-value-type'
+import { LitElement, html, unsafeCSS, nothing } from 'lit'
+import { customElement, property, query, state } from 'lit/decorators.js'
+
+export type ThemeStatusVariantType =
+  | 'error'
+  | 'info'
+  | 'success'
+  | 'warning'
+
+@customElement('{{ componentName }}')
+export class MdsInput extends LitElement {
+
+  static formAssociated = true
+
+  static styles = [
+    unsafeCSS(globalStyles),
+  ]
+
+  private internals
+
+  /**
+   * Specifies a short hint that describes the expected value of the element
+   */
+  @property({ type: String }) readonly placeholder?: string
+
+  // TODO: write doc
+  @state() private tabindex?: number
+
+  // TODO: write doc
+  @query('.input') inputElement: HTMLInputElement | HTMLTextAreaElement | undefined
+
+  constructor () {
+    super()
+    this.internals = this.attachInternals()
+  }
+
+  firstUpdated () {
+    this.handleValidation(null)
+  }
+
+  connectedCallback (): void {
+    super.connectedCallback()
+    const host = this.shadowRoot?.host as HTMLElement
+    const tabindex = host.getAttribute('tabindex')
+    if (host.hasAttribute('tabindex') && tabindex !== null && tabindex !== undefined) {
+      this.tabindex = parseInt(tabindex)
+      host.removeAttribute('tabindex')
+    }
+  }
+
+  private getValue (): string {
+    return typeof this.value === 'number' ? this.value.toString() : (this.value ?? '').toString()
+  }
+
+  private onInput = (ev: InputEvent) => {
+    const input = ev.target as HTMLInputElement | HTMLTextAreaElement
+    if (input) {
+      this.value = input.value ?? ''
+    }
+    this.internals.setFormValue(this.value as string)
+    // this.handleValidation(this.value as string)
+    this.internals.setValidity(input.validity, input.validationMessage, input)
+    this.dispatchEvent(new CustomEvent('mdsInputChange', { bubbles: true, detail: { value: this.value } }))
+    const event = new CustomEvent('mdsInputKeydown', { bubbles: true, detail: { value: ev } })
+    this.dispatchEvent(event)
+  }
+
+  private handleValidation (data: string | null) {
+    if (!data && this.required) {
+      this.internals.setValidity(
+        {
+          valueMissing: true,
+        },
+        'Il campo è obbligatorio',
+        this.inputElement,
+      )
+    } else {
+      this.internals.setValidity({})
+    }
+  }
+
+  private onBlur = () => {
+    // this.hasFocus = false
+    this.dispatchEvent(new CustomEvent('mdsInputBlur', { bubbles: true }))
+  }
+
+  private onFocus = (ev: Event) => {
+    const input = ev.target as HTMLInputElement | HTMLTextAreaElement
+    // this.hasFocus = true
+    this.dispatchEvent(new CustomEvent('mdsInputFocus', { bubbles: true }))
+    if (this.readonly) {
+      // setTimeout to avoid Safari 14.1.2
+      // to unselect text when mouse is clicked slowly
+      setTimeout(() => {
+        input.select()
+      }, 10)
+    }
+  }
+
+  private buildInput (value: string) {
+    if (this.type === 'textarea') {
+      return html`
+        <textarea
+          class=${clsx('input', this.icon && 'has-icon') ?? nothing}
+          .placeholder=${this.placeholder ?? nothing}>
+        </textarea>
+      `
+    }
+
+    return html`
+      <input
+        class=${clsx('input', this.icon && 'has-icon')}
+        .placeholder=${this.placeholder ?? nothing}
+      />
+    `
+  }
+
+  private buildDatalist () {
+    if (!this.datalist || (this.datalist.length && this.datalist.length === 0)) return html``
+
+    const datalist = Array.isArray(this.datalist) ? this.datalist : JSON.parse(this.datalist)
+
+    return html`
+      <datalist id="datalist" class="datalist">
+        ${datalist.map((element: string) => html`<option value="${element}" />`)}
+      </datalist>
+    `
+  }
+
+  // add the following methods to make your Custom Element participate
+  // in form validation
+
+  get validity () {
+    return this.internals.validity
+  }
+
+  get validationMessage () {
+    return this.internals.validationMessage
+  }
+
+  get willValidate () {
+    return this.internals.willValidate
+  }
+
+  checkValidity () {
+    return this.internals.checkValidity()
+  }
+
+  reportValidity () {
+    return this.internals.reportValidity()
+  }
+
+  formResetCallback () {
+    if (!this.inputElement) return
+
+    this.internals.setFormValue('')
+    this.inputElement.value = ''
+
+    this.dispatchEvent(new CustomEvent('mdsInputReset', { bubbles: true, detail: { input: this.inputElement } }))
+  }
+
+  render () {
+    const value = this.getValue()
+    const input = this.buildInput(value)
+    const datalist = this.buildDatalist()
+
+    return html`
+      ${input}
+      ${this.required && !this.readonly ? html`
+        <mds-text typography="option" class="tip top-1 required">Obbligatorio</mds-text>
+      ` : ''}
+      ${this.disabled ? html`
+        <mds-text typography="option" class="tip top-1 disabled">Disabilitato</mds-text>
+      ` : ''}
+      ${this.readonly ? html`
+        <mds-text typography="option" class="tip top-1 read-only">Sola lettura</mds-text>
+      ` : ''}
+      ${this.tip ? html`
+        <mds-text typography="option" class=${clsx('tip bottom-1', this.variant && 'tip-variant')}>${this.tip}</mds-text>
+      ` : ''}
+      ${datalist}
+      ${this.icon ? html`
+        <mds-icon class="${clsx('icon', this.variant)}" name="${this.icon}"/>
+      ` : ''}
+    `
+  }
+}
+
+declare global {
+  interface HTMLElementTagNameMap {
+    '{{ componentName }}': MdsInput
+  }
+}

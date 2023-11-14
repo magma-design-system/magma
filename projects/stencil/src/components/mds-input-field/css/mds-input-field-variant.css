@@ -1,6 +1,6 @@
 @tailwind utilities;
 
-:host[variant="info"] {
+:host( [variant="info"] ) {
 
   --mds-input-field-message-color: theme('colors.status-info-02');
   --mds-input-field-message-background: theme('colors.status-info-09');

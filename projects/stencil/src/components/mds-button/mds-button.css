@@ -1,6 +1,6 @@
-@import '../../tailwind/components.css';
 @import '~@maggioli-design-system/styles/dist/tailwind/typography.css';
-@tailwind base;
+@import '../../tailwind/components.css';
+@tailwind base; /* typography and focus animation */
 @tailwind components;
 @tailwind utilities;
 
@@ -31,7 +31,7 @@
   @apply
     duration-200
     ease-out
-    focus-off
+    focus-bounce
     px-6
     py-2;
 
@@ -52,7 +52,9 @@
 }
 
 :host(:focus-visible) {
-  @apply focus-on;
+  @apply
+    focus-bounce--focused
+    z-10;
 }
 
 .text {
