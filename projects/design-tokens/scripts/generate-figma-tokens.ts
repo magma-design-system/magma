@@ -1,8 +1,10 @@
 // this script generate a json file that can be imported to figma through 'Import/Export Variables' plugin only.
 // https://www.figma.com/plugin-docs/working-with-variables/#createvariable
-
+import chalk from 'chalk'
 import defaultTokens from '../tokens/color/generated/default.json'
 import { writeFile } from 'fs-extra'
+import { mkdir } from 'fs/promises'
+import { resolve } from 'path'
 import { DIST_DIR } from './meta'
 
 enum VariableType {
@@ -82,7 +84,15 @@ const generateFigmaTokens = (nameCollection: string, tokens) => {
   collection.variableIds = Array.from(variables.keys())
   collection.variables = Array.from(variables.values())
 
-  writeFile(`${DIST_DIR}/json/figma-${nameCollection.toLocaleLowerCase().replace(/\s/g, '-')}.json`, JSON.stringify(collection))
+  console.info('pino')
+
+  mkdir( resolve(`${DIST_DIR}/json`), { recursive: true })
+    .then(() => {
+      writeFile(`${DIST_DIR}/json/figma-${nameCollection.toLocaleLowerCase().replace(/\s/g, '-')}.json`, JSON.stringify(collection))
+    })
+    .catch(error => {
+      throw Error(chalk.red(error))
+    })
 }
 
 const buildVariables = (tokens): Map<string, Variable> => {

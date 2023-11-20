@@ -8,7 +8,7 @@ import { fileURLToPath } from 'url'
 
 const PROJECT_PATH = resolve(dirname(fileURLToPath(import.meta.url)), './')
 const COLOR_PATH = `${PROJECT_PATH}/tokens/color/generated`
-const CONFIG_PATH = `${PROJECT_PATH}/config/generated`
+const CONFIG_PATH = `${PROJECT_PATH}/config/colors/generated`
 const TEMPLATES_PATH = `${PROJECT_PATH}/template`
 
 const colorsRawData = readFileSync(resolve(PROJECT_PATH, 'colors-config.json'))
