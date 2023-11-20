@@ -1,6 +1,6 @@
 {
   "source": [
-    "properties/color/label.json"
+    "tokens/color/status.json"
   ],
   "platforms": {
     "css": {
@@ -9,11 +9,11 @@
       "files": [
         {
           "format": "css/vars",
-          "destination": "colors-hex-label.css"
+          "destination": "colors-hex-status.css"
         },
         {
           "format": "css/vars-rgb-channels",
-          "destination": "colors-rgb-label.css"
+          "destination": "colors-rgb-status.css"
         }
       ]
     }

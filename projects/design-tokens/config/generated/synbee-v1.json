@@ -1,6 +1,6 @@
 {
   "source": [
-    "properties/color/synbee-v1.json"
+    "tokens/color/generated/synbee-v1.json"
   ],
   "platforms": {
     "css": {
@@ -14,6 +14,16 @@
         {
           "format": "css/vars-rgb-channels",
           "destination": "colors-rgb-synbee-v1.css"
+        }
+      ]
+    },
+    "dart": {
+      "transformGroup": "js",
+      "buildPath": "dist/flutter/",
+      "files": [
+        {
+          "destination": "colors-synbee-v1.dart",
+          "format": "flutter/color"
         }
       ]
     }

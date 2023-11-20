@@ -6,13 +6,12 @@ import Handlebars from 'handlebars'
 import { dirname, resolve } from 'path'
 import { fileURLToPath } from 'url'
 
-const TOKENS_DIR = resolve('./tokens')
 const PROJECT_PATH = resolve(dirname(fileURLToPath(import.meta.url)), './')
-const COLOR_PATH = `${PROJECT_PATH}/properties/color/generated`
+const COLOR_PATH = `${PROJECT_PATH}/tokens/color/generated`
 const CONFIG_PATH = `${PROJECT_PATH}/config/generated`
 const TEMPLATES_PATH = `${PROJECT_PATH}/template`
 
-const colorsRawData = readFileSync(resolve(TOKENS_DIR, 'colors.json'))
+const colorsRawData = readFileSync(resolve(PROJECT_PATH, 'colors-config.json'))
 const { colors, colorspace, ratios, smooth } = JSON.parse(colorsRawData)
 
 const output = 'HEX'
@@ -175,9 +174,9 @@ const formatPalette = async opts => {
     }
   })
 
-  if (exportGroups !== {}) {
-    await exportPalettes(exportGroups)
-  }
+  // if (exportGroups !== {}) {
+  await exportPalettes(exportGroups)
+  // }
 
   const jsonPalette = JSON.stringify(palette, null, 2)
 

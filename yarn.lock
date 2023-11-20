@@ -1895,6 +1895,16 @@
   resolved "https://registry.npmjs.org/@juggle/resize-observer/-/resize-observer-3.4.0.tgz#08d6c5e20cf7e4cc02fd181c4b0c225cd31dbb60"
   integrity sha512-dfLbk+PwWvFzSxwk3n5ySL0hfBog779o8h68wK/7/APo/7cgyWp5jcXockbxdk5kFRkbeXWm4Fbi9FrdN381sA==
 
+"@maggioli-design-system/design-tokens@11.0.1":
+  version "11.0.1"
+  resolved "https://registry.npmjs.org/@maggioli-design-system/design-tokens/-/design-tokens-11.0.1.tgz#77ca972fe82e4b139835f3e4ca63ddb3ccbed2f0"
+  integrity sha512-3hXxutf0xYSMc1VJlLeyoI03VmGauiA1hXeioDrcWIq+bmd5nhB0/x3fcHfjYV+r4NW0zlpU54AZBZoG01+/mw==
+
+"@maggioli-design-system/identity@2.0.0":
+  version "2.0.0"
+  resolved "https://registry.npmjs.org/@maggioli-design-system/identity/-/identity-2.0.0.tgz#456f4103f3c81b89846473e9c0edf3a907807917"
+  integrity sha512-u0VgoEp0TRIWlip7intvx4rCuZRBYQddexPiuGl2d5X29p9H5jmL96tWHnXVQnWV0i5jvr7Njdb6isk78CUBjw==
+
 "@maggioli-design-system/svg-icons@^2.6.3":
   version "2.10.1"
   resolved "https://registry.npmjs.org/@maggioli-design-system/svg-icons/-/svg-icons-2.10.1.tgz#3c86d5b738407a7fe756877aa87baf7b4d2d5f8d"
@@ -2422,10 +2432,10 @@
   dependencies:
     "@sinonjs/commons" "^1.7.0"
 
-"@stencil/core@4.7.1":
-  version "4.7.1"
-  resolved "https://registry.npmjs.org/@stencil/core/-/core-4.7.1.tgz#38f3f42c2348bebd22aee34fc170518870b9baa0"
-  integrity sha512-KDWA/3qDiABA5LqtHCmTVwORuzgu/YdC0FpSBwVmwlw6K8jUjbTA5JB6Q03da2F+EQlDHOVgbW0TNtHCm54uXQ==
+"@stencil/core@4.7.2":
+  version "4.7.2"
+  resolved "https://registry.npmjs.org/@stencil/core/-/core-4.7.2.tgz#e83db6a79b2e30d56848c860314124588b02e178"
+  integrity sha512-sPPDYrXiTbfeUF5CCyfqysXK/yfTHC4xYR1+nHzGkS2vhRSBOLp0oPuB+xkJLKA+K2ZqDJUxpOnDxy1CLWwBXA==
 
 "@stencil/eslint-plugin@0.4.0":
   version "0.4.0"
@@ -13139,10 +13149,10 @@ strong-log-transformer@^2.1.0:
     minimist "^1.2.0"
     through "^2.3.4"
 
-style-dictionary@3.8.0:
-  version "3.8.0"
-  resolved "https://registry.npmjs.org/style-dictionary/-/style-dictionary-3.8.0.tgz#7cb8d64360c53431f768d44def665f61e971a73e"
-  integrity sha512-wHlB/f5eO3mDcYv6WtOz6gvQC477jBKrwuIXe+PtHskTCBsJdAOvL8hCquczJxDui2TnwpeNE+2msK91JJomZg==
+style-dictionary@3.9.0:
+  version "3.9.0"
+  resolved "https://registry.npmjs.org/style-dictionary/-/style-dictionary-3.9.0.tgz#c89ba60b81a821c52515ae45d5e5c2da41c34546"
+  integrity sha512-mnq8QfPJoj3ellKHRKZwmCgYUGgwYtoagW5edyKpR09O1W4/XqBdeKXoY/LbeIKqHrqVR7sGgk6E/dNYkPS4aA==
   dependencies:
     chalk "^4.0.0"
     change-case "^4.1.2"

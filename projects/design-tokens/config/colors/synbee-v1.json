@@ -1,6 +1,6 @@
 {
   "source": [
-    "properties/color/brand.json"
+    "tokens/color/synbee-v1.json"
   ],
   "platforms": {
     "css": {
@@ -9,11 +9,11 @@
       "files": [
         {
           "format": "css/vars",
-          "destination": "colors-hex-brand.css"
+          "destination": "colors-hex-synbee-v1.css"
         },
         {
           "format": "css/vars-rgb-channels",
-          "destination": "colors-rgb-brand.css"
+          "destination": "colors-rgb-synbee-v1.css"
         }
       ]
     }

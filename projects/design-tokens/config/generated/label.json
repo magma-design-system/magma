@@ -1,11 +1,6 @@
 {
   "source": [
-    {{#ifEquals fileName 'default'}}
-    "tokens/color/generated/{{../fileName}}.json",
-    "tokens/color/themes.json"
-    {{else}}
-    "tokens/color/generated/{{../fileName}}.json"
-    {{/ifEquals}}
+    "tokens/color/generated/label.json"
   ],
   "platforms": {
     "css": {
@@ -14,11 +9,11 @@
       "files": [
         {
           "format": "css/vars",
-          "destination": "colors-hex-{{fileName}}.css"
+          "destination": "colors-hex-label.css"
         },
         {
           "format": "css/vars-rgb-channels",
-          "destination": "colors-rgb-{{fileName}}.css"
+          "destination": "colors-rgb-label.css"
         }
       ]
     },
@@ -27,7 +22,7 @@
       "buildPath": "dist/flutter/",
       "files": [
         {
-          "destination": "colors-{{fileName}}.dart",
+          "destination": "colors-label.dart",
           "format": "flutter/color"
         }
       ]

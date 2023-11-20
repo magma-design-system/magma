@@ -1,6 +1,6 @@
 {
   "source": [
-    "properties/color/status.json"
+    "tokens/color/generated/status.json"
   ],
   "platforms": {
     "css": {
@@ -14,6 +14,16 @@
         {
           "format": "css/vars-rgb-channels",
           "destination": "colors-rgb-status.css"
+        }
+      ]
+    },
+    "dart": {
+      "transformGroup": "js",
+      "buildPath": "dist/flutter/",
+      "files": [
+        {
+          "destination": "colors-status.dart",
+          "format": "flutter/color"
         }
       ]
     }

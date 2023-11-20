@@ -1,0 +1,33 @@
+{
+  "typography": {
+    "size": {
+      "3xl": {
+        "value": "48px"
+      },
+      "2xl": {
+        "value": "36px"
+      },
+      "xl": {
+        "value": "30px"
+      },
+      "lg": {
+        "value": "24px"
+      },
+      "md": {
+        "value": "20px"
+      },
+      "default": {
+        "value": "16px"
+      },
+      "sm": {
+        "value": "14px"
+      },
+      "xs": {
+        "value": "12px"
+      },
+      "2xs": {
+        "value": "10px"
+      }
+    }
+  }
+}

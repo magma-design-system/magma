@@ -1,0 +1,15 @@
+{
+  "typography": {
+    "sizing": {
+      "phrase": {
+        "value": "50ch"
+      },
+      "text": {
+        "value": "75ch"
+      },
+      "title": {
+        "value": "30ch"
+      }
+    }
+  }
+}

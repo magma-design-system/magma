@@ -1,0 +1,24 @@
+{
+  "sizing": {
+    "aspectRatio": {
+      "cover": {
+        "value": "2:3"
+      },
+      "picture": {
+        "value": "1:4"
+      },
+      "square": {
+        "value": "1:1"
+      },
+      "a4": {
+        "value": "1:1.4"
+      },
+      "book": {
+        "value": "{sizing.aspectRatio.a4}"
+      },
+      "video": {
+        "value": "16:9"
+      }
+    }
+  }
+}

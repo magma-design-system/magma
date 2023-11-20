@@ -1,6 +1,6 @@
 {
   "source": [
-    "properties/color/brand-synbee.json"
+    "tokens/color/brand-synbee.json"
   ],
   "platforms": {
     "css": {

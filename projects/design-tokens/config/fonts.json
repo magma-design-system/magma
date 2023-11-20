@@ -1,6 +1,9 @@
 {
   "source": [
-    "properties/font/default.json"
+    "tokens/typography/default.json"
+  ],
+  "include": [
+    "tokens/typography/**/*.json"
   ],
   "platforms": {
     "js": {

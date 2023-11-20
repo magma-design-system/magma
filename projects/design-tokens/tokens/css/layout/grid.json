@@ -1,0 +1,24 @@
+{
+  "css": {
+    "gridTemplateColumns": {
+      "fit-lg": {
+        "value": "repeat(auto-fit, minmax(17.5rem, 1fr))"
+      },
+      "fit-md": {
+        "value": "repeat(auto-fit, minmax(15rem, 1fr))"
+      },
+      "fit-sm": {
+        "value": "repeat(auto-fit, minmax(10rem, 1fr))"
+      },
+      "fit-xl": {
+        "value": "repeat(auto-fit, minmax(20rem, 1fr))"
+      },
+      "fit": {
+        "value": "repeat(auto-fit, minmax(12.5rem, 1fr))"
+      },
+      "full": {
+        "value": "repeat(auto-fit, minmax(1px, 100%))"
+      }
+    }
+  }
+}

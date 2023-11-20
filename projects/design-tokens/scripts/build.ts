@@ -1,10 +1,4 @@
 /* eslint-disable @typescript-eslint/no-var-requires */
-const beautify = require('js-beautify').js
-import chalk from 'chalk'
-import path from 'path'
-import { DIST_DIR, TOKENS_DIR } from './meta'
-import { readFile, writeFile } from 'fs/promises'
-import { logFileActionDone } from '../../../scripts/log'
 import StyleDictionary from 'style-dictionary/types'
 import cssVarsHex from '../formats/css-vars-hex/css-vars-hex'
 import cssVarsRgb from '../formats/css-vars-rgb/css-vars-rgb'
@@ -16,11 +10,6 @@ import jsTailwindFontFamily from '../formats/js-tailwind-font-family/js-tailwind
 import jsTailwindFontSize from '../formats/js-tailwind-font-size/js-tailwind-font-size'
 import jsonCoolors from '../formats/json-coolors/json-coolors'
 
-const beautifyConfig = {
-  indent_size: 2,
-  space_in_empty_paren: true,
-}
-
 let StyleDictionaryColors: StyleDictionary.Core,
   StyleDictionaryBrand: StyleDictionary.Core,
   StyleDictionaryBrandSynbee: StyleDictionary.Core,
@@ -30,12 +19,12 @@ let StyleDictionaryColors: StyleDictionary.Core,
   StyleDictionarySynbeeV1: StyleDictionary.Core,
   StyleDictionaryTones: StyleDictionary.Core
 
-StyleDictionaryColors = jsModule.extend('./config/colors.json')
-StyleDictionaryColors = jsModuleTailwindColors.extend('./config/colors.json')
-StyleDictionaryColors = flutterColor.extend('./config/colors.json')
-StyleDictionaryColors = cssVarsRgb.extend('./config/colors.json')
-StyleDictionaryColors = cssVarsHex.extend('./config/colors.json')
-StyleDictionaryColors = jsonCoolors.extend('./config/colors.json')
+StyleDictionaryColors = jsModule.extend('./config/colors/default.json')
+StyleDictionaryColors = jsModuleTailwindColors.extend('./config/colors/default.json')
+StyleDictionaryColors = flutterColor.extend('./config/colors/default.json')
+StyleDictionaryColors = cssVarsRgb.extend('./config/colors/default.json')
+StyleDictionaryColors = cssVarsHex.extend('./config/colors/default.json')
+StyleDictionaryColors = jsonCoolors.extend('./config/colors/default.json')
 StyleDictionaryColors.buildAllPlatforms()
 
 StyleDictionaryTones = cssVarsHex.extend('./config/generated/tones.json')
@@ -65,52 +54,3 @@ let StyleDictionaryFontFamily: StyleDictionary.Core = jsTailwindFontFamily.exten
 StyleDictionaryFontFamily = jsTailwindFontSize.extend('./config/fonts.json')
 StyleDictionaryFontFamily = flutterFont.extend('./config/fonts.json')
 StyleDictionaryFontFamily.buildAllPlatforms()
-
-const saveAsJs = ({ source, varName, destination }: { source: string, varName: string, destination: string }) => {
-  readFile(path.resolve(__dirname, source))
-    .then((data: Buffer) => {
-      const jsonData = JSON.parse(data.toString())
-      const jsData = `
-      const ${varName} = ${JSON.stringify(jsonData, null, 4)}
-      module.exports = {
-        ${varName},
-      }
-      `
-      const jsString = beautify(jsData, beautifyConfig)
-
-      writeFile(destination, jsString)
-        .then(() => {
-          logFileActionDone({
-            entity: 'token',
-            source,
-            actionDone: 'exported',
-            destination,
-          })
-        })
-        .catch(error => {
-          throw Error(chalk.red(error))
-        })
-    })
-    .catch(error => {
-      throw Error(chalk.red(error))
-    })
-}
-
-saveAsJs({
-  destination: path.join(DIST_DIR, 'js/ease.js'),
-  source: path.join(TOKENS_DIR, 'css/ease.json'),
-  varName: 'ease',
-})
-
-
-saveAsJs({
-  destination: path.join(DIST_DIR, 'js/gap.js'),
-  source: path.join(TOKENS_DIR, 'css/gap.json'),
-  varName: 'gap',
-})
-
-saveAsJs({
-  destination: path.join(DIST_DIR, 'js/media.js'),
-  source: path.join(TOKENS_DIR, 'css/media.json'),
-  varName: 'media',
-})

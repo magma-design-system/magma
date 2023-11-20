@@ -1,6 +1,6 @@
 {
   "source": [
-    "properties/color/tones.json"
+    "tokens/color/generated/tones.json"
   ],
   "platforms": {
     "css": {
@@ -14,6 +14,16 @@
         {
           "format": "css/vars-rgb-channels",
           "destination": "colors-rgb-tones.css"
+        }
+      ]
+    },
+    "dart": {
+      "transformGroup": "js",
+      "buildPath": "dist/flutter/",
+      "files": [
+        {
+          "destination": "colors-tones.dart",
+          "format": "flutter/color"
         }
       ]
     }

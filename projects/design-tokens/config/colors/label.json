@@ -1,0 +1,21 @@
+{
+  "source": [
+    "tokens/color/label.json"
+  ],
+  "platforms": {
+    "css": {
+      "transformGroup": "css",
+      "buildPath": "dist/css/",
+      "files": [
+        {
+          "format": "css/vars",
+          "destination": "colors-hex-label.css"
+        },
+        {
+          "format": "css/vars-rgb-channels",
+          "destination": "colors-rgb-label.css"
+        }
+      ]
+    }
+  }
+}

@@ -1,0 +1,21 @@
+{
+  "source": [
+    "tokens/color/brand.json"
+  ],
+  "platforms": {
+    "css": {
+      "transformGroup": "css",
+      "buildPath": "dist/css/",
+      "files": [
+        {
+          "format": "css/vars",
+          "destination": "colors-hex-brand.css"
+        },
+        {
+          "format": "css/vars-rgb-channels",
+          "destination": "colors-rgb-brand.css"
+        }
+      ]
+    }
+  }
+}

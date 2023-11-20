@@ -1,7 +1,7 @@
 // this script generate a json file that can be imported to figma through 'Import/Export Variables' plugin only.
 // https://www.figma.com/plugin-docs/working-with-variables/#createvariable
 
-import defaultTokens from '../properties/color/generated/default.json'
+import defaultTokens from '../tokens/color/generated/default.json'
 import { writeFile } from 'fs-extra'
 import { DIST_DIR } from './meta'
 

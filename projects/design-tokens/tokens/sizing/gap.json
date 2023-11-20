@@ -1,0 +1,30 @@
+{
+  "sizing": {
+    "gap": {
+      "none": {
+        "value": "0px"
+      },
+      "xs": {
+        "value": "{sizing.spacing.0100}"
+      },
+      "sm": {
+        "value": "{sizing.spacing.0200}"
+      },
+      "md": {
+        "value": "{sizing.spacing.0400}"
+      },
+      "default": {
+        "value": "{sizing.spacing.0600}"
+      },
+      "xl": {
+        "value": "{sizing.spacing.0800}"
+      },
+      "2xl": {
+        "value": "{sizing.spacing.1200}"
+      },
+      "3xl": {
+        "value": "{sizing.spacing.2000}"
+      }
+    }
+  }
+}
