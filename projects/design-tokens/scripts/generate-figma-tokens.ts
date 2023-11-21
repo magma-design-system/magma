@@ -84,8 +84,6 @@ const generateFigmaTokens = (nameCollection: string, tokens) => {
   collection.variableIds = Array.from(variables.keys())
   collection.variables = Array.from(variables.values())
 
-  console.info('pino')
-
   mkdir( resolve(`${DIST_DIR}/json`), { recursive: true })
     .then(() => {
       writeFile(`${DIST_DIR}/json/figma-${nameCollection.toLocaleLowerCase().replace(/\s/g, '-')}.json`, JSON.stringify(collection))

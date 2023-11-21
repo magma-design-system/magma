@@ -16,7 +16,7 @@
       "md": {
         "value": "20px"
       },
-      "default": {
+      "DEFAULT": {
         "value": "16px"
       },
       "sm": {

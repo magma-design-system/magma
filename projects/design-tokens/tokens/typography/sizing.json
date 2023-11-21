@@ -4,6 +4,9 @@
       "phrase": {
         "value": "50ch"
       },
+      "prose": {
+        "value": "65ch"
+      },
       "text": {
         "value": "75ch"
       },

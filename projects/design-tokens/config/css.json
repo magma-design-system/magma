@@ -1,0 +1,22 @@
+{
+  "source": [
+    "tokens/css/**/*.json"
+  ],
+  "include": [
+    "tokens/sizing/default.json"
+  ],
+  "platforms": {
+    "js": {
+      "transforms": [
+        "size/pxToRem"
+      ],
+      "buildPath": "dist/js/",
+      "files": [
+        {
+          "destination": "tailwind-props.js",
+          "format": "js/tailwind-props"
+        }
+      ]
+    }
+  }
+}

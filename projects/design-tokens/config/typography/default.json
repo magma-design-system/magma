@@ -3,7 +3,8 @@
     "tokens/typography/default.json"
   ],
   "include": [
-    "tokens/typography/**/*.json"
+    "tokens/typography/leading.json",
+    "tokens/typography/size.json"
   ],
   "platforms": {
     "js": {

@@ -44,15 +44,15 @@
           "lineHeight": { "value": "{typography.leading.md}" }
         },
         "h6": {
-          "fontSize": { "value": "{typography.size.default}" },
+          "fontSize": { "value": "{typography.size.DEFAULT}" },
           "fontWeight": { "value": 700 },
           "letterSpacing": { "value": "-0.4px" },
-          "lineHeight": { "value": "{typography.leading.default}" }
+          "lineHeight": { "value": "{typography.leading.DEFAULT}" }
         },
         "action": {
           "fontSize": { "value": "{typography.size.sm}" },
           "fontWeight": { "value": 500 },
-          "lineHeight": { "value": "{typography.leading.default}" }
+          "lineHeight": { "value": "{typography.leading.DEFAULT}" }
         }
       }
     },
@@ -80,9 +80,9 @@
           }
         },
         "detail": {
-          "fontSize": { "value": "{typography.size.default}" },
+          "fontSize": { "value": "{typography.size.DEFAULT}" },
           "fontWeight": { "value": 400 },
-          "lineHeight": { "value": "{typography.leading.default}" },
+          "lineHeight": { "value": "{typography.leading.DEFAULT}" },
           "variants": {
             "bold": {
               "fontWeight": { "value": 700 }
@@ -140,9 +140,9 @@
           }
         },
         "detail": {
-          "fontSize": { "value": "{typography.size.default}" },
+          "fontSize": { "value": "{typography.size.DEFAULT}" },
           "fontWeight": { "value": 300 },
-          "lineHeight": { "value": "{typography.leading.default}" },
+          "lineHeight": { "value": "{typography.leading.DEFAULT}" },
           "variants": {
             "bold": {
               "fontWeight": { "value": 700 }
@@ -170,9 +170,9 @@
       },
       "variants": {
         "snippet": {
-          "fontSize": { "value": "{typography.size.default}" },
+          "fontSize": { "value": "{typography.size.DEFAULT}" },
           "fontWeight": { "value": 400 },
-          "lineHeight": { "value": "{typography.leading.default}" }
+          "lineHeight": { "value": "{typography.leading.DEFAULT}" }
         },
         "hack": {
           "fontSize": { "value": "{typography.size.sm}" },
