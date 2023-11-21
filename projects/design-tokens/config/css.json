@@ -8,7 +8,9 @@
   "platforms": {
     "js": {
       "transforms": [
-        "size/pxToRem"
+        "attribute/cti",
+        "name/cti/kebab",
+        "tailwind/pxToRem"
       ],
       "buildPath": "dist/js/",
       "files": [

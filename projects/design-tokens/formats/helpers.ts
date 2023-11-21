@@ -128,4 +128,6 @@ export {
   safeString,
   stripText,
   tailwindFontSize,
+  pixelToEm,
+  pixelToRem,
 }
