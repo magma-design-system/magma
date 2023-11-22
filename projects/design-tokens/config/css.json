@@ -1,6 +1,11 @@
 {
   "source": [
+    "tokens/cosmetic/border-radius.json",
+    "tokens/cosmetic/border.json",
+    "tokens/cosmetic/box-shadow.json",
     "tokens/css/**/*.json",
+    "tokens/sizing/aspect-ratio.json",
+    "tokens/sizing/gap.json",
     "tokens/typography/leading.json",
     "tokens/typography/size.json"
   ],

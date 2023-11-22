@@ -1,6 +1,6 @@
 {
   "typography": {
-    "size": {
+    "fontSize": {
       "3xl": {
         "value": "48px"
       },

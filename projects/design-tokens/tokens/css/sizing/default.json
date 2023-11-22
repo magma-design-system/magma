@@ -1,6 +1,6 @@
 {
   "css": {
-    "sizing": {
+    "size": {
       "0": {
         "value": "{sizing.primitive.0}"
       },
