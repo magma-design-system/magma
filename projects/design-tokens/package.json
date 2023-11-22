@@ -22,7 +22,7 @@
   ],
   "license": "ISC",
   "scripts": {
-    "build": "npm run clean && npm run build-palette && npm run build-style-dictionary && npm run build-figma-tokens && npm run build-css-tokens",
+    "build": "npm run clean && npm run build-palette && npm run build-style-dictionary && npm run build-figma-tokens",
     "build-css-tokens": "run-for-every-file --src ./tokens/css/ --dest dist/scss/ --file '**/*.json' --not-file '**/*.scss' --run 'json-to-scss {{src-file}} {{dest}}{{file-name-ext}}'",
     "build-palette": "node leonardo.mjs",
     "build-figma-tokens": "npx ts-node scripts/generate-figma-tokens.ts",
@@ -38,7 +38,7 @@
     "@adobe/leonardo-contrast-colors": "1.0.0-alpha.13",
     "handlebars": "4.7.8",
     "hex-rgb": "4.3.0",
-    "js-beautify": "1.14.3",
+    "js-beautify": "1.14.11",
     "json-to-scss": "1.6.2",
     "run-for-every-file": "1.1.0",
     "style-dictionary": "3.9.0"
