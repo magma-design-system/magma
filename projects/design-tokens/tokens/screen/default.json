@@ -1,12 +1,12 @@
 {
   "screen": {
     "mobile": {
-      "DEFAULT": {
+      "max": {
         "value": "767px"
       }
     },
     "tablet": {
-      "DEFAULT": {
+      "min": {
         "value": "768px"
       },
       "max": {
@@ -14,7 +14,7 @@
       }
     },
     "desktop": {
-      "DEFAULT": {
+      "min": {
         "value": "1024px"
       },
       "max": {
@@ -22,7 +22,7 @@
       }
     },
     "wide": {
-      "DEFAULT": {
+      "min": {
         "value": "1280px"
       },
       "max": {
@@ -30,7 +30,7 @@
       }
     },
     "large": {
-      "DEFAULT": {
+      "min": {
         "value": "1440px"
       },
       "max": {
@@ -38,7 +38,7 @@
       }
     },
     "xlarge": {
-      "DEFAULT": {
+      "min": {
         "value": "1600px"
       },
       "max": {
@@ -46,7 +46,7 @@
       }
     },
     "tv": {
-      "DEFAULT": {
+      "min": {
         "value": "1920px"
       }
     }

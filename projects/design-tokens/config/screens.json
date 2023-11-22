@@ -1,0 +1,20 @@
+{
+  "source": [
+    "tokens/screen/default.json"
+  ],
+  "platforms": {
+    "js": {
+      "transforms": [
+        "attribute/cti",
+        "name/cti/kebab"
+      ],
+      "buildPath": "dist/js/",
+      "files": [
+        {
+          "destination": "tailwind-screens.js",
+          "format": "js/tailwind-screens"
+        }
+      ]
+    }
+  }
+}
