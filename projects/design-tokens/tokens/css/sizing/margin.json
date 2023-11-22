@@ -1,6 +1,6 @@
 {
   "css": {
-    "sizing": {
+    "margin": {
       "0": {
         "value": "{sizing.primitive.0}"
       },
@@ -112,62 +112,20 @@
       "9600": {
         "value": "{sizing.primitive.9600}"
       },
-      "none": {
-        "value": "{sizing.primitive.0}"
+      "1/1": {
+        "value": "100%"
       },
-      "xs": {
-        "value": "320px"
+      "16/9": {
+        "value": "56.25%"
       },
-      "sm": {
-        "value": "384px"
+      "3/2": {
+        "value": "66.67%"
       },
-      "md": {
-        "value": "448px"
-      },
-      "lg": {
-        "value": "512px"
-      },
-      "xl": {
-        "value": "576px"
-      },
-      "2xl": {
-        "value": "672px"
-      },
-      "3xl": {
-        "value": "768px"
-      },
-      "4xl": {
-        "value": "896px"
-      },
-      "5xl": {
-        "value": "1024px"
-      },
-      "6xl": {
-        "value": "1152px"
-      },
-      "7xl": {
-        "value": "1280px"
-      },
-      "1/4": {
-        "value": "25%"
-      },
-      "1/2": {
-        "value": "50%"
-      },
-      "3/4": {
+      "4/3": {
         "value": "75%"
       },
-      "title": {
-        "value": "30ch"
-      },
-      "phrase": {
-        "value": "50ch"
-      },
-      "prose": {
-        "value": "65ch"
-      },
-      "text": {
-        "value": "75ch"
+      "5/4": {
+        "value": "80%"
       }
     }
   }

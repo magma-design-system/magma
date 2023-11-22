@@ -2,115 +2,115 @@
   "sizing": {
     "gap": {
       "0": {
-        "value": "{sizing.spacing.0}"
+        "value": "{sizing.primitive.0}"
       },
       "0025": {
-        "value": "{sizing.spacing.0025}"
+        "value": "{sizing.primitive.0025}"
       },
       "0050": {
-        "value": "{sizing.spacing.0050}"
+        "value": "{sizing.primitive.0050}"
       },
       "0100": {
-        "value": "{sizing.spacing.0100}"
+        "value": "{sizing.primitive.0100}"
       },
       "0150": {
-        "value": "{sizing.spacing.0150}"
+        "value": "{sizing.primitive.0150}"
       },
       "0200": {
-        "value": "{sizing.spacing.0200}"
+        "value": "{sizing.primitive.0200}"
       },
       "0250": {
-        "value": "{sizing.spacing.0250}"
+        "value": "{sizing.primitive.0250}"
       },
       "0300": {
-        "value": "{sizing.spacing.0300}"
+        "value": "{sizing.primitive.0300}"
       },
       "0350": {
-        "value": "{sizing.spacing.0350}"
+        "value": "{sizing.primitive.0350}"
       },
       "0400": {
-        "value": "{sizing.spacing.0400}"
+        "value": "{sizing.primitive.0400}"
       },
       "0500": {
-        "value": "{sizing.spacing.0500}"
+        "value": "{sizing.primitive.0500}"
       },
       "0600": {
-        "value": "{sizing.spacing.0600}"
+        "value": "{sizing.primitive.0600}"
       },
       "0700": {
-        "value": "{sizing.spacing.0700}"
+        "value": "{sizing.primitive.0700}"
       },
       "0800": {
-        "value": "{sizing.spacing.0800}"
+        "value": "{sizing.primitive.0800}"
       },
       "0900": {
-        "value": "{sizing.spacing.0900}"
+        "value": "{sizing.primitive.0900}"
       },
       "1000": {
-        "value": "{sizing.spacing.1000}"
+        "value": "{sizing.primitive.1000}"
       },
       "11": {
-        "value": "{sizing.spacing.11}"
+        "value": "{sizing.primitive.11}"
       },
       "1200": {
-        "value": "{sizing.spacing.1200}"
+        "value": "{sizing.primitive.1200}"
       },
       "1300": {
-        "value": "{sizing.spacing.1300}"
+        "value": "{sizing.primitive.1300}"
       },
       "1400": {
-        "value": "{sizing.spacing.1400}"
+        "value": "{sizing.primitive.1400}"
       },
       "1500": {
-        "value": "{sizing.spacing.1500}"
+        "value": "{sizing.primitive.1500}"
       },
       "1600": {
-        "value": "{sizing.spacing.1600}"
+        "value": "{sizing.primitive.1600}"
       },
       "2000": {
-        "value": "{sizing.spacing.2000}"
+        "value": "{sizing.primitive.2000}"
       },
       "2400": {
-        "value": "{sizing.spacing.2400}"
+        "value": "{sizing.primitive.2400}"
       },
       "2800": {
-        "value": "{sizing.spacing.2800}"
+        "value": "{sizing.primitive.2800}"
       },
       "3200": {
-        "value": "{sizing.spacing.3200}"
+        "value": "{sizing.primitive.3200}"
       },
       "3600": {
-        "value": "{sizing.spacing.3600}"
+        "value": "{sizing.primitive.3600}"
       },
       "4000": {
-        "value": "{sizing.spacing.4000}"
+        "value": "{sizing.primitive.4000}"
       },
       "4400": {
-        "value": "{sizing.spacing.4400}"
+        "value": "{sizing.primitive.4400}"
       },
       "4800": {
-        "value": "{sizing.spacing.4800}"
+        "value": "{sizing.primitive.4800}"
       },
       "5200": {
-        "value": "{sizing.spacing.5200}"
+        "value": "{sizing.primitive.5200}"
       },
       "5600": {
-        "value": "{sizing.spacing.5600}"
+        "value": "{sizing.primitive.5600}"
       },
       "6000": {
-        "value": "{sizing.spacing.6000}"
+        "value": "{sizing.primitive.6000}"
       },
       "6400": {
-        "value": "{sizing.spacing.6400}"
+        "value": "{sizing.primitive.6400}"
       },
       "7200": {
-        "value": "{sizing.spacing.7200}"
+        "value": "{sizing.primitive.7200}"
       },
       "8000": {
-        "value": "{sizing.spacing.8000}"
+        "value": "{sizing.primitive.8000}"
       },
       "9600": {
-        "value": "{sizing.spacing.9600}"
+        "value": "{sizing.primitive.9600}"
       },
       "none": {
         "value": "{sizing.gap.0}"
@@ -126,6 +126,9 @@
       },
       "DEFAULT": {
         "value": "{sizing.gap.0600}"
+      },
+      "lg": {
+        "value": "{sizing.gap.DEFAULT}"
       },
       "xl": {
         "value": "{sizing.gap.0800}"

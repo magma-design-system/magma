@@ -5,16 +5,16 @@
         "value": "0px"
       },
       "default": {
-        "value": "{sizing.spacing.0025}"
+        "value": "{sizing.primitive.0025}"
       },
       "md": {
-        "value": "{sizing.spacing.0050}"
+        "value": "{sizing.primitive.0050}"
       },
       "lg": {
-        "value": "{sizing.spacing.0200}"
+        "value": "{sizing.primitive.0200}"
       },
       "xl": {
-        "value": "{sizing.spacing.0800}"
+        "value": "{sizing.primitive.0800}"
       }
     }
   }

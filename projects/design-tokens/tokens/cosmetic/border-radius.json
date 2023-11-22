@@ -2,25 +2,25 @@
   "cosmetic": {
     "borderRadius": {
       "sm": {
-        "value": "{sizing.spacing.0050}"
+        "value": "{sizing.primitive.0050}"
       },
-      "default": {
-        "value": "{sizing.spacing.0100}"
+      "DEFAULT": {
+        "value": "{sizing.primitive.0100}"
       },
       "md": {
-        "value": "{sizing.spacing.0150}"
+        "value": "{sizing.primitive.0150}"
       },
       "lg": {
-        "value": "{sizing.spacing.0200}"
+        "value": "{sizing.primitive.0200}"
       },
       "xl": {
-        "value": "{sizing.spacing.0300}"
+        "value": "{sizing.primitive.0300}"
       },
       "2xl": {
-        "value": "{sizing.spacing.0400}"
+        "value": "{sizing.primitive.0400}"
       },
       "3xl": {
-        "value": "{sizing.spacing.0600}"
+        "value": "{sizing.primitive.0600}"
       }
     }
   }

@@ -1,6 +1,8 @@
 {
   "source": [
-    "tokens/css/**/*.json"
+    "tokens/css/**/*.json",
+    "tokens/typography/leading.json",
+    "tokens/typography/size.json"
   ],
   "include": [
     "tokens/sizing/default.json"
