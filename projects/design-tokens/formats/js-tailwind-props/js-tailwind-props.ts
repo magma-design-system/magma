@@ -4,7 +4,7 @@ import fs from 'fs'
 import path from 'path'
 import { FormatterArguments } from 'style-dictionary/types/Format'
 import { tailwindFontSize, ifEquals, safeString, ifTailwindFontSizeProp, pixelToRem } from '../helpers'
-
+import { version } from '../../package.json'
 const templatePath = path.resolve(__dirname, './template.hbs')
 const template = Handlebars.compile(fs.readFileSync(templatePath).toString())
 
@@ -31,6 +31,7 @@ StyleDictionary.registerFormat({
       properties: dictionary.properties,
       date: new Date().toUTCString(),
       options: platform,
+      version,
     })
   },
 })
