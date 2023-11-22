@@ -17,7 +17,7 @@ const {
   transitionProperty,
 } = require('@maggioli-design-system/design-tokens/dist/js/tailwind-props')
 
-const mediaQueries = require('@maggioli-design-system/design-tokens/dist/js/media').media
+const screens = require('@maggioli-design-system/design-tokens/dist/js/tailwind-props')
 
 module.exports = {
   important: true,
@@ -38,9 +38,7 @@ module.exports = {
     fontFamily: {
       ...fontFamily,
     },
-    screens: {
-      ...mediaQueries,
-    },
+    screens,
     extend: {
       aspectRatio,
       borderRadius,
