@@ -1,6 +1,7 @@
 /* eslint-disable @typescript-eslint/no-var-requires */
 const { palette } = require('@maggioli-design-system/design-tokens')
 const { fontFamily } = require('@maggioli-design-system/design-tokens/dist/js/tailwind-font-family')
+const fontSizeMagma = require('@maggioli-design-system/design-tokens/dist/js/tailwind-font-size').fontSize
 const {
   aspectRatio,
   border,
@@ -38,20 +39,35 @@ module.exports = {
     fontFamily: {
       ...fontFamily,
     },
-    screens,
+    screens: {
+      ...screens,
+    },
     extend: {
-      aspectRatio,
-      borderRadius,
+      aspectRatio: {
+        ...aspectRatio,
+      },
+      borderRadius: {
+        ...borderRadius,
+      },
       borderWidth: {
         ...border,
       },
-      boxShadow,
-      fontSize,
-      gap,
+      boxShadow: {
+        ...boxShadow,
+      },
+      fontSize: {
+        ...fontSizeMagma,
+        ...fontSize,
+      },
+      gap: {
+        ...gap,
+      },
       gridAutoRows: {
         1: '1fr',
       },
-      gridTemplateColumns,
+      gridTemplateColumns: {
+        ...gridTemplateColumns,
+      },
       height: {
         ...size,
       },
@@ -70,15 +86,21 @@ module.exports = {
       minWidth: {
         ...size,
       },
-      margin,
-      padding,
+      margin: {
+        ...margin,
+      },
+      padding: {
+        ...padding,
+      },
       overflow: {
         inherit: 'inherit',
       },
       textOverflow: {
         inherit: 'inherit',
       },
-      transitionProperty,
+      transitionProperty: {
+        ...transitionProperty,
+      },
       transitionTimingFunction: {
         ...timingFunction,
       },
