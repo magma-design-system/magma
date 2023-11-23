@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/no-var-requires */
 const { palette } = require('@maggioli-design-system/design-tokens')
-const { fontFamily } = require('@maggioli-design-system/design-tokens/dist/js/tailwind-font-family')
-const fontSizeMagma = require('@maggioli-design-system/design-tokens/dist/js/tailwind-font-size').fontSize
+const { fontFamily } = require('@maggioli-design-system/design-tokens/dist/js/tailwind-font-family.js')
+const fontSizeMagma = require('@maggioli-design-system/design-tokens/dist/js/tailwind-font-size.js').fontSize
 const {
   aspectRatio,
   border,
@@ -16,9 +16,9 @@ const {
   size,
   timingFunction,
   transitionProperty,
-} = require('@maggioli-design-system/design-tokens/dist/js/tailwind-props')
+} = require('@maggioli-design-system/design-tokens/dist/js/tailwind-props.js').properties
 
-const screens = require('@maggioli-design-system/design-tokens/dist/js/tailwind-props')
+const screens = require('@maggioli-design-system/design-tokens/dist/js/tailwind-screens.js')
 
 module.exports = {
   important: true,
