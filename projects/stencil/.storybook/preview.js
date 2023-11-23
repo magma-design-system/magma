@@ -19,9 +19,8 @@ import './tailwind.css'
 import './iconsauce.css'
 
 import devices from './devices.json'
-import media from '@maggioli-design-system/design-tokens/dist/js/tailwind-screens'
+// import media from '@maggioli-design-system/design-tokens/dist/js/tailwind-screens'
 
-console.log('media', media)
 
 defineCustomElements();
 
@@ -84,10 +83,10 @@ const decorateViewport = (name, item) => {
 
 const parameters = {
   actions: { argTypesRegex: '^on[A-Z].*' },
-  // viewport: {
-  //   devices,
-  //   viewports,
-  // },
+  viewport: {
+    devices,
+    // viewports,
+  },
 }
 
 const decorators = [
