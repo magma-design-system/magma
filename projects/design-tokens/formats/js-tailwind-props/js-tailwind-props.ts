@@ -24,6 +24,17 @@ StyleDictionary.registerTransform({
   },
 })
 
+StyleDictionary.registerTransform({
+  name: 'tailwind/cssAspectRatio',
+  type: 'value',
+  matcher: token => {
+    return String(token.value).includes(':')
+  },
+  transformer: function (token) {
+    return token.value.replace(':', '/')
+  },
+})
+
 StyleDictionary.registerFormat({
   name: 'js/tailwind-props',
   formatter: ({ dictionary, platform }: FormatterArguments) => {

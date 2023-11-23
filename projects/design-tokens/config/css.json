@@ -17,6 +17,7 @@
       "transforms": [
         "attribute/cti",
         "name/cti/kebab",
+        "tailwind/cssAspectRatio",
         "tailwind/pxToRem"
       ],
       "buildPath": "dist/js/",
