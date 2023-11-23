@@ -21,12 +21,12 @@ let StyleDictionaryColors: StyleDictionary.Core,
   StyleDictionarySynbeeV1: StyleDictionary.Core,
   StyleDictionaryTones: StyleDictionary.Core
 
-StyleDictionaryColors = jsModule.extend('./config/colors/generated/default.json')
-StyleDictionaryColors = jsModuleTailwindColors.extend('./config/colors/generated/default.json')
-StyleDictionaryColors = flutterColor.extend('./config/colors/generated/default.json')
-StyleDictionaryColors = cssVarsRgb.extend('./config/colors/generated/default.json')
-StyleDictionaryColors = cssVarsHex.extend('./config/colors/generated/default.json')
-StyleDictionaryColors = jsonCoolors.extend('./config/colors/generated/default.json')
+StyleDictionaryColors = jsModule.extend('./config/colors/default.json')
+StyleDictionaryColors = jsModuleTailwindColors.extend('./config/colors/default.json')
+StyleDictionaryColors = flutterColor.extend('./config/colors/default.json')
+StyleDictionaryColors = cssVarsRgb.extend('./config/colors/default.json')
+StyleDictionaryColors = cssVarsHex.extend('./config/colors/default.json')
+StyleDictionaryColors = jsonCoolors.extend('./config/colors/default.json')
 StyleDictionaryColors.buildAllPlatforms()
 
 StyleDictionaryTones = cssVarsHex.extend('./config/colors/generated/tones.json')
