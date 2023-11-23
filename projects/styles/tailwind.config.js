@@ -18,7 +18,7 @@ const {
   transitionProperty,
 } = require('@maggioli-design-system/design-tokens/dist/js/tailwind-props.js').properties
 
-const screens = require('@maggioli-design-system/design-tokens/dist/js/tailwind-screens.js')
+const { screens } = require('@maggioli-design-system/design-tokens/dist/js/tailwind-screens.js')
 
 module.exports = {
   important: true,
