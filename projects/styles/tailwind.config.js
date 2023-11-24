@@ -95,6 +95,9 @@ module.exports = {
       overflow: {
         inherit: 'inherit',
       },
+      spacing: {
+        ...size,
+      },
       textOverflow: {
         inherit: 'inherit',
       },
