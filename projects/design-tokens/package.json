@@ -36,11 +36,13 @@
   ],
   "devDependencies": {
     "@adobe/leonardo-contrast-colors": "1.0.0-alpha.13",
+    "@types/sort-object-keys": "1.1.3",
     "handlebars": "4.7.8",
     "hex-rgb": "4.3.0",
     "js-beautify": "1.14.11",
     "json-to-scss": "1.6.2",
     "run-for-every-file": "1.1.0",
+    "sort-object-keys": "1.1.3",
     "style-dictionary": "3.9.0"
   },
   "repository": {
