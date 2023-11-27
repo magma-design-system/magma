@@ -3969,11 +3969,6 @@
   dependencies:
     sharp "*"
 
-"@types/sort-object-keys@1.1.3":
-  version "1.1.3"
-  resolved "https://registry.npmjs.org/@types/sort-object-keys/-/sort-object-keys-1.1.3.tgz#f617a3ab04a803e13088758a0d74b4b0921a19a6"
-  integrity sha512-DBHXe+SvV5yZASv/RnIoIID5cwl4N0dY5aC19jOINFzydZkpJXt8DwRzWUjVnscPQsRkkmQRrcOqMMozSvP5tg==
-
 "@types/stack-utils@^2.0.0":
   version "2.0.3"
   resolved "https://registry.npmjs.org/@types/stack-utils/-/stack-utils-2.0.3.tgz#6209321eb2c1712a7e7466422b8cb1fc0d9dd5d8"
@@ -12910,11 +12905,6 @@ socks@^2.6.2, socks@^2.7.1:
   dependencies:
     ip "^2.0.0"
     smart-buffer "^4.2.0"
-
-sort-object-keys@1.1.3:
-  version "1.1.3"
-  resolved "https://registry.npmjs.org/sort-object-keys/-/sort-object-keys-1.1.3.tgz#bff833fe85cab147b34742e45863453c1e190b45"
-  integrity sha512-855pvK+VkU7PaKYPc+Jjnmt4EzejQHyhhF33q31qG8x7maDzkeFhAAThdCYay11CISO+qAMwjOBP+fPZe0IPyg==
 
 source-map-js@^0.6.2:
   version "0.6.2"

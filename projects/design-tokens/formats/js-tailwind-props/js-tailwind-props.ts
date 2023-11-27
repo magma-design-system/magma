@@ -1,3 +1,4 @@
+/* eslint-disable quote-props */
 import Handlebars from 'handlebars'
 import StyleDictionary from 'style-dictionary'
 import fs from 'fs'
