@@ -10,7 +10,6 @@ const {
   fontSize,
   gap,
   gridTemplateColumns,
-  leading,
   margin,
   padding,
   size,
@@ -19,6 +18,7 @@ const {
 } = require('@maggioli-design-system/design-tokens/dist/js/tailwind-props.js').properties
 
 const { screens } = require('@maggioli-design-system/design-tokens/dist/js/tailwind-screens.js')
+const { leading } = require('@maggioli-design-system/design-tokens/dist/js/tailwind-leading.js')
 
 module.exports = {
   important: true,
@@ -39,8 +39,14 @@ module.exports = {
     fontFamily: {
       ...fontFamily,
     },
+    lineHeight: {
+      ...leading,
+    },
     screens: {
       ...screens,
+    },
+    spacing: {
+      ...size,
     },
     extend: {
       aspectRatio: {
@@ -71,9 +77,6 @@ module.exports = {
       height: {
         ...size,
       },
-      lineHeight: {
-        leading,
-      },
       maxHeight: {
         ...size,
       },
@@ -94,9 +97,6 @@ module.exports = {
       },
       overflow: {
         inherit: 'inherit',
-      },
-      spacing: {
-        ...size,
       },
       textOverflow: {
         inherit: 'inherit',
