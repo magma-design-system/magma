@@ -17,13 +17,11 @@ const screens = {
     {{/each}}
   },
   {{else}}
-  {{@key}}: {
     {{#each viewport as | rule |}}
       {{#ifEquals @key 'min'}}
-      {{@key}}: '{{rule.value}}',
+  {{@../key}}: '{{rule.value}}',
       {{/ifEquals}}
     {{/each}}
-  },
   {{/ifEquals}}
   {{#each viewport as | rule |}}
   {{#ifEquals @../key 'mobile'}}
