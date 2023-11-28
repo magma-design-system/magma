@@ -4,47 +4,47 @@
       "0": {
         "value": "{sizing.primitive.0}"
       },
-      "0025": {
-        "value": "{sizing.primitive.0025}"
+      "25": {
+        "value": "{sizing.primitive.25}"
       },
-      "0050": {
-        "value": "{sizing.primitive.0050}"
+      "50": {
+        "value": "{sizing.primitive.50}"
       },
-      "0100": {
-        "value": "{sizing.primitive.0100}"
+      "100": {
+        "value": "{sizing.primitive.100}"
       },
-      "0150": {
-        "value": "{sizing.primitive.0150}"
+      "150": {
+        "value": "{sizing.primitive.150}"
       },
-      "0200": {
-        "value": "{sizing.primitive.0200}"
+      "200": {
+        "value": "{sizing.primitive.200}"
       },
-      "0250": {
-        "value": "{sizing.primitive.0250}"
+      "250": {
+        "value": "{sizing.primitive.250}"
       },
-      "0300": {
-        "value": "{sizing.primitive.0300}"
+      "300": {
+        "value": "{sizing.primitive.300}"
       },
-      "0350": {
-        "value": "{sizing.primitive.0350}"
+      "350": {
+        "value": "{sizing.primitive.350}"
       },
-      "0400": {
-        "value": "{sizing.primitive.0400}"
+      "400": {
+        "value": "{sizing.primitive.400}"
       },
-      "0500": {
-        "value": "{sizing.primitive.0500}"
+      "500": {
+        "value": "{sizing.primitive.500}"
       },
-      "0600": {
-        "value": "{sizing.primitive.0600}"
+      "600": {
+        "value": "{sizing.primitive.600}"
       },
-      "0700": {
-        "value": "{sizing.primitive.0700}"
+      "700": {
+        "value": "{sizing.primitive.700}"
       },
-      "0800": {
-        "value": "{sizing.primitive.0800}"
+      "800": {
+        "value": "{sizing.primitive.800}"
       },
-      "0900": {
-        "value": "{sizing.primitive.0900}"
+      "900": {
+        "value": "{sizing.primitive.900}"
       },
       "1000": {
         "value": "{sizing.primitive.1000}"
@@ -116,22 +116,22 @@
         "value": "{sizing.gap.0}"
       },
       "xs": {
-        "value": "{sizing.gap.0100}"
+        "value": "{sizing.gap.100}"
       },
       "sm": {
-        "value": "{sizing.gap.0200}"
+        "value": "{sizing.gap.200}"
       },
       "md": {
-        "value": "{sizing.gap.0400}"
+        "value": "{sizing.gap.400}"
       },
       "DEFAULT": {
-        "value": "{sizing.gap.0600}"
+        "value": "{sizing.gap.600}"
       },
       "lg": {
         "value": "{sizing.gap.DEFAULT}"
       },
       "xl": {
-        "value": "{sizing.gap.0800}"
+        "value": "{sizing.gap.800}"
       },
       "2xl": {
         "value": "{sizing.gap.1200}"
