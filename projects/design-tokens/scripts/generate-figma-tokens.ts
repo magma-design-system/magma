@@ -2,6 +2,10 @@
 // https://www.figma.com/plugin-docs/working-with-variables/#createvariable
 import chalk from 'chalk'
 import defaultTokens from '../tokens/color/generated/default.json'
+import spacing from '../tokens/sizing/default.json'
+import gap from '../tokens/sizing/gap.json'
+import screen from '../tokens/screen/default.json'
+import borderRadius from '../tokens/cosmetic/border-radius.json'
 import { writeFile } from 'fs-extra'
 import { mkdir } from 'fs/promises'
 import { resolve } from 'path'
@@ -49,10 +53,10 @@ interface Variable {
   name: string;
   description: string;
   type: VariableType;
-  valuesByMode: { [key: string]: Color };
+  valuesByMode: { [key: string]: Color | number | string | boolean };
   resolvedValuesByMode: {
     [key: string]: {
-      resolvedValue: Color;
+      resolvedValue: Color | number | string | boolean;
       alias?: string;
     };
   };
@@ -65,7 +69,31 @@ const capitalizeFirstLetter = (value: string): string =>
   value.charAt(0).toUpperCase() + value.slice(1)
 
 
-const generateFigmaTokens = (nameCollection: string, tokens) => {
+const generateFigmaTokens = (nameCollection: string) => {
+  const collection: Collection = {
+    id: 'VariableCollectionId:1',
+    name: nameCollection,
+    modes: { value: 'Value' },
+    variableIds: [],
+    variables: [],
+  }
+
+  const variables = new Map([
+    ...buildTokenVariables('Spacing', spacing),
+    ...buildTokenVariables('Gap', gap),
+    ...buildTokenVariables('BorderRadius', borderRadius),
+    ...buildScreenToken('Screen', screen),
+  ])
+
+  // console.log(variables)
+  collection.variableIds = Array.from(variables.keys())
+  collection.variables = Array.from(variables.values())
+
+  // collection.variables.forEach(console.log)
+  writeFigmaVariables(collection)
+}
+
+const generateFigmaColors = (nameCollection: string, tokens) => {
   const lightMode = 'light'
   const darkMode = 'dark'
 
@@ -79,21 +107,95 @@ const generateFigmaTokens = (nameCollection: string, tokens) => {
   collection.modes[lightMode] = 'Light'
   collection.modes[darkMode] = 'Dark'
 
-  const variables = buildVariables(tokens)
+  const variables = buildColorVariables(tokens)
 
   collection.variableIds = Array.from(variables.keys())
   collection.variables = Array.from(variables.values())
 
-  mkdir( resolve(`${DIST_DIR}/json`), { recursive: true })
-    .then(() => {
-      writeFile(`${DIST_DIR}/json/figma-${nameCollection.toLocaleLowerCase().replace(/\s/g, '-')}.json`, JSON.stringify(collection))
-    })
-    .catch(error => {
-      throw Error(chalk.red(error))
-    })
+  writeFigmaVariables(collection)
 }
 
-const buildVariables = (tokens): Map<string, Variable> => {
+const buildScreenToken = (name: string, tokens): Map<string, Variable> => {
+  const variables: Map<string, Variable> = new Map()
+  Object.entries(tokens).forEach(type => {
+    Object.entries(type[1]).forEach(subtype => {
+      Object.entries(subtype[1]).forEach(token => {
+        if (token[0] === 'min') {
+          const UID = `${name}:${subtype[0]}`
+          // eslint-disable-next-line dot-notation
+          const value = getValue(token[1]['value'])
+          variables.set(UID, {
+            id: UID,
+            name: UID.replace(/:/g, '/'),
+            description: '',
+            type: VariableType.Number,
+            valuesByMode: {
+              value,
+            },
+            resolvedValuesByMode: {
+              value: {
+                resolvedValue: value,
+                alias: null,
+              },
+            },
+            scopes: [Scope.All],
+            hiddenFromPublishing: false,
+          })
+        }
+      })
+    })
+  })
+  return variables
+
+}
+const buildTokenVariables = (name: string, tokens): Map<string, Variable> => {
+  const variables: Map<string, Variable> = new Map()
+  Object.entries(tokens).forEach(type => {
+    Object.entries(type[1]).forEach(subtype => {
+      Object.entries(subtype[1]).forEach(token => {
+        const UID = `${name}:${token[0]}`
+        // eslint-disable-next-line dot-notation
+        const value = getValue(token[1]['value'] as string)
+
+        variables.set(UID, {
+          id: UID,
+          name: UID.replace(/:/g, '/'),
+          description: '',
+          type: VariableType.Number,
+          valuesByMode: {
+            value,
+          },
+          resolvedValuesByMode: {
+            value: {
+              resolvedValue: value,
+              alias: null,
+            },
+          },
+          scopes: [Scope.All],
+          hiddenFromPublishing: false,
+        })
+      })
+    })
+  })
+  return variables
+}
+
+/**
+ * Get a number value resolving also reference value between spacing and gap
+ * @param value a string rappresenting value "1px" or "{spacing.sizing.1000}"
+ * @returns value as number
+ */
+const getValue = (value: string): number => {
+  if (value.startsWith('{')) {
+    const ref = value.slice(1, -1).split('.')
+    if (ref[1] === 'gap') {
+      return getValue(gap[ref[0]][ref[1]][ref[2]].value)
+    }
+    return getValue(spacing[ref[0]][ref[1]][ref[2]].value)
+  }
+  return Number(value.match(/\d+/)[0])
+}
+const buildColorVariables = (tokens): Map<string, Variable> => {
   const variables: Map<string, Variable> = new Map()
 
   /**
@@ -159,6 +261,16 @@ const buildVariables = (tokens): Map<string, Variable> => {
   return variables
 }
 
+const writeFigmaVariables = (collection: Collection) => {
+  mkdir( resolve(`${DIST_DIR}/json`), { recursive: true })
+    .then(() => {
+      writeFile(`${DIST_DIR}/json/figma-${collection.name.toLocaleLowerCase().replace(/\s/g, '-')}.json`, JSON.stringify(collection))
+    })
+    .catch(error => {
+      throw Error(chalk.red(error))
+    })
+}
+
 const hexToRgbA = (hex: string): Color => {
   let c
   if (/^#([A-Fa-f0-9]{3}){1,2}$/.test(hex)) {
@@ -177,4 +289,6 @@ const hexToRgbA = (hex: string): Color => {
   throw new Error('Bad Hex')
 }
 
-generateFigmaTokens('Magma Colors', defaultTokens)
+generateFigmaColors('Magma Colors', defaultTokens)
+
+generateFigmaTokens('Magma Tokens')
