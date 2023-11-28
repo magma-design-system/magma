@@ -10,7 +10,13 @@ const leading = {
   {{#each property as | typography |}}
     {{#each typography as | leading |}}
   '{{@key}}': '{{#pixelToRem}}{{leading.value}}{{/pixelToRem}}',
+    {{/each}}
+    {{#each typography as | leading |}}
+      {{#ifEquals @key 'DEFAULT'}}
+  'px': '{{leading.value}}',
+      {{else}}
   'px-{{@key}}': '{{leading.value}}',
+      {{/ifEquals}}
     {{/each}}
   {{/each}}
 {{/each}}

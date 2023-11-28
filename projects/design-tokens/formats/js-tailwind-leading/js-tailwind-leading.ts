@@ -4,11 +4,12 @@ import fs from 'fs'
 import path from 'path'
 import { version } from '../../package.json'
 import { FormatterArguments } from 'style-dictionary/types/Format'
-import { pixelToRem } from '../helpers'
+import { ifEquals, pixelToRem } from '../helpers'
 
 const templatePath = path.resolve(__dirname, './template.hbs')
 const template = Handlebars.compile(fs.readFileSync(templatePath).toString())
 
+Handlebars.registerHelper('ifEquals', ifEquals)
 Handlebars.registerHelper('pixelToRem', (options: HelperOptions) => {
   return pixelToRem(options.fn(this))
 })
