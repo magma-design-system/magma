@@ -1,6 +1,9 @@
 {
   "cosmetic": {
     "borderRadius": {
+      "none": {
+        "value": "0"
+      },
       "sm": {
         "value": "{sizing.primitive.50}"
       },

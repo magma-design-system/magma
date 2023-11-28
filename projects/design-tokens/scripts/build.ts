@@ -9,6 +9,7 @@ import jsModuleTailwindColors from '../formats/js-tailwind-colors/js-tailwind-co
 import jsTailwindFontFamily from '../formats/js-tailwind-font-family/js-tailwind-font-family'
 import jsTailwindFontSize from '../formats/js-tailwind-font-size/js-tailwind-font-size'
 import jsTailwindProps from '../formats/js-tailwind-props/js-tailwind-props'
+import jsTailwindLeading from '../formats/js-tailwind-leading/js-tailwind-leading'
 import jsTailwindScreens from '../formats/js-tailwind-screens/js-tailwind-screens'
 import jsonCoolors from '../formats/json-coolors/json-coolors'
 
@@ -56,6 +57,9 @@ let StyleDictionaryFontFamily: StyleDictionary.Core = jsTailwindFontFamily.exten
 StyleDictionaryFontFamily = jsTailwindFontSize.extend('./config/typography/default.json')
 StyleDictionaryFontFamily = flutterFont.extend('./config/typography/default.json')
 StyleDictionaryFontFamily.buildAllPlatforms()
+
+const StyleDictionaryLeading: StyleDictionary.Core = jsTailwindLeading.extend('./config/typography/leading.json')
+StyleDictionaryLeading.buildAllPlatforms()
 
 const StyleDictionaryCss: StyleDictionary.Core = jsTailwindProps.extend('./config/css.json')
 StyleDictionaryCss.buildAllPlatforms()
