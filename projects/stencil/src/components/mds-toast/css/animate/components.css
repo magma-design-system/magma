@@ -18,19 +18,18 @@
   }
 
   .animate-bottom-intro {
-    transform: translate(0, calc(theme('translate.4') * -1));
+    transform: translate(0, calc(theme('translate.400') * -1));
   }
 
   .animate-bottom-outro {
-    transform: translate(0, calc(theme('translate.full') + theme('translate.2')));
+    transform: translate(0, calc(theme('translate.full') + theme('translate.200')));
   }
 
-  /* TODO */
   .animate-top-intro {
-    transform: translate(0, calc(theme('translate.4')));
+    transform: translate(0, calc(theme('translate.400')));
   }
 
   .animate-top-outro {
-    transform: translate(0, calc(-1 * theme('translate.full') - theme('translate.4')));
+    transform: translate(0, calc(-1 * theme('translate.full') - theme('translate.400')));
   }
 }

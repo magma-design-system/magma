@@ -8,9 +8,9 @@
     duration-200
     ease-out
     focus-bounce
-    gap-1
-    px-4
-    py-2
+    gap-100
+    px-400
+    py-200
     rounded-full
     whitespace-nowrap;
 
@@ -30,9 +30,9 @@
 
 :host( [icon]:not([label]) ) {
   @apply
-    h-9
+    h-900
     p-0
-    w-9;
+    w-900;
 }
 
 :host( [selected]:not([selected="false"]) ),

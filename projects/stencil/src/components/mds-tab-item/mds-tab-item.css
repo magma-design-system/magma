@@ -21,7 +21,7 @@
   --mds-tab-item-color-hover: theme('colors.tone-neutral-02');
   --mds-tab-item-color-selected: theme('colors.tone-neutral-02');
   --mds-tab-item-color: theme('colors.tone-neutral-04');
-  --mds-tab-item-radius: theme('spacing.2');
+  --mds-tab-item-radius: theme('spacing.200');
   --mds-tab-item-shadow-selected: theme('boxShadow.DEFAULT');
 
 }

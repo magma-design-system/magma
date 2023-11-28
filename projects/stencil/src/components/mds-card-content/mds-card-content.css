@@ -3,8 +3,8 @@
 :host {
 
   @apply
-  gap-4
-  p-4;
+    gap-400
+    p-400;
 
   display: grid;
   grid-template-columns: minmax(1fr, 100%);

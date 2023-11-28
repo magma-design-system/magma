@@ -33,27 +33,27 @@ This is a web-component from Maggioli Design System [Magma](https://magma.maggio
 
 ## CSS Custom Properties
 
-| Name                                       | Description                                                                  |
-| ------------------------------------------ | ---------------------------------------------------------------------------- |
-| `--animation-timing-adjust`                | Set the size multiplier when the switch toggle is resizing by animation      |
-| `--animation-timing-function`              | Set the timing function of the animation                                     |
-| `--duration`                               | Set the duration of the animation                                            |
-| `--icon-color-checked`                     | Set the color of the icon when the switch is checked                         |
-| `--icon-color-checked-disabled`            | Set the color of the icon when the switch is disabled and checked            |
-| `--icon-color-indeterminate`               | Set the color of the icon when the switch is indeterminate                   |
-| `--icon-color-indeterminate-disabled`      | Set the color of the icon when the switch is disabled and indeterminate      |
-| `--icon-color-unchecked`                   | Set the color of the icon when the switch is unchecked                       |
-| `--icon-color-unchecked-disabled`          | Set the color of the icon when the switch is disabled and unchecked          |
-| `--switch-color-checked`                   | Set the color of the switch when the switch is checked                       |
-| `--switch-color-disabled-checked`          | Set the color of the switch when the switch is disabled and checked          |
-| `--switch-color-disabled-unchecked`        | Set the color of the switch when the switch is disabled and unchecked        |
-| `--switch-color-unchecked`                 | Set the color of the switch when the switch is unchecked                     |
-| `--switch-padding`                         | Set the padding of the switch toggle's container                             |
-| `--switch-toggle-color-checked`            | Set the color of the switch toggle when the switch is checked                |
-| `--switch-toggle-color-disabled-checked`   | Set the color of the switch toggle when the switch is disabled and checked   |
-| `--switch-toggle-color-disabled-unchecked` | Set the color of the switch toggle when the switch is disabled and unchecked |
-| `--switch-toggle-color-unchecked`          | Set the color of the switch toggle when the switch is unchecked              |
-| `--switch-toggle-size`                     | Sets the size of the switch toggle                                           |
+| Name                                                   | Description                                                                  |
+| ------------------------------------------------------ | ---------------------------------------------------------------------------- |
+| `--mds-input-switch-animation-timing-adjust`           | Set the size multiplier when the switch toggle is resizing by animation      |
+| `--mds-input-switch-animation-timing-function`         | Set the timing function of the animation                                     |
+| `--mds-input-switch-box-color-checked`                 | Set the color of the switch when the switch is checked                       |
+| `--mds-input-switch-box-color-disabled-checked`        | Set the color of the switch when the switch is disabled and checked          |
+| `--mds-input-switch-box-color-disabled-unchecked`      | Set the color of the switch when the switch is disabled and unchecked        |
+| `--mds-input-switch-box-color-unchecked`               | Set the color of the switch when the switch is unchecked                     |
+| `--mds-input-switch-box-padding`                       | Set the padding of the switch toggle's container                             |
+| `--mds-input-switch-duration`                          | Set the duration of the animation                                            |
+| `--mds-input-switch-icon-color-checked`                | Set the color of the icon when the switch is checked                         |
+| `--mds-input-switch-icon-color-checked-disabled`       | Set the color of the icon when the switch is disabled and checked            |
+| `--mds-input-switch-icon-color-indeterminate`          | Set the color of the icon when the switch is indeterminate                   |
+| `--mds-input-switch-icon-color-indeterminate-disabled` | Set the color of the icon when the switch is disabled and indeterminate      |
+| `--mds-input-switch-icon-color-unchecked`              | Set the color of the icon when the switch is unchecked                       |
+| `--mds-input-switch-icon-color-unchecked-disabled`     | Set the color of the icon when the switch is disabled and unchecked          |
+| `--mds-input-switch-toggle-color-checked`              | Set the color of the switch toggle when the switch is checked                |
+| `--mds-input-switch-toggle-color-disabled-checked`     | Set the color of the switch toggle when the switch is disabled and checked   |
+| `--mds-input-switch-toggle-color-disabled-unchecked`   | Set the color of the switch toggle when the switch is disabled and unchecked |
+| `--mds-input-switch-toggle-color-unchecked`            | Set the color of the switch toggle when the switch is unchecked              |
+| `--mds-input-switch-toggle-size`                       | Sets the size of the switch toggle                                           |
 
 
 ## Dependencies

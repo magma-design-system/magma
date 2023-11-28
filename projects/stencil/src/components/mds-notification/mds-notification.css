@@ -15,8 +15,8 @@
 
   --mds-notification-color: theme('colors.tone-neutral');
   --mds-notification-dot-background: theme('colors.status-error-05');
-  --mds-notification-dot-padding: 0.375rem;
-  --mds-notification-size: theme('spacing.5');
+  --mds-notification-dot-padding: theme('spacing.150');
+  --mds-notification-size: theme('spacing.50');
   --mds-notification-ring-size: 2px;
   --mds-notification-ring-color: theme('colors.tone-neutral');
   --mds-notification-translate-offset-x: -1.75;
@@ -25,22 +25,22 @@
   --mds-notification-min-width: calc(var(--mds-notification-size) - calc(var(--mds-notification-dot-padding) * 2));
 
   @apply
-    bottom-full
     duration-300
     ease-in-cubic
     opacity-0
-    right-full
     rounded-full
     transition-cosmetic
     z-10;
 
   align-items: center;
+  bottom: 100%;
   color: var(--mds-notification-color);
   display: inline-flex;
   height: var(--mds-notification-size);
   justify-content: flex-end;
   min-width: min-content;
   pointer-events: none;
+  right: 100%;
   transform: var(--mds-notification-translate) scale(0);
   transform-origin: calc(100% - calc(var(--mds-notification-size) / 2)) 50%;
   width: var(--mds-notification-size);

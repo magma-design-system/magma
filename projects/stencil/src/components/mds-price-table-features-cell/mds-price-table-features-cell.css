@@ -8,7 +8,7 @@
 
 :host {
 
-  --mds-price-table-features-cell-padding: var(--mds-price-table-features-padding, theme('spacing.3'));
+  --mds-price-table-features-cell-padding: var(--mds-price-table-features-padding, theme('spacing.300'));
   --mds-price-table-features-cell-icon-supported-color: theme('colors.label-green-06');
   --mds-price-table-features-cell-icon-unsupported-color: theme('colors.tone-neutral-07');
 
@@ -20,8 +20,8 @@
 
 .icon {
   @apply
-    h-6
-    w-6;
+    h-600
+    w-600;
 
   display: flex;
   fill: var(--icon-fill-color);

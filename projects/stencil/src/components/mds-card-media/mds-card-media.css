@@ -8,8 +8,8 @@
 
 .content {
   @apply
-    gap-2
-    p-4;
+    gap-200
+    p-400;
 
   align-items: flex-end;
   display: flex;

@@ -32,7 +32,7 @@
   @apply
     gap-0
     hide-scrollbar
-    p-2;
+    p-200;
 
   align-items: center;
   display: flex;
@@ -49,10 +49,10 @@
 
 .back {
   @apply
-    h-8
-    mr-1
+    h-800
+    mr-100
     rounded-full
-    w-8;
+    w-800;
 
   align-items: center;
   background-color: var(--mds-breadcrumb-button-background);

@@ -26,7 +26,7 @@
   --mds-input-controls-border: 2px solid theme('colors.tone-neutral-09');
 
   @apply
-    gap-2
+    gap-200
     text-info-detail;
 
   container-type: inline-size;
@@ -48,8 +48,8 @@
     duration-300
     ease-out-expo
     m-0
-    px-4
-    py-3
+    px-400
+    py-300
     rounded-lg
     text-info-detail
     transition-cosmetic;
@@ -78,8 +78,8 @@ textarea.input:active {
 
 textarea.input {
   @apply
-    max-h-64
-    min-h-24
+    max-h-6400
+    min-h-2400
     rounded-br-none;
 }
 
@@ -105,15 +105,15 @@ textarea.input {
 }
 
 .input.has-icon {
-  @apply pl-11;
+  @apply pl-1100;
 }
 
 
 
 .icon {
   @apply
-    left-3
-    top-3;
+    left-300
+    top-300;
 
   fill: rgb(var(--mds-input-icon-color));
   position: absolute;
@@ -130,10 +130,10 @@ textarea.input {
 
 .counter-button {
   @apply
-    h-6
+    h-600
     p-0
     rounded-lg
-    w-7;
+    w-700;
 
   align-items: center;
   background-color: transparent;
@@ -161,8 +161,8 @@ textarea.input {
 
 .counter-button--horizontal {
   @apply
-    h-12
-    w-12;
+    h-1200
+    w-1200;
 
   bottom: 0;
   position: absolute;
@@ -184,24 +184,24 @@ textarea.input {
 }
 
 :host( [type="number"] ) .input {
-  @apply pr-8;
+  @apply pr-800;
 }
 
 :host( [type="number"][controls-layout="horizontal"] ) .input {
-  @apply px-14;
+  @apply px-1400;
 
   text-align: center;
 }
 
 :host( [type="number"][controls-layout="horizontal"][icon] ) .input {
-  @apply pl-24;
+  @apply pl-2400;
 
   text-align: left;
 }
 
 
 :host( [type="number"][controls-layout="horizontal"] ) .icon {
-  left: 3.75rem;
+  @apply left-1500;
 }
 
 @import './css/mds-input-variant.css';

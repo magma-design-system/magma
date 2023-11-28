@@ -5,8 +5,8 @@
   --mds-price-table-list-separator-color: theme('colors.theme-default-04-primary-decoration');
 
   @apply
-    gap-6
-    p-6
+    gap-600
+    p-600
     rounded-xl;
 
   background-color: theme('colors.label-green-10');
@@ -20,19 +20,19 @@
 
 
 header {
-  @apply gap-2;
+  @apply gap-200;
 
   display: grid;
 }
 
 main {
-  @apply gap-3;
+  @apply gap-300;
 
   display: grid;
 }
 
 footer {
-  @apply gap-4;
+  @apply gap-400;
 
   display: grid;
 }

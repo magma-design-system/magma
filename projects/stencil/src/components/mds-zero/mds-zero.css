@@ -9,9 +9,9 @@
   --mds-zero-contents-max-width: 400px;
 
   @apply
-    gap-6
-    p-12
-    mobile:px-6
+    gap-600
+    p-1200
+    mobile:px-600
     rounded-xl;
 
   align-items: center;
@@ -31,7 +31,7 @@
 }
 
 :host .actions {
-  @apply gap-2;
+  @apply gap-200;
 
   align-items: center;
   display: flex;

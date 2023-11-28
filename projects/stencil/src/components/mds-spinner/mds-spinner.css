@@ -11,8 +11,8 @@
   @apply
     duration-300
     ease-in-out-quart
-    h-12
-    w-12;
+    h-1200
+    w-1200;
 
   align-items: center;
   color: theme('colors.brand-maggioli-03');

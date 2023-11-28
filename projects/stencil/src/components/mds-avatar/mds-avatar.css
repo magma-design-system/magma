@@ -25,9 +25,9 @@
   @apply transition-colors;
 
   aspect-ratio: 1/1;
+  color: transparent;
   display: inline-flex;
   overflow: hidden;
-  color: transparent;
   width: 100%;
 }
 
@@ -47,8 +47,8 @@
 }
 
 .avatar.fallback {
-  padding: 20%;
   background-color: var(--mds-avatar-background-color-placeholder);
+  padding: 20%;
 }
 
 .avatar.initials {
@@ -83,8 +83,8 @@
     duration-200
     ease-in-out;
 
-  transition-property: font-size;
   display: inline-block;
+  transition-property: font-size;
   white-space: nowrap;
 }
 

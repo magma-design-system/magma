@@ -10,7 +10,7 @@
 
   --mds-accordion-timer-progress-bar-color: theme('colors.tone-neutral-03');
   --mds-accordion-timer-progress-bar-background: theme('colors.tone-neutral-08');
-  --mds-accordion-timer-progress-bar-thickness: theme('width.1');
+  --mds-accordion-timer-progress-bar-thickness: theme('width.100');
   --mds-accordion-timer-duration: 500ms;
 
   display: block;

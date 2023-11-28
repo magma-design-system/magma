@@ -10,19 +10,19 @@
 
 :host {
 
-  --mds-input-range-thumb-size: theme('spacing.4');
+  --mds-input-range-thumb-size: theme('spacing.400');
   --mds-input-range-thumb-background: theme('colors.brand-maggioli-03');
   --mds-input-range-track-background: theme('colors.tone-neutral-09');
-  --mds-input-range-track-size: theme('spacing.2');
+  --mds-input-range-track-size: theme('spacing.200');
   --mds-input-range-track-progress-background: var(--mds-input-range-thumb-background);
 
-  @apply gap-1;
+  @apply gap-100;
 
   display: grid;
 }
 
 .header {
-  @apply gap-2;
+  @apply gap-200;
 
   display: flex;
 }

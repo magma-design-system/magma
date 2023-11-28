@@ -18,13 +18,13 @@
   --mds-banner-background: theme('colors.tone-neutral-10');
   --mds-banner-close-icon-hover-background: theme('colors.tone-neutral-09');
   --mds-banner-color: theme('colors.tone-neutral-02');
-  --mds-banner-gap: theme('spacing.4');
+  --mds-banner-gap: theme('spacing.400');
   --mds-banner-icon-color: theme('colors.tone-neutral-04');
   --mds-banner-radius: theme('borderRadius.lg');
   --mds-banner-shadow: none;
 
   @apply
-    p-6
+    p-600
     transition-cosmetic;
 
   background-color: var(--mds-banner-background);
@@ -60,11 +60,11 @@
 
 .close-icon {
   @apply
-    -m-1
+    -m-100
     duration-200
     ease-out
     focus-bounce
-    p-1
+    p-100
     rounded-md;
 
   background-color: transparent;

@@ -15,13 +15,14 @@
 
   --mds-accordion-timer-item-progress-bar-color: var(--mds-accordion-timer-progress-bar-color, theme('colors.tone-neutral-03'));
   --mds-accordion-timer-item-progress-bar-background: var(--mds-accordion-timer-progress-bar-background, theme('colors.tone-neutral-08'));
-  --mds-accordion-timer-item-progress-bar-thickness: var(--mds-accordion-timer-progress-bar-thickness, theme('width.1'));
+  --mds-accordion-timer-item-progress-bar-thickness: var(--mds-accordion-timer-progress-bar-thickness, theme('width.100'));
   --mds-accordion-timer-item-duration: var(--mds-accordion-timer-duration, 500ms);
 
   @apply
     duration-500
     ease-out-expo
-    py-4
+    lea
+    py-400
     transition-cosmetic;
 
   color: var(--mds-accordion-timer-item-color, theme('colors.tone-neutral-02'));
@@ -30,7 +31,7 @@
 }
 
 .row {
-  @apply gap-4;
+  @apply gap-400;
 
   display: flex;
 }
@@ -65,7 +66,7 @@
 .contents {
   @apply
     ease-in-out-expo
-    gap-4;
+    gap-400;
 
   display: grid;
   grid-template-rows: 0fr;
@@ -84,7 +85,7 @@
 :host( [selected] ) .contents {
   @apply
     opacity-100
-    pt-4;
+    pt-400;
 
   grid-template-rows: 1fr;
 }

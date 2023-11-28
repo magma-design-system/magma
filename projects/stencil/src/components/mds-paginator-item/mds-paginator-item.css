@@ -35,13 +35,13 @@
   --mds-paginator-item-shadow-hover: none;
   --mds-paginator-item-shadow-selected: theme('boxShadow.sharp-md');
   --mds-paginator-item-shadow: none;
-  --mds-paginator-item-size: theme('spacing.9');
+  --mds-paginator-item-size: theme('spacing.900');
 
   @apply
     duration-200
     ease-out
     focus-bounce
-    px-3;
+    px-300;
 
   align-items: center;
   background-color: var(--mds-paginator-item-background);

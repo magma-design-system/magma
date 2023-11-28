@@ -42,9 +42,9 @@
   @apply
     duration-150
     ease-in-out
-    gap-1.5
-    h-9
-    p-1.5
+    gap-150
+    h-900
+    p-150
     rounded-full;
 
   align-items: center;
@@ -92,19 +92,19 @@
 }
 
 .label:first-child {
-  @apply pl-2;
+  @apply pl-200;
 }
 
 .label:last-child {
-  @apply pr-2;
+  @apply pr-200;
 }
 
 .icon-area {
   @apply
-    h-6
+    h-600
     justify-center
     rounded-full
-    w-6;
+    w-600;
 
   align-items: center;
   background-color: var(--mds-chip-icon-background);
@@ -116,17 +116,17 @@
 
 .icon {
   @apply
-    h-4
-    w-4;
+    h-400
+    w-400;
 
   fill: var(--mds-chip-icon-color);
 }
 
 .delete {
   @apply
-    h-6
+    h-600
     rounded-full
-    w-6;
+    w-600;
 
   cursor: pointer;
   fill: var(--mds-chip-delete-icon-color);

@@ -6,8 +6,8 @@
   @apply
     duration-500
     ease-out-expo
-    px-6
-    py-4;
+    px-600
+    py-400;
 
   background-color: theme('colors.tone-neutral');
   box-shadow: theme('boxShadow.sharp-md');
@@ -24,7 +24,7 @@
 
 .contents {
   @apply
-    gap-4
+    gap-400
     max-w-screen-wide;
 
   align-items: center;
@@ -34,20 +34,20 @@
 }
 
 .actions {
-  @apply gap-6;
+  @apply gap-600;
 
   display: flex;
 }
 
 .nav {
-  @apply gap-4;
+  @apply gap-400;
 
   display: inline-flex;
   flex-shrink: 0;
 }
 
 .menu-icon {
-  @apply w-8;
+  @apply w-800;
 
   cursor: pointer;
   fill: inherit;

@@ -9,7 +9,7 @@
 }
 
 .quote {
-  @apply gap-4;
+  @apply gap-400;
 
   display: grid;
   user-select: all;

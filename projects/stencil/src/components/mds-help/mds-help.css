@@ -8,7 +8,7 @@ mds-help {
   --mds-help-tooltip-max-width: 280px;
   --mds-help-tooltip-delay: 0.25s;
 
-  @apply ml-1;
+  @apply ml-100;
 
   cursor: help;
   display: inline-flex;
@@ -46,8 +46,8 @@ mds-help mds-tooltip::part(text) {
 mds-icon,
 i {
   @apply
-    h-4
-    w-4;
+    h-400
+    w-400;
 
   fill: inherit;
 }

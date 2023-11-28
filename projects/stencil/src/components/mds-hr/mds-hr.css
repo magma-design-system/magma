@@ -3,7 +3,7 @@
 
 :host {
   @apply
-    h-1
+    h-100
     rounded
     w-full;
 

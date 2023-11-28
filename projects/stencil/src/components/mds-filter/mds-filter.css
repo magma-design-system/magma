@@ -15,12 +15,12 @@
 
   --mds-filter-items-background-active: theme('colors.tone-neutral-09');
   --mds-filter-items-background: theme('colors.tone-neutral-10');
-  --mds-filter-items-gap: theme('spacing.2');
-  --mds-filter-items-padding: theme('spacing.2');
+  --mds-filter-items-gap: theme('spacing.200');
+  --mds-filter-items-padding: theme('spacing.200');
   --mds-filter-items-radius: theme('borderRadius.full');
-  --mds-filter-label-padding: 0 theme('spacing.6');
+  --mds-filter-label-padding: 0 theme('spacing.600');
 
-  @apply gap-1;
+  @apply gap-100;
 
   display: grid;
   grid-auto-rows: min-content;

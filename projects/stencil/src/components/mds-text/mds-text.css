@@ -154,7 +154,7 @@
 
 :host( [tag="code"] ) {
   @apply
-    px-1
+    px-100
     rounded
     transition-colors;
 

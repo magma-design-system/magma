@@ -33,10 +33,10 @@
 .dialog {
   @apply
     ease-in-cubic
-    gap-4
+    gap-400
     max-w-full
-    mx-4
-    p-4
+    mx-400
+    p-400
     rounded-xl;
 
   align-items: center;
@@ -87,7 +87,7 @@
 }
 
 .actions {
-  @apply gap-2;
+  @apply gap-200;
 
   display: flex;
 }

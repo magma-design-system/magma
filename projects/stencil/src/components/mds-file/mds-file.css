@@ -33,7 +33,7 @@
 .preview {
   @apply
     transition-colors
-    w-14;
+    w-1400;
 
   align-items: center;
   display: flex;
@@ -44,10 +44,10 @@
 
 .image-preview {
   @apply
-    bottom-3
-    left-3
-    right-3
-    top-3;
+    bottom-300
+    left-300
+    right-300
+    top-300;
 
   background-position: center;
   background-repeat: no-repeat;
@@ -58,8 +58,8 @@
 .info {
   @apply
     min-w-0
-    px-3
-    py-2;
+    px-300
+    py-200;
 
   display: flex;
   flex-direction: column;
@@ -84,7 +84,7 @@
 
 .detail {
   @apply
-    gap-2
+    gap-200
     min-w-0;
 
   align-items: center;

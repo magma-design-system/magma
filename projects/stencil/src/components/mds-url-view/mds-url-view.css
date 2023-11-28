@@ -20,7 +20,7 @@
 
   @apply
     h-screen
-    p-4;
+    p-400;
 
   box-sizing: border-box;
   display: flex;
@@ -41,8 +41,8 @@
 
 .header {
   @apply
-    gap-2
-    p-2;
+    gap-200
+    p-200;
 
   align-items: center;
   background-color: var(--mds-url-view-background);

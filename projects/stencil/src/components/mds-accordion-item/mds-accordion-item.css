@@ -20,8 +20,8 @@
   --mds-accordion-item-color: var(--mds-accordion-color, theme('colors.tone-neutral-03'));
   --mds-accordion-item-description-color: var(--mds-accordion-description-color, theme('colors.tone-neutral-02'));
   --mds-accordion-item-duration: var(--mds-accordion-duration, 300ms);
-  --mds-accordion-item-padding-selected: var(--mds-accordion-padding-selected, theme('spacing.4') 0 theme('spacing.8') 0);
-  --mds-accordion-item-padding-unselected: var(--mds-accordion-padding-unselected, theme('spacing.4') 0 theme('spacing.4') 0);
+  --mds-accordion-item-padding-selected: var(--mds-accordion-padding-selected, theme('spacing.400') 0 theme('spacing.800') 0);
+  --mds-accordion-item-padding-unselected: var(--mds-accordion-padding-unselected, theme('spacing.400') 0 theme('spacing.400') 0);
 
   @apply
     duration-500
@@ -63,7 +63,7 @@
 .action {
   @apply
     focus-bounce
-    gap-4
+    gap-400
     rounded-lg;
 
   background-color: transparent;
@@ -90,7 +90,7 @@
 .contents {
   @apply
     ease-in-out-expo
-    gap-4;
+    gap-400;
 
   display: grid;
   grid-template-rows: 0fr;
@@ -107,7 +107,7 @@
 }
 
 :host( [selected] ) .contents {
-  @apply pt-4;
+  @apply pt-400;
 
   grid-template-rows: 1fr;
   opacity: 1;

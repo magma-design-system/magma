@@ -6,41 +6,40 @@
 
 
 :host {
-  @apply
-    flex
-    relative
-    text-tone-neutral-02
-    text-info-detail;
+  @apply text-info-detail;
 
-  --variant-color: 0, 0, 0;
-  --ring: 0 0 0 1px rgba(var(--variant-color), 0.1);
-  --shadow: 0 1px 3px 0 rgba(var(--variant-color), 0.1), 0 1px 2px 0 rgba(var(--variant-color), 0.06);
+  --mds-input-select-variant-color: 0, 0, 0;
+  --mds-input-select-ring: 0 0 0 1px rgba(var(--mds-input-select-variant-color) / 0.1);
+  --mds-input-select-shadow: 0 1px 3px 0 rgba(var(--mds-input-select-variant-color) / 0.1), 0 1px 2px 0 rgba(var(--mds-input-select-variant-color) / 0.06);
+
+  color: theme('colors.tone-neutral-02');
+  display: flex;
+  position: relative;
 }
 
 .input {
   @apply
-    appearance-none
-    bg-tone-neutral
-    border-none
-    border-transparent
-    box-border
-    cursor-pointer
     duration-300
     ease-out-expo
     m-0
-    min-h-12
-    text-ellipsis
-    overflow-hidden
-    pl-4
-    pr-12
-    py-3
+    min-h-1200
+    pl-400
+    pr-1200
+    py-300
     rounded-lg
-    text-tone-neutral-05
     text-info-detail
     transition-cosmetic
     w-full;
 
-  box-shadow: var(--ring), var(--shadow);
+  appearance: none;
+  background-color: theme('colors.tone-neutral');
+  border: 0;
+  box-shadow: var(--mds-input-select-ring), var(--mds-input-select-shadow);
+  box-sizing: border-box;
+  color: theme('colors.tone-neutral-05');
+  cursor: pointer;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 .input:focus {
@@ -50,38 +49,39 @@
     outline-none
     transition-cosmetic;
 
-  --variant-color: 10, 80, 212;
-  --ring: 0 0 0 3px rgba(var(--variant-color), 1);
-  --shadow: 0 4px 6px -1px rgba(var(--variant-color), 0.1), 0 2px 4px -1px rgba(var(--variant-color), 0.06);
+  --mds-input-select-variant-color: 10, 80, 212;
+  --mds-input-select-ring: 0 0 0 3px rgb(var(--mds-input-select-variant-color) 1);
+  --mds-input-select-shadow: 0 4px 6px -1px rgb(var(--mds-input-select-variant-color) 0.1), 0 2px 4px -1px rgb(var(--mds-input-select-variant-color) 0.06);
 }
 
-.input--selected {
-  @apply text-tone-neutral-02;
+.input--mds-input-select-selected {
+  color: theme('colors.tone-neutral-02');
 }
 
 .icon-container {
   @apply
-    absolute
-    flex
-    h-12
-    items-center
-    pointer-events-none
-    right-4
-    text-inherit;
+    h-1200
+    right-400;
+
+  align-items: center;
+  color: inherit;
+  display: flex;
+  pointer-events: none;
+  position: absolute;
 }
 
 .icon {
   @apply
-    bg-transparent
     duration-200
     rounded-full
-    fill-brand-maggioli-04
     transition-colors;
+
+  background-color: transparent;
+  fill: theme('colors.brand-maggioli-04');
 }
 
 .input:focus + .icon-container .icon,
 .input:hover + .icon-container .icon {
-  @apply
-    bg-tone-neutral-09
-    fill-brand-maggioli-02;
+  background-color: theme('colors.tone-neutral-09');
+  fill: theme('colors.brand-maggioli-02');
 }

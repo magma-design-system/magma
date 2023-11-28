@@ -1,17 +1,17 @@
 :host( [size="sm"] ) {
 
-  --switch-toggle-size: theme('spacing.5');
-  --switch-padding: theme('spacing.1');
+  --switch-toggle-size: theme('spacing.500');
+  --switch-padding: theme('spacing.100');
 }
 
 :host( [size="md"] ) {
 
-  --switch-toggle-size: theme('spacing.6');
-  --switch-padding: theme('spacing.1');
+  --switch-toggle-size: theme('spacing.600');
+  --switch-padding: theme('spacing.100');
 }
 
 :host( [size="lg"] ) {
 
-  --switch-toggle-size: theme('spacing.7');
-  --switch-padding: theme('spacing.1');
+  --switch-toggle-size: theme('spacing.700');
+  --switch-padding: theme('spacing.100');
 }

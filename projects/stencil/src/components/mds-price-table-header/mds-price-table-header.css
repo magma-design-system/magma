@@ -2,7 +2,7 @@
 
 :host {
 
-  @apply gap-6;
+  @apply gap-600;
 
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(1px, 1fr));

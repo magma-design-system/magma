@@ -19,8 +19,8 @@
   --mds-entity-shadow: theme('boxShadow.DEFAULT');
 
   @apply
-    gap-2
-    p-2
+    gap-200
+    p-200
     rounded-lg;
 
   align-items: stretch;
@@ -35,7 +35,7 @@
 .icon {
   @apply
     rounded
-    w-11;
+    w-1100;
 
   flex-shrink: 0;
 }
@@ -62,7 +62,7 @@
 }
 
 .details {
-  @apply gap-1;
+  @apply gap-100;
 
   align-items: center;
   color: var(--mds-entity-detail-color);
@@ -70,7 +70,7 @@
 }
 
 .actions {
-  @apply gap-2;
+  @apply gap-200;
 
   align-items: center;
   display: flex;
@@ -79,7 +79,7 @@
 ::slotted( [slot="action"] ) {
   @apply
     aspect-square
-    w-11;
+    w-1100;
 
   height: auto;
 }
