@@ -3874,17 +3874,10 @@
   resolved "https://registry.npmjs.org/@types/parse-json/-/parse-json-4.0.2.tgz#5950e50960793055845e956c427fc2b0d70c5239"
   integrity sha512-dISoDXWWQwUquiKsyZ4Ng+HX2KsPL7LyHKHQwgGFEA3IaKac4Obd+h2a/a6waisAoepJlBcx9paWqjA8/HVjCw==
 
-"@types/pdfkit@*":
+"@types/pdfkit@*", "@types/pdfkit@0.13.3":
   version "0.13.3"
   resolved "https://registry.npmjs.org/@types/pdfkit/-/pdfkit-0.13.3.tgz#f0db9a51c0d558ee8026abfce4f4f8ea37bb61bf"
   integrity sha512-CN0prCV0n1HssBg34izaTAcWRmq0916SnsmpTsRqIxlbdS6QkDYsZ5/cm6/a5V2MO3501fbZHkv9DLjJCh9W4Q==
-  dependencies:
-    "@types/node" "*"
-
-"@types/pdfkit@0.13.2":
-  version "0.13.2"
-  resolved "https://registry.npmjs.org/@types/pdfkit/-/pdfkit-0.13.2.tgz#9e3aad2ffc8263982fc81c24840ed19663a92999"
-  integrity sha512-fmvYh4i/O6DM5za+B8TmuKxBK/iSqXQE9uWVNp/1DK2+Is+BlzhzyOtsS14TWMNwj7zxnN8u2vBl9Vs+jCX28A==
   dependencies:
     "@types/node" "*"
 
@@ -6060,7 +6053,7 @@ cross-spawn@^7.0.0, cross-spawn@^7.0.2, cross-spawn@^7.0.3:
     shebang-command "^2.0.0"
     which "^2.0.1"
 
-crypto-js@^4.0.0, crypto-js@^4.2.0:
+crypto-js@^4.2.0:
   version "4.2.0"
   resolved "https://registry.npmjs.org/crypto-js/-/crypto-js-4.2.0.tgz#4d931639ecdfd12ff80e8186dba6af2c2e856631"
   integrity sha512-KALDyEYgpY+Rlob/iriUtjV6d5Eq+Y191A5g4UqLAi8CyGP9N1+FdVbkc1SxKc2r4YAYqG8JzO2KGL+AizD70Q==
@@ -11321,17 +11314,7 @@ pathe@^1.1.1:
   resolved "https://registry.npmjs.org/pathe/-/pathe-1.1.1.tgz#1dd31d382b974ba69809adc9a7a347e65d84829a"
   integrity sha512-d+RQGp0MAYTIaDBIMmOfMwz3E+LOZnxx1HZd5R18mmCZY0QBlK0LDZfPc8FW8Ed2DlvsuE6PRjroDY+wg4+j/Q==
 
-pdfkit@0.13.0:
-  version "0.13.0"
-  resolved "https://registry.npmjs.org/pdfkit/-/pdfkit-0.13.0.tgz#da4c2becd63a129e3aae448fdaed4ee7be790f8f"
-  integrity sha512-AW79eHU5eLd2vgRDS9z3bSoi0FA+gYm+100LLosrQQMLUzOBGVOhG7ABcMFpJu7Bpg+MT74XYHi4k9EuU/9EZw==
-  dependencies:
-    crypto-js "^4.0.0"
-    fontkit "^1.8.1"
-    linebreak "^1.0.2"
-    png-js "^1.0.0"
-
-pdfkit@>=0.8.1:
+pdfkit@0.14.0, pdfkit@>=0.8.1:
   version "0.14.0"
   resolved "https://registry.npmjs.org/pdfkit/-/pdfkit-0.14.0.tgz#1416633d48b1271b8059e7f0f7675635fd42a53e"
   integrity sha512-Hnor8/78jhHm6ONrxWhrqOwAVALlBnFyWOF8sstBZMiqHZgZ5A6RU+Q3yahhw82plxpT7LOfH3b3qcOX6rzMQg==
