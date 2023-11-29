@@ -242,16 +242,16 @@
         "value": "91.666667%"
       },
       "title": {
-        "value": "30ch"
+        "value": "{typography.sizing.title}"
       },
       "phrase": {
-        "value": "50ch"
+        "value": "{typography.sizing.phrase}"
       },
       "prose": {
-        "value": "65ch"
+        "value": "{typography.sizing.prose}"
       },
       "text": {
-        "value": "75ch"
+        "value": "{typography.sizing.text}"
       }
     }
   }

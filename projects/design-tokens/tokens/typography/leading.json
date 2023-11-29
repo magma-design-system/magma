@@ -1,32 +1,32 @@
 {
   "typography": {
     "leading": {
-      "3xl": {
-        "value": "48px"
-      },
-      "2xl": {
-        "value": "40px"
-      },
-      "xl": {
-        "value": "36px"
-      },
-      "lg": {
-        "value": "32px"
-      },
-      "md": {
-        "value": "28px"
-      },
-      "DEFAULT": {
-        "value": "24px"
-      },
-      "sm": {
-        "value": "20px"
+      "2xs": {
+        "value": "10px"
       },
       "xs": {
         "value": "16px"
       },
-      "2xs": {
-        "value": "10px"
+      "sm": {
+        "value": "20px"
+      },
+      "DEFAULT": {
+        "value": "24px"
+      },
+      "md": {
+        "value": "28px"
+      },
+      "lg": {
+        "value": "32px"
+      },
+      "xl": {
+        "value": "36px"
+      },
+      "2xl": {
+        "value": "40px"
+      },
+      "3xl": {
+        "value": "48px"
       }
     }
   }
