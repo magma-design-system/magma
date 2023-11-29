@@ -10,7 +10,7 @@
     py-400;
 
   background-color: theme('colors.tone-neutral');
-  box-shadow: theme('boxShadow.sharp-md');
+  box-shadow: theme('boxShadow.md-sharp');
   display: flex;
   inset: 0 0 auto;
   justify-content: center;

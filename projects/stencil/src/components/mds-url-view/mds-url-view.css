@@ -15,7 +15,7 @@
   --mds-url-view-background: theme('colors.tone-neutral-10');
   --mds-url-view-color: theme('colors.tone-neutral-02');
   --mds-url-view-radius: theme('borderRadius.md');
-  --mds-url-view-header-shadow: theme('boxShadow.sharp-sm');
+  --mds-url-view-header-shadow: theme('boxShadow.sm-sharp');
   --mds-url-view-shadow: theme('boxShadow.lg');
 
   @apply

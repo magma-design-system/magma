@@ -27,7 +27,7 @@
 }
 
 :host( :hover ) {
-  box-shadow: theme('boxShadow.sharp-md');
+  box-shadow: theme('boxShadow.md-sharp');
 }
 
 .preview {

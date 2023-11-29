@@ -3,7 +3,7 @@
 :host {
   background-color: theme('colors.tone-neutral');
   bottom: 0;
-  box-shadow: theme('boxShadow.sharp-sm');
+  box-shadow: theme('boxShadow.sm-sharp');
   display: flex;
   justify-content: space-around;
   left: 0;
