@@ -1,23 +1,79 @@
-const modelValidator = {
-  cc: {
-    font: 'font-mono',
-    regex: /^(?:[A-Z][AEIOU][AEIOUX]|[B-DF-HJ-NP-TV-Z]{2}[A-Z]){2}(?:[\dLMNP-V]{2}(?:[A-EHLMPR-T](?:[04LQ][1-9MNP-V]|[15MR][\dLMNP-V]|[26NS][0-8LMNP-U])|[DHPS][37PT][0L]|[ACELMRT][37PT][01LM]|[AC-EHLMPR-T][26NS][9V])|(?:[02468LNQSU][048LQU]|[13579MPRTV][26NS])B[26NS][9V])(?:[A-MZ][1-9MNP-V][\dLMNP-V]{2}|[A-M][0L](?:[1-9MNP-V][\dLMNP-V]|[0L][1-9MNP-V]))[A-Z]$/gi,
-    message: 'Messaggio di errore del Codice Fiscale.',
-  },
-  cf: {
-    font: 'font-mono uppercase',
-    mask: '### ### ## # ## #### #',
-    regex: /^(?:[A-Z][AEIOU][AEIOUX]|[B-DF-HJ-NP-TV-Z]{2}[A-Z]){2}(?:[\dLMNP-V]{2}(?:[A-EHLMPR-T](?:[04LQ][1-9MNP-V]|[15MR][\dLMNP-V]|[26NS][0-8LMNP-U])|[DHPS][37PT][0L]|[ACELMRT][37PT][01LM]|[AC-EHLMPR-T][26NS][9V])|(?:[02468LNQSU][048LQU]|[13579MPRTV][26NS])B[26NS][9V])(?:[A-MZ][1-9MNP-V][\dLMNP-V]{2}|[A-M][0L](?:[1-9MNP-V][\dLMNP-V]|[0L][1-9MNP-V]))[A-Z]$/gi,
-    message: 'Messaggio di errore del Codice Fiscale.',
-  },
-  iban: {
-    regex: /^(?:(?:IT|SM)\d{2}[A-Z]\d{22}|CY\d{2}[A-Z]\d{23}|NL\d{2}[A-Z]{4}\d{10}|LV\d{2}[A-Z]{4}\d{13}|(?:BG|BH|GB|IE)\d{2}[A-Z]{4}\d{14}|GI\d{2}[A-Z]{4}\d{15}|RO\d{2}[A-Z]{4}\d{16}|KW\d{2}[A-Z]{4}\d{22}|MT\d{2}[A-Z]{4}\d{23}|NO\d{13}|(?:DK|FI|GL|FO)\d{16}|MK\d{17}|(?:AT|EE|KZ|LU|XK)\d{18}|(?:BA|HR|LI|CH|CR)\d{19}|(?:GE|DE|LT|ME|RS)\d{20}|IL\d{21}|(?:AD|CZ|ES|MD|SA)\d{22}|PT\d{23}|(?:BE|IS)\d{24}|(?:FR|MR|MC)\d{25}|(?:AL|DO|LB|PL)\d{26}|(?:AZ|HU)\d{27}|(?:GR|MU)\d{28})$/i,
-  },
-  hour: {
-    regex: /^([0-1][0-9]|2[0-3]):([0-5][0-9])$/i,
-  },
+export interface MdsValidationErrors {
+  [key: string]: string
 }
 
-export {
-  modelValidator,
+export type MdsValidatorFn = (input: string) => null | MdsValidationErrors
+
+export const NullValidator: MdsValidatorFn = () => null
+
+export const isbnValidatorFn: MdsValidatorFn = (input: string) => {
+  if (Number.isNaN(input.slice(0, -1)) || (input.length !== 10 && input.length !== 13)) return { 'isbn-error': 'formato isbn non correto' }
+
+  const v: number[] = input.split('').map(v => (v === 'X' ? 10 : Number(v)))
+
+  let check = 0
+  // check isbn-10
+  if (input.length === 10) {
+    const numVerify = v.reduce((prev, curr, i) => {
+      return prev + ((10 - i) * curr)
+    }, 0)
+
+    check = numVerify % 11
+  } else {
+    // check isbn-13
+    const numVerify = v.reduce((prev, curr, i) => {
+      const multiply = i % 2 === 0 ? 1 : 3
+      return prev + (curr * multiply)
+    }, 0)
+    check = numVerify % 10
+  }
+  return check === 0 ? null : { 'isbn-error': 'codice isbn non valido' }
+}
+
+export class Validator {
+  private _validators: MdsValidatorFn[]
+
+  private _errors: MdsValidationErrors | null
+  isValid: boolean
+
+  constructor () {
+    this._validators = []
+    this._errors = null
+    this.isValid = true
+  }
+
+  addValidator (validator: MdsValidatorFn | MdsValidatorFn[]): void {
+    if (Array.isArray(validator)) {
+      this._validators.push(...validator)
+    } else {
+      this._validators.push(validator)
+    }
+  }
+
+  private _hasValidator (validators: MdsValidatorFn | MdsValidatorFn[], validator: MdsValidatorFn): boolean {
+    return Array.isArray(validators) ? validators.includes(validator) : validators === validator
+  }
+
+  hasValidator (validator: MdsValidatorFn): boolean {
+    return this._hasValidator(this._validators, validator)
+  }
+
+  removeValidator (validator: MdsValidatorFn | MdsValidatorFn[]): void {
+    this._validators = this._validators.filter(v => !this._hasValidator(validator, v))
+  }
+
+  validate (value: string): void {
+    if (value.length === 0) {
+      this._errors = null
+      this.isValid = true
+      return
+    }
+    const res = this._validators.map(v => v(value)).reduce((prev, curr) => ({ ...prev, ...curr }), NullValidator )
+    this._errors = Object.keys(res).length === 0 ? null : res
+    this.isValid = !this._errors
+  }
+
+  get errors (): MdsValidationErrors | null {
+    return this._errors
+  }
 }

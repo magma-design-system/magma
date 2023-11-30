@@ -11,6 +11,23 @@ const inputTextTypeDictionary = [
   'url',
 ]
 
+const inputFieldTypeDictionary = [
+  'date',
+  'email',
+  'number',
+  'password',
+  'search',
+  'tel',
+  'text',
+  'textarea',
+  'time',
+  'url',
+  'cc',
+  'cf',
+  'isbn',
+  'piva',
+]
+
 
 const inputControlsLayoutDictionary = [
   'horizontal',
@@ -26,5 +43,6 @@ export {
   inputControlsIconDictionary,
   inputControlsLayoutDictionary,
   inputTextTypeDictionary,
+  inputFieldTypeDictionary,
 }
 

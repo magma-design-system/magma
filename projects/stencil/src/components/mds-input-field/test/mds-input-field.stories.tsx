@@ -1,6 +1,6 @@
 import { autoCompleteDictionary } from '@dictionary/autocomplete'
 import { themeStatusVariantDictionary } from '@dictionary/variant'
-import { inputTextTypeDictionary, inputControlsLayoutDictionary, inputControlsIconDictionary } from '@dictionary/input'
+import { inputControlsLayoutDictionary, inputControlsIconDictionary, inputFieldTypeDictionary } from '@dictionary/input'
 import { iconsDictionary } from '@dictionary/icon'
 import { typographyInputDictionary } from '@dictionary/typography'
 import { validationModelDictionary } from '../meta/dictionary'
@@ -120,7 +120,7 @@ export default {
     type: {
       type: { name: 'string' },
       description: 'Specifies the type of element',
-      options: inputTextTypeDictionary,
+      options: inputFieldTypeDictionary,
       control: { type: 'select' },
     },
     typography: {
@@ -262,13 +262,6 @@ Icon.args = {
   placeholder: 'This is a field',
 }
 
-export const Validate = Template.bind({})
-Validate.args = {
-  validate: 'cf',
-  label: 'inserisci il tuo codice fiscale',
-  placeholder: 'Es: MRCRSS83B21D704L',
-}
-
 const FormIntegrationTemplate = (args: MdsInputFieldInterface) => (
   <div class="grid gap-6">
     <form class="grid gap-4" id="mds-icon-fi" name="mds-icon-fi">
@@ -295,4 +288,12 @@ FormIntegration.args = {
   label: 'Write something',
   placeholder: 'Es: Hello world!',
   name: 'mds-input-field',
+}
+
+export const Validation = Template.bind({})
+Validation.args = {
+  label: 'inserisci il tuo codice fiscale',
+  placeholder: 'Es: MRCRSS83B21D704L',
+  type: 'cf',
+
 }

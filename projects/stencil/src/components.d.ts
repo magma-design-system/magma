@@ -32,8 +32,9 @@ import { MdsImgEventDetail } from "./components/mds-img/meta/event-detail";
 import { AutocompleteType } from "@type/autocomplete";
 import { InputControlsIconType, InputControlsLayoutType, InputTextType, InputValueType } from "@type/input";
 import { MdsInputEventDetail } from "./components/mds-input/meta/event-detail";
-import { ValidationModelType } from "./components/mds-input-field/meta/types";
+import { InputFieldType } from "./components/mds-input-field/meta/types";
 import { MdsInputEventDetail as MdsInputEventDetail1 } from "@component/mds-input/meta/event-detail";
+import { MdsValidationErrors, MdsValidatorFn } from "./components/mds-input-field/meta/validators";
 import { InputValue } from "@interface/input-value";
 import { InputSwitchSizeType, InputSwitchType } from "./components/mds-input-switch/meta/types";
 import { ModalPositionType } from "./components/mds-modal/meta/types";
@@ -76,8 +77,9 @@ export { MdsImgEventDetail } from "./components/mds-img/meta/event-detail";
 export { AutocompleteType } from "@type/autocomplete";
 export { InputControlsIconType, InputControlsLayoutType, InputTextType, InputValueType } from "@type/input";
 export { MdsInputEventDetail } from "./components/mds-input/meta/event-detail";
-export { ValidationModelType } from "./components/mds-input-field/meta/types";
+export { InputFieldType } from "./components/mds-input-field/meta/types";
 export { MdsInputEventDetail as MdsInputEventDetail1 } from "@component/mds-input/meta/event-detail";
+export { MdsValidationErrors, MdsValidatorFn } from "./components/mds-input-field/meta/validators";
 export { InputValue } from "@interface/input-value";
 export { InputSwitchSizeType, InputSwitchType } from "./components/mds-input-switch/meta/types";
 export { ModalPositionType } from "./components/mds-modal/meta/types";
@@ -756,6 +758,7 @@ export namespace Components {
         "variant"?: ThemeStatusVariantType;
     }
     interface MdsInputField {
+        "addValidator": (validator: MdsValidatorFn) => Promise<void>;
         /**
           * Specifies whether the element should have autocomplete enabled
          */
@@ -780,10 +783,11 @@ export namespace Components {
           * Specifies the label for the displayed state disabled
          */
         "disabledLabel"?: string;
+        "getErrors": () => Promise<MdsValidationErrors | null>;
         /**
           * Returns the native `<input>` element used under the hood.
          */
-        "getInputElement": () => Promise<HTMLMdsInputElement>;
+        "getInputElement": () => Promise<HTMLInputElement | HTMLTextAreaElement | null | undefined>;
         /**
           * An icon displayed at the right of the input
          */
@@ -832,6 +836,7 @@ export namespace Components {
           * Specifies the label for the displayed state read-only
          */
         "readonlyLabel"?: string;
+        "removeValidator": (validator: MdsValidatorFn) => Promise<void>;
         /**
           * Specifies that the element must be filled out before submitting the form
          */
@@ -855,19 +860,15 @@ export namespace Components {
         /**
           * Specifies the type of input element
          */
-        "type": InputTextType;
+        "type": InputFieldType;
         /**
           * Specifies the typography of input element
          */
         "typography": TypographyInputType;
         /**
-          * Specifies the type of model data to be automatically validated
-         */
-        "validate"?: ValidationModelType;
-        /**
           * Specifies the value of the input element
          */
-        "value"?: string;
+        "value": string;
         /**
           * Display the variant of a message at the bottom of the input text field
          */
@@ -3338,15 +3339,11 @@ declare namespace LocalJSX {
         /**
           * Specifies the type of input element
          */
-        "type"?: InputTextType;
+        "type"?: InputFieldType;
         /**
           * Specifies the typography of input element
          */
         "typography"?: TypographyInputType;
-        /**
-          * Specifies the type of model data to be automatically validated
-         */
-        "validate"?: ValidationModelType;
         /**
           * Specifies the value of the input element
          */
