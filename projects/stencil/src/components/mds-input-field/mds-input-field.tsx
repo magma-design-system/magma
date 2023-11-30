@@ -1,13 +1,14 @@
 import clsx from 'clsx'
 import { AttachInternals, Component, Element, Event, EventEmitter, Host, Method, Prop, State, Watch, h } from '@stencil/core'
 import { AutocompleteType } from '@type/autocomplete'
-import { InputTextType, InputControlsLayoutType, InputControlsIconType } from '@type/input'
+import { InputControlsLayoutType, InputControlsIconType, InputTextType } from '@type/input'
 import { MdsInputEventDetail } from '@component/mds-input/meta/event-detail'
 import { MdsInputInterface } from '@component/mds-input/mds-input'
 import { ThemeStatusVariantType } from '@type/variant'
 import { TypographyInputType } from '@type/typography'
-import { ValidationModelType } from './meta/types'
-import { modelValidator } from './meta/validators'
+import { InputValidationManager, createInputValidationManager } from './meta/input-type/InputValidationManager'
+import { MdsValidatorFn, MdsValidationErrors } from './meta/validators'
+import { InputFieldType } from './meta/types'
 
 export interface MdsInputFieldInterface extends MdsInputInterface {
   label?: string
@@ -20,12 +21,15 @@ export interface MdsInputFieldInterface extends MdsInputInterface {
   formAssociated: true,
   shadow: true,
 })
-
 export class MdsInputField {
 
   // private cleanValue?: string | number | null = ''
-  private nativeInput?: HTMLMdsInputElement
+  private nativeInput?: HTMLInputElement | HTMLTextAreaElement | null
   private tabindex?: number
+
+  private inputValidation: InputValidationManager
+
+  private isValidInput: boolean = true
 
   @Element() el!: HTMLMdsInputFieldElement
   @State() hasFocus = false
@@ -135,22 +139,17 @@ export class MdsInputField {
   /**
    * Specifies the type of input element
    */
-  @Prop({ reflect: true }) type: InputTextType = 'text'
+  @Prop({ reflect: true }) type: InputFieldType = 'text'
 
   /**
    * Specifies the typography of input element
    */
-  @Prop({ reflect: true }) typography: TypographyInputType = 'detail'
-
-  /**
-   * Specifies the type of model data to be automatically validated
-   */
-  @Prop() validate?: ValidationModelType
+  @Prop() typography: TypographyInputType = 'detail'
 
   /**
    * Specifies the value of the input element
    */
-  @Prop({ reflect: true }) value?: string = ''
+  @Prop({ reflect: true, mutable: true }) value: string = ''
 
   /**
    * Emits an InputValue when the value of the input element changes
@@ -181,17 +180,24 @@ export class MdsInputField {
       this.tabindex = tabindex !== null ? parseInt(tabindex) : undefined
       this.el.removeAttribute('tabindex')
     }
+
+    this.inputValidation = createInputValidationManager(this.type)
   }
 
+  componentDidLoad (): void {
+    this.nativeInput = this.el.shadowRoot?.querySelector('mds-input')?.shadowRoot?.querySelector('input')
+    this.nativeInput?.setAttribute('pattern', String(this.inputValidation.pattern))
+    // this.inputValidation.mask(this.nativeInput)
+
+    // this.mdsInput?.getInputElement().then(input => this.inputValidation.mask(input as HTMLInputElement))
+  }
   /**
    * Emits the change event when the component value changes
    */
   @Watch('value')
   protected valueChanged ():void {
     this.changeEvent.emit({ value: this.value })
-    this.internals.setFormValue(this.value ?? null)
-    // this.cleanValue = this.value
-    // console.log(this.cleanValue)
+    this.internals.setFormValue(this.value)
   }
 
   /**
@@ -210,53 +216,49 @@ export class MdsInputField {
    * Returns the native `<input>` element used under the hood.
    */
   @Method()
-  getInputElement (): Promise<HTMLMdsInputElement> {
+  getInputElement (): Promise<HTMLInputElement | HTMLTextAreaElement | null | undefined> {
     // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-    return Promise.resolve(this.nativeInput!)
+    return Promise.resolve(this.nativeInput)
   }
 
-  // private getValue (): string {
-  //   return typeof this.value === 'number' ? this.value.toString() : (this.value ?? '')
-  // }
+  @Method()
+  async addValidator (validator: MdsValidatorFn): Promise<void> {
+    this.inputValidation.validator.addValidator(validator)
+    return Promise.resolve()
+  }
 
-  private mask (value: string | number | null = '' ): string | number | null {
-    let i = -1
-    const v = value?.toString()
-    if (this.validate && v) {
-      const { mask } = modelValidator[this.validate]
-      let maskedChars: string
+  @Method()
+  async removeValidator (validator: MdsValidatorFn): Promise<void> {
+    this.inputValidation.validator.removeValidator(validator)
+  }
 
-      return mask.replace(/#/g, () => {
-        i += 1
-        // console.log(v.length, i, v[ i ])
-        // console.log(`'${mask[i]}'`)
-        maskedChars = v[ i ] ?? ''
-        return maskedChars
-      })
-    }
-    return null
+  @Method()
+  async getErrors (): Promise<MdsValidationErrors | null> {
+    return Promise.resolve(this.inputValidation.validator.errors)
+  }
+
+  private validateInput () {
+    return this.inputValidation.isValid(this.value)
   }
 
   private onInput = (ev: Event) => {
     const input = ev.target as HTMLInputElement | false
     if (input) {
       this.value = input.value
-      this.internals.setFormValue(this.value ?? null)
+      this.internals.setFormValue(this.value)
     }
     this.keyDownEvent.emit(ev as KeyboardEvent)
-
-    if (this.validate !== null) {
-      this.mask(this.value)
-      // console.log(`"${this.mask(this.value)}"`)
-    }
   }
 
   private onBlur = () => {
     this.hasFocus = false
     this.blurEvent.emit()
-
-    if (this.validate !== null) {
-
+    this.isValidInput = this.validateInput()
+    this.variant = this.isValidInput ? 'success' : 'error'
+    if (this.inputValidation.validator.errors){
+      this.message = Object.entries(this.inputValidation.validator.errors).map(v => v[1]).join('\n')
+    } else {
+      this.message = undefined
     }
   }
 
@@ -283,12 +285,12 @@ export class MdsInputField {
   /**
    * Display a message at the bottom of the input text field
    */
-  @Prop() message?: string
+  @Prop({ mutable: true }) message?: string
 
   /**
    * Display the variant of a message at the bottom of the input text field
    */
-  @Prop({ reflect: true }) variant?: ThemeStatusVariantType
+  @Prop({ reflect: true, mutable: true }) variant?: ThemeStatusVariantType
 
   /**
    * Display the variant of a message at the bottom of the input text field
@@ -296,7 +298,6 @@ export class MdsInputField {
   @Prop() tip?: string
 
   render () {
-    // const value = this.getValue()
     return (
       <Host>
         { this.label && <mds-text class="label" typography="label">{ this.label }</mds-text> }
@@ -304,7 +305,7 @@ export class MdsInputField {
           <mds-input
             autocomplete={this.autocomplete}
             autofocus={this.autofocus}
-            class={clsx('input', this.validate && modelValidator[this.validate].font)}
+            class={clsx('input', this.isValidInput ? 'input-valid' : 'input-invalid')}
             controlsLayout={this.controlsLayout}
             controlsIcon={this.controlsIcon}
             disabled={this.disabled}
@@ -321,14 +322,14 @@ export class MdsInputField {
             pattern={this.pattern}
             placeholder={this.placeholder}
             readonly={this.readonly}
-            ref={ input => (this.nativeInput = input)}
+            // ref={ input => (this.mdsInput = input)}
             required={this.required}
             typography={this.typography}
             variant={this.variant}
             tip={this.tip}
             step={this.step}
             tabIndex={this.tabindex}
-            type={this.type}
+            type={this.type as InputTextType}
             value={this.value}
           />
           { this.message && <mds-text class="message" typography="caption">{ this.message }</mds-text> }
