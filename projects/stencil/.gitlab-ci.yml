@@ -76,7 +76,7 @@ stencil-test:
   image: atools/chrome-headless:java17-nodelts-latest
   stage: test
   tags:
-    - maggioli-network
+    - maggioli-k8s
   dependencies: [base-stencil-build]
   before_script:
     - cd projects/stencil
