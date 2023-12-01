@@ -13,8 +13,8 @@
   --color: theme('colors.label-sky-03');
 
   @apply
-    px-2
-    py-1
+    px-200
+    py-100
     transition-colors;
 
   align-items: center;

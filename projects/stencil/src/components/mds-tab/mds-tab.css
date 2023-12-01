@@ -18,9 +18,9 @@
 .tabs {
 
   @apply
-    gap-2
+    gap-200
     hide-scrollbar
-    p-2;
+    p-200;
 
   background-color: rgb(var(--theme-default-06-secondary-background));
   border-radius: theme('borderRadius.xl');
@@ -41,7 +41,7 @@
   --mds-tab-contents-height: auto;
 
   @apply
-    gap-6
+    gap-600
     hide-scrollbar;
 
   align-items: flex-start;
@@ -69,14 +69,12 @@
 }
 
 :host( [strategy="default"] ) ::slotted( [slot="content"] ) {
-  @apply
-    left-0
-    opacity-0
-    right-0
-    top-0;
-
   background-color: theme('colors.label-blue-06');
+  left: 0;
+  opacity: 0;
   pointer-events: none;
   position: absolute;
+  right: 0;
+  top: 0;
 }
 

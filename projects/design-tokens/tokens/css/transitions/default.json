@@ -1,0 +1,12 @@
+{
+  "css": {
+    "transitionProperty": {
+      "cosmetic": {
+        "value": "background-color, border-color, box-shadow, color, fill, height, margin, opacity, padding, transform, width"
+      },
+      "size": {
+        "value": "height, margin, padding, width"
+      }
+    }
+  }
+}

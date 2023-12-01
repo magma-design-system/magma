@@ -64,12 +64,12 @@
   @apply
     duration-500
     ease-in-out-quart
-    h-9
+    h-900
     opacity-0
     rounded-full
     text-4xl
     top-0
-    w-9;
+    w-900;
 
   cursor: pointer;
   fill: inherit;

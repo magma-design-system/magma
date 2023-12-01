@@ -7,7 +7,7 @@
   --mds-banner-close-icon-hover-background: theme('colors.tone-neutral-03');
   --mds-banner-color: theme('colors.tone-neutral-08');
   --mds-banner-icon-color: theme('colors.tone-neutral-07');
-  --mds-banner-shadow: theme('boxShadow.sharp-lg');
+  --mds-banner-shadow: theme('boxShadow.lg-sharp');
 }
 
 :host( [variant="dark"][tone="weak"] ) {
@@ -16,7 +16,7 @@
   --mds-banner-close-icon-hover-background: theme('colors.tone-neutral-05');
   --mds-banner-color: theme('colors.tone-neutral-09');
   --mds-banner-icon-color: theme('colors.tone-neutral-07');
-  --mds-banner-shadow: theme('boxShadow.sharp-sm');
+  --mds-banner-shadow: theme('boxShadow.sm-sharp');
 }
 
 :host( [variant="dark"][tone="ghost"] ) {

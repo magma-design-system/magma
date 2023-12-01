@@ -1,0 +1,33 @@
+{
+  "source": [
+    "tokens/cosmetic/border-radius.json",
+    "tokens/cosmetic/border.json",
+    "tokens/cosmetic/box-shadow.json",
+    "tokens/css/**/*.json",
+    "tokens/sizing/aspect-ratio.json",
+    "tokens/sizing/gap.json",
+    "tokens/typography/leading.json",
+    "tokens/typography/size.json",
+    "tokens/typography/sizing.json"
+  ],
+  "include": [
+    "tokens/sizing/default.json"
+  ],
+  "platforms": {
+    "js": {
+      "transforms": [
+        "attribute/cti",
+        "name/cti/kebab",
+        "tailwind/cssAspectRatio",
+        "tailwind/pxToRem"
+      ],
+      "buildPath": "dist/js/",
+      "files": [
+        {
+          "destination": "tailwind-props.js",
+          "format": "js/tailwind-props"
+        }
+      ]
+    }
+  }
+}

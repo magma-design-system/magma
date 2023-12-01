@@ -15,7 +15,7 @@
 :host {
 
   --mds-kpi-item-description-color: theme('colors.tone-neutral-04');
-  --mds-kpi-item-info-padding: theme('spacing.4');
+  --mds-kpi-item-info-padding: theme('spacing.400');
   --mds-kpi-item-value-color: theme('colors.tone-neutral-02');
   --mds-kpi-item-duration: 1s;
 

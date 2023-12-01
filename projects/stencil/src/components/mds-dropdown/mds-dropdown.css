@@ -27,9 +27,9 @@
   --mds-dropdown-z-index: var(--magma-dropdown-z-index, 4000);
 
   @apply
-    gap-4
+    gap-400
     opacity-0
-    p-6
+    p-600
     rounded-lg;
 
   background-color: var(--mds-dropdown-background);
@@ -57,7 +57,7 @@
 }
 
 .arrow {
-  @apply -top-4;
+  @apply -top-400;
 
   display: flex;
   fill: var(--mds-dropdown-arrow-background);

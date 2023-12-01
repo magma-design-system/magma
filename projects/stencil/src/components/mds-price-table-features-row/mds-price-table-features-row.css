@@ -15,5 +15,5 @@
 }
 
 :host(:hover) > ::slotted([type="label"]) {
-  transform: translate(theme('spacing.2'), 0);
+  transform: translate(theme('spacing.200'), 0);
 }

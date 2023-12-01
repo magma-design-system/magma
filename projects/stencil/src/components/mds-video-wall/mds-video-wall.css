@@ -32,10 +32,11 @@
 video,
 .noise {
   @apply
-    absolute
     h-full
-    inset-0
     w-full;
+
+  inset: 0;
+  position: absolute;
 }
 
 video {

@@ -7,7 +7,7 @@
   --mds-price-table-list-item-supported-icon-color: theme('colors.label-green-06');
   --mds-price-table-list-item-unsupported-icon-color: rgb(var(--theme-default-04-primary-decoration));
 
-  @apply gap-1;
+  @apply gap-100;
 
   align-items: flex-start;
   display: flex;
@@ -25,9 +25,9 @@
   @apply
     duration-500
     ease-out-expo
-    h-6
+    h-600
     transition-colors
-    w-6;
+    w-600;
 
   fill: var(--mds-price-table-list-item-unsupported-icon-color);
 }

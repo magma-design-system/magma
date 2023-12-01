@@ -1,7 +1,7 @@
 @tailwind utilities;
 
 :host {
-  @apply gap-4;
+  @apply gap-400;
 
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));

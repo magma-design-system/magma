@@ -12,8 +12,8 @@
   --mds-usage-badge-color: theme('colors.status-info-10');
 
   @apply
-    gap-4
-    p-6
+    gap-400
+    p-600
     rounded-xl;
 
   background-color: var(--mds-usage-background);
@@ -24,7 +24,7 @@
 }
 
 .header {
-  @apply px-6;
+  @apply px-600;
 
   align-items: center;
   display: flex;
@@ -40,9 +40,9 @@
 
 .badge {
   @apply
-    gap-2
-    px-4
-    py-1
+    gap-200
+    px-400
+    py-100
     rounded-full;
 
   background-color: var(--mds-usage-badge-background);

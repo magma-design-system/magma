@@ -2,8 +2,8 @@
 
 :host {
   @apply
-    gap-4
-    pl-4;
+    gap-400
+    pl-400;
 
   display: grid;
 }

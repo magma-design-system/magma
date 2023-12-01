@@ -1,0 +1,30 @@
+{
+  "cosmetic": {
+    "borderRadius": {
+      "none": {
+        "value": "0"
+      },
+      "sm": {
+        "value": "{sizing.primitive.50}"
+      },
+      "DEFAULT": {
+        "value": "{sizing.primitive.100}"
+      },
+      "md": {
+        "value": "{sizing.primitive.150}"
+      },
+      "lg": {
+        "value": "{sizing.primitive.200}"
+      },
+      "xl": {
+        "value": "{sizing.primitive.300}"
+      },
+      "2xl": {
+        "value": "{sizing.primitive.400}"
+      },
+      "3xl": {
+        "value": "{sizing.primitive.600}"
+      }
+    }
+  }
+}

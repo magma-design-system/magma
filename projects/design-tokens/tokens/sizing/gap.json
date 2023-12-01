@@ -1,0 +1,144 @@
+{
+  "sizing": {
+    "gap": {
+      "0": {
+        "value": "{sizing.primitive.0}"
+      },
+      "25": {
+        "value": "{sizing.primitive.25}"
+      },
+      "50": {
+        "value": "{sizing.primitive.50}"
+      },
+      "100": {
+        "value": "{sizing.primitive.100}"
+      },
+      "150": {
+        "value": "{sizing.primitive.150}"
+      },
+      "200": {
+        "value": "{sizing.primitive.200}"
+      },
+      "250": {
+        "value": "{sizing.primitive.250}"
+      },
+      "300": {
+        "value": "{sizing.primitive.300}"
+      },
+      "350": {
+        "value": "{sizing.primitive.350}"
+      },
+      "400": {
+        "value": "{sizing.primitive.400}"
+      },
+      "500": {
+        "value": "{sizing.primitive.500}"
+      },
+      "600": {
+        "value": "{sizing.primitive.600}"
+      },
+      "700": {
+        "value": "{sizing.primitive.700}"
+      },
+      "800": {
+        "value": "{sizing.primitive.800}"
+      },
+      "900": {
+        "value": "{sizing.primitive.900}"
+      },
+      "1000": {
+        "value": "{sizing.primitive.1000}"
+      },
+      "1100": {
+        "value": "{sizing.primitive.1100}"
+      },
+      "1200": {
+        "value": "{sizing.primitive.1200}"
+      },
+      "1300": {
+        "value": "{sizing.primitive.1300}"
+      },
+      "1400": {
+        "value": "{sizing.primitive.1400}"
+      },
+      "1500": {
+        "value": "{sizing.primitive.1500}"
+      },
+      "1600": {
+        "value": "{sizing.primitive.1600}"
+      },
+      "2000": {
+        "value": "{sizing.primitive.2000}"
+      },
+      "2400": {
+        "value": "{sizing.primitive.2400}"
+      },
+      "2800": {
+        "value": "{sizing.primitive.2800}"
+      },
+      "3200": {
+        "value": "{sizing.primitive.3200}"
+      },
+      "3600": {
+        "value": "{sizing.primitive.3600}"
+      },
+      "4000": {
+        "value": "{sizing.primitive.4000}"
+      },
+      "4400": {
+        "value": "{sizing.primitive.4400}"
+      },
+      "4800": {
+        "value": "{sizing.primitive.4800}"
+      },
+      "5200": {
+        "value": "{sizing.primitive.5200}"
+      },
+      "5600": {
+        "value": "{sizing.primitive.5600}"
+      },
+      "6000": {
+        "value": "{sizing.primitive.6000}"
+      },
+      "6400": {
+        "value": "{sizing.primitive.6400}"
+      },
+      "7200": {
+        "value": "{sizing.primitive.7200}"
+      },
+      "8000": {
+        "value": "{sizing.primitive.8000}"
+      },
+      "9600": {
+        "value": "{sizing.primitive.9600}"
+      },
+      "none": {
+        "value": "{sizing.gap.0}"
+      },
+      "xs": {
+        "value": "{sizing.gap.100}"
+      },
+      "sm": {
+        "value": "{sizing.gap.200}"
+      },
+      "md": {
+        "value": "{sizing.gap.400}"
+      },
+      "DEFAULT": {
+        "value": "{sizing.gap.600}"
+      },
+      "lg": {
+        "value": "{sizing.gap.DEFAULT}"
+      },
+      "xl": {
+        "value": "{sizing.gap.800}"
+      },
+      "2xl": {
+        "value": "{sizing.gap.1200}"
+      },
+      "3xl": {
+        "value": "{sizing.gap.2000}"
+      }
+    }
+  }
+}

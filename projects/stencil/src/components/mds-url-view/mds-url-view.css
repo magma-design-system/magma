@@ -15,12 +15,12 @@
   --mds-url-view-background: theme('colors.tone-neutral-10');
   --mds-url-view-color: theme('colors.tone-neutral-02');
   --mds-url-view-radius: theme('borderRadius.md');
-  --mds-url-view-header-shadow: theme('boxShadow.sharp-sm');
+  --mds-url-view-header-shadow: theme('boxShadow.sm-sharp');
   --mds-url-view-shadow: theme('boxShadow.lg');
 
   @apply
     h-screen
-    p-4;
+    p-400;
 
   box-sizing: border-box;
   display: flex;
@@ -41,8 +41,8 @@
 
 .header {
   @apply
-    gap-2
-    p-2;
+    gap-200
+    p-200;
 
   align-items: center;
   background-color: var(--mds-url-view-background);

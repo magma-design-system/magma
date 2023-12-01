@@ -14,7 +14,7 @@
   --mds-details-icon-color: theme('colors.brand-maggioli-04');
   --mds-details-helper-icon-color: theme('colors.tone-neutral-03');
 
-  @apply gap-2;
+  @apply gap-200;
 
   align-items: flex-start;
   display: flex;
@@ -26,7 +26,7 @@
 
 .details {
   @apply
-    gap-4
+    gap-400
     opacity-0
     pt-0;
 
@@ -39,14 +39,14 @@
 }
 
 .contents-expander {
-  @apply gap-4;
+  @apply gap-400;
 
   display: grid;
   min-height: 0;
 }
 
 .details.opened {
-  @apply pt-4;
+  @apply pt-400;
 
   grid-template-rows: 1fr;
   opacity: 1;
@@ -54,7 +54,7 @@
 }
 
 .header {
-  @apply gap-2;
+  @apply gap-200;
 
   align-items: center;
   display: inline-flex;
@@ -85,7 +85,7 @@
 }
 
 .actions {
-  @apply gap-4;
+  @apply gap-400;
 
   display: flex;
 }

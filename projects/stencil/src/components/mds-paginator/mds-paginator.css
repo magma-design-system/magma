@@ -10,7 +10,7 @@
 
   --mds-paginator-background: theme('colors.tone-neutral-09');
 
-  @apply gap-1;
+  @apply gap-100;
 
   align-items: center;
   display: flex;
@@ -19,8 +19,8 @@
 .pages {
   @apply
     hide-scrollbar
-    mx-2
-    p-2
+    mx-200
+    p-200
     rounded-full;
 
   align-items: center;

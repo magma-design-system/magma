@@ -16,13 +16,11 @@
   --mds-label-background: theme('colors.label-yellow-09');
   --mds-label-color: theme('colors.label-yellow-02');
   --mds-label-icon-color: var(--mds-label-color);
-  --mds-label-radius: theme('spacing[1.5]');
+  --mds-label-radius: theme('spacing.150');
   --mds-label-selection-background: var(--magma-selection-background, theme('colors.label-yellow-09'));
   --mds-label-selection-color: var(--magma-selection-color, theme('colors.label-yellow-02'));
 
-  @apply
-    items-stretch
-    pl-3;
+  @apply pl-300;
 
   align-items: stretch;
   background-color: var(--mds-label-background);
@@ -40,7 +38,7 @@
 .text {
   @apply
     min-w-0
-    py-1;
+    py-100;
 
   --mds-text-selection-background: var(--mds-label-selection-background);
   --mds-text-selection-color: var(--mds-label-selection-color);
@@ -51,16 +49,15 @@
 }
 
 .text:last-child {
-  @apply pr-3;
+  @apply pr-300;
 }
 
 .close {
   @apply
-    bg-opacity-30
-    bg-tone-neutral
-    hover:bg-opacity-50
-    ml-1
-    px-1.5
+    bg-tone-neutral/30
+    hover:bg-tone-neutral/50
+    ml-100
+    px-150
     rounded-r-md
     transition-colors;
 

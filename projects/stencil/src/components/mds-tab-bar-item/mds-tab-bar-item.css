@@ -15,8 +15,8 @@
   --mds-tab-bar-item-color-selected: theme('colors.brand-maggioli-04');
 
   @apply
-    gap-1
-    p-2
+    gap-100
+    p-200
     transition-colors;
 
   align-items: center;

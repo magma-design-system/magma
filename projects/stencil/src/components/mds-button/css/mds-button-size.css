@@ -1,7 +1,7 @@
 :host( [size="sm"] ) {
   @apply
-    h-7
-    px-3
+    h-700
+    px-300
     py-0;
 
   --mds-button-radius: theme('borderRadius.md');
@@ -21,33 +21,33 @@
 
 :host( [size="md"] ) {
   @apply
-    h-9
-    px-3
-    py-1;
+    h-900
+    px-300
+    py-100;
 }
 
 :host( .no-text[size="md"] ) {
-  @apply p-1;
+  @apply p-100;
 }
 
 :host( [size="lg"] ) {
   @apply
-    h-11
-    px-6
-    py-2;
+    h-1100
+    px-600
+    py-200;
 }
 
 :host( .no-text[size="lg"] ) {
-  @apply p-2;
+  @apply p-200;
 }
 
 :host( [size="xl"] ) {
   @apply
-    h-13
-    px-8
-    py-2;
+    h-1300
+    px-800
+    py-200;
 }
 
 :host( .no-text[size="xl"] ) {
-  @apply p-2;
+  @apply p-200;
 }

@@ -1,0 +1,17 @@
+{
+  "source": [
+    "tokens/typography/leading.json"
+  ],
+  "platforms": {
+    "js": {
+      "transformGroup": "js",
+      "buildPath": "dist/js/",
+      "files": [
+        {
+          "destination": "tailwind-leading.js",
+          "format": "js/tailwind-leading"
+        }
+      ]
+    }
+  }
+}

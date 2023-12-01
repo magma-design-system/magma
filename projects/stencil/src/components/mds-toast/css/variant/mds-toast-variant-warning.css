@@ -5,7 +5,7 @@
 
   --mds-toast-background: theme('colors.status-warning-09');
   --mds-toast-color: theme('colors.status-warning-02');
-  --mds-toast-shadow: theme('boxShadow.sharp-lg');
+  --mds-toast-shadow: theme('boxShadow.lg-sharp');
   --mds-toast-icon-color: theme('colors.status-warning-05');
 }
 
@@ -13,6 +13,6 @@
 
   --mds-toast-background: theme('colors.status-warning-10');
   --mds-toast-color: theme('colors.status-warning-03');
-  --mds-toast-shadow: theme('boxShadow.sharp-sm');
+  --mds-toast-shadow: theme('boxShadow.sm-sharp');
   --mds-toast-icon-color: theme('colors.status-warning-06');
 }

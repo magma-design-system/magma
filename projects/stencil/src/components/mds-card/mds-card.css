@@ -8,11 +8,11 @@
   @apply rounded-2xl;
 
   background-color: theme('colors.tone-neutral');
-  box-shadow: theme('boxShadow.sharp-md');
+  box-shadow: theme('boxShadow.md-sharp');
   container-name: mds-card;
   container-type: inline-size;
   display: grid;
-  min-height: theme('spacing.4');
+  min-height: theme('spacing.400');
   overflow: hidden;
 }
 
@@ -33,7 +33,7 @@
 }
 
 .layout {
-  @apply p-4;
+  @apply p-400;
 
   display: grid;
   gap: var(--mds-card-gap);

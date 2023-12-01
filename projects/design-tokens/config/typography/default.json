@@ -1,0 +1,42 @@
+{
+  "source": [
+    "tokens/typography/default.json"
+  ],
+  "include": [
+    "tokens/typography/leading.json",
+    "tokens/typography/size.json"
+  ],
+  "platforms": {
+    "js": {
+      "transformGroup": "js",
+      "buildPath": "dist/js/",
+      "files": [
+        {
+          "destination": "tailwind-font-family.js",
+          "format": "js/tailwind-font-family"
+        },{
+          "destination": "tailwind-font-size.js",
+          "format": "js/tailwind-font-size"
+        }
+      ]
+    },
+    "flutter": {
+      "transforms": [
+        "attribute/cti",
+        "name/cti/camel",
+        "content/flutter/literal",
+        "asset/flutter/literal",
+        "font/flutter/literal",
+        "flutter/toDouble",
+        "flutter/fontWeight"
+      ],
+      "buildPath": "dist/flutter/",
+      "files": [
+        {
+          "destination": "fonts.dart",
+          "format": "flutter/font"
+        }
+      ]
+    }
+  }
+}

@@ -2,14 +2,14 @@
 
 :host {
   @apply
-    gap-1
+    gap-100
     grid-cols-full;
 
   display: grid;
 }
 
 .infos {
-  @apply gap-1;
+  @apply gap-100;
 
   display: flex;
   justify-content: space-between;

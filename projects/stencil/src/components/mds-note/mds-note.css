@@ -21,8 +21,8 @@
 
   @apply
     duration-300
-    gap-2
-    p-6
+    gap-200
+    p-600
     rounded
     transition-colors;
 
@@ -40,13 +40,13 @@
 }
 
 :host( [deletable]:not([deletable="false"]) ) {
-  @apply pr-16;
+  @apply pr-1600;
 }
 
 :host( [deletable]:not([deletable="false"]) ) .close {
   @apply
-    right-4
-    top-4;
+    right-400
+    top-400;
 
   position: absolute;
 }
@@ -73,7 +73,7 @@
     duration-200
     ease-out
     hover:bg-tone-neutral/50
-    p-1
+    p-100
     rounded-full;
 
   background-color: transparent;
@@ -83,7 +83,7 @@
 }
 
 .title {
-  @apply gap-4;
+  @apply gap-400;
 
   align-items: flex-start;
   display: flex;

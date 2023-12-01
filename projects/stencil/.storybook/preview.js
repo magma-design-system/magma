@@ -19,7 +19,8 @@ import './tailwind.css'
 import './iconsauce.css'
 
 import devices from './devices.json'
-import media from '@maggioli-design-system/design-tokens/dist/json/css/media.json'
+// import media from '@maggioli-design-system/design-tokens/dist/js/tailwind-screens'
+
 
 defineCustomElements();
 
@@ -73,18 +74,18 @@ const decorateViewport = (name, item) => {
   }
 }
 
-const viewportKeys = Object.keys(media)
-const viewports = {}
+// const viewportKeys = Object.keys(media)
+// const viewports = {}
 
-viewportKeys.forEach(viewportKeys => {
-  viewports[viewportKeys] = decorateViewport(viewportKeys, media[viewportKeys])
-})
+// viewportKeys.forEach(viewportKeys => {
+//   viewports[viewportKeys] = decorateViewport(viewportKeys, media[viewportKeys])
+// })
 
 const parameters = {
   actions: { argTypesRegex: '^on[A-Z].*' },
   viewport: {
     devices,
-    viewports,
+    // viewports,
   },
 }
 

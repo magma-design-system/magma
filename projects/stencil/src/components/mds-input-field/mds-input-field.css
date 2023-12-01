@@ -11,7 +11,7 @@
   --mds-input-field-message-color: theme('colors.tone-neutral-03');
   --mds-input-field-message-background: transparent;
 
-  @apply gap-2;
+  @apply gap-200;
 
   color: theme('colors.tone-neutral-02');
   display: grid;
@@ -21,7 +21,7 @@
   @apply
     duration-300
     ease-out-expo
-    gap-2
+    gap-200
     p-0
     rounded-xl
     transition-cosmetic;
@@ -33,14 +33,14 @@
 
 .message-window--opened {
   @apply
-    p-2;
+    p-200;
 }
 
 .message {
   @apply
-    pb-2
-    pt-1
-    px-2;
+    pb-200
+    pt-100
+    px-200;
 }
 
 @import './css/mds-input-field-variant.css';

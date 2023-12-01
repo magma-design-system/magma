@@ -122,6 +122,8 @@ export {
   ifTailwindFontSizeProp,
   leadZero,
   pascalCase,
+  pixelToEm,
+  pixelToRem,
   pixelToScale,
   rgbChannel,
   rgbCommaSeparatedChannel,

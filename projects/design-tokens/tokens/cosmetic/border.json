@@ -1,0 +1,36 @@
+{
+  "cosmetic": {
+    "border": {
+      "none": {
+        "value": "0"
+      },
+      "0": {
+        "value": "{sizing.primitive.0}"
+      },
+      "25": {
+        "value": "{sizing.primitive.25}"
+      },
+      "50": {
+        "value": "{sizing.primitive.50}"
+      },
+      "200": {
+        "value": "{sizing.primitive.200}"
+      },
+      "800": {
+        "value": "{sizing.primitive.800}"
+      },
+      "default": {
+        "value": "{sizing.primitive.25}"
+      },
+      "md": {
+        "value": "{sizing.primitive.50}"
+      },
+      "lg": {
+        "value": "{sizing.primitive.200}"
+      },
+      "xl": {
+        "value": "{sizing.primitive.800}"
+      }
+    }
+  }
+}

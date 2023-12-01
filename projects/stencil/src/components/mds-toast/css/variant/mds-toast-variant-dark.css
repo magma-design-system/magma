@@ -5,7 +5,7 @@
 
   --mds-toast-background: theme('colors.tone-neutral-02');
   --mds-toast-color: theme('colors.tone-neutral-09');
-  --mds-toast-shadow: theme('boxShadow.sharp-lg');
+  --mds-toast-shadow: theme('boxShadow.lg-sharp');
   --mds-toast-icon-color: theme('colors.tone-neutral-09');
 }
 
@@ -13,6 +13,6 @@
 
   --mds-toast-background: theme('colors.tone-neutral-03');
   --mds-toast-color: theme('colors.tone-neutral-10');
-  --mds-toast-shadow: theme('boxShadow.sharp-sm');
+  --mds-toast-shadow: theme('boxShadow.sm-sharp');
   --mds-toast-icon-color: theme('colors.tone-neutral-08');
 }

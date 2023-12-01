@@ -24,7 +24,7 @@
   --mds-table-cell-background: transparent;
   --mds-table-cell-border-color: theme('colors.tone-neutral-08');
   --mds-table-cell-border-width: var(--mds-table-border-width);
-  --mds-table-cell-padding: theme('spacing.4');
+  --mds-table-cell-padding: theme('spacing.400');
 
   @apply rounded-2xl;
 
