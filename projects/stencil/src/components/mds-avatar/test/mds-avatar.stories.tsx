@@ -16,9 +16,7 @@ export default {
 }
 
 const Template = args =>
-  <div class="w-24">
-    <mds-avatar {...args}/>
-  </div>
+  <mds-avatar {...args} class="w-2400"/>
 
 export const Default = Template.bind({})
 Default.args = {
