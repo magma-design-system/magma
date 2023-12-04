@@ -22,8 +22,8 @@ const FullCardTemplate = args =>
   <div>
     <mds-card {...args}>
       <mds-card-header>
-        <div class="flex gap-4 items-center">
-          <mds-avatar class="w-11 min-w-11" initials='mc'></mds-avatar>
+        <div class="flex gap-400 items-center">
+          <mds-avatar class="w-1100 min-w-1100 " initials='mc'></mds-avatar>
           <div class="flex gap-0 flex-col">
             <mds-text typography="h6">Mauro Coletta</mds-text>
             <mds-text typography="caption">Management designer</mds-text>
@@ -42,7 +42,7 @@ const FullCardTemplate = args =>
         <mds-button>Contact</mds-button>
       </mds-card-footer>
     </mds-card>
-    <mds-dropdown target="action-example" class="max-w-[350px] p-2 gap-1" backdrop>
+    <mds-dropdown target="action-example" class="max-w-[350px] p-200 gap-100" backdrop>
       <mds-button variant="dark" tone="quiet" class="justify-start">Modifica account</mds-button>
       <mds-button variant="dark" tone="quiet" class="justify-start">Elimina</mds-button>
       <mds-button variant="dark" tone="quiet" class="justify-start">Esci dalla sessione</mds-button>
@@ -52,9 +52,9 @@ const FullCardTemplate = args =>
 const CustomSlotsTemplate = args =>
   <div>
     <mds-card {...args}>
-      <div slot="header" class="flex gap-4 items-center justify-between px-4 py-4">
-        <div class="flex gap-4 items-center">
-          <mds-avatar class="w-11 min-w-11" initials='mc'></mds-avatar>
+      <div slot="header" class="flex gap-400 items-center justify-between px-400 py-400">
+        <div class="flex gap-400 items-center">
+          <mds-avatar class="w-1100 min-w-1100 " initials='mc'></mds-avatar>
           <div class="flex gap-0 flex-col">
             <mds-text typography="h6">Mauro Coletta</mds-text>
             <mds-text typography="caption">Management designer</mds-text>
@@ -63,14 +63,14 @@ const CustomSlotsTemplate = args =>
         <mds-button id="action-example" icon="mi/round/more-vert" variant="light"></mds-button>
       </div>
       <mds-img src={URLs[0]} slot="media" class="object-cover"></mds-img>
-      <div slot="content" class="px-4">
+      <div slot="content" class="px-400">
         Lorem ipsum dolor sit amet, consectetur adipiscing elit. Proin quis elementum lorem. Phasellus vel quam leo. Ut eget finibus libero. Integer sed odio hendrerit diam maximus blandit ac malesuada odio.
       </div>
-      <div slot="footer" class="px-4 py-4 text-right">
+      <div slot="footer" class="px-400 py-400 text-right">
         <mds-button variant="dark">Contact</mds-button>
       </div>
     </mds-card>
-    <mds-dropdown target="action-example" class="max-w-[350px] p-2 gap-1" backdrop>
+    <mds-dropdown target="action-example" class="max-w-[350px] p-200 gap-100" backdrop>
       <mds-button variant="dark" tone="quiet" class="justify-start">Modifica account</mds-button>
       <mds-button variant="dark" tone="quiet" class="justify-start">Elimina</mds-button>
       <mds-button variant="dark" tone="quiet" class="justify-start">Esci dalla sessione</mds-button>
@@ -80,8 +80,8 @@ const CustomSlotsTemplate = args =>
 const LayoutHMCFTemplate = args =>
   <mds-card {...args}>
     <mds-card-header>
-      <div class="flex gap-4 items-center">
-        <mds-avatar class="w-11 min-w-11" initials='mc'></mds-avatar>
+      <div class="flex gap-400 items-center">
+        <mds-avatar class="w-1100 min-w-1100" initials='mc'></mds-avatar>
         <div class="flex gap-0 flex-col">
           <mds-text typography="h6">Mauro Coletta</mds-text>
           <mds-text typography="caption">Management designer</mds-text>
@@ -104,8 +104,8 @@ const LayoutHMCFTemplate = args =>
 const LayoutHMCTemplate = args =>
   <mds-card {...args}>
     <mds-card-header>
-      <div class="flex gap-4 items-center">
-        <mds-avatar class="w-11 min-w-11" initials='mc'></mds-avatar>
+      <div class="flex gap-400 items-center">
+        <mds-avatar class="w-1100 min-w-1100 " initials='mc'></mds-avatar>
         <div class="flex gap-0 flex-col">
           <mds-text typography="h6">Mauro Coletta</mds-text>
           <mds-text typography="caption">Management designer</mds-text>
@@ -124,8 +124,8 @@ const LayoutHMCTemplate = args =>
 const LayoutHMFTemplate = args =>
   <mds-card {...args}>
     <mds-card-header>
-      <div class="flex gap-4 items-center">
-        <mds-avatar class="w-11 min-w-11" initials='mc'></mds-avatar>
+      <div class="flex gap-400 items-center">
+        <mds-avatar class="w-1100 min-w-1100 " initials='mc'></mds-avatar>
         <div class="flex gap-0 flex-col">
           <mds-text typography="h6">Mauro Coletta</mds-text>
           <mds-text typography="caption">Management designer</mds-text>
@@ -145,8 +145,8 @@ const LayoutHMFTemplate = args =>
 const LayoutHCFTemplate = args =>
   <mds-card {...args}>
     <mds-card-header>
-      <div class="flex gap-4 items-center">
-        <mds-avatar class="w-11 min-w-11" initials='mc'></mds-avatar>
+      <div class="flex gap-400 items-center">
+        <mds-avatar class="w-1100 min-w-1100 " initials='mc'></mds-avatar>
         <div class="flex gap-0 flex-col">
           <mds-text typography="h6">Mauro Coletta</mds-text>
           <mds-text typography="caption">Management designer</mds-text>
@@ -180,8 +180,8 @@ const LayoutMCFTemplate = args =>
 const LayoutHCTemplate = args =>
   <mds-card {...args}>
     <mds-card-header>
-      <div class="flex gap-4 items-center">
-        <mds-avatar class="w-11 min-w-11" initials='mc'></mds-avatar>
+      <div class="flex gap-400 items-center">
+        <mds-avatar class="w-1100 min-w-1100 " initials='mc'></mds-avatar>
         <div class="flex gap-0 flex-col">
           <mds-text typography="h6">Mauro Coletta</mds-text>
           <mds-text typography="caption">Management designer</mds-text>
@@ -218,8 +218,8 @@ const LayoutMFTemplate = args =>
 const LayoutHMTemplate = args =>
   <mds-card {...args}>
     <mds-card-header>
-      <div class="flex gap-4 items-center">
-        <mds-avatar class="w-11 min-w-11" initials='mc'></mds-avatar>
+      <div class="flex gap-400 items-center">
+        <mds-avatar class="w-1100 min-w-1100 " initials='mc'></mds-avatar>
         <div class="flex gap-0 flex-col">
           <mds-text typography="h6">Mauro Coletta</mds-text>
           <mds-text typography="caption">Management designer</mds-text>
@@ -246,8 +246,8 @@ const LayoutCFTemplate = args =>
 const LayoutHFTemplate = args =>
   <mds-card {...args}>
     <mds-card-header>
-      <div class="flex gap-4 items-center">
-        <mds-avatar class="w-11 min-w-11" initials='mc'></mds-avatar>
+      <div class="flex gap-400 items-center">
+        <mds-avatar class="w-1100 min-w-1100 " initials='mc'></mds-avatar>
         <div class="flex gap-0 flex-col">
           <mds-text typography="h6">Mauro Coletta</mds-text>
           <mds-text typography="caption">Management designer</mds-text>
@@ -271,8 +271,8 @@ const LayoutMTemplate = args =>
 const LayoutHTemplate = args =>
   <mds-card {...args}>
     <mds-card-header>
-      <div class="flex gap-4 items-center">
-        <mds-avatar class="w-11 min-w-11" initials='mc'></mds-avatar>
+      <div class="flex gap-400 items-center">
+        <mds-avatar class="w-1100 min-w-1100 " initials='mc'></mds-avatar>
         <div class="flex gap-0 flex-col">
           <mds-text typography="h6">Mauro Coletta</mds-text>
           <mds-text typography="caption">Management designer</mds-text>
