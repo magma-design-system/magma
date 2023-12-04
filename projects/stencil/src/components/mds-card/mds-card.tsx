@@ -23,7 +23,7 @@ export class MdsCard {
    */
   @Prop({ reflect: true }) readonly autoGrid = true
 
-  componentDidLoad (): void {
+  componentWillLoad (): void {
     this.layout = ''
     if (this.host.querySelector('[slot="media"]') !== null) {
       this.layout += 'm'
