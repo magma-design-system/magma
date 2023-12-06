@@ -20,8 +20,8 @@ export class MdsPriceTableList {
   @State() hasItems: boolean
   @Element() hostElement: HTMLMdsPriceTableListElement
 
-  componentDidRender (): void {
-    this.hasItems = this.hostElement.querySelectorAll('[slot="item"]').length > 0
+  componentWillLoad (): void {
+    this.hasItems = this.hostElement.querySelectorAll('[slot="item"], mds-price-table-list-item').length > 0
   }
 
   render () {
