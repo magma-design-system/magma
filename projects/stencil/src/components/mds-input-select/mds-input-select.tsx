@@ -20,7 +20,7 @@ export class MdsInputSelect {
   /**
    * Specifies a short hint that describes the expected value of the element
    */
-  @Prop() readonly options: string = ''
+  @Prop() readonly options: string = '{}'
 
   /**
    * Specifies the value of the element
@@ -62,6 +62,14 @@ export class MdsInputSelect {
     this.focusEvent.emit()
   }
 
+  private getParsedOptions = () => {
+    try {
+      return JSON.parse(this.options)
+    } catch (e) {
+      console.error('Cant parse json')
+    }
+  }
+
   render () {
     return (
       <Host>
@@ -72,7 +80,7 @@ export class MdsInputSelect {
           onInput={this.onInput}
         >
           { this.placeholder && <option value="" disabled selected>{ this.placeholder }</option> }
-          { Object.entries(JSON.parse(this.options)).map(([key, text]) =>
+          { Object.entries(this.getParsedOptions()).map(([key, text]) =>
             <option value={ key }>{ text }</option>,
           ) }
         </select>
