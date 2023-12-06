@@ -19,9 +19,9 @@ export default {
 
 const Template = args =>
   <mds-header-bar {...args}>
-    <div class="flex gap-2 items-center">
-      <mds-img class="w-10" src="./logo-gruppo-maggioli.svg" />
-      <div class="mb-1">
+    <div class="flex gap-200 items-center">
+      <mds-img class="w-1000" src="./logo-gruppo-maggioli.svg" />
+      <div class="mb-100">
         <mds-text typography="h6">Mobile menu</mds-text>
         <mds-text typography="option" class="text-tone-neutral-04">Shows up under 1024px</mds-text>
       </div>
