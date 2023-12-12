@@ -15,7 +15,7 @@ export class MdsPriceTableFeaturesRow {
   @State() cellPercWidth: string
   @Element() host: HTMLMdsPriceTableFeaturesRowElement
 
-  componentDidRender (): void {
+  componentWillRender (): void {
     this.horizontalCells = this.host.querySelectorAll('mds-price-table-features-cell')
     this.cellPercWidth = Number(100 / this.horizontalCells.length).toFixed(4) + '%'
     this.horizontalCells.forEach((el: HTMLMdsPriceTableFeaturesCellElement) => {

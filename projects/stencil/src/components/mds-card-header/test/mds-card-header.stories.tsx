@@ -7,7 +7,7 @@ export default {
 const Template = args =>
   <mds-card>
     <mds-card-header {...args}>
-      <div class="flex gap-4 items-center">
+      <div class="flex gap-400 items-center">
         <mds-avatar class="w-11" initials='mc'></mds-avatar>
         <div class="flex gap-0 flex-col">
           <mds-text typography="h6">Mauro Coletta</mds-text>
@@ -15,7 +15,7 @@ const Template = args =>
         </div>
       </div>
       <mds-button id="action-example" icon="mi/round/more-vert" variant="light"></mds-button>
-      <mds-dropdown target="action-example" class="max-w-[350px] p-2 gap-1">
+      <mds-dropdown target="action-example" class="max-w-[350px] p-200 gap-100">
         <mds-button variant="light" class="justify-start">Modifica account</mds-button>
         <mds-button variant="light" class="justify-start">Elimina</mds-button>
         <mds-button variant="light" class="justify-start">Esci dalla sessione</mds-button>

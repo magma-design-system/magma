@@ -47,7 +47,7 @@ export class MdsHeader {
     this.closedEvent.emit({ bar: this.headerBar() })
   }
 
-  componentDidLoad (): void {
+  componentWillLoad (): void {
     this.hasMenu = this.mobileMenu() !== null
     if (this.hasMenu) {
       this.onMenuChangedHandler(this.menu)
@@ -64,13 +64,17 @@ export class MdsHeader {
   @Watch('menu')
   onMenuChangedHandler (newValue: MenuType): void {
     const headerBar = this.headerBar()
-    headerBar.setAttribute('menu', newValue)
+    if (headerBar){
+      headerBar.setAttribute('menu', newValue)
+    }
   }
 
   @Watch('nav')
   onNavChangedHandler (newValue: MenuType): void {
     const headerBar = this.headerBar()
-    headerBar.setAttribute('nav', newValue)
+    if (headerBar) {
+      headerBar.setAttribute('nav', newValue)
+    }
   }
 
   render () {

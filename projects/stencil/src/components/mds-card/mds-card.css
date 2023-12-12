@@ -41,7 +41,7 @@
   padding: var(--mds-card-padding);
 }
 
-.layout--mhcf:not(.layout--disabled) {
+.layout--cfhm:not(.layout--disabled) {
   grid-template-areas:
     "header"
     "media"
@@ -54,7 +54,7 @@
     min-content;
 }
 
-.layout--mhc:not(.layout--disabled) {
+.layout--chm:not(.layout--disabled) {
   grid-template-areas:
     "header"
     "media"
@@ -65,7 +65,7 @@
     1fr;
 }
 
-.layout--mcf:not(.layout--disabled) {
+.layout--cfm:not(.layout--disabled) {
   grid-template-areas:
     "media"
     "content"
@@ -76,7 +76,7 @@
     min-content;
 }
 
-.layout--mhf:not(.layout--disabled) {
+.layout--fhm:not(.layout--disabled) {
   grid-template-areas:
     "header"
     "media"
@@ -87,7 +87,7 @@
     min-content;
 }
 
-.layout--hcf:not(.layout--disabled) {
+.layout--cfh:not(.layout--disabled) {
   grid-template-areas:
     "header"
     "content"
@@ -98,7 +98,7 @@
     min-content;
 }
 
-.layout--mh:not(.layout--disabled) {
+.layout--hm:not(.layout--disabled) {
   grid-template-areas:
     "header"
     "media";
@@ -107,7 +107,7 @@
     1fr;
 }
 
-.layout--mf:not(.layout--disabled) {
+.layout--fm:not(.layout--disabled) {
   grid-template-areas:
     "media"
     "footer";
@@ -116,7 +116,7 @@
     min-content;
 }
 
-.layout--mc:not(.layout--disabled) {
+.layout--cm:not(.layout--disabled) {
   grid-template-areas:
     "media"
     "content";
@@ -125,7 +125,7 @@
     1fr;
 }
 
-.layout--hf:not(.layout--disabled) {
+.layout--fh:not(.layout--disabled) {
   grid-template-areas:
     "header"
     "footer";
@@ -134,7 +134,7 @@
     1fr;
 }
 
-.layout--hc:not(.layout--disabled) {
+.layout--ch:not(.layout--disabled) {
   grid-template-areas:
     "header"
     "content";
@@ -173,7 +173,7 @@
 }
 
 @container mds-card (width > 30em) {
-  .layout--mhcf:not(.layout--disabled) {
+  .layout--cfhm:not(.layout--disabled) {
     grid-template-areas:
       "media header"
       "media content"
@@ -185,7 +185,7 @@
       min-content;
   }
 
-  .layout--mhc:not(.layout--disabled) {
+  .layout--chm:not(.layout--disabled) {
     grid-template-areas:
       "media header"
       "media content"
@@ -197,7 +197,7 @@
       1fr;
   }
 
-  .layout--mhf:not(.layout--disabled) {
+  .layout--fhm:not(.layout--disabled) {
     grid-template-areas:
       "media header"
       "media footer";
@@ -207,7 +207,7 @@
       1fr;
   }
 
-  .layout--mcf:not(.layout--disabled) {
+  .layout--cfm:not(.layout--disabled) {
     grid-template-areas:
       "media content"
       "media footer";
@@ -217,7 +217,7 @@
       min-content;
   }
 
-  .layout--mc:not(.layout--disabled) {
+  .layout--cm:not(.layout--disabled) {
     grid-template-areas:
       "media content";
     grid-template-columns: minmax(240px, 1fr) 2fr;

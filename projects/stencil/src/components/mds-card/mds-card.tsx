@@ -23,20 +23,18 @@ export class MdsCard {
    */
   @Prop({ reflect: true }) readonly autoGrid = true
 
-  componentDidLoad (): void {
-    this.layout = ''
-    if (this.host.querySelector('[slot="media"]') !== null) {
-      this.layout += 'm'
-    }
-    if (this.host.querySelector('[slot="header"]') !== null) {
-      this.layout += 'h'
-    }
-    if (this.host.querySelector('[slot="content"]') !== null) {
-      this.layout += 'c'
-    }
-    if (this.host.querySelector('[slot="footer"]') !== null) {
-      this.layout += 'f'
-    }
+  componentWillLoad (): void {
+    this.layout = Array.from(this.host.children)
+      // check custom slot
+      .map(c => (c.getAttribute('slot')
+        // if no custom slot find mds-card-{component}
+        ?? c.tagName.startsWith('MDS-CARD-')
+        // replace mds-card-header with header (for all mds-card-{component})
+        ? c.tagName.toLocaleLowerCase().replace('mds-card-', '')
+        // if find other tag do nothing
+        : ''))
+      .sort()
+      .reduce((prev, curr) => prev + curr.charAt(0), '')
   }
 
   render () {

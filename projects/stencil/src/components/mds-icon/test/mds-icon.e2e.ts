@@ -60,6 +60,9 @@ describe('mds-icon', () => {
   })
 
   it('shouldn\'t render unknown icon', async () => {
+    // mock console.error launched by mds-icon when doesn't find svg
+    jest.spyOn(console, 'error').mockImplementation(jest.fn())
+
     await page.setContent(`<mds-icon name="${fooBarIcon}"></mds-icon>`)
     await page.waitForChanges()
 

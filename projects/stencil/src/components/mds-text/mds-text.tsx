@@ -33,14 +33,16 @@ export class MdsText {
    */
   @Prop({ reflect: true }) readonly variant?: TypographyVariants
 
-  render () {
+  componentWillRender (): void {
     const { tag } = typographyDefaultsVariant[this.typography]
     this.tag = this.tag ?? tag as TypographyTagType
+  }
+  render () {
     return (
       <Host>
-        <this.tag class="text">
+        <tag class="text">
           <slot />
-        </this.tag>
+        </tag>
       </Host>
     )
   }
