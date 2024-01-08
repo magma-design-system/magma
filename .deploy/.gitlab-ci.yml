@@ -40,5 +40,3 @@ deploy-storybook-base:
       changes:
         - projects/stencil/**/*
         - .deploy/**/*
-
-# DEPLOY WEBSITE TODO
