@@ -1,37 +1,6 @@
-# Stage 0, based on Node.js, to build and compile the website
-FROM node:15 as node
-LABEL step=build
-WORKDIR /app
-
-RUN npm install -g npm-install-peers
-
-# Storybook of react project, dependency install
-COPY ./projects/react/package.json /app/react/package.json
-RUN cd react && yarn install
-# RUN cd react && npm-install-peers
-
-# Website of doc project, dependency install
-COPY ./projects/docs/package.json /app/doc/package.json
-
-RUN cd doc && yarn install
-# RUN cd doc && yarn install && \
-#     npm-install-peers
-
-# Copy of all sources
-COPY ./projects/react /app/react
-COPY ./projects/docs /app/doc
-
-
-# TODO Copiare solo i sorgenti invece di fare gatsby:clean
-RUN cd react && yarn run build-storybook
-RUN cd doc && yarn run clean && yarn run build
-
-# Stage 1, based on Nginx, to have only the compiled website, ready for production with Nginx
 FROM nginx:alpine
-LABEL step=runtime
 
-COPY --from=node /app/doc/public/ /var/www/html/gatsby
-COPY --from=node /app/react/storybook-static /var/www/html/storybook
+COPY ./projects/stencil/dist-storybook /usr/share/nginx/html/storybook
 
 COPY ./docker/nginx/nginx.conf /etc/nginx/nginx.conf
 COPY ./docker/nginx/sites/ /etc/nginx/sites-available
