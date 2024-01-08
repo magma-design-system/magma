@@ -1,19 +1,21 @@
+include:
+  # Maggioli Common jobs
+  - project: maggiolispa/devops/templates
+    file:
+      - '/cicd/container-build-push.yml'
+
 # DEPLOY STORYBOOK
-push-storybook:
+container-build-push:
   stage: publish
   dependencies: [stencil-storybook-build]
-  services:
-    - docker:dind
   variables:
-    DOCKER_HOST: 'tcp://docker:2375'
-    CI_IMAGE_NAME: magma-storybook
-    CI_IMAGE_TAG: $CI_REGISTRY/$CI_IMAGE_NAME:${CI_COMMIT_SHORT_SHA}
-  script:
-    - echo $CI_REGISTRY_PSW | docker login -u $CI_REGISTRY_USR --password-stdin https://$CI_REGISTRY
-    - docker build -t $CI_IMAGE_TAG -f Dockerfile-storybook .
-    - docker push $CI_IMAGE_TAG
+    CONTAINER_REGISTRY_URL: $CI_REGISTRY
+    CONTAINER_REGISTRY_USERNAME: "$CI_REGISTRY_USR"
+    CONTAINER_REGISTRY_PASSWORD: "$CI_REGISTRY_PSW"
+    IMAGE_NAME: magma-storybook
+    IMAGE_TAGS: $CI_REGISTRY/$CI_IMAGE_NAME:${CI_COMMIT_SHORT_SHA}
   rules:
-    - if: $CI_COMMIT_BRANCH =~ /^(dev|pipeline)$/
+    - if: $CI_COMMIT_BRANCH == "dev"
       changes:
         - projects/stencil/**/*
         - .deploy/**/*
@@ -21,7 +23,7 @@ push-storybook:
 deploy-storybook-base:
   stage: deploy:storybook
   image: maggiolieditore.azurecr.io/alpine-ssh-envsubst
-  dependencies: [push-storybook]
+  dependencies: [container-build-push]
   variables:
     DEPLOY_FOLDER: $DEPLOY_FOLDER_STORYBOOK
     SERVER: $CI_SERVER_IP
