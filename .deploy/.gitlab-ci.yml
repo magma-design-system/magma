@@ -24,6 +24,8 @@ deploy-storybook-base:
   stage: deploy:storybook
   image: maggiolieditore.azurecr.io/alpine-ssh-envsubst
   dependencies: [container-build-push]
+  tags:
+    - maggioli-network
   variables:
     DEPLOY_FOLDER: $DEPLOY_FOLDER_STORYBOOK
     SERVER: $CI_SERVER_IP
