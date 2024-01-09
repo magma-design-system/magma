@@ -10,22 +10,22 @@
       "sm": {
         "value": "20px"
       },
-      "DEFAULT": {
+      "md": {
         "value": "24px"
       },
-      "md": {
+      "lg": {
         "value": "28px"
       },
-      "lg": {
+      "xl": {
         "value": "32px"
       },
-      "xl": {
+      "2xl": {
         "value": "36px"
       },
-      "2xl": {
+      "3xl": {
         "value": "40px"
       },
-      "3xl": {
+      "4xl": {
         "value": "48px"
       }
     }
