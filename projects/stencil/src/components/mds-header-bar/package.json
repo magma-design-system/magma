@@ -1,6 +1,6 @@
 {
   "name": "@maggioli-design-system/mds-header-bar",
-  "version": "6.2.3",
+  "version": "6.2.4",
   "description": "mds-header-bar is a web-component from Magma Design System, built with StencilJS, TypeScript, Storybook. It's based on the web-component standard and it's designed to be agnostic from the JavaScirpt framework you are using.",
   "main": "dist/index.cjs.js",
   "module": "dist/index.js",
@@ -23,9 +23,9 @@
     "prepublishOnly": "npm run build"
   },
   "dependencies": {
-    "@maggioli-design-system/mds-button": "4.12.3",
-    "@maggioli-design-system/styles": "14.0.0",
-    "@stencil/core": "4.8.0"
+    "@maggioli-design-system/mds-button": "4.12.4",
+    "@maggioli-design-system/styles": "14.1.0",
+    "@stencil/core": "4.9.1"
   },
   "license": "MIT",
   "author": {
