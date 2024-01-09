@@ -1,28 +1,9 @@
-html {
-  scroll-behavior: smooth;
-}
-
-* {
-  box-sizing: border-box;
-}
-
-body,
-html {
-  @apply m-0;
-}
-
 body {
   @apply
-    antialiased
     font-info
-    text-info-detail
-    text-theme-default-03-secondary-text;
+    text-info-detail;
 
-  -moz-osx-font-smoothing: grayscale;
-  -webkit-font-smoothing: antialiased;
-  -webkit-tap-highlight-color: transparent;
-  text-rendering: optimizelegibility;
-  text-size-adjust: 100%;
+  color: rgb(var(--theme-default-03-secondary-text, theme('colors.theme-default-03-secondary-text')));
 }
 
 ::selection {
@@ -36,13 +17,6 @@ select {
   @apply text-title-action;
 }
 
-input,
-textarea {
-  @apply appearance-none;
-
-  font-family: inherit;
-}
-
 b,
 strong {
   @apply
@@ -51,38 +25,7 @@ strong {
 }
 
 a {
-  @apply text-theme-default-02-primary-text;
-
-  font-family: inherit;
-  font-size: inherit;
-  font-weight: inherit;
-}
-
-a,
-aside,
-body,
-code,
-div,
-datalist,
-footer,
-form,
-h1,
-h2,
-h3,
-h4,
-h5,
-h6,
-header,
-hr,
-html,
-input,
-li,
-main,
-section,
-span,
-ul,
-textarea {
-  @apply box-border;
+  color: rgb(var(--theme-default-02-primary-text, theme('colors.theme-default-02-primary-text')));
 }
 
 h1,
@@ -90,7 +33,10 @@ h2,
 h3,
 h4,
 h5,
-h6,
+h6 {
+  max-width: theme('spacing.title');
+}
+
 p {
-  @apply m-0;
+  max-width: theme('spacing.text');
 }
