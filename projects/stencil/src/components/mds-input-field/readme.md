@@ -55,6 +55,12 @@ This is a web-component from Maggioli Design System [Magma](https://magma.maggio
 
 
 
+#### Parameters
+
+| Name        | Type                                             | Description |
+| ----------- | ------------------------------------------------ | ----------- |
+| `validator` | `(input: string) => MdsValidationErrors \| null` |             |
+
 #### Returns
 
 Type: `Promise<void>`
@@ -84,6 +90,12 @@ Type: `Promise<HTMLInputElement | HTMLTextAreaElement | null | undefined>`
 ### `removeValidator(validator: MdsValidatorFn) => Promise<void>`
 
 
+
+#### Parameters
+
+| Name        | Type                                             | Description |
+| ----------- | ------------------------------------------------ | ----------- |
+| `validator` | `(input: string) => MdsValidationErrors \| null` |             |
 
 #### Returns
 
