@@ -90,6 +90,7 @@ const ifTailwindFontSizeProp = (property: string, options: HelperOptions) => {
 
 const tailwindFontSize = (property: string, value: string): string => {
   switch (property) {
+  case 'fontSize':
   case 'lineHeight': {
     return pixelToRem(value)
   }
