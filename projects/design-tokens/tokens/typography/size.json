@@ -1,22 +1,22 @@
 {
   "typography": {
     "fontSize": {
-      "3xl": {
+      "4xl": {
         "value": "48px"
       },
-      "2xl": {
+      "3xl": {
         "value": "36px"
       },
-      "xl": {
+      "2xl": {
         "value": "30px"
       },
-      "lg": {
+      "xl": {
         "value": "24px"
       },
-      "md": {
+      "lg": {
         "value": "20px"
       },
-      "DEFAULT": {
+      "md": {
         "value": "16px"
       },
       "sm": {

@@ -1,0 +1,98 @@
+html {
+  color-scheme: dark light;
+  hanging-punctuation: first last;
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+body,
+html {
+  margin: 0;
+}
+
+body {
+  -moz-osx-font-smoothing: grayscale;
+  -webkit-font-smoothing: antialiased;
+  min-height: 100svh;
+  -webkit-tap-highlight-color: transparent;
+  text-rendering: optimizelegibility;
+  text-size-adjust: 100%;
+}
+
+input,
+textarea {
+  appearance: none;
+  font-family: inherit;
+}
+
+a {
+  font-family: inherit;
+  font-size: inherit;
+  font-weight: inherit;
+}
+
+a,
+aside,
+body,
+code,
+div,
+datalist,
+footer,
+form,
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+header,
+hr,
+html,
+input,
+li,
+main,
+section,
+span,
+ul,
+textarea {
+  box-sizing: border-box;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  margin: 0;
+  max-width: theme('spacing.title');
+  text-wrap: balance;
+}
+
+p {
+  margin: 0;
+  max-width: theme('spacing.text');
+  text-wrap: pretty;
+}
+
+img,
+picture,
+svg,
+video {
+  display: block;
+  max-width: 100%;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  html {
+    scroll-behavior: smooth;
+  }
+
+  :has(:target) {
+    scroll-behavior: smooth;
+  }
+}

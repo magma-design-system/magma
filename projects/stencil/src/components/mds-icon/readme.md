@@ -86,6 +86,12 @@ This is a web-component from Maggioli Design System [Magma](https://magma.maggio
 
 Set the path to the directory of svg files
 
+#### Parameters
+
+| Name      | Type     | Description                        |
+| --------- | -------- | ---------------------------------- |
+| `svgPath` | `string` | path to the directory of svg files |
+
 #### Returns
 
 Type: `Promise<void>`

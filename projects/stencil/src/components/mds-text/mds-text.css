@@ -57,6 +57,15 @@
   @apply text-title-h6;
 }
 
+:host( [typography="h1"] ),
+:host( [typography="h2"] ),
+:host( [typography="h3"] ),
+:host( [typography="h4"] ),
+:host( [typography="h5"] ),
+:host( [typography="h6"] ), {
+  text-wrap: balance;
+}
+
 :host( [typography="action"] ) {
   @apply text-title-action;
 }
@@ -71,6 +80,12 @@
 
 :host( [typography="caption"] ) {
   @apply text-info-caption;
+}
+
+:host( [typography="paragraph"] ),
+:host( [typography="detail"] ),
+:host( [typography="caption"] ) {
+  text-wrap: pretty;
 }
 
 :host( [typography="label"] ) {

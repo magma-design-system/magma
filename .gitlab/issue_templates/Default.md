@@ -119,10 +119,7 @@ Provide a link to a live example, or an unambiguous set of steps to reproduce th
 Include code to reproduce, if relevant.
 
 Example:
-1. Pull the repo, and remember to be on branch `dev`;
-2. Run the command `nx run stencil:storybook.start` to start the environment;
-3. Go to the [component storybook test][storybook] to reach it;
-4. Try to select the text.
+You can try it on Storybook at: https://magma.maggiolicloud.it/storybook/?path=/story/design-typography--variant-title-h-1
 -->
 
 ## Context (environment)

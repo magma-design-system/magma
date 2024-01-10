@@ -243,6 +243,6 @@ So you can update `@stencil/core` based on `stencil/package.json` without add un
 If for some reason you need to update all components in mass with a patch:
 
 ```
-nx run stencil:update.version patch all
 nx run stencil:update.dependencies --sync-dep all
+nx run stencil:update.version patch all
 ```
