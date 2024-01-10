@@ -77,8 +77,13 @@ stencil-test:
   stage: test
   dependencies: [base-stencil-build]
   before_script:
-    - cd projects/stencil
+    - |
+      if [[ ! -d node_modules ]]; then
+        npm install -g --force nx yarn
+        yarn install --frozen-lockfile --prefer-offline
+      fi
   script:
+    - cd projects/stencil
     - npm run test
   cache:
     policy: pull
