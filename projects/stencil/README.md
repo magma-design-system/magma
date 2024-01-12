@@ -5,7 +5,7 @@
 ## To generate a new web-component:
 
 ```
-nx run stencil:generate
+nx run stencil:generate mds-component-name
 ```
 
 ## To build a web-component:
