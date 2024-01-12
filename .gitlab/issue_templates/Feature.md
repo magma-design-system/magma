@@ -21,8 +21,9 @@ to let other components be able to style text selection, which is not possible r
 
 This feature should be a:
 
+- [X] A new component
 - [~] Breaking change
-- [x] Minor
+- [~] Minor
 - [~] Patch
 
 <!-- 🔴 Required
