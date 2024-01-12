@@ -103,6 +103,7 @@ Type: `Promise<void>`
 
 ### Used by
 
+ - [mds-avatar](../mds-avatar)
  - [mds-banner](../mds-banner)
  - [mds-button](../mds-button)
  - [mds-chip](../mds-chip)
@@ -121,6 +122,7 @@ Type: `Promise<void>`
 ### Graph
 ```mermaid
 graph TD;
+  mds-avatar --> mds-icon
   mds-banner --> mds-icon
   mds-button --> mds-icon
   mds-chip --> mds-icon
