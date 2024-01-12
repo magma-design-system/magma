@@ -39,6 +39,24 @@ const themeFullVariantDictionary = [
   'yellow',
 ]
 
+const themeFullVariantAvatarDictionary = [
+  'amaranth',
+  'aqua',
+  'blue',
+  'error',
+  'green',
+  'info',
+  'lime',
+  'orange',
+  'orchid',
+  'primary',
+  'sky',
+  'success',
+  'violet',
+  'warning',
+  'yellow',
+]
+
 const themeLabelVariantDictionary = [
   'amaranth',
   'aqua',
@@ -80,6 +98,7 @@ const toneMinimalVariantDictionary = [
 ]
 
 export {
+  themeFullVariantAvatarDictionary,
   themeFullVariantDictionary,
   themeLabelVariantDictionary,
   themeLuminanceVariantDictionary,

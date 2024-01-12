@@ -79,20 +79,13 @@ This is a web-component from Maggioli Design System [Magma](https://magma.maggio
 
 ## Properties
 
-| Property   | Attribute  | Description                                                 | Type                  | Default     |
-| ---------- | ---------- | ----------------------------------------------------------- | --------------------- | ----------- |
-| `initials` | `initials` | The user's inizials displayed if there's no image available | `string`              | `''`        |
-| `src`      | `src`      | Specifies the path to the image                             | `string \| undefined` | `undefined` |
-
-
-## CSS Custom Properties
-
-| Name                                        | Description                                   |
-| ------------------------------------------- | --------------------------------------------- |
-| `--mds-avatar-background-color-pending`     | The background-color when an image is loading |
-| `--mds-avatar-background-color-placeholder` | The background-color of the placeholder icon  |
-| `--mds-avatar-color-placeholder`            | The color of the placeholder icon             |
-| `--mds-avatar-radius`                       | The border-radius of the element              |
+| Property   | Attribute  | Description                                                 | Type                                                                                                                                                                                    | Default     |
+| ---------- | ---------- | ----------------------------------------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ----------- |
+| `icon`     | `icon`     | Specifies the path to the icon                              | `string \| undefined`                                                                                                                                                                   | `undefined` |
+| `initials` | `initials` | The user's inizials displayed if there's no image available | `string`                                                                                                                                                                                | `''`        |
+| `src`      | `src`      | Specifies the path to the image                             | `string \| undefined`                                                                                                                                                                   | `undefined` |
+| `tone`     | `tone`     | Specifies the color tone of the component                   | `"strong" \| "weak" \| undefined`                                                                                                                                                       | `undefined` |
+| `variant`  | `variant`  | Specifies the color variant of the component                | `"amaranth" \| "aqua" \| "blue" \| "error" \| "green" \| "info" \| "lime" \| "orange" \| "orchid" \| "primary" \| "sky" \| "success" \| "violet" \| "warning" \| "yellow" \| undefined` | `undefined` |
 
 
 ## Dependencies
@@ -105,12 +98,14 @@ This is a web-component from Maggioli Design System [Magma](https://magma.maggio
 
 - [mds-text](../mds-text)
 - [mds-img](../mds-img)
+- [mds-icon](../mds-icon)
 
 ### Graph
 ```mermaid
 graph TD;
   mds-avatar --> mds-text
   mds-avatar --> mds-img
+  mds-avatar --> mds-icon
   mds-entity --> mds-avatar
   style mds-avatar fill:#f9f,stroke:#333,stroke-width:4px
 ```
