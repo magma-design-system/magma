@@ -19,8 +19,7 @@ export default {
 }
 
 const Template = args => {
-  const html = document.getElementsByTagName('html')[0]
-  html.setAttribute('class', `hydrated ${args.darkMode}`)
+  document.getElementsByTagName('html')[0].setAttribute('class', `hydrated ${args.darkMode}`)
 
   return <div class={clsx('grid gap-6 p-6 bg-tone-neutral transition-colors text-tone-neutral-03', args.darkMode)}>
     <div class="gap-2">
