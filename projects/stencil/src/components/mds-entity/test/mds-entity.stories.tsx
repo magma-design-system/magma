@@ -1,5 +1,6 @@
 import { h } from '@stencil/core'
 import { iconsDictionary } from '@dictionary/icon'
+import { themeFullVariantAvatarDictionary, toneMinimalVariantDictionary } from '@dictionary/variant'
 
 export default {
   title: 'UI / Entity',
@@ -17,6 +18,18 @@ export default {
     src: {
       type: { name: 'string' },
       description: 'The URL of the avatar image',
+    },
+    tone: {
+      type: { name: 'string' },
+      description: 'Specifies the tone variant of the component',
+      options: toneMinimalVariantDictionary,
+      control: { type: 'select' },
+    },
+    variant: {
+      type: { name: 'string' },
+      description: 'Specifies the variant of the component',
+      options: themeFullVariantAvatarDictionary,
+      control: { type: 'select' },
     },
   },
 }

@@ -30,9 +30,8 @@
   display: flex;
 }
 
-.avatar,
-.delete,
-.icon {
+.preview,
+.delete {
   @apply
     rounded
     w-1100;
@@ -40,7 +39,7 @@
   flex-shrink: 0;
 }
 
-.icon {
+.preview {
   @apply aspect-square;
 
   align-items: center;
