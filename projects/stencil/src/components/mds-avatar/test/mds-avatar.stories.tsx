@@ -1,10 +1,7 @@
 import { h } from '@stencil/core'
 import { lokiDisabled } from '@test/loki-disabled'
 import { iconsDictionary, mggIconsDictionary } from '@dictionary/icon'
-import {
-  themeFullVariantAvatarDictionary,
-  toneMinimalVariantDictionary,
-} from '@dictionary/variant'
+import { themeFullVariantAvatarDictionary, toneMinimalVariantDictionary } from '@dictionary/variant'
 
 export default {
   title: 'UI / Avatar',
@@ -25,13 +22,13 @@ export default {
     },
     tone: {
       type: { name: 'string' },
-      description: 'Specifies the tone variant of the button',
+      description: 'Specifies the tone variant of the component',
       options: toneMinimalVariantDictionary,
       control: { type: 'select' },
     },
     variant: {
       type: { name: 'string' },
-      description: 'Specifies the variant of the button',
+      description: 'Specifies the variant of the component',
       options: themeFullVariantAvatarDictionary,
       control: { type: 'select' },
     },

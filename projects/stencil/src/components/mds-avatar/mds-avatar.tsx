@@ -11,6 +11,9 @@ import { ThemeFullVariantAvatarType, ToneMinimalVariantType } from '@type/varian
 })
 export class MdsAvatar {
 
+  // BUG: when user switch from initials to other and turn back to initials fitty breaks
+  // BUG: switching from src mode to icon mode will loose default icon size
+
   @Element() private element: HTMLMdsAvatarElement
   @State() placeholder = false
   @State() loaded = false
@@ -28,7 +31,7 @@ export class MdsAvatar {
   @Prop() readonly icon?: string|undefined
 
   /**
-   * The user's inizials displayed if there's no image available
+   * The user's inizials displayed if there's no image available, initials will override tone and variant senttings to keep user recognizable from others
    */
   @Prop({ mutable:true, reflect: true }) readonly initials: string = ''
 
@@ -40,12 +43,12 @@ export class MdsAvatar {
   /**
    * Specifies the color tone of the component
    */
-  @Prop() readonly tone?: ToneMinimalVariantType
+  @Prop({ reflect: true }) readonly tone?: ToneMinimalVariantType
 
   /**
    * Specifies the color variant of the component
    */
-  @Prop() readonly variant?: ThemeFullVariantAvatarType
+  @Prop({ reflect: true }) readonly variant?: ThemeFullVariantAvatarType
 
   private addFontResize = (): void => {
     const initialsElement = this.element.shadowRoot?.querySelector('.fit')
@@ -148,5 +151,4 @@ export class MdsAvatar {
       </Host>
     )
   }
-
 }
