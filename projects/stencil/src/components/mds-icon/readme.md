@@ -107,7 +107,6 @@ Type: `Promise<void>`
  - [mds-banner](../mds-banner)
  - [mds-button](../mds-button)
  - [mds-chip](../mds-chip)
- - [mds-entity](../mds-entity)
  - [mds-file](../mds-file)
  - [mds-filter-item](../mds-filter-item)
  - [mds-help](../mds-help)
@@ -126,7 +125,6 @@ graph TD;
   mds-banner --> mds-icon
   mds-button --> mds-icon
   mds-chip --> mds-icon
-  mds-entity --> mds-icon
   mds-file --> mds-icon
   mds-filter-item --> mds-icon
   mds-help --> mds-icon
