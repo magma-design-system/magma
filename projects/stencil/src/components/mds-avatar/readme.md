@@ -88,6 +88,13 @@ This is a web-component from Maggioli Design System [Magma](https://magma.maggio
 | `variant`  | `variant`  | Specifies the color variant of the component                                                                                                         | `"amaranth" \| "aqua" \| "blue" \| "error" \| "green" \| "info" \| "lime" \| "orange" \| "orchid" \| "primary" \| "sky" \| "success" \| "violet" \| "warning" \| "yellow" \| undefined` | `undefined` |
 
 
+## Shadow Parts
+
+| Part     | Description |
+| -------- | ----------- |
+| `"icon"` |             |
+
+
 ## Dependencies
 
 ### Used by

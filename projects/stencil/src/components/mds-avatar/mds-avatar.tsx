@@ -1,8 +1,12 @@
-import { Component, Element, Host, h, State, Prop, Watch } from '@stencil/core'
 import clsx from 'clsx'
-import { avatarVariant } from './meta/variants'
 import fitty from 'fitty/dist/fitty.min.js'
+import { Component, Element, Host, h, State, Prop, Watch } from '@stencil/core'
 import { ThemeFullVariantAvatarType, ToneMinimalVariantType } from '@type/variant'
+import { avatarVariant } from './meta/variants'
+
+/*
+ * @part icon - The selected icon of the avatar
+ */
 
 @Component({
   tag: 'mds-avatar',
@@ -146,7 +150,7 @@ export class MdsAvatar {
               src={ this.src }
             />
           }
-          { this.icon && !this.hasInitials && <mds-icon class="icon" name={this.icon}></mds-icon> }
+          { this.icon && !this.hasInitials && <mds-icon class="icon" part="icon" name={this.icon}></mds-icon> }
         </div>
       </Host>
     )
