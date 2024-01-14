@@ -1,9 +1,9 @@
 @keyframes focus-bounce {
   0%, 75%, 100% {
-    outline-offset: var(--magma-outline-focus-offset);
+    outline-offset: var(--magma-outline-focus-offset, 6px);
   }
 
   50% {
-    outline-offset: var(--magma-outline-blur-offset);
+    outline-offset: var(--magma-outline-blur-offset, 2px);
   }
 }
