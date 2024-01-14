@@ -61,6 +61,7 @@ This is a web-component from Maggioli Design System [Magma](https://magma.maggio
  - [mds-price-table-features](../mds-price-table-features)
  - [mds-price-table-features-cell](../mds-price-table-features-cell)
  - [mds-price-table-list-item](../mds-price-table-list-item)
+ - [mds-push-notification](../mds-push-notification)
  - [mds-quote](../mds-quote)
  - [mds-stepper-bar-item](../mds-stepper-bar-item)
  - [mds-tab-bar-item](../mds-tab-bar-item)
@@ -97,6 +98,7 @@ graph TD;
   mds-price-table-features --> mds-text
   mds-price-table-features-cell --> mds-text
   mds-price-table-list-item --> mds-text
+  mds-push-notification --> mds-text
   mds-quote --> mds-text
   mds-stepper-bar-item --> mds-text
   mds-tab-bar-item --> mds-text
