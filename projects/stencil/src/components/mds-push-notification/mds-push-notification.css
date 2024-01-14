@@ -1,0 +1,79 @@
+@import '../../tailwind/components.css';
+@tailwind utilities;
+@tailwind components;
+
+:host {
+
+  --mds-push-notification-background-color: theme('colors.tone-neutral');
+  --mds-push-notification-color: theme('colors.tone-neutral-02');
+  --mds-push-notification-message-line-clamp: 3;
+  --mds-push-notification-shadow: theme('boxShadow.DEFAULT');
+  --mds-push-notification-subject-line-clamp: 2;
+
+  @apply
+    gap-400
+    max-w-8000
+    p-400
+    pr-800
+    rounded-lg;
+
+  align-items: flex-start;
+  background-color: var(--mds-push-notification-background-color);
+  box-shadow: var(--mds-push-notification-shadow);
+  color: var(--mds-push-notification-color);
+  display: flex;
+  position: relative;
+}
+
+.content {
+  display: grid;
+  flex-grow: 1;
+}
+
+.close-icon,
+.icon,
+.picture {
+  flex-shrink: 0;
+}
+
+.close-icon {
+  fill: inherit;
+}
+
+.close-button {
+  @apply p-150;
+
+  background-color: transparent;
+  fill: theme('colors.tone-neutral-06');
+  position: absolute;
+  right: 0;
+  top: 0;
+}
+
+.close-button:focus-visible,
+.close-button:hover {
+  fill: theme('colors.tone-neutral-03');
+}
+
+.subject {
+  line-clamp: var(--mds-push-notification-subject-line-clamp);
+  text-overflow: ellipsis;
+}
+
+.message {
+  line-clamp: var(--mds-push-notification-message-line-clamp);
+  text-overflow: ellipsis;
+}
+
+.icon {
+  @apply
+    h-900
+    w-900;
+
+  background-color: theme('colors.tone-slate-08');
+  border-radius: 1000px;
+}
+
+.icon::part(svg) {
+  @apply w-600;
+}
