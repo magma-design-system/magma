@@ -1,6 +1,7 @@
 @import '~@maggioli-design-system/styles/dist/tailwind/typography.css';
+@import '~@maggioli-design-system/styles/dist/css/animations.css';
 @import '../../tailwind/components.css';
-@tailwind base; /* typography and focus animation */
+@tailwind base; /* typography */
 @tailwind components;
 @tailwind utilities;
 
