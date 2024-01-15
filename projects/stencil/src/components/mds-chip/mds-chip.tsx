@@ -143,10 +143,10 @@ export class MdsChip {
           </div>
         }
         { this.clickable
-          ? <mds-text class="label focus-bounce" tabindex="0" typography="caption" truncate={true}>
+          ? <mds-text class="label focus-bounce" tabindex="0" typography="caption" truncate="word">
             { this.label }
           </mds-text>
-          : <mds-text class="label" typography="caption" truncate={true}>
+          : <mds-text class="label" typography="caption" truncate="word">
             { this.label }
           </mds-text>
         }

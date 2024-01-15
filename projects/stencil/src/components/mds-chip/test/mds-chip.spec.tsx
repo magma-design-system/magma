@@ -10,7 +10,7 @@ describe('mds-chip', () => {
     expect(page.root).toEqualHtml(`
       <mds-chip aria-disabled="false">
         <mock:shadow-root>
-          <mds-text class="label" truncate="" typography="caption"></mds-text>
+          <mds-text class="label" truncate="word" typography="caption"></mds-text>
         </mock:shadow-root>
       </mds-chip>
     `)
