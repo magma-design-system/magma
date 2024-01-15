@@ -2,6 +2,7 @@
 import { typographyDictionary } from '@dictionary/typography'
 import { themeFullVariantDictionary, toneSimpleVariantDictionary } from '@dictionary/variant'
 import { h } from '@stencil/core'
+import { truncateDictionary } from '@dictionary/text'
 
 export default {
   title: 'UI / Label',
@@ -11,7 +12,9 @@ export default {
       description: 'Enables the cross icon to perform cancel/delete action on element',
     },
     truncate: {
-      type: { name: 'boolean' },
+      type: { name: 'string' },
+      control: { type: 'select' },
+      options: truncateDictionary,
       description: 'Truncates text inside the tag or displays it in multiline if needed',
     },
     typography: {
@@ -41,8 +44,8 @@ export const Default = Template.bind({})
 
 export const Truncate = Template.bind({})
 Truncate.args = {
-  truncate: false,
-  class: 'w-32',
+  truncate: 'word',
+  class: 'w-3200',
 }
 
 export const Typography = Template.bind({})

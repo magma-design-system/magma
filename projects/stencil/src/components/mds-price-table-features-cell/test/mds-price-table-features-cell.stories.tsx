@@ -43,12 +43,12 @@ const Template = args =>
         <mds-price-table-features-cell type="label">
           Customer support
         </mds-price-table-features-cell>
-        <mds-price-table-features-cell class="px-3" type="custom">
+        <mds-price-table-features-cell class="px-300" type="custom">
           <span>Uno</span>
           <mds-help auto-placement="false" placement="top">This is very nice.</mds-help>
         </mds-price-table-features-cell>
-        <mds-price-table-features-cell class="px-3" type="custom"><span>Due</span></mds-price-table-features-cell>
-        <mds-price-table-features-cell class="px-3" type="custom"><span>Tre</span></mds-price-table-features-cell>
+        <mds-price-table-features-cell class="px-300" type="custom"><span>Due</span></mds-price-table-features-cell>
+        <mds-price-table-features-cell class="px-300" type="custom"><span>Tre</span></mds-price-table-features-cell>
       </mds-price-table-features-row>
     </mds-price-table-features>
   </mds-price-table>

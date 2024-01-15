@@ -8,7 +8,7 @@ const Template = args =>
   <div>
     Switch Group: {args.names[0]}
     <mds-input-switch-group name={args.names[0]}>
-      <div class="grid grid-cols-1 gap-4">
+      <div class="grid grid-cols-1 gap-400">
         <mds-input-switch name={args.names[0]} type="radio" value="1">Uomo</mds-input-switch>
         <mds-input-switch name={args.names[0]} type="radio" value="2">Uoma</mds-input-switch>
         <mds-input-switch name={args.names[0]} type="radio" value="3">Donna</mds-input-switch>
@@ -18,7 +18,7 @@ const Template = args =>
     <hr></hr>
     Switch Group: {args.names[1]}
     <mds-input-switch-group name={args.names[1]}>
-      <div class="grid grid-cols-1 gap-4">
+      <div class="grid grid-cols-1 gap-400">
         <mds-input-switch name={args.names[1]} type="radio" value="1">Uomo</mds-input-switch>
         <mds-input-switch name={args.names[1]} type="radio" value="2">Uoma</mds-input-switch>
         <mds-input-switch name={args.names[1]} type="radio" value="3">Donno</mds-input-switch>

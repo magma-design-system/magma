@@ -66,7 +66,7 @@ const Template = args =>
   <mds-input-switch {...args}>Notifiche via e-mail</mds-input-switch>
 
 const TemplateMultiple = args =>
-  <form name="form-name" class="grid grid-cols-1 gap-4">
+  <form name="form-name" class="grid grid-cols-1 gap-400">
     <mds-input-switch {...args} value="1">Accetto</mds-input-switch>
     <mds-input-switch {...args} value="2">Non accetto</mds-input-switch>
   </form>
@@ -78,15 +78,15 @@ Default.args = {
   value: '1',
 }
 
-export const checkbox = Template.bind({})
-checkbox.args = {
+export const Checkbox = Template.bind({})
+Checkbox.args = {
   name: 'checkbox-name',
   type: 'checkbox',
   value: '1',
 }
 
-export const radio = TemplateMultiple.bind({})
-radio.args = {
+export const Radio = TemplateMultiple.bind({})
+Radio.args = {
   name: 'radio-name',
   type: 'radio',
   value: '1',

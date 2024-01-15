@@ -24,12 +24,12 @@ export default {
 const Template = args =>
   <div>
     <mds-notification target="my-button" {...args}/>
-    <mds-button class="fixed bottom-20 right-20" id="my-button" icon="mdi/email">Incoming messages</mds-button>
+    <mds-button class="fixed bottom-2000 right-2000" id="my-button" icon="mdi/email">Incoming messages</mds-button>
   </div>
 
 const TemplateStatic = args =>
   <div>
-    <mds-button class="fixed bottom-20 right-20" id="my-button" icon="mdi/email">
+    <mds-button class="fixed bottom-2000 right-2000" id="my-button" icon="mdi/email">
       Incoming messages
       <mds-notification style={{ '--mds-notification-ring-size': '0' }} slot="notification" {...args}/>
     </mds-button>
@@ -37,9 +37,9 @@ const TemplateStatic = args =>
 
 const TemplateStaticPositioning = args =>
   <div>
-    <mds-button class="fixed bottom-20 right-20" id="my-button" icon="mdi/email">
+    <mds-button class="fixed bottom-2000 right-2000" id="my-button" icon="mdi/email">
       Incoming messages
-      <mds-notification class="absolute -top-3 -right-2 translate-1/2" slot="notification" {...args}/>
+      <mds-notification class="absolute -top-300 -right-200 translate-1/2" slot="notification" {...args}/>
     </mds-button>
   </div>
 

@@ -17,8 +17,8 @@ const Template = args =>
 export const Default = Template.bind({})
 Default.story = lokiDisabled
 
-export const running = Template.bind({})
-running.story = lokiDisabled
-running.args = {
+export const Running = Template.bind({})
+Running.story = lokiDisabled
+Running.args = {
   running: true,
 }

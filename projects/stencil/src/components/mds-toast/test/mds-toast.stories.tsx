@@ -34,7 +34,7 @@ export default {
   },
 }
 
-const checkVariant = (variant: any) => {
+const checkVariant = (variant: 'dark'|'light') => {
   if (variant === 'dark') {
     return 'light'
   }

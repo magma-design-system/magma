@@ -31,8 +31,8 @@ Default.args = {
   label: 'Blipbug',
 }
 
-export const selected = Template.bind({})
-selected.args = {
+export const Selected = Template.bind({})
+Selected.args = {
   selected: true,
   label: 'Blipbug',
 }

@@ -67,7 +67,7 @@ const Template = ({ layout, ...args }) =>
     <mds-button id="my-dropdown">Show Fred</mds-button>
     <mds-dropdown target="my-dropdown" {...args}>
       <mds-author class="text-tone-neutral-04">
-        <mds-avatar aria-describedby="A protrait of Frederick Phillips Brooks Jr." initials="fb" src="./fred-brooks-zoom.webp" slot="avatar" class="w-20 bg-brand-maggioli-06" />
+        <mds-avatar aria-describedby="A protrait of Frederick Phillips Brooks Jr." initials="fb" src="./fred-brooks-zoom.webp" slot="avatar" class="w-2000 bg-brand-maggioli-06" />
         <mds-text typography="h6" class="text-tone-neutral-02">Fred Brooks</mds-text>
         <mds-text typography="caption">Software engineer</mds-text>
         <mds-text typography="caption">IT</mds-text>
@@ -92,7 +92,7 @@ export const NoTarget = () =>
     </mds-dropdown>
   </div>
 
-const TemplateNested = ({ layout, ...args }) =>
+const TemplateNested = ({ ...args }) =>
   <div>
     <mds-header>
       <mds-header-bar>

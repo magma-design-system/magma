@@ -260,8 +260,8 @@ Icon.args = {
 }
 
 const FormIntegrationTemplate = (args: MdsInputInterface) => (
-  <div class="grid gap-6">
-    <form class="grid gap-4" id="mds-icon-fi" name="mds-icon-fi">
+  <div class="grid gap-600">
+    <form class="grid gap-400" id="mds-icon-fi" name="mds-icon-fi">
       <mds-input {...args}></mds-input>
       <mds-button class="w-min" type="button" role="submit" onClick={() => {
         const form = document.querySelector('form') as HTMLFormElement

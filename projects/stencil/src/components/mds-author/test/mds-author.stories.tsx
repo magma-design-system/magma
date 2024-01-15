@@ -6,7 +6,7 @@ export default {
 
 const Template = args =>
   <mds-author {...args} class="text-tone-neutral-04">
-    <mds-avatar initials="fb" src="./fred-brooks-zoom.webp" slot="avatar" class="w-20 bg-brand-maggioli-06"/>
+    <mds-avatar initials="fb" src="./fred-brooks-zoom.webp" slot="avatar" class="w-2000 bg-brand-maggioli-06"/>
     <mds-text typography="h6" class="text-tone-neutral-02">Fred Brooks</mds-text>
     <mds-text typography="caption">Software engineer</mds-text>
     <mds-text typography="caption">IT</mds-text>
@@ -20,4 +20,4 @@ const TemplateNoAvatar = args =>
   </mds-author>
 
 export const Default = Template.bind({})
-export const noAvatar = TemplateNoAvatar.bind({})
+export const NoAvatar = TemplateNoAvatar.bind({})

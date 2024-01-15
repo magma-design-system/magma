@@ -39,7 +39,7 @@ const Template = args =>
 export const Default = Template.bind({})
 
 
-export const selected = Template.bind({})
-selected.args = {
+export const Selected = Template.bind({})
+Selected.args = {
   selected: true,
 }
