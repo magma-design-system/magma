@@ -4,6 +4,7 @@ import { MdsFileEventDetail } from './meta/event-detail'
 import { ThemeFullVariantType } from '@type/variant'
 import { fileExtensionsDictionary } from './meta/dictionary'
 import { fileFormatsVariant } from './meta/variants'
+// import { TypographyTruncateType } from '@type/text'
 
 @Component({
   tag: 'mds-file',
@@ -100,12 +101,12 @@ export class MdsFile {
         </div>
         <div class="info">
           <div class="filename" title={ this.filename }>
-            <mds-text typography="h6" class="name">{ this.getName() }</mds-text>
+            <mds-text truncate="word" typography="h6" class="name">{ this.getName() }</mds-text>
             { this.suffix === undefined && this.getSuffix() && <mds-text typography="h6" class="extension">.{ this.getSuffix() }</mds-text> }
           </div>
           <div class="detail">
             { this.getSuffix() && <mds-badge variant={variant as ThemeFullVariantType} tone="quiet" class="suffix">{ this.getSuffix() }</mds-badge> }
-            <mds-text typography="caption" class="description" title={ this.description ?? description }>{ this.description ?? description }</mds-text>
+            <mds-text truncate="all" typography="caption" class="description" title={ this.description ?? description }>{ this.description ?? description }</mds-text>
           </div>
         </div>
       </Host>
