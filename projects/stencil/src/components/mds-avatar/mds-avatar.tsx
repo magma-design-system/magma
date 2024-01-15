@@ -140,13 +140,13 @@ export class MdsAvatar {
       <Host>
         <div class={clsx(
           'avatar',
-          this.initials && 'avatar--initials',
+          this.initials && !this.fallback && !this.src && 'avatar--initials',
           (this.fallback || (!this.icon && !this.initials && !this.src)) && 'avatar--fallback',
           this.icon && 'avatar--icon',
           this.loaded ? 'avatar--loaded' : 'avatar--pending',
           this.backgroundColor,
         )} part="wrapper">
-          { this.initials && <mds-text typography="h5" class={clsx( this.initials ? 'initials-text' : 'fallback-image')}>
+          { this.initials && !this.fallback && !this.src && <mds-text typography="h5" class={clsx( this.initials ? 'initials-text' : 'fallback-image')}>
             <span class="fit">{ this.initials.substring(0, 2) }</span>
           </mds-text>
           }

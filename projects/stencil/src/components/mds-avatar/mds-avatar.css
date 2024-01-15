@@ -27,7 +27,6 @@
   @apply transition-colors;
 
   aspect-ratio: 1/1;
-  background-color: var(--mds-avatar-background-color);
   color: transparent;
   display: inline-flex;
   overflow: hidden;
@@ -40,6 +39,12 @@
 
 .avatar--loaded {
   animation: none;
+}
+
+.avatar--icon,
+.avatar--fallback,
+.avatar--initials {
+  background-color: var(--mds-avatar-background-color);
 }
 
 .avatar--fallback,
