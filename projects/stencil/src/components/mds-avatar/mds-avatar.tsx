@@ -3,9 +3,11 @@ import fitty from 'fitty/dist/fitty.min.js'
 import { Component, Element, Host, h, State, Prop, Watch } from '@stencil/core'
 import { ThemeFullVariantAvatarType, ToneMinimalVariantType } from '@type/variant'
 import { avatarVariant } from './meta/variants'
+import miBaselinePerson from '@icon/mi/baseline/person.svg'
 
 /*
  * @part icon - The selected icon of the avatar
+ * @part wrapper - The wrapper which contains media displayed
  */
 
 @Component({
@@ -16,12 +18,10 @@ import { avatarVariant } from './meta/variants'
 export class MdsAvatar {
 
   // BUG: when user switch from initials to other and turn back to initials fitty breaks
-  // BUG: switching from src mode to icon mode will loose default icon size
 
   @Element() private element: HTMLMdsAvatarElement
-  @State() placeholder = false
-  @State() loaded = false
-  @State() hasInitials = false
+  @State() fallback = false
+  @State() loaded = true
 
   private observer: ResizeObserver
   private fittyElements
@@ -32,17 +32,17 @@ export class MdsAvatar {
    * Specifies the path to the icon
    * @see https://magma.maggiolicloud.it/storybook/?path=/story/design-icon--default
    */
-  @Prop() readonly icon?: string|undefined
+  @Prop({ reflect: true }) readonly icon?: string|undefined
 
   /**
    * The user's inizials displayed if there's no image available, initials will override tone and variant senttings to keep user recognizable from others
    */
-  @Prop({ mutable:true, reflect: true }) readonly initials: string = ''
+  @Prop({ mutable:true, reflect: true }) readonly initials?: string
 
   /**
    * Specifies the path to the image
    */
-  @Prop() readonly src?: string
+  @Prop({ reflect: true }) readonly src?: string
 
   /**
    * Specifies the color tone of the component
@@ -76,19 +76,17 @@ export class MdsAvatar {
     this.observer.unobserve(this.element)
   }
 
-  private checkInitials = (value: string): void => {
-    if (value !== '' && !this.src) {
+  private checkInitials = (value?: string): void => {
+    if (value !== '' && value !== undefined) {
       if (this.fittyInitialized) {
         return
       }
-      this.hasInitials = true
       if (!this.fittyInitialized) {
         this.addFontResize()
         console.info('addFontResize')
       }
       return
     }
-    this.hasInitials = false
     if (this.fittyInitialized) {
       this.removeFontResize()
       console.info('removeFontResize')
@@ -96,64 +94,72 @@ export class MdsAvatar {
   }
 
   private checkInitialsBackground = (): void => {
-
-    this.backgroundColor = ''
-
-    if (this.hasInitials) {
+    if (this.initials) {
       let cleanedInitials = this.initials.toLowerCase().replace(/[^a-zA-Z0-9]+/g, '').substring(0, 2)
       if (cleanedInitials.length === 1) {
         cleanedInitials = cleanedInitials + cleanedInitials
       }
       this.backgroundColor = avatarVariant[(cleanedInitials.substring(0, 1).charCodeAt(0) + cleanedInitials.substring(1, 2).charCodeAt(0)) % avatarVariant.length]
     }
-
-    if (this.src === undefined) {
-      this.placeholder = true
-      this.loaded = true
-    }
-    if (this.icon !== undefined) {
-      this.loaded = true
-    }
   }
 
-  componentDidRender (): void {
-    this.checkInitials(this.initials)
+  componentWillLoad (): void {
     this.checkInitialsBackground()
   }
 
   componentDidLoad (): void {
+    if (this.src !== undefined) {
+      this.loaded = false
+    }
     this.checkInitials(this.initials)
-    this.checkInitialsBackground()
   }
 
   @Watch('initials')
-  initialsHandler (newValue: string): void {
+  initialsHandler (newValue?: string): void {
     this.checkInitials(newValue)
+    this.checkInitialsBackground()
+  }
+
+  @Watch('src')
+  srcHandler (newValue: string): void {
+    if (newValue === undefined) {
+      this.loaded = true
+    }
+  }
+
+  @Watch('icon')
+  iconHandler (newValue: string): void {
+    if (newValue !== undefined) {
+      this.loaded = true
+    }
   }
 
   render () {
+    console.info('backgroundColor', this.backgroundColor)
     return (
       <Host>
         <div class={clsx(
           'avatar',
-          this.hasInitials && 'initials',
-          this.loaded ? 'loaded' : 'pending',
-          this.placeholder && !this.hasInitials && 'fallback',
+          this.initials && 'avatar--initials',
+          (this.fallback || (!this.icon && !this.initials && !this.src)) && 'avatar--fallback',
+          this.icon && 'avatar--icon',
+          this.loaded ? 'avatar--loaded' : 'avatar--pending',
           this.backgroundColor,
-        )}>
-          { this.placeholder && <mds-text typography="h5" class={clsx( this.hasInitials ? 'initials-text' : 'fallback-image')}>
-            { this.hasInitials && <span class="fit">{ this.initials.substring(0, 2) }</span> }
+        )} part="wrapper">
+          { this.initials && <mds-text typography="h5" class={clsx( this.initials ? 'initials-text' : 'fallback-image')}>
+            <span class="fit">{ this.initials.substring(0, 2) }</span>
           </mds-text>
           }
-          { this.src && !this.placeholder && !this.icon && <mds-img
+          { this.src && !this.fallback && !this.icon && <mds-img
             class="image"
             loading="lazy"
-            onMdsImgLoadError={ () => { this.loaded = true; this.placeholder = true } }
+            onMdsImgLoadError={ () => { this.loaded = true; this.fallback = true } }
             onMdsImgLoadSuccess={ () => { this.loaded = true } }
             src={ this.src }
           />
           }
-          { this.icon && !this.hasInitials && <mds-icon class="icon" part="icon" name={this.icon}></mds-icon> }
+          { this.icon && !this.initials && <mds-icon class="icon" part="icon" name={this.icon}></mds-icon> }
+          { (this.fallback || (!this.icon && !this.initials && !this.src)) && <i class="svg fallback-icon" innerHTML={miBaselinePerson}/> }
         </div>
       </Host>
     )

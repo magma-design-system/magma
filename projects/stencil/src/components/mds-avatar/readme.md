@@ -82,7 +82,7 @@ This is a web-component from Maggioli Design System [Magma](https://magma.maggio
 | Property   | Attribute  | Description                                                                                                                                          | Type                                                                                                                                                                                    | Default     |
 | ---------- | ---------- | ---------------------------------------------------------------------------------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ----------- |
 | `icon`     | `icon`     | Specifies the path to the icon                                                                                                                       | `string \| undefined`                                                                                                                                                                   | `undefined` |
-| `initials` | `initials` | The user's inizials displayed if there's no image available, initials will override tone and variant senttings to keep user recognizable from others | `string`                                                                                                                                                                                | `''`        |
+| `initials` | `initials` | The user's inizials displayed if there's no image available, initials will override tone and variant senttings to keep user recognizable from others | `string \| undefined`                                                                                                                                                                   | `undefined` |
 | `src`      | `src`      | Specifies the path to the image                                                                                                                      | `string \| undefined`                                                                                                                                                                   | `undefined` |
 | `tone`     | `tone`     | Specifies the color tone of the component                                                                                                            | `"strong" \| "weak" \| undefined`                                                                                                                                                       | `undefined` |
 | `variant`  | `variant`  | Specifies the color variant of the component                                                                                                         | `"amaranth" \| "aqua" \| "blue" \| "error" \| "green" \| "info" \| "lime" \| "orange" \| "orchid" \| "primary" \| "sky" \| "success" \| "violet" \| "warning" \| "yellow" \| undefined` | `undefined` |
@@ -90,19 +90,10 @@ This is a web-component from Maggioli Design System [Magma](https://magma.maggio
 
 ## Shadow Parts
 
-| Part     | Description |
-| -------- | ----------- |
-| `"icon"` |             |
-
-
-## CSS Custom Properties
-
-| Name                                        | Description                                   |
-| ------------------------------------------- | --------------------------------------------- |
-| `--mds-avatar-background-color-pending`     | The background-color when an image is loading |
-| `--mds-avatar-background-color-placeholder` | The background-color of the placeholder icon  |
-| `--mds-avatar-color`                        | The color of the placeholder icon             |
-| `--mds-avatar-radius`                       | The border-radius of the element              |
+| Part        | Description |
+| ----------- | ----------- |
+| `"icon"`    |             |
+| `"wrapper"` |             |
 
 
 ## Dependencies
