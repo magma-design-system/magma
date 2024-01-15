@@ -382,7 +382,7 @@ export class MdsInput {
           { this.disabled &&
             <div class="tip tip--expanded tip--disabled">
               <div class="tip__content">
-                <mds-text typography="option" truncate>
+                <mds-text typography="option" truncate="word">
                   <span class="tip__text">{ this.disabledLabel }</span>
                 </mds-text>
               </div>
@@ -391,7 +391,7 @@ export class MdsInput {
           { this.readonly &&
             <div class="tip tip--expanded tip--read-only">
               <div class="tip__content">
-                <mds-text typography="option" truncate>
+                <mds-text typography="option" truncate="word">
                   <span class="tip__text">{ this.readonlyLabel }</span>
                 </mds-text>
               </div>
@@ -400,7 +400,7 @@ export class MdsInput {
           { this.required &&
             <div class="tip tip--expand tip--required">
               <div class="tip__content">
-                <mds-text typography="option" truncate>
+                <mds-text typography="option" truncate="word">
                   <span class="tip__text">{ this.requiredLabel }</span>
                   <span class="tip__icon svg" innerHTML={miBaselineDone}></span>
                 </mds-text>
@@ -412,7 +412,7 @@ export class MdsInput {
           { this.tip &&
             <div class="tip tip--expanded tip--variant">
               <div class="tip__content">
-                <mds-text typography="option" truncate>
+                <mds-text typography="option" truncate="word">
                   <span class="tip__text">{ this.tip }</span>
                 </mds-text>
               </div>
