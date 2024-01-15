@@ -79,6 +79,11 @@
   width: 100%;
 }
 
+:host([initials]) .initials-text {
+
+  --mds-avatar-color: theme('colors.tone-neutral');
+}
+
 .fit {
   @apply
     duration-200

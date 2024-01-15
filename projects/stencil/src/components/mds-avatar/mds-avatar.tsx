@@ -96,6 +96,9 @@ export class MdsAvatar {
   }
 
   private checkInitialsBackground = (): void => {
+
+    this.backgroundColor = ''
+
     if (this.hasInitials) {
       let cleanedInitials = this.initials.toLowerCase().replace(/[^a-zA-Z0-9]+/g, '').substring(0, 2)
       if (cleanedInitials.length === 1) {
@@ -138,17 +141,17 @@ export class MdsAvatar {
           this.placeholder && !this.hasInitials && 'fallback',
           this.backgroundColor,
         )}>
-          { this.placeholder
-            ? <mds-text typography="h5" class={clsx( this.hasInitials ? 'initials-text' : 'fallback-image')}>
-              { this.hasInitials && <span class="fit">{ this.initials.substring(0, 2) }</span> }
-            </mds-text>
-            : <mds-img
-              class="image"
-              loading="lazy"
-              onMdsImgLoadError={ () => { this.loaded = true; this.placeholder = true } }
-              onMdsImgLoadSuccess={ () => { this.loaded = true } }
-              src={ this.src }
-            />
+          { this.placeholder && <mds-text typography="h5" class={clsx( this.hasInitials ? 'initials-text' : 'fallback-image')}>
+            { this.hasInitials && <span class="fit">{ this.initials.substring(0, 2) }</span> }
+          </mds-text>
+          }
+          { this.src && !this.placeholder && !this.icon && <mds-img
+            class="image"
+            loading="lazy"
+            onMdsImgLoadError={ () => { this.loaded = true; this.placeholder = true } }
+            onMdsImgLoadSuccess={ () => { this.loaded = true } }
+            src={ this.src }
+          />
           }
           { this.icon && !this.hasInitials && <mds-icon class="icon" part="icon" name={this.icon}></mds-icon> }
         </div>
