@@ -4,8 +4,8 @@
 
 :host {
 
-  --mds-push-notification-background-color: theme('colors.tone-neutral');
-  --mds-push-notification-color: theme('colors.tone-neutral-02');
+  --mds-push-notification-icon-background-color: transparent;
+  --mds-push-notification-icon-color: theme('colors.tone-neutral-04');
   --mds-push-notification-message-line-clamp: 3;
   --mds-push-notification-shadow: theme('boxShadow.DEFAULT');
   --mds-push-notification-subject-line-clamp: 2;
@@ -18,9 +18,9 @@
     rounded-lg;
 
   align-items: flex-start;
-  background-color: var(--mds-push-notification-background-color);
+  background-color: theme('colors.tone-neutral');
   box-shadow: var(--mds-push-notification-shadow);
-  color: var(--mds-push-notification-color);
+  color: theme('colors.tone-neutral-02');
   display: flex;
   position: relative;
 }
@@ -30,10 +30,29 @@
   flex-grow: 1;
 }
 
+.actions {
+  @apply
+    gap-200
+    pt-200;
+
+  display: flex;
+  flex-wrap: wrap;
+  min-width: 1px;
+}
+
 .close-icon,
-.icon,
+.avatar,
 .picture {
   flex-shrink: 0;
+}
+
+.picture {
+  @apply
+    max-w-1200
+    rounded;
+
+  box-shadow: theme('boxShadow.sm-sharp');
+  width: 100%;
 }
 
 .close-icon {
@@ -57,23 +76,39 @@
 
 .subject {
   line-clamp: var(--mds-push-notification-subject-line-clamp);
+  line-height: theme('lineHeight.sm');
   text-overflow: ellipsis;
 }
 
 .message {
   line-clamp: var(--mds-push-notification-message-line-clamp);
+  line-height: theme('lineHeight.sm');
   text-overflow: ellipsis;
 }
 
-.icon {
+.avatar {
   @apply
     h-900
+    transition-colors
     w-900;
 
-  background-color: theme('colors.tone-slate-08');
+  background-color: var(--mds-push-notification-icon-background-color);
   border-radius: 1000px;
+  fill: var(--mds-push-notification-icon-color);
 }
 
-.icon::part(svg) {
+.avatar::part(svg) {
   @apply w-600;
 }
+
+:host([src]) .avatar {
+  background-color: transparent;
+}
+
+:host([icon]) .avatar::part(wrapper) {
+  @apply p-150;
+}
+
+@import './css/mds-push-notification-variant-primary.css';
+@import './css/mds-push-notification-variant-label.css';
+@import './css/mds-push-notification-variant-state.css';

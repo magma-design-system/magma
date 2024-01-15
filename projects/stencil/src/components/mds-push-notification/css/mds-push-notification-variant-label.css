@@ -1,0 +1,191 @@
+@tailwind utilities;
+
+:host( [variant="orange"][tone="strong"] ) {
+  
+  --mds-push-notification-icon-background-color: theme('colors.label-orange-05');
+  --mds-push-notification-icon-color: theme('colors.label-orange-10');
+}
+
+:host( [variant="orange"] ),
+:host( [variant="orange"][tone="weak"] ) {
+
+  --mds-push-notification-icon-background-color: theme('colors.label-orange-09');
+  --mds-push-notification-icon-color: theme('colors.label-orange-05');
+}
+
+:host( [variant="orange"][tone="quiet"] ) {
+
+  --mds-push-notification-icon-background-color: transparent;
+  --mds-push-notification-icon-color: theme('colors.label-orange-05');
+}
+
+:host( [variant="amaranth"][tone="strong"] ) {
+  
+  --mds-push-notification-icon-background-color: theme('colors.label-amaranth-05');
+  --mds-push-notification-icon-color: theme('colors.label-amaranth-10');
+}
+
+:host( [variant="amaranth"] ),
+:host( [variant="amaranth"][tone="weak"] ) {
+
+  --mds-push-notification-icon-background-color: theme('colors.label-amaranth-09');
+  --mds-push-notification-icon-color: theme('colors.label-amaranth-05');
+}
+
+:host( [variant="amaranth"][tone="quiet"] ) {
+
+  --mds-push-notification-icon-background-color: transparent;
+  --mds-push-notification-icon-color: theme('colors.label-amaranth-05');
+}
+
+:host( [variant="orchid"][tone="strong"] ) {
+  
+  --mds-push-notification-icon-background-color: theme('colors.label-orchid-05');
+  --mds-push-notification-icon-color: theme('colors.label-orchid-10');
+}
+
+:host( [variant="orchid"] ),
+:host( [variant="orchid"][tone="weak"] ) {
+
+  --mds-push-notification-icon-background-color: theme('colors.label-orchid-09');
+  --mds-push-notification-icon-color: theme('colors.label-orchid-05');
+}
+
+:host( [variant="orchid"][tone="quiet"] ) {
+
+  --mds-push-notification-icon-background-color: transparent;
+  --mds-push-notification-icon-color: theme('colors.label-orchid-05');
+}
+
+:host( [variant="violet"][tone="strong"] ) {
+  
+  --mds-push-notification-icon-background-color: theme('colors.label-violet-05');
+  --mds-push-notification-icon-color: theme('colors.label-violet-10');
+}
+
+:host( [variant="violet"] ),
+:host( [variant="violet"][tone="weak"] ) {
+
+  --mds-push-notification-icon-background-color: theme('colors.label-violet-09');
+  --mds-push-notification-icon-color: theme('colors.label-violet-05');
+}
+
+:host( [variant="violet"][tone="quiet"] ) {
+
+  --mds-push-notification-icon-background-color: transparent;
+  --mds-push-notification-icon-color: theme('colors.label-violet-05');
+}
+
+:host( [variant="blue"][tone="strong"] ) {
+  
+  --mds-push-notification-icon-background-color: theme('colors.label-blue-05');
+  --mds-push-notification-icon-color: theme('colors.label-blue-10');
+}
+
+:host( [variant="blue"] ),
+:host( [variant="blue"][tone="weak"] ) {
+
+  --mds-push-notification-icon-background-color: theme('colors.label-blue-09');
+  --mds-push-notification-icon-color: theme('colors.label-blue-05');
+}
+
+:host( [variant="blue"][tone="quiet"] ) {
+
+  --mds-push-notification-icon-background-color: transparent;
+  --mds-push-notification-icon-color: theme('colors.label-blue-05');
+}
+
+:host( [variant="sky"][tone="strong"] ) {
+  
+  --mds-push-notification-icon-background-color: theme('colors.label-sky-05');
+  --mds-push-notification-icon-color: theme('colors.label-sky-10');
+}
+
+:host( [variant="sky"] ),
+:host( [variant="sky"][tone="weak"] ) {
+
+  --mds-push-notification-icon-background-color: theme('colors.label-sky-09');
+  --mds-push-notification-icon-color: theme('colors.label-sky-05');
+}
+
+:host( [variant="sky"][tone="quiet"] ) {
+
+  --mds-push-notification-icon-background-color: transparent;
+  --mds-push-notification-icon-color: theme('colors.label-sky-05');
+}
+
+:host( [variant="aqua"][tone="strong"] ) {
+  
+  --mds-push-notification-icon-background-color: theme('colors.label-aqua-05');
+  --mds-push-notification-icon-color: theme('colors.label-aqua-10');
+}
+
+:host( [variant="aqua"] ),
+:host( [variant="aqua"][tone="weak"] ) {
+
+  --mds-push-notification-icon-background-color: theme('colors.label-aqua-09');
+  --mds-push-notification-icon-color: theme('colors.label-aqua-05');
+}
+
+:host( [variant="aqua"][tone="quiet"] ) {
+
+  --mds-push-notification-icon-background-color: transparent;
+  --mds-push-notification-icon-color: theme('colors.label-aqua-05');
+}
+
+:host( [variant="green"][tone="strong"] ) {
+  
+  --mds-push-notification-icon-background-color: theme('colors.label-green-05');
+  --mds-push-notification-icon-color: theme('colors.label-green-10');
+}
+
+:host( [variant="green"] ),
+:host( [variant="green"][tone="weak"] ) {
+
+  --mds-push-notification-icon-background-color: theme('colors.label-green-09');
+  --mds-push-notification-icon-color: theme('colors.label-green-05');
+}
+
+:host( [variant="green"][tone="quiet"] ) {
+
+  --mds-push-notification-icon-background-color: transparent;
+  --mds-push-notification-icon-color: theme('colors.label-green-05');
+}
+
+:host( [variant="lime"][tone="strong"] ) {
+  
+  --mds-push-notification-icon-background-color: theme('colors.label-lime-05');
+  --mds-push-notification-icon-color: theme('colors.label-lime-10');
+}
+
+:host( [variant="lime"] ),
+:host( [variant="lime"][tone="weak"] ) {
+
+  --mds-push-notification-icon-background-color: theme('colors.label-lime-09');
+  --mds-push-notification-icon-color: theme('colors.label-lime-05');
+}
+
+:host( [variant="lime"][tone="quiet"] ) {
+
+  --mds-push-notification-icon-background-color: transparent;
+  --mds-push-notification-icon-color: theme('colors.label-lime-05');
+}
+
+:host( [variant="yellow"][tone="strong"] ) {
+  
+  --mds-push-notification-icon-background-color: theme('colors.label-yellow-05');
+  --mds-push-notification-icon-color: theme('colors.label-yellow-10');
+}
+
+:host( [variant="yellow"] ),
+:host( [variant="yellow"][tone="weak"] ) {
+
+  --mds-push-notification-icon-background-color: theme('colors.label-yellow-09');
+  --mds-push-notification-icon-color: theme('colors.label-yellow-05');
+}
+
+:host( [variant="yellow"][tone="quiet"] ) {
+
+  --mds-push-notification-icon-background-color: transparent;
+  --mds-push-notification-icon-color: theme('colors.label-yellow-05');
+}
