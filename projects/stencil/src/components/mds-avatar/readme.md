@@ -95,11 +95,22 @@ This is a web-component from Maggioli Design System [Magma](https://magma.maggio
 | `"icon"` |             |
 
 
+## CSS Custom Properties
+
+| Name                                        | Description                                   |
+| ------------------------------------------- | --------------------------------------------- |
+| `--mds-avatar-background-color-pending`     | The background-color when an image is loading |
+| `--mds-avatar-background-color-placeholder` | The background-color of the placeholder icon  |
+| `--mds-avatar-color`                        | The color of the placeholder icon             |
+| `--mds-avatar-radius`                       | The border-radius of the element              |
+
+
 ## Dependencies
 
 ### Used by
 
  - [mds-entity](../mds-entity)
+ - [mds-push-notification](../mds-push-notification)
 
 ### Depends on
 
@@ -114,6 +125,7 @@ graph TD;
   mds-avatar --> mds-img
   mds-avatar --> mds-icon
   mds-entity --> mds-avatar
+  mds-push-notification --> mds-avatar
   style mds-avatar fill:#f9f,stroke:#333,stroke-width:4px
 ```
 

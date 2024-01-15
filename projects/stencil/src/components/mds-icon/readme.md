@@ -121,7 +121,6 @@ Type: `Promise<void>`
  - [mds-input-switch](../mds-input-switch)
  - [mds-list-item](../mds-list-item)
  - [mds-paginator-item](../mds-paginator-item)
- - [mds-push-notification](../mds-push-notification)
  - [mds-stepper-bar-item](../mds-stepper-bar-item)
  - [mds-tab-bar-item](../mds-tab-bar-item)
  - [mds-usage](../mds-usage)
@@ -140,7 +139,6 @@ graph TD;
   mds-input-switch --> mds-icon
   mds-list-item --> mds-icon
   mds-paginator-item --> mds-icon
-  mds-push-notification --> mds-icon
   mds-stepper-bar-item --> mds-icon
   mds-tab-bar-item --> mds-icon
   mds-usage --> mds-icon
