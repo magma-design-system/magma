@@ -1,28 +1,30 @@
 import { typographyDictionary, typographyVariationsDictionary } from '@dictionary/typography'
 import { h } from '@stencil/core'
 import { tagsDictionary } from '../meta/dictionary'
+import { truncateDictionary } from '@dictionary/text'
 
 export default {
   title: 'Design / Typography',
   argTypes: {
     tag: {
+      control: { type: 'select' },
       description: 'Specifies the HTML tag of the element',
       options: tagsDictionary,
-      control: { type: 'select' },
     },
     truncate: {
-      type: { name: 'boolean' },
+      control: { type: 'select' },
       description: 'Specifies if the text shoud be truncated or should behave as a normal text',
+      options: truncateDictionary,
     },
     typography: {
+      control: { type: 'select' },
       description: 'Specifies the font typography of the element',
       options: typographyDictionary,
-      control: { type: 'select' },
     },
     variant: {
+      control: { type: 'select' },
       description: 'Specifies the variant for `typography`',
       options: typographyVariationsDictionary,
-      control: { type: 'select' },
     },
   },
 }
@@ -33,7 +35,7 @@ export const Default = Template.bind({})
 
 export const Truncate = Template.bind({})
 Truncate.args = {
-  truncate: true,
+  truncate: 'word',
 }
 
 export const VariantTitleAction = Template.bind({})
