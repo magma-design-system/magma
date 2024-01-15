@@ -125,3 +125,13 @@ ContactAvatar.args = {
   tone: 'strong',
   variant: 'primary',
 }
+
+export const ContactAvatarInitials = TemplateContact.bind({})
+ContactAvatarInitials.args = {
+  message: 'Ciao, sono Sarah, questo è il mio contatto, buona giornata!',
+  initials: 'sh',
+  subject: 'Sarah Ho',
+  preview: 'avatar',
+  tone: 'strong',
+  variant: 'primary',
+}
