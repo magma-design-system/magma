@@ -46,25 +46,33 @@ const TemplateAddNotifications = args => {
   return <div>
     <mds-button onClick={() => setItem(items + 1) }>Add notifications</mds-button>
     <mds-push-notifications {...args}>
-      <mds-button slot="top" variant="dark">Cancella notifiche</mds-button>
       { Array.from(Array(items).keys()).map((_item, index) =>
         <PushNotificationElement key={index} index={index}/>,
       ) }
-      <mds-button slot="bottom" variant="dark">Carica altre...</mds-button>
     </mds-push-notifications>
   </div>
 }
 
 const TemplateAddMultipleNotifications = args => {
   const [items, setItem] = useState(0)
+  const addItems = (e: Event) => {
+    const target = e.currentTarget as HTMLElement
+    target?.setAttribute('await', '')
+    target.innerHTML = 'Caricamento...'
+    setTimeout(() => {
+      target?.removeAttribute('await')
+      target.innerHTML = 'Carica notifiche...'
+    }, 2000)
+    setItem(items + 3)
+  }
   return <div>
-    <mds-button onClick={() => setItem(items + 3) }>Add notifications</mds-button>
+    <mds-button onClick={addItems.bind(this)}>Carica notifiche...</mds-button>
     <mds-push-notifications {...args}>
-      <mds-button slot="top" variant="dark">Cancella notifiche</mds-button>
+      <mds-button slot="top" variant="dark" onClick={addItems.bind(this)}>Carica notifiche...</mds-button>
       { Array.from(Array(items).keys()).map((_item, index) =>
         <PushNotificationElement key={index} index={index}/>,
       ) }
-      <mds-button slot="bottom" variant="dark">Carica altre...</mds-button>
+      <mds-button slot="bottom" variant="dark">Cancella notifiche</mds-button>
     </mds-push-notifications>
   </div>
 }
