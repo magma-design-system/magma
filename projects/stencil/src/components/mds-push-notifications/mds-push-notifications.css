@@ -2,6 +2,7 @@
 
 :host {
 
+  --mds-push-notifications-fadeout-delay: 3s;
   --mds-push-notifications-gap: theme('spacing.200');
   --mds-push-notifications-items-delay: 400ms;
   --mds-push-notifications-items-duration: 300ms;
@@ -24,11 +25,13 @@
   right: 0;
   top: 0;
   transform: translate(100%, 0);
+  transition-delay: 0;
   transition-property: transform;
 }
 
 :host([visible]:not([visible="false"])) {
   transform: translate(0, 0);
+  transition-delay: var(--mds-push-notifications-fadeout-delay);
 }
 
 .notifications {
