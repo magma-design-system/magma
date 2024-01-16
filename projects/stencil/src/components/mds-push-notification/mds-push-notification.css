@@ -4,15 +4,18 @@
 
 :host {
 
+  --mds-push-notification-duration: 200ms;
   --mds-push-notification-icon-background-color: transparent;
   --mds-push-notification-icon-color: theme('colors.tone-neutral-04');
-  --mds-push-notification-message-line-clamp: 3;
+  --mds-push-notification-message-line-clamp: 2;
   --mds-push-notification-shadow: theme('boxShadow.DEFAULT');
-  --mds-push-notification-subject-line-clamp: 2;
+  --mds-push-notification-subject-line-clamp: 1;
+  --mds-push-notification-timing-function: theme('transitionTimingFunction.in-out-expo');
 
   @apply
     gap-400
     max-w-8000
+    min-w-7200
     p-400
     pr-800
     rounded-lg;
@@ -23,6 +26,9 @@
   color: theme('colors.tone-neutral-02');
   display: flex;
   position: relative;
+  transition-duration: var(--mds-push-notification-duration);
+  transition-property: transform;
+  transition-timing-function: var(--mds-push-notification-timing-function);
 }
 
 .content {
@@ -75,13 +81,17 @@
 }
 
 .subject {
-  line-clamp: var(--mds-push-notification-subject-line-clamp);
+
+  --mds-text-line-clamp: var(--mds-push-notification-subject-line-clamp);
+
   line-height: theme('lineHeight.sm');
   text-overflow: ellipsis;
 }
 
 .message {
-  line-clamp: var(--mds-push-notification-message-line-clamp);
+
+  --mds-text-line-clamp: var(--mds-push-notification-message-line-clamp);
+
   line-height: theme('lineHeight.sm');
   text-overflow: ellipsis;
 }

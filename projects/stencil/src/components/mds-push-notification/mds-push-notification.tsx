@@ -2,6 +2,7 @@ import { Component, Element, Host, h, Prop } from '@stencil/core'
 import miBaselineCancel from '@icon/mi/baseline/cancel.svg'
 import { ThemeFullVariantAvatarType, ToneMinimalVariantType } from '@type/variant'
 import { NotificationPreviewType } from './meta/types'
+
 /**
  * @part actions - The actions wrapper
  * @part content - The content wrapper of the message
@@ -71,7 +72,7 @@ export class MdsPushNotification {
         { this.src && this.preview !== 'avatar' && <mds-img class="picture" part="picture" src={this.src}></mds-img> }
         <div class="content" part="content">
           { this.subject && <mds-text class="subject" typography="h6" variant="title">{ this.subject }</mds-text> }
-          <mds-text class="message" typography="caption" variant="info">{ this.message }</mds-text>
+          <mds-text class="message" truncate="all" typography="caption" variant="info">{ this.message }</mds-text>
           { this.hasActions && <div class="actions" part="actions">
             <slot name="actions"></slot>
           </div> }

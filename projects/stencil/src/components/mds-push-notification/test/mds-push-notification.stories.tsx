@@ -4,7 +4,7 @@ import { themeFullVariantAvatarDictionary, toneMinimalVariantDictionary } from '
 import { notificationPreviewDictionary } from '../meta/dictionary'
 
 export default {
-  title: 'UI / Push Notification',
+  title: 'UI / Push Notifications / Push Notification',
   argTypes: {
     icon: {
       type: { name: 'string' },
