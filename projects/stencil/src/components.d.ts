@@ -9,7 +9,7 @@ import { MdsAccordionEventDetail } from "./components/mds-accordion/meta/event-d
 import { TypographyInfoType, TypographyInputType, TypographyReadingVariants, TypographyReadType, TypographySmallerType, TypographyTitleType, TypographyTooltipType, TypographyType, TypographyVariants } from "@type/typography";
 import { MdsAccordionItemEventDetail } from "./components/mds-accordion-item/meta/event-detail";
 import { MdsAccordionTimerItemEventDetail } from "./components/mds-accordion-timer-item/meta/event-detail";
-import { LabelVariantType, ThemeFullVariantType, ThemeLuminanceVariantType, ThemeStatusVariantType, ThemeVariantType, ToneMinimalVariantType, ToneSimpleVariantType, ToneVariantType } from "@type/variant";
+import { LabelVariantType, ThemeFullVariantAvatarType, ThemeFullVariantType, ThemeLuminanceVariantType, ThemeStatusVariantType, ThemeVariantType, ToneMinimalVariantType, ToneSimpleVariantType, ToneVariantType } from "@type/variant";
 import { BenchmarkBarTypographyType } from "./components/mds-benchmark-bar/meta/types";
 import { BibliographyFormatType, BibliographyRelationshipType } from "./components/mds-bibliography/meta/types";
 import { MdsBreadcrumbEventDetail } from "./components/mds-breadcrumb/meta/event-detail";
@@ -37,11 +37,13 @@ import { MdsInputEventDetail as MdsInputEventDetail1 } from "@component/mds-inpu
 import { MdsValidationErrors, MdsValidatorFn } from "./components/mds-input-field/meta/validators";
 import { InputValue } from "@interface/input-value";
 import { InputSwitchSizeType, InputSwitchType } from "./components/mds-input-switch/meta/types";
+import { TypographyTruncateType } from "@type/text";
 import { ModalPositionType } from "./components/mds-modal/meta/types";
 import { StrategyType } from "./components/mds-notification/meta/types";
 import { MdsPaginatorEventDetail } from "./components/mds-paginator/meta/event-detail";
 import { PriceTableFeaturesCellType } from "./components/mds-price-table-features-cell/meta/types";
 import { DirectionType } from "./components/mds-progress/meta/types";
+import { NotificationPreviewType } from "./components/mds-push-notification/meta/types";
 import { MdsStepperBarEventDetail } from "./components/mds-stepper-bar/meta/event-detail";
 import { MdsStepperBarItemEventDetail } from "./components/mds-stepper-bar-item/meta/event-detail";
 import { MdsTabEventDetail } from "./components/mds-tab/meta/event-detail";
@@ -54,7 +56,7 @@ export { MdsAccordionEventDetail } from "./components/mds-accordion/meta/event-d
 export { TypographyInfoType, TypographyInputType, TypographyReadingVariants, TypographyReadType, TypographySmallerType, TypographyTitleType, TypographyTooltipType, TypographyType, TypographyVariants } from "@type/typography";
 export { MdsAccordionItemEventDetail } from "./components/mds-accordion-item/meta/event-detail";
 export { MdsAccordionTimerItemEventDetail } from "./components/mds-accordion-timer-item/meta/event-detail";
-export { LabelVariantType, ThemeFullVariantType, ThemeLuminanceVariantType, ThemeStatusVariantType, ThemeVariantType, ToneMinimalVariantType, ToneSimpleVariantType, ToneVariantType } from "@type/variant";
+export { LabelVariantType, ThemeFullVariantAvatarType, ThemeFullVariantType, ThemeLuminanceVariantType, ThemeStatusVariantType, ThemeVariantType, ToneMinimalVariantType, ToneSimpleVariantType, ToneVariantType } from "@type/variant";
 export { BenchmarkBarTypographyType } from "./components/mds-benchmark-bar/meta/types";
 export { BibliographyFormatType, BibliographyRelationshipType } from "./components/mds-bibliography/meta/types";
 export { MdsBreadcrumbEventDetail } from "./components/mds-breadcrumb/meta/event-detail";
@@ -82,11 +84,13 @@ export { MdsInputEventDetail as MdsInputEventDetail1 } from "@component/mds-inpu
 export { MdsValidationErrors, MdsValidatorFn } from "./components/mds-input-field/meta/validators";
 export { InputValue } from "@interface/input-value";
 export { InputSwitchSizeType, InputSwitchType } from "./components/mds-input-switch/meta/types";
+export { TypographyTruncateType } from "@type/text";
 export { ModalPositionType } from "./components/mds-modal/meta/types";
 export { StrategyType } from "./components/mds-notification/meta/types";
 export { MdsPaginatorEventDetail } from "./components/mds-paginator/meta/event-detail";
 export { PriceTableFeaturesCellType } from "./components/mds-price-table-features-cell/meta/types";
 export { DirectionType } from "./components/mds-progress/meta/types";
+export { NotificationPreviewType } from "./components/mds-push-notification/meta/types";
 export { MdsStepperBarEventDetail } from "./components/mds-stepper-bar/meta/event-detail";
 export { MdsStepperBarItemEventDetail } from "./components/mds-stepper-bar-item/meta/event-detail";
 export { MdsTabEventDetail } from "./components/mds-tab/meta/event-detail";
@@ -152,13 +156,26 @@ export namespace Components {
     }
     interface MdsAvatar {
         /**
-          * The user's inizials displayed if there's no image available
+          * Specifies the path to the icon
+          * @see https://magma.maggiolicloud.it/storybook/?path=/story/design-icon--default
          */
-        "initials": string;
+        "icon"?: string|undefined;
+        /**
+          * The user's inizials displayed if there's no image available, initials will override tone and variant senttings to keep user recognizable from others
+         */
+        "initials"?: string;
         /**
           * Specifies the path to the image
          */
         "src"?: string;
+        /**
+          * Specifies the color tone of the component
+         */
+        "tone"?: ToneMinimalVariantType;
+        /**
+          * Specifies the color variant of the component
+         */
+        "variant"?: ThemeFullVariantAvatarType;
     }
     interface MdsBadge {
         /**
@@ -447,6 +464,14 @@ export namespace Components {
           * Specifies the path to the image
          */
         "src"?: string;
+        /**
+          * Specifies the color tone of the component
+         */
+        "tone"?: ToneMinimalVariantType;
+        /**
+          * Specifies the color variant of the component
+         */
+        "variant"?: ThemeFullVariantAvatarType;
     }
     interface MdsFile {
         /**
@@ -990,7 +1015,7 @@ export namespace Components {
         /**
           * Truncates text inside the label or displays it in multiline if needed
          */
-        "truncate": boolean;
+        "truncate"?: TypographyTruncateType;
         /**
           * Specifies the typography of the element
          */
@@ -1130,6 +1155,50 @@ export namespace Components {
          */
         "variant": ThemeVariantType;
     }
+    interface MdsPushNotification {
+        /**
+          * Specifies the icon to be displayed
+         */
+        "icon"?: string;
+        /**
+          * The user's inizials displayed if there's no image available, initials will override tone and variant senttings to keep user recognizable from others
+         */
+        "initials"?: string;
+        /**
+          * Specifies the message of the component
+         */
+        "message": string;
+        /**
+          * Specifies if the `src` attribute is used to show a the image as avatar or full image
+         */
+        "preview"?: NotificationPreviewType;
+        /**
+          * Specifies the path to the image
+         */
+        "src"?: string;
+        /**
+          * Specifies the subject of the component
+         */
+        "subject"?: string;
+        /**
+          * Specifies the color tone of the component
+         */
+        "tone"?: ToneMinimalVariantType;
+        /**
+          * Specifies the color variant of the component
+         */
+        "variant"?: ThemeFullVariantAvatarType;
+    }
+    interface MdsPushNotifications {
+        /**
+          * Specifies if the component is visible or not.
+         */
+        "visible"?: boolean;
+        /**
+          * Specifies if the component visibility is handled when new `mds-push-notification` components are added to this component or when they are removed.
+         */
+        "visiblity"?: 'auto'|'manual';
+    }
     interface MdsQuote {
         /**
           * Specifies the font typography of the element
@@ -1251,7 +1320,7 @@ export namespace Components {
         /**
           * Specifies if the text shoud be truncated or should behave as a normal text
          */
-        "truncate"?: boolean;
+        "truncate"?: TypographyTruncateType;
         /**
           * Specifies the font typography of the element
          */
@@ -2157,6 +2226,18 @@ declare global {
         prototype: HTMLMdsProgressElement;
         new (): HTMLMdsProgressElement;
     };
+    interface HTMLMdsPushNotificationElement extends Components.MdsPushNotification, HTMLStencilElement {
+    }
+    var HTMLMdsPushNotificationElement: {
+        prototype: HTMLMdsPushNotificationElement;
+        new (): HTMLMdsPushNotificationElement;
+    };
+    interface HTMLMdsPushNotificationsElement extends Components.MdsPushNotifications, HTMLStencilElement {
+    }
+    var HTMLMdsPushNotificationsElement: {
+        prototype: HTMLMdsPushNotificationsElement;
+        new (): HTMLMdsPushNotificationsElement;
+    };
     interface HTMLMdsQuoteElement extends Components.MdsQuote, HTMLStencilElement {
     }
     var HTMLMdsQuoteElement: {
@@ -2446,6 +2527,8 @@ declare global {
         "mds-price-table-list": HTMLMdsPriceTableListElement;
         "mds-price-table-list-item": HTMLMdsPriceTableListItemElement;
         "mds-progress": HTMLMdsProgressElement;
+        "mds-push-notification": HTMLMdsPushNotificationElement;
+        "mds-push-notifications": HTMLMdsPushNotificationsElement;
         "mds-quote": HTMLMdsQuoteElement;
         "mds-separator": HTMLMdsSeparatorElement;
         "mds-spinner": HTMLMdsSpinnerElement;
@@ -2559,13 +2642,26 @@ declare namespace LocalJSX {
     }
     interface MdsAvatar {
         /**
-          * The user's inizials displayed if there's no image available
+          * Specifies the path to the icon
+          * @see https://magma.maggiolicloud.it/storybook/?path=/story/design-icon--default
+         */
+        "icon"?: string|undefined;
+        /**
+          * The user's inizials displayed if there's no image available, initials will override tone and variant senttings to keep user recognizable from others
          */
         "initials"?: string;
         /**
           * Specifies the path to the image
          */
         "src"?: string;
+        /**
+          * Specifies the color tone of the component
+         */
+        "tone"?: ToneMinimalVariantType;
+        /**
+          * Specifies the color variant of the component
+         */
+        "variant"?: ThemeFullVariantAvatarType;
     }
     interface MdsBadge {
         /**
@@ -2890,6 +2986,14 @@ declare namespace LocalJSX {
           * Specifies the path to the image
          */
         "src"?: string;
+        /**
+          * Specifies the color tone of the component
+         */
+        "tone"?: ToneMinimalVariantType;
+        /**
+          * Specifies the color variant of the component
+         */
+        "variant"?: ThemeFullVariantAvatarType;
     }
     interface MdsFile {
         /**
@@ -3497,7 +3601,7 @@ declare namespace LocalJSX {
         /**
           * Truncates text inside the label or displays it in multiline if needed
          */
-        "truncate"?: boolean;
+        "truncate"?: TypographyTruncateType;
         /**
           * Specifies the typography of the element
          */
@@ -3649,6 +3753,50 @@ declare namespace LocalJSX {
          */
         "variant"?: ThemeVariantType;
     }
+    interface MdsPushNotification {
+        /**
+          * Specifies the icon to be displayed
+         */
+        "icon"?: string;
+        /**
+          * The user's inizials displayed if there's no image available, initials will override tone and variant senttings to keep user recognizable from others
+         */
+        "initials"?: string;
+        /**
+          * Specifies the message of the component
+         */
+        "message"?: string;
+        /**
+          * Specifies if the `src` attribute is used to show a the image as avatar or full image
+         */
+        "preview"?: NotificationPreviewType;
+        /**
+          * Specifies the path to the image
+         */
+        "src"?: string;
+        /**
+          * Specifies the subject of the component
+         */
+        "subject"?: string;
+        /**
+          * Specifies the color tone of the component
+         */
+        "tone"?: ToneMinimalVariantType;
+        /**
+          * Specifies the color variant of the component
+         */
+        "variant"?: ThemeFullVariantAvatarType;
+    }
+    interface MdsPushNotifications {
+        /**
+          * Specifies if the component is visible or not.
+         */
+        "visible"?: boolean;
+        /**
+          * Specifies if the component visibility is handled when new `mds-push-notification` components are added to this component or when they are removed.
+         */
+        "visiblity"?: 'auto'|'manual';
+    }
     interface MdsQuote {
         /**
           * Specifies the font typography of the element
@@ -3798,7 +3946,7 @@ declare namespace LocalJSX {
         /**
           * Specifies if the text shoud be truncated or should behave as a normal text
          */
-        "truncate"?: boolean;
+        "truncate"?: TypographyTruncateType;
         /**
           * Specifies the font typography of the element
          */
@@ -3998,6 +4146,8 @@ declare namespace LocalJSX {
         "mds-price-table-list": MdsPriceTableList;
         "mds-price-table-list-item": MdsPriceTableListItem;
         "mds-progress": MdsProgress;
+        "mds-push-notification": MdsPushNotification;
+        "mds-push-notifications": MdsPushNotifications;
         "mds-quote": MdsQuote;
         "mds-separator": MdsSeparator;
         "mds-spinner": MdsSpinner;
@@ -4083,6 +4233,8 @@ declare module "@stencil/core" {
             "mds-price-table-list": LocalJSX.MdsPriceTableList & JSXBase.HTMLAttributes<HTMLMdsPriceTableListElement>;
             "mds-price-table-list-item": LocalJSX.MdsPriceTableListItem & JSXBase.HTMLAttributes<HTMLMdsPriceTableListItemElement>;
             "mds-progress": LocalJSX.MdsProgress & JSXBase.HTMLAttributes<HTMLMdsProgressElement>;
+            "mds-push-notification": LocalJSX.MdsPushNotification & JSXBase.HTMLAttributes<HTMLMdsPushNotificationElement>;
+            "mds-push-notifications": LocalJSX.MdsPushNotifications & JSXBase.HTMLAttributes<HTMLMdsPushNotificationsElement>;
             "mds-quote": LocalJSX.MdsQuote & JSXBase.HTMLAttributes<HTMLMdsQuoteElement>;
             "mds-separator": LocalJSX.MdsSeparator & JSXBase.HTMLAttributes<HTMLMdsSeparatorElement>;
             "mds-spinner": LocalJSX.MdsSpinner & JSXBase.HTMLAttributes<HTMLMdsSpinnerElement>;
