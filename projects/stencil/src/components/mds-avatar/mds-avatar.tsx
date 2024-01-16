@@ -135,7 +135,6 @@ export class MdsAvatar {
   }
 
   render () {
-    console.info('backgroundColor', this.backgroundColor)
     return (
       <Host>
         <div class={clsx(
