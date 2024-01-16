@@ -7,10 +7,10 @@
 
 ## Properties
 
-| Property    | Attribute   | Description                                                                                                                                        | Type                              | Default     |
-| ----------- | ----------- | -------------------------------------------------------------------------------------------------------------------------------------------------- | --------------------------------- | ----------- |
-| `visible`   | `visible`   | Specifies if the component is visible or not.                                                                                                      | `boolean \| undefined`            | `undefined` |
-| `visiblity` | `visiblity` | Specifies if the component visibility is handled when new `mds-push-notification` components are added to this component or when they are removed. | `"auto" \| "manual" \| undefined` | `undefined` |
+| Property    | Attribute   | Description                                                                                                                                        | Type                                           | Default     |
+| ----------- | ----------- | -------------------------------------------------------------------------------------------------------------------------------------------------- | ---------------------------------------------- | ----------- |
+| `visible`   | `visible`   | Specifies if the component is visible or not.                                                                                                      | `boolean \| undefined`                         | `undefined` |
+| `visiblity` | `visiblity` | Specifies if the component visibility is handled when new `mds-push-notification` components are added to this component or when they are removed. | `"auto" \| "hidden" \| "visible" \| undefined` | `undefined` |
 
 
 ## Slots

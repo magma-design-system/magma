@@ -45,7 +45,21 @@ const TemplateAddNotifications = args => {
   const [items, setItem] = useState(0)
   return <div>
     <mds-button onClick={() => setItem(items + 1) }>Add notifications</mds-button>
-    <mds-push-notifications visiblity="auto" {...args}>
+    <mds-push-notifications {...args}>
+      <mds-button slot="top" variant="dark">Cancella notifiche</mds-button>
+      { Array.from(Array(items).keys()).map((_item, index) =>
+        <PushNotificationElement key={index} index={index}/>,
+      ) }
+      <mds-button slot="bottom" variant="dark">Carica altre...</mds-button>
+    </mds-push-notifications>
+  </div>
+}
+
+const TemplateAddMultipleNotifications = args => {
+  const [items, setItem] = useState(0)
+  return <div>
+    <mds-button onClick={() => setItem(items + 3) }>Add notifications</mds-button>
+    <mds-push-notifications {...args}>
       <mds-button slot="top" variant="dark">Cancella notifiche</mds-button>
       { Array.from(Array(items).keys()).map((_item, index) =>
         <PushNotificationElement key={index} index={index}/>,
@@ -57,4 +71,10 @@ const TemplateAddNotifications = args => {
 
 export const Default = Template.bind({})
 export const AddNotifications = TemplateAddNotifications.bind({})
-
+AddNotifications.args = {
+  visible: true,
+}
+export const AddMultipleNotifications = TemplateAddMultipleNotifications.bind({})
+AddMultipleNotifications.args = {
+  visible: true,
+}

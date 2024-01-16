@@ -17,9 +17,11 @@ import { cssDurationToMilliseconds, cssSizeToNumber } from '@common/unit'
 export class MdsPushNotifications {
 
   @Element() host: HTMLMdsPushNotificationsElement
-  private cssItemsGap: string
-  private cssItemsDuration: string
   private cssItemsDelay: string
+  private cssItemsDuration: string
+  private cssItemsGap: string
+  private totalItems = 0
+  private runningItems = 0
 
   /**
    * Specifies if the component is visible or not.
@@ -29,9 +31,9 @@ export class MdsPushNotifications {
   /**
    * Specifies if the component visibility is handled when new `mds-push-notification` components are added to this component or when they are removed.
    */
-  @Prop({ reflect: true }) readonly visiblity?: 'auto'|'manual'
+  @Prop({ reflect: true }) readonly visiblity?: 'auto'|'visible'|'hidden'
 
-  private introItem = (element: HTMLElement): void => {
+  private introItem = (element: HTMLElement, delay: number): void => {
     element.style.visibility = 'hidden'
     element.style.position = 'absolute'
 
@@ -42,8 +44,14 @@ export class MdsPushNotifications {
         element.style.position = ''
         element.style.transform = 'translate(0, 0)'
         element.style.marginBottom = '0px'
-      }, cssDurationToMilliseconds(this.cssItemsDelay) + cssDurationToMilliseconds(this.cssItemsDuration))
-    }, 15)
+
+        /* questo controllo va spostato in un timer a parte */
+        console.info(this.runningItems, this.totalItems, this.runningItems === this.totalItems)
+        if (this.runningItems === this.totalItems) {
+          this.runningItems = 0
+        }
+      }, cssDurationToMilliseconds(this.cssItemsDuration))
+    }, delay ? delay : 15)
   }
 
   private handleSlotChange = (): void => {
@@ -53,8 +61,24 @@ export class MdsPushNotifications {
       console.info('No slotted elements found.')
       return
     }
-    const lastElement:HTMLElement = elements[elements.length - 1] as HTMLElement
-    this.introItem(lastElement)
+
+    console.info(this.runningItems)
+
+    while (this.totalItems < elements.length) {
+      const delay = cssDurationToMilliseconds(this.cssItemsDelay) * this.runningItems
+      this.introItem(elements[this.totalItems] as HTMLElement, delay)
+      this.totalItems += 1
+      this.runningItems += 1
+    }
+
+    /*
+      manca un timer che fa la differenza tra un gruppo aggiunto e l'altro
+      in modo da appenderli in modo omogeneo
+    */
+
+    setTimeout(() => {
+      // ciaone
+    }, cssDurationToMilliseconds(this.cssItemsDelay) * this.runningItems)
   }
 
   private updateCSSCustomProps = (): void => {

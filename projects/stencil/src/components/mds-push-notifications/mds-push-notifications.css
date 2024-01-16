@@ -3,10 +3,10 @@
 :host {
 
   --mds-push-notifications-gap: theme('spacing.200');
-  --mds-push-notifications-items-delay: 100ms;
+  --mds-push-notifications-items-delay: 400ms;
   --mds-push-notifications-items-duration: 300ms;
   --mds-push-notifications-items-gap: var(--mds-push-notifications-gap);
-  --mds-push-notifications-items-timing-function: theme('transitionTimingFunction.in-out-quart');
+  --mds-push-notifications-items-timing-function: theme('transitionTimingFunction.in-out-quint');
 
   @apply
     duration-500
