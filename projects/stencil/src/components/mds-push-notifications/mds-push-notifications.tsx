@@ -17,12 +17,9 @@ import { cssDurationToMilliseconds, cssSizeToNumber } from '@common/unit'
 export class MdsPushNotifications {
 
   @Element() host: HTMLMdsPushNotificationsElement
-  private cssItemsDelay: string
   private cssItemsDuration: string
   private cssItemsGap: string
   private totalItems = 0
-  // private guardTimer = new Date()
-  private runningItems = 0
 
   /**
    * Specifies if the component is visible or not.
@@ -34,11 +31,10 @@ export class MdsPushNotifications {
    */
   @Prop({ reflect: true }) readonly visiblity?: 'auto'|'visible'|'hidden'
 
-  private introItem = (element: HTMLElement, delay: number, isLast: boolean): void => {
-    element.style.visibility = 'hidden'
-    element.style.position = 'absolute'
-
-    setTimeout(() => {
+  private introItem (element: HTMLElement) {
+    return new Promise<void>(resolve => {
+      element.style.visibility = 'hidden'
+      element.style.position = 'absolute'
       element.style.marginBottom = `-${element.offsetHeight + cssSizeToNumber(this.cssItemsGap)}px`
       setTimeout(() => {
         element.style.visibility = ''
@@ -46,13 +42,10 @@ export class MdsPushNotifications {
         element.style.transform = 'translate(0, 0)'
         element.style.marginBottom = '0px'
 
-        /* TODO: questo controllo va spostato in un timer a parte */
-        if (isLast) {
-          console.info('stop running items')
-          this.runningItems = 0
-        }
+        resolve()
       }, cssDurationToMilliseconds(this.cssItemsDuration))
-    }, delay ? delay : 15)
+
+    })
   }
 
   private handleSlotChange = (): void => {
@@ -63,35 +56,22 @@ export class MdsPushNotifications {
       return
     }
 
-    console.info(this.runningItems)
+    const itemsIntro: Promise<void>[] = []
 
     while (this.totalItems < elements.length) {
-      const delay = cssDurationToMilliseconds(this.cssItemsDelay) * this.runningItems
-      console.info('delay', delay)
-      this.introItem(elements[this.totalItems] as HTMLElement, delay, this.totalItems === elements.length - 1)
+      itemsIntro.push(this.introItem(elements[this.totalItems] as HTMLElement))
       this.totalItems += 1
-      this.runningItems += 1
-
-      // if (this.totalItems === elements.length - 1) {
-      //   this.guardTimer = new Date()
-      // }
     }
 
-    /*
-      TODO: manca un timer che fa la differenza tra un gruppo aggiunto e l'altro
-      in modo da appenderli in modo omogeneo
-    */
-
-    setTimeout(() => {
-      // ciaone
-    }, cssDurationToMilliseconds(this.cssItemsDelay) * this.runningItems)
+    itemsIntro.forEach(async intro => {
+      await intro
+    })
   }
 
   private updateCSSCustomProps = (): void => {
     const elementStyles = window.getComputedStyle(this.host)
     this.cssItemsGap = elementStyles.getPropertyValue('--mds-push-notifications-items-gap') ?? '0.5rem'
     this.cssItemsDuration = elementStyles.getPropertyValue('--mds-push-notifications-items-duration') ?? '200ms'
-    this.cssItemsDelay = elementStyles.getPropertyValue('--mds-push-notifications-items-delay') ?? '100ms'
   }
 
   componentDidLoad (): void {
@@ -110,3 +90,4 @@ export class MdsPushNotifications {
     )
   }
 }
+
