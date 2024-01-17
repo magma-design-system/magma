@@ -66,18 +66,24 @@
 }
 
 .close-button {
-  @apply p-150;
+  @apply p-150 transition-opacity;
 
   background-color: transparent;
   fill: theme('colors.tone-neutral-06');
+  opacity: 0;
   position: absolute;
   right: 0;
   top: 0;
 }
 
+:host(:hover) .close-button {
+  opacity: 1;
+}
+
 .close-button:focus-visible,
 .close-button:hover {
   fill: theme('colors.tone-neutral-03');
+  opacity: 1;
 }
 
 .subject {
