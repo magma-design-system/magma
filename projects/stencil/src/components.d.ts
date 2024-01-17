@@ -453,6 +453,10 @@ export namespace Components {
     }
     interface MdsEntity {
         /**
+          * Specifies if the component is awaiting a response from an external resource
+         */
+        "await"?: boolean;
+        /**
           * Specifies the icon to be displayed if src propery is not used
          */
         "icon"?: string;
@@ -478,6 +482,10 @@ export namespace Components {
           * Overrides the default filetype description
          */
         "description"?: string;
+        /**
+          * Sets a label which is shown when the file is downloaded
+         */
+        "downloadedLabel"?: string;
         /**
           * The filename shown as component title, is used to auto assign one of the filetype known in the filetype dictionary
          */
@@ -2975,6 +2983,10 @@ declare namespace LocalJSX {
     }
     interface MdsEntity {
         /**
+          * Specifies if the component is awaiting a response from an external resource
+         */
+        "await"?: boolean;
+        /**
           * Specifies the icon to be displayed if src propery is not used
          */
         "icon"?: string;
@@ -3000,6 +3012,10 @@ declare namespace LocalJSX {
           * Overrides the default filetype description
          */
         "description"?: string;
+        /**
+          * Sets a label which is shown when the file is downloaded
+         */
+        "downloadedLabel"?: string;
         /**
           * The filename shown as component title, is used to auto assign one of the filetype known in the filetype dictionary
          */

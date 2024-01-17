@@ -2135,6 +2135,18 @@
   resolved "https://registry.npmjs.org/@juggle/resize-observer/-/resize-observer-3.4.0.tgz#08d6c5e20cf7e4cc02fd181c4b0c225cd31dbb60"
   integrity sha512-dfLbk+PwWvFzSxwk3n5ySL0hfBog779o8h68wK/7/APo/7cgyWp5jcXockbxdk5kFRkbeXWm4Fbi9FrdN381sA==
 
+"@maggioli-design-system/styles@14.1.0":
+  version "14.1.0"
+  resolved "https://registry.npmjs.org/@maggioli-design-system/styles/-/styles-14.1.0.tgz#562fdd04a9df31dbd4784c4a21cf095c0f2c79ee"
+  integrity sha512-Ij16w0OmFDIhKibgbITNChxSWgt6XMBKpqa8viMPpctMjD10Tja040B+EFoF8zBpQZr5AOVCMfq1hNFcq7ArdQ==
+  dependencies:
+    "@fontsource/karla" "5.0.18"
+    "@fontsource/merriweather" "5.0.8"
+    "@fontsource/roboto" "5.0.8"
+    "@fontsource/roboto-mono" "5.0.16"
+    "@maggioli-design-system/design-tokens" "12.0.1"
+    normalize.css "8.0.1"
+
 "@maggioli-design-system/svg-icons@^2.6.3":
   version "2.10.1"
   resolved "https://registry.npmjs.org/@maggioli-design-system/svg-icons/-/svg-icons-2.10.1.tgz#3c86d5b738407a7fe756877aa87baf7b4d2d5f8d"
@@ -2672,10 +2684,10 @@
   dependencies:
     "@sinonjs/commons" "^1.7.0"
 
-"@stencil/core@4.9.1":
-  version "4.9.1"
-  resolved "https://registry.npmjs.org/@stencil/core/-/core-4.9.1.tgz#955451027e4aeb429ee8cddf95b62c9bf939c8a7"
-  integrity sha512-FB3vQR2xbX8RkiKdvBRj6jAe2VunKgB4U5hWSbpdcg/GhZrwOhsEgkGUGa8hGm9bgEUpIu16in1zFqziPyBEFw==
+"@stencil/core@4.10.0":
+  version "4.10.0"
+  resolved "https://registry.npmjs.org/@stencil/core/-/core-4.10.0.tgz#cafdaee8e1120912b9ab028d7b76fbdcc5ba2af4"
+  integrity sha512-7lDTPY1IxXN2/C+wQPHt3e/dYgY4YgelA8MxOsU3ZftXtpzWad/QNWhSAtKisJMrSjQh41jMDOgD0yLBwV6E7w==
 
 "@stencil/eslint-plugin@0.4.0":
   version "0.4.0"
@@ -3572,6 +3584,11 @@
   integrity sha512-fXRhhUkG4H3TQk5dBhQ7m/JDdSNHKwR2BBia62lhwEIq9xGiQKLxd6LymNhn47SjXhsUEPmxi+PKw2OkW4LLjA==
   dependencies:
     "@types/node" "*"
+
+"@types/crypto-js@4.2.1":
+  version "4.2.1"
+  resolved "https://registry.npmjs.org/@types/crypto-js/-/crypto-js-4.2.1.tgz#480edd76991a63050cb88db1a8840758c55a7135"
+  integrity sha512-FSPGd9+OcSok3RsM0UZ/9fcvMOXJ1ENE/ZbLfOPlBWj7BgXtEAM8VYfTtT760GiLbQIMoVozwVuisjvsVwqYWw==
 
 "@types/detect-port@^1.3.0":
   version "1.3.5"
@@ -5942,7 +5959,7 @@ cross-spawn@^7.0.0, cross-spawn@^7.0.2, cross-spawn@^7.0.3:
     shebang-command "^2.0.0"
     which "^2.0.1"
 
-crypto-js@^4.2.0:
+crypto-js@4.2.0, crypto-js@^4.2.0:
   version "4.2.0"
   resolved "https://registry.npmjs.org/crypto-js/-/crypto-js-4.2.0.tgz#4d931639ecdfd12ff80e8186dba6af2c2e856631"
   integrity sha512-KALDyEYgpY+Rlob/iriUtjV6d5Eq+Y191A5g4UqLAi8CyGP9N1+FdVbkc1SxKc2r4YAYqG8JzO2KGL+AizD70Q==
