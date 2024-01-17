@@ -55,14 +55,7 @@ const TemplateAddNotifications = args => {
 
 const TemplateAddMultipleNotifications = args => {
   const [items, setItem] = useState(0)
-  const addItems = (e: Event) => {
-    const target = e.currentTarget as HTMLElement
-    target?.setAttribute('await', '')
-    target.innerHTML = 'Caricamento...'
-    setTimeout(() => {
-      target?.removeAttribute('await')
-      target.innerHTML = 'Carica notifiche...'
-    }, 2000)
+  const addItems = () => {
     setItem(items + 3)
   }
   return <div>
