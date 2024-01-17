@@ -26,8 +26,8 @@
   "dependencies": {
     "@maggioli-design-system/mds-img": "2.6.3",
     "@maggioli-design-system/mds-text": "3.7.0",
-    "@maggioli-design-system/styles": "14.1.0",
-    "@stencil/core": "4.9.1",
+    "@maggioli-design-system/styles": "14.2.0",
+    "@stencil/core": "4.10.0",
     "clsx": "2.1.0",
     "fitty": "2.4.2"
   },
