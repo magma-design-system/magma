@@ -103,3 +103,15 @@
 
   color: theme('colors.tone-neutral-05');
 }
+
+.indicator {
+  @apply pr-400;
+
+  align-items: center;
+  display: flex;
+  justify-content: center;
+}
+
+.downloaded {
+  fill: theme('colors.status-success-06');
+}
