@@ -45,7 +45,9 @@
   --mds-push-notification-duration: var(--mds-push-notifications-items-duration);
   --mds-push-notification-timing-function: var(--mds-push-notifications-items-timing-function);
 
-  position: relative;
+  position: absolute;
   transform: translate(calc(100% + calc(var(--mds-push-notifications-gap) + var(--mds-push-notifications-gap))), 0);
   transition-property: margin, transform;
+  visibility: hidden;
+
 }

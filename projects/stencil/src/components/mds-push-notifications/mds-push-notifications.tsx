@@ -32,19 +32,20 @@ export class MdsPushNotifications {
   @Prop({ reflect: true }) readonly visiblity?: 'auto'|'visible'|'hidden'
 
   private introItem (element: HTMLElement) {
+    // no reason why I must duplicata marginBottom negative to prevent flickering
+    element.style.marginBottom = `-${element.offsetHeight + cssSizeToNumber(this.cssItemsGap)}px`
     return new Promise<void>(resolve => {
-      element.style.visibility = 'hidden'
-      element.style.position = 'absolute'
-      element.style.marginBottom = `-${element.offsetHeight + cssSizeToNumber(this.cssItemsGap)}px`
       setTimeout(() => {
-        element.style.visibility = ''
-        element.style.position = ''
-        element.style.transform = 'translate(0, 0)'
-        element.style.marginBottom = '0px'
+        element.style.marginBottom = `-${element.offsetHeight + cssSizeToNumber(this.cssItemsGap)}px`
+        setTimeout(() => {
+          element.style.visibility = 'visible'
+          element.style.position = 'relative'
+          element.style.transform = 'translate(0, 0)'
+          element.style.marginBottom = '0px'
 
-        resolve()
-      }, cssDurationToMilliseconds(this.cssItemsDuration))
-
+          resolve()
+        }, cssDurationToMilliseconds(this.cssItemsDuration))
+      }, 15) // hope to find a better solution not based on 15ms of delay, not very robust
     })
   }
 
