@@ -21,6 +21,7 @@ export class MdsPushNotifications {
   private cssItemsDuration: string
   private cssItemsGap: string
   private totalItems = 0
+  // private guardTimer = new Date()
   private runningItems = 0
 
   /**
@@ -33,7 +34,7 @@ export class MdsPushNotifications {
    */
   @Prop({ reflect: true }) readonly visiblity?: 'auto'|'visible'|'hidden'
 
-  private introItem = (element: HTMLElement, delay: number): void => {
+  private introItem = (element: HTMLElement, delay: number, isLast: boolean): void => {
     element.style.visibility = 'hidden'
     element.style.position = 'absolute'
 
@@ -45,9 +46,9 @@ export class MdsPushNotifications {
         element.style.transform = 'translate(0, 0)'
         element.style.marginBottom = '0px'
 
-        /* questo controllo va spostato in un timer a parte */
-        console.info(this.runningItems, this.totalItems, this.runningItems === this.totalItems)
-        if (this.runningItems === this.totalItems) {
+        /* TODO: questo controllo va spostato in un timer a parte */
+        if (isLast) {
+          console.info('stop running items')
           this.runningItems = 0
         }
       }, cssDurationToMilliseconds(this.cssItemsDuration))
@@ -66,13 +67,18 @@ export class MdsPushNotifications {
 
     while (this.totalItems < elements.length) {
       const delay = cssDurationToMilliseconds(this.cssItemsDelay) * this.runningItems
-      this.introItem(elements[this.totalItems] as HTMLElement, delay)
+      console.info('delay', delay)
+      this.introItem(elements[this.totalItems] as HTMLElement, delay, this.totalItems === elements.length - 1)
       this.totalItems += 1
       this.runningItems += 1
+
+      // if (this.totalItems === elements.length - 1) {
+      //   this.guardTimer = new Date()
+      // }
     }
 
     /*
-      manca un timer che fa la differenza tra un gruppo aggiunto e l'altro
+      TODO: manca un timer che fa la differenza tra un gruppo aggiunto e l'altro
       in modo da appenderli in modo omogeneo
     */
 
