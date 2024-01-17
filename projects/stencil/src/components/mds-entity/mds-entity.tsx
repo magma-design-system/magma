@@ -19,6 +19,11 @@ export class MdsEntity {
   private actions: boolean
 
   /**
+   * Specifies if the component is awaiting a response from an external resource
+   */
+  @Prop({ reflect: true }) readonly await?: boolean
+
+  /**
    * Specifies the icon to be displayed if src propery is not used
    */
   @Prop({ reflect: true }) readonly icon?: string
@@ -44,7 +49,20 @@ export class MdsEntity {
   @Prop({ reflect: true }) readonly variant?: ThemeFullVariantAvatarType
 
   private checkAvatar (): boolean {
-    return this.src !== undefined ?? this.icon !== undefined ?? this.initials !== undefined
+    let hasAvatar = false
+    if (this.src !== undefined) {
+      hasAvatar = true
+    }
+    if (this.icon !== undefined) {
+      hasAvatar = true
+    }
+    if (this.initials !== undefined) {
+      hasAvatar = true
+    }
+    if (this.await) {
+      return false
+    }
+    return hasAvatar
   } 
   componentWillLoad (): void {
     this.details = this.hostElement.querySelector('[slot="detail"]') !== null
@@ -54,6 +72,9 @@ export class MdsEntity {
   render () {
     return (
       <Host>
+        <div class="spinner">
+          <mds-spinner running></mds-spinner>
+        </div>
         { this.checkAvatar() &&
           <mds-avatar class="preview" icon={this.icon} initials={this.initials} src={this.src} tone={this.tone} variant={this.variant}/>
         }
