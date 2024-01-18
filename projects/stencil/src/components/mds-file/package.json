@@ -24,11 +24,10 @@
   },
   "dependencies": {
     "@maggioli-design-system/mds-badge": "2.7.4",
-    "@maggioli-design-system/mds-icon": "2.7.3",
+    "@maggioli-design-system/mds-icon": "2.8.0",
     "@maggioli-design-system/mds-text": "4.0.0",
     "@maggioli-design-system/styles": "14.2.0",
     "@stencil/core": "4.10.0",
-    "@types/crypto-js": "4.2.1",
     "crypto-js": "4.2.0"
   },
   "license": "MIT",
