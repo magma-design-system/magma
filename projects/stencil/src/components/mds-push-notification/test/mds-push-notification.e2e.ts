@@ -6,6 +6,6 @@ describe('mds-push-notification', () => {
     await page.setContent('<mds-push-notification></mds-push-notification>')
 
     const element = await page.find('mds-push-notification')
-    expect(element).toHaveClass('hydrated')
+    expect(element).toHaveAttribute('hydrated')
   })
 })
