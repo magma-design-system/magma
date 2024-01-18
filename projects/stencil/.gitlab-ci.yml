@@ -184,6 +184,8 @@ include:
   - '/projects/stencil/src/components/mds-price-table-list/.gitlab-ci.yml'
   - '/projects/stencil/src/components/mds-price-table/.gitlab-ci.yml'
   - '/projects/stencil/src/components/mds-progress/.gitlab-ci.yml'
+  - '/projects/stencil/src/components/mds-push-notification/.gitlab-ci.yml'
+  - '/projects/stencil/src/components/mds-push-notifications/.gitlab-ci.yml'
   - '/projects/stencil/src/components/mds-quote/.gitlab-ci.yml'
   - '/projects/stencil/src/components/mds-separator/.gitlab-ci.yml'
   - '/projects/stencil/src/components/mds-spinner/.gitlab-ci.yml'
