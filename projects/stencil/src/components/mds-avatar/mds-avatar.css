@@ -3,7 +3,7 @@
 
 /**
   * @prop --mds-avatar-background-color-pending: The background-color when an image is loading
-  * @prop --mds-avatar-background-color-placeholder: The background-color of the placeholder icon
+  * @prop --mds-avatar-background-color: The background-color of the component
   * @prop --mds-avatar-color: The color of the placeholder icon
   * @prop --mds-avatar-radius: The border-radius of the element
   */
@@ -11,7 +11,6 @@
 :host {
 
   --mds-avatar-background-color-pending: theme('colors.tone-neutral-08');
-  --mds-avatar-background-color-placeholder: theme('colors.brand-maggioli-05');
   --mds-avatar-background-color: theme('colors.brand-maggioli-05');
   --mds-avatar-color: theme('colors.brand-maggioli-10');
   --mds-avatar-radius: theme('borderRadius.full');
