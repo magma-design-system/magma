@@ -1,6 +1,7 @@
 import { Component, Element, h, Host, Method, Prop, State, Watch } from '@stencil/core'
 import { IconsSetService } from './services/icons-set.service'
-/*
+
+/**
  * @part svg - The svg container of the icon
  */
 
