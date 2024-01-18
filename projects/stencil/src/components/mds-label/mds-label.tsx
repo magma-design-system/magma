@@ -1,10 +1,9 @@
-import clsx from 'clsx'
 import miBaselineClose from '@icon/mi/baseline/close.svg'
 import { Component, Element, Event, EventEmitter, Host, h, Prop } from '@stencil/core'
 import { KeyboardManager } from '@common/keyboard-manager'
 import { ThemeFullVariantType, ToneSimpleVariantType } from '@type/variant'
 import { TypographyType } from '@type/typography'
-
+import { TypographyTruncateType } from '@type/text'
 /**
  * @slot default - Add `text string` to this slot, **avoid** to add `HTML elements` or `components` here.
  */
@@ -38,7 +37,7 @@ export class MdsLabel {
   /**
    * Truncates text inside the label or displays it in multiline if needed
    */
-  @Prop() readonly truncate: boolean = true
+  @Prop({ reflect: true }) readonly truncate?: TypographyTruncateType
 
   /**
    * Specifies the typography of the element
@@ -86,7 +85,7 @@ export class MdsLabel {
   render () {
     return (
       <Host>
-        <mds-text typography={this.typography} class={clsx('text', this.truncate && 'truncate')}>
+        <mds-text class="text" truncate={this.truncate} typography={this.typography}>
           <slot/>
         </mds-text>
         { this.deletable && <i class="svg close focus-bounce" innerHTML={miBaselineClose} tabindex="0" onClick={ this.onClickDelete.bind(this) } role="button" title={this.labelAction}/> }

@@ -39,8 +39,8 @@ Default.args = {
   description: 'Blipbug',
 }
 
-export const selected = Template.bind({})
-selected.args = {
+export const Selected = Template.bind({})
+Selected.args = {
   selected: true,
   description: 'Blipbug',
 }
@@ -53,5 +53,5 @@ Progress.args = {
 }
 
 Default.story = lokiDisabled
-selected.story = lokiDisabled
+Selected.story = lokiDisabled
 Progress.story = lokiDisabled

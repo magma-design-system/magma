@@ -1,5 +1,6 @@
 import { Component, Host, Prop, h } from '@stencil/core'
 import { TypographyTagType } from './meta/types'
+import { TypographyTruncateType } from '@type/text'
 import { TypographyType, TypographyVariants } from '@type/typography'
 import { typographyDefaultsVariant } from './meta/variants'
 
@@ -21,7 +22,7 @@ export class MdsText {
   /**
    * Specifies if the text shoud be truncated or should behave as a normal text
    */
-  @Prop({ reflect: true }) readonly truncate?: boolean
+  @Prop({ reflect: true }) readonly truncate?: TypographyTruncateType
 
   /**
    * Specifies the font typography of the element

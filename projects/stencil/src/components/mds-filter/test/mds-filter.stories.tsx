@@ -34,14 +34,14 @@ Default.args = {
   label: 'Filter label',
 }
 
-export const autoReset = Template.bind({})
-autoReset.args = {
+export const AutoReset = Template.bind({})
+AutoReset.args = {
   multiple: true,
   'auto-reset': true,
 }
 
-export const reset = Template.bind({})
-reset.args = {
+export const Reset = Template.bind({})
+Reset.args = {
   multiple: true,
   reset: true,
 }

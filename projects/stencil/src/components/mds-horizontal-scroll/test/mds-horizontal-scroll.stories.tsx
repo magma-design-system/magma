@@ -42,7 +42,7 @@ Scrollbar.args = {
   scrollbar: true,
 }
 
-export const tailwindStyled = Template.bind({})
-tailwindStyled.args = {
-  class: 'bg-tone-neutral-04 gap-4 p-4 snap-px-4',
+export const TailwindStyled = Template.bind({})
+TailwindStyled.args = {
+  class: 'bg-tone-neutral-04 gap-400 p-400 snap-px-400',
 }

@@ -11,7 +11,7 @@ export default {
 }
 
 const Template = args =>
-  <mds-form {...args} class="gap-4">
+  <mds-form {...args} class="gap-400">
     <mds-text>Hello form</mds-text>
     <mds-input placeholder="Full name"/>
     <button type="submit">Submittalo</button>
@@ -20,5 +20,5 @@ const Template = args =>
 export const Default = Template.bind({})
 Default.args = {
   name: 'pinello',
-  onSubmit: (e: any) => { console.info(e) },
+  onSubmit: (e: Event) => { console.info(e) },
 }

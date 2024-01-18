@@ -26,11 +26,13 @@ This is a web-component from Maggioli Design System [Magma](https://magma.maggio
 ### Used by
 
  - [mds-button](../mds-button)
+ - [mds-entity](../mds-entity)
 
 ### Graph
 ```mermaid
 graph TD;
   mds-button --> mds-spinner
+  mds-entity --> mds-spinner
   style mds-spinner fill:#f9f,stroke:#333,stroke-width:4px
 ```
 

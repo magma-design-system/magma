@@ -9,11 +9,14 @@ This is a web-component from Maggioli Design System [Magma](https://magma.maggio
 
 ## Properties
 
-| Property   | Attribute  | Description                                                                     | Type                  | Default     |
-| ---------- | ---------- | ------------------------------------------------------------------------------- | --------------------- | ----------- |
-| `icon`     | `icon`     | Specifies the icon to be displayed if src propery is not used                   | `string \| undefined` | `undefined` |
-| `initials` | `initials` | The user's inizials displayed if there's no image available and icon is not set | `string \| undefined` | `undefined` |
-| `src`      | `src`      | Specifies the path to the image                                                 | `string \| undefined` | `undefined` |
+| Property   | Attribute  | Description                                                                     | Type                                                                                                                                                                                    | Default     |
+| ---------- | ---------- | ------------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ----------- |
+| `await`    | `await`    | Specifies if the component is awaiting a response from an external resource     | `boolean \| undefined`                                                                                                                                                                  | `undefined` |
+| `icon`     | `icon`     | Specifies the icon to be displayed if src propery is not used                   | `string \| undefined`                                                                                                                                                                   | `undefined` |
+| `initials` | `initials` | The user's inizials displayed if there's no image available and icon is not set | `string \| undefined`                                                                                                                                                                   | `undefined` |
+| `src`      | `src`      | Specifies the path to the image                                                 | `string \| undefined`                                                                                                                                                                   | `undefined` |
+| `tone`     | `tone`     | Specifies the color tone of the component                                       | `"strong" \| "weak" \| undefined`                                                                                                                                                       | `undefined` |
+| `variant`  | `variant`  | Specifies the color variant of the component                                    | `"amaranth" \| "aqua" \| "blue" \| "error" \| "green" \| "info" \| "lime" \| "orange" \| "orchid" \| "primary" \| "sky" \| "success" \| "violet" \| "warning" \| "yellow" \| undefined` | `undefined` |
 
 
 ## Slots
@@ -41,16 +44,17 @@ This is a web-component from Maggioli Design System [Magma](https://magma.maggio
 
 ### Depends on
 
+- [mds-spinner](../mds-spinner)
 - [mds-avatar](../mds-avatar)
-- [mds-icon](../mds-icon)
 
 ### Graph
 ```mermaid
 graph TD;
+  mds-entity --> mds-spinner
   mds-entity --> mds-avatar
-  mds-entity --> mds-icon
   mds-avatar --> mds-text
   mds-avatar --> mds-img
+  mds-avatar --> mds-icon
   style mds-entity fill:#f9f,stroke:#333,stroke-width:4px
 ```
 

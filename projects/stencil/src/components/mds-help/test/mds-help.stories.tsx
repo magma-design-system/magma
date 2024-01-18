@@ -16,7 +16,7 @@ export default {
 const Template = args =>
   <mds-text>
     We are available 24/7!
-    <mds-help {...args} class="ml-1">
+    <mds-help {...args} class="ml-100">
       Well, maybe it's more a 24/5, because we are colsed on saturday and sunday.
     </mds-help>
   </mds-text>

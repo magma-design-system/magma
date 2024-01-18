@@ -30,9 +30,9 @@
   display: flex;
 }
 
-.avatar,
-.delete,
-.icon {
+.spinner,
+.preview,
+.delete {
   @apply
     rounded
     w-1100;
@@ -40,7 +40,8 @@
   flex-shrink: 0;
 }
 
-.icon {
+.spinner,
+.preview {
   @apply aspect-square;
 
   align-items: center;
@@ -48,6 +49,22 @@
   display: inline-flex;
   fill: var(--mds-entity-icon-color);
   justify-content: center;
+}
+
+.spinner {
+  background-color: transparent;
+  display: none;
+  fill: var(--mds-entity-icon-color);
+}
+
+:host([await]:not([await="false"])) .spinner {
+  display: inline-flex;
+}
+
+mds-spinner {
+  @apply
+    h-900
+    w-900;
 }
 
 .infos {

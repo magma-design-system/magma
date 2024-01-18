@@ -69,33 +69,33 @@ Default.args = {
   ...defaultArgs,
 }
 
-export const done = TemplateDone.bind({})
-done.args = {
+export const Done = TemplateDone.bind({})
+Done.args = {
   ...defaultArgs,
   done: true,
 }
 
-export const current = TemplateDone.bind({})
-current.args = {
+export const Current = TemplateDone.bind({})
+Current.args = {
   ...defaultArgs,
   current: true,
 }
 
-export const iconChecked = TemplateDone.bind({})
-iconChecked.args = {
+export const IconChecked = TemplateDone.bind({})
+IconChecked.args = {
   ...defaultArgs,
   done: true,
   'icon-checked': 'mi/baseline/done',
 }
 
-export const text = Template.bind({})
-text.args = {
+export const Text = Template.bind({})
+Text.args = {
   ...defaultArgs,
   text: 'Item text',
 }
 
-export const typography = Template.bind({})
-typography.args = {
+export const Typography = Template.bind({})
+Typography.args = {
   ...defaultArgs,
   typography: 'paragraph',
 }

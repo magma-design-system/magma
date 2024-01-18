@@ -14,14 +14,14 @@ Default.args = {
   src: URLs[0],
 }
 
-export const altText = Template.bind({})
-altText.args = {
+export const AltText = Template.bind({})
+AltText.args = {
   alt: 'This is an alternative text',
   src: URLs[0],
 }
 
-export const aspectRatio = Template.bind({})
-aspectRatio.args = {
+export const AspectRatio = Template.bind({})
+AspectRatio.args = {
   'aspect-ratio': aspectRatios[5],
   src: URLs[2],
 }

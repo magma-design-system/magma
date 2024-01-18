@@ -1,17 +1,18 @@
+@import '../../tailwind/components.css';
 @tailwind utilities;
 
 /**
   * @prop --mds-avatar-background-color-pending: The background-color when an image is loading
-  * @prop --mds-avatar-background-color-placeholder: The background-color of the placeholder icon
+  * @prop --mds-avatar-background-color: The background-color of the component
+  * @prop --mds-avatar-color: The color of the placeholder icon
   * @prop --mds-avatar-radius: The border-radius of the element
-  * @prop --mds-avatar-color-placeholder: The color of the placeholder icon
   */
 
 :host {
 
   --mds-avatar-background-color-pending: theme('colors.tone-neutral-08');
-  --mds-avatar-background-color-placeholder: theme('colors.brand-maggioli-04');
-  --mds-avatar-color-placeholder: theme('colors.brand-maggioli-10');
+  --mds-avatar-background-color: theme('colors.brand-maggioli-05');
+  --mds-avatar-color: theme('colors.brand-maggioli-10');
   --mds-avatar-radius: theme('borderRadius.full');
 
   aspect-ratio: 1/1;
@@ -31,27 +32,33 @@
   width: 100%;
 }
 
-.avatar.pending {
+.avatar--pending {
   background-color: var(--mds-avatar-background-color-pending);
 }
 
-.avatar.loaded {
+.avatar--loaded {
   animation: none;
 }
 
-.avatar.fallback,
-.avatar.initials {
+.avatar--icon,
+.avatar--fallback,
+.avatar--initials {
+  background-color: var(--mds-avatar-background-color);
+}
+
+.avatar--fallback,
+.avatar--initials {
   align-items: stretch;
   display: flex;
   justify-items: stretch;
 }
 
-.avatar.fallback {
-  background-color: var(--mds-avatar-background-color-placeholder);
+.avatar--icon,
+.avatar--fallback {
   padding: 20%;
 }
 
-.avatar.initials {
+.avatar--initials {
   padding: 30% 25% 25%;
 }
 
@@ -59,23 +66,27 @@
   aspect-ratio: 1/1;
 }
 
-.fallback-image {
+.fallback-icon {
   aspect-ratio: 1/1;
-  background-color: var(--mds-avatar-color-placeholder);
-  height: 100%;
-  mask-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' height='24' viewBox='0 0 24 24' width='24'%3E%3Cpath d='M0 0h24v24H0z' fill='none'/%3E%3Cpath d='M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z'/%3E%3C/svg%3E");
-  mask-size: cover;
+  fill: var(--mds-avatar-color);
   width: 100%;
 }
 
+
 .initials-text {
   align-items: center;
-  color: var(--mds-avatar-color-placeholder);
+  color: var(--mds-avatar-color);
   display: flex;
   height: 100%;
   justify-content: center;
   text-transform: uppercase;
+  user-select: none;
   width: 100%;
+}
+
+:host([initials]) .initials-text {
+
+  --mds-avatar-color: theme('colors.tone-neutral');
 }
 
 .fit {
@@ -89,7 +100,12 @@
 }
 
 .icon {
-  color: var(--mds-avatar-color-placeholder);
+
+  @apply transition-colors;
+
+  fill: var(--mds-avatar-color);
   height: 100%;
   width: 100%;
 }
+
+@import './css/mds-avatar-variant.css';

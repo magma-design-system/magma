@@ -31,6 +31,23 @@ export type ThemeFullVariantType =
   | 'warning'
   | 'yellow'
 
+export type ThemeFullVariantAvatarType =
+  | 'amaranth'
+  | 'aqua'
+  | 'blue'
+  | 'error'
+  | 'green'
+  | 'info'
+  | 'lime'
+  | 'orange'
+  | 'orchid'
+  | 'primary'
+  | 'sky'
+  | 'success'
+  | 'violet'
+  | 'warning'
+  | 'yellow'
+
 export type ThemeLuminanceVariantType =
   | 'dark'
   | 'light'

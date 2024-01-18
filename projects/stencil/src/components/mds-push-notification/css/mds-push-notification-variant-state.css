@@ -1,0 +1,77 @@
+@tailwind utilities;
+
+:host( [variant="error"][tone="strong"] ) {
+
+  --mds-push-notification-icon-background-color: theme('colors.status-error-05');
+  --mds-push-notification-icon-color: theme('colors.status-error-10');
+}
+
+:host( [variant="error"] ),
+:host( [variant="error"][tone="weak"] ) {
+
+  --mds-push-notification-icon-background-color: theme('colors.status-error-09');
+  --mds-push-notification-icon-color: theme('colors.status-error-05');
+}
+
+:host( [variant="error"][tone="quiet"] ) {
+
+  --mds-push-notification-icon-background-color: transparent;
+  --mds-push-notification-icon-color: theme('colors.status-error-05');
+}
+
+:host( [variant="warning"][tone="strong"] ) {
+  
+  --mds-push-notification-icon-background-color: theme('colors.status-warning-05');
+  --mds-push-notification-icon-color: theme('colors.status-warning-10');
+}
+
+:host( [variant="warning"] ),
+:host( [variant="warning"][tone="weak"] ) {
+
+  --mds-push-notification-icon-background-color: theme('colors.status-warning-09');
+  --mds-push-notification-icon-color: theme('colors.status-warning-05');
+}
+
+:host( [variant="warning"][tone="quiet"] ) {
+
+  --mds-push-notification-icon-background-color: transparent;
+  --mds-push-notification-icon-color: theme('colors.status-warning-05');
+}
+
+:host( [variant="success"][tone="strong"] ) {
+  
+  --mds-push-notification-icon-background-color: theme('colors.status-success-05');
+  --mds-push-notification-icon-color: theme('colors.status-success-10');
+}
+
+:host( [variant="success"] ),
+:host( [variant="success"][tone="weak"] ) {
+
+  --mds-push-notification-icon-background-color: theme('colors.status-success-09');
+  --mds-push-notification-icon-color: theme('colors.status-success-05');
+}
+
+:host( [variant="success"][tone="quiet"] ) {
+
+  --mds-push-notification-icon-background-color: transparent;
+  --mds-push-notification-icon-color: theme('colors.status-success-05');
+}
+
+:host( [variant="info"][tone="strong"] ) {
+  
+  --mds-push-notification-icon-background-color: theme('colors.status-info-05');
+  --mds-push-notification-icon-color: theme('colors.status-info-10');
+}
+
+:host( [variant="info"] ),
+:host( [variant="info"][tone="weak"] ) {
+
+  --mds-push-notification-icon-background-color: theme('colors.status-info-09');
+  --mds-push-notification-icon-color: theme('colors.status-info-05');
+}
+
+:host( [variant="info"][tone="quiet"] ) {
+
+  --mds-push-notification-icon-background-color: transparent;
+  --mds-push-notification-icon-color: theme('colors.status-info-05');
+}

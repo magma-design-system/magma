@@ -26,25 +26,25 @@ const email = `${firstName.toLowerCase()}.${lastName.toLowerCase()}@nintendo.com
 
 const Template = args =>
   <mds-modal {...args}>
-    <header slot="top" class="p-8 max-w-lg flex gap-4 items-center border-b border-tone-neutral-09">
-      <mds-img class="w-16" src="/logo-gruppo-maggioli-512w.webp"/>
+    <header slot="top" class="p-800 max-w-lg flex gap-400 items-center border-b border-solid border-0 border-tone-neutral-09">
+      <mds-img class="w-1600" src="/logo-gruppo-maggioli-512w.webp"/>
       <div class="text-tone-neutral-02">
         <mds-text typography="h5" class="truncate min-w-0">Maggioli Editore</mds-text>
         <mds-text typography="detail" class="truncate min-w-0">Menu di servizio</mds-text>
       </div>
     </header>
-    <div class="p-8 max-w-lg">
+    <div class="p-800 max-w-lg">
       <mds-text>
         As a multi-brand design system, our components need to be flexible enough for any one of our brands to use them for multiple use cases. To achieve this, we ensure that all of the brands are involved in the specification stage, giving us more confidence that we’re future-proofing our components as more brands adopt NewsKit.
       </mds-text>
     </div>
-    <footer slot="bottom" class="p-8 max-w-lg flex gap-4 text-tone-neutral-02 border-t border-tone-neutral-09">
-      <mds-author>
-        <mds-avatar slot="avatar" class="w-16 mobile:w-12" src="/avatar-01-200x200.jpeg"/>
-        <mds-text typography="h6" class="truncate min-w-0">{ fullName }</mds-text>
-        <mds-text typography="caption" class="text-tone-neutral-04 truncate min-w-0">{ email }</mds-text>
+    <footer slot="bottom" class="p-800 max-w-lg flex gap-400 text-tone-neutral-02 border-t border-solid border-0 border-tone-neutral-09">
+      <mds-author class="flex-grow">
+        <mds-avatar slot="avatar" class="w-1600 mobile:w-1200" src="/avatar-01-200x200.jpeg"/>
+        <mds-text typography="h6">{ fullName }</mds-text>
+        <mds-text typography="caption" class="text-tone-neutral-04">{ email }</mds-text>
       </mds-author>
-      <mds-button icon="mdi/dots-vertical" class="ml-auto bg-transparent text-tone-neutral-02 p-4 border border-tone-neutral-09 rounded-full"/>
+      <mds-button icon="mdi/dots-vertical" variant="light"></mds-button>
     </footer>
   </mds-modal>
 

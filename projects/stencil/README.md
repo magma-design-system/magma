@@ -5,7 +5,7 @@
 ## To generate a new web-component:
 
 ```
-nx run stencil:generate
+nx run stencil:generate mds-component-name
 ```
 
 ## To build a web-component:
@@ -17,7 +17,7 @@ nx run stencil:build --skip-nx-cache
 ## To generate an independent `package.json`, needed to publish the new web-component
 
 ```
-nx run stencil:generate.package
+nx run stencil:publish.isolate.component --component=mds-component-name
 ```
 
 ## To publish the new web-component

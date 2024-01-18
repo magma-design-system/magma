@@ -12,7 +12,7 @@ This is a web-component from Maggioli Design System [Magma](https://magma.maggio
 | Property     | Attribute    | Description                                                                | Type                                                                                                                                                      | Default     |
 | ------------ | ------------ | -------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------- | ----------- |
 | `tag`        | `tag`        | Specifies the HTML tag of the element                                      | `TypographyTagType \| undefined`                                                                                                                          | `undefined` |
-| `truncate`   | `truncate`   | Specifies if the text shoud be truncated or should behave as a normal text | `boolean \| undefined`                                                                                                                                    | `undefined` |
+| `truncate`   | `truncate`   | Specifies if the text shoud be truncated or should behave as a normal text | `"all" \| "word" \| undefined`                                                                                                                            | `undefined` |
 | `typography` | `typography` | Specifies the font typography of the element                               | `"action" \| "caption" \| "detail" \| "h1" \| "h2" \| "h3" \| "h4" \| "h5" \| "h6" \| "hack" \| "label" \| "option" \| "paragraph" \| "snippet" \| "tip"` | `'detail'`  |
 | `variant`    | `variant`    | Specifies the variant for `typography`                                     | `"code" \| "info" \| "read" \| "title" \| undefined`                                                                                                      | `undefined` |
 
@@ -26,10 +26,11 @@ This is a web-component from Maggioli Design System [Magma](https://magma.maggio
 
 ## CSS Custom Properties
 
-| Name                              | Description                                                     |
-| --------------------------------- | --------------------------------------------------------------- |
-| `--mds-text-selection-background` | Sets the background-color of the text when the text is selected |
-| `--mds-text-selection-color`      | Sets the color of the text when the text is selected            |
+| Name                              | Description                                                                                                                                                                                                                       |
+| --------------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `--mds-text-line-clamp`           | Sets the max number of visible lines before the text overflows with ellipsis. It works only if attribute `truncate='all' is set`. **WARNING:** this is supported only by Chrome, Safare and Firefox with native browser prefixes. |
+| `--mds-text-selection-background` | Sets the background-color of the text when the text is selected                                                                                                                                                                   |
+| `--mds-text-selection-color`      | Sets the color of the text when the text is selected                                                                                                                                                                              |
 
 
 ## Dependencies
@@ -61,6 +62,7 @@ This is a web-component from Maggioli Design System [Magma](https://magma.maggio
  - [mds-price-table-features](../mds-price-table-features)
  - [mds-price-table-features-cell](../mds-price-table-features-cell)
  - [mds-price-table-list-item](../mds-price-table-list-item)
+ - [mds-push-notification](../mds-push-notification)
  - [mds-quote](../mds-quote)
  - [mds-stepper-bar-item](../mds-stepper-bar-item)
  - [mds-tab-bar-item](../mds-tab-bar-item)
@@ -97,6 +99,7 @@ graph TD;
   mds-price-table-features --> mds-text
   mds-price-table-features-cell --> mds-text
   mds-price-table-list-item --> mds-text
+  mds-push-notification --> mds-text
   mds-quote --> mds-text
   mds-stepper-bar-item --> mds-text
   mds-tab-bar-item --> mds-text

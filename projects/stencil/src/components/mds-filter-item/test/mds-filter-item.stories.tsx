@@ -28,8 +28,8 @@ Default.args = {
   label: 'Filter label',
 }
 
-export const selected = Template.bind({})
-selected.args = {
+export const Selected = Template.bind({})
+Selected.args = {
   label: 'Filter label',
   selected: true,
 }

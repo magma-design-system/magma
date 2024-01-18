@@ -1,6 +1,10 @@
 import { Component, Element, h, Host, Method, Prop, State, Watch } from '@stencil/core'
 import { IconsSetService } from './services/icons-set.service'
 
+/**
+ * @part svg - The svg container of the icon
+ */
+
 @Component({
   tag: 'mds-icon',
   styleUrl: 'mds-icon.css',
@@ -48,7 +52,7 @@ export class MdsIcon {
   render () {
     return (
       <Host>
-        { this.svgHTML && <i aria-hidden="true" class="icon" innerHTML={this.svgHTML} /> }
+        { this.svgHTML && <i aria-hidden="true" class="icon" part="svg" innerHTML={this.svgHTML} /> }
       </Host>
     )
   }

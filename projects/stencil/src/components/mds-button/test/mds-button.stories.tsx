@@ -77,7 +77,7 @@ const TemplateAwait = args =>
   </mds-button>
 
 const TemplateKeyboard = args =>
-  <div class="bg-tone-grey-10 p-6 grid gap-6">
+  <div class="bg-tone-grey-10 p-600 grid gap-600">
     <mds-text>Focus this button with tab before press enter.</mds-text>
     <mds-button {...args}>
       Click me from enter keyborad
@@ -141,7 +141,7 @@ IconPosition.args = {
 
 export const KeyboardPress = TemplateKeyboard.bind({})
 KeyboardPress.args = {
-  onClick: () => { alert('Button clicked') },
+  onClick: () => { console.info('Button clicked') },
 }
 
 export const Href = Template.bind({})

@@ -1,0 +1,130 @@
+@import '../../tailwind/components.css';
+@tailwind utilities;
+@tailwind components;
+
+:host {
+
+  --mds-push-notification-duration: 200ms;
+  --mds-push-notification-icon-background-color: transparent;
+  --mds-push-notification-icon-color: theme('colors.tone-neutral-04');
+  --mds-push-notification-message-line-clamp: 2;
+  --mds-push-notification-shadow: theme('boxShadow.DEFAULT');
+  --mds-push-notification-subject-line-clamp: 1;
+  --mds-push-notification-timing-function: theme('transitionTimingFunction.in-out-expo');
+
+  @apply
+    gap-400
+    max-w-8000
+    min-w-7200
+    p-400
+    pr-800
+    rounded-lg;
+
+  align-items: flex-start;
+  background-color: theme('colors.tone-neutral');
+  box-shadow: var(--mds-push-notification-shadow);
+  color: theme('colors.tone-neutral-02');
+  display: flex;
+  position: relative;
+  transition-duration: var(--mds-push-notification-duration);
+  transition-property: transform;
+  transition-timing-function: var(--mds-push-notification-timing-function);
+}
+
+.content {
+  display: grid;
+  flex-grow: 1;
+}
+
+.actions {
+  @apply
+    gap-200
+    pt-200;
+
+  display: flex;
+  flex-wrap: wrap;
+  min-width: 1px;
+}
+
+.close-icon,
+.avatar,
+.picture {
+  flex-shrink: 0;
+}
+
+.picture {
+  @apply
+    max-w-1200
+    rounded;
+
+  box-shadow: theme('boxShadow.sm-sharp');
+  width: 100%;
+}
+
+.close-icon {
+  fill: inherit;
+}
+
+.close-button {
+  @apply p-150 transition-opacity;
+
+  background-color: transparent;
+  fill: theme('colors.tone-neutral-06');
+  opacity: 0;
+  position: absolute;
+  right: 0;
+  top: 0;
+}
+
+:host(:hover) .close-button {
+  opacity: 1;
+}
+
+.close-button:focus-visible,
+.close-button:hover {
+  fill: theme('colors.tone-neutral-03');
+  opacity: 1;
+}
+
+.subject {
+
+  --mds-text-line-clamp: var(--mds-push-notification-subject-line-clamp);
+
+  line-height: theme('lineHeight.sm');
+  text-overflow: ellipsis;
+}
+
+.message {
+
+  --mds-text-line-clamp: var(--mds-push-notification-message-line-clamp);
+
+  line-height: theme('lineHeight.sm');
+  text-overflow: ellipsis;
+}
+
+.avatar {
+  @apply
+    h-900
+    transition-colors
+    w-900;
+
+  background-color: var(--mds-push-notification-icon-background-color);
+  border-radius: 1000px;
+  fill: var(--mds-push-notification-icon-color);
+}
+
+.avatar::part(svg) {
+  @apply w-600;
+}
+
+:host([src]) .avatar {
+  background-color: transparent;
+}
+
+:host([icon]) .avatar::part(wrapper) {
+  @apply p-150;
+}
+
+@import './css/mds-push-notification-variant-primary.css';
+@import './css/mds-push-notification-variant-label.css';
+@import './css/mds-push-notification-variant-state.css';

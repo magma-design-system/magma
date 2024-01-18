@@ -22,7 +22,7 @@ const Template = args =>
 const TemplateIcon = args =>
   <mds-kpi>
     <mds-kpi-item {...args}>
-      <div slot="icon" class="bg-label-sky-10 fill-label-sky-04 p-6 pb-3 w-full flex justify-center items-center">
+      <div slot="icon" class="bg-label-sky-10 fill-label-sky-04 p-600 pb-300 w-full flex justify-center items-center">
         <mds-icon name="mi/baseline/groups" class="w-12"/>
       </div>
     </mds-kpi-item>

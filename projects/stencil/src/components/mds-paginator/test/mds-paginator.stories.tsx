@@ -22,10 +22,10 @@ Default.args = {
   pages: 32,
 }
 
-export const currentPage = Template.bind({})
-currentPage.args = {
+export const CurrentPage = Template.bind({})
+CurrentPage.args = {
   'current-page': 16,
   pages: 32,
 }
 
-currentPage.story = lokiDisabled
+CurrentPage.story = lokiDisabled

@@ -1,0 +1,20 @@
+@tailwind utilities;
+
+:host( [variant="primary"][tone="strong"] ) {
+  
+  --mds-push-notification-icon-background-color: theme('colors.brand-maggioli-05');
+  --mds-push-notification-icon-color: theme('colors.brand-maggioli-10');
+}
+
+:host( [variant="primary"] ),
+:host( [variant="primary"][tone="weak"] ) {
+
+  --mds-push-notification-icon-background-color: theme('colors.brand-maggioli-09');
+  --mds-push-notification-icon-color: theme('colors.brand-maggioli-05');
+}
+
+:host( [variant="primary"][tone="quiet"] ) {
+
+  --mds-push-notification-icon-background-color: transparent;
+  --mds-push-notification-icon-color: theme('colors.brand-maggioli-05');
+}

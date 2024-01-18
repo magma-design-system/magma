@@ -263,8 +263,8 @@ Icon.args = {
 }
 
 const FormIntegrationTemplate = (args: MdsInputFieldInterface) => (
-  <div class="grid gap-6">
-    <form class="grid gap-4" id="mds-icon-fi" name="mds-icon-fi">
+  <div class="grid gap-600">
+    <form class="grid gap-400" id="mds-icon-fi" name="mds-icon-fi">
       <mds-input-field {...args}></mds-input-field>
       <mds-button class="w-min" type="button" role="submit" onClick={() => {
         const form = document.querySelector('form') as HTMLFormElement
@@ -278,7 +278,7 @@ const FormIntegrationTemplate = (args: MdsInputFieldInterface) => (
       }>Check value</mds-button>
     </form>
     <mds-text variant="code">
-      Input value taken from form element: <span class="input-value rounded text-tone-neutral-04 bg-tone-neutral-08 px-2">Empty</span>
+      Input value taken from form element: <span class="input-value rounded text-tone-neutral-04 bg-tone-neutral-08 px-200">Empty</span>
     </mds-text>
   </div>
 )

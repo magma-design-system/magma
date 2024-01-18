@@ -1,9 +1,13 @@
-import { Component, Element, Event, EventEmitter, Host, h, Prop } from '@stencil/core'
+import { Component, Element, Event, EventEmitter, Host, h, Prop, State } from '@stencil/core'
 import { ExtensionSuffixType } from './meta/types'
 import { MdsFileEventDetail } from './meta/event-detail'
 import { ThemeFullVariantType } from '@type/variant'
 import { fileExtensionsDictionary } from './meta/dictionary'
 import { fileFormatsVariant } from './meta/variants'
+import { MD5 } from 'crypto-js'
+import miBaselineFileDownloadDone from '@icon/mi/baseline/file-download-done.svg'
+
+// https://stackoverflow.com/questions/1106377/detect-when-a-browser-receives-a-file-download
 
 @Component({
   tag: 'mds-file',
@@ -14,6 +18,8 @@ export class MdsFile {
 
   @Element() private host: HTMLMdsFileElement
 
+  @State() private wasDownloaded = false
+
   /**
    * Overrides the automatic filetype recongition by forcing the suffix to one of the available formats choosen
    */
@@ -23,6 +29,11 @@ export class MdsFile {
    * Overrides the default filetype description
    */
   @Prop() readonly description?: string
+
+  /**
+   * Sets a label which is shown when the file is downloaded
+   */
+  @Prop() readonly downloadedLabel?: string = 'Hai già scaricato questo file'
 
   /**
    * The filename shown as component title, is used to auto assign one of the filetype known in the filetype dictionary
@@ -85,29 +96,59 @@ export class MdsFile {
   private handleOnClick = (): void => {
     const { format, description } = this.getExtensionInfos()
     this.downloadedEvent.emit({ description: this.description ?? description, extension: this.getSuffix(), filename: this.filename, target: this.host, type: format })
+    localStorage.setItem(`mds-file/${MD5(this.filename).toString()}`, 'downloaded')
+    this.checkWasDownloaded()
+  }
+
+  private checkWasDownloaded = () => {
+    const filename = `mds-file/${MD5(this.filename).toString()}`
+    this.wasDownloaded = localStorage.getItem(filename) === 'downloaded'
+  }
+
+  private getDefaultDescription = (): string =>
+    this.getExtensionInfos().description
+
+  private getFormatsVariant = (): {
+    color: string;
+    icon: string;
+    iconBackground: string;
+    variant: string;
+  } => {
+    return fileFormatsVariant[this.getExtensionInfos().format]
+  }
+
+  componentWillLoad (): void {
+    this.checkWasDownloaded()
+  }
+
+  componentDidUpdate (): void {
+    this.checkWasDownloaded()
   }
 
   render () {
-    const { format, description } = this.getExtensionInfos()
-    const { variant, color, icon, iconBackground } = fileFormatsVariant[format]
     return (
       <Host tabindex="0" onClick={this.handleOnClick}>
-        <div class={`preview ${color} ${iconBackground}`}>
+        <div class={`preview ${this.getFormatsVariant().color} ${this.getFormatsVariant().iconBackground}`}>
           { this.preview !== undefined
             ? <div class="image-preview" style={{ backgroundImage: `url(${this.preview})` }}></div>
-            : <mds-icon name={icon}/>
+            : <mds-icon name={this.getFormatsVariant().icon}/>
           }
         </div>
         <div class="info">
           <div class="filename" title={ this.filename }>
-            <mds-text typography="h6" class="name">{ this.getName() }</mds-text>
+            <mds-text truncate="word" typography="h6" class="name">{ this.getName() }</mds-text>
             { this.suffix === undefined && this.getSuffix() && <mds-text typography="h6" class="extension">.{ this.getSuffix() }</mds-text> }
           </div>
           <div class="detail">
-            { this.getSuffix() && <mds-badge variant={variant as ThemeFullVariantType} tone="quiet" class="suffix">{ this.getSuffix() }</mds-badge> }
-            <mds-text typography="caption" class="description" title={ this.description ?? description }>{ this.description ?? description }</mds-text>
+            { this.getSuffix() && <mds-badge variant={this.getFormatsVariant().variant as ThemeFullVariantType} tone="quiet" class="suffix">{ this.getSuffix() }</mds-badge> }
+            <mds-text truncate="word" typography="caption" class="description" title={ this.description ?? this.getDefaultDescription() }>{ this.description ?? this.getDefaultDescription() }</mds-text>
           </div>
         </div>
+        { this.wasDownloaded &&
+          <div class="indicator">
+            <i class="svg downloaded" innerHTML={miBaselineFileDownloadDone} title={this.downloadedLabel}/>
+          </div>
+        }
       </Host>
     )
   }

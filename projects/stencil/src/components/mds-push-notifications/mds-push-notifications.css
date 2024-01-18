@@ -1,0 +1,53 @@
+@tailwind utilities;
+
+:host {
+
+  --mds-push-notifications-fadeout-delay: 3s;
+  --mds-push-notifications-gap: theme('spacing.200');
+  --mds-push-notifications-items-delay: 400ms;
+  --mds-push-notifications-items-duration: 300ms;
+  --mds-push-notifications-items-gap: var(--mds-push-notifications-gap);
+  --mds-push-notifications-items-timing-function: theme('transitionTimingFunction.in-out-quint');
+
+  @apply
+    duration-500
+    ease-in-out-expo
+    gap-200
+    max-w-[360px]
+    min-w-7200
+    p-400;
+
+  bottom: 0;
+  display: flex;
+  flex-direction: column;
+  overflow: auto;
+  position: fixed;
+  right: 0;
+  top: 0;
+  transform: translate(100%, 0);
+  transition-delay: 0;
+  transition-property: transform;
+}
+
+:host([visible]:not([visible="false"])) {
+  transform: translate(0, 0);
+  transition-delay: var(--mds-push-notifications-fadeout-delay);
+}
+
+.notifications {
+  display: flex;
+  flex-direction: column-reverse;
+  gap: var(--mds-push-notifications-items-gap);
+}
+
+.notifications ::slotted( mds-push-notification ) {
+
+  --mds-push-notification-duration: var(--mds-push-notifications-items-duration);
+  --mds-push-notification-timing-function: var(--mds-push-notifications-items-timing-function);
+
+  position: absolute;
+  transform: translate(calc(100% + calc(var(--mds-push-notifications-gap) + var(--mds-push-notifications-gap))), 0);
+  transition-property: margin, transform;
+  visibility: hidden;
+
+}

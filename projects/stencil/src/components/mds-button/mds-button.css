@@ -1,6 +1,7 @@
 @import '~@maggioli-design-system/styles/dist/tailwind/typography.css';
+@import '~@maggioli-design-system/styles/dist/css/animations.css';
 @import '../../tailwind/components.css';
-@tailwind base; /* typography and focus animation */
+@tailwind base; /* typography */
 @tailwind components;
 @tailwind utilities;
 
@@ -22,10 +23,6 @@
   --mds-button-color: theme('colors.tone-neutral');
   --mds-button-gap: theme('spacing.200');
   --mds-button-icon-color: var(--mds-button-color);
-  --mds-button-outline-blur-offset: var(--magma-outline-blur-offset, 6px);
-  --mds-button-outline-blur: var(--magma-outline-blur, 2px solid transparent);
-  --mds-button-outline-focus-offset: var(--magma-outline-focus-offset, 2px);
-  --mds-button-outline-focus: var(--magma-outline-focus, 2px solid theme('colors.label-sky-05'));
   --mds-button-radius: theme('borderRadius.lg');
 
   @apply
