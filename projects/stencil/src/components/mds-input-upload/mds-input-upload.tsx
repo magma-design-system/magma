@@ -58,7 +58,7 @@ export class MdsInputUpload {
             <div class="main-action-icon">
               <i class="svg icon" innerHTML={miBaselineAddCircle}/>
             </div>
-            <mds-text variant="title" typography="action">{ this.actionTitle }</mds-text>
+            <mds-text animation="yugop" variant="title" typography="action" text={ this.actionTitle }></mds-text>
           </div>
           <div class="main-infos">
             <mds-progress class="progress-bar" progress={0.4}></mds-progress>
