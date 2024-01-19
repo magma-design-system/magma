@@ -101,9 +101,9 @@ Type: `Promise<void>`
 
 ## Shadow Parts
 
-| Part    | Description |
-| ------- | ----------- |
-| `"svg"` |             |
+| Part    | Description                   |
+| ------- | ----------------------------- |
+| `"svg"` | The svg container of the icon |
 
 
 ## Dependencies

@@ -54,6 +54,7 @@ This is a web-component from Maggioli Design System [Magma](https://magma.maggio
  - [mds-input-field](../mds-input-field)
  - [mds-input-range](../mds-input-range)
  - [mds-input-switch](../mds-input-switch)
+ - [mds-input-upload](../mds-input-upload)
  - [mds-kpi-item](../mds-kpi-item)
  - [mds-label](../mds-label)
  - [mds-list-item](../mds-list-item)
@@ -91,6 +92,7 @@ graph TD;
   mds-input-field --> mds-text
   mds-input-range --> mds-text
   mds-input-switch --> mds-text
+  mds-input-upload --> mds-text
   mds-kpi-item --> mds-text
   mds-label --> mds-text
   mds-list-item --> mds-text

@@ -59,6 +59,7 @@ This is a web-component from Maggioli Design System [Magma](https://magma.maggio
 
  - [mds-header-bar](../mds-header-bar)
  - [mds-input](../mds-input)
+ - [mds-input-upload](../mds-input-upload)
  - [mds-push-notification](../mds-push-notification)
  - [mds-tab-item](../mds-tab-item)
 
@@ -76,6 +77,7 @@ graph TD;
   mds-button --> mds-text
   mds-header-bar --> mds-button
   mds-input --> mds-button
+  mds-input-upload --> mds-button
   mds-push-notification --> mds-button
   mds-tab-item --> mds-button
   style mds-button fill:#f9f,stroke:#333,stroke-width:4px

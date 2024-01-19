@@ -34,6 +34,7 @@ This is a web-component from Maggioli Design System [Magma](https://magma.maggio
 
  - [mds-accordion-timer-item](../mds-accordion-timer-item)
  - [mds-benchmark-bar](../mds-benchmark-bar)
+ - [mds-input-upload](../mds-input-upload)
  - [mds-stepper-bar-item](../mds-stepper-bar-item)
 
 ### Graph
@@ -41,6 +42,7 @@ This is a web-component from Maggioli Design System [Magma](https://magma.maggio
 graph TD;
   mds-accordion-timer-item --> mds-progress
   mds-benchmark-bar --> mds-progress
+  mds-input-upload --> mds-progress
   mds-stepper-bar-item --> mds-progress
   style mds-progress fill:#f9f,stroke:#333,stroke-width:4px
 ```
