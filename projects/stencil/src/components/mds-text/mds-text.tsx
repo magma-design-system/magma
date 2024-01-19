@@ -1,4 +1,4 @@
-import { Component, Element, Host, Prop, h } from '@stencil/core'
+import { Component, Element, Host, Prop, h, Watch } from '@stencil/core'
 import { TypographyTagType, TextAnimationType } from './meta/types'
 import { TypographyTruncateType } from '@type/text'
 import { TypographyType, TypographyVariants } from '@type/typography'
@@ -18,20 +18,18 @@ export class MdsText {
 
   private randomTextOptions = {
     speed: 2,
-    placeholderChar: '',
+    placeholderChar: ' ',
     frameOffset: 10,
     charOffset: 20,
     charStep: 15,
   }
 
-  // private observer: MutationObserver
+  private randomText:RandomText
 
   @Element() host: HTMLMdsTextElement
 
   /**
    * Specifies if the text is animated when it is rendered
-   * https://github.com/zenoplex/random-text
-   * https://github.com/vitto/vit.to/blob/master/frontend/js/textShuffle.js
    */
   @Prop() readonly animation?: TextAnimationType = 'none'
 
@@ -39,6 +37,11 @@ export class MdsText {
    * Specifies the HTML tag of the element
    */
   @Prop({ mutable: true, reflect: true }) tag?: TypographyTagType
+
+  /**
+   * Specifies the text string to the component instead of passing an HTML node
+   */
+  @Prop({ reflect: true }) readonly text?: string
 
   /**
    * Specifies if the text shoud be truncated or should behave as a normal text
@@ -55,40 +58,14 @@ export class MdsText {
    */
   @Prop({ reflect: true }) readonly variant?: TypographyVariants
 
-  // private onSlotChangeHandler = (): void => {
-  //   console.info('onSlotChangeHandler')
-  //   const elements = this.host.shadowRoot?.querySelector('slot')?.assignedNodes()[0]
-  //   if (!elements) {
-  //     console.info('No slotted elements found.')
-  //     return
-  //   }
-  //   console.info(elements)
-  // }
-
-  private onCharacterDataModified = (): void => {
-    this.host.firstChild?.removeEventListener('DOMCharacterDataModified', this.onCharacterDataModified.bind(this), false)
-    const newText = this.host.innerText
-
-    const randomText = new RandomText({
-      str: newText,
-      onProgress: (str: string) => { this.host.innerHTML = str },
-      onComplete: () => { this.observeTextChange() },
+  private animateText = (text: string): void => {
+    const textElement = this.host.shadowRoot?.querySelector('.text') as HTMLElement
+    this.randomText = new RandomText({
+      str: text,
+      onProgress: (str: string) => { textElement.innerHTML = str },
       ...this.randomTextOptions,
     })
-    randomText.start()
-  }
-
-  // private observeCallback = (): void => {
-  //   console.info('something is changed')
-  // }
-
-  private observeTextChange = (): void => {
-    console.info('observeTextChange')
-    // const config = { attributes: false, childList: true, subtree: true }
-    // this.observer = new MutationObserver(this.observeCallback)
-    // this.observer.observe(this.host.firstChild as ChildNode, config)
-
-    this.host.firstChild?.addEventListener('DOMCharacterDataModified', this.onCharacterDataModified.bind(this), false)
+    this.randomText.start()
   }
 
   componentWillRender = (): void => {
@@ -96,19 +73,27 @@ export class MdsText {
     this.tag = this.tag ?? tag as TypographyTagType
   }
 
-  componentDidLoad = (): void => {
-    this.observeTextChange()
+  @Watch('text')
+  textHandler (newValue?: string): void {
+    if (this.animation === 'none') {
+      return
+    }
+    if (this.randomText) {
+      this.randomText.stop()
+    }
+    if (newValue) {
+      this.animateText(newValue)
+    }
   }
-
-  // disconnectedCallback = (): void => {
-  //   this.observer.disconnect()
-  // }
 
   render () {
     return (
       <Host>
         <tag class="text">
-          <slot></slot>
+          { !this.text
+            ? <slot></slot>
+            : this.text
+          }
         </tag>
       </Host>
     )

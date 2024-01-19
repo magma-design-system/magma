@@ -7,7 +7,7 @@ import { truncateDictionary } from '@dictionary/text'
 export default {
   title: 'Design / Typography',
   argTypes: {
-    animate: {
+    animation: {
       control: { type: 'select' },
       description: 'Specifies if the text is animated when it is rendered',
       options: textAnimateDictionary,
@@ -16,6 +16,10 @@ export default {
       control: { type: 'select' },
       description: 'Specifies the HTML tag of the element',
       options: tagsDictionary,
+    },
+    text: {
+      type: { name: 'string' },
+      description: 'Specifies the text string to the component instead of passing an HTML node',
     },
     truncate: {
       control: { type: 'select' },
@@ -37,7 +41,7 @@ export default {
 const Template = args =>
   <mds-text {...args}>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Praesent dictum nec eros vitae dictum. Nunc lobortis pharetra lectus. Mauris egestas velit et mattis molestie. Sed risus purus, laoreet a massa in, tincidunt iaculis sem. Nam congue, ipsum viverra condimentum dignissim, mauris mi lacinia tortor, eu sodales magna augue a dui.</mds-text>
 
-const AnimateTemplate = args => {
+const AnimateTemplate = () => {
 
   const [text, setText] = useState('Choose a song...')
 
@@ -48,7 +52,7 @@ const AnimateTemplate = args => {
 
   return <div class="grid gap-400">
     <div class="bg-tone-neutral-09 p-600 rounded-lg">
-      <mds-text {...args}>{ text }</mds-text>
+      <mds-text animation="yugop" text={ text }></mds-text>
     </div>
     <div>
       <select onChange={(e: Event) => setValue(e)}>
@@ -64,9 +68,11 @@ const AnimateTemplate = args => {
 
 export const Default = Template.bind({})
 
-export const Animate = AnimateTemplate.bind({})
-Animate.args = {
-  animate: 'yugop',
+export const Animation = AnimateTemplate.bind({})
+
+export const Text = Template.bind({})
+Text.args = {
+  text: 'This is a text string passed by text attribute',
 }
 
 export const Truncate = Template.bind({})
