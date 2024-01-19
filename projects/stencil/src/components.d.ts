@@ -1324,13 +1324,17 @@ export namespace Components {
     }
     interface MdsText {
         /**
-          * Specifies if the text is animated when it is rendered https://github.com/zenoplex/random-text https://github.com/vitto/vit.to/blob/master/frontend/js/textShuffle.js
+          * Specifies if the text is animated when it is rendered
          */
         "animation"?: TextAnimationType;
         /**
           * Specifies the HTML tag of the element
          */
         "tag"?: TypographyTagType;
+        /**
+          * Specifies the text string to the component instead of passing an HTML node
+         */
+        "text"?: string;
         /**
           * Specifies if the text shoud be truncated or should behave as a normal text
          */
@@ -3971,13 +3975,17 @@ declare namespace LocalJSX {
     }
     interface MdsText {
         /**
-          * Specifies if the text is animated when it is rendered https://github.com/zenoplex/random-text https://github.com/vitto/vit.to/blob/master/frontend/js/textShuffle.js
+          * Specifies if the text is animated when it is rendered
          */
         "animation"?: TextAnimationType;
         /**
           * Specifies the HTML tag of the element
          */
         "tag"?: TypographyTagType;
+        /**
+          * Specifies the text string to the component instead of passing an HTML node
+         */
+        "text"?: string;
         /**
           * Specifies if the text shoud be truncated or should behave as a normal text
          */
