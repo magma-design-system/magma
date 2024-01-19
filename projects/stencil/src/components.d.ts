@@ -621,7 +621,7 @@ export namespace Components {
     }
     interface MdsIcon {
         /**
-          * The name of the icon.
+          * The name of the icon or a base64 string to render it as an svg
          */
         "name": string;
         /**
@@ -3188,7 +3188,7 @@ declare namespace LocalJSX {
     }
     interface MdsIcon {
         /**
-          * The name of the icon.
+          * The name of the icon or a base64 string to render it as an svg
          */
         "name": string;
     }
