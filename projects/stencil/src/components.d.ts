@@ -48,7 +48,7 @@ import { MdsStepperBarEventDetail } from "./components/mds-stepper-bar/meta/even
 import { MdsStepperBarItemEventDetail } from "./components/mds-stepper-bar-item/meta/event-detail";
 import { MdsTabEventDetail } from "./components/mds-tab/meta/event-detail";
 import { MdsTabBarEventDetail } from "./components/mds-tab-bar/meta/event-detail";
-import { TypographyTagType } from "./components/mds-text/meta/types";
+import { TextAnimationType, TypographyTagType } from "./components/mds-text/meta/types";
 import { ToastPosition } from "./components/mds-toast/meta/types";
 import { UsageType } from "./components/mds-usage/meta/types";
 import { NoiseType, PreloadType } from "./components/mds-video-wall/meta/types";
@@ -95,7 +95,7 @@ export { MdsStepperBarEventDetail } from "./components/mds-stepper-bar/meta/even
 export { MdsStepperBarItemEventDetail } from "./components/mds-stepper-bar-item/meta/event-detail";
 export { MdsTabEventDetail } from "./components/mds-tab/meta/event-detail";
 export { MdsTabBarEventDetail } from "./components/mds-tab-bar/meta/event-detail";
-export { TypographyTagType } from "./components/mds-text/meta/types";
+export { TextAnimationType, TypographyTagType } from "./components/mds-text/meta/types";
 export { ToastPosition } from "./components/mds-toast/meta/types";
 export { UsageType } from "./components/mds-usage/meta/types";
 export { NoiseType, PreloadType } from "./components/mds-video-wall/meta/types";
@@ -1323,6 +1323,10 @@ export namespace Components {
         "interactive": boolean;
     }
     interface MdsText {
+        /**
+          * Specifies if the text is animated when it is rendered https://github.com/zenoplex/random-text https://github.com/vitto/vit.to/blob/master/frontend/js/textShuffle.js
+         */
+        "animation"?: TextAnimationType;
         /**
           * Specifies the HTML tag of the element
          */
@@ -3966,6 +3970,10 @@ declare namespace LocalJSX {
         "interactive"?: boolean;
     }
     interface MdsText {
+        /**
+          * Specifies if the text is animated when it is rendered https://github.com/zenoplex/random-text https://github.com/vitto/vit.to/blob/master/frontend/js/textShuffle.js
+         */
+        "animation"?: TextAnimationType;
         /**
           * Specifies the HTML tag of the element
          */

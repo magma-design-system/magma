@@ -1,11 +1,17 @@
 import { typographyDictionary, typographyVariationsDictionary } from '@dictionary/typography'
 import { h } from '@stencil/core'
-import { tagsDictionary } from '../meta/dictionary'
+import { useState } from 'react'
+import { tagsDictionary, textAnimateDictionary } from '../meta/dictionary'
 import { truncateDictionary } from '@dictionary/text'
 
 export default {
   title: 'Design / Typography',
   argTypes: {
+    animate: {
+      control: { type: 'select' },
+      description: 'Specifies if the text is animated when it is rendered',
+      options: textAnimateDictionary,
+    },
     tag: {
       control: { type: 'select' },
       description: 'Specifies the HTML tag of the element',
@@ -31,7 +37,37 @@ export default {
 const Template = args =>
   <mds-text {...args}>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Praesent dictum nec eros vitae dictum. Nunc lobortis pharetra lectus. Mauris egestas velit et mattis molestie. Sed risus purus, laoreet a massa in, tincidunt iaculis sem. Nam congue, ipsum viverra condimentum dignissim, mauris mi lacinia tortor, eu sodales magna augue a dui.</mds-text>
 
+const AnimateTemplate = args => {
+
+  const [text, setText] = useState('Choose a song...')
+
+  const setValue = (event: Event): void|undefined => {
+    const selectEl = event.target as HTMLSelectElement
+    setText(selectEl.value)
+  }
+
+  return <div class="grid gap-400">
+    <div class="bg-tone-neutral-09 p-600 rounded-lg">
+      <mds-text {...args}>{ text }</mds-text>
+    </div>
+    <div>
+      <select onChange={(e: Event) => setValue(e)}>
+        <option value="U2">Choose a song...</option>
+        <option value="One">One</option>
+        <option value="Zoo Station">Zoo Station</option>
+        <option value="With or Without You">With or Without You</option>
+        <option value="Where The Streets Have No Name">Where The Streets Have No Name</option>
+      </select>
+    </div>
+  </div>
+}
+
 export const Default = Template.bind({})
+
+export const Animate = AnimateTemplate.bind({})
+Animate.args = {
+  animate: 'yugop',
+}
 
 export const Truncate = Template.bind({})
 Truncate.args = {

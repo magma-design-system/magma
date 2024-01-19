@@ -48,3 +48,7 @@ export type TypographyTagType =
   | 'u'
   | 'ul'
   | 'var'
+
+export type TextAnimationType =
+  | 'none'
+  | 'yugop'
