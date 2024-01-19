@@ -15,7 +15,7 @@ export class MdsIcon {
   @State() svgHTML: string
 
   /**
-   * The name of the icon.
+   * The name of the icon or a base64 string to render it as an svg
    */
   @Prop({ reflect: true }) readonly name!: string
 
@@ -23,9 +23,22 @@ export class MdsIcon {
 
   @Element() hostElement: HTMLMdsIconElement
 
-  componentWillLoad (): void {
+  componentWillLoad = (): void => {
     this.updateIcon()
     IconsSetService.registerListener(() => this.updateIcon())
+  }
+
+  private checkIconFormatIsBase64 = (): boolean => {
+    return this.name.startsWith('data:image/svg+xml;base64,')
+  }
+
+  private checkIconFormatIsSVG = (): boolean => {
+    return this.name.startsWith('<svg ')
+  }
+
+  private convertBase64ToSvg = (): string => {
+    const svgBase64 = this.name.replace('data:image/svg+xml;base64,', '').replace(/\=/i, '')
+    return atob(svgBase64)
   }
 
   static setSvgPathStatic (path: string): void {
@@ -44,6 +57,17 @@ export class MdsIcon {
   @Watch('name')
   async updateIcon (): Promise<void> {
     if (!this.name) return Promise.resolve()
+
+    if (this.checkIconFormatIsBase64()) {
+      this.svgHTML = this.convertBase64ToSvg()
+      return Promise.resolve()
+    }
+
+    if (this.checkIconFormatIsSVG()) {
+      this.svgHTML = this.name
+      return Promise.resolve()
+    }
+
     const svgPath = IconsSetService.getSvgPath() || window.sessionStorage.getItem(IconsSetService._svgPathKey)
     this._iconHref = svgPath && !this.name.startsWith('http') ? window.location.origin.concat(svgPath.concat(this.name).concat('.svg')) : this.name
     this.svgHTML = await IconsSetService.fetchSvg(this._iconHref)

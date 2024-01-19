@@ -75,9 +75,9 @@ This is a web-component from Maggioli Design System [Magma](https://magma.maggio
 
 ## Properties
 
-| Property            | Attribute | Description           | Type     | Default     |
-| ------------------- | --------- | --------------------- | -------- | ----------- |
-| `name` _(required)_ | `name`    | The name of the icon. | `string` | `undefined` |
+| Property            | Attribute | Description                                                    | Type     | Default     |
+| ------------------- | --------- | -------------------------------------------------------------- | -------- | ----------- |
+| `name` _(required)_ | `name`    | The name of the icon or a base64 string to render it as an svg | `string` | `undefined` |
 
 
 ## Methods
