@@ -59,11 +59,27 @@
   fill: theme('colors.brand-maggioli-05');
 }
 
-.action-select-file {
+.action {
   @apply p-150;
+
+  --mds-button-icon-color: theme('colors.tone-neutral-04');
 
   border-radius: 1000px;
   height: auto;
+}
+
+.action--cancel-upload:focus-visible,
+.action--cancel-upload:hover {
+
+  --mds-button-icon-color: theme('colors.status-error-04');
+  --mds-button-background: theme('colors.status-error-09');
+}
+
+.action--retry-upload:focus-visible,
+.action--retry-upload:hover {
+
+  --mds-button-icon-color: theme('colors.status-success-04');
+  --mds-button-background: theme('colors.status-success-09');
 }
 
 .main-action {

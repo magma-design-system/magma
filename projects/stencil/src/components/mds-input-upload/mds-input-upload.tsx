@@ -1,6 +1,9 @@
 import { Component, Host, Element, State, h } from '@stencil/core'
 import miBaselineAddCircle from '@icon/mi/baseline/add-circle.svg'
 import miBaselineCancel from '@icon/mi/baseline/cancel.svg'
+import miBaselineDone from '@icon/mi/baseline/done.svg'
+import miBaselineError from '@icon/mi/baseline/error.svg'
+import miBaselineClose from '@icon/mi/baseline/close.svg'
 import miBaselineReplay from '@icon/mi/baseline/replay.svg'
 
 @Component({
@@ -73,18 +76,18 @@ export class MdsInputUpload {
           <mds-entity await>
             <mds-text aria-label="Nome" truncate="word" typography="h6">Report finanziario 2024.docx</mds-text>
             <mds-text aria-label="Stato caricamento" slot="detail" truncate="word" typography="caption">Upload in corso...</mds-text>
-            <mds-button class="action-select-file" slot="action" title="Annulla upload" tone="quiet" variant="dark"><i class="svg icon-cancel" innerHTML={miBaselineCancel}/></mds-button>
+            <mds-button class="action action--cancel-upload" slot="action" icon={miBaselineCancel} title="Annulla upload" tone="quiet" variant="dark"></mds-button>
           </mds-entity>
-          <mds-entity icon="mi/baseline/error" tone="weak" variant="error">
+          <mds-entity icon={miBaselineError} tone="weak" variant="error">
             <mds-text aria-label="Nome" truncate="word" typography="h6">Report finanziario 2024.docx</mds-text>
             <mds-text aria-label="Stato caricamento" slot="detail" truncate="word" typography="caption">Errore caricamento</mds-text>
-            <mds-button class="action-select-file" slot="action" title="Ritenta upload" tone="quiet" variant="dark"><i class="svg icon-cancel" innerHTML={miBaselineReplay}/></mds-button>
+            <mds-button class="action action--retry-upload" slot="action" icon={miBaselineReplay} title="Ritenta upload" tone="quiet" variant="dark"></mds-button>
           </mds-entity>
-          <mds-entity icon="mi/outline/do-not-disturb-on" tone="weak" variant="warning">
+          <mds-entity icon={miBaselineClose} tone="weak" variant="warning">
             <mds-text aria-label="Nome" truncate="word" typography="h6">Report finanziario 2024.docx</mds-text>
             <mds-text aria-label="Stato caricamento" slot="detail" truncate="word" typography="caption">Upload annullato</mds-text>
           </mds-entity>
-          <mds-entity icon="mi/baseline/done" tone="weak" variant="success">
+          <mds-entity icon={miBaselineDone} tone="weak" variant="success">
             <mds-text aria-label="Nome" truncate="word" typography="h6">Report finanziario 2024.docx</mds-text>
             <mds-text aria-label="Stato caricamento" slot="detail" truncate="word" typography="caption">Upload completato</mds-text>
           </mds-entity>

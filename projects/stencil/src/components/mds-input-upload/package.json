@@ -24,8 +24,8 @@
     "test": "stencil test --spec --e2e"
   },
   "dependencies": {
-    "@maggioli-design-system/mds-button": "4.13.0",
-    "@maggioli-design-system/mds-entity": "4.7.0",
+    "@maggioli-design-system/mds-button": "4.14.0",
+    "@maggioli-design-system/mds-entity": "4.8.0",
     "@maggioli-design-system/mds-progress": "2.8.3",
     "@maggioli-design-system/mds-text": "4.2.0",
     "@maggioli-design-system/styles": "14.2.0",
