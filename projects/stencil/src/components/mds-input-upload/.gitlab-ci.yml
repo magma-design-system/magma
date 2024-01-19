@@ -1,0 +1,25 @@
+.base-input-upload:
+  variables:
+    COMPONENT: mds-input-upload
+
+# ISOLATE
+input-upload-isolate:
+  extends: [.base-isolate, .base-input-upload]
+  dependencies: [base-stencil-build]
+
+# TEST
+input-upload-publish-test:
+  extends: [.base-stencil-publish-test, .base-input-upload]
+  dependencies: [base-stencil-build, input-upload-isolate]
+
+# PUBLISH
+input-upload-publish:
+  extends: [.base-stencil-publish, .base-input-upload]
+  dependencies: [base-stencil-build, input-upload-isolate]
+  needs: [base-stencil-build, input-upload-isolate, input-upload-publish-test]
+
+# INSTALL TEST
+input-upload-install-test:
+  extends: [.base-stencil-install-test, .base-input-upload]
+  dependencies: [base-stencil-build, input-upload-isolate]
+  needs: [base-stencil-build, input-upload-isolate, input-upload-publish]
