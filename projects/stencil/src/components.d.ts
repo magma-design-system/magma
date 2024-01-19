@@ -991,6 +991,8 @@ export namespace Components {
          */
         "name": string;
     }
+    interface MdsInputUpload {
+    }
     interface MdsKpi {
     }
     interface MdsKpiItem {
@@ -2082,6 +2084,12 @@ declare global {
         prototype: HTMLMdsInputSwitchGroupElement;
         new (): HTMLMdsInputSwitchGroupElement;
     };
+    interface HTMLMdsInputUploadElement extends Components.MdsInputUpload, HTMLStencilElement {
+    }
+    var HTMLMdsInputUploadElement: {
+        prototype: HTMLMdsInputUploadElement;
+        new (): HTMLMdsInputUploadElement;
+    };
     interface HTMLMdsKpiElement extends Components.MdsKpi, HTMLStencilElement {
     }
     var HTMLMdsKpiElement: {
@@ -2517,6 +2525,7 @@ declare global {
         "mds-input-select": HTMLMdsInputSelectElement;
         "mds-input-switch": HTMLMdsInputSwitchElement;
         "mds-input-switch-group": HTMLMdsInputSwitchGroupElement;
+        "mds-input-upload": HTMLMdsInputUploadElement;
         "mds-kpi": HTMLMdsKpiElement;
         "mds-kpi-item": HTMLMdsKpiItemElement;
         "mds-label": HTMLMdsLabelElement;
@@ -3581,6 +3590,8 @@ declare namespace LocalJSX {
          */
         "name"?: string;
     }
+    interface MdsInputUpload {
+    }
     interface MdsKpi {
     }
     interface MdsKpiItem {
@@ -4144,6 +4155,7 @@ declare namespace LocalJSX {
         "mds-input-select": MdsInputSelect;
         "mds-input-switch": MdsInputSwitch;
         "mds-input-switch-group": MdsInputSwitchGroup;
+        "mds-input-upload": MdsInputUpload;
         "mds-kpi": MdsKpi;
         "mds-kpi-item": MdsKpiItem;
         "mds-label": MdsLabel;
@@ -4231,6 +4243,7 @@ declare module "@stencil/core" {
             "mds-input-select": LocalJSX.MdsInputSelect & JSXBase.HTMLAttributes<HTMLMdsInputSelectElement>;
             "mds-input-switch": LocalJSX.MdsInputSwitch & JSXBase.HTMLAttributes<HTMLMdsInputSwitchElement>;
             "mds-input-switch-group": LocalJSX.MdsInputSwitchGroup & JSXBase.HTMLAttributes<HTMLMdsInputSwitchGroupElement>;
+            "mds-input-upload": LocalJSX.MdsInputUpload & JSXBase.HTMLAttributes<HTMLMdsInputUploadElement>;
             "mds-kpi": LocalJSX.MdsKpi & JSXBase.HTMLAttributes<HTMLMdsKpiElement>;
             "mds-kpi-item": LocalJSX.MdsKpiItem & JSXBase.HTMLAttributes<HTMLMdsKpiItemElement>;
             "mds-label": LocalJSX.MdsLabel & JSXBase.HTMLAttributes<HTMLMdsLabelElement>;
