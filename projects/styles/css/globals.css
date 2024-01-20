@@ -14,7 +14,7 @@
   --magma-outline-blur-color: transparent;
   --magma-outline-blur: 2px solid var(--magma-outline-blur-color);
   --magma-outline-focus-offset: 2px;
-  --magma-outline-focus-color: rgb(var(--tone-neutral-05));
+  --magma-outline-focus-color: invert;
   --magma-outline-focus: 2px solid var(--magma-outline-focus-color);
   --magma-overlay-blur: var(--magma-backdrop-blur);
   --magma-overlay-color: var(--magma-backdrop-color);
