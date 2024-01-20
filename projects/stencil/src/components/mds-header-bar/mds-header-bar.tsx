@@ -64,9 +64,7 @@ export class MdsHeaderBar {
               </nav>
             }
             {this.menu !== 'none' &&
-              <mds-button class="menu" onClick={this.open} part="hamburger">
-                <i class="menu-icon svg" innerHTML={miRoundMenu} />
-              </mds-button>
+              <mds-button class="menu" icon={miRoundMenu} onClick={this.open} part="hamburger"></mds-button>
             }
           </div>
         </div>

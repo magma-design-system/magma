@@ -113,10 +113,13 @@ export class MdsBreadcrumb {
   render () {
     return (
       <Host>
-        { this.back &&
+        {/* { this.back &&
           <div tabindex="0" class="back focus-bounce" onClick={ this.togglePrevious }>
             <i class="svg icon" innerHTML={miBaselineArrowBack}/>
           </div>
+        } */}
+        { this.back &&
+          <mds-button class="back" icon={miBaselineArrowBack} onClick={ this.togglePrevious }></mds-button>
         }
         <slot/>
       </Host>

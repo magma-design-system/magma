@@ -46,7 +46,6 @@
   min-width: 1px;
 }
 
-.close-icon,
 .avatar,
 .picture {
   flex-shrink: 0;
@@ -61,12 +60,13 @@
   width: 100%;
 }
 
-.close-icon {
-  fill: inherit;
-}
-
 .close-button {
-  @apply p-150 transition-opacity;
+
+  @apply
+    p-150
+    transition-opacity;
+
+  --mds-button-icon-color: inherit;
 
   background-color: transparent;
   fill: theme('colors.tone-neutral-06');

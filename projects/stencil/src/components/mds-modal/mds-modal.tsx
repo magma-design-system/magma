@@ -138,7 +138,7 @@ export class MdsModal {
             }
           </div>
         }
-        { !this.window && <i innerHTML={miBaselineClose} tabindex="0" onClick={(e: Event) => { this.closeModal(e) }} class="svg close focus-bounce-light"/> }
+        { !this.window && <mds-button icon={miBaselineClose} onClick={(e: Event) => { this.closeModal(e) }} class="button-close"></mds-button> }
       </Host>
     )
   }

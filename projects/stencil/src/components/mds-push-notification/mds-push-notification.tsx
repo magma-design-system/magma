@@ -77,7 +77,7 @@ export class MdsPushNotification {
             <slot name="actions"></slot>
           </div> }
         </div>
-        <mds-button class="close-button"><i class="svg close-icon" innerHTML={miBaselineCancel}/></mds-button>
+        <mds-button class="close-button" icon={miBaselineCancel}></mds-button>
       </Host>
     )
   }

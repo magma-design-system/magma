@@ -10,6 +10,7 @@ import { setAttributeIfEmpty, unslugName } from '@common/aria'
 /**
  * @slot default - Add `text string` to this slot, **avoid** to add `HTML elements` or `components` here.
  * @slot notification - Add `HTML elements` or `components`, it is **recommended** to use `mds-notification` element.
+ * @part icon - The icon inside the component
  */
 
 @Component({
@@ -168,10 +169,10 @@ export class MdsButton {
         <div class="await">
           <mds-spinner class="spinner" running={this.await}/>
         </div>
-        { this.icon && this.iconPosition === 'left' && <mds-icon aria-hidden="true" class="icon" name={this.icon} /> }
+        { this.icon && this.iconPosition === 'left' && <mds-icon aria-hidden="true" class="icon" name={this.icon} part="icon"/> }
         { this.hasText && <mds-text class="text" part="label" typography={this.typography}><slot /></mds-text> }
         { this.hasNotification && <slot name="notification"/> }
-        { this.icon && this.iconPosition === 'right' && <mds-icon aria-hidden="true" class="icon" name={this.icon} /> }
+        { this.icon && this.iconPosition === 'right' && <mds-icon aria-hidden="true" class="icon" name={this.icon} part="icon"/> }
       </Host>
     )
   }

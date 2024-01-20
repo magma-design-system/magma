@@ -601,7 +601,7 @@ export namespace Components {
         /**
           * Set the name of the icon.
          */
-        "icon": string;
+        "icon"?: string;
         /**
           * Specifies where the component should be placed relative to the caller.
          */

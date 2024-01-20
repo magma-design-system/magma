@@ -4,6 +4,9 @@
 :host( [variant="warning"][tone="strong"] ) {
 
   --mds-label-background: theme('colors.status-warning-04');
+  --mds-label-button-background: theme('colors.status-warning-04');
+  --mds-label-button-background-hover: theme('colors.status-warning-05');
+  --mds-label-button-icon-color: theme('colors.status-warning-10');
   --mds-label-color: theme('colors.status-warning-10');
   --mds-label-icon-color: theme('colors.status-warning-10');
   --mds-label-selection-background: theme('colors.status-warning-08');
@@ -13,6 +16,9 @@
 :host( [variant="warning"][tone="weak"] ) {
 
   --mds-label-background: theme('colors.status-warning-08');
+  --mds-label-button-background: theme('colors.status-warning-09');
+  --mds-label-button-background-hover: theme('colors.status-warning-08');
+  --mds-label-button-icon-color: theme('colors.status-warning-04');
   --mds-label-color: theme('colors.status-warning-02');
   --mds-label-icon-color: theme('colors.status-warning-02');
   --mds-label-selection-background: theme('colors.status-warning-06');
@@ -22,6 +28,9 @@
 :host( [variant="warning"][tone="quiet"] ) {
 
   --mds-label-background: theme('colors.status-warning-09');
+  --mds-label-button-background: theme('colors.status-warning-09');
+  --mds-label-button-background-hover: theme('colors.status-warning-08');
+  --mds-label-button-icon-color: theme('colors.status-warning-04');
   --mds-label-color: theme('colors.status-warning-04');
   --mds-label-icon-color: theme('colors.status-warning-04');
   --mds-label-selection-background: theme('colors.status-warning-05');

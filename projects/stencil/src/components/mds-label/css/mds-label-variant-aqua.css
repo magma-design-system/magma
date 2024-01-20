@@ -4,6 +4,9 @@
 :host( [variant="aqua"][tone="strong"] ) {
 
   --mds-label-background: theme('colors.label-aqua-04');
+  --mds-label-button-background: theme('colors.label-aqua-04');
+  --mds-label-button-background-hover: theme('colors.label-aqua-05');
+  --mds-label-button-icon-color: theme('colors.label-aqua-10');
   --mds-label-color: theme('colors.label-aqua-10');
   --mds-label-icon-color: theme('colors.label-aqua-10');
   --mds-label-selection-background: theme('colors.label-aqua-08');
@@ -13,6 +16,9 @@
 :host( [variant="aqua"][tone="weak"] ) {
 
   --mds-label-background: theme('colors.label-aqua-08');
+  --mds-label-button-background: theme('colors.label-aqua-09');
+  --mds-label-button-background-hover: theme('colors.label-aqua-08');
+  --mds-label-button-icon-color: theme('colors.label-aqua-04');
   --mds-label-color: theme('colors.label-aqua-02');
   --mds-label-icon-color: theme('colors.label-aqua-02');
   --mds-label-selection-background: theme('colors.label-aqua-06');
@@ -22,6 +28,9 @@
 :host( [variant="aqua"][tone="quiet"] ) {
 
   --mds-label-background: theme('colors.label-aqua-09');
+  --mds-label-button-background: theme('colors.label-aqua-09');
+  --mds-label-button-background-hover: theme('colors.label-aqua-08');
+  --mds-label-button-icon-color: theme('colors.label-aqua-04');
   --mds-label-color: theme('colors.label-aqua-04');
   --mds-label-icon-color: theme('colors.label-aqua-04');
   --mds-label-selection-background: theme('colors.label-aqua-05');

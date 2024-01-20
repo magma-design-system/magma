@@ -19,7 +19,7 @@ export class MdsHelp {
   /**
    * Set the name of the icon.
    */
-  @Prop() readonly icon: string = 'mi/outline/help-outline'
+  @Prop() readonly icon?: string
 
   /**
    * If set, the component will be placed automatically near it's caller.
@@ -38,10 +38,7 @@ export class MdsHelp {
   render () {
     return (
       <Host>
-        { this.icon
-          ? <mds-icon id={this.id} name={ this.icon }></mds-icon>
-          : <i id={this.id} innerHTML={miOutlineHelp}/>
-        }
+        <mds-icon id={this.id} name={ this.icon ?? miOutlineHelp }></mds-icon>
         <mds-tooltip placement={this.placement} autoPlacement={this.autoPlacement} strategy="fixed" target={'#' + this.id}>
           <slot/>
         </mds-tooltip>

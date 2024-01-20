@@ -1,8 +1,9 @@
-@import '../../tailwind/components.css';
-@tailwind components;
 @tailwind utilities;
 
 :host {
+
+  --mds-header-bar-hamburger-color: theme('colors.tone-neutral-03');
+
   @apply
     duration-500
     ease-out-expo
@@ -46,17 +47,16 @@
   flex-shrink: 0;
 }
 
-.menu-icon {
-  @apply w-800;
+.menu {
 
-  cursor: pointer;
-  fill: inherit;
-  flex-shrink: 0;
+  --mds-button-background: transparent;
+  --mds-button-icon-color: var(--mds-header-bar-hamburger-color);
+
+  padding: 0;
 }
 
-.menu {
-  background-color: transparent;
-  padding: 0;
+.menu::part(icon) {
+  @apply w-800;
 }
 
 :host([menu="desktop"]) .menu,

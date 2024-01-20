@@ -38,11 +38,16 @@ This is a web-component from Maggioli Design System [Magma](https://magma.maggio
 ### Depends on
 
 - [mds-text](../mds-text)
+- [mds-button](../mds-button)
 
 ### Graph
 ```mermaid
 graph TD;
   mds-url-view --> mds-text
+  mds-url-view --> mds-button
+  mds-button --> mds-spinner
+  mds-button --> mds-icon
+  mds-button --> mds-text
   style mds-url-view fill:#f9f,stroke:#333,stroke-width:4px
 ```
 

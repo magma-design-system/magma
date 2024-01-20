@@ -1,8 +1,4 @@
-@import '~@maggioli-design-system/styles/dist/css/animations.css'; /* included for focus effect */
-@import '../../tailwind/components.css';
-@tailwind components;
 @tailwind utilities;
-
 
 /**
   * @prop --mds-banner-background: Sets the background-color of the component
@@ -58,24 +54,15 @@
   justify-content: flex-end;
 }
 
-.close-icon {
-  @apply
-    -m-100
-    duration-200
-    ease-out
-    focus-bounce
-    p-100
-    rounded-md;
+.close-button {
 
-  background-color: transparent;
-  cursor: pointer;
-  fill: var(--mds-banner-color);
-  flex-shrink: 0;
-  transition-property: background-color, fill, outline, outline-offset;
+  --mds-button-background: transparent;
+  --mds-button-icon-color: var(--mds-banner-color);
 }
 
-.close-icon:hover {
-  background-color: var(--mds-banner-close-icon-hover-background);
+.close-button:hover {
+
+  --mds-button-background: var(--mds-banner-close-icon-hover-background);
 }
 
 .icon {

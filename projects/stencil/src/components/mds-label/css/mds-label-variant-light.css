@@ -4,6 +4,9 @@
 :host( [variant="light"][tone="strong"] ) {
 
   --mds-label-background: theme('colors.tone-neutral-10');
+  --mds-label-button-background: theme('colors.tone-neutral-10');
+  --mds-label-button-background-hover: theme('colors.tone-neutral-09');
+  --mds-label-button-icon-color: theme('colors.tone-neutral-03');
   --mds-label-color: theme('colors.tone-neutral-03');
   --mds-label-icon-color: theme('colors.tone-neutral-03');
   --mds-label-selection-background: theme('colors.tone-neutral-03');
@@ -12,7 +15,10 @@
 
 :host( [variant="light"][tone="weak"] ) {
 
-  --mds-label-background: theme('colors.tone-neutral-10');
+  --mds-label-background: theme('colors.tone-neutral-09');
+  --mds-label-button-background: theme('colors.tone-neutral-09');
+  --mds-label-button-background-hover: theme('colors.tone-neutral-10');
+  --mds-label-button-icon-color: theme('colors.tone-neutral-03');
   --mds-label-color: theme('colors.tone-neutral-03');
   --mds-label-icon-color: theme('colors.tone-neutral-03');
   --mds-label-selection-background: theme('colors.tone-neutral-03');
@@ -22,6 +28,9 @@
 :host( [variant="light"][tone="quiet"] ) {
 
   --mds-label-background: theme('colors.tone-neutral-09');
+  --mds-label-button-background: theme('colors.tone-neutral-09');
+  --mds-label-button-background-hover: theme('colors.tone-neutral-09');
+  --mds-label-button-icon-color: theme('colors.tone-neutral-02');
   --mds-label-color: theme('colors.tone-neutral-02');
   --mds-label-icon-color: theme('colors.tone-neutral-02');
   --mds-label-selection-background: theme('colors.tone-neutral-02');

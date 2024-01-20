@@ -150,7 +150,7 @@ export class MdsChip {
             { this.label }
           </mds-text>
         }
-        { this.deletable && <i class="svg delete focus-bounce" innerHTML={miBaselineCancel} onClick={this.onDeleteHandler.bind(this)} role="button" tabindex="0" title={ `${this.deleteLabel} ${this.label}` }/> }
+        { this.deletable && <mds-button class="button-delete" icon={miBaselineCancel} onClick={this.onDeleteHandler.bind(this)} title={ `${this.deleteLabel} ${this.label}` } variant="dark" tone="quiet"></mds-button> }
       </Host>
     )
   }
