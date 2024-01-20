@@ -4,6 +4,7 @@
       antialiased
       font-black
       font-title
+      min-h-1200
       text-size-title-h1;
   }
 
@@ -12,6 +13,7 @@
       antialiased
       font-black
       font-title
+      min-h-1000
       text-size-title-h2;
   }
 
@@ -20,6 +22,7 @@
       antialiased
       font-black
       font-title
+      min-h-900
       text-size-title-h3;
   }
 
@@ -28,6 +31,7 @@
       antialiased
       font-bold
       font-title
+      min-h-800
       text-size-title-h4;
   }
 
@@ -36,6 +40,7 @@
       antialiased
       font-bold
       font-title
+      min-h-700
       text-size-title-h5;
   }
 
@@ -44,6 +49,7 @@
       antialiased
       font-bold
       font-title
+      min-h-600
       text-size-title-h6;
   }
 
@@ -52,6 +58,7 @@
       antialiased
       font-medium
       font-title
+      min-h-600
       text-size-title-action;
   }
 
@@ -59,6 +66,7 @@
     @apply
       antialiased
       font-info
+      min-h-800
       text-size-info-paragraph;
   }
 
@@ -66,6 +74,7 @@
     @apply
       antialiased
       font-info
+      min-h-600
       text-size-info-detail;
   }
 
@@ -73,6 +82,7 @@
     @apply
       antialiased
       font-info
+      min-h-500
       text-size-info-caption;
   }
 
@@ -81,6 +91,7 @@
       antialiased
       font-bold
       font-info
+      min-h-400
       text-size-info-label
       uppercase;
   }
@@ -90,6 +101,7 @@
       antialiased
       font-bold
       font-info
+      min-h-250
       text-size-info-option
       uppercase;
   }
@@ -98,6 +110,7 @@
     @apply
       antialiased
       font-info
+      min-h-400
       text-size-info-tip;
   }
 
@@ -106,6 +119,7 @@
       antialiased
       font-light
       font-read
+      min-h-800
       text-size-read-paragraph;
   }
 
@@ -114,6 +128,7 @@
       antialiased
       font-light
       font-read
+      min-h-600
       text-size-read-detail;
   }
 
@@ -121,6 +136,7 @@
     @apply
       antialiased
       font-read
+      min-h-500
       text-size-read-caption;
   }
 
@@ -128,6 +144,7 @@
     @apply
       antialiased
       font-code
+      min-h-600
       text-size-code-snippet;
   }
 
@@ -135,6 +152,7 @@
     @apply
       antialiased
       font-code
+      min-h-500
       text-size-code-hack;
   }
 }
