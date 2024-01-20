@@ -21,7 +21,7 @@
     "build.icons.prepare": "nx run svg-icons:dictionary",
     "build.watch": "stencil build --watch",
     "build.watch-no-cache": "stencil build --no-cache --watch",
-    "clean": "npx ts-node --skipProject ./scripts/clean.ts",
+    "clean": "npx ts-node --skipProject ./scripts/clean.ts nx run storybook.clear-cache",
     "generate": "stencil generate",
     "generate.doc": "npx ts-node --skipProject ./scripts/generate-doc.ts",
     "gitlab-ci-yml-regenerate": "npx ts-node --skipProject ./scripts/gitlab-ci-yml-regenerate.ts",
