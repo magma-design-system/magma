@@ -24,7 +24,7 @@
   },
   "dependencies": {
     "@maggioli-design-system/mds-tab-bar-item": "4.6.0",
-    "@maggioli-design-system/styles": "14.2.0",
+    "@maggioli-design-system/styles": "14.2.1",
     "@stencil/core": "4.10.0"
   },
   "license": "MIT",

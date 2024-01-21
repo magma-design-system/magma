@@ -9,6 +9,16 @@
   Available values: 1, 2, 3, 5, 8 (if 9+ you should consider to split in multiple issues)
 -->
 
+<!--
+
+## Prerequisites
+
+ [ ] I have read the [Contributing Guidelines](https://github.com/ionic-team/stencil/blob/main/CONTRIBUTING.md).
+ [ ] I agree to follow the [Code of Conduct](https://github.com/ionic-team/stencil/blob/main/CODE_OF_CONDUCT.md).
+ [ ] I have searched for [existing issues](https://github.com/ionic-team/stencil/issues) that already report this problem, without success.
+
+-->
+
 <!-- 🔴 Required
 Provide a general summary of the issue.
 
