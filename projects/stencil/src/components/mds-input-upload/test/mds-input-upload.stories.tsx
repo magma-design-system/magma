@@ -11,6 +11,22 @@ export default {
       options: iconsDictionary,
       control: { type: 'select' },
     },
+    accept: {
+      type: { name: 'string' },
+      description: 'Defines the file types the file input should accept',
+    },
+    'max-file-size': {
+      type: { name: 'number' },
+      description: 'Specifies the max size of a single file that can be uploaded in MB',
+    },
+    'max-files': {
+      type: { name: 'number' },
+      description: 'Specifies the max number of files that can be uploaded',
+    },
+    multiple: {
+      type: { name: 'boolean' },
+      description: 'Specifies if its possible to upload multiple file',
+    },
   },
 }
 
@@ -22,4 +38,18 @@ const Template = args =>
 export const Default = Template.bind({})
 Default.args = {
   // icon: 'mi/baseline/email',
+  accept: '',
+}
+
+export const CustomAccept = Template.bind({})
+CustomAccept.args = {
+  accept: '.pdf, image/jpeg',
+  'max-file-size': 70,
+}
+
+export const Multiple = Template.bind({})
+Multiple.args = {
+  accept: '.pdf, image/jpeg',
+  'max-file-size': 70,
+  multiple: true,
 }

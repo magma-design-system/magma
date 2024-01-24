@@ -992,6 +992,22 @@ export namespace Components {
         "name": string;
     }
     interface MdsInputUpload {
+        /**
+          * Defines the file types the file input should accept
+         */
+        "accept": string;
+        /**
+          * Specifies the max size of a single file that can be uploaded in MB
+         */
+        "maxFileSize": number;
+        /**
+          * Specifies the max number of files that can be uploaded
+         */
+        "maxFiles": number;
+        /**
+          * Specifies if its possible to upload multiple file
+         */
+        "multiple": boolean;
     }
     interface MdsKpi {
     }
@@ -3599,6 +3615,22 @@ declare namespace LocalJSX {
         "name"?: string;
     }
     interface MdsInputUpload {
+        /**
+          * Defines the file types the file input should accept
+         */
+        "accept": string;
+        /**
+          * Specifies the max size of a single file that can be uploaded in MB
+         */
+        "maxFileSize"?: number;
+        /**
+          * Specifies the max number of files that can be uploaded
+         */
+        "maxFiles"?: number;
+        /**
+          * Specifies if its possible to upload multiple file
+         */
+        "multiple"?: boolean;
     }
     interface MdsKpi {
     }
