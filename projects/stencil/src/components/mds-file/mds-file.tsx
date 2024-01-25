@@ -1,9 +1,9 @@
 import { Component, Element, Event, EventEmitter, Host, h, Prop, State } from '@stencil/core'
-import { ExtensionSuffixType } from './meta/types'
+import { ExtensionSuffixType } from '@type/file-types'
 import { MdsFileEventDetail } from './meta/event-detail'
 import { ThemeFullVariantType } from '@type/variant'
-import { fileExtensionsDictionary } from './meta/dictionary'
-import { fileFormatsVariant } from './meta/variants'
+import { fileExtensionsDictionary } from '@dictionary/file-extensions'
+import { fileFormatsVariant } from '@type/variant-file-format'
 import { MD5 } from 'crypto-js'
 import miBaselineFileDownloadDone from '@icon/mi/baseline/file-download-done.svg'
 
