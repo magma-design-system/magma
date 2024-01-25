@@ -51,5 +51,5 @@ export const Multiple = Template.bind({})
 Multiple.args = {
   accept: '.pdf, image/jpeg',
   'max-file-size': 70,
-  multiple: true,
+  'max-files': 5,
 }

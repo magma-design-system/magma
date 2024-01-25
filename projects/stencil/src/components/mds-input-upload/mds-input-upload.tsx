@@ -120,7 +120,12 @@ export class MdsInputUpload {
    */
   private onCancel = (filekey: string): void => {
     this.files = this.files.filter(f => f.key !== filekey)
-    this.updateProgress()
+    if (this.nativeInput) {
+      const data = new DataTransfer()
+      this.files.forEach(f => {if (f.status === Status.SUCCESS) {data.items.add(f.file)}})
+      this.nativeInput.files = data.files
+      this.updateProgress()
+    }
   }
 
   /**
@@ -152,7 +157,9 @@ export class MdsInputUpload {
     }
     const data = new DataTransfer()
     const f = this.files
+    // prepare new file added
     for (const file of files) {
+      // open only file not added previously
       if (this.files.findIndex(f => f.key === hashValue(file.name + file.size)) === -1) {
         let error = ''
         if (!this.checkFileSize(file)){
@@ -167,17 +174,19 @@ export class MdsInputUpload {
           reader.onload = () => {
             this.updateFileSatus(file, Status.SUCCESS)
           }
+          // error
           reader.onerror = () => {
             this.updateFileSatus(file, Status.ERROR)
           }
           f.push({ key: hashValue(file.name + file.size), file, status: Status.UPLOADING })
           reader.readAsArrayBuffer(file)
-          data.items.add(file)
         } else {
           f.push({ key: hashValue(file.name + file.size), file, status: Status.ERROR, errorMessage: error })
         }
       }
     }
+    f.forEach(f => data.items.add(f.file))
+    this.files = f
     return data.files
   }
 
