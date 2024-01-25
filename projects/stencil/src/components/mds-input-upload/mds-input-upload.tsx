@@ -54,12 +54,7 @@ export class MdsInputUpload {
   /**
    * Specifies the max number of files that can be uploaded
    */
-  @Prop() maxFiles = 5
-
-  /**
-   * Specifies if its possible to upload multiple file
-   */
-  @Prop() multiple = false
+  @Prop() maxFiles = 1
 
   @AttachInternals() internals: ElementInternals
   @State() files: FileStatus[] = []
@@ -74,9 +69,6 @@ export class MdsInputUpload {
 
 
   componentWillLoad (): void {
-    if (!this.multiple) {
-      this.maxFiles = 1
-    }
     this.extensions = this.accept.split(',').map(mtype => (mtype.includes('.') ? mtype.slice(1) : Mime.getExtension(mtype))).join(', ').toUpperCase()
   }
 
@@ -247,7 +239,7 @@ export class MdsInputUpload {
             <mds-text variant="info" typography="caption">Puoi caricare fino a {this.maxFiles} file</mds-text>
           </div>
         </div>
-        <input type='file' accept={this.accept} hidden ref={i => this.nativeInput = i} onChange={this.onAdd} multiple = {this.multiple}/>
+        <input type='file' accept={this.accept} hidden ref={i => this.nativeInput = i} onChange={this.onAdd} multiple = {this.maxFiles > 1}/>
         <div class="additional-infos">
           <mds-text variant="info" typography="caption">{this.extensions !== '' ? 'Puoi caricare ' + this.extensions : 'Puoi caricare qualsiasi formato'}</mds-text>
           <mds-text variant="info" typography="caption">{this.maxFileSize}MB max per file</mds-text>
