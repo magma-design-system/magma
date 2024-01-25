@@ -63,6 +63,7 @@ export class MdsInputUpload {
 
   @AttachInternals() internals: ElementInternals
   @State() files: FileStatus[] = []
+  @State() progress = 0
 
   private nativeInput?: HTMLInputElement
   private elDragArea?: HTMLElement
@@ -70,7 +71,6 @@ export class MdsInputUpload {
   private km = new KeyboardManager()
 
   private extensions: string
-  private progress: number
 
 
   componentWillLoad (): void {
@@ -93,7 +93,6 @@ export class MdsInputUpload {
 
   private onDropHandler = (event: DragEvent) => {
     if (this.nativeInput && event.dataTransfer) {
-      this.nativeInput.files = event.dataTransfer.files
       const f = this.prepareFiles(event.dataTransfer.files)
       this.nativeInput.files = f
       this.internals.setFormValue(this.nativeInput.value)
@@ -117,11 +116,33 @@ export class MdsInputUpload {
     event.preventDefault()
   }
 
-  private onChangeInput = (event: Event) => {
+  private onAdd = (event: Event) => {
     const input = ((event.target) as HTMLInputElement)
     input.files = this.prepareFiles(input.files)
     this.internals.setFormValue(input.value)
   }
+
+  /**
+   * Delete single file from upload
+   * @param filekey
+   */
+  private onCancel = (filekey: string): void => {
+    this.files = this.files.filter(f => f.key !== filekey)
+    this.updateProgress()
+  }
+
+  /**
+   * Delete all files from upload
+   */
+  private onReset = () : void => {
+    if (this.nativeInput) {
+      this.files = []
+      this.nativeInput.files = null
+      this.internals.setFormValue(null)
+      this.updateProgress()
+    }
+  }
+
   /**
    * Prepare file to be submitted.
    * Limit number of file to maxFiles
@@ -131,7 +152,6 @@ export class MdsInputUpload {
    */
   private prepareFiles (fileList: FileList | null): FileList | null {
     if (!fileList) return null
-    this.progress = 0
     let files = Array.from(fileList)
 
     if (files.length >= this.maxFiles) {
@@ -139,46 +159,53 @@ export class MdsInputUpload {
       files = files.slice(0, this.maxFiles)
     }
     const data = new DataTransfer()
-    const f: FileStatus[] = []
+    const f = this.files
     for (const file of files) {
-      let error = ''
-      if (!this.checkFileSize(file)){
-        error += 'File troppo grande.'
-      }
-      if (!this.checkFileType(file)){
-        error += 'Formato non supportato.'
-      }
-      if (!error){
-        data.items.add(file)
-        const reader = new FileReader()
-        // success
-        reader.onload = () => {
-          this.updateFileSatus(file, Status.SUCCESS)
+      if (this.files.findIndex(f => f.key === hashValue(file.name + file.size)) === -1) {
+        let error = ''
+        if (!this.checkFileSize(file)){
+          error += 'File troppo grande.'
         }
-        reader.onerror = () => {
-          this.updateFileSatus(file, Status.ERROR)
+        if (!this.checkFileType(file)){
+          error += 'Formato non supportato.'
         }
-        f.push({ key: hashValue(file.name + file.size), file, status: Status.UPLOADING })
-        reader.readAsArrayBuffer(file)
-      } else {
-        f.push({ key: hashValue(file.name + file.size), file, status: Status.ERROR, errorMessage: error })
+        if (!error) {
+          const reader = new FileReader()
+          // success
+          reader.onload = () => {
+            this.updateFileSatus(file, Status.SUCCESS)
+          }
+          reader.onerror = () => {
+            this.updateFileSatus(file, Status.ERROR)
+          }
+          f.push({ key: hashValue(file.name + file.size), file, status: Status.UPLOADING })
+          reader.readAsArrayBuffer(file)
+          data.items.add(file)
+        } else {
+          f.push({ key: hashValue(file.name + file.size), file, status: Status.ERROR, errorMessage: error })
+        }
       }
     }
-    this.files = f
     return data.files
   }
 
   private updateFileSatus (file: File, status: Status) {
     const index = this.files.findIndex(f => f.key === hashValue(file.name + file.size))
-    const f = this.files[index]
-    this.files[index] = { ...f, status }
-    // update progress bar
-    const fileDone = this.files.map(fileStatus => (fileStatus.status === Status.UPLOADING ? 0 : 1) as number).reduce((prev, curr) => prev + curr)
-    this.progress = this.files.length / fileDone
-    // necessary assignment for trigger render
-    this.files = [...this.files]
+    if (index !== -1){
+      const f = this.files[index]
+      this.files[index] = { ...f, status }
+      // necessary assignment for trigger render
+      this.files = [...this.files]
+      this.updateProgress()
+
+    }
   }
 
+  private updateProgress () {
+    // update progress bar
+    const nFile = this.files.map(fileStatus => (fileStatus.status === Status.SUCCESS ? 1 : 0) as number).reduce((prev, curr) => prev + curr, 0)
+    this.progress = nFile / this.maxFiles
+  }
   private checkFileSize (file: File): boolean {
     return file.size < this.maxFileSize * 1024 * 1024
   }
@@ -214,11 +241,13 @@ export class MdsInputUpload {
             <mds-text animation="yugop" variant="title" typography="action" text={ this.actionTitle }></mds-text>
           </div>
           <div class="main-infos">
-            { this.progress !== undefined && <mds-progress class="progress-bar" progress={this.progress}></mds-progress> }
+            {this.files && <mds-button variant='error' onClick={this.onReset}>Cancella tutto</mds-button>}
+            <mds-button variant='primary' onClick={this.onAdd}> {this.files ? 'Aggiungi file' : 'Seleziona File'}</mds-button>
+            <mds-progress class="progress-bar" progress={this.progress}></mds-progress>
             <mds-text variant="info" typography="caption">Puoi caricare fino a {this.maxFiles} file</mds-text>
           </div>
         </div>
-        <input type='file' accept={this.accept} hidden ref={i => this.nativeInput = i} onChange={this.onChangeInput} multiple = {this.multiple}/>
+        <input type='file' accept={this.accept} hidden ref={i => this.nativeInput = i} onChange={this.onAdd} multiple = {this.multiple}/>
         <div class="additional-infos">
           <mds-text variant="info" typography="caption">{this.extensions !== '' ? 'Puoi caricare ' + this.extensions : 'Puoi caricare qualsiasi formato'}</mds-text>
           <mds-text variant="info" typography="caption">{this.maxFileSize}MB max per file</mds-text>
@@ -255,6 +284,7 @@ export class MdsInputUpload {
                 <mds-entity icon={miBaselineDone} tone="weak" variant="success">
                   <mds-text aria-label="Nome" truncate="word" typography="h6">{file.file.name}</mds-text>
                   <mds-text aria-label="Stato caricamento" slot="detail" truncate="word" typography="caption">Upload completato</mds-text>
+                  <mds-button class="action action--cancel-upload" slot="action" icon={miBaselineCancel} title="Annulla" tone="quiet" variant="dark" onClick={() => this.onCancel(file.key)}></mds-button>
                 </mds-entity>
               )
             }
