@@ -1,42 +1,49 @@
+import baselineFolderZip from '@icon/mi/baseline/folder-zip.svg'
+import baselineAttachFile from '@icon/mi/baseline/attach-file.svg'
+import baselineAudiotrack from '@icon/mi/baseline/audiotrack.svg'
+import baselineTerminal from '@icon/mi/baseline/terminal.svg'
+import baselineInsertDriveFile from '@icon/mi/baseline/insert-drive-file.svg'
+import mdiHardDisk from '@icon/mdi/harddisk.svg'
+
 const fileFormatsVariant = {
   archive: {
     color: 'fill-label-amaranth-04 text-label-amaranth-04',
-    icon: 'mi/baseline/folder-zip',
+    icon: baselineFolderZip,
     iconBackground: 'bg-label-amaranth-10',
     preview: false,
     variant: 'amaranth',
   },
   attachment: {
     color: 'fill-tone-neutral-04 text-tone-neutral-04',
-    icon: 'mi/baseline/attach-file',
+    icon: baselineAttachFile,
     iconBackground: 'bg-tone-neutral-10',
     preview: false,
     variant: 'dark',
   },
   audio: {
     color: 'fill-label-violet-04 text-label-violet-04',
-    icon: 'mi/baseline/audiotrack',
+    icon: baselineAudiotrack,
     iconBackground: 'bg-label-violet-10',
     preview: false,
     variant: 'violet',
   },
   code: {
     color: 'fill-label-yellow-04 text-label-yellow-04',
-    icon: 'mi/baseline/terminal',
+    icon: baselineTerminal,
     iconBackground: 'bg-label-yellow-10',
     preview: false,
     variant: 'yellow',
   },
   data: {
     color: 'fill-label-yellow-04 text-label-yellow-04',
-    icon: 'mdi/harddisk',
+    icon: mdiHardDisk,
     iconBackground: 'bg-label-yellow-10',
     preview: false,
     variant: 'yellow',
   },
   document: {
     color: 'fill-label-orange-04 text-label-orange-04',
-    icon: 'mi/baseline/insert-drive-file',
+    icon: baselineInsertDriveFile,
     iconBackground: 'bg-label-orange-10',
     preview: false,
     variant: 'orange',
