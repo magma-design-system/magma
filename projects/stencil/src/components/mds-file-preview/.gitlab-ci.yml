@@ -1,0 +1,25 @@
+.base-file-preview:
+  variables:
+    COMPONENT: mds-file-preview
+
+# ISOLATE
+file-preview-isolate:
+  extends: [.base-isolate, .base-file-preview]
+  dependencies: [base-stencil-build]
+
+# TEST
+file-preview-publish-test:
+  extends: [.base-stencil-publish-test, .base-file-preview]
+  dependencies: [base-stencil-build, file-preview-isolate]
+
+# PUBLISH
+file-preview-publish:
+  extends: [.base-stencil-publish, .base-file-preview]
+  dependencies: [base-stencil-build, file-preview-isolate]
+  needs: [base-stencil-build, file-preview-isolate, file-preview-publish-test]
+
+# INSTALL TEST
+file-preview-install-test:
+  extends: [.base-stencil-install-test, .base-file-preview]
+  dependencies: [base-stencil-build, file-preview-isolate]
+  needs: [base-stencil-build, file-preview-isolate, file-preview-publish]

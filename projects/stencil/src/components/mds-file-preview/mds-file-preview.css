@@ -1,0 +1,63 @@
+@tailwind utilities;
+
+:host {
+
+  --mds-file-preview-border-radius: theme('borderRadius.lg');
+  --mds-file-preview-background-color: theme('colors.tone-neutral');
+  --mds-file-preview-color: theme('colors.tone-neutral-03');
+
+  align-items: stretch;
+  background-color: var(--mds-file-preview-background-color);
+  border-radius: var(--mds-file-preview-border-radius);
+  box-shadow: theme('boxShadow.DEFAULT');
+  display: flex;
+  fill: var(--mds-file-preview-color);
+  justify-content: stretch;
+  position: relative;
+}
+
+.card {
+  @apply
+    gap-200
+    grid-cols-full
+    p-400;
+
+  border-radius: var(--mds-file-preview-border-radius);
+  display: grid;
+  width: 100%;
+}
+
+.preview {
+  background-color: theme('colors.tone-neutral-03');
+  border-radius: theme('borderRadius.DEFAULT');
+  width: 100%;
+}
+
+.action-delete {
+  background-color: var(--mds-file-preview-background-color);
+  fill: var(--mds-file-preview-color);
+  position: absolute;
+  right: 0;
+  top: 0;
+}
+
+.infos {
+
+  @apply gap-200;
+
+  align-items: center;
+  display: flex;
+}
+
+.badge {
+  flex-shrink: 0;
+}
+
+.infos--has-file-size {
+  justify-content: space-between;
+}
+
+.file-name {
+
+  --mds-text-line-clamp: 2;
+}
