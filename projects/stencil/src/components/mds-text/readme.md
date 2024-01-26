@@ -50,6 +50,7 @@ This is a web-component from Maggioli Design System [Magma](https://magma.maggio
  - [mds-button](../mds-button)
  - [mds-chip](../mds-chip)
  - [mds-file](../mds-file)
+ - [mds-file-preview](../mds-file-preview)
  - [mds-filter](../mds-filter)
  - [mds-filter-item](../mds-filter-item)
  - [mds-input](../mds-input)
@@ -88,6 +89,7 @@ graph TD;
   mds-button --> mds-text
   mds-chip --> mds-text
   mds-file --> mds-text
+  mds-file-preview --> mds-text
   mds-filter --> mds-text
   mds-filter-item --> mds-text
   mds-input --> mds-text

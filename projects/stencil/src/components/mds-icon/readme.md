@@ -115,6 +115,7 @@ Type: `Promise<void>`
  - [mds-button](../mds-button)
  - [mds-chip](../mds-chip)
  - [mds-file](../mds-file)
+ - [mds-file-preview](../mds-file-preview)
  - [mds-filter-item](../mds-filter-item)
  - [mds-help](../mds-help)
  - [mds-input](../mds-input)
@@ -133,6 +134,7 @@ graph TD;
   mds-button --> mds-icon
   mds-chip --> mds-icon
   mds-file --> mds-icon
+  mds-file-preview --> mds-icon
   mds-filter-item --> mds-icon
   mds-help --> mds-icon
   mds-input --> mds-icon
