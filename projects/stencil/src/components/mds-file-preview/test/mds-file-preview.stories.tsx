@@ -67,7 +67,80 @@ const Template = args =>
 
 export const Default = Template.bind({})
 Default.args = {
+  filename: filesList[15],
+  filesize: 10248594,
+}
+
+export const Deletable = Template.bind({})
+Deletable.args = {
   filename: filesList[1],
+  deletable: true,
+  filesize: 10248594,
   src: './fred-brooks-zoom.webp',
 }
 
+export const Description = Template.bind({})
+Description.args = {
+  filename: filesList[1],
+  description: 'Incredible format',
+  src: './fred-brooks-zoom.webp',
+}
+
+export const Filename = Template.bind({})
+Filename.args = {
+  filename: filesList[1],
+}
+
+export const Filesize = Template.bind({})
+Filesize.args = {
+  filename: filesList[20],
+  filesize: '12 MB',
+}
+
+export const Icon = Template.bind({})
+Icon.args = {
+  filename: filesList[20],
+  filesize: '12 MB',
+  icon: mggIconsDictionary[150],
+}
+
+export const Message = Template.bind({})
+Message.args = {
+  filename: filesList[20],
+  filesize: '12 MB',
+  message: 'File format non valido',
+  variant: 'error',
+  icon:'mi/baseline/warning',
+}
+
+export const Truncate = Template.bind({})
+Truncate.args = {
+  filename: 'This is one of the most lenght filename humanity have ever seen.doc',
+  filesize: 84791746,
+  truncate: 'all',
+}
+
+export const Src = Template.bind({})
+Src.args = {
+  filename: filesList[1],
+  filesize: 84791746,
+  src: './fred-brooks-zoom.webp',
+}
+
+export const Suffix = Template.bind({})
+Suffix.args = {
+  filename: filesList[1],
+  filesize: 84791746,
+  suffix: 'pdf',
+  src: './fred-brooks-zoom.webp',
+}
+
+export const Variant = Template.bind({})
+Variant.args = {
+  filename: filesList[1],
+  filesize: 84791746,
+  suffix: 'pdf',
+  src: './fred-brooks-zoom.webp',
+  message: 'Works only with message attribute',
+  variant: 'success',
+}

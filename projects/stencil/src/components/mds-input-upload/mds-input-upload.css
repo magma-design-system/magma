@@ -115,9 +115,14 @@
 
 .file-list {
   @apply
-    gap-400;
+    gap-400
+    grid-cols-fit-sm;
 
-  grid-template-columns: repeat(auto-fit, minmax(10rem/* 160px */, 20rem));
+  /* grid-template-columns: repeat(auto-fit, minmax(theme('spacing.4000'), 50%)); */
+}
+
+.file-list > * {
+  max-width: 240px;
 }
 
 .main-infos {
