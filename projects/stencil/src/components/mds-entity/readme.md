@@ -42,10 +42,6 @@ This is a web-component from Maggioli Design System [Magma](https://magma.maggio
 
 ## Dependencies
 
-### Used by
-
- - [mds-input-upload](../mds-input-upload)
-
 ### Depends on
 
 - [mds-spinner](../mds-spinner)
@@ -59,7 +55,6 @@ graph TD;
   mds-avatar --> mds-text
   mds-avatar --> mds-img
   mds-avatar --> mds-icon
-  mds-input-upload --> mds-entity
   style mds-entity fill:#f9f,stroke:#333,stroke-width:4px
 ```
 

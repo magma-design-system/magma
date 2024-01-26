@@ -517,7 +517,7 @@ export namespace Components {
         /**
           * The filesize shown, if you pass a string you can write whathever you want, if you pass a number it expect filesize in bytes, the component will format it automatically.
          */
-        "filesize"?: string;
+        "filesize"?: string | number;
         /**
           * The name of the icon or a base64 string to render it as an svg
          */
@@ -3142,11 +3142,11 @@ declare namespace LocalJSX {
         /**
           * The filesize shown, if you pass a string you can write whathever you want, if you pass a number it expect filesize in bytes, the component will format it automatically.
          */
-        "filesize"?: string;
+        "filesize"?: string | number;
         /**
           * The name of the icon or a base64 string to render it as an svg
          */
-        "icon": string;
+        "icon"?: string;
         /**
           * Sets a feedback message related to the component
          */
