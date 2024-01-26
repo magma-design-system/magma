@@ -1,5 +1,5 @@
 import { h } from '@stencil/core'
-import { iconsDictionary, mggIconsDictionary } from '@dictionary/icon'
+import { iconsDictionary, mggIconsDictionary, svgIconsDictionary } from '@dictionary/icon'
 
 const urlIcon = `${location.origin}/svg/mi/baseline/email.svg`
 const base64IconEncoded = 'data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIGhlaWdodD0iMjQiIHZpZXdCb3g9IjAgLTk2MCA5NjAgOTYwIiB3aWR0aD0iMjQiPjxwYXRoIGQ9Im0yMzMtODAgNjUtMjgxTDgwLTU1MGwyODgtMjUgMTEyLTI2NSAxMTIgMjY1IDI4OCAyNS0yMTggMTg5IDY1IDI4MS0yNDctMTQ5TDIzMy04MFoiLz48L3N2Zz4='
@@ -10,8 +10,8 @@ export default {
   argTypes: {
     name: {
       type: { name: 'string' },
-      description: 'The name of the icon set. The icon set is strictly realted to @maggioli-design-system/icons',
-      options: mggIconsDictionary.concat(iconsDictionary).concat([base64IconEncoded, svgIconDecoded, urlIcon]),
+      description: 'The name of the icon or a base64 string to render it as an svg',
+      options: mggIconsDictionary.concat(iconsDictionary).concat(svgIconsDictionary),
       control: { type: 'select' },
     },
   },
