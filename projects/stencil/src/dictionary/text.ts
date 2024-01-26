@@ -1,6 +1,7 @@
 const truncateDictionary = [
-  'word',
   'all',
+  'none',
+  'word',
 ]
 
 export {

@@ -28,9 +28,26 @@
 }
 
 .preview {
-  background-color: theme('colors.tone-neutral-03');
+
+  @apply aspect-square;
+
   border-radius: theme('borderRadius.DEFAULT');
   width: 100%;
+}
+
+.preview--image {
+  padding: 0 !important;
+}
+
+.preview--icon {
+  align-items: center;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.icon {
+  @apply h-1200 w-1200;
 }
 
 .action-delete {
@@ -49,7 +66,7 @@
   display: flex;
 }
 
-.badge {
+.suffix {
   flex-shrink: 0;
 }
 

@@ -6,7 +6,7 @@ import { TypographyTruncateType } from '@type/text'
 import { clsx } from 'clsx'
 import { filesize } from 'filesize'
 import { ThemeFullVariantType } from '@type/variant'
-import { getFormatsVariant, getName, getSuffix, getExtensionInfos } from '@common/file'
+import { getFormatsVariant, getSuffix, getExtensionInfos } from '@common/file'
 
 @Component({
   tag: 'mds-file-preview',
@@ -43,7 +43,7 @@ export class MdsFilePreview {
   /**
    * Truncates the filename shown
    */
-  @Prop({ reflect: true }) readonly truncate?: TypographyTruncateType
+  @Prop({ reflect: true }) readonly truncate?: TypographyTruncateType = 'word'
 
   /**
    * The image preview src if available of a file, useful if you have a logo to display, or a smaller version of a bigger image
@@ -80,22 +80,22 @@ export class MdsFilePreview {
       <Host>
         { this.deletable && <mds-button class="action-delete" icon={miBaselineCancel} variant="light" onClick={() => { console.info('onClick') }}></mds-button> }
         <div class="card" part="card">
-          { this.src
+          { this.src && !this.message && getFormatsVariant(this.filename, this.suffix).preview
             ? <mds-img src={this.src} class="preview preview--image" aspect-ratio="1/1"></mds-img>
-            : <div class="preview preview--icon">
+            : <div class={`preview preview--icon ${getFormatsVariant(this.filename, this.suffix).color} ${getFormatsVariant(this.filename, this.suffix).iconBackground}`}>
               { this.icon
-                ? <mds-icon name={this.icon}></mds-icon>
-                : <mds-icon name={getFormatsVariant(this.filename, this.suffix).icon}/>
+                ? <mds-icon class="icon" name={this.icon}></mds-icon>
+                : <mds-icon class="icon" name={getFormatsVariant(this.filename, this.suffix).icon}/>
               }
               { this.message && <mds-text typography="caption" variant="info">{ this.message }</mds-text> }
             </div>
           }
-          <mds-text class="file-name" typography="h6" variant="title" truncate={this.truncate}>{ getName(this.filename) }</mds-text>
+          <mds-text class="file-name" typography="h6" variant="title" truncate={this.truncate} title={ this.filename }>{ this.filename }</mds-text>
           <footer class={clsx('infos', this.filesize && 'infos--has-file-size')}>
             { this.filesize && this.filesize === Number(this.filesize).toString() && <mds-text class="file-size" typography="caption" variant="info">{ filesize(Number(this.filesize), { standard: 'jedec' }) }</mds-text> }
             { this.filesize && this.filesize !== Number(this.filesize).toString() && <mds-text class="file-size" typography="caption" variant="info">{ this.filesize }</mds-text> }
             { getSuffix(this.filename, this.suffix) && <mds-badge variant={getFormatsVariant(this.filename, this.suffix).variant as ThemeFullVariantType} tone="quiet" class="suffix">{ getSuffix(this.filename, this.suffix) }</mds-badge> }
-            { !this.filesize && <mds-text class="file-size" truncate="word" typography="caption" variant="info" title={ this.description ?? this.getDefaultDescription() }>{ this.description ?? this.getDefaultDescription() }</mds-text> }
+            { !this.filesize && <mds-text class="description" truncate="word" typography="caption" variant="info" title={ this.description ?? this.getDefaultDescription() }>{ this.description ?? this.getDefaultDescription() }</mds-text> }
           </footer>
         </div>
       </Host>

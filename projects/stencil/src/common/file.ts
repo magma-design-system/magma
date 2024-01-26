@@ -5,6 +5,7 @@ type FileFormatsVariants = {
     color: string
     icon: string
     iconBackground: string
+    preview: boolean
     variant: string
 }
 
