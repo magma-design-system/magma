@@ -1,10 +1,5 @@
 import { AttachInternals, Component, Host, Prop, State, h } from '@stencil/core'
 import miBaselineAddCircle from '@icon/mi/baseline/add-circle.svg'
-import miBaselineCancel from '@icon/mi/baseline/cancel.svg'
-import miBaselineDone from '@icon/mi/baseline/done.svg'
-import miBaselineError from '@icon/mi/baseline/error.svg'
-import miBaselineClose from '@icon/mi/baseline/close.svg'
-import miBaselineReplay from '@icon/mi/baseline/replay.svg'
 import { KeyboardManager } from '@common/keyboard-manager'
 import { hashValue } from '@common/aria'
 import Mime from 'mime'
@@ -85,8 +80,7 @@ export class MdsInputUpload {
 
   private onDropHandler = (event: DragEvent) => {
     if (this.nativeInput && event.dataTransfer) {
-      const f = this.prepareFiles(event.dataTransfer.files)
-      this.nativeInput.files = f
+      this.nativeInput.files = this.prepareFiles(event.dataTransfer.files)
       this.internals.setFormValue(this.nativeInput.value)
     }
     event.preventDefault()
@@ -156,7 +150,7 @@ export class MdsInputUpload {
       files = files.slice(0, this.maxFiles)
     }
     const data = new DataTransfer()
-    const f = this.files
+    const f = [...this.files]
     // prepare new file added
     for (const file of files) {
       // open only file not added previously
@@ -169,17 +163,8 @@ export class MdsInputUpload {
           error += 'Formato non supportato.'
         }
         if (!error) {
-          const reader = new FileReader()
-          // success
-          reader.onload = () => {
-            this.updateFileSatus(file, Status.SUCCESS)
-          }
-          // error
-          reader.onerror = () => {
-            this.updateFileSatus(file, Status.ERROR)
-          }
-          f.push({ key: hashValue(file.name + file.size), file, status: Status.UPLOADING })
-          reader.readAsArrayBuffer(file)
+          f.push({ key: hashValue(file.name + file.size), file, status: Status.SUCCESS })
+          // reader.readAsArrayBuffer(file)
         } else {
           f.push({ key: hashValue(file.name + file.size), file, status: Status.ERROR, errorMessage: error })
         }
@@ -187,19 +172,8 @@ export class MdsInputUpload {
     }
     f.forEach(f => data.items.add(f.file))
     this.files = f
+    this.updateProgress()
     return data.files
-  }
-
-  private updateFileSatus (file: File, status: Status) {
-    const index = this.files.findIndex(f => f.key === hashValue(file.name + file.size))
-    if (index !== -1){
-      const f = this.files[index]
-      this.files[index] = { ...f, status }
-      // necessary assignment for trigger render
-      this.files = [...this.files]
-      this.updateProgress()
-
-    }
   }
 
   private updateProgress () {
@@ -212,7 +186,8 @@ export class MdsInputUpload {
   }
 
   private checkFileType (file: File): boolean {
-    const acceptArray = this.accept.split(',')
+
+    const acceptArray = this.accept.replace(/ /g, '').split(',')
     // controllo mime type univoco (es. image/png)
     if (acceptArray.includes(file.type)) return true
     // controllo mime type multiestensione (es. image/*)
@@ -232,7 +207,6 @@ export class MdsInputUpload {
           onDragOver={this.onDragOverHandler}
           onDragEnter={this.onDragEnterHandler}
           onDragLeave={this.onDragLeaveHandler}
-          onClick={() => this.nativeInput?.click()}
           ref={ dragArea => this.elDragArea = dragArea}
         >
           <div class="main-action">
@@ -242,8 +216,8 @@ export class MdsInputUpload {
             <mds-text animation="yugop" variant="title" typography="action" text={ this.actionTitle }></mds-text>
           </div>
           <div class="main-infos">
-            {this.files && <mds-button variant='error' onClick={this.onReset}>Cancella tutto</mds-button>}
-            <mds-button variant='primary' onClick={this.onAdd}> {this.files ? 'Aggiungi file' : 'Seleziona File'}</mds-button>
+            {this.files.length && <mds-button variant='error' onClick={this.onReset}>Cancella tutto</mds-button>}
+            <mds-button variant='primary' onClick={() => this.nativeInput?.click()}> {this.files ? 'Aggiungi file' : 'Seleziona File'}</mds-button>
             <mds-progress class="progress-bar" progress={this.progress}></mds-progress>
             <mds-text variant="info" typography="caption">Puoi caricare fino a {this.maxFiles} file</mds-text>
           </div>
@@ -257,36 +231,15 @@ export class MdsInputUpload {
           {this.files.map(file =>
           {
             switch (file.status) {
-            case Status.UPLOADING :
-              return (
-                <mds-entity await>
-                  <mds-text aria-label="Nome" truncate="word" typography="h6">{file.file.name}</mds-text>
-                  <mds-text aria-label="Stato caricamento" slot="detail" truncate="word" typography="caption">Upload in corso...</mds-text>
-                  <mds-button class="action action--cancel-upload" slot="action" icon={miBaselineCancel} title="Annulla upload" tone="quiet" variant="dark"></mds-button>
-                </mds-entity>
-              )
             case Status.ERROR:
               return (
-                <mds-entity icon={miBaselineError} tone="weak" variant="error">
-                  <mds-text aria-label="Nome" truncate="word" typography="h6">{file.file.name}</mds-text>
-                  <mds-text aria-label="Stato caricamento" slot="detail" truncate="word" typography="caption">Errore caricamento. {file.errorMessage}</mds-text>
-                  <mds-button class="action action--retry-upload" slot="action" icon={miBaselineReplay} title="Ritenta upload" tone="quiet" variant="dark"></mds-button>
-                </mds-entity>
-              )
-            case Status.ABORT:
-              return (
-                <mds-entity icon={miBaselineClose} tone="weak" variant="warning">
-                  <mds-text aria-label="Nome" truncate="word" typography="h6">{file.file.name}</mds-text>
-                  <mds-text aria-label="Stato caricamento" slot="detail" truncate="word" typography="caption">Upload annullato</mds-text>
-                </mds-entity>
+                <mds-file-preview variant="error" filename={file.file.name} filesize={file.file.size} message={file.errorMessage}>
+                </mds-file-preview>
               )
             case Status.SUCCESS:
               return (
-                <mds-entity icon={miBaselineDone} tone="weak" variant="success">
-                  <mds-text aria-label="Nome" truncate="word" typography="h6">{file.file.name}</mds-text>
-                  <mds-text aria-label="Stato caricamento" slot="detail" truncate="word" typography="caption">Upload completato</mds-text>
-                  <mds-button class="action action--cancel-upload" slot="action" icon={miBaselineCancel} title="Annulla" tone="quiet" variant="dark" onClick={() => this.onCancel(file.key)}></mds-button>
-                </mds-entity>
+                <mds-file-preview deletable filename={file.file.name} filesize={file.file.size} onMdsFileRemove={() => this.onCancel(file.key)}>
+                </mds-file-preview>
               )
             }
           },

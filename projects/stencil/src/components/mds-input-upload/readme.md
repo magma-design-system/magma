@@ -21,7 +21,7 @@
 - [mds-text](../mds-text)
 - [mds-button](../mds-button)
 - [mds-progress](../mds-progress)
-- [mds-entity](../mds-entity)
+- [mds-file-preview](../mds-file-preview)
 
 ### Graph
 ```mermaid
@@ -29,15 +29,16 @@ graph TD;
   mds-input-upload --> mds-text
   mds-input-upload --> mds-button
   mds-input-upload --> mds-progress
-  mds-input-upload --> mds-entity
+  mds-input-upload --> mds-file-preview
   mds-button --> mds-spinner
   mds-button --> mds-icon
   mds-button --> mds-text
-  mds-entity --> mds-spinner
-  mds-entity --> mds-avatar
-  mds-avatar --> mds-text
-  mds-avatar --> mds-img
-  mds-avatar --> mds-icon
+  mds-file-preview --> mds-button
+  mds-file-preview --> mds-img
+  mds-file-preview --> mds-icon
+  mds-file-preview --> mds-text
+  mds-file-preview --> mds-badge
+  mds-badge --> mds-text
   style mds-input-upload fill:#f9f,stroke:#333,stroke-width:4px
 ```
 
