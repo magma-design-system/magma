@@ -90,6 +90,14 @@
   text-align: center;
 }
 
+.main-actions {
+
+  @apply gap-200 min-w-3200;
+
+  display: flex;
+  flex-direction: column;
+}
+
 .main-action-icon {
   align-items: center;
   display: inline-flex;
@@ -108,6 +116,7 @@
 .file-list {
   @apply
     gap-400;
+
   grid-template-columns: repeat(auto-fit, minmax(10rem/* 160px */, 20rem));
 }
 

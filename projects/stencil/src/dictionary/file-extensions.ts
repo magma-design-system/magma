@@ -19,7 +19,7 @@ const fileExtensionsDictionary = {
   jpeg: { format: 'image', description: 'Immagine compressa' },
   jpg: { format: 'image', description: 'Immagine compressa' },
   js: { format: 'code', description: 'JavaScript' },
-  json: { format: 'data', description: 'File database' },
+  json: { format: 'data', description: 'JavaScript Object Notation' },
   jsx: { format: 'code', description: 'JavaScript' },
   m2v: { format: 'video', description: 'Filmato SD' },
   mp2: { format: 'audio', description: 'Audio compresso' },

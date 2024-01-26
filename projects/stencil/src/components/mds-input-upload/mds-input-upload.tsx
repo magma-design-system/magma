@@ -215,9 +215,11 @@ export class MdsInputUpload {
             </div>
             <mds-text animation="yugop" variant="title" typography="action" text={ this.actionTitle }></mds-text>
           </div>
-          <div class="main-infos">
-            {this.files.length && <mds-button variant='error' onClick={this.onReset}>Cancella tutto</mds-button>}
+          <div class="main-actions">
             <mds-button variant='primary' onClick={() => this.nativeInput?.click()}> {this.files ? 'Aggiungi file' : 'Seleziona File'}</mds-button>
+            {this.files.length > 0 && <mds-button variant='error' onClick={this.onReset}>Cancella tutto</mds-button> }
+          </div>
+          <div class="main-infos">
             <mds-progress class="progress-bar" progress={this.progress}></mds-progress>
             <mds-text variant="info" typography="caption">Puoi caricare fino a {this.maxFiles} file</mds-text>
           </div>
@@ -233,13 +235,11 @@ export class MdsInputUpload {
             switch (file.status) {
             case Status.ERROR:
               return (
-                <mds-file-preview variant="error" filename={file.file.name} filesize={file.file.size} message={file.errorMessage}>
-                </mds-file-preview>
+                <mds-file-preview variant="error" filename={file.file.name} filesize={file.file.size.toString()} message={file.errorMessage}></mds-file-preview>
               )
             case Status.SUCCESS:
               return (
-                <mds-file-preview deletable filename={file.file.name} filesize={file.file.size} onMdsFileRemove={() => this.onCancel(file.key)}>
-                </mds-file-preview>
+                <mds-file-preview deletable filename={file.file.name} filesize={file.file.size.toString()} onMdsFileRemove={() => this.onCancel(file.key)}></mds-file-preview>
               )
             }
           },

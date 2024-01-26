@@ -3,7 +3,7 @@ import { fileExtensionsDictionary } from '@dictionary/file-extensions'
 import { filesList } from '@fixture/filenames'
 import { truncateDictionary } from '@dictionary/text'
 import { iconsDictionary, mggIconsDictionary, svgIconsDictionary } from '@dictionary/icon'
-
+import { themeFullVariantAvatarDictionary } from '@dictionary/variant'
 
 const extensionsList = Object.keys(fileExtensionsDictionary).sort()
 
@@ -52,6 +52,12 @@ export default {
       description: 'Overrides the automatic filetype recongition by forcing the suffix to one of the available formats choosen',
       options: extensionsList,
       control: { type: 'select' },
+    },
+    variant: {
+      type: { name: 'string' },
+      control: { type: 'select' },
+      description: 'Sets the theme variant colors',
+      options: themeFullVariantAvatarDictionary,
     },
   },
 }

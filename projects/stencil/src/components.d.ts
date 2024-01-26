@@ -517,7 +517,7 @@ export namespace Components {
         /**
           * The filesize shown, if you pass a string you can write whathever you want, if you pass a number it expect filesize in bytes, the component will format it automatically.
          */
-        "filesize"?: string | number;
+        "filesize"?: string;
         /**
           * The name of the icon or a base64 string to render it as an svg
          */
@@ -538,7 +538,10 @@ export namespace Components {
           * Truncates the filename shown
          */
         "truncate"?: TypographyTruncateType;
-        "variant": string;
+        /**
+          * The variant of the component, is shown only if the message attribute is defined
+         */
+        "variant"?: ThemeFullVariantAvatarType;
     }
     interface MdsFilter {
         /**
@@ -3142,7 +3145,7 @@ declare namespace LocalJSX {
         /**
           * The filesize shown, if you pass a string you can write whathever you want, if you pass a number it expect filesize in bytes, the component will format it automatically.
          */
-        "filesize"?: string | number;
+        "filesize"?: string;
         /**
           * The name of the icon or a base64 string to render it as an svg
          */
@@ -3171,7 +3174,10 @@ declare namespace LocalJSX {
           * Truncates the filename shown
          */
         "truncate"?: TypographyTruncateType;
-        "variant"?: string;
+        /**
+          * The variant of the component, is shown only if the message attribute is defined
+         */
+        "variant"?: ThemeFullVariantAvatarType;
     }
     interface MdsFilter {
         /**
