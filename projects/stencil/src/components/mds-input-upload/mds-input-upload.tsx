@@ -44,6 +44,7 @@ export class MdsInputUpload {
   private elDragArea?: HTMLElement
   private km = new KeyboardManager()
   private extensions: string
+  private fileUploaded = 0
   private cssMinCols: number = 1000
 
   /**
@@ -122,6 +123,7 @@ export class MdsInputUpload {
       const data = new DataTransfer()
       this.files.forEach(f => {if (f.status === Status.SUCCESS) {data.items.add(f.file)}})
       this.nativeInput.files = data.files
+      this.fileUploaded -= 1
       this.updateProgress()
     }
   }
@@ -134,6 +136,7 @@ export class MdsInputUpload {
       this.files = []
       this.nativeInput.files = null
       this.internals.setFormValue(null)
+      this.fileUploaded = 0
       this.updateProgress()
     }
   }
@@ -147,12 +150,7 @@ export class MdsInputUpload {
    */
   private prepareFiles (fileList: FileList | null): FileList | null {
     if (!fileList) return null
-    let files = Array.from(fileList)
-
-    if (files.length >= this.maxFiles) {
-      console.info(`numero massimo di file raggiunto, verranno caricati solo i primi ${this.maxFiles} file`)
-      files = files.slice(0, this.maxFiles)
-    }
+    const files = Array.from(fileList)
     const data = new DataTransfer()
     const f = [...this.files]
     // prepare new file added
@@ -160,6 +158,9 @@ export class MdsInputUpload {
       // open only file not added previously
       if (this.files.findIndex(f => f.key === hashValue(file.name + file.size)) === -1) {
         let error = ''
+        if (this.fileUploaded >= this.maxFiles) {
+          error += 'Numero massimo di file raggiunto.'
+        }
         if (!this.checkFileSize(file)){
           error += 'File troppo grande.'
         }
@@ -168,13 +169,16 @@ export class MdsInputUpload {
         }
         if (!error) {
           f.push({ key: hashValue(file.name + file.size), file, status: Status.SUCCESS })
-          // reader.readAsArrayBuffer(file)
+          this.fileUploaded += 1
         } else {
           f.push({ key: hashValue(file.name + file.size), file, status: Status.ERROR, errorMessage: error })
         }
       }
     }
-    f.forEach(f => data.items.add(f.file))
+    // show uploadable file before the others with error
+    f.sort(this.sortByStatusAndName)
+    // set input.files only uploadable file
+    f.slice(0, this.maxFiles).forEach(f => data.items.add(f.file))
     this.files = f
     this.updateProgress()
     return data.files
@@ -201,6 +205,13 @@ export class MdsInputUpload {
     // controllo estensione
     if (acceptArray.includes(`.${file.name.split('.').pop()}`)) return true
     return false
+  }
+
+  private sortByStatusAndName (a: FileStatus, b: FileStatus): number {
+    if (a.status === b.status) {
+      return a.file.name.localeCompare(b.file.name)
+    }
+    return a.status === Status.SUCCESS ? -1 : 1
   }
 
   render () {
