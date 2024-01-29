@@ -17,6 +17,7 @@ interface FileStatus {
   file: File,
   status: Status,
   errorMessage?: string
+  id: number
 }
 
 @Component({
@@ -46,6 +47,7 @@ export class MdsInputUpload {
   private extensions: string
   private fileUploaded = 0
   private cssMinCols: number = 1000
+  private id: number = 0
 
   /**
    * Defines the file types the file input should accept
@@ -156,6 +158,7 @@ export class MdsInputUpload {
     // prepare new file added
     for (const file of files) {
       // update only file not added previously file with errors
+      this.id += 1
       const index = this.files.findIndex(f => f.key === hashValue(file.name + file.size))
       if (index === -1 || this.files[index].status !== Status.SUCCESS) {
         let error = ''
@@ -169,15 +172,16 @@ export class MdsInputUpload {
           error += 'Formato non supportato.'
         }
         if (!error) {
-          f.push({ key: hashValue(file.name + file.size), file, status: Status.SUCCESS })
+          f.push({ key: hashValue(file.name + file.size), file, id: this.id, status: Status.SUCCESS })
           this.fileUploaded += 1
         } else {
-          f.push({ key: hashValue(file.name + file.size), file, status: Status.ERROR, errorMessage: error })
+          f.push({ key: hashValue(file.name + file.size), file, id: this.id, status: Status.ERROR, errorMessage: error })
         }
       }
     }
     // show uploadable file before the others with error
-    f.sort(this.sortByStatusAndName)
+    // f.sort(this.sortByStatusAndName)
+    f.sort(this.sortById)
     // set input.files only uploadable file
     f.slice(0, this.maxFiles).forEach(f => data.items.add(f.file))
     this.files = f
@@ -208,11 +212,15 @@ export class MdsInputUpload {
     return false
   }
 
-  private sortByStatusAndName (a: FileStatus, b: FileStatus): number {
-    if (a.status === b.status) {
-      return a.file.name.localeCompare(b.file.name)
-    }
-    return a.status === Status.SUCCESS ? -1 : 1
+  // private sortByStatusAndName (a: FileStatus, b: FileStatus): number {
+  //   if (a.status === b.status) {
+  //     return a.file.name.localeCompare(b.file.name)
+  //   }
+  //   return a.status === Status.SUCCESS ? -1 : 1
+  // }
+
+  private sortById (a: FileStatus, b: FileStatus): number {
+    return b.id - a.id
   }
 
   render () {
