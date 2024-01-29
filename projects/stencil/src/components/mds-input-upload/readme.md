@@ -10,8 +10,8 @@
 | Property              | Attribute       | Description                                                        | Type     | Default     |
 | --------------------- | --------------- | ------------------------------------------------------------------ | -------- | ----------- |
 | `accept` _(required)_ | `accept`        | Defines the file types the file input should accept                | `string` | `undefined` |
-| `maxFileSize`         | `max-file-size` | Specifies the max size of a single file that can be uploaded in MB | `number` | `20`        |
-| `maxFiles`            | `max-files`     | Specifies the max number of files that can be uploaded             | `number` | `1`         |
+| `maxFileSize`         | `max-file-size` | Specifies the max size of a single file that can be uploaded in MB | `20`     | `20`        |
+| `maxFiles`            | `max-files`     | Specifies the max number of files that can be uploaded             | `1`      | `1`         |
 
 
 ## Dependencies

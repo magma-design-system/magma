@@ -1043,11 +1043,11 @@ export namespace Components {
         /**
           * Specifies the max size of a single file that can be uploaded in MB
          */
-        "maxFileSize": number;
+        "maxFileSize": 20;
         /**
           * Specifies the max number of files that can be uploaded
          */
-        "maxFiles": number;
+        "maxFiles": 1;
     }
     interface MdsKpi {
     }
@@ -3735,11 +3735,11 @@ declare namespace LocalJSX {
         /**
           * Specifies the max size of a single file that can be uploaded in MB
          */
-        "maxFileSize"?: number;
+        "maxFileSize"?: 20;
         /**
           * Specifies the max number of files that can be uploaded
          */
-        "maxFiles"?: number;
+        "maxFiles"?: 1;
     }
     interface MdsKpi {
     }

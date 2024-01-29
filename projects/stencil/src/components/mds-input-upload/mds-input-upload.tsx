@@ -34,34 +34,30 @@ export class MdsInputUpload {
   }
 
   // @Element() private element: HTMLMdsInputUploadElement
-  @State() actionTitle: string = this.mainActionTitle.default
-
-  /**
-   * Defines the file types the file input should accept
-   */
-  @Prop() accept!: string
-
-  /**
-   * Specifies the max size of a single file that can be uploaded in MB
-   */
-  @Prop() maxFileSize = 20
-
-  /**
-   * Specifies the max number of files that can be uploaded
-   */
-  @Prop() maxFiles = 1
-
   @AttachInternals() internals: ElementInternals
+  @State() actionTitle: string = this.mainActionTitle.default
   @State() files: FileStatus[] = []
   @State() progress = 0
 
   private nativeInput?: HTMLInputElement
   private elDragArea?: HTMLElement
-
   private km = new KeyboardManager()
-
   private extensions: string
 
+  /**
+   * Defines the file types the file input should accept
+   */
+  @Prop({ reflect: true }) readonly accept!: string
+
+  /**
+   * Specifies the max size of a single file that can be uploaded in MB
+   */
+  @Prop({ reflect: true }) readonly maxFileSize = 20
+
+  /**
+   * Specifies the max number of files that can be uploaded
+   */
+  @Prop({ reflect: true }) readonly maxFiles = 1
 
   componentWillLoad (): void {
     this.extensions = this.accept.split(',').map(mtype => (mtype.includes('.') ? mtype.slice(1) : Mime.getExtension(mtype))).join(', ').toUpperCase()
@@ -239,7 +235,7 @@ export class MdsInputUpload {
               )
             case Status.SUCCESS:
               return (
-                <mds-file-preview deletable filename={file.file.name} filesize={file.file.size.toString()} onMdsFileRemove={() => this.onCancel(file.key)}></mds-file-preview>
+                <mds-file-preview deletable filename={file.file.name} filesize={file.file.size.toString()} onMdsFileRemove={() => this.onCancel(file.key)} src={URL.createObjectURL(file.file)}></mds-file-preview>
               )
             }
           },

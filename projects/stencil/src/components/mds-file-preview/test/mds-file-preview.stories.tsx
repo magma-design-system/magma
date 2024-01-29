@@ -19,7 +19,7 @@ export default {
       description: 'Overrides the default filetype description',
     },
     filename: {
-      type: { name: 'string' },
+      type: 'string',
       description: 'The filename shown as component title, is used to auto assign one of the filetype known in the filetype dictionary',
       options: filesList,
       control: { type: 'select' },
@@ -29,7 +29,7 @@ export default {
       description: 'The filesize shown, if you pass a string you can write whathever you want, if you pass a number it expect filesize in bytes, the component will format it automatically.',
     },
     icon: {
-      type: { name: 'string' },
+      type: 'string',
       description: 'The name of the icon or a base64 string to render it as an svg',
       options: mggIconsDictionary.concat(iconsDictionary).concat(svgIconsDictionary),
       control: { type: 'select' },
@@ -44,17 +44,17 @@ export default {
       options: truncateDictionary,
     },
     src: {
-      type: { name: 'string' },
+      type: 'string',
       description: 'The image preview src if available of a file, useful if you have a logo to display, or a smaller version of a bigger image',
     },
     suffix: {
-      type: { name: 'string' },
+      type: 'string',
       description: 'Overrides the automatic filetype recongition by forcing the suffix to one of the available formats choosen',
       options: extensionsList,
       control: { type: 'select' },
     },
     variant: {
-      type: { name: 'string' },
+      type: 'string',
       control: { type: 'select' },
       description: 'Sets the theme variant colors',
       options: themeFullVariantAvatarDictionary,
@@ -140,6 +140,7 @@ Variant.args = {
   filename: filesList[1],
   filesize: 84791746,
   suffix: 'pdf',
+  icon: 'mdi/file-document-remove-outline',
   src: './fred-brooks-zoom.webp',
   message: 'Works only with message attribute',
   variant: 'success',

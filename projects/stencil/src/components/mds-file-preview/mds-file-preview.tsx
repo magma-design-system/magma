@@ -58,12 +58,12 @@ export class MdsFilePreview {
   /**
    * The name of the icon or a base64 string to render it as an svg
    */
-  @Prop({ reflect: true }) readonly icon: string
+  @Prop({ reflect: true }) icon: string
 
   /**
    * The variant of the component, is shown only if the message attribute is defined
    */
-  @Prop({ reflect: true }) readonly variant?: ThemeFullVariantAvatarType
+  @Prop({ reflect: true }) variant?: ThemeFullVariantAvatarType
 
   /**
    * Emits when the component is clicked, returning file infos
@@ -90,7 +90,7 @@ export class MdsFilePreview {
                 ? <mds-icon class="icon" name={this.icon}></mds-icon>
                 : <mds-icon class="icon" name={getFormatsVariant(this.filename, this.suffix).icon}/>
               }
-              <mds-text class="message" typography="caption" variant="info">{ this.message }</mds-text>
+              { this.message && <mds-text class="message" typography="caption" variant="info">{ this.message }</mds-text> }
             </div>
           }
           <mds-text class="file-name" typography="h6" variant="title" truncate={this.truncate} title={ this.filename }>{ this.filename }</mds-text>
