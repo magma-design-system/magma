@@ -1,5 +1,5 @@
 import miBaselineCancel from '@icon/mi/baseline/cancel.svg'
-import { Component, Event, EventEmitter, Host, h, Prop } from '@stencil/core'
+import { Component, Element, Event, EventEmitter, Host, h, Prop, Watch } from '@stencil/core'
 import { ExtensionSuffixType } from '@type/file-types'
 import { MdsFilePreviewEventDetail } from './meta/event-detail'
 import { TypographyTruncateType } from '@type/text'
@@ -15,10 +15,17 @@ import { getFormatsVariant, getSuffix, getExtensionInfos } from '@common/file'
 })
 export class MdsFilePreview {
 
+  @Element() host: HTMLMdsFilePreviewElement
+
   /**
    * Enables the cross icon to perform cancel/delete action on element
    */
   @Prop({ reflect: true }) readonly deletable?: boolean
+
+  /**
+   * Enables the download icon to perform the related action on element
+   */
+  @Prop({ reflect: true }) readonly downloadable?: boolean
 
   /**
    * Overrides the default filetype description
@@ -73,16 +80,39 @@ export class MdsFilePreview {
   /**
    * Emits when the component is removed, returning file infos
    */
-  @Event({ eventName: 'mdsFileRemove' }) removedEvent: EventEmitter<MdsFilePreviewEventDetail>
+  @Event({ eventName: 'mdsFileDelete' }) deletedEvent: EventEmitter<MdsFilePreviewEventDetail>
 
   private getDefaultDescription = (): string =>
     getExtensionInfos(this.filename, this.suffix).description
 
+  private onClickDeletedEvent = (): void => {
+    this.deletedEvent.emit({ target: this.host, filename: this.filename, extension: getSuffix(this.filename, this.suffix) })
+  }
+
+  private onClickDownloadEvent = (): void => {
+    this.downloadedEvent.emit({ target: this.host, filename: this.filename, extension: getSuffix(this.filename, this.suffix) })
+  }
+
+  componentDidLoad = (): void => {
+    this.handleDownloadable(this.downloadable)
+  }
+
+  @Watch('downloadable')
+  handleDownloadable (newValue?: boolean, oldValue?: boolean): void {
+    if (newValue === oldValue) return
+    const card = this.host.shadowRoot?.querySelector('.card')
+    if (newValue) {
+      card?.addEventListener('click', this.onClickDownloadEvent)
+      return
+    }
+    card?.removeEventListener('click', this.onClickDownloadEvent)
+  }
+
   render () {
     return (
       <Host>
-        { this.deletable && <mds-button class="action-delete" icon={miBaselineCancel} variant="light" onClick={() => { console.info('onClick') }}></mds-button> }
-        <div class="card" part="card">
+        { this.deletable && <mds-button class="action-delete" icon={miBaselineCancel} variant="light" onClick={this.onClickDeletedEvent}></mds-button> }
+        <div class="card" part="card" onClick={this.onClickDownloadEvent}>
           { this.src && !this.message && getFormatsVariant(this.filename, this.suffix).preview
             ? <mds-img src={this.src} class="preview preview--image" aspect-ratio="1/1"></mds-img>
             : <div class={clsx('preview', !this.message ? `preview--icon ${getFormatsVariant(this.filename, this.suffix).color} ${getFormatsVariant(this.filename, this.suffix).iconBackground}` : 'preview--status')}>

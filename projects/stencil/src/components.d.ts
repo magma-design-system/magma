@@ -511,6 +511,10 @@ export namespace Components {
          */
         "description"?: string;
         /**
+          * Enables the download icon to perform the related action on element
+         */
+        "downloadable"?: boolean;
+        /**
           * The filename shown as component title, is used to auto assign one of the filetype known in the filetype dictionary
          */
         "filename": string;
@@ -1938,7 +1942,7 @@ declare global {
     };
     interface HTMLMdsFilePreviewElementEventMap {
         "mdsFileDownload": MdsFilePreviewEventDetail;
-        "mdsFileRemove": MdsFilePreviewEventDetail;
+        "mdsFileDelete": MdsFilePreviewEventDetail;
     }
     interface HTMLMdsFilePreviewElement extends Components.MdsFilePreview, HTMLStencilElement {
         addEventListener<K extends keyof HTMLMdsFilePreviewElementEventMap>(type: K, listener: (this: HTMLMdsFilePreviewElement, ev: MdsFilePreviewCustomEvent<HTMLMdsFilePreviewElementEventMap[K]>) => any, options?: boolean | AddEventListenerOptions): void;
@@ -3139,6 +3143,10 @@ declare namespace LocalJSX {
          */
         "description"?: string;
         /**
+          * Enables the download icon to perform the related action on element
+         */
+        "downloadable"?: boolean;
+        /**
           * The filename shown as component title, is used to auto assign one of the filetype known in the filetype dictionary
          */
         "filename"?: string;
@@ -3155,13 +3163,13 @@ declare namespace LocalJSX {
          */
         "message"?: string;
         /**
+          * Emits when the component is removed, returning file infos
+         */
+        "onMdsFileDelete"?: (event: MdsFilePreviewCustomEvent<MdsFilePreviewEventDetail>) => void;
+        /**
           * Emits when the component is clicked, returning file infos
          */
         "onMdsFileDownload"?: (event: MdsFilePreviewCustomEvent<MdsFilePreviewEventDetail>) => void;
-        /**
-          * Emits when the component is removed, returning file infos
-         */
-        "onMdsFileRemove"?: (event: MdsFilePreviewCustomEvent<MdsFilePreviewEventDetail>) => void;
         /**
           * The image preview src if available of a file, useful if you have a logo to display, or a smaller version of a bigger image
          */
