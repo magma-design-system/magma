@@ -243,7 +243,7 @@ export class MdsInputUpload {
               )
             case Status.SUCCESS:
               return (
-                <mds-file-preview deletable filename={file.file.name} filesize={file.file.size.toString()} onMdsFileRemove={() => this.onCancel(file.key)} src={URL.createObjectURL(file.file)}></mds-file-preview>
+                <mds-file-preview deletable filename={file.file.name} filesize={file.file.size.toString()} onMdsFileDelete={() => this.onCancel(file.key)} src={URL.createObjectURL(file.file)}></mds-file-preview>
               )
             }
           },

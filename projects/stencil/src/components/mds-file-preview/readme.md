@@ -26,8 +26,8 @@
 
 | Event             | Description                                               | Type                                     |
 | ----------------- | --------------------------------------------------------- | ---------------------------------------- |
+| `mdsFileDelete`   | Emits when the component is removed, returning file infos | `CustomEvent<MdsFilePreviewEventDetail>` |
 | `mdsFileDownload` | Emits when the component is clicked, returning file infos | `CustomEvent<MdsFilePreviewEventDetail>` |
-| `mdsFileRemove`   | Emits when the component is removed, returning file infos | `CustomEvent<MdsFilePreviewEventDetail>` |
 
 
 ## Shadow Parts
