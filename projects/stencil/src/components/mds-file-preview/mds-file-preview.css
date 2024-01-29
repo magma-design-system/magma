@@ -39,6 +39,7 @@
 }
 
 .preview--image {
+  filter: brightness(0.975);
   padding: 0 !important;
 }
 
@@ -73,6 +74,7 @@
   position: absolute;
   right: 0;
   top: 0;
+  z-index: theme('zIndex.10');
 }
 
 .infos {

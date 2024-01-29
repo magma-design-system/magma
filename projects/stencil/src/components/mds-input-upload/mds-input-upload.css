@@ -7,13 +7,14 @@
   --mds-input-upload-drag-area-background-color: theme('colors.tone-neutral');
   --mds-input-upload-drag-area-border-on-drag: 3px dashed theme('colors.tone-neutral-07');
   --mds-input-upload-drag-area-border: 3px dashed theme('colors.tone-neutral-07');
-
+  --mds-input-upload-min-cols: 3;
+  
   @apply
     gap-400
     grid-cols-full;
 
+  container-type: inline-size;
   display: grid;
-
 }
 
 .drag-area {
@@ -114,10 +115,31 @@
 }
 
 .file-list {
+
+  
+  --cols: var(--mds-input-upload-min-cols);
+  --perc-w: calc(100% / var(--cols));
+  --gap: theme('spacing.400');
+  --gap-w: calc(var(--gap) - calc(var(--gap) / var(--cols)));
+  --max-w: calc(var(--perc-w) - var(--gap-w));
+  --template-cols: repeat(auto-fit, minmax(theme('spacing.4000'), var(--max-w)));
+
   @apply
     gap-400;
 
-  grid-template-columns: repeat(auto-fit, minmax(theme('spacing.4000'), theme('spacing.6000')));
+  grid-template-columns: var(--template-cols);
+}
+
+.file-list--more-items {
+
+  --template-cols: repeat(auto-fit, minmax(theme('spacing.4000'), 1fr));
+}
+
+@container (max-width: 340px) {
+  .file-list {;
+
+    --template-cols: 1fr;
+  }
 }
 
 .main-infos {
