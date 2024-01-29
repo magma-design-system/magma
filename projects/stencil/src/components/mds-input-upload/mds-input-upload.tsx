@@ -1,8 +1,9 @@
-import { AttachInternals, Component, Host, Prop, State, h } from '@stencil/core'
+import Mime from 'mime'
+import clsx from 'clsx'
 import miBaselineAddCircle from '@icon/mi/baseline/add-circle.svg'
+import { AttachInternals, Component, Element, Host, Prop, State, h } from '@stencil/core'
 import { KeyboardManager } from '@common/keyboard-manager'
 import { hashValue } from '@common/aria'
-import Mime from 'mime'
 
 enum Status {
   UPLOADING,
@@ -33,7 +34,7 @@ export class MdsInputUpload {
     end: 'Caricamento completato',
   }
 
-  // @Element() private element: HTMLMdsInputUploadElement
+  @Element() private host: HTMLMdsInputUploadElement
   @AttachInternals() internals: ElementInternals
   @State() actionTitle: string = this.mainActionTitle.default
   @State() files: FileStatus[] = []
@@ -43,6 +44,7 @@ export class MdsInputUpload {
   private elDragArea?: HTMLElement
   private km = new KeyboardManager()
   private extensions: string
+  private cssMinCols: number = 1000
 
   /**
    * Defines the file types the file input should accept
@@ -68,10 +70,16 @@ export class MdsInputUpload {
       this.km.addElement(this.elDragArea)
       this.km.attachClickBehavior()
     }
+    this.updateCSSCustomProps()
   }
 
   disconnectedCallback (): void {
     this.km.detachClickBehavior()
+  }
+
+  private updateCSSCustomProps = (): void => {
+    const elementStyles = window.getComputedStyle(this.host)
+    this.cssMinCols = Number(elementStyles.getPropertyValue('--mds-input-upload-min-cols'))
   }
 
   private onDropHandler = (event: DragEvent) => {
@@ -225,7 +233,7 @@ export class MdsInputUpload {
           <mds-text variant="info" typography="caption">{this.extensions !== '' ? 'Puoi caricare ' + this.extensions : 'Puoi caricare qualsiasi formato'}</mds-text>
           <mds-text variant="info" typography="caption">{this.maxFileSize}MB max per file</mds-text>
         </div>
-        <div class="file-list">
+        <div class={clsx('file-list', this.files.length > this.cssMinCols && 'file-list--more-items')}>
           {this.files.map(file =>
           {
             switch (file.status) {
