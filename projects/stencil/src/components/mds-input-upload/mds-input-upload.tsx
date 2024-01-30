@@ -4,6 +4,7 @@ import miBaselineAddCircle from '@icon/mi/baseline/add-circle.svg'
 import { AttachInternals, Component, Element, Host, Method, Prop, State, h } from '@stencil/core'
 import { KeyboardManager } from '@common/keyboard-manager'
 import { hashValue } from '@common/aria'
+import { genericMimeToExt } from '@dictionary/file-extensions'
 
 enum Status {
   UPLOADING,
@@ -65,7 +66,7 @@ export class MdsInputUpload {
   @Prop({ reflect: true }) readonly maxFiles = 1
 
   componentWillLoad (): void {
-    this.extensions = this.accept.split(',').map(mtype => (mtype.includes('.') ? mtype.slice(1) : Mime.getExtension(mtype))).join(', ').toUpperCase()
+    this.extensions = this.getExtension()
   }
 
   componentDidLoad (): void {
@@ -218,6 +219,20 @@ export class MdsInputUpload {
     // controllo estensione
     if (acceptArray.includes(`.${file.name.split('.').pop()}`)) return true
     return false
+  }
+
+  private getExtension (): string {
+    return this.accept.replace(/ /g, '').split(',')
+      .flatMap(mtype => {
+        // replace generic mime-type with related extensions
+        if (mtype.includes('*')) {
+          return [...genericMimeToExt.get(mtype.split('/')[0]) ?? '']
+        }
+        return mtype
+      })
+      // format string
+      .map(mtype => (mtype.includes('.') ? mtype.slice(1) : Mime.getExtension(mtype)))
+      .join(', ').toUpperCase()
   }
 
   // private sortByStatusAndName (a: FileStatus, b: FileStatus): number {

@@ -67,8 +67,15 @@ const fileExtensionsDictionary: FileExtenstion = {
   zip: { format: 'archive', description: 'Archivio compresso' },
 }
 
+const genericMimeToExt: Map<string, string[]> = new Map([
+  ['image', ['.png', '.jpg', '.jpeg', '.tiff', '.webp', '.jpe', '.gif', '.heic']],
+  ['audio', ['.mp2', '.mp3', '.mpga', '.wav', '.flac']],
+  ['video', ['.mv2', '.mp4', '.mp4v', '.mpeg', '.mpg4', '.mpg']],
+])
+
 export {
-  fileExtensionsDictionary,
   FileExtenstion,
   ExtensionInfo,
+  fileExtensionsDictionary,
+  genericMimeToExt,
 }
