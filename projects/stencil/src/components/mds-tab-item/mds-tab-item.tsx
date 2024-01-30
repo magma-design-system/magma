@@ -15,6 +15,7 @@ export class MdsTabItem {
 
   @Element() private element: HTMLMdsTabItemElement
   @State() isSelected: boolean
+  @State() hasText: boolean
 
   /**
    * Specifies if the tab item is selected or not
@@ -58,6 +59,10 @@ export class MdsTabItem {
     this.isSelected = newValue
   }
 
+  componentWillLoad ():void {
+    this.hasText = this.element.innerHTML !== ''
+  }
+
   render () {
     return (
       <Host onClick={this.toggle}>
@@ -68,7 +73,7 @@ export class MdsTabItem {
           size={this.size}
           type={this.type}
         >
-          <slot/>
+          { this.hasText && <slot/> }
         </mds-button>
       </Host>
     )

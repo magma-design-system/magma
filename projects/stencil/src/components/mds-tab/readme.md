@@ -38,6 +38,19 @@ This is a web-component from Maggioli Design System [Magma](https://magma.maggio
 | `--mds-tab-timing-function` | Sets the animation timing function on how the contents height is resized when the component switch from a content to another one |
 
 
+## Dependencies
+
+### Used by
+
+ - [mds-input-upload](../mds-input-upload)
+
+### Graph
+```mermaid
+graph TD;
+  mds-input-upload --> mds-tab
+  style mds-tab fill:#f9f,stroke:#333,stroke-width:4px
+```
+
 ----------------------------------------------
 
 Built with love @ [Gruppo Maggioli](https://www.maggioli.com) from [R&D Department](https://www.maggioli.com/it-it/chi-siamo/ricerca-sviluppo)
