@@ -1,22 +1,12 @@
-import { fileExtensionsDictionary } from '@dictionary/file-extensions'
+import { fileExtensionsDictionary, ExtensionInfo } from '@dictionary/file-extensions'
 import { fileFormatsVariant } from '@type/variant-file-format'
 
-type FileFormatsVariants = {
-    color: string
-    icon: string
-    iconBackground: string
-    preview: boolean
-    variant: string
+interface FileFormatsVariants {
+  color: string
+  icon: string
+  iconBackground: string
+  variant: string
 }
-
-type ExtensionInfo = {
-  format: string
-  description: string
-}
-
-// type FileExtensions = {
-//   [key: string]: ExtensionInfo
-// }
 
 const sanitizeFilename = (filename: string, error: string = 'Attribute "filename" is undefined.') => {
   if (filename === undefined ) {
@@ -58,7 +48,7 @@ const getSuffix = (rawFilename: string, suffixOverride?: string): string => {
 
 const getExtensionInfos = (rawFilename: string, suffixOverride?: string): ExtensionInfo => {
   const suffix = getSuffix(rawFilename, suffixOverride).toLocaleLowerCase()
-  return fileExtensionsDictionary[suffix] !== undefined ? fileExtensionsDictionary[suffix] : fileExtensionsDictionary.default
+  return fileExtensionsDictionary[suffix] ?? fileExtensionsDictionary.default
 }
 
 const getFormatsVariant = (rawFilename: string, suffixOverride?: string): FileFormatsVariants => {

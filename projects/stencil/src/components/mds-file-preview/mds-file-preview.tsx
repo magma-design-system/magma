@@ -113,7 +113,7 @@ export class MdsFilePreview {
       <Host>
         { this.deletable && <mds-button class="action-delete" icon={miBaselineCancel} variant="light" onClick={this.onClickDeletedEvent}></mds-button> }
         <div class="card" part="card" onClick={this.onClickDownloadEvent}>
-          { this.src && !this.message && getFormatsVariant(this.filename, this.suffix).preview
+          { this.src && !this.message && getExtensionInfos(this.filename, this.suffix).preview
             ? <mds-img src={this.src} class="preview preview--image" aspect-ratio="1/1"></mds-img>
             : <div class={clsx('preview', !this.message ? `preview--icon ${getFormatsVariant(this.filename, this.suffix).color} ${getFormatsVariant(this.filename, this.suffix).iconBackground}` : 'preview--status')}>
               { this.icon
