@@ -14,6 +14,19 @@
 | `maxFiles`            | `max-files`     | Specifies the max number of files that can be uploaded             | `1`      | `1`         |
 
 
+## Methods
+
+### `getFiles() => Promise<FileList | null>`
+
+Returns a promise of files uploaded as Filelist or null if there's none
+
+#### Returns
+
+Type: `Promise<FileList | null>`
+
+
+
+
 ## Dependencies
 
 ### Depends on

@@ -1045,6 +1045,10 @@ export namespace Components {
          */
         "accept": string;
         /**
+          * Returns a promise of files uploaded as Filelist or null if there's none
+         */
+        "getFiles": () => Promise<FileList | null>;
+        /**
           * Specifies the max size of a single file that can be uploaded in MB
          */
         "maxFileSize": 20;

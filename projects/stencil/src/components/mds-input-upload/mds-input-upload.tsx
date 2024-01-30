@@ -1,7 +1,7 @@
 import Mime from 'mime'
 import clsx from 'clsx'
 import miBaselineAddCircle from '@icon/mi/baseline/add-circle.svg'
-import { AttachInternals, Component, Element, Host, Prop, State, h } from '@stencil/core'
+import { AttachInternals, Component, Element, Host, Method, Prop, State, h } from '@stencil/core'
 import { KeyboardManager } from '@common/keyboard-manager'
 import { hashValue } from '@common/aria'
 
@@ -78,6 +78,14 @@ export class MdsInputUpload {
 
   disconnectedCallback (): void {
     this.km.detachClickBehavior()
+  }
+
+  /**
+   * Returns a promise of files uploaded as Filelist or null if there's none
+   */
+  @Method()
+  getFiles (): Promise<FileList | null> {
+    return Promise.resolve(this.nativeInput?.files ?? null)
   }
 
   private updateCSSCustomProps = (): void => {
