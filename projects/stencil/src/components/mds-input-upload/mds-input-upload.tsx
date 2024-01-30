@@ -1,7 +1,10 @@
 import Mime from 'mime'
 import clsx from 'clsx'
+import iconSortByAlpha from '@icon/mi/baseline/sort-by-alpha.svg'
+import iconSortById from '@icon/mi/baseline/pin.svg'
 import miBaselineAddCircle from '@icon/mi/baseline/add-circle.svg'
 import { AttachInternals, Component, Element, Host, Method, Prop, State, h } from '@stencil/core'
+import { AttachmentSort } from './meta/types'
 import { KeyboardManager } from '@common/keyboard-manager'
 import { hashValue } from '@common/aria'
 import { genericMimeToExt } from '@dictionary/file-extensions'
@@ -64,6 +67,11 @@ export class MdsInputUpload {
    * Specifies the max number of files that can be uploaded
    */
   @Prop({ reflect: true }) readonly maxFiles = 1
+
+  /**
+   * Specifies if the component should show a sort widget by alphabetical name or date of upload
+   */
+  @Prop({ reflect: true }) readonly sort?: AttachmentSort = 'manual'
 
   componentWillLoad (): void {
     this.extensions = this.getExtension()
@@ -203,6 +211,7 @@ export class MdsInputUpload {
     const nFile = this.files.map(fileStatus => (fileStatus.status === Status.SUCCESS ? 1 : 0) as number).reduce((prev, curr) => prev + curr, 0)
     this.progress = nFile / this.maxFiles
   }
+
   private checkFileSize (file: File): boolean {
     return file.size < this.maxFileSize * 1024 * 1024
   }
@@ -273,8 +282,14 @@ export class MdsInputUpload {
         </div>
         <input type='file' accept={this.accept} hidden ref={i => this.nativeInput = i} onChange={this.onAdd} multiple = {this.maxFiles > 1}/>
         <div class="additional-infos">
-          <mds-text variant="info" typography="caption">{this.extensions !== '' ? 'Puoi caricare ' + this.extensions : 'Puoi caricare qualsiasi formato'}</mds-text>
-          <mds-text variant="info" typography="caption">{this.maxFileSize}MB max per file</mds-text>
+          <div class="file-specs">
+            <mds-text variant="info" typography="caption">{this.extensions !== '' ? 'Puoi caricare ' + this.extensions : 'Puoi caricare qualsiasi formato'}</mds-text>
+            <mds-text variant="info" typography="caption">{this.maxFileSize}MB max per file</mds-text>
+          </div>
+          <mds-tab class="action-sort">
+            <mds-tab-item icon={iconSortById} selected title="Ordine per data di aggiunta"></mds-tab-item>
+            <mds-tab-item icon={iconSortByAlpha} title="Ordine alfabetico"></mds-tab-item>
+          </mds-tab>
         </div>
         <div class={clsx('file-list', this.files.length > this.cssMinCols && 'file-list--more-items')}>
           {this.files.map(file =>

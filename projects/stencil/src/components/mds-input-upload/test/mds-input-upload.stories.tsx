@@ -1,6 +1,6 @@
 import { h } from '@stencil/core'
 import { iconsDictionary } from '@dictionary/icon'
-// import { themeFullVariantAvatarDictionary, toneMinimalVariantDictionary } from '@dictionary/variant'
+import { attachmentSortDictionary } from '../meta/dictionary'
 
 export default {
   title: 'Form / Input Upload',
@@ -27,6 +27,12 @@ export default {
       type: { name: 'boolean' },
       description: 'Specifies if its possible to upload multiple file',
     },
+    sort: {
+      type: { name: 'string' },
+      description: 'Specifies if the component should show a sort widget by alphabetical name or date of upload',
+      options: attachmentSortDictionary,
+      control: { type: 'select' },
+    },
   },
 }
 
@@ -49,7 +55,7 @@ CustomAccept.args = {
 
 export const Multiple = Template.bind({})
 Multiple.args = {
-  accept: '.pdf, image/jpeg, image/png, .svg, .heic',
+  accept: '.pdf, image/jpeg, image/png, .svg, .heic, .webp',
   'max-file-size': 70,
   'max-files': 5,
 }

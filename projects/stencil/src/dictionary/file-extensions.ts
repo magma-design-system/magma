@@ -60,7 +60,7 @@ const fileExtensionsDictionary: FileExtenstion = {
   tsx: { format: 'code', description: 'TypeScript Extended Syntax' },
   txt: { format: 'text', description: 'Documento di testo non formattato' },
   wav: { format: 'audio', description: 'Audio non compresso' },
-  webp: { format: 'image', description: 'Immagine compressa Google', preview: true },
+  webp: { format: 'image', description: 'Immagine Web Picture', preview: true },
   xar: { format: 'archive', description: 'Archivio compresso' },
   xls: { format: 'spreadsheet', description: 'Foglio di calcolo Office' },
   xlsx: { format: 'spreadsheet', description: 'Foglio di calcolo Office' },

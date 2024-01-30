@@ -48,6 +48,7 @@ export type ExtensionSuffixType =
   | 'ts'
   | 'txt'
   | 'wav'
+  | 'webp'
   | 'xar'
   | 'xls'
   | 'xlsx'

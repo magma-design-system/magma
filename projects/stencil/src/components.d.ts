@@ -39,6 +39,7 @@ import { MdsInputEventDetail as MdsInputEventDetail1 } from "@component/mds-inpu
 import { MdsValidationErrors, MdsValidatorFn } from "./components/mds-input-field/meta/validators";
 import { InputValue } from "@interface/input-value";
 import { InputSwitchSizeType, InputSwitchType } from "./components/mds-input-switch/meta/types";
+import { AttachmentSort } from "./components/mds-input-upload/meta/types";
 import { ModalPositionType } from "./components/mds-modal/meta/types";
 import { StrategyType } from "./components/mds-notification/meta/types";
 import { MdsPaginatorEventDetail } from "./components/mds-paginator/meta/event-detail";
@@ -87,6 +88,7 @@ export { MdsInputEventDetail as MdsInputEventDetail1 } from "@component/mds-inpu
 export { MdsValidationErrors, MdsValidatorFn } from "./components/mds-input-field/meta/validators";
 export { InputValue } from "@interface/input-value";
 export { InputSwitchSizeType, InputSwitchType } from "./components/mds-input-switch/meta/types";
+export { AttachmentSort } from "./components/mds-input-upload/meta/types";
 export { ModalPositionType } from "./components/mds-modal/meta/types";
 export { StrategyType } from "./components/mds-notification/meta/types";
 export { MdsPaginatorEventDetail } from "./components/mds-paginator/meta/event-detail";
@@ -1056,6 +1058,10 @@ export namespace Components {
           * Specifies the max number of files that can be uploaded
          */
         "maxFiles": 1;
+        /**
+          * Specifies if the component should show a sort widget by alphabetical name or date of upload
+         */
+        "sort"?: AttachmentSort;
     }
     interface MdsKpi {
     }
@@ -3752,6 +3758,10 @@ declare namespace LocalJSX {
           * Specifies the max number of files that can be uploaded
          */
         "maxFiles"?: 1;
+        /**
+          * Specifies if the component should show a sort widget by alphabetical name or date of upload
+         */
+        "sort"?: AttachmentSort;
     }
     interface MdsKpi {
     }

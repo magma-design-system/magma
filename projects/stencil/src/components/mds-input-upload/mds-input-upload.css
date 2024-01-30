@@ -157,9 +157,38 @@
 
 .additional-infos {
 
-  @apply gap-x-400;
+  @apply gap-400;
 
+  align-items: flex-start;
   display: flex;
   flex-wrap: wrap;
+}
+
+.file-specs {
+
+  @apply gap-x-400 gap-y-100;
+
+  display: flex;
+  flex-grow: 1;
+  flex-wrap: wrap;
+  justify-content: space-between;
+}
+
+.action-sort {
+  display: none;
+}
+
+
+:host( [sort="manual"] ) .action-sort {
+  display: inline-flex;
+}
+
+:host( [sort="manual"] ) .file-specs {
+  flex-direction: column;
+  flex-wrap: nowrap;
+  justify-content: center;
+}
+
+:host( [sort="manual"] ) .additional-infos {
   justify-content: space-between;
 }
