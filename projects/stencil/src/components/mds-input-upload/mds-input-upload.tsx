@@ -183,7 +183,7 @@ export class MdsInputUpload {
     // f.sort(this.sortByStatusAndName)
     f.sort(this.sortById)
     // set input.files only uploadable file
-    f.slice(0, this.maxFiles).forEach(f => data.items.add(f.file))
+    f.filter(f => f.status === Status.SUCCESS).forEach(f => data.items.add(f.file))
     this.files = f
     this.updateProgress()
     return data.files
