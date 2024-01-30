@@ -69,6 +69,13 @@ const fileFormatsVariant = {
     preview: true,
     variant: 'green',
   },
+  imageRaster: {
+    color: 'fill-label-green-04 text-label-green-04',
+    icon: 'mi/baseline/panorama',
+    iconBackground: 'bg-label-green-10',
+    preview: false,
+    variant: 'green',
+  },
   markup: {
     color: 'fill-label-yellow-04 text-label-yellow-04',
     icon: 'mi/baseline/web',
@@ -96,6 +103,13 @@ const fileFormatsVariant = {
     iconBackground: 'bg-label-blue-10',
     preview: false,
     variant: 'blue',
+  },
+  vectorImage: {
+    color: 'fill-label-aqua-04 text-label-aqua-04',
+    icon: 'mdi/vector-curve',
+    iconBackground: 'bg-label-aqua-10',
+    preview: true,
+    variant: 'aqua',
   },
   vector: {
     color: 'fill-label-aqua-04 text-label-aqua-04',

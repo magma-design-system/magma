@@ -49,7 +49,7 @@ CustomAccept.args = {
 
 export const Multiple = Template.bind({})
 Multiple.args = {
-  accept: '.pdf, image/jpeg, image/png',
+  accept: '.pdf, image/jpeg, image/png, .svg',
   'max-file-size': 70,
   'max-files': 5,
 }

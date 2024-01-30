@@ -127,7 +127,7 @@ export class MdsFilePreview {
           <footer class={clsx('infos', this.filesize && 'infos--has-file-size')}>
             { this.filesize && this.filesize === Number(this.filesize).toString() && <mds-text class="file-size" truncate="word" typography="caption" variant="info">{ filesize(Number(this.filesize), { standard: 'jedec' }) }</mds-text> }
             { this.filesize && this.filesize !== Number(this.filesize).toString() && <mds-text class="file-size" truncate="word" typography="caption" variant="info">{ this.filesize }</mds-text> }
-            { getSuffix(this.filename, this.suffix) && <mds-badge variant={getFormatsVariant(this.filename, this.suffix).variant as ThemeFullVariantType} tone="quiet" class="suffix">{ getSuffix(this.filename, this.suffix) }</mds-badge> }
+            { getSuffix(this.filename, this.suffix) && <mds-badge variant={getFormatsVariant(this.filename, this.suffix).variant as ThemeFullVariantType} tone="quiet" class="suffix" title={ this.description ?? this.getDefaultDescription() }>{ getSuffix(this.filename, this.suffix) }</mds-badge> }
             { !this.filesize && <mds-text class="description" truncate="word" typography="caption" variant="info" title={ this.description ?? this.getDefaultDescription() }>{ this.description ?? this.getDefaultDescription() }</mds-text> }
           </footer>
         </div>
