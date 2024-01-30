@@ -6,6 +6,7 @@ import { ToneVariantType } from '@type/variant'
 import { TypographyType } from '@type/typography'
 import { buttonSizeTypographyVariant } from './meta/variants'
 import { setAttributeIfEmpty, unslugName } from '@common/aria'
+import { isIconFormatIsBase64, isIconFormatIsSVG } from '@common/icon'
 
 /**
  * @slot default - Add `text string` to this slot, **avoid** to add `HTML elements` or `components` here.
@@ -143,6 +144,17 @@ export class MdsButton {
       this.km.attachClickBehavior()
     }
     this.host.setAttribute('aria-busy', this.await ? 'true' : 'false')
+    
+    if (this.autoFocus) {
+      this.host.focus()
+    }
+
+    if (isIconFormatIsBase64(this.icon)) {
+      return
+    }
+    if (isIconFormatIsSVG(this.icon)) {
+      return
+    }
 
     if (!this.hasText && this.icon) {
       const iconTitle = unslugName(this.icon)
@@ -150,10 +162,6 @@ export class MdsButton {
         setAttributeIfEmpty(this.host, 'title', iconTitle)
       }
       setAttributeIfEmpty(this.host, 'aria-label', iconTitle)
-    }
-
-    if (this.autoFocus) {
-      this.host.focus()
     }
   }
 

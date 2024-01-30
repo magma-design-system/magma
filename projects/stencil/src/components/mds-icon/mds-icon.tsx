@@ -1,5 +1,6 @@
 import { Component, Element, h, Host, Method, Prop, State, Watch } from '@stencil/core'
 import { IconsSetService } from './services/icons-set.service'
+import { isIconFormatIsBase64, isIconFormatIsSVG, BASE64_SVG_ICON } from '@common/icon'
 
 /**
  * @part svg - The svg container of the icon
@@ -28,16 +29,8 @@ export class MdsIcon {
     IconsSetService.registerListener(() => this.updateIcon())
   }
 
-  private checkIconFormatIsBase64 = (): boolean => {
-    return this.name.startsWith('data:image/svg+xml;base64,')
-  }
-
-  private checkIconFormatIsSVG = (): boolean => {
-    return this.name.startsWith('<svg ')
-  }
-
   private convertBase64ToSvg = (): string => {
-    const svgBase64 = this.name.replace('data:image/svg+xml;base64,', '').replace(/\=/i, '')
+    const svgBase64 = this.name.replace(BASE64_SVG_ICON, '').replace(/\=/i, '')
     return atob(svgBase64)
   }
 
@@ -58,12 +51,12 @@ export class MdsIcon {
   async updateIcon (): Promise<void> {
     if (!this.name) return Promise.resolve()
 
-    if (this.checkIconFormatIsBase64()) {
+    if (isIconFormatIsBase64(this.name)) {
       this.svgHTML = this.convertBase64ToSvg()
       return Promise.resolve()
     }
 
-    if (this.checkIconFormatIsSVG()) {
+    if (isIconFormatIsSVG(this.name)) {
       this.svgHTML = this.name
       return Promise.resolve()
     }
