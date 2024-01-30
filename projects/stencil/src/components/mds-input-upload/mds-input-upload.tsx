@@ -1,7 +1,7 @@
 import Mime from 'mime'
 import clsx from 'clsx'
 import iconSortByAlpha from '@icon/mi/baseline/sort-by-alpha.svg'
-import iconSortById from '@icon/mi/baseline/pin.svg'
+import iconSortById from '@icon/mi/outline/schedule.svg'
 import miBaselineAddCircle from '@icon/mi/baseline/add-circle.svg'
 import { AttachInternals, Component, Element, Host, Method, Prop, State, h } from '@stencil/core'
 import { AttachmentSort } from './meta/types'
