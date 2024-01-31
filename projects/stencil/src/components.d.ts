@@ -50,6 +50,7 @@ import { MdsStepperBarEventDetail } from "./components/mds-stepper-bar/meta/even
 import { MdsStepperBarItemEventDetail } from "./components/mds-stepper-bar-item/meta/event-detail";
 import { MdsTabEventDetail } from "./components/mds-tab/meta/event-detail";
 import { MdsTabBarEventDetail } from "./components/mds-tab-bar/meta/event-detail";
+import { MdsTabItemEventDetail } from "./components/mds-tab-item/meta/event-detail";
 import { TextAnimationType, TypographyTagType } from "./components/mds-text/meta/types";
 import { ToastPosition } from "./components/mds-toast/meta/types";
 import { UsageType } from "./components/mds-usage/meta/types";
@@ -99,6 +100,7 @@ export { MdsStepperBarEventDetail } from "./components/mds-stepper-bar/meta/even
 export { MdsStepperBarItemEventDetail } from "./components/mds-stepper-bar-item/meta/event-detail";
 export { MdsTabEventDetail } from "./components/mds-tab/meta/event-detail";
 export { MdsTabBarEventDetail } from "./components/mds-tab-bar/meta/event-detail";
+export { MdsTabItemEventDetail } from "./components/mds-tab-item/meta/event-detail";
 export { TextAnimationType, TypographyTagType } from "./components/mds-text/meta/types";
 export { ToastPosition } from "./components/mds-toast/meta/types";
 export { UsageType } from "./components/mds-usage/meta/types";
@@ -1059,7 +1061,7 @@ export namespace Components {
          */
         "maxFiles": 1;
         /**
-          * Specifies if the component should show a sort widget by alphabetical name or date of upload
+          * Specifies if the component should show a sort widget by status or date of upload, if not defined let user choose
          */
         "sort"?: AttachmentSort;
     }
@@ -1373,6 +1375,10 @@ export namespace Components {
           * The type of the tab item element
          */
         "type"?: ButtonType;
+        /**
+          * Specifies an optional value to get from mdsTabItemSelect event
+         */
+        "value"?: string;
     }
     interface MdsTable {
         /**
@@ -2458,7 +2464,7 @@ declare global {
         new (): HTMLMdsTabBarItemElement;
     };
     interface HTMLMdsTabItemElementEventMap {
-        "mdsTabItemSelect": string;
+        "mdsTabItemSelect": MdsTabItemEventDetail;
     }
     interface HTMLMdsTabItemElement extends Components.MdsTabItem, HTMLStencilElement {
         addEventListener<K extends keyof HTMLMdsTabItemElementEventMap>(type: K, listener: (this: HTMLMdsTabItemElement, ev: MdsTabItemCustomEvent<HTMLMdsTabItemElementEventMap[K]>) => any, options?: boolean | AddEventListenerOptions): void;
@@ -3759,7 +3765,7 @@ declare namespace LocalJSX {
          */
         "maxFiles"?: 1;
         /**
-          * Specifies if the component should show a sort widget by alphabetical name or date of upload
+          * Specifies if the component should show a sort widget by status or date of upload, if not defined let user choose
          */
         "sort"?: AttachmentSort;
     }
@@ -4100,7 +4106,7 @@ declare namespace LocalJSX {
         /**
           * Emits when the tab item is selected
          */
-        "onMdsTabItemSelect"?: (event: MdsTabItemCustomEvent<string>) => void;
+        "onMdsTabItemSelect"?: (event: MdsTabItemCustomEvent<MdsTabItemEventDetail>) => void;
         /**
           * Specifies if the tab item is selected or not
          */
@@ -4113,6 +4119,10 @@ declare namespace LocalJSX {
           * The type of the tab item element
          */
         "type"?: ButtonType;
+        /**
+          * Specifies an optional value to get from mdsTabItemSelect event
+         */
+        "value"?: string;
     }
     interface MdsTable {
         /**
