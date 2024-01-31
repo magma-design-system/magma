@@ -8,7 +8,7 @@
   --mds-input-upload-drag-area-border-on-drag: 3px dashed theme('colors.tone-neutral-07');
   --mds-input-upload-drag-area-border: 3px dashed theme('colors.tone-neutral-07');
   --mds-input-upload-min-cols: 3;
-  
+
   @apply
     gap-400
     grid-cols-full;
@@ -116,7 +116,7 @@
 
 .file-list {
 
-  
+
   --cols: var(--mds-input-upload-min-cols);
   --perc-w: calc(100% / var(--cols));
   --gap: theme('spacing.400');
@@ -136,7 +136,7 @@
 }
 
 @container (max-width: 340px) {
-  .file-list {;
+  .file-list {
 
     --template-cols: 1fr;
   }
@@ -175,20 +175,15 @@
 }
 
 .action-sort {
-  display: none;
-}
-
-
-:host( [sort="manual"] ) .action-sort {
   display: inline-flex;
 }
 
-:host( [sort="manual"] ) .file-specs {
+.file-specs {
   flex-direction: column;
   flex-wrap: nowrap;
   justify-content: center;
 }
 
-:host( [sort="manual"] ) .additional-infos {
+.additional-infos {
   justify-content: space-between;
 }

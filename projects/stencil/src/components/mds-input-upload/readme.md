@@ -7,12 +7,12 @@
 
 ## Properties
 
-| Property              | Attribute       | Description                                                                                 | Type                                                | Default     |
-| --------------------- | --------------- | ------------------------------------------------------------------------------------------- | --------------------------------------------------- | ----------- |
-| `accept` _(required)_ | `accept`        | Defines the file types the file input should accept                                         | `string`                                            | `undefined` |
-| `maxFileSize`         | `max-file-size` | Specifies the max size of a single file that can be uploaded in MB                          | `20`                                                | `20`        |
-| `maxFiles`            | `max-files`     | Specifies the max number of files that can be uploaded                                      | `1`                                                 | `1`         |
-| `sort`                | `sort`          | Specifies if the component should show a sort widget by alphabetical name or date of upload | `"alphanumeric" \| "date" \| "manual" \| undefined` | `'manual'`  |
+| Property              | Attribute       | Description                                                                                                      | Type                              | Default     |
+| --------------------- | --------------- | ---------------------------------------------------------------------------------------------------------------- | --------------------------------- | ----------- |
+| `accept` _(required)_ | `accept`        | Defines the file types the file input should accept                                                              | `string`                          | `undefined` |
+| `maxFileSize`         | `max-file-size` | Specifies the max size of a single file that can be uploaded in MB                                               | `20`                              | `20`        |
+| `maxFiles`            | `max-files`     | Specifies the max number of files that can be uploaded                                                           | `1`                               | `1`         |
+| `sort`                | `sort`          | Specifies if the component should show a sort widget by status or date of upload, if not defined let user choose | `"date" \| "status" \| undefined` | `undefined` |
 
 
 ## Methods

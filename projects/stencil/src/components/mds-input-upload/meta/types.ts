@@ -1,7 +1,6 @@
 type AttachmentSort =
-  | 'alphanumeric'
+  | 'status'
   | 'date'
-  | 'manual'
 
 export {
   AttachmentSort,
