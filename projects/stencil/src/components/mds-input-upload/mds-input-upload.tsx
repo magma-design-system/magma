@@ -4,27 +4,11 @@ import iconSortByStatus from '@icon/mi/baseline/category.svg'
 import iconSortById from '@icon/mi/outline/schedule.svg'
 import miBaselineAddCircle from '@icon/mi/baseline/add-circle.svg'
 import { AttachInternals, Component, Element, Host, Method, Prop, State, h } from '@stencil/core'
-import { AttachmentSort } from './meta/types'
+import { AttachmentSort, FileStatus, LOCALSTORAGE_KEY_USER_SORT, Status } from './meta/types'
 import { KeyboardManager } from '@common/keyboard-manager'
 import { hashValue } from '@common/aria'
 import { genericMimeToExt } from '@dictionary/file-extensions'
 import { MdsTabEventDetail } from '@component/mds-tab/meta/event-detail'
-// import { MdsTabEventDetail } from 'src/components'
-
-enum Status {
-  UPLOADING,
-  ERROR,
-  ABORT,
-  SUCCESS
-}
-
-interface FileStatus {
-  key: string,
-  file: File,
-  status: Status,
-  errorMessage?: string
-  id: number
-}
 
 @Component({
   tag: 'mds-input-upload',
@@ -54,7 +38,7 @@ export class MdsInputUpload {
   private fileUploaded = 0
   private cssMinCols: number = 1000
   private id: number = 0
-  private userSort: AttachmentSort = 'date'
+  private userSort: AttachmentSort
 
   /**
    * Defines the file types the file input should accept
@@ -78,6 +62,7 @@ export class MdsInputUpload {
 
   componentWillLoad (): void {
     this.extensions = this.getExtension()
+    this.userSort = AttachmentSort[localStorage.getItem(LOCALSTORAGE_KEY_USER_SORT) ?? AttachmentSort.date]
   }
 
   componentDidLoad (): void {
@@ -165,8 +150,9 @@ export class MdsInputUpload {
 
   private onChangeTab = (event: MdsTabEventDetail): void => {
     if (event.value) {
-      this.sortFiles(this.files, event.value as AttachmentSort)
-      this.userSort = event.value as AttachmentSort
+      this.sortFiles(this.files, AttachmentSort[event.value])
+      this.userSort = AttachmentSort[event.value]
+      localStorage.setItem(LOCALSTORAGE_KEY_USER_SORT, this.userSort)
     }
   }
   /**
@@ -189,13 +175,13 @@ export class MdsInputUpload {
       if (index === -1 || this.files[index].status !== Status.SUCCESS) {
         let error = ''
         if (this.fileUploaded >= this.maxFiles) {
-          error += 'Numero massimo di file raggiunto.'
+          error = 'Numero massimo di file raggiunto.'
         }
         if (!this.checkFileSize(file)){
-          error += 'File troppo grande.'
+          error = 'File troppo grande.'
         }
         if (!this.checkFileType(file)){
-          error += 'Formato non supportato.'
+          error = 'Formato non consentito.'
         }
         if (!error) {
           f.push({ key: hashValue(file.name + file.size), file, id: this.id, status: Status.SUCCESS })
@@ -222,10 +208,10 @@ export class MdsInputUpload {
   }
 
   private sortFiles (files: FileStatus[], sort: AttachmentSort): void {
-    if (sort === 'date') {
+    if (sort === AttachmentSort.date) {
       this.files = files.slice().sort(this.sortById)
     }
-    if (sort === 'status'){
+    if (sort === AttachmentSort.status){
       this.files = files.slice().sort(this.sortByStatusAndName)
     }
   }
@@ -306,8 +292,8 @@ export class MdsInputUpload {
           </div>
           {this.sort ??
             <mds-tab class="action-sort" onMdsTabChange={event => this.onChangeTab(event.detail)} >
-              <mds-tab-item icon={iconSortById} selected title="Ordine per data di aggiunta" value='date'></mds-tab-item>
-              <mds-tab-item icon={iconSortByStatus} title="Raggruppa per stato" value='status'></mds-tab-item>
+              <mds-tab-item icon={iconSortById} selected title="Ordine per data di aggiunta" value={AttachmentSort.date}></mds-tab-item>
+              <mds-tab-item icon={iconSortByStatus} title="Raggruppa per stato" value={AttachmentSort.status}></mds-tab-item>
             </mds-tab>
           }
         </div>
