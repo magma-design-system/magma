@@ -55,7 +55,7 @@ export class MdsTab {
     this.tabItems.forEach((item, key) => {
       if (key === scrollItem) {
         item.selected = true
-        this.changedEvent.emit({ id: key })
+        this.changedEvent.emit({ id: key, value: item.value })
         this.currentItem = key
         this.scrollTabs()
       } else {
