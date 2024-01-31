@@ -301,7 +301,7 @@ export class MdsInputUpload {
             switch (file.status) {
             case Status.ERROR:
               return (
-                <mds-file-preview variant="error" filename={file.file.name} filesize={file.file.size.toString()} message={file.errorMessage}></mds-file-preview>
+                <mds-file-preview deletable variant="error" filename={file.file.name} filesize={file.file.size.toString()} onMdsFileDelete={() => this.onCancel(file.key)} message={file.errorMessage}></mds-file-preview>
               )
             case Status.SUCCESS:
               return (
