@@ -1,5 +1,6 @@
 import { Component, Element, Event, EventEmitter, Host, Listen, h } from '@stencil/core'
 import { MdsTabEventDetail } from './meta/event-detail'
+import { MdsTabItemEventDetail } from '@component/mds-tab-item/meta/event-detail'
 
 /**
  * @slot default - Add `mds-tab-item` element/s.
@@ -74,11 +75,11 @@ export class MdsTab {
   }
 
   @Listen('mdsTabItemSelect')
-  changeEventHandler (event: CustomEvent<string>): void {
+  changeEventHandler (event: CustomEvent<MdsTabItemEventDetail>): void {
     // since the external developer can define a custom id
     // we must find the key from event.detail
     this.tabItems.forEach((item, key: number) => {
-      if (item.id === event.detail) {
+      if (item.id === event.detail.target.id) {
         this.selectTabItem(key)
       } else {
         item.selected = false
