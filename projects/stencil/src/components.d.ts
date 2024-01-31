@@ -981,7 +981,11 @@ export namespace Components {
         /**
           * Specifies a short hint that describes the expected value of the element
          */
-        "options": string;
+        "autoFocus"?: boolean;
+        /**
+          * Specifies a short hint that describes the expected value of the element
+         */
+        "autocomplete"?: 'on';
         /**
           * Specifies a short hint that describes the expected value of the element
          */
@@ -2149,9 +2153,6 @@ declare global {
     };
     interface HTMLMdsInputSelectElementEventMap {
         "mdsInputSelectChange": InputValue;
-        "mdsInputSelectKeydown": KeyboardEvent;
-        "mdsInputSelectBlur": void;
-        "mdsInputSelectFocus": void;
     }
     interface HTMLMdsInputSelectElement extends Components.MdsInputSelect, HTMLStencilElement {
         addEventListener<K extends keyof HTMLMdsInputSelectElementEventMap>(type: K, listener: (this: HTMLMdsInputSelectElement, ev: MdsInputSelectCustomEvent<HTMLMdsInputSelectElementEventMap[K]>) => any, options?: boolean | AddEventListenerOptions): void;
@@ -3667,25 +3668,17 @@ declare namespace LocalJSX {
     }
     interface MdsInputSelect {
         /**
-          * Emits a void event when input element is blurred
+          * Specifies a short hint that describes the expected value of the element
          */
-        "onMdsInputSelectBlur"?: (event: MdsInputSelectCustomEvent<void>) => void;
+        "autoFocus"?: boolean;
+        /**
+          * Specifies a short hint that describes the expected value of the element
+         */
+        "autocomplete"?: 'on';
         /**
           * Emits an InputChangeEventDetail when the value of the input element changes
          */
         "onMdsInputSelectChange"?: (event: MdsInputSelectCustomEvent<InputValue>) => void;
-        /**
-          * Emits a void event when input element is focused
-         */
-        "onMdsInputSelectFocus"?: (event: MdsInputSelectCustomEvent<void>) => void;
-        /**
-          * Emits a KeyboardEvent when a keboard key is pressed on the focused input element
-         */
-        "onMdsInputSelectKeydown"?: (event: MdsInputSelectCustomEvent<KeyboardEvent>) => void;
-        /**
-          * Specifies a short hint that describes the expected value of the element
-         */
-        "options"?: string;
         /**
           * Specifies a short hint that describes the expected value of the element
          */
