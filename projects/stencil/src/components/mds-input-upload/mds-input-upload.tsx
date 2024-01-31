@@ -164,6 +164,9 @@ export class MdsInputUpload {
       this.id += 1
       const index = this.files.findIndex(f => f.key === hashValue(file.name + file.size))
       if (index === -1 || this.files[index].status !== Status.SUCCESS) {
+        if (index !== -1) {
+          f.splice(index)
+        }
         let error = ''
         if (this.fileUploaded >= this.maxFiles) {
           error = 'Numero massimo di file raggiunto.'
