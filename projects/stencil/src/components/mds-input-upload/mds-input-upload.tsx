@@ -5,7 +5,6 @@ import iconSortById from '@icon/mi/outline/schedule.svg'
 import miBaselineAddCircle from '@icon/mi/baseline/add-circle.svg'
 import { AttachInternals, Component, Element, Host, Method, Prop, State, h } from '@stencil/core'
 import { AttachmentSort, FileStatus, LOCALSTORAGE_KEY_USER_SORT, Status } from './meta/types'
-import { KeyboardManager } from '@common/keyboard-manager'
 import { hashValue } from '@common/aria'
 import { genericMimeToExt } from '@dictionary/file-extensions'
 import { MdsTabEventDetail } from '@component/mds-tab/meta/event-detail'
@@ -33,7 +32,6 @@ export class MdsInputUpload {
 
   private nativeInput?: HTMLInputElement
   private elDragArea?: HTMLElement
-  private km = new KeyboardManager()
   private extensions: string
   private fileUploaded = 0
   private cssMinCols: number = 1000
@@ -66,15 +64,7 @@ export class MdsInputUpload {
   }
 
   componentDidLoad (): void {
-    if (this.elDragArea){
-      this.km.addElement(this.elDragArea)
-      this.km.attachClickBehavior()
-    }
     this.updateCSSCustomProps()
-  }
-
-  disconnectedCallback (): void {
-    this.km.detachClickBehavior()
   }
 
   /**
@@ -142,6 +132,7 @@ export class MdsInputUpload {
     if (this.nativeInput) {
       this.files = []
       this.nativeInput.files = null
+      this.nativeInput.value = ''
       this.internals.setFormValue(null)
       this.fileUploaded = 0
       this.updateProgress()
@@ -166,7 +157,7 @@ export class MdsInputUpload {
     if (!fileList) return null
     const files = Array.from(fileList)
     const data = new DataTransfer()
-    const f = [...this.files]
+    const f = this.files
     // prepare new file added
     for (const file of files) {
       // update only file not added previously file with errors
@@ -201,12 +192,20 @@ export class MdsInputUpload {
     return data.files
   }
 
+  /**
+   * Update progress bar
+   */
   private updateProgress () {
-    // update progress bar
     const nFile = this.files.map(fileStatus => (fileStatus.status === Status.SUCCESS ? 1 : 0) as number).reduce((prev, curr) => prev + curr, 0)
     this.progress = nFile / this.maxFiles
   }
 
+  /**
+   * Sort recieved file and assign the result to this.files for update render
+   *
+   * @param files current list of files to be sorted
+   * @param sort type of sorting
+   */
   private sortFiles (files: FileStatus[], sort: AttachmentSort): void {
     if (sort === AttachmentSort.date) {
       this.files = files.slice().sort(this.sortById)
@@ -221,7 +220,6 @@ export class MdsInputUpload {
   }
 
   private checkFileType (file: File): boolean {
-
     const acceptArray = this.accept.replace(/ /g, '').split(',')
     // controllo mime type univoco (es. image/png)
     if (acceptArray.includes(file.type)) return true
