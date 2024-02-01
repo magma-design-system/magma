@@ -3166,7 +3166,7 @@ declare namespace LocalJSX {
         /**
           * The filename shown as component title, is used to auto assign one of the filetype known in the filetype dictionary
          */
-        "filename"?: string;
+        "filename": string;
         /**
           * The filesize shown, if you pass a string you can write whathever you want, if you pass a number it expect filesize in bytes, the component will format it automatically.
          */
