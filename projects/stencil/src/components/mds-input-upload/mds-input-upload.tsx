@@ -5,7 +5,6 @@ import iconSortById from '@icon/mi/outline/schedule.svg'
 import miBaselineAddCircle from '@icon/mi/baseline/add-circle.svg'
 import { AttachInternals, Component, Element, Host, Method, Prop, State, h } from '@stencil/core'
 import { AttachmentSort, FileStatus, LOCALSTORAGE_KEY_USER_SORT, Status } from './meta/types'
-import { hashValue } from '@common/aria'
 import { genericMimeToExt } from '@dictionary/file-extensions'
 import { MdsTabEventDetail } from '@component/mds-tab/meta/event-detail'
 
@@ -120,7 +119,6 @@ export class MdsInputUpload {
       const data = new DataTransfer()
       this.files.forEach(f => {if (f.status === Status.SUCCESS) {data.items.add(f.file)}})
       this.nativeInput.files = data.files
-      this.fileUploaded -= 1
       this.updateProgress()
     }
   }
@@ -134,7 +132,6 @@ export class MdsInputUpload {
       this.nativeInput.files = null
       this.nativeInput.value = ''
       this.internals.setFormValue(null)
-      this.fileUploaded = 0
       this.updateProgress()
     }
   }
@@ -157,49 +154,52 @@ export class MdsInputUpload {
     if (!fileList) return null
     const files = Array.from(fileList)
     const data = new DataTransfer()
-    const f = this.files
     // prepare new file added
     for (const file of files) {
-      // update only file not added previously file with errors
+      // update only file not added previously or files with errors
       this.id += 1
-      const index = this.files.findIndex(f => f.key === hashValue(file.name + file.size))
+      const index = this.files.findIndex(f => f.key === file.name)
       if (index === -1 || this.files[index].status !== Status.SUCCESS) {
+        // remove file with error
         if (index !== -1) {
-          f.splice(index)
+          this.files.splice(index, 1)
         }
-        let error = ''
-        if (this.fileUploaded >= this.maxFiles) {
-          error = 'Numero massimo di file raggiunto.'
-        }
-        if (!this.checkFileSize(file)){
-          error = 'File troppo grande.'
-        }
-        if (!this.checkFileType(file)){
-          error = 'Formato non consentito.'
-        }
-        if (!error) {
-          f.push({ key: hashValue(file.name + file.size), file, id: this.id, status: Status.SUCCESS })
+        const errorMessage = this.checkError(file)
+        if (!errorMessage) {
+          this.files.push({ key: file.name, file, id: this.id, status: Status.SUCCESS })
           this.fileUploaded += 1
         } else {
-          f.push({ key: hashValue(file.name + file.size), file, id: this.id, status: Status.ERROR, errorMessage: error })
+          this.files.push({ key: file.name, file, id: this.id, status: Status.ERROR, errorMessage })
         }
       }
+
     }
-    // show uploadable file before the others with error
-    // f.sort(this.sortByStatusAndName)
-    // f.sort(this.sortById)
     // set input.files only uploadable file
-    f.filter(f => f.status === Status.SUCCESS).forEach(f => data.items.add(f.file))
-    this.sortFiles(f, this.sort ?? this.userSort)
+    this.files.filter(f => f.status === Status.SUCCESS).forEach(f => data.items.add(f.file))
+    this.sortFiles(this.files, this.sort ?? this.userSort)
     this.updateProgress()
     return data.files
   }
 
+  private checkError (file: File): string {
+    let error = ''
+    if (this.fileUploaded >= this.maxFiles) {
+      error = 'Numero massimo di file raggiunto.'
+    }
+    if (!this.checkFileSize(file)){
+      error = 'File troppo grande.'
+    }
+    if (!this.checkFileType(file)){
+      error = 'Formato non consentito.'
+    }
+    return error
+  }
   /**
    * Update progress bar
    */
   private updateProgress () {
     const nFile = this.files.map(fileStatus => (fileStatus.status === Status.SUCCESS ? 1 : 0) as number).reduce((prev, curr) => prev + curr, 0)
+    this.fileUploaded = nFile
     this.progress = nFile / this.maxFiles
   }
 
@@ -293,8 +293,8 @@ export class MdsInputUpload {
           </div>
           {this.sort ??
             <mds-tab class="action-sort" onMdsTabChange={event => this.onChangeTab(event.detail)} >
-              <mds-tab-item icon={iconSortById} selected title="Ordine per data di aggiunta" value={AttachmentSort.date}></mds-tab-item>
-              <mds-tab-item icon={iconSortByStatus} title="Raggruppa per stato" value={AttachmentSort.status}></mds-tab-item>
+              <mds-tab-item icon={iconSortById} selected={this.userSort === 'date'} title="Ordine per data di aggiunta" value={AttachmentSort.date}></mds-tab-item>
+              <mds-tab-item icon={iconSortByStatus} selected={this.userSort === 'status'} title="Raggruppa per stato" value={AttachmentSort.status}></mds-tab-item>
             </mds-tab>
           }
         </div>
