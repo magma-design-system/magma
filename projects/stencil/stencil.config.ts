@@ -94,7 +94,7 @@ export const config: Config = {
       '@icon/(.*)': '<rootDir>assets/svg/$1',
       '@placeholder': 'https://via.placeholder.com',
       '@test/(.*)': '<rootDir>src/test/$1',
-      '@type/(.*)': '<rootDir>src/types/$1',
+      '@type/(.*)': '<rootDir>src/type/$1',
     },
     modulePathIgnorePatterns: ['<rootDir>/.build/', '<rootDir>/template/', '<rootDir>/node_modules/'],
     testPathIgnorePatterns: ['<rootDir>/.cache', '<rootDir>/template/', '<rootDir>/node_modules/', '<rootDir>/.vscode', '/.stencil', '/dist', '/www'],
