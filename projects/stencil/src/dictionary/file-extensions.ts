@@ -15,7 +15,7 @@ const fileExtensionsDictionary: FileExtenstion = {
   dart: { format: 'code', description: 'Dart' },
   db: { format: 'data', description: 'File di database' },
   default: { format: 'attachment', description: 'Formato sconosciuto' },
-  dmg: { format: 'executable', description: 'Immagine disco Mac' },
+  dmg: { format: 'executable', description: 'Apple Disk Image' },
   doc: { format: 'text', description: 'Documento Microsoft Word' },
   docm: { format: 'text', description: 'Documento Microsoft Word' },
   docx: { format: 'text', description: 'Documento Microsoft Word Compresso' },
