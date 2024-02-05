@@ -65,6 +65,7 @@
   animation-fill-mode: forwards;
   animation-timing-function: var(--mds-tab-timing-function);
   flex-basis: 0;
+  flex-grow: 1;
   scroll-snap-align: start;
 }
 
