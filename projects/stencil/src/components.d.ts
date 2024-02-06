@@ -1051,7 +1051,7 @@ export namespace Components {
         /**
           * Defines the file types the file input should accept
          */
-        "accept": string;
+        "accept": "";
         /**
           * Returns a promise of files uploaded as Filelist or null if there's none
          */
@@ -3748,7 +3748,7 @@ declare namespace LocalJSX {
         /**
           * Defines the file types the file input should accept
          */
-        "accept": string;
+        "accept"?: "";
         /**
           * Specifies the max size of a single file that can be uploaded in MB
          */

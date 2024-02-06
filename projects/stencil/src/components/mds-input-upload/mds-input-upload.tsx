@@ -40,7 +40,7 @@ export class MdsInputUpload {
   /**
    * Defines the file types the file input should accept
    */
-  @Prop({ reflect: true }) readonly accept!: string
+  @Prop({ reflect: true }) readonly accept = ''
 
   /**
    * Specifies the max size of a single file that can be uploaded in MB
