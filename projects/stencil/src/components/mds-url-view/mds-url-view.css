@@ -67,11 +67,13 @@
   fill: var(--mds-url-view-color);
 }
 
-.close {
+.button-close {
+
   @apply rounded-md;
 
+  --mds-button-icon-color: var(--mds-url-view-color);
+
   cursor: pointer;
-  fill: var(--mds-url-view-color);
 }
 
 .iframe {

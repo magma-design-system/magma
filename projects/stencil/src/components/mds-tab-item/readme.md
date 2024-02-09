@@ -16,13 +16,14 @@ This is a web-component from Maggioli Design System [Magma](https://magma.maggio
 | `selected`     | `selected`      | Specifies if the tab item is selected or not                            | `boolean \| undefined`                                | `undefined` |
 | `size`         | `size`          | Specifies the size for the tab item                                     | `"lg" \| "md" \| "sm" \| "xl" \| undefined`           | `'md'`      |
 | `type`         | `type`          | The type of the tab item element                                        | `"a" \| "button" \| "reset" \| "submit" \| undefined` | `'submit'`  |
+| `value`        | `value`         | Specifies an optional value to get from mdsTabItemSelect event          | `string \| undefined`                                 | `undefined` |
 
 
 ## Events
 
-| Event              | Description                         | Type                  |
-| ------------------ | ----------------------------------- | --------------------- |
-| `mdsTabItemSelect` | Emits when the tab item is selected | `CustomEvent<string>` |
+| Event              | Description                         | Type                                 |
+| ------------------ | ----------------------------------- | ------------------------------------ |
+| `mdsTabItemSelect` | Emits when the tab item is selected | `CustomEvent<MdsTabItemEventDetail>` |
 
 
 ## Slots
@@ -55,6 +56,10 @@ This is a web-component from Maggioli Design System [Magma](https://magma.maggio
 
 ## Dependencies
 
+### Used by
+
+ - [mds-input-upload](../mds-input-upload)
+
 ### Depends on
 
 - [mds-button](../mds-button)
@@ -66,6 +71,7 @@ graph TD;
   mds-button --> mds-spinner
   mds-button --> mds-icon
   mds-button --> mds-text
+  mds-input-upload --> mds-tab-item
   style mds-tab-item fill:#f9f,stroke:#333,stroke-width:4px
 ```
 

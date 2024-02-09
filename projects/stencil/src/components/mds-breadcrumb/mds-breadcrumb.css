@@ -1,4 +1,3 @@
-@import '~@maggioli-design-system/styles/dist/css/animations.css'; /* included for focus effect */
 @import '../../tailwind/components.css';
 @tailwind components;
 @tailwind utilities;
@@ -48,31 +47,24 @@
 }
 
 .back {
-  @apply
-    h-800
-    mr-100
-    rounded-full
-    w-800;
+  @apply mr-100;
 
-  align-items: center;
-  background-color: var(--mds-breadcrumb-button-background);
-  cursor: pointer;
-  display: flex;
-  fill: var(--mds-breadcrumb-button-color);
+  --mds-button-background: var(--mds-breadcrumb-button-background);
+  --mds-button-icon-color: var(--mds-breadcrumb-button-color);
+
   flex-shrink: 0;
-  justify-content: center;
 }
 
 .back:hover {
 
-  --mds-breadcrumb-button-background: var(--mds-breadcrumb-button-background-hover);
-  --mds-breadcrumb-button-color: var(--mds-breadcrumb-button-color-hover);
+  --mds-button-background: var(--mds-breadcrumb-button-background-hover);
+  --mds-button-icon-color: var(--mds-breadcrumb-button-color-hover);
 }
 
 .disabled {
 
-  --mds-breadcrumb-button-background: var(--mds-breadcrumb-button-background-disabled);
-  --mds-breadcrumb-button-color: var(--mds-breadcrumb-button-color-disabled);
+  --mds-button-background: var(--mds-breadcrumb-button-background-disabled);
+  --mds-button-icon-color: var(--mds-breadcrumb-button-color-disabled);
 
   pointer-events: none;
 }

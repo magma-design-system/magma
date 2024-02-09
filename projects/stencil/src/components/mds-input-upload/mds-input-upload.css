@@ -1,0 +1,189 @@
+@import '../../tailwind/components.css';
+@tailwind utilities;
+
+:host {
+
+  --mds-input-upload-drag-area-background-color-on-drag: theme('colors.tone-neutral-10');
+  --mds-input-upload-drag-area-background-color: theme('colors.tone-neutral');
+  --mds-input-upload-drag-area-border-on-drag: 3px dashed theme('colors.tone-neutral-07');
+  --mds-input-upload-drag-area-border: 3px dashed theme('colors.tone-neutral-07');
+  --mds-input-upload-min-cols: 3;
+
+  @apply
+    gap-400
+    grid-cols-full;
+
+  container-type: inline-size;
+  display: grid;
+}
+
+.drag-area {
+
+  /*
+    actually there is no way to custom background-image url
+    paramter which not allows to pass custom properties inside
+    --stroke-color: theme('colors.tone-neutral-07');
+    --stroke-dashoffset: 8;
+    --stroke-line-width: 8;
+    --stroke-width: 5;
+    --stroke-line-distance: theme('spacing.400');
+    --stroke-dasharray-line: var(--stroke-line-width) '%2c' var(--stroke-line-distance);
+    --border-radius: theme('borderRadius.2xl');
+    --url: "url(data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg'%3e%3crect width='100%25' height='100%25' fill='none' rx='" var(--border-radius) "' ry='" var(--border-radius) "' stroke='" var(--stroke-color) "' stroke-width='" var(--stroke-width) "' stroke-dasharray='8%2c 16' stroke-dashoffset='0' stroke-linecap='square'/%3e%3c/svg%3e)";
+    background-image: url("data:image/svg+xml,%3csvg width='100%25' height='100%25' xmlns='http://www.w3.org/2000/svg'%3e%3crect width='100%25' height='100%25' fill='none' rx="16" ry='16' stroke='red' stroke-width='5' stroke-dasharray='8%2c 16' stroke-dashoffset='0' stroke-linecap='square'/%3e%3c/svg%3e");
+  */
+
+  @apply
+    gap-400
+    p-600
+    rounded-2xl
+    transition-colors;
+
+  align-items: center;
+  background-color: var(--mds-input-upload-drag-area-background-color);
+  border: var(--mds-input-upload-drag-area-border);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  user-select: none;
+}
+
+.drag-area--on-drag-enter {
+
+  --mds-input-upload-drag-area-background-color: var(--mds-input-upload-drag-area-background-color-on-drag);
+  --mds-input-upload-drag-area-border: var(--mds-input-upload-drag-area-border-on-drag);
+}
+
+.icon {
+  @apply w-1200;
+
+  fill: theme('colors.brand-maggioli-05');
+}
+
+.action {
+  @apply p-150;
+
+  --mds-button-icon-color: theme('colors.tone-neutral-04');
+
+  border-radius: 1000px;
+  height: auto;
+}
+
+.action--cancel-upload:focus-visible,
+.action--cancel-upload:hover {
+
+  --mds-button-icon-color: theme('colors.status-error-04');
+  --mds-button-background: theme('colors.status-error-09');
+}
+
+.action--retry-upload:focus-visible,
+.action--retry-upload:hover {
+
+  --mds-button-icon-color: theme('colors.status-success-04');
+  --mds-button-background: theme('colors.status-success-09');
+}
+
+.main-action {
+  @apply grid-cols-full;
+
+  display: grid;
+  pointer-events: none;
+  text-align: center;
+}
+
+.main-actions {
+
+  @apply gap-200 min-w-3200;
+
+  display: flex;
+  flex-direction: column;
+}
+
+.main-action-icon {
+  align-items: center;
+  display: inline-flex;
+  justify-content: center;
+}
+
+.file-list,
+.main-infos {
+  @apply
+    gap-100
+    grid-cols-full;
+
+  display: grid;
+}
+
+.file-list {
+
+
+  --cols: var(--mds-input-upload-min-cols);
+  --perc-w: calc(100% / var(--cols));
+  --gap: theme('spacing.400');
+  --gap-w: calc(var(--gap) - calc(var(--gap) / var(--cols)));
+  --max-w: calc(var(--perc-w) - var(--gap-w));
+  --template-cols: repeat(auto-fit, minmax(theme('spacing.4000'), var(--max-w)));
+
+  @apply
+    gap-400;
+
+  grid-template-columns: var(--template-cols);
+}
+
+.file-list--more-items {
+
+  --template-cols: repeat(auto-fit, minmax(theme('spacing.4000'), 1fr));
+}
+
+@container (max-width: 340px) {
+  .file-list {
+
+    --template-cols: 1fr;
+  }
+}
+
+.main-infos {
+  @apply max-w-4800;
+
+  min-width: 0;
+  text-align: center;
+  width: 100%;
+}
+
+.progress-bar {
+  min-width: 0;
+  width: 100%;
+}
+
+.additional-infos {
+
+  @apply gap-400;
+
+  align-items: flex-start;
+  display: flex;
+  flex-wrap: wrap;
+}
+
+.file-specs {
+
+  @apply gap-x-400 gap-y-100;
+
+  display: flex;
+  flex-grow: 1;
+  flex-wrap: wrap;
+  justify-content: space-between;
+}
+
+.action-sort {
+  display: inline-flex;
+}
+
+.file-specs {
+  flex-direction: column;
+  flex-wrap: nowrap;
+  justify-content: center;
+}
+
+.additional-infos {
+  justify-content: space-between;
+}

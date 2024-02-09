@@ -2135,18 +2135,6 @@
   resolved "https://registry.npmjs.org/@juggle/resize-observer/-/resize-observer-3.4.0.tgz#08d6c5e20cf7e4cc02fd181c4b0c225cd31dbb60"
   integrity sha512-dfLbk+PwWvFzSxwk3n5ySL0hfBog779o8h68wK/7/APo/7cgyWp5jcXockbxdk5kFRkbeXWm4Fbi9FrdN381sA==
 
-"@maggioli-design-system/styles@14.1.0":
-  version "14.1.0"
-  resolved "https://registry.npmjs.org/@maggioli-design-system/styles/-/styles-14.1.0.tgz#562fdd04a9df31dbd4784c4a21cf095c0f2c79ee"
-  integrity sha512-Ij16w0OmFDIhKibgbITNChxSWgt6XMBKpqa8viMPpctMjD10Tja040B+EFoF8zBpQZr5AOVCMfq1hNFcq7ArdQ==
-  dependencies:
-    "@fontsource/karla" "5.0.18"
-    "@fontsource/merriweather" "5.0.8"
-    "@fontsource/roboto" "5.0.8"
-    "@fontsource/roboto-mono" "5.0.16"
-    "@maggioli-design-system/design-tokens" "12.0.1"
-    normalize.css "8.0.1"
-
 "@maggioli-design-system/svg-icons@^2.6.3":
   version "2.10.1"
   resolved "https://registry.npmjs.org/@maggioli-design-system/svg-icons/-/svg-icons-2.10.1.tgz#3c86d5b738407a7fe756877aa87baf7b4d2d5f8d"
@@ -7465,6 +7453,11 @@ filelist@^1.0.4:
   dependencies:
     minimatch "^5.0.1"
 
+filesize@10.1.0:
+  version "10.1.0"
+  resolved "https://registry.npmjs.org/filesize/-/filesize-10.1.0.tgz#846f5cd8d16e073c5d6767651a8264f6149183cd"
+  integrity sha512-GTLKYyBSDz3nPhlLVPjPWZCnhkd9TrrRArNcy8Z+J2cqScB7h2McAzR6NBX6nYOoWafql0roY8hrocxnZBv9CQ==
+
 fill-range@^4.0.0:
   version "4.0.0"
   resolved "https://registry.npmjs.org/fill-range/-/fill-range-4.0.0.tgz#d544811d428f98eb06a63dc402d2403c328c38f7"
@@ -10250,6 +10243,11 @@ mime@1.6.0:
   version "1.6.0"
   resolved "https://registry.npmjs.org/mime/-/mime-1.6.0.tgz#32cd9e5c64553bd58d19a568af452acff04981b1"
   integrity sha512-x0Vn8spI+wuJ1O6S7gnbaQg8Pxh4NNHb7KSINmEWKiPE4RKOplvijn+NkmYmmRgP68mc70j2EbeTFRsrswaQeg==
+
+mime@4.0.1:
+  version "4.0.1"
+  resolved "https://registry.npmjs.org/mime/-/mime-4.0.1.tgz#ad7563d1bfe30253ad97dedfae2b1009d01b9470"
+  integrity sha512-5lZ5tyrIfliMXzFtkYyekWbtRXObT9OWa8IwQ5uxTBDHucNNwniRqo0yInflj+iYi5CBa6qxadGzGarDfuEOxA==
 
 mime@^2.0.3:
   version "2.6.0"

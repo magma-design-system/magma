@@ -1,6 +1,6 @@
 import clsx from 'clsx'
 import miBaselineKeyboardArrowDown from '@icon/mi/baseline/keyboard-arrow-down.svg'
-import { Component, Event, EventEmitter, Host, Prop, h, State } from '@stencil/core'
+import { AttachInternals, Component, Element, Event, EventEmitter, Host, Prop, h, State } from '@stencil/core'
 import { InputValue } from '@interface/input-value'
 
 @Component({
@@ -10,64 +10,84 @@ import { InputValue } from '@interface/input-value'
 })
 export class MdsInputSelect {
 
+  @Element() host: HTMLMdsInputSelectElement
   @State() selected: boolean
+  @AttachInternals() internals: ElementInternals
 
   /**
    * Specifies a short hint that describes the expected value of the element
    */
-  @Prop() readonly placeholder?: string
+  @Prop({ reflect: true }) readonly autocomplete?: 'on'
 
   /**
    * Specifies a short hint that describes the expected value of the element
    */
-  @Prop() readonly options: string = '{}'
+  @Prop({ reflect: true }) readonly autoFocus?: boolean
+
+  /**
+   * Specifies a short hint that describes the expected value of the element
+   */
+  @Prop({ reflect: true }) readonly placeholder?: string
 
   /**
    * Specifies the value of the element
    */
-  @Prop() value?: string | number | null = ''
+  @Prop({ reflect: true }) value?: string | number | null = ''
 
   /**
    * Emits an InputChangeEventDetail when the value of the input element changes
    */
   @Event({ eventName: 'mdsInputSelectChange' }) changeEvent: EventEmitter<InputValue>
 
-  /**
-    * Emits a KeyboardEvent when a keboard key is pressed on the focused input element
-    */
-  @Event({ eventName: 'mdsInputSelectKeydown' }) keyDownEvent: EventEmitter<KeyboardEvent>
-
-  /**
-    * Emits a void event when input element is blurred
-    */
-  @Event({ eventName: 'mdsInputSelectBlur' }) blurEvent: EventEmitter<void>
-
-  /**
-    * Emits a void event when input element is focused
-    */
-  @Event({ eventName: 'mdsInputSelectFocus' }) focusEvent: EventEmitter<void>
 
   private onInput = (ev: Event) => {
     const input = ev.target as HTMLSelectElement | false
     if (input) {
       this.selected = input.value !== ''
+      this.value = input.value
+      this.internals.setFormValue(input.value)
     }
   }
 
-  private onBlur = () => {
-    this.blurEvent.emit()
-  }
+  private emptyOptions = (): void => {
+    const select = this.host.shadowRoot?.querySelector('select')
+    const options = select?.querySelectorAll('option')
 
-  private onFocus = () => {
-    this.focusEvent.emit()
-  }
-
-  private getParsedOptions = () => {
-    try {
-      return JSON.parse(this.options)
-    } catch (e) {
-      console.error('Cant parse json')
+    if (!options) {
+      return
     }
+
+    options.forEach((option: HTMLOptionElement, index: number) => {
+      if (!this.placeholder) {
+        option.remove()
+      }
+      
+      if (this.placeholder && index > 0) {
+        option.remove()
+      }
+    })
+  }
+
+  private onSlotChangeHandler = (): void => {
+    const elements = this.host.shadowRoot?.querySelectorAll('slot')[0]?.assignedNodes()
+    const select = this.host.shadowRoot?.querySelector('select')
+    const options = select?.querySelectorAll('option')
+
+    if (!options) {
+      return
+    }
+
+    if (!this.placeholder && options.length > 0) {
+      this.emptyOptions()
+    }
+
+    if (this.placeholder && options.length > 1) {
+      this.emptyOptions()
+    }
+
+    elements?.forEach((element: HTMLElement) => {
+      select?.appendChild(element.cloneNode(true))
+    })
   }
 
   render () {
@@ -75,17 +95,15 @@ export class MdsInputSelect {
       <Host>
         <select
           class={clsx('input', this.selected && 'input--selected')}
-          onBlur={this.onBlur}
-          onFocus={this.onFocus}
           onInput={this.onInput}
         >
           { this.placeholder && <option value="" disabled selected>{ this.placeholder }</option> }
-          { Object.entries(this.getParsedOptions()).map(([key, text]) =>
-            <option value={ key }>{ text }</option>,
-          ) }
         </select>
         <div class="icon-container">
           <i class="svg icon" innerHTML={miBaselineKeyboardArrowDown} />
+        </div>
+        <div class="option-container">
+          <slot onSlotchange={this.onSlotChangeHandler}/>
         </div>
       </Host>
     )

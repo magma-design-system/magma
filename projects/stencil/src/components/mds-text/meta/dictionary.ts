@@ -50,6 +50,12 @@ const tagsDictionary = [
   'var',
 ]
 
+const textAnimateDictionary = [
+  'none',
+  'yugop',
+]
+
 export {
   tagsDictionary,
+  textAnimateDictionary,
 }

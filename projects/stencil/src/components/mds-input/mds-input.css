@@ -1,8 +1,6 @@
 @import '~@maggioli-design-system/styles/dist/tailwind/typography.css';
-@import '~@maggioli-design-system/styles/dist/css/animations.css'; /* included for focus effect */
-@import '../../tailwind/components.css';
-@tailwind base;
 @tailwind components;
+@tailwind base;
 @tailwind utilities;
 
 /**
@@ -129,22 +127,22 @@ textarea.input {
 }
 
 .counter-button {
+
   @apply
     h-600
     p-0
     rounded-lg
     w-700;
 
-  align-items: center;
-  background-color: transparent;
+  --mds-button-background: transparent;
+  --mds-button-icon-color: var(--mds-input-controls-color);
+
   border: 0;
-  display: flex;
-  fill: var(--mds-input-controls-color);
-  justify-content: center;
 }
 
 .counter-button:hover {
-  background-color: theme('colors.tone-neutral-09');
+
+  --mds-button-background: theme('colors.tone-neutral-09');
 }
 
 .counter .counter-button:first-child {

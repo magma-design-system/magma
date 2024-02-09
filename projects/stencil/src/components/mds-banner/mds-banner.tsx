@@ -96,7 +96,7 @@ export class MdsBanner {
               <slot/>
             </div>
           </div>
-          { this.deletable && <i class="svg close-icon focus-bounce" innerHTML={miBaselineClose} onClick={this.closeBanner} role="button" tabindex="0" title={this.closeLabel}/>}
+          { this.deletable && <mds-button class="close-button" icon={miBaselineClose} onClick={this.closeBanner} title={this.closeLabel}/>}
         </div>
         { this.actions
           &&

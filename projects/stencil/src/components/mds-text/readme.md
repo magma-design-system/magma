@@ -11,8 +11,10 @@ This is a web-component from Maggioli Design System [Magma](https://magma.maggio
 
 | Property     | Attribute    | Description                                                                | Type                                                                                                                                                      | Default     |
 | ------------ | ------------ | -------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------- | ----------- |
+| `animation`  | `animation`  | Specifies if the text is animated when it is rendered                      | `"none" \| "yugop" \| undefined`                                                                                                                          | `'none'`    |
 | `tag`        | `tag`        | Specifies the HTML tag of the element                                      | `TypographyTagType \| undefined`                                                                                                                          | `undefined` |
-| `truncate`   | `truncate`   | Specifies if the text shoud be truncated or should behave as a normal text | `"all" \| "word" \| undefined`                                                                                                                            | `undefined` |
+| `text`       | `text`       | Specifies the text string to the component instead of passing an HTML node | `string \| undefined`                                                                                                                                     | `undefined` |
+| `truncate`   | `truncate`   | Specifies if the text shoud be truncated or should behave as a normal text | `"all" \| "none" \| "word" \| undefined`                                                                                                                  | `undefined` |
 | `typography` | `typography` | Specifies the font typography of the element                               | `"action" \| "caption" \| "detail" \| "h1" \| "h2" \| "h3" \| "h4" \| "h5" \| "h6" \| "hack" \| "label" \| "option" \| "paragraph" \| "snippet" \| "tip"` | `'detail'`  |
 | `variant`    | `variant`    | Specifies the variant for `typography`                                     | `"code" \| "info" \| "read" \| "title" \| undefined`                                                                                                      | `undefined` |
 
@@ -48,12 +50,14 @@ This is a web-component from Maggioli Design System [Magma](https://magma.maggio
  - [mds-button](../mds-button)
  - [mds-chip](../mds-chip)
  - [mds-file](../mds-file)
+ - [mds-file-preview](../mds-file-preview)
  - [mds-filter](../mds-filter)
  - [mds-filter-item](../mds-filter-item)
  - [mds-input](../mds-input)
  - [mds-input-field](../mds-input-field)
  - [mds-input-range](../mds-input-range)
  - [mds-input-switch](../mds-input-switch)
+ - [mds-input-upload](../mds-input-upload)
  - [mds-kpi-item](../mds-kpi-item)
  - [mds-label](../mds-label)
  - [mds-list-item](../mds-list-item)
@@ -85,12 +89,14 @@ graph TD;
   mds-button --> mds-text
   mds-chip --> mds-text
   mds-file --> mds-text
+  mds-file-preview --> mds-text
   mds-filter --> mds-text
   mds-filter-item --> mds-text
   mds-input --> mds-text
   mds-input-field --> mds-text
   mds-input-range --> mds-text
   mds-input-switch --> mds-text
+  mds-input-upload --> mds-text
   mds-kpi-item --> mds-text
   mds-label --> mds-text
   mds-list-item --> mds-text

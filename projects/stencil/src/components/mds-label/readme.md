@@ -14,7 +14,7 @@ This is a web-component from Maggioli Design System [Magma](https://magma.maggio
 | `deletable`   | `deletable`    | Enables the cross icon to perform cancel/delete action on element     | `boolean`                                                                                                                                                                          | `false`     |
 | `labelAction` | `label-action` | Specifies the ARIA label for remove element                           | `string \| undefined`                                                                                                                                                              | `'Rimuovi'` |
 | `tone`        | `tone`         | Sets the tone of the color variant                                    | `"quiet" \| "strong" \| "weak"`                                                                                                                                                    | `'quiet'`   |
-| `truncate`    | `truncate`     | Truncates text inside the label or displays it in multiline if needed | `"all" \| "word" \| undefined`                                                                                                                                                     | `undefined` |
+| `truncate`    | `truncate`     | Truncates text inside the label or displays it in multiline if needed | `"all" \| "none" \| "word" \| undefined`                                                                                                                                           | `undefined` |
 | `typography`  | `typography`   | Specifies the typography of the element                               | `"action" \| "caption" \| "detail" \| "h1" \| "h2" \| "h3" \| "h4" \| "h5" \| "h6" \| "hack" \| "label" \| "option" \| "paragraph" \| "snippet" \| "tip"`                          | `'caption'` |
 | `variant`     | `variant`      | Sets the theme variant colors                                         | `"amaranth" \| "aqua" \| "blue" \| "dark" \| "error" \| "green" \| "info" \| "light" \| "lime" \| "orange" \| "orchid" \| "sky" \| "success" \| "violet" \| "warning" \| "yellow"` | `'sky'`     |
 
@@ -49,11 +49,16 @@ This is a web-component from Maggioli Design System [Magma](https://magma.maggio
 ### Depends on
 
 - [mds-text](../mds-text)
+- [mds-button](../mds-button)
 
 ### Graph
 ```mermaid
 graph TD;
   mds-label --> mds-text
+  mds-label --> mds-button
+  mds-button --> mds-spinner
+  mds-button --> mds-icon
+  mds-button --> mds-text
   style mds-label fill:#f9f,stroke:#333,stroke-width:4px
 ```
 

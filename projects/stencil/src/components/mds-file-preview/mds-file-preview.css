@@ -1,0 +1,101 @@
+@tailwind utilities;
+
+:host {
+
+  --mds-file-preview-background-color: theme('colors.tone-neutral');
+  --mds-file-preview-border-radius: theme('borderRadius.lg');
+  --mds-file-preview-color: theme('colors.tone-neutral-03');
+  --mds-file-preview-icon-background-color: inherit;
+  --mds-file-preview-icon-color: inherit;
+
+  align-items: stretch;
+  background-color: var(--mds-file-preview-background-color);
+  border-radius: var(--mds-file-preview-border-radius);
+  box-shadow: theme('boxShadow.DEFAULT');
+  display: flex;
+  fill: var(--mds-file-preview-color);
+  justify-content: stretch;
+  position: relative;
+}
+
+.card {
+  @apply
+    gap-200
+    grid-cols-full
+    p-400;
+
+  border-radius: var(--mds-file-preview-border-radius);
+  display: grid;
+  width: 100%;
+}
+
+.preview {
+
+  @apply aspect-square;
+
+  border-radius: theme('borderRadius.DEFAULT');
+  box-sizing: border-box;
+  width: 100%;
+}
+
+.preview--image {
+  filter: brightness(0.975);
+  padding: 0 !important;
+}
+
+.preview--icon,
+.preview--status {
+  align-items: center;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.preview--status {
+
+  @apply p-400 gap-200;
+
+  background-color: var(--mds-file-preview-icon-background-color);
+  color: var(--mds-file-preview-icon-color);
+  fill: var(--mds-file-preview-icon-color);
+}
+
+.icon {
+  @apply h-1200 w-1200;
+}
+
+.message {
+  text-align: center;
+}
+
+.action-delete {
+  background-color: var(--mds-file-preview-background-color);
+  fill: var(--mds-file-preview-color);
+  position: absolute;
+  right: 0;
+  top: 0;
+  z-index: theme('zIndex.10');
+}
+
+.infos {
+
+  @apply gap-200;
+
+  align-items: center;
+  display: flex;
+}
+
+.suffix {
+  flex-shrink: 0;
+}
+
+.infos--has-file-size {
+  justify-content: space-between;
+}
+
+.file-name {
+
+  --mds-text-line-clamp: 2;
+}
+
+@import './css/mds-file-preview-variants.css';

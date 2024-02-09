@@ -1,6 +1,7 @@
 import { Component, Element, Event, EventEmitter, Host, Prop, State, Watch, h } from '@stencil/core'
 import { ButtonIconPositionType, ButtonSizeType, ButtonType } from '@type/button'
 import clsx from 'clsx'
+import { MdsTabItemEventDetail } from './meta/event-detail'
 
 /**
  * @slot default - Put text string here, avoid elements
@@ -15,6 +16,7 @@ export class MdsTabItem {
 
   @Element() private element: HTMLMdsTabItemElement
   @State() isSelected: boolean
+  @State() hasText: boolean
 
   /**
    * Specifies if the tab item is selected or not
@@ -41,21 +43,30 @@ export class MdsTabItem {
    */
   @Prop({ reflect: true }) readonly size?: ButtonSizeType = 'md'
 
+  /**
+   * Specifies an optional value to get from mdsTabItemSelect event 
+   */
+  @Prop({ reflect: true }) readonly value?: string
+
   private toggle = () => {
     this.isSelected = !this.isSelected
     if (this.isSelected) {
-      this.selectedEvent.emit(this.element.id)
+      this.selectedEvent.emit({ target: this.element, value: this.value })
     }
   }
 
   /**
    * Emits when the tab item is selected
    */
-  @Event({ eventName: 'mdsTabItemSelect' }) selectedEvent: EventEmitter<string>
+  @Event({ eventName: 'mdsTabItemSelect' }) selectedEvent: EventEmitter<MdsTabItemEventDetail>
 
   @Watch('selected')
   validateActive (newValue: boolean): void {
     this.isSelected = newValue
+  }
+
+  componentWillLoad ():void {
+    this.hasText = this.element.innerHTML !== ''
   }
 
   render () {
@@ -68,7 +79,7 @@ export class MdsTabItem {
           size={this.size}
           type={this.type}
         >
-          <slot/>
+          { this.hasText && <slot/> }
         </mds-button>
       </Host>
     )

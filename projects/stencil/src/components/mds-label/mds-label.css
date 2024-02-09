@@ -1,6 +1,3 @@
-@import '~@maggioli-design-system/styles/dist/css/animations.css'; /* included for focus effect */
-@import '../../tailwind/components.css';
-@tailwind components;
 @tailwind utilities;
 
 /**
@@ -19,8 +16,14 @@
   --mds-label-radius: theme('spacing.150');
   --mds-label-selection-background: var(--magma-selection-background, theme('colors.label-yellow-09'));
   --mds-label-selection-color: var(--magma-selection-color, theme('colors.label-yellow-02'));
+  --mds-label-button-background: theme('colors.label-yellow-08');
+  --mds-label-button-background-hover: theme('colors.label-yellow-07');
+  --mds-label-button-icon-color: theme('colors.label-yellow-03');
 
-  @apply pl-300;
+  @apply
+    min-h-900
+    pl-300
+    transition-colors;
 
   align-items: stretch;
   background-color: var(--mds-label-background);
@@ -52,22 +55,23 @@
   @apply pr-300;
 }
 
-.close {
+.button-close {
   @apply
-    bg-tone-neutral/30
-    hover:bg-tone-neutral/50
     ml-100
     px-150
     rounded-r-md
     transition-colors;
 
-  align-items: center;
+  --mds-button-icon-color: var(--mds-label-button-icon-color);
+  --mds-button-background: var(--mds-label-button-background);
+
   border-radius: 0 var(--mds-label-radius) var(--mds-label-radius) 0;
-  color: inherit;
-  cursor: pointer;
-  display: flex;
-  flex-shrink: 0;
-  transition-property: outline, outline-offset;
+  height: auto;
+}
+
+.button-close:hover {
+
+  --mds-button-background: var(--mds-label-button-background-hover);
 }
 
 @import './css/mds-label-variant-amaranth.css';

@@ -30,23 +30,17 @@ This is a web-component from Maggioli Design System [Magma](https://magma.maggio
 
 ## CSS Custom Properties
 
-| Name                                          | Description                                                                                     |
-| --------------------------------------------- | ----------------------------------------------------------------------------------------------- |
-| `--mds-chip-backgroud-selected`               | Sets the `background-color` of the component when it's selected                                 |
-| `--mds-chip-background`                       | Sets the `background-color` of the component                                                    |
-| `--mds-chip-color`                            | Sets the `color` of the component                                                               |
-| `--mds-chip-color-selected`                   | Sets the `color` of the component when it's selected                                            |
-| `--mds-chip-delete-icon-color`                | Sets the `fill` color of the delete icon of the component                                       |
-| `--mds-chip-delete-icon-color-hover`          | Sets the `fill` color of the delete icon when the mouse is over the component                   |
-| `--mds-chip-delete-icon-color-hover-selected` | Sets the `fill` color of the delete icon when the mouse is over the component and it's selected |
-| `--mds-chip-delete-icon-color-selected`       | Sets the `fill` color of the delete icon when the component and it's selected                   |
-| `--mds-chip-icon-background`                  | Sets the `background-color` of the icon                                                         |
-| `--mds-chip-icon-background-hover`            | Sets the `background-color` of the icon when the mouse is over the component                    |
-| `--mds-chip-icon-background-selected`         | Sets the `background-color` color of the icon when the component is selected                    |
-| `--mds-chip-icon-color`                       | Sets the `fill` color of the icon of the component                                              |
-| `--mds-chip-icon-color-hover`                 | Sets the `fill` color of the icon when the mouse is over the component                          |
-| `--mds-chip-icon-color-selected`              | Sets the `fill` color of the icon of the component when it's selected                           |
-| `--mds-chip-opacity-disabled`                 | Sets the `opacity` of the component when it's disabled                                          |
+| Name                                  | Description                                                                  |
+| ------------------------------------- | ---------------------------------------------------------------------------- |
+| `--mds-chip-backgroud-selected`       | Sets the `background-color` of the component when it's selected              |
+| `--mds-chip-background`               | Sets the `background-color` of the component                                 |
+| `--mds-chip-color`                    | Sets the `color` of the component                                            |
+| `--mds-chip-color-selected`           | Sets the `color` of the component when it's selected                         |
+| `--mds-chip-icon-background`          | Sets the `background-color` of the icon                                      |
+| `--mds-chip-icon-background-selected` | Sets the `background-color` color of the icon when the component is selected |
+| `--mds-chip-icon-color`               | Sets the `fill` color of the icon of the component                           |
+| `--mds-chip-icon-color-selected`      | Sets the `fill` color of the icon of the component when it's selected        |
+| `--mds-chip-opacity-disabled`         | Sets the `opacity` of the component when it's disabled                       |
 
 
 ## Dependencies
@@ -55,12 +49,17 @@ This is a web-component from Maggioli Design System [Magma](https://magma.maggio
 
 - [mds-icon](../mds-icon)
 - [mds-text](../mds-text)
+- [mds-button](../mds-button)
 
 ### Graph
 ```mermaid
 graph TD;
   mds-chip --> mds-icon
   mds-chip --> mds-text
+  mds-chip --> mds-button
+  mds-button --> mds-spinner
+  mds-button --> mds-icon
+  mds-button --> mds-text
   style mds-chip fill:#f9f,stroke:#333,stroke-width:4px
 ```
 

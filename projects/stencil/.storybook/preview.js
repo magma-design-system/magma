@@ -24,22 +24,20 @@ import devices from './devices.json'
 
 defineCustomElements();
 
-import { mds_icon } from '../dist/esm/mds-icon.entry'
+const pathName = window.location.pathname.replace('/iframe.html', '')
+const svgPath = pathName.charAt(pathName.length - 1) === '/' ? `${pathName}svg/` : `${pathName}/svg/`
+
 // Method 1 - call static function of MdsIcon
-const mdsIconGet = async () => {
-  await customElements.whenDefined('mds-icon')
 
-  const pathName = window.location.pathname.replace('/iframe.html', '')
-  const svgPath = pathName.charAt(pathName.length - 1) === '/' ? `${pathName}svg/` : `${pathName}/svg/`
-
-  mds_icon.setSvgPathStatic(svgPath)
-  // MdsIcon.setSvgPathStatic('/svg/') // non va, why?
-}
-
-mdsIconGet()
+// import { mds_icon } from '../dist/esm/mds-icon.entry'
+// const mdsIconGet = async () => {
+//   await customElements.whenDefined('mds-icon')
+//   mds_icon.setSvgPathStatic(svgPath)
+// }
+// mdsIconGet()
 
 // Method 2 - use of sessionStorage
-// window.sessionStorage.setItem('mdsIconPath', '/svg/')
+window.sessionStorage.setItem('mdsIconSvgPath', svgPath)
 
 // Method 3 - instantiate a temp MdsIcon DOM node element to call a stencil class Method
 // const mdsIconGet = async () => {

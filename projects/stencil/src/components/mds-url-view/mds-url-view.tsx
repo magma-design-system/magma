@@ -63,7 +63,7 @@ export class MdsUrlView {
             { this.domain && <mds-text class="title" typography="caption">
               { this.urlDomain(this.src) }
             </mds-text> }
-            <i class="svg close focus-bounce" innerHTML={miBaselineClose} onClick={this.closeUrlView} tabindex="0"/>
+            <mds-button class="button-close" icon={miBaselineClose} onClick={this.closeUrlView}></mds-button>
           </header>
           <iframe class="iframe" src={ this.src }/>
         </div>

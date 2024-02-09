@@ -8,9 +8,9 @@
 :host {
   @apply text-info-detail;
 
-  --mds-input-select-variant-color: 0, 0, 0;
-  --mds-input-select-ring: 0 0 0 1px rgba(var(--mds-input-select-variant-color) / 0.1);
-  --mds-input-select-shadow: 0 1px 3px 0 rgba(var(--mds-input-select-variant-color) / 0.1), 0 1px 2px 0 rgba(var(--mds-input-select-variant-color) / 0.06);
+  --mds-input-select-variant-color: var(--tone-neutral-01);
+  --mds-input-select-ring: 0 0 0 1px rgb(var(--mds-input-select-variant-color) / 0.1);
+  --mds-input-select-shadow: 0 1px 3px 0 rgb(var(--mds-input-select-variant-color) / 0.1), 0 1px 2px 0 rgb(var(--mds-input-select-variant-color) / 0.06);
 
   color: theme('colors.tone-neutral-02');
   display: flex;
@@ -42,6 +42,7 @@
   text-overflow: ellipsis;
 }
 
+.input:hover,
 .input:focus {
   @apply
     duration-300
@@ -49,9 +50,15 @@
     outline-none
     transition-cosmetic;
 
-  --mds-input-select-variant-color: 10, 80, 212;
-  --mds-input-select-ring: 0 0 0 3px rgb(var(--mds-input-select-variant-color) 1);
-  --mds-input-select-shadow: 0 4px 6px -1px rgb(var(--mds-input-select-variant-color) 0.1), 0 2px 4px -1px rgb(var(--mds-input-select-variant-color) 0.06);
+  --mds-input-select-variant-color: var(--brand-maggioli-04);
+  --mds-input-select-ring: 0 0 0 3px rgb(var(--mds-input-select-variant-color) / 1);
+  --mds-input-select-shadow: 0 4px 6px -1px rgb(var(--mds-input-select-variant-color) / 0.1), 0 2px 4px -1px rgb(var(--mds-input-select-variant-color) / 0.06);
+
+  color: theme('colors.tone-neutral-03');
+}
+
+:host([value]:not([value=""])) .input {
+  color: theme('colors.tone-neutral-03');
 }
 
 .input--mds-input-select-selected {
@@ -84,4 +91,8 @@
 .input:hover + .icon-container .icon {
   background-color: theme('colors.tone-neutral-09');
   fill: theme('colors.brand-maggioli-02');
+}
+
+.option-container {
+  display: none;
 }

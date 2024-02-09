@@ -35,9 +35,10 @@ This is a web-component from Maggioli Design System [Magma](https://magma.maggio
 
 ## Shadow Parts
 
-| Part      | Description |
-| --------- | ----------- |
-| `"label"` |             |
+| Part      | Description                   |
+| --------- | ----------------------------- |
+| `"icon"`  | The icon inside the component |
+| `"label"` |                               |
 
 
 ## CSS Custom Properties
@@ -57,10 +58,19 @@ This is a web-component from Maggioli Design System [Magma](https://magma.maggio
 
 ### Used by
 
+ - [mds-banner](../mds-banner)
+ - [mds-breadcrumb](../mds-breadcrumb)
+ - [mds-chip](../mds-chip)
+ - [mds-file-preview](../mds-file-preview)
  - [mds-header-bar](../mds-header-bar)
  - [mds-input](../mds-input)
+ - [mds-input-upload](../mds-input-upload)
+ - [mds-label](../mds-label)
+ - [mds-modal](../mds-modal)
+ - [mds-note](../mds-note)
  - [mds-push-notification](../mds-push-notification)
  - [mds-tab-item](../mds-tab-item)
+ - [mds-url-view](../mds-url-view)
 
 ### Depends on
 
@@ -74,10 +84,19 @@ graph TD;
   mds-button --> mds-spinner
   mds-button --> mds-icon
   mds-button --> mds-text
+  mds-banner --> mds-button
+  mds-breadcrumb --> mds-button
+  mds-chip --> mds-button
+  mds-file-preview --> mds-button
   mds-header-bar --> mds-button
   mds-input --> mds-button
+  mds-input-upload --> mds-button
+  mds-label --> mds-button
+  mds-modal --> mds-button
+  mds-note --> mds-button
   mds-push-notification --> mds-button
   mds-tab-item --> mds-button
+  mds-url-view --> mds-button
   style mds-button fill:#f9f,stroke:#333,stroke-width:4px
 ```
 

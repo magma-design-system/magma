@@ -31,10 +31,7 @@ export class MdsListItem {
   render () {
     return (
       <Host>
-        { this.icon
-          ? <mds-icon class="icon" name={this.icon} part="icon"/>
-          : <i class="svg icon" innerHTML={mggListDot} part="icon"/>
-        }
+        <mds-icon class="icon" name={this.icon ?? mggListDot} part="icon"/>
         <mds-text tag="span" typography={this.typography} variant={this.variant} part="text">
           <slot/>
         </mds-text>

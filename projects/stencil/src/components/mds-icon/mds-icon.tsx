@@ -1,5 +1,6 @@
 import { Component, Element, h, Host, Method, Prop, State, Watch } from '@stencil/core'
 import { IconsSetService } from './services/icons-set.service'
+import { isIconFormatIsBase64, isIconFormatIsSVG, BASE64_SVG_ICON } from '@common/icon'
 
 /**
  * @part svg - The svg container of the icon
@@ -15,7 +16,7 @@ export class MdsIcon {
   @State() svgHTML: string
 
   /**
-   * The name of the icon.
+   * The name of the icon or a base64 string to render it as an svg
    */
   @Prop({ reflect: true }) readonly name!: string
 
@@ -23,9 +24,14 @@ export class MdsIcon {
 
   @Element() hostElement: HTMLMdsIconElement
 
-  componentWillLoad (): void {
+  componentWillLoad = (): void => {
     this.updateIcon()
     IconsSetService.registerListener(() => this.updateIcon())
+  }
+
+  private convertBase64ToSvg = (): string => {
+    const svgBase64 = this.name.replace(BASE64_SVG_ICON, '').replace(/\=/i, '')
+    return atob(svgBase64)
   }
 
   static setSvgPathStatic (path: string): void {
@@ -44,6 +50,17 @@ export class MdsIcon {
   @Watch('name')
   async updateIcon (): Promise<void> {
     if (!this.name) return Promise.resolve()
+
+    if (isIconFormatIsBase64(this.name)) {
+      this.svgHTML = this.convertBase64ToSvg()
+      return Promise.resolve()
+    }
+
+    if (isIconFormatIsSVG(this.name)) {
+      this.svgHTML = this.name
+      return Promise.resolve()
+    }
+
     const svgPath = IconsSetService.getSvgPath() || window.sessionStorage.getItem(IconsSetService._svgPathKey)
     this._iconHref = svgPath && !this.name.startsWith('http') ? window.location.origin.concat(svgPath.concat(this.name).concat('.svg')) : this.name
     this.svgHTML = await IconsSetService.fetchSvg(this._iconHref)

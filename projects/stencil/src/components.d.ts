@@ -18,8 +18,10 @@ import { ButtonIconPositionType, ButtonSizeType, ButtonTargetType, ButtonType, B
 import { MdsChipEvent } from "./components/mds-chip/meta/interface";
 import { FloatingUIPlacement, FloatingUIStrategy } from "@type/floating-ui";
 import { MdsDropdownEventDetail } from "./components/mds-dropdown/meta/event-detail";
-import { ExtensionSuffixType } from "./components/mds-file/meta/types";
+import { ExtensionSuffixType } from "@type/file-types";
 import { MdsFileEventDetail } from "./components/mds-file/meta/event-detail";
+import { TypographyTruncateType } from "@type/text";
+import { MdsFilePreviewEventDetail } from "./components/mds-file-preview/meta/event-detail";
 import { MdsFilterEventDetail } from "./components/mds-filter/meta/event-detail";
 import { MdsFilterItemEventDetail } from "./components/mds-filter-item/meta/event-detail";
 import { CharacterSetType, EnctypeType, FormAutocompleteType, FormMethodType } from "./components/mds-form/meta/types";
@@ -37,7 +39,7 @@ import { MdsInputEventDetail as MdsInputEventDetail1 } from "@component/mds-inpu
 import { MdsValidationErrors, MdsValidatorFn } from "./components/mds-input-field/meta/validators";
 import { InputValue } from "@interface/input-value";
 import { InputSwitchSizeType, InputSwitchType } from "./components/mds-input-switch/meta/types";
-import { TypographyTruncateType } from "@type/text";
+import { AttachmentSort } from "./components/mds-input-upload/meta/types";
 import { ModalPositionType } from "./components/mds-modal/meta/types";
 import { StrategyType } from "./components/mds-notification/meta/types";
 import { MdsPaginatorEventDetail } from "./components/mds-paginator/meta/event-detail";
@@ -48,7 +50,8 @@ import { MdsStepperBarEventDetail } from "./components/mds-stepper-bar/meta/even
 import { MdsStepperBarItemEventDetail } from "./components/mds-stepper-bar-item/meta/event-detail";
 import { MdsTabEventDetail } from "./components/mds-tab/meta/event-detail";
 import { MdsTabBarEventDetail } from "./components/mds-tab-bar/meta/event-detail";
-import { TypographyTagType } from "./components/mds-text/meta/types";
+import { MdsTabItemEventDetail } from "./components/mds-tab-item/meta/event-detail";
+import { TextAnimationType, TypographyTagType } from "./components/mds-text/meta/types";
 import { ToastPosition } from "./components/mds-toast/meta/types";
 import { UsageType } from "./components/mds-usage/meta/types";
 import { NoiseType, PreloadType } from "./components/mds-video-wall/meta/types";
@@ -65,8 +68,10 @@ export { ButtonIconPositionType, ButtonSizeType, ButtonTargetType, ButtonType, B
 export { MdsChipEvent } from "./components/mds-chip/meta/interface";
 export { FloatingUIPlacement, FloatingUIStrategy } from "@type/floating-ui";
 export { MdsDropdownEventDetail } from "./components/mds-dropdown/meta/event-detail";
-export { ExtensionSuffixType } from "./components/mds-file/meta/types";
+export { ExtensionSuffixType } from "@type/file-types";
 export { MdsFileEventDetail } from "./components/mds-file/meta/event-detail";
+export { TypographyTruncateType } from "@type/text";
+export { MdsFilePreviewEventDetail } from "./components/mds-file-preview/meta/event-detail";
 export { MdsFilterEventDetail } from "./components/mds-filter/meta/event-detail";
 export { MdsFilterItemEventDetail } from "./components/mds-filter-item/meta/event-detail";
 export { CharacterSetType, EnctypeType, FormAutocompleteType, FormMethodType } from "./components/mds-form/meta/types";
@@ -84,7 +89,7 @@ export { MdsInputEventDetail as MdsInputEventDetail1 } from "@component/mds-inpu
 export { MdsValidationErrors, MdsValidatorFn } from "./components/mds-input-field/meta/validators";
 export { InputValue } from "@interface/input-value";
 export { InputSwitchSizeType, InputSwitchType } from "./components/mds-input-switch/meta/types";
-export { TypographyTruncateType } from "@type/text";
+export { AttachmentSort } from "./components/mds-input-upload/meta/types";
 export { ModalPositionType } from "./components/mds-modal/meta/types";
 export { StrategyType } from "./components/mds-notification/meta/types";
 export { MdsPaginatorEventDetail } from "./components/mds-paginator/meta/event-detail";
@@ -95,7 +100,8 @@ export { MdsStepperBarEventDetail } from "./components/mds-stepper-bar/meta/even
 export { MdsStepperBarItemEventDetail } from "./components/mds-stepper-bar-item/meta/event-detail";
 export { MdsTabEventDetail } from "./components/mds-tab/meta/event-detail";
 export { MdsTabBarEventDetail } from "./components/mds-tab-bar/meta/event-detail";
-export { TypographyTagType } from "./components/mds-text/meta/types";
+export { MdsTabItemEventDetail } from "./components/mds-tab-item/meta/event-detail";
+export { TextAnimationType, TypographyTagType } from "./components/mds-text/meta/types";
 export { ToastPosition } from "./components/mds-toast/meta/types";
 export { UsageType } from "./components/mds-usage/meta/types";
 export { NoiseType, PreloadType } from "./components/mds-video-wall/meta/types";
@@ -499,6 +505,52 @@ export namespace Components {
          */
         "suffix"?: ExtensionSuffixType;
     }
+    interface MdsFilePreview {
+        /**
+          * Enables the cross icon to perform cancel/delete action on element
+         */
+        "deletable"?: boolean;
+        /**
+          * Overrides the default filetype description
+         */
+        "description"?: string;
+        /**
+          * Enables the download icon to perform the related action on element
+         */
+        "downloadable"?: boolean;
+        /**
+          * The filename shown as component title, is used to auto assign one of the filetype known in the filetype dictionary
+         */
+        "filename": string;
+        /**
+          * The filesize shown, if you pass a string you can write whathever you want, if you pass a number it expect filesize in bytes, the component will format it automatically.
+         */
+        "filesize"?: string;
+        /**
+          * The name of the icon or a base64 string to render it as an svg
+         */
+        "icon": string;
+        /**
+          * Sets a feedback message related to the component
+         */
+        "message"?: string;
+        /**
+          * The image preview src if available of a file, useful if you have a logo to display, or a smaller version of a bigger image
+         */
+        "src"?: string;
+        /**
+          * Overrides the automatic filetype recongition by forcing the suffix to one of the available formats choosen
+         */
+        "suffix"?: ExtensionSuffixType;
+        /**
+          * Truncates the filename shown
+         */
+        "truncate"?: TypographyTruncateType;
+        /**
+          * The variant of the component, is shown only if the message attribute is defined
+         */
+        "variant"?: ThemeFullVariantAvatarType;
+    }
     interface MdsFilter {
         /**
           * Sets an automatic reset of active filters if all filters are triggered
@@ -601,7 +653,7 @@ export namespace Components {
         /**
           * Set the name of the icon.
          */
-        "icon": string;
+        "icon"?: string;
         /**
           * Specifies where the component should be placed relative to the caller.
          */
@@ -621,7 +673,7 @@ export namespace Components {
     }
     interface MdsIcon {
         /**
-          * The name of the icon.
+          * The name of the icon or a base64 string to render it as an svg
          */
         "name": string;
         /**
@@ -929,7 +981,11 @@ export namespace Components {
         /**
           * Specifies a short hint that describes the expected value of the element
          */
-        "options": string;
+        "autoFocus"?: boolean;
+        /**
+          * Specifies a short hint that describes the expected value of the element
+         */
+        "autocomplete"?: 'on';
         /**
           * Specifies a short hint that describes the expected value of the element
          */
@@ -990,6 +1046,28 @@ export namespace Components {
           * Specifies the name of the group
          */
         "name": string;
+    }
+    interface MdsInputUpload {
+        /**
+          * Defines the file types the file input should accept
+         */
+        "accept": "";
+        /**
+          * Returns a promise of files uploaded as Filelist or null if there's none
+         */
+        "getFiles": () => Promise<FileList | null>;
+        /**
+          * Specifies the max size of a single file that can be uploaded in MB
+         */
+        "maxFileSize": 20;
+        /**
+          * Specifies the max number of files that can be uploaded
+         */
+        "maxFiles": 1;
+        /**
+          * Specifies if the component should show a sort widget by status or date of upload, if not defined let user choose
+         */
+        "sort"?: AttachmentSort;
     }
     interface MdsKpi {
     }
@@ -1301,6 +1379,10 @@ export namespace Components {
           * The type of the tab item element
          */
         "type"?: ButtonType;
+        /**
+          * Specifies an optional value to get from mdsTabItemSelect event
+         */
+        "value"?: string;
     }
     interface MdsTable {
         /**
@@ -1322,9 +1404,17 @@ export namespace Components {
     }
     interface MdsText {
         /**
+          * Specifies if the text is animated when it is rendered
+         */
+        "animation"?: TextAnimationType;
+        /**
           * Specifies the HTML tag of the element
          */
         "tag"?: TypographyTagType;
+        /**
+          * Specifies the text string to the component instead of passing an HTML node
+         */
+        "text"?: string;
         /**
           * Specifies if the text shoud be truncated or should behave as a normal text
          */
@@ -1506,6 +1596,10 @@ export interface MdsDropdownCustomEvent<T> extends CustomEvent<T> {
 export interface MdsFileCustomEvent<T> extends CustomEvent<T> {
     detail: T;
     target: HTMLMdsFileElement;
+}
+export interface MdsFilePreviewCustomEvent<T> extends CustomEvent<T> {
+    detail: T;
+    target: HTMLMdsFilePreviewElement;
 }
 export interface MdsFilterCustomEvent<T> extends CustomEvent<T> {
     detail: T;
@@ -1866,6 +1960,24 @@ declare global {
         prototype: HTMLMdsFileElement;
         new (): HTMLMdsFileElement;
     };
+    interface HTMLMdsFilePreviewElementEventMap {
+        "mdsFileDownload": MdsFilePreviewEventDetail;
+        "mdsFileDelete": MdsFilePreviewEventDetail;
+    }
+    interface HTMLMdsFilePreviewElement extends Components.MdsFilePreview, HTMLStencilElement {
+        addEventListener<K extends keyof HTMLMdsFilePreviewElementEventMap>(type: K, listener: (this: HTMLMdsFilePreviewElement, ev: MdsFilePreviewCustomEvent<HTMLMdsFilePreviewElementEventMap[K]>) => any, options?: boolean | AddEventListenerOptions): void;
+        addEventListener<K extends keyof DocumentEventMap>(type: K, listener: (this: Document, ev: DocumentEventMap[K]) => any, options?: boolean | AddEventListenerOptions): void;
+        addEventListener<K extends keyof HTMLElementEventMap>(type: K, listener: (this: HTMLElement, ev: HTMLElementEventMap[K]) => any, options?: boolean | AddEventListenerOptions): void;
+        addEventListener(type: string, listener: EventListenerOrEventListenerObject, options?: boolean | AddEventListenerOptions): void;
+        removeEventListener<K extends keyof HTMLMdsFilePreviewElementEventMap>(type: K, listener: (this: HTMLMdsFilePreviewElement, ev: MdsFilePreviewCustomEvent<HTMLMdsFilePreviewElementEventMap[K]>) => any, options?: boolean | EventListenerOptions): void;
+        removeEventListener<K extends keyof DocumentEventMap>(type: K, listener: (this: Document, ev: DocumentEventMap[K]) => any, options?: boolean | EventListenerOptions): void;
+        removeEventListener<K extends keyof HTMLElementEventMap>(type: K, listener: (this: HTMLElement, ev: HTMLElementEventMap[K]) => any, options?: boolean | EventListenerOptions): void;
+        removeEventListener(type: string, listener: EventListenerOrEventListenerObject, options?: boolean | EventListenerOptions): void;
+    }
+    var HTMLMdsFilePreviewElement: {
+        prototype: HTMLMdsFilePreviewElement;
+        new (): HTMLMdsFilePreviewElement;
+    };
     interface HTMLMdsFilterElementEventMap {
         "mdsFilterChange": MdsFilterEventDetail;
     }
@@ -2041,9 +2153,6 @@ declare global {
     };
     interface HTMLMdsInputSelectElementEventMap {
         "mdsInputSelectChange": InputValue;
-        "mdsInputSelectKeydown": KeyboardEvent;
-        "mdsInputSelectBlur": void;
-        "mdsInputSelectFocus": void;
     }
     interface HTMLMdsInputSelectElement extends Components.MdsInputSelect, HTMLStencilElement {
         addEventListener<K extends keyof HTMLMdsInputSelectElementEventMap>(type: K, listener: (this: HTMLMdsInputSelectElement, ev: MdsInputSelectCustomEvent<HTMLMdsInputSelectElementEventMap[K]>) => any, options?: boolean | AddEventListenerOptions): void;
@@ -2081,6 +2190,12 @@ declare global {
     var HTMLMdsInputSwitchGroupElement: {
         prototype: HTMLMdsInputSwitchGroupElement;
         new (): HTMLMdsInputSwitchGroupElement;
+    };
+    interface HTMLMdsInputUploadElement extends Components.MdsInputUpload, HTMLStencilElement {
+    }
+    var HTMLMdsInputUploadElement: {
+        prototype: HTMLMdsInputUploadElement;
+        new (): HTMLMdsInputUploadElement;
     };
     interface HTMLMdsKpiElement extends Components.MdsKpi, HTMLStencilElement {
     }
@@ -2350,7 +2465,7 @@ declare global {
         new (): HTMLMdsTabBarItemElement;
     };
     interface HTMLMdsTabItemElementEventMap {
-        "mdsTabItemSelect": string;
+        "mdsTabItemSelect": MdsTabItemEventDetail;
     }
     interface HTMLMdsTabItemElement extends Components.MdsTabItem, HTMLStencilElement {
         addEventListener<K extends keyof HTMLMdsTabItemElementEventMap>(type: K, listener: (this: HTMLMdsTabItemElement, ev: MdsTabItemCustomEvent<HTMLMdsTabItemElementEventMap[K]>) => any, options?: boolean | AddEventListenerOptions): void;
@@ -2501,6 +2616,7 @@ declare global {
         "mds-dropdown": HTMLMdsDropdownElement;
         "mds-entity": HTMLMdsEntityElement;
         "mds-file": HTMLMdsFileElement;
+        "mds-file-preview": HTMLMdsFilePreviewElement;
         "mds-filter": HTMLMdsFilterElement;
         "mds-filter-item": HTMLMdsFilterItemElement;
         "mds-form": HTMLMdsFormElement;
@@ -2517,6 +2633,7 @@ declare global {
         "mds-input-select": HTMLMdsInputSelectElement;
         "mds-input-switch": HTMLMdsInputSwitchElement;
         "mds-input-switch-group": HTMLMdsInputSwitchGroupElement;
+        "mds-input-upload": HTMLMdsInputUploadElement;
         "mds-kpi": HTMLMdsKpiElement;
         "mds-kpi-item": HTMLMdsKpiItemElement;
         "mds-label": HTMLMdsLabelElement;
@@ -3033,6 +3150,60 @@ declare namespace LocalJSX {
          */
         "suffix"?: ExtensionSuffixType;
     }
+    interface MdsFilePreview {
+        /**
+          * Enables the cross icon to perform cancel/delete action on element
+         */
+        "deletable"?: boolean;
+        /**
+          * Overrides the default filetype description
+         */
+        "description"?: string;
+        /**
+          * Enables the download icon to perform the related action on element
+         */
+        "downloadable"?: boolean;
+        /**
+          * The filename shown as component title, is used to auto assign one of the filetype known in the filetype dictionary
+         */
+        "filename": string;
+        /**
+          * The filesize shown, if you pass a string you can write whathever you want, if you pass a number it expect filesize in bytes, the component will format it automatically.
+         */
+        "filesize"?: string;
+        /**
+          * The name of the icon or a base64 string to render it as an svg
+         */
+        "icon"?: string;
+        /**
+          * Sets a feedback message related to the component
+         */
+        "message"?: string;
+        /**
+          * Emits when the component is removed, returning file infos
+         */
+        "onMdsFileDelete"?: (event: MdsFilePreviewCustomEvent<MdsFilePreviewEventDetail>) => void;
+        /**
+          * Emits when the component is clicked, returning file infos
+         */
+        "onMdsFileDownload"?: (event: MdsFilePreviewCustomEvent<MdsFilePreviewEventDetail>) => void;
+        /**
+          * The image preview src if available of a file, useful if you have a logo to display, or a smaller version of a bigger image
+         */
+        "src"?: string;
+        /**
+          * Overrides the automatic filetype recongition by forcing the suffix to one of the available formats choosen
+         */
+        "suffix"?: ExtensionSuffixType;
+        /**
+          * Truncates the filename shown
+         */
+        "truncate"?: TypographyTruncateType;
+        /**
+          * The variant of the component, is shown only if the message attribute is defined
+         */
+        "variant"?: ThemeFullVariantAvatarType;
+    }
     interface MdsFilter {
         /**
           * Sets an automatic reset of active filters if all filters are triggered
@@ -3171,7 +3342,7 @@ declare namespace LocalJSX {
     }
     interface MdsIcon {
         /**
-          * The name of the icon.
+          * The name of the icon or a base64 string to render it as an svg
          */
         "name": string;
     }
@@ -3497,25 +3668,17 @@ declare namespace LocalJSX {
     }
     interface MdsInputSelect {
         /**
-          * Emits a void event when input element is blurred
+          * Specifies a short hint that describes the expected value of the element
          */
-        "onMdsInputSelectBlur"?: (event: MdsInputSelectCustomEvent<void>) => void;
+        "autoFocus"?: boolean;
+        /**
+          * Specifies a short hint that describes the expected value of the element
+         */
+        "autocomplete"?: 'on';
         /**
           * Emits an InputChangeEventDetail when the value of the input element changes
          */
         "onMdsInputSelectChange"?: (event: MdsInputSelectCustomEvent<InputValue>) => void;
-        /**
-          * Emits a void event when input element is focused
-         */
-        "onMdsInputSelectFocus"?: (event: MdsInputSelectCustomEvent<void>) => void;
-        /**
-          * Emits a KeyboardEvent when a keboard key is pressed on the focused input element
-         */
-        "onMdsInputSelectKeydown"?: (event: MdsInputSelectCustomEvent<KeyboardEvent>) => void;
-        /**
-          * Specifies a short hint that describes the expected value of the element
-         */
-        "options"?: string;
         /**
           * Specifies a short hint that describes the expected value of the element
          */
@@ -3580,6 +3743,24 @@ declare namespace LocalJSX {
           * Specifies the name of the group
          */
         "name"?: string;
+    }
+    interface MdsInputUpload {
+        /**
+          * Defines the file types the file input should accept
+         */
+        "accept"?: "";
+        /**
+          * Specifies the max size of a single file that can be uploaded in MB
+         */
+        "maxFileSize"?: 20;
+        /**
+          * Specifies the max number of files that can be uploaded
+         */
+        "maxFiles"?: 1;
+        /**
+          * Specifies if the component should show a sort widget by status or date of upload, if not defined let user choose
+         */
+        "sort"?: AttachmentSort;
     }
     interface MdsKpi {
     }
@@ -3918,7 +4099,7 @@ declare namespace LocalJSX {
         /**
           * Emits when the tab item is selected
          */
-        "onMdsTabItemSelect"?: (event: MdsTabItemCustomEvent<string>) => void;
+        "onMdsTabItemSelect"?: (event: MdsTabItemCustomEvent<MdsTabItemEventDetail>) => void;
         /**
           * Specifies if the tab item is selected or not
          */
@@ -3931,6 +4112,10 @@ declare namespace LocalJSX {
           * The type of the tab item element
          */
         "type"?: ButtonType;
+        /**
+          * Specifies an optional value to get from mdsTabItemSelect event
+         */
+        "value"?: string;
     }
     interface MdsTable {
         /**
@@ -3956,9 +4141,17 @@ declare namespace LocalJSX {
     }
     interface MdsText {
         /**
+          * Specifies if the text is animated when it is rendered
+         */
+        "animation"?: TextAnimationType;
+        /**
           * Specifies the HTML tag of the element
          */
         "tag"?: TypographyTagType;
+        /**
+          * Specifies the text string to the component instead of passing an HTML node
+         */
+        "text"?: string;
         /**
           * Specifies if the text shoud be truncated or should behave as a normal text
          */
@@ -4128,6 +4321,7 @@ declare namespace LocalJSX {
         "mds-dropdown": MdsDropdown;
         "mds-entity": MdsEntity;
         "mds-file": MdsFile;
+        "mds-file-preview": MdsFilePreview;
         "mds-filter": MdsFilter;
         "mds-filter-item": MdsFilterItem;
         "mds-form": MdsForm;
@@ -4144,6 +4338,7 @@ declare namespace LocalJSX {
         "mds-input-select": MdsInputSelect;
         "mds-input-switch": MdsInputSwitch;
         "mds-input-switch-group": MdsInputSwitchGroup;
+        "mds-input-upload": MdsInputUpload;
         "mds-kpi": MdsKpi;
         "mds-kpi-item": MdsKpiItem;
         "mds-label": MdsLabel;
@@ -4215,6 +4410,7 @@ declare module "@stencil/core" {
             "mds-dropdown": LocalJSX.MdsDropdown & JSXBase.HTMLAttributes<HTMLMdsDropdownElement>;
             "mds-entity": LocalJSX.MdsEntity & JSXBase.HTMLAttributes<HTMLMdsEntityElement>;
             "mds-file": LocalJSX.MdsFile & JSXBase.HTMLAttributes<HTMLMdsFileElement>;
+            "mds-file-preview": LocalJSX.MdsFilePreview & JSXBase.HTMLAttributes<HTMLMdsFilePreviewElement>;
             "mds-filter": LocalJSX.MdsFilter & JSXBase.HTMLAttributes<HTMLMdsFilterElement>;
             "mds-filter-item": LocalJSX.MdsFilterItem & JSXBase.HTMLAttributes<HTMLMdsFilterItemElement>;
             "mds-form": LocalJSX.MdsForm & JSXBase.HTMLAttributes<HTMLMdsFormElement>;
@@ -4231,6 +4427,7 @@ declare module "@stencil/core" {
             "mds-input-select": LocalJSX.MdsInputSelect & JSXBase.HTMLAttributes<HTMLMdsInputSelectElement>;
             "mds-input-switch": LocalJSX.MdsInputSwitch & JSXBase.HTMLAttributes<HTMLMdsInputSwitchElement>;
             "mds-input-switch-group": LocalJSX.MdsInputSwitchGroup & JSXBase.HTMLAttributes<HTMLMdsInputSwitchGroupElement>;
+            "mds-input-upload": LocalJSX.MdsInputUpload & JSXBase.HTMLAttributes<HTMLMdsInputUploadElement>;
             "mds-kpi": LocalJSX.MdsKpi & JSXBase.HTMLAttributes<HTMLMdsKpiElement>;
             "mds-kpi-item": LocalJSX.MdsKpiItem & JSXBase.HTMLAttributes<HTMLMdsKpiItemElement>;
             "mds-label": LocalJSX.MdsLabel & JSXBase.HTMLAttributes<HTMLMdsLabelElement>;

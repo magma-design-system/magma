@@ -75,9 +75,9 @@ This is a web-component from Maggioli Design System [Magma](https://magma.maggio
 
 ## Properties
 
-| Property            | Attribute | Description           | Type     | Default     |
-| ------------------- | --------- | --------------------- | -------- | ----------- |
-| `name` _(required)_ | `name`    | The name of the icon. | `string` | `undefined` |
+| Property            | Attribute | Description                                                    | Type     | Default     |
+| ------------------- | --------- | -------------------------------------------------------------- | -------- | ----------- |
+| `name` _(required)_ | `name`    | The name of the icon or a base64 string to render it as an svg | `string` | `undefined` |
 
 
 ## Methods
@@ -101,9 +101,9 @@ Type: `Promise<void>`
 
 ## Shadow Parts
 
-| Part    | Description |
-| ------- | ----------- |
-| `"svg"` |             |
+| Part    | Description                   |
+| ------- | ----------------------------- |
+| `"svg"` | The svg container of the icon |
 
 
 ## Dependencies
@@ -115,6 +115,7 @@ Type: `Promise<void>`
  - [mds-button](../mds-button)
  - [mds-chip](../mds-chip)
  - [mds-file](../mds-file)
+ - [mds-file-preview](../mds-file-preview)
  - [mds-filter-item](../mds-filter-item)
  - [mds-help](../mds-help)
  - [mds-input](../mds-input)
@@ -133,6 +134,7 @@ graph TD;
   mds-button --> mds-icon
   mds-chip --> mds-icon
   mds-file --> mds-icon
+  mds-file-preview --> mds-icon
   mds-filter-item --> mds-icon
   mds-help --> mds-icon
   mds-input --> mds-icon

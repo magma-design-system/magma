@@ -43,12 +43,14 @@ This is a web-component from Maggioli Design System [Magma](https://magma.maggio
 ### Used by
 
  - [mds-avatar](../mds-avatar)
+ - [mds-file-preview](../mds-file-preview)
  - [mds-push-notification](../mds-push-notification)
 
 ### Graph
 ```mermaid
 graph TD;
   mds-avatar --> mds-img
+  mds-file-preview --> mds-img
   mds-push-notification --> mds-img
   style mds-img fill:#f9f,stroke:#333,stroke-width:4px
 ```

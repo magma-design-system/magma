@@ -16,7 +16,6 @@ describe('mds-push-notification', () => {
             </mds-text>
           </div>
           <mds-button class="close-button">
-            <i class="close-icon svg"></i>
           </mds-button>
         </mock:shadow-root>
       </mds-push-notification>

@@ -1,3 +1,4 @@
 export type TypographyTruncateType =
-  | 'word'
   | 'all'
+  | 'none'
+  | 'word'

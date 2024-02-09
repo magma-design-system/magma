@@ -60,23 +60,28 @@
   pointer-events: auto;
 }
 
-.close {
+.button-close {
   @apply
     duration-500
     ease-in-out-quart
-    h-900
     opacity-0
     rounded-full
-    text-4xl
-    top-0
-    w-900;
+    top-0;
 
-  cursor: pointer;
-  fill: inherit;
+  --mds-button-icon-color: theme('colors.tone-neutral');
+  --mds-button-background: transparent;
+
+  height: auto;
   position: absolute;
   transform: translate(0, 24px) rotate(90deg);
   transform-origin: center;
   transition-property: opacity, outline, outline-offset, transform;
+}
+
+.button-close::part(icon) {
+  @apply
+    h-900
+    w-900;
 }
 
 .window {

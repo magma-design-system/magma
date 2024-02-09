@@ -19,8 +19,8 @@
   @apply animate-right-opened;
 }
 
-:host( .to-right-opened ) .close,
-:host( .to-right-opened.to-right-outro ) .close {
+:host( .to-right-opened ) .button-close,
+:host( .to-right-opened.to-right-outro ) .button-close {
   @apply opacity-100;
 
   transform: translate(24px, 24px) rotate(0);
@@ -31,11 +31,11 @@
   @apply animate-right-outro;
 }
 
-:host( .to-right-outro ) .close {
+:host( .to-right-outro ) .button-close {
   transform: translate(-24px, 24px) rotate(90deg);
 }
 
-:host( .to-right ) .close {
+:host( .to-right ) .button-close {
   @apply left-0;
 
   transform: translate(-36px, 24px) rotate(-90deg);

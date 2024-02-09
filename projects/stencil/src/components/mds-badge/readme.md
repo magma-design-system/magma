@@ -38,6 +38,7 @@ This is a web-component from Maggioli Design System [Magma](https://magma.maggio
 ### Used by
 
  - [mds-file](../mds-file)
+ - [mds-file-preview](../mds-file-preview)
  - [mds-stepper-bar-item](../mds-stepper-bar-item)
 
 ### Depends on
@@ -49,6 +50,7 @@ This is a web-component from Maggioli Design System [Magma](https://magma.maggio
 graph TD;
   mds-badge --> mds-text
   mds-file --> mds-badge
+  mds-file-preview --> mds-badge
   mds-stepper-bar-item --> mds-badge
   style mds-badge fill:#f9f,stroke:#333,stroke-width:4px
 ```

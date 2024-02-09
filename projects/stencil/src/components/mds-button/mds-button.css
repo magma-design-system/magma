@@ -72,6 +72,7 @@
   display: inline-flex;
   fill: var(--mds-button-icon-color);
   justify-content: center;
+  pointer-events: none;
 }
 
 :host([disabled]:not([disabled="false"])) {
