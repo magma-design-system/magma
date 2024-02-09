@@ -1,6 +1,6 @@
 {
   "name": "@maggioli-design-system/mds-details",
-  "version": "3.6.3",
+  "version": "3.7.0",
   "description": "mds-details is a web-component from Magma Design System, built with StencilJS, TypeScript, Storybook. It's based on the web-component standard and it's designed to be agnostic from the JavaScirpt framework you are using.",
   "main": "dist/index.cjs.js",
   "module": "dist/index.js",
@@ -23,8 +23,8 @@
     "prepublishOnly": "npm run build"
   },
   "dependencies": {
-    "@maggioli-design-system/styles": "14.1.0",
-    "@stencil/core": "4.9.1",
+    "@maggioli-design-system/styles": "14.2.1",
+    "@stencil/core": "4.10.0",
     "clsx": "2.1.0"
   },
   "license": "MIT",

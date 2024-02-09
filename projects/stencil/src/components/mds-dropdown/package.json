@@ -1,6 +1,6 @@
 {
   "name": "@maggioli-design-system/mds-dropdown",
-  "version": "4.5.3",
+  "version": "4.6.0",
   "description": "mds-dropdown is a web-component from Magma Design System, built with StencilJS, TypeScript, Storybook. It's based on the web-component standard and it's designed to be agnostic from the JavaScirpt framework you are using.",
   "main": "dist/index.cjs.js",
   "module": "dist/index.js",
@@ -23,9 +23,9 @@
     "prepublishOnly": "npm run build"
   },
   "dependencies": {
-    "@floating-ui/dom": "^1.5.3",
-    "@maggioli-design-system/styles": "14.1.0",
-    "@stencil/core": "4.9.1"
+    "@floating-ui/dom": "1.5.4",
+    "@maggioli-design-system/styles": "14.2.1",
+    "@stencil/core": "4.10.0"
   },
   "license": "MIT",
   "author": {
