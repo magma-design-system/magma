@@ -1410,7 +1410,7 @@ export namespace Components {
         /**
           * Specifies the HTML tag of the element
          */
-        "tag"?: TypographyTagType;
+        "tag": TypographyTagType;
         /**
           * Specifies the text string to the component instead of passing an HTML node
          */

@@ -401,7 +401,7 @@ export class MdsDropdown {
     this.updateCSSCustomProps()
     document.addEventListener('click', this.handleCloseDropdown)
     this.arrowEl = this.host.shadowRoot?.querySelector('.arrow') as HTMLElement
-    const caller = document.getElementById(this.target)
+    const caller = document.querySelector(this.target) as HTMLElement
 
     if (!caller) {
       return
