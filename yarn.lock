@@ -1671,10 +1671,10 @@
   resolved "https://registry.npmjs.org/@humanwhocodes/object-schema/-/object-schema-2.0.1.tgz#e5211452df060fa8522b55c7b3c0c4d1981cb044"
   integrity sha512-dvuCeX5fC9dXgJn9t+X5atfmgQAzUOWqS1254Gh0m6i8wKd10ebXkfNKiRK+1GWi/yTvvLDHpoxLr0xxxeslWw==
 
-"@iconsauce/config@^0.4.0":
-  version "0.4.0"
-  resolved "https://registry.npmjs.org/@iconsauce/config/-/config-0.4.0.tgz#51e45a1e40381b08a4e56548e3719b186ac25f8a"
-  integrity sha512-LiPp/UMsgJfuXy1S2Lyk+JbHyZ1razxwiIiIdE9ym7IQeNlhJfEyZ4WRTBFDrJocgIbIBKWKddMz7CUuohtkHA==
+"@iconsauce/config@0.4.1", "@iconsauce/config@^0.4.1":
+  version "0.4.1"
+  resolved "https://registry.npmjs.org/@iconsauce/config/-/config-0.4.1.tgz#e4d987ba78a8cc979ed13fdf9f1cfb6c3c46cb36"
+  integrity sha512-7Ra/d95RaXpBvPt4KolyLbadJkC8Ih3OiOxAl5dpJtTLkIHq3FmnnsaUdDIDjmd2zIU8MoZMMkejyEqWSbpCAg==
   dependencies:
     "@iconsauce/material-icons" "^1.0.3"
     "@iconsauce/mdi-svg" "^1.0.8"
@@ -1684,48 +1684,48 @@
     fast-glob "^3.2.11"
     lilconfig "2.0.4"
 
-"@iconsauce/core@^1.2.0":
-  version "1.2.2"
-  resolved "https://registry.npmjs.org/@iconsauce/core/-/core-1.2.2.tgz#0247870fd3a0b557c14872bd61eccc8506bd3d7e"
-  integrity sha512-2q7pzl3VrvIkkqbSEekO/Z6KPK8svXlFNh+/V4RYsF7Bae5gsdh5ll7IBqYA/dO6j2Ss8VR6H/VZ8yBoFH1rgg==
+"@iconsauce/core@^1.2.4":
+  version "1.2.5"
+  resolved "https://registry.npmjs.org/@iconsauce/core/-/core-1.2.5.tgz#62f73199c286769d64e20627392a96e8094baa3b"
+  integrity sha512-xzyKPMZ45ejWEr0RFUwVOsJS2ijS/wiizNGTnfCocVIldXQTEwfhVQUhC0/8Ssx7+tGq3bcpjftcqV1OVanpKA==
   dependencies:
-    "@iconsauce/config" "^0.4.0"
-    "@iconsauce/material-icons" "^1.0.3"
-    "@iconsauce/mdi-svg" "^1.0.8"
-    "@iconsauce/mgg-icons" "^1.0.9"
-    "@iconsauce/plugin" "^0.0.1"
-    arg "^5.0.1"
+    "@iconsauce/config" "0.4.1"
+    "@iconsauce/material-icons" "1.0.3"
+    "@iconsauce/mdi-svg" "1.0.8"
+    "@iconsauce/mgg-icons" "1.0.9"
+    "@iconsauce/plugin" "0.0.1"
+    arg "5.0.2"
     chalk "4.0.0"
-    css-loader "^6.6.0"
-    fast-glob "^3.2.11"
-    handlebars "^4.7.7"
+    css-loader "6.8.1"
+    fast-glob "3.3.1"
+    handlebars "4.7.8"
     lilconfig "2.0.4"
-    recursive-copy "^2.0.14"
-    svg2ttf "^6.0.3"
-    svgicons2svgfont "^10.0.5"
+    recursive-copy "2.0.14"
+    svg2ttf "6.0.3"
+    svgicons2svgfont "10.0.6"
 
-"@iconsauce/material-icons@^1.0.3":
+"@iconsauce/material-icons@1.0.3", "@iconsauce/material-icons@^1.0.3":
   version "1.0.3"
   resolved "https://registry.npmjs.org/@iconsauce/material-icons/-/material-icons-1.0.3.tgz#d37cb65d10645a1b3b2d8a2dd46d4cde4822c50c"
   integrity sha512-LX7nLRvkhr5/g7YgzBkzJZn5dX59yJBVQIzgu2gjY9JILGrYlyGU9GQ4WHcBhn/ml7YL+46Q68Jndfvjet9bhQ==
   dependencies:
     "@material-icons/svg" "^1.0.25"
 
-"@iconsauce/mdi-svg@^1.0.8":
+"@iconsauce/mdi-svg@1.0.8", "@iconsauce/mdi-svg@^1.0.8":
   version "1.0.8"
   resolved "https://registry.npmjs.org/@iconsauce/mdi-svg/-/mdi-svg-1.0.8.tgz#1cb70e7623e9adb1959b2a8e3761616ea0f78561"
   integrity sha512-9zvFfT43errhFqM0xpfbMUjYUnJ1fH8u5rwVdg+jCfhSlBsOfL/8pwT7TByues6GGCd8lEwcy/igmVY64GyzvQ==
   dependencies:
     "@mdi/svg" "^6.5.95"
 
-"@iconsauce/mgg-icons@^1.0.9":
+"@iconsauce/mgg-icons@1.0.9", "@iconsauce/mgg-icons@^1.0.9":
   version "1.0.9"
   resolved "https://registry.npmjs.org/@iconsauce/mgg-icons/-/mgg-icons-1.0.9.tgz#c04431f0f675c94cab8c71f5013e9c8c58d451f1"
   integrity sha512-DYyoWjGRIH56SMb0jzU+TltTGUmnKy0H76R20++6ikL/SV9rEiEVOnqKI2t004bfBYPXa0Y6hrvbfBq9wuZHlg==
   dependencies:
     "@maggioli-design-system/svg-icons" "^2.6.3"
 
-"@iconsauce/plugin@^0.0.1":
+"@iconsauce/plugin@0.0.1", "@iconsauce/plugin@^0.0.1":
   version "0.0.1"
   resolved "https://registry.npmjs.org/@iconsauce/plugin/-/plugin-0.0.1.tgz#f01a39d6032660e26db7d117172799ed7aa6890b"
   integrity sha512-qWHU/NAInyKFMdE+ayhpaLEjPEEggHZ3jxEB6fOpFDU10AbqeE8T6PKQPyIZchEb9edBsiLlGL5mAW/Rpsc0DQ==
@@ -4551,15 +4551,15 @@ are-we-there-yet@^3.0.0:
     delegates "^1.0.0"
     readable-stream "^3.6.0"
 
+arg@5.0.2, arg@^5.0.2:
+  version "5.0.2"
+  resolved "https://registry.npmjs.org/arg/-/arg-5.0.2.tgz#c81433cc427c92c4dcf4865142dbca6f15acd59c"
+  integrity sha512-PYjyFOLKQ9y57JvQ6QLo8dAgNqswh8M1RMJYdQduT6xbWSgK36P/Z/v+p888pM69jMMfS8Xd8F6I1kQ/I9HUGg==
+
 arg@^4.1.0:
   version "4.1.3"
   resolved "https://registry.npmjs.org/arg/-/arg-4.1.3.tgz#269fc7ad5b8e42cb63c896d5666017261c144089"
   integrity sha512-58S9QDqG0Xx27YwPSt9fJxivjYl432YCwfDMfZ+71RAqUrZef7LrKQZ3LHLOwCS4FLNBplP533Zx895SeOCHvA==
-
-arg@^5.0.1, arg@^5.0.2:
-  version "5.0.2"
-  resolved "https://registry.npmjs.org/arg/-/arg-5.0.2.tgz#c81433cc427c92c4dcf4865142dbca6f15acd59c"
-  integrity sha512-PYjyFOLKQ9y57JvQ6QLo8dAgNqswh8M1RMJYdQduT6xbWSgK36P/Z/v+p888pM69jMMfS8Xd8F6I1kQ/I9HUGg==
 
 argparse@^1.0.7:
   version "1.0.10"
@@ -5962,7 +5962,7 @@ css-functions-list@^3.2.1:
   resolved "https://registry.npmjs.org/css-functions-list/-/css-functions-list-3.2.1.tgz#2eb205d8ce9f9ce74c5c1d7490b66b77c45ce3ea"
   integrity sha512-Nj5YcaGgBtuUmn1D7oHqPW0c9iui7xsTsj5lIX8ZgevdfhmjFfKB3r8moHJtNJnctnYXJyYX5I1pp90HM4TPgQ==
 
-css-loader@6.8.1, css-loader@^6.6.0, css-loader@^6.7.1, css-loader@^6.7.3:
+css-loader@6.8.1, css-loader@^6.7.1, css-loader@^6.7.3:
   version "6.8.1"
   resolved "https://registry.npmjs.org/css-loader/-/css-loader-6.8.1.tgz#0f8f52699f60f5e679eab4ec0fcd68b8e8a50a88"
   integrity sha512-xDAXtEVGlD0gJ07iclwWVkLoZOpEvAWaSyf6W18S2pOC//K8+qUDIx8IIT3D+HjnmkJPQeesOPv5aiUaJsCM2g==
@@ -7348,6 +7348,17 @@ fast-glob@3.2.7:
   version "3.2.7"
   resolved "https://registry.npmjs.org/fast-glob/-/fast-glob-3.2.7.tgz#fd6cb7a2d7e9aa7a7846111e85a196d6b2f766a1"
   integrity sha512-rYGMRwip6lUMvYD3BTScMwT1HtAs2d71SMv66Vrxs0IekGZEjhM0pcMfjQPnknBt2zeCwQMEupiN02ZP4DiT1Q==
+  dependencies:
+    "@nodelib/fs.stat" "^2.0.2"
+    "@nodelib/fs.walk" "^1.2.3"
+    glob-parent "^5.1.2"
+    merge2 "^1.3.0"
+    micromatch "^4.0.4"
+
+fast-glob@3.3.1:
+  version "3.3.1"
+  resolved "https://registry.npmjs.org/fast-glob/-/fast-glob-3.3.1.tgz#784b4e897340f3dbbef17413b3f11acf03c874c4"
+  integrity sha512-kNFPyjhh5cKjrUltxs+wFx+ZkbRaxxmZ+X0ZU31SOsxCEtP9VPgtq2teZw1DebupL5GmDaNQ6yKMMVcM41iqDg==
   dependencies:
     "@nodelib/fs.stat" "^2.0.2"
     "@nodelib/fs.walk" "^1.2.3"
@@ -11342,13 +11353,13 @@ postcss-flexbugs-fixes@5.0.2:
   resolved "https://registry.npmjs.org/postcss-flexbugs-fixes/-/postcss-flexbugs-fixes-5.0.2.tgz#2028e145313074fc9abe276cb7ca14e5401eb49d"
   integrity sha512-18f9voByak7bTktR2QgDveglpn9DTbBWPUzSOe9g0N4WR/2eSt6Vrcbf0hmspvMI6YWGywz6B9f7jzpFNJJgnQ==
 
-postcss-iconsauce@1.4.0:
-  version "1.4.0"
-  resolved "https://registry.npmjs.org/postcss-iconsauce/-/postcss-iconsauce-1.4.0.tgz#332760f32ad832b9565a6822a252d8080c07850a"
-  integrity sha512-px+Fw3X6LYtvRKDhGW+ZS4CTljCvEV9L1BDHANn2sQFVb3uBnL39wqiIaob6rNsdVClbNCVyoj4F7XfcodVAhw==
+postcss-iconsauce@1.4.1:
+  version "1.4.1"
+  resolved "https://registry.npmjs.org/postcss-iconsauce/-/postcss-iconsauce-1.4.1.tgz#10d8549ad0aa0e1011be38ecaf7bf7f526f5dfd6"
+  integrity sha512-YAboC6dqJEOFLHolJsAHbV0644Y4y9NPGEdWccAmvi5ngCJqT64wcJl9TiZA6ifrIEai5YKXIHxRjhk8xdjWvQ==
   dependencies:
-    "@iconsauce/config" "^0.4.0"
-    "@iconsauce/core" "^1.2.0"
+    "@iconsauce/config" "^0.4.1"
+    "@iconsauce/core" "^1.2.4"
 
 postcss-import@16.0.0:
   version "16.0.0"
@@ -12036,7 +12047,7 @@ rechoir@^0.6.2:
   dependencies:
     resolve "^1.1.6"
 
-recursive-copy@^2.0.14:
+recursive-copy@2.0.14:
   version "2.0.14"
   resolved "https://registry.npmjs.org/recursive-copy/-/recursive-copy-2.0.14.tgz#6358af3b5f8da89562f000db44720c4daa94b6d7"
   integrity sha512-K8WNY8f8naTpfbA+RaXmkaQuD1IeW9EgNEfyGxSqqTQukpVtoOKros9jUqbpEsSw59YOmpd8nCBgtqJZy5nvog==
@@ -13413,7 +13424,7 @@ svg-to-pdfkit@0.1.8:
   dependencies:
     pdfkit ">=0.8.1"
 
-svg2ttf@6.0.3, svg2ttf@^6.0.3:
+svg2ttf@6.0.3:
   version "6.0.3"
   resolved "https://registry.npmjs.org/svg2ttf/-/svg2ttf-6.0.3.tgz#7b92978ff124b2a583d21e1208b9675e245e56d1"
   integrity sha512-CgqMyZrbOPpc+WqH7aga4JWkDPso23EgypLsbQ6gN3uoPWwwiLjXvzgrwGADBExvCRJrWFzAeK1bSoSpE7ixSQ==
@@ -13438,7 +13449,7 @@ svgicons2svgfont@10.0.5:
     sax "^1.2.4"
     svg-pathdata "^6.0.0"
 
-svgicons2svgfont@^10.0.5:
+svgicons2svgfont@10.0.6:
   version "10.0.6"
   resolved "https://registry.npmjs.org/svgicons2svgfont/-/svgicons2svgfont-10.0.6.tgz#2901f9016244049674d3b3178c36471994a30c0a"
   integrity sha512-fUgQEVg3XwTbOHvlXahHGqCet5Wvfo1bV4DCvbSRvjsOCPCRunYbG4dUJCPegps37BMph3eOrfoobhH5AWuC6A==
