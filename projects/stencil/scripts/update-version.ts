@@ -4,7 +4,7 @@ import { COMPONENTS_DIR } from './meta'
 import { exec } from 'child_process'
 import { resolve } from 'path'
 
-function update (version: string, component: string) {
+export function update (version: string, component: string): void {
   if (!existsSync(resolve(COMPONENTS_DIR, component, 'package.json'))) {
     console.log('package.json non presente per ', component)
     return
@@ -37,4 +37,6 @@ function main () {
     component.forEach(c => update(v, c))
   }
 }
-main()
+if (require.main === module) {
+  main()
+}

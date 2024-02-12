@@ -9,13 +9,19 @@ import {
 } from 'fs-extra'
 import { resolve } from 'path'
 import { ask } from 'stdio'
+import { update } from './update-version'
 
 interface Dep {
-  dependencie: string,
+  dependencie: string
   version: string
 }
 
-function updateComponentDependencies (nameComponent: string, stencilDependencies: Dep[]) {
+function updateComponentDependencies (
+  nameComponent: string,
+  stencilDependencies: Dep[],
+  version: string,
+  deps?:string[],
+) {
   const componentPackage = resolve(
     COMPONENTS_DIR,
     nameComponent,
@@ -52,7 +58,7 @@ function updateComponentDependencies (nameComponent: string, stencilDependencies
         }
         // updatedDependencies = [...{package, version}]
         updatedDependencies.forEach(d => {
-          if (json.dependencies[d.dependencie] !== `${d.version}`) {
+          if (json.dependencies[d.dependencie] !== `${d.version}` && (deps ? deps.includes(d.dependencie) : true)) {
             updated = true
           }
           // check if dependencies exists, it does not add new dependencies if --sync-dep is active
@@ -66,12 +72,12 @@ function updateComponentDependencies (nameComponent: string, stencilDependencies
     })
     .then(({ json, updated }) => {
       // rewrite file only if dependencies have been updated
-      if (updated){
+      if (updated) {
         // writeFileSync avoid to read a file before write is completed
         writeFileSync(componentPackage, `${JSON.stringify(json, null, 2)}\n`)
         console.log(`${nameComponent}: updated dependencies`)
-      } else {
-        console.log(`${nameComponent}: already with updated dependencies, nothing to do`)
+        // update version component
+        update(version, nameComponent)
       }
     })
 }
@@ -96,18 +102,45 @@ function getDependencies (json: any): Dep[] {
   return packageWithVersion
 }
 
+async function getVersion (args: string[]): Promise<string> {
+  let [version] = args
+    .filter(arg => arg.startsWith('--version'))
+    .map(argVersion => argVersion.split('=')[1])
+  const versionOptions = ['major', 'minor', 'patch']
+  if (!versionOptions.includes(version)) {
+    console.info('Release version is required')
+    const continueTask = await ask('Select version', {
+      options: [...versionOptions, ''],
+    })
+    if (!versionOptions.includes(continueTask)) {
+      return Promise.reject(new Error('Selected version is invalid'))
+    }
+    version = continueTask
+  }
+  return Promise.resolve(version)
+}
+
 async function main () {
   const components = process.argv.filter(arg => !arg.startsWith('--')).slice(2)
 
   const sync = process.argv.indexOf('--sync-dep') !== -1
 
+  const version = await getVersion(process.argv).catch(err => {
+    console.error(err.message)
+    return null
+  })
+  if (!version) return
   let stencilDependencies: Dep[] = []
   if (sync) {
-    stencilDependencies = getDependencies(JSON.parse(readFileSync(resolve(PROJECT_DIR, 'package.json'), 'utf-8')))
+    stencilDependencies = getDependencies(
+      JSON.parse(readFileSync(resolve(PROJECT_DIR, 'package.json'), 'utf-8')),
+    )
   }
 
   if (components[0] === 'all') {
-    const continueTask = await ask('Continue to update ALL components?', { options: ['Y', 'n', ''] })
+    const continueTask = await ask('Continue to update ALL components?', {
+      options: ['Y', 'n', ''],
+    })
 
     if (continueTask === 'n') {
       return
@@ -117,11 +150,16 @@ async function main () {
       dirs
         .filter(dir => dir.isDirectory())
         .forEach(dir => {
-          updateComponentDependencies(dir.name, stencilDependencies)
+          updateComponentDependencies(dir.name, stencilDependencies, version)
         })
     })
   } else {
-    components.forEach(component => updateComponentDependencies(component, stencilDependencies))
+    components.forEach(component =>
+      updateComponentDependencies(component, stencilDependencies, version),
+    )
   }
 }
-main()
+
+if (require.main === module) {
+  main()
+}
