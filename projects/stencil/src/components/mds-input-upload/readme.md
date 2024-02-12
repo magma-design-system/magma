@@ -9,9 +9,9 @@
 
 | Property      | Attribute       | Description                                                                                                      | Type                                                        | Default     |
 | ------------- | --------------- | ---------------------------------------------------------------------------------------------------------------- | ----------------------------------------------------------- | ----------- |
-| `accept`      | `accept`        | Defines the file types the file input should accept                                                              | `""`                                                        | `''`        |
-| `maxFileSize` | `max-file-size` | Specifies the max size of a single file that can be uploaded in MB                                               | `20`                                                        | `20`        |
-| `maxFiles`    | `max-files`     | Specifies the max number of files that can be uploaded                                                           | `1`                                                         | `1`         |
+| `accept`      | `accept`        | Defines the file types the file input should accept                                                              | `string`                                                    | `''`        |
+| `maxFileSize` | `max-file-size` | Specifies the max size of a single file that can be uploaded in MB                                               | `number`                                                    | `20`        |
+| `maxFiles`    | `max-files`     | Specifies the max number of files that can be uploaded                                                           | `number`                                                    | `1`         |
 | `sort`        | `sort`          | Specifies if the component should show a sort widget by status or date of upload, if not defined let user choose | `AttachmentSort.date \| AttachmentSort.status \| undefined` | `undefined` |
 
 

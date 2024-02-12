@@ -40,17 +40,17 @@ export class MdsInputUpload {
   /**
    * Defines the file types the file input should accept
    */
-  @Prop({ reflect: true }) readonly accept = ''
+  @Prop({ reflect: true }) readonly accept: string = ''
 
   /**
    * Specifies the max size of a single file that can be uploaded in MB
    */
-  @Prop({ reflect: true }) readonly maxFileSize = 20
+  @Prop({ reflect: true }) readonly maxFileSize: number = 20
 
   /**
    * Specifies the max number of files that can be uploaded
    */
-  @Prop({ reflect: true }) readonly maxFiles = 1
+  @Prop({ reflect: true }) readonly maxFiles: number = 1
 
   /**
    * Specifies if the component should show a sort widget by status or date of upload, if not defined let user choose
@@ -287,15 +287,16 @@ export class MdsInputUpload {
         </div>
         <input type='file' accept={this.accept} hidden ref={i => this.nativeInput = i} onChange={this.onAdd} multiple = {this.maxFiles > 1}/>
         <div class="additional-infos">
-          <div class="file-specs">
+          <div class={clsx('file-specs', !this.sort && 'file-specs-sort')}>
             <mds-text variant="info" typography="caption">{this.extensions !== '' ? 'Puoi caricare ' + this.extensions : 'Puoi caricare qualsiasi formato'}</mds-text>
             <mds-text variant="info" typography="caption">{this.maxFileSize}MB max per file</mds-text>
           </div>
-          {this.sort ??
+          {!this.sort ?
             <mds-tab class="action-sort" onMdsTabChange={event => this.onChangeTab(event.detail)} >
               <mds-tab-item icon={iconSortById} selected={this.userSort === 'date'} title="Ordine per data di aggiunta" value={AttachmentSort.date}></mds-tab-item>
               <mds-tab-item icon={iconSortByStatus} selected={this.userSort === 'status'} title="Raggruppa per stato" value={AttachmentSort.status}></mds-tab-item>
             </mds-tab>
+            : ''
           }
         </div>
         <div class={clsx('file-list', this.files.length > this.cssMinCols && 'file-list--more-items')}>
