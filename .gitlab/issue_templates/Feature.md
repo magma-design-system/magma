@@ -9,15 +9,21 @@
   Available values: 1, 2, 3, 5, 8 (if 9+ you should consider to split in multiple issues)
 -->
 
-<!--
+<!-- 🔴 Required
+Ensure to fill the prerequisites
+
+Example:
+- [x] I have read the Contributing Guidelines
+
+-->
 
 ## Prerequisites
 
- [ ] I have read the [Contributing Guidelines](https://github.com/ionic-team/stencil/blob/main/CONTRIBUTING.md).
- [ ] I agree to follow the [Code of Conduct](https://github.com/ionic-team/stencil/blob/main/CODE_OF_CONDUCT.md).
- [ ] I have searched for [existing issues](https://github.com/ionic-team/stencil/issues) that already report this problem, without success.
+- [ ] I have read the [Contributing Guidelines](https://magma.maggiolicloud.it/en/contribute/contribution-model).
+- [ ] I agree to follow the [Code of Conduct](https://magma.maggiolicloud.it/en/contribute/code-of-conduct).
+- [ ] I have searched for [existing issues](https://gitlab.com/maggiolispa/ricerca-sviluppo-new-media/magma/design-system/-/issues) that already report this problem, without success.
 
--->
+---
 
 <!-- 🔴 Required
 Provide a general summary of the proposal.

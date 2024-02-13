@@ -36,7 +36,7 @@ export class MdsText {
   /**
    * Specifies the HTML tag of the element
    */
-  @Prop({ mutable: true, reflect: true }) tag?: TypographyTagType
+  @Prop({ mutable: true, reflect: true }) tag: TypographyTagType
 
   /**
    * Specifies the text string to the component instead of passing an HTML node
@@ -89,12 +89,12 @@ export class MdsText {
   render () {
     return (
       <Host>
-        <tag class="text">
+        <this.tag class="text">
           { !this.text
             ? <slot></slot>
             : this.text
           }
-        </tag>
+        </this.tag>
       </Host>
     )
   }

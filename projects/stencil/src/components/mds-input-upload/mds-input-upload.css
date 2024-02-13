@@ -162,6 +162,7 @@
   align-items: flex-start;
   display: flex;
   flex-wrap: wrap;
+  justify-content: space-between;
 }
 
 .file-specs {
@@ -178,12 +179,8 @@
   display: inline-flex;
 }
 
-.file-specs {
+.file-specs.file-specs-sort{
   flex-direction: column;
   flex-wrap: nowrap;
   justify-content: center;
-}
-
-.additional-infos {
-  justify-content: space-between;
 }

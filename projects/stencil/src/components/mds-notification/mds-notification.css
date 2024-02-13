@@ -38,7 +38,7 @@
   display: inline-flex;
   height: var(--mds-notification-size);
   justify-content: flex-end;
-  min-width: min-content;
+  min-width: max-content;
   pointer-events: none;
   right: 100%;
   transform: var(--mds-notification-translate) scale(0);

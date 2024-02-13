@@ -148,13 +148,15 @@ Will become:
 ### Update component dependencies
 
 ```
-nx run stencil:update.dependencies {component | all}
+nx run stencil:update.dependencies --version={major | mino | patch} {component | all}
 ```
+
+Option --version will update version package to related version
 
 Assuming we have a `mds-foo` to default version `1.0.0`, with two dependencies to be updated to `mds-dep-1@1.3.1` and `mds-dep-2@1.1.2`, if you run:
 
 ```
-nx run stencil:update.dependencies mds-foo
+nx run stencil:update.dependencies --version=patch mds-foo
 ```
 
 Old dependencies:
@@ -175,7 +177,7 @@ Will be updated to:
 ```json
 {
   "name": "@maggioli-design-system/mds-foo",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "dependencies": {
     "@maggioli-design-system/mds-dep-1": "^1.3.1",
     "@maggioli-design-system/mds-dep-2": "^1.1.2"
@@ -188,7 +190,7 @@ Will be updated to:
 The option `--sync-dep` will also update dependencies found also in `stencil/package.json` file.
 
 ```
-nx run stencil:update.dependencies --sync-dep mds-foo
+nx run stencil:update.dependencies --sync-dep --version=patch mds-foo
 ```
 
 This means if you have a component `mds-foo/package.json`:
@@ -226,7 +228,7 @@ The command will update the dependecies both found on `stencil` and `mds-foo` on
 ```json
 {
   "name": "@maggioli-design-system/mds-foo",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "dependencies": {
     "@maggioli-design-system/mds-dep-1": "^1.1.2",
     "@maggioli-design-system/styles": "^13.0.0",
