@@ -1,0 +1,20 @@
+:host([explicit][checked]:not([explicit="false"][checked="false"][disabled])) {
+
+  --mds-input-switch-icon-explicit-color: var(--mds-input-switch-icon-color-checked);
+}
+
+:host([explicit][checked][disabled]:not([explicit="false"][checked="false"][disabled="false"])) {
+
+  --mds-input-switch-icon-explicit-color: var(--mds-input-switch-icon-color-checked-disabled);
+
+}
+
+:host([explicit]:not([explicit="false"][checked][disabled])) {
+
+  --mds-input-switch-icon-explicit-color: var(--mds-input-switch-icon-color-unchecked);
+}
+
+:host([explicit][disabled]:not([explicit="false"][disabled="false"][checked])) {
+
+  --mds-input-switch-icon-explicit-color: var(--mds-input-switch-icon-color-unchecked-disabled);
+}

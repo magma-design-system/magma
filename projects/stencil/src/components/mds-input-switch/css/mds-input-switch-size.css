@@ -1,17 +1,20 @@
-:host( [size="sm"] ) {
+:host([size="sm"]) {
 
-  --switch-toggle-size: theme('spacing.500');
-  --switch-padding: theme('spacing.100');
+  --mds-input-switch-box-padding: var(--mds-input-switch-box-padding-sm);
+  --mds-input-switch-toggle-size: var(--mds-input-switch-toggle-size-sm);
+  --mds-input-switch-toggle-container-size: calc(calc(var(--mds-input-switch-toggle-size-sm) * 2) + calc(var(--mds-input-switch-box-padding-sm) * 2));
 }
 
-:host( [size="md"] ) {
+:host([size="md"]) {
 
-  --switch-toggle-size: theme('spacing.600');
-  --switch-padding: theme('spacing.100');
+  --mds-input-switch-box-padding: var(--mds-input-switch-box-padding-md);
+  --mds-input-switch-toggle-size: var(--mds-input-switch-toggle-size-md);
+  --mds-input-switch-toggle-container-size: calc(calc(var(--mds-input-switch-toggle-size-md) * 2) + calc(var(--mds-input-switch-box-padding-md) * 2));
 }
 
-:host( [size="lg"] ) {
+:host([size="lg"]) {
 
-  --switch-toggle-size: theme('spacing.700');
-  --switch-padding: theme('spacing.100');
+  --mds-input-switch-box-padding: var(--mds-input-switch-box-padding-lg);
+  --mds-input-switch-toggle-size: var(--mds-input-switch-toggle-size-lg);
+  --mds-input-switch-toggle-container-size: calc(calc(var(--mds-input-switch-toggle-size-lg) * 2) + calc(var(--mds-input-switch-box-padding-lg) * 2));
 }

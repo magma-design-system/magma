@@ -7,29 +7,33 @@ export default {
   title: 'Form / Switch',
   argTypes: {
     autofocus: {
-      type: { name: 'boolean', required: false },
+      type: { name: 'boolean' },
       description: 'Sets or returns whether a checkbox should automatically get focus when the page loads',
     },
     checked: {
-      type: { name: 'boolean', required: false },
+      type: { name: 'boolean' },
       description: 'Specifies that an <input> element should be pre-selected when the page loads (for type="checkbox" or type="radio")',
     },
     disabled: {
-      type: { name: 'boolean', required: false },
+      type: { name: 'boolean' },
       description: 'Sets or returns whether a checkbox is disabled, or not',
     },
+    explicit: {
+      type: { name: 'boolean' },
+      description: 'Sets if the type switch mode shows explicit icons',
+    },
     icon: {
-      type: { name: 'string', required: false },
+      type: { name: 'string' },
       description: 'The name of the icon set. The icon set is strictly realted to @maggioli-design-system/icons',
       options: iconsDictionary,
       control: { type: 'select' },
     },
     indeterminate: {
-      type: { name: 'boolean', required: false },
+      type: { name: 'boolean' },
       description: 'Sets or returns the indeterminate state of the checkbox',
     },
     name: {
-      type: { name: 'string', required: false },
+      type: { name: 'string' },
       description: 'Specifies the name of an <input> element',
     },
     size: {
