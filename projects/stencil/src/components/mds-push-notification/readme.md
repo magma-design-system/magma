@@ -53,7 +53,6 @@ graph TD;
   mds-push-notification --> mds-img
   mds-push-notification --> mds-text
   mds-push-notification --> mds-button
-  mds-avatar --> mds-text
   mds-avatar --> mds-img
   mds-avatar --> mds-icon
   mds-button --> mds-spinner

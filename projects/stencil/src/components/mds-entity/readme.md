@@ -52,7 +52,6 @@ This is a web-component from Maggioli Design System [Magma](https://magma.maggio
 graph TD;
   mds-entity --> mds-spinner
   mds-entity --> mds-avatar
-  mds-avatar --> mds-text
   mds-avatar --> mds-img
   mds-avatar --> mds-icon
   style mds-entity fill:#f9f,stroke:#333,stroke-width:4px
