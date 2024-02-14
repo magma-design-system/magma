@@ -107,7 +107,7 @@ textarea.input {
 }
 
 
-
+.await,
 .icon {
   @apply
     left-300
@@ -115,6 +115,12 @@ textarea.input {
 
   fill: rgb(var(--mds-input-icon-color));
   position: absolute;
+}
+
+.await {
+  color: rgb(var(--mds-input-icon-color));
+  height: 24px;
+  width: 24px;
 }
 
 .counter {

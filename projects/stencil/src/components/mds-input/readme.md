@@ -16,6 +16,7 @@ This is a web-component from Maggioli Design System [Magma](https://magma.maggio
 | ---------------------- | ------------------------ | --------------------------------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------- | ---------------- |
 | `autocomplete`         | `autocomplete`           | Specifies whether the element should have autocomplete enabled                                                  | `AutocompleteType \| undefined`                                                                                            | `'off'`          |
 | `autofocus`            | `autofocus`              | Specifies that the element should automatically get focus when the page loads                                   | `boolean`                                                                                                                  | `false`          |
+| `await`                | `await`                  | Specifies if the spinner icon is shown, replacing the icon if present                                           | `boolean`                                                                                                                  | `false`          |
 | `controlDecreaseLabel` | `control-decrease-label` | Specifies the label for control button decrease for component when type is number                               | `string \| undefined`                                                                                                      | `'Riduci'`       |
 | `controlIncreaseLabel` | `control-increase-label` | Specifies the label for control button increase for component when type is number                               | `string \| undefined`                                                                                                      | `'Aumenta'`      |
 | `controlsIcon`         | `controls-icon`          | Specifies the icon type of the counter button when the input type is set to `number`                            | `"arithmetic" \| "arrow" \| undefined`                                                                                     | `'arrow'`        |
@@ -109,6 +110,7 @@ Type: `Promise<void>`
 - [mds-button](../mds-button)
 - [mds-text](../mds-text)
 - [mds-icon](../mds-icon)
+- [mds-spinner](../mds-spinner)
 
 ### Graph
 ```mermaid
@@ -116,6 +118,7 @@ graph TD;
   mds-input --> mds-button
   mds-input --> mds-text
   mds-input --> mds-icon
+  mds-input --> mds-spinner
   mds-button --> mds-spinner
   mds-button --> mds-icon
   mds-button --> mds-text

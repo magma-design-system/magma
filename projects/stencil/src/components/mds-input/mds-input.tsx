@@ -61,12 +61,17 @@ export class MdsInput {
   /**
    * Specifies whether the element should have autocomplete enabled
    */
-  @Prop() readonly autocomplete?: AutocompleteType = 'off'
+  @Prop({ reflect: true }) readonly autocomplete?: AutocompleteType = 'off'
 
   /**
    * Specifies that the element should automatically get focus when the page loads
    */
-  @Prop() readonly autofocus: boolean = false
+  @Prop({ reflect: true }) readonly autofocus: boolean = false
+
+  /**
+   * Specifies if the spinner icon is shown, replacing the icon if present
+   */
+  @Prop({ reflect: true }) readonly await: boolean = false
 
   /**
    * Specifies the layout of the counter button when the input type is set to `number`
@@ -114,41 +119,41 @@ export class MdsInput {
    * use it with input type="number" or type="date"
    * Example: max="180", max="2046-12-04"
    */
-  @Prop() readonly max?: string
+  @Prop({ reflect: true }) readonly max?: string
 
   /**
    * Specifies the maximum number of characters allowed in an element
    * use it with input type="number"
    */
-  @Prop() readonly maxlength?: number
+  @Prop({ reflect: true }) readonly maxlength?: number
 
   /**
    * Specifies the minimum value
    * use it with input type="number" or type="date"
    * Example: min="-3", min="1988-04-15"
    */
-  @Prop() readonly min?: string | number
+  @Prop({ reflect: true }) readonly min?: string | number
 
   /**
    * Specifies the minimum number of characters allowed in an element
    * use it with input type="number"
    */
-  @Prop() readonly minlength?: number
+  @Prop({ reflect: true }) readonly minlength?: number
 
   /**
    * Is needed to reference the form data after the form is submitted
    */
-  @Prop() readonly name?: string
+  @Prop({ reflect: true }) readonly name?: string
 
   /**
    * Specifies a regular expression that element\'s value is checked against
    */
-  @Prop() readonly pattern?: string
+  @Prop({ reflect: true }) readonly pattern?: string
 
   /**
    * Specifies a short hint that describes the expected value of the element
    */
-  @Prop() readonly placeholder: string = ''
+  @Prop({ reflect: true }) readonly placeholder: string = ''
 
   /**
    * Specifies that the element is read-only
@@ -178,12 +183,12 @@ export class MdsInput {
   /**
    * Sets the word(s) of the tip of the input field
    */
-  @Prop() readonly tip?: string
+  @Prop({ reflect: true }) readonly tip?: string
 
   /**
    * Specifies the interval between legal numbers in an input field
    */
-  @Prop() readonly step?: string
+  @Prop({ reflect: true }) readonly step?: string
 
   /**
    * Specifies the type of input element
@@ -314,7 +319,7 @@ export class MdsInput {
           ? <textarea
             class={clsx(
               'input',
-              this.icon && 'has-icon',
+              (this.icon ?? this.await) && 'has-icon',
             )}
             autoFocus={this.autofocus}
             disabled={this.disabled}
@@ -334,7 +339,7 @@ export class MdsInput {
           : <input
             class={clsx(
               'input',
-              this.icon && 'has-icon',
+              (this.icon ?? this.await) && 'has-icon',
             )}
             autoComplete={this.autocomplete}
             autoFocus={this.autofocus}
@@ -418,7 +423,8 @@ export class MdsInput {
             })}
           </datalist>
         }
-        { this.icon && <mds-icon class={clsx('icon', this.variant)} name={this.icon}/> }
+        { this.icon && !this.await && <mds-icon class={clsx('icon', this.variant)} name={this.icon}/> }
+        <mds-spinner running={this.await} class={clsx('await', this.variant)} />
       </Host>
     )
   }

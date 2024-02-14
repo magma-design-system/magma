@@ -22,6 +22,10 @@ export default {
       type: { name: 'boolean' },
       description: 'Specifies that the element should automatically get focus when the page loads',
     },
+    await: {
+      type: { name: 'boolean' },
+      description: 'Specifies if the spinner icon is shown, replacing the icon if present',
+    },
     'control-decrease-label': {
       type: { name: 'string' },
       description: 'Specifies the label for control button decrease for component when type is number',

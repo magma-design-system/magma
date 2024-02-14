@@ -13,6 +13,7 @@ This is a web-component from Maggioli Design System [Magma](https://magma.maggio
 | ---------------- | ----------------- | --------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------- | ---------------- |
 | `autocomplete`   | `autocomplete`    | Specifies whether the element should have autocomplete enabled                                                  | `AutocompleteType \| undefined`                                                                                                                   | `'off'`          |
 | `autofocus`      | `autofocus`       | Specifies that the element should automatically get focus when the page loads                                   | `boolean`                                                                                                                                         | `false`          |
+| `await`          | `await`           | Specifies if the spinner icon is shown, replacing the icon if present                                           | `boolean`                                                                                                                                         | `false`          |
 | `controlsIcon`   | `controls-icon`   | Specifies the icon type of the counter button when the input type is set to `number`                            | `"arithmetic" \| "arrow" \| undefined`                                                                                                            | `'arrow'`        |
 | `controlsLayout` | `controls-layout` | Specifies the layout of the counter button when the input type is set to `number`                               | `"horizontal" \| "vertical" \| undefined`                                                                                                         | `'vertical'`     |
 | `disabled`       | `disabled`        | If true, the element is displayed as disabled                                                                   | `boolean \| undefined`                                                                                                                            | `false`          |
@@ -116,14 +117,6 @@ Type: `Promise<void>`
 
 
 
-## CSS Custom Properties
-
-| Name                                   | Description                                                                                                                      |
-| -------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------- |
-| `--mds-input-field-message-background` | Sets the message background color of the component, will be visible only if there is a text defined by `tip` component attribute |
-| `--mds-input-field-message-color`      | Sets the message text color of the component                                                                                     |
-
-
 ## Dependencies
 
 ### Depends on
@@ -139,6 +132,7 @@ graph TD;
   mds-input --> mds-button
   mds-input --> mds-text
   mds-input --> mds-icon
+  mds-input --> mds-spinner
   mds-button --> mds-spinner
   mds-button --> mds-icon
   mds-button --> mds-text

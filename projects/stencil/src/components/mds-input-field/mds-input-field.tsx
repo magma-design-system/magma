@@ -38,12 +38,17 @@ export class MdsInputField {
   /**
    * Specifies whether the element should have autocomplete enabled
    */
-  @Prop() autocomplete?: AutocompleteType = 'off'
+  @Prop({ reflect: true }) autocomplete?: AutocompleteType = 'off'
 
   /**
    * Specifies that the element should automatically get focus when the page loads
    */
-  @Prop() autofocus = false
+  @Prop({ reflect: true }) autofocus = false
+
+  /**
+   * Specifies if the spinner icon is shown, replacing the icon if present
+   */
+  @Prop({ reflect: true }) readonly await: boolean = false
 
   /**
    * Specifies the layout of the counter button when the input type is set to `number`
@@ -305,6 +310,7 @@ export class MdsInputField {
           <mds-input
             autocomplete={this.autocomplete}
             autofocus={this.autofocus}
+            await={this.await}
             class={clsx('input', this.isValidInput ? 'input-valid' : 'input-invalid')}
             controlsLayout={this.controlsLayout}
             controlsIcon={this.controlsIcon}
