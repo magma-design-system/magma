@@ -32,7 +32,7 @@ import { CrossoriginType, ReferrerpolicyType } from "./components/mds-img/meta/t
 import { LoadingType } from "@type/loading";
 import { MdsImgEventDetail } from "./components/mds-img/meta/event-detail";
 import { AutocompleteType } from "@type/autocomplete";
-import { InputControlsIconType, InputControlsLayoutType, InputTextType, InputValueType } from "@type/input";
+import { InputControlsIconType, InputControlsLayoutType, InputTextType } from "@type/input";
 import { MdsInputEventDetail } from "./components/mds-input/meta/event-detail";
 import { InputFieldType } from "./components/mds-input-field/meta/types";
 import { MdsInputEventDetail as MdsInputEventDetail1 } from "@component/mds-input/meta/event-detail";
@@ -82,7 +82,7 @@ export { CrossoriginType, ReferrerpolicyType } from "./components/mds-img/meta/t
 export { LoadingType } from "@type/loading";
 export { MdsImgEventDetail } from "./components/mds-img/meta/event-detail";
 export { AutocompleteType } from "@type/autocomplete";
-export { InputControlsIconType, InputControlsLayoutType, InputTextType, InputValueType } from "@type/input";
+export { InputControlsIconType, InputControlsLayoutType, InputTextType } from "@type/input";
 export { MdsInputEventDetail } from "./components/mds-input/meta/event-detail";
 export { InputFieldType } from "./components/mds-input-field/meta/types";
 export { MdsInputEventDetail as MdsInputEventDetail1 } from "@component/mds-input/meta/event-detail";
@@ -1017,6 +1017,10 @@ export namespace Components {
          */
         "disabled"?: boolean;
         /**
+          * Sets if the type switch mode shows explicit icons
+         */
+        "explicit"?: boolean;
+        /**
           * The checked icon displayed
          */
         "icon": string;
@@ -1043,7 +1047,7 @@ export namespace Components {
         /**
           * Specifies the value of the input element
          */
-        "value"?: InputValueType;
+        "value"?: string;
         /**
           * Specifies the variant for `typography`
          */
@@ -2177,7 +2181,7 @@ declare global {
         new (): HTMLMdsInputSelectElement;
     };
     interface HTMLMdsInputSwitchElementEventMap {
-        "mdsInputSwitchChange": { name: string, value: InputValueType };
+        "mdsInputSwitchChange": { name: string, checked: boolean, value: string };
     }
     interface HTMLMdsInputSwitchElement extends Components.MdsInputSwitch, HTMLStencilElement {
         addEventListener<K extends keyof HTMLMdsInputSwitchElementEventMap>(type: K, listener: (this: HTMLMdsInputSwitchElement, ev: MdsInputSwitchCustomEvent<HTMLMdsInputSwitchElementEventMap[K]>) => any, options?: boolean | AddEventListenerOptions): void;
@@ -3718,6 +3722,10 @@ declare namespace LocalJSX {
          */
         "disabled"?: boolean;
         /**
+          * Sets if the type switch mode shows explicit icons
+         */
+        "explicit"?: boolean;
+        /**
           * The checked icon displayed
          */
         "icon"?: string;
@@ -3732,7 +3740,7 @@ declare namespace LocalJSX {
         /**
           * Emits when the value changes
          */
-        "onMdsInputSwitchChange"?: (event: MdsInputSwitchCustomEvent<{ name: string, value: InputValueType }>) => void;
+        "onMdsInputSwitchChange"?: (event: MdsInputSwitchCustomEvent<{ name: string, checked: boolean, value: string }>) => void;
         /**
           * Specifies the size for the switch toggle, it works only if attribute 'type' is set to 'switch'
          */
@@ -3748,7 +3756,7 @@ declare namespace LocalJSX {
         /**
           * Specifies the value of the input element
          */
-        "value"?: InputValueType;
+        "value"?: string;
         /**
           * Specifies the variant for `typography`
          */
