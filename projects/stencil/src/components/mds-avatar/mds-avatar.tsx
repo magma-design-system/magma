@@ -27,6 +27,7 @@ export class MdsAvatar {
   private fittyElements
   private backgroundColor = ''
   private fittyInitialized = false
+  private initialsChanged = false
 
   /**
    * Specifies the path to the icon
@@ -55,23 +56,24 @@ export class MdsAvatar {
   @Prop({ reflect: true }) readonly variant?: ThemeFullVariantAvatarType
 
   private addFontResize = (): void => {
-    const initialsElement = this.element.shadowRoot?.querySelector('.fit')
-    if (initialsElement === null) {
+    if (this.fittyInitialized) {
       return
     }
-    if (!this.observer) {
-      this.fittyElements = fitty(initialsElement as HTMLElement, { minSize: 10 })
-      this.observer = new ResizeObserver(entries => {
-        entries.forEach(() => {
-          this.fittyElements.fit()
-        })
+    const initialsElement = this.element.shadowRoot?.querySelector('.fit')
+    this.fittyElements = fitty(initialsElement as HTMLElement, { minSize: 10 })
+    this.observer = new ResizeObserver(entries => {
+      entries.forEach(() => {
+        this.fittyElements.fit()
       })
-    }
+    })
     this.observer.observe(this.element)
     this.fittyInitialized = true
   }
 
   private removeFontResize = (): void => {
+    if (!this.fittyInitialized) {
+      return
+    }
     this.fittyInitialized = false
     this.observer.unobserve(this.element)
   }
@@ -83,13 +85,11 @@ export class MdsAvatar {
       }
       if (!this.fittyInitialized) {
         this.addFontResize()
-        console.info('addFontResize')
       }
       return
     }
     if (this.fittyInitialized) {
       this.removeFontResize()
-      console.info('removeFontResize')
     }
   }
 
@@ -114,9 +114,18 @@ export class MdsAvatar {
     this.checkInitials(this.initials)
   }
 
+  componentDidRender = (): void => {
+    if (this.initialsChanged) {
+      // placed here becase @Watch('initials') is fired
+      // BEFORE the element .fit is attached on shDOM
+      this.checkInitials(this.initials)
+      this.initialsChanged = false
+    }
+  }
+
   @Watch('initials')
-  initialsHandler (newValue?: string): void {
-    this.checkInitials(newValue)
+  initialsHandler (): void {
+    this.initialsChanged = true
     this.checkInitialsBackground()
   }
 
@@ -143,11 +152,11 @@ export class MdsAvatar {
           (this.fallback || (!this.icon && !this.initials && !this.src)) && 'avatar--fallback',
           this.icon && 'avatar--icon',
           this.loaded ? 'avatar--loaded' : 'avatar--pending',
-          this.backgroundColor,
+          this.initials ? this.backgroundColor : '',
         )} part="wrapper">
-          { this.initials && !this.fallback && !this.src && <mds-text typography="h5" class="initials-text">
+          { this.initials && !this.fallback && !this.src && <div class="initials-text">
             <span class="fit">{ this.initials.substring(0, 2) }</span>
-          </mds-text>
+          </div>
           }
           { this.src && !this.fallback && !this.icon && <mds-img
             class="image"
