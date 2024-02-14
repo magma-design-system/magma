@@ -14,9 +14,12 @@
   --mds-avatar-background-color: theme('colors.brand-maggioli-05');
   --mds-avatar-color: theme('colors.brand-maggioli-10');
   --mds-avatar-radius: theme('borderRadius.full');
+  --mds-avatar-initials-padding: 20%;
 
   aspect-ratio: 1/1;
   border-radius: var(--mds-avatar-radius);
+  container-name: mds-avatar;
+  container-type: inline-size;
   display: inline-flex;
   overflow: hidden;
   width: theme('spacing.1200');
@@ -59,7 +62,7 @@
 }
 
 .avatar--initials {
-  padding: 30% 25% 25%;
+  padding: 30% var(--mds-avatar-initials-padding) 25%;
 }
 
 .image {
@@ -74,6 +77,11 @@
 
 
 .initials-text {
+
+  @apply
+    font-title
+    font-bold;
+
   align-items: center;
   color: var(--mds-avatar-color);
   display: flex;
@@ -90,13 +98,8 @@
 }
 
 .fit {
-  @apply
-    duration-200
-    ease-in-out;
-
   display: inline-block;
-  transition-property: font-size;
-  white-space: nowrap;
+  white-space: nowrap !important;
 }
 
 .icon {
@@ -109,3 +112,13 @@
 }
 
 @import './css/mds-avatar-variant.css';
+
+@container (max-width: 24px) {
+  .avatar--initials {
+    padding: 0 var(--mds-avatar-initials-padding);
+  }
+
+  .initials-text {
+    @apply font-black;
+  }
+}
