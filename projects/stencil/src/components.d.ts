@@ -734,6 +734,10 @@ export namespace Components {
          */
         "autofocus": boolean;
         /**
+          * Specifies if the spinner icon is shown, replacing the icon if present
+         */
+        "await": boolean;
+        /**
           * Specifies the label for control button decrease for component when type is number
          */
         "controlDecreaseLabel"?: string;
@@ -852,6 +856,10 @@ export namespace Components {
           * Specifies that the element should automatically get focus when the page loads
          */
         "autofocus": boolean;
+        /**
+          * Specifies if the spinner icon is shown, replacing the icon if present
+         */
+        "await": boolean;
         /**
           * Specifies the icon type of the counter button when the input type is set to `number`
          */
@@ -3406,6 +3414,10 @@ declare namespace LocalJSX {
          */
         "autofocus"?: boolean;
         /**
+          * Specifies if the spinner icon is shown, replacing the icon if present
+         */
+        "await"?: boolean;
+        /**
           * Specifies the label for control button decrease for component when type is number
          */
         "controlDecreaseLabel"?: string;
@@ -3531,6 +3543,10 @@ declare namespace LocalJSX {
           * Specifies that the element should automatically get focus when the page loads
          */
         "autofocus"?: boolean;
+        /**
+          * Specifies if the spinner icon is shown, replacing the icon if present
+         */
+        "await"?: boolean;
         /**
           * Specifies the icon type of the counter button when the input type is set to `number`
          */
