@@ -65,7 +65,7 @@ export default {
 const Template = ({ layout, ...args }) =>
   <div class={layout}>
     <mds-button id="my-dropdown">Show Fred</mds-button>
-    <mds-dropdown target="my-dropdown" {...args}>
+    <mds-dropdown target="#my-dropdown" {...args}>
       <mds-author class="text-tone-neutral-04">
         <mds-avatar aria-describedby="A protrait of Frederick Phillips Brooks Jr." initials="fb" src="./fred-brooks-zoom.webp" slot="avatar" class="w-2000 bg-brand-maggioli-06" />
         <mds-text typography="h6" class="text-tone-neutral-02">Fred Brooks</mds-text>
@@ -116,7 +116,7 @@ const TemplateNested = ({ ...args }) =>
         <mds-button slot="nav" id="my-dropdown">Show Fred</mds-button>
       </mds-header-bar>
     </mds-header>
-    <mds-dropdown target="my-dropdown" class="max-w-[350px]" {...args}>
+    <mds-dropdown target="#my-dropdown" class="max-w-[350px]" {...args}>
       <mds-author class="text-tone-neutral-04">
         <mds-avatar aria-describedby="A protrait of Frederick Phillips Brooks Jr." initials="fb" src="./fred-brooks-zoom.webp" slot="avatar" class="w-20 bg-brand-maggioli-06" />
         <mds-text typography="h6" class="text-tone-neutral-02">Fred Brooks</mds-text>
