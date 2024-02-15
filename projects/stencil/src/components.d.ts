@@ -39,6 +39,7 @@ import { MdsInputEventDetail as MdsInputEventDetail1 } from "@component/mds-inpu
 import { MdsValidationErrors, MdsValidatorFn } from "./components/mds-input-field/meta/validators";
 import { InputValue } from "@interface/input-value";
 import { InputSwitchSizeType, InputSwitchType } from "./components/mds-input-switch/meta/types";
+import { MdsInputSwitchEventDetail } from "./components/mds-input-switch/meta/event-detail";
 import { AttachmentSort } from "./components/mds-input-upload/meta/types";
 import { ModalPositionType } from "./components/mds-modal/meta/types";
 import { StrategyType } from "./components/mds-notification/meta/types";
@@ -89,6 +90,7 @@ export { MdsInputEventDetail as MdsInputEventDetail1 } from "@component/mds-inpu
 export { MdsValidationErrors, MdsValidatorFn } from "./components/mds-input-field/meta/validators";
 export { InputValue } from "@interface/input-value";
 export { InputSwitchSizeType, InputSwitchType } from "./components/mds-input-switch/meta/types";
+export { MdsInputSwitchEventDetail } from "./components/mds-input-switch/meta/event-detail";
 export { AttachmentSort } from "./components/mds-input-upload/meta/types";
 export { ModalPositionType } from "./components/mds-modal/meta/types";
 export { StrategyType } from "./components/mds-notification/meta/types";
@@ -1052,12 +1054,6 @@ export namespace Components {
           * Specifies the variant for `typography`
          */
         "variant"?: TypographyVariants;
-    }
-    interface MdsInputSwitchGroup {
-        /**
-          * Specifies the name of the group
-         */
-        "name": string;
     }
     interface MdsInputUpload {
         /**
@@ -2181,7 +2177,7 @@ declare global {
         new (): HTMLMdsInputSelectElement;
     };
     interface HTMLMdsInputSwitchElementEventMap {
-        "mdsInputSwitchChange": { name: string, checked: boolean, value: string };
+        "mdsInputSwitchChange": MdsInputSwitchEventDetail;
     }
     interface HTMLMdsInputSwitchElement extends Components.MdsInputSwitch, HTMLStencilElement {
         addEventListener<K extends keyof HTMLMdsInputSwitchElementEventMap>(type: K, listener: (this: HTMLMdsInputSwitchElement, ev: MdsInputSwitchCustomEvent<HTMLMdsInputSwitchElementEventMap[K]>) => any, options?: boolean | AddEventListenerOptions): void;
@@ -2196,12 +2192,6 @@ declare global {
     var HTMLMdsInputSwitchElement: {
         prototype: HTMLMdsInputSwitchElement;
         new (): HTMLMdsInputSwitchElement;
-    };
-    interface HTMLMdsInputSwitchGroupElement extends Components.MdsInputSwitchGroup, HTMLStencilElement {
-    }
-    var HTMLMdsInputSwitchGroupElement: {
-        prototype: HTMLMdsInputSwitchGroupElement;
-        new (): HTMLMdsInputSwitchGroupElement;
     };
     interface HTMLMdsInputUploadElement extends Components.MdsInputUpload, HTMLStencilElement {
     }
@@ -2644,7 +2634,6 @@ declare global {
         "mds-input-range": HTMLMdsInputRangeElement;
         "mds-input-select": HTMLMdsInputSelectElement;
         "mds-input-switch": HTMLMdsInputSwitchElement;
-        "mds-input-switch-group": HTMLMdsInputSwitchGroupElement;
         "mds-input-upload": HTMLMdsInputUploadElement;
         "mds-kpi": HTMLMdsKpiElement;
         "mds-kpi-item": HTMLMdsKpiItemElement;
@@ -3740,7 +3729,7 @@ declare namespace LocalJSX {
         /**
           * Emits when the value changes
          */
-        "onMdsInputSwitchChange"?: (event: MdsInputSwitchCustomEvent<{ name: string, checked: boolean, value: string }>) => void;
+        "onMdsInputSwitchChange"?: (event: MdsInputSwitchCustomEvent<MdsInputSwitchEventDetail>) => void;
         /**
           * Specifies the size for the switch toggle, it works only if attribute 'type' is set to 'switch'
          */
@@ -3761,12 +3750,6 @@ declare namespace LocalJSX {
           * Specifies the variant for `typography`
          */
         "variant"?: TypographyVariants;
-    }
-    interface MdsInputSwitchGroup {
-        /**
-          * Specifies the name of the group
-         */
-        "name"?: string;
     }
     interface MdsInputUpload {
         /**
@@ -4361,7 +4344,6 @@ declare namespace LocalJSX {
         "mds-input-range": MdsInputRange;
         "mds-input-select": MdsInputSelect;
         "mds-input-switch": MdsInputSwitch;
-        "mds-input-switch-group": MdsInputSwitchGroup;
         "mds-input-upload": MdsInputUpload;
         "mds-kpi": MdsKpi;
         "mds-kpi-item": MdsKpiItem;
@@ -4450,7 +4432,6 @@ declare module "@stencil/core" {
             "mds-input-range": LocalJSX.MdsInputRange & JSXBase.HTMLAttributes<HTMLMdsInputRangeElement>;
             "mds-input-select": LocalJSX.MdsInputSelect & JSXBase.HTMLAttributes<HTMLMdsInputSelectElement>;
             "mds-input-switch": LocalJSX.MdsInputSwitch & JSXBase.HTMLAttributes<HTMLMdsInputSwitchElement>;
-            "mds-input-switch-group": LocalJSX.MdsInputSwitchGroup & JSXBase.HTMLAttributes<HTMLMdsInputSwitchGroupElement>;
             "mds-input-upload": LocalJSX.MdsInputUpload & JSXBase.HTMLAttributes<HTMLMdsInputUploadElement>;
             "mds-kpi": LocalJSX.MdsKpi & JSXBase.HTMLAttributes<HTMLMdsKpiElement>;
             "mds-kpi-item": LocalJSX.MdsKpiItem & JSXBase.HTMLAttributes<HTMLMdsKpiItemElement>;

@@ -1,10 +1,12 @@
-import { AttachInternals, Component, Element, Host, h, Prop, Event, EventEmitter, State } from '@stencil/core'
 import clsx from 'clsx'
-import { InputSwitchType, InputSwitchSizeType } from './meta/types'
-import { inputSwitchIconVariant } from './meta/variants'
-import { TypographyInfoType, TypographyReadType, TypographyVariants } from '@type/typography'
 import miBaselineChecked from '@icon/mgg/check-small.svg'
 import miBaselineRemove from '@icon/mi/baseline/remove.svg'
+import { AttachInternals, Component, Element, Host, h, Prop, Event, EventEmitter, State } from '@stencil/core'
+import { InputSwitchType, InputSwitchSizeType } from './meta/types'
+import { KeyboardManager } from '@common/keyboard-manager'
+import { MdsInputSwitchEventDetail } from './meta/event-detail'
+import { TypographyInfoType, TypographyReadType, TypographyVariants } from '@type/typography'
+import { inputSwitchIconVariant } from './meta/variants'
 
 /**
  * @slot default - Put text string or elements here
@@ -20,6 +22,7 @@ export class MdsInputSwitch {
 
   @AttachInternals() internals: ElementInternals
   @Element() host: HTMLMdsInputSwitchElement
+  private km = new KeyboardManager()
 
   @State() dirty = false
   /**
@@ -87,7 +90,17 @@ export class MdsInputSwitch {
   /**
    * Emits when the value changes
    */
-  @Event({ eventName: 'mdsInputSwitchChange' }) changeEvent: EventEmitter<{ name: string, checked: boolean, value: string }>
+  @Event({ eventName: 'mdsInputSwitchChange' }) changeEvent: EventEmitter<MdsInputSwitchEventDetail>
+
+  private uncheckSiblings = (): void => {
+    const elements = document.querySelectorAll(`mds-input-switch[name="${this.name}"]`)
+
+    elements.forEach((element: HTMLMdsInputSwitchElement) => {
+      if (element !== this.host) {
+        element.checked = false
+      }
+    })
+  }
 
   private handleInputOnChange = (e: Event): void => {
     const { value } = (e.target as HTMLInputElement)
@@ -95,30 +108,44 @@ export class MdsInputSwitch {
     e.stopPropagation()
     const input = this.host.shadowRoot?.getElementById('field') as HTMLInputElement
     this.checked = input.checked
+    
+    if (this.type === 'radio') {
+      this.uncheckSiblings()
+    }
+
     this.changeEvent.emit({ name: this.name, checked: this.checked, value })
+    this.internals.setFormValue(this.checked ? this.value ?? null : null)
   }
 
   private handleDirty = (): void => {
     this.dirty = true
   }
 
-  componentWillLoad = (): void => {
-    this.internals.setFormValue(this.value ?? null)
+  private checkFocusElement = (): void => {
+    switch (this.type) {
+    case 'switch':
+      this.km.removeElement('default')
+      this.km.addElement(this.host.shadowRoot?.querySelector('.switch-container') as HTMLElement, 'switch')
+      this.km.attachClickBehavior('switch')
+      break
+    default:
+      this.km.removeElement('switch')
+      this.km.addElement(this.host.shadowRoot?.querySelector('.label-icon') as HTMLElement, 'default')
+      this.km.attachClickBehavior('default')
+    }
+  }
+
+  componentDidLoad (): void {
+    this.internals.setFormValue(this.checked ? this.value ?? null : null)
+    this.checkFocusElement()
   }
 
   render () {
-
     const { iconChecked, iconUnchecked, iconIndeterminate } = inputSwitchIconVariant[this.type]
     const iconCheckedUser = this.icon !== '' ? this.icon : iconChecked
+    
     return (
-      <Host
-        class={clsx(
-          this.disabled && 'disabled',
-          this.indeterminate && 'indeterminate',
-          this.type === 'switch' ? 'items-stretch' : 'items-start',
-        )}
-        onClick={this.handleDirty}
-      >
+      <Host onClick={this.handleDirty}>
         <input
           autoFocus={this.autofocus}
           checked={this.checked}
@@ -133,16 +160,15 @@ export class MdsInputSwitch {
         />
         { this.type === 'switch'
           ?
-          <label htmlFor="field" class={clsx(this.dirty !== false && 'dirty', 'switch-container')}>
+          <label htmlFor="field" class={clsx('switch-container', this.dirty !== false && 'dirty')} tabindex="0" role="switch">
             <div class="switch">
               <div class="switch-toggle">
-                { this.explicit && this.checked && <mds-icon class="icon-explicit" name={miBaselineChecked}></mds-icon> }
-                { this.explicit && !this.checked && <mds-icon class="icon-explicit" name={miBaselineRemove}></mds-icon> }
+                { this.explicit && <mds-icon class="icon-explicit" name={this.checked ? miBaselineChecked : miBaselineRemove}></mds-icon> }
               </div>
             </div>
           </label>
           :
-          <label htmlFor="field" class="label-icon">
+          <label htmlFor="field" class="label-icon" tabindex="0" role="switch">
             <mds-text class="icon-typography-unchecked" tag="div" typography={this.typography} variant={this.variant}>
               <mds-icon class="icon-unchecked" name={iconUnchecked}/>
             </mds-text>

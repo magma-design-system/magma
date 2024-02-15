@@ -71,8 +71,10 @@ const Template = args =>
 
 const TemplateMultiple = args =>
   <form name="form-name" class="grid grid-cols-1 gap-400">
-    <mds-input-switch {...args} value="1">Accetto</mds-input-switch>
-    <mds-input-switch {...args} value="2">Non accetto</mds-input-switch>
+    <mds-input-switch {...args} value="1">Choice A</mds-input-switch>
+    <mds-input-switch {...args} value="2">Choice B</mds-input-switch>
+    <mds-input-switch {...args} value="2">Choice C</mds-input-switch>
+    <mds-input-switch {...args} value="2">Choice D</mds-input-switch>
   </form>
 
 export const Default = Template.bind({})
@@ -93,5 +95,4 @@ export const Radio = TemplateMultiple.bind({})
 Radio.args = {
   name: 'radio-name',
   type: 'radio',
-  value: '1',
 }

@@ -1,9 +1,9 @@
 export class KeyboardManager {
   private escapeCallback: () => void
-  private elements = []
+  private elements = new Map<string, HTMLElement>()
 
   private handleClickBehaviorDispatchEvent = (event: KeyboardEvent): void => {
-    if (event.code === 'Space' || event.code === 'Enter' || event.code === 'NumpadEnter') {
+    if (event.code === 'Enter' || event.code === 'NumpadEnter') {
       (event.target as HTMLElement).click()
     }
   }
@@ -15,30 +15,32 @@ export class KeyboardManager {
   }
 
   addElement = (el: HTMLElement, name = 'element'): void => {
-    this.elements[name] = el
+    console.info(el)
+    this.elements.set(name, el)
+  }
+
+  removeElement = (name: string = 'element'): void => {
+    this.detachClickBehavior(name)
+    this.elements.delete(name)
   }
 
   attachClickBehavior = (name = 'element'): void => {
-    if (this.elements[name]) {
-      this.elements[name].addEventListener('keydown', this.handleClickBehaviorDispatchEvent)
-    }
+    this.elements.get(name)?.addEventListener('keydown', this.handleClickBehaviorDispatchEvent)
   }
 
   detachClickBehavior = (name = 'element'): void => {
-    if (this.elements[name]) {
-      this.elements[name].removeEventListener('keydown', this.handleClickBehaviorDispatchEvent)
-    }
+    this.elements.get(name)?.removeEventListener('keydown', this.handleClickBehaviorDispatchEvent)
   }
 
-  attachEscapeBehavior = (callBack: () => void): void => {
-    this.escapeCallback = callBack
+  attachEscapeBehavior = (callback: () => void): void => {
+    this.escapeCallback = callback
     if (window !== undefined) {
       window.addEventListener('keydown', this.handleEscapeBehaviorDispatchEvent.bind(this))
     }
   }
 
   detachEscapeBehavior = (): void => {
-    this.escapeCallback = () => {return}
+    this.escapeCallback = () => { return }
     if (window !== undefined) {
       window.removeEventListener('keydown', this.handleEscapeBehaviorDispatchEvent.bind(this))
     }
