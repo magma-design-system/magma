@@ -15,7 +15,9 @@ export class KeyboardManager {
   }
 
   addElement = (el: HTMLElement, name = 'element'): void => {
-    console.info(el)
+    if (!el) {
+      throw Error(`Passed an ${el} element parameter to KeyboardManager.addElement`)
+    }
     this.elements.set(name, el)
   }
 
