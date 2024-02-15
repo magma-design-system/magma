@@ -68,7 +68,7 @@ export class MdsText {
     this.randomText.start()
   }
 
-  componentWillRender = (): void => {
+  componentWillRender (): void {
     const { tag } = typographyDefaultsVariant[this.typography]
     this.tag = this.tag ?? tag as TypographyTagType
   }

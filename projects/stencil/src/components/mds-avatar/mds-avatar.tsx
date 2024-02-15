@@ -114,7 +114,7 @@ export class MdsAvatar {
     this.checkInitials(this.initials)
   }
 
-  componentDidRender = (): void => {
+  componentDidRender (): void {
     if (this.initialsChanged) {
       // placed here becase @Watch('initials') is fired
       // BEFORE the element .fit is attached on shDOM

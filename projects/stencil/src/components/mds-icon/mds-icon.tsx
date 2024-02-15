@@ -24,7 +24,7 @@ export class MdsIcon {
 
   @Element() hostElement: HTMLMdsIconElement
 
-  componentWillLoad = (): void => {
+  componentWillLoad (): void {
     this.updateIcon()
     IconsSetService.registerListener(() => this.updateIcon())
   }
