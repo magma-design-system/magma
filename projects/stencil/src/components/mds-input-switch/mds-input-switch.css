@@ -1,3 +1,5 @@
+@import '~@maggioli-design-system/styles/dist/css/animations.css';
+@import '../../tailwind/components.css';
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
@@ -16,12 +18,16 @@
   * @prop --mds-input-switch-box-color-disabled-checked: Set the color of the switch when the switch is disabled and checked
   * @prop --mds-input-switch-box-color-disabled-unchecked: Set the color of the switch when the switch is disabled and unchecked
   * @prop --mds-input-switch-box-color-unchecked: Set the color of the switch when the switch is unchecked
-  * @prop --mds-input-switch-box-padding: Set the padding of the switch toggle's container
+  * @prop --mds-input-switch-box-padding-sm: Set the padding of the switch toggle's container
+  * @prop --mds-input-switch-box-padding-md: Set the padding of the switch toggle's container
+  * @prop --mds-input-switch-box-padding-lg: Set the padding of the switch toggle's container
   * @prop --mds-input-switch-toggle-color-checked: Set the color of the switch toggle when the switch is checked
   * @prop --mds-input-switch-toggle-color-disabled-checked: Set the color of the switch toggle when the switch is disabled and checked
   * @prop --mds-input-switch-toggle-color-disabled-unchecked: Set the color of the switch toggle when the switch is disabled and unchecked
   * @prop --mds-input-switch-toggle-color-unchecked: Set the color of the switch toggle when the switch is unchecked
-  * @prop --mds-input-switch-toggle-size: Sets the size of the switch toggle
+  * @prop --mds-input-switch-toggle-size-sm: Sets the size of the switch toggle
+  * @prop --mds-input-switch-toggle-size-md: Sets the size of the switch toggle
+  * @prop --mds-input-switch-toggle-size-lg: Sets the size of the switch toggle
   */
 
 :host {
@@ -29,7 +35,7 @@
   --mds-input-switch-animation-timing-adjust: 1.4;
   --mds-input-switch-animation-timing-function: theme('transitionTimingFunction.in-out-quad');
   --mds-input-switch-duration: 300ms;
-  --mds-input-switch-icon-color-checked-disabled: theme('colors.brand-maggioli-04');
+  --mds-input-switch-icon-color-checked-disabled: theme('colors.tone-neutral-06');
   --mds-input-switch-icon-color-checked: theme('colors.brand-maggioli-04');
   --mds-input-switch-icon-color-indeterminate-disabled: theme('colors.tone-neutral-05');
   --mds-input-switch-icon-color-indeterminate: theme('colors.tone-neutral-05');
@@ -39,12 +45,20 @@
   --mds-input-switch-box-color-disabled-checked: theme('colors.tone-neutral-06');
   --mds-input-switch-box-color-disabled-unchecked: theme('colors.tone-neutral-08');
   --mds-input-switch-box-color-unchecked: theme('colors.tone-neutral-07');
-  --mds-input-switch-box-padding: theme('spacing.100');
+  --mds-input-switch-box-padding-sm: theme('spacing.100');
+  --mds-input-switch-box-padding-md: theme('spacing.100');
+  --mds-input-switch-box-padding-lg: theme('spacing.100');
   --mds-input-switch-toggle-color-checked: theme('colors.tone-neutral');
   --mds-input-switch-toggle-color-disabled-checked: theme('colors.tone-neutral');
   --mds-input-switch-toggle-color-disabled-unchecked: theme('colors.tone-neutral-09');
   --mds-input-switch-toggle-color-unchecked: theme('colors.tone-neutral-10');
-  --mds-input-switch-toggle-size: theme('spacing.600');
+  --mds-input-switch-toggle-size-sm: theme('spacing.400');
+  --mds-input-switch-toggle-size-md: theme('spacing.600');
+  --mds-input-switch-toggle-size-lg: theme('spacing.800');
+  --mds-input-switch-icon-explicit-color: var(--mds-input-switch-icon-color-checked);
+  --mds-input-switch-toggle-size: var(--mds-input-switch-toggle-size-md);
+  --mds-input-switch-toggle-container-size: calc(calc(var(--mds-input-switch-toggle-size-md) * 2) + calc(var(--mds-input-switch-box-padding-md) * 2));
+  --mds-input-switch-box-padding: var(--mds-input-switch-box-padding-md);
 
   @apply gap-200;
 
@@ -57,10 +71,17 @@
 }
 
 .label-icon {
+  @apply focus-bounce;
+
   align-items: baseline;
   cursor: pointer;
   display: flex;
   position: relative;
+  transition-property: outline-offset opacity;
+}
+
+.label-icon:focus-visible {
+  @apply focus-bounce--focused;
 }
 
 .label-text {
@@ -68,6 +89,12 @@
   align-self: center;
   cursor: pointer;
   display: flex;
+}
+
+.icon-explicit {
+  fill: var(--mds-input-switch-icon-explicit-color);
+  height: var(--mds-input-switch-toggle-size);
+  width: var(--mds-input-switch-toggle-size);
 }
 
 .icon-typography-checked,
@@ -98,7 +125,7 @@
 
   fill: var(--mds-input-switch-icon-color-unchecked);
   transform: scale(theme('scale.100'));
-  transition-duration: calc(var(--mds-input-switch-duration) * 2);
+  transition-duration: var(--mds-input-switch-duration);
 }
 
 .icon-checked {
@@ -110,41 +137,51 @@
   transition-duration: var(--mds-input-switch-duration);
 }
 
-.indeterminate .icon-checked {
+:host([indeterminate]) .icon-checked {
   fill: var(--mds-input-switch-icon-color-indeterminate);
 }
 
 .switch-container {
+
+  @apply
+    focus-bounce
+    rounded-full;
+
   align-self: stretch;
+  box-sizing: border-box;
+  display: flex;
+  flex-shrink: 0;
+  transition-property: width outline-offset opacity;
+  width: var(--mds-input-switch-toggle-container-size);
 }
 
-.switch,
-.switch-container {
-  @apply transition-size;
-
-  box-sizing: border-box;
-  flex-shrink: 0;
-  width: calc(calc(var(--mds-input-switch-toggle-size) * 2) + calc(var(--mds-input-switch-box-padding) * 2));
+.switch-container:focus-visible {
+  @apply focus-bounce--focused;
 }
 
 .switch {
   @apply
     rounded-full
+    duration-200
     transition-cosmetic;
 
   background-color: var(--mds-input-switch-box-color-unchecked);
+  box-sizing: border-box;
   display: inline-flex;
   flex-shrink: 0;
   padding: var(--mds-input-switch-box-padding);
   transition-duration: var(--mds-input-switch-duration);
+  width: var(--mds-input-switch-toggle-container-size);
 }
 
 .switch-toggle {
   @apply
     ease-linear
     rounded-full
+    duration-200
     transition-cosmetic;
 
+  align-items: center;
   animation-duration: calc(var(--mds-input-switch-duration) * 1.5);
   animation-fill-mode: forwards;
   animation-iteration-count: 1;
@@ -154,32 +191,10 @@
   background-color: var(--mds-input-switch-toggle-color-checked);
   box-shadow: theme('boxShadow.DEFAULT');
   cursor: pointer;
+  display: flex;
   height: var(--mds-input-switch-toggle-size);
+  justify-content: center;
   width: var(--mds-input-switch-toggle-size);
-}
-
-.field:checked + .label-icon .icon-unchecked {
-  @apply opacity-0;
-
-  transform: scale(theme('scale.150'));
-  transition-duration: calc(var(--mds-input-switch-duration) * 2);
-}
-
-.field:checked + .label-icon .icon-checked {
-  transform: scale(theme('scale.100'));
-  transition-duration: calc(var(--mds-input-switch-duration) * 1.5);
-}
-
-.field:disabled + .label-icon .icon-unchecked {
-  fill: var(--mds-input-switch-icon-color-unchecked-disabled);
-}
-
-.field:disabled + .label-icon .icon-checked {
-  fill: var(--mds-input-switch-icon-color-checked-disabled);
-}
-
-.indeterminate .field:disabled + .label-icon .icon-checked {
-  fill: var(--mds-input-switch-icon-color-indeterminate-disabled);
 }
 
 .field:disabled + .label-icon {
@@ -256,4 +271,6 @@
   }
 }
 
+@import './css/mds-input-switch-explicit.css';
+@import './css/mds-input-switch-label-icon.css';
 @import './css/mds-input-switch-size.css';

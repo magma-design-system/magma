@@ -27,7 +27,7 @@ export class MdsTable {
     this.interactiveEvent.emit(this.interactive)
   }
 
-  componentDidLoad = (): void => {
+  componentDidLoad (): void {
     this.interactiveEvent.emit(this.interactive)
   }
 

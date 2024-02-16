@@ -1,0 +1,20 @@
+:host([explicit]:not([explicit="false"]) [checked]:not([checked="false"]) [disabled]) {
+
+  --mds-input-switch-icon-explicit-color: var(--mds-input-switch-icon-color-checked);
+}
+
+:host([explicit]:not([explicit="false"]) [checked]:not([checked="false"]) [disabled]:not([disabled="false"])) {
+
+  --mds-input-switch-icon-explicit-color: var(--mds-input-switch-icon-color-checked-disabled);
+
+}
+
+:host([explicit]:not([explicit="false"]) [checked] [disabled]) {
+
+  --mds-input-switch-icon-explicit-color: var(--mds-input-switch-icon-color-unchecked);
+}
+
+:host([explicit]:not([explicit="false"]) [disabled]:not([disabled="false"]) [checked]) {
+
+  --mds-input-switch-icon-explicit-color: var(--mds-input-switch-icon-color-unchecked-disabled);
+}

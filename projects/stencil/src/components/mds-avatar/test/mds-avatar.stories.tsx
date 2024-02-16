@@ -38,6 +38,9 @@ export default {
 const Template = args =>
   <mds-avatar {...args} class="w-2400"/>
 
+const TemplateSmall = args =>
+  <mds-avatar {...args} class="w-600"/>
+
 export const Default = Template.bind({})
 Default.args = {
   src: './avatar-06-200x200.jpeg',
@@ -48,6 +51,11 @@ NoImage.args = { }
 
 export const Initials = Template.bind({})
 Initials.args = {
+  initials: 'ts',
+}
+
+export const InitialsSmall = TemplateSmall.bind({})
+InitialsSmall.args = {
   initials: 'ts',
 }
 

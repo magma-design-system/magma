@@ -1,5 +1,7 @@
 import { Component, Element, Event, EventEmitter, Host, h, Prop } from '@stencil/core'
 import { MdsPaginatorEventDetail } from './meta/event-detail'
+import miBaselineArrowBack from '@icon/mi/baseline/arrow-back.svg'
+import miBaselineArrowForward from '@icon/mi/baseline/arrow-forward.svg'
 
 @Component({
   tag: 'mds-paginator',
@@ -67,7 +69,7 @@ export class MdsPaginator {
   render () {
     return (
       <Host>
-        <mds-paginator-item icon="mi/baseline/arrow-back" disabled={this.currentPage === 1} onClick={ev => this.goToPage(this.currentPage - 1, ev.target as HTMLMdsPaginatorItemElement)}/>
+        <mds-paginator-item icon={miBaselineArrowBack} disabled={this.currentPage === 1} onClick={ev => this.goToPage(this.currentPage - 1, ev.target as HTMLMdsPaginatorItemElement)}/>
         { this.pages > 0 && <mds-paginator-item selected={this.currentPage === 1} onClick={ev => this.goToPage(1, ev.target as HTMLMdsPaginatorItemElement)}>1</mds-paginator-item>}
         { this.pages > 2 &&
           <div class="pages">
@@ -75,7 +77,7 @@ export class MdsPaginator {
           </div>
         }
         { this.pages > 1 && <mds-paginator-item selected={this.currentPage === this.pages} onClick={ev => this.goToPage(this.pages, ev.target as HTMLMdsPaginatorItemElement)}>{ this.pages }</mds-paginator-item>}
-        <mds-paginator-item icon="mi/baseline/arrow-forward" disabled={this.currentPage === this.pages} onClick={ev => this.goToPage(this.currentPage + 1, ev.target as HTMLMdsPaginatorItemElement)}/>
+        <mds-paginator-item icon={miBaselineArrowForward} disabled={this.currentPage === this.pages} onClick={ev => this.goToPage(this.currentPage + 1, ev.target as HTMLMdsPaginatorItemElement)}/>
       </Host>
     )
   }

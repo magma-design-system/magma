@@ -67,7 +67,7 @@ export class MdsModal {
     }, 500)
   }
 
-  componentDidLoad = (): void => {
+  componentDidLoad (): void {
     this.km.addElement(this.host, 'host')
     const close = this.host.shadowRoot?.querySelector('.close')
     if (close) this.km.addElement(close as HTMLElement, 'close')

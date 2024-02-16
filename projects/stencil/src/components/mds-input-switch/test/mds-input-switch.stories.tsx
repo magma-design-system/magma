@@ -7,29 +7,33 @@ export default {
   title: 'Form / Switch',
   argTypes: {
     autofocus: {
-      type: { name: 'boolean', required: false },
+      type: { name: 'boolean' },
       description: 'Sets or returns whether a checkbox should automatically get focus when the page loads',
     },
     checked: {
-      type: { name: 'boolean', required: false },
+      type: { name: 'boolean' },
       description: 'Specifies that an <input> element should be pre-selected when the page loads (for type="checkbox" or type="radio")',
     },
     disabled: {
-      type: { name: 'boolean', required: false },
+      type: { name: 'boolean' },
       description: 'Sets or returns whether a checkbox is disabled, or not',
     },
+    explicit: {
+      type: { name: 'boolean' },
+      description: 'Sets if the type switch mode shows explicit icons',
+    },
     icon: {
-      type: { name: 'string', required: false },
+      type: { name: 'string' },
       description: 'The name of the icon set. The icon set is strictly realted to @maggioli-design-system/icons',
       options: iconsDictionary,
       control: { type: 'select' },
     },
     indeterminate: {
-      type: { name: 'boolean', required: false },
+      type: { name: 'boolean' },
       description: 'Sets or returns the indeterminate state of the checkbox',
     },
     name: {
-      type: { name: 'string', required: false },
+      type: { name: 'string' },
       description: 'Specifies the name of an <input> element',
     },
     size: {
@@ -67,8 +71,10 @@ const Template = args =>
 
 const TemplateMultiple = args =>
   <form name="form-name" class="grid grid-cols-1 gap-400">
-    <mds-input-switch {...args} value="1">Accetto</mds-input-switch>
-    <mds-input-switch {...args} value="2">Non accetto</mds-input-switch>
+    <mds-input-switch {...args} value="1">Choice A</mds-input-switch>
+    <mds-input-switch {...args} value="2">Choice B</mds-input-switch>
+    <mds-input-switch {...args} value="2">Choice C</mds-input-switch>
+    <mds-input-switch {...args} value="2">Choice D</mds-input-switch>
   </form>
 
 export const Default = Template.bind({})
@@ -89,5 +95,4 @@ export const Radio = TemplateMultiple.bind({})
 Radio.args = {
   name: 'radio-name',
   type: 'radio',
-  value: '1',
 }

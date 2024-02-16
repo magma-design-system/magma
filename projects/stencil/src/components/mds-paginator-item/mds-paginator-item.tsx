@@ -30,12 +30,12 @@ export class MdsPaginatorItem {
    */
   @Prop({ reflect: true }) readonly disabled?: boolean
 
-  componentDidLoad = (): void => {
+  componentDidLoad (): void {
     this.km.addElement(this.host)
     this.km.attachClickBehavior()
   }
 
-  componentDidUpdate = (): void => {
+  componentDidUpdate (): void {
     if (!this.disabled && !this.selected) {
       this.km.attachClickBehavior()
       return

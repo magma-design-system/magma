@@ -27,18 +27,19 @@ import { MdsFilterItemEventDetail } from "./components/mds-filter-item/meta/even
 import { CharacterSetType, EnctypeType, FormAutocompleteType, FormMethodType } from "./components/mds-form/meta/types";
 import { MenuType } from "./components/mds-header-bar/meta/types";
 import { MdsHeaderEventDetail } from "./components/mds-header/meta/event-detail";
-import { SnapType } from "./components/mds-horizontal-scroll/meta/types";
+import { SnapType, ViewportType } from "./components/mds-horizontal-scroll/meta/types";
 import { CrossoriginType, ReferrerpolicyType } from "./components/mds-img/meta/types";
 import { LoadingType } from "@type/loading";
 import { MdsImgEventDetail } from "./components/mds-img/meta/event-detail";
 import { AutocompleteType } from "@type/autocomplete";
-import { InputControlsIconType, InputControlsLayoutType, InputTextType, InputValueType } from "@type/input";
+import { InputControlsIconType, InputControlsLayoutType, InputTextType } from "@type/input";
 import { MdsInputEventDetail } from "./components/mds-input/meta/event-detail";
 import { InputFieldType } from "./components/mds-input-field/meta/types";
 import { MdsInputEventDetail as MdsInputEventDetail1 } from "@component/mds-input/meta/event-detail";
 import { MdsValidationErrors, MdsValidatorFn } from "./components/mds-input-field/meta/validators";
 import { InputValue } from "@interface/input-value";
 import { InputSwitchSizeType, InputSwitchType } from "./components/mds-input-switch/meta/types";
+import { MdsInputSwitchEventDetail } from "./components/mds-input-switch/meta/event-detail";
 import { AttachmentSort } from "./components/mds-input-upload/meta/types";
 import { ModalPositionType } from "./components/mds-modal/meta/types";
 import { StrategyType } from "./components/mds-notification/meta/types";
@@ -77,18 +78,19 @@ export { MdsFilterItemEventDetail } from "./components/mds-filter-item/meta/even
 export { CharacterSetType, EnctypeType, FormAutocompleteType, FormMethodType } from "./components/mds-form/meta/types";
 export { MenuType } from "./components/mds-header-bar/meta/types";
 export { MdsHeaderEventDetail } from "./components/mds-header/meta/event-detail";
-export { SnapType } from "./components/mds-horizontal-scroll/meta/types";
+export { SnapType, ViewportType } from "./components/mds-horizontal-scroll/meta/types";
 export { CrossoriginType, ReferrerpolicyType } from "./components/mds-img/meta/types";
 export { LoadingType } from "@type/loading";
 export { MdsImgEventDetail } from "./components/mds-img/meta/event-detail";
 export { AutocompleteType } from "@type/autocomplete";
-export { InputControlsIconType, InputControlsLayoutType, InputTextType, InputValueType } from "@type/input";
+export { InputControlsIconType, InputControlsLayoutType, InputTextType } from "@type/input";
 export { MdsInputEventDetail } from "./components/mds-input/meta/event-detail";
 export { InputFieldType } from "./components/mds-input-field/meta/types";
 export { MdsInputEventDetail as MdsInputEventDetail1 } from "@component/mds-input/meta/event-detail";
 export { MdsValidationErrors, MdsValidatorFn } from "./components/mds-input-field/meta/validators";
 export { InputValue } from "@interface/input-value";
 export { InputSwitchSizeType, InputSwitchType } from "./components/mds-input-switch/meta/types";
+export { MdsInputSwitchEventDetail } from "./components/mds-input-switch/meta/event-detail";
 export { AttachmentSort } from "./components/mds-input-upload/meta/types";
 export { ModalPositionType } from "./components/mds-modal/meta/types";
 export { StrategyType } from "./components/mds-notification/meta/types";
@@ -661,6 +663,10 @@ export namespace Components {
     }
     interface MdsHorizontalScroll {
         /**
+          * Specifies the viewport which will display navigation controls
+         */
+        "controls"?: ViewportType;
+        /**
           * Specifies the box’s snap position as an alignment of its snap area
          */
         "scrollbar"?: boolean;
@@ -733,6 +739,10 @@ export namespace Components {
           * Specifies that the element should automatically get focus when the page loads
          */
         "autofocus": boolean;
+        /**
+          * Specifies if the spinner icon is shown, replacing the icon if present
+         */
+        "await": boolean;
         /**
           * Specifies the label for control button decrease for component when type is number
          */
@@ -852,6 +862,10 @@ export namespace Components {
           * Specifies that the element should automatically get focus when the page loads
          */
         "autofocus": boolean;
+        /**
+          * Specifies if the spinner icon is shown, replacing the icon if present
+         */
+        "await": boolean;
         /**
           * Specifies the icon type of the counter button when the input type is set to `number`
          */
@@ -1009,6 +1023,10 @@ export namespace Components {
          */
         "disabled"?: boolean;
         /**
+          * Sets if the type switch mode shows explicit icons
+         */
+        "explicit"?: boolean;
+        /**
           * The checked icon displayed
          */
         "icon": string;
@@ -1035,17 +1053,11 @@ export namespace Components {
         /**
           * Specifies the value of the input element
          */
-        "value"?: InputValueType;
+        "value"?: string;
         /**
           * Specifies the variant for `typography`
          */
         "variant"?: TypographyVariants;
-    }
-    interface MdsInputSwitchGroup {
-        /**
-          * Specifies the name of the group
-         */
-        "name": string;
     }
     interface MdsInputUpload {
         /**
@@ -2169,7 +2181,7 @@ declare global {
         new (): HTMLMdsInputSelectElement;
     };
     interface HTMLMdsInputSwitchElementEventMap {
-        "mdsInputSwitchChange": { name: string, value: InputValueType };
+        "mdsInputSwitchChange": MdsInputSwitchEventDetail;
     }
     interface HTMLMdsInputSwitchElement extends Components.MdsInputSwitch, HTMLStencilElement {
         addEventListener<K extends keyof HTMLMdsInputSwitchElementEventMap>(type: K, listener: (this: HTMLMdsInputSwitchElement, ev: MdsInputSwitchCustomEvent<HTMLMdsInputSwitchElementEventMap[K]>) => any, options?: boolean | AddEventListenerOptions): void;
@@ -2184,12 +2196,6 @@ declare global {
     var HTMLMdsInputSwitchElement: {
         prototype: HTMLMdsInputSwitchElement;
         new (): HTMLMdsInputSwitchElement;
-    };
-    interface HTMLMdsInputSwitchGroupElement extends Components.MdsInputSwitchGroup, HTMLStencilElement {
-    }
-    var HTMLMdsInputSwitchGroupElement: {
-        prototype: HTMLMdsInputSwitchGroupElement;
-        new (): HTMLMdsInputSwitchGroupElement;
     };
     interface HTMLMdsInputUploadElement extends Components.MdsInputUpload, HTMLStencilElement {
     }
@@ -2632,7 +2638,6 @@ declare global {
         "mds-input-range": HTMLMdsInputRangeElement;
         "mds-input-select": HTMLMdsInputSelectElement;
         "mds-input-switch": HTMLMdsInputSwitchElement;
-        "mds-input-switch-group": HTMLMdsInputSwitchGroupElement;
         "mds-input-upload": HTMLMdsInputUploadElement;
         "mds-kpi": HTMLMdsKpiElement;
         "mds-kpi-item": HTMLMdsKpiItemElement;
@@ -3330,6 +3335,10 @@ declare namespace LocalJSX {
     }
     interface MdsHorizontalScroll {
         /**
+          * Specifies the viewport which will display navigation controls
+         */
+        "controls"?: ViewportType;
+        /**
           * Specifies the box’s snap position as an alignment of its snap area
          */
         "scrollbar"?: boolean;
@@ -3405,6 +3414,10 @@ declare namespace LocalJSX {
           * Specifies that the element should automatically get focus when the page loads
          */
         "autofocus"?: boolean;
+        /**
+          * Specifies if the spinner icon is shown, replacing the icon if present
+         */
+        "await"?: boolean;
         /**
           * Specifies the label for control button decrease for component when type is number
          */
@@ -3531,6 +3544,10 @@ declare namespace LocalJSX {
           * Specifies that the element should automatically get focus when the page loads
          */
         "autofocus"?: boolean;
+        /**
+          * Specifies if the spinner icon is shown, replacing the icon if present
+         */
+        "await"?: boolean;
         /**
           * Specifies the icon type of the counter button when the input type is set to `number`
          */
@@ -3702,6 +3719,10 @@ declare namespace LocalJSX {
          */
         "disabled"?: boolean;
         /**
+          * Sets if the type switch mode shows explicit icons
+         */
+        "explicit"?: boolean;
+        /**
           * The checked icon displayed
          */
         "icon"?: string;
@@ -3716,7 +3737,7 @@ declare namespace LocalJSX {
         /**
           * Emits when the value changes
          */
-        "onMdsInputSwitchChange"?: (event: MdsInputSwitchCustomEvent<{ name: string, value: InputValueType }>) => void;
+        "onMdsInputSwitchChange"?: (event: MdsInputSwitchCustomEvent<MdsInputSwitchEventDetail>) => void;
         /**
           * Specifies the size for the switch toggle, it works only if attribute 'type' is set to 'switch'
          */
@@ -3732,17 +3753,11 @@ declare namespace LocalJSX {
         /**
           * Specifies the value of the input element
          */
-        "value"?: InputValueType;
+        "value"?: string;
         /**
           * Specifies the variant for `typography`
          */
         "variant"?: TypographyVariants;
-    }
-    interface MdsInputSwitchGroup {
-        /**
-          * Specifies the name of the group
-         */
-        "name"?: string;
     }
     interface MdsInputUpload {
         /**
@@ -4337,7 +4352,6 @@ declare namespace LocalJSX {
         "mds-input-range": MdsInputRange;
         "mds-input-select": MdsInputSelect;
         "mds-input-switch": MdsInputSwitch;
-        "mds-input-switch-group": MdsInputSwitchGroup;
         "mds-input-upload": MdsInputUpload;
         "mds-kpi": MdsKpi;
         "mds-kpi-item": MdsKpiItem;
@@ -4426,7 +4440,6 @@ declare module "@stencil/core" {
             "mds-input-range": LocalJSX.MdsInputRange & JSXBase.HTMLAttributes<HTMLMdsInputRangeElement>;
             "mds-input-select": LocalJSX.MdsInputSelect & JSXBase.HTMLAttributes<HTMLMdsInputSelectElement>;
             "mds-input-switch": LocalJSX.MdsInputSwitch & JSXBase.HTMLAttributes<HTMLMdsInputSwitchElement>;
-            "mds-input-switch-group": LocalJSX.MdsInputSwitchGroup & JSXBase.HTMLAttributes<HTMLMdsInputSwitchGroupElement>;
             "mds-input-upload": LocalJSX.MdsInputUpload & JSXBase.HTMLAttributes<HTMLMdsInputUploadElement>;
             "mds-kpi": LocalJSX.MdsKpi & JSXBase.HTMLAttributes<HTMLMdsKpiElement>;
             "mds-kpi-item": LocalJSX.MdsKpiItem & JSXBase.HTMLAttributes<HTMLMdsKpiItemElement>;

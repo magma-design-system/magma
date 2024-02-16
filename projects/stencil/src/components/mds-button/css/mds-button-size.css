@@ -1,10 +1,12 @@
 :host( [size="sm"] ) {
   @apply
-    h-700
     px-300
     py-0;
 
   --mds-button-radius: theme('borderRadius.md');
+
+  min-height: theme('size.700');
+  min-width: theme('size.700');
 }
 
 :host( .no-text[size="sm"] ) {
@@ -21,9 +23,11 @@
 
 :host( [size="md"] ) {
   @apply
-    h-900
     px-300
     py-100;
+
+  min-height: theme('size.900');
+  min-width: theme('size.900');
 }
 
 :host( .no-text[size="md"] ) {
@@ -32,9 +36,11 @@
 
 :host( [size="lg"] ) {
   @apply
-    h-1100
     px-600
     py-200;
+
+  min-height: theme('size.1100');
+  min-width: theme('size.1100');
 }
 
 :host( .no-text[size="lg"] ) {
@@ -43,9 +49,11 @@
 
 :host( [size="xl"] ) {
   @apply
-    h-1300
     px-800
     py-200;
+
+  min-height: theme('size.1300');
+  min-width: theme('size.1300');
 }
 
 :host( .no-text[size="xl"] ) {

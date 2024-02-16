@@ -115,14 +115,12 @@ This is a web-component from Maggioli Design System [Magma](https://magma.maggio
 
 ### Depends on
 
-- [mds-text](../mds-text)
 - [mds-img](../mds-img)
 - [mds-icon](../mds-icon)
 
 ### Graph
 ```mermaid
 graph TD;
-  mds-avatar --> mds-text
   mds-avatar --> mds-img
   mds-avatar --> mds-icon
   mds-entity --> mds-avatar

@@ -1,7 +1,7 @@
 {
-  "name": "@maggioli-design-system/mds-price-table-features-cell",
-  "version": "1.4.1",
-  "description": "mds-price-table-features-cell is a web-component from Magma Design System, built with StencilJS, TypeScript, Storybook. It's based on the web-component standard and it's designed to be agnostic from the JavaScirpt framework you are using.",
+  "name": "@maggioli-design-system/mds-input-switch",
+  "version": "1.0.0",
+  "description": "mds-input-switch is a web-component from Magma Design System, built with StencilJS, TypeScript, Storybook. It's based on the web-component standard and it's designed to be agnostic from the JavaScirpt framework you are using.",
   "main": "dist/index.cjs.js",
   "module": "dist/index.js",
   "es2015": "dist/esm/index.mjs",
@@ -9,7 +9,7 @@
   "types": "dist/types/components.d.ts",
   "collection": "dist/collection/collection-manifest.json",
   "collection:main": "dist/collection/index.js",
-  "unpkg": "dist/mds-price-table-features-cell/mds-price-table-features-cell.esm.js",
+  "unpkg": "dist/mds-input-switch/mds-input-switch.esm.js",
   "files": [
     "dist/",
     "documentation.json",
@@ -24,8 +24,7 @@
     "test": "stencil test --spec --e2e"
   },
   "dependencies": {
-    "@maggioli-design-system/mds-text": "4.3.3",
-    "@maggioli-design-system/styles": "14.2.1",
+    "@maggioli-design-system/styles": "14.2.2",
     "@stencil/core": "4.10.0"
   },
   "license": "MIT",
@@ -35,16 +34,6 @@
     "url": "https://vitto.github.io/vit.to/"
   },
   "contributors": [
-    {
-      "name": "Andrea Pruccoli",
-      "email": "andrea.pruccoli@maggioli.it",
-      "role": "Software Engineer"
-    },
-    {
-      "name": "Daniele Tardia",
-      "email": "daniele.tardia@hibo.it",
-      "role": "Senior Developer"
-    },
     {
       "name": "Nicola Tamburini",
       "email": "nicola.tamburini@maggioli.it",

@@ -42,7 +42,7 @@ export class MdsFilterItem {
    */
   @Event({ eventName: 'mdsFilterItemSelect' }) selectedEvent: EventEmitter<MdsFilterItemEventDetail>
 
-  componentDidLoad = (): void => {
+  componentDidLoad (): void {
     this.km.addElement(this.element)
     this.km.attachClickBehavior()
   }

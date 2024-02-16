@@ -93,7 +93,7 @@ export class MdsFilePreview {
     this.downloadedEvent.emit({ target: this.host, filename: this.filename, extension: getSuffix(this.filename, this.suffix) })
   }
 
-  componentDidLoad = (): void => {
+  componentDidLoad (): void {
     this.handleDownloadable(this.downloadable)
   }
 

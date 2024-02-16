@@ -27,12 +27,14 @@ This is a web-component from Maggioli Design System [Magma](https://magma.maggio
 
  - [mds-button](../mds-button)
  - [mds-entity](../mds-entity)
+ - [mds-input](../mds-input)
 
 ### Graph
 ```mermaid
 graph TD;
   mds-button --> mds-spinner
   mds-entity --> mds-spinner
+  mds-input --> mds-spinner
   style mds-spinner fill:#f9f,stroke:#333,stroke-width:4px
 ```
 

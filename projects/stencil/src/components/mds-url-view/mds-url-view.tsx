@@ -44,7 +44,7 @@ export class MdsUrlView {
     this.closeEvent.emit()
   }
 
-  componentDidLoad = (): void => {
+  componentDidLoad (): void {
     const close = this.host.shadowRoot?.querySelector('.close') as HTMLElement
     this.km.addElement(close)
     this.km.attachClickBehavior()
