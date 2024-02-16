@@ -96,6 +96,16 @@ This is a web-component from Maggioli Design System [Magma](https://magma.maggio
 | `"wrapper"` |             |
 
 
+## CSS Custom Properties
+
+| Name                                    | Description                                   |
+| --------------------------------------- | --------------------------------------------- |
+| `--mds-avatar-background-color`         | The background-color of the component         |
+| `--mds-avatar-background-color-pending` | The background-color when an image is loading |
+| `--mds-avatar-color`                    | The color of the placeholder icon             |
+| `--mds-avatar-radius`                   | The border-radius of the element              |
+
+
 ## Dependencies
 
 ### Used by
