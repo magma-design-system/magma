@@ -27,7 +27,7 @@ import { MdsFilterItemEventDetail } from "./components/mds-filter-item/meta/even
 import { CharacterSetType, EnctypeType, FormAutocompleteType, FormMethodType } from "./components/mds-form/meta/types";
 import { MenuType } from "./components/mds-header-bar/meta/types";
 import { MdsHeaderEventDetail } from "./components/mds-header/meta/event-detail";
-import { SnapType } from "./components/mds-horizontal-scroll/meta/types";
+import { SnapType, ViewportType } from "./components/mds-horizontal-scroll/meta/types";
 import { CrossoriginType, ReferrerpolicyType } from "./components/mds-img/meta/types";
 import { LoadingType } from "@type/loading";
 import { MdsImgEventDetail } from "./components/mds-img/meta/event-detail";
@@ -78,7 +78,7 @@ export { MdsFilterItemEventDetail } from "./components/mds-filter-item/meta/even
 export { CharacterSetType, EnctypeType, FormAutocompleteType, FormMethodType } from "./components/mds-form/meta/types";
 export { MenuType } from "./components/mds-header-bar/meta/types";
 export { MdsHeaderEventDetail } from "./components/mds-header/meta/event-detail";
-export { SnapType } from "./components/mds-horizontal-scroll/meta/types";
+export { SnapType, ViewportType } from "./components/mds-horizontal-scroll/meta/types";
 export { CrossoriginType, ReferrerpolicyType } from "./components/mds-img/meta/types";
 export { LoadingType } from "@type/loading";
 export { MdsImgEventDetail } from "./components/mds-img/meta/event-detail";
@@ -662,6 +662,10 @@ export namespace Components {
         "placement"?: FloatingUIPlacement;
     }
     interface MdsHorizontalScroll {
+        /**
+          * Specifies the viewport which will display navigation controls
+         */
+        "controls"?: ViewportType;
         /**
           * Specifies the box’s snap position as an alignment of its snap area
          */
@@ -3330,6 +3334,10 @@ declare namespace LocalJSX {
         "placement"?: FloatingUIPlacement;
     }
     interface MdsHorizontalScroll {
+        /**
+          * Specifies the viewport which will display navigation controls
+         */
+        "controls"?: ViewportType;
         /**
           * Specifies the box’s snap position as an alignment of its snap area
          */
