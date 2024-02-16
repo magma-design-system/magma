@@ -9,10 +9,11 @@ This is a web-component from Maggioli Design System [Magma](https://magma.maggio
 
 ## Properties
 
-| Property    | Attribute   | Description                                                        | Type                                                  | Default     |
-| ----------- | ----------- | ------------------------------------------------------------------ | ----------------------------------------------------- | ----------- |
-| `scrollbar` | `scrollbar` | Specifies the box’s snap position as an alignment of its snap area | `boolean \| undefined`                                | `undefined` |
-| `snap`      | `snap`      | Specifies the box’s snap position as an alignment of its snap area | `"center" \| "end" \| "none" \| "start" \| undefined` | `'start'`   |
+| Property    | Attribute   | Description                                                        | Type                                                                                             | Default     |
+| ----------- | ----------- | ------------------------------------------------------------------ | ------------------------------------------------------------------------------------------------ | ----------- |
+| `controls`  | `controls`  | Specifies the viewport which will display navigation controls      | `"all" \| "desktop" \| "large" \| "none" \| "tablet" \| "tv" \| "wide" \| "xlarge" \| undefined` | `'desktop'` |
+| `scrollbar` | `scrollbar` | Specifies the box’s snap position as an alignment of its snap area | `boolean \| undefined`                                                                           | `undefined` |
+| `snap`      | `snap`      | Specifies the box’s snap position as an alignment of its snap area | `"center" \| "end" \| "none" \| "start" \| undefined`                                            | `'center'`  |
 
 
 ## Slots
@@ -22,17 +23,28 @@ This is a web-component from Maggioli Design System [Magma](https://magma.maggio
 | `"default"` | Add `text string`, `HTML elements` or `components` to this slot. |
 
 
-## CSS Custom Properties
+## Shadow Parts
 
-| Name                                                 | Description                                                              |
-| ---------------------------------------------------- | ------------------------------------------------------------------------ |
-| `--mds-horizontal-scroll-background`                 | Sets the background-color of the component                               |
-| `--mds-horizontal-scroll-scrollbar-margin`           | Sets the margin of the browser scroll bar (if supported)                 |
-| `--mds-horizontal-scroll-scrollbar-radius`           | Sets the border-radius of the browser scroll bar (if supported)          |
-| `--mds-horizontal-scroll-scrollbar-size`             | Sets the height and width of the browser scroll bar (if supported)       |
-| `--mds-horizontal-scroll-scrollbar-thumb-background` | Sets the background-color of the browser scroll bar thumb (if supported) |
-| `--mds-horizontal-scroll-scrollbar-track-background` | Sets the background-color of the browser scroll bar track (if supported) |
+| Part        | Description |
+| ----------- | ----------- |
+| `"content"` |             |
 
+
+## Dependencies
+
+### Depends on
+
+- [mds-button](../mds-button)
+
+### Graph
+```mermaid
+graph TD;
+  mds-horizontal-scroll --> mds-button
+  mds-button --> mds-spinner
+  mds-button --> mds-icon
+  mds-button --> mds-text
+  style mds-horizontal-scroll fill:#f9f,stroke:#333,stroke-width:4px
+```
 
 ----------------------------------------------
 

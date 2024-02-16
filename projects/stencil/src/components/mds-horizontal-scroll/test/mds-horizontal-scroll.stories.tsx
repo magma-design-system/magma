@@ -1,9 +1,15 @@
 import { h } from '@stencil/core'
-import { snapDictionary } from '../meta/dictionary'
+import { snapDictionary, viewportDictionary } from '../meta/dictionary'
 
 export default {
   title: 'Layout / Horizontal Scroll',
   argTypes: {
+    controls: {
+      type: { name: 'string' },
+      description: 'Specifies the viewport which will display navigation controls',
+      options: viewportDictionary,
+      control: { type: 'select' },
+    },
     scrollbar: {
       description: 'Specifies if the scrollbar is visible or not',
       type: { name: 'boolean' },
@@ -17,17 +23,27 @@ export default {
   },
 }
 
+const CardTemplate = () =>
+  <div class="bg-tone-neutral rounded-lg shadow-sharp gap-0 grid min-w-8000 overflow-hidden">
+    <mds-img src="https://placehold.co/600x400"></mds-img>
+    <div class="grid gap-100 p-400">
+      <mds-text typography="h5">This is a card title</mds-text>
+      <mds-text truncate="all">Lorem ipsum dolor, sit amet consectetur adipisicing elit. Laborum dolores aut, qui omnis, quisquam totam neque, perspiciatis at enim blanditiis beatae. Modi, qui veritatis dignissimos totam corporis molestias distinctio numquam?</mds-text>
+    </div>
+  </div>
+
 const Template = args =>
   <mds-horizontal-scroll {...args}>
-    <mds-button>First blood</mds-button>
-    <mds-button>Second impact</mds-button>
-    <mds-button>The third reich</mds-button>
-    <mds-button>Four rooms</mds-button>
-    <mds-button>The fifth element</mds-button>
-    <mds-button>The sixth sense</mds-button>
-    <mds-button>Seven psychopaths</mds-button>
-    <mds-button>The hateful eight</mds-button>
-    <mds-button>The ninth gate</mds-button>
+    <CardTemplate/>
+    <CardTemplate/>
+    <CardTemplate/>
+    <CardTemplate/>
+    <CardTemplate/>
+    <CardTemplate/>
+    <CardTemplate/>
+    <CardTemplate/>
+    <CardTemplate/>
+    <CardTemplate/>
   </mds-horizontal-scroll>
 
 export const Default = Template.bind({})
