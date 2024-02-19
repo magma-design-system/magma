@@ -84,6 +84,68 @@ Default.args = {
   value: '1',
 }
 
+export const Checked = Template.bind({})
+Checked.args = {
+  checked: true,
+  name: 'input-name',
+  type: 'switch',
+  value: '1',
+}
+
+export const Disabled = Template.bind({})
+Disabled.args = {
+  checked: true,
+  disabled: true,
+  name: 'input-name',
+  type: 'switch',
+  value: '1',
+}
+
+export const Explicit = Template.bind({})
+Explicit.args = {
+  explicit: true,
+  name: 'input-name',
+  type: 'switch',
+  value: '1',
+}
+
+export const Icon = Template.bind({})
+Icon.args = {
+  name: 'input-name',
+  checked: true,
+  icon: 'mi/baseline/check-circle',
+  type: 'checkbox',
+  value: '1',
+}
+
+export const Indeterminate = Template.bind({})
+Indeterminate.args = {
+  name: 'input-name',
+  checked: true,
+  indeterminate: true,
+  type: 'checkbox',
+  value: '1',
+}
+
+export const Size = Template.bind({})
+Size.args = {
+  checked: true,
+  size: inputSwitchSizeDictionary[0],
+  name: 'input-name',
+  type: 'switch',
+  value: '1',
+}
+
+export const Typography = Template.bind({})
+Typography.args = {
+  checked: true,
+  size: inputSwitchSizeDictionary[0],
+  typography: 'caption',
+  name: 'input-name',
+  type: 'switch',
+  value: '1',
+}
+
 export const Checkbox = Template.bind({})
 Checkbox.args = {
   name: 'checkbox-name',

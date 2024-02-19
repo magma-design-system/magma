@@ -1,3 +1,9 @@
+import miBaselineCheckbox from '@icon/mi/baseline/check-box.svg'
+import miBaselineIndeterminateCheckbox from '@icon/mi/baseline/indeterminate-check-box.svg'
+import miBaselineCheckboxOutlineBlank from '@icon/mi/baseline/check-box-outline-blank.svg'
+import miBaselineRadioButtonChecked from '@icon/mi/baseline/radio-button-checked.svg'
+import miBaselineRadioButtonUnchecked from '@icon/mi/baseline/radio-button-unchecked.svg'
+
 const inputSwitchIconVariant = {
   switch: {
     iconChecked: '',
@@ -5,14 +11,14 @@ const inputSwitchIconVariant = {
     iconUnchecked: '',
   },
   checkbox: {
-    iconChecked: 'mi/baseline/check-box',
-    iconIndeterminate: 'mi/baseline/indeterminate-check-box',
-    iconUnchecked: 'mi/baseline/check-box-outline-blank',
+    iconChecked: miBaselineCheckbox,
+    iconIndeterminate: miBaselineIndeterminateCheckbox,
+    iconUnchecked: miBaselineCheckboxOutlineBlank,
   },
   radio: {
-    iconChecked: 'mi/baseline/radio-button-checked',
+    iconChecked: miBaselineRadioButtonChecked,
     iconIndeterminate: '',
-    iconUnchecked: 'mi/baseline/radio-button-unchecked',
+    iconUnchecked: miBaselineRadioButtonUnchecked,
   },
 }
 

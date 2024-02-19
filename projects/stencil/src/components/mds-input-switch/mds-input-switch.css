@@ -85,10 +85,13 @@
 }
 
 .label-text {
-  align-items: center;
-  align-self: center;
   cursor: pointer;
   display: flex;
+}
+
+:host([type="switch"]) .label-text {
+  align-items: center;
+  align-self: center;
 }
 
 .icon-explicit {
