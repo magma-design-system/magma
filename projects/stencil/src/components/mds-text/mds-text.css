@@ -24,6 +24,7 @@
 }
 
 .text {
+  cursor: inherit;
   display: inherit;
 }
 
