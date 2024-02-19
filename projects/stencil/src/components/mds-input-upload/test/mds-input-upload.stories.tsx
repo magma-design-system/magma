@@ -1,16 +1,9 @@
 import { h } from '@stencil/core'
-import { iconsDictionary } from '@dictionary/icon'
 import { attachmentSortDictionary } from '../meta/dictionary'
 
 export default {
   title: 'Form / Input Upload',
   argTypes: {
-    icon: {
-      type: { name: 'string' },
-      description: 'Specifies the icon to be displayed if src propery is not used',
-      options: iconsDictionary,
-      control: { type: 'select' },
-    },
     accept: {
       type: { name: 'string' },
       description: 'Defines the file types the file input should accept',
@@ -22,10 +15,6 @@ export default {
     'max-files': {
       type: { name: 'number' },
       description: 'Specifies the max number of files that can be uploaded',
-    },
-    multiple: {
-      type: { name: 'boolean' },
-      description: 'Specifies if its possible to upload multiple file',
     },
     sort: {
       type: { name: 'string' },

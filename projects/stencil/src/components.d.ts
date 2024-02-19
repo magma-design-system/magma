@@ -3879,7 +3879,7 @@ declare namespace LocalJSX {
         /**
           * Specifies the id of the caller element.
          */
-        "target": string;
+        "target"?: string;
         /**
           * Specifies number of notifications to display, if it set to 0, the element will be hidden
          */
