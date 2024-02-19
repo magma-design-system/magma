@@ -30,7 +30,7 @@ export class MdsHorizontalScroll {
   /**
    * Specifies the box’s snap position as an alignment of its snap area
    */
-  @Prop({ reflect: true }) readonly snap?: SnapType = 'center'
+  @Prop({ reflect: true }) readonly snap?: SnapType = 'start'
 
   /**
    * Specifies the box’s snap position as an alignment of its snap area
@@ -84,7 +84,7 @@ export class MdsHorizontalScroll {
     let elLastInViewport: HTMLElement | undefined
 
     this.elements.forEach((element: HTMLElement, index: number) => {
-      element.style.backgroundColor = 'white'
+      // element.style.backgroundColor = 'white'
       if (this.isInViewport(element)) {
         if (!elFirstInViewport) {
           firstIndex = index
@@ -123,14 +123,9 @@ export class MdsHorizontalScroll {
     })
   }
 
-  private checkScroll = (): void => {
-    console.info(this.contents.scrollLeft)
-  }
-
   componentDidLoad (): void {
     this.contents = this.host.shadowRoot?.querySelector('.contents') as HTMLElement
     this.contents.addEventListener('scrollend', this.checkNavigationButtons)
-    this.contents.addEventListener('scroll', this.checkScroll)
   }
 
   disconnectedCallback (): void {
