@@ -6,10 +6,11 @@
   align-items: center;
   container-name: mds-author;
   container-type: inline-size;
-  display: inline-flex;
+  display: flex;
 }
 
 .avatar {
+  display: flex;
   flex-shrink: 0;
   user-select: none;
 }
