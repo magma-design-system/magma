@@ -7,10 +7,10 @@ enum Status {
   SUCCESS
 }
 
-enum AttachmentSort {
-  status = 'status',
-  date = 'date',
-}
+type AttachmentSort =
+  'status' |
+  'date'
+
 interface FileStatus {
   key: string,
   file: File,

@@ -15,20 +15,12 @@ import { MdsTabEventDetail } from '@component/mds-tab/meta/event-detail'
   shadow: true,
 })
 export class MdsInputUpload {
-
   private mainActionTitle = {
     default: 'Clicca o trascina qui per selezionare i file da caricare',
     uploading: 'Caricamento in corso...',
     dragEnter: 'Rilascia qui per iniziare il caricamento',
     end: 'Caricamento completato',
   }
-
-  @Element() private host: HTMLMdsInputUploadElement
-  @AttachInternals() internals: ElementInternals
-  @State() actionTitle: string = this.mainActionTitle.default
-  @State() files: FileStatus[] = []
-  @State() progress = 0
-
   private nativeInput?: HTMLInputElement
   private elDragArea?: HTMLElement
   private extensions: string
@@ -36,6 +28,12 @@ export class MdsInputUpload {
   private cssMinCols: number = 1000
   private id: number = 0
   private userSort: AttachmentSort
+
+  @Element() private host: HTMLMdsInputUploadElement
+  @AttachInternals() internals: ElementInternals
+  @State() actionTitle: string = this.mainActionTitle.default
+  @State() files: FileStatus[] = []
+  @State() progress = 0
 
   /**
    * Defines the file types the file input should accept
@@ -59,7 +57,7 @@ export class MdsInputUpload {
 
   componentWillLoad (): void {
     this.extensions = this.getExtension()
-    this.userSort = AttachmentSort[localStorage.getItem(LOCALSTORAGE_KEY_USER_SORT) ?? AttachmentSort.date]
+    this.userSort = localStorage.getItem(LOCALSTORAGE_KEY_USER_SORT) as AttachmentSort ?? 'date'
   }
 
   componentDidLoad (): void {
@@ -138,8 +136,8 @@ export class MdsInputUpload {
 
   private onChangeTab = (event: MdsTabEventDetail): void => {
     if (event.value) {
-      this.sortFiles(this.files, AttachmentSort[event.value])
-      this.userSort = AttachmentSort[event.value]
+      this.sortFiles(this.files, event.value as AttachmentSort)
+      this.userSort = event.value as AttachmentSort
       localStorage.setItem(LOCALSTORAGE_KEY_USER_SORT, this.userSort)
     }
   }
@@ -210,10 +208,10 @@ export class MdsInputUpload {
    * @param sort type of sorting
    */
   private sortFiles (files: FileStatus[], sort: AttachmentSort): void {
-    if (sort === AttachmentSort.date) {
+    if (sort === 'date') {
       this.files = files.slice().sort(this.sortById)
     }
-    if (sort === AttachmentSort.status){
+    if (sort === 'status'){
       this.files = files.slice().sort(this.sortByStatusAndName)
     }
   }
@@ -293,8 +291,8 @@ export class MdsInputUpload {
           </div>
           {!this.sort ?
             <mds-tab class="action-sort" onMdsTabChange={event => this.onChangeTab(event.detail)} >
-              <mds-tab-item icon={iconSortById} selected={this.userSort === 'date'} title="Ordine per data di aggiunta" value={AttachmentSort.date}></mds-tab-item>
-              <mds-tab-item icon={iconSortByStatus} selected={this.userSort === 'status'} title="Raggruppa per stato" value={AttachmentSort.status}></mds-tab-item>
+              <mds-tab-item icon={iconSortById} selected={this.userSort === 'date'} title="Ordine per data di aggiunta" value='date'></mds-tab-item>
+              <mds-tab-item icon={iconSortByStatus} selected={this.userSort === 'status'} title="Raggruppa per stato" value='status'></mds-tab-item>
             </mds-tab>
             : ''
           }

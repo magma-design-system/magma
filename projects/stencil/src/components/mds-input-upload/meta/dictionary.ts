@@ -1,7 +1,6 @@
 const attachmentSortDictionary = [
-  'alphanumeric',
   'date',
-  'manual',
+  'status',
 ]
 
 export {
