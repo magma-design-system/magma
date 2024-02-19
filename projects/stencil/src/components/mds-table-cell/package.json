@@ -1,6 +1,6 @@
 {
   "name": "@maggioli-design-system/mds-table-cell",
-  "version": "4.5.0",
+  "version": "4.5.1",
   "description": "mds-table-cell is a web-component from Magma Design System, built with StencilJS, TypeScript, Storybook. It's based on the web-component standard and it's designed to be agnostic from the JavaScirpt framework you are using.",
   "main": "dist/index.cjs.js",
   "module": "dist/index.js",
@@ -23,7 +23,7 @@
     "prepublishOnly": "npm run build"
   },
   "dependencies": {
-    "@maggioli-design-system/styles": "14.2.1",
+    "@maggioli-design-system/styles": "14.2.2",
     "@stencil/core": "4.10.0"
   },
   "license": "MIT",

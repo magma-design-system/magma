@@ -1,6 +1,6 @@
 {
   "name": "@maggioli-design-system/mds-avatar",
-  "version": "3.10.2",
+  "version": "3.10.3",
   "description": "mds-avatar is a web-component from Magma Design System, built with StencilJS, TypeScript, Storybook. It's based on the web-component standard and it's designed to be agnostic from the JavaScirpt framework you are using.",
   "main": "dist/index.cjs.js",
   "module": "dist/index.js",
@@ -26,7 +26,7 @@
   "dependencies": {
     "@maggioli-design-system/mds-icon": "2.10.1",
     "@maggioli-design-system/mds-img": "2.7.0",
-    "@maggioli-design-system/styles": "14.2.1",
+    "@maggioli-design-system/styles": "14.2.2",
     "@stencil/core": "4.10.0",
     "clsx": "2.1.0",
     "fitty": "2.4.2"
