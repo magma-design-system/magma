@@ -92,27 +92,13 @@ This is a web-component from Maggioli Design System [Magma](https://magma.maggio
 
 ## Properties
 
-| Property              | Attribute  | Description                                                                                                                                        | Type                                  | Default     |
-| --------------------- | ---------- | -------------------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------- | ----------- |
-| `max`                 | `max`      | Specifies the maximum number that can be seen, assuming that the number is for example 9 and that this is exceeded with 15, the component shows +9 | `number \| undefined`                 | `undefined` |
-| `strategy`            | `strategy` | Specifies the position strategy of the notification                                                                                                | `"absolute" \| "disabled" \| "fixed"` | `'fixed'`   |
-| `target` _(required)_ | `target`   | Specifies the id of the caller element.                                                                                                            | `string`                              | `undefined` |
-| `value`               | `value`    | Specifies number of notifications to display, if it set to 0, the element will be hidden                                                           | `number`                              | `0`         |
-| `visible`             | `visible`  | Specifies if the notification is visible                                                                                                           | `boolean`                             | `true`      |
-
-
-## CSS Custom Properties
-
-| Name                                    | Description                                           |
-| --------------------------------------- | ----------------------------------------------------- |
-| `--mds-notification-color`              | Sets the text color of the component                  |
-| `--mds-notification-dot-background`     | Sets the background-color of the component            |
-| `--mds-notification-dot-padding`        | Sets the size of the component                        |
-| `--mds-notification-ring-color`         | Sets the border color of ring around the notification |
-| `--mds-notification-ring-size`          | Sets the border size of ring around the notification  |
-| `--mds-notification-size`               | Sets the size of the component                        |
-| `--mds-notification-translate-offset-x` | Sets offset x positioning of the notification         |
-| `--mds-notification-translate-offset-y` | Sets offset y positioning of the notification         |
+| Property   | Attribute  | Description                                                                                                                                        | Type                                  | Default     |
+| ---------- | ---------- | -------------------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------- | ----------- |
+| `max`      | `max`      | Specifies the maximum number that can be seen, assuming that the number is for example 9 and that this is exceeded with 15, the component shows +9 | `number \| undefined`                 | `undefined` |
+| `strategy` | `strategy` | Specifies the position strategy of the notification                                                                                                | `"absolute" \| "disabled" \| "fixed"` | `'fixed'`   |
+| `target`   | `target`   | Specifies the id of the caller element.                                                                                                            | `string`                              | `undefined` |
+| `value`    | `value`    | Specifies number of notifications to display, if it set to 0, the element will be hidden                                                           | `number`                              | `0`         |
+| `visible`  | `visible`  | Specifies if the notification is visible                                                                                                           | `boolean`                             | `true`      |
 
 
 ## Dependencies

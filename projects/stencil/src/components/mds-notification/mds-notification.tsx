@@ -17,7 +17,7 @@ export class MdsNotification {
   /**
    * Specifies the id of the caller element.
    */
-  @Prop() readonly target!: string
+  @Prop() readonly target: string
 
   /**
    * Specifies number of notifications to display, if it set to 0, the element will be hidden
@@ -32,7 +32,7 @@ export class MdsNotification {
   /**
    * Specifies the position strategy of the notification
    */
-  @Prop({ reflect: true }) strategy: StrategyType = 'fixed'
+  @Prop({ mutable: true, reflect: true }) strategy: StrategyType = 'fixed'
 
   /**
    * Specifies the maximum number that can be seen, assuming that the number is for example 9 and that this is exceeded with 15, the component shows +9
@@ -72,6 +72,10 @@ export class MdsNotification {
   }
 
   componentDidRender (): void {
+    if (!this.target) {
+      this.strategy = 'disabled'
+      return
+    }
     const c = document.getElementById(this.target)
     if (!c) throw new Error('No valid target found')
     this.caller = c
@@ -82,7 +86,7 @@ export class MdsNotification {
       return
     }
 
-    if (!this.cleanupAutoUpdate) {
+    if (this.target && !this.cleanupAutoUpdate) {
       setTimeout(() => {
         this.cleanupAutoUpdate = autoUpdate(this.caller, this.host, this.updatePosition)
       }, 100)
@@ -90,13 +94,13 @@ export class MdsNotification {
   }
 
   disconnectedCallback (): void {
-    this.cleanupAutoUpdate = () => {return}
+    this.cleanupAutoUpdate = (): void => {}
   }
 
   @Watch('strategy')
-  strategyHandler (newValue: string): void {
-    if (newValue === 'static') {
-      this.cleanupAutoUpdate = () => {return}
+  strategyHandler (newValue: StrategyType): void {
+    if (newValue === 'disabled') {
+      this.cleanupAutoUpdate = (): void => {}
     }
   }
 
