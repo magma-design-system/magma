@@ -70,14 +70,11 @@
   margin: 0;
 }
 
-textarea.input:active {
-  transition-property: none;
-}
-
 textarea.input {
   @apply
     max-h-6400
     min-h-2400
+    resize-y
     rounded-br-none;
 }
 
