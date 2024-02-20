@@ -45,7 +45,8 @@
     "test.regression.reference": "npm run build && loki update --port 6006 --chromeFlags='--wm-window-animations-disabled --headless --disable-gpu --hide-scrollbars' --chromeEnableAnimations=false",
     "test.regression.review": "npm run build && loki test --port 6006 --requireReference --chromeEnableAnimations=false",
     "update.dependencies": "npx ts-node --skipProject ./scripts/update-dependencies.ts",
-    "update.version": "npx ts-node --skipProject ./scripts/update-version.ts"
+    "update.version": "npx ts-node --skipProject ./scripts/update-version.ts",
+    "update": "npx ts-node --skipProject ./scripts/update.ts"
   },
   "dependencies": {
     "@floating-ui/dom": "1.5.4",
