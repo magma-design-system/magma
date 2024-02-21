@@ -280,10 +280,12 @@ async function writePackages (components: string[]): Promise<void> {
       .then(json => writeFileSync(path, `${JSON.stringify(json, null, 2)}\n`))
   })
 }
+
+/**
+ * ['@maggioli-design-system/mds-text]: "1.2.3"
+ */
 interface Dep {
   [key:string] : string,
-  // dependencie: string
-  // version: string
 }
 
 interface ShortPackageInfo {
@@ -291,10 +293,14 @@ interface ShortPackageInfo {
   dependencies: Dep
 }
 
+// key is component, value is an array of strings of the components on which it is dependent
 const componentsMap = new Map<string, string[]>()
+// key is component, value is a ShortPackageInfo of published component
 const npmComponentMap = new Map<string, ShortPackageInfo>()
+// key is component, value is a ShortPackageInfo of component updated during the whole process of sync/update
 const componentsUpdatedMap = new Map<string, ShortPackageInfo>()
 
+// array of components name to be updated
 const componentsToBeUpdated: string[] = []
 
 async function main (argv: string[]) {
@@ -303,9 +309,6 @@ async function main (argv: string[]) {
 
   const timeStart = Date.now()
   await buildMap()
-  // console.log('npmpackage', npmComponentMap)
-  // console.log('localPackage', componentsUpdatedMap)
-  // return
   const timeBuild = Date.now()
   await Promise.all(
     componentsToBeUpdated.map(c => updateComponent(c, version)),
@@ -321,19 +324,7 @@ async function main (argv: string[]) {
   console.log('buildMapTime: ', timeBuild - timeStart, 'ms')
   console.log('updateTime', timeEnd - timeBuild, 'ms')
   console.log('totaleTime: ', timeEnd - timeStart, 'ms')
-
-  // writeFileSync('temp.json', JSON.stringify(componentsUpdatedMap, replacer))
 }
-// function replacer (key: any, value: any) {
-//   if (value instanceof Map) {
-//     return {
-//       dataType: 'Map',
-//       value: Array.from(value.entries()), // or with spread: value: [...value]
-//     }
-//   }
-//   return value
-
-// }
 
 if (require.main === module) {
   main(process.argv)
