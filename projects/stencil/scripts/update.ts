@@ -23,7 +23,7 @@ const componentPackagePath = (name: string) =>
  */
 async function update (component: string, version: string): Promise<string> {
 
-  const v = await getCurrentComponentVersion(component)
+  const v = await getNpmComponentVersion(component)
   let [major, minor, patch] = v.split('.')
   switch (version) {
   case 'patch': patch = `${Number(patch) + 1}`; break
@@ -31,22 +31,6 @@ async function update (component: string, version: string): Promise<string> {
   case 'major': patch = '0'; minor = '0'; major = `${Number(major) + 1}`; break
   }
   return `${major}.${minor}.${patch}`
-  // if (!existsSync(resolve(COMPONENTS_DIR, component, 'package.json'))) {
-  //   console.log('package.json non presente per ', component)
-  //   return Promise.reject(new Error(`package.json non presente per ${component}`))
-  // }
-
-
-  // return new Promise<string>((res, rej) => exec(
-  //   `cd ${resolve(COMPONENTS_DIR, component)} && npm version ${version}`,
-  //   (err, stdout) => {
-  //     if (err) {
-  //       console.error(err)
-  //       rej(err)
-  //     }
-  //     res(stdout.trim().slice(1))
-  //   },
-  // ))
 }
 
 /**
@@ -119,7 +103,7 @@ function getCurrentComponentDependencies (c: string): Promise<Dep> {
 
 function getCurrentComponentVersion (c: string): Promise<string> {
   const v = componentsUpdatedMap.get(c)?.version
-  return v ? Promise.resolve(v) : readJSON(componentPackagePath(c)).then(p => p.version)
+  return v ? Promise.resolve(v) : readJSON(componentPackagePath(c)).then(p => p.version).catch(() => {throw new Error('not mds component')})
 }
 
 function getNpmPackageShortInfo (c: string): Promise<ShortPackageInfo> {
@@ -189,17 +173,7 @@ async function needUpdateComponent (
   const npmDependencies = npmComponentMap.get(component)?.dependencies
   const currentDependencies = await getCurrentComponentDependencies(component)
   const currentVersion = await getCurrentComponentVersion(component)
-  if (component === 'mds-avatar') {
-    console.log('mds-avatar')
-    console.log('npmversion', npmVersion)
-    console.log('currentVersion', currentVersion)
-    console.log('npmDependencies', npmDependencies)
-    console.log('currentDependencies', currentDependencies)
-    console.log('!componentsToBeUpdated.includes(component)', !componentsToBeUpdated.includes(component) )
-    console.log('npmDependencies === currentDependencies', isEqual(npmDependencies, currentDependencies))
 
-    console.log('componentsttobeupdated', componentsToBeUpdated)
-  }
   // error retrive info from npm
   if (!npmDependencies || !npmVersion) return false
   // component is not updatable and same dependencies
@@ -220,11 +194,16 @@ async function needUpdateComponent (
   return false
 }
 
+/**
+ * Check dependencies of component and fix versions consistently to all components which it depends
+ * @param name of component
+ */
 async function updateComponentDependencies2 (name: string): Promise<void> {
   const v = await getCurrentComponentVersion(name)
 
   const relatedComponent = componentsMap.get(name)
 
+  // check correlate component dependencies first
   if (relatedComponent) {
     await Promise.all(relatedComponent.map(async rc => {
       const pInfo = componentsUpdatedMap.get(rc)
@@ -232,25 +211,40 @@ async function updateComponentDependencies2 (name: string): Promise<void> {
         pInfo.dependencies[`@maggioli-design-system/${name}`] = v
         componentsUpdatedMap.set(rc, pInfo)
         if (!componentsToBeUpdated.includes(name)){
-          componentsToBeUpdated.push(name)
+          componentsToBeUpdated.push(rc)
         }
       }
       await updateComponent(rc, 'patch')
       await updateComponentDependencies2(rc)
     }))
   }
+
+  // check version of dependencies and change to latest if needed
+  const pInfo = componentsUpdatedMap.get(name)
+  if (pInfo) {
+    Object.entries(pInfo.dependencies).map(async ([dep, vers]) => {
+      const currentDepVersion = await getCurrentComponentVersion(dep.split('/')[1] ?? '').catch(() => {return null})
+      if (currentDepVersion && currentDepVersion !== vers) {
+        pInfo.dependencies[dep] = currentDepVersion
+      }
+    })
+    componentsUpdatedMap.set(name, pInfo)
+  }
+
 }
 
+/**
+ * Updates the component and all components on which it is dependent
+ * @param c name component
+ * @param version of component updated
+ */
 async function updateComponent (c: string, version: string) : Promise<void> {
   const needUpdate = await needUpdateComponent(c, version)
-  // const currentVersion = await getCurrentComponentVersion(c)
-  // console.log('NEED UPDATE', c, needUpdate)
   if (needUpdate) {
     const newVersion = await update(c, version)
     const pInfo = componentsUpdatedMap.get(c)
     if (pInfo) {
       pInfo.version = newVersion
-      // console.log('update version', c, pInfo)
       componentsUpdatedMap.set(c, pInfo)
     }
 
@@ -267,11 +261,10 @@ async function updateComponent (c: string, version: string) : Promise<void> {
   }
 }
 
+/**
+ * Synchronize all dependencies between components
+ */
 async function syncDep (): Promise<void[]> {
-  // await Promise.all(Array.from(componentsMap.keys())
-  //   .map(name => updateComponentDependencie(name)),
-  // ).then(() => Array.from(componentsMap.keys()).map(name => updateComponent(name, 'patch')))
-
   return Promise.all(Array.from(componentsMap.keys())
     .map(name => updateComponentDependencies2(name)))
 }
