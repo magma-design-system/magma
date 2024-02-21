@@ -1,6 +1,6 @@
 {
   "name": "@maggioli-design-system/mds-tab-bar",
-  "version": "4.7.2",
+  "version": "4.7.3",
   "description": "mds-tab-bar is a web-component from Magma Design System, built with StencilJS, TypeScript, Storybook. It's based on the web-component standard and it's designed to be agnostic from the JavaScirpt framework you are using.",
   "main": "dist/index.cjs.js",
   "module": "dist/index.js",
@@ -23,7 +23,7 @@
     "prepublishOnly": "npm run build"
   },
   "dependencies": {
-    "@maggioli-design-system/mds-tab-bar-item": "4.7.1",
+    "@maggioli-design-system/mds-tab-bar-item": "4.7.3",
     "@maggioli-design-system/styles": "14.2.2",
     "@stencil/core": "4.10.0"
   },
