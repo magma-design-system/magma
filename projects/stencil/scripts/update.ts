@@ -3,8 +3,8 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 /* eslint-disable no-console */
 
-import { existsSync, readFile, readFileSync, readJSON, readdir, writeFileSync, writeJSON } from 'fs-extra'
-import { COMPONENTS_DIR, PROJECT_DIR } from './meta'
+import { existsSync, readFile, readJSON, readdir, writeFileSync } from 'fs-extra'
+import { COMPONENTS_DIR } from './meta'
 import { resolve } from 'path'
 import { isEqual } from 'lodash'
 
