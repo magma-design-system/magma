@@ -59,6 +59,7 @@
     "loader",
     "node_modules",
     "template",
-    "www"
+    "www",
+    "scripts"
   ]
 }

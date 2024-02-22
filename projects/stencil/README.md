@@ -92,18 +92,19 @@ nx run stencil:test.regression.clean
 ## Semi-automatic versioning of the component package.json files
 
 We've added a list of terminal commands to ease the updating processo for all component.
+Updates the component and all components on which it is dependent.
 
 
 ### Updating package version
 
 ```
-nx run stencil:update.version {major | minor | patch} {component | all}
+nx run stencil:update -- --version={major | minor | patch} {component}
 ```
 
-Assuming we have a `mds-foo` to default version `1.0.0`, if you run:
+Assuming we have a `mds-foo` to default version `1.0.0` and a `mds-bar` which have a `mds-foo` as dependencie and version `2.2.3`, if you run:
 
 ```
-nx run stencil:update.version major mds-foo
+nx run stencil:update -- --version=major mds-foo
 ```
 
 Will become:
@@ -115,10 +116,21 @@ Will become:
 }
 ```
 
+```json
+{
+  "name": "@maggioli-design-system/mds-bar",
+  "version": "3.0.0",
+  "dependencies": {
+    "mds-foo": "2.0.0"
+  }
+}
+```
+
+
 Assuming we have a `mds-foo` to default version `1.0.0`, if you run:
 
 ```
-nx run stencil:update.version minor mds-foo
+nx run stencil:update -- --version=minor mds-foo
 ```
 
 Will become:
@@ -147,16 +159,15 @@ Will become:
 
 ### Update component dependencies
 
+To synchronize all version components dependencies launch
 ```
-nx run stencil:update.dependencies --version={major | mino | patch} {component | all}
+nx run stencil:update
 ```
-
-Option --version will update version package to related version
 
 Assuming we have a `mds-foo` to default version `1.0.0`, with two dependencies to be updated to `mds-dep-1@1.3.1` and `mds-dep-2@1.1.2`, if you run:
 
 ```
-nx run stencil:update.dependencies --version=patch mds-foo
+nx run stencil:update
 ```
 
 Old dependencies:
@@ -166,8 +177,8 @@ Old dependencies:
   "name": "@maggioli-design-system/mds-foo",
   "version": "1.0.0",
   "dependencies": {
-    "@maggioli-design-system/mds-dep-1": "^1.2.0",
-    "@maggioli-design-system/mds-dep-2": "^1.0.0"
+    "@maggioli-design-system/mds-dep-1": "1.2.0",
+    "@maggioli-design-system/mds-dep-2": "1.0.0"
   }
 }
 ```
@@ -179,12 +190,12 @@ Will be updated to:
   "name": "@maggioli-design-system/mds-foo",
   "version": "1.0.1",
   "dependencies": {
-    "@maggioli-design-system/mds-dep-1": "^1.3.1",
-    "@maggioli-design-system/mds-dep-2": "^1.1.2"
+    "@maggioli-design-system/mds-dep-1": "1.3.1",
+    "@maggioli-design-system/mds-dep-2": "1.1.2"
   }
 }
 ```
-
+<!--
 ### Update component dependencies and core dependencies
 
 The option `--sync-dep` will also update dependencies found also in `stencil/package.json` file.
@@ -248,3 +259,4 @@ If for some reason you need to update all components in mass with a patch:
 nx run stencil:update.dependencies --sync-dep all
 nx run stencil:update.version patch all
 ```
+-->
