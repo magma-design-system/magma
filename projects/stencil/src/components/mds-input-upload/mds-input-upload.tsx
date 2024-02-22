@@ -3,7 +3,7 @@ import clsx from 'clsx'
 import iconSortByStatus from '@icon/mi/baseline/category.svg'
 import iconSortById from '@icon/mi/outline/schedule.svg'
 import miBaselineAddCircle from '@icon/mi/baseline/add-circle.svg'
-import { AttachInternals, Component, Element, Host, Method, Prop, State, h } from '@stencil/core'
+import { AttachInternals, Component, Element, Event, EventEmitter, Host, Method, Prop, State, h } from '@stencil/core'
 import { AttachmentSort, FileStatus, LOCALSTORAGE_KEY_USER_SORT, Status } from './meta/types'
 import { genericMimeToExt } from '@dictionary/file-extensions'
 import { MdsTabEventDetail } from '@component/mds-tab/meta/event-detail'
@@ -55,6 +55,11 @@ export class MdsInputUpload {
    */
   @Prop({ reflect: true }) readonly sort?: AttachmentSort
 
+  /**
+   * Emits when the component attribute selected is changed
+   */
+  @Event({ eventName: 'mdsInputUploadChange' }) changedEvent: EventEmitter<FileList | null>
+
   componentWillLoad (): void {
     this.extensions = this.getExtension()
     this.userSort = localStorage.getItem(LOCALSTORAGE_KEY_USER_SORT) as AttachmentSort ?? 'date'
@@ -81,6 +86,7 @@ export class MdsInputUpload {
     if (this.nativeInput && event.dataTransfer) {
       this.nativeInput.files = this.prepareFiles(event.dataTransfer.files)
       this.internals.setFormValue(this.nativeInput.value)
+      this.changedEvent.emit(this.nativeInput.files)
     }
     event.preventDefault()
   }
@@ -105,6 +111,7 @@ export class MdsInputUpload {
     const input = ((event.target) as HTMLInputElement)
     input.files = this.prepareFiles(input.files)
     this.internals.setFormValue(input.value)
+    this.changedEvent.emit(input.files)
   }
 
   /**
@@ -118,6 +125,7 @@ export class MdsInputUpload {
       this.files.forEach(f => {if (f.status === Status.SUCCESS) {data.items.add(f.file)}})
       this.nativeInput.files = data.files
       this.updateProgress()
+      this.changedEvent.emit(data.files)
     }
   }
 
@@ -131,6 +139,7 @@ export class MdsInputUpload {
       this.nativeInput.value = ''
       this.internals.setFormValue(null)
       this.updateProgress()
+      this.changedEvent.emit(null)
     }
   }
 

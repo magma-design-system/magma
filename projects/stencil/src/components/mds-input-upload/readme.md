@@ -15,6 +15,13 @@
 | `sort`        | `sort`          | Specifies if the component should show a sort widget by status or date of upload, if not defined let user choose | `"date" \| "status" \| undefined` | `undefined` |
 
 
+## Events
+
+| Event                  | Description                                            | Type                            |
+| ---------------------- | ------------------------------------------------------ | ------------------------------- |
+| `mdsInputUploadChange` | Emits when the component attribute selected is changed | `CustomEvent<FileList \| null>` |
+
+
 ## Methods
 
 ### `getFiles() => Promise<FileList | null>`

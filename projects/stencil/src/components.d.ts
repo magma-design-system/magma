@@ -1653,6 +1653,10 @@ export interface MdsInputSwitchCustomEvent<T> extends CustomEvent<T> {
     detail: T;
     target: HTMLMdsInputSwitchElement;
 }
+export interface MdsInputUploadCustomEvent<T> extends CustomEvent<T> {
+    detail: T;
+    target: HTMLMdsInputUploadElement;
+}
 export interface MdsLabelCustomEvent<T> extends CustomEvent<T> {
     detail: T;
     target: HTMLMdsLabelElement;
@@ -2197,7 +2201,18 @@ declare global {
         prototype: HTMLMdsInputSwitchElement;
         new (): HTMLMdsInputSwitchElement;
     };
+    interface HTMLMdsInputUploadElementEventMap {
+        "mdsInputUploadChange": FileList | null;
+    }
     interface HTMLMdsInputUploadElement extends Components.MdsInputUpload, HTMLStencilElement {
+        addEventListener<K extends keyof HTMLMdsInputUploadElementEventMap>(type: K, listener: (this: HTMLMdsInputUploadElement, ev: MdsInputUploadCustomEvent<HTMLMdsInputUploadElementEventMap[K]>) => any, options?: boolean | AddEventListenerOptions): void;
+        addEventListener<K extends keyof DocumentEventMap>(type: K, listener: (this: Document, ev: DocumentEventMap[K]) => any, options?: boolean | AddEventListenerOptions): void;
+        addEventListener<K extends keyof HTMLElementEventMap>(type: K, listener: (this: HTMLElement, ev: HTMLElementEventMap[K]) => any, options?: boolean | AddEventListenerOptions): void;
+        addEventListener(type: string, listener: EventListenerOrEventListenerObject, options?: boolean | AddEventListenerOptions): void;
+        removeEventListener<K extends keyof HTMLMdsInputUploadElementEventMap>(type: K, listener: (this: HTMLMdsInputUploadElement, ev: MdsInputUploadCustomEvent<HTMLMdsInputUploadElementEventMap[K]>) => any, options?: boolean | EventListenerOptions): void;
+        removeEventListener<K extends keyof DocumentEventMap>(type: K, listener: (this: Document, ev: DocumentEventMap[K]) => any, options?: boolean | EventListenerOptions): void;
+        removeEventListener<K extends keyof HTMLElementEventMap>(type: K, listener: (this: HTMLElement, ev: HTMLElementEventMap[K]) => any, options?: boolean | EventListenerOptions): void;
+        removeEventListener(type: string, listener: EventListenerOrEventListenerObject, options?: boolean | EventListenerOptions): void;
     }
     var HTMLMdsInputUploadElement: {
         prototype: HTMLMdsInputUploadElement;
@@ -3772,6 +3787,10 @@ declare namespace LocalJSX {
           * Specifies the max number of files that can be uploaded
          */
         "maxFiles"?: number;
+        /**
+          * Emits when the component attribute selected is changed
+         */
+        "onMdsInputUploadChange"?: (event: MdsInputUploadCustomEvent<FileList | null>) => void;
         /**
           * Specifies if the component should show a sort widget by status or date of upload, if not defined let user choose
          */
