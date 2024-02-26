@@ -6,6 +6,7 @@ import { InputValue } from '@interface/input-value'
 @Component({
   tag: 'mds-input-select',
   styleUrl: 'mds-input-select.css',
+  formAssociated: true,
   shadow: true,
 })
 export class MdsInputSelect {
@@ -95,7 +96,7 @@ export class MdsInputSelect {
       <Host>
         <select
           class={clsx('input', this.selected && 'input--selected')}
-          onInput={this.onInput}
+          onInput={this.onInput.bind(this)}
         >
           { this.placeholder && <option value="" disabled selected>{ this.placeholder }</option> }
         </select>
@@ -103,7 +104,7 @@ export class MdsInputSelect {
           <i class="svg icon" innerHTML={miBaselineKeyboardArrowDown} />
         </div>
         <div class="option-container">
-          <slot onSlotchange={this.onSlotChangeHandler}/>
+          <slot onSlotchange={this.onSlotChangeHandler}></slot>
         </div>
       </Host>
     )

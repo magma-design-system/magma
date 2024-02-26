@@ -6,6 +6,7 @@
   * @prop --mds-dropdown-backdrop-duration: Sets the transition duration of the backdrop, used by component's code too.
   * @prop --mds-dropdown-backdrop-z-indx: Sets the backdrop z-index, used by component's code too.
   * @prop --mds-dropdown-drop-shadow: Sets the drop-shadow of the dropdown.
+  * @prop --mds-dropdown-mouseover-delay: Sets the delay duration of the component when the caller trigger mouseover event, it's used by the javascript code.
   * @prop --mds-dropdown-duration: Sets the duration of the dropdown animation.
   * @prop --mds-dropdown-ease: Sets the easing of the dropdown animation.
   * @prop --mds-dropdown-transform-from: Sets the from animation transform of the dropdown.
@@ -19,6 +20,7 @@
   --mds-dropdown-backdrop-duration: 200ms;
   --mds-dropdown-backdrop-z-index: var(--magma-backdrop-z-index, 3000);
   --mds-dropdown-background: theme('colors.tone-neutral');
+  --mds-dropdown-mouseover-delay: 0.5s;
   --mds-dropdown-drop-shadow: drop-shadow(0 10px 8px rgb(0 0 0 / 0.04)) drop-shadow(0 4px 3px rgb(0 0 0 / 0.1)) drop-shadow(0 0 1px rgb(0 0 0 / 0.1));
   --mds-dropdown-duration: 0.5s;
   --mds-dropdown-ease: theme('transitionTimingFunction.out-expo');

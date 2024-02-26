@@ -1,7 +1,7 @@
 {
-  "name": "@maggioli-design-system/mds-dropdown",
-  "version": "5.2.0",
-  "description": "mds-dropdown is a web-component from Magma Design System, built with StencilJS, TypeScript, Storybook. It's based on the web-component standard and it's designed to be agnostic from the JavaScirpt framework you are using.",
+  "name": "@maggioli-design-system/mds-input-select",
+  "version": "1.0.0",
+  "description": "mds-input-select is a web-component from Magma Design System, built with StencilJS, TypeScript, Storybook. It's based on the web-component standard and it's designed to be agnostic from the JavaScirpt framework you are using.",
   "main": "dist/index.cjs.js",
   "module": "dist/index.js",
   "es2015": "dist/esm/index.mjs",
@@ -9,7 +9,7 @@
   "types": "dist/types/components.d.ts",
   "collection": "dist/collection/collection-manifest.json",
   "collection:main": "dist/collection/index.js",
-  "unpkg": "dist/mds-dropdown/mds-dropdown.esm.js",
+  "unpkg": "dist/mds-input-select/mds-input-select.esm.js",
   "files": [
     "dist/",
     "documentation.json",
@@ -20,12 +20,21 @@
   ],
   "scripts": {
     "build": "rm src/components.d.ts || true && stencil build --docs-readme",
-    "prepublishOnly": "npm run build"
+    "prepublishOnly": "npm run build",
+    "test": "stencil test --spec --e2e"
   },
   "dependencies": {
     "@floating-ui/dom": "1.5.4",
+    "@maggioli-design-system/design-tokens": "12.0.1",
+    "@maggioli-design-system/identity": "2.0.4",
     "@maggioli-design-system/styles": "14.2.2",
-    "@stencil/core": "4.10.0"
+    "@stencil/core": "4.10.0",
+    "clsx": "2.1.0",
+    "crypto-js": "4.2.0",
+    "filesize": "10.1.0",
+    "fitty": "2.4.2",
+    "idb-keyval": "6.2.1",
+    "mime": "4.0.1"
   },
   "license": "MIT",
   "author": {
@@ -34,11 +43,6 @@
     "url": "https://vitto.github.io/vit.to/"
   },
   "contributors": [
-    {
-      "name": "Andrea Pruccoli",
-      "email": "andrea.pruccoli@maggioli.it",
-      "role": "Software Engineer"
-    },
     {
       "name": "Nicola Tamburini",
       "email": "nicola.tamburini@maggioli.it",

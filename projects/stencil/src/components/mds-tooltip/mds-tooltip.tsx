@@ -268,7 +268,7 @@ export class MdsTooltip {
       this.caller.addEventListener('mouseenter', this.handleVisibility.bind(this, true))
       return
     }
-    console.error('Warning: attribute `target` is undefined.')
+    throw Error('Warning: attribute `target` is undefined.')
   }
 
   componentDidLoad (): void {

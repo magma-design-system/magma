@@ -2,6 +2,7 @@ import {
   floatingUIPlacementDictionary,
   floatingUIStrategyDictionary,
 } from '@dictionary/floating-ui'
+import { dropdownInteractionDictionary } from '../meta/dictionary'
 import { h } from '@stencil/core'
 
 export default {
@@ -26,6 +27,12 @@ export default {
     flip: {
       type: { name: 'boolean' },
       description: 'Specifies the placement of the component if no space is available where it is placed',
+    },
+    interaction: {
+      type: { name: 'string' },
+      description: 'Specifies if the component is triggered from the caller on mouseover or click event',
+      options: dropdownInteractionDictionary,
+      control: { type: 'select' },
     },
     offset: {
       type: { name: 'number' },
@@ -182,6 +189,15 @@ Flip.args = {
   layout: 'flex h-[150vh] justify-center items-center',
   flip: true,
   visible: true,
+}
+
+export const Interaction = Template.bind({})
+Interaction.args = {
+  class: 'max-w-[350px] w-full',
+  backdrop: true,
+  interaction: 'mouseover',
+  layout: 'flex justify-center',
+  visible: false,
 }
 
 export const Offset = Template.bind({})
