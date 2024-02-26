@@ -16,6 +16,7 @@ import { MdsBreadcrumbEventDetail } from "./components/mds-breadcrumb/meta/event
 import { MdsBreadcrumbItemEventDetail } from "./components/mds-breadcrumb-item/meta/event-detail";
 import { ButtonIconPositionType, ButtonSizeType, ButtonTargetType, ButtonType, ButtonVariantType } from "@type/button";
 import { MdsChipEvent } from "./components/mds-chip/meta/interface";
+import { DropdownInteractionType } from "./components/mds-dropdown/meta/types";
 import { FloatingUIPlacement, FloatingUIStrategy } from "@type/floating-ui";
 import { MdsDropdownEventDetail } from "./components/mds-dropdown/meta/event-detail";
 import { ExtensionSuffixType } from "@type/file-types";
@@ -67,6 +68,7 @@ export { MdsBreadcrumbEventDetail } from "./components/mds-breadcrumb/meta/event
 export { MdsBreadcrumbItemEventDetail } from "./components/mds-breadcrumb-item/meta/event-detail";
 export { ButtonIconPositionType, ButtonSizeType, ButtonTargetType, ButtonType, ButtonVariantType } from "@type/button";
 export { MdsChipEvent } from "./components/mds-chip/meta/interface";
+export { DropdownInteractionType } from "./components/mds-dropdown/meta/types";
 export { FloatingUIPlacement, FloatingUIStrategy } from "@type/floating-ui";
 export { MdsDropdownEventDetail } from "./components/mds-dropdown/meta/event-detail";
 export { ExtensionSuffixType } from "@type/file-types";
@@ -422,6 +424,10 @@ export namespace Components {
           * Specifies the placement of the component if no space is available where it is placed.
          */
         "flip": boolean;
+        /**
+          * Specifies if the component is triggered from the caller on mouseover or click event
+         */
+        "interaction"?: DropdownInteractionType;
         /**
           * Sets distance between the dropdown and the caller.
          */
@@ -3069,6 +3075,10 @@ declare namespace LocalJSX {
           * Specifies the placement of the component if no space is available where it is placed.
          */
         "flip"?: boolean;
+        /**
+          * Specifies if the component is triggered from the caller on mouseover or click event
+         */
+        "interaction"?: DropdownInteractionType;
         /**
           * Sets distance between the dropdown and the caller.
          */

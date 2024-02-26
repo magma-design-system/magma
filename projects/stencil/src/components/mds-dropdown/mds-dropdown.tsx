@@ -6,6 +6,7 @@ import { Component, Element, Event, EventEmitter, Host, Prop, Watch, h } from '@
 import { FloatingUIPlacement, FloatingUIStrategy } from '@type/floating-ui'
 import arrowSvg from './assets/arrow.svg'
 import { MdsDropdownEventDetail } from './meta/event-detail'
+import { DropdownInteractionType } from './meta/types'
 
 /**
  * @slot default - Add `text string`, `HTML elements` or `components` to this slot, elements will be shown when the component is triggered.
@@ -22,10 +23,12 @@ export class MdsDropdown {
   private backdropBackgroundVisible = 'rgba(var(--magma-backdrop-color, 0 0 0) / var(--magma-backdrop-opacity, 0.1))'
   private backdropBackgroundHidden = 'rgba(var(--magma-backdrop-color, 0 0 0) / 0)'
   private cssBackdropDuration: string
+  private cssMouseOverDelayDuration: string
   private cssBackdropZIndex: string
   private backdropEl: HTMLElement
   private backdropId = 'mds-dropdown-backdrop'
   private backdropTimer: NodeJS.Timeout
+  private mouseoverTimer: NodeJS.Timeout
   private caller: HTMLElement
   private cleanupAutoUpdate: () => void
   private km = new KeyboardManager()
@@ -56,6 +59,11 @@ export class MdsDropdown {
    * Specifies the placement of the component if no space is available where it is placed.
    */
   @Prop() readonly flip: boolean = false
+
+  /**
+   * Specifies if the component is triggered from the caller on mouseover or click event
+   */
+  @Prop({ reflect: true }) readonly interaction?: DropdownInteractionType = 'click'
 
   /**
    * Specifies the id of the caller element.
@@ -169,6 +177,24 @@ export class MdsDropdown {
 
   private callerOnClick = (): void => {
     this.handleVisibility(!this.visible)
+  }
+
+  private callerOnMouseOver = (): void => {
+    this.mouseoverTimer = setTimeout(() => {
+      clearTimeout(this.mouseoverTimer)
+      this.handleVisibility(true)
+    }, cssDurationToMilliseconds(this.cssMouseOverDelayDuration))
+  }
+
+  private closeDropdownMouseLeave = (): void => {
+    this.handleVisibility(false)
+    this.host.removeEventListener('mouseleave', this.closeDropdownMouseLeave.bind(this))
+    this.host.addEventListener('mouseover', this.handleCloseDropdownMouseLeave.bind(this))
+  }
+
+  private handleCloseDropdownMouseLeave = (): void => {
+    this.host.removeEventListener('mouseover', this.handleCloseDropdownMouseLeave.bind(this))
+    this.host.addEventListener('mouseleave', this.closeDropdownMouseLeave.bind(this))
   }
 
   private arrowInset = (middleware: MiddlewareData, arrowPosition: string): { bottom?: string, left?: string, right?: string, top?: string } => {
@@ -380,6 +406,7 @@ export class MdsDropdown {
     const elementStyles = window.getComputedStyle(this.host)
     this.cssBackdropDuration = elementStyles.getPropertyValue('--mds-dropdown-backdrop-duration')
     this.cssBackdropZIndex = elementStyles.getPropertyValue('--mds-dropdown-backdrop-z-index')
+    this.cssMouseOverDelayDuration = elementStyles.getPropertyValue('--mds-dropdown-mouseover-delay')
   }
 
   componentWillLoad (): void {
@@ -410,7 +437,15 @@ export class MdsDropdown {
     this.caller = caller
     this.setAriaAttributes()
 
-    this.caller.addEventListener('click', this.callerOnClick.bind(this))
+    if (this.interaction === 'click') {
+      this.caller.addEventListener('click', this.callerOnClick.bind(this))
+    }
+
+    if (this.interaction === 'mouseover') {
+      this.caller.addEventListener('mouseover', this.callerOnMouseOver.bind(this))
+      this.host.addEventListener('mouseover', this.handleCloseDropdownMouseLeave.bind(this))
+    }
+
     this.km.addElement(this.host)
     this.km.attachEscapeBehavior(() => this.handleVisibility(false))
 
