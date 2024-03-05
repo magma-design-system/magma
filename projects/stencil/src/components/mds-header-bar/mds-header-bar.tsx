@@ -53,7 +53,7 @@ export class MdsHeaderBar {
   render () {
     return (
       <Host>
-        <div class="contents">
+        <div class="contents" part="contents">
           <div class="logo">
             <slot />
           </div>
