@@ -329,6 +329,7 @@ export class MdsInput {
             onBlur={this.onBlur}
             onFocus={this.onFocus}
             onInput={this.onInput}
+            part="field"
             placeholder={this.placeholder}
             readOnly={this.readonly}
             ref={ input => (this.nativeInput = input)}
@@ -354,6 +355,7 @@ export class MdsInput {
             onInput={this.onInput}
             pattern={this.pattern}
             list={this.datalist && 'datalist'}
+            part="field"
             placeholder={this.placeholder}
             readOnly={this.readonly}
             ref={ input => (this.nativeInput = input)}
