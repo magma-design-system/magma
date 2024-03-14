@@ -66,7 +66,7 @@
     "order/properties-order": null,
     "order/properties-alphabetical-order": true,
     "property-disallowed-list": [ "background" ],
-    "property-no-unknown": true,
+    "property-no-unknown": [ true, { "ignoreProperties": [ "field-sizing" ] } ],
     "property-no-vendor-prefix": [ true, { "ignoreProperties": [ "-webkit-overflow-scrolling" ] } ],
     "rule-empty-line-before": [ "always-multi-line", { "except": [ "first-nested" ] }, { "ignore": [ "after-comment", "first-nested" ] } ],
     "selector-attribute-quotes": "always",
