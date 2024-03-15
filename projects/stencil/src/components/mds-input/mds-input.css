@@ -8,6 +8,9 @@
   * @prop --mds-input-icon-color: Sets the icon color of the component
   * @prop --mds-input-ring: Sets the box-shadow of the component's input
   * @prop --mds-input-shadow: Sets the box-shadow of the component's input
+  * @prop --mds-input-textarea-field-sizing: Sets the height of the textarea automatically, this is an EXPERIMENTAL css property, so it couldn't work in every browser 
+  * @prop --mds-input-textarea-max-height: Sets the `max-height` of the component when attribute `type` is set to `textarea`
+  * @prop --mds-input-textarea-min-height: Sets the `min-height` of the component when attribute `type` is set to `textarea`
   * @prop --mds-input-tip-background: Sets the background color of the tip message at the bottom right of the component
   * @prop --mds-input-variant-color: Sets the variant colors of the component
   */
@@ -22,6 +25,9 @@
   --mds-input-variant-color: 0 0 0;
   --mds-input-controls-color: theme('colors.tone-neutral-04');
   --mds-input-controls-border: 2px solid theme('colors.tone-neutral-09');
+  --mds-input-textarea-min-height: theme('size.2400');
+  --mds-input-textarea-max-height: theme('size.6400');
+  --mds-input-textarea-field-sizing: content;
 
   @apply
     gap-200
@@ -49,8 +55,7 @@
     px-400
     py-300
     rounded-lg
-    text-info-detail
-    transition-cosmetic;
+    text-info-detail;
 
     background-color: var(--mds-input-background);
     border: 0;
@@ -60,6 +65,7 @@
     min-height: 3rem;
     overflow: hidden;
     text-overflow: ellipsis;
+    transition-property: background-color, border-color, box-shadow, color, fill, margin, opacity, padding, transform;
     width: 100%;
 }
 
@@ -72,10 +78,13 @@
 
 textarea.input {
   @apply
-    max-h-6400
-    min-h-2400
     resize-y
     rounded-br-none;
+
+  field-sizing: var(--mds-input-textarea-field-sizing);
+  max-height: var(--mds-input-textarea-max-height);
+  min-height: var(--mds-input-textarea-min-height);
+  overflow: auto
 }
 
 .input:focus {
