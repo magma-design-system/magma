@@ -66,7 +66,7 @@ export class MdsDropdown {
   @Prop({ reflect: true }) readonly interaction?: DropdownInteractionType = 'click'
 
   /**
-   * Specifies the id of the caller element.
+   * Specifies the selector of the target element, this attribute is used with `querySelector` method.
    */
   @Prop() readonly target!: string
 

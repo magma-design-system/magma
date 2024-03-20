@@ -63,6 +63,7 @@
   padding-left: var(--mds-notification-dot-padding);
   padding-right: var(--mds-notification-dot-padding);
   position: absolute;
+  white-space: nowrap;
 }
 
 .spacer {

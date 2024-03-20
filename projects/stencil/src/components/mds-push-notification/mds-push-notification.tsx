@@ -1,7 +1,8 @@
-import { Component, Element, Host, h, Prop } from '@stencil/core'
+import { Component, Element, Event, EventEmitter, Host, h, Prop } from '@stencil/core'
 import miBaselineCancel from '@icon/mi/baseline/cancel.svg'
 import { ThemeFullVariantAvatarType, ToneMinimalVariantType } from '@type/variant'
 import { NotificationPreviewType } from './meta/types'
+import { MdsPushNotificationEventDetail } from './meta/event-detail'
 
 /**
  * @part actions - The actions wrapper
@@ -61,6 +62,15 @@ export class MdsPushNotification {
    */
   @Prop({ reflect: true }) readonly variant?: ThemeFullVariantAvatarType
 
+  /**
+   * Emits when the component is closed
+   */
+  @Event({ eventName: 'mdsPushNotificationClose' }) closedEvent: EventEmitter<MdsPushNotificationEventDetail>
+
+  private onClickClose = () => {
+    this.closedEvent.emit()
+  }
+
   componentWillLoad ():void {
     this.hasActions = this.host.querySelector('[slot="actions"]') !== null
   }
@@ -77,7 +87,7 @@ export class MdsPushNotification {
             <slot name="actions"></slot>
           </div> }
         </div>
-        <mds-button class="close-button" icon={miBaselineCancel}></mds-button>
+        <mds-button class="close-button" icon={miBaselineCancel} onClick={this.onClickClose.bind(this)}></mds-button>
       </Host>
     )
   }

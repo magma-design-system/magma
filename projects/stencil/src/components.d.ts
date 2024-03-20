@@ -48,6 +48,7 @@ import { MdsPaginatorEventDetail } from "./components/mds-paginator/meta/event-d
 import { PriceTableFeaturesCellType } from "./components/mds-price-table-features-cell/meta/types";
 import { DirectionType } from "./components/mds-progress/meta/types";
 import { NotificationPreviewType } from "./components/mds-push-notification/meta/types";
+import { MdsPushNotificationEventDetail } from "./components/mds-push-notification/meta/event-detail";
 import { MdsStepperBarEventDetail } from "./components/mds-stepper-bar/meta/event-detail";
 import { MdsStepperBarItemEventDetail } from "./components/mds-stepper-bar-item/meta/event-detail";
 import { MdsTabEventDetail } from "./components/mds-tab/meta/event-detail";
@@ -100,6 +101,7 @@ export { MdsPaginatorEventDetail } from "./components/mds-paginator/meta/event-d
 export { PriceTableFeaturesCellType } from "./components/mds-price-table-features-cell/meta/types";
 export { DirectionType } from "./components/mds-progress/meta/types";
 export { NotificationPreviewType } from "./components/mds-push-notification/meta/types";
+export { MdsPushNotificationEventDetail } from "./components/mds-push-notification/meta/event-detail";
 export { MdsStepperBarEventDetail } from "./components/mds-stepper-bar/meta/event-detail";
 export { MdsStepperBarItemEventDetail } from "./components/mds-stepper-bar-item/meta/event-detail";
 export { MdsTabEventDetail } from "./components/mds-tab/meta/event-detail";
@@ -453,7 +455,7 @@ export namespace Components {
          */
         "strategy": FloatingUIStrategy;
         /**
-          * Specifies the id of the caller element.
+          * Specifies the selector of the target element, this attribute is used with `querySelector` method.
          */
         "target": string;
         /**
@@ -1175,7 +1177,7 @@ export namespace Components {
          */
         "strategy": StrategyType;
         /**
-          * Specifies the id of the caller element.
+          * Specifies the selector of the target element, this attribute is used with `querySelector` method.
          */
         "target": string;
         /**
@@ -1502,7 +1504,7 @@ export namespace Components {
          */
         "strategy"?: FloatingUIStrategy;
         /**
-          * Specifies the id of the caller element.
+          * Specifies the selector of the target element, this attribute is used with `querySelector` method.
          */
         "target": string;
         /**
@@ -1678,6 +1680,10 @@ export interface MdsNoteCustomEvent<T> extends CustomEvent<T> {
 export interface MdsPaginatorCustomEvent<T> extends CustomEvent<T> {
     detail: T;
     target: HTMLMdsPaginatorElement;
+}
+export interface MdsPushNotificationCustomEvent<T> extends CustomEvent<T> {
+    detail: T;
+    target: HTMLMdsPushNotificationElement;
 }
 export interface MdsStepperBarCustomEvent<T> extends CustomEvent<T> {
     detail: T;
@@ -2376,7 +2382,18 @@ declare global {
         prototype: HTMLMdsProgressElement;
         new (): HTMLMdsProgressElement;
     };
+    interface HTMLMdsPushNotificationElementEventMap {
+        "mdsPushNotificationClose": MdsPushNotificationEventDetail;
+    }
     interface HTMLMdsPushNotificationElement extends Components.MdsPushNotification, HTMLStencilElement {
+        addEventListener<K extends keyof HTMLMdsPushNotificationElementEventMap>(type: K, listener: (this: HTMLMdsPushNotificationElement, ev: MdsPushNotificationCustomEvent<HTMLMdsPushNotificationElementEventMap[K]>) => any, options?: boolean | AddEventListenerOptions): void;
+        addEventListener<K extends keyof DocumentEventMap>(type: K, listener: (this: Document, ev: DocumentEventMap[K]) => any, options?: boolean | AddEventListenerOptions): void;
+        addEventListener<K extends keyof HTMLElementEventMap>(type: K, listener: (this: HTMLElement, ev: HTMLElementEventMap[K]) => any, options?: boolean | AddEventListenerOptions): void;
+        addEventListener(type: string, listener: EventListenerOrEventListenerObject, options?: boolean | AddEventListenerOptions): void;
+        removeEventListener<K extends keyof HTMLMdsPushNotificationElementEventMap>(type: K, listener: (this: HTMLMdsPushNotificationElement, ev: MdsPushNotificationCustomEvent<HTMLMdsPushNotificationElementEventMap[K]>) => any, options?: boolean | EventListenerOptions): void;
+        removeEventListener<K extends keyof DocumentEventMap>(type: K, listener: (this: Document, ev: DocumentEventMap[K]) => any, options?: boolean | EventListenerOptions): void;
+        removeEventListener<K extends keyof HTMLElementEventMap>(type: K, listener: (this: HTMLElement, ev: HTMLElementEventMap[K]) => any, options?: boolean | EventListenerOptions): void;
+        removeEventListener(type: string, listener: EventListenerOrEventListenerObject, options?: boolean | EventListenerOptions): void;
     }
     var HTMLMdsPushNotificationElement: {
         prototype: HTMLMdsPushNotificationElement;
@@ -3116,7 +3133,7 @@ declare namespace LocalJSX {
          */
         "strategy"?: FloatingUIStrategy;
         /**
-          * Specifies the id of the caller element.
+          * Specifies the selector of the target element, this attribute is used with `querySelector` method.
          */
         "target": string;
         /**
@@ -3906,7 +3923,7 @@ declare namespace LocalJSX {
          */
         "strategy"?: StrategyType;
         /**
-          * Specifies the id of the caller element.
+          * Specifies the selector of the target element, this attribute is used with `querySelector` method.
          */
         "target"?: string;
         /**
@@ -4007,6 +4024,10 @@ declare namespace LocalJSX {
           * Specifies the message of the component
          */
         "message"?: string;
+        /**
+          * Emits when the component is closed
+         */
+        "onMdsPushNotificationClose"?: (event: MdsPushNotificationCustomEvent<MdsPushNotificationEventDetail>) => void;
         /**
           * Specifies if the `src` attribute is used to show a the image as avatar or full image
          */
@@ -4269,7 +4290,7 @@ declare namespace LocalJSX {
          */
         "strategy"?: FloatingUIStrategy;
         /**
-          * Specifies the id of the caller element.
+          * Specifies the selector of the target element, this attribute is used with `querySelector` method.
          */
         "target": string;
         /**

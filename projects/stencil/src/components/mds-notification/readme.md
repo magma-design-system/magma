@@ -96,7 +96,7 @@ This is a web-component from Maggioli Design System [Magma](https://magma.maggio
 | ---------- | ---------- | -------------------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------- | ----------- |
 | `max`      | `max`      | Specifies the maximum number that can be seen, assuming that the number is for example 9 and that this is exceeded with 15, the component shows +9 | `number \| undefined`                 | `undefined` |
 | `strategy` | `strategy` | Specifies the position strategy of the notification                                                                                                | `"absolute" \| "disabled" \| "fixed"` | `'fixed'`   |
-| `target`   | `target`   | Specifies the id of the caller element.                                                                                                            | `string`                              | `undefined` |
+| `target`   | `target`   | Specifies the selector of the target element, this attribute is used with `querySelector` method.                                                  | `string`                              | `undefined` |
 | `value`    | `value`    | Specifies number of notifications to display, if it set to 0, the element will be hidden                                                           | `number`                              | `0`         |
 | `visible`  | `visible`  | Specifies if the notification is visible                                                                                                           | `boolean`                             | `true`      |
 

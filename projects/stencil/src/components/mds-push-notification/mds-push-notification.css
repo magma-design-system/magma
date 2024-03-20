@@ -25,6 +25,7 @@
   box-shadow: var(--mds-push-notification-shadow);
   color: theme('colors.tone-neutral-02');
   display: flex;
+  pointer-events: auto;
   position: relative;
   transition-duration: var(--mds-push-notification-duration);
   transition-property: transform;
