@@ -19,6 +19,13 @@
 | `variant`  | `variant`  | Specifies the color variant of the component                                                                                                         | `"amaranth" \| "aqua" \| "blue" \| "error" \| "green" \| "info" \| "lime" \| "orange" \| "orchid" \| "primary" \| "sky" \| "success" \| "violet" \| "warning" \| "yellow" \| undefined` | `undefined`                      |
 
 
+## Events
+
+| Event                      | Description                        | Type                                          |
+| -------------------------- | ---------------------------------- | --------------------------------------------- |
+| `mdsPushNotificationClose` | Emits when the component is closed | `CustomEvent<MdsPushNotificationEventDetail>` |
+
+
 ## Slots
 
 | Slot        | Description                                                                             |
