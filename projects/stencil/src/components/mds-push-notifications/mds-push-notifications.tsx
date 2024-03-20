@@ -1,5 +1,4 @@
 import { Component, Element, Host, h, Prop } from '@stencil/core'
-// import { cssSizeToNumber } from '@common/unit'
 import { cssDurationToMilliseconds, cssSizeToNumber } from '@common/unit'
 
 /**
@@ -24,14 +23,14 @@ export class MdsPushNotifications {
   /**
    * Specifies if the component is visible or not.
    */
-  @Prop({ reflect: true }) readonly visible?: boolean
+  @Prop({ reflect: true, mutable: true }) visible?: boolean
 
   /**
    * Specifies if the component visibility is handled when new `mds-push-notification` components are added to this component or when they are removed.
    */
   @Prop({ reflect: true }) readonly visiblity?: 'auto'|'visible'|'hidden'
 
-  private introItem (element: HTMLElement) {
+  private introItem = (element: HTMLElement): Promise<void> => {
     // no reason why I must duplicata marginBottom negative to prevent flickering
     element.style.marginBottom = `-${element.offsetHeight + cssSizeToNumber(this.cssItemsGap)}px`
     return new Promise<void>(resolve => {
@@ -42,11 +41,41 @@ export class MdsPushNotifications {
           element.style.position = 'relative'
           element.style.transform = 'translate(0, 0)'
           element.style.marginBottom = '0px'
-
           resolve()
         }, cssDurationToMilliseconds(this.cssItemsDuration))
       }, 15) // hope to find a better solution not based on 15ms of delay, not very robust
     })
+  }
+
+  private checkNotificationsItems = (): void => {
+    this.totalItems -= 1
+    if (this.totalItems === 0) {
+      this.visible = false
+    }
+  }
+
+  private outroItem = (element: HTMLElement): Promise<void> => {
+    // no reason why I must duplicata marginBottom negative to prevent flickering
+    element.style.marginBottom = '0px'
+    this.checkNotificationsItems()
+    return new Promise<void>(resolve => {
+      setTimeout(() => {
+        element.style.marginBottom = '0px'
+        setTimeout(() => {
+          element.addEventListener('transitionend', () => {
+            // element.removeEventListener('transitionend')
+            element.remove()
+          })
+          element.style.removeProperty('transform')
+          element.style.marginBottom = `-${element.offsetHeight + cssSizeToNumber(this.cssItemsGap)}px`
+          resolve()
+        }, cssDurationToMilliseconds(this.cssItemsDuration))
+      }, 15) // hope to find a better solution not based on 15ms of delay, not very robust
+    })
+  }
+
+  private addNotificationBehavior = (element: HTMLElement): void => {
+    element.addEventListener('mdsPushNotificationClose', () => this.outroItem(element))
   }
 
   private handleSlotChange = (): void => {
@@ -58,9 +87,11 @@ export class MdsPushNotifications {
     }
 
     const itemsIntro: Promise<void>[] = []
-
+    let element: HTMLElement
     while (this.totalItems < elements.length) {
-      itemsIntro.push(this.introItem(elements[this.totalItems] as HTMLElement))
+      element = elements[this.totalItems] as HTMLElement
+      this.addNotificationBehavior(element)
+      itemsIntro.push(this.introItem(element))
       this.totalItems += 1
     }
 

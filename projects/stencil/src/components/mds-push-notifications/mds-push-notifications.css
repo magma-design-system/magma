@@ -21,12 +21,14 @@
   display: flex;
   flex-direction: column;
   overflow: auto;
+  pointer-events: none;
   position: fixed;
   right: 0;
   top: 0;
   transform: translate(100%, 0);
   transition-delay: 0;
   transition-property: transform;
+  z-index: var(--magma-notification-z-index, 3000);
 }
 
 :host([visible]:not([visible="false"])) {
