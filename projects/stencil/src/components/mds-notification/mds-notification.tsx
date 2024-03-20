@@ -15,7 +15,7 @@ export class MdsNotification {
   private cleanupAutoUpdate: () => void
 
   /**
-   * Specifies the id of the caller element.
+   * Specifies the selector of the target element, this attribute is used with `querySelector` method.
    */
   @Prop() readonly target: string
 
@@ -76,7 +76,7 @@ export class MdsNotification {
       this.strategy = 'disabled'
       return
     }
-    const c = document.getElementById(this.target)
+    const c = document.querySelector(this.target) as HTMLElement
     if (!c) throw new Error('No valid target found')
     this.caller = c
   }
