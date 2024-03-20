@@ -24,7 +24,7 @@
     "test": "stencil test --spec --e2e"
   },
   "dependencies": {
-    "@maggioli-design-system/mds-push-notification": "1.4.6",
+    "@maggioli-design-system/mds-push-notification": "1.5.0",
     "@stencil/core": "4.10.0",
     "clsx": "2.1.0"
   },
