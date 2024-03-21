@@ -67,7 +67,8 @@ export class MdsPushNotification {
    */
   @Event({ eventName: 'mdsPushNotificationClose' }) closedEvent: EventEmitter<MdsPushNotificationEventDetail>
 
-  private onClickClose = () => {
+  private onClickClose = (e: Event) => {
+    e.stopPropagation()
     this.closedEvent.emit()
   }
 
