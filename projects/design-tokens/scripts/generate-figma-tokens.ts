@@ -6,10 +6,12 @@ import spacing from '../tokens/sizing/default.json'
 import gap from '../tokens/sizing/gap.json'
 import screen from '../tokens/screen/default.json'
 import borderRadius from '../tokens/cosmetic/border-radius.json'
-import { writeFile } from 'fs-extra'
+import { readJSON, readdir, writeFile } from 'fs-extra'
 import { mkdir } from 'fs/promises'
 import { resolve } from 'path'
-import { DIST_DIR } from './meta'
+import { DIST_DIR, TOKENS_DIR } from './meta'
+
+const COLOR_DIR = `${TOKENS_DIR}/color/generated`
 
 enum VariableType {
   Color = 'COLOR',
@@ -67,7 +69,6 @@ interface Variable {
 
 const capitalizeFirstLetter = (value: string): string =>
   value.charAt(0).toUpperCase() + value.slice(1)
-
 
 const generateFigmaTokens = (nameCollection: string) => {
   const collection: Collection = {
@@ -146,8 +147,8 @@ const buildScreenToken = (name: string, tokens): Map<string, Variable> => {
     })
   })
   return variables
-
 }
+
 const buildTokenVariables = (name: string, tokens): Map<string, Variable> => {
   const variables: Map<string, Variable> = new Map()
   Object.entries(tokens).forEach(type => {
@@ -262,7 +263,7 @@ const buildColorVariables = (tokens): Map<string, Variable> => {
 }
 
 const writeFigmaVariables = (collection: Collection) => {
-  mkdir( resolve(`${DIST_DIR}/json`), { recursive: true })
+  mkdir(resolve(`${DIST_DIR}/json`), { recursive: true })
     .then(() => {
       writeFile(`${DIST_DIR}/json/figma-${collection.name.toLocaleLowerCase().replace(/\s/g, '-')}.json`, JSON.stringify(collection))
     })
@@ -289,6 +290,26 @@ const hexToRgbA = (hex: string): Color => {
   throw new Error('Bad Hex')
 }
 
-generateFigmaColors('Magma Colors', defaultTokens)
+const mergeTokens = async () => {
+  const brandColors = await readdir(COLOR_DIR).then(files => {
+    // read all brand json file and merge them
+    return Promise.all(
+      files
+        .filter(name => name.startsWith('brand'))
+        .map(brand => readJSON(`${COLOR_DIR}/${brand}`)),
+    ).then(brands =>
+      brands
+        .map(json => json.color.brand)
+        .reduce((prev, current) => Object.assign(prev, { ...current })),
+    )
+  })
+  const tokens = defaultTokens
+  tokens.color.brand = brandColors
+  return tokens
+}
+
+(async () =>
+  generateFigmaColors('Magma Colors', await mergeTokens())
+)()
 
 generateFigmaTokens('Magma Tokens')
