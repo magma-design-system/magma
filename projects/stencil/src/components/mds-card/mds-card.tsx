@@ -21,7 +21,7 @@ export class MdsCard {
   /**
    * Enables automatic responsive behavior based on container queries
    */
-  @Prop({ reflect: true }) readonly autoGrid = true
+  @Prop({ reflect: true }) readonly autoGrid: boolean = true
 
   componentWillLoad (): void {
     this.layout = Array.from(this.host.children)

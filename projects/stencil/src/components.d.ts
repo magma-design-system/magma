@@ -359,7 +359,7 @@ export namespace Components {
         /**
           * Enables automatic responsive behavior based on container queries
          */
-        "autoGrid": true;
+        "autoGrid": boolean;
     }
     interface MdsCardContent {
     }
@@ -3013,7 +3013,7 @@ declare namespace LocalJSX {
         /**
           * Enables automatic responsive behavior based on container queries
          */
-        "autoGrid"?: true;
+        "autoGrid"?: boolean;
     }
     interface MdsCardContent {
     }
