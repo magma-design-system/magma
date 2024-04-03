@@ -6,11 +6,6 @@
     { "color": "#a3a3a3", "export": ["tones", "default"], "name": "tone.neutral", "ratios": "tone", "seed": { "light": "#FFFFFF", "dark": "#000000" } },
     { "color": "#a8a29e", "export": ["tones"], "name": "tone.stone", "ratios": "tone", "seed": { "light": "#FFFFFF", "dark": "#000000" } },
 
-    { "color": "#00379E", "export": ["brand", "default"], "name": "brand.maggioli", "colorspace": "HSL", "smooth": true },
-    { "color": "#0f4ad5", "export": ["brand"], "name": "brand.maggioli-editore", "colorspace": "HSL", "smooth": true },
-    { "color": "#036278", "export": ["brand"], "name": "brand.mindy", "colorspace": "HSL", "smooth": true },
-    { "color": "#CBA26B", "export": ["brand"], "name": "brand.rnd", "colorspace": "HSL", "smooth": true },
-
     { "color": "#23B2E1", "export": ["status", "default"], "name": "status.info", "colorspace": "OKLCH" },
     { "color": "#21BF73", "export": ["status", "default"], "name": "status.success", "colorspace": "OKLCH" },
     { "color": "#ED6663", "export": ["status", "default"], "name": "status.error", "colorspace": "OKLCH" },
@@ -27,8 +22,6 @@
     { "color": "#F9E14E", "export": ["label", "default"], "name": "label.yellow" },
     { "color": "#F17032", "export": ["label", "default"], "name": "label.orange" },
 
-    { "color": "#597CB9", "export": ["brand-synbee"], "name": "brand.synbee-eolo" },
-    { "color": "#FFC300", "export": ["brand-synbee"], "name": "brand.synbee" },
     { "color": "#597CB9", "export": ["synbee-v1"], "name": "brand.eolo-v1", "ratios": "v1" },
     { "color": "#FFFFFF", "export": ["synbee-v1"], "name": "adjust.tone-v1", "ratios": "v1", "seed": { "light": "#FFFFFF", "dark": "#000000" } },
     { "color": "#23B2E1", "export": ["synbee-v1"], "name": "status.info-v1", "ratios": "v1" },
@@ -46,6 +39,12 @@
     { "color": "#F9E14E", "export": ["synbee-v1"], "name": "label.yellow-v1", "ratios": "v1" },
     { "color": "#F17032", "export": ["synbee-v1"], "name": "label.orange-v1", "ratios": "v1" },
 
+    { "color": "#00379E", "export": ["brand", "default"], "name": "brand.maggioli", "colorspace": "HSL", "smooth": true },
+    { "color": "#0f4ad5", "export": ["brand"], "name": "brand.maggioli-editore", "colorspace": "HSL", "smooth": true },
+    { "color": "#036278", "export": ["brand-mindy"], "name": "brand.mindy", "colorspace": "HSL", "smooth": true },
+    { "color": "#CBA26B", "export": ["brand-rnd"], "name": "brand.rnd", "colorspace": "HSL", "smooth": true },
+    { "color": "#597CB9", "export": ["brand-synbee"], "name": "brand.synbee-eolo" },
+    { "color": "#FFC300", "export": ["brand-synbee"], "name": "brand.synbee" },
     { "color": "#ED7C63", "disabled": true, "name": "brand.argo" },
     { "color": "#01495C", "disabled": true, "name": "brand.la-polizia-locale" },
     { "color": "#FBE00E", "disabled": true, "name": "brand.cantiere-innovazione" },
