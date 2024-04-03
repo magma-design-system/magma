@@ -304,8 +304,19 @@ const mergeTokens = async () => {
     )
   })
   const tokens = defaultTokens
-  tokens.color.brand = brandColors
+  tokens.color.brand = sortJsonByKeys(brandColors, (a, b) => b.localeCompare(a))
   return tokens
+}
+
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+function sortJsonByKeys (json, compareFn: (a: string, b: string) => number): any {
+  return Object.keys(json).sort(compareFn).reduce(
+    (obj, key) => {
+      obj[key] = json[key]
+      return obj
+    },
+    {},
+  )
 }
 
 (async () =>
