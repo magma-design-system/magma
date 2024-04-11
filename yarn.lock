@@ -2154,10 +2154,17 @@
   resolved "https://registry.npmjs.org/@juggle/resize-observer/-/resize-observer-3.4.0.tgz#08d6c5e20cf7e4cc02fd181c4b0c225cd31dbb60"
   integrity sha512-dfLbk+PwWvFzSxwk3n5ySL0hfBog779o8h68wK/7/APo/7cgyWp5jcXockbxdk5kFRkbeXWm4Fbi9FrdN381sA==
 
-"@maggioli-design-system/svg-icons@3.17.0":
-  version "3.17.0"
-  resolved "https://registry.npmjs.org/@maggioli-design-system/svg-icons/-/svg-icons-3.17.0.tgz#f1e36ef8b476d0159d13f9a4246b736b497e0b05"
-  integrity sha512-/nKpgmrNWbx0PhDVKpDnea6w6Ekl9gEFC3O2XOFsI+7DlE5YTP4uvkaP4LLSFSTVH8pIHA81N++UtQaNVjy6gA==
+"@maggioli-design-system/styles@14.2.2":
+  version "14.2.2"
+  resolved "https://registry.npmjs.org/@maggioli-design-system/styles/-/styles-14.2.2.tgz#98e8dcbeaa69a2a8a0c53e656f8a61a93817b17b"
+  integrity sha512-m4WAvF6ctTX9lQeZpxRQkBgjs8Yr2u/lhUwya6/nx9uaAIcRI6xr983c8QjpjEc8dMB/EmP8WuuDYRe7rTkNTw==
+  dependencies:
+    "@fontsource/karla" "5.0.18"
+    "@fontsource/merriweather" "5.0.8"
+    "@fontsource/roboto" "5.0.8"
+    "@fontsource/roboto-mono" "5.0.16"
+    "@maggioli-design-system/design-tokens" "12.0.1"
+    normalize.css "8.0.1"
 
 "@maggioli-design-system/svg-icons@^2.6.3":
   version "2.10.1"
