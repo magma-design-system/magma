@@ -11,6 +11,12 @@ import { MdsInputEventDetail } from './meta/event-detail'
 import { ThemeStatusVariantType } from '@type/variant'
 import { TypographyInputType } from '@type/typography'
 
+/*
+  * @part field - Selects the native input field used by the component
+  * @part counter-button-decrease - Selects the button used to decrese the input value
+  * @part counter-button-increase - Selects the button used to increse the input value
+  */
+
 export interface MdsInputInterface {
   autocomplete?: AutocompleteType
   autofocus?: boolean
