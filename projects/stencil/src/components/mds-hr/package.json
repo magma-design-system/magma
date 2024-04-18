@@ -23,7 +23,7 @@
     "prepublishOnly": "npm run build"
   },
   "dependencies": {
-    "@maggioli-design-system/styles": "14.2.2",
+    "@maggioli-design-system/styles": "14.3.2",
     "@stencil/core": "4.10.0"
   },
   "license": "MIT",
