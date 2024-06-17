@@ -17,9 +17,9 @@
 
 ## Events
 
-| Event                  | Description                                            | Type                            |
-| ---------------------- | ------------------------------------------------------ | ------------------------------- |
-| `mdsInputUploadChange` | Emits when the component attribute selected is changed | `CustomEvent<FileList \| null>` |
+| Event                  | Description                                | Type                            |
+| ---------------------- | ------------------------------------------ | ------------------------------- |
+| `mdsInputUploadChange` | Emits when the component files are changed | `CustomEvent<FileList \| null>` |
 
 
 ## Methods
@@ -31,6 +31,16 @@ Returns a promise of files uploaded as Filelist or null if there's none
 #### Returns
 
 Type: `Promise<FileList | null>`
+
+
+
+### `getFilesError() => Promise<FileError[] | null>`
+
+Returns a promise of files error or null if there's none
+
+#### Returns
+
+Type: `Promise<FileError[] | null>`
 
 
 

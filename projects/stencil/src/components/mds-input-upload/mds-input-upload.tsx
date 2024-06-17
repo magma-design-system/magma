@@ -4,7 +4,7 @@ import iconSortByStatus from '@icon/mi/baseline/category.svg'
 import iconSortById from '@icon/mi/outline/schedule.svg'
 import miBaselineAddCircle from '@icon/mi/baseline/add-circle.svg'
 import { AttachInternals, Component, Element, Event, EventEmitter, Host, Method, Prop, State, h } from '@stencil/core'
-import { AttachmentSort, FileStatus, LOCALSTORAGE_KEY_USER_SORT, Status } from './meta/types'
+import { AttachmentSort, ErrorType, FileError, FileStatus, LOCALSTORAGE_KEY_USER_SORT, Status } from './meta/types'
 import { genericMimeToExt } from '@dictionary/file-extensions'
 import { MdsTabEventDetail } from '@component/mds-tab/meta/event-detail'
 
@@ -56,7 +56,7 @@ export class MdsInputUpload {
   @Prop({ reflect: true }) readonly sort?: AttachmentSort
 
   /**
-   * Emits when the component attribute selected is changed
+   * Emits when the component files are changed
    */
   @Event({ eventName: 'mdsInputUploadChange' }) changedEvent: EventEmitter<FileList | null>
 
@@ -77,6 +77,16 @@ export class MdsInputUpload {
     return Promise.resolve(this.nativeInput?.files ?? null)
   }
 
+  /**
+   * Returns a promise of files error or null if there's none
+   */
+  @Method()
+  getFilesError (): Promise<FileError[] | null> {
+    // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+    const err = this.files.filter(file => file.status === Status.ERROR).map(file => ({ filename: file.key, errorMessage: file.errorMessage! }))
+    return err.length > 0 ? Promise.resolve(err) : Promise.resolve(null)
+  }
+
   private updateCSSCustomProps = (): void => {
     const elementStyles = window.getComputedStyle(this.host)
     this.cssMinCols = Number(elementStyles.getPropertyValue('--mds-input-upload-min-cols'))
@@ -84,9 +94,7 @@ export class MdsInputUpload {
 
   private onDropHandler = (event: DragEvent) => {
     if (this.nativeInput && event.dataTransfer) {
-      this.nativeInput.files = this.prepareFiles(event.dataTransfer.files)
-      this.internals.setFormValue(this.nativeInput.value)
-      this.changedEvent.emit(this.nativeInput.files)
+      this.update(this.nativeInput, this.prepareFiles(event.dataTransfer.files))
     }
     event.preventDefault()
   }
@@ -109,9 +117,7 @@ export class MdsInputUpload {
 
   private onAdd = (event: Event) => {
     const input = ((event.target) as HTMLInputElement)
-    input.files = this.prepareFiles(input.files)
-    this.internals.setFormValue(input.value)
-    this.changedEvent.emit(input.files)
+    this.update(input, this.prepareFiles(input.files))
   }
 
   /**
@@ -123,9 +129,7 @@ export class MdsInputUpload {
     if (this.nativeInput) {
       const data = new DataTransfer()
       this.files.forEach(f => {if (f.status === Status.SUCCESS) {data.items.add(f.file)}})
-      this.nativeInput.files = data.files
-      this.updateProgress()
-      this.changedEvent.emit(data.files)
+      this.update(this.nativeInput, data.files)
     }
   }
 
@@ -135,11 +139,8 @@ export class MdsInputUpload {
   private onReset = () : void => {
     if (this.nativeInput) {
       this.files = []
-      this.nativeInput.files = null
       this.nativeInput.value = ''
-      this.internals.setFormValue(null)
-      this.updateProgress()
-      this.changedEvent.emit(null)
+      this.update(this.nativeInput, null)
     }
   }
 
@@ -171,12 +172,12 @@ export class MdsInputUpload {
         if (index !== -1) {
           this.files.splice(index, 1)
         }
-        const errorMessage = this.checkError(file)
+        const { errorMessage, type } = this.checkError(file)
         if (!errorMessage) {
           this.files.push({ key: file.name, file, id: this.id, status: Status.SUCCESS })
           this.fileUploaded += 1
         } else {
-          this.files.push({ key: file.name, file, id: this.id, status: Status.ERROR, errorMessage })
+          this.files.push({ key: file.name, file, id: this.id, status: Status.ERROR, errorType: type, errorMessage })
         }
       }
 
@@ -184,23 +185,54 @@ export class MdsInputUpload {
     // set input.files only uploadable file
     this.files.filter(f => f.status === Status.SUCCESS).forEach(f => data.items.add(f.file))
     this.sortFiles(this.files, this.sort ?? this.userSort)
-    this.updateProgress()
+    // this.updateProgress()
     return data.files
   }
 
-  private checkError (file: File): string {
-    let error = ''
+  private checkError (file: File): {errorMessage: string, type: ErrorType} {
+    let errorMessage, type
     if (this.fileUploaded >= this.maxFiles) {
-      error = 'Numero massimo di file raggiunto.'
+      errorMessage = 'Numero massimo di file raggiunto.'
+      type = ErrorType.MAX
     }
     if (!this.checkFileSize(file)){
-      error = 'File troppo grande.'
+      errorMessage = 'File troppo grande.'
+      type = ErrorType.SIZE
     }
     if (!this.checkFileType(file)){
-      error = 'Formato non consentito.'
+      errorMessage = 'Formato non consentito.'
+      type = ErrorType.TYPE
     }
-    return error
+    return { errorMessage, type }
   }
+
+  private update (input: HTMLInputElement, files: FileList | null): void {
+    input.files = files
+
+    const validity : ValidityStateFlags = {}
+    const errorMessage: Set<string> = new Set()
+    this.files.filter(f => f.status === Status.ERROR)
+      .forEach(error => {
+        switch (error.errorType) {
+        case ErrorType.MAX:
+          validity.rangeOverflow = true
+          break
+        case ErrorType.SIZE:
+          validity.tooLong = true
+          break
+        case ErrorType.TYPE:
+          validity.typeMismatch = true
+          break
+        }
+        // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+        errorMessage.add(error.errorMessage!)
+      })
+    this.internals.setFormValue(input.value)
+    this.internals.setValidity(validity, Array.from(errorMessage).join(', '))
+    this.updateProgress()
+    this.changedEvent.emit(files)
+  }
+
   /**
    * Update progress bar
    */

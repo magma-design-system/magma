@@ -41,7 +41,7 @@ import { MdsValidationErrors, MdsValidatorFn } from "./components/mds-input-fiel
 import { InputValue } from "@interface/input-value";
 import { InputSwitchSizeType, InputSwitchType } from "./components/mds-input-switch/meta/types";
 import { MdsInputSwitchEventDetail } from "./components/mds-input-switch/meta/event-detail";
-import { AttachmentSort } from "./components/mds-input-upload/meta/types";
+import { AttachmentSort, FileError } from "./components/mds-input-upload/meta/types";
 import { ModalPositionType } from "./components/mds-modal/meta/types";
 import { StrategyType } from "./components/mds-notification/meta/types";
 import { MdsPaginatorEventDetail } from "./components/mds-paginator/meta/event-detail";
@@ -94,7 +94,7 @@ export { MdsValidationErrors, MdsValidatorFn } from "./components/mds-input-fiel
 export { InputValue } from "@interface/input-value";
 export { InputSwitchSizeType, InputSwitchType } from "./components/mds-input-switch/meta/types";
 export { MdsInputSwitchEventDetail } from "./components/mds-input-switch/meta/event-detail";
-export { AttachmentSort } from "./components/mds-input-upload/meta/types";
+export { AttachmentSort, FileError } from "./components/mds-input-upload/meta/types";
 export { ModalPositionType } from "./components/mds-modal/meta/types";
 export { StrategyType } from "./components/mds-notification/meta/types";
 export { MdsPaginatorEventDetail } from "./components/mds-paginator/meta/event-detail";
@@ -1076,6 +1076,10 @@ export namespace Components {
           * Returns a promise of files uploaded as Filelist or null if there's none
          */
         "getFiles": () => Promise<FileList | null>;
+        /**
+          * Returns a promise of files error or null if there's none
+         */
+        "getFilesError": () => Promise<FileError[] | null>;
         /**
           * Specifies the max size of a single file that can be uploaded in MB
          */
@@ -3815,7 +3819,7 @@ declare namespace LocalJSX {
          */
         "maxFiles"?: number;
         /**
-          * Emits when the component attribute selected is changed
+          * Emits when the component files are changed
          */
         "onMdsInputUploadChange"?: (event: MdsInputUploadCustomEvent<FileList | null>) => void;
         /**
