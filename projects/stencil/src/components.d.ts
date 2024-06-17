@@ -511,6 +511,10 @@ export namespace Components {
          */
         "preview"?: string;
         /**
+          * Sets if the download icon must be shown or not
+         */
+        "showDownloadedIcon"?: boolean;
+        /**
           * Overrides the automatic filetype recongition by forcing the suffix to one of the available formats choosen
          */
         "suffix"?: ExtensionSuffixType;
@@ -3196,6 +3200,10 @@ declare namespace LocalJSX {
           * The image preview src if available of a file, useful if you have a logo to display, or a smaller version of a bigger image
          */
         "preview"?: string;
+        /**
+          * Sets if the download icon must be shown or not
+         */
+        "showDownloadedIcon"?: boolean;
         /**
           * Overrides the automatic filetype recongition by forcing the suffix to one of the available formats choosen
          */

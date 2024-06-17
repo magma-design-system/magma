@@ -45,6 +45,11 @@ export class MdsFile {
   @Prop() readonly preview?: string
 
   /**
+   * Sets if the download icon must be shown or not
+   */
+  @Prop() readonly showDownloadedIcon?: boolean = true
+
+  /**
    * Emits when the component is clicked, returning file infos
    */
   @Event({ eventName: 'mdsFileDownload' }) downloadedEvent: EventEmitter<MdsFileEventDetail>
@@ -91,7 +96,7 @@ export class MdsFile {
             <mds-text truncate="word" typography="caption" class="description" title={ this.description ?? this.getDefaultDescription() }>{ this.description ?? this.getDefaultDescription() }</mds-text>
           </div>
         </div>
-        { this.wasDownloaded &&
+        { this.wasDownloaded && this.showDownloadedIcon &&
           <div class="indicator">
             <i class="svg downloaded" innerHTML={miBaselineFileDownloadDone} title={this.downloadedLabel}/>
           </div>
