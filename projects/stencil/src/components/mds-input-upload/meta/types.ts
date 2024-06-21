@@ -7,6 +7,12 @@ enum Status {
   SUCCESS
 }
 
+enum ErrorType {
+  SIZE,
+  TYPE,
+  MAX,
+}
+
 type AttachmentSort =
   'status' |
   'date'
@@ -15,10 +21,15 @@ interface FileStatus {
   key: string,
   file: File,
   status: Status,
-  errorMessage?: string
-  id: number
+  errorMessage?: string,
+  errorType?: ErrorType,
+  id: number,
 }
 
+interface FileError {
+  filename: string,
+  errorMessage: string,
+}
 
 export {
   LOCALSTORAGE_KEY_USER_SORT,
@@ -26,4 +37,6 @@ export {
   AttachmentSort,
   Status,
   FileStatus,
+  ErrorType,
+  FileError,
 }

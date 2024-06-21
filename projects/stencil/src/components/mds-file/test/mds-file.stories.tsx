@@ -15,6 +15,10 @@ export default {
       type: { name: 'string' },
       description: 'Sets a label which is shown when the file is downloaded',
     },
+    'show-downloaded-icon': {
+      type: { name:'boolean' },
+      description: 'Sets if shows an icon when the file is downloaded',
+    },
     filename: {
       type: { name: 'string' },
       description: 'The filename shown as component title, is used to auto assign one of the filetype known in the filetype dictionary',

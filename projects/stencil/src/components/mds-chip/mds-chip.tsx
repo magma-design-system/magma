@@ -79,7 +79,7 @@ export class MdsChip {
 
   private handleDeletableKeyboard = (): void => {
     if (this.deletable) {
-      const deleteElement = this.host.shadowRoot?.querySelector('.delete') as HTMLElement
+      const deleteElement = this.host.shadowRoot?.querySelector('.button-delete') as HTMLElement
       this.km.addElement(deleteElement, 'delete')
       this.km.attachClickBehavior('delete')
       return
@@ -102,7 +102,7 @@ export class MdsChip {
   }
 
   private handleDeletableElement = (): void => {
-    const deleteElement = this.host.shadowRoot?.querySelector('.delete') as HTMLElement
+    const deleteElement = this.host.shadowRoot?.querySelector('.button-delete') as HTMLElement
     if (!deleteElement) {
       return
     }

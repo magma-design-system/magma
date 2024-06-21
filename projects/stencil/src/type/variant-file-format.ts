@@ -4,6 +4,15 @@ import baselineAudiotrack from '@icon/mi/baseline/audiotrack.svg'
 import baselineTerminal from '@icon/mi/baseline/terminal.svg'
 import baselineInsertDriveFile from '@icon/mi/baseline/insert-drive-file.svg'
 import mdiHardDisk from '@icon/mdi/harddisk.svg'
+import baselineEmail from '@icon/mi/baseline/email.svg'
+import baselineWysiwyg from '@icon/mi/baseline/wysiwyg.svg'
+import baselinePanorama from '@icon/mi/baseline/panorama.svg'
+import baselineWeb from '@icon/mi/baseline/web.svg'
+import baselineTV from '@icon/mi/baseline/tv.svg'
+import baselineBorderAll from '@icon/mi/baseline/border-all.svg'
+import baselineDescription from '@icon/mi/baseline/description.svg'
+import mdiVectorCurve from '@icon/mdi/vector-curve.svg'
+import baselineVideocam from '@icon/mi/baseline/videocam.svg'
 
 interface FileFormatVariant {
   color: string
@@ -55,67 +64,67 @@ const fileFormatsVariant: FileFormatVariants = {
   },
   email: {
     color: 'fill-label-blue-04 text-label-blue-04',
-    icon: 'mi/baseline/email',
+    icon: baselineEmail,
     iconBackground: 'bg-label-blue-10',
     variant: 'blue',
   },
   executable: {
     color: 'fill-label-amaranth-04 text-label-amaranth-04',
-    icon: 'mi/baseline/wysiwyg',
+    icon: baselineWysiwyg,
     iconBackground: 'bg-label-amaranth-10',
     variant: 'amaranth',
   },
   image: {
     color: 'fill-label-green-04 text-label-green-04',
-    icon: 'mi/baseline/panorama',
+    icon: baselinePanorama,
     iconBackground: 'bg-label-green-10',
     variant: 'green',
   },
   imageRaster: {
     color: 'fill-label-green-04 text-label-green-04',
-    icon: 'mi/baseline/panorama',
+    icon: baselinePanorama,
     iconBackground: 'bg-label-green-10',
     variant: 'green',
   },
   markup: {
     color: 'fill-label-yellow-04 text-label-yellow-04',
-    icon: 'mi/baseline/web',
+    icon: baselineWeb,
     iconBackground: 'bg-label-yellow-10',
     variant: 'yellow',
   },
   slide: {
     color: 'fill-label-orchid-04 text-label-orchid-04',
-    icon: 'mi/baseline/tv',
+    icon: baselineTV,
     iconBackground: 'bg-label-orchid-10',
     variant: 'orchid',
   },
   spreadsheet: {
     color: 'fill-label-lime-04 text-label-lime-04',
-    icon: 'mi/baseline/border-all',
+    icon: baselineBorderAll,
     iconBackground: 'bg-label-lime-10',
     variant: 'lime',
   },
   text: {
     color: 'fill-label-blue-04 text-label-blue-04',
-    icon: 'mi/baseline/description',
+    icon: baselineDescription,
     iconBackground: 'bg-label-blue-10',
     variant: 'blue',
   },
   vectorImage: {
     color: 'fill-label-aqua-04 text-label-aqua-04',
-    icon: 'mdi/vector-curve',
+    icon: mdiVectorCurve,
     iconBackground: 'bg-label-aqua-10',
     variant: 'aqua',
   },
   vector: {
     color: 'fill-label-aqua-04 text-label-aqua-04',
-    icon: 'mdi/vector-curve',
+    icon: mdiVectorCurve,
     iconBackground: 'bg-label-aqua-10',
     variant: 'aqua',
   },
   video: {
     color: 'fill-label-violet-04 text-label-violet-04',
-    icon: 'mi/baseline/videocam',
+    icon: baselineVideocam,
     iconBackground: 'bg-label-violet-10',
     variant: 'violet',
   },
