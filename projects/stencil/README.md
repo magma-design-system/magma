@@ -195,13 +195,18 @@ Will be updated to:
   }
 }
 ```
-<!--
+
 ### Update component dependencies and core dependencies
 
-The option `--sync-dep` will also update dependencies found also in `stencil/package.json` file.
+The option `--common` will also update dependencies found also in `stencil/package.json` file for each component that have the updated dependencies.
 
 ```
-nx run stencil:update.dependencies --sync-dep --version=patch mds-foo
+nx run stencil:update --common
+```
+
+Note: if you want choose type of version you need to add `--` with nx run command:
+```
+nx run stencil:update -- --common --version=minor
 ```
 
 This means if you have a component `mds-foo/package.json`:
@@ -211,9 +216,9 @@ This means if you have a component `mds-foo/package.json`:
   "name": "@maggioli-design-system/mds-foo",
   "version": "1.0.0",
   "dependencies": {
-    "@maggioli-design-system/mds-dep-1": "^1.1.2",
-    "@maggioli-design-system/styles": "^11.0.0",
-    "@stencil/core": "^4.2.0"
+    "@maggioli-design-system/mds-dep-1": "1.1.2",
+    "@maggioli-design-system/styles": "11.0.0",
+    "@stencil/core": "4.2.0"
   }
 }
 ```
@@ -225,9 +230,9 @@ And this is `stencil/package.json`:
   "name": "stencil",
   "version": "1.0.0",
   "dependencies": {
-    "clsx": "^2.0.0",
-    "@maggioli-design-system/styles": "^13.0.0",
-    "@stencil/core": "^4.6.0",
+    "clsx": "2.0.0",
+    "@maggioli-design-system/styles": "13.0.0",
+    "@stencil/core": "4.6.0",
     "fitty": "2.3.7",
     "idb-keyval": "6.2.1"
   }
@@ -241,22 +246,12 @@ The command will update the dependecies both found on `stencil` and `mds-foo` on
   "name": "@maggioli-design-system/mds-foo",
   "version": "1.0.1",
   "dependencies": {
-    "@maggioli-design-system/mds-dep-1": "^1.1.2",
-    "@maggioli-design-system/styles": "^13.0.0",
-    "@stencil/core": "^4.6.0"
+    "@maggioli-design-system/mds-dep-1": "1.1.2",
+    "@maggioli-design-system/styles": "13.0.0",
+    "@stencil/core": "4.6.0"
   }
 }
 ```
 
 So you can update `@stencil/core` based on `stencil/package.json` without add unwanted dependencies to `mds-foo/package.json`.
 
-
-### Update all components with it's dependencies
-
-If for some reason you need to update all components in mass with a patch:
-
-```
-nx run stencil:update.dependencies --sync-dep all
-nx run stencil:update.version patch all
-```
--->
