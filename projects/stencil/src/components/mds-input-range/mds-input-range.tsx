@@ -45,7 +45,7 @@ export class MdsInputRange {
     let v = parseInt(this.inputElement.value)
     if (v > this.max) v = this.max
     else if (v < this.min) v = this.min
-    if (v % this.step !== 0) v = Math.round(v / this.step) * this.step
+    if ((v - this.min) % (this.step) !== 0) v = Math.round(v / this.step) * this.step - this.min
     this.value = v
 
     this.internals.setFormValue(this.value.toString())
@@ -77,12 +77,14 @@ export class MdsInputRange {
 
   @Watch('step')
   stepChanged (): void {
+    if (this.step < 1) throw Error('step cant be negative or zero')
     this.calculateProgress()
   }
 
   componentDidLoad (): void {
     this.inputElement = this.element.shadowRoot?.querySelector('.field') as HTMLInputElement
     this.value = parseInt(this.inputElement.value)
+    this.calculateProgress()
   }
 
   render () {
