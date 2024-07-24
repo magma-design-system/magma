@@ -1,13 +1,18 @@
-import { Component, Event, EventEmitter, Host, h, Prop, Watch } from '@stencil/core'
+import { AttachInternals, Component, Element, Event, EventEmitter, Host, h, Prop, Watch } from '@stencil/core'
 
 @Component({
   tag: 'mds-input-range',
   styleUrl: 'mds-input-range.css',
+  formAssociated: true,
   shadow: true,
 })
 export class MdsInputRange {
 
-  private progress:number
+  private progress: number
+  private inputElement: HTMLInputElement
+
+  @Element() private element: HTMLMdsInputRangeElement
+  @AttachInternals() internals: ElementInternals
 
   /**
    * The greatest value in the range of permitted values
@@ -36,13 +41,14 @@ export class MdsInputRange {
   @Event({ eventName: 'mdsInputRangeChange' }) changeEvent: EventEmitter<number>
 
   private calculateProgress = () => {
+    this.value = parseInt(this.inputElement.value, 10)
+    this.internals.setFormValue(this.value.toString())
     const total = Math.abs(this.min) + Math.abs(this.max)
-    const current = this.value + Math.abs(this.min)
+    const current = Math.round(this.value / (this.step ?? 1)) * (this.step ?? 1) + Math.abs(this.min)
     this.progress = current * 100 / total
   }
 
-  private onInput = (e: Event) => {
-    this.value = parseInt((e.target as HTMLInputElement).value, 10)
+  private onInput = () => {
     this.calculateProgress()
     this.changeEvent.emit(this.value)
   }
@@ -66,8 +72,9 @@ export class MdsInputRange {
   stepChanged (): void {
     this.calculateProgress()
   }
-
-  componentWillLoad (): void {
+  
+  componentDidLoad (): void {
+    this.inputElement = this.element.shadowRoot?.querySelector('.field') as HTMLInputElement
     this.calculateProgress()
   }
 
