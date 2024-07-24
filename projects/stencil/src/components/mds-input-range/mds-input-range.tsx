@@ -1,4 +1,4 @@
-import { AttachInternals, Component, Element, Event, EventEmitter, Host, h, Prop, Watch } from '@stencil/core'
+import { AttachInternals, Component, Element, Event, EventEmitter, Host, h, Prop, Watch, State } from '@stencil/core'
 
 @Component({
   tag: 'mds-input-range',
@@ -8,7 +8,7 @@ import { AttachInternals, Component, Element, Event, EventEmitter, Host, h, Prop
 })
 export class MdsInputRange {
 
-  private progress: number
+  @State() private progress: number
   private inputElement: HTMLInputElement
 
   @Element() private element: HTMLMdsInputRangeElement
@@ -28,12 +28,12 @@ export class MdsInputRange {
    * The step attribute is a number that specifies the granularity that
    * the value must adhere to, or the special value any, which is described below.
    */
-  @Prop() readonly step?: number = 1
+  @Prop() readonly step: number = 1
 
   /**
    * The value attribute contains a number which contains a representation of the selected number.
    */
-  @Prop({ mutable: true, reflect: true }) value = 50
+  @Prop({ mutable: false, reflect: true }) value: number
 
   /**
    * Emits when the input range is changed
@@ -41,40 +41,47 @@ export class MdsInputRange {
   @Event({ eventName: 'mdsInputRangeChange' }) changeEvent: EventEmitter<number>
 
   private calculateProgress = () => {
-    this.value = parseInt(this.inputElement.value, 10)
     this.internals.setFormValue(this.value.toString())
-    const total = Math.abs(this.min) + Math.abs(this.max)
-    const current = Math.round(this.value / (this.step ?? 1)) * (this.step ?? 1) + Math.abs(this.min)
+    const total = this.max - this.min
+    const current = this.value - this.min
     this.progress = current * 100 / total
   }
 
   private onInput = () => {
+    // trigger valueChanged that update progress and emit event
+    this.value = parseInt(this.inputElement.value)
+  }
+  @Watch('value')
+  valueChanged (): void {
+    if (this.value > this.max) this.value = this.max
+    else if (this.value < this.min) this.value = this.min
+    if (this.value % this.step !== 0) this.value = Math.round(this.value / this.step) * this.step
+    this.inputElement.value = this.value.toString()
     this.calculateProgress()
     this.changeEvent.emit(this.value)
   }
 
-  @Watch('value')
-  valueChanged (): void {
-    this.calculateProgress()
-  }
-
   @Watch('min')
   minChanged (): void {
+    this.value = parseInt(this.inputElement.value)
     this.calculateProgress()
   }
 
   @Watch('max')
   maxChanged (): void {
+    this.value = parseInt(this.inputElement.value)
     this.calculateProgress()
   }
 
   @Watch('step')
   stepChanged (): void {
+    this.value = parseInt(this.inputElement.value)
     this.calculateProgress()
   }
-  
+
   componentDidLoad (): void {
     this.inputElement = this.element.shadowRoot?.querySelector('.field') as HTMLInputElement
+    this.value = parseInt(this.inputElement.value)
     this.calculateProgress()
   }
 
