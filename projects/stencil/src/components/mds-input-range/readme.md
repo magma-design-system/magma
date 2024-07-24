@@ -24,6 +24,17 @@ This is a web-component from Maggioli Design System [Magma](https://magma.maggio
 | `mdsInputRangeChange` | Emits when the input range is changed | `CustomEvent<number>` |
 
 
+## CSS Custom Properties
+
+| Name                                          | Description                                      |
+| --------------------------------------------- | ------------------------------------------------ |
+| `--mds-input-range-thumb-background`          |                                                  |
+| `--mds-input-range-thumb-size`                | Sets the thumb width and height of the component |
+| `--mds-input-range-track-background`          |                                                  |
+| `--mds-input-range-track-progress-background` |                                                  |
+| `--mds-input-range-track-size`                |                                                  |
+
+
 ## Dependencies
 
 ### Depends on

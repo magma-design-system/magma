@@ -1,3 +1,6 @@
+@import '~@maggioli-design-system/styles/dist/css/animations.css';
+@import '../../tailwind/components.css';
+@tailwind components;
 @tailwind utilities;
 
 /**
@@ -56,53 +59,51 @@
 
 .field {
   @apply
-    m-0
+    focus-bounce
+    h-400
     z-20;
 
+  appearance: none;
+  background-color: transparent;
+  border-radius: 1000px;
   flex-grow: 1;
+  margin: 0;
 }
 
-.field:focus {
-  outline: none;
+.field:focus-visible {
+  @apply focus-bounce--focused;
+}
+
+.field::-webkit-slider-thumb {
+  appearance: none;
+  background-color: var(--mds-input-range-thumb-background);
+  border: 0;
+  border-radius: var(--mds-input-range-thumb-size);
+  cursor: pointer;
+  height: var(--mds-input-range-thumb-size);
+  line-height: 0;
+  transform: translate(0, -50%);
+  width: var(--mds-input-range-thumb-size);
+}
+
+.field::-webkit-slider-runnable-track {
+  appearance: none;
+  border: 0;
+  height: 0;
+  width: 100%;
+}
+
+.track-progress {
+  background-color: var(--mds-input-range-track-progress-background);
+  display: flex;
+  height: var(--mds-input-range-track-size);
 }
 
 .track-total {
-  display: none;
-}
-
-@supports (-webkit-appearance: none) {
-  input[type = 'range']::-webkit-slider-thumb {
-    appearance: none;
-    background-color: var(--mds-input-range-thumb-background);
-    border: 0;
-    border-radius: var(--mds-input-range-thumb-size);
-    cursor: pointer;
-    height: var(--mds-input-range-thumb-size);
-    line-height: 0;
-    transform: translate(0, -50%);
-    width: var(--mds-input-range-thumb-size);
-  }
-
-  input[type = 'range']::-webkit-slider-runnable-track {
-    appearance: none;
-    border: 0;
-    height: 0;
-    width: 100%;
-  }
-
-  .track-progress {
-    background-color: var(--mds-input-range-track-progress-background);
-    display: flex;
-    height: var(--mds-input-range-track-size);
-  }
-
-  .track-total {
-    @apply w-full;
-
-    background-color: var(--mds-input-range-track-background);
-    border-radius: var(--mds-input-range-track-size);
-    display: flex;
-    height: var(--mds-input-range-track-size);
-    overflow: hidden;
-  }
+  background-color: var(--mds-input-range-track-background);
+  border-radius: var(--mds-input-range-track-size);
+  display: flex;
+  height: var(--mds-input-range-track-size);
+  overflow: hidden;
+  width: 100%;
 }
