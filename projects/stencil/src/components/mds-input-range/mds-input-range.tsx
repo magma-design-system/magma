@@ -33,14 +33,21 @@ export class MdsInputRange {
   /**
    * The value attribute contains a number which contains a representation of the selected number.
    */
-  @Prop({ mutable: false, reflect: true }) value: number
+  @Prop({ mutable: true, reflect: true }) value: number
 
   /**
    * Emits when the input range is changed
    */
   @Event({ eventName: 'mdsInputRangeChange' }) changeEvent: EventEmitter<number>
 
-  private calculateProgress = () => {
+  calculateProgress (): void {
+    // validate value
+    let v = parseInt(this.inputElement.value)
+    if (v > this.max) v = this.max
+    else if (v < this.min) v = this.min
+    if (v % this.step !== 0) v = Math.round(v / this.step) * this.step
+    this.value = v
+
     this.internals.setFormValue(this.value.toString())
     const total = this.max - this.min
     const current = this.value - this.min
@@ -53,9 +60,6 @@ export class MdsInputRange {
   }
   @Watch('value')
   valueChanged (): void {
-    if (this.value > this.max) this.value = this.max
-    else if (this.value < this.min) this.value = this.min
-    if (this.value % this.step !== 0) this.value = Math.round(this.value / this.step) * this.step
     this.inputElement.value = this.value.toString()
     this.calculateProgress()
     this.changeEvent.emit(this.value)
@@ -63,26 +67,22 @@ export class MdsInputRange {
 
   @Watch('min')
   minChanged (): void {
-    this.value = parseInt(this.inputElement.value)
     this.calculateProgress()
   }
 
   @Watch('max')
   maxChanged (): void {
-    this.value = parseInt(this.inputElement.value)
     this.calculateProgress()
   }
 
   @Watch('step')
   stepChanged (): void {
-    this.value = parseInt(this.inputElement.value)
     this.calculateProgress()
   }
 
   componentDidLoad (): void {
     this.inputElement = this.element.shadowRoot?.querySelector('.field') as HTMLInputElement
     this.value = parseInt(this.inputElement.value)
-    this.calculateProgress()
   }
 
   render () {
