@@ -8,7 +8,7 @@ import { logStatus } from '../../../scripts/log'
 const VERBOSE = true
 
 class Maggioli {
-  static ICONS_DIR = `${path.dirname(require.resolve('@maggioli-design-system/svg-icons/package.json'))}/svg`
+  static ICONS_DIR = `${path.dirname(require.resolve('@maggioli-design-system/svg-icons/package.json'))}/dist/svg`
   static FILE_NAME_REGEX = /^([\w0-9-]+)\.svg$/
 
   /**
