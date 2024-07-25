@@ -5,9 +5,11 @@ import fs from 'fs/promises'
 import path from 'path'
 import { logStatus } from '../../../scripts/log'
 
+const VERBOSE = true
+
 class Maggioli {
   static ICONS_DIR = `${path.dirname(require.resolve('@maggioli-design-system/svg-icons/package.json'))}/svg`
-  static FILE_NAME_REGEX = /^([\w-]+)\.svg$/
+  static FILE_NAME_REGEX = /^([\w0-9-]+)\.svg$/
 
   /**
    * List of paths of subdirectories (possibly) with icons
@@ -155,7 +157,7 @@ class MaterialCommunity {
 }
 
 class LocalDirectory {
-  static FILE_NAME_REGEX = /^([\w-]+)\.svg$/
+  static FILE_NAME_REGEX = /^([\w0-9-]+)\.svg$/
 
   /**
    * List of paths of subdirectories (possibly) with icons
@@ -208,13 +210,13 @@ const subDirectories = async (source: string): Promise<string[]> => {
 const iconGroupGetHelper = async (iconGroup: string, directories: string[], iconName: string, filename: string): Promise<string> => {
   for (const directory of directories) {
     const fullPath = await searchFileInDirectory(directory, filename)
-    logStatus({
-      actionDoing: 'checking',
-      subject: iconName,
-      status: 'match',
-      match: path.basename(filename),
-    })
     if (fullPath) {
+      logStatus({
+        actionDoing: 'checking',
+        subject: iconName,
+        status: 'match',
+        match: VERBOSE ? fullPath : path.basename(filename),
+      })
       return fullPath
     }
   }
