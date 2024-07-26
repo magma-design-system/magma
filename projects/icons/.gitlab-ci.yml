@@ -2,12 +2,14 @@
 icons-build:
   extends: .base-build
   script:
+    - nx run svg-icons:build
     - nx run icons:build
   artifacts:
     name: icons-build
     expire_in: 1 day
     paths:
       - projects/icons/dist
+      - projects/svg-icons/dist
   cache:
     policy: pull-push
   rules:
