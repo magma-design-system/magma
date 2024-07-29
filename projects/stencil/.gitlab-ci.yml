@@ -7,6 +7,7 @@ base-stencil-build:
   script:
     - nx run design-tokens:build
     - nx run styles:build
+    - nx run svg-icons:build
     - nx run icons:build
     - nx run stencil:build.fixtures
     - nx run stencil:build.icons
@@ -19,6 +20,7 @@ base-stencil-build:
       - projects/design-tokens/config
       - projects/design-tokens/properties
       - projects/styles/dist
+      - projects/svg-icons/dist
       - projects/icons/dist
       - projects/stencil/dist
       - projects/stencil/src/components.d.ts

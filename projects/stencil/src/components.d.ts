@@ -997,7 +997,7 @@ export namespace Components {
         /**
           * The step attribute is a number that specifies the granularity that the value must adhere to, or the special value any, which is described below.
          */
-        "step"?: number;
+        "step": number;
         /**
           * The value attribute contains a number which contains a representation of the selected number.
          */

@@ -1,13 +1,18 @@
-import { Component, Event, EventEmitter, Host, h, Prop, Watch } from '@stencil/core'
+import { AttachInternals, Component, Element, Event, EventEmitter, Host, h, Prop, Watch, State } from '@stencil/core'
 
 @Component({
   tag: 'mds-input-range',
   styleUrl: 'mds-input-range.css',
+  formAssociated: true,
   shadow: true,
 })
 export class MdsInputRange {
 
-  private progress:number
+  @State() private progress: number
+  private inputElement: HTMLInputElement
+
+  @Element() private element: HTMLMdsInputRangeElement
+  @AttachInternals() internals: ElementInternals
 
   /**
    * The greatest value in the range of permitted values
@@ -23,33 +28,41 @@ export class MdsInputRange {
    * The step attribute is a number that specifies the granularity that
    * the value must adhere to, or the special value any, which is described below.
    */
-  @Prop() readonly step?: number = 1
+  @Prop() readonly step: number = 1
 
   /**
    * The value attribute contains a number which contains a representation of the selected number.
    */
-  @Prop({ mutable: true, reflect: true }) value = 50
+  @Prop({ mutable: true, reflect: true }) value: number
 
   /**
    * Emits when the input range is changed
    */
   @Event({ eventName: 'mdsInputRangeChange' }) changeEvent: EventEmitter<number>
 
-  private calculateProgress = () => {
-    const total = Math.abs(this.min) + Math.abs(this.max)
-    const current = this.value + Math.abs(this.min)
+  calculateProgress (): void {
+    // validate value
+    let v = parseInt(this.inputElement.value)
+    if (v > this.max) v = this.max
+    else if (v < this.min) v = this.min
+    if ((v - this.min) % (this.step) !== 0) v = Math.round(v / this.step) * this.step - this.min
+    this.value = v
+
+    this.internals.setFormValue(this.value.toString())
+    const total = this.max - this.min
+    const current = this.value - this.min
     this.progress = current * 100 / total
   }
 
-  private onInput = (e: Event) => {
-    this.value = parseInt((e.target as HTMLInputElement).value, 10)
-    this.calculateProgress()
-    this.changeEvent.emit(this.value)
+  private onInput = () => {
+    // trigger valueChanged that update progress and emit event
+    this.value = parseInt(this.inputElement.value)
   }
-
   @Watch('value')
   valueChanged (): void {
+    this.inputElement.value = this.value.toString()
     this.calculateProgress()
+    this.changeEvent.emit(this.value)
   }
 
   @Watch('min')
@@ -64,10 +77,13 @@ export class MdsInputRange {
 
   @Watch('step')
   stepChanged (): void {
+    if (this.step < 1) throw Error('step cant be negative or zero')
     this.calculateProgress()
   }
 
-  componentWillLoad (): void {
+  componentDidLoad (): void {
+    this.inputElement = this.element.shadowRoot?.querySelector('.field') as HTMLInputElement
+    this.value = parseInt(this.inputElement.value)
     this.calculateProgress()
   }
 
