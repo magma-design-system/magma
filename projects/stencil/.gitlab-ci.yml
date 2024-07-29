@@ -131,7 +131,6 @@ stencil-test:
 include:
   # - '/projects/stencil/src/components/mds-form/.gitlab-ci.yml'
   # - '/projects/stencil/src/components/mds-input-field/.gitlab-ci.yml'
-  # - '/projects/stencil/src/components/mds-input-range/.gitlab-ci.yml'
   # - '/projects/stencil/src/components/mds-kpi-item/.gitlab-ci.yml'
   # - '/projects/stencil/src/components/mds-kpi/.gitlab-ci.yml'
   - '/projects/stencil/src/components/mds-accordion-item/.gitlab-ci.yml'
@@ -167,6 +166,7 @@ include:
   - '/projects/stencil/src/components/mds-hr/.gitlab-ci.yml'
   - '/projects/stencil/src/components/mds-icon/.gitlab-ci.yml'
   - '/projects/stencil/src/components/mds-img/.gitlab-ci.yml'
+  - '/projects/stencil/src/components/mds-input-range/.gitlab-ci.yml'
   - '/projects/stencil/src/components/mds-input-select/.gitlab-ci.yml'
   - '/projects/stencil/src/components/mds-input-switch/.gitlab-ci.yml'
   - '/projects/stencil/src/components/mds-input-upload/.gitlab-ci.yml'
