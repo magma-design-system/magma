@@ -1,5 +1,8 @@
 import { AttachInternals, Component, Element, Event, EventEmitter, Host, h, Prop, Watch, State } from '@stencil/core'
 
+/**
+ * @part header - The element containing the labels displayed over the input element
+ */
 @Component({
   tag: 'mds-input-range',
   styleUrl: 'mds-input-range.css',
@@ -90,7 +93,7 @@ export class MdsInputRange {
   render () {
     return (
       <Host>
-        <header class="header">
+        <header class="header" part="header">
           <mds-text class="label" typography="label"><slot/></mds-text>
           <mds-text class="value" typography="label">{ this.value }</mds-text>
         </header>

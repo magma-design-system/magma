@@ -24,6 +24,13 @@ This is a web-component from Maggioli Design System [Magma](https://magma.maggio
 | `mdsInputRangeChange` | Emits when the input range is changed | `CustomEvent<number>` |
 
 
+## Shadow Parts
+
+| Part       | Description                                                        |
+| ---------- | ------------------------------------------------------------------ |
+| `"header"` | The element containing the labels displayed over the input element |
+
+
 ## CSS Custom Properties
 
 | Name                                          | Description                                      |
