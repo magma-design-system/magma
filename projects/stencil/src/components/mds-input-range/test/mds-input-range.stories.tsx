@@ -27,6 +27,21 @@ const Template = args =>
     Range label
   </mds-input-range>
 
+const hideHeaderCss = `
+  mds-input-range::part(header) {
+    display: none;
+  }
+`
+
+const HideHeaderTemplate = args =>
+  <div>
+    <style>{hideHeaderCss}</style>
+    <mds-input-range {...args}>
+      This shouldn't be visible
+    </mds-input-range>
+  </div>
+
+
 export const Default = Template.bind({})
 
 export const Min = Template.bind({})
@@ -48,3 +63,5 @@ export const Value = Template.bind({})
 Value.args = {
   value: 90,
 }
+
+export const HideHeader = HideHeaderTemplate.bind({})
