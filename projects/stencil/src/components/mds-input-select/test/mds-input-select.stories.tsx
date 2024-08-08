@@ -8,6 +8,10 @@ citiesDictionary.map((element, index) => { cities[index] = element } )
 export default {
   title: 'Form / Select',
   argTypes: {
+    value: {
+      type: { name: 'string' },
+      description: 'The selected value of the select',
+    },
     autocomplete: {
       description: 'Specifies whether the element should have autocomplete enabled',
       options: autoCompleteDictionary,

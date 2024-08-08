@@ -1025,6 +1025,10 @@ export namespace Components {
          */
         "multiple"?: boolean;
         /**
+          * Is needed to reference the form data after the form is submitted
+         */
+        "name"?: string;
+        /**
           * Specifies a short hint that describes the expected value of the element
          */
         "placeholder"?: string;
@@ -3782,6 +3786,10 @@ declare namespace LocalJSX {
           * Specifies if the select should allow multiple options to be selected in the list
          */
         "multiple"?: boolean;
+        /**
+          * Is needed to reference the form data after the form is submitted
+         */
+        "name"?: string;
         /**
           * Emits an InputChangeEventDetail when the value of the input element changes
          */

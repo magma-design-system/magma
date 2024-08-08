@@ -35,6 +35,11 @@ export class MdsInputSelect {
   @Prop({ reflect: true }) readonly placeholder?: string
 
   /**
+   * Is needed to reference the form data after the form is submitted
+   */
+  @Prop({ reflect: true }) readonly name?: string
+
+  /**
    * If true, the element is displayed as disabled
    */
   @Prop({ reflect: true }) readonly disabled?: boolean = false
@@ -79,16 +84,23 @@ export class MdsInputSelect {
    */
   @Watch('value')
   protected valueChanged ():void {
+    this.selected = this.value !== ''
     this.changeEvent.emit({ value: this.value })
     this.internals.setFormValue((this.value as string) ?? null)
+  }
+
+  componentDidLoad (): void {
+    if (this.value) {
+      this.selected = true
+
+      this.internals.setFormValue(this.value as string)
+    }
   }
 
   private onInput = (ev: Event) => {
     const input = ev.target as HTMLSelectElement | false
     if (input) {
-      this.selected = input.value !== ''
       this.value = input.value
-      // this.internals.setFormValue(input.value)
     }
   }
 
@@ -128,9 +140,19 @@ export class MdsInputSelect {
       this.emptyOptions()
     }
 
-    elements?.forEach((element: HTMLElement) => {
+    elements?.forEach((element: HTMLOptionElement) => {
       select?.appendChild(element.cloneNode(true))
     })
+
+    /**
+     * I found only this way to make the `select` element SEE the
+     * selected option that we wanted as a default
+     */
+    if (this.value){
+      select?.querySelectorAll('option').forEach((element: HTMLOptionElement) => {
+        element.selected = element.value === this.value
+      })
+    }
   }
 
   render () {
@@ -139,6 +161,7 @@ export class MdsInputSelect {
         <select
           class={clsx('input', this.selected && 'input--selected')}
           onInput={this.onInput.bind(this)}
+          name={this.name}
           required={this.required}
           disabled={this.disabled}
           multiple={this.multiple}
