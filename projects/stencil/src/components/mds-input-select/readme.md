@@ -30,6 +30,13 @@ This is a web-component from Maggioli Design System [Magma](https://magma.maggio
 | `mdsInputSelectChange` | Emits an InputChangeEventDetail when the value of the input element changes | `CustomEvent<InputValue>` |
 
 
+## Shadow Parts
+
+| Part       | Description             |
+| ---------- | ----------------------- |
+| `"select"` | The select HTML element |
+
+
 ## Dependencies
 
 ### Depends on

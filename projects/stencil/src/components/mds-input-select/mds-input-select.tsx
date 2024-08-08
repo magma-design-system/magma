@@ -4,6 +4,9 @@ import miBaselineKeyboardArrowDown from '@icon/mi/baseline/keyboard-arrow-down.s
 import { AttachInternals, Component, Element, Event, EventEmitter, Host, Prop, h, State, Watch } from '@stencil/core'
 import { InputValue } from '@interface/input-value'
 
+/**
+ * @part select - The select HTML element
+ */
 @Component({
   tag: 'mds-input-select',
   styleUrl: 'mds-input-select.css',
@@ -140,6 +143,7 @@ export class MdsInputSelect {
           disabled={this.disabled}
           multiple={this.multiple}
           size={this.size}
+          part="select"
         >
           { this.placeholder && <option value="" disabled selected>{ this.placeholder }</option> }
         </select>
