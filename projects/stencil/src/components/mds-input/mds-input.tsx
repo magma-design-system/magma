@@ -202,8 +202,8 @@ export class MdsInput {
   @Prop({ reflect: true }) readonly type?: InputTextType = 'text'
 
   /**
- * Specifies the typography of input element
- */
+   * Specifies the typography of input element
+   */
   @Prop({ reflect: true }) typography: TypographyInputType = 'detail'
 
   /**
