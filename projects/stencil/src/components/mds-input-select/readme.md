@@ -9,19 +9,20 @@ This is a web-component from Maggioli Design System [Magma](https://magma.maggio
 
 ## Properties
 
-| Property        | Attribute        | Description                                                                                        | Type                                    | Default          |
-| --------------- | ---------------- | -------------------------------------------------------------------------------------------------- | --------------------------------------- | ---------------- |
-| `autoFocus`     | `auto-focus`     | Specifies a short hint that describes the expected value of the element                            | `boolean \| undefined`                  | `undefined`      |
-| `autocomplete`  | `autocomplete`   | Specifies a short hint that describes the expected value of the element                            | `"on" \| undefined`                     | `undefined`      |
-| `disabled`      | `disabled`       | If true, the element is displayed as disabled                                                      | `boolean \| undefined`                  | `false`          |
-| `disabledLabel` | `disabled-label` | Specifies the label for the displayed state disabled                                               | `string \| undefined`                   | `'disattivato'`  |
-| `multiple`      | `multiple`       | Specifies if the select should allow multiple options to be selected in the list                   | `boolean \| undefined`                  | `false`          |
-| `name`          | `name`           | Is needed to reference the form data after the form is submitted                                   | `string \| undefined`                   | `undefined`      |
-| `placeholder`   | `placeholder`    | Specifies a short hint that describes the expected value of the element                            | `string \| undefined`                   | `undefined`      |
-| `required`      | `required`       | Specifies that the element must be filled out before submitting the form                           | `boolean \| undefined`                  | `false`          |
-| `requiredLabel` | `required-label` | Specifies the label for the displayed state required                                               | `string \| undefined`                   | `'obbligatorio'` |
-| `size`          | `size`           | When `multiple` is set to `true`, represents the number or rows in the list that should be visible | `number \| undefined`                   | `0`              |
-| `value`         | `value`          | Specifies the value of the element                                                                 | `null \| number \| string \| undefined` | `''`             |
+| Property        | Attribute        | Description                                                                                        | Type                                                       | Default          |
+| --------------- | ---------------- | -------------------------------------------------------------------------------------------------- | ---------------------------------------------------------- | ---------------- |
+| `autoFocus`     | `auto-focus`     | Specifies a short hint that describes the expected value of the element                            | `boolean \| undefined`                                     | `undefined`      |
+| `autocomplete`  | `autocomplete`   | Specifies a short hint that describes the expected value of the element                            | `"on" \| undefined`                                        | `undefined`      |
+| `disabled`      | `disabled`       | If true, the element is displayed as disabled                                                      | `boolean \| undefined`                                     | `false`          |
+| `disabledLabel` | `disabled-label` | Specifies the label for the displayed state disabled                                               | `string \| undefined`                                      | `'disattivato'`  |
+| `multiple`      | `multiple`       | Specifies if the select should allow multiple options to be selected in the list                   | `boolean \| undefined`                                     | `false`          |
+| `name`          | `name`           | Is needed to reference the form data after the form is submitted                                   | `string \| undefined`                                      | `undefined`      |
+| `placeholder`   | `placeholder`    | Specifies a short hint that describes the expected value of the element                            | `string \| undefined`                                      | `undefined`      |
+| `required`      | `required`       | Specifies that the element must be filled out before submitting the form                           | `boolean \| undefined`                                     | `false`          |
+| `requiredLabel` | `required-label` | Specifies the label for the displayed state required                                               | `string \| undefined`                                      | `'obbligatorio'` |
+| `size`          | `size`           | When `multiple` is set to `true`, represents the number or rows in the list that should be visible | `number \| undefined`                                      | `0`              |
+| `value`         | `value`          | Specifies the value of the component                                                               | `null \| number \| string \| undefined`                    | `''`             |
+| `variant`       | `variant`        | Sets the variant of the component                                                                  | `"error" \| "info" \| "success" \| "warning" \| undefined` | `undefined`      |
 
 
 ## Events

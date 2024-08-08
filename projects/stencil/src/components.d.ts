@@ -1045,9 +1045,13 @@ export namespace Components {
          */
         "size"?: number;
         /**
-          * Specifies the value of the element
+          * Specifies the value of the component
          */
         "value"?: string | number | null;
+        /**
+          * Sets the variant of the component
+         */
+        "variant"?: ThemeStatusVariantType;
     }
     interface MdsInputSwitch {
         /**
@@ -3811,9 +3815,13 @@ declare namespace LocalJSX {
          */
         "size"?: number;
         /**
-          * Specifies the value of the element
+          * Specifies the value of the component
          */
         "value"?: string | number | null;
+        /**
+          * Sets the variant of the component
+         */
+        "variant"?: ThemeStatusVariantType;
     }
     interface MdsInputSwitch {
         /**

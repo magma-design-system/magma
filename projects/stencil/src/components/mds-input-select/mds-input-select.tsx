@@ -3,6 +3,7 @@ import miBaselineDone from '@icon/mi/baseline/done.svg'
 import miBaselineKeyboardArrowDown from '@icon/mi/baseline/keyboard-arrow-down.svg'
 import { AttachInternals, Component, Element, Event, EventEmitter, Host, Prop, h, State, Watch } from '@stencil/core'
 import { InputValue } from '@interface/input-value'
+import { ThemeStatusVariantType } from '@type/variant'
 
 /**
  * @part select - The select HTML element
@@ -70,9 +71,14 @@ export class MdsInputSelect {
   @Prop({ reflect: true }) readonly size?: number = 0
 
   /**
-   * Specifies the value of the element
+   * Specifies the value of the component
    */
   @Prop({ reflect: true }) value?: string | number | null = ''
+
+  /**
+   * Sets the variant of the component
+   */
+  @Prop({ reflect: true }) readonly variant?: ThemeStatusVariantType
 
   /**
    * Emits an InputChangeEventDetail when the value of the input element changes

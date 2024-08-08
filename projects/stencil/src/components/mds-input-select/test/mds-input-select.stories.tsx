@@ -1,5 +1,6 @@
 import { citiesDictionary } from '@fixture/cities'
 import { autoCompleteDictionary } from '@dictionary/autocomplete'
+import { themeStatusVariantDictionary } from '@dictionary/variant'
 import { h } from '@stencil/core'
 
 const cities = {}
@@ -48,6 +49,12 @@ export default {
     size: {
       type: { name: 'number' },
       description: 'When multiple is set to true, represents the number of rows in the list that should be visible',
+    },
+    variant: {
+      type: { name: 'string' },
+      options: themeStatusVariantDictionary,
+      control: { type: 'select' },
+      description: 'Sets the variant of the component',
     },
   },
 }

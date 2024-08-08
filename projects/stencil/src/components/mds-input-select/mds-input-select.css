@@ -1,6 +1,6 @@
 @import '~@maggioli-design-system/styles/dist/tailwind/typography.css';
 @import '../../tailwind/components.css';
-@import '../mds-input/css/mds-input-tip.css';
+
 
 @tailwind base;
 @tailwind components;
@@ -13,10 +13,31 @@
   --mds-input-select-variant-color: var(--tone-neutral-01);
   --mds-input-select-ring: 0 0 0 1px rgb(var(--mds-input-select-variant-color) / 0.1);
   --mds-input-select-shadow: 0 1px 3px 0 rgb(var(--mds-input-select-variant-color) / 0.1), 0 1px 2px 0 rgb(var(--mds-input-select-variant-color) / 0.06);
+  --mds-input-select-arrow-icon-blur-background-color: transparent;
+  --mds-input-select-arrow-icon-hover-background-color: rgb(var(--mds-input-select-variant-color) / 0.5);
+  --mds-input-select-arrow-icon-blur-color: rgb(var(--mds-input-select-variant-color) / 0.5);
+  --mds-input-select-arrow-icon-hover-color: rgb(var(--mds-input-select-variant-color));
+  --mds-input-select-arrow-icon-background-color: var(--mds-input-select-arrow-icon-blur-background-color);
+  --mds-input-select-arrow-icon-color: var(--mds-input-select-arrow-icon-blur-color);
 
   color: theme('colors.tone-neutral-02');
   display: flex;
   position: relative;
+  user-select: none;
+}
+
+:host( [required]:not([required="false"]):focus-within ) .icon {
+  @apply translate-y-150;
+}
+
+:host( :hover ),
+:host( :focus-within ) {
+
+  --mds-input-select-variant-color: var(--brand-maggioli-03);
+  --mds-input-select-ring: 0 0 0 3px rgb(var(--mds-input-select-variant-color) / 1);
+  --mds-input-select-shadow: 0 4px 6px -1px rgb(var(--mds-input-select-variant-color) / 0.1), 0 2px 4px -1px rgb(var(--mds-input-select-variant-color) / 0.06);
+  --mds-input-select-arrow-icon-background-color: var(--mds-input-select-arrow-icon-hover-background-color);
+  --mds-input-select-arrow-icon-color: var(--mds-input-select-arrow-icon-hover-color);
 }
 
 .input {
@@ -51,10 +72,6 @@
     ease-out-expo
     outline-none
     transition-cosmetic;
-
-  --mds-input-select-variant-color: var(--brand-maggioli-04);
-  --mds-input-select-ring: 0 0 0 3px rgb(var(--mds-input-select-variant-color) / 1);
-  --mds-input-select-shadow: 0 4px 6px -1px rgb(var(--mds-input-select-variant-color) / 0.1), 0 2px 4px -1px rgb(var(--mds-input-select-variant-color) / 0.06);
 
   color: theme('colors.tone-neutral-03');
 }
@@ -96,16 +113,10 @@
   @apply
     duration-200
     rounded-full
-    transition-colors;
+    transition-cosmetic;
 
-  background-color: transparent;
-  fill: theme('colors.brand-maggioli-04');
-}
-
-.input:focus + .icon-container .icon,
-.input:hover + .icon-container .icon {
-  background-color: theme('colors.tone-neutral-09');
-  fill: theme('colors.brand-maggioli-02');
+  background-color: var(--mds-input-select-arrow-icon-background-color, theme('colors.brand-maggioli-09'));
+  fill: var(--mds-input-select-arrow-icon-color, theme('colors.brand-maggioli-04'));
 }
 
 .option-container {
@@ -126,6 +137,9 @@
 
   :host {
 
-    --mds-input-background: theme('colors.brand-maggioli-07');
+    --mds-input-select-background: theme('colors.brand-maggioli-07');
   }
 }
+
+@import './css/mds-input-tip.css';
+@import './css/mds-input-variant.css';
