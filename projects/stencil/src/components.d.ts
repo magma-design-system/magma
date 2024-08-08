@@ -1013,9 +1013,33 @@ export namespace Components {
          */
         "autocomplete"?: 'on';
         /**
+          * If true, the element is displayed as disabled
+         */
+        "disabled"?: boolean;
+        /**
+          * Specifies the label for the displayed state disabled
+         */
+        "disabledLabel"?: string;
+        /**
+          * Specifies if the select should allow multiple options to be selected in the list
+         */
+        "multiple"?: boolean;
+        /**
           * Specifies a short hint that describes the expected value of the element
          */
         "placeholder"?: string;
+        /**
+          * Specifies that the element must be filled out before submitting the form
+         */
+        "required"?: boolean;
+        /**
+          * Specifies the label for the displayed state required
+         */
+        "requiredLabel"?: string;
+        /**
+          * When `multiple` is set to `true`, represents the number or rows in the list that should be visible
+         */
+        "size"?: number;
         /**
           * Specifies the value of the element
          */
@@ -3747,6 +3771,18 @@ declare namespace LocalJSX {
          */
         "autocomplete"?: 'on';
         /**
+          * If true, the element is displayed as disabled
+         */
+        "disabled"?: boolean;
+        /**
+          * Specifies the label for the displayed state disabled
+         */
+        "disabledLabel"?: string;
+        /**
+          * Specifies if the select should allow multiple options to be selected in the list
+         */
+        "multiple"?: boolean;
+        /**
           * Emits an InputChangeEventDetail when the value of the input element changes
          */
         "onMdsInputSelectChange"?: (event: MdsInputSelectCustomEvent<InputValue>) => void;
@@ -3754,6 +3790,18 @@ declare namespace LocalJSX {
           * Specifies a short hint that describes the expected value of the element
          */
         "placeholder"?: string;
+        /**
+          * Specifies that the element must be filled out before submitting the form
+         */
+        "required"?: boolean;
+        /**
+          * Specifies the label for the displayed state required
+         */
+        "requiredLabel"?: string;
+        /**
+          * When `multiple` is set to `true`, represents the number or rows in the list that should be visible
+         */
+        "size"?: number;
         /**
           * Specifies the value of the element
          */

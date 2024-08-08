@@ -21,6 +21,30 @@ export default {
       type: { name: 'string' },
       description: 'Specifies a short hint that describes the expected value of the element',
     },
+    required: {
+      type: { name: 'boolean' },
+      description: 'Specifies that the element must be filled out before submitting the form',
+    },
+    'required-label': {
+      type: { name: 'string' },
+      description: 'The label for required state',
+    },
+    disabled: {
+      type: { name: 'boolean' },
+      description: 'If true, the element is displayed as disabled',
+    },
+    'disabled-label': {
+      type: { name: 'string' },
+      description: 'The label for disabled state',
+    },
+    multiple: {
+      type: { name: 'boolean' },
+      description: 'If true, the element allows multiple options to be selected in the list',
+    },
+    size: {
+      type: { name: 'number' },
+      description: 'When multiple is set to true, represents the number of rows in the list that should be visible',
+    },
   },
 }
 
@@ -35,4 +59,9 @@ const Template = args =>
 export const Default = Template.bind({})
 Default.args = {
   placeholder: 'Seleziona un film...',
+}
+
+export const Multiple = Template.bind({})
+Multiple.args = {
+  multiple: true,
 }

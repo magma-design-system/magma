@@ -1,4 +1,5 @@
 import clsx from 'clsx'
+import miBaselineDone from '@icon/mi/baseline/done.svg'
 import miBaselineKeyboardArrowDown from '@icon/mi/baseline/keyboard-arrow-down.svg'
 import { AttachInternals, Component, Element, Event, EventEmitter, Host, Prop, h, State, Watch } from '@stencil/core'
 import { InputValue } from '@interface/input-value'
@@ -29,6 +30,36 @@ export class MdsInputSelect {
    * Specifies a short hint that describes the expected value of the element
    */
   @Prop({ reflect: true }) readonly placeholder?: string
+
+  /**
+   * If true, the element is displayed as disabled
+   */
+  @Prop({ reflect: true }) readonly disabled?: boolean = false
+
+  /**
+ * Specifies the label for the displayed state disabled
+ */
+  @Prop({ reflect: true }) readonly disabledLabel?: string = 'disattivato'
+
+  /**
+   * Specifies that the element must be filled out before submitting the form
+   */
+  @Prop({ reflect: true }) readonly required?: boolean = false
+
+  /**
+   * Specifies the label for the displayed state required
+   */
+  @Prop({ reflect: true }) readonly requiredLabel?: string = 'obbligatorio'
+
+  /**
+   * Specifies if the select should allow multiple options to be selected in the list
+   */
+  @Prop({ reflect: true }) readonly multiple?: boolean = false
+
+  /**
+   * When `multiple` is set to `true`, represents the number or rows in the list that should be visible
+   */
+  @Prop({ reflect: true }) readonly size?: number = 0
 
   /**
    * Specifies the value of the element
@@ -105,6 +136,10 @@ export class MdsInputSelect {
         <select
           class={clsx('input', this.selected && 'input--selected')}
           onInput={this.onInput.bind(this)}
+          required={this.required}
+          disabled={this.disabled}
+          multiple={this.multiple}
+          size={this.size}
         >
           { this.placeholder && <option value="" disabled selected>{ this.placeholder }</option> }
         </select>
@@ -113,6 +148,27 @@ export class MdsInputSelect {
         </div>
         <div class="option-container">
           <slot onSlotchange={this.onSlotChangeHandler}></slot>
+        </div>
+        <div class="tip-container tip-container--top">
+          { this.disabled &&
+            <div class="tip tip--expanded tip--disabled">
+              <div class="tip__content">
+                <mds-text typography="option" truncate="word">
+                  <span class="tip__text">{ this.disabledLabel }</span>
+                </mds-text>
+              </div>
+            </div>
+          }
+          { this.required &&
+            <div class="tip tip--expand tip--required">
+              <div class="tip__content">
+                <mds-text typography="option" truncate="word">
+                  <span class="tip__text">{ this.requiredLabel }</span>
+                  <span class="tip__icon svg" innerHTML={miBaselineDone}></span>
+                </mds-text>
+              </div>
+            </div>
+          }
         </div>
       </Host>
     )
