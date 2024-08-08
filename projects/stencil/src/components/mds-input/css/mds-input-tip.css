@@ -64,7 +64,7 @@
 }
 
 .tip__text {
-  transform: translate(0, 1px);
+  line-height: theme('spacing.300');
 }
 
 .tip__icon {
