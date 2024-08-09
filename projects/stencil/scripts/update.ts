@@ -4,7 +4,7 @@
 /* eslint-disable no-console */
 
 import { existsSync, readFile, readJSON, readdir, writeFileSync } from 'fs-extra'
-import { COMPONENTS_DIR } from './meta'
+import { COMPONENTS_DIR, PROJECT_DIR } from './meta'
 import { resolve } from 'path'
 import { isEqual } from 'lodash'
 
@@ -83,7 +83,7 @@ async function buildMap (): Promise<void[]> {
     return getNpmPackageShortInfo(name)
       .then(value => {
         npmComponentMap.set(name, value)
-      }).catch(err => console.error(err))
+      }).catch(err => console.error(`Error on fetch package ${name}:`, err))
   }))
   promises.push(...Array.from(componentsMap.keys()).map(name => {
     return Promise.all([getCurrentComponentVersion(name), getCurrentComponentDependencies(name)])
@@ -198,7 +198,7 @@ async function needUpdateComponent (
  * Check dependencies of component and fix versions consistently to all components which it depends
  * @param name of component
  */
-async function updateComponentDependencies2 (name: string): Promise<void> {
+async function updateComponentDependencies (name: string): Promise<void> {
   const v = await getCurrentComponentVersion(name)
 
   const relatedComponent = componentsMap.get(name)
@@ -215,7 +215,7 @@ async function updateComponentDependencies2 (name: string): Promise<void> {
         }
       }
       await updateComponent(rc, 'patch')
-      await updateComponentDependencies2(rc)
+      await updateComponentDependencies(rc)
     }))
   }
 
@@ -266,7 +266,28 @@ async function updateComponent (c: string, version: string) : Promise<void> {
  */
 async function syncDep (): Promise<void[]> {
   return Promise.all(Array.from(componentsMap.keys())
-    .map(name => updateComponentDependencies2(name)))
+    .map(name => updateComponentDependencies(name)))
+}
+
+async function updateCommonDependencies(): Promise<void[]> {
+  const commonDeps = await readJSON(resolve(PROJECT_DIR, 'package.json')).then(p => p.dependencies) as Dep
+
+  return Promise.all(Array.from(componentsMap.keys())
+    .map(componentName => {
+      getCurrentComponentDependencies(componentName).then(deps => {
+        // filter dependencies that need to be updated
+        const sharedDependencies = Array.from(Object.keys(commonDeps)).filter(cd => deps[cd] && commonDeps[cd] !== deps[cd])
+
+        if (sharedDependencies.length) {
+          sharedDependencies.forEach(cd => {
+            deps[cd] = commonDeps[cd]
+          })
+          componentsUpdatedMap.set(componentName, {version : componentsUpdatedMap.get(componentName)!.version, dependencies: deps})
+          componentsToBeUpdated.push(componentName)
+        }
+      })
+    }
+  ))
 }
 
 async function writePackages (components: string[]): Promise<void> {
@@ -282,7 +303,7 @@ async function writePackages (components: string[]): Promise<void> {
 }
 
 /**
- * ['@maggioli-design-system/mds-text]: "1.2.3"
+ * ['@maggioli-design-system/mds-text']: "1.2.3"
  */
 interface Dep {
   [key:string] : string,
@@ -310,11 +331,16 @@ async function main (argv: string[]) {
   const timeStart = Date.now()
   await buildMap()
   const timeBuild = Date.now()
+
+  if(argv.filter(arg => arg.startsWith('--common'))) {
+    await updateCommonDependencies()
+  }
+
   await Promise.all(
     componentsToBeUpdated.map(c => updateComponent(c, version)),
   )
   await Promise.all(
-    componentsToBeUpdated.map(updateComponentDependencies2),
+    componentsToBeUpdated.map(updateComponentDependencies),
   )
   if (componentsToBeUpdated.length === 0) {
     await syncDep()

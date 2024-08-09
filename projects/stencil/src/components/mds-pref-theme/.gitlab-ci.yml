@@ -1,0 +1,25 @@
+.base-pref-theme:
+  variables:
+    COMPONENT: mds-pref-theme
+
+# ISOLATE
+pref-theme-isolate:
+  extends: [.base-isolate, .base-pref-theme]
+  dependencies: [base-stencil-build]
+
+# TEST
+pref-theme-publish-test:
+  extends: [.base-stencil-publish-test, .base-pref-theme]
+  dependencies: [base-stencil-build, pref-theme-isolate]
+
+# PUBLISH
+pref-theme-publish:
+  extends: [.base-stencil-publish, .base-pref-theme]
+  dependencies: [base-stencil-build, pref-theme-isolate]
+  needs: [base-stencil-build, pref-theme-isolate, pref-theme-publish-test]
+
+# INSTALL TEST
+pref-theme-install-test:
+  extends: [.base-stencil-install-test, .base-pref-theme]
+  dependencies: [base-stencil-build, pref-theme-isolate]
+  needs: [base-stencil-build, pref-theme-isolate, pref-theme-publish]

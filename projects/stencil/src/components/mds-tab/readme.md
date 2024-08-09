@@ -43,11 +43,13 @@ This is a web-component from Maggioli Design System [Magma](https://magma.maggio
 ### Used by
 
  - [mds-input-upload](../mds-input-upload)
+ - [mds-pref-theme](../mds-pref-theme)
 
 ### Graph
 ```mermaid
 graph TD;
   mds-input-upload --> mds-tab
+  mds-pref-theme --> mds-tab
   style mds-tab fill:#f9f,stroke:#333,stroke-width:4px
 ```
 
