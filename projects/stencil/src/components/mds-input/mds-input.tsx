@@ -383,6 +383,9 @@ export class MdsInput {
           && this.controlsLayout === 'horizontal'
           && <mds-button class="counter-button counter-button--horizontal counter-button--increase" icon={this.controlsIcon === 'arrow' ? miBaselineArrowUp : miBaselineAdd} onClick={this.stepUp} role="button" tabindex="0" title={this.controlIncreaseLabel} part="counter-button-increase"></mds-button>
         }
+        <mds-input-tip position="top">
+          <mds-input-tip-item variant="disabled"></mds-input-tip-item>
+        </mds-input-tip>
         <div class="tip-container tip-container--top">
           { this.disabled &&
             <div class="tip tip--expanded tip--disabled">

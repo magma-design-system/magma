@@ -41,6 +41,8 @@ import { MdsValidationErrors, MdsValidatorFn } from "./components/mds-input-fiel
 import { InputValue } from "@interface/input-value";
 import { InputSwitchSizeType, InputSwitchType } from "./components/mds-input-switch/meta/types";
 import { MdsInputSwitchEventDetail } from "./components/mds-input-switch/meta/event-detail";
+import { InputTipPositionType } from "./components/mds-input-tip/meta/types";
+import { InputTipItemVariantType } from "@component/mds-input-tip-item/meta/types";
 import { AttachmentSort, FileError } from "./components/mds-input-upload/meta/types";
 import { ModalPositionType } from "./components/mds-modal/meta/types";
 import { StrategyType } from "./components/mds-notification/meta/types";
@@ -94,6 +96,8 @@ export { MdsValidationErrors, MdsValidatorFn } from "./components/mds-input-fiel
 export { InputValue } from "@interface/input-value";
 export { InputSwitchSizeType, InputSwitchType } from "./components/mds-input-switch/meta/types";
 export { MdsInputSwitchEventDetail } from "./components/mds-input-switch/meta/event-detail";
+export { InputTipPositionType } from "./components/mds-input-tip/meta/types";
+export { InputTipItemVariantType } from "@component/mds-input-tip-item/meta/types";
 export { AttachmentSort, FileError } from "./components/mds-input-upload/meta/types";
 export { ModalPositionType } from "./components/mds-modal/meta/types";
 export { StrategyType } from "./components/mds-notification/meta/types";
@@ -1102,6 +1106,18 @@ export namespace Components {
           * Specifies the variant for `typography`
          */
         "variant"?: TypographyVariants;
+    }
+    interface MdsInputTip {
+        /**
+          * Specifies the position of the element relative to its container
+         */
+        "position"?: InputTipPositionType;
+    }
+    interface MdsInputTipItem {
+        /**
+          * Specifies the variant of the element
+         */
+        "variant"?: InputTipItemVariantType;
     }
     interface MdsInputUpload {
         /**
@@ -2253,6 +2269,18 @@ declare global {
         prototype: HTMLMdsInputSwitchElement;
         new (): HTMLMdsInputSwitchElement;
     };
+    interface HTMLMdsInputTipElement extends Components.MdsInputTip, HTMLStencilElement {
+    }
+    var HTMLMdsInputTipElement: {
+        prototype: HTMLMdsInputTipElement;
+        new (): HTMLMdsInputTipElement;
+    };
+    interface HTMLMdsInputTipItemElement extends Components.MdsInputTipItem, HTMLStencilElement {
+    }
+    var HTMLMdsInputTipItemElement: {
+        prototype: HTMLMdsInputTipItemElement;
+        new (): HTMLMdsInputTipItemElement;
+    };
     interface HTMLMdsInputUploadElementEventMap {
         "mdsInputUploadChange": FileList | null;
     }
@@ -2716,6 +2744,8 @@ declare global {
         "mds-input-range": HTMLMdsInputRangeElement;
         "mds-input-select": HTMLMdsInputSelectElement;
         "mds-input-switch": HTMLMdsInputSwitchElement;
+        "mds-input-tip": HTMLMdsInputTipElement;
+        "mds-input-tip-item": HTMLMdsInputTipItemElement;
         "mds-input-upload": HTMLMdsInputUploadElement;
         "mds-kpi": HTMLMdsKpiElement;
         "mds-kpi-item": HTMLMdsKpiItemElement;
@@ -3877,6 +3907,18 @@ declare namespace LocalJSX {
          */
         "variant"?: TypographyVariants;
     }
+    interface MdsInputTip {
+        /**
+          * Specifies the position of the element relative to its container
+         */
+        "position"?: InputTipPositionType;
+    }
+    interface MdsInputTipItem {
+        /**
+          * Specifies the variant of the element
+         */
+        "variant"?: InputTipItemVariantType;
+    }
     interface MdsInputUpload {
         /**
           * Defines the file types the file input should accept
@@ -4478,6 +4520,8 @@ declare namespace LocalJSX {
         "mds-input-range": MdsInputRange;
         "mds-input-select": MdsInputSelect;
         "mds-input-switch": MdsInputSwitch;
+        "mds-input-tip": MdsInputTip;
+        "mds-input-tip-item": MdsInputTipItem;
         "mds-input-upload": MdsInputUpload;
         "mds-kpi": MdsKpi;
         "mds-kpi-item": MdsKpiItem;
@@ -4566,6 +4610,8 @@ declare module "@stencil/core" {
             "mds-input-range": LocalJSX.MdsInputRange & JSXBase.HTMLAttributes<HTMLMdsInputRangeElement>;
             "mds-input-select": LocalJSX.MdsInputSelect & JSXBase.HTMLAttributes<HTMLMdsInputSelectElement>;
             "mds-input-switch": LocalJSX.MdsInputSwitch & JSXBase.HTMLAttributes<HTMLMdsInputSwitchElement>;
+            "mds-input-tip": LocalJSX.MdsInputTip & JSXBase.HTMLAttributes<HTMLMdsInputTipElement>;
+            "mds-input-tip-item": LocalJSX.MdsInputTipItem & JSXBase.HTMLAttributes<HTMLMdsInputTipItemElement>;
             "mds-input-upload": LocalJSX.MdsInputUpload & JSXBase.HTMLAttributes<HTMLMdsInputUploadElement>;
             "mds-kpi": LocalJSX.MdsKpi & JSXBase.HTMLAttributes<HTMLMdsKpiElement>;
             "mds-kpi-item": LocalJSX.MdsKpiItem & JSXBase.HTMLAttributes<HTMLMdsKpiItemElement>;

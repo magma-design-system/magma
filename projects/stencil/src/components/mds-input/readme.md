@@ -88,21 +88,6 @@ Type: `Promise<void>`
 | `"field"`                   |             |
 
 
-## CSS Custom Properties
-
-| Name                                | Description                                                                                                               |
-| ----------------------------------- | ------------------------------------------------------------------------------------------------------------------------- |
-| `--mds-input-background`            | Sets the background-color of the component                                                                                |
-| `--mds-input-icon-color`            | Sets the icon color of the component                                                                                      |
-| `--mds-input-ring`                  | Sets the box-shadow of the component's input                                                                              |
-| `--mds-input-shadow`                | Sets the box-shadow of the component's input                                                                              |
-| `--mds-input-textarea-field-sizing` | Sets the height of the textarea automatically, this is an EXPERIMENTAL css property, so it couldn't work in every browser |
-| `--mds-input-textarea-max-height`   | Sets the `max-height` of the component when attribute `type` is set to `textarea`                                         |
-| `--mds-input-textarea-min-height`   | Sets the `min-height` of the component when attribute `type` is set to `textarea`                                         |
-| `--mds-input-tip-background`        | Sets the background color of the tip message at the bottom right of the component                                         |
-| `--mds-input-variant-color`         | Sets the variant colors of the component                                                                                  |
-
-
 ## Dependencies
 
 ### Used by
@@ -112,6 +97,8 @@ Type: `Promise<void>`
 ### Depends on
 
 - [mds-button](../mds-button)
+- [mds-input-tip](../mds-input-tip)
+- [mds-input-tip-item](../mds-input-tip-item)
 - [mds-text](../mds-text)
 - [mds-icon](../mds-icon)
 - [mds-spinner](../mds-spinner)
@@ -120,6 +107,8 @@ Type: `Promise<void>`
 ```mermaid
 graph TD;
   mds-input --> mds-button
+  mds-input --> mds-input-tip
+  mds-input --> mds-input-tip-item
   mds-input --> mds-text
   mds-input --> mds-icon
   mds-input --> mds-spinner

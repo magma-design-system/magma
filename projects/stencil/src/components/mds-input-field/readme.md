@@ -138,6 +138,8 @@ graph TD;
   mds-input-field --> mds-text
   mds-input-field --> mds-input
   mds-input --> mds-button
+  mds-input --> mds-input-tip
+  mds-input --> mds-input-tip-item
   mds-input --> mds-text
   mds-input --> mds-icon
   mds-input --> mds-spinner

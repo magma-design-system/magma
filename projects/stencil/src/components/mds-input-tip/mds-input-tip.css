@@ -1,0 +1,28 @@
+@tailwind utilities;
+
+:host {
+  @apply
+    duration-300
+    ease-out-expo
+    gap-100
+    left-100
+    right-100
+    transition-cosmetic;
+
+  display: flex;
+  justify-content: flex-end;
+  pointer-events: none;
+  position: absolute;
+}
+
+:host ( :empty ) {
+  display: none;
+}
+
+:host ( [position="top"] ) {
+  top: theme('spacing.100');
+}
+
+:host ( [position="bottom"] ) {
+  bottom: theme('spacing.100');
+}
