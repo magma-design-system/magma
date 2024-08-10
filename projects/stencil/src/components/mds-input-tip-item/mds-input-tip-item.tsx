@@ -1,5 +1,9 @@
-import { Component, Host, h, Prop } from '@stencil/core'
+import { Component, Element, Host, h, Prop } from '@stencil/core'
 import { InputTipItemVariantType } from '@component/mds-input-tip-item/meta/types'
+import miBaselineDone from '@icon/mi/baseline/done.svg'
+import { Locale } from '@common/locale'
+import jsonEnData from './meta/i18n.en.json'
+import jsonItData from './meta/i18n.it.json'
 
 @Component({
   tag: 'mds-input-tip-item',
@@ -7,16 +11,55 @@ import { InputTipItemVariantType } from '@component/mds-input-tip-item/meta/type
   shadow: true,
 })
 export class MdsInputTipItem {
+  @Element() private element: HTMLMdsPrefThemeElement
+
+  private t:Locale = new Locale({
+    en: jsonEnData,
+    it: jsonItData,
+  })
+
+  componentWillRender (): void {
+    this.t.lang(this.element)
+  }
 
   /**
    * Specifies the variant of the element
    */
   @Prop({ reflect: true }) readonly variant?: InputTipItemVariantType = 'required'
 
+  /**
+   * Specifies if the element is expanded
+   */
+  @Prop({ reflect: true }) readonly expanded?: boolean = true
+
   render () {
     return (
       <Host>
-        <slot></slot>
+        <div class="content">
+          { this.variant === 'text' &&
+            <mds-text typography="option" truncate="word">
+              <span class="text"><slot/></span>
+            </mds-text>
+          }
+          { this.variant === 'readonly' &&
+            <mds-text typography="option" truncate="word">
+              <span class="text">{this.variant && this.t.get(this.variant.toString())}</span>
+            </mds-text>
+          }
+          { this.variant === 'disabled' &&
+            <mds-text typography="option" truncate="word">
+              <span class="text">{ this.variant && this.t.get(this.variant.toString()) }</span>
+            </mds-text>
+          }
+          { this.variant === 'required' &&
+            <mds-text typography="option" truncate="word">
+              <span class="text">{this.variant && this.t.get(this.variant.toString())}</span>
+            </mds-text>
+          }
+          { this.variant === 'required-success' &&
+            <span class="icon svg" innerHTML={miBaselineDone}></span>
+          }
+        </div>
       </Host>
     )
   }

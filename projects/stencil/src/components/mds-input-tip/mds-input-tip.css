@@ -26,3 +26,8 @@
 :host ( [position="bottom"] ) {
   bottom: theme('spacing.100');
 }
+
+:host ( [active]:not([active="false"]) ) {
+  transform: translate(theme('translate.100'), theme('translate.100'));
+  background-color: red;
+}

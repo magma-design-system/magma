@@ -11,6 +11,11 @@ export class MdsInputTip {
   /**
    * Specifies the position of the element relative to its container
    */
+  @Prop({ reflect: true }) readonly active?: boolean = false
+
+  /**
+   * Specifies the position of the element relative to its container
+   */
   @Prop({ reflect: true }) readonly position?: InputTipPositionType = 'top'
 
   render () {

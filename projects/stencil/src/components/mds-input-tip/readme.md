@@ -9,6 +9,7 @@
 
 | Property   | Attribute  | Description                                                     | Type                             | Default |
 | ---------- | ---------- | --------------------------------------------------------------- | -------------------------------- | ------- |
+| `active`   | `active`   | Specifies the position of the element relative to its container | `boolean \| undefined`           | `false` |
 | `position` | `position` | Specifies the position of the element relative to its container | `"bottom" \| "top" \| undefined` | `'top'` |
 
 

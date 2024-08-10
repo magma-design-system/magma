@@ -3,4 +3,4 @@ export type InputTipItemVariantType =
   | 'required-success'
   | 'disabled'
   | 'readonly'
-  | 'message'
+  | 'text'

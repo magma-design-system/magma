@@ -52,11 +52,11 @@ This is a web-component from Maggioli Design System [Magma](https://magma.maggio
  - [mds-file-preview](../mds-file-preview)
  - [mds-filter](../mds-filter)
  - [mds-filter-item](../mds-filter-item)
- - [mds-input](../mds-input)
  - [mds-input-field](../mds-input-field)
  - [mds-input-range](../mds-input-range)
  - [mds-input-select](../mds-input-select)
  - [mds-input-switch](../mds-input-switch)
+ - [mds-input-tip-item](../mds-input-tip-item)
  - [mds-input-upload](../mds-input-upload)
  - [mds-kpi-item](../mds-kpi-item)
  - [mds-label](../mds-label)
@@ -92,11 +92,11 @@ graph TD;
   mds-file-preview --> mds-text
   mds-filter --> mds-text
   mds-filter-item --> mds-text
-  mds-input --> mds-text
   mds-input-field --> mds-text
   mds-input-range --> mds-text
   mds-input-select --> mds-text
   mds-input-switch --> mds-text
+  mds-input-tip-item --> mds-text
   mds-input-upload --> mds-text
   mds-kpi-item --> mds-text
   mds-label --> mds-text

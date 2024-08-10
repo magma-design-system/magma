@@ -7,9 +7,10 @@
 
 ## Properties
 
-| Property  | Attribute | Description                          | Type                                                                                     | Default      |
-| --------- | --------- | ------------------------------------ | ---------------------------------------------------------------------------------------- | ------------ |
-| `variant` | `variant` | Specifies the variant of the element | `"disabled" \| "message" \| "readonly" \| "required" \| "required-success" \| undefined` | `'required'` |
+| Property   | Attribute  | Description                          | Type                                                                                  | Default      |
+| ---------- | ---------- | ------------------------------------ | ------------------------------------------------------------------------------------- | ------------ |
+| `expanded` | `expanded` | Specifies if the element is expanded | `boolean \| undefined`                                                                | `true`       |
+| `variant`  | `variant`  | Specifies the variant of the element | `"disabled" \| "readonly" \| "required" \| "required-success" \| "text" \| undefined` | `'required'` |
 
 
 ## Dependencies
@@ -18,9 +19,14 @@
 
  - [mds-input](../mds-input)
 
+### Depends on
+
+- [mds-text](../mds-text)
+
 ### Graph
 ```mermaid
 graph TD;
+  mds-input-tip-item --> mds-text
   mds-input --> mds-input-tip-item
   style mds-input-tip-item fill:#f9f,stroke:#333,stroke-width:4px
 ```

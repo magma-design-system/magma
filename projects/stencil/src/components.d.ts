@@ -784,10 +784,6 @@ export namespace Components {
          */
         "disabled"?: boolean;
         /**
-          * Specifies the label for the displayed state disabled
-         */
-        "disabledLabel"?: string;
-        /**
           * Returns the native `<input>` element used under the hood.
          */
         "getInputElement": () => Promise<HTMLInputElement | HTMLTextAreaElement>;
@@ -828,17 +824,9 @@ export namespace Components {
          */
         "readonly"?: boolean;
         /**
-          * Specifies the label for the displayed state read-only
-         */
-        "readonlyLabel"?: string;
-        /**
           * Specifies that the element must be filled out before submitting the form
          */
         "required"?: boolean;
-        /**
-          * Specifies the label for the displayed state required
-         */
-        "requiredLabel"?: string;
         /**
           * Sets focus on the specified `my-input`. Use this method instead of the global `input.focus()`.
          */
@@ -894,10 +882,6 @@ export namespace Components {
           * If true, the element is displayed as disabled
          */
         "disabled"?: boolean;
-        /**
-          * Specifies the label for the displayed state disabled
-         */
-        "disabledLabel"?: string;
         "getErrors": () => Promise<MdsValidationErrors | null>;
         /**
           * Returns the native `<input>` element used under the hood.
@@ -947,19 +931,11 @@ export namespace Components {
           * Specifies that the element is read-only
          */
         "readonly"?: boolean;
-        /**
-          * Specifies the label for the displayed state read-only
-         */
-        "readonlyLabel"?: string;
         "removeValidator": (validator: MdsValidatorFn) => Promise<void>;
         /**
           * Specifies that the element must be filled out before submitting the form
          */
         "required"?: boolean;
-        /**
-          * Specifies the label for the displayed state required
-         */
-        "requiredLabel"?: string;
         /**
           * Sets focus on the specified `my-input`. Use this method instead of the global `input.focus()`.
          */
@@ -1111,9 +1087,17 @@ export namespace Components {
         /**
           * Specifies the position of the element relative to its container
          */
+        "active"?: boolean;
+        /**
+          * Specifies the position of the element relative to its container
+         */
         "position"?: InputTipPositionType;
     }
     interface MdsInputTipItem {
+        /**
+          * Specifies if the element is expanded
+         */
+        "expanded"?: boolean;
         /**
           * Specifies the variant of the element
          */
@@ -3568,10 +3552,6 @@ declare namespace LocalJSX {
          */
         "disabled"?: boolean;
         /**
-          * Specifies the label for the displayed state disabled
-         */
-        "disabledLabel"?: string;
-        /**
           * An icon displayed at the right of the input
          */
         "icon"?: string;
@@ -3608,7 +3588,7 @@ declare namespace LocalJSX {
          */
         "onMdsInputFocus"?: (event: MdsInputCustomEvent<void>) => void;
         /**
-          * Emits a KeyboardEvent when a keboard key is pressed on the focused input element
+          * Emits a KeyboardEvent when a keyboard key is pressed on the focused input element
          */
         "onMdsInputKeydown"?: (event: MdsInputCustomEvent<KeyboardEvent>) => void;
         /**
@@ -3624,17 +3604,9 @@ declare namespace LocalJSX {
          */
         "readonly"?: boolean;
         /**
-          * Specifies the label for the displayed state read-only
-         */
-        "readonlyLabel"?: string;
-        /**
           * Specifies that the element must be filled out before submitting the form
          */
         "required"?: boolean;
-        /**
-          * Specifies the label for the displayed state required
-         */
-        "requiredLabel"?: string;
         /**
           * Specifies the interval between legal numbers in an input field
          */
@@ -3685,10 +3657,6 @@ declare namespace LocalJSX {
           * If true, the element is displayed as disabled
          */
         "disabled"?: boolean;
-        /**
-          * Specifies the label for the displayed state disabled
-         */
-        "disabledLabel"?: string;
         /**
           * An icon displayed at the right of the input
          */
@@ -3750,17 +3718,9 @@ declare namespace LocalJSX {
          */
         "readonly"?: boolean;
         /**
-          * Specifies the label for the displayed state read-only
-         */
-        "readonlyLabel"?: string;
-        /**
           * Specifies that the element must be filled out before submitting the form
          */
         "required"?: boolean;
-        /**
-          * Specifies the label for the displayed state required
-         */
-        "requiredLabel"?: string;
         /**
           * Specifies the interval between legal numbers in an input field
          */
@@ -3920,9 +3880,17 @@ declare namespace LocalJSX {
         /**
           * Specifies the position of the element relative to its container
          */
+        "active"?: boolean;
+        /**
+          * Specifies the position of the element relative to its container
+         */
         "position"?: InputTipPositionType;
     }
     interface MdsInputTipItem {
+        /**
+          * Specifies if the element is expanded
+         */
+        "expanded"?: boolean;
         /**
           * Specifies the variant of the element
          */
