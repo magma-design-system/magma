@@ -2156,6 +2156,11 @@
   resolved "https://registry.npmjs.org/@juggle/resize-observer/-/resize-observer-3.4.0.tgz#08d6c5e20cf7e4cc02fd181c4b0c225cd31dbb60"
   integrity sha512-dfLbk+PwWvFzSxwk3n5ySL0hfBog779o8h68wK/7/APo/7cgyWp5jcXockbxdk5kFRkbeXWm4Fbi9FrdN381sA==
 
+"@maggioli-design-system/identity@2.0.4":
+  version "2.0.4"
+  resolved "https://registry.npmjs.org/@maggioli-design-system/identity/-/identity-2.0.4.tgz#fa068dd75abe6947da7fc086554e5dbf2ae49842"
+  integrity sha512-RNhUOnpfhSUZhdJRZCCaW//FrLEPmBoARWmlmVuUZqB+D9F5vk7dOVBtRu7E2i0gAXgizfVzHYLbAt+YT/YAwA==
+
 "@maggioli-design-system/svg-icons@^2.6.3":
   version "2.10.1"
   resolved "https://registry.npmjs.org/@maggioli-design-system/svg-icons/-/svg-icons-2.10.1.tgz#3c86d5b738407a7fe756877aa87baf7b4d2d5f8d"
