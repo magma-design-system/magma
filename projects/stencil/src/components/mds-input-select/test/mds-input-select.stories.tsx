@@ -30,17 +30,9 @@ export default {
       type: { name: 'boolean' },
       description: 'Specifies that the element must be filled out before submitting the form',
     },
-    'required-label': {
-      type: { name: 'string' },
-      description: 'The label for required state',
-    },
     disabled: {
       type: { name: 'boolean' },
       description: 'If true, the element is displayed as disabled',
-    },
-    'disabled-label': {
-      type: { name: 'string' },
-      description: 'The label for disabled state',
     },
     multiple: {
       type: { name: 'boolean' },
@@ -75,4 +67,14 @@ Default.args = {
 export const Multiple = Template.bind({})
 Multiple.args = {
   multiple: true,
+}
+
+export const Required = Template.bind({})
+Required.args = {
+  required: true,
+}
+
+export const Disabled = Template.bind({})
+Disabled.args = {
+  disabled: true,
 }

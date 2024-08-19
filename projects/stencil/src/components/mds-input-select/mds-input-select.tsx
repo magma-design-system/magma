@@ -1,5 +1,4 @@
 import clsx from 'clsx'
-import miBaselineDone from '@icon/mi/baseline/done.svg'
 import miBaselineKeyboardArrowDown from '@icon/mi/baseline/keyboard-arrow-down.svg'
 import { AttachInternals, Component, Element, Event, EventEmitter, Host, Prop, h, State, Watch } from '@stencil/core'
 import { InputValue } from '@interface/input-value'
@@ -18,6 +17,7 @@ export class MdsInputSelect {
 
   @Element() host: HTMLMdsInputSelectElement
   @State() selected: boolean
+  @State() hasFocus = false
   @AttachInternals() internals: ElementInternals
 
   /**
@@ -46,19 +46,9 @@ export class MdsInputSelect {
   @Prop({ reflect: true }) readonly disabled?: boolean = false
 
   /**
- * Specifies the label for the displayed state disabled
- */
-  @Prop({ reflect: true }) readonly disabledLabel?: string = 'disattivato'
-
-  /**
    * Specifies that the element must be filled out before submitting the form
    */
   @Prop({ reflect: true }) readonly required?: boolean = false
-
-  /**
-   * Specifies the label for the displayed state required
-   */
-  @Prop({ reflect: true }) readonly requiredLabel?: string = 'obbligatorio'
 
   /**
    * Specifies if the select should allow multiple options to be selected in the list
@@ -108,6 +98,14 @@ export class MdsInputSelect {
     if (input) {
       this.value = input.value
     }
+  }
+
+  private onBlur = () => {
+    this.hasFocus = false
+  }
+
+  private onFocus = () => {
+    this.hasFocus = true
   }
 
   private emptyOptions = (): void => {
@@ -167,6 +165,8 @@ export class MdsInputSelect {
         <select
           class={clsx('input', this.selected && 'input--selected')}
           onInput={this.onInput.bind(this)}
+          onBlur={this.onBlur}
+          onFocus={this.onFocus}
           name={this.name}
           required={this.required}
           disabled={this.disabled}
@@ -182,27 +182,12 @@ export class MdsInputSelect {
         <div class="option-container">
           <slot onSlotchange={this.onSlotChangeHandler}></slot>
         </div>
-        <div class="tip-container tip-container--top">
-          { this.disabled &&
-            <div class="tip tip--expanded tip--disabled">
-              <div class="tip__content">
-                <mds-text typography="option" truncate="word">
-                  <span class="tip__text">{ this.disabledLabel }</span>
-                </mds-text>
-              </div>
-            </div>
-          }
+        <mds-input-tip position="top" active={this.hasFocus}>
+          { this.disabled && <mds-input-tip-item expanded variant="disabled"></mds-input-tip-item> }
           { this.required &&
-            <div class="tip tip--expand tip--required">
-              <div class="tip__content">
-                <mds-text typography="option" truncate="word">
-                  <span class="tip__text">{ this.requiredLabel }</span>
-                  <span class="tip__icon svg" innerHTML={miBaselineDone}></span>
-                </mds-text>
-              </div>
-            </div>
+            <mds-input-tip-item expanded={this.hasFocus} variant={this.value === '' ? 'required' : 'required-success'}></mds-input-tip-item>
           }
-        </div>
+        </mds-input-tip>
       </Host>
     )
   }

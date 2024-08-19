@@ -27,7 +27,7 @@
 }
 
 :host( [required]:not([required="false"]):focus-within ) .icon {
-  @apply translate-y-150;
+  @apply translate-y-150 translate-x-150;
 }
 
 :host( :hover ),
@@ -89,11 +89,17 @@
   opacity: 1;
 }
 
+:host([disabled]:not([disabled="false"])) {
+  pointer-events: none;
+}
+
 :host([disabled]:not([disabled="false"])) .input {
   pointer-events: none;
 }
 
 :host([disabled]:not([disabled="false"])) .icon {
+  @apply translate-y-200 translate-x-250;
+
   fill: theme('colors.tone-neutral-06');
 }
 
@@ -141,5 +147,4 @@
   }
 }
 
-@import './css/mds-input-tip.css';
 @import './css/mds-input-variant.css';
