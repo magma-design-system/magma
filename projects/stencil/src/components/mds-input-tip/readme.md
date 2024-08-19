@@ -18,11 +18,13 @@
 ### Used by
 
  - [mds-input](../mds-input)
+ - [mds-input-select](../mds-input-select)
 
 ### Graph
 ```mermaid
 graph TD;
   mds-input --> mds-input-tip
+  mds-input-select --> mds-input-tip
   style mds-input-tip fill:#f9f,stroke:#333,stroke-width:4px
 ```
 

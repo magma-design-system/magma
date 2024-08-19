@@ -997,10 +997,6 @@ export namespace Components {
          */
         "disabled"?: boolean;
         /**
-          * Specifies the label for the displayed state disabled
-         */
-        "disabledLabel"?: string;
-        /**
           * Specifies if the select should allow multiple options to be selected in the list
          */
         "multiple"?: boolean;
@@ -1016,10 +1012,6 @@ export namespace Components {
           * Specifies that the element must be filled out before submitting the form
          */
         "required"?: boolean;
-        /**
-          * Specifies the label for the displayed state required
-         */
-        "requiredLabel"?: string;
         /**
           * When `multiple` is set to `true`, represents the number or rows in the list that should be visible
          */
@@ -3782,10 +3774,6 @@ declare namespace LocalJSX {
          */
         "disabled"?: boolean;
         /**
-          * Specifies the label for the displayed state disabled
-         */
-        "disabledLabel"?: string;
-        /**
           * Specifies if the select should allow multiple options to be selected in the list
          */
         "multiple"?: boolean;
@@ -3805,10 +3793,6 @@ declare namespace LocalJSX {
           * Specifies that the element must be filled out before submitting the form
          */
         "required"?: boolean;
-        /**
-          * Specifies the label for the displayed state required
-         */
-        "requiredLabel"?: string;
         /**
           * When `multiple` is set to `true`, represents the number or rows in the list that should be visible
          */
