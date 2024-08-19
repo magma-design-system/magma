@@ -1,3 +1,4 @@
+@import '../../tailwind/components.css';
 @tailwind components;
 @tailwind utilities;
 
@@ -5,7 +6,7 @@
 
   --mds-input-tip-item-background: theme('colors.tone-neutral-01');
   --mds-input-tip-item-color: theme('colors.tone-neutral');
-  --mds-input-tip-item-icon-color: theme('colors.tone-neutral');
+  --mds-input-tip-item-icon-color: var(--tone-neutral);
 
   @apply
     duration-300
@@ -29,7 +30,6 @@
 }
 
 :host ([expanded="false"]) {
-
   color: transparent;
 }
 
@@ -66,8 +66,8 @@
     h-300
     w-300;
 
-  display: none;
   fill: rgb(var(--mds-input-tip-item-icon-color));
+  transform: translateY(-1px);
 }
 
 :host ([variant="required"]) {
