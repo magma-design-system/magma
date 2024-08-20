@@ -10,8 +10,8 @@ import { MdsInputEventDetail } from './meta/event-detail'
 import { ThemeStatusVariantType } from '@type/variant'
 import { TypographyInputType } from '@type/typography'
 import { Locale } from '@common/locale'
-import jsonEnData from './meta/i18n.en.json'
-import jsonItData from './meta/i18n.it.json'
+import localeEn from './meta/locale.en.json'
+import localeIt from './meta/locale.it.json'
 
 /*
   * @part field - Selects the native input field used by the component
@@ -60,8 +60,8 @@ export class MdsInput {
   @State() hasFocus = false
 
   private t:Locale = new Locale({
-    en: jsonEnData,
-    it: jsonItData,
+    en: localeEn,
+    it: localeIt,
   })
 
   @AttachInternals() internals: ElementInternals
