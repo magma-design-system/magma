@@ -68,9 +68,9 @@ export class MdsPrefTheme {
       <Host >
         <mds-text class="info" typography="caption"><b>{this.t.get('label')}</b> {this.t.get(this.theme[this.themeMode ?? this.defaultMode].label)}</mds-text>
         <mds-tab>
-          <mds-tab-item onClick={() => { this.setTheme('light') }} class="item item--light-mode" icon={miBaselineLightMode}></mds-tab-item>
-          <mds-tab-item onClick={() => { this.setTheme('system') }} class="item item--system-settings" icon={miBaselineSettings}></mds-tab-item>
-          <mds-tab-item onClick={() => { this.setTheme('dark') }} class="item item--dark-mode" icon={miBaselineDarkMode}></mds-tab-item>
+          <mds-tab-item onClick={() => { this.setTheme('light') }} class="item item--light" icon={miBaselineLightMode}></mds-tab-item>
+          <mds-tab-item onClick={() => { this.setTheme('system') }} class="item item--system" icon={miBaselineSettings}></mds-tab-item>
+          <mds-tab-item onClick={() => { this.setTheme('dark') }} class="item item--dark" icon={miBaselineDarkMode}></mds-tab-item>
         </mds-tab>
       </Host>
     )

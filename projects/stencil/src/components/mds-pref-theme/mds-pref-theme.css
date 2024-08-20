@@ -15,17 +15,17 @@
   flex-grow: 1;
 }
 
-.item--system-settings {
+.item--system {
 
   --mds-tab-item-color-selected: theme('colors.tone-neutral-03');
 }
 
-.item--light-mode {
+.item--light {
 
   --mds-tab-item-color-selected: theme('colors.label-yellow-06');
 }
 
-.item--dark-mode {
+.item--dark {
 
   --mds-tab-item-color-selected: theme('colors.label-sky-06');
 }
