@@ -9,23 +9,23 @@
 
 .item {
 
-  --mds-tab-item-color: theme('colors.tone-neutral-04');
+  --mds-tab-item-color: theme('colors.tone-neutral-05');
 
   flex-basis: 0;
   flex-grow: 1;
 }
 
-.item--system-settings {
+.item--system {
 
   --mds-tab-item-color-selected: theme('colors.tone-neutral-03');
 }
 
-.item--light-mode {
+.item--enabled {
 
-  --mds-tab-item-color-selected: theme('colors.label-yellow-06');
+  --mds-tab-item-color-selected: theme('colors.tone-neutral-03');
 }
 
-.item--dark-mode {
+.item--disabled {
 
-  --mds-tab-item-color-selected: theme('colors.label-sky-06');
+  --mds-tab-item-color-selected: theme('colors.tone-neutral-03');
 }

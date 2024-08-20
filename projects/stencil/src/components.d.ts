@@ -47,6 +47,10 @@ import { AttachmentSort, FileError } from "./components/mds-input-upload/meta/ty
 import { ModalPositionType } from "./components/mds-modal/meta/types";
 import { StrategyType } from "./components/mds-notification/meta/types";
 import { MdsPaginatorEventDetail } from "./components/mds-paginator/meta/event-detail";
+import { AnimationModeType } from "./components/mds-pref-animation/meta/types";
+import { ConsumptionModeType } from "./components/mds-pref-consumption/meta/types";
+import { ContrastModeType } from "./components/mds-pref-contrast/meta/types";
+import { ThemeModeType } from "./components/mds-pref-theme/meta/types";
 import { PriceTableFeaturesCellType } from "./components/mds-price-table-features-cell/meta/types";
 import { DirectionType } from "./components/mds-progress/meta/types";
 import { NotificationPreviewType } from "./components/mds-push-notification/meta/types";
@@ -102,6 +106,10 @@ export { AttachmentSort, FileError } from "./components/mds-input-upload/meta/ty
 export { ModalPositionType } from "./components/mds-modal/meta/types";
 export { StrategyType } from "./components/mds-notification/meta/types";
 export { MdsPaginatorEventDetail } from "./components/mds-paginator/meta/event-detail";
+export { AnimationModeType } from "./components/mds-pref-animation/meta/types";
+export { ConsumptionModeType } from "./components/mds-pref-consumption/meta/types";
+export { ContrastModeType } from "./components/mds-pref-contrast/meta/types";
+export { ThemeModeType } from "./components/mds-pref-theme/meta/types";
 export { PriceTableFeaturesCellType } from "./components/mds-price-table-features-cell/meta/types";
 export { DirectionType } from "./components/mds-progress/meta/types";
 export { NotificationPreviewType } from "./components/mds-push-notification/meta/types";
@@ -1245,9 +1253,31 @@ export namespace Components {
          */
         "selected"?: boolean;
     }
+    interface MdsPref {
+    }
     interface MdsPrefAnimation {
+        /**
+          * Specifies the preference mode
+         */
+        "mode"?: AnimationModeType;
+    }
+    interface MdsPrefConsumption {
+        /**
+          * Specifies the preference mode
+         */
+        "mode"?: ConsumptionModeType;
+    }
+    interface MdsPrefContrast {
+        /**
+          * Specifies the preference mode
+         */
+        "mode"?: ContrastModeType;
     }
     interface MdsPrefTheme {
+        /**
+          * Specifies the preference mode
+         */
+        "mode"?: ThemeModeType;
     }
     interface MdsPriceTable {
     }
@@ -2382,11 +2412,29 @@ declare global {
         prototype: HTMLMdsPaginatorItemElement;
         new (): HTMLMdsPaginatorItemElement;
     };
+    interface HTMLMdsPrefElement extends Components.MdsPref, HTMLStencilElement {
+    }
+    var HTMLMdsPrefElement: {
+        prototype: HTMLMdsPrefElement;
+        new (): HTMLMdsPrefElement;
+    };
     interface HTMLMdsPrefAnimationElement extends Components.MdsPrefAnimation, HTMLStencilElement {
     }
     var HTMLMdsPrefAnimationElement: {
         prototype: HTMLMdsPrefAnimationElement;
         new (): HTMLMdsPrefAnimationElement;
+    };
+    interface HTMLMdsPrefConsumptionElement extends Components.MdsPrefConsumption, HTMLStencilElement {
+    }
+    var HTMLMdsPrefConsumptionElement: {
+        prototype: HTMLMdsPrefConsumptionElement;
+        new (): HTMLMdsPrefConsumptionElement;
+    };
+    interface HTMLMdsPrefContrastElement extends Components.MdsPrefContrast, HTMLStencilElement {
+    }
+    var HTMLMdsPrefContrastElement: {
+        prototype: HTMLMdsPrefContrastElement;
+        new (): HTMLMdsPrefContrastElement;
     };
     interface HTMLMdsPrefThemeElement extends Components.MdsPrefTheme, HTMLStencilElement {
     }
@@ -2749,7 +2797,10 @@ declare global {
         "mds-notification": HTMLMdsNotificationElement;
         "mds-paginator": HTMLMdsPaginatorElement;
         "mds-paginator-item": HTMLMdsPaginatorItemElement;
+        "mds-pref": HTMLMdsPrefElement;
         "mds-pref-animation": HTMLMdsPrefAnimationElement;
+        "mds-pref-consumption": HTMLMdsPrefConsumptionElement;
+        "mds-pref-contrast": HTMLMdsPrefContrastElement;
         "mds-pref-theme": HTMLMdsPrefThemeElement;
         "mds-price-table": HTMLMdsPriceTableElement;
         "mds-price-table-features": HTMLMdsPriceTableFeaturesElement;
@@ -4051,9 +4102,31 @@ declare namespace LocalJSX {
          */
         "selected"?: boolean;
     }
+    interface MdsPref {
+    }
     interface MdsPrefAnimation {
+        /**
+          * Specifies the preference mode
+         */
+        "mode"?: AnimationModeType;
+    }
+    interface MdsPrefConsumption {
+        /**
+          * Specifies the preference mode
+         */
+        "mode"?: ConsumptionModeType;
+    }
+    interface MdsPrefContrast {
+        /**
+          * Specifies the preference mode
+         */
+        "mode"?: ContrastModeType;
     }
     interface MdsPrefTheme {
+        /**
+          * Specifies the preference mode
+         */
+        "mode"?: ThemeModeType;
     }
     interface MdsPriceTable {
     }
@@ -4507,7 +4580,10 @@ declare namespace LocalJSX {
         "mds-notification": MdsNotification;
         "mds-paginator": MdsPaginator;
         "mds-paginator-item": MdsPaginatorItem;
+        "mds-pref": MdsPref;
         "mds-pref-animation": MdsPrefAnimation;
+        "mds-pref-consumption": MdsPrefConsumption;
+        "mds-pref-contrast": MdsPrefContrast;
         "mds-pref-theme": MdsPrefTheme;
         "mds-price-table": MdsPriceTable;
         "mds-price-table-features": MdsPriceTableFeatures;
@@ -4599,7 +4675,10 @@ declare module "@stencil/core" {
             "mds-notification": LocalJSX.MdsNotification & JSXBase.HTMLAttributes<HTMLMdsNotificationElement>;
             "mds-paginator": LocalJSX.MdsPaginator & JSXBase.HTMLAttributes<HTMLMdsPaginatorElement>;
             "mds-paginator-item": LocalJSX.MdsPaginatorItem & JSXBase.HTMLAttributes<HTMLMdsPaginatorItemElement>;
+            "mds-pref": LocalJSX.MdsPref & JSXBase.HTMLAttributes<HTMLMdsPrefElement>;
             "mds-pref-animation": LocalJSX.MdsPrefAnimation & JSXBase.HTMLAttributes<HTMLMdsPrefAnimationElement>;
+            "mds-pref-consumption": LocalJSX.MdsPrefConsumption & JSXBase.HTMLAttributes<HTMLMdsPrefConsumptionElement>;
+            "mds-pref-contrast": LocalJSX.MdsPrefContrast & JSXBase.HTMLAttributes<HTMLMdsPrefContrastElement>;
             "mds-pref-theme": LocalJSX.MdsPrefTheme & JSXBase.HTMLAttributes<HTMLMdsPrefThemeElement>;
             "mds-price-table": LocalJSX.MdsPriceTable & JSXBase.HTMLAttributes<HTMLMdsPriceTableElement>;
             "mds-price-table-features": LocalJSX.MdsPriceTableFeatures & JSXBase.HTMLAttributes<HTMLMdsPriceTableFeaturesElement>;

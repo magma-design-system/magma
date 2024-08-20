@@ -1,0 +1,8 @@
+@tailwind utilities;
+
+:host {
+
+  @apply gap-400;
+
+  display: grid;
+}

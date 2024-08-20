@@ -1,6 +1,6 @@
 {
-  "disabled": "Disabled",
+  "animationDisabled": "Disabled",
+  "animationEnabled": "Enabled",
   "label": "Animations",
-  "enabled": "Enabled",
   "systemSettings": "System settings"
 }

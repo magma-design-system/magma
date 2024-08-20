@@ -1,20 +1,20 @@
 import { h } from '@stencil/core'
-import { themeModeDictionary } from '../meta/dictionary'
 
+import { contrastDictionary } from '../meta/dictionary'
 
 export default {
-  title: 'UI / Preferences / Theme',
+  title: 'UI / Preferences / Contrast',
   argTypes: {
     mode: {
       type: { name: 'string' },
-      options: themeModeDictionary,
+      options: contrastDictionary,
       control: { type: 'select' },
       description: 'Specifies the preference mode',
     },
   },
 }
 const Template = args =>
-  <mds-pref-theme {...args}/>
+  <mds-pref-contrast {...args}/>
 
 export const Default = Template.bind({})
 Default.args = {

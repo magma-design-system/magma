@@ -1,6 +1,6 @@
 {
-  "disabled": "Disabilitate",
+  "animationDisabled": "Disabilitate",
+  "animationEnabled": "Abilitate",
   "label": "Animazioni",
-  "enabled": "Abilitate",
   "systemSettings": "Sistema operativo"
 }

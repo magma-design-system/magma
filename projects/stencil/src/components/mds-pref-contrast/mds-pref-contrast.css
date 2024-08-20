@@ -20,12 +20,12 @@
   --mds-tab-item-color-selected: theme('colors.tone-neutral-03');
 }
 
-.item--light {
+.item--high {
 
-  --mds-tab-item-color-selected: theme('colors.label-yellow-06');
+  --mds-tab-item-color-selected: theme('colors.tone-neutral-03');
 }
 
-.item--dark {
+.item--default {
 
-  --mds-tab-item-color-selected: theme('colors.label-sky-06');
+  --mds-tab-item-color-selected: theme('colors.tone-neutral-03');
 }

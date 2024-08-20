@@ -1,13 +1,12 @@
-import { Component, Host, Element, h, State } from '@stencil/core'
+import { Component, Host, Element, h, Prop, Watch } from '@stencil/core'
 import miBaselineLightMode from '@icon/mi/baseline/light-mode.svg'
+import miOutlineDarkMode from '@icon/mi/outline/dark-mode.svg'
 import miBaselineDarkMode from '@icon/mi/baseline/dark-mode.svg'
 import miBaselineSettings from '@icon/mi/baseline/settings.svg'
 import { Locale } from '@common/locale'
 import localeEn from './meta/locale.en.json'
 import localeIt from './meta/locale.it.json'
 import { ThemeModeType } from './meta/types'
-
-
 
 @Component({
   tag: 'mds-pref-theme',
@@ -16,12 +15,17 @@ import { ThemeModeType } from './meta/types'
 })
 export class MdsPrefTheme {
   @Element() private element: HTMLMdsPrefThemeElement
-  @State() themeMode: ThemeModeType
   private defaultMode: ThemeModeType = 'system'
   private t:Locale = new Locale({
     en: localeEn,
     it: localeIt,
   })
+
+  
+  /**
+   * Specifies the preference mode
+   */
+  @Prop({ mutable: true, reflect: true }) mode?: ThemeModeType
 
   // related selectors for @magma-design-system/styles
   // projects/design-tokens/formats/css-vars-rgb/template.hbs
@@ -47,12 +51,12 @@ export class MdsPrefTheme {
   }
 
   componentDidLoad (): void {
-    this.setTheme(localStorage.getItem('mds-pref-theme') as ThemeModeType ?? this.defaultMode)
+    this.setTheme(this.mode ?? localStorage.getItem('mds-pref-theme') as ThemeModeType ?? this.defaultMode)
   }
 
   private setTheme = (mode: ThemeModeType): void => {
     localStorage.setItem('mds-pref-theme', mode)
-    this.themeMode = mode
+    this.mode = mode
     if (document) {
       for (const key in this.theme) {
         if ({}.hasOwnProperty.call(this.theme, key)) {
@@ -63,14 +67,19 @@ export class MdsPrefTheme {
     }
   }
 
+  @Watch('mode')
+  modeChanged (newValue: ThemeModeType): void {
+    this.setTheme(newValue)
+  }
+
   render () {
     return (
       <Host >
-        <mds-text class="info" typography="caption"><b>{this.t.get('label')}</b> {this.t.get(this.theme[this.themeMode ?? this.defaultMode].label)}</mds-text>
+        <mds-text class="info" typography="caption"><b>{this.t.get('label')}</b> {this.t.get(this.theme[this.mode ?? this.defaultMode].label)}</mds-text>
         <mds-tab>
-          <mds-tab-item onClick={() => { this.setTheme('light') }} class="item item--light" icon={miBaselineLightMode}></mds-tab-item>
-          <mds-tab-item onClick={() => { this.setTheme('system') }} class="item item--system" icon={miBaselineSettings}></mds-tab-item>
-          <mds-tab-item onClick={() => { this.setTheme('dark') }} class="item item--dark" icon={miBaselineDarkMode}></mds-tab-item>
+          <mds-tab-item selected={this.mode === 'light'} onClick={() => { this.setTheme('light') }} class="item item--light" icon={miBaselineLightMode}></mds-tab-item>
+          <mds-tab-item selected={this.mode === 'system'} onClick={() => { this.setTheme('system') }} class="item item--system" icon={miBaselineSettings}></mds-tab-item>
+          <mds-tab-item selected={this.mode === 'dark'} onClick={() => { this.setTheme('dark') }} class="item item--dark" icon={this.mode === 'dark' ? miBaselineDarkMode : miOutlineDarkMode}></mds-tab-item>
         </mds-tab>
       </Host>
     )

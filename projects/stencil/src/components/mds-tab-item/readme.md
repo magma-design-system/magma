@@ -59,6 +59,9 @@ This is a web-component from Maggioli Design System [Magma](https://magma.maggio
 ### Used by
 
  - [mds-input-upload](../mds-input-upload)
+ - [mds-pref-animation](../mds-pref-animation)
+ - [mds-pref-consumption](../mds-pref-consumption)
+ - [mds-pref-contrast](../mds-pref-contrast)
  - [mds-pref-theme](../mds-pref-theme)
 
 ### Depends on
@@ -73,6 +76,9 @@ graph TD;
   mds-button --> mds-icon
   mds-button --> mds-text
   mds-input-upload --> mds-tab-item
+  mds-pref-animation --> mds-tab-item
+  mds-pref-consumption --> mds-tab-item
+  mds-pref-contrast --> mds-tab-item
   mds-pref-theme --> mds-tab-item
   style mds-tab-item fill:#f9f,stroke:#333,stroke-width:4px
 ```

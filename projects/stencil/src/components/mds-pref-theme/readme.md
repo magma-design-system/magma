@@ -5,6 +5,13 @@
 <!-- Auto Generated Below -->
 
 
+## Properties
+
+| Property | Attribute | Description                   | Type                                         | Default     |
+| -------- | --------- | ----------------------------- | -------------------------------------------- | ----------- |
+| `mode`   | `mode`    | Specifies the preference mode | `"dark" \| "light" \| "system" \| undefined` | `undefined` |
+
+
 ## Dependencies
 
 ### Depends on
