@@ -56,6 +56,8 @@ window.sessionStorage.setItem('mdsIconSvgPath', svgPath)
 
 // mdsIconGet()
 
+document.querySelector('html').classList.add('bg-tone-neutral')
+
 const toUpperCase = string => {
   return string.charAt(0).toUpperCase() + string.slice(1)
 }
