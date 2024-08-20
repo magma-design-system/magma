@@ -1245,6 +1245,8 @@ export namespace Components {
          */
         "selected"?: boolean;
     }
+    interface MdsPrefAnimation {
+    }
     interface MdsPrefTheme {
     }
     interface MdsPriceTable {
@@ -2380,6 +2382,12 @@ declare global {
         prototype: HTMLMdsPaginatorItemElement;
         new (): HTMLMdsPaginatorItemElement;
     };
+    interface HTMLMdsPrefAnimationElement extends Components.MdsPrefAnimation, HTMLStencilElement {
+    }
+    var HTMLMdsPrefAnimationElement: {
+        prototype: HTMLMdsPrefAnimationElement;
+        new (): HTMLMdsPrefAnimationElement;
+    };
     interface HTMLMdsPrefThemeElement extends Components.MdsPrefTheme, HTMLStencilElement {
     }
     var HTMLMdsPrefThemeElement: {
@@ -2741,6 +2749,7 @@ declare global {
         "mds-notification": HTMLMdsNotificationElement;
         "mds-paginator": HTMLMdsPaginatorElement;
         "mds-paginator-item": HTMLMdsPaginatorItemElement;
+        "mds-pref-animation": HTMLMdsPrefAnimationElement;
         "mds-pref-theme": HTMLMdsPrefThemeElement;
         "mds-price-table": HTMLMdsPriceTableElement;
         "mds-price-table-features": HTMLMdsPriceTableFeaturesElement;
@@ -4042,6 +4051,8 @@ declare namespace LocalJSX {
          */
         "selected"?: boolean;
     }
+    interface MdsPrefAnimation {
+    }
     interface MdsPrefTheme {
     }
     interface MdsPriceTable {
@@ -4496,6 +4507,7 @@ declare namespace LocalJSX {
         "mds-notification": MdsNotification;
         "mds-paginator": MdsPaginator;
         "mds-paginator-item": MdsPaginatorItem;
+        "mds-pref-animation": MdsPrefAnimation;
         "mds-pref-theme": MdsPrefTheme;
         "mds-price-table": MdsPriceTable;
         "mds-price-table-features": MdsPriceTableFeatures;
@@ -4587,6 +4599,7 @@ declare module "@stencil/core" {
             "mds-notification": LocalJSX.MdsNotification & JSXBase.HTMLAttributes<HTMLMdsNotificationElement>;
             "mds-paginator": LocalJSX.MdsPaginator & JSXBase.HTMLAttributes<HTMLMdsPaginatorElement>;
             "mds-paginator-item": LocalJSX.MdsPaginatorItem & JSXBase.HTMLAttributes<HTMLMdsPaginatorItemElement>;
+            "mds-pref-animation": LocalJSX.MdsPrefAnimation & JSXBase.HTMLAttributes<HTMLMdsPrefAnimationElement>;
             "mds-pref-theme": LocalJSX.MdsPrefTheme & JSXBase.HTMLAttributes<HTMLMdsPrefThemeElement>;
             "mds-price-table": LocalJSX.MdsPriceTable & JSXBase.HTMLAttributes<HTMLMdsPriceTableElement>;
             "mds-price-table-features": LocalJSX.MdsPriceTableFeatures & JSXBase.HTMLAttributes<HTMLMdsPriceTableFeaturesElement>;
