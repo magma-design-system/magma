@@ -26,6 +26,6 @@ export class Locale {
   }
 
   get = (tag: string): string => {
-    return this.config[this.language][tag]
+    return this.config[this.language][tag] ?? this.config[this.defaultLanguage][tag]
   }
 }
