@@ -2,8 +2,8 @@ import { Component, Element, Host, h, Prop } from '@stencil/core'
 import { InputTipItemVariantType } from '@component/mds-input-tip-item/meta/types'
 import miBaselineDone from '@icon/mi/baseline/done.svg'
 import { Locale } from '@common/locale'
-import jsonEnData from './meta/i18n.en.json'
-import jsonItData from './meta/i18n.it.json'
+import localeEn from './meta/locale.en.json'
+import localeIt from './meta/locale.it.json'
 
 @Component({
   tag: 'mds-input-tip-item',
@@ -14,8 +14,8 @@ export class MdsInputTipItem {
   @Element() private element: HTMLMdsPrefThemeElement
 
   private t:Locale = new Locale({
-    en: jsonEnData,
-    it: jsonItData,
+    en: localeEn,
+    it: localeIt,
   })
 
   componentWillRender (): void {
