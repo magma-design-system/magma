@@ -7,9 +7,10 @@
 
 ## Properties
 
-| Property | Attribute | Description                   | Type                                         | Default     |
-| -------- | --------- | ----------------------------- | -------------------------------------------- | ----------- |
-| `mode`   | `mode`    | Specifies the preference mode | `"dark" \| "light" \| "system" \| undefined` | `undefined` |
+| Property     | Attribute    | Description                   | Type                                         | Default     |
+| ------------ | ------------ | ----------------------------- | -------------------------------------------- | ----------- |
+| `mode`       | `mode`       | Specifies the preference mode | `"dark" \| "light" \| "system" \| undefined` | `undefined` |
+| `transition` | `transition` | Specifies the preference mode | `"flash" \| "none" \| "smooth"`              | `'flash'`   |
 
 
 ## Dependencies
