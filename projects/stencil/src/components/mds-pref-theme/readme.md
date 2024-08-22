@@ -7,10 +7,10 @@
 
 ## Properties
 
-| Property     | Attribute    | Description                   | Type                                         | Default     |
-| ------------ | ------------ | ----------------------------- | -------------------------------------------- | ----------- |
-| `mode`       | `mode`       | Specifies the preference mode | `"dark" \| "light" \| "system" \| undefined` | `undefined` |
-| `transition` | `transition` | Specifies the preference mode | `"flash" \| "none" \| "smooth"`              | `'flash'`   |
+| Property     | Attribute    | Description                                                       | Type                                         | Default     |
+| ------------ | ------------ | ----------------------------------------------------------------- | -------------------------------------------- | ----------- |
+| `mode`       | `mode`       | Specifies the preference mode                                     | `"dark" \| "light" \| "system" \| undefined` | `undefined` |
+| `transition` | `transition` | Specifies the transition of switching from a theme to another one | `"flash" \| "none" \| "smooth"`              | `'smooth'`  |
 
 
 ## Dependencies

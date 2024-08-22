@@ -1,5 +1,5 @@
 import { h } from '@stencil/core'
-import { themeModeDictionary } from '../meta/dictionary'
+import { themeModeDictionary, transitionDictionary } from '../meta/dictionary'
 
 
 export default {
@@ -10,6 +10,12 @@ export default {
       options: themeModeDictionary,
       control: { type: 'select' },
       description: 'Specifies the preference mode',
+    },
+    transition: {
+      type: { name: 'string' },
+      options: transitionDictionary,
+      control: { type: 'select' },
+      description: 'Specifies the transition of switching from a theme to another one',
     },
   },
 }

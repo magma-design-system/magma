@@ -23,21 +23,21 @@ export class MdsPrefTheme {
   })
 
   private overlayBackgroundVisible = 'rgb(var(--tone-neutral))'
-  private overlayBackgroundHidden = 'rgb(var(--tone-neutral) / 0.5)'
+  private overlayBackgroundHidden = 'rgb(var(--tone-neutral) / 0)'
   private cssOverlayShowDuration: string = '300'
   private cssOverlayFadeoutDuration: string = '200'
-  private cssOverlayZIndex: string = '10000'
+  private cssOverlayZIndex: string = '6000'
   private overlayEl: HTMLElement
   private overlayId = 'mds-pref-theme-overlay'
   private overlayTimer: NodeJS.Timeout
-  // private overlayShowTimer: NodeJS.Timeout
-  private prevMode?: ThemeModeType = 'system'
+  private overlaySmoothTimer: NodeJS.Timeout
+  private overlayShow: boolean = false
 
   private updateCSSCustomProps = (): void => {
     const elementStyles = window.getComputedStyle(this.element)
-    this.cssOverlayShowDuration = elementStyles.getPropertyValue('--mds-pref-theme-overlay-show-duration')
-    this.cssOverlayFadeoutDuration = elementStyles.getPropertyValue('--mds-pref-theme-overlay-fadeout-duration')
-    this.cssOverlayZIndex = elementStyles.getPropertyValue('--mds-pref-theme-overlay-z-index')
+    this.cssOverlayShowDuration = elementStyles.getPropertyValue('--mds-pref-theme-overlay-show-duration') ?? '300'
+    this.cssOverlayFadeoutDuration = elementStyles.getPropertyValue('--mds-pref-theme-overlay-fadeout-duration') ?? '200'
+    this.cssOverlayZIndex = elementStyles.getPropertyValue('--mds-pref-theme-overlay-z-index') ?? '6000'
   }
 
   
@@ -47,9 +47,9 @@ export class MdsPrefTheme {
   @Prop({ mutable: true, reflect: true }) mode?: ThemeModeType
 
   /**
-   * Specifies the preference mode
+   * Specifies the transition of switching from a theme to another one
    */
-  @Prop({ mutable: true, reflect: true }) transition: ThemeTransitionType = 'flash'
+  @Prop({ mutable: true, reflect: true }) transition: ThemeTransitionType = 'smooth'
 
   // related selectors for @magma-design-system/styles
   // projects/design-tokens/formats/css-vars-rgb/template.hbs
@@ -79,73 +79,13 @@ export class MdsPrefTheme {
     this.setTheme(this.mode ?? localStorage.getItem('mds-pref-theme') as ThemeModeType ?? this.defaultMode)
   }
 
-  private isDarkMode = (): boolean => {
-    return window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches
-  }
-
-  private getColorScheme = (): ThemeModeType => {
-    if (this.mode === 'system') {
-      if (this.isDarkMode()) {
-        return 'dark'
-      }
-      return 'light'
-    }
-
-    return this.mode as ThemeModeType
-  }
-
-  private attachOverlayTransition = (): void => {
-    const colorScheme = this.getColorScheme()
-    if (this.prevMode === colorScheme) {
+  @Watch('mode')
+  modeChanged (newValue: ThemeModeType, oldValue: ThemeModeType): void {
+    if (newValue === oldValue) {
       return
     }
-    this.prevMode = colorScheme
-
-    if (!this.overlayEl) {
-      this.overlayEl = document.createElement('div')
-      this.overlayEl.className = this.overlayId
-      this.overlayEl.style.inset = '0'
-      this.overlayEl.style.pointerEvents = 'none'
-      this.overlayEl.style.position = 'fixed'
-      this.overlayEl.style.backgroundColor = 'transparent'
-      this.overlayEl.style.transition = `background-color ${this.cssOverlayFadeoutDuration} ease-out`
-      this.overlayEl.style.zIndex = this.cssOverlayZIndex
-    }
-
-    this.overlayEl.style.backgroundColor = this.overlayBackgroundVisible
-    document.body.appendChild(this.overlayEl)
-
-    clearTimeout(this.overlayTimer)
-    this.overlayTimer = setTimeout(() => {
-      this.detachOverlayTransition()
-    }, cssDurationToMilliseconds(this.cssOverlayShowDuration))
+    this.setTheme(newValue)
   }
-
-  private detachOverlayTransition (): void {
-    if (!this.overlayEl) {
-      return
-    }
-    this.overlayEl.style.backgroundColor = this.overlayBackgroundHidden
-    clearTimeout(this.overlayTimer)
-    
-    this.overlayTimer = setTimeout(() => {
-      this.overlayEl.remove()
-    }, cssDurationToMilliseconds(this.cssOverlayFadeoutDuration))
-  }
-
-  // private changeTheme = (mode: ThemeModeType): void => {
-  //   this.attachOverlayTransition()
-
-  //   clearTimeout(this.overlayShowTimer)
-  //   this.overlayShowTimer = setTimeout(() => {
-  //     this.overlayEl.style.backgroundColor = this.overlayBackgroundVisible
-  //   }, 1)
-
-  //   clearTimeout(this.overlayTimer)
-  //   this.overlayTimer = setTimeout(() => {
-  //     this.detachOverlayTransition()
-  //   }, cssDurationToMilliseconds(this.cssOverlayShowDuration))
-  // }
 
   private setTheme = (mode: ThemeModeType): void => {
     localStorage.setItem('mds-pref-theme', mode)
@@ -161,19 +101,122 @@ export class MdsPrefTheme {
     }
   }
 
-  @Watch('mode')
-  modeChanged (newValue: ThemeModeType): void {
-    this.setTheme(newValue)
+  private isDarkMode = (): boolean => {
+    return window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches
+  }
+
+  private getColorScheme = (mode?: ThemeModeType): ThemeModeType => {
+    if (mode) {
+      if (mode === 'system') {
+        return this.isDarkMode() ? 'dark' : 'light'
+      }
+      return mode as ThemeModeType
+    }
+
+    if (this.mode === 'system') {
+      return this.isDarkMode() ? 'dark' : 'light'
+    }
+    return this.mode as ThemeModeType
+  }
+
+  private instanceOverlay = (): void => {
+    if (!this.overlayEl) {
+      this.overlayEl = document.createElement('div')
+      this.overlayEl.className = this.overlayId
+      this.overlayEl.style.inset = '0'
+      this.overlayEl.style.pointerEvents = 'none'
+      this.overlayEl.style.position = 'fixed'
+      this.overlayEl.style.transition = `background-color ${this.cssOverlayFadeoutDuration} ease-out`
+      this.overlayEl.style.zIndex = this.cssOverlayZIndex
+    }
+    this.overlayEl.style.backgroundColor = this.overlayBackgroundHidden
+  }
+
+  private detachOverlayTransition (): void {
+    if (!this.overlayEl) {
+      return
+    }
+    this.overlayEl.style.backgroundColor = this.overlayBackgroundHidden
+    clearTimeout(this.overlayTimer)
+    
+    this.overlayTimer = setTimeout(() => {
+      this.overlayEl.remove()
+    }, cssDurationToMilliseconds(this.cssOverlayFadeoutDuration))
+  }
+
+  private attachFlashOverlayTransition = (): void => {
+    this.overlayShow = true
+    this.instanceOverlay()
+    this.overlayEl.style.backgroundColor = this.overlayBackgroundVisible
+    document.body.appendChild(this.overlayEl)
+
+    clearTimeout(this.overlayTimer)
+    this.overlayTimer = setTimeout(() => {
+      this.overlayShow = false
+      this.detachOverlayTransition()
+    }, cssDurationToMilliseconds(this.cssOverlayShowDuration))
+  }
+
+  private attachSmoothOverlayTransition = (mode: ThemeModeType): void => {
+
+    this.overlayShow = true
+    this.instanceOverlay()
+    document.body.appendChild(this.overlayEl)
+
+    clearTimeout(this.overlaySmoothTimer)
+    this.overlaySmoothTimer = setTimeout(() => {
+      this.overlayEl.style.backgroundColor = this.overlayBackgroundVisible
+      clearTimeout(this.overlayTimer)
+
+      this.overlayTimer = setTimeout(() => {
+        this.setTheme(mode)
+
+        clearTimeout(this.overlayTimer)
+        this.overlayTimer = setTimeout(() => {
+          this.overlayShow = false
+          this.detachOverlayTransition()
+        }, cssDurationToMilliseconds(this.cssOverlayFadeoutDuration))
+
+      }, cssDurationToMilliseconds(this.cssOverlayShowDuration))
+
+    }, 1)
+  }
+
+  private changeTheme = (mode: ThemeModeType): void => {
+
+    const prevColor = this.getColorScheme()
+    const nextColor = this.getColorScheme(mode)
+
+    if (prevColor === nextColor) {
+      this.setTheme(mode)
+      return
+    }
+
+    switch (this.transition) {
+    case 'none':
+      this.setTheme(mode)
+      break
+    case 'flash':
+      this.setTheme(mode)
+      this.attachFlashOverlayTransition()
+      break
+    case 'smooth':
+      this.attachSmoothOverlayTransition(mode)
+      break
+    default:
+      this.setTheme(mode)
+      break
+    }
   }
 
   render () {
     return (
-      <Host >
+      <Host>
         <mds-text class="info" typography="caption"><b>{this.t.get('label')}</b> {this.t.get(this.theme[this.mode ?? this.defaultMode].label)}</mds-text>
         <mds-tab>
-          <mds-tab-item selected={this.mode === 'light'} onClick={() => { this.setTheme('light'); this.attachOverlayTransition() }} class="item item--light" icon={miBaselineLightMode}></mds-tab-item>
-          <mds-tab-item selected={this.mode === 'system'} onClick={() => { this.setTheme('system'); this.attachOverlayTransition() }} class="item item--system" icon={miBaselineSettings}></mds-tab-item>
-          <mds-tab-item selected={this.mode === 'dark'} onClick={() => { this.setTheme('dark'); this.attachOverlayTransition() }} class="item item--dark" icon={this.mode === 'dark' ? miBaselineDarkMode : miOutlineDarkMode}></mds-tab-item>
+          <mds-tab-item selected={this.mode === 'light'} onClick={() => { if (this.overlayShow) { return } this.changeTheme('light') }} class="item item--light" icon={miBaselineLightMode}></mds-tab-item>
+          <mds-tab-item selected={this.mode === 'system'} onClick={() => { if (this.overlayShow) { return } this.changeTheme('system') }} class="item item--system" icon={miBaselineSettings}></mds-tab-item>
+          <mds-tab-item selected={this.mode === 'dark'} onClick={() => { if (this.overlayShow) { return } this.changeTheme('dark') }} class="item item--dark" icon={this.mode === 'dark' ? miBaselineDarkMode : miOutlineDarkMode}></mds-tab-item>
         </mds-tab>
       </Host>
     )
