@@ -4,15 +4,8 @@ import { h } from '@stencil/core'
 
 export default {
   title: 'UI / Preferences',
-  argTypes: {
-    mode: {
-      type: { name: 'string' },
-      // options: animationDictionary,
-      // control: { type: 'select' },
-      description: 'Specifies the preference mode',
-    },
-  },
 }
+
 const Template = args =>
   <mds-pref {...args}>
     <mds-pref-theme></mds-pref-theme>
@@ -22,6 +15,4 @@ const Template = args =>
   </mds-pref>
 
 export const Default = Template.bind({})
-Default.args = {
-
-}
+Default.args = { }
