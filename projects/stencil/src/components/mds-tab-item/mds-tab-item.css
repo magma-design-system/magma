@@ -53,3 +53,5 @@
   box-shadow: var(--mds-tab-item-shadow-selected);
   pointer-events: none;
 }
+
+@import './css/mds-tab-item-pref-theme.css';
