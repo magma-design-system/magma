@@ -50,7 +50,7 @@ import { MdsPaginatorEventDetail } from "./components/mds-paginator/meta/event-d
 import { AnimationModeType } from "./components/mds-pref-animation/meta/types";
 import { ConsumptionModeType } from "./components/mds-pref-consumption/meta/types";
 import { ContrastModeType } from "./components/mds-pref-contrast/meta/types";
-import { ThemeModeType } from "./components/mds-pref-theme/meta/types";
+import { ThemeModeType, ThemeTransitionType } from "./components/mds-pref-theme/meta/types";
 import { PriceTableFeaturesCellType } from "./components/mds-price-table-features-cell/meta/types";
 import { DirectionType } from "./components/mds-progress/meta/types";
 import { NotificationPreviewType } from "./components/mds-push-notification/meta/types";
@@ -109,7 +109,7 @@ export { MdsPaginatorEventDetail } from "./components/mds-paginator/meta/event-d
 export { AnimationModeType } from "./components/mds-pref-animation/meta/types";
 export { ConsumptionModeType } from "./components/mds-pref-consumption/meta/types";
 export { ContrastModeType } from "./components/mds-pref-contrast/meta/types";
-export { ThemeModeType } from "./components/mds-pref-theme/meta/types";
+export { ThemeModeType, ThemeTransitionType } from "./components/mds-pref-theme/meta/types";
 export { PriceTableFeaturesCellType } from "./components/mds-price-table-features-cell/meta/types";
 export { DirectionType } from "./components/mds-progress/meta/types";
 export { NotificationPreviewType } from "./components/mds-push-notification/meta/types";
@@ -1278,6 +1278,10 @@ export namespace Components {
           * Specifies the preference mode
          */
         "mode"?: ThemeModeType;
+        /**
+          * Specifies the transition of switching from a theme to another one
+         */
+        "transition": ThemeTransitionType;
     }
     interface MdsPriceTable {
     }
@@ -4127,6 +4131,10 @@ declare namespace LocalJSX {
           * Specifies the preference mode
          */
         "mode"?: ThemeModeType;
+        /**
+          * Specifies the transition of switching from a theme to another one
+         */
+        "transition"?: ThemeTransitionType;
     }
     interface MdsPriceTable {
     }
