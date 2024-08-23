@@ -48,7 +48,11 @@
 
   --mds-button-background: var(--mds-tab-item-background-selected);
   --mds-button-color: var(--mds-tab-item-color-selected);
+  --mds-button-icon-color: var(--mds-tab-item-color-selected);
 
   box-shadow: var(--mds-tab-item-shadow-selected);
   pointer-events: none;
 }
+
+@import './css/mds-tab-item-pref-theme.css';
+@import './css/mds-tab-item-pref-contrast.css';

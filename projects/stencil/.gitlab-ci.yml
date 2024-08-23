@@ -169,6 +169,8 @@ include:
   - '/projects/stencil/src/components/mds-input-range/.gitlab-ci.yml'
   - '/projects/stencil/src/components/mds-input-select/.gitlab-ci.yml'
   - '/projects/stencil/src/components/mds-input-switch/.gitlab-ci.yml'
+  - '/projects/stencil/src/components/mds-input-tip-item/.gitlab-ci.yml'
+  - '/projects/stencil/src/components/mds-input-tip/.gitlab-ci.yml'
   - '/projects/stencil/src/components/mds-input-upload/.gitlab-ci.yml'
   - '/projects/stencil/src/components/mds-input/.gitlab-ci.yml'
   - '/projects/stencil/src/components/mds-label/.gitlab-ci.yml'

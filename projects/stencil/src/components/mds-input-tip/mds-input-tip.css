@@ -1,0 +1,52 @@
+@tailwind utilities;
+
+:host {
+
+  --mds-input-tip-active-translate: translate(0, 0);
+
+  @apply
+    duration-300
+    ease-out-expo
+    gap-100
+    left-100
+    right-100
+    transition-cosmetic;
+
+  display: flex;
+  justify-content: flex-end;
+  pointer-events: none;
+  position: absolute;
+  transform: var(--mds-input-tip-active-translate);
+}
+
+:host ( :empty ) {
+  display: none;
+}
+
+:host ( [position="top"] ) {
+  top: theme('spacing.100');
+}
+
+:host ( [position="bottom"] ) {
+  bottom: theme('spacing.100');
+}
+
+:host ( [position="top"][active]:not([active="false"]) ) {
+
+  --mds-input-tip-active-translate: translate(calc(theme('translate.100') * -1), calc(theme('translate.100') * -1));
+}
+
+:host( [position="top"][active]:not([active="false"]) ) ::slotted( mds-input-tip-item ) {
+  border-top-left-radius: 0;
+  border-top-right-radius: 0;
+}
+
+:host ( [position="bottom"][active]:not([active="false"]) ) {
+
+  --mds-input-tip-active-translate: translate(calc(theme('translate.100') * -1), theme('translate.100'));
+}
+
+:host( [position="bottom"][active]:not([active="false"]) ) ::slotted( mds-input-tip-item ) {
+  border-bottom-left-radius: 0;
+  border-bottom-right-radius: 0;
+}

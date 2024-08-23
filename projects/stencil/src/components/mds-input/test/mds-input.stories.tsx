@@ -52,10 +52,6 @@ export default {
       type: { name: 'boolean' },
       description: 'If true, the element is displayed as disabled',
     },
-    'disabled-label': {
-      type: { name: 'string' },
-      description: 'The label for disabled state',
-    },
     icon: {
       control: { type: 'select' },
       description: 'An icon displayed at the right of the input',
@@ -94,17 +90,9 @@ export default {
       type: { name: 'boolean' },
       description: 'Specifies that the element is read-only',
     },
-    'readOnly-label': {
-      type: { name: 'string' },
-      description: 'The label for readonly state',
-    },
     required: {
       type: { name: 'boolean' },
       description: 'Specifies that the element must be filled out before submitting the form',
-    },
-    'required-label': {
-      type: { name: 'string' },
-      description: 'The label for required state',
     },
     step: {
       type: { name: 'string' },
@@ -190,13 +178,6 @@ Disabled.args = {
   placeholder: 'Disabled',
 }
 
-export const DisabledLabel = Template.bind({})
-DisabledLabel.args = {
-  disabled: true,
-  'disabled-label': 'not active',
-  placeholder: 'Disabled',
-}
-
 export const Max = Template.bind({})
 Max.args = {
   max: '3',
@@ -217,23 +198,9 @@ Required.args = {
   placeholder: 'This is a required field',
 }
 
-export const RequiredLabel = Template.bind({})
-RequiredLabel.args = {
-  required: true,
-  'required-label': 'unavoidable',
-  placeholder: 'Required label',
-}
-
 export const ReadOnly = Template.bind({})
 ReadOnly.args = {
   readOnly: true,
-  value: 'Read only text',
-}
-
-export const ReadOnlyLabel = Template.bind({})
-ReadOnlyLabel.args = {
-  readOnly: true,
-  'readOnly-label': 'just read',
   value: 'Read only text',
 }
 

@@ -11,11 +11,11 @@
   --magma-modal-z-index: 3000;
   --magma-notification-z-index: 2000;
   --magma-outline-animation-duration: 1.5s;
-  --magma-outline-blur-offset: 6px;
   --magma-outline-blur-color: transparent;
+  --magma-outline-blur-offset: 6px;
   --magma-outline-blur: 2px solid var(--magma-outline-blur-color);
-  --magma-outline-focus-offset: 2px;
   --magma-outline-focus-color: rgb(var(--tone-neutral-04, 0 0 0));
+  --magma-outline-focus-offset: 2px;
   --magma-outline-focus: 2px solid var(--magma-outline-focus-color);
   --magma-overlay-blur: var(--magma-backdrop-blur);
   --magma-overlay-color: var(--magma-backdrop-color);
@@ -23,5 +23,6 @@
   --magma-overlay: rgba(var(--magma-overlay-color) / var(--magma-overlay-opacity));
   --magma-selection-background: rgb(var(--label-sky-09));
   --magma-selection-color: rgb(var(--label-sky-01));
+  --magma-theme-overlay-z-index: 6000;
   --magma-tooltip-z-index: 6000;
 }

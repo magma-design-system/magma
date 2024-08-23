@@ -216,7 +216,6 @@ textarea.input {
 }
 
 @import './css/mds-input-variant.css';
-@import './css/mds-input-tip.css';
 
 @container (max-width: 210px) {
   :host .tip__content,
