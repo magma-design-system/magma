@@ -18,6 +18,9 @@
 .tabs {
 
   @apply
+    border
+    border-solid
+    border-transparent
     gap-200
     hide-scrollbar
     p-200;
@@ -29,7 +32,6 @@
   overflow: auto;
   scroll-behavior: smooth;
   scroll-snap-type: x mandatory;
-
 }
 
 .tabs::-webkit-scrollbar {
@@ -69,13 +71,4 @@
   scroll-snap-align: start;
 }
 
-:host( [strategy="default"] ) ::slotted( [slot="content"] ) {
-  background-color: theme('colors.label-blue-06');
-  left: 0;
-  opacity: 0;
-  pointer-events: none;
-  position: absolute;
-  right: 0;
-  top: 0;
-}
-
+@import './css/mds-tab-pref-theme.css';

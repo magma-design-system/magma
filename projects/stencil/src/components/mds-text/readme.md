@@ -52,16 +52,20 @@ This is a web-component from Maggioli Design System [Magma](https://magma.maggio
  - [mds-file-preview](../mds-file-preview)
  - [mds-filter](../mds-filter)
  - [mds-filter-item](../mds-filter-item)
- - [mds-input](../mds-input)
  - [mds-input-field](../mds-input-field)
  - [mds-input-range](../mds-input-range)
  - [mds-input-switch](../mds-input-switch)
+ - [mds-input-tip-item](../mds-input-tip-item)
  - [mds-input-upload](../mds-input-upload)
  - [mds-kpi-item](../mds-kpi-item)
  - [mds-label](../mds-label)
  - [mds-list-item](../mds-list-item)
  - [mds-notification](../mds-notification)
  - [mds-paginator-item](../mds-paginator-item)
+ - [mds-pref-animation](../mds-pref-animation)
+ - [mds-pref-consumption](../mds-pref-consumption)
+ - [mds-pref-contrast](../mds-pref-contrast)
+ - [mds-pref-theme](../mds-pref-theme)
  - [mds-price-table-features](../mds-price-table-features)
  - [mds-price-table-features-cell](../mds-price-table-features-cell)
  - [mds-price-table-list-item](../mds-price-table-list-item)
@@ -90,16 +94,20 @@ graph TD;
   mds-file-preview --> mds-text
   mds-filter --> mds-text
   mds-filter-item --> mds-text
-  mds-input --> mds-text
   mds-input-field --> mds-text
   mds-input-range --> mds-text
   mds-input-switch --> mds-text
+  mds-input-tip-item --> mds-text
   mds-input-upload --> mds-text
   mds-kpi-item --> mds-text
   mds-label --> mds-text
   mds-list-item --> mds-text
   mds-notification --> mds-text
   mds-paginator-item --> mds-text
+  mds-pref-animation --> mds-text
+  mds-pref-consumption --> mds-text
+  mds-pref-contrast --> mds-text
+  mds-pref-theme --> mds-text
   mds-price-table-features --> mds-text
   mds-price-table-features-cell --> mds-text
   mds-price-table-list-item --> mds-text

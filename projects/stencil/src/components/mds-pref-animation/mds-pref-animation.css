@@ -1,0 +1,31 @@
+@tailwind utilities;
+
+:host {
+
+  @apply gap-100;
+
+  display: grid;
+}
+
+.item {
+
+  --mds-tab-item-color: theme('colors.tone-neutral-05');
+
+  flex-basis: 0;
+  flex-grow: 1;
+}
+
+.item--system {
+
+  --mds-tab-item-color-selected: theme('colors.tone-neutral-03');
+}
+
+.item--enabled {
+
+  --mds-tab-item-color-selected: theme('colors.tone-neutral-03');
+}
+
+.item--disabled {
+
+  --mds-tab-item-color-selected: theme('colors.tone-neutral-03');
+}

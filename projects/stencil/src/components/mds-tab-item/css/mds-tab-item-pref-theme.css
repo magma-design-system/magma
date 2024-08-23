@@ -1,0 +1,18 @@
+@tailwind utilities;
+
+@container style(--magma-pref-theme: dark) {
+  :host {
+
+    --mds-tab-item-background-selected: theme('colors.tone-neutral-08');
+  }
+}
+
+@container style(--magma-pref-theme: system) {
+
+  @media (prefers-color-scheme: dark) {
+    :host {
+  
+      --mds-tab-item-background-selected: theme('colors.tone-neutral-08');
+    }
+  }
+}

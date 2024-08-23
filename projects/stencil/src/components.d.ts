@@ -41,10 +41,16 @@ import { MdsValidationErrors, MdsValidatorFn } from "./components/mds-input-fiel
 import { InputValue } from "@interface/input-value";
 import { InputSwitchSizeType, InputSwitchType } from "./components/mds-input-switch/meta/types";
 import { MdsInputSwitchEventDetail } from "./components/mds-input-switch/meta/event-detail";
+import { InputTipPositionType } from "./components/mds-input-tip/meta/types";
+import { InputTipItemVariantType } from "@component/mds-input-tip-item/meta/types";
 import { AttachmentSort, FileError } from "./components/mds-input-upload/meta/types";
 import { ModalPositionType } from "./components/mds-modal/meta/types";
 import { StrategyType } from "./components/mds-notification/meta/types";
 import { MdsPaginatorEventDetail } from "./components/mds-paginator/meta/event-detail";
+import { AnimationModeType } from "./components/mds-pref-animation/meta/types";
+import { ConsumptionModeType } from "./components/mds-pref-consumption/meta/types";
+import { ContrastModeType } from "./components/mds-pref-contrast/meta/types";
+import { ThemeModeType, ThemeTransitionType } from "./components/mds-pref-theme/meta/types";
 import { PriceTableFeaturesCellType } from "./components/mds-price-table-features-cell/meta/types";
 import { DirectionType } from "./components/mds-progress/meta/types";
 import { NotificationPreviewType } from "./components/mds-push-notification/meta/types";
@@ -94,10 +100,16 @@ export { MdsValidationErrors, MdsValidatorFn } from "./components/mds-input-fiel
 export { InputValue } from "@interface/input-value";
 export { InputSwitchSizeType, InputSwitchType } from "./components/mds-input-switch/meta/types";
 export { MdsInputSwitchEventDetail } from "./components/mds-input-switch/meta/event-detail";
+export { InputTipPositionType } from "./components/mds-input-tip/meta/types";
+export { InputTipItemVariantType } from "@component/mds-input-tip-item/meta/types";
 export { AttachmentSort, FileError } from "./components/mds-input-upload/meta/types";
 export { ModalPositionType } from "./components/mds-modal/meta/types";
 export { StrategyType } from "./components/mds-notification/meta/types";
 export { MdsPaginatorEventDetail } from "./components/mds-paginator/meta/event-detail";
+export { AnimationModeType } from "./components/mds-pref-animation/meta/types";
+export { ConsumptionModeType } from "./components/mds-pref-consumption/meta/types";
+export { ContrastModeType } from "./components/mds-pref-contrast/meta/types";
+export { ThemeModeType, ThemeTransitionType } from "./components/mds-pref-theme/meta/types";
 export { PriceTableFeaturesCellType } from "./components/mds-price-table-features-cell/meta/types";
 export { DirectionType } from "./components/mds-progress/meta/types";
 export { NotificationPreviewType } from "./components/mds-push-notification/meta/types";
@@ -780,10 +792,6 @@ export namespace Components {
          */
         "disabled"?: boolean;
         /**
-          * Specifies the label for the displayed state disabled
-         */
-        "disabledLabel"?: string;
-        /**
           * Returns the native `<input>` element used under the hood.
          */
         "getInputElement": () => Promise<HTMLInputElement | HTMLTextAreaElement>;
@@ -824,17 +832,9 @@ export namespace Components {
          */
         "readonly"?: boolean;
         /**
-          * Specifies the label for the displayed state read-only
-         */
-        "readonlyLabel"?: string;
-        /**
           * Specifies that the element must be filled out before submitting the form
          */
         "required"?: boolean;
-        /**
-          * Specifies the label for the displayed state required
-         */
-        "requiredLabel"?: string;
         /**
           * Sets focus on the specified `my-input`. Use this method instead of the global `input.focus()`.
          */
@@ -890,10 +890,6 @@ export namespace Components {
           * If true, the element is displayed as disabled
          */
         "disabled"?: boolean;
-        /**
-          * Specifies the label for the displayed state disabled
-         */
-        "disabledLabel"?: string;
         "getErrors": () => Promise<MdsValidationErrors | null>;
         /**
           * Returns the native `<input>` element used under the hood.
@@ -943,19 +939,11 @@ export namespace Components {
           * Specifies that the element is read-only
          */
         "readonly"?: boolean;
-        /**
-          * Specifies the label for the displayed state read-only
-         */
-        "readonlyLabel"?: string;
         "removeValidator": (validator: MdsValidatorFn) => Promise<void>;
         /**
           * Specifies that the element must be filled out before submitting the form
          */
         "required"?: boolean;
-        /**
-          * Specifies the label for the displayed state required
-         */
-        "requiredLabel"?: string;
         /**
           * Sets focus on the specified `my-input`. Use this method instead of the global `input.focus()`.
          */
@@ -1013,13 +1001,37 @@ export namespace Components {
          */
         "autocomplete"?: 'on';
         /**
+          * If true, the element is displayed as disabled
+         */
+        "disabled"?: boolean;
+        /**
+          * Specifies if the select should allow multiple options to be selected in the list
+         */
+        "multiple"?: boolean;
+        /**
+          * Is needed to reference the form data after the form is submitted
+         */
+        "name"?: string;
+        /**
           * Specifies a short hint that describes the expected value of the element
          */
         "placeholder"?: string;
         /**
-          * Specifies the value of the element
+          * Specifies that the element must be filled out before submitting the form
+         */
+        "required"?: boolean;
+        /**
+          * When `multiple` is set to `true`, represents the number or rows in the list that should be visible
+         */
+        "size"?: number;
+        /**
+          * Specifies the value of the component
          */
         "value"?: string | number | null;
+        /**
+          * Sets the variant of the component
+         */
+        "variant"?: ThemeStatusVariantType;
     }
     interface MdsInputSwitch {
         /**
@@ -1070,6 +1082,26 @@ export namespace Components {
           * Specifies the variant for `typography`
          */
         "variant"?: TypographyVariants;
+    }
+    interface MdsInputTip {
+        /**
+          * Specifies the position of the element relative to its container
+         */
+        "active"?: boolean;
+        /**
+          * Specifies the position of the element relative to its container
+         */
+        "position"?: InputTipPositionType;
+    }
+    interface MdsInputTipItem {
+        /**
+          * Specifies if the element is expanded
+         */
+        "expanded"?: boolean;
+        /**
+          * Specifies the variant of the element
+         */
+        "variant"?: InputTipItemVariantType;
     }
     interface MdsInputUpload {
         /**
@@ -1220,6 +1252,36 @@ export namespace Components {
           * Specifies if the item is selected or not, is handled from the parent paginator
          */
         "selected"?: boolean;
+    }
+    interface MdsPref {
+    }
+    interface MdsPrefAnimation {
+        /**
+          * Specifies the preference mode
+         */
+        "mode"?: AnimationModeType;
+    }
+    interface MdsPrefConsumption {
+        /**
+          * Specifies the preference mode
+         */
+        "mode"?: ConsumptionModeType;
+    }
+    interface MdsPrefContrast {
+        /**
+          * Specifies the preference mode
+         */
+        "mode"?: ContrastModeType;
+    }
+    interface MdsPrefTheme {
+        /**
+          * Specifies the preference mode
+         */
+        "mode"?: ThemeModeType;
+        /**
+          * Specifies the transition of switching from a theme to another one
+         */
+        "transition": ThemeTransitionType;
     }
     interface MdsPriceTable {
     }
@@ -2221,6 +2283,18 @@ declare global {
         prototype: HTMLMdsInputSwitchElement;
         new (): HTMLMdsInputSwitchElement;
     };
+    interface HTMLMdsInputTipElement extends Components.MdsInputTip, HTMLStencilElement {
+    }
+    var HTMLMdsInputTipElement: {
+        prototype: HTMLMdsInputTipElement;
+        new (): HTMLMdsInputTipElement;
+    };
+    interface HTMLMdsInputTipItemElement extends Components.MdsInputTipItem, HTMLStencilElement {
+    }
+    var HTMLMdsInputTipItemElement: {
+        prototype: HTMLMdsInputTipItemElement;
+        new (): HTMLMdsInputTipItemElement;
+    };
     interface HTMLMdsInputUploadElementEventMap {
         "mdsInputUploadChange": FileList | null;
     }
@@ -2341,6 +2415,36 @@ declare global {
     var HTMLMdsPaginatorItemElement: {
         prototype: HTMLMdsPaginatorItemElement;
         new (): HTMLMdsPaginatorItemElement;
+    };
+    interface HTMLMdsPrefElement extends Components.MdsPref, HTMLStencilElement {
+    }
+    var HTMLMdsPrefElement: {
+        prototype: HTMLMdsPrefElement;
+        new (): HTMLMdsPrefElement;
+    };
+    interface HTMLMdsPrefAnimationElement extends Components.MdsPrefAnimation, HTMLStencilElement {
+    }
+    var HTMLMdsPrefAnimationElement: {
+        prototype: HTMLMdsPrefAnimationElement;
+        new (): HTMLMdsPrefAnimationElement;
+    };
+    interface HTMLMdsPrefConsumptionElement extends Components.MdsPrefConsumption, HTMLStencilElement {
+    }
+    var HTMLMdsPrefConsumptionElement: {
+        prototype: HTMLMdsPrefConsumptionElement;
+        new (): HTMLMdsPrefConsumptionElement;
+    };
+    interface HTMLMdsPrefContrastElement extends Components.MdsPrefContrast, HTMLStencilElement {
+    }
+    var HTMLMdsPrefContrastElement: {
+        prototype: HTMLMdsPrefContrastElement;
+        new (): HTMLMdsPrefContrastElement;
+    };
+    interface HTMLMdsPrefThemeElement extends Components.MdsPrefTheme, HTMLStencilElement {
+    }
+    var HTMLMdsPrefThemeElement: {
+        prototype: HTMLMdsPrefThemeElement;
+        new (): HTMLMdsPrefThemeElement;
     };
     interface HTMLMdsPriceTableElement extends Components.MdsPriceTable, HTMLStencilElement {
     }
@@ -2684,6 +2788,8 @@ declare global {
         "mds-input-range": HTMLMdsInputRangeElement;
         "mds-input-select": HTMLMdsInputSelectElement;
         "mds-input-switch": HTMLMdsInputSwitchElement;
+        "mds-input-tip": HTMLMdsInputTipElement;
+        "mds-input-tip-item": HTMLMdsInputTipItemElement;
         "mds-input-upload": HTMLMdsInputUploadElement;
         "mds-kpi": HTMLMdsKpiElement;
         "mds-kpi-item": HTMLMdsKpiItemElement;
@@ -2695,6 +2801,11 @@ declare global {
         "mds-notification": HTMLMdsNotificationElement;
         "mds-paginator": HTMLMdsPaginatorElement;
         "mds-paginator-item": HTMLMdsPaginatorItemElement;
+        "mds-pref": HTMLMdsPrefElement;
+        "mds-pref-animation": HTMLMdsPrefAnimationElement;
+        "mds-pref-consumption": HTMLMdsPrefConsumptionElement;
+        "mds-pref-contrast": HTMLMdsPrefContrastElement;
+        "mds-pref-theme": HTMLMdsPrefThemeElement;
         "mds-price-table": HTMLMdsPriceTableElement;
         "mds-price-table-features": HTMLMdsPriceTableFeaturesElement;
         "mds-price-table-features-cell": HTMLMdsPriceTableFeaturesCellElement;
@@ -3497,10 +3608,6 @@ declare namespace LocalJSX {
          */
         "disabled"?: boolean;
         /**
-          * Specifies the label for the displayed state disabled
-         */
-        "disabledLabel"?: string;
-        /**
           * An icon displayed at the right of the input
          */
         "icon"?: string;
@@ -3537,7 +3644,7 @@ declare namespace LocalJSX {
          */
         "onMdsInputFocus"?: (event: MdsInputCustomEvent<void>) => void;
         /**
-          * Emits a KeyboardEvent when a keboard key is pressed on the focused input element
+          * Emits a KeyboardEvent when a keyboard key is pressed on the focused input element
          */
         "onMdsInputKeydown"?: (event: MdsInputCustomEvent<KeyboardEvent>) => void;
         /**
@@ -3553,17 +3660,9 @@ declare namespace LocalJSX {
          */
         "readonly"?: boolean;
         /**
-          * Specifies the label for the displayed state read-only
-         */
-        "readonlyLabel"?: string;
-        /**
           * Specifies that the element must be filled out before submitting the form
          */
         "required"?: boolean;
-        /**
-          * Specifies the label for the displayed state required
-         */
-        "requiredLabel"?: string;
         /**
           * Specifies the interval between legal numbers in an input field
          */
@@ -3614,10 +3713,6 @@ declare namespace LocalJSX {
           * If true, the element is displayed as disabled
          */
         "disabled"?: boolean;
-        /**
-          * Specifies the label for the displayed state disabled
-         */
-        "disabledLabel"?: string;
         /**
           * An icon displayed at the right of the input
          */
@@ -3679,17 +3774,9 @@ declare namespace LocalJSX {
          */
         "readonly"?: boolean;
         /**
-          * Specifies the label for the displayed state read-only
-         */
-        "readonlyLabel"?: string;
-        /**
           * Specifies that the element must be filled out before submitting the form
          */
         "required"?: boolean;
-        /**
-          * Specifies the label for the displayed state required
-         */
-        "requiredLabel"?: string;
         /**
           * Specifies the interval between legal numbers in an input field
          */
@@ -3747,6 +3834,18 @@ declare namespace LocalJSX {
          */
         "autocomplete"?: 'on';
         /**
+          * If true, the element is displayed as disabled
+         */
+        "disabled"?: boolean;
+        /**
+          * Specifies if the select should allow multiple options to be selected in the list
+         */
+        "multiple"?: boolean;
+        /**
+          * Is needed to reference the form data after the form is submitted
+         */
+        "name"?: string;
+        /**
           * Emits an InputChangeEventDetail when the value of the input element changes
          */
         "onMdsInputSelectChange"?: (event: MdsInputSelectCustomEvent<InputValue>) => void;
@@ -3755,9 +3854,21 @@ declare namespace LocalJSX {
          */
         "placeholder"?: string;
         /**
-          * Specifies the value of the element
+          * Specifies that the element must be filled out before submitting the form
+         */
+        "required"?: boolean;
+        /**
+          * When `multiple` is set to `true`, represents the number or rows in the list that should be visible
+         */
+        "size"?: number;
+        /**
+          * Specifies the value of the component
          */
         "value"?: string | number | null;
+        /**
+          * Sets the variant of the component
+         */
+        "variant"?: ThemeStatusVariantType;
     }
     interface MdsInputSwitch {
         /**
@@ -3812,6 +3923,26 @@ declare namespace LocalJSX {
           * Specifies the variant for `typography`
          */
         "variant"?: TypographyVariants;
+    }
+    interface MdsInputTip {
+        /**
+          * Specifies the position of the element relative to its container
+         */
+        "active"?: boolean;
+        /**
+          * Specifies the position of the element relative to its container
+         */
+        "position"?: InputTipPositionType;
+    }
+    interface MdsInputTipItem {
+        /**
+          * Specifies if the element is expanded
+         */
+        "expanded"?: boolean;
+        /**
+          * Specifies the variant of the element
+         */
+        "variant"?: InputTipItemVariantType;
     }
     interface MdsInputUpload {
         /**
@@ -3974,6 +4105,36 @@ declare namespace LocalJSX {
           * Specifies if the item is selected or not, is handled from the parent paginator
          */
         "selected"?: boolean;
+    }
+    interface MdsPref {
+    }
+    interface MdsPrefAnimation {
+        /**
+          * Specifies the preference mode
+         */
+        "mode"?: AnimationModeType;
+    }
+    interface MdsPrefConsumption {
+        /**
+          * Specifies the preference mode
+         */
+        "mode"?: ConsumptionModeType;
+    }
+    interface MdsPrefContrast {
+        /**
+          * Specifies the preference mode
+         */
+        "mode"?: ContrastModeType;
+    }
+    interface MdsPrefTheme {
+        /**
+          * Specifies the preference mode
+         */
+        "mode"?: ThemeModeType;
+        /**
+          * Specifies the transition of switching from a theme to another one
+         */
+        "transition"?: ThemeTransitionType;
     }
     interface MdsPriceTable {
     }
@@ -4414,6 +4575,8 @@ declare namespace LocalJSX {
         "mds-input-range": MdsInputRange;
         "mds-input-select": MdsInputSelect;
         "mds-input-switch": MdsInputSwitch;
+        "mds-input-tip": MdsInputTip;
+        "mds-input-tip-item": MdsInputTipItem;
         "mds-input-upload": MdsInputUpload;
         "mds-kpi": MdsKpi;
         "mds-kpi-item": MdsKpiItem;
@@ -4425,6 +4588,11 @@ declare namespace LocalJSX {
         "mds-notification": MdsNotification;
         "mds-paginator": MdsPaginator;
         "mds-paginator-item": MdsPaginatorItem;
+        "mds-pref": MdsPref;
+        "mds-pref-animation": MdsPrefAnimation;
+        "mds-pref-consumption": MdsPrefConsumption;
+        "mds-pref-contrast": MdsPrefContrast;
+        "mds-pref-theme": MdsPrefTheme;
         "mds-price-table": MdsPriceTable;
         "mds-price-table-features": MdsPriceTableFeatures;
         "mds-price-table-features-cell": MdsPriceTableFeaturesCell;
@@ -4502,6 +4670,8 @@ declare module "@stencil/core" {
             "mds-input-range": LocalJSX.MdsInputRange & JSXBase.HTMLAttributes<HTMLMdsInputRangeElement>;
             "mds-input-select": LocalJSX.MdsInputSelect & JSXBase.HTMLAttributes<HTMLMdsInputSelectElement>;
             "mds-input-switch": LocalJSX.MdsInputSwitch & JSXBase.HTMLAttributes<HTMLMdsInputSwitchElement>;
+            "mds-input-tip": LocalJSX.MdsInputTip & JSXBase.HTMLAttributes<HTMLMdsInputTipElement>;
+            "mds-input-tip-item": LocalJSX.MdsInputTipItem & JSXBase.HTMLAttributes<HTMLMdsInputTipItemElement>;
             "mds-input-upload": LocalJSX.MdsInputUpload & JSXBase.HTMLAttributes<HTMLMdsInputUploadElement>;
             "mds-kpi": LocalJSX.MdsKpi & JSXBase.HTMLAttributes<HTMLMdsKpiElement>;
             "mds-kpi-item": LocalJSX.MdsKpiItem & JSXBase.HTMLAttributes<HTMLMdsKpiItemElement>;
@@ -4513,6 +4683,11 @@ declare module "@stencil/core" {
             "mds-notification": LocalJSX.MdsNotification & JSXBase.HTMLAttributes<HTMLMdsNotificationElement>;
             "mds-paginator": LocalJSX.MdsPaginator & JSXBase.HTMLAttributes<HTMLMdsPaginatorElement>;
             "mds-paginator-item": LocalJSX.MdsPaginatorItem & JSXBase.HTMLAttributes<HTMLMdsPaginatorItemElement>;
+            "mds-pref": LocalJSX.MdsPref & JSXBase.HTMLAttributes<HTMLMdsPrefElement>;
+            "mds-pref-animation": LocalJSX.MdsPrefAnimation & JSXBase.HTMLAttributes<HTMLMdsPrefAnimationElement>;
+            "mds-pref-consumption": LocalJSX.MdsPrefConsumption & JSXBase.HTMLAttributes<HTMLMdsPrefConsumptionElement>;
+            "mds-pref-contrast": LocalJSX.MdsPrefContrast & JSXBase.HTMLAttributes<HTMLMdsPrefContrastElement>;
+            "mds-pref-theme": LocalJSX.MdsPrefTheme & JSXBase.HTMLAttributes<HTMLMdsPrefThemeElement>;
             "mds-price-table": LocalJSX.MdsPriceTable & JSXBase.HTMLAttributes<HTMLMdsPriceTableElement>;
             "mds-price-table-features": LocalJSX.MdsPriceTableFeatures & JSXBase.HTMLAttributes<HTMLMdsPriceTableFeaturesElement>;
             "mds-price-table-features-cell": LocalJSX.MdsPriceTableFeaturesCell & JSXBase.HTMLAttributes<HTMLMdsPriceTableFeaturesCellElement>;

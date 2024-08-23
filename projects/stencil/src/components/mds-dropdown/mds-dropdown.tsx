@@ -148,7 +148,6 @@ export class MdsDropdown {
   private attachBackdrop (): void {
     if (!this.backdropEl) {
       this.backdropEl = document.createElement('div')
-      this.backdropEl.style.backgroundColor = this.backdropBackgroundHidden
       this.backdropEl.className = this.backdropId
       this.backdropEl.style.inset = '0'
       this.backdropEl.style.pointerEvents = 'none'
@@ -156,6 +155,7 @@ export class MdsDropdown {
       this.backdropEl.style.transition = `background-color ${this.cssBackdropDuration} ease-out`
       this.backdropEl.style.zIndex = this.cssBackdropZIndex
     }
+    this.backdropEl.style.backgroundColor = this.backdropBackgroundHidden
     document.body.appendChild(this.backdropEl)
 
     clearTimeout(this.backdropTimer)

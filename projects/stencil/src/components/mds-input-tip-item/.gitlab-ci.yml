@@ -1,0 +1,25 @@
+.base-input-tip-item:
+  variables:
+    COMPONENT: mds-input-tip-item
+
+# ISOLATE
+input-tip-item-isolate:
+  extends: [.base-isolate, .base-input-tip-item]
+  dependencies: [base-stencil-build]
+
+# TEST
+input-tip-item-publish-test:
+  extends: [.base-stencil-publish-test, .base-input-tip-item]
+  dependencies: [base-stencil-build, input-tip-item-isolate]
+
+# PUBLISH
+input-tip-item-publish:
+  extends: [.base-stencil-publish, .base-input-tip-item]
+  dependencies: [base-stencil-build, input-tip-item-isolate]
+  needs: [base-stencil-build, input-tip-item-isolate, input-tip-item-publish-test]
+
+# INSTALL TEST
+input-tip-item-install-test:
+  extends: [.base-stencil-install-test, .base-input-tip-item]
+  dependencies: [base-stencil-build, input-tip-item-isolate]
+  needs: [base-stencil-build, input-tip-item-isolate, input-tip-item-publish]
