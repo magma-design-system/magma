@@ -1,4 +1,4 @@
 export type ContrastModeType =
-  | 'high'
-  | 'default'
+  | 'more'
+  | 'no-preference'
   | 'system'

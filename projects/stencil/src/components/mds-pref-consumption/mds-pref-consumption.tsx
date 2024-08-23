@@ -49,15 +49,17 @@ export class MdsPrefContrast {
   }
 
   private setConsumption = (mode: ConsumptionModeType): void => {
-    localStorage.setItem('mds-pref-consumption', mode)
     this.mode = mode
+    localStorage.setItem('mds-pref-consumption', this.mode)
     if (document) {
+      const element = document.querySelector('html')
       for (const key in this.consumption) {
         if ({}.hasOwnProperty.call(this.consumption, key)) {
-          document.querySelector('html')?.classList.remove(this.consumption[key].selector)
+          element?.classList.remove(this.consumption[key].selector)
         }
       }
-      document.querySelector('html')?.classList.add(this.consumption[mode].selector)
+      element?.classList.add(this.consumption[this.mode].selector)
+      element?.style.setProperty('--magma-pref-consumption', this.mode)
     }
   }
 

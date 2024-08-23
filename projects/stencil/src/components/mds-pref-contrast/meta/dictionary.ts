@@ -1,6 +1,6 @@
 const contrastDictionary = [
-  'high',
-  'default',
+  'more',
+  'no-preference',
   'system',
 ]
 

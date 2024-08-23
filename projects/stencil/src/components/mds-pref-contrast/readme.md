@@ -7,9 +7,9 @@
 
 ## Properties
 
-| Property | Attribute | Description                   | Type                                           | Default     |
-| -------- | --------- | ----------------------------- | ---------------------------------------------- | ----------- |
-| `mode`   | `mode`    | Specifies the preference mode | `"default" \| "high" \| "system" \| undefined` | `undefined` |
+| Property | Attribute | Description                   | Type                                                 | Default     |
+| -------- | --------- | ----------------------------- | ---------------------------------------------------- | ----------- |
+| `mode`   | `mode`    | Specifies the preference mode | `"more" \| "no-preference" \| "system" \| undefined` | `undefined` |
 
 
 ## Dependencies

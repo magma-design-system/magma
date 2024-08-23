@@ -1,4 +1,4 @@
 export type AnimationModeType =
-  | 'enabled'
-  | 'disabled'
+  | 'reduce'
+  | 'no-preference'
   | 'system'

@@ -88,16 +88,17 @@ export class MdsPrefTheme {
   }
 
   private setTheme = (mode: ThemeModeType): void => {
-    localStorage.setItem('mds-pref-theme', mode)
     this.mode = mode
+    localStorage.setItem('mds-pref-theme', this.mode)
     if (document) {
+      const element = document.querySelector('html')
       for (const key in this.theme) {
         if ({}.hasOwnProperty.call(this.theme, key)) {
-          document.querySelector('html')?.classList.remove(this.theme[key].selector)
+          element?.classList.remove(this.theme[key].selector)
         }
       }
-      document.querySelector('html')?.classList.add(this.theme[mode].selector)
-      document.querySelector('html')?.setAttribute('style', `--magma-pref-theme:${this.mode};`)
+      element?.classList.add(this.theme[mode].selector)
+      element?.style.setProperty('--magma-pref-theme', this.mode)
     }
   }
 

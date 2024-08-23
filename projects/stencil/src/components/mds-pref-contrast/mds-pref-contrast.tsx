@@ -21,22 +21,29 @@ export class MdsPrefContrast {
     it: localeIt,
   })
 
+  private prefersDefaults = {
+    custom: 'no-preference',
+    less: 'no-preference',
+    more: 'more',
+    'no-preference': 'no-preference',
+  }
+
   /**
    * Specifies the preference mode
    */
   @Prop({ mutable: true, reflect: true }) mode?: ContrastModeType
 
   private contrast = {
-    high: {
-      selector: 'pref-contrast-high',
-      label: 'contrastHigh',
+    more: {
+      selector: 'pref-contrast-more',
+      label: 'contrastMore',
     },
     system: {
       selector: 'pref-contrast-system',
       label: 'systemSettings',
     },
-    default: {
-      selector: 'pref-contrast-default',
+    'no-preference': {
+      selector: 'pref-contrast-no-preference',
       label: 'contrastDefault',
     },
   }
@@ -49,22 +56,43 @@ export class MdsPrefContrast {
     this.setContrast(this.mode ?? localStorage.getItem('mds-pref-contrast') as ContrastModeType ?? this.defaultMode)
   }
 
-  private setContrast = (mode: ContrastModeType): void => {
-    localStorage.setItem('mds-pref-contrast', mode)
-    this.mode = mode
-    if (document) {
-      for (const key in this.contrast) {
-        if ({}.hasOwnProperty.call(this.contrast, key)) {
-          document.querySelector('html')?.classList.remove(this.contrast[key].selector)
+  private rollbackContrast = (): ContrastModeType => {
+    if (!window) {
+      return this.defaultMode
+    }
+
+    for (const key in this.prefersDefaults) {
+      if ({}.hasOwnProperty.call(this.prefersDefaults, key)) {
+        if (window.matchMedia(`(prefers-contrast: ${key})`).matches) {
+          return this.prefersDefaults[key]
         }
       }
-      document.querySelector('html')?.classList.add(this.contrast[mode].selector)
+    }
+
+    throw Error('No prefers-contrast value found.')
+  }
+
+  private setContrast = (mode: ContrastModeType): void => {
+    this.rollbackContrast()
+    this.mode = mode
+    localStorage.setItem('mds-pref-contrast', this.mode)
+    if (document) {
+      const element = document.querySelector('html')
+      for (const key in this.contrast) {
+        if ({}.hasOwnProperty.call(this.contrast, key)) {
+          element?.classList.remove(this.contrast[key].selector)
+        }
+      }
+      element?.classList.add(this.contrast[mode].selector)
+      element?.style.setProperty('--magma-pref-contrast', this.mode)
     }
   }
 
   @Watch('mode')
-  modeChanged (newValue: ContrastModeType): void {
-    this.setContrast(newValue)
+  modeChanged (newValue: ContrastModeType, oldValue: ContrastModeType): void {
+    if (newValue !== oldValue) {
+      this.setContrast(newValue)
+    }
   }
 
   render () {
@@ -72,9 +100,9 @@ export class MdsPrefContrast {
       <Host >
         <mds-text class="info" typography="caption"><b>{this.t.get('label')}</b> {this.t.get(this.contrast[this.mode ?? this.defaultMode].label)}</mds-text>
         <mds-tab>
-          <mds-tab-item selected={this.mode === 'high'} onClick={() => { this.setContrast('high') }} class="item item--high" icon={miBaselineContrast}></mds-tab-item>
+          <mds-tab-item selected={this.mode === 'more'} onClick={() => { this.setContrast('more') }} class="item item--more" icon={miBaselineContrast}></mds-tab-item>
           <mds-tab-item selected={this.mode === 'system'} onClick={() => { this.setContrast('system') }} class="item item--system" icon={miBaselineSettings}></mds-tab-item>
-          <mds-tab-item selected={this.mode === 'default'} onClick={() => { this.setContrast('default') }} class="item item--default" icon={this.mode === 'default' ? miBaselineAutoAwesome : miOutlineAutoAwesome}></mds-tab-item>
+          <mds-tab-item selected={this.mode === 'no-preference'} onClick={() => { this.setContrast('no-preference') }} class="item item--default" icon={this.mode === 'no-preference' ? miBaselineAutoAwesome : miOutlineAutoAwesome}></mds-tab-item>
         </mds-tab>
       </Host>
     )
