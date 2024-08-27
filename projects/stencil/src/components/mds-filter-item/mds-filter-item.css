@@ -3,6 +3,8 @@
 @tailwind components;
 @tailwind utilities;
 
+/* x */
+
 :host {
   @apply
     duration-200
@@ -20,7 +22,7 @@
   display: flex;
   fill: theme('colors.tone-neutral-03');
   justify-content: center;
-  transition-property: background-color, color, outline, outline-offset;
+  transition-property: background-color, box-shadow, color, outline, outline-offset;
   white-space: nowrap;
 }
 
@@ -43,3 +45,7 @@
 :host( [selected]:not([selected="false"]) ) {
   color: theme('colors.tone-neutral-01');
 }
+
+@import './css/mds-filter-item-pref-animation.css';
+@import './css/mds-filter-item-pref-theme.css';
+@import './css/mds-filter-item-pref-contrast.css';
