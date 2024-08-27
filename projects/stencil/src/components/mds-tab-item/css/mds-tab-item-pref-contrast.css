@@ -3,7 +3,8 @@
 @container style(--magma-pref-contrast: more) {
   :host {
 
-    --mds-tab-item-background-selected: theme('colors.tone-neutral-06');
+    --mds-tab-item-color-selected: theme('colors.tone-neutral-01');
+    --mds-tab-item-shadow-selected: theme('boxShadow.outline-strong-50');
   }
 }
 
@@ -11,8 +12,9 @@
 
   @media (prefers-contrast: more) {
     :host {
-  
-      --mds-tab-item-background-selected: theme('colors.tone-neutral-06');
+
+      --mds-tab-item-color-selected: theme('colors.tone-neutral-01');
+      --mds-tab-item-shadow-selected: theme('boxShadow.outline-strong-50');
     }
   }
 }
