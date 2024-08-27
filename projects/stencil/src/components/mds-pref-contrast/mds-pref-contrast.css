@@ -22,3 +22,4 @@
   --mds-tab-item-color-selected: theme('colors.tone-neutral-03');
 }
 
+@import './css/mds-pref-contrast-pref-contrast.css';
