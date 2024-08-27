@@ -1,5 +1,9 @@
 @tailwind utilities;
 
+/*
+ *
+ */
+
 :host {
 
   @apply gap-100;
@@ -29,3 +33,5 @@
 
   --mds-tab-item-color-selected: theme('colors.status-success-06');
 }
+
+@import './css/mds-pref-consumption-pref-contrast.css';

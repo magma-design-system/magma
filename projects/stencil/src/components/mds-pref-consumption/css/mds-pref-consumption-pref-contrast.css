@@ -1,0 +1,48 @@
+@tailwind utilities;
+
+@container style(--magma-pref-contrast: more) {
+  .item {
+
+    --mds-tab-item-color: theme('colors.tone-neutral-01');
+  }
+
+  .item--high {
+
+    --mds-tab-item-color-selected: theme('colors.status-error-03');
+  }
+  
+  .item--medium {
+  
+    --mds-tab-item-color-selected: theme('colors.status-warning-03');
+  }
+  
+  .item--low {
+  
+    --mds-tab-item-color-selected: theme('colors.status-success-03');
+  }
+}
+
+@container style(--magma-pref-contrast: system) {
+
+  @media (prefers-contrast: more) {
+    .item {
+
+      --mds-tab-item-color: theme('colors.tone-neutral-01');
+  }
+
+  .item--high {
+
+    --mds-tab-item-color-selected: theme('colors.status-error-03');
+  }
+  
+  .item--medium {
+  
+    --mds-tab-item-color-selected: theme('colors.status-warning-03');
+  }
+  
+  .item--low {
+  
+    --mds-tab-item-color-selected: theme('colors.status-success-03');
+  }
+}
+}
