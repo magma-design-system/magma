@@ -29,9 +29,9 @@ This is a web-component from Maggioli Design System [Magma](https://magma.maggio
 
 ## Slots
 
-| Slot        | Description                                                                    |
-| ----------- | ------------------------------------------------------------------------------ |
-| `"default"` | Add contents like `text string`, `HTML elements` or `components` to this slot. |
+| Slot        | Description                                                                   |
+| ----------- | ----------------------------------------------------------------------------- |
+| `"default"` | Add content like `text string`, `HTML elements` or `components` to this slot. |
 
 
 ## CSS Custom Properties
