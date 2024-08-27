@@ -115,3 +115,7 @@
 .downloaded {
   fill: theme('colors.status-success-06');
 }
+
+@import './css/mds-file-pref-animation.css';
+@import './css/mds-file-pref-theme.css';
+@import './css/mds-file-pref-contrast.css';
