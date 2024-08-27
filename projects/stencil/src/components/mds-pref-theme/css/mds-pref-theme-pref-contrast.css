@@ -1,0 +1,48 @@
+@tailwind utilities;
+
+@container style(--magma-pref-contrast: more) {
+  .item {
+
+    --mds-tab-item-color: theme('colors.tone-neutral-01');
+  }
+
+  .item--system {
+
+    --mds-tab-item-color-selected: theme('colors.tone-neutral-03');
+  }
+  
+  .item--light {
+  
+    --mds-tab-item-color-selected: theme('colors.label-yellow-03');
+  }
+  
+  .item--dark {
+  
+    --mds-tab-item-color-selected: theme('colors.label-sky-03');
+  }
+}
+
+@container style(--magma-pref-contrast: system) {
+
+  @media (prefers-contrast: more) {
+    .item {
+
+      --mds-tab-item-color: theme('colors.tone-neutral-01');
+    }
+
+    .item--system {
+
+      --mds-tab-item-color-selected: theme('colors.tone-neutral-03');
+    }
+    
+    .item--light {
+    
+      --mds-tab-item-color-selected: theme('colors.label-yellow-03');
+    }
+    
+    .item--dark {
+    
+      --mds-tab-item-color-selected: theme('colors.label-sky-03');
+    }
+  }
+}
