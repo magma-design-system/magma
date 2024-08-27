@@ -61,7 +61,7 @@ export class MdsDetails {
         <div class="icon" onClick={ this.toggle }>
           <slot name="icon"/>
         </div>
-        <div class="contents">
+        <div class="content">
           <div>
             <header class="header focus-bounce" tabindex="0" onClick={ this.toggle }>
               <div class="title">
@@ -71,7 +71,7 @@ export class MdsDetails {
             </header>
           </div>
           <div class={clsx('details', this.isOpened && 'opened')}>
-            <div class="contents-expander" part="contents">
+            <div class="content-expander" part="content">
               <slot/>
               <div class="actions">
                 <slot name="action"/>
