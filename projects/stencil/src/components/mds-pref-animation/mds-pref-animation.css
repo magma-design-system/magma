@@ -29,3 +29,5 @@
 
   --mds-tab-item-color-selected: theme('colors.tone-neutral-03');
 }
+
+@import './css/mds-pref-animation-pref-contrast.css';
