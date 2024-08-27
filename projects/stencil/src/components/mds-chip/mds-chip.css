@@ -15,7 +15,7 @@
 :host {
 
   --mds-chip-background: theme('colors.tone-neutral-09');
-  --mds-chip-color: theme('colors.tone-neutral-04');
+  --mds-chip-color: theme('colors.tone-neutral-03');
   --mds-chip-icon-background: theme('colors.brand-maggioli-06');
   --mds-chip-icon-background-selected: theme('colors.brand-maggioli-04');
   --mds-chip-icon-color: theme('colors.tone-neutral');
@@ -110,3 +110,6 @@
   height: auto;
   padding: 0;
 }
+
+@import './css/mds-chip-pref-animation.css';
+@import './css/mds-chip-pref-contrast.css';
