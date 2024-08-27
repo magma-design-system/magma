@@ -1,0 +1,17 @@
+@tailwind utilities;
+
+@container style(--magma-pref-contrast: more) {
+  .tabs {
+    border-color: theme('colors.tone-neutral-06');
+  }
+}
+
+@container style(--magma-pref-contrast: system) {
+
+  @media (prefers-contrast: more) {
+    .tabs {
+      border-color: theme('colors.tone-neutral-06');
+    }
+  }
+}
+

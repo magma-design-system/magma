@@ -18,15 +18,16 @@
 .tabs {
 
   @apply
-    border
+    border-50
     border-solid
     border-transparent
     gap-200
     hide-scrollbar
-    p-200;
+    p-200
+    transition-colors;
 
   background-color: rgb(var(--theme-default-06-secondary-background));
-  border-radius: theme('borderRadius.xl');
+  border-radius: theme('borderRadius.2xl');
   box-sizing: border-box;
   display: flex;
   overflow: auto;
@@ -71,4 +72,6 @@
   scroll-snap-align: start;
 }
 
+@import './css/mds-tab-pref-animation.css';
 @import './css/mds-tab-pref-theme.css';
+@import './css/mds-tab-pref-contrast.css';
