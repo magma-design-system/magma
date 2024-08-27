@@ -5,16 +5,16 @@ export default {
 }
 
 const Template = args =>
-  <mds-author {...args} class="text-tone-neutral-04">
+  <mds-author {...args}>
     <mds-avatar initials="fb" src="./fred-brooks-zoom.webp" slot="avatar" class="w-2000 bg-brand-maggioli-06"/>
-    <mds-text typography="h6" class="text-tone-neutral-02">Fred Brooks</mds-text>
+    <mds-text typography="h6">Fred Brooks</mds-text>
     <mds-text typography="caption">Software engineer</mds-text>
     <mds-text typography="caption">IT</mds-text>
   </mds-author>
 
 const TemplateNoAvatar = args =>
-  <mds-author {...args} class="text-tone-neutral-04">
-    <mds-text typography="h6" class="text-tone-neutral-02">Fred Brooks</mds-text>
+  <mds-author {...args}>
+    <mds-text typography="h6">Fred Brooks</mds-text>
     <mds-text typography="caption">Software engineer</mds-text>
     <mds-text typography="caption">IT</mds-text>
   </mds-author>
