@@ -1,0 +1,29 @@
+@tailwind utilities;
+
+@container style(--magma-pref-contrast: more) {
+  :host {
+
+    --mds-entity-background: theme('colors.tone-neutral');
+    --mds-entity-color: theme('colors.tone-neutral-01');
+    --mds-entity-detail-color: theme('colors.tone-neutral-02');
+    --mds-entity-icon-background: theme('colors.label-blue-08');
+    --mds-entity-icon-color: theme('colors.label-blue-03');
+    --mds-entity-shadow: theme('boxShadow.outline-50');
+  }
+}
+
+@container style(--magma-pref-contrast: system) {
+
+  @media (prefers-contrast: more) {
+    :host {
+
+      --mds-entity-background: theme('colors.tone-neutral');
+      --mds-entity-color: theme('colors.tone-neutral-01');
+      --mds-entity-detail-color: theme('colors.tone-neutral-02');
+      --mds-entity-icon-background: theme('colors.label-blue-08');
+      --mds-entity-icon-color: theme('colors.label-blue-03');
+      --mds-entity-shadow: theme('boxShadow.outline-50');
+    }
+  }
+}
+
