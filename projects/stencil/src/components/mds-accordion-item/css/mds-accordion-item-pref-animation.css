@@ -1,0 +1,30 @@
+@tailwind utilities;
+
+@container style(--magma-pref-animation: reduce) {
+  :host {
+
+    --mds-accordion-item-duration: var(--mds-accordion-duration, 0s);
+
+    transition-duration: 0s;
+  }
+
+  .icon {
+    transition-duration: 0s;
+  }
+}
+
+@container style(--magma-pref-animation: system) {
+
+  @media (prefers-reduced-motion) {
+    :host {
+
+      --mds-accordion-item-duration: var(--mds-accordion-duration, 0s);
+
+      transition-duration: 0s;
+    }
+  
+    .icon {
+      transition-duration: 0s;
+    }
+  }
+}

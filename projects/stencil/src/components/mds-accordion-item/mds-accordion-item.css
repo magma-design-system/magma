@@ -87,7 +87,7 @@
   display: block;
 }
 
-.contents {
+.content {
   @apply
     ease-in-out-expo
     gap-400;
@@ -102,11 +102,11 @@
   transition-property: grid-template-rows opacity padding;
 }
 
-.contents-expander {
+.content-expander {
   min-height: 0;
 }
 
-:host( [selected] ) .contents {
+:host( [selected] ) .content {
   @apply pt-400;
 
   grid-template-rows: 1fr;
@@ -126,3 +126,7 @@
 :host( [selected] ) .icon {
   transform: rotate(0deg);
 }
+
+/* x */
+@import './css/mds-accordion-item-pref-animation.css';
+@import './css/mds-accordion-item-pref-contrast.css';

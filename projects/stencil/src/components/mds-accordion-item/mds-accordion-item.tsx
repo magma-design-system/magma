@@ -62,7 +62,7 @@ export class MdsAccordionItem {
   render () {
     return (
       <Host>
-        <button aria-controls="contents" aria-expanded={this.selected ? 'true' : 'false'} class="action" id="action" onClick={this.toggle} role="button" tabindex="0">
+        <button aria-controls="content" aria-expanded={this.selected ? 'true' : 'false'} class="action" id="action" onClick={this.toggle} role="button" tabindex="0">
           <mds-text part="label" typography={this.typography}>
             {this.label}
           </mds-text>
@@ -70,8 +70,8 @@ export class MdsAccordionItem {
             <i class="svg icon" innerHTML={miBaselineKeyboardArrowUp} />
           </mds-text>
         </button>
-        <div class="contents" id="contents">
-          <div aria-labelledby="action" class="contents-expander" part="contents" role="region">
+        <div class="content" id="content">
+          <div aria-labelledby="action" class="content-expander" part="content" role="region">
             <slot />
           </div>
         </div>
