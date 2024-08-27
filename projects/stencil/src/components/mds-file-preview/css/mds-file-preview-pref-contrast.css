@@ -1,0 +1,23 @@
+@tailwind utilities;
+
+@container style(--magma-pref-contrast: more) {
+  :host {
+
+    --mds-file-preview-color: theme('colors.tone-neutral-01');
+
+    box-shadow: theme('boxShadow.outline-50');
+  }
+}
+
+@container style(--magma-pref-contrast: system) {
+
+  @media (prefers-contrast: more) {
+    :host {
+
+      --mds-file-preview-color: theme('colors.tone-neutral-01');
+
+      box-shadow: theme('boxShadow.outline-50');
+    }
+  }
+}
+
