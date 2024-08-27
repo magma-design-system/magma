@@ -13,8 +13,8 @@
 
 :host {
 
-  --mds-filter-items-background-active: theme('colors.tone-neutral-09');
-  --mds-filter-items-background: theme('colors.tone-neutral-10');
+  --mds-filter-items-background-active: theme('colors.tone-neutral-08');
+  --mds-filter-items-background: theme('colors.tone-neutral-09');
   --mds-filter-items-gap: theme('spacing.200');
   --mds-filter-items-padding: theme('spacing.200');
   --mds-filter-items-radius: theme('borderRadius.full');
@@ -68,3 +68,7 @@
 .active {
   background-color: var(--mds-filter-items-background-active);
 }
+
+@import './css/mds-filter-pref-animation.css';
+@import './css/mds-filter-pref-theme.css';
+@import './css/mds-filter-pref-contrast.css';
