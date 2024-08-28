@@ -4,6 +4,7 @@
   :host {
 
     --mds-accordion-border-color: theme('colors.tone-neutral-01');
+    --mds-accordion-color: theme('colors.tone-neutral-01');
   }
 }
 
@@ -13,6 +14,7 @@
     :host {
 
       --mds-accordion-border-color: theme('colors.tone-neutral-01');
+      --mds-accordion-color: theme('colors.tone-neutral-01');
     }
   }
 }
