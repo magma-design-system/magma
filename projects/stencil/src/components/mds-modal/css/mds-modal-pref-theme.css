@@ -1,0 +1,20 @@
+@tailwind utilities;
+
+@container style(--magma-pref-theme: dark) {
+  :host {
+
+    --mds-modal-window-background: theme('colors.tone-neutral-09');
+    --mds-modal-window-shadow: theme('boxShadow.outline'), theme('boxShadow.xl');
+  }
+}
+
+@container style(--magma-pref-theme: system) {
+
+  @media (prefers-color-scheme: dark) {
+    :host {
+
+      --mds-modal-window-background: theme('colors.tone-neutral-09');
+      --mds-modal-window-shadow: theme('boxShadow.outline'), theme('boxShadow.xl');
+    }
+  }
+}
