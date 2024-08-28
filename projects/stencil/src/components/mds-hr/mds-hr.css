@@ -11,3 +11,5 @@
   border: 0;
   display: flex;
 }
+
+@import './css/mds-hr-pref-theme.css';
