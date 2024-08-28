@@ -25,7 +25,9 @@
 }
 
 .modal {
-  fill: var(--mds-header-modal-icon-color);
+
+  --mds-modal-close-icon-color: var(--mds-header-modal-icon-color);
+
   z-index: var(--mds-header-z-index);
 }
 
@@ -40,3 +42,5 @@
 :host([menu="none"]) .menu {
   display: none;
 }
+
+@import './css/mds-header-pref-theme.css';
