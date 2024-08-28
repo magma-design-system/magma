@@ -1,0 +1,51 @@
+@tailwind utilities;
+
+@container style(--magma-pref-contrast: more) {
+  :host {
+
+    --mds-tooltip-drop-shadow: drop-shadow(0 0 4px rgb(var(--tone-neutral-01) / 0.05)) drop-shadow(0 0 4px rgb(var(--tone-neutral-01) / 0.3)) drop-shadow(0 0 4px rgb(var(--tone-neutral-01) / 0.3));
+  }
+}
+
+@container style(--magma-pref-contrast: system) {
+
+  @media (prefers-contrast: more) {
+    :host {
+
+      --mds-tooltip-drop-shadow: drop-shadow(0 0 4px rgb(var(--tone-neutral-01) / 0.05)) drop-shadow(0 0 4px rgb(var(--tone-neutral-01) / 0.3)) drop-shadow(0 0 4px rgb(var(--tone-neutral-01) / 0.3));
+    }
+  }
+}
+
+/* contrast + dark */
+
+@container style(--magma-pref-contrast: more) and style(--magma-pref-theme: dark) {
+  :host {
+
+    --mds-tooltip-drop-shadow: drop-shadow(0 0 4px rgb(var(--tone-neutral-01) / 0.075)) drop-shadow(0 0 4px rgb(var(--tone-neutral-01) / 0.45)) drop-shadow(0 0 4px rgb(var(--tone-neutral-01) / 0.45));
+  }
+}
+
+@container style(--magma-pref-contrast: system) and style(--magma-pref-theme: dark) {
+
+  @media (prefers-contrast: more) {
+    :host {
+
+      --mds-tooltip-drop-shadow: drop-shadow(0 0 4px rgb(var(--tone-neutral-01) / 0.075)) drop-shadow(0 0 4px rgb(var(--tone-neutral-01) / 0.45)) drop-shadow(0 0 4px rgb(var(--tone-neutral-01) / 0.45));
+    }
+  }
+}
+
+@container style(--magma-pref-contrast: system) and style(--magma-pref-theme: system) {
+
+  @media (prefers-contrast: more) {
+
+    @media (prefers-color-scheme: dark) {
+      :host {
+
+        --mds-tooltip-drop-shadow: drop-shadow(0 0 4px rgb(var(--tone-neutral-01) / 0.075)) drop-shadow(0 0 4px rgb(var(--tone-neutral-01) / 0.45)) drop-shadow(0 0 4px rgb(var(--tone-neutral-01) / 0.45));
+      }
+    }
+  }
+}
+

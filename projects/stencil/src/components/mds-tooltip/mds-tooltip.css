@@ -84,3 +84,7 @@
 
   position: relative;
 }
+
+@import './css/mds-tooltip-pref-animation.css';
+@import './css/mds-tooltip-pref-theme.css';
+@import './css/mds-tooltip-pref-contrast.css';
