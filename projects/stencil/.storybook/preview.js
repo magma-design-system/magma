@@ -56,6 +56,27 @@ window.sessionStorage.setItem('mdsIconSvgPath', svgPath)
 
 // mdsIconGet()
 
+const setAccessibility = (preference, value) => {
+  const htmlEl = document.querySelector('html')
+  htmlEl.style.setProperty(`--magma-pref-${preference}`, value)
+  htmlEl.classList.add(`pref-${preference}-${value}`)
+  window.localStorage.setItem(`mds-pref-${preference}`, value)
+}
+
+const checkAccessibility = (pref, defaultValue) => {
+  if (window.localStorage.getItem(`mds-pref-${pref}`)) {
+    const prefValue = window.localStorage.getItem(`mds-pref-${pref}`)
+    setAccessibility(pref, prefValue)
+    return
+  }
+  setAccessibility(pref, defaultValue)
+}
+
+checkAccessibility('theme', 'system')
+checkAccessibility('contrast', 'system')
+checkAccessibility('animation', 'system')
+checkAccessibility('consumption', 'high')
+
 document.querySelector('html').classList.add('bg-tone-neutral')
 document.querySelector('html').setAttribute('lang', 'it')
 
