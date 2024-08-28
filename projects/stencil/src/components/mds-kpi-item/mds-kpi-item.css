@@ -6,11 +6,13 @@
 * @prop --mds-kpi-item-value-color: Set the color of the value text
 */
 
-@property --value {
+/* https://benfrain.com/using-css-property-inside-shadowroot-web-components-workaround/ */
+
+/* @property --mds-kpi-item-value {
   inherits: false;
   initial-value: 0;
   syntax: '<integer>';
-}
+} */
 
 :host {
 
@@ -46,10 +48,8 @@
 
 .value {
   color: var(--mds-kpi-item-value-color);
-  counter-set: num var(--value);
-  transition: --value 1s; /* stylelint-disable-line custom-property-no-missing-var-function */
-
-  /* transition: --value var(--mds-kpi-item-duration); stylelint-disable-line custom-property-no-missing-var-function */
+  counter-set: num var(--mds-kpi-item-value);
+  transition: --mds-kpi-item-value var(--mds-kpi-item-duration); /* stylelint-disable-line custom-property-no-missing-var-function */
 }
 
 .value::after {
