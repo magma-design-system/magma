@@ -3,7 +3,7 @@
 @container style(--magma-pref-animation: reduce) {
   :host {
 
-    --mds-accordion-timer-duration: 0s;
+    --mds-accordion-timer-item-duration: 0s;
   }
 }
 
@@ -12,7 +12,7 @@
   @media (prefers-reduced-motion) {
     :host {
 
-      --mds-accordion-timer-duration: 0s;
+      --mds-accordion-timer-item-duration: 0s;
     }
   }
 }
