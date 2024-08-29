@@ -47,7 +47,7 @@ import { ModalPositionType } from "./components/mds-modal/meta/types";
 import { StrategyType } from "./components/mds-notification/meta/types";
 import { MdsPaginatorEventDetail } from "./components/mds-paginator/meta/event-detail";
 import { AnimationModeType } from "./components/mds-pref-animation/meta/types";
-import { ConsumptionModeType } from "./components/mds-pref-consumption/meta/types";
+import { ConsumptionModeType } from "@type/preference";
 import { ContrastModeType } from "./components/mds-pref-contrast/meta/types";
 import { ThemeModeType, ThemeTransitionType } from "./components/mds-pref-theme/meta/types";
 import { PriceTableFeaturesCellType } from "./components/mds-price-table-features-cell/meta/types";
@@ -105,7 +105,7 @@ export { ModalPositionType } from "./components/mds-modal/meta/types";
 export { StrategyType } from "./components/mds-notification/meta/types";
 export { MdsPaginatorEventDetail } from "./components/mds-paginator/meta/event-detail";
 export { AnimationModeType } from "./components/mds-pref-animation/meta/types";
-export { ConsumptionModeType } from "./components/mds-pref-consumption/meta/types";
+export { ConsumptionModeType } from "@type/preference";
 export { ContrastModeType } from "./components/mds-pref-contrast/meta/types";
 export { ThemeModeType, ThemeTransitionType } from "./components/mds-pref-theme/meta/types";
 export { PriceTableFeaturesCellType } from "./components/mds-price-table-features-cell/meta/types";
@@ -709,6 +709,10 @@ export namespace Components {
           * Specifies a list of image files to use in different situations. Defines multiple sizes of the same image, allowing the browser to select the appropriate image source.
          */
         "srcset"?: string;
+        /**
+          * Specifies a list of image files to use in different situations. Defines multiple sizes of the same image, allowing the browser to select the appropriate image source based on consumption configuration. ``` <mds-img srcset-consumption="image-black-n-white-1x.jpg low, image-1x.jpg medium, image-2x.jpg high"></mds-img> ```
+         */
+        "srcsetConsumption"?: string;
         /**
           * The width attribute specifies the width of an image, in pixels.
          */
@@ -3480,6 +3484,10 @@ declare namespace LocalJSX {
           * Specifies a list of image files to use in different situations. Defines multiple sizes of the same image, allowing the browser to select the appropriate image source.
          */
         "srcset"?: string;
+        /**
+          * Specifies a list of image files to use in different situations. Defines multiple sizes of the same image, allowing the browser to select the appropriate image source based on consumption configuration. ``` <mds-img srcset-consumption="image-black-n-white-1x.jpg low, image-1x.jpg medium, image-2x.jpg high"></mds-img> ```
+         */
+        "srcsetConsumption"?: string;
         /**
           * The width attribute specifies the width of an image, in pixels.
          */

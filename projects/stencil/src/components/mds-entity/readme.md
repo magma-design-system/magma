@@ -54,6 +54,7 @@ graph TD;
   mds-entity --> mds-avatar
   mds-avatar --> mds-img
   mds-avatar --> mds-icon
+  mds-img --> mds-text
   style mds-entity fill:#f9f,stroke:#333,stroke-width:4px
 ```
 
