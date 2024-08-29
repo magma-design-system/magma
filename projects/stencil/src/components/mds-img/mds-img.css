@@ -7,10 +7,33 @@
   display: flex;
   object-fit: fill;
   overflow: hidden;
+  position: relative;
 }
 
 img {
   @apply w-full;
 
   object-fit: inherit;
+}
+
+.alt-text-container {
+  @apply p-600;
+
+  align-items: center;
+  background-color: theme('colors.brand-maggioli-03');
+  color: theme('colors.brand-maggioli-09');
+  display: flex;
+  justify-content: center;
+  text-align: center;
+}
+
+.alt-text-container--absolute {
+  inset: 0;
+  position: absolute;
+}
+
+.alt-text-container--default-aspect-ratio {
+  @apply aspect-square;
+
+  width: 100%;
 }

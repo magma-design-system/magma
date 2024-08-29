@@ -47,6 +47,10 @@ const argTypes = {
     description: 'Specifies a list of image files to use in different situations',
     type: { name: 'string', required: false },
   },
+  'srcset-consumption': {
+    description: 'Specifies a list of image files to use in different consumption situations',
+    type: { name: 'string' },
+  },
   src: {
     control: { type: 'select' },
     description: 'Specifies the path to the image',

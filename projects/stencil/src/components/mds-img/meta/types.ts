@@ -8,3 +8,10 @@ export type ReferrerpolicyType =
   | 'origin'
   | 'origin-when-cross-origin'
   | 'unsafe-url'
+
+export type ImageConsumptionType =
+  {
+    low?: string,
+    medium?: string,
+    high?: string,
+  }
