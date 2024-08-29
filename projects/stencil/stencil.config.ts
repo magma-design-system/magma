@@ -69,6 +69,7 @@ export const config: Config = {
         { find: /^@common\/(.*)+$/, replacement: path.resolve('.', './src/common/$1') },
         { find: /^@component\/(.*)+$/, replacement: path.resolve('.', './src/components/$1') },
         { find: /^@dictionary\/(.*)+$/, replacement: path.resolve('.', './src/dictionary/$1') },
+        { find: /^@event\/(.*)+$/, replacement: path.resolve('.', './src/event-detail/$1') },
         { find: /^@fixture\/(.*)+$/, replacement: path.resolve('.', './src/fixtures/$1') },
         { find: /^@icon\/([a-zA-Z-\/]+)\.svg$/, replacement: path.resolve(__dirname, './assets/svg/$1.svg') },
         { find: /^@interface\/(.*)+$/, replacement: path.resolve('.', './src/interface/$1') },
@@ -90,6 +91,7 @@ export const config: Config = {
     moduleNameMapper: {
       '@common/(.*)': '<rootDir>src/common/$1',
       '@dictionary/(.*)': '<rootDir>src/dictionary/$1',
+      '@event/(.*)': '<rootDir>src/event-detail/$1',
       '@fixture/(.*)': '<rootDir>src/fixtures/$1',
       '@icon/(.*)': '<rootDir>assets/svg/$1',
       '@placeholder': 'https://via.placeholder.com',

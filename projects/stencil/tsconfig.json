@@ -29,6 +29,9 @@
       "@dictionary/*": [
         "src/dictionary/*"
       ],
+      "@event/*": [
+        "src/event-detail/*"
+      ],
       "@fixture/*": [
         "src/fixtures/*"
       ],
