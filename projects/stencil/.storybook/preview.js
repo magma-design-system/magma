@@ -77,7 +77,7 @@ checkAccessibility('contrast', 'system')
 checkAccessibility('animation', 'system')
 checkAccessibility('consumption', 'high')
 
-document.querySelector('html').classList.add('bg-tone-neutral')
+document.querySelector('html').classList.add('bg-tone-neutral', 'transition-colors')
 document.querySelector('html').setAttribute('lang', 'it')
 
 const toUpperCase = string => {
