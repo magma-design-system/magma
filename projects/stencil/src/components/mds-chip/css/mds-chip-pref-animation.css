@@ -2,7 +2,8 @@
 
 @container style(--magma-pref-animation: reduce) {
   :host,
-  .label {
+  .label,
+  .icon {
     transition-duration: 0s;
   }
 }
@@ -11,7 +12,8 @@
 
   @media (prefers-reduced-motion) {
     :host,
-    .label {
+    .label,
+    .icon {
       transition-duration: 0s;
     }
   }

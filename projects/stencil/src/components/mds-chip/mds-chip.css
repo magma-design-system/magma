@@ -99,10 +99,12 @@
 
 .icon {
   @apply
+    duration-200
     h-400
     w-400;
 
   fill: var(--mds-chip-icon-color);
+  transition: fill;
 }
 
 .button-delete {
@@ -112,4 +114,5 @@
 }
 
 @import './css/mds-chip-pref-animation.css';
+@import './css/mds-chip-pref-theme.css';
 @import './css/mds-chip-pref-contrast.css';
