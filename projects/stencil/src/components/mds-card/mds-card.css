@@ -232,4 +232,5 @@
   }
 }
 
-@import './css/mds-card-pref-contrast.css'
+@import './css/mds-card-pref-theme.css';
+@import './css/mds-card-pref-contrast.css';
