@@ -26,7 +26,6 @@ table {
 
 header {
   border-bottom: 1px solid theme('colors.theme-default-04-primary-decoration');
-  padding-left: var(--mds-price-table-features-padding);
-  padding-right: var(--mds-price-table-features-padding);
+  padding: var(--mds-price-table-features-padding) var(--mds-price-table-features-padding) var(--mds-price-table-features-padding) 0;
   width: 100%;
 }
