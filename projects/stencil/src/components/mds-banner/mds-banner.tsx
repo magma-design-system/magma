@@ -2,6 +2,9 @@ import { Component, Element, Event, EventEmitter, Host, Prop, h } from '@stencil
 import { ToneSimpleVariantType, ThemeVariantType } from '@type/variant'
 import miBaselineClose from '@icon/mi/baseline/close.svg'
 import { KeyboardManager } from '@common/keyboard-manager'
+import { Locale } from '@common/locale'
+import localeEn from './meta/locale.en.json'
+import localeIt from './meta/locale.it.json'
 
 /**
  * @slot default - Add `text string`, `HTML elements` or `components` to this slot.
@@ -15,10 +18,13 @@ import { KeyboardManager } from '@common/keyboard-manager'
 })
 export class MdsBanner {
 
+  @Element() host: HTMLMdsBannerElement
   private actions: boolean
   private km = new KeyboardManager()
-
-  @Element() host: HTMLMdsBannerElement
+  private t:Locale = new Locale({
+    en: localeEn,
+    it: localeIt,
+  })
 
   /**
    * Sets the theme variant colors
@@ -29,11 +35,6 @@ export class MdsBanner {
    * Sets the tone of the color variant
    */
   @Prop({ reflect: true }) readonly tone?: ToneSimpleVariantType = 'weak'
-
-  /**
-   * Sets the cross icon accessibility label to perform close action on element
-   */
-  @Prop() readonly closeLabel? = 'Annulla'
 
   /**
    * Shows the cross icon to perform cancel/delete action on element
@@ -52,7 +53,7 @@ export class MdsBanner {
 
   private deletableHandler = (): void => {
     if (this.deletable) {
-      const closeIcon = this.host.shadowRoot?.querySelector('.close-icon') as HTMLElement
+      const closeIcon = this.host.shadowRoot?.querySelector('.close-button') as HTMLElement
       this.km.addElement(closeIcon)
       this.km.attachClickBehavior()
       return
@@ -60,6 +61,10 @@ export class MdsBanner {
     this.km.detachClickBehavior()
   }
 
+  componentWillRender (): void {
+    this.t.lang(this.host)
+  }
+  
   componentWillLoad (): void {
     this.actions = this.host.querySelector('[slot="actions"]') !== null
   }
@@ -96,7 +101,7 @@ export class MdsBanner {
               <slot/>
             </div>
           </div>
-          { this.deletable && <mds-button class="close-button" icon={miBaselineClose} onClick={this.closeBanner} title={this.closeLabel}/>}
+          { this.deletable && <mds-button class="close-button" icon={miBaselineClose} onClick={this.closeBanner} title={ this.t.get('cancel') }/>}
         </div>
         { this.actions
           &&
