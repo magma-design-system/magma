@@ -62,7 +62,9 @@ graph TD;
   mds-button --> mds-spinner
   mds-button --> mds-icon
   mds-button --> mds-text
+  mds-img --> mds-icon
   mds-img --> mds-text
+  mds-img --> mds-button
   mds-badge --> mds-text
   mds-input-upload --> mds-file-preview
   style mds-file-preview fill:#f9f,stroke:#333,stroke-width:4px

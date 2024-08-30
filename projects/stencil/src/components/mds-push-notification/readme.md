@@ -62,7 +62,9 @@ graph TD;
   mds-push-notification --> mds-button
   mds-avatar --> mds-img
   mds-avatar --> mds-icon
+  mds-img --> mds-icon
   mds-img --> mds-text
+  mds-img --> mds-button
   mds-button --> mds-spinner
   mds-button --> mds-icon
   mds-button --> mds-text
