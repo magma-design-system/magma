@@ -1,6 +1,14 @@
 @tailwind utilities;
 
 :host {
+
+  --mds-img-background: theme('colors.brand-maggioli-03');
+  --mds-img-color: theme('colors.brand-maggioli-09');
+  --mds-img-icon-color: theme('colors.brand-maggioli-07');
+  --mds-img-error-background: theme('colors.status-error-09');
+  --mds-img-error-color: theme('colors.status-error-04');
+  --mds-img-error-icon-color: theme('colors.status-error-06');
+
   background-position: center;
   background-repeat: no-repeat;
   background-size: cover;
@@ -17,23 +25,48 @@ img {
 }
 
 .alt-text-container {
-  @apply p-600;
+  @apply
+    gap-600
+    p-600;
 
   align-items: center;
-  background-color: theme('colors.brand-maggioli-03');
-  color: theme('colors.brand-maggioli-09');
+  background-color: var(--mds-img-background);
+  color: var(--mds-img-color);
   display: flex;
+  flex-direction: column;
   justify-content: center;
   text-align: center;
 }
 
 .alt-text-container--absolute {
+  cursor: pointer;
   inset: 0;
   position: absolute;
+}
+
+.alt-text-container--error {
+
+  --mds-img-background: var(--mds-img-error-background);
+  --mds-img-color: var(--mds-img-error-color);
+  --mds-img-icon-color: var(--mds-img-error-icon-color);
+
+  cursor: not-allowed;
 }
 
 .alt-text-container--default-aspect-ratio {
   @apply aspect-square;
 
+  cursor: pointer;
   width: 100%;
+}
+
+.click-to-load {
+  pointer-events: none;
+}
+
+.icon {
+
+  @apply w-900;
+
+  fill: var(--mds-img-icon-color);
 }

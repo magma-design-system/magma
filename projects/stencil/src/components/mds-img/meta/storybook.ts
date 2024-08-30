@@ -3,6 +3,7 @@ import { loadingDictionary } from '@dictionary/loading'
 const aspectRatios = [
   '1/1',
   '1/2',
+  '1/1.414',
   '2/1',
   '3/2',
   '4/3',
