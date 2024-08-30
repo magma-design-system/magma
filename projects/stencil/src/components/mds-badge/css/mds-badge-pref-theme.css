@@ -1,0 +1,16 @@
+@tailwind utilities;
+
+@container style(--magma-pref-theme: dark) {
+  :host {
+    box-shadow: theme('boxShadow.outline') inset;
+  }
+}
+
+@container style(--magma-pref-theme: system) {
+
+  @media (prefers-color-scheme: dark) {
+    :host {
+      box-shadow: theme('boxShadow.outline') inset;
+    }
+  }
+}

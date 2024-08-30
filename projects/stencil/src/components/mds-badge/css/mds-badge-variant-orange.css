@@ -3,18 +3,58 @@
 :host( [variant="orange"] ),
 :host( [variant="orange"][tone="strong"] ) {
 
-  --background: theme('colors.label-orange-05');
-  --color: theme('colors.label-orange-10');
+  --mds-badge-background: theme('colors.label-orange-05');
+  --mds-badge-color: theme('colors.label-orange-10');
 }
 
 :host( [variant="orange"][tone="weak"] ) {
 
-  --background: theme('colors.label-orange-08');
-  --color: theme('colors.label-orange-02');
+  --mds-badge-background: theme('colors.label-orange-08');
+  --mds-badge-color: theme('colors.label-orange-02');
 }
 
 :host( [variant="orange"][tone="quiet"] ) {
 
-  --background: theme('colors.label-orange-09');
-  --color: theme('colors.label-orange-04');
+  --mds-badge-background: theme('colors.label-orange-09');
+  --mds-badge-color: theme('colors.label-orange-04');
+}
+
+@container style(--magma-pref-contrast: more) {
+  :host( [variant="orange"] ),
+  :host( [variant="orange"][tone="strong"] ) {
+
+    --mds-badge-background: theme('colors.label-orange-04');
+  }
+
+  :host( [variant="orange"][tone="weak"] ) {
+
+    --mds-badge-color: theme('colors.label-orange-01');
+  }
+  
+  :host( [variant="orange"][tone="quiet"] ) {
+  
+    --mds-badge-color: theme('colors.label-orange-03');
+  }
+
+}
+
+@container style(--magma-pref-contrast: system) {
+
+  @media (prefers-contrast: more) {
+    :host( [variant="orange"] ),
+    :host( [variant="orange"][tone="strong"] ) {
+
+      --mds-badge-background: theme('colors.label-orange-04');
+    }
+
+    :host( [variant="orange"][tone="weak"] ) {
+
+      --mds-badge-color: theme('colors.label-orange-01');
+    }
+    
+    :host( [variant="orange"][tone="quiet"] ) {
+    
+      --mds-badge-color: theme('colors.label-orange-03');
+    }
+  }
 }
