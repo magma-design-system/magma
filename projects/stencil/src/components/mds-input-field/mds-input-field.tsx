@@ -244,7 +244,7 @@ export class MdsInputField {
     this.hasFocus = false
     this.blurEvent.emit()
     this.isValidInput = this.validateInput()
-    this.variant = this.isValidInput ? 'success' : 'error'
+    // this.variant = this.isValidInput ? 'success' : 'error'
     if (this.inputValidation.validator.errors){
       this.message = Object.entries(this.inputValidation.validator.errors).map(v => v[1]).join('\n')
     } else {
