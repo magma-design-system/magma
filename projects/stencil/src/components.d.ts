@@ -678,10 +678,6 @@ export namespace Components {
          */
         "alt": string;
         /**
-          * Specifies the aspect ratio of the image, useful to render all images of a list with the same proportions. When defined, mds-img will render the Host element with background-image instead of wrapping ad img element. This will drop all atributes useful for img elements only: alt, crossorigin, height, loading, referrerpolicy, sizes, src, srcset, width
-         */
-        "aspectRatio": string;
-        /**
           * Allow images from third-party sites that allow cross-origin access to be used with canvas
          */
         "crossorigin"?: CrossoriginType;
@@ -3444,10 +3440,6 @@ declare namespace LocalJSX {
           * Specifies an alternate text for an image
          */
         "alt"?: string;
-        /**
-          * Specifies the aspect ratio of the image, useful to render all images of a list with the same proportions. When defined, mds-img will render the Host element with background-image instead of wrapping ad img element. This will drop all atributes useful for img elements only: alt, crossorigin, height, loading, referrerpolicy, sizes, src, srcset, width
-         */
-        "aspectRatio"?: string;
         /**
           * Allow images from third-party sites that allow cross-origin access to be used with canvas
          */
