@@ -1,0 +1,23 @@
+@tailwind utilities;
+
+@container style(--magma-pref-contrast: more) {
+  :host,
+  :host( [variant="primary"] ) {
+
+    --mds-progress-color: theme('colors.brand-maggioli-05');
+    --mds-progress-background: theme('colors.tone-neutral-07');
+  }
+}
+
+@container style(--magma-pref-contrast: system) {
+
+  @media (prefers-contrast: more) {
+    :host,
+    :host( [variant="primary"] ) {
+
+      --mds-progress-color: theme('colors.brand-maggioli-05');
+      --mds-progress-background: theme('colors.tone-neutral-07');
+    }
+  }
+}
+

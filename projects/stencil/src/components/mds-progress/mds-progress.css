@@ -1,3 +1,6 @@
+@import '../../tailwind/components.css';
+
+@tailwind components;
 @tailwind utilities;
 
 /**
@@ -24,6 +27,7 @@
   height: var(--mds-progress-thickness);
   min-width: var(--mds-progress-thickness);
   overflow: hidden;
+  position: relative;
   width: 100%;
 }
 
@@ -32,6 +36,10 @@
   height: unset;
   min-height: var(--mds-progress-thickness);
   width: var(--mds-progress-thickness);
+}
+
+.contrast-area {
+  @apply contrast;
 }
 
 .progress {
@@ -44,3 +52,5 @@
 }
 
 @import './css/mds-progress-variant.css';
+@import './css/mds-progress-pref-animation.css';
+@import './css/mds-progress-pref-theme.css';
