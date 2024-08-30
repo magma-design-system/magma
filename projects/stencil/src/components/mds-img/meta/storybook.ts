@@ -1,15 +1,5 @@
 import { loadingDictionary } from '@dictionary/loading'
 
-const aspectRatios = [
-  '1/1',
-  '1/2',
-  '1/1.414',
-  '2/1',
-  '3/2',
-  '4/3',
-  '16/9',
-]
-
 const URLs = [
   'https://via.placeholder.com/1920x1024',
   'https://via.placeholder.com/1280x768',
@@ -22,12 +12,6 @@ const URLs = [
 const argTypes = {
   alt: {
     description: 'Specifies an alternate text for an image',
-    type: { name: 'string', required: false },
-  },
-  'aspect-ratio': {
-    control: { type: 'select' },
-    description: 'Specifies the aspect ratio of the image, useful to render all images of a list with the same proportions. When defined, mds-img will render the Host element with background-image instead of wrapping ad img element',
-    options: aspectRatios,
     type: { name: 'string', required: false },
   },
   height: {
@@ -66,6 +50,5 @@ const argTypes = {
 
 export {
   argTypes,
-  aspectRatios,
   URLs,
 }

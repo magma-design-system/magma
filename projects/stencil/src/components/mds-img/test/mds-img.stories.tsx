@@ -1,5 +1,5 @@
 import { h } from '@stencil/core'
-import { argTypes, aspectRatios, URLs } from '../meta/storybook'
+import { argTypes, URLs } from '../meta/storybook'
 
 export default {
   title: 'UI / Image',
@@ -89,7 +89,6 @@ SrcsetConsumptionBookExample.args = {
 export const BrokenImage = TemplateBook.bind({})
 BrokenImage.args = {
   class: 'aspect-book rounded-md shadow',
-  'aspect-ratio': aspectRatios[2],
   alt: 'Il nuovo codice dei contratti pubblici e la disciplina vigente nel periodo transitorio',
   src: './broken-image-path.jpg',
   'srcset-consumption': './broken-image-path.jpg low',
