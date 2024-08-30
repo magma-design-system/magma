@@ -219,10 +219,6 @@ export namespace Components {
     }
     interface MdsBanner {
         /**
-          * Sets the cross icon accessibility label to perform close action on element
-         */
-        "closeLabel"?: "Annulla" | undefined;
-        /**
           * Shows the cross icon to perform cancel/delete action on element
          */
         "deletable"?: boolean;
@@ -2922,10 +2918,6 @@ declare namespace LocalJSX {
         "variant"?: ThemeFullVariantType;
     }
     interface MdsBanner {
-        /**
-          * Sets the cross icon accessibility label to perform close action on element
-         */
-        "closeLabel"?: "Annulla" | undefined;
         /**
           * Shows the cross icon to perform cancel/delete action on element
          */
