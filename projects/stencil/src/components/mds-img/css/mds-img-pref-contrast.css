@@ -1,0 +1,27 @@
+@tailwind utilities;
+
+@container style(--magma-pref-contrast: more) {
+  :host .contrast-area {
+    display: block;
+    opacity: 1;
+
+    @starting-style {
+      opacity: 0;
+    }
+  }
+}
+
+@container style(--magma-pref-contrast: system) {
+
+  @media (prefers-contrast: more) {
+    :host .contrast-area {
+      display: block;
+      opacity: 1;
+
+      @starting-style {
+        opacity: 0;
+      }
+    }
+  }
+}
+
