@@ -17,13 +17,12 @@ import localeIt from './meta/locale.it.json'
 })
 export class MdsImg {
 
-  private aspectRatioModern = true
   @Element() private host: HTMLMdsImgElement
-  private image: HTMLImageElement
-  private consumptionMode: ConsumptionModeType = 'high'
-  private srcsetConsumptionData?: ImageConsumptionType
   @State() imageConsumptionLoaded: boolean = false
   @State() imageError: boolean = false
+  private consumptionMode: ConsumptionModeType = 'high'
+  private image: HTMLImageElement
+  private srcsetConsumptionData?: ImageConsumptionType
   private t:Locale = new Locale({
     en: localeEn,
     it: localeIt,
@@ -33,13 +32,6 @@ export class MdsImg {
    * Specifies an alternate text for an image
    */
   @Prop({ mutable: true, reflect: true }) alt: string = ''
-
-  /**
-   * Specifies the aspect ratio of the image, useful to render all images of a list with the same proportions.
-   * When defined, mds-img will render the Host element with background-image instead of wrapping ad img element.
-   * This will drop all atributes useful for img elements only: alt, crossorigin, height, loading, referrerpolicy, sizes, src, srcset, width
-   */
-  @Prop() readonly aspectRatio: string = ''
 
   /**
    * Allow images from third-party sites that allow
@@ -96,23 +88,6 @@ export class MdsImg {
    */
   @Prop() readonly width?: string
 
-  private aspectRatioPaddingTop () {
-    const ratioBase = parseInt(this.aspectRatio.split('/')[1])
-    const ratioDivisor = parseInt(this.aspectRatio.split('/')[0])
-    return `${(ratioBase / ratioDivisor * 100).toFixed(2)}%`
-  }
-
-  private aspectRatioSanitized () {
-    return `${this.aspectRatio.split('/')[0]} / ${this.aspectRatio.split('/')[1]}`
-  }
-
-  private getAspectRatio () {
-    if (this.aspectRatioModern) {
-      return { aspectRatio: this.aspectRatioSanitized() }
-    }
-    return { paddingTop: this.aspectRatioPaddingTop() }
-  }
-
   /**
    * Emits when the image is not loaded
    */
@@ -138,25 +113,6 @@ export class MdsImg {
     this.image = ev.target as HTMLImageElement
     this.loadErrorEvent.emit({ image: this.image })
     this.imageError = true
-  }
-
-  private isBacgroundImageLoaded = (url: string): Promise<boolean> => {
-    return new Promise(resolve => {
-      const img = new Image()
-      img.src = url
-      img.onload = () => resolve(true)
-      img.onerror = () => resolve(false)
-    })
-  }
-
-  private setBackgroundImage = async (url: string): Promise<string> => {
-    const imageExists = await this.isBacgroundImageLoaded(url)
-    if (imageExists) {
-      this.imageError = false
-      return `url(${url})`
-    }
-    this.imageError = true
-    return 'unset'
   }
 
   private formatConsumptionData = (consumptionData: string): ImageConsumptionType => {
@@ -190,9 +146,7 @@ export class MdsImg {
   }
 
   private setAriaAttributes = (): void => {
-    if (this.aspectRatio !== '') {
-      setAttributeIfEmpty(this.host, 'aria-label', this.alt)
-    }
+    setAttributeIfEmpty(this.host, 'aria-label', this.alt)
   }
 
   componentWillLoad ():void {
@@ -218,22 +172,9 @@ export class MdsImg {
   render () {
 
     if (this.imageError) {
-      if (this.aspectRatio === '') {
-        return (
-          <Host aria-label={this.alt} role="img">
-            <div class="alt-text-container alt-text-container--error alt-text-container--default-aspect-ratio">
-              <mds-icon class="icon" name={miBaselineBrokenImage}></mds-icon>
-              <mds-text class="alt-text" aria-hidden="true" typography="h6"><i>{ this.alt }</i></mds-text>
-            </div>
-          </Host>
-        )
-      }
       return (
-        <Host
-          aria-label={this.alt}
-          role="img"
-          style={{ ...this.getAspectRatio(), width: '100%' }}>
-          <div class="alt-text-container alt-text-container--error alt-text-container--absolute">
+        <Host aria-label={this.alt} role="img">
+          <div class="alt-text-container alt-text-container--error alt-text-container--default-aspect-ratio">
             <mds-icon class="icon" name={miBaselineBrokenImage}></mds-icon>
             <mds-text class="alt-text" aria-hidden="true" typography="h6"><i>{ this.alt }</i></mds-text>
           </div>
@@ -241,87 +182,50 @@ export class MdsImg {
       )
     }
 
-
     if (this.srcsetConsumptionData) {
       if (this.consumptionMode === 'low') {
-        if (this.aspectRatio === '') {
-          return (
-            <Host aria-label={this.alt} role="img" onClick={() => { this.imageConsumptionLoaded = true }}>
-              { !this.imageConsumptionLoaded
-                ? <div class="alt-text-container alt-text-container--default-aspect-ratio">
-                  <mds-icon class="icon" name={miBaselinePanorama}></mds-icon>
-                  <mds-text class="alt-text" aria-hidden="true" typography="h6"><i>{ this.alt }</i></mds-text>
-                  <mds-button class="click-to-load" aria-hidden="true" variant="light" tone="ghost">{ this.t.get('clickToLoad') }</mds-button>
-                </div>
-                : <img
-                  alt={this.alt}
-                  aria-hidden="true"
-                  height={this.height}
-                  loading={this.loading}
-                  onError={this.onError}
-                  onLoad={this.onSuccess}
-                  part="media"
-                  sizes={this.sizes}
-                  src={this.srcsetConsumptionData[this.consumptionMode] ?? this.src}
-                  srcset={this.srcset}
-                  width={this.width}
-                />
-              }
-            </Host>
-          )
-        }
         return (
-          <Host
-            aria-label={this.alt}
-            role="img"
-            onClick={() => { this.imageConsumptionLoaded = true }}
-            style={{ ...this.getAspectRatio(), backgroundImage: this.imageConsumptionLoaded ? await this.setBackgroundImage(this.srcsetConsumptionData[this.consumptionMode] ?? this.src) : 'unset', width: '100%' }}>
+          <Host aria-label={this.alt} role="img" onClick={() => { this.imageConsumptionLoaded = true }}>
             { !this.imageConsumptionLoaded
-                && <div class="alt-text-container alt-text-container--absolute">
-                  <mds-icon class="icon" name={miBaselinePanorama}></mds-icon>
-                  <mds-text class="alt-text" aria-hidden="true" typography="h6"><i>{ this.alt }</i></mds-text>
-                  <mds-button class="click-to-load" aria-hidden="true" variant="light" tone="ghost">{ this.t.get('clickToLoad') }</mds-button>
-                </div>
+              ? <div class="alt-text-container alt-text-container--default-aspect-ratio">
+                <mds-icon class="icon" name={miBaselinePanorama}></mds-icon>
+                <mds-text class="alt-text" aria-hidden="true" typography="h6"><i>{ this.alt }</i></mds-text>
+                <mds-button class="click-to-load" aria-hidden="true" variant="light" tone="ghost">{ this.t.get('clickToLoad') }</mds-button>
+              </div>
+              : <img
+                alt={this.alt}
+                aria-hidden="true"
+                height={this.height}
+                loading={this.loading}
+                onError={this.onError}
+                onLoad={this.onSuccess}
+                part="media"
+                sizes={this.sizes}
+                src={this.srcsetConsumptionData[this.consumptionMode] ?? this.src}
+                srcset={this.srcset}
+                width={this.width}
+              />
             }
           </Host>
         )
       }
 
-      if (this.aspectRatio === '') {
-        return (
-          <Host aria-label={this.alt} role="img">
-            <img
-              alt={this.alt}
-              aria-hidden="true"
-              height={this.height}
-              loading={this.loading}
-              onError={this.onError}
-              onLoad={this.onSuccess}
-              part="media"
-              sizes={this.sizes}
-              src={this.srcsetConsumptionData[this.consumptionMode] ?? this.src}
-              srcset={this.srcset}
-              width={this.width}
-            />
-          </Host>
-        )
-      }
       return (
-        <Host
-          aria-label={this.alt}
-          role="img"
-          style={{ ...this.getAspectRatio(), backgroundImage: await this.setBackgroundImage(this.srcsetConsumptionData[this.consumptionMode] ?? this.src), width: '100%' }}>
+        <Host aria-label={this.alt} role="img">
+          <img
+            alt={this.alt}
+            aria-hidden="true"
+            height={this.height}
+            loading={this.loading}
+            onError={this.onError}
+            onLoad={this.onSuccess}
+            part="media"
+            sizes={this.sizes}
+            src={this.srcsetConsumptionData[this.consumptionMode] ?? this.src}
+            srcset={this.srcset}
+            width={this.width}
+          />
         </Host>
-      )
-    }
-
-    if (this.aspectRatio !== '') {
-      return (
-        <Host
-          aria-label={this.alt}
-          role="img"
-          style={{ ...this.getAspectRatio(), backgroundImage: await this.setBackgroundImage(this.src), width: '100%' }}
-        />
       )
     }
 

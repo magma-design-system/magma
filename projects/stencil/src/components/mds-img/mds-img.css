@@ -13,7 +13,7 @@
   background-repeat: no-repeat;
   background-size: cover;
   display: flex;
-  object-fit: fill;
+  object-fit: cover;
   overflow: hidden;
   position: relative;
 }

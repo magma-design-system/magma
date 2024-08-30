@@ -61,7 +61,7 @@ AltText.args = {
 
 export const AspectRatio = Template.bind({})
 AspectRatio.args = {
-  'aspect-ratio': aspectRatios[5],
+  class: 'aspect-square',
   src: URLs[2],
 }
 
