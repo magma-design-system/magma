@@ -74,9 +74,6 @@ graph TD;
   mds-file-preview --> mds-icon
   mds-file-preview --> mds-text
   mds-file-preview --> mds-badge
-  mds-img --> mds-icon
-  mds-img --> mds-text
-  mds-img --> mds-button
   mds-badge --> mds-text
   style mds-input-upload fill:#f9f,stroke:#333,stroke-width:4px
 ```

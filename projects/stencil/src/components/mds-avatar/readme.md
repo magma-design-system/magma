@@ -123,12 +123,6 @@ This is a web-component from Maggioli Design System [Magma](https://magma.maggio
 graph TD;
   mds-avatar --> mds-img
   mds-avatar --> mds-icon
-  mds-img --> mds-icon
-  mds-img --> mds-text
-  mds-img --> mds-button
-  mds-button --> mds-spinner
-  mds-button --> mds-icon
-  mds-button --> mds-text
   mds-entity --> mds-avatar
   mds-push-notification --> mds-avatar
   style mds-avatar fill:#f9f,stroke:#333,stroke-width:4px

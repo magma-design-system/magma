@@ -64,7 +64,6 @@ This is a web-component from Maggioli Design System [Magma](https://magma.maggio
  - [mds-file-preview](../mds-file-preview)
  - [mds-header-bar](../mds-header-bar)
  - [mds-horizontal-scroll](../mds-horizontal-scroll)
- - [mds-img](../mds-img)
  - [mds-input](../mds-input)
  - [mds-input-upload](../mds-input-upload)
  - [mds-label](../mds-label)
@@ -92,7 +91,6 @@ graph TD;
   mds-file-preview --> mds-button
   mds-header-bar --> mds-button
   mds-horizontal-scroll --> mds-button
-  mds-img --> mds-button
   mds-input --> mds-button
   mds-input-upload --> mds-button
   mds-label --> mds-button

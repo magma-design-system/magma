@@ -34,10 +34,10 @@ This is a web-component from Maggioli Design System [Magma](https://magma.maggio
 
 ## Shadow Parts
 
-| Part        | Description |
-| ----------- | ----------- |
-| `"content"` |             |
-| `"label"`   |             |
+| Part         | Description |
+| ------------ | ----------- |
+| `"contents"` |             |
+| `"label"`    |             |
 
 
 ## CSS Custom Properties
