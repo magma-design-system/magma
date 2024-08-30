@@ -69,6 +69,10 @@
     width: 100%;
 }
 
+.input::placeholder {
+  color: theme('colors.tone-neutral-04');
+}
+
 .input::-webkit-outer-spin-button,
 .input::-webkit-inner-spin-button {
   appearance: none;
@@ -216,6 +220,9 @@ textarea.input {
 }
 
 @import './css/mds-input-variant.css';
+@import './css/mds-input-pref-animation.css';
+@import './css/mds-input-pref-theme.css';
+@import './css/mds-input-pref-contrast.css';
 
 @container (max-width: 210px) {
   :host .tip__content,
