@@ -50,6 +50,7 @@ const TemplateBook = args =>
 export const Default = Template.bind({})
 Default.args = {
   src: URLs[0],
+  class: 'aspect-book',
 }
 
 export const AltText = Template.bind({})

@@ -152,6 +152,7 @@ export class MdsImg {
   private setBackgroundImage = async (url: string): Promise<string> => {
     const imageExists = await this.isBacgroundImageLoaded(url)
     if (imageExists) {
+      this.imageError = false
       return `url(${url})`
     }
     this.imageError = true
@@ -274,7 +275,7 @@ export class MdsImg {
             aria-label={this.alt}
             role="img"
             onClick={() => { this.imageConsumptionLoaded = true }}
-            style={{ ...this.getAspectRatio(), backgroundImage: this.imageConsumptionLoaded ? `url(${this.setBackgroundImage(this.srcsetConsumptionData[this.consumptionMode] ?? this.src)})` : 'unset', width: '100%' }}>
+            style={{ ...this.getAspectRatio(), backgroundImage: this.imageConsumptionLoaded ? await this.setBackgroundImage(this.srcsetConsumptionData[this.consumptionMode] ?? this.src) : 'unset', width: '100%' }}>
             { !this.imageConsumptionLoaded
                 && <div class="alt-text-container alt-text-container--absolute">
                   <mds-icon class="icon" name={miBaselinePanorama}></mds-icon>
@@ -309,7 +310,7 @@ export class MdsImg {
         <Host
           aria-label={this.alt}
           role="img"
-          style={{ ...this.getAspectRatio(), backgroundImage: `url(${this.setBackgroundImage(this.srcsetConsumptionData[this.consumptionMode] ?? this.src)})`, width: '100%' }}>
+          style={{ ...this.getAspectRatio(), backgroundImage: await this.setBackgroundImage(this.srcsetConsumptionData[this.consumptionMode] ?? this.src), width: '100%' }}>
         </Host>
       )
     }
@@ -319,7 +320,7 @@ export class MdsImg {
         <Host
           aria-label={this.alt}
           role="img"
-          style={{ ...this.getAspectRatio(), backgroundImage: `url(${this.setBackgroundImage(this.src)})`, width: '100%' }}
+          style={{ ...this.getAspectRatio(), backgroundImage: await this.setBackgroundImage(this.src), width: '100%' }}
         />
       )
     }
