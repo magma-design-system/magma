@@ -1,6 +1,6 @@
 import { h } from '@stencil/core'
 
-import { argTypes, aspectRatios, URLs } from '../meta/storybook'
+import { argTypes, URLs } from '../meta/storybook'
 
 export default {
   title: 'UI / Image / ARIA',
@@ -39,7 +39,6 @@ const TemplateAriaLabelledBackground = args =>
 export const LabelledBackgroundImage = TemplateAriaLabelledBackground.bind({})
 LabelledBackgroundImage.args = {
   src: URLs[3],
-  'aspect-ratio': aspectRatios[5],
 }
 
 
