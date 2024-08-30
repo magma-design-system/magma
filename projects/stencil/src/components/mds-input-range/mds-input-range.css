@@ -1,5 +1,6 @@
 @import '~@maggioli-design-system/styles/dist/css/animations.css';
 @import '../../tailwind/components.css';
+
 @tailwind components;
 @tailwind utilities;
 
@@ -14,14 +15,18 @@
 :host {
 
   --mds-input-range-thumb-size: theme('spacing.400');
-  --mds-input-range-thumb-background: theme('colors.brand-maggioli-03');
+  --mds-input-range-thumb-background: theme('colors.brand-maggioli-04');
+  --mds-input-range-thumb-shadow: 0 0 0 2px theme('colors.tone-neutral');
   --mds-input-range-track-background: theme('colors.tone-neutral-09');
   --mds-input-range-track-size: theme('spacing.200');
-  --mds-input-range-track-progress-background: var(--mds-input-range-thumb-background);
+  --mds-input-range-track-progress-background: theme('colors.brand-maggioli-03');
 
-  @apply gap-100;
+  @apply
+    duration-200
+    gap-100;
 
   display: grid;
+  transition-property: color;
 }
 
 .header {
@@ -75,11 +80,17 @@
 }
 
 .field::-webkit-slider-thumb {
+
+  @apply
+    duration-200
+    transition-cosmetic;
+
   appearance: none;
   background-color: var(--mds-input-range-thumb-background);
   border: 0;
   border-radius: var(--mds-input-range-thumb-size);
-  cursor: pointer;
+  box-shadow: var(--mds-input-range-thumb-shadow);
+  cursor: grab;
   height: var(--mds-input-range-thumb-size);
   line-height: 0;
   transform: translate(0, -50%);
@@ -87,6 +98,11 @@
 }
 
 .field::-webkit-slider-runnable-track {
+
+  @apply
+    duration-200
+    transition-cosmetic;
+
   appearance: none;
   border: 0;
   height: 0;
@@ -94,12 +110,21 @@
 }
 
 .track-progress {
+  @apply
+    duration-200
+    transition-colors;
+
   background-color: var(--mds-input-range-track-progress-background);
   display: flex;
   height: var(--mds-input-range-track-size);
 }
 
 .track-total {
+
+  @apply
+    duration-200
+    transition-colors;
+
   background-color: var(--mds-input-range-track-background);
   border-radius: var(--mds-input-range-track-size);
   display: flex;
@@ -107,3 +132,13 @@
   overflow: hidden;
   width: 100%;
 }
+
+.contrast-area {
+  @apply contrast mx-100;
+
+  border-radius: var(--mds-input-range-track-size);
+}
+
+@import './css/mds-input-range-pref-animation.css';
+@import './css/mds-input-range-pref-theme.css';
+@import './css/mds-input-range-pref-contrast.css';
