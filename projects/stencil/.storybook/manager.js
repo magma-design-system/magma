@@ -20,10 +20,27 @@ const AccessibilityPanel = () => {
 
   const isSelected = (preference, value) => {
     if (window) {
-      const pref = window.localStorage.getItem(`mds-pref-${preference}`)
-      return pref === value
+      return window.localStorage.getItem(`mds-pref-${preference}`) === value
     }
     return false
+  }
+
+  const isLangSelected = (lang) => {
+    if(window) {
+      return window.localStorage.getItem('language') === lang
+    }
+    return false
+  }
+
+  const setLanguage = (lang) => {
+    if (window) {
+      window.localStorage.setItem('language', lang)
+    }
+    if (document) {
+      const iframe = document.getElementById('storybook-preview-iframe')
+      const iframeDocument = iframe.contentDocument || iframe.contentWindow.document
+      iframeDocument.querySelector('html').setAttribute('lang', window.localStorage.getItem('language') ?? 'it')
+    }
   }
 
   return (
@@ -66,6 +83,16 @@ const AccessibilityPanel = () => {
           <option selected={isSelected('consumption', 'low')} value="low">Low</option>
           <option selected={isSelected('consumption', 'medium')} value="medium">Medium</option>
           <option selected={isSelected('consumption', 'high')} value="high">High</option>
+        </Form.Select>
+      </Form.Field>
+      <Form.Field label="Language">
+        <Form.Select
+          name="pref-language"
+          onChange={(event) => { setLanguage(event.target.value) }}
+        >
+          <option selected={isLangSelected('it')} value="it">Italiano</option>
+          <option selected={isLangSelected('en')} value="en">English</option>
+          <option selected={isLangSelected('br')} value="br">Brasilian (missing example)</option>
         </Form.Select>
       </Form.Field>
     </Form>
