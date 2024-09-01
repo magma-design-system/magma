@@ -1,0 +1,17 @@
+@tailwind utilities;
+
+@container style(--magma-pref-contrast: more) {
+  :host {
+    box-shadow: theme('boxShadow.outline-50') inset;
+  }
+}
+
+@container style(--magma-pref-contrast: system) {
+
+  @media (prefers-contrast: more) {
+    :host {
+      box-shadow: theme('boxShadow.outline-50') inset;
+    }
+  }
+}
+
