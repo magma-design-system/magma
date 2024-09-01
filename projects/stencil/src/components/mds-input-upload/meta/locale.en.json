@@ -1,0 +1,5 @@
+{
+  "default": "Click and select or drag files to upload here",
+  "dragEnter": "Drop files to upload here",
+  "maxFilesUpload": [ "You can upload a maximum of {{ maxFiles }} file", "You can upload a maximum of {{ maxFiles }} files" ]
+}

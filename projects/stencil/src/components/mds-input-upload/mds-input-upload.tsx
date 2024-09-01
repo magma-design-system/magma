@@ -7,6 +7,9 @@ import { AttachInternals, Component, Element, Event, EventEmitter, Host, Method,
 import { AttachmentSort, ErrorType, FileError, FileStatus, LOCALSTORAGE_KEY_USER_SORT, Status } from './meta/types'
 import { genericMimeToExt } from '@dictionary/file-extensions'
 import { MdsTabEventDetail } from '@component/mds-tab/meta/event-detail'
+import { Locale } from '@common/locale'
+import localeEn from './meta/locale.en.json'
+import localeIt from './meta/locale.it.json'
 
 @Component({
   tag: 'mds-input-upload',
@@ -15,12 +18,6 @@ import { MdsTabEventDetail } from '@component/mds-tab/meta/event-detail'
   shadow: true,
 })
 export class MdsInputUpload {
-  private mainActionTitle = {
-    default: 'Clicca o trascina qui per selezionare i file da caricare',
-    uploading: 'Caricamento in corso...',
-    dragEnter: 'Rilascia qui per iniziare il caricamento',
-    end: 'Caricamento completato',
-  }
   private nativeInput?: HTMLInputElement
   private elDragArea?: HTMLElement
   private extensions: string
@@ -28,10 +25,14 @@ export class MdsInputUpload {
   private cssMinCols: number = 1000
   private id: number = 0
   private userSort: AttachmentSort
+  private t:Locale = new Locale({
+    en: localeEn,
+    it: localeIt,
+  })
 
   @Element() private host: HTMLMdsInputUploadElement
   @AttachInternals() internals: ElementInternals
-  @State() actionTitle: string = this.mainActionTitle.default
+  @State() actionTitle: string = ''
   @State() files: FileStatus[] = []
   @State() progress = 0
 
@@ -62,6 +63,8 @@ export class MdsInputUpload {
 
   componentWillLoad (): void {
     this.extensions = this.getExtension()
+    this.t.lang(this.host)
+    this.actionTitle = this.t.get('default')
     this.userSort = localStorage.getItem(LOCALSTORAGE_KEY_USER_SORT) as AttachmentSort ?? 'date'
   }
 
@@ -104,13 +107,13 @@ export class MdsInputUpload {
   }
 
   private onDragEnterHandler = (event: DragEvent) => {
-    this.actionTitle = this.mainActionTitle.dragEnter
+    this.actionTitle = this.t.get('dragEnter')
     this.elDragArea?.classList.add('drag-area--on-drag-enter')
     event.preventDefault()
   }
 
   private onDragLeaveHandler = (event: DragEvent) => {
-    this.actionTitle = this.mainActionTitle.default
+    this.actionTitle = this.t.get('default')
     this.elDragArea?.classList.remove('drag-area--on-drag-enter')
     event.preventDefault()
   }
@@ -321,7 +324,7 @@ export class MdsInputUpload {
           </div>
           <div class="main-infos">
             <mds-progress class="progress-bar" progress={this.progress}></mds-progress>
-            <mds-text variant="info" typography="caption">Puoi caricare fino a {this.maxFiles} file</mds-text>
+            <mds-text variant="info" typography="caption">{this.t.get('maxFilesUpload', { maxFiles: this.maxFiles })}</mds-text>
           </div>
         </div>
         <input type='file' accept={this.accept} hidden ref={i => this.nativeInput = i} onChange={this.onAdd} multiple = {this.maxFiles > 1}/>

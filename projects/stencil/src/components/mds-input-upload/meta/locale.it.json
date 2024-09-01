@@ -1,0 +1,5 @@
+{
+  "default": "Clicca e seleziona o trascina qui i file da caricare",
+  "dragEnter": "Rilascia qui i file da caricare",
+  "maxFilesUpload": "Puoi caricare fino a {{ maxFiles }} file"
+}
