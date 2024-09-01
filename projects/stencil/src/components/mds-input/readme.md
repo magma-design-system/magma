@@ -59,7 +59,7 @@ Returns the native `<input>` element used under the hood.
 
 #### Returns
 
-Type: `Promise<HTMLTextAreaElement | HTMLInputElement>`
+Type: `Promise<HTMLInputElement | HTMLTextAreaElement>`
 
 
 
