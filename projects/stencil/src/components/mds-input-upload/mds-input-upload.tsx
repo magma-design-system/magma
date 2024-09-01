@@ -3,7 +3,7 @@ import clsx from 'clsx'
 import iconSortByStatus from '@icon/mi/baseline/category.svg'
 import iconSortById from '@icon/mi/outline/schedule.svg'
 import miBaselineAddCircle from '@icon/mi/baseline/add-circle.svg'
-import { AttachInternals, Component, Element, Event, EventEmitter, Host, Method, Prop, State, h } from '@stencil/core'
+import { AttachInternals, Component, Element, Event, EventEmitter, Host, Method, Prop, State, h, Watch } from '@stencil/core'
 import { AttachmentSort, ErrorType, FileError, FileStatus, LOCALSTORAGE_KEY_USER_SORT, Status } from './meta/types'
 import { genericMimeToExt } from '@dictionary/file-extensions'
 import { MdsTabEventDetail } from '@component/mds-tab/meta/event-detail'
@@ -35,6 +35,7 @@ export class MdsInputUpload {
   @State() actionTitle: string = ''
   @State() files: FileStatus[] = []
   @State() progress = 0
+  @State() animateText: boolean = false
 
   /**
    * Defines the file types the file input should accept
@@ -64,7 +65,7 @@ export class MdsInputUpload {
   componentWillLoad (): void {
     this.extensions = this.getExtension()
     this.t.lang(this.host)
-    this.actionTitle = this.t.get('default')
+    this.actionTitle = this.t.get('clickOrDrag', { maxFiles: this.maxFiles })
     this.userSort = localStorage.getItem(LOCALSTORAGE_KEY_USER_SORT) as AttachmentSort ?? 'date'
   }
 
@@ -90,6 +91,14 @@ export class MdsInputUpload {
     return err.length > 0 ? Promise.resolve(err) : Promise.resolve(null)
   }
 
+  @Watch('maxFiles')
+  updateActionTitle (newValue: number, oldValue: number): void {
+    if (newValue !== oldValue) {
+      this.animateText = false
+      this.actionTitle = this.t.get('clickOrDrag', { maxFiles: newValue })
+    }
+  }
+
   private updateCSSCustomProps = (): void => {
     const elementStyles = window.getComputedStyle(this.host)
     this.cssMinCols = Number(elementStyles.getPropertyValue('--mds-input-upload-min-cols'))
@@ -108,12 +117,13 @@ export class MdsInputUpload {
 
   private onDragEnterHandler = (event: DragEvent) => {
     this.actionTitle = this.t.get('dragEnter')
+    this.animateText = true
     this.elDragArea?.classList.add('drag-area--on-drag-enter')
     event.preventDefault()
   }
 
   private onDragLeaveHandler = (event: DragEvent) => {
-    this.actionTitle = this.t.get('default')
+    this.actionTitle = this.t.get('clickOrDrag', { maxFiles: this.maxFiles })
     this.elDragArea?.classList.remove('drag-area--on-drag-enter')
     event.preventDefault()
   }
@@ -195,15 +205,15 @@ export class MdsInputUpload {
   private checkError (file: File): {errorMessage: string, type: ErrorType} {
     let errorMessage, type
     if (this.fileUploaded >= this.maxFiles) {
-      errorMessage = 'Numero massimo di file raggiunto.'
+      errorMessage = this.t.get('maxFilesExceed')
       type = ErrorType.MAX
     }
     if (!this.checkFileSize(file)){
-      errorMessage = 'File troppo grande.'
+      errorMessage = this.t.get('fileTooLarge')
       type = ErrorType.SIZE
     }
     if (!this.checkFileType(file)){
-      errorMessage = 'Formato non consentito.'
+      errorMessage = this.t.get('formatNotAlowed')
       type = ErrorType.TYPE
     }
     return { errorMessage, type }
@@ -316,11 +326,11 @@ export class MdsInputUpload {
             <div class="main-action-icon">
               <i class="svg icon" innerHTML={miBaselineAddCircle}/>
             </div>
-            <mds-text animation="yugop" variant="title" typography="action" text={ this.actionTitle }></mds-text>
+            <mds-text animation={this.animateText ? 'yugop' : 'none'} variant="title" typography="action" text={ this.actionTitle }></mds-text>
           </div>
           <div class="main-actions">
-            <mds-button variant='primary' onClick={() => this.nativeInput?.click()}> {this.files ? 'Aggiungi file' : 'Seleziona File'}</mds-button>
-            {this.files.length > 0 && <mds-button variant='error' onClick={this.onReset}>Cancella tutto</mds-button> }
+            <mds-button variant='primary' onClick={() => this.nativeInput?.click()}> {this.files ? this.t.get('addFile', { maxFiles: this.maxFiles }) : this.t.get('selectFile') }</mds-button>
+            {this.files.length > 0 && <mds-button variant='error' onClick={this.onReset}>{ this.t.get('cancel') }</mds-button> }
           </div>
           <div class="main-infos">
             <mds-progress class="progress-bar" progress={this.progress}></mds-progress>
@@ -330,13 +340,13 @@ export class MdsInputUpload {
         <input type='file' accept={this.accept} hidden ref={i => this.nativeInput = i} onChange={this.onAdd} multiple = {this.maxFiles > 1}/>
         <div class="additional-infos">
           <div class={clsx('file-specs', !this.sort && 'file-specs-sort')}>
-            <mds-text variant="info" typography="caption">{this.extensions !== '' ? 'Puoi caricare ' + this.extensions : 'Puoi caricare qualsiasi formato'}</mds-text>
-            <mds-text variant="info" typography="caption">{this.maxFileSize}MB max per file</mds-text>
+            <mds-text variant="info" typography="caption">{this.extensions !== '' ? `${this.t.get('canUpload')} ${this.extensions}` : this.t.get('canUploadAll') }</mds-text>
+            <mds-text variant="info" typography="caption">{ this.t.get('maxFileSizePerFile', { maxFileSize: this.maxFileSize })}</mds-text>
           </div>
           {!this.sort ?
             <mds-tab class="action-sort" onMdsTabChange={event => this.onChangeTab(event.detail)} >
-              <mds-tab-item icon={iconSortById} selected={this.userSort === 'date'} title="Ordine per data di aggiunta" value='date'></mds-tab-item>
-              <mds-tab-item icon={iconSortByStatus} selected={this.userSort === 'status'} title="Raggruppa per stato" value='status'></mds-tab-item>
+              <mds-tab-item icon={iconSortById} selected={this.userSort === 'date'} title={this.t.get('sortByDate')} value='date'></mds-tab-item>
+              <mds-tab-item icon={iconSortByStatus} selected={this.userSort === 'status'} title={this.t.get('sortByStatus')} value='status'></mds-tab-item>
             </mds-tab>
             : ''
           }

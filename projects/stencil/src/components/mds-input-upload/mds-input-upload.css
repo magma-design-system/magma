@@ -124,8 +124,7 @@
   --max-w: calc(var(--perc-w) - var(--gap-w));
   --template-cols: repeat(auto-fit, minmax(theme('spacing.4000'), var(--max-w)));
 
-  @apply
-    gap-400;
+  @apply gap-400;
 
   grid-template-columns: var(--template-cols);
 }

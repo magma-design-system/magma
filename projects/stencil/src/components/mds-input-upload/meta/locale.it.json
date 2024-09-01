@@ -1,5 +1,16 @@
 {
-  "default": "Clicca e seleziona o trascina qui i file da caricare",
+  "addFile": "Aggiungi file",
+  "canUpload": "Puoi caricare",
+  "canUploadAll": "Puoi caricare qualsiasi formato",
+  "cancel": "Annulla",
+  "clickOrDrag": ["Clicca e seleziona o trascina qui il file da caricare", "Clicca e seleziona o trascina qui i file da caricare"],
   "dragEnter": "Rilascia qui i file da caricare",
-  "maxFilesUpload": "Puoi caricare fino a {{ maxFiles }} file"
+  "fileTooLarge": "File troppo grande",
+  "formatNotAlowed": "Formato file non consentito",
+  "maxFilesExceed": "Numero massimo di file raggiunto",
+  "maxFileSizePerFile": "{{ maxFileSize }}MB max per file",
+  "maxFilesUpload": "Puoi caricare fino a {{ maxFiles }} file",
+  "selectFile": "Seleziona file",
+  "sortByDate": "Ordino per data di aggiunta",
+  "sortByState": "Ordino per stato upload"
 }
