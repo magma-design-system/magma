@@ -53,7 +53,7 @@
     "@maggioli-design-system/design-tokens": "13.2.0",
     "@maggioli-design-system/identity": "2.0.4",
     "@maggioli-design-system/styles": "15.2.0",
-    "@stencil/core": "4.10.0",
+    "@stencil/core": "4.21.0",
     "clsx": "2.1.0",
     "crypto-js": "4.2.0",
     "filesize": "10.1.0",
