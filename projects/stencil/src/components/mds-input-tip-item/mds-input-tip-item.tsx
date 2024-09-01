@@ -11,7 +11,7 @@ import localeIt from './meta/locale.it.json'
   shadow: true,
 })
 export class MdsInputTipItem {
-  @Element() private element: HTMLMdsPrefThemeElement
+  @Element() private element: HTMLMdsInputTipItemElement
 
   private t:Locale = new Locale({
     en: localeEn,
