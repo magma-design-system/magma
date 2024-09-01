@@ -1,0 +1,22 @@
+@container style(--magma-pref-animation: reduce) {
+  :host,
+  .input,
+  .input:hover,
+  .input:focus,
+  .icon {
+    transition-duration: 0s;
+  }
+}
+
+@container style(--magma-pref-animation: system) {
+
+  @media (prefers-reduced-motion) {
+    :host,
+    .input,
+    .input:hover,
+    .input:focus,
+    .icon {
+      transition-duration: 0s;
+    }
+  }
+}
