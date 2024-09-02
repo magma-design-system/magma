@@ -70,21 +70,3 @@ img {
 
   fill: var(--mds-img-icon-color);
 }
-
-.contrast-area {
-
-  @apply duration-300;
-
-  border-radius: inherit;
-  box-shadow: theme('boxShadow.outline-50') inset;
-  display: none;
-  inset: 0;
-  opacity: 0;
-  pointer-events: none;
-  position: absolute;
-  transition-behavior: allow-discrete;
-  transition-property: display opacity;
-}
-
-@import './css/mds-img-pref-animation.css';
-@import './css/mds-img-pref-contrast.css';

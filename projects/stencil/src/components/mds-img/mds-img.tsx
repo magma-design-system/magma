@@ -174,7 +174,7 @@ export class MdsImg {
     if (this.imageError) {
       return (
         <Host aria-label={this.alt} role="img">
-          <div class="contrast-area"></div>
+          <div class="contrast-area-50"></div>
           <div class="alt-text-container alt-text-container--error alt-text-container--default-aspect-ratio">
             <mds-icon class="icon" name={miBaselineBrokenImage}></mds-icon>
             <mds-text class="alt-text" aria-hidden="true" typography="h6"><i>{ this.alt }</i></mds-text>
@@ -187,7 +187,7 @@ export class MdsImg {
       if (this.consumptionMode === 'low') {
         return (
           <Host aria-label={this.alt} role="img" onClick={() => { this.imageConsumptionLoaded = true }}>
-            <div class="contrast-area"></div>
+            <div class="contrast-area-50"></div>
             { !this.imageConsumptionLoaded
               ? <div class="alt-text-container alt-text-container--default-aspect-ratio">
                 <mds-icon class="icon" name={miBaselinePanorama}></mds-icon>
@@ -214,7 +214,7 @@ export class MdsImg {
 
       return (
         <Host aria-label={this.alt} role="img">
-          <div class="contrast-area"></div>
+          <div class="contrast-area-50"></div>
           <img
             alt={this.alt}
             aria-hidden="true"
@@ -234,7 +234,7 @@ export class MdsImg {
 
     return (
       <Host aria-label={this.alt} role="img">
-        <div class="contrast-area"></div>
+        <div class="contrast-area-50"></div>
         <img
           alt={this.alt}
           aria-hidden="true"
