@@ -9,7 +9,7 @@
   "formatNotAlowed": "Invalid file format",
   "maxFilesExceed": "Maximum number of files reached",
   "maxFileSizePerFile": "{{ maxFileSize }}MB max per file",
-  "maxFilesUpload": [ "You can upload a maximum of {{ maxFiles }} file", "You can upload a maximum of {{ maxFiles }} files" ],
+  "maxFilesUpload": [ "You can upload a single file", "You can upload a maximum of {{ maxFiles }} files" ],
   "selectFile": "Select file",
   "sortByDate": "Sort by date added",
   "sortByState": "Sort by upload status"
