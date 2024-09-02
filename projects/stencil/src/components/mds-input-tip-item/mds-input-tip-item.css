@@ -1,3 +1,6 @@
+@import '../../tailwind/components.css';
+
+@tailwind components;
 @tailwind utilities;
 
 :host {
@@ -53,44 +56,44 @@
   transform: translateY(-1px);
 }
 
-:host ([expanded="false"]) {
+:host([expanded="false"]) {
   color: transparent;
 }
 
-:host ([expanded]:not([expanded="false"])) {
+:host([expanded]:not([expanded="false"])) {
   @apply px-200;
 
   --mds-input-tip-item-color: theme('colors.tone-neutral');
 }
 
-:host ([expanded]:not([expanded="false"])) .content {
+:host([expanded]:not([expanded="false"])) .content {
   grid-template-columns: 1fr;
   opacity: 1;
 }
 
-:host ([variant="required"]) {
+:host([variant="required"]) {
 
   --mds-input-tip-item-background: theme('colors.status-error-05');
 }
 
-:host ([variant="required-success"]) {
+:host([variant="required-success"]) {
 
   --mds-input-tip-item-background: theme('colors.status-success-05');
 }
 
-:host ([variant="readonly"]) {
+:host([variant="readonly"]) {
 
   --mds-input-tip-item-background: theme('colors.status-info-05');
 }
 
-:host ([variant="disabled"]) {
+:host([variant="disabled"]) {
 
   --mds-input-tip-item-background: theme('colors.tone-neutral-05');
 }
 
-:host ([variant="text"]) {
+:host([variant="text"]) {
 
   --mds-input-tip-item-background: theme('colors.tone-neutral-03');
 }
 
-/* @import './css/mds-input-tip-item-pref-animation.css'; */
+@import './css/mds-input-tip-item-pref-animation.css';
