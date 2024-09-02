@@ -1,5 +1,7 @@
 @import '../../tailwind/components.css';
 
+/* @import '../../tailwind/static-components.css'; */
+
 @tailwind components;
 @tailwind utilities;
 
@@ -36,10 +38,6 @@
   height: unset;
   min-height: var(--mds-progress-thickness);
   width: var(--mds-progress-thickness);
-}
-
-.contrast-area {
-  @apply contrast;
 }
 
 .progress {

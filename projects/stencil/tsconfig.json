@@ -44,6 +44,9 @@
       "@placeholder": [
         "https://via.placeholder.com"
       ],
+      "@tailwind/*": [
+        "src/tailwind/*"
+      ],
       "@test/*": [
         "src/test/*"
       ],

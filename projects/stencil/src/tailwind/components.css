@@ -1,5 +1,6 @@
 @import '~@maggioli-design-system/styles/dist/tailwind/components.css';
 @tailwind components;
+@tailwind utilities;
 
 @layer components {
   .svg {
@@ -13,11 +14,7 @@
       w-full;
   }
 
-  .contrast,
-  .contrast-50 {
-
-    @apply duration-300;
-  
+  .contrast-area-base {
     border-radius: inherit;
     box-shadow: theme('boxShadow.outline-50') inset;
     display: none;
@@ -29,50 +26,60 @@
     transition-property: display opacity;
   }
 
-  .contrast {
+  .contrast-area-50 {
+    @apply contrast-area-base;
+
+    box-shadow: theme('boxShadow.outline-50') inset;
+  }
+
+  .contrast-area {
+    @apply contrast-area-base;
+
     box-shadow: theme('boxShadow.outline') inset;
   }
 
   @container style(--magma-pref-contrast: more) {
-    .contrast,
-    .contrast-50 {
-      display: block;
-      opacity: 1;
-  
-      @starting-style {
+    .contrast-area,
+    .contrast-area-50 {
+      @apply
+        block
+        opacity-100;
+
+      /* @starting-style {
         opacity: 0;
-      }
+      } */
     }
   }
-  
+
   @container style(--magma-pref-contrast: system) {
-  
+
     @media (prefers-contrast: more) {
-      .contrast,
-      .contrast-50 {
-        display: block;
-        opacity: 1;
-  
-        @starting-style {
+      .contrast-area,
+      .contrast-area-50 {
+        @apply
+          block
+          opacity-100;
+
+        /* @starting-style {
           opacity: 0;
-        }
+        } */
       }
     }
   }
 
   @container style(--magma-pref-animation: reduce) {
-    .contrast,
-    .contrast-50 {
-      transition-duration: 0s;
+    .contrast-area,
+    .contrast-area-50 {
+      @apply duration-0;
     }
   }
-  
+
   @container style(--magma-pref-animation: system) {
-  
+    
     @media (prefers-reduced-motion) {
-      .contrast,
-      .contrast-50 {
-        transition-duration: 0s;
+      .contrast-area,
+      .contrast-area-50 {
+        @apply duration-0;
       }
     }
   }

@@ -134,7 +134,7 @@
 }
 
 .contrast-area {
-  @apply contrast mx-100;
+  @apply mx-100;
 
   border-radius: var(--mds-input-range-track-size);
 }
