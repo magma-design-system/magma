@@ -1,3 +1,5 @@
+@tailwind utilities;
+
 @container style(--magma-pref-animation: reduce) {
   :host {
     transition-duration: 0s;
