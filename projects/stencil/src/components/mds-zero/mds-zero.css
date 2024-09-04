@@ -11,6 +11,8 @@
   @apply
     gap-600
     p-1200
+    duration-200
+    ease-out
     mobile:px-600
     rounded-xl;
 
@@ -19,6 +21,7 @@
   display: flex;
   flex-direction: column;
   justify-items: center;
+  transition-property: box-shadow, background-color;
 }
 
 :host .contents {
@@ -42,3 +45,7 @@
 :host ::slotted([slot="action"]) {
   margin: auto;
 }
+
+@import './css/mds-zero-pref-animation.css';
+@import './css/mds-zero-pref-theme.css';
+@import './css/mds-zero-pref-contrast.css';
