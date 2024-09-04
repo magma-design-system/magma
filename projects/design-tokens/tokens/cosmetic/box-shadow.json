@@ -49,6 +49,18 @@
       "outline-100": {
         "value": "0 0 0 4px rgb(var(--tone-neutral-01) / 0.3)"
       },
+      "outline-light": {
+        "value": "0 0 0 1px rgb(var(--tone-neutral-01) / 0.15)"
+      },
+      "outline-light-50": {
+        "value": "0 0 0 2px rgb(var(--tone-neutral-01) / 0.15)"
+      },
+      "outline-light-75": {
+        "value": "0 0 0 3px rgb(var(--tone-neutral-01) / 0.15)"
+      },
+      "outline-light-100": {
+        "value": "0 0 0 4px rgb(var(--tone-neutral-01) / 0.15)"
+      },
       "outline-strong": {
         "value": "0 0 0 1px rgb(var(--tone-neutral-01) / 0.6)"
       },
