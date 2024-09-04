@@ -59,22 +59,22 @@
   user-select: none;
 }
 
-:host( :focus-visible ) {
+:host(:focus-visible) {
   @apply focus-bounce--focused;
 }
 
-:host( :hover ) {
+:host(:hover) {
   background-color: var(--mds-paginator-item-background-hover);
   box-shadow: var(--mds-paginator-item-shadow-hover);
   color: var(--mds-paginator-item-color-hover);
   fill: var(--mds-paginator-item-color-hover);
 }
 
-:host( [icon] ) {
+:host([icon]) {
   @apply p-0;
 }
 
-:host( [selected] ) {
+:host([selected]) {
   background-color: var(--mds-paginator-item-background-selected);
   box-shadow: var(--mds-paginator-item-shadow-selected);
   color: var(--mds-paginator-item-color-selected);
@@ -82,7 +82,7 @@
   pointer-events: none;
 }
 
-:host( [disabled] ) {
+:host([disabled]) {
   background-color: var(--mds-paginator-item-background-disabled);
   box-shadow: var(--mds-paginator-item-shadow-disabled);
   color: var(--mds-paginator-item-color-disabled);
@@ -92,4 +92,9 @@
 
 .icon {
   @apply px-0;
+
+  fill: currentcolor;
 }
+
+@import './css/mds-paginator-item-pref-animation.css';
+@import './css/mds-paginator-item-pref-theme.css';
