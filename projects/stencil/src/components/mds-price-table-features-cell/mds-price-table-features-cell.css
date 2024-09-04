@@ -9,22 +9,34 @@
 :host {
 
   --mds-price-table-features-cell-padding: var(--mds-price-table-features-padding, theme('spacing.300'));
+  --mds-price-table-features-cell-icon-supported-color-hover: theme('colors.label-green-06');
   --mds-price-table-features-cell-icon-supported-color: theme('colors.label-green-06');
-  --mds-price-table-features-cell-icon-unsupported-color: theme('colors.tone-neutral-07');
+  --mds-price-table-features-cell-icon-unsupported-color-hover: theme('colors.tone-neutral-06');
+  --mds-price-table-features-cell-icon-unsupported-color: theme('colors.tone-neutral-06');
+  --mds-price-table-features-cell-border-color: theme('colors.tone-neutral-08');
 
-  border-bottom: 1px solid theme('colors.theme-default-05-secondary-decoration');
+  @apply
+    duration-200
+    ease-out;
+
+  border-bottom: 1px solid var(--mds-price-table-features-cell-border-color);
   display: table-cell;
   padding: var(--mds-price-table-features-cell-padding);
+  transition-property: border-color, border-color, transform;
   vertical-align: top;
 }
 
 .icon {
   @apply
     h-600
+    duration-200
+    ease-out
     w-600;
 
   display: flex;
-  fill: var(--icon-fill-color);
+  fill: var(--icon-fill-color, currentColor);
+  transition-property: fill;
+  
 }
 
 .icon--supported {
@@ -36,3 +48,7 @@
 
   --icon-fill-color: var(--mds-price-table-features-cell-icon-unsupported-color);
 }
+
+@import './css/mds-price-table-cell-pref-animation.css';
+@import './css/mds-price-table-cell-pref-theme.css';
+@import './css/mds-price-table-cell-pref-contrast.css';
