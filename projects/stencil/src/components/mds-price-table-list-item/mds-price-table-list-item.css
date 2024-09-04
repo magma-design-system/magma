@@ -4,8 +4,10 @@
 
 :host {
 
+  --mds-price-table-list-item-supported-icon-color-hover: theme('colors.label-green-05');
   --mds-price-table-list-item-supported-icon-color: theme('colors.label-green-06');
-  --mds-price-table-list-item-unsupported-icon-color: rgb(var(--theme-default-04-primary-decoration));
+  --mds-price-table-list-item-unsupported-icon-color-hover: theme('colors.tone-neutral-04');
+  --mds-price-table-list-item-unsupported-icon-color: theme('colors.tone-neutral-05');
 
   @apply gap-100;
 
