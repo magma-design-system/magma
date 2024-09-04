@@ -1,0 +1,18 @@
+@tailwind utilities;
+
+@container style(--magma-pref-contrast: more) {
+  :host {
+
+    --mds-price-table-features-border-color: theme('colors.tone-neutral-03');
+  }
+}
+
+@container style(--magma-pref-contrast: system) {
+
+  @media (prefers-contrast: more) {
+    :host {
+
+      --mds-price-table-features-border-color: theme('colors.tone-neutral-03');
+    }
+  }
+}
