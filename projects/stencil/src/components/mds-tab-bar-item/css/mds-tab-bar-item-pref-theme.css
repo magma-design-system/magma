@@ -1,0 +1,20 @@
+@tailwind utilities;
+
+@container style(--magma-pref-theme: dark) {
+  :host {
+
+    --mds-tab-bar-item-color: theme('colors.tone-neutral-04');
+    --mds-tab-bar-item-color-selected: theme('colors.brand-maggioli-02');
+  }
+}
+
+@container style(--magma-pref-theme: system) {
+
+  @media (prefers-color-scheme: dark) {
+    :host {
+
+      --mds-tab-bar-item-color: theme('colors.tone-neutral-04');
+      --mds-tab-bar-item-color-selected: theme('colors.brand-maggioli-02');
+    }
+  }
+}

@@ -37,3 +37,7 @@
   color: var(--mds-tab-bar-item-color-selected);
   fill: var(--mds-tab-bar-item-color-selected);
 }
+
+@import './css/mds-tab-bar-item-pref-animation.css';
+@import './css/mds-tab-bar-item-pref-theme.css';
+@import './css/mds-tab-bar-item-pref-contrast.css';
