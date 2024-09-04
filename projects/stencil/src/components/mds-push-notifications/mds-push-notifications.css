@@ -49,7 +49,6 @@
 
   position: absolute;
   transform: translate(calc(100% + calc(var(--mds-push-notifications-gap) + var(--mds-push-notifications-gap))), 0);
-  transition-property: margin, transform;
   visibility: hidden;
 
 }
