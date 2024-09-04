@@ -44,3 +44,5 @@
 :host( [hydrated] ) .contents {
   opacity: 1;
 }
+
+@import './css/mds-stepper-bar-pref-animation.css';
