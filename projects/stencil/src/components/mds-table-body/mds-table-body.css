@@ -7,7 +7,10 @@
 
 :host {
 
-  @apply transition-colors;
+  @apply
+    duration-200
+    ease-out
+    transition-colors;
 
   background-color: var(--mds-table-body-background, theme('colors.tone-neutral'));
   display: table-row-group;
@@ -18,3 +21,5 @@
 
   --mds-table-body-background: var(--mds-table-body-background-hover, theme('colors.tone-neutral-10'));
 }
+
+@import './css/mds-table-body-pref-animation.css';
