@@ -21,7 +21,7 @@ describe('mds-accordion-item', () => {
     const page = await newE2EPage()
     await page.setContent('<mds-accordion-item label="titolo"></mds-accordion-item>')
 
-    const contents = await page.find('mds-accordion-item >>> .contents')
+    const contents = await page.find('mds-accordion-item >>> .content')
     expect(contents).toBeTruthy()
     expect(await contents.getComputedStyle()).toHaveProperty('gridTemplateRows', '0px')
     expect(await contents.getComputedStyle()).toHaveProperty('opacity', '0')
@@ -31,7 +31,7 @@ describe('mds-accordion-item', () => {
     const page = await newE2EPage()
     await page.setContent('<mds-accordion-item selected>testo</mds-accordion-item>')
     await page.waitForChanges()
-    const contents = await page.find('mds-accordion-item >>> .contents')
+    const contents = await page.find('mds-accordion-item >>> .content')
 
     expect(contents).toBeTruthy()
     expect(await contents.getComputedStyle()).toHaveProperty('gridTemplateRows', expect.not.stringContaining('0px'))
