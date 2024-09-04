@@ -1,0 +1,18 @@
+@tailwind utilities;
+
+@container style(--magma-pref-theme: dark) {
+  :host {
+
+    --mds-separator-background: theme('colors.tone-neutral-07');
+  }
+}
+
+@container style(--magma-pref-theme: system) {
+
+  @media (prefers-color-scheme: dark) {
+    :host {
+
+      --mds-separator-background: theme('colors.tone-neutral-07');
+    }
+  }
+}

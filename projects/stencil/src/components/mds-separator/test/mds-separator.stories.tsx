@@ -6,7 +6,7 @@ export default {
 
 const Template = args =>
   <div class="p-600 bg-tone-neutral-10 rounded-3xl">
-    <div class="grid rounded-xl bg-tone-neutral shadow overflow-hidden">
+    <div class="grid rounded-xl bg-tone-neutral shadow contrast-more:shadow-outline overflow-hidden">
       <mds-entity aria-label="Personaggio" class="shadow-none p-600" icon="mi/baseline/person">
         <mds-text aria-label="Nome" typography="h6">Mario Rossi</mds-text>
         <mds-badge aria-label="Carattere" slot="detail" variant="orange" tone="quiet">buono</mds-badge>

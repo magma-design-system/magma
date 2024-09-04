@@ -2,12 +2,15 @@
 
 :host {
 
-  --mds-separator-background: rgb(var(--theme-default-05-secondary-decoration));
+  --mds-separator-background: theme('colors.tone-neutral-08');
 
   @apply
     rounded-full
     h-[1px];
 
-  background-color: var(--mds-separator-background, theme('colors.tone-neutral-08'));
+  background-color: var(--mds-separator-background);
   display: flex;
 }
+
+@import './css/mds-separator-pref-theme.css';
+@import './css/mds-separator-pref-contrast.css';
