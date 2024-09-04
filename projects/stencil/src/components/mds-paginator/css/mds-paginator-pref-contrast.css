@@ -1,0 +1,48 @@
+@tailwind utilities;
+
+@container style(--magma-pref-contrast: more) {
+  .pages {
+    box-shadow: theme('boxShadow.outline-50') inset;
+  }
+
+  .item {
+
+    --mds-paginator-item-background-hover: theme('colors.tone-neutral');
+    --mds-paginator-item-shadow-hover: theme('boxShadow.outline-50') inset;
+    --mds-paginator-item-shadow: none;
+  }
+
+  .item-first,
+  .item-last,
+  .item-icon {
+
+    --mds-paginator-item-shadow-disabled: theme('boxShadow.outline-50') inset;
+    --mds-paginator-item-shadow-hover: theme('boxShadow.outline-50') inset;
+    --mds-paginator-item-shadow: theme('boxShadow.outline-50') inset;
+  }
+}
+
+@container style(--magma-pref-contrast: system) {
+
+  @media (prefers-contrast: more) {
+    .pages {
+      box-shadow: theme('boxShadow.outline-50') inset;
+    }
+
+    .item {
+
+      --mds-paginator-item-background-hover: theme('colors.tone-neutral');
+      --mds-paginator-item-shadow-hover: theme('boxShadow.outline-50') inset;
+      --mds-paginator-item-shadow: none;
+    }
+
+    .item-first,
+    .item-last,
+    .item-icon {
+
+      --mds-paginator-item-shadow-disabled: theme('boxShadow.outline-50') inset;
+      --mds-paginator-item-shadow-hover: theme('boxShadow.outline-50') inset;
+      --mds-paginator-item-shadow: theme('boxShadow.outline-50') inset;
+    }
+  }
+}

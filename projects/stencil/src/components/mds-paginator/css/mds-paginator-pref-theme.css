@@ -1,0 +1,29 @@
+
+
+@tailwind utilities;
+
+@container style(--magma-pref-theme: dark) {
+  :host {
+
+    --mds-paginator-background: theme('colors.tone-neutral-09');
+
+  }
+  
+  .pages {
+    box-shadow: theme('boxShadow.outline') inset;
+  }
+}
+
+@container style(--magma-pref-theme: system) {
+
+  @media (prefers-color-scheme: dark) {
+    :host {
+
+      --mds-paginator-background: theme('colors.tone-neutral-09');
+    }
+
+    .pages {
+      box-shadow: theme('boxShadow.outline') inset;
+    }
+  }
+}

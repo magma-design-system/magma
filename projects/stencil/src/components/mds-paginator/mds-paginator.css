@@ -18,7 +18,9 @@
 
 .pages {
   @apply
+    duration-200
     hide-scrollbar
+    ease-in-out
     mx-200
     p-200
     rounded-full;
@@ -30,8 +32,13 @@
   gap: 2px;
   overflow: auto;
   scroll-behavior: smooth;
+  transition-property: background-color, box-shadow;
 }
 
 .pages::-webkit-scrollbar {
   display: none;
 }
+
+@import './css/mds-paginator-pref-animation.css';
+@import './css/mds-paginator-pref-theme.css';
+@import './css/mds-paginator-pref-contrast.css';
