@@ -1,0 +1,30 @@
+@tailwind utilities;
+
+@container style(--magma-pref-contrast: more) {
+  :host,
+  :host([variant="do"]),
+  :host([variant="dont"]),
+  :host([variant="warn"]) {
+
+    --mds-usage-badge-color: theme('colors.tone-neutral-01');
+    --mds-usage-color: theme('colors.tone-neutral-01');
+
+    box-shadow: theme('boxShadow.outline-50');
+  }
+}
+
+@container style(--magma-pref-contrast: system) {
+
+  @media (prefers-contrast: more) {
+    :host,
+    :host([variant="do"]),
+    :host([variant="dont"]),
+    :host([variant="warn"]) {
+
+      --mds-usage-badge-color: theme('colors.tone-neutral-01');
+      --mds-usage-color: theme('colors.tone-neutral-01');
+
+      box-shadow: theme('boxShadow.outline-50');
+    }
+  }
+}

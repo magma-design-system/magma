@@ -10,23 +10,30 @@
   --mds-usage-background: theme('colors.status-info-10');
   --mds-usage-badge-background: theme('colors.status-info-06');
   --mds-usage-badge-color: theme('colors.status-info-10');
+  --mds-usage-color: theme('colors.tone-neutral-03');
+
 
   @apply
+    duration-200
+    ease-out
     gap-400
     p-600
     rounded-xl;
 
   background-color: var(--mds-usage-background);
+  color: var(--mds-usage-color);
   display: grid;
   grid-auto-rows: min-content;
   grid-template-columns: minmax(0, 100%);
   position: relative;
+  transition-property: background-color, box-shadow, color;
 }
 
 .header {
   @apply px-600;
 
   align-items: center;
+  color: var(--mds-usage-badge-color);
   display: flex;
   height: 0;
   inset: 0 0 auto;
@@ -40,34 +47,43 @@
 
 .badge {
   @apply
+    duration-200
+    ease-out
     gap-200
     px-400
     py-100
     rounded-full;
 
   background-color: var(--mds-usage-badge-background);
-  color: var(--mds-usage-badge-color);
   display: flex;
   fill: var(--mds-usage-badge-color);
+  transition-property: background-color, color, fill;
 }
 
-:host( [variant="do"] ) {
+:host([variant="do"]) {
 
   --mds-usage-background: theme('colors.status-success-10');
   --mds-usage-badge-background: theme('colors.status-success-06');
   --mds-usage-badge-color: theme('colors.status-success-10');
+  --mds-usage-color: theme('colors.status-success-02');
 }
 
-:host( [variant="dont"] ) {
+:host([variant="dont"]) {
 
   --mds-usage-background: theme('colors.status-error-10');
   --mds-usage-badge-background: theme('colors.status-error-06');
   --mds-usage-badge-color: theme('colors.status-error-10');
+  --mds-usage-color: theme('colors.status-error-02');
 }
 
-:host( [variant="warn"] ) {
+:host([variant="warn"]) {
 
   --mds-usage-background: theme('colors.status-warning-10');
   --mds-usage-badge-background: theme('colors.status-warning-08');
   --mds-usage-badge-color: theme('colors.status-warning-01');
+  --mds-usage-color: theme('colors.status-warning-02');
 }
+
+@import './css/mds-usage-pref-animation.css';
+@import './css/mds-usage-pref-theme.css';
+@import './css/mds-usage-pref-contrast.css';
