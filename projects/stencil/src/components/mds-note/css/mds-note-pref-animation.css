@@ -1,0 +1,18 @@
+@tailwind utilities;
+
+@container style(--magma-pref-animation: reduce) {
+  :host,
+  .fold {
+    transition-duration: 0s;
+  }
+}
+
+@container style(--magma-pref-animation: system) {
+
+  @media (prefers-reduced-motion) {
+    :host,
+    .fold {
+      transition-duration: 0s;
+    }
+  }
+}

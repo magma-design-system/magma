@@ -2,80 +2,80 @@
 
 :host( [variant="amaranth"] ) {
 
-  --mds-note-background: theme('colors.label-amaranth-10');
+  --mds-note-background: theme('colors.label-amaranth-09');
   --mds-note-color: theme('colors.label-amaranth-02');
-  --mds-note-selection-background: theme('colors.label-amaranth-09');
+  --mds-note-selection-background: theme('colors.label-amaranth-08');
   --mds-note-selection-color: theme('colors.label-amaranth-04');
 }
 
 :host( [variant="aqua"] ) {
 
-  --mds-note-background: theme('colors.label-aqua-10');
+  --mds-note-background: theme('colors.label-aqua-09');
   --mds-note-color: theme('colors.label-aqua-02');
-  --mds-note-selection-background: theme('colors.label-aqua-09');
+  --mds-note-selection-background: theme('colors.label-aqua-08');
   --mds-note-selection-color: theme('colors.label-aqua-04');
 }
 
 :host( [variant="blue"] ) {
 
-  --mds-note-background: theme('colors.label-blue-10');
+  --mds-note-background: theme('colors.label-blue-09');
   --mds-note-color: theme('colors.label-blue-02');
-  --mds-note-selection-background: theme('colors.label-blue-09');
+  --mds-note-selection-background: theme('colors.label-blue-08');
   --mds-note-selection-color: theme('colors.label-blue-04');
 }
 
 :host( [variant="green"] ) {
 
-  --mds-note-background: theme('colors.label-green-10');
+  --mds-note-background: theme('colors.label-green-09');
   --mds-note-color: theme('colors.label-green-02');
-  --mds-note-selection-background: theme('colors.label-green-09');
+  --mds-note-selection-background: theme('colors.label-green-08');
   --mds-note-selection-color: theme('colors.label-green-04');
 }
 
 :host( [variant="lime"] ) {
 
-  --mds-note-background: theme('colors.label-lime-10');
+  --mds-note-background: theme('colors.label-lime-09');
   --mds-note-color: theme('colors.label-lime-02');
-  --mds-note-selection-background: theme('colors.label-lime-09');
+  --mds-note-selection-background: theme('colors.label-lime-08');
   --mds-note-selection-color: theme('colors.label-lime-04');
 }
 
 :host( [variant="orange"] ) {
 
-  --mds-note-background: theme('colors.label-orange-10');
+  --mds-note-background: theme('colors.label-orange-09');
   --mds-note-color: theme('colors.label-orange-02');
-  --mds-note-selection-background: theme('colors.label-orange-09');
+  --mds-note-selection-background: theme('colors.label-orange-08');
   --mds-note-selection-color: theme('colors.label-orange-04');
 }
 
 :host( [variant="orchid"] ) {
 
-  --mds-note-background: theme('colors.label-orchid-10');
+  --mds-note-background: theme('colors.label-orchid-09');
   --mds-note-color: theme('colors.label-orchid-02');
-  --mds-note-selection-background: theme('colors.label-orchid-09');
+  --mds-note-selection-background: theme('colors.label-orchid-08');
   --mds-note-selection-color: theme('colors.label-orchid-04');
 }
 
 :host( [variant="sky"] ) {
 
-  --mds-note-background: theme('colors.label-sky-10');
+  --mds-note-background: theme('colors.label-sky-09');
   --mds-note-color: theme('colors.label-sky-02');
-  --mds-note-selection-background: theme('colors.label-sky-09');
+  --mds-note-selection-background: theme('colors.label-sky-08');
   --mds-note-selection-color: theme('colors.label-sky-04');
 }
 
 :host( [variant="violet"] ) {
 
-  --mds-note-background: theme('colors.label-violet-10');
+  --mds-note-background: theme('colors.label-violet-09');
   --mds-note-color: theme('colors.label-violet-02');
-  --mds-note-selection-background: theme('colors.label-violet-09');
+  --mds-note-selection-background: theme('colors.label-violet-08');
   --mds-note-selection-color: theme('colors.label-violet-04');
 }
 
 :host( [variant="yellow"] ) {
 
-  --mds-note-background: theme('colors.label-yellow-10');
+  --mds-note-background: theme('colors.label-yellow-09');
   --mds-note-color: theme('colors.label-yellow-02');
-  --mds-note-selection-background: theme('colors.label-yellow-09');
+  --mds-note-selection-background: theme('colors.label-yellow-08');
   --mds-note-selection-color: theme('colors.label-yellow-04');
 }
