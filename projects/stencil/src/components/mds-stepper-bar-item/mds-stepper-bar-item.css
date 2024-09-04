@@ -74,7 +74,6 @@
   --mds-stepper-bar-item-icon-background: var(--mds-stepper-bar-item-icon-background-current);
   --mds-stepper-bar-item-icon-color: var(--mds-stepper-bar-item-icon-color-current);
 
-  box-shadow: 0 0 0 var(--mds-stepper-bar-item-icon-ring-size) var(--mds-stepper-bar-item-icon-ring-color), 0 0 0 var(--mds-stepper-bar-item-icon-ring-separator-size) var(--mds-stepper-bar-item-icon-ring-separator-color);
   transition-delay: calc(var(--mds-stepper-bar-item-duaration) / 2);
 }
 
@@ -103,7 +102,7 @@
     transition-cosmetic;
 
   background-color: var(--mds-stepper-bar-item-icon-background);
-  box-shadow: 0 0 0 0 var(--mds-stepper-bar-item-icon-ring-color), 0 0 0 0 var(--mds-stepper-bar-item-icon-ring-separator-color);
+  box-shadow: 0 0 0 var(--mds-stepper-bar-item-icon-ring-size) var(--mds-stepper-bar-item-icon-ring-color), 0 0 0 var(--mds-stepper-bar-item-icon-ring-separator-size) var(--mds-stepper-bar-item-icon-ring-separator-color);
   display: flex;
   fill: var(--mds-stepper-bar-item-icon-color);
   flex-shrink: 0;
@@ -121,6 +120,8 @@
 
   flex-grow: 1;
   margin-right: calc(calc(calc(var(--mds-stepper-bar-item-icon-ring-size) + var(--mds-stepper-bar-item-icon-ring-separator-size)) * -1) - theme('spacing.100'));
+  position: relative;
+  z-index: -1;
 }
 
 .infos {
@@ -151,3 +152,5 @@
   color: theme('colors.tone-neutral-04');
   pointer-events: none;
 }
+
+@import './css/mds-stepper-bar-item-pref-animation.css';
