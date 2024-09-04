@@ -108,7 +108,7 @@ export class MdsNotification {
     return (
       <Host>
         <mds-text typography="caption" class="dot">
-          { this.value ? this.clean(this.value) : <span class="spacer"/> }
+          { this.value ? this.clean(this.value) : '' }
         </mds-text>
       </Host>
     )
