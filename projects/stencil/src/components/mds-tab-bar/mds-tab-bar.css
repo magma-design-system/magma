@@ -1,12 +1,22 @@
 @tailwind utilities;
 
 :host {
+
+  @apply
+    duration-200
+    ease-out;
+
   background-color: theme('colors.tone-neutral');
   bottom: 0;
-  box-shadow: theme('boxShadow.sm-sharp');
+  box-shadow: theme('boxShadow.outline-light-50');
   display: flex;
   justify-content: space-around;
   left: 0;
   position: fixed;
   right: 0;
+  transition-property: background-color, color, box-shadow;
 }
+
+@import './css/mds-tab-bar-pref-animation.css';
+@import './css/mds-tab-bar-pref-theme.css';
+@import './css/mds-tab-bar-pref-contrast.css';
