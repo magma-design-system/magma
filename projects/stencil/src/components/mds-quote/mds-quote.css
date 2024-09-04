@@ -18,3 +18,5 @@
 span {
   user-select: none;
 }
+
+@import './css/mds-quote-pref-contrast.css';
