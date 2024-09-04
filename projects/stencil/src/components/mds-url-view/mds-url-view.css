@@ -28,7 +28,10 @@
 }
 
 .window {
-  @apply w-full;
+  @apply
+    duration-200
+    ease-out
+    w-full;
 
   background-color: var(--mds-url-view-background);
   border-radius: var(--mds-url-view-radius);
@@ -37,10 +40,13 @@
   flex-direction: column;
   flex-grow: 1;
   overflow: hidden;
+  transition-property: background-color, box-shadow;
 }
 
 .header {
   @apply
+    duration-200
+    ease-out
     gap-200
     p-200;
 
@@ -52,6 +58,7 @@
   flex-shrink: 0;
   justify-content: space-between;
   position: relative;
+  transition-property: background-color, box-shadow;
 }
 
 .title {
@@ -84,3 +91,7 @@
   padding: 0;
   width: 100%;
 }
+
+@import './css/mds-url-view-pref-animation.css';
+@import './css/mds-url-view-pref-theme.css';
+@import './css/mds-url-view-pref-contrast.css';
