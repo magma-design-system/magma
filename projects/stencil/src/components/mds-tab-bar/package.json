@@ -23,9 +23,9 @@
     "prepublishOnly": "npm run build"
   },
   "dependencies": {
-    "@maggioli-design-system/mds-tab-bar-item": "4.7.4",
-    "@maggioli-design-system/styles": "14.3.2",
-    "@stencil/core": "4.10.0"
+    "@maggioli-design-system/mds-tab-bar-item": "4.8.0",
+    "@maggioli-design-system/styles": "15.3.0",
+    "@stencil/core": "4.21.0"
   },
   "license": "MIT",
   "author": {

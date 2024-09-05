@@ -24,9 +24,9 @@
     "test": "stencil test --spec --e2e"
   },
   "dependencies": {
-    "@maggioli-design-system/styles": "14.3.2",
-    "@maggioli-design-system/mds-text": "4.3.6",
-    "@stencil/core": "4.10.0"
+    "@maggioli-design-system/styles": "15.3.0",
+    "@maggioli-design-system/mds-text": "4.4.0",
+    "@stencil/core": "4.21.0"
   },
   "license": "MIT",
   "author": {
@@ -36,14 +36,14 @@
   },
   "contributors": [
     {
-        "name": "Nicola Tamburini",
-        "email": "nicola.tamburini@maggioli.it",
-        "role": "Software Engineer"
+      "name": "Nicola Tamburini",
+      "email": "nicola.tamburini@maggioli.it",
+      "role": "Software Engineer"
     },
     {
-        "name": "Vittorio Vittori",
-        "email": "vittorio.vittori@maggioli.it",
-        "role": "Product Designer"
+      "name": "Vittorio Vittori",
+      "email": "vittorio.vittori@maggioli.it",
+      "role": "Product Designer"
     }
   ]
 }
