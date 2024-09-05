@@ -1,19 +1,42 @@
 @tailwind utilities;
 
 :host {
+
+  --mds-price-table-features-row-background: transparent;
+  --mds-price-table-features-row-background-hover: theme('colors.tone-neutral-10');
+  --mds-price-table-features-row-color: theme('colors.tone-neutral-04');
+  --mds-price-table-features-row-color-hover: theme('colors.tone-neutral-01');
+
+  @apply
+    duration-200
+    ease-in-out;
+
+  background-color: var(--mds-price-table-features-row-background);
+  color: var(--mds-price-table-features-row-color);
   display: table-row;
+  transition-property: background-color, color;
 }
 
 :host(:hover) {
-  background-color: theme('colors.tone-neutral-10');
+
+  --mds-price-table-features-row-background: var(--mds-price-table-features-row-background-hover);
+  --mds-price-table-features-row-color: var(--mds-price-table-features-row-color-hover);
+}
+
+:host(:hover) > ::slotted(mds-price-table-features-cell) {
+
+  --mds-price-table-features-cell-icon-supported-color: var(--mds-price-table-features-cell-icon-supported-color-hover);
+  --mds-price-table-features-cell-icon-unsupported-color: var(--mds-price-table-features-cell-icon-unsupported-color-hover);
 }
 
 :host > ::slotted([type="label"]) {
-  @apply transition-transform;
-
   padding-left: 0;
 }
 
 :host(:hover) > ::slotted([type="label"]) {
   transform: translate(theme('spacing.200'), 0);
 }
+
+@import './css/mds-price-table-features-pref-animation.css';
+@import './css/mds-price-table-features-pref-contrast.css';
+@import './css/mds-price-table-features-pref-theme.css';

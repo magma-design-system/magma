@@ -4,6 +4,7 @@
   * @prop --mds-banner-background: Sets the background-color of the component
   * @prop --mds-banner-color: Sets the text color of the component
   * @prop --mds-banner-close-icon-hover-background: Sets the background color of the close icon when the mouse is over it
+  * @prop --mds-banner-gap: Sets gap between banner elements
   * @prop --mds-banner-icon-color: Sets the close icon fill color of the component
   * @prop --mds-banner-radius: Sets the border-radius of the component
   * @prop --mds-banner-shadow: Sets the box-shadow of the component
@@ -83,3 +84,6 @@
 @import './css/mds-banner-variant-primary.css';
 @import './css/mds-banner-variant-success.css';
 @import './css/mds-banner-variant-warning.css';
+@import './css/mds-banner-pref-animation.css';
+@import './css/mds-banner-pref-theme.css';
+@import './css/mds-banner-pref-contrast.css';

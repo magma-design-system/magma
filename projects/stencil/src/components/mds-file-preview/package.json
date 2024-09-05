@@ -1,6 +1,6 @@
 {
   "name": "@maggioli-design-system/mds-file-preview",
-  "version": "1.3.6",
+  "version": "1.4.0",
   "description": "mds-file-preview is a web-component from Magma Design System, built with StencilJS, TypeScript, Storybook. It's based on the web-component standard and it's designed to be agnostic from the JavaScirpt framework you are using.",
   "main": "dist/index.cjs.js",
   "module": "dist/index.js",
@@ -24,11 +24,11 @@
     "test": "stencil test --spec --e2e"
   },
   "dependencies": {
-    "@maggioli-design-system/mds-badge": "2.9.4",
-    "@maggioli-design-system/mds-button": "4.17.5",
-    "@maggioli-design-system/mds-text": "4.3.6",
-    "@maggioli-design-system/styles": "14.3.2",
-    "@stencil/core": "4.10.0",
+    "@maggioli-design-system/mds-badge": "3.0.0",
+    "@maggioli-design-system/mds-button": "4.18.0",
+    "@maggioli-design-system/mds-text": "4.4.0",
+    "@maggioli-design-system/styles": "15.3.0",
+    "@stencil/core": "4.21.0",
     "filesize": "10.1.0"
   },
   "license": "MIT",

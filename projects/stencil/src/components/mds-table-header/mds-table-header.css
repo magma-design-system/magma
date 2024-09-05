@@ -4,7 +4,14 @@
 
   --mds-table-cell-background: transparent;
 
+  @apply
+    duration-200
+    ease-out;
+
   border-bottom: var(--mds-table-cell-border-width, theme('borderWidth.2')) solid var(--mds-table-cell-border-color, theme('colors.tone-neutral-07'));
   display: table-row;
   overflow: hidden;
+  transition-property: border-color;
 }
+
+@import './css/mds-table-header-pref-animation.css';

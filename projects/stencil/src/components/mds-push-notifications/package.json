@@ -1,6 +1,6 @@
 {
   "name": "@maggioli-design-system/mds-push-notifications",
-  "version": "1.5.2",
+  "version": "1.5.3",
   "description": "mds-push-notifications is a web-component from Magma Design System, built with StencilJS, TypeScript, Storybook. It's based on the web-component standard and it's designed to be agnostic from the JavaScirpt framework you are using.",
   "main": "dist/index.cjs.js",
   "module": "dist/index.js",
@@ -24,8 +24,8 @@
     "test": "stencil test --spec --e2e"
   },
   "dependencies": {
-    "@maggioli-design-system/mds-push-notification": "1.5.2",
-    "@stencil/core": "4.10.0",
+    "@maggioli-design-system/mds-push-notification": "1.6.0",
+    "@stencil/core": "4.21.0",
     "clsx": "2.1.0"
   },
   "license": "MIT",

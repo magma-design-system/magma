@@ -28,7 +28,7 @@
   pointer-events: auto;
   position: relative;
   transition-duration: var(--mds-push-notification-duration);
-  transition-property: transform;
+  transition-property: background-color, box-shadow, color, margin, transform;
   transition-timing-function: var(--mds-push-notification-timing-function);
 }
 
@@ -106,7 +106,6 @@
 .avatar {
   @apply
     h-900
-    transition-colors
     w-900;
 
   background-color: var(--mds-push-notification-icon-background-color);
@@ -129,3 +128,6 @@
 @import './css/mds-push-notification-variant-primary.css';
 @import './css/mds-push-notification-variant-label.css';
 @import './css/mds-push-notification-variant-state.css';
+@import './css/mds-push-notification-pref-animation.css';
+@import './css/mds-push-notification-pref-theme.css';
+@import './css/mds-push-notification-pref-contrast.css';

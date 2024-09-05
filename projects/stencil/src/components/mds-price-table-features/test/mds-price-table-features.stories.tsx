@@ -12,7 +12,6 @@ const Template = args =>
         <mds-price-table-features-cell type="supported"></mds-price-table-features-cell>
         <mds-price-table-features-cell type="supported"></mds-price-table-features-cell>
         <mds-price-table-features-cell type="supported"></mds-price-table-features-cell>
-        <mds-price-table-features-cell type="supported"></mds-price-table-features-cell>
       </mds-price-table-features-row>
       <mds-price-table-features-row>
         <mds-price-table-features-cell type="label">Users</mds-price-table-features-cell>
@@ -24,10 +23,7 @@ const Template = args =>
         <mds-price-table-features-cell type="label">User data</mds-price-table-features-cell>
         <mds-price-table-features-cell type="text">10GB</mds-price-table-features-cell>
         <mds-price-table-features-cell type="text">20GB</mds-price-table-features-cell>
-        <mds-price-table-features-cell type="text">
-          1TB
-          <mds-help auto-placement="false" placement="top">It can vary by server status.</mds-help>
-        </mds-price-table-features-cell>
+        <mds-price-table-features-cell type="text">1TB<mds-help auto-placement="false" placement="top">It can vary by server status.</mds-help></mds-price-table-features-cell>
       </mds-price-table-features-row>
       <mds-price-table-features-row>
         <mds-price-table-features-cell type="label">Customer support</mds-price-table-features-cell>

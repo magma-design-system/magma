@@ -113,6 +113,12 @@ function getNpmPackageShortInfo (c: string): Promise<ShortPackageInfo> {
       if (res.status === 200) {
         return res.json()
       }
+      if(res.status === 404) {
+        return Promise.resolve({
+          version: getCurrentComponentVersion(c),
+          dependencies: getCurrentComponentDependencies(c),
+        })
+      }
       return Promise.reject(new Error(`cant fetch npm version package ${c}\n${res.status}: ${res.statusText}`))
     })
     // eslint-disable-next-line @typescript-eslint/no-explicit-any

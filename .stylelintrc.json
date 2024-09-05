@@ -15,7 +15,7 @@
   "rules": {
     "alpha-value-notation": "number",
     "at-rule-empty-line-before": [ "always", { "ignoreAtRules": [ "apply", "each", "else", "import", "include", "layer", "return", "tailwind", "use" ] } ],
-    "at-rule-no-unknown": [ true, { "ignoreAtRules": [ "apply", "at-root", "container", "each", "else", "error", "extend", "for", "function", "if", "include", "layer", "mixin", "responsive", "return", "screen", "tailwind", "use", "variants", "warn", "while" ] } ],
+    "at-rule-no-unknown": [ true, { "ignoreAtRules": [ "apply", "at-root", "container", "each", "else", "error", "extend", "for", "function", "if", "include", "layer", "mixin", "responsive", "return", "screen", "starting-style", "tailwind", "use", "variants", "warn", "while" ] } ],
     "at-rule-no-vendor-prefix": true,
     "at-rule-property-required-list": { "font-face": [ "font-display", "font-family", "font-style" ] },
     "block-no-empty": true,

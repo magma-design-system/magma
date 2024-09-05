@@ -20,3 +20,7 @@
 
   display: grid;
 }
+
+@import './css/mds-accordion-pref-animation.css';
+@import './css/mds-accordion-pref-theme.css';
+@import './css/mds-accordion-pref-contrast.css';

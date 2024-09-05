@@ -15,6 +15,7 @@
   --mds-entity-color: theme('colors.tone-neutral-02');
   --mds-entity-detail-color: theme('colors.tone-neutral-03');
   --mds-entity-icon-background: theme('colors.label-blue-09');
+  --mds-entity-icon-radius: theme('borderRadius.DEFAULT');
   --mds-entity-icon-color: theme('colors.label-blue-04');
   --mds-entity-shadow: theme('boxShadow.DEFAULT');
 
@@ -46,9 +47,15 @@
 
   align-items: center;
   background-color: var(--mds-entity-icon-background);
+  border-radius: var(--mds-entity-icon-radius);
   display: inline-flex;
   fill: var(--mds-entity-icon-color);
   justify-content: center;
+}
+
+.preview {
+
+  --mds-avatar-radius: var(--mds-entity-icon-radius);
 }
 
 .spinner {
@@ -114,3 +121,6 @@ mds-spinner {
 
   display: flex;
 }
+
+@import './css/mds-entity-pref-contrast.css';
+@import './css/mds-entity-pref-theme.css';

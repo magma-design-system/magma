@@ -1,0 +1,24 @@
+@tailwind utilities;
+
+@container style(--magma-pref-animation: reduce) {
+  :host,
+  .field::-webkit-slider-thumb,
+  .field::-webkit-slider-runnable-track,
+  .track-progress,
+  .track-total {
+    transition-duration: 0s;
+  }
+}
+
+@container style(--magma-pref-animation: system) {
+
+  @media (prefers-reduced-motion) {
+    :host,
+    .field::-webkit-slider-thumb,
+    .field::-webkit-slider-runnable-track,
+    .track-progress,
+    .track-total {
+      transition-duration: 0s;
+    }
+  }
+}

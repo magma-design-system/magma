@@ -23,7 +23,7 @@ export default {
 
 const Template = args =>
   <div>
-    <mds-notification target="my-button" {...args}/>
+    <mds-notification target="#my-button" {...args}/>
     <mds-button class="fixed bottom-2000 right-2000" id="my-button" icon="mdi/email">Incoming messages</mds-button>
   </div>
 

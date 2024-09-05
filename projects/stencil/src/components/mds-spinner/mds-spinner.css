@@ -49,3 +49,6 @@
 :host([running]:not([running="false"])) .await-icon {
   animation-play-state: running;
 }
+
+@import './css/mds-spinner-pref-animation.css';
+@import './css/mds-spinner-pref-contrast.css';

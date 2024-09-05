@@ -1,0 +1,26 @@
+
+
+@tailwind utilities;
+
+@container style(--magma-pref-theme: dark) {
+  :host {
+
+    --mds-table-body-background-hover: theme('colors.tone-neutral');
+    --mds-table-border-color: theme('colors.tone-neutral-07');
+    --mds-table-cell-background-hover: theme('colors.tone-neutral-09');
+    --mds-table-cell-border-color: theme('colors.tone-neutral-07');
+  }
+}
+
+@container style(--magma-pref-theme: system) {
+
+  @media (prefers-color-scheme: dark) {
+    :host {
+
+      --mds-table-body-background-hover: theme('colors.tone-neutral');
+      --mds-table-border-color: theme('colors.tone-neutral-07');
+      --mds-table-cell-background-hover: theme('colors.tone-neutral-09');
+      --mds-table-cell-border-color: theme('colors.tone-neutral-07');
+    }
+  }
+}

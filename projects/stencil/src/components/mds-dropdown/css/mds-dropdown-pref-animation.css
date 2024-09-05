@@ -1,0 +1,20 @@
+@tailwind utilities;
+
+@container style(--magma-pref-animation: reduce) {
+  :host {
+
+    --mds-dropdown-backdrop-duration: 0s;
+    --mds-dropdown-duration: 0s;
+  }
+}
+
+@container style(--magma-pref-animation: system) {
+
+  @media (prefers-reduced-motion) {
+    :host {
+
+      --mds-dropdown-backdrop-duration: 0s;
+      --mds-dropdown-duration: 0s;
+    }
+  }
+}

@@ -1,0 +1,29 @@
+@tailwind utilities;
+
+@container style(--magma-pref-contrast: more) {
+  :host {
+    background-color: theme('colors.tone-neutral');
+    box-shadow: theme('boxShadow.outline-50');
+    color: theme('colors.tone-neutral-01');
+  }
+
+  :host(:hover) {
+    box-shadow: theme('boxShadow.outline-strong-100');
+  }
+}
+
+@container style(--magma-pref-contrast: system) {
+
+  @media (prefers-contrast: more) {
+    :host {
+      background-color: theme('colors.tone-neutral');
+      box-shadow: theme('boxShadow.outline-50');
+      color: theme('colors.tone-neutral-01');
+    }
+
+    :host(:hover) {
+      box-shadow: theme('boxShadow.outline-strong-100');
+    }
+  }
+}
+

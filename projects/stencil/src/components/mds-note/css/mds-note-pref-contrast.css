@@ -1,0 +1,27 @@
+@tailwind utilities;
+
+@container style(--magma-pref-contrast: more) {
+  :host {
+    box-shadow: theme('boxShadow.outline-50') inset;
+  }
+
+  .fold {
+    bottom: theme('spacing.50');
+    right: theme('spacing.50');
+  }
+}
+
+@container style(--magma-pref-contrast: system) {
+
+  @media (prefers-contrast: more) {
+    :host {
+      box-shadow: theme('boxShadow.outline-50') inset;
+    }
+
+    .fold {
+      bottom: theme('spacing.50');
+      right: theme('spacing.50');
+    }
+  }
+}
+

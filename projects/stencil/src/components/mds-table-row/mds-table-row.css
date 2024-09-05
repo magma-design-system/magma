@@ -1,10 +1,24 @@
 @tailwind utilities;
 
 :host {
+
+  --mds-table-row-color-hover: var(--mds-table-color-hover, theme('colors.tone-neutral-02'));
+  --mds-table-row-color: var(--mds-table-color, theme('colors.tone-neutral-03'));
+
+  @apply
+    duration-200
+    ease-out;
+
+  color: var(--mds-table-row-color);
   display: table-row;
+  transition-property: color;
+
 }
 
 :host( [interactive]:hover ) {
 
   --mds-table-cell-background: var(--mds-table-cell-background-hover, theme('colors.tone-neutral'));
+  --mds-table-row-color: var(--mds-table-row-color-hover);
 }
+
+@import './css/mds-table-row-pref-animation.css';

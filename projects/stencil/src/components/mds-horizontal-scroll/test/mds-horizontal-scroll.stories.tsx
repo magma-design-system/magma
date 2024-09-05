@@ -24,13 +24,24 @@ export default {
 }
 
 const CardTemplate = () =>
-  <div class="bg-tone-neutral rounded-lg shadow-sharp gap-0 grid min-w-8000 overflow-hidden">
-    <mds-img src="https://placehold.co/600x400"></mds-img>
-    <div class="grid gap-100 p-400">
-      <mds-text typography="h5">This is a card title</mds-text>
-      <mds-text truncate="all">Lorem ipsum dolor, sit amet consectetur adipisicing elit. Laborum dolores aut, qui omnis, quisquam totam neque, perspiciatis at enim blanditiis beatae. Modi, qui veritatis dignissimos totam corporis molestias distinctio numquam?</mds-text>
-    </div>
-  </div>
+  <mds-card class="min-w-[320px]">
+    <mds-card-header>
+      <div class="flex gap-400 items-center">
+        <mds-avatar class="w-1100 min-w-1100 " initials='mc'></mds-avatar>
+        <div class="flex gap-0 flex-col">
+          <mds-text typography="h6">Mauro Coletta</mds-text>
+          <mds-text typography="caption">Management designer</mds-text>
+        </div>
+      </div>
+      <mds-button id="action-example" icon="mi/round/more-vert" variant="light"></mds-button>
+    </mds-card-header>
+    <mds-card-media>
+      <mds-img src="https://placehold.co/600x400" class="object-cover"></mds-img>
+    </mds-card-media>
+    <mds-card-content>
+      Lorem ipsum dolor sit amet, consectetur adipiscing elit. Proin quis elementum lorem. Phasellus vel quam leo. Ut eget finibus libero. Integer sed odio hendrerit diam maximus blandit ac malesuada odio.
+    </mds-card-content>
+  </mds-card>
 
 const Template = args =>
   <mds-horizontal-scroll {...args}>

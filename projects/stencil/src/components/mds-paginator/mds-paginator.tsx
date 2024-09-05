@@ -69,15 +69,15 @@ export class MdsPaginator {
   render () {
     return (
       <Host>
-        <mds-paginator-item icon={miBaselineArrowBack} disabled={this.currentPage === 1} onClick={ev => this.goToPage(this.currentPage - 1, ev.target as HTMLMdsPaginatorItemElement)}/>
-        { this.pages > 0 && <mds-paginator-item selected={this.currentPage === 1} onClick={ev => this.goToPage(1, ev.target as HTMLMdsPaginatorItemElement)}>1</mds-paginator-item>}
+        <mds-paginator-item class="item-icon" icon={miBaselineArrowBack} disabled={this.currentPage === 1} onClick={ev => this.goToPage(this.currentPage - 1, ev.target as HTMLMdsPaginatorItemElement)}/>
+        { this.pages > 0 && <mds-paginator-item class="item-first" selected={this.currentPage === 1} onClick={ev => this.goToPage(1, ev.target as HTMLMdsPaginatorItemElement)}>1</mds-paginator-item>}
         { this.pages > 2 &&
           <div class="pages">
-            { Array.from(Array(this.pages - 2).keys()).map( i => <mds-paginator-item key={i} selected={this.currentPage === i + 2} onClick={ev => this.goToPage(i + 2, ev.target as HTMLMdsPaginatorItemElement)}>{ i + 2 }</mds-paginator-item>) }
+            { Array.from(Array(this.pages - 2).keys()).map( i => <mds-paginator-item key={i} class="item" selected={this.currentPage === i + 2} onClick={ev => this.goToPage(i + 2, ev.target as HTMLMdsPaginatorItemElement)}>{ i + 2 }</mds-paginator-item>) }
           </div>
         }
-        { this.pages > 1 && <mds-paginator-item selected={this.currentPage === this.pages} onClick={ev => this.goToPage(this.pages, ev.target as HTMLMdsPaginatorItemElement)}>{ this.pages }</mds-paginator-item>}
-        <mds-paginator-item icon={miBaselineArrowForward} disabled={this.currentPage === this.pages} onClick={ev => this.goToPage(this.currentPage + 1, ev.target as HTMLMdsPaginatorItemElement)}/>
+        { this.pages > 1 && <mds-paginator-item class="item-last" selected={this.currentPage === this.pages} onClick={ev => this.goToPage(this.pages, ev.target as HTMLMdsPaginatorItemElement)}>{ this.pages }</mds-paginator-item>}
+        <mds-paginator-item class="item-icon" icon={miBaselineArrowForward} disabled={this.currentPage === this.pages} onClick={ev => this.goToPage(this.currentPage + 1, ev.target as HTMLMdsPaginatorItemElement)}/>
       </Host>
     )
   }

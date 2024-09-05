@@ -1,0 +1,20 @@
+@tailwind utilities;
+
+@container style(--magma-pref-animation: reduce) {
+  :host,
+  .button-close,
+  .window {
+    transition-duration: 0s !important;
+  }
+}
+
+@container style(--magma-pref-animation: system) {
+
+  @media (prefers-reduced-motion) {
+    :host,
+    .button-close,
+    .window {
+      transition-duration: 0s !important;
+    }
+  }
+}

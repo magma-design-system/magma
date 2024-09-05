@@ -1,0 +1,70 @@
+@tailwind utilities;
+
+@container style(--magma-pref-theme: dark) {
+  :host,
+  :host( [variant="primary"] ) {
+
+    --mds-progress-color: theme('colors.brand-maggioli-05');
+    --mds-progress-background: theme('colors.tone-neutral-07');
+  }
+
+  :host( [variant="error"] ) {
+
+    --mds-progress-color: theme('colors.status-error-04');
+    --mds-progress-background: theme('colors.status-error-07');
+  }
+  
+  :host( [variant="warning"] ) {
+  
+    --mds-progress-color: theme('colors.status-warning-04');
+    --mds-progress-background: theme('colors.status-warning-07');
+  }
+  
+  :host( [variant="success"] ) {
+  
+    --mds-progress-color: theme('colors.status-success-04');
+    --mds-progress-background: theme('colors.status-success-07');
+  }
+  
+  :host( [variant="info"] ) {
+  
+    --mds-progress-color: theme('colors.status-info-04');
+    --mds-progress-background: theme('colors.status-info-07');
+  }
+}
+
+@container style(--magma-pref-theme: system) {
+
+  @media (prefers-color-scheme: dark) {
+    :host,
+    :host( [variant="primary"] ) {
+
+      --mds-progress-color: theme('colors.brand-maggioli-05');
+      --mds-progress-background: theme('colors.tone-neutral-07');
+    }
+
+    :host( [variant="error"] ) {
+
+      --mds-progress-color: theme('colors.status-error-04');
+      --mds-progress-background: theme('colors.status-error-07');
+    }
+    
+    :host( [variant="warning"] ) {
+    
+      --mds-progress-color: theme('colors.status-warning-04');
+      --mds-progress-background: theme('colors.status-warning-07');
+    }
+    
+    :host( [variant="success"] ) {
+    
+      --mds-progress-color: theme('colors.status-success-04');
+      --mds-progress-background: theme('colors.status-success-07');
+    }
+    
+    :host( [variant="info"] ) {
+    
+      --mds-progress-color: theme('colors.status-info-04');
+      --mds-progress-background: theme('colors.status-info-07');
+    }
+  }
+}

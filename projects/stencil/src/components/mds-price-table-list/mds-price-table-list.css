@@ -2,26 +2,32 @@
 
 :host {
 
-  --mds-price-table-list-separator-color: theme('colors.theme-default-04-primary-decoration');
+  --mds-price-table-list-separator-color: rgb(var(--tone-neutral-03) / 0.5);
 
   @apply
+    duration-200
+    ease-in-out
     gap-600
     p-600
     rounded-xl;
 
   background-color: theme('colors.label-green-10');
   display: grid;
+  transition-property: background-color, color;
 }
 
 
 .separator {
+  @apply
+    duration-200
+    ease-in-out;
+  
   background-color: var(--mds-price-table-list-separator-color);
+  transition-property: background-color;
 }
 
 
 header {
-  @apply gap-200;
-
   display: grid;
 }
 
@@ -37,3 +43,5 @@ footer {
   display: grid;
 }
 
+@import './css/mds-price-table-list-pref-theme.css';
+@import './css/mds-price-table-list-pref-contrast.css';

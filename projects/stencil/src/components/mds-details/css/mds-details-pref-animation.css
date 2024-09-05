@@ -1,0 +1,18 @@
+@tailwind utilities;
+
+@container style(--magma-pref-animation: reduce) {
+  :host {
+
+    --mds-details-duration: 0s;
+  }
+}
+
+@container style(--magma-pref-animation: system) {
+
+  @media (prefers-reduced-motion) {
+    :host {
+
+      --mds-details-duration: 0s;
+    }
+  }
+}

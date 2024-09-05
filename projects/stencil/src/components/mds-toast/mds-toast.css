@@ -45,6 +45,7 @@
   display: inline-flex;
   pointer-events: none;
   transition-duration: var(--mds-toast-duration);
+  transition-property: box-shadow, background-color, color, transform;
   width: var(--mds-toast-width);
 }
 
@@ -93,10 +94,13 @@
 }
 
 ::slotted( [slot="icon"] ) {
-  @apply transition-colors;
+  @apply
+    duration-200
+    ease-out;
 
   fill: var(--mds-toast-icon-color);
   flex-shrink: 0;
+  transition-property: fill;
 }
 
 @import './css/variant/mds-toast-variant-dark.css';
@@ -107,3 +111,6 @@
 @import './css/variant/mds-toast-variant-warning.css';
 @import './css/animate/mds-toast-animate-top.css';
 @import './css/animate/mds-toast-animate-bottom.css';
+@import './css/mds-toast-pref-animation.css';
+@import './css/mds-toast-pref-theme.css';
+@import './css/mds-toast-pref-contrast.css';

@@ -1,0 +1,21 @@
+@tailwind utilities;
+
+@container style(--magma-pref-contrast: more) {
+  :host {
+
+    --mds-accordion-item-border-color: var(--mds-accordion-border-color, theme('colors.tone-neutral-01'));
+    --mds-accordion-item-color: var(--mds-accordion-color, theme('colors.tone-neutral-01'));
+  }
+}
+
+@container style(--magma-pref-contrast: system) {
+
+  @media (prefers-contrast: more) {
+    :host {
+
+      --mds-accordion-item-border-color: var(--mds-accordion-border-color, theme('colors.tone-neutral-01'));
+      --mds-accordion-item-color: var(--mds-accordion-color, theme('colors.tone-neutral-01'));
+    }
+  }
+}
+

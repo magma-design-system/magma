@@ -6,6 +6,7 @@
 @tailwind utilities;
 
 /**
+  * @prop --mds-modal-close-icon-color: Set the color of the close icon button to the top left.
   * @prop --mds-modal-overlay-color: Set the overlay color of the background when the component is opened, this property can be inherited from `globals.css` in `styles^8.0.0`.
   * @prop --mds-modal-overlay-opacity: Set the overlay color opacity of the background when the component is opened, this property can be inherited from `globals.css` in `styles^8.0.0`.
   * @prop --mds-modal-window-background: Set the background color of the window
@@ -16,6 +17,7 @@
 
 :host {
 
+  --mds-modal-close-icon-color: theme('colors.tone-neutral');
   --mds-modal-overlay-color: var(--magma-overlay-color, 0 0 0);
   --mds-modal-overlay-opacity: var(--magma-overlay-opacity, 0.5);
   --mds-modal-window-background: theme('colors.tone-neutral');
@@ -68,7 +70,7 @@
     rounded-full
     top-0;
 
-  --mds-button-icon-color: theme('colors.tone-neutral');
+  --mds-button-icon-color: var(--mds-modal-close-icon-color);
   --mds-button-background: transparent;
 
   height: auto;
@@ -109,9 +111,14 @@
   grid-template-rows: auto 1fr auto;
 }
 
+/* xx */
+
 @import './css/mds-modal-animate-bottom.css';
 @import './css/mds-modal-animate-center.css';
 @import './css/mds-modal-animate-left.css';
 @import './css/mds-modal-animate-right.css';
 @import './css/mds-modal-animate-top.css';
+@import './css/mds-modal-pref-animation.css';
+@import './css/mds-modal-pref-theme.css';
+@import './css/mds-modal-pref-contrast.css';
 

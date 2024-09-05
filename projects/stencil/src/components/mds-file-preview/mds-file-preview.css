@@ -53,7 +53,9 @@
 
 .preview--status {
 
-  @apply p-400 gap-200;
+  @apply
+    gap-200
+    p-400;
 
   background-color: var(--mds-file-preview-icon-background-color);
   color: var(--mds-file-preview-icon-color);
@@ -61,7 +63,9 @@
 }
 
 .icon {
-  @apply h-1200 w-1200;
+  @apply
+    h-1200
+    w-1200;
 }
 
 .message {
@@ -99,3 +103,6 @@
 }
 
 @import './css/mds-file-preview-variants.css';
+@import './css/mds-file-preview-pref-animation.css';
+@import './css/mds-file-preview-pref-theme.css';
+@import './css/mds-file-preview-pref-contrast.css';

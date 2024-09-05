@@ -1,0 +1,18 @@
+@tailwind utilities;
+
+@container style(--magma-pref-animation: reduce) {
+  .avatar,
+  .icon {
+    transition-duration: 0s;
+  }
+}
+
+@container style(--magma-pref-animation: system) {
+
+  @media (prefers-reduced-motion) {
+    .avatar,
+    .icon {
+      transition-duration: 0s;
+    }
+  }
+}

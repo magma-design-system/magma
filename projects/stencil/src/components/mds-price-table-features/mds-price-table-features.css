@@ -6,9 +6,15 @@
 
 :host {
 
+  --mds-price-table-features-border-color: theme('colors.tone-neutral-06');
   --mds-price-table-features-padding: theme('spacing.300');
 
+  @apply
+    duration-200
+    ease-in-out;
+
   display: flex;
+  transition-property: border-color;
   width: 100%;
 }
 
@@ -25,8 +31,10 @@ table {
 }
 
 header {
-  border-bottom: 1px solid theme('colors.theme-default-04-primary-decoration');
-  padding-left: var(--mds-price-table-features-padding);
-  padding-right: var(--mds-price-table-features-padding);
-  width: 100%;
+  border-bottom: 1px solid var(--mds-price-table-features-border-color);
+  padding: var(--mds-price-table-features-padding) var(--mds-price-table-features-padding) var(--mds-price-table-features-padding) 0;
 }
+
+@import './css/mds-price-table-features-pref-animation.css';
+@import './css/mds-price-table-features-pref-theme.css';
+@import './css/mds-price-table-features-pref-contrast.css';

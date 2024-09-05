@@ -1,0 +1,20 @@
+@tailwind utilities;
+
+@container style(--magma-pref-animation: reduce) {
+  .contents,
+  .items {
+    scroll-behavior: unset;
+    transition-duration: 0s;
+  }
+}
+
+@container style(--magma-pref-animation: system) {
+
+  @media (prefers-reduced-motion) {
+    .contents,
+    .items {
+      scroll-behavior: unset;
+      transition-duration: 0s;
+    }
+  }
+}

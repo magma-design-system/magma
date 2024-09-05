@@ -9,7 +9,7 @@ import { InputTipPositionType } from './meta/types'
 export class MdsInputTip {
 
   /**
-   * Specifies the position of the element relative to its container
+   * Specifies if the component is active and shows expanded children or not
    */
   @Prop({ reflect: true }) readonly active?: boolean = false
 

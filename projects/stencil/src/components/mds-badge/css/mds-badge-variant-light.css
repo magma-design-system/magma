@@ -3,18 +3,18 @@
 :host( [variant="light"] ),
 :host( [variant="light"][tone="strong"] ) {
 
-  --background: theme('colors.tone-neutral-10');
-  --color: theme('colors.tone-neutral-03');
+  --mds-badge-background: theme('colors.tone-neutral-10');
+  --mds-badge-color: theme('colors.tone-neutral-03');
 }
 
 :host( [variant="light"][tone="weak"] ) {
 
-  --background: theme('colors.tone-neutral-10');
-  --color: theme('colors.tone-neutral-03');
+  --mds-badge-background: theme('colors.tone-neutral-10');
+  --mds-badge-color: theme('colors.tone-neutral-03');
 }
 
 :host( [variant="light"][tone="quiet"] ) {
 
-  --background: theme('colors.tone-neutral-09');
-  --color: theme('colors.tone-neutral-02');
+  --mds-badge-background: theme('colors.tone-neutral-09');
+  --mds-badge-color: theme('colors.tone-neutral-02');
 }

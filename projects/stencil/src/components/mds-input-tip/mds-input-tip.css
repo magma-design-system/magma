@@ -19,34 +19,36 @@
   transform: var(--mds-input-tip-active-translate);
 }
 
-:host ( :empty ) {
+:host(:empty) {
   display: none;
 }
 
-:host ( [position="top"] ) {
+:host([position="top"]) {
   top: theme('spacing.100');
 }
 
-:host ( [position="bottom"] ) {
+:host([position="bottom"]) {
   bottom: theme('spacing.100');
 }
 
-:host ( [position="top"][active]:not([active="false"]) ) {
+:host([position="top"][active]:not([active="false"])) {
 
   --mds-input-tip-active-translate: translate(calc(theme('translate.100') * -1), calc(theme('translate.100') * -1));
 }
 
-:host( [position="top"][active]:not([active="false"]) ) ::slotted( mds-input-tip-item ) {
+:host([position="top"][active]:not([active="false"])) ::slotted( mds-input-tip-item ) {
   border-top-left-radius: 0;
   border-top-right-radius: 0;
 }
 
-:host ( [position="bottom"][active]:not([active="false"]) ) {
+:host([position="bottom"][active]:not([active="false"])) {
 
   --mds-input-tip-active-translate: translate(calc(theme('translate.100') * -1), theme('translate.100'));
 }
 
-:host( [position="bottom"][active]:not([active="false"]) ) ::slotted( mds-input-tip-item ) {
+:host([position="bottom"][active]:not([active="false"])) ::slotted( mds-input-tip-item ) {
   border-bottom-left-radius: 0;
   border-bottom-right-radius: 0;
 }
+
+@import './css/mds-input-tip-pref-animation.css';

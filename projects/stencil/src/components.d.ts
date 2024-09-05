@@ -25,7 +25,6 @@ import { TypographyTruncateType } from "@type/text";
 import { MdsFilePreviewEventDetail } from "./components/mds-file-preview/meta/event-detail";
 import { MdsFilterEventDetail } from "./components/mds-filter/meta/event-detail";
 import { MdsFilterItemEventDetail } from "./components/mds-filter-item/meta/event-detail";
-import { CharacterSetType, EnctypeType, FormAutocompleteType, FormMethodType } from "./components/mds-form/meta/types";
 import { MenuType } from "./components/mds-header-bar/meta/types";
 import { MdsHeaderEventDetail } from "./components/mds-header/meta/event-detail";
 import { SnapType, ViewportType } from "./components/mds-horizontal-scroll/meta/types";
@@ -48,7 +47,7 @@ import { ModalPositionType } from "./components/mds-modal/meta/types";
 import { StrategyType } from "./components/mds-notification/meta/types";
 import { MdsPaginatorEventDetail } from "./components/mds-paginator/meta/event-detail";
 import { AnimationModeType } from "./components/mds-pref-animation/meta/types";
-import { ConsumptionModeType } from "./components/mds-pref-consumption/meta/types";
+import { ConsumptionModeType } from "@type/preference";
 import { ContrastModeType } from "./components/mds-pref-contrast/meta/types";
 import { ThemeModeType, ThemeTransitionType } from "./components/mds-pref-theme/meta/types";
 import { PriceTableFeaturesCellType } from "./components/mds-price-table-features-cell/meta/types";
@@ -84,7 +83,6 @@ export { TypographyTruncateType } from "@type/text";
 export { MdsFilePreviewEventDetail } from "./components/mds-file-preview/meta/event-detail";
 export { MdsFilterEventDetail } from "./components/mds-filter/meta/event-detail";
 export { MdsFilterItemEventDetail } from "./components/mds-filter-item/meta/event-detail";
-export { CharacterSetType, EnctypeType, FormAutocompleteType, FormMethodType } from "./components/mds-form/meta/types";
 export { MenuType } from "./components/mds-header-bar/meta/types";
 export { MdsHeaderEventDetail } from "./components/mds-header/meta/event-detail";
 export { SnapType, ViewportType } from "./components/mds-horizontal-scroll/meta/types";
@@ -107,7 +105,7 @@ export { ModalPositionType } from "./components/mds-modal/meta/types";
 export { StrategyType } from "./components/mds-notification/meta/types";
 export { MdsPaginatorEventDetail } from "./components/mds-paginator/meta/event-detail";
 export { AnimationModeType } from "./components/mds-pref-animation/meta/types";
-export { ConsumptionModeType } from "./components/mds-pref-consumption/meta/types";
+export { ConsumptionModeType } from "@type/preference";
 export { ContrastModeType } from "./components/mds-pref-contrast/meta/types";
 export { ThemeModeType, ThemeTransitionType } from "./components/mds-pref-theme/meta/types";
 export { PriceTableFeaturesCellType } from "./components/mds-price-table-features-cell/meta/types";
@@ -220,10 +218,6 @@ export namespace Components {
         "variant"?: ThemeFullVariantType;
     }
     interface MdsBanner {
-        /**
-          * Sets the cross icon accessibility label to perform close action on element
-         */
-        "closeLabel"?: "Annulla" | undefined;
         /**
           * Shows the cross icon to perform cancel/delete action on element
          */
@@ -613,44 +607,6 @@ export namespace Components {
          */
         "value": string;
     }
-    interface MdsForm {
-        /**
-          * Specifies the character encodings that are to be used for the form submission
-         */
-        "acceptcharset"?: CharacterSetType;
-        /**
-          * Specifies where to send the form-data when a form is submitted
-         */
-        "action"?: string;
-        /**
-          * Specifies whether a form should have autocomplete on or off
-         */
-        "autocomplete"?: FormAutocompleteType;
-        /**
-          * Specifies one or more classnames for an element (refers to a class in a style sheet)
-         */
-        "class"?: string;
-        /**
-          * Specifies how the form-data should be encoded when submitting it to the server (only for method="post")
-         */
-        "enctype"?: EnctypeType;
-        /**
-          * Specifies the HTTP method to use when sending form-data
-         */
-        "method"?: FormMethodType;
-        /**
-          * Specifies the name of the form
-         */
-        "name"?: string;
-        /**
-          * Specifies that the form should not be validated when submitted
-         */
-        "novalidate"?: boolean;
-        /**
-          * Specifies a name or a keyword that indicates where to display the response that is received after submitting the form. Possible values are _blank, _self, _parent, _top or a custom frame name
-         */
-        "target"?: string;
-    }
     interface MdsHeader {
         /**
           * Sets the visibility type of the hamburger menu of mds-header-bar
@@ -718,10 +674,6 @@ export namespace Components {
          */
         "alt": string;
         /**
-          * Specifies the aspect ratio of the image, useful to render all images of a list with the same proportions. When defined, mds-img will render the Host element with background-image instead of wrapping ad img element. This will drop all atributes useful for img elements only: alt, crossorigin, height, loading, referrerpolicy, sizes, src, srcset, width
-         */
-        "aspectRatio": string;
-        /**
           * Allow images from third-party sites that allow cross-origin access to be used with canvas
          */
         "crossorigin"?: CrossoriginType;
@@ -749,6 +701,10 @@ export namespace Components {
           * Specifies a list of image files to use in different situations. Defines multiple sizes of the same image, allowing the browser to select the appropriate image source.
          */
         "srcset"?: string;
+        /**
+          * Specifies a list of image files to use in different situations. Defines multiple sizes of the same image, allowing the browser to select the appropriate image source based on consumption configuration. ``` <mds-img srcset-consumption="image-black-n-white-1x.jpg low, image-1x.jpg medium, image-2x.jpg high"></mds-img> ```
+         */
+        "srcsetConsumption"?: string;
         /**
           * The width attribute specifies the width of an image, in pixels.
          */
@@ -1085,7 +1041,7 @@ export namespace Components {
     }
     interface MdsInputTip {
         /**
-          * Specifies the position of the element relative to its container
+          * Specifies if the component is active and shows expanded children or not
          */
         "active"?: boolean;
         /**
@@ -2110,12 +2066,6 @@ declare global {
         prototype: HTMLMdsFilterItemElement;
         new (): HTMLMdsFilterItemElement;
     };
-    interface HTMLMdsFormElement extends Components.MdsForm, HTMLStencilElement {
-    }
-    var HTMLMdsFormElement: {
-        prototype: HTMLMdsFormElement;
-        new (): HTMLMdsFormElement;
-    };
     interface HTMLMdsHeaderElementEventMap {
         "mdsHeaderClose": MdsHeaderEventDetail;
     }
@@ -2775,7 +2725,6 @@ declare global {
         "mds-file-preview": HTMLMdsFilePreviewElement;
         "mds-filter": HTMLMdsFilterElement;
         "mds-filter-item": HTMLMdsFilterItemElement;
-        "mds-form": HTMLMdsFormElement;
         "mds-header": HTMLMdsHeaderElement;
         "mds-header-bar": HTMLMdsHeaderBarElement;
         "mds-help": HTMLMdsHelpElement;
@@ -2969,10 +2918,6 @@ declare namespace LocalJSX {
         "variant"?: ThemeFullVariantType;
     }
     interface MdsBanner {
-        /**
-          * Sets the cross icon accessibility label to perform close action on element
-         */
-        "closeLabel"?: "Annulla" | undefined;
         /**
           * Shows the cross icon to perform cancel/delete action on element
          */
@@ -3418,44 +3363,6 @@ declare namespace LocalJSX {
          */
         "value"?: string;
     }
-    interface MdsForm {
-        /**
-          * Specifies the character encodings that are to be used for the form submission
-         */
-        "acceptcharset"?: CharacterSetType;
-        /**
-          * Specifies where to send the form-data when a form is submitted
-         */
-        "action"?: string;
-        /**
-          * Specifies whether a form should have autocomplete on or off
-         */
-        "autocomplete"?: FormAutocompleteType;
-        /**
-          * Specifies one or more classnames for an element (refers to a class in a style sheet)
-         */
-        "class"?: string;
-        /**
-          * Specifies how the form-data should be encoded when submitting it to the server (only for method="post")
-         */
-        "enctype"?: EnctypeType;
-        /**
-          * Specifies the HTTP method to use when sending form-data
-         */
-        "method"?: FormMethodType;
-        /**
-          * Specifies the name of the form
-         */
-        "name"?: string;
-        /**
-          * Specifies that the form should not be validated when submitted
-         */
-        "novalidate"?: boolean;
-        /**
-          * Specifies a name or a keyword that indicates where to display the response that is received after submitting the form. Possible values are _blank, _self, _parent, _top or a custom frame name
-         */
-        "target"?: string;
-    }
     interface MdsHeader {
         /**
           * Sets the visibility type of the hamburger menu of mds-header-bar
@@ -3526,10 +3433,6 @@ declare namespace LocalJSX {
          */
         "alt"?: string;
         /**
-          * Specifies the aspect ratio of the image, useful to render all images of a list with the same proportions. When defined, mds-img will render the Host element with background-image instead of wrapping ad img element. This will drop all atributes useful for img elements only: alt, crossorigin, height, loading, referrerpolicy, sizes, src, srcset, width
-         */
-        "aspectRatio"?: string;
-        /**
           * Allow images from third-party sites that allow cross-origin access to be used with canvas
          */
         "crossorigin"?: CrossoriginType;
@@ -3565,6 +3468,10 @@ declare namespace LocalJSX {
           * Specifies a list of image files to use in different situations. Defines multiple sizes of the same image, allowing the browser to select the appropriate image source.
          */
         "srcset"?: string;
+        /**
+          * Specifies a list of image files to use in different situations. Defines multiple sizes of the same image, allowing the browser to select the appropriate image source based on consumption configuration. ``` <mds-img srcset-consumption="image-black-n-white-1x.jpg low, image-1x.jpg medium, image-2x.jpg high"></mds-img> ```
+         */
+        "srcsetConsumption"?: string;
         /**
           * The width attribute specifies the width of an image, in pixels.
          */
@@ -3926,7 +3833,7 @@ declare namespace LocalJSX {
     }
     interface MdsInputTip {
         /**
-          * Specifies the position of the element relative to its container
+          * Specifies if the component is active and shows expanded children or not
          */
         "active"?: boolean;
         /**
@@ -4562,7 +4469,6 @@ declare namespace LocalJSX {
         "mds-file-preview": MdsFilePreview;
         "mds-filter": MdsFilter;
         "mds-filter-item": MdsFilterItem;
-        "mds-form": MdsForm;
         "mds-header": MdsHeader;
         "mds-header-bar": MdsHeaderBar;
         "mds-help": MdsHelp;
@@ -4657,7 +4563,6 @@ declare module "@stencil/core" {
             "mds-file-preview": LocalJSX.MdsFilePreview & JSXBase.HTMLAttributes<HTMLMdsFilePreviewElement>;
             "mds-filter": LocalJSX.MdsFilter & JSXBase.HTMLAttributes<HTMLMdsFilterElement>;
             "mds-filter-item": LocalJSX.MdsFilterItem & JSXBase.HTMLAttributes<HTMLMdsFilterItemElement>;
-            "mds-form": LocalJSX.MdsForm & JSXBase.HTMLAttributes<HTMLMdsFormElement>;
             "mds-header": LocalJSX.MdsHeader & JSXBase.HTMLAttributes<HTMLMdsHeaderElement>;
             "mds-header-bar": LocalJSX.MdsHeaderBar & JSXBase.HTMLAttributes<HTMLMdsHeaderBarElement>;
             "mds-help": LocalJSX.MdsHelp & JSXBase.HTMLAttributes<HTMLMdsHelpElement>;

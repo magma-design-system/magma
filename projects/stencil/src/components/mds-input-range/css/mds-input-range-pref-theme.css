@@ -1,0 +1,22 @@
+@tailwind utilities;
+
+@container style(--magma-pref-theme: dark) {
+  :host {
+
+    --mds-input-range-thumb-background: theme('colors.brand-maggioli-04');
+    --mds-input-range-track-background: theme('colors.tone-neutral-07');
+    --mds-input-range-track-progress-background: theme('colors.brand-maggioli-05');
+  }
+}
+
+@container style(--magma-pref-theme: system) {
+
+  @media (prefers-color-scheme: dark) {
+    :host {
+
+      --mds-input-range-thumb-background: theme('colors.brand-maggioli-04');
+      --mds-input-range-track-background: theme('colors.tone-neutral-07');
+      --mds-input-range-track-progress-background: theme('colors.brand-maggioli-05');
+    }
+  }
+}

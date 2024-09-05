@@ -80,6 +80,20 @@ p {
   text-wrap: pretty;
 }
 
+li,
+figcaption {
+  max-width: theme('spacing.text');
+  text-wrap: pretty;
+}
+
+header,
+footer,
+main,
+section,
+article {
+  container-type: inline-size;
+}
+
 img,
 picture,
 svg,

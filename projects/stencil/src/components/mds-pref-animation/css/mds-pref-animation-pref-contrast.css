@@ -1,0 +1,18 @@
+@tailwind utilities;
+
+@container style(--magma-pref-contrast: more) {
+  .item {
+
+    --mds-tab-item-color: theme('colors.tone-neutral-01');
+  }
+}
+
+@container style(--magma-pref-contrast: system) {
+
+  @media (prefers-contrast: more) {
+    .item {
+
+      --mds-tab-item-color: theme('colors.tone-neutral-01');
+    }
+  }
+}

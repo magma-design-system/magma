@@ -1,0 +1,22 @@
+@tailwind utilities;
+
+@container style(--magma-pref-contrast: more) {
+  :host {
+
+    --mds-push-notification-shadow: theme('boxShadow.outline-strong-50') inset;
+
+    color: theme('colors.tone-neutral-01');
+  }
+}
+
+@container style(--magma-pref-contrast: system) {
+
+  @media (prefers-contrast: more) {
+    :host {
+
+      --mds-push-notification-shadow: theme('boxShadow.outline-strong-50') inset;
+
+      color: theme('colors.tone-neutral-01');
+    }
+  }
+}

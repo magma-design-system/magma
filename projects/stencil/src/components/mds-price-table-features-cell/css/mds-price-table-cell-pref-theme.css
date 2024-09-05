@@ -1,0 +1,24 @@
+@tailwind utilities;
+
+@container style(--magma-pref-theme: dark) {
+  :host {
+
+    --mds-price-table-features-cell-border-color: theme('colors.tone-neutral-07');
+    --mds-price-table-features-cell-icon-supported-color: theme('colors.label-green-03');
+    --mds-price-table-features-cell-icon-supported-color-hover: theme('colors.label-green-02');
+    --mds-price-table-features-cell-icon-unsupported-color-hover: theme('colors.tone-neutral-04');
+  }
+}
+
+@container style(--magma-pref-theme: system) {
+
+  @media (prefers-color-scheme: dark) {
+    :host {
+
+      --mds-price-table-features-cell-border-color: theme('colors.tone-neutral-07');
+      --mds-price-table-features-cell-icon-supported-color: theme('colors.label-green-03');
+      --mds-price-table-features-cell-icon-supported-color-hover: theme('colors.label-green-02');
+      --mds-price-table-features-cell-icon-unsupported-color-hover: theme('colors.tone-neutral-04');
+    }
+  }
+}

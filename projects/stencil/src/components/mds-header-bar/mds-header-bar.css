@@ -23,7 +23,7 @@
   display: flex;
 }
 
-.contents {
+.content {
   @apply
     gap-400
     max-w-screen-wide;
@@ -73,3 +73,6 @@
 :host([nav="none"]) .nav {
   display: none;
 }
+
+@import './css/mds-header-bar-pref-theme.css';
+@import './css/mds-header-bar-pref-contrast.css';

@@ -1,0 +1,34 @@
+@tailwind utilities;
+
+@container style(--magma-pref-theme: dark) {
+  :host {
+    background-color: theme('colors.tone-neutral-10');
+  }
+
+  :host( [selected]:not([selected="false"]) ) {
+    background-color: theme('colors.tone-neutral-08');
+    box-shadow: theme('boxShadow.outline');
+  }
+
+  :host( :hover ) {
+    box-shadow: theme('boxShadow.outline');
+  }
+}
+
+@container style(--magma-pref-theme: system) {
+
+  @media (prefers-color-scheme: dark) {
+    :host {
+      background-color: theme('colors.tone-neutral-10');
+    }
+
+    :host( [selected]:not([selected="false"]) ) {
+      background-color: theme('colors.tone-neutral-08');
+      box-shadow: theme('boxShadow.outline');
+    }
+
+    :host( :hover ) {
+      box-shadow: theme('boxShadow.outline');
+    }
+  }
+}

@@ -7,6 +7,7 @@ import { ThemeStatusVariantType } from '@type/variant'
 /**
  * @part select - The select HTML element
  */
+
 @Component({
   tag: 'mds-input-select',
   styleUrl: 'mds-input-select.css',

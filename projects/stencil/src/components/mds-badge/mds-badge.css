@@ -1,16 +1,16 @@
 @tailwind utilities;
 
+/**
+  * @prop --mds-badge-background: Sets the background-color of the component
+  * @prop --mds-badge-radius: Sets the border-radius of the component
+  * @prop --mds-badge-color: Sets the text color of the component
+  */
+
 :host {
 
-  /**
-    * @prop --background: Sets the background-color of the component
-    * @prop --radius: Sets the border-radius of the component
-    * @prop --color: Sets the text color of the component
-    */
-
-  --background: theme('colors.label-sky-09');
-  --radius: theme('borderRadius.DEFAULT');
-  --color: theme('colors.label-sky-03');
+  --mds-badge-background: theme('colors.label-sky-09');
+  --mds-badge-radius: theme('borderRadius.DEFAULT');
+  --mds-badge-color: theme('colors.label-sky-03');
 
   @apply
     px-200
@@ -18,9 +18,9 @@
     transition-colors;
 
   align-items: center;
-  background-color: var(--background);
-  border-radius: var(--radius);
-  color: var(--color);
+  background-color: var(--mds-badge-background);
+  border-radius: var(--mds-badge-radius);
+  color: var(--mds-badge-color);
   display: inline-flex;
   min-width: min-content;
 }
@@ -41,3 +41,6 @@
 @import './css/mds-badge-variant-violet.css';
 @import './css/mds-badge-variant-warning.css';
 @import './css/mds-badge-variant-yellow.css';
+@import './css/mds-badge-pref-animation.css';
+@import './css/mds-badge-pref-theme.css';
+@import './css/mds-badge-pref-contrast.css';

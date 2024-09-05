@@ -19,7 +19,6 @@
   --mds-accordion-timer-item-duration: var(--mds-accordion-timer-duration, 500ms);
 
   @apply
-    duration-500
     ease-out-expo
     py-400
     transition-cosmetic;
@@ -27,6 +26,7 @@
   color: var(--mds-accordion-timer-item-color, theme('colors.tone-neutral-02'));
   display: grid;
   position: relative;
+  transition-duration: var(--mds-accordion-timer-item-duration);
 }
 
 .row {
@@ -62,7 +62,7 @@
   cursor: auto;
 }
 
-.contents {
+.content {
   @apply
     ease-in-out-expo
     gap-400;
@@ -77,14 +77,16 @@
   transition-property: grid-template-rows opacity padding;
 }
 
-.contents-expander {
+.content-expander {
   min-height: 0;
 }
 
-:host( [selected] ) .contents {
+:host( [selected] ) .content {
   @apply
     opacity-100
     pt-400;
 
   grid-template-rows: 1fr;
 }
+
+@import './css/mds-accordion-timer-item-pref-animation.css'

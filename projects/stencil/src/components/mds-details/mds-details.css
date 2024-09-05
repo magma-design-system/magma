@@ -20,7 +20,7 @@
   display: flex;
 }
 
-.contents {
+.content {
   display: grid;
 }
 
@@ -38,7 +38,7 @@
   transition-property: grid-template-rows opacity padding;
 }
 
-.contents-expander {
+.content-expander {
   @apply gap-400;
 
   display: grid;
@@ -89,3 +89,6 @@
 
   display: flex;
 }
+
+@import './css/mds-details-pref-animation.css';
+@import './css/mds-details-pref-contrast.css';

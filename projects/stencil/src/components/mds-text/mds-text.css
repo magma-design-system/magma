@@ -265,3 +265,5 @@ wbr {
   overflow: inherit;
   text-overflow: inherit;
 }
+
+@import './css/mds-text-pref-animation.css';

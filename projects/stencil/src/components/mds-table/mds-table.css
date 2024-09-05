@@ -25,17 +25,27 @@
   --mds-table-cell-border-color: theme('colors.tone-neutral-08');
   --mds-table-cell-border-width: var(--mds-table-border-width);
   --mds-table-cell-padding: theme('spacing.400');
+  --mds-table-color-hover: theme('colors.tone-neutral-02');
+  --mds-table-color: theme('colors.tone-neutral-03');
 
-  @apply rounded-2xl;
+  @apply
+    duration-200
+    ease-out
+    rounded-2xl;
 
   background-color: var(--mds-table-background);
   border: var(--mds-table-border-width) solid var(--mds-table-border-color) !important;
   border-color: var(--mds-table-border-color);
   display: flex;
   overflow: auto;
+  transition-property: background-color, border-color, color;
 }
 
 .table {
   border-collapse: collapse;
   width: 100%;
 }
+
+@import './css/mds-table-pref-animation.css';
+@import './css/mds-table-pref-theme.css';
+@import './css/mds-table-pref-contrast.css';

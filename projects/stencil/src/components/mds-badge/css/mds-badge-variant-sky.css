@@ -3,18 +3,58 @@
 :host( [variant="sky"] ),
 :host( [variant="sky"][tone="strong"] ) {
 
-  --background: theme('colors.label-sky-05');
-  --color: theme('colors.label-sky-10');
+  --mds-badge-background: theme('colors.label-sky-05');
+  --mds-badge-color: theme('colors.label-sky-10');
 }
 
 :host( [variant="sky"][tone="weak"] ) {
 
-  --background: theme('colors.label-sky-08');
-  --color: theme('colors.label-sky-02');
+  --mds-badge-background: theme('colors.label-sky-08');
+  --mds-badge-color: theme('colors.label-sky-02');
 }
 
 :host( [variant="sky"][tone="quiet"] ) {
 
-  --background: theme('colors.label-sky-09');
-  --color: theme('colors.label-sky-04');
+  --mds-badge-background: theme('colors.label-sky-09');
+  --mds-badge-color: theme('colors.label-sky-04');
+}
+
+@container style(--magma-pref-contrast: more) {
+  :host( [variant="sky"] ),
+  :host( [variant="sky"][tone="strong"] ) {
+
+    --mds-badge-background: theme('colors.label-sky-04');
+  }
+
+  :host( [variant="sky"][tone="weak"] ) {
+
+    --mds-badge-color: theme('colors.label-sky-01');
+  }
+  
+  :host( [variant="sky"][tone="quiet"] ) {
+  
+    --mds-badge-color: theme('colors.label-sky-03');
+  }
+
+}
+
+@container style(--magma-pref-contrast: system) {
+
+  @media (prefers-contrast: more) {
+    :host( [variant="sky"] ),
+    :host( [variant="sky"][tone="strong"] ) {
+
+      --mds-badge-background: theme('colors.label-sky-04');
+    }
+
+    :host( [variant="sky"][tone="weak"] ) {
+
+      --mds-badge-color: theme('colors.label-sky-01');
+    }
+    
+    :host( [variant="sky"][tone="quiet"] ) {
+    
+      --mds-badge-color: theme('colors.label-sky-03');
+    }
+  }
 }

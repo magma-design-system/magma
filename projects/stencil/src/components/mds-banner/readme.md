@@ -9,14 +9,13 @@ This is a web-component from Maggioli Design System [Magma](https://magma.maggio
 
 ## Properties
 
-| Property     | Attribute     | Description                                                                | Type                                                                                         | Default     |
-| ------------ | ------------- | -------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------- | ----------- |
-| `closeLabel` | `close-label` | Sets the cross icon accessibility label to perform close action on element | `"Annulla" \| undefined`                                                                     | `'Annulla'` |
-| `deletable`  | `deletable`   | Shows the cross icon to perform cancel/delete action on element            | `boolean \| undefined`                                                                       | `undefined` |
-| `headline`   | `headline`    | The title on the top of the banner                                         | `string \| undefined`                                                                        | `undefined` |
-| `icon`       | `icon`        | An icon displayed at the top left of the banner                            | `string \| undefined`                                                                        | `undefined` |
-| `tone`       | `tone`        | Sets the tone of the color variant                                         | `"quiet" \| "strong" \| "weak" \| undefined`                                                 | `'weak'`    |
-| `variant`    | `variant`     | Sets the theme variant colors                                              | `"dark" \| "error" \| "info" \| "light" \| "primary" \| "success" \| "warning" \| undefined` | `'light'`   |
+| Property    | Attribute   | Description                                                     | Type                                                                                         | Default     |
+| ----------- | ----------- | --------------------------------------------------------------- | -------------------------------------------------------------------------------------------- | ----------- |
+| `deletable` | `deletable` | Shows the cross icon to perform cancel/delete action on element | `boolean \| undefined`                                                                       | `undefined` |
+| `headline`  | `headline`  | The title on the top of the banner                              | `string \| undefined`                                                                        | `undefined` |
+| `icon`      | `icon`      | An icon displayed at the top left of the banner                 | `string \| undefined`                                                                        | `undefined` |
+| `tone`      | `tone`      | Sets the tone of the color variant                              | `"quiet" \| "strong" \| "weak" \| undefined`                                                 | `'weak'`    |
+| `variant`   | `variant`   | Sets the theme variant colors                                   | `"dark" \| "error" \| "info" \| "light" \| "primary" \| "success" \| "warning" \| undefined` | `'light'`   |
 
 
 ## Events
@@ -41,6 +40,7 @@ This is a web-component from Maggioli Design System [Magma](https://magma.maggio
 | `--mds-banner-background`                  | Sets the background-color of the component                            |
 | `--mds-banner-close-icon-hover-background` | Sets the background color of the close icon when the mouse is over it |
 | `--mds-banner-color`                       | Sets the text color of the component                                  |
+| `--mds-banner-gap`                         | Sets gap between banner elements                                      |
 | `--mds-banner-icon-color`                  | Sets the close icon fill color of the component                       |
 | `--mds-banner-radius`                      | Sets the border-radius of the component                               |
 | `--mds-banner-shadow`                      | Sets the box-shadow of the component                                  |

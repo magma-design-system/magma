@@ -103,6 +103,7 @@ export class MdsPrefContrast {
           <mds-tab-item selected={this.mode === 'more'} onClick={() => { this.setContrast('more') }} class="item item--more" icon={miBaselineContrast}></mds-tab-item>
           <mds-tab-item selected={this.mode === 'system'} onClick={() => { this.setContrast('system') }} class="item item--system" icon={miBaselineSettings}></mds-tab-item>
           <mds-tab-item selected={this.mode === 'no-preference'} onClick={() => { this.setContrast('no-preference') }} class="item item--default" icon={this.mode === 'no-preference' ? miBaselineAutoAwesome : miOutlineAutoAwesome}></mds-tab-item>
+          {/* <mds-tab-item selected={this.mode === 'sensor'} onClick={() => { this.setContrast('sensor') }} class="item item--sensor" icon={this.mode === 'sensor' ? miBaselineAutoAwesome : miOutlineAutoAwesome}></mds-tab-item> */}
         </mds-tab>
       </Host>
     )

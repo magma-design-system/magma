@@ -1,0 +1,24 @@
+@tailwind utilities;
+
+@container style(--magma-pref-animation: reduce) {
+  :host,
+  .header,
+  .icon,
+  .text {
+    transition-delay: 0s !important;
+    transition-duration: 0s;
+  }
+}
+
+@container style(--magma-pref-animation: system) {
+
+  @media (prefers-reduced-motion) {
+    :host,
+    .header,
+    .icon,
+    .text {
+      transition-delay: 0s !important;
+      transition-duration: 0s;
+    }
+  }
+}

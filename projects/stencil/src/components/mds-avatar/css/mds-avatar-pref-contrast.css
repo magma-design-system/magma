@@ -1,0 +1,21 @@
+@tailwind utilities;
+
+@container style(--magma-pref-contrast: more) {
+  .avatar--icon,
+  .avatar--fallback,
+  .avatar--initials {
+    box-shadow: theme('boxShadow.outline-50') inset;
+  }
+}
+
+@container style(--magma-pref-contrast: system) {
+
+  @media (prefers-contrast: more) {
+    .avatar--icon,
+    .avatar--fallback,
+    .avatar--initials {
+      box-shadow: theme('boxShadow.outline-50') inset;
+    }
+  }
+}
+

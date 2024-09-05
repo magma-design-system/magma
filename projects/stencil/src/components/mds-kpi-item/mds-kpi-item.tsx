@@ -24,6 +24,18 @@ export class MdsKpiItem {
   }
 
   componentWillLoad (): void {
+    if (document) {
+      const sheet = new CSSStyleSheet()
+      sheet.replaceSync(`
+        @property --mds-kpi-item-value {
+          inherits: false;
+          initial-value: 0;
+          syntax: '<integer>';
+        }
+      `)
+      document.adoptedStyleSheets.push(sheet)
+    }
+
     this.hasIcon = this.hostElement.querySelector('[slot="icon"]') !== null
     this.observer = new window.IntersectionObserver(([entry]) => {
       this.isIntersecting = entry.isIntersecting

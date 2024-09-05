@@ -1,6 +1,6 @@
 {
   "name": "@maggioli-design-system/mds-list",
-  "version": "3.9.5",
+  "version": "3.9.6",
   "description": "mds-list is a web-component from Magma Design System, built with StencilJS, TypeScript, Storybook. It's based on the web-component standard and it's designed to be agnostic from the JavaScirpt framework you are using.",
   "main": "dist/index.cjs.js",
   "module": "dist/index.js",
@@ -23,9 +23,9 @@
     "prepublishOnly": "npm run build"
   },
   "dependencies": {
-    "@maggioli-design-system/mds-list-item": "3.10.4",
-    "@maggioli-design-system/styles": "14.3.2",
-    "@stencil/core": "4.10.0"
+    "@maggioli-design-system/mds-list-item": "3.11.0",
+    "@maggioli-design-system/styles": "15.3.0",
+    "@stencil/core": "4.21.0"
   },
   "license": "MIT",
   "author": {

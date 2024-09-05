@@ -1,0 +1,18 @@
+@tailwind utilities;
+
+@container style(--magma-pref-theme: dark) {
+  :host {
+
+    --mds-url-view-shadow: theme('boxShadow.outline');
+  }
+}
+
+@container style(--magma-pref-theme: system) {
+
+  @media (prefers-color-scheme: dark) {
+    :host {
+
+      --mds-url-view-shadow: theme('boxShadow.outline');
+    }
+  }
+}

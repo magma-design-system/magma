@@ -15,14 +15,14 @@
 
   --mds-notification-color: theme('colors.tone-neutral');
   --mds-notification-dot-background: theme('colors.status-error-05');
-  --mds-notification-dot-padding: theme('spacing.150');
-  --mds-notification-size: theme('spacing.50');
+  --mds-notification-dot-padding: 6px;
+  --mds-notification-size: 20px;
   --mds-notification-ring-size: 2px;
   --mds-notification-ring-color: theme('colors.tone-neutral');
   --mds-notification-translate-offset-x: -1.75;
   --mds-notification-translate-offset-y: -2;
   --mds-notification-translate: translate(calc(var(--mds-notification-size) / var(--mds-notification-translate-offset-x)), calc(var(--mds-notification-size) / var(--mds-notification-translate-offset-y)));
-  --mds-notification-min-width: calc(var(--mds-notification-size) - calc(var(--mds-notification-dot-padding) * 2));
+  --mds-notification-min-width: var(--mds-notification-size);
 
   @apply
     duration-300
@@ -113,3 +113,5 @@
 :host( :not([target]) ) .dot {
   position: static;
 }
+
+@import './css/mds-notification-pref-animation.css';

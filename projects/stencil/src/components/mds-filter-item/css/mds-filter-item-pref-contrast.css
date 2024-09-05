@@ -1,0 +1,19 @@
+@tailwind utilities;
+
+@container style(--magma-pref-contrast: more) {
+  :host( [selected]:not([selected="false"]) ),
+  :host( :hover ) {
+    box-shadow: theme('boxShadow.outline-strong-50');
+  }
+}
+
+@container style(--magma-pref-contrast: system) {
+
+  @media (prefers-contrast: more) {
+    :host( [selected]:not([selected="false"]) ),
+    :host( :hover ) {
+      box-shadow: theme('boxShadow.outline-strong-50');
+    }
+  }
+}
+

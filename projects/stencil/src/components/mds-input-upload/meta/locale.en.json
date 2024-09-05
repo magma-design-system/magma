@@ -1,0 +1,16 @@
+{
+  "addFile": ["Add file", "Add files"],
+  "canUpload": "You can upload",
+  "canUploadAll": "You can upload every file format",
+  "cancel": "Cancel",
+  "clickOrDrag": ["Click and select or drag the file to upload here", "Click and select or drag files to upload here"],
+  "dragEnter": "Drop files to upload here",
+  "fileTooLarge": "File too large",
+  "formatNotAlowed": "Invalid file format",
+  "maxFilesExceed": "Maximum number of files reached",
+  "maxFileSizePerFile": "{{ maxFileSize }}MB max per file",
+  "maxFilesUpload": [ "You can upload a single file", "You can upload a maximum of {{ maxFiles }} files" ],
+  "selectFile": "Select file",
+  "sortByDate": "Sort by date added",
+  "sortByState": "Sort by upload status"
+}

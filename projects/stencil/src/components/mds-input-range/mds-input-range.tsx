@@ -99,6 +99,7 @@ export class MdsInputRange {
         </header>
         <div class="range">
           <div class="track">
+            <div class="contrast-area"></div>
             <div class="track-total">
               <div class="track-progress" style={{ width: `${this.progress}%` }}></div>
             </div>

@@ -35,7 +35,7 @@ This is a web-component from Maggioli Design System [Magma](https://magma.maggio
 | Part          | Description                                                 |
 | ------------- | ----------------------------------------------------------- |
 | `"actions"`   | Selects the element which wraps `nav` and `hamburger` parts |
-| `"contents"`  |                                                             |
+| `"content"`   |                                                             |
 | `"hamburger"` | Selects the `hamburger` menu action element                 |
 | `"nav"`       | Selects the `nav` element that contains the horizontal menu |
 

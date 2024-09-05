@@ -1,0 +1,38 @@
+@tailwind utilities;
+
+@container style(--magma-pref-theme: dark) {
+  :host {
+
+    --mds-input-select-ring: theme('boxShadow.outline-50');
+    --mds-input-select-arrow-icon-background-color: var(--mds-input-select-arrow-icon-blur-background-color);
+    --mds-input-select-arrow-icon-blur-background-color: theme('colors.brand-maggioli-05');
+    --mds-input-select-arrow-icon-blur-color: rgb(var(--mds-input-select-variant-color));
+    --mds-input-select-arrow-icon-color: var(--mds-input-select-arrow-icon-blur-color);
+    --mds-input-select-arrow-icon-hover-background-color: rgb(var(--mds-input-select-variant-color));
+    --mds-input-select-arrow-icon-hover-color: theme('colors.tone-neutral-10');
+  }
+
+  .input {
+    color: theme('colors.tone-neutral-03');
+  }
+}
+
+@container style(--magma-pref-theme: system) {
+
+  @media (prefers-color-scheme: dark) {
+    :host {
+
+      --mds-input-select-ring: theme('boxShadow.outline-50');
+      --mds-input-select-arrow-icon-background-color: var(--mds-input-select-arrow-icon-blur-background-color);
+      --mds-input-select-arrow-icon-blur-background-color: theme('colors.brand-maggioli-05');
+      --mds-input-select-arrow-icon-blur-color: rgb(var(--mds-input-select-variant-color));
+      --mds-input-select-arrow-icon-color: var(--mds-input-select-arrow-icon-blur-color);
+      --mds-input-select-arrow-icon-hover-background-color: rgb(var(--mds-input-select-variant-color));
+      --mds-input-select-arrow-icon-hover-color: theme('colors.tone-neutral-10');
+    }
+
+    .input {
+      color: theme('colors.tone-neutral-03');
+    }
+  }
+}

@@ -1,5 +1,9 @@
 @tailwind utilities;
 
+/*
+ * x
+ */
+
 :host {
 
   --mds-pref-theme-overlay-fadeout-duration: 200ms;
@@ -33,3 +37,5 @@
 
   --mds-tab-item-color-selected: theme('colors.label-sky-06');
 }
+
+@import './css/mds-pref-theme-pref-contrast.css';

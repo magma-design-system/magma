@@ -26,12 +26,14 @@
 }
 
 .avatar {
-  @apply transition-colors;
+  @apply duration-200;
 
   aspect-ratio: 1/1;
+  border-radius: var(--mds-avatar-radius);
   color: transparent;
   display: inline-flex;
   overflow: hidden;
+  transition-property: color, background-color, box-shadow, fill;
   width: 100%;
 }
 
@@ -47,6 +49,7 @@
 .avatar--fallback,
 .avatar--initials {
   background-color: var(--mds-avatar-background-color);
+  box-shadow: none;
 }
 
 .avatar--fallback,
@@ -67,6 +70,7 @@
 
 .image {
   aspect-ratio: 1/1;
+  border-radius: var(--mds-avatar-radius);
 }
 
 .fallback-icon {
@@ -112,6 +116,8 @@
 }
 
 @import './css/mds-avatar-variant.css';
+@import './css/mds-avatar-pref-animation.css';
+@import './css/mds-avatar-pref-contrast.css';
 
 @container (max-width: 24px) {
   .avatar--initials {

@@ -13,12 +13,12 @@
   --mds-input-select-variant-color: var(--tone-neutral-01);
   --mds-input-select-ring: 0 0 0 1px rgb(var(--mds-input-select-variant-color) / 0.1);
   --mds-input-select-shadow: 0 1px 3px 0 rgb(var(--mds-input-select-variant-color) / 0.1), 0 1px 2px 0 rgb(var(--mds-input-select-variant-color) / 0.06);
-  --mds-input-select-arrow-icon-blur-background-color: transparent;
-  --mds-input-select-arrow-icon-hover-background-color: rgb(var(--mds-input-select-variant-color) / 0.5);
-  --mds-input-select-arrow-icon-blur-color: rgb(var(--mds-input-select-variant-color) / 0.5);
-  --mds-input-select-arrow-icon-hover-color: rgb(var(--mds-input-select-variant-color));
   --mds-input-select-arrow-icon-background-color: var(--mds-input-select-arrow-icon-blur-background-color);
+  --mds-input-select-arrow-icon-blur-background-color: transparent;
+  --mds-input-select-arrow-icon-blur-color: rgb(var(--mds-input-select-variant-color) / 0.5);
   --mds-input-select-arrow-icon-color: var(--mds-input-select-arrow-icon-blur-color);
+  --mds-input-select-arrow-icon-hover-background-color: rgb(var(--mds-input-select-variant-color) / 0.5);
+  --mds-input-select-arrow-icon-hover-color: rgb(var(--mds-input-select-variant-color));
 
   color: theme('colors.tone-neutral-02');
   display: flex;
@@ -147,4 +147,7 @@
   }
 }
 
-@import './css/mds-input-variant.css';
+@import './css/mds-input-select-variant.css';
+@import './css/mds-input-select-pref-animation.css';
+@import './css/mds-input-select-pref-theme.css';
+@import './css/mds-input-select-pref-contrast.css';
