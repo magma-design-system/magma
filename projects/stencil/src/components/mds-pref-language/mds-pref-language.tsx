@@ -1,4 +1,4 @@
-import { Component, Host, h, Prop, State } from '@stencil/core'
+import { Component, Element, Host, h, Prop, State } from '@stencil/core'
 import { LanguageType } from '@type/language'
 
 @Component({
@@ -8,31 +8,51 @@ import { LanguageType } from '@type/language'
 })
 export class MdsPrefLanguage {
   @State() showDropdown: boolean = false
+  @Element() element: HTMLMdsPrefLanguageElement
   private pageLanguage: LanguageType
   private systemLanguage: LanguageType
+  private currentSelectedItem: HTMLMdsPrefLanguageItemElement
+  private elPreferLanguageItems: NodeListOf<HTMLMdsPrefLanguageItemElement>
 
   /**
    * Specifies the preference mode
    */
-  @Prop({ mutable: true, reflect: true }) set?: LanguageType
+  @Prop({ mutable: true, reflect: true }) set?: LanguageType = 'auto'
+
+  componentDidLoad (): void {
+    this.systemLanguage = this.sanitizeLanguage(navigator.language)
+    this.pageLanguage = (document.querySelector('html')?.getAttribute('lang') ?? this.systemLanguage) as LanguageType
+    this.setLanguage(this.set ?? this.pageLanguage)
+    this.checkLanguageSelect()
+  }
 
   private showLanguageSelectDropdown = (e: CustomEvent): void => {
-    console.info(e.detail.language)
     if (!e.detail.language) {
-      this.setLanguage('auto')
       this.showDropdown = true
     }
   }
 
   private hideLanguageSelectDropdown = (): void => {
     this.showDropdown = false
-    this.setLanguage('auto')
   }
 
-  componentDidLoad (): void {
-    this.systemLanguage = this.sanitizeLanguage(navigator.language)
-    this.pageLanguage = (document.querySelector('html')?.getAttribute('lang') ?? this.systemLanguage) as LanguageType
-    this.setLanguage(this.set ?? this.pageLanguage)
+  private changeLanguageSelectItem = (): void => {
+    this.elPreferLanguageItems.forEach(element => {
+      element.selected = false
+    })
+  }
+
+  private checkLanguageSelect = (): void => {
+    this.elPreferLanguageItems = this.element.querySelectorAll('mds-pref-language-item')
+    this.elPreferLanguageItems.forEach(element => {
+      element.addEventListener('mdsPrefLanguageItemSelect', (e: CustomEvent) => {
+        this.changeLanguageSelectItem()
+        this.currentSelectedItem = e.currentTarget as HTMLMdsPrefLanguageItemElement
+        this.currentSelectedItem.selected = true
+        this.showDropdown = false
+        this.setLanguage(e.detail.language)
+      })
+    })
   }
 
   private sanitizeLanguage = (value: string): LanguageType => {

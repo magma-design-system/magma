@@ -1,6 +1,6 @@
 import { h } from '@stencil/core'
 
-import { languageDictionary, languageListDictionary } from '../meta/dictionary'
+import { languageDictionary } from '../meta/dictionary'
 
 export default {
   title: 'UI / Preferences / Language',
@@ -15,11 +15,9 @@ export default {
 }
 const Template = args =>
   <mds-pref-language {...args}>
-    { Object.entries(languageListDictionary).map(([key], index) => {
-      return <div key={index}>
-        <mds-mds-pref-language-item code={key}></mds-mds-pref-language-item>
-      </div>
-    }) }
+    <mds-pref-language-item code="it"></mds-pref-language-item>
+    <mds-pref-language-item code="en"></mds-pref-language-item>
+    <mds-pref-language-item code="el"></mds-pref-language-item>
   </mds-pref-language>
 
 export const Default = Template.bind({})

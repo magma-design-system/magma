@@ -8,13 +8,6 @@ import localeEn from './meta/locale.en.json'
 import localeIt from './meta/locale.it.json'
 import { MdsPrefLanguageNavEventDetail } from '@event/language'
 
-/*
-default
-html
-user (os fallback)
-os
-*/
-
 @Component({
   tag: 'mds-pref-language-nav',
   styleUrl: 'mds-pref-language-nav.css',
@@ -52,7 +45,7 @@ export class MdsPrefLanguageNav {
   render () {
     return (
       <Host>
-        <mds-text class="info" typography="caption"><b>{this.t.get('label')}</b> {this.t.get(this.set ?? 'auto')}</mds-text>
+        <mds-text class="info" typography="caption"><b>{ this.t.get('label') }</b> {this.t.get(this.set ?? 'auto')}</mds-text>
         <mds-tab>
           <mds-tab-item selected={this.set !== 'auto'} onClick={() => { this.selectLanguage() }} class="item item--custom-language" icon={miBaselineTranslate}></mds-tab-item>
           <mds-tab-item selected={this.set === 'auto'} onClick={() => { this.setAutoLanguage() }} class="item item--auto" icon={miBaselineWysiwyg}></mds-tab-item>

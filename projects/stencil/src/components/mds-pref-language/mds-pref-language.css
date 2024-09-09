@@ -1,3 +1,11 @@
+@tailwind utilities;
+
 :host {
-  display: block;
+  display: flex;
+}
+
+mds-dropdown {
+  @apply
+    gap-100
+    p-400;
 }

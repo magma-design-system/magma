@@ -7,9 +7,9 @@
 
 ## Properties
 
-| Property | Attribute | Description                   | Type                                                                                                                        | Default     |
-| -------- | --------- | ----------------------------- | --------------------------------------------------------------------------------------------------------------------------- | ----------- |
-| `set`    | `set`     | Specifies the preference mode | ``${Lowercase<string>}${Lowercase<string>}${Lowercase<string>}` \| `${Lowercase<string>}${Lowercase<string>}` \| undefined` | `undefined` |
+| Property | Attribute | Description                   | Type                                                                                                                        | Default  |
+| -------- | --------- | ----------------------------- | --------------------------------------------------------------------------------------------------------------------------- | -------- |
+| `set`    | `set`     | Specifies the preference mode | ``${Lowercase<string>}${Lowercase<string>}${Lowercase<string>}` \| `${Lowercase<string>}${Lowercase<string>}` \| undefined` | `'auto'` |
 
 
 ## Dependencies

@@ -7,30 +7,29 @@
 
 ## Properties
 
-| Property | Attribute | Description | Type                                                                                                                        | Default     |
-| -------- | --------- | ----------- | --------------------------------------------------------------------------------------------------------------------------- | ----------- |
-| `code`   | `code`    |             | ``${Lowercase<string>}${Lowercase<string>}${Lowercase<string>}` \| `${Lowercase<string>}${Lowercase<string>}` \| undefined` | `undefined` |
+| Property   | Attribute  | Description                          | Type                                                                                                                        | Default     |
+| ---------- | ---------- | ------------------------------------ | --------------------------------------------------------------------------------------------------------------------------- | ----------- |
+| `code`     | `code`     | Specifies the language code          | ``${Lowercase<string>}${Lowercase<string>}${Lowercase<string>}` \| `${Lowercase<string>}${Lowercase<string>}` \| undefined` | `undefined` |
+| `selected` | `selected` | Specifies if the element is selected | `boolean \| undefined`                                                                                                      | `false`     |
+
+
+## Events
+
+| Event                       | Description                                   | Type                                         |
+| --------------------------- | --------------------------------------------- | -------------------------------------------- |
+| `mdsPrefLanguageItemSelect` | Emits when the component trigger the language | `CustomEvent<MdsPrefLanguageNavEventDetail>` |
 
 
 ## Dependencies
 
 ### Depends on
 
-- [mds-entity](../mds-entity)
-- [mds-text](../mds-text)
+- [mds-button](../mds-button)
 
 ### Graph
 ```mermaid
 graph TD;
-  mds-pref-language-item --> mds-entity
-  mds-pref-language-item --> mds-text
-  mds-entity --> mds-spinner
-  mds-entity --> mds-avatar
-  mds-avatar --> mds-img
-  mds-avatar --> mds-icon
-  mds-img --> mds-icon
-  mds-img --> mds-text
-  mds-img --> mds-button
+  mds-pref-language-item --> mds-button
   mds-button --> mds-spinner
   mds-button --> mds-icon
   mds-button --> mds-text

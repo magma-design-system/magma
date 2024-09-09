@@ -15,6 +15,10 @@
   flex-grow: 1;
 }
 
+.item--custom-language {
+  cursor: pointer;
+}
+
 .item--auto,
 .item--custom-language {
 
