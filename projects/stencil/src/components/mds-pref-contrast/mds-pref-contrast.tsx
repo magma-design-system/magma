@@ -97,7 +97,7 @@ export class MdsPrefContrast {
 
   render () {
     return (
-      <Host >
+      <Host>
         <mds-text class="info" typography="caption"><b>{this.t.get('label')}</b> {this.t.get(this.contrast[this.mode ?? this.defaultMode].label)}</mds-text>
         <mds-tab>
           <mds-tab-item selected={this.mode === 'more'} onClick={() => { this.setContrast('more') }} class="item item--more" icon={miBaselineContrast}></mds-tab-item>
