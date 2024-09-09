@@ -40,20 +40,6 @@ This is a web-component from Maggioli Design System [Magma](https://magma.maggio
 | `"button"` |             |
 
 
-## CSS Custom Properties
-
-| Name                                 | Description                                              |
-| ------------------------------------ | -------------------------------------------------------- |
-| `--mds-tab-item-background`          | Sets the background color of the component               |
-| `--mds-tab-item-background-hover`    | Sets the background when the mouse is over the component |
-| `--mds-tab-item-background-selected` | Sets the background when the component is selected       |
-| `--mds-tab-item-color`               | Sets the color of the component                          |
-| `--mds-tab-item-color-hover`         | Sets the color when the mouse is over the component      |
-| `--mds-tab-item-color-selected`      | Sets the color when the component is selected            |
-| `--mds-tab-item-radius`              | Sets the border-radius of the component                  |
-| `--mds-tab-item-shadow-selected`     | Sets the box-shadow when the component is selected       |
-
-
 ## Dependencies
 
 ### Used by
@@ -62,6 +48,7 @@ This is a web-component from Maggioli Design System [Magma](https://magma.maggio
  - [mds-pref-animation](../mds-pref-animation)
  - [mds-pref-consumption](../mds-pref-consumption)
  - [mds-pref-contrast](../mds-pref-contrast)
+ - [mds-pref-language-nav](../mds-pref-language-nav)
  - [mds-pref-theme](../mds-pref-theme)
 
 ### Depends on
@@ -79,6 +66,7 @@ graph TD;
   mds-pref-animation --> mds-tab-item
   mds-pref-consumption --> mds-tab-item
   mds-pref-contrast --> mds-tab-item
+  mds-pref-language-nav --> mds-tab-item
   mds-pref-theme --> mds-tab-item
   style mds-tab-item fill:#f9f,stroke:#333,stroke-width:4px
 ```

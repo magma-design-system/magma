@@ -30,14 +30,6 @@ This is a web-component from Maggioli Design System [Magma](https://magma.maggio
 | `"tabs"`     |             |
 
 
-## CSS Custom Properties
-
-| Name                        | Description                                                                                                                      |
-| --------------------------- | -------------------------------------------------------------------------------------------------------------------------------- |
-| `--mds-tab-duration`        | Sets the animation duration on how the contents height is resized when the component switch from a content to another one        |
-| `--mds-tab-timing-function` | Sets the animation timing function on how the contents height is resized when the component switch from a content to another one |
-
-
 ## Dependencies
 
 ### Used by
@@ -46,6 +38,7 @@ This is a web-component from Maggioli Design System [Magma](https://magma.maggio
  - [mds-pref-animation](../mds-pref-animation)
  - [mds-pref-consumption](../mds-pref-consumption)
  - [mds-pref-contrast](../mds-pref-contrast)
+ - [mds-pref-language-nav](../mds-pref-language-nav)
  - [mds-pref-theme](../mds-pref-theme)
 
 ### Graph
@@ -55,6 +48,7 @@ graph TD;
   mds-pref-animation --> mds-tab
   mds-pref-consumption --> mds-tab
   mds-pref-contrast --> mds-tab
+  mds-pref-language-nav --> mds-tab
   mds-pref-theme --> mds-tab
   style mds-tab fill:#f9f,stroke:#333,stroke-width:4px
 ```

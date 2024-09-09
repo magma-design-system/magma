@@ -41,19 +41,6 @@ This is a web-component from Maggioli Design System [Magma](https://magma.maggio
 | `"label"` |                               |
 
 
-## CSS Custom Properties
-
-| Name                          | Description                                                                                              |
-| ----------------------------- | -------------------------------------------------------------------------------------------------------- |
-| `--mds-button-await-duration` | Sets the duration of the rotation of the spinner await component                                         |
-| `--mds-button-background`     | Sets the background-color of the component                                                               |
-| `--mds-button-border-color`   | Sets the border-color of the component                                                                   |
-| `--mds-button-color`          | Sets the text color of the component                                                                     |
-| `--mds-button-gap`            | Sets the distance betwen element inside the components, use it instead of setting gap property directly. |
-| `--mds-button-icon-color`     | Sets the icon color of the component                                                                     |
-| `--mds-button-radius`         | Sets the border-radius of the component                                                                  |
-
-
 ## Dependencies
 
 ### Used by
@@ -70,6 +57,7 @@ This is a web-component from Maggioli Design System [Magma](https://magma.maggio
  - [mds-label](../mds-label)
  - [mds-modal](../mds-modal)
  - [mds-note](../mds-note)
+ - [mds-pref-language-item](../mds-pref-language-item)
  - [mds-push-notification](../mds-push-notification)
  - [mds-tab-item](../mds-tab-item)
  - [mds-url-view](../mds-url-view)
@@ -98,6 +86,7 @@ graph TD;
   mds-label --> mds-button
   mds-modal --> mds-button
   mds-note --> mds-button
+  mds-pref-language-item --> mds-button
   mds-push-notification --> mds-button
   mds-tab-item --> mds-button
   mds-url-view --> mds-button

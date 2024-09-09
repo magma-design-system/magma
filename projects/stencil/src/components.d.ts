@@ -1240,7 +1240,14 @@ export namespace Components {
         "set"?: LanguageType;
     }
     interface MdsPrefLanguageItem {
+        /**
+          * Specifies the language code
+         */
         "code"?: LanguageType;
+        /**
+          * Specifies if the element is selected
+         */
+        "selected"?: boolean;
     }
     interface MdsPrefLanguageNav {
         /**
@@ -1725,6 +1732,10 @@ export interface MdsNoteCustomEvent<T> extends CustomEvent<T> {
 export interface MdsPaginatorCustomEvent<T> extends CustomEvent<T> {
     detail: T;
     target: HTMLMdsPaginatorElement;
+}
+export interface MdsPrefLanguageItemCustomEvent<T> extends CustomEvent<T> {
+    detail: T;
+    target: HTMLMdsPrefLanguageItemElement;
 }
 export interface MdsPrefLanguageNavCustomEvent<T> extends CustomEvent<T> {
     detail: T;
@@ -2419,7 +2430,18 @@ declare global {
         prototype: HTMLMdsPrefLanguageElement;
         new (): HTMLMdsPrefLanguageElement;
     };
+    interface HTMLMdsPrefLanguageItemElementEventMap {
+        "mdsPrefLanguageItemSelect": MdsPrefLanguageNavEventDetail;
+    }
     interface HTMLMdsPrefLanguageItemElement extends Components.MdsPrefLanguageItem, HTMLStencilElement {
+        addEventListener<K extends keyof HTMLMdsPrefLanguageItemElementEventMap>(type: K, listener: (this: HTMLMdsPrefLanguageItemElement, ev: MdsPrefLanguageItemCustomEvent<HTMLMdsPrefLanguageItemElementEventMap[K]>) => any, options?: boolean | AddEventListenerOptions): void;
+        addEventListener<K extends keyof DocumentEventMap>(type: K, listener: (this: Document, ev: DocumentEventMap[K]) => any, options?: boolean | AddEventListenerOptions): void;
+        addEventListener<K extends keyof HTMLElementEventMap>(type: K, listener: (this: HTMLElement, ev: HTMLElementEventMap[K]) => any, options?: boolean | AddEventListenerOptions): void;
+        addEventListener(type: string, listener: EventListenerOrEventListenerObject, options?: boolean | AddEventListenerOptions): void;
+        removeEventListener<K extends keyof HTMLMdsPrefLanguageItemElementEventMap>(type: K, listener: (this: HTMLMdsPrefLanguageItemElement, ev: MdsPrefLanguageItemCustomEvent<HTMLMdsPrefLanguageItemElementEventMap[K]>) => any, options?: boolean | EventListenerOptions): void;
+        removeEventListener<K extends keyof DocumentEventMap>(type: K, listener: (this: Document, ev: DocumentEventMap[K]) => any, options?: boolean | EventListenerOptions): void;
+        removeEventListener<K extends keyof HTMLElementEventMap>(type: K, listener: (this: HTMLElement, ev: HTMLElementEventMap[K]) => any, options?: boolean | EventListenerOptions): void;
+        removeEventListener(type: string, listener: EventListenerOrEventListenerObject, options?: boolean | EventListenerOptions): void;
     }
     var HTMLMdsPrefLanguageItemElement: {
         prototype: HTMLMdsPrefLanguageItemElement;
@@ -4095,7 +4117,18 @@ declare namespace LocalJSX {
         "set"?: LanguageType;
     }
     interface MdsPrefLanguageItem {
+        /**
+          * Specifies the language code
+         */
         "code"?: LanguageType;
+        /**
+          * Emits when the component trigger the language
+         */
+        "onMdsPrefLanguageItemSelect"?: (event: MdsPrefLanguageItemCustomEvent<MdsPrefLanguageNavEventDetail>) => void;
+        /**
+          * Specifies if the element is selected
+         */
+        "selected"?: boolean;
     }
     interface MdsPrefLanguageNav {
         /**
