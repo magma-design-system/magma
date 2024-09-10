@@ -3,6 +3,7 @@ export type UIPreferenceType =
   | 'consumption'
   | 'contrast'
   | 'theme'
+  | 'language'
 
 export type ConsumptionModeType =
   | 'high'

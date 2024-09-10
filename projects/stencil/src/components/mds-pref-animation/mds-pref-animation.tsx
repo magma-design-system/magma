@@ -1,8 +1,10 @@
-import { Component, Host, Element, h, Prop, Watch } from '@stencil/core'
+import { Component, Host, Element, Event, EventEmitter, h, Prop, Watch } from '@stencil/core'
 import miOutlineCircle from '@icon/mi/outline/circle.svg'
 import miBaselineAnimation from '@icon/mi/baseline/animation.svg'
 import miBaselineSettings from '@icon/mi/baseline/settings.svg'
+import { MdsPrefChangeEventDetail } from '@event/preference'
 import { Locale } from '@common/locale'
+import localeEl from './meta/locale.el.json'
 import localeEn from './meta/locale.en.json'
 import localeIt from './meta/locale.it.json'
 import { AnimationModeType } from './meta/types'
@@ -16,6 +18,7 @@ export class MdsPrefAnimation {
   @Element() private element: HTMLMdsPrefAnimationElement
   private defaultMode: AnimationModeType = 'system'
   private t:Locale = new Locale({
+    el: localeEl,
     en: localeEn,
     it: localeIt,
   })
@@ -24,6 +27,11 @@ export class MdsPrefAnimation {
    * Specifies the preference mode
    */
   @Prop({ mutable: true, reflect: true }) mode?: AnimationModeType
+
+  /**
+   * Emits when the component is triggered
+   */
+  @Event({ eventName: 'mdsPrefChange' }) prefChangeEvent: EventEmitter<MdsPrefChangeEventDetail>
 
   private animation = {
     reduce: {
@@ -49,6 +57,7 @@ export class MdsPrefAnimation {
   }
 
   private setAnimation = (mode: AnimationModeType): void => {
+    this.prefChangeEvent.emit({ preference: 'animation' })
     this.mode = mode
     localStorage.setItem('mds-pref-animation', this.mode)
     if (document) {

@@ -1,10 +1,12 @@
 @tailwind utilities;
 
-:host {
-  display: flex;
+mds-pref-language {
+  @apply gap-400;
+
+  display: grid;
 }
 
-mds-dropdown {
+.mds-pref-language-dropdown {
   @apply
     gap-100
     p-400;

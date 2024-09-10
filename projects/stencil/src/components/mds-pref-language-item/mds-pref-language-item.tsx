@@ -6,7 +6,7 @@ import localeIt from './meta/locale.it.json'
 import localeEn from './meta/locale.en.json'
 import miBaselineCheckCircle from '@icon/mi/baseline/check-circle.svg'
 import miOutlineCircle from '@icon/mi/outline/circle.svg'
-import { MdsPrefLanguageNavEventDetail } from '@event/language'
+import { MdsPrefLanguageEventDetail } from '@event/language'
 
 @Component({
   tag: 'mds-pref-language-item',
@@ -21,7 +21,7 @@ export class MdsPrefLanguageItem {
   })
 
   /**
-   * Specifies the language code
+   * Specifies the language code based on HTML `lang` attribute
    */
   @Prop({ reflect: true }) readonly code?: LanguageType
 
@@ -33,7 +33,7 @@ export class MdsPrefLanguageItem {
   /**
    * Emits when the component trigger the language
    */
-  @Event({ eventName: 'mdsPrefLanguageItemSelect' }) selectLanguageEvent: EventEmitter<MdsPrefLanguageNavEventDetail>
+  @Event({ eventName: 'mdsPrefLanguageItemSelect' }) selectLanguageEvent: EventEmitter<MdsPrefLanguageEventDetail>
 
   componentWillRender (): void {
     this.t.lang(this.element)

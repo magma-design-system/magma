@@ -10,3 +10,9 @@
 :host(:empty) {
   display: none;
 }
+
+.reload-required {
+  @apply gap-200;
+
+  display: grid;
+}

@@ -1,4 +1,4 @@
-import { Component, Host, Element, h, Prop, Watch } from '@stencil/core'
+import { Component, Host, Element, Event, EventEmitter, h, Prop, Watch } from '@stencil/core'
 import { cssDurationToMilliseconds } from '@common/unit'
 import miBaselineLightMode from '@icon/mi/baseline/light-mode.svg'
 import miOutlineDarkMode from '@icon/mi/outline/dark-mode.svg'
@@ -8,6 +8,7 @@ import { Locale } from '@common/locale'
 import localeEn from './meta/locale.en.json'
 import localeIt from './meta/locale.it.json'
 import { ThemeModeType, ThemeTransitionType } from './meta/types'
+import { MdsPrefChangeEventDetail } from '@event/preference'
 
 @Component({
   tag: 'mds-pref-theme',
@@ -51,9 +52,10 @@ export class MdsPrefTheme {
    */
   @Prop({ mutable: true, reflect: true }) transition: ThemeTransitionType = 'smooth'
 
-  // related selectors for @magma-design-system/styles
-  // projects/design-tokens/formats/css-vars-rgb/template.hbs
-  // projects/design-tokens/formats/css-vars-hex/template.hbs
+  /**
+   * Emits when the component is triggered
+   */
+  @Event({ eventName: 'mdsPrefChange' }) prefChangeEvent: EventEmitter<MdsPrefChangeEventDetail>
 
   private theme = {
     dark: {
@@ -88,6 +90,7 @@ export class MdsPrefTheme {
   }
 
   private setTheme = (mode: ThemeModeType): void => {
+    this.prefChangeEvent.emit({ preference: 'theme' })
     this.mode = mode
     localStorage.setItem('mds-pref-theme', this.mode)
     if (document) {

@@ -1,5 +1,15 @@
-import { Component, Element, Host, h, Prop, State } from '@stencil/core'
+import { Component, Element, Event, EventEmitter, Host, h, Prop, State } from '@stencil/core'
 import { LanguageType } from '@type/language'
+import { MdsPrefLanguageEventDetail } from '@event/language'
+import { MdsPrefChangeEventDetail } from '@event/preference'
+import { Locale } from '@common/locale'
+import localeEn from './meta/locale.en.json'
+import localeIt from './meta/locale.it.json'
+import localeEl from './meta/locale.el.json'
+
+/**
+ * @slot default - Add `mds-pref-language-item` element/s.
+ */
 
 @Component({
   tag: 'mds-pref-language',
@@ -9,27 +19,46 @@ import { LanguageType } from '@type/language'
 export class MdsPrefLanguage {
   @State() showDropdown: boolean = false
   @Element() element: HTMLMdsPrefLanguageElement
+  private defaultLanguage: LanguageType = 'en'
   private pageLanguage: LanguageType
   private systemLanguage: LanguageType
   private currentSelectedItem: HTMLMdsPrefLanguageItemElement
   private elPreferLanguageItems: NodeListOf<HTMLMdsPrefLanguageItemElement>
+  private t:Locale = new Locale({
+    en: localeEn,
+    it: localeIt,
+    el: localeEl,
+  })
+  /**
 
   /**
-   * Specifies the preference mode
+   * Specifies the language code based on HTML `lang` attribute
    */
-  @Prop({ mutable: true, reflect: true }) set?: LanguageType = 'auto'
+  @Prop({ mutable: true, reflect: true }) set: LanguageType = 'auto'
 
-  componentDidLoad (): void {
+  /**
+   * Emits when the component changes the language selected from the click event of the dropdown list item
+   */
+  @Event({ eventName: 'mdsPrefLanguageChange' }) languageChangeEvent: EventEmitter<MdsPrefLanguageEventDetail>
+
+  /**
+   * Emits when the component is triggered
+   */
+  @Event({ eventName: 'mdsPrefChange' }) prefChangeEvent: EventEmitter<MdsPrefChangeEventDetail>
+
+  componentWillLoad (): void {
     this.systemLanguage = this.sanitizeLanguage(navigator.language)
     this.pageLanguage = (document.querySelector('html')?.getAttribute('lang') ?? this.systemLanguage) as LanguageType
-    this.setLanguage(this.set ?? this.pageLanguage)
+    this.setLanguage(this.set)
     this.checkLanguageSelect()
   }
 
-  private showLanguageSelectDropdown = (e: CustomEvent): void => {
-    if (!e.detail.language) {
-      this.showDropdown = true
-    }
+  componentWillRender (): void {
+    this.t.lang(this.element)
+  }
+
+  private showLanguageSelectDropdown = (): void => {
+    this.showDropdown = !this.showDropdown
   }
 
   private hideLanguageSelectDropdown = (): void => {
@@ -49,9 +78,14 @@ export class MdsPrefLanguage {
         this.changeLanguageSelectItem()
         this.currentSelectedItem = e.currentTarget as HTMLMdsPrefLanguageItemElement
         this.currentSelectedItem.selected = true
+        this.languageChangeEvent.emit({ language: this.currentSelectedItem.code })
         this.showDropdown = false
         this.setLanguage(e.detail.language)
       })
+    })
+
+    this.elPreferLanguageItems.forEach(element => {
+      element.selected = element.code === this.set
     })
   }
 
@@ -63,7 +97,12 @@ export class MdsPrefLanguage {
   }
 
   private setLanguage = (set: LanguageType): void => {
+    this.prefChangeEvent.emit({ preference: 'language' })
     this.set = set
+
+    if (this.set === 'auto') {
+      this.set = this.pageLanguage
+    }
     localStorage.setItem('mds-pref-language', this.set)
     if (document) {
       const element = document.querySelector('html')
@@ -74,10 +113,11 @@ export class MdsPrefLanguage {
   render () {
     return (
       <Host>
-        <mds-pref-language-nav id="mds-pref-language-nav" onMdsPrefLanguageNavSelect={this.showLanguageSelectDropdown} set={this.set}></mds-pref-language-nav>
-        <mds-dropdown target="#mds-pref-language-nav" interaction="none" visible={this.showDropdown} onMdsDropdownHide={this.hideLanguageSelectDropdown}>
+        <mds-pref-language-nav active={this.showDropdown} id="mds-pref-language-nav" onMdsPrefLanguageNavSelect={this.showLanguageSelectDropdown} set={this.set}></mds-pref-language-nav>
+        <mds-dropdown class="mds-pref-language-dropdown" target="#mds-pref-language-nav" interaction="none" visible={this.showDropdown} onMdsDropdownHide={this.hideLanguageSelectDropdown}>
           <slot></slot>
         </mds-dropdown>
+        { this.set !== this.defaultLanguage && <mds-text typography="caption">{ this.t.get('defaultLanguage') }</mds-text> }
       </Host>
     )
   }
