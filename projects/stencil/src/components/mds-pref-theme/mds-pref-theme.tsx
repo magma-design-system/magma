@@ -5,6 +5,7 @@ import miOutlineDarkMode from '@icon/mi/outline/dark-mode.svg'
 import miBaselineDarkMode from '@icon/mi/baseline/dark-mode.svg'
 import miBaselineSettings from '@icon/mi/baseline/settings.svg'
 import { Locale } from '@common/locale'
+import localeEl from './meta/locale.el.json'
 import localeEn from './meta/locale.en.json'
 import localeIt from './meta/locale.it.json'
 import { ThemeModeType, ThemeTransitionType } from './meta/types'
@@ -19,6 +20,7 @@ export class MdsPrefTheme {
   @Element() private element: HTMLMdsPrefThemeElement
   private defaultMode: ThemeModeType = 'system'
   private t:Locale = new Locale({
+    el: localeEl,
     en: localeEn,
     it: localeIt,
   })

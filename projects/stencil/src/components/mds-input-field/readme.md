@@ -81,7 +81,7 @@ Returns the native `<input>` element used under the hood.
 
 #### Returns
 
-Type: `Promise<HTMLTextAreaElement | HTMLInputElement | null | undefined>`
+Type: `Promise<HTMLInputElement | HTMLTextAreaElement | null | undefined>`
 
 
 
@@ -112,6 +112,14 @@ of the global `input.focus()`.
 Type: `Promise<void>`
 
 
+
+
+## CSS Custom Properties
+
+| Name                                   | Description                                                                                                                      |
+| -------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------- |
+| `--mds-input-field-message-background` | Sets the message background color of the component, will be visible only if there is a text defined by `tip` component attribute |
+| `--mds-input-field-message-color`      | Sets the message text color of the component                                                                                     |
 
 
 ## Dependencies

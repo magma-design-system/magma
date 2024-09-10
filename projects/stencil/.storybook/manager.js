@@ -20,12 +20,12 @@ const AccessibilityPanel = () => {
 
   const setLanguage = (lang) => {
     if (window) {
-      window.localStorage.setItem('language', lang)
+      window.localStorage.setItem('mds-pref-language', lang)
     }
     if (document) {
       const iframe = document.getElementById('storybook-preview-iframe')
       const iframeDocument = iframe.contentDocument || iframe.contentWindow.document
-      iframeDocument.querySelector('html').setAttribute('lang', window.localStorage.getItem('language') ?? 'it')
+      iframeDocument.querySelector('html').setAttribute('lang', window.localStorage.getItem('mds-pref-language') ?? 'it')
     }
   }
 

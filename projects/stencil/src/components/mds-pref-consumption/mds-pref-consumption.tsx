@@ -6,6 +6,7 @@ import mggConsumptionHigh from '@icon/mgg/consumption-high.svg'
 import { Locale } from '@common/locale'
 import localeEn from './meta/locale.en.json'
 import localeIt from './meta/locale.it.json'
+import localeEl from './meta/locale.el.json'
 import { ConsumptionModeType } from '@type/preference'
 
 @Component({
@@ -19,6 +20,7 @@ export class MdsPrefContrast {
   private t:Locale = new Locale({
     en: localeEn,
     it: localeIt,
+    el: localeEl,
   })
 
   /**

@@ -4,6 +4,7 @@ import miOutlineAutoAwesome from '@icon/mi/outline/auto-awesome.svg'
 import miBaselineAutoAwesome from '@icon/mi/baseline/auto-awesome.svg'
 import miBaselineSettings from '@icon/mi/baseline/settings.svg'
 import { Locale } from '@common/locale'
+import localeEl from './meta/locale.el.json'
 import localeEn from './meta/locale.en.json'
 import localeIt from './meta/locale.it.json'
 import { ContrastModeType } from './meta/types'
@@ -18,6 +19,7 @@ export class MdsPrefContrast {
   @Element() private element: HTMLMdsPrefContrastElement
   private defaultMode: ContrastModeType = 'system'
   private t:Locale = new Locale({
+    el: localeEl,
     en: localeEn,
     it: localeIt,
   })

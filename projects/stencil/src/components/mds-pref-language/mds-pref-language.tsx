@@ -22,6 +22,7 @@ export class MdsPrefLanguage {
   private defaultLanguage: LanguageType = 'en'
   private pageLanguage: LanguageType
   private systemLanguage: LanguageType
+  private userLanguage: LanguageType
   private currentSelectedItem: HTMLMdsPrefLanguageItemElement
   private elPreferLanguageItems: NodeListOf<HTMLMdsPrefLanguageItemElement>
   private t:Locale = new Locale({
@@ -48,7 +49,8 @@ export class MdsPrefLanguage {
 
   componentWillLoad (): void {
     this.systemLanguage = this.sanitizeLanguage(navigator.language)
-    this.pageLanguage = (document.querySelector('html')?.getAttribute('lang') ?? this.systemLanguage) as LanguageType
+    this.userLanguage = localStorage.getItem('mds-pref-language') as LanguageType
+    this.pageLanguage = (document.querySelector('html')?.getAttribute('lang') ?? this.userLanguage ?? this.systemLanguage) as LanguageType
     this.setLanguage(this.set)
     this.checkLanguageSelect()
   }
