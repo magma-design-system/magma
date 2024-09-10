@@ -7,16 +7,17 @@
 
 ## Properties
 
-| Property | Attribute | Description                   | Type                                                                                                                        | Default     |
-| -------- | --------- | ----------------------------- | --------------------------------------------------------------------------------------------------------------------------- | ----------- |
-| `set`    | `set`     | Specifies the preference mode | ``${Lowercase<string>}${Lowercase<string>}${Lowercase<string>}` \| `${Lowercase<string>}${Lowercase<string>}` \| undefined` | `undefined` |
+| Property | Attribute | Description                                                | Type                                                                                                                        | Default     |
+| -------- | --------- | ---------------------------------------------------------- | --------------------------------------------------------------------------------------------------------------------------- | ----------- |
+| `active` | `active`  | Specifies if the element is active or not                  | `boolean`                                                                                                                   | `false`     |
+| `set`    | `set`     | Specifies the language code based on HTML `lang` attribute | ``${Lowercase<string>}${Lowercase<string>}${Lowercase<string>}` \| `${Lowercase<string>}${Lowercase<string>}` \| undefined` | `undefined` |
 
 
 ## Events
 
-| Event                      | Description                                                     | Type                                         |
-| -------------------------- | --------------------------------------------------------------- | -------------------------------------------- |
-| `mdsPrefLanguageNavSelect` | Emits when the component trigger the language selector dropdown | `CustomEvent<MdsPrefLanguageNavEventDetail>` |
+| Event                      | Description                                                     | Type                                      |
+| -------------------------- | --------------------------------------------------------------- | ----------------------------------------- |
+| `mdsPrefLanguageNavSelect` | Emits when the component trigger the language selector dropdown | `CustomEvent<MdsPrefLanguageEventDetail>` |
 
 
 ## Dependencies

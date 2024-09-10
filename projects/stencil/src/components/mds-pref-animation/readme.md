@@ -12,6 +12,13 @@
 | `mode`   | `mode`    | Specifies the preference mode | `"no-preference" \| "reduce" \| "system" \| undefined` | `undefined` |
 
 
+## Events
+
+| Event           | Description                           | Type                                    |
+| --------------- | ------------------------------------- | --------------------------------------- |
+| `mdsPrefChange` | Emits when the component is triggered | `CustomEvent<MdsPrefChangeEventDetail>` |
+
+
 ## Dependencies
 
 ### Depends on
