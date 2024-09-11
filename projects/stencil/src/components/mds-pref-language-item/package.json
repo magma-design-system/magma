@@ -25,7 +25,7 @@
   },
   "dependencies": {
     "@maggioli-design-system/styles": "15.3.0",
-    "@maggioli-design-system/mds-button": "4.4.0",
+    "@maggioli-design-system/mds-button": "4.18.0",
     "@stencil/core": "4.21.0"
   },
   "license": "MIT",
@@ -36,14 +36,14 @@
   },
   "contributors": [
     {
-        "name": "Nicola Tamburini",
-        "email": "nicola.tamburini@maggioli.it",
-        "role": "Software Engineer"
+      "name": "Nicola Tamburini",
+      "email": "nicola.tamburini@maggioli.it",
+      "role": "Software Engineer"
     },
     {
-        "name": "Vittorio Vittori",
-        "email": "vittorio.vittori@maggioli.it",
-        "role": "Product Designer"
+      "name": "Vittorio Vittori",
+      "email": "vittorio.vittori@maggioli.it",
+      "role": "Product Designer"
     }
   ]
 }

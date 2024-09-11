@@ -26,7 +26,7 @@
   "dependencies": {
     "@maggioli-design-system/styles": "15.3.0",
     "@maggioli-design-system/mds-pref-animation": "1.0.0",
-    "@maggioli-design-system/mds-pref-consumtion": "1.0.0",
+    "@maggioli-design-system/mds-pref-consumption": "1.0.0",
     "@maggioli-design-system/mds-pref-contrast": "1.0.0",
     "@maggioli-design-system/mds-pref-language": "1.0.0",
     "@maggioli-design-system/mds-pref-theme": "1.0.0",
