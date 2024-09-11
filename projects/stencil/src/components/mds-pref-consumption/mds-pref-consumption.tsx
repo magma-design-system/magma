@@ -1,9 +1,12 @@
-import { Component, Host, Element, h, Prop, Watch } from '@stencil/core'
+import { Component, Host, Element, Event, EventEmitter, h, Prop, Watch } from '@stencil/core'
+import { MdsPrefChangeEventDetail } from '@event/preference'
 import mggConsumptionLow from '@icon/mgg/consumption-low.svg'
 import mggConsumptionMedium from '@icon/mgg/consumption-medium.svg'
 import mggConsumptionHigh from '@icon/mgg/consumption-high.svg'
 import { Locale } from '@common/locale'
+import localeEl from './meta/locale.el.json'
 import localeEn from './meta/locale.en.json'
+import localeEs from './meta/locale.es.json'
 import localeIt from './meta/locale.it.json'
 import { ConsumptionModeType } from '@type/preference'
 
@@ -16,7 +19,9 @@ export class MdsPrefContrast {
   @Element() private element: HTMLMdsPrefContrastElement
   private defaultMode: ConsumptionModeType = 'high'
   private t:Locale = new Locale({
+    el: localeEl,
     en: localeEn,
+    es: localeEs,
     it: localeIt,
   })
 
@@ -24,6 +29,11 @@ export class MdsPrefContrast {
    * Specifies the preference mode
    */
   @Prop({ mutable: true, reflect: true }) mode?: ConsumptionModeType
+
+  /**
+   * Emits when the component is triggered
+   */
+  @Event({ eventName: 'mdsPrefChange' }) prefChangeEvent: EventEmitter<MdsPrefChangeEventDetail>
 
   private consumption = {
     high: {
@@ -49,6 +59,7 @@ export class MdsPrefContrast {
   }
 
   private setConsumption = (mode: ConsumptionModeType): void => {
+    this.prefChangeEvent.emit({ preference: 'consumption' })
     this.mode = mode
     localStorage.setItem('mds-pref-consumption', this.mode)
     if (document) {

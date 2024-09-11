@@ -53,7 +53,7 @@ This is a web-component from Maggioli Design System [Magma](https://magma.maggio
 | `autoPlacement`       | `auto-placement` | If set, the component will be placed automatically near it's caller.                              | `boolean`                                                                                                                                                            | `false`     |
 | `backdrop`            | `backdrop`       | Specifies if the component has a backdrop background                                              | `boolean`                                                                                                                                                            | `false`     |
 | `flip`                | `flip`           | Specifies the placement of the component if no space is available where it is placed.             | `boolean`                                                                                                                                                            | `false`     |
-| `interaction`         | `interaction`    | Specifies if the component is triggered from the caller on mouseover or click event               | `"click" \| "mouseover" \| undefined`                                                                                                                                | `'click'`   |
+| `interaction`         | `interaction`    | Specifies if the component is triggered from the caller on mouseover or click event               | `"click" \| "mouseover" \| "none" \| undefined`                                                                                                                      | `'click'`   |
 | `offset`              | `offset`         | Sets distance between the dropdown and the caller.                                                | `number`                                                                                                                                                             | `24`        |
 | `placement`           | `placement`      | Specifies where the component should be placed relative to the caller.                            | `"bottom" \| "bottom-end" \| "bottom-start" \| "left" \| "left-end" \| "left-start" \| "right" \| "right-end" \| "right-start" \| "top" \| "top-end" \| "top-start"` | `'bottom'`  |
 | `shift`               | `shift`          | If set, the component will be kept inside the viewport.                                           | `boolean`                                                                                                                                                            | `true`      |
@@ -97,6 +97,19 @@ This is a web-component from Maggioli Design System [Magma](https://magma.maggio
 | `--mds-dropdown-transform-to`      | Sets the to animation transform of the dropdown.                                                                    |
 | `--mds-dropdown-z-index`           | Sets the z-index of the component.                                                                                  |
 
+
+## Dependencies
+
+### Used by
+
+ - [mds-pref-language](../mds-pref-language)
+
+### Graph
+```mermaid
+graph TD;
+  mds-pref-language --> mds-dropdown
+  style mds-dropdown fill:#f9f,stroke:#333,stroke-width:4px
+```
 
 ----------------------------------------------
 

@@ -13,6 +13,13 @@
 | `transition` | `transition` | Specifies the transition of switching from a theme to another one | `"flash" \| "none" \| "smooth"`              | `'smooth'`  |
 
 
+## Events
+
+| Event           | Description                           | Type                                    |
+| --------------- | ------------------------------------- | --------------------------------------- |
+| `mdsPrefChange` | Emits when the component is triggered | `CustomEvent<MdsPrefChangeEventDetail>` |
+
+
 ## Dependencies
 
 ### Depends on

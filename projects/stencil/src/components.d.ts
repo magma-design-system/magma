@@ -47,8 +47,11 @@ import { ModalPositionType } from "./components/mds-modal/meta/types";
 import { StrategyType } from "./components/mds-notification/meta/types";
 import { MdsPaginatorEventDetail } from "./components/mds-paginator/meta/event-detail";
 import { AnimationModeType } from "./components/mds-pref-animation/meta/types";
+import { MdsPrefChangeEventDetail } from "@event/preference";
 import { ConsumptionModeType } from "@type/preference";
 import { ContrastModeType } from "./components/mds-pref-contrast/meta/types";
+import { LanguageType } from "@type/language";
+import { MdsPrefLanguageEventDetail } from "@event/language";
 import { ThemeModeType, ThemeTransitionType } from "./components/mds-pref-theme/meta/types";
 import { PriceTableFeaturesCellType } from "./components/mds-price-table-features-cell/meta/types";
 import { DirectionType } from "./components/mds-progress/meta/types";
@@ -105,8 +108,11 @@ export { ModalPositionType } from "./components/mds-modal/meta/types";
 export { StrategyType } from "./components/mds-notification/meta/types";
 export { MdsPaginatorEventDetail } from "./components/mds-paginator/meta/event-detail";
 export { AnimationModeType } from "./components/mds-pref-animation/meta/types";
+export { MdsPrefChangeEventDetail } from "@event/preference";
 export { ConsumptionModeType } from "@type/preference";
 export { ContrastModeType } from "./components/mds-pref-contrast/meta/types";
+export { LanguageType } from "@type/language";
+export { MdsPrefLanguageEventDetail } from "@event/language";
 export { ThemeModeType, ThemeTransitionType } from "./components/mds-pref-theme/meta/types";
 export { PriceTableFeaturesCellType } from "./components/mds-price-table-features-cell/meta/types";
 export { DirectionType } from "./components/mds-progress/meta/types";
@@ -1229,6 +1235,32 @@ export namespace Components {
          */
         "mode"?: ContrastModeType;
     }
+    interface MdsPrefLanguage {
+        /**
+          * /**   Specifies the language code based on HTML `lang` attribute
+         */
+        "set": LanguageType;
+    }
+    interface MdsPrefLanguageItem {
+        /**
+          * Specifies the language code based on HTML `lang` attribute
+         */
+        "code"?: LanguageType;
+        /**
+          * Specifies if the element is selected
+         */
+        "selected"?: boolean;
+    }
+    interface MdsPrefLanguageNav {
+        /**
+          * Specifies if the element is active or not
+         */
+        "active": boolean;
+        /**
+          * Specifies the language code based on HTML `lang` attribute
+         */
+        "set"?: LanguageType;
+    }
     interface MdsPrefTheme {
         /**
           * Specifies the preference mode
@@ -1706,6 +1738,34 @@ export interface MdsNoteCustomEvent<T> extends CustomEvent<T> {
 export interface MdsPaginatorCustomEvent<T> extends CustomEvent<T> {
     detail: T;
     target: HTMLMdsPaginatorElement;
+}
+export interface MdsPrefAnimationCustomEvent<T> extends CustomEvent<T> {
+    detail: T;
+    target: HTMLMdsPrefAnimationElement;
+}
+export interface MdsPrefConsumptionCustomEvent<T> extends CustomEvent<T> {
+    detail: T;
+    target: HTMLMdsPrefConsumptionElement;
+}
+export interface MdsPrefContrastCustomEvent<T> extends CustomEvent<T> {
+    detail: T;
+    target: HTMLMdsPrefContrastElement;
+}
+export interface MdsPrefLanguageCustomEvent<T> extends CustomEvent<T> {
+    detail: T;
+    target: HTMLMdsPrefLanguageElement;
+}
+export interface MdsPrefLanguageItemCustomEvent<T> extends CustomEvent<T> {
+    detail: T;
+    target: HTMLMdsPrefLanguageItemElement;
+}
+export interface MdsPrefLanguageNavCustomEvent<T> extends CustomEvent<T> {
+    detail: T;
+    target: HTMLMdsPrefLanguageNavElement;
+}
+export interface MdsPrefThemeCustomEvent<T> extends CustomEvent<T> {
+    detail: T;
+    target: HTMLMdsPrefThemeElement;
 }
 export interface MdsPushNotificationCustomEvent<T> extends CustomEvent<T> {
     detail: T;
@@ -2372,25 +2432,121 @@ declare global {
         prototype: HTMLMdsPrefElement;
         new (): HTMLMdsPrefElement;
     };
+    interface HTMLMdsPrefAnimationElementEventMap {
+        "mdsPrefChange": MdsPrefChangeEventDetail;
+    }
     interface HTMLMdsPrefAnimationElement extends Components.MdsPrefAnimation, HTMLStencilElement {
+        addEventListener<K extends keyof HTMLMdsPrefAnimationElementEventMap>(type: K, listener: (this: HTMLMdsPrefAnimationElement, ev: MdsPrefAnimationCustomEvent<HTMLMdsPrefAnimationElementEventMap[K]>) => any, options?: boolean | AddEventListenerOptions): void;
+        addEventListener<K extends keyof DocumentEventMap>(type: K, listener: (this: Document, ev: DocumentEventMap[K]) => any, options?: boolean | AddEventListenerOptions): void;
+        addEventListener<K extends keyof HTMLElementEventMap>(type: K, listener: (this: HTMLElement, ev: HTMLElementEventMap[K]) => any, options?: boolean | AddEventListenerOptions): void;
+        addEventListener(type: string, listener: EventListenerOrEventListenerObject, options?: boolean | AddEventListenerOptions): void;
+        removeEventListener<K extends keyof HTMLMdsPrefAnimationElementEventMap>(type: K, listener: (this: HTMLMdsPrefAnimationElement, ev: MdsPrefAnimationCustomEvent<HTMLMdsPrefAnimationElementEventMap[K]>) => any, options?: boolean | EventListenerOptions): void;
+        removeEventListener<K extends keyof DocumentEventMap>(type: K, listener: (this: Document, ev: DocumentEventMap[K]) => any, options?: boolean | EventListenerOptions): void;
+        removeEventListener<K extends keyof HTMLElementEventMap>(type: K, listener: (this: HTMLElement, ev: HTMLElementEventMap[K]) => any, options?: boolean | EventListenerOptions): void;
+        removeEventListener(type: string, listener: EventListenerOrEventListenerObject, options?: boolean | EventListenerOptions): void;
     }
     var HTMLMdsPrefAnimationElement: {
         prototype: HTMLMdsPrefAnimationElement;
         new (): HTMLMdsPrefAnimationElement;
     };
+    interface HTMLMdsPrefConsumptionElementEventMap {
+        "mdsPrefChange": MdsPrefChangeEventDetail;
+    }
     interface HTMLMdsPrefConsumptionElement extends Components.MdsPrefConsumption, HTMLStencilElement {
+        addEventListener<K extends keyof HTMLMdsPrefConsumptionElementEventMap>(type: K, listener: (this: HTMLMdsPrefConsumptionElement, ev: MdsPrefConsumptionCustomEvent<HTMLMdsPrefConsumptionElementEventMap[K]>) => any, options?: boolean | AddEventListenerOptions): void;
+        addEventListener<K extends keyof DocumentEventMap>(type: K, listener: (this: Document, ev: DocumentEventMap[K]) => any, options?: boolean | AddEventListenerOptions): void;
+        addEventListener<K extends keyof HTMLElementEventMap>(type: K, listener: (this: HTMLElement, ev: HTMLElementEventMap[K]) => any, options?: boolean | AddEventListenerOptions): void;
+        addEventListener(type: string, listener: EventListenerOrEventListenerObject, options?: boolean | AddEventListenerOptions): void;
+        removeEventListener<K extends keyof HTMLMdsPrefConsumptionElementEventMap>(type: K, listener: (this: HTMLMdsPrefConsumptionElement, ev: MdsPrefConsumptionCustomEvent<HTMLMdsPrefConsumptionElementEventMap[K]>) => any, options?: boolean | EventListenerOptions): void;
+        removeEventListener<K extends keyof DocumentEventMap>(type: K, listener: (this: Document, ev: DocumentEventMap[K]) => any, options?: boolean | EventListenerOptions): void;
+        removeEventListener<K extends keyof HTMLElementEventMap>(type: K, listener: (this: HTMLElement, ev: HTMLElementEventMap[K]) => any, options?: boolean | EventListenerOptions): void;
+        removeEventListener(type: string, listener: EventListenerOrEventListenerObject, options?: boolean | EventListenerOptions): void;
     }
     var HTMLMdsPrefConsumptionElement: {
         prototype: HTMLMdsPrefConsumptionElement;
         new (): HTMLMdsPrefConsumptionElement;
     };
+    interface HTMLMdsPrefContrastElementEventMap {
+        "mdsPrefChange": MdsPrefChangeEventDetail;
+    }
     interface HTMLMdsPrefContrastElement extends Components.MdsPrefContrast, HTMLStencilElement {
+        addEventListener<K extends keyof HTMLMdsPrefContrastElementEventMap>(type: K, listener: (this: HTMLMdsPrefContrastElement, ev: MdsPrefContrastCustomEvent<HTMLMdsPrefContrastElementEventMap[K]>) => any, options?: boolean | AddEventListenerOptions): void;
+        addEventListener<K extends keyof DocumentEventMap>(type: K, listener: (this: Document, ev: DocumentEventMap[K]) => any, options?: boolean | AddEventListenerOptions): void;
+        addEventListener<K extends keyof HTMLElementEventMap>(type: K, listener: (this: HTMLElement, ev: HTMLElementEventMap[K]) => any, options?: boolean | AddEventListenerOptions): void;
+        addEventListener(type: string, listener: EventListenerOrEventListenerObject, options?: boolean | AddEventListenerOptions): void;
+        removeEventListener<K extends keyof HTMLMdsPrefContrastElementEventMap>(type: K, listener: (this: HTMLMdsPrefContrastElement, ev: MdsPrefContrastCustomEvent<HTMLMdsPrefContrastElementEventMap[K]>) => any, options?: boolean | EventListenerOptions): void;
+        removeEventListener<K extends keyof DocumentEventMap>(type: K, listener: (this: Document, ev: DocumentEventMap[K]) => any, options?: boolean | EventListenerOptions): void;
+        removeEventListener<K extends keyof HTMLElementEventMap>(type: K, listener: (this: HTMLElement, ev: HTMLElementEventMap[K]) => any, options?: boolean | EventListenerOptions): void;
+        removeEventListener(type: string, listener: EventListenerOrEventListenerObject, options?: boolean | EventListenerOptions): void;
     }
     var HTMLMdsPrefContrastElement: {
         prototype: HTMLMdsPrefContrastElement;
         new (): HTMLMdsPrefContrastElement;
     };
+    interface HTMLMdsPrefLanguageElementEventMap {
+        "mdsPrefLanguageChange": MdsPrefLanguageEventDetail;
+        "mdsPrefChange": MdsPrefChangeEventDetail;
+    }
+    interface HTMLMdsPrefLanguageElement extends Components.MdsPrefLanguage, HTMLStencilElement {
+        addEventListener<K extends keyof HTMLMdsPrefLanguageElementEventMap>(type: K, listener: (this: HTMLMdsPrefLanguageElement, ev: MdsPrefLanguageCustomEvent<HTMLMdsPrefLanguageElementEventMap[K]>) => any, options?: boolean | AddEventListenerOptions): void;
+        addEventListener<K extends keyof DocumentEventMap>(type: K, listener: (this: Document, ev: DocumentEventMap[K]) => any, options?: boolean | AddEventListenerOptions): void;
+        addEventListener<K extends keyof HTMLElementEventMap>(type: K, listener: (this: HTMLElement, ev: HTMLElementEventMap[K]) => any, options?: boolean | AddEventListenerOptions): void;
+        addEventListener(type: string, listener: EventListenerOrEventListenerObject, options?: boolean | AddEventListenerOptions): void;
+        removeEventListener<K extends keyof HTMLMdsPrefLanguageElementEventMap>(type: K, listener: (this: HTMLMdsPrefLanguageElement, ev: MdsPrefLanguageCustomEvent<HTMLMdsPrefLanguageElementEventMap[K]>) => any, options?: boolean | EventListenerOptions): void;
+        removeEventListener<K extends keyof DocumentEventMap>(type: K, listener: (this: Document, ev: DocumentEventMap[K]) => any, options?: boolean | EventListenerOptions): void;
+        removeEventListener<K extends keyof HTMLElementEventMap>(type: K, listener: (this: HTMLElement, ev: HTMLElementEventMap[K]) => any, options?: boolean | EventListenerOptions): void;
+        removeEventListener(type: string, listener: EventListenerOrEventListenerObject, options?: boolean | EventListenerOptions): void;
+    }
+    var HTMLMdsPrefLanguageElement: {
+        prototype: HTMLMdsPrefLanguageElement;
+        new (): HTMLMdsPrefLanguageElement;
+    };
+    interface HTMLMdsPrefLanguageItemElementEventMap {
+        "mdsPrefLanguageItemSelect": MdsPrefLanguageEventDetail;
+    }
+    interface HTMLMdsPrefLanguageItemElement extends Components.MdsPrefLanguageItem, HTMLStencilElement {
+        addEventListener<K extends keyof HTMLMdsPrefLanguageItemElementEventMap>(type: K, listener: (this: HTMLMdsPrefLanguageItemElement, ev: MdsPrefLanguageItemCustomEvent<HTMLMdsPrefLanguageItemElementEventMap[K]>) => any, options?: boolean | AddEventListenerOptions): void;
+        addEventListener<K extends keyof DocumentEventMap>(type: K, listener: (this: Document, ev: DocumentEventMap[K]) => any, options?: boolean | AddEventListenerOptions): void;
+        addEventListener<K extends keyof HTMLElementEventMap>(type: K, listener: (this: HTMLElement, ev: HTMLElementEventMap[K]) => any, options?: boolean | AddEventListenerOptions): void;
+        addEventListener(type: string, listener: EventListenerOrEventListenerObject, options?: boolean | AddEventListenerOptions): void;
+        removeEventListener<K extends keyof HTMLMdsPrefLanguageItemElementEventMap>(type: K, listener: (this: HTMLMdsPrefLanguageItemElement, ev: MdsPrefLanguageItemCustomEvent<HTMLMdsPrefLanguageItemElementEventMap[K]>) => any, options?: boolean | EventListenerOptions): void;
+        removeEventListener<K extends keyof DocumentEventMap>(type: K, listener: (this: Document, ev: DocumentEventMap[K]) => any, options?: boolean | EventListenerOptions): void;
+        removeEventListener<K extends keyof HTMLElementEventMap>(type: K, listener: (this: HTMLElement, ev: HTMLElementEventMap[K]) => any, options?: boolean | EventListenerOptions): void;
+        removeEventListener(type: string, listener: EventListenerOrEventListenerObject, options?: boolean | EventListenerOptions): void;
+    }
+    var HTMLMdsPrefLanguageItemElement: {
+        prototype: HTMLMdsPrefLanguageItemElement;
+        new (): HTMLMdsPrefLanguageItemElement;
+    };
+    interface HTMLMdsPrefLanguageNavElementEventMap {
+        "mdsPrefLanguageNavSelect": MdsPrefLanguageEventDetail;
+    }
+    interface HTMLMdsPrefLanguageNavElement extends Components.MdsPrefLanguageNav, HTMLStencilElement {
+        addEventListener<K extends keyof HTMLMdsPrefLanguageNavElementEventMap>(type: K, listener: (this: HTMLMdsPrefLanguageNavElement, ev: MdsPrefLanguageNavCustomEvent<HTMLMdsPrefLanguageNavElementEventMap[K]>) => any, options?: boolean | AddEventListenerOptions): void;
+        addEventListener<K extends keyof DocumentEventMap>(type: K, listener: (this: Document, ev: DocumentEventMap[K]) => any, options?: boolean | AddEventListenerOptions): void;
+        addEventListener<K extends keyof HTMLElementEventMap>(type: K, listener: (this: HTMLElement, ev: HTMLElementEventMap[K]) => any, options?: boolean | AddEventListenerOptions): void;
+        addEventListener(type: string, listener: EventListenerOrEventListenerObject, options?: boolean | AddEventListenerOptions): void;
+        removeEventListener<K extends keyof HTMLMdsPrefLanguageNavElementEventMap>(type: K, listener: (this: HTMLMdsPrefLanguageNavElement, ev: MdsPrefLanguageNavCustomEvent<HTMLMdsPrefLanguageNavElementEventMap[K]>) => any, options?: boolean | EventListenerOptions): void;
+        removeEventListener<K extends keyof DocumentEventMap>(type: K, listener: (this: Document, ev: DocumentEventMap[K]) => any, options?: boolean | EventListenerOptions): void;
+        removeEventListener<K extends keyof HTMLElementEventMap>(type: K, listener: (this: HTMLElement, ev: HTMLElementEventMap[K]) => any, options?: boolean | EventListenerOptions): void;
+        removeEventListener(type: string, listener: EventListenerOrEventListenerObject, options?: boolean | EventListenerOptions): void;
+    }
+    var HTMLMdsPrefLanguageNavElement: {
+        prototype: HTMLMdsPrefLanguageNavElement;
+        new (): HTMLMdsPrefLanguageNavElement;
+    };
+    interface HTMLMdsPrefThemeElementEventMap {
+        "mdsPrefChange": MdsPrefChangeEventDetail;
+    }
     interface HTMLMdsPrefThemeElement extends Components.MdsPrefTheme, HTMLStencilElement {
+        addEventListener<K extends keyof HTMLMdsPrefThemeElementEventMap>(type: K, listener: (this: HTMLMdsPrefThemeElement, ev: MdsPrefThemeCustomEvent<HTMLMdsPrefThemeElementEventMap[K]>) => any, options?: boolean | AddEventListenerOptions): void;
+        addEventListener<K extends keyof DocumentEventMap>(type: K, listener: (this: Document, ev: DocumentEventMap[K]) => any, options?: boolean | AddEventListenerOptions): void;
+        addEventListener<K extends keyof HTMLElementEventMap>(type: K, listener: (this: HTMLElement, ev: HTMLElementEventMap[K]) => any, options?: boolean | AddEventListenerOptions): void;
+        addEventListener(type: string, listener: EventListenerOrEventListenerObject, options?: boolean | AddEventListenerOptions): void;
+        removeEventListener<K extends keyof HTMLMdsPrefThemeElementEventMap>(type: K, listener: (this: HTMLMdsPrefThemeElement, ev: MdsPrefThemeCustomEvent<HTMLMdsPrefThemeElementEventMap[K]>) => any, options?: boolean | EventListenerOptions): void;
+        removeEventListener<K extends keyof DocumentEventMap>(type: K, listener: (this: Document, ev: DocumentEventMap[K]) => any, options?: boolean | EventListenerOptions): void;
+        removeEventListener<K extends keyof HTMLElementEventMap>(type: K, listener: (this: HTMLElement, ev: HTMLElementEventMap[K]) => any, options?: boolean | EventListenerOptions): void;
+        removeEventListener(type: string, listener: EventListenerOrEventListenerObject, options?: boolean | EventListenerOptions): void;
     }
     var HTMLMdsPrefThemeElement: {
         prototype: HTMLMdsPrefThemeElement;
@@ -2754,6 +2910,9 @@ declare global {
         "mds-pref-animation": HTMLMdsPrefAnimationElement;
         "mds-pref-consumption": HTMLMdsPrefConsumptionElement;
         "mds-pref-contrast": HTMLMdsPrefContrastElement;
+        "mds-pref-language": HTMLMdsPrefLanguageElement;
+        "mds-pref-language-item": HTMLMdsPrefLanguageItemElement;
+        "mds-pref-language-nav": HTMLMdsPrefLanguageNavElement;
         "mds-pref-theme": HTMLMdsPrefThemeElement;
         "mds-price-table": HTMLMdsPriceTableElement;
         "mds-price-table-features": HTMLMdsPriceTableFeaturesElement;
@@ -4020,24 +4179,82 @@ declare namespace LocalJSX {
           * Specifies the preference mode
          */
         "mode"?: AnimationModeType;
+        /**
+          * Emits when the component is triggered
+         */
+        "onMdsPrefChange"?: (event: MdsPrefAnimationCustomEvent<MdsPrefChangeEventDetail>) => void;
     }
     interface MdsPrefConsumption {
         /**
           * Specifies the preference mode
          */
         "mode"?: ConsumptionModeType;
+        /**
+          * Emits when the component is triggered
+         */
+        "onMdsPrefChange"?: (event: MdsPrefConsumptionCustomEvent<MdsPrefChangeEventDetail>) => void;
     }
     interface MdsPrefContrast {
         /**
           * Specifies the preference mode
          */
         "mode"?: ContrastModeType;
+        /**
+          * Emits when the component is triggered
+         */
+        "onMdsPrefChange"?: (event: MdsPrefContrastCustomEvent<MdsPrefChangeEventDetail>) => void;
+    }
+    interface MdsPrefLanguage {
+        /**
+          * Emits when the component is triggered
+         */
+        "onMdsPrefChange"?: (event: MdsPrefLanguageCustomEvent<MdsPrefChangeEventDetail>) => void;
+        /**
+          * Emits when the component changes the language selected from the click event of the dropdown list item
+         */
+        "onMdsPrefLanguageChange"?: (event: MdsPrefLanguageCustomEvent<MdsPrefLanguageEventDetail>) => void;
+        /**
+          * /**   Specifies the language code based on HTML `lang` attribute
+         */
+        "set"?: LanguageType;
+    }
+    interface MdsPrefLanguageItem {
+        /**
+          * Specifies the language code based on HTML `lang` attribute
+         */
+        "code"?: LanguageType;
+        /**
+          * Emits when the component trigger the language
+         */
+        "onMdsPrefLanguageItemSelect"?: (event: MdsPrefLanguageItemCustomEvent<MdsPrefLanguageEventDetail>) => void;
+        /**
+          * Specifies if the element is selected
+         */
+        "selected"?: boolean;
+    }
+    interface MdsPrefLanguageNav {
+        /**
+          * Specifies if the element is active or not
+         */
+        "active"?: boolean;
+        /**
+          * Emits when the component trigger the language selector dropdown
+         */
+        "onMdsPrefLanguageNavSelect"?: (event: MdsPrefLanguageNavCustomEvent<MdsPrefLanguageEventDetail>) => void;
+        /**
+          * Specifies the language code based on HTML `lang` attribute
+         */
+        "set"?: LanguageType;
     }
     interface MdsPrefTheme {
         /**
           * Specifies the preference mode
          */
         "mode"?: ThemeModeType;
+        /**
+          * Emits when the component is triggered
+         */
+        "onMdsPrefChange"?: (event: MdsPrefThemeCustomEvent<MdsPrefChangeEventDetail>) => void;
         /**
           * Specifies the transition of switching from a theme to another one
          */
@@ -4498,6 +4715,9 @@ declare namespace LocalJSX {
         "mds-pref-animation": MdsPrefAnimation;
         "mds-pref-consumption": MdsPrefConsumption;
         "mds-pref-contrast": MdsPrefContrast;
+        "mds-pref-language": MdsPrefLanguage;
+        "mds-pref-language-item": MdsPrefLanguageItem;
+        "mds-pref-language-nav": MdsPrefLanguageNav;
         "mds-pref-theme": MdsPrefTheme;
         "mds-price-table": MdsPriceTable;
         "mds-price-table-features": MdsPriceTableFeatures;
@@ -4592,6 +4812,9 @@ declare module "@stencil/core" {
             "mds-pref-animation": LocalJSX.MdsPrefAnimation & JSXBase.HTMLAttributes<HTMLMdsPrefAnimationElement>;
             "mds-pref-consumption": LocalJSX.MdsPrefConsumption & JSXBase.HTMLAttributes<HTMLMdsPrefConsumptionElement>;
             "mds-pref-contrast": LocalJSX.MdsPrefContrast & JSXBase.HTMLAttributes<HTMLMdsPrefContrastElement>;
+            "mds-pref-language": LocalJSX.MdsPrefLanguage & JSXBase.HTMLAttributes<HTMLMdsPrefLanguageElement>;
+            "mds-pref-language-item": LocalJSX.MdsPrefLanguageItem & JSXBase.HTMLAttributes<HTMLMdsPrefLanguageItemElement>;
+            "mds-pref-language-nav": LocalJSX.MdsPrefLanguageNav & JSXBase.HTMLAttributes<HTMLMdsPrefLanguageNavElement>;
             "mds-pref-theme": LocalJSX.MdsPrefTheme & JSXBase.HTMLAttributes<HTMLMdsPrefThemeElement>;
             "mds-price-table": LocalJSX.MdsPriceTable & JSXBase.HTMLAttributes<HTMLMdsPriceTableElement>;
             "mds-price-table-features": LocalJSX.MdsPriceTableFeatures & JSXBase.HTMLAttributes<HTMLMdsPriceTableFeaturesElement>;

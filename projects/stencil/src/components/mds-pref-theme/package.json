@@ -24,10 +24,10 @@
     "test": "stencil test --spec --e2e"
   },
   "dependencies": {
-    "@maggioli-design-system/styles": "15.3.0",
     "@maggioli-design-system/mds-tab": "6.8.1",
-    "@stencil/core": "4.21.0",
-    "clsx": "2.1.0"
+    "@maggioli-design-system/mds-text": "4.4.0",
+    "@maggioli-design-system/styles": "15.3.0",
+    "@stencil/core": "4.21.0"
   },
   "license": "MIT",
   "author": {

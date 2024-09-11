@@ -1,12 +1,15 @@
-import { Component, Host, Element, h, Prop, Watch } from '@stencil/core'
+import { Component, Host, Element, Event, EventEmitter, h, Prop, Watch } from '@stencil/core'
 import miBaselineContrast from '@icon/mi/baseline/contrast.svg'
 import miOutlineAutoAwesome from '@icon/mi/outline/auto-awesome.svg'
 import miBaselineAutoAwesome from '@icon/mi/baseline/auto-awesome.svg'
 import miBaselineSettings from '@icon/mi/baseline/settings.svg'
 import { Locale } from '@common/locale'
+import localeEl from './meta/locale.el.json'
 import localeEn from './meta/locale.en.json'
+import localeEs from './meta/locale.es.json'
 import localeIt from './meta/locale.it.json'
 import { ContrastModeType } from './meta/types'
+import { MdsPrefChangeEventDetail } from '@event/preference'
 
 @Component({
   tag: 'mds-pref-contrast',
@@ -17,7 +20,9 @@ export class MdsPrefContrast {
   @Element() private element: HTMLMdsPrefContrastElement
   private defaultMode: ContrastModeType = 'system'
   private t:Locale = new Locale({
+    el: localeEl,
     en: localeEn,
+    es: localeEs,
     it: localeIt,
   })
 
@@ -32,6 +37,11 @@ export class MdsPrefContrast {
    * Specifies the preference mode
    */
   @Prop({ mutable: true, reflect: true }) mode?: ContrastModeType
+
+  /**
+   * Emits when the component is triggered
+   */
+  @Event({ eventName: 'mdsPrefChange' }) prefChangeEvent: EventEmitter<MdsPrefChangeEventDetail>
 
   private contrast = {
     more: {
@@ -73,6 +83,7 @@ export class MdsPrefContrast {
   }
 
   private setContrast = (mode: ContrastModeType): void => {
+    this.prefChangeEvent.emit({ preference: 'contrast' })
     this.rollbackContrast()
     this.mode = mode
     localStorage.setItem('mds-pref-contrast', this.mode)
@@ -97,7 +108,7 @@ export class MdsPrefContrast {
 
   render () {
     return (
-      <Host >
+      <Host>
         <mds-text class="info" typography="caption"><b>{this.t.get('label')}</b> {this.t.get(this.contrast[this.mode ?? this.defaultMode].label)}</mds-text>
         <mds-tab>
           <mds-tab-item selected={this.mode === 'more'} onClick={() => { this.setContrast('more') }} class="item item--more" icon={miBaselineContrast}></mds-tab-item>

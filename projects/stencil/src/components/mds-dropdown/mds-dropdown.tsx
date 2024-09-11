@@ -424,6 +424,22 @@ export class MdsDropdown {
     setAttributeIfEmpty(this.host, 'aria-labelledby', this.target)
   }
 
+  private setInteractionBehaviour = (): void => {
+
+    if (this.interaction === 'none') {
+      return
+    }
+
+    if (this.interaction === 'click') {
+      this.caller.addEventListener('click', this.callerOnClick.bind(this))
+    }
+
+    if (this.interaction === 'mouseover') {
+      this.caller.addEventListener('mouseover', this.callerOnMouseOver.bind(this))
+      this.host.addEventListener('mouseover', this.handleCloseDropdownMouseLeave.bind(this))
+    }
+  }
+
   componentDidLoad (): void {
     this.updateCSSCustomProps()
     document.addEventListener('click', this.handleCloseDropdown)
@@ -437,20 +453,13 @@ export class MdsDropdown {
     this.caller = caller
     this.setAriaAttributes()
 
-    if (this.interaction === 'click') {
-      this.caller.addEventListener('click', this.callerOnClick.bind(this))
-    }
-
-    if (this.interaction === 'mouseover') {
-      this.caller.addEventListener('mouseover', this.callerOnMouseOver.bind(this))
-      this.host.addEventListener('mouseover', this.handleCloseDropdownMouseLeave.bind(this))
-    }
-
     this.km.addElement(this.host)
     this.km.attachEscapeBehavior(() => this.handleVisibility(false))
 
     this.backdropChanged(this.backdrop)
     this.updatePosition()
+
+    this.setInteractionBehaviour()
 
     if (!this.cleanupAutoUpdate) {
       this.cleanupAutoUpdate = autoUpdate(this.caller, this.host, this.updatePosition)

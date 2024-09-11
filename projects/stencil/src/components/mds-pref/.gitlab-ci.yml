@@ -1,0 +1,25 @@
+.base-pref:
+  variables:
+    COMPONENT: mds-pref
+
+# ISOLATE
+pref-isolate:
+  extends: [.base-isolate, .base-pref]
+  dependencies: [base-stencil-build]
+
+# TEST
+pref-publish-test:
+  extends: [.base-stencil-publish-test, .base-pref]
+  dependencies: [base-stencil-build, pref-isolate]
+
+# PUBLISH
+pref-publish:
+  extends: [.base-stencil-publish, .base-pref]
+  dependencies: [base-stencil-build, pref-isolate]
+  needs: [base-stencil-build, pref-isolate, pref-publish-test]
+
+# INSTALL TEST
+pref-install-test:
+  extends: [.base-stencil-install-test, .base-pref]
+  dependencies: [base-stencil-build, pref-isolate]
+  needs: [base-stencil-build, pref-isolate, pref-publish]

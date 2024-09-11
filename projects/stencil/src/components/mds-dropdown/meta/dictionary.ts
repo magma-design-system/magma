@@ -1,6 +1,7 @@
 
 const dropdownInteractionDictionary = [
   'click',
+  'none',
   'mouseover',
 ]
 

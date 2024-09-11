@@ -18,28 +18,14 @@ const AccessibilityPanel = () => {
     }
   }
 
-  const isSelected = (preference, value) => {
-    if (window) {
-      return window.localStorage.getItem(`mds-pref-${preference}`) === value
-    }
-    return false
-  }
-
-  const isLangSelected = (lang) => {
-    if(window) {
-      return window.localStorage.getItem('language') === lang
-    }
-    return false
-  }
-
   const setLanguage = (lang) => {
     if (window) {
-      window.localStorage.setItem('language', lang)
+      window.localStorage.setItem('mds-pref-language', lang)
     }
     if (document) {
       const iframe = document.getElementById('storybook-preview-iframe')
       const iframeDocument = iframe.contentDocument || iframe.contentWindow.document
-      iframeDocument.querySelector('html').setAttribute('lang', window.localStorage.getItem('language') ?? 'it')
+      iframeDocument.querySelector('html').setAttribute('lang', window.localStorage.getItem('mds-pref-language') ?? 'it')
     }
   }
 
@@ -48,51 +34,56 @@ const AccessibilityPanel = () => {
       <Form.Field label="Theme">
         <Form.Select
           name="pref-theme"
+          defaultValue={ window.localStorage.getItem('mds-pref-theme') ?? 'light' }
           onChange={(event) => { setAccessibility('theme', event.target.value, ['light', 'system', 'dark']) }}
         >
-          <option selected={isSelected('theme', 'light')} value="light">Light</option>
-          <option selected={isSelected('theme', 'system')} value="system">System</option>
-          <option selected={isSelected('theme', 'dark')} value="dark">Dark</option>
+          <option value="light">Light</option>
+          <option value="system">System</option>
+          <option value="dark">Dark</option>
         </Form.Select>
       </Form.Field>
       <Form.Field label="Contrast">
         <Form.Select
           name="pref-contrast"
+          defaultValue={ window.localStorage.getItem('mds-pref-contrast') ?? 'no-preference' }
           onChange={(event) => { setAccessibility('contrast', event.target.value, ['more', 'system', 'no-preference']) }}
         >
-          <option selected={isSelected('contrast', 'more')} value="more">More</option>
-          <option selected={isSelected('contrast', 'system')} value="system">System</option>
-          <option selected={isSelected('contrast', 'no-preference')} value="no-preference">No preference</option>
+          <option value="more">More</option>
+          <option value="system">System</option>
+          <option value="no-preference">No preference</option>
         </Form.Select>
       </Form.Field>
       <Form.Field label="Animations">
         <Form.Select
           name="pref-animation"
+          defaultValue={ window.localStorage.getItem('mds-pref-animation') ?? 'no-preference' }
           onChange={(event) => { setAccessibility('animation', event.target.value, ['reduce', 'system', 'no-preference']) }}
         >
-          <option selected={isSelected('animation', 'reduce')} value="reduce">Reduce</option>
-          <option selected={isSelected('animation', 'system')} value="system">System</option>
-          <option selected={isSelected('animation', 'no-preference')} value="no-preference">No preference</option>
+          <option value="reduce">Reduce</option>
+          <option value="system">System</option>
+          <option value="no-preference">No preference</option>
         </Form.Select>
       </Form.Field>
       <Form.Field label="Consumption">
         <Form.Select
           name="pref-consumption"
+          defaultValue={ window.localStorage.getItem('mds-pref-consumption') ?? 'high' }
           onChange={(event) => { setAccessibility('consumption', event.target.value, ['low', 'medium', 'high']) }}
         >
-          <option selected={isSelected('consumption', 'low')} value="low">Low</option>
-          <option selected={isSelected('consumption', 'medium')} value="medium">Medium</option>
-          <option selected={isSelected('consumption', 'high')} value="high">High</option>
+          <option value="low">Low</option>
+          <option value="medium">Medium</option>
+          <option value="high">High</option>
         </Form.Select>
       </Form.Field>
       <Form.Field label="Language">
         <Form.Select
           name="pref-language"
+          defaultValue={ window.localStorage.getItem('mds-pref-language') ?? 'en' }
           onChange={(event) => { setLanguage(event.target.value) }}
         >
-          <option selected={isLangSelected('it')} value="it">Italiano</option>
-          <option selected={isLangSelected('en')} value="en">English</option>
-          <option selected={isLangSelected('br')} value="br">Brasilian (missing example)</option>
+          <option value="it">Italiano</option>
+          <option value="en">English</option>
+          <option value="el">Ελληνικά (Greek)</option>
         </Form.Select>
       </Form.Field>
     </Form>

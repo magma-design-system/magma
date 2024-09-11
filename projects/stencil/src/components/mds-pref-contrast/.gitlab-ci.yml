@@ -1,0 +1,25 @@
+.base-pref-contrast:
+  variables:
+    COMPONENT: mds-pref-contrast
+
+# ISOLATE
+pref-contrast-isolate:
+  extends: [.base-isolate, .base-pref-contrast]
+  dependencies: [base-stencil-build]
+
+# TEST
+pref-contrast-publish-test:
+  extends: [.base-stencil-publish-test, .base-pref-contrast]
+  dependencies: [base-stencil-build, pref-contrast-isolate]
+
+# PUBLISH
+pref-contrast-publish:
+  extends: [.base-stencil-publish, .base-pref-contrast]
+  dependencies: [base-stencil-build, pref-contrast-isolate]
+  needs: [base-stencil-build, pref-contrast-isolate, pref-contrast-publish-test]
+
+# INSTALL TEST
+pref-contrast-install-test:
+  extends: [.base-stencil-install-test, .base-pref-contrast]
+  dependencies: [base-stencil-build, pref-contrast-isolate]
+  needs: [base-stencil-build, pref-contrast-isolate, pref-contrast-publish]
