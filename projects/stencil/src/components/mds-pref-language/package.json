@@ -1,7 +1,7 @@
 {
-  "name": "@maggioli-design-system/mds-pref-theme",
+  "name": "@maggioli-design-system/mds-pref-language",
   "version": "1.0.0",
-  "description": "mds-pref-theme is a web-component from Magma Design System, built with StencilJS, TypeScript, Storybook. It's based on the web-component standard and it's designed to be agnostic from the JavaScirpt framework you are using.",
+  "description": "mds-pref-language is a web-component from Magma Design System, built with StencilJS, TypeScript, Storybook. It's based on the web-component standard and it's designed to be agnostic from the JavaScirpt framework you are using.",
   "main": "dist/index.cjs.js",
   "module": "dist/index.js",
   "es2015": "dist/esm/index.mjs",
@@ -9,7 +9,7 @@
   "types": "dist/types/components.d.ts",
   "collection": "dist/collection/collection-manifest.json",
   "collection:main": "dist/collection/index.js",
-  "unpkg": "dist/mds-pref-theme/mds-pref-theme.esm.js",
+  "unpkg": "dist/mds-pref-language/mds-pref-language.esm.js",
   "files": [
     "dist/",
     "documentation.json",
@@ -24,7 +24,9 @@
     "test": "stencil test --spec --e2e"
   },
   "dependencies": {
-    "@maggioli-design-system/mds-tab": "6.8.1",
+    "@maggioli-design-system/mds-dropdown": "5.3.0",
+    "@maggioli-design-system/mds-langauge-item": "1.0.0",
+    "@maggioli-design-system/mds-langauge-nav": "1.0.0",
     "@maggioli-design-system/mds-text": "4.4.0",
     "@maggioli-design-system/styles": "15.3.0",
     "@stencil/core": "4.21.0"
@@ -37,24 +39,14 @@
   },
   "contributors": [
     {
-      "name": "Andrea Pruccoli",
-      "email": "andrea.pruccoli@maggioli.it",
-      "role": "Software Engineer"
+        "name": "Nicola Tamburini",
+        "email": "nicola.tamburini@maggioli.it",
+        "role": "Software Engineer"
     },
     {
-      "name": "Daniele Tardia",
-      "email": "daniele.tardia@hibo.it",
-      "role": "Senior Developer"
-    },
-    {
-      "name": "Nicola Tamburini",
-      "email": "nicola.tamburini@maggioli.it",
-      "role": "Software Engineer"
-    },
-    {
-      "name": "Vittorio Vittori",
-      "email": "vittorio.vittori@maggioli.it",
-      "role": "Product Designer"
+        "name": "Vittorio Vittori",
+        "email": "vittorio.vittori@maggioli.it",
+        "role": "Product Designer"
     }
   ]
 }

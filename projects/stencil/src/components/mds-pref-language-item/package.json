@@ -1,0 +1,49 @@
+{
+  "name": "@maggioli-design-system/mds-pref-language-item",
+  "version": "1.0.0",
+  "description": "mds-pref-language-item is a web-component from Magma Design System, built with StencilJS, TypeScript, Storybook. It's based on the web-component standard and it's designed to be agnostic from the JavaScirpt framework you are using.",
+  "main": "dist/index.cjs.js",
+  "module": "dist/index.js",
+  "es2015": "dist/esm/index.mjs",
+  "es2017": "dist/esm/index.mjs",
+  "types": "dist/types/components.d.ts",
+  "collection": "dist/collection/collection-manifest.json",
+  "collection:main": "dist/collection/index.js",
+  "unpkg": "dist/mds-pref-language-item/mds-pref-language-item.esm.js",
+  "files": [
+    "dist/",
+    "documentation.json",
+    "loader/",
+    "readme.md",
+    "src/",
+    "www/"
+  ],
+  "scripts": {
+    "build": "rm src/components.d.ts || true && stencil build --docs-readme",
+    "prepublishOnly": "npm run build",
+    "test": "stencil test --spec --e2e"
+  },
+  "dependencies": {
+    "@maggioli-design-system/styles": "15.3.0",
+    "@maggioli-design-system/mds-button": "4.4.0",
+    "@stencil/core": "4.21.0"
+  },
+  "license": "MIT",
+  "author": {
+    "name": "Vittorio Vittori",
+    "email": "vittorio.vittori@maggioli.it",
+    "url": "https://vitto.github.io/vit.to/"
+  },
+  "contributors": [
+    {
+        "name": "Nicola Tamburini",
+        "email": "nicola.tamburini@maggioli.it",
+        "role": "Software Engineer"
+    },
+    {
+        "name": "Vittorio Vittori",
+        "email": "vittorio.vittori@maggioli.it",
+        "role": "Product Designer"
+    }
+  ]
+}
