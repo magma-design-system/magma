@@ -6,6 +6,6 @@ describe('mds-pref-language-nav', () => {
     await page.setContent('<mds-pref-language-nav></mds-pref-language-nav>')
 
     const element = await page.find('mds-pref-language-nav')
-    expect(element).toHaveClass('hydrated')
+    expect(element).toHaveAttribute('hydrated')
   })
 })
