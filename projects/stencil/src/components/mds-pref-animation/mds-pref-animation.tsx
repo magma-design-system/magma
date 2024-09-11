@@ -6,6 +6,7 @@ import { MdsPrefChangeEventDetail } from '@event/preference'
 import { Locale } from '@common/locale'
 import localeEl from './meta/locale.el.json'
 import localeEn from './meta/locale.en.json'
+import localeEs from './meta/locale.es.json'
 import localeIt from './meta/locale.it.json'
 import { AnimationModeType } from './meta/types'
 
@@ -20,6 +21,7 @@ export class MdsPrefAnimation {
   private t:Locale = new Locale({
     el: localeEl,
     en: localeEn,
+    es: localeEs,
     it: localeIt,
   })
 

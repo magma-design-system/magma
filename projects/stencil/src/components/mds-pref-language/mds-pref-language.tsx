@@ -3,9 +3,10 @@ import { LanguageType } from '@type/language'
 import { MdsPrefLanguageEventDetail } from '@event/language'
 import { MdsPrefChangeEventDetail } from '@event/preference'
 import { Locale } from '@common/locale'
-import localeEn from './meta/locale.en.json'
-import localeIt from './meta/locale.it.json'
 import localeEl from './meta/locale.el.json'
+import localeEn from './meta/locale.en.json'
+import localeEs from './meta/locale.es.json'
+import localeIt from './meta/locale.it.json'
 
 /**
  * @slot default - Add `mds-pref-language-item` element/s.
@@ -26,9 +27,10 @@ export class MdsPrefLanguage {
   private currentSelectedItem: HTMLMdsPrefLanguageItemElement
   private elPreferLanguageItems: NodeListOf<HTMLMdsPrefLanguageItemElement>
   private t:Locale = new Locale({
-    en: localeEn,
-    it: localeIt,
     el: localeEl,
+    en: localeEn,
+    es: localeEs,
+    it: localeIt,
   })
   /**
 

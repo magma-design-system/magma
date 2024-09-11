@@ -4,9 +4,10 @@ import mggConsumptionLow from '@icon/mgg/consumption-low.svg'
 import mggConsumptionMedium from '@icon/mgg/consumption-medium.svg'
 import mggConsumptionHigh from '@icon/mgg/consumption-high.svg'
 import { Locale } from '@common/locale'
-import localeEn from './meta/locale.en.json'
-import localeIt from './meta/locale.it.json'
 import localeEl from './meta/locale.el.json'
+import localeEn from './meta/locale.en.json'
+import localeEs from './meta/locale.es.json'
+import localeIt from './meta/locale.it.json'
 import { ConsumptionModeType } from '@type/preference'
 
 @Component({
@@ -18,9 +19,10 @@ export class MdsPrefContrast {
   @Element() private element: HTMLMdsPrefContrastElement
   private defaultMode: ConsumptionModeType = 'high'
   private t:Locale = new Locale({
-    en: localeEn,
-    it: localeIt,
     el: localeEl,
+    en: localeEn,
+    es: localeEs,
+    it: localeIt,
   })
 
   /**

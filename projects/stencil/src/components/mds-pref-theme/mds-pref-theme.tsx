@@ -7,6 +7,7 @@ import miBaselineSettings from '@icon/mi/baseline/settings.svg'
 import { Locale } from '@common/locale'
 import localeEl from './meta/locale.el.json'
 import localeEn from './meta/locale.en.json'
+import localeEs from './meta/locale.es.json'
 import localeIt from './meta/locale.it.json'
 import { ThemeModeType, ThemeTransitionType } from './meta/types'
 import { MdsPrefChangeEventDetail } from '@event/preference'
@@ -22,6 +23,7 @@ export class MdsPrefTheme {
   private t:Locale = new Locale({
     el: localeEl,
     en: localeEn,
+    es: localeEs,
     it: localeIt,
   })
 

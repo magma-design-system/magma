@@ -2,6 +2,7 @@ import { Component, Host, h, Element, State } from '@stencil/core'
 import { Locale } from '@common/locale'
 import localeEl from './meta/locale.el.json'
 import localeEn from './meta/locale.en.json'
+import localeEs from './meta/locale.es.json'
 import localeIt from './meta/locale.it.json'
 
 /**
@@ -21,6 +22,7 @@ export class MdsPref {
   private t:Locale = new Locale({
     el: localeEl,
     en: localeEn,
+    es: localeEs,
     it: localeIt,
   })
 

@@ -3,9 +3,10 @@ import miBaselineKeyboardArrowDown from '@icon/mi/baseline/keyboard-arrow-down.s
 import miBaselineKeyboardArrowUp from '@icon/mi/baseline/keyboard-arrow-up.svg'
 import { LanguageType } from '@type/language'
 import { Locale } from '@common/locale'
-import localeEn from './meta/locale.en.json'
-import localeIt from './meta/locale.it.json'
 import localeEl from './meta/locale.el.json'
+import localeEn from './meta/locale.en.json'
+import localeEs from './meta/locale.es.json'
+import localeIt from './meta/locale.it.json'
 import { MdsPrefLanguageEventDetail } from '@event/language'
 
 @Component({
@@ -19,6 +20,7 @@ export class MdsPrefLanguageNav {
   private t:Locale = new Locale({
     el: localeEl,
     en: localeEn,
+    es: localeEs,
     it: localeIt,
   })
 

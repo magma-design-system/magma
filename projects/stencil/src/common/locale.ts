@@ -1,9 +1,10 @@
 import Handlebars from 'handlebars'
 
 type LocaleConfig = {
-  it?: Record<string, string | string[]>
-  en?: Record<string, string | string[]>
   el?: Record<string, string | string[]>
+  en: Record<string, string | string[]>
+  es?: Record<string, string | string[]>
+  it?: Record<string, string | string[]>
 }
 
 export class Locale {
