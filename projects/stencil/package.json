@@ -54,7 +54,7 @@
     "@floating-ui/dom": "1.5.4",
     "@maggioli-design-system/design-tokens": "13.2.0",
     "@maggioli-design-system/identity": "2.1.0",
-    "@maggioli-design-system/styles": "15.3.0",
+    "@maggioli-design-system/styles": "15.3.1",
     "@stencil/core": "4.21.0",
     "clsx": "2.1.0",
     "crypto-js": "4.2.0",
