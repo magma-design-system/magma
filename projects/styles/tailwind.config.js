@@ -1,4 +1,6 @@
 /* eslint-disable @typescript-eslint/no-var-requires */
+/** @type {import('tailwindcss').Config} */
+
 const { palette } = require('@maggioli-design-system/design-tokens')
 const { fontFamily } = require('@maggioli-design-system/design-tokens/dist/js/tailwind-font-family.js')
 const fontSizeMagma = require('@maggioli-design-system/design-tokens/dist/js/tailwind-font-size.js').fontSize
@@ -25,7 +27,13 @@ module.exports = {
   content: [
     './src/**/*.{js,jsx}',
   ],
-  darkMode: ['class', '.dark-mode'],
+  darkMode: [
+    'variant',
+    [
+      '@media (prefers-color-scheme: dark) { &:is(.pref-theme-system *) }',
+      '&:is(.pref-theme-dark *)',
+    ],
+  ],
   corePlugins: {
     preflight: false,
   },
