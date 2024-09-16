@@ -81,7 +81,7 @@ Returns the native `<input>` element used under the hood.
 
 #### Returns
 
-Type: `Promise<HTMLTextAreaElement | HTMLInputElement | null | undefined>`
+Type: `Promise<HTMLInputElement | HTMLTextAreaElement | null | undefined>`
 
 
 
