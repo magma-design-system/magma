@@ -44,7 +44,7 @@ export class MdsTabItem {
   @Prop({ reflect: true }) readonly size?: ButtonSizeType = 'md'
 
   /**
-   * Specifies an optional value to get from mdsTabItemSelect event 
+   * Specifies an optional value to get from mdsTabItemSelect event
    */
   @Prop({ reflect: true }) readonly value?: string
 
@@ -63,6 +63,9 @@ export class MdsTabItem {
   @Watch('selected')
   validateActive (newValue: boolean): void {
     this.isSelected = newValue
+    if (this.selected) {
+      this.selectedEvent.emit({ target: this.element, value: this.value })
+    }
   }
 
   componentWillLoad ():void {
