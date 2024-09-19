@@ -127,6 +127,13 @@ Icon.args = {
   title: 'Pianta un albero',
 }
 
+export const IconFill = TemplateIcon.bind({})
+IconFill.args = {
+  variant: 'success',
+  icon: 'mi/baseline/eco',
+  class: 'fill-status-error-05',
+}
+
 export const IconARIATitle = TemplateIcon.bind({})
 IconARIATitle.args = {
   icon: 'mi/baseline/eco',

@@ -50,7 +50,7 @@
 .menu {
 
   --mds-button-background: transparent;
-  --mds-button-icon-color: var(--mds-header-bar-hamburger-color);
+  fill: var(--mds-header-bar-hamburger-color);
 
   padding: 0;
 }

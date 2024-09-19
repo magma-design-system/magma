@@ -70,7 +70,7 @@
     rounded-full
     top-0;
 
-  --mds-button-icon-color: var(--mds-modal-close-icon-color);
+  fill: var(--mds-modal-close-icon-color);
   --mds-button-background: transparent;
 
   height: auto;

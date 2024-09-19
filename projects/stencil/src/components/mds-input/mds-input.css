@@ -8,7 +8,7 @@
   * @prop --mds-input-icon-color: Sets the icon color of the component
   * @prop --mds-input-ring: Sets the box-shadow of the component's input
   * @prop --mds-input-shadow: Sets the box-shadow of the component's input
-  * @prop --mds-input-textarea-field-sizing: Sets the height of the textarea automatically, this is an EXPERIMENTAL css property, so it couldn't work in every browser 
+  * @prop --mds-input-textarea-field-sizing: Sets the height of the textarea automatically, this is an EXPERIMENTAL css property, so it couldn't work in every browser
   * @prop --mds-input-textarea-max-height: Sets the `max-height` of the component when attribute `type` is set to `textarea`
   * @prop --mds-input-textarea-min-height: Sets the `min-height` of the component when attribute `type` is set to `textarea`
   * @prop --mds-input-tip-background: Sets the background color of the tip message at the bottom right of the component
@@ -150,7 +150,7 @@ textarea.input {
     w-700;
 
   --mds-button-background: transparent;
-  --mds-button-icon-color: var(--mds-input-controls-color);
+  fill: var(--mds-input-controls-color);
 
   border: 0;
   min-height: 0;

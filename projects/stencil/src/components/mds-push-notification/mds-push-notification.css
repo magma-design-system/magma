@@ -67,7 +67,7 @@
     p-150
     transition-opacity;
 
-  --mds-button-icon-color: inherit;
+  fill: inherit;
 
   background-color: transparent;
   fill: theme('colors.tone-neutral-06');
