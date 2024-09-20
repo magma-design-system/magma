@@ -11,7 +11,6 @@
   * @prop --mds-button-border-color: Sets the border-color of the component
   * @prop --mds-button-color: Sets the text color of the component
   * @prop --mds-button-gap: Sets the distance betwen element inside the components, use it instead of setting gap property directly.
-  * @prop --mds-button-icon-color: Sets the icon color of the component
   * @prop --mds-button-radius: Sets the border-radius of the component
   */
 
@@ -22,7 +21,6 @@
   --mds-button-border-color: transparent;
   --mds-button-color: theme('colors.tone-neutral');
   --mds-button-gap: theme('spacing.200');
-  --mds-button-icon-color: var(--mds-button-color);
   --mds-button-radius: theme('borderRadius.lg');
 
   @apply
@@ -42,6 +40,7 @@
   color: var(--mds-button-color);
   cursor: pointer;
   display: inline-flex;
+  fill: currentColor;
   gap: var(--mds-button-gap);
   justify-content: center;
   position: relative;
@@ -70,7 +69,7 @@
 
   align-items: center;
   display: inline-flex;
-  fill: var(--mds-button-icon-color);
+  fill: inherit;
   justify-content: center;
   pointer-events: none;
 }

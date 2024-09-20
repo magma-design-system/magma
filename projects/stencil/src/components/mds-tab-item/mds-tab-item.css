@@ -30,7 +30,7 @@
 
   --mds-button-background: var(--mds-tab-item-background);
   --mds-button-color: var(--mds-tab-item-color);
-  --mds-button-icon-color: var(--mds-tab-item-color);
+  fill: var(--mds-tab-item-color);
   --mds-button-radius: var(--mds-tab-item-radius);
 
   flex-grow: 1;
@@ -40,7 +40,7 @@
 
   --mds-button-background: var(--mds-tab-item-background-hover);
   --mds-button-color: var(--mds-tab-item-color-hover);
-  --mds-button-icon-color: var(--mds-tab-item-color-hover);
+  fill: var(--mds-tab-item-color-hover);
 }
 
 .button--selected:hover,
@@ -48,7 +48,7 @@
 
   --mds-button-background: var(--mds-tab-item-background-selected);
   --mds-button-color: var(--mds-tab-item-color-selected);
-  --mds-button-icon-color: var(--mds-tab-item-color-selected);
+  fill: var(--mds-tab-item-color-selected);
 
   box-shadow: var(--mds-tab-item-shadow-selected);
   pointer-events: none;

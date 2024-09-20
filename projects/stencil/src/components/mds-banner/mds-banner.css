@@ -58,7 +58,7 @@
 .close-button {
 
   --mds-button-background: transparent;
-  --mds-button-icon-color: var(--mds-banner-color);
+  fill: var(--mds-banner-color);
 }
 
 .close-button:hover {

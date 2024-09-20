@@ -58,11 +58,12 @@
 .button-close {
   @apply
     ml-100
+    m-25
     px-150
     rounded-r-md
     transition-colors;
 
-  --mds-button-icon-color: var(--mds-label-button-icon-color);
+  fill: var(--mds-label-button-icon-color);
   --mds-button-background: var(--mds-label-button-background);
 
   border-radius: 0 var(--mds-label-radius) var(--mds-label-radius) 0;

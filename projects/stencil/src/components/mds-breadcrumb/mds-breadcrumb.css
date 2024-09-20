@@ -50,7 +50,7 @@
   @apply mr-100;
 
   --mds-button-background: var(--mds-breadcrumb-button-background);
-  --mds-button-icon-color: var(--mds-breadcrumb-button-color);
+  fill: var(--mds-breadcrumb-button-color);
 
   flex-shrink: 0;
 }
@@ -58,13 +58,13 @@
 .back:hover {
 
   --mds-button-background: var(--mds-breadcrumb-button-background-hover);
-  --mds-button-icon-color: var(--mds-breadcrumb-button-color-hover);
+  fill: var(--mds-breadcrumb-button-color-hover);
 }
 
 .disabled {
 
   --mds-button-background: var(--mds-breadcrumb-button-background-disabled);
-  --mds-button-icon-color: var(--mds-breadcrumb-button-color-disabled);
+  fill: var(--mds-breadcrumb-button-color-disabled);
 
   pointer-events: none;
 }

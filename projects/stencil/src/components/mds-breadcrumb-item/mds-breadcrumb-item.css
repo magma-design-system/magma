@@ -80,6 +80,6 @@
 }
 
 .icon {
-  color: var(--mds-breadcrumb-item-arrow-depth-color);
+  fill: var(--mds-breadcrumb-item-arrow-depth-color);
   pointer-events: none;
 }

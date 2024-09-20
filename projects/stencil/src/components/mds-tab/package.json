@@ -1,6 +1,6 @@
 {
   "name": "@maggioli-design-system/mds-tab",
-  "version": "6.8.4",
+  "version": "6.8.5",
   "description": "mds-tab is a web-component from Magma Design System, built with StencilJS, TypeScript, Storybook. It's based on the web-component standard and it's designed to be agnostic from the JavaScirpt framework you are using.",
   "main": "dist/index.cjs.js",
   "module": "dist/index.js",
@@ -24,7 +24,7 @@
     "test": "stencil test --spec --e2e"
   },
   "dependencies": {
-    "@maggioli-design-system/mds-tab-item": "6.9.4",
+    "@maggioli-design-system/mds-tab-item": "6.9.5",
     "@maggioli-design-system/styles": "15.3.2",
     "@stencil/core": "4.21.0"
   },
