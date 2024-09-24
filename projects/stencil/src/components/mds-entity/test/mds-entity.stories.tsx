@@ -42,7 +42,7 @@ export default {
 const Template = args =>
   <mds-entity {...args} aria-label="Personaggio">
     <mds-text truncate="word" aria-label="Nome" typography="h6">Mario Rossi</mds-text>
-    <mds-badge aria-label="Carattere" slot="detail" variant="orange" tone="quiet">buono</mds-badge>
+    <mds-badge aria-label="Carattere" slot="detail" variant="orange" tone="weak">buono</mds-badge>
     <mds-text truncate="word" aria-label="Email" slot="detail" typography="caption">mario@nintendo.com</mds-text>
     <mds-button onClick={() => { console.info('Restore') }} slot="action" icon="mdi/replay" variant="primary" tone="strong" title="Restore"/>
     <mds-button onClick={() => { console.info('Delete') }} slot="action" icon="mdi/delete" variant="error" tone="strong" title="Delete"/>
