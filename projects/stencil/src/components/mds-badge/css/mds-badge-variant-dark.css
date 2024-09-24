@@ -1,6 +1,10 @@
 @tailwind utilities;
 
-:host( [variant="dark"] ),
+:host( [variant="dark"] ) {
+
+  --mds-badge-color: theme('colors.tone-neutral-02');
+}
+
 :host( [variant="dark"][tone="strong"] ) {
 
   --mds-badge-background: theme('colors.tone-neutral-02');
@@ -13,8 +17,9 @@
   --mds-badge-color: theme('colors.tone-neutral-02');
 }
 
-:host( [variant="dark"][tone="quiet"] ) {
+:host( [variant="dark"][tone="ghost"] ) {
 
   --mds-badge-background: theme('colors.tone-neutral-09');
-  --mds-badge-color: theme('colors.tone-neutral-05');
+  --mds-badge-color: theme('colors.tone-neutral-03');
+  --mds-badge-border-color: theme('colors.tone-neutral-03');
 }

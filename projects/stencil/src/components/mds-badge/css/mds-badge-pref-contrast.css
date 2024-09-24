@@ -1,7 +1,7 @@
 @tailwind utilities;
 
 @container style(--magma-pref-contrast: more) {
-  :host {
+  :host([tone="weak"]) {
     box-shadow: theme('boxShadow.outline') inset;
   }
 }
@@ -9,14 +9,15 @@
 @container style(--magma-pref-contrast: system) {
 
   @media (prefers-contrast: more) {
-    :host {
+    :host([tone="weak"]) {
       box-shadow: theme('boxShadow.outline') inset;
     }
   }
 }
 
 @container style(--magma-pref-contrast: more) and style(--magma-pref-theme: dark) {
-  :host {
+  :host([tone="strong"]),
+  :host([tone="weak"]) {
     box-shadow: theme('boxShadow.outline-strong') inset;
   }
 }
@@ -24,7 +25,8 @@
 @container style(--magma-pref-theme: system) and style(--magma-pref-contrast: system) {
 
   @media (prefers-color-scheme: dark) and (prefers-contrast: more)  {
-    :host {
+    :host([tone="strong"]),
+    :host([tone="weak"]) {
       box-shadow: theme('boxShadow.outline-strong') inset;
     }
   }
@@ -33,7 +35,8 @@
 @container style(--magma-pref-theme: dark) and style(--magma-pref-contrast: system) {
 
   @media (prefers-contrast: more) {
-    :host {
+    :host([tone="strong"]),
+    :host([tone="weak"]) {
       box-shadow: theme('boxShadow.outline-strong') inset;
     }
   }

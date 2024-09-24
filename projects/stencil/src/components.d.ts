@@ -209,7 +209,7 @@ export namespace Components {
         /**
           * Sets the tone of the color variant
          */
-        "tone"?: ToneSimpleVariantType;
+        "tone"?: ToneVariantType;
         /**
           * Specifies the typography of the element
          */
@@ -3074,7 +3074,7 @@ declare namespace LocalJSX {
         /**
           * Sets the tone of the color variant
          */
-        "tone"?: ToneSimpleVariantType;
+        "tone"?: ToneVariantType;
         /**
           * Specifies the typography of the element
          */

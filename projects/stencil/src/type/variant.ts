@@ -90,9 +90,9 @@ export type ToneVariantType =
   | 'quiet' // no background, no border
 
 export type ToneSimpleVariantType =
+  | 'quiet'
   | 'strong'
   | 'weak'
-  | 'quiet'
 
 export type ToneMinimalVariantType =
 | 'strong'

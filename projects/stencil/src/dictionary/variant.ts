@@ -92,6 +92,12 @@ const toneSimpleVariantDictionary = [
   'quiet',
 ]
 
+const toneSmartVariantDictionary = [
+  'strong',
+  'weak',
+  'ghost',
+]
+
 const toneMinimalVariantDictionary = [
   'strong',
   'weak',
@@ -107,5 +113,6 @@ export {
   toneActionVariantDictionary,
   toneMinimalVariantDictionary,
   toneSimpleVariantDictionary,
+  toneSmartVariantDictionary,
   toneVariantDictionary,
 }

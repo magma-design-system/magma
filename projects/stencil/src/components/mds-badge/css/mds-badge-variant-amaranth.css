@@ -1,39 +1,55 @@
 @tailwind utilities;
 
-:host( [variant="amaranth"] ),
-:host( [variant="amaranth"][tone="strong"] ) {
+:host([variant="amaranth"]) {
 
-  --mds-badge-background: theme('colors.label-amaranth-05');
   --mds-badge-color: theme('colors.label-amaranth-10');
 }
 
-:host( [variant="amaranth"][tone="weak"] ) {
+:host([variant="amaranth"][tone="strong"]) {
 
-  --mds-badge-background: theme('colors.label-amaranth-08');
+  --mds-badge-background: theme('colors.label-amaranth-05');
+}
+
+:host([variant="amaranth"][tone="weak"]) {
+
+  --mds-badge-background: theme('colors.label-amaranth-09');
   --mds-badge-color: theme('colors.label-amaranth-02');
 }
 
-:host( [variant="amaranth"][tone="quiet"] ) {
+:host([variant="amaranth"][tone="quiet"]) {
 
-  --mds-badge-background: theme('colors.label-amaranth-09');
+  --mds-badge-color: theme('colors.label-amaranth-04');
+}
+
+:host([variant="amaranth"][tone="ghost"]) {
+
+  --mds-badge-background: transparent;
+  --mds-badge-border-color: theme('colors.label-amaranth-06');
   --mds-badge-color: theme('colors.label-amaranth-04');
 }
 
 @container style(--magma-pref-contrast: more) {
-  :host( [variant="amaranth"] ),
-  :host( [variant="amaranth"][tone="strong"] ) {
+  :host([variant="amaranth"]),
+  :host([variant="amaranth"][tone="strong"]) {
 
     --mds-badge-background: theme('colors.label-amaranth-04');
   }
 
-  :host( [variant="amaranth"][tone="weak"] ) {
+  :host([variant="amaranth"][tone="weak"]) {
 
     --mds-badge-color: theme('colors.label-amaranth-01');
   }
+
+  :host([variant="amaranth"][tone="quiet"]) {
+
+    --mds-badge-color: theme('colors.label-amaranth-02');
+  }
   
-  :host( [variant="amaranth"][tone="quiet"] ) {
-  
+  :host([variant="amaranth"][tone="ghost"]) {
+
+    --mds-badge-background: transparent;
     --mds-badge-color: theme('colors.label-amaranth-03');
+    --mds-badge-border-color: theme('colors.label-amaranth-03');
   }
 
 }
@@ -41,20 +57,27 @@
 @container style(--magma-pref-contrast: system) {
 
   @media (prefers-contrast: more) {
-    :host( [variant="amaranth"] ),
-    :host( [variant="amaranth"][tone="strong"] ) {
+    :host([variant="amaranth"]),
+    :host([variant="amaranth"][tone="strong"]) {
 
       --mds-badge-background: theme('colors.label-amaranth-04');
     }
 
-    :host( [variant="amaranth"][tone="weak"] ) {
+    :host([variant="amaranth"][tone="weak"]) {
 
       --mds-badge-color: theme('colors.label-amaranth-01');
     }
-    
-    :host( [variant="amaranth"][tone="quiet"] ) {
-    
+
+    :host([variant="amaranth"][tone="quiet"]) {
+
+      --mds-badge-color: theme('colors.label-amaranth-02');
+    }
+
+    :host([variant="amaranth"][tone="ghost"]) {
+      
+      --mds-badge-background: transparent;
       --mds-badge-color: theme('colors.label-amaranth-03');
+      --mds-badge-border-color: theme('colors.label-amaranth-03');
     }
   }
 }
