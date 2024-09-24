@@ -22,13 +22,6 @@ This is a web-component from Maggioli Design System [Magma](https://magma.maggio
 | `mdsPaginatorChange` | Emits when a page is changed | `CustomEvent<MdsPaginatorEventDetail>` |
 
 
-## CSS Custom Properties
-
-| Name                         | Description                                              |
-| ---------------------------- | -------------------------------------------------------- |
-| `--mds-paginator-background` | Sets the background-color of the pages area and the item |
-
-
 ## Dependencies
 
 ### Depends on
