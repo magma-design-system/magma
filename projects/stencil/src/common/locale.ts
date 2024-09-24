@@ -13,22 +13,28 @@ export class Locale {
   config: LocaleConfig
   closestElement:HTMLElement
 
-  constructor (configData: LocaleConfig) {
+  constructor (configData?: LocaleConfig) {
+    if (configData) {
+      this.set(configData)
+    }
+  }
+
+  set = (configData: LocaleConfig): void => {
     this.config = configData
   }
 
-  lang = (element: HTMLElement): void => {
+  lang = (element: HTMLElement): string => {
     this.closestElement = element.closest('[lang]') as HTMLElement
 
-    
     if (this.closestElement) {
       if (this.closestElement.lang) {
         this.language = this.closestElement.lang
-        return
+        return this.language
       }
     }
 
     this.language = this.rollbackLanguage
+    return this.language
   }
 
   private pluralize = (tag: string | string[], context: Record<string, string | number>): string => {

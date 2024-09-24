@@ -3,6 +3,12 @@ const notificationPreviewDictionary = [
   'image',
 ]
 
+const notificationDateFormatDictionary = [
+  'timeago',
+  'none',
+]
+
 export {
+  notificationDateFormatDictionary,
   notificationPreviewDictionary,
 }

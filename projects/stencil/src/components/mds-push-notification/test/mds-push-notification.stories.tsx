@@ -1,11 +1,34 @@
 import { h } from '@stencil/core'
 import { iconsDictionary } from '@dictionary/icon'
 import { themeFullVariantAvatarDictionary, toneMinimalVariantDictionary } from '@dictionary/variant'
-import { notificationPreviewDictionary } from '../meta/dictionary'
+import { notificationPreviewDictionary, notificationDateFormatDictionary } from '../meta/dictionary'
+
+const timePadding = 45
+let itemsCreated = 10
+
+const getDatetime = (): string => {
+  const datetime = new Date(new Date().getTime() - (timePadding * itemsCreated) * 1000)
+  itemsCreated += 1
+  return datetime.toString()
+}
 
 export default {
   title: 'UI / Push Notifications / Push Notification',
   argTypes: {
+    datetime: {
+      type: { name: 'string' },
+      description: 'Specifies the notification date based on [standard ISO 8601](https://www.iso.org/iso-8601-date-and-time-format.html).',
+    },
+    'date-format': {
+      type: { name: 'string' },
+      description: 'Specifies if the notification date format shows time passed or displays date as a static string',
+      options: notificationDateFormatDictionary,
+      control: { type: 'select' },
+    },
+    deletable: {
+      type: { name: 'boolean' },
+      description: 'Specifies if the component is dismissable or not, it should be set to true by default is used with it\'s parent component `mds-push-notifications`',
+    },
     icon: {
       type: { name: 'string' },
       description: 'Specifies the icon to be displayed if src propery is not used',
@@ -68,6 +91,14 @@ const TemplateWithAttachment = args =>
     </mds-push-notification>
   </div>
 
+const TemplateWithAttachmentBadge = args =>
+  <div>
+    <mds-push-notification {...args}>
+      <mds-badge slot="badge" variant="amaranth" tone="quiet">pdf</mds-badge>
+      <mds-button slot="actions" tone="ghost" size="sm">Download</mds-button>
+    </mds-push-notification>
+  </div>
+
 const TemplateContact = args =>
   <div>
     <mds-push-notification {...args}>
@@ -79,6 +110,7 @@ const TemplateContact = args =>
 
 export const Default = Template.bind({})
 Default.args = {
+  datetime: getDatetime(),
   icon: 'mi/baseline/email',
   message: 'You have 3 new messages from different accounts',
   subject: 'New messages',
@@ -86,6 +118,7 @@ Default.args = {
 
 export const Thumb = Template.bind({})
 Thumb.args = {
+  datetime: getDatetime(),
   message: 'Image can be 48px max wide',
   src: './book-cover-01.webp',
   subject: 'Preview image',
@@ -93,24 +126,36 @@ Thumb.args = {
 
 export const Variant = TemplateWithAction.bind({})
 Variant.args = {
-  message: 'Description of the article changed successfully',
+  datetime: getDatetime(),
   icon: 'mi/baseline/done',
+  message: 'Description of the article changed successfully',
   subject: 'Article',
   variant: 'success',
 }
 
 export const Attachment = TemplateWithAttachment.bind({})
 Attachment.args = {
-  message: 'You\'ve got a new file attachment from Mark',
+  datetime: getDatetime(),
   icon: 'mi/baseline/attach-file',
+  message: 'You\'ve got a new file attachment from Mark',
+  subject: 'New attachment',
+  variant: 'primary',
+}
+
+export const AttachmentBadge = TemplateWithAttachmentBadge.bind({})
+AttachmentBadge.args = {
+  datetime: getDatetime(),
+  icon: 'mi/baseline/attach-file',
+  message: 'You\'ve got a new file attachment from Mark',
   subject: 'New attachment',
   variant: 'primary',
 }
 
 export const Contact = TemplateContact.bind({})
 Contact.args = {
-  message: 'Ciao, sono Mario, questo è il mio contatto, buona giornata!',
+  datetime: getDatetime(),
   icon: 'mi/baseline/person',
+  message: 'Ciao, sono Mario, questo è il mio contatto, buona giornata!',
   subject: 'Mario Giannini',
   tone: 'strong',
   variant: 'primary',
@@ -118,20 +163,45 @@ Contact.args = {
 
 export const ContactAvatar = TemplateContact.bind({})
 ContactAvatar.args = {
+  datetime: getDatetime(),
   message: 'Ciao, sono Sarah, questo è il mio contatto, buona giornata!',
+  preview: 'avatar',
   src: './avatar-05-200x200.jpeg',
   subject: 'Sarah Ho',
-  preview: 'avatar',
   tone: 'strong',
   variant: 'primary',
 }
 
 export const ContactAvatarInitials = TemplateContact.bind({})
 ContactAvatarInitials.args = {
-  message: 'Ciao, sono Sarah, questo è il mio contatto, buona giornata!',
+  datetime: getDatetime(),
   initials: 'sh',
-  subject: 'Sarah Ho',
+  message: 'Ciao, sono Sarah, questo è il mio contatto, buona giornata!',
   preview: 'avatar',
+  subject: 'Sarah Ho',
+  tone: 'strong',
+  variant: 'primary',
+}
+
+export const DateTime = Template.bind({})
+DateTime.args = {
+  datetime: getDatetime(),
+  message: 'Ciao, sono Sarah, questo è il mio contatto, buona giornata!',
+  preview: 'avatar',
+  src: './avatar-05-200x200.jpeg',
+  subject: 'Sarah Ho',
+  tone: 'strong',
+  variant: 'primary',
+}
+
+export const DateFormat = Template.bind({})
+DateFormat.args = {
+  'date-format': 'none',
+  datetime: '2023-12-12',
+  message: 'Ciao, sono Sarah, questo è il mio contatto, buona giornata!',
+  preview: 'avatar',
+  src: './avatar-05-200x200.jpeg',
+  subject: 'Sarah Ho',
   tone: 'strong',
   variant: 'primary',
 }

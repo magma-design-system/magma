@@ -1,8 +1,15 @@
 import { Component, Element, Event, EventEmitter, Host, h, Prop } from '@stencil/core'
+import dayjs from 'dayjs'
+import relativeTime from 'dayjs/plugin/relativeTime'
 import miBaselineCancel from '@icon/mi/baseline/cancel.svg'
 import { ThemeFullVariantAvatarType, ToneMinimalVariantType } from '@type/variant'
-import { NotificationPreviewType } from './meta/types'
+import { NotificationPreviewType, NotificationDateFormatType, RelativeTimeType } from './meta/types'
 import { MdsPushNotificationEventDetail } from './meta/event-detail'
+import { Locale } from '@common/locale'
+import localeEn from './meta/locale.en.json'
+import localeIt from './meta/locale.it.json'
+
+dayjs.extend(relativeTime)
 
 /**
  * @part actions - The actions wrapper
@@ -10,6 +17,7 @@ import { MdsPushNotificationEventDetail } from './meta/event-detail'
  * @part icon - The icon set by `icon` attribute
  * @part picture - The picture image added by `src` attribute
  * @slot actions - Add `HTML elements` or `components`, it is **recommended** to use `mds-button` element.
+ * @slot badge - Add `HTML elements` or `components`, it is **recommended** to use `mds-badge` element.
  */
 
 @Component({
@@ -20,7 +28,27 @@ import { MdsPushNotificationEventDetail } from './meta/event-detail'
 export class MdsPushNotification {
 
   private hasActions?: boolean
+  private hasBadge?: boolean
   @Element() host: HTMLMdsPushNotificationElement
+  private t:Locale = new Locale({
+    en: localeEn,
+    it: localeIt,
+  })
+
+  /**
+   * Specifies the notification date based on [standard ISO 8601](https://www.iso.org/iso-8601-date-and-time-format.html).
+   */
+  @Prop({ reflect: true }) readonly datetime?: string
+
+  /**
+   * Specifies if the notification date format shows time passed or displays date as a static string
+   */
+  @Prop({ reflect: true }) readonly dateFormat: NotificationDateFormatType = 'timeago'
+
+  /**
+   * Specifies if the component is dismissable or not, it should be set to true by default is used with it's parent component `mds-push-notifications`
+   */
+  @Prop({ reflect: true }) readonly deletable: boolean = true
 
   /**
    * Specifies the icon to be displayed
@@ -74,6 +102,25 @@ export class MdsPushNotification {
 
   componentWillLoad ():void {
     this.hasActions = this.host.querySelector('[slot="actions"]') !== null
+    this.hasBadge = this.host.querySelector('[slot="badge"]') !== null
+    this.t.lang(this.host)
+    const relativeTimeCustom = {
+      future: this.t.get('future'),
+      past: this.t.get('past'),
+      s: this.t.get('s'),
+      m: this.t.get('m'),
+      mm: this.t.get('mm'),
+      h: this.t.get('h'),
+      hh: this.t.get('hh'),
+      d: this.t.get('d'),
+      dd: this.t.get('dd'),
+      M: this.t.get('M'),
+      MM: this.t.get('MM'),
+      y: this.t.get('y'),
+      yy: this.t.get('yy'),
+    }
+
+    dayjs.locale('custom-locale', { relativeTime: relativeTimeCustom as RelativeTimeType })
   }
 
   render () {
@@ -82,13 +129,24 @@ export class MdsPushNotification {
         { (this.icon ?? this.preview === 'avatar') && <mds-avatar class="avatar" icon={this.icon} initials={this.initials} part="avatar" src={this.src} tone={this.tone} variant={this.variant}></mds-avatar> }
         { this.src && this.preview !== 'avatar' && <mds-img class="picture" part="picture" src={this.src}></mds-img> }
         <div class="content" part="content">
-          { this.subject && <mds-text class="subject" typography="h6" variant="title">{ this.subject }</mds-text> }
+          <header>
+            <div class="infos">
+              { this.hasBadge && <div><slot name="badge"></slot></div> }
+              { this.subject && <mds-text class="subject" typography="h6" variant="title" truncate="all">{ this.subject }</mds-text> }
+            </div>
+            { this.datetime && <mds-text class="time" typography="option">
+              { this.dateFormat === 'timeago'
+                ? dayjs(this.datetime).fromNow()
+                : this.datetime
+              }
+            </mds-text> }
+          </header>
           <mds-text class="message" truncate="all" typography="caption" variant="info">{ this.message }</mds-text>
           { this.hasActions && <div class="actions" part="actions">
             <slot name="actions"></slot>
           </div> }
         </div>
-        <mds-button class="close-button" icon={miBaselineCancel} onClick={this.onClickClose.bind(this)}></mds-button>
+        { this.deletable && <mds-button class="close-button" title={this.t.get('dismiss')} icon={miBaselineCancel} onClick={this.onClickClose.bind(this)}></mds-button> }
       </Host>
     )
   }
