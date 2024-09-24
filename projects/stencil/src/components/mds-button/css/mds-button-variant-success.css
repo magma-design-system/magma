@@ -21,20 +21,24 @@
 
 :host( [variant="success"][tone="weak"] ) {
 
-  --mds-button-background: theme('colors.status-success-06');
-  --mds-button-color: theme('colors.status-success-10');
+  --mds-button-background: theme('colors.status-success-09');
+  --mds-button-color: theme('colors.status-success-03');
+
+  fill: theme('colors.status-success-03');
 }
 
 :host( [variant="success"][tone="weak"]:hover ) {
 
-  --mds-button-background: theme('colors.status-success-05');
-  --mds-button-color: theme('colors.tone-neutral');
+  --mds-button-background: theme('colors.status-success-08');
+
 }
 
 :host( [variant="success"][tone="weak"][active] ) {
 
-  --mds-button-background: theme('colors.status-success-07');
-  --mds-button-color: theme('colors.status-success-10');
+  --mds-button-background: theme('colors.status-success-08');
+  --mds-button-color: theme('colors.status-success-02');
+
+  fill: theme('colors.status-success-02');
 }
 
 :host( [variant="success"][tone="ghost"] ) {
@@ -98,20 +102,26 @@
 
   :host( [variant="success"][tone="weak"] ) {
 
-    --mds-button-background: theme('colors.status-success-05');
-    --mds-button-color: theme('colors.status-success-10');
+    --mds-button-background: theme('colors.status-success-09');
+    --mds-button-color: theme('colors.status-success-02');
+
+    fill: theme('colors.status-success-02');
   }
 
   :host( [variant="success"][tone="weak"]:hover ) {
 
-    --mds-button-background: theme('colors.status-success-04');
-    --mds-button-color: theme('colors.tone-neutral');
+    --mds-button-background: theme('colors.status-success-08');
+    --mds-button-color: theme('colors.status-success-01');
+
+    fill: theme('colors.status-success-01');
   }
 
   :host( [variant="success"][tone="weak"][active] ) {
 
-    --mds-button-background: theme('colors.status-success-06');
-    --mds-button-color: theme('colors.status-success-10');
+    --mds-button-background: theme('colors.status-success-08');
+    --mds-button-color: theme('colors.status-success-01');
+
+    fill: theme('colors.status-success-01');
   }
 
   :host( [variant="success"][tone="ghost"] ) {
@@ -178,20 +188,26 @@
 
     :host( [variant="success"][tone="weak"] ) {
 
-      --mds-button-background: theme('colors.status-success-05');
-      --mds-button-color: theme('colors.status-success-10');
+      --mds-button-background: theme('colors.status-success-09');
+      --mds-button-color: theme('colors.status-success-02');
+  
+      fill: theme('colors.status-success-02');
     }
 
     :host( [variant="success"][tone="weak"]:hover ) {
-
-      --mds-button-background: theme('colors.status-success-04');
-      --mds-button-color: theme('colors.tone-neutral');
+  
+      --mds-button-background: theme('colors.status-success-08');
+      --mds-button-color: theme('colors.status-success-01');
+  
+      fill: theme('colors.status-success-01');
     }
 
     :host( [variant="success"][tone="weak"][active] ) {
-
-      --mds-button-background: theme('colors.status-success-06');
-      --mds-button-color: theme('colors.status-success-10');
+  
+      --mds-button-background: theme('colors.status-success-08');
+      --mds-button-color: theme('colors.status-success-01');
+  
+      fill: theme('colors.status-success-01');
     }
 
     :host( [variant="success"][tone="ghost"] ) {
