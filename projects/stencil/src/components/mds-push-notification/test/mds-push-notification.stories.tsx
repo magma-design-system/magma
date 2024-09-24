@@ -94,7 +94,7 @@ const TemplateWithAttachment = args =>
 const TemplateWithAttachmentBadge = args =>
   <div>
     <mds-push-notification {...args}>
-      <mds-badge slot="badge" variant="amaranth" tone="quiet">pdf</mds-badge>
+      <mds-badge slot="badge" variant="amaranth" tone="weak">pdf</mds-badge>
       <mds-button slot="actions" tone="ghost" size="sm">Download</mds-button>
     </mds-push-notification>
   </div>

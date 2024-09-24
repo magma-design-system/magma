@@ -1,7 +1,7 @@
 {
   "dismiss": "Close",
   "future": "in %s",
-  "past": "%s",
+  "past": "%s ago",
   "s": "few sec",
   "m": "1 min",
   "mm": "%d mins",

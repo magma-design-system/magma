@@ -120,7 +120,6 @@ export class MdsPushNotification {
       yy: this.t.get('yy'),
     }
 
-    // "past": "%s ago", to show "# mins ago"
     dayjs.locale('custom-locale', { relativeTime: relativeTimeCustom as RelativeTimeType })
   }
 
