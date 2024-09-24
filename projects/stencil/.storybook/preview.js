@@ -78,7 +78,7 @@ checkAccessibility('animation', 'system')
 checkAccessibility('consumption', 'high')
 
 document.querySelector('html').classList.add('bg-tone-neutral', 'transition-colors')
-document.querySelector('html').setAttribute('lang', window.localStorage.getItem('language') ?? 'it')
+document.querySelector('html').setAttribute('lang', window.localStorage.getItem('mds-pref-language') ?? 'it')
 
 const toUpperCase = string => {
   return string.charAt(0).toUpperCase() + string.slice(1)
