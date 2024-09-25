@@ -1,6 +1,6 @@
 import clsx from 'clsx'
 import { ButtonIconPositionType, ButtonSizeType, ButtonTargetType, ButtonType, ButtonVariantType } from '@type/button'
-import { Component, Host, Element, h, Prop, Watch } from '@stencil/core'
+import { Component, Host, Element, h, Prop, Watch, AttachInternals } from '@stencil/core'
 import { KeyboardManager } from '@common/keyboard-manager'
 import { ToneVariantType } from '@type/variant'
 import { TypographyType } from '@type/typography'
@@ -18,6 +18,7 @@ import { isIconFormatIsBase64, isIconFormatIsSVG } from '@common/icon'
   tag: 'mds-button',
   styleUrl: 'mds-button.css',
   shadow: true,
+  formAssociated: true,
 })
 export class MdsButton {
 
@@ -27,6 +28,8 @@ export class MdsButton {
   private km = new KeyboardManager()
 
   @Element() host: HTMLMdsButtonElement
+
+  @AttachInternals() internals: ElementInternals
 
   /**
    * Specifies if the component is focused when is loaded on the viewport
@@ -107,6 +110,33 @@ export class MdsButton {
     this.km.detachClickBehavior()
   }
 
+  @Watch('type')
+  handleTypeChange (newValue: string): void {
+    // If not participating we don't do anything
+    if (!this.internals.form) return
+
+    if (newValue === 'submit') {
+      this.host.removeEventListener('click', this.handleReset)
+      this.host.addEventListener('click', this.handleRequestSubmitForm)
+    } else if (newValue === 'reset') {
+      this.host.removeEventListener('click', this.handleRequestSubmitForm)
+      this.host.addEventListener('click', this.handleReset)
+    } else {
+      this.host.removeEventListener('click', this.handleRequestSubmitForm)
+      this.host.removeEventListener('click', this.handleReset)
+    }
+  }
+
+  private handleRequestSubmitForm = (e: MouseEvent) => {
+    e.preventDefault()
+    this.internals.form?.requestSubmit()
+  }
+
+  private handleReset = (e: MouseEvent) => {
+    e.preventDefault()
+    this.internals.form?.reset()
+  }
+
   private mouseDown = () => {
     this.active = true
   }
@@ -135,6 +165,12 @@ export class MdsButton {
         }
         window.location.href = this.href ?? '' // TypeScript 5.0.2 bug: if (this.href) not checked
       })
+    } else if (this.internals.form) {
+      if (this.type === 'submit') {
+        this.host.addEventListener('click', this.handleRequestSubmitForm)
+      } else if (this.type === 'reset') {
+        this.host.addEventListener('click', this.handleReset)
+      }
     }
   }
 
@@ -144,7 +180,7 @@ export class MdsButton {
       this.km.attachClickBehavior()
     }
     this.host.setAttribute('aria-busy', this.await ? 'true' : 'false')
-    
+
     if (this.autoFocus) {
       this.host.focus()
     }

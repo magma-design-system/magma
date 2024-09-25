@@ -32,10 +32,17 @@ const buttonIconPositionDictionary = [
   'right',
 ]
 
+const buttonTypeDictionary = [
+  'button',
+  'submit',
+  'reset',
+]
+
 export {
   buttonIconPositionDictionary,
   buttonSizeDictionary,
   buttonTargetDictionary,
   buttonToneVariantDictionary,
+  buttonTypeDictionary,
   buttonVariantDictionary,
 }

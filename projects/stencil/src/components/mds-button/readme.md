@@ -50,7 +50,6 @@ This is a web-component from Maggioli Design System [Magma](https://magma.maggio
 | `--mds-button-border-color`   | Sets the border-color of the component                                                                   |
 | `--mds-button-color`          | Sets the text color of the component                                                                     |
 | `--mds-button-gap`            | Sets the distance betwen element inside the components, use it instead of setting gap property directly. |
-| `--mds-button-icon-color`     | Sets the icon color of the component                                                                     |
 | `--mds-button-radius`         | Sets the border-radius of the component                                                                  |
 
 
