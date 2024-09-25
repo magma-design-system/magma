@@ -3,8 +3,8 @@
 @tailwind utilities;
 
 /**
-* @prop --mds-list-item-icon-margin: Sets the margin of the component's icon
-*/
+  * @prop --mds-list-item-icon-margin: Sets the margin of the component's icon
+  */
 
 :host {
 

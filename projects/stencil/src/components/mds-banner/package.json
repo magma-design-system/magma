@@ -26,7 +26,7 @@
   "dependencies": {
     "@maggioli-design-system/mds-button": "5.1.0",
     "@maggioli-design-system/mds-icon": "2.10.5",
-    "@maggioli-design-system/mds-text": "4.4.2",
+    "@maggioli-design-system/mds-text": "4.4.3",
     "@maggioli-design-system/styles": "15.3.2",
     "@stencil/core": "4.21.0"
   },

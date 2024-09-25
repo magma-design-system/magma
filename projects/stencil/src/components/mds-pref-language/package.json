@@ -27,7 +27,7 @@
     "@maggioli-design-system/mds-dropdown": "5.4.2",
     "@maggioli-design-system/mds-pref-language-item": "1.0.4",
     "@maggioli-design-system/mds-pref-language-nav": "1.0.5",
-    "@maggioli-design-system/mds-text": "4.4.2",
+    "@maggioli-design-system/mds-text": "4.4.3",
     "@maggioli-design-system/styles": "15.3.2",
     "@stencil/core": "4.21.0"
   },
