@@ -16,7 +16,7 @@ describe('mds-file-preview', () => {
             </div>
             <mds-text class="file-name" truncate="word" typography="h6" variant="title"></mds-text>
             <footer class="infos">
-              <mds-badge class="suffix" title="Formato sconosciuto" tone="quiet" variant="dark">
+              <mds-badge class="suffix" title="Formato sconosciuto" tone="weak" variant="dark">
                 default
               </mds-badge>
               <mds-text class="description" title="Formato sconosciuto" truncate="word" typography="caption" variant="info">

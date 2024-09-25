@@ -8,14 +8,17 @@ describe('mds-push-notification', () => {
       html: '<mds-push-notification></mds-push-notification>',
     })
     expect(page.root).toEqualHtml(`
-      <mds-push-notification message="Nessun messaggio disponibile" preview="image" tone="weak">
+      <mds-push-notification date-format="timeago" deletable="" message="Nessun messaggio disponibile" preview="image" tone="weak">
         <mock:shadow-root>
           <div class="content" part="content">
+            <header>
+              <div class="infos"></div>
+            </header>
             <mds-text class="message" truncate="all" typography="caption" variant="info">
               Nessun messaggio disponibile
             </mds-text>
           </div>
-          <mds-button class="close-button">
+          <mds-button class="close-button" title="Close">
           </mds-button>
         </mock:shadow-root>
       </mds-push-notification>
