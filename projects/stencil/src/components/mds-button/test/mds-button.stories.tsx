@@ -6,6 +6,7 @@ import {
   buttonToneVariantDictionary,
   buttonTargetDictionary,
   buttonIconPositionDictionary,
+  buttonTypeDictionary,
 } from '@dictionary/button'
 
 export default {
@@ -63,6 +64,12 @@ export default {
       options: buttonVariantDictionary,
       control: { type: 'select' },
     },
+    type: {
+      type: { name: 'string' },
+      description: 'Specifies the type of the button',
+      options: buttonTypeDictionary,
+      control: { type: 'select' },
+    },
   },
 }
 
@@ -86,6 +93,18 @@ const TemplateKeyboard = args =>
 
 const TemplateIcon = args =>
   <mds-button {...args}/>
+
+const TemplateForm = args =>
+  <form action='#' onSubmit={event => {
+    event.preventDefault()
+
+    // eslint-disable-next-line no-console
+    console.log('Form submitted via mds-button')
+
+    return false
+  }}>
+    <mds-button {...args}>Cliccami</mds-button>
+  </form>
 
 export const Default = Template.bind({})
 
@@ -160,4 +179,9 @@ export const Target = Template.bind({})
 Target.args = {
   href: 'http://www.maggioli.it',
   target: 'blank',
+}
+
+export const FormParticipation = TemplateForm.bind({})
+FormParticipation.args = {
+  type: 'button',
 }
