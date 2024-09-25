@@ -131,15 +131,6 @@ This is a web-component from Maggioli Design System [Magma](https://magma.maggio
 | `variant`    | `variant`    | Specifies the variant for `typography`                                                                                                                                                                                                                                                                                                                                                                            | `"code" \| "info" \| "read" \| "title" \| undefined`                   | `undefined`  |
 
 
-## CSS Custom Properties
-
-| Name                                       | Description                                                          |
-| ------------------------------------------ | -------------------------------------------------------------------- |
-| `--mds-bibliography-color`                 | Sets the text color of the component                                 |
-| `--mds-bibliography-text-decoration`       | Sets the text decoration color of the link                           |
-| `--mds-bibliography-text-decoration-hover` | Sets the text decoration color of the link when the mouse is over it |
-
-
 ## Dependencies
 
 ### Depends on

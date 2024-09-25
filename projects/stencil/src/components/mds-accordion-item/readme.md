@@ -40,19 +40,6 @@ This is a web-component from Maggioli Design System [Magma](https://magma.maggio
 | `"label"`   |             |
 
 
-## CSS Custom Properties
-
-| Name                                      | Description                                                               |
-| ----------------------------------------- | ------------------------------------------------------------------------- |
-| `--mds-accordion-item-border-color`       | Sets the border-color of the component                                    |
-| `--mds-accordion-item-border-width`       | Sets the border-width of the separators of the component                  |
-| `--mds-accordion-item-color`              | Sets the text-color of the component                                      |
-| `--mds-accordion-item-description-color`  | Sets the color of the always visible title description                    |
-| `--mds-accordion-item-duration`           | Sets the transition duration of the close/open animation of the component |
-| `--mds-accordion-item-padding-selected`   | Sets the vertical padding of the component when it's selected             |
-| `--mds-accordion-item-padding-unselected` | Sets the vertical padding of the component when it's unselected           |
-
-
 ## Dependencies
 
 ### Depends on
