@@ -35,6 +35,7 @@ const buttonIconPositionDictionary = [
 const buttonTypeDictionary = [
   'button',
   'submit',
+  'reset',
 ]
 
 export {

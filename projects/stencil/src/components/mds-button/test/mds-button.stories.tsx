@@ -95,14 +95,15 @@ const TemplateIcon = args =>
   <mds-button {...args}/>
 
 const TemplateForm = args =>
-  <form action='#' onSubmit={event => {
+  <form class="flex gap-x-400" action='#' onSubmit={event => {
     event.preventDefault()
 
     // eslint-disable-next-line no-console
-    console.log('Form submitted via mds-button')
+    console.log('Form submitted via mds-button', event)
 
     return false
   }}>
+    <input type="text" name="inputTest" />
     <mds-button {...args}>Cliccami</mds-button>
   </form>
 

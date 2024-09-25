@@ -116,15 +116,25 @@ export class MdsButton {
     if (!this.internals.form) return
 
     if (newValue === 'submit') {
-      this.host.addEventListener('click', this.handleRequestSubmit)
+      this.host.removeEventListener('click', this.handleReset)
+      this.host.addEventListener('click', this.handleRequestSubmitForm)
+    } else if (newValue === 'reset') {
+      this.host.removeEventListener('click', this.handleRequestSubmitForm)
+      this.host.addEventListener('click', this.handleReset)
     } else {
-      this.host.removeEventListener('click', this.handleRequestSubmit)
+      this.host.removeEventListener('click', this.handleRequestSubmitForm)
+      this.host.removeEventListener('click', this.handleReset)
     }
   }
 
-  private handleRequestSubmit = (e: MouseEvent) => {
+  private handleRequestSubmitForm = (e: MouseEvent) => {
     e.preventDefault()
     this.internals.form?.requestSubmit()
+  }
+
+  private handleReset = (e: MouseEvent) => {
+    e.preventDefault()
+    this.internals.form?.reset()
   }
 
   private mouseDown = () => {
@@ -155,11 +165,12 @@ export class MdsButton {
         }
         window.location.href = this.href ?? '' // TypeScript 5.0.2 bug: if (this.href) not checked
       })
-    } else if (this.type === 'submit' && this.internals.form) {
-      this.host.addEventListener('click', (e: MouseEvent) => {
-        e.preventDefault()
-        this.internals.form?.requestSubmit()
-      })
+    } else if (this.internals.form) {
+      if (this.type === 'submit') {
+        this.host.addEventListener('click', this.handleRequestSubmitForm)
+      } else if (this.type === 'reset') {
+        this.host.addEventListener('click', this.handleReset)
+      }
     }
   }
 
