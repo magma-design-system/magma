@@ -1,10 +1,10 @@
 @tailwind utilities;
 
 /**
-* @prop --mds-header-icon-color: Sets the color of the icon toggler
-* @prop --mds-header-color: Sets the text color of the header and the mobile toggler icon
-* @prop --mds-header-z-index: Sets the z-index of the modal
-*/
+  * @prop --mds-header-icon-color: Sets the color of the icon toggler
+  * @prop --mds-header-color: Sets the text color of the header and the mobile toggler icon
+  * @prop --mds-header-z-index: Sets the z-index of the modal
+  */
 
 :host {
 

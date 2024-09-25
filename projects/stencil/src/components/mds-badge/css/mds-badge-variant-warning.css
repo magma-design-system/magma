@@ -1,39 +1,55 @@
 @tailwind utilities;
 
-:host( [variant="warning"] ),
-:host( [variant="warning"][tone="strong"] ) {
+:host([variant="warning"]) {
 
-  --mds-badge-background: theme('colors.status-warning-05');
   --mds-badge-color: theme('colors.status-warning-10');
 }
 
-:host( [variant="warning"][tone="weak"] ) {
+:host([variant="warning"][tone="strong"]) {
 
-  --mds-badge-background: theme('colors.status-warning-08');
+  --mds-badge-background: theme('colors.status-warning-05');
+}
+
+:host([variant="warning"][tone="weak"]) {
+
+  --mds-badge-background: theme('colors.status-warning-09');
   --mds-badge-color: theme('colors.status-warning-02');
 }
 
-:host( [variant="warning"][tone="quiet"] ) {
+:host([variant="warning"][tone="quiet"]) {
 
-  --mds-badge-background: theme('colors.status-warning-09');
+  --mds-badge-color: theme('colors.status-warning-04');
+}
+
+:host([variant="warning"][tone="ghost"]) {
+
+  --mds-badge-background: transparent;
+  --mds-badge-border-color: theme('colors.status-warning-06');
   --mds-badge-color: theme('colors.status-warning-04');
 }
 
 @container style(--magma-pref-contrast: more) {
-  :host( [variant="warning"] ),
-  :host( [variant="warning"][tone="strong"] ) {
+  :host([variant="warning"]),
+  :host([variant="warning"][tone="strong"]) {
 
     --mds-badge-background: theme('colors.status-warning-04');
   }
 
-  :host( [variant="warning"][tone="weak"] ) {
+  :host([variant="warning"][tone="weak"]) {
 
     --mds-badge-color: theme('colors.status-warning-01');
   }
+
+  :host([variant="warning"][tone="quiet"]) {
+
+    --mds-badge-color: theme('colors.status-warning-02');
+  }
   
-  :host( [variant="warning"][tone="quiet"] ) {
-  
+  :host([variant="warning"][tone="ghost"]) {
+
+    --mds-badge-background: transparent;
     --mds-badge-color: theme('colors.status-warning-03');
+    --mds-badge-border-color: theme('colors.status-warning-03');
   }
 
 }
@@ -41,20 +57,27 @@
 @container style(--magma-pref-contrast: system) {
 
   @media (prefers-contrast: more) {
-    :host( [variant="warning"] ),
-    :host( [variant="warning"][tone="strong"] ) {
+    :host([variant="warning"]),
+    :host([variant="warning"][tone="strong"]) {
 
       --mds-badge-background: theme('colors.status-warning-04');
     }
 
-    :host( [variant="warning"][tone="weak"] ) {
+    :host([variant="warning"][tone="weak"]) {
 
       --mds-badge-color: theme('colors.status-warning-01');
     }
-    
-    :host( [variant="warning"][tone="quiet"] ) {
-    
+
+    :host([variant="warning"][tone="quiet"]) {
+
+      --mds-badge-color: theme('colors.status-warning-02');
+    }
+
+    :host([variant="warning"][tone="ghost"]) {
+      
+      --mds-badge-background: transparent;
       --mds-badge-color: theme('colors.status-warning-03');
+      --mds-badge-border-color: theme('colors.status-warning-03');
     }
   }
 }

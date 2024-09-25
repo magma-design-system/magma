@@ -1,39 +1,55 @@
 @tailwind utilities;
 
-:host( [variant="success"] ),
-:host( [variant="success"][tone="strong"] ) {
+:host([variant="success"]) {
 
-  --mds-badge-background: theme('colors.status-success-05');
   --mds-badge-color: theme('colors.status-success-10');
 }
 
-:host( [variant="success"][tone="weak"] ) {
+:host([variant="success"][tone="strong"]) {
 
-  --mds-badge-background: theme('colors.status-success-08');
+  --mds-badge-background: theme('colors.status-success-05');
+}
+
+:host([variant="success"][tone="weak"]) {
+
+  --mds-badge-background: theme('colors.status-success-09');
   --mds-badge-color: theme('colors.status-success-02');
 }
 
-:host( [variant="success"][tone="quiet"] ) {
+:host([variant="success"][tone="quiet"]) {
 
-  --mds-badge-background: theme('colors.status-success-09');
+  --mds-badge-color: theme('colors.status-success-04');
+}
+
+:host([variant="success"][tone="ghost"]) {
+
+  --mds-badge-background: transparent;
+  --mds-badge-border-color: theme('colors.status-success-06');
   --mds-badge-color: theme('colors.status-success-04');
 }
 
 @container style(--magma-pref-contrast: more) {
-  :host( [variant="success"] ),
-  :host( [variant="success"][tone="strong"] ) {
+  :host([variant="success"]),
+  :host([variant="success"][tone="strong"]) {
 
     --mds-badge-background: theme('colors.status-success-04');
   }
 
-  :host( [variant="success"][tone="weak"] ) {
+  :host([variant="success"][tone="weak"]) {
 
     --mds-badge-color: theme('colors.status-success-01');
   }
+
+  :host([variant="success"][tone="quiet"]) {
+
+    --mds-badge-color: theme('colors.status-success-02');
+  }
   
-  :host( [variant="success"][tone="quiet"] ) {
-  
+  :host([variant="success"][tone="ghost"]) {
+
+    --mds-badge-background: transparent;
     --mds-badge-color: theme('colors.status-success-03');
+    --mds-badge-border-color: theme('colors.status-success-03');
   }
 
 }
@@ -41,20 +57,27 @@
 @container style(--magma-pref-contrast: system) {
 
   @media (prefers-contrast: more) {
-    :host( [variant="success"] ),
-    :host( [variant="success"][tone="strong"] ) {
+    :host([variant="success"]),
+    :host([variant="success"][tone="strong"]) {
 
       --mds-badge-background: theme('colors.status-success-04');
     }
 
-    :host( [variant="success"][tone="weak"] ) {
+    :host([variant="success"][tone="weak"]) {
 
       --mds-badge-color: theme('colors.status-success-01');
     }
-    
-    :host( [variant="success"][tone="quiet"] ) {
-    
+
+    :host([variant="success"][tone="quiet"]) {
+
+      --mds-badge-color: theme('colors.status-success-02');
+    }
+
+    :host([variant="success"][tone="ghost"]) {
+      
+      --mds-badge-background: transparent;
       --mds-badge-color: theme('colors.status-success-03');
+      --mds-badge-border-color: theme('colors.status-success-03');
     }
   }
 }

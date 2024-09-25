@@ -1,7 +1,8 @@
 @tailwind utilities;
 
 @container style(--magma-pref-theme: dark) {
-  :host {
+  :host([tone="strong"]),
+  :host([tone="weak"]) {
     box-shadow: theme('boxShadow.outline') inset;
   }
 }
@@ -9,7 +10,8 @@
 @container style(--magma-pref-theme: system) {
 
   @media (prefers-color-scheme: dark) {
-    :host {
+    :host([tone="strong"]),
+    :host([tone="weak"]) {
       box-shadow: theme('boxShadow.outline') inset;
     }
   }

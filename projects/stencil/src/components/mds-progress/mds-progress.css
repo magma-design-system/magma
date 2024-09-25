@@ -6,12 +6,12 @@
 @tailwind utilities;
 
 /**
-* @prop --mds-progress-background: Sets the background-color of the component
-* @prop --mds-progress-color: Sets the background-color of the progress
-* @prop --mds-progress-duration: Sets the duration of the progress bar animation
-* @prop --mds-progress-radius: Sets the border-radius of the component
-* @prop --mds-progress-thickness: Sets the thickness of the progress bar
-*/
+  * @prop --mds-progress-background: Sets the background-color of the component
+  * @prop --mds-progress-color: Sets the background-color of the progress
+  * @prop --mds-progress-duration: Sets the duration of the progress bar animation
+  * @prop --mds-progress-radius: Sets the border-radius of the component
+  * @prop --mds-progress-thickness: Sets the thickness of the progress bar
+  */
 
 :host {
 

@@ -9,13 +9,16 @@
 :host {
 
   --mds-badge-background: theme('colors.label-sky-09');
-  --mds-badge-radius: theme('borderRadius.DEFAULT');
+  --mds-badge-border-color: theme('colors.label-sky-06');;
+  --mds-badge-border-width: 1px;
   --mds-badge-color: theme('colors.label-sky-03');
+  --mds-badge-radius: theme('borderRadius.DEFAULT');
 
   @apply
+    duration-200
+    ease-out
     px-200
-    py-100
-    transition-colors;
+    py-100;
 
   align-items: center;
   background-color: var(--mds-badge-background);
@@ -23,6 +26,18 @@
   color: var(--mds-badge-color);
   display: inline-flex;
   min-width: min-content;
+  transition-property: background-color, border-color, border-width, color;
+}
+
+:host([tone="ghost"]) {
+  border-color: var(--mds-badge-border-color);
+  border-style: solid;
+  border-width: var(--mds-badge-border-width);
+}
+
+:host([tone="quiet"]) {
+
+  --mds-badge-background: theme('colors.tone-neutral');
 }
 
 @import './css/mds-badge-variant-amaranth.css';

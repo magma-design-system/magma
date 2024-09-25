@@ -1,0 +1,16 @@
+{
+  "dismiss": "Close",
+  "future": "in %s",
+  "past": "%s ago",
+  "s": "few sec",
+  "m": "1 min",
+  "mm": "%d mins",
+  "h": "1 hour",
+  "hh": "%d hours",
+  "d": "1 day",
+  "dd": "%d days",
+  "M": "1 month",
+  "MM": "%d months",
+  "y": "1 year",
+  "yy": "%d years"
+}

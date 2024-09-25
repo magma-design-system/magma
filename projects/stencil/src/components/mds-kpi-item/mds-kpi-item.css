@@ -1,10 +1,10 @@
 @tailwind utilities;
 
 /**
-* @prop --mds-kpi-item-description-color: Set the color of the description text
-* @prop --mds-kpi-item-info-padding: Set the padding of the info text
-* @prop --mds-kpi-item-value-color: Set the color of the value text
-*/
+  * @prop --mds-kpi-item-description-color: Set the color of the description text
+  * @prop --mds-kpi-item-info-padding: Set the padding of the info text
+  * @prop --mds-kpi-item-value-color: Set the color of the value text
+  */
 
 /* https://benfrain.com/using-css-property-inside-shadowroot-web-components-workaround/ */
 

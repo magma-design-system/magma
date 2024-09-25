@@ -32,6 +32,10 @@
   transition-timing-function: var(--mds-push-notification-timing-function);
 }
 
+:host([deletable="false"]) {
+  @apply pr-400;
+}
+
 .content {
   display: grid;
   flex-grow: 1;
@@ -67,8 +71,6 @@
     p-150
     transition-opacity;
 
-  fill: inherit;
-
   background-color: transparent;
   fill: theme('colors.tone-neutral-06');
   opacity: 0;
@@ -85,6 +87,31 @@
 .close-button:hover {
   fill: theme('colors.tone-neutral-03');
   opacity: 1;
+}
+
+header {
+
+  @apply gap-100;
+
+  align-items: baseline;
+  display: flex;
+  justify-content: space-between;
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.infos {
+  display: flex;
+  flex-direction: column;
+}
+
+.time {
+
+  @apply mr-100;
+
+  flex-shrink: 0;
+  white-space: nowrap;
 }
 
 .subject {

@@ -58,6 +58,7 @@
     "@stencil/core": "4.21.0",
     "clsx": "2.1.0",
     "crypto-js": "4.2.0",
+    "dayjs": "1.11.13",
     "filesize": "10.1.0",
     "fitty": "2.4.2",
     "idb-keyval": "6.2.1",

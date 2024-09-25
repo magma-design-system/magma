@@ -1,6 +1,6 @@
 import { Component, Host, h, Prop } from '@stencil/core'
 import { TypographyInfoType, TypographyReadType, TypographyVariants } from '@type/typography'
-import { ThemeFullVariantType, ToneSimpleVariantType } from '@type/variant'
+import { ThemeFullVariantType, ToneVariantType } from '@type/variant'
 
 /**
  * @slot default - Add `text string` to this slot, **avoid** to add `HTML elements` or `components` here.
@@ -21,7 +21,7 @@ export class MdsBadge {
   /**
    * Sets the tone of the color variant
    */
-  @Prop( { reflect: true } ) tone?: ToneSimpleVariantType = 'weak'
+  @Prop( { reflect: true } ) tone?: ToneVariantType = 'weak'
 
   /**
    * Specifies the typography of the element

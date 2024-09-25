@@ -1,9 +1,9 @@
 @tailwind utilities;
 
 /**
-* @prop --mds-usage-background: Sets the background-color of the component
-* @prop --mds-usage-border-width: Sets the colored border-size of the component
-*/
+  * @prop --mds-usage-background: Sets the background-color of the component
+  * @prop --mds-usage-border-width: Sets the colored border-size of the component
+  */
 
 :host {
 

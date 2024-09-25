@@ -55,7 +55,8 @@ import { MdsPrefLanguageEventDetail } from "@event/language";
 import { ThemeModeType, ThemeTransitionType } from "./components/mds-pref-theme/meta/types";
 import { PriceTableFeaturesCellType } from "./components/mds-price-table-features-cell/meta/types";
 import { DirectionType } from "./components/mds-progress/meta/types";
-import { NotificationPreviewType } from "./components/mds-push-notification/meta/types";
+import { ISO8601Date } from "@type/date";
+import { NotificationDateFormatType, NotificationPreviewType } from "./components/mds-push-notification/meta/types";
 import { MdsPushNotificationEventDetail } from "./components/mds-push-notification/meta/event-detail";
 import { MdsStepperBarEventDetail } from "./components/mds-stepper-bar/meta/event-detail";
 import { MdsStepperBarItemEventDetail } from "./components/mds-stepper-bar-item/meta/event-detail";
@@ -116,7 +117,8 @@ export { MdsPrefLanguageEventDetail } from "@event/language";
 export { ThemeModeType, ThemeTransitionType } from "./components/mds-pref-theme/meta/types";
 export { PriceTableFeaturesCellType } from "./components/mds-price-table-features-cell/meta/types";
 export { DirectionType } from "./components/mds-progress/meta/types";
-export { NotificationPreviewType } from "./components/mds-push-notification/meta/types";
+export { ISO8601Date } from "@type/date";
+export { NotificationDateFormatType, NotificationPreviewType } from "./components/mds-push-notification/meta/types";
 export { MdsPushNotificationEventDetail } from "./components/mds-push-notification/meta/event-detail";
 export { MdsStepperBarEventDetail } from "./components/mds-stepper-bar/meta/event-detail";
 export { MdsStepperBarItemEventDetail } from "./components/mds-stepper-bar-item/meta/event-detail";
@@ -209,7 +211,7 @@ export namespace Components {
         /**
           * Sets the tone of the color variant
          */
-        "tone"?: ToneSimpleVariantType;
+        "tone"?: ToneVariantType;
         /**
           * Specifies the typography of the element
          */
@@ -1320,6 +1322,18 @@ export namespace Components {
         "variant": ThemeVariantType;
     }
     interface MdsPushNotification {
+        /**
+          * Specifies if the notification date format shows time passed or displays date as a static string
+         */
+        "dateFormat": NotificationDateFormatType;
+        /**
+          * Specifies the notification date based on [standard ISO 8601](https://www.iso.org/iso-8601-date-and-time-format.html).
+         */
+        "datetime"?: ISO8601Date;
+        /**
+          * Specifies if the component is dismissable or not, it should be set to true by default is used with it's parent component `mds-push-notifications`
+         */
+        "deletable": boolean;
         /**
           * Specifies the icon to be displayed
          */
@@ -3062,7 +3076,7 @@ declare namespace LocalJSX {
         /**
           * Sets the tone of the color variant
          */
-        "tone"?: ToneSimpleVariantType;
+        "tone"?: ToneVariantType;
         /**
           * Specifies the typography of the element
          */
@@ -4309,6 +4323,18 @@ declare namespace LocalJSX {
         "variant"?: ThemeVariantType;
     }
     interface MdsPushNotification {
+        /**
+          * Specifies if the notification date format shows time passed or displays date as a static string
+         */
+        "dateFormat"?: NotificationDateFormatType;
+        /**
+          * Specifies the notification date based on [standard ISO 8601](https://www.iso.org/iso-8601-date-and-time-format.html).
+         */
+        "datetime"?: ISO8601Date;
+        /**
+          * Specifies if the component is dismissable or not, it should be set to true by default is used with it's parent component `mds-push-notifications`
+         */
+        "deletable"?: boolean;
         /**
           * Specifies the icon to be displayed
          */

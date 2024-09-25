@@ -92,7 +92,7 @@ export class MdsFile {
             { this.suffix === undefined && getSuffix(this.filename, this.suffix) && <mds-text typography="h6" class="extension">.{ getSuffix(this.filename, this.suffix) }</mds-text> }
           </div>
           <div class="detail">
-            { getSuffix(this.filename, this.suffix) && <mds-badge variant={getFormatsVariant(this.filename, this.suffix).variant as ThemeFullVariantType} tone="quiet" class="suffix">{ getSuffix(this.filename, this.suffix) }</mds-badge> }
+            { getSuffix(this.filename, this.suffix) && <mds-badge variant={getFormatsVariant(this.filename, this.suffix).variant as ThemeFullVariantType} tone="weak" class="suffix">{ getSuffix(this.filename, this.suffix) }</mds-badge> }
             <mds-text truncate="word" typography="caption" class="description" title={ this.description ?? this.getDefaultDescription() }>{ this.description ?? this.getDefaultDescription() }</mds-text>
           </div>
         </div>

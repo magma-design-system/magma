@@ -1,6 +1,6 @@
 import { h } from '@stencil/core'
 import { typographyInfoDictionary, typographyVariationsDictionary } from '@dictionary/typography'
-import { themeFullVariantDictionary, toneSimpleVariantDictionary } from '@dictionary/variant'
+import { themeFullVariantDictionary, toneVariantDictionary } from '@dictionary/variant'
 
 export default {
   title: 'UI / Badge',
@@ -9,7 +9,7 @@ export default {
       type: { name: 'string' },
       control: { type: 'select' },
       description: 'Sets the tone of the color variant',
-      options: toneSimpleVariantDictionary,
+      options: toneVariantDictionary,
     },
     typography: {
       type: { name: 'string' },
