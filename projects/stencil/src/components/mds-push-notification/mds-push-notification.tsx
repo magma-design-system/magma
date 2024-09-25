@@ -1,13 +1,16 @@
-import { Component, Element, Event, EventEmitter, Host, h, Prop } from '@stencil/core'
+
 import dayjs from 'dayjs'
-import relativeTime from 'dayjs/plugin/relativeTime'
-import miBaselineCancel from '@icon/mi/baseline/cancel.svg'
-import { ThemeFullVariantAvatarType, ToneMinimalVariantType } from '@type/variant'
-import { NotificationPreviewType, NotificationDateFormatType, RelativeTimeType } from './meta/types'
-import { MdsPushNotificationEventDetail } from './meta/event-detail'
-import { Locale } from '@common/locale'
 import localeEn from './meta/locale.en.json'
 import localeIt from './meta/locale.it.json'
+import miBaselineCancel from '@icon/mi/baseline/cancel.svg'
+import relativeTime from 'dayjs/plugin/relativeTime'
+import { Component, Element, Event, EventEmitter, Host, h, Prop } from '@stencil/core'
+import { ISO8601Date } from '@type/date'
+import { Locale } from '@common/locale'
+import { MdsPushNotificationEventDetail } from './meta/event-detail'
+import { NotificationPreviewType, NotificationDateFormatType, RelativeTimeType } from './meta/types'
+import { ThemeFullVariantAvatarType, ToneMinimalVariantType } from '@type/variant'
+import { sanitizeISO8601Date } from '@common/date'
 
 dayjs.extend(relativeTime)
 
@@ -38,7 +41,7 @@ export class MdsPushNotification {
   /**
    * Specifies the notification date based on [standard ISO 8601](https://www.iso.org/iso-8601-date-and-time-format.html).
    */
-  @Prop({ reflect: true }) readonly datetime?: string
+  @Prop({ reflect: true, mutable: true }) datetime?: ISO8601Date
 
   /**
    * Specifies if the notification date format shows time passed or displays date as a static string
@@ -103,6 +106,11 @@ export class MdsPushNotification {
   componentWillLoad ():void {
     this.hasActions = this.host.querySelector('[slot="actions"]') !== null
     this.hasBadge = this.host.querySelector('[slot="badge"]') !== null
+
+    if (this.datetime) {
+      this.datetime = sanitizeISO8601Date(this.datetime?.toString()) as ISO8601Date
+    }
+
     this.t.lang(this.host)
     const relativeTimeCustom = {
       future: this.t.get('future'),
@@ -137,7 +145,7 @@ export class MdsPushNotification {
             { this.datetime && <mds-text class="time" typography="option">
               { this.dateFormat === 'timeago'
                 ? dayjs(this.datetime).fromNow()
-                : this.datetime
+                : dayjs(this.datetime).format(this.dateFormat)
               }
             </mds-text> }
           </header>

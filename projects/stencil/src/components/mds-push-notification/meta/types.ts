@@ -4,7 +4,7 @@ export type NotificationPreviewType =
 
 export type NotificationDateFormatType =
   | 'timeago'
-  | 'none'
+  | string
 
 export type RelativeTimeType = {
   future: string
