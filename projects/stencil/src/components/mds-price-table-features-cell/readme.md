@@ -29,6 +29,15 @@ This is a web-component from Maggioli Design System [Magma](https://magma.maggio
 | `"text"` | Selects the HTML element wrapper of text when `type` attribute when is `text`.                   |
 
 
+## CSS Custom Properties
+
+| Name                                                     | Description                                              |
+| -------------------------------------------------------- | -------------------------------------------------------- |
+| `--mds-price-table-features-cell-icon-supported-color`   | Sets the border-color of the component                   |
+| `--mds-price-table-features-cell-icon-unsupported-color` | Sets the border-width of the separators of the component |
+| `--mds-price-table-features-cell-padding`                | Sets the cell padding of the component                   |
+
+
 ## Dependencies
 
 ### Depends on

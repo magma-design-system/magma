@@ -30,6 +30,14 @@ This is a web-component from Maggioli Design System [Magma](https://magma.maggio
 | `"tabs"`     |             |
 
 
+## CSS Custom Properties
+
+| Name                        | Description                                                                                                                      |
+| --------------------------- | -------------------------------------------------------------------------------------------------------------------------------- |
+| `--mds-tab-duration`        | Sets the animation duration on how the contents height is resized when the component switch from a content to another one        |
+| `--mds-tab-timing-function` | Sets the animation timing function on how the contents height is resized when the component switch from a content to another one |
+
+
 ## Dependencies
 
 ### Used by

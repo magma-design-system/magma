@@ -22,6 +22,14 @@ This is a web-component from Maggioli Design System [Magma](https://magma.maggio
 | `"default"` | Add `text string`, `HTML elements` or `components` to this slot. |
 
 
+## CSS Custom Properties
+
+| Name                       | Description                                   |
+| -------------------------- | --------------------------------------------- |
+| `--mds-usage-background`   | Sets the background-color of the component    |
+| `--mds-usage-border-width` | Sets the colored border-size of the component |
+
+
 ## Dependencies
 
 ### Depends on
