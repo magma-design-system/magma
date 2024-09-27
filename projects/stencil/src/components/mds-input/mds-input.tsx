@@ -12,6 +12,7 @@ import { TypographyInputType } from '@type/typography'
 import { Locale } from '@common/locale'
 import localeEn from './meta/locale.en.json'
 import localeIt from './meta/locale.it.json'
+import { LanguageType } from '@type/language'
 
 /*
   * @part field - Selects the native input field used by the component
@@ -56,8 +57,9 @@ export class MdsInput {
 
   private nativeInput?: HTMLInputElement | HTMLTextAreaElement
   private tabindex?: number
-  @Element() el!: HTMLMdsInputElement
+  @Element() el: HTMLMdsInputElement
   @State() hasFocus = false
+  @State() language:LanguageType
 
   private t:Locale = new Locale({
     en: localeEn,
@@ -219,6 +221,9 @@ export class MdsInput {
   @Event({ eventName: 'mdsInputFocus' }) focusEvent!: EventEmitter<void>
 
   componentWillLoad (): void {
+
+    this.language = this.t.lang(this.el) as LanguageType
+
     // If the mds-input has a tabindex attribute we get the value
     // and pass it down to the native input, then remove it from the
     // mds-input to avoid causing tabbing twice on the same element
@@ -385,14 +390,14 @@ export class MdsInput {
             role="button" tabindex="0" title={this.t.get('increase')}
             part="counter-button-increase"></mds-button>
         }
-        <mds-input-tip position="top" active={this.hasFocus}>
+        <mds-input-tip lang={this.language} position="top" active={this.hasFocus}>
           { this.disabled && <mds-input-tip-item expanded variant="disabled"></mds-input-tip-item> }
           { this.readonly && <mds-input-tip-item expanded variant="readonly"></mds-input-tip-item> }
           { this.required &&
             <mds-input-tip-item expanded={this.hasFocus} variant={this.value === '' ? 'required' : 'required-success'}></mds-input-tip-item>
           }
         </mds-input-tip>
-        <mds-input-tip position="bottom" active={this.hasFocus}>
+        <mds-input-tip lang={this.language} position="bottom" active={this.hasFocus}>
           { this.tip && <mds-input-tip-item expanded variant="text">{ this.tip }</mds-input-tip-item>}
         </mds-input-tip>
         {this.datalist &&
