@@ -23,7 +23,7 @@
   --mds-input-ring: 0 0 0 1px rgb(var(--mds-input-variant-color) / 0.1);
   --mds-input-shadow: 0 1px 3px 0 rgb(var(--mds-input-variant-color) / 0.1), 0 1px 2px 0 rgb(var(--mds-input-variant-color) / 0.06);
   --mds-input-variant-color: 0 0 0;
-  --mds-input-controls-color: theme('colors.tone-neutral-04');
+  --mds-input-controls-color: theme('colors.brand-maggioli-03');
   --mds-input-controls-border: 2px solid theme('colors.tone-neutral-09');
   --mds-input-textarea-min-height: theme('size.2400');
   --mds-input-textarea-max-height: theme('size.6400');
@@ -150,9 +150,9 @@ textarea.input {
     w-700;
 
   --mds-button-background: transparent;
-  fill: var(--mds-input-controls-color);
 
   border: 0;
+  fill: var(--mds-input-controls-color);
   min-height: 0;
   padding: 0;
 }
@@ -203,6 +203,7 @@ textarea.input {
     top-150
     right-150;
 
+  fill: var(--mds-input-controls-color);
   position: absolute;
 }
 
@@ -227,11 +228,12 @@ textarea.input {
   @apply left-1500;
 }
 
-:host( [type="password"]) .input {
-  -webkit-text-security: disc;
+:host( [type="password"]) .input[type="password"]:not(:placeholder-shown) {
+  font-size: theme('fontSize.4xl');
+  max-height: 3rem;
 }
 
-:host( [type="password"]) .input[type="text"] {
+:host( [type="password"]) .input[type="text"]:not(:placeholder-shown) {
   @apply text-code-snippet;
 }
 
