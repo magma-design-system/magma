@@ -1,4 +1,6 @@
 {
   "increase": "Increase",
-  "decrease": "Decrease"
+  "decrease": "Decrease",
+  "showPassword": "Show Password",
+  "hidePassword": "Hide Password"
 }

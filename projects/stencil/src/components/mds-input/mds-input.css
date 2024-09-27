@@ -198,6 +198,14 @@ textarea.input {
   right: 0;
 }
 
+.password-toggle-button {
+  @apply
+    top-150
+    right-150;
+
+  position: absolute;
+}
+
 :host( [type="number"] ) .input {
   @apply pr-800;
 }
@@ -217,6 +225,14 @@ textarea.input {
 
 :host( [type="number"][controls-layout="horizontal"] ) .icon {
   @apply left-1500;
+}
+
+:host( [type="password"]) .input {
+  -webkit-text-security: disc;
+}
+
+:host( [type="password"]) .input[type="text"] {
+  @apply text-code-snippet;
 }
 
 @import './css/mds-input-variant.css';

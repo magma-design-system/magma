@@ -3,6 +3,10 @@ import miBaselineAdd from '@icon/mi/baseline/add.svg'
 import miBaselineArrowDown from '@icon/mi/baseline/keyboard-arrow-down.svg'
 import miBaselineArrowUp from '@icon/mi/baseline/keyboard-arrow-up.svg'
 import miBaselineRemove from '@icon/mi/baseline/remove.svg'
+import miBaselineVisible from '@icon/mi/baseline/visibility.svg'
+import miBaselineVisibleOff from '@icon/mi/baseline/visibility-off.svg'
+
+
 import { AttachInternals, Component, Element, Event, EventEmitter, Host, Method, Prop, State, Watch, h } from '@stencil/core'
 import { AutocompleteType } from '@type/autocomplete'
 import { InputTextType, InputControlsLayoutType, InputControlsIconType } from '@type/input'
@@ -18,6 +22,7 @@ import { LanguageType } from '@type/language'
   * @part field - Selects the native input field used by the component
   * @part counter-button-decrease - Selects the button used to decrese the input value
   * @part counter-button-increase - Selects the button used to increse the input value
+  * @part password-toggle-button - Selects the button used to show or hide password
   */
 
 export interface MdsInputInterface {
@@ -60,6 +65,7 @@ export class MdsInput {
   @Element() el: HTMLMdsInputElement
   @State() hasFocus = false
   @State() language:LanguageType
+  @State() isPasswordVisible = false
 
   private t:Locale = new Locale({
     en: localeEn,
@@ -367,7 +373,7 @@ export class MdsInput {
             required={this.required}
             step={this.step}
             tabIndex={this.tabindex}
-            type={this.type}
+            type={this.type === 'password' && this.isPasswordVisible ? 'text' : this.type}
             value={this.value}
           />
         }
@@ -389,6 +395,12 @@ export class MdsInput {
             icon={this.controlsIcon === 'arrow' ? miBaselineArrowUp : miBaselineAdd} onClick={this.stepUp}
             role="button" tabindex="0" title={this.t.get('increase')}
             part="counter-button-increase"></mds-button>
+        }
+        {this.type === 'password'
+          && <mds-button class="password-toggle-button"
+            icon={this.isPasswordVisible ? miBaselineVisibleOff : miBaselineVisible} onClick={() => this.isPasswordVisible = !this.isPasswordVisible}
+            role="button" tabindex="0" tone="quiet" title={this.isPasswordVisible ? this.t.get('hidePassword') : this.t.get('showPassword')}
+            part="password-toggle-button"></mds-button>
         }
         <mds-input-tip lang={this.language} position="top" active={this.hasFocus}>
           { this.disabled && <mds-input-tip-item expanded variant="disabled"></mds-input-tip-item> }

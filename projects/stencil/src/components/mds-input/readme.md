@@ -83,6 +83,7 @@ Type: `Promise<void>`
 | `"counter-button-decrease"` |             |
 | `"counter-button-increase"` |             |
 | `"field"`                   |             |
+| `"password-toggle-button"`  |             |
 
 
 ## CSS Custom Properties
