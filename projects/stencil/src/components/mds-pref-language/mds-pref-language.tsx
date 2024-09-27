@@ -1,5 +1,5 @@
 import { Component, Element, Event, EventEmitter, Host, h, Prop, State } from '@stencil/core'
-import { LanguageType } from '@type/language'
+import { PrefLanguageType } from '@type/language'
 import { MdsPrefLanguageEventDetail } from '@event/language'
 import { MdsPrefChangeEventDetail } from '@event/preference'
 import { Locale } from '@common/locale'
@@ -20,10 +20,10 @@ import localeIt from './meta/locale.it.json'
 export class MdsPrefLanguage {
   @State() showDropdown: boolean = false
   @Element() element: HTMLMdsPrefLanguageElement
-  private defaultLanguage: LanguageType = 'en'
-  private pageLanguage: LanguageType
-  private systemLanguage: LanguageType
-  private userLanguage: LanguageType
+  private defaultLanguage: PrefLanguageType = 'en'
+  private pageLanguage: PrefLanguageType
+  private systemLanguage: PrefLanguageType
+  private userLanguage: PrefLanguageType
   private currentSelectedItem: HTMLMdsPrefLanguageItemElement
   private elPreferLanguageItems: NodeListOf<HTMLMdsPrefLanguageItemElement>
   private t:Locale = new Locale({
@@ -37,7 +37,7 @@ export class MdsPrefLanguage {
   /**
    * Specifies the language code based on HTML `lang` attribute
    */
-  @Prop({ mutable: true, reflect: true }) set: LanguageType = 'auto'
+  @Prop({ mutable: true, reflect: true }) set: PrefLanguageType = 'auto'
 
   /**
    * Emits when the component changes the language selected from the click event of the dropdown list item
@@ -51,8 +51,8 @@ export class MdsPrefLanguage {
 
   componentDidLoad (): void {
     this.systemLanguage = this.sanitizeLanguage(navigator.language)
-    this.userLanguage = localStorage.getItem('mds-pref-language') as LanguageType
-    this.pageLanguage = (document.querySelector('html')?.getAttribute('lang')) as LanguageType
+    this.userLanguage = localStorage.getItem('mds-pref-language') as PrefLanguageType
+    this.pageLanguage = (document.querySelector('html')?.getAttribute('lang')) as PrefLanguageType
     this.setLanguage(this.set)
     this.checkLanguageSelect()
   }
@@ -93,14 +93,14 @@ export class MdsPrefLanguage {
     })
   }
 
-  private sanitizeLanguage = (value: string): LanguageType => {
+  private sanitizeLanguage = (value: string): PrefLanguageType => {
     if (value.includes('-')) {
-      return value.split('-')[0].toLowerCase() as LanguageType
+      return value.split('-')[0].toLowerCase() as PrefLanguageType
     }
-    return value as LanguageType
+    return value as PrefLanguageType
   }
 
-  private setLanguage = (set: LanguageType): void => {
+  private setLanguage = (set: PrefLanguageType): void => {
     set === 'auto' ? this.set = this.userLanguage ?? this.pageLanguage ?? this.systemLanguage : this.set = set
 
     this.prefChangeEvent.emit({ preference: 'language' })
