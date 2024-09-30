@@ -31,6 +31,18 @@ This is a web-component from Maggioli Design System [Magma](https://magma.maggio
 | `"default"` | Add `mds-filter-item` element/s. |
 
 
+## CSS Custom Properties
+
+| Name                                   | Description                                                             |
+| -------------------------------------- | ----------------------------------------------------------------------- |
+| `--mds-filter-items-background`        | Sets the background-color of the items row area                         |
+| `--mds-filter-items-background-active` | Sets the background-color of the items row area when a filter is active |
+| `--mds-filter-items-gap`               | Sets the gap between items                                              |
+| `--mds-filter-items-padding`           | Sets the padding of the items row area                                  |
+| `--mds-filter-items-radius`            | Sets the border-radius of the items row area                            |
+| `--mds-filter-label-padding`           | Sets the padding of the label                                           |
+
+
 ## Dependencies
 
 ### Depends on

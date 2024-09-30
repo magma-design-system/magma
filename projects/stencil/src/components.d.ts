@@ -50,7 +50,7 @@ import { AnimationModeType } from "./components/mds-pref-animation/meta/types";
 import { MdsPrefChangeEventDetail } from "@event/preference";
 import { ConsumptionModeType } from "@type/preference";
 import { ContrastModeType } from "./components/mds-pref-contrast/meta/types";
-import { LanguageType } from "@type/language";
+import { LanguageType, PrefLanguageType } from "@type/language";
 import { MdsPrefLanguageEventDetail } from "@event/language";
 import { ThemeModeType, ThemeTransitionType } from "./components/mds-pref-theme/meta/types";
 import { PriceTableFeaturesCellType } from "./components/mds-price-table-features-cell/meta/types";
@@ -112,7 +112,7 @@ export { AnimationModeType } from "./components/mds-pref-animation/meta/types";
 export { MdsPrefChangeEventDetail } from "@event/preference";
 export { ConsumptionModeType } from "@type/preference";
 export { ContrastModeType } from "./components/mds-pref-contrast/meta/types";
-export { LanguageType } from "@type/language";
+export { LanguageType, PrefLanguageType } from "@type/language";
 export { MdsPrefLanguageEventDetail } from "@event/language";
 export { ThemeModeType, ThemeTransitionType } from "./components/mds-pref-theme/meta/types";
 export { PriceTableFeaturesCellType } from "./components/mds-price-table-features-cell/meta/types";
@@ -1241,7 +1241,7 @@ export namespace Components {
         /**
           * /**   Specifies the language code based on HTML `lang` attribute
          */
-        "set": LanguageType;
+        "set": PrefLanguageType;
     }
     interface MdsPrefLanguageItem {
         /**
@@ -4230,7 +4230,7 @@ declare namespace LocalJSX {
         /**
           * /**   Specifies the language code based on HTML `lang` attribute
          */
-        "set"?: LanguageType;
+        "set"?: PrefLanguageType;
     }
     interface MdsPrefLanguageItem {
         /**

@@ -217,6 +217,12 @@ Tip.args = {
   tip: 'input',
 }
 
+export const Password = Template.bind({})
+Password.args = {
+  type: 'password',
+  placeholder: 'Insert a pasword',
+}
+
 export const Search = Template.bind({})
 Search.args = {
   datalist: citiesDictionary,
