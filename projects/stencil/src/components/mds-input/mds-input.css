@@ -228,6 +228,10 @@ textarea.input {
   @apply left-1500;
 }
 
+:host( [type="password"]) .input {
+  @apply pl-1000;
+}
+
 :host( [type="password"]) .input[type="password"]:not(:placeholder-shown) {
   font-size: theme('fontSize.4xl');
   max-height: 3rem;
