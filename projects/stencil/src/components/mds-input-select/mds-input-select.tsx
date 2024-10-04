@@ -157,6 +157,8 @@ export class MdsInputSelect {
       select?.querySelectorAll('option').forEach((element: HTMLOptionElement) => {
         element.selected = element.value === this.value
       })
+    } else if (!this.placeholder) {
+      this.value = select?.querySelectorAll('option')[0].value
     }
   }
 
