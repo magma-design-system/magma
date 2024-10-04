@@ -59,6 +59,24 @@ const Template = args =>
     <option value="4">The Fourth Emendament</option>
   </mds-input-select>
 
+const TemplateForm = args =>
+  <form class="flex gap-x-400" action='#' onSubmit={event => {
+    event.preventDefault()
+
+    // eslint-disable-next-line no-console
+    console.log('Form submitted via mds-button', event.target?.[0].value)
+
+    return false
+  }}>
+    <mds-input-select {...args}>
+      <option value="1">First contact</option>
+      <option value="2">Second impact</option>
+      <option value="3">The Third Man</option>
+      <option value="4">The Fourth Emendament</option>
+    </mds-input-select>
+    <mds-button>Submit</mds-button>
+  </form>
+
 export const Default = Template.bind({})
 Default.args = {
   placeholder: 'Seleziona un film...',
@@ -78,3 +96,10 @@ export const Disabled = Template.bind({})
 Disabled.args = {
   disabled: true,
 }
+
+export const FormIntegrationWithPlaceholder = TemplateForm.bind({})
+FormIntegrationWithPlaceholder.args = {
+  placeholder: 'Seleziona un film...',
+}
+
+export const FormIntegration = TemplateForm.bind({})
