@@ -4,12 +4,12 @@
 @tailwind utilities;
 
 /**
-  * @prop --mds-toast-background: Sets the background-color of the component
-  * @prop --mds-toast-color: Sets the text color of the component
-  * @prop --mds-toast-duration: Sets the animation duration of the component, used also by component's logic
-  * @prop --mds-toast-icon-color: Sets the text color of the component
-  * @prop --mds-toast-shadow: Sets the box-shadow of the component
-  */
+ * @prop --mds-toast-background: Sets the background-color of the component
+ * @prop --mds-toast-color: Sets the text color of the component
+ * @prop --mds-toast-duration: Sets the animation duration of the component, used also by component's logic
+ * @prop --mds-toast-icon-color: Sets the text color of the component
+ * @prop --mds-toast-shadow: Sets the box-shadow of the component
+ */
 
 :host {
 

@@ -1,16 +1,16 @@
 @tailwind utilities;
 
 /**
-  * @prop --mds-chip-background: Sets the `background-color` of the component
-  * @prop --mds-chip-color: Sets the `color` of the component
-  * @prop --mds-chip-icon-background: Sets the `background-color` of the icon
-  * @prop --mds-chip-icon-background-selected: Sets the `background-color` color of the icon when the component is selected
-  * @prop --mds-chip-icon-color: Sets the `fill` color of the icon of the component
-  * @prop --mds-chip-opacity-disabled: Sets the `opacity` of the component when it's disabled
-  * @prop --mds-chip-backgroud-selected: Sets the `background-color` of the component when it's selected
-  * @prop --mds-chip-color-selected: Sets the `color` of the component when it's selected
-  * @prop --mds-chip-icon-color-selected: Sets the `fill` color of the icon of the component when it's selected
-  */
+ * @prop --mds-chip-background: Sets the `background-color` of the component
+ * @prop --mds-chip-color: Sets the `color` of the component
+ * @prop --mds-chip-icon-background: Sets the `background-color` of the icon
+ * @prop --mds-chip-icon-background-selected: Sets the `background-color` color of the icon when the component is selected
+ * @prop --mds-chip-icon-color: Sets the `fill` color of the icon of the component
+ * @prop --mds-chip-opacity-disabled: Sets the `opacity` of the component when it's disabled
+ * @prop --mds-chip-backgroud-selected: Sets the `background-color` of the component when it's selected
+ * @prop --mds-chip-color-selected: Sets the `color` of the component when it's selected
+ * @prop --mds-chip-icon-color-selected: Sets the `fill` color of the icon of the component when it's selected
+ */
 
 :host {
 

@@ -1,10 +1,10 @@
 @tailwind utilities;
 
 /**
-  * @prop --mds-badge-background: Sets the background-color of the component
-  * @prop --mds-badge-radius: Sets the border-radius of the component
-  * @prop --mds-badge-color: Sets the text color of the component
-  */
+ * @prop --mds-badge-background: Sets the background-color of the component
+ * @prop --mds-badge-radius: Sets the border-radius of the component
+ * @prop --mds-badge-color: Sets the text color of the component
+ */
 
 :host {
 

@@ -1,13 +1,13 @@
 @tailwind utilities;
 
 /**
-  * @prop --mds-entity-background: The background-color of the entity
-  * @prop --mds-entity-color: The color of the entity name
-  * @prop --mds-entity-detail-color: The color of the text details
-  * @prop --mds-entity-icon-background: The background-color of the icon
-  * @prop --mds-entity-icon-color: The color of the icon
-  * @prop --mds-entity-shadow: The box-shadow od the component
-  */
+ * @prop --mds-entity-background: The background-color of the entity
+ * @prop --mds-entity-color: The color of the entity name
+ * @prop --mds-entity-detail-color: The color of the text details
+ * @prop --mds-entity-icon-background: The background-color of the icon
+ * @prop --mds-entity-icon-color: The color of the icon
+ * @prop --mds-entity-shadow: The box-shadow od the component
+ */
 
 :host {
 

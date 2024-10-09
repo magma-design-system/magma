@@ -31,7 +31,7 @@
     --border-radius: theme('borderRadius.2xl');
     --url: "url(data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg'%3e%3crect width='100%25' height='100%25' fill='none' rx='" var(--border-radius) "' ry='" var(--border-radius) "' stroke='" var(--stroke-color) "' stroke-width='" var(--stroke-width) "' stroke-dasharray='8%2c 16' stroke-dashoffset='0' stroke-linecap='square'/%3e%3c/svg%3e)";
     background-image: url("data:image/svg+xml,%3csvg width='100%25' height='100%25' xmlns='http://www.w3.org/2000/svg'%3e%3crect width='100%25' height='100%25' fill='none' rx="16" ry='16' stroke='red' stroke-width='5' stroke-dasharray='8%2c 16' stroke-dashoffset='0' stroke-linecap='square'/%3e%3c/svg%3e");
-  */
+ */
 
   @apply
     gap-400
@@ -63,24 +63,25 @@
 .action {
   @apply p-150;
 
-  fill: theme('colors.tone-neutral-04');
-
   border-radius: 1000px;
+  fill: theme('colors.tone-neutral-04');
   height: auto;
 }
 
 .action--cancel-upload:focus-visible,
 .action--cancel-upload:hover {
 
-  fill: theme('colors.status-error-04');
   --mds-button-background: theme('colors.status-error-09');
+
+  fill: theme('colors.status-error-04');
 }
 
 .action--retry-upload:focus-visible,
 .action--retry-upload:hover {
 
-  fill: theme('colors.status-success-04');
   --mds-button-background: theme('colors.status-success-09');
+
+  fill: theme('colors.status-success-04');
 }
 
 .main-action {

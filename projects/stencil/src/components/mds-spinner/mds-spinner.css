@@ -1,8 +1,8 @@
 @tailwind utilities;
 
 /**
-  * @prop --mds-spinner-duration: Sets the duration of the icon animation
-  */
+ * @prop --mds-spinner-duration: Sets the duration of the icon animation
+ */
 
 :host {
 
