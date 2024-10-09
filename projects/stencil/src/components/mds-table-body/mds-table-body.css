@@ -1,9 +1,9 @@
 @tailwind utilities;
 
 /**
-  * @prop --mds-table-body-background-hover: The background-color of the table body when the mouse is over it
-  * @prop --mds-table-body-background: The background-color of the table body
-  */
+ * @prop --mds-table-body-background-hover: The background-color of the table body when the mouse is over it
+ * @prop --mds-table-body-background: The background-color of the table body
+ */
 
 :host {
 
