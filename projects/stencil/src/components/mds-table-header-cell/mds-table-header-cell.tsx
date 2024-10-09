@@ -14,13 +14,15 @@ export class MdsTableHeaderCell {
 
   @State() isAscending: boolean = true
   @Element() element: HTMLMdsTableHeaderCellElement
+  private currentDirection: number = 0
+  private directionSequence = ['asc', 'desc', 'none']
+  private index: number = 0
+  private sorterInitialized: boolean = false
   private tableBody: HTMLMdsTableBodyElement
   private tableHeader: HTMLMdsTableHeaderElement
   private tableHeaderCellSiblings: HTMLMdsTableHeaderCellElement[]
   private tableRows: HTMLMdsTableRowElement[]
-  private index: number = 0
-  private sorterInitialized: boolean = false
-  private dirtySorted: boolean = false
+  private tableRowsDefaultSorted: HTMLMdsTableRowElement[]
 
   /**
    * Tells the component to make the cell able to sort the table columns items
@@ -46,6 +48,7 @@ export class MdsTableHeaderCell {
     this.tableHeaderCellSiblings = Array.from(this.tableHeader.children) as HTMLMdsTableHeaderCellElement[]
     this.index = this.tableHeaderCellSiblings.indexOf(this.element)
     this.tableRows = Array.from(this.tableBody.children) as HTMLMdsTableRowElement[]
+    this.tableRowsDefaultSorted = Array.from(this.tableBody.children) as HTMLMdsTableRowElement[]
     this.sorterInitialized = true
   }
 
@@ -67,7 +70,7 @@ export class MdsTableHeaderCell {
     this.tableRows.forEach((row: HTMLMdsTableRowElement) => {
       const cells: HTMLMdsTableCellElement[] = Array.from(row.children) as HTMLMdsTableCellElement[]
       cells.forEach((cell: HTMLMdsTableCellElement, index: number) => {
-        if (this.index === index) {
+        if (this.index === index && this.direction !== 'none') {
           cell.setAttribute('sorted', '')
           return
         }
@@ -77,33 +80,43 @@ export class MdsTableHeaderCell {
   }
 
   private sortRows = (): void => {
+
+    if (this.direction === 'none') {
+      this.tableRowsDefaultSorted.forEach(row => this.tableBody.appendChild(row))
+      return
+    }
+
     const sortedRows = this.tableRows.sort((a: HTMLMdsTableRowElement, b: HTMLMdsTableRowElement) => {
       const cellA = this.getValue(a.querySelectorAll('mds-table-cell')[this.index])
       const cellB = this.getValue(b.querySelectorAll('mds-table-cell')[this.index])
       const isNumeric = !isNaN(Number(cellA)) && !isNaN(Number(cellB))
       if (isNumeric) {
-        return this.isAscending ? Number(cellA) - Number(cellB) : Number(cellB) - Number(cellA)
+        return this.direction === 'asc' ? Number(cellA) - Number(cellB) : Number(cellB) - Number(cellA)
       }
-      return this.isAscending ? String(cellA).localeCompare(String(cellB)) : String(cellB).localeCompare(String(cellA))
+      return this.direction === 'asc' ? String(cellA).localeCompare(String(cellB)) : String(cellB).localeCompare(String(cellA))
     })
     sortedRows.forEach(row => this.tableBody.appendChild(row))
   }
 
+  private updateDirection = (): void => {
+    this.direction = this.directionSequence[this.currentDirection] as SortDirectionType
+    this.currentDirection = (this.currentDirection + 1) % this.directionSequence.length
+  }
+
   private sort = (): void => {
-    this.isAscending = !this.isAscending
-    if (this.isAscending) {
-      this.direction = 'asc'
-    } else {
-      this.direction = 'desc'
-    }
+    this.updateDirection()
     this.sortRows()
     this.resetSortAttribute()
-    if (!this.dirtySorted) {
+    if (this.direction !== 'none') {
       this.tableRows.forEach((row: HTMLMdsTableRowElement) => {
         row.setAttribute('sorted', '')
       })
+      return
     }
-    this.dirtySorted = true
+
+    this.tableRows.forEach((row: HTMLMdsTableRowElement) => {
+      row.removeAttribute('sorted')
+    })
   }
 
   @Watch('sortable')
