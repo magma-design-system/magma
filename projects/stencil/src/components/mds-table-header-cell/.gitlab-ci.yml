@@ -1,0 +1,25 @@
+.base-table-header-cell:
+  variables:
+    COMPONENT: mds-table-header-cell
+
+# ISOLATE
+table-header-cell-isolate:
+  extends: [.base-isolate, .base-table-header-cell]
+  dependencies: [base-stencil-build]
+
+# TEST
+table-header-cell-publish-test:
+  extends: [.base-stencil-publish-test, .base-table-header-cell]
+  dependencies: [base-stencil-build, table-header-cell-isolate]
+
+# PUBLISH
+table-header-cell-publish:
+  extends: [.base-stencil-publish, .base-table-header-cell]
+  dependencies: [base-stencil-build, table-header-cell-isolate]
+  needs: [base-stencil-build, table-header-cell-isolate, table-header-cell-publish-test]
+
+# INSTALL TEST
+table-header-cell-install-test:
+  extends: [.base-stencil-install-test, .base-table-header-cell]
+  dependencies: [base-stencil-build, table-header-cell-isolate]
+  needs: [base-stencil-build, table-header-cell-isolate, table-header-cell-publish]
