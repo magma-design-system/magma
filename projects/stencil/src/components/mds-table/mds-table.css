@@ -20,13 +20,15 @@
   --mds-table-body-background: var(--mds-table-background);
   --mds-table-border-color: theme('colors.tone-neutral-08');
   --mds-table-border-width: 2px;
-  --mds-table-cell-background-hover: theme('colors.tone-neutral');
+  --mds-table-cell-background-hover: var(--mds-table-background);
   --mds-table-cell-background: transparent;
-  --mds-table-cell-border-color: theme('colors.tone-neutral-08');
+  --mds-table-cell-border-color: var(--mds-table-border-color);
   --mds-table-cell-border-width: var(--mds-table-border-width);
   --mds-table-cell-padding: theme('spacing.400');
   --mds-table-color-hover: theme('colors.tone-neutral-02');
   --mds-table-color: theme('colors.tone-neutral-03');
+  --mds-table-row-color-hover: var(--mds-table-body-background-hover);
+  --mds-table-row-color: var(--mds-table-color);
 
   @apply
     duration-200

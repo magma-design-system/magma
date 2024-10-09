@@ -12,14 +12,14 @@
     ease-out
     transition-colors;
 
-  background-color: var(--mds-table-body-background, theme('colors.tone-neutral'));
+  background-color: var(--mds-table-body-background);
   display: table-row-group;
   overflow: hidden;
 }
 
 :host( [interactive]:hover ) {
 
-  --mds-table-body-background: var(--mds-table-body-background-hover, theme('colors.tone-neutral-10'));
+  --mds-table-body-background: var(--mds-table-body-background-hover);
 }
 
 :host(:last-child) ::slotted(*:last-child) {

@@ -93,9 +93,3 @@ export const Sortable = TemplateSortable.bind({})
 Sortable.args = {
   interactive: true,
 }
-
-export const Pivot = TemplateSortable.bind({})
-Pivot.args = {
-  interactive: true,
-  pivot: true,
-}

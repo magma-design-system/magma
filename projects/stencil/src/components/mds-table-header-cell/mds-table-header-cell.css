@@ -17,9 +17,9 @@
     duration-200
     ease-out;
 
-  background-color: var(--mds-table-cell-background, theme('colors.tone-neutral'));
-  border-bottom: var(--mds-table-cell-border-width, theme('borderWidth.2')) solid var(--mds-table-cell-border-color, theme('colors.tone-neutral-09')) !important;
-  border-top: var(--mds-table-cell-border-width, theme('borderWidth.2')) solid transparent !important;
+  background-color: var(--mds-table-cell-background);
+  border-bottom: var(--mds-table-cell-border-width) solid var(--mds-table-cell-border-color) !important;
+  border-top: var(--mds-table-cell-border-width) solid transparent !important;
   display: table-cell;
   padding: var(--mds-table-header-cell-padding);
   transition-property: background-color, border-color, color;
