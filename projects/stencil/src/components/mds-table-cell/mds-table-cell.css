@@ -1,12 +1,12 @@
 @tailwind utilities;
 
 /**
-  * @prop --mds-table-cell-background-hover: The background-color of the table cell when the mouse is over it
-  * @prop --mds-table-cell-background: The background-color of the table cell
-  * @prop --mds-table-cell-border-color: The border-color of the table cell
-  * @prop --mds-table-cell-border-width: The border-width of the table cell
-  * @prop --mds-table-cell-padding: The padding of the table cell
-  */
+ * @prop --mds-table-cell-background-hover: The background-color of the table cell when the mouse is over it
+ * @prop --mds-table-cell-background: The background-color of the table cell
+ * @prop --mds-table-cell-border-color: The border-color of the table cell
+ * @prop --mds-table-cell-border-width: The border-width of the table cell
+ * @prop --mds-table-cell-padding: The padding of the table cell
+ */
 
 :host {
 
