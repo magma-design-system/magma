@@ -229,7 +229,7 @@ textarea.input {
 }
 
 :host( [type="password"]) .input {
-  @apply pl-1000;
+  @apply pr-1000;
 }
 
 :host( [type="password"]) .input[type="password"]:not(:placeholder-shown) {
