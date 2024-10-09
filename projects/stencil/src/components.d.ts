@@ -63,6 +63,7 @@ import { MdsStepperBarItemEventDetail } from "./components/mds-stepper-bar-item/
 import { MdsTabEventDetail } from "./components/mds-tab/meta/event-detail";
 import { MdsTabBarEventDetail } from "./components/mds-tab-bar/meta/event-detail";
 import { MdsTabItemEventDetail } from "./components/mds-tab-item/meta/event-detail";
+import { SortDirectionType } from "./components/mds-table-header-cell/meta/types";
 import { TextAnimationType, TypographyTagType } from "./components/mds-text/meta/types";
 import { ToastPosition } from "./components/mds-toast/meta/types";
 import { UsageType } from "./components/mds-usage/meta/types";
@@ -125,6 +126,7 @@ export { MdsStepperBarItemEventDetail } from "./components/mds-stepper-bar-item/
 export { MdsTabEventDetail } from "./components/mds-tab/meta/event-detail";
 export { MdsTabBarEventDetail } from "./components/mds-tab-bar/meta/event-detail";
 export { MdsTabItemEventDetail } from "./components/mds-tab-item/meta/event-detail";
+export { SortDirectionType } from "./components/mds-table-header-cell/meta/types";
 export { TextAnimationType, TypographyTagType } from "./components/mds-text/meta/types";
 export { ToastPosition } from "./components/mds-toast/meta/types";
 export { UsageType } from "./components/mds-usage/meta/types";
@@ -1486,10 +1488,25 @@ export namespace Components {
         "interactive": boolean;
     }
     interface MdsTableCell {
+        /**
+          * Sets a value to help the sorting function from `mds-table-header-cell`, if not set it will be used the content of the cell.
+         */
+        "value"?: string | number;
     }
     interface MdsTableFooter {
     }
     interface MdsTableHeader {
+    }
+    interface MdsTableHeaderCell {
+        "direction": SortDirectionType;
+        /**
+          * Sets a label for the cell
+         */
+        "label"?: string;
+        /**
+          * Tells the component to make the cell able to sort the table columns items
+         */
+        "sortable"?: boolean;
     }
     interface MdsTableRow {
         "interactive": boolean;
@@ -2798,6 +2815,12 @@ declare global {
         prototype: HTMLMdsTableHeaderElement;
         new (): HTMLMdsTableHeaderElement;
     };
+    interface HTMLMdsTableHeaderCellElement extends Components.MdsTableHeaderCell, HTMLStencilElement {
+    }
+    var HTMLMdsTableHeaderCellElement: {
+        prototype: HTMLMdsTableHeaderCellElement;
+        new (): HTMLMdsTableHeaderCellElement;
+    };
     interface HTMLMdsTableRowElement extends Components.MdsTableRow, HTMLStencilElement {
     }
     var HTMLMdsTableRowElement: {
@@ -2952,6 +2975,7 @@ declare global {
         "mds-table-cell": HTMLMdsTableCellElement;
         "mds-table-footer": HTMLMdsTableFooterElement;
         "mds-table-header": HTMLMdsTableHeaderElement;
+        "mds-table-header-cell": HTMLMdsTableHeaderCellElement;
         "mds-table-row": HTMLMdsTableRowElement;
         "mds-text": HTMLMdsTextElement;
         "mds-toast": HTMLMdsToastElement;
@@ -4519,10 +4543,25 @@ declare namespace LocalJSX {
         "interactive"?: boolean;
     }
     interface MdsTableCell {
+        /**
+          * Sets a value to help the sorting function from `mds-table-header-cell`, if not set it will be used the content of the cell.
+         */
+        "value"?: string | number;
     }
     interface MdsTableFooter {
     }
     interface MdsTableHeader {
+    }
+    interface MdsTableHeaderCell {
+        "direction"?: SortDirectionType;
+        /**
+          * Sets a label for the cell
+         */
+        "label"?: string;
+        /**
+          * Tells the component to make the cell able to sort the table columns items
+         */
+        "sortable"?: boolean;
     }
     interface MdsTableRow {
         "interactive"?: boolean;
@@ -4769,6 +4808,7 @@ declare namespace LocalJSX {
         "mds-table-cell": MdsTableCell;
         "mds-table-footer": MdsTableFooter;
         "mds-table-header": MdsTableHeader;
+        "mds-table-header-cell": MdsTableHeaderCell;
         "mds-table-row": MdsTableRow;
         "mds-text": MdsText;
         "mds-toast": MdsToast;
@@ -4866,6 +4906,7 @@ declare module "@stencil/core" {
             "mds-table-cell": LocalJSX.MdsTableCell & JSXBase.HTMLAttributes<HTMLMdsTableCellElement>;
             "mds-table-footer": LocalJSX.MdsTableFooter & JSXBase.HTMLAttributes<HTMLMdsTableFooterElement>;
             "mds-table-header": LocalJSX.MdsTableHeader & JSXBase.HTMLAttributes<HTMLMdsTableHeaderElement>;
+            "mds-table-header-cell": LocalJSX.MdsTableHeaderCell & JSXBase.HTMLAttributes<HTMLMdsTableHeaderCellElement>;
             "mds-table-row": LocalJSX.MdsTableRow & JSXBase.HTMLAttributes<HTMLMdsTableRowElement>;
             "mds-text": LocalJSX.MdsText & JSXBase.HTMLAttributes<HTMLMdsTextElement>;
             "mds-toast": LocalJSX.MdsToast & JSXBase.HTMLAttributes<HTMLMdsToastElement>;
