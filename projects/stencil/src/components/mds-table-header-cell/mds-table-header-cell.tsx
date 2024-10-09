@@ -126,6 +126,13 @@ export class MdsTableHeaderCell {
     }
   }
 
+  @Watch('direction')
+  directionHandler (newValue: SortDirectionType): void {
+    if (newValue === 'none' && this.currentDirection !== 0) {
+      this.currentDirection = 0
+    }
+  }
+
   render () {
     return (
       <Host>
