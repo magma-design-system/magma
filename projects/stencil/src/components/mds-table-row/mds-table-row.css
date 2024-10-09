@@ -15,10 +15,31 @@
 
 }
 
-:host( [interactive]:hover ) {
+:host([sorted][interactive]:not([interactive="false"])) ::slotted(mds-table-cell[sorted]) {
+
+  --mds-table-cell-background: var(--mds-table-cell-background-hover, theme('colors.tone-neutral'));
+}
+
+:host([sorted][interactive]:not([interactive="false"])) ::slotted(mds-table-cell:not([sorted])) {
+
+  --mds-table-cell-background: theme('colors.tone-neutral-10');
+}
+
+:host([interactive]:not([interactive="false"]):hover) {
 
   --mds-table-cell-background: var(--mds-table-cell-background-hover, theme('colors.tone-neutral'));
   --mds-table-row-color: var(--mds-table-row-color-hover);
+}
+
+
+:host([sorted][interactive]:not([interactive="false"]):hover) ::slotted(mds-table-cell:not([sorted])) {
+
+  --mds-table-cell-background: theme('colors.tone-neutral');
+}
+
+:host([sorted]:not([interactive])) ::slotted(mds-table-cell:not([sorted])) {
+
+  --mds-table-cell-background: theme('colors.tone-neutral-10');
 }
 
 @import './css/mds-table-row-pref-animation.css';
