@@ -33,6 +33,19 @@ This is a web-component from Maggioli Design System [Magma](https://magma.maggio
 | `"default"` | Add `text string`, `HTML elements` or `components` to this slot.                        |
 
 
+## CSS Custom Properties
+
+| Name                                       | Description                                                           |
+| ------------------------------------------ | --------------------------------------------------------------------- |
+| `--mds-banner-background`                  | Sets the background-color of the component                            |
+| `--mds-banner-close-icon-hover-background` | Sets the background color of the close icon when the mouse is over it |
+| `--mds-banner-color`                       | Sets the text color of the component                                  |
+| `--mds-banner-gap`                         | Sets gap between banner elements                                      |
+| `--mds-banner-icon-color`                  | Sets the close icon fill color of the component                       |
+| `--mds-banner-radius`                      | Sets the border-radius of the component                               |
+| `--mds-banner-shadow`                      | Sets the box-shadow of the component                                  |
+
+
 ## Dependencies
 
 ### Depends on

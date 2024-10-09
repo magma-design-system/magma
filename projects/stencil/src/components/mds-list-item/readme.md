@@ -31,6 +31,13 @@ This is a web-component from Maggioli Design System [Magma](https://magma.maggio
 | `"text"` |             |
 
 
+## CSS Custom Properties
+
+| Name                          | Description                             |
+| ----------------------------- | --------------------------------------- |
+| `--mds-list-item-icon-margin` | Sets the margin of the component's icon |
+
+
 ## Dependencies
 
 ### Depends on
