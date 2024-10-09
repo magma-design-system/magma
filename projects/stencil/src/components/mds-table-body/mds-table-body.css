@@ -22,4 +22,9 @@
   --mds-table-body-background: var(--mds-table-body-background-hover, theme('colors.tone-neutral-10'));
 }
 
+:host(:last-child) ::slotted(*:last-child) {
+
+  --mds-table-cell-border-color: transparent;
+}
+
 @import './css/mds-table-body-pref-animation.css';
