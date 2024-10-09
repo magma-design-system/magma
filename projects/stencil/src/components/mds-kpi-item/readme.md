@@ -23,15 +23,6 @@ This is a web-component from Maggioli Design System [Magma](https://magma.maggio
 | `"icon"` | Insert an icon image, it can be `HTML elements` or `components`, it is **recommended** to add `mds-icon` element. |
 
 
-## CSS Custom Properties
-
-| Name                               | Description                           |
-| ---------------------------------- | ------------------------------------- |
-| `--mds-kpi-item-description-color` | Set the color of the description text |
-| `--mds-kpi-item-info-padding`      | Set the padding of the info text      |
-| `--mds-kpi-item-value-color`       | Set the color of the value text       |
-
-
 ## Dependencies
 
 ### Depends on

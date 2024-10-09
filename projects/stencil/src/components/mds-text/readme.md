@@ -12,7 +12,7 @@ This is a web-component from Maggioli Design System [Magma](https://magma.maggio
 | Property     | Attribute    | Description                                                                | Type                                                                                                                                                                                                                                                                                                                                                                                                                                                                         | Default     |
 | ------------ | ------------ | -------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ----------- |
 | `animation`  | `animation`  | Specifies if the text is animated when it is rendered                      | `"none" \| "yugop" \| undefined`                                                                                                                                                                                                                                                                                                                                                                                                                                             | `'none'`    |
-| `tag`        | `tag`        | Specifies the HTML tag of the element                                      | `"address" \| "abbr" \| "article" \| "b" \| "bdo" \| "blockquote" \| "cite" \| "code" \| "dd" \| "del" \| "details" \| "dfn" \| "div" \| "dl" \| "dt" \| "em" \| "figcaption" \| "h1" \| "h2" \| "h3" \| "h4" \| "h5" \| "h6" \| "i" \| "ins" \| "kbd" \| "label" \| "legend" \| "li" \| "mark" \| "ol" \| "p" \| "pre" \| "q" \| "rt" \| "ruby" \| "s" \| "samp" \| "small" \| "span" \| "strong" \| "sub" \| "summary" \| "sup" \| "time" \| "u" \| "ul" \| "var" \| "rb"` | `undefined` |
+| `tag`        | `tag`        | Specifies the HTML tag of the element                                      | `"h1" \| "h2" \| "h3" \| "h4" \| "h5" \| "h6" \| "strong" \| "label" \| "code" \| "address" \| "time" \| "abbr" \| "article" \| "b" \| "bdo" \| "blockquote" \| "cite" \| "dd" \| "del" \| "details" \| "dfn" \| "div" \| "dl" \| "dt" \| "em" \| "figcaption" \| "i" \| "ins" \| "kbd" \| "legend" \| "li" \| "mark" \| "ol" \| "p" \| "pre" \| "q" \| "rb" \| "rt" \| "ruby" \| "s" \| "samp" \| "small" \| "span" \| "sub" \| "summary" \| "sup" \| "u" \| "ul" \| "var"` | `undefined` |
 | `text`       | `text`       | Specifies the text string to the component instead of passing an HTML node | `string \| undefined`                                                                                                                                                                                                                                                                                                                                                                                                                                                        | `undefined` |
 | `truncate`   | `truncate`   | Specifies if the text shoud be truncated or should behave as a normal text | `"all" \| "none" \| "word" \| undefined`                                                                                                                                                                                                                                                                                                                                                                                                                                     | `undefined` |
 | `typography` | `typography` | Specifies the font typography of the element                               | `"action" \| "caption" \| "detail" \| "h1" \| "h2" \| "h3" \| "h4" \| "h5" \| "h6" \| "hack" \| "label" \| "option" \| "paragraph" \| "snippet" \| "tip"`                                                                                                                                                                                                                                                                                                                    | `'detail'`  |
@@ -24,15 +24,6 @@ This is a web-component from Maggioli Design System [Magma](https://magma.maggio
 | Slot        | Description                                                                            |
 | ----------- | -------------------------------------------------------------------------------------- |
 | `"default"` | Add `text string` to this slot, **avoid** to add `HTML elements` or `components` here. |
-
-
-## CSS Custom Properties
-
-| Name                              | Description                                                                                                                                                                                                                       |
-| --------------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `--mds-text-line-clamp`           | Sets the max number of visible lines before the text overflows with ellipsis. It works only if attribute `truncate='all' is set`. **WARNING:** this is supported only by Chrome, Safare and Firefox with native browser prefixes. |
-| `--mds-text-selection-background` | Sets the background-color of the text when the text is selected                                                                                                                                                                   |
-| `--mds-text-selection-color`      | Sets the color of the text when the text is selected                                                                                                                                                                              |
 
 
 ## Dependencies
@@ -77,6 +68,7 @@ This is a web-component from Maggioli Design System [Magma](https://magma.maggio
  - [mds-quote](../mds-quote)
  - [mds-stepper-bar-item](../mds-stepper-bar-item)
  - [mds-tab-bar-item](../mds-tab-bar-item)
+ - [mds-table-header-cell](../mds-table-header-cell)
  - [mds-toast](../mds-toast)
  - [mds-tooltip](../mds-tooltip)
  - [mds-url-view](../mds-url-view)
@@ -123,6 +115,7 @@ graph TD;
   mds-quote --> mds-text
   mds-stepper-bar-item --> mds-text
   mds-tab-bar-item --> mds-text
+  mds-table-header-cell --> mds-text
   mds-toast --> mds-text
   mds-tooltip --> mds-text
   mds-url-view --> mds-text
