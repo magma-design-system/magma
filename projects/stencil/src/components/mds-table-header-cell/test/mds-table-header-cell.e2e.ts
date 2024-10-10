@@ -6,6 +6,6 @@ describe('mds-table-header-cell', () => {
     await page.setContent('<mds-table-header-cell></mds-table-header-cell>')
 
     const element = await page.find('mds-table-header-cell')
-    expect(element).toHaveClass('hydrated')
+    expect(element).toHaveAttribute('hydrated')
   })
 })
