@@ -201,6 +201,38 @@ async function needUpdateComponent (
 }
 
 /**
+ *
+ * @param componentVersion version of component (npm)
+ * @param currentVersion current version component
+ * @returns version type difference between versions, null if there are the same
+ *
+ * @example
+ * componentVersion: 1.2.3
+ * currentVersion: 1.2.4
+ * return 'patch'
+ *
+ * @example
+ * componentVersion: 1.2.3
+ * currentVersion: 1.3.4
+ * return 'minor'
+ *
+ * @example
+ * componentVersion: 1.2.3
+ * currentVersion: 1.2.3
+ * return null
+ */
+function getVersionTypeDiff(componentVersion: string | undefined, currentVersion: string): string | null{
+  if(!componentVersion || componentVersion === currentVersion) {
+    return null
+  }
+  const dv = componentVersion.split('.')
+  const cv = currentVersion.split('.')
+  if(dv[0] !== cv[0]) return 'major'
+  if(dv[1] !== cv[1]) return 'minor'
+  return 'patch' // dv[2] !== cv[2]
+}
+
+/**
  * Check dependencies of component and fix versions consistently to all components which it depends
  * @param name of component
  */
@@ -213,14 +245,15 @@ async function updateComponentDependencies (name: string): Promise<void> {
   if (relatedComponent) {
     await Promise.all(relatedComponent.map(async rc => {
       const pInfo = componentsUpdatedMap.get(rc)
-      if (pInfo && pInfo.dependencies[`@maggioli-design-system/${name}`] !== v) {
-        pInfo.dependencies[`@maggioli-design-system/${name}`] = v
-        componentsUpdatedMap.set(rc, pInfo)
+      const versionUpgradeType = getVersionTypeDiff(pInfo?.dependencies[`@maggioli-design-system/${name}`], v)
+      if (versionUpgradeType) {
+        pInfo!.dependencies[`@maggioli-design-system/${name}`] = v
+        componentsUpdatedMap.set(rc, pInfo!)
         if (!componentsToBeUpdated.includes(name)){
           componentsToBeUpdated.push(rc)
         }
       }
-      await updateComponent(rc, 'patch')
+      await updateComponent(rc, versionUpgradeType ?? '')
       await updateComponentDependencies(rc)
     }))
   }
