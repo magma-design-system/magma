@@ -54,8 +54,6 @@ img {
 }
 
 .alt-text-container--default-aspect-ratio {
-  @apply aspect-square;
-
   cursor: pointer;
   width: 100%;
 }
