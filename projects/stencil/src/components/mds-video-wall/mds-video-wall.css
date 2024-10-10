@@ -1,10 +1,10 @@
 @tailwind utilities;
 
 /**
-  * @prop --mds-video-wall-noise-background-color: Sets the background-color of the noise when active
-  * @prop --mds-video-wall-noise-background-size: Sets the background-color of the noise when active
-  * @prop --mds-video-wall-video-fit: Sets the object-fit of the video stream
-  */
+ * @prop --mds-video-wall-noise-background-color: Sets the background-color of the noise when active
+ * @prop --mds-video-wall-noise-background-size: Sets the background-color of the noise when active
+ * @prop --mds-video-wall-video-fit: Sets the object-fit of the video stream
+ */
 
 :host {
 

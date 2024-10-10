@@ -6,13 +6,13 @@
 @tailwind utilities;
 
 /**
-  * @prop --mds-button-await-duration: Sets the duration of the rotation of the spinner await component
-  * @prop --mds-button-background: Sets the background-color of the component
-  * @prop --mds-button-border-color: Sets the border-color of the component
-  * @prop --mds-button-color: Sets the text color of the component
-  * @prop --mds-button-gap: Sets the distance betwen element inside the components, use it instead of setting gap property directly.
-  * @prop --mds-button-radius: Sets the border-radius of the component
-  */
+ * @prop --mds-button-await-duration: Sets the duration of the rotation of the spinner await component
+ * @prop --mds-button-background: Sets the background-color of the component
+ * @prop --mds-button-border-color: Sets the border-color of the component
+ * @prop --mds-button-color: Sets the text color of the component
+ * @prop --mds-button-gap: Sets the distance betwen element inside the components, use it instead of setting gap property directly.
+ * @prop --mds-button-radius: Sets the border-radius of the component
+ */
 
 :host {
 

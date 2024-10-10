@@ -2,11 +2,11 @@
 @tailwind utilities;
 
 /**
-  * @prop --mds-avatar-background-color-pending: The background-color when an image is loading
-  * @prop --mds-avatar-background-color: The background-color of the component
-  * @prop --mds-avatar-color: The color of the placeholder icon
-  * @prop --mds-avatar-radius: The border-radius of the element
-  */
+ * @prop --mds-avatar-background-color-pending: The background-color when an image is loading
+ * @prop --mds-avatar-background-color: The background-color of the component
+ * @prop --mds-avatar-color: The color of the placeholder icon
+ * @prop --mds-avatar-radius: The border-radius of the element
+ */
 
 :host {
 

@@ -5,30 +5,30 @@
 @tailwind utilities;
 
 /**
-  * @prop --mds-input-switch-animation-timing-adjust: Set the size multiplier when the switch toggle is resizing by animation
-  * @prop --mds-input-switch-animation-timing-function: Set the timing function of the animation
-  * @prop --mds-input-switch-duration: Set the duration of the animation
-  * @prop --mds-input-switch-icon-color-checked-disabled: Set the color of the icon when the switch is disabled and checked
-  * @prop --mds-input-switch-icon-color-checked: Set the color of the icon when the switch is checked
-  * @prop --mds-input-switch-icon-color-indeterminate-disabled: Set the color of the icon when the switch is disabled and indeterminate
-  * @prop --mds-input-switch-icon-color-indeterminate: Set the color of the icon when the switch is indeterminate
-  * @prop --mds-input-switch-icon-color-unchecked-disabled: Set the color of the icon when the switch is disabled and unchecked
-  * @prop --mds-input-switch-icon-color-unchecked: Set the color of the icon when the switch is unchecked
-  * @prop --mds-input-switch-box-color-checked: Set the color of the switch when the switch is checked
-  * @prop --mds-input-switch-box-color-disabled-checked: Set the color of the switch when the switch is disabled and checked
-  * @prop --mds-input-switch-box-color-disabled-unchecked: Set the color of the switch when the switch is disabled and unchecked
-  * @prop --mds-input-switch-box-color-unchecked: Set the color of the switch when the switch is unchecked
-  * @prop --mds-input-switch-box-padding-sm: Set the padding of the switch toggle's container
-  * @prop --mds-input-switch-box-padding-md: Set the padding of the switch toggle's container
-  * @prop --mds-input-switch-box-padding-lg: Set the padding of the switch toggle's container
-  * @prop --mds-input-switch-toggle-color-checked: Set the color of the switch toggle when the switch is checked
-  * @prop --mds-input-switch-toggle-color-disabled-checked: Set the color of the switch toggle when the switch is disabled and checked
-  * @prop --mds-input-switch-toggle-color-disabled-unchecked: Set the color of the switch toggle when the switch is disabled and unchecked
-  * @prop --mds-input-switch-toggle-color-unchecked: Set the color of the switch toggle when the switch is unchecked
-  * @prop --mds-input-switch-toggle-size-sm: Sets the size of the switch toggle
-  * @prop --mds-input-switch-toggle-size-md: Sets the size of the switch toggle
-  * @prop --mds-input-switch-toggle-size-lg: Sets the size of the switch toggle
-  */
+ * @prop --mds-input-switch-animation-timing-adjust: Set the size multiplier when the switch toggle is resizing by animation
+ * @prop --mds-input-switch-animation-timing-function: Set the timing function of the animation
+ * @prop --mds-input-switch-duration: Set the duration of the animation
+ * @prop --mds-input-switch-icon-color-checked-disabled: Set the color of the icon when the switch is disabled and checked
+ * @prop --mds-input-switch-icon-color-checked: Set the color of the icon when the switch is checked
+ * @prop --mds-input-switch-icon-color-indeterminate-disabled: Set the color of the icon when the switch is disabled and indeterminate
+ * @prop --mds-input-switch-icon-color-indeterminate: Set the color of the icon when the switch is indeterminate
+ * @prop --mds-input-switch-icon-color-unchecked-disabled: Set the color of the icon when the switch is disabled and unchecked
+ * @prop --mds-input-switch-icon-color-unchecked: Set the color of the icon when the switch is unchecked
+ * @prop --mds-input-switch-box-color-checked: Set the color of the switch when the switch is checked
+ * @prop --mds-input-switch-box-color-disabled-checked: Set the color of the switch when the switch is disabled and checked
+ * @prop --mds-input-switch-box-color-disabled-unchecked: Set the color of the switch when the switch is disabled and unchecked
+ * @prop --mds-input-switch-box-color-unchecked: Set the color of the switch when the switch is unchecked
+ * @prop --mds-input-switch-box-padding-sm: Set the padding of the switch toggle's container
+ * @prop --mds-input-switch-box-padding-md: Set the padding of the switch toggle's container
+ * @prop --mds-input-switch-box-padding-lg: Set the padding of the switch toggle's container
+ * @prop --mds-input-switch-toggle-color-checked: Set the color of the switch toggle when the switch is checked
+ * @prop --mds-input-switch-toggle-color-disabled-checked: Set the color of the switch toggle when the switch is disabled and checked
+ * @prop --mds-input-switch-toggle-color-disabled-unchecked: Set the color of the switch toggle when the switch is disabled and unchecked
+ * @prop --mds-input-switch-toggle-color-unchecked: Set the color of the switch toggle when the switch is unchecked
+ * @prop --mds-input-switch-toggle-size-sm: Sets the size of the switch toggle
+ * @prop --mds-input-switch-toggle-size-md: Sets the size of the switch toggle
+ * @prop --mds-input-switch-toggle-size-lg: Sets the size of the switch toggle
+ */
 
 :host {
 

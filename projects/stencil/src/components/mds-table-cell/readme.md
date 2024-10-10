@@ -7,6 +7,13 @@ This is a web-component from Maggioli Design System [Magma](https://magma.maggio
 <!-- Auto Generated Below -->
 
 
+## Properties
+
+| Property | Attribute | Description                                                                                                                 | Type                            | Default     |
+| -------- | --------- | --------------------------------------------------------------------------------------------------------------------------- | ------------------------------- | ----------- |
+| `value`  | `value`   | Sets a value to help the sorting function from `mds-table-header-cell`, if not set it will be used the content of the cell. | `number \| string \| undefined` | `undefined` |
+
+
 ## Slots
 
 | Slot        | Description                                                      |

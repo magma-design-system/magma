@@ -1,12 +1,12 @@
 @tailwind utilities;
 
 /**
-  * @prop --mds-table-cell-background-hover: The background-color of the table cell when the mouse is over it
-  * @prop --mds-table-cell-background: The background-color of the table cell
-  * @prop --mds-table-cell-border-color: The border-color of the table cell
-  * @prop --mds-table-cell-border-width: The border-width of the table cell
-  * @prop --mds-table-cell-padding: The padding of the table cell
-  */
+ * @prop --mds-table-cell-background-hover: The background-color of the table cell when the mouse is over it
+ * @prop --mds-table-cell-background: The background-color of the table cell
+ * @prop --mds-table-cell-border-color: The border-color of the table cell
+ * @prop --mds-table-cell-border-width: The border-width of the table cell
+ * @prop --mds-table-cell-padding: The padding of the table cell
+ */
 
 :host {
 
@@ -14,11 +14,11 @@
     duration-200
     ease-out;
 
-  background-color: var(--mds-table-cell-background, theme('colors.tone-neutral'));
-  border-bottom: var(--mds-table-cell-border-width, theme('borderWidth.2')) solid var(--mds-table-cell-border-color, theme('colors.tone-neutral-09')) !important;
-  border-top: var(--mds-table-cell-border-width, theme('borderWidth.2')) solid transparent !important;
+  background-color: var(--mds-table-cell-background);
+  border-bottom: var(--mds-table-cell-border-width) solid var(--mds-table-cell-border-color) !important;
+  border-top: var(--mds-table-cell-border-width) solid transparent !important;
   display: table-cell;
-  padding: var(--mds-table-cell-padding, 0);
+  padding: var(--mds-table-cell-padding);
   transition-property: background-color, border-color, color;
 }
 

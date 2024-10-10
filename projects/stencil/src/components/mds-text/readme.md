@@ -77,6 +77,7 @@ This is a web-component from Maggioli Design System [Magma](https://magma.maggio
  - [mds-quote](../mds-quote)
  - [mds-stepper-bar-item](../mds-stepper-bar-item)
  - [mds-tab-bar-item](../mds-tab-bar-item)
+ - [mds-table-header-cell](../mds-table-header-cell)
  - [mds-toast](../mds-toast)
  - [mds-tooltip](../mds-tooltip)
  - [mds-url-view](../mds-url-view)
@@ -123,6 +124,7 @@ graph TD;
   mds-quote --> mds-text
   mds-stepper-bar-item --> mds-text
   mds-tab-bar-item --> mds-text
+  mds-table-header-cell --> mds-text
   mds-toast --> mds-text
   mds-tooltip --> mds-text
   mds-url-view --> mds-text

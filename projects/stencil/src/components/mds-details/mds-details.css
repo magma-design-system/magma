@@ -4,9 +4,9 @@
 @tailwind utilities;
 
 /**
-  * @prop --mds-details-icon-color: Sets the icon color the component
-  * @prop --mds-details-helper-icon-color: Sets icon color of the helper icon of the component
-  */
+ * @prop --mds-details-icon-color: Sets the icon color the component
+ * @prop --mds-details-helper-icon-color: Sets icon color of the helper icon of the component
+ */
 
 :host {
 

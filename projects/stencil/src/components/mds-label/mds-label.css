@@ -1,12 +1,12 @@
 @tailwind utilities;
 
 /**
-  * @prop --mds-label-background: Sets the background-color of the component
-  * @prop --mds-label-color: Sets the text color of the component
-  * @prop --mds-label-icon-color: Sets the color of the icon
-  * @prop --mds-label-selection-background: Sets the selection background color of the text
-  * @prop --mds-label-selection-color: Sets the selection color of the text
-  */
+ * @prop --mds-label-background: Sets the background-color of the component
+ * @prop --mds-label-color: Sets the text color of the component
+ * @prop --mds-label-icon-color: Sets the color of the icon
+ * @prop --mds-label-selection-background: Sets the selection background color of the text
+ * @prop --mds-label-selection-color: Sets the selection color of the text
+ */
 
 :host {
 
@@ -56,18 +56,18 @@
 }
 
 .button-close {
+
+  --mds-button-background: var(--mds-label-button-background);
+
+  border-radius: 0 var(--mds-label-radius) var(--mds-label-radius) 0;
+  fill: var(--mds-label-button-icon-color);
+  height: auto;
   @apply
     ml-100
     m-25
     px-150
     rounded-r-md
     transition-colors;
-
-  fill: var(--mds-label-button-icon-color);
-  --mds-button-background: var(--mds-label-button-background);
-
-  border-radius: 0 var(--mds-label-radius) var(--mds-label-radius) 0;
-  height: auto;
 }
 
 .button-close:hover {

@@ -1,7 +1,7 @@
 {
-  "name": "@maggioli-design-system/mds-table-row",
-  "version": "4.7.0",
-  "description": "mds-table-row is a web-component from Magma Design System, built with StencilJS, TypeScript, Storybook. It's based on the web-component standard and it's designed to be agnostic from the JavaScirpt framework you are using.",
+  "name": "@maggioli-design-system/mds-table-header-cell",
+  "version": "1.0.0",
+  "description": "mds-table-header-cell is a web-component from Magma Design System, built with StencilJS, TypeScript, Storybook. It's based on the web-component standard and it's designed to be agnostic from the JavaScirpt framework you are using.",
   "main": "dist/index.cjs.js",
   "module": "dist/index.js",
   "es2015": "dist/esm/index.mjs",
@@ -9,7 +9,7 @@
   "types": "dist/types/components.d.ts",
   "collection": "dist/collection/collection-manifest.json",
   "collection:main": "dist/collection/index.js",
-  "unpkg": "dist/mds-table-row/mds-table-row.esm.js",
+  "unpkg": "dist/mds-table-header-cell/mds-table-header-cell.esm.js",
   "files": [
     "dist/",
     "documentation.json",
@@ -20,10 +20,10 @@
   ],
   "scripts": {
     "build": "rm src/components.d.ts || true && stencil build --docs-readme",
-    "prepublishOnly": "npm run build"
+    "prepublishOnly": "npm run build",
+    "test": "stencil test --spec --e2e"
   },
   "dependencies": {
-    "@maggioli-design-system/mds-table-cell": "4.7.0",
     "@maggioli-design-system/styles": "15.3.2",
     "@stencil/core": "4.21.0"
   },
@@ -34,11 +34,6 @@
     "url": "https://vitto.github.io/vit.to/"
   },
   "contributors": [
-    {
-      "name": "Andrea Pruccoli",
-      "email": "andrea.pruccoli@maggioli.it",
-      "role": "Software Engineer"
-    },
     {
       "name": "Nicola Tamburini",
       "email": "nicola.tamburini@maggioli.it",

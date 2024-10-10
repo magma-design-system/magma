@@ -3,13 +3,13 @@
 @tailwind utilities;
 
 /**
-  * @prop --mds-filter-items-background-active: Sets the background-color of the items row area when a filter is active
-  * @prop --mds-filter-items-background: Sets the background-color of the items row area
-  * @prop --mds-filter-items-gap: Sets the gap between items
-  * @prop --mds-filter-items-padding: Sets the padding of the items row area
-  * @prop --mds-filter-items-radius: Sets the border-radius of the items row area
-  * @prop --mds-filter-label-padding: Sets the padding of the label
-  */
+ * @prop --mds-filter-items-background-active: Sets the background-color of the items row area when a filter is active
+ * @prop --mds-filter-items-background: Sets the background-color of the items row area
+ * @prop --mds-filter-items-gap: Sets the gap between items
+ * @prop --mds-filter-items-padding: Sets the padding of the items row area
+ * @prop --mds-filter-items-radius: Sets the border-radius of the items row area
+ * @prop --mds-filter-label-padding: Sets the padding of the label
+ */
 
 :host {
 

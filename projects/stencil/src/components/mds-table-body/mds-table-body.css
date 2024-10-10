@@ -1,9 +1,9 @@
 @tailwind utilities;
 
 /**
-  * @prop --mds-table-body-background-hover: The background-color of the table body when the mouse is over it
-  * @prop --mds-table-body-background: The background-color of the table body
-  */
+ * @prop --mds-table-body-background-hover: The background-color of the table body when the mouse is over it
+ * @prop --mds-table-body-background: The background-color of the table body
+ */
 
 :host {
 
@@ -12,14 +12,19 @@
     ease-out
     transition-colors;
 
-  background-color: var(--mds-table-body-background, theme('colors.tone-neutral'));
+  background-color: var(--mds-table-body-background);
   display: table-row-group;
   overflow: hidden;
 }
 
 :host( [interactive]:hover ) {
 
-  --mds-table-body-background: var(--mds-table-body-background-hover, theme('colors.tone-neutral-10'));
+  --mds-table-body-background: var(--mds-table-body-background-hover);
+}
+
+:host(:last-child) ::slotted(*:last-child) {
+
+  --mds-table-cell-border-color: transparent;
 }
 
 @import './css/mds-table-body-pref-animation.css';

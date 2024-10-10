@@ -5,12 +5,12 @@
 @tailwind utilities;
 
 /**
-  * @prop --mds-input-range-thumb-size: Sets the thumb width and height of the component
-  * @prop --mds-input-range-thumb-background:
-  * @prop --mds-input-range-track-background:
-  * @prop --mds-input-range-track-size:
-  * @prop --mds-input-range-track-progress-background:
-  */
+ * @prop --mds-input-range-thumb-size: Sets the thumb width and height of the component
+ * @prop --mds-input-range-thumb-background:
+ * @prop --mds-input-range-track-background:
+ * @prop --mds-input-range-track-size:
+ * @prop --mds-input-range-track-progress-background:
+ */
 
 :host {
 
