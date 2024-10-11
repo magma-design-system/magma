@@ -7,13 +7,11 @@ describe('mds-modal', () => {
 
     const element = await page.find('mds-modal')
 
-    // La riga seguente non è valida perché `animate-right-intro` viene impostato in `componentDidRender`
-    // e quindi appena instanziato non è presente come classe
-    expect(element).toHaveClass('to-right')
+    expect(element).toHaveClass('to-center')
     expect(element).toHaveAttribute('hydrated')
     expect(element).toHaveAttribute('position')
 
-    expect(element.getAttribute('position')).toBe('right')
+    expect(element.getAttribute('position')).toBe('center')
 
     expect(element).not.toHaveAttribute('opened')
   })
