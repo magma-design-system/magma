@@ -5,6 +5,12 @@ import miBaselineUnfoldMore from '@icon/mi/baseline/unfold-more.svg'
 import { SortDirectionType } from './meta/types'
 import clsx from 'clsx'
 
+enum Sort {
+  ASC = 'asc',
+  DESC = 'desc',
+  NONE = 'none'
+}
+
 @Component({
   tag: 'mds-table-header-cell',
   styleUrl: 'mds-table-header-cell.css',
@@ -14,10 +20,8 @@ export class MdsTableHeaderCell {
 
   @State() isAscending: boolean = true
   @Element() element: HTMLMdsTableHeaderCellElement
-  private currentDirection: number = 0
-  private directionSequence = ['asc', 'desc', 'none']
+  private currentDirection = Sort.NONE
   private index: number = 0
-  private sorterInitialized: boolean = false
   private tableBody: HTMLMdsTableBodyElement
   private tableHeader: HTMLMdsTableHeaderElement
   private tableHeaderCellSiblings: HTMLMdsTableHeaderCellElement[]
@@ -37,19 +41,17 @@ export class MdsTableHeaderCell {
   @Prop({ reflect: true, mutable: true }) direction: SortDirectionType = 'none'
 
   componentDidLoad (): void {
-    if (this.sortable && !this.sorterInitialized) {
-      this.prepareSorter()
-    }
+    this.prepareSorter()
   }
 
   private prepareSorter = (): void => {
+    if (!this.sortable || (this.sortable && this.tableHeaderCellSiblings?.length)) return
     this.tableBody = this.element.closest('mds-table')?.querySelector('mds-table-body') as HTMLMdsTableBodyElement
     this.tableHeader = this.element.closest('mds-table-header') as HTMLMdsTableHeaderElement
     this.tableHeaderCellSiblings = Array.from(this.tableHeader.children) as HTMLMdsTableHeaderCellElement[]
     this.index = this.tableHeaderCellSiblings.indexOf(this.element)
     this.tableRows = Array.from(this.tableBody.children) as HTMLMdsTableRowElement[]
     this.tableRowsDefaultSorted = Array.from(this.tableBody.children) as HTMLMdsTableRowElement[]
-    this.sorterInitialized = true
   }
 
   private getValue = (element: HTMLMdsTableCellElement): string | number => {
@@ -70,7 +72,7 @@ export class MdsTableHeaderCell {
     this.tableRows.forEach((row: HTMLMdsTableRowElement) => {
       const cells: HTMLMdsTableCellElement[] = Array.from(row.children) as HTMLMdsTableCellElement[]
       cells.forEach((cell: HTMLMdsTableCellElement, index: number) => {
-        if (this.index === index && this.direction !== 'none') {
+        if (this.index === index && this.currentDirection !== Sort.NONE) {
           cell.setAttribute('sorted', '')
           return
         }
@@ -80,13 +82,12 @@ export class MdsTableHeaderCell {
   }
 
   private sortRows = (): void => {
-
-    if (this.direction === 'none') {
+    if (this.currentDirection === Sort.NONE) {
       this.tableRowsDefaultSorted.forEach(row => this.tableBody.appendChild(row))
       return
     }
 
-    const sortedRows = this.tableRows.sort((a: HTMLMdsTableRowElement, b: HTMLMdsTableRowElement) => {
+    const sortedRows = [...this.tableRows].sort((a: HTMLMdsTableRowElement, b: HTMLMdsTableRowElement) => {
       const cellA = this.getValue(a.querySelectorAll('mds-table-cell')[this.index])
       const cellB = this.getValue(b.querySelectorAll('mds-table-cell')[this.index])
       const isNumeric = !isNaN(Number(cellA)) && !isNaN(Number(cellB))
@@ -99,15 +100,15 @@ export class MdsTableHeaderCell {
   }
 
   private updateDirection = (): void => {
-    this.direction = this.directionSequence[this.currentDirection] as SortDirectionType
-    this.currentDirection = (this.currentDirection + 1) % this.directionSequence.length
+    this.currentDirection = Object.values(Sort)[(Object.values(Sort).indexOf(this.currentDirection) + 1) % Object.values(Sort).length]
+    this.direction = this.currentDirection.toString() as SortDirectionType
   }
 
   private sort = (): void => {
     this.updateDirection()
     this.sortRows()
     this.resetSortAttribute()
-    if (this.direction !== 'none') {
+    if (this.currentDirection !== Sort.NONE) {
       this.tableRows.forEach((row: HTMLMdsTableRowElement) => {
         row.setAttribute('sorted', '')
       })
@@ -120,16 +121,15 @@ export class MdsTableHeaderCell {
   }
 
   @Watch('sortable')
-  sortableHandler (newValue: boolean): void {
-    if (newValue && !this.sorterInitialized) {
-      this.prepareSorter()
-    }
+  sortableHandler (): void {
+    this.prepareSorter()
   }
 
   @Watch('direction')
-  directionHandler (newValue: SortDirectionType): void {
-    if (newValue === 'none' && this.currentDirection !== 0) {
-      this.currentDirection = 0
+  directionHandler (newValue: string): void {
+    if (newValue === 'none') {
+      this.direction = 'none'
+      this.currentDirection = Sort.NONE
     }
   }
 

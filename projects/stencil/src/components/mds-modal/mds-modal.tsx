@@ -1,6 +1,6 @@
 import clsx from 'clsx'
 import miBaselineClose from '@icon/mi/baseline/close.svg'
-import { Component, Element, Event, EventEmitter, Host, h, Listen, Prop, Watch, State } from '@stencil/core'
+import { Component, Element, Event, EventEmitter, Host, h, Listen, Prop } from '@stencil/core'
 import { KeyboardManager } from '@common/keyboard-manager'
 import { ModalPositionType, ModalAnimationStateType } from './meta/types'
 
@@ -23,9 +23,8 @@ export class MdsModal {
   private top = false
   private bottom = false
   private animationState: ModalAnimationStateType = 'intro'
-  private km = new KeyboardManager()
+  private readonly km = new KeyboardManager()
 
-  @State() stateOpened: boolean
   @Element() host: HTMLMdsModalElement
 
   /**
@@ -42,11 +41,6 @@ export class MdsModal {
     this.bottom = this.host.querySelector('[slot="bottom"]') !== null
     this.top = this.host.querySelector('[slot="top"]') !== null
     this.window = this.host.querySelector('[slot="window"]') !== null
-    this.stateOpened = this.opened
-
-    if (!this.window) {
-      this.position = 'right'
-    }
 
     if (this.window) {
       this.host.querySelector('[slot="window"]')?.setAttribute('role', 'modal')
@@ -54,11 +48,10 @@ export class MdsModal {
   }
 
   componentWillRender (): void {
+    this.host.className = ''
     this.animationState = this.opened ? 'intro' : 'outro'
     this.host.classList.add(this.animationName())
-  }
 
-  componentDidRender (): void {
     this.animationDeelay = window.setTimeout(() => {
       this.animationState = this.animationState === 'intro' ? 'outro' : 'intro'
       this.host.classList.remove(this.animationName(this.animationState === 'intro' ? 'outro' : 'intro'))
@@ -82,20 +75,6 @@ export class MdsModal {
 
   private animationName = (customState = '', customPosition = ''): string => {
     return `to-${customPosition !== '' ? customPosition : this.position}${customState !== '' ? '-' + customState : ''}`
-  }
-
-  @Watch('position')
-  positionChange (_newValue: string, oldValue: string): void {
-    window.clearTimeout(this.animationDeelay)
-    this.host.classList.remove(this.animationName('', oldValue))
-    this.host.classList.remove(this.animationName('intro', oldValue))
-    this.host.classList.remove(this.animationName('outro', oldValue))
-  }
-
-  @Watch('opened')
-  openedChange (newValue: boolean): void {
-    this.stateOpened = newValue
-    window.clearTimeout(this.animationDeelay)
   }
 
   /**
@@ -125,7 +104,7 @@ export class MdsModal {
 
   render () {
     return (
-      <Host aria-modal={clsx(this.opened ? 'true' : 'false' )} class={clsx(this.stateOpened && this.animationName('opened'))} onClick={(e: Event) => { this.closeModal(e) }}>
+      <Host aria-modal={clsx(this.opened ? 'true' : 'false' )} class={clsx(this.opened && this.animationName('opened'))} onClick={(e: Event) => { this.closeModal(e) }}>
         { this.window
           ? <slot name="window"/>
           : <div class={clsx('window', (this.top || this.bottom) && `window-${this.top ? '-top' : ''}${this.bottom ? '-bottom' : ''}`)} role="dialog" part="window">

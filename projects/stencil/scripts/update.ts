@@ -253,7 +253,7 @@ async function updateComponentDependencies (name: string): Promise<void> {
           componentsToBeUpdated.push(rc)
         }
       }
-      await updateComponent(rc, versionUpgradeType ?? '')
+      await updateComponent(rc, versionUpgradeType ?? 'patch')
       await updateComponentDependencies(rc)
     }))
   }
