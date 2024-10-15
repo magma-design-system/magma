@@ -1,6 +1,7 @@
+import miBaselineKeyboardArrowDown from '@icon/mi/baseline/keyboard-arrow-down.svg'
 import { Component, Event, EventEmitter, Host, Prop, h } from '@stencil/core'
-import { TypographyTitleType } from '@type/typography'
 import { MdsAccordionTimerItemEventDetail } from './meta/event-detail'
+import { TypographyTitleType } from '@type/typography'
 
 /**
  * @slot default - Add content like `text string`, `HTML elements` or `components` to this slot.
@@ -85,6 +86,9 @@ export class MdsAccordionTimerItem {
           <div class="accordion">
             <button aria-controls="content" aria-expanded={this.selected ? 'true' : 'false'} class="action focus-bounce" id="action" onClick={this.toggle} role="button" tabindex="0">
               <mds-text typography={this.typography}>{this.description}</mds-text>
+              <mds-text aria-hidden="true" class="icon-button" typography={this.typography}>
+                <i class="svg icon" innerHTML={miBaselineKeyboardArrowDown} />
+              </mds-text>
             </button>
             <div class="content" id="content">
               <div class="content-expander">

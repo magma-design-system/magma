@@ -49,11 +49,16 @@
 }
 
 .action {
-  @apply rounded-xl;
+  @apply
+    gap-400
+    rounded-xl;
 
   background-color: transparent;
   border: 0;
+  color: inherit;
   cursor: pointer;
+  display: flex;
+  justify-content: space-between;
   padding: 0;
   text-align: left;
 }
@@ -79,6 +84,20 @@
 
 .content-expander {
   min-height: 0;
+}
+
+.icon {
+  @apply
+    duration-500
+    ease-out-expo
+    transition-transform;
+
+  fill: currentcolor;
+  transform: rotate(180deg);
+}
+
+:host( [selected] ) .icon {
+  transform: rotate(0deg);
 }
 
 :host( [selected] ) .content {
