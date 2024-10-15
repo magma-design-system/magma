@@ -1,4 +1,4 @@
-import miBaselineKeyboardArrowUp from '@icon/mi/baseline/keyboard-arrow-up.svg'
+import miBaselineKeyboardArrowDown from '@icon/mi/baseline/keyboard-arrow-down.svg'
 import { Component, Element, Event, EventEmitter, Host, Prop, h } from '@stencil/core'
 import { TypographyTitleType } from '@type/typography'
 import { MdsAccordionItemEventDetail } from './meta/event-detail'
@@ -67,7 +67,7 @@ export class MdsAccordionItem {
             {this.label}
           </mds-text>
           <mds-text aria-hidden="true" class="icon-button" typography={this.typography}>
-            <i class="svg icon" innerHTML={miBaselineKeyboardArrowUp} />
+            <i class="svg icon" innerHTML={miBaselineKeyboardArrowDown} />
           </mds-text>
         </button>
         <div class="content" id="content">
