@@ -5,7 +5,7 @@ import { ThemeFullVariantAvatarType, ToneMinimalVariantType } from '@type/varian
 import { avatarVariant } from './meta/variants'
 import miBaselinePerson from '@icon/mi/baseline/person.svg'
 
-/*
+/**
  * @part icon - The selected icon of the avatar
  * @part wrapper - The wrapper which contains media displayed
  */
