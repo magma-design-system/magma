@@ -1,5 +1,6 @@
 import { MdsAccordionTimerItemEventDetail } from '@component/mds-accordion-timer-item/meta/event-detail'
 import { Component, Host, Element, Event, EventEmitter, h, Prop, Listen, State } from '@stencil/core'
+import { MdsAccordionTimerEventDetail } from './meta/event-detail'
 
 /**
  * @slot default - Add `mds-accordion-timer-item` element/s.
@@ -30,7 +31,7 @@ export class MdsAccordionTimer {
   /**
    * Emits when the accordion changes it's item
    */
-  @Event({ eventName: 'mdsAccordionTimerChange' }) changeEvent: EventEmitter<void>
+  @Event({ eventName: 'mdsAccordionTimerChange' }) changeEvent: EventEmitter<MdsAccordionTimerEventDetail>
 
   componentDidLoad (): void {
     this.children = this.element.querySelectorAll<HTMLMdsAccordionTimerItemElement>('mds-accordion-timer-item')
@@ -89,7 +90,7 @@ export class MdsAccordionTimer {
       if (key === uuid) {
         item.selected = true
         this.selectedItem = item
-        this.changeEvent.emit()
+        this.changeEvent.emit({ index: key })
       } else {
         item.selected = false
       }
