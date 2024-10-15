@@ -4,7 +4,10 @@ import { MdsAccordionTimerItemEventDetail } from './meta/event-detail'
 import { TypographyTitleType } from '@type/typography'
 
 /**
- * @slot default - Add content like `text string`, `HTML elements` or `components` to this slot.
+ * @slot default - Add content like `text string`, `HTML elements` or `components` to this slot
+ * @part content - the content wrapper of the `default` slot
+ * @part label - The text label of the component
+ * @part icon - The arrow icon of the component
  */
 
 @Component({
@@ -85,13 +88,13 @@ export class MdsAccordionTimerItem {
           <mds-progress class="progress-bar" progress={Number(this.progress?.toFixed(2))} direction="vertical" />
           <div class="accordion">
             <button aria-controls="content" aria-expanded={this.selected ? 'true' : 'false'} class="action focus-bounce" id="action" onClick={this.toggle} role="button" tabindex="0">
-              <mds-text typography={this.typography}>{this.description}</mds-text>
-              <mds-text aria-hidden="true" class="icon-button" typography={this.typography}>
+              <mds-text typography={this.typography} part="label">{this.description}</mds-text>
+              <mds-text aria-hidden="true" class="icon-button" typography={this.typography} part="icon">
                 <i class="svg icon" innerHTML={miBaselineKeyboardArrowDown} />
               </mds-text>
             </button>
             <div class="content" id="content">
-              <div class="content-expander">
+              <div class="content-expander" part="content">
                 <slot />
               </div>
             </div>

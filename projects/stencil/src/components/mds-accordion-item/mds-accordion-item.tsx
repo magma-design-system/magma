@@ -5,6 +5,9 @@ import { MdsAccordionItemEventDetail } from './meta/event-detail'
 
 /**
  * @slot default - Add contents like `text string`, `HTML elements` or `components` to this slot.
+ * @part content - the content wrapper of the `default` slot
+ * @part icon - The arrow icon of the component
+ * @part label - The text label of the component
  */
 
 @Component({
@@ -63,10 +66,10 @@ export class MdsAccordionItem {
     return (
       <Host>
         <button aria-controls="content" aria-expanded={this.selected ? 'true' : 'false'} class="action" id="action" onClick={this.toggle} role="button" tabindex="0">
-          <mds-text part="label" typography={this.typography}>
+          <mds-text typography={this.typography} part="label">
             {this.label}
           </mds-text>
-          <mds-text aria-hidden="true" class="icon-button" typography={this.typography}>
+          <mds-text aria-hidden="true" class="icon-button" typography={this.typography} part="icon">
             <i class="svg icon" innerHTML={miBaselineKeyboardArrowDown} />
           </mds-text>
         </button>
