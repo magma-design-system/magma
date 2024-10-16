@@ -46,8 +46,7 @@
     "test.regression.clean": "npx ts-node --skipProject ./scripts/clean-regression.ts",
     "test.regression.reference": "npm run build && loki update --port 6006 --chromeFlags='--wm-window-animations-disabled --headless --disable-gpu --hide-scrollbars' --chromeEnableAnimations=false",
     "test.regression.review": "npm run build && loki test --port 6006 --requireReference --chromeEnableAnimations=false",
-    "update.dependencies": "npx ts-node --skipProject ./scripts/update-dependencies.ts",
-    "update.version": "npx ts-node --skipProject ./scripts/update-version.ts",
+    "test.script": "npx jest",
     "update": "npx ts-node --skipProject ./scripts/update.ts"
   },
   "dependencies": {

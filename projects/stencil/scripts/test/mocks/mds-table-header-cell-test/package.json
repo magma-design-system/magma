@@ -1,0 +1,8 @@
+{
+  "name": "@maggioli-design-system/mds-table-header-cell-test",
+  "version": "1.0.1",
+  "dependencies": {
+    "@maggioli-design-system/styles": "15.3.2",
+    "@stencil/core": "4.21.0"
+  }
+}

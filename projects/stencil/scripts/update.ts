@@ -8,7 +8,7 @@ import { COMPONENTS_DIR, PROJECT_DIR } from './meta'
 import { resolve } from 'path'
 import { isEqual } from 'lodash'
 
-const componentPackagePath = (name: string) =>
+export const componentPackagePath = (name: string): string =>
   resolve(COMPONENTS_DIR, name, 'package.json')
 
 // const stencilDep = getDependencies(
@@ -68,6 +68,10 @@ async function getMdsDependencies (component: string): Promise<string[]> {
   })
 }
 
+/**
+ * Populate componentsMap, npmComponentMap, componentsUpdatedMap
+ * @returns
+ */
 async function buildMap (): Promise<void[]> {
   (await getComponents()).forEach(name => {
     componentsMap.set(name, [])
@@ -113,7 +117,7 @@ function getNpmPackageShortInfo (c: string): Promise<ShortPackageInfo> {
       if (res.status === 200) {
         return res.json()
       }
-      if(res.status === 404) {
+      if (res.status === 404) {
         return Promise.resolve({
           version: getCurrentComponentVersion(c),
           dependencies: getCurrentComponentDependencies(c),
@@ -221,14 +225,14 @@ async function needUpdateComponent (
  * currentVersion: 1.2.3
  * return null
  */
-function getVersionTypeDiff(componentVersion: string | undefined, currentVersion: string): string | null{
-  if(!componentVersion || componentVersion === currentVersion) {
+function getVersionTypeDiff (componentVersion: string | undefined, currentVersion: string): string | null {
+  if (!componentVersion || componentVersion === currentVersion) {
     return null
   }
   const dv = componentVersion.split('.')
   const cv = currentVersion.split('.')
-  if(dv[0] !== cv[0]) return 'major'
-  if(dv[1] !== cv[1]) return 'minor'
+  if (dv[0] !== cv[0]) return 'major'
+  if (dv[1] !== cv[1]) return 'minor'
   return 'patch' // dv[2] !== cv[2]
 }
 
@@ -308,7 +312,7 @@ async function syncDep (): Promise<void[]> {
     .map(name => updateComponentDependencies(name)))
 }
 
-async function updateCommonDependencies(): Promise<void[]> {
+async function updateCommonDependencies (): Promise<void[]> {
   const commonDeps = await readJSON(resolve(PROJECT_DIR, 'package.json')).then(p => p.dependencies) as Dep
 
   return Promise.all(Array.from(componentsMap.keys())
@@ -321,24 +325,31 @@ async function updateCommonDependencies(): Promise<void[]> {
           sharedDependencies.forEach(cd => {
             deps[cd] = commonDeps[cd]
           })
-          componentsUpdatedMap.set(componentName, {version : componentsUpdatedMap.get(componentName)!.version, dependencies: deps})
+          componentsUpdatedMap.set(componentName, { version : componentsUpdatedMap.get(componentName)!.version, dependencies: deps })
           componentsToBeUpdated.push(componentName)
         }
       })
-    }
-  ))
+    },
+    ))
 }
 
-async function writePackages (components: string[]): Promise<void> {
-  components.forEach(name => {
+async function writePackages (components: string[], dryRun = false): Promise<void[]> {
+  return Promise.all(components.map(name => {
     const path = componentPackagePath(name)
-    readFile(path, 'utf-8').then(JSON.parse).then(json => {
-      json.version = componentsUpdatedMap.get(name)?.version
-      json.dependencies = componentsUpdatedMap.get(name)?.dependencies
-      return json
-    })
-      .then(json => writeFileSync(path, `${JSON.stringify(json, null, 2)}\n`))
-  })
+    return readFile(path, 'utf-8')
+      .then(JSON.parse).then(json => {
+        json.version = componentsUpdatedMap.get(name)?.version
+        json.dependencies = componentsUpdatedMap.get(name)?.dependencies
+        return json
+      })
+      .then(json => {
+        if (!dryRun) {
+          writeFileSync(path, `${JSON.stringify(json, null, 2)}\n`)
+        } else {
+          console.log({ component: name, package: json })
+        }
+      })
+  }))
 }
 
 /**
@@ -363,15 +374,15 @@ const componentsUpdatedMap = new Map<string, ShortPackageInfo>()
 // array of components name to be updated
 const componentsToBeUpdated: string[] = []
 
-async function main (argv: string[]) {
+async function main (argv: string[]): Promise<void> {
   componentsToBeUpdated.push(...argv.slice(2).filter(arg => !arg.startsWith('--')))
   const version = argv.filter(arg => arg.startsWith('--version'))[0]?.split('=')[1] ?? 'patch'
-
+  const dryRun = argv.includes('--dry-run')
   const timeStart = Date.now()
   await buildMap()
   const timeBuild = Date.now()
 
-  if(argv.filter(arg => arg.startsWith('--common'))) {
+  if (argv.filter(arg => arg.startsWith('--common'))) {
     await updateCommonDependencies()
   }
 
@@ -384,13 +395,34 @@ async function main (argv: string[]) {
   if (componentsToBeUpdated.length === 0) {
     await syncDep()
   }
-  await writePackages(componentsToBeUpdated)
+  await writePackages(componentsToBeUpdated, dryRun)
   const timeEnd = Date.now()
-  console.log('buildMapTime: ', timeBuild - timeStart, 'ms')
-  console.log('updateTime', timeEnd - timeBuild, 'ms')
-  console.log('totaleTime: ', timeEnd - timeStart, 'ms')
+  if (!dryRun) {
+    console.log('buildMapTime: ', timeBuild - timeStart, 'ms')
+    console.log('updateTime', timeEnd - timeBuild, 'ms')
+    console.log('totaleTime: ', timeEnd - timeStart, 'ms')
+  }
 }
 
 if (require.main === module) {
   main(process.argv)
+}
+
+// export functions for testing purposes
+export {
+  main,
+  buildMap,
+  updateComponent,
+  updateComponentDependencies,
+  syncDep,
+  updateCommonDependencies,
+  writePackages,
+  getComponents,
+  getNpmComponentDependencies,
+  componentsMap,
+  npmComponentMap,
+  componentsUpdatedMap,
+  componentsToBeUpdated,
+  Dep,
+  ShortPackageInfo,
 }

@@ -1,0 +1,9 @@
+{
+  "name": "@maggioli-design-system/mds-container",
+  "version": "1.1.0",
+  "dependencies": {
+    "@maggioli-design-system/mds-content": "1.1.0",
+    "@maggioli-design-system/styles": "15.3.2",
+    "@stencil/core": "4.21.0"
+  }
+}

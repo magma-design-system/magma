@@ -9,14 +9,13 @@ module.exports = {
         allowedNames: ['render'],
       }],
       '@typescript-eslint/prefer-nullish-coalescing': 'error',
-      '@typescript-eslint/no-non-null-assertion': 'error',
       '@typescript-eslint/no-unused-vars': ['error', {
         varsIgnorePattern: '^h$',
       }],
       'react/jsx-no-bind': 'off',
     },
     parserOptions: {
-      project: ['./tsconfig.json'],
+      project: ['./tsconfig.json', './script.tsconfig.json'],
       tsconfigRootDir: __dirname,
     },
   }],

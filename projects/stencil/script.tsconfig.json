@@ -1,0 +1,20 @@
+{
+  "skipLibCheck": true,
+  "compilerOptions": {
+    "allowSyntheticDefaultImports": true,
+    "allowUnreachableCode": false,
+    "baseUrl": ".",
+    "declaration": false,
+    "experimentalDecorators": true,
+    "lib": ["esnext"],
+    "esModuleInterop": true,
+    "module": "esnext",
+    "moduleResolution": "node",
+    "noUnusedLocals": true,
+    "resolveJsonModule": true,
+    "strictNullChecks": true,
+    "target": "esnext"
+  },
+  "include": ["scripts"],
+  "exclude": ["node_modules", "src"]
+}
