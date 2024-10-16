@@ -16,9 +16,9 @@ This is a web-component from Maggioli Design System [Magma](https://magma.maggio
 
 ## Events
 
-| Event                     | Description                                | Type                |
-| ------------------------- | ------------------------------------------ | ------------------- |
-| `mdsAccordionTimerChange` | Emits when the accordion changes it's item | `CustomEvent<void>` |
+| Event                     | Description                                | Type                                        |
+| ------------------------- | ------------------------------------------ | ------------------------------------------- |
+| `mdsAccordionTimerChange` | Emits when the accordion changes it's item | `CustomEvent<MdsAccordionTimerEventDetail>` |
 
 
 ## Slots

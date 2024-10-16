@@ -1,10 +1,13 @@
-import miBaselineKeyboardArrowUp from '@icon/mi/baseline/keyboard-arrow-up.svg'
+import miBaselineKeyboardArrowDown from '@icon/mi/baseline/keyboard-arrow-down.svg'
 import { Component, Element, Event, EventEmitter, Host, Prop, h } from '@stencil/core'
 import { TypographyTitleType } from '@type/typography'
 import { MdsAccordionItemEventDetail } from './meta/event-detail'
 
 /**
  * @slot default - Add contents like `text string`, `HTML elements` or `components` to this slot.
+ * @part content - the content wrapper of the `default` slot
+ * @part icon - The arrow icon of the component
+ * @part label - The text label of the component
  */
 
 @Component({
@@ -63,11 +66,11 @@ export class MdsAccordionItem {
     return (
       <Host>
         <button aria-controls="content" aria-expanded={this.selected ? 'true' : 'false'} class="action" id="action" onClick={this.toggle} role="button" tabindex="0">
-          <mds-text part="label" typography={this.typography}>
+          <mds-text typography={this.typography} part="label">
             {this.label}
           </mds-text>
-          <mds-text aria-hidden="true" class="icon-button" typography={this.typography}>
-            <i class="svg icon" innerHTML={miBaselineKeyboardArrowUp} />
+          <mds-text aria-hidden="true" class="icon-button" typography={this.typography} part="icon">
+            <i class="svg icon" innerHTML={miBaselineKeyboardArrowDown} />
           </mds-text>
         </button>
         <div class="content" id="content">

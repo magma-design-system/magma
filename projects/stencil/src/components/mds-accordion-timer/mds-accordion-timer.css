@@ -15,6 +15,7 @@
   --mds-accordion-timer-progress-bar-thickness: theme('width.100');
   --mds-accordion-timer-duration: 500ms;
 
+  /* comment */
   display: block;
 }
 

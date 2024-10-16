@@ -8,6 +8,7 @@ import { HTMLStencilElement, JSXBase } from "@stencil/core/internal";
 import { MdsAccordionEventDetail } from "./components/mds-accordion/meta/event-detail";
 import { TypographyInfoType, TypographyInputType, TypographyReadingVariants, TypographyReadType, TypographySmallerType, TypographyTitleType, TypographyTooltipType, TypographyType, TypographyVariants } from "@type/typography";
 import { MdsAccordionItemEventDetail } from "./components/mds-accordion-item/meta/event-detail";
+import { MdsAccordionTimerEventDetail } from "./components/mds-accordion-timer/meta/event-detail";
 import { MdsAccordionTimerItemEventDetail } from "./components/mds-accordion-timer-item/meta/event-detail";
 import { LabelVariantType, ThemeFullVariantAvatarType, ThemeFullVariantType, ThemeLuminanceVariantType, ThemeStatusVariantType, ThemeVariantType, ToneMinimalVariantType, ToneSimpleVariantType, ToneVariantType } from "@type/variant";
 import { BenchmarkBarTypographyType } from "./components/mds-benchmark-bar/meta/types";
@@ -71,6 +72,7 @@ import { NoiseType, PreloadType } from "./components/mds-video-wall/meta/types";
 export { MdsAccordionEventDetail } from "./components/mds-accordion/meta/event-detail";
 export { TypographyInfoType, TypographyInputType, TypographyReadingVariants, TypographyReadType, TypographySmallerType, TypographyTitleType, TypographyTooltipType, TypographyType, TypographyVariants } from "@type/typography";
 export { MdsAccordionItemEventDetail } from "./components/mds-accordion-item/meta/event-detail";
+export { MdsAccordionTimerEventDetail } from "./components/mds-accordion-timer/meta/event-detail";
 export { MdsAccordionTimerItemEventDetail } from "./components/mds-accordion-timer-item/meta/event-detail";
 export { LabelVariantType, ThemeFullVariantAvatarType, ThemeFullVariantType, ThemeLuminanceVariantType, ThemeStatusVariantType, ThemeVariantType, ToneMinimalVariantType, ToneSimpleVariantType, ToneVariantType } from "@type/variant";
 export { BenchmarkBarTypographyType } from "./components/mds-benchmark-bar/meta/types";
@@ -1876,7 +1878,7 @@ declare global {
         new (): HTMLMdsAccordionItemElement;
     };
     interface HTMLMdsAccordionTimerElementEventMap {
-        "mdsAccordionTimerChange": void;
+        "mdsAccordionTimerChange": MdsAccordionTimerEventDetail;
     }
     interface HTMLMdsAccordionTimerElement extends Components.MdsAccordionTimer, HTMLStencilElement {
         addEventListener<K extends keyof HTMLMdsAccordionTimerElementEventMap>(type: K, listener: (this: HTMLMdsAccordionTimerElement, ev: MdsAccordionTimerCustomEvent<HTMLMdsAccordionTimerElementEventMap[K]>) => any, options?: boolean | AddEventListenerOptions): void;
@@ -3035,7 +3037,7 @@ declare namespace LocalJSX {
         /**
           * Emits when the accordion changes it's item
          */
-        "onMdsAccordionTimerChange"?: (event: MdsAccordionTimerCustomEvent<void>) => void;
+        "onMdsAccordionTimerChange"?: (event: MdsAccordionTimerCustomEvent<MdsAccordionTimerEventDetail>) => void;
     }
     interface MdsAccordionTimerItem {
         /**
