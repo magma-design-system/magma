@@ -1,0 +1,12 @@
+{
+  "name": "@maggioli-design-system/mds-table-test",
+  "version": "4.7.1",
+  "dependencies": {
+    "@maggioli-design-system/mds-table-body-test": "4.7.0",
+    "@maggioli-design-system/mds-table-footer-test": "4.6.3",
+    "@maggioli-design-system/mds-table-header-test": "4.7.1",
+    "@maggioli-design-system/styles": "15.3.2",
+    "@stencil/core": "4.21.0",
+    "clsx": "2.1.0"
+  }
+}
