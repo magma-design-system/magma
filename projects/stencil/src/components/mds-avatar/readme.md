@@ -90,10 +90,10 @@ This is a web-component from Maggioli Design System [Magma](https://magma.maggio
 
 ## Shadow Parts
 
-| Part        | Description |
-| ----------- | ----------- |
-| `"icon"`    |             |
-| `"wrapper"` |             |
+| Part        | Description                                |
+| ----------- | ------------------------------------------ |
+| `"icon"`    | The selected icon of the avatar            |
+| `"wrapper"` | The wrapper which contains media displayed |
 
 
 ## CSS Custom Properties
