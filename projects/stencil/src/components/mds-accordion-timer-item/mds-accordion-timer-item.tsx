@@ -6,8 +6,9 @@ import { TypographyTitleType } from '@type/typography'
 /**
  * @slot default - Add content like `text string`, `HTML elements` or `components` to this slot
  * @part content - the content wrapper of the `default` slot
- * @part label - The text label of the component
  * @part icon - The arrow icon of the component
+ * @part label - The text label of the component
+ * @part progress - The progress bar of the component
  */
 
 @Component({
@@ -85,7 +86,7 @@ export class MdsAccordionTimerItem {
     return (
       <Host onMouseEnter={this.mouseEnter} onMouseLeave={this.mouseLeave}>
         <div class="row">
-          <mds-progress class="progress-bar" progress={Number(this.progress?.toFixed(2))} direction="vertical" />
+          <mds-progress class="progress-bar" progress={Number(this.progress?.toFixed(2))} direction="vertical" part="progress"/>
           <div class="accordion">
             <button aria-controls="content" aria-expanded={this.selected ? 'true' : 'false'} class="action focus-bounce" id="action" onClick={this.toggle} role="button" tabindex="0">
               <mds-text typography={this.typography} part="label">{this.description}</mds-text>
