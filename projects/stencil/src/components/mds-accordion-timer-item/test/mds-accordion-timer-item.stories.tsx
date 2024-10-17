@@ -13,6 +13,10 @@ export default {
       type: { name: 'boolean' },
       description: 'Specifies if the accordion item is selected or not',
     },
+    duration: {
+      type: { name: 'number' },
+      description: 'Specifies the duration of the single component when selected, it overrides the global duration of itself only',
+    },
     progress: {
       control: { type: 'range', step: 0.01, min: 0, max: 1 },
       type: { name: 'number' },

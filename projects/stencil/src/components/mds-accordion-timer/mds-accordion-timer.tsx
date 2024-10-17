@@ -1,5 +1,5 @@
 import { MdsAccordionTimerItemEventDetail } from '@component/mds-accordion-timer-item/meta/event-detail'
-import { Component, Host, Element, Event, EventEmitter, h, Prop, Listen, State } from '@stencil/core'
+import { Component, Host, Element, Event, EventEmitter, h, Prop, Listen, State, Watch } from '@stencil/core'
 import { MdsAccordionTimerEventDetail } from './meta/event-detail'
 
 /**
@@ -17,6 +17,7 @@ export class MdsAccordionTimer {
   private timeChecker: number
   private timeStarted: number
   private selectedItemDurationTime: number
+  private currentDuration: number = 0
   private children: NodeListOf<HTMLMdsAccordionTimerItemElement>
   private selectedItem: HTMLMdsAccordionTimerItemElement
   @Element() private element: HTMLMdsAccordionTimerElement
@@ -26,7 +27,12 @@ export class MdsAccordionTimer {
   /**
    * Sets the duration of the single accordion item
    */
-  @Prop() duration = 10000
+  @Prop({ reflect: true }) duration = 10000
+
+  /**
+   * When paused is defined, the timer stops run
+   */
+  @Prop({ reflect: true }) paused?: boolean
 
   /**
    * Emits when the accordion changes it's item
@@ -42,8 +48,14 @@ export class MdsAccordionTimer {
       }
     })
 
+    this.currentDuration = this.duration
+
     if (this.selectedItem !== undefined) {
       this.startTimer()
+    }
+
+    if (this.paused) {
+      this.pauseTimer()
     }
   }
 
@@ -59,7 +71,7 @@ export class MdsAccordionTimer {
   }
 
   private progress = (): number => {
-    return Math.abs(this.remainingTime() / this.duration - 1)
+    return Math.abs(this.remainingTime() / this.currentDuration - 1)
   }
 
   private addTimeListener = (): void => {
@@ -89,6 +101,7 @@ export class MdsAccordionTimer {
     this.children.forEach((item, key) => {
       if (key === uuid) {
         item.selected = true
+        item.duration ? this.currentDuration = item.duration : this.currentDuration = this.duration
         this.selectedItem = item
         this.changeEvent.emit({ index: key })
       } else {
@@ -106,7 +119,7 @@ export class MdsAccordionTimer {
   private startTimer = (): void => {
     this.clearIntervals()
     this.time = this.beginningTime()
-    this.selectedItemDurationTime = this.duration
+    this.selectedItemDurationTime = this.currentDuration
     this.addTimeListener()
   }
 
@@ -136,14 +149,29 @@ export class MdsAccordionTimer {
 
   @Listen('mdsAccordionTimerItemMouseEnterSelect')
   onMouseEnterSelect (): void {
+    if (this.paused) {
+      return
+    }
     this.pauseTimer()
   }
 
   @Listen('mdsAccordionTimerItemMouseLeaveSelect')
   onMouseLeaveSelect (): void {
+    if (this.paused) {
+      return
+    }
     if (this.timeChecker === 0) {
       this.playTimer()
     }
+  }
+
+  @Watch('paused')
+  handlePaused (newValue: boolean): void {
+    if (newValue) {
+      this.pauseTimer()
+      return
+    }
+    this.playTimer()
   }
 
   render () {
