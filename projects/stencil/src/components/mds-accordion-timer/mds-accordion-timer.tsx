@@ -27,12 +27,12 @@ export class MdsAccordionTimer {
   /**
    * Sets the duration of the single accordion item
    */
-  @Prop() duration = 10000
+  @Prop({ reflect: true }) duration = 10000
 
   /**
    * When paused is defined, the timer stops run
    */
-  @Prop() paused?: boolean
+  @Prop({ reflect: true }) paused?: boolean
 
   /**
    * Emits when the accordion changes it's item
@@ -52,6 +52,10 @@ export class MdsAccordionTimer {
 
     if (this.selectedItem !== undefined) {
       this.startTimer()
+    }
+
+    if (this.paused) {
+      this.pauseTimer()
     }
   }
 
@@ -145,11 +149,17 @@ export class MdsAccordionTimer {
 
   @Listen('mdsAccordionTimerItemMouseEnterSelect')
   onMouseEnterSelect (): void {
+    if (this.paused) {
+      return
+    }
     this.pauseTimer()
   }
 
   @Listen('mdsAccordionTimerItemMouseLeaveSelect')
   onMouseLeaveSelect (): void {
+    if (this.paused) {
+      return
+    }
     if (this.timeChecker === 0) {
       this.playTimer()
     }
@@ -159,9 +169,9 @@ export class MdsAccordionTimer {
   handlePaused (newValue: boolean): void {
     if (newValue) {
       this.pauseTimer()
-    } else {
-      this.playTimer()
+      return
     }
+    this.playTimer()
   }
 
   render () {

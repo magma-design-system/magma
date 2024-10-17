@@ -9,9 +9,10 @@ This is a web-component from Maggioli Design System [Magma](https://magma.maggio
 
 ## Properties
 
-| Property   | Attribute  | Description                                    | Type     | Default |
-| ---------- | ---------- | ---------------------------------------------- | -------- | ------- |
-| `duration` | `duration` | Sets the duration of the single accordion item | `number` | `10000` |
+| Property   | Attribute  | Description                                    | Type                   | Default     |
+| ---------- | ---------- | ---------------------------------------------- | ---------------------- | ----------- |
+| `duration` | `duration` | Sets the duration of the single accordion item | `number`               | `10000`     |
+| `paused`   | `paused`   | When paused is defined, the timer stops run    | `boolean \| undefined` | `undefined` |
 
 
 ## Events
@@ -26,17 +27,6 @@ This is a web-component from Maggioli Design System [Magma](https://magma.maggio
 | Slot        | Description                               |
 | ----------- | ----------------------------------------- |
 | `"default"` | Add `mds-accordion-timer-item` element/s. |
-
-
-## CSS Custom Properties
-
-| Name                                            | Description                                                                                 |
-| ----------------------------------------------- | ------------------------------------------------------------------------------------------- |
-| `--mds-accordion-timer-color`                   | Sets the text color of the component mds-accordion-timer-item                               |
-| `--mds-accordion-timer-duration`                | Sets the transition duration of open/close animation of the mds-accordion-timer-item        |
-| `--mds-accordion-timer-progress-bar-background` | Sets the background-color of the progress bar when the mds-accordion-timer-item is selected |
-| `--mds-accordion-timer-progress-bar-color`      | Sets the color of the progress bar when the mds-accordion-timer-item is selected            |
-| `--mds-accordion-timer-progress-bar-thickness`  | Sets thickness of the progress bar of the mds-accordion-timer-item                          |
 
 
 ----------------------------------------------
