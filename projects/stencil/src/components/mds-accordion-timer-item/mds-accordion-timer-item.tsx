@@ -99,8 +99,10 @@ export class MdsAccordionTimerItem {
                 <i class="svg icon" innerHTML={miBaselineKeyboardArrowDown} />
               </mds-text>
             </button>
-            <div class="content" id="content" part="content">
-              <slot />
+            <div class="content" id="content">
+              <div class="content-expander" part="content" role="region">
+                <slot />
+              </div>
             </div>
           </div>
         </div>
