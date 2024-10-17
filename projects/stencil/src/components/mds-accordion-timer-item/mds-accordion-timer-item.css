@@ -63,10 +63,6 @@
   text-align: left;
 }
 
-:host( [selected] ) .action {
-  cursor: auto;
-}
-
 .content {
   @apply
     ease-in-out-expo
@@ -96,11 +92,15 @@
   transform: rotate(180deg);
 }
 
-:host( [selected] ) .icon {
+:host( [selected]:not([selected="false"]) ) .action {
+  cursor: auto;
+}
+
+:host( [selected]:not([selected="false"]) ) .icon {
   transform: rotate(0deg);
 }
 
-:host( [selected] ) .content {
+:host( [selected]:not([selected="false"]) ) .content {
   @apply
     opacity-100
     pt-400;
