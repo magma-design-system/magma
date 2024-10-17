@@ -34,10 +34,11 @@ This is a web-component from Maggioli Design System [Magma](https://magma.maggio
 
 ## Shadow Parts
 
-| Part        | Description |
-| ----------- | ----------- |
-| `"content"` |             |
-| `"label"`   |             |
+| Part        | Description                               |
+| ----------- | ----------------------------------------- |
+| `"content"` | the content wrapper of the `default` slot |
+| `"icon"`    | The arrow icon of the component           |
+| `"label"`   | The text label of the component           |
 
 
 ## CSS Custom Properties

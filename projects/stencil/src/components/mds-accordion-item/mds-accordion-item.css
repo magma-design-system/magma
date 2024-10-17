@@ -42,24 +42,6 @@
   margin-top: 0;
 }
 
-:host( [selected] ) {
-  border-bottom: solid var(--mds-accordion-item-border-width) var(--mds-accordion-item-border-color);
-  border-top: solid var(--mds-accordion-item-border-width) var(--mds-accordion-item-border-color);
-  padding: var(--mds-accordion-item-padding-selected);
-}
-
-:host( [selected]:first-child ) {
-  @apply mt-0;
-
-  border-top-color: transparent;
-}
-
-:host( [selected]:last-child ) {
-  @apply mb-0;
-
-  border-bottom-color: transparent;
-}
-
 .action {
   @apply
     focus-bounce
@@ -106,13 +88,6 @@
   min-height: 0;
 }
 
-:host( [selected] ) .content {
-  @apply pt-400;
-
-  grid-template-rows: 1fr;
-  opacity: 1;
-}
-
 .icon {
   @apply
     duration-500
@@ -123,7 +98,32 @@
   transform: rotate(180deg);
 }
 
-:host( [selected] ) .icon {
+:host( [selected]:not([selected="false"]) ) {
+  border-bottom: solid var(--mds-accordion-item-border-width) var(--mds-accordion-item-border-color);
+  border-top: solid var(--mds-accordion-item-border-width) var(--mds-accordion-item-border-color);
+  padding: var(--mds-accordion-item-padding-selected);
+}
+
+:host( [selected]:not([selected="false"]):first-child ) {
+  @apply mt-0;
+
+  border-top-color: transparent;
+}
+
+:host( [selected]:not([selected="false"]):last-child ) {
+  @apply mb-0;
+
+  border-bottom-color: transparent;
+}
+
+:host( [selected]:not([selected="false"]) ) .content {
+  @apply pt-400;
+
+  grid-template-rows: 1fr;
+  opacity: 1;
+}
+
+:host( [selected]:not([selected="false"]) ) .icon {
   transform: rotate(0deg);
 }
 
