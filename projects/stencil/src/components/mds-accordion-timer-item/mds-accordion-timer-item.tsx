@@ -36,7 +36,7 @@ export class MdsAccordionTimerItem {
   /**
    * Specifies the duration of the single component when selected, it overrides the global duration of itself only
    */
-  @Prop() readonly duration!: number
+  @Prop({ reflect: true }) readonly duration?: number
 
   /**
    * A value between 0 and 100 that rapresents the status progress

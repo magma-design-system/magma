@@ -163,12 +163,20 @@ export namespace Components {
           * Sets the duration of the single accordion item
          */
         "duration": number;
+        /**
+          * When paused is defined, the timer stops run
+         */
+        "paused"?: boolean;
     }
     interface MdsAccordionTimerItem {
         /**
           * Specifies the title shown when the accordion is closed or opened
          */
         "description": string;
+        /**
+          * Specifies the duration of the single component when selected, it overrides the global duration of itself only
+         */
+        "duration"?: number;
         /**
           * A value between 0 and 100 that rapresents the status progress
          */
@@ -3038,12 +3046,20 @@ declare namespace LocalJSX {
           * Emits when the accordion changes it's item
          */
         "onMdsAccordionTimerChange"?: (event: MdsAccordionTimerCustomEvent<MdsAccordionTimerEventDetail>) => void;
+        /**
+          * When paused is defined, the timer stops run
+         */
+        "paused"?: boolean;
     }
     interface MdsAccordionTimerItem {
         /**
           * Specifies the title shown when the accordion is closed or opened
          */
         "description": string;
+        /**
+          * Specifies the duration of the single component when selected, it overrides the global duration of itself only
+         */
+        "duration"?: number;
         /**
           * Emits when the accordion is clicked by the mouse
          */

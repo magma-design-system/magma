@@ -9,13 +9,14 @@ This is a web-component from Maggioli Design System [Magma](https://magma.maggio
 
 ## Properties
 
-| Property                   | Attribute     | Description                                                             | Type                                                       | Default     |
-| -------------------------- | ------------- | ----------------------------------------------------------------------- | ---------------------------------------------------------- | ----------- |
-| `description` _(required)_ | `description` | Specifies the title shown when the accordion is closed or opened        | `string`                                                   | `undefined` |
-| `progress`                 | `progress`    | A value between 0 and 100 that rapresents the status progress           | `number`                                                   | `0`         |
-| `selected`                 | `selected`    | Specifies if the accordion item is opened or not                        | `boolean`                                                  | `false`     |
-| `typography`               | `typography`  | Specifies the typography of the element                                 | `"action" \| "h1" \| "h2" \| "h3" \| "h4" \| "h5" \| "h6"` | `'h5'`      |
-| `uuid`                     | `uuid`        | Used automatically by MdsAccordionTimer wrapper to handle it's siblings | `number`                                                   | `0`         |
+| Property                   | Attribute     | Description                                                                                                   | Type                                                       | Default     |
+| -------------------------- | ------------- | ------------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------- | ----------- |
+| `description` _(required)_ | `description` | Specifies the title shown when the accordion is closed or opened                                              | `string`                                                   | `undefined` |
+| `duration`                 | `duration`    | Specifies the duration of the single component when selected, it overrides the global duration of itself only | `number \| undefined`                                      | `undefined` |
+| `progress`                 | `progress`    | A value between 0 and 100 that rapresents the status progress                                                 | `number`                                                   | `0`         |
+| `selected`                 | `selected`    | Specifies if the accordion item is opened or not                                                              | `boolean`                                                  | `false`     |
+| `typography`               | `typography`  | Specifies the typography of the element                                                                       | `"action" \| "h1" \| "h2" \| "h3" \| "h4" \| "h5" \| "h6"` | `'h5'`      |
+| `uuid`                     | `uuid`        | Used automatically by MdsAccordionTimer wrapper to handle it's siblings                                       | `number`                                                   | `0`         |
 
 
 ## Events
@@ -29,9 +30,19 @@ This is a web-component from Maggioli Design System [Magma](https://magma.maggio
 
 ## Slots
 
-| Slot        | Description                                                                   |
-| ----------- | ----------------------------------------------------------------------------- |
-| `"default"` | Add content like `text string`, `HTML elements` or `components` to this slot. |
+| Slot        | Description                                                                  |
+| ----------- | ---------------------------------------------------------------------------- |
+| `"default"` | Add content like `text string`, `HTML elements` or `components` to this slot |
+
+
+## Shadow Parts
+
+| Part         | Description                               |
+| ------------ | ----------------------------------------- |
+| `"content"`  | the content wrapper of the `default` slot |
+| `"icon"`     | The arrow icon of the component           |
+| `"label"`    | The text label of the component           |
+| `"progress"` | The progress bar of the component         |
 
 
 ## CSS Custom Properties
