@@ -138,13 +138,22 @@ export class MdsAccordionTimer {
   }
 
   @Listen('mdsAccordionTimerItemClickSelect')
-  onClickActive (event: CustomEvent<MdsAccordionTimerItemEventDetail>): void {
+  onClickSelect (event: CustomEvent<MdsAccordionTimerItemEventDetail>): void {
     if (this.selectedItem) {
       this.selectedItem.progress = 0
     }
     this.setSelectedItem(event.detail.uuid)
     this.startTimer()
     this.pauseTimer()
+  }
+
+  @Listen('mdsAccordionTimerItemSelect')
+  onSelect (event: CustomEvent<MdsAccordionTimerItemEventDetail>): void {
+    if (this.selectedItem) {
+      this.selectedItem.progress = 0
+    }
+    this.setSelectedItem(event.detail.uuid)
+    this.startTimer()
   }
 
   @Listen('mdsAccordionTimerItemMouseEnterSelect')

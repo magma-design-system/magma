@@ -26,6 +26,7 @@ This is a web-component from Maggioli Design System [Magma](https://magma.maggio
 | `mdsAccordionTimerItemClickSelect`      | Emits when the accordion is clicked by the mouse | `CustomEvent<MdsAccordionTimerItemEventDetail>` |
 | `mdsAccordionTimerItemMouseEnterSelect` | Emits when the accordion is hovered by the mouse | `CustomEvent<MdsAccordionTimerItemEventDetail>` |
 | `mdsAccordionTimerItemMouseLeaveSelect` | Emits when the accordion is hovered by the mouse | `CustomEvent<MdsAccordionTimerItemEventDetail>` |
+| `mdsAccordionTimerItemSelect`           | Emits when the accordion is changed from code    | `CustomEvent<MdsAccordionTimerItemEventDetail>` |
 
 
 ## Slots
@@ -43,17 +44,6 @@ This is a web-component from Maggioli Design System [Magma](https://magma.maggio
 | `"icon"`     | The arrow icon of the component           |
 | `"label"`    | The text label of the component           |
 | `"progress"` | The progress bar of the component         |
-
-
-## CSS Custom Properties
-
-| Name                                                 | Description                                                             |
-| ---------------------------------------------------- | ----------------------------------------------------------------------- |
-| `--mds-accordion-timer-item-color`                   | Sets the text color of the component                                    |
-| `--mds-accordion-timer-item-duration`                | Sets the transition duration of open/close animation                    |
-| `--mds-accordion-timer-item-progress-bar-background` | Sets the background-color of the progress bar when the item is selected |
-| `--mds-accordion-timer-item-progress-bar-color`      | Sets the color of the progress bar when the item is selected            |
-| `--mds-accordion-timer-item-progress-bar-thickness`  | Sets thickness of the progress bar                                      |
 
 
 ## Dependencies

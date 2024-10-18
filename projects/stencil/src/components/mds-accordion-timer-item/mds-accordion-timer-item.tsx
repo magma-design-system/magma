@@ -1,5 +1,5 @@
 import miBaselineKeyboardArrowDown from '@icon/mi/baseline/keyboard-arrow-down.svg'
-import { Component, Event, EventEmitter, Host, Prop, h } from '@stencil/core'
+import { Component, Event, EventEmitter, Host, Prop, h, Watch } from '@stencil/core'
 import { MdsAccordionTimerItemEventDetail } from './meta/event-detail'
 import { TypographyTitleType } from '@type/typography'
 
@@ -78,6 +78,11 @@ export class MdsAccordionTimerItem {
   @Event({ eventName: 'mdsAccordionTimerItemClickSelect' }) clickSelectEvent: EventEmitter<MdsAccordionTimerItemEventDetail>
 
   /**
+   * Emits when the accordion is changed from code
+   */
+  @Event({ eventName: 'mdsAccordionTimerItemSelect' }) selectEvent: EventEmitter<MdsAccordionTimerItemEventDetail>
+
+  /**
    * Emits when the accordion is hovered by the mouse
    */
   @Event({ eventName: 'mdsAccordionTimerItemMouseEnterSelect' }) selectedMouseEnterEvent: EventEmitter<MdsAccordionTimerItemEventDetail>
@@ -86,6 +91,14 @@ export class MdsAccordionTimerItem {
    * Emits when the accordion is hovered by the mouse
    */
   @Event({ eventName: 'mdsAccordionTimerItemMouseLeaveSelect' }) selectedMouseLeaveEvent: EventEmitter<MdsAccordionTimerItemEventDetail>
+
+  @Watch('selected')
+  handleSelected (newValue: boolean): void {
+    this.progress = 0
+    if (newValue) {
+      this.selectEvent.emit({ selected: this.selected, uuid: this.uuid })
+    }
+  }
 
   render () {
     return (
