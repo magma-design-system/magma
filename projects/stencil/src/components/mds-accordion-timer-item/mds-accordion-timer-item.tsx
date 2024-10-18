@@ -78,6 +78,11 @@ export class MdsAccordionTimerItem {
   @Event({ eventName: 'mdsAccordionTimerItemClickSelect' }) clickSelectEvent: EventEmitter<MdsAccordionTimerItemEventDetail>
 
   /**
+   * Emits when the accordion is changed from code
+   */
+  @Event({ eventName: 'mdsAccordionTimerItemSelect' }) selectEvent: EventEmitter<MdsAccordionTimerItemEventDetail>
+
+  /**
    * Emits when the accordion is hovered by the mouse
    */
   @Event({ eventName: 'mdsAccordionTimerItemMouseEnterSelect' }) selectedMouseEnterEvent: EventEmitter<MdsAccordionTimerItemEventDetail>
@@ -91,7 +96,7 @@ export class MdsAccordionTimerItem {
   handleSelected (newValue: boolean): void {
     this.progress = 0
     if (newValue) {
-      this.selectedMouseLeaveEvent.emit({ selected: this.selected, uuid: this.uuid })
+      this.selectEvent.emit({ selected: this.selected, uuid: this.uuid })
     }
   }
 

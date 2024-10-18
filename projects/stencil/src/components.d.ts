@@ -1904,6 +1904,7 @@ declare global {
     };
     interface HTMLMdsAccordionTimerItemElementEventMap {
         "mdsAccordionTimerItemClickSelect": MdsAccordionTimerItemEventDetail;
+        "mdsAccordionTimerItemSelect": MdsAccordionTimerItemEventDetail;
         "mdsAccordionTimerItemMouseEnterSelect": MdsAccordionTimerItemEventDetail;
         "mdsAccordionTimerItemMouseLeaveSelect": MdsAccordionTimerItemEventDetail;
     }
@@ -3072,6 +3073,10 @@ declare namespace LocalJSX {
           * Emits when the accordion is hovered by the mouse
          */
         "onMdsAccordionTimerItemMouseLeaveSelect"?: (event: MdsAccordionTimerItemCustomEvent<MdsAccordionTimerItemEventDetail>) => void;
+        /**
+          * Emits when the accordion is changed from code
+         */
+        "onMdsAccordionTimerItemSelect"?: (event: MdsAccordionTimerItemCustomEvent<MdsAccordionTimerItemEventDetail>) => void;
         /**
           * A value between 0 and 100 that rapresents the status progress
          */
