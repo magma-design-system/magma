@@ -80,13 +80,9 @@ const TemplatePaused = args =>
 
 const TemplateClickPaused = args => {
   const startSecond = () => {
-    const element = document.querySelector('mds-accordion-timer') as HTMLMdsAccordionTimerElement
     const elements = document.querySelectorAll('mds-accordion-timer-item')
-    const elemSecond = elements[1] as HTMLMdsAccordionTimerItemElement
+    const elemSecond = elements[1]
     elemSecond.selected = true
-    if (element.paused) {
-      element.paused = false
-    }
   }
   return <div>
     <div>
