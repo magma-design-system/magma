@@ -16,7 +16,7 @@ export class MdsAccordionTimer {
   private timer: number
   private timeChecker: number
   private timeStarted: number
-  private selectedItemDurationTime: number
+  private selectedItemRemainingTime: number
   private currentDuration: number = 0
   private children: NodeListOf<HTMLMdsAccordionTimerItemElement>
   private selectedItem: HTMLMdsAccordionTimerItemElement
@@ -44,11 +44,10 @@ export class MdsAccordionTimer {
     this.children.forEach((item, key) => {
       item.uuid = key
       if (item.selected) {
+        item.duration ? this.currentDuration = item.duration : this.currentDuration = this.duration
         this.selectedItem = item
       }
     })
-
-    this.currentDuration = this.duration
 
     if (this.selectedItem !== undefined) {
       this.startTimer()
@@ -68,6 +67,11 @@ export class MdsAccordionTimer {
   disconnectedCallback (): void {
     this.stopTimer()
     this.clearIntervals()
+  }
+
+  private remainingTime = (): number => {
+    const remainingTime:number = this.selectedItemRemainingTime - ( (new Date()).getTime() - this.timeStarted )
+    return remainingTime >= 0 ? remainingTime : 0
   }
 
   private progress = (): number => {
@@ -92,11 +96,6 @@ export class MdsAccordionTimer {
     return this.timeStarted
   }
 
-  private remainingTime = (): number => {
-    const remainingTime:number = this.selectedItemDurationTime - ( (new Date()).getTime() - this.timeStarted )
-    return remainingTime >= 0 ? remainingTime : 0
-  }
-
   private setSelectedItem = (uuid: number): void => {
     this.children.forEach((item, key) => {
       if (key === uuid) {
@@ -119,7 +118,7 @@ export class MdsAccordionTimer {
   private startTimer = (): void => {
     this.clearIntervals()
     this.time = this.beginningTime()
-    this.selectedItemDurationTime = this.currentDuration
+    this.selectedItemRemainingTime = this.currentDuration
     this.addTimeListener()
   }
 
@@ -130,7 +129,7 @@ export class MdsAccordionTimer {
 
   private pauseTimer = (): void => {
     this.clearIntervals()
-    this.selectedItemDurationTime = this.remainingTime()
+    this.selectedItemRemainingTime = this.remainingTime()
   }
 
   private stopTimer = (): void => {
