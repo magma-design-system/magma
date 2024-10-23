@@ -13,14 +13,13 @@ import { MdsAccordionTimerEventDetail } from './meta/event-detail'
 })
 export class MdsAccordionTimer {
 
-  private timer: number
   private timeChecker: number
   private timeStarted: number
-  private selectedItemDurationTime: number
+  private selectedItemRemainingTime: number
   private currentDuration: number = 0
   private children: NodeListOf<HTMLMdsAccordionTimerItemElement>
   private selectedItem: HTMLMdsAccordionTimerItemElement
-  @Element() private element: HTMLMdsAccordionTimerElement
+  @Element() private readonly element: HTMLMdsAccordionTimerElement
 
   @State() time = 0
 
@@ -44,11 +43,10 @@ export class MdsAccordionTimer {
     this.children.forEach((item, key) => {
       item.uuid = key
       if (item.selected) {
+        item.duration ? this.currentDuration = item.duration : this.currentDuration = this.duration
         this.selectedItem = item
       }
     })
-
-    this.currentDuration = this.duration
 
     if (this.selectedItem !== undefined) {
       this.startTimer()
@@ -59,8 +57,7 @@ export class MdsAccordionTimer {
     }
   }
 
-  private clearIntervals = (): void => {
-    window.clearInterval(this.timer)
+  private readonly clearIntervals = (): void => {
     window.clearInterval(this.timeChecker)
     this.timeChecker = 0
   }
@@ -70,11 +67,16 @@ export class MdsAccordionTimer {
     this.clearIntervals()
   }
 
-  private progress = (): number => {
+  private readonly remainingTime = (): number => {
+    const remainingTime:number = this.selectedItemRemainingTime - ( (new Date()).getTime() - this.timeStarted )
+    return remainingTime >= 0 ? remainingTime : 0
+  }
+
+  private readonly progress = (): number => {
     return Math.abs(this.remainingTime() / this.currentDuration - 1)
   }
 
-  private addTimeListener = (): void => {
+  private readonly addTimeListener = (): void => {
     this.timeChecker = window.setInterval(() => {
       const progress = this.progress()
       if (this.selectedItem !== undefined) {
@@ -87,17 +89,12 @@ export class MdsAccordionTimer {
     }, 100)
   }
 
-  private beginningTime = (): number => {
+  private readonly beginningTime = (): number => {
     this.timeStarted = (new Date()).getTime()
     return this.timeStarted
   }
 
-  private remainingTime = (): number => {
-    const remainingTime:number = this.selectedItemDurationTime - ( (new Date()).getTime() - this.timeStarted )
-    return remainingTime >= 0 ? remainingTime : 0
-  }
-
-  private setSelectedItem = (uuid: number): void => {
+  private readonly setSelectedItem = (uuid: number): void => {
     this.children.forEach((item, key) => {
       if (key === uuid) {
         item.selected = true
@@ -110,35 +107,36 @@ export class MdsAccordionTimer {
     })
   }
 
-  private startNext = (): void => {
+  private readonly startNext = (): void => {
     const nextUuid = this.selectedItem.uuid + 1 > this.children.length - 1 ? 0 : this.selectedItem.uuid + 1
     this.setSelectedItem(nextUuid)
     this.startTimer()
   }
 
-  private startTimer = (): void => {
+  private readonly startTimer = (): void => {
     this.clearIntervals()
     this.time = this.beginningTime()
-    this.selectedItemDurationTime = this.currentDuration
+    this.selectedItemRemainingTime = this.currentDuration
     this.addTimeListener()
   }
 
-  private playTimer = (): void => {
+  private readonly playTimer = (): void => {
     this.beginningTime()
     this.addTimeListener()
   }
 
-  private pauseTimer = (): void => {
+  private readonly pauseTimer = (): void => {
     this.clearIntervals()
-    this.selectedItemDurationTime = this.remainingTime()
+    this.selectedItemRemainingTime = this.remainingTime()
   }
 
-  private stopTimer = (): void => {
+  private readonly stopTimer = (): void => {
     this.clearIntervals()
   }
 
   @Listen('mdsAccordionTimerItemClickSelect')
   onClickSelect (event: CustomEvent<MdsAccordionTimerItemEventDetail>): void {
+    this.clearIntervals()
     if (this.selectedItem) {
       this.selectedItem.progress = 0
     }
@@ -149,6 +147,8 @@ export class MdsAccordionTimer {
 
   @Listen('mdsAccordionTimerItemSelect')
   onSelect (event: CustomEvent<MdsAccordionTimerItemEventDetail>): void {
+    this.clearIntervals()
+    this.paused = false
     if (this.selectedItem) {
       this.selectedItem.progress = 0
     }
