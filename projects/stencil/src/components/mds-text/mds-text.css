@@ -15,7 +15,7 @@
   --mds-text-selection-background: theme('colors.label-sky-09');
   --mds-text-selection-color: theme('colors.label-sky-01');
   --mds-text-line-clamp: 3;
-  --mds-text-animation-speed: 0.2;
+  --mds-text-animation-speed: 0.5;
   --mds-text-animation-placeholder-char: " ";
 
   display: flex;
