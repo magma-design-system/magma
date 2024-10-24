@@ -40,7 +40,7 @@
     { "color": "#F17032", "export": ["synbee-v1"], "name": "label.orange-v1", "ratios": "v1" },
 
     { "color": "#00379E", "export": ["brand", "default"], "name": "brand.maggioli", "colorspace": "HSL", "smooth": true },
-    { "color": "#0f4ad5", "export": ["brand"], "name": "brand.maggioli-editore", "colorspace": "HSL", "smooth": true },
+    { "color": "#0f4ad5", "export": ["brand", "default"], "name": "brand.maggioli-editore", "colorspace": "HSL", "smooth": true },
     { "color": "#036278", "export": ["brand-mindy"], "name": "brand.mindy", "colorspace": "HSL", "smooth": true },
     { "color": "#CBA26B", "export": ["brand-rnd"], "name": "brand.rnd", "colorspace": "HSL", "smooth": true },
     { "color": "#597CB9", "export": ["brand-synbee"], "name": "brand.synbee-eolo" },
