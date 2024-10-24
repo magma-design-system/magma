@@ -1,0 +1,60 @@
+@tailwind utilities;
+
+@container style(--magma-pref-theme: dark) {
+  :host {
+
+    --mds-kpi-item-icon-background: theme('colors.brand-maggioli-09');
+
+    background-color: theme('colors.tone-neutral-09');
+    box-shadow: theme('boxShadow.outline');
+  }
+}
+
+@container style(--magma-pref-theme: system) {
+
+  @media (prefers-color-scheme: dark) {
+    :host {
+
+      --mds-kpi-item-icon-background: theme('colors.brand-maggioli-09');
+
+      background-color: theme('colors.tone-neutral-09');
+      box-shadow: theme('boxShadow.outline');
+    }
+  }
+}
+
+
+@container style(--magma-pref-theme: dark) and style(--magma-pref-contrast: more) {
+  :host {
+    box-shadow: theme('boxShadow.outline-50');
+  }
+}
+
+@container style(--magma-pref-theme: dark) and style(--magma-pref-contrast: system) {
+
+  @media (prefers-contrast: more) {
+    :host {
+      box-shadow: theme('boxShadow.outline-50');
+    }
+  }
+}
+
+@container style(--magma-pref-theme: system) and style(--magma-pref-contrast: system) {
+
+  @media (prefers-color-scheme: dark) and (prefers-contrast: more)  {
+    :host {
+      box-shadow: theme('boxShadow.outline-50');
+    }
+  }
+}
+
+@container style(--magma-pref-theme: system) and style(--magma-pref-contrast: more) {
+
+  @media (prefers-color-scheme: dark) {
+    :host {
+      box-shadow: theme('boxShadow.outline-50');
+    }
+  }
+}
+
+

@@ -23,6 +23,8 @@
   --mds-kpi-item-text-animation-speed: var(--mds-kpi-text-animation-speed, 0.15);
 
   @apply
+    duration-300
+    ease-out
     gap-0
     rounded-2xl;
 
@@ -30,19 +32,31 @@
   box-shadow: theme('boxShadow.lg');
   display: grid;
   overflow: hidden;
+  transition-property: background-color, box-shadow;
 }
 
 .icon-container {
+
+  @apply
+    duration-300
+    ease-out;
+
   align-items: center;
   background-color: var(--mds-kpi-item-icon-background);
   display: flex;
   justify-content: center;
   padding: var(--mds-kpi-item-padding);
+  transition-property: background-color;
 }
 
 .icon {
+  @apply
+    duration-300
+    ease-out;
+
   fill: var(--mds-kpi-item-icon-color);
   height: var(--mds-kpi-item-icon-size);
+  transition-property: fill;
   width: var(--mds-kpi-item-icon-size);
 }
 
@@ -58,8 +72,14 @@
 .label,
 .description {
 
+  @apply
+    duration-300
+    ease-out;
+
   --mds-text-animation-speed: var(--mds-kpi-item-text-animation-speed);
   --mds-text-animation-placeholder-char: var(--mds-kpi-item-text-animation-placeholder-char);
+
+  transition-property: fill;
 }
 
 .label {
@@ -69,3 +89,7 @@
 .description {
   color: var(--mds-kpi-item-description-color);
 }
+
+@import './css/mds-kpi-item-pref-animation.css';
+@import './css/mds-kpi-item-pref-contrast.css';
+@import './css/mds-kpi-item-pref-theme.css';
