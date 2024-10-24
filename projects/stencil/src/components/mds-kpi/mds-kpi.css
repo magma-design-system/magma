@@ -1,6 +1,15 @@
 @tailwind utilities;
 
+/**
+ * @prop --mds-kpi-text-animation-placeholder-char: Sets the animation placeholder char of the text
+ * @prop --mds-kpi-text-animation-speed: Sets the animation speed of the text
+ */
+
 :host {
+
+  --mds-kpi-text-animation-speed: 0.2;
+  --mds-kpi-text-animation-placeholder-char: " ";
+
   @apply gap-400;
 
   display: grid;
