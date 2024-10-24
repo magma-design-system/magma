@@ -1,37 +1,32 @@
 @tailwind utilities;
 
 /**
- * @prop --mds-kpi-item-description-color: Set the color of the description text
- * @prop --mds-kpi-item-icon-background: Set the background color of the icon wrapper element
  * @prop --mds-kpi-item-icon-color: Set the fill color of the icon element
- * @prop --mds-kpi-item-icon-size: Set the size of the icon element
- * @prop --mds-kpi-item-info-padding: Set the padding of the info text
- * @prop --mds-kpi-item-label-color: Set the color of the label text
+ * @prop --mds-kpi-item-info-background: Set the `background-color` of the text area element
  * @prop --mds-kpi-item-text-animation-placeholder-char: Sets the animation placeholder char of the text
  * @prop --mds-kpi-item-text-animation-speed: Sets the animation speed of the text
  */
 
 :host {
 
-  --mds-kpi-item-description-color: theme('colors.tone-neutral-04');
-  --mds-kpi-item-icon-background: theme('colors.brand-maggioli-10');
   --mds-kpi-item-icon-color: theme('colors.brand-maggioli-04');
-  --mds-kpi-item-label-color: theme('colors.tone-neutral-02');
-  --mds-kpi-item-padding: theme('spacing.400');
-  --mds-kpi-item-icon-size: theme('size.1200');
+  --mds-kpi-item-info-background: theme('colors.tone-neutral');
   --mds-kpi-item-text-animation-placeholder-char: var(--mds-kpi-text-animation-placeholder-char, " ");
   --mds-kpi-item-text-animation-speed: var(--mds-kpi-text-animation-speed, 0.15);
 
   @apply
     duration-300
     ease-out
-    gap-0
-    rounded-2xl;
+    gap-0;
 
-  background-color: theme('colors.tone-neutral');
+  aspect-ratio: 1;
+  background-color: theme('colors.brand-maggioli-10');
+  border-radius: theme('borderRadius.2xl');
   box-shadow: theme('boxShadow.lg');
-  display: grid;
+  display: flex;
+  flex-direction: column;
   overflow: hidden;
+  padding: theme('spacing.400');
   transition-property: background-color, box-shadow;
 }
 
@@ -42,10 +37,9 @@
     ease-out;
 
   align-items: center;
-  background-color: var(--mds-kpi-item-icon-background);
   display: flex;
+  flex-grow: 1;
   justify-content: center;
-  padding: var(--mds-kpi-item-padding);
   transition-property: background-color;
 }
 
@@ -55,18 +49,25 @@
     ease-out;
 
   fill: var(--mds-kpi-item-icon-color);
-  height: var(--mds-kpi-item-icon-size);
   transition-property: fill;
-  width: var(--mds-kpi-item-icon-size);
+  width: 40%;
 }
 
 .info {
-  @apply gap-0;
+  @apply
+    duration-300
+    ease-out
+    gap-0;
 
+  background-color: var(--mds-kpi-item-info-background);
+  border-radius: theme('borderRadius.lg');
+  box-shadow: theme('boxShadow.sm');
   display: grid;
+  flex-shrink: 0;
   justify-content: center;
-  padding: var(--mds-kpi-item-padding);
+  padding: theme('spacing.400');
   text-align: center;
+  transition-property: background-color, border-radius, box-shadow;
 }
 
 .label,
@@ -80,14 +81,6 @@
   --mds-text-animation-placeholder-char: var(--mds-kpi-item-text-animation-placeholder-char);
 
   transition-property: fill;
-}
-
-.label {
-  color: var(--mds-kpi-item-label-color);
-}
-
-.description {
-  color: var(--mds-kpi-item-description-color);
 }
 
 @import './css/mds-kpi-item-pref-animation.css';

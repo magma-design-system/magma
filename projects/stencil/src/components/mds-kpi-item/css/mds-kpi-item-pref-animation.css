@@ -5,6 +5,7 @@
   .description,
   .icon,
   .icon-container,
+  .info,
   .label {
     transition-duration: 0s;
   }
@@ -17,6 +18,7 @@
     .description,
     .icon,
     .icon-container,
+    .info,
     .label {
       transition-duration: 0s;
     }
