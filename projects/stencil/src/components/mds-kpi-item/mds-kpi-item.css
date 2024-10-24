@@ -4,29 +4,24 @@
  * @prop --mds-kpi-item-description-color: Set the color of the description text
  * @prop --mds-kpi-item-info-padding: Set the padding of the info text
  * @prop --mds-kpi-item-value-color: Set the color of the value text
+ * @prop --mds-kpi-item-text-animation-placeholder-char: Sets the animation placeholder char of the text
+ * @prop --mds-kpi-item-text-animation-speed: Sets the animation speed of the text
  */
-
-/* https://benfrain.com/using-css-property-inside-shadowroot-web-components-workaround/ */
-
-/* @property --mds-kpi-item-value {
-  inherits: false;
-  initial-value: 0;
-  syntax: '<integer>';
-} */
 
 :host {
 
   --mds-kpi-item-description-color: theme('colors.tone-neutral-04');
   --mds-kpi-item-info-padding: theme('spacing.400');
   --mds-kpi-item-value-color: theme('colors.tone-neutral-02');
-  --mds-kpi-item-duration: 1s;
+  --mds-kpi-item-text-animation-speed: var(--mds-kpi-text-animation-speed, 0.2);
+  --mds-kpi-item-text-animation-placeholder-char: var(--mds-kpi-text-animation-placeholder-char, " ");
 
   @apply
     gap-0
     rounded-2xl;
 
-  background-color: var(--background-color, theme('colors.tone-neutral'));
-  box-shadow: var(--shadow, theme('boxShadow.lg'));
+  background-color: theme('colors.tone-neutral');
+  box-shadow: theme('boxShadow.lg');
   display: grid;
   overflow: hidden;
 }
@@ -46,14 +41,15 @@
   text-align: center;
 }
 
-.value {
-  color: var(--mds-kpi-item-value-color);
-  counter-set: num var(--mds-kpi-item-value);
-  transition: --mds-kpi-item-value var(--mds-kpi-item-duration); /* stylelint-disable-line custom-property-no-missing-var-function */
+.value,
+.description {
+
+  --mds-text-animation-speed: var(--mds-kpi-item-text-animation-speed);
+  --mds-text-animation-placeholder-char: var(--mds-kpi-item-text-animation-placeholder-char);
 }
 
-.value::after {
-  content: counter(num);
+.value {
+  color: var(--mds-kpi-item-value-color);
 }
 
 .description {

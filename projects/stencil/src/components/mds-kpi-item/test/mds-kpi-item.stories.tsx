@@ -4,11 +4,15 @@ export default {
   title: 'UI / KPI / KPI Item',
   argTypes: {
     description: {
-      type: { name: 'string', required: true },
+      type: { name: 'string' },
       description: 'Specifies the description under the value in the KPI element',
     },
-    value: {
-      type: { name: 'number', required: true },
+    label: {
+      type: { name: 'string' },
+      description: 'Specifies the number to be displayed in the KPI element',
+    },
+    threshold: {
+      type: { name: 'number' },
       description: 'Specifies the number to be displayed in the KPI element',
     },
   },
@@ -30,12 +34,12 @@ const TemplateIcon = args =>
 
 export const Default = Template.bind({})
 Default.args = {
-  value: 400,
+  label: '400',
   description: 'Employees in 2021',
 }
 
 export const Icon = TemplateIcon.bind({})
 Icon.args = {
-  value: 400,
+  label: '400',
   description: 'Employees in 2021',
 }

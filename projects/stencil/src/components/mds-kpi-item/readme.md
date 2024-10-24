@@ -9,11 +9,12 @@ This is a web-component from Maggioli Design System [Magma](https://magma.maggio
 
 ## Properties
 
-| Property                   | Attribute     | Description                                                  | Type                  | Default     |
-| -------------------------- | ------------- | ------------------------------------------------------------ | --------------------- | ----------- |
-| `description` _(required)_ | `description` | Specifies the description under the value in the KPI element | `string`              | `undefined` |
-| `icon`                     | `icon`        | Specifies the icon on the top of the KPI element             | `string \| undefined` | `undefined` |
-| `value` _(required)_       | `value`       | Specifies the number to be displayed in the KPI element      | `number`              | `undefined` |
+| Property      | Attribute     | Description                                                  | Type                  | Default     |
+| ------------- | ------------- | ------------------------------------------------------------ | --------------------- | ----------- |
+| `description` | `description` | Specifies the description under the value in the KPI element | `string \| undefined` | `undefined` |
+| `icon`        | `icon`        | Specifies the icon on the top of the KPI element             | `string \| undefined` | `undefined` |
+| `label`       | `label`       | Specifies the number to be displayed in the KPI element      | `string \| undefined` | `undefined` |
+| `threshold`   | `threshold`   | Specifies the description under the value in the KPI element | `number \| undefined` | `0`         |
 
 
 ## Slots
@@ -25,11 +26,13 @@ This is a web-component from Maggioli Design System [Magma](https://magma.maggio
 
 ## CSS Custom Properties
 
-| Name                               | Description                           |
-| ---------------------------------- | ------------------------------------- |
-| `--mds-kpi-item-description-color` | Set the color of the description text |
-| `--mds-kpi-item-info-padding`      | Set the padding of the info text      |
-| `--mds-kpi-item-value-color`       | Set the color of the value text       |
+| Name                                             | Description                                     |
+| ------------------------------------------------ | ----------------------------------------------- |
+| `--mds-kpi-item-description-color`               | Set the color of the description text           |
+| `--mds-kpi-item-info-padding`                    | Set the padding of the info text                |
+| `--mds-kpi-item-text-animation-placeholder-char` | Sets the animation placeholder char of the text |
+| `--mds-kpi-item-text-animation-speed`            | Sets the animation speed of the text            |
+| `--mds-kpi-item-value-color`                     | Set the color of the value text                 |
 
 
 ## Dependencies
