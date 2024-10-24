@@ -1111,7 +1111,7 @@ export namespace Components {
         /**
           * Specifies the description under the value in the KPI element
          */
-        "description": string;
+        "description"?: string;
         /**
           * Specifies the icon on the top of the KPI element
          */
@@ -1119,7 +1119,11 @@ export namespace Components {
         /**
           * Specifies the number to be displayed in the KPI element
          */
-        "value": number;
+        "label"?: string;
+        /**
+          * Specifies the description under the value in the KPI element
+         */
+        "threshold"?: number;
     }
     interface MdsLabel {
         /**
@@ -4099,7 +4103,7 @@ declare namespace LocalJSX {
         /**
           * Specifies the description under the value in the KPI element
          */
-        "description": string;
+        "description"?: string;
         /**
           * Specifies the icon on the top of the KPI element
          */
@@ -4107,7 +4111,11 @@ declare namespace LocalJSX {
         /**
           * Specifies the number to be displayed in the KPI element
          */
-        "value": number;
+        "label"?: string;
+        /**
+          * Specifies the description under the value in the KPI element
+         */
+        "threshold"?: number;
     }
     interface MdsLabel {
         /**
