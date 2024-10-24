@@ -2,8 +2,11 @@
 
 /**
  * @prop --mds-kpi-item-description-color: Set the color of the description text
+ * @prop --mds-kpi-item-icon-background: Set the background color of the icon wrapper element
+ * @prop --mds-kpi-item-icon-color: Set the fill color of the icon element
+ * @prop --mds-kpi-item-icon-size: Set the size of the icon element
  * @prop --mds-kpi-item-info-padding: Set the padding of the info text
- * @prop --mds-kpi-item-value-color: Set the color of the value text
+ * @prop --mds-kpi-item-label-color: Set the color of the label text
  * @prop --mds-kpi-item-text-animation-placeholder-char: Sets the animation placeholder char of the text
  * @prop --mds-kpi-item-text-animation-speed: Sets the animation speed of the text
  */
@@ -11,10 +14,13 @@
 :host {
 
   --mds-kpi-item-description-color: theme('colors.tone-neutral-04');
-  --mds-kpi-item-info-padding: theme('spacing.400');
-  --mds-kpi-item-value-color: theme('colors.tone-neutral-02');
-  --mds-kpi-item-text-animation-speed: var(--mds-kpi-text-animation-speed, 0.2);
+  --mds-kpi-item-icon-background: theme('colors.brand-maggioli-10');
+  --mds-kpi-item-icon-color: theme('colors.brand-maggioli-04');
+  --mds-kpi-item-label-color: theme('colors.tone-neutral-02');
+  --mds-kpi-item-padding: theme('spacing.400');
+  --mds-kpi-item-icon-size: theme('size.1200');
   --mds-kpi-item-text-animation-placeholder-char: var(--mds-kpi-text-animation-placeholder-char, " ");
+  --mds-kpi-item-text-animation-speed: var(--mds-kpi-text-animation-speed, 0.15);
 
   @apply
     gap-0
@@ -26,10 +32,18 @@
   overflow: hidden;
 }
 
-.icon {
-  align-items: flex-start;
+.icon-container {
+  align-items: center;
+  background-color: var(--mds-kpi-item-icon-background);
   display: flex;
   justify-content: center;
+  padding: var(--mds-kpi-item-padding);
+}
+
+.icon {
+  fill: var(--mds-kpi-item-icon-color);
+  height: var(--mds-kpi-item-icon-size);
+  width: var(--mds-kpi-item-icon-size);
 }
 
 .info {
@@ -37,19 +51,19 @@
 
   display: grid;
   justify-content: center;
-  padding: var(--mds-kpi-item-info-padding);
+  padding: var(--mds-kpi-item-padding);
   text-align: center;
 }
 
-.value,
+.label,
 .description {
 
   --mds-text-animation-speed: var(--mds-kpi-item-text-animation-speed);
   --mds-text-animation-placeholder-char: var(--mds-kpi-item-text-animation-placeholder-char);
 }
 
-.value {
-  color: var(--mds-kpi-item-value-color);
+.label {
+  color: var(--mds-kpi-item-label-color);
 }
 
 .description {

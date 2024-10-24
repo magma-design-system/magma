@@ -7,7 +7,7 @@
 
 :host {
 
-  --mds-kpi-text-animation-speed: 0.2;
+  --mds-kpi-text-animation-speed: 0.15;
   --mds-kpi-text-animation-placeholder-char: " ";
 
   @apply gap-400;

@@ -1,7 +1,8 @@
 import { Component, Element, Host, Prop, h, State } from '@stencil/core'
 
 /**
- * @slot icon - Insert an icon image, it can be `HTML elements` or `components`, it is **recommended** to add `mds-icon` element.
+ * @part icon - Selects the icon element
+ * @part icon-container - Selects the icon wrapper element
  */
 
 @Component({
@@ -12,7 +13,6 @@ import { Component, Element, Host, Prop, h, State } from '@stencil/core'
 export class MdsKpiItem {
 
   @Element() hostElement: HTMLMdsKpiItemElement
-  private hasIcon: boolean
   @State() isIntersecting: boolean
   private observer: IntersectionObserver
 
@@ -47,7 +47,6 @@ export class MdsKpiItem {
   }
 
   componentWillLoad (): void {
-    this.hasIcon = this.hostElement.querySelector('[slot="icon"]') !== null
     if (this.threshold !== 0) {
       this.setObserver()
     }
@@ -56,9 +55,9 @@ export class MdsKpiItem {
   render () {
     return (
       <Host>
-        { this.hasIcon &&
-          <div class="icon">
-            <slot name="icon"/>
+        { this.icon &&
+          <div class="icon-container" part="icon-container">
+            <mds-icon class="icon" name={ this.icon } part="icon"></mds-icon>
           </div>
         }
         <div class="info">
