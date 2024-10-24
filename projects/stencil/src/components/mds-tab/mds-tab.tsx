@@ -15,7 +15,7 @@ import { MdsTabItemEventDetail } from '@component/mds-tab-item/meta/event-detail
 export class MdsTab {
 
   @Element() private element: HTMLMdsTabElement
-  private currentItem = -1
+  private currentItem: number = -1
   private tabs: HTMLElement
   private tabItems: NodeListOf<HTMLMdsTabItemElement>
   private contentItems: NodeListOf<HTMLElement>
@@ -67,9 +67,9 @@ export class MdsTab {
 
   private selectContentItem = (): void => {
     this.contentItems.forEach((item: HTMLElement, index: number) => {
-      item.classList.add('hidden')
+      item.setAttribute('mds-tab-content-hidden', '')
       if (index === this.currentItem) {
-        item.classList.remove('hidden')
+        item.removeAttribute('mds-tab-content-hidden')
       }
     })
   }

@@ -11,6 +11,7 @@
 
   --mds-tab-duration: .75s;
   --mds-tab-timing-function: theme('transitionTimingFunction.in-out-expo');
+  --mds-tab-current-item: 2;
 
   display: grid;
 }
@@ -70,6 +71,10 @@
   flex-basis: 0;
   flex-grow: 1;
   scroll-snap-align: start;
+}
+
+::slotted( [slot="content"][mds-tab-content-hidden] ) {
+    display: none !important;
 }
 
 @import './css/mds-tab-pref-animation.css';
