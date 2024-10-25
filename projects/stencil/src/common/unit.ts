@@ -23,7 +23,7 @@ const cssSizeToNumber = (size: string, defaultValue = 0): number => {
   if (size.includes('em')) {
     return Number(size.replace('em', '')) * 16
   }
-  
+
   return defaultValue
 }
 
