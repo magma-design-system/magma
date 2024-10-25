@@ -1,6 +1,7 @@
 import { Component, Element, Host, Prop, h, State } from '@stencil/core'
 
 /**
+ * @part content - Selects the label and description wrapper element
  * @part icon - Selects the icon element
  * @part icon-container - Selects the icon wrapper element
  */
@@ -60,7 +61,7 @@ export class MdsKpiItem {
             <mds-icon class="icon" name={ this.icon } part="icon"></mds-icon>
           </div>
         }
-        <div class="info">
+        <div class="info" part="content">
           { this.label && this.threshold !== 0 && <mds-text class="value" typography="h2" text={ this.isIntersecting ? this.label : '' } animation="yugop"></mds-text> }
           { this.label && this.threshold === 0 && <mds-text class="value" typography="h2">{ this.label }</mds-text> }
           { this.description && this.threshold !== 0 && <mds-text class="description" typography="label" text={ this.isIntersecting ? this.description : '' } animation="yugop"></mds-text> }
