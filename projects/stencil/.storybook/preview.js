@@ -56,16 +56,20 @@ window.sessionStorage.setItem('mdsIconSvgPath', svgPath)
 
 // mdsIconGet()
 
+const capitalize = (string) => {
+  return string.charAt(0).toUpperCase() + string.slice(1);
+}
+
 const setAccessibility = (preference, value) => {
   const htmlEl = document.querySelector('html')
   htmlEl.style.setProperty(`--magma-pref-${preference}`, value)
   htmlEl.classList.add(`pref-${preference}-${value}`)
-  window.localStorage.setItem(`mds-pref-${preference}`, value)
+  window.localStorage.setItem(`mdsPref${capitalize(preference)}`, value)
 }
 
 const checkAccessibility = (pref, defaultValue) => {
-  if (window.localStorage.getItem(`mds-pref-${pref}`)) {
-    const prefValue = window.localStorage.getItem(`mds-pref-${pref}`)
+  if (window.localStorage.getItem(`mdsPref${capitalize(pref)}`)) {
+    const prefValue = window.localStorage.getItem(`mdsPref${capitalize(pref)}`)
     setAccessibility(pref, prefValue)
     return
   }
@@ -78,7 +82,7 @@ checkAccessibility('animation', 'system')
 checkAccessibility('consumption', 'high')
 
 document.querySelector('html').classList.add('bg-tone-neutral', 'transition-colors')
-document.querySelector('html').setAttribute('lang', window.localStorage.getItem('mds-pref-language') ?? 'it')
+document.querySelector('html').setAttribute('lang', window.localStorage.getItem('mdsPrefLanguage') ?? 'it')
 
 const toUpperCase = string => {
   return string.charAt(0).toUpperCase() + string.slice(1)

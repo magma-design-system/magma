@@ -17,6 +17,8 @@ import { AnimationModeType } from './meta/types'
 })
 export class MdsPrefAnimation {
   @Element() private element: HTMLMdsPrefAnimationElement
+  private localStorageAlias: string = 'mdsPrefAnimation'
+  private customPropertyAlias: string = '--magma-pref-animation'
   private defaultMode: AnimationModeType = 'system'
   private t:Locale = new Locale({
     el: localeEl,
@@ -55,13 +57,13 @@ export class MdsPrefAnimation {
   }
 
   componentDidLoad (): void {
-    this.setAnimation(this.mode ?? localStorage.getItem('mdsPrefAnimation') as AnimationModeType ?? this.defaultMode)
+    this.setAnimation(this.mode ?? localStorage.getItem(this.localStorageAlias) as AnimationModeType ?? this.defaultMode)
   }
 
   private setAnimation = (mode: AnimationModeType): void => {
     this.prefChangeEvent.emit({ preference: 'animation' })
     this.mode = mode
-    localStorage.setItem('mdsPrefAnimation', this.mode)
+    localStorage.setItem(this.localStorageAlias, this.mode)
     if (document) {
       const element = document.querySelector('html')
 
@@ -71,7 +73,7 @@ export class MdsPrefAnimation {
         }
       }
       element?.classList.add(this.animation[this.mode].selector)
-      element?.style.setProperty('--magma-pref-animation', this.mode)
+      element?.style.setProperty(this.customPropertyAlias, this.mode)
     }
   }
 

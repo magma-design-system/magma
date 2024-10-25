@@ -27,6 +27,8 @@ export class MdsPrefTheme {
     it: localeIt,
   })
 
+  private localStorageAlias: string = 'mdsPrefTheme'
+  private customPropertyAlias: string = '--magma-pref-theme'
   private overlayBackgroundVisible = 'rgb(var(--tone-neutral))'
   private overlayBackgroundHidden = 'rgb(var(--tone-neutral) / 0)'
   private cssOverlayShowDuration: string = '300'
@@ -82,7 +84,7 @@ export class MdsPrefTheme {
 
   componentDidLoad (): void {
     this.updateCSSCustomProps()
-    this.setTheme(this.mode ?? localStorage.getItem('mdsPrefTheme') as ThemeModeType ?? this.defaultMode)
+    this.setTheme(this.mode ?? localStorage.getItem(this.localStorageAlias) as ThemeModeType ?? this.defaultMode)
   }
 
   @Watch('mode')
@@ -96,7 +98,7 @@ export class MdsPrefTheme {
   private setTheme = (mode: ThemeModeType): void => {
     this.prefChangeEvent.emit({ preference: 'theme' })
     this.mode = mode
-    localStorage.setItem('mdsPrefTheme', this.mode)
+    localStorage.setItem(this.localStorageAlias, this.mode)
     if (document) {
       const element = document.querySelector('html')
       for (const key in this.theme) {
@@ -105,7 +107,7 @@ export class MdsPrefTheme {
         }
       }
       element?.classList.add(this.theme[mode].selector)
-      element?.style.setProperty('--magma-pref-theme', this.mode)
+      element?.style.setProperty(this.customPropertyAlias, this.mode)
     }
   }
 

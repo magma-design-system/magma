@@ -18,6 +18,8 @@ import { MdsPrefChangeEventDetail } from '@event/preference'
 })
 export class MdsPrefContrast {
   @Element() private element: HTMLMdsPrefContrastElement
+  private localStorageAlias: string = 'mdsPrefContrast'
+  private customPropertyAlias: string = '--magma-pref-contrast'
   private defaultMode: ContrastModeType = 'system'
   private t:Locale = new Locale({
     el: localeEl,
@@ -63,7 +65,7 @@ export class MdsPrefContrast {
   }
 
   componentDidLoad (): void {
-    this.setContrast(this.mode ?? localStorage.getItem('mdsPrefContrast') as ContrastModeType ?? this.defaultMode)
+    this.setContrast(this.mode ?? localStorage.getItem(this.localStorageAlias) as ContrastModeType ?? this.defaultMode)
   }
 
   private rollbackContrast = (): ContrastModeType => {
@@ -86,7 +88,7 @@ export class MdsPrefContrast {
     this.prefChangeEvent.emit({ preference: 'contrast' })
     this.rollbackContrast()
     this.mode = mode
-    localStorage.setItem('mdsPrefContrast', this.mode)
+    localStorage.setItem(this.localStorageAlias, this.mode)
     if (document) {
       const element = document.querySelector('html')
       for (const key in this.contrast) {
@@ -95,7 +97,7 @@ export class MdsPrefContrast {
         }
       }
       element?.classList.add(this.contrast[mode].selector)
-      element?.style.setProperty('--magma-pref-contrast', this.mode)
+      element?.style.setProperty(this.customPropertyAlias, this.mode)
     }
   }
 
