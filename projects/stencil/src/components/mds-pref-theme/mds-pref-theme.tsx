@@ -45,7 +45,7 @@ export class MdsPrefTheme {
     this.cssOverlayZIndex = elementStyles.getPropertyValue('--mds-pref-theme-overlay-z-index') ?? '6000'
   }
 
-  
+
   /**
    * Specifies the preference mode
    */
@@ -82,7 +82,7 @@ export class MdsPrefTheme {
 
   componentDidLoad (): void {
     this.updateCSSCustomProps()
-    this.setTheme(this.mode ?? localStorage.getItem('mds-pref-theme') as ThemeModeType ?? this.defaultMode)
+    this.setTheme(this.mode ?? localStorage.getItem('mdsPrefTheme') as ThemeModeType ?? this.defaultMode)
   }
 
   @Watch('mode')
@@ -96,7 +96,7 @@ export class MdsPrefTheme {
   private setTheme = (mode: ThemeModeType): void => {
     this.prefChangeEvent.emit({ preference: 'theme' })
     this.mode = mode
-    localStorage.setItem('mds-pref-theme', this.mode)
+    localStorage.setItem('mdsPrefTheme', this.mode)
     if (document) {
       const element = document.querySelector('html')
       for (const key in this.theme) {
@@ -146,7 +146,7 @@ export class MdsPrefTheme {
     }
     this.overlayEl.style.backgroundColor = this.overlayBackgroundHidden
     clearTimeout(this.overlayTimer)
-    
+
     this.overlayTimer = setTimeout(() => {
       this.overlayEl.remove()
     }, cssDurationToMilliseconds(this.cssOverlayFadeoutDuration))

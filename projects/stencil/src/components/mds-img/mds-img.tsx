@@ -150,7 +150,7 @@ export class MdsImg {
   }
 
   componentWillLoad ():void {
-    this.consumptionMode = localStorage.getItem('mds-pref-consumption') as ConsumptionModeType ?? 'high'
+    this.consumptionMode = localStorage.getItem('mdsPrefConsumption') as ConsumptionModeType ?? 'high'
     if (this.srcsetConsumption) {
       this.srcsetConsumptionData = this.formatConsumptionData(this.srcsetConsumption)
     }

@@ -55,13 +55,13 @@ export class MdsPrefAnimation {
   }
 
   componentDidLoad (): void {
-    this.setAnimation(this.mode ?? localStorage.getItem('mds-pref-animation') as AnimationModeType ?? this.defaultMode)
+    this.setAnimation(this.mode ?? localStorage.getItem('mdsPrefAnimation') as AnimationModeType ?? this.defaultMode)
   }
 
   private setAnimation = (mode: AnimationModeType): void => {
     this.prefChangeEvent.emit({ preference: 'animation' })
     this.mode = mode
-    localStorage.setItem('mds-pref-animation', this.mode)
+    localStorage.setItem('mdsPrefAnimation', this.mode)
     if (document) {
       const element = document.querySelector('html')
 

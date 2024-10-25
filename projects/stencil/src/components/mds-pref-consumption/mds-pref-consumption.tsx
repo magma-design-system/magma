@@ -55,13 +55,13 @@ export class MdsPrefContrast {
   }
 
   componentDidLoad (): void {
-    this.setConsumption(this.mode ?? localStorage.getItem('mds-pref-consumption') as ConsumptionModeType ?? this.defaultMode)
+    this.setConsumption(this.mode ?? localStorage.getItem('mdsPrefConsumption') as ConsumptionModeType ?? this.defaultMode)
   }
 
   private setConsumption = (mode: ConsumptionModeType): void => {
     this.prefChangeEvent.emit({ preference: 'consumption' })
     this.mode = mode
-    localStorage.setItem('mds-pref-consumption', this.mode)
+    localStorage.setItem('mdsPrefConsumption', this.mode)
     if (document) {
       const element = document.querySelector('html')
       for (const key in this.consumption) {

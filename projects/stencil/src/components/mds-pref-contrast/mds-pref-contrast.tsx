@@ -63,7 +63,7 @@ export class MdsPrefContrast {
   }
 
   componentDidLoad (): void {
-    this.setContrast(this.mode ?? localStorage.getItem('mds-pref-contrast') as ContrastModeType ?? this.defaultMode)
+    this.setContrast(this.mode ?? localStorage.getItem('mdsPrefContrast') as ContrastModeType ?? this.defaultMode)
   }
 
   private rollbackContrast = (): ContrastModeType => {
@@ -86,7 +86,7 @@ export class MdsPrefContrast {
     this.prefChangeEvent.emit({ preference: 'contrast' })
     this.rollbackContrast()
     this.mode = mode
-    localStorage.setItem('mds-pref-contrast', this.mode)
+    localStorage.setItem('mdsPrefContrast', this.mode)
     if (document) {
       const element = document.querySelector('html')
       for (const key in this.contrast) {

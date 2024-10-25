@@ -51,7 +51,7 @@ export class MdsPrefLanguage {
 
   componentDidLoad (): void {
     this.systemLanguage = this.sanitizeLanguage(navigator.language)
-    this.userLanguage = localStorage.getItem('mds-pref-language') as PrefLanguageType
+    this.userLanguage = localStorage.getItem('mdsPrefLanguage') as PrefLanguageType
     this.pageLanguage = (document.querySelector('html')?.getAttribute('lang')) as PrefLanguageType
     this.setLanguage(this.set)
     this.checkLanguageSelect()
@@ -105,7 +105,7 @@ export class MdsPrefLanguage {
 
     this.prefChangeEvent.emit({ preference: 'language' })
 
-    localStorage.setItem('mds-pref-language', this.set)
+    localStorage.setItem('mdsPrefLanguage', this.set)
     if (document) {
       const element = document.querySelector('html')
       element?.setAttribute('lang', this.set)

@@ -57,7 +57,7 @@ export class MdsFile {
   private handleOnClick = (): void => {
     const { format, description } = getExtensionInfos(this.filename, this.suffix)
     this.downloadedEvent.emit({ description: this.description ?? description, extension: getSuffix(this.filename, this.suffix), filename: this.filename, target: this.host, type: format })
-    localStorage.setItem(`mds-file/${MD5(this.filename).toString()}`, 'downloaded')
+    localStorage.setItem(`mdsFile${MD5(this.filename).toString()}`, 'downloaded')
     this.checkWasDownloaded()
   }
 
