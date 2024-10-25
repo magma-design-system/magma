@@ -14,18 +14,18 @@ const AccessibilityPanel = () => {
       }
       htmlEl.style.setProperty(`--magma-pref-${preference}`, value)
       htmlEl.classList.add(`pref-${preference}-${value}`)
-      window.localStorage.setItem(`mds-pref-${preference}`, value)
+      window.localStorage.setItem(`mdsPref${preference}`, value)
     }
   }
 
   const setLanguage = (lang) => {
     if (window) {
-      window.localStorage.setItem('mds-pref-language', lang)
+      window.localStorage.setItem('mdsPrefLanguage', lang)
     }
     if (document) {
       const iframe = document.getElementById('storybook-preview-iframe')
       const iframeDocument = iframe.contentDocument || iframe.contentWindow.document
-      iframeDocument.querySelector('html').setAttribute('lang', window.localStorage.getItem('mds-pref-language') ?? 'it')
+      iframeDocument.querySelector('html').setAttribute('lang', window.localStorage.getItem('mdsPrefLanguage') ?? 'it')
     }
   }
 
@@ -34,8 +34,8 @@ const AccessibilityPanel = () => {
       <Form.Field label="Theme">
         <Form.Select
           name="pref-theme"
-          defaultValue={ window.localStorage.getItem('mds-pref-theme') ?? 'light' }
-          onChange={(event) => { setAccessibility('theme', event.target.value, ['light', 'system', 'dark']) }}
+          defaultValue={ window.localStorage.getItem('mdsPrefLanguage') ?? 'light' }
+          onChange={(event) => { setAccessibility('Theme', event.target.value, ['light', 'system', 'dark']) }}
         >
           <option value="light">Light</option>
           <option value="system">System</option>
@@ -45,8 +45,8 @@ const AccessibilityPanel = () => {
       <Form.Field label="Contrast">
         <Form.Select
           name="pref-contrast"
-          defaultValue={ window.localStorage.getItem('mds-pref-contrast') ?? 'no-preference' }
-          onChange={(event) => { setAccessibility('contrast', event.target.value, ['more', 'system', 'no-preference']) }}
+          defaultValue={ window.localStorage.getItem('mdsPrefContrast') ?? 'no-preference' }
+          onChange={(event) => { setAccessibility('Contrast', event.target.value, ['more', 'system', 'no-preference']) }}
         >
           <option value="more">More</option>
           <option value="system">System</option>
@@ -56,8 +56,8 @@ const AccessibilityPanel = () => {
       <Form.Field label="Animations">
         <Form.Select
           name="pref-animation"
-          defaultValue={ window.localStorage.getItem('mds-pref-animation') ?? 'no-preference' }
-          onChange={(event) => { setAccessibility('animation', event.target.value, ['reduce', 'system', 'no-preference']) }}
+          defaultValue={ window.localStorage.getItem('mdsPrefAnimation') ?? 'no-preference' }
+          onChange={(event) => { setAccessibility('Animation', event.target.value, ['reduce', 'system', 'no-preference']) }}
         >
           <option value="reduce">Reduce</option>
           <option value="system">System</option>
@@ -67,8 +67,8 @@ const AccessibilityPanel = () => {
       <Form.Field label="Consumption">
         <Form.Select
           name="pref-consumption"
-          defaultValue={ window.localStorage.getItem('mds-pref-consumption') ?? 'high' }
-          onChange={(event) => { setAccessibility('consumption', event.target.value, ['low', 'medium', 'high']) }}
+          defaultValue={ window.localStorage.getItem('mdsPrefConsumption') ?? 'high' }
+          onChange={(event) => { setAccessibility('Consumption', event.target.value, ['low', 'medium', 'high']) }}
         >
           <option value="low">Low</option>
           <option value="medium">Medium</option>
@@ -78,7 +78,7 @@ const AccessibilityPanel = () => {
       <Form.Field label="Language">
         <Form.Select
           name="pref-language"
-          defaultValue={ window.localStorage.getItem('mds-pref-language') ?? 'en' }
+          defaultValue={ window.localStorage.getItem('mdsPrefLanguage') ?? 'en' }
           onChange={(event) => { setLanguage(event.target.value) }}
         >
           <option value="it">Italiano</option>
