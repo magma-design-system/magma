@@ -16,7 +16,6 @@
 
 :host {
 
-  --mds-modal-close-icon-color: theme('colors.tone-neutral');
   --mds-modal-overlay-color: var(--magma-overlay-color, 0 0 0);
   --mds-modal-overlay-opacity: var(--magma-overlay-opacity, 0.5);
   --mds-modal-transition-duration: 500ms;
@@ -51,30 +50,6 @@
 :host( [position="bottom"] ) {
   align-items: flex-end;
   justify-content: center;
-}
-
-.button-close {
-
-  --mds-button-background: transparent;
-
-  fill: var(--mds-modal-close-icon-color);
-  height: auto;
-  position: absolute;
-  transform: translate(0, 24px) rotate(90deg);
-  transform-origin: center;
-  transition-duration: var(--mds-modal-transition-duration);
-  transition-property: opacity, outline, outline-offset, transform;
-  @apply
-    ease-in-out-quart
-    opacity-0
-    rounded-full
-    top-0;
-}
-
-.button-close::part(icon) {
-  @apply
-    h-900
-    w-900;
 }
 
 .window {

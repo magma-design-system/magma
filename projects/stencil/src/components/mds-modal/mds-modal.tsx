@@ -1,7 +1,5 @@
 import clsx from 'clsx'
-import miBaselineClose from '@icon/mi/baseline/close.svg'
 import { Component, Element, Event, EventEmitter, Host, h, Listen, Prop, Watch } from '@stencil/core'
-import { KeyboardManager } from '@common/keyboard-manager'
 import { ModalPositionType, ModalAnimationStateType } from './meta/types'
 import { cssDurationToMilliseconds } from '@common/unit'
 
@@ -24,7 +22,6 @@ export class MdsModal {
   private top = false
   private bottom = false
   private cssTransitionDuration: string
-  private readonly km = new KeyboardManager()
 
   @Element() host: HTMLMdsModalElement
 
@@ -99,16 +96,6 @@ export class MdsModal {
 
   componentDidLoad (): void {
     this.updateCSSCustomProps()
-    this.km.addElement(this.host, 'host')
-    const close = this.host.shadowRoot?.querySelector('.close')
-    if (close) this.km.addElement(close as HTMLElement, 'close')
-    this.km.attachEscapeBehavior(() => this.closeEvent.emit())
-    this.km.attachClickBehavior('close')
-  }
-
-  disconnectedCallback (): void {
-    this.km.detachEscapeBehavior()
-    this.km.detachClickBehavior('close')
   }
 
   private closeModal = (e:Event): void => {
@@ -155,9 +142,7 @@ export class MdsModal {
             }
           </div>
         }
-        { !this.window && <mds-button icon={miBaselineClose} onClick={(e: Event) => { this.closeModal(e) }} class="button-close"></mds-button> }
       </Host>
     )
   }
-
 }
