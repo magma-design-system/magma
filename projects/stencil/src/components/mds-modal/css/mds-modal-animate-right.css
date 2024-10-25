@@ -1,42 +1,19 @@
-:host( .to-right ) {
+:host([position="right"]) {
+  align-items: center;
   justify-content: flex-end;
 }
 
-:host( .to-right ) .window,
-:host( .to-right ) > ::slotted([slot="window"]) {
-  @apply animate;
+:host([position="right"]) .window {
+  height: 100dvh;
+  max-width: calc(100vw - 80px);
 }
 
-:host( .to-right-intro ) .window,
-:host( .to-right-intro ) > ::slotted( [slot="window"] ) {
-  @apply animate-right-intro;
+:host([position="right"][opened="false"]) > ::slotted( [slot="window"] ),
+:host([position="right"]:not([opened])) > ::slotted( [slot="window"] ) {
+  transform: rotateX(0) rotateY(-22deg) rotateZ(0) scale(0.5) translate(100%, 0%);
 }
 
-:host( .to-right-opened.to-right-outro ) .window,
-:host( .to-right-opened.to-right-outro ) > ::slotted( [slot="window"] ),
-:host( .to-right-opened ) .window,
-:host( .to-right-opened ) > ::slotted( [slot="window"] ) {
-  @apply animate-right-opened;
-}
-
-:host( .to-right-opened ) .button-close,
-:host( .to-right-opened.to-right-outro ) .button-close {
-  @apply opacity-100;
-
-  transform: translate(24px, 24px) rotate(0);
-}
-
-:host( .to-right-outro ) .window,
-:host( .to-right-outro ) > ::slotted( [slot="window"] ) {
-  @apply animate-right-outro;
-}
-
-:host( .to-right-outro ) .button-close {
-  transform: translate(-24px, 24px) rotate(90deg);
-}
-
-:host( .to-right ) .button-close {
-  @apply left-0;
-
-  transform: translate(-36px, 24px) rotate(-90deg);
+:host([position="right"][opened="false"]) .window,
+:host([position="right"]:not([opened])) .window {
+  transform: translate(100%, 0%);
 }

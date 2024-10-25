@@ -6,6 +6,11 @@
   .window {
     transition-duration: 0s !important;
   }
+
+  :host {
+
+    --mds-modal-transition-duration: 0s;
+  }
 }
 
 @container style(--magma-pref-animation: system) {
@@ -15,6 +20,11 @@
     .button-close,
     .window {
       transition-duration: 0s !important;
+    }
+
+    :host {
+
+      --mds-modal-transition-duration: 0s;
     }
   }
 }

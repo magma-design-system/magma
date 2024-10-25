@@ -1,0 +1,19 @@
+:host([position="top-left"]) {
+  align-items: flex-start;
+  justify-content: flex-start;
+}
+
+:host([position="bottom"]) .window {
+  height: auto;
+  width: 100vw;
+}
+
+:host([position="top-left"][opened="false"]) > ::slotted( [slot="window"] ),
+:host([position="top-left"]:not([opened])) > ::slotted( [slot="window"] ) {
+  transform: rotateX(22deg) rotateY(22deg) scale(0.5) translate(-80%, 80%);
+}
+
+:host([position="top-left"][opened="false"]) .window,
+:host([position="top-left"]:not([opened])) .window {
+  transform: translate(0, -100%);
+}

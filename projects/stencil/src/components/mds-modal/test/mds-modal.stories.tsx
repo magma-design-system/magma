@@ -26,19 +26,19 @@ const email = `${firstName.toLowerCase()}.${lastName.toLowerCase()}@nintendo.com
 
 const Template = args =>
   <mds-modal {...args}>
-    <header slot="top" class="p-800 max-w-lg flex gap-400 items-center border-b border-solid border-0 border-tone-neutral-09">
+    <header slot="top" class="p-800 flex gap-400 items-center border-b border-solid border-0 border-tone-neutral-09">
       <mds-img class="w-1600" src="/logo-gruppo-maggioli-512w.webp"/>
       <div class="text-tone-neutral-02">
         <mds-text typography="h5" class="truncate min-w-0">Maggioli Editore</mds-text>
         <mds-text typography="detail" class="truncate min-w-0">Menu di servizio</mds-text>
       </div>
     </header>
-    <div class="p-800 max-w-lg">
+    <div class="p-800">
       <mds-text>
         As a multi-brand design system, our components need to be flexible enough for any one of our brands to use them for multiple use cases. To achieve this, we ensure that all of the brands are involved in the specification stage, giving us more confidence that we’re future-proofing our components as more brands adopt NewsKit.
       </mds-text>
     </div>
-    <footer slot="bottom" class="p-800 max-w-lg flex gap-400 text-tone-neutral-02 border-t border-solid border-0 border-tone-neutral-09">
+    <footer slot="bottom" class="p-800 flex gap-400 text-tone-neutral-02 border-t border-solid border-0 border-tone-neutral-09">
       <mds-author class="flex-grow">
         <mds-avatar slot="avatar" class="w-1600 mobile:w-1200" src="/avatar-01-200x200.jpeg"/>
         <mds-text typography="h6">{ fullName }</mds-text>
@@ -78,5 +78,8 @@ const AriaTemplate = () => {
 }
 
 export const Default = Template.bind({})
+Default.args = {
+  position: 'right',
+}
 export const CustomWindow = CustomTemplate.bind({})
 export const ARIATest = AriaTemplate.bind({})

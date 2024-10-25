@@ -9,17 +9,19 @@ This is a web-component from Maggioli Design System [Magma](https://magma.maggio
 
 ## Properties
 
-| Property   | Attribute  | Description                                          | Type                                                              | Default    |
-| ---------- | ---------- | ---------------------------------------------------- | ----------------------------------------------------------------- | ---------- |
-| `opened`   | `opened`   | Specifies if the modal is opened or not              | `boolean`                                                         | `false`    |
-| `position` | `position` | Specifies the animation position of the modal window | `"bottom" \| "center" \| "left" \| "right" \| "top" \| undefined` | `'center'` |
+| Property    | Attribute   | Description                                           | Type                                                                                                                              | Default    |
+| ----------- | ----------- | ----------------------------------------------------- | --------------------------------------------------------------------------------------------------------------------------------- | ---------- |
+| `animating` | `animating` | Specifies if the component is animating itself or not | `"intro" \| "none" \| "outro" \| undefined`                                                                                       | `'none'`   |
+| `opened`    | `opened`    | Specifies if the modal is opened or not               | `boolean`                                                                                                                         | `false`    |
+| `position`  | `position`  | Specifies the animation position of the modal window  | `"bottom" \| "bottom-left" \| "bottom-right" \| "center" \| "left" \| "right" \| "top" \| "top-left" \| "top-right" \| undefined` | `'center'` |
 
 
 ## Events
 
-| Event           | Description                  | Type                |
-| --------------- | ---------------------------- | ------------------- |
-| `mdsModalClose` | Emits when a modal is closed | `CustomEvent<void>` |
+| Event           | Description                                                                                                     | Type                |
+| --------------- | --------------------------------------------------------------------------------------------------------------- | ------------------- |
+| `mdsModalClose` | Emits when a modal is closed                                                                                    | `CustomEvent<void>` |
+| `mdsModalHide`  | Emits when a modal is totally invisible, can be useful to detach the component when it's hidden and gain memory | `CustomEvent<void>` |
 
 
 ## Slots
