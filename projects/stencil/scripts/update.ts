@@ -255,10 +255,10 @@ async function updateComponentDependencies (name: string): Promise<void> {
         componentsUpdatedMap.set(rc, pInfo!)
         if (!componentsToBeUpdated.includes(name)){
           componentsToBeUpdated.push(rc)
+          await updateComponent(rc, versionUpgradeType)
+          await updateComponentDependencies(rc)
         }
       }
-      await updateComponent(rc, versionUpgradeType ?? 'patch')
-      await updateComponentDependencies(rc)
     }))
   }
 
@@ -283,6 +283,7 @@ async function updateComponentDependencies (name: string): Promise<void> {
  */
 async function updateComponent (c: string, version: string) : Promise<void> {
   const needUpdate = await needUpdateComponent(c, version)
+  console.log('componente', c, needUpdate )
   if (needUpdate) {
     const newVersion = await update(c, version)
     const pInfo = componentsUpdatedMap.get(c)
@@ -385,16 +386,20 @@ async function main (argv: string[]): Promise<void> {
   if (argv.filter(arg => arg.startsWith('--common'))) {
     await updateCommonDependencies()
   }
-
+  console.log('update component inseriti')
   await Promise.all(
     componentsToBeUpdated.map(c => updateComponent(c, version)),
   )
+  console.log('update component dipendenti')
   await Promise.all(
     componentsToBeUpdated.map(updateComponentDependencies),
   )
+
   if (componentsToBeUpdated.length === 0) {
+    console.log('sync')
     await syncDep()
   }
+  console.log('prewrite')
   await writePackages(componentsToBeUpdated, dryRun)
   const timeEnd = Date.now()
   if (!dryRun) {

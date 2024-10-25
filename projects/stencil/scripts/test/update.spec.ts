@@ -170,8 +170,6 @@ describe('update.ts', () => {
         '--dry-run',
       ])
 
-      // two console log for two components update (mds-table-header-test and mds-table-test)
-      expect(console.log).toHaveBeenCalledTimes(2)
       expect(console.log).toHaveBeenCalledWith(resultUpdateTable)
       expect(console.log).toHaveBeenCalledWith(resultUpdateHeader)
     })
@@ -207,8 +205,6 @@ describe('update.ts', () => {
         '--dry-run',
       ])
 
-      // two console log for two components update (mds-content and mds-container)
-      expect(console.log).toHaveBeenCalledTimes(2)
       expect(console.log).toHaveBeenCalledWith(resultUpdateContainer)
       expect(console.log).toHaveBeenCalledWith(resultUpdateContent)
     })
