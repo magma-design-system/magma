@@ -26,7 +26,8 @@ import { TypographyTruncateType } from "@type/text";
 import { MdsFilePreviewEventDetail } from "./components/mds-file-preview/meta/event-detail";
 import { MdsFilterEventDetail } from "./components/mds-filter/meta/event-detail";
 import { MdsFilterItemEventDetail } from "./components/mds-filter-item/meta/event-detail";
-import { MenuType } from "./components/mds-header-bar/meta/types";
+import { AppearanceType } from "./components/mds-header/meta/types";
+import { HeaderBarMenuType, HeaderBarNavType } from "@type/header-bar";
 import { MdsHeaderEventDetail } from "./components/mds-header/meta/event-detail";
 import { SnapType, ViewportType } from "./components/mds-horizontal-scroll/meta/types";
 import { CrossoriginType, ReferrerpolicyType } from "./components/mds-img/meta/types";
@@ -44,7 +45,7 @@ import { MdsInputSwitchEventDetail } from "./components/mds-input-switch/meta/ev
 import { InputTipPositionType } from "./components/mds-input-tip/meta/types";
 import { InputTipItemVariantType } from "@component/mds-input-tip-item/meta/types";
 import { AttachmentSort, FileError } from "./components/mds-input-upload/meta/types";
-import { ModalPositionType } from "./components/mds-modal/meta/types";
+import { ModalAnimationStateType, ModalPositionType } from "./components/mds-modal/meta/types";
 import { StrategyType } from "./components/mds-notification/meta/types";
 import { MdsPaginatorEventDetail } from "./components/mds-paginator/meta/event-detail";
 import { AnimationModeType } from "./components/mds-pref-animation/meta/types";
@@ -90,7 +91,8 @@ export { TypographyTruncateType } from "@type/text";
 export { MdsFilePreviewEventDetail } from "./components/mds-file-preview/meta/event-detail";
 export { MdsFilterEventDetail } from "./components/mds-filter/meta/event-detail";
 export { MdsFilterItemEventDetail } from "./components/mds-filter-item/meta/event-detail";
-export { MenuType } from "./components/mds-header-bar/meta/types";
+export { AppearanceType } from "./components/mds-header/meta/types";
+export { HeaderBarMenuType, HeaderBarNavType } from "@type/header-bar";
 export { MdsHeaderEventDetail } from "./components/mds-header/meta/event-detail";
 export { SnapType, ViewportType } from "./components/mds-horizontal-scroll/meta/types";
 export { CrossoriginType, ReferrerpolicyType } from "./components/mds-img/meta/types";
@@ -108,7 +110,7 @@ export { MdsInputSwitchEventDetail } from "./components/mds-input-switch/meta/ev
 export { InputTipPositionType } from "./components/mds-input-tip/meta/types";
 export { InputTipItemVariantType } from "@component/mds-input-tip-item/meta/types";
 export { AttachmentSort, FileError } from "./components/mds-input-upload/meta/types";
-export { ModalPositionType } from "./components/mds-modal/meta/types";
+export { ModalAnimationStateType, ModalPositionType } from "./components/mds-modal/meta/types";
 export { StrategyType } from "./components/mds-notification/meta/types";
 export { MdsPaginatorEventDetail } from "./components/mds-paginator/meta/event-detail";
 export { AnimationModeType } from "./components/mds-pref-animation/meta/types";
@@ -629,23 +631,27 @@ export namespace Components {
     }
     interface MdsHeader {
         /**
+          * Sets the appearance of the header bar element
+         */
+        "appearance": AppearanceType;
+        /**
           * Sets the visibility type of the hamburger menu of mds-header-bar
          */
-        "menu": MenuType;
+        "menu": HeaderBarMenuType;
         /**
           * Sets the visibility type of the navigation menu of mds-header-bar
          */
-        "nav": MenuType;
+        "nav": HeaderBarNavType;
     }
     interface MdsHeaderBar {
         /**
           * Sets the visibility type of the hamburger menu
          */
-        "menu": MenuType;
+        "menu": HeaderBarMenuType;
         /**
           * Sets the visibility type of the navigation menu
          */
-        "nav": MenuType;
+        "nav": HeaderBarNavType;
     }
     interface MdsHelp {
         /**
@@ -1168,6 +1174,10 @@ export namespace Components {
         "variant"?: TypographyReadingVariants;
     }
     interface MdsModal {
+        /**
+          * Specifies if the component is animating itself or not
+         */
+        "animating"?: ModalAnimationStateType;
         /**
           * Specifies if the modal is opened or not
          */
@@ -2411,6 +2421,7 @@ declare global {
     };
     interface HTMLMdsModalElementEventMap {
         "mdsModalClose": void;
+        "mdsModalHide": void;
     }
     interface HTMLMdsModalElement extends Components.MdsModal, HTMLStencilElement {
         addEventListener<K extends keyof HTMLMdsModalElementEventMap>(type: K, listener: (this: HTMLMdsModalElement, ev: MdsModalCustomEvent<HTMLMdsModalElementEventMap[K]>) => any, options?: boolean | AddEventListenerOptions): void;
@@ -3589,13 +3600,17 @@ declare namespace LocalJSX {
     }
     interface MdsHeader {
         /**
+          * Sets the appearance of the header bar element
+         */
+        "appearance"?: AppearanceType;
+        /**
           * Sets the visibility type of the hamburger menu of mds-header-bar
          */
-        "menu"?: MenuType;
+        "menu"?: HeaderBarMenuType;
         /**
           * Sets the visibility type of the navigation menu of mds-header-bar
          */
-        "nav"?: MenuType;
+        "nav"?: HeaderBarNavType;
         /**
           * Emits when the component is closed
          */
@@ -3605,11 +3620,11 @@ declare namespace LocalJSX {
         /**
           * Sets the visibility type of the hamburger menu
          */
-        "menu"?: MenuType;
+        "menu"?: HeaderBarMenuType;
         /**
           * Sets the visibility type of the navigation menu
          */
-        "nav"?: MenuType;
+        "nav"?: HeaderBarNavType;
         /**
           * Emits when the component is opened
          */
@@ -4165,9 +4180,17 @@ declare namespace LocalJSX {
     }
     interface MdsModal {
         /**
+          * Specifies if the component is animating itself or not
+         */
+        "animating"?: ModalAnimationStateType;
+        /**
           * Emits when a modal is closed
          */
         "onMdsModalClose"?: (event: MdsModalCustomEvent<void>) => void;
+        /**
+          * Emits when a modal is totally invisible, can be useful to detach the component when it's hidden and gain memory
+         */
+        "onMdsModalHide"?: (event: MdsModalCustomEvent<void>) => void;
         /**
           * Specifies if the modal is opened or not
          */

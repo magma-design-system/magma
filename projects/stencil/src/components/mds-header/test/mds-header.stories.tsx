@@ -1,9 +1,15 @@
 import { h } from '@stencil/core'
 import { menuDictionary, navDictionary } from '../../mds-header-bar/meta/dictionary'
+import { appearanceDictionary } from '../meta/dictionary'
 
 export default {
   title: 'UI / Header',
   argTypes: {
+    appearance: {
+      description: 'Sets the appearance of the header bar element',
+      options: appearanceDictionary,
+      control: { type: 'select' },
+    },
     menu: {
       description: 'Sets the visibility type of the hamburger menu of mds-header-bar',
       options: menuDictionary,
@@ -20,7 +26,7 @@ export default {
 const Template = args =>
   <mds-header {...args}>
     <mds-header-bar>
-      <div class="flex gap-200 items-center">
+      <div class="flex gap-400 items-center">
         <mds-img class="w-1000" src="./logo-gruppo-maggioli.svg" />
         <div class="mb-100">
           <mds-text typography="h6">Mobile menu</mds-text>

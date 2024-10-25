@@ -14,8 +14,11 @@
   box-shadow: theme('boxShadow.md-sharp');
   display: flex;
   inset: 0 0 auto;
+  interpolate-size: allow-keywords; /* not supported yet https://youtu.be/JN-nme9oF10 */
   justify-content: center;
+  max-width: 100%;
   position: fixed;
+  transition-property: background-color, border-radius, margin, width;
 }
 
 .logo {

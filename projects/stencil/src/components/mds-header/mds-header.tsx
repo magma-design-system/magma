@@ -1,6 +1,7 @@
 import { Component, Element, Event, EventEmitter, Host, Listen, State, h, Prop, Watch } from '@stencil/core'
 import { MdsHeaderEventDetail } from './meta/event-detail'
-import { MenuType } from '../mds-header-bar/meta/types'
+import { HeaderBarMenuType, HeaderBarNavType } from '@type/header-bar'
+import { AppearanceType } from './meta/types'
 
 /**
  * @part menu - The container element of the modal
@@ -20,14 +21,19 @@ export class MdsHeader {
   @State() isOpened: boolean
 
   /**
+   * Sets the appearance of the header bar element
+   */
+  @Prop({ reflect: true, mutable: true }) appearance: AppearanceType = 'stripe'
+
+  /**
    * Sets the visibility type of the hamburger menu of mds-header-bar
    */
-  @Prop({ reflect: true }) menu: MenuType = 'mobile'
+  @Prop({ reflect: true }) menu: HeaderBarMenuType = 'mobile'
 
   /**
    * Sets the visibility type of the navigation menu of mds-header-bar
    */
-  @Prop({ reflect: true }) nav: MenuType = 'desktop'
+  @Prop({ reflect: true }) nav: HeaderBarNavType = 'desktop'
 
   /**
    * Emits when the component is closed
@@ -62,7 +68,7 @@ export class MdsHeader {
   }
 
   @Watch('menu')
-  onMenuChangedHandler (newValue: MenuType): void {
+  onMenuChangedHandler (newValue: HeaderBarMenuType): void {
     const headerBar = this.headerBar()
     if (headerBar){
       headerBar.setAttribute('menu', newValue)
@@ -70,7 +76,7 @@ export class MdsHeader {
   }
 
   @Watch('nav')
-  onNavChangedHandler (newValue: MenuType): void {
+  onNavChangedHandler (newValue: HeaderBarNavType): void {
     const headerBar = this.headerBar()
     if (headerBar) {
       headerBar.setAttribute('nav', newValue)
@@ -83,7 +89,7 @@ export class MdsHeader {
         <slot />
         {this.hasMenu &&
           <div class="menu" part="menu">
-            <mds-modal class="modal" opened={this.isOpened} onMdsModalClose={this.close}>
+            <mds-modal class="modal" opened={this.isOpened} onMdsModalClose={this.close} position="right">
               <slot name="menu" />
             </mds-modal>
           </div>

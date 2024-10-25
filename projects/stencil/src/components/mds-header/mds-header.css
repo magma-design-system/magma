@@ -31,6 +31,18 @@
   z-index: var(--mds-header-z-index);
 }
 
+:host([appearance="inline"]) ::slotted(mds-header-bar) {
+  @apply
+    my-600
+    mx-auto
+    max-w-screen-wide
+    rounded-lg;
+
+  margin-left: auto;
+  margin-right: auto;
+  width: calc(100% - theme('size.1200'));
+}
+
 :host([menu="desktop"]) .menu {
   @apply tablet-max:hidden;
 }
