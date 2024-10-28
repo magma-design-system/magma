@@ -1,4 +1,4 @@
 export type AppearanceType =
-  | 'stripe'
-  | 'inline'
-
+  | [string, string, number]
+  | [string, string]
+  | [string]

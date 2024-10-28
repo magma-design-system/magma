@@ -26,7 +26,6 @@ import { TypographyTruncateType } from "@type/text";
 import { MdsFilePreviewEventDetail } from "./components/mds-file-preview/meta/event-detail";
 import { MdsFilterEventDetail } from "./components/mds-filter/meta/event-detail";
 import { MdsFilterItemEventDetail } from "./components/mds-filter-item/meta/event-detail";
-import { AppearanceType } from "./components/mds-header/meta/types";
 import { HeaderBarMenuType, HeaderBarNavType } from "@type/header-bar";
 import { MdsHeaderEventDetail } from "./components/mds-header/meta/event-detail";
 import { SnapType, ViewportType } from "./components/mds-horizontal-scroll/meta/types";
@@ -91,7 +90,6 @@ export { TypographyTruncateType } from "@type/text";
 export { MdsFilePreviewEventDetail } from "./components/mds-file-preview/meta/event-detail";
 export { MdsFilterEventDetail } from "./components/mds-filter/meta/event-detail";
 export { MdsFilterItemEventDetail } from "./components/mds-filter-item/meta/event-detail";
-export { AppearanceType } from "./components/mds-header/meta/types";
 export { HeaderBarMenuType, HeaderBarNavType } from "@type/header-bar";
 export { MdsHeaderEventDetail } from "./components/mds-header/meta/event-detail";
 export { SnapType, ViewportType } from "./components/mds-horizontal-scroll/meta/types";
@@ -631,9 +629,17 @@ export namespace Components {
     }
     interface MdsHeader {
         /**
-          * Sets the appearance of the header bar element
+          * Sets the appearance of the header bar element when loaded, it can be changed depending on how `appearance-set` attribute is set
          */
-        "appearance": AppearanceType;
+        "appearance": string;
+        /**
+          * Sets the appearance of the header bar element depending on the scroll position you should set three different values: initial appearance, changed appearance and `window.scrollY` threshold Es: appearance-set="stripe, inline 200" means the component will start with stripe appearance that will change to inline if the page is scrolled more of 199 pixels
+         */
+        "appearanceSet"?: string;
+        /**
+          * When the page is scrolled down, the component mds-header-bar is hidden starting from the `autoHide` attribute's value, then if the page is scrolled up it is shown again
+         */
+        "autoHide"?: number;
         /**
           * Sets the visibility type of the hamburger menu of mds-header-bar
          */
@@ -642,6 +648,14 @@ export namespace Components {
           * Sets the visibility type of the navigation menu of mds-header-bar
          */
         "nav": HeaderBarNavType;
+        /**
+          * Sets the threshold margin to trigger hide or show status of the `mds-header-bar`
+         */
+        "threshold": number;
+        /**
+          * Sets the visibility type of the navigation menu of mds-header-bar
+         */
+        "visibility"?: 'hidden' | 'visible';
     }
     interface MdsHeaderBar {
         /**
@@ -3600,9 +3614,17 @@ declare namespace LocalJSX {
     }
     interface MdsHeader {
         /**
-          * Sets the appearance of the header bar element
+          * Sets the appearance of the header bar element when loaded, it can be changed depending on how `appearance-set` attribute is set
          */
-        "appearance"?: AppearanceType;
+        "appearance"?: string;
+        /**
+          * Sets the appearance of the header bar element depending on the scroll position you should set three different values: initial appearance, changed appearance and `window.scrollY` threshold Es: appearance-set="stripe, inline 200" means the component will start with stripe appearance that will change to inline if the page is scrolled more of 199 pixels
+         */
+        "appearanceSet"?: string;
+        /**
+          * When the page is scrolled down, the component mds-header-bar is hidden starting from the `autoHide` attribute's value, then if the page is scrolled up it is shown again
+         */
+        "autoHide"?: number;
         /**
           * Sets the visibility type of the hamburger menu of mds-header-bar
          */
@@ -3615,6 +3637,14 @@ declare namespace LocalJSX {
           * Emits when the component is closed
          */
         "onMdsHeaderClose"?: (event: MdsHeaderCustomEvent<MdsHeaderEventDetail>) => void;
+        /**
+          * Sets the threshold margin to trigger hide or show status of the `mds-header-bar`
+         */
+        "threshold"?: number;
+        /**
+          * Sets the visibility type of the navigation menu of mds-header-bar
+         */
+        "visibility"?: 'hidden' | 'visible';
     }
     interface MdsHeaderBar {
         /**
