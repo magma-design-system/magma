@@ -54,6 +54,7 @@
 
 .action-close {
   border-radius: 100px;
+  opacity: 0;
   pointer-events: none;
   position: absolute;
   transition-duration: var(--mds-modal-transition-duration);
@@ -62,6 +63,7 @@
 }
 
 :host([opened]:not([opened="false"])) .action-close {
+  opacity: 1;
   pointer-events: auto;
 }
 
