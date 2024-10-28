@@ -15,5 +15,5 @@
 
 :host([position="bottom-left"][opened="false"]) .window,
 :host([position="bottom-left"]:not([opened])) .window {
-  transform: translate(0, -100%);
+  transform: translate(0, 100%);
 }
