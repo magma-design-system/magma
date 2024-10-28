@@ -5,7 +5,6 @@
   --mds-header-bar-hamburger-color: theme('colors.tone-neutral-03');
 
   @apply
-    duration-500
     ease-out-expo
     px-600
     py-400;
@@ -20,7 +19,8 @@
   margin-right: auto;
   max-width: 100%;
   position: fixed;
-  transition-property: background-color, border-radius, margin, transform, width;
+  transition-duration: theme('transitionDuration.500');
+  transition-property: background-color, border-radius, margin, max-width, transform, width;
 }
 
 .logo {
