@@ -142,6 +142,7 @@ export class MdsModal {
             }
           </div>
         }
+        { !this.window && <mds-button class="action-close" icon="mi/baseline/close" variant="light" tone="quiet" size="xl" onClick={(e: Event) => { this.closeModal(e) }}></mds-button> }
       </Host>
     )
   }

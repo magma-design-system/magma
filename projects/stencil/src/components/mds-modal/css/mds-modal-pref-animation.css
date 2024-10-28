@@ -2,7 +2,7 @@
 
 @container style(--magma-pref-animation: reduce) {
   :host,
-  .button-close,
+  .action-close,
   .window {
     transition-duration: 0s !important;
   }
@@ -17,7 +17,7 @@
 
   @media (prefers-reduced-motion) {
     :host,
-    .button-close,
+    .action-close,
     .window {
       transition-duration: 0s !important;
     }

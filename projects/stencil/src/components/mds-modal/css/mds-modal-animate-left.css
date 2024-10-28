@@ -17,3 +17,13 @@
 :host([position="left"]:not([opened])) .window {
   transform: translate(-100%, 0%);
 }
+
+:host([position="left"]) .action-close {
+  right: theme('spacing.300');
+  top: theme('spacing.300');
+  transform: translateX(-120%) rotate(-45deg);
+}
+
+:host([position="left"][opened]:not([opened="false"])) .action-close {
+  transform: translateX(0);
+}
