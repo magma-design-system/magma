@@ -19,11 +19,12 @@ export class MdsHeader {
   @Element() host: HTMLMdsHeaderElement
   @State() hasMenu: boolean
   @State() isOpened: boolean
-  private currentPosition: number = 0
-  private scrollingDownMargin: number = 0
-  private scrollingUpMargin: number = 0
+  private relativeTresholdDown = 0
+  private relativePosition = 0
+  private relativeThresholdUp = 0
+  // private scrollingUpMargin = 0
   private sanitizedAppearance: AppearanceType = ['stripe']
-  private appearanceThreshold: number = 300
+  private appearanceThreshold = 300
 
   /**
    * Sets the appearance of the header bar element when loaded,
@@ -88,47 +89,45 @@ export class MdsHeader {
     if (!this.autoHide) {
       return
     }
-
-    if (this.currentPosition > window.scrollY) {
-      this.scrollingUpMargin += Math.abs(this.currentPosition - window.scrollY)
-    } else {
-      this.scrollingUpMargin = 0
-    }
-
-    if (this.currentPosition < window.scrollY) {
-      this.scrollingDownMargin += Math.abs(this.currentPosition - window.scrollY)
-    } else {
-      this.scrollingDownMargin = 0
-    }
-
-    this.currentPosition = window.scrollY
-
-    // console.log('position', this.currentPosition)
-    // console.log('up margin', this.scrollingUpMargin)
-    // console.log('down margin', this.scrollingDownMargin)
-
-    if (this.scrollingUpMargin >= this.threshold) {
+    // reset var if the page is scrolled to top
+    if (window.scrollY < this.autoHide) {
       this.visibility = 'visible'
+      this.relativeThresholdUp = 0
+      this.relativeTresholdDown = 0
+      this.relativePosition = 0
       return
     }
 
-    if (this.scrollingDownMargin >= this.threshold) {
+    if (this.relativeTresholdDown - window.scrollY <= 0) {
       this.visibility = 'hidden'
-      return
+      this.relativePosition = this.relativeTresholdDown
     }
 
-    if (this.currentPosition > this.autoHide) {
-      this.visibility = 'hidden'
-      return
+    if (this.relativeThresholdUp - window.scrollY >= this.threshold) {
+      this.visibility = 'visible'
+      this.relativeThresholdUp = window.scrollY
+      this.relativePosition = this.relativeThresholdUp
     }
-    this.visibility = 'visible'
+
+    // set hidden for the first scroll from top
+    if (this.relativePosition < this.autoHide && this.autoHide - window.scrollY <= 0) {
+      this.visibility = 'hidden'
+      this.relativePosition = this.autoHide
+    }
+
+    // update respective threshold if page is scrolled up or down
+    if (window.scrollY > this.relativeThresholdUp) {
+      this.relativeThresholdUp = window.scrollY
+    } else {
+      this.relativeTresholdDown = window.scrollY + this.threshold
+    }
   }
 
   private sanitizeAppearance = (): AppearanceType => {
-    const regex = /\b(\w+)\b/g
     if (!this.appearanceSet) {
       return [this.appearance]
     }
+    const regex = /\b(\w+)\b/g
     const matches = this.appearanceSet.match(regex)
     if (matches) {
       return matches as AppearanceType
@@ -137,7 +136,7 @@ export class MdsHeader {
   }
 
   private handleAppearance = (): void => {
-    if (this.currentPosition >= this.appearanceThreshold) {
+    if (window.scrollY >= this.appearanceThreshold) {
       this.appearance = this.sanitizedAppearance[1] ?? this.appearance
       return
     }
@@ -147,9 +146,6 @@ export class MdsHeader {
   private handleScroll = (): void => {
     if (this.autoHide) {
       this.handleVisibility()
-    }
-    if (!this.autoHide) {
-      this.currentPosition = window.scrollY
     }
     if (this.sanitizedAppearance.length > 1) {
       this.handleAppearance()
@@ -161,7 +157,10 @@ export class MdsHeader {
       return
     }
     this.sanitizedAppearance = this.sanitizeAppearance()
-    this.appearanceThreshold = this.sanitizedAppearance[2] ?? 300
+    if (this.sanitizedAppearance[2]) {
+      this.appearanceThreshold = this.sanitizedAppearance[2]
+    }
+    this.relativeTresholdDown = this.threshold
     window.addEventListener('scroll', this.handleScroll)
   }
 
