@@ -14,6 +14,7 @@ import { postcss } from '@stencil/postcss'
 
 const packageName = 'magma-components'
 const srcDir = './src'
+const minify = false
 
 export const config: Config = {
   namespace: packageName,
@@ -23,7 +24,9 @@ export const config: Config = {
   taskQueue: 'async',
   transformAliasedImportPaths: false,
   srcDir,
-  sourceMap: false,
+  sourceMap: !minify,
+  minifyCss: minify,
+  minifyJs: minify,
   buildEs5: true,
   extras: {
     enableImportInjection: true,
@@ -58,9 +61,7 @@ export const config: Config = {
   plugins: [
     postcss({
       plugins: [
-        autoprefixer({
-          flexbox: 'no-2009',
-        }),
+        autoprefixer({ flexbox: 'no-2009' }),
         tailwind(),
       ],
     }),
