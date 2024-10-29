@@ -649,7 +649,7 @@ export namespace Components {
          */
         "nav": HeaderBarNavType;
         /**
-          * Sets the threshold margin to trigger hide or show status of the `mds-header-bar`
+          * Sets the threshold margin to trigger hide or show status of the `mds-header-bar` when the page is scrolled
          */
         "threshold": number;
         /**
@@ -3638,7 +3638,7 @@ declare namespace LocalJSX {
          */
         "onMdsHeaderClose"?: (event: MdsHeaderCustomEvent<MdsHeaderEventDetail>) => void;
         /**
-          * Sets the threshold margin to trigger hide or show status of the `mds-header-bar`
+          * Sets the threshold margin to trigger hide or show status of the `mds-header-bar` when the page is scrolled
          */
         "threshold"?: number;
         /**

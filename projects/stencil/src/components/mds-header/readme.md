@@ -9,10 +9,15 @@ This is a web-component from Maggioli Design System [Magma](https://magma.maggio
 
 ## Properties
 
-| Property | Attribute | Description                                                       | Type                                       | Default     |
-| -------- | --------- | ----------------------------------------------------------------- | ------------------------------------------ | ----------- |
-| `menu`   | `menu`    | Sets the visibility type of the hamburger menu of mds-header-bar  | `"all" \| "desktop" \| "mobile" \| "none"` | `'mobile'`  |
-| `nav`    | `nav`     | Sets the visibility type of the navigation menu of mds-header-bar | `"all" \| "desktop" \| "mobile" \| "none"` | `'desktop'` |
+| Property        | Attribute        | Description                                                                                                                                                                                                                                                                                                                                                     | Type                                       | Default     |
+| --------------- | ---------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------ | ----------- |
+| `appearance`    | `appearance`     | Sets the appearance of the header bar element when loaded, it can be changed depending on how `appearance-set` attribute is set                                                                                                                                                                                                                                 | `string`                                   | `'stripe'`  |
+| `appearanceSet` | `appearance-set` | Sets the appearance of the header bar element depending on the scroll position you should set three different values: initial appearance, changed appearance and `window.scrollY` threshold Es: appearance-set="stripe, inline 200" means the component will start with stripe appearance that will change to inline if the page is scrolled more of 199 pixels | `string \| undefined`                      | `undefined` |
+| `autoHide`      | `auto-hide`      | When the page is scrolled down, the component mds-header-bar is hidden starting from the `autoHide` attribute's value, then if the page is scrolled up it is shown again                                                                                                                                                                                        | `number \| undefined`                      | `undefined` |
+| `menu`          | `menu`           | Sets the visibility type of the hamburger menu of mds-header-bar                                                                                                                                                                                                                                                                                                | `"all" \| "desktop" \| "mobile" \| "none"` | `'mobile'`  |
+| `nav`           | `nav`            | Sets the visibility type of the navigation menu of mds-header-bar                                                                                                                                                                                                                                                                                               | `"all" \| "desktop" \| "mobile" \| "none"` | `'desktop'` |
+| `threshold`     | `threshold`      | Sets the threshold margin to trigger hide or show status of the `mds-header-bar` when the page is scrolled                                                                                                                                                                                                                                                      | `number`                                   | `1`         |
+| `visibility`    | `visibility`     | Sets the visibility type of the navigation menu of mds-header-bar                                                                                                                                                                                                                                                                                               | `"hidden" \| "visible" \| undefined`       | `undefined` |
 
 
 ## Events
@@ -35,15 +40,6 @@ This is a web-component from Maggioli Design System [Magma](https://magma.maggio
 | Part     | Description                        |
 | -------- | ---------------------------------- |
 | `"menu"` | The container element of the modal |
-
-
-## CSS Custom Properties
-
-| Name                      | Description                                                   |
-| ------------------------- | ------------------------------------------------------------- |
-| `--mds-header-color`      | Sets the text color of the header and the mobile toggler icon |
-| `--mds-header-icon-color` | Sets the color of the icon toggler                            |
-| `--mds-header-z-index`    | Sets the z-index of the modal                                 |
 
 
 ## Dependencies

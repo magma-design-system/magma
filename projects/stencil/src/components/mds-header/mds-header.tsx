@@ -20,6 +20,7 @@ export class MdsHeader {
   @State() hasMenu: boolean
   @State() isOpened: boolean
   private currentPosition: number = 0
+  private scrollingDownMargin: number = 0
   private scrollingUpMargin: number = 0
   private sanitizedAppearance: AppearanceType = ['stripe']
   private appearanceThreshold: number = 300
@@ -55,7 +56,7 @@ export class MdsHeader {
   @Prop({ reflect: true }) readonly nav: HeaderBarNavType = 'desktop'
 
   /**
-   * Sets the threshold margin to trigger hide or show status of the `mds-header-bar`
+   * Sets the threshold margin to trigger hide or show status of the `mds-header-bar` when the page is scrolled
    */
   @Prop({ reflect: true }) readonly threshold: number = 1
 
@@ -83,20 +84,40 @@ export class MdsHeader {
   }
 
   private handleVisibility = (): void => {
+
+    if (!this.autoHide) {
+      return
+    }
+
     if (this.currentPosition > window.scrollY) {
-      this.scrollingUpMargin += 1
+      this.scrollingUpMargin += Math.abs(this.currentPosition - window.scrollY)
     } else {
       this.scrollingUpMargin = 0
     }
 
+    if (this.currentPosition < window.scrollY) {
+      this.scrollingDownMargin += Math.abs(this.currentPosition - window.scrollY)
+    } else {
+      this.scrollingDownMargin = 0
+    }
+
     this.currentPosition = window.scrollY
+
+    // console.log('position', this.currentPosition)
+    // console.log('up margin', this.scrollingUpMargin)
+    // console.log('down margin', this.scrollingDownMargin)
 
     if (this.scrollingUpMargin >= this.threshold) {
       this.visibility = 'visible'
       return
     }
 
-    if (this.autoHide && this.currentPosition > this.autoHide) {
+    if (this.scrollingDownMargin >= this.threshold) {
+      this.visibility = 'hidden'
+      return
+    }
+
+    if (this.currentPosition > this.autoHide) {
       this.visibility = 'hidden'
       return
     }

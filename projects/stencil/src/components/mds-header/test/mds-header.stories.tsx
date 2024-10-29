@@ -35,7 +35,7 @@ export default {
 const Template = args =>
   <div>
     <div class="grid">
-      {Array(20).fill(null).map((_value, index) => (
+      {Array(40).fill(null).map((_value, index) => (
         <div key={index} class="h-[100px] flex items-start justify-center text-center border-0 border-t border-solid border-t-tone-neutral-07">
           <mds-text class="px-200 py-100 rounded-b-lg bg-tone-neutral-10 border-t-0 border border-solid border-tone-neutral-07" typography="snippet" tag="div">
             { index === 0 ? '0px' : index + '00px' }
@@ -74,7 +74,7 @@ const Template = args =>
 const TemplateAutoHide = args =>
   <div>
     <div class="grid">
-      {Array(20).fill(null).map((_value, index) => (
+      {Array(40).fill(null).map((_value, index) => (
         <div key={index} class="h-[100px] flex items-start justify-center text-center border-0 border-t border-solid border-t-tone-neutral-07">
           <mds-text class="px-200 py-100 rounded-b-lg bg-tone-neutral-10 border-t-0 border border-solid border-tone-neutral-07" typography="snippet" tag="div">
             { index === 0 ? '0px' : index + '00px' }

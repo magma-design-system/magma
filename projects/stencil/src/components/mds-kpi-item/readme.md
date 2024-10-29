@@ -19,25 +19,21 @@ This is a web-component from Maggioli Design System [Magma](https://magma.maggio
 
 ## Shadow Parts
 
-| Part               | Description                      |
-| ------------------ | -------------------------------- |
-| `"icon"`           | Selects the icon element         |
-| `"icon-container"` | Selects the icon wrapper element |
+| Part               | Description                                       |
+| ------------------ | ------------------------------------------------- |
+| `"content"`        | Selects the label and description wrapper element |
+| `"icon"`           | Selects the icon element                          |
+| `"icon-container"` | Selects the icon wrapper element                  |
 
 
 ## CSS Custom Properties
 
-| Name                                             | Description                                          |
-| ------------------------------------------------ | ---------------------------------------------------- |
-| `--mds-kpi-item-description-color`               | Set the color of the description text                |
-| `--mds-kpi-item-icon-background`                 | Set the background color of the icon wrapper element |
-| `--mds-kpi-item-icon-color`                      | Set the fill color of the icon element               |
-| `--mds-kpi-item-icon-size`                       | Set the size of the icon element                     |
-| `--mds-kpi-item-info-background`                 | Set the `background-color` of the icon element       |
-| `--mds-kpi-item-info-padding`                    | Set the padding of the info text                     |
-| `--mds-kpi-item-label-color`                     | Set the color of the label text                      |
-| `--mds-kpi-item-text-animation-placeholder-char` | Sets the animation placeholder char of the text      |
-| `--mds-kpi-item-text-animation-speed`            | Sets the animation speed of the text                 |
+| Name                                             | Description                                         |
+| ------------------------------------------------ | --------------------------------------------------- |
+| `--mds-kpi-item-icon-color`                      | Set the fill color of the icon element              |
+| `--mds-kpi-item-info-background`                 | Set the `background-color` of the text area element |
+| `--mds-kpi-item-text-animation-placeholder-char` | Sets the animation placeholder char of the text     |
+| `--mds-kpi-item-text-animation-speed`            | Sets the animation speed of the text                |
 
 
 ## Dependencies
