@@ -7,6 +7,11 @@ url-view-isolate:
   extends: [.base-isolate, .base-url-view]
   dependencies: [base-stencil-build]
 
+# TEST
+url-view-publish-test:
+  extends: [.base-stencil-publish-test, .base-url-view]
+  dependencies: [base-stencil-build, url-view-isolate]
+
 # PUBLISH
 url-view-publish:
   extends: [.base-stencil-publish, .base-url-view]

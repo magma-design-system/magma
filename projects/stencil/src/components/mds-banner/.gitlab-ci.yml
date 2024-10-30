@@ -7,6 +7,11 @@ banner-isolate:
   extends: [.base-isolate, .base-banner]
   dependencies: [base-stencil-build]
 
+# TEST
+banner-publish-test:
+  extends: [.base-stencil-publish-test, .base-banner]
+  dependencies: [base-stencil-build, banner-isolate]
+
 # PUBLISH
 banner-publish:
   extends: [.base-stencil-publish, .base-banner]

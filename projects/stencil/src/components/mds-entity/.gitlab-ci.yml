@@ -7,6 +7,11 @@ entity-isolate:
   extends: [.base-isolate, .base-entity]
   dependencies: [base-stencil-build]
 
+# TEST
+entity-publish-test:
+  extends: [.base-stencil-publish-test, .base-entity]
+  dependencies: [base-stencil-build, entity-isolate]
+
 # PUBLISH
 entity-publish:
   extends: [.base-stencil-publish, .base-entity]

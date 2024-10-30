@@ -7,6 +7,11 @@ accordion-timer-item-isolate:
   extends: [.base-isolate, .base-accordion-timer-item]
   dependencies: [base-stencil-build]
 
+# TEST
+accordion-timer-item-publish-test:
+  extends: [.base-stencil-publish-test, .base-accordion-timer-item]
+  dependencies: [base-stencil-build, accordion-timer-item-isolate]
+
 # PUBLISH
 accordion-timer-item-publish:
   extends: [.base-stencil-publish, .base-accordion-timer-item]

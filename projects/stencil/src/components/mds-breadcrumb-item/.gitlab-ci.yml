@@ -7,6 +7,11 @@ breadcrumb-item-isolate:
   extends: [.base-isolate, .base-breadcrumb-item]
   dependencies: [base-stencil-build]
 
+# TEST
+breadcrumb-item-publish-test:
+  extends: [.base-stencil-publish-test, .base-breadcrumb-item]
+  dependencies: [base-stencil-build, breadcrumb-item-isolate]
+
 # PUBLISH
 breadcrumb-item-publish:
   extends: [.base-stencil-publish, .base-breadcrumb-item]

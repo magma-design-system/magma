@@ -7,6 +7,11 @@ price-table-header-isolate:
   extends: [.base-isolate, .base-price-table-header]
   dependencies: [base-stencil-build]
 
+# TEST
+price-table-header-publish-test:
+  extends: [.base-stencil-publish-test, .base-price-table-header]
+  dependencies: [base-stencil-build, price-table-header-isolate]
+
 # PUBLISH
 price-table-header-publish:
   extends: [.base-stencil-publish, .base-price-table-header]

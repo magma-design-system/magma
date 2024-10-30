@@ -7,6 +7,11 @@ table-cell-isolate:
   extends: [.base-isolate, .base-table-cell]
   dependencies: [base-stencil-build]
 
+# TEST
+table-cell-publish-test:
+  extends: [.base-stencil-publish-test, .base-table-cell]
+  dependencies: [base-stencil-build, table-cell-isolate]
+
 # PUBLISH
 table-cell-publish:
   extends: [.base-stencil-publish, .base-table-cell]

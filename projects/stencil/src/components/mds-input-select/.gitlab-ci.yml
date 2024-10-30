@@ -7,6 +7,11 @@ input-select-isolate:
   extends: [.base-isolate, .base-input-select]
   dependencies: [base-stencil-build]
 
+# TEST
+input-select-publish-test:
+  extends: [.base-stencil-publish-test, .base-input-select]
+  dependencies: [base-stencil-build, input-select-isolate]
+
 # PUBLISH
 input-select-publish:
   extends: [.base-stencil-publish, .base-input-select]

@@ -7,6 +7,11 @@ note-isolate:
   extends: [.base-isolate, .base-note]
   dependencies: [base-stencil-build]
 
+# TEST
+note-publish-test:
+  extends: [.base-stencil-publish-test, .base-note]
+  dependencies: [base-stencil-build, note-isolate]
+
 # PUBLISH
 note-publish:
   extends: [.base-stencil-publish, .base-note]

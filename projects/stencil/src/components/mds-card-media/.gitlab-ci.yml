@@ -7,6 +7,11 @@ card-media-isolate:
   extends: [.base-isolate, .base-card-media]
   dependencies: [base-stencil-build]
 
+# TEST
+card-media-publish-test:
+  extends: [.base-stencil-publish-test, .base-card-media]
+  dependencies: [base-stencil-build, card-media-isolate]
+
 # PUBLISH
 card-media-publish:
   extends: [.base-stencil-publish, .base-card-media]

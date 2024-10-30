@@ -7,6 +7,11 @@ header-bar-isolate:
   extends: [.base-isolate, .base-header-bar]
   dependencies: [base-stencil-build]
 
+# TEST
+header-bar-publish-test:
+  extends: [.base-stencil-publish-test, .base-header-bar]
+  dependencies: [base-stencil-build, header-bar-isolate]
+
 # PUBLISH
 header-bar-publish:
   extends: [.base-stencil-publish, .base-header-bar]

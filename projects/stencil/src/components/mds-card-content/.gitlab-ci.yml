@@ -7,6 +7,11 @@ card-content-isolate:
   extends: [.base-isolate, .base-card-content]
   dependencies: [base-stencil-build]
 
+# TEST
+card-content-publish-test:
+  extends: [.base-stencil-publish-test, .base-card-content]
+  dependencies: [base-stencil-build, card-content-isolate]
+
 # PUBLISH
 card-content-publish:
   extends: [.base-stencil-publish, .base-card-content]

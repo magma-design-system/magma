@@ -7,6 +7,11 @@ tooltip-isolate:
   extends: [.base-isolate, .base-tooltip]
   dependencies: [base-stencil-build]
 
+# TEST
+tooltip-publish-test:
+  extends: [.base-stencil-publish-test, .base-tooltip]
+  dependencies: [base-stencil-build, tooltip-isolate]
+
 # PUBLISH
 tooltip-publish:
   extends: [.base-stencil-publish, .base-tooltip]

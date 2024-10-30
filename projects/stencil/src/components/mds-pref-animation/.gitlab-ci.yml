@@ -7,6 +7,11 @@ pref-animation-isolate:
   extends: [.base-isolate, .base-pref-animation]
   dependencies: [base-stencil-build]
 
+# TEST
+pref-animation-publish-test:
+  extends: [.base-stencil-publish-test, .base-pref-animation]
+  dependencies: [base-stencil-build, pref-animation-isolate]
+
 # PUBLISH
 pref-animation-publish:
   extends: [.base-stencil-publish, .base-pref-animation]

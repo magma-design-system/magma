@@ -7,6 +7,11 @@ button-isolate:
   extends: [.base-isolate, .base-button]
   dependencies: [base-stencil-build]
 
+# TEST
+button-publish-test:
+  extends: [.base-stencil-publish-test, .base-button]
+  dependencies: [base-stencil-build, button-isolate]
+
 # PUBLISH
 button-publish:
   extends: [.base-stencil-publish, .base-button]

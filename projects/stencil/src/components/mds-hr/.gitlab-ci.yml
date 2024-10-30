@@ -7,6 +7,11 @@ hr-isolate:
   extends: [.base-isolate, .base-hr]
   dependencies: [base-stencil-build]
 
+# TEST
+hr-publish-test:
+  extends: [.base-stencil-publish-test, .base-hr]
+  dependencies: [base-stencil-build, hr-isolate]
+
 # PUBLISH
 hr-publish:
   extends: [.base-stencil-publish, .base-hr]

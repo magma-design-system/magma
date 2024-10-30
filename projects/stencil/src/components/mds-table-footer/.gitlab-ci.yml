@@ -7,6 +7,11 @@ table-footer-isolate:
   extends: [.base-isolate, .base-table-footer]
   dependencies: [base-stencil-build]
 
+# TEST
+table-footer-publish-test:
+  extends: [.base-stencil-publish-test, .base-table-footer]
+  dependencies: [base-stencil-build, table-footer-isolate]
+
 # PUBLISH
 table-footer-publish:
   extends: [.base-stencil-publish, .base-table-footer]

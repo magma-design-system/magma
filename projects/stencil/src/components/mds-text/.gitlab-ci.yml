@@ -7,6 +7,11 @@ text-isolate:
   extends: [.base-isolate, .base-text]
   dependencies: [base-stencil-build]
 
+# TEST
+text-publish-test:
+  extends: [.base-stencil-publish-test, .base-text]
+  dependencies: [base-stencil-build, text-isolate]
+
 # PUBLISH
 text-publish:
   extends: [.base-stencil-publish, .base-text]

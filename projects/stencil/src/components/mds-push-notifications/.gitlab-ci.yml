@@ -7,6 +7,11 @@ push-notifications-isolate:
   extends: [.base-isolate, .base-push-notifications]
   dependencies: [base-stencil-build]
 
+# TEST
+push-notifications-publish-test:
+  extends: [.base-stencil-publish-test, .base-push-notifications]
+  dependencies: [base-stencil-build, push-notifications-isolate]
+
 # PUBLISH
 push-notifications-publish:
   extends: [.base-stencil-publish, .base-push-notifications]

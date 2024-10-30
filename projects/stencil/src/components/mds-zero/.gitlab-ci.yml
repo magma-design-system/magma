@@ -7,6 +7,11 @@ zero-isolate:
   extends: [.base-isolate, .base-zero]
   dependencies: [base-stencil-build]
 
+# TEST
+zero-publish-test:
+  extends: [.base-stencil-publish-test, .base-zero]
+  dependencies: [base-stencil-build, zero-isolate]
+
 # PUBLISH
 zero-publish:
   extends: [.base-stencil-publish, .base-zero]

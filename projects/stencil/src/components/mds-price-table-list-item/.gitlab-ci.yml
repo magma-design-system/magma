@@ -7,6 +7,11 @@ price-table-list-item-isolate:
   extends: [.base-isolate, .base-price-table-list-item]
   dependencies: [base-stencil-build]
 
+# TEST
+price-table-list-item-publish-test:
+  extends: [.base-stencil-publish-test, .base-price-table-list-item]
+  dependencies: [base-stencil-build, price-table-list-item-isolate]
+
 # PUBLISH
 price-table-list-item-publish:
   extends: [.base-stencil-publish, .base-price-table-list-item]

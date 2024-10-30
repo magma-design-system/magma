@@ -7,6 +7,11 @@ stepper-bar-item-isolate:
   extends: [.base-isolate, .base-stepper-bar-item]
   dependencies: [base-stencil-build]
 
+# TEST
+stepper-bar-item-publish-test:
+  extends: [.base-stencil-publish-test, .base-stepper-bar-item]
+  dependencies: [base-stencil-build, stepper-bar-item-isolate]
+
 # PUBLISH
 stepper-bar-item-publish:
   extends: [.base-stencil-publish, .base-stepper-bar-item]

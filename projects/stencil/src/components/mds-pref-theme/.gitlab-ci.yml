@@ -7,6 +7,11 @@ pref-theme-isolate:
   extends: [.base-isolate, .base-pref-theme]
   dependencies: [base-stencil-build]
 
+# TEST
+pref-theme-publish-test:
+  extends: [.base-stencil-publish-test, .base-pref-theme]
+  dependencies: [base-stencil-build, pref-theme-isolate]
+
 # PUBLISH
 pref-theme-publish:
   extends: [.base-stencil-publish, .base-pref-theme]

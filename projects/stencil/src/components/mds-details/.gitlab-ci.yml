@@ -7,6 +7,11 @@ details-isolate:
   extends: [.base-isolate, .base-details]
   dependencies: [base-stencil-build]
 
+# TEST
+details-publish-test:
+  extends: [.base-stencil-publish-test, .base-details]
+  dependencies: [base-stencil-build, details-isolate]
+
 # PUBLISH
 details-publish:
   extends: [.base-stencil-publish, .base-details]

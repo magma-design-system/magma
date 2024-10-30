@@ -7,6 +7,11 @@ card-header-isolate:
   extends: [.base-isolate, .base-card-header]
   dependencies: [base-stencil-build]
 
+# TEST
+card-header-publish-test:
+  extends: [.base-stencil-publish-test, .base-card-header]
+  dependencies: [base-stencil-build, card-header-isolate]
+
 # PUBLISH
 card-header-publish:
   extends: [.base-stencil-publish, .base-card-header]

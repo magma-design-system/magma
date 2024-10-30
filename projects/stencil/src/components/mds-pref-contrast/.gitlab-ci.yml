@@ -7,6 +7,11 @@ pref-contrast-isolate:
   extends: [.base-isolate, .base-pref-contrast]
   dependencies: [base-stencil-build]
 
+# TEST
+pref-contrast-publish-test:
+  extends: [.base-stencil-publish-test, .base-pref-contrast]
+  dependencies: [base-stencil-build, pref-contrast-isolate]
+
 # PUBLISH
 pref-contrast-publish:
   extends: [.base-stencil-publish, .base-pref-contrast]
