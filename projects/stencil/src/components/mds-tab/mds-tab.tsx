@@ -1,6 +1,7 @@
 import { Component, Element, Event, EventEmitter, Host, Listen, h } from '@stencil/core'
 import { MdsTabEventDetail } from './meta/event-detail'
 import { MdsTabItemEventDetail } from '@component/mds-tab-item/meta/event-detail'
+import { setAttributeIfEmpty } from '@common/aria'
 
 /**
  * @slot default - Add `mds-tab-item` element/s.
@@ -44,6 +45,9 @@ export class MdsTab {
   componentDidLoad (): void {
     this.tabs = this.element.shadowRoot?.querySelector('.tabs') as HTMLElement
     this.contentItems = this.queryContentItems()
+    this.contentItems.forEach((item: HTMLElement): void => {
+      setAttributeIfEmpty(item, 'role', 'tabpanel')
+    })
     this.selectContentItem()
   }
 
