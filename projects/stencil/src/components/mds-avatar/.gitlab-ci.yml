@@ -7,11 +7,6 @@ avatar-isolate:
   extends: [.base-isolate, .base-avatar]
   dependencies: [base-stencil-build]
 
-# TEST
-avatar-publish-test:
-  extends: [.base-stencil-publish-test, .base-avatar]
-  dependencies: [base-stencil-build, avatar-isolate]
-
 # PUBLISH
 avatar-publish:
   extends: [.base-stencil-publish, .base-avatar]

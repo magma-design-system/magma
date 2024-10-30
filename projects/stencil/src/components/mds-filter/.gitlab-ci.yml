@@ -7,11 +7,6 @@ filter-isolate:
   extends: [.base-isolate, .base-filter]
   dependencies: [base-stencil-build]
 
-# TEST
-filter-publish-test:
-  extends: [.base-stencil-publish-test, .base-filter]
-  dependencies: [base-stencil-build, filter-isolate]
-
 # PUBLISH
 filter-publish:
   extends: [.base-stencil-publish, .base-filter]

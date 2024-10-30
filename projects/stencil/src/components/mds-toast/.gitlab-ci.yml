@@ -7,11 +7,6 @@ toast-isolate:
   extends: [.base-isolate, .base-toast]
   dependencies: [base-stencil-build]
 
-# TEST
-toast-publish-test:
-  extends: [.base-stencil-publish-test, .base-toast]
-  dependencies: [base-stencil-build, toast-isolate]
-
 # PUBLISH
 toast-publish:
   extends: [.base-stencil-publish, .base-toast]

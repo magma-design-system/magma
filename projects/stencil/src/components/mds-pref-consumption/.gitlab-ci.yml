@@ -7,11 +7,6 @@ pref-consumption-isolate:
   extends: [.base-isolate, .base-pref-consumption]
   dependencies: [base-stencil-build]
 
-# TEST
-pref-consumption-publish-test:
-  extends: [.base-stencil-publish-test, .base-pref-consumption]
-  dependencies: [base-stencil-build, pref-consumption-isolate]
-
 # PUBLISH
 pref-consumption-publish:
   extends: [.base-stencil-publish, .base-pref-consumption]

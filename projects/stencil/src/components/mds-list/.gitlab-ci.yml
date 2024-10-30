@@ -7,11 +7,6 @@ list-isolate:
   extends: [.base-isolate, .base-list]
   dependencies: [base-stencil-build]
 
-# TEST
-list-publish-test:
-  extends: [.base-stencil-publish-test, .base-list]
-  dependencies: [base-stencil-build, list-isolate]
-
 # PUBLISH
 list-publish:
   extends: [.base-stencil-publish, .base-list]

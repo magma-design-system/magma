@@ -7,11 +7,6 @@ tab-bar-isolate:
   extends: [.base-isolate, .base-tab-bar]
   dependencies: [base-stencil-build]
 
-# TEST
-tab-bar-publish-test:
-  extends: [.base-stencil-publish-test, .base-tab-bar]
-  dependencies: [base-stencil-build, tab-bar-isolate]
-
 # PUBLISH
 tab-bar-publish:
   extends: [.base-stencil-publish, .base-tab-bar]

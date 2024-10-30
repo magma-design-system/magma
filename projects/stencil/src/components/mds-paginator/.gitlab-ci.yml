@@ -7,11 +7,6 @@ paginator-isolate:
   extends: [.base-isolate, .base-paginator]
   dependencies: [base-stencil-build]
 
-# TEST
-paginator-publish-test:
-  extends: [.base-stencil-publish-test, .base-paginator]
-  dependencies: [base-stencil-build, paginator-isolate]
-
 # PUBLISH
 paginator-publish:
   extends: [.base-stencil-publish, .base-paginator]

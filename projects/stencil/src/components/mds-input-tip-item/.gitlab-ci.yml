@@ -7,11 +7,6 @@ input-tip-item-isolate:
   extends: [.base-isolate, .base-input-tip-item]
   dependencies: [base-stencil-build]
 
-# TEST
-input-tip-item-publish-test:
-  extends: [.base-stencil-publish-test, .base-input-tip-item]
-  dependencies: [base-stencil-build, input-tip-item-isolate]
-
 # PUBLISH
 input-tip-item-publish:
   extends: [.base-stencil-publish, .base-input-tip-item]

@@ -7,11 +7,6 @@ price-table-features-isolate:
   extends: [.base-isolate, .base-price-table-features]
   dependencies: [base-stencil-build]
 
-# TEST
-price-table-features-publish-test:
-  extends: [.base-stencil-publish-test, .base-price-table-features]
-  dependencies: [base-stencil-build, price-table-features-isolate]
-
 # PUBLISH
 price-table-features-publish:
   extends: [.base-stencil-publish, .base-price-table-features]

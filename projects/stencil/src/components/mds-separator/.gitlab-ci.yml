@@ -7,11 +7,6 @@ separator-isolate:
   extends: [.base-isolate, .base-separator]
   dependencies: [base-stencil-build]
 
-# TEST
-separator-publish-test:
-  extends: [.base-stencil-publish-test, .base-separator]
-  dependencies: [base-stencil-build, separator-isolate]
-
 # PUBLISH
 separator-publish:
   extends: [.base-stencil-publish, .base-separator]

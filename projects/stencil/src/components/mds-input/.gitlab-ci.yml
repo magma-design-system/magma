@@ -7,11 +7,6 @@ input-isolate:
   extends: [.base-isolate, .base-input]
   dependencies: [base-stencil-build]
 
-# TEST
-input-publish-test:
-  extends: [.base-stencil-publish-test, .base-input]
-  dependencies: [base-stencil-build, input-isolate]
-
 # PUBLISH
 input-publish:
   extends: [.base-stencil-publish, .base-input]

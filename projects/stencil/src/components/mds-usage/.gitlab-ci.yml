@@ -7,11 +7,6 @@ usage-isolate:
   extends: [.base-isolate, .base-usage]
   dependencies: [base-stencil-build]
 
-# TEST
-usage-publish-test:
-  extends: [.base-stencil-publish-test, .base-usage]
-  dependencies: [base-stencil-build, usage-isolate]
-
 # PUBLISH
 usage-publish:
   extends: [.base-stencil-publish, .base-usage]

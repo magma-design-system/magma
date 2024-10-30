@@ -7,11 +7,6 @@ accordion-isolate:
   extends: [.base-isolate, .base-accordion]
   dependencies: [base-stencil-build]
 
-# TEST
-accordion-publish-test:
-  extends: [.base-stencil-publish-test, .base-accordion]
-  dependencies: [base-stencil-build, accordion-isolate]
-
 # PUBLISH
 accordion-publish:
   extends: [.base-stencil-publish, .base-accordion]

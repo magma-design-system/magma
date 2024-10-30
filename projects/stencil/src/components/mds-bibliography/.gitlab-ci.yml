@@ -7,11 +7,6 @@ bibliography-isolate:
   extends: [.base-isolate, .base-bibliography]
   dependencies: [base-stencil-build]
 
-# TEST
-bibliography-publish-test:
-  extends: [.base-stencil-publish-test, .base-bibliography]
-  dependencies: [base-stencil-build, bibliography-isolate]
-
 # PUBLISH
 bibliography-publish:
   extends: [.base-stencil-publish, .base-bibliography]

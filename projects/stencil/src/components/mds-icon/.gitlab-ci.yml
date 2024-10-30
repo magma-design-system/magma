@@ -7,11 +7,6 @@ icon-isolate:
   extends: [.base-isolate, .base-icon]
   dependencies: [base-stencil-build]
 
-# TEST
-icon-publish-test:
-  extends: [.base-stencil-publish-test, .base-icon]
-  dependencies: [base-stencil-build, icon-isolate]
-
 # PUBLISH
 icon-publish:
   extends: [.base-stencil-publish, .base-icon]

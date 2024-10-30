@@ -7,11 +7,6 @@ label-isolate:
   extends: [.base-isolate, .base-label]
   dependencies: [base-stencil-build]
 
-# TEST
-label-publish-test:
-  extends: [.base-stencil-publish-test, .base-label]
-  dependencies: [base-stencil-build, label-isolate]
-
 # PUBLISH
 label-publish:
   extends: [.base-stencil-publish, .base-label]

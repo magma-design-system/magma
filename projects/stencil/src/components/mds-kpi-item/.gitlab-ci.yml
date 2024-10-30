@@ -7,11 +7,6 @@ kpi-item-isolate:
   extends: [.base-isolate, .base-kpi-item]
   dependencies: [base-stencil-build]
 
-# TEST
-kpi-item-publish-test:
-  extends: [.base-stencil-publish-test, .base-kpi-item]
-  dependencies: [base-stencil-build, kpi-item-isolate]
-
 # PUBLISH
 kpi-item-publish:
   extends: [.base-stencil-publish, .base-kpi-item]

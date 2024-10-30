@@ -68,7 +68,7 @@ stencil-storybook-build:
   cache:
     policy: pull
   rules:
-    - if: $CI_COMMIT_BRANCH
+    - if: $CI_COMMIT_BRANCH == main
       changes:
         - projects/stencil/src/components/$COMPONENT/package.json
 
@@ -101,7 +101,7 @@ stencil-test:
   variables:
     BUILD_DIR: projects/stencil/.build/$COMPONENT
   rules:
-    - if: $CI_PIPELINE_SOURCE == "merge_request_event" || $CI_COMMIT_BRANCH == "main"
+    - if: $CI_COMMIT_BRANCH == "main"
       changes:
         - projects/stencil/src/components/$COMPONENT/package.json
 

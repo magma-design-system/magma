@@ -7,11 +7,6 @@ input-switch-isolate:
   extends: [.base-isolate, .base-input-switch]
   dependencies: [base-stencil-build]
 
-# TEST
-input-switch-publish-test:
-  extends: [.base-stencil-publish-test, .base-input-switch]
-  dependencies: [base-stencil-build, input-switch-isolate]
-
 # PUBLISH
 input-switch-publish:
   extends: [.base-stencil-publish, .base-input-switch]

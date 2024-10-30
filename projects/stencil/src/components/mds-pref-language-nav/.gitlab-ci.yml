@@ -7,11 +7,6 @@ pref-language-nav-isolate:
   extends: [.base-isolate, .base-pref-language-nav]
   dependencies: [base-stencil-build]
 
-# TEST
-pref-language-nav-publish-test:
-  extends: [.base-stencil-publish-test, .base-pref-language-nav]
-  dependencies: [base-stencil-build, pref-language-nav-isolate]
-
 # PUBLISH
 pref-language-nav-publish:
   extends: [.base-stencil-publish, .base-pref-language-nav]

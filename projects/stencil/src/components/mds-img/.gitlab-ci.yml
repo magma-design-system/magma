@@ -7,11 +7,6 @@ img-isolate:
   extends: [.base-isolate, .base-img]
   dependencies: [base-stencil-build]
 
-# TEST
-img-publish-test:
-  extends: [.base-stencil-publish-test, .base-img]
-  dependencies: [base-stencil-build, img-isolate]
-
 # PUBLISH
 img-publish:
   extends: [.base-stencil-publish, .base-img]

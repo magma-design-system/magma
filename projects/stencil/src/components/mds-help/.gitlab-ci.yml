@@ -7,11 +7,6 @@ help-isolate:
   extends: [.base-isolate, .base-help]
   dependencies: [base-stencil-build]
 
-# TEST
-help-publish-test:
-  extends: [.base-stencil-publish-test, .base-help]
-  dependencies: [base-stencil-build, help-isolate]
-
 # PUBLISH
 help-publish:
   extends: [.base-stencil-publish, .base-help]

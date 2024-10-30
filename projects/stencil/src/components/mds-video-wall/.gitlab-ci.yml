@@ -7,11 +7,6 @@ video-wall-isolate:
   extends: [.base-isolate, .base-video-wall]
   dependencies: [base-stencil-build]
 
-# TEST
-video-wall-publish-test:
-  extends: [.base-stencil-publish-test, .base-video-wall]
-  dependencies: [base-stencil-build, video-wall-isolate]
-
 # PUBLISH
 video-wall-publish:
   extends: [.base-stencil-publish, .base-video-wall]

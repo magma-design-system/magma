@@ -7,11 +7,6 @@ pref-language-item-isolate:
   extends: [.base-isolate, .base-pref-language-item]
   dependencies: [base-stencil-build]
 
-# TEST
-pref-language-item-publish-test:
-  extends: [.base-stencil-publish-test, .base-pref-language-item]
-  dependencies: [base-stencil-build, pref-language-item-isolate]
-
 # PUBLISH
 pref-language-item-publish:
   extends: [.base-stencil-publish, .base-pref-language-item]
