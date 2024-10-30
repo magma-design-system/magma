@@ -6,6 +6,7 @@ import { Config } from '@stencil/core'
 import { inlineSvg } from 'stencil-inline-svg'
 import { postcss } from '@stencil/postcss'
 
+import { reactOutputTarget } from '@stencil/react-output-target'
 // https://github.com/ionic-team/stencil/issues/1307
 // still not working
 // import tsconfigPathsJest from 'tsconfig-paths-jest'
@@ -36,8 +37,15 @@ export const config: Config = {
       type: 'dist',
       esmLoaderPath: '../loader',
     },
+    reactOutputTarget({
+      // Relative path to where the React components will be generated
+      outDir: './react/',
+      customElementsDir: 'dist/components',
+      // hydrateModule: '../hydrate',
+    }),
     {
       type: 'dist-custom-elements',
+      customElementsExportBehavior: 'auto-define-custom-elements',
       generateTypeDeclarations: true,
     },
     {
@@ -57,6 +65,9 @@ export const config: Config = {
       type: 'stats',
       file: './dist/stats.json',
     },
+    // {
+    //   type: 'dist-hydrate-script',
+    // },
   ],
   plugins: [
     postcss({
