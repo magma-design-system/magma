@@ -92,7 +92,7 @@ export class MdsTab {
   render () {
     return (
       <Host>
-        <div class="tabs" part="tabs">
+        <div class="tabs" part="tabs" role="tablist">
           <slot />
         </div>
         <div class="contents" part="contents">

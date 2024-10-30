@@ -78,6 +78,7 @@ export class MdsTabItem {
           icon={this.icon}
           iconPosition={this.iconPosition}
           part="button"
+          role="tab"
           size={this.size}
           type={this.type}
         >
