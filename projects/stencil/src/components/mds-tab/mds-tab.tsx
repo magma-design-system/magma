@@ -51,23 +51,22 @@ export class MdsTab {
     this.selectContentItem()
   }
 
-  private scrollTabs = (): void => {
-    const tabItem = this.tabItems[this.currentItem]
+  private scrollTabs = (key: number): void => {
+    const tabItem = this.tabItems[key]
     this.tabs.scrollLeft = tabItem.offsetLeft - this.tabs.offsetLeft - (this.tabs.offsetWidth / 2) + (tabItem.offsetWidth / 2)
   }
 
-  private selectTabItem = (scrollItem: number): void => {
-    this.tabItems.forEach((item, key) => {
-      if (key === scrollItem) {
-        item.selected = true
-        this.changedEvent.emit({ id: key, value: item.value })
-        this.currentItem = key
-        this.scrollTabs()
-      } else {
-        item.selected = false
-      }
-    })
-  }
+  // private selectTabItem = (scrollItem: number): void => {
+  //   this.tabItems.forEach((item, key) => {
+  //     if (key === scrollItem) {
+  //       item.selected = true
+  //       this.changedEvent.emit({ id: key, value: item.value })
+  //       this.currentItem = key
+  //     } else {
+  //       item.selected = false
+  //     }
+  //   })
+  // }
 
   private selectContentItem = (): void => {
     this.contentItems.forEach((item: HTMLElement, index: number) => {
@@ -84,13 +83,24 @@ export class MdsTab {
     // we must find the key from event.detail
     this.tabItems.forEach((item, key: number) => {
       if (item.id === event.detail.target.id) {
-        this.selectTabItem(key)
+        item.selected = true
+        this.changedEvent.emit({ id: key, value: item.value })
+        this.currentItem = key
+        this.scrollTabs(key)
       } else {
         item.selected = false
       }
     })
-
     this.selectContentItem()
+  }
+
+  @Listen('mdsTabItemFocus')
+  focusEventHandler (event: CustomEvent<MdsTabItemEventDetail>): void {
+    this.tabItems.forEach((item, key: number) => {
+      if (item.id === event.detail.target.id) {
+        this.scrollTabs(key)
+      }
+    })
   }
 
   render () {

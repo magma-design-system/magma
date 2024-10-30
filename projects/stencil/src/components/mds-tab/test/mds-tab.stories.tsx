@@ -18,6 +18,22 @@ const TemplateEmpty = args =>
     </div>
   </div>
 
+const TemplateOverflow = args =>
+  <div class="grid gap-600">
+    <mds-tab {...args}>
+      <mds-tab-item selected>First Blood</mds-tab-item>
+      <mds-tab-item>Double Impact</mds-tab-item>
+      <mds-tab-item>The Third Man</mds-tab-item>
+      <mds-tab-item>The Fantastic Four</mds-tab-item>
+      <mds-tab-item>The Fifth Element</mds-tab-item>
+      <mds-tab-item>6 Underground</mds-tab-item>
+      <mds-tab-item>Seven Samurai</mds-tab-item>
+      <mds-tab-item>The Hateful Eight</mds-tab-item>
+      <mds-tab-item>Nine Perfect Strangers</mds-tab-item>
+      <mds-tab-item>10 Things I Hate About You</mds-tab-item>
+    </mds-tab>
+  </div>
+
 const Template = args =>
   <div class="grid gap-600">
     <mds-tab {...args}>
@@ -129,5 +145,6 @@ const TemplateNoSelected = args =>
 export const Default = Template.bind({})
 
 export const ManualTabContents = TemplateEmpty.bind({})
+export const OverflowItems = TemplateOverflow.bind({})
 export const NoSelectedItem = TemplateNoSelected.bind({})
 

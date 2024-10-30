@@ -2799,6 +2799,7 @@ declare global {
     };
     interface HTMLMdsTabItemElementEventMap {
         "mdsTabItemSelect": MdsTabItemEventDetail;
+        "mdsTabItemFocus": MdsTabItemEventDetail;
     }
     interface HTMLMdsTabItemElement extends Components.MdsTabItem, HTMLStencilElement {
         addEventListener<K extends keyof HTMLMdsTabItemElementEventMap>(type: K, listener: (this: HTMLMdsTabItemElement, ev: MdsTabItemCustomEvent<HTMLMdsTabItemElementEventMap[K]>) => any, options?: boolean | AddEventListenerOptions): void;
@@ -4592,6 +4593,10 @@ declare namespace LocalJSX {
           * Specifies the horizontal position of the icon displayed in the tab item
          */
         "iconPosition"?: ButtonIconPositionType;
+        /**
+          * Emits when the tab item is selected
+         */
+        "onMdsTabItemFocus"?: (event: MdsTabItemCustomEvent<MdsTabItemEventDetail>) => void;
         /**
           * Emits when the tab item is selected
          */

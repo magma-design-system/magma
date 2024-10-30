@@ -23,6 +23,7 @@ This is a web-component from Maggioli Design System [Magma](https://magma.maggio
 
 | Event              | Description                         | Type                                 |
 | ------------------ | ----------------------------------- | ------------------------------------ |
+| `mdsTabItemFocus`  | Emits when the tab item is selected | `CustomEvent<MdsTabItemEventDetail>` |
 | `mdsTabItemSelect` | Emits when the tab item is selected | `CustomEvent<MdsTabItemEventDetail>` |
 
 
