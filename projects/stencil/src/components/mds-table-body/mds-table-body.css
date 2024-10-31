@@ -9,12 +9,12 @@
 
   @apply
     duration-200
-    ease-out
-    transition-colors;
+    ease-out;
 
   background-color: var(--mds-table-body-background);
   display: table-row-group;
   overflow: hidden;
+  transition-property: background-color;
 }
 
 :host( [interactive]:hover ) {
