@@ -65,13 +65,16 @@
 }
 
 .icon {
-  @apply transition-colors;
+  @apply
+    duration-300
+    ease-in-out;
 
   align-items: center;
   display: inline-flex;
   fill: inherit;
   justify-content: center;
   pointer-events: none;
+  transition-property: fill;
 }
 
 :host([disabled]:not([disabled="false"])) {
