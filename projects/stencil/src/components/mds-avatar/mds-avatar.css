@@ -74,6 +74,8 @@
 }
 
 .fallback-icon {
+  @apply svg;
+
   aspect-ratio: 1/1;
   fill: var(--mds-avatar-color);
   width: 100%;

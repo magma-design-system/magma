@@ -167,7 +167,7 @@ export class MdsAvatar {
           />
           }
           { this.icon && !this.initials && <mds-icon class="icon" part="icon" name={this.icon}></mds-icon> }
-          { (this.fallback || (!this.icon && !this.initials && !this.src)) && <i class="svg fallback-icon" innerHTML={miBaselinePerson}/> }
+          { (this.fallback || (!this.icon && !this.initials && !this.src)) && <i class="fallback-icon" innerHTML={miBaselinePerson}/> }
         </div>
       </Host>
     )
