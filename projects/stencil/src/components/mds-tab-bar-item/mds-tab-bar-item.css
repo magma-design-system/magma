@@ -15,9 +15,10 @@
   --mds-tab-bar-item-color-selected: theme('colors.brand-maggioli-04');
 
   @apply
+    duration-200
+    ease-in-out
     gap-100
-    p-200
-    transition-colors;
+    p-200;
 
   align-items: center;
   background-color: var(--mds-tab-bar-item-background);
@@ -30,6 +31,7 @@
   flex-grow: 1;
   flex-shrink: 0;
   text-align: center;
+  transition-property: color, background-color, fill;
 }
 
 :host( [selected]:not([selected="false"]) ) {
