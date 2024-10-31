@@ -32,7 +32,8 @@
 
 .preview {
   @apply
-    transition-colors
+    duration-300
+    ease-in-out
     w-1400;
 
   align-items: center;
@@ -43,6 +44,8 @@
   flex-shrink: 0;
   justify-content: center;
   position: relative;
+  transition-property: color, background-color, fill;
+
 }
 
 .image-preview {
