@@ -178,10 +178,12 @@
   @apply
     px-100
     rounded
-    transition-colors;
+    ease-in-out
+    duration-200;
 
   background-color: theme('colors.tone-neutral-09');
   color: theme('colors.tone-neutral-03');
+  transition-property: color, background-color;
 }
 
 :host( [truncate] ) .text {
