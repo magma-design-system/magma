@@ -22,16 +22,17 @@
 
   @apply
     duration-300
+    ease-in-out
     gap-200
     p-600
-    rounded
-    transition-colors;
+    rounded;
 
   background-color: var(--mds-note-background);
   color: var(--mds-note-color);
   display: grid;
   overflow: hidden;
   position: relative;
+  transition-property: color, background-color;
 }
 
 :host ::slotted( mds-text ) {
@@ -75,7 +76,6 @@
   @apply
     duration-200
     ease-out
-    hover:bg-tone-neutral/50
     p-100
     rounded-full;
 
@@ -83,6 +83,10 @@
   cursor: pointer;
   fill: var(--mds-note-color);
   transition-property: background-color, fill, outline, outline-offset;
+}
+
+.button-close:hover {
+  background-color: rgb(var(--tone-neutral) / 0.5);
 }
 
 .title {
