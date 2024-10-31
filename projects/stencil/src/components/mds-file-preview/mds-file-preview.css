@@ -5,8 +5,8 @@
   --mds-file-preview-background-color: theme('colors.tone-neutral');
   --mds-file-preview-border-radius: theme('borderRadius.lg');
   --mds-file-preview-color: theme('colors.tone-neutral-03');
-  --mds-file-preview-icon-background-color: inherit;
-  --mds-file-preview-icon-color: inherit;
+  --mds-file-preview-icon-background: inherit;
+  --mds-file-preview-icon-color: var(--mds-file-preview-color);
 
   align-items: stretch;
   background-color: var(--mds-file-preview-background-color);
@@ -33,8 +33,11 @@
 
   @apply aspect-square;
 
+  background-color: var(--mds-file-preview-icon-bacground);
   border-radius: theme('borderRadius.DEFAULT');
   box-sizing: border-box;
+  color:  var(--mds-file-preview-color);
+  fill:  var(--mds-file-preview-icon-color);
   width: 100%;
 }
 
@@ -56,10 +59,6 @@
   @apply
     gap-200
     p-400;
-
-  background-color: var(--mds-file-preview-icon-background-color);
-  color: var(--mds-file-preview-icon-color);
-  fill: var(--mds-file-preview-icon-color);
 }
 
 .icon {
@@ -102,6 +101,7 @@
   --mds-text-line-clamp: 2;
 }
 
+@import './css/mds-file-preview-format.css';
 @import './css/mds-file-preview-variants.css';
 @import './css/mds-file-preview-pref-animation.css';
 @import './css/mds-file-preview-pref-theme.css';
