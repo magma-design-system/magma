@@ -20,13 +20,13 @@
 
   @apply
     ease-out-expo
-    py-400
-    transition-cosmetic;
+    py-400;
 
   color: var(--mds-accordion-timer-item-color, theme('colors.tone-neutral-02'));
   display: grid;
   position: relative;
   transition-duration: var(--mds-accordion-timer-item-duration);
+  transition-property: color;
 }
 
 .row {
@@ -86,10 +86,11 @@
   @apply
     duration-500
     ease-out-expo
-    transition-transform;
+    svg;
 
   fill: currentcolor;
   transform: rotate(180deg);
+  transition-property: transform;
 }
 
 :host( [selected]:not([selected="false"]) ) .action {
