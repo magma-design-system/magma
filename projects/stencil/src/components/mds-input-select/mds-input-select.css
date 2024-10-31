@@ -24,10 +24,8 @@
   user-select: none;
 }
 
-:host( [required]:not([required="false"]):focus-within ) .icon {
-  @apply
-    translate-y-150
-    translate-x-150;
+:host([required]:not([required="false"]):focus-within) .icon {
+  transform: translate(theme('spacing.150'), theme('spacing.150'));
 }
 
 :host(:hover),
@@ -97,11 +95,8 @@
 }
 
 :host([disabled]:not([disabled="false"])) .icon {
-  @apply
-    translate-y-200
-    translate-x-250;
-
   fill: theme('colors.tone-neutral-06');
+  transform: translate(theme('spacing.250'), theme('spacing.200'));
 }
 
 .icon-container {
