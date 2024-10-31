@@ -33,9 +33,12 @@
 }
 
 .reset-button {
-  @apply transition-transform;
+  @apply
+    duration-300
+    ease-in-out-expo;
 
   scale: 0;
+  transition-property: transform;
 }
 
 .reset-button-opened {
@@ -44,8 +47,9 @@
 
 .items {
   @apply
-    hide-scrollbar
-    transition-colors;
+    duration-300
+    ease-in-out-expo
+    hide-scrollbar;
 
   background-color: var(--mds-filter-items-background);
   border-radius: var(--mds-filter-items-radius);
@@ -55,6 +59,8 @@
   padding: var(--mds-filter-items-padding);
   scroll-behavior: smooth;
   scroll-snap-type: x mandatory;
+  transition-property: background-color;
+
 }
 
 .items::-webkit-scrollbar {
