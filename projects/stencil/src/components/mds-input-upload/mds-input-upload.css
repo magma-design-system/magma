@@ -34,10 +34,11 @@
  */
 
   @apply
+    duration-300
+    ease-in-out
     gap-400
     p-600
-    rounded-2xl
-    transition-colors;
+    rounded-2xl;
 
   align-items: center;
   background-color: var(--mds-input-upload-drag-area-background-color);
@@ -45,6 +46,7 @@
   display: flex;
   flex-direction: column;
   justify-content: center;
+  transition-property: color, background-color, border-color, text-decoration-color, fill, stroke;
   user-select: none;
 }
 
@@ -55,7 +57,9 @@
 }
 
 .icon {
-  @apply w-1200;
+  @apply
+    svg
+    w-1200;
 
   fill: theme('colors.brand-maggioli-05');
 }
@@ -94,7 +98,9 @@
 
 .main-actions {
 
-  @apply gap-200 min-w-3200;
+  @apply
+    gap-200
+    min-w-3200;
 
   display: flex;
   flex-direction: column;
@@ -167,7 +173,9 @@
 
 .file-specs {
 
-  @apply gap-x-400 gap-y-100;
+  @apply
+    gap-x-400
+    gap-y-100;
 
   display: flex;
   flex-grow: 1;
@@ -179,7 +187,7 @@
   display: inline-flex;
 }
 
-.file-specs.file-specs-sort{
+.file-specs.file-specs-sort {
   flex-direction: column;
   flex-wrap: nowrap;
   justify-content: center;

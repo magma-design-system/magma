@@ -324,7 +324,7 @@ export class MdsInputUpload {
         >
           <div class="main-action">
             <div class="main-action-icon">
-              <i class="svg icon" innerHTML={miBaselineAddCircle}/>
+              <i class="icon" innerHTML={miBaselineAddCircle}/>
             </div>
             <mds-text animation={this.animateText ? 'yugop' : 'none'} variant="title" typography="action" text={ this.actionTitle }></mds-text>
           </div>
