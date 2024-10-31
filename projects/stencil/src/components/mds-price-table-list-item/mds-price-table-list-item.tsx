@@ -25,8 +25,8 @@ export class MdsPriceTableListItem {
       <Host slot="item">
         <mds-text class="icon-container" typography={this.typography}>
           { this.supported
-            ? <i class="svg icon" innerHTML={miBaselineCheckCircle} part="icon" />
-            : <i class="svg icon" innerHTML={miBaselineHorizontalRule} part="icon" />
+            ? <i class="icon" innerHTML={miBaselineCheckCircle} part="icon" />
+            : <i class="icon" innerHTML={miBaselineHorizontalRule} part="icon" />
           }
         </mds-text>
         <mds-text class="text" typography={this.typography}>
