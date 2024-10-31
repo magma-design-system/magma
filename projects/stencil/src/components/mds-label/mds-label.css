@@ -23,7 +23,8 @@
   @apply
     min-h-900
     pl-300
-    transition-colors;
+    ease-in-out
+    duration-200;
 
   align-items: stretch;
   background-color: var(--mds-label-background);
@@ -31,6 +32,7 @@
   color: var(--mds-label-color);
   display: flex;
   fill: var(--mds-label-icon-color);
+  transition-property: color, background-color, fill;
 }
 
 :host::selection {
@@ -57,17 +59,20 @@
 
 .button-close {
 
-  --mds-button-background: var(--mds-label-button-background);
-
-  border-radius: 0 var(--mds-label-radius) var(--mds-label-radius) 0;
-  fill: var(--mds-label-button-icon-color);
-  height: auto;
   @apply
     ml-100
     m-25
     px-150
     rounded-r-md
-    transition-colors;
+    ease-in-out
+    duration-200;
+
+  --mds-button-background: var(--mds-label-button-background);
+
+  border-radius: 0 var(--mds-label-radius) var(--mds-label-radius) 0;
+  fill: var(--mds-label-button-icon-color);
+  height: auto;
+  transition-property: fill;
 }
 
 .button-close:hover {
