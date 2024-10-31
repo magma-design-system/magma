@@ -75,7 +75,7 @@
   }
 
   @container style(--magma-pref-animation: system) {
-    
+
     @media (prefers-reduced-motion) {
       .contrast-area,
       .contrast-area-50 {
