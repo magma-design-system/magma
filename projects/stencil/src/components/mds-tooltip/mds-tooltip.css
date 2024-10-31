@@ -69,13 +69,16 @@
 }
 
 .arrow {
-  @apply transition-cosmetic;
+  @apply
+    duration-300
+    ease-in-out;
 
   display: flex;
   fill: var(--mds-tooltip-arrow-background);
   pointer-events: none;
   position: fixed;
   top: -9px;
+  transition-property: fill;
   z-index: -1;
 }
 
