@@ -18,7 +18,7 @@
 }
 
 :host( [size="sm"][await]:not([await="false"]) ) .await {
-  @apply scale-75;
+  transform: scale(theme('scale.75'));
 }
 
 :host( [size="md"] ) {
