@@ -4,6 +4,7 @@ const buttonVariantDictionary = [
   'info',
   'light',
   'primary',
+  'secondary',
   'success',
   'warning',
 ]

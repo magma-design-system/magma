@@ -20,6 +20,7 @@ import localeIt from './meta/locale.it.json'
 export class MdsPrefLanguage {
   @State() showDropdown: boolean = false
   @Element() element: HTMLMdsPrefLanguageElement
+  private localStorageAlias: string = 'mdsPrefLanguage'
   private defaultLanguage: PrefLanguageType = 'en'
   private pageLanguage: PrefLanguageType
   private systemLanguage: PrefLanguageType
@@ -51,7 +52,7 @@ export class MdsPrefLanguage {
 
   componentDidLoad (): void {
     this.systemLanguage = this.sanitizeLanguage(navigator.language)
-    this.userLanguage = localStorage.getItem('mds-pref-language') as PrefLanguageType
+    this.userLanguage = localStorage.getItem(this.localStorageAlias) as PrefLanguageType
     this.pageLanguage = (document.querySelector('html')?.getAttribute('lang')) as PrefLanguageType
     this.setLanguage(this.set)
     this.checkLanguageSelect()
@@ -105,7 +106,7 @@ export class MdsPrefLanguage {
 
     this.prefChangeEvent.emit({ preference: 'language' })
 
-    localStorage.setItem('mds-pref-language', this.set)
+    localStorage.setItem(this.localStorageAlias, this.set)
     if (document) {
       const element = document.querySelector('html')
       element?.setAttribute('lang', this.set)

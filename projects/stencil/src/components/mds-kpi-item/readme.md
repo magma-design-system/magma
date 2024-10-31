@@ -9,38 +9,44 @@ This is a web-component from Maggioli Design System [Magma](https://magma.maggio
 
 ## Properties
 
-| Property                   | Attribute     | Description                                                  | Type                  | Default     |
-| -------------------------- | ------------- | ------------------------------------------------------------ | --------------------- | ----------- |
-| `description` _(required)_ | `description` | Specifies the description under the value in the KPI element | `string`              | `undefined` |
-| `icon`                     | `icon`        | Specifies the icon on the top of the KPI element             | `string \| undefined` | `undefined` |
-| `value` _(required)_       | `value`       | Specifies the number to be displayed in the KPI element      | `number`              | `undefined` |
+| Property      | Attribute     | Description                                                  | Type                  | Default     |
+| ------------- | ------------- | ------------------------------------------------------------ | --------------------- | ----------- |
+| `description` | `description` | Specifies the description under the value in the KPI element | `string \| undefined` | `undefined` |
+| `icon`        | `icon`        | Specifies the icon on the top of the KPI element             | `string \| undefined` | `undefined` |
+| `label`       | `label`       | Specifies the number to be displayed in the KPI element      | `string \| undefined` | `undefined` |
+| `threshold`   | `threshold`   | Specifies the description under the value in the KPI element | `number \| undefined` | `0`         |
 
 
-## Slots
+## Shadow Parts
 
-| Slot     | Description                                                                                                       |
-| -------- | ----------------------------------------------------------------------------------------------------------------- |
-| `"icon"` | Insert an icon image, it can be `HTML elements` or `components`, it is **recommended** to add `mds-icon` element. |
+| Part               | Description                                       |
+| ------------------ | ------------------------------------------------- |
+| `"content"`        | Selects the label and description wrapper element |
+| `"icon"`           | Selects the icon element                          |
+| `"icon-container"` | Selects the icon wrapper element                  |
 
 
 ## CSS Custom Properties
 
-| Name                               | Description                           |
-| ---------------------------------- | ------------------------------------- |
-| `--mds-kpi-item-description-color` | Set the color of the description text |
-| `--mds-kpi-item-info-padding`      | Set the padding of the info text      |
-| `--mds-kpi-item-value-color`       | Set the color of the value text       |
+| Name                                             | Description                                         |
+| ------------------------------------------------ | --------------------------------------------------- |
+| `--mds-kpi-item-icon-color`                      | Set the fill color of the icon element              |
+| `--mds-kpi-item-info-background`                 | Set the `background-color` of the text area element |
+| `--mds-kpi-item-text-animation-placeholder-char` | Sets the animation placeholder char of the text     |
+| `--mds-kpi-item-text-animation-speed`            | Sets the animation speed of the text                |
 
 
 ## Dependencies
 
 ### Depends on
 
+- [mds-icon](../mds-icon)
 - [mds-text](../mds-text)
 
 ### Graph
 ```mermaid
 graph TD;
+  mds-kpi-item --> mds-icon
   mds-kpi-item --> mds-text
   style mds-kpi-item fill:#f9f,stroke:#333,stroke-width:4px
 ```

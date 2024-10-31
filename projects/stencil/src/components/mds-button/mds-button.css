@@ -117,6 +117,7 @@
 }
 
 @import './css/mds-button-variant-primary.css';
+@import './css/mds-button-variant-secondary.css';
 @import './css/mds-button-variant-dark.css';
 @import './css/mds-button-variant-light.css';
 @import './css/mds-button-variant-error.css';

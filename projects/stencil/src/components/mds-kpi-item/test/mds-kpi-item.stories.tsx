@@ -1,14 +1,25 @@
 import { h } from '@stencil/core'
+import { iconsDictionary, mggIconsDictionary, svgIconsDictionary } from '@dictionary/icon'
 
 export default {
   title: 'UI / KPI / KPI Item',
   argTypes: {
     description: {
-      type: { name: 'string', required: true },
+      type: { name: 'string' },
       description: 'Specifies the description under the value in the KPI element',
     },
-    value: {
-      type: { name: 'number', required: true },
+    label: {
+      type: { name: 'string' },
+      description: 'Specifies the number to be displayed in the KPI element',
+    },
+    icon: {
+      type: { name: 'string' },
+      description: 'The name of the icon or a base64 string to render it as an svg',
+      options: mggIconsDictionary.concat(iconsDictionary).concat(svgIconsDictionary),
+      control: { type: 'select' },
+    },
+    threshold: {
+      type: { name: 'number' },
       description: 'Specifies the number to be displayed in the KPI element',
     },
   },
@@ -16,26 +27,12 @@ export default {
 
 const Template = args =>
   <mds-kpi>
-    <mds-kpi-item {...args}/>
-  </mds-kpi>
-
-const TemplateIcon = args =>
-  <mds-kpi>
-    <mds-kpi-item {...args}>
-      <div slot="icon" class="bg-label-sky-10 fill-label-sky-04 p-600 pb-300 w-full flex justify-center items-center">
-        <mds-icon name="mi/baseline/groups" class="w-12"/>
-      </div>
-    </mds-kpi-item>
+    <mds-kpi-item {...args}></mds-kpi-item>
   </mds-kpi>
 
 export const Default = Template.bind({})
 Default.args = {
-  value: 400,
-  description: 'Employees in 2021',
-}
-
-export const Icon = TemplateIcon.bind({})
-Icon.args = {
-  value: 400,
+  label: '400',
+  icon: 'mi/baseline/description',
   description: 'Employees in 2021',
 }

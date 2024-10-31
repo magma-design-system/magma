@@ -15,10 +15,20 @@
   }
 }
 
-@container style(--magma-pref-contrast: more) and style(--magma-pref-theme: dark) {
+@container style(--magma-pref-theme: dark) and style(--magma-pref-contrast: more) {
   :host([tone="strong"]),
   :host([tone="weak"]) {
     box-shadow: theme('boxShadow.outline-strong') inset;
+  }
+}
+
+@container style(--magma-pref-theme: dark) and style(--magma-pref-contrast: system) {
+
+  @media (prefers-contrast: more) {
+    :host([tone="strong"]),
+    :host([tone="weak"]) {
+      box-shadow: theme('boxShadow.outline-strong') inset;
+    }
   }
 }
 
@@ -32,9 +42,9 @@
   }
 }
 
-@container style(--magma-pref-theme: dark) and style(--magma-pref-contrast: system) {
+@container style(--magma-pref-theme: system) and style(--magma-pref-contrast: more) {
 
-  @media (prefers-contrast: more) {
+  @media (prefers-color-scheme: dark) {
     :host([tone="strong"]),
     :host([tone="weak"]) {
       box-shadow: theme('boxShadow.outline-strong') inset;

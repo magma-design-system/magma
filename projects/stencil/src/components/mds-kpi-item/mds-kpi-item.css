@@ -1,61 +1,88 @@
 @tailwind utilities;
 
 /**
- * @prop --mds-kpi-item-description-color: Set the color of the description text
- * @prop --mds-kpi-item-info-padding: Set the padding of the info text
- * @prop --mds-kpi-item-value-color: Set the color of the value text
+ * @prop --mds-kpi-item-icon-color: Set the fill color of the icon element
+ * @prop --mds-kpi-item-info-background: Set the `background-color` of the text area element
+ * @prop --mds-kpi-item-text-animation-placeholder-char: Sets the animation placeholder char of the text
+ * @prop --mds-kpi-item-text-animation-speed: Sets the animation speed of the text
  */
-
-/* https://benfrain.com/using-css-property-inside-shadowroot-web-components-workaround/ */
-
-/* @property --mds-kpi-item-value {
-  inherits: false;
-  initial-value: 0;
-  syntax: '<integer>';
-} */
 
 :host {
 
-  --mds-kpi-item-description-color: theme('colors.tone-neutral-04');
-  --mds-kpi-item-info-padding: theme('spacing.400');
-  --mds-kpi-item-value-color: theme('colors.tone-neutral-02');
-  --mds-kpi-item-duration: 1s;
+  --mds-kpi-item-icon-color: theme('colors.brand-maggioli-04');
+  --mds-kpi-item-info-background: theme('colors.tone-neutral');
+  --mds-kpi-item-text-animation-placeholder-char: var(--mds-kpi-text-animation-placeholder-char, " ");
+  --mds-kpi-item-text-animation-speed: var(--mds-kpi-text-animation-speed, 0.15);
 
   @apply
-    gap-0
-    rounded-2xl;
+    duration-300
+    ease-out
+    gap-0;
 
-  background-color: var(--background-color, theme('colors.tone-neutral'));
-  box-shadow: var(--shadow, theme('boxShadow.lg'));
-  display: grid;
+  aspect-ratio: 1;
+  background-color: theme('colors.brand-maggioli-10');
+  border-radius: theme('borderRadius.2xl');
+  box-shadow: theme('boxShadow.lg');
+  display: flex;
+  flex-direction: column;
   overflow: hidden;
+  padding: theme('spacing.400');
+  transition-property: background-color, box-shadow;
+}
+
+.icon-container {
+
+  @apply
+    duration-300
+    ease-out;
+
+  align-items: center;
+  display: flex;
+  flex-grow: 1;
+  justify-content: center;
+  transition-property: background-color;
 }
 
 .icon {
-  align-items: flex-start;
-  display: flex;
-  justify-content: center;
+  @apply
+    duration-300
+    ease-out;
+
+  fill: var(--mds-kpi-item-icon-color);
+  transition-property: fill;
+  width: 40%;
 }
 
 .info {
-  @apply gap-0;
+  @apply
+    duration-300
+    ease-out
+    gap-0;
 
+  background-color: var(--mds-kpi-item-info-background);
+  border-radius: theme('borderRadius.lg');
+  box-shadow: theme('boxShadow.sm');
   display: grid;
+  flex-shrink: 0;
   justify-content: center;
-  padding: var(--mds-kpi-item-info-padding);
+  padding: theme('spacing.400');
   text-align: center;
+  transition-property: background-color, border-radius, box-shadow;
 }
 
-.value {
-  color: var(--mds-kpi-item-value-color);
-  counter-set: num var(--mds-kpi-item-value);
-  transition: --mds-kpi-item-value var(--mds-kpi-item-duration); /* stylelint-disable-line custom-property-no-missing-var-function */
-}
-
-.value::after {
-  content: counter(num);
-}
-
+.label,
 .description {
-  color: var(--mds-kpi-item-description-color);
+
+  @apply
+    duration-300
+    ease-out;
+
+  --mds-text-animation-speed: var(--mds-kpi-item-text-animation-speed);
+  --mds-text-animation-placeholder-char: var(--mds-kpi-item-text-animation-placeholder-char);
+
+  transition-property: fill;
 }
+
+@import './css/mds-kpi-item-pref-animation.css';
+@import './css/mds-kpi-item-pref-contrast.css';
+@import './css/mds-kpi-item-pref-theme.css';

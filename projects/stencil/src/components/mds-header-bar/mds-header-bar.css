@@ -5,7 +5,6 @@
   --mds-header-bar-hamburger-color: theme('colors.tone-neutral-03');
 
   @apply
-    duration-500
     ease-out-expo
     px-600
     py-400;
@@ -14,8 +13,14 @@
   box-shadow: theme('boxShadow.md-sharp');
   display: flex;
   inset: 0 0 auto;
+  interpolate-size: allow-keywords; /* not supported yet https://youtu.be/JN-nme9oF10 */
   justify-content: center;
+  margin-left: auto;
+  margin-right: auto;
+  max-width: 100%;
   position: fixed;
+  transition-duration: theme('transitionDuration.500');
+  transition-property: background-color, border-radius, margin, max-width, transform, width;
 }
 
 .logo {
@@ -50,8 +55,8 @@
 .menu {
 
   --mds-button-background: transparent;
-  fill: var(--mds-header-bar-hamburger-color);
 
+  fill: var(--mds-header-bar-hamburger-color);
   padding: 0;
 }
 
@@ -74,5 +79,6 @@
   display: none;
 }
 
+@import './css/mds-header-bar-pref-animation.css';
 @import './css/mds-header-bar-pref-theme.css';
 @import './css/mds-header-bar-pref-contrast.css';

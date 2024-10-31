@@ -3,6 +3,8 @@
 @tailwind utilities;
 
 /**
+ * @prop --mds-text-animation-placeholder-char: Sets the animation placeholder char of the text when `animation` attribute is set to `yugop`
+ * @prop --mds-text-animation-speed: Sets the animation speed of the text when `animation` attribute is set to `yugop`
  * @prop --mds-text-line-clamp: Sets the max number of visible lines before the text overflows with ellipsis. It works only if attribute `truncate='all' is set`. **WARNING:** this is supported only by Chrome, Safare and Firefox with native browser prefixes.
  * @prop --mds-text-selection-background: Sets the background-color of the text when the text is selected
  * @prop --mds-text-selection-color: Sets the color of the text when the text is selected
@@ -13,6 +15,8 @@
   --mds-text-selection-background: theme('colors.label-sky-09');
   --mds-text-selection-color: theme('colors.label-sky-01');
   --mds-text-line-clamp: 3;
+  --mds-text-animation-speed: 0.5;
+  --mds-text-animation-placeholder-char: " ";
 
   display: flex;
   min-width: 0;

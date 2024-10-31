@@ -15,7 +15,7 @@ styles-build:
   cache:
     policy: pull-push
   rules:
-    - if: $CI_PIPELINE_SOURCE == "merge_request_event" || $CI_COMMIT_BRANCH =~ /^(dev|main)$/
+    - if: $CI_COMMIT_BRANCH
       changes:
         - projects/styles/**/*
 
@@ -29,7 +29,7 @@ styles-publish-test:
     COMPONENT: styles
     PACK_NAME: maggioli-design-system-styles-*.tgz
   rules:
-    - if: $CI_PIPELINE_SOURCE == "merge_request_event" || $CI_COMMIT_BRANCH == "main"
+    - if: $CI_COMMIT_BRANCH
       changes:
         - projects/styles/package.json
 

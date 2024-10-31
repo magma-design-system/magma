@@ -28,7 +28,7 @@ export class MdsHorizontalScroll {
   @Prop({ reflect: true }) readonly controls?: ViewportType = 'desktop'
 
   /**
-   * Specifies the box’s snap position as an alignment of its snap area
+   * Shows the horizontal scrollbar to maximize accessibility
    */
   @Prop({ reflect: true }) readonly snap?: SnapType = 'start'
 
@@ -47,7 +47,6 @@ export class MdsHorizontalScroll {
     }
     const rect = element.getBoundingClientRect()
     const rectWrapper = this.contents.getBoundingClientRect()
-    
     return (
       rect.top >= 0 &&
       rect.left >= 0 &&
