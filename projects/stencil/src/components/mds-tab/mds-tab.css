@@ -33,7 +33,8 @@
     border-transparent
     gap-200
     p-200
-    transition-colors;
+    ease-in-out
+    duration-200;
 
   background-color: rgb(var(--theme-default-06-secondary-background));
   border-radius: theme('borderRadius.2xl');
@@ -42,6 +43,7 @@
   overflow: auto;
   scroll-behavior: smooth;
   scroll-snap-type: x mandatory;
+  transition-property: background-color;
 }
 
 .contents {
