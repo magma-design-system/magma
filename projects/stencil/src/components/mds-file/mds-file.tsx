@@ -1,4 +1,4 @@
-import { Component, Element, Event, EventEmitter, Host, h, Prop, State } from '@stencil/core'
+import { Component, Element, Event, EventEmitter, Host, h, Prop, State, Watch } from '@stencil/core'
 import { ExtensionSuffixType } from '@type/file-types'
 import { MdsFileEventDetail } from './meta/event-detail'
 import { ThemeFullVariantType } from '@type/variant'
@@ -22,7 +22,7 @@ export class MdsFile {
   /**
    * Overrides the automatic filetype recongition by forcing the suffix to one of the available formats choosen
    */
-  @Prop() readonly suffix?: ExtensionSuffixType
+  @Prop({ reflect: true }) readonly suffix?: ExtensionSuffixType
 
   /**
    * Overrides the default filetype description
@@ -50,6 +50,11 @@ export class MdsFile {
   @Prop() readonly showDownloadedIcon?: boolean = true
 
   /**
+   * Sets if the download icon must be shown or not
+   */
+  @Prop({ reflect: true, mutable: true }) format?: string
+
+  /**
    * Emits when the component is clicked, returning file infos
    */
   @Event({ eventName: 'mdsFileDownload' }) downloadedEvent: EventEmitter<MdsFileEventDetail>
@@ -62,7 +67,7 @@ export class MdsFile {
   }
 
   private checkWasDownloaded = () => {
-    const filename = `mds-file/${MD5(this.filename).toString()}`
+    const filename = `mdsFile/${MD5(this.filename).toString()}`
     this.wasDownloaded = localStorage.getItem(filename) === 'downloaded'
   }
 
@@ -71,16 +76,22 @@ export class MdsFile {
 
   componentWillLoad (): void {
     this.checkWasDownloaded()
+    this.format = getExtensionInfos(this.filename, this.suffix).format
   }
 
   componentDidUpdate (): void {
     this.checkWasDownloaded()
   }
 
+  @Watch('filename')
+  handleFilename (newValue: string): void {
+    this.format = getExtensionInfos(newValue, this.suffix).format
+  }
+
   render () {
     return (
       <Host tabindex="0" onClick={this.handleOnClick}>
-        <div class={`preview ${getFormatsVariant(this.filename, this.suffix).color} ${getFormatsVariant(this.filename, this.suffix).iconBackground}`}>
+        <div class="preview">
           { this.preview !== undefined
             ? <div class="image-preview" style={{ backgroundImage: `url(${this.preview})` }}></div>
             : <mds-icon name={getFormatsVariant(this.filename, this.suffix).icon}/>
