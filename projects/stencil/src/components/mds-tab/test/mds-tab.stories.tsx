@@ -2,6 +2,12 @@ import { h } from '@stencil/core'
 
 export default {
   title: 'UI / Tab',
+  argTypes: {
+    scrollbar: {
+      description: 'Specifies if the scrollbar is visible or not',
+      type: { name: 'boolean' },
+    },
+  },
 }
 
 const TemplateEmpty = args =>
@@ -146,5 +152,9 @@ export const Default = Template.bind({})
 
 export const ManualTabContents = TemplateEmpty.bind({})
 export const OverflowItems = TemplateOverflow.bind({})
+export const ShowScrollbar = TemplateOverflow.bind({})
+ShowScrollbar.args = {
+  scrollbar: true,
+}
 export const NoSelectedItem = TemplateNoSelected.bind({})
 

@@ -691,7 +691,7 @@ export namespace Components {
          */
         "scrollbar"?: boolean;
         /**
-          * Specifies the box’s snap position as an alignment of its snap area
+          * Shows the horizontal scrollbar to maximize accessibility
          */
         "snap"?: SnapType;
     }
@@ -1476,6 +1476,10 @@ export namespace Components {
         "value"?: string;
     }
     interface MdsTab {
+        /**
+          * Shows the horizontal scrollbar to maximize accessibility
+         */
+        "scrollbar"?: boolean;
     }
     interface MdsTabBar {
     }
@@ -3685,7 +3689,7 @@ declare namespace LocalJSX {
          */
         "scrollbar"?: boolean;
         /**
-          * Specifies the box’s snap position as an alignment of its snap area
+          * Shows the horizontal scrollbar to maximize accessibility
          */
         "snap"?: SnapType;
     }
@@ -4562,6 +4566,10 @@ declare namespace LocalJSX {
           * Emits when a children is changed
          */
         "onMdsTabChange"?: (event: MdsTabCustomEvent<MdsTabEventDetail>) => void;
+        /**
+          * Shows the horizontal scrollbar to maximize accessibility
+         */
+        "scrollbar"?: boolean;
     }
     interface MdsTabBar {
         /**

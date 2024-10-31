@@ -1,4 +1,4 @@
-import { Component, Element, Event, EventEmitter, Host, Listen, h } from '@stencil/core'
+import { Component, Element, Event, EventEmitter, Host, Listen, h, Prop } from '@stencil/core'
 import { MdsTabEventDetail } from './meta/event-detail'
 import { MdsTabItemEventDetail } from '@component/mds-tab-item/meta/event-detail'
 import { setAttributeIfEmpty } from '@common/aria'
@@ -20,6 +20,11 @@ export class MdsTab {
   private tabs: HTMLElement
   private tabItems: NodeListOf<HTMLMdsTabItemElement>
   private contentItems: NodeListOf<HTMLElement>
+
+  /**
+   * Shows the horizontal scrollbar to maximize accessibility
+   */
+  @Prop({ reflect: true }) readonly scrollbar?: boolean
 
   /**
    * Emits when a children is changed
@@ -55,18 +60,6 @@ export class MdsTab {
     const tabItem = this.tabItems[key]
     this.tabs.scrollLeft = tabItem.offsetLeft - this.tabs.offsetLeft - (this.tabs.offsetWidth / 2) + (tabItem.offsetWidth / 2)
   }
-
-  // private selectTabItem = (scrollItem: number): void => {
-  //   this.tabItems.forEach((item, key) => {
-  //     if (key === scrollItem) {
-  //       item.selected = true
-  //       this.changedEvent.emit({ id: key, value: item.value })
-  //       this.currentItem = key
-  //     } else {
-  //       item.selected = false
-  //     }
-  //   })
-  // }
 
   private selectContentItem = (): void => {
     this.contentItems.forEach((item: HTMLElement, index: number) => {
