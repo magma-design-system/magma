@@ -1,42 +1,29 @@
-:host( .to-left ) {
+:host([position="left"]) {
+  align-items: center;
   justify-content: flex-start;
 }
 
-:host( .to-left ) .window,
-:host( .to-left ) > ::slotted( [slot="window"] ) {
-  @apply animate;
+:host([position="left"]) .window {
+  height: 100dvh;
+  max-width: calc(100vw - 80px);
 }
 
-:host( .to-left-intro ) .window,
-:host( .to-left-intro ) > ::slotted( [slot="window"] ) {
-  @apply animate-left-intro;
+:host([position="left"][opened="false"]) > ::slotted( [slot="window"] ),
+:host([position="left"]:not([opened])) > ::slotted( [slot="window"] ) {
+  transform: rotateX(0) rotateY(22deg) rotateZ(0) scale(0.5) translate(-100%, 0%);
 }
 
-:host( .to-left-opened.to-left-outro ) .window,
-:host( .to-left-opened.to-left-outro ) > ::slotted( [slot="window"] ),
-:host( .to-left-opened ) .window,
-:host( .to-left-opened ) > ::slotted( [slot="window"] ) {
-  @apply animate-left-opened;
+:host([position="left"][opened="false"]) .window,
+:host([position="left"]:not([opened])) .window {
+  transform: translate(-100%, 0%);
 }
 
-:host( .to-left-opened ) .button-close,
-:host( .to-left-opened.to-left-outro ) .button-close {
-  @apply opacity-100;
-
-  transform: translate(-24px, 24px) rotate(0);
+:host([position="left"]) .action-close {
+  right: theme('spacing.300');
+  top: theme('spacing.300');
+  transform: translateX(-120%) rotate(-45deg);
 }
 
-:host( .to-left-outro ) .window,
-:host( .to-left-outro ) > ::slotted( [slot="window"] ) {
-  @apply animate-left-outro;
-}
-
-:host( .to-left-outro ) .button-close {
-  transform: translate(24px, 24px) rotate(-90deg);
-}
-
-:host( .to-left ) .button-close {
-  @apply right-0;
-
-  transform: translate(36px, 24px) rotate(90deg);
+:host([position="left"][opened]:not([opened="false"])) .action-close {
+  transform: translateX(0);
 }

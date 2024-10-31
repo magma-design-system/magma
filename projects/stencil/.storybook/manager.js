@@ -4,6 +4,11 @@ import { useGlobals, addons, types } from '@storybook/manager-api'
 import themeMaggioli from './theme'
 
 const AccessibilityPanel = () => {
+
+  const capitalize = (string) => {
+    return string.charAt(0).toUpperCase() + string.slice(1);
+  }
+
   const setAccessibility = (preference, value, list) => {
     const iframe = document.getElementById('storybook-preview-iframe')
     if (iframe) {
@@ -14,18 +19,18 @@ const AccessibilityPanel = () => {
       }
       htmlEl.style.setProperty(`--magma-pref-${preference}`, value)
       htmlEl.classList.add(`pref-${preference}-${value}`)
-      window.localStorage.setItem(`mds-pref-${preference}`, value)
+      window.localStorage.setItem(`mdsPref${capitalize(preference)}`, value)
     }
   }
 
   const setLanguage = (lang) => {
     if (window) {
-      window.localStorage.setItem('mds-pref-language', lang)
+      window.localStorage.setItem('mdsPrefLanguage', lang)
     }
     if (document) {
       const iframe = document.getElementById('storybook-preview-iframe')
       const iframeDocument = iframe.contentDocument || iframe.contentWindow.document
-      iframeDocument.querySelector('html').setAttribute('lang', window.localStorage.getItem('mds-pref-language') ?? 'it')
+      iframeDocument.querySelector('html').setAttribute('lang', window.localStorage.getItem('mdsPrefLanguage') ?? 'it')
     }
   }
 
@@ -34,7 +39,7 @@ const AccessibilityPanel = () => {
       <Form.Field label="Theme">
         <Form.Select
           name="pref-theme"
-          defaultValue={ window.localStorage.getItem('mds-pref-theme') ?? 'light' }
+          defaultValue={ window.localStorage.getItem('mdsPrefTheme') ?? 'light' }
           onChange={(event) => { setAccessibility('theme', event.target.value, ['light', 'system', 'dark']) }}
         >
           <option value="light">Light</option>
@@ -45,7 +50,7 @@ const AccessibilityPanel = () => {
       <Form.Field label="Contrast">
         <Form.Select
           name="pref-contrast"
-          defaultValue={ window.localStorage.getItem('mds-pref-contrast') ?? 'no-preference' }
+          defaultValue={ window.localStorage.getItem('mdsPrefContrast') ?? 'no-preference' }
           onChange={(event) => { setAccessibility('contrast', event.target.value, ['more', 'system', 'no-preference']) }}
         >
           <option value="more">More</option>
@@ -56,7 +61,7 @@ const AccessibilityPanel = () => {
       <Form.Field label="Animations">
         <Form.Select
           name="pref-animation"
-          defaultValue={ window.localStorage.getItem('mds-pref-animation') ?? 'no-preference' }
+          defaultValue={ window.localStorage.getItem('mdsPrefAnimation') ?? 'no-preference' }
           onChange={(event) => { setAccessibility('animation', event.target.value, ['reduce', 'system', 'no-preference']) }}
         >
           <option value="reduce">Reduce</option>
@@ -67,7 +72,7 @@ const AccessibilityPanel = () => {
       <Form.Field label="Consumption">
         <Form.Select
           name="pref-consumption"
-          defaultValue={ window.localStorage.getItem('mds-pref-consumption') ?? 'high' }
+          defaultValue={ window.localStorage.getItem('mdsPrefConsumption') ?? 'high' }
           onChange={(event) => { setAccessibility('consumption', event.target.value, ['low', 'medium', 'high']) }}
         >
           <option value="low">Low</option>
@@ -78,7 +83,7 @@ const AccessibilityPanel = () => {
       <Form.Field label="Language">
         <Form.Select
           name="pref-language"
-          defaultValue={ window.localStorage.getItem('mds-pref-language') ?? 'en' }
+          defaultValue={ window.localStorage.getItem('mdsPrefLanguage') ?? 'en' }
           onChange={(event) => { setLanguage(event.target.value) }}
         >
           <option value="it">Italiano</option>

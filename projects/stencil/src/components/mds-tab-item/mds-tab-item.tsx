@@ -1,6 +1,5 @@
 import { Component, Element, Event, EventEmitter, Host, Prop, State, Watch, h } from '@stencil/core'
 import { ButtonIconPositionType, ButtonSizeType, ButtonType } from '@type/button'
-import clsx from 'clsx'
 import { MdsTabItemEventDetail } from './meta/event-detail'
 
 /**
@@ -48,6 +47,16 @@ export class MdsTabItem {
    */
   @Prop({ reflect: true }) readonly value?: string
 
+  /**
+   * Emits when the tab item is selected
+   */
+  @Event({ eventName: 'mdsTabItemSelect' }) selectedEvent: EventEmitter<MdsTabItemEventDetail>
+
+  /**
+   * Emits when the tab item is selected
+   */
+  @Event({ eventName: 'mdsTabItemFocus' }) focusedEvent: EventEmitter<MdsTabItemEventDetail>
+
   private toggle = () => {
     this.isSelected = !this.isSelected
     if (this.isSelected) {
@@ -55,10 +64,9 @@ export class MdsTabItem {
     }
   }
 
-  /**
-   * Emits when the tab item is selected
-   */
-  @Event({ eventName: 'mdsTabItemSelect' }) selectedEvent: EventEmitter<MdsTabItemEventDetail>
+  private focus = () => {
+    this.focusedEvent.emit({ target: this.element, value: this.value })
+  }
 
   @Watch('selected')
   validateActive (newValue: boolean): void {
@@ -75,10 +83,12 @@ export class MdsTabItem {
   render () {
     return (
       <Host onClick={this.toggle}>
-        <mds-button class={clsx('button', this.selected && 'button--selected')}
+        <mds-button class="button"
+          onFocus={this.focus}
           icon={this.icon}
           iconPosition={this.iconPosition}
           part="button"
+          role="tab"
           size={this.size}
           type={this.type}
         >

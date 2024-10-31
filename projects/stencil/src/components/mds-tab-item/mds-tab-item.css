@@ -44,8 +44,8 @@
   fill: var(--mds-tab-item-color-hover);
 }
 
-.button--selected:hover,
-.button--selected {
+:host([selected]:not([selected="false"])) .button,
+:host([selected]:not([selected="false"])) .button:hover {
 
   --mds-button-background: var(--mds-tab-item-background-selected);
   --mds-button-color: var(--mds-tab-item-color-selected);

@@ -1,8 +1,7 @@
 import clsx from 'clsx'
-import miBaselineClose from '@icon/mi/baseline/close.svg'
-import { Component, Element, Event, EventEmitter, Host, h, Listen, Prop } from '@stencil/core'
-import { KeyboardManager } from '@common/keyboard-manager'
+import { Component, Element, Event, EventEmitter, Host, h, Listen, Prop, Watch } from '@stencil/core'
 import { ModalPositionType, ModalAnimationStateType } from './meta/types'
+import { cssDurationToMilliseconds } from '@common/unit'
 
 /**
  * @slot default - Contents that will be placed in the center of the window. Add `text string`, `HTML elements` or `components` to this slot.
@@ -18,12 +17,11 @@ import { ModalPositionType, ModalAnimationStateType } from './meta/types'
 })
 export class MdsModal {
 
-  private animationDeelay
+  private animationDelayTimeout: NodeJS.Timeout
   private window = false
   private top = false
   private bottom = false
-  private animationState: ModalAnimationStateType = 'intro'
-  private readonly km = new KeyboardManager()
+  private cssTransitionDuration: string
 
   @Element() host: HTMLMdsModalElement
 
@@ -37,6 +35,51 @@ export class MdsModal {
    */
   @Prop({ reflect: true, mutable: true }) position?: ModalPositionType = 'center'
 
+  /**
+   * Specifies if the component is animating itself or not
+   */
+  @Prop({ reflect: true, mutable: true }) animating?: ModalAnimationStateType = 'none'
+
+  /**
+   * Emits when a modal is closed
+   */
+  @Event({ bubbles: true, composed: true, eventName: 'mdsModalClose' }) closeEvent: EventEmitter<void>
+
+  /**
+   * Emits when a modal is totally invisible, can be useful to detach the component when it's hidden and gain memory
+   */
+  @Event({ bubbles: true, composed: true, eventName: 'mdsModalHide' }) hideEvent: EventEmitter<void>
+
+  private updateCSSCustomProps = (): void => {
+    const elementStyles = window.getComputedStyle(this.host)
+    this.cssTransitionDuration = elementStyles.getPropertyValue('--mds-modal-transition-duration') ?? '500'
+  }
+
+  private stopIntroAnimationWindow = (): void => {
+    this.animating = 'none'
+    this.host.setAttribute('animating', 'none') // wtf?
+    clearTimeout(this.animationDelayTimeout)
+  }
+
+  private stopOutroAnimationWindow = (): void => {
+    this.animating = 'none'
+    this.host.setAttribute('animating', 'none')
+    this.hideEvent.emit()
+    clearTimeout(this.animationDelayTimeout)
+  }
+
+  private animateOpenWindow = (): void => {
+    this.animating = 'intro'
+    clearTimeout(this.animationDelayTimeout)
+    this.animationDelayTimeout = setTimeout(this.stopIntroAnimationWindow.bind(this), cssDurationToMilliseconds(this.cssTransitionDuration))
+  }
+
+  private animateCloseWindow = (): void => {
+    this.animating = 'outro'
+    clearTimeout(this.animationDelayTimeout)
+    this.animationDelayTimeout = setTimeout(this.stopOutroAnimationWindow.bind(this), cssDurationToMilliseconds(this.cssTransitionDuration))
+  }
+
   componentWillLoad (): void {
     this.bottom = this.host.querySelector('[slot="bottom"]') !== null
     this.top = this.host.querySelector('[slot="top"]') !== null
@@ -48,39 +91,12 @@ export class MdsModal {
   }
 
   componentWillRender (): void {
-    this.host.className = ''
-    this.animationState = this.opened ? 'intro' : 'outro'
-    this.host.classList.add(this.animationName())
-
-    this.animationDeelay = window.setTimeout(() => {
-      this.animationState = this.animationState === 'intro' ? 'outro' : 'intro'
-      this.host.classList.remove(this.animationName(this.animationState === 'intro' ? 'outro' : 'intro'))
-      this.host.classList.add(this.animationName(this.animationState))
-      window.clearTimeout(this.animationDeelay)
-    }, 500)
+    this.animating = this.opened ? 'intro' : 'outro'
   }
 
   componentDidLoad (): void {
-    this.km.addElement(this.host, 'host')
-    const close = this.host.shadowRoot?.querySelector('.close')
-    if (close) this.km.addElement(close as HTMLElement, 'close')
-    this.km.attachEscapeBehavior(() => this.closeEvent.emit())
-    this.km.attachClickBehavior('close')
+    this.updateCSSCustomProps()
   }
-
-  disconnectedCallback (): void {
-    this.km.detachEscapeBehavior()
-    this.km.detachClickBehavior('close')
-  }
-
-  private animationName = (customState = '', customPosition = ''): string => {
-    return `to-${customPosition !== '' ? customPosition : this.position}${customState !== '' ? '-' + customState : ''}`
-  }
-
-  /**
-   * Emits when a modal is closed
-   */
-  @Event({ bubbles: true, composed: true, eventName: 'mdsModalClose' }) closeEvent: EventEmitter<void>
 
   private closeModal = (e:Event): void => {
     if ((e.target as HTMLElement)?.localName !== 'mds-modal') {
@@ -90,6 +106,15 @@ export class MdsModal {
     if (!this.opened) {
       this.closeEvent.emit()
     }
+  }
+
+  @Watch('opened')
+  handleOpenProp (newValue: boolean): void {
+    if (newValue) {
+      this.animateOpenWindow()
+      return
+    }
+    this.animateCloseWindow()
   }
 
   @Listen('mdsModalClose', { target: 'document' })
@@ -104,7 +129,7 @@ export class MdsModal {
 
   render () {
     return (
-      <Host aria-modal={clsx(this.opened ? 'true' : 'false' )} class={clsx(this.opened && this.animationName('opened'))} onClick={(e: Event) => { this.closeModal(e) }}>
+      <Host aria-modal={clsx(this.opened ? 'true' : 'false' )} onClick={(e: Event) => { this.closeModal(e) }}>
         { this.window
           ? <slot name="window"/>
           : <div class={clsx('window', (this.top || this.bottom) && `window-${this.top ? '-top' : ''}${this.bottom ? '-bottom' : ''}`)} role="dialog" part="window">
@@ -117,9 +142,8 @@ export class MdsModal {
             }
           </div>
         }
-        { !this.window && <mds-button icon={miBaselineClose} onClick={(e: Event) => { this.closeModal(e) }} class="button-close"></mds-button> }
+        { !this.window && <mds-button class="action-close" icon="mi/baseline/close" variant="light" tone="quiet" size="xl" onClick={(e: Event) => { this.closeModal(e) }}></mds-button> }
       </Host>
     )
   }
-
 }

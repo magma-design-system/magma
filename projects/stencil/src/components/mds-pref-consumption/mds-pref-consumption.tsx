@@ -17,6 +17,8 @@ import { ConsumptionModeType } from '@type/preference'
 })
 export class MdsPrefContrast {
   @Element() private element: HTMLMdsPrefContrastElement
+  private localStorageAlias: string = 'mdsPrefConsumption'
+  private customPropertyAlias: string = '--magma-pref-consumption'
   private defaultMode: ConsumptionModeType = 'high'
   private t:Locale = new Locale({
     el: localeEl,
@@ -55,13 +57,13 @@ export class MdsPrefContrast {
   }
 
   componentDidLoad (): void {
-    this.setConsumption(this.mode ?? localStorage.getItem('mds-pref-consumption') as ConsumptionModeType ?? this.defaultMode)
+    this.setConsumption(this.mode ?? localStorage.getItem(this.localStorageAlias) as ConsumptionModeType ?? this.defaultMode)
   }
 
   private setConsumption = (mode: ConsumptionModeType): void => {
     this.prefChangeEvent.emit({ preference: 'consumption' })
     this.mode = mode
-    localStorage.setItem('mds-pref-consumption', this.mode)
+    localStorage.setItem(this.localStorageAlias, this.mode)
     if (document) {
       const element = document.querySelector('html')
       for (const key in this.consumption) {
@@ -70,7 +72,7 @@ export class MdsPrefContrast {
         }
       }
       element?.classList.add(this.consumption[this.mode].selector)
-      element?.style.setProperty('--magma-pref-consumption', this.mode)
+      element?.style.setProperty(this.customPropertyAlias, this.mode)
     }
   }
 

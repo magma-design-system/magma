@@ -248,6 +248,9 @@ async function updateComponentDependencies (name: string): Promise<void> {
   // check correlate component dependencies first
   if (relatedComponent) {
     await Promise.all(relatedComponent.map(async rc => {
+      if (rc === name) {
+        throw new Error(`Component ${name} has self dependencies`)
+      }
       const pInfo = componentsUpdatedMap.get(rc)
       const versionUpgradeType = getVersionTypeDiff(pInfo?.dependencies[`@maggioli-design-system/${name}`], v)
       if (versionUpgradeType) {
@@ -385,13 +388,13 @@ async function main (argv: string[]): Promise<void> {
   if (argv.filter(arg => arg.startsWith('--common'))) {
     await updateCommonDependencies()
   }
-
   await Promise.all(
     componentsToBeUpdated.map(c => updateComponent(c, version)),
   )
   await Promise.all(
     componentsToBeUpdated.map(updateComponentDependencies),
   )
+
   if (componentsToBeUpdated.length === 0) {
     await syncDep()
   }

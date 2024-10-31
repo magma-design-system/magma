@@ -1,6 +1,7 @@
-import { Component, Element, Event, EventEmitter, Host, Listen, h } from '@stencil/core'
+import { Component, Element, Event, EventEmitter, Host, Listen, h, Prop } from '@stencil/core'
 import { MdsTabEventDetail } from './meta/event-detail'
 import { MdsTabItemEventDetail } from '@component/mds-tab-item/meta/event-detail'
+import { setAttributeIfEmpty } from '@common/aria'
 
 /**
  * @slot default - Add `mds-tab-item` element/s.
@@ -15,10 +16,15 @@ import { MdsTabItemEventDetail } from '@component/mds-tab-item/meta/event-detail
 export class MdsTab {
 
   @Element() private element: HTMLMdsTabElement
-  private currentItem = -1
+  private currentItem: number = -1
   private tabs: HTMLElement
   private tabItems: NodeListOf<HTMLMdsTabItemElement>
   private contentItems: NodeListOf<HTMLElement>
+
+  /**
+   * Shows the horizontal scrollbar to maximize accessibility
+   */
+  @Prop({ reflect: true }) readonly scrollbar?: boolean
 
   /**
    * Emits when a children is changed
@@ -44,32 +50,22 @@ export class MdsTab {
   componentDidLoad (): void {
     this.tabs = this.element.shadowRoot?.querySelector('.tabs') as HTMLElement
     this.contentItems = this.queryContentItems()
+    this.contentItems.forEach((item: HTMLElement): void => {
+      setAttributeIfEmpty(item, 'role', 'tabpanel')
+    })
     this.selectContentItem()
   }
 
-  private scrollTabs = (): void => {
-    const tabItem = this.tabItems[this.currentItem]
+  private scrollTabs = (key: number): void => {
+    const tabItem = this.tabItems[key]
     this.tabs.scrollLeft = tabItem.offsetLeft - this.tabs.offsetLeft - (this.tabs.offsetWidth / 2) + (tabItem.offsetWidth / 2)
-  }
-
-  private selectTabItem = (scrollItem: number): void => {
-    this.tabItems.forEach((item, key) => {
-      if (key === scrollItem) {
-        item.selected = true
-        this.changedEvent.emit({ id: key, value: item.value })
-        this.currentItem = key
-        this.scrollTabs()
-      } else {
-        item.selected = false
-      }
-    })
   }
 
   private selectContentItem = (): void => {
     this.contentItems.forEach((item: HTMLElement, index: number) => {
-      item.classList.add('hidden')
+      item.setAttribute('mds-tab-content-hidden', '')
       if (index === this.currentItem) {
-        item.classList.remove('hidden')
+        item.removeAttribute('mds-tab-content-hidden')
       }
     })
   }
@@ -80,19 +76,30 @@ export class MdsTab {
     // we must find the key from event.detail
     this.tabItems.forEach((item, key: number) => {
       if (item.id === event.detail.target.id) {
-        this.selectTabItem(key)
+        item.selected = true
+        this.changedEvent.emit({ id: key, value: item.value })
+        this.currentItem = key
+        this.scrollTabs(key)
       } else {
         item.selected = false
       }
     })
-
     this.selectContentItem()
+  }
+
+  @Listen('mdsTabItemFocus')
+  focusEventHandler (event: CustomEvent<MdsTabItemEventDetail>): void {
+    this.tabItems.forEach((item, key: number) => {
+      if (item.id === event.detail.target.id) {
+        this.scrollTabs(key)
+      }
+    })
   }
 
   render () {
     return (
       <Host>
-        <div class="tabs" part="tabs">
+        <div class="tabs" part="tabs" role="tablist">
           <slot />
         </div>
         <div class="contents" part="contents">

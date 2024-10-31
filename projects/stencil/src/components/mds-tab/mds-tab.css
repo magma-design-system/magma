@@ -4,6 +4,11 @@
 
 /**
  * @prop --mds-tab-duration: Sets the animation duration on how the contents height is resized when the component switch from a content to another one
+ * @prop --mds-tab-scrollbar-margin: Sets the margin of the browser scroll bar (if supported)
+ * @prop --mds-tab-scrollbar-radius: Sets the border-radius of the browser scroll bar (if supported)
+ * @prop --mds-tab-scrollbar-size: Sets the height and width of the browser scroll bar (if supported)
+ * @prop --mds-tab-scrollbar-thumb-background: Sets the background-color of the browser scroll bar thumb (if supported)
+ * @prop --mds-tab-scrollbar-track-background: Sets the background-color of the browser scroll bar track (if supported)
  * @prop --mds-tab-timing-function: Sets the animation timing function on how the contents height is resized when the component switch from a content to another one
  */
 
@@ -11,18 +16,22 @@
 
   --mds-tab-duration: .75s;
   --mds-tab-timing-function: theme('transitionTimingFunction.in-out-expo');
+  --mds-tab-current-item: 2;
+  --mds-tab-scroll-scrollbar-radius: 0;
+  --mds-tab-scroll-scrollbar-margin: 0;
+  --mds-tab-scroll-scrollbar-size: theme('spacing.200');
+  --mds-tab-scroll-scrollbar-thumb-background: rgb(var(--tone-neutral-02) theme('opacity.30'));
+  --mds-tab-scroll-scrollbar-track-background: rgb(var(--tone-neutral-06) theme('opacity.30'));
 
   display: grid;
 }
 
 .tabs {
-
   @apply
     border-50
     border-solid
     border-transparent
     gap-200
-    hide-scrollbar
     p-200
     transition-colors;
 
@@ -33,10 +42,6 @@
   overflow: auto;
   scroll-behavior: smooth;
   scroll-snap-type: x mandatory;
-}
-
-.tabs::-webkit-scrollbar {
-  display: none;
 }
 
 .contents {
@@ -72,6 +77,11 @@
   scroll-snap-align: start;
 }
 
+::slotted( [slot="content"][mds-tab-content-hidden] ) {
+    display: none !important;
+}
+
+@import './css/mds-tab-scrollbar.css';
 @import './css/mds-tab-pref-animation.css';
 @import './css/mds-tab-pref-theme.css';
 @import './css/mds-tab-pref-contrast.css';

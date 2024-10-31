@@ -7,7 +7,6 @@ describe('mds-modal', () => {
 
     const element = await page.find('mds-modal')
 
-    expect(element).toHaveClass('to-center')
     expect(element).toHaveAttribute('hydrated')
     expect(element).toHaveAttribute('position')
 
@@ -47,6 +46,6 @@ describe('mds-modal', () => {
 
     await page.waitForChanges()
 
-    expect(element).not.toHaveClass('opened')
+    expect(element).not.toHaveAttribute('opened')
   })
 })

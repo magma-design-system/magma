@@ -26,7 +26,7 @@ import { TypographyTruncateType } from "@type/text";
 import { MdsFilePreviewEventDetail } from "./components/mds-file-preview/meta/event-detail";
 import { MdsFilterEventDetail } from "./components/mds-filter/meta/event-detail";
 import { MdsFilterItemEventDetail } from "./components/mds-filter-item/meta/event-detail";
-import { MenuType } from "./components/mds-header-bar/meta/types";
+import { HeaderBarMenuType, HeaderBarNavType } from "@type/header-bar";
 import { MdsHeaderEventDetail } from "./components/mds-header/meta/event-detail";
 import { SnapType, ViewportType } from "./components/mds-horizontal-scroll/meta/types";
 import { CrossoriginType, ReferrerpolicyType } from "./components/mds-img/meta/types";
@@ -44,7 +44,7 @@ import { MdsInputSwitchEventDetail } from "./components/mds-input-switch/meta/ev
 import { InputTipPositionType } from "./components/mds-input-tip/meta/types";
 import { InputTipItemVariantType } from "@component/mds-input-tip-item/meta/types";
 import { AttachmentSort, FileError } from "./components/mds-input-upload/meta/types";
-import { ModalPositionType } from "./components/mds-modal/meta/types";
+import { ModalAnimationStateType, ModalPositionType } from "./components/mds-modal/meta/types";
 import { StrategyType } from "./components/mds-notification/meta/types";
 import { MdsPaginatorEventDetail } from "./components/mds-paginator/meta/event-detail";
 import { AnimationModeType } from "./components/mds-pref-animation/meta/types";
@@ -90,7 +90,7 @@ export { TypographyTruncateType } from "@type/text";
 export { MdsFilePreviewEventDetail } from "./components/mds-file-preview/meta/event-detail";
 export { MdsFilterEventDetail } from "./components/mds-filter/meta/event-detail";
 export { MdsFilterItemEventDetail } from "./components/mds-filter-item/meta/event-detail";
-export { MenuType } from "./components/mds-header-bar/meta/types";
+export { HeaderBarMenuType, HeaderBarNavType } from "@type/header-bar";
 export { MdsHeaderEventDetail } from "./components/mds-header/meta/event-detail";
 export { SnapType, ViewportType } from "./components/mds-horizontal-scroll/meta/types";
 export { CrossoriginType, ReferrerpolicyType } from "./components/mds-img/meta/types";
@@ -108,7 +108,7 @@ export { MdsInputSwitchEventDetail } from "./components/mds-input-switch/meta/ev
 export { InputTipPositionType } from "./components/mds-input-tip/meta/types";
 export { InputTipItemVariantType } from "@component/mds-input-tip-item/meta/types";
 export { AttachmentSort, FileError } from "./components/mds-input-upload/meta/types";
-export { ModalPositionType } from "./components/mds-modal/meta/types";
+export { ModalAnimationStateType, ModalPositionType } from "./components/mds-modal/meta/types";
 export { StrategyType } from "./components/mds-notification/meta/types";
 export { MdsPaginatorEventDetail } from "./components/mds-paginator/meta/event-detail";
 export { AnimationModeType } from "./components/mds-pref-animation/meta/types";
@@ -629,23 +629,43 @@ export namespace Components {
     }
     interface MdsHeader {
         /**
+          * Sets the appearance of the header bar element when loaded, it can be changed depending on how `appearance-set` attribute is set
+         */
+        "appearance": string;
+        /**
+          * Sets the appearance of the header bar element depending on the scroll position you should set three different values: initial appearance, changed appearance and `window.scrollY` threshold Es: appearance-set="stripe, inline 200" means the component will start with stripe appearance that will change to inline if the page is scrolled more of 199 pixels
+         */
+        "appearanceSet"?: string;
+        /**
+          * When the page is scrolled down, the component mds-header-bar is hidden starting from the `autoHide` attribute's value, then if the page is scrolled up it is shown again
+         */
+        "autoHide"?: number;
+        /**
           * Sets the visibility type of the hamburger menu of mds-header-bar
          */
-        "menu": MenuType;
+        "menu": HeaderBarMenuType;
         /**
           * Sets the visibility type of the navigation menu of mds-header-bar
          */
-        "nav": MenuType;
+        "nav": HeaderBarNavType;
+        /**
+          * Sets the threshold margin to trigger hide or show status of the `mds-header-bar` when the page is scrolled
+         */
+        "threshold": number;
+        /**
+          * Sets the visibility type of the navigation menu of mds-header-bar
+         */
+        "visibility"?: 'hidden' | 'visible';
     }
     interface MdsHeaderBar {
         /**
           * Sets the visibility type of the hamburger menu
          */
-        "menu": MenuType;
+        "menu": HeaderBarMenuType;
         /**
           * Sets the visibility type of the navigation menu
          */
-        "nav": MenuType;
+        "nav": HeaderBarNavType;
     }
     interface MdsHelp {
         /**
@@ -671,7 +691,7 @@ export namespace Components {
          */
         "scrollbar"?: boolean;
         /**
-          * Specifies the box’s snap position as an alignment of its snap area
+          * Shows the horizontal scrollbar to maximize accessibility
          */
         "snap"?: SnapType;
     }
@@ -1111,7 +1131,7 @@ export namespace Components {
         /**
           * Specifies the description under the value in the KPI element
          */
-        "description": string;
+        "description"?: string;
         /**
           * Specifies the icon on the top of the KPI element
          */
@@ -1119,7 +1139,11 @@ export namespace Components {
         /**
           * Specifies the number to be displayed in the KPI element
          */
-        "value": number;
+        "label"?: string;
+        /**
+          * Specifies the description under the value in the KPI element
+         */
+        "threshold"?: number;
     }
     interface MdsLabel {
         /**
@@ -1164,6 +1188,10 @@ export namespace Components {
         "variant"?: TypographyReadingVariants;
     }
     interface MdsModal {
+        /**
+          * Specifies if the component is animating itself or not
+         */
+        "animating"?: ModalAnimationStateType;
         /**
           * Specifies if the modal is opened or not
          */
@@ -1448,6 +1476,10 @@ export namespace Components {
         "value"?: string;
     }
     interface MdsTab {
+        /**
+          * Shows the horizontal scrollbar to maximize accessibility
+         */
+        "scrollbar"?: boolean;
     }
     interface MdsTabBar {
     }
@@ -2407,6 +2439,7 @@ declare global {
     };
     interface HTMLMdsModalElementEventMap {
         "mdsModalClose": void;
+        "mdsModalHide": void;
     }
     interface HTMLMdsModalElement extends Components.MdsModal, HTMLStencilElement {
         addEventListener<K extends keyof HTMLMdsModalElementEventMap>(type: K, listener: (this: HTMLMdsModalElement, ev: MdsModalCustomEvent<HTMLMdsModalElementEventMap[K]>) => any, options?: boolean | AddEventListenerOptions): void;
@@ -2770,6 +2803,7 @@ declare global {
     };
     interface HTMLMdsTabItemElementEventMap {
         "mdsTabItemSelect": MdsTabItemEventDetail;
+        "mdsTabItemFocus": MdsTabItemEventDetail;
     }
     interface HTMLMdsTabItemElement extends Components.MdsTabItem, HTMLStencilElement {
         addEventListener<K extends keyof HTMLMdsTabItemElementEventMap>(type: K, listener: (this: HTMLMdsTabItemElement, ev: MdsTabItemCustomEvent<HTMLMdsTabItemElementEventMap[K]>) => any, options?: boolean | AddEventListenerOptions): void;
@@ -3585,27 +3619,47 @@ declare namespace LocalJSX {
     }
     interface MdsHeader {
         /**
+          * Sets the appearance of the header bar element when loaded, it can be changed depending on how `appearance-set` attribute is set
+         */
+        "appearance"?: string;
+        /**
+          * Sets the appearance of the header bar element depending on the scroll position you should set three different values: initial appearance, changed appearance and `window.scrollY` threshold Es: appearance-set="stripe, inline 200" means the component will start with stripe appearance that will change to inline if the page is scrolled more of 199 pixels
+         */
+        "appearanceSet"?: string;
+        /**
+          * When the page is scrolled down, the component mds-header-bar is hidden starting from the `autoHide` attribute's value, then if the page is scrolled up it is shown again
+         */
+        "autoHide"?: number;
+        /**
           * Sets the visibility type of the hamburger menu of mds-header-bar
          */
-        "menu"?: MenuType;
+        "menu"?: HeaderBarMenuType;
         /**
           * Sets the visibility type of the navigation menu of mds-header-bar
          */
-        "nav"?: MenuType;
+        "nav"?: HeaderBarNavType;
         /**
           * Emits when the component is closed
          */
         "onMdsHeaderClose"?: (event: MdsHeaderCustomEvent<MdsHeaderEventDetail>) => void;
+        /**
+          * Sets the threshold margin to trigger hide or show status of the `mds-header-bar` when the page is scrolled
+         */
+        "threshold"?: number;
+        /**
+          * Sets the visibility type of the navigation menu of mds-header-bar
+         */
+        "visibility"?: 'hidden' | 'visible';
     }
     interface MdsHeaderBar {
         /**
           * Sets the visibility type of the hamburger menu
          */
-        "menu"?: MenuType;
+        "menu"?: HeaderBarMenuType;
         /**
           * Sets the visibility type of the navigation menu
          */
-        "nav"?: MenuType;
+        "nav"?: HeaderBarNavType;
         /**
           * Emits when the component is opened
          */
@@ -3635,7 +3689,7 @@ declare namespace LocalJSX {
          */
         "scrollbar"?: boolean;
         /**
-          * Specifies the box’s snap position as an alignment of its snap area
+          * Shows the horizontal scrollbar to maximize accessibility
          */
         "snap"?: SnapType;
     }
@@ -4099,7 +4153,7 @@ declare namespace LocalJSX {
         /**
           * Specifies the description under the value in the KPI element
          */
-        "description": string;
+        "description"?: string;
         /**
           * Specifies the icon on the top of the KPI element
          */
@@ -4107,7 +4161,11 @@ declare namespace LocalJSX {
         /**
           * Specifies the number to be displayed in the KPI element
          */
-        "value": number;
+        "label"?: string;
+        /**
+          * Specifies the description under the value in the KPI element
+         */
+        "threshold"?: number;
     }
     interface MdsLabel {
         /**
@@ -4157,9 +4215,17 @@ declare namespace LocalJSX {
     }
     interface MdsModal {
         /**
+          * Specifies if the component is animating itself or not
+         */
+        "animating"?: ModalAnimationStateType;
+        /**
           * Emits when a modal is closed
          */
         "onMdsModalClose"?: (event: MdsModalCustomEvent<void>) => void;
+        /**
+          * Emits when a modal is totally invisible, can be useful to detach the component when it's hidden and gain memory
+         */
+        "onMdsModalHide"?: (event: MdsModalCustomEvent<void>) => void;
         /**
           * Specifies if the modal is opened or not
          */
@@ -4500,6 +4566,10 @@ declare namespace LocalJSX {
           * Emits when a children is changed
          */
         "onMdsTabChange"?: (event: MdsTabCustomEvent<MdsTabEventDetail>) => void;
+        /**
+          * Shows the horizontal scrollbar to maximize accessibility
+         */
+        "scrollbar"?: boolean;
     }
     interface MdsTabBar {
         /**
@@ -4531,6 +4601,10 @@ declare namespace LocalJSX {
           * Specifies the horizontal position of the icon displayed in the tab item
          */
         "iconPosition"?: ButtonIconPositionType;
+        /**
+          * Emits when the tab item is selected
+         */
+        "onMdsTabItemFocus"?: (event: MdsTabItemCustomEvent<MdsTabItemEventDetail>) => void;
         /**
           * Emits when the tab item is selected
          */

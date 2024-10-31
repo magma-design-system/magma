@@ -5,9 +5,9 @@ export default {
   argTypes: {
     description: {
       type: { name: 'string', required: true },
-      description: 'Specifies the description under the value in the KPI element',
+      description: 'Specifies the description under the label in the KPI element',
     },
-    value: {
+    label: {
       type: { name: 'number', required: true },
       description: 'Specifies the number to be displayed in the KPI element',
     },
@@ -16,31 +16,11 @@ export default {
 
 const Template = args =>
   <mds-kpi {...args}>
-    <mds-kpi-item value={75} description="Allenatori">
-      <div slot="icon" class="bg-label-sky-09 fill-label-sky-04 p-600 pb-300 w-full flex justify-center items-center">
-        <mds-icon name="mi/round/groups" class="w-12"/>
-      </div>
-    </mds-kpi-item>
-    <mds-kpi-item value={123} description="Arbitri">
-      <div slot="icon" class="bg-label-sky-09 fill-label-sky-04 p-600 pb-300 w-full flex justify-center items-center">
-        <mds-icon name="mi/round/groups" class="w-12"/>
-      </div>
-    </mds-kpi-item>
-    <mds-kpi-item value={48} description="Tifosi">
-      <div slot="icon" class="bg-label-sky-09 fill-label-sky-04 p-600 pb-300 w-full flex justify-center items-center">
-        <mds-icon name="mi/round/groups" class="w-12"/>
-      </div>
-    </mds-kpi-item>
-    <mds-kpi-item value={188} description="Stadi">
-      <div slot="icon" class="bg-label-sky-09 fill-label-sky-04 p-600 pb-300 w-full flex justify-center items-center">
-        <mds-icon name="mi/round/groups" class="w-12"/>
-      </div>
-    </mds-kpi-item>
-    <mds-kpi-item value={3} description="Giocatori">
-      <div slot="icon" class="bg-label-sky-09 fill-label-sky-04 p-600 pb-300 w-full flex justify-center items-center">
-        <mds-icon name="mi/round/groups" class="w-12"/>
-      </div>
-    </mds-kpi-item>
+    <mds-kpi-item icon="mi/baseline/directions-walk" label="75" description="Allenatori"></mds-kpi-item>
+    <mds-kpi-item icon="mi/baseline/sports" label="123" description="Arbitri"></mds-kpi-item>
+    <mds-kpi-item icon="mi/baseline/sports-soccer" label="48" description="Tifosi"></mds-kpi-item>
+    <mds-kpi-item icon="mi/baseline/stadium" label="188" description="Stadi"></mds-kpi-item>
+    <mds-kpi-item icon="mi/baseline/directions-run" label="3" description="Giocatori"></mds-kpi-item>
   </mds-kpi>
 
 const TemplateScroll = args =>
@@ -57,31 +37,11 @@ const TemplateScroll = args =>
       </div>
     </div>
     <mds-kpi {...args}>
-      <mds-kpi-item value={451} description="Progetti">
-        <div slot="icon" class="bg-label-sky-10 fill-label-sky-04 p-600 pb-300 w-full flex justify-center items-center">
-          <mds-icon name="mi/baseline/groups" class="w-12"/>
-        </div>
-      </mds-kpi-item>
-      <mds-kpi-item value={385} description="Manager">
-        <div slot="icon" class="bg-label-sky-10 fill-label-sky-04 p-600 pb-300 w-full flex justify-center items-center">
-          <mds-icon name="mi/baseline/groups" class="w-12"/>
-        </div>
-      </mds-kpi-item>
-      <mds-kpi-item value={196} description="Case">
-        <div slot="icon" class="bg-label-sky-10 fill-label-sky-04 p-600 pb-300 w-full flex justify-center items-center">
-          <mds-icon name="mi/baseline/groups" class="w-12"/>
-        </div>
-      </mds-kpi-item>
-      <mds-kpi-item value={67} description="Automobili">
-        <div slot="icon" class="bg-label-sky-10 fill-label-sky-04 p-600 pb-300 w-full flex justify-center items-center">
-          <mds-icon name="mi/baseline/groups" class="w-12"/>
-        </div>
-      </mds-kpi-item>
-      <mds-kpi-item value={22} description="Formaggi">
-        <div slot="icon" class="bg-label-sky-10 fill-label-sky-04 p-600 pb-300 w-full flex justify-center items-center">
-          <mds-icon name="mi/baseline/groups" class="w-12"/>
-        </div>
-      </mds-kpi-item>
+      <mds-kpi-item icon="mi/baseline/directions-walk" label="451" description="Progetti" threshold={0.5}></mds-kpi-item>
+      <mds-kpi-item icon="mi/baseline/sports" label="385" description="Manager" threshold={0.5}></mds-kpi-item>
+      <mds-kpi-item icon="mi/baseline/sports-soccer" label="196" description="Case" threshold={0.5}></mds-kpi-item>
+      <mds-kpi-item icon="mi/baseline/stadium" label="67" description="Automobili" threshold={0.5}></mds-kpi-item>
+      <mds-kpi-item icon="mi/baseline/directions-run" label="22" description="Formaggi" threshold={0.5}></mds-kpi-item>
     </mds-kpi>
   </div>
 

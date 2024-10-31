@@ -16,9 +16,11 @@ import RandomText from '@common/yugop'
 } )
 export class MdsText {
 
+  private cssTextAnimationSpeed: number = 2
+  private cssTextAnimationPlaceholderChar: string = ' '
   private randomTextOptions = {
-    speed: 2,
-    placeholderChar: ' ',
+    speed: this.cssTextAnimationSpeed,
+    placeholderChar: this.cssTextAnimationPlaceholderChar,
     frameOffset: 10,
     charOffset: 20,
     charStep: 15,
@@ -60,6 +62,9 @@ export class MdsText {
 
   private animateText = (text: string): void => {
     const textElement = this.host.shadowRoot?.querySelector('.text') as HTMLElement
+    this.randomTextOptions.speed = this.cssTextAnimationSpeed
+    this.randomTextOptions.placeholderChar = this.cssTextAnimationPlaceholderChar
+    console.info('animateText', this.cssTextAnimationPlaceholderChar)
     this.randomText = new RandomText({
       str: text,
       onProgress: (str: string) => { textElement.innerHTML = str },
@@ -68,9 +73,24 @@ export class MdsText {
     this.randomText.start()
   }
 
+  private updateCSSCustomProps = (): void => {
+    const elementStyles = window.getComputedStyle(this.host)
+    this.cssTextAnimationSpeed = Number(elementStyles.getPropertyValue('--mds-text-animation-speed'))
+    const placeholderChar = elementStyles.getPropertyValue('--mds-text-animation-placeholder-char')
+    if (placeholderChar === '" "' || placeholderChar === '\' \'') {
+      this.cssTextAnimationPlaceholderChar = ' '
+      return
+    }
+    this.cssTextAnimationPlaceholderChar = placeholderChar
+  }
+
   componentWillRender (): void {
     const { tag } = typographyDefaultsVariant[this.typography]
     this.tag = this.tag ?? tag as TypographyTagType
+  }
+
+  componentDidLoad (): void {
+    this.updateCSSCustomProps()
   }
 
   @Watch('text')

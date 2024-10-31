@@ -20,6 +20,7 @@ export type ButtonIconPositionType =
 
 export type ButtonVariantType =
   | 'primary'
+  | 'secondary'
   | 'dark'
   | 'light'
   | 'error'

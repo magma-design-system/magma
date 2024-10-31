@@ -1,6 +1,6 @@
 import miRoundMenu from '@icon/mi/round/menu.svg'
 import { Component, Element, Event, EventEmitter, Host, Listen, Prop, State, h } from '@stencil/core'
-import { MenuType } from './meta/types'
+import { HeaderBarMenuType, HeaderBarNavType } from '@type/header-bar'
 
 /**
  * @part actions - Selects the element which wraps `nav` and `hamburger` parts
@@ -24,12 +24,12 @@ export class MdsHeaderBar {
   /**
    * Sets the visibility type of the hamburger menu
    */
-  @Prop({ reflect: true }) menu: MenuType = 'mobile'
+  @Prop({ reflect: true }) menu: HeaderBarMenuType = 'mobile'
 
   /**
    * Sets the visibility type of the navigation menu
    */
-  @Prop({ reflect: true }) nav: MenuType = 'desktop'
+  @Prop({ reflect: true }) nav: HeaderBarNavType = 'desktop'
 
   componentWillLoad (): void {
     this.hasNav = this.host.querySelector('[slot="nav"]') !== null
