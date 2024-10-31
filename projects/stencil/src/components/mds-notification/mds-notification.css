@@ -29,7 +29,6 @@
     ease-in-cubic
     opacity-0
     rounded-full
-    transition-cosmetic
     z-10;
 
   align-items: center;
@@ -43,14 +42,15 @@
   right: 100%;
   transform: var(--mds-notification-translate) scale(0);
   transform-origin: calc(100% - calc(var(--mds-notification-size) / 2)) 50%;
+  transition-property: color, height, opacity, transform, width;
   width: var(--mds-notification-size);
 }
 
 .dot {
   @apply
     duration-300
-    rounded-full
-    transition-cosmetic;
+    ease-in-out
+    rounded-full;
 
   align-items: center;
   background-color: var(--mds-notification-dot-background);
@@ -63,6 +63,7 @@
   padding-left: var(--mds-notification-dot-padding);
   padding-right: var(--mds-notification-dot-padding);
   position: absolute;
+  transition-property: background-color, color, box-shadow;
   white-space: nowrap;
 }
 
