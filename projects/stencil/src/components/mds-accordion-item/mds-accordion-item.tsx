@@ -70,7 +70,7 @@ export class MdsAccordionItem {
             {this.label}
           </mds-text>
           <mds-text aria-hidden="true" class="icon-button" typography={this.typography} part="icon">
-            <i class="svg icon" innerHTML={miBaselineKeyboardArrowDown} />
+            <i class="icon" innerHTML={miBaselineKeyboardArrowDown} />
           </mds-text>
         </button>
         <div class="content" id="content">
