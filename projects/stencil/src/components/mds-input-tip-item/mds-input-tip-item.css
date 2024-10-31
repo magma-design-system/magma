@@ -50,6 +50,7 @@
 .icon {
   @apply
     h-300
+    svg
     w-300;
 
   fill: var(--mds-input-tip-item-icon-color);
