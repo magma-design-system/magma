@@ -109,7 +109,7 @@ export class MdsFile {
         </div>
         { this.wasDownloaded && this.showDownloadedIcon &&
           <div class="indicator">
-            <i class="svg downloaded" innerHTML={miBaselineFileDownloadDone} title={this.downloadedLabel}/>
+            <i class="downloaded" innerHTML={miBaselineFileDownloadDone} title={this.downloadedLabel}/>
           </div>
         }
       </Host>

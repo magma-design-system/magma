@@ -116,6 +116,8 @@
 }
 
 .downloaded {
+  @apply svg;
+
   fill: theme('colors.status-success-06');
 }
 
