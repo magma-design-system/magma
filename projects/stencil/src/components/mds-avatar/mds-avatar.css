@@ -110,10 +110,13 @@
 
 .icon {
 
-  @apply transition-colors;
+  @apply
+    duration-300
+    ease-in-out-expo;
 
   fill: var(--mds-avatar-color);
   height: 100%;
+  transition-property: fill;
   width: 100%;
 }
 
