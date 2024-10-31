@@ -59,7 +59,7 @@ export class MdsUrlView {
       <Host>
         <div class="window">
           <header class="header">
-            <i class="svg browser-icon" innerHTML={miBaselineExplore}/>
+            <i class="browser-icon" innerHTML={miBaselineExplore}/>
             { this.domain && <mds-text class="title" typography="caption">
               { this.urlDomain(this.src) }
             </mds-text> }
