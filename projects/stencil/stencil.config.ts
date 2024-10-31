@@ -39,15 +39,18 @@ export const config: Config = {
     },
     reactOutputTarget({
       // Relative path to where the React components will be generated
-      outDir: './react/',
+      outDir: '../stencil-react/src/',
       customElementsDir: 'dist/components',
-      // hydrateModule: '../hydrate',
+      // hydrateModule: './hydrate',
     }),
     {
       type: 'dist-custom-elements',
-      customElementsExportBehavior: 'auto-define-custom-elements',
-      generateTypeDeclarations: true,
+      // customElementsExportBehavior: 'auto-define-custom-elements',
+      // generateTypeDeclarations: true,
     },
+    // {
+    //   type: 'dist-hydrate-script',
+    // },
     {
       type: 'docs-readme',
       footer: 'Built with love @ [Gruppo Maggioli](https://www.maggioli.com) from [R&D Department](https://www.maggioli.com/it-it/chi-siamo/ricerca-sviluppo)',
@@ -65,9 +68,6 @@ export const config: Config = {
       type: 'stats',
       file: './dist/stats.json',
     },
-    // {
-    //   type: 'dist-hydrate-script',
-    // },
   ],
   plugins: [
     postcss({

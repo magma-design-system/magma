@@ -2764,7 +2764,7 @@
     autoprefixer "^10.3.6"
     postcss "~8.3.8"
 
-"@stencil/react-output-target@^0.7.1":
+"@stencil/react-output-target@0.7.4":
   version "0.7.4"
   resolved "https://registry.npmjs.org/@stencil/react-output-target/-/react-output-target-0.7.4.tgz#23456c17eaec4888e962829bdb3de09c21ce260a"
   integrity sha512-MuvUJJXtYvSUo0dcFbWx0orVc8ROB0qfaFq1IbNODECqsCKOP3kU5Oy7/NyWs3xNpa8U2lMWvyBYmRvWNB6ExQ==
@@ -14908,7 +14908,7 @@ typescript@5.2.2:
   resolved "https://registry.npmjs.org/typescript/-/typescript-5.2.2.tgz#5ebb5e5a5b75f085f22bc3f8460fba308310fa78"
   integrity sha512-mI4WrpHsbCIcwT9cF4FZvr80QUeKvsUsUvKDoR+X/7XHQH98xYD8YHZg7ANtz2GtZt/CBq2QJ0thkGJMHfqc1w==
 
-"typescript@^4.6.4 || ^5.2.2":
+typescript@5.6.3, "typescript@^4.6.4 || ^5.2.2":
   version "5.6.3"
   resolved "https://registry.npmjs.org/typescript/-/typescript-5.6.3.tgz#5f3449e31c9d94febb17de03cc081dd56d81db5b"
   integrity sha512-hjcS1mhfuyi4WW8IWtjP7brDrG2cuDZukyrYrSauoXGNgx0S7zceP07adYkJycEr56BOUTNPzbInooiN3fn1qw==

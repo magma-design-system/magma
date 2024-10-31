@@ -1,0 +1,11 @@
+# STENCIL REACT BUILD
+stencil-react-build:
+  extends: .base-stencil-build
+  dependencies: [base-stencil-build]
+  script:
+    - nx run stencil-react:build
+  artifacts:
+    name: stencil-react-build
+    expire_in: 1 day
+
+# TODO ADD PUBLISH
