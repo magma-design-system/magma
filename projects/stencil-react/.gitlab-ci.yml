@@ -15,25 +15,10 @@ stencil-react-build:
         - projects/stencil/**/*
         - .deploy/**/*
 
-# STENCIL REACT INSTALL TEST
-stencil-react-install-test:
-  extends: .base-install-test
-  needs: [stencil-react-build]
-  variables:
-    BUILD_DIR: projects/stencil-react
-    COMPONENT: magma-react
-    PACK_NAME: maggioli-design-system-magma-react-*.tgz
-  rules:
-    - if: $CI_COMMIT_BRANCH
-      changes:
-        - projects/stencil-react/package.json
-
-
 # STENCIL REACT PUBLISH TEST
 stencil-react-publish-test:
   extends: .base-publish-test
   dependencies: [stencil-react-build]
-  needs: [stencil-react-install-test]
   stage: test
   variables:
     BUILD_DIR: projects/stencil-react
@@ -42,7 +27,6 @@ stencil-react-publish-test:
     - if: $CI_COMMIT_BRANCH
       changes:
         - projects/stencil-react/package.json
-
 
 # STENCIL REACT PUBLISH
 stencil-react-publish:
@@ -55,3 +39,17 @@ stencil-react-publish:
     - if: $CI_COMMIT_BRANCH == "main"
       changes:
         - projects/styles/package.json
+
+# STENCIL REACT INSTALL TEST
+stencil-react-install-test:
+  extends: .base-install-test
+  needs: [stencil-react-publish]
+  stage: test
+  variables:
+    BUILD_DIR: projects/stencil-react
+    COMPONENT: magma-react
+    PACK_NAME: maggioli-design-system-magma-react-*.tgz
+  rules:
+    - if: $CI_COMMIT_BRANCH
+      changes:
+        - projects/stencil-react/package.json
