@@ -695,11 +695,11 @@ export namespace Components {
          */
         "controls"?: ViewportType;
         /**
-          * Specifies the box’s snap position as an alignment of its snap area
+          * Shows the horizontal scrollbar to maximize accessibility
          */
         "scrollbar"?: boolean;
         /**
-          * Shows the horizontal scrollbar to maximize accessibility
+          * Specifies the box’s snap position as an alignment of its snap area
          */
         "snap"?: SnapType;
     }
@@ -3701,11 +3701,11 @@ declare namespace LocalJSX {
          */
         "controls"?: ViewportType;
         /**
-          * Specifies the box’s snap position as an alignment of its snap area
+          * Shows the horizontal scrollbar to maximize accessibility
          */
         "scrollbar"?: boolean;
         /**
-          * Shows the horizontal scrollbar to maximize accessibility
+          * Specifies the box’s snap position as an alignment of its snap area
          */
         "snap"?: SnapType;
     }
