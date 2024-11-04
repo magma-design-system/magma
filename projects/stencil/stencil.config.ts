@@ -15,7 +15,6 @@ import { reactOutputTarget } from '@stencil/react-output-target'
 
 const packageName = 'magma-components'
 const srcDir = './src'
-const minify = false
 
 export const config: Config = {
   namespace: packageName,
@@ -25,9 +24,9 @@ export const config: Config = {
   taskQueue: 'async',
   transformAliasedImportPaths: false,
   srcDir,
-  sourceMap: !minify,
-  minifyCss: minify,
-  minifyJs: minify,
+  sourceMap: false,
+  minifyCss: true,
+  minifyJs: true,
   buildEs5: true,
   extras: {
     enableImportInjection: true,
