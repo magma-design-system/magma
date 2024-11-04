@@ -26,6 +26,7 @@ base-stencil-build:
       - projects/stencil/src/components.d.ts
       - projects/stencil/src/fixtures
       - projects/stencil/assets
+      - projects/stencil-react/src
   cache:
     policy: pull-push
   rules:

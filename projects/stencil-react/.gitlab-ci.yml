@@ -1,11 +1,57 @@
 # STENCIL REACT BUILD
 stencil-react-build:
-  extends: .base-stencil-build
-  dependencies: [base-stencil-build]
+  extends: .base-build
+  needs: [base-stencil-build]
   script:
     - nx run stencil-react:build
   artifacts:
     name: stencil-react-build
     expire_in: 1 day
+    paths:
+      - projects/stencil-react/dist
+  rules:
+    - if: $CI_COMMIT_BRANCH
+      changes:
+        - projects/stencil/**/*
+        - .deploy/**/*
 
-# TODO ADD PUBLISH
+# STENCIL REACT INSTALL TEST
+stencil-react-install-test:
+  extends: .base-install-test
+  needs: [stencil-react-build]
+  variables:
+    BUILD_DIR: projects/stencil-react
+    COMPONENT: magma-react
+    PACK_NAME: maggioli-design-system-magma-react-*.tgz
+  rules:
+    - if: $CI_COMMIT_BRANCH
+      changes:
+        - projects/stencil-react/package.json
+
+
+# STENCIL REACT PUBLISH TEST
+stencil-react-publish-test:
+  extends: .base-publish-test
+  dependencies: [stencil-react-build]
+  needs: [stencil-react-install-test]
+  stage: test
+  variables:
+    BUILD_DIR: projects/stencil-react
+    COMPONENT: magma-react
+  rules:
+    - if: $CI_COMMIT_BRANCH
+      changes:
+        - projects/stencil-react/package.json
+
+
+# STENCIL REACT PUBLISH
+stencil-react-publish:
+  extends: .base-publish
+  dependencies: [stencil-react-build]
+  needs: [stencil-react-build, stencil-react-publish-test]
+  variables:
+    BUILD_DIR: projects/stencil-react
+  rules:
+    - if: $CI_COMMIT_BRANCH == "main"
+      changes:
+        - projects/styles/package.json
