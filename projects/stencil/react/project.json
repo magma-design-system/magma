@@ -1,6 +1,6 @@
 {
   "name": "stencil-react",
-  "$schema": "../../node_modules/nx/schemas/project-schema.json",
+  "$schema": "../../../node_modules/nx/schemas/project-schema.json",
   "type": "library",
   "tags": ["type:lib"],
   "implicitDependencies": ["stencil"]

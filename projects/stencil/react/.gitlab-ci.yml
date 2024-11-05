@@ -33,6 +33,7 @@ stencil-react-publish:
   extends: .base-publish
   dependencies: [stencil-react-build]
   needs: [stencil-react-build, stencil-react-publish-test]
+  stage: publish
   variables:
     BUILD_DIR: projects/stencil/react
   rules:
