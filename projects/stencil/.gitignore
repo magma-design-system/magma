@@ -5,7 +5,6 @@
 /dist
 /dist-storybook
 /loader
-/react/
 /magma-components
 /src/components/**/components.d.ts
 /src/components/**/documentation.json

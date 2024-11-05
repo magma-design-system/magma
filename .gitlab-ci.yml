@@ -5,7 +5,6 @@ include:
   - '/projects/stencil/.gitlab-ci.yml'
   - '/projects/styles/.gitlab-ci.yml'
   - '/projects/svg-icons/.gitlab-ci.yml'
-  - '/projects/stencil-react/.gitlab-ci.yml'
   - '/.deploy/.gitlab-ci.yml'
 
 variables:
@@ -43,8 +42,6 @@ stages:
       - projects/icons/node_modules
       - projects/stencil/node_modules
       - projects/identity/node_modules
-      - projects/stencil-react/node_modules
-      - projects/stencil-react/node_modules
     policy: pull-push
 
 # BASE PUBLISH TEST

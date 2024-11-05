@@ -38,7 +38,7 @@ export const config: Config = {
     },
     reactOutputTarget({
       // Relative path to where the React components will be generated
-      outDir: '../stencil-react/src/',
+      outDir: './react/src/',
       customElementsDir: 'dist/components',
       // hydrateModule: './hydrate',
     }),
