@@ -68,6 +68,7 @@ stencil-storybook-build:
       - $BUILD_DIR
   cache:
     policy: pull
+  resource_group: isolate
   rules:
     - if: $CI_COMMIT_BRANCH == "main"
       changes:
@@ -137,6 +138,7 @@ stencil-test:
   stage: test
   variables:
     BUILD_DIR: projects/stencil/.build/$COMPONENT
+  resource_group: publish-test
   rules:
     - if: $CI_COMMIT_BRANCH == "main"
       changes:
@@ -149,6 +151,7 @@ stencil-test:
   stage: publish
   variables:
     BUILD_DIR: projects/stencil/.build/$COMPONENT
+  resource_group: publish
   rules:
     - if: $CI_COMMIT_BRANCH == "main"
       changes:
@@ -160,6 +163,7 @@ stencil-test:
   variables:
     BUILD_DIR: projects/stencil/.build/$COMPONENT
     PACK_NAME: maggioli-design-system-${COMPONENT}-*.tgz
+  resource_group: install-test
   rules:
     - if: $CI_COMMIT_BRANCH == "main"
       changes:

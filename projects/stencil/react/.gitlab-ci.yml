@@ -24,7 +24,7 @@ stencil-react-publish-test:
     BUILD_DIR: projects/stencil/react
     COMPONENT: magma-react
   rules:
-    - if: $CI_COMMIT_BRANCH
+    - if: $CI_COMMIT_BRANCH == "main"
       changes:
         - projects/stencil/react/package.json
 
@@ -50,6 +50,6 @@ stencil-react-install-test:
     COMPONENT: magma-react
     PACK_NAME: maggioli-design-system-magma-react-*.tgz
   rules:
-    - if: $CI_COMMIT_BRANCH
+    - if: $CI_COMMIT_BRANCH == "main"
       changes:
         - projects/stencil/react/package.json
