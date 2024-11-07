@@ -95,7 +95,43 @@ stencil-test:
       changes:
         - projects/stencil/**/*
 
-# BASE STENCIL PUBLISH TEST
+
+# BASE MAGMA PUBLISH TEST
+.base-magma-publish-test:
+  extends: .base-publish-test
+  stage: test
+  variables:
+    BUILD_DIR: projects/stencil
+  rules:
+    - if: $CI_COMMIT_BRANCH == "main"
+      changes:
+        - projects/stencil/package.json
+
+# BASE MAGMA PUBLISH
+.base-magma-publish:
+  extends: .base-publish
+  dependencies: [base-stencil-build]
+  stage: publish
+  variables:
+    BUILD_DIR: projects/stencil/
+  rules:
+    - if: $CI_COMMIT_BRANCH == "main"
+      changes:
+        - projects/stencil/package.json
+
+# BASE MAGMA INSTALL TEST
+.base-magma-install-test:
+  extends: .base-install-test
+  variables:
+    BUILD_DIR: projects/stencil/
+    PACK_NAME: maggioli-design-system-magma-*.tgz
+  rules:
+    - if: $CI_COMMIT_BRANCH == "main"
+      changes:
+        - projects/stencil/package.json
+
+
+# BASE STENCIL COMPONENT PUBLISH TEST
 .base-stencil-publish-test:
   extends: .base-publish-test
   stage: test
@@ -106,7 +142,7 @@ stencil-test:
       changes:
         - projects/stencil/src/components/$COMPONENT/package.json
 
-# BASE STENCIL PUBLISH
+# BASE STENCIL COMPONENT PUBLISH
 .base-stencil-publish:
   extends: .base-publish
   dependencies: [base-stencil-build]
@@ -118,7 +154,7 @@ stencil-test:
       changes:
         - projects/stencil/src/components/$COMPONENT/package.json
 
-# BASE STENCIL PUBLISH TEST
+# BASE STENCIL COMPONENT INSTALL TEST
 .base-stencil-install-test:
   extends: .base-install-test
   variables:
