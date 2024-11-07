@@ -97,8 +97,8 @@ stencil-test:
         - projects/stencil/**/*
 
 
-# BASE MAGMA PUBLISH TEST
-.base-magma-publish-test:
+# MAGMA PUBLISH TEST
+magma-publish-test:
   extends: .base-publish-test
   stage: test
   variables:
@@ -108,8 +108,8 @@ stencil-test:
       changes:
         - projects/stencil/package.json
 
-# BASE MAGMA PUBLISH
-.base-magma-publish:
+# MAGMA PUBLISH
+magma-publish:
   extends: .base-publish
   dependencies: [base-stencil-build]
   stage: publish
@@ -120,8 +120,8 @@ stencil-test:
       changes:
         - projects/stencil/package.json
 
-# BASE MAGMA INSTALL TEST
-.base-magma-install-test:
+# MAGMA INSTALL TEST
+magma-install-test:
   extends: .base-install-test
   variables:
     BUILD_DIR: projects/stencil/
