@@ -25,10 +25,10 @@ export class MdsPriceTableFeaturesCell {
     return (
       <Host>
         { this.type === 'supported' &&
-          <i class="svg icon icon--supported" innerHTML={miBaselineCheckCircle} part="icon"/>
+          <i class="icon icon--supported" innerHTML={miBaselineCheckCircle} part="icon"/>
         }
         { this.type === 'unsupported' &&
-          <i class="svg icon icon--unsupported" innerHTML={miBaselineHorizontalRule} part="icon"/>
+          <i class="icon icon--unsupported" innerHTML={miBaselineHorizontalRule} part="icon"/>
         }
         { this.type === 'text' &&
           <mds-text part="text" typography="detail">

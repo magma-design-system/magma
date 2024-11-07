@@ -5,16 +5,16 @@
   .animate-intro {
     @apply
       duration-500
-      ease-in-out-expo
-      transition-cosmetic;
+      ease-in-out-expo;
+
+    transition-property: background-color, border-color, box-shadow, color, fill, height, margin, opacity, padding, transform, width;
   }
 
   .animate-outro {
-    @apply
-      ease-in-cubic
-      transition-cosmetic;
+    @apply ease-in-cubic;
 
     transition-duration: var(--mds-toast-duration, 300ms);
+    transition-property: background-color, border-color, box-shadow, color, fill, height, margin, opacity, padding, transform, width;
   }
 
   .animate-bottom-intro {

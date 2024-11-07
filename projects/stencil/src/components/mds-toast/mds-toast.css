@@ -1,6 +1,4 @@
 @import './css/animate/components.css';
-
-@tailwind base;
 @tailwind utilities;
 
 /**

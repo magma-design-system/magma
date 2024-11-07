@@ -21,8 +21,9 @@
   --mds-banner-shadow: none;
 
   @apply
-    p-600
-    transition-cosmetic;
+    duration-300
+    ease-in-out-expo
+    p-600;
 
   background-color: var(--mds-banner-background);
   border-radius: var(--mds-banner-radius);
@@ -30,6 +31,7 @@
   color: var(--mds-banner-color);
   display: grid;
   gap: var(--mds-banner-gap);
+  transition-property: background-color, box-shadow, color;
 }
 
 .body {

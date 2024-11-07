@@ -1,11 +1,10 @@
 import { fileExtensionsDictionary, ExtensionInfo } from '@dictionary/file-extensions'
 import { fileFormatsVariant } from '@type/variant-file-format'
+import { ThemeFullVariantType } from '@type/variant'
 
 interface FileFormatsVariants {
-  color: string
   icon: string
-  iconBackground: string
-  variant: string
+  variant: ThemeFullVariantType
 }
 
 const sanitizeFilename = (filename: string, error: string = 'Attribute "filename" is undefined.') => {

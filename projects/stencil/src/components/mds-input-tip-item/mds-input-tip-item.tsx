@@ -57,7 +57,7 @@ export class MdsInputTipItem {
             </mds-text>
           }
           { this.variant === 'required-success' &&
-            <span class="icon svg" innerHTML={miBaselineDone}></span>
+            <span class="icon" innerHTML={miBaselineDone}></span>
           }
         </div>
       </Host>

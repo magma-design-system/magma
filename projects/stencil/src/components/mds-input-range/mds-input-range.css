@@ -80,11 +80,6 @@
 }
 
 .field::-webkit-slider-thumb {
-
-  @apply
-    duration-200
-    transition-cosmetic;
-
   appearance: none;
   background-color: var(--mds-input-range-thumb-background);
   border: 0;
@@ -98,11 +93,6 @@
 }
 
 .field::-webkit-slider-runnable-track {
-
-  @apply
-    duration-200
-    transition-cosmetic;
-
   appearance: none;
   border: 0;
   height: 0;
@@ -111,25 +101,27 @@
 
 .track-progress {
   @apply
-    duration-200
-    transition-colors;
+    ease-in-out
+    duration-300;
 
   background-color: var(--mds-input-range-track-progress-background);
   display: flex;
   height: var(--mds-input-range-track-size);
+  transition-property: background-color;
 }
 
 .track-total {
 
   @apply
-    duration-200
-    transition-colors;
+    ease-in-out
+    duration-300;
 
   background-color: var(--mds-input-range-track-background);
   border-radius: var(--mds-input-range-track-size);
   display: flex;
   height: var(--mds-input-range-track-size);
   overflow: hidden;
+  transition-property: background-color;
   width: 100%;
 }
 

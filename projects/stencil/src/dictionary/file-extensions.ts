@@ -1,10 +1,12 @@
+import { FileFormat } from '@type/variant-file-format'
+
 interface FileExtenstion {
   [key: string]: ExtensionInfo
 }
 
 interface ExtensionInfo {
   preview?: boolean
-  format: string
+  format: FileFormat
   description: string
 }
 

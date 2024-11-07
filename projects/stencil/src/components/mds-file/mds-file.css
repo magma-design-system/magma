@@ -32,14 +32,20 @@
 
 .preview {
   @apply
-    transition-colors
+    duration-300
+    ease-in-out
     w-1400;
 
   align-items: center;
+  background-color: var(--mds-file-preview-icon-bacground);
+  color: var(--mds-file-preview-color);
   display: flex;
+  fill: var(--mds-file-preview-icon-color);
   flex-shrink: 0;
   justify-content: center;
   position: relative;
+  transition-property: color, background-color, fill;
+
 }
 
 .image-preview {
@@ -113,9 +119,12 @@
 }
 
 .downloaded {
+  @apply svg;
+
   fill: theme('colors.status-success-06');
 }
 
+@import './css/mds-file-format.css';
 @import './css/mds-file-pref-animation.css';
 @import './css/mds-file-pref-theme.css';
 @import './css/mds-file-pref-contrast.css';

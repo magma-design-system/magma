@@ -180,7 +180,7 @@ export class MdsInputSelect {
           { this.placeholder && <option value="" disabled selected>{ this.placeholder }</option> }
         </select>
         <div class="icon-container">
-          <i class="svg icon" innerHTML={miBaselineKeyboardArrowDown} />
+          <i class="icon" innerHTML={miBaselineKeyboardArrowDown} />
         </div>
         <div class="option-container">
           <slot onSlotchange={this.onSlotChangeHandler}></slot>

@@ -1,7 +1,6 @@
 @import '~@maggioli-design-system/styles/dist/tailwind/typography.css';
 @import '~@maggioli-design-system/styles/dist/css/animations.css';
 @import '../../tailwind/components.css';
-@tailwind base;
 @tailwind components;
 @tailwind utilities;
 
@@ -65,13 +64,16 @@
 }
 
 .icon {
-  @apply transition-colors;
+  @apply
+    duration-300
+    ease-in-out;
 
   align-items: center;
   display: inline-flex;
   fill: inherit;
   justify-content: center;
   pointer-events: none;
+  transition-property: fill;
 }
 
 :host([disabled]:not([disabled="false"])) {

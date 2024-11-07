@@ -73,6 +73,11 @@ export class MdsFilePreview {
   @Prop({ reflect: true }) variant?: ThemeFullVariantAvatarType
 
   /**
+   * Sets if the download icon must be shown or not
+   */
+  @Prop({ reflect: true, mutable: true }) format?: string
+
+  /**
    * Emits when the component is clicked, returning file infos
    */
   @Event({ eventName: 'mdsFileDownload' }) downloadedEvent: EventEmitter<MdsFilePreviewEventDetail>
@@ -93,8 +98,17 @@ export class MdsFilePreview {
     this.downloadedEvent.emit({ target: this.host, filename: this.filename, extension: getSuffix(this.filename, this.suffix) })
   }
 
+  componentWillLoad (): void {
+    this.format = getExtensionInfos(this.filename, this.suffix).format
+  }
+
   componentDidLoad (): void {
     this.handleDownloadable(this.downloadable)
+  }
+
+  @Watch('filename')
+  handleFilename (newValue: string): void {
+    this.format = getExtensionInfos(newValue, this.suffix).format
   }
 
   @Watch('downloadable')
@@ -115,7 +129,7 @@ export class MdsFilePreview {
         <div class="card" part="card" onClick={this.onClickDownloadEvent}>
           { this.src && !this.message && getExtensionInfos(this.filename, this.suffix).preview
             ? <mds-img src={this.src} class="preview preview--image" aspect-ratio="1/1"></mds-img>
-            : <div class={clsx('preview', !this.message ? `preview--icon ${getFormatsVariant(this.filename, this.suffix).color} ${getFormatsVariant(this.filename, this.suffix).iconBackground}` : 'preview--status')}>
+            : <div class={clsx('preview', !this.message ? 'preview--icon' : 'preview--status')}>
               { this.icon
                 ? <mds-icon class="icon" name={this.icon}></mds-icon>
                 : <mds-icon class="icon" name={getFormatsVariant(this.filename, this.suffix).icon}/>

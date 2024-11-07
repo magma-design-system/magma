@@ -109,7 +109,7 @@ export class MdsAccordionTimerItem {
             <button aria-controls="content" aria-expanded={this.selected ? 'true' : 'false'} class="action focus-bounce" id="action" onClick={this.toggle} role="button" tabindex="0">
               <mds-text typography={this.typography} part="label">{this.description}</mds-text>
               <mds-text aria-hidden="true" class="icon-button" typography={this.typography} part="icon">
-                <i class="svg icon" innerHTML={miBaselineKeyboardArrowDown} />
+                <i class="icon" innerHTML={miBaselineKeyboardArrowDown} />
               </mds-text>
             </button>
             <div class="content" id="content">

@@ -67,7 +67,7 @@ export class MdsDetails {
               <div class="title">
                 <slot name="title"/>
               </div>
-              <i class={clsx('svg helper-icon', this.isOpened && 'opened')} innerHTML={miBaselineKeyboardArrowDown}/>
+              <i class={clsx('helper-icon', this.isOpened && 'opened')} innerHTML={miBaselineKeyboardArrowDown}/>
             </header>
           </div>
           <div class={clsx('details', this.isOpened && 'opened')}>

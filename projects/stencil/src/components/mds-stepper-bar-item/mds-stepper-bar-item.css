@@ -61,7 +61,7 @@
   display: hidden;
 }
 
-:host( [ done ] ) .icon {
+:host([done]) .icon {
 
   --mds-stepper-bar-item-icon-background: var(--mds-stepper-bar-item-icon-background-done);
   --mds-stepper-bar-item-icon-color: var(--mds-stepper-bar-item-icon-color-done);
@@ -69,7 +69,7 @@
   transition-delay: 0ms;
 }
 
-:host( [ current ] ) .icon {
+:host([current]) .icon {
 
   --mds-stepper-bar-item-icon-background: var(--mds-stepper-bar-item-icon-background-current);
   --mds-stepper-bar-item-icon-color: var(--mds-stepper-bar-item-icon-color-current);
@@ -77,8 +77,8 @@
   transition-delay: calc(var(--mds-stepper-bar-item-duaration) / 2);
 }
 
-:host( :not([ done ]) ) .icon,
-:host( :not([ current ]) ) .icon {
+:host(:not([done])) .icon,
+:host(:not([current])) .icon {
 
   --mds-stepper-bar-item-icon-ring-color: var(--mds-stepper-bar-item-icon-background);
 }
@@ -98,8 +98,9 @@
 .icon {
   @apply
     p-200
-    rounded-full
-    transition-cosmetic;
+    ease-in-out
+    duration-150
+    rounded-full;
 
   background-color: var(--mds-stepper-bar-item-icon-background);
   box-shadow: 0 0 0 var(--mds-stepper-bar-item-icon-ring-size) var(--mds-stepper-bar-item-icon-ring-color), 0 0 0 var(--mds-stepper-bar-item-icon-ring-separator-size) var(--mds-stepper-bar-item-icon-ring-separator-color);
@@ -108,6 +109,7 @@
   flex-shrink: 0;
   position: relative;
   transition-duration: var(--mds-stepper-bar-item-duaration);
+  transition-property: background-color, box-shadow, fill;
 }
 
 .progress {
@@ -133,11 +135,14 @@
 }
 
 .text {
-  @apply transition-cosmetic;
+  @apply
+    ease-in-out
+    duration-150;
 
   color: var(--mds-stepper-bar-item-color);
   pointer-events: none;
   transition-duration: var(--mds-stepper-bar-item-duaration);
+  transition-property: color;
 }
 
 .badge {

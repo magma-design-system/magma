@@ -1,8 +1,5 @@
 @import '~@maggioli-design-system/styles/dist/tailwind/typography.css';
 @import '../../tailwind/components.css';
-
-
-@tailwind base;
 @tailwind components;
 @tailwind utilities;
 
@@ -26,12 +23,12 @@
   user-select: none;
 }
 
-:host( [required]:not([required="false"]):focus-within ) .icon {
-  @apply translate-y-150 translate-x-150;
+:host([required]:not([required="false"]):focus-within) .icon {
+  transform: translate(theme('spacing.150'), theme('spacing.150'));
 }
 
-:host( :hover ),
-:host( :focus-within ) {
+:host(:hover),
+:host(:focus-within) {
 
   --mds-input-select-variant-color: var(--brand-maggioli-03);
   --mds-input-select-ring: 0 0 0 3px rgb(var(--mds-input-select-variant-color) / 1);
@@ -51,7 +48,6 @@
     py-300
     rounded-lg
     text-info-detail
-    transition-cosmetic
     w-full;
 
   appearance: none;
@@ -63,6 +59,7 @@
   cursor: pointer;
   overflow: hidden;
   text-overflow: ellipsis;
+  transition-property: background-color, border-color, box-shadow, color, fill;
 }
 
 .input:hover,
@@ -70,8 +67,7 @@
   @apply
     duration-300
     ease-out-expo
-    outline-none
-    transition-cosmetic;
+    outline-none;
 
   color: theme('colors.tone-neutral-03');
 }
@@ -98,9 +94,8 @@
 }
 
 :host([disabled]:not([disabled="false"])) .icon {
-  @apply translate-y-200 translate-x-250;
-
   fill: theme('colors.tone-neutral-06');
+  transform: translate(theme('spacing.250'), theme('spacing.200'));
 }
 
 .icon-container {
@@ -119,10 +114,11 @@
   @apply
     duration-200
     rounded-full
-    transition-cosmetic;
+    svg;
 
   background-color: var(--mds-input-select-arrow-icon-background-color, theme('colors.brand-maggioli-09'));
   fill: var(--mds-input-select-arrow-icon-color, theme('colors.brand-maggioli-04'));
+  transition-property: background-color, fill;
 }
 
 .option-container {

@@ -8,10 +8,10 @@ describe('mds-file-preview', () => {
       html: '<mds-file-preview filename=""></mds-file-preview>',
     })
     expect(page.root).toEqualHtml(`
-      <mds-file-preview filename="" truncate="word">
+      <mds-file-preview filename="" format="attachment" truncate="word">
         <mock:shadow-root>
           <div class="card" part="card">
-            <div class="bg-tone-neutral-10 fill-tone-neutral-04 preview preview--icon text-tone-neutral-04">
+            <div class="preview preview--icon">
               <mds-icon class="icon"></mds-icon>
             </div>
             <mds-text class="file-name" truncate="word" typography="h6" variant="title"></mds-text>

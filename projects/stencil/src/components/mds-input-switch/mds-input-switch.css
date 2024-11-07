@@ -1,6 +1,5 @@
 @import '~@maggioli-design-system/styles/dist/css/animations.css';
 @import '../../tailwind/components.css';
-@tailwind base;
 @tailwind components;
 @tailwind utilities;
 
@@ -117,24 +116,21 @@
 .icon-checked,
 .icon-unchecked {
   @apply
+    duration-200
     ease-out-expo
     font-normal;
+
+  transition-property: fill, transform;
 }
 
 .icon-unchecked {
-  @apply
-    opacity-100
-    transition-cosmetic;
-
   fill: var(--mds-input-switch-icon-color-unchecked);
+  opacity: 1;
   transform: scale(theme('scale.100'));
   transition-duration: var(--mds-input-switch-duration);
 }
 
 .icon-checked {
-  @apply
-    transition-cosmetic;
-
   fill: var(--mds-input-switch-icon-color-checked);
   transform: scale(theme('scale.0'));
   transition-duration: var(--mds-input-switch-duration);
@@ -165,8 +161,8 @@
 .switch {
   @apply
     rounded-full
-    duration-200
-    transition-cosmetic;
+    ease-in-out
+    duration-200;
 
   background-color: var(--mds-input-switch-box-color-unchecked);
   box-sizing: border-box;
@@ -174,6 +170,7 @@
   flex-shrink: 0;
   padding: var(--mds-input-switch-box-padding);
   transition-duration: var(--mds-input-switch-duration);
+  transition-property: background-color, border-color, box-shadow, color, fill, height, margin, opacity, padding, transform, width;
   width: var(--mds-input-switch-toggle-container-size);
 }
 
@@ -181,8 +178,7 @@
   @apply
     ease-linear
     rounded-full
-    duration-200
-    transition-cosmetic;
+    duration-200;
 
   align-items: center;
   animation-duration: calc(var(--mds-input-switch-duration) * 1.5);
@@ -197,6 +193,7 @@
   display: flex;
   height: var(--mds-input-switch-toggle-size);
   justify-content: center;
+  transition-property: background-color, border-color, box-shadow, color, fill, height, margin, opacity, padding, transform, width;
   width: var(--mds-input-switch-toggle-size);
 }
 

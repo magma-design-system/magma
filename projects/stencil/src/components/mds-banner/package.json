@@ -1,6 +1,6 @@
 {
   "name": "@maggioli-design-system/mds-banner",
-  "version": "5.1.0",
+  "version": "5.1.1",
   "description": "This is mds-banner web component from Maggioli Design System Magma. ",
   "main": "dist/index.cjs.js",
   "module": "dist/index.js",
@@ -24,9 +24,9 @@
     "test": "stencil test --spec --e2e"
   },
   "dependencies": {
-    "@maggioli-design-system/mds-button": "5.2.0",
+    "@maggioli-design-system/mds-button": "5.2.1",
     "@maggioli-design-system/mds-icon": "2.10.6",
-    "@maggioli-design-system/mds-text": "4.5.0",
+    "@maggioli-design-system/mds-text": "4.5.1",
     "@maggioli-design-system/styles": "15.4.0",
     "@stencil/core": "4.21.0"
   },

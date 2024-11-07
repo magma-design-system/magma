@@ -71,6 +71,8 @@
 }
 
 .browser-icon {
+  @apply svg;
+
   fill: var(--mds-url-view-color);
 }
 

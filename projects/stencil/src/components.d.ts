@@ -533,6 +533,10 @@ export namespace Components {
          */
         "filename": string;
         /**
+          * Sets if the download icon must be shown or not
+         */
+        "format"?: string;
+        /**
           * The image preview src if available of a file, useful if you have a logo to display, or a smaller version of a bigger image
          */
         "preview"?: string;
@@ -566,6 +570,10 @@ export namespace Components {
           * The filesize shown, if you pass a string you can write whathever you want, if you pass a number it expect filesize in bytes, the component will format it automatically.
          */
         "filesize"?: string;
+        /**
+          * Sets if the download icon must be shown or not
+         */
+        "format"?: string;
         /**
           * The name of the icon or a base64 string to render it as an svg
          */
@@ -687,11 +695,11 @@ export namespace Components {
          */
         "controls"?: ViewportType;
         /**
-          * Specifies the box’s snap position as an alignment of its snap area
+          * Shows the horizontal scrollbar to maximize accessibility
          */
         "scrollbar"?: boolean;
         /**
-          * Shows the horizontal scrollbar to maximize accessibility
+          * Specifies the box’s snap position as an alignment of its snap area
          */
         "snap"?: SnapType;
     }
@@ -3503,6 +3511,10 @@ declare namespace LocalJSX {
          */
         "filename"?: string;
         /**
+          * Sets if the download icon must be shown or not
+         */
+        "format"?: string;
+        /**
           * Emits when the component is clicked, returning file infos
          */
         "onMdsFileDownload"?: (event: MdsFileCustomEvent<MdsFileEventDetail>) => void;
@@ -3540,6 +3552,10 @@ declare namespace LocalJSX {
           * The filesize shown, if you pass a string you can write whathever you want, if you pass a number it expect filesize in bytes, the component will format it automatically.
          */
         "filesize"?: string;
+        /**
+          * Sets if the download icon must be shown or not
+         */
+        "format"?: string;
         /**
           * The name of the icon or a base64 string to render it as an svg
          */
@@ -3685,11 +3701,11 @@ declare namespace LocalJSX {
          */
         "controls"?: ViewportType;
         /**
-          * Specifies the box’s snap position as an alignment of its snap area
+          * Shows the horizontal scrollbar to maximize accessibility
          */
         "scrollbar"?: boolean;
         /**
-          * Shows the horizontal scrollbar to maximize accessibility
+          * Specifies the box’s snap position as an alignment of its snap area
          */
         "snap"?: SnapType;
     }

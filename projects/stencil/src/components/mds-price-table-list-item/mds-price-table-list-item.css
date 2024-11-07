@@ -28,10 +28,11 @@
     duration-500
     ease-out-expo
     h-600
-    transition-colors
+    svg
     w-600;
 
   fill: var(--mds-price-table-list-item-unsupported-icon-color);
+  transition-property: fill;
 }
 
 :host([supported]:not([supported="false"])) .icon {

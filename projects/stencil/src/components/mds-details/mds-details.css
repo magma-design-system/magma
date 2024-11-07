@@ -72,12 +72,14 @@
 .helper-icon {
   @apply
     duration-300
-    transition-transform;
+    ease-in-out-expo
+    svg;
 
   cursor: pointer;
   fill: var(--mds-details-helper-icon-color);
   flex-shrink: 0;
   rotate: 0deg;
+  transition-property: transform;
 }
 
 .helper-icon.opened {

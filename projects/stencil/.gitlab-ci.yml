@@ -26,6 +26,7 @@ base-stencil-build:
       - projects/stencil/src/components.d.ts
       - projects/stencil/src/fixtures
       - projects/stencil/assets
+      - projects/stencil/react/src
   cache:
     policy: pull-push
   rules:
@@ -67,6 +68,7 @@ stencil-storybook-build:
       - $BUILD_DIR
   cache:
     policy: pull
+  resource_group: isolate
   rules:
     - if: $CI_COMMIT_BRANCH == "main"
       changes:
@@ -94,41 +96,81 @@ stencil-test:
       changes:
         - projects/stencil/**/*
 
-# BASE STENCIL PUBLISH TEST
+
+# BASE MAGMA PUBLISH TEST
+.base-magma-publish-test:
+  extends: .base-publish-test
+  stage: test
+  variables:
+    BUILD_DIR: projects/stencil
+  rules:
+    - if: $CI_COMMIT_BRANCH == "main"
+      changes:
+        - projects/stencil/package.json
+
+# BASE MAGMA PUBLISH
+.base-magma-publish:
+  extends: .base-publish
+  dependencies: [base-stencil-build]
+  stage: publish
+  variables:
+    BUILD_DIR: projects/stencil/
+  rules:
+    - if: $CI_COMMIT_BRANCH == "main"
+      changes:
+        - projects/stencil/package.json
+
+# BASE MAGMA INSTALL TEST
+.base-magma-install-test:
+  extends: .base-install-test
+  variables:
+    BUILD_DIR: projects/stencil/
+    PACK_NAME: maggioli-design-system-magma-*.tgz
+  rules:
+    - if: $CI_COMMIT_BRANCH == "main"
+      changes:
+        - projects/stencil/package.json
+
+
+# BASE STENCIL COMPONENT PUBLISH TEST
 .base-stencil-publish-test:
   extends: .base-publish-test
   stage: test
   variables:
     BUILD_DIR: projects/stencil/.build/$COMPONENT
+  resource_group: publish-test
   rules:
     - if: $CI_COMMIT_BRANCH == "main"
       changes:
         - projects/stencil/src/components/$COMPONENT/package.json
 
-# BASE STENCIL PUBLISH
+# BASE STENCIL COMPONENT PUBLISH
 .base-stencil-publish:
   extends: .base-publish
   dependencies: [base-stencil-build]
   stage: publish
   variables:
     BUILD_DIR: projects/stencil/.build/$COMPONENT
+  resource_group: publish
   rules:
     - if: $CI_COMMIT_BRANCH == "main"
       changes:
         - projects/stencil/src/components/$COMPONENT/package.json
 
-# BASE STENCIL PUBLISH TEST
+# BASE STENCIL COMPONENT INSTALL TEST
 .base-stencil-install-test:
   extends: .base-install-test
   variables:
     BUILD_DIR: projects/stencil/.build/$COMPONENT
     PACK_NAME: maggioli-design-system-${COMPONENT}-*.tgz
+  resource_group: install-test
   rules:
     - if: $CI_COMMIT_BRANCH == "main"
       changes:
         - projects/stencil/src/components/$COMPONENT/package.json
 
 include:
+  - '/projects/stencil/react/.gitlab-ci.yml'
   # - '/projects/stencil/src/components/mds-input-field/.gitlab-ci.yml'
   - '/projects/stencil/src/components/mds-accordion-item/.gitlab-ci.yml'
   - '/projects/stencil/src/components/mds-accordion-timer-item/.gitlab-ci.yml'
