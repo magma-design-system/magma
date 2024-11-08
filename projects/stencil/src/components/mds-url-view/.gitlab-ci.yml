@@ -2,24 +2,19 @@
   variables:
     COMPONENT: mds-url-view
 
-# ISOLATE
-url-view-isolate:
-  extends: [.base-isolate, .base-url-view]
-  dependencies: [base-stencil-build]
-
 # TEST
 url-view-publish-test:
   extends: [.base-stencil-publish-test, .base-url-view]
-  dependencies: [base-stencil-build, url-view-isolate]
+  dependencies: [base-stencil-build, base-isolate]
 
 # PUBLISH
 url-view-publish:
   extends: [.base-stencil-publish, .base-url-view]
-  dependencies: [base-stencil-build, url-view-isolate]
-  needs: [base-stencil-build, url-view-isolate, url-view-publish-test]
+  dependencies: [base-stencil-build, base-isolate]
+  needs: [base-stencil-build, base-isolate, url-view-publish-test]
 
 # INSTALL TEST
 url-view-install-test:
   extends: [.base-stencil-install-test, .base-url-view]
-  dependencies: [base-stencil-build, url-view-isolate]
-  needs: [base-stencil-build, url-view-isolate, url-view-publish]
+  dependencies: [base-stencil-build, base-isolate]
+  needs: [base-stencil-build, base-isolate, url-view-publish]

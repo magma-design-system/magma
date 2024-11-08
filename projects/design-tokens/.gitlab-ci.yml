@@ -21,7 +21,6 @@ design-tokens-build:
 design-tokens-publish-test:
   extends: .base-publish-test
   dependencies: [design-tokens-build]
-  stage: test
   variables:
     BUILD_DIR: projects/design-tokens
     COMPONENT: design-tokens

@@ -2,24 +2,19 @@
   variables:
     COMPONENT: mds-quote
 
-# ISOLATE
-quote-isolate:
-  extends: [.base-isolate, .base-quote]
-  dependencies: [base-stencil-build]
-
 # TEST
 quote-publish-test:
   extends: [.base-stencil-publish-test, .base-quote]
-  dependencies: [base-stencil-build, quote-isolate]
+  dependencies: [base-stencil-build, base-isolate]
 
 # PUBLISH
 quote-publish:
   extends: [.base-stencil-publish, .base-quote]
-  dependencies: [base-stencil-build, quote-isolate]
-  needs: [base-stencil-build, quote-isolate, quote-publish-test]
+  dependencies: [base-stencil-build, base-isolate]
+  needs: [base-stencil-build, base-isolate, quote-publish-test]
 
 # INSTALL TEST
 quote-install-test:
   extends: [.base-stencil-install-test, .base-quote]
-  dependencies: [base-stencil-build, quote-isolate]
-  needs: [base-stencil-build, quote-isolate, quote-publish]
+  dependencies: [base-stencil-build, base-isolate]
+  needs: [base-stencil-build, base-isolate, quote-publish]

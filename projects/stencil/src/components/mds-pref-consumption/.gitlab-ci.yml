@@ -2,24 +2,19 @@
   variables:
     COMPONENT: mds-pref-consumption
 
-# ISOLATE
-pref-consumption-isolate:
-  extends: [.base-isolate, .base-pref-consumption]
-  dependencies: [base-stencil-build]
-
 # TEST
 pref-consumption-publish-test:
   extends: [.base-stencil-publish-test, .base-pref-consumption]
-  dependencies: [base-stencil-build, pref-consumption-isolate]
+  dependencies: [base-stencil-build, base-isolate]
 
 # PUBLISH
 pref-consumption-publish:
   extends: [.base-stencil-publish, .base-pref-consumption]
-  dependencies: [base-stencil-build, pref-consumption-isolate]
-  needs: [base-stencil-build, pref-consumption-isolate, pref-consumption-publish-test]
+  dependencies: [base-stencil-build, base-isolate]
+  needs: [base-stencil-build, base-isolate, pref-consumption-publish-test]
 
 # INSTALL TEST
 pref-consumption-install-test:
   extends: [.base-stencil-install-test, .base-pref-consumption]
-  dependencies: [base-stencil-build, pref-consumption-isolate]
-  needs: [base-stencil-build, pref-consumption-isolate, pref-consumption-publish]
+  dependencies: [base-stencil-build, base-isolate]
+  needs: [base-stencil-build, base-isolate, pref-consumption-publish]

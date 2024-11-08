@@ -1,7 +1,6 @@
 # SVG-ICONS PUBLISH TEST
 svg-icons-publish-test:
   extends: .base-publish-test
-  stage: test
   variables:
     BUILD_DIR: projects/svg-icons
     COMPONENT: svg-icons

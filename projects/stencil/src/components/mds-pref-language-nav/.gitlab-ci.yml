@@ -2,24 +2,19 @@
   variables:
     COMPONENT: mds-pref-language-nav
 
-# ISOLATE
-pref-language-nav-isolate:
-  extends: [.base-isolate, .base-pref-language-nav]
-  dependencies: [base-stencil-build]
-
 # TEST
 pref-language-nav-publish-test:
   extends: [.base-stencil-publish-test, .base-pref-language-nav]
-  dependencies: [base-stencil-build, pref-language-nav-isolate]
+  dependencies: [base-stencil-build, base-isolate]
 
 # PUBLISH
 pref-language-nav-publish:
   extends: [.base-stencil-publish, .base-pref-language-nav]
-  dependencies: [base-stencil-build, pref-language-nav-isolate]
-  needs: [base-stencil-build, pref-language-nav-isolate, pref-language-nav-publish-test]
+  dependencies: [base-stencil-build, base-isolate]
+  needs: [base-stencil-build, base-isolate, pref-language-nav-publish-test]
 
 # INSTALL TEST
 pref-language-nav-install-test:
   extends: [.base-stencil-install-test, .base-pref-language-nav]
-  dependencies: [base-stencil-build, pref-language-nav-isolate]
-  needs: [base-stencil-build, pref-language-nav-isolate, pref-language-nav-publish]
+  dependencies: [base-stencil-build, base-isolate]
+  needs: [base-stencil-build, base-isolate, pref-language-nav-publish]

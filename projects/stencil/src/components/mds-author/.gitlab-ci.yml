@@ -2,24 +2,19 @@
   variables:
     COMPONENT: mds-author
 
-# ISOLATE
-author-isolate:
-  extends: [.base-isolate, .base-author]
-  dependencies: [base-stencil-build]
-
 # TEST
 author-publish-test:
   extends: [.base-stencil-publish-test, .base-author]
-  dependencies: [base-stencil-build, author-isolate]
+  dependencies: [base-stencil-build, base-isolate]
 
 # PUBLISH
 author-publish:
   extends: [.base-stencil-publish, .base-author]
-  dependencies: [base-stencil-build, author-isolate]
-  needs: [base-stencil-build, author-isolate, author-publish-test]
+  dependencies: [base-stencil-build, base-isolate]
+  needs: [base-stencil-build, base-isolate, author-publish-test]
 
 # INSTALL TEST
 author-install-test:
   extends: [.base-stencil-install-test, .base-author]
-  dependencies: [base-stencil-build, author-isolate]
-  needs: [base-stencil-build, author-isolate, author-publish]
+  dependencies: [base-stencil-build, base-isolate]
+  needs: [base-stencil-build, base-isolate, author-publish]

@@ -2,24 +2,19 @@
   variables:
     COMPONENT: mds-button
 
-# ISOLATE
-button-isolate:
-  extends: [.base-isolate, .base-button]
-  dependencies: [base-stencil-build]
-
 # TEST
 button-publish-test:
   extends: [.base-stencil-publish-test, .base-button]
-  dependencies: [base-stencil-build, button-isolate]
+  dependencies: [base-stencil-build, base-isolate]
 
 # PUBLISH
 button-publish:
   extends: [.base-stencil-publish, .base-button]
-  dependencies: [base-stencil-build, button-isolate]
-  needs: [base-stencil-build, button-isolate, button-publish-test]
+  dependencies: [base-stencil-build, base-isolate]
+  needs: [base-stencil-build, base-isolate, button-publish-test]
 
 # INSTALL TEST
 button-install-test:
   extends: [.base-stencil-install-test, .base-button]
-  dependencies: [base-stencil-build, button-isolate]
-  needs: [base-stencil-build, button-isolate, button-publish]
+  dependencies: [base-stencil-build, base-isolate]
+  needs: [base-stencil-build, base-isolate, button-publish]

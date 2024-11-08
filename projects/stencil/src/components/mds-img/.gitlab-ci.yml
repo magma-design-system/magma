@@ -2,24 +2,19 @@
   variables:
     COMPONENT: mds-img
 
-# ISOLATE
-img-isolate:
-  extends: [.base-isolate, .base-img]
-  dependencies: [base-stencil-build]
-
 # TEST
 img-publish-test:
   extends: [.base-stencil-publish-test, .base-img]
-  dependencies: [base-stencil-build, img-isolate]
+  dependencies: [base-stencil-build, base-isolate]
 
 # PUBLISH
 img-publish:
   extends: [.base-stencil-publish, .base-img]
-  dependencies: [base-stencil-build, img-isolate]
-  needs: [base-stencil-build, img-isolate, img-publish-test]
+  dependencies: [base-stencil-build, base-isolate]
+  needs: [base-stencil-build, base-isolate, img-publish-test]
 
 # INSTALL TEST
 img-install-test:
   extends: [.base-stencil-install-test, .base-img]
-  dependencies: [base-stencil-build, img-isolate]
-  needs: [base-stencil-build, img-isolate, img-publish]
+  dependencies: [base-stencil-build, base-isolate]
+  needs: [base-stencil-build, base-isolate, img-publish]

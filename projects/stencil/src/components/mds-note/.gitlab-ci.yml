@@ -2,24 +2,19 @@
   variables:
     COMPONENT: mds-note
 
-# ISOLATE
-note-isolate:
-  extends: [.base-isolate, .base-note]
-  dependencies: [base-stencil-build]
-
 # TEST
 note-publish-test:
   extends: [.base-stencil-publish-test, .base-note]
-  dependencies: [base-stencil-build, note-isolate]
+  dependencies: [base-stencil-build, base-isolate]
 
 # PUBLISH
 note-publish:
   extends: [.base-stencil-publish, .base-note]
-  dependencies: [base-stencil-build, note-isolate]
-  needs: [base-stencil-build, note-isolate, note-publish-test]
+  dependencies: [base-stencil-build, base-isolate]
+  needs: [base-stencil-build, base-isolate, note-publish-test]
 
 # INSTALL TEST
 note-install-test:
   extends: [.base-stencil-install-test, .base-note]
-  dependencies: [base-stencil-build, note-isolate]
-  needs: [base-stencil-build, note-isolate, note-publish]
+  dependencies: [base-stencil-build, base-isolate]
+  needs: [base-stencil-build, base-isolate, note-publish]

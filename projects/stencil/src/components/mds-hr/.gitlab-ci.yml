@@ -2,24 +2,19 @@
   variables:
     COMPONENT: mds-hr
 
-# ISOLATE
-hr-isolate:
-  extends: [.base-isolate, .base-hr]
-  dependencies: [base-stencil-build]
-
 # TEST
 hr-publish-test:
   extends: [.base-stencil-publish-test, .base-hr]
-  dependencies: [base-stencil-build, hr-isolate]
+  dependencies: [base-stencil-build, base-isolate]
 
 # PUBLISH
 hr-publish:
   extends: [.base-stencil-publish, .base-hr]
-  dependencies: [base-stencil-build, hr-isolate]
-  needs: [base-stencil-build, hr-isolate, hr-publish-test]
+  dependencies: [base-stencil-build, base-isolate]
+  needs: [base-stencil-build, base-isolate, hr-publish-test]
 
 # INSTALL TEST
 hr-install-test:
   extends: [.base-stencil-install-test, .base-hr]
-  dependencies: [base-stencil-build, hr-isolate]
-  needs: [base-stencil-build, hr-isolate, hr-publish]
+  dependencies: [base-stencil-build, base-isolate]
+  needs: [base-stencil-build, base-isolate, hr-publish]

@@ -2,24 +2,19 @@
   variables:
     COMPONENT: mds-banner
 
-# ISOLATE
-banner-isolate:
-  extends: [.base-isolate, .base-banner]
-  dependencies: [base-stencil-build]
-
 # TEST
 banner-publish-test:
   extends: [.base-stencil-publish-test, .base-banner]
-  dependencies: [base-stencil-build, banner-isolate]
+  dependencies: [base-stencil-build, base-isolate]
 
 # PUBLISH
 banner-publish:
   extends: [.base-stencil-publish, .base-banner]
-  dependencies: [base-stencil-build, banner-isolate]
-  needs: [base-stencil-build, banner-isolate, banner-publish-test]
+  dependencies: [base-stencil-build, base-isolate]
+  needs: [base-stencil-build, base-isolate, banner-publish-test]
 
 # INSTALL TEST
 banner-install-test:
   extends: [.base-stencil-install-test, .base-banner]
-  dependencies: [base-stencil-build, banner-isolate]
-  needs: [base-stencil-build, banner-isolate, banner-publish]
+  dependencies: [base-stencil-build, base-isolate]
+  needs: [base-stencil-build, base-isolate, banner-publish]

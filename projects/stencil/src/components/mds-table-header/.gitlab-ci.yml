@@ -2,24 +2,19 @@
   variables:
     COMPONENT: mds-table-header
 
-# ISOLATE
-table-header-isolate:
-  extends: [.base-isolate, .base-table-header]
-  dependencies: [base-stencil-build]
-
 # TEST
 table-header-publish-test:
   extends: [.base-stencil-publish-test, .base-table-header]
-  dependencies: [base-stencil-build, table-header-isolate]
+  dependencies: [base-stencil-build, base-isolate]
 
 # PUBLISH
 table-header-publish:
   extends: [.base-stencil-publish, .base-table-header]
-  dependencies: [base-stencil-build, table-header-isolate]
-  needs: [base-stencil-build, table-header-isolate, table-header-publish-test]
+  dependencies: [base-stencil-build, base-isolate]
+  needs: [base-stencil-build, base-isolate, table-header-publish-test]
 
 # INSTALL TEST
 table-header-install-test:
   extends: [.base-stencil-install-test, .base-table-header]
-  dependencies: [base-stencil-build, table-header-isolate]
-  needs: [base-stencil-build, table-header-isolate, table-header-publish]
+  dependencies: [base-stencil-build, base-isolate]
+  needs: [base-stencil-build, base-isolate, table-header-publish]

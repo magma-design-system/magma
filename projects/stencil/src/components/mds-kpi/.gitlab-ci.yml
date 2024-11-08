@@ -2,24 +2,19 @@
   variables:
     COMPONENT: mds-kpi
 
-# ISOLATE
-kpi-isolate:
-  extends: [.base-isolate, .base-kpi]
-  dependencies: [base-stencil-build]
-
 # TEST
 kpi-publish-test:
   extends: [.base-stencil-publish-test, .base-kpi]
-  dependencies: [base-stencil-build, kpi-isolate]
+  dependencies: [base-stencil-build, base-isolate]
 
 # PUBLISH
 kpi-publish:
   extends: [.base-stencil-publish, .base-kpi]
-  dependencies: [base-stencil-build, kpi-isolate]
-  needs: [base-stencil-build, kpi-isolate, kpi-publish-test]
+  dependencies: [base-stencil-build, base-isolate]
+  needs: [base-stencil-build, base-isolate, kpi-publish-test]
 
 # INSTALL TEST
 kpi-install-test:
   extends: [.base-stencil-install-test, .base-kpi]
-  dependencies: [base-stencil-build, kpi-isolate]
-  needs: [base-stencil-build, kpi-isolate, kpi-publish]
+  dependencies: [base-stencil-build, base-isolate]
+  needs: [base-stencil-build, base-isolate, kpi-publish]
