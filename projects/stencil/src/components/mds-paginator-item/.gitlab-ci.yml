@@ -2,24 +2,19 @@
   variables:
     COMPONENT: mds-paginator-item
 
-# ISOLATE
-paginator-item-isolate:
-  extends: [.base-isolate, .base-paginator-item]
-  dependencies: [base-stencil-build]
-
 # TEST
 paginator-item-publish-test:
   extends: [.base-stencil-publish-test, .base-paginator-item]
-  dependencies: [base-stencil-build, paginator-item-isolate]
+  dependencies: [base-stencil-build, base-isolate]
 
 # PUBLISH
 paginator-item-publish:
   extends: [.base-stencil-publish, .base-paginator-item]
-  dependencies: [base-stencil-build, paginator-item-isolate]
-  needs: [base-stencil-build, paginator-item-isolate, paginator-item-publish-test]
+  dependencies: [base-stencil-build, base-isolate]
+  needs: [base-stencil-build, base-isolate, paginator-item-publish-test]
 
 # INSTALL TEST
 paginator-item-install-test:
   extends: [.base-stencil-install-test, .base-paginator-item]
-  dependencies: [base-stencil-build, paginator-item-isolate]
-  needs: [base-stencil-build, paginator-item-isolate, paginator-item-publish]
+  dependencies: [base-stencil-build, base-isolate]
+  needs: [base-stencil-build, base-isolate, paginator-item-publish]

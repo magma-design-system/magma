@@ -4,7 +4,7 @@
 
 # ISOLATE
 input-field-isolate:
-  extends: [.base-isolate, .base-input-field]
+  extends: [base-isolate, .base-input-field]
   dependencies: [base-stencil-build]
 
 # TEST

@@ -86,7 +86,7 @@ const scaffoldStencil = async (componentName: string): Promise<void> => {
 
   await writeFile(join(TEMP_PROJECT_DIR, componentName, fileName), stencilConfig, { encoding: 'utf8' })
     .then(() => {
-      logFileSavedTo(fileName, componentName)
+      logFileSavedTo(fileName, join(TEMP_PROJECT_DIR, componentName, fileName))
     })
     .catch(error => {
       throw Error(chalk.red(error))

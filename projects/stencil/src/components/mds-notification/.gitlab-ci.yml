@@ -2,24 +2,19 @@
   variables:
     COMPONENT: mds-notification
 
-# ISOLATE
-notification-isolate:
-  extends: [.base-isolate, .base-notification]
-  dependencies: [base-stencil-build]
-
 # TEST
 notification-publish-test:
   extends: [.base-stencil-publish-test, .base-notification]
-  dependencies: [base-stencil-build, notification-isolate]
+  dependencies: [base-stencil-build, base-isolate]
 
 # PUBLISH
 notification-publish:
   extends: [.base-stencil-publish, .base-notification]
-  dependencies: [base-stencil-build, notification-isolate]
-  needs: [base-stencil-build, notification-isolate, notification-publish-test]
+  dependencies: [base-stencil-build, base-isolate]
+  needs: [base-stencil-build, base-isolate, notification-publish-test]
 
 # INSTALL TEST
 notification-install-test:
   extends: [.base-stencil-install-test, .base-notification]
-  dependencies: [base-stencil-build, notification-isolate]
-  needs: [base-stencil-build, notification-isolate, notification-publish]
+  dependencies: [base-stencil-build, base-isolate]
+  needs: [base-stencil-build, base-isolate, notification-publish]

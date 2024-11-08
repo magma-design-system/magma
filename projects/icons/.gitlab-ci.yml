@@ -21,7 +21,6 @@ icons-build:
 icons-publish-test:
   extends: .base-publish-test
   dependencies: [icons-build]
-  stage: test
   variables:
     BUILD_DIR: projects/icons
     COMPONENT: icons

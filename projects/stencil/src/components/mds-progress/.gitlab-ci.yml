@@ -2,24 +2,19 @@
   variables:
     COMPONENT: mds-progress
 
-# ISOLATE
-progress-isolate:
-  extends: [.base-isolate, .base-progress]
-  dependencies: [base-stencil-build]
-
 # TEST
 progress-publish-test:
   extends: [.base-stencil-publish-test, .base-progress]
-  dependencies: [base-stencil-build, progress-isolate]
+  dependencies: [base-stencil-build, base-isolate]
 
 # PUBLISH
 progress-publish:
   extends: [.base-stencil-publish, .base-progress]
-  dependencies: [base-stencil-build, progress-isolate]
-  needs: [base-stencil-build, progress-isolate, progress-publish-test]
+  dependencies: [base-stencil-build, base-isolate]
+  needs: [base-stencil-build, base-isolate, progress-publish-test]
 
 # INSTALL TEST
 progress-install-test:
   extends: [.base-stencil-install-test, .base-progress]
-  dependencies: [base-stencil-build, progress-isolate]
-  needs: [base-stencil-build, progress-isolate, progress-publish]
+  dependencies: [base-stencil-build, base-isolate]
+  needs: [base-stencil-build, base-isolate, progress-publish]

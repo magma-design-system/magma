@@ -2,24 +2,19 @@
   variables:
     COMPONENT: mds-input
 
-# ISOLATE
-input-isolate:
-  extends: [.base-isolate, .base-input]
-  dependencies: [base-stencil-build]
-
 # TEST
 input-publish-test:
   extends: [.base-stencil-publish-test, .base-input]
-  dependencies: [base-stencil-build, input-isolate]
+  dependencies: [base-stencil-build, base-isolate]
 
 # PUBLISH
 input-publish:
   extends: [.base-stencil-publish, .base-input]
-  dependencies: [base-stencil-build, input-isolate]
-  needs: [base-stencil-build, input-isolate, input-publish-test]
+  dependencies: [base-stencil-build, base-isolate]
+  needs: [base-stencil-build, base-isolate, input-publish-test]
 
 # INSTALL TEST
 input-install-test:
   extends: [.base-stencil-install-test, .base-input]
-  dependencies: [base-stencil-build, input-isolate]
-  needs: [base-stencil-build, input-isolate, input-publish]
+  dependencies: [base-stencil-build, base-isolate]
+  needs: [base-stencil-build, base-isolate, input-publish]

@@ -19,7 +19,6 @@ identity-build:
 identity-publish-test:
   extends: .base-publish-test
   dependencies: [identity-build]
-  stage: test
   variables:
     BUILD_DIR: projects/identity
     COMPONENT: identity

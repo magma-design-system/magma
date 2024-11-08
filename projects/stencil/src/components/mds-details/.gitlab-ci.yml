@@ -2,24 +2,19 @@
   variables:
     COMPONENT: mds-details
 
-# ISOLATE
-details-isolate:
-  extends: [.base-isolate, .base-details]
-  dependencies: [base-stencil-build]
-
 # TEST
 details-publish-test:
   extends: [.base-stencil-publish-test, .base-details]
-  dependencies: [base-stencil-build, details-isolate]
+  dependencies: [base-stencil-build, base-isolate]
 
 # PUBLISH
 details-publish:
   extends: [.base-stencil-publish, .base-details]
-  dependencies: [base-stencil-build, details-isolate]
-  needs: [base-stencil-build, details-isolate, details-publish-test]
+  dependencies: [base-stencil-build, base-isolate]
+  needs: [base-stencil-build, base-isolate, details-publish-test]
 
 # INSTALL TEST
 details-install-test:
   extends: [.base-stencil-install-test, .base-details]
-  dependencies: [base-stencil-build, details-isolate]
-  needs: [base-stencil-build, details-isolate, details-publish]
+  dependencies: [base-stencil-build, base-isolate]
+  needs: [base-stencil-build, base-isolate, details-publish]

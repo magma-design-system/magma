@@ -2,24 +2,19 @@
   variables:
     COMPONENT: mds-modal
 
-# ISOLATE
-modal-isolate:
-  extends: [.base-isolate, .base-modal]
-  dependencies: [base-stencil-build]
-
 # TEST
 modal-publish-test:
   extends: [.base-stencil-publish-test, .base-modal]
-  dependencies: [base-stencil-build, modal-isolate]
+  dependencies: [base-stencil-build, base-isolate]
 
 # PUBLISH
 modal-publish:
   extends: [.base-stencil-publish, .base-modal]
-  dependencies: [base-stencil-build, modal-isolate]
-  needs: [base-stencil-build, modal-isolate, modal-publish-test]
+  dependencies: [base-stencil-build, base-isolate]
+  needs: [base-stencil-build, base-isolate, modal-publish-test]
 
 # INSTALL TEST
 modal-install-test:
   extends: [.base-stencil-install-test, .base-modal]
-  dependencies: [base-stencil-build, modal-isolate]
-  needs: [base-stencil-build, modal-isolate, modal-publish]
+  dependencies: [base-stencil-build, base-isolate]
+  needs: [base-stencil-build, base-isolate, modal-publish]

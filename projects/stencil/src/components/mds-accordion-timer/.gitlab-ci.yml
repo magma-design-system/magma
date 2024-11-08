@@ -2,24 +2,19 @@
   variables:
     COMPONENT: mds-accordion-timer
 
-# ISOLATE
-accordion-timer-isolate:
-  extends: [.base-isolate, .base-accordion-timer]
-  dependencies: [base-stencil-build]
-
 # TEST
 accordion-timer-publish-test:
   extends: [.base-stencil-publish-test, .base-accordion-timer]
-  dependencies: [base-stencil-build, accordion-timer-isolate]
+  dependencies: [base-stencil-build, base-isolate]
 
 # PUBLISH
 accordion-timer-publish:
   extends: [.base-stencil-publish, .base-accordion-timer]
-  dependencies: [base-stencil-build, accordion-timer-isolate]
-  needs: [base-stencil-build, accordion-timer-isolate, accordion-timer-publish-test]
+  dependencies: [base-stencil-build, base-isolate]
+  needs: [base-stencil-build, base-isolate, accordion-timer-publish-test]
 
 # INSTALL TEST
 accordion-timer-install-test:
   extends: [.base-stencil-install-test, .base-accordion-timer]
-  dependencies: [base-stencil-build, accordion-timer-isolate]
-  needs: [base-stencil-build, accordion-timer-isolate, accordion-timer-publish]
+  dependencies: [base-stencil-build, base-isolate]
+  needs: [base-stencil-build, base-isolate, accordion-timer-publish]

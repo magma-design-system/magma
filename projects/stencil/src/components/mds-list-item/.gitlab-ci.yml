@@ -2,24 +2,19 @@
   variables:
     COMPONENT: mds-list-item
 
-# ISOLATE
-list-item-isolate:
-  extends: [.base-isolate, .base-list-item]
-  dependencies: [base-stencil-build]
-
 # TEST
 list-item-publish-test:
   extends: [.base-stencil-publish-test, .base-list-item]
-  dependencies: [base-stencil-build, list-item-isolate]
+  dependencies: [base-stencil-build, base-isolate]
 
 # PUBLISH
 list-item-publish:
   extends: [.base-stencil-publish, .base-list-item]
-  dependencies: [base-stencil-build, list-item-isolate]
-  needs: [base-stencil-build, list-item-isolate, list-item-publish-test]
+  dependencies: [base-stencil-build, base-isolate]
+  needs: [base-stencil-build, base-isolate, list-item-publish-test]
 
 # INSTALL TEST
 list-item-install-test:
   extends: [.base-stencil-install-test, .base-list-item]
-  dependencies: [base-stencil-build, list-item-isolate]
-  needs: [base-stencil-build, list-item-isolate, list-item-publish]
+  dependencies: [base-stencil-build, base-isolate]
+  needs: [base-stencil-build, base-isolate, list-item-publish]

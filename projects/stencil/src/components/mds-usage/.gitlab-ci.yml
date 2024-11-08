@@ -2,24 +2,19 @@
   variables:
     COMPONENT: mds-usage
 
-# ISOLATE
-usage-isolate:
-  extends: [.base-isolate, .base-usage]
-  dependencies: [base-stencil-build]
-
 # TEST
 usage-publish-test:
   extends: [.base-stencil-publish-test, .base-usage]
-  dependencies: [base-stencil-build, usage-isolate]
+  dependencies: [base-stencil-build, base-isolate]
 
 # PUBLISH
 usage-publish:
   extends: [.base-stencil-publish, .base-usage]
-  dependencies: [base-stencil-build, usage-isolate]
-  needs: [base-stencil-build, usage-isolate, usage-publish-test]
+  dependencies: [base-stencil-build, base-isolate]
+  needs: [base-stencil-build, base-isolate, usage-publish-test]
 
 # INSTALL TEST
 usage-install-test:
   extends: [.base-stencil-install-test, .base-usage]
-  dependencies: [base-stencil-build, usage-isolate]
-  needs: [base-stencil-build, usage-isolate, usage-publish]
+  dependencies: [base-stencil-build, base-isolate]
+  needs: [base-stencil-build, base-isolate, usage-publish]

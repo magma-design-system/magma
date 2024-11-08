@@ -2,24 +2,19 @@
   variables:
     COMPONENT: mds-text
 
-# ISOLATE
-text-isolate:
-  extends: [.base-isolate, .base-text]
-  dependencies: [base-stencil-build]
-
 # TEST
 text-publish-test:
   extends: [.base-stencil-publish-test, .base-text]
-  dependencies: [base-stencil-build, text-isolate]
+  dependencies: [base-stencil-build, base-isolate]
 
 # PUBLISH
 text-publish:
   extends: [.base-stencil-publish, .base-text]
-  dependencies: [base-stencil-build, text-isolate]
-  needs: [base-stencil-build, text-isolate, text-publish-test]
+  dependencies: [base-stencil-build, base-isolate]
+  needs: [base-stencil-build, base-isolate, text-publish-test]
 
 # INSTALL TEST
 text-install-test:
   extends: [.base-stencil-install-test, .base-text]
-  dependencies: [base-stencil-build, text-isolate]
-  needs: [base-stencil-build, text-isolate, text-publish]
+  dependencies: [base-stencil-build, base-isolate]
+  needs: [base-stencil-build, base-isolate, text-publish]

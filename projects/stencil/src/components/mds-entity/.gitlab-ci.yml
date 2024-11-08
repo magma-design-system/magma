@@ -2,24 +2,19 @@
   variables:
     COMPONENT: mds-entity
 
-# ISOLATE
-entity-isolate:
-  extends: [.base-isolate, .base-entity]
-  dependencies: [base-stencil-build]
-
 # TEST
 entity-publish-test:
   extends: [.base-stencil-publish-test, .base-entity]
-  dependencies: [base-stencil-build, entity-isolate]
+  dependencies: [base-stencil-build, base-isolate]
 
 # PUBLISH
 entity-publish:
   extends: [.base-stencil-publish, .base-entity]
-  dependencies: [base-stencil-build, entity-isolate]
-  needs: [base-stencil-build, entity-isolate, entity-publish-test]
+  dependencies: [base-stencil-build, base-isolate]
+  needs: [base-stencil-build, base-isolate, entity-publish-test]
 
 # INSTALL TEST
 entity-install-test:
   extends: [.base-stencil-install-test, .base-entity]
-  dependencies: [base-stencil-build, entity-isolate]
-  needs: [base-stencil-build, entity-isolate, entity-publish]
+  dependencies: [base-stencil-build, base-isolate]
+  needs: [base-stencil-build, base-isolate, entity-publish]

@@ -19,7 +19,6 @@ stencil-react-build:
 stencil-react-publish-test:
   extends: .base-publish-test
   dependencies: [stencil-react-build]
-  stage: test
   variables:
     BUILD_DIR: projects/stencil/react
     COMPONENT: magma-react

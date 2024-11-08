@@ -2,24 +2,19 @@
   variables:
     COMPONENT: mds-filter-item
 
-# ISOLATE
-filter-item-isolate:
-  extends: [.base-isolate, .base-filter-item]
-  dependencies: [base-stencil-build]
-
 # TEST
 filter-item-publish-test:
   extends: [.base-stencil-publish-test, .base-filter-item]
-  dependencies: [base-stencil-build, filter-item-isolate]
+  dependencies: [base-stencil-build, base-isolate]
 
 # PUBLISH
 filter-item-publish:
   extends: [.base-stencil-publish, .base-filter-item]
-  dependencies: [base-stencil-build, filter-item-isolate]
-  needs: [base-stencil-build, filter-item-isolate, filter-item-publish-test]
+  dependencies: [base-stencil-build, base-isolate]
+  needs: [base-stencil-build, base-isolate, filter-item-publish-test]
 
 # INSTALL TEST
 filter-item-install-test:
   extends: [.base-stencil-install-test, .base-filter-item]
-  dependencies: [base-stencil-build, filter-item-isolate]
-  needs: [base-stencil-build, filter-item-isolate, filter-item-publish]
+  dependencies: [base-stencil-build, base-isolate]
+  needs: [base-stencil-build, base-isolate, filter-item-publish]

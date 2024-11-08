@@ -2,24 +2,19 @@
   variables:
     COMPONENT: mds-header-bar
 
-# ISOLATE
-header-bar-isolate:
-  extends: [.base-isolate, .base-header-bar]
-  dependencies: [base-stencil-build]
-
 # TEST
 header-bar-publish-test:
   extends: [.base-stencil-publish-test, .base-header-bar]
-  dependencies: [base-stencil-build, header-bar-isolate]
+  dependencies: [base-stencil-build, base-isolate]
 
 # PUBLISH
 header-bar-publish:
   extends: [.base-stencil-publish, .base-header-bar]
-  dependencies: [base-stencil-build, header-bar-isolate]
-  needs: [base-stencil-build, header-bar-isolate, header-bar-publish-test]
+  dependencies: [base-stencil-build, base-isolate]
+  needs: [base-stencil-build, base-isolate, header-bar-publish-test]
 
 # INSTALL TEST
 header-bar-install-test:
   extends: [.base-stencil-install-test, .base-header-bar]
-  dependencies: [base-stencil-build, header-bar-isolate]
-  needs: [base-stencil-build, header-bar-isolate, header-bar-publish]
+  dependencies: [base-stencil-build, base-isolate]
+  needs: [base-stencil-build, base-isolate, header-bar-publish]

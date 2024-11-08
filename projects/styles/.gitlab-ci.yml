@@ -23,7 +23,6 @@ styles-build:
 styles-publish-test:
   extends: .base-publish-test
   dependencies: [styles-build]
-  stage: test
   variables:
     BUILD_DIR: projects/styles
     COMPONENT: styles

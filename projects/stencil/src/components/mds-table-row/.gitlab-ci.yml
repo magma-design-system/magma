@@ -2,24 +2,19 @@
   variables:
     COMPONENT: mds-table-row
 
-# ISOLATE
-table-row-isolate:
-  extends: [.base-isolate, .base-table-row]
-  dependencies: [base-stencil-build]
-
 # TEST
 table-row-publish-test:
   extends: [.base-stencil-publish-test, .base-table-row]
-  dependencies: [base-stencil-build, table-row-isolate]
+  dependencies: [base-stencil-build, base-isolate]
 
 # PUBLISH
 table-row-publish:
   extends: [.base-stencil-publish, .base-table-row]
-  dependencies: [base-stencil-build, table-row-isolate]
-  needs: [base-stencil-build, table-row-isolate, table-row-publish-test]
+  dependencies: [base-stencil-build, base-isolate]
+  needs: [base-stencil-build, base-isolate, table-row-publish-test]
 
 # INSTALL TEST
 table-row-install-test:
   extends: [.base-stencil-install-test, .base-table-row]
-  dependencies: [base-stencil-build, table-row-isolate]
-  needs: [base-stencil-build, table-row-isolate, table-row-publish]
+  dependencies: [base-stencil-build, base-isolate]
+  needs: [base-stencil-build, base-isolate, table-row-publish]

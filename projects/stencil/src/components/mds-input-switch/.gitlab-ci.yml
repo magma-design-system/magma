@@ -2,24 +2,19 @@
   variables:
     COMPONENT: mds-input-switch
 
-# ISOLATE
-input-switch-isolate:
-  extends: [.base-isolate, .base-input-switch]
-  dependencies: [base-stencil-build]
-
 # TEST
 input-switch-publish-test:
   extends: [.base-stencil-publish-test, .base-input-switch]
-  dependencies: [base-stencil-build, input-switch-isolate]
+  dependencies: [base-stencil-build, base-isolate]
 
 # PUBLISH
 input-switch-publish:
   extends: [.base-stencil-publish, .base-input-switch]
-  dependencies: [base-stencil-build, input-switch-isolate]
-  needs: [base-stencil-build, input-switch-isolate, input-switch-publish-test]
+  dependencies: [base-stencil-build, base-isolate]
+  needs: [base-stencil-build, base-isolate, input-switch-publish-test]
 
 # INSTALL TEST
 input-switch-install-test:
   extends: [.base-stencil-install-test, .base-input-switch]
-  dependencies: [base-stencil-build, input-switch-isolate]
-  needs: [base-stencil-build, input-switch-isolate, input-switch-publish]
+  dependencies: [base-stencil-build, base-isolate]
+  needs: [base-stencil-build, base-isolate, input-switch-publish]

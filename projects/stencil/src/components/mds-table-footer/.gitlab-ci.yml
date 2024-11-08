@@ -2,24 +2,19 @@
   variables:
     COMPONENT: mds-table-footer
 
-# ISOLATE
-table-footer-isolate:
-  extends: [.base-isolate, .base-table-footer]
-  dependencies: [base-stencil-build]
-
 # TEST
 table-footer-publish-test:
   extends: [.base-stencil-publish-test, .base-table-footer]
-  dependencies: [base-stencil-build, table-footer-isolate]
+  dependencies: [base-stencil-build, base-isolate]
 
 # PUBLISH
 table-footer-publish:
   extends: [.base-stencil-publish, .base-table-footer]
-  dependencies: [base-stencil-build, table-footer-isolate]
-  needs: [base-stencil-build, table-footer-isolate, table-footer-publish-test]
+  dependencies: [base-stencil-build, base-isolate]
+  needs: [base-stencil-build, base-isolate, table-footer-publish-test]
 
 # INSTALL TEST
 table-footer-install-test:
   extends: [.base-stencil-install-test, .base-table-footer]
-  dependencies: [base-stencil-build, table-footer-isolate]
-  needs: [base-stencil-build, table-footer-isolate, table-footer-publish]
+  dependencies: [base-stencil-build, base-isolate]
+  needs: [base-stencil-build, base-isolate, table-footer-publish]
