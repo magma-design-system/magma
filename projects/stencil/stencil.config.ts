@@ -7,6 +7,8 @@ import { inlineSvg } from 'stencil-inline-svg'
 import { postcss } from '@stencil/postcss'
 
 import { reactOutputTarget } from '@stencil/react-output-target'
+import { angularOutputTarget } from '@stencil/angular-output-target'
+
 // https://github.com/ionic-team/stencil/issues/1307
 // still not working
 // import tsconfigPathsJest from 'tsconfig-paths-jest'
@@ -36,6 +38,12 @@ export const config: Config = {
       type: 'dist',
       esmLoaderPath: '../loader',
     },
+    angularOutputTarget({
+      componentCorePackage: '@maggioli-design-system/magma',
+      outputType: 'component',
+      directivesProxyFile: './angular/magma-angular/src/stencil-generated/components.ts',
+      directivesArrayFile: './angular/magma-angular/src/stencil-generated/index.ts',
+    }),
     reactOutputTarget({
       // Relative path to where the React components will be generated
       outDir: './react/src/',

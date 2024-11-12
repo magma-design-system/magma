@@ -2743,6 +2743,11 @@
   dependencies:
     "@sinonjs/commons" "^1.7.0"
 
+"@stencil/angular-output-target@0.10.0":
+  version "0.10.0"
+  resolved "https://registry.npmjs.org/@stencil/angular-output-target/-/angular-output-target-0.10.0.tgz#990ee88801a509da7ab857afd36a310b4d0954c6"
+  integrity sha512-j/VXofXggbqzfzX6+1F++IZbGNfEKw1eQAdd5S4PpjGGWsf0TI6qDBd4YrjCMHAKCSV18FNuKFBejejM/49T/Q==
+
 "@stencil/core@4.21.0":
   version "4.21.0"
   resolved "https://registry.npmjs.org/@stencil/core/-/core-4.21.0.tgz#6e294c57468e58dd77a458244968fe73d589b41b"
