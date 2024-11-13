@@ -101,4 +101,5 @@ magma-install-test:
 
 include:
   - '/projects/stencil/react/.gitlab-ci.yml'
+  - '/projects/stencil/angular/.gitlab-ci.yml'
   - '/projects/stencil/src/components/.gitlab-ci.yml'
