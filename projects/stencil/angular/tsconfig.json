@@ -4,15 +4,9 @@
   "compileOnSave": false,
   "compilerOptions": {
     "paths": {
-      "component-library": [
-        "./dist/component-library"
-      ],
       "magma-angular": [
         "./dist/magma-angular"
       ],
-      "my-lib": [
-        "./dist/my-lib"
-      ]
     },
     "outDir": "./dist/out-tsc",
     "strict": true,

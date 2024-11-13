@@ -1,9 +1,10 @@
 {
-  "name": "magma-angular",
+  "name": "@maggioli-design-system/magma-angular",
   "version": "0.0.1",
   "peerDependencies": {
     "@angular/common": "^18.2.0",
-    "@angular/core": "^18.2.0"
+    "@angular/core": "^18.2.0",
+    "@maggioli-design-system/magma": "1.0.0-beta"
   },
   "dependencies": {
     "tslib": "^2.3.0"

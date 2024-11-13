@@ -3,7 +3,8 @@ import { defineCustomElements } from '@maggioli-design-system/magma/loader';
 import { DIRECTIVES } from '../stencil-generated';
 
 @NgModule({
-  imports: [DIRECTIVES],
+  declarations: [...DIRECTIVES],
+  exports: [...DIRECTIVES],
   providers: [
     {
       provide: APP_INITIALIZER,
