@@ -1,4 +1,4 @@
-import { Component, Host, Element, Event, EventEmitter, h, Prop } from '@stencil/core'
+import { Component, Host, Element, Event, EventEmitter, h, Prop, Method, State } from '@stencil/core'
 import { LanguageType } from '@type/language'
 import { Locale } from '@common/locale'
 import localeDefault from './meta/locale.json'
@@ -19,6 +19,11 @@ export class MdsPrefLanguageItem {
     en: localeEn,
     it: localeIt,
   })
+  @State() language: string
+  @Method()
+  async updateLang (): Promise<void> {
+    this.language = this.t.lang(this.element)
+  }
 
   /**
    * Specifies the language code based on HTML `lang` attribute

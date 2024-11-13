@@ -41,7 +41,7 @@ export class Locale {
 
     const languagePhrase: string | string[] = this.config[this.language] ? this.config[this.language][tag] : this.config[this.rollbackLanguage][tag]
     const phrases: string[] = []
-    
+
     if (Array.isArray(languagePhrase)) {
       phrases.push(languagePhrase[0])
       phrases.push(languagePhrase[1])

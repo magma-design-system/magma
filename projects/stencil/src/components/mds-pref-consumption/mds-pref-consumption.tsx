@@ -1,4 +1,4 @@
-import { Component, Host, Element, Event, EventEmitter, h, Prop, Watch } from '@stencil/core'
+import { Component, Host, Element, Event, EventEmitter, h, Prop, Watch, Method, State } from '@stencil/core'
 import { MdsPrefChangeEventDetail } from '@event/preference'
 import mggConsumptionLow from '@icon/mgg/consumption-low.svg'
 import mggConsumptionMedium from '@icon/mgg/consumption-medium.svg'
@@ -26,6 +26,11 @@ export class MdsPrefContrast {
     es: localeEs,
     it: localeIt,
   })
+  @State() language: string
+  @Method()
+  async updateLang (): Promise<void> {
+    this.language = this.t.lang(this.element)
+  }
 
   /**
    * Specifies the preference mode
