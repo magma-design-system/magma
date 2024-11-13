@@ -1,4 +1,4 @@
-import { Component, Element, Event, EventEmitter, Host, h, Prop, State } from '@stencil/core'
+import { Component, Element, Event, EventEmitter, Host, h, Prop, State, Method } from '@stencil/core'
 import { PrefLanguageType } from '@type/language'
 import { MdsPrefLanguageEventDetail } from '@event/language'
 import { MdsPrefChangeEventDetail } from '@event/preference'
@@ -33,7 +33,12 @@ export class MdsPrefLanguage {
     es: localeEs,
     it: localeIt,
   })
-  /**
+  @State() language: string
+  @Method()
+  async updateLang (): Promise<void> {
+    this.language = this.t.lang(this.element)
+  }
+
 
   /**
    * Specifies the language code based on HTML `lang` attribute
@@ -86,6 +91,7 @@ export class MdsPrefLanguage {
         this.languageChangeEvent.emit({ language: this.currentSelectedItem.code })
         this.showDropdown = false
         this.setLanguage(e.detail.language)
+        this.translateAllComponents()
       })
     })
 
@@ -111,6 +117,18 @@ export class MdsPrefLanguage {
       const element = document.querySelector('html')
       element?.setAttribute('lang', this.set)
     }
+  }
+
+  private translateAllComponents = (): void => {
+    document.querySelectorAll('*').forEach(el => {
+      if (el.tagName.toLowerCase().startsWith('mds-')) {
+        // eslint-disable-next-line no-restricted-syntax
+        if (el && 'updateLang' in el) {
+          // eslint-disable-next-line @typescript-eslint/no-explicit-any
+          (el as any).updateLang()
+        }
+      }
+    })
   }
 
   render () {

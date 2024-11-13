@@ -1274,30 +1274,35 @@ export namespace Components {
         "selected"?: boolean;
     }
     interface MdsPref {
+        "updateLang": () => Promise<void>;
     }
     interface MdsPrefAnimation {
         /**
           * Specifies the preference mode
          */
         "mode"?: AnimationModeType;
+        "updateLang": () => Promise<void>;
     }
     interface MdsPrefConsumption {
         /**
           * Specifies the preference mode
          */
         "mode"?: ConsumptionModeType;
+        "updateLang": () => Promise<void>;
     }
     interface MdsPrefContrast {
         /**
           * Specifies the preference mode
          */
         "mode"?: ContrastModeType;
+        "updateLang": () => Promise<void>;
     }
     interface MdsPrefLanguage {
         /**
-          * /**   Specifies the language code based on HTML `lang` attribute
+          * Specifies the language code based on HTML `lang` attribute
          */
         "set": PrefLanguageType;
+        "updateLang": () => Promise<void>;
     }
     interface MdsPrefLanguageItem {
         /**
@@ -1308,6 +1313,7 @@ export namespace Components {
           * Specifies if the element is selected
          */
         "selected"?: boolean;
+        "updateLang": () => Promise<void>;
     }
     interface MdsPrefLanguageNav {
         /**
@@ -1318,6 +1324,7 @@ export namespace Components {
           * Specifies the language code based on HTML `lang` attribute
          */
         "set"?: LanguageType;
+        "updateLang": () => Promise<void>;
     }
     interface MdsPrefTheme {
         /**
@@ -1328,6 +1335,7 @@ export namespace Components {
           * Specifies the transition of switching from a theme to another one
          */
         "transition": ThemeTransitionType;
+        "updateLang": () => Promise<void>;
     }
     interface MdsPriceTable {
     }
@@ -4373,7 +4381,7 @@ declare namespace LocalJSX {
          */
         "onMdsPrefLanguageChange"?: (event: MdsPrefLanguageCustomEvent<MdsPrefLanguageEventDetail>) => void;
         /**
-          * /**   Specifies the language code based on HTML `lang` attribute
+          * Specifies the language code based on HTML `lang` attribute
          */
         "set"?: PrefLanguageType;
     }

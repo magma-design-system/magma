@@ -1,4 +1,4 @@
-import { Component, Host, h, Element, State } from '@stencil/core'
+import { Component, Host, h, Element, State, Method } from '@stencil/core'
 import { Locale } from '@common/locale'
 import localeEl from './meta/locale.el.json'
 import localeEn from './meta/locale.en.json'
@@ -25,6 +25,11 @@ export class MdsPref {
     es: localeEs,
     it: localeIt,
   })
+  @State() language: string
+  @Method()
+  async updateLang (): Promise<void> {
+    this.language = this.t.lang(this.host)
+  }
 
   componentWillRender (): void {
     this.t.lang(this.host)

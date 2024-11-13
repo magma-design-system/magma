@@ -1,4 +1,4 @@
-import { Component, Host, h, Element, Event, EventEmitter, Prop, State } from '@stencil/core'
+import { Component, Host, h, Element, Event, EventEmitter, Prop, State, Method } from '@stencil/core'
 import miBaselineKeyboardArrowDown from '@icon/mi/baseline/keyboard-arrow-down.svg'
 import miBaselineKeyboardArrowUp from '@icon/mi/baseline/keyboard-arrow-up.svg'
 import { LanguageType } from '@type/language'
@@ -23,6 +23,11 @@ export class MdsPrefLanguageNav {
     es: localeEs,
     it: localeIt,
   })
+  @State() language: string
+  @Method()
+  async updateLang (): Promise<void> {
+    this.language = this.t.lang(this.element)
+  }
 
   /**
    * Specifies the language code based on HTML `lang` attribute
