@@ -28,22 +28,6 @@ This is a web-component from Maggioli Design System [Magma](https://magma.maggio
 | `"default"` | Add `mds-breadcrumb-item` element/s. |
 
 
-## CSS Custom Properties
-
-| Name                                          | Description                                                                          |
-| --------------------------------------------- | ------------------------------------------------------------------------------------ |
-| `--mds-breadcrumb-arrow-depth-color`          | Sets the color of the arrow icon that separates buttons                              |
-| `--mds-breadcrumb-button-background`          | Sets the background color of the button                                              |
-| `--mds-breadcrumb-button-background-current`  | Sets the background color of the button when it's active                             |
-| `--mds-breadcrumb-button-background-disabled` | Sets the background color of the button when it's disabled, is used for arrow button |
-| `--mds-breadcrumb-button-background-hover`    | Sets the background color of the button when the mouse is over it                    |
-| `--mds-breadcrumb-button-color`               | Sets the text color of the button                                                    |
-| `--mds-breadcrumb-button-color-current`       | Sets the text color of the button when it's active                                   |
-| `--mds-breadcrumb-button-color-disabled`      | Sets the text color of the button when it's disabled, is used for arrow button       |
-| `--mds-breadcrumb-button-color-hover`         | Sets the text color of the button when the mouse is over it                          |
-| `--mds-breadcrumb-current-button-color`       | Sets the text color of the current depth button                                      |
-
-
 ## Dependencies
 
 ### Depends on

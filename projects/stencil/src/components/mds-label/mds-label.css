@@ -60,19 +60,16 @@
 .button-close {
 
   @apply
-    ml-100
-    m-25
     px-150
-    rounded-r-md
-    ease-in-out
-    duration-200;
+    rounded-r-md;
 
   --mds-button-background: var(--mds-label-button-background);
 
   border-radius: 0 var(--mds-label-radius) var(--mds-label-radius) 0;
   fill: var(--mds-label-button-icon-color);
+  flex-shrink: 0;
   height: auto;
-  transition-property: fill;
+  transition-duration: inherit;
 }
 
 .button-close:hover {

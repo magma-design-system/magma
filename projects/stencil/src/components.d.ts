@@ -10,7 +10,7 @@ import { TypographyInfoType, TypographyInputType, TypographyReadingVariants, Typ
 import { MdsAccordionItemEventDetail } from "./components/mds-accordion-item/meta/event-detail";
 import { MdsAccordionTimerEventDetail } from "./components/mds-accordion-timer/meta/event-detail";
 import { MdsAccordionTimerItemEventDetail } from "./components/mds-accordion-timer-item/meta/event-detail";
-import { LabelVariantType, ThemeFullVariantAvatarType, ThemeFullVariantType, ThemeLuminanceVariantType, ThemeStatusVariantType, ThemeVariantType, ToneMinimalVariantType, ToneSimpleVariantType, ToneVariantType } from "@type/variant";
+import { ChipVariantType, LabelVariantType, ThemeFullVariantAvatarType, ThemeFullVariantType, ThemeLuminanceVariantType, ThemeStatusVariantType, ThemeVariantType, ToneMinimalVariantType, ToneSimpleVariantType, ToneVariantType } from "@type/variant";
 import { BenchmarkBarTypographyType } from "./components/mds-benchmark-bar/meta/types";
 import { BibliographyFormatType, BibliographyRelationshipType } from "./components/mds-bibliography/meta/types";
 import { MdsBreadcrumbEventDetail } from "./components/mds-breadcrumb/meta/event-detail";
@@ -74,7 +74,7 @@ export { TypographyInfoType, TypographyInputType, TypographyReadingVariants, Typ
 export { MdsAccordionItemEventDetail } from "./components/mds-accordion-item/meta/event-detail";
 export { MdsAccordionTimerEventDetail } from "./components/mds-accordion-timer/meta/event-detail";
 export { MdsAccordionTimerItemEventDetail } from "./components/mds-accordion-timer-item/meta/event-detail";
-export { LabelVariantType, ThemeFullVariantAvatarType, ThemeFullVariantType, ThemeLuminanceVariantType, ThemeStatusVariantType, ThemeVariantType, ToneMinimalVariantType, ToneSimpleVariantType, ToneVariantType } from "@type/variant";
+export { ChipVariantType, LabelVariantType, ThemeFullVariantAvatarType, ThemeFullVariantType, ThemeLuminanceVariantType, ThemeStatusVariantType, ThemeVariantType, ToneMinimalVariantType, ToneSimpleVariantType, ToneVariantType } from "@type/variant";
 export { BenchmarkBarTypographyType } from "./components/mds-benchmark-bar/meta/types";
 export { BibliographyFormatType, BibliographyRelationshipType } from "./components/mds-bibliography/meta/types";
 export { MdsBreadcrumbEventDetail } from "./components/mds-breadcrumb/meta/event-detail";
@@ -405,10 +405,6 @@ export namespace Components {
          */
         "deletable"?: boolean;
         /**
-          * Sets the cross icon accessibility label to perform cancel/delete action on element
-         */
-        "deleteLabel"?: "Rimuovi" | undefined;
-        /**
           * Sets the component disabled status
          */
         "disabled"?: boolean;
@@ -421,9 +417,21 @@ export namespace Components {
          */
         "label": string;
         /**
+          * Sets if the component change is status to selected when is clicked
+         */
+        "selectable"?: boolean;
+        /**
           * Sets the component selected
          */
-        "selected": boolean;
+        "selected"?: boolean;
+        /**
+          * Sets the color variant tone of the component
+         */
+        "tone"?: ToneMinimalVariantType;
+        /**
+          * Sets the color variant of the component
+         */
+        "variant"?: ChipVariantType;
     }
     interface MdsDetails {
         /**
@@ -3359,10 +3367,6 @@ declare namespace LocalJSX {
          */
         "deletable"?: boolean;
         /**
-          * Sets the cross icon accessibility label to perform cancel/delete action on element
-         */
-        "deleteLabel"?: "Rimuovi" | undefined;
-        /**
           * Sets the component disabled status
          */
         "disabled"?: boolean;
@@ -3383,9 +3387,21 @@ declare namespace LocalJSX {
          */
         "onMdsChipDelete"?: (event: MdsChipCustomEvent<MdsChipEvent>) => void;
         /**
+          * Sets if the component change is status to selected when is clicked
+         */
+        "selectable"?: boolean;
+        /**
           * Sets the component selected
          */
         "selected"?: boolean;
+        /**
+          * Sets the color variant tone of the component
+         */
+        "tone"?: ToneMinimalVariantType;
+        /**
+          * Sets the color variant of the component
+         */
+        "variant"?: ChipVariantType;
     }
     interface MdsDetails {
         /**

@@ -7,7 +7,7 @@
 
     --mds-paginator-item-background-disabled: theme('colors.tone-neutral-09');
     --mds-paginator-item-background-hover: theme('colors.tone-neutral-08');
-    --mds-paginator-item-background-selected: theme('colors.brand-maggioli-03');
+    --mds-paginator-item-background-selected: theme('colors.variant-primary-03');
     --mds-paginator-item-background: transparent;
     --mds-paginator-item-color-disabled: theme('colors.tone-neutral-06');
     --mds-paginator-item-color-hover: theme('colors.tone-neutral-02');
@@ -27,7 +27,7 @@
 
       --mds-paginator-item-background-disabled: theme('colors.tone-neutral-09');
       --mds-paginator-item-background-hover: theme('colors.tone-neutral-08');
-      --mds-paginator-item-background-selected: theme('colors.brand-maggioli-03');
+      --mds-paginator-item-background-selected: theme('colors.variant-primary-03');
       --mds-paginator-item-background: transparent;
       --mds-paginator-item-color-disabled: theme('colors.tone-neutral-06');
       --mds-paginator-item-color-hover: theme('colors.tone-neutral-02');

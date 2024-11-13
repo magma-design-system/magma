@@ -2,18 +2,18 @@
 
 :host {
 
-  --mds-input-select-icon-color: var(--brand-maggioli-03);
+  --mds-input-select-icon-color: var(--variant-primary-03);
   --mds-input-select-variant-color: 0 0 0;
-  --mds-input-select-arrow-icon-blur-background-color: rgb(var(--brand-maggioli-09));
-  --mds-input-select-arrow-icon-hover-background-color: rgb(var(--brand-maggioli-08));
-  --mds-input-select-arrow-icon-blur-color: rgb(var(--brand-maggioli-06));
-  --mds-input-select-arrow-icon-hover-color: rgb(var(--brand-maggioli-04));
+  --mds-input-select-arrow-icon-blur-background-color: rgb(var(--variant-primary-09));
+  --mds-input-select-arrow-icon-hover-background-color: rgb(var(--variant-primary-08));
+  --mds-input-select-arrow-icon-blur-color: rgb(var(--variant-primary-06));
+  --mds-input-select-arrow-icon-hover-color: rgb(var(--variant-primary-04));
 }
 
 :host( :hover ),
 :host( :focus-within ) {
 
-  --mds-input-select-variant-color: var(--brand-maggioli-04);
+  --mds-input-select-variant-color: var(--variant-primary-04);
 }
 
 :host( [variant="info"] ) {

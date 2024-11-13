@@ -27,8 +27,8 @@
     "@maggioli-design-system/mds-price-table-features": "1.6.0",
     "@maggioli-design-system/mds-price-table-header": "1.5.0",
     "@maggioli-design-system/mds-price-table-list": "1.6.0",
-    "@maggioli-design-system/styles": "15.4.0",
-    "@stencil/core": "4.21.0"
+    "@maggioli-design-system/styles": "15.5.0",
+    "@stencil/core": "4.22.2"
   },
   "license": "MIT",
   "author": {

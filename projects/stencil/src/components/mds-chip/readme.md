@@ -9,15 +9,17 @@ This is a web-component from Maggioli Design System [Magma](https://magma.maggio
 
 ## Properties
 
-| Property             | Attribute      | Description                                                                        | Type                     | Default     |
-| -------------------- | -------------- | ---------------------------------------------------------------------------------- | ------------------------ | ----------- |
-| `clickable`          | `clickable`    | Adds ARIA support to the element if has interaction                                | `boolean \| undefined`   | `undefined` |
-| `deletable`          | `deletable`    | Shows the cross icon to perform cancel/delete action on element                    | `boolean \| undefined`   | `undefined` |
-| `deleteLabel`        | `delete-label` | Sets the cross icon accessibility label to perform cancel/delete action on element | `"Rimuovi" \| undefined` | `'Rimuovi'` |
-| `disabled`           | `disabled`     | Sets the component disabled status                                                 | `boolean \| undefined`   | `false`     |
-| `icon`               | `icon`         | The icon displayed to the left of the component's label                            | `string \| undefined`    | `undefined` |
-| `label` _(required)_ | `label`        | The label displayed to the right of the component's icon                           | `string`                 | `undefined` |
-| `selected`           | `selected`     | Sets the component selected                                                        | `boolean`                | `false`     |
+| Property             | Attribute    | Description                                                        | Type                                                                                             | Default     |
+| -------------------- | ------------ | ------------------------------------------------------------------ | ------------------------------------------------------------------------------------------------ | ----------- |
+| `clickable`          | `clickable`  | Adds ARIA support to the element if has interaction                | `boolean \| undefined`                                                                           | `undefined` |
+| `deletable`          | `deletable`  | Shows the cross icon to perform cancel/delete action on element    | `boolean \| undefined`                                                                           | `undefined` |
+| `disabled`           | `disabled`   | Sets the component disabled status                                 | `boolean \| undefined`                                                                           | `false`     |
+| `icon`               | `icon`       | The icon displayed to the left of the component's label            | `string \| undefined`                                                                            | `undefined` |
+| `label` _(required)_ | `label`      | The label displayed to the right of the component's icon           | `string`                                                                                         | `undefined` |
+| `selectable`         | `selectable` | Sets if the component change is status to selected when is clicked | `boolean \| undefined`                                                                           | `false`     |
+| `selected`           | `selected`   | Sets the component selected                                        | `boolean \| undefined`                                                                           | `false`     |
+| `tone`               | `tone`       | Sets the color variant tone of the component                       | `"strong" \| "weak" \| undefined`                                                                | `'strong'`  |
+| `variant`            | `variant`    | Sets the color variant of the component                            | `"dark" \| "error" \| "info" \| "primary" \| "secondary" \| "success" \| "warning" \| undefined` | `'primary'` |
 
 
 ## Events

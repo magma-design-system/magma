@@ -14,14 +14,6 @@ This is a web-component from Maggioli Design System [Magma](https://magma.maggio
 | `"default"` | Add `mds-kpi-item` element/s. |
 
 
-## CSS Custom Properties
-
-| Name                                        | Description                                     |
-| ------------------------------------------- | ----------------------------------------------- |
-| `--mds-kpi-text-animation-placeholder-char` | Sets the animation placeholder char of the text |
-| `--mds-kpi-text-animation-speed`            | Sets the animation speed of the text            |
-
-
 ----------------------------------------------
 
 Built with love @ [Gruppo Maggioli](https://www.maggioli.com) from [R&D Department](https://www.maggioli.com/it-it/chi-siamo/ricerca-sviluppo)

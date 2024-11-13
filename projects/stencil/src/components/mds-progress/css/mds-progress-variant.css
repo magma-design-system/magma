@@ -38,6 +38,6 @@
 
 :host( [variant="primary"] ) {
 
-  --mds-progress-color: theme('colors.brand-maggioli-03');
+  --mds-progress-color: theme('colors.variant-primary-03');
   --mds-progress-background: theme('colors.tone-neutral-08');
 }

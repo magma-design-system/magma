@@ -8,7 +8,7 @@
 
 :host {
 
-  --mds-video-wall-noise-background-color: rgb(var(--brand-maggioli-03) / 0.8);
+  --mds-video-wall-noise-background-color: rgb(var(--variant-primary-03) / 0.8);
   --mds-video-wall-noise-background-size: auto;
   --mds-video-wall-video-fit: cover;
 

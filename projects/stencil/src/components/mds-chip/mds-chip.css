@@ -14,26 +14,33 @@
 
 :host {
 
-  --mds-chip-background: theme('colors.tone-neutral-09');
+  /* --mds-chip-backgroud-selected: theme('colors.tone-neutral-08');
+  --mds-chip-border-selected: theme('colors.variant-primary-04');
+  --mds-chip-color-selected: theme('colors.tone-neutral-01');
+  --mds-chip-icon-background-selected: theme('colors.variant-primary-04');
+  --mds-chip-icon-color-selected: theme('colors.tone-neutral'); */
+
+  --mds-chip-background: theme('colors.tone-neutral');
+  --mds-chip-border: transparent;
   --mds-chip-color: theme('colors.tone-neutral-03');
-  --mds-chip-icon-background: theme('colors.brand-maggioli-06');
-  --mds-chip-icon-background-selected: theme('colors.brand-maggioli-04');
+  --mds-chip-icon-background: theme('colors.variant-primary-06');
   --mds-chip-icon-color: theme('colors.tone-neutral');
   --mds-chip-opacity-disabled: var(--opacity-disabled, 0.5);
-  --mds-chip-backgroud-selected: theme('colors.tone-neutral-08');
-  --mds-chip-color-selected: theme('colors.tone-neutral-01');
-  --mds-chip-icon-color-selected: theme('colors.tone-neutral');
+  --mds-chip-shadow: theme('boxShadow.sharp');
 
   @apply
     duration-150
     ease-in-out
     gap-150
     h-900
-    p-150
+    py-150
+    px-100
     rounded-full;
 
   align-items: center;
   background-color: var(--mds-chip-background);
+  border: 2px solid var(--mds-chip-border);
+  box-shadow: var(--mds-chip-shadow);
   color: var(--mds-chip-color);
   display: inline-flex;
   justify-content: center;
@@ -44,14 +51,6 @@
 :host( [disabled]:not([disabled="false"]) ) {
   opacity: var(--mds-chip-opacity-disabled);
   pointer-events: none;
-}
-
-:host( [selected]:not([selected="false"]) ) {
-
-  --mds-chip-color: var(--mds-chip-color-selected);
-  --mds-chip-background: var(--mds-chip-backgroud-selected);
-  --mds-chip-icon-color: var(--mds-chip-icon-color-selected);
-  --mds-chip-icon-background: var(--mds-chip-icon-background-selected);
 }
 
 .label {
@@ -113,6 +112,7 @@
   padding: 0;
 }
 
+@import './css/mds-chip-variant.css';
 @import './css/mds-chip-pref-animation.css';
 @import './css/mds-chip-pref-theme.css';
 @import './css/mds-chip-pref-contrast.css';

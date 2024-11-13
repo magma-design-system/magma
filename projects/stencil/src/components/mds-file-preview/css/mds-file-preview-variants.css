@@ -70,8 +70,8 @@
 
 :host( [variant="primary"][message] ) {
 
-  --mds-file-preview-icon-background-color: theme('colors.brand-maggioli-09');
-  --mds-file-preview-icon-color: theme('colors.brand-maggioli-04');
+  --mds-file-preview-icon-background-color: theme('colors.variant-primary-09');
+  --mds-file-preview-icon-color: theme('colors.variant-primary-04');
 }
 
 :host( [variant="sky"][message] ) {
@@ -163,8 +163,8 @@
 
   :host( [variant="primary"][message] ) {
 
-    --mds-file-preview-icon-background-color: theme('colors.brand-maggioli-10');
-    --mds-file-preview-icon-color: theme('colors.brand-maggioli-02');
+    --mds-file-preview-icon-background-color: theme('colors.variant-primary-10');
+    --mds-file-preview-icon-color: theme('colors.variant-primary-02');
   }
 
   :host( [variant="sky"][message] ) {
@@ -259,8 +259,8 @@
 
     :host( [variant="primary"][message] ) {
 
-      --mds-file-preview-icon-background-color: theme('colors.brand-maggioli-10');
-      --mds-file-preview-icon-color: theme('colors.brand-maggioli-02');
+      --mds-file-preview-icon-background-color: theme('colors.variant-primary-10');
+      --mds-file-preview-icon-color: theme('colors.variant-primary-02');
     }
 
     :host( [variant="sky"][message] ) {

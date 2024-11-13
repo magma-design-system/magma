@@ -61,7 +61,7 @@
     svg
     w-1200;
 
-  fill: theme('colors.brand-maggioli-05');
+  fill: theme('colors.variant-primary-05');
 }
 
 .action {

@@ -1,0 +1,175 @@
+:host([variant="primary"][tone="strong"]) {
+
+  --mds-chip-background: theme('colors.tone-neutral');
+  --mds-chip-border: transparent;
+  --mds-chip-color: theme('colors.tone-neutral-03');
+  --mds-chip-icon-background: theme('colors.variant-primary-05');
+  --mds-chip-icon-color: theme('colors.tone-neutral');
+  --mds-chip-shadow: theme('boxShadow.sharp');
+}
+
+:host([variant="secondary"][tone="strong"]) {
+
+  --mds-chip-background: theme('colors.tone-neutral');
+  --mds-chip-border: transparent;
+  --mds-chip-color: theme('colors.tone-neutral-03');
+  --mds-chip-icon-background: theme('colors.variant-secondary-05');
+  --mds-chip-icon-color: theme('colors.tone-neutral');
+  --mds-chip-shadow: theme('boxShadow.sharp');
+}
+
+:host([variant="dark"][tone="strong"]) {
+
+  --mds-chip-background: theme('colors.tone-neutral-04');
+  --mds-chip-border: transparent;
+  --mds-chip-color: theme('colors.tone-neutral-03');
+  --mds-chip-icon-background: theme('colors.tone-neutral-05');
+  --mds-chip-icon-color: theme('colors.tone-neutral');
+  --mds-chip-shadow: theme('boxShadow.sharp');
+}
+
+:host([variant="info"][tone="strong"]) {
+
+  --mds-chip-background: theme('colors.tone-neutral');
+  --mds-chip-border: transparent;
+  --mds-chip-color: theme('colors.tone-neutral-03');
+  --mds-chip-icon-background: theme('colors.status-info-05');
+  --mds-chip-icon-color: theme('colors.tone-neutral');
+  --mds-chip-shadow: theme('boxShadow.sharp');
+}
+
+:host([variant="success"][tone="strong"]) {
+
+  --mds-chip-background: theme('colors.tone-neutral');
+  --mds-chip-border: transparent;
+  --mds-chip-color: theme('colors.tone-neutral-03');
+  --mds-chip-icon-background: theme('colors.status-success-05');
+  --mds-chip-icon-color: theme('colors.tone-neutral');
+  --mds-chip-shadow: theme('boxShadow.sharp');
+}
+
+:host([variant="warning"][tone="strong"]) {
+
+  --mds-chip-background: theme('colors.tone-neutral');
+  --mds-chip-border: transparent;
+  --mds-chip-color: theme('colors.tone-neutral-03');
+  --mds-chip-icon-background: theme('colors.status-warning-05');
+  --mds-chip-icon-color: theme('colors.tone-neutral');
+  --mds-chip-shadow: theme('boxShadow.sharp');
+}
+
+:host([variant="error"][tone="strong"]) {
+
+  --mds-chip-background: theme('colors.tone-neutral');
+  --mds-chip-border: transparent;
+  --mds-chip-color: theme('colors.tone-neutral-03');
+  --mds-chip-icon-background: theme('colors.status-error-05');
+  --mds-chip-icon-color: theme('colors.tone-neutral');
+  --mds-chip-shadow: theme('boxShadow.sharp');
+}
+
+
+:host([variant="primary"][tone="weak"]) {
+
+  --mds-chip-background: theme('colors.variant-primary-09');
+  --mds-chip-border: transparent;
+  --mds-chip-color: theme('colors.tone-neutral-03');
+  --mds-chip-icon-background: theme('colors.variant-primary-04');
+  --mds-chip-icon-color: theme('colors.tone-neutral');
+  --mds-chip-shadow: none;
+}
+
+:host([variant="secondary"][tone="weak"]) {
+
+  --mds-chip-background: theme('colors.variant-secondary-09');
+  --mds-chip-border: transparent;
+  --mds-chip-color: theme('colors.tone-neutral-03');
+  --mds-chip-icon-background: theme('colors.variant-secondary-04');
+  --mds-chip-icon-color: theme('colors.tone-neutral');
+  --mds-chip-shadow: none;
+}
+
+:host([variant="dark"][tone="weak"]) {
+
+  --mds-chip-background: theme('colors.tone-neutral-08');
+  --mds-chip-border: transparent;
+  --mds-chip-color: theme('colors.tone-neutral-03');
+  --mds-chip-icon-background: theme('colors.tone-neutral-03');
+  --mds-chip-icon-color: theme('colors.tone-neutral');
+  --mds-chip-shadow: none;
+}
+
+:host([variant="info"][tone="weak"]) {
+
+  --mds-chip-background: theme('colors.status-info-09');
+  --mds-chip-border: transparent;
+  --mds-chip-color: theme('colors.tone-neutral-03');
+  --mds-chip-icon-background: theme('colors.status-info-04');
+  --mds-chip-icon-color: theme('colors.tone-neutral');
+  --mds-chip-shadow: none;
+}
+
+:host([variant="success"][tone="weak"]) {
+
+  --mds-chip-background: theme('colors.status-success-09');
+  --mds-chip-border: transparent;
+  --mds-chip-color: theme('colors.tone-neutral-03');
+  --mds-chip-icon-background: theme('colors.status-success-04');
+  --mds-chip-icon-color: theme('colors.tone-neutral');
+  --mds-chip-shadow: none;
+}
+
+:host([variant="warning"][tone="weak"]) {
+
+  --mds-chip-background: theme('colors.status-warning-09');
+  --mds-chip-border: transparent;
+  --mds-chip-color: theme('colors.tone-neutral-03');
+  --mds-chip-icon-background: theme('colors.status-warning-04');
+  --mds-chip-icon-color: theme('colors.tone-neutral');
+  --mds-chip-shadow: none;
+}
+
+:host([variant="error"][tone="weak"]) {
+
+  --mds-chip-background: theme('colors.status-error-09');
+  --mds-chip-border: transparent;
+  --mds-chip-color: theme('colors.tone-neutral-03');
+  --mds-chip-icon-background: theme('colors.status-error-04');
+  --mds-chip-icon-color: theme('colors.tone-neutral');
+  --mds-chip-shadow: none;
+}
+
+:host([variant="primary"][selected]:not([selected="false"])) {
+
+  --mds-chip-border: theme('colors.variant-primary-04');
+}
+
+:host([variant="secondary"][selected]:not([selected="false"])) {
+
+  --mds-chip-border: theme('colors.variant-secondary-04');
+}
+
+:host([variant="dark"][selected]:not([selected="false"])) {
+
+  --mds-chip-border: theme('colors.tone-neutral-05');
+}
+
+:host([variant="info"][selected]:not([selected="false"])) {
+
+  --mds-chip-border: theme('colors.status-info-04');
+}
+
+:host([variant="success"][selected]:not([selected="false"])) {
+
+  --mds-chip-border: theme('colors.status-success-04');
+}
+
+:host([variant="warning"][selected]:not([selected="false"])) {
+
+  --mds-chip-border: theme('colors.status-warning-04');
+}
+
+:host([variant="error"][selected]:not([selected="false"])) {
+
+  --mds-chip-border: theme('colors.status-error-04');
+}

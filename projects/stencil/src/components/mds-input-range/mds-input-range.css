@@ -15,11 +15,11 @@
 :host {
 
   --mds-input-range-thumb-size: theme('spacing.400');
-  --mds-input-range-thumb-background: theme('colors.brand-maggioli-04');
+  --mds-input-range-thumb-background: theme('colors.variant-primary-04');
   --mds-input-range-thumb-shadow: 0 0 0 2px theme('colors.tone-neutral');
   --mds-input-range-track-background: theme('colors.tone-neutral-09');
   --mds-input-range-track-size: theme('spacing.200');
-  --mds-input-range-track-progress-background: theme('colors.brand-maggioli-03');
+  --mds-input-range-track-progress-background: theme('colors.variant-primary-03');
 
   @apply
     duration-200
