@@ -4,3 +4,38 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+/*
+:root,
+:root.pref-theme-dark {
+
+  --variant-primary-01: var(--brand-rnd-01);
+  --variant-primary-02: var(--brand-rnd-02);
+  --variant-primary-03: var(--brand-rnd-03);
+  --variant-primary-04: var(--brand-rnd-04);
+  --variant-primary-05: var(--brand-rnd-05);
+  --variant-primary-06: var(--brand-rnd-06);
+  --variant-primary-07: var(--brand-rnd-07);
+  --variant-primary-08: var(--brand-rnd-08);
+  --variant-primary-09: var(--brand-rnd-09);
+  --variant-primary-10: var(--brand-rnd-10);
+  --variant-primary: var(--brand-rnd);
+}
+
+@media (prefers-color-scheme: dark) {
+  :root.pref-theme-system {
+
+    --variant-primary-01: var(--brand-rnd-01);
+    --variant-primary-02: var(--brand-rnd-02);
+    --variant-primary-03: var(--brand-rnd-03);
+    --variant-primary-04: var(--brand-rnd-04);
+    --variant-primary-05: var(--brand-rnd-05);
+    --variant-primary-06: var(--brand-rnd-06);
+    --variant-primary-07: var(--brand-rnd-07);
+    --variant-primary-08: var(--brand-rnd-08);
+    --variant-primary-09: var(--brand-rnd-09);
+    --variant-primary-10: var(--brand-rnd-10);
+    --variant-primary: var(--brand-rnd);
+  }
+}
+*/

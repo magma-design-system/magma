@@ -5,7 +5,7 @@
 
     --mds-kpi-item-info-background: theme('colors.tone-neutral-09');
 
-    background-color: theme('colors.brand-maggioli-09');
+    background-color: theme('colors.variant-primary-09');
     box-shadow: theme('boxShadow.outline');
   }
 }
@@ -17,7 +17,7 @@
 
       --mds-kpi-item-info-background: theme('colors.tone-neutral-09');
 
-      background-color: theme('colors.brand-maggioli-09');
+      background-color: theme('colors.variant-primary-09');
       box-shadow: theme('boxShadow.outline');
     }
   }

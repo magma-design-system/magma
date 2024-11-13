@@ -5,9 +5,9 @@
 
 :host {
 
-  --mds-img-background: theme('colors.brand-maggioli-03');
-  --mds-img-color: theme('colors.brand-maggioli-09');
-  --mds-img-icon-color: theme('colors.brand-maggioli-07');
+  --mds-img-background: theme('colors.variant-primary-03');
+  --mds-img-color: theme('colors.variant-primary-09');
+  --mds-img-icon-color: theme('colors.variant-primary-07');
   --mds-img-error-background: theme('colors.status-error-09');
   --mds-img-error-color: theme('colors.status-error-04');
   --mds-img-error-icon-color: theme('colors.status-error-06');

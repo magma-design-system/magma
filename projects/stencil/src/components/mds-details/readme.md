@@ -38,14 +38,6 @@ This is a web-component from Maggioli Design System [Magma](https://magma.maggio
 | `"content"` |             |
 
 
-## CSS Custom Properties
-
-| Name                              | Description                                         |
-| --------------------------------- | --------------------------------------------------- |
-| `--mds-details-helper-icon-color` | Sets icon color of the helper icon of the component |
-| `--mds-details-icon-color`        | Sets the icon color the component                   |
-
-
 ----------------------------------------------
 
 Built with love @ [Gruppo Maggioli](https://www.maggioli.com) from [R&D Department](https://www.maggioli.com/it-it/chi-siamo/ricerca-sviluppo)

@@ -12,7 +12,7 @@
   --mds-tab-bar-item-background: transparent;
   --mds-tab-bar-item-background-selected: var(--mds-tab-bar-item-background);
   --mds-tab-bar-item-color: theme('colors.tone-neutral-06');
-  --mds-tab-bar-item-color-selected: theme('colors.brand-maggioli-04');
+  --mds-tab-bar-item-color-selected: theme('colors.variant-primary-04');
 
   @apply
     duration-200

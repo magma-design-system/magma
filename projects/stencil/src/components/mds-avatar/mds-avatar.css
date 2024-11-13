@@ -11,8 +11,8 @@
 :host {
 
   --mds-avatar-background-color-pending: theme('colors.tone-neutral-08');
-  --mds-avatar-background-color: theme('colors.brand-maggioli-05');
-  --mds-avatar-color: theme('colors.brand-maggioli-10');
+  --mds-avatar-background-color: theme('colors.variant-primary-05');
+  --mds-avatar-color: theme('colors.variant-primary-10');
   --mds-avatar-radius: theme('borderRadius.full');
   --mds-avatar-initials-padding: 20%;
 

@@ -16,7 +16,7 @@
 :host {
 
   --mds-button-await-duration: 0.725s;
-  --mds-button-background: theme('colors.brand-maggioli-02');
+  --mds-button-background: theme('colors.variant-primary-02');
   --mds-button-border-color: transparent;
   --mds-button-color: theme('colors.tone-neutral');
   --mds-button-gap: theme('spacing.200');

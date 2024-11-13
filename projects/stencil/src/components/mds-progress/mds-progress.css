@@ -13,7 +13,7 @@
 :host {
 
   --mds-progress-background: theme('colors.tone-neutral-08');
-  --mds-progress-color: theme('colors.brand-maggioli-03');
+  --mds-progress-color: theme('colors.variant-primary-03');
   --mds-progress-duration: 750ms;
   --mds-progress-radius: theme('borderRadius.lg');
   --mds-progress-thickness: theme('height.200');

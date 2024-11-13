@@ -15,7 +15,7 @@
     w-1200;
 
   align-items: center;
-  color: theme('colors.brand-maggioli-03');
+  color: theme('colors.variant-primary-03');
   display: inline-flex;
   justify-content: center;
   transform: scale(0);

@@ -3,14 +3,14 @@
 :host( [variant="primary"] ),
 :host( [variant="primary"][tone="strong"] ) {
 
-  --mds-avatar-background-color: theme('colors.brand-maggioli-05');
-  --mds-avatar-color: theme('colors.brand-maggioli-10');
+  --mds-avatar-background-color: theme('colors.variant-primary-05');
+  --mds-avatar-color: theme('colors.variant-primary-10');
 }
 
 :host( [variant="primary"][tone="weak"] ) {
 
-  --mds-avatar-background-color: theme('colors.brand-maggioli-09');
-  --mds-avatar-color: theme('colors.brand-maggioli-05');
+  --mds-avatar-background-color: theme('colors.variant-primary-09');
+  --mds-avatar-color: theme('colors.variant-primary-05');
 }
 
 :host( [variant="orange"] ),

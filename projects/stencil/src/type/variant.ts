@@ -69,6 +69,15 @@ export type ActionVariantType =
   | 'dark'
   | 'light'
 
+export type ChipVariantType =
+  | 'primary'
+  | 'secondary'
+  | 'dark'
+  | 'error'
+  | 'info'
+  | 'success'
+  | 'warning'
+
 export type StateVariantType =
   | 'disabled'
   | 'focused'
@@ -77,7 +86,6 @@ export type StateVariantType =
 export type ToneActionVariantType =
   | 'primary' // background strong
   | 'secondary' // background weak
-  | 'tertiary' // no background, no border
   | 'strong' // background strong
   | 'weak' // background weak
   | 'ghost' // bordered

@@ -3,7 +3,7 @@
 @container style(--magma-pref-contrast: more) {
   :host {
 
-    --mds-details-icon-color: theme('colors.brand-maggioli-03');
+    --mds-details-icon-color: theme('colors.variant-primary-03');
     --mds-details-helper-icon-color: theme('colors.tone-neutral-02');
   }
 }
@@ -13,7 +13,7 @@
   @media (prefers-contrast: more) {
     :host {
 
-      --mds-details-icon-color: theme('colors.brand-maggioli-03');
+      --mds-details-icon-color: theme('colors.variant-primary-03');
       --mds-details-helper-icon-color: theme('colors.tone-neutral-02');
     }
   }

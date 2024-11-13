@@ -1,4 +1,4 @@
-import miBaselineClose from '@icon/mi/baseline/close.svg'
+import miBaselineCancel from '@icon/mi/baseline/cancel.svg'
 import { Component, Element, Event, EventEmitter, Host, h, Prop } from '@stencil/core'
 import { KeyboardManager } from '@common/keyboard-manager'
 import { ThemeFullVariantType, ToneSimpleVariantType } from '@type/variant'
@@ -88,7 +88,7 @@ export class MdsLabel {
         <mds-text class="text" truncate={this.truncate} typography={this.typography}>
           <slot/>
         </mds-text>
-        { this.deletable && <mds-button class="button-close" icon={miBaselineClose} onClick={ this.onClickDelete.bind(this) } title={this.labelAction}></mds-button> }
+        { this.deletable && <mds-button class="button-close" icon={miBaselineCancel} onClick={ this.onClickDelete.bind(this) } title={this.labelAction}></mds-button> }
       </Host>
     )
   }

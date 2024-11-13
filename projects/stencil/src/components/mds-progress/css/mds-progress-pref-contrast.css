@@ -4,7 +4,7 @@
   :host,
   :host( [variant="primary"] ) {
 
-    --mds-progress-color: theme('colors.brand-maggioli-05');
+    --mds-progress-color: theme('colors.variant-primary-05');
     --mds-progress-background: theme('colors.tone-neutral-07');
   }
 }
@@ -15,7 +15,7 @@
     :host,
     :host( [variant="primary"] ) {
 
-      --mds-progress-color: theme('colors.brand-maggioli-05');
+      --mds-progress-color: theme('colors.variant-primary-05');
       --mds-progress-background: theme('colors.tone-neutral-07');
     }
   }

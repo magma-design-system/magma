@@ -26,8 +26,8 @@
     "@maggioli-design-system/mds-badge": "3.2.0",
     "@maggioli-design-system/mds-icon": "2.10.6",
     "@maggioli-design-system/mds-text": "4.5.1",
-    "@maggioli-design-system/styles": "15.4.0",
-    "@stencil/core": "4.21.0",
+    "@maggioli-design-system/styles": "15.5.0",
+    "@stencil/core": "4.22.2",
     "crypto-js": "4.2.0"
   },
   "license": "MIT",

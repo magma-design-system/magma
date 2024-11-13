@@ -51,11 +51,11 @@
     "watch": "npm run build.fixtures && npm run build.icons && stencil build --watch"
   },
   "dependencies": {
-    "@floating-ui/dom": "1.5.4",
-    "@maggioli-design-system/design-tokens": "13.4.0",
+    "@floating-ui/dom": "1.6.12",
+    "@maggioli-design-system/design-tokens": "13.5.0",
     "@maggioli-design-system/identity": "2.1.1",
-    "@maggioli-design-system/styles": "15.4.0",
-    "@stencil/core": "4.21.0",
+    "@maggioli-design-system/styles": "15.5.0",
+    "@stencil/core": "4.22.2",
     "clsx": "2.1.0",
     "crypto-js": "4.2.0",
     "dayjs": "1.11.13",
@@ -94,7 +94,7 @@
     "eslint-plugin-storybook": "0.6.15",
     "handlebars": "4.7.8",
     "jest-transformer-svg": "1.0.2",
-    "postcss": "8.4.47",
+    "postcss": "8.4.49",
     "postcss-flexbugs-fixes": "5.0.2",
     "postcss-iconsauce": "1.4.1",
     "postcss-import": "16.0.0",
@@ -111,7 +111,7 @@
     "stencil-inline-svg": "1.1.0",
     "storybook": "7.6.7",
     "style-loader": "3.3.3",
-    "tailwindcss": "3.4.10",
+    "tailwindcss": "3.4.14",
     "ts-loader": "9.5.0",
     "tsconfig-paths-jest": "0.0.1",
     "tsconfig-paths-webpack-plugin": "4.1.0"

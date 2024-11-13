@@ -1,5 +1,6 @@
 import { h } from '@stencil/core'
 import { iconsDictionary } from '@dictionary/icon'
+import { themeVariantChipDictionary, toneMinimalVariantDictionary } from '@dictionary/variant'
 
 export default {
   title: 'UI / Chip',
@@ -30,6 +31,22 @@ export default {
       type: { name: 'boolean' },
       description: 'Sets the component selected',
     },
+    selectable: {
+      type: { name: 'boolean' },
+      description: 'Sets if the component change is status to selected when is clicked',
+    },
+    tone: {
+      type: { name: 'string' },
+      options: toneMinimalVariantDictionary,
+      control: { type: 'select' },
+      description: 'Sets the color variant tone of the component',
+    },
+    variant: {
+      type: { name: 'string' },
+      options: themeVariantChipDictionary,
+      control: { type: 'select' },
+      description: 'Sets the color variant of the component',
+    },
   },
 }
 
@@ -44,8 +61,8 @@ Default.args = {
   icon: 'mi/baseline/pets',
 }
 
-export const selected = Template.bind({})
-selected.args = {
+export const Selected = Template.bind({})
+Selected.args = {
   label: 'Bovaro del Bernese',
   icon: 'mi/baseline/pets',
   selected: true,
@@ -57,20 +74,22 @@ Icon.args = {
   icon: 'mi/baseline/eco',
 }
 
-export const deletable = Template.bind({})
-deletable.args = {
+export const Deletable = Template.bind({})
+Deletable.args = {
   deletable: true,
   label: 'Bovaro del Bernese',
 }
 
-export const clickable = Template.bind({})
-clickable.args = {
+export const Clickable = Template.bind({})
+Clickable.args = {
   clickable: true,
+  selectable: true,
+  icon: 'mi/baseline/eco',
   label: 'Hover me to interact',
 }
 
-export const fullyInteractive = Template.bind({})
-fullyInteractive.args = {
+export const FullyInteractive = Template.bind({})
+FullyInteractive.args = {
   clickable: true,
   deletable: true,
   icon: 'mi/baseline/downhill-skiing',

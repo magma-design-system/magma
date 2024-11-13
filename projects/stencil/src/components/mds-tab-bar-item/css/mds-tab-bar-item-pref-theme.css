@@ -4,7 +4,7 @@
   :host {
 
     --mds-tab-bar-item-color: theme('colors.tone-neutral-04');
-    --mds-tab-bar-item-color-selected: theme('colors.brand-maggioli-02');
+    --mds-tab-bar-item-color-selected: theme('colors.variant-primary-02');
   }
 }
 
@@ -14,7 +14,7 @@
     :host {
 
       --mds-tab-bar-item-color: theme('colors.tone-neutral-04');
-      --mds-tab-bar-item-color-selected: theme('colors.brand-maggioli-02');
+      --mds-tab-bar-item-color-selected: theme('colors.variant-primary-02');
     }
   }
 }
