@@ -23,6 +23,20 @@ const AccessibilityPanel = () => {
     }
   }
 
+  // const translateAllComponents = () => {
+  //   console.log('translateAllComponents')
+  //   document.querySelectorAll('*').forEach(el => {
+  //     console.log(el)
+  //     if (el.tagName.toLowerCase().startsWith('mds-')) {
+  //       console.log('mds-', el)
+  //       if (el && 'updateLang' in el) {
+  //         console.log('updateLang')
+  //         el.updateLang()
+  //       }
+  //     }
+  //   })
+  // }
+
   const setLanguage = (lang) => {
     if (window) {
       window.localStorage.setItem('mdsPrefLanguage', lang)
@@ -31,6 +45,7 @@ const AccessibilityPanel = () => {
       const iframe = document.getElementById('storybook-preview-iframe')
       const iframeDocument = iframe.contentDocument || iframe.contentWindow.document
       iframeDocument.querySelector('html').setAttribute('lang', window.localStorage.getItem('mdsPrefLanguage') ?? 'it')
+      // translateAllComponents()
     }
   }
 
