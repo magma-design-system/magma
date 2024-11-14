@@ -5,8 +5,6 @@ import miBaselineArrowUp from '@icon/mi/baseline/keyboard-arrow-up.svg'
 import miBaselineRemove from '@icon/mi/baseline/remove.svg'
 import miBaselineVisible from '@icon/mi/baseline/visibility.svg'
 import miBaselineVisibleOff from '@icon/mi/baseline/visibility-off.svg'
-
-
 import { AttachInternals, Component, Element, Event, EventEmitter, Host, Method, Prop, State, Watch, h } from '@stencil/core'
 import { AutocompleteType } from '@type/autocomplete'
 import { InputTextType, InputControlsLayoutType, InputControlsIconType } from '@type/input'
@@ -14,7 +12,9 @@ import { MdsInputEventDetail } from './meta/event-detail'
 import { ThemeStatusVariantType } from '@type/variant'
 import { TypographyInputType } from '@type/typography'
 import { Locale } from '@common/locale'
+import localeEl from './meta/locale.el.json'
 import localeEn from './meta/locale.en.json'
+import localeEs from './meta/locale.es.json'
 import localeIt from './meta/locale.it.json'
 import { LanguageType } from '@type/language'
 
@@ -68,9 +68,16 @@ export class MdsInput {
   @State() isPasswordVisible = false
 
   private t:Locale = new Locale({
+    el: localeEl,
     en: localeEn,
+    es: localeEs,
     it: localeIt,
   })
+  @Method()
+  async updateLang (): Promise<void> {
+    this.language = this.t.lang(this.el) as LanguageType
+    this.t.update()
+  }
 
   @AttachInternals() internals: ElementInternals
 

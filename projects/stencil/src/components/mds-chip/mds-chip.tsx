@@ -1,11 +1,13 @@
-import { Component, Element, Event, EventEmitter, Host, h, Prop, Watch } from '@stencil/core'
+import { Component, Element, Event, EventEmitter, Host, Method, Prop, State, Watch, h } from '@stencil/core'
 import miBaselineCancel from '@icon/mi/baseline/cancel.svg'
 import { setAttributeIfEmpty } from '@common/aria'
 import { MdsChipEvent } from './meta/interface'
 import { KeyboardManager } from '@common/keyboard-manager'
 import { ChipVariantType, ToneMinimalVariantType } from '@type/variant'
 import { Locale } from '@common/locale'
+import localeEl from './meta/locale.el.json'
 import localeEn from './meta/locale.en.json'
+import localeEs from './meta/locale.es.json'
 import localeIt from './meta/locale.it.json'
 
 @Component({
@@ -18,9 +20,16 @@ export class MdsChip {
   @Element() host: HTMLMdsChipElement
   private km = new KeyboardManager()
   private t:Locale = new Locale({
+    el: localeEl,
     en: localeEn,
+    es: localeEs,
     it: localeIt,
   })
+  @State() language: string
+  @Method()
+  async updateLang (): Promise<void> {
+    this.language = this.t.lang(this.host)
+  }
 
   /**
    * Adds ARIA support to the element if has interaction

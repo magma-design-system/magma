@@ -1,10 +1,15 @@
-import { Component, Element, Event, EventEmitter, Host, h, Prop, State, Watch } from '@stencil/core'
+import { Component, Element, Event, EventEmitter, Host, h, Prop, State, Watch, Method } from '@stencil/core'
 import { ExtensionSuffixType } from '@type/file-types'
 import { MdsFileEventDetail } from './meta/event-detail'
 import { ThemeFullVariantType } from '@type/variant'
 import { MD5 } from 'crypto-js'
 import { getFormatsVariant, getName, getSuffix, getExtensionInfos } from '@common/file'
 import miBaselineFileDownloadDone from '@icon/mi/baseline/file-download-done.svg'
+import { Locale } from '@common/locale'
+import localeEl from './meta/locale.el.json'
+import localeEn from './meta/locale.en.json'
+import localeEs from './meta/locale.es.json'
+import localeIt from './meta/locale.it.json'
 
 // https://stackoverflow.com/questions/1106377/detect-when-a-browser-receives-a-file-download
 
@@ -16,6 +21,17 @@ import miBaselineFileDownloadDone from '@icon/mi/baseline/file-download-done.svg
 export class MdsFile {
 
   @Element() private host: HTMLMdsFileElement
+  private t:Locale = new Locale({
+    el: localeEl,
+    en: localeEn,
+    es: localeEs,
+    it: localeIt,
+  })
+  @State() language: string
+  @Method()
+  async updateLang (): Promise<void> {
+    this.language = this.t.lang(this.host)
+  }
 
   @State() private wasDownloaded = false
 
@@ -28,11 +44,6 @@ export class MdsFile {
    * Overrides the default filetype description
    */
   @Prop() readonly description?: string
-
-  /**
-   * Sets a label which is shown when the file is downloaded
-   */
-  @Prop() readonly downloadedLabel?: string = 'Hai già scaricato questo file'
 
   /**
    * The filename shown as component title, is used to auto assign one of the filetype known in the filetype dictionary
@@ -109,7 +120,7 @@ export class MdsFile {
         </div>
         { this.wasDownloaded && this.showDownloadedIcon &&
           <div class="indicator">
-            <i class="downloaded" innerHTML={miBaselineFileDownloadDone} title={this.downloadedLabel}/>
+            <i class="downloaded" innerHTML={miBaselineFileDownloadDone} title={this.t.get('alreadyDownloaded')}/>
           </div>
         }
       </Host>

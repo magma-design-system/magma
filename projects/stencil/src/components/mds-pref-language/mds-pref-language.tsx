@@ -91,7 +91,7 @@ export class MdsPrefLanguage {
         this.languageChangeEvent.emit({ language: this.currentSelectedItem.code })
         this.showDropdown = false
         this.setLanguage(e.detail.language)
-        this.translateAllComponents()
+        this.t.update(document)
       })
     })
 
@@ -117,18 +117,6 @@ export class MdsPrefLanguage {
       const element = document.querySelector('html')
       element?.setAttribute('lang', this.set)
     }
-  }
-
-  private translateAllComponents = (): void => {
-    document.querySelectorAll('*').forEach(el => {
-      if (el.tagName.toLowerCase().startsWith('mds-')) {
-        // eslint-disable-next-line no-restricted-syntax
-        if (el && 'updateLang' in el) {
-          // eslint-disable-next-line @typescript-eslint/no-explicit-any
-          (el as any).updateLang()
-        }
-      }
-    })
   }
 
   render () {

@@ -1,10 +1,11 @@
-
 import dayjs from 'dayjs'
+import localeEl from './meta/locale.el.json'
 import localeEn from './meta/locale.en.json'
+import localeEs from './meta/locale.es.json'
 import localeIt from './meta/locale.it.json'
 import miBaselineCancel from '@icon/mi/baseline/cancel.svg'
 import relativeTime from 'dayjs/plugin/relativeTime'
-import { Component, Element, Event, EventEmitter, Host, h, Prop } from '@stencil/core'
+import { Component, Element, Event, EventEmitter, Host, h, Prop, Method, State } from '@stencil/core'
 import { ISO8601Date } from '@type/date'
 import { Locale } from '@common/locale'
 import { MdsPushNotificationEventDetail } from './meta/event-detail'
@@ -34,9 +35,16 @@ export class MdsPushNotification {
   private hasBadge?: boolean
   @Element() host: HTMLMdsPushNotificationElement
   private t:Locale = new Locale({
+    el: localeEl,
     en: localeEn,
+    es: localeEs,
     it: localeIt,
   })
+  @State() language: string
+  @Method()
+  async updateLang (): Promise<void> {
+    this.language = this.t.lang(this.host)
+  }
 
   /**
    * Specifies the notification date based on [standard ISO 8601](https://www.iso.org/iso-8601-date-and-time-format.html).
