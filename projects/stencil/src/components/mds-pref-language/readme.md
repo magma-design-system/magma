@@ -7,9 +7,9 @@
 
 ## Properties
 
-| Property | Attribute | Description                                                       | Type                                                                                                           | Default  |
-| -------- | --------- | ----------------------------------------------------------------- | -------------------------------------------------------------------------------------------------------------- | -------- |
-| `set`    | `set`     |  /**   Specifies the language code based on HTML `lang` attribute | ``${Lowercase<string>}${Lowercase<string>}${Lowercase<string>}` \| `${Lowercase<string>}${Lowercase<string>}`` | `'auto'` |
+| Property | Attribute | Description                                                | Type                                                                                                           | Default  |
+| -------- | --------- | ---------------------------------------------------------- | -------------------------------------------------------------------------------------------------------------- | -------- |
+| `set`    | `set`     | Specifies the language code based on HTML `lang` attribute | ``${Lowercase<string>}${Lowercase<string>}${Lowercase<string>}` \| `${Lowercase<string>}${Lowercase<string>}`` | `'auto'` |
 
 
 ## Events
@@ -18,6 +18,19 @@
 | ----------------------- | ----------------------------------------------------------------------------------------------------- | ----------------------------------------- |
 | `mdsPrefChange`         | Emits when the component is triggered                                                                 | `CustomEvent<MdsPrefChangeEventDetail>`   |
 | `mdsPrefLanguageChange` | Emits when the component changes the language selected from the click event of the dropdown list item | `CustomEvent<MdsPrefLanguageEventDetail>` |
+
+
+## Methods
+
+### `updateLang() => Promise<void>`
+
+
+
+#### Returns
+
+Type: `Promise<void>`
+
+
 
 
 ## Slots

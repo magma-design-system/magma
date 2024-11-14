@@ -22,6 +22,13 @@
 | `"label"`  |             |
 
 
+## CSS Custom Properties
+
+| Name                              | Description                   |
+| --------------------------------- | ----------------------------- |
+| `--mds-table-header-cell-padding` | The padding of the table cell |
+
+
 ## Dependencies
 
 ### Depends on

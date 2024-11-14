@@ -9,15 +9,14 @@ This is a web-component from Maggioli Design System [Magma](https://magma.maggio
 
 ## Properties
 
-| Property             | Attribute              | Description                                                                                                                | Type                               | Default                           |
-| -------------------- | ---------------------- | -------------------------------------------------------------------------------------------------------------------------- | ---------------------------------- | --------------------------------- |
-| `description`        | `description`          | Overrides the default filetype description                                                                                 | `string \| undefined`              | `undefined`                       |
-| `downloadedLabel`    | `downloaded-label`     | Sets a label which is shown when the file is downloaded                                                                    | `string \| undefined`              | `'Hai già scaricato questo file'` |
-| `filename`           | `filename`             | The filename shown as component title, is used to auto assign one of the filetype known in the filetype dictionary         | `string`                           | `undefined`                       |
-| `format`             | `format`               | Sets if the download icon must be shown or not                                                                             | `string \| undefined`              | `undefined`                       |
-| `preview`            | `preview`              | The image preview src if available of a file, useful if you have a logo to display, or a smaller version of a bigger image | `string \| undefined`              | `undefined`                       |
-| `showDownloadedIcon` | `show-downloaded-icon` | Sets if the download icon must be shown or not                                                                             | `boolean \| undefined`             | `true`                            |
-| `suffix`             | `suffix`               | Overrides the automatic filetype recongition by forcing the suffix to one of the available formats choosen                 | `ExtensionSuffixType \| undefined` | `undefined`                       |
+| Property             | Attribute              | Description                                                                                                                | Type                               | Default     |
+| -------------------- | ---------------------- | -------------------------------------------------------------------------------------------------------------------------- | ---------------------------------- | ----------- |
+| `description`        | `description`          | Overrides the default filetype description                                                                                 | `string \| undefined`              | `undefined` |
+| `filename`           | `filename`             | The filename shown as component title, is used to auto assign one of the filetype known in the filetype dictionary         | `string`                           | `undefined` |
+| `format`             | `format`               | Sets if the download icon must be shown or not                                                                             | `string \| undefined`              | `undefined` |
+| `preview`            | `preview`              | The image preview src if available of a file, useful if you have a logo to display, or a smaller version of a bigger image | `string \| undefined`              | `undefined` |
+| `showDownloadedIcon` | `show-downloaded-icon` | Sets if the download icon must be shown or not                                                                             | `boolean \| undefined`             | `true`      |
+| `suffix`             | `suffix`               | Overrides the automatic filetype recongition by forcing the suffix to one of the available formats choosen                 | `ExtensionSuffixType \| undefined` | `undefined` |
 
 
 ## Events
@@ -25,6 +24,19 @@ This is a web-component from Maggioli Design System [Magma](https://magma.maggio
 | Event             | Description                                               | Type                              |
 | ----------------- | --------------------------------------------------------- | --------------------------------- |
 | `mdsFileDownload` | Emits when the component is clicked, returning file infos | `CustomEvent<MdsFileEventDetail>` |
+
+
+## Methods
+
+### `updateLang() => Promise<void>`
+
+
+
+#### Returns
+
+Type: `Promise<void>`
+
+
 
 
 ## Dependencies

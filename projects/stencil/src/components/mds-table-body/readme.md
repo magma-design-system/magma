@@ -21,6 +21,14 @@ This is a web-component from Maggioli Design System [Magma](https://magma.maggio
 | `"default"` | Put `mds-table-row` element/s. |
 
 
+## CSS Custom Properties
+
+| Name                                | Description                                                      |
+| ----------------------------------- | ---------------------------------------------------------------- |
+| `--mds-table-body-background`       | The background-color of the table body                           |
+| `--mds-table-body-background-hover` | The background-color of the table body when the mouse is over it |
+
+
 ----------------------------------------------
 
 Built with love @ [Gruppo Maggioli](https://www.maggioli.com) from [R&D Department](https://www.maggioli.com/it-it/chi-siamo/ricerca-sviluppo)

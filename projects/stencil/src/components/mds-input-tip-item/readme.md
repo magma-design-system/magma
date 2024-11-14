@@ -13,6 +13,19 @@
 | `variant`  | `variant`  | Specifies the variant of the element | `"disabled" \| "readonly" \| "required" \| "required-success" \| "text" \| undefined` | `'required'` |
 
 
+## Methods
+
+### `updateLang() => Promise<void>`
+
+
+
+#### Returns
+
+Type: `Promise<void>`
+
+
+
+
 ## Dependencies
 
 ### Used by
