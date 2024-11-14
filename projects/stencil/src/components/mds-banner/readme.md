@@ -25,6 +25,19 @@ This is a web-component from Maggioli Design System [Magma](https://magma.maggio
 | `mdsBannerClose` | Emits when the url view is closed | `CustomEvent<void>` |
 
 
+## Methods
+
+### `updateLang() => Promise<void>`
+
+
+
+#### Returns
+
+Type: `Promise<void>`
+
+
+
+
 ## Slots
 
 | Slot        | Description                                                                             |

@@ -44,6 +44,16 @@ Type: `Promise<FileError[] | null>`
 
 
 
+### `updateLang() => Promise<void>`
+
+
+
+#### Returns
+
+Type: `Promise<void>`
+
+
+
 
 ## Dependencies
 

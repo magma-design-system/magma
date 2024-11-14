@@ -37,6 +37,19 @@ This is a web-component from Maggioli Design System [Magma](https://magma.maggio
 | `"tabs"`     |             |
 
 
+## CSS Custom Properties
+
+| Name                                   | Description                                                                                                                      |
+| -------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------- |
+| `--mds-tab-duration`                   | Sets the animation duration on how the contents height is resized when the component switch from a content to another one        |
+| `--mds-tab-scrollbar-margin`           | Sets the margin of the browser scroll bar (if supported)                                                                         |
+| `--mds-tab-scrollbar-radius`           | Sets the border-radius of the browser scroll bar (if supported)                                                                  |
+| `--mds-tab-scrollbar-size`             | Sets the height and width of the browser scroll bar (if supported)                                                               |
+| `--mds-tab-scrollbar-thumb-background` | Sets the background-color of the browser scroll bar thumb (if supported)                                                         |
+| `--mds-tab-scrollbar-track-background` | Sets the background-color of the browser scroll bar track (if supported)                                                         |
+| `--mds-tab-timing-function`            | Sets the animation timing function on how the contents height is resized when the component switch from a content to another one |
+
+
 ## Dependencies
 
 ### Used by

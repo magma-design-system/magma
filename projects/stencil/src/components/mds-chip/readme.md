@@ -30,6 +30,19 @@ This is a web-component from Maggioli Design System [Magma](https://magma.maggio
 | `mdsChipDelete`     | Emits when the component's delete button is clicked | `CustomEvent<MdsChipEvent>` |
 
 
+## Methods
+
+### `updateLang() => Promise<void>`
+
+
+
+#### Returns
+
+Type: `Promise<void>`
+
+
+
+
 ## CSS Custom Properties
 
 | Name                                  | Description                                                                  |

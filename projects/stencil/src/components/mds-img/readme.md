@@ -31,6 +31,19 @@ This is a web-component from Maggioli Design System [Magma](https://magma.maggio
 | `mdsImgLoadSuccess` | Emits when the image is successfully loaded | `CustomEvent<MdsImgEventDetail>` |
 
 
+## Methods
+
+### `updateLang() => Promise<void>`
+
+
+
+#### Returns
+
+Type: `Promise<void>`
+
+
+
+
 ## Shadow Parts
 
 | Part      | Description |
