@@ -130,6 +130,22 @@ export default {
 const Template = (args: MdsInputInterface) =>
   <mds-input {...args}></mds-input>
 
+const TemplateLanguage = (args: MdsInputInterface) =>
+  <div class="grid gap-400">
+    <mds-input {...args}></mds-input>
+    <div class="grid gap grid-cols-3">
+      <mds-pref>
+        <mds-pref-language>
+          <mds-pref-language-item code="it"></mds-pref-language-item>
+          <mds-pref-language-item code="en"></mds-pref-language-item>
+          <mds-pref-language-item code="el"></mds-pref-language-item>
+          <mds-pref-language-item code="es"></mds-pref-language-item>
+          <mds-pref-language-item code="ja"></mds-pref-language-item>
+        </mds-pref-language>
+      </mds-pref>
+    </div>
+  </div>
+
 export const Default = Template.bind({})
 Default.args = {
   placeholder: 'Scrivi qualcosa',
@@ -233,6 +249,13 @@ Search.args = {
 export const Icon = Template.bind({})
 Icon.args = {
   icon: 'mi/round/email',
+  placeholder: 'Status input field',
+}
+
+export const TestLanguageChange = TemplateLanguage.bind({})
+TestLanguageChange.args = {
+  icon: 'mi/round/email',
+  readonly: true,
   placeholder: 'Status input field',
 }
 

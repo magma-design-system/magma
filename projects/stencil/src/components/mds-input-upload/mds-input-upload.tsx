@@ -8,7 +8,9 @@ import { AttachmentSort, ErrorType, FileError, FileStatus, LOCALSTORAGE_KEY_USER
 import { genericMimeToExt } from '@dictionary/file-extensions'
 import { MdsTabEventDetail } from '@component/mds-tab/meta/event-detail'
 import { Locale } from '@common/locale'
+import localeEl from './meta/locale.el.json'
 import localeEn from './meta/locale.en.json'
+import localeEs from './meta/locale.es.json'
 import localeIt from './meta/locale.it.json'
 
 @Component({
@@ -26,9 +28,16 @@ export class MdsInputUpload {
   private id: number = 0
   private userSort: AttachmentSort
   private t:Locale = new Locale({
+    el: localeEl,
     en: localeEn,
+    es: localeEs,
     it: localeIt,
   })
+  @State() language: string
+  @Method()
+  async updateLang (): Promise<void> {
+    this.language = this.t.lang(this.host)
+  }
 
   @Element() private host: HTMLMdsInputUploadElement
   @AttachInternals() internals: ElementInternals
