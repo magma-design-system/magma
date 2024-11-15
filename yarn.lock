@@ -2355,22 +2355,14 @@
   resolved "https://registry.npmjs.org/@fal-works/esbuild-plugin-global-externals/-/esbuild-plugin-global-externals-2.1.2.tgz#c05ed35ad82df8e6ac616c68b92c2282bd083ba4"
   integrity sha512-cEee/Z+I12mZcFJshKcCqC8tuX5hG3s+d+9nZ3LabqKF1vKdF41B92pJVCBggjAGORAeOzyyDDKrZwIkLffeOQ==
 
-"@floating-ui/core@^1.5.3", "@floating-ui/core@^1.6.0":
+"@floating-ui/core@^1.6.0":
   version "1.6.8"
   resolved "https://registry.npmjs.org/@floating-ui/core/-/core-1.6.8.tgz#aa43561be075815879305965020f492cdb43da12"
   integrity sha512-7XJ9cPU+yI2QeLS+FCSlqNFZJq8arvswefkZrYI1yQBbftw6FyrZOxYSh+9S7z7TpeWlRt9zJ5IhM1WIL334jA==
   dependencies:
     "@floating-ui/utils" "^0.2.8"
 
-"@floating-ui/dom@1.5.4":
-  version "1.5.4"
-  resolved "https://registry.npmjs.org/@floating-ui/dom/-/dom-1.5.4.tgz#28df1e1cb373884224a463235c218dcbd81a16bb"
-  integrity sha512-jByEsHIY+eEdCjnTVu+E3ephzTOzkQ8hgUfGwos+bg7NlH33Zc5uO+QHz1mrQUOgIKKDD1RtS201P9NvAfq3XQ==
-  dependencies:
-    "@floating-ui/core" "^1.5.3"
-    "@floating-ui/utils" "^0.2.0"
-
-"@floating-ui/dom@^1.0.0":
+"@floating-ui/dom@1.6.12", "@floating-ui/dom@^1.0.0":
   version "1.6.12"
   resolved "https://registry.npmjs.org/@floating-ui/dom/-/dom-1.6.12.tgz#6333dcb5a8ead3b2bf82f33d6bc410e95f54e556"
   integrity sha512-NP83c0HjokcGVEMeoStg317VD9W7eDlGK7457dMBANbKA6GJZdc7rjujdgqzTaz93jkGgc5P/jeWbaCHnMNc+w==
@@ -2385,30 +2377,30 @@
   dependencies:
     "@floating-ui/dom" "^1.0.0"
 
-"@floating-ui/utils@^0.2.0", "@floating-ui/utils@^0.2.8":
+"@floating-ui/utils@^0.2.8":
   version "0.2.8"
   resolved "https://registry.npmjs.org/@floating-ui/utils/-/utils-0.2.8.tgz#21a907684723bbbaa5f0974cf7730bd797eb8e62"
   integrity sha512-kym7SodPp8/wloecOpcmSnWJsK7M0E5Wg8UcFA+uO4B9s5d0ywXOEro/8HM9x0rW+TljRzul/14UYz3TleT3ig==
 
-"@fontsource/karla@5.0.19":
-  version "5.0.19"
-  resolved "https://registry.npmjs.org/@fontsource/karla/-/karla-5.0.19.tgz#008eef689f4f6120c532f28184a1c402f8c0fe3e"
-  integrity sha512-0OjZTKSxHfYREKvcYfP7ri1RzOVUGNb33lDOt+vZTs17vduIS4tl3R61rVCP1Mt1X1Ba1Y4CNj7WBpsGAgR7HA==
+"@fontsource/karla@5.1.0":
+  version "5.1.0"
+  resolved "https://registry.npmjs.org/@fontsource/karla/-/karla-5.1.0.tgz#9f780482328348f49fa8690963bc33058c1b6d1e"
+  integrity sha512-QlfxTCjR3rzj1k31jUgI7TLSvuJxECNVEopgJHfPV7Zqh8dFl0Ozq0XKb22iK3rlm2x67j6w/RBdUocAphSVuw==
 
-"@fontsource/merriweather@5.0.12":
-  version "5.0.12"
-  resolved "https://registry.npmjs.org/@fontsource/merriweather/-/merriweather-5.0.12.tgz#8221eb544d389c0d468a9ec80a2430eedef53565"
-  integrity sha512-l7brVGcFUiGhK7bucRbwWYZDInfyXuVYEthHNw26RkkfMR9TFTiOAIABnN6PFr6Vjaz+c0o7ibLmdEMeSMDfRA==
+"@fontsource/merriweather@5.1.0":
+  version "5.1.0"
+  resolved "https://registry.npmjs.org/@fontsource/merriweather/-/merriweather-5.1.0.tgz#3644b3d19fc7f4171aff8d18dad113f595eec7d1"
+  integrity sha512-CliXFoCACKkrx8G93xGw6cD7RYCOytuY/Afe1W/htsRRlaSyGA6HGNQzQJc6NKzjs9XenBH2CcMQsONyppd+uQ==
 
-"@fontsource/roboto-mono@5.0.17":
-  version "5.0.17"
-  resolved "https://registry.npmjs.org/@fontsource/roboto-mono/-/roboto-mono-5.0.17.tgz#c73c650c8da27a7f89bf8829da7d14573d1da9a5"
-  integrity sha512-MU6FrAyG7DWMCL8mu0JDPvB2tnFcn/lYvVKixzqHb2uefRsLaD6OBFfF1q5RMFsKcFHyPySHM7ZcGw/Q6A1/FA==
+"@fontsource/roboto-mono@5.1.0":
+  version "5.1.0"
+  resolved "https://registry.npmjs.org/@fontsource/roboto-mono/-/roboto-mono-5.1.0.tgz#ce210c3d9a6d045ac73d4cd1f5a4110ee15bafed"
+  integrity sha512-7lIxTeanF2XrwAIukUrOUvO9veGkQiG7L7vizMxVjl+lrTwS4GAYyOvziyGZ6/3kU80K3lGd/FnWrmoTud0V6A==
 
-"@fontsource/roboto@5.0.12":
-  version "5.0.12"
-  resolved "https://registry.npmjs.org/@fontsource/roboto/-/roboto-5.0.12.tgz#418f7305a3be7fc567dd154db20090f7ece7fc6c"
-  integrity sha512-x0o17jvgoSSbS9OZnUX2+xJmVRvVCfeaYJjkS7w62iN7CuJWtMf5vJj8LqgC7ibqIkitOHVW+XssRjgrcHn62g==
+"@fontsource/roboto@5.1.0":
+  version "5.1.0"
+  resolved "https://registry.npmjs.org/@fontsource/roboto/-/roboto-5.1.0.tgz#00230737ec09c60ae877a5e33d067c0607fdd5ba"
+  integrity sha512-cFRRC1s6RqPygeZ8Uw/acwVHqih8Czjt6Q0MwoUoDe9U3m4dH1HmNDRBZyqlMSFwgNAUKgFImncKdmDHyKpwdg==
 
 "@gar/promisify@^1.0.1":
   version "1.1.3"
@@ -4310,10 +4302,10 @@
   resolved "https://registry.npmjs.org/@stencil/angular-output-target/-/angular-output-target-0.10.0.tgz#990ee88801a509da7ab857afd36a310b4d0954c6"
   integrity sha512-j/VXofXggbqzfzX6+1F++IZbGNfEKw1eQAdd5S4PpjGGWsf0TI6qDBd4YrjCMHAKCSV18FNuKFBejejM/49T/Q==
 
-"@stencil/core@4.21.0":
-  version "4.21.0"
-  resolved "https://registry.npmjs.org/@stencil/core/-/core-4.21.0.tgz#6e294c57468e58dd77a458244968fe73d589b41b"
-  integrity sha512-v50lnVbzS8mpMSnEVxR+G75XpvxHKtkJaQrNPE8+/fF6Ppr5z4bcdcBhcP8LPfEW+4BZcic6VifMXRwTopc+kw==
+"@stencil/core@4.22.2":
+  version "4.22.2"
+  resolved "https://registry.npmjs.org/@stencil/core/-/core-4.22.2.tgz#5fb00b85b5e3e595341f2b5d91960533a9736bc5"
+  integrity sha512-eq2pYrrnzcLyBRANk0X/VVOfCtD0nCxWnEZ0AVdscuqfDkOjxa6SSZOfEhR9FAvrmESHp8y5jRCVPnf4n5CC4A==
 
 "@stencil/eslint-plugin@0.4.0":
   version "0.4.0"
@@ -6852,18 +6844,6 @@ autoprefixer@*, autoprefixer@10.4.20, autoprefixer@^10.3.6:
     picocolors "^1.0.1"
     postcss-value-parser "^4.2.0"
 
-autoprefixer@10.4.16:
-  version "10.4.16"
-  resolved "https://registry.npmjs.org/autoprefixer/-/autoprefixer-10.4.16.tgz#fad1411024d8670880bdece3970aa72e3572feb8"
-  integrity sha512-7vd3UC6xKp0HLfua5IjZlcXvGAGy7cBAXTg2lyQ/8WpNhd6SiZ8Be+xm3FyBSYJx5GKcpRCzBh7RH4/0dnY+uQ==
-  dependencies:
-    browserslist "^4.21.10"
-    caniuse-lite "^1.0.30001538"
-    fraction.js "^4.3.6"
-    normalize-range "^0.1.2"
-    picocolors "^1.0.0"
-    postcss-value-parser "^4.2.0"
-
 available-typed-arrays@^1.0.7:
   version "1.0.7"
   resolved "https://registry.npmjs.org/available-typed-arrays/-/available-typed-arrays-1.0.7.tgz#a5cc375d6a03c2efc87a553f3e0b1522def14846"
@@ -7416,7 +7396,7 @@ camelcase@^6.2.0, camelcase@^6.3.0:
   resolved "https://registry.npmjs.org/camelcase/-/camelcase-6.3.0.tgz#5685b95eb209ac9c0c177467778c9c84df58ba9a"
   integrity sha512-Gmy6FhYlCY7uOElZUSbxo2UCDH8owEk996gkbrpsgGtrJLM3J7jGxl9Ic7Qwwj4ivOE5AWZWRMecDdF7hqGjFA==
 
-caniuse-lite@^1.0.30001538, caniuse-lite@^1.0.30001646, caniuse-lite@^1.0.30001669:
+caniuse-lite@^1.0.30001646, caniuse-lite@^1.0.30001669:
   version "1.0.30001680"
   resolved "https://registry.npmjs.org/caniuse-lite/-/caniuse-lite-1.0.30001680.tgz#5380ede637a33b9f9f1fc6045ea99bd142f3da5e"
   integrity sha512-rPQy70G6AGUMnbwS1z6Xg+RkHYPAi18ihs47GH0jcxIG7wArmPgY3XbS2sRdBbxJljp3thdT8BIqv9ccCypiPA==
@@ -10331,7 +10311,7 @@ forwarded@0.2.0:
   resolved "https://registry.npmjs.org/forwarded/-/forwarded-0.2.0.tgz#2269936428aad4c15c7ebe9779a84bf0b2a81811"
   integrity sha512-buRG0fpBtRHSTCOASe6hD258tEubFoRLb4ZNA6NxMVHNw2gOcwHo9wyablzMzOA5z9xA9L1KNjk/Nt6MT9aYow==
 
-fraction.js@^4.3.6, fraction.js@^4.3.7:
+fraction.js@^4.3.7:
   version "4.3.7"
   resolved "https://registry.npmjs.org/fraction.js/-/fraction.js-4.3.7.tgz#06ca0085157e42fda7f9e726e79fefc4068840f7"
   integrity sha512-ZsDfxO51wGAXREY55a7la9LScWpwv9RxIrYABrlvOFBlH/ShPnrtsXeuUIfXKKOVicNxQ+o8JTbJvjS4M89yew==
@@ -14904,6 +14884,15 @@ postcss-import@16.0.0:
     read-cache "^1.0.0"
     resolve "^1.1.7"
 
+postcss-import@16.1.0:
+  version "16.1.0"
+  resolved "https://registry.npmjs.org/postcss-import/-/postcss-import-16.1.0.tgz#258732175518129667fe1e2e2a05b19b5654b96a"
+  integrity sha512-7hsAZ4xGXl4MW+OKEWCnF6T5jqBw80/EE9aXg1r2yyn1RsVEU8EtKXbijEODa+rg7iih4bKf7vlvTGYR4CnPNg==
+  dependencies:
+    postcss-value-parser "^4.0.0"
+    read-cache "^1.0.0"
+    resolve "^1.1.7"
+
 postcss-import@^15.1.0:
   version "15.1.0"
   resolved "https://registry.npmjs.org/postcss-import/-/postcss-import-15.1.0.tgz#41c64ed8cc0e23735a9698b3249ffdbf704adc70"
@@ -15038,15 +15027,6 @@ postcss-value-parser@^4.0.0, postcss-value-parser@^4.1.0, postcss-value-parser@^
   resolved "https://registry.npmjs.org/postcss-value-parser/-/postcss-value-parser-4.2.0.tgz#723c09920836ba6d3e5af019f92bc0971c02e514"
   integrity sha512-1NNCs6uurfkVbeXG4S8JFT9t19m45ICnif8zWLd5oPSZ50QnwMfK+H3jv408d4jw/7Bttv5axS5IiHoLaVNHeQ==
 
-postcss@8.4.33:
-  version "8.4.33"
-  resolved "https://registry.npmjs.org/postcss/-/postcss-8.4.33.tgz#1378e859c9f69bf6f638b990a0212f43e2aaa742"
-  integrity sha512-Kkpbhhdjw2qQs2O2DGX+8m5OVqEcbB9HRBvuYM9pgrjEFUg30A9LmXNlTAUj4S9kgtGyrMbTzVjH7E+s5Re2yg==
-  dependencies:
-    nanoid "^3.3.7"
-    picocolors "^1.0.0"
-    source-map-js "^1.0.2"
-
 postcss@8.4.41:
   version "8.4.41"
   resolved "https://registry.npmjs.org/postcss/-/postcss-8.4.41.tgz#d6104d3ba272d882fe18fc07d15dc2da62fa2681"
@@ -15056,16 +15036,7 @@ postcss@8.4.41:
     picocolors "^1.0.1"
     source-map-js "^1.2.0"
 
-postcss@8.4.47:
-  version "8.4.47"
-  resolved "https://registry.npmjs.org/postcss/-/postcss-8.4.47.tgz#5bf6c9a010f3e724c503bf03ef7947dcb0fea365"
-  integrity sha512-56rxCq7G/XfB4EkXq9Egn5GCqugWvDFjafDOThIdMBsI15iqPqR5r15TfSr1YPYeEI19YeaXMCbY6u88Y76GLQ==
-  dependencies:
-    nanoid "^3.3.7"
-    picocolors "^1.1.0"
-    source-map-js "^1.2.1"
-
-postcss@^8.2.14, postcss@^8.4.21, postcss@^8.4.23, postcss@^8.4.28, postcss@^8.4.31, postcss@^8.4.32, postcss@^8.4.33, postcss@^8.4.43:
+postcss@8.4.49, postcss@^8.2.14, postcss@^8.4.21, postcss@^8.4.23, postcss@^8.4.28, postcss@^8.4.31, postcss@^8.4.32, postcss@^8.4.33, postcss@^8.4.43:
   version "8.4.49"
   resolved "https://registry.npmjs.org/postcss/-/postcss-8.4.49.tgz#4ea479048ab059ab3ae61d082190fabfd994fe19"
   integrity sha512-OCVPnIObs4N29kxTjzLfUryOkvZEq+pf8jTF0lg8E7uETuWHA+v7j3c/xJmiqpX450191LlmZfUKkXxkTry7nA==
@@ -17519,10 +17490,10 @@ table@^6.8.1:
     string-width "^4.2.3"
     strip-ansi "^6.0.1"
 
-tailwindcss@3.4.10:
-  version "3.4.10"
-  resolved "https://registry.npmjs.org/tailwindcss/-/tailwindcss-3.4.10.tgz#70442d9aeb78758d1f911af29af8255ecdb8ffef"
-  integrity sha512-KWZkVPm7yJRhdu4SRSl9d4AK2wM3a50UsvgHZO7xY77NQr2V+fIrEuoDGQcbvswWvFGbS2f6e+jC/6WJm1Dl0w==
+tailwindcss@3.4.14:
+  version "3.4.14"
+  resolved "https://registry.npmjs.org/tailwindcss/-/tailwindcss-3.4.14.tgz#6dd23a7f54ec197b19159e91e3bb1e55e7aa73ac"
+  integrity sha512-IcSvOcTRcUtQQ7ILQL5quRDg7Xs93PdJEk1ZLbhhvJc7uj/OAhYOnruEiwnGgBvUtaUAJ8/mhSw1o8L2jCiENA==
   dependencies:
     "@alloc/quick-lru" "^5.2.0"
     arg "^5.0.2"
