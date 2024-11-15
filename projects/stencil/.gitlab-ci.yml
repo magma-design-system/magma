@@ -11,12 +11,6 @@ base-stencil-build:
     name: stencil-build
     expire_in: 1 day
     paths:
-      - projects/design-tokens/dist
-      - projects/design-tokens/config
-      - projects/design-tokens/properties
-      - projects/styles/dist
-      - projects/svg-icons/dist
-      - projects/icons/dist
       - projects/stencil/dist
       - projects/stencil/src/components.d.ts
       - projects/stencil/src/fixtures
