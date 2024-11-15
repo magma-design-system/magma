@@ -14,6 +14,7 @@ base-stencil-build:
       - projects/stencil/dist
       - projects/stencil/src/components.d.ts
       - projects/stencil/src/fixtures
+      - projects/stencil/www
       - projects/stencil/assets
       - projects/stencil/react/src
       - projects/stencil/loader
