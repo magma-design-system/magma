@@ -62,7 +62,7 @@
     "filesize": "10.1.0",
     "fitty": "2.4.2",
     "idb-keyval": "6.2.1",
-    "mime": "4.0.1"
+    "mime": "4.0.4"
   },
   "license": "MIT",
   "devDependencies": {
