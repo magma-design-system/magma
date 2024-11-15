@@ -12,6 +12,7 @@ export class Locale {
   language: string
   config: LocaleConfig
   closestElement:HTMLElement
+  element: HTMLElement
 
   constructor (configData?: LocaleConfig) {
     if (configData) {
@@ -23,8 +24,9 @@ export class Locale {
     this.config = configData
   }
 
-  lang = (element: HTMLElement): string => {
-    this.closestElement = element.closest('[lang]') as HTMLElement
+  lang = (el: HTMLElement): string => {
+    this.element = el
+    this.closestElement = this.element.closest('[lang]') as HTMLElement
 
     if (this.closestElement) {
       if (this.closestElement.lang) {
@@ -37,11 +39,24 @@ export class Locale {
     return this.language
   }
 
+  update = (doc?: Document | ShadowRoot): void => {
+    const context = doc ?? this.element.shadowRoot
+    context && context.querySelectorAll('*').forEach(el => {
+      if (el.tagName.toLowerCase().startsWith('mds-')) {
+        // eslint-disable-next-line no-restricted-syntax
+        if (el && 'updateLang' in el) {
+          // eslint-disable-next-line @typescript-eslint/no-explicit-any
+          (el as any).updateLang()
+        }
+      }
+    })
+  }
+
   private pluralize = (tag: string | string[], context: Record<string, string | number>): string => {
 
     const languagePhrase: string | string[] = this.config[this.language] ? this.config[this.language][tag] : this.config[this.rollbackLanguage][tag]
     const phrases: string[] = []
-    
+
     if (Array.isArray(languagePhrase)) {
       phrases.push(languagePhrase[0])
       phrases.push(languagePhrase[1])

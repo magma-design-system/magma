@@ -4,7 +4,7 @@
   :host,
   :host( [variant="primary"] ) {
 
-    --mds-progress-color: theme('colors.brand-maggioli-05');
+    --mds-progress-color: theme('colors.variant-primary-05');
     --mds-progress-background: theme('colors.tone-neutral-07');
   }
 
@@ -13,21 +13,21 @@
     --mds-progress-color: theme('colors.status-error-04');
     --mds-progress-background: theme('colors.status-error-07');
   }
-  
+
   :host( [variant="warning"] ) {
-  
+
     --mds-progress-color: theme('colors.status-warning-04');
     --mds-progress-background: theme('colors.status-warning-07');
   }
-  
+
   :host( [variant="success"] ) {
-  
+
     --mds-progress-color: theme('colors.status-success-04');
     --mds-progress-background: theme('colors.status-success-07');
   }
-  
+
   :host( [variant="info"] ) {
-  
+
     --mds-progress-color: theme('colors.status-info-04');
     --mds-progress-background: theme('colors.status-info-07');
   }
@@ -39,7 +39,7 @@
     :host,
     :host( [variant="primary"] ) {
 
-      --mds-progress-color: theme('colors.brand-maggioli-05');
+      --mds-progress-color: theme('colors.variant-primary-05');
       --mds-progress-background: theme('colors.tone-neutral-07');
     }
 
@@ -48,21 +48,21 @@
       --mds-progress-color: theme('colors.status-error-04');
       --mds-progress-background: theme('colors.status-error-07');
     }
-    
+
     :host( [variant="warning"] ) {
-    
+
       --mds-progress-color: theme('colors.status-warning-04');
       --mds-progress-background: theme('colors.status-warning-07');
     }
-    
+
     :host( [variant="success"] ) {
-    
+
       --mds-progress-color: theme('colors.status-success-04');
       --mds-progress-background: theme('colors.status-success-07');
     }
-    
+
     :host( [variant="info"] ) {
-    
+
       --mds-progress-color: theme('colors.status-info-04');
       --mds-progress-background: theme('colors.status-info-07');
     }

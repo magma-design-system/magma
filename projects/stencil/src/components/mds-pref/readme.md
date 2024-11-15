@@ -5,6 +5,19 @@
 <!-- Auto Generated Below -->
 
 
+## Methods
+
+### `updateLang() => Promise<void>`
+
+
+
+#### Returns
+
+Type: `Promise<void>`
+
+
+
+
 ## Slots
 
 | Slot        | Description                                                                                                                |

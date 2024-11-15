@@ -22,6 +22,9 @@
     { "color": "#F9E14E", "export": ["label", "default"], "name": "label.yellow" },
     { "color": "#F17032", "export": ["label", "default"], "name": "label.orange" },
 
+    { "color": "#00379E", "export": ["default"], "name": "variant.primary" },
+    { "color": "#0f4ad5", "export": ["default"], "name": "variant.secondary" },
+
     { "color": "#597CB9", "export": ["synbee-v1"], "name": "brand.eolo-v1", "ratios": "v1" },
     { "color": "#FFFFFF", "export": ["synbee-v1"], "name": "adjust.tone-v1", "ratios": "v1", "seed": { "light": "#FFFFFF", "dark": "#000000" } },
     { "color": "#23B2E1", "export": ["synbee-v1"], "name": "status.info-v1", "ratios": "v1" },

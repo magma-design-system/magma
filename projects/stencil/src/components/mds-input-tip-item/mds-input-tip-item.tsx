@@ -1,8 +1,10 @@
-import { Component, Element, Host, h, Prop } from '@stencil/core'
-import { InputTipItemVariantType } from '@component/mds-input-tip-item/meta/types'
+import { Component, Element, Host, h, Prop, State, Method } from '@stencil/core'
+import { InputTipItemVariantType } from './meta/types'
 import miBaselineDone from '@icon/mi/baseline/done.svg'
 import { Locale } from '@common/locale'
+import localeEl from './meta/locale.el.json'
 import localeEn from './meta/locale.en.json'
+import localeEs from './meta/locale.es.json'
 import localeIt from './meta/locale.it.json'
 
 @Component({
@@ -15,8 +17,15 @@ export class MdsInputTipItem {
 
   private t:Locale = new Locale({
     en: localeEn,
+    el: localeEl,
+    es: localeEs,
     it: localeIt,
   })
+  @State() language: string
+  @Method()
+  async updateLang (): Promise<void> {
+    this.language = this.t.lang(this.element)
+  }
 
   componentWillRender (): void {
     this.t.lang(this.element)

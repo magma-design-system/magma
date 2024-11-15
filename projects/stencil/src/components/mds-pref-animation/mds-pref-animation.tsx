@@ -1,4 +1,4 @@
-import { Component, Host, Element, Event, EventEmitter, h, Prop, Watch } from '@stencil/core'
+import { Component, Host, Element, Event, EventEmitter, h, Prop, Watch, Method, State } from '@stencil/core'
 import miOutlineCircle from '@icon/mi/outline/circle.svg'
 import miBaselineAnimation from '@icon/mi/baseline/animation.svg'
 import miBaselineSettings from '@icon/mi/baseline/settings.svg'
@@ -20,12 +20,18 @@ export class MdsPrefAnimation {
   private localStorageAlias: string = 'mdsPrefAnimation'
   private customPropertyAlias: string = '--magma-pref-animation'
   private defaultMode: AnimationModeType = 'system'
+
   private t:Locale = new Locale({
     el: localeEl,
     en: localeEn,
     es: localeEs,
     it: localeIt,
   })
+  @State() language: string
+  @Method()
+  async updateLang (): Promise<void> {
+    this.language = this.t.lang(this.element)
+  }
 
   /**
    * Specifies the preference mode

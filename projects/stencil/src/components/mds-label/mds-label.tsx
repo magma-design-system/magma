@@ -1,9 +1,15 @@
-import miBaselineClose from '@icon/mi/baseline/close.svg'
-import { Component, Element, Event, EventEmitter, Host, h, Prop } from '@stencil/core'
+import miBaselineCancel from '@icon/mi/baseline/cancel.svg'
+import { Component, Element, Event, EventEmitter, Host, h, Prop, State, Method } from '@stencil/core'
 import { KeyboardManager } from '@common/keyboard-manager'
 import { ThemeFullVariantType, ToneSimpleVariantType } from '@type/variant'
 import { TypographyType } from '@type/typography'
 import { TypographyTruncateType } from '@type/text'
+import { Locale } from '@common/locale'
+import localeEl from './meta/locale.el.json'
+import localeEn from './meta/locale.en.json'
+import localeEs from './meta/locale.en.json'
+import localeIt from './meta/locale.it.json'
+
 /**
  * @slot default - Add `text string` to this slot, **avoid** to add `HTML elements` or `components` here.
  */
@@ -17,7 +23,17 @@ export class MdsLabel {
 
   @Element() private host: HTMLMdsLabelElement
   private km = new KeyboardManager()
-
+  private t:Locale = new Locale({
+    el: localeEl,
+    en: localeEn,
+    es: localeEs,
+    it: localeIt,
+  })
+  @State() language: string
+  @Method()
+  async updateLang (): Promise<void> {
+    this.language = this.t.lang(this.host)
+  }
 
   /**
    * Specifies the ARIA label for remove element
@@ -71,6 +87,7 @@ export class MdsLabel {
   }
 
   componentDidLoad ():void {
+    this.t.lang(this.host)
     this.handleKeyboard()
   }
 
@@ -88,7 +105,7 @@ export class MdsLabel {
         <mds-text class="text" truncate={this.truncate} typography={this.typography}>
           <slot/>
         </mds-text>
-        { this.deletable && <mds-button class="button-close" icon={miBaselineClose} onClick={ this.onClickDelete.bind(this) } title={this.labelAction}></mds-button> }
+        { this.deletable && <mds-button class="button-close" icon={miBaselineCancel} onClick={ this.onClickDelete.bind(this) } title={this.t.get('remove')}></mds-button> }
       </Host>
     )
   }

@@ -1,9 +1,11 @@
-import { Component, Element, Event, EventEmitter, Host, Prop, h } from '@stencil/core'
+import { Component, Element, Event, EventEmitter, Host, Prop, h, State, Method } from '@stencil/core'
 import { ToneSimpleVariantType, ThemeVariantType } from '@type/variant'
 import miBaselineClose from '@icon/mi/baseline/close.svg'
 import { KeyboardManager } from '@common/keyboard-manager'
 import { Locale } from '@common/locale'
+import localeEl from './meta/locale.el.json'
 import localeEn from './meta/locale.en.json'
+import localeEs from './meta/locale.es.json'
 import localeIt from './meta/locale.it.json'
 
 /**
@@ -22,9 +24,16 @@ export class MdsBanner {
   private actions: boolean
   private km = new KeyboardManager()
   private t:Locale = new Locale({
+    el: localeEl,
     en: localeEn,
+    es: localeEs,
     it: localeIt,
   })
+  @State() language: string
+  @Method()
+  async updateLang (): Promise<void> {
+    this.language = this.t.lang(this.host)
+  }
 
   /**
    * Sets the theme variant colors
@@ -64,7 +73,7 @@ export class MdsBanner {
   componentWillRender (): void {
     this.t.lang(this.host)
   }
-  
+
   componentWillLoad (): void {
     this.actions = this.host.querySelector('[slot="actions"]') !== null
   }

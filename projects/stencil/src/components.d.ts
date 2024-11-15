@@ -10,7 +10,7 @@ import { TypographyInfoType, TypographyInputType, TypographyReadingVariants, Typ
 import { MdsAccordionItemEventDetail } from "./components/mds-accordion-item/meta/event-detail";
 import { MdsAccordionTimerEventDetail } from "./components/mds-accordion-timer/meta/event-detail";
 import { MdsAccordionTimerItemEventDetail } from "./components/mds-accordion-timer-item/meta/event-detail";
-import { LabelVariantType, ThemeFullVariantAvatarType, ThemeFullVariantType, ThemeLuminanceVariantType, ThemeStatusVariantType, ThemeVariantType, ToneMinimalVariantType, ToneSimpleVariantType, ToneVariantType } from "@type/variant";
+import { ChipVariantType, LabelVariantType, ThemeFullVariantAvatarType, ThemeFullVariantType, ThemeLuminanceVariantType, ThemeStatusVariantType, ThemeVariantType, ToneMinimalVariantType, ToneSimpleVariantType, ToneVariantType } from "@type/variant";
 import { BenchmarkBarTypographyType } from "./components/mds-benchmark-bar/meta/types";
 import { BibliographyFormatType, BibliographyRelationshipType } from "./components/mds-bibliography/meta/types";
 import { MdsBreadcrumbEventDetail } from "./components/mds-breadcrumb/meta/event-detail";
@@ -35,6 +35,7 @@ import { MdsImgEventDetail } from "./components/mds-img/meta/event-detail";
 import { AutocompleteType } from "@type/autocomplete";
 import { InputControlsIconType, InputControlsLayoutType, InputTextType } from "@type/input";
 import { MdsInputEventDetail } from "./components/mds-input/meta/event-detail";
+import { LanguageType, PrefLanguageType } from "@type/language";
 import { InputFieldType } from "./components/mds-input-field/meta/types";
 import { MdsInputEventDetail as MdsInputEventDetail1 } from "@component/mds-input/meta/event-detail";
 import { MdsValidationErrors, MdsValidatorFn } from "./components/mds-input-field/meta/validators";
@@ -42,7 +43,7 @@ import { InputValue } from "@interface/input-value";
 import { InputSwitchSizeType, InputSwitchType } from "./components/mds-input-switch/meta/types";
 import { MdsInputSwitchEventDetail } from "./components/mds-input-switch/meta/event-detail";
 import { InputTipPositionType } from "./components/mds-input-tip/meta/types";
-import { InputTipItemVariantType } from "@component/mds-input-tip-item/meta/types";
+import { InputTipItemVariantType } from "./components/mds-input-tip-item/meta/types";
 import { AttachmentSort, FileError } from "./components/mds-input-upload/meta/types";
 import { ModalAnimationStateType, ModalPositionType } from "./components/mds-modal/meta/types";
 import { StrategyType } from "./components/mds-notification/meta/types";
@@ -51,7 +52,6 @@ import { AnimationModeType } from "./components/mds-pref-animation/meta/types";
 import { MdsPrefChangeEventDetail } from "@event/preference";
 import { ConsumptionModeType } from "@type/preference";
 import { ContrastModeType } from "./components/mds-pref-contrast/meta/types";
-import { LanguageType, PrefLanguageType } from "@type/language";
 import { MdsPrefLanguageEventDetail } from "@event/language";
 import { ThemeModeType, ThemeTransitionType } from "./components/mds-pref-theme/meta/types";
 import { PriceTableFeaturesCellType } from "./components/mds-price-table-features-cell/meta/types";
@@ -74,7 +74,7 @@ export { TypographyInfoType, TypographyInputType, TypographyReadingVariants, Typ
 export { MdsAccordionItemEventDetail } from "./components/mds-accordion-item/meta/event-detail";
 export { MdsAccordionTimerEventDetail } from "./components/mds-accordion-timer/meta/event-detail";
 export { MdsAccordionTimerItemEventDetail } from "./components/mds-accordion-timer-item/meta/event-detail";
-export { LabelVariantType, ThemeFullVariantAvatarType, ThemeFullVariantType, ThemeLuminanceVariantType, ThemeStatusVariantType, ThemeVariantType, ToneMinimalVariantType, ToneSimpleVariantType, ToneVariantType } from "@type/variant";
+export { ChipVariantType, LabelVariantType, ThemeFullVariantAvatarType, ThemeFullVariantType, ThemeLuminanceVariantType, ThemeStatusVariantType, ThemeVariantType, ToneMinimalVariantType, ToneSimpleVariantType, ToneVariantType } from "@type/variant";
 export { BenchmarkBarTypographyType } from "./components/mds-benchmark-bar/meta/types";
 export { BibliographyFormatType, BibliographyRelationshipType } from "./components/mds-bibliography/meta/types";
 export { MdsBreadcrumbEventDetail } from "./components/mds-breadcrumb/meta/event-detail";
@@ -99,6 +99,7 @@ export { MdsImgEventDetail } from "./components/mds-img/meta/event-detail";
 export { AutocompleteType } from "@type/autocomplete";
 export { InputControlsIconType, InputControlsLayoutType, InputTextType } from "@type/input";
 export { MdsInputEventDetail } from "./components/mds-input/meta/event-detail";
+export { LanguageType, PrefLanguageType } from "@type/language";
 export { InputFieldType } from "./components/mds-input-field/meta/types";
 export { MdsInputEventDetail as MdsInputEventDetail1 } from "@component/mds-input/meta/event-detail";
 export { MdsValidationErrors, MdsValidatorFn } from "./components/mds-input-field/meta/validators";
@@ -106,7 +107,7 @@ export { InputValue } from "@interface/input-value";
 export { InputSwitchSizeType, InputSwitchType } from "./components/mds-input-switch/meta/types";
 export { MdsInputSwitchEventDetail } from "./components/mds-input-switch/meta/event-detail";
 export { InputTipPositionType } from "./components/mds-input-tip/meta/types";
-export { InputTipItemVariantType } from "@component/mds-input-tip-item/meta/types";
+export { InputTipItemVariantType } from "./components/mds-input-tip-item/meta/types";
 export { AttachmentSort, FileError } from "./components/mds-input-upload/meta/types";
 export { ModalAnimationStateType, ModalPositionType } from "./components/mds-modal/meta/types";
 export { StrategyType } from "./components/mds-notification/meta/types";
@@ -115,7 +116,6 @@ export { AnimationModeType } from "./components/mds-pref-animation/meta/types";
 export { MdsPrefChangeEventDetail } from "@event/preference";
 export { ConsumptionModeType } from "@type/preference";
 export { ContrastModeType } from "./components/mds-pref-contrast/meta/types";
-export { LanguageType, PrefLanguageType } from "@type/language";
 export { MdsPrefLanguageEventDetail } from "@event/language";
 export { ThemeModeType, ThemeTransitionType } from "./components/mds-pref-theme/meta/types";
 export { PriceTableFeaturesCellType } from "./components/mds-price-table-features-cell/meta/types";
@@ -254,6 +254,7 @@ export namespace Components {
           * Sets the tone of the color variant
          */
         "tone"?: ToneSimpleVariantType;
+        "updateLang": () => Promise<void>;
         /**
           * Sets the theme variant colors
          */
@@ -405,10 +406,6 @@ export namespace Components {
          */
         "deletable"?: boolean;
         /**
-          * Sets the cross icon accessibility label to perform cancel/delete action on element
-         */
-        "deleteLabel"?: "Rimuovi" | undefined;
-        /**
           * Sets the component disabled status
          */
         "disabled"?: boolean;
@@ -421,9 +418,22 @@ export namespace Components {
          */
         "label": string;
         /**
+          * Sets if the component change is status to selected when is clicked
+         */
+        "selectable"?: boolean;
+        /**
           * Sets the component selected
          */
-        "selected": boolean;
+        "selected"?: boolean;
+        /**
+          * Sets the color variant tone of the component
+         */
+        "tone"?: ToneMinimalVariantType;
+        "updateLang": () => Promise<void>;
+        /**
+          * Sets the color variant of the component
+         */
+        "variant"?: ChipVariantType;
     }
     interface MdsDetails {
         /**
@@ -525,10 +535,6 @@ export namespace Components {
          */
         "description"?: string;
         /**
-          * Sets a label which is shown when the file is downloaded
-         */
-        "downloadedLabel"?: string;
-        /**
           * The filename shown as component title, is used to auto assign one of the filetype known in the filetype dictionary
          */
         "filename": string;
@@ -548,6 +554,7 @@ export namespace Components {
           * Overrides the automatic filetype recongition by forcing the suffix to one of the available formats choosen
          */
         "suffix"?: ExtensionSuffixType;
+        "updateLang": () => Promise<void>;
     }
     interface MdsFilePreview {
         /**
@@ -753,6 +760,7 @@ export namespace Components {
           * Specifies a list of image files to use in different situations. Defines multiple sizes of the same image, allowing the browser to select the appropriate image source based on consumption configuration. ``` <mds-img srcset-consumption="image-black-n-white-1x.jpg low, image-1x.jpg medium, image-2x.jpg high"></mds-img> ```
          */
         "srcsetConsumption"?: string;
+        "updateLang": () => Promise<void>;
         /**
           * The width attribute specifies the width of an image, in pixels.
          */
@@ -859,6 +867,7 @@ export namespace Components {
           * Specifies the typography of input element
          */
         "typography": TypographyInputType;
+        "updateLang": () => Promise<void>;
         /**
           * Specifies the value of the input element
          */
@@ -1102,6 +1111,7 @@ export namespace Components {
           * Specifies if the element is expanded
          */
         "expanded"?: boolean;
+        "updateLang": () => Promise<void>;
         /**
           * Specifies the variant of the element
          */
@@ -1132,6 +1142,7 @@ export namespace Components {
           * Specifies if the component should show a sort widget by status or date of upload, if not defined let user choose
          */
         "sort"?: AttachmentSort;
+        "updateLang": () => Promise<void>;
     }
     interface MdsKpi {
     }
@@ -1174,6 +1185,7 @@ export namespace Components {
           * Specifies the typography of the element
          */
         "typography": TypographyType;
+        "updateLang": () => Promise<void>;
         /**
           * Sets the theme variant colors
          */
@@ -1266,30 +1278,35 @@ export namespace Components {
         "selected"?: boolean;
     }
     interface MdsPref {
+        "updateLang": () => Promise<void>;
     }
     interface MdsPrefAnimation {
         /**
           * Specifies the preference mode
          */
         "mode"?: AnimationModeType;
+        "updateLang": () => Promise<void>;
     }
     interface MdsPrefConsumption {
         /**
           * Specifies the preference mode
          */
         "mode"?: ConsumptionModeType;
+        "updateLang": () => Promise<void>;
     }
     interface MdsPrefContrast {
         /**
           * Specifies the preference mode
          */
         "mode"?: ContrastModeType;
+        "updateLang": () => Promise<void>;
     }
     interface MdsPrefLanguage {
         /**
-          * /**   Specifies the language code based on HTML `lang` attribute
+          * Specifies the language code based on HTML `lang` attribute
          */
         "set": PrefLanguageType;
+        "updateLang": () => Promise<void>;
     }
     interface MdsPrefLanguageItem {
         /**
@@ -1300,6 +1317,7 @@ export namespace Components {
           * Specifies if the element is selected
          */
         "selected"?: boolean;
+        "updateLang": () => Promise<void>;
     }
     interface MdsPrefLanguageNav {
         /**
@@ -1310,6 +1328,7 @@ export namespace Components {
           * Specifies the language code based on HTML `lang` attribute
          */
         "set"?: LanguageType;
+        "updateLang": () => Promise<void>;
     }
     interface MdsPrefTheme {
         /**
@@ -1320,6 +1339,7 @@ export namespace Components {
           * Specifies the transition of switching from a theme to another one
          */
         "transition": ThemeTransitionType;
+        "updateLang": () => Promise<void>;
     }
     interface MdsPriceTable {
     }
@@ -1410,6 +1430,7 @@ export namespace Components {
           * Specifies the color tone of the component
          */
         "tone"?: ToneMinimalVariantType;
+        "updateLang": () => Promise<void>;
         /**
           * Specifies the color variant of the component
          */
@@ -3359,10 +3380,6 @@ declare namespace LocalJSX {
          */
         "deletable"?: boolean;
         /**
-          * Sets the cross icon accessibility label to perform cancel/delete action on element
-         */
-        "deleteLabel"?: "Rimuovi" | undefined;
-        /**
           * Sets the component disabled status
          */
         "disabled"?: boolean;
@@ -3383,9 +3400,21 @@ declare namespace LocalJSX {
          */
         "onMdsChipDelete"?: (event: MdsChipCustomEvent<MdsChipEvent>) => void;
         /**
+          * Sets if the component change is status to selected when is clicked
+         */
+        "selectable"?: boolean;
+        /**
           * Sets the component selected
          */
         "selected"?: boolean;
+        /**
+          * Sets the color variant tone of the component
+         */
+        "tone"?: ToneMinimalVariantType;
+        /**
+          * Sets the color variant of the component
+         */
+        "variant"?: ChipVariantType;
     }
     interface MdsDetails {
         /**
@@ -3502,10 +3531,6 @@ declare namespace LocalJSX {
           * Overrides the default filetype description
          */
         "description"?: string;
-        /**
-          * Sets a label which is shown when the file is downloaded
-         */
-        "downloadedLabel"?: string;
         /**
           * The filename shown as component title, is used to auto assign one of the filetype known in the filetype dictionary
          */
@@ -4357,7 +4382,7 @@ declare namespace LocalJSX {
          */
         "onMdsPrefLanguageChange"?: (event: MdsPrefLanguageCustomEvent<MdsPrefLanguageEventDetail>) => void;
         /**
-          * /**   Specifies the language code based on HTML `lang` attribute
+          * Specifies the language code based on HTML `lang` attribute
          */
         "set"?: PrefLanguageType;
     }

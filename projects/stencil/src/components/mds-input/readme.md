@@ -75,6 +75,16 @@ Type: `Promise<void>`
 
 
 
+### `updateLang() => Promise<void>`
+
+
+
+#### Returns
+
+Type: `Promise<void>`
+
+
+
 
 ## Shadow Parts
 

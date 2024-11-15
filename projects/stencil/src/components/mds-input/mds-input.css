@@ -22,7 +22,7 @@
   --mds-input-ring: 0 0 0 1px rgb(var(--mds-input-variant-color) / 0.1);
   --mds-input-shadow: 0 1px 3px 0 rgb(var(--mds-input-variant-color) / 0.1), 0 1px 2px 0 rgb(var(--mds-input-variant-color) / 0.06);
   --mds-input-variant-color: 0 0 0;
-  --mds-input-controls-color: theme('colors.brand-maggioli-03');
+  --mds-input-controls-color: theme('colors.variant-primary-03');
   --mds-input-controls-border: 2px solid theme('colors.tone-neutral-09');
   --mds-input-textarea-min-height: theme('size.2400');
   --mds-input-textarea-max-height: theme('size.6400');
@@ -255,6 +255,6 @@ textarea.input {
 
   :host {
 
-    --mds-input-background: theme('colors.brand-maggioli-07');
+    --mds-input-background: theme('colors.variant-primary-07');
   }
 }

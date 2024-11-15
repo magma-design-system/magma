@@ -77,6 +77,16 @@ const toneVariantDictionary = [
   'quiet',
 ]
 
+const themeVariantChipDictionary = [
+  'primary',
+  'secondary',
+  'dark',
+  'error',
+  'info',
+  'success',
+  'warning',
+]
+
 const toneActionVariantDictionary = [
   'primary',
   'secondary',
@@ -110,6 +120,7 @@ export {
   themeLuminanceVariantDictionary,
   themeStatusVariantDictionary,
   themeVariantDictionary,
+  themeVariantChipDictionary,
   toneActionVariantDictionary,
   toneMinimalVariantDictionary,
   toneSimpleVariantDictionary,

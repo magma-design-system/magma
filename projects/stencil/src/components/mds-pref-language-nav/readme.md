@@ -20,6 +20,19 @@
 | `mdsPrefLanguageNavSelect` | Emits when the component trigger the language selector dropdown | `CustomEvent<MdsPrefLanguageEventDetail>` |
 
 
+## Methods
+
+### `updateLang() => Promise<void>`
+
+
+
+#### Returns
+
+Type: `Promise<void>`
+
+
+
+
 ## Dependencies
 
 ### Used by

@@ -1,4 +1,4 @@
-import { Component, Host, Element, Event, EventEmitter, h, Prop, Watch } from '@stencil/core'
+import { Component, Host, Element, Event, EventEmitter, h, Prop, Watch, Method, State } from '@stencil/core'
 import { cssDurationToMilliseconds } from '@common/unit'
 import miBaselineLightMode from '@icon/mi/baseline/light-mode.svg'
 import miOutlineDarkMode from '@icon/mi/outline/dark-mode.svg'
@@ -26,6 +26,11 @@ export class MdsPrefTheme {
     es: localeEs,
     it: localeIt,
   })
+  @State() language: string
+  @Method()
+  async updateLang (): Promise<void> {
+    this.language = this.t.lang(this.element)
+  }
 
   private localStorageAlias: string = 'mdsPrefTheme'
   private customPropertyAlias: string = '--magma-pref-theme'

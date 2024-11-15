@@ -11,7 +11,7 @@
 :host {
 
   --mds-details-duration: 300ms;
-  --mds-details-icon-color: theme('colors.brand-maggioli-04');
+  --mds-details-icon-color: theme('colors.variant-primary-04');
   --mds-details-helper-icon-color: theme('colors.tone-neutral-03');
 
   @apply gap-200;

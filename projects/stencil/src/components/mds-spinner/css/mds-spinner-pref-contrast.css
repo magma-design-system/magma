@@ -2,7 +2,7 @@
 
 @container style(--magma-pref-contrast: more) {
   :host {
-    color: theme('colors.brand-maggioli-01');
+    color: theme('colors.variant-primary-01');
   }
 }
 
@@ -10,7 +10,7 @@
 
   @media (prefers-contrast: more) {
     :host {
-      color: theme('colors.brand-maggioli-01');
+      color: theme('colors.variant-primary-01');
     }
   }
 }

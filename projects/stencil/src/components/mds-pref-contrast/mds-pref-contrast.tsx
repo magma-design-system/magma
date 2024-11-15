@@ -1,4 +1,4 @@
-import { Component, Host, Element, Event, EventEmitter, h, Prop, Watch } from '@stencil/core'
+import { Component, Host, Element, Event, EventEmitter, h, Prop, Watch, Method, State } from '@stencil/core'
 import miBaselineContrast from '@icon/mi/baseline/contrast.svg'
 import miOutlineAutoAwesome from '@icon/mi/outline/auto-awesome.svg'
 import miBaselineAutoAwesome from '@icon/mi/baseline/auto-awesome.svg'
@@ -27,6 +27,11 @@ export class MdsPrefContrast {
     es: localeEs,
     it: localeIt,
   })
+  @State() language: string
+  @Method()
+  async updateLang (): Promise<void> {
+    this.language = this.t.lang(this.element)
+  }
 
   private prefersDefaults = {
     custom: 'no-preference',

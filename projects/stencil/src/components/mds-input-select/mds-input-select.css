@@ -30,7 +30,7 @@
 :host(:hover),
 :host(:focus-within) {
 
-  --mds-input-select-variant-color: var(--brand-maggioli-03);
+  --mds-input-select-variant-color: var(--variant-primary-03);
   --mds-input-select-ring: 0 0 0 3px rgb(var(--mds-input-select-variant-color) / 1);
   --mds-input-select-shadow: 0 4px 6px -1px rgb(var(--mds-input-select-variant-color) / 0.1), 0 2px 4px -1px rgb(var(--mds-input-select-variant-color) / 0.06);
   --mds-input-select-arrow-icon-background-color: var(--mds-input-select-arrow-icon-hover-background-color);
@@ -116,8 +116,8 @@
     rounded-full
     svg;
 
-  background-color: var(--mds-input-select-arrow-icon-background-color, theme('colors.brand-maggioli-09'));
-  fill: var(--mds-input-select-arrow-icon-color, theme('colors.brand-maggioli-04'));
+  background-color: var(--mds-input-select-arrow-icon-background-color, theme('colors.variant-primary-09'));
+  fill: var(--mds-input-select-arrow-icon-color, theme('colors.variant-primary-04'));
   transition-property: background-color, fill;
 }
 
@@ -139,7 +139,7 @@
 
   :host {
 
-    --mds-input-select-background: theme('colors.brand-maggioli-07');
+    --mds-input-select-background: theme('colors.variant-primary-07');
   }
 }
 
