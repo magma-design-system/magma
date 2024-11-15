@@ -119,7 +119,7 @@ export const config: Config = {
       '@type/(.*)': '<rootDir>src/type/$1',
     },
     modulePathIgnorePatterns: ['<rootDir>/.build/', '<rootDir>/template/', '<rootDir>/node_modules/'],
-    testPathIgnorePatterns: ['<rootDir>/.cache', '<rootDir>/template/', '<rootDir>/node_modules/', '<rootDir>/.vscode', '/.stencil', '/dist', '/www'],
+    testPathIgnorePatterns: ['<rootDir>/.cache', '<rootDir>/template/', '<rootDir>/node_modules/', '<rootDir>/.vscode', '/.stencil', '/dist', '/www', '/scripts'],
     transform: { '^.+\\.svg$': 'jest-transformer-svg', '^.+\\.(ts|tsx|js|jsx|css)$': '@stencil/core/testing/jest-preprocessor' },
     transformIgnorePatterns: ['<rootDir>/.build/', '<rootDir>/template/'],
     watchPathIgnorePatterns: ['"^.+\\.d\\.ts$" '],
