@@ -1,6 +1,6 @@
 {
   "name": "@maggioli-design-system/magma",
-  "version": "1.0.0-beta",
+  "version": "1.0.0",
   "description": "Magma is Maggioli Design System's web-components library.",
   "main": "dist/index.cjs.js",
   "module": "dist/index.js",
@@ -61,6 +61,7 @@
     "dayjs": "1.11.13",
     "filesize": "10.1.0",
     "fitty": "2.4.2",
+    "handlebars": "4.7.8",
     "idb-keyval": "6.2.1",
     "mime": "4.0.4"
   },

@@ -15,7 +15,7 @@
     "access": "public"
   },
   "dependencies": {
-    "@maggioli-design-system/magma": "1.0.0-beta",
+    "@maggioli-design-system/magma": "1.0.0",
     "@stencil/react-output-target": "0.7.4"
   },
   "devDependencies": {
