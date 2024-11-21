@@ -35,7 +35,6 @@ import { MdsImgEventDetail } from "./components/mds-img/meta/event-detail";
 import { AutocompleteType } from "@type/autocomplete";
 import { InputControlsIconType, InputControlsLayoutType, InputTextType } from "@type/input";
 import { MdsInputEventDetail } from "./components/mds-input/meta/event-detail";
-import { LanguageType, PrefLanguageType } from "@type/language";
 import { InputFieldType } from "./components/mds-input-field/meta/types";
 import { MdsInputEventDetail as MdsInputEventDetail1 } from "@component/mds-input/meta/event-detail";
 import { MdsValidationErrors, MdsValidatorFn } from "./components/mds-input-field/meta/validators";
@@ -99,7 +98,6 @@ export { MdsImgEventDetail } from "./components/mds-img/meta/event-detail";
 export { AutocompleteType } from "@type/autocomplete";
 export { InputControlsIconType, InputControlsLayoutType, InputTextType } from "@type/input";
 export { MdsInputEventDetail } from "./components/mds-input/meta/event-detail";
-export { LanguageType, PrefLanguageType } from "@type/language";
 export { InputFieldType } from "./components/mds-input-field/meta/types";
 export { MdsInputEventDetail as MdsInputEventDetail1 } from "@component/mds-input/meta/event-detail";
 export { MdsValidationErrors, MdsValidatorFn } from "./components/mds-input-field/meta/validators";
@@ -1303,31 +1301,20 @@ export namespace Components {
     }
     interface MdsPrefLanguage {
         /**
-          * Specifies the language code based on HTML `lang` attribute
+          * Specifies the language code based on HTML `lang` attribute  A string representing the language version as defined in {@link https://datatracker.ietf.org/doc/html/rfc5646 RFC 5646: Tags for Identifying Languages (also known as BCP 47)}.  `Examples of valid language codes include "en", "en-US", "fr", "fr-FR", "es-ES", etc.`  Supported languages are Italiano, English, Español, ελληνικά
          */
-        "set": PrefLanguageType;
+        "set": string;
         "updateLang": () => Promise<void>;
     }
     interface MdsPrefLanguageItem {
         /**
           * Specifies the language code based on HTML `lang` attribute
          */
-        "code"?: LanguageType;
+        "code": string;
         /**
           * Specifies if the element is selected
          */
         "selected"?: boolean;
-        "updateLang": () => Promise<void>;
-    }
-    interface MdsPrefLanguageNav {
-        /**
-          * Specifies if the element is active or not
-         */
-        "active": boolean;
-        /**
-          * Specifies the language code based on HTML `lang` attribute
-         */
-        "set"?: LanguageType;
         "updateLang": () => Promise<void>;
     }
     interface MdsPrefTheme {
@@ -1860,10 +1847,6 @@ export interface MdsPrefLanguageCustomEvent<T> extends CustomEvent<T> {
 export interface MdsPrefLanguageItemCustomEvent<T> extends CustomEvent<T> {
     detail: T;
     target: HTMLMdsPrefLanguageItemElement;
-}
-export interface MdsPrefLanguageNavCustomEvent<T> extends CustomEvent<T> {
-    detail: T;
-    target: HTMLMdsPrefLanguageNavElement;
 }
 export interface MdsPrefThemeCustomEvent<T> extends CustomEvent<T> {
     detail: T;
@@ -2622,23 +2605,6 @@ declare global {
         prototype: HTMLMdsPrefLanguageItemElement;
         new (): HTMLMdsPrefLanguageItemElement;
     };
-    interface HTMLMdsPrefLanguageNavElementEventMap {
-        "mdsPrefLanguageNavSelect": MdsPrefLanguageEventDetail;
-    }
-    interface HTMLMdsPrefLanguageNavElement extends Components.MdsPrefLanguageNav, HTMLStencilElement {
-        addEventListener<K extends keyof HTMLMdsPrefLanguageNavElementEventMap>(type: K, listener: (this: HTMLMdsPrefLanguageNavElement, ev: MdsPrefLanguageNavCustomEvent<HTMLMdsPrefLanguageNavElementEventMap[K]>) => any, options?: boolean | AddEventListenerOptions): void;
-        addEventListener<K extends keyof DocumentEventMap>(type: K, listener: (this: Document, ev: DocumentEventMap[K]) => any, options?: boolean | AddEventListenerOptions): void;
-        addEventListener<K extends keyof HTMLElementEventMap>(type: K, listener: (this: HTMLElement, ev: HTMLElementEventMap[K]) => any, options?: boolean | AddEventListenerOptions): void;
-        addEventListener(type: string, listener: EventListenerOrEventListenerObject, options?: boolean | AddEventListenerOptions): void;
-        removeEventListener<K extends keyof HTMLMdsPrefLanguageNavElementEventMap>(type: K, listener: (this: HTMLMdsPrefLanguageNavElement, ev: MdsPrefLanguageNavCustomEvent<HTMLMdsPrefLanguageNavElementEventMap[K]>) => any, options?: boolean | EventListenerOptions): void;
-        removeEventListener<K extends keyof DocumentEventMap>(type: K, listener: (this: Document, ev: DocumentEventMap[K]) => any, options?: boolean | EventListenerOptions): void;
-        removeEventListener<K extends keyof HTMLElementEventMap>(type: K, listener: (this: HTMLElement, ev: HTMLElementEventMap[K]) => any, options?: boolean | EventListenerOptions): void;
-        removeEventListener(type: string, listener: EventListenerOrEventListenerObject, options?: boolean | EventListenerOptions): void;
-    }
-    var HTMLMdsPrefLanguageNavElement: {
-        prototype: HTMLMdsPrefLanguageNavElement;
-        new (): HTMLMdsPrefLanguageNavElement;
-    };
     interface HTMLMdsPrefThemeElementEventMap {
         "mdsPrefChange": MdsPrefChangeEventDetail;
     }
@@ -3023,7 +2989,6 @@ declare global {
         "mds-pref-contrast": HTMLMdsPrefContrastElement;
         "mds-pref-language": HTMLMdsPrefLanguageElement;
         "mds-pref-language-item": HTMLMdsPrefLanguageItemElement;
-        "mds-pref-language-nav": HTMLMdsPrefLanguageNavElement;
         "mds-pref-theme": HTMLMdsPrefThemeElement;
         "mds-price-table": HTMLMdsPriceTableElement;
         "mds-price-table-features": HTMLMdsPriceTableFeaturesElement;
@@ -4382,15 +4347,15 @@ declare namespace LocalJSX {
          */
         "onMdsPrefLanguageChange"?: (event: MdsPrefLanguageCustomEvent<MdsPrefLanguageEventDetail>) => void;
         /**
-          * Specifies the language code based on HTML `lang` attribute
+          * Specifies the language code based on HTML `lang` attribute  A string representing the language version as defined in {@link https://datatracker.ietf.org/doc/html/rfc5646 RFC 5646: Tags for Identifying Languages (also known as BCP 47)}.  `Examples of valid language codes include "en", "en-US", "fr", "fr-FR", "es-ES", etc.`  Supported languages are Italiano, English, Español, ελληνικά
          */
-        "set"?: PrefLanguageType;
+        "set"?: string;
     }
     interface MdsPrefLanguageItem {
         /**
           * Specifies the language code based on HTML `lang` attribute
          */
-        "code"?: LanguageType;
+        "code"?: string;
         /**
           * Emits when the component trigger the language
          */
@@ -4399,20 +4364,6 @@ declare namespace LocalJSX {
           * Specifies if the element is selected
          */
         "selected"?: boolean;
-    }
-    interface MdsPrefLanguageNav {
-        /**
-          * Specifies if the element is active or not
-         */
-        "active"?: boolean;
-        /**
-          * Emits when the component trigger the language selector dropdown
-         */
-        "onMdsPrefLanguageNavSelect"?: (event: MdsPrefLanguageNavCustomEvent<MdsPrefLanguageEventDetail>) => void;
-        /**
-          * Specifies the language code based on HTML `lang` attribute
-         */
-        "set"?: LanguageType;
     }
     interface MdsPrefTheme {
         /**
@@ -4920,7 +4871,6 @@ declare namespace LocalJSX {
         "mds-pref-contrast": MdsPrefContrast;
         "mds-pref-language": MdsPrefLanguage;
         "mds-pref-language-item": MdsPrefLanguageItem;
-        "mds-pref-language-nav": MdsPrefLanguageNav;
         "mds-pref-theme": MdsPrefTheme;
         "mds-price-table": MdsPriceTable;
         "mds-price-table-features": MdsPriceTableFeatures;
@@ -5018,7 +4968,6 @@ declare module "@stencil/core" {
             "mds-pref-contrast": LocalJSX.MdsPrefContrast & JSXBase.HTMLAttributes<HTMLMdsPrefContrastElement>;
             "mds-pref-language": LocalJSX.MdsPrefLanguage & JSXBase.HTMLAttributes<HTMLMdsPrefLanguageElement>;
             "mds-pref-language-item": LocalJSX.MdsPrefLanguageItem & JSXBase.HTMLAttributes<HTMLMdsPrefLanguageItemElement>;
-            "mds-pref-language-nav": LocalJSX.MdsPrefLanguageNav & JSXBase.HTMLAttributes<HTMLMdsPrefLanguageNavElement>;
             "mds-pref-theme": LocalJSX.MdsPrefTheme & JSXBase.HTMLAttributes<HTMLMdsPrefThemeElement>;
             "mds-price-table": LocalJSX.MdsPriceTable & JSXBase.HTMLAttributes<HTMLMdsPriceTableElement>;
             "mds-price-table-features": LocalJSX.MdsPriceTableFeatures & JSXBase.HTMLAttributes<HTMLMdsPriceTableFeaturesElement>;

@@ -1,5 +1,4 @@
 import { Component, Element, Event, EventEmitter, Host, h, Prop, State, Method } from '@stencil/core'
-import { PrefLanguageType } from '@type/language'
 import { MdsPrefLanguageEventDetail } from '@event/language'
 import { MdsPrefChangeEventDetail } from '@event/preference'
 import { Locale } from '@common/locale'
@@ -7,6 +6,8 @@ import localeEl from './meta/locale.el.json'
 import localeEn from './meta/locale.en.json'
 import localeEs from './meta/locale.es.json'
 import localeIt from './meta/locale.it.json'
+import miBaselineKeyboardArrowDown from '@icon/mi/baseline/keyboard-arrow-down.svg'
+import miBaselineKeyboardArrowUp from '@icon/mi/baseline/keyboard-arrow-up.svg'
 
 /**
  * @slot default - Add `mds-pref-language-item` element/s.
@@ -15,19 +16,19 @@ import localeIt from './meta/locale.it.json'
 @Component({
   tag: 'mds-pref-language',
   styleUrl: 'mds-pref-language.css',
-  shadow: false,
+  shadow: true,
 })
 export class MdsPrefLanguage {
   @State() showDropdown: boolean = false
   @Element() element: HTMLMdsPrefLanguageElement
-  private localStorageAlias: string = 'mdsPrefLanguage'
-  private defaultLanguage: PrefLanguageType = 'en'
-  private pageLanguage: PrefLanguageType
-  private systemLanguage: PrefLanguageType
-  private userLanguage: PrefLanguageType
+  private readonly localStorageAlias: string = 'mdsPrefLanguage'
+  private readonly defaultLanguage: string = 'en'
+  private pageLanguage: string | null
+  private systemLanguage: string
+  private userLanguage: string | null
   private currentSelectedItem: HTMLMdsPrefLanguageItemElement
   private elPreferLanguageItems: NodeListOf<HTMLMdsPrefLanguageItemElement>
-  private t:Locale = new Locale({
+  private readonly t: Locale = new Locale({
     el: localeEl,
     en: localeEn,
     es: localeEs,
@@ -42,8 +43,14 @@ export class MdsPrefLanguage {
 
   /**
    * Specifies the language code based on HTML `lang` attribute
+   *
+   * A string representing the language version as defined in {@link https://datatracker.ietf.org/doc/html/rfc5646 RFC 5646: Tags for Identifying Languages (also known as BCP 47)}.
+   *
+   * `Examples of valid language codes include "en", "en-US", "fr", "fr-FR", "es-ES", etc.`
+   *
+   * Supported languages are Italiano, English, Español, ελληνικά
    */
-  @Prop({ mutable: true, reflect: true }) set: PrefLanguageType = 'auto'
+  @Prop({ mutable: true, reflect: true }) set: string = 'auto'
 
   /**
    * Emits when the component changes the language selected from the click event of the dropdown list item
@@ -56,32 +63,32 @@ export class MdsPrefLanguage {
   @Event({ eventName: 'mdsPrefChange' }) prefChangeEvent: EventEmitter<MdsPrefChangeEventDetail>
 
   componentDidLoad (): void {
-    this.systemLanguage = this.sanitizeLanguage(navigator.language)
-    this.userLanguage = localStorage.getItem(this.localStorageAlias) as PrefLanguageType
-    this.pageLanguage = (document.querySelector('html')?.getAttribute('lang')) as PrefLanguageType
-    this.setLanguage(this.set)
     this.checkLanguageSelect()
   }
 
   componentWillRender (): void {
+    this.systemLanguage = this.sanitizeLanguage(navigator.language)
+    this.userLanguage = localStorage.getItem(this.localStorageAlias)
+    this.pageLanguage = (document.querySelector('html')?.getAttribute('lang')) ?? null
+    this.setLanguage(this.set)
     this.t.lang(this.element)
   }
 
-  private showLanguageSelectDropdown = (): void => {
+  private readonly toggleDropdown = (): void => {
     this.showDropdown = !this.showDropdown
   }
 
-  private hideLanguageSelectDropdown = (): void => {
+  private readonly hideLanguageSelectDropdown = (): void => {
     this.showDropdown = false
   }
 
-  private changeLanguageSelectItem = (): void => {
+  private readonly changeLanguageSelectItem = (): void => {
     this.elPreferLanguageItems.forEach(element => {
       element.selected = false
     })
   }
 
-  private checkLanguageSelect = (): void => {
+  private readonly checkLanguageSelect = (): void => {
     this.elPreferLanguageItems = this.element.querySelectorAll('mds-pref-language-item')
     this.elPreferLanguageItems.forEach(element => {
       element.addEventListener('mdsPrefLanguageItemSelect', (e: CustomEvent) => {
@@ -100,15 +107,18 @@ export class MdsPrefLanguage {
     })
   }
 
-  private sanitizeLanguage = (value: string): PrefLanguageType => {
+  private readonly sanitizeLanguage = (value: string): string => {
     if (value.includes('-')) {
-      return value.split('-')[0].toLowerCase() as PrefLanguageType
+      return value.split('-')[0].toLowerCase()
     }
-    return value as PrefLanguageType
+    return value
   }
 
-  private setLanguage = (set: PrefLanguageType): void => {
-    set === 'auto' ? this.set = this.userLanguage ?? this.pageLanguage ?? this.systemLanguage : this.set = set
+  private readonly setLanguage = (set: string): void => {
+    if (!/(auto)|^[a-z]{2}(-[A-Z]{2})?$/gm.exec(set)) {
+      throw Error(`Language code setted not reconized: ${set}`)
+    }
+    set === 'auto' ? this.set = this.userLanguage ?? this.pageLanguage ?? this.systemLanguage : this.set = this.sanitizeLanguage(set)
 
     this.prefChangeEvent.emit({ preference: 'language' })
 
@@ -122,7 +132,13 @@ export class MdsPrefLanguage {
   render () {
     return (
       <Host>
-        <mds-pref-language-nav active={this.showDropdown} id="mds-pref-language-nav" onMdsPrefLanguageNavSelect={this.showLanguageSelectDropdown} set={this.set}></mds-pref-language-nav>
+        <div class="menu" >
+          <mds-text class="info" typography="caption"><b>{ this.t.get('label') }</b></mds-text>
+          <mds-tab>
+            <mds-tab-item selected onClick={this.toggleDropdown} id="mds-pref-language-nav" class="item item--custom-language" icon-position="right" icon={this.showDropdown ? miBaselineKeyboardArrowUp : miBaselineKeyboardArrowDown}>{this.t.get(this.set ?? 'auto')}</mds-tab-item>
+          </mds-tab>
+        </div>
+
         <mds-dropdown class="mds-pref-language-dropdown" target="#mds-pref-language-nav" interaction="none" visible={this.showDropdown} onMdsDropdownHide={this.hideLanguageSelectDropdown}>
           <slot></slot>
         </mds-dropdown>

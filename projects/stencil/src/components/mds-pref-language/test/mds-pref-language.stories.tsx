@@ -5,7 +5,7 @@ import { languageDictionary } from '../meta/dictionary'
 export default {
   title: 'UI / Preferences / Language',
   argTypes: {
-    mode: {
+    set: {
       type: { name: 'string' },
       options: languageDictionary,
       control: { type: 'select' },

@@ -7,10 +7,10 @@
 
 ## Properties
 
-| Property   | Attribute  | Description                                                | Type                                                                                                                        | Default     |
-| ---------- | ---------- | ---------------------------------------------------------- | --------------------------------------------------------------------------------------------------------------------------- | ----------- |
-| `code`     | `code`     | Specifies the language code based on HTML `lang` attribute | ``${Lowercase<string>}${Lowercase<string>}${Lowercase<string>}` \| `${Lowercase<string>}${Lowercase<string>}` \| undefined` | `undefined` |
-| `selected` | `selected` | Specifies if the element is selected                       | `boolean \| undefined`                                                                                                      | `false`     |
+| Property   | Attribute  | Description                                                | Type                   | Default     |
+| ---------- | ---------- | ---------------------------------------------------------- | ---------------------- | ----------- |
+| `code`     | `code`     | Specifies the language code based on HTML `lang` attribute | `string`               | `undefined` |
+| `selected` | `selected` | Specifies if the element is selected                       | `boolean \| undefined` | `false`     |
 
 
 ## Events
