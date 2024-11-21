@@ -450,7 +450,7 @@ export class MdsDropdown {
       (this.host.getRootNode() as HTMLElement).querySelector(this.target) as HTMLElement
 
     if (!caller) {
-      throw Error(`Targe not found: ${this.target}`)
+      throw Error(`Target not found: ${this.target}`)
     }
 
     this.caller = caller
