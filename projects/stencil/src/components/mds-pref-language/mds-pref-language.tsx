@@ -139,7 +139,7 @@ export class MdsPrefLanguage {
           </mds-tab>
         </div>
 
-        <mds-dropdown class="mds-pref-language-dropdown" target="#mds-pref-language-nav" interaction="none" visible={this.showDropdown} onMdsDropdownHide={this.hideLanguageSelectDropdown}>
+        <mds-dropdown class="mds-pref-language-dropdown" target="#mds-pref-language-nav" interaction="none" visible={this.showDropdown} onMdsDropdownHide={this.hideLanguageSelectDropdown} autoPlacement>
           <slot></slot>
         </mds-dropdown>
         { this.set !== this.defaultLanguage && <mds-text typography="caption">{ this.t.get('defaultLanguage') }</mds-text> }

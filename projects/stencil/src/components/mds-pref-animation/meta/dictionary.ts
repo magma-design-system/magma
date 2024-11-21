@@ -1,6 +1,6 @@
 const animationDictionary = [
-  'enabled',
-  'disabled',
+  'reduce',
+  'no-preference',
   'system',
 ]
 
