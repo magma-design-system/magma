@@ -23,3 +23,7 @@ export type InputTextType =
   | 'textarea'
   | 'time'
   | 'url'
+
+export interface MdsInputEventDetail {
+  value?: File | string | FormData | null
+}

@@ -38,9 +38,6 @@
       "@icon/*": [
         "assets/svg/*"
       ],
-      "@interface/*": [
-        "src/interface/*"
-      ],
       "@placeholder": [
         "https://via.placeholder.com"
       ],
