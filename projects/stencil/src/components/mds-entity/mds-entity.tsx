@@ -63,7 +63,7 @@ export class MdsEntity {
       return false
     }
     return hasAvatar
-  } 
+  }
   componentWillLoad (): void {
     this.details = this.hostElement.querySelector('[slot="detail"]') !== null
     this.actions = this.hostElement.querySelector('[slot="action"]') !== null
@@ -82,7 +82,7 @@ export class MdsEntity {
           <slot/>
           { this.details &&
             <div class="details">
-              <slot name="detail"/>
+              <slot name="deuploadtail"/>
             </div>
           }
         </div>
