@@ -1,4 +1,4 @@
-import Handlebars from 'handlebars'
+import { render } from 'mustache'
 
 type LocaleConfig = {
   el?: Record<string, string | string[]>
@@ -78,8 +78,7 @@ export class Locale {
       }
     }
 
-    const template = Handlebars.compile(translatePhrase)
-    return template(context)
+    return render(translatePhrase, context)
   }
 
   get = (tag: string | string[], context?: Record<string, string | number>): string => {
