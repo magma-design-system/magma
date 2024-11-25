@@ -2,7 +2,7 @@
 
 
 
-This is a web-component from Maggioli Design System [Magma](https://magma.maggiolicloud.it), built with StencilJS, TypeScript, Storybook. It's based on the web-component standard and it's designed to be agnostic from the JavaScirpt framework you are using.
+This is a web-component from Maggioli Design System [Magma](https://magma.maggiolicloud.it), built with StencilJS, TypeScript, Storybook. It's based on the web-component standard and it's designed to be agnostic from the JavaScript framework you are using.
 
 <!-- Auto Generated Below -->
 
@@ -58,7 +58,7 @@ This is a web-component from Maggioli Design System [Magma](https://magma.maggio
  - [mds-pref-animation](../mds-pref-animation)
  - [mds-pref-consumption](../mds-pref-consumption)
  - [mds-pref-contrast](../mds-pref-contrast)
- - [mds-pref-language-nav](../mds-pref-language-nav)
+ - [mds-pref-language](../mds-pref-language)
  - [mds-pref-theme](../mds-pref-theme)
 
 ### Graph
@@ -68,7 +68,7 @@ graph TD;
   mds-pref-animation --> mds-tab
   mds-pref-consumption --> mds-tab
   mds-pref-contrast --> mds-tab
-  mds-pref-language-nav --> mds-tab
+  mds-pref-language --> mds-tab
   mds-pref-theme --> mds-tab
   style mds-tab fill:#f9f,stroke:#333,stroke-width:4px
 ```

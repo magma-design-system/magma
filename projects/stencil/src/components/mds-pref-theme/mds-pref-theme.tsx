@@ -19,8 +19,8 @@ import { MdsPrefChangeEventDetail } from '@event/preference'
 })
 export class MdsPrefTheme {
   @Element() private element: HTMLMdsPrefThemeElement
-  private defaultMode: ThemeModeType = 'system'
-  private t:Locale = new Locale({
+  private readonly defaultMode: ThemeModeType = 'system'
+  private readonly t: Locale = new Locale({
     el: localeEl,
     en: localeEn,
     es: localeEs,
@@ -32,15 +32,15 @@ export class MdsPrefTheme {
     this.language = this.t.lang(this.element)
   }
 
-  private localStorageAlias: string = 'mdsPrefTheme'
-  private customPropertyAlias: string = '--magma-pref-theme'
-  private overlayBackgroundVisible = 'rgb(var(--tone-neutral))'
-  private overlayBackgroundHidden = 'rgb(var(--tone-neutral) / 0)'
+  private readonly localStorageAlias: string = 'mdsPrefTheme'
+  private readonly customPropertyAlias: string = '--magma-pref-theme'
+  private readonly overlayBackgroundVisible = 'rgb(var(--tone-neutral))'
+  private readonly overlayBackgroundHidden = 'rgb(var(--tone-neutral) / 0)'
   private cssOverlayShowDuration: string = '300'
   private cssOverlayFadeoutDuration: string = '200'
   private cssOverlayZIndex: string = '6000'
   private overlayEl: HTMLElement
-  private overlayId = 'mds-pref-theme-overlay'
+  private readonly overlayId = 'mds-pref-theme-overlay'
   private overlayTimer: NodeJS.Timeout
   private overlaySmoothTimer: NodeJS.Timeout
   private overlayShow: boolean = false
@@ -68,7 +68,7 @@ export class MdsPrefTheme {
    */
   @Event({ eventName: 'mdsPrefChange' }) prefChangeEvent: EventEmitter<MdsPrefChangeEventDetail>
 
-  private theme = {
+  private readonly theme = {
     dark: {
       selector: 'pref-theme-dark',
       label: 'darkMode',
@@ -85,11 +85,11 @@ export class MdsPrefTheme {
 
   componentWillRender (): void {
     this.t.lang(this.element)
+    this.setTheme(this.mode ?? localStorage.getItem(this.localStorageAlias) as ThemeModeType ?? this.defaultMode)
   }
 
   componentDidLoad (): void {
     this.updateCSSCustomProps()
-    this.setTheme(this.mode ?? localStorage.getItem(this.localStorageAlias) as ThemeModeType ?? this.defaultMode)
   }
 
   @Watch('mode')
@@ -100,7 +100,7 @@ export class MdsPrefTheme {
     this.setTheme(newValue)
   }
 
-  private setTheme = (mode: ThemeModeType): void => {
+  private readonly setTheme = (mode: ThemeModeType): void => {
     this.prefChangeEvent.emit({ preference: 'theme' })
     this.mode = mode
     localStorage.setItem(this.localStorageAlias, this.mode)
@@ -116,11 +116,11 @@ export class MdsPrefTheme {
     }
   }
 
-  private isDarkMode = (): boolean => {
+  private readonly isDarkMode = (): boolean => {
     return window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches
   }
 
-  private getColorScheme = (mode?: ThemeModeType): ThemeModeType => {
+  private readonly getColorScheme = (mode?: ThemeModeType): ThemeModeType => {
     if (mode) {
       if (mode === 'system') {
         return this.isDarkMode() ? 'dark' : 'light'

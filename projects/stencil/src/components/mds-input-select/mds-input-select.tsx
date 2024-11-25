@@ -1,7 +1,7 @@
 import clsx from 'clsx'
 import miBaselineKeyboardArrowDown from '@icon/mi/baseline/keyboard-arrow-down.svg'
 import { AttachInternals, Component, Element, Event, EventEmitter, Host, Prop, h, State, Watch } from '@stencil/core'
-import { InputValue } from '@interface/input-value'
+import { MdsInputEventDetail } from '@type/input'
 import { ThemeStatusVariantType } from '@type/variant'
 
 /**
@@ -74,7 +74,7 @@ export class MdsInputSelect {
   /**
    * Emits an InputChangeEventDetail when the value of the input element changes
    */
-  @Event({ eventName: 'mdsInputSelectChange' }) changeEvent: EventEmitter<InputValue>
+  @Event({ eventName: 'mdsInputSelectChange' }) changeEvent: EventEmitter<MdsInputEventDetail>
 
   /**
    * Emits the change event when the component value changes
@@ -82,15 +82,15 @@ export class MdsInputSelect {
   @Watch('value')
   protected valueChanged ():void {
     this.selected = this.value !== ''
-    this.changeEvent.emit({ value: this.value })
-    this.internals.setFormValue((this.value as string) ?? null)
+    this.changeEvent.emit({ value: this.value?.toString() })
+    this.internals.setFormValue(this.value?.toString() ?? null)
   }
 
   componentDidLoad (): void {
     if (this.value) {
       this.selected = true
 
-      this.internals.setFormValue(this.value as string)
+      this.internals.setFormValue(this.value.toString())
     }
   }
 

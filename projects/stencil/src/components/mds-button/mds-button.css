@@ -71,6 +71,7 @@
   align-items: center;
   display: inline-flex;
   fill: inherit;
+  flex-shrink: 0;
   justify-content: center;
   pointer-events: none;
   transition-property: fill;
@@ -89,8 +90,11 @@
     h-600
     w-600;
 
+  display: none;
+  transform: scale(0);
   margin-right: calc(calc(-1 * var(--mds-button-gap)) - theme('spacing.600'));
-  transition-property: margin-right;
+  transition-behavior: allow-discrete;
+  transition-property: display, margin-right, opacity, transform, width;
 }
 
 .spinner {
@@ -111,7 +115,17 @@
 }
 
 :host([await]:not([await="false"])) .await {
-  @apply mr-0;
+  @apply
+    mr-0
+    opacity-100;
+  display: flex;
+  transform: scale(1);
+
+  @starting-style {
+    margin-right: calc(calc(-1 * var(--mds-button-gap)) - theme('spacing.600'));
+    opacity: 0;
+    transform: scale(0);
+  }
 }
 
 :host([await]:not([await="false"])) {

@@ -18,10 +18,10 @@ import { MdsPrefChangeEventDetail } from '@event/preference'
 })
 export class MdsPrefContrast {
   @Element() private element: HTMLMdsPrefContrastElement
-  private localStorageAlias: string = 'mdsPrefContrast'
-  private customPropertyAlias: string = '--magma-pref-contrast'
-  private defaultMode: ContrastModeType = 'system'
-  private t:Locale = new Locale({
+  private readonly localStorageAlias: string = 'mdsPrefContrast'
+  private readonly customPropertyAlias: string = '--magma-pref-contrast'
+  private readonly defaultMode: ContrastModeType = 'system'
+  private readonly t: Locale = new Locale({
     el: localeEl,
     en: localeEn,
     es: localeEs,
@@ -33,7 +33,7 @@ export class MdsPrefContrast {
     this.language = this.t.lang(this.element)
   }
 
-  private prefersDefaults = {
+  private readonly prefersDefaults = {
     custom: 'no-preference',
     less: 'no-preference',
     more: 'more',
@@ -50,7 +50,7 @@ export class MdsPrefContrast {
    */
   @Event({ eventName: 'mdsPrefChange' }) prefChangeEvent: EventEmitter<MdsPrefChangeEventDetail>
 
-  private contrast = {
+  private readonly contrast = {
     more: {
       selector: 'pref-contrast-more',
       label: 'contrastMore',
@@ -67,13 +67,10 @@ export class MdsPrefContrast {
 
   componentWillRender (): void {
     this.t.lang(this.element)
-  }
-
-  componentDidLoad (): void {
     this.setContrast(this.mode ?? localStorage.getItem(this.localStorageAlias) as ContrastModeType ?? this.defaultMode)
   }
 
-  private rollbackContrast = (): ContrastModeType => {
+  private readonly rollbackContrast = (): ContrastModeType => {
     if (!window) {
       return this.defaultMode
     }
@@ -89,7 +86,7 @@ export class MdsPrefContrast {
     throw Error('No prefers-contrast value found.')
   }
 
-  private setContrast = (mode: ContrastModeType): void => {
+  private readonly setContrast = (mode: ContrastModeType): void => {
     this.prefChangeEvent.emit({ preference: 'contrast' })
     this.rollbackContrast()
     this.mode = mode

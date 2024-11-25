@@ -17,11 +17,11 @@ import { AnimationModeType } from './meta/types'
 })
 export class MdsPrefAnimation {
   @Element() private element: HTMLMdsPrefAnimationElement
-  private localStorageAlias: string = 'mdsPrefAnimation'
-  private customPropertyAlias: string = '--magma-pref-animation'
-  private defaultMode: AnimationModeType = 'system'
+  private readonly localStorageAlias: string = 'mdsPrefAnimation'
+  private readonly customPropertyAlias: string = '--magma-pref-animation'
+  private readonly defaultMode: AnimationModeType = 'system'
 
-  private t:Locale = new Locale({
+  private readonly t: Locale = new Locale({
     el: localeEl,
     en: localeEn,
     es: localeEs,
@@ -43,7 +43,7 @@ export class MdsPrefAnimation {
    */
   @Event({ eventName: 'mdsPrefChange' }) prefChangeEvent: EventEmitter<MdsPrefChangeEventDetail>
 
-  private animation = {
+  private readonly animation = {
     reduce: {
       selector: 'pref-animation-reduce',
       label: 'animationDisabled',
@@ -60,13 +60,10 @@ export class MdsPrefAnimation {
 
   componentWillRender (): void {
     this.t.lang(this.element)
-  }
-
-  componentDidLoad (): void {
     this.setAnimation(this.mode ?? localStorage.getItem(this.localStorageAlias) as AnimationModeType ?? this.defaultMode)
   }
 
-  private setAnimation = (mode: AnimationModeType): void => {
+  private readonly setAnimation = (mode: AnimationModeType): void => {
     this.prefChangeEvent.emit({ preference: 'animation' })
     this.mode = mode
     localStorage.setItem(this.localStorageAlias, this.mode)

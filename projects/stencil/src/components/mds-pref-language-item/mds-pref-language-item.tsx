@@ -1,5 +1,4 @@
 import { Component, Host, Element, Event, EventEmitter, h, Prop, Method, State } from '@stencil/core'
-import { LanguageType } from '@type/language'
 import { Locale } from '@common/locale'
 import localeDefault from './meta/locale.json'
 import localeIt from './meta/locale.it.json'
@@ -15,7 +14,7 @@ import { MdsPrefLanguageEventDetail } from '@event/language'
 })
 export class MdsPrefLanguageItem {
   @Element() private element: HTMLMdsPrefLanguageItemElement
-  private t:Locale = new Locale({
+  private readonly t: Locale = new Locale({
     en: localeEn,
     it: localeIt,
   })
@@ -28,7 +27,7 @@ export class MdsPrefLanguageItem {
   /**
    * Specifies the language code based on HTML `lang` attribute
    */
-  @Prop({ reflect: true }) readonly code?: LanguageType
+  @Prop({ reflect: true }) readonly code: string
 
   /**
    * Specifies if the element is selected
@@ -41,6 +40,9 @@ export class MdsPrefLanguageItem {
   @Event({ eventName: 'mdsPrefLanguageItemSelect' }) selectLanguageEvent: EventEmitter<MdsPrefLanguageEventDetail>
 
   componentWillRender (): void {
+    if (!localeDefault[this.code]) {
+      throw Error(`Language code not found: ${this.code}`)
+    }
     this.t.lang(this.element)
   }
 

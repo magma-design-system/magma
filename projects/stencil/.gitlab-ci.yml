@@ -6,24 +6,19 @@ base-stencil-build:
     - nx run styles:build
     - nx run svg-icons:build
     - nx run icons:build
-    - nx run stencil:build.fixtures
-    - nx run stencil:build.icons
     - nx run stencil:build
   artifacts:
     name: stencil-build
     expire_in: 1 day
     paths:
-      - projects/design-tokens/dist
-      - projects/design-tokens/config
-      - projects/design-tokens/properties
-      - projects/styles/dist
-      - projects/svg-icons/dist
-      - projects/icons/dist
       - projects/stencil/dist
       - projects/stencil/src/components.d.ts
       - projects/stencil/src/fixtures
+      - projects/stencil/www
       - projects/stencil/assets
       - projects/stencil/react/src
+      - projects/stencil/loader
+      - projects/stencil/angular/magma-angular/src/stencil-generated
   cache:
     policy: pull-push
   rules:
@@ -101,4 +96,5 @@ magma-install-test:
 
 include:
   - '/projects/stencil/react/.gitlab-ci.yml'
+  - '/projects/stencil/angular/.gitlab-ci.yml'
   - '/projects/stencil/src/components/.gitlab-ci.yml'

@@ -18,7 +18,6 @@ export type AutocompleteType =
   | 'cc-exp-month'
   | 'cc-exp-year'
   | 'cc-family-name'
-  | 'cc-family-name'
   | 'cc-given-name'
   | 'cc-name'
   | 'cc-number'

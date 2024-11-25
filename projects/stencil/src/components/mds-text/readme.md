@@ -2,7 +2,7 @@
 
 
 
-This is a web-component from Maggioli Design System [Magma](https://magma.maggiolicloud.it), built with StencilJS, TypeScript, Storybook. It's based on the web-component standard and it's designed to be agnostic from the JavaScirpt framework you are using.
+This is a web-component from Maggioli Design System [Magma](https://magma.maggiolicloud.it), built with StencilJS, TypeScript, Storybook. It's based on the web-component standard and it's designed to be agnostic from the JavaScript framework you are using.
 
 <!-- Auto Generated Below -->
 
@@ -70,7 +70,6 @@ This is a web-component from Maggioli Design System [Magma](https://magma.maggio
  - [mds-pref-consumption](../mds-pref-consumption)
  - [mds-pref-contrast](../mds-pref-contrast)
  - [mds-pref-language](../mds-pref-language)
- - [mds-pref-language-nav](../mds-pref-language-nav)
  - [mds-pref-theme](../mds-pref-theme)
  - [mds-price-table-features](../mds-price-table-features)
  - [mds-price-table-features-cell](../mds-price-table-features-cell)
@@ -117,7 +116,6 @@ graph TD;
   mds-pref-consumption --> mds-text
   mds-pref-contrast --> mds-text
   mds-pref-language --> mds-text
-  mds-pref-language-nav --> mds-text
   mds-pref-theme --> mds-text
   mds-price-table-features --> mds-text
   mds-price-table-features-cell --> mds-text

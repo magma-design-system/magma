@@ -260,15 +260,16 @@ export class MdsTooltip {
     this.arrowEl = this.host.shadowRoot?.querySelector('.arrow') as HTMLElement
 
     // https://stackoverflow.com/a/68964329/185921
-    const caller = document.querySelector(this.target) as HTMLElement
+    const caller = this.host.parentElement?.shadowRoot?.querySelector(this.target) as HTMLElement ??
+    (this.host.getRootNode() as HTMLElement).querySelector(this.target) as HTMLElement
 
-    if (caller) {
-      this.caller = caller
-      this.caller.addEventListener('mouseleave', this.handleVisibility.bind(this, false))
-      this.caller.addEventListener('mouseenter', this.handleVisibility.bind(this, true))
-      return
+    if (!caller) {
+      throw Error(`Target not found: ${this.target}`)
     }
-    throw Error('Warning: attribute `target` is undefined.')
+
+    this.caller = caller
+    this.caller.addEventListener('mouseleave', this.handleVisibility.bind(this, false))
+    this.caller.addEventListener('mouseenter', this.handleVisibility.bind(this, true))
   }
 
   componentDidLoad (): void {

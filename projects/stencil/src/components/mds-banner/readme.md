@@ -2,7 +2,7 @@
 
 
 
-This is a web-component from Maggioli Design System [Magma](https://magma.maggiolicloud.it), built with StencilJS, TypeScript, Storybook. It's based on the web-component standard and it's designed to be agnostic from the JavaScirpt framework you are using.
+This is a web-component from Maggioli Design System [Magma](https://magma.maggiolicloud.it), built with StencilJS, TypeScript, Storybook. It's based on the web-component standard and it's designed to be agnostic from the JavaScript framework you are using.
 
 <!-- Auto Generated Below -->
 
@@ -44,6 +44,19 @@ Type: `Promise<void>`
 | ----------- | --------------------------------------------------------------------------------------- |
 | `"action"`  | Add `HTML elements` or `components`, it is **recommended** to use `mds-button` element. |
 | `"default"` | Add `text string`, `HTML elements` or `components` to this slot.                        |
+
+
+## CSS Custom Properties
+
+| Name                                       | Description                                                           |
+| ------------------------------------------ | --------------------------------------------------------------------- |
+| `--mds-banner-background`                  | Sets the background-color of the component                            |
+| `--mds-banner-close-icon-hover-background` | Sets the background color of the close icon when the mouse is over it |
+| `--mds-banner-color`                       | Sets the text color of the component                                  |
+| `--mds-banner-gap`                         | Sets gap between banner elements                                      |
+| `--mds-banner-icon-color`                  | Sets the close icon fill color of the component                       |
+| `--mds-banner-radius`                      | Sets the border-radius of the component                               |
+| `--mds-banner-shadow`                      | Sets the box-shadow of the component                                  |
 
 
 ## Dependencies

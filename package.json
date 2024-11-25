@@ -5,7 +5,8 @@
   "private": true,
   "workspaces": [
     "projects/!(deprecated)",
-    "projects/stencil/react"
+    "projects/stencil/react",
+    "projects/stencil/angular"
   ],
   "devDependencies": {
     "@commitlint/cli": "17.8.0",

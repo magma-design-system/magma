@@ -7,8 +7,7 @@ import miBaselineVisible from '@icon/mi/baseline/visibility.svg'
 import miBaselineVisibleOff from '@icon/mi/baseline/visibility-off.svg'
 import { AttachInternals, Component, Element, Event, EventEmitter, Host, Method, Prop, State, Watch, h } from '@stencil/core'
 import { AutocompleteType } from '@type/autocomplete'
-import { InputTextType, InputControlsLayoutType, InputControlsIconType } from '@type/input'
-import { MdsInputEventDetail } from './meta/event-detail'
+import { InputTextType, InputControlsLayoutType, InputControlsIconType, MdsInputEventDetail } from '@type/input'
 import { ThemeStatusVariantType } from '@type/variant'
 import { TypographyInputType } from '@type/typography'
 import { Locale } from '@common/locale'
@@ -16,7 +15,6 @@ import localeEl from './meta/locale.el.json'
 import localeEn from './meta/locale.en.json'
 import localeEs from './meta/locale.es.json'
 import localeIt from './meta/locale.it.json'
-import { LanguageType } from '@type/language'
 
 /*
   * @part field - Selects the native input field used by the component
@@ -64,7 +62,7 @@ export class MdsInput {
   private tabindex?: number
   @Element() el: HTMLMdsInputElement
   @State() hasFocus = false
-  @State() language:LanguageType
+  @State() language: string
   @State() isPasswordVisible = false
 
   private t:Locale = new Locale({
@@ -75,7 +73,7 @@ export class MdsInput {
   })
   @Method()
   async updateLang (): Promise<void> {
-    this.language = this.t.lang(this.el) as LanguageType
+    this.language = this.t.lang(this.el)
     this.t.update()
   }
 
@@ -235,7 +233,7 @@ export class MdsInput {
 
   componentWillLoad (): void {
 
-    this.language = this.t.lang(this.el) as LanguageType
+    this.language = this.t.lang(this.el)
 
     // If the mds-input has a tabindex attribute we get the value
     // and pass it down to the native input, then remove it from the

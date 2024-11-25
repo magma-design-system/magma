@@ -6,40 +6,36 @@
  */
 import { HTMLStencilElement, JSXBase } from "@stencil/core/internal";
 import { MdsAccordionEventDetail } from "./components/mds-accordion/meta/event-detail";
-import { TypographyInfoType, TypographyInputType, TypographyReadingVariants, TypographyReadType, TypographySmallerType, TypographyTitleType, TypographyTooltipType, TypographyType, TypographyVariants } from "@type/typography";
+import { TypographyInfoType, TypographyInputType, TypographyReadingVariants, TypographyReadType, TypographySmallerType, TypographyTitleType, TypographyTooltipType, TypographyType, TypographyVariants } from "./type/typography";
 import { MdsAccordionItemEventDetail } from "./components/mds-accordion-item/meta/event-detail";
 import { MdsAccordionTimerEventDetail } from "./components/mds-accordion-timer/meta/event-detail";
 import { MdsAccordionTimerItemEventDetail } from "./components/mds-accordion-timer-item/meta/event-detail";
-import { ChipVariantType, LabelVariantType, ThemeFullVariantAvatarType, ThemeFullVariantType, ThemeLuminanceVariantType, ThemeStatusVariantType, ThemeVariantType, ToneMinimalVariantType, ToneSimpleVariantType, ToneVariantType } from "@type/variant";
+import { ChipVariantType, LabelVariantType, ThemeFullVariantAvatarType, ThemeFullVariantType, ThemeLuminanceVariantType, ThemeStatusVariantType, ThemeVariantType, ToneMinimalVariantType, ToneSimpleVariantType, ToneVariantType } from "./type/variant";
 import { BenchmarkBarTypographyType } from "./components/mds-benchmark-bar/meta/types";
 import { BibliographyFormatType, BibliographyRelationshipType } from "./components/mds-bibliography/meta/types";
 import { MdsBreadcrumbEventDetail } from "./components/mds-breadcrumb/meta/event-detail";
 import { MdsBreadcrumbItemEventDetail } from "./components/mds-breadcrumb-item/meta/event-detail";
-import { ButtonIconPositionType, ButtonSizeType, ButtonTargetType, ButtonType, ButtonVariantType } from "@type/button";
+import { ButtonIconPositionType, ButtonSizeType, ButtonTargetType, ButtonType, ButtonVariantType } from "./type/button";
 import { MdsChipEvent } from "./components/mds-chip/meta/interface";
 import { DropdownInteractionType } from "./components/mds-dropdown/meta/types";
-import { FloatingUIPlacement, FloatingUIStrategy } from "@type/floating-ui";
+import { FloatingUIPlacement, FloatingUIStrategy } from "./type/floating-ui";
 import { MdsDropdownEventDetail } from "./components/mds-dropdown/meta/event-detail";
-import { ExtensionSuffixType } from "@type/file-types";
+import { ExtensionSuffixType } from "./type/file-types";
 import { MdsFileEventDetail } from "./components/mds-file/meta/event-detail";
-import { TypographyTruncateType } from "@type/text";
+import { TypographyTruncateType } from "./type/text";
 import { MdsFilePreviewEventDetail } from "./components/mds-file-preview/meta/event-detail";
 import { MdsFilterEventDetail } from "./components/mds-filter/meta/event-detail";
 import { MdsFilterItemEventDetail } from "./components/mds-filter-item/meta/event-detail";
-import { HeaderBarMenuType, HeaderBarNavType } from "@type/header-bar";
+import { HeaderBarMenuType, HeaderBarNavType } from "./type/header-bar";
 import { MdsHeaderEventDetail } from "./components/mds-header/meta/event-detail";
 import { SnapType, ViewportType } from "./components/mds-horizontal-scroll/meta/types";
 import { CrossoriginType, ReferrerpolicyType } from "./components/mds-img/meta/types";
-import { LoadingType } from "@type/loading";
+import { LoadingType } from "./type/loading";
 import { MdsImgEventDetail } from "./components/mds-img/meta/event-detail";
-import { AutocompleteType } from "@type/autocomplete";
-import { InputControlsIconType, InputControlsLayoutType, InputTextType } from "@type/input";
-import { MdsInputEventDetail } from "./components/mds-input/meta/event-detail";
-import { LanguageType, PrefLanguageType } from "@type/language";
+import { AutocompleteType } from "./type/autocomplete";
+import { InputControlsIconType, InputControlsLayoutType, InputTextType, MdsInputEventDetail } from "./type/input";
 import { InputFieldType } from "./components/mds-input-field/meta/types";
-import { MdsInputEventDetail as MdsInputEventDetail1 } from "@component/mds-input/meta/event-detail";
 import { MdsValidationErrors, MdsValidatorFn } from "./components/mds-input-field/meta/validators";
-import { InputValue } from "@interface/input-value";
 import { InputSwitchSizeType, InputSwitchType } from "./components/mds-input-switch/meta/types";
 import { MdsInputSwitchEventDetail } from "./components/mds-input-switch/meta/event-detail";
 import { InputTipPositionType } from "./components/mds-input-tip/meta/types";
@@ -49,14 +45,14 @@ import { ModalAnimationStateType, ModalPositionType } from "./components/mds-mod
 import { StrategyType } from "./components/mds-notification/meta/types";
 import { MdsPaginatorEventDetail } from "./components/mds-paginator/meta/event-detail";
 import { AnimationModeType } from "./components/mds-pref-animation/meta/types";
-import { MdsPrefChangeEventDetail } from "@event/preference";
-import { ConsumptionModeType } from "@type/preference";
+import { MdsPrefChangeEventDetail } from "./event-detail/preference";
+import { ConsumptionModeType } from "./type/preference";
 import { ContrastModeType } from "./components/mds-pref-contrast/meta/types";
-import { MdsPrefLanguageEventDetail } from "@event/language";
+import { MdsPrefLanguageEventDetail } from "./event-detail/language";
 import { ThemeModeType, ThemeTransitionType } from "./components/mds-pref-theme/meta/types";
 import { PriceTableFeaturesCellType } from "./components/mds-price-table-features-cell/meta/types";
 import { DirectionType } from "./components/mds-progress/meta/types";
-import { ISO8601Date } from "@type/date";
+import { ISO8601Date } from "./type/date";
 import { NotificationDateFormatType, NotificationPreviewType } from "./components/mds-push-notification/meta/types";
 import { MdsPushNotificationEventDetail } from "./components/mds-push-notification/meta/event-detail";
 import { MdsStepperBarEventDetail } from "./components/mds-stepper-bar/meta/event-detail";
@@ -70,40 +66,36 @@ import { ToastPosition } from "./components/mds-toast/meta/types";
 import { UsageType } from "./components/mds-usage/meta/types";
 import { NoiseType, PreloadType } from "./components/mds-video-wall/meta/types";
 export { MdsAccordionEventDetail } from "./components/mds-accordion/meta/event-detail";
-export { TypographyInfoType, TypographyInputType, TypographyReadingVariants, TypographyReadType, TypographySmallerType, TypographyTitleType, TypographyTooltipType, TypographyType, TypographyVariants } from "@type/typography";
+export { TypographyInfoType, TypographyInputType, TypographyReadingVariants, TypographyReadType, TypographySmallerType, TypographyTitleType, TypographyTooltipType, TypographyType, TypographyVariants } from "./type/typography";
 export { MdsAccordionItemEventDetail } from "./components/mds-accordion-item/meta/event-detail";
 export { MdsAccordionTimerEventDetail } from "./components/mds-accordion-timer/meta/event-detail";
 export { MdsAccordionTimerItemEventDetail } from "./components/mds-accordion-timer-item/meta/event-detail";
-export { ChipVariantType, LabelVariantType, ThemeFullVariantAvatarType, ThemeFullVariantType, ThemeLuminanceVariantType, ThemeStatusVariantType, ThemeVariantType, ToneMinimalVariantType, ToneSimpleVariantType, ToneVariantType } from "@type/variant";
+export { ChipVariantType, LabelVariantType, ThemeFullVariantAvatarType, ThemeFullVariantType, ThemeLuminanceVariantType, ThemeStatusVariantType, ThemeVariantType, ToneMinimalVariantType, ToneSimpleVariantType, ToneVariantType } from "./type/variant";
 export { BenchmarkBarTypographyType } from "./components/mds-benchmark-bar/meta/types";
 export { BibliographyFormatType, BibliographyRelationshipType } from "./components/mds-bibliography/meta/types";
 export { MdsBreadcrumbEventDetail } from "./components/mds-breadcrumb/meta/event-detail";
 export { MdsBreadcrumbItemEventDetail } from "./components/mds-breadcrumb-item/meta/event-detail";
-export { ButtonIconPositionType, ButtonSizeType, ButtonTargetType, ButtonType, ButtonVariantType } from "@type/button";
+export { ButtonIconPositionType, ButtonSizeType, ButtonTargetType, ButtonType, ButtonVariantType } from "./type/button";
 export { MdsChipEvent } from "./components/mds-chip/meta/interface";
 export { DropdownInteractionType } from "./components/mds-dropdown/meta/types";
-export { FloatingUIPlacement, FloatingUIStrategy } from "@type/floating-ui";
+export { FloatingUIPlacement, FloatingUIStrategy } from "./type/floating-ui";
 export { MdsDropdownEventDetail } from "./components/mds-dropdown/meta/event-detail";
-export { ExtensionSuffixType } from "@type/file-types";
+export { ExtensionSuffixType } from "./type/file-types";
 export { MdsFileEventDetail } from "./components/mds-file/meta/event-detail";
-export { TypographyTruncateType } from "@type/text";
+export { TypographyTruncateType } from "./type/text";
 export { MdsFilePreviewEventDetail } from "./components/mds-file-preview/meta/event-detail";
 export { MdsFilterEventDetail } from "./components/mds-filter/meta/event-detail";
 export { MdsFilterItemEventDetail } from "./components/mds-filter-item/meta/event-detail";
-export { HeaderBarMenuType, HeaderBarNavType } from "@type/header-bar";
+export { HeaderBarMenuType, HeaderBarNavType } from "./type/header-bar";
 export { MdsHeaderEventDetail } from "./components/mds-header/meta/event-detail";
 export { SnapType, ViewportType } from "./components/mds-horizontal-scroll/meta/types";
 export { CrossoriginType, ReferrerpolicyType } from "./components/mds-img/meta/types";
-export { LoadingType } from "@type/loading";
+export { LoadingType } from "./type/loading";
 export { MdsImgEventDetail } from "./components/mds-img/meta/event-detail";
-export { AutocompleteType } from "@type/autocomplete";
-export { InputControlsIconType, InputControlsLayoutType, InputTextType } from "@type/input";
-export { MdsInputEventDetail } from "./components/mds-input/meta/event-detail";
-export { LanguageType, PrefLanguageType } from "@type/language";
+export { AutocompleteType } from "./type/autocomplete";
+export { InputControlsIconType, InputControlsLayoutType, InputTextType, MdsInputEventDetail } from "./type/input";
 export { InputFieldType } from "./components/mds-input-field/meta/types";
-export { MdsInputEventDetail as MdsInputEventDetail1 } from "@component/mds-input/meta/event-detail";
 export { MdsValidationErrors, MdsValidatorFn } from "./components/mds-input-field/meta/validators";
-export { InputValue } from "@interface/input-value";
 export { InputSwitchSizeType, InputSwitchType } from "./components/mds-input-switch/meta/types";
 export { MdsInputSwitchEventDetail } from "./components/mds-input-switch/meta/event-detail";
 export { InputTipPositionType } from "./components/mds-input-tip/meta/types";
@@ -113,14 +105,14 @@ export { ModalAnimationStateType, ModalPositionType } from "./components/mds-mod
 export { StrategyType } from "./components/mds-notification/meta/types";
 export { MdsPaginatorEventDetail } from "./components/mds-paginator/meta/event-detail";
 export { AnimationModeType } from "./components/mds-pref-animation/meta/types";
-export { MdsPrefChangeEventDetail } from "@event/preference";
-export { ConsumptionModeType } from "@type/preference";
+export { MdsPrefChangeEventDetail } from "./event-detail/preference";
+export { ConsumptionModeType } from "./type/preference";
 export { ContrastModeType } from "./components/mds-pref-contrast/meta/types";
-export { MdsPrefLanguageEventDetail } from "@event/language";
+export { MdsPrefLanguageEventDetail } from "./event-detail/language";
 export { ThemeModeType, ThemeTransitionType } from "./components/mds-pref-theme/meta/types";
 export { PriceTableFeaturesCellType } from "./components/mds-price-table-features-cell/meta/types";
 export { DirectionType } from "./components/mds-progress/meta/types";
-export { ISO8601Date } from "@type/date";
+export { ISO8601Date } from "./type/date";
 export { NotificationDateFormatType, NotificationPreviewType } from "./components/mds-push-notification/meta/types";
 export { MdsPushNotificationEventDetail } from "./components/mds-push-notification/meta/event-detail";
 export { MdsStepperBarEventDetail } from "./components/mds-stepper-bar/meta/event-detail";
@@ -1303,31 +1295,20 @@ export namespace Components {
     }
     interface MdsPrefLanguage {
         /**
-          * Specifies the language code based on HTML `lang` attribute
+          * Specifies the language code based on HTML `lang` attribute  A string representing the language version as defined in {@link https://datatracker.ietf.org/doc/html/rfc5646 RFC 5646: Tags for Identifying Languages (also known as BCP 47)}.  `Examples of valid language codes include "en", "en-US", "fr", "fr-FR", "es-ES", etc.`  Supported languages are Italiano, English, Español, ελληνικά
          */
-        "set": PrefLanguageType;
+        "set": string;
         "updateLang": () => Promise<void>;
     }
     interface MdsPrefLanguageItem {
         /**
           * Specifies the language code based on HTML `lang` attribute
          */
-        "code"?: LanguageType;
+        "code": string;
         /**
           * Specifies if the element is selected
          */
         "selected"?: boolean;
-        "updateLang": () => Promise<void>;
-    }
-    interface MdsPrefLanguageNav {
-        /**
-          * Specifies if the element is active or not
-         */
-        "active": boolean;
-        /**
-          * Specifies the language code based on HTML `lang` attribute
-         */
-        "set"?: LanguageType;
         "updateLang": () => Promise<void>;
     }
     interface MdsPrefTheme {
@@ -1861,10 +1842,6 @@ export interface MdsPrefLanguageItemCustomEvent<T> extends CustomEvent<T> {
     detail: T;
     target: HTMLMdsPrefLanguageItemElement;
 }
-export interface MdsPrefLanguageNavCustomEvent<T> extends CustomEvent<T> {
-    detail: T;
-    target: HTMLMdsPrefLanguageNavElement;
-}
 export interface MdsPrefThemeCustomEvent<T> extends CustomEvent<T> {
     detail: T;
     target: HTMLMdsPrefThemeElement;
@@ -2326,7 +2303,7 @@ declare global {
         new (): HTMLMdsInputElement;
     };
     interface HTMLMdsInputFieldElementEventMap {
-        "mdsInputFieldChange": MdsInputEventDetail1;
+        "mdsInputFieldChange": MdsInputEventDetail;
         "mdsInputFieldKeydown": KeyboardEvent;
         "mdsInputFieldBlur": void;
         "mdsInputFieldFocus": void;
@@ -2363,7 +2340,7 @@ declare global {
         new (): HTMLMdsInputRangeElement;
     };
     interface HTMLMdsInputSelectElementEventMap {
-        "mdsInputSelectChange": InputValue;
+        "mdsInputSelectChange": MdsInputEventDetail;
     }
     interface HTMLMdsInputSelectElement extends Components.MdsInputSelect, HTMLStencilElement {
         addEventListener<K extends keyof HTMLMdsInputSelectElementEventMap>(type: K, listener: (this: HTMLMdsInputSelectElement, ev: MdsInputSelectCustomEvent<HTMLMdsInputSelectElementEventMap[K]>) => any, options?: boolean | AddEventListenerOptions): void;
@@ -2621,23 +2598,6 @@ declare global {
     var HTMLMdsPrefLanguageItemElement: {
         prototype: HTMLMdsPrefLanguageItemElement;
         new (): HTMLMdsPrefLanguageItemElement;
-    };
-    interface HTMLMdsPrefLanguageNavElementEventMap {
-        "mdsPrefLanguageNavSelect": MdsPrefLanguageEventDetail;
-    }
-    interface HTMLMdsPrefLanguageNavElement extends Components.MdsPrefLanguageNav, HTMLStencilElement {
-        addEventListener<K extends keyof HTMLMdsPrefLanguageNavElementEventMap>(type: K, listener: (this: HTMLMdsPrefLanguageNavElement, ev: MdsPrefLanguageNavCustomEvent<HTMLMdsPrefLanguageNavElementEventMap[K]>) => any, options?: boolean | AddEventListenerOptions): void;
-        addEventListener<K extends keyof DocumentEventMap>(type: K, listener: (this: Document, ev: DocumentEventMap[K]) => any, options?: boolean | AddEventListenerOptions): void;
-        addEventListener<K extends keyof HTMLElementEventMap>(type: K, listener: (this: HTMLElement, ev: HTMLElementEventMap[K]) => any, options?: boolean | AddEventListenerOptions): void;
-        addEventListener(type: string, listener: EventListenerOrEventListenerObject, options?: boolean | AddEventListenerOptions): void;
-        removeEventListener<K extends keyof HTMLMdsPrefLanguageNavElementEventMap>(type: K, listener: (this: HTMLMdsPrefLanguageNavElement, ev: MdsPrefLanguageNavCustomEvent<HTMLMdsPrefLanguageNavElementEventMap[K]>) => any, options?: boolean | EventListenerOptions): void;
-        removeEventListener<K extends keyof DocumentEventMap>(type: K, listener: (this: Document, ev: DocumentEventMap[K]) => any, options?: boolean | EventListenerOptions): void;
-        removeEventListener<K extends keyof HTMLElementEventMap>(type: K, listener: (this: HTMLElement, ev: HTMLElementEventMap[K]) => any, options?: boolean | EventListenerOptions): void;
-        removeEventListener(type: string, listener: EventListenerOrEventListenerObject, options?: boolean | EventListenerOptions): void;
-    }
-    var HTMLMdsPrefLanguageNavElement: {
-        prototype: HTMLMdsPrefLanguageNavElement;
-        new (): HTMLMdsPrefLanguageNavElement;
     };
     interface HTMLMdsPrefThemeElementEventMap {
         "mdsPrefChange": MdsPrefChangeEventDetail;
@@ -3023,7 +2983,6 @@ declare global {
         "mds-pref-contrast": HTMLMdsPrefContrastElement;
         "mds-pref-language": HTMLMdsPrefLanguageElement;
         "mds-pref-language-item": HTMLMdsPrefLanguageItemElement;
-        "mds-pref-language-nav": HTMLMdsPrefLanguageNavElement;
         "mds-pref-theme": HTMLMdsPrefThemeElement;
         "mds-price-table": HTMLMdsPriceTableElement;
         "mds-price-table-features": HTMLMdsPriceTableFeaturesElement;
@@ -3974,7 +3933,7 @@ declare namespace LocalJSX {
         /**
           * Emits an InputValue when the value of the input element changes
          */
-        "onMdsInputFieldChange"?: (event: MdsInputFieldCustomEvent<MdsInputEventDetail1>) => void;
+        "onMdsInputFieldChange"?: (event: MdsInputFieldCustomEvent<MdsInputEventDetail>) => void;
         /**
           * Emits a void event when input element is focused
          */
@@ -4070,7 +4029,7 @@ declare namespace LocalJSX {
         /**
           * Emits an InputChangeEventDetail when the value of the input element changes
          */
-        "onMdsInputSelectChange"?: (event: MdsInputSelectCustomEvent<InputValue>) => void;
+        "onMdsInputSelectChange"?: (event: MdsInputSelectCustomEvent<MdsInputEventDetail>) => void;
         /**
           * Specifies a short hint that describes the expected value of the element
          */
@@ -4382,15 +4341,15 @@ declare namespace LocalJSX {
          */
         "onMdsPrefLanguageChange"?: (event: MdsPrefLanguageCustomEvent<MdsPrefLanguageEventDetail>) => void;
         /**
-          * Specifies the language code based on HTML `lang` attribute
+          * Specifies the language code based on HTML `lang` attribute  A string representing the language version as defined in {@link https://datatracker.ietf.org/doc/html/rfc5646 RFC 5646: Tags for Identifying Languages (also known as BCP 47)}.  `Examples of valid language codes include "en", "en-US", "fr", "fr-FR", "es-ES", etc.`  Supported languages are Italiano, English, Español, ελληνικά
          */
-        "set"?: PrefLanguageType;
+        "set"?: string;
     }
     interface MdsPrefLanguageItem {
         /**
           * Specifies the language code based on HTML `lang` attribute
          */
-        "code"?: LanguageType;
+        "code"?: string;
         /**
           * Emits when the component trigger the language
          */
@@ -4399,20 +4358,6 @@ declare namespace LocalJSX {
           * Specifies if the element is selected
          */
         "selected"?: boolean;
-    }
-    interface MdsPrefLanguageNav {
-        /**
-          * Specifies if the element is active or not
-         */
-        "active"?: boolean;
-        /**
-          * Emits when the component trigger the language selector dropdown
-         */
-        "onMdsPrefLanguageNavSelect"?: (event: MdsPrefLanguageNavCustomEvent<MdsPrefLanguageEventDetail>) => void;
-        /**
-          * Specifies the language code based on HTML `lang` attribute
-         */
-        "set"?: LanguageType;
     }
     interface MdsPrefTheme {
         /**
@@ -4920,7 +4865,6 @@ declare namespace LocalJSX {
         "mds-pref-contrast": MdsPrefContrast;
         "mds-pref-language": MdsPrefLanguage;
         "mds-pref-language-item": MdsPrefLanguageItem;
-        "mds-pref-language-nav": MdsPrefLanguageNav;
         "mds-pref-theme": MdsPrefTheme;
         "mds-price-table": MdsPriceTable;
         "mds-price-table-features": MdsPriceTableFeatures;
@@ -5018,7 +4962,6 @@ declare module "@stencil/core" {
             "mds-pref-contrast": LocalJSX.MdsPrefContrast & JSXBase.HTMLAttributes<HTMLMdsPrefContrastElement>;
             "mds-pref-language": LocalJSX.MdsPrefLanguage & JSXBase.HTMLAttributes<HTMLMdsPrefLanguageElement>;
             "mds-pref-language-item": LocalJSX.MdsPrefLanguageItem & JSXBase.HTMLAttributes<HTMLMdsPrefLanguageItemElement>;
-            "mds-pref-language-nav": LocalJSX.MdsPrefLanguageNav & JSXBase.HTMLAttributes<HTMLMdsPrefLanguageNavElement>;
             "mds-pref-theme": LocalJSX.MdsPrefTheme & JSXBase.HTMLAttributes<HTMLMdsPrefThemeElement>;
             "mds-price-table": LocalJSX.MdsPriceTable & JSXBase.HTMLAttributes<HTMLMdsPriceTableElement>;
             "mds-price-table-features": LocalJSX.MdsPriceTableFeatures & JSXBase.HTMLAttributes<HTMLMdsPriceTableFeaturesElement>;

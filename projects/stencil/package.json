@@ -1,6 +1,6 @@
 {
   "name": "@maggioli-design-system/magma",
-  "version": "1.0.0-beta",
+  "version": "1.0.0",
   "description": "Magma is Maggioli Design System's web-components library.",
   "main": "dist/index.cjs.js",
   "module": "dist/index.js",
@@ -39,8 +39,8 @@
     "storybook.start": "npm run storybook.clear-cache && npm run build.fixtures && npm run build.icons && npm run storybook.version && storybook dev -p 6006 & npm run build.watch",
     "storybook.version": "npx ts-node --skipProject ./scripts/list-components-version.ts",
     "storybook.watch-no-cache": "npm run storybook.clear-cache && npm run build.watch-no-cache & npm run storybook.version && storybook dev -p 6006",
-    "test": "npm run test.e2e -- --maxWorkers=2",
-    "test.e2e": "stencil test --spec --e2e",
+    "test": "npm run test.e2e -- --no-build --maxWorkers=2",
+    "test.e2e": "stencil test --spec --e2e --maxWorkers=2",
     "test.e2e.watch": "stencil test --spec --e2e --watchAll",
     "test.regression.approve": "loki approve",
     "test.regression.clean": "npx ts-node --skipProject ./scripts/clean-regression.ts",
@@ -48,7 +48,7 @@
     "test.regression.review": "npm run build && loki test --port 6006 --requireReference --chromeEnableAnimations=false",
     "test.script": "npx jest",
     "update": "npx ts-node --skipProject ./scripts/update.ts",
-    "watch": "npm run build.fixtures && npm run build.icons && stencil build --watch"
+    "watch": "npm run build.fixtures && npm run build.icons && stencil build --docs-readme --watch"
   },
   "dependencies": {
     "@floating-ui/dom": "1.6.12",
@@ -61,8 +61,9 @@
     "dayjs": "1.11.13",
     "filesize": "10.1.0",
     "fitty": "2.4.2",
+    "mustache": "4.2.0",
     "idb-keyval": "6.2.1",
-    "mime": "4.0.1"
+    "mime": "4.0.4"
   },
   "license": "MIT",
   "devDependencies": {
@@ -72,6 +73,7 @@
     "@babel/preset-react": "7.22.15",
     "@babel/preset-typescript": "7.23.2",
     "@rollup/plugin-alias": "5.1.0",
+    "@stencil/angular-output-target": "0.10.0",
     "@stencil/eslint-plugin": "0.4.0",
     "@stencil/postcss": "2.1.0",
     "@stencil/react-output-target": "0.7.4",

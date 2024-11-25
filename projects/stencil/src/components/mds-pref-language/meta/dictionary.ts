@@ -3,6 +3,8 @@ const languageDictionary = [
   'it',
   'en',
   'el',
+  'non una lingua',
+  'it-IT',
 ]
 
 export {

@@ -10,7 +10,7 @@ import { FloatingUIPlacement } from '@type/floating-ui'
 @Component({
   tag: 'mds-help',
   styleUrl: 'mds-help.css',
-  shadow: false,
+  shadow: true,
 })
 export class MdsHelp {
 

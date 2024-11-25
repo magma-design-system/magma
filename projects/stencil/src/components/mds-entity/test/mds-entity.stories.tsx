@@ -65,7 +65,7 @@ const TemplateDownload = args => {
     message = 'Upload annullato'
   }
   if (isComplete) {
-    message = 'Upload comlpetato con successo'
+    message = 'Upload completato con successo'
   }
   return <div class="grid gap-400 grid-cols-full">
     <mds-entity await={isUploading && !isComplete} icon={isComplete ? 'mi/baseline/done' : 'mi/baseline/remove-circle'} variant={isComplete ? 'success' : 'warning'} {...args} aria-label="File">
@@ -79,7 +79,7 @@ const TemplateDownload = args => {
     </div>
   </div>
 }
-  
+
 
 export const Default = Template.bind({})
 Default.args = {

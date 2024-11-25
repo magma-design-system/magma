@@ -11,3 +11,21 @@ mds-pref-language {
     gap-100
     p-400;
 }
+
+.item {
+
+  --mds-tab-item-color: theme('colors.tone-neutral-05');
+
+  flex-basis: 0;
+  flex-grow: 1;
+}
+
+.item--custom-language {
+  cursor: pointer;
+}
+
+.item--auto,
+.item--custom-language {
+
+  --mds-tab-item-color-selected: theme('colors.tone-neutral-03');
+}
