@@ -1,24 +1,53 @@
 # MagmaAngular
 
-This library was generated with [Angular CLI](https://github.com/angular/angular-cli) version 18.2.0.
+Magma Angular specific building blocks on top of [@maggioli-design-system/magma](https://www.npmjs.com/package/@maggioli-design-system/magma) components.
 
-## Code scaffolding
+## Installation
 
-Run `ng generate component component-name --project magma-angular` to generate a new component. You can also use `ng generate directive|pipe|service|class|guard|interface|enum|module --project magma-angular`.
-> Note: Don't forget to add `--project magma-angular` or else it will be added to the default project in your `angular.json` file. 
+Install package
+```
+npm i @maggioli-design-system/magma-angular
+```
 
-## Build
+### NgModule
 
-Run `ng build magma-angular` to build the project. The build artifacts will be stored in the `dist/` directory.
+```
+import { MagmaModule } from '@maggioli-design-system/magma-angular'
 
-## Publishing
+@NgModule({
+  imports: [
+   ...,
+   MagmaModule.forRoot(),
+  ],
+  bootstrap: [AppComponent],
+})
+export class AppModule {}
+```
 
-After building your library with `ng build magma-angular`, go to the dist folder `cd dist/magma-angular` and run `npm publish`.
+### Standalone
 
-## Running unit tests
+import module in `AppComponent`
+```
+import { MagmaModule } from '@maggioli-design-system/magma-angular'
 
-Run `ng test magma-angular` to execute the unit tests via [Karma](https://karma-runner.github.io).
+@Component({
+  selector: 'app-root',
+  standalone: true,
+  templateUrl: './app.component.html',
+  styleUrl: './app.component.scss',
+  imports: [..., MagmaModule],
+})
+export class AppComponent implements OnInit {}
+```
 
-## Further help
+set config for module in `app.config.ts`
+```
+import { MagmaModule } from '@maggioli-design-system/magma-angular';
 
-To get more help on the Angular CLI use `ng help` or go check out the [Angular CLI Overview and Command Reference](https://angular.dev/tools/cli) page.
+export const appConfig: ApplicationConfig = {
+  providers: [
+    ...,
+    importProvidersFrom(MagmaModule.forRoot())
+  ],
+};
+```
