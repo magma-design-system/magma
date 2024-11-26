@@ -33,7 +33,7 @@
 
   @apply aspect-square;
 
-  background-color: var(--mds-file-preview-icon-bacground);
+  background-color: var(--mds-file-preview-icon-background);
   border-radius: theme('borderRadius.DEFAULT');
   box-sizing: border-box;
   color:  var(--mds-file-preview-color);
@@ -73,7 +73,6 @@
 
 .action-delete {
   background-color: var(--mds-file-preview-background-color);
-  fill: var(--mds-file-preview-color);
   position: absolute;
   right: 0;
   top: 0;
