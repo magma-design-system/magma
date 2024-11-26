@@ -11,7 +11,10 @@ const alias = {
 const TsConfigPathsPlugin = require("tsconfig-paths-webpack-plugin");
 const stories = ['../src/**/*.stories.mdx', '../src/**/*.stories.@(js|jsx|ts|tsx)']
 const staticDirs = ['../assets', '../dist']
-const addons = ['@storybook/addon-essentials', {
+const addons = [
+  '@storybook/addon-essentials',
+  '@storybook/addon-a11y',
+  {
     name: '@storybook/addon-styling',
     options: {
       postCss: {
