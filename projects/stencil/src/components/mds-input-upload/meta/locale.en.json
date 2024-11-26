@@ -4,6 +4,8 @@
   "canUploadAll": "You can upload every file format",
   "cancel": "Cancel",
   "clickOrDrag": ["Click and select or drag the file to upload here", "Click and select or drag files to upload here"],
+  "currentFilesNoMax": ["You have uploaded {{ currentFiles }} file", "You have uploaded {{ currentFiles }} files"],
+  "currentFilesWithMax": ["You have uploaded {{ currentFiles }} file of {{ maxFiles }} total", "You have uploaded {{ currentFiles }} files of {{ maxFiles }} total"],
   "dragEnter": "Drop files to upload here",
   "fileTooLarge": "File too large",
   "formatNotAlowed": "Invalid file format",
@@ -12,5 +14,5 @@
   "maxFilesUpload": [ "You can upload a single file", "You can upload a maximum of {{ maxFiles }} files" ],
   "selectFile": "Select file",
   "sortByDate": "Sort by date added",
-  "sortByState": "Sort by upload status"
+  "sortByStatus": "Sort by upload status"
 }

@@ -342,8 +342,16 @@ export class MdsInputUpload {
             {this.files.length > 0 && <mds-button variant='error' onClick={this.onReset}>{ this.t.get('cancel') }</mds-button> }
           </div>
           <div class="main-infos">
-            <mds-progress class="progress-bar" progress={this.progress}></mds-progress>
-            <mds-text variant="info" typography="caption">{this.t.get('maxFilesUpload', { maxFiles: this.maxFiles })}</mds-text>
+            <mds-progress aria-hidden="true" class="progress-bar" progress={this.progress}></mds-progress>
+            { this.files.length < 1
+              ? <mds-text variant="info" typography="caption">{this.t.get('maxFilesUpload', { maxFiles: this.maxFiles })}</mds-text>
+              : <mds-text variant="info" typography="caption">
+                { this.maxFiles
+                  ? this.t.get('currentFilesWithMax', { currentFiles: this.files.length, maxFiles: this.maxFiles })
+                  : this.t.get('currentFilesNoMax', { currentFiles: this.files.length })
+                }
+              </mds-text>
+            }
           </div>
         </div>
         <input type='file' accept={this.accept} hidden ref={i => this.nativeInput = i} onChange={this.onAdd} multiple = {this.maxFiles > 1}/>
@@ -352,12 +360,11 @@ export class MdsInputUpload {
             <mds-text variant="info" typography="caption">{this.extensions !== '' ? `${this.t.get('canUpload')} ${this.extensions}` : this.t.get('canUploadAll') }</mds-text>
             <mds-text variant="info" typography="caption">{ this.t.get('maxFileSizePerFile', { maxFileSize: this.maxFileSize })}</mds-text>
           </div>
-          {!this.sort ?
+          { !this.sort && this.files.length > 1 &&
             <mds-tab class="action-sort" onMdsTabChange={event => this.onChangeTab(event.detail)} >
               <mds-tab-item icon={iconSortById} selected={this.userSort === 'date'} title={this.t.get('sortByDate')} value='date'></mds-tab-item>
               <mds-tab-item icon={iconSortByStatus} selected={this.userSort === 'status'} title={this.t.get('sortByStatus')} value='status'></mds-tab-item>
             </mds-tab>
-            : ''
           }
         </div>
         <div class={clsx('file-list', this.files.length > this.cssMinCols && 'file-list--more-items')}>
