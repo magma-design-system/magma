@@ -41,17 +41,17 @@ export default {
 
 const Template = args =>
   <mds-entity {...args} aria-label="Personaggio">
-    <mds-text truncate="word" aria-label="Nome" typography="h6">Mario Rossi</mds-text>
-    <mds-badge aria-label="Carattere" slot="detail" variant="orange" tone="weak">buono</mds-badge>
-    <mds-text truncate="word" aria-label="Email" slot="detail" typography="caption">mario@nintendo.com</mds-text>
+    <mds-text truncate="word" aria-label="Nome" role="text" typography="h6">Mario Rossi</mds-text>
+    <mds-badge aria-label="Carattere" role="text" slot="detail" variant="orange" tone="weak">buono</mds-badge>
+    <mds-text truncate="word" aria-label="Email" role="text" slot="detail" typography="caption">mario@nintendo.com</mds-text>
     <mds-button onClick={() => { console.info('Restore') }} slot="action" icon="mdi/replay" variant="primary" tone="strong" title="Restore"/>
     <mds-button onClick={() => { console.info('Delete') }} slot="action" icon="mdi/delete" variant="error" tone="strong" title="Delete"/>
   </mds-entity>
 
 const TemplateLocation = args =>
   <mds-entity {...args} aria-label="Luogo">
-    <mds-text truncate="word" aria-label="Nome" typography="h6">Maggioli Headquarters</mds-text>
-    <mds-text truncate="word" aria-label="Strada" slot="detail" typography="caption">Via Pinelli 64, Santarcangelo di Romanga, Italy</mds-text>
+    <mds-text truncate="word" typography="h6" title="Nome">Maggioli Headquarters</mds-text>
+    <mds-text truncate="word" title="Strada" slot="detail" typography="caption">Via Pinelli 64, Santarcangelo di Romanga, Italy</mds-text>
     <mds-button slot="action" icon="mdi/map-marker" variant="primary" tone="strong" title="Go to Google Maps"/>
   </mds-entity>
 
