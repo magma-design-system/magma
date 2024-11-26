@@ -86,7 +86,7 @@ export class MdsModal {
     this.window = this.host.querySelector('[slot="window"]') !== null
 
     if (this.window) {
-      this.host.querySelector('[slot="window"]')?.setAttribute('role', 'modal')
+      this.host.querySelector('[slot="window"]')?.setAttribute('role', 'dialog')
     }
   }
 
