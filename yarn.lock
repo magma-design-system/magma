@@ -4334,6 +4334,14 @@
     style-object-to-css-string "^1.0.0"
     ts-morph "^22.0.0"
 
+"@storybook/addon-a11y@7.6.7":
+  version "7.6.7"
+  resolved "https://registry.npmjs.org/@storybook/addon-a11y/-/addon-a11y-7.6.7.tgz#e71391ccff72432d6eb6f855153b3bcdff6a245b"
+  integrity sha512-poT2oXIYDwLnhqn6g9ACTQ+7gi8QDHVlib4TQANdcozC/qYg+Bs6Pd99wT6rT4lrC/npVNTSKKwLw+3oXqlCxg==
+  dependencies:
+    "@storybook/addon-highlight" "7.6.7"
+    axe-core "^4.2.0"
+
 "@storybook/addon-actions@7.6.7":
   version "7.6.7"
   resolved "https://registry.npmjs.org/@storybook/addon-actions/-/addon-actions-7.6.7.tgz#2985d5417c65a9a0bce75a487b09bf1d1140b943"
@@ -6850,6 +6858,11 @@ available-typed-arrays@^1.0.7:
   integrity sha512-wvUjBtSGN7+7SjNpq/9M2Tg350UZD3q62IFZLbRAR1bSMlCo1ZaeW+BJ+D090e4hIIZLBcTDWe4Mh4jvUDajzQ==
   dependencies:
     possible-typed-array-names "^1.0.0"
+
+axe-core@^4.2.0:
+  version "4.10.2"
+  resolved "https://registry.npmjs.org/axe-core/-/axe-core-4.10.2.tgz#85228e3e1d8b8532a27659b332e39b7fa0e022df"
+  integrity sha512-RE3mdQ7P3FRSe7eqCWoeQ/Z9QXrtniSjp1wUjt5nRC3WIpz5rSCve6o3fsZ2aCpJtrZjSZgjwXAoTO5k4tEI0w==
 
 axios@^1.0.0:
   version "1.7.7"

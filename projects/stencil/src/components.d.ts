@@ -317,6 +317,7 @@ export namespace Components {
           * Choose to display or not the back arrow button
          */
         "back"?: boolean;
+        "updateLang": () => Promise<void>;
     }
     interface MdsBreadcrumbItem {
         /**
