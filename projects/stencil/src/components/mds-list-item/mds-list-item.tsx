@@ -30,8 +30,8 @@ export class MdsListItem {
 
   render () {
     return (
-      <Host>
-        <mds-icon class="icon" name={this.icon ?? mggListDot} part="icon"/>
+      <Host role="listitem">
+        <mds-icon aria-hidden="true" class="icon" name={this.icon ?? mggListDot} part="icon"/>
         <mds-text tag="span" typography={this.typography} variant={this.variant} part="text">
           <slot/>
         </mds-text>

@@ -14,7 +14,7 @@ export class MdsList {
 
   render () {
     return (
-      <Host>
+      <Host role="list">
         <slot></slot>
       </Host>
     )

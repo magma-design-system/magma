@@ -53,7 +53,7 @@ export class MdsFilterItem {
 
   render () {
     return (
-      <Host tabindex="0" role="button" aria-label={ this.label ?? this.icon } onClick={ this.toggle }>
+      <Host tabindex="0" role="menuitem" aria-label={ this.label ?? this.icon } onClick={ this.toggle }>
         { this.icon && <mds-icon aria-hidden="true" name={this.icon} /> }
         { this.label && <mds-text aria-hidden="true" variant="info" typography="caption">{ this.label }</mds-text> }
       </Host>

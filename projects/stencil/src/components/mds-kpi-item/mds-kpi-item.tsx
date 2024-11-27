@@ -28,7 +28,7 @@ export class MdsKpiItem {
   @Prop() readonly description?: string
 
   /**
-   * Specifies the description under the value in the KPI element
+   * Specifies the page threshold which starts the text animation
    */
   @Prop() readonly threshold?: number = 0
 
@@ -55,13 +55,13 @@ export class MdsKpiItem {
 
   render () {
     return (
-      <Host>
+      <Host aria-label={ `${this.label}: ${this.description}` } role="listitem">
         { this.icon &&
           <div class="icon-container" part="icon-container">
             <mds-icon class="icon" name={ this.icon } part="icon"></mds-icon>
           </div>
         }
-        <div class="info" part="content">
+        <div class="info" part="content" aria-hidden="true">
           { this.label && this.threshold !== 0 && <mds-text class="value" typography="h2" text={ this.isIntersecting ? this.label : '' } animation="yugop"></mds-text> }
           { this.label && this.threshold === 0 && <mds-text class="value" typography="h2">{ this.label }</mds-text> }
           { this.description && this.threshold !== 0 && <mds-text class="description" typography="label" text={ this.isIntersecting ? this.description : '' } animation="yugop"></mds-text> }

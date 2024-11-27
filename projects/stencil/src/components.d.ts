@@ -594,6 +594,7 @@ export namespace Components {
           * Truncates the filename shown
          */
         "truncate"?: TypographyTruncateType;
+        "updateLang": () => Promise<void>;
         /**
           * The variant of the component, is shown only if the message attribute is defined
          */
@@ -1153,7 +1154,7 @@ export namespace Components {
          */
         "label"?: string;
         /**
-          * Specifies the description under the value in the KPI element
+          * Specifies the page threshold which starts the text animation
          */
         "threshold"?: number;
     }
@@ -1219,6 +1220,7 @@ export namespace Components {
           * Enables the cross icon to perform cancel/delete action on element
          */
         "deletable"?: boolean;
+        "updateLang": () => Promise<void>;
         /**
           * Specifies the color variant for the element
          */
@@ -4164,7 +4166,7 @@ declare namespace LocalJSX {
          */
         "label"?: string;
         /**
-          * Specifies the description under the value in the KPI element
+          * Specifies the page threshold which starts the text animation
          */
         "threshold"?: number;
     }

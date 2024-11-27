@@ -35,6 +35,9 @@
       "@fixture/*": [
         "src/fixtures/*"
       ],
+      "@meta/*": [
+        "src/meta/*"
+      ],
       "@icon/*": [
         "assets/svg/*"
       ],
