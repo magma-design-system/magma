@@ -27,7 +27,7 @@ export class MdsInputUpload {
   private cssMinCols: number = 1000
   private idFile: number = 0
   private userSort: AttachmentSort
-  private t:Locale = new Locale({
+  private t: Locale = new Locale({
     el: localeEl,
     en: localeEn,
     es: localeEs,
@@ -108,36 +108,36 @@ export class MdsInputUpload {
     }
   }
 
-  private updateCSSCustomProps = (): void => {
+  private readonly updateCSSCustomProps = (): void => {
     const elementStyles = window.getComputedStyle(this.host)
     this.cssMinCols = Number(elementStyles.getPropertyValue('--mds-input-upload-min-cols'))
   }
 
-  private onDropHandler = (event: DragEvent) => {
+  private readonly onDropHandler = (event: DragEvent) => {
     if (this.nativeInput && event.dataTransfer) {
       this.update(this.nativeInput, this.prepareFiles(event.dataTransfer.files))
     }
     event.preventDefault()
   }
 
-  private onDragOverHandler = (event: DragEvent) => {
+  private readonly onDragOverHandler = (event: DragEvent) => {
     event.preventDefault()
   }
 
-  private onDragEnterHandler = (event: DragEvent) => {
+  private readonly onDragEnterHandler = (event: DragEvent) => {
     this.actionTitle = this.t.get('dragEnter')
     this.animateText = true
     this.elDragArea?.classList.add('drag-area--on-drag-enter')
     event.preventDefault()
   }
 
-  private onDragLeaveHandler = (event: DragEvent) => {
+  private readonly onDragLeaveHandler = (event: DragEvent) => {
     this.actionTitle = this.t.get('clickOrDrag', { maxFiles: this.maxFiles })
     this.elDragArea?.classList.remove('drag-area--on-drag-enter')
     event.preventDefault()
   }
 
-  private onAdd = (event: Event) => {
+  private readonly onAdd = (event: Event) => {
     const input = ((event.target) as HTMLInputElement)
     this.update(input, this.prepareFiles(input.files))
   }
@@ -146,7 +146,7 @@ export class MdsInputUpload {
    * Delete single file from upload
    * @param filekey
    */
-  private onCancel = (filekey: string): void => {
+  private readonly onCancel = (filekey: string): void => {
     this.files = this.files.filter(f => f.key !== filekey)
     if (this.nativeInput) {
       const data = new DataTransfer()
@@ -158,7 +158,7 @@ export class MdsInputUpload {
   /**
    * Delete all files from upload
    */
-  private onReset = () : void => {
+  private readonly onReset = () : void => {
     if (this.nativeInput) {
       this.files = []
       this.nativeInput.value = ''
@@ -166,7 +166,7 @@ export class MdsInputUpload {
     }
   }
 
-  private onChangeTab = (event: MdsTabEventDetail): void => {
+  private readonly onChangeTab = (event: MdsTabEventDetail): void => {
     if (event.value) {
       this.sortFiles(this.files, event.value as AttachmentSort)
       this.userSort = event.value as AttachmentSort
@@ -321,6 +321,10 @@ export class MdsInputUpload {
     return b.id - a.id
   }
 
+  private isSortTabShown (): boolean {
+    return !!this.sort && this.files.length > 1
+  }
+
   render () {
     return (
       <Host>
@@ -356,11 +360,11 @@ export class MdsInputUpload {
         </div>
         <input type='file' accept={this.accept} hidden ref={i => this.nativeInput = i} onChange={this.onAdd} multiple = {this.maxFiles > 1}/>
         <div class="additional-infos">
-          <div class={clsx('file-specs', !this.sort && 'file-specs-sort')}>
+          <div class={clsx('file-specs', this.isSortTabShown() && 'file-specs-sort')}>
             <mds-text variant="info" typography="caption">{this.extensions !== '' ? `${this.t.get('canUpload')} ${this.extensions}` : this.t.get('canUploadAll') }</mds-text>
             <mds-text variant="info" typography="caption">{ this.t.get('maxFileSizePerFile', { maxFileSize: this.maxFileSize })}</mds-text>
           </div>
-          { !this.sort && this.files.length > 1 &&
+          { this.isSortTabShown() &&
             <mds-tab class="action-sort" onMdsTabChange={event => this.onChangeTab(event.detail)} >
               <mds-tab-item icon={iconSortById} selected={this.userSort === 'date'} title={this.t.get('sortByDate')} value='date'></mds-tab-item>
               <mds-tab-item icon={iconSortByStatus} selected={this.userSort === 'status'} title={this.t.get('sortByStatus')} value='status'></mds-tab-item>
