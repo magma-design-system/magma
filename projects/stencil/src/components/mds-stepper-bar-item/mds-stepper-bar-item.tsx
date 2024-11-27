@@ -97,10 +97,10 @@ export class MdsStepperBarItem {
   render () {
     return (
       <Host>
-        <header class="header" tabindex="0">
+        <div class="header" tabindex="0">
           <mds-icon class="icon" name={ clsx(this.isDone && !this.isCurrent ? this.iconChecked : this.icon) }/>
-          <mds-progress class="progress" progress={ this.isDone ? 1 : 0 }/>
-        </header>
+          <mds-progress aria-hidden="true" class="progress" progress={ this.isDone ? 1 : 0 }/>
+        </div>
         <div class="infos">
           { this.step && <mds-text class="step" typography="option">step { this.index + 1 }</mds-text> }
           { this.label && <mds-text class="text" typography={ this.typography }>{ this.label }</mds-text> }

@@ -1,0 +1,5 @@
+{
+  "close": "Cerrar",
+  "iframeURL": "Elemento iframe que contiene {{ url }}",
+  "previewURL": "Ventana con vista previa de {{ url }}"
+}

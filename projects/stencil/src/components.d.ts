@@ -22,7 +22,7 @@ import { FloatingUIPlacement, FloatingUIStrategy } from "./type/floating-ui";
 import { MdsDropdownEventDetail } from "./components/mds-dropdown/meta/event-detail";
 import { ExtensionSuffixType } from "./type/file-types";
 import { MdsFileEventDetail } from "./components/mds-file/meta/event-detail";
-import { TypographyTruncateType } from "./type/text";
+import { TypographyHeadingTagType, TypographyTagType, TypographyTruncateType } from "./type/text";
 import { MdsFilePreviewEventDetail } from "./components/mds-file-preview/meta/event-detail";
 import { MdsFilterEventDetail } from "./components/mds-filter/meta/event-detail";
 import { MdsFilterItemEventDetail } from "./components/mds-filter-item/meta/event-detail";
@@ -61,7 +61,7 @@ import { MdsTabEventDetail } from "./components/mds-tab/meta/event-detail";
 import { MdsTabBarEventDetail } from "./components/mds-tab-bar/meta/event-detail";
 import { MdsTabItemEventDetail } from "./components/mds-tab-item/meta/event-detail";
 import { SortDirectionType } from "./components/mds-table-header-cell/meta/types";
-import { TextAnimationType, TypographyTagType } from "./components/mds-text/meta/types";
+import { TextAnimationType } from "./components/mds-text/meta/types";
 import { ToastPosition } from "./components/mds-toast/meta/types";
 import { UsageType } from "./components/mds-usage/meta/types";
 import { NoiseType, PreloadType } from "./components/mds-video-wall/meta/types";
@@ -82,7 +82,7 @@ export { FloatingUIPlacement, FloatingUIStrategy } from "./type/floating-ui";
 export { MdsDropdownEventDetail } from "./components/mds-dropdown/meta/event-detail";
 export { ExtensionSuffixType } from "./type/file-types";
 export { MdsFileEventDetail } from "./components/mds-file/meta/event-detail";
-export { TypographyTruncateType } from "./type/text";
+export { TypographyHeadingTagType, TypographyTagType, TypographyTruncateType } from "./type/text";
 export { MdsFilePreviewEventDetail } from "./components/mds-file-preview/meta/event-detail";
 export { MdsFilterEventDetail } from "./components/mds-filter/meta/event-detail";
 export { MdsFilterItemEventDetail } from "./components/mds-filter-item/meta/event-detail";
@@ -121,7 +121,7 @@ export { MdsTabEventDetail } from "./components/mds-tab/meta/event-detail";
 export { MdsTabBarEventDetail } from "./components/mds-tab-bar/meta/event-detail";
 export { MdsTabItemEventDetail } from "./components/mds-tab-item/meta/event-detail";
 export { SortDirectionType } from "./components/mds-table-header-cell/meta/types";
-export { TextAnimationType, TypographyTagType } from "./components/mds-text/meta/types";
+export { TextAnimationType } from "./components/mds-text/meta/types";
 export { ToastPosition } from "./components/mds-toast/meta/types";
 export { UsageType } from "./components/mds-usage/meta/types";
 export { NoiseType, PreloadType } from "./components/mds-video-wall/meta/types";
@@ -1432,6 +1432,10 @@ export namespace Components {
     }
     interface MdsQuote {
         /**
+          * Specifies the tag the element
+         */
+        "tag": TypographyHeadingTagType;
+        /**
           * Specifies the font typography of the element
          */
         "typography": TypographyTitleType;
@@ -1673,6 +1677,7 @@ export namespace Components {
           * Specifies the URL to the web page
          */
         "src": string;
+        "updateLang": () => Promise<void>;
     }
     interface MdsUsage {
         /**
@@ -4485,6 +4490,10 @@ declare namespace LocalJSX {
         "visiblity"?: 'auto'|'visible'|'hidden';
     }
     interface MdsQuote {
+        /**
+          * Specifies the tag the element
+         */
+        "tag"?: TypographyHeadingTagType;
         /**
           * Specifies the font typography of the element
          */

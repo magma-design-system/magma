@@ -27,19 +27,19 @@ export class MdsPriceTableList {
   render () {
     return (
       <Host>
-        <header part="header">
+        <div class="header" part="header">
           <slot name="header"/>
-        </header>
+        </div>
         { this.hasItems && <mds-separator class="separator"></mds-separator> }
         { this.hasItems &&
-          <main part="content">
+          <main class="main" part="content">
             <slot name="item"/>
           </main>
         }
-        <footer part="footer">
+        <div class="footer" part="footer">
           <slot name="price"/>
           <slot name="action"/>
-        </footer>
+        </div>
       </Host>
     )
   }

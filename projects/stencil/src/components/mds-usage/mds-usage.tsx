@@ -1,7 +1,5 @@
-import clsx from 'clsx'
 import { Component, Element, Host, h, Prop } from '@stencil/core'
 import { UsageType } from './meta/types'
-import { setAttributeIfEmpty } from '@common/aria'
 import { usageVariant } from './meta/variants'
 
 /**
@@ -27,26 +25,19 @@ export class MdsUsage {
    */
   @Prop() readonly alias?: string
 
-  componentDidLoad ():void {
-    this.addAriaAttributes()
-  }
-
-  private addAriaAttributes (): void {
-    const { alias } = usageVariant[this.variant]
-    setAttributeIfEmpty(this.host, 'aria-label', this.alias ?? alias)
-  }
-
   render () {
     const { alias, icon } = usageVariant[this.variant]
     return (
-      <Host>
-        <header class={clsx('header')} aria-hidden="true">
+      <Host role="suggestion">
+        <div class="header" aria-hidden="true">
           <div class="badge">
             <mds-icon class="icon" name={icon}/>
             <mds-text typography="h6">{ this.alias ?? alias }</mds-text>
           </div>
-        </header>
-        <slot/>
+        </div>
+        <div class="content" role={ this.variant === 'do' || this.variant === 'info' ? 'insertion' : 'deletion'}>
+          <slot/>
+        </div>
       </Host>
     )
   }

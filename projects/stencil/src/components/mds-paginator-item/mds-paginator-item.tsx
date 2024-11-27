@@ -53,8 +53,8 @@ export class MdsPaginatorItem {
       <Host tabindex="0">
         { this.icon !== undefined
           ? <mds-icon class="icon" name={this.icon}/>
-          : <mds-text class="text" typography="detail">
-            <slot/>
+          : <mds-text class="text" typography="caption">
+            <b><slot/></b>
           </mds-text>
         }
       </Host>

@@ -12,14 +12,14 @@
 
     --mds-usage-badge-background: theme('colors.status-success-05');
   }
-  
+
   :host([variant="dont"]) {
-  
+
     --mds-usage-badge-background: theme('colors.status-error-05');
   }
-  
+
   :host([variant="warn"]) {
-  
+
     --mds-usage-badge-background: theme('colors.status-warning-05');
   }
 }
@@ -30,22 +30,22 @@
     :host {
 
       --mds-usage-badge-background: theme('colors.status-info-05');
-  
+
       box-shadow: theme('boxShadow.outline');
     }
-  
+
     :host([variant="do"]) {
-  
+
       --mds-usage-badge-background: theme('colors.status-success-05');
     }
-    
+
     :host([variant="dont"]) {
-    
+
       --mds-usage-badge-background: theme('colors.status-error-05');
     }
-    
+
     :host([variant="warn"]) {
-    
+
       --mds-usage-badge-background: theme('colors.status-warning-05');
     }
   }

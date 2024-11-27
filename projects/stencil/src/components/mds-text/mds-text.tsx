@@ -1,5 +1,6 @@
 import { Component, Element, Host, Prop, h, Watch } from '@stencil/core'
-import { TypographyTagType, TextAnimationType } from './meta/types'
+import { TextAnimationType } from './meta/types'
+import { TypographyTagType } from '@type/text'
 import { TypographyTruncateType } from '@type/text'
 import { TypographyType, TypographyVariants } from '@type/typography'
 import { typographyDefaultsVariant } from './meta/variants'
