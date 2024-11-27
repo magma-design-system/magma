@@ -25,7 +25,7 @@ export class MdsInputUpload {
   private extensions: string
   private fileUploaded = 0
   private cssMinCols: number = 1000
-  private id: number = 0
+  private idFile: number = 0
   private userSort: AttachmentSort
   private t:Locale = new Locale({
     el: localeEl,
@@ -187,7 +187,7 @@ export class MdsInputUpload {
     // prepare new file added
     for (const file of files) {
       // update only file not added previously or files with errors
-      this.id += 1
+      this.idFile += 1
       const index = this.files.findIndex(f => f.key === file.name)
       if (index === -1 || this.files[index].status !== Status.SUCCESS) {
         // remove file with error
@@ -196,10 +196,10 @@ export class MdsInputUpload {
         }
         const { errorMessage, type } = this.checkError(file)
         if (!errorMessage) {
-          this.files.push({ key: file.name, file, id: this.id, status: Status.SUCCESS })
+          this.files.push({ key: file.name, file, id: this.idFile, status: Status.SUCCESS })
           this.fileUploaded += 1
         } else {
-          this.files.push({ key: file.name, file, id: this.id, status: Status.ERROR, errorType: type, errorMessage })
+          this.files.push({ key: file.name, file, id: this.idFile, status: Status.ERROR, errorType: type, errorMessage })
         }
       }
 

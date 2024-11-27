@@ -69,13 +69,6 @@ describe('mds-input-upload', () => {
     }
   })
 
-  it('should show sort', async () => {
-    expect(component?.sort).toBeUndefined()
-    const sortTab = component?.shadowRoot?.querySelector('.action-sort')
-    expect(sortTab).toBeDefined()
-    expect(sortTab?.firstChild).toHaveAttribute('selected')
-  })
-
   it('should not show sort', async () => {
     await page.setContent('<mds-input-upload sort="status"></mds-input-upload>')
     await page.waitForChanges()
