@@ -10,8 +10,6 @@
 
 :host {
 
-  --mds-table-header-cell-padding: theme('spacing.200');
-
   @apply
     duration-200
     ease-out;
@@ -20,7 +18,7 @@
   border-bottom: var(--mds-table-cell-border-width) solid var(--mds-table-cell-border-color) !important;
   border-top: var(--mds-table-cell-border-width) solid transparent !important;
   display: table-cell;
-  padding: var(--mds-table-header-cell-padding);
+  padding: var(--mds-table-cell-padding);
   transition-property: background-color, border-color, color;
   vertical-align: top;
 }

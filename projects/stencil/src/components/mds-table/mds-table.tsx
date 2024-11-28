@@ -34,7 +34,7 @@ export class MdsTable {
   render () {
     return (
       <Host>
-        <table class={clsx('table', this.interactive && 'table--interactive')} role="grid">
+        <table class={clsx('table', this.interactive && 'table--interactive')} role="table">
           <slot/>
         </table>
       </Host>

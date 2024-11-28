@@ -6,8 +6,8 @@ import { SortDirectionType } from './meta/types'
 import clsx from 'clsx'
 
 enum Sort {
-  ASC = 'asc',
-  DESC = 'desc',
+  ASC = 'ascending',
+  DESC = 'descending',
   NONE = 'none'
 }
 
@@ -92,9 +92,9 @@ export class MdsTableHeaderCell {
       const cellB = this.getValue(b.querySelectorAll('mds-table-cell')[this.index])
       const isNumeric = !isNaN(Number(cellA)) && !isNaN(Number(cellB))
       if (isNumeric) {
-        return this.direction === 'asc' ? Number(cellA) - Number(cellB) : Number(cellB) - Number(cellA)
+        return this.direction === 'ascending' ? Number(cellA) - Number(cellB) : Number(cellB) - Number(cellA)
       }
-      return this.direction === 'asc' ? String(cellA).localeCompare(String(cellB)) : String(cellB).localeCompare(String(cellA))
+      return this.direction === 'ascending' ? String(cellA).localeCompare(String(cellB)) : String(cellB).localeCompare(String(cellA))
     })
     sortedRows.forEach(row => this.tableBody.appendChild(row))
   }
@@ -135,9 +135,9 @@ export class MdsTableHeaderCell {
 
   render () {
     return (
-      <Host>
+      <Host role="columnheader" aria-sort={this.direction}>
         { this.sortable
-          ? <mds-button class="action" icon={clsx(this.direction === 'none' && miBaselineUnfoldMore, this.direction === 'asc' && miBaselineKeyboardArrowUp, this.direction === 'desc' && miBaselineKeyboardArrowDown)} icon-position="right" onClick={this.sort} tone="quiet" variant="dark" size="sm" part="action">
+          ? <mds-button class="action" icon={clsx(this.direction === 'none' && miBaselineUnfoldMore, this.direction === 'ascending' && miBaselineKeyboardArrowUp, this.direction === 'descending' && miBaselineKeyboardArrowDown)} icon-position="right" onClick={this.sort} tone="quiet" variant="dark" size="sm" part="action">
             { this.label }
           </mds-button>
           : <mds-text class="label" typography="label" part="label">
