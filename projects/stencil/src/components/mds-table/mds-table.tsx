@@ -1,5 +1,5 @@
 import clsx from 'clsx'
-import { Component, Host, h, Prop, Event, EventEmitter, Watch } from '@stencil/core'
+import { Component, Host, h, Prop, Event, EventEmitter, Watch, Element } from '@stencil/core'
 
 /**
  * @slot default - Put `mds-table-header`, `mds-table-body`, `mds-table-footer` element/s.
@@ -11,6 +11,8 @@ import { Component, Host, h, Prop, Event, EventEmitter, Watch } from '@stencil/c
   shadow: true,
 })
 export class MdsTable {
+
+  @Element() host: HTMLMdsTableElement
 
   /**
    * Specifies if the table row are higlighted on mouseover event
@@ -29,6 +31,21 @@ export class MdsTable {
 
   componentDidLoad (): void {
     this.interactiveEvent.emit(this.interactive)
+    const rowElements: NodeListOf<HTMLMdsTableRowElement> = this.host.querySelectorAll('mds-table-row') as NodeListOf<HTMLMdsTableRowElement>
+    this.host.addEventListener('scroll', (e: Event) => {
+      const target = e.target as HTMLElement
+      // console.log('here', target.scrollLeft, target.offsetWidth)
+      // console.log(target.offsetWidth - target.scrollLeft)
+      // console.log(rowElement.offsetWidth - target.offsetWidth)
+      rowElements.forEach((rowElement: HTMLMdsTableRowElement) => {
+        if (target.scrollLeft > rowElement.offsetWidth - target.offsetWidth) {
+          rowElement.overlayActions = true
+          return
+        }
+        rowElement.overlayActions = false
+      })
+
+    })
   }
 
   render () {

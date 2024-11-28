@@ -1569,6 +1569,7 @@ export namespace Components {
     }
     interface MdsTableRow {
         "interactive": boolean;
+        "overlayActions": boolean;
     }
     interface MdsText {
         /**
@@ -4660,6 +4661,7 @@ declare namespace LocalJSX {
     }
     interface MdsTableRow {
         "interactive"?: boolean;
+        "overlayActions"?: boolean;
     }
     interface MdsText {
         /**

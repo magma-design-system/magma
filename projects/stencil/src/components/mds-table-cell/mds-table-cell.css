@@ -22,9 +22,4 @@
   transition-property: background-color, border-color, color;
 }
 
-.actions {
-  position: absolute;
-  right: 0;
-}
-
 @import './css/mds-table-cell-pref-animation.css';
