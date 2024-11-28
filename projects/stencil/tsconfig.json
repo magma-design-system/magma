@@ -1,5 +1,4 @@
 {
-  "skipLibCheck": true,
   "compilerOptions": {
     "allowSyntheticDefaultImports": true,
     "allowUnreachableCode": false,
@@ -52,8 +51,12 @@
       ],
       "@type/*": [
         "src/type/*"
+      ],
+      "react": [
+        "node_modules/react"
       ]
     },
+    "skipLibCheck": true,
     "strictNullChecks": true
   },
   "include": [
