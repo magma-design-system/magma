@@ -54,14 +54,17 @@ const AnimateTemplate = () => {
     <div class="bg-tone-neutral-09 p-600 rounded-lg">
       <mds-text animation="yugop" text={ text }></mds-text>
     </div>
-    <div>
-      <select onChange={(e: Event) => setValue(e)}>
-        <option value="U2">Choose a song...</option>
-        <option value="One">One</option>
-        <option value="Zoo Station">Zoo Station</option>
-        <option value="With or Without You">With or Without You</option>
-        <option value="Where The Streets Have No Name">Where The Streets Have No Name</option>
-      </select>
+    <div class="grid gap-200">
+      <label htmlFor='song'>Selected song:</label>
+      <div>
+        <select id="song" onChange={(e: Event) => setValue(e)}>
+          <option>Choose a song...</option>
+          <option value="One">One</option>
+          <option value="Zoo Station">Zoo Station</option>
+          <option value="With or Without You">With or Without You</option>
+          <option value="Where The Streets Have No Name">Where The Streets Have No Name</option>
+        </select>
+      </div>
     </div>
   </div>
 }
