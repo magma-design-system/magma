@@ -276,7 +276,7 @@ const FormIntegrationTemplate = (args: MdsInputInterface) => {
         }>Check value</mds-button>
       </form>
       <mds-text variant="code">
-        Input value taken from form element: <span class="inline-flex input-value rounded text-tone-neutral-04 bg-tone-neutral-08 px-200 py-50">Empty</span>
+        Input value taken from form element: <span class="inline-flex input-value rounded text-tone-neutral-01 bg-tone-neutral-08 px-200 py-50">Empty</span>
       </mds-text>
     </div>
   )
