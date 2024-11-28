@@ -50,11 +50,20 @@
   transition-timing-function: theme('transitionTimingFunction.out-expo');
 }
 
+.actions-wrapper--mobile {
+  position: relative;
+}
+
+.actions-wrapper--mobile .actions {
+  position: static;
+  transform: translateX(0);
+}
+
 :host(:hover) .actions {
   transform: translateX(0);
 }
 
-:host([overlay-actions]:not([overlay-actions="false"])) .actions {
+:host([overlay-actions]:not([overlay-actions="false"])) .actions-wrapper:not(.actions-wrapper--mobile) .actions {
   transform: translateX(100%);
 }
 

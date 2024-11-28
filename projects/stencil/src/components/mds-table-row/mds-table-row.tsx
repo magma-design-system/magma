@@ -1,4 +1,7 @@
 import { Component, Host, h, Listen, Prop, Element } from '@stencil/core'
+import { isMobileDevice } from '@common/device'
+import clsx from 'clsx'
+
 /**
  * @slot default - Put `mds-table-cell` element/s.
  */
@@ -31,7 +34,7 @@ export class MdsTableRow {
       <Host role="row">
         <slot/>
         { this.actions
-          && <div class="actions-wrapper" role="cell">
+          && <div class={clsx('actions-wrapper', isMobileDevice() && 'actions-wrapper--mobile')} role="cell">
             <div class="actions">
               <slot name="action"></slot>
             </div>
