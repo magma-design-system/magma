@@ -1,5 +1,6 @@
 import { h } from '@stencil/core'
 import { iconsDictionary, mggIconsDictionary, svgIconsDictionary } from '@dictionary/icon'
+import { useState } from 'react'
 
 const urlIcon = `${location.origin}/svg/mi/baseline/email.svg`
 const base64IconEncoded = 'data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIGhlaWdodD0iMjQiIHZpZXdCb3g9IjAgLTk2MCA5NjAgOTYwIiB3aWR0aD0iMjQiPjxwYXRoIGQ9Im0yMzMtODAgNjUtMjgxTDgwLTU1MGwyODgtMjUgMTEyLTI2NSAxMTIgMjY1IDI4OCAyNS0yMTggMTg5IDY1IDI4MS0yNDctMTQ5TDIzMy04MFoiLz48L3N2Zz4='
@@ -66,3 +67,37 @@ StorageTest.args = {
   name: 'mdi/alien',
   class: 'fill-label-green-05',
 }
+
+const ListIconsTemplate = () => {
+  const [filteredIcons, setFilteredIcons] = useState<string[]>(mggIconsDictionary)
+
+  return <div class="flex flex-col gap-y-400">
+    <div class="flex flex-col gap-y-600">
+      <mds-text>
+        La seguente è una lista delle icone presenti nel pacchetto `@maggioli-design-system/svg-icons`, facente riferimento alle icone di Maggioli
+      </mds-text>
+      <mds-text>
+        Oltre a questo set, `@maggioli-design-system/icons` fa uso anche delle librerie di `Material Icons` e `Material Design Icons`, la cui lista può essere consultata sui relativi siti
+      </mds-text>
+    </div>
+    <div class="flex flex-col gap-y-600">
+      <mds-input name="filter" placeholder='Cerca icona ...' onInput={event => {
+        const _filter = (event.target as HTMLMdsInputElement).value ?? ''
+
+        if (!_filter) {
+          setFilteredIcons([...mggIconsDictionary])
+          return
+        }
+
+        setFilteredIcons(mggIconsDictionary.filter(item => item.includes(_filter)))
+      }} />
+      <div class="grid grid-cols-5 gap-400">
+        {filteredIcons.map(icon => <div key={icon} class="flex flex-col justify-center items-center">
+          <mds-icon class="w-1200 fill-brand-maggioli-05" name={icon} />
+          <mds-text>{icon}</mds-text>
+        </div>)}
+      </div>
+    </div>
+  </div>
+}
+export const ListIcons = ListIconsTemplate.bind({})
