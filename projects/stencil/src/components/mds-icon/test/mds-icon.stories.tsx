@@ -74,10 +74,10 @@ const ListIconsTemplate = () => {
   return <div class="flex flex-col gap-y-400">
     <div class="flex flex-col gap-y-600">
       <mds-text>
-        La seguente è una lista delle icone presenti nel pacchetto `@maggioli-design-system/svg-icons`, facente riferimento alle icone di Maggioli
+        La seguente è una lista delle icone presenti nel pacchetto <strong>@maggioli-design-system/svg-icons</strong>, facente riferimento alle icone di Maggioli
       </mds-text>
       <mds-text>
-        Oltre a questo set, `@maggioli-design-system/icons` fa uso anche delle librerie di `Material Icons` e `Material Design Icons`, la cui lista può essere consultata sui relativi siti
+        Oltre a questo set, <strong>@maggioli-design-system/icons</strong> fa uso anche delle librerie di <a href="https://fonts.google.com/icons">Material Icons</a> e <a href="https://pictogrammers.com/library/mdi/">Material Design Icons</a>, la cui lista può essere consultata sui relativi siti.
       </mds-text>
     </div>
     <div class="flex flex-col gap-y-600">
