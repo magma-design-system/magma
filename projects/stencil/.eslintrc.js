@@ -1,5 +1,5 @@
 module.exports = {
-  extends: ['plugin:@typescript-eslint/recommended', 'plugin:storybook/recommended', 'plugin:@stencil-community/eslint-plugin'],
+  extends: ['plugin:@typescript-eslint/recommended', 'plugin:storybook/recommended'],
   ignorePatterns: ['**/*.config.js', '**/*.stories.js', './.build', './dist', './src/componnts.d.ts', './template'],
   overrides: [{
     files: ['./**/*.tsx', './**/*.ts', './*.config.ts'],

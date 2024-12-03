@@ -163,7 +163,9 @@ export class MdsButton {
           this.redirectBlank()
           return
         }
-        window.location.href = this.href ?? '' // TypeScript 5.0.2 bug: if (this.href) not checked
+        if (typeof window !== 'undefined') {
+          window.location.href = this.href ?? '' // TypeScript 5.0.2 bug: if (this.href) not checked
+        }
       })
     } else if (this.internals.form) {
       if (this.type === 'submit') {

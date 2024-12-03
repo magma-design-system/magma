@@ -109,6 +109,7 @@ export class MdsInputUpload {
   }
 
   private readonly updateCSSCustomProps = (): void => {
+    if (typeof window === 'undefined') return
     const elementStyles = window.getComputedStyle(this.host)
     this.cssMinCols = Number(elementStyles.getPropertyValue('--mds-input-upload-min-cols'))
   }

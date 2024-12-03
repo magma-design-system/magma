@@ -38,6 +38,7 @@ export class MdsKpiItem {
   @Prop() readonly icon?: string
 
   private setObserver = (): void => {
+    if (typeof window === 'undefined') return
     this.observer = new window.IntersectionObserver(([entry]) => {
       this.isIntersecting = entry.isIntersecting
     }, {

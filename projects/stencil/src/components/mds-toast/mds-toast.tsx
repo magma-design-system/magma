@@ -55,11 +55,13 @@ export class MdsToast {
   @Event({ eventName: 'mdsToastClose' }) closedEvent: EventEmitter<void>
 
   private updateCSSCustomProps (): void {
+    if (typeof window === 'undefined') return
     const elementStyles = window.getComputedStyle(this.hostElement)
     this.cssDismissAnimationDuration = cssDurationToMilliseconds(elementStyles.getPropertyValue('--mds-tab-duration'))
   }
 
   private reloadTimeListeners = (visible: boolean): void => {
+    if (typeof window === 'undefined') return
     if (!this.duration) {
       return
     }

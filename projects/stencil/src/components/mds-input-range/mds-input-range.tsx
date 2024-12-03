@@ -85,11 +85,14 @@ export class MdsInputRange {
     this.calculateProgress()
   }
 
+  componentWillLoad (): void {
+    this.calculateProgress()
+  }
+
   componentDidLoad (): void {
     this.label = this.element.textContent ?? ''
     this.inputElement = this.element.shadowRoot?.querySelector('.field') as HTMLInputElement
     this.value = parseInt(this.inputElement.value)
-    this.calculateProgress()
   }
 
   render () {

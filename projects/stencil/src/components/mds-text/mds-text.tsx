@@ -75,6 +75,7 @@ export class MdsText {
   }
 
   private updateCSSCustomProps = (): void => {
+    if (typeof window === 'undefined') return
     const elementStyles = window.getComputedStyle(this.host)
     this.cssTextAnimationSpeed = Number(elementStyles.getPropertyValue('--mds-text-animation-speed'))
     const placeholderChar = elementStyles.getPropertyValue('--mds-text-animation-placeholder-char')

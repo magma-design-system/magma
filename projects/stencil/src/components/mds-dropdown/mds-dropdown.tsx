@@ -403,6 +403,7 @@ export class MdsDropdown {
   }
 
   private updateCSSCustomProps = (): void => {
+    if (typeof window === 'undefined') return
     const elementStyles = window.getComputedStyle(this.host)
     this.cssBackdropDuration = elementStyles.getPropertyValue('--mds-dropdown-backdrop-duration')
     this.cssBackdropZIndex = elementStyles.getPropertyValue('--mds-dropdown-backdrop-z-index')
