@@ -1,0 +1,38 @@
+.actions-view {
+  align-items: center;
+  display: flex;
+  inset: 0;
+  justify-content: end;
+  pointer-events: none;
+  position: absolute;
+}
+
+.actions {
+  align-items: center;
+  background-color: var(--mds-table-cell-background);
+  display: inline-flex;
+  gap: var(--mds-table-row-actions-gap);
+  inset: 0;
+  margin-right: 100%;
+  padding-right: 0;
+  pointer-events: auto;
+  position: sticky;
+  right: 0;
+  transform: translateX(100%);
+  transition-duration: theme('transitionDuration.500');
+  transition-property: transform, background-color, padding-right;
+  transition-timing-function: theme('transitionTimingFunction.out-expo');
+}
+
+:host(:hover) .actions {
+  transform: translateX(100%);
+}
+
+:host([overlay-actions]:not([overlay-actions="false"])) .actions {
+  padding-right: var(--mds-table-cell-padding);
+  transform: translateX(100%);
+}
+
+:host([overlay-actions]:not([overlay-actions="false"]):hover) .actions {
+  transform: translateX(0);
+}

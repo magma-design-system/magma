@@ -1,7 +1,8 @@
 @tailwind utilities;
 
 @container style(--magma-pref-animation: reduce) {
-  :host {
+  :host,
+  .actions {
     transition-duration: 0s;
   }
 }
@@ -9,7 +10,8 @@
 @container style(--magma-pref-animation: system) {
 
   @media (prefers-reduced-motion) {
-    :host {
+    :host,
+    .actions {
       transition-duration: 0s;
     }
   }

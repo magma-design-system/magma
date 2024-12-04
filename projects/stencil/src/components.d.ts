@@ -1555,6 +1555,7 @@ export namespace Components {
     interface MdsTableFooter {
     }
     interface MdsTableHeader {
+        "updateLang": () => Promise<void>;
     }
     interface MdsTableHeaderCell {
         "direction": SortDirectionType;
