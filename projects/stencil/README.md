@@ -2,256 +2,74 @@
 
 # Maggioli Design System Web-Component
 
-## To generate a new web-component:
+Questa libreria fornisce una lista di componenti basati sullo standard web-component agnostici rispetto ai framework Javascript
+
+Fa uso della libreria [@maggioli-design-system/styles](https://www.npmjs.com/package/@maggioli-design-system/styles) per gli sitli dei componenti
+
+## Installation
 
 ```
-nx run stencil:generate mds-component-name
+npm i '@maggioli-design-system/magma'
 ```
 
-## To build a web-component:
+## Define Components
 
-```
-nx run stencil:build --skip-nx-cache
-```
+```js
+// insert in bootstrap file of client part of your application
 
-## To generate an independent `package.json`, needed to publish the new web-component
+import { defineCustomElements } from "@maggioli-design-system/magma/loader";
 
-```
-nx run stencil:publish.isolate.component --component=mds-component-name
+defineCustomElements();
 ```
 
-## To publish the new web-component
+Alternatively, if you wanted to take advantage of ES Modules, you could include the components using an import statement.
 
-### Build Stencil first
-
-```
-npx nx run stencil:build
-```
-
-### Isolate component
-
-```
-npx nx run stencil:isolate-component --skip-nx-cache
-```
-
-And follow script instructions
-
-### Build and publish isolated component
-
-```
-cd .build/component-name
-npm run build
-npm publish --access public
+```html
+<html>
+  <head>
+    <script type="module">
+      import { defineCustomElements } from '@maggioli-design-system/magma/loader/index.es2017.mjs';
+      defineCustomElements();
+    </script>
+  </head>
+  <body>
+    <mds-text>Hello world</mds-text>
+  </body>
+</html>
 ```
 
----
+## Style
+Import style used by components
 
-## Tests
+```css
+/* global.css */
 
-All tests paths are from this project `design-system/projects/stencil/` path.
+// color
+@import "@maggioli-design-system/styles/dist/css/colors-rgb.css";
 
-### Regression tests
-
-To run regression tests you'll need to have Docker installed on your local machine, this will ensure to run the same Chrome render between local machines with different operative systems.
-
-#### Create references
-
-First, if you don't have a reference images `.loki/reference` path, you need to run:
-
-```
-nx run stencil:test.regression.reference
-```
-
-Then you should see images inside `.loki/reference`, these images will be used to check differences after your changes.
-
-You should do it AFTER a `git pull` and BEFORE starting to work:
-
-```
-git pull
-nx run stencil:test.regression.reference
+// font
+@import '@fontsource/karla/400.css';
+@import '@fontsource/karla/700.css';
+@import '@fontsource/merriweather/400.css';
+@import '@fontsource/merriweather/700.css';
+@import '@fontsource/roboto-mono/400.css';
+@import '@fontsource/roboto/500.css';
+@import '@fontsource/roboto/700.css';
+@import '@fontsource/roboto/900.css';
 ```
 
-#### Make changes to the code and then run regression tests
+For more details see the [library](https://www.npmjs.com/package/@maggioli-design-system/styles)
 
-When you have the reference images and you have worked
 
-```
-nx run stencil:test.regression.review
-```
+## Icon
+Set the path where the `mds-icon` component will get the svg icons
 
-##### Clean to remove all image references
-
-If for some reason you need to clean loki image cache:
-
-```
-nx run stencil:test.regression.clean
+```js
+window.sessionStorage.setItem('mdsIconSvgPath', 'assets/img/svg/');
 ```
 
----
-
-## Semi-automatic versioning of the component package.json files
-
-We've added a list of terminal commands to ease the updating processo for all component.
-Updates the component and all components on which it is dependent.
+If you are using React set this inside `UseEffet` otherwise window is not defined
 
 
-### Updating package version
-
-```
-nx run stencil:update -- --version={major | minor | patch} {component}
-```
-
-Assuming we have a `mds-foo` to default version `1.0.0` and a `mds-bar` which have a `mds-foo` as dependencie and version `2.2.3`, if you run:
-
-```
-nx run stencil:update -- --version=major mds-foo
-```
-
-Will become:
-
-```json
-{
-  "name": "@maggioli-design-system/mds-foo",
-  "version": "2.0.0"
-}
-```
-
-```json
-{
-  "name": "@maggioli-design-system/mds-bar",
-  "version": "3.0.0",
-  "dependencies": {
-    "mds-foo": "2.0.0"
-  }
-}
-```
-
-
-Assuming we have a `mds-foo` to default version `1.0.0`, if you run:
-
-```
-nx run stencil:update -- --version=minor mds-foo
-```
-
-Will become:
-
-```json
-{
-  "name": "@maggioli-design-system/mds-foo",
-  "version": "1.1.0"
-}
-```
-
-Assuming we have a `mds-foo` to default version `1.0.0`, if you run:
-
-```
-nx run stencil:update.version patch mds-foo
-```
-
-Will become:
-
-```json
-{
-  "name": "@maggioli-design-system/mds-foo",
-  "version": "1.0.1"
-}
-```
-
-### Update component dependencies
-
-To synchronize all version components dependencies launch
-```
-nx run stencil:update
-```
-
-Assuming we have a `mds-foo` to default version `1.0.0`, with two dependencies to be updated to `mds-dep-1@1.3.1` and `mds-dep-2@1.1.2`, if you run:
-
-```
-nx run stencil:update
-```
-
-Old dependencies:
-
-```json
-{
-  "name": "@maggioli-design-system/mds-foo",
-  "version": "1.0.0",
-  "dependencies": {
-    "@maggioli-design-system/mds-dep-1": "1.2.0",
-    "@maggioli-design-system/mds-dep-2": "1.0.0"
-  }
-}
-```
-
-Will be updated to:
-
-```json
-{
-  "name": "@maggioli-design-system/mds-foo",
-  "version": "1.0.1",
-  "dependencies": {
-    "@maggioli-design-system/mds-dep-1": "1.3.1",
-    "@maggioli-design-system/mds-dep-2": "1.1.2"
-  }
-}
-```
-
-### Update component dependencies and core dependencies
-
-The option `--common` will also update dependencies found also in `stencil/package.json` file for each component that have the updated dependencies.
-
-```
-nx run stencil:update --common
-```
-
-Note: if you want choose type of version you need to add `--` with nx run command:
-```
-nx run stencil:update -- --common --version=minor
-```
-
-This means if you have a component `mds-foo/package.json`:
-
-```json
-{
-  "name": "@maggioli-design-system/mds-foo",
-  "version": "1.0.0",
-  "dependencies": {
-    "@maggioli-design-system/mds-dep-1": "1.1.2",
-    "@maggioli-design-system/styles": "11.0.0",
-    "@stencil/core": "4.2.0"
-  }
-}
-```
-
-And this is `stencil/package.json`:
-
-```json
-{
-  "name": "stencil",
-  "version": "1.0.0",
-  "dependencies": {
-    "clsx": "2.0.0",
-    "@maggioli-design-system/styles": "13.0.0",
-    "@stencil/core": "4.6.0",
-    "fitty": "2.3.7",
-    "idb-keyval": "6.2.1"
-  }
-}
-```
-
-The command will update the dependecies both found on `stencil` and `mds-foo` only:
-
-```json
-{
-  "name": "@maggioli-design-system/mds-foo",
-  "version": "1.0.1",
-  "dependencies": {
-    "@maggioli-design-system/mds-dep-1": "1.1.2",
-    "@maggioli-design-system/styles": "13.0.0",
-    "@stencil/core": "4.6.0"
-  }
-}
-```
-
-So you can update `@stencil/core` based on `stencil/package.json` without add unwanted dependencies to `mds-foo/package.json`.
+For greater interoperability between components and frameworks, see the specific libraries for [Angular](https://www.npmjs.com/package/@maggioli-design-system/magma-angular) and [React](https://www.npmjs.com/package/@maggioli-design-system/magma-react)
 
