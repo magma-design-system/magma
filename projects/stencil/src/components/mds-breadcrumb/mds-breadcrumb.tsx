@@ -1,8 +1,13 @@
-import { Component, Element, Event, EventEmitter, Listen, Host, h, Prop } from '@stencil/core'
+import { Component, Element, Event, EventEmitter, Listen, Host, h, Prop, State, Method } from '@stencil/core'
 import miBaselineArrowBack from '@icon/mi/baseline/arrow-back.svg'
 import { MdsBreadcrumbEventDetail } from './meta/event-detail'
 import { MdsBreadcrumbItemEventDetail } from '@component/mds-breadcrumb-item/meta/event-detail'
 import { KeyboardManager } from '@common/keyboard-manager'
+import { Locale } from '@common/locale'
+import localeEl from './meta/locale.el.json'
+import localeEn from './meta/locale.en.json'
+import localeEs from './meta/locale.es.json'
+import localeIt from './meta/locale.it.json'
 
 /**
  * @slot default - Add `mds-breadcrumb-item` element/s.
@@ -17,6 +22,17 @@ export class MdsBreadcrumb {
 
   @Element() private element: HTMLMdsBreadcrumbElement
   private kb = new KeyboardManager()
+  private t:Locale = new Locale({
+    el: localeEl,
+    en: localeEn,
+    es: localeEs,
+    it: localeIt,
+  })
+  @State() language: string
+  @Method()
+  async updateLang (): Promise<void> {
+    this.language = this.t.lang(this.element)
+  }
 
   /**
    * Choose to display or not the back arrow button
@@ -69,6 +85,10 @@ export class MdsBreadcrumb {
     this.kb.detachClickBehavior()
   }
 
+  componentWillRender (): void {
+    this.t.lang(this.element)
+  }
+
   disconnectedCallback (): void {
     this.kb.detachClickBehavior()
   }
@@ -114,7 +134,7 @@ export class MdsBreadcrumb {
     return (
       <Host>
         { this.back &&
-          <mds-button class="back" icon={miBaselineArrowBack} onClick={ this.togglePrevious }></mds-button>
+          <mds-button title={this.t.get('back')} class="back" icon={miBaselineArrowBack} onClick={ this.togglePrevious }></mds-button>
         }
         <slot/>
       </Host>

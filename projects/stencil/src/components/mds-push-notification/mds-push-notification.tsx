@@ -145,7 +145,7 @@ export class MdsPushNotification {
         { (this.icon ?? this.preview === 'avatar') && <mds-avatar class="avatar" icon={this.icon} initials={this.initials} part="avatar" src={this.src} tone={this.tone} variant={this.variant}></mds-avatar> }
         { this.src && this.preview !== 'avatar' && <mds-img class="picture" part="picture" src={this.src}></mds-img> }
         <div class="content" part="content">
-          <header>
+          <div class="header">
             <div class="infos">
               { this.hasBadge && <div><slot name="badge"></slot></div> }
               { this.subject && <mds-text class="subject" typography="h6" variant="title" truncate="all">{ this.subject }</mds-text> }
@@ -156,7 +156,7 @@ export class MdsPushNotification {
                 : dayjs(this.datetime).format(this.dateFormat)
               }
             </mds-text> }
-          </header>
+          </div>
           <mds-text class="message" truncate="all" typography="caption" variant="info">{ this.message }</mds-text>
           { this.hasActions && <div class="actions" part="actions">
             <slot name="actions"></slot>

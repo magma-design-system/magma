@@ -1,5 +1,5 @@
 import miBaselineCancel from '@icon/mi/baseline/cancel.svg'
-import { Component, Element, Event, EventEmitter, Host, h, Prop, Watch } from '@stencil/core'
+import { Component, Element, Event, EventEmitter, Host, h, Prop, Watch, State, Method } from '@stencil/core'
 import { ExtensionSuffixType } from '@type/file-types'
 import { MdsFilePreviewEventDetail } from './meta/event-detail'
 import { TypographyTruncateType } from '@type/text'
@@ -7,6 +7,15 @@ import { clsx } from 'clsx'
 import { filesize } from 'filesize'
 import { ThemeFullVariantAvatarType, ThemeFullVariantType } from '@type/variant'
 import { getFormatsVariant, getSuffix, getExtensionInfos } from '@common/file'
+import { Locale } from '@common/locale'
+import localeEl from './meta/locale.el.json'
+import localeEn from './meta/locale.en.json'
+import localeEs from './meta/locale.es.json'
+import localeIt from './meta/locale.it.json'
+import fileDescriptionLocaleEl from '@meta/file-format/locale.el.json'
+import fileDescriptionLocaleEn from '@meta/file-format/locale.en.json'
+import fileDescriptionLocaleEs from '@meta/file-format/locale.es.json'
+import fileDescriptionLocaleIt from '@meta/file-format/locale.it.json'
 
 @Component({
   tag: 'mds-file-preview',
@@ -16,6 +25,19 @@ import { getFormatsVariant, getSuffix, getExtensionInfos } from '@common/file'
 export class MdsFilePreview {
 
   @Element() host: HTMLMdsFilePreviewElement
+  private t:Locale = new Locale({
+    el: { ...localeEl, ...fileDescriptionLocaleEl },
+    en: { ...localeEn, ...fileDescriptionLocaleEn },
+    es: { ...localeEs, ...fileDescriptionLocaleEs },
+    it: { ...localeIt, ...fileDescriptionLocaleIt },
+  })
+  @State() language: string
+  @Method()
+  async updateLang (): Promise<void> {
+    this.language = this.t.lang(this.host)
+  }
+
+  // ciaone
 
   /**
    * Enables the cross icon to perform cancel/delete action on element
@@ -87,7 +109,7 @@ export class MdsFilePreview {
    */
   @Event({ eventName: 'mdsFileDelete' }) deletedEvent: EventEmitter<MdsFilePreviewEventDetail>
 
-  private getDefaultDescription = (): string =>
+  private getDefaultKeyDescription = (): string =>
     getExtensionInfos(this.filename, this.suffix).description
 
   private onClickDeletedEvent = (): void => {
@@ -99,6 +121,7 @@ export class MdsFilePreview {
   }
 
   componentWillLoad (): void {
+    this.t.lang(this.host)
     this.format = getExtensionInfos(this.filename, this.suffix).format
   }
 
@@ -125,7 +148,7 @@ export class MdsFilePreview {
   render () {
     return (
       <Host>
-        { this.deletable && <mds-button class="action-delete" icon={miBaselineCancel} variant="light" onClick={this.onClickDeletedEvent}></mds-button> }
+        { this.deletable && <mds-button title={this.t.get('remove')} class="action-delete" icon={miBaselineCancel} variant="light" onClick={this.onClickDeletedEvent}></mds-button> }
         <div class="card" part="card" onClick={this.onClickDownloadEvent}>
           { this.src && !this.message && getExtensionInfos(this.filename, this.suffix).preview
             ? <mds-img src={this.src} class="preview preview--image" aspect-ratio="1/1"></mds-img>
@@ -141,8 +164,8 @@ export class MdsFilePreview {
           <footer class={clsx('infos', this.filesize && 'infos--has-file-size')}>
             { this.filesize && this.filesize === Number(this.filesize).toString() && <mds-text class="file-size" truncate="word" typography="caption" variant="info">{ filesize(Number(this.filesize), { standard: 'jedec' }) }</mds-text> }
             { this.filesize && this.filesize !== Number(this.filesize).toString() && <mds-text class="file-size" truncate="word" typography="caption" variant="info">{ this.filesize }</mds-text> }
-            { getSuffix(this.filename, this.suffix) && <mds-badge variant={getFormatsVariant(this.filename, this.suffix).variant as ThemeFullVariantType} tone="weak" class="suffix" title={ this.description ?? this.getDefaultDescription() }>{ getSuffix(this.filename, this.suffix) }</mds-badge> }
-            { !this.filesize && <mds-text class="description" truncate="word" typography="caption" variant="info" title={ this.description ?? this.getDefaultDescription() }>{ this.description ?? this.getDefaultDescription() }</mds-text> }
+            { getSuffix(this.filename, this.suffix) && <mds-badge variant={getFormatsVariant(this.filename, this.suffix).variant as ThemeFullVariantType} tone="weak" class="suffix" title={ this.description ?? this.t.get(this.getDefaultKeyDescription()) }>{ getSuffix(this.filename, this.suffix) }</mds-badge> }
+            { !this.filesize && <mds-text class="description" truncate="word" typography="caption" variant="info" title={ this.description ?? this.t.get(this.getDefaultKeyDescription()) }>{ this.description ?? this.t.get(this.getDefaultKeyDescription()) }</mds-text> }
           </footer>
         </div>
       </Host>

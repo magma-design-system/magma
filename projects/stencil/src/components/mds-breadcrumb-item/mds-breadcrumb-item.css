@@ -37,6 +37,7 @@
   display: flex;
   flex-shrink: 0;
   transition-property: box-shadow, outline, outline-offset;
+  user-select: none;
 
 }
 

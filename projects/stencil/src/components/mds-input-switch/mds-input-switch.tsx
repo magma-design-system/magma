@@ -23,6 +23,7 @@ export class MdsInputSwitch {
   @AttachInternals() internals: ElementInternals
   @Element() host: HTMLMdsInputSwitchElement
   private km = new KeyboardManager()
+  private label: string
 
   @State() dirty = false
   /**
@@ -108,7 +109,7 @@ export class MdsInputSwitch {
     e.stopPropagation()
     const input = this.host.shadowRoot?.getElementById('field') as HTMLInputElement
     this.checked = input.checked
-    
+
     if (this.type === 'radio') {
       this.uncheckSiblings()
     }
@@ -136,6 +137,7 @@ export class MdsInputSwitch {
   }
 
   componentDidLoad (): void {
+    this.label = this.host.textContent ?? ''
     this.internals.setFormValue(this.checked ? this.value ?? null : null)
     this.checkFocusElement()
   }
@@ -143,7 +145,7 @@ export class MdsInputSwitch {
   render () {
     const { iconChecked, iconUnchecked, iconIndeterminate } = inputSwitchIconVariant[this.type]
     const iconCheckedUser = this.icon !== '' ? this.icon : iconChecked
-    
+
     return (
       <Host onClick={this.handleDirty}>
         <input
@@ -160,7 +162,7 @@ export class MdsInputSwitch {
         />
         { this.type === 'switch'
           ?
-          <label htmlFor="field" class={clsx('switch-container', this.dirty !== false && 'dirty')} tabindex="0" role="switch">
+          <label htmlFor="field" class={clsx('switch-container', this.dirty !== false && 'dirty')} tabindex="0" aria-label={this.label}>
             <div class="switch">
               <div class="switch-toggle">
                 { this.explicit && <mds-icon class="icon-explicit" name={this.checked ? miBaselineChecked : miBaselineRemove}></mds-icon> }
@@ -168,7 +170,7 @@ export class MdsInputSwitch {
             </div>
           </label>
           :
-          <label htmlFor="field" class="label-icon" tabindex="0" role="switch">
+          <label htmlFor="field" class="label-icon" aria-hidden="true">
             <mds-text class="icon-typography-unchecked" tag="div" typography={this.typography} variant={this.variant}>
               <mds-icon class="icon-unchecked" name={iconUnchecked}/>
             </mds-text>

@@ -4,19 +4,19 @@ export default {
   title: 'Form / Range',
   argTypes: {
     min: {
-      type: { name: 'number', required: true },
+      type: { name: 'number' },
       description: 'The lowest value in the range of permitted values',
     },
     max: {
-      type: { name: 'number', required: true },
+      type: { name: 'number' },
       description: 'The greatest value in the range of permitted values',
     },
     step: {
-      type: { name: 'number', required: true },
+      type: { name: 'number' },
       description: 'The step attribute is a number that specifies the granularity that the value must adhere to, or the special value any, which is described below',
     },
     value: {
-      type: { name: 'number', required: true },
+      type: { name: 'number' },
       description: 'The value attribute contains a number which contains a representation of the selected number',
     },
   },

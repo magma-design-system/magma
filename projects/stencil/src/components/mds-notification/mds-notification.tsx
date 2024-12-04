@@ -106,8 +106,8 @@ export class MdsNotification {
 
   render () {
     return (
-      <Host>
-        <mds-text typography="caption" class="dot">
+      <Host aria-labelledby={this.target} aria-label={this.value ?? '0'}>
+        <mds-text typography="caption" class="dot" aria-hidden="true">
           { this.value ? this.clean(this.value) : '' }
         </mds-text>
       </Host>

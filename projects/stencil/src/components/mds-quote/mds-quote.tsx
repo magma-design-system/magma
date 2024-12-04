@@ -1,5 +1,6 @@
 import { Component, Host, h, Prop } from '@stencil/core'
 import { TypographyTitleType } from '@type/typography'
+import { TypographyHeadingTagType } from '@type/text'
 
 /**
  * @slot default - Add `text string`, `HTML elements` or `components` to this slot.
@@ -18,12 +19,17 @@ export class MdsQuote {
    */
   @Prop() readonly typography: TypographyTitleType = 'h3'
 
+  /**
+   * Specifies the tag the element
+   */
+  @Prop() readonly tag: TypographyHeadingTagType = 'h3'
+
   render () {
     return (
       <Host>
-        <mds-text class="open-quote" typography={ this.typography }><span><i>❝&nbsp;</i></span></mds-text>
+        <mds-text class="open-quote" tag="div" typography={ this.typography }><span><i>❝&nbsp;</i></span></mds-text>
         <div class="quote">
-          <mds-text typography={ this.typography }>
+          <mds-text tag={this.tag} typography={ this.typography }>
             <i><slot/><span>&nbsp;❞</span></i>
           </mds-text>
           <slot name="author"/>

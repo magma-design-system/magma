@@ -19,18 +19,18 @@
 
 :host( [variant="dark"][tone="weak"] ) {
 
-  --mds-button-background: theme('colors.tone-neutral-05');
-  --mds-button-color: theme('colors.tone-neutral');
+  --mds-button-background: theme('colors.tone-neutral-08');
+  --mds-button-color: theme('colors.tone-neutral-02');
 }
 
 :host( [variant="dark"][tone="weak"]:hover ) {
 
-  --mds-button-background: theme('colors.tone-neutral-06');
+  --mds-button-background: theme('colors.tone-neutral-07');
 }
 
 :host( [variant="dark"][tone="weak"][active] ) {
 
-  --mds-button-background: theme('colors.tone-neutral-04');
+  --mds-button-background: theme('colors.tone-neutral-06');
 }
 
 :host( [variant="dark"][tone="ghost"] ) {

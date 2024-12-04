@@ -60,9 +60,10 @@ export class MdsVideoWall {
     return (
       <Host>
         { this.noise !== 'none' &&
-          <div class={clsx('noise', `noise--${this.noise}`)}/>
+          <div aria-hidden="true" class={clsx('noise', `noise--${this.noise}`)}/>
         }
         <video
+          aria-hidden="true"
           autoplay={ this.autoplay }
           loop={ this.loop }
           muted={ this.muted }

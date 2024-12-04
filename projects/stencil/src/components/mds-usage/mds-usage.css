@@ -8,7 +8,7 @@
 :host {
 
   --mds-usage-background: theme('colors.status-info-10');
-  --mds-usage-badge-background: theme('colors.status-info-06');
+  --mds-usage-badge-background: theme('colors.status-info-05');
   --mds-usage-badge-color: theme('colors.status-info-10');
   --mds-usage-color: theme('colors.tone-neutral-03');
 
@@ -63,7 +63,7 @@
 :host([variant="do"]) {
 
   --mds-usage-background: theme('colors.status-success-10');
-  --mds-usage-badge-background: theme('colors.status-success-06');
+  --mds-usage-badge-background: theme('colors.status-success-05');
   --mds-usage-badge-color: theme('colors.status-success-10');
   --mds-usage-color: theme('colors.status-success-02');
 }
@@ -71,7 +71,7 @@
 :host([variant="dont"]) {
 
   --mds-usage-background: theme('colors.status-error-10');
-  --mds-usage-badge-background: theme('colors.status-error-06');
+  --mds-usage-badge-background: theme('colors.status-error-05');
   --mds-usage-badge-color: theme('colors.status-error-10');
   --mds-usage-color: theme('colors.status-error-02');
 }

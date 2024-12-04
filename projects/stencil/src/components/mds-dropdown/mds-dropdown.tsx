@@ -1,4 +1,4 @@
-import { hashValue, setAttributeIfEmpty } from '@common/aria'
+import { setAttributeIfEmpty } from '@common/aria'
 import { KeyboardManager } from '@common/keyboard-manager'
 import { cssDurationToMilliseconds } from '@common/unit'
 import { Middleware, MiddlewareData, arrow, autoPlacement, autoUpdate, computePosition, flip, offset, shift } from '@floating-ui/dom'
@@ -403,6 +403,7 @@ export class MdsDropdown {
   }
 
   private updateCSSCustomProps = (): void => {
+    if (typeof window === 'undefined') return
     const elementStyles = window.getComputedStyle(this.host)
     this.cssBackdropDuration = elementStyles.getPropertyValue('--mds-dropdown-backdrop-duration')
     this.cssBackdropZIndex = elementStyles.getPropertyValue('--mds-dropdown-backdrop-z-index')
@@ -417,9 +418,8 @@ export class MdsDropdown {
   }
 
   private setAriaAttributes (): void {
-    const hostId = setAttributeIfEmpty(this.host, 'id', hashValue(this.target))
     setAttributeIfEmpty(this.caller, 'aria-haspopup', 'true')
-    setAttributeIfEmpty(this.caller, 'aria-controls', hostId)
+    setAttributeIfEmpty(this.caller, 'aria-controls', this.target)
     setAttributeIfEmpty(this.host, 'role', 'menu')
     setAttributeIfEmpty(this.host, 'aria-labelledby', this.target)
   }

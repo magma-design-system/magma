@@ -13,7 +13,7 @@ export class MdsKpi {
 
   render () {
     return (
-      <Host>
+      <Host role="list">
         <slot></slot>
       </Host>
     )

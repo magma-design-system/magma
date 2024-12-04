@@ -11,9 +11,9 @@ describe('mds-push-notification', () => {
       <mds-push-notification date-format="timeago" deletable="" message="Nessun messaggio disponibile" preview="image" tone="weak">
         <mock:shadow-root>
           <div class="content" part="content">
-            <header>
+            <div class="header">
               <div class="infos"></div>
-            </header>
+            </div >
             <mds-text class="message" truncate="all" typography="caption" variant="info">
               Nessun messaggio disponibile
             </mds-text>

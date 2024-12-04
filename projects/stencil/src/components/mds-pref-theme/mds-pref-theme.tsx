@@ -46,6 +46,7 @@ export class MdsPrefTheme {
   private overlayShow: boolean = false
 
   private updateCSSCustomProps = (): void => {
+    if (typeof window === 'undefined') return
     const elementStyles = window.getComputedStyle(this.element)
     this.cssOverlayShowDuration = elementStyles.getPropertyValue('--mds-pref-theme-overlay-show-duration') ?? '300'
     this.cssOverlayFadeoutDuration = elementStyles.getPropertyValue('--mds-pref-theme-overlay-fadeout-duration') ?? '200'

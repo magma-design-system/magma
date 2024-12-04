@@ -2,12 +2,12 @@
 
 :host([variant="aqua"]) {
 
-  --mds-badge-color: theme('colors.label-aqua-10');
+  --mds-badge-color: theme('colors.tone-neutral');
 }
 
 :host([variant="aqua"][tone="strong"]) {
 
-  --mds-badge-background: theme('colors.label-aqua-05');
+  --mds-badge-background: theme('colors.label-aqua-04');
 }
 
 :host([variant="aqua"][tone="weak"]) {
@@ -44,7 +44,7 @@
 
     --mds-badge-color: theme('colors.label-aqua-02');
   }
-  
+
   :host([variant="aqua"][tone="ghost"]) {
 
     --mds-badge-background: transparent;
@@ -60,7 +60,7 @@
     :host([variant="aqua"]),
     :host([variant="aqua"][tone="strong"]) {
 
-      --mds-badge-background: theme('colors.label-aqua-04');
+      --mds-badge-background: theme('colors.label-aqua-03');
     }
 
     :host([variant="aqua"][tone="weak"]) {
@@ -74,7 +74,7 @@
     }
 
     :host([variant="aqua"][tone="ghost"]) {
-      
+
       --mds-badge-background: transparent;
       --mds-badge-color: theme('colors.label-aqua-03');
       --mds-badge-border-color: theme('colors.label-aqua-03');

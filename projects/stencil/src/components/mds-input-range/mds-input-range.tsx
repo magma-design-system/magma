@@ -12,6 +12,7 @@ import { AttachInternals, Component, Element, Event, EventEmitter, Host, h, Prop
 export class MdsInputRange {
 
   @State() private progress: number
+  private label: string
   private inputElement: HTMLInputElement
 
   @Element() private element: HTMLMdsInputRangeElement
@@ -85,6 +86,7 @@ export class MdsInputRange {
   }
 
   componentDidLoad (): void {
+    this.label = this.element.textContent ?? ''
     this.inputElement = this.element.shadowRoot?.querySelector('.field') as HTMLInputElement
     this.value = parseInt(this.inputElement.value)
     this.calculateProgress()
@@ -106,6 +108,7 @@ export class MdsInputRange {
           </div>
           <input
             class="field"
+            aria-label={this.label}
             max={this.max}
             min={this.min}
             onInput={this.onInput}

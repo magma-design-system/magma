@@ -1,0 +1,16 @@
+@tailwind utilities;
+
+@container style(--magma-pref-animation: reduce) {
+  video {
+    display: none;
+  }
+}
+
+@container style(--magma-pref-animation: system) {
+
+  @media (prefers-reduced-motion) {
+    video {
+      display: none;
+    }
+  }
+}

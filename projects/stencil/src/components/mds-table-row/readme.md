@@ -9,9 +9,10 @@ This is a web-component from Maggioli Design System [Magma](https://magma.maggio
 
 ## Properties
 
-| Property      | Attribute     | Description | Type      | Default     |
-| ------------- | ------------- | ----------- | --------- | ----------- |
-| `interactive` | `interactive` |             | `boolean` | `undefined` |
+| Property         | Attribute         | Description | Type      | Default     |
+| ---------------- | ----------------- | ----------- | --------- | ----------- |
+| `interactive`    | `interactive`     |             | `boolean` | `undefined` |
+| `overlayActions` | `overlay-actions` |             | `boolean` | `undefined` |
 
 
 ## Slots

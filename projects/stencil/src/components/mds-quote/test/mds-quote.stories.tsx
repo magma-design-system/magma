@@ -1,9 +1,15 @@
 import { typographyReadDictionary } from '@dictionary/typography'
+import { typographyHeadingTagDictionary } from '@dictionary/text'
 import { h } from '@stencil/core'
 
 export default {
   title: 'UI / Quote',
   argTypes: {
+    tag: {
+      description: 'Specifies the font typography of the element',
+      options: typographyHeadingTagDictionary,
+      control: { type: 'select' },
+    },
     typography: {
       description: 'Specifies the font typography of the element',
       options: typographyReadDictionary,
@@ -23,7 +29,12 @@ const Template = args =>
   </mds-quote>
 
 export const Default = Template.bind({})
+Default.args = {
+  tag: 'h5',
+  typography: 'h5',
+}
 export const Typography = Template.bind({})
 Typography.args = {
+  tag: 'h5',
   typography: 'h5',
 }

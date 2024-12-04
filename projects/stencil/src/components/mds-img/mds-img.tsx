@@ -198,10 +198,10 @@ export class MdsImg {
           <Host aria-label={this.alt} role="img" onClick={() => { this.imageConsumptionLoaded = true }}>
             <div class="contrast-area-50"></div>
             { !this.imageConsumptionLoaded
-              ? <div class="alt-text-container alt-text-container--default-aspect-ratio">
+              ? <div aria-hidden="true" class="alt-text-container alt-text-container--default-aspect-ratio">
                 <mds-icon class="icon" name={miBaselinePanorama}></mds-icon>
-                <mds-text class="alt-text" aria-hidden="true" typography="h6"><i>{ this.alt }</i></mds-text>
-                <mds-button class="click-to-load" aria-hidden="true" variant="light" tone="ghost">{ this.t.get('clickToLoad') }</mds-button>
+                <mds-text class="alt-text" typography="h6"><i>{ this.alt }</i></mds-text>
+                <mds-button aria-hidden="true" role="none" class="click-to-load" tabIndex={-1} variant="light" tone="ghost">{ this.t.get('clickToLoad') }</mds-button>
               </div>
               : <img
                 alt={this.alt}

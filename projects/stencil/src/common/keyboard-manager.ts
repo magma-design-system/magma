@@ -36,14 +36,14 @@ export class KeyboardManager {
 
   attachEscapeBehavior = (callback: () => void): void => {
     this.escapeCallback = callback
-    if (window !== undefined) {
+    if (typeof window !== 'undefined') {
       window.addEventListener('keydown', this.handleEscapeBehaviorDispatchEvent.bind(this))
     }
   }
 
   detachEscapeBehavior = (): void => {
     this.escapeCallback = () => { return }
-    if (window !== undefined) {
+    if (typeof window !== 'undefined') {
       window.removeEventListener('keydown', this.handleEscapeBehaviorDispatchEvent.bind(this))
     }
   }

@@ -4,6 +4,8 @@
   "canUploadAll": "Puedes subir cualquier formato de archivo",
   "cancel": "Cancelar",
   "clickOrDrag": ["Haz clic y selecciona o arrastra el archivo para subirlo aquí", "Haz clic y selecciona o arrastra los archivos para subirlos aquí"],
+  "currentFilesNoMax": ["Has subido un archivo", "Has subido {{ currentFiles }} archivos"],
+  "currentFilesWithMax": ["Has subido {{ currentFiles }} archivos de un total de {{ maxFiles }}", "Has subido un archivo de un total de {{ maxFiles }}"],
   "dragEnter": "Suelta los archivos para subirlos aquí",
   "fileTooLarge": "El archivo es demasiado grande",
   "formatNotAlowed": "Formato de archivo no válido",
@@ -12,5 +14,5 @@
   "maxFilesUpload": ["Puedes subir un solo archivo", "Puedes subir un máximo de {{ maxFiles }} archivos"],
   "selectFile": "Seleccionar archivo",
   "sortByDate": "Ordenar por fecha de añadido",
-  "sortByState": "Ordenar por estado de subida"
+  "sortByStatus": "Ordenar por estado de subida"
 }

@@ -21,23 +21,23 @@
   @apply
     duration-200
     ease-in-out;
-  
+
   background-color: var(--mds-price-table-list-separator-color);
   transition-property: background-color;
 }
 
 
-header {
+.header {
   display: grid;
 }
 
-main {
+.main {
   @apply gap-300;
 
   display: grid;
 }
 
-footer {
+.footer {
   @apply gap-400;
 
   display: grid;

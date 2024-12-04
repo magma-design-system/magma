@@ -144,6 +144,7 @@ export class MdsHeader {
   }
 
   private handleScroll = (): void => {
+    if (typeof window === 'undefined') return
     if (this.autoHide) {
       this.handleVisibility()
     }

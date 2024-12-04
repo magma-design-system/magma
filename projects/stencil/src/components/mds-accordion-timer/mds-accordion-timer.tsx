@@ -58,7 +58,9 @@ export class MdsAccordionTimer {
   }
 
   private readonly clearIntervals = (): void => {
-    window.clearInterval(this.timeChecker)
+    if (typeof window !== 'undefined') {
+      window.clearInterval(this.timeChecker)
+    }
     this.timeChecker = 0
   }
 
@@ -77,16 +79,18 @@ export class MdsAccordionTimer {
   }
 
   private readonly addTimeListener = (): void => {
-    this.timeChecker = window.setInterval(() => {
-      const progress = this.progress()
-      if (this.selectedItem !== undefined) {
-        this.selectedItem.progress = progress
-      }
-      if (progress === 1) {
-        this.selectedItem.progress = 0
-        this.startNext()
-      }
-    }, 100)
+    if (typeof window !== 'undefined') {
+      this.timeChecker = window.setInterval(() => {
+        const progress = this.progress()
+        if (this.selectedItem !== undefined) {
+          this.selectedItem.progress = progress
+        }
+        if (progress === 1) {
+          this.selectedItem.progress = 0
+          this.startNext()
+        }
+      }, 100)
+    }
   }
 
   private readonly beginningTime = (): number => {

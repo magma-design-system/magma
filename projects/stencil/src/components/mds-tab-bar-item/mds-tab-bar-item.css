@@ -9,10 +9,10 @@
 
 :host {
 
-  --mds-tab-bar-item-background: transparent;
-  --mds-tab-bar-item-background-selected: var(--mds-tab-bar-item-background);
-  --mds-tab-bar-item-color: theme('colors.tone-neutral-06');
-  --mds-tab-bar-item-color-selected: theme('colors.variant-primary-04');
+  --mds-tab-bar-item-background: theme('colors.tone-neutral-10');
+  --mds-tab-bar-item-background-selected: transparent;
+  --mds-tab-bar-item-color: theme('colors.tone-neutral-04');
+  --mds-tab-bar-item-color-selected: theme('colors.variant-primary-03');
 
   @apply
     duration-200
