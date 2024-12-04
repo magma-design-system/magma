@@ -45,7 +45,7 @@ stencil-angular-install-test:
   extends: .base-install-test
   needs: [stencil-angular-publish]
   variables:
-    BUILD_DIR: projects/stencil/angular/dist/magma-angular/
+    BUILD_DIR: projects/stencil/angular/dist/magma-angular
     COMPONENT: magma-angular
     PACK_NAME: maggioli-design-system-magma-angular-*.tgz
   rules:
