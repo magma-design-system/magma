@@ -10,6 +10,10 @@ import localeEl from './meta/locale.el.json'
 import localeEn from './meta/locale.en.json'
 import localeEs from './meta/locale.es.json'
 import localeIt from './meta/locale.it.json'
+import fileDescriptionLocaleEl from '@meta/file-format/locale.el.json'
+import fileDescriptionLocaleEn from '@meta/file-format/locale.en.json'
+import fileDescriptionLocaleEs from '@meta/file-format/locale.es.json'
+import fileDescriptionLocaleIt from '@meta/file-format/locale.it.json'
 
 // https://stackoverflow.com/questions/1106377/detect-when-a-browser-receives-a-file-download
 
@@ -22,10 +26,10 @@ export class MdsFile {
 
   @Element() private host: HTMLMdsFileElement
   private t:Locale = new Locale({
-    el: localeEl,
-    en: localeEn,
-    es: localeEs,
-    it: localeIt,
+    el: { ...localeEl, ...fileDescriptionLocaleEl },
+    en: { ...localeEn, ...fileDescriptionLocaleEn },
+    es: { ...localeEs, ...fileDescriptionLocaleEs },
+    it: { ...localeIt, ...fileDescriptionLocaleIt },
   })
   @State() language: string
   @Method()
@@ -87,6 +91,7 @@ export class MdsFile {
 
   componentWillLoad (): void {
     this.checkWasDownloaded()
+    this.t.lang(this.host)
     this.format = getExtensionInfos(this.filename, this.suffix).format
   }
 
@@ -115,7 +120,7 @@ export class MdsFile {
           </div>
           <div class="detail">
             { getSuffix(this.filename, this.suffix) && <mds-badge variant={getFormatsVariant(this.filename, this.suffix).variant as ThemeFullVariantType} tone="weak" class="suffix">{ getSuffix(this.filename, this.suffix) }</mds-badge> }
-            <mds-text truncate="word" typography="caption" class="description" title={ this.description ?? this.getDefaultDescription() }>{ this.description ?? this.getDefaultDescription() }</mds-text>
+            <mds-text truncate="word" typography="caption" class="description" title={ this.description ?? this.t.get(this.getDefaultDescription()) }>{ this.description ?? this.t.get(this.getDefaultDescription()) }</mds-text>
           </div>
         </div>
         { this.wasDownloaded && this.showDownloadedIcon &&

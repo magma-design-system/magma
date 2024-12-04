@@ -1,6 +1,7 @@
 import { Component, Element, Host, h, Prop, Watch, State } from '@stencil/core'
 import { DirectionType } from './meta/types'
 import { ThemeVariantType } from '@type/variant'
+import { removeAttributesIf, ifAttribute } from '@common/aria'
 
 @Component({
   tag: 'mds-progress',
@@ -37,10 +38,16 @@ export class MdsProgress {
     this.setProgress(this.progress)
   }
 
+  componentDidLoad (): void {
+    removeAttributesIf(this.element, 'aria-hidden', 'true', ['aria-valuemax', 'aria-valuemin', 'aria-valuenow', 'aria-valuetext', 'role'])
+  }
+
   private setProgress (progress: number): void {
     if (this.steps) {
       this.currentStep = this.stepsList[Math.round(progress * (this.stepsList.length - 1))]
-      this.element.setAttribute('aria-valuetext', this.currentStep)
+      if (!ifAttribute(this.element, 'aria-hidden')) {
+        this.element.setAttribute('aria-valuetext', this.currentStep)
+      }
     }
   }
 
@@ -56,7 +63,7 @@ export class MdsProgress {
 
   render () {
     return (
-      <Host aria-valuemax="100" aria-valuemin="0" aria-valuenow={ Math.round(this.progress * 100) } role="progressbar">
+      <Host aria-valuemax="100" aria-valuemin="0" aria-valuenow={ !ifAttribute(this.element, 'aria-hidden') && Math.round(this.progress * 100) } role="progressbar">
         <div class="contrast-area"></div>
         <div class="progress" style={
           this.direction === 'horizontal'

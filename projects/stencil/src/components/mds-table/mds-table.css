@@ -27,8 +27,8 @@
   --mds-table-cell-padding: theme('spacing.400');
   --mds-table-color-hover: theme('colors.tone-neutral-02');
   --mds-table-color: theme('colors.tone-neutral-03');
-  --mds-table-row-color-hover: var(--mds-table-body-background-hover);
-  --mds-table-row-color: var(--mds-table-color);
+  --mds-table-actions-gap: theme('spacing.200');
+
 
   @apply
     duration-200
@@ -44,7 +44,8 @@
 }
 
 .table {
-  border-collapse: collapse;
+  border-collapse: separate;
+  border-spacing: 0;
   width: 100%;
 }
 

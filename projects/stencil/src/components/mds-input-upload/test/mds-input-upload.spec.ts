@@ -1,6 +1,7 @@
 import { SpecPage, newSpecPage } from '@stencil/core/testing'
 import { MdsInputUpload } from '../mds-input-upload'
 import { mockFile, mockFileList } from '@test/file'
+import { Status } from '../meta/types'
 
 describe('mds-input-upload', () => {
   let page: SpecPage
@@ -69,13 +70,6 @@ describe('mds-input-upload', () => {
     }
   })
 
-  it('should show sort', async () => {
-    expect(component?.sort).toBeUndefined()
-    const sortTab = component?.shadowRoot?.querySelector('.action-sort')
-    expect(sortTab).toBeDefined()
-    expect(sortTab?.firstChild).toHaveAttribute('selected')
-  })
-
   it('should not show sort', async () => {
     await page.setContent('<mds-input-upload sort="status"></mds-input-upload>')
     await page.waitForChanges()
@@ -86,6 +80,70 @@ describe('mds-input-upload', () => {
       const sortTab = component?.shadowRoot?.querySelector('.action-sort')
       expect(sortTab).toBeNull()
     }
+  })
+
+  it('should not show sort when more than one file is added and sort hasnt been set', async () => {
+    const inputElement = component?.shadowRoot?.querySelector('input') as HTMLInputElement
+    if (!inputElement) throw new Error('input not found')
+
+    // status is on ERROR for not trigger browser File type related code
+    page.rootInstance.files = [ {
+      key: '1',
+      file:  mockFile('file-a', 2 * 1024 * 1024),
+      status: Status.ERROR,
+      id: 0,
+    }, {
+      key: '2',
+      file: mockFile('file-b', 6 * 1024 * 1024),
+      status: Status.ERROR,
+      id: 1,
+    }]
+    await page.waitForChanges()
+    component = page.body.querySelector('mds-input-upload')
+
+    const sortTab = component?.shadowRoot?.querySelector('.action-sort')
+    expect(sortTab).toBeNull()
+  })
+
+  it('should not show sort when one file is added and sort has been set', async () => {
+    await page.setContent('<mds-input-upload sort="date"></mds-input-upload>')
+    const inputElement = component?.shadowRoot?.querySelector('input') as HTMLInputElement
+    if (!inputElement) throw new Error('input not found')
+
+    // status is on ERROR for not trigger browser File type related code
+    page.rootInstance.files = [ {
+      key: '1',
+      file:  mockFile('file-a', 2 * 1024 * 1024),
+      status: Status.ERROR,
+      id: 0,
+    }]
+    await page.waitForChanges()
+
+    component = page.body.querySelector('mds-input-upload')
+    const sortTab = component?.shadowRoot?.querySelector('.action-sort')
+    expect(sortTab).toBeNull()
+  })
+
+  it('should show sort when more than one file is added and sort has been set', async () => {
+    await page.setContent('<mds-input-upload sort="date"></mds-input-upload>')
+
+    // status is on ERROR for not trigger browser File type related code
+    page.rootInstance.files = [ {
+      key: '1',
+      file: mockFile('file-a', 2 * 1024 * 1024),
+      status: Status.ERROR,
+      id: 0,
+    }, {
+      key: '2',
+      file: mockFile('file-b', 6 * 1024 * 1024),
+      status: Status.ERROR,
+      id: 1,
+    }]
+    await page.waitForChanges()
+    component = page.body.querySelector('mds-input-upload')
+    const sortTab = component?.shadowRoot?.querySelector('.action-sort')
+    expect(sortTab).toBeTruthy()
+    expect(sortTab?.firstChild).toHaveAttribute('selected')
   })
 
   it('should set files', async () => {

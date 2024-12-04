@@ -51,6 +51,7 @@ export class MdsModal {
   @Event({ bubbles: true, composed: true, eventName: 'mdsModalHide' }) hideEvent: EventEmitter<void>
 
   private updateCSSCustomProps = (): void => {
+    if (typeof window === 'undefined') return
     const elementStyles = window.getComputedStyle(this.host)
     this.cssTransitionDuration = elementStyles.getPropertyValue('--mds-modal-transition-duration') ?? '500'
   }
@@ -86,7 +87,7 @@ export class MdsModal {
     this.window = this.host.querySelector('[slot="window"]') !== null
 
     if (this.window) {
-      this.host.querySelector('[slot="window"]')?.setAttribute('role', 'modal')
+      this.host.querySelector('[slot="window"]')?.setAttribute('role', 'dialog')
     }
   }
 

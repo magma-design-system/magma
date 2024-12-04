@@ -104,7 +104,7 @@ export class MdsAccordionTimerItem {
     return (
       <Host onMouseEnter={this.mouseEnter} onMouseLeave={this.mouseLeave}>
         <div class="row">
-          <mds-progress class="progress-bar" progress={Number(this.progress?.toFixed(2))} direction="vertical" part="progress"/>
+          <mds-progress aria-hidden="true" class="progress-bar" progress={Number(this.progress?.toFixed(2))} direction="vertical" part="progress"/>
           <div class="accordion">
             <button aria-controls="content" aria-expanded={this.selected ? 'true' : 'false'} class="action focus-bounce" id="action" onClick={this.toggle} role="button" tabindex="0">
               <mds-text typography={this.typography} part="label">{this.description}</mds-text>
@@ -113,7 +113,7 @@ export class MdsAccordionTimerItem {
               </mds-text>
             </button>
             <div class="content" id="content">
-              <div class="content-expander" part="content" role="region">
+              <div aria-label={this.description} class="content-expander" part="content" role="region">
                 <slot />
               </div>
             </div>

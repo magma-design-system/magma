@@ -1,5 +1,4 @@
 {
-  "skipLibCheck": true,
   "compilerOptions": {
     "allowSyntheticDefaultImports": true,
     "allowUnreachableCode": false,
@@ -35,6 +34,9 @@
       "@fixture/*": [
         "src/fixtures/*"
       ],
+      "@meta/*": [
+        "src/meta/*"
+      ],
       "@icon/*": [
         "assets/svg/*"
       ],
@@ -49,8 +51,12 @@
       ],
       "@type/*": [
         "src/type/*"
+      ],
+      "react": [
+        "node_modules/react"
       ]
     },
+    "skipLibCheck": true,
     "strictNullChecks": true
   },
   "include": [

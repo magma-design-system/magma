@@ -1,5 +1,6 @@
 import { Component, Element, Host, Prop, h, Watch } from '@stencil/core'
-import { TypographyTagType, TextAnimationType } from './meta/types'
+import { TextAnimationType } from './meta/types'
+import { TypographyTagType } from '@type/text'
 import { TypographyTruncateType } from '@type/text'
 import { TypographyType, TypographyVariants } from '@type/typography'
 import { typographyDefaultsVariant } from './meta/variants'
@@ -74,6 +75,7 @@ export class MdsText {
   }
 
   private updateCSSCustomProps = (): void => {
+    if (typeof window === 'undefined') return
     const elementStyles = window.getComputedStyle(this.host)
     this.cssTextAnimationSpeed = Number(elementStyles.getPropertyValue('--mds-text-animation-speed'))
     const placeholderChar = elementStyles.getPropertyValue('--mds-text-animation-placeholder-char')

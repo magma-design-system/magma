@@ -101,11 +101,11 @@ export class MdsBanner {
 
   render () {
     return (
-      <Host>
+      <Host aria-label={ this.headline }>
         <div class="body">
-          { this.icon && <mds-icon class="icon" name={this.icon}/> }
+          { this.icon && <mds-icon aria-hidden="true" class="icon" name={this.icon}/> }
           <div class="content">
-            { this.headline && <mds-text class="headline" typography="h6">{ this.headline }</mds-text> }
+            { this.headline && <mds-text aria-hidden="true" class="headline" typography="h6">{ this.headline }</mds-text> }
             <div class="text">
               <slot/>
             </div>

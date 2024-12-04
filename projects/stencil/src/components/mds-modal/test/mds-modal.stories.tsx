@@ -8,13 +8,13 @@ export default {
   argTypes: {
     opened: {
       description: 'Specifies if the modal is opened or not',
-      type: { name: 'boolean', required: false },
+      type: { name: 'boolean' },
     },
     position: {
       control: { type: 'select' },
       description: 'Specifies the animation position of the modal window',
       options: modalPositionDictionary,
-      type: { name: 'string', required: false },
+      type: { name: 'string' },
     },
   },
 }
@@ -59,7 +59,7 @@ const CustomTemplate = args =>
     </mds-banner>
   </mds-modal>
 
-const AriaTemplate = () => {
+const InteractiveTemplate = () => {
   // Click not working with reader
   const [opened, setOpened] = useState(false)
   window.addEventListener('mdsModalClose', () => { setOpened(false) })
@@ -82,4 +82,8 @@ Default.args = {
   position: 'right',
 }
 export const CustomWindow = CustomTemplate.bind({})
-export const ARIATest = AriaTemplate.bind({})
+export const Interactive = InteractiveTemplate.bind({})
+export const ARIATest = CustomTemplate.bind({})
+ARIATest.args = {
+  opened: true,
+}

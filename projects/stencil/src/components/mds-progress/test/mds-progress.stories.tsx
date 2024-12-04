@@ -26,7 +26,7 @@ export default {
 }
 
 const Template = args =>
-  <mds-progress {...args}/>
+  <mds-progress aria-label="Progress bar title" {...args}/>
 
 export const Default = Template.bind({})
 Default.args = {

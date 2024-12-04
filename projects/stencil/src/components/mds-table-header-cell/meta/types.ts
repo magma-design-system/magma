@@ -1,5 +1,5 @@
 export type SortDirectionType =
-  | 'asc'
-  | 'desc'
+  | 'ascending'
+  | 'descending'
   | 'none'
 

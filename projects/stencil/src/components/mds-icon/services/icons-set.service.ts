@@ -1,18 +1,15 @@
 import { get, set, del } from 'idb-keyval'
 import { IconNameResolverFn, MdsIconSet } from '../meta/icon-set'
 class IconsSetController {
-  private _svgPath: string
-  private _iconsSets: Map<string, MdsIconSet> = new Map()
-
   public readonly _svgPathKey = 'mdsIconSvgPath'
 
+  private readonly _iconsSets: Map<string, MdsIconSet> = new Map()
   private readonly _svgPathUpdate = 'mdsIconSvgPathUpdate'
-
   private readonly cacheExp = 60 * 60 * 1000 * 24
+  private readonly listeners: (() => void)[] = []
 
+  private _svgPath: string
   private memoryCache = {}
-
-  private listeners: (() => void)[] = []
 
   constructor () {
     this.setUpListener()
@@ -42,9 +39,31 @@ class IconsSetController {
     return { set: this._iconsSets.get(iconName.split('/')[0]) }
   }
 
+  /**
+   * recognize svg path pattern and set host and svgPath variable
+   *
+   * input path: https://www.abc.com/svg/path
+   * svgPath =  https://www.abc.com/svg/path
+   *
+   * input path: localhost:9000/svg/path
+   * svgPath = localhost:9000/svg/path
+   *
+   * input path: /svg/path
+   * svgPath = {window.location.host}/svg/path
+   *
+   * input path: svg/path
+   * throw error
+   *
+   */
   setSvgPath (svgPath: string): void {
-    this._svgPath = svgPath
-    window.dispatchEvent(new Event(this._svgPathUpdate))
+    const reg = /^(((https?:\/\/)?[.\w]+(:\d+)?)|\/)([\w/-]+)*/
+    const match = reg.exec(svgPath)
+    if (!match) {throw Error(`Svg path not recognize ${svgPath}, ensure is a absolute path starting with '/' or a url`)}
+
+    if (typeof window !== 'undefined') {
+      this._svgPath = match[1] ? match[0] : window.location.origin.concat(match[0])
+      window.dispatchEvent(new Event(this._svgPathUpdate))
+    }
   }
 
   getSvgPath (): string {
@@ -92,13 +111,20 @@ class IconsSetController {
   }
 
   private setUpListener (): void {
-    window.addEventListener(this._svgPathUpdate, () => {
-      for (const listener of this.listeners) listener()
-    })
+    if (typeof window !== 'undefined') {
+      window.addEventListener(this._svgPathUpdate, () => {
+        for (const listener of this.listeners) listener()
+      })
+    }
   }
 
-  async fetchSvg (src: string): Promise<string> {
+  async fetchSvg (name: string): Promise<string> {
     try {
+      if (!this._svgPath && typeof window === 'undefined') { throw Error('Cant find svgPath, ensure you set it')}
+      if (!this._svgPath) {
+        this.setSvgPath(window.sessionStorage.getItem(IconsSetService._svgPathKey) ?? '')
+      }
+      const src = this._svgPath && !name.startsWith('http') ? this._svgPath.concat(name, '.svg') : name
       const lsCache = await this.isCacheAvailable(src)
 
       if (this.memoryCache[src] || lsCache) {

@@ -14,7 +14,7 @@ This is a web-component from Maggioli Design System [Magma](https://magma.maggio
 | `description` | `description` | Specifies the description under the value in the KPI element | `string \| undefined` | `undefined` |
 | `icon`        | `icon`        | Specifies the icon on the top of the KPI element             | `string \| undefined` | `undefined` |
 | `label`       | `label`       | Specifies the number to be displayed in the KPI element      | `string \| undefined` | `undefined` |
-| `threshold`   | `threshold`   | Specifies the description under the value in the KPI element | `number \| undefined` | `0`         |
+| `threshold`   | `threshold`   | Specifies the page threshold which starts the text animation | `number \| undefined` | `0`         |
 
 
 ## Shadow Parts

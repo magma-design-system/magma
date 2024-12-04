@@ -259,26 +259,28 @@ TestLanguageChange.args = {
   placeholder: 'Status input field',
 }
 
-const FormIntegrationTemplate = (args: MdsInputInterface) => (
-  <div class="grid gap-600">
-    <form class="grid gap-400" id="mds-icon-fi" name="mds-icon-fi">
-      <mds-input {...args}></mds-input>
-      <mds-button class="w-min" type="button" role="submit" onClick={() => {
-        const form = document.querySelector('form') as HTMLFormElement
-        const span = document.querySelector('span.input-value') as HTMLSpanElement
-        span.innerText = form['mds-input'].value !== '' ? form['mds-input'].value : 'Empty'
-        form.addEventListener('submit', (e: SubmitEvent) => {
+const FormIntegrationTemplate = (args: MdsInputInterface) => {
+  return (
+    <div class="grid gap-600">
+      <form class="grid gap-400" id="mds-icon-fi" name="mds-icon-fi" onSubmit={(e: SubmitEvent) => {
+        e.preventDefault()
+        console.info('Submitted', e)
+      }}>
+        <mds-input {...args}></mds-input>
+        <mds-button class="w-min" type="submit" onClick={(e: MouseEvent) => {
           e.preventDefault()
-          console.info('Submitted', e)
-        })
-      }
-      }>Check value</mds-button>
-    </form>
-    <mds-text variant="code">
-      Input value taken from form element: <span class="input-value rounded text-tone-neutral-04 bg-tone-neutral-08 px-2">Empty</span>
-    </mds-text>
-  </div>
-)
+          const form = document.querySelector('form') as HTMLFormElement
+          const span = document.querySelector('span.input-value') as HTMLSpanElement
+          span.innerText = form['mds-input'].value !== '' ? form['mds-input'].value : 'Empty'
+        }
+        }>Check value</mds-button>
+      </form>
+      <mds-text variant="code">
+        Input value taken from form element: <span class="inline-flex input-value rounded text-tone-neutral-01 bg-tone-neutral-08 px-200 py-50">Empty</span>
+      </mds-text>
+    </div>
+  )
+}
 
 export const FormIntegration = FormIntegrationTemplate.bind({})
 FormIntegration.args = {

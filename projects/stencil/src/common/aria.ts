@@ -20,6 +20,24 @@ const setAttributeIfEmpty = (element: HTMLElement, attribute: string, value: str
   return value
 }
 
+const removeAttributesIf = (element: HTMLElement, attribute: string, valueCheck: string = 'true', cleanAttributes: string | string[]): boolean => {
+  if (ifAttribute(element, attribute, valueCheck)) {
+    const attributesList = Array.isArray(cleanAttributes) ? cleanAttributes : [cleanAttributes]
+    attributesList.forEach(attributeToRemove => {
+      element.removeAttribute(attributeToRemove)
+    })
+    return true
+  }
+  return false
+}
+
+const ifAttribute = (element: HTMLElement, attribute: string, valueCheck: string = 'true'): boolean => {
+  if (element.hasAttribute(attribute) && element.getAttribute(attribute) === valueCheck) {
+    return true
+  }
+  return false
+}
+
 const hashValue = (value: string): string => `${value}-${hash(value)}`
 
 const hashRandomValue = (value?: string): string => {
@@ -32,8 +50,10 @@ const hashRandomValue = (value?: string): string => {
 }
 
 export {
-  unslugName,
-  setAttributeIfEmpty,
   hashRandomValue,
   hashValue,
+  removeAttributesIf,
+  setAttributeIfEmpty,
+  ifAttribute,
+  unslugName,
 }

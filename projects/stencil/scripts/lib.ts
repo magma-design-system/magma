@@ -107,6 +107,7 @@ const createTempProjectInstance = async (componentName: string): Promise<void> =
 
   await cp(join(PROJECT_DIR, 'src/dictionary'), join(ISOLATED_PATH, 'src/dictionary'), { recursive: true }).catch(error => { throw Error(chalk.red(error)) })
   await cp(join(PROJECT_DIR, 'src/fixtures'), join(ISOLATED_PATH, 'src/fixtures'), { recursive: true }).catch(error => { throw Error(chalk.red(error)) })
+  await cp(join(PROJECT_DIR, 'src/meta'), join(ISOLATED_PATH, 'src/meta'), { recursive: true }).catch(error => { throw Error(chalk.red(error)) })
   await cp(join(PROJECT_DIR, 'src/tailwind'), join(ISOLATED_PATH, 'src/tailwind'), { recursive: true }).catch(error => { throw Error(chalk.red(error)) })
   await cp(join(PROJECT_DIR, 'src/type'), join(ISOLATED_PATH, 'src/type'), { recursive: true }).catch(error => { throw Error(chalk.red(error)) })
   await cp(join(PROJECT_DIR, 'src/common'), join(ISOLATED_PATH, 'src/common'), { recursive: true }).catch(error => { throw Error(chalk.red(error)) })

@@ -7,11 +7,11 @@
 
 ## Properties
 
-| Property    | Attribute   | Description                                                               | Type                        | Default     |
-| ----------- | ----------- | ------------------------------------------------------------------------- | --------------------------- | ----------- |
-| `direction` | `direction` |                                                                           | `"asc" \| "desc" \| "none"` | `'none'`    |
-| `label`     | `label`     | Sets a label for the cell                                                 | `string \| undefined`       | `undefined` |
-| `sortable`  | `sortable`  | Tells the component to make the cell able to sort the table columns items | `boolean \| undefined`      | `undefined` |
+| Property    | Attribute   | Description                                                               | Type                                    | Default     |
+| ----------- | ----------- | ------------------------------------------------------------------------- | --------------------------------------- | ----------- |
+| `direction` | `direction` |                                                                           | `"ascending" \| "descending" \| "none"` | `'none'`    |
+| `label`     | `label`     | Sets a label for the cell                                                 | `string \| undefined`                   | `undefined` |
+| `sortable`  | `sortable`  | Tells the component to make the cell able to sort the table columns items | `boolean \| undefined`                  | `undefined` |
 
 
 ## Shadow Parts

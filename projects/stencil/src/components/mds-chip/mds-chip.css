@@ -1,3 +1,6 @@
+@import '~@maggioli-design-system/styles/dist/css/animations.css';
+@import '../../tailwind/components.css';
+@tailwind components;
 @tailwind utilities;
 
 /**
@@ -79,6 +82,16 @@
 
 .label:last-child {
   @apply pr-200;
+}
+
+.label--interactive {
+  @apply focus-bounce;
+}
+
+.label--interactive:focus-visible {
+  @apply
+    focus-bounce--focused
+    z-10;
 }
 
 .icon-area {

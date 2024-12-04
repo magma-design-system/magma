@@ -141,7 +141,7 @@ export class MdsFilter {
 
   render () {
     return (
-      <Host aria-label={ this.label }>
+      <Host aria-label={ this.label } role="menubar">
         { this.label && <mds-text class="label" typography="label">{ this.label }</mds-text> }
         <div class={clsx('items', this.active && 'active')}>
           <slot/>
