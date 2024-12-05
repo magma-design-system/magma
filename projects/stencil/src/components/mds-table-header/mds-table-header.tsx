@@ -39,7 +39,7 @@ export class MdsTableHeader {
     return (
       <Host role="row">
         <slot/>
-        { this.hasActions && <mds-table-header-cell label={this.t.get('actions')}></mds-table-header-cell> }
+        { this.hasActions && <mds-table-header-cell class="actions" label={this.t.get('actions')}></mds-table-header-cell> }
       </Host>
     )
   }

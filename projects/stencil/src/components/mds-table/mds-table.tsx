@@ -15,6 +15,7 @@ export class MdsTable {
   @Element() host: HTMLMdsTableElement
   private rows: NodeListOf<HTMLMdsTableRowElement>
   private resizeObserver: ResizeObserver
+  private cellsWidth: number = 0
 
   /**
    * Specifies if the table row are higlighted on mouseover event
@@ -31,26 +32,36 @@ export class MdsTable {
     this.interactiveEvent.emit(this.interactive)
   }
 
-  private handleActions = (): void => {
-    const row = this.rows[0] as HTMLMdsTableRowElement
-    const cells: NodeListOf<HTMLMdsTableCellElement> = row.querySelectorAll('mds-table-cell') as NodeListOf<HTMLMdsTableCellElement>
-    let cellsWidth = 0
+  private updateCellsSize = (): void => {
+    const cells: NodeListOf<HTMLMdsTableCellElement> = this.rows[0].querySelectorAll('mds-table-cell') as NodeListOf<HTMLMdsTableCellElement>
+    this.cellsWidth = 0
     cells.forEach((cell: HTMLMdsTableCellElement) => {
-      cellsWidth += cell.offsetWidth
+      this.cellsWidth += cell.offsetWidth
     })
-    const overlayActions = this.host.offsetWidth + this.host.scrollLeft < cellsWidth
+  }
+
+  private hasActions = (): boolean => {
+    this.updateCellsSize()
+    return this.rows[0].offsetWidth > this.cellsWidth
+  }
+
+  private handleActions = (): void => {
+    this.updateCellsSize()
+    const overlayActions = this.host.offsetWidth + this.host.scrollLeft < this.cellsWidth
     this.rows.forEach((row: HTMLMdsTableRowElement) => {
       row.overlayActions = overlayActions
     })
   }
 
   componentDidLoad (): void {
-    this.rows = this.host.querySelectorAll('mds-table-row') as NodeListOf<HTMLMdsTableRowElement>
     this.interactiveEvent.emit(this.interactive)
-    this.host.addEventListener('scroll', this.handleActions)
-    this.resizeObserver = new ResizeObserver(this.handleActions)
-    this.resizeObserver.observe(this.host)
-    this.handleActions()
+    this.rows = this.host.querySelectorAll('mds-table-row') as NodeListOf<HTMLMdsTableRowElement>
+    if (this.hasActions()) {
+      this.host.addEventListener('scroll', this.handleActions)
+      this.resizeObserver = new ResizeObserver(this.handleActions)
+      this.resizeObserver.observe(this.host)
+      this.handleActions()
+    }
   }
 
   disconnectedCallback (): void {

@@ -46,6 +46,7 @@ export class MdsTableRow {
           <mds-table-cell class="actions-cell">
             <div class="actions-sizer" style={{
               minHeight: '1px',
+              maxWidth: this.sizerWidth,
               minWidth: this.sizerWidth,
             }}></div>
             <div class="actions-view">

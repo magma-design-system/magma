@@ -32,6 +32,19 @@ This is a web-component from Maggioli Design System [Magma](https://magma.maggio
 | `--mds-table-cell-padding`          | The padding of the table cell                                    |
 
 
+## Dependencies
+
+### Used by
+
+ - [mds-table-row](../mds-table-row)
+
+### Graph
+```mermaid
+graph TD;
+  mds-table-row --> mds-table-cell
+  style mds-table-cell fill:#f9f,stroke:#333,stroke-width:4px
+```
+
 ----------------------------------------------
 
 Built with love @ [Gruppo Maggioli](https://www.maggioli.com) from [R&D Department](https://www.maggioli.com/it-it/chi-siamo/ricerca-sviluppo)
