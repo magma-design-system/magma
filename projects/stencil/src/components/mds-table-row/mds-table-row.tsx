@@ -1,6 +1,6 @@
 import { Component, Host, h, Listen, Prop, Element } from '@stencil/core'
-import { isMobileDevice } from '@common/device'
-import clsx from 'clsx'
+// import { isMobileDevice } from '@common/device'
+// import clsx from 'clsx'
 
 /**
  * @slot default - Put `mds-table-cell` element/s.
@@ -14,7 +14,9 @@ import clsx from 'clsx'
 export class MdsTableRow {
 
   @Element() host: HTMLMdsTableRowElement
-  private actions: boolean
+  private actions: HTMLDivElement
+  private hasActions: boolean
+  private sizerWidth: string
 
   @Prop({ mutable: true, reflect: true }) interactive: boolean
 
@@ -26,19 +28,35 @@ export class MdsTableRow {
   }
 
   componentWillLoad (): void {
-    this.actions = this.host.querySelector('[slot="action"]') !== null
+    this.hasActions = this.host.querySelector('[slot="action"]') !== null
+  }
+
+  componentDidLoad (): void {
+    if (this.hasActions) {
+      this.actions = this.host.shadowRoot?.querySelector('.actions') as HTMLDivElement
+      this.sizerWidth = `${this.actions.offsetWidth.toString()}px`
+    }
   }
 
   render () {
     return (
       <Host role="row">
         <slot/>
-        { this.actions
-          && <div class={clsx('actions-wrapper', isMobileDevice() && 'actions-wrapper--mobile')} role="cell">
-            <div class="actions">
-              <slot name="action"></slot>
+        { this.hasActions &&
+          <mds-table-cell class="actions-cell">
+            <div class="actions-sizer" style={{
+              minHeight: '1px',
+              maxWidth: this.sizerWidth,
+              minWidth: this.sizerWidth,
+            }}></div>
+            <div class="actions-view">
+              <div class="actions" style={{
+                marginRight: `calc(${this.sizerWidth} + var(--mds-table-cell-padding))`,
+              }}>
+                <slot name="action"></slot>
+              </div>
             </div>
-          </div>
+          </mds-table-cell>
         }
       </Host>
     )

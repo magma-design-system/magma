@@ -13,6 +13,9 @@ import { Component, Host, h, Prop, Event, EventEmitter, Watch, Element } from '@
 export class MdsTable {
 
   @Element() host: HTMLMdsTableElement
+  private rows: NodeListOf<HTMLMdsTableRowElement>
+  private resizeObserver: ResizeObserver
+  private cellsWidth: number = 0
 
   /**
    * Specifies if the table row are higlighted on mouseover event
@@ -29,23 +32,41 @@ export class MdsTable {
     this.interactiveEvent.emit(this.interactive)
   }
 
+  private updateCellsSize = (): void => {
+    const cells: NodeListOf<HTMLMdsTableCellElement> = this.rows[0].querySelectorAll('mds-table-cell') as NodeListOf<HTMLMdsTableCellElement>
+    this.cellsWidth = 0
+    cells.forEach((cell: HTMLMdsTableCellElement) => {
+      this.cellsWidth += cell.offsetWidth
+    })
+  }
+
+  private hasActions = (): boolean => {
+    this.updateCellsSize()
+    return this.rows[0].offsetWidth > this.cellsWidth
+  }
+
+  private handleActions = (): void => {
+    this.updateCellsSize()
+    const overlayActions = this.host.offsetWidth + this.host.scrollLeft < this.cellsWidth
+    this.rows.forEach((row: HTMLMdsTableRowElement) => {
+      row.overlayActions = overlayActions
+    })
+  }
+
   componentDidLoad (): void {
     this.interactiveEvent.emit(this.interactive)
-    const rowElements: NodeListOf<HTMLMdsTableRowElement> = this.host.querySelectorAll('mds-table-row') as NodeListOf<HTMLMdsTableRowElement>
-    this.host.addEventListener('scroll', (e: Event) => {
-      const target = e.target as HTMLElement
-      // console.log('here', target.scrollLeft, target.offsetWidth)
-      // console.log(target.offsetWidth - target.scrollLeft)
-      // console.log(rowElement.offsetWidth - target.offsetWidth)
-      rowElements.forEach((rowElement: HTMLMdsTableRowElement) => {
-        if (target.scrollLeft > rowElement.offsetWidth - target.offsetWidth) {
-          rowElement.overlayActions = true
-          return
-        }
-        rowElement.overlayActions = false
-      })
+    this.rows = this.host.querySelectorAll('mds-table-row') as NodeListOf<HTMLMdsTableRowElement>
+    if (this.hasActions()) {
+      this.host.addEventListener('scroll', this.handleActions)
+      this.resizeObserver = new ResizeObserver(this.handleActions)
+      this.resizeObserver.observe(this.host)
+      this.handleActions()
+    }
+  }
 
-    })
+  disconnectedCallback (): void {
+    this.host.removeEventListener('scroll', this.handleActions)
+    this.resizeObserver.disconnect()
   }
 
   render () {

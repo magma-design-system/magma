@@ -18,63 +18,6 @@
 
 }
 
-.actions-wrapper {
-  inset: 0;
-  display: flex;
-  justify-content: end;
-  pointer-events: none;
-  position: absolute;
-}
-
-.actions {
-  align-items: center;
-  background-color: var(--mds-table-cell-background);
-  border-bottom-color: transparent;
-  border-bottom-style: solid;
-  border-bottom-width: var(--mds-table-border-width);
-  border-top-color: var(--mds-table-border-color);
-  border-top-style: solid;
-  border-top-width: var(--mds-table-border-width);
-  box-sizing: border-box;
-  display: inline-flex;
-  gap: var(--mds-table-row-actions-gap);
-  height: 100%;
-  margin-top: calc(var(--mds-table-border-width) * -1);
-  padding: var(--mds-table-cell-padding);
-  pointer-events: auto;
-  position: sticky;
-  right: 0;
-  transform: translateX(100%);
-  transition-duration: theme('transitionDuration.500');
-  transition-property: transform, background-color;
-  transition-timing-function: theme('transitionTimingFunction.out-expo');
-}
-
-.actions-wrapper--mobile {
-  position: relative;
-}
-
-.actions-wrapper--mobile .actions {
-  position: static;
-  transform: translateX(0);
-}
-
-:host(:hover) .actions {
-  transform: translateX(0);
-}
-
-:host([overlay-actions]:not([overlay-actions="false"])) .actions-wrapper:not(.actions-wrapper--mobile) .actions {
-  transform: translateX(100%);
-}
-
-:host([interactive]:not([interactive="false"])) .actions {
-  --mds-table-cell-background: var(--mds-table-body-background);
-}
-
-:host([interactive]:not([interactive="false"]):hover) .actions {
-  --mds-table-cell-background: var(--mds-table-cell-background-hover);
-}
-
 :host([sorted][interactive]:not([interactive="false"])) ::slotted(mds-table-cell[sorted]) {
 
   --mds-table-cell-background: var(--mds-table-cell-background-hover);
@@ -102,4 +45,5 @@
   --mds-table-cell-background: var(--mds-table-body-background-hover);
 }
 
+@import './css/mds-table-row-actions.css';
 @import './css/mds-table-row-pref-animation.css';

@@ -260,7 +260,7 @@ export class MdsTooltip {
     this.arrowEl = this.host.shadowRoot?.querySelector('.arrow') as HTMLElement
 
     // https://stackoverflow.com/a/68964329/185921
-    const caller = this.host.parentElement?.shadowRoot?.querySelector(this.target) as HTMLElement ??
+    const caller = document.querySelector(this.target) as HTMLElement ??
     (this.host.getRootNode() as HTMLElement).querySelector(this.target) as HTMLElement
 
     if (!caller) {

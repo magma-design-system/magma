@@ -446,7 +446,7 @@ export class MdsDropdown {
     this.arrowEl = this.host.shadowRoot?.querySelector('.arrow') as HTMLElement
 
     // search caller in document or rootNode of host (if target is in shadowDOM)
-    const caller = this.host.parentElement?.shadowRoot?.querySelector(this.target) as HTMLElement ??
+    const caller = document.querySelector(this.target) as HTMLElement ??
       (this.host.getRootNode() as HTMLElement).querySelector(this.target) as HTMLElement
 
     if (!caller) {

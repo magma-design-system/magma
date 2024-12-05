@@ -12,4 +12,8 @@
   transition-property: border-color;
 }
 
+.actions {
+  text-align: right;
+}
+
 @import './css/mds-table-header-pref-animation.css';
