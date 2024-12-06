@@ -5,8 +5,11 @@ import { setAttributeIfEmpty } from '@common/aria'
 import { HorizontalActionsAnimationType } from '@type/animation'
 
 /**
- * @slot default - Add `mds-tab-item` element/s.
+ * @part contents - Selects the container of the tabbed contents elements.
+ * @part slider - Selects the slider element which is visible when attribute `animation` is set to `slide`.
+ * @part tabs - Selects the container of `mds-tab-item` list elements.
  * @slot content - Add `HTML elements` or `components`, one per mds-tab-item added.
+ * @slot default - Add `mds-tab-item` element/s.
  */
 
 @Component({
@@ -33,7 +36,7 @@ export class MdsTab {
   /**
    * Sets the animation type of the selection transition between `mds-tab-item` elements
    */
-  @Prop({ reflect: true }) readonly animation?: HorizontalActionsAnimationType = 'fade'
+  @Prop({ reflect: true }) readonly animation?: HorizontalActionsAnimationType = 'slide'
 
   /**
    * Emits when a children is changed
@@ -141,7 +144,7 @@ export class MdsTab {
         <div class="tabs" part="tabs" role="tablist">
           <slot />
           { this.animation === 'slide' &&
-            <div class="slider" style={{
+            <div class="slider" part="slider" style={{
               '--mds-tab-slider-width': `${this.sliderWidth}px`,
               '--mds-tab-slider-offset': `${this.sliderOffset}px`,
             }}></div>
