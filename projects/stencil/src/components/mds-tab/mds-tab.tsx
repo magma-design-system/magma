@@ -1,7 +1,8 @@
-import { Component, Element, Event, EventEmitter, Host, Listen, h, Prop } from '@stencil/core'
+import { Component, Element, Event, EventEmitter, Host, Listen, h, Prop, Watch, State } from '@stencil/core'
 import { MdsTabEventDetail } from './meta/event-detail'
 import { MdsTabItemEventDetail } from '@component/mds-tab-item/meta/event-detail'
 import { setAttributeIfEmpty } from '@common/aria'
+import { HorizontalActionsAnimationType } from '@type/animation'
 
 /**
  * @slot default - Add `mds-tab-item` element/s.
@@ -17,14 +18,22 @@ export class MdsTab {
 
   @Element() private element: HTMLMdsTabElement
   private currentItem: number = -1
+  private slider: HTMLDivElement | null
   private tabs: HTMLElement
   private tabItems: NodeListOf<HTMLMdsTabItemElement>
   private contentItems: NodeListOf<HTMLElement>
+  @State() sliderWidth: number
+  @State() sliderOffset: number
 
   /**
    * Shows the horizontal scrollbar to maximize accessibility
    */
   @Prop({ reflect: true }) readonly scrollbar?: boolean
+
+  /**
+   * Sets the animation type of the selection transition between `mds-tab-item` elements
+   */
+  @Prop({ reflect: true }) readonly animation?: HorizontalActionsAnimationType = 'fade'
 
   /**
    * Emits when a children is changed
@@ -54,6 +63,23 @@ export class MdsTab {
       setAttributeIfEmpty(item, 'role', 'tabpanel')
     })
     this.selectContentItem()
+    if (this.animation === 'slide') {
+      this.updateSliderPosition()
+    }
+  }
+
+  private updateSliderPosition = (): void => {
+    if (!this.slider) {
+      this.setSlider()
+    }
+    if (this.slider) {
+      this.sliderWidth = this.tabItems[this.currentItem].offsetWidth
+      this.sliderOffset = this.tabItems[this.currentItem].offsetLeft - this.tabs.offsetLeft
+    }
+  }
+
+  private setSlider = (): void => {
+    this.slider = this.element.shadowRoot?.querySelector('.slider') as HTMLDivElement
   }
 
   private scrollTabs = (key: number): void => {
@@ -85,6 +111,10 @@ export class MdsTab {
       }
     })
     this.selectContentItem()
+
+    if (this.animation === 'slide') {
+      this.updateSliderPosition()
+    }
   }
 
   @Listen('mdsTabItemFocus')
@@ -96,11 +126,26 @@ export class MdsTab {
     })
   }
 
+  @Watch('animation')
+  handleAnimation (newValue: HorizontalActionsAnimationType): void {
+    if (newValue === 'slide') {
+      this.updateSliderPosition()
+      return
+    }
+    this.slider = null
+  }
+
   render () {
     return (
       <Host>
         <div class="tabs" part="tabs" role="tablist">
           <slot />
+          { this.animation === 'slide' &&
+            <div class="slider" style={{
+              '--mds-tab-slider-width': `${this.sliderWidth}px`,
+              '--mds-tab-slider-offset': `${this.sliderOffset}px`,
+            }}></div>
+          }
         </div>
         <div class="contents" part="contents">
           <slot name="content"/>

@@ -1,0 +1,26 @@
+.tabs {
+  position: relative;
+}
+
+.slider {
+  background-color: var(--mds-tab-item-selected-background);
+  border-radius: var(--mds-tab-item-default-radius);
+  bottom: var(--mds-tab-list-padding);
+  box-shadow: var(--mds-tab-item-selected-shadow);
+  left: 0;
+  min-width: theme('size.1000');
+  pointer-events: none;
+  position: absolute;
+  top: var(--mds-tab-list-padding);
+  transform: translateX(var(--mds-tab-slider-offset));
+  transition-duration: var(--mds-tab-duration);
+  transition-property: transform, width;
+  transition-timing-function: var(--mds-tab-timing-function);
+  width: var(--mds-tab-slider-width);
+  z-index: 0;
+}
+
+::slotted( mds-tab-item ) {
+  position: relative;
+  z-index: 1;
+}

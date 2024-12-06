@@ -14,16 +14,39 @@
 
 :host {
 
-  --mds-tab-duration: .75s;
-  --mds-tab-timing-function: theme('transitionTimingFunction.in-out-expo');
-  --mds-tab-current-item: 2;
-  --mds-tab-scroll-scrollbar-radius: 0;
+  /* --mds-tab-current-item: 2; */
+  --mds-tab-duration: 0.5s;
+  --mds-tab-item-default-radius: theme('borderRadius.lg');
+  --mds-tab-item-hover-background: transparent;
+  --mds-tab-item-hover-color: theme('colors.tone-neutral-02');
+  --mds-tab-item-hover-shadow: transparent;
+  --mds-tab-item-selected-background: theme('colors.tone-neutral');
+  --mds-tab-item-selected-color: theme('colors.tone-neutral-02');
+  --mds-tab-item-selected-shadow: theme('boxShadow.DEFAULT');
+  --mds-tab-item-unselected-background: transparent;
+  --mds-tab-item-unselected-color: theme('colors.tone-neutral-03');
+  --mds-tab-item-unselected-shadow: transparent;
+  --mds-tab-list-background: theme('colors.tone-neutral-09');
+  --mds-tab-list-gap: theme('padding.200');
+  --mds-tab-list-padding: theme('padding.200');
   --mds-tab-scroll-scrollbar-margin: 0;
+  --mds-tab-scroll-scrollbar-radius: 0;
   --mds-tab-scroll-scrollbar-size: theme('spacing.200');
   --mds-tab-scroll-scrollbar-thumb-background: rgb(var(--tone-neutral-02) theme('opacity.30'));
   --mds-tab-scroll-scrollbar-track-background: rgb(var(--tone-neutral-06) theme('opacity.30'));
+  --mds-tab-slider-offset: 0;
+  --mds-tab-slider-width: 0;
+  --mds-tab-timing-function: theme('transitionTimingFunction.out-expo');
 
   display: grid;
+}
+
+:host([animation="slide"]) ::slotted( mds-tab-item ) {
+  --mds-tab-item-hover-background: transparent;
+  --mds-tab-item-selected-background: transparent;
+  --mds-tab-item-selected-shadow: transparent;
+  --mds-tab-item-unselected-background: transparent;
+  --mds-tab-item-unselected-shadow: transparent;
 }
 
 .tabs {
@@ -31,16 +54,16 @@
     border-50
     border-solid
     border-transparent
-    gap-200
-    p-200
     ease-in-out
     duration-200;
 
-  background-color: rgb(var(--theme-default-06-secondary-background));
+  background-color: var(--mds-tab-list-background);
   border-radius: theme('borderRadius.2xl');
   box-sizing: border-box;
   display: flex;
+  gap: var(--mds-tab-list-gap);
   overflow: auto;
+  padding: var(--mds-tab-list-padding);
   scroll-behavior: smooth;
   scroll-snap-type: x mandatory;
   transition-property: background-color;
@@ -83,6 +106,7 @@
     display: none !important;
 }
 
+@import './css/mds-tab-animation.css';
 @import './css/mds-tab-scrollbar.css';
 @import './css/mds-tab-pref-animation.css';
 @import './css/mds-tab-pref-theme.css';

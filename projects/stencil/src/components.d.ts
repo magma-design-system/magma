@@ -57,6 +57,7 @@ import { NotificationDateFormatType, NotificationPreviewType } from "./component
 import { MdsPushNotificationEventDetail } from "./components/mds-push-notification/meta/event-detail";
 import { MdsStepperBarEventDetail } from "./components/mds-stepper-bar/meta/event-detail";
 import { MdsStepperBarItemEventDetail } from "./components/mds-stepper-bar-item/meta/event-detail";
+import { HorizontalActionsAnimationType } from "./type/animation";
 import { MdsTabEventDetail } from "./components/mds-tab/meta/event-detail";
 import { MdsTabBarEventDetail } from "./components/mds-tab-bar/meta/event-detail";
 import { MdsTabItemEventDetail } from "./components/mds-tab-item/meta/event-detail";
@@ -117,6 +118,7 @@ export { NotificationDateFormatType, NotificationPreviewType } from "./component
 export { MdsPushNotificationEventDetail } from "./components/mds-push-notification/meta/event-detail";
 export { MdsStepperBarEventDetail } from "./components/mds-stepper-bar/meta/event-detail";
 export { MdsStepperBarItemEventDetail } from "./components/mds-stepper-bar-item/meta/event-detail";
+export { HorizontalActionsAnimationType } from "./type/animation";
 export { MdsTabEventDetail } from "./components/mds-tab/meta/event-detail";
 export { MdsTabBarEventDetail } from "./components/mds-tab-bar/meta/event-detail";
 export { MdsTabItemEventDetail } from "./components/mds-tab-item/meta/event-detail";
@@ -1493,6 +1495,10 @@ export namespace Components {
         "value"?: string;
     }
     interface MdsTab {
+        /**
+          * Sets the animation type of the selection transition between `mds-tab-item` elements
+         */
+        "animation"?: HorizontalActionsAnimationType;
         /**
           * Shows the horizontal scrollbar to maximize accessibility
          */
@@ -4562,6 +4568,10 @@ declare namespace LocalJSX {
         "value"?: string;
     }
     interface MdsTab {
+        /**
+          * Sets the animation type of the selection transition between `mds-tab-item` elements
+         */
+        "animation"?: HorizontalActionsAnimationType;
         /**
           * Emits when a children is changed
          */

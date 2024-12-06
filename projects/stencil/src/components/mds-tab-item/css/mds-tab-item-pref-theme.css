@@ -3,7 +3,7 @@
 @container style(--magma-pref-theme: dark) {
   :host {
 
-    --mds-tab-item-background-selected: theme('colors.tone-neutral-08');
+    --mds-tab-item-selected-background: theme('colors.tone-neutral-08');
   }
 }
 
@@ -11,8 +11,8 @@
 
   @media (prefers-color-scheme: dark) {
     :host {
-  
-      --mds-tab-item-background-selected: theme('colors.tone-neutral-08');
+
+      --mds-tab-item-selected-background: theme('colors.tone-neutral-08');
     }
   }
 }
