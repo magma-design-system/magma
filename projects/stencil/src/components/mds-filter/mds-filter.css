@@ -13,7 +13,7 @@
 
 :host {
 
-  --mds-filter-items-background-active: theme('colors.tone-neutral-08');
+  --mds-filter-items-background-active: theme('colors.tone-neutral-09');
   --mds-filter-items-background: theme('colors.tone-neutral-09');
   --mds-filter-items-gap: theme('spacing.200');
   --mds-filter-items-padding: theme('spacing.200');
