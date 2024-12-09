@@ -39,32 +39,6 @@ This is a web-component from Maggioli Design System [Magma](https://magma.maggio
 | `"tabs"`     | Selects the container of `mds-tab-item` list elements.                                    |
 
 
-## CSS Custom Properties
-
-| Name                                          | Description                                                                                                                             |
-| --------------------------------------------- | --------------------------------------------------------------------------------------------------------------------------------------- |
-| `--mds-tab-item-default-background`           | Sets the `background-color` of `mds-tab-item` or `mds-input::part(slider)` depending on attribute `animation`                           |
-| `--mds-tab-item-default-color`                | Sets the `color` of `mds-tab-item` or `mds-input::part(slider)` depending on attribute `animation`                                      |
-| `--mds-tab-item-default-radius`               | Sets the `border-radius` of `mds-tab-item` or `mds-input::part(slider)` depending on attribute `animation`.                             |
-| `--mds-tab-item-default-shadow`               | Sets the `box-shadow` of `mds-tab-item` or `mds-input::part(slider)` depending on attribute `animation`                                 |
-| `--mds-tab-item-hover-background`             | Sets the `background-color` when the mouse is over of `mds-tab-item` or `mds-input::part(slider)` depending on attribute `animation`    |
-| `--mds-tab-item-hover-color`                  | Sets the `color` when the mouse is over of `mds-tab-item` or `mds-input::part(slider)` depending on attribute `animation`               |
-| `--mds-tab-item-hover-shadow`                 | Sets the `box-shadow` when the mouse is over of `mds-tab-item` or `mds-input::part(slider)` depending on attribute `animation`          |
-| `--mds-tab-item-selected-background`          | Sets the `background-color` when the item is selected of `mds-tab-item` or `mds-input::part(slider)` depending on attribute `animation` |
-| `--mds-tab-item-selected-color`               | Sets the `color` when the item is selected of `mds-tab-item` or `mds-input::part(slider)` depending on attribute `animation`            |
-| `--mds-tab-item-selected-shadow`              | Sets the `box-shadow` when the item is selected of `mds-tab-item` or `mds-input::part(slider)` depending on attribute `animation`       |
-| `--mds-tab-item-transition-duration`          | Sets the animation duration on how the contents height is resized when the component switch from a content to another one               |
-| `--mds-tab-item-transition-timing-function`   | Sets the animation timing function on how the contents height is resized when the component switch from a content to another one        |
-| `--mds-tab-scroll-scrollbar-margin`           | Sets the margin of the browser scroll bar (if supported)                                                                                |
-| `--mds-tab-scroll-scrollbar-radius`           | Sets the border-radius of the browser scroll bar (if supported)                                                                         |
-| `--mds-tab-scroll-scrollbar-size`             | Sets the height and width of the browser scroll bar (if supported)                                                                      |
-| `--mds-tab-scroll-scrollbar-thumb-background` | Sets the background-color of the browser scroll bar thumb (if supported)                                                                |
-| `--mds-tab-scroll-scrollbar-track-background` | Sets the background-color of the browser scroll bar track (if supported)                                                                |
-| `--mds-tab-tabs-background`                   | Sets the `background-color` of `mds-input::part(tabs)`                                                                                  |
-| `--mds-tab-tabs-gap`                          | Sets the `gap` of `mds-input::part(tabs)`                                                                                               |
-| `--mds-tab-tabs-padding`                      | Sets the `padding` of `mds-input::part(tabs)`                                                                                           |
-
-
 ## Dependencies
 
 ### Used by

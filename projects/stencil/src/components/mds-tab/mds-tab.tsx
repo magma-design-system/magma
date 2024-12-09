@@ -3,6 +3,7 @@ import { MdsTabEventDetail } from './meta/event-detail'
 import { MdsTabItemEventDetail } from '@component/mds-tab-item/meta/event-detail'
 import { setAttributeIfEmpty } from '@common/aria'
 import { HorizontalActionsAnimationType } from '@type/animation'
+import { hashRandomValue } from '@common/aria'
 
 /**
  * @part contents - Selects the container of the tabbed contents elements.
@@ -51,7 +52,7 @@ export class MdsTab {
 
     this.tabItems.forEach((item, key) => {
       if (!item.id) {
-        item.id = `mds-tab-item-${key}`
+        setAttributeIfEmpty(item, 'id', hashRandomValue('mds-tab-item'))
       }
       if (item.selected) {
         this.currentItem = key
@@ -62,8 +63,9 @@ export class MdsTab {
   componentDidLoad (): void {
     this.tabs = this.element.shadowRoot?.querySelector('.tabs') as HTMLElement
     this.contentItems = this.queryContentItems()
-    this.contentItems.forEach((item: HTMLElement): void => {
+    this.contentItems.forEach((item: HTMLElement, key: number): void => {
       setAttributeIfEmpty(item, 'role', 'tabpanel')
+      setAttributeIfEmpty(item, 'aria-labelledby', this.tabItems[key].id)
     })
     this.selectContentItem()
     if (this.animation === 'slide') {

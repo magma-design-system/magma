@@ -52,6 +52,7 @@
 }
 
 :host([animation="slide"]) ::slotted( mds-tab-item ) {
+
   --mds-tab-item-hover-background: transparent;
   --mds-tab-item-selected-background: transparent;
   --mds-tab-item-selected-shadow: transparent;
