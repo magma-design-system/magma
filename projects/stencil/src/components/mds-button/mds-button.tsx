@@ -201,6 +201,8 @@ export class MdsButton {
       }
       setAttributeIfEmpty(this.host, 'aria-label', iconTitle)
     }
+
+    setAttributeIfEmpty(this.host, 'role', 'button')
   }
 
   disconnectedCallback (): void {
@@ -211,7 +213,7 @@ export class MdsButton {
     this.typography = buttonSizeTypographyVariant[this.size] as TypographyType
 
     return (
-      <Host class={clsx(!this.hasText && 'no-text')} onMouseDown={this.mouseDown} onMouseUp={this.mouseUp} onMouseOut={this.mouseUp} tabindex="0" role="button">
+      <Host class={clsx(!this.hasText && 'no-text')} onMouseDown={this.mouseDown} onMouseUp={this.mouseUp} onMouseOut={this.mouseUp} tabindex="0">
         <div class="await">
           <mds-spinner class="spinner" running={this.await}/>
         </div>
