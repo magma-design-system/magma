@@ -4,23 +4,23 @@
 
 .slider {
 
-  --mds-tab-slider-offset: 0;
-  --mds-tab-slider-width: 0;
+  --mds-tab-slider-offset: 0px;
+  --mds-tab-slider-width: 0px;
 
   background-color: var(--mds-tab-item-selected-background);
   border-radius: var(--mds-tab-item-default-radius);
   bottom: var(--mds-tab-tabs-padding);
   box-shadow: var(--mds-tab-item-selected-shadow);
   left: 0;
-  min-width: theme('size.1000');
   pointer-events: none;
   position: absolute;
   top: var(--mds-tab-tabs-padding);
-  transform: translateX(var(--mds-tab-slider-offset));
+  transform: translateX(var(--mds-tab-slider-offset)) translateZ(0);
   transition-duration: var(--mds-tab-transition-duration);
   transition-property: transform, width;
   transition-timing-function: var(--mds-tab-transition-timing-function);
   width: var(--mds-tab-slider-width);
+  will-change: transform, width;
   z-index: 0;
 }
 

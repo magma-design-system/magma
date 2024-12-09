@@ -26,8 +26,8 @@ export class MdsTab {
   private tabs: HTMLElement
   private tabItems: NodeListOf<HTMLMdsTabItemElement>
   private contentItems: NodeListOf<HTMLElement>
-  @State() sliderWidth: number
-  @State() sliderOffset: number
+  @State() sliderWidth: number = -1
+  @State() sliderOffset: number = -1
 
   /**
    * Shows the horizontal scrollbar to maximize accessibility
@@ -152,9 +152,11 @@ export class MdsTab {
             }}></div>
           }
         </div>
+        { this.contentItems &&
         <div class="contents" part="contents">
           <slot name="content"/>
         </div>
+        }
       </Host>
     )
   }
