@@ -1596,6 +1596,7 @@ export namespace Components {
         "overlayActions": boolean;
         "selectable"?: boolean;
         "selected"?: boolean;
+        "updateLang": () => Promise<void>;
         "value"?: string | number;
     }
     interface MdsText {

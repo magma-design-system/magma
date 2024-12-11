@@ -18,6 +18,19 @@ This is a web-component from Maggioli Design System [Magma](https://magma.maggio
 | `value`          | `value`           |             | `number \| string \| undefined` | `undefined` |
 
 
+## Methods
+
+### `updateLang() => Promise<void>`
+
+
+
+#### Returns
+
+Type: `Promise<void>`
+
+
+
+
 ## Slots
 
 | Slot        | Description                     |

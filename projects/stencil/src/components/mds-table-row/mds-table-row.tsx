@@ -1,6 +1,9 @@
-import { Component, Host, h, Prop, Element } from '@stencil/core'
-// import { isMobileDevice } from '@common/device'
-// import clsx from 'clsx'
+import { Component, Host, h, Prop, Element, State, Method } from '@stencil/core'
+import { Locale } from '@common/locale'
+import localeEl from './meta/locale.el.json'
+import localeEn from './meta/locale.en.json'
+import localeEs from './meta/locale.es.json'
+import localeIt from './meta/locale.it.json'
 
 /**
  * @slot default - Put `mds-table-cell` element/s.
@@ -17,6 +20,17 @@ export class MdsTableRow {
   private actions: HTMLDivElement
   private hasActions: boolean
   private sizerWidth: string
+  private t:Locale = new Locale({
+    el: localeEl,
+    en: localeEn,
+    es: localeEs,
+    it: localeIt,
+  })
+  @State() language: string
+  @Method()
+  async updateLang (): Promise<void> {
+    this.language = this.t.lang(this.host)
+  }
 
   @Prop({ reflect: true }) readonly interactive?: boolean
 
@@ -29,6 +43,7 @@ export class MdsTableRow {
   @Prop({ reflect: true }) readonly value?: string | number
 
   componentWillLoad (): void {
+    this.t.lang(this.host)
     this.hasActions = this.host.querySelector('[slot="action"]') !== null
   }
 
@@ -49,7 +64,7 @@ export class MdsTableRow {
       <Host role="row">
         { this.selectable &&
           <mds-table-cell class="selection-cell">
-            <mds-input-switch type="checkbox" checked={this.selected} onMdsInputSwitchChange={this.handleSelectionChange}></mds-input-switch>
+            <mds-input-switch title={this.t.get(this.selected ? 'unselectRow' : 'selectRow')} type="checkbox" checked={this.selected} onMdsInputSwitchChange={this.handleSelectionChange}></mds-input-switch>
           </mds-table-cell>
         }
         <slot/>
