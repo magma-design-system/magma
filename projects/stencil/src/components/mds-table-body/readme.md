@@ -9,9 +9,9 @@ This is a web-component from Maggioli Design System [Magma](https://magma.maggio
 
 ## Properties
 
-| Property      | Attribute     | Description | Type      | Default     |
-| ------------- | ------------- | ----------- | --------- | ----------- |
-| `interactive` | `interactive` |             | `boolean` | `undefined` |
+| Property      | Attribute     | Description | Type                   | Default     |
+| ------------- | ------------- | ----------- | ---------------------- | ----------- |
+| `interactive` | `interactive` |             | `boolean \| undefined` | `undefined` |
 
 
 ## Slots
@@ -19,14 +19,6 @@ This is a web-component from Maggioli Design System [Magma](https://magma.maggio
 | Slot        | Description                    |
 | ----------- | ------------------------------ |
 | `"default"` | Put `mds-table-row` element/s. |
-
-
-## CSS Custom Properties
-
-| Name                                | Description                                                      |
-| ----------------------------------- | ---------------------------------------------------------------- |
-| `--mds-table-body-background`       | The background-color of the table body                           |
-| `--mds-table-body-background-hover` | The background-color of the table body when the mouse is over it |
 
 
 ----------------------------------------------

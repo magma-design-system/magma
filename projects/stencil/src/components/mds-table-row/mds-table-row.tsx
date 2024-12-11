@@ -1,4 +1,4 @@
-import { Component, Host, h, Listen, Prop, Element } from '@stencil/core'
+import { Component, Host, h, Prop, Element } from '@stencil/core'
 // import { isMobileDevice } from '@common/device'
 // import clsx from 'clsx'
 
@@ -18,14 +18,15 @@ export class MdsTableRow {
   private hasActions: boolean
   private sizerWidth: string
 
-  @Prop({ mutable: true, reflect: true }) interactive: boolean
+  @Prop({ reflect: true }) readonly interactive?: boolean
 
-  @Prop({ mutable: true, reflect: true }) overlayActions: boolean
+  @Prop({ reflect: true }) readonly overlayActions: boolean
 
-  @Listen('mdsTableInteractiveChange', { target: 'document' })
-  tableInteractiveHandler (event: CustomEvent<boolean>): void {
-    this.interactive = event.detail
-  }
+  @Prop({ reflect: true }) readonly selectable?: boolean = undefined
+
+  @Prop({ mutable: true, reflect: true }) selected?: boolean
+
+  @Prop({ reflect: true }) readonly value?: string | number
 
   componentWillLoad (): void {
     this.hasActions = this.host.querySelector('[slot="action"]') !== null
@@ -38,9 +39,19 @@ export class MdsTableRow {
     }
   }
 
+  private handleSelectionChange = (e: CustomEvent): void => {
+    this.selected = e.detail.checked
+    this.host.closest('mds-table')?.updateSelection()
+  }
+
   render () {
     return (
       <Host role="row">
+        { this.selectable &&
+          <mds-table-cell class="selection-cell">
+            <mds-input-switch type="checkbox" checked={this.selected} onMdsInputSwitchChange={this.handleSelectionChange}></mds-input-switch>
+          </mds-table-cell>
+        }
         <slot/>
         { this.hasActions &&
           <mds-table-cell class="actions-cell">

@@ -1,0 +1,5 @@
+:host([selected]:not([selected="false"])) {
+
+  --mds-table-cell-background: var(--mds-table-cell-background-hover);
+  --mds-table-row-color: var(--mds-table-row-color-hover);
+}

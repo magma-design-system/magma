@@ -9,10 +9,13 @@ This is a web-component from Maggioli Design System [Magma](https://magma.maggio
 
 ## Properties
 
-| Property         | Attribute         | Description | Type      | Default     |
-| ---------------- | ----------------- | ----------- | --------- | ----------- |
-| `interactive`    | `interactive`     |             | `boolean` | `undefined` |
-| `overlayActions` | `overlay-actions` |             | `boolean` | `undefined` |
+| Property         | Attribute         | Description | Type                            | Default     |
+| ---------------- | ----------------- | ----------- | ------------------------------- | ----------- |
+| `interactive`    | `interactive`     |             | `boolean \| undefined`          | `undefined` |
+| `overlayActions` | `overlay-actions` |             | `boolean`                       | `undefined` |
+| `selectable`     | `selectable`      |             | `boolean \| undefined`          | `undefined` |
+| `selected`       | `selected`        |             | `boolean \| undefined`          | `undefined` |
+| `value`          | `value`           |             | `number \| string \| undefined` | `undefined` |
 
 
 ## Slots
@@ -27,11 +30,15 @@ This is a web-component from Maggioli Design System [Magma](https://magma.maggio
 ### Depends on
 
 - [mds-table-cell](../mds-table-cell)
+- [mds-input-switch](../mds-input-switch)
 
 ### Graph
 ```mermaid
 graph TD;
   mds-table-row --> mds-table-cell
+  mds-table-row --> mds-input-switch
+  mds-input-switch --> mds-icon
+  mds-input-switch --> mds-text
   style mds-table-row fill:#f9f,stroke:#333,stroke-width:4px
 ```
 

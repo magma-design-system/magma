@@ -1,5 +1,7 @@
 import clsx from 'clsx'
-import { Component, Host, h, Prop, Event, EventEmitter, Watch, Element } from '@stencil/core'
+import { Component, Host, h, Prop, Event, EventEmitter, Watch, Element, Method, State } from '@stencil/core'
+import { MdsTableSelectionEventDetail } from './meta/event-detail'
+import { MdsTableRowSelection } from './meta/type'
 
 /**
  * @slot default - Put `mds-table-header`, `mds-table-body`, `mds-table-footer` element/s.
@@ -14,27 +16,81 @@ export class MdsTable {
 
   @Element() host: HTMLMdsTableElement
   private rows: NodeListOf<HTMLMdsTableRowElement>
+  private body: HTMLMdsTableBodyElement
   private resizeObserver: ResizeObserver
   private cellsWidth: number = 0
+  @State() selectedRows: MdsTableRowSelection[] = []
 
   /**
-   * Specifies if the table row are higlighted on mouseover event
+   * Specifies if the table rows are higlighted on mouseover event
    */
   @Prop() readonly interactive?: boolean
 
   /**
+   * Specifies if the table rows are selectable by a checkbox
+   */
+  @Prop() readonly selectable?: boolean
+
+  @Prop({ mutable: true, reflect: true }) selection?: boolean
+
+  /**
    * Dispatces when interactive property changes
    */
-  @Event({ bubbles: true, composed: true, eventName: 'mdsTableInteractiveChange' }) interactiveEvent: EventEmitter<boolean>
+  @Event({ bubbles: true, composed: true, eventName: 'mdsTableSelectionChange' }) selectionEvent: EventEmitter<MdsTableSelectionEventDetail>
 
   @Watch('interactive')
   onTableInteractive (): void {
-    this.interactiveEvent.emit(this.interactive)
+    this.updateInteractive()
+  }
+
+  @Watch('selectable')
+  onTableSelectable (): void {
+    this.handleSelection()
+  }
+
+  /**
+   * `internal` Updates the selection data event and emits it, it's used to avoid add event listener to the dom and lower performance.
+   */
+  @Method()
+  async updateSelection (): Promise<void> {
+    if (!this.selectable) {
+      return
+    }
+    this.selectedRows = []
+    this.rows.forEach((row: HTMLMdsTableRowElement, index: number) => {
+      if (row.selected) {
+        this.selectedRows.push({ index, value: row.value } as MdsTableRowSelection)
+      }
+    })
+    this.selectionEvent.emit({ rows: this.selectedRows })
+    this.selection = this.selectedRows.length > 0
+  }
+
+  /**
+   * Selects all elements or none, depending
+   */
+  @Method()
+  async selectAll (select: boolean = true): Promise<void> {
+    if (!this.selectable) {
+      return
+    }
+    this.rows.forEach((row: HTMLMdsTableRowElement) => {
+      row.selected = select
+    })
+    this.updateSelection()
+  }
+
+  private updateInteractive = (): void => {
+    this.body.interactive = this.interactive
+    this.rows.forEach((row: HTMLMdsTableRowElement) => {
+      row.interactive = this.interactive
+    })
   }
 
   private updateCellsSize = (): void => {
     const cells: NodeListOf<HTMLMdsTableCellElement> = this.rows[0].querySelectorAll('mds-table-cell') as NodeListOf<HTMLMdsTableCellElement>
-    this.cellsWidth = 0
+    const cellSelection: HTMLMdsTableCellElement = this.rows[0].shadowRoot?.querySelector('.selection-cell') as HTMLMdsTableCellElement
+    this.cellsWidth = cellSelection ? cellSelection.offsetWidth : 0
     cells.forEach((cell: HTMLMdsTableCellElement) => {
       this.cellsWidth += cell.offsetWidth
     })
@@ -43,6 +99,12 @@ export class MdsTable {
   private hasActions = (): boolean => {
     this.updateCellsSize()
     return this.rows[0].offsetWidth > this.cellsWidth
+  }
+
+  private handleSelection = (): void => {
+    this.rows.forEach((row: HTMLMdsTableRowElement) => {
+      row.selectable = this.selectable
+    })
   }
 
   private handleActions = (): void => {
@@ -54,8 +116,10 @@ export class MdsTable {
   }
 
   componentDidLoad (): void {
-    this.interactiveEvent.emit(this.interactive)
     this.rows = this.host.querySelectorAll('mds-table-row') as NodeListOf<HTMLMdsTableRowElement>
+    this.body = this.host.querySelector('mds-table-body') as HTMLMdsTableBodyElement
+    this.updateInteractive()
+    this.handleSelection()
     if (this.hasActions()) {
       this.host.addEventListener('scroll', this.handleActions)
       this.resizeObserver = new ResizeObserver(this.handleActions)
