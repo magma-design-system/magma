@@ -27,7 +27,7 @@ This is a web-component from Maggioli Design System [Magma](https://magma.maggio
 
 ### `selectAll(select?: boolean) => Promise<void>`
 
-Selects all elements or none, depending
+Selects all elements or none, works only if `selectable` is true.
 
 #### Parameters
 
@@ -43,7 +43,7 @@ Type: `Promise<void>`
 
 ### `updateSelection() => Promise<void>`
 
-`internal` Updates the selection data event and emits it, it's used to avoid add event listener to the dom and lower performance.
+`internal` Updates the selection data event and emits it, it's used to avoid add event listener to the dom and lower performance, works only if `selectable` is true.
 
 #### Returns
 

@@ -49,7 +49,7 @@ export class MdsTable {
   }
 
   /**
-   * `internal` Updates the selection data event and emits it, it's used to avoid add event listener to the dom and lower performance.
+   * `internal` Updates the selection data event and emits it, it's used to avoid add event listener to the dom and lower performance, works only if `selectable` is true.
    */
   @Method()
   async updateSelection (): Promise<void> {
@@ -67,7 +67,7 @@ export class MdsTable {
   }
 
   /**
-   * Selects all elements or none, depending
+   * Selects all elements or none, works only if `selectable` is true.
    */
   @Method()
   async selectAll (select: boolean = true): Promise<void> {

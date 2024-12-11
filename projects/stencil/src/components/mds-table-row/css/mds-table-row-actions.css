@@ -9,7 +9,7 @@
 
 .actions {
   align-items: center;
-  background-color: var(--mds-table-cell-background);
+  background-color: var(--mds-table-cell-background-hover);
   display: inline-flex;
   gap: var(--mds-table-row-actions-gap);
   inset: 0;
