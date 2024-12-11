@@ -18,6 +18,7 @@ export class MdsTableHeader {
 
   @Element() host: HTMLMdsTableHeaderElement
   private table: HTMLMdsTableElement
+  @State() selectAll: boolean = false
   @State() hasActions: boolean = false
   @State() hasSelection?: boolean = false
   private t:Locale = new Locale({
@@ -40,15 +41,18 @@ export class MdsTableHeader {
   }
 
   private handleSelectAllChange = (e: CustomEvent): void => {
-    this.table.selectAll(e.detail.checked)
+    this.selectAll = e.detail.checked
+    this.table.selectAll(this.selectAll)
   }
 
   render () {
     return (
       <Host role="row">
-        { this.hasSelection && <mds-table-cell class="selection">
-          <mds-input-switch type="checkbox" onMdsInputSwitchChange={this.handleSelectAllChange}></mds-input-switch>
-        </mds-table-cell> }
+        { this.hasSelection &&
+          <mds-table-cell class="selection">
+            <mds-input-switch title={this.t.get(this.selectAll ? 'selectNoneRows' : 'selectAllRows')} type="checkbox" onMdsInputSwitchChange={this.handleSelectAllChange}></mds-input-switch>
+          </mds-table-cell>
+        }
         <slot/>
         { this.hasActions && <mds-table-header-cell class="actions" label={this.t.get('actions')}></mds-table-header-cell> }
       </Host>

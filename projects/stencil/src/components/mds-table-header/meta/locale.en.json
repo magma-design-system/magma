@@ -1,4 +1,5 @@
 {
   "actions": "Actions",
-  "selection": "Selection"
+  "selectAllRows": "Select all rows",
+  "selectNoneRows": "Deselect all rows"
 }

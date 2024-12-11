@@ -1,4 +1,5 @@
 {
   "actions": "Azioni",
-  "selection": "Selezione"
+  "selectAllRows": "Seleziona tutte le righe",
+  "selectNoneRows": "Deseleziona tutte le righe"
 }

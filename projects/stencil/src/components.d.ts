@@ -1553,7 +1553,7 @@ export namespace Components {
          */
         "interactive"?: boolean;
         /**
-          * Selects all elements or none, depending
+          * Selects all elements or none, works only if `selectable` is true.
          */
         "selectAll": (select?: boolean) => Promise<void>;
         /**
@@ -1562,7 +1562,7 @@ export namespace Components {
         "selectable"?: boolean;
         "selection"?: boolean;
         /**
-          * `internal` Updates the selection data event and emits it, it's used to avoid add event listener to the dom and lower performance.
+          * `internal` Updates the selection data event and emits it, it's used to avoid add event listener to the dom and lower performance, works only if `selectable` is true.
          */
         "updateSelection": () => Promise<void>;
     }
