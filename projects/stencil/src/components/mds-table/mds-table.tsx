@@ -66,6 +66,7 @@ export class MdsTable {
     })
     this.selectionEvent.emit({ rows: this.selectedRows })
     this.selection = this.selectedRows.length > 0
+    this.body.selection = this.selection
   }
 
   /**

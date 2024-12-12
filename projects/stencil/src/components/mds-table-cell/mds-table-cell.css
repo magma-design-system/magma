@@ -17,6 +17,7 @@
   background-color: var(--mds-table-cell-background);
   border-bottom: var(--mds-table-cell-border-width) solid var(--mds-table-cell-border-color) !important;
   border-top: var(--mds-table-cell-border-width) solid transparent !important;
+  color: var(--mds-table-cell-color);
   display: table-cell;
   padding: var(--mds-table-cell-padding);
   transition-property: background-color, border-color, color;

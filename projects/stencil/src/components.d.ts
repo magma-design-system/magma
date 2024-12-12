@@ -1569,6 +1569,7 @@ export namespace Components {
     }
     interface MdsTableBody {
         "interactive"?: boolean;
+        "selection"?: boolean;
     }
     interface MdsTableCell {
         /**
@@ -4676,6 +4677,7 @@ declare namespace LocalJSX {
     }
     interface MdsTableBody {
         "interactive"?: boolean;
+        "selection"?: boolean;
     }
     interface MdsTableCell {
         /**

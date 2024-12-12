@@ -3,9 +3,10 @@
 :host {
 
   --mds-table-row-color-hover: var(--mds-table-color-hover, theme('colors.tone-neutral-02'));
-  --mds-table-row-color: var(--mds-table-color, theme('colors.tone-neutral-03'));
+  --mds-table-row-color: var(--mds-table-color, theme('colors.tone-neutral-05'));
+  --mds-table-row-background: var(--mds-table-background-alt, theme('colors.tone-neutral-10'));
+  --mds-table-row-background-hover: var(--mds-table-background, theme('colors.tone-neutral'));
   --mds-table-row-actions-gap: var(--mds-table-actions-gap, theme('spacing.400'));
-
 
   @apply
     duration-200
@@ -24,6 +25,12 @@
 
 .checkbox-wrapper {
   display: flex;
+}
+
+:host ::slotted(mds-table-cell),
+:host mds-table-cell {
+  --mds-table-cell-color: var(--mds-table-row-color);
+  --mds-table-cell-background: var(--mds-table-row-background);
 }
 
 @import './css/mds-table-row-interactive.css';
