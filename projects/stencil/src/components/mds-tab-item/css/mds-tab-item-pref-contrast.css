@@ -3,8 +3,8 @@
 @container style(--magma-pref-contrast: more) {
   :host {
 
-    --mds-tab-item-color-selected: theme('colors.tone-neutral-01');
-    --mds-tab-item-shadow-selected: theme('boxShadow.outline-strong-50');
+    --mds-tab-item-selected-color: theme('colors.tone-neutral-01');
+    --mds-tab-item-selected-shadow: theme('boxShadow.outline-strong-50');
   }
 }
 
@@ -13,8 +13,8 @@
   @media (prefers-contrast: more) {
     :host {
 
-      --mds-tab-item-color-selected: theme('colors.tone-neutral-01');
-      --mds-tab-item-shadow-selected: theme('boxShadow.outline-strong-50');
+      --mds-tab-item-selected-color: theme('colors.tone-neutral-01');
+      --mds-tab-item-selected-shadow: theme('boxShadow.outline-strong-50');
     }
   }
 }

@@ -2,15 +2,7 @@
 
 @container style(--magma-pref-animation: reduce) {
   :host {
-
-    --mds-tab-duration: 0s;
-
-    transition-duration: 0s;
-  }
-
-  .contents,
-  .tabs {
-    transition-duration: 0s;
+    --mds-tab-transition-duration: 0s;
   }
 }
 
@@ -18,15 +10,7 @@
 
   @media (prefers-reduced-motion) {
     :host {
-
-      --mds-tab-duration: 0s;
-
-      transition-duration: 0s;
-    }
-  
-    .contents,
-    .tabs {
-      transition-duration: 0s;
+      --mds-tab-transition-duration: 0s;
     }
   }
 }

@@ -17,7 +17,7 @@
   transition-property: background-color;
 }
 
-:host( [interactive]:hover ) {
+:host([interactive]:not([interactive="false"]):hover) {
 
   --mds-table-body-background: var(--mds-table-body-background-hover);
 }

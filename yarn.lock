@@ -3102,25 +3102,6 @@
   resolved "https://registry.npmjs.org/@lmdb/lmdb-win32-x64/-/lmdb-win32-x64-3.0.13.tgz#93bcd6dc24afd1cc60dd88a65b9e4fab32dcf397"
   integrity sha512-UCrMJQY/gJnOl3XgbWRZZUvGGBuKy6i0YNSptgMzHBjs+QYDYR1Mt/RLTOPy4fzzves65O1EDmlL//OzEqoLlA==
 
-"@maggioli-design-system/magma@1.0.1":
-  version "1.0.1"
-  resolved "https://registry.npmjs.org/@maggioli-design-system/magma/-/magma-1.0.1.tgz#b6aa801f44a8df7f4a6186010cf087b048caf494"
-  integrity sha512-YOJQPqvbPSKR0gEZy4MJn2Q7wXW8hn2p7rptCD53LkchPGUPTH0i82OAhZ84aaJ74vnAFS0EBD28rzHljnsafA==
-  dependencies:
-    "@floating-ui/dom" "1.6.12"
-    "@maggioli-design-system/design-tokens" "13.5.0"
-    "@maggioli-design-system/identity" "2.1.1"
-    "@maggioli-design-system/styles" "15.5.0"
-    "@stencil/core" "4.22.2"
-    clsx "2.1.0"
-    crypto-js "4.2.0"
-    dayjs "1.11.13"
-    filesize "10.1.0"
-    fitty "2.4.2"
-    idb-keyval "6.2.1"
-    mime "4.0.4"
-    mustache "4.2.0"
-
 "@maggioli-design-system/svg-icons@^2.6.3":
   version "2.10.1"
   resolved "https://registry.npmjs.org/@maggioli-design-system/svg-icons/-/svg-icons-2.10.1.tgz#3c86d5b738407a7fe756877aa87baf7b4d2d5f8d"

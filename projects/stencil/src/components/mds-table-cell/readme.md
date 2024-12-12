@@ -36,11 +36,13 @@ This is a web-component from Maggioli Design System [Magma](https://magma.maggio
 
 ### Used by
 
+ - [mds-table-header](../mds-table-header)
  - [mds-table-row](../mds-table-row)
 
 ### Graph
 ```mermaid
 graph TD;
+  mds-table-header --> mds-table-cell
   mds-table-row --> mds-table-cell
   style mds-table-cell fill:#f9f,stroke:#333,stroke-width:4px
 ```

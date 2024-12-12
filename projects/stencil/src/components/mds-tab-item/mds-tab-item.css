@@ -1,57 +1,30 @@
 @tailwind utilities;
 
-/**
- * @prop --mds-tab-item-background-hover: Sets the background when the mouse is over the component
- * @prop --mds-tab-item-background-selected: Sets the background when the component is selected
- * @prop --mds-tab-item-background: Sets the background color of the component
- * @prop --mds-tab-item-color-hover: Sets the color when the mouse is over the component
- * @prop --mds-tab-item-color-selected: Sets the color when the component is selected
- * @prop --mds-tab-item-color: Sets the color of the component
- * @prop --mds-tab-item-radius: Sets the border-radius of the component
- * @prop --mds-tab-item-shadow-selected: Sets the box-shadow when the component is selected
- */
-
 :host {
-
-  @apply flex;
-
-  --mds-tab-item-background-hover: transparent;
-  --mds-tab-item-background-selected: theme('colors.tone-neutral');
-  --mds-tab-item-background: transparent;
-  --mds-tab-item-color-hover: theme('colors.tone-neutral-02');
-  --mds-tab-item-color-selected: theme('colors.tone-neutral-02');
-  --mds-tab-item-color: theme('colors.tone-neutral-04');
-  --mds-tab-item-radius: theme('spacing.200');
-  --mds-tab-item-shadow-selected: theme('boxShadow.DEFAULT');
-
+  display: flex;
 }
 
 .button {
 
-  --mds-button-background: var(--mds-tab-item-background);
-  --mds-button-color: var(--mds-tab-item-color);
-  --mds-button-radius: var(--mds-tab-item-radius);
-
-  fill: var(--mds-tab-item-color);
+  --mds-button-background: var(--mds-tab-item-default-background);
+  --mds-button-color: var(--mds-tab-item-default-color);
+  --mds-button-radius: var(--mds-tab-item-default-radius);
   flex-grow: 1;
 }
 
 .button:hover {
 
-  --mds-button-background: var(--mds-tab-item-background-hover);
-  --mds-button-color: var(--mds-tab-item-color-hover);
-
-  fill: var(--mds-tab-item-color-hover);
+  --mds-button-background: var(--mds-tab-item-hover-background);
+  --mds-button-color: var(--mds-tab-item-hover-color);
 }
 
 :host([selected]:not([selected="false"])) .button,
 :host([selected]:not([selected="false"])) .button:hover {
 
-  --mds-button-background: var(--mds-tab-item-background-selected);
-  --mds-button-color: var(--mds-tab-item-color-selected);
+  --mds-button-background: var(--mds-tab-item-selected-background);
+  --mds-button-color: var(--mds-tab-item-selected-color);
 
-  box-shadow: var(--mds-tab-item-shadow-selected);
-  fill: var(--mds-tab-item-color-selected);
+  box-shadow: var(--mds-tab-item-selected-shadow);
   pointer-events: none;
 }
 

@@ -57,9 +57,12 @@ import { NotificationDateFormatType, NotificationPreviewType } from "./component
 import { MdsPushNotificationEventDetail } from "./components/mds-push-notification/meta/event-detail";
 import { MdsStepperBarEventDetail } from "./components/mds-stepper-bar/meta/event-detail";
 import { MdsStepperBarItemEventDetail } from "./components/mds-stepper-bar-item/meta/event-detail";
+import { HorizontalActionsAnimationType } from "./type/animation";
 import { MdsTabEventDetail } from "./components/mds-tab/meta/event-detail";
 import { MdsTabBarEventDetail } from "./components/mds-tab-bar/meta/event-detail";
 import { MdsTabItemEventDetail } from "./components/mds-tab-item/meta/event-detail";
+import { MdsTableSelectionEventDetail } from "./components/mds-table/meta/event-detail";
+import { MdsTableRowSelection } from "./components/mds-table/meta/type";
 import { SortDirectionType } from "./components/mds-table-header-cell/meta/types";
 import { TextAnimationType } from "./components/mds-text/meta/types";
 import { ToastPosition } from "./components/mds-toast/meta/types";
@@ -117,9 +120,12 @@ export { NotificationDateFormatType, NotificationPreviewType } from "./component
 export { MdsPushNotificationEventDetail } from "./components/mds-push-notification/meta/event-detail";
 export { MdsStepperBarEventDetail } from "./components/mds-stepper-bar/meta/event-detail";
 export { MdsStepperBarItemEventDetail } from "./components/mds-stepper-bar-item/meta/event-detail";
+export { HorizontalActionsAnimationType } from "./type/animation";
 export { MdsTabEventDetail } from "./components/mds-tab/meta/event-detail";
 export { MdsTabBarEventDetail } from "./components/mds-tab-bar/meta/event-detail";
 export { MdsTabItemEventDetail } from "./components/mds-tab-item/meta/event-detail";
+export { MdsTableSelectionEventDetail } from "./components/mds-table/meta/event-detail";
+export { MdsTableRowSelection } from "./components/mds-table/meta/type";
 export { SortDirectionType } from "./components/mds-table-header-cell/meta/types";
 export { TextAnimationType } from "./components/mds-text/meta/types";
 export { ToastPosition } from "./components/mds-toast/meta/types";
@@ -1494,6 +1500,10 @@ export namespace Components {
     }
     interface MdsTab {
         /**
+          * Sets the animation type of the selection transition between `mds-tab-item` elements
+         */
+        "animation"?: HorizontalActionsAnimationType;
+        /**
           * Shows the horizontal scrollbar to maximize accessibility
          */
         "scrollbar"?: boolean;
@@ -1539,12 +1549,25 @@ export namespace Components {
     }
     interface MdsTable {
         /**
-          * Specifies if the table row are higlighted on mouseover event
+          * Specifies if the table rows are higlighted on mouseover event
          */
         "interactive"?: boolean;
+        /**
+          * Selects all elements or none, works only if `selectable` is true.
+         */
+        "selectAll": (select?: boolean) => Promise<void>;
+        /**
+          * Specifies if the table rows are selectable by a checkbox
+         */
+        "selectable"?: boolean;
+        "selection"?: boolean;
+        /**
+          * `internal` Updates the selection data event and emits it, it's used to avoid add event listener to the dom and lower performance, works only if `selectable` is true.
+         */
+        "updateSelection": () => Promise<void>;
     }
     interface MdsTableBody {
-        "interactive": boolean;
+        "interactive"?: boolean;
     }
     interface MdsTableCell {
         /**
@@ -1569,8 +1592,12 @@ export namespace Components {
         "sortable"?: boolean;
     }
     interface MdsTableRow {
-        "interactive": boolean;
+        "interactive"?: boolean;
         "overlayActions": boolean;
+        "selectable"?: boolean;
+        "selected"?: boolean;
+        "updateLang": () => Promise<void>;
+        "value"?: string | number;
     }
     interface MdsText {
         /**
@@ -2819,7 +2846,7 @@ declare global {
         new (): HTMLMdsTabItemElement;
     };
     interface HTMLMdsTableElementEventMap {
-        "mdsTableInteractiveChange": boolean;
+        "mdsTableSelectionChange": MdsTableSelectionEventDetail;
     }
     interface HTMLMdsTableElement extends Components.MdsTable, HTMLStencilElement {
         addEventListener<K extends keyof HTMLMdsTableElementEventMap>(type: K, listener: (this: HTMLMdsTableElement, ev: MdsTableCustomEvent<HTMLMdsTableElementEventMap[K]>) => any, options?: boolean | AddEventListenerOptions): void;
@@ -4563,6 +4590,10 @@ declare namespace LocalJSX {
     }
     interface MdsTab {
         /**
+          * Sets the animation type of the selection transition between `mds-tab-item` elements
+         */
+        "animation"?: HorizontalActionsAnimationType;
+        /**
           * Emits when a children is changed
          */
         "onMdsTabChange"?: (event: MdsTabCustomEvent<MdsTabEventDetail>) => void;
@@ -4628,13 +4659,18 @@ declare namespace LocalJSX {
     }
     interface MdsTable {
         /**
-          * Specifies if the table row are higlighted on mouseover event
+          * Specifies if the table rows are higlighted on mouseover event
          */
         "interactive"?: boolean;
         /**
           * Dispatces when interactive property changes
          */
-        "onMdsTableInteractiveChange"?: (event: MdsTableCustomEvent<boolean>) => void;
+        "onMdsTableSelectionChange"?: (event: MdsTableCustomEvent<MdsTableSelectionEventDetail>) => void;
+        /**
+          * Specifies if the table rows are selectable by a checkbox
+         */
+        "selectable"?: boolean;
+        "selection"?: boolean;
     }
     interface MdsTableBody {
         "interactive"?: boolean;
@@ -4663,6 +4699,9 @@ declare namespace LocalJSX {
     interface MdsTableRow {
         "interactive"?: boolean;
         "overlayActions"?: boolean;
+        "selectable"?: boolean;
+        "selected"?: boolean;
+        "value"?: string | number;
     }
     interface MdsText {
         /**

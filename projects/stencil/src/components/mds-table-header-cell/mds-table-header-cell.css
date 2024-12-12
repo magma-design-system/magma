@@ -21,6 +21,7 @@
   padding: var(--mds-table-cell-padding);
   transition-property: background-color, border-color, color;
   vertical-align: top;
+  white-space: nowrap;
 }
 
 .action {

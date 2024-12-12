@@ -17,7 +17,10 @@ import localeIt from './meta/locale.it.json'
 export class MdsTableHeader {
 
   @Element() host: HTMLMdsTableHeaderElement
+  private table: HTMLMdsTableElement
+  @State() selectAll: boolean = false
   @State() hasActions: boolean = false
+  @State() hasSelection?: boolean = false
   private t:Locale = new Locale({
     el: localeEl,
     en: localeEn,
@@ -32,12 +35,24 @@ export class MdsTableHeader {
 
   componentWillLoad (): void {
     this.t.lang(this.host)
-    this.hasActions = this.host.closest('mds-table')?.querySelector('[slot="action"]') !== null
+    this.table = this.host.closest('mds-table') as HTMLMdsTableElement
+    this.hasActions = this.table.querySelector('[slot="action"]') !== null
+    this.hasSelection = this.table.hasAttribute('selectable')
+  }
+
+  private handleSelectAllChange = (e: CustomEvent): void => {
+    this.selectAll = e.detail.checked
+    this.table.selectAll(this.selectAll)
   }
 
   render () {
     return (
       <Host role="row">
+        { this.hasSelection &&
+          <mds-table-cell class="selection">
+            <mds-input-switch title={this.t.get(this.selectAll ? 'selectNoneRows' : 'selectAllRows')} type="checkbox" onMdsInputSwitchChange={this.handleSelectAllChange}></mds-input-switch>
+          </mds-table-cell>
+        }
         <slot/>
         { this.hasActions && <mds-table-header-cell class="actions" label={this.t.get('actions')}></mds-table-header-cell> }
       </Host>
