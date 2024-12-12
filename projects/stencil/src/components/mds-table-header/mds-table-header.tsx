@@ -51,7 +51,7 @@ export class MdsTableHeader {
     return (
       <Host role="row">
         { this.selectable &&
-          <mds-table-cell class="selection">
+          <mds-table-cell class="selection" role="columnheader">
             <div class="checkbox-wrapper">
               <mds-input-switch title={this.t.get(this.selectAll ? 'selectNoneRows' : 'selectAllRows')} lang={this.language} type="checkbox" onMdsInputSwitchChange={this.handleSelectAllChange}></mds-input-switch>
             </div>

@@ -7,7 +7,7 @@ const hasSlottedElements = (el: HTMLElement, name?: string): boolean => {
   if (slot) {
     return slot.assignedNodes().length > 0
   }
-  throw Error(`Slot ${query} does not exists on component ${el.tagName}`)
+  return false
 }
 
 export {
