@@ -73,6 +73,7 @@
   @apply focus-bounce;
 
   align-items: baseline;
+  border-radius: theme('borderRadius.DEFAULT');
   cursor: pointer;
   display: flex;
   position: relative;

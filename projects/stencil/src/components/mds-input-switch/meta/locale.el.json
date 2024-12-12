@@ -1,0 +1,4 @@
+{
+  "select": "Επιλογή {{#label}}{{label}}{{/label}}{{^label}}στοιχείο{{/label}}",
+  "unselect": "Αποεπιλογή {{#label}}{{label}}{{/label}}{{^label}}στοιχείο{{/label}}"
+}
