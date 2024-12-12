@@ -16,4 +16,12 @@
   text-align: right;
 }
 
+.selection {
+  vertical-align: middle;
+}
+
+.checkbox-wrapper {
+  display: flex;
+}
+
 @import './css/mds-table-header-pref-animation.css';

@@ -18,6 +18,14 @@
 
 }
 
+.selection-cell {
+  vertical-align: middle;
+}
+
+.checkbox-wrapper {
+  display: flex;
+}
+
 @import './css/mds-table-row-interactive.css';
 @import './css/mds-table-row-actions.css';
 @import './css/mds-table-row-selected.css';

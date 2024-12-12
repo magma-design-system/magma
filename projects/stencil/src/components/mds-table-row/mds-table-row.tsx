@@ -30,6 +30,7 @@ export class MdsTableRow {
   @Method()
   async updateLang (): Promise<void> {
     this.language = this.t.lang(this.host)
+    this.t.update()
   }
 
   @Prop({ reflect: true }) readonly interactive?: boolean
@@ -43,7 +44,7 @@ export class MdsTableRow {
   @Prop({ reflect: true }) readonly value?: string | number
 
   componentWillLoad (): void {
-    this.t.lang(this.host)
+    this.language = this.t.lang(this.host)
     this.hasActions = this.host.querySelector('[slot="action"]') !== null
   }
 
@@ -64,7 +65,9 @@ export class MdsTableRow {
       <Host role="row">
         { this.selectable &&
           <mds-table-cell class="selection-cell">
-            <mds-input-switch title={this.t.get(this.selected ? 'unselectRow' : 'selectRow')} type="checkbox" checked={this.selected} onMdsInputSwitchChange={this.handleSelectionChange}></mds-input-switch>
+            <div class="checkbox-wrapper">
+              <mds-input-switch title={this.t.get(this.selected ? 'unselectRow' : 'selectRow')} lang={this.language} type="checkbox" checked={this.selected} onMdsInputSwitchChange={this.handleSelectionChange}></mds-input-switch>
+            </div>
           </mds-table-cell>
         }
         <slot/>

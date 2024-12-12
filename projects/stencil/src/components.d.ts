@@ -1087,6 +1087,7 @@ export namespace Components {
           * Specifies the font typography of the element
          */
         "typography"?: TypographyInfoType | TypographyReadType;
+        "updateLang": () => Promise<void>;
         /**
           * Specifies the value of the input element
          */
@@ -1578,6 +1579,7 @@ export namespace Components {
     interface MdsTableFooter {
     }
     interface MdsTableHeader {
+        "selectable"?: boolean;
         "updateLang": () => Promise<void>;
     }
     interface MdsTableHeaderCell {
@@ -4684,6 +4686,7 @@ declare namespace LocalJSX {
     interface MdsTableFooter {
     }
     interface MdsTableHeader {
+        "selectable"?: boolean;
     }
     interface MdsTableHeaderCell {
         "direction"?: SortDirectionType;
