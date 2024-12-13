@@ -12,6 +12,7 @@ This is a web-component from Maggioli Design System [Magma](https://magma.maggio
 | Property      | Attribute     | Description | Type                   | Default     |
 | ------------- | ------------- | ----------- | ---------------------- | ----------- |
 | `interactive` | `interactive` |             | `boolean \| undefined` | `undefined` |
+| `selection`   | `selection`   |             | `boolean \| undefined` | `undefined` |
 
 
 ## Slots
@@ -26,6 +27,7 @@ This is a web-component from Maggioli Design System [Magma](https://magma.maggio
 | Name                                | Description                                                      |
 | ----------------------------------- | ---------------------------------------------------------------- |
 | `--mds-table-body-background`       | The background-color of the table body                           |
+| `--mds-table-body-background-alt`   | The background-color of the table body when the mouse is over it |
 | `--mds-table-body-background-hover` | The background-color of the table body when the mouse is over it |
 
 

@@ -20,7 +20,7 @@
   transition-property: background-color;
 }
 
-:host([interactive]:not([interactive="false"]):hover) {
+:host([interactive]:hover) {
 
   --mds-table-body-background: var(--mds-table-body-background-hover);
 }
@@ -32,22 +32,22 @@
   --mds-table-row-background: var(--mds-table-background);
 }
 
-:host([selection]:not([selection="false"])) ::slotted(mds-table-row:not([selected])),
-:host([selection]:not([selection="false"])) mds-table-row:not([selected]) {
+:host([selection]) ::slotted(mds-table-row:not([selected])),
+:host([selection]) mds-table-row:not([selected]) {
 
   --mds-table-row-color: var(--mds-table-color);
   --mds-table-row-background: var(--mds-table-body-background-hover);
 }
 
-:host([interactive]:not([interactive="false"]):hover) ::slotted(mds-table-row),
-:host([interactive]:not([interactive="false"]):hover) mds-table-row {
+:host([interactive]:hover) ::slotted(mds-table-row),
+:host([interactive]:hover) mds-table-row {
 
   --mds-table-row-color: var(--mds-table-color-alt);
   --mds-table-row-background: var(--mds-table-body-background);
 }
 
-:host([selection]:not([selection="false"])) ::slotted(mds-table-row[selected]),
-:host([selection]:not([selection="false"])) mds-table-row[selected] {
+:host([selection]) ::slotted(mds-table-row[selected]),
+:host([selection]) mds-table-row[selected] {
 
   --mds-table-row-color: var(--mds-table-color);
   --mds-table-row-background: var(--mds-table-background);

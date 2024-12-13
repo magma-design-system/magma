@@ -1,0 +1,22 @@
+:host([sorted][selected]) {
+
+  --mds-table-row-background-alt: var(--mds-table-row-background-hover);
+}
+
+:host([sorted][selected]) ::slotted(mds-table-cell),
+:host([sorted][selected]) mds-table-cell {
+
+  --mds-table-cell-background: var(--mds-table-cell-background-hover);
+}
+
+:host([sorted]) ::slotted(mds-table-cell),
+:host([sorted]) mds-table-cell {
+
+  --mds-table-cell-background: var(--mds-table-body-background-alt);
+}
+
+:host([sorted]:hover) ::slotted(mds-table-cell),
+:host([sorted]:hover) mds-table-cell {
+
+  --mds-table-cell-background: var(--mds-table-cell-background-hover);
+}

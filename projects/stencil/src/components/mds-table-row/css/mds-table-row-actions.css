@@ -28,11 +28,11 @@
   transform: translateX(100%);
 }
 
-:host([overlay-actions]:not([overlay-actions="false"])) .actions {
+:host([overlay-actions]) .actions {
   padding-right: var(--mds-table-cell-padding);
   transform: translateX(100%);
 }
 
-:host([overlay-actions]:not([overlay-actions="false"]):hover) .actions {
+:host([overlay-actions]:hover) .actions {
   transform: translateX(0);
 }
