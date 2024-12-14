@@ -1,39 +1,5 @@
-:host([sorted][interactive]) ::slotted(mds-table-cell[sorted]) {
-
-  --mds-table-row-background: var(--mds-table-cell-background-hover);
-}
-
-:host([sorted][interactive]) ::slotted(mds-table-cell:not([sorted])) {
-
-  --mds-table-row-background: var(--mds-table-body-background-hover);
-}
-
-:host([sorted][interactive]:hover) ::slotted(mds-table-cell:not([sorted])) {
-
-  --mds-table-row-background: var(--mds-table-cell-background-hover);
-}
-
-:host([sorted]:not([interactive])) ::slotted(mds-table-cell:not([sorted])) {
-
-  --mds-table-row-background: var(--mds-table-body-background-hover);
-}
-
 :host([interactive]:hover) {
 
-  --mds-table-row-background: var(--mds-table-cell-background-hover);
+  --mds-table-row-background: var(--mds-table-row-background-hover);
   --mds-table-row-color: var(--mds-table-row-color-hover);
-}
-
-:host([interactive]:hover) ::slotted(mds-table-cell),
-:host([interactive]:hover) mds-table-cell {
-
-  --mds-table-cell-background: var(--mds-table-row-background-hover);
-  --mds-table-cell-color: var(--mds-table-row-color-hover);
-}
-
-:host([interactive]) ::slotted(mds-table-cell),
-:host([interactive]) mds-table-cell {
-
-  --mds-table-cell-background: var(--mds-table-row-background);
-  --mds-table-cell-color: var(--mds-table-row-color);
 }

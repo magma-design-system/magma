@@ -9,6 +9,12 @@
 
   --mds-table-body-background-hover: var(--mds-table-background-alt, theme('colors.tone-neutral-10'));
   --mds-table-body-background: var(--mds-table-background, theme('colors.tone-neutral'));
+  --mds-table-body-background-alt: var(--mds-table-body-background-hover);
+  --mds-table-body-color-alt: var(--mds-table-color-alt, theme('colors.tone-neutral-05'));
+  --mds-table-body-color: var(--mds-table-color, theme('colors.tone-neutral-02'));
+
+  /* internal */
+  --mds-table-row-color: var(--mds-table-body-color);
 
   @apply
     duration-200
@@ -20,42 +26,11 @@
   transition-property: background-color;
 }
 
-:host([interactive]:hover) {
-
-  --mds-table-body-background: var(--mds-table-body-background-hover);
-}
-
-:host ::slotted(mds-table-row),
-:host mds-table-row {
-
-  --mds-table-row-color: var(--mds-table-color);
-  --mds-table-row-background: var(--mds-table-background);
-}
-
-:host([selection]) ::slotted(mds-table-row:not([selected])),
-:host([selection]) mds-table-row:not([selected]) {
-
-  --mds-table-row-color: var(--mds-table-color);
-  --mds-table-row-background: var(--mds-table-body-background-hover);
-}
-
-:host([interactive]:hover) ::slotted(mds-table-row),
-:host([interactive]:hover) mds-table-row {
-
-  --mds-table-row-color: var(--mds-table-color-alt);
-  --mds-table-row-background: var(--mds-table-body-background);
-}
-
-:host([selection]) ::slotted(mds-table-row[selected]),
-:host([selection]) mds-table-row[selected] {
-
-  --mds-table-row-color: var(--mds-table-color);
-  --mds-table-row-background: var(--mds-table-background);
-}
-
 :host(:last-child) ::slotted(*:last-child) {
 
   --mds-table-cell-border-color: transparent;
 }
 
+@import './css/mds-table-body-interactive.css';
+@import './css/mds-table-body-selection.css';
 @import './css/mds-table-body-pref-animation.css';

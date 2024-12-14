@@ -10,6 +10,11 @@
 
 :host {
 
+  --mds-table-cell-background: var(--mds-table-row-background);
+  --mds-table-cell-background-alt: var(--mds-table-row-background-alt);
+  --mds-table-cell-color-alt: var(--mds-table-row-color-alt);
+  --mds-table-cell-color: var(--mds-table-row-color);
+
   @apply
     duration-200
     ease-out;
@@ -24,3 +29,5 @@
 }
 
 @import './css/mds-table-cell-pref-animation.css';
+@import './css/mds-table-cell-sorted.css';
+/* @import './css/mds-table-cell-selected.css'; */

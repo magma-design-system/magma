@@ -21,7 +21,7 @@
   --mds-table-cell-padding: theme('spacing.400');
   --mds-table-color-alt: theme('colors.tone-neutral-05');
   --mds-table-color: theme('colors.tone-neutral-02');
-
+  /* internal */
   --mds-table-cell-border-color: var(--mds-table-border-color);
   --mds-table-cell-border-width: var(--mds-table-border-width);
 

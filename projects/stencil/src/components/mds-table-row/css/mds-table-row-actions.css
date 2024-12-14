@@ -8,8 +8,11 @@
 }
 
 .actions {
+
+  --mds-table-row-actions-background: var(--mds-table-row-background);
+
   align-items: center;
-  background-color: var(--mds-table-cell-background-hover);
+  background-color: var(--mds-table-row-actions-background);
   display: inline-flex;
   gap: var(--mds-table-row-actions-gap);
   inset: 0;
@@ -25,6 +28,7 @@
 }
 
 :host(:hover) .actions {
+  --mds-table-row-actions-background: var(--mds-table-row-background-hover);
   transform: translateX(100%);
 }
 
