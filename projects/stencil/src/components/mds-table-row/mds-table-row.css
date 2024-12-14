@@ -2,10 +2,11 @@
 
 :host {
 
-  --mds-table-row-color-hover: var(--mds-table-color-hover, theme('colors.tone-neutral-02'));
-  --mds-table-row-color: var(--mds-table-color, theme('colors.tone-neutral-03'));
+  --mds-table-row-color-hover: var(--mds-table-color, theme('colors.tone-neutral-02'));
+  --mds-table-row-color-alt: var(--mds-table-color-alt, theme('colors.tone-neutral-02'));
+  --mds-table-row-background-hover: var(--mds-table-background, theme('colors.tone-neutral'));
+  --mds-table-row-background-alt: var(--mds-table-background-alt, theme('colors.tone-neutral'));
   --mds-table-row-actions-gap: var(--mds-table-actions-gap, theme('spacing.400'));
-
 
   @apply
     duration-200
@@ -18,7 +19,16 @@
 
 }
 
+.selection-cell {
+  vertical-align: middle;
+}
+
+.checkbox-wrapper {
+  display: flex;
+}
+
 @import './css/mds-table-row-interactive.css';
-@import './css/mds-table-row-actions.css';
 @import './css/mds-table-row-selected.css';
+@import './css/mds-table-row-sorted.css';
+@import './css/mds-table-row-actions.css';
 @import './css/mds-table-row-pref-animation.css';

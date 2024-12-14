@@ -199,7 +199,9 @@ export class MdsButton {
       if (!this.host.hasAttribute('aria-label')) {
         setAttributeIfEmpty(this.host, 'title', iconTitle)
       }
-      setAttributeIfEmpty(this.host, 'aria-label', iconTitle)
+      if (!this.host.hasAttribute('title')) {
+        setAttributeIfEmpty(this.host, 'aria-label', iconTitle)
+      }
     }
 
     setAttributeIfEmpty(this.host, 'role', 'button')

@@ -32,6 +32,19 @@ This is a web-component from Maggioli Design System [Magma](https://magma.maggio
 | `mdsInputSwitchChange` | Emits when the value changes | `CustomEvent<MdsInputSwitchEventDetail>` |
 
 
+## Methods
+
+### `updateLang() => Promise<void>`
+
+
+
+#### Returns
+
+Type: `Promise<void>`
+
+
+
+
 ## Slots
 
 | Slot        | Description                      |
