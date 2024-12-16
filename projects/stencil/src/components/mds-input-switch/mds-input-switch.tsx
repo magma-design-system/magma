@@ -1,7 +1,7 @@
 import clsx from 'clsx'
 import miBaselineChecked from '@icon/mgg/check-small.svg'
 import miBaselineRemove from '@icon/mi/baseline/remove.svg'
-import { AttachInternals, Component, Element, Host, h, Prop, Event, EventEmitter, State, Method } from '@stencil/core'
+import { AttachInternals, Component, Element, Host, h, Prop, Event, EventEmitter, State, Method, Watch } from '@stencil/core'
 import { InputSwitchType, InputSwitchSizeType } from './meta/types'
 import { KeyboardManager } from '@common/keyboard-manager'
 import { MdsInputSwitchEventDetail } from './meta/event-detail'
@@ -152,6 +152,18 @@ export class MdsInputSwitch {
       this.km.removeElement('switch')
       this.km.addElement(this.host.shadowRoot?.querySelector('.label-icon') as HTMLElement, 'default')
       this.km.attachClickBehavior('default')
+    }
+  }
+
+  @Watch('disabled')
+  protected disabledChanged (newValue: boolean):void {
+    /**
+     * This is related to ALL disabled attributes set on Magma input components
+     * if solved, please check mds-button, mds-input, mds-input-*
+     * https://github.com/ionic-team/stencil/issues/5461
+     */
+    if (newValue) {
+      this.internals.setFormValue(null)
     }
   }
 
