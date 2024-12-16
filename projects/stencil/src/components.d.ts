@@ -347,7 +347,7 @@ export namespace Components {
         /**
           * Specifies if the component is disabled or not
          */
-        "disabled": boolean;
+        "disabled"?: boolean;
         /**
           * Specifies the URL target of the button
          */
@@ -987,6 +987,10 @@ export namespace Components {
         "variant"?: ThemeStatusVariantType;
     }
     interface MdsInputRange {
+        /**
+          * Sets if the component is disabled
+         */
+        "disabled"?: boolean;
         /**
           * The greatest value in the range of permitted values
          */
@@ -4024,6 +4028,10 @@ declare namespace LocalJSX {
         "variant"?: ThemeStatusVariantType;
     }
     interface MdsInputRange {
+        /**
+          * Sets if the component is disabled
+         */
+        "disabled"?: boolean;
         /**
           * The greatest value in the range of permitted values
          */

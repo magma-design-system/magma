@@ -17,12 +17,16 @@
   --mds-input-range-thumb-size: theme('spacing.400');
   --mds-input-range-thumb-background: theme('colors.variant-primary-04');
   --mds-input-range-thumb-shadow: 0 0 0 2px theme('colors.tone-neutral');
-  --mds-input-range-track-background: theme('colors.tone-neutral-09');
+  --mds-input-range-track-background: theme('colors.tone-neutral-08');
   --mds-input-range-track-size: theme('spacing.200');
   --mds-input-range-track-progress-background: theme('colors.variant-primary-03');
+  --mds-input-range-thumb-background-disabled: theme('colors.tone-neutral-06');
+  --mds-input-range-track-background-disabled: theme('colors.tone-neutral-08');
+  --mds-input-range-track-progress-background-disabled: theme('colors.tone-neutral-06');
 
   @apply
-    duration-200
+    duration-300
+    ease-in-out
     gap-100;
 
   display: grid;
@@ -80,6 +84,10 @@
 }
 
 .field::-webkit-slider-thumb {
+  @apply
+    ease-in-out
+    duration-300;
+
   appearance: none;
   background-color: var(--mds-input-range-thumb-background);
   border: 0;
@@ -89,6 +97,7 @@
   height: var(--mds-input-range-thumb-size);
   line-height: 0;
   transform: translate(0, -50%);
+  transition-property: background-color, box-shadow;
   width: var(--mds-input-range-thumb-size);
 }
 
@@ -131,6 +140,7 @@
   border-radius: var(--mds-input-range-track-size);
 }
 
+@import './css/mds-input-range-disabled.css';
 @import './css/mds-input-range-pref-animation.css';
 @import './css/mds-input-range-pref-theme.css';
 @import './css/mds-input-range-pref-contrast.css';

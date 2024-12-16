@@ -1,0 +1,49 @@
+.await {
+  @apply
+    duration-300
+    ease-in-out
+    h-600
+    w-600;
+
+  display: none;
+  margin-right: calc(calc(-1 * var(--mds-button-gap)) - theme('spacing.600'));
+  transform: scale(0);
+  transition-behavior: allow-discrete;
+  transition-property: display, margin-right, opacity, transform, width;
+}
+
+.spinner {
+  @apply
+    h-600
+    w-600;
+
+  --mds-spinner-duration: var(--mds-button-await-duration);
+
+  color: currentcolor;
+}
+
+:host(:not([await])) .spinner,
+:host([await="false"]) .spinner {
+  @apply
+    duration-200
+    ease-out;
+}
+
+:host([await]:not([await="false"])) .await {
+  @apply
+    mr-0
+    opacity-100;
+
+  display: flex;
+  transform: scale(1);
+
+  @starting-style {
+    margin-right: calc(calc(-1 * var(--mds-button-gap)) - theme('spacing.600'));
+    opacity: 0;
+    transform: scale(0);
+  }
+}
+
+:host([await]:not([await="false"])) {
+  pointer-events: none;
+}

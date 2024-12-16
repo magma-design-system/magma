@@ -3,6 +3,10 @@ import { h } from '@stencil/core'
 export default {
   title: 'Form / Range',
   argTypes: {
+    disabled: {
+      type: { name: 'boolean' },
+      description: 'Sets if the component is disabled',
+    },
     min: {
       type: { name: 'number' },
       description: 'The lowest value in the range of permitted values',
@@ -43,6 +47,11 @@ const HideHeaderTemplate = args =>
 
 
 export const Default = Template.bind({})
+
+export const Disabled = Template.bind({})
+Disabled.args = {
+  disabled: true,
+}
 
 export const Min = Template.bind({})
 Min.args = {

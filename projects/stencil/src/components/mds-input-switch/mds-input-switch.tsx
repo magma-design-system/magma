@@ -155,6 +155,10 @@ export class MdsInputSwitch {
     }
   }
 
+  formResetCallback (): void {
+    this.internals.setFormValue('')
+  }
+
   componentDidLoad (): void {
     this.language = this.t.lang(this.host)
     this.label = this.host.textContent ?? ''

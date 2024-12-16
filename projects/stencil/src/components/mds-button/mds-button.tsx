@@ -74,7 +74,7 @@ export class MdsButton {
   /**
    * Specifies if the component is disabled or not
    */
-  @Prop({ reflect: true }) readonly disabled: boolean
+  @Prop({ mutable: false, reflect: true }) disabled?: boolean
 
   /**
    * Specifies if the button is awaiting for a response
@@ -98,6 +98,13 @@ export class MdsButton {
       return
     }
     this.km.detachClickBehavior()
+
+    /**
+     * When the component is disabled="false" it won't work with onClick events
+     * since formAssociated where added to it.
+     * https://github.com/ionic-team/stencil/issues/5461
+     */
+    this.disabled = undefined
   }
 
   @Watch('await')

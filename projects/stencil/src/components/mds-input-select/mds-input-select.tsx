@@ -86,6 +86,10 @@ export class MdsInputSelect {
     this.internals.setFormValue(this.value?.toString() ?? null)
   }
 
+  formResetCallback (): void {
+    this.internals.setFormValue('')
+  }
+
   componentDidLoad (): void {
     if (this.value) {
       this.selected = true
