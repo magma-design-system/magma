@@ -18,22 +18,23 @@ import { DropdownInteractionType } from './meta/types'
   shadow: true,
 })
 export class MdsDropdown {
+  private readonly backdropBackgroundVisible = 'rgba(var(--magma-backdrop-color, 0 0 0) / var(--magma-backdrop-opacity, 0.1))'
+  private readonly backdropBackgroundHidden = 'rgba(var(--magma-backdrop-color, 0 0 0) / 0)'
+  private readonly backdropId = 'mds-dropdown-backdrop'
+  private readonly km = new KeyboardManager()
 
   private arrowEl: HTMLElement
-  private backdropBackgroundVisible = 'rgba(var(--magma-backdrop-color, 0 0 0) / var(--magma-backdrop-opacity, 0.1))'
-  private backdropBackgroundHidden = 'rgba(var(--magma-backdrop-color, 0 0 0) / 0)'
   private cssBackdropDuration: string
   private cssMouseOverDelayDuration: string
   private cssBackdropZIndex: string
   private backdropEl: HTMLElement
-  private backdropId = 'mds-dropdown-backdrop'
   private backdropTimer: NodeJS.Timeout
   private mouseoverTimer: NodeJS.Timeout
   private caller: HTMLElement
   private cleanupAutoUpdate: () => void
-  private km = new KeyboardManager()
+  private updatePropsCssCalled = false
 
-  @Element() private host: HTMLMdsDropdownElement
+  @Element() private readonly host: HTMLMdsDropdownElement
 
   /**
    * If set, the component will have an arrow pointing to the caller.
@@ -125,24 +126,10 @@ export class MdsDropdown {
    */
   @Event({ eventName: 'mdsDropdownChange' }) changedEvent: EventEmitter<MdsDropdownEventDetail>
 
-  private handleCloseDropdown = (e: Event): void => {
-    if (!this.visible) {
-      return
-    }
+  private readonly handleCloseDropdown = (e: Event): void => {
     if (!this.host.contains(e.target as HTMLElement) && e.target as HTMLElement !== this.caller) {
-      this.handleVisibility(false)
+      this.visible = false
     }
-  }
-
-  private handleVisibility = (visibility: boolean): void => {
-    this.visible = visibility
-    this.changedEvent.emit({ caller: this.caller, visible: this.visible })
-    if (this.visible) {
-      this.visibleEvent.emit({ caller: this.caller, visible: true })
-      return
-    }
-    this.hiddenEvent.emit({ caller: this.caller, visible: false })
-    this.updatePosition()
   }
 
   private attachBackdrop (): void {
@@ -175,29 +162,29 @@ export class MdsDropdown {
     }, cssDurationToMilliseconds(this.cssBackdropDuration))
   }
 
-  private callerOnClick = (): void => {
-    this.handleVisibility(!this.visible)
+  private readonly callerOnClick = (): void => {
+    this.visible = !this.visible
   }
 
-  private callerOnMouseOver = (): void => {
+  private readonly callerOnMouseOver = (): void => {
     this.mouseoverTimer = setTimeout(() => {
       clearTimeout(this.mouseoverTimer)
-      this.handleVisibility(true)
+      this.visible = true
     }, cssDurationToMilliseconds(this.cssMouseOverDelayDuration))
   }
 
-  private closeDropdownMouseLeave = (): void => {
-    this.handleVisibility(false)
+  private readonly closeDropdownMouseLeave = (): void => {
+    this.visible = false
     this.host.removeEventListener('mouseleave', this.closeDropdownMouseLeave.bind(this))
     this.host.addEventListener('mouseover', this.handleCloseDropdownMouseLeave.bind(this))
   }
 
-  private handleCloseDropdownMouseLeave = (): void => {
+  private readonly handleCloseDropdownMouseLeave = (): void => {
     this.host.removeEventListener('mouseover', this.handleCloseDropdownMouseLeave.bind(this))
     this.host.addEventListener('mouseleave', this.closeDropdownMouseLeave.bind(this))
   }
 
-  private arrowInset = (middleware: MiddlewareData, arrowPosition: string): { bottom?: string, left?: string, right?: string, top?: string } => {
+  private readonly arrowInset = (middleware: MiddlewareData, arrowPosition: string): { bottom?: string, left?: string, right?: string, top?: string } => {
     const { arrow } = middleware
     const inset = { bottom: '', left: '', right: '', top: '' }
 
@@ -228,7 +215,7 @@ export class MdsDropdown {
     return inset
   }
 
-  private arrowTransform = (arrowPosition: string): { transform: string } => {
+  private readonly arrowTransform = (arrowPosition: string): { transform: string } => {
     let transformProps = this.arrow && this.visible ? 'scale(1)' : 'scale(0)'
     switch (arrowPosition) {
     case 'bottom':
@@ -249,7 +236,7 @@ export class MdsDropdown {
     return { transform: transformProps }
   }
 
-  private arrowTransformOrigin = (arrowPosition: string): { transformOrigin: string } => {
+  private readonly arrowTransformOrigin = (arrowPosition: string): { transformOrigin: string } => {
     switch (arrowPosition) {
     case 'bottom':
       return { transformOrigin: 'center top' }
@@ -264,9 +251,10 @@ export class MdsDropdown {
     }
   }
 
-  private updatePosition = (): void => {
+  private readonly updatePosition = (): void => {
     if (!this.caller) return
 
+    console.info('update position')
     const middleware: Middleware[] = new Array<Middleware>()
     const config: { padding?: number } = {}
 
@@ -382,39 +370,61 @@ export class MdsDropdown {
     this.updatePosition()
   }
 
+  @Watch('target')
+  targetChanged (): void {
+    if (!this.target) return
+
+    this.arrowEl = this.host.shadowRoot?.querySelector('.arrow') as HTMLElement
+
+    // search caller in document or rootNode of host (if target is in shadowDOM)
+    const caller = this.host.parentElement?.shadowRoot?.querySelector(this.target) as HTMLElement ??
+    (this.host.getRootNode() as HTMLElement).querySelector(this.target) as HTMLElement
+
+    if (!caller) {
+      throw Error(`Target not found: ${this.target}`)
+    }
+
+    this.caller = caller
+    this.setAriaAttributes()
+
+    this.setInteractionBehaviour()
+
+    this.km.addElement(this.host)
+    this.km.attachEscapeBehavior(() => this.visibleChanged(false))
+  }
+
   @Watch('visible')
   visibleChanged (newValue: boolean): void {
-    this.updatePosition()
-    if (!this.backdrop) {
-      return
-    }
+    this.changedEvent.emit({ caller: this.caller, visible: newValue })
     if (newValue) {
+      this.updateCSSCustomProps()
+      document.addEventListener('click', this.handleCloseDropdown)
+      if (!this.cleanupAutoUpdate) {
+        this.cleanupAutoUpdate = autoUpdate(this.caller, this.host, this.updatePosition)
+      }
+      this.visibleEvent.emit({ caller: this.caller, visible: true })
       this.attachBackdrop()
       return
     }
+    document.removeEventListener('click', this.handleCloseDropdown)
+    this.cleanupAutoUpdate()
     this.detachBackdrop()
+    this.hiddenEvent.emit({ caller: this.caller, visible: false })
   }
 
-  @Watch('zIndex')
-  zIndexChanged (newValue: number): void {
-    if (newValue) {
-      this.host.style.setProperty('z-index', newValue.toString())
-    }
-  }
-
-  private updateCSSCustomProps = (): void => {
-    if (typeof window === 'undefined') return
+  private readonly updateCSSCustomProps = (): void => {
+    if (!this.updatePropsCssCalled && typeof window === 'undefined') return
     const elementStyles = window.getComputedStyle(this.host)
     this.cssBackdropDuration = elementStyles.getPropertyValue('--mds-dropdown-backdrop-duration')
     this.cssBackdropZIndex = elementStyles.getPropertyValue('--mds-dropdown-backdrop-z-index')
     this.cssMouseOverDelayDuration = elementStyles.getPropertyValue('--mds-dropdown-mouseover-delay')
+    this.updatePropsCssCalled = true
   }
 
   componentWillLoad (): void {
     Array.from(document.getElementsByClassName(this.backdropId)).forEach((element: HTMLElement) => {
       element.remove()
     })
-    this.zIndexChanged(this.zIndex)
   }
 
   private setAriaAttributes (): void {
@@ -424,8 +434,7 @@ export class MdsDropdown {
     setAttributeIfEmpty(this.host, 'aria-labelledby', this.target)
   }
 
-  private setInteractionBehaviour = (): void => {
-
+  private readonly setInteractionBehaviour = (): void => {
     if (this.interaction === 'none') {
       return
     }
@@ -441,32 +450,16 @@ export class MdsDropdown {
   }
 
   componentDidLoad (): void {
-    this.updateCSSCustomProps()
-    document.addEventListener('click', this.handleCloseDropdown)
-    this.arrowEl = this.host.shadowRoot?.querySelector('.arrow') as HTMLElement
-
-    // search caller in document or rootNode of host (if target is in shadowDOM)
-    const caller = document.querySelector(this.target) as HTMLElement ??
-      (this.host.getRootNode() as HTMLElement).querySelector(this.target) as HTMLElement
-
-    if (!caller) {
-      throw Error(`Target not found: ${this.target}`)
-    }
-
-    this.caller = caller
-    this.setAriaAttributes()
-
-    this.km.addElement(this.host)
-    this.km.attachEscapeBehavior(() => this.handleVisibility(false))
-
-    this.backdropChanged(this.backdrop)
-    this.updatePosition()
-
-    this.setInteractionBehaviour()
-
-    if (!this.cleanupAutoUpdate) {
-      this.cleanupAutoUpdate = autoUpdate(this.caller, this.host, this.updatePosition)
-    }
+    /**
+   * When binding values in frameworks such as Angular
+   * it is possible for the value to be set after the Web Component
+   * initializes but before the value watcher is set up in Stencil.
+   * As a result, the watcher callback may not be fired.
+   * We work around this by manually calling the watcher
+   * callback when the component has loaded and the watcher
+   * is configured.
+   */
+    this.targetChanged()
   }
 
   disconnectedCallback (): void {
@@ -477,7 +470,11 @@ export class MdsDropdown {
 
   render () {
     return (
-      <Host>
+      <Host
+        style={{
+          zIndex: `${this.zIndex}`,
+        }}
+      >
         <div class="arrow" innerHTML={arrowSvg} />
         <slot />
       </Host>

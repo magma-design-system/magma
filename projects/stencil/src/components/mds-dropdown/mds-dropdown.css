@@ -37,7 +37,7 @@
 
   background-color: var(--mds-dropdown-background);
   box-sizing: border-box;
-  display: grid;
+  display: none;
   filter: var(--mds-dropdown-drop-shadow);
   pointer-events: none;
   position: fixed;
@@ -50,6 +50,8 @@
 
 :host( [visible]:not([visible="false"]) ) {
   @apply opacity-100;
+
+  display: grid;
 
   pointer-events: auto;
   transform: var(--mds-dropdown-transform-to);

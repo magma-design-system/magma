@@ -140,6 +140,21 @@ const TemplateNested = ({ ...args }) =>
     </mds-dropdown>
   </div>
 
+const TemplatePerformance = ({ ...args }) =>
+  <div class="grid">
+    {Array(400).fill(null).map((_value, index) => (
+      <div key={index} class="h-[100px] flex items-start justify-center text-center border-0 border-t border-solid border-t-tone-neutral-07">
+        <p id={'button-' + index}
+          class="px-200 py-100 rounded-b-lg bg-tone-neutral-10 border-t-0 border border-solid border-tone-neutral-07">
+          Pseudo-button { index }
+        </p>
+        <mds-dropdown target={'#button-' + index} {...args}>
+          <mds-text> Testo del dropdown per il bottone {index}</mds-text>
+        </mds-dropdown>
+      </div>
+    ))}
+  </div>
+
 export const Default = Template.bind({})
 Default.args = {
   class: 'max-w-[350px] w-full',
@@ -256,3 +271,7 @@ export const NestedBestPractice = TemplateNested.bind({})
 NestedBestPractice.args = {
   backdrop: true,
 }
+
+export const Performance = TemplatePerformance.bind({
+  Backdrop: true,
+})
