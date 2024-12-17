@@ -1,4 +1,4 @@
-import { Component, Host, h, Element, State, Method } from '@stencil/core'
+import { Component, Host, h, Element, State, Method, Prop } from '@stencil/core'
 import { Locale } from '@common/locale'
 import localeEl from './meta/locale.el.json'
 import localeEn from './meta/locale.en.json'
@@ -31,13 +31,15 @@ export class MdsTableHeader {
   @Method()
   async updateLang (): Promise<void> {
     this.language = this.t.lang(this.host)
+    this.t.update()
   }
 
+  @Prop() readonly selectable?: boolean
+
   componentWillLoad (): void {
-    this.t.lang(this.host)
+    this.language = this.t.lang(this.host)
     this.table = this.host.closest('mds-table') as HTMLMdsTableElement
     this.hasActions = this.table.querySelector('[slot="action"]') !== null
-    this.hasSelection = this.table.hasAttribute('selectable')
   }
 
   private handleSelectAllChange = (e: CustomEvent): void => {
@@ -48,9 +50,11 @@ export class MdsTableHeader {
   render () {
     return (
       <Host role="row">
-        { this.hasSelection &&
-          <mds-table-cell class="selection">
-            <mds-input-switch title={this.t.get(this.selectAll ? 'selectNoneRows' : 'selectAllRows')} type="checkbox" onMdsInputSwitchChange={this.handleSelectAllChange}></mds-input-switch>
+        { this.selectable &&
+          <mds-table-cell class="selection" role="columnheader">
+            <div class="checkbox-wrapper">
+              <mds-input-switch title={this.t.get(this.selectAll ? 'selectNoneRows' : 'selectAllRows')} lang={this.language} type="checkbox" onMdsInputSwitchChange={this.handleSelectAllChange}></mds-input-switch>
+            </div>
           </mds-table-cell>
         }
         <slot/>

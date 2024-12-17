@@ -61,18 +61,16 @@ Type: `Promise<void>`
 
 ## CSS Custom Properties
 
-| Name                                | Description                                                      |
-| ----------------------------------- | ---------------------------------------------------------------- |
-| `--mds-table-background`            | The background-color of the table                                |
-| `--mds-table-body-background`       | The background-color of the table body                           |
-| `--mds-table-body-background-hover` | The background-color of the table body when the mouse is over it |
-| `--mds-table-border-color`          | The border-color of the table                                    |
-| `--mds-table-border-width`          | The border-width of the table                                    |
-| `--mds-table-cell-background`       | The background-color of the table cell                           |
-| `--mds-table-cell-background-hover` | The background-color of the table cell when the mouse is over it |
-| `--mds-table-cell-border-color`     | The border-color of the table cell                               |
-| `--mds-table-cell-border-width`     | The border-width of the table cell                               |
-| `--mds-table-cell-padding`          | The padding of the table cell                                    |
+| Name                         | Description                                                                                             |
+| ---------------------------- | ------------------------------------------------------------------------------------------------------- |
+| `--mds-table-actions-gap`    | The gap between slotted actions on `mds-table-row` element                                              |
+| `--mds-table-background`     | The background-color of the table                                                                       |
+| `--mds-table-background-alt` | The background-color of the table cell not hovered, visible when attribute `interactive` is set tu true |
+| `--mds-table-border-color`   | The border-color of the table                                                                           |
+| `--mds-table-border-width`   | The border-width of the table, visible when attribute `interactive` is set tu true                      |
+| `--mds-table-cell-padding`   | The padding of the table cell                                                                           |
+| `--mds-table-color`          | The text color of the table                                                                             |
+| `--mds-table-color-alt`      | The text color of the table                                                                             |
 
 
 ----------------------------------------------

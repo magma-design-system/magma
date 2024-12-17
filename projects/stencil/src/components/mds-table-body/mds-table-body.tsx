@@ -11,7 +11,8 @@ import { Component, Host, h, Prop } from '@stencil/core'
 })
 export class MdsTableBody {
 
-  @Prop({ reflect: true }) interactive?: boolean
+  @Prop({ reflect: true }) readonly interactive?: boolean
+  @Prop({ reflect: true }) readonly selection?: boolean
 
   render () {
     return (

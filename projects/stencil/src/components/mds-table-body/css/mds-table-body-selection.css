@@ -1,0 +1,4 @@
+:host([selection]) {
+
+  --mds-table-body-background: var(--mds-table-body-background-alt);
+}

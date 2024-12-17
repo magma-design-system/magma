@@ -7,6 +7,13 @@ This is a web-component from Maggioli Design System [Magma](https://magma.maggio
 <!-- Auto Generated Below -->
 
 
+## Properties
+
+| Property     | Attribute    | Description | Type                   | Default     |
+| ------------ | ------------ | ----------- | ---------------------- | ----------- |
+| `selectable` | `selectable` |             | `boolean \| undefined` | `undefined` |
+
+
 ## Methods
 
 ### `updateLang() => Promise<void>`

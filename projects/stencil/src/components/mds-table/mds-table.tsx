@@ -17,6 +17,7 @@ export class MdsTable {
   @Element() host: HTMLMdsTableElement
   private rows: NodeListOf<HTMLMdsTableRowElement>
   private body: HTMLMdsTableBodyElement
+  private header: HTMLMdsTableHeaderElement
   private resizeObserver: ResizeObserver
   private cellsWidth: number = 0
   @State() selectedRows: MdsTableRowSelection[] = []
@@ -44,8 +45,9 @@ export class MdsTable {
   }
 
   @Watch('selectable')
-  onTableSelectable (): void {
+  onTableSelectable (newValue: boolean): void {
     this.handleSelection()
+    this.header.selectable = newValue
   }
 
   /**
@@ -64,6 +66,7 @@ export class MdsTable {
     })
     this.selectionEvent.emit({ rows: this.selectedRows })
     this.selection = this.selectedRows.length > 0
+    this.body.selection = this.selection
   }
 
   /**
@@ -118,6 +121,8 @@ export class MdsTable {
   componentDidLoad (): void {
     this.rows = this.host.querySelectorAll('mds-table-row') as NodeListOf<HTMLMdsTableRowElement>
     this.body = this.host.querySelector('mds-table-body') as HTMLMdsTableBodyElement
+    this.header = this.host.querySelector('mds-table-header') as HTMLMdsTableHeaderElement
+    this.header.selectable = this.selectable
     this.updateInteractive()
     this.handleSelection()
     if (this.hasActions()) {
