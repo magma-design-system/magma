@@ -3,6 +3,7 @@ import baselineAttachFile from '@icon/mi/baseline/attach-file.svg'
 import baselineAudiotrack from '@icon/mi/baseline/audiotrack.svg'
 import baselineTerminal from '@icon/mi/baseline/terminal.svg'
 import baselineInsertDriveFile from '@icon/mi/baseline/insert-drive-file.svg'
+import mdiLicense from '@icon/mdi/license.svg'
 import mdiHardDisk from '@icon/mdi/harddisk.svg'
 import baselineEmail from '@icon/mi/baseline/email.svg'
 import baselineWysiwyg from '@icon/mi/baseline/wysiwyg.svg'
@@ -19,6 +20,7 @@ type FileFormat =
   | 'archive'
   | 'attachment'
   | 'audio'
+  | 'certificate'
   | 'code'
   | 'data'
   | 'document'
@@ -53,6 +55,10 @@ const fileFormatsVariant: FileFormatVariants = {
   audio: {
     icon: baselineAudiotrack,
     variant: 'violet',
+  },
+  certificate: {
+    icon: mdiLicense,
+    variant: 'orange',
   },
   code: {
     icon: baselineTerminal,
