@@ -112,8 +112,15 @@ const TemplateAutoHide = args =>
 
 const TemplateLandingPage = args =>
   <div class="-m-400">
-    <div class="bg-label-amaranth-06 flex items-center justify-center h-[600px]">
-      <mds-text typography='h1'>Welcome</mds-text>
+    <div class="bg-label-amaranth-06 text-label-amaranth-04 flex text-center items-center justify-center h-[600px] flex-col pt-2000">
+      <mds-text typography='h1'>Hey</mds-text>
+      <mds-text typography='h1'>WelcomeTo</mds-text>
+      <mds-text typography='h1'>ThisBeautiful</mds-text>
+      <mds-text typography='h1'>AndIncrediblyNice</mds-text>
+      <mds-text typography='h1'>FakeLandingPage</mds-text>
+      <mds-text typography='h1'>ForYourJoy</mds-text>
+      <mds-text typography='h1'>ByeBye</mds-text>
+      <mds-text typography='h1'>Bro</mds-text>
     </div>
     <div class="p-1200 flex justify-center">
       <div class="grid gap-600 grid-cols-3 mobile:grid-cols-1 max-w-screen-desktop">
