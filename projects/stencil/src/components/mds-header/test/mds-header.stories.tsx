@@ -110,6 +110,50 @@ const TemplateAutoHide = args =>
     </mds-header>
   </div>
 
+const TemplateLandingPage = args =>
+  <div class="-m-400">
+    <div class="bg-label-amaranth-06 flex items-center justify-center h-[600px]">
+      <mds-text typography='h1'>Welcome</mds-text>
+    </div>
+    <div class="p-1200 flex justify-center">
+      <div class="grid gap-600 grid-cols-3 mobile:grid-cols-1 max-w-screen-desktop">
+        {Array(18).fill(null).map(() => (
+          <div class="grid gap-25">
+            <mds-text typography='h5'>This is a section title</mds-text>
+            <mds-text>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Accusamus iure, ratione beatae quam optio cumque rerum modi consectetur odit eligendi omnis veniam fuga non ipsam voluptatum a ut neque illum.</mds-text>
+          </div>
+        ))}
+      </div>
+    </div>
+    <mds-header {...args}>
+      <mds-header-bar>
+        <div class="flex gap-400 items-center">
+          <mds-img class="w-1000" src="./logo-gruppo-maggioli.svg" />
+          <div class="mb-100">
+            <mds-text typography="h6">Mobile menu</mds-text>
+            <mds-text typography="option" class="text-tone-neutral-04">Shows up under 1024px</mds-text>
+          </div>
+        </div>
+        <mds-button slot="nav" variant="dark" tone="ghost">Accedi</mds-button>
+        <mds-button slot="nav" icon="mi/round/person">Registrati</mds-button>
+      </mds-header-bar>
+      <div slot="menu">
+        <div class="flex gap-200 items-center p-600 border-b border-tone-neutral-09">
+          <mds-img class="w-1000" src="./logo-gruppo-maggioli.svg" />
+          <div class="mb-100">
+            <mds-text typography="h6">Gruppo Maggioli</mds-text>
+            <mds-text typography="option" class="text-tone-neutral-04">Header by RD Team</mds-text>
+          </div>
+        </div>
+        <div class="grid gap-200 p-600">
+          <mds-button variant="dark" tone="ghost">Accedi</mds-button>
+          <mds-button icon="mi/round/person">Registrati</mds-button>
+        </div>
+      </div>
+    </mds-header>
+  </div>
+
+
 export const Default = Template.bind({})
 export const AutoHide = TemplateAutoHide.bind({})
 AutoHide.args = {
@@ -122,10 +166,10 @@ Appearance.args = {
   appearance: 'inline',
 }
 
-export const AppearanceSet = TemplateAutoHide.bind({})
+export const AppearanceSet = TemplateLandingPage.bind({})
 AppearanceSet.args = {
-  'auto-hide': 600,
+  'auto-hide': 800,
   threshold: 10,
-  appearance: 'stripe',
-  'appearance-set': 'stripe, inline 300',
+  appearance: 'inline',
+  'appearance-set': 'inline, stripe 548',
 }

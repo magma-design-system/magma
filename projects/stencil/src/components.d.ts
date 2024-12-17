@@ -663,6 +663,7 @@ export namespace Components {
           * Sets the visibility type of the navigation menu of mds-header-bar
          */
         "nav": HeaderBarNavType;
+        "setOpened": (isOpened?: boolean) => Promise<void>;
         /**
           * Sets the threshold margin to trigger hide or show status of the `mds-header-bar` when the page is scrolled
          */
@@ -681,6 +682,7 @@ export namespace Components {
           * Sets the visibility type of the navigation menu
          */
         "nav": HeaderBarNavType;
+        "setOpened": (isOpened?: boolean) => Promise<void>;
     }
     interface MdsHelp {
         /**

@@ -22,6 +22,25 @@ This is a web-component from Maggioli Design System [Magma](https://magma.maggio
 | `mdsHeaderBarOpen` | Emits when the component is opened | `CustomEvent<void>` |
 
 
+## Methods
+
+### `setOpened(isOpened?: boolean) => Promise<void>`
+
+
+
+#### Parameters
+
+| Name       | Type      | Description |
+| ---------- | --------- | ----------- |
+| `isOpened` | `boolean` |             |
+
+#### Returns
+
+Type: `Promise<void>`
+
+
+
+
 ## Slots
 
 | Slot        | Description                                                                                                                                          |
