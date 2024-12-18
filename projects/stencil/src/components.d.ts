@@ -52,7 +52,6 @@ import { MdsPrefLanguageEventDetail } from "./event-detail/language";
 import { ThemeModeType, ThemeTransitionType } from "./components/mds-pref-theme/meta/types";
 import { PriceTableFeaturesCellType } from "./components/mds-price-table-features-cell/meta/types";
 import { DirectionType } from "./components/mds-progress/meta/types";
-import { ISO8601Date } from "./type/date";
 import { NotificationDateFormatType, NotificationPreviewType } from "./components/mds-push-notification/meta/types";
 import { MdsPushNotificationEventDetail } from "./components/mds-push-notification/meta/event-detail";
 import { MdsStepperBarEventDetail } from "./components/mds-stepper-bar/meta/event-detail";
@@ -115,7 +114,6 @@ export { MdsPrefLanguageEventDetail } from "./event-detail/language";
 export { ThemeModeType, ThemeTransitionType } from "./components/mds-pref-theme/meta/types";
 export { PriceTableFeaturesCellType } from "./components/mds-price-table-features-cell/meta/types";
 export { DirectionType } from "./components/mds-progress/meta/types";
-export { ISO8601Date } from "./type/date";
 export { NotificationDateFormatType, NotificationPreviewType } from "./components/mds-push-notification/meta/types";
 export { MdsPushNotificationEventDetail } from "./components/mds-push-notification/meta/event-detail";
 export { MdsStepperBarEventDetail } from "./components/mds-stepper-bar/meta/event-detail";
@@ -1394,7 +1392,7 @@ export namespace Components {
         /**
           * Specifies the notification date based on [standard ISO 8601](https://www.iso.org/iso-8601-date-and-time-format.html).
          */
-        "datetime"?: ISO8601Date;
+        "datetime"?: string;
         /**
           * Specifies if the component is dismissable or not, it should be set to true by default is used with it's parent component `mds-push-notifications`
          */
@@ -4479,7 +4477,7 @@ declare namespace LocalJSX {
         /**
           * Specifies the notification date based on [standard ISO 8601](https://www.iso.org/iso-8601-date-and-time-format.html).
          */
-        "datetime"?: ISO8601Date;
+        "datetime"?: string;
         /**
           * Specifies if the component is dismissable or not, it should be set to true by default is used with it's parent component `mds-push-notifications`
          */

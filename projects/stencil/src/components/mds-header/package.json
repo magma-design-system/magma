@@ -24,7 +24,7 @@
   },
   "dependencies": {
     "@maggioli-design-system/mds-header-bar": "7.1.2",
-    "@maggioli-design-system/mds-modal": "5.2.0",
+    "@maggioli-design-system/mds-modal": "5.2.1",
     "@maggioli-design-system/styles": "15.5.0",
     "@stencil/core": "4.22.2"
   },
