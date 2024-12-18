@@ -89,7 +89,7 @@
   opacity: 1;
 }
 
-header {
+.header {
 
   @apply gap-100;
 
