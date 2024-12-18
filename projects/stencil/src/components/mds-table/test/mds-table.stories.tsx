@@ -201,6 +201,6 @@ Actions.args = {
 
 export const Selectable = TemplateSelectable.bind({})
 Selectable.args = {
-  interactive: true,
+  interactive: false,
   selectable: true,
 }
