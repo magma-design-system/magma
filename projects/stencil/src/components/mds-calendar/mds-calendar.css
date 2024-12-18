@@ -1,0 +1,53 @@
+@tailwind utilities;
+
+:host {
+
+  --mds-calendar-day-number-other-month-color: theme('colors.tone-neutral-07');
+  --mds-calendar-day-number-color: theme('colors.tone-neutral-01');
+  --mds-calendar-cell-gap: theme('gap.50');
+
+  background-color: theme('colors.tone-neutral');
+  border-radius: theme('borderRadius.2xl');
+  box-shadow: theme('boxShadow.md');
+  display: flex;
+  flex-direction: column;
+  gap: theme('gap.400');
+  max-width: 380px;
+  min-width: min-content;
+  padding: theme('padding.400');
+}
+
+nav {
+  display: flex;
+  gap: theme('spacing.400');
+  justify-content: space-between;
+}
+
+.action-back,
+.action-forward {
+  flex-shrink: 0;
+}
+
+.select-month-or-year {
+  background-color: theme('colors.tone-neutral-09');
+  border-radius: theme('borderRadius.lg');
+  display: flex;
+  flex-grow: 1;
+  justify-content: space-evenly;
+}
+
+.action-month,
+.action-year {
+  flex-basis: 0;
+  flex-grow: 1;
+}
+
+.week-day-name {
+  align-items: center;
+  aspect-ratio: 1;
+  max-height: auto;
+  min-height: auto;
+  padding: 0;
+}
+
+@import './css/mds-calendar-view-month.css';
