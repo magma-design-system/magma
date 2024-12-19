@@ -35,6 +35,11 @@ export class MdsInputRange {
   @Prop() readonly step: number = 1
 
   /**
+   * Sets if the component is disabled
+   */
+  @Prop({ mutable: true, reflect: true }) disabled?: boolean
+
+  /**
    * The value attribute contains a number which contains a representation of the selected number.
    */
   @Prop({ mutable: true, reflect: true }) value: number
@@ -62,6 +67,19 @@ export class MdsInputRange {
     // trigger valueChanged that update progress and emit event
     this.value = parseInt(this.inputElement.value)
   }
+
+  @Watch('disabled')
+  protected disabledChanged (newValue: boolean):void {
+    /**
+     * This is related to ALL disabled attributes set on Magma input components
+     * if solved, please check mds-button, mds-input, mds-input-*
+     * https://github.com/ionic-team/stencil/issues/5461
+     */
+    if (newValue) {
+      this.internals.setFormValue(null)
+    }
+  }
+
   @Watch('value')
   valueChanged (): void {
     this.inputElement.value = this.value.toString()
@@ -83,6 +101,10 @@ export class MdsInputRange {
   stepChanged (): void {
     if (this.step < 1) throw Error('step cant be negative or zero')
     this.calculateProgress()
+  }
+
+  formResetCallback (): void {
+    this.internals.setFormValue('')
   }
 
   componentDidLoad (): void {
@@ -109,6 +131,7 @@ export class MdsInputRange {
           <input
             class="field"
             aria-label={this.label}
+            disabled={this.disabled}
             max={this.max}
             min={this.min}
             onInput={this.onInput}

@@ -30,6 +30,7 @@
   --mds-file-preview-icon-bacground: theme('colors.label-yellow-10');
 }
 
+:host([format="certificate"]),
 :host([format="document"]) {
 
   --mds-file-preview-icon-color: theme('colors.label-orange-04');

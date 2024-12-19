@@ -86,6 +86,22 @@ export class MdsInputSelect {
     this.internals.setFormValue(this.value?.toString() ?? null)
   }
 
+  @Watch('disabled')
+  protected disabledChanged (newValue: boolean):void {
+    /**
+     * This is related to ALL disabled attributes set on Magma input components
+     * if solved, please check mds-button, mds-input, mds-input-*
+     * https://github.com/ionic-team/stencil/issues/5461
+     */
+    if (newValue) {
+      this.internals.setFormValue(null)
+    }
+  }
+
+  formResetCallback (): void {
+    this.internals.setFormValue('')
+  }
+
   componentDidLoad (): void {
     if (this.value) {
       this.selected = true

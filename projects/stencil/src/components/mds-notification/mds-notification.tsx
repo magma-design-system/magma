@@ -14,6 +14,9 @@ export class MdsNotification {
   @Element() private host: HTMLMdsNotificationElement
   private cleanupAutoUpdate: () => void
 
+  // We should change in the future this approach when it will be fully supported by main browsers
+  // https://www.youtube.com/watch?v=DNXEORSk4GU&list=PLMTbm2xm6FfPWPUr__bFUGVPfYMZwu5U7&index=67
+
   /**
    * Specifies the selector of the target element, this attribute is used with `querySelector` method.
    */

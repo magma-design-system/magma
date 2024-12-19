@@ -1,5 +1,5 @@
 import miRoundMenu from '@icon/mi/round/menu.svg'
-import { Component, Element, Event, EventEmitter, Host, Listen, Prop, State, h } from '@stencil/core'
+import { Component, Element, Event, EventEmitter, Host, Method, Prop, State, h } from '@stencil/core'
 import { HeaderBarMenuType, HeaderBarNavType } from '@type/header-bar'
 
 /**
@@ -38,16 +38,17 @@ export class MdsHeaderBar {
   /**
    * Emits when the component is opened
    */
-  @Event({ bubbles: true, composed: true, eventName: 'mdsHeaderBarOpen' }) openedEvent: EventEmitter<void>
+  @Event({ bubbles: true, eventName: 'mdsHeaderBarOpen' }) openedEvent: EventEmitter<void>
 
   private open = () => {
     this.isOpened = true
     this.openedEvent.emit()
+    this.host.closest('mds-header')?.setOpened(true)
   }
 
-  @Listen('mdsHeaderClose', { target: 'document' })
-  closedHandler (): void {
-    this.isOpened = false
+  @Method()
+  async setOpened (isOpened: boolean = true): Promise<void> {
+    this.isOpened = isOpened
   }
 
   render () {

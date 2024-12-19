@@ -231,6 +231,10 @@ export class MdsInput {
    */
   @Event({ eventName: 'mdsInputFocus' }) focusEvent!: EventEmitter<void>
 
+  formResetCallback (): void {
+    this.internals.setFormValue('')
+  }
+
   componentWillLoad (): void {
 
     this.language = this.t.lang(this.el)
@@ -253,6 +257,18 @@ export class MdsInput {
   protected valueChanged ():void {
     this.changeEvent.emit({ value: this.value })
     this.internals.setFormValue(this.value ?? null)
+  }
+
+  @Watch('disabled')
+  protected disabledChanged (newValue: boolean):void {
+    /**
+     * This is related to ALL disabled attributes set on Magma input components
+     * if solved, please check mds-button, mds-input, mds-input-*
+     * https://github.com/ionic-team/stencil/issues/5461
+     */
+    if (newValue) {
+      this.internals.setFormValue(null)
+    }
   }
 
   /**

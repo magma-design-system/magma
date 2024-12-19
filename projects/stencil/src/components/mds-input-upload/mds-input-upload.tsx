@@ -71,6 +71,10 @@ export class MdsInputUpload {
    */
   @Event({ eventName: 'mdsInputUploadChange' }) changedEvent: EventEmitter<FileList | null>
 
+  formResetCallback (): void {
+    this.internals.setFormValue('')
+  }
+
   componentWillLoad (): void {
     this.extensions = this.getExtension()
     this.t.lang(this.host)

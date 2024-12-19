@@ -49,7 +49,7 @@ export class MdsPushNotification {
   /**
    * Specifies the notification date based on [standard ISO 8601](https://www.iso.org/iso-8601-date-and-time-format.html).
    */
-  @Prop({ reflect: true, mutable: true }) datetime?: ISO8601Date
+  @Prop({ reflect: true, mutable: true }) datetime?: string
 
   /**
    * Specifies if the notification date format shows time passed or displays date as a static string
