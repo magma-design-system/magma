@@ -1,4 +1,4 @@
-import { Component, Element, Event, EventEmitter, Host, Listen, State, h, Prop, Watch } from '@stencil/core'
+import { Component, Element, Event, EventEmitter, Host, State, h, Prop, Watch, Method } from '@stencil/core'
 import { MdsHeaderEventDetail } from './meta/event-detail'
 import { HeaderBarMenuType, HeaderBarNavType } from '@type/header-bar'
 import { AppearanceType } from './meta/types'
@@ -22,9 +22,9 @@ export class MdsHeader {
   private relativeTresholdDown = 0
   private relativePosition = 0
   private relativeThresholdUp = 0
-  // private scrollingUpMargin = 0
   private sanitizedAppearance: AppearanceType = ['stripe']
   private appearanceThreshold = 300
+  private headerBar: HTMLMdsHeaderBarElement
 
   /**
    * Sets the appearance of the header bar element when loaded,
@@ -71,17 +71,19 @@ export class MdsHeader {
    */
   @Event({ bubbles: true, composed: true, eventName: 'mdsHeaderClose' }) closedEvent: EventEmitter<MdsHeaderEventDetail>
 
+  @Method()
+  async setOpened (isOpened: boolean = true): Promise<void> {
+    this.isOpened = isOpened
+  }
+
   private mobileMenu = (): HTMLElement => {
     return this.host.querySelector('[slot="menu"]') as HTMLElement
   }
 
-  private headerBar = (): HTMLMdsHeaderBarElement => {
-    return this.host.querySelector('mds-header-bar') as HTMLMdsHeaderBarElement
-  }
-
   private close = () => {
     this.isOpened = false
-    this.closedEvent.emit({ bar: this.headerBar() })
+    this.closedEvent.emit({ bar: this.headerBar })
+    this.headerBar.setOpened(false)
   }
 
   private handleVisibility = (): void => {
@@ -153,15 +155,19 @@ export class MdsHeader {
     }
   }
 
-  private initScrollListener = (): void => {
-    if (!window) {
-      return
-    }
+  private setAppearanceSetData = (): void => {
     this.sanitizedAppearance = this.sanitizeAppearance()
     if (this.sanitizedAppearance[2]) {
       this.appearanceThreshold = this.sanitizedAppearance[2]
     }
     this.relativeTresholdDown = this.threshold
+  }
+
+  private initScrollListener = (): void => {
+    if (!window) {
+      return
+    }
+    this.setAppearanceSetData()
     window.addEventListener('scroll', this.handleScroll)
   }
 
@@ -182,28 +188,27 @@ export class MdsHeader {
   }
 
   componentDidLoad (): void {
+    this.headerBar = this.host.querySelector('mds-header-bar') as HTMLMdsHeaderBarElement
     this.initScrollListener()
-  }
-
-  @Listen('mdsHeaderBarOpen', { target: 'document' })
-  onModalOpenedHandler (): void {
-    this.isOpened = true
   }
 
   @Watch('menu')
   onMenuChangedHandler (newValue: HeaderBarMenuType): void {
-    const headerBar = this.headerBar()
-    if (headerBar){
-      headerBar.setAttribute('menu', newValue)
+    if (this.headerBar){
+      this.headerBar.setAttribute('menu', newValue)
     }
   }
 
   @Watch('nav')
   onNavChangedHandler (newValue: HeaderBarNavType): void {
-    const headerBar = this.headerBar()
-    if (headerBar) {
-      headerBar.setAttribute('nav', newValue)
+    if (this.headerBar) {
+      this.headerBar.setAttribute('nav', newValue)
     }
+  }
+
+  @Watch('appearanceSet')
+  onAppearanceSetChangedHandler (): void {
+    this.setAppearanceSetData()
   }
 
   render () {

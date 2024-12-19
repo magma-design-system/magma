@@ -1,0 +1,6 @@
+:host([interactive]:hover) {
+
+  --mds-table-row-actions-background: var(--mds-table-row-background-hover);
+  --mds-table-row-background: var(--mds-table-row-background-hover);
+  --mds-table-row-color: var(--mds-table-row-color-hover);
+}

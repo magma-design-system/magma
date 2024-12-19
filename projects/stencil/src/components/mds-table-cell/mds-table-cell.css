@@ -10,6 +10,11 @@
 
 :host {
 
+  --mds-table-cell-background: var(--mds-table-row-background);
+  --mds-table-cell-background-alt: var(--mds-table-row-background-alt);
+  --mds-table-cell-color-alt: var(--mds-table-row-color-alt);
+  --mds-table-cell-color: var(--mds-table-row-color);
+
   @apply
     duration-200
     ease-out;
@@ -17,9 +22,12 @@
   background-color: var(--mds-table-cell-background);
   border-bottom: var(--mds-table-cell-border-width) solid var(--mds-table-cell-border-color) !important;
   border-top: var(--mds-table-cell-border-width) solid transparent !important;
+  color: var(--mds-table-cell-color);
   display: table-cell;
   padding: var(--mds-table-cell-padding);
   transition-property: background-color, border-color, color;
 }
 
 @import './css/mds-table-cell-pref-animation.css';
+@import './css/mds-table-cell-sorted.css';
+/* @import './css/mds-table-cell-selected.css'; */

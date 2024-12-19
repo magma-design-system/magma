@@ -7,6 +7,13 @@ This is a web-component from Maggioli Design System [Magma](https://magma.maggio
 <!-- Auto Generated Below -->
 
 
+## Properties
+
+| Property     | Attribute    | Description | Type                   | Default     |
+| ------------ | ------------ | ----------- | ---------------------- | ----------- |
+| `selectable` | `selectable` |             | `boolean \| undefined` | `undefined` |
+
+
 ## Methods
 
 ### `updateLang() => Promise<void>`
@@ -31,12 +38,18 @@ Type: `Promise<void>`
 
 ### Depends on
 
+- [mds-table-cell](../mds-table-cell)
+- [mds-input-switch](../mds-input-switch)
 - [mds-table-header-cell](../mds-table-header-cell)
 
 ### Graph
 ```mermaid
 graph TD;
+  mds-table-header --> mds-table-cell
+  mds-table-header --> mds-input-switch
   mds-table-header --> mds-table-header-cell
+  mds-input-switch --> mds-icon
+  mds-input-switch --> mds-text
   mds-table-header-cell --> mds-button
   mds-table-header-cell --> mds-text
   mds-button --> mds-spinner

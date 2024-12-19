@@ -1,6 +1,9 @@
-import { Component, Host, h, Listen, Prop, Element } from '@stencil/core'
-// import { isMobileDevice } from '@common/device'
-// import clsx from 'clsx'
+import { Component, Host, h, Prop, Element, State, Method } from '@stencil/core'
+import { Locale } from '@common/locale'
+import localeEl from './meta/locale.el.json'
+import localeEn from './meta/locale.en.json'
+import localeEs from './meta/locale.es.json'
+import localeIt from './meta/locale.it.json'
 
 /**
  * @slot default - Put `mds-table-cell` element/s.
@@ -17,17 +20,31 @@ export class MdsTableRow {
   private actions: HTMLDivElement
   private hasActions: boolean
   private sizerWidth: string
-
-  @Prop({ mutable: true, reflect: true }) interactive: boolean
-
-  @Prop({ mutable: true, reflect: true }) overlayActions: boolean
-
-  @Listen('mdsTableInteractiveChange', { target: 'document' })
-  tableInteractiveHandler (event: CustomEvent<boolean>): void {
-    this.interactive = event.detail
+  private t:Locale = new Locale({
+    el: localeEl,
+    en: localeEn,
+    es: localeEs,
+    it: localeIt,
+  })
+  @State() language: string
+  @Method()
+  async updateLang (): Promise<void> {
+    this.language = this.t.lang(this.host)
+    this.t.update()
   }
 
+  @Prop({ reflect: true }) readonly interactive?: boolean
+
+  @Prop({ reflect: true }) readonly overlayActions: boolean
+
+  @Prop({ reflect: true }) readonly selectable?: boolean = undefined
+
+  @Prop({ mutable: true, reflect: true }) selected?: boolean
+
+  @Prop({ reflect: true }) readonly value?: string | number
+
   componentWillLoad (): void {
+    this.language = this.t.lang(this.host)
     this.hasActions = this.host.querySelector('[slot="action"]') !== null
   }
 
@@ -38,9 +55,21 @@ export class MdsTableRow {
     }
   }
 
+  private handleSelectionChange = (e: CustomEvent): void => {
+    this.selected = e.detail.checked
+    this.host.closest('mds-table')?.updateSelection()
+  }
+
   render () {
     return (
       <Host role="row">
+        { this.selectable &&
+          <mds-table-cell class="selection-cell">
+            <div class="checkbox-wrapper">
+              <mds-input-switch title={this.t.get(this.selected ? 'unselectRow' : 'selectRow')} lang={this.language} type="checkbox" checked={this.selected} onMdsInputSwitchChange={this.handleSelectionChange}></mds-input-switch>
+            </div>
+          </mds-table-cell>
+        }
         <slot/>
         { this.hasActions &&
           <mds-table-cell class="actions-cell">

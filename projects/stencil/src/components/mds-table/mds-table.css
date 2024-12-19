@@ -1,34 +1,29 @@
 @tailwind utilities;
 
 /**
+ * @prop --mds-table-actions-gap: The gap between slotted actions on `mds-table-row` element
+ * @prop --mds-table-background-alt: The background-color of the table cell not hovered, visible when attribute `interactive` is set tu true
  * @prop --mds-table-background: The background-color of the table
- * @prop --mds-table-body-background-hover: The background-color of the table body when the mouse is over it
- * @prop --mds-table-body-background: The background-color of the table body
  * @prop --mds-table-border-color: The border-color of the table
- * @prop --mds-table-border-width: The border-width of the table
- * @prop --mds-table-cell-background-hover: The background-color of the table cell when the mouse is over it
- * @prop --mds-table-cell-background: The background-color of the table cell
- * @prop --mds-table-cell-border-color: The border-color of the table cell
- * @prop --mds-table-cell-border-width: The border-width of the table cell
+ * @prop --mds-table-border-width: The border-width of the table, visible when attribute `interactive` is set tu true
  * @prop --mds-table-cell-padding: The padding of the table cell
+ * @prop --mds-table-color-alt: The text color of the table
+ * @prop --mds-table-color: The text color of the table
  */
 
 :host {
 
+  --mds-table-actions-gap: theme('spacing.200');
+  --mds-table-background-alt: theme('colors.tone-neutral-10');
   --mds-table-background: theme('colors.tone-neutral');
-  --mds-table-body-background-hover: theme('colors.tone-neutral-10');
-  --mds-table-body-background: var(--mds-table-background);
   --mds-table-border-color: theme('colors.tone-neutral-08');
   --mds-table-border-width: 2px;
-  --mds-table-cell-background-hover: var(--mds-table-background);
-  --mds-table-cell-background: transparent;
+  --mds-table-cell-padding: theme('spacing.400');
+  --mds-table-color-alt: theme('colors.tone-neutral-05');
+  --mds-table-color: theme('colors.tone-neutral-02');
+  /* internal */
   --mds-table-cell-border-color: var(--mds-table-border-color);
   --mds-table-cell-border-width: var(--mds-table-border-width);
-  --mds-table-cell-padding: theme('spacing.400');
-  --mds-table-color-hover: theme('colors.tone-neutral-02');
-  --mds-table-color: theme('colors.tone-neutral-03');
-  --mds-table-actions-gap: theme('spacing.200');
-
 
   @apply
     duration-200
@@ -49,6 +44,7 @@
   width: 100%;
 }
 
+@import './css/mds-table-selection.css';
 @import './css/mds-table-pref-animation.css';
 @import './css/mds-table-pref-theme.css';
 @import './css/mds-table-pref-contrast.css';

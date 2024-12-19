@@ -1,11 +1,16 @@
-import { Component, Element, Event, EventEmitter, Host, Listen, h, Prop } from '@stencil/core'
+import { Component, Element, Event, EventEmitter, Host, Listen, h, Prop, Watch, State } from '@stencil/core'
 import { MdsTabEventDetail } from './meta/event-detail'
 import { MdsTabItemEventDetail } from '@component/mds-tab-item/meta/event-detail'
 import { setAttributeIfEmpty } from '@common/aria'
+import { HorizontalActionsAnimationType } from '@type/animation'
+import { hashRandomValue } from '@common/aria'
 
 /**
- * @slot default - Add `mds-tab-item` element/s.
+ * @part contents - Selects the container of the tabbed contents elements.
+ * @part slider - Selects the slider element which is visible when attribute `animation` is set to `slide`.
+ * @part tabs - Selects the container of `mds-tab-item` list elements.
  * @slot content - Add `HTML elements` or `components`, one per mds-tab-item added.
+ * @slot default - Add `mds-tab-item` element/s.
  */
 
 @Component({
@@ -17,14 +22,22 @@ export class MdsTab {
 
   @Element() private element: HTMLMdsTabElement
   private currentItem: number = -1
+  private slider: HTMLDivElement | null
   private tabs: HTMLElement
   private tabItems: NodeListOf<HTMLMdsTabItemElement>
   private contentItems: NodeListOf<HTMLElement>
+  @State() sliderWidth: number = -1
+  @State() sliderOffset: number = -1
 
   /**
    * Shows the horizontal scrollbar to maximize accessibility
    */
   @Prop({ reflect: true }) readonly scrollbar?: boolean
+
+  /**
+   * Sets the animation type of the selection transition between `mds-tab-item` elements
+   */
+  @Prop({ reflect: true }) readonly animation?: HorizontalActionsAnimationType = 'slide'
 
   /**
    * Emits when a children is changed
@@ -39,7 +52,7 @@ export class MdsTab {
 
     this.tabItems.forEach((item, key) => {
       if (!item.id) {
-        item.id = `mds-tab-item-${key}`
+        setAttributeIfEmpty(item, 'id', hashRandomValue('mds-tab-item'))
       }
       if (item.selected) {
         this.currentItem = key
@@ -50,10 +63,28 @@ export class MdsTab {
   componentDidLoad (): void {
     this.tabs = this.element.shadowRoot?.querySelector('.tabs') as HTMLElement
     this.contentItems = this.queryContentItems()
-    this.contentItems.forEach((item: HTMLElement): void => {
+    this.contentItems.forEach((item: HTMLElement, key: number): void => {
       setAttributeIfEmpty(item, 'role', 'tabpanel')
+      setAttributeIfEmpty(item, 'aria-labelledby', this.tabItems[key].id)
     })
     this.selectContentItem()
+    if (this.animation === 'slide') {
+      this.updateSliderPosition()
+    }
+  }
+
+  private updateSliderPosition = (): void => {
+    if (!this.slider) {
+      this.setSlider()
+    }
+    if (this.slider) {
+      this.sliderWidth = this.tabItems[this.currentItem].offsetWidth
+      this.sliderOffset = this.tabItems[this.currentItem].offsetLeft - this.tabs.offsetLeft
+    }
+  }
+
+  private setSlider = (): void => {
+    this.slider = this.element.shadowRoot?.querySelector('.slider') as HTMLDivElement
   }
 
   private scrollTabs = (key: number): void => {
@@ -85,6 +116,10 @@ export class MdsTab {
       }
     })
     this.selectContentItem()
+
+    if (this.animation === 'slide') {
+      this.updateSliderPosition()
+    }
   }
 
   @Listen('mdsTabItemFocus')
@@ -96,15 +131,32 @@ export class MdsTab {
     })
   }
 
+  @Watch('animation')
+  handleAnimation (newValue: HorizontalActionsAnimationType): void {
+    if (newValue === 'slide') {
+      this.updateSliderPosition()
+      return
+    }
+    this.slider = null
+  }
+
   render () {
     return (
       <Host>
         <div class="tabs" part="tabs" role="tablist">
           <slot />
+          { this.animation === 'slide' &&
+            <div class="slider" part="slider" style={{
+              '--mds-tab-slider-width': `${this.sliderWidth}px`,
+              '--mds-tab-slider-offset': `${this.sliderOffset}px`,
+            }}></div>
+          }
         </div>
+        { this.contentItems &&
         <div class="contents" part="contents">
           <slot name="content"/>
         </div>
+        }
       </Host>
     )
   }

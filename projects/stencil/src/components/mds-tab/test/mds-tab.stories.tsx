@@ -1,8 +1,15 @@
 import { h } from '@stencil/core'
+import { horizontalActionsAnimationDictionary } from '@dictionary/animation'
 
 export default {
   title: 'UI / Tab',
   argTypes: {
+    animation: {
+      type: { name: 'string' },
+      description: 'Sets the animation type of the selection transition between `mds-tab-item` elements',
+      options: horizontalActionsAnimationDictionary,
+      control: { type: 'select' },
+    },
     scrollbar: {
       description: 'Specifies if the scrollbar is visible or not',
       type: { name: 'boolean' },
@@ -149,9 +156,15 @@ const TemplateNoSelected = args =>
   </div>
 
 export const Default = Template.bind({})
-
+export const Animation = Template.bind({})
+Animation.args = {
+  animation: 'slide',
+}
 export const ManualTabContents = TemplateEmpty.bind({})
 export const OverflowItems = TemplateOverflow.bind({})
+OverflowItems.args = {
+  animation: 'slide',
+}
 export const ShowScrollbar = TemplateOverflow.bind({})
 ShowScrollbar.args = {
   scrollbar: true,

@@ -1,0 +1,3 @@
+:host([selection]:not([selection="false"])) {
+  --mds-table-body-background: var(--mds-table-body-background-hover);
+}

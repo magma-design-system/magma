@@ -1,0 +1,4 @@
+{
+  "select": "Select {{#label}}{{label}}{{/label}}{{^label}}element{{/label}}",
+  "unselect": "Deselect {{#label}}{{label}}{{/label}}{{^label}}element{{/label}}"
+}

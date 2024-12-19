@@ -9,16 +9,47 @@ This is a web-component from Maggioli Design System [Magma](https://magma.maggio
 
 ## Properties
 
-| Property      | Attribute     | Description                                                  | Type                   | Default     |
-| ------------- | ------------- | ------------------------------------------------------------ | ---------------------- | ----------- |
-| `interactive` | `interactive` | Specifies if the table row are higlighted on mouseover event | `boolean \| undefined` | `undefined` |
+| Property      | Attribute     | Description                                                   | Type                   | Default     |
+| ------------- | ------------- | ------------------------------------------------------------- | ---------------------- | ----------- |
+| `interactive` | `interactive` | Specifies if the table rows are higlighted on mouseover event | `boolean \| undefined` | `undefined` |
+| `selectable`  | `selectable`  | Specifies if the table rows are selectable by a checkbox      | `boolean \| undefined` | `undefined` |
+| `selection`   | `selection`   |                                                               | `boolean \| undefined` | `undefined` |
 
 
 ## Events
 
-| Event                       | Description                                 | Type                   |
-| --------------------------- | ------------------------------------------- | ---------------------- |
-| `mdsTableInteractiveChange` | Dispatces when interactive property changes | `CustomEvent<boolean>` |
+| Event                     | Description                                 | Type                                        |
+| ------------------------- | ------------------------------------------- | ------------------------------------------- |
+| `mdsTableSelectionChange` | Dispatces when interactive property changes | `CustomEvent<MdsTableSelectionEventDetail>` |
+
+
+## Methods
+
+### `selectAll(select?: boolean) => Promise<void>`
+
+Selects all elements or none, works only if `selectable` is true.
+
+#### Parameters
+
+| Name     | Type      | Description |
+| -------- | --------- | ----------- |
+| `select` | `boolean` |             |
+
+#### Returns
+
+Type: `Promise<void>`
+
+
+
+### `updateSelection() => Promise<void>`
+
+`internal` Updates the selection data event and emits it, it's used to avoid add event listener to the dom and lower performance, works only if `selectable` is true.
+
+#### Returns
+
+Type: `Promise<void>`
+
+
 
 
 ## Slots
@@ -26,6 +57,20 @@ This is a web-component from Maggioli Design System [Magma](https://magma.maggio
 | Slot        | Description                                                             |
 | ----------- | ----------------------------------------------------------------------- |
 | `"default"` | Put `mds-table-header`, `mds-table-body`, `mds-table-footer` element/s. |
+
+
+## CSS Custom Properties
+
+| Name                         | Description                                                                                             |
+| ---------------------------- | ------------------------------------------------------------------------------------------------------- |
+| `--mds-table-actions-gap`    | The gap between slotted actions on `mds-table-row` element                                              |
+| `--mds-table-background`     | The background-color of the table                                                                       |
+| `--mds-table-background-alt` | The background-color of the table cell not hovered, visible when attribute `interactive` is set tu true |
+| `--mds-table-border-color`   | The border-color of the table                                                                           |
+| `--mds-table-border-width`   | The border-width of the table, visible when attribute `interactive` is set tu true                      |
+| `--mds-table-cell-padding`   | The padding of the table cell                                                                           |
+| `--mds-table-color`          | The text color of the table                                                                             |
+| `--mds-table-color-alt`      | The text color of the table                                                                             |
 
 
 ----------------------------------------------

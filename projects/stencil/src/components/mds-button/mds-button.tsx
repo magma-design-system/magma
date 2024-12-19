@@ -74,7 +74,7 @@ export class MdsButton {
   /**
    * Specifies if the component is disabled or not
    */
-  @Prop({ reflect: true }) readonly disabled: boolean
+  @Prop({ mutable: false, reflect: true }) disabled?: boolean
 
   /**
    * Specifies if the button is awaiting for a response
@@ -98,6 +98,13 @@ export class MdsButton {
       return
     }
     this.km.detachClickBehavior()
+
+    /**
+     * When the component is disabled="false" it won't work with onClick events
+     * since formAssociated where added to it.
+     * https://github.com/ionic-team/stencil/issues/5461
+     */
+    this.disabled = undefined
   }
 
   @Watch('await')
@@ -199,8 +206,12 @@ export class MdsButton {
       if (!this.host.hasAttribute('aria-label')) {
         setAttributeIfEmpty(this.host, 'title', iconTitle)
       }
-      setAttributeIfEmpty(this.host, 'aria-label', iconTitle)
+      if (!this.host.hasAttribute('title')) {
+        setAttributeIfEmpty(this.host, 'aria-label', iconTitle)
+      }
     }
+
+    setAttributeIfEmpty(this.host, 'role', 'button')
   }
 
   disconnectedCallback (): void {
@@ -211,7 +222,7 @@ export class MdsButton {
     this.typography = buttonSizeTypographyVariant[this.size] as TypographyType
 
     return (
-      <Host class={clsx(!this.hasText && 'no-text')} onMouseDown={this.mouseDown} onMouseUp={this.mouseUp} onMouseOut={this.mouseUp} tabindex="0" role="button">
+      <Host class={clsx(!this.hasText && 'no-text')} onMouseDown={this.mouseDown} onMouseUp={this.mouseUp} onMouseOut={this.mouseUp} tabindex="0">
         <div class="await">
           <mds-spinner class="spinner" running={this.await}/>
         </div>

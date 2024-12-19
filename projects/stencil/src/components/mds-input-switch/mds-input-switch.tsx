@@ -1,12 +1,18 @@
 import clsx from 'clsx'
 import miBaselineChecked from '@icon/mgg/check-small.svg'
 import miBaselineRemove from '@icon/mi/baseline/remove.svg'
-import { AttachInternals, Component, Element, Host, h, Prop, Event, EventEmitter, State } from '@stencil/core'
+import { AttachInternals, Component, Element, Host, h, Prop, Event, EventEmitter, State, Method, Watch } from '@stencil/core'
 import { InputSwitchType, InputSwitchSizeType } from './meta/types'
 import { KeyboardManager } from '@common/keyboard-manager'
 import { MdsInputSwitchEventDetail } from './meta/event-detail'
 import { TypographyInfoType, TypographyReadType, TypographyVariants } from '@type/typography'
 import { inputSwitchIconVariant } from './meta/variants'
+import { hasSlottedElements } from '@common/slot'
+import { Locale } from '@common/locale'
+import localeEl from './meta/locale.el.json'
+import localeEn from './meta/locale.en.json'
+import localeEs from './meta/locale.es.json'
+import localeIt from './meta/locale.it.json'
 
 /**
  * @slot default - Put text string or elements here
@@ -24,8 +30,21 @@ export class MdsInputSwitch {
   @Element() host: HTMLMdsInputSwitchElement
   private km = new KeyboardManager()
   private label: string
-
   @State() dirty = false
+  @State() hasText: boolean
+
+  private t: Locale = new Locale({
+    el: localeEl,
+    en: localeEn,
+    es: localeEs,
+    it: localeIt,
+  })
+  @State() language: string
+  @Method()
+  async updateLang (): Promise<void> {
+    this.language = this.t.lang(this.host)
+  }
+
   /**
    * Sets or returns whether a checkbox should automatically
    * get focus when the page loads
@@ -136,10 +155,28 @@ export class MdsInputSwitch {
     }
   }
 
+  @Watch('disabled')
+  protected disabledChanged (newValue: boolean):void {
+    /**
+     * This is related to ALL disabled attributes set on Magma input components
+     * if solved, please check mds-button, mds-input, mds-input-*
+     * https://github.com/ionic-team/stencil/issues/5461
+     */
+    if (newValue) {
+      this.internals.setFormValue(null)
+    }
+  }
+
+  formResetCallback (): void {
+    this.internals.setFormValue('')
+  }
+
   componentDidLoad (): void {
+    this.language = this.t.lang(this.host)
     this.label = this.host.textContent ?? ''
     this.internals.setFormValue(this.checked ? this.value ?? null : null)
     this.checkFocusElement()
+    this.hasText = hasSlottedElements(this.host)
   }
 
   render () {
@@ -162,7 +199,7 @@ export class MdsInputSwitch {
         />
         { this.type === 'switch'
           ?
-          <label htmlFor="field" class={clsx('switch-container', this.dirty !== false && 'dirty')} tabindex="0" aria-label={this.label}>
+          <label htmlFor="field" class={clsx('switch-container', this.dirty !== false && 'dirty')} tabindex="0" aria-label={ this.t.get(this.checked ? 'unselect' : 'select', { label: this.label })}>
             <div class="switch">
               <div class="switch-toggle">
                 { this.explicit && <mds-icon class="icon-explicit" name={this.checked ? miBaselineChecked : miBaselineRemove}></mds-icon> }
@@ -170,7 +207,7 @@ export class MdsInputSwitch {
             </div>
           </label>
           :
-          <label htmlFor="field" class="label-icon" aria-hidden="true">
+          <label htmlFor="field" class="label-icon" tabindex="0" aria-label={ this.t.get(this.checked ? 'unselect' : 'select', { label: this.label })}>
             <mds-text class="icon-typography-unchecked" tag="div" typography={this.typography} variant={this.variant}>
               <mds-icon class="icon-unchecked" name={iconUnchecked}/>
             </mds-text>
@@ -179,11 +216,13 @@ export class MdsInputSwitch {
             </mds-text>
           </label>
         }
-        <label htmlFor="field" class="label-text">
-          <mds-text typography={this.typography} variant={this.variant}>
-            <slot></slot>
-          </mds-text>
-        </label>
+        { this.hasText &&
+          <label htmlFor="field" class="label-text">
+            <mds-text typography={this.typography} variant={this.variant}>
+              <slot></slot>
+            </mds-text>
+          </label>
+        }
       </Host>
     )
   }

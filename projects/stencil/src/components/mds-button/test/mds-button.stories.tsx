@@ -123,6 +123,7 @@ Await.args = {
 export const Disabled = Template.bind({})
 Disabled.args = {
   disabled: true,
+  onClick: () => { alert('click') },
 }
 
 export const Variant = Template.bind({})

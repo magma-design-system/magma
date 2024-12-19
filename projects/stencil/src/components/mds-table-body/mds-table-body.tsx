@@ -1,4 +1,4 @@
-import { Component, Listen, Host, h, Prop } from '@stencil/core'
+import { Component, Host, h, Prop } from '@stencil/core'
 
 /**
  * @slot default - Put `mds-table-row` element/s.
@@ -11,12 +11,8 @@ import { Component, Listen, Host, h, Prop } from '@stencil/core'
 })
 export class MdsTableBody {
 
-  @Prop({ mutable: true, reflect: true }) interactive:boolean
-
-  @Listen('mdsTableInteractiveChange', { target: 'document' })
-  tableInteractiveHandler (event: CustomEvent<boolean>): void {
-    this.interactive = event.detail
-  }
+  @Prop({ reflect: true }) readonly interactive?: boolean
+  @Prop({ reflect: true }) readonly selection?: boolean
 
   render () {
     return (

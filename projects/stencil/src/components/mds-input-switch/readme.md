@@ -32,6 +32,19 @@ This is a web-component from Maggioli Design System [Magma](https://magma.maggio
 | `mdsInputSwitchChange` | Emits when the value changes | `CustomEvent<MdsInputSwitchEventDetail>` |
 
 
+## Methods
+
+### `updateLang() => Promise<void>`
+
+
+
+#### Returns
+
+Type: `Promise<void>`
+
+
+
+
 ## Slots
 
 | Slot        | Description                      |
@@ -70,6 +83,11 @@ This is a web-component from Maggioli Design System [Magma](https://magma.maggio
 
 ## Dependencies
 
+### Used by
+
+ - [mds-table-header](../mds-table-header)
+ - [mds-table-row](../mds-table-row)
+
 ### Depends on
 
 - [mds-icon](../mds-icon)
@@ -80,6 +98,8 @@ This is a web-component from Maggioli Design System [Magma](https://magma.maggio
 graph TD;
   mds-input-switch --> mds-icon
   mds-input-switch --> mds-text
+  mds-table-header --> mds-input-switch
+  mds-table-row --> mds-input-switch
   style mds-input-switch fill:#f9f,stroke:#333,stroke-width:4px
 ```
 
