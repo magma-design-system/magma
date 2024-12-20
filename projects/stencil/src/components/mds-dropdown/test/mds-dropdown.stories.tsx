@@ -149,7 +149,7 @@ const TemplatePerformance = ({ ...args }) =>
           Pseudo-button { index }
         </p>
         <mds-dropdown target={'#button-' + index} {...args}>
-          <mds-text> Testo del dropdown per il bottone {index}</mds-text>
+          <p> Testo del dropdown per il bottone {index}</p>
         </mds-dropdown>
       </div>
     ))}

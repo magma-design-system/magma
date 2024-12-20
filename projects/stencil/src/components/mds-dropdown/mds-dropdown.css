@@ -43,8 +43,9 @@
   position: fixed;
   transform: var(--mds-dropdown-transform-from);
   transition-duration: var(--mds-dropdown-duration);
-  transition-property: opacity, transform, transform-origin;
+  transition-property: opacity, transform, transform-origin, display;
   transition-timing-function: var(--mds-dropdown-ease);
+  transition-behavior: allow-discrete;
   z-index: var(--mds-dropdown-z-index);
 }
 
@@ -55,6 +56,11 @@
 
   pointer-events: auto;
   transform: var(--mds-dropdown-transform-to);
+
+  @starting-style {
+    opacity: 0;
+    transform: scale(0);
+  }
 }
 
 :host( [smooth]:not([smooth="false"]) ) {
@@ -72,11 +78,13 @@
   transition-property: bottom, left, right, top, transform, transform-origin;
 }
 
-:host( [arrow]:not([arrow="false"])[visible]:not([visible="false"]) ) .arrow {
+:host([arrow]:not([arrow="false"])[visible]:not([visible="false"])) .arrow {
+  transform: scale(1);
   transition-timing-function: theme('transitionTimingFunction.out-quart');
 }
 
-:host( [arrow]:not([arrow="false"], [visible], [visible="true"])) .arrow {
+:host([arrow]:not([arrow="false"]):not([visible])) .arrow {
+  transform: scale(0);
   transition-timing-function: theme('transitionTimingFunction.out-expo');
 }
 
