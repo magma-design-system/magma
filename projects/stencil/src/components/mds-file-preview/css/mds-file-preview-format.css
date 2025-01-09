@@ -30,7 +30,8 @@
   --mds-file-preview-icon-color: theme('colors.label-yellow-04');
 }
 
-:host([format="document"]) {
+:host([format="document"]),
+:host([format="certificate"]) {
 
   --mds-file-preview-color: theme('colors.label-orange-04');
   --mds-file-preview-icon-background: theme('colors.label-orange-10');

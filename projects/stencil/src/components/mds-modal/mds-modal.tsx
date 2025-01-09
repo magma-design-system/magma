@@ -133,7 +133,7 @@ export class MdsModal {
       <Host aria-modal={clsx(this.opened ? 'true' : 'false' )} onClick={(e: Event) => { this.closeModal(e) }}>
         { this.window
           ? <slot name="window"/>
-          : <div class={clsx('window', (this.top || this.bottom) && `window-${this.top ? '-top' : ''}${this.bottom ? '-bottom' : ''}`)} role="dialog" part="window">
+          : <div class={clsx('window', (this.top || this.bottom) && `window-${this.top ? '-top' : ''}${this.bottom ? '-bottom' : ''}`)} part="window">
             { this.top &&
               <slot name="top"/>
             }
