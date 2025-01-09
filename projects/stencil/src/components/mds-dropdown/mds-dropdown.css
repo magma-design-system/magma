@@ -74,18 +74,6 @@
   fill: var(--mds-dropdown-arrow-background);
   pointer-events: none;
   position: fixed;
-  transition-duration: var(--mds-dropdown-duration);
-  transition-property: bottom, left, right, top, transform, transform-origin;
-}
-
-:host([arrow]:not([arrow="false"])[visible]:not([visible="false"])) .arrow {
-  transform: scale(1);
-  transition-timing-function: theme('transitionTimingFunction.out-quart');
-}
-
-:host([arrow]:not([arrow="false"]):not([visible])) .arrow {
-  transform: scale(0);
-  transition-timing-function: theme('transitionTimingFunction.out-expo');
 }
 
 ::slotted( * ) {

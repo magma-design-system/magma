@@ -15,14 +15,10 @@ import { setAttributeIfEmpty } from './aria'
 import { HTMLStencilElement } from '@stencil/core/internal'
 
 export interface FloatingElement extends PositionOptions {
-  // onClickTarget(): Promise<void>,
-  // onMouseOverTarget(): Promise<void>,
   host: HTMLFloatingElement,
 }
 
 export interface HTMLFloatingElement extends HTMLStencilElement, PositionOptions {
-  // onClickTarget(): Promise<void>,
-  // onMouseOverTarget(): Promise<void>,
   visible: boolean,
 }
 
@@ -41,87 +37,16 @@ export interface PositionOptions {
 export class FloatingController {
   private _caller: HTMLElement
   private readonly _host: HTMLFloatingElement
-  arrowEl: HTMLElement
-  // private _arrow: boolean
-  // private visible: boolean
-  // private _target: string
-  // private _interaction: DropdownInteractionType
-  // private floatElement: HTMLElement
-  // private _shiftPadding: number
-  // private _autoPlacement: boolean
-  // private _offset: number
-  // private _flip: boolean
-  // private _shift: boolean
-  // private _arrowPadding: number
-  // private _placement: FloatingUIPlacement
-  // private _strategy: FloatingUIStrategy
+  arrowEl: HTMLElement | undefined
+
   private cleanupAutoUpdate: () => void
 
-  constructor (
-    host: HTMLFloatingElement,
-    // interaction: DropdownInteractionType,
-    // opts: PositionOptions,
-  ) {
+  constructor (host: HTMLFloatingElement, arrowEl?: HTMLElement) {
     this._host = host
-    // this._interaction = interaction
-
-    // this._arrow = opts.arrow
-    // this._shiftPadding = opts.shiftPadding
-    // this._autoPlacement = opts.autoPlacement
-    // this._offset = opts.offset
-    // this._flip = opts.flip
-    // this._shift = opts.shift
-    // this._arrowPadding = opts.arrowPadding
-    // this._placement = opts.placement
-    // this._strategy = opts.strategy
+    this.arrowEl = arrowEl
   }
 
-  // set shiftPadding (value: number) {
-  //   this._shiftPadding = value
-  // }
-
-  // set arrow (value: boolean) {
-  //   this._arrow = value
-  // }
-
-  // set autoPlacement (value: boolean) {
-  //   this._autoPlacement = value
-  // }
-
-  // set offset (value: number) {
-  //   this._offset = value
-  // }
-
-  // set flip (value: boolean) {
-  //   this._flip = value
-  // }
-
-  // set shift (value: boolean) {
-  //   this._shift = value
-  // }
-
-  // set arrowPadding (value: number) {
-  //   this._arrowPadding = value
-  // }
-
-  // set placement (value: FloatingUIPlacement) {
-  //   this._placement = value
-  // }
-
-  // set strategy (value: FloatingUIStrategy) {
-  //   this._strategy = value
-  // }
-
-  // set target (value: string) {
-  //   this._target = value
-  //   console.log('set target', value)
-  //   this.setCaller()
-
-  // }
-
   updateCaller (target: string): HTMLElement {
-    this.arrowEl = this._host.shadowRoot?.querySelector('.arrow') as HTMLElement
-
     // search caller in document or rootNode of host (if target is in shadowDOM)
     const caller = (this._host.parentElement?.shadowRoot?.querySelector(target) as HTMLElement) ??
       ((this._host.getRootNode() as HTMLElement).querySelector(target) as HTMLElement)
@@ -239,7 +164,7 @@ export class FloatingController {
       middleware.push(shift(config))
     }
 
-    if (this._host.arrow) {
+    if (this.arrowEl && this._host.arrow) {
       middleware.push(
         arrow({
           element: this.arrowEl,
@@ -266,7 +191,7 @@ export class FloatingController {
         left: 'right',
       }[placement.split('-')[0]]
 
-      if (arrowPosition) {
+      if (arrowPosition && this.arrowEl) {
         Object.assign(arrowStyle, this.arrowTransform(arrowPosition))
         Object.assign(
           arrowStyle,

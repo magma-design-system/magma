@@ -297,6 +297,7 @@ export class MdsDropdown implements FloatingElement {
   }
 
   componentDidLoad (): void {
+    const arrow = this.host.shadowRoot?.querySelector('.arrow') as HTMLElement
     /**
      * When binding values in frameworks such as Angular
      * it is possible for the value to be set after the Web Component
@@ -306,7 +307,7 @@ export class MdsDropdown implements FloatingElement {
      * callback when the component has loaded and the watcher
      * is configured.
      */
-    this.floatingController = new FloatingController(this.host)
+    this.floatingController = new FloatingController(this.host, arrow)
     this.updateCSSCustomProps()
     this.targetChanged()
   }
@@ -323,7 +324,7 @@ export class MdsDropdown implements FloatingElement {
           zIndex: `${this.zIndex}`,
         }}
       >
-        <div class="arrow" innerHTML={arrowSvg} />
+        <div class="arrow" innerHTML={arrowSvg}/>
         <slot />
       </Host>
     )

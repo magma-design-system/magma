@@ -15,9 +15,7 @@ import { FloatingController, FloatingElement } from '@common/floating-controller
 })
 export class MdsTooltip implements FloatingElement {
 
-  // private arrowEl: HTMLElement
   private caller: HTMLElement
-  // private cleanupAutoUpdate: () => void
   private floatingController: FloatingController
 
   @Element() host!: HTMLMdsTooltipElement
@@ -84,9 +82,7 @@ export class MdsTooltip implements FloatingElement {
 
   private readonly handleVisibility = (visibility: boolean): void => {
     this.visible = visibility
-    // if (this.visible) this.floatingController.updatePosition()
   }
-
 
   @Watch('arrow')
   arrowChanged (): void {
@@ -133,7 +129,7 @@ export class MdsTooltip implements FloatingElement {
     this.floatingController.updatePosition()
   }
 
-  @Watch('targe')
+  @Watch('target')
   targetChanged (): void {
     if (!this.target) return
 
@@ -143,25 +139,9 @@ export class MdsTooltip implements FloatingElement {
   }
 
   componentDidLoad (): void {
-    this.floatingController = new FloatingController(this.host)
+    const arrow = this.host.shadowRoot?.querySelector('.arrow') as HTMLElement
+    this.floatingController = new FloatingController(this.host, arrow)
     this.targetChanged()
-  }
-
-  componentDidRender (): void {
-    // this.arrowEl = this.host.shadowRoot?.querySelector('.arrow') as HTMLElement
-
-    // // https://stackoverflow.com/a/68964329/185921
-    // const caller = document.querySelector(this.target) as HTMLElement ??
-    // (this.host.getRootNode() as HTMLElement).querySelector(this.target) as HTMLElement
-
-    // if (!caller) {
-    //   throw Error(`Target not found: ${this.target}`)
-    // }
-
-    // this.caller = caller
-    // this.caller.addEventListener('mouseleave', this.handleVisibility.bind(this, false))
-    // this.caller.addEventListener('mouseenter', this.handleVisibility.bind(this, true))
-
   }
 
   disconnectedCallback (): void {
