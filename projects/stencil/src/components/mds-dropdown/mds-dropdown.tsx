@@ -1,12 +1,42 @@
-import { setAttributeIfEmpty } from '@common/aria'
 import { KeyboardManager } from '@common/keyboard-manager'
 import { cssDurationToMilliseconds } from '@common/unit'
-import { Middleware, MiddlewareData, arrow, autoPlacement, autoUpdate, computePosition, flip, offset, shift } from '@floating-ui/dom'
-import { Component, Element, Event, EventEmitter, Host, Prop, Watch, h } from '@stencil/core'
+// import {
+//   Middleware,
+//   MiddlewareData,
+//   arrow,
+//   autoPlacement,
+//   autoUpdate,
+//   computePosition,
+//   flip,
+//   offset,
+//   shift,
+// } from '@floating-ui/dom'
+import {
+  Component,
+  Element,
+  Event,
+  EventEmitter,
+  Host,
+  // Method,
+  Prop,
+  Watch,
+  h,
+} from '@stencil/core'
+//   Middleware,
+//   MiddlewareData,
+//   arrow,
+//   autoPlacement,
+//   autoUpdate,
+//   computePosition,
+//   flip,
+//   offset,
+//   shift,
+// } from '@floating-ui/dom''
 import { FloatingUIPlacement, FloatingUIStrategy } from '@type/floating-ui'
 import arrowSvg from './assets/arrow.svg'
 import { MdsDropdownEventDetail } from './meta/event-detail'
 import { DropdownInteractionType } from './meta/types'
+import { Backdrop, FloatingController, FloatingElement } from '@common/floating-controller'
 
 /**
  * @slot default - Add `text string`, `HTML elements` or `components` to this slot, elements will be shown when the component is triggered.
@@ -17,28 +47,20 @@ import { DropdownInteractionType } from './meta/types'
   styleUrl: 'mds-dropdown.css',
   shadow: true,
 })
-export class MdsDropdown {
-
-  private arrowEl: HTMLElement
-  private backdropBackgroundVisible = 'rgba(var(--magma-backdrop-color, 0 0 0) / var(--magma-backdrop-opacity, 0.1))'
-  private backdropBackgroundHidden = 'rgba(var(--magma-backdrop-color, 0 0 0) / 0)'
-  private cssBackdropDuration: string
+export class MdsDropdown implements FloatingElement {
+  private readonly km = new KeyboardManager()
   private cssMouseOverDelayDuration: string
-  private cssBackdropZIndex: string
-  private backdropEl: HTMLElement
-  private backdropId = 'mds-dropdown-backdrop'
-  private backdropTimer: NodeJS.Timeout
   private mouseoverTimer: NodeJS.Timeout
   private caller: HTMLElement
-  private cleanupAutoUpdate: () => void
-  private km = new KeyboardManager()
+  private readonly backdropController: Backdrop = new Backdrop()
+  private floatingController: FloatingController
 
-  @Element() private host: HTMLMdsDropdownElement
+  @Element() readonly host!: HTMLMdsDropdownElement
 
   /**
    * If set, the component will have an arrow pointing to the caller.
    */
-  @Prop() readonly arrow: boolean = true
+  @Prop({ reflect: true }) readonly arrow: boolean = true
 
   /**
    * Sets the distance between arrow and dropdown margins.
@@ -63,7 +85,7 @@ export class MdsDropdown {
   /**
    * Specifies if the component is triggered from the caller on mouseover or click event
    */
-  @Prop({ reflect: true }) readonly interaction?: DropdownInteractionType = 'click'
+  @Prop({ reflect: true }) readonly interaction: DropdownInteractionType = 'click'
 
   /**
    * Specifies the selector of the target element, this attribute is used with `querySelector` method.
@@ -125,219 +147,20 @@ export class MdsDropdown {
    */
   @Event({ eventName: 'mdsDropdownChange' }) changedEvent: EventEmitter<MdsDropdownEventDetail>
 
-  private handleCloseDropdown = (e: Event): void => {
-    if (!this.visible) {
-      return
-    }
-    if (!this.host.contains(e.target as HTMLElement) && e.target as HTMLElement !== this.caller) {
-      this.handleVisibility(false)
-    }
-  }
-
-  private handleVisibility = (visibility: boolean): void => {
-    this.visible = visibility
-    this.changedEvent.emit({ caller: this.caller, visible: this.visible })
-    if (this.visible) {
-      this.visibleEvent.emit({ caller: this.caller, visible: true })
-      return
-    }
-    this.hiddenEvent.emit({ caller: this.caller, visible: false })
-    this.updatePosition()
-  }
-
-  private attachBackdrop (): void {
-    if (!this.backdropEl) {
-      this.backdropEl = document.createElement('div')
-      this.backdropEl.className = this.backdropId
-      this.backdropEl.style.inset = '0'
-      this.backdropEl.style.pointerEvents = 'none'
-      this.backdropEl.style.position = 'fixed'
-      this.backdropEl.style.transition = `background-color ${this.cssBackdropDuration} ease-out`
-      this.backdropEl.style.zIndex = this.cssBackdropZIndex
-    }
-    this.backdropEl.style.backgroundColor = this.backdropBackgroundHidden
-    document.body.appendChild(this.backdropEl)
-
-    clearTimeout(this.backdropTimer)
-    this.backdropTimer = setTimeout(() => {
-      this.backdropEl.style.backgroundColor = this.backdropBackgroundVisible
-    }, 1)
-  }
-
-  private detachBackdrop (): void {
-    if (!this.backdropEl) {
-      return
-    }
-    this.backdropEl.style.backgroundColor = 'transparent'
-    clearTimeout(this.backdropTimer)
-    this.backdropTimer = setTimeout(() => {
-      this.backdropEl.remove()
-    }, cssDurationToMilliseconds(this.cssBackdropDuration))
-  }
-
-  private callerOnClick = (): void => {
-    this.handleVisibility(!this.visible)
-  }
-
-  private callerOnMouseOver = (): void => {
-    this.mouseoverTimer = setTimeout(() => {
-      clearTimeout(this.mouseoverTimer)
-      this.handleVisibility(true)
-    }, cssDurationToMilliseconds(this.cssMouseOverDelayDuration))
-  }
-
-  private closeDropdownMouseLeave = (): void => {
-    this.handleVisibility(false)
-    this.host.removeEventListener('mouseleave', this.closeDropdownMouseLeave.bind(this))
-    this.host.addEventListener('mouseover', this.handleCloseDropdownMouseLeave.bind(this))
-  }
-
-  private handleCloseDropdownMouseLeave = (): void => {
-    this.host.removeEventListener('mouseover', this.handleCloseDropdownMouseLeave.bind(this))
-    this.host.addEventListener('mouseleave', this.closeDropdownMouseLeave.bind(this))
-  }
-
-  private arrowInset = (middleware: MiddlewareData, arrowPosition: string): { bottom?: string, left?: string, right?: string, top?: string } => {
-    const { arrow } = middleware
-    const inset = { bottom: '', left: '', right: '', top: '' }
-
-    if (arrow === undefined) {
-      return {}
-    }
-
-    switch (arrowPosition) {
-    case 'bottom':
-      inset.left = arrow.x !== null ? `${arrow.x}px` : ''
-      inset.top = '100%'
-      break
-    case 'left':
-      inset.right = '100%'
-      inset.top = arrow.y !== null ? `${arrow.y}px` : ''
-      break
-    case 'right':
-      inset.left = '100%'
-      inset.top = arrow.y !== null ? `${arrow.y}px` : ''
-      break
-    case 'top':
-      inset.left = arrow.x !== null ? `${arrow.x}px` : ''
-      inset.top = ''
-      break
-    default:
-      break
-    }
-    return inset
-  }
-
-  private arrowTransform = (arrowPosition: string): { transform: string } => {
-    let transformProps = this.arrow && this.visible ? 'scale(1)' : 'scale(0)'
-    switch (arrowPosition) {
-    case 'bottom':
-      transformProps = `rotate(180deg) ${transformProps} translate(0, -100%)`
-      break
-    case 'left':
-      transformProps = `rotate(-90deg) ${transformProps} translate(50%, -50%)`
-      break
-    case 'right':
-      transformProps = `rotate(90deg) ${transformProps} translate(-50%, -50%)`
-      break
-    case 'top':
-      transformProps = `rotate(0deg) ${transformProps} translate(0, 0)`
-      break
-    default:
-      break
-    }
-    return { transform: transformProps }
-  }
-
-  private arrowTransformOrigin = (arrowPosition: string): { transformOrigin: string } => {
-    switch (arrowPosition) {
-    case 'bottom':
-      return { transformOrigin: 'center top' }
-    case 'left':
-      return { transformOrigin: 'right center' }
-    case 'right':
-      return { transformOrigin: 'left center' }
-    case 'top':
-      return { transformOrigin: 'center bottom' }
-    default:
-      return { transformOrigin: 'center top' }
-    }
-  }
-
-  private updatePosition = (): void => {
-    if (!this.caller) return
-
-    const middleware: Middleware[] = new Array<Middleware>()
-    const config: { padding?: number } = {}
-
-    if (this.shiftPadding) {
-      config.padding = this.shiftPadding
-    }
-
-    if (this.autoPlacement) {
-      middleware.push(autoPlacement())
-    }
-
-    if (this.offset) {
-      middleware.push(offset(this.offset))
-    }
-
-    if (!this.autoPlacement && this.flip) {
-      middleware.push(flip(config))
-    }
-
-    if (this.shift) {
-      middleware.push(shift(config))
-    }
-
-    if (this.arrow) {
-      middleware.push(arrow({
-        element: this.arrowEl,
-        padding: this.arrowPadding,
-      }))
-    }
-
-    computePosition(this.caller, this.host, {
-      middleware,
-      placement: this.placement,
-      strategy: this.strategy,
-    }).then(({ x, y, placement, middlewareData }) => {
-
-      Object.assign(this.host.style, {
-        left: `${x}px`,
-        top: `${y}px`,
-      })
-
-      const arrowStyle = {}
-      const arrowPosition = {
-        top: 'bottom',
-        right: 'left',
-        bottom: 'top',
-        left: 'right',
-      }[placement.split('-')[0]]
-
-      if (arrowPosition) {
-        Object.assign(arrowStyle, this.arrowTransform(arrowPosition))
-        Object.assign(arrowStyle, this.arrowInset(middlewareData, arrowPosition))
-        Object.assign(arrowStyle, this.arrowTransformOrigin(arrowPosition))
-        Object.assign(this.arrowEl.style, arrowStyle)
-      }
-    })
-  }
-
   @Watch('arrow')
   arrowChanged (): void {
-    this.updatePosition()
+    this.floatingController.updatePosition()
   }
 
   @Watch('arrowPadding')
   arrowPaddingChanged (): void {
-    this.updatePosition()
+    this.floatingController.updatePosition()
+
   }
 
   @Watch('autoPlacement')
   autoPlacementChanged (): void {
-    this.updatePosition()
+    this.floatingController.updatePosition()
   }
 
   @Watch('backdrop')
@@ -346,139 +169,162 @@ export class MdsDropdown {
       return
     }
     if (newValue) {
-      this.attachBackdrop()
+      this.backdropController.attachBackdrop()
       return
     }
-    this.detachBackdrop()
+    this.backdropController.detachBackdrop()
   }
 
   @Watch('flip')
   flipChanged (): void {
-    this.updatePosition()
+    this.floatingController.updatePosition()
+
   }
 
   @Watch('offset')
   offsetChanged (): void {
-    this.updatePosition()
+    this.floatingController.updatePosition()
+
   }
 
   @Watch('placement')
   placementChanged (): void {
-    this.updatePosition()
+    this.floatingController.updatePosition()
+
   }
 
   @Watch('shift')
   shiftChanged (): void {
-    this.updatePosition()
+    this.floatingController.updatePosition()
+
   }
 
   @Watch('shiftPadding')
   shiftPaddingChanged (): void {
-    this.updatePosition()
+    this.floatingController.updatePosition()
+
   }
 
   @Watch('strategy')
   strategyChanged (): void {
-    this.updatePosition()
+    this.floatingController.updatePosition()
+  }
+
+  @Watch('target')
+  targetChanged (): void {
+    if (!this.target) return
+    this.caller = this.floatingController.updateCaller(this.target)
+    this.setInteractionBehaviour()
+    this.km.addElement(this.host)
+    this.km.attachEscapeBehavior(() => this.visibleChanged(false))
   }
 
   @Watch('visible')
   visibleChanged (newValue: boolean): void {
-    this.updatePosition()
-    if (!this.backdrop) {
+    this.changedEvent.emit({ caller: this.caller, visible: newValue })
+    if (newValue) {
+      document.addEventListener('click', this.handleCloseDropdown)
+      this.floatingController.updatePosition()
+      this.backdropController.attachBackdrop()
+      this.visibleEvent.emit({ caller: this.caller, visible: true })
       return
     }
-    if (newValue) {
-      this.attachBackdrop()
-      return
-    }
-    this.detachBackdrop()
+    this.floatingController.dismiss()
+    this.backdropController.detachBackdrop()
+    this.hiddenEvent.emit({ caller: this.caller, visible: false })
   }
 
-  @Watch('zIndex')
-  zIndexChanged (newValue: number): void {
-    if (newValue) {
-      this.host.style.setProperty('z-index', newValue.toString())
-    }
+  onClickTarget (): void {
+    this.visible = !this.visible
   }
 
-  private updateCSSCustomProps = (): void => {
+  onMouseOverTarget (): void {
+    this.mouseoverTimer = setTimeout(() => {
+      clearTimeout(this.mouseoverTimer)
+      this.visible = true
+    }, cssDurationToMilliseconds(this.cssMouseOverDelayDuration))
+  }
+
+  onMouseOutTarget (): void {
+    clearTimeout(this.mouseoverTimer)
+    this.mouseoverTimer = setTimeout(() => {
+      clearTimeout(this.mouseoverTimer)
+      this.visible = false
+    }, cssDurationToMilliseconds(this.cssMouseOverDelayDuration))
+  }
+
+  private readonly updateCSSCustomProps = (): void => {
     if (typeof window === 'undefined') return
     const elementStyles = window.getComputedStyle(this.host)
-    this.cssBackdropDuration = elementStyles.getPropertyValue('--mds-dropdown-backdrop-duration')
-    this.cssBackdropZIndex = elementStyles.getPropertyValue('--mds-dropdown-backdrop-z-index')
-    this.cssMouseOverDelayDuration = elementStyles.getPropertyValue('--mds-dropdown-mouseover-delay')
+    this.cssMouseOverDelayDuration = elementStyles.getPropertyValue(
+      '--mds-dropdown-mouseover-delay',
+    )
   }
 
-  componentWillLoad (): void {
-    Array.from(document.getElementsByClassName(this.backdropId)).forEach((element: HTMLElement) => {
-      element.remove()
-    })
-    this.zIndexChanged(this.zIndex)
+  private readonly handleCloseDropdown = (e: Event): void => {
+    if (e.type === 'mouseleave') {
+      this.host.removeEventListener('mouseleave', this.handleCloseDropdown)
+      this.caller.removeEventListener('mouseleave', this.handleCloseDropdown)
+      this.visible = false
+      return
+    }
+    if (!this.host.contains(e.target as HTMLElement) && e.target as HTMLElement !== this.caller) {
+      this.visible = false
+      document.removeEventListener('click', this.handleCloseDropdown)
+    }
   }
 
-  private setAriaAttributes (): void {
-    setAttributeIfEmpty(this.caller, 'aria-haspopup', 'true')
-    setAttributeIfEmpty(this.caller, 'aria-controls', this.target)
-    setAttributeIfEmpty(this.host, 'role', 'menu')
-    setAttributeIfEmpty(this.host, 'aria-labelledby', this.target)
-  }
-
-  private setInteractionBehaviour = (): void => {
-
+  private readonly setInteractionBehaviour = (): void => {
     if (this.interaction === 'none') {
       return
     }
 
     if (this.interaction === 'click') {
-      this.caller.addEventListener('click', this.callerOnClick.bind(this))
+      this.caller.addEventListener('click', this.onClickTarget.bind(this))
     }
 
     if (this.interaction === 'mouseover') {
-      this.caller.addEventListener('mouseover', this.callerOnMouseOver.bind(this))
+      this.caller.addEventListener('mouseover', this.onMouseOverTarget.bind(this))
+      this.caller.addEventListener('mouseout', this.onMouseOutTarget.bind(this))
       this.host.addEventListener('mouseover', this.handleCloseDropdownMouseLeave.bind(this))
     }
   }
 
+  private readonly handleCloseDropdownMouseLeave = (): void => {
+    clearTimeout(this.mouseoverTimer)
+    this.host.removeEventListener('mouseover', this.handleCloseDropdownMouseLeave.bind(this))
+    this.host.addEventListener('mouseleave', this.handleCloseDropdown.bind(this))
+  }
+
   componentDidLoad (): void {
+    const arrow = this.host.shadowRoot?.querySelector('.arrow') as HTMLElement
+    /**
+     * When binding values in frameworks such as Angular
+     * it is possible for the value to be set after the Web Component
+     * initializes but before the value watcher is set up in Stencil.
+     * As a result, the watcher callback may not be fired.
+     * We work around this by manually calling the watcher
+     * callback when the component has loaded and the watcher
+     * is configured.
+     */
+    this.floatingController = new FloatingController(this.host, arrow)
     this.updateCSSCustomProps()
-    document.addEventListener('click', this.handleCloseDropdown)
-    this.arrowEl = this.host.shadowRoot?.querySelector('.arrow') as HTMLElement
-
-    // search caller in document or rootNode of host (if target is in shadowDOM)
-    const caller = document.querySelector(this.target) as HTMLElement ??
-      (this.host.getRootNode() as HTMLElement).querySelector(this.target) as HTMLElement
-
-    if (!caller) {
-      throw Error(`Target not found: ${this.target}`)
-    }
-
-    this.caller = caller
-    this.setAriaAttributes()
-
-    this.km.addElement(this.host)
-    this.km.attachEscapeBehavior(() => this.handleVisibility(false))
-
-    this.backdropChanged(this.backdrop)
-    this.updatePosition()
-
-    this.setInteractionBehaviour()
-
-    if (!this.cleanupAutoUpdate) {
-      this.cleanupAutoUpdate = autoUpdate(this.caller, this.host, this.updatePosition)
-    }
+    this.targetChanged()
   }
 
   disconnectedCallback (): void {
-    this.detachBackdrop()
+    this.backdropController.detachBackdrop()
     this.km.detachEscapeBehavior()
-    this.cleanupAutoUpdate = () => { return }
   }
 
   render () {
     return (
-      <Host>
-        <div class="arrow" innerHTML={arrowSvg} />
+      <Host
+        style={{
+          zIndex: `${this.zIndex}`,
+        }}
+      >
+        <div class="arrow" innerHTML={arrowSvg}/>
         <slot />
       </Host>
     )
