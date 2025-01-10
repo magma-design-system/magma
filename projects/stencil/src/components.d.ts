@@ -1700,6 +1700,24 @@ export namespace Components {
          */
         "visible": boolean;
     }
+    interface MdsTree {
+        /**
+          * Specifies the selector of the target element, this attribute is used with `querySelector` method.
+         */
+        "appearance": 'curved' | 'straight' | 'mixed';
+        /**
+          * Specifies the selector of the target element, this attribute is used with `querySelector` method.
+         */
+        "depth": 'left'|'right';
+        /**
+          * Specifies the selector of the target element, this attribute is used with `querySelector` method.
+         */
+        "heiarchy": boolean;
+        /**
+          * Specifies the selector of the target element, this attribute is used with `querySelector` method.
+         */
+        "label": string;
+    }
     interface MdsUrlView {
         /**
           * Specifies if domain is visible on header
@@ -2934,6 +2952,12 @@ declare global {
         prototype: HTMLMdsTooltipElement;
         new (): HTMLMdsTooltipElement;
     };
+    interface HTMLMdsTreeElement extends Components.MdsTree, HTMLStencilElement {
+    }
+    var HTMLMdsTreeElement: {
+        prototype: HTMLMdsTreeElement;
+        new (): HTMLMdsTreeElement;
+    };
     interface HTMLMdsUrlViewElementEventMap {
         "mdsUrlViewClose": void;
     }
@@ -3057,6 +3081,7 @@ declare global {
         "mds-text": HTMLMdsTextElement;
         "mds-toast": HTMLMdsToastElement;
         "mds-tooltip": HTMLMdsTooltipElement;
+        "mds-tree": HTMLMdsTreeElement;
         "mds-url-view": HTMLMdsUrlViewElement;
         "mds-usage": HTMLMdsUsageElement;
         "mds-video-wall": HTMLMdsVideoWallElement;
@@ -4814,6 +4839,24 @@ declare namespace LocalJSX {
          */
         "visible"?: boolean;
     }
+    interface MdsTree {
+        /**
+          * Specifies the selector of the target element, this attribute is used with `querySelector` method.
+         */
+        "appearance"?: 'curved' | 'straight' | 'mixed';
+        /**
+          * Specifies the selector of the target element, this attribute is used with `querySelector` method.
+         */
+        "depth"?: 'left'|'right';
+        /**
+          * Specifies the selector of the target element, this attribute is used with `querySelector` method.
+         */
+        "heiarchy"?: boolean;
+        /**
+          * Specifies the selector of the target element, this attribute is used with `querySelector` method.
+         */
+        "label"?: string;
+    }
     interface MdsUrlView {
         /**
           * Specifies if domain is visible on header
@@ -4962,6 +5005,7 @@ declare namespace LocalJSX {
         "mds-text": MdsText;
         "mds-toast": MdsToast;
         "mds-tooltip": MdsTooltip;
+        "mds-tree": MdsTree;
         "mds-url-view": MdsUrlView;
         "mds-usage": MdsUsage;
         "mds-video-wall": MdsVideoWall;
@@ -5059,6 +5103,7 @@ declare module "@stencil/core" {
             "mds-text": LocalJSX.MdsText & JSXBase.HTMLAttributes<HTMLMdsTextElement>;
             "mds-toast": LocalJSX.MdsToast & JSXBase.HTMLAttributes<HTMLMdsToastElement>;
             "mds-tooltip": LocalJSX.MdsTooltip & JSXBase.HTMLAttributes<HTMLMdsTooltipElement>;
+            "mds-tree": LocalJSX.MdsTree & JSXBase.HTMLAttributes<HTMLMdsTreeElement>;
             "mds-url-view": LocalJSX.MdsUrlView & JSXBase.HTMLAttributes<HTMLMdsUrlViewElement>;
             "mds-usage": LocalJSX.MdsUsage & JSXBase.HTMLAttributes<HTMLMdsUsageElement>;
             "mds-video-wall": LocalJSX.MdsVideoWall & JSXBase.HTMLAttributes<HTMLMdsVideoWallElement>;
