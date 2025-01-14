@@ -1,7 +1,10 @@
-import { Component, Host, Prop, State, h } from '@stencil/core'
+import { Component, Host, Method, Prop, State, h, Element, Watch } from '@stencil/core'
 import miBaselineForwardIos from '@icon/mi/baseline/arrow-forward-ios.svg'
 import miBaselineBackIosNew from '@icon/mi/baseline/arrow-back-ios-new.svg'
 import { DateTime } from 'luxon'
+import { Locale } from '@common/locale'
+import { ISO8601Date } from '@type/date'
+import { sanitizeISO8601Date } from '@common/date'
 
 @Component({
   tag: 'mds-calendar',
@@ -9,6 +12,8 @@ import { DateTime } from 'luxon'
   shadow: true,
 })
 export class MdsCalendar {
+  @Element() private host: HTMLMdsCalendarElement
+
   @State() currentDate: DateTime = DateTime.now()
   @State() weekDaysinMonth: DateTime[] = []
   @State() weekdays: string[] = []
@@ -17,8 +22,26 @@ export class MdsCalendar {
   @State() previewElement: HTMLElement | null = null
   @State() isFirstClick: boolean = true
 
-  @Prop({ reflect: true }) startDate: string = '2024-12-12'
-  @Prop({ reflect: true }) endDate: string = '2024-12-16'
+  @Prop({ reflect: true, mutable: true }) startDate: string
+  @Prop({ reflect: true, mutable: true }) endDate: string
+
+  @Watch('startDate')
+  handleStartDate (newValue: ISO8601Date): void {
+    this.startDate = sanitizeISO8601Date(newValue?.toString()) as ISO8601Date
+
+    if (this.startDate && this.endDate){
+      this.updateCalendar().then(() => setTimeout(() => this.setDates(), 50))
+    }
+  }
+
+  @Watch('endDate')
+  handleEndDate (newValue: ISO8601Date): void {
+    this.endDate = sanitizeISO8601Date(newValue?.toString()) as ISO8601Date
+
+    if (this.startDate && this.endDate){
+      this.updateCalendar().then(() => setTimeout(() => this.setDates(), 50))
+    }
+  }
 
   startDateTime: DateTime
   endDateTime: DateTime
@@ -28,13 +51,19 @@ export class MdsCalendar {
   currentYear: string = ''
 
   componentWillLoad (): void {
+    this.language = this.t.lang(this.host)
 
     if (this.startDate) {
+      this.startDate = sanitizeISO8601Date(this.startDate?.toString()) as ISO8601Date
       this.startDateTime = DateTime.fromISO(this.startDate)
     }
+
     if (this.endDate) {
+      this.endDate = sanitizeISO8601Date(this.endDate?.toString()) as ISO8601Date
       this.endDateTime = DateTime.fromISO(this.endDate)
+
     }
+
 
     this.updateCalendar()
   }
@@ -43,17 +72,22 @@ export class MdsCalendar {
     this.setDates()
   }
 
+  private readonly t: Locale = new Locale()
+  @State() language: string
+  @Method()
+  async updateLang (): Promise<void> {
+    this.language = this.t.lang(this.host)
+  }
 
 
   async updateCalendar (): Promise<void> {
     try {
-      const language = navigator.language || 'it-IT'
       const startOfWeek = DateTime.now().startOf('week')
       this.weekdays = Array.from( { length: 7 } ).map((_, index) =>
-        startOfWeek.setLocale(language).plus({ days: index }).toFormat('ccc'),
+        startOfWeek.setLocale(this.language).plus({ days: index }).toFormat('ccc'),
       )
       this.calculateWeekDaysInMonth()
-      this.currentMonth = this.currentDate.setLocale('it').toFormat('MMMM')
+      this.currentMonth = this.currentDate.setLocale(this.language).toFormat('MMMM')
       this.currentMonthNumber = this.currentDate.month
       this.currentYear = this.currentDate.toFormat('yyyy')
     }
@@ -78,8 +112,8 @@ export class MdsCalendar {
     if (!this.startDate || !this.endDate) return
 
     // Converto startDateTime ed endDateTime in oggetti DateTime
-    this.startDateTime = DateTime.fromISO(this.startDate)
-    this.endDateTime = DateTime.fromISO(this.endDate)
+    this.startDateTime = DateTime.fromISO(this.startDate.toString())
+    this.endDateTime = DateTime.fromISO(this.endDate.toString())
 
     const cells = shadowRoot.querySelectorAll('mds-calendar-cell')
     if (cells) {
@@ -181,30 +215,34 @@ export class MdsCalendar {
     const startDateElementIndex = Array.from(mdsCalendarCellElements ?? []).indexOf(this.startDateElement as HTMLMdsCalendarCellElement)
     const elementIndex = Array.from(mdsCalendarCellElements ?? []).indexOf(element as HTMLMdsCalendarCellElement)
 
-    if (elementIndex < startDateElementIndex) {
-      this.startDateElement?.removeAttribute('selection')
-      this.startDateElement?.removeAttribute('preview')
-      this.startDateElement = element
-      this.startDateTime = dayInfo
-      element.setAttribute('selection', 'start')
-      element.setAttribute('preview', 'true')
-    } else {
-      element.setAttribute('selection', 'end')
+
+    element.setAttribute('selection', 'end')
+    if ( this.startDateElement && DateTime.fromISO(this.startDateElement.getAttribute('date') as string) < DateTime.fromISO(element.getAttribute('date') as string)) {
       this.endDateElement = element
       this.endDateTime = dayInfo
       this.endDate = this.endDateTime.toISO().split('T')[0]
+    } else {
+      this.endDateElement = this.startDateElement
+      this.endDateTime = this.startDateTime
+      this.endDate = this.startDate
 
-      calendar?.shadowRoot?.querySelectorAll('mds-calendar-cell[preview]').forEach(day => {
-        day.removeAttribute('preview')
-      })
-
-      if (mdsCalendarCellElements) {
-        for (let i = startDateElementIndex + 1; i < elementIndex; i++) {
-          mdsCalendarCellElements[i].setAttribute('selection', 'middle')
-        }
-      }
-
+      this.startDateElement = element
+      this.startDateTime = dayInfo
+      this.startDate = this.startDateTime.toISO().split('T')[0]
     }
+
+
+    calendar?.shadowRoot?.querySelectorAll('mds-calendar-cell[preview]').forEach(day => {
+      day.removeAttribute('preview')
+    })
+
+    if (mdsCalendarCellElements) {
+      for (let i = startDateElementIndex + 1; i < elementIndex; i++) {
+        mdsCalendarCellElements[i].setAttribute('selection', 'middle')
+      }
+    }
+
+
   }
 
   handleHover ( element: HTMLElement ): void {
@@ -216,21 +254,40 @@ export class MdsCalendar {
       const startIndex = Array.from(mdsCalendarCellElements ?? []).indexOf(startTypedElement)
       const hoverIndex = Array.from(mdsCalendarCellElements ?? []).indexOf(typedElement)
 
-      mdsCalendarCellElements?.forEach((cellDay, index) => {
-        if (index >= startIndex && index <= hoverIndex) {
-          cellDay.setAttribute('preview', 'true')
-          if (index === hoverIndex) {
-            cellDay.setAttribute('selection', 'end')
-          } else if (index === startIndex) {
-            cellDay.setAttribute('selection', 'start')
+      if (startTypedElement && typedElement) {
+        typedElement.setAttribute('preview', 'true')
+
+        if (startTypedElement.date && typedElement.date ) {
+          const typedDate = DateTime.fromISO(typedElement.date)
+          const startDate = DateTime.fromISO(startTypedElement.date)
+
+          if (startDate < typedDate && startTypedElement.getAttribute('selection') === undefined) {
+            startTypedElement.setAttribute('selection', 'start')
+          } else if (startDate > typedDate) {
+            startTypedElement.setAttribute('selection', 'end')
+            typedElement.setAttribute('selection', 'start')
           } else {
-            cellDay.setAttribute('selection', 'middle')
+            typedElement.setAttribute('selection', 'end')
           }
-        } else {
-          cellDay.removeAttribute('preview')
-          cellDay.removeAttribute('selection')
         }
-      })
+        const start = startIndex < hoverIndex ? startIndex : hoverIndex
+        const end = startIndex > hoverIndex ? startIndex : hoverIndex
+        if (mdsCalendarCellElements) {
+          mdsCalendarCellElements.forEach((calendarCell, index) => {
+            if (startIndex !== index && hoverIndex !== index && index >= start && index <= end) {
+              calendarCell.setAttribute('preview', 'true')
+              calendarCell.setAttribute('selection', 'middle')
+            } else {
+              if (startIndex !== index && hoverIndex !== index) {
+                calendarCell.removeAttribute('preview')
+                calendarCell.removeAttribute('selection')
+              }
+            }
+          })
+        }
+      }
+
+
     }
   }
 

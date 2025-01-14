@@ -59,6 +59,8 @@ This is a web-component from Maggioli Design System [Magma](https://magma.maggio
 
  - [mds-banner](../mds-banner)
  - [mds-breadcrumb](../mds-breadcrumb)
+ - [mds-calendar](../mds-calendar)
+ - [mds-calendar-cell](../mds-calendar-cell)
  - [mds-chip](../mds-chip)
  - [mds-file-preview](../mds-file-preview)
  - [mds-header-bar](../mds-header-bar)
@@ -89,6 +91,8 @@ graph TD;
   mds-button --> mds-text
   mds-banner --> mds-button
   mds-breadcrumb --> mds-button
+  mds-calendar --> mds-button
+  mds-calendar-cell --> mds-button
   mds-chip --> mds-button
   mds-file-preview --> mds-button
   mds-header-bar --> mds-button

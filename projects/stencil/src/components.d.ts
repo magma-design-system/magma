@@ -16,6 +16,7 @@ import { BibliographyFormatType, BibliographyRelationshipType } from "./componen
 import { MdsBreadcrumbEventDetail } from "./components/mds-breadcrumb/meta/event-detail";
 import { MdsBreadcrumbItemEventDetail } from "./components/mds-breadcrumb-item/meta/event-detail";
 import { ButtonIconPositionType, ButtonSizeType, ButtonTargetType, ButtonType, ButtonVariantType } from "./type/button";
+import { CalendarCellSelectionOrieintationType, CalendarCellSelectionPositionType, CalendarCellType } from "./components/mds-calendar-cell/meta/types";
 import { MdsChipEvent } from "./components/mds-chip/meta/interface";
 import { DropdownInteractionType } from "./components/mds-dropdown/meta/types";
 import { FloatingUIPlacement, FloatingUIStrategy } from "./type/floating-ui";
@@ -79,6 +80,7 @@ export { BibliographyFormatType, BibliographyRelationshipType } from "./componen
 export { MdsBreadcrumbEventDetail } from "./components/mds-breadcrumb/meta/event-detail";
 export { MdsBreadcrumbItemEventDetail } from "./components/mds-breadcrumb-item/meta/event-detail";
 export { ButtonIconPositionType, ButtonSizeType, ButtonTargetType, ButtonType, ButtonVariantType } from "./type/button";
+export { CalendarCellSelectionOrieintationType, CalendarCellSelectionPositionType, CalendarCellType } from "./components/mds-calendar-cell/meta/types";
 export { MdsChipEvent } from "./components/mds-chip/meta/interface";
 export { DropdownInteractionType } from "./components/mds-dropdown/meta/types";
 export { FloatingUIPlacement, FloatingUIStrategy } from "./type/floating-ui";
@@ -380,6 +382,18 @@ export namespace Components {
           * Specifies the color variant for the button
          */
         "variant"?: ButtonVariantType;
+    }
+    interface MdsCalendar {
+        "endDate": string;
+        "startDate": string;
+        "updateLang": () => Promise<void>;
+    }
+    interface MdsCalendarCell {
+        "date"?: string;
+        "month"?: CalendarCellType;
+        "orientation"?: CalendarCellSelectionOrieintationType;
+        "preview"?: boolean;
+        "selection"?: CalendarCellSelectionPositionType;
     }
     interface MdsCard {
         /**
@@ -2087,6 +2101,18 @@ declare global {
         prototype: HTMLMdsButtonElement;
         new (): HTMLMdsButtonElement;
     };
+    interface HTMLMdsCalendarElement extends Components.MdsCalendar, HTMLStencilElement {
+    }
+    var HTMLMdsCalendarElement: {
+        prototype: HTMLMdsCalendarElement;
+        new (): HTMLMdsCalendarElement;
+    };
+    interface HTMLMdsCalendarCellElement extends Components.MdsCalendarCell, HTMLStencilElement {
+    }
+    var HTMLMdsCalendarCellElement: {
+        prototype: HTMLMdsCalendarCellElement;
+        new (): HTMLMdsCalendarCellElement;
+    };
     interface HTMLMdsCardElement extends Components.MdsCard, HTMLStencilElement {
     }
     var HTMLMdsCardElement: {
@@ -2979,6 +3005,8 @@ declare global {
         "mds-breadcrumb": HTMLMdsBreadcrumbElement;
         "mds-breadcrumb-item": HTMLMdsBreadcrumbItemElement;
         "mds-button": HTMLMdsButtonElement;
+        "mds-calendar": HTMLMdsCalendarElement;
+        "mds-calendar-cell": HTMLMdsCalendarCellElement;
         "mds-card": HTMLMdsCardElement;
         "mds-card-content": HTMLMdsCardContentElement;
         "mds-card-footer": HTMLMdsCardFooterElement;
@@ -3354,6 +3382,17 @@ declare namespace LocalJSX {
           * Specifies the color variant for the button
          */
         "variant"?: ButtonVariantType;
+    }
+    interface MdsCalendar {
+        "endDate"?: string;
+        "startDate"?: string;
+    }
+    interface MdsCalendarCell {
+        "date"?: string;
+        "month"?: CalendarCellType;
+        "orientation"?: CalendarCellSelectionOrieintationType;
+        "preview"?: boolean;
+        "selection"?: CalendarCellSelectionPositionType;
     }
     interface MdsCard {
         /**
@@ -4880,6 +4919,8 @@ declare namespace LocalJSX {
         "mds-breadcrumb": MdsBreadcrumb;
         "mds-breadcrumb-item": MdsBreadcrumbItem;
         "mds-button": MdsButton;
+        "mds-calendar": MdsCalendar;
+        "mds-calendar-cell": MdsCalendarCell;
         "mds-card": MdsCard;
         "mds-card-content": MdsCardContent;
         "mds-card-footer": MdsCardFooter;
@@ -4977,6 +5018,8 @@ declare module "@stencil/core" {
             "mds-breadcrumb": LocalJSX.MdsBreadcrumb & JSXBase.HTMLAttributes<HTMLMdsBreadcrumbElement>;
             "mds-breadcrumb-item": LocalJSX.MdsBreadcrumbItem & JSXBase.HTMLAttributes<HTMLMdsBreadcrumbItemElement>;
             "mds-button": LocalJSX.MdsButton & JSXBase.HTMLAttributes<HTMLMdsButtonElement>;
+            "mds-calendar": LocalJSX.MdsCalendar & JSXBase.HTMLAttributes<HTMLMdsCalendarElement>;
+            "mds-calendar-cell": LocalJSX.MdsCalendarCell & JSXBase.HTMLAttributes<HTMLMdsCalendarCellElement>;
             "mds-card": LocalJSX.MdsCard & JSXBase.HTMLAttributes<HTMLMdsCardElement>;
             "mds-card-content": LocalJSX.MdsCardContent & JSXBase.HTMLAttributes<HTMLMdsCardContentElement>;
             "mds-card-footer": LocalJSX.MdsCardFooter & JSXBase.HTMLAttributes<HTMLMdsCardFooterElement>;
