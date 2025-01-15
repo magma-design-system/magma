@@ -20,6 +20,7 @@
   --mds-button-border-color: transparent;
   --mds-button-color: theme('colors.tone-neutral');
   --mds-button-gap: theme('spacing.200');
+  --mds-button-line-clamp: 1;
   --mds-button-radius: theme('borderRadius.lg');
 
   @apply
@@ -53,10 +54,8 @@
 }
 
 .text {
-  @apply truncate;
 
-  min-width: 0;
-  user-select: none;
+  --mds-text-line-clamp: var(--mds-button-line-clamp);
 }
 
 .text::first-letter {
