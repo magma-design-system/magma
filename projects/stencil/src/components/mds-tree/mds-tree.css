@@ -1,3 +1,86 @@
+@tailwind utilities;
+
 :host {
-  display: block;
+
+  --mds-tree-label-border-radius: theme('borderRadius.lg');
+  --mds-tree-label-background: theme('colors.variant-primary-10');
+  --mds-tree-line-clamp: 2;
+  --mds-tree-icon-color: theme('colors.variant-primary-03');
+  --mds-tree-nasting-offset: theme('spacing.400');
+  --mds-tree-transition-duration: theme('transitionDuration.300');
+  --mds-tree-transition-timing-function: theme('transitionTimingFunction.in-out-circ');
+
+  display: grid;
 }
+
+.header {
+
+  @apply
+    duration-200
+    ease-out;
+
+  align-items: flex-start;
+  background-color: transparent;
+  border-radius: var(--mds-tree-label-border-radius);
+  display: flex;
+  min-width: 0;
+  transition-property: background-color;
+  width: 100%;
+}
+
+.header:hover {
+  background-color: var(--mds-tree-label-background);
+}
+
+.title {
+  align-items: flex-start;
+  display: flex;
+  flex-grow: 1;
+  gap: theme('spacing.400');
+  justify-content: space-between;
+  min-width: 0;
+}
+
+.label-action {
+
+  --mds-button-line-clamp: var(--mds-tree-line-clamp);
+
+  flex-grow: 1;
+  justify-content: flex-start;
+  padding-right: 0;
+}
+
+.toggle-icon {
+  fill: var(--mds-tree-icon-color);
+  flex-shrink: 0;
+  order: 0;
+  transform: rotate(0deg);
+  transition-duration: var(--mds-tree-transition-duration);
+  transition-property: transform;
+  transition-timing-function: var(--mds-tree-transition-timing-function);
+}
+
+.children {
+  height: 0;
+  interpolate-size: allow-keywords;
+  overflow: clip;
+  padding-left: var(--mds-tree-nasting-offset);
+  transition-delay: 0, var(--mds-tree-transition-duration);
+  transition-duration: var(--mds-tree-transition-duration), 0;
+  transition-property: height, overflow;
+  transition-timing-function: var(--mds-tree-transition-timing-function);
+}
+
+.children--expanded {
+  height: auto;
+}
+
+.children--show-focus {
+  overflow: visible;
+}
+
+.children--empty {
+  display: none;
+}
+
+@import './css/mds-tree-icon-position.css';
