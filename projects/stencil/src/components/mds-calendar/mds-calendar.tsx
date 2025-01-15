@@ -247,21 +247,23 @@ export class MdsCalendar {
 
   handleHover ( element: HTMLElement ): void {
     const typedElement = element as HTMLMdsCalendarCellElement
-    const startTypedElement = this.startDateElement as HTMLMdsCalendarCellElement
-    if (this.startDateElement && this.startDateElement !== element && this.endDateElement === null) {
+    const startDate: DateTime = DateTime.fromISO(this.startDate)
+    if (startDate && this.endDateElement === null) {
       const calendar = document.querySelector('mds-calendar')
       const mdsCalendarCellElements = calendar?.shadowRoot?.querySelectorAll('mds-calendar-cell')
-      const startIndex = Array.from(mdsCalendarCellElements ?? []).indexOf(startTypedElement)
-      const hoverIndex = Array.from(mdsCalendarCellElements ?? []).indexOf(typedElement)
+      const hoveredDate: DateTime = DateTime.fromISO(typedElement.getAttribute('date') as string)
+      const calendarCells: HTMLElement[] = Array.from(mdsCalendarCellElements ?? [])
+      const startTypedElement = calendarCells.find(cell => cell.getAttribute('date') === this.startDate)
 
-      if (startTypedElement && typedElement) {
+
+
+      if (typedElement) {
         typedElement.setAttribute('preview', 'true')
 
-        if (startTypedElement.date && typedElement.date ) {
+        if (typedElement.date && startTypedElement ) {
           const typedDate = DateTime.fromISO(typedElement.date)
-          const startDate = DateTime.fromISO(startTypedElement.date)
 
-          if (startDate < typedDate && startTypedElement.getAttribute('selection') === undefined) {
+          if (startDate < typedDate) {
             startTypedElement.setAttribute('selection', 'start')
           } else if (startDate > typedDate) {
             startTypedElement.setAttribute('selection', 'end')
@@ -270,18 +272,25 @@ export class MdsCalendar {
             typedElement.setAttribute('selection', 'end')
           }
         }
-        const start = startIndex < hoverIndex ? startIndex : hoverIndex
-        const end = startIndex > hoverIndex ? startIndex : hoverIndex
+        const start: DateTime = startDate < hoveredDate ? startDate : hoveredDate
+        const end: DateTime = startDate > hoveredDate ? startDate : hoveredDate
         if (mdsCalendarCellElements) {
-          mdsCalendarCellElements.forEach((calendarCell, index) => {
-            if (startIndex !== index && hoverIndex !== index && index >= start && index <= end) {
+          mdsCalendarCellElements.forEach(calendarCell => {
+            const cellElementDate = DateTime.fromISO(calendarCell.getAttribute('date') as string)
+            if (start !== cellElementDate && hoveredDate !== cellElementDate && cellElementDate >= start && cellElementDate <= end) {
               calendarCell.setAttribute('preview', 'true')
-              calendarCell.setAttribute('selection', 'middle')
-            } else {
-              if (startIndex !== index && hoverIndex !== index) {
-                calendarCell.removeAttribute('preview')
-                calendarCell.removeAttribute('selection')
+
+              let selectionType = 'middle' // Default
+
+              if (start.equals(cellElementDate)) {
+                selectionType = 'start'
+              } else if (end.equals(cellElementDate)) {
+                selectionType = 'end'
               }
+              calendarCell.setAttribute('selection', selectionType)
+            } else {
+              calendarCell.removeAttribute('preview')
+              calendarCell.removeAttribute('selection')
             }
           })
         }
@@ -404,7 +413,11 @@ export class MdsCalendar {
 
             {this.weekDaysinMonth.map(dayInfo => {
               return (
-                <mds-calendar-cell date={dayInfo.date.toFormat('yyyy-MM-dd')} month={dayInfo.isCurrentMonth ? 'current' : 'other'} onClick={event => this.handleRange(event.target as HTMLElement, dayInfo.date)} onMouseOver={(event => this.handleHover(event.target as HTMLElement))} >
+                <mds-calendar-cell date={dayInfo.date.toFormat('yyyy-MM-dd')} month={dayInfo.isCurrentMonth ? 'current' : 'other'} onClick={event => this.handleRange(event.target as HTMLElement, dayInfo.date)} onMouseOver={event => {
+                  if (this.startDateElement) {
+                    this.handleHover(event.target as HTMLElement)
+                  }
+                }} >
                   {dayInfo.date.toFormat('dd')}
                 </mds-calendar-cell>
               )
