@@ -31,7 +31,7 @@ export class MdsInputSwitch {
   private km = new KeyboardManager()
   private label: string
   @State() dirty = false
-  @State() hasText: boolean
+  @State() hasText: boolean = true
 
   private t: Locale = new Locale({
     el: localeEl,
