@@ -42,7 +42,8 @@ export default {
 
 const Template = ({ ...args }) =>
   <mds-tree {...args}>
-    <mds-button slot="action" icon="mi/baseline/explore"></mds-button>
+    <mds-button slot="action" icon="mi/baseline/explore" variant="dark" tone="quiet"></mds-button>
+    <mds-button slot="action" icon="mi/baseline/explore" variant="dark" tone="quiet"></mds-button>
     <mds-tree icon={args.icon} icon-position={args['icon-position']} truncate={args.truncate} label="First children element"></mds-tree>
     <mds-tree icon={args.icon} icon-position={args['icon-position']} truncate={args.truncate} label="Second element"></mds-tree>
     <mds-tree icon={args.icon} icon-position={args['icon-position']} truncate={args.truncate} label="This is the third element children"></mds-tree>

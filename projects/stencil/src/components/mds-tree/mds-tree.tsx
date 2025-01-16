@@ -22,7 +22,6 @@ import { TypographyTruncateType } from '@type/text'
 export class MdsTree {
 
   private hasActions: boolean
-  private childrenEl: HTMLDivElement
   @State() hasChildren: boolean = true
   @State() currentIcon: string
   @State() await: boolean
@@ -79,32 +78,13 @@ export class MdsTree {
     this.updateIcon()
   }
 
-  @Watch('expanded')
-  handleExpandedChange (newValue: boolean): void {
-    if (newValue) {
-      this.preventFocusClip()
-    }
-  }
-
   componentWillLoad (): void {
-    this.childrenEl = this.host.shadowRoot?.querySelector('.children') as HTMLDivElement
     this.hasActions = this.host.querySelector('[slot="action"]') !== null
     this.updateIcon()
   }
 
   componentDidLoad (): void {
     this.hasChildren = hasSlottedElements(this.host)
-  }
-
-  private onAnimationEnd = (): void => {
-    // NOT WORKING
-    // https://chatgpt.com/c/6786a4f3-b810-8007-bc7d-6c0f1645aae1
-    this.childrenEl.classList.add('children--show-focus')
-    this.childrenEl.removeEventListener('animationend', this.onAnimationEnd)
-  }
-
-  private preventFocusClip = (): void => {
-    this.childrenEl.addEventListener('animationend', this.onAnimationEnd)
   }
 
   private updateIcon = (): void => {
@@ -148,13 +128,15 @@ export class MdsTree {
           <div class="title">
             <mds-button class="label-action" onClick={this.onClick.bind(this)} variant="dark" tone="quiet" truncate={this.truncate}>{ this.label }</mds-button>
             { this.hasActions &&
-              <div class="actions">
-                <slot name="action"></slot>
+              <div class="actions-container">
+                <div class="actions" part="actions">
+                  <slot name="action"></slot>
+                </div>
               </div>
             }
           </div>
         </div>
-        <div class={clsx('children', this.expanded && 'children--expanded', !this.hasChildren && 'children--empty')}>
+        <div class={clsx('children', this.expanded && 'children--expanded', this.hasChildren ?? 'children--empty')}>
           <slot></slot>
         </div>
       </Host>

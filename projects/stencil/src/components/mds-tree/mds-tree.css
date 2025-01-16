@@ -3,10 +3,13 @@
 :host {
 
   --mds-tree-label-border-radius: theme('borderRadius.lg');
-  --mds-tree-label-background: theme('colors.variant-primary-10');
+  --mds-tree-label-background-default: transparent;
+  --mds-tree-label-background-hover: theme('colors.variant-primary-10');
   --mds-tree-line-clamp: 2;
   --mds-tree-icon-color: theme('colors.variant-primary-03');
   --mds-tree-nasting-offset: theme('spacing.400');
+  --mds-tree-nasting-offset-animation: theme('spacing.400');
+  --mds-tree-actions-gap: theme('spacing.50');
   --mds-tree-transition-duration: theme('transitionDuration.300');
   --mds-tree-transition-timing-function: theme('transitionTimingFunction.in-out-circ');
 
@@ -20,7 +23,7 @@
     ease-out;
 
   align-items: flex-start;
-  background-color: transparent;
+  background-color: var(--mds-tree-label-background-default);
   border-radius: var(--mds-tree-label-border-radius);
   display: flex;
   min-width: 0;
@@ -29,14 +32,24 @@
 }
 
 .header:hover {
-  background-color: var(--mds-tree-label-background);
+  background-color: var(--mds-tree-label-background-hover);
+}
+
+.header:hover .actions {
+  pointer-events: auto;
+}
+
+.header:hover .actions-container {
+  animation: toggleOverflow var(--mds-tree-transition-duration) forwards;
+  min-width: min-content;
+  width: min-content;
 }
 
 .title {
   align-items: flex-start;
   display: flex;
   flex-grow: 1;
-  gap: theme('spacing.400');
+  gap: theme('spacing.200');
   justify-content: space-between;
   min-width: 0;
 }
@@ -63,24 +76,53 @@
 .children {
   height: 0;
   interpolate-size: allow-keywords;
+  margin-left: var(--mds-tree-nasting-offset-animation);
   overflow: clip;
   padding-left: var(--mds-tree-nasting-offset);
-  transition-delay: 0, var(--mds-tree-transition-duration);
-  transition-duration: var(--mds-tree-transition-duration), 0;
-  transition-property: height, overflow;
+  transition-duration: var(--mds-tree-transition-duration);
+  transition-property: height, margin;
   transition-timing-function: var(--mds-tree-transition-timing-function);
 }
 
 .children--expanded {
+  animation: toggleOverflow var(--mds-tree-transition-duration) forwards;
   height: auto;
-}
-
-.children--show-focus {
-  overflow: visible;
+  margin-left: 0;
 }
 
 .children--empty {
   display: none;
+}
+
+.actions-container {
+  border-radius: var(--mds-tree-label-border-radius);
+  display: flex;
+  interpolate-size: allow-keywords;
+  min-width: 0;
+  overflow: hidden;
+  transition-behavior: allow-discrete;
+  transition-duration: var(--mds-tree-transition-duration);
+  transition-property: min-width, width, overflow;
+  transition-timing-function: var(--mds-tree-transition-timing-function);
+  width: 0;
+}
+
+.actions {
+  align-items: center;
+  border-radius: var(--mds-tree-label-border-radius);
+  display: inline-flex;
+  gap: var(--mds-tree-actions-gap);
+  pointer-events: none;
+}
+
+@keyframes toggleOverflow {
+  99.99% {
+    overflow: hidden;
+  }
+
+  100% {
+    overflow: visible;
+  }
 }
 
 @import './css/mds-tree-icon-position.css';
