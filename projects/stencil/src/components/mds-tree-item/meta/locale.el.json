@@ -1,0 +1,4 @@
+{
+  "expand": "Ανάπτυξη {{ label }}",
+  "collapse": "Σύμπτυξη {{ label }}"
+}

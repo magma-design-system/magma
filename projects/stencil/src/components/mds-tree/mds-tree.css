@@ -1,128 +1,23 @@
-@tailwind utilities;
-
 :host {
 
-  --mds-tree-label-border-radius: theme('borderRadius.lg');
+  --mds-tree-actions-border-radius: theme('borderRadius.lg');
+  --mds-tree-actions-gap: theme('spacing.50');
   --mds-tree-label-background-default: transparent;
   --mds-tree-label-background-hover: theme('colors.variant-primary-10');
   --mds-tree-line-clamp: 2;
-  --mds-tree-icon-color: theme('colors.variant-primary-03');
-  --mds-tree-nasting-offset: theme('spacing.400');
-  --mds-tree-nasting-offset-animation: theme('spacing.400');
-  --mds-tree-actions-gap: theme('spacing.50');
+  --mds-tree-toggle-border-color: theme('colors.tone-neutral-07');
+  --mds-tree-toggle-border-radius: theme('borderRadius.lg'); /* to remove radius, use 0px instead 0 or calc will not work properly */
+  --mds-tree-toggle-border-size: theme('size.50');
+  --mds-tree-toggle-gap: theme('size.150');
+  --mds-tree-toggle-icon-chevron-default-background: theme('colors.variant-primary-04');
+  --mds-tree-toggle-icon-chevron-default-color: theme('colors.tone-neutral');
+  --mds-tree-toggle-icon-chevron-opened-background: var(--mds-tree-toggle-icon-chevron-default-background);
+  --mds-tree-toggle-icon-chevron-opened-color: var(--mds-tree-toggle-icon-chevron-default-color);
+  --mds-tree-toggle-icon-folder-default-background: theme('colors.variant-primary-04');
+  --mds-tree-toggle-icon-folder-default-color: theme('colors.tone-neutral');
+  --mds-tree-toggle-size: theme('size.900'); /* internal */
   --mds-tree-transition-duration: theme('transitionDuration.300');
-  --mds-tree-transition-timing-function: theme('transitionTimingFunction.in-out-circ');
+  --mds-tree-transition-timing-function: theme('transitionTimingFunction.in-out-expo');
 
   display: grid;
 }
-
-.header {
-
-  @apply
-    duration-200
-    ease-out;
-
-  align-items: flex-start;
-  background-color: var(--mds-tree-label-background-default);
-  border-radius: var(--mds-tree-label-border-radius);
-  display: flex;
-  min-width: 0;
-  transition-property: background-color;
-  width: 100%;
-}
-
-.header:hover {
-  background-color: var(--mds-tree-label-background-hover);
-}
-
-.header:hover .actions {
-  pointer-events: auto;
-}
-
-.header:hover .actions-container {
-  animation: toggleOverflow var(--mds-tree-transition-duration) forwards;
-  min-width: min-content;
-  width: min-content;
-}
-
-.title {
-  align-items: flex-start;
-  display: flex;
-  flex-grow: 1;
-  gap: theme('spacing.200');
-  justify-content: space-between;
-  min-width: 0;
-}
-
-.label-action {
-
-  --mds-button-line-clamp: var(--mds-tree-line-clamp);
-
-  flex-grow: 1;
-  justify-content: flex-start;
-  padding-right: 0;
-}
-
-.toggle-icon {
-  fill: var(--mds-tree-icon-color);
-  flex-shrink: 0;
-  order: 0;
-  transform: rotate(0deg);
-  transition-duration: var(--mds-tree-transition-duration);
-  transition-property: transform;
-  transition-timing-function: var(--mds-tree-transition-timing-function);
-}
-
-.children {
-  height: 0;
-  interpolate-size: allow-keywords;
-  margin-left: var(--mds-tree-nasting-offset-animation);
-  overflow: clip;
-  padding-left: var(--mds-tree-nasting-offset);
-  transition-duration: var(--mds-tree-transition-duration);
-  transition-property: height, margin;
-  transition-timing-function: var(--mds-tree-transition-timing-function);
-}
-
-.children--expanded {
-  animation: toggleOverflow var(--mds-tree-transition-duration) forwards;
-  height: auto;
-  margin-left: 0;
-}
-
-.children--empty {
-  display: none;
-}
-
-.actions-container {
-  border-radius: var(--mds-tree-label-border-radius);
-  display: flex;
-  interpolate-size: allow-keywords;
-  min-width: 0;
-  overflow: hidden;
-  transition-behavior: allow-discrete;
-  transition-duration: var(--mds-tree-transition-duration);
-  transition-property: min-width, width, overflow;
-  transition-timing-function: var(--mds-tree-transition-timing-function);
-  width: 0;
-}
-
-.actions {
-  align-items: center;
-  border-radius: var(--mds-tree-label-border-radius);
-  display: inline-flex;
-  gap: var(--mds-tree-actions-gap);
-  pointer-events: none;
-}
-
-@keyframes toggleOverflow {
-  99.99% {
-    overflow: hidden;
-  }
-
-  100% {
-    overflow: visible;
-  }
-}
-
-@import './css/mds-tree-icon-position.css';

@@ -1,0 +1,177 @@
+.tree-node {
+
+  --middle-pos-x: calc(50% - calc(var(--mds-tree-item-toggle-border-size)/ 2));
+
+  align-items: center;
+  box-sizing: border-box;
+  display: inline-flex;
+  flex-shrink: 0;
+  height: var(--mds-tree-item-toggle-size);
+  justify-content: center;
+  position: relative;
+  width: var(--mds-tree-item-toggle-size);
+}
+
+.tree-node::before {
+  border-color: var(--mds-tree-item-toggle-border-color);
+  border-radius: 0 0 0 var(--mds-tree-item-toggle-border-radius);
+  border-style: solid;
+  border-width: 0 0 var(--mds-tree-item-toggle-border-size) var(--mds-tree-item-toggle-border-size);
+  box-sizing: border-box;
+  content: "";
+  display: flex;
+  height: var(--mds-tree-item-toggle-size);
+  inset: auto 0 0 var(--middle-pos-x);
+  position: absolute;
+  width: var(--mds-tree-item-toggle-size);
+  z-index: 1;
+}
+
+.tree-node:not(:empty)::after {
+  border-left-color: var(--mds-tree-item-toggle-border-color);
+  border-left-style: solid;
+  border-left-width: var(--mds-tree-item-toggle-border-size);
+  box-sizing: border-box;
+  content: "";
+  display: flex;
+  height: 10px;
+  inset: calc(var(--mds-tree-item-toggle-size) / 2) 0 auto var(--middle-pos-x);
+  position: absolute;
+  transition-delay: var(--mds-tree-item-transition-duration);
+  transition-duration: calc(var(--mds-tree-item-transition-duration) / 3);
+  transition-property: height;
+  transition-timing-function: linear;
+  z-index: 0;
+}
+
+:host([expanded]) .tree-node::after {
+  height: calc(var(--mds-tree-item-toggle-size) / 2);
+  transition-delay: 0s;
+}
+
+/* has children */
+
+.tree-node:not(:empty)::before {
+
+  --pos-y: calc(calc(-50% - var(--mds-tree-item-toggle-border-radius) / 2) + var(--mds-tree-item-toggle-border-size) / 2);
+
+  height: calc(var(--mds-tree-item-toggle-size) + var(--mds-tree-item-toggle-border-radius));
+  inset: 0 0 auto;
+  transform: translateY(var(--pos-y));
+  width: calc(var(--mds-tree-item-toggle-size) / 2);
+}
+
+/* has children, first and last element */
+
+:host(:first-child) .tree-node:not(:empty)::before,
+:host(:last-child) .tree-node:not(:empty)::before {
+  border-bottom-width: 0;
+  border-radius: 0;
+  height: calc(var(--mds-tree-item-toggle-size) / 2);
+  transform: none;
+}
+
+/* has children, first element */
+
+:host(:first-child) .tree-node:not(:empty)::before {
+  inset: auto 0 0 var(--middle-pos-x);
+}
+
+/* has children, last element */
+
+:host(:last-child) .tree-node:not(:empty)::before {
+  inset: 0 0 auto var(--middle-pos-x);
+}
+
+/* has children, not first element */
+
+:host(:not(:first-child)) .tree-node:not(:empty)::before {
+  height: calc(var(--mds-tree-item-toggle-size) + var(--mds-tree-item-toggle-border-radius));
+  transform: translateY(calc(-50% - var(--mds-tree-item-toggle-border-radius) / 2));
+}
+
+/* no children */
+
+.tree-node:empty::before {
+  border-bottom-width: var(--mds-tree-item-toggle-border-size);
+  height: calc(var(--mds-tree-item-toggle-size) + var(--mds-tree-item-toggle-border-radius));
+  inset: 0 0 auto;
+  transform: translateY(calc(-50% - var(--mds-tree-item-toggle-border-radius) / 2));
+  width: calc(100% - var(--mds-tree-item-toggle-gap));
+}
+
+.toggle-icon {
+
+  --size: 24px;
+
+  background-color: var(--mds-tree-item-icon-background-color);
+  border: 0;
+  border-radius: var(--mds-tree-item-toggle-size);
+  fill: var(--mds-tree-item-icon-color);
+  flex-shrink: 0;
+  height: var(--size);
+  min-height: var(--size);
+  min-width: var(--size);
+  order: 0;
+  position: absolute;
+  transform: rotate(0deg);
+  transition-duration: var(--mds-tree-item-transition-duration);
+  transition-property: transform;
+  transition-timing-function: var(--mds-tree-item-transition-timing-function);
+  width: var(--size);
+  z-index: 2;
+}
+
+:host([icon="chevron"]) .toggle-icon {
+
+  --mds-tree-item-icon-background-color: var(--mds-tree-item-toggle-icon-chevron-default-background);
+  --mds-tree-item-icon-color: var(--mds-tree-item-toggle-icon-chevron-default-color);
+}
+
+:host([icon="chevron"][expanded]) .toggle-icon {
+
+  --mds-tree-item-icon-background-color: var(--mds-tree-item-toggle-icon-chevron-expanded-background);
+  --mds-tree-item-icon-color: var(--mds-tree-item-toggle-icon-chevron-expanded-color);
+}
+
+:host([icon="folder"]) .toggle-icon {
+
+  --mds-tree-item-icon-background-color: var(--mds-tree-item-toggle-icon-folder-default-background);
+  --mds-tree-item-icon-color: var(--mds-tree-item-toggle-icon-folder-default-color);
+}
+
+:host([icon="folder"][expanded]) .toggle-icon {
+
+  --mds-tree-item-icon-background-color: var(--mds-tree-item-toggle-icon-folder-expanded-background);
+  --mds-tree-item-icon-color: var(--mds-tree-item-toggle-icon-folder-expanded-color);
+}
+
+/*
+
+.tree-node::after,
+.tree-node::before {
+  background-color: var(--mds-tree-item-toggle-border-color);
+  content: "";
+  display: flex;
+}
+
+.tree-node::after {
+  height: var(--mds-tree-item-toggle-border-size);
+  width: 100%;
+}
+
+.tree-node::before {
+  height: 100%;
+  width: var(--mds-tree-item-toggle-border-size);
+}
+
+.tree-node:not(:empty)::after {
+  width: 50%;
+}
+
+:host(:last-child) .tree-node::before {
+  align-self: flex-start;
+  height: calc(50% + calc(var(--mds-tree-item-toggle-border-size) / 2));
+}
+
+*/

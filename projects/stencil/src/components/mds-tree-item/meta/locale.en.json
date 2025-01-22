@@ -1,0 +1,4 @@
+{
+  "expand": "Expand {{ label }}",
+  "collapse": "Collapse {{ label }}"
+}

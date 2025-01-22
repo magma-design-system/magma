@@ -1,8 +1,11 @@
+const treeActionsDictionary = [
+  'auto',
+  'visible',
+]
+
 const treeAppearanceDictionary = [
-  'curved',
-  'straight',
-  'mixed',
-  'simplified',
+  'depth',
+  'none',
 ]
 
 const treeIconDictionary = [
@@ -11,6 +14,7 @@ const treeIconDictionary = [
 ]
 
 export {
+  treeActionsDictionary,
   treeAppearanceDictionary,
   treeIconDictionary,
 }

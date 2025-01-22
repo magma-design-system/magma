@@ -1,0 +1,113 @@
+@tailwind utilities;
+
+:host {
+
+  --mds-tree-item-toggle-size: var(--mds-tree-toggle-size);
+  --mds-tree-item-toggle-border-size: var(--mds-tree-toggle-border-size);
+  --mds-tree-item-toggle-border-color: var(--mds-tree-toggle-border-color);
+  --mds-tree-item-toggle-border-radius: var(--mds-tree-toggle-border-radius);
+  --mds-tree-item-toggle-gap: var(--mds-tree-toggle-gap);
+  --mds-tree-item-actions-border-radius: var(--mds-tree-actions-border-radius);
+  --mds-tree-item-actions-gap: var(--mds-tree-actions-gap);
+  --mds-tree-item-label-background-default: var(--mds-tree-label-background-default);
+  --mds-tree-item-label-background-hover: var(--mds-tree-label-background-hover);
+  --mds-tree-item-line-clamp: var(--mds-tree-line-clamp);
+  --mds-tree-item-toggle-icon-chevron-default-background: var(--mds-tree-toggle-icon-chevron-default-background);
+  --mds-tree-item-toggle-icon-chevron-default-color: var(--mds-tree-toggle-icon-chevron-default-color);
+  --mds-tree-item-toggle-icon-chevron-expanded-background: var(--mds-tree-item-toggle-icon-chevron-default-background);
+  --mds-tree-item-toggle-icon-chevron-expanded-color: var(--mds-tree-item-toggle-icon-chevron-default-color);
+  --mds-tree-item-toggle-icon-folder-default-background: var(--mds-tree-toggle-icon-folder-default-background);
+  --mds-tree-item-toggle-icon-folder-default-color: var(--mds-tree-toggle-icon-folder-default-color);
+  --mds-tree-item-toggle-icon-folder-expanded-background: var(--mds-tree-item-toggle-icon-folder-default-background);
+  --mds-tree-item-toggle-icon-folder-expanded-color: var(--mds-tree-item-toggle-icon-folder-default-color);
+  --mds-tree-item-transition-duration: var(--mds-tree-transition-duration);
+  --mds-tree-item-transition-timing-function: var(--mds-tree-transition-timing-function);
+  --mds-tree-item-icon-background-color: var(--mds-tree-item-toggle-icon-chevron-default-background);
+  --mds-tree-item-icon-color: var(--mds-tree-item-toggle-icon-chevron-default-color);
+
+  display: grid;
+  transition-duration: var(--mds-tree-item-transition-duration);
+  transition-timing-function: var(--mds-tree-item-transition-timing-function);
+}
+
+.header {
+  align-items: flex-start;
+  display: flex;
+  min-width: 0;
+  position: relative;
+  z-index: 1;
+}
+
+.title {
+  align-items: flex-start;
+  display: flex;
+  flex-grow: 1;
+  gap: theme('spacing.200');
+  justify-content: space-between;
+  min-width: 0;
+}
+
+.label-action {
+
+  --mds-button-line-clamp: var(--mds-tree-item-line-clamp);
+
+  background-color: var(--mds-tree-item-label-background-default);
+  flex-grow: 1;
+  justify-content: flex-start;
+  padding-right: 0;
+}
+
+.label-action:hover {
+  background-color: var(--mds-tree-item-label-background-hover);
+}
+
+.children {
+
+  --padding-left: calc(calc(var(--mds-tree-item-toggle-size) - var(--mds-tree-item-toggle-border-size)) / 2);
+
+  height: 0;
+  interpolate-size: allow-keywords;
+  overflow: clip;
+  padding-left: var(--padding-left);
+  position: relative;
+  transition-duration: inherit;
+  transition-property: height;
+  transition-timing-function: inherit;
+  z-index: 0;
+}
+
+.children::after {
+  border-left-color: var(--mds-tree-item-toggle-border-color);
+  border-left-style: solid;
+  border-left-width: var(--mds-tree-item-toggle-border-size);
+  content: "";
+  display: flex;
+  height: calc(100% - var(--mds-tree-item-toggle-size));
+  left: var(--padding-left);
+  position: absolute;
+  top: 0;
+}
+
+.children--expanded {
+  animation: toggleOverflow var(--mds-tree-item-transition-duration) forwards;
+  animation-timing-function: var(--mds-tree-item-transition-timing-function);
+  height: auto;
+}
+
+.children--empty {
+  display: none;
+}
+
+@keyframes toggleOverflow {
+  99.99% {
+    overflow: hidden;
+  }
+
+  100% {
+    overflow: visible;
+  }
+}
+
+@import './css/mds-tree-item-actions.css';
+@import './css/mds-tree-item-icon-position.css';
+@import './css/mds-tree-item-node.css';

@@ -1,0 +1,37 @@
+.actions-container {
+
+  --duration: theme('transitionDuration.300');
+  --ease: theme('transitionTimingFunction.in-out-expo');
+
+  border-radius: var(--mds-tree-item-actions-border-radius);
+  display: flex;
+  interpolate-size: allow-keywords;
+  min-width: 0;
+  overflow: hidden;
+  transition-behavior: allow-discrete;
+  transition-duration: var(--duration);
+  transition-property: min-width, width, overflow;
+  transition-timing-function: var(--ease);
+  width: 0;
+}
+
+.actions {
+  align-items: center;
+  border-radius: var(--mds-tree-item-actions-border-radius);
+  display: inline-flex;
+  gap: var(--mds-tree-item-actions-gap);
+  pointer-events: none;
+  transition-duration: var(--duration);
+  transition-property: transform;
+  transition-timing-function: var(--ease);
+}
+
+.header:hover .actions {
+  pointer-events: auto;
+}
+
+.header:hover .actions-container {
+  animation: toggleOverflow var(--duration) forwards;
+  min-width: min-content;
+  width: min-content;
+}

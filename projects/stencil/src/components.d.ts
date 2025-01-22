@@ -65,7 +65,7 @@ import { MdsTableRowSelection } from "./components/mds-table/meta/type";
 import { SortDirectionType } from "./components/mds-table-header-cell/meta/types";
 import { TextAnimationType } from "./components/mds-text/meta/types";
 import { ToastPosition } from "./components/mds-toast/meta/types";
-import { TreeAppearance, TreeIcon } from "./components/mds-tree/meta/types";
+import { TreeAppearance, TreeIcon } from "./components/mds-tree-item/meta/types";
 import { UsageType } from "./components/mds-usage/meta/types";
 import { NoiseType, PreloadType } from "./components/mds-video-wall/meta/types";
 export { MdsAccordionEventDetail } from "./components/mds-accordion/meta/event-detail";
@@ -128,7 +128,7 @@ export { MdsTableRowSelection } from "./components/mds-table/meta/type";
 export { SortDirectionType } from "./components/mds-table-header-cell/meta/types";
 export { TextAnimationType } from "./components/mds-text/meta/types";
 export { ToastPosition } from "./components/mds-toast/meta/types";
-export { TreeAppearance, TreeIcon } from "./components/mds-tree/meta/types";
+export { TreeAppearance, TreeIcon } from "./components/mds-tree-item/meta/types";
 export { UsageType } from "./components/mds-usage/meta/types";
 export { NoiseType, PreloadType } from "./components/mds-video-wall/meta/types";
 export namespace Components {
@@ -1707,6 +1707,12 @@ export namespace Components {
         "visible": boolean;
     }
     interface MdsTree {
+    }
+    interface MdsTreeItem {
+        /**
+          * Show actions on the element.
+         */
+        "actions"?: 'visible' | 'auto';
         /**
           * Specifies if the branches depth decorations are visible.
          */
@@ -2978,6 +2984,12 @@ declare global {
         prototype: HTMLMdsTreeElement;
         new (): HTMLMdsTreeElement;
     };
+    interface HTMLMdsTreeItemElement extends Components.MdsTreeItem, HTMLStencilElement {
+    }
+    var HTMLMdsTreeItemElement: {
+        prototype: HTMLMdsTreeItemElement;
+        new (): HTMLMdsTreeItemElement;
+    };
     interface HTMLMdsUrlViewElementEventMap {
         "mdsUrlViewClose": void;
     }
@@ -3102,6 +3114,7 @@ declare global {
         "mds-toast": HTMLMdsToastElement;
         "mds-tooltip": HTMLMdsTooltipElement;
         "mds-tree": HTMLMdsTreeElement;
+        "mds-tree-item": HTMLMdsTreeItemElement;
         "mds-url-view": HTMLMdsUrlViewElement;
         "mds-usage": HTMLMdsUsageElement;
         "mds-video-wall": HTMLMdsVideoWallElement;
@@ -4864,6 +4877,12 @@ declare namespace LocalJSX {
         "visible"?: boolean;
     }
     interface MdsTree {
+    }
+    interface MdsTreeItem {
+        /**
+          * Show actions on the element.
+         */
+        "actions"?: 'visible' | 'auto';
         /**
           * Specifies if the branches depth decorations are visible.
          */
@@ -5042,6 +5061,7 @@ declare namespace LocalJSX {
         "mds-toast": MdsToast;
         "mds-tooltip": MdsTooltip;
         "mds-tree": MdsTree;
+        "mds-tree-item": MdsTreeItem;
         "mds-url-view": MdsUrlView;
         "mds-usage": MdsUsage;
         "mds-video-wall": MdsVideoWall;
@@ -5140,6 +5160,7 @@ declare module "@stencil/core" {
             "mds-toast": LocalJSX.MdsToast & JSXBase.HTMLAttributes<HTMLMdsToastElement>;
             "mds-tooltip": LocalJSX.MdsTooltip & JSXBase.HTMLAttributes<HTMLMdsTooltipElement>;
             "mds-tree": LocalJSX.MdsTree & JSXBase.HTMLAttributes<HTMLMdsTreeElement>;
+            "mds-tree-item": LocalJSX.MdsTreeItem & JSXBase.HTMLAttributes<HTMLMdsTreeItemElement>;
             "mds-url-view": LocalJSX.MdsUrlView & JSXBase.HTMLAttributes<HTMLMdsUrlViewElement>;
             "mds-usage": LocalJSX.MdsUsage & JSXBase.HTMLAttributes<HTMLMdsUsageElement>;
             "mds-video-wall": LocalJSX.MdsVideoWall & JSXBase.HTMLAttributes<HTMLMdsVideoWallElement>;

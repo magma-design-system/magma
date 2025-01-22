@@ -17,3 +17,11 @@
 :host([icon-position="left"]) .header .toggle-icon + .title .label-action {
   padding-left: 0;
 }
+
+:host([icon-position="right"]) .header .actions {
+  transform: scale(0);
+}
+
+:host([icon-position="right"]) .header:hover .actions {
+  transform: scale(1);
+}

@@ -1,6 +1,6 @@
 import { h } from '@stencil/core'
 import { buttonIconPositionDictionary } from '@dictionary/button'
-import { treeIconDictionary, treeAppearanceDictionary } from '../meta/dictionary'
+import { treeIconDictionary, treeAppearanceDictionary } from '@component/mds-tree-item/meta/dictionary'
 import { truncateDictionary } from '@dictionary/text'
 
 export default {
@@ -42,16 +42,32 @@ export default {
 
 const Template = ({ ...args }) =>
   <mds-tree {...args}>
-    <mds-button slot="action" icon="mi/baseline/explore" variant="dark" tone="quiet"></mds-button>
-    <mds-button slot="action" icon="mi/baseline/explore" variant="dark" tone="quiet"></mds-button>
-    <mds-tree icon={args.icon} icon-position={args['icon-position']} truncate={args.truncate} label="First children element"></mds-tree>
-    <mds-tree icon={args.icon} icon-position={args['icon-position']} truncate={args.truncate} label="Second element"></mds-tree>
-    <mds-tree icon={args.icon} icon-position={args['icon-position']} truncate={args.truncate} label="This is the third element children"></mds-tree>
-    <mds-tree icon={args.icon} icon-position={args['icon-position']} truncate={args.truncate} label="The fourth and final children">
-      <mds-tree icon={args.icon} icon-position={args['icon-position']} truncate={args.truncate} label="Surpraaaaaise!"></mds-tree>
-    </mds-tree>
-    <mds-tree icon={args.icon} icon-position={args['icon-position']} truncate={args.truncate} label="Surprise! There is a fifth element"></mds-tree>
-    <mds-tree icon={args.icon} icon-position={args['icon-position']} truncate={args.truncate} label="And probably a sixth"></mds-tree>
+    <mds-tree-item label="First element of the tree" icon={args.icon} icon-position={args['icon-position']} truncate={args.truncate}>
+      <mds-button slot="action" icon="mi/baseline/attach-file" variant="primary" tone="quiet" title="Schedule"></mds-button>
+      <mds-button slot="action" icon="mi/baseline/more-vert" variant="primary" tone="quiet" title="Options"></mds-button>
+      <mds-tree-item icon={args.icon} icon-position={args['icon-position']} truncate={args.truncate} label="First children element"></mds-tree-item>
+      <mds-tree-item icon={args.icon} icon-position={args['icon-position']} truncate={args.truncate} label="Second element"></mds-tree-item>
+      <mds-tree-item icon={args.icon} icon-position={args['icon-position']} truncate={args.truncate} label="This is the third element children"></mds-tree-item>
+      <mds-tree-item icon={args.icon} icon-position={args['icon-position']} truncate={args.truncate} label="The fourth and final children">
+        <mds-tree-item icon={args.icon} icon-position={args['icon-position']} truncate={args.truncate} label="Hello beautiful world"></mds-tree-item>
+        <mds-tree-item icon={args.icon} icon-position={args['icon-position']} truncate={args.truncate} label="Surpraaaaaise!"></mds-tree-item>
+      </mds-tree-item>
+      <mds-tree-item icon={args.icon} icon-position={args['icon-position']} truncate={args.truncate} label="Surprise! There is a fifth element"></mds-tree-item>
+      <mds-tree-item icon={args.icon} icon-position={args['icon-position']} truncate={args.truncate} label="And probably a sixth"></mds-tree-item>
+    </mds-tree-item>
+    <mds-tree-item label="Second element used in this tree" icon={args.icon} icon-position={args['icon-position']} truncate={args.truncate}>
+      <mds-button slot="action" icon="mi/baseline/attach-file" variant="primary" tone="quiet" title="Schedule"></mds-button>
+      <mds-button slot="action" icon="mi/baseline/more-vert" variant="primary" tone="quiet" title="Options"></mds-button>
+      <mds-tree-item icon={args.icon} icon-position={args['icon-position']} truncate={args.truncate} label="First children element"></mds-tree-item>
+      <mds-tree-item icon={args.icon} icon-position={args['icon-position']} truncate={args.truncate} label="Second element"></mds-tree-item>
+      <mds-tree-item icon={args.icon} icon-position={args['icon-position']} truncate={args.truncate} label="This is the third element children"></mds-tree-item>
+      <mds-tree-item icon={args.icon} icon-position={args['icon-position']} truncate={args.truncate} label="The fourth and final children">
+        <mds-tree-item icon={args.icon} icon-position={args['icon-position']} truncate={args.truncate} label="Hello beautiful world"></mds-tree-item>
+        <mds-tree-item icon={args.icon} icon-position={args['icon-position']} truncate={args.truncate} label="Surpraaaaaise!"></mds-tree-item>
+      </mds-tree-item>
+      <mds-tree-item icon={args.icon} icon-position={args['icon-position']} truncate={args.truncate} label="Surprise! There is a fifth element"></mds-tree-item>
+      <mds-tree-item icon={args.icon} icon-position={args['icon-position']} truncate={args.truncate} label="And probably a sixth"></mds-tree-item>
+    </mds-tree-item>
   </mds-tree>
 
 export const Default = Template.bind({})
