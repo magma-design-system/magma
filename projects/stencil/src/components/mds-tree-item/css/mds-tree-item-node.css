@@ -99,3 +99,11 @@
   transform: translateY(calc(-50% - var(--mds-tree-item-toggle-border-radius) / 2));
   width: calc(100% - var(--mds-tree-item-toggle-gap));
 }
+
+:host-context(mds-tree[appearance="none"]) .tree-node::after,
+:host-context(mds-tree[appearance="none"]) .tree-node::before {
+
+  --mds-tree-item-toggle-border-color: rgb(255 0 0 / 0.1);
+
+  /* display: none; */
+}

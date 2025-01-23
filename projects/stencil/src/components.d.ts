@@ -65,7 +65,7 @@ import { MdsTableRowSelection } from "./components/mds-table/meta/type";
 import { SortDirectionType } from "./components/mds-table-header-cell/meta/types";
 import { TextAnimationType } from "./components/mds-text/meta/types";
 import { ToastPosition } from "./components/mds-toast/meta/types";
-import { TreeAppearance, TreeIcon } from "./components/mds-tree-item/meta/types";
+import { TreeAppearance, TreeIcon } from "./type/tree";
 import { UsageType } from "./components/mds-usage/meta/types";
 import { NoiseType, PreloadType } from "./components/mds-video-wall/meta/types";
 export { MdsAccordionEventDetail } from "./components/mds-accordion/meta/event-detail";
@@ -128,7 +128,7 @@ export { MdsTableRowSelection } from "./components/mds-table/meta/type";
 export { SortDirectionType } from "./components/mds-table-header-cell/meta/types";
 export { TextAnimationType } from "./components/mds-text/meta/types";
 export { ToastPosition } from "./components/mds-toast/meta/types";
-export { TreeAppearance, TreeIcon } from "./components/mds-tree-item/meta/types";
+export { TreeAppearance, TreeIcon } from "./type/tree";
 export { UsageType } from "./components/mds-usage/meta/types";
 export { NoiseType, PreloadType } from "./components/mds-video-wall/meta/types";
 export namespace Components {
@@ -1707,6 +1707,10 @@ export namespace Components {
         "visible": boolean;
     }
     interface MdsTree {
+        /**
+          * Specifies if the branches depth decorations are visible.
+         */
+        "appearance": TreeAppearance;
     }
     interface MdsTreeItem {
         /**
@@ -4877,6 +4881,10 @@ declare namespace LocalJSX {
         "visible"?: boolean;
     }
     interface MdsTree {
+        /**
+          * Specifies if the branches depth decorations are visible.
+         */
+        "appearance"?: TreeAppearance;
     }
     interface MdsTreeItem {
         /**

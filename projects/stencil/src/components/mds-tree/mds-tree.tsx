@@ -1,4 +1,5 @@
-import { Component, Host, h, Element } from '@stencil/core'
+import { Component, Host, h, Element, Prop } from '@stencil/core'
+import { TreeAppearance } from '@type/tree'
 
 @Component({
   tag: 'mds-tree',
@@ -9,6 +10,11 @@ export class MdsTree {
 
   @Element() private host: HTMLMdsTreeElement
   private elements:Node[]
+
+  /**
+   * Specifies if the branches depth decorations are visible.
+   */
+  @Prop({ reflect: true }) readonly appearance: TreeAppearance = 'depth'
 
   private updateElements = (): void => {
     this.elements = this.host.shadowRoot?.querySelectorAll('slot')[0]?.assignedNodes() as Node[]

@@ -10,7 +10,7 @@ import miBaselineFolderClosed from '@icon/mi/baseline/folder.svg'
 import { ButtonIconPositionType } from '@type/button'
 import { Component, Host, h, Prop, Element, State, Method, Watch } from '@stencil/core'
 import { Locale } from '@common/locale'
-import { TreeAppearance, TreeIcon } from './meta/types'
+import { TreeAppearance, TreeIcon } from '@type/tree'
 import { hasSlottedElements } from '@common/slot'
 import { TypographyTruncateType } from '@type/text'
 

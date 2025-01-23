@@ -26,6 +26,7 @@
   transition-timing-function: var(--ease);
 }
 
+.header:focus-within .actions,
 .header:hover .actions {
   pointer-events: auto;
 }
