@@ -99,7 +99,6 @@ export const config: Config = {
     inlineSvg(),
   ],
   testing: {
-    browserHeadless: 'new',
     /**
      * Gitlab CI doesn't allow sandbox, therefor this parameters must be passed to your Headless Chrome
      * before it can run your tests
@@ -119,7 +118,7 @@ export const config: Config = {
       '@test/(.*)': '<rootDir>src/test/$1',
       '@type/(.*)': '<rootDir>src/type/$1',
     },
-    modulePathIgnorePatterns: ['<rootDir>/.build/', '<rootDir>/template/', '<rootDir>/node_modules/'],
+    modulePathIgnorePatterns: ['<rootDir>/.build/', '<rootDir>/template/', '<rootDir>/node_modules/', '<rootDir>/angular/', '<rootDir>/react/'],
     testPathIgnorePatterns: ['<rootDir>/.cache', '<rootDir>/template/', '<rootDir>/node_modules/', '<rootDir>/.vscode', '/.stencil', '/dist', '/www', '/scripts'],
     transform: { '^.+\\.svg$': 'jest-transformer-svg', '^.+\\.(ts|tsx|js|jsx|css)$': '@stencil/core/testing/jest-preprocessor' },
     transformIgnorePatterns: ['<rootDir>/.build/', '<rootDir>/template/'],

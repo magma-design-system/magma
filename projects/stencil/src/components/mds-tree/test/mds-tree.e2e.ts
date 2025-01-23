@@ -6,6 +6,6 @@ describe('mds-tree', () => {
     await page.setContent('<mds-tree></mds-tree>')
 
     const element = await page.find('mds-tree')
-    expect(element).toHaveClass('hydrated')
+    expect(element).toHaveAttribute('hydrated')
   })
 })
