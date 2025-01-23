@@ -30,6 +30,7 @@
   pointer-events: auto;
 }
 
+.header:focus-within .actions-container,
 .header:hover .actions-container {
   animation: toggleOverflow var(--duration) forwards;
   min-width: min-content;

@@ -11,10 +11,12 @@
   --mds-tree-toggle-gap: theme('size.150');
   --mds-tree-toggle-icon-chevron-default-background: theme('colors.variant-primary-04');
   --mds-tree-toggle-icon-chevron-default-color: theme('colors.tone-neutral');
-  --mds-tree-toggle-icon-chevron-opened-background: var(--mds-tree-toggle-icon-chevron-default-background);
-  --mds-tree-toggle-icon-chevron-opened-color: var(--mds-tree-toggle-icon-chevron-default-color);
-  --mds-tree-toggle-icon-folder-default-background: theme('colors.variant-primary-04');
-  --mds-tree-toggle-icon-folder-default-color: theme('colors.tone-neutral');
+  --mds-tree-toggle-icon-chevron-expanded-background: var(--mds-tree-toggle-icon-chevron-default-background);
+  --mds-tree-toggle-icon-chevron-expanded-color: var(--mds-tree-toggle-icon-chevron-default-color);
+  --mds-tree-toggle-icon-folder-default-background: theme('colors.tone-neutral-08');
+  --mds-tree-toggle-icon-folder-default-color: theme('colors.variant-primary-04');
+  --mds-tree-toggle-icon-folder-expanded-background: var(--mds-tree-toggle-icon-folder-default-background);
+  --mds-tree-toggle-icon-folder-expanded-color: var(--mds-tree-toggle-icon-folder-default-color);
   --mds-tree-toggle-size: theme('size.900'); /* internal */
   --mds-tree-transition-duration: theme('transitionDuration.300');
   --mds-tree-transition-timing-function: theme('transitionTimingFunction.in-out-expo');
