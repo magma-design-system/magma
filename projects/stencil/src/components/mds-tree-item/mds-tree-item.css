@@ -7,6 +7,8 @@
   --mds-tree-item-toggle-border-color: var(--mds-tree-toggle-border-color);
   --mds-tree-item-toggle-border-radius: var(--mds-tree-toggle-border-radius);
   --mds-tree-item-toggle-gap: var(--mds-tree-toggle-gap);
+  --mds-tree-item-toggle-dot-default-color: var(--mds-tree-toggle-dot-default-color);
+  --mds-tree-item-toggle-dot-expanded-color: var(--mds-tree-toggle-dot-expanded-color);
   --mds-tree-item-actions-border-radius: var(--mds-tree-actions-border-radius);
   --mds-tree-item-actions-gap: var(--mds-tree-actions-gap);
   --mds-tree-item-label-background-default: var(--mds-tree-label-background-default);

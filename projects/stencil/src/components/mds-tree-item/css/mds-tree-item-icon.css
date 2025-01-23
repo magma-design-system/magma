@@ -52,6 +52,10 @@
   transform: rotate(90deg);
 }
 
+:host([icon-position="left"]) .header .toggle-icon + .title .label-action {
+  padding-left: 0;
+}
+
 :host([icon-position="right"]) .toggle-icon {
   order: 2;
 }
@@ -64,14 +68,30 @@
   transform: rotate(270deg);
 }
 
-:host([icon-position="left"]) .header .toggle-icon + .title .label-action {
-  padding-left: 0;
-}
-
 :host([icon-position="right"]) .header .actions {
   transform: scale(0);
 }
 
+:host([icon-position="right"]) .header:focus-within .actions,
 :host([icon-position="right"]) .header:hover .actions {
   transform: scale(1);
+}
+
+:host([icon="chevron"][icon-position="right"]:not([expanded])) .toggle-icon--dot,
+:host([icon="folder"][icon-position="right"]:not([expanded])) .toggle-icon--dot,
+:host([icon="chevron"][icon-position="right"][expanded]) .toggle-icon--dot,
+:host([icon="folder"][icon-position="right"][expanded]) .toggle-icon--dot {
+  transform: rotate(0) scale(0.825) !important;
+}
+
+:host([icon="chevron"][icon-position="right"]:not([expanded])) .toggle-icon,
+:host([icon="folder"][icon-position="right"]:not([expanded])) .toggle-icon {
+  background-color: transparent;
+  fill: var(--mds-tree-item-toggle-dot-default-color);
+}
+
+:host([icon="chevron"][icon-position="right"][expanded]) .toggle-icon,
+:host([icon="folder"][icon-position="right"][expanded]) .toggle-icon {
+  background-color: transparent;
+  fill: var(--mds-tree-item-toggle-dot-expanded-color);
 }

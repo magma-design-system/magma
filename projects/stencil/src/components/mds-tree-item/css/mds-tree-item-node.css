@@ -34,7 +34,7 @@
   box-sizing: border-box;
   content: "";
   display: flex;
-  height: 10px;
+  height: 4px;
   inset: calc(var(--mds-tree-item-toggle-size) / 2) 0 auto var(--middle-pos-x);
   position: absolute;
   transition-delay: var(--mds-tree-item-transition-duration);
@@ -106,4 +106,9 @@
   --mds-tree-item-toggle-border-color: rgb(255 0 0 / 0.1);
 
   /* display: none; */
+}
+
+.tree-node:last-child::after,
+.tree-node:last-child::before {
+  display: none;
 }

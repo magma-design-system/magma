@@ -4,7 +4,7 @@ import localeEs from './meta/locale.es.json'
 import localeIt from './meta/locale.it.json'
 import clsx from 'clsx'
 import miBaselineChevronRight from '@icon/mi/baseline/chevron-right.svg'
-// import miBaselineFolderOpen from '@icon/mi/baseline/folder-open.svg'
+import miBaselineDot from '@icon/mi/baseline/circle.svg'
 import mdiFolderOpen from '@icon/mdi/folder-open.svg'
 import miBaselineFolderClosed from '@icon/mi/baseline/folder.svg'
 import { ButtonIconPositionType } from '@type/button'
@@ -130,9 +130,9 @@ export class MdsTreeItem {
     return (
       <Host>
         <div class="header">
-          <div class="tree-node">
+          <div class={clsx('tree-node')}>
             { this.hasChildren &&
-              <mds-button await={this.await} class="toggle-icon" onClick={this.onClick.bind(this)} icon={!this.await ? this.currentIcon : ''} title={ this.t.get(this.expanded ? 'collapse' : 'expand', { label: this.label }) } variant="dark" tone="quiet" size="sm"/>
+              <mds-button await={this.await} class={clsx('toggle-icon', this.iconPosition === 'right' && 'toggle-icon--dot' )} onClick={this.onClick.bind(this)} icon={!this.await && this.iconPosition === 'left' ? this.currentIcon : miBaselineDot} title={ this.t.get(this.expanded ? 'collapse' : 'expand', { label: this.label }) } variant="dark" tone="quiet" size="sm"/>
             }
           </div>
           <div class="title">
@@ -142,6 +142,11 @@ export class MdsTreeItem {
                 <div class="actions" part="actions">
                   <slot name="action"></slot>
                 </div>
+              </div>
+            }
+            { this.hasChildren && this.iconPosition === 'right' &&
+              <div class="tree-node">
+                <mds-button await={this.await} class="toggle-icon" onClick={this.onClick.bind(this)} icon={!this.await ? this.currentIcon : ''} title={ this.t.get(this.expanded ? 'collapse' : 'expand', { label: this.label }) } variant="dark" tone="quiet" size="sm"/>
               </div>
             }
           </div>

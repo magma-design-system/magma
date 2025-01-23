@@ -5,6 +5,8 @@
   --mds-tree-label-background-default: transparent;
   --mds-tree-label-background-hover: theme('colors.variant-primary-10');
   --mds-tree-line-clamp: 2;
+  --mds-tree-toggle-dot-default-color: theme('colors.tone-neutral-07');
+  --mds-tree-toggle-dot-expanded-color: theme('colors.tone-neutral-05');
   --mds-tree-toggle-border-color: theme('colors.tone-neutral-07');
   --mds-tree-toggle-border-radius: theme('borderRadius.lg'); /* to remove radius, use 0px instead 0 or calc will not work properly */
   --mds-tree-toggle-border-size: theme('size.50');
