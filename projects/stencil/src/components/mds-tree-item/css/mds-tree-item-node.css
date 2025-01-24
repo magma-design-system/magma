@@ -3,6 +3,7 @@
   --middle-pos-x: calc(50% - calc(var(--mds-tree-item-toggle-border-size)/ 2));
 
   align-items: center;
+  background-color: theme('colors.label-green-04');
   box-sizing: border-box;
   display: inline-flex;
   flex-shrink: 0;
@@ -98,6 +99,12 @@
   inset: 0 0 auto;
   transform: translateY(calc(-50% - var(--mds-tree-item-toggle-border-radius) / 2));
   width: calc(100% - var(--mds-tree-item-toggle-gap));
+}
+
+:host-context(mds-tree mds-tree-item) .tree-node::after,
+:host-context(mds-tree mds-tree-item) .tree-node::before {
+
+  --mds-tree-item-toggle-border-color: rgb(0 255 0 / 0.1);
 }
 
 :host-context(mds-tree[appearance="none"]) .tree-node::after,

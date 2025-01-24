@@ -59,6 +59,7 @@
   --mds-button-line-clamp: var(--mds-tree-item-line-clamp);
 
   background-color: var(--mds-tree-item-label-background-default);
+  border-radius: theme('borderRadius.lg');
   fill: var(--mds-tree-item-icon-default-color);
   flex-grow: 1;
   justify-content: flex-start;
