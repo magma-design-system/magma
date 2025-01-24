@@ -1706,13 +1706,11 @@ export namespace Components {
          */
         "visible": boolean;
     }
+    /**
+     * TODO
+     * Rendere custom le icone degli elementi selezionabili
+     */
     interface MdsTree {
-        /**
-          * Specifies if the branches depth decorations are visible.
-         */
-        "appearance": TreeAppearance;
-    }
-    interface MdsTreeItem {
         /**
           * Show actions on the element.
          */
@@ -1730,18 +1728,44 @@ export namespace Components {
          */
         "expanded"?: boolean;
         /**
-          * Specifies the icon of the element
+          * Specifies the selector of the target element, this attribute is used with `querySelector` method.
          */
-        "icon": TreeIcon;
+        "label": string;
         /**
-          * Specifies the icon position of the element
+          * Specifies the toggle icon of the element
          */
-        "iconPosition": ButtonIconPositionType;
+        "toggle": TreeIcon;
+        /**
+          * Specifies the toggle icon position of the element
+         */
+        "togglePosition": ButtonIconPositionType;
+        /**
+          * Truncate the text of the element on one single line.
+         */
+        "truncate"?: TypographyTruncateType;
+    }
+    interface MdsTreeItem {
+        /**
+          * Specifies the tree should be opened asynchronously when after the click, .
+         */
+        "async"?: boolean;
+        /**
+          * Specifies if the tree is expanded.
+         */
+        "expanded"?: boolean;
+        /**
+          * The icon displayed in the button
+         */
+        "icon"?: string;
         /**
           * Specifies the selector of the target element, this attribute is used with `querySelector` method.
          */
         "label": string;
         "open": () => Promise<void>;
+        /**
+          * Specifies the icon of the element
+         */
+        "toggle"?: TreeIcon;
         /**
           * Truncate the text of the element on one single line.
          */
@@ -2982,6 +3006,10 @@ declare global {
         prototype: HTMLMdsTooltipElement;
         new (): HTMLMdsTooltipElement;
     };
+    /**
+     * TODO
+     * Rendere custom le icone degli elementi selezionabili
+     */
     interface HTMLMdsTreeElement extends Components.MdsTree, HTMLStencilElement {
     }
     var HTMLMdsTreeElement: {
@@ -4880,13 +4908,11 @@ declare namespace LocalJSX {
          */
         "visible"?: boolean;
     }
+    /**
+     * TODO
+     * Rendere custom le icone degli elementi selezionabili
+     */
     interface MdsTree {
-        /**
-          * Specifies if the branches depth decorations are visible.
-         */
-        "appearance"?: TreeAppearance;
-    }
-    interface MdsTreeItem {
         /**
           * Show actions on the element.
          */
@@ -4904,17 +4930,43 @@ declare namespace LocalJSX {
          */
         "expanded"?: boolean;
         /**
-          * Specifies the icon of the element
+          * Specifies the selector of the target element, this attribute is used with `querySelector` method.
          */
-        "icon"?: TreeIcon;
+        "label"?: string;
         /**
-          * Specifies the icon position of the element
+          * Specifies the toggle icon of the element
          */
-        "iconPosition"?: ButtonIconPositionType;
+        "toggle"?: TreeIcon;
+        /**
+          * Specifies the toggle icon position of the element
+         */
+        "togglePosition"?: ButtonIconPositionType;
+        /**
+          * Truncate the text of the element on one single line.
+         */
+        "truncate"?: TypographyTruncateType;
+    }
+    interface MdsTreeItem {
+        /**
+          * Specifies the tree should be opened asynchronously when after the click, .
+         */
+        "async"?: boolean;
+        /**
+          * Specifies if the tree is expanded.
+         */
+        "expanded"?: boolean;
+        /**
+          * The icon displayed in the button
+         */
+        "icon"?: string;
         /**
           * Specifies the selector of the target element, this attribute is used with `querySelector` method.
          */
         "label"?: string;
+        /**
+          * Specifies the icon of the element
+         */
+        "toggle"?: TreeIcon;
         /**
           * Truncate the text of the element on one single line.
          */
@@ -5167,6 +5219,10 @@ declare module "@stencil/core" {
             "mds-text": LocalJSX.MdsText & JSXBase.HTMLAttributes<HTMLMdsTextElement>;
             "mds-toast": LocalJSX.MdsToast & JSXBase.HTMLAttributes<HTMLMdsToastElement>;
             "mds-tooltip": LocalJSX.MdsTooltip & JSXBase.HTMLAttributes<HTMLMdsTooltipElement>;
+            /**
+             * TODO
+             * Rendere custom le icone degli elementi selezionabili
+             */
             "mds-tree": LocalJSX.MdsTree & JSXBase.HTMLAttributes<HTMLMdsTreeElement>;
             "mds-tree-item": LocalJSX.MdsTreeItem & JSXBase.HTMLAttributes<HTMLMdsTreeItemElement>;
             "mds-url-view": LocalJSX.MdsUrlView & JSXBase.HTMLAttributes<HTMLMdsUrlViewElement>;

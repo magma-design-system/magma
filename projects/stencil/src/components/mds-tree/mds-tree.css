@@ -11,6 +11,8 @@
   --mds-tree-toggle-border-radius: theme('borderRadius.lg'); /* to remove radius, use 0px instead 0 or calc will not work properly */
   --mds-tree-toggle-border-size: theme('size.50');
   --mds-tree-toggle-gap: theme('size.150');
+  --mds-tree-icon-default-color: theme('colors.variant-primary-04');
+  --mds-tree-icon-hover-color: var(--mds-tree-icon-default-color);
   --mds-tree-toggle-icon-chevron-default-background: theme('colors.variant-primary-04');
   --mds-tree-toggle-icon-chevron-default-color: theme('colors.tone-neutral');
   --mds-tree-toggle-icon-chevron-expanded-background: var(--mds-tree-toggle-icon-chevron-default-background);

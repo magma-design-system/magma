@@ -1,0 +1,62 @@
+:host-context(mds-tree[toggle-position="left"]) .toggle-icon {
+  order: 0;
+}
+
+:host-context(mds-tree[toggle-position="right"]) .toggle-icon {
+  background-color: purple;
+  order: 1;
+}
+
+/* chevron right */
+
+:host-context(mds-tree[toggle-position="right"]) :host([toggle="chevron"][expanded]) .toggle-icon {
+  background-color: red;
+  transform: rotate(270deg);
+}
+
+/*
+
+:host-context(mds-tree[toggle-position="left"]) :host([toggle="chevron"][expanded]) .toggle-icon {
+  transform: rotate(90deg);
+}
+
+:host-context(mds-tree[toggle-position="left"]) :host([toggle="chevron"]:not([expanded])) .toggle-icon {
+  transform: rotate(270deg);
+}
+
+:host-context(mds-tree[toggle-position="right"]) :host([toggle="chevron"][expanded]) .toggle-icon {
+  transform: rotate(270deg);
+}
+
+
+:host-context(mds-tree[toggle-position="right"]) .header .actions {
+  transform: scale(0);
+}
+
+:host-context(mds-tree[toggle-position="right"]) .header:focus-within .actions,
+:host-context(mds-tree[toggle-position="right"]) .header:hover .actions {
+  transform: scale(1);
+}
+
+:host-context(mds-tree[toggle-position="right"]) :host([toggle="chevron"]) .toggle-icon--dot,
+:host-context(mds-tree[toggle-position="right"]) :host([toggle="folder"]) .toggle-icon--dot {
+  transform: rotate(0) scale(0.825);
+}
+
+:host-context(mds-tree[toggle-position="right"]) :host([toggle="chevron"]) .toggle-icon,
+:host-context(mds-tree[toggle-position="right"]) :host([toggle="folder"]) .toggle-icon {
+  background-color: transparent;
+  fill: var(--mds-tree-item-toggle-dot-default-color);
+}
+
+:host-context(mds-tree[toggle-position="right"]) :host([toggle="chevron"]) .toggle-icon {
+  background-color: red;
+}
+
+:host-context(mds-tree[toggle-position="right"]) :host([toggle="chevron"][expanded]) .toggle-icon,
+:host-context(mds-tree[toggle-position="right"]) :host([toggle="folder"][expanded]) .toggle-icon {
+  background-color: transparent;
+  fill: var(--mds-tree-item-toggle-dot-expanded-color);
+}
+
+*/

@@ -4,13 +4,12 @@ import localeEs from './meta/locale.es.json'
 import localeIt from './meta/locale.it.json'
 import clsx from 'clsx'
 import miBaselineChevronRight from '@icon/mi/baseline/chevron-right.svg'
-import miBaselineDot from '@icon/mi/baseline/circle.svg'
 import mdiFolderOpen from '@icon/mdi/folder-open.svg'
 import miBaselineFolderClosed from '@icon/mi/baseline/folder.svg'
-import { ButtonIconPositionType } from '@type/button'
+// import { ButtonIconPositionType } from '@type/button'
 import { Component, Host, h, Prop, Element, State, Method, Watch } from '@stencil/core'
 import { Locale } from '@common/locale'
-import { TreeAppearance, TreeIcon } from '@type/tree'
+import { TreeIcon } from '@type/tree'
 import { hasSlottedElements } from '@common/slot'
 import { TypographyTruncateType } from '@type/text'
 
@@ -22,8 +21,10 @@ import { TypographyTruncateType } from '@type/text'
 export class MdsTreeItem {
 
   private hasActions: boolean
+  // private togglePosition?: ButtonIconPositionType = 'left'
+  private childrenElement: HTMLElement
   @State() hasChildren: boolean = true
-  @State() currentIcon: string
+  @State() currentToggleIcon: string
   @State() await: boolean
   @Element() private host: HTMLMdsTreeItemElement
   private t:Locale = new Locale({
@@ -51,17 +52,7 @@ export class MdsTreeItem {
   /**
    * Specifies the icon of the element
    */
-  @Prop({ reflect: true }) readonly icon: TreeIcon = 'chevron'
-
-  /**
-   * Specifies the icon position of the element
-   */
-  @Prop({ reflect: true }) readonly iconPosition: ButtonIconPositionType = 'left'
-
-  /**
-   * Specifies if the branches depth decorations are visible.
-   */
-  @Prop({ reflect: true }) readonly appearance: TreeAppearance = 'depth'
+  @Prop({ mutable: true, reflect: true }) toggle?: TreeIcon // = 'chevron'
 
   /**
    * Specifies if the tree is expanded.
@@ -71,34 +62,53 @@ export class MdsTreeItem {
   /**
    * Truncate the text of the element on one single line.
    */
-  @Prop({ reflect: true }) readonly truncate?: TypographyTruncateType = 'word'
+  @Prop({ mutable: true, reflect: true }) truncate?: TypographyTruncateType = 'word'
 
   /**
-   * Show actions on the element.
+   * The icon displayed in the button
    */
-  @Prop({ reflect: true }) readonly actions?: 'visible' | 'auto' = 'auto'
+  @Prop() readonly icon?: string
 
-  @Watch('icon')
+  // /**
+  //  * Show actions on the element.
+  //  */
+  // @Prop({ reflect: true }) readonly actions?: 'visible' | 'auto' = 'auto'
+
+  @Watch('toggle')
   handleIconChange (): void {
-    this.updateIcon()
+    this.updateToggleIcon()
   }
 
-  componentWillLoad (): void {
-    this.hasActions = this.host.querySelector('[slot="action"]') !== null
-    this.updateIcon()
+  @Watch('expanded')
+  handleExpandedChange (newValue: boolean): void {
+    if (newValue) {
+      this.childrenElement.classList.remove('children--hidden')
+    }
   }
 
-  componentDidLoad (): void {
-    this.language = this.t.lang(this.host)
-    this.hasChildren = hasSlottedElements(this.host)
+  private getParentAttribute = (element: HTMLElement, parent: string, attribute: string, defaultValue?: string): string | undefined => {
+    const attributeValue = element.closest(parent)?.getAttribute(attribute)
+    return attributeValue ? attributeValue : defaultValue ?? undefined
   }
 
-  private updateIcon = (): void => {
-    if (this.icon === 'folder') {
-      this.currentIcon = this.expanded ? mdiFolderOpen : miBaselineFolderClosed
+  private updateAttrubtes = (): void => {
+    this.toggle = this.getParentAttribute(this.host, 'mds-tree', 'toggle', 'chevron') as TreeIcon
+    // this.togglePosition = this.getParentAttribute(this.host, 'mds-tree', 'toggle-position', 'left') as ButtonIconPositionType
+    this.truncate = this.getParentAttribute(this.host, 'mds-tree', 'truncate', 'all') as TypographyTruncateType
+  }
+
+  private checkChildrenTransitionEnd = (): void => {
+    if (!this.childrenElement.classList.contains('children--expanded')) {
+      this.childrenElement.classList.add('children--hidden')
+    }
+  }
+
+  private updateToggleIcon = (): void => {
+    if (this.toggle === 'folder') {
+      this.currentToggleIcon = this.expanded ? mdiFolderOpen : miBaselineFolderClosed
       return
     }
-    this.currentIcon = miBaselineChevronRight
+    this.currentToggleIcon = miBaselineChevronRight
   }
 
   private onClick = (): void => {
@@ -107,7 +117,7 @@ export class MdsTreeItem {
       return
     }
 
-    this.toggle()
+    this.updateToggle()
   }
 
   private idle = (): void => {
@@ -115,38 +125,50 @@ export class MdsTreeItem {
     // evento onMdsTreeAwait
   }
 
-  private toggle = (): void => {
+  private updateToggle = (): void => {
     this.expanded = !this.expanded
-    this.updateIcon()
+    this.updateToggleIcon()
   }
 
   @Method()
   async open (): Promise<void> {
     this.expanded = true
-    this.updateIcon()
+    this.updateToggleIcon()
+  }
+
+  componentWillLoad (): void {
+    this.hasActions = this.host.querySelector('[slot="action"]') !== null
+    this.childrenElement = this.host.shadowRoot?.querySelector('.children') as HTMLElement
+  }
+
+  componentDidLoad (): void {
+    this.updateToggleIcon()
+    this.updateAttrubtes()
+    this.language = this.t.lang(this.host)
+    this.childrenElement.addEventListener('transitionend', this.checkChildrenTransitionEnd)
+    this.hasChildren = hasSlottedElements(this.host)
+  }
+
+  disconnectedCallback (): void {
+    this.childrenElement.removeEventListener('transitionend', this.checkChildrenTransitionEnd)
   }
 
   render () {
     return (
       <Host>
         <div class="header">
-          <div class={clsx('tree-node')}>
-            { this.hasChildren &&
-              <mds-button await={this.await} class={clsx('toggle-icon', this.iconPosition === 'right' && 'toggle-icon--dot' )} onClick={this.onClick.bind(this)} icon={!this.await && this.iconPosition === 'left' ? this.currentIcon : miBaselineDot} title={ this.t.get(this.expanded ? 'collapse' : 'expand', { label: this.label }) } variant="dark" tone="quiet" size="sm"/>
-            }
+          <div class="tree-node">
           </div>
+          { this.hasChildren &&
+            <mds-button await={this.await} class="toggle-icon" onClick={this.onClick.bind(this)} icon={!this.await ? this.currentToggleIcon : undefined} title={ this.t.get(this.expanded ? 'collapse' : 'expand', { label: this.label }) } variant="dark" tone="quiet" size="sm"/>
+          }
           <div class="title">
-            <mds-button class="label-action" onClick={this.onClick.bind(this)} variant="dark" tone="quiet" truncate={this.truncate}>{ this.label }</mds-button>
+            <mds-button class="label-action" icon={this.icon} onClick={this.onClick.bind(this)} variant="dark" tone="quiet" truncate={this.truncate}>{ this.label }</mds-button>
             { this.hasActions &&
               <div class="actions-container">
                 <div class="actions" part="actions">
                   <slot name="action"></slot>
                 </div>
-              </div>
-            }
-            { this.hasChildren && this.iconPosition === 'right' &&
-              <div class="tree-node">
-                <mds-button await={this.await} class="toggle-icon" onClick={this.onClick.bind(this)} icon={!this.await ? this.currentIcon : ''} title={ this.t.get(this.expanded ? 'collapse' : 'expand', { label: this.label }) } variant="dark" tone="quiet" size="sm"/>
               </div>
             }
           </div>

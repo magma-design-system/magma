@@ -1,0 +1,49 @@
+.toggle-icon {
+
+  --size: 24px;
+
+  background-color: var(--mds-tree-item-icon-background-color);
+  border: 0;
+  border-radius: var(--mds-tree-item-toggle-size);
+  fill: var(--mds-tree-item-icon-color);
+  flex-shrink: 0;
+  height: var(--size);
+  min-height: var(--size);
+  min-width: var(--size);
+  position: absolute;
+  transform: rotate(0deg);
+  transition-duration: var(--mds-tree-item-transition-duration);
+  transition-property: transform;
+  transition-timing-function: var(--mds-tree-item-transition-timing-function);
+  width: var(--size);
+  z-index: 2;
+}
+
+:host([toggle="chevron"]) .toggle-icon {
+
+  --mds-tree-item-icon-background-color: var(--mds-tree-item-toggle-icon-chevron-default-background);
+  --mds-tree-item-icon-color: var(--mds-tree-item-toggle-icon-chevron-default-color);
+}
+
+:host([toggle="chevron"][expanded]) .toggle-icon {
+
+  --mds-tree-item-icon-background-color: var(--mds-tree-item-toggle-icon-chevron-expanded-background);
+  --mds-tree-item-icon-color: var(--mds-tree-item-toggle-icon-chevron-expanded-color);
+}
+
+:host([toggle="folder"]) .toggle-icon {
+
+  --mds-tree-item-icon-background-color: var(--mds-tree-item-toggle-icon-folder-default-background);
+  --mds-tree-item-icon-color: var(--mds-tree-item-toggle-icon-folder-default-color);
+  --size: auto;
+
+  border-radius: theme('borderRadius.md');
+  padding: theme('spacing.25') theme('spacing.50');
+}
+
+:host([toggle="folder"][expanded]) .toggle-icon {
+
+  --mds-tree-item-icon-background-color: var(--mds-tree-item-toggle-icon-folder-expanded-background);
+  --mds-tree-item-icon-color: var(--mds-tree-item-toggle-icon-folder-expanded-color);
+}
+
