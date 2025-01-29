@@ -1,0 +1,19 @@
+:host-context([appearance="none"]) .header {
+
+  --offset: 0;
+}
+
+:host(:not(:last-child)):host-context([appearance="none"]) .children--has-children::before,
+:host-context([appearance="none"]) .tree-dot,
+:host-context([appearance="none"]) .tree-node {
+  display: none;
+}
+
+:host-context([appearance="none"]) .label-action {
+
+  --padding: theme('padding.200');
+
+  margin-left: 0;
+  padding-left: var(--padding);
+  padding-right: var(--padding);
+}

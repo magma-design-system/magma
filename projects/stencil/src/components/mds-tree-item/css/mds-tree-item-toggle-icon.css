@@ -1,33 +1,48 @@
 .toggle-icon {
-
-  --size: theme('size.800');
-
+  align-items: center;
   align-self: center;
-  background-color: var(--mds-tree-item-icon-background-color);
-  border: 0;
-  border-radius: var(--mds-tree-item-toggle-size);
-  fill: var(--mds-tree-item-icon-color);
+  display: inline-flex;
   flex-shrink: 0;
-  margin-left: calc(var(--size) * -1);
+  height: var(--mds-tree-item-toggle-size);
+  justify-content: center;
+  margin-left: calc(var(--offset) * -1);
+  position: relative;
   transform: rotate(0deg);
   transition-duration: var(--mds-tree-item-transition-duration);
   transition-property: transform;
   transition-timing-function: var(--mds-tree-item-transition-timing-function);
+  width: var(--mds-tree-item-toggle-size);
+  z-index: 1;
 }
 
-:host([toggle="chevron"]) .toggle-icon {
+.toggle-icon mds-button {
+
+  --size: theme('size.600');
+
+  background-color: var(--mds-tree-item-icon-background-color);
+  border: 0;
+  border-radius: var(--mds-tree-item-toggle-size);
+  fill: var(--mds-tree-item-icon-color);
+  height: var(--size);
+  min-height: var(--size);
+  min-width: var(--size);
+  width: var(--size);
+
+}
+
+:host:host-context([toggle="chevron"]) .toggle-icon {
 
   --mds-tree-item-icon-background-color: var(--mds-tree-item-toggle-icon-chevron-default-background);
   --mds-tree-item-icon-color: var(--mds-tree-item-toggle-icon-chevron-default-color);
 }
 
-:host([toggle="chevron"][expanded]) .toggle-icon {
+:host([expanded]):host-context([toggle="chevron"]) .toggle-icon {
 
   --mds-tree-item-icon-background-color: var(--mds-tree-item-toggle-icon-chevron-expanded-background);
   --mds-tree-item-icon-color: var(--mds-tree-item-toggle-icon-chevron-expanded-color);
 }
 
-:host([toggle="folder"]) .toggle-icon {
+:host:host-context([toggle="folder"]) .toggle-icon {
 
   --mds-tree-item-icon-background-color: var(--mds-tree-item-toggle-icon-folder-default-background);
   --mds-tree-item-icon-color: var(--mds-tree-item-toggle-icon-folder-default-color);
@@ -37,13 +52,13 @@
   padding: theme('spacing.25') theme('spacing.50');
 }
 
-:host([toggle="folder"][expanded]) .toggle-icon {
+:host([expanded]):host-context(mds-tree[toggle="folder"]) .toggle-icon {
 
   --mds-tree-item-icon-background-color: var(--mds-tree-item-toggle-icon-folder-expanded-background);
   --mds-tree-item-icon-color: var(--mds-tree-item-toggle-icon-folder-expanded-color);
 }
 
-:host([toggle="chevron"][expanded]):host-context(mds-tree[toggle-position="left"]) .toggle-icon {
+:host([expanded]):host-context(mds-tree[toggle-position="left"][toggle="chevron"]) .toggle-icon {
   transform: rotate(90deg);
 }
 

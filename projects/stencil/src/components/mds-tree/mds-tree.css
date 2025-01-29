@@ -8,7 +8,8 @@
   --mds-tree-toggle-dot-default-color: theme('colors.tone-neutral-07');
   --mds-tree-toggle-dot-expanded-color: theme('colors.tone-neutral-06');
   --mds-tree-toggle-border-color: theme('colors.tone-neutral-07');
-  --mds-tree-toggle-border-radius: theme('borderRadius.lg'); /* to remove radius, use 0px instead 0 or calc will not work properly */
+  --mds-tree-toggle-border-radius: theme('borderRadius.lg'); /* to remove radius, use 0px instead 0 or calc will not work properly
+  /* --mds-tree-toggle-border-radius: 0; /* to remove radius, use 0px instead 0 or calc will not work properly */
   --mds-tree-toggle-border-size: theme('size.50');
   --mds-tree-toggle-gap: theme('size.150');
   --mds-tree-icon-default-color: theme('colors.variant-primary-04');
@@ -25,8 +26,17 @@
   --mds-tree-transition-duration: theme('transitionDuration.300');
   --mds-tree-transition-timing-function: theme('transitionTimingFunction.in-out-expo');
 
+  @apply
+    duration-200
+    ease-out;
+
   background-color: theme('colors.tone-neutral-10');
   border-radius: theme('size.250');
   display: grid;
-  padding: theme('padding.50')
+  padding: theme('padding.50');
+  transition-property: background-color;
+}
+
+:host(:hover) {
+  background-color: theme('colors.tone-neutral-09');
 }

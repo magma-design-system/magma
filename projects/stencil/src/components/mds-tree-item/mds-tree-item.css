@@ -1,5 +1,14 @@
 @tailwind utilities;
 
+@container style(--mds-tree-toggle-border-radius: 0) {
+    :host {
+
+      /* stylelint-disable-next-line length-zero-no-unit */
+      --mds-tree-toggle-border-radius: 0px;
+    }
+
+}
+
 :host {
 
   --mds-tree-item-actions-border-radius: var(--mds-tree-actions-border-radius);
@@ -37,9 +46,13 @@
 }
 
 .header {
+
+  --header-gap: theme('spacing.100');
+  --offset: calc(var(--mds-tree-item-toggle-size) + var(--header-gap));
+
   align-items: flex-start;
   display: flex;
-  gap: theme('spacing.100');
+  gap: var(--header-gap);
   min-width: 0;
   position: relative;
   z-index: 1;
@@ -57,17 +70,16 @@
 .label-action {
 
   --mds-button-line-clamp: var(--mds-tree-item-line-clamp);
+  --padding: theme('padding.100');
 
   background-color: var(--mds-tree-item-label-background-default);
   border-radius: theme('borderRadius.lg');
   fill: var(--mds-tree-item-icon-default-color);
   flex-grow: 1;
   justify-content: flex-start;
-  padding-right: 0;
-}
-
-:host([icon]) .label-action {
-  padding-left: theme('padding.100');
+  margin-left: calc(var(--padding) * -1);
+  padding-left: var(--padding);
+  padding-right: var(--padding);
 }
 
 .label-action:hover {
@@ -77,6 +89,7 @@
 
 @import './css/mds-tree-item-actions.css';
 @import './css/mds-tree-item-children.css';
-@import './css/mds-tree-item-node.css';
+@import './css/mds-tree-item-tree-node.css';
 @import './css/mds-tree-item-toggle-icon.css';
 @import './css/mds-tree-item-toggle-position.css';
+@import './css/mds-tree-item-appearance.css';

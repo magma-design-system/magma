@@ -2,6 +2,10 @@
   order: 0;
 }
 
+:host-context(mds-tree[toggle-position="right"]) .header--has-children .title {
+  margin-right: var(--offset);
+}
+
 :host([toggle="chevron"][expanded]):host-context(mds-tree[toggle-position="left"]) .toggle-icon {
   transform: rotate(90deg);
 }

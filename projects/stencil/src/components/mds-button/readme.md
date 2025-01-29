@@ -74,7 +74,7 @@ This is a web-component from Maggioli Design System [Magma](https://magma.maggio
  - [mds-push-notification](../mds-push-notification)
  - [mds-tab-item](../mds-tab-item)
  - [mds-table-header-cell](../mds-table-header-cell)
- - [mds-tree](../mds-tree)
+ - [mds-tree-item](../mds-tree-item)
  - [mds-url-view](../mds-url-view)
 
 ### Depends on
@@ -105,7 +105,7 @@ graph TD;
   mds-push-notification --> mds-button
   mds-tab-item --> mds-button
   mds-table-header-cell --> mds-button
-  mds-tree --> mds-button
+  mds-tree-item --> mds-button
   mds-url-view --> mds-button
   style mds-button fill:#f9f,stroke:#333,stroke-width:4px
 ```

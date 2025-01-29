@@ -1,0 +1,101 @@
+.tree-node {
+
+  --middle-pos-x: calc(50% - calc(var(--mds-tree-item-toggle-border-size)/ 2));
+
+  align-items: center;
+  box-sizing: border-box;
+  display: inline-flex;
+  flex-shrink: 0;
+  height: var(--mds-tree-item-toggle-size);
+  justify-content: center;
+  position: relative;
+  width: var(--mds-tree-item-toggle-size);
+  z-index: 0;
+}
+
+.tree-node::before {
+
+  --pos-y: calc(calc(var(--mds-tree-item-toggle-size) / 2 + var(--mds-tree-item-toggle-border-radius)) * -1);
+  --tree-height: calc(var(--mds-tree-item-toggle-size) + var(--mds-tree-item-toggle-border-radius) + var(--mds-tree-item-toggle-border-size));
+  --tree-width: calc(var(--mds-tree-item-toggle-size) / 2);
+
+  border-color: var(--mds-tree-item-toggle-border-color);
+  border-radius: 0 0 0 var(--mds-tree-item-toggle-border-radius);
+  border-style: solid;
+  border-width: 0 0 var(--mds-tree-item-toggle-border-size) var(--mds-tree-item-toggle-border-size);
+  box-sizing: border-box;
+  content: "";
+  display: flex;
+  height: var(--tree-height);
+  inset: 0;
+  position: absolute;
+  transform: translateY(var(--pos-y));
+  width: calc(var(--mds-tree-item-toggle-size) / 2);
+  z-index: 1;
+}
+
+.tree-dot {
+
+  --size: calc(theme('size.300') + var(--mds-tree-item-toggle-border-size) * 2);
+
+  background-color: var(--mds-tree-item-toggle-border-color);
+  border-radius: var(--size);
+  display: none;
+  height: var(--size);
+  width: var(--size);
+}
+
+.header--has-children .tree-dot {
+  display: inline-flex;
+}
+
+:host(:empty) .tree-node::before {
+  width: calc(var(--mds-tree-item-toggle-size) - var(--header-gap));
+}
+
+/* border used when component has children */
+
+:host(:not(:last-child)) .header--has-children .tree-node::after {
+
+  --size: calc(calc(var(--mds-tree-item-toggle-size) / 2) + var(--mds-tree-item-toggle-border-radius));
+  --pos-y: calc(var(--size) / 2);
+
+  /* border-color: purple; */
+  border-color: var(--mds-tree-item-toggle-border-color);
+  border-radius: 0 0 0 var(--mds-tree-item-toggle-border-radius);
+  border-style: solid;
+  border-width: 0 0 var(--mds-tree-item-toggle-border-size) var(--mds-tree-item-toggle-border-size);
+  box-sizing: border-box;
+  content: "";
+  display: flex;
+  height: var(--size);
+  inset: 0;
+  position: absolute;
+  transform: translateY(var(--pos-y));
+  width: var(--mds-tree-item-toggle-border-size);
+  z-index: 1;
+}
+
+:host(:not(:last-child)) .children--has-children::before {
+
+  /* border-left-color: green; */
+  border-left-color: var(--mds-tree-item-toggle-border-color);
+  border-left-style: solid;
+  border-left-width: var(--mds-tree-item-toggle-border-size);
+  content: "";
+  display: flex;
+  height: calc(100% + var(--mds-tree-item-toggle-size));
+  left: 0;
+  position: absolute;
+  top: calc(var(--mds-tree-item-toggle-size) * -1);
+}
+
+/* IM HERE */
+
+:host-context(mds-tree):not(:host-context(mds-tree-item)) .tree-node::before {
+  border-color: purple;
+}
+
+:host(:first-of-type) .children--has-children::before {
+  border-color: red;
+}

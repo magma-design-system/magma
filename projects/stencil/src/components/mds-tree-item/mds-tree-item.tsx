@@ -23,7 +23,7 @@ export class MdsTreeItem {
   private hasActions: boolean
   // private togglePosition?: ButtonIconPositionType = 'left'
   private childrenElement: HTMLElement
-  @State() hasChildren: boolean = true
+  @State() hasChildren: boolean = false
   @State() currentToggleIcon: string
   @State() await: boolean
   @Element() private host: HTMLMdsTreeItemElement
@@ -138,13 +138,13 @@ export class MdsTreeItem {
 
   componentWillLoad (): void {
     this.hasActions = this.host.querySelector('[slot="action"]') !== null
-    this.childrenElement = this.host.shadowRoot?.querySelector('.children') as HTMLElement
   }
 
   componentDidLoad (): void {
     this.updateToggleIcon()
     this.updateAttrubtes()
     this.language = this.t.lang(this.host)
+    this.childrenElement = this.host.shadowRoot?.querySelector('.children') as HTMLElement
     this.childrenElement.addEventListener('transitionend', this.checkChildrenTransitionEnd)
     this.hasChildren = hasSlottedElements(this.host)
   }
@@ -156,12 +156,13 @@ export class MdsTreeItem {
   render () {
     return (
       <Host>
-        <div class="header">
+        <div class={clsx('header', this.hasChildren && 'header--has-children')}>
           <div class="tree-node">
+            <div class="tree-dot"></div>
           </div>
-          { this.hasChildren &&
-            <mds-button await={this.await} class="toggle-icon" onClick={this.onClick.bind(this)} icon={!this.await ? this.currentToggleIcon : undefined} title={ this.t.get(this.expanded ? 'collapse' : 'expand', { label: this.label }) } variant="dark" tone="quiet" size="sm"/>
-          }
+          <div class="toggle-icon">
+            <mds-button await={this.await} onClick={this.onClick.bind(this)} icon={!this.await ? this.currentToggleIcon : undefined} title={ this.t.get(this.expanded ? 'collapse' : 'expand', { label: this.label }) } variant="dark" tone="quiet" size="sm"/>
+          </div>
           <div class="title">
             <mds-button class="label-action" icon={this.icon} onClick={this.onClick.bind(this)} variant="dark" tone="quiet" truncate={this.truncate}>{ this.label }</mds-button>
             { this.hasActions &&
@@ -173,7 +174,7 @@ export class MdsTreeItem {
             }
           </div>
         </div>
-        <div class={clsx('children', this.expanded && 'children--expanded', this.hasChildren ?? 'children--empty')}>
+        <div class={clsx('children', this.hasChildren && 'children--has-children', this.expanded && 'children--expanded')}>
           <slot></slot>
         </div>
       </Host>
