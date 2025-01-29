@@ -4341,10 +4341,10 @@
   resolved "https://registry.npmjs.org/@stencil/angular-output-target/-/angular-output-target-0.10.2.tgz#a885058e0991df6a8040f2fa841683ea63e75059"
   integrity sha512-jPRa2NMAPtm/iMY+mUaWATbIhgY5zPJfUNQyF8nwC0rMrfXifPoRCf6BbH2S4Gy7SX0X4hlP+jAbVUjQNg/P+Q==
 
-"@stencil/core@4.25.0":
-  version "4.25.0"
-  resolved "https://registry.npmjs.org/@stencil/core/-/core-4.25.0.tgz#2e175db88f09a9f5e2ab8679965a6f0454903922"
-  integrity sha512-mLyaGCCGaHh6M4n1Hs3CXytD8MLQEt/eBBEoeJvAKE82S3CaqT5n5STXNHnv+qRz3btaSzqEfn2DBTurHYgKeQ==
+"@stencil/core@4.25.1":
+  version "4.25.1"
+  resolved "https://registry.npmjs.org/@stencil/core/-/core-4.25.1.tgz#95bb17bb3fb1503203f9ef46a3e3924b7559add3"
+  integrity sha512-SJhAAN6nHj7l2n2F7H6NoOUFhXC5tYXSvOpAaNFi5As6c2jOvaDOvAH+om4OKmw8U2kHI9yihEqpZrtY1J20dQ==
 
 "@stencil/postcss@2.1.0":
   version "2.1.0"
