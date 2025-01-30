@@ -1,7 +1,9 @@
 import { h } from '@stencil/core'
 import { treeIconDictionary } from '@dictionary/tree'
 import { iconsDictionary } from '@dictionary/icon'
-import { useEffect, useRef } from 'react'
+// import { useEffect } from 'react'
+import { MdsTreeItemEventDetail } from 'src/components'
+import { useEffect } from 'react'
 // import { useRef } from 'react'
 // import { MdsTreeItemEventDetail } from '../meta/event-detail'
 
@@ -78,28 +80,24 @@ const TemplateOrganizationalChart = ({ ...args }) =>
   </mds-tree>
 
 const TemplateAsync = ({ ...args }) => {
-  // const handleItemExpand = (event: CustomEvent<MdsTreeItemEventDetail>): void => {
-  //   console.log('onMdsTreeItemExpand')
-  //   const { element } = event.detail
-  //   if (!element.async) return
-  //   setTimeout(() => {
-  //     element.expand()
-  //     element.async = false
-  //     console.log('expanded')
-  //   }, 5000)
-  // }
-  const treeItemElement = useRef(null)
-
-  // if (treeItemElement === null) return
-  // console.log('treeItemElement')
+  // Simulate async request
   useEffect(() => {
-    // console.log(treeItemElement)
-    // if (treeItemElement.current === null) return
-    // treeItemElement.addEventListener('mdsTreeItemExpand', handleItemExpand)
+    const treeItemElement = document.querySelectorAll('.mds-tree-item')?.[0]
+    if (treeItemElement) {
+      treeItemElement.addEventListener('mdsTreeItemExpand', (event: CustomEvent<MdsTreeItemEventDetail>) => {
+        const { element } = event.detail
+        if (!element.async) return
+        setTimeout(() => {
+          element.expand()
+          element.async = false
+        }, 5000)
+      })
+    }
   }, [])
+
   return (
     <mds-tree toggle="chevron">
-      <mds-tree-item class="mds-tree-item" {...args} ref={() => treeItemElement} async label="Comune di Rimini" icon="mgg/historic-building">
+      <mds-tree-item class="mds-tree-item" {...args} async label="Comune di Rimini" icon="mgg/historic-building">
         <mds-tree-item {...args} label="Settore Affari Generali" icon="mdi/handshake">
           <mds-tree-item {...args} label="Servizio Affari Generali" icon="mi/baseline/home-repair-service">
             <mds-tree-item {...args} label="Segreteria" icon="mi/baseline/desk">
