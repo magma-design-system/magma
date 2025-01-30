@@ -18,9 +18,17 @@
 | `truncate` | `truncate` | Truncate the text of the element on one single line.                     | `"all" \| "none" \| "word" \| undefined` | `'word'`    |
 
 
+## Events
+
+| Event                 | Description                                             | Type                                  |
+| --------------------- | ------------------------------------------------------- | ------------------------------------- |
+| `mdsTreeItemCollapse` | Emits when the component attribute selected is changed  | `CustomEvent<MdsTreeItemEventDetail>` |
+| `mdsTreeItemExpand`   | Emits when the component expand it's children container | `CustomEvent<MdsTreeItemEventDetail>` |
+
+
 ## Methods
 
-### `open() => Promise<void>`
+### `expand() => Promise<void>`
 
 
 

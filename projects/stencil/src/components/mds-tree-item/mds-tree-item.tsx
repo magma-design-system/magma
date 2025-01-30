@@ -6,11 +6,13 @@ import clsx from 'clsx'
 import miBaselineChevronRight from '@icon/mi/baseline/chevron-right.svg'
 import mdiFolderOpen from '@icon/mdi/folder-open.svg'
 import miBaselineFolderClosed from '@icon/mi/baseline/folder.svg'
-import { Component, Host, h, Prop, Element, State, Method, Watch } from '@stencil/core'
+import { MdsTreeItemEventDetail } from './meta/event-detail'
+import { Component, Host, h, Prop, Element, Event, EventEmitter, State, Method, Watch } from '@stencil/core'
 import { Locale } from '@common/locale'
 import { TreeIcon } from '@type/tree'
 import { hasSlottedElements } from '@common/slot'
 import { TypographyTruncateType } from '@type/text'
+import { cssDurationToMilliseconds } from '@common/unit'
 
 @Component({
   tag: 'mds-tree-item',
@@ -21,6 +23,8 @@ export class MdsTreeItem {
 
   private hasActions: boolean
   private childrenElement: HTMLElement
+  private toggleChildrenTimer: NodeJS.Timeout
+  private cssToggleChildrenDuration: string
   @State() hasChildren: boolean = false
   @State() currentToggleIcon: string
   @State() await: boolean
@@ -72,6 +76,16 @@ export class MdsTreeItem {
    */
   @Prop() readonly icon?: string
 
+  /**
+   * Emits when the component expand it's children container
+   */
+  @Event({ eventName: 'mdsTreeItemExpand' }) expandEvent: EventEmitter<MdsTreeItemEventDetail>
+
+  /**
+   * Emits when the component attribute selected is changed
+   */
+  @Event({ eventName: 'mdsTreeItemCollapse' }) collapsedEvent: EventEmitter<MdsTreeItemEventDetail>
+
   @Watch('toggle')
   handleIconChange (): void {
     this.updateToggleIcon()
@@ -81,7 +95,12 @@ export class MdsTreeItem {
   handleExpandedChange (newValue: boolean): void {
     if (newValue) {
       this.childrenElement.classList.remove('children--hidden')
+      return
     }
+    this.toggleChildrenTimer = setTimeout(() => {
+      clearTimeout(this.toggleChildrenTimer)
+      this.collapsedEvent.emit({ element: this.host })
+    }, cssDurationToMilliseconds(this.cssToggleChildrenDuration))
   }
 
   private getParentAttribute = (element: HTMLElement, parent: string, attribute: string, defaultValue?: string): string | undefined => {
@@ -119,8 +138,7 @@ export class MdsTreeItem {
 
   private idle = (): void => {
     this.await = true
-    // console.log('onMdsTreeAwait')
-    // evento onMdsTreeAwait
+    this.expandEvent.emit({ element: this.host })
   }
 
   private updateToggle = (): void => {
@@ -128,9 +146,15 @@ export class MdsTreeItem {
     this.updateToggleIcon()
   }
 
+  private updateCssCustomProperty = (): void => {
+    const elementStyles = window.getComputedStyle(this.host)
+    this.cssToggleChildrenDuration = elementStyles.getPropertyValue('--mds-dropdown-backdrop-duration')
+  }
+
   @Method()
-  async open (): Promise<void> {
+  async expand (): Promise<void> {
     this.expanded = true
+    this.await = false
     this.updateToggleIcon()
   }
 
@@ -139,6 +163,7 @@ export class MdsTreeItem {
   }
 
   componentDidLoad (): void {
+    this.updateCssCustomProperty()
     this.updateToggleIcon()
     this.updateAttrubtes()
     this.language = this.t.lang(this.host)

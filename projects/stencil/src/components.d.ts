@@ -66,6 +66,7 @@ import { SortDirectionType } from "./components/mds-table-header-cell/meta/types
 import { TextAnimationType } from "./components/mds-text/meta/types";
 import { ToastPosition } from "./components/mds-toast/meta/types";
 import { TreeActions, TreeAppearance, TreeIcon } from "./type/tree";
+import { MdsTreeItemEventDetail } from "./components/mds-tree-item/meta/event-detail";
 import { UsageType } from "./components/mds-usage/meta/types";
 import { NoiseType, PreloadType } from "./components/mds-video-wall/meta/types";
 export { MdsAccordionEventDetail } from "./components/mds-accordion/meta/event-detail";
@@ -129,6 +130,7 @@ export { SortDirectionType } from "./components/mds-table-header-cell/meta/types
 export { TextAnimationType } from "./components/mds-text/meta/types";
 export { ToastPosition } from "./components/mds-toast/meta/types";
 export { TreeActions, TreeAppearance, TreeIcon } from "./type/tree";
+export { MdsTreeItemEventDetail } from "./components/mds-tree-item/meta/event-detail";
 export { UsageType } from "./components/mds-usage/meta/types";
 export { NoiseType, PreloadType } from "./components/mds-video-wall/meta/types";
 export namespace Components {
@@ -1750,6 +1752,7 @@ export namespace Components {
          */
         "async"?: boolean;
         "depth"?: number;
+        "expand": () => Promise<void>;
         /**
           * Specifies if the tree is expanded.
          */
@@ -1762,7 +1765,6 @@ export namespace Components {
           * Specifies the label of the tree item
          */
         "label": string;
-        "open": () => Promise<void>;
         /**
           * Specifies the icon of the element
          */
@@ -1998,6 +2000,10 @@ export interface MdsTableCustomEvent<T> extends CustomEvent<T> {
 export interface MdsToastCustomEvent<T> extends CustomEvent<T> {
     detail: T;
     target: HTMLMdsToastElement;
+}
+export interface MdsTreeItemCustomEvent<T> extends CustomEvent<T> {
+    detail: T;
+    target: HTMLMdsTreeItemElement;
 }
 export interface MdsUrlViewCustomEvent<T> extends CustomEvent<T> {
     detail: T;
@@ -3017,7 +3023,19 @@ declare global {
         prototype: HTMLMdsTreeElement;
         new (): HTMLMdsTreeElement;
     };
+    interface HTMLMdsTreeItemElementEventMap {
+        "mdsTreeItemExpand": MdsTreeItemEventDetail;
+        "mdsTreeItemCollapse": MdsTreeItemEventDetail;
+    }
     interface HTMLMdsTreeItemElement extends Components.MdsTreeItem, HTMLStencilElement {
+        addEventListener<K extends keyof HTMLMdsTreeItemElementEventMap>(type: K, listener: (this: HTMLMdsTreeItemElement, ev: MdsTreeItemCustomEvent<HTMLMdsTreeItemElementEventMap[K]>) => any, options?: boolean | AddEventListenerOptions): void;
+        addEventListener<K extends keyof DocumentEventMap>(type: K, listener: (this: Document, ev: DocumentEventMap[K]) => any, options?: boolean | AddEventListenerOptions): void;
+        addEventListener<K extends keyof HTMLElementEventMap>(type: K, listener: (this: HTMLElement, ev: HTMLElementEventMap[K]) => any, options?: boolean | AddEventListenerOptions): void;
+        addEventListener(type: string, listener: EventListenerOrEventListenerObject, options?: boolean | AddEventListenerOptions): void;
+        removeEventListener<K extends keyof HTMLMdsTreeItemElementEventMap>(type: K, listener: (this: HTMLMdsTreeItemElement, ev: MdsTreeItemCustomEvent<HTMLMdsTreeItemElementEventMap[K]>) => any, options?: boolean | EventListenerOptions): void;
+        removeEventListener<K extends keyof DocumentEventMap>(type: K, listener: (this: Document, ev: DocumentEventMap[K]) => any, options?: boolean | EventListenerOptions): void;
+        removeEventListener<K extends keyof HTMLElementEventMap>(type: K, listener: (this: HTMLElement, ev: HTMLElementEventMap[K]) => any, options?: boolean | EventListenerOptions): void;
+        removeEventListener(type: string, listener: EventListenerOrEventListenerObject, options?: boolean | EventListenerOptions): void;
     }
     var HTMLMdsTreeItemElement: {
         prototype: HTMLMdsTreeItemElement;
@@ -4965,6 +4983,14 @@ declare namespace LocalJSX {
           * Specifies the label of the tree item
          */
         "label"?: string;
+        /**
+          * Emits when the component attribute selected is changed
+         */
+        "onMdsTreeItemCollapse"?: (event: MdsTreeItemCustomEvent<MdsTreeItemEventDetail>) => void;
+        /**
+          * Emits when the component expand it's children container
+         */
+        "onMdsTreeItemExpand"?: (event: MdsTreeItemCustomEvent<MdsTreeItemEventDetail>) => void;
         /**
           * Specifies the icon of the element
          */

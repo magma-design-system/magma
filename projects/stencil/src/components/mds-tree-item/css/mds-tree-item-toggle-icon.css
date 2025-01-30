@@ -22,6 +22,7 @@
   background-color: var(--mds-tree-item-icon-background-color);
   border: 0;
   border-radius: var(--mds-tree-item-toggle-size);
+  color: var(--mds-tree-item-icon-color);
   fill: var(--mds-tree-item-icon-color);
   height: var(--size);
   min-height: var(--size);

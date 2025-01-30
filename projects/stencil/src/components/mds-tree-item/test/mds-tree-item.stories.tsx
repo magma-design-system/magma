@@ -1,6 +1,9 @@
 import { h } from '@stencil/core'
 import { treeIconDictionary } from '@dictionary/tree'
 import { iconsDictionary } from '@dictionary/icon'
+import { useEffect, useRef } from 'react'
+// import { useRef } from 'react'
+// import { MdsTreeItemEventDetail } from '../meta/event-detail'
 
 export default {
   title: 'UI / Tree / Tree Item',
@@ -74,6 +77,44 @@ const TemplateOrganizationalChart = ({ ...args }) =>
     </mds-tree-item>
   </mds-tree>
 
-export const Default = Template.bind({})
+const TemplateAsync = ({ ...args }) => {
+  // const handleItemExpand = (event: CustomEvent<MdsTreeItemEventDetail>): void => {
+  //   console.log('onMdsTreeItemExpand')
+  //   const { element } = event.detail
+  //   if (!element.async) return
+  //   setTimeout(() => {
+  //     element.expand()
+  //     element.async = false
+  //     console.log('expanded')
+  //   }, 5000)
+  // }
+  const treeItemElement = useRef(null)
 
+  // if (treeItemElement === null) return
+  // console.log('treeItemElement')
+  useEffect(() => {
+    // console.log(treeItemElement)
+    // if (treeItemElement.current === null) return
+    // treeItemElement.addEventListener('mdsTreeItemExpand', handleItemExpand)
+  }, [])
+  return (
+    <mds-tree toggle="chevron">
+      <mds-tree-item class="mds-tree-item" {...args} ref={() => treeItemElement} async label="Comune di Rimini" icon="mgg/historic-building">
+        <mds-tree-item {...args} label="Settore Affari Generali" icon="mdi/handshake">
+          <mds-tree-item {...args} label="Servizio Affari Generali" icon="mi/baseline/home-repair-service">
+            <mds-tree-item {...args} label="Segreteria" icon="mi/baseline/desk">
+              <mds-tree-item {...args} label="Andrea Rossi" icon="mi/baseline/person"></mds-tree-item>
+              <mds-tree-item {...args} label="Mirco Romanelli" icon="mi/baseline/person"></mds-tree-item>
+              <mds-tree-item {...args} label="Elone Muschio" icon="mi/baseline/person"></mds-tree-item>
+            </mds-tree-item>
+            <mds-tree-item {...args} label="Demografici" icon="mi/baseline/desk"></mds-tree-item>
+          </mds-tree-item>
+        </mds-tree-item>
+      </mds-tree-item>
+    </mds-tree>
+  )
+}
+
+export const Default = Template.bind({})
 export const OrganizationalChart = TemplateOrganizationalChart.bind({})
+export const AsyncToggle = TemplateAsync.bind({})
