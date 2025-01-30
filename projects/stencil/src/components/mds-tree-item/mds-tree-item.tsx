@@ -187,7 +187,7 @@ export class MdsTreeItem {
             <mds-button await={this.await} onClick={this.onClick.bind(this)} icon={!this.await ? this.currentToggleIcon : undefined} title={ this.t.get(this.expanded ? 'collapse' : 'expand', { label: this.label }) } variant="dark" tone="quiet" size="sm"/>
           </div>
           <div class="title">
-            <mds-button class="label-action" icon={this.icon} onClick={this.onClick.bind(this)} variant="dark" tone="quiet" truncate={this.truncate}>{ this.label }</mds-button>
+            <mds-button class={clsx('label-action', this.await && 'label-action--await')} disabled={this.await} icon={this.icon} onClick={this.onClick.bind(this)} variant="dark" tone="quiet" truncate={this.truncate}>{ this.label }</mds-button>
             { this.hasActions &&
               <div class="actions-container">
                 <div class="actions" part="actions">

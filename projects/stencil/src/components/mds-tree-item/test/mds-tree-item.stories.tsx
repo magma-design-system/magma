@@ -90,24 +90,19 @@ const TemplateAsync = ({ ...args }) => {
         setTimeout(() => {
           element.expand()
           element.async = false
-        }, 5000)
+        }, 3000)
       })
     }
   }, [])
 
   return (
     <mds-tree toggle="chevron">
-      <mds-tree-item class="mds-tree-item" {...args} async label="Comune di Rimini" icon="mgg/historic-building">
-        <mds-tree-item {...args} label="Settore Affari Generali" icon="mdi/handshake">
-          <mds-tree-item {...args} label="Servizio Affari Generali" icon="mi/baseline/home-repair-service">
-            <mds-tree-item {...args} label="Segreteria" icon="mi/baseline/desk">
-              <mds-tree-item {...args} label="Andrea Rossi" icon="mi/baseline/person"></mds-tree-item>
-              <mds-tree-item {...args} label="Mirco Romanelli" icon="mi/baseline/person"></mds-tree-item>
-              <mds-tree-item {...args} label="Elone Muschio" icon="mi/baseline/person"></mds-tree-item>
-            </mds-tree-item>
-            <mds-tree-item {...args} label="Demografici" icon="mi/baseline/desk"></mds-tree-item>
-          </mds-tree-item>
-        </mds-tree-item>
+      <mds-tree-item async class="mds-tree-item" {...args} label="Segreteria" icon="mi/baseline/desk">
+        <mds-tree-item {...args} label="Genoveffo Baci" icon="mi/baseline/person"></mds-tree-item>
+        <mds-tree-item {...args} label="Donaldo Trombetta" icon="mi/baseline/person"></mds-tree-item>
+        <mds-tree-item {...args} label="Elone Muschio" icon="mi/baseline/person"></mds-tree-item>
+        <mds-tree-item {...args} label="Andrew Mountflower" icon="mi/baseline/person"></mds-tree-item>
+        <mds-tree-item {...args} label="Super Mauro Bros" icon="mi/baseline/person"></mds-tree-item>
       </mds-tree-item>
     </mds-tree>
   )
@@ -115,4 +110,4 @@ const TemplateAsync = ({ ...args }) => {
 
 export const Default = Template.bind({})
 export const OrganizationalChart = TemplateOrganizationalChart.bind({})
-export const AsyncToggle = TemplateAsync.bind({})
+export const AsyncRequest = TemplateAsync.bind({})
