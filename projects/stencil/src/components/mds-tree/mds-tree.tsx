@@ -1,5 +1,5 @@
 import { Component, Host, h, Element, Prop } from '@stencil/core'
-import { TreeAppearance, TreeIcon } from '@type/tree'
+import { TreeActions, TreeAppearance, TreeIcon } from '@type/tree'
 import { TypographyTruncateType } from '@type/text'
 import { ButtonIconPositionType } from '@type/button'
 
@@ -54,9 +54,9 @@ export class MdsTree {
   @Prop({ reflect: true }) readonly truncate?: TypographyTruncateType = 'word'
 
   /**
-   * Show actions on the element.
+   * Show actions on the every tree item on hover or by default.
    */
-  @Prop({ reflect: true }) readonly actions?: 'visible' | 'auto' = 'auto'
+  @Prop({ reflect: true }) readonly actions?: TreeActions = 'auto'
 
   private updateElements = (): void => {
     this.elements = this.host.shadowRoot?.querySelectorAll('slot')[0]?.assignedNodes() as Node[]
@@ -67,6 +67,15 @@ export class MdsTree {
     this.elements.forEach((element, index) => {
       (element as HTMLElement).style.zIndex = `${this.elements.length - index}`
     })
+  }
+
+  componentDidLoad (): void {
+    const firstLevelElements = this.host.querySelectorAll(':scope > mds-tree-item')
+    if (firstLevelElements) {
+      firstLevelElements.forEach((element: HTMLMdsTreeItemElement) => {
+        element.depth = 0
+      })
+    }
   }
 
   render () {

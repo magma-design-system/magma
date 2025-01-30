@@ -7,14 +7,15 @@
 
 ## Properties
 
-| Property   | Attribute  | Description                                                                                       | Type                                     | Default     |
-| ---------- | ---------- | ------------------------------------------------------------------------------------------------- | ---------------------------------------- | ----------- |
-| `async`    | `async`    | Specifies the tree should be opened asynchronously when after the click, .                        | `boolean \| undefined`                   | `undefined` |
-| `expanded` | `expanded` | Specifies if the tree is expanded.                                                                | `boolean \| undefined`                   | `undefined` |
-| `icon`     | `icon`     | The icon displayed in the button                                                                  | `string \| undefined`                    | `undefined` |
-| `label`    | `label`    | Specifies the selector of the target element, this attribute is used with `querySelector` method. | `string`                                 | `undefined` |
-| `toggle`   | `toggle`   | Specifies the icon of the element                                                                 | `"chevron" \| "folder" \| undefined`     | `undefined` |
-| `truncate` | `truncate` | Truncate the text of the element on one single line.                                              | `"all" \| "none" \| "word" \| undefined` | `'word'`    |
+| Property   | Attribute  | Description                                                              | Type                                     | Default     |
+| ---------- | ---------- | ------------------------------------------------------------------------ | ---------------------------------------- | ----------- |
+| `async`    | `async`    | Specifies the tree should be opened asynchronously when after the click. | `boolean \| undefined`                   | `undefined` |
+| `depth`    | `depth`    |                                                                          | `number \| undefined`                    | `undefined` |
+| `expanded` | `expanded` | Specifies if the tree is expanded.                                       | `boolean \| undefined`                   | `undefined` |
+| `icon`     | `icon`     | The icon displayed in the button                                         | `string \| undefined`                    | `undefined` |
+| `label`    | `label`    | Specifies the label of the tree item                                     | `string`                                 | `undefined` |
+| `toggle`   | `toggle`   | Specifies the icon of the element                                        | `"chevron" \| "folder" \| undefined`     | `undefined` |
+| `truncate` | `truncate` | Truncate the text of the element on one single line.                     | `"all" \| "none" \| "word" \| undefined` | `'word'`    |
 
 
 ## Methods

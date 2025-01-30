@@ -26,11 +26,13 @@
   transition-timing-function: var(--ease);
 }
 
+:host-context([actions="visible"]) .actions-container,
 .header:focus-within .actions,
 .header:hover .actions {
   pointer-events: auto;
 }
 
+:host-context([actions="visible"]) .actions-container,
 .header:focus-within .actions-container,
 .header:hover .actions-container {
   animation: toggleOverflow var(--duration) forwards;

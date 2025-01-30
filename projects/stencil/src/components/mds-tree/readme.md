@@ -14,7 +14,7 @@ Rendere custom le icone degli elementi selezionabili
 
 | Property         | Attribute         | Description                                                                                       | Type                                     | Default     |
 | ---------------- | ----------------- | ------------------------------------------------------------------------------------------------- | ---------------------------------------- | ----------- |
-| `actions`        | `actions`         | Show actions on the element.                                                                      | `"auto" \| "visible" \| undefined`       | `'auto'`    |
+| `actions`        | `actions`         | Show actions on the every tree item on hover or by default.                                       | `"auto" \| "visible" \| undefined`       | `'auto'`    |
 | `appearance`     | `appearance`      | Specifies if the branches depth decorations are visible.                                          | `"depth" \| "none"`                      | `'depth'`   |
 | `async`          | `async`           | Specifies the tree should be opened asynchronously when after the click, .                        | `boolean \| undefined`                   | `undefined` |
 | `expanded`       | `expanded`        | Specifies if the tree is expanded.                                                                | `boolean \| undefined`                   | `undefined` |

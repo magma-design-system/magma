@@ -30,7 +30,7 @@
 
 }
 
-:host:host-context([toggle="chevron"]) .toggle-icon {
+:host-context([toggle="chevron"]) .toggle-icon {
 
   --mds-tree-item-icon-background-color: var(--mds-tree-item-toggle-icon-chevron-default-background);
   --mds-tree-item-icon-color: var(--mds-tree-item-toggle-icon-chevron-default-color);
@@ -42,20 +42,37 @@
   --mds-tree-item-icon-color: var(--mds-tree-item-toggle-icon-chevron-expanded-color);
 }
 
-:host:host-context([toggle="folder"]) .toggle-icon {
+:host-context([toggle="folder"]) .toggle-icon mds-button {
+
+  --size: auto;
+
+  border-radius: theme('borderRadius.DEFAULT');
+  box-shadow: 0 theme('spacing.25') 0 0 var(--mds-tree-item-toggle-border-color);
+  padding: theme('spacing.25') theme('spacing.50');
+}
+
+:host-context([toggle="folder"]) .toggle-icon {
 
   --mds-tree-item-icon-background-color: var(--mds-tree-item-toggle-icon-folder-default-background);
   --mds-tree-item-icon-color: var(--mds-tree-item-toggle-icon-folder-default-color);
-  --size: auto;
-
-  border-radius: theme('borderRadius.md');
-  padding: theme('spacing.25') theme('spacing.50');
 }
 
 :host([expanded]):host-context(mds-tree[toggle="folder"]) .toggle-icon {
 
   --mds-tree-item-icon-background-color: var(--mds-tree-item-toggle-icon-folder-expanded-background);
   --mds-tree-item-icon-color: var(--mds-tree-item-toggle-icon-folder-expanded-color);
+}
+
+:host-context(mds-tree[toggle-position="right"]) .toggle-icon {
+
+  --mds-tree-item-icon-background-color: var(--mds-tree-item-toggle-icon-position-right-default-background);
+  --mds-tree-item-icon-color: var(--mds-tree-item-toggle-icon-position-right-default-color);
+}
+
+:host([expanded]):host-context(mds-tree[toggle-position="right"]) .toggle-icon {
+
+  --mds-tree-item-icon-background-color: var(--mds-tree-item-toggle-icon-position-right-expanded-background);
+  --mds-tree-item-icon-color: var(--mds-tree-item-toggle-icon-position-right-expanded-color);
 }
 
 :host([expanded]):host-context(mds-tree[toggle-position="left"][toggle="chevron"]) .toggle-icon {

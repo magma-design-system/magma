@@ -1,17 +1,10 @@
 import { h } from '@stencil/core'
-import { treeIconDictionary, treeAppearanceDictionary } from '@component/mds-tree-item/meta/dictionary'
-import { truncateDictionary } from '@dictionary/text'
+import { treeIconDictionary } from '@dictionary/tree'
 import { iconsDictionary } from '@dictionary/icon'
 
 export default {
   title: 'UI / Tree / Tree Item',
   argTypes: {
-    appearance: {
-      type: { name: 'string' },
-      description: 'Specifies the horizontal position of the icon displayed in the component',
-      options: treeAppearanceDictionary,
-      control: { type: 'select' },
-    },
     expanded: {
       type: { name: 'boolean' },
       description: 'Specifies if the tree is expanded',
@@ -24,18 +17,13 @@ export default {
     },
     label: {
       type: { name: 'string' },
-      description: 'Specifies where the component should be placed relative to the caller',
+      description: 'Specifies the label of the tree item',
     },
     toggle: {
       type: { name: 'string' },
       description: 'Specifies the horizontal position of the toggle icon displayed in the component',
       options: treeIconDictionary,
       control: { type: 'select' },
-    },
-    truncate: {
-      control: { type: 'select' },
-      description: 'Specifies if the text shoud be truncated or should behave as a normal text',
-      options: truncateDictionary,
     },
   },
 }

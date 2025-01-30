@@ -65,7 +65,7 @@ import { MdsTableRowSelection } from "./components/mds-table/meta/type";
 import { SortDirectionType } from "./components/mds-table-header-cell/meta/types";
 import { TextAnimationType } from "./components/mds-text/meta/types";
 import { ToastPosition } from "./components/mds-toast/meta/types";
-import { TreeAppearance, TreeIcon } from "./type/tree";
+import { TreeActions, TreeAppearance, TreeIcon } from "./type/tree";
 import { UsageType } from "./components/mds-usage/meta/types";
 import { NoiseType, PreloadType } from "./components/mds-video-wall/meta/types";
 export { MdsAccordionEventDetail } from "./components/mds-accordion/meta/event-detail";
@@ -128,7 +128,7 @@ export { MdsTableRowSelection } from "./components/mds-table/meta/type";
 export { SortDirectionType } from "./components/mds-table-header-cell/meta/types";
 export { TextAnimationType } from "./components/mds-text/meta/types";
 export { ToastPosition } from "./components/mds-toast/meta/types";
-export { TreeAppearance, TreeIcon } from "./type/tree";
+export { TreeActions, TreeAppearance, TreeIcon } from "./type/tree";
 export { UsageType } from "./components/mds-usage/meta/types";
 export { NoiseType, PreloadType } from "./components/mds-video-wall/meta/types";
 export namespace Components {
@@ -1712,9 +1712,9 @@ export namespace Components {
      */
     interface MdsTree {
         /**
-          * Show actions on the element.
+          * Show actions on the every tree item on hover or by default.
          */
-        "actions"?: 'visible' | 'auto';
+        "actions"?: TreeActions;
         /**
           * Specifies if the branches depth decorations are visible.
          */
@@ -1746,9 +1746,10 @@ export namespace Components {
     }
     interface MdsTreeItem {
         /**
-          * Specifies the tree should be opened asynchronously when after the click, .
+          * Specifies the tree should be opened asynchronously when after the click.
          */
         "async"?: boolean;
+        "depth"?: number;
         /**
           * Specifies if the tree is expanded.
          */
@@ -1758,7 +1759,7 @@ export namespace Components {
          */
         "icon"?: string;
         /**
-          * Specifies the selector of the target element, this attribute is used with `querySelector` method.
+          * Specifies the label of the tree item
          */
         "label": string;
         "open": () => Promise<void>;
@@ -4914,9 +4915,9 @@ declare namespace LocalJSX {
      */
     interface MdsTree {
         /**
-          * Show actions on the element.
+          * Show actions on the every tree item on hover or by default.
          */
-        "actions"?: 'visible' | 'auto';
+        "actions"?: TreeActions;
         /**
           * Specifies if the branches depth decorations are visible.
          */
@@ -4948,9 +4949,10 @@ declare namespace LocalJSX {
     }
     interface MdsTreeItem {
         /**
-          * Specifies the tree should be opened asynchronously when after the click, .
+          * Specifies the tree should be opened asynchronously when after the click.
          */
         "async"?: boolean;
+        "depth"?: number;
         /**
           * Specifies if the tree is expanded.
          */
@@ -4960,7 +4962,7 @@ declare namespace LocalJSX {
          */
         "icon"?: string;
         /**
-          * Specifies the selector of the target element, this attribute is used with `querySelector` method.
+          * Specifies the label of the tree item
          */
         "label"?: string;
         /**

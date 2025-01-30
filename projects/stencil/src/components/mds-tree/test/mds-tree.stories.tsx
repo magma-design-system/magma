@@ -1,11 +1,17 @@
 import { h } from '@stencil/core'
 import { buttonIconPositionDictionary } from '@dictionary/button'
-import { treeIconDictionary, treeAppearanceDictionary } from '@component/mds-tree-item/meta/dictionary'
+import { treeIconDictionary, treeAppearanceDictionary, treeActionsDictionary } from '@dictionary/tree'
 import { truncateDictionary } from '@dictionary/text'
 
 export default {
   title: 'UI / Tree',
   argTypes: {
+    actions: {
+      type: { name: 'string' },
+      description: 'Show actions on the every tree item on hover or by default',
+      options: treeActionsDictionary,
+      control: { type: 'select' },
+    },
     appearance: {
       type: { name: 'string' },
       description: 'Specifies the horizontal position of the icon displayed in the component',
@@ -15,10 +21,6 @@ export default {
     expanded: {
       type: { name: 'boolean' },
       description: 'Specifies if the tree is expanded',
-    },
-    label: {
-      type: { name: 'string' },
-      description: 'Specifies where the component should be placed relative to the caller',
     },
     'toggle-position': {
       type: { name: 'string' },

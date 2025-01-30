@@ -6,7 +6,6 @@ import clsx from 'clsx'
 import miBaselineChevronRight from '@icon/mi/baseline/chevron-right.svg'
 import mdiFolderOpen from '@icon/mdi/folder-open.svg'
 import miBaselineFolderClosed from '@icon/mi/baseline/folder.svg'
-// import { ButtonIconPositionType } from '@type/button'
 import { Component, Host, h, Prop, Element, State, Method, Watch } from '@stencil/core'
 import { Locale } from '@common/locale'
 import { TreeIcon } from '@type/tree'
@@ -21,7 +20,6 @@ import { TypographyTruncateType } from '@type/text'
 export class MdsTreeItem {
 
   private hasActions: boolean
-  // private togglePosition?: ButtonIconPositionType = 'left'
   private childrenElement: HTMLElement
   @State() hasChildren: boolean = false
   @State() currentToggleIcon: string
@@ -40,19 +38,24 @@ export class MdsTreeItem {
   }
 
   /**
-   * Specifies the tree should be opened asynchronously when after the click, .
+   * Specifies the tree should be opened asynchronously when after the click.
    */
   @Prop({ reflect: true }) readonly async?: boolean
 
+  //
+  // Specifies the tree branch depth, it's internal and it's used by css to remove fitst level elements branch lines.
+  //
+  @Prop({ reflect: true }) readonly depth?: number
+
   /**
-   * Specifies the selector of the target element, this attribute is used with `querySelector` method.
+   * Specifies the label of the tree item
    */
   @Prop() readonly label: string
 
   /**
    * Specifies the icon of the element
    */
-  @Prop({ mutable: true, reflect: true }) toggle?: TreeIcon // = 'chevron'
+  @Prop({ mutable: true, reflect: true }) toggle?: TreeIcon
 
   /**
    * Specifies if the tree is expanded.
@@ -68,11 +71,6 @@ export class MdsTreeItem {
    * The icon displayed in the button
    */
   @Prop() readonly icon?: string
-
-  // /**
-  //  * Show actions on the element.
-  //  */
-  // @Prop({ reflect: true }) readonly actions?: 'visible' | 'auto' = 'auto'
 
   @Watch('toggle')
   handleIconChange (): void {
@@ -93,7 +91,6 @@ export class MdsTreeItem {
 
   private updateAttrubtes = (): void => {
     this.toggle = this.getParentAttribute(this.host, 'mds-tree', 'toggle', 'chevron') as TreeIcon
-    // this.togglePosition = this.getParentAttribute(this.host, 'mds-tree', 'toggle-position', 'left') as ButtonIconPositionType
     this.truncate = this.getParentAttribute(this.host, 'mds-tree', 'truncate', 'all') as TypographyTruncateType
   }
 
@@ -122,6 +119,7 @@ export class MdsTreeItem {
 
   private idle = (): void => {
     this.await = true
+    // console.log('onMdsTreeAwait')
     // evento onMdsTreeAwait
   }
 

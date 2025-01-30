@@ -8,6 +8,7 @@
   flex-shrink: 0;
   height: var(--mds-tree-item-toggle-size);
   justify-content: center;
+  pointer-events: none;
   position: relative;
   width: var(--mds-tree-item-toggle-size);
   z-index: 0;
@@ -16,7 +17,7 @@
 .tree-node::before {
 
   --pos-y: calc(calc(var(--mds-tree-item-toggle-size) / 2 + var(--mds-tree-item-toggle-border-radius)) * -1);
-  --tree-height: calc(var(--mds-tree-item-toggle-size) + var(--mds-tree-item-toggle-border-radius) + var(--mds-tree-item-toggle-border-size));
+  --tree-height: calc(var(--mds-tree-item-toggle-size) + var(--mds-tree-item-toggle-border-radius) + var(--mds-tree-item-toggle-border-size) / 2);
   --tree-width: calc(var(--mds-tree-item-toggle-size) / 2);
 
   border-color: var(--mds-tree-item-toggle-border-color);
@@ -90,12 +91,10 @@
   top: calc(var(--mds-tree-item-toggle-size) * -1);
 }
 
-/* IM HERE */
+/* remove first level elements */
 
-:host-context(mds-tree):not(:host-context(mds-tree-item)) .tree-node::before {
-  border-color: purple;
-}
-
-:host(:first-of-type) .children--has-children::before {
-  border-color: red;
+:host([depth="0"]) .children--has-children::before,
+:host([depth="0"]) .header--has-children .tree-node::after,
+:host([depth="0"]) .tree-node::before {
+  display: none;
 }

@@ -59,20 +59,6 @@ Type: `Promise<void>`
 | `"default"` | Put `mds-table-header`, `mds-table-body`, `mds-table-footer` element/s. |
 
 
-## CSS Custom Properties
-
-| Name                         | Description                                                                                             |
-| ---------------------------- | ------------------------------------------------------------------------------------------------------- |
-| `--mds-table-actions-gap`    | The gap between slotted actions on `mds-table-row` element                                              |
-| `--mds-table-background`     | The background-color of the table                                                                       |
-| `--mds-table-background-alt` | The background-color of the table cell not hovered, visible when attribute `interactive` is set tu true |
-| `--mds-table-border-color`   | The border-color of the table                                                                           |
-| `--mds-table-border-width`   | The border-width of the table, visible when attribute `interactive` is set tu true                      |
-| `--mds-table-cell-padding`   | The padding of the table cell                                                                           |
-| `--mds-table-color`          | The text color of the table                                                                             |
-| `--mds-table-color-alt`      | The text color of the table                                                                             |
-
-
 ----------------------------------------------
 
 Built with love @ [Gruppo Maggioli](https://www.maggioli.com) from [R&D Department](https://www.maggioli.com/it-it/chi-siamo/ricerca-sviluppo)

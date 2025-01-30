@@ -2,41 +2,40 @@
 
   --mds-tree-actions-border-radius: theme('borderRadius.lg');
   --mds-tree-actions-gap: theme('spacing.50');
+  --mds-tree-icon-default-color: theme('colors.variant-primary-04');
+  --mds-tree-icon-hover-color: var(--mds-tree-icon-default-color);
   --mds-tree-label-background-default: transparent;
   --mds-tree-label-background-hover: theme('colors.tone-neutral');
   --mds-tree-line-clamp: 2;
+  --mds-tree-toggle-border-color: theme('colors.tone-neutral-07');
+  --mds-tree-toggle-border-rounded: true;
+  --mds-tree-toggle-border-size: theme('size.50');
   --mds-tree-toggle-dot-default-color: theme('colors.tone-neutral-07');
   --mds-tree-toggle-dot-expanded-color: theme('colors.tone-neutral-06');
-  --mds-tree-toggle-border-color: theme('colors.tone-neutral-07');
-  --mds-tree-toggle-border-radius: theme('borderRadius.lg'); /* to remove radius, use 0px instead 0 or calc will not work properly
-  /* --mds-tree-toggle-border-radius: 0; /* to remove radius, use 0px instead 0 or calc will not work properly */
-  --mds-tree-toggle-border-size: theme('size.50');
   --mds-tree-toggle-gap: theme('size.150');
-  --mds-tree-icon-default-color: theme('colors.variant-primary-04');
-  --mds-tree-icon-hover-color: var(--mds-tree-icon-default-color);
+  --mds-tree-toggle-icon-position-right-default-background: transparent;
+  --mds-tree-toggle-icon-position-right-default-color: theme('colors.tone-neutral-06');
+  --mds-tree-toggle-icon-position-right-expanded-background: transparent;
+  --mds-tree-toggle-icon-position-right-expanded-color: theme('colors.tone-neutral-06');
   --mds-tree-toggle-icon-chevron-default-background: theme('colors.variant-primary-04');
   --mds-tree-toggle-icon-chevron-default-color: theme('colors.tone-neutral');
   --mds-tree-toggle-icon-chevron-expanded-background: var(--mds-tree-toggle-icon-chevron-default-background);
   --mds-tree-toggle-icon-chevron-expanded-color: var(--mds-tree-toggle-icon-chevron-default-color);
   --mds-tree-toggle-icon-folder-default-background: theme('colors.tone-neutral-08');
-  --mds-tree-toggle-icon-folder-default-color: theme('colors.variant-primary-04');
+  --mds-tree-toggle-icon-folder-default-color: theme('colors.tone-neutral-04');
   --mds-tree-toggle-icon-folder-expanded-background: var(--mds-tree-toggle-icon-folder-default-background);
   --mds-tree-toggle-icon-folder-expanded-color: var(--mds-tree-toggle-icon-folder-default-color);
-  --mds-tree-toggle-size: theme('size.900'); /* internal */
   --mds-tree-transition-duration: theme('transitionDuration.300');
   --mds-tree-transition-timing-function: theme('transitionTimingFunction.in-out-expo');
+  /* private */ --mds-tree-toggle-border-radius: theme('borderRadius.lg');
+  /* private */ --mds-tree-toggle-size: theme('size.900');
 
   @apply
     duration-200
     ease-out;
 
-  background-color: theme('colors.tone-neutral-10');
   border-radius: theme('size.250');
   display: grid;
   padding: theme('padding.50');
   transition-property: background-color;
-}
-
-:host(:hover) {
-  background-color: theme('colors.tone-neutral-09');
 }

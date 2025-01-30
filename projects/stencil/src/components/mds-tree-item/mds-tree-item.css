@@ -1,11 +1,20 @@
 @tailwind utilities;
 
-@container style(--mds-tree-toggle-border-radius: 0) {
-    :host {
+@container style(--mds-tree-toggle-border-rounded: true) {
+  :host {
 
-      /* stylelint-disable-next-line length-zero-no-unit */
-      --mds-tree-toggle-border-radius: 0px;
-    }
+    /* stylelint-disable-next-line length-zero-no-unit */
+    --mds-tree-toggle-border-radius: theme('borderRadius.lg');
+  }
+
+}
+
+@container style(--mds-tree-toggle-border-rounded: false) {
+  :host {
+
+    /* stylelint-disable-next-line length-zero-no-unit */
+    --mds-tree-toggle-border-radius: 0px;
+  }
 
 }
 
@@ -32,6 +41,10 @@
   --mds-tree-item-toggle-icon-folder-default-color: var(--mds-tree-toggle-icon-folder-default-color);
   --mds-tree-item-toggle-icon-folder-expanded-background: var(--mds-tree-item-toggle-icon-folder-default-background);
   --mds-tree-item-toggle-icon-folder-expanded-color: var(--mds-tree-item-toggle-icon-folder-default-color);
+  --mds-tree-item-toggle-icon-position-right-default-background: var(--mds-tree-toggle-icon-position-right-default-background);
+  --mds-tree-item-toggle-icon-position-right-default-color: var(--mds-tree-toggle-icon-position-right-default-color);
+  --mds-tree-item-toggle-icon-position-right-expanded-background: var(--mds-tree-toggle-icon-position-right-expanded-background);
+  --mds-tree-item-toggle-icon-position-right-expanded-color: var(--mds-tree-toggle-icon-position-right-expanded-color);
   --mds-tree-item-toggle-size: var(--mds-tree-toggle-size);
   --mds-tree-item-transition-duration: var(--mds-tree-transition-duration);
   --mds-tree-item-transition-timing-function: var(--mds-tree-transition-timing-function);
@@ -39,6 +52,7 @@
   /* internal */
   --mds-tree-item-icon-background-color: var(--mds-tree-item-toggle-icon-chevron-default-background);
   --mds-tree-item-icon-color: var(--mds-tree-item-toggle-icon-chevron-default-color);
+  --header-gap: theme('spacing.100');
 
   display: grid;
   transition-duration: var(--mds-tree-item-transition-duration);
@@ -47,7 +61,6 @@
 
 .header {
 
-  --header-gap: theme('spacing.100');
   --offset: calc(var(--mds-tree-item-toggle-size) + var(--header-gap));
 
   align-items: flex-start;

@@ -28,15 +28,6 @@ This is a web-component from Maggioli Design System [Magma](https://magma.maggio
 | `"default"` | Write browser support missing message here.                                                      |
 
 
-## CSS Custom Properties
-
-| Name                                      | Description                                        |
-| ----------------------------------------- | -------------------------------------------------- |
-| `--mds-video-wall-noise-background-color` | Sets the background-color of the noise when active |
-| `--mds-video-wall-noise-background-size`  | Sets the background-color of the noise when active |
-| `--mds-video-wall-video-fit`              | Sets the object-fit of the video stream            |
-
-
 ----------------------------------------------
 
 Built with love @ [Gruppo Maggioli](https://www.maggioli.com) from [R&D Department](https://www.maggioli.com/it-it/chi-siamo/ricerca-sviluppo)
