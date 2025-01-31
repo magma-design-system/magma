@@ -4,7 +4,7 @@
   --ease: theme('transitionTimingFunction.in-out-expo');
 
   border-radius: var(--mds-tree-item-actions-border-radius);
-  display: flex;
+  display: none;
   interpolate-size: allow-keywords;
   min-width: 0;
   overflow: hidden;
@@ -13,6 +13,10 @@
   transition-property: min-width, width, overflow;
   transition-timing-function: var(--ease);
   width: 0;
+}
+
+.actions-container--has-actions {
+  display: flex;
 }
 
 .actions {

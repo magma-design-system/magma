@@ -1744,7 +1744,7 @@ export namespace Components {
         /**
           * Truncate the text of the element on one single line.
          */
-        "truncate"?: TypographyTruncateType;
+        "truncate": TypographyTruncateType;
     }
     interface MdsTreeItem {
         /**

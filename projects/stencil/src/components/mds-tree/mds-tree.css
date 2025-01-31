@@ -13,6 +13,8 @@
   --mds-tree-toggle-dot-default-color: theme('colors.tone-neutral-07');
   --mds-tree-toggle-dot-expanded-color: theme('colors.tone-neutral-06');
   --mds-tree-toggle-gap: theme('size.150');
+  --mds-tree-toggle-icon-async-background: theme('colors.tone-neutral-09');
+  --mds-tree-toggle-icon-async-color: theme('colors.variant-primary-03');
   --mds-tree-toggle-icon-position-right-default-background: transparent;
   --mds-tree-toggle-icon-position-right-default-color: theme('colors.tone-neutral-06');
   --mds-tree-toggle-icon-position-right-expanded-background: transparent;
@@ -22,7 +24,7 @@
   --mds-tree-toggle-icon-chevron-expanded-background: var(--mds-tree-toggle-icon-chevron-default-background);
   --mds-tree-toggle-icon-chevron-expanded-color: var(--mds-tree-toggle-icon-chevron-default-color);
   --mds-tree-toggle-icon-folder-default-background: theme('colors.tone-neutral-08');
-  --mds-tree-toggle-icon-folder-default-color: theme('colors.tone-neutral-04');
+  --mds-tree-toggle-icon-folder-default-color: theme('colors.variant-primary-04');
   --mds-tree-toggle-icon-folder-expanded-background: var(--mds-tree-toggle-icon-folder-default-background);
   --mds-tree-toggle-icon-folder-expanded-color: var(--mds-tree-toggle-icon-folder-default-color);
   --mds-tree-transition-duration: theme('transitionDuration.300');

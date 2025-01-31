@@ -72,7 +72,58 @@ const Template = ({ ...args }) =>
     </mds-tree-item>
   </mds-tree>
 
+const TemplateFolder = ({ ...args }) =>
+  <mds-tree {...args}>
+    <mds-tree-item label="First element of the tree">
+      <mds-icon slot="action" name="mi/baseline/attach-file" title="Schedule"></mds-icon>
+      <mds-icon slot="action" name="mi/baseline/more-vert" title="Options"></mds-icon>
+      <mds-tree-item label="First children element">
+        <mds-icon slot="action" name="mi/baseline/attach-file" title="Schedule"></mds-icon>
+        <mds-icon slot="action" name="mi/baseline/more-vert" title="Options"></mds-icon>
+      </mds-tree-item>
+      <mds-tree-item label="Second element">
+        <mds-icon slot="action" name="mi/baseline/attach-file" title="Schedule"></mds-icon>
+        <mds-icon slot="action" name="mi/baseline/more-vert" title="Options"></mds-icon>
+      </mds-tree-item>
+      <mds-tree-item label="This is the third element children">
+        <mds-icon slot="action" name="mi/baseline/attach-file" title="Schedule"></mds-icon>
+        <mds-icon slot="action" name="mi/baseline/more-vert" title="Options"></mds-icon>
+      </mds-tree-item>
+      <mds-tree-item label="The fourth and final children">
+        <mds-icon slot="action" name="mi/baseline/attach-file" title="Schedule"></mds-icon>
+        <mds-icon slot="action" name="mi/baseline/more-vert" title="Options"></mds-icon>
+        <mds-tree-item label="Hello beautiful world">
+          <mds-icon slot="action" name="mi/baseline/attach-file" title="Schedule"></mds-icon>
+          <mds-icon slot="action" name="mi/baseline/more-vert" title="Options"></mds-icon>
+        </mds-tree-item>
+        <mds-tree-item label="Surpraaaaaise!">
+          <mds-icon slot="action" name="mi/baseline/attach-file" title="Schedule"></mds-icon>
+          <mds-icon slot="action" name="mi/baseline/more-vert" title="Options"></mds-icon>
+        </mds-tree-item>
+      </mds-tree-item>
+      <mds-tree-item label="Surprise! There is a fifth element">
+        <mds-icon slot="action" name="mi/baseline/attach-file" title="Schedule"></mds-icon>
+        <mds-icon slot="action" name="mi/baseline/more-vert" title="Options"></mds-icon>
+      </mds-tree-item>
+      <mds-tree-item label="And probably a sixth">
+        <mds-icon slot="action" name="mi/baseline/attach-file" title="Schedule"></mds-icon>
+        <mds-icon slot="action" name="mi/baseline/more-vert" title="Options"></mds-icon>
+      </mds-tree-item>
+    </mds-tree-item>
+  </mds-tree>
+
 export const Default = Template.bind({})
-Default.args = {
-  label: '1.2.0 - Denominazione, territorio, Circoscrizione di decentralizzazione, Toponomastica',
+
+export const ComplexMenu = Template.bind({})
+ComplexMenu.args = {
+  toggle: 'chevron',
+  'toggle-position': 'right',
+  appearance: 'none',
+  style: { '--mds-tree-label-background-hover': 'rgb(var(--tone-neutral-09))' },
+}
+
+export const FolderMenu = TemplateFolder.bind({})
+ComplexMenu.args = {
+  actions: 'visible',
+  toggle: 'folder',
 }

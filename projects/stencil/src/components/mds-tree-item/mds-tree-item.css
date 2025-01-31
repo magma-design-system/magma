@@ -30,6 +30,8 @@
   --mds-tree-item-toggle-border-color: var(--mds-tree-toggle-border-color);
   --mds-tree-item-toggle-border-radius: var(--mds-tree-toggle-border-radius);
   --mds-tree-item-toggle-border-size: var(--mds-tree-toggle-border-size);
+  --mds-tree-item-toggle-icon-async-background: var(--mds-tree-toggle-icon-async-background);
+  --mds-tree-item-toggle-icon-async-color: var(--mds-tree-toggle-icon-async-color);
   --mds-tree-item-toggle-dot-default-color: var(--mds-tree-toggle-dot-default-color);
   --mds-tree-item-toggle-dot-expanded-color: var(--mds-tree-toggle-dot-expanded-color);
   --mds-tree-item-toggle-gap: var(--mds-tree-toggle-gap);
@@ -72,7 +74,7 @@
 }
 
 .title {
-  align-items: flex-start;
+  align-items: stretch;
   display: flex;
   flex-grow: 1;
   gap: theme('spacing.200');

@@ -1,4 +1,4 @@
-import { Component, Host, h, Element, Prop } from '@stencil/core'
+import { Component, Host, h, Element, Prop, Watch } from '@stencil/core'
 import { TreeActions, TreeAppearance, TreeIcon } from '@type/tree'
 import { TypographyTruncateType } from '@type/text'
 import { ButtonIconPositionType } from '@type/button'
@@ -17,6 +17,7 @@ export class MdsTree {
 
   @Element() private host: HTMLMdsTreeElement
   private elements:Node[]
+  private childrenElements:NodeListOf<HTMLMdsTreeItemElement>
 
   /**
    * Specifies if the branches depth decorations are visible.
@@ -51,12 +52,46 @@ export class MdsTree {
   /**
    * Truncate the text of the element on one single line.
    */
-  @Prop({ reflect: true }) readonly truncate?: TypographyTruncateType = 'word'
+  @Prop({ reflect: true }) readonly truncate: TypographyTruncateType = 'word'
 
   /**
    * Show actions on the every tree item on hover or by default.
    */
   @Prop({ reflect: true }) readonly actions?: TreeActions = 'auto'
+
+  private updateChildrenExpanded = (newValue: boolean): void => {
+    this.childrenElements.forEach((element: HTMLMdsTreeItemElement) => {
+      if (element.async) return
+      element.expanded = newValue
+    })
+  }
+
+  @Watch('expanded')
+  handleExpandedChange (newValue: boolean): void {
+    this.updateChildrenExpanded(newValue)
+  }
+
+  private updateChildrenToggle = (newValue: TreeIcon): void => {
+    this.childrenElements.forEach((element: HTMLMdsTreeItemElement) => {
+      element.toggle = newValue
+    })
+  }
+
+  @Watch('toggle')
+  handleToggleChange (newValue: TreeIcon): void {
+    this.updateChildrenToggle(newValue)
+  }
+
+  private updateChildrenTruncate = (newValue: TypographyTruncateType): void => {
+    this.childrenElements.forEach((element: HTMLMdsTreeItemElement) => {
+      element.truncate = newValue
+    })
+  }
+
+  @Watch('truncate')
+  handleTruncateChange (newValue: TypographyTruncateType): void {
+    this.updateChildrenTruncate(newValue)
+  }
 
   private updateElements = (): void => {
     this.elements = this.host.shadowRoot?.querySelectorAll('slot')[0]?.assignedNodes() as Node[]
@@ -71,6 +106,9 @@ export class MdsTree {
 
   componentDidLoad (): void {
     const firstLevelElements = this.host.querySelectorAll(':scope > mds-tree-item')
+    this.childrenElements = this.host.querySelectorAll('mds-tree-item') as NodeListOf<HTMLMdsTreeItemElement>
+    this.updateChildrenTruncate(this.truncate)
+    this.updateChildrenToggle(this.toggle)
     if (firstLevelElements) {
       firstLevelElements.forEach((element: HTMLMdsTreeItemElement) => {
         element.depth = 0

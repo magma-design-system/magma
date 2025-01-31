@@ -21,10 +21,10 @@ import { cssDurationToMilliseconds } from '@common/unit'
 })
 export class MdsTreeItem {
 
-  private hasActions: boolean
   private childrenElement: HTMLElement
   private toggleChildrenTimer: NodeJS.Timeout
   private cssToggleChildrenDuration: string
+  @State() hasActions: boolean = false
   @State() hasChildren: boolean = false
   @State() currentToggleIcon: string
   @State() await: boolean
@@ -108,7 +108,7 @@ export class MdsTreeItem {
     return attributeValue ? attributeValue : defaultValue ?? undefined
   }
 
-  private updateAttrubtes = (): void => {
+  private updateChildrenAttrubtes = (): void => {
     this.toggle = this.getParentAttribute(this.host, 'mds-tree', 'toggle', 'chevron') as TreeIcon
     this.truncate = this.getParentAttribute(this.host, 'mds-tree', 'truncate', 'all') as TypographyTruncateType
   }
@@ -158,17 +158,14 @@ export class MdsTreeItem {
     this.updateToggleIcon()
   }
 
-  componentWillLoad (): void {
-    this.hasActions = this.host.querySelector('[slot="action"]') !== null
-  }
-
   componentDidLoad (): void {
     this.updateCssCustomProperty()
     this.updateToggleIcon()
-    this.updateAttrubtes()
+    this.updateChildrenAttrubtes()
     this.language = this.t.lang(this.host)
     this.childrenElement = this.host.shadowRoot?.querySelector('.children') as HTMLElement
     this.childrenElement.addEventListener('transitionend', this.checkChildrenTransitionEnd)
+    this.hasActions = hasSlottedElements(this.host, 'action')
     this.hasChildren = hasSlottedElements(this.host)
   }
 
@@ -188,13 +185,11 @@ export class MdsTreeItem {
           </div>
           <div class="title">
             <mds-button class={clsx('label-action', this.await && 'label-action--await')} disabled={this.await} icon={this.icon} onClick={this.onClick.bind(this)} variant="dark" tone="quiet" truncate={this.truncate}>{ this.label }</mds-button>
-            { this.hasActions &&
-              <div class="actions-container">
-                <div class="actions" part="actions">
-                  <slot name="action"></slot>
-                </div>
+            <div class={clsx('actions-container', this.hasActions && 'actions-container--has-actions')}>
+              <div class="actions" part="actions">
+                <slot name="action"></slot>
               </div>
-            }
+            </div>
           </div>
         </div>
         <div class={clsx('children', this.hasChildren && 'children--has-children', this.expanded && 'children--expanded')}>

@@ -29,7 +29,7 @@
   transform: rotate(270deg);
 }
 
-:host-context(mds-tree[toggle-position="right"]) .header .actions {
+:host-context(mds-tree[toggle-position="right"]:not([actions:"visible"])) .header .actions {
   transform: scale(0);
 }
 

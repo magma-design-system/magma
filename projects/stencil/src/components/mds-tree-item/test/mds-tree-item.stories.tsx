@@ -96,7 +96,7 @@ const TemplateAsync = ({ ...args }) => {
   }, [])
 
   return (
-    <mds-tree toggle="chevron">
+    <mds-tree toggle="chevron" {...args}>
       <mds-tree-item async class="mds-tree-item" {...args} label="Segreteria" icon="mi/baseline/desk">
         <mds-tree-item {...args} label="Genoveffo Baci" icon="mi/baseline/person"></mds-tree-item>
         <mds-tree-item {...args} label="Donaldo Trombetta" icon="mi/baseline/person"></mds-tree-item>

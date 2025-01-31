@@ -51,7 +51,7 @@
   display: inline-flex;
 }
 
-:host(:empty) .tree-node::before {
+.header:not(.header--has-children) .tree-node::before {
   width: calc(var(--mds-tree-item-toggle-size) - var(--header-gap));
 }
 
