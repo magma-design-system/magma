@@ -9,9 +9,10 @@
   overflow: clip;
   padding-left: var(--padding-left);
   position: relative;
-  transition-duration: inherit;
-  transition-property: height;
-  transition-timing-function: inherit;
+  transform: translateY(calc(var(--mds-tree-item-toggle-size) / 2 * -1));
+  transition-duration: var(--mds-tree-item-transition-duration);
+  transition-property: height, transform;
+  transition-timing-function: var(--mds-tree-item-transition-timing-function);
   z-index: 0;
 }
 
@@ -20,6 +21,7 @@
   animation-timing-function: var(--mds-tree-item-transition-timing-function);
   display: flex;
   height: auto;
+  transform: translateY(0);
 }
 
 .children--hidden,

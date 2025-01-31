@@ -27,8 +27,13 @@
   height: var(--size);
   min-height: var(--size);
   min-width: var(--size);
+  overflow: hidden;
   width: var(--size);
+}
 
+.toggle-icon mds-button[await] {
+  background-color: var(--mds-tree-item-toggle-border-color);
+  color: currentcolor;
 }
 
 :host-context([toggle="chevron"]) .toggle-icon {

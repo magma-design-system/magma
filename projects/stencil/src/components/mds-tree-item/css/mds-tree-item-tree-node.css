@@ -78,24 +78,6 @@
   z-index: 1;
 }
 
-.tree-dot::after {
-
-  --pos-y: calc(var(--size) / 2);
-
-  background-color: purple;
-
-  /* border-color: var(--mds-tree-item-toggle-border-color); */
-  box-sizing: border-box;
-  content: "";
-  display: flex;
-  height: calc(var(--size) + var(--mds-tree-item-toggle-border-size));
-  inset: 0 50% 0 0;
-  position: absolute;
-  transform: translate(calc(var(--pos-y) - var(--mds-tree-item-toggle-border-size) / 2), var(--pos-y));
-  width: var(--mds-tree-item-toggle-border-size);
-  z-index: 1;
-}
-
 :host(:not(:last-child)) .children--has-children::before {
 
   /* border-left-color: green; */
@@ -108,6 +90,29 @@
   left: 0;
   position: absolute;
   top: calc(var(--mds-tree-item-toggle-size) * -1);
+}
+
+.tree-dot::after {
+
+  --pos-y: calc(var(--size) / 2);
+
+  background-color: var(--mds-tree-item-toggle-border-color);
+  box-sizing: border-box;
+  content: "";
+  display: inline-flex;
+  height: calc(var(--size) / 2);
+  inset: 0 50% 0 0;
+  position: absolute;
+  transform: translate(calc(var(--pos-y) - var(--mds-tree-item-toggle-border-size) / 2), var(--pos-y));
+  transition-duration: var(--mds-tree-item-transition-duration);
+  transition-property: height;
+  transition-timing-function: var(--mds-tree-item-transition-timing-function);
+  width: var(--mds-tree-item-toggle-border-size);
+  z-index: 1;
+}
+
+:host([expanded]) .tree-dot::after {
+  height: calc(var(--size) + var(--mds-tree-item-toggle-border-size));
 }
 
 /* remove first level elements */
