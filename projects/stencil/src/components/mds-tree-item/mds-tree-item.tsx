@@ -103,16 +103,6 @@ export class MdsTreeItem {
     }, cssDurationToMilliseconds(this.cssToggleChildrenDuration))
   }
 
-  private getParentAttribute = (element: HTMLElement, parent: string, attribute: string, defaultValue?: string): string | undefined => {
-    const attributeValue = element.closest(parent)?.getAttribute(attribute)
-    return attributeValue ? attributeValue : defaultValue ?? undefined
-  }
-
-  private updateChildrenAttrubtes = (): void => {
-    this.toggle = this.getParentAttribute(this.host, 'mds-tree', 'toggle', 'chevron') as TreeIcon
-    this.truncate = this.getParentAttribute(this.host, 'mds-tree', 'truncate', 'all') as TypographyTruncateType
-  }
-
   private checkChildrenTransitionEnd = (): void => {
     if (!this.childrenElement.classList.contains('children--expanded')) {
       this.childrenElement.classList.add('children--hidden')
@@ -161,7 +151,6 @@ export class MdsTreeItem {
   componentDidLoad (): void {
     this.updateCssCustomProperty()
     this.updateToggleIcon()
-    this.updateChildrenAttrubtes()
     this.language = this.t.lang(this.host)
     this.childrenElement = this.host.shadowRoot?.querySelector('.children') as HTMLElement
     this.childrenElement.addEventListener('transitionend', this.checkChildrenTransitionEnd)
