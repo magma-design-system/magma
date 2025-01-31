@@ -123,7 +123,7 @@ ComplexMenu.args = {
 }
 
 export const FolderMenu = TemplateFolder.bind({})
-ComplexMenu.args = {
+FolderMenu.args = {
   actions: 'visible',
   toggle: 'folder',
 }
