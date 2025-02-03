@@ -104,11 +104,12 @@ export class MdsTree {
     })
   }
 
-  componentDidLoad (): void {
-    const firstLevelElements = this.host.querySelectorAll(':scope > mds-tree-item')
-    this.childrenElements = this.host.querySelectorAll('mds-tree-item') as NodeListOf<HTMLMdsTreeItemElement>
+  componentWillLoad (): void {
+    this.childrenElements = this.host.querySelectorAll('mds-tree-item')
     this.updateChildrenTruncate(this.truncate)
     this.updateChildrenToggle(this.toggle)
+    const firstLevelElements = this.host.querySelectorAll(':scope > mds-tree-item')
+
     if (firstLevelElements) {
       firstLevelElements.forEach((element: HTMLMdsTreeItemElement) => {
         element.depth = 0

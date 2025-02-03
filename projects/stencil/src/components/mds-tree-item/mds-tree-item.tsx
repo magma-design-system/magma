@@ -10,7 +10,6 @@ import { MdsTreeItemEventDetail } from './meta/event-detail'
 import { Component, Host, h, Prop, Element, Event, EventEmitter, State, Method, Watch } from '@stencil/core'
 import { Locale } from '@common/locale'
 import { TreeIcon } from '@type/tree'
-import { hasSlottedElements } from '@common/slot'
 import { TypographyTruncateType } from '@type/text'
 import { cssDurationToMilliseconds } from '@common/unit'
 
@@ -28,8 +27,8 @@ export class MdsTreeItem {
   @State() hasChildren: boolean = false
   @State() currentToggleIcon: string
   @State() await: boolean
-  @Element() private host: HTMLMdsTreeItemElement
-  private t:Locale = new Locale({
+  @Element() private readonly host: HTMLMdsTreeItemElement
+  private readonly t:Locale = new Locale({
     el: localeEl,
     en: localeEn,
     es: localeEs,
@@ -59,7 +58,7 @@ export class MdsTreeItem {
   /**
    * Specifies the icon of the element
    */
-  @Prop({ mutable: true, reflect: true }) toggle?: TreeIcon
+  @Prop({ reflect: true }) toggle?: TreeIcon
 
   /**
    * Specifies if the tree is expanded.
@@ -69,7 +68,7 @@ export class MdsTreeItem {
   /**
    * Truncate the text of the element on one single line.
    */
-  @Prop({ mutable: true, reflect: true }) truncate?: TypographyTruncateType = 'word'
+  @Prop({ reflect: true }) truncate?: TypographyTruncateType = 'word'
 
   /**
    * The icon displayed in the button
@@ -148,14 +147,19 @@ export class MdsTreeItem {
     this.updateToggleIcon()
   }
 
+  componentWillLoad (): void {
+    this.language = this.t.lang(this.host)
+
+    this.updateToggleIcon()
+
+    this.hasActions = !!this.host.querySelector('[slot="action"]')
+    this.hasChildren = !!this.host.querySelector('mds-tree-item')
+  }
+
   componentDidLoad (): void {
     this.updateCssCustomProperty()
-    this.updateToggleIcon()
-    this.language = this.t.lang(this.host)
     this.childrenElement = this.host.shadowRoot?.querySelector('.children') as HTMLElement
     this.childrenElement.addEventListener('transitionend', this.checkChildrenTransitionEnd)
-    this.hasActions = hasSlottedElements(this.host, 'action')
-    this.hasChildren = hasSlottedElements(this.host)
   }
 
   disconnectedCallback (): void {
