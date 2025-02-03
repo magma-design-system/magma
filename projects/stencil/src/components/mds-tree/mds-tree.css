@@ -16,9 +16,9 @@
   --mds-tree-toggle-icon-async-background: theme('colors.tone-neutral-09');
   --mds-tree-toggle-icon-async-color: theme('colors.variant-primary-03');
   --mds-tree-toggle-icon-position-right-default-background: transparent;
-  --mds-tree-toggle-icon-position-right-default-color: theme('colors.tone-neutral-06');
+  --mds-tree-toggle-icon-position-right-default-color: theme('colors.tone-neutral-07');
   --mds-tree-toggle-icon-position-right-expanded-background: transparent;
-  --mds-tree-toggle-icon-position-right-expanded-color: theme('colors.tone-neutral-06');
+  --mds-tree-toggle-icon-position-right-expanded-color: theme('colors.tone-neutral-07');
   --mds-tree-toggle-icon-chevron-default-background: theme('colors.variant-primary-04');
   --mds-tree-toggle-icon-chevron-default-color: theme('colors.tone-neutral');
   --mds-tree-toggle-icon-chevron-expanded-background: var(--mds-tree-toggle-icon-chevron-default-background);

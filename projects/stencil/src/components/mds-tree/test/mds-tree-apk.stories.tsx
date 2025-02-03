@@ -6,15 +6,18 @@ export default {
   title: 'UI / Tree / Usecase hyperSIC',
 }
 
+const durations = [500, 750, 1000, 1250, 1500, 1750, 2000]
+const randomDuration = () => durations[Math.floor(Math.random() * durations.length)]
+
 const TemplateNavigationMenu = () => {
   const [isExpanded, setExpand] = useState(false)
   return <div class="grid gap-400 bg-tone-slate-10 rounded-lg p-600">
     <div class="flex items-center justify-between gap-400">
       <mds-text typography="h5">Menu</mds-text>
-      <mds-button onClick={() => {setExpand(!isExpanded)}} icon={ isExpanded ? 'mi/baseline/unfold-less' : 'mi/baseline/unfold-more' } iconPosition="right">{ isExpanded ? 'Close' : 'Open' }</mds-button>
+      <mds-button onClick={() => {setExpand(!isExpanded)}} icon={ isExpanded ? 'mi/baseline/unfold-less' : 'mi/baseline/unfold-more' } title={ isExpanded ? 'Close' : 'Open' } variant="light"></mds-button>
     </div>
-    <mds-tree class="bg-tone-neutral" toggle="chevron" toggle-position="right" actions="auto" appearance="none" expanded={isExpanded}>
-      <mds-tree-item label="Protocollazione documenti" style={{ '--mds-tree-label-background-hover': 'rgb(var(--tone-neutral-09))' }}>
+    <mds-tree class="bg-tone-neutral shadow" toggle="chevron" toggle-position="right" actions="auto" appearance="none" expanded={isExpanded}>
+      <mds-tree-item label="Protocollazione documenti" style={{ '--mds-tree-label-background-hover': 'rgb(var(--variant-primary-10))' }}>
         <mds-tree-item label="Attività protocollo generale">
           <mds-tree-item label="Nuovo protocollo in arrivo" actions="visible">
             <mds-button slot="action" icon="mi/baseline/favorite" class="fill-tone-neutral-04" variant="dark" tone="quiet"></mds-button>
@@ -63,8 +66,8 @@ const TemplateOrganizationalChart = () => {
         if (!element.async) return
         setTimeout(() => {
           element.expand()
-          element.async = false
-        }, 1500)
+          // element.async = false
+        }, randomDuration())
       })
     }
   }, [])
@@ -122,8 +125,8 @@ const TemplateClassification = () => {
         if (!element.async) return
         setTimeout(() => {
           element.expand()
-          element.async = false
-        }, 1500)
+          // element.async = false
+        }, randomDuration())
       })
     }
   }, [])
