@@ -29,15 +29,6 @@
   transform: rotate(270deg);
 }
 
-:host-context(mds-tree[toggle-position="right"]:not([actions:"visible"])) .header .actions {
-  transform: scale(0);
-}
-
-:host-context(mds-tree[toggle-position="right"]) .header:focus-within .actions,
-:host-context(mds-tree[toggle-position="right"]) .header:hover .actions {
-  transform: scale(1);
-}
-
 :host([toggle="chevron"]):host-context(mds-tree[toggle-position="right"]) .toggle-icon--dot,
 :host([toggle="folder"]):host-context(mds-tree[toggle-position="right"]) .toggle-icon--dot {
   transform: rotate(0) scale(0.825);

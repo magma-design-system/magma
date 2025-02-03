@@ -1,11 +1,8 @@
 import { h } from '@stencil/core'
 import { treeIconDictionary } from '@dictionary/tree'
 import { iconsDictionary } from '@dictionary/icon'
-// import { useEffect } from 'react'
 import { MdsTreeItemEventDetail } from 'src/components'
 import { useEffect } from 'react'
-// import { useRef } from 'react'
-// import { MdsTreeItemEventDetail } from '../meta/event-detail'
 
 export default {
   title: 'UI / Tree / Tree Item',
@@ -63,22 +60,6 @@ const Template = ({ ...args }) =>
     </mds-tree-item>
   </mds-tree>
 
-const TemplateOrganizationalChart = ({ ...args }) =>
-  <mds-tree toggle="chevron" toggle-position="right">
-    <mds-tree-item {...args} label="Comune di Rimini" icon="mgg/historic-building">
-      <mds-tree-item {...args} label="Settore Affari Generali" icon="mdi/handshake">
-        <mds-tree-item {...args} label="Servizio Affari Generali" icon="mi/baseline/home-repair-service">
-          <mds-tree-item {...args} label="Segreteria" icon="mi/baseline/desk">
-            <mds-tree-item {...args} label="Andrea Rossi" icon="mi/baseline/person"></mds-tree-item>
-            <mds-tree-item {...args} label="Mirco Romanelli" icon="mi/baseline/person"></mds-tree-item>
-            <mds-tree-item {...args} label="Elone Muschio" icon="mi/baseline/person"></mds-tree-item>
-          </mds-tree-item>
-          <mds-tree-item {...args} label="Demografici" icon="mi/baseline/desk"></mds-tree-item>
-        </mds-tree-item>
-      </mds-tree-item>
-    </mds-tree-item>
-  </mds-tree>
-
 const TemplateAsync = ({ ...args }) => {
   // Simulate async request
   useEffect(() => {
@@ -109,5 +90,5 @@ const TemplateAsync = ({ ...args }) => {
 }
 
 export const Default = Template.bind({})
-export const OrganizationalChart = TemplateOrganizationalChart.bind({})
 export const AsyncRequest = TemplateAsync.bind({})
+

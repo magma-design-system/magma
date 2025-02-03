@@ -1748,6 +1748,10 @@ export namespace Components {
     }
     interface MdsTreeItem {
         /**
+          * Show actions on the tree item on hover or by default.
+         */
+        "actions"?: TreeActions;
+        /**
           * Specifies the tree should be opened asynchronously when after the click.
          */
         "async"?: boolean;
@@ -4966,6 +4970,10 @@ declare namespace LocalJSX {
         "truncate"?: TypographyTruncateType;
     }
     interface MdsTreeItem {
+        /**
+          * Show actions on the tree item on hover or by default.
+         */
+        "actions"?: TreeActions;
         /**
           * Specifies the tree should be opened asynchronously when after the click.
          */

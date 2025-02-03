@@ -7,9 +7,9 @@ import miBaselineChevronRight from '@icon/mi/baseline/chevron-right.svg'
 import mdiFolderOpen from '@icon/mdi/folder-open.svg'
 import miBaselineFolderClosed from '@icon/mi/baseline/folder.svg'
 import { MdsTreeItemEventDetail } from './meta/event-detail'
+import { TreeActions, TreeIcon } from '@type/tree'
 import { Component, Host, h, Prop, Element, Event, EventEmitter, State, Method, Watch } from '@stencil/core'
 import { Locale } from '@common/locale'
-import { TreeIcon } from '@type/tree'
 import { TypographyTruncateType } from '@type/text'
 import { cssDurationToMilliseconds } from '@common/unit'
 
@@ -39,6 +39,11 @@ export class MdsTreeItem {
   async updateLang (): Promise<void> {
     this.language = this.t.lang(this.host)
   }
+
+  /**
+   * Show actions on the tree item on hover or by default.
+   */
+  @Prop({ reflect: true }) readonly actions?: TreeActions
 
   /**
    * Specifies the tree should be opened asynchronously when after the click.
@@ -178,8 +183,8 @@ export class MdsTreeItem {
           </div>
           <div class="title">
             <mds-button class={clsx('label-action', this.await && 'label-action--await')} disabled={this.await} icon={this.icon} onClick={this.onClick.bind(this)} variant="dark" tone="quiet" truncate={this.truncate}>{ this.label }</mds-button>
-            <div class={clsx('actions-container', this.hasActions && 'actions-container--has-actions')}>
-              <div class="actions" part="actions">
+            <div class={clsx('actions-container', this.hasActions && 'actions-container--has-actions')} part="actions-container">
+              <div class="actions" part="actions-list">
                 <slot name="action"></slot>
               </div>
             </div>
