@@ -21,6 +21,10 @@ export class MdsCalendar {
   @State() endDateElement: HTMLElement | null = null
   @State() previewElement: HTMLElement | null = null
   @State() isFirstClick: boolean = true
+  @State() currentView: 'calendar' | 'years' | 'months' = 'calendar'
+  @State() selectedYear: number = this.currentDate.year
+
+
 
   @Prop({ reflect: true, mutable: true }) startDate: string
   @Prop({ reflect: true, mutable: true }) endDate: string
@@ -314,117 +318,87 @@ export class MdsCalendar {
             this.changeMonth(-1)
           }}></mds-button>
           <div class="select-month-or-year">
-            <mds-button class="action-month" variant="dark" tone="quiet">{this.currentMonth}</mds-button>
-            <mds-button class="action-year" variant="dark" tone="quiet">{this.currentYear}</mds-button>
+            <mds-button class="action-month" variant="dark" tone="quiet" onClick={() => {
+              this.currentView = 'months'
+            }}>{this.currentMonth}</mds-button>
+
+            <mds-button class="action-year" variant="dark" tone="quiet" onClick={() => {
+              this.currentView = 'years'
+            }}>{this.currentYear}</mds-button>
+
           </div>
           <mds-button class="action-forward" icon={miBaselineForwardIos} variant="dark" tone="quiet" onClick={() => {
             this.changeMonth(1)
           }}></mds-button>
         </nav>
-        <section class="month-view">
-          <header class="month-view__days-names">
-            {/*   <mds-button class="week-day-name" variant="dark" tone="quiet">Lun</mds-button>
-            <mds-button class="week-day-name" variant="dark" tone="quiet">Mar</mds-button>
-            <mds-button class="week-day-name" variant="dark" tone="quiet">Mer</mds-button>
-            <mds-button class="week-day-name" variant="dark" tone="quiet">Gio</mds-button>
-            <mds-button class="week-day-name" variant="dark" tone="quiet">Ven</mds-button>
-            <mds-button class="week-day-name" variant="dark" tone="quiet">Sab</mds-button>
-            <mds-button class="week-day-name" variant="dark" tone="quiet">Dom</mds-button> */}
-
-
-            {this.weekdays.map(day => (
-              <mds-button class="week-day-name" variant="dark" tone="quiet">{day}</mds-button>
-            ))}
-
-
-          </header>
-          <div class="month-view__cells">
-            {/* <mds-calendar-cell preview selection="start" month="other">30</mds-calendar-cell>
-            <mds-calendar-cell preview selection="middle" month="other">31</mds-calendar-cell>
-            <mds-calendar-cell preview selection="middle">1</mds-calendar-cell>
-            <mds-calendar-cell preview selection="end">2</mds-calendar-cell>
-            <mds-calendar-cell>3</mds-calendar-cell>
-            <mds-calendar-cell>4</mds-calendar-cell>
-            <mds-calendar-cell>5</mds-calendar-cell>
-            <mds-calendar-cell>6</mds-calendar-cell>
-            <mds-calendar-cell>7</mds-calendar-cell>
-            <mds-calendar-cell selection="start">8</mds-calendar-cell>
-            <mds-calendar-cell selection="middle">9</mds-calendar-cell>
-            <mds-calendar-cell selection="middle">10</mds-calendar-cell>
-            <mds-calendar-cell selection="middle">11</mds-calendar-cell>
-            <mds-calendar-cell selection="middle">12</mds-calendar-cell>
-            <mds-calendar-cell selection="middle">13</mds-calendar-cell>
-            <mds-calendar-cell selection="middle">14</mds-calendar-cell>
-            <mds-calendar-cell selection="middle">15</mds-calendar-cell>
-            <mds-calendar-cell selection="end">16</mds-calendar-cell>
-            <mds-calendar-cell>17</mds-calendar-cell>
-            <mds-calendar-cell>18</mds-calendar-cell>
-            <mds-calendar-cell>19</mds-calendar-cell>
-            <mds-calendar-cell>20</mds-calendar-cell>
-            <mds-calendar-cell>21</mds-calendar-cell>
-            <mds-calendar-cell>22</mds-calendar-cell>
-            <mds-calendar-cell>23</mds-calendar-cell>
-            <mds-calendar-cell>24</mds-calendar-cell>
-            <mds-calendar-cell>25</mds-calendar-cell>
-            <mds-calendar-cell>26</mds-calendar-cell>
-            <mds-calendar-cell>27</mds-calendar-cell>
-            <mds-calendar-cell>28</mds-calendar-cell>
-            <mds-calendar-cell>29</mds-calendar-cell>
-            <mds-calendar-cell selection="start">30</mds-calendar-cell>
-            <mds-calendar-cell selection="middle">31</mds-calendar-cell>
-            <mds-calendar-cell selection="middle" month="other">1</mds-calendar-cell>
-            <mds-calendar-cell selection="end" month="other">2</mds-calendar-cell> */}
-
-            {/* <mds-calendar-cell month="other">30</mds-calendar-cell>
-            <mds-calendar-cell month="other">31</mds-calendar-cell>
-            <mds-calendar-cell>1</mds-calendar-cell>
-            <mds-calendar-cell>2</mds-calendar-cell>
-            <mds-calendar-cell>3</mds-calendar-cell>
-            <mds-calendar-cell>4</mds-calendar-cell>
-            <mds-calendar-cell>5</mds-calendar-cell>
-            <mds-calendar-cell selection="start" orientation="vertical" preview>6</mds-calendar-cell>
-            <mds-calendar-cell>7</mds-calendar-cell>
-            <mds-calendar-cell>8</mds-calendar-cell>
-            <mds-calendar-cell>9</mds-calendar-cell>
-            <mds-calendar-cell>10</mds-calendar-cell>
-            <mds-calendar-cell>11</mds-calendar-cell>
-            <mds-calendar-cell>12</mds-calendar-cell>
-            <mds-calendar-cell selection="middle" orientation="vertical" preview>13</mds-calendar-cell>
-            <mds-calendar-cell>14</mds-calendar-cell>
-            <mds-calendar-cell>15</mds-calendar-cell>
-            <mds-calendar-cell>16</mds-calendar-cell>
-            <mds-calendar-cell>17</mds-calendar-cell>
-            <mds-calendar-cell>18</mds-calendar-cell>
-            <mds-calendar-cell>19</mds-calendar-cell>
-            <mds-calendar-cell selection="middle" orientation="vertical" preview>20</mds-calendar-cell>
-            <mds-calendar-cell>21</mds-calendar-cell>
-            <mds-calendar-cell>22</mds-calendar-cell>
-            <mds-calendar-cell>23</mds-calendar-cell>
-            <mds-calendar-cell>24</mds-calendar-cell>
-            <mds-calendar-cell>25</mds-calendar-cell>
-            <mds-calendar-cell>26</mds-calendar-cell>
-            <mds-calendar-cell selection="end" orientation="vertical" preview>27</mds-calendar-cell>
-            <mds-calendar-cell>28</mds-calendar-cell>
-            <mds-calendar-cell>29</mds-calendar-cell>
-            <mds-calendar-cell>30</mds-calendar-cell>
-            <mds-calendar-cell>31</mds-calendar-cell>
-            <mds-calendar-cell month="other">1</mds-calendar-cell>
-            <mds-calendar-cell month="other">2</mds-calendar-cell>  */}
-
-            {this.weekDaysinMonth.map(dayInfo => {
-              return (
-                <mds-calendar-cell date={dayInfo.date.toFormat('yyyy-MM-dd')} month={dayInfo.isCurrentMonth ? 'current' : 'other'} onClick={event => this.handleRange(event.target as HTMLElement, dayInfo.date)} onMouseOver={event => {
-                  if (this.startDateElement) {
-                    this.handleHover(event.target as HTMLElement)
-                  }
-                }} >
+        {this.currentView === 'calendar' && (
+          <section class="month-view">
+            <header class="month-view__days-names">
+              {this.weekdays.map(day => (
+                <mds-button class="week-day-name" variant="dark" tone="quiet">{day}</mds-button>
+              ))}
+            </header>
+            <div class="month-view__cells">
+              {this.weekDaysinMonth.map(dayInfo => (
+                <mds-calendar-cell
+                  date={dayInfo.date.toFormat('yyyy-MM-dd')}
+                  month={dayInfo.isCurrentMonth ? 'current' : 'other'}
+                  onClick={event => this.handleRange(event.target as HTMLElement, dayInfo.date)}
+                  onMouseOver={event => {
+                    if (this.startDateElement) {
+                      this.handleHover(event.target as HTMLElement)
+                    }
+                  }}
+                >
                   {dayInfo.date.toFormat('dd')}
                 </mds-calendar-cell>
-              )
-            })}
+              ))}
+            </div>
+          </section>
+        )}
 
-          </div>
-        </section>
+        {this.currentView === 'months' && (
+          <section class="month-selection">
+            <header class="month-view__month-names">
+              {Array.from({ length: 12 }).map((_, index) => {
+                const monthName = DateTime.local().set({ month: index + 1 }).setLocale(this.language).toFormat('MMMM')
+                return (
+                  <mds-button class='action' variant='dark' tone='quiet' onClick={() => {
+                    this.currentDate = this.currentDate.set({ month: index + 1 })
+                    this.currentMonth = this.currentDate.toFormat('MMMM')
+                    this.currentView = 'calendar'
+                    this.updateCalendar()
+                  }}>
+                    {monthName}
+                  </mds-button>
+                )
+              })}
+            </header>
+          </section>
+        )}
+
+        {this.currentView === 'years' && (
+          <section class="year-selection">
+            <header class="month-view__years">
+              <mds-button class='action' variant='dark' tone='quiet' onClick={() => this.selectedYear -= 10}>◀</mds-button>
+              {Array.from({ length: 10 }).map((_, index) => {
+                const year = this.selectedYear + index
+                return (
+                  <mds-button class='action' variant='dark' tone='quiet' onClick={() => {
+                    this.currentDate = this.currentDate.set({ year })
+                    this.currentYear = year.toString()
+                    this.currentView = 'calendar'
+                    this.updateCalendar()
+                  }}>
+                    {year}
+                  </mds-button>
+                )
+              })}
+              <mds-button class='action' variant='dark' tone='quiet' onClick={() => this.selectedYear += 10}>▶</mds-button>
+            </header>
+          </section>
+        )}
+
       </Host>
     )
   }
