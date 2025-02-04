@@ -1,4 +1,4 @@
-import { Component, Host, Method, Prop, State, h, Element, Watch } from '@stencil/core'
+import { Component, Host, Method, Prop, State, h, Element, Watch, EventEmitter, Event } from '@stencil/core'
 import miBaselineForwardIos from '@icon/mi/baseline/arrow-forward-ios.svg'
 import miBaselineBackIosNew from '@icon/mi/baseline/arrow-back-ios-new.svg'
 import { DateTime } from 'luxon'
@@ -28,6 +28,7 @@ export class MdsCalendar {
 
   @Prop({ reflect: true, mutable: true }) startDate: string
   @Prop({ reflect: true, mutable: true }) endDate: string
+  @Event() datesEmitter: EventEmitter<{startDate: string, endDate: string}>
 
   @Watch('startDate')
   handleStartDate (newValue: ISO8601Date): void {
@@ -101,7 +102,7 @@ export class MdsCalendar {
   }
 
   setDates (): void {
-    const calendar = document.querySelector('mds-calendar')
+    const calendar: HTMLMdsCalendarElement = this.host
     if (!calendar) return
 
     const { shadowRoot } = calendar
@@ -193,7 +194,7 @@ export class MdsCalendar {
       this.endDateTime = null
       this.isFirstClick = true
 
-      const calendar = document.querySelector('mds-calendar')
+      const calendar: HTMLMdsCalendarElement = this.host
       calendar?.shadowRoot?.querySelectorAll('mds-calendar-cell[selection]').forEach(day => {
         day.removeAttribute('selection')
         day.removeAttribute('preview')
@@ -214,7 +215,7 @@ export class MdsCalendar {
       return
     }
 
-    const calendar = document.querySelector('mds-calendar')
+    const calendar: HTMLMdsCalendarElement = this.host
     const mdsCalendarCellElements = calendar?.shadowRoot?.querySelectorAll('mds-calendar-cell')
     const startDateElementIndex = Array.from(mdsCalendarCellElements ?? []).indexOf(this.startDateElement as HTMLMdsCalendarCellElement)
     const elementIndex = Array.from(mdsCalendarCellElements ?? []).indexOf(element as HTMLMdsCalendarCellElement)
@@ -246,6 +247,9 @@ export class MdsCalendar {
       }
     }
 
+    if (this.startDate && this.endDate) {
+      this.datesEmitter.emit({ startDate: this.startDate, endDate: this.endDate })
+    }
 
   }
 
@@ -253,7 +257,7 @@ export class MdsCalendar {
     const typedElement = element as HTMLMdsCalendarCellElement
     const startDate: DateTime = DateTime.fromISO(this.startDate)
     if (startDate && this.endDateElement === null) {
-      const calendar = document.querySelector('mds-calendar')
+      const calendar: HTMLMdsCalendarElement = this.host
       const mdsCalendarCellElements = calendar?.shadowRoot?.querySelectorAll('mds-calendar-cell')
       const hoveredDate: DateTime = DateTime.fromISO(typedElement.getAttribute('date') as string)
       const calendarCells: HTMLElement[] = Array.from(mdsCalendarCellElements ?? [])

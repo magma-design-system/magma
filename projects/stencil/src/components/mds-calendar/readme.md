@@ -13,6 +13,13 @@
 | `startDate` | `start-date` |             | `string` | `undefined` |
 
 
+## Events
+
+| Event          | Description | Type                                                   |
+| -------------- | ----------- | ------------------------------------------------------ |
+| `datesEmitter` |             | `CustomEvent<{ startDate: string; endDate: string; }>` |
+
+
 ## Methods
 
 ### `updateLang() => Promise<void>`
@@ -28,6 +35,10 @@ Type: `Promise<void>`
 
 ## Dependencies
 
+### Used by
+
+ - [mds-date-picker](../mds-date-picker)
+
 ### Depends on
 
 - [mds-button](../mds-button)
@@ -42,6 +53,7 @@ graph TD;
   mds-button --> mds-icon
   mds-button --> mds-text
   mds-calendar-cell --> mds-button
+  mds-date-picker --> mds-calendar
   style mds-calendar fill:#f9f,stroke:#333,stroke-width:4px
 ```
 
