@@ -5,7 +5,26 @@
 <!-- Auto Generated Below -->
 
 
+## Properties
+
+| Property    | Attribute    | Description | Type     | Default |
+| ----------- | ------------ | ----------- | -------- | ------- |
+| `endDate`   | `end-date`   |             | `string` | `''`    |
+| `startDate` | `start-date` |             | `string` | `''`    |
+
+
+## Events
+
+| Event                 | Description | Type                   |
+| --------------------- | ----------- | ---------------------- |
+| `buttonToggleEmitter` |             | `CustomEvent<boolean>` |
+
+
 ## Dependencies
+
+### Used by
+
+ - [mds-date-picker](../mds-date-picker)
 
 ### Depends on
 
@@ -20,6 +39,7 @@ graph TD;
   mds-button --> mds-spinner
   mds-button --> mds-icon
   mds-button --> mds-text
+  mds-date-picker --> mds-input-date-range
   style mds-input-date-range fill:#f9f,stroke:#333,stroke-width:4px
 ```
 

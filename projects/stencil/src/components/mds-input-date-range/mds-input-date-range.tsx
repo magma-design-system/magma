@@ -1,4 +1,4 @@
-import { Component, Element, Host, h } from '@stencil/core'
+import { Component, Element, Host, h, Event, EventEmitter, State, Prop } from '@stencil/core'
 import miBaselineCalendarToday from '@icon/mi/baseline/calendar-today.svg'
 
 @Component({
@@ -9,6 +9,11 @@ import miBaselineCalendarToday from '@icon/mi/baseline/calendar-today.svg'
 export class MdsInputDateRange {
 
   @Element() host: HTMLMdsInputDateRangeElement
+  @Prop({ reflect: true, mutable: true }) startDate: string = ''
+  @Prop({ reflect: true, mutable: true }) endDate: string = ''
+
+  @Event() buttonToggleEmitter: EventEmitter<boolean>
+  @State() buttonValue: boolean = false
 
   private focusInput = (element: HTMLMdsInputDateElement): void => {
     element.focusInput()
@@ -28,6 +33,11 @@ export class MdsInputDateRange {
     this.focusInput(this.host.querySelector('mds-input-date[slot="end"]') as HTMLMdsInputDateElement)
   }
 
+  manageButtonValue (): void {
+    this.buttonValue = !this.buttonValue
+    this.buttonToggleEmitter.emit(this.buttonValue)
+  }
+
   render () {
     return (
       <Host onClick={this.focusDateInput}>
@@ -41,7 +51,7 @@ export class MdsInputDateRange {
             <slot name="end"></slot>
           </div>
         </div>
-        <mds-button class="action-open-calendar" variant="dark" tone="quiet" icon={miBaselineCalendarToday}></mds-button>
+        <mds-button class="action-open-calendar" variant="dark" tone="quiet" icon={miBaselineCalendarToday} onClick={() => this.manageButtonValue()}></mds-button>
       </Host>
     )
   }
