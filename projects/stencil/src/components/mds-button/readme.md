@@ -41,18 +41,6 @@ This is a web-component from Maggioli Design System [Magma](https://magma.maggio
 | `"label"` |                               |
 
 
-## CSS Custom Properties
-
-| Name                          | Description                                                                                              |
-| ----------------------------- | -------------------------------------------------------------------------------------------------------- |
-| `--mds-button-await-duration` | Sets the duration of the rotation of the spinner await component                                         |
-| `--mds-button-background`     | Sets the background-color of the component                                                               |
-| `--mds-button-border-color`   | Sets the border-color of the component                                                                   |
-| `--mds-button-color`          | Sets the text color of the component                                                                     |
-| `--mds-button-gap`            | Sets the distance betwen element inside the components, use it instead of setting gap property directly. |
-| `--mds-button-radius`         | Sets the border-radius of the component                                                                  |
-
-
 ## Dependencies
 
 ### Used by
@@ -67,6 +55,8 @@ This is a web-component from Maggioli Design System [Magma](https://magma.maggio
  - [mds-horizontal-scroll](../mds-horizontal-scroll)
  - [mds-img](../mds-img)
  - [mds-input](../mds-input)
+ - [mds-input-date](../mds-input-date)
+ - [mds-input-date-range](../mds-input-date-range)
  - [mds-input-upload](../mds-input-upload)
  - [mds-label](../mds-label)
  - [mds-modal](../mds-modal)
@@ -99,6 +89,8 @@ graph TD;
   mds-horizontal-scroll --> mds-button
   mds-img --> mds-button
   mds-input --> mds-button
+  mds-input-date --> mds-button
+  mds-input-date-range --> mds-button
   mds-input-upload --> mds-button
   mds-label --> mds-button
   mds-modal --> mds-button

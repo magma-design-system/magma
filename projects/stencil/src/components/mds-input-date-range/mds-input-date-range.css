@@ -1,0 +1,84 @@
+@import '~@maggioli-design-system/styles/dist/tailwind/typography.css';
+@tailwind components;
+@tailwind utilities;
+
+:host {
+
+  --mds-input-date-range-background: theme('colors.tone-neutral');
+  --mds-input-date-range-icon-color: var(--mds-input-date-range-variant-color);
+  --mds-input-date-range-tip-background: 84 84 84;
+  --mds-input-date-range-ring: 0 0 0 1px rgb(var(--mds-input-date-range-variant-color) / 0.1);
+  --mds-input-date-range-shadow: 0 1px 3px 0 rgb(var(--mds-input-date-range-variant-color) / 0.1), 0 1px 2px 0 rgb(var(--mds-input-date-range-variant-color) / 0.06);
+  --mds-input-date-range-variant-color: 0 0 0;
+  --mds-input-date-range-textarea-min-height: theme('size.2400');
+  --mds-input-date-range-textarea-max-height: theme('size.6400');
+  --mds-input-date-range-textarea-field-sizing: content;
+
+  @apply
+    gap-200
+    text-info-detail;
+
+  color: theme('colors.tone-neutral-02');
+  container-type: inline-size;
+  cursor: text;
+  display: flex;
+  overflow: visible;
+  position: relative;
+}
+
+.inputs {
+  @apply
+    duration-300
+    ease-out-expo
+    m-0
+    px-400
+    py-300
+    rounded-lg
+    text-code-hack;
+
+  align-items: baseline;
+  background-color: var(--mds-input-date-range-background);
+  border: 0;
+  box-shadow: var(--mds-input-date-range-ring), var(--mds-input-date-range-shadow);
+  box-sizing: border-box;
+  color: inherit;
+  display: inline-flex;
+  min-height: 3rem;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  transition-property: background-color, border-color, box-shadow, color, fill, margin, opacity, padding, transform;
+  width: 100%;
+}
+
+:host(:focus-within) .inputs {
+  @apply
+    outline-none
+    transition-cosmetic
+    duration-300
+    ease-out-expo;
+
+  --mds-input-date-range-ring: 0 0 0 3px rgb(var(--mds-input-date-range-variant-color) / 1);
+  --mds-input-date-range-shadow: 0 4px 6px 3px rgb(var(--mds-input-date-range-variant-color) / 0.1), 0 2px 4px -1px rgb(var(--mds-input-date-range-variant-color) / 0.06);
+}
+
+.input-wrapper {
+  display: flex;
+  flex-shrink: 0;
+}
+
+:host() ::slotted(mds-input-date) {
+  color: inherit;
+}
+
+.action-open-calendar {
+
+  --mds-button-color: rgb(var(--mds-input-date-range-icon-color));
+
+  aspect-ratio: 1;
+  bottom: 0;
+  position: absolute;
+  right: 0;
+  top: 0;
+}
+
+@import './css/mds-input-date-range-variant.css';
