@@ -21,7 +21,7 @@
 }
 
 :host-context([appearance="none"][toggle-position="left"]) .children {
-  padding-left: calc(calc(var(--header-gap) * 2) + var(--mds-tree-item-toggle-border-size) + var(--padding-left) * 2);
+  padding-left: calc(calc(var(--header-gap) * 2) + var(--mds-tree-item-branch-border-size) + var(--padding-left) * 2);
 }
 
 :host-context([appearance="none"][toggle-position="right"]) .children {

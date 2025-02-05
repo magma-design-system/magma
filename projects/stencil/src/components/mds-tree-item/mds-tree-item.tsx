@@ -13,6 +13,13 @@ import { Locale } from '@common/locale'
 import { TypographyTruncateType } from '@type/text'
 import { cssDurationToMilliseconds } from '@common/unit'
 
+/**
+ * @slot default - Add `mds-tree-item` element/s.
+ * @slot action - Add `mds-button`, `mds-icon` or other types component and HTML element/s.
+ * @part actions-container - Selects the wrapper of the container of the actions.
+ * @part actions-list - Selects the container of the actions.
+ */
+
 @Component({
   tag: 'mds-tree-item',
   styleUrl: 'mds-tree-item.css',

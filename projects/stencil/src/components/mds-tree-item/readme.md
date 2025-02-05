@@ -9,6 +9,7 @@
 
 | Property   | Attribute  | Description                                                              | Type                                     | Default     |
 | ---------- | ---------- | ------------------------------------------------------------------------ | ---------------------------------------- | ----------- |
+| `actions`  | `actions`  | Show actions on the tree item on hover or by default.                    | `"auto" \| "visible" \| undefined`       | `undefined` |
 | `async`    | `async`    | Specifies the tree should be opened asynchronously when after the click. | `boolean \| undefined`                   | `undefined` |
 | `depth`    | `depth`    |                                                                          | `number \| undefined`                    | `undefined` |
 | `expanded` | `expanded` | Specifies if the tree is expanded.                                       | `boolean \| undefined`                   | `undefined` |
@@ -49,11 +50,20 @@ Type: `Promise<void>`
 
 
 
+## Slots
+
+| Slot        | Description                                                               |
+| ----------- | ------------------------------------------------------------------------- |
+| `"action"`  | Add `mds-button`, `mds-icon` or other types component and HTML element/s. |
+| `"default"` | Add `mds-tree-item` element/s.                                            |
+
+
 ## Shadow Parts
 
-| Part        | Description |
-| ----------- | ----------- |
-| `"actions"` |             |
+| Part                  | Description                                          |
+| --------------------- | ---------------------------------------------------- |
+| `"actions-container"` | Selects the wrapper of the container of the actions. |
+| `"actions-list"`      | Selects the container of the actions.                |
 
 
 ## Dependencies

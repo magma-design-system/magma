@@ -49,7 +49,7 @@
 }
 
 :host-context([toggle="folder"][toggle-position="left"]) .toggle-icon mds-button {
-  box-shadow: 0 theme('spacing.25') 0 0 var(--mds-tree-item-toggle-border-color);
+  box-shadow: 0 theme('spacing.25') 0 0 var(--mds-tree-item-branch-border-color);
 }
 
 :host-context([toggle="folder"]) .toggle-icon mds-button {

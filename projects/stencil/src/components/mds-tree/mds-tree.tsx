@@ -3,10 +3,9 @@ import { TreeActions, TreeAppearance, TreeIcon } from '@type/tree'
 import { TypographyTruncateType } from '@type/text'
 import { ButtonIconPositionType } from '@type/button'
 
-/** TODO
- * Rendere custom le icone degli elementi selezionabili
- *
- * */
+/**
+ * @slot default - Add `mds-tree-item` element/s.
+ */
 
 @Component({
   tag: 'mds-tree',

@@ -1,6 +1,6 @@
 .tree-node {
 
-  --middle-pos-x: calc(50% - calc(var(--mds-tree-item-toggle-border-size)/ 2));
+  --middle-pos-x: calc(50% - calc(var(--mds-tree-item-branch-border-size)/ 2));
 
   align-items: center;
   box-sizing: border-box;
@@ -16,14 +16,14 @@
 
 .tree-node::before {
 
-  --pos-y: calc(calc(var(--mds-tree-item-toggle-size) / 2 + var(--mds-tree-item-toggle-border-radius)) * -1);
-  --tree-height: calc(var(--mds-tree-item-toggle-size) + var(--mds-tree-item-toggle-border-radius) + var(--mds-tree-item-toggle-border-size) / 2);
+  --pos-y: calc(calc(var(--mds-tree-item-toggle-size) / 2 + var(--mds-tree-item-branch-border-radius)) * -1);
+  --tree-height: calc(var(--mds-tree-item-toggle-size) + var(--mds-tree-item-branch-border-radius) + var(--mds-tree-item-branch-border-size) / 2);
   --tree-width: calc(var(--mds-tree-item-toggle-size) / 2);
 
-  border-color: var(--mds-tree-item-toggle-border-color);
-  border-radius: 0 0 0 var(--mds-tree-item-toggle-border-radius);
+  border-color: var(--mds-tree-item-branch-border-color);
+  border-radius: 0 0 0 var(--mds-tree-item-branch-border-radius);
   border-style: solid;
-  border-width: 0 0 var(--mds-tree-item-toggle-border-size) var(--mds-tree-item-toggle-border-size);
+  border-width: 0 0 var(--mds-tree-item-branch-border-size) var(--mds-tree-item-branch-border-size);
   box-sizing: border-box;
   content: "";
   display: flex;
@@ -37,9 +37,9 @@
 
 .tree-dot {
 
-  --size: calc(theme('size.300') + var(--mds-tree-item-toggle-border-size) * 2);
+  --size: calc(theme('size.300') + var(--mds-tree-item-branch-border-size) * 2);
 
-  background-color: var(--mds-tree-item-toggle-border-color);
+  background-color: var(--mds-tree-item-branch-border-color);
   border-radius: var(--size);
   display: none;
   height: var(--size);
@@ -59,14 +59,14 @@
 
 :host(:not(:last-child)) .header--has-children .tree-node::after {
 
-  --size: calc(calc(var(--mds-tree-item-toggle-size) / 2) + var(--mds-tree-item-toggle-border-radius));
+  --size: calc(calc(var(--mds-tree-item-toggle-size) / 2) + var(--mds-tree-item-branch-border-radius));
   --pos-y: calc(var(--size) / 2);
 
   /* border-color: purple; */
-  border-color: var(--mds-tree-item-toggle-border-color);
-  border-radius: 0 0 0 var(--mds-tree-item-toggle-border-radius);
+  border-color: var(--mds-tree-item-branch-border-color);
+  border-radius: 0 0 0 var(--mds-tree-item-branch-border-radius);
   border-style: solid;
-  border-width: 0 0 var(--mds-tree-item-toggle-border-size) var(--mds-tree-item-toggle-border-size);
+  border-width: 0 0 var(--mds-tree-item-branch-border-size) var(--mds-tree-item-branch-border-size);
   box-sizing: border-box;
   content: "";
   display: flex;
@@ -74,16 +74,16 @@
   inset: 0;
   position: absolute;
   transform: translateY(var(--pos-y));
-  width: var(--mds-tree-item-toggle-border-size);
+  width: var(--mds-tree-item-branch-border-size);
   z-index: 1;
 }
 
 :host(:not(:last-child)) .children--has-children::before {
 
   /* border-left-color: green; */
-  border-left-color: var(--mds-tree-item-toggle-border-color);
+  border-left-color: var(--mds-tree-item-branch-border-color);
   border-left-style: solid;
-  border-left-width: var(--mds-tree-item-toggle-border-size);
+  border-left-width: var(--mds-tree-item-branch-border-size);
   content: "";
   display: flex;
   height: calc(100% + var(--mds-tree-item-toggle-size));
@@ -96,23 +96,23 @@
 
   --pos-y: calc(var(--size) / 2);
 
-  background-color: var(--mds-tree-item-toggle-border-color);
+  background-color: var(--mds-tree-item-branch-border-color);
   box-sizing: border-box;
   content: "";
   display: inline-flex;
   height: calc(var(--size) / 2);
   inset: 0 50% 0 0;
   position: absolute;
-  transform: translate(calc(var(--pos-y) - var(--mds-tree-item-toggle-border-size) / 2), var(--pos-y));
+  transform: translate(calc(var(--pos-y) - var(--mds-tree-item-branch-border-size) / 2), var(--pos-y));
   transition-duration: var(--mds-tree-item-transition-duration);
   transition-property: height;
   transition-timing-function: var(--mds-tree-item-transition-timing-function);
-  width: var(--mds-tree-item-toggle-border-size);
+  width: var(--mds-tree-item-branch-border-size);
   z-index: 1;
 }
 
 :host([expanded]) .tree-dot::after {
-  height: calc(var(--size) + var(--mds-tree-item-toggle-border-size));
+  height: calc(var(--size) + var(--mds-tree-item-branch-border-size));
 }
 
 /* remove first level elements */

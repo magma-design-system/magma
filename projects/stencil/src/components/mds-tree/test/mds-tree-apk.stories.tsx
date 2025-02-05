@@ -17,7 +17,7 @@ const TemplateNavigationMenu = () => {
       <mds-button onClick={() => {setExpand(!isExpanded)}} icon={ isExpanded ? 'mi/baseline/unfold-less' : 'mi/baseline/unfold-more' } title={ isExpanded ? 'Close' : 'Open' } variant="light"></mds-button>
     </div>
     <mds-tree class="bg-tone-neutral shadow" toggle="chevron" toggle-position="right" actions="auto" appearance="none" expanded={isExpanded}>
-      <mds-tree-item label="Protocollazione documenti" style={{ '--mds-tree-label-background-hover': 'rgb(var(--variant-primary-10))' }}>
+      <mds-tree-item label="Protocollazione documenti" style={{ '--mds-tree-label-hover-background': 'rgb(var(--variant-primary-10))' }}>
         <mds-tree-item label="Attività protocollo generale">
           <mds-tree-item label="Nuovo protocollo in arrivo" actions="visible">
             <mds-button slot="action" icon="mi/baseline/favorite" class="fill-tone-neutral-04" variant="dark" tone="quiet"></mds-button>

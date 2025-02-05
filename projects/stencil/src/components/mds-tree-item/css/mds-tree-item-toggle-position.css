@@ -37,12 +37,12 @@
 :host([toggle="chevron"]):host-context(mds-tree[toggle-position="right"]) .toggle-icon,
 :host([toggle="folder"]):host-context(mds-tree[toggle-position="right"]) .toggle-icon {
   background-color: transparent;
-  fill: var(--mds-tree-item-toggle-dot-default-color);
+  fill: var(--mds-tree-item-branch-dot-default-color);
 }
 
 :host([toggle="chevron"][expanded]):host-context(mds-tree[toggle-position="right"]) .toggle-icon,
 :host([toggle="folder"][expanded]):host-context(mds-tree[toggle-position="right"]) .toggle-icon {
   background-color: transparent;
-  fill: var(--mds-tree-item-toggle-dot-expanded-color);
+  fill: var(--mds-tree-item-branch-dot-expanded-color);
 }
 

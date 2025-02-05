@@ -1,24 +1,54 @@
+@tailwind utilities;
+
+/**
+ * @prop --mds-tree-actions-border-radius: Sets the border-radius of the wrapper container of the actions.
+ * @prop --mds-tree-actions-gap: Sets the gap between the actions.
+ * @prop --mds-tree-label-icon-default-color: Sets the default text color of the icon used at the near right of the label.
+ * @prop --mds-tree-label-icon-hover-color: Sets the text color of the icon used at the near right of the label when the mouse is over the item.
+ * @prop --mds-tree-label-default-background: Sets the default text color of the icon used at the near right of the label.
+ * @prop --mds-tree-label-hover-background: Sets the background-color of the label when the mouse is over the item.
+ * @prop --mds-tree-line-clamp: Sets the number of lines to show before truncating the text, it only works when attribute `truncate` is set to `all`.
+ * @prop --mds-tree-branch-border-color: Sets the border color of the tree branch.
+ * @prop --mds-tree-branch-border-radius: Sets the border-radius of the tree branch.
+ * @prop --mds-tree-branch-border-size: Sets the border size of the tree branch.
+ * @prop --mds-tree-branch-dot-default-color: Sets the default color of the tree branch dot.
+ * @prop --mds-tree-branch-dot-expanded-color: Sets the color of the tree branch dot when the item is expanded.
+ * @prop --mds-tree-toggle-gap: Sets the gap between the toggle icon and the label.
+ * @prop --mds-tree-toggle-icon-async-background: Sets the background-color of the icon when the attribute `async` is set.
+ * @prop --mds-tree-toggle-icon-async-color: Sets the text color of the icon when the attribute `async` is set.
+ * @prop --mds-tree-toggle-icon-chevron-default-background: Sets the background-color of the chevron icon when the item is collapsed.
+ * @prop --mds-tree-toggle-icon-chevron-default-color: Sets the text color of the chevron icon when the item is collapsed.
+ * @prop --mds-tree-toggle-icon-chevron-expanded-background: Sets the background-color of the chevron icon when the item is expanded.
+ * @prop --mds-tree-toggle-icon-chevron-expanded-color: Sets the text color of the chevron icon when the item is expanded.
+ * @prop --mds-tree-toggle-icon-folder-default-background: Sets the background-color of the folder icon when the item is collapsed.
+ * @prop --mds-tree-toggle-icon-folder-default-color: Sets the text color of the folder icon when the item is collapsed.
+ * @prop --mds-tree-toggle-icon-folder-expanded-background: Sets the background-color of the folder icon when the item is expanded.
+ * @prop --mds-tree-toggle-icon-folder-expanded-color: Sets the text color of the folder icon when the item is expanded.
+ * @prop --mds-tree-toggle-icon-position-right-default-background: Sets the background-color of the icon when the attribute `toggle-position` is set to `right`.
+ * @prop --mds-tree-toggle-icon-position-right-default-color: Sets the text color of the icon when the attribute `toggle-position` is set to `right`.
+ * @prop --mds-tree-toggle-icon-position-right-expanded-background: Sets the background-color of the icon when the attribute `toggle-position` is set to `right` and the item is expanded.
+ * @prop --mds-tree-toggle-icon-position-right-expanded-color: Sets the text color of the icon when the attribute `toggle-position` is set to `right` and the item is expanded.
+ * @prop --mds-tree-transition-duration: Sets the duration of the transition effect.
+ * @prop --mds-tree-transition-timing-function: Sets the timing function of the transition effect.
+ */
+
 :host {
 
   --mds-tree-actions-border-radius: theme('borderRadius.lg');
   --mds-tree-actions-gap: theme('spacing.50');
-  --mds-tree-icon-default-color: theme('colors.variant-primary-04');
-  --mds-tree-icon-hover-color: var(--mds-tree-icon-default-color);
-  --mds-tree-label-background-default: transparent;
-  --mds-tree-label-background-hover: theme('colors.tone-neutral');
+  --mds-tree-label-default-background: transparent;
+  --mds-tree-label-hover-background: theme('colors.tone-neutral');
+  --mds-tree-label-icon-default-color: theme('colors.variant-primary-04');
+  --mds-tree-label-icon-hover-color: var(--mds-tree-label-icon-default-color);
   --mds-tree-line-clamp: 2;
-  --mds-tree-toggle-border-color: theme('colors.tone-neutral-07');
-  --mds-tree-toggle-border-rounded: true;
-  --mds-tree-toggle-border-size: theme('size.50');
-  --mds-tree-toggle-dot-default-color: theme('colors.tone-neutral-07');
-  --mds-tree-toggle-dot-expanded-color: theme('colors.tone-neutral-06');
+  --mds-tree-branch-border-color: theme('colors.tone-neutral-07');
+  --mds-tree-branch-border-radius: true;
+  --mds-tree-branch-border-size: theme('size.50');
+  --mds-tree-branch-dot-default-color: theme('colors.tone-neutral-07');
+  --mds-tree-branch-dot-expanded-color: theme('colors.tone-neutral-06');
   --mds-tree-toggle-gap: theme('size.150');
   --mds-tree-toggle-icon-async-background: theme('colors.tone-neutral-09');
   --mds-tree-toggle-icon-async-color: theme('colors.variant-primary-03');
-  --mds-tree-toggle-icon-position-right-default-background: transparent;
-  --mds-tree-toggle-icon-position-right-default-color: theme('colors.tone-neutral-07');
-  --mds-tree-toggle-icon-position-right-expanded-background: transparent;
-  --mds-tree-toggle-icon-position-right-expanded-color: theme('colors.tone-neutral-07');
   --mds-tree-toggle-icon-chevron-default-background: theme('colors.variant-primary-04');
   --mds-tree-toggle-icon-chevron-default-color: theme('colors.tone-neutral');
   --mds-tree-toggle-icon-chevron-expanded-background: var(--mds-tree-toggle-icon-chevron-default-background);
@@ -27,6 +57,10 @@
   --mds-tree-toggle-icon-folder-default-color: theme('colors.variant-primary-04');
   --mds-tree-toggle-icon-folder-expanded-background: var(--mds-tree-toggle-icon-folder-default-background);
   --mds-tree-toggle-icon-folder-expanded-color: var(--mds-tree-toggle-icon-folder-default-color);
+  --mds-tree-toggle-icon-position-right-default-background: transparent;
+  --mds-tree-toggle-icon-position-right-default-color: theme('colors.tone-neutral-07');
+  --mds-tree-toggle-icon-position-right-expanded-background: transparent;
+  --mds-tree-toggle-icon-position-right-expanded-color: theme('colors.tone-neutral-07');
   --mds-tree-transition-duration: theme('transitionDuration.300');
   --mds-tree-transition-timing-function: theme('transitionTimingFunction.in-out-expo');
   /* private */ --mds-tree-toggle-border-radius: theme('borderRadius.lg');

@@ -119,7 +119,7 @@ ComplexMenu.args = {
   toggle: 'chevron',
   'toggle-position': 'right',
   appearance: 'none',
-  style: { '--mds-tree-label-background-hover': 'rgb(var(--tone-neutral-09))' },
+  style: { '--mds-tree-label-hover-background': 'rgb(var(--tone-neutral-09))' },
 }
 
 export const FolderMenu = TemplateFolder.bind({})

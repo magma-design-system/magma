@@ -1706,10 +1706,6 @@ export namespace Components {
          */
         "visible": boolean;
     }
-    /**
-     * TODO
-     * Rendere custom le icone degli elementi selezionabili
-     */
     interface MdsTree {
         /**
           * Show actions on the every tree item on hover or by default.
@@ -3015,10 +3011,6 @@ declare global {
         prototype: HTMLMdsTooltipElement;
         new (): HTMLMdsTooltipElement;
     };
-    /**
-     * TODO
-     * Rendere custom le icone degli elementi selezionabili
-     */
     interface HTMLMdsTreeElement extends Components.MdsTree, HTMLStencilElement {
     }
     var HTMLMdsTreeElement: {
@@ -4927,10 +4919,6 @@ declare namespace LocalJSX {
          */
         "visible"?: boolean;
     }
-    /**
-     * TODO
-     * Rendere custom le icone degli elementi selezionabili
-     */
     interface MdsTree {
         /**
           * Show actions on the every tree item on hover or by default.
@@ -5251,10 +5239,6 @@ declare module "@stencil/core" {
             "mds-text": LocalJSX.MdsText & JSXBase.HTMLAttributes<HTMLMdsTextElement>;
             "mds-toast": LocalJSX.MdsToast & JSXBase.HTMLAttributes<HTMLMdsToastElement>;
             "mds-tooltip": LocalJSX.MdsTooltip & JSXBase.HTMLAttributes<HTMLMdsTooltipElement>;
-            /**
-             * TODO
-             * Rendere custom le icone degli elementi selezionabili
-             */
             "mds-tree": LocalJSX.MdsTree & JSXBase.HTMLAttributes<HTMLMdsTreeElement>;
             "mds-tree-item": LocalJSX.MdsTreeItem & JSXBase.HTMLAttributes<HTMLMdsTreeItemElement>;
             "mds-url-view": LocalJSX.MdsUrlView & JSXBase.HTMLAttributes<HTMLMdsUrlViewElement>;

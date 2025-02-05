@@ -1,6 +1,6 @@
 @tailwind utilities;
 
-@container style(--mds-tree-toggle-border-rounded: true) {
+@container style(--mds-tree-branch-border-radius: true) {
   :host {
 
     /* stylelint-disable-next-line length-zero-no-unit */
@@ -9,7 +9,7 @@
 
 }
 
-@container style(--mds-tree-toggle-border-rounded: false) {
+@container style(--mds-tree-branch-border-radius: false) {
   :host {
 
     /* stylelint-disable-next-line length-zero-no-unit */
@@ -22,19 +22,19 @@
 
   --mds-tree-item-actions-border-radius: var(--mds-tree-actions-border-radius);
   --mds-tree-item-actions-gap: var(--mds-tree-actions-gap);
-  --mds-tree-item-icon-default-color: var(--mds-tree-icon-default-color);
-  --mds-tree-item-icon-hover-color: var(--mds-tree-icon-hover-color);
-  --mds-tree-item-label-background-default: var(--mds-tree-label-background-default);
-  --mds-tree-item-label-background-hover: var(--mds-tree-label-background-hover);
+  --mds-tree-item-branch-border-color: var(--mds-tree-branch-border-color);
+  --mds-tree-item-branch-border-radius: var(--mds-tree-branch-border-radius);
+  --mds-tree-item-branch-border-size: var(--mds-tree-branch-border-size);
+  --mds-tree-item-branch-dot-default-color: var(--mds-tree-branch-dot-default-color);
+  --mds-tree-item-branch-dot-expanded-color: var(--mds-tree-branch-dot-expanded-color);
+  --mds-tree-item-label-default-background: var(--mds-tree-label-default-background);
+  --mds-tree-item-label-hover-background: var(--mds-tree-label-hover-background);
+  --mds-tree-item-label-icon-default-color: var(--mds-tree-label-icon-default-color);
+  --mds-tree-item-label-icon-hover-color: var(--mds-tree-label-icon-hover-color);
   --mds-tree-item-line-clamp: var(--mds-tree-line-clamp);
-  --mds-tree-item-toggle-border-color: var(--mds-tree-toggle-border-color);
-  --mds-tree-item-toggle-border-radius: var(--mds-tree-toggle-border-radius);
-  --mds-tree-item-toggle-border-size: var(--mds-tree-toggle-border-size);
+  --mds-tree-item-toggle-gap: var(--mds-tree-toggle-gap);
   --mds-tree-item-toggle-icon-async-background: var(--mds-tree-toggle-icon-async-background);
   --mds-tree-item-toggle-icon-async-color: var(--mds-tree-toggle-icon-async-color);
-  --mds-tree-item-toggle-dot-default-color: var(--mds-tree-toggle-dot-default-color);
-  --mds-tree-item-toggle-dot-expanded-color: var(--mds-tree-toggle-dot-expanded-color);
-  --mds-tree-item-toggle-gap: var(--mds-tree-toggle-gap);
   --mds-tree-item-toggle-icon-chevron-default-background: var(--mds-tree-toggle-icon-chevron-default-background);
   --mds-tree-item-toggle-icon-chevron-default-color: var(--mds-tree-toggle-icon-chevron-default-color);
   --mds-tree-item-toggle-icon-chevron-expanded-background: var(--mds-tree-item-toggle-icon-chevron-default-background);
@@ -87,9 +87,9 @@
   --mds-button-line-clamp: var(--mds-tree-item-line-clamp);
   --padding: theme('padding.100');
 
-  background-color: var(--mds-tree-item-label-background-default);
+  background-color: var(--mds-tree-item-label-default-background);
   border-radius: theme('borderRadius.lg');
-  fill: var(--mds-tree-item-icon-default-color);
+  fill: var(--mds-tree-item-label-icon-default-color);
   flex-grow: 1;
   justify-content: flex-start;
   margin-left: calc(var(--padding) * -1);
@@ -98,8 +98,8 @@
 }
 
 .label-action:hover {
-  background-color: var(--mds-tree-item-label-background-hover);
-  fill: var(--mds-tree-item-icon-hover-color);
+  background-color: var(--mds-tree-item-label-hover-background);
+  fill: var(--mds-tree-item-label-icon-hover-color);
 }
 
 @import './css/mds-tree-item-actions.css';
