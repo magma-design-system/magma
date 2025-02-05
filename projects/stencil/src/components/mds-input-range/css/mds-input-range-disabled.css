@@ -1,0 +1,9 @@
+:host([disabled]:not([disabled="false"])) {
+  --mds-input-range-thumb-background: var(--mds-input-range-thumb-background-disabled);
+  --mds-input-range-track-background: var(--mds-input-range-track-background-disabled);
+  --mds-input-range-track-progress-background: var(--mds-input-range-track-progress-background-disabled);
+}
+
+:host([disabled]:not([disabled="false"])) .field::-webkit-slider-thumb {
+  cursor: not-allowed;
+}

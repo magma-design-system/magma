@@ -1,6 +1,6 @@
 {
   "name": "@maggioli-design-system/mds-pref-consumption",
-  "version": "2.1.1",
+  "version": "2.2.0",
   "description": "mds-pref-consumption is a web-component from Magma Design System, built with StencilJS, TypeScript, Storybook. It's based on the web-component standard and it's designed to be agnostic from the JavaScript framework you are using.",
   "main": "dist/index.cjs.js",
   "module": "dist/index.js",
@@ -24,10 +24,10 @@
     "test": "stencil test --spec --e2e"
   },
   "dependencies": {
-    "@maggioli-design-system/mds-tab": "8.0.0",
-    "@maggioli-design-system/mds-text": "4.5.2",
-    "@maggioli-design-system/styles": "15.5.0",
-    "@stencil/core": "4.22.2"
+    "@maggioli-design-system/mds-tab": "8.1.0",
+    "@maggioli-design-system/mds-text": "4.5.3",
+    "@maggioli-design-system/styles": "15.7.0",
+    "@stencil/core": "4.25.1"
   },
   "license": "MIT",
   "author": {

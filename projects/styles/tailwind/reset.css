@@ -1,6 +1,9 @@
 html {
   color-scheme: dark light;
   hanging-punctuation: first last;
+  interpolate-size: allow-keywords;
+  transition-duration: theme('transitionDuration.200');
+  transition-timing-function: theme('transitionTimingFunction.out');
 }
 
 *,
@@ -108,5 +111,44 @@ video {
 
   :has(:target) {
     scroll-behavior: smooth;
+  }
+}
+
+@container style(--magma-pref-animation: no-preference) {
+  html {
+    scroll-behavior: smooth;
+  }
+
+  :has(:target) {
+    scroll-behavior: smooth;
+  }
+}
+
+@container style(--magma-pref-animation: system) {
+
+  @media (prefers-reduced-motion: no-preference) {
+    html {
+      scroll-behavior: smooth;
+    }
+
+    :has(:target) {
+      scroll-behavior: smooth;
+    }
+  }
+}
+
+
+@container style(--magma-pref-animation: reduce) {
+  html {
+    transition-duration: 0s;
+  }
+}
+
+@container style(--magma-pref-animation: system) {
+
+  @media (prefers-reduced-motion) {
+    html {
+      transition-duration: 0s;
+    }
   }
 }

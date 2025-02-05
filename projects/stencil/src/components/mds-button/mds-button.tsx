@@ -7,6 +7,7 @@ import { TypographyType } from '@type/typography'
 import { buttonSizeTypographyVariant } from './meta/variants'
 import { setAttributeIfEmpty, unslugName } from '@common/aria'
 import { isIconFormatIsBase64, isIconFormatIsSVG } from '@common/icon'
+import { TypographyTruncateType } from '@type/text'
 
 /**
  * @slot default - Add `text string` to this slot, **avoid** to add `HTML elements` or `components` here.
@@ -74,7 +75,7 @@ export class MdsButton {
   /**
    * Specifies if the component is disabled or not
    */
-  @Prop({ reflect: true }) readonly disabled: boolean
+  @Prop({ mutable: false, reflect: true }) disabled?: boolean
 
   /**
    * Specifies if the button is awaiting for a response
@@ -91,6 +92,11 @@ export class MdsButton {
    */
   @Prop() readonly target: ButtonTargetType = 'self'
 
+  /**
+   * Specifies if the text shoud be truncated or should behave as a normal text
+   */
+  @Prop({ reflect: true }) readonly truncate?: TypographyTruncateType = 'word'
+
   @Watch('disabled')
   disabledChanged (newValue: boolean): void {
     if (newValue) {
@@ -98,6 +104,13 @@ export class MdsButton {
       return
     }
     this.km.detachClickBehavior()
+
+    /**
+     * When the component is disabled="false" it won't work with onClick events
+     * since formAssociated where added to it.
+     * https://github.com/ionic-team/stencil/issues/5461
+     */
+    this.disabled = undefined
   }
 
   @Watch('await')
@@ -220,7 +233,7 @@ export class MdsButton {
           <mds-spinner class="spinner" running={this.await}/>
         </div>
         { this.icon && this.iconPosition === 'left' && <mds-icon aria-hidden="true" class="icon" name={this.icon} part="icon"/> }
-        { this.hasText && <mds-text class="text" part="label" typography={this.typography}><slot /></mds-text> }
+        { this.hasText && <mds-text class="text" part="label" typography={this.typography} truncate={this.truncate}><slot /></mds-text> }
         { this.hasNotification && <slot name="notification"/> }
         { this.icon && this.iconPosition === 'right' && <mds-icon aria-hidden="true" class="icon" name={this.icon} part="icon"/> }
       </Host>

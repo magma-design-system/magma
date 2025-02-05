@@ -1,6 +1,6 @@
 import { h } from '@stencil/core'
 import { fileExtensionsDictionary } from '@dictionary/file-extensions'
-import { filesList } from '@fixture/filenames'
+import { filesList, namedFilesList } from '@fixture/filenames'
 
 const extensionsList = Object.keys(fileExtensionsDictionary).sort()
 
@@ -22,7 +22,7 @@ export default {
     filename: {
       type: { name: 'string' },
       description: 'The filename shown as component title, is used to auto assign one of the filetype known in the filetype dictionary',
-      options: filesList,
+      options: namedFilesList,
       control: { type: 'select' },
     },
     preview: {

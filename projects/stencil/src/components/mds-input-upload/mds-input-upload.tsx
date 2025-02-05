@@ -71,6 +71,10 @@ export class MdsInputUpload {
    */
   @Event({ eventName: 'mdsInputUploadChange' }) changedEvent: EventEmitter<FileList | null>
 
+  formResetCallback (): void {
+    this.internals.setFormValue('')
+  }
+
   componentWillLoad (): void {
     this.extensions = this.getExtension()
     this.t.lang(this.host)
@@ -362,7 +366,7 @@ export class MdsInputUpload {
         <input type='file' accept={this.accept} hidden ref={i => this.nativeInput = i} onChange={this.onAdd} multiple = {this.maxFiles > 1}/>
         <div class="additional-infos">
           <div class={clsx('file-specs', this.isSortTabShown() && 'file-specs-sort')}>
-            <mds-text variant="info" typography="caption">{this.extensions !== '' ? `${this.t.get('canUpload')} ${this.extensions}` : this.t.get('canUploadAll') }</mds-text>
+            <mds-text variant="info" typography="caption">{ this.extensions ? `${this.t.get('canUpload')} ${this.extensions}` : this.t.get('canUploadAll') }</mds-text>
             <mds-text variant="info" typography="caption">{ this.t.get('maxFileSizePerFile', { maxFileSize: this.maxFileSize })}</mds-text>
           </div>
           { this.isSortTabShown() &&

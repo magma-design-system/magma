@@ -1,0 +1,48 @@
+:host-context(mds-tree[toggle-position="left"]) .toggle-icon {
+  order: 0;
+}
+
+:host-context(mds-tree[toggle-position="right"]) .header--has-children .title {
+  margin-right: var(--offset);
+}
+
+:host([toggle="chevron"][expanded]):host-context(mds-tree[toggle-position="left"]) .toggle-icon {
+  transform: rotate(90deg);
+}
+
+:host([toggle="chevron"]:not([expanded])):host-context(mds-tree[toggle-position="left"]) .toggle-icon {
+  transform: rotate(0deg);
+}
+
+:host-context(mds-tree[toggle-position="right"]) .toggle-icon {
+  background-color: transparent;
+  order: 1;
+}
+
+/* chevron right */
+
+:host([toggle="chevron"]):host-context(mds-tree[toggle-position="right"]) .toggle-icon {
+  transform: rotate(90deg);
+}
+
+:host([toggle="chevron"][expanded]):host-context(mds-tree[toggle-position="right"]) .toggle-icon {
+  transform: rotate(270deg);
+}
+
+:host([toggle="chevron"]):host-context(mds-tree[toggle-position="right"]) .toggle-icon--dot,
+:host([toggle="folder"]):host-context(mds-tree[toggle-position="right"]) .toggle-icon--dot {
+  transform: rotate(0) scale(0.825);
+}
+
+:host([toggle="chevron"]):host-context(mds-tree[toggle-position="right"]) .toggle-icon,
+:host([toggle="folder"]):host-context(mds-tree[toggle-position="right"]) .toggle-icon {
+  background-color: transparent;
+  fill: var(--mds-tree-item-branch-dot-default-color);
+}
+
+:host([toggle="chevron"][expanded]):host-context(mds-tree[toggle-position="right"]) .toggle-icon,
+:host([toggle="folder"][expanded]):host-context(mds-tree[toggle-position="right"]) .toggle-icon {
+  background-color: transparent;
+  fill: var(--mds-tree-item-branch-dot-expanded-color);
+}
+

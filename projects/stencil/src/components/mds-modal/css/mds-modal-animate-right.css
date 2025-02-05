@@ -4,7 +4,8 @@
 }
 
 :host([position="right"]) .window {
-  height: 100dvh;
+  height: 100%;
+  max-height: calc(100dvh - calc(var(--mds-modal-window-distance) * 2));
   max-width: calc(100vw - 80px);
 }
 

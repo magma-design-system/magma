@@ -1,14 +1,4 @@
-:host {
-  @apply
-    mobile:p-400
-    p-800;
-}
-
 :host .window {
-  @apply
-    mobile:-m-400
-    -m-800;
-
   transition-delay: 0s, calc(var(--mds-modal-transition-duration) / 2);
 }
 
