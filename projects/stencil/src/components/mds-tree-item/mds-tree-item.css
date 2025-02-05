@@ -1,19 +1,19 @@
 @tailwind utilities;
 
-@container style(--mds-tree-branch-border-radius: true) {
+@container style(--mds-tree-branch-use-rounded-border: true) {
   :host {
 
     /* stylelint-disable-next-line length-zero-no-unit */
-    --mds-tree-toggle-border-radius: theme('borderRadius.lg');
+    --mds-tree-branch-border-radius: theme('borderRadius.lg');
   }
 
 }
 
-@container style(--mds-tree-branch-border-radius: false) {
+@container style(--mds-tree-branch-use-rounded-border: false) {
   :host {
 
     /* stylelint-disable-next-line length-zero-no-unit */
-    --mds-tree-toggle-border-radius: 0px;
+    --mds-tree-branch-border-radius: 0px;
   }
 
 }
