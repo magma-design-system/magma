@@ -1,37 +1,15 @@
 import { KeyboardManager } from '@common/keyboard-manager'
 import { cssDurationToMilliseconds } from '@common/unit'
-// import {
-//   Middleware,
-//   MiddlewareData,
-//   arrow,
-//   autoPlacement,
-//   autoUpdate,
-//   computePosition,
-//   flip,
-//   offset,
-//   shift,
-// } from '@floating-ui/dom'
 import {
   Component,
   Element,
   Event,
   EventEmitter,
   Host,
-  // Method,
   Prop,
   Watch,
   h,
 } from '@stencil/core'
-//   Middleware,
-//   MiddlewareData,
-//   arrow,
-//   autoPlacement,
-//   autoUpdate,
-//   computePosition,
-//   flip,
-//   offset,
-//   shift,
-// } from '@floating-ui/dom''
 import { FloatingUIPlacement, FloatingUIStrategy } from '@type/floating-ui'
 import arrowSvg from './assets/arrow.svg'
 import { MdsDropdownEventDetail } from './meta/event-detail'
