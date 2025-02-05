@@ -29,7 +29,7 @@
     "@maggioli-design-system/mds-card-header": "1.3.7",
     "@maggioli-design-system/mds-card-media": "1.3.7",
     "@maggioli-design-system/styles": "15.5.0",
-    "@stencil/core": "4.25.0",
+    "@stencil/core": "4.25.1",
     "clsx": "2.1.0"
   },
   "license": "MIT",

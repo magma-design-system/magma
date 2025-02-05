@@ -470,7 +470,7 @@ export namespace Components {
         /**
           * Specifies if the component is triggered from the caller on mouseover or click event
          */
-        "interaction"?: DropdownInteractionType;
+        "interaction": DropdownInteractionType;
         /**
           * Sets distance between the dropdown and the caller.
          */
@@ -1663,14 +1663,12 @@ export namespace Components {
         "visible"?: boolean;
     }
     interface MdsTooltip {
-        /**
-          * If set, the component will have an arrow pointing to the caller.
-         */
-        "arrow"?: boolean;
+        "arrow": boolean;
+        "arrowPadding": number;
         /**
           * If set, the component will be placed automatically near it's caller.
          */
-        "autoPlacement"?: boolean;
+        "autoPlacement": boolean;
         /**
           * Specifies the placement of the component if no space is available where it is placed.
          */
@@ -1682,11 +1680,11 @@ export namespace Components {
         /**
           * Specifies where the component should be placed relative to the caller.
          */
-        "placement"?: FloatingUIPlacement;
+        "placement": FloatingUIPlacement;
         /**
           * If set, the component will be kept inside the viewport.
          */
-        "shift"?: boolean;
+        "shift": boolean;
         /**
           * Sets a safe area distance between the tooltip and the viewport.
          */
@@ -1694,7 +1692,7 @@ export namespace Components {
         /**
           * Sets the CSS position strategy of the component.
          */
-        "strategy"?: FloatingUIStrategy;
+        "strategy": FloatingUIStrategy;
         /**
           * Specifies the selector of the target element, this attribute is used with `querySelector` method.
          */
@@ -4886,10 +4884,8 @@ declare namespace LocalJSX {
         "visible"?: boolean;
     }
     interface MdsTooltip {
-        /**
-          * If set, the component will have an arrow pointing to the caller.
-         */
         "arrow"?: boolean;
+        "arrowPadding"?: number;
         /**
           * If set, the component will be placed automatically near it's caller.
          */

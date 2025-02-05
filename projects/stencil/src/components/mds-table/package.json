@@ -28,7 +28,7 @@
     "@maggioli-design-system/mds-table-footer": "5.0.1",
     "@maggioli-design-system/mds-table-header": "4.9.1",
     "@maggioli-design-system/styles": "15.5.0",
-    "@stencil/core": "4.25.0",
+    "@stencil/core": "4.25.1",
     "clsx": "2.1.0"
   },
   "license": "MIT",
