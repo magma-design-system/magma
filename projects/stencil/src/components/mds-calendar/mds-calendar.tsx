@@ -253,60 +253,66 @@ export class MdsCalendar {
 
   }
 
-  handleHover ( element: HTMLElement ): void {
+  private handleHover (element: HTMLElement): void {
     const typedElement = element as HTMLMdsCalendarCellElement
-    const startDate: DateTime = DateTime.fromISO(this.startDate)
-    if (startDate && this.endDateElement === null) {
-      const calendar: HTMLMdsCalendarElement = this.host
-      const mdsCalendarCellElements = calendar?.shadowRoot?.querySelectorAll('mds-calendar-cell')
-      const hoveredDate: DateTime = DateTime.fromISO(typedElement.getAttribute('date') as string)
-      const calendarCells: HTMLElement[] = Array.from(mdsCalendarCellElements ?? [])
-      const startTypedElement = calendarCells.find(cell => cell.getAttribute('date') === this.startDate)
+    const startDate = DateTime.fromISO(this.startDate)
 
+    if (!startDate.isValid || this.endDateElement !== null) return
 
+    const calendar = this.host as HTMLMdsCalendarElement
+    const mdsCalendarCellElements = Array.from(calendar?.shadowRoot?.querySelectorAll('mds-calendar-cell') ?? [])
+    const hoveredDateStr = typedElement.getAttribute('date')
 
-      if (typedElement) {
-        typedElement.setAttribute('preview', 'true')
+    if (!hoveredDateStr) return
+    const hoveredDate = DateTime.fromISO(hoveredDateStr)
+    if (!hoveredDate.isValid) return
 
-        if (typedElement.date && startTypedElement ) {
-          const typedDate = DateTime.fromISO(typedElement.date)
+    const startTypedElement = mdsCalendarCellElements.find(cell => cell.getAttribute('date') === this.startDate)
 
-          if (startDate < typedDate) {
-            startTypedElement.setAttribute('selection', 'start')
-          } else if (startDate > typedDate) {
-            startTypedElement.setAttribute('selection', 'end')
-            typedElement.setAttribute('selection', 'start')
-          } else {
-            typedElement.setAttribute('selection', 'end')
-          }
-        }
-        const start: DateTime = startDate < hoveredDate ? startDate : hoveredDate
-        const end: DateTime = startDate > hoveredDate ? startDate : hoveredDate
-        if (mdsCalendarCellElements) {
-          mdsCalendarCellElements.forEach(calendarCell => {
-            const cellElementDate = DateTime.fromISO(calendarCell.getAttribute('date') as string)
-            if (start !== cellElementDate && hoveredDate !== cellElementDate && cellElementDate >= start && cellElementDate <= end) {
-              calendarCell.setAttribute('preview', 'true')
+    // Reset all cells before applying new styles
+    mdsCalendarCellElements.forEach(cell => {
+      cell.removeAttribute('preview')
+      cell.removeAttribute('selection')
+    })
 
-              let selectionType = 'middle' // Default
+    typedElement.setAttribute('preview', 'true')
 
-              if (start.equals(cellElementDate)) {
-                selectionType = 'start'
-              } else if (end.equals(cellElementDate)) {
-                selectionType = 'end'
-              }
-              calendarCell.setAttribute('selection', selectionType)
-            } else {
-              calendarCell.removeAttribute('preview')
-              calendarCell.removeAttribute('selection')
-            }
-          })
+    const typedDateStr = typedElement.getAttribute('date')
+    if (typedDateStr) {
+      const typedDate = DateTime.fromISO(typedDateStr)
+      if (typedDate.isValid && startTypedElement) {
+        if (startDate < typedDate) {
+          startTypedElement.setAttribute('selection', 'start')
+        } else if (startDate > typedDate) {
+          startTypedElement.setAttribute('selection', 'end')
+          typedElement.setAttribute('selection', 'start')
+        } else {
+          typedElement.setAttribute('selection', 'end')
         }
       }
-
-
     }
+
+    const [start, end] = startDate < hoveredDate ? [startDate, hoveredDate] : [hoveredDate, startDate]
+
+    mdsCalendarCellElements.forEach(cell => {
+      const cellDateStr = cell.getAttribute('date')
+      if (!cellDateStr) return
+
+      const cellDate = DateTime.fromISO(cellDateStr)
+      if (!cellDate.isValid) return
+
+      if (cellDate >= start && cellDate <= end) {
+        cell.setAttribute('preview', 'true')
+
+        let selectionType = 'middle'
+        if (cellDate.equals(start)) selectionType = 'start'
+        if (cellDate.equals(end)) selectionType = 'end'
+
+        cell.setAttribute('selection', selectionType)
+      }
+    })
   }
+
 
   handleMouseOut (): void {
     if (this.previewElement) {
