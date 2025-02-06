@@ -96,8 +96,8 @@ export class MdsCalendar {
       this.currentMonthNumber = this.currentDate.month
       this.currentYear = this.currentDate.toFormat('yyyy')
     }
-    catch {
-
+    catch (error) {
+      console.error('Error while updating the calendar:', error)
     }
   }
 
@@ -116,7 +116,6 @@ export class MdsCalendar {
 
     if (!this.startDate || !this.endDate) return
 
-    // Converto startDateTime ed endDateTime in oggetti DateTime
     this.startDateTime = DateTime.fromISO(this.startDate.toString())
     this.endDateTime = DateTime.fromISO(this.endDate.toString())
 
@@ -130,17 +129,14 @@ export class MdsCalendar {
         if (cellDate) {
           const currentDate = DateTime.fromISO(cellDate)
 
-          // Impostazione 'start' sulla data di inizio
           if (currentDate.toFormat('yyyy-MM-dd') === this.startDateTime.toFormat('yyyy-MM-dd')) {
             cells[i].setAttribute('selection', 'start')
           }
 
-          // Impostazione 'end' sulla data di fine
           if (currentDate.toFormat('yyyy-MM-dd') === this.endDateTime.toFormat('yyyy-MM-dd')) {
             cells[i].setAttribute('selection', 'end')
           }
 
-          // Impostazione 'middle' sui giorni intermedi
           isBetweenDates = currentDate > this.startDateTime && currentDate < this.endDateTime
           if (isBetweenDates) {
             cells[i].setAttribute('selection', 'middle')
@@ -186,7 +182,7 @@ export class MdsCalendar {
     this.weekDaysinMonth = allDays
   }
 
-  handleRange (element: HTMLElement, dayInfo: DateTime): void {
+  private handleRange (element: HTMLElement, dayInfo: DateTime): void {
     const resetSelection = (): void => {
       this.startDateElement = null
       this.startDateTime = null
@@ -269,7 +265,6 @@ export class MdsCalendar {
 
     const startTypedElement = mdsCalendarCellElements.find(cell => cell.getAttribute('date') === this.startDate)
 
-    // Reset all cells before applying new styles
     mdsCalendarCellElements.forEach(cell => {
       cell.removeAttribute('preview')
       cell.removeAttribute('selection')
