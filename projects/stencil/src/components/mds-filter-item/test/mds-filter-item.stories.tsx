@@ -3,6 +3,10 @@ import { h } from '@stencil/core'
 export default {
   title: 'UI / Filter / Filter item',
   argTypes: {
+    count: {
+      type: { name: 'string' },
+      description: 'Shows the number of items will be filtered by the component',
+    },
     selected: {
       type: { name: 'boolean' },
       description: 'Sets the component to selected state',

@@ -37,12 +37,12 @@
     duration-300
     ease-in-out-expo;
 
-  scale: 0;
+  transform: scale(0);
   transition-property: transform;
 }
 
 .reset-button-opened {
-  scale: 1;
+  transform: scale(1);
 }
 
 .items {

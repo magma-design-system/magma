@@ -2,6 +2,7 @@ import clsx from 'clsx'
 import { Component, Element, Event, EventEmitter, Host, h, Listen, Prop, State } from '@stencil/core'
 import { MdsFilterEventDetail } from './meta/event-detail'
 import { MdsFilterItemEventDetail } from '@component/mds-filter-item/meta/event-detail'
+import miBaselineClose from '@icon/mi/baseline/close.svg'
 
 /**
  * @slot default - Add `mds-filter-item` element/s.
@@ -145,9 +146,9 @@ export class MdsFilter {
         { this.label && <mds-text class="label" typography="label">{ this.label }</mds-text> }
         <div class={clsx('items', this.active && 'active')}>
           <slot/>
-          { this.reset && <div class={clsx('reset', this.active && 'reset-opened')}>
-            <mds-filter-item selected={this.active} class={clsx('reset-button', this.active && 'reset-button-opened')} icon="mi/baseline/close" onClick={this.resetItems}/>
-          </div> }
+          <div class={clsx('reset', this.active && 'reset-opened')}>
+            <mds-filter-item selected={this.active} disabled={!this.active} class={clsx('reset-button', this.active && 'reset-button-opened')} icon={miBaselineClose} onClick={this.resetItems}/>
+          </div>
         </div>
       </Host>
     )

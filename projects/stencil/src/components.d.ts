@@ -632,6 +632,14 @@ export namespace Components {
     }
     interface MdsFilterItem {
         /**
+          * Shows the number of items will be filtered by the component
+         */
+        "count"?: string;
+        /**
+          * Sets if the component is disabled or not
+         */
+        "disabled"?: boolean;
+        /**
           * Sets the icon of the filter item
          */
         "icon"?: string;
@@ -3747,6 +3755,14 @@ declare namespace LocalJSX {
         "reset"?: boolean;
     }
     interface MdsFilterItem {
+        /**
+          * Shows the number of items will be filtered by the component
+         */
+        "count"?: string;
+        /**
+          * Sets if the component is disabled or not
+         */
+        "disabled"?: boolean;
         /**
           * Sets the icon of the filter item
          */
