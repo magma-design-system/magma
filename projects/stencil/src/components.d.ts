@@ -16,13 +16,13 @@ import { BibliographyFormatType, BibliographyRelationshipType } from "./componen
 import { MdsBreadcrumbEventDetail } from "./components/mds-breadcrumb/meta/event-detail";
 import { MdsBreadcrumbItemEventDetail } from "./components/mds-breadcrumb-item/meta/event-detail";
 import { ButtonIconPositionType, ButtonSizeType, ButtonTargetType, ButtonType, ButtonVariantType } from "./type/button";
+import { TypographyHeadingTagType, TypographyTagType, TypographyTruncateType } from "./type/text";
 import { MdsChipEvent } from "./components/mds-chip/meta/interface";
 import { DropdownInteractionType } from "./components/mds-dropdown/meta/types";
 import { FloatingUIPlacement, FloatingUIStrategy } from "./type/floating-ui";
 import { MdsDropdownEventDetail } from "./components/mds-dropdown/meta/event-detail";
 import { ExtensionSuffixType } from "./type/file-types";
 import { MdsFileEventDetail } from "./components/mds-file/meta/event-detail";
-import { TypographyHeadingTagType, TypographyTagType, TypographyTruncateType } from "./type/text";
 import { MdsFilePreviewEventDetail } from "./components/mds-file-preview/meta/event-detail";
 import { MdsFilterEventDetail } from "./components/mds-filter/meta/event-detail";
 import { MdsFilterItemEventDetail } from "./components/mds-filter-item/meta/event-detail";
@@ -65,6 +65,8 @@ import { MdsTableRowSelection } from "./components/mds-table/meta/type";
 import { SortDirectionType } from "./components/mds-table-header-cell/meta/types";
 import { TextAnimationType } from "./components/mds-text/meta/types";
 import { ToastPosition } from "./components/mds-toast/meta/types";
+import { TreeActions, TreeAppearance, TreeIcon } from "./type/tree";
+import { MdsTreeItemEventDetail } from "./components/mds-tree-item/meta/event-detail";
 import { UsageType } from "./components/mds-usage/meta/types";
 import { NoiseType, PreloadType } from "./components/mds-video-wall/meta/types";
 export { MdsAccordionEventDetail } from "./components/mds-accordion/meta/event-detail";
@@ -78,13 +80,13 @@ export { BibliographyFormatType, BibliographyRelationshipType } from "./componen
 export { MdsBreadcrumbEventDetail } from "./components/mds-breadcrumb/meta/event-detail";
 export { MdsBreadcrumbItemEventDetail } from "./components/mds-breadcrumb-item/meta/event-detail";
 export { ButtonIconPositionType, ButtonSizeType, ButtonTargetType, ButtonType, ButtonVariantType } from "./type/button";
+export { TypographyHeadingTagType, TypographyTagType, TypographyTruncateType } from "./type/text";
 export { MdsChipEvent } from "./components/mds-chip/meta/interface";
 export { DropdownInteractionType } from "./components/mds-dropdown/meta/types";
 export { FloatingUIPlacement, FloatingUIStrategy } from "./type/floating-ui";
 export { MdsDropdownEventDetail } from "./components/mds-dropdown/meta/event-detail";
 export { ExtensionSuffixType } from "./type/file-types";
 export { MdsFileEventDetail } from "./components/mds-file/meta/event-detail";
-export { TypographyHeadingTagType, TypographyTagType, TypographyTruncateType } from "./type/text";
 export { MdsFilePreviewEventDetail } from "./components/mds-file-preview/meta/event-detail";
 export { MdsFilterEventDetail } from "./components/mds-filter/meta/event-detail";
 export { MdsFilterItemEventDetail } from "./components/mds-filter-item/meta/event-detail";
@@ -127,6 +129,8 @@ export { MdsTableRowSelection } from "./components/mds-table/meta/type";
 export { SortDirectionType } from "./components/mds-table-header-cell/meta/types";
 export { TextAnimationType } from "./components/mds-text/meta/types";
 export { ToastPosition } from "./components/mds-toast/meta/types";
+export { TreeActions, TreeAppearance, TreeIcon } from "./type/tree";
+export { MdsTreeItemEventDetail } from "./components/mds-tree-item/meta/event-detail";
 export { UsageType } from "./components/mds-usage/meta/types";
 export { NoiseType, PreloadType } from "./components/mds-video-wall/meta/types";
 export namespace Components {
@@ -371,6 +375,10 @@ export namespace Components {
          */
         "tone"?: ToneVariantType;
         /**
+          * Specifies if the text shoud be truncated or should behave as a normal text
+         */
+        "truncate"?: TypographyTruncateType;
+        /**
           * The type of the button element
          */
         "type"?: ButtonType;
@@ -462,7 +470,7 @@ export namespace Components {
         /**
           * Specifies if the component is triggered from the caller on mouseover or click event
          */
-        "interaction"?: DropdownInteractionType;
+        "interaction": DropdownInteractionType;
         /**
           * Sets distance between the dropdown and the caller.
          */
@@ -1655,14 +1663,12 @@ export namespace Components {
         "visible"?: boolean;
     }
     interface MdsTooltip {
-        /**
-          * If set, the component will have an arrow pointing to the caller.
-         */
-        "arrow"?: boolean;
+        "arrow": boolean;
+        "arrowPadding": number;
         /**
           * If set, the component will be placed automatically near it's caller.
          */
-        "autoPlacement"?: boolean;
+        "autoPlacement": boolean;
         /**
           * Specifies the placement of the component if no space is available where it is placed.
          */
@@ -1674,11 +1680,11 @@ export namespace Components {
         /**
           * Specifies where the component should be placed relative to the caller.
          */
-        "placement"?: FloatingUIPlacement;
+        "placement": FloatingUIPlacement;
         /**
           * If set, the component will be kept inside the viewport.
          */
-        "shift"?: boolean;
+        "shift": boolean;
         /**
           * Sets a safe area distance between the tooltip and the viewport.
          */
@@ -1686,7 +1692,7 @@ export namespace Components {
         /**
           * Sets the CSS position strategy of the component.
          */
-        "strategy"?: FloatingUIStrategy;
+        "strategy": FloatingUIStrategy;
         /**
           * Specifies the selector of the target element, this attribute is used with `querySelector` method.
          */
@@ -1699,6 +1705,73 @@ export namespace Components {
           * Specifies the visibility of the component.
          */
         "visible": boolean;
+    }
+    interface MdsTree {
+        /**
+          * Show actions on the every tree item on hover or by default.
+         */
+        "actions"?: TreeActions;
+        /**
+          * Specifies if the branches depth decorations are visible.
+         */
+        "appearance": TreeAppearance;
+        /**
+          * Specifies the tree should be opened asynchronously when after the click, .
+         */
+        "async"?: boolean;
+        /**
+          * Specifies if the tree is expanded.
+         */
+        "expanded"?: boolean;
+        /**
+          * Specifies the selector of the target element, this attribute is used with `querySelector` method.
+         */
+        "label": string;
+        /**
+          * Specifies the toggle icon of the element
+         */
+        "toggle": TreeIcon;
+        /**
+          * Specifies the toggle icon position of the element
+         */
+        "togglePosition": ButtonIconPositionType;
+        /**
+          * Truncate the text of the element on one single line.
+         */
+        "truncate": TypographyTruncateType;
+    }
+    interface MdsTreeItem {
+        /**
+          * Show actions on the tree item on hover or by default.
+         */
+        "actions"?: TreeActions;
+        /**
+          * Specifies the tree should be opened asynchronously when after the click.
+         */
+        "async"?: boolean;
+        "depth"?: number;
+        "expand": () => Promise<void>;
+        /**
+          * Specifies if the tree is expanded.
+         */
+        "expanded"?: boolean;
+        /**
+          * The icon displayed in the button
+         */
+        "icon"?: string;
+        /**
+          * Specifies the label of the tree item
+         */
+        "label": string;
+        /**
+          * Specifies the icon of the element
+         */
+        "toggle"?: TreeIcon;
+        /**
+          * Truncate the text of the element on one single line.
+         */
+        "truncate"?: TypographyTruncateType;
+        "updateLang": () => Promise<void>;
     }
     interface MdsUrlView {
         /**
@@ -1925,6 +1998,10 @@ export interface MdsTableCustomEvent<T> extends CustomEvent<T> {
 export interface MdsToastCustomEvent<T> extends CustomEvent<T> {
     detail: T;
     target: HTMLMdsToastElement;
+}
+export interface MdsTreeItemCustomEvent<T> extends CustomEvent<T> {
+    detail: T;
+    target: HTMLMdsTreeItemElement;
 }
 export interface MdsUrlViewCustomEvent<T> extends CustomEvent<T> {
     detail: T;
@@ -2934,6 +3011,30 @@ declare global {
         prototype: HTMLMdsTooltipElement;
         new (): HTMLMdsTooltipElement;
     };
+    interface HTMLMdsTreeElement extends Components.MdsTree, HTMLStencilElement {
+    }
+    var HTMLMdsTreeElement: {
+        prototype: HTMLMdsTreeElement;
+        new (): HTMLMdsTreeElement;
+    };
+    interface HTMLMdsTreeItemElementEventMap {
+        "mdsTreeItemExpand": MdsTreeItemEventDetail;
+        "mdsTreeItemCollapse": MdsTreeItemEventDetail;
+    }
+    interface HTMLMdsTreeItemElement extends Components.MdsTreeItem, HTMLStencilElement {
+        addEventListener<K extends keyof HTMLMdsTreeItemElementEventMap>(type: K, listener: (this: HTMLMdsTreeItemElement, ev: MdsTreeItemCustomEvent<HTMLMdsTreeItemElementEventMap[K]>) => any, options?: boolean | AddEventListenerOptions): void;
+        addEventListener<K extends keyof DocumentEventMap>(type: K, listener: (this: Document, ev: DocumentEventMap[K]) => any, options?: boolean | AddEventListenerOptions): void;
+        addEventListener<K extends keyof HTMLElementEventMap>(type: K, listener: (this: HTMLElement, ev: HTMLElementEventMap[K]) => any, options?: boolean | AddEventListenerOptions): void;
+        addEventListener(type: string, listener: EventListenerOrEventListenerObject, options?: boolean | AddEventListenerOptions): void;
+        removeEventListener<K extends keyof HTMLMdsTreeItemElementEventMap>(type: K, listener: (this: HTMLMdsTreeItemElement, ev: MdsTreeItemCustomEvent<HTMLMdsTreeItemElementEventMap[K]>) => any, options?: boolean | EventListenerOptions): void;
+        removeEventListener<K extends keyof DocumentEventMap>(type: K, listener: (this: Document, ev: DocumentEventMap[K]) => any, options?: boolean | EventListenerOptions): void;
+        removeEventListener<K extends keyof HTMLElementEventMap>(type: K, listener: (this: HTMLElement, ev: HTMLElementEventMap[K]) => any, options?: boolean | EventListenerOptions): void;
+        removeEventListener(type: string, listener: EventListenerOrEventListenerObject, options?: boolean | EventListenerOptions): void;
+    }
+    var HTMLMdsTreeItemElement: {
+        prototype: HTMLMdsTreeItemElement;
+        new (): HTMLMdsTreeItemElement;
+    };
     interface HTMLMdsUrlViewElementEventMap {
         "mdsUrlViewClose": void;
     }
@@ -3057,6 +3158,8 @@ declare global {
         "mds-text": HTMLMdsTextElement;
         "mds-toast": HTMLMdsToastElement;
         "mds-tooltip": HTMLMdsTooltipElement;
+        "mds-tree": HTMLMdsTreeElement;
+        "mds-tree-item": HTMLMdsTreeItemElement;
         "mds-url-view": HTMLMdsUrlViewElement;
         "mds-usage": HTMLMdsUsageElement;
         "mds-video-wall": HTMLMdsVideoWallElement;
@@ -3350,6 +3453,10 @@ declare namespace LocalJSX {
           * Specifies the tone variant for the button
          */
         "tone"?: ToneVariantType;
+        /**
+          * Specifies if the text shoud be truncated or should behave as a normal text
+         */
+        "truncate"?: TypographyTruncateType;
         /**
           * The type of the button element
          */
@@ -4769,10 +4876,8 @@ declare namespace LocalJSX {
         "visible"?: boolean;
     }
     interface MdsTooltip {
-        /**
-          * If set, the component will have an arrow pointing to the caller.
-         */
         "arrow"?: boolean;
+        "arrowPadding"?: number;
         /**
           * If set, the component will be placed automatically near it's caller.
          */
@@ -4813,6 +4918,79 @@ declare namespace LocalJSX {
           * Specifies the visibility of the component.
          */
         "visible"?: boolean;
+    }
+    interface MdsTree {
+        /**
+          * Show actions on the every tree item on hover or by default.
+         */
+        "actions"?: TreeActions;
+        /**
+          * Specifies if the branches depth decorations are visible.
+         */
+        "appearance"?: TreeAppearance;
+        /**
+          * Specifies the tree should be opened asynchronously when after the click, .
+         */
+        "async"?: boolean;
+        /**
+          * Specifies if the tree is expanded.
+         */
+        "expanded"?: boolean;
+        /**
+          * Specifies the selector of the target element, this attribute is used with `querySelector` method.
+         */
+        "label"?: string;
+        /**
+          * Specifies the toggle icon of the element
+         */
+        "toggle"?: TreeIcon;
+        /**
+          * Specifies the toggle icon position of the element
+         */
+        "togglePosition"?: ButtonIconPositionType;
+        /**
+          * Truncate the text of the element on one single line.
+         */
+        "truncate"?: TypographyTruncateType;
+    }
+    interface MdsTreeItem {
+        /**
+          * Show actions on the tree item on hover or by default.
+         */
+        "actions"?: TreeActions;
+        /**
+          * Specifies the tree should be opened asynchronously when after the click.
+         */
+        "async"?: boolean;
+        "depth"?: number;
+        /**
+          * Specifies if the tree is expanded.
+         */
+        "expanded"?: boolean;
+        /**
+          * The icon displayed in the button
+         */
+        "icon"?: string;
+        /**
+          * Specifies the label of the tree item
+         */
+        "label"?: string;
+        /**
+          * Emits when the component attribute selected is changed
+         */
+        "onMdsTreeItemCollapse"?: (event: MdsTreeItemCustomEvent<MdsTreeItemEventDetail>) => void;
+        /**
+          * Emits when the component expand it's children container
+         */
+        "onMdsTreeItemExpand"?: (event: MdsTreeItemCustomEvent<MdsTreeItemEventDetail>) => void;
+        /**
+          * Specifies the icon of the element
+         */
+        "toggle"?: TreeIcon;
+        /**
+          * Truncate the text of the element on one single line.
+         */
+        "truncate"?: TypographyTruncateType;
     }
     interface MdsUrlView {
         /**
@@ -4962,6 +5140,8 @@ declare namespace LocalJSX {
         "mds-text": MdsText;
         "mds-toast": MdsToast;
         "mds-tooltip": MdsTooltip;
+        "mds-tree": MdsTree;
+        "mds-tree-item": MdsTreeItem;
         "mds-url-view": MdsUrlView;
         "mds-usage": MdsUsage;
         "mds-video-wall": MdsVideoWall;
@@ -5059,6 +5239,8 @@ declare module "@stencil/core" {
             "mds-text": LocalJSX.MdsText & JSXBase.HTMLAttributes<HTMLMdsTextElement>;
             "mds-toast": LocalJSX.MdsToast & JSXBase.HTMLAttributes<HTMLMdsToastElement>;
             "mds-tooltip": LocalJSX.MdsTooltip & JSXBase.HTMLAttributes<HTMLMdsTooltipElement>;
+            "mds-tree": LocalJSX.MdsTree & JSXBase.HTMLAttributes<HTMLMdsTreeElement>;
+            "mds-tree-item": LocalJSX.MdsTreeItem & JSXBase.HTMLAttributes<HTMLMdsTreeItemElement>;
             "mds-url-view": LocalJSX.MdsUrlView & JSXBase.HTMLAttributes<HTMLMdsUrlViewElement>;
             "mds-usage": LocalJSX.MdsUsage & JSXBase.HTMLAttributes<HTMLMdsUsageElement>;
             "mds-video-wall": LocalJSX.MdsVideoWall & JSXBase.HTMLAttributes<HTMLMdsVideoWallElement>;

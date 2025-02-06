@@ -53,4 +53,13 @@ const Template = args =>
     <mds-button slot="action" size="sm" variant={checkVariant(args.variant)} tone={args.tone}>Annulla</mds-button>
   </mds-toast>
 
+const TemplateSpinner = args =>
+  <mds-toast {...args}>
+    <mds-spinner running slot="icon" class="w-600 h-600"/>
+    Invio messaggio in corso...
+    <mds-button slot="action" size="sm" variant="warning" tone="weak">Annulla</mds-button>
+  </mds-toast>
+
 export const Default = Template.bind({})
+
+export const Spinner = TemplateSpinner.bind({})

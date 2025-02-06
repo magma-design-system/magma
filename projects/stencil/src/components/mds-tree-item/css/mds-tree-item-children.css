@@ -1,0 +1,50 @@
+.children {
+
+  --padding-left: calc(calc(var(--mds-tree-item-toggle-size) - var(--mds-tree-item-branch-border-size)) / 2);
+
+  display: flex;
+  flex-direction: column;
+  height: 0;
+  interpolate-size: allow-keywords;
+  overflow: clip;
+  padding-left: var(--padding-left);
+  position: relative;
+  transform: translateY(calc(var(--mds-tree-item-toggle-size) / 2 * -1));
+  transition-duration: var(--mds-tree-item-transition-duration);
+  transition-property: height, transform;
+  transition-timing-function: var(--mds-tree-item-transition-timing-function);
+  z-index: 0;
+}
+
+.children--expanded {
+  animation: toggleOverflow var(--mds-tree-item-transition-duration) forwards;
+  animation-timing-function: var(--mds-tree-item-transition-timing-function);
+  display: flex;
+  height: auto;
+  transform: translateY(0);
+}
+
+.children--hidden,
+.children--empty {
+  display: none;
+}
+
+@keyframes toggleOverflow {
+  99.99% {
+    overflow: hidden;
+  }
+
+  100% {
+    overflow: visible;
+  }
+}
+
+@keyframes toggleDisplay {
+  99.99% {
+    display: flex;
+  }
+
+  100% {
+    display: none;
+  }
+}

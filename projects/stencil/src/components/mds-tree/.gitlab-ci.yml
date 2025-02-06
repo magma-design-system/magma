@@ -1,0 +1,20 @@
+.base-tree:
+  variables:
+    COMPONENT: mds-tree
+
+# TEST
+tree-publish-test:
+  extends: [.base-stencil-publish-test, .base-tree]
+  dependencies: [base-stencil-build, base-isolate]
+
+# PUBLISH
+tree-publish:
+  extends: [.base-stencil-publish, .base-tree]
+  dependencies: [base-stencil-build, base-isolate]
+  needs: [base-stencil-build, base-isolate, tree-publish-test]
+
+# INSTALL TEST
+tree-install-test:
+  extends: [.base-stencil-install-test, .base-tree]
+  dependencies: [base-stencil-build, base-isolate]
+  needs: [base-stencil-build, base-isolate, tree-publish]

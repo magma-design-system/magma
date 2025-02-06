@@ -29,8 +29,7 @@ stages:
   before_script:
     - apt update && apt install jq -y
     - npm install -g --force nx yarn
-    # workaround for puppeteer<22.1.0 https://github.com/puppeteer/puppeteer/issues/12094#issuecomment-1999345951
-    - PUPPETEER_DOWNLOAD_BASE_URL="https://storage.googleapis.com/chrome-for-testing-public" yarn install --frozen-lockfile --prefer-offline
+    - yarn install --frozen-lockfile --prefer-offline
   cache:
     key:
       files:
@@ -72,7 +71,7 @@ stages:
   before_script:
     - |
       if [[ ! -d node_modules ]]; then
-        PUPPETEER_DOWNLOAD_BASE_URL="https://storage.googleapis.com/chrome-for-testing-public" yarn install --frozen-lockfile --prefer-offline
+        yarn install --frozen-lockfile --prefer-offline
       fi
   script:
     - cd $BUILD_DIR
@@ -101,7 +100,7 @@ stages:
   before_script:
     - |
       if [[ ! -d node_modules ]]; then
-        PUPPETEER_DOWNLOAD_BASE_URL="https://storage.googleapis.com/chrome-for-testing-public" yarn install --frozen-lockfile --prefer-offline
+        yarn install --frozen-lockfile --prefer-offline
       fi
   script:
     - cd $BUILD_DIR
@@ -118,7 +117,7 @@ stages:
   before_script:
     - |
       if [[ ! -d node_modules ]]; then
-        PUPPETEER_DOWNLOAD_BASE_URL="https://storage.googleapis.com/chrome-for-testing-public" yarn install --frozen-lockfile --prefer-offline
+        yarn install --frozen-lockfile --prefer-offline
       fi
   script:
     - cd $BUILD_DIR

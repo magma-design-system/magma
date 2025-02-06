@@ -1,0 +1,65 @@
+.actions-container {
+
+  --duration: theme('transitionDuration.300');
+  --ease: theme('transitionTimingFunction.in-out-expo');
+
+  align-items: center;
+  border-radius: var(--mds-tree-item-actions-border-radius);
+  display: none;
+  interpolate-size: allow-keywords;
+  justify-content: flex-start;
+  min-width: 0;
+  overflow: hidden;
+  transition-behavior: allow-discrete;
+  transition-duration: var(--duration);
+  transition-property: min-width, width, overflow;
+  transition-timing-function: var(--ease);
+  width: 0;
+}
+
+.actions-container--has-actions {
+  display: flex;
+}
+
+.actions {
+  align-items: center;
+  border-radius: var(--mds-tree-item-actions-border-radius);
+  display: inline-flex;
+  flex-shrink: 0;
+  gap: var(--mds-tree-item-actions-gap);
+  pointer-events: none;
+  transform: scale(0);
+  transition-duration: var(--duration);
+  transition-property: transform;
+  transition-timing-function: var(--ease);
+}
+
+:host-context([actions="visible"]) .actions-container,
+:host([actions="visible"]):host-context([actions="auto"]) .actions-container,
+.header:focus-within .actions,
+.header:hover .actions {
+  pointer-events: auto;
+}
+
+:host-context([actions="visible"]) .actions-container,
+:host([actions="visible"]):host-context([actions="auto"]) .actions-container,
+.header:focus-within .actions-container,
+.header:hover .actions-container {
+  animation: toggleOverflow var(--duration) forwards;
+  min-width: fit-content;
+  width: fit-content;
+}
+
+:host([actions="visible"]):host-context([actions="auto"]) .header:focus-within .actions,
+:host([actions="visible"]):host-context([actions="auto"]) .header:hover .actions,
+:host(:not([actions="auto"])):host-context([actions="visible"]) .actions,
+:host(:not([actions="visible"])):host-context([actions="auto"]) .header:focus-within .actions,
+:host(:not([actions="visible"])):host-context([actions="auto"]) .header:hover .actions,
+.header:focus-within .actions,
+.header:hover .actions {
+  transform: scale(1);
+}
+
+:host(:not([actions="visible"])):host-context([actions="auto"]) .actions {
+  transform: scale(0);
+}

@@ -1,0 +1,30 @@
+:host-context([appearance="none"]) .header {
+
+  --offset: 0;
+
+  gap: 0;
+}
+
+:host(:not(:last-child)):host-context([appearance="none"]) .children--has-children::before,
+:host-context([appearance="none"]) .tree-dot,
+:host-context([appearance="none"]) .tree-node {
+  display: none;
+}
+
+:host-context([appearance="none"]) .label-action {
+
+  --padding: theme('padding.200');
+
+  margin-left: 0;
+  padding-left: var(--padding);
+  padding-right: var(--padding);
+}
+
+:host-context([appearance="none"][toggle-position="left"]) .children {
+  padding-left: calc(calc(var(--header-gap) * 2) + var(--mds-tree-item-branch-border-size) + var(--padding-left) * 2);
+}
+
+:host-context([appearance="none"][toggle-position="right"]) .children {
+  padding-left: var(--padding-left);
+}
+
