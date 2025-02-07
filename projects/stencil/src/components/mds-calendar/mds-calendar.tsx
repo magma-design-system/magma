@@ -74,6 +74,13 @@ export class MdsCalendar {
   }
 
   componentDidLoad (): void {
+    this.host?.shadowRoot?.addEventListener('mouseover', event => {
+      const target = event.target as HTMLElement
+      if (target.matches('mds-calendar-cell') && this.startDateElement) {
+        this.handleHover(target)
+      }
+    })
+
     this.setDates()
   }
 
@@ -349,11 +356,6 @@ export class MdsCalendar {
                   date={dayInfo.date.toFormat('yyyy-MM-dd')}
                   month={dayInfo.isCurrentMonth ? 'current' : 'other'}
                   onClick={event => this.handleRange(event.target as HTMLElement, dayInfo.date)}
-                  onMouseOver={event => {
-                    if (this.startDateElement) {
-                      this.handleHover(event.target as HTMLElement)
-                    }
-                  }}
                 >
                   {dayInfo.date.toFormat('dd')}
                 </mds-calendar-cell>
