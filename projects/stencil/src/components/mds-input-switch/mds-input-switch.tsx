@@ -7,7 +7,7 @@ import { KeyboardManager } from '@common/keyboard-manager'
 import { MdsInputSwitchEventDetail } from './meta/event-detail'
 import { TypographyInfoType, TypographyReadType, TypographyVariants } from '@type/typography'
 import { inputSwitchIconVariant } from './meta/variants'
-import { hasSlottedElements } from '@common/slot'
+import { hasSlotted } from '@common/slot'
 import { Locale } from '@common/locale'
 import localeEl from './meta/locale.el.json'
 import localeEn from './meta/locale.en.json'
@@ -31,7 +31,7 @@ export class MdsInputSwitch {
   private km = new KeyboardManager()
   private label: string
   @State() dirty = false
-  @State() hasText: boolean = true
+  @State() hasText: boolean = false
 
   private t: Locale = new Locale({
     el: localeEl,
@@ -75,7 +75,7 @@ export class MdsInputSwitch {
   /**
    * Sets or returns the indeterminate state of the checkbox
    */
-  @Prop({ reflect: true }) readonly indeterminate: boolean = false
+  @Prop({ reflect: true, mutable: true }) indeterminate?: boolean
 
   /**
    * Specifies the name of an <input> element
@@ -128,6 +128,7 @@ export class MdsInputSwitch {
     e.stopPropagation()
     const input = this.host.shadowRoot?.getElementById('field') as HTMLInputElement
     this.checked = input.checked
+    this.indeterminate = false
 
     if (this.type === 'radio') {
       this.uncheckSiblings()
@@ -176,7 +177,7 @@ export class MdsInputSwitch {
     this.label = this.host.textContent ?? ''
     this.internals.setFormValue(this.checked ? this.value ?? null : null)
     this.checkFocusElement()
-    this.hasText = hasSlottedElements(this.host)
+    this.hasText = hasSlotted(this.host)
   }
 
   render () {
@@ -209,20 +210,18 @@ export class MdsInputSwitch {
           :
           <label htmlFor="field" class="label-icon" tabindex="0" aria-label={ this.t.get(this.checked ? 'unselect' : 'select', { label: this.label })}>
             <mds-text class="icon-typography-unchecked" tag="div" typography={this.typography} variant={this.variant}>
-              <mds-icon class="icon-unchecked" name={iconUnchecked}/>
+              <mds-icon class="icon-unchecked" name={clsx(this.indeterminate ? iconIndeterminate : iconUnchecked)}/>
             </mds-text>
             <mds-text class="icon-typography-checked" tag="div" typography={this.typography} variant={this.variant}>
               <mds-icon class="icon-checked" name={clsx(this.indeterminate ? iconIndeterminate : iconCheckedUser)}/>
             </mds-text>
           </label>
         }
-        { this.hasText &&
-          <label htmlFor="field" class="label-text">
-            <mds-text typography={this.typography} variant={this.variant}>
-              <slot></slot>
-            </mds-text>
-          </label>
-        }
+        <label htmlFor="field" class={clsx('label-text', !this.hasText && 'label-text--empty')}>
+          <mds-text typography={this.typography} variant={this.variant}>
+            <slot></slot>
+          </mds-text>
+        </label>
       </Host>
     )
   }
