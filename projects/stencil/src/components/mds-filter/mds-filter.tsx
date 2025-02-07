@@ -24,7 +24,7 @@ export class MdsFilter {
   /**
    * Sets an automatic reset of active filters if all filters are triggered
    */
-  @Prop() autoReset?: boolean
+  @Prop({ reflect: true }) autoReset?: boolean
 
   /**
    * Sets the label of the filter group
@@ -34,12 +34,12 @@ export class MdsFilter {
   /**
    * Sets if the filter group can filter multiple filters simultaneously
    */
-  @Prop() multiple?: boolean
+  @Prop({ reflect: true }) multiple?: boolean
 
   /**
    * Shows a reset button if one or more filters are active
    */
-  @Prop() reset?: boolean
+  @Prop({ reflect: true }) reset?: boolean
 
   private queryItems = ():NodeListOf<HTMLMdsFilterItemElement> =>
     this.element.querySelectorAll<HTMLMdsFilterItemElement>('mds-filter-item')
@@ -147,8 +147,8 @@ export class MdsFilter {
         <div class="items-wrapper">
           <div class={clsx('items', this.active && 'active')}>
             <slot/>
-            <div class={clsx('reset', this.active && 'reset-opened')}>
-              <mds-filter-item selected={this.active} disabled={!this.active} class={clsx('reset-button', this.active && 'reset-button-opened')} icon={miBaselineClose} onClick={this.resetItems}/>
+            <div class={clsx('reset', this.active && 'reset--opened')}>
+              <mds-filter-item selected={this.active} disabled={!this.active && this.reset} class={clsx('reset-button', this.active && 'reset-button-opened')} icon={miBaselineClose} onClick={this.resetItems}/>
             </div>
           </div>
         </div>

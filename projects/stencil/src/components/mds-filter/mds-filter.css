@@ -28,9 +28,20 @@
 }
 
 .reset {
+  @apply
+    duration-300
+    ease-in-out-expo;
+
   display: flex;
   flex-grow: 1;
   justify-content: flex-end;
+  transform: scale(0);
+  transform-origin: center;
+  transition-property: transform;
+}
+
+:host([reset]:not([reset="false"])) .reset {
+  transform: scale(1);
 }
 
 .reset-button {
