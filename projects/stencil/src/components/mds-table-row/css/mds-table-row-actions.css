@@ -13,10 +13,13 @@
 
   align-items: center;
   background-color: var(--mds-table-row-actions-background);
+  border-bottom-left-radius: calc(theme('borderRadius.lg') + var(--mds-table-border-width) * 2);
+  border-top-left-radius: calc(theme('borderRadius.lg') + var(--mds-table-border-width) * 2);
   display: inline-flex;
   gap: var(--mds-table-row-actions-gap);
   inset: 0;
   margin-right: 100%;
+  padding: calc(var(--mds-table-border-width) * 2);
   padding-right: 0;
   pointer-events: auto;
   position: sticky;
