@@ -19,6 +19,7 @@
   --mds-filter-items-padding: theme('spacing.200');
   --mds-filter-items-radius: theme('borderRadius.full');
   --mds-filter-label-padding: 0 theme('spacing.600');
+  --mds-filter-outline-opacity: 0.7;
 
   @apply gap-100;
 
@@ -57,10 +58,27 @@
   gap: var(--mds-filter-items-gap);
   overflow: auto;
   padding: var(--mds-filter-items-padding);
+  position: relative;
   scroll-behavior: smooth;
   scroll-snap-type: x mandatory;
   transition-property: background-color;
 
+}
+
+.items-wrapper {
+  display: grid;
+  overflow: hidden;
+  position: relative;
+}
+
+.items-wrapper::after {
+  border-radius: var(--mds-filter-items-radius);
+  box-shadow: 0 0 0 2px var(--mds-filter-items-background) inset;
+  content: "";
+  inset: 0;
+  opacity: var(--mds-filter-outline-opacity);
+  pointer-events: none;
+  position: absolute;
 }
 
 .items::-webkit-scrollbar {

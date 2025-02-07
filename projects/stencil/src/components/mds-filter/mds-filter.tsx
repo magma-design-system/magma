@@ -144,10 +144,12 @@ export class MdsFilter {
     return (
       <Host aria-label={ this.label } role="menubar">
         { this.label && <mds-text class="label" typography="label">{ this.label }</mds-text> }
-        <div class={clsx('items', this.active && 'active')}>
-          <slot/>
-          <div class={clsx('reset', this.active && 'reset-opened')}>
-            <mds-filter-item selected={this.active} disabled={!this.active} class={clsx('reset-button', this.active && 'reset-button-opened')} icon={miBaselineClose} onClick={this.resetItems}/>
+        <div class="items-wrapper">
+          <div class={clsx('items', this.active && 'active')}>
+            <slot/>
+            <div class={clsx('reset', this.active && 'reset-opened')}>
+              <mds-filter-item selected={this.active} disabled={!this.active} class={clsx('reset-button', this.active && 'reset-button-opened')} icon={miBaselineClose} onClick={this.resetItems}/>
+            </div>
           </div>
         </div>
       </Host>
