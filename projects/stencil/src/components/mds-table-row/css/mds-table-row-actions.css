@@ -31,7 +31,6 @@
   transform: translateX(100%);
 }
 
-
 :host([overlay-actions]) .actions {
   padding-right: var(--mds-table-cell-padding);
   transform: translateX(100%);
@@ -42,4 +41,18 @@
   --mds-table-row-actions-background: var(--mds-table-row-background);
 
   transform: translateX(0);
+}
+
+:host(:hover):host-context(mds-table[interactive="false"]) .actions,
+:host(:hover):host-context(mds-table:not([interactive])) .actions {
+
+  --mds-table-row-actions-background: var(--mds-table-row-background-hover);
+}
+
+:host(:not([selected]):hover):host-context(mds-table[selection]:not([interactive])) .actions,
+:host(:not([selected]):hover):host-context(mds-table[selection][interactive="false"]) .actions,
+:host([selected="false"]:hover):host-context(mds-table[selection]:not([interactive])) .actions,
+:host([selected="false"]:hover):host-context(mds-table[selection][interactive="false"]) .actions {
+
+  --mds-table-row-actions-background: var(--mds-table-row-background-alt);
 }
