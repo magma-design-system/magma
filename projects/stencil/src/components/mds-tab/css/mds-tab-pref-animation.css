@@ -2,6 +2,7 @@
 
 @container style(--magma-pref-animation: reduce) {
   :host {
+
     --mds-tab-transition-duration: 0s;
   }
 }
@@ -10,6 +11,7 @@
 
   @media (prefers-reduced-motion) {
     :host {
+
       --mds-tab-transition-duration: 0s;
     }
   }

@@ -24,6 +24,7 @@ export class MdsTab {
   private currentItem: number = -1
   private slider: HTMLDivElement | null
   private tabs: HTMLElement
+  private tabsContainer: HTMLElement
   private tabItems: NodeListOf<HTMLMdsTabItemElement>
   private contentItems: NodeListOf<HTMLElement>
   @State() sliderWidth: number = -1
@@ -62,6 +63,7 @@ export class MdsTab {
 
   componentDidLoad (): void {
     this.tabs = this.element.shadowRoot?.querySelector('.tabs') as HTMLElement
+    this.tabsContainer = this.element.shadowRoot?.querySelector('.tabs-wrapper') as HTMLElement
     this.contentItems = this.queryContentItems()
     this.contentItems.forEach((item: HTMLElement, key: number): void => {
       setAttributeIfEmpty(item, 'role', 'tabpanel')
@@ -79,7 +81,7 @@ export class MdsTab {
     }
     if (this.slider) {
       this.sliderWidth = this.tabItems[this.currentItem].offsetWidth
-      this.sliderOffset = this.tabItems[this.currentItem].offsetLeft - this.tabs.offsetLeft
+      this.sliderOffset = this.tabItems[this.currentItem].offsetLeft - this.tabsContainer.offsetLeft
     }
   }
 
@@ -143,14 +145,16 @@ export class MdsTab {
   render () {
     return (
       <Host>
-        <div class="tabs" part="tabs" role="tablist">
-          <slot />
-          { this.animation === 'slide' &&
-            <div class="slider" part="slider" style={{
-              '--mds-tab-slider-width': `${this.sliderWidth}px`,
-              '--mds-tab-slider-offset': `${this.sliderOffset}px`,
-            }}></div>
-          }
+        <div class="tabs-wrapper">
+          <div class="tabs" part="tabs" role="tablist">
+            <slot />
+            { this.animation === 'slide' &&
+              <div class="slider" part="slider" style={{
+                '--mds-tab-slider-width': `${this.sliderWidth}px`,
+                '--mds-tab-slider-offset': `${this.sliderOffset}px`,
+              }}></div>
+            }
+          </div>
         </div>
         { this.contentItems &&
         <div class="contents" part="contents">
