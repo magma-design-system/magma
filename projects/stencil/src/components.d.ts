@@ -1090,7 +1090,7 @@ export namespace Components {
         /**
           * Sets or returns the indeterminate state of the checkbox
          */
-        "indeterminate": boolean;
+        "indeterminate"?: boolean;
         /**
           * Specifies the name of an <input> element
          */
@@ -1601,6 +1601,7 @@ export namespace Components {
     }
     interface MdsTableHeader {
         "selectable"?: boolean;
+        "setSelection": (selectedItems: number, totalItems: number) => Promise<void>;
         "updateLang": () => Promise<void>;
     }
     interface MdsTableHeaderCell {

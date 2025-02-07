@@ -18,8 +18,10 @@ export class MdsTableHeader {
 
   @Element() host: HTMLMdsTableHeaderElement
   private table: HTMLMdsTableElement
+  private checkboxEl: HTMLMdsInputSwitchElement
   @State() selectAll: boolean = false
   @State() hasActions: boolean = false
+  @State() indeterminate: boolean = false
   @State() hasSelection?: boolean = false
   private t:Locale = new Locale({
     el: localeEl,
@@ -36,6 +38,17 @@ export class MdsTableHeader {
 
   @Prop() readonly selectable?: boolean
 
+  @Method()
+  async setSelection (selectedItems: number, totalItems: number): Promise<void> {
+    this.indeterminate = selectedItems !== 0 ? selectedItems !== totalItems : false
+    if (this.indeterminate) {
+      if (!this.checkboxEl) {
+        this.checkboxEl = this.host.shadowRoot?.querySelector('.checkbox') as HTMLMdsInputSwitchElement
+      }
+      this.checkboxEl.checked = false
+    }
+  }
+
   componentWillLoad (): void {
     this.language = this.t.lang(this.host)
     this.table = this.host.closest('mds-table') as HTMLMdsTableElement
@@ -43,7 +56,12 @@ export class MdsTableHeader {
   }
 
   private handleSelectAllChange = (e: CustomEvent): void => {
-    this.selectAll = e.detail.checked
+    if (this.indeterminate) {
+      this.selectAll = true
+    } else {
+      this.selectAll = e.detail.checked
+    }
+    this.indeterminate = false
     this.table.selectAll(this.selectAll)
   }
 
@@ -53,7 +71,7 @@ export class MdsTableHeader {
         { this.selectable &&
           <mds-table-cell class="selection" role="columnheader">
             <div class="checkbox-wrapper">
-              <mds-input-switch title={this.t.get(this.selectAll ? 'selectNoneRows' : 'selectAllRows')} lang={this.language} type="checkbox" onMdsInputSwitchChange={this.handleSelectAllChange}></mds-input-switch>
+              <mds-input-switch class="checkbox" title={this.t.get(this.selectAll ? 'selectNoneRows' : 'selectAllRows')} lang={this.language} type="checkbox" onMdsInputSwitchChange={this.handleSelectAllChange} indeterminate={this.indeterminate}></mds-input-switch>
             </div>
           </mds-table-cell>
         }
