@@ -1,0 +1,59 @@
+.icon-checked,
+.icon-unchecked {
+  @apply
+    duration-200
+    ease-out-expo
+    font-normal;
+
+  transition-property: fill, transform;
+}
+
+.icon-unchecked {
+  fill: var(--mds-input-switch-icon-color-unchecked);
+  opacity: 1;
+  transform: scale(theme('scale.100'));
+  transition-duration: var(--mds-input-switch-duration);
+}
+
+.icon-checked {
+  fill: var(--mds-input-switch-icon-color-checked);
+  transform: scale(theme('scale.0'));
+  transition-duration: var(--mds-input-switch-duration);
+}
+
+.field:disabled + .label-icon {
+  cursor: default;
+}
+
+.field:disabled + .label-icon + .label-text {
+  cursor: default;
+}
+
+.field:checked + .label-icon .icon-unchecked {
+  @apply opacity-0;
+
+  transform: scale(theme('scale.150'));
+  transition-duration: calc(var(--mds-input-switch-duration) * 2);
+}
+
+.field:checked + .label-icon .icon-checked {
+  transform: scale(theme('scale.100'));
+  transition-duration: calc(var(--mds-input-switch-duration) * 1.5);
+}
+
+.field:disabled + .label-icon .icon-unchecked {
+  fill: var(--mds-input-switch-icon-color-unchecked-disabled);
+}
+
+.field:disabled + .label-icon .icon-checked {
+  fill: var(--mds-input-switch-icon-color-checked-disabled);
+}
+
+.field:disabled:indeterminate + .label-icon .icon-checked {
+  fill: var(--mds-input-switch-icon-color-indeterminate-disabled);
+}
+
+.field:indeterminate + .label-icon .icon-checked {
+  fill: var(--mds-input-switch-icon-color-indeterminate);
+  transform: scale(theme('scale.100'));
+}

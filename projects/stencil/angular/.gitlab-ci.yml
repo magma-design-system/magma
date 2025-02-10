@@ -43,7 +43,8 @@ stencil-angular-publish:
 # STENCIL ANGULAR INSTALL TEST
 stencil-angular-install-test:
   extends: .base-install-test
-  needs: [stencil-angular-publish]
+  dependencies: [stencil-angular-build]
+  needs: [stencil-angular-publish, stencil-angular-build]
   variables:
     BUILD_DIR: projects/stencil/angular/dist/magma-angular
     COMPONENT: magma-angular
