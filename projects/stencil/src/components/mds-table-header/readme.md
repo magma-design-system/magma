@@ -16,6 +16,23 @@ This is a web-component from Maggioli Design System [Magma](https://magma.maggio
 
 ## Methods
 
+### `setSelection(selectedItems: number, totalItems: number) => Promise<void>`
+
+
+
+#### Parameters
+
+| Name            | Type     | Description |
+| --------------- | -------- | ----------- |
+| `selectedItems` | `number` |             |
+| `totalItems`    | `number` |             |
+
+#### Returns
+
+Type: `Promise<void>`
+
+
+
 ### `updateLang() => Promise<void>`
 
 

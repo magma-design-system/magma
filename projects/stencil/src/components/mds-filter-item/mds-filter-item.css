@@ -6,6 +6,12 @@
 /* x */
 
 :host {
+
+  --mds-filter-item-count-background-default: theme('colors.tone-neutral-08');
+  --mds-filter-item-count-color-default: theme('colors.tone-neutral-02');
+  --mds-filter-item-count-background-selected: theme('colors.tone-neutral-05');
+  --mds-filter-item-count-color-selected: theme('colors.tone-neutral');
+
   @apply
     duration-200
     ease-out
@@ -13,17 +19,43 @@
     gap-100
     px-400
     py-200
-    rounded-full
-    whitespace-nowrap;
+    rounded-full;
 
   align-items: center;
   color: theme('colors.tone-neutral-03');
   cursor: pointer;
   display: flex;
-  fill: theme('colors.tone-neutral-03');
+  fill: currentcolor;
   justify-content: center;
   transition-property: background-color, box-shadow, color, outline, outline-offset;
+  user-select: none;
   white-space: nowrap;
+}
+
+mds-text {
+  white-space: nowrap;
+}
+
+.count {
+  @apply
+    duration-200
+    ease-out;
+
+  align-items: center;
+  background-color: var(--mds-filter-item-count-background-default);
+  border-radius: theme('size.400');
+  box-sizing: border-box;
+  color: currentcolor;
+  color: var(--mds-filter-item-count-color-default);
+  display: inline-flex;
+  flex-shrink: 0;
+  height: theme('size.400');
+  justify-content: center;
+  min-width: theme('size.400');
+  padding-left: theme('padding.150');
+  padding-right: theme('padding.150');
+  transition-property: background-color, color;
+  user-select: none;
 }
 
 :host(:focus-visible) {
@@ -42,10 +74,19 @@
   background-color: theme('colors.tone-neutral');
 }
 
+:host(:hover) {
+  box-shadow: theme('boxShadow.sm');
+}
+
 :host( [selected]:not([selected="false"]) ) {
   color: theme('colors.tone-neutral-01');
 }
 
+:host( [selected]:not([selected="false"]) ) .count {
+  background-color: var(--mds-filter-item-count-background-selected);
+  color: var(--mds-filter-item-count-color-selected);
+}
+
 @import './css/mds-filter-item-pref-animation.css';
 @import './css/mds-filter-item-pref-theme.css';
-@import './css/mds-filter-item-pref-contrast.css';
+@import './css/mds-filter-item-pref-contrast.css'
