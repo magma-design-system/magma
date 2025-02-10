@@ -3,8 +3,7 @@
 @container style(--magma-pref-animation: reduce) {
   :host {
 
-    --mds-tab-scroll-behavior: auto;
-    --mds-tab-transition-duration: 0s;
+    --mds-horizontal-scroll-behavior: auto;
   }
 }
 
@@ -13,8 +12,7 @@
   @media (prefers-reduced-motion) {
     :host {
 
-      --mds-tab-scroll-behavior: auto;
-      --mds-tab-transition-duration: 0s;
+      --mds-horizontal-scroll-behavior: auto;
     }
   }
 }

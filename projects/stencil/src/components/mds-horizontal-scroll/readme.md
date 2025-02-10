@@ -35,6 +35,7 @@ This is a web-component from Maggioli Design System [Magma](https://magma.maggio
 | Name                                                 | Description                                                              |
 | ---------------------------------------------------- | ------------------------------------------------------------------------ |
 | `--mds-horizontal-scroll-background`                 | Sets the background-color of the component                               |
+| `--mds-horizontal-scroll-behavior`                   | Sets the scroll-behavior animation                                                 |
 | `--mds-horizontal-scroll-scrollbar-margin`           | Sets the margin of the browser scroll bar (if supported)                 |
 | `--mds-horizontal-scroll-scrollbar-radius`           | Sets the border-radius of the browser scroll bar (if supported)          |
 | `--mds-horizontal-scroll-scrollbar-size`             | Sets the height and width of the browser scroll bar (if supported)       |

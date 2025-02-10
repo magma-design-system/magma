@@ -65,6 +65,7 @@ This is a web-component from Maggioli Design System [Magma](https://magma.maggio
 | `--mds-tab-tabs-outline-opacity`              | Sets the `opacity` of outline border which holds                                                                                      |
 | `--mds-tab-tabs-padding`                      | Sets the `padding` of `mds-tab::part(tabs)`                                                                                           |
 | `--mds-tab-tabs-radius`                       | Sets the `border-radius` of `mds-tab::part(tabs)`                                                                                     |
+| `--mds-tab-tabs-wrapper-outline-opacity`      | Sets the `opacity` of outline border which holds                                                                                      |
 
 
 ## Dependencies

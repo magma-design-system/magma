@@ -17,7 +17,7 @@
   top: var(--mds-tab-tabs-padding);
   transform: translateX(var(--mds-tab-slider-offset)) translateZ(0);
   transition-duration: var(--mds-tab-transition-duration);
-  transition-property: transform, width;
+  transition-property: background-color, box-shadow, transform, width;
   transition-timing-function: var(--mds-tab-transition-timing-function);
   width: var(--mds-tab-slider-width);
   will-change: transform, width;
