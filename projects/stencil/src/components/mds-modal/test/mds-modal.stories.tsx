@@ -27,7 +27,7 @@ const email = `${firstName.toLowerCase()}.${lastName.toLowerCase()}@nintendo.com
 const Template = args =>
   <mds-modal {...args}>
     <header slot="top" class="p-800 flex gap-400 items-center border-b border-solid border-0 border-tone-neutral-09 max-w-[400px]">
-      <mds-img class="w-1600" src="/logo-gruppo-maggioli-512w.webp"/>
+      <mds-img class="w-1600" src="./logo-gruppo-maggioli-512w.webp"/>
       <div class="text-tone-neutral-02">
         <mds-text typography="h5" class="truncate min-w-0">Maggioli Editore</mds-text>
         <mds-text typography="detail" class="truncate min-w-0">Menu di servizio</mds-text>
@@ -40,7 +40,7 @@ const Template = args =>
     </div>
     <footer slot="bottom" class="p-800 flex gap-400 text-tone-neutral-02 border-t border-solid border-0 border-tone-neutral-09 max-w-[400px]">
       <mds-author class="flex-grow">
-        <mds-avatar slot="avatar" class="w-1600 mobile:w-1200" src="/avatar-01-200x200.jpeg"/>
+        <mds-avatar slot="avatar" class="w-1600 mobile:w-1200" src="./avatar-01-200x200.jpeg"/>
         <mds-text typography="h6">{ fullName }</mds-text>
         <mds-text typography="caption" class="text-tone-neutral-04">{ email }</mds-text>
       </mds-author>

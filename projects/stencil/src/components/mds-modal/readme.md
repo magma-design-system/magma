@@ -43,17 +43,18 @@ This is a web-component from Maggioli Design System [Magma](https://magma.maggio
 
 ## CSS Custom Properties
 
-| Name                            | Description                                                                                                                                        |
-| ------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `--mds-modal-close-icon-color`  | Set the color of the close icon button to the top left.                                                                                            |
-| `--mds-modal-overlay-color`     | Set the overlay color of the background when the component is opened, this property can be inherited from `globals.css` in `styles^8.0.0`.         |
-| `--mds-modal-overlay-opacity`   | Set the overlay color opacity of the background when the component is opened, this property can be inherited from `globals.css` in `styles^8.0.0`. |
-| `--mds-modal-window-background` | Set the background color of the window                                                                                                             |
-| `--mds-modal-window-distance`   | Set the distance between the modal window and the screen bounds                                                                                    |
-| `--mds-modal-window-overflow`   | Set the overflow of the window                                                                                                                     |
-| `--mds-modal-window-radius`     | Set the border radius of the window                                                                                                                |
-| `--mds-modal-window-shadow`     | Set the box shadow of the window                                                                                                                   |
-| `--mds-modal-z-index`           | Set the z-index of the window when the component is opened                                                                                         |
+| Name                                 | Description                                                                                                                                        |
+| ------------------------------------ | -------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `--mds-modal-close-icon-color`       | Set the color of the close icon button to the top left.                                                                                            |
+| `--mds-modal-custom-window-distance` | Set the distance between the slotted modal window and the screen bounds                                                                            |
+| `--mds-modal-overlay-color`          | Set the overlay color of the background when the component is opened, this property can be inherited from `globals.css` in `styles^8.0.0`.         |
+| `--mds-modal-overlay-opacity`        | Set the overlay color opacity of the background when the component is opened, this property can be inherited from `globals.css` in `styles^8.0.0`. |
+| `--mds-modal-window-background`      | Set the background color of the window                                                                                                             |
+| `--mds-modal-window-distance`        | Set the distance between the modal window and the screen bounds                                                                                    |
+| `--mds-modal-window-overflow`        | Set the overflow of the window                                                                                                                     |
+| `--mds-modal-window-radius`          | Set the border radius of the window                                                                                                                |
+| `--mds-modal-window-shadow`          | Set the box shadow of the window                                                                                                                   |
+| `--mds-modal-z-index`                | Set the z-index of the window when the component is opened                                                                                         |
 
 
 ## Dependencies
