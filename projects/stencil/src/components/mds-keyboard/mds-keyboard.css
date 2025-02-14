@@ -1,0 +1,24 @@
+@tailwind utilities;
+
+:host {
+
+  --mds-keyboard-illumination-dark-size: theme('spacing.150');
+  --mds-keyboard-illumination-light-size: theme('spacing.25');
+  --mds-keyboard-illumination-dark: 0 calc(var(--mds-keyboard-illumination-dark-size) * -1) 0 0 rgb(0 0 0 / 0.075) inset;
+  --mds-keyboard-illumination-light: 0 var(--mds-keyboard-illumination-light-size) 0 0 rgb(255 255 255 / 0) inset;
+  --mds-keyboard-illumination-shadow: 0 0 0 0 rgb(0 0 0 / 0);
+  --mds-keyboard-padding: theme('spacing.200');
+
+  align-items: center;
+  background-color: theme('colors.tone-stone-07');
+  border-radius: theme('borderRadius.xl');
+  box-shadow: var(--mds-keyboard-illumination-light), var(--mds-keyboard-illumination-dark), var(--mds-keyboard-illumination-shadow);
+  display: inline-flex;
+  gap: theme('spacing.100');
+  padding: calc(var(--mds-keyboard-illumination-light-size) + var(--mds-keyboard-padding)) var(--mds-keyboard-padding) calc(var(--mds-keyboard-illumination-dark-size) + var(--mds-keyboard-padding)) var(--mds-keyboard-padding);
+  user-select: none;
+}
+
+::slotted(mds-keyboard-key) {
+  align-self: flex-end;
+}

@@ -1165,6 +1165,10 @@ export namespace Components {
         "sort"?: AttachmentSort;
         "updateLang": () => Promise<void>;
     }
+    interface MdsKeyboard {
+    }
+    interface MdsKeyboardKey {
+    }
     interface MdsKpi {
     }
     interface MdsKpiItem {
@@ -2532,6 +2536,18 @@ declare global {
         prototype: HTMLMdsInputUploadElement;
         new (): HTMLMdsInputUploadElement;
     };
+    interface HTMLMdsKeyboardElement extends Components.MdsKeyboard, HTMLStencilElement {
+    }
+    var HTMLMdsKeyboardElement: {
+        prototype: HTMLMdsKeyboardElement;
+        new (): HTMLMdsKeyboardElement;
+    };
+    interface HTMLMdsKeyboardKeyElement extends Components.MdsKeyboardKey, HTMLStencilElement {
+    }
+    var HTMLMdsKeyboardKeyElement: {
+        prototype: HTMLMdsKeyboardKeyElement;
+        new (): HTMLMdsKeyboardKeyElement;
+    };
     interface HTMLMdsKpiElement extends Components.MdsKpi, HTMLStencilElement {
     }
     var HTMLMdsKpiElement: {
@@ -3121,6 +3137,8 @@ declare global {
         "mds-input-tip": HTMLMdsInputTipElement;
         "mds-input-tip-item": HTMLMdsInputTipItemElement;
         "mds-input-upload": HTMLMdsInputUploadElement;
+        "mds-keyboard": HTMLMdsKeyboardElement;
+        "mds-keyboard-key": HTMLMdsKeyboardKeyElement;
         "mds-kpi": HTMLMdsKpiElement;
         "mds-kpi-item": HTMLMdsKpiItemElement;
         "mds-label": HTMLMdsLabelElement;
@@ -4319,6 +4337,10 @@ declare namespace LocalJSX {
          */
         "sort"?: AttachmentSort;
     }
+    interface MdsKeyboard {
+    }
+    interface MdsKeyboardKey {
+    }
     interface MdsKpi {
     }
     interface MdsKpiItem {
@@ -5111,6 +5133,8 @@ declare namespace LocalJSX {
         "mds-input-tip": MdsInputTip;
         "mds-input-tip-item": MdsInputTipItem;
         "mds-input-upload": MdsInputUpload;
+        "mds-keyboard": MdsKeyboard;
+        "mds-keyboard-key": MdsKeyboardKey;
         "mds-kpi": MdsKpi;
         "mds-kpi-item": MdsKpiItem;
         "mds-label": MdsLabel;
@@ -5210,6 +5234,8 @@ declare module "@stencil/core" {
             "mds-input-tip": LocalJSX.MdsInputTip & JSXBase.HTMLAttributes<HTMLMdsInputTipElement>;
             "mds-input-tip-item": LocalJSX.MdsInputTipItem & JSXBase.HTMLAttributes<HTMLMdsInputTipItemElement>;
             "mds-input-upload": LocalJSX.MdsInputUpload & JSXBase.HTMLAttributes<HTMLMdsInputUploadElement>;
+            "mds-keyboard": LocalJSX.MdsKeyboard & JSXBase.HTMLAttributes<HTMLMdsKeyboardElement>;
+            "mds-keyboard-key": LocalJSX.MdsKeyboardKey & JSXBase.HTMLAttributes<HTMLMdsKeyboardKeyElement>;
             "mds-kpi": LocalJSX.MdsKpi & JSXBase.HTMLAttributes<HTMLMdsKpiElement>;
             "mds-kpi-item": LocalJSX.MdsKpiItem & JSXBase.HTMLAttributes<HTMLMdsKpiItemElement>;
             "mds-label": LocalJSX.MdsLabel & JSXBase.HTMLAttributes<HTMLMdsLabelElement>;
