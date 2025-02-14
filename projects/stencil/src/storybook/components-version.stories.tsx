@@ -2,7 +2,7 @@ import { h } from '@stencil/core'
 import versions from './components-version.json'
 
 export default {
-  title: 'Components version',
+  title: 'Common tests',
 }
 
 const Template = () =>

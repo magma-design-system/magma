@@ -1,6 +1,7 @@
 import { defineCustomElements } from '../dist/esm/loader'
 
 import 'normalize.css'
+import '@maggioli-design-system/styles/dist/css/hydrated.css'
 import '@maggioli-design-system/styles/dist/css/colors-rgb.css'
 import '@maggioli-design-system/styles/dist/css/globals.css'
 import '@maggioli-design-system/styles/dist/css/animations.css'
