@@ -10,11 +10,23 @@ export default {
   },
 }
 
-const Template = args =>
+const TemplateSingleKey = args =>
   <mds-keyboard {...args}>
-    <mds-keyboard-key>ctrl</mds-keyboard-key>
+    <mds-keyboard-key>F1</mds-keyboard-key>
+  </mds-keyboard>
+
+const TemplateMultipleKeys = args =>
+  <mds-keyboard {...args}>
+    <mds-keyboard-key code="control">ctrl</mds-keyboard-key>
     <mds-keyboard-key>x</mds-keyboard-key>
   </mds-keyboard>
 
-export const Default = Template.bind({})
-// Default.args = { }
+export const Default = TemplateSingleKey.bind({})
+Default.args = {
+  try: true,
+}
+
+export const MultipleKeys = TemplateMultipleKeys.bind({})
+MultipleKeys.args = {
+  try: true,
+}

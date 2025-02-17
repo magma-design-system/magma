@@ -41,6 +41,8 @@ import { MdsInputSwitchEventDetail } from "./components/mds-input-switch/meta/ev
 import { InputTipPositionType } from "./components/mds-input-tip/meta/types";
 import { InputTipItemVariantType } from "./components/mds-input-tip-item/meta/types";
 import { AttachmentSort, FileError } from "./components/mds-input-upload/meta/types";
+import { KeyboardTest } from "./components/mds-keyboard/meta/type";
+import { KeyboarKeyName } from "./type/keyboard";
 import { ModalAnimationStateType, ModalPositionType } from "./components/mds-modal/meta/types";
 import { StrategyType } from "./components/mds-notification/meta/types";
 import { MdsPaginatorEventDetail } from "./components/mds-paginator/meta/event-detail";
@@ -105,6 +107,8 @@ export { MdsInputSwitchEventDetail } from "./components/mds-input-switch/meta/ev
 export { InputTipPositionType } from "./components/mds-input-tip/meta/types";
 export { InputTipItemVariantType } from "./components/mds-input-tip-item/meta/types";
 export { AttachmentSort, FileError } from "./components/mds-input-upload/meta/types";
+export { KeyboardTest } from "./components/mds-keyboard/meta/type";
+export { KeyboarKeyName } from "./type/keyboard";
 export { ModalAnimationStateType, ModalPositionType } from "./components/mds-modal/meta/types";
 export { StrategyType } from "./components/mds-notification/meta/types";
 export { MdsPaginatorEventDetail } from "./components/mds-paginator/meta/event-detail";
@@ -1166,8 +1170,19 @@ export namespace Components {
         "updateLang": () => Promise<void>;
     }
     interface MdsKeyboard {
+        "test"?: KeyboardTest;
+        "try"?: boolean;
+        "updateLang": () => Promise<void>;
     }
     interface MdsKeyboardKey {
+        /**
+          * Sets the code of the keyboard key for test if enabled from `mds-keyboard` parent component
+         */
+        "code"?: KeyboarKeyName;
+        /**
+          * Sets if the key is pressed or not
+         */
+        "pressed"?: boolean;
     }
     interface MdsKpi {
     }
@@ -4338,8 +4353,18 @@ declare namespace LocalJSX {
         "sort"?: AttachmentSort;
     }
     interface MdsKeyboard {
+        "test"?: KeyboardTest;
+        "try"?: boolean;
     }
     interface MdsKeyboardKey {
+        /**
+          * Sets the code of the keyboard key for test if enabled from `mds-keyboard` parent component
+         */
+        "code"?: KeyboarKeyName;
+        /**
+          * Sets if the key is pressed or not
+         */
+        "pressed"?: boolean;
     }
     interface MdsKpi {
     }
