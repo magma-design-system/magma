@@ -5,6 +5,7 @@
 :host {
 
   --mds-keyboard-background-default: var(--mds-keyboard-background);
+  --mds-keyboard-spinner-duration: 1s;
   --mds-keyboard-background-fail: theme('colors.status-error-09');
   --mds-keyboard-background-pass: theme('colors.status-success-09');
   --mds-keyboard-background: theme('colors.tone-slate-08');
@@ -75,6 +76,9 @@ mds-tooltip {
 }
 
 .combination-checker {
+
+  --mds-button-await-duration: var(--mds-keyboard-spinner-duration);
+
   border-radius: 100px;
 }
 

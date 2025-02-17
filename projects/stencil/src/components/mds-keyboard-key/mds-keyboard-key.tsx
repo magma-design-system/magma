@@ -30,7 +30,7 @@ export class MdsKeyboardKey {
 
   render () {
     return (
-      <Host>
+      <Host title="Missing explanation">
         <mds-text class="shortcut-text" typography="detail"><b><slot/></b></mds-text>
       </Host>
     )
