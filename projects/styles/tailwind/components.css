@@ -50,4 +50,12 @@
     -ms-overflow-style: none;
     scrollbar-width: none;
   }
+
+  .not-hydrated {
+    animation-duration: 0s;
+    opacity: 0;
+    transition-delay: 0.1s;
+    transition-duration: 0s;
+    visibility: hidden;
+  }
 }
