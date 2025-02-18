@@ -13,3 +13,7 @@ export type ModalAnimationStateType =
   | 'intro'
   | 'none'
   | 'outro'
+
+export type ModalOverflowType =
+  | 'auto'
+  | 'manual'

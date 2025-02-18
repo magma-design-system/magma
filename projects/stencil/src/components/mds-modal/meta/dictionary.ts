@@ -10,6 +10,12 @@ const modalPositionDictionary = [
   'top-right',
 ]
 
+const modalOverflowDictionary = [
+  'auto',
+  'manual',
+]
+
 export {
+  modalOverflowDictionary,
   modalPositionDictionary,
 }
