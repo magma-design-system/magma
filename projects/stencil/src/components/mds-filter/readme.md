@@ -40,9 +40,9 @@ This is a web-component from Maggioli Design System [Magma](https://magma.maggio
 | `--mds-filter-items-gap`               | Sets the gap between items                                              |
 | `--mds-filter-items-padding`           | Sets the padding of the items row area                                  |
 | `--mds-filter-items-radius`            | Sets the border-radius of the items row area                            |
-| `--mds-filter-items-scroll-behavior`   | smooth;                                                                 |
+| `--mds-filter-items-scroll-behavior`   | Sets the scroll-behavior animation;                                     |
 | `--mds-filter-label-padding`           | Sets the padding of the label                                           |
-| `--mds-filter-wrapper-shadow`          | 0 0 0 2px var(--mds-filter-wrapper-shadow-color) inset;                 |
+| `--mds-filter-wrapper-shadow`          | Sets the shadow used as outline border                                  |
 | `--mds-filter-wrapper-shadow-color`    | Sets the effect of the outline border                                   |
 | `--mds-filter-wrapper-shodow-opacity`  | Sets the opacity of the outline border                                  |
 
