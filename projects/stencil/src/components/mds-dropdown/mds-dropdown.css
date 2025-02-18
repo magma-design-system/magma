@@ -42,10 +42,10 @@
   pointer-events: none;
   position: fixed;
   transform: var(--mds-dropdown-transform-from);
+  transition-behavior: allow-discrete;
   transition-duration: var(--mds-dropdown-duration);
   transition-property: opacity, transform, transform-origin, display;
   transition-timing-function: var(--mds-dropdown-ease);
-  transition-behavior: allow-discrete;
   z-index: var(--mds-dropdown-z-index);
 }
 
@@ -53,7 +53,6 @@
   @apply opacity-100;
 
   display: grid;
-
   pointer-events: auto;
   transform: var(--mds-dropdown-transform-to);
 
