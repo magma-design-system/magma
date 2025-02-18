@@ -175,8 +175,9 @@ Appearance.args = {
 
 export const AppearanceSet = TemplateLandingPage.bind({})
 AppearanceSet.args = {
-  'auto-hide': 800,
-  threshold: 10,
-  appearance: 'inline',
   'appearance-set': 'inline, stripe 548',
+  'auto-hide': 800,
+  appearance: 'inline',
+  menu: 'all',
+  threshold: 10,
 }

@@ -2,6 +2,7 @@ import { Component, Element, Event, EventEmitter, Host, State, h, Prop, Watch, M
 import { MdsHeaderEventDetail } from './meta/event-detail'
 import { HeaderBarMenuType, HeaderBarNavType } from '@type/header-bar'
 import { AppearanceType } from './meta/types'
+import clsx from 'clsx'
 
 /**
  * @part menu - The container element of the modal
@@ -214,6 +215,7 @@ export class MdsHeader {
   render () {
     return (
       <Host>
+        <div class={clsx('backdrop', `backdrop--${this.visibility}`)}></div>
         <slot />
         {this.hasMenu &&
           <div class="menu" part="menu">
