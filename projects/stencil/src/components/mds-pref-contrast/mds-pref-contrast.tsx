@@ -114,7 +114,7 @@ export class MdsPrefContrast {
     return (
       <Host>
         <mds-text class="info" typography="caption"><b>{this.t.get('label')}</b> {this.t.get(this.contrast[this.mode ?? this.defaultMode].label)}</mds-text>
-        <mds-tab>
+        <mds-tab fill>
           <mds-tab-item selected={this.mode === 'more'} onClick={() => { this.setContrast('more') }} class="item item--more" icon={miBaselineContrast}></mds-tab-item>
           <mds-tab-item selected={this.mode === 'system'} onClick={() => { this.setContrast('system') }} class="item item--system" icon={miBaselineSettings}></mds-tab-item>
           <mds-tab-item selected={this.mode === 'no-preference'} onClick={() => { this.setContrast('no-preference') }} class="item item--default" icon={this.mode === 'no-preference' ? miBaselineAutoAwesome : miOutlineAutoAwesome}></mds-tab-item>
