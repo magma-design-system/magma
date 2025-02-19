@@ -84,6 +84,7 @@
 
 .tabs-wrapper {
   display: grid;
+  max-width: max-content;
   overflow: hidden;
   position: relative;
 }
