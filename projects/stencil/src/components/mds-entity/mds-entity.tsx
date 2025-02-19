@@ -82,7 +82,7 @@ export class MdsEntity {
           <slot/>
           { this.details &&
             <div class="details">
-              <slot name="deuploadtail"/>
+              <slot name="detail"/>
             </div>
           }
         </div>
