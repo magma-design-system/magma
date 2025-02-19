@@ -17,6 +17,10 @@
         },{
           "destination": "tailwind-font-size.js",
           "format": "js/tailwind-font-size"
+        },
+        {
+          "destination": "tailwind-leading.js",
+          "format": "js/tailwind-leading"
         }
       ]
     },
