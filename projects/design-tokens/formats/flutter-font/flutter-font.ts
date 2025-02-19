@@ -25,7 +25,7 @@ Handlebars.registerHelper('ifFlutterTextThemeVariant', ifFlutterTextThemeVariant
 Handlebars.registerHelper('flutterTextThemeVariant', flutterTextThemeVariant)
 Handlebars.registerHelper('ifFlutterCompatible', ifFlutterCompatible)
 
-StyleDictionary.registerTransform({
+export const flutterToDoubleTransform: StyleDictionary.Named<StyleDictionary.Transform> = {
   name: 'flutter/toDouble',
   type: 'value',
   matcher: token => {
@@ -35,9 +35,9 @@ StyleDictionary.registerTransform({
   transformer: function (token) {
     return parseFloat(token.original.value)
   },
-})
+}
 
-StyleDictionary.registerTransform({
+export const flutterFontWeightTransform: StyleDictionary.Named<StyleDictionary.Transform> = {
   name: 'flutter/fontWeight',
   type: 'value',
   matcher: token => {
@@ -46,9 +46,9 @@ StyleDictionary.registerTransform({
   transformer: function (token) {
     return `FontWeight.w${token.original.value}`
   },
-})
+}
 
-StyleDictionary.registerFormat({
+export const flutterFontFormat: StyleDictionary.Format = {
   name: 'flutter/font',
   formatter: ({ dictionary, platform }: FormatterArguments) => {
     return template({
@@ -58,19 +58,4 @@ StyleDictionary.registerFormat({
       version,
     })
   },
-})
-
-// const format = {
-//   name: 'flutter/font',
-//   formatter: ({ dictionary, platform }: FormatterArguments) => {
-//     fs.writeFile('temp', JSON.stringify(dictionary.properties, null, 2), error => console.log(error))
-//     return template({
-//       properties: dictionary.properties,
-//       date: new Date().toUTCString(),
-//       options: platform,
-//     })
-//   },
-// }
-
-// export default format
-export default StyleDictionary
+}

@@ -1,8 +1,21 @@
 {
   "compilerOptions": {
-    "moduleResolution": "Node",
-    "resolveJsonModule": true,
+    "allowJs": true,
+    "skipLibCheck": true,
     "esModuleInterop": true,
-    "target": "ES6"
-  }
+    "jsx": "react",
+    "baseUrl": ".",
+    "lib": ["esnext"],
+    "module": "commonjs",
+    "moduleResolution": "node",
+    "outDir": "build",
+    "resolveJsonModule": true,
+    "sourceMap": true,
+    "target": "es2017",
+    "paths": {
+      "@/formats/*": ["formats/*"],
+    }
+  },
+  "include": ["src", "formats"],
+  "exclude": ["node_modules"]
 }

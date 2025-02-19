@@ -6,12 +6,12 @@ import { version } from '../../package.json'
 import { FormatterArguments } from 'style-dictionary/types/Format'
 import { leadZero } from '../helpers'
 
-const templatePath = path.resolve(__dirname, './scss-map.hbs')
+const templatePath = path.resolve(__dirname, './template.hbs')
 const template = Handlebars.compile(fs.readFileSync(templatePath).toString())
 
 Handlebars.registerHelper('leadZero', leadZero)
 
-StyleDictionary.registerFormat({
+export const scssMapFormat: StyleDictionary.Format = {
   name: 'scss/map',
   formatter: ({ dictionary, platform }: FormatterArguments) => {
     return template({
@@ -21,6 +21,4 @@ StyleDictionary.registerFormat({
       version,
     })
   },
-})
-
-export default StyleDictionary
+}

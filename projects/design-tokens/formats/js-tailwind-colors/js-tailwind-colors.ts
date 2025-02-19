@@ -13,7 +13,7 @@ Handlebars.registerHelper('ifEquals', ifEquals)
 Handlebars.registerHelper('leadZero', leadZero)
 Handlebars.registerHelper('rgbChannel', rgbChannel)
 
-StyleDictionary.registerFormat({
+export const jsTailwindColorsFormat: StyleDictionary.Format = {
   name: 'js/tailwind-colors',
   formatter: ({ dictionary, platform }: FormatterArguments) => {
     return template({
@@ -23,6 +23,5 @@ StyleDictionary.registerFormat({
       version,
     })
   },
-})
+}
 
-export default StyleDictionary

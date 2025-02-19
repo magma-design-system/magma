@@ -14,7 +14,7 @@ Handlebars.registerHelper('ifEquals', ifEquals)
 Handlebars.registerHelper('ifTailwindFontSizeProp', ifTailwindFontSizeProp)
 Handlebars.registerHelper('tailwindFontSize', tailwindFontSize)
 
-StyleDictionary.registerFormat({
+export const jsTailwindFontSizeFormat: StyleDictionary.Format = {
   name: 'js/tailwind-font-size',
   formatter: ({ dictionary, platform }: FormatterArguments) => {
     return template({
@@ -24,6 +24,4 @@ StyleDictionary.registerFormat({
       version,
     })
   },
-})
-
-export default StyleDictionary
+}

@@ -11,7 +11,7 @@ const template = Handlebars.compile(fs.readFileSync(templatePath).toString())
 
 Handlebars.registerHelper('safeString', safeString)
 
-StyleDictionary.registerFormat({
+export const jsTailwindFontFamilyFormat: StyleDictionary.Format = {
   name: 'js/tailwind-font-family',
   formatter: ({ dictionary, platform }: FormatterArguments) => {
     return template({
@@ -21,6 +21,4 @@ StyleDictionary.registerFormat({
       version,
     })
   },
-})
-
-export default StyleDictionary
+}

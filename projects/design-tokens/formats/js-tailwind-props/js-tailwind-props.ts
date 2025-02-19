@@ -14,7 +14,7 @@ Handlebars.registerHelper('ifEquals', ifEquals)
 Handlebars.registerHelper('ifTailwindFontSizeProp', ifTailwindFontSizeProp)
 Handlebars.registerHelper('tailwindFontSize', tailwindFontSize)
 
-StyleDictionary.registerTransform({
+export const tailwindPxToRemTransform: StyleDictionary.Named<StyleDictionary.Transform> = {
   name: 'tailwind/pxToRem',
   type: 'value',
   matcher: token => {
@@ -23,9 +23,10 @@ StyleDictionary.registerTransform({
   transformer: function (token) {
     return pixelToRem(token.value)
   },
-})
+}
 
-StyleDictionary.registerTransform({
+export const tailwindcssAspetctRationTransform : StyleDictionary.Named<StyleDictionary.Transform> = {
+
   name: 'tailwind/cssAspectRatio',
   type: 'value',
   matcher: token => {
@@ -34,9 +35,9 @@ StyleDictionary.registerTransform({
   transformer: function (token) {
     return token.value.replace(':', '/')
   },
-})
+}
 
-StyleDictionary.registerFormat({
+export const jsTailwindPropsFormat: StyleDictionary.Format = {
   name: 'js/tailwind-props',
   formatter: ({ dictionary, platform }: FormatterArguments) => {
     return template({
@@ -46,6 +47,5 @@ StyleDictionary.registerFormat({
       version,
     })
   },
-})
+}
 
-export default StyleDictionary

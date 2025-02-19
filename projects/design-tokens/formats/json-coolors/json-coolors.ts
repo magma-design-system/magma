@@ -12,8 +12,7 @@ const template = Handlebars.compile(fs.readFileSync(templatePath).toString())
 Handlebars.registerHelper('coolorizeName', humanCase)
 Handlebars.registerHelper('leadZero', leadZero)
 Handlebars.registerHelper('ifEquals', ifEquals)
-
-StyleDictionary.registerFormat({
+export const jsonCoolorsFormat: StyleDictionary.Format = {
   name: 'json/coolors',
   formatter: ({ dictionary, platform }: FormatterArguments) => {
     return template({
@@ -23,6 +22,4 @@ StyleDictionary.registerFormat({
       version,
     })
   },
-})
-
-export default StyleDictionary
+}

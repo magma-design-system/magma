@@ -14,7 +14,7 @@ Handlebars.registerHelper('pixelToRem', (options: HelperOptions) => {
   return pixelToRem(options.fn(this))
 })
 
-StyleDictionary.registerFormat({
+export const jsTailwindLeadingFormat: StyleDictionary.Format = {
   name: 'js/tailwind-leading',
   formatter: ({ dictionary, platform }: FormatterArguments) => {
     return template({
@@ -24,6 +24,4 @@ StyleDictionary.registerFormat({
       version,
     })
   },
-})
-
-export default StyleDictionary
+}

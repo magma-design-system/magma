@@ -12,7 +12,7 @@ const template = Handlebars.compile(fs.readFileSync(templatePath).toString())
 Handlebars.registerHelper('ifEquals', ifEquals)
 Handlebars.registerHelper('leadZero', leadZero)
 
-StyleDictionary.registerFormat({
+export const jsFormat: StyleDictionary.Format = {
   name: 'js/module',
   formatter: ({ dictionary, platform }: FormatterArguments) => {
     return template({
@@ -22,6 +22,4 @@ StyleDictionary.registerFormat({
       version,
     })
   },
-})
-
-export default StyleDictionary
+}
