@@ -41,21 +41,21 @@
   flex-shrink: 0;
 }
 
-.spinner,
-.preview {
-  @apply aspect-square;
-
-  align-items: center;
-  background-color: var(--mds-entity-icon-background);
-  border-radius: var(--mds-entity-icon-radius);
-  display: inline-flex;
-  fill: var(--mds-entity-icon-color);
-  justify-content: center;
-}
-
 .preview {
 
   --mds-avatar-radius: var(--mds-entity-icon-radius);
+  --mds-avatar-color: var(--mds-entity-icon-color);
+  --mds-avatar-background-color: var(--mds-entity-icon-background);
+}
+
+.spinner,
+.preview {
+
+  @apply aspect-square;
+
+  align-items: center;
+  display: inline-flex;
+  justify-content: center;
 }
 
 .spinner {
