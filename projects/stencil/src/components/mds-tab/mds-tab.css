@@ -89,6 +89,10 @@
   position: relative;
 }
 
+.tabs-wrapper--fill {
+  max-width: 100%;
+}
+
 .tabs-wrapper::after {
   border-radius: var(--mds-tab-tabs-radius);
   box-shadow: var(--mds-tab-tabs-wrapper-shadow);
@@ -125,6 +129,10 @@
   transition-duration: var(--mds-tab-transition-duration);
   transition-property: height;
   transition-timing-function: var(--mds-tab-transition-timing-function);
+}
+
+.contents:empty {
+  display: none;
 }
 
 ::slotted( [slot="content"] ) {
