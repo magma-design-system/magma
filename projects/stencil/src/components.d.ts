@@ -42,8 +42,8 @@ import { InputTipPositionType } from "./components/mds-input-tip/meta/types";
 import { InputTipItemVariantType } from "./components/mds-input-tip-item/meta/types";
 import { AttachmentSort, FileError } from "./components/mds-input-upload/meta/types";
 import { KeyboardTest } from "./components/mds-keyboard/meta/type";
-import { KeyboarKeyName } from "./type/keyboard";
-import { ModalAnimationStateType, ModalPositionType } from "./components/mds-modal/meta/types";
+import { KeyboardKeyName } from "./type/keyboard";
+import { ModalAnimationStateType, ModalOverflowType, ModalPositionType } from "./components/mds-modal/meta/types";
 import { StrategyType } from "./components/mds-notification/meta/types";
 import { MdsPaginatorEventDetail } from "./components/mds-paginator/meta/event-detail";
 import { AnimationModeType } from "./components/mds-pref-animation/meta/types";
@@ -108,8 +108,8 @@ export { InputTipPositionType } from "./components/mds-input-tip/meta/types";
 export { InputTipItemVariantType } from "./components/mds-input-tip-item/meta/types";
 export { AttachmentSort, FileError } from "./components/mds-input-upload/meta/types";
 export { KeyboardTest } from "./components/mds-keyboard/meta/type";
-export { KeyboarKeyName } from "./type/keyboard";
-export { ModalAnimationStateType, ModalPositionType } from "./components/mds-modal/meta/types";
+export { KeyboardKeyName } from "./type/keyboard";
+export { ModalAnimationStateType, ModalOverflowType, ModalPositionType } from "./components/mds-modal/meta/types";
 export { StrategyType } from "./components/mds-notification/meta/types";
 export { MdsPaginatorEventDetail } from "./components/mds-paginator/meta/event-detail";
 export { AnimationModeType } from "./components/mds-pref-animation/meta/types";
@@ -1170,19 +1170,26 @@ export namespace Components {
         "updateLang": () => Promise<void>;
     }
     interface MdsKeyboard {
+        /**
+          * Shows the keyboard key combination test result
+         */
         "test"?: KeyboardTest;
+        /**
+          * Sets if the keyboard key combination test is enabled
+         */
         "try"?: boolean;
         "updateLang": () => Promise<void>;
     }
     interface MdsKeyboardKey {
         /**
-          * Sets the code of the keyboard key for test if enabled from `mds-keyboard` parent component
+          * Sets the code of the keyboard key for combination tests if `try` attribute is set from `mds-keyboard` parent component
          */
-        "code"?: KeyboarKeyName;
+        "name": KeyboardKeyName;
         /**
           * Sets if the key is pressed or not
          */
         "pressed"?: boolean;
+        "updateLang": () => Promise<void>;
     }
     interface MdsKpi {
     }
@@ -1256,6 +1263,10 @@ export namespace Components {
           * Specifies if the modal is opened or not
          */
         "opened": boolean;
+        /**
+          * Specifies if the component prevents the body from scrolling when modal window is opened
+         */
+        "overflow": ModalOverflowType;
         /**
           * Specifies the animation position of the modal window
          */
@@ -1543,6 +1554,10 @@ export namespace Components {
           * Sets the animation type of the selection transition between `mds-tab-item` elements
          */
         "animation"?: HorizontalActionsAnimationType;
+        /**
+          * Sets if the tab area should fill the entire width
+         */
+        "fill"?: boolean;
         /**
           * Shows the horizontal scrollbar to maximize accessibility
          */
@@ -4353,14 +4368,20 @@ declare namespace LocalJSX {
         "sort"?: AttachmentSort;
     }
     interface MdsKeyboard {
+        /**
+          * Shows the keyboard key combination test result
+         */
         "test"?: KeyboardTest;
+        /**
+          * Sets if the keyboard key combination test is enabled
+         */
         "try"?: boolean;
     }
     interface MdsKeyboardKey {
         /**
-          * Sets the code of the keyboard key for test if enabled from `mds-keyboard` parent component
+          * Sets the code of the keyboard key for combination tests if `try` attribute is set from `mds-keyboard` parent component
          */
-        "code"?: KeyboarKeyName;
+        "name"?: KeyboardKeyName;
         /**
           * Sets if the key is pressed or not
          */
@@ -4449,6 +4470,10 @@ declare namespace LocalJSX {
           * Specifies if the modal is opened or not
          */
         "opened"?: boolean;
+        /**
+          * Specifies if the component prevents the body from scrolling when modal window is opened
+         */
+        "overflow"?: ModalOverflowType;
         /**
           * Specifies the animation position of the modal window
          */
@@ -4775,6 +4800,10 @@ declare namespace LocalJSX {
           * Sets the animation type of the selection transition between `mds-tab-item` elements
          */
         "animation"?: HorizontalActionsAnimationType;
+        /**
+          * Sets if the tab area should fill the entire width
+         */
+        "fill"?: boolean;
         /**
           * Emits when a children is changed
          */

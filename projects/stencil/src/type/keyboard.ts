@@ -1,10 +1,12 @@
-type KeyboardKeyData = {
+export type KeyboardKeyData = {
   description: string
+  keyCode: string
+  keyboardPosition?: 'left' | 'right'
+  keyCodes?: string[]
   alias: string
-  icon?: boolean
 }
 
-export type KeyboarKeyName =
+export type KeyboardKeyName =
   | '0'
   | '1'
   | '2'
@@ -17,6 +19,8 @@ export type KeyboarKeyName =
   | '9'
   | 'a'
   | 'alt'
+  | 'altleft'
+  | 'altright'
   | 'arrowdown'
   | 'arrowleft'
   | 'arrowright'
@@ -25,10 +29,12 @@ export type KeyboarKeyName =
   | 'backspace'
   | 'c'
   | 'capslock'
-  | 'cmd'
   | 'command'
+  | 'commandleft'
+  | 'commandright'
   | 'control'
-  | 'ctrl'
+  | 'controlleft'
+  | 'controlright'
   | 'd'
   | 'delete'
   | 'e'
@@ -57,13 +63,10 @@ export type KeyboarKeyName =
   | 'l'
   | 'm'
   | 'n'
-  | 'numpadadd'
-  | 'numpaddivide'
-  | 'numpadenter'
-  | 'numpadmultiply'
-  | 'numpadnumber'
-  | 'numpadsubtract'
   | 'o'
+  | 'option'
+  | 'optionleft'
+  | 'optionright'
   | 'p'
   | 'pagedown'
   | 'pageup'
@@ -71,16 +74,20 @@ export type KeyboarKeyName =
   | 'r'
   | 's'
   | 'shift'
+  | 'shiftleft'
+  | 'shiftright'
   | 'space'
   | 't'
   | 'tab'
   | 'u'
   | 'v'
   | 'w'
-  | 'win'
   | 'windows'
+  | 'windowsleft'
+  | 'windowsright'
   | 'x'
   | 'y'
   | 'z'
 
-export type KeyboardKeyMap = Record<KeyboarKeyName, KeyboardKeyData>;
+
+export type KeyboardKeyMap = Record<KeyboardKeyName, KeyboardKeyData>;

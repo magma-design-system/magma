@@ -33,7 +33,10 @@ const closest = (input: string, validCodes: string[]): string => {
   return closest
 }
 
+const firstLetterUppercase = (str: string): string => str.charAt(0).toUpperCase() + str.slice(1)
+
 export {
-  levenshteinDistance,
   closest,
+  firstLetterUppercase,
+  levenshteinDistance,
 }

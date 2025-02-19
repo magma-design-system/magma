@@ -5,11 +5,10 @@
 :host {
 
   --mds-keyboard-background-default: var(--mds-keyboard-background);
-  --mds-keyboard-spinner-duration: 1s;
   --mds-keyboard-background-fail: theme('colors.status-error-09');
   --mds-keyboard-background-pass: theme('colors.status-success-09');
   --mds-keyboard-background: theme('colors.tone-slate-08');
-  --mds-keyboard-plus-color: theme('colors.tone-slate-05');
+  --mds-keyboard-color: theme('colors.tone-neutral-04');
   --mds-keyboard-fill-fail: theme('colors.status-error-06');
   --mds-keyboard-fill-pass: theme('colors.status-success-06');
   --mds-keyboard-illumination-dark-opacity: 0.05;
@@ -24,11 +23,14 @@
   --mds-keyboard-key-illumination-light-opacity: 0.5;
   --mds-keyboard-key-illumination-shadow: theme('boxShadow.sharp');
   --mds-keyboard-padding: theme('spacing.200');
+  --mds-keyboard-plus-color: theme('colors.tone-slate-05');
+  --mds-keyboard-spinner-duration: 1s;
 
   align-items: center;
   background-color: var(--mds-keyboard-background-default);
   border-radius: theme('borderRadius.xl');
   box-shadow: var(--mds-keyboard-illumination-light), var(--mds-keyboard-illumination-dark), var(--mds-keyboard-illumination-shadow);
+  color: var(--mds-keyboard-color);
   display: inline-flex;
   gap: theme('spacing.200');
   padding: calc(var(--mds-keyboard-illumination-light-size) + var(--mds-keyboard-padding)) var(--mds-keyboard-padding) calc(var(--mds-keyboard-illumination-dark-size) + var(--mds-keyboard-padding)) var(--mds-keyboard-padding);

@@ -1,5 +1,5 @@
 import { Component, Host, h, Element, Method, State, Prop, Watch } from '@stencil/core'
-import { KeyboarKeyName } from '@type/keyboard'
+import { KeyboardKeyName } from '@type/keyboard'
 import miBaselineKeyboard from '@icon/mi/baseline/keyboard.svg'
 import miBaselineDone from '@icon/mi/baseline/done.svg'
 import miBaselineClose from '@icon/mi/baseline/close.svg'
@@ -9,7 +9,7 @@ import localeEn from './meta/locale.en.json'
 import localeEs from './meta/locale.es.json'
 import localeIt from './meta/locale.it.json'
 import keyboardKeys from '@meta/keyboard/keys.json'
-import { closest } from '@common/string'
+// import { closest } from '@common/string'
 import { KeyboardTest } from './meta/type'
 
 @Component({
@@ -21,12 +21,15 @@ export class MdsKeyboard {
 
   @Element() private host: HTMLMdsKeyboardElement
   private nodes: Node[]
+  private filteredNodes: Element[]
   private buttonTrigger: HTMLMdsButtonElement
   private shortcutsEl: HTMLDivElement
   private keyEls: HTMLMdsKeyboardKeyElement[] = []
   private testInit: boolean = false
-  private pressedKeys: Set<KeyboarKeyName> = new Set()
-  private keyCombination: Set<KeyboarKeyName> = new Set()
+  private pressedKeys: Set<string> = new Set()
+  private keyCombination: Set<string> = new Set()
+  // private pressedKeys: Set<string> = new Set()
+  // private keyCombination: Set<string> = new Set()
   private t: Locale = new Locale({
     el: localeEl,
     en: localeEn,
@@ -41,8 +44,14 @@ export class MdsKeyboard {
 
   @State() testPassed?: boolean = undefined
 
+  /**
+   * Shows the keyboard key combination test result
+   */
   @Prop({ mutable: true, reflect: true }) test?: KeyboardTest
 
+  /**
+   * Sets if the keyboard key combination test is enabled
+   */
   @Prop({ reflect: true }) readonly try?: boolean
 
   componentWillLoad (): void {
@@ -71,20 +80,17 @@ export class MdsKeyboard {
   }
 
   componentDidLoad (): void {
+    this.nodes = this.host.shadowRoot?.querySelectorAll('slot')[0]?.assignedNodes() as Node[]
+    this.filteredNodes = this.nodes.filter((node): node is Element => node.nodeType === 1)
+    this.separateKeys()
     if (this.try) {
       this.initKeyboardTest()
     }
   }
 
-  private updateElements = (): void => {
-    this.nodes = this.host.shadowRoot?.querySelectorAll('slot')[0]?.assignedNodes() as Node[]
-    const filteredNodes = this.nodes.filter((node): node is Element => node.nodeType === 1)
-    filteredNodes.forEach((node: HTMLMdsKeyboardKeyElement, index: number) => {
-      if (node.code) {
-        this.keyEls.push(node)
-        this.keyCombination.add(node.code.toLowerCase() as KeyboarKeyName)
-      }
-      if (index < filteredNodes.length - 1) {
+  private separateKeys = (): void => {
+    this.filteredNodes.forEach((node: HTMLMdsKeyboardKeyElement, index: number) => {
+      if (index < this.filteredNodes.length - 1) {
         const separator: HTMLMdsTextElement = document.createElement('mds-text')
         separator.typography = 'detail'
         separator.innerHTML = '<b>+</b>'
@@ -93,10 +99,20 @@ export class MdsKeyboard {
     })
   }
 
-  private areEqual = (setA: Set<KeyboarKeyName>, setB: Set<KeyboarKeyName>): boolean => {
-    if (setA.size !== setB.size) return false
-    return [...setA].every(value => setB.has(value))
+  private updateElements = (): void => {
+    this.filteredNodes.forEach((node: HTMLMdsKeyboardKeyElement) => {
+      if (node.name) {
+        this.keyEls.push(node)
+        // / console.log(this.keyCode(node.name.toLowerCase()))
+        this.keyCombination.add(this.keyCodes(node.name.toLowerCase()).toString())
+      }
+    })
   }
+
+  // private areEqual = (setA: Set<string>, setB: Set<string>): boolean => {
+  //   if (setA.size !== setB.size) return false
+  //   return [...setA].every(value => setB.has(value))
+  // }
 
   private checkTest = (): KeyboardTest | undefined => {
     if (this.testPassed === true) {
@@ -112,10 +128,35 @@ export class MdsKeyboard {
 
   private checkKeyboardShortcut = (): void => {
     this.stopKeyboardShortcutTest()
-    this.testPassed = this.areEqual(this.keyCombination, this.pressedKeys)
+    // console.log('json keys x', this.keyCombination)
+    // console.log('os output x', this.pressedKeys)
+    this.testPassed = this.areEquivalent(this.keyCombination, this.pressedKeys)
     this.test = this.checkTest()
     this.keyEls.forEach((el: HTMLMdsKeyboardKeyElement) => {
       el.removeAttribute('pressed')
+    })
+  }
+
+  private keyCodes = (code: string): string[] => {
+    return keyboardKeys[code.toLowerCase()].keyCodes
+  }
+
+  private hasKeyCode = (name: KeyboardKeyName, code: string): boolean => {
+    return keyboardKeys[name.toLowerCase()].keyCodes.includes(code)
+  }
+
+  private areEquivalent = (set1: Set<string>, set2: Set<string>): boolean => {
+    const array1 = Array.from(set1)
+    const array2 = Array.from(set2)
+
+    if (array1.length !== array2.length) {
+      return false
+    }
+
+    // Confrontiamo gli elementi mantenendo l'ordine
+    return array1.every((value, index) => {
+      const options = value.split(',') // Espandiamo l'elemento in più opzioni
+      return options.includes(array2[index]) // Verifichiamo se una delle opzioni corrisponde
     })
   }
 
@@ -125,10 +166,11 @@ export class MdsKeyboard {
     }
     event.stopPropagation()
     event.preventDefault()
-    const key: KeyboarKeyName = closest(event.key.toLowerCase() as string, Object.keys(keyboardKeys)) as KeyboarKeyName
-    this.pressedKeys.add(key)
+    // const key: string = closest(event.key.toLowerCase() as string, this.keys(keyboardKeys as Record<string, KeyboardKeyData>))
+    const { code } = event
+    this.pressedKeys.add(code)
     this.keyEls.forEach((el: HTMLMdsKeyboardKeyElement) => {
-      if (el.code === key) {
+      if (this.hasKeyCode(el.name, code)) {
         el.pressed = true
       }
     })
