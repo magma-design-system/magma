@@ -8,6 +8,13 @@
  * @prop --mds-table-header-cell-padding: The padding of the table cell
  */
 
+;
+
+mds-button:not([hydrated]),
+mds-text:not([hydrated]) {
+  @apply not-hydrated;
+}
+
 :host {
 
   @apply

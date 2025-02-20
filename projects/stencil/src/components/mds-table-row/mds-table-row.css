@@ -1,4 +1,10 @@
+@import '../../tailwind/components.css';
+@tailwind components;
 @tailwind utilities;
+
+mds-table-cell:not([hydrated]) {
+  @apply not-hydrated;
+}
 
 :host {
 
