@@ -22,17 +22,16 @@
   ],
   "license": "ISC",
   "scripts": {
-    "build": "npm run clean && npm run build-palette && npm run build-style-dictionary && npm run build-figma-tokens",
+    "build": "npm run clean && npm run build-style-dictionary && npm run build-figma-tokens",
     "build-css-tokens": "run-for-every-file --src ./tokens/css/ --dest dist/scss/ --file '**/*.json' --not-file '**/*.scss' --run 'json-to-scss {{src-file}} {{dest}}{{file-name-ext}}'",
     "build-palette": "node leonardo.mjs",
     "build-figma-tokens": "npx ts-node scripts/generate-figma-tokens.ts",
-    "build-cli": "tsc --outDir ./dist",
-    "build-style-dictionary": "npx ts-node scripts/build.ts",
-    "build-style-dictionary2": "npx tsx scripts/build.new.ts",
+    "build-cli": "tsc",
+    "build-style-dictionary": "npx tsx scripts/build.ts",
     "clean": "npx ts-node scripts/clean.ts",
     "postbuild": "npx ts-node scripts/postbuild.ts",
     "cli": "npx tsx src/cli.ts",
-    "test-cli": "jest"
+    "test": "jest"
   },
   "main": "dist/js/tailwind-colors-css-vars.js",
   "files": [

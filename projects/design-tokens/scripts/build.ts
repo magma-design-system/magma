@@ -1,11 +1,15 @@
 import {
   getColorsConfig,
   getStyleDictionaryWithAllCustomTransform,
+  writeJsonTokens,
 } from '../src/lib/utils'
 import { createColorTokens } from '../src/lib/color'
 import { getStyleDictionaryColorConfigAllPlatforms } from '../src/config/sd-color-all-platforms.config'
 import { getBrandColorConfig } from '../src/config/sd-brand-color.config'
 import themeTokens from '../tokens/color/themes.json'
+import { TOKENS_DIR } from './meta'
+
+const GENERATED_TOKEN_DIR = `${TOKENS_DIR}/color/generated`
 
 // retrieve style-dictionary with all custom transform
 const styleDictionary = getStyleDictionaryWithAllCustomTransform()
@@ -30,6 +34,8 @@ getColorsConfig().then(resultConfig => {
     styleDictionary
       .extend(getBrandColorConfig(exportName, exportGroups[exportName]))
       .buildAllPlatforms()
+    // write generated tokens for script 'generate-figma-tokens'
+    writeJsonTokens(exportGroups[exportName], exportName, GENERATED_TOKEN_DIR )
   })
 
   // build fonts
