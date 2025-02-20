@@ -1,9 +1,9 @@
 export type KeyboardKeyData = {
-  description: string
-  keyCode: string
-  keyboardPosition?: { left?: boolean; right?: boolean }
-  keyCodes?: string[]
   alias: string
+  description: string
+  group: string
+  keyCodes: string[]
+  keyboardPosition?: { left?: boolean; right?: boolean }
 }
 
 export type KeyboardKeyName =

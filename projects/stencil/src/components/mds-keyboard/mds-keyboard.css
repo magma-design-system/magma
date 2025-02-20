@@ -60,6 +60,11 @@
   fill: var(--mds-keyboard-fill-fail);
 }
 
+.errors {
+  display: grid;
+  gap: theme('spacing.100');
+}
+
 .shortcuts {
   align-items: center;
   display: inline-flex;
