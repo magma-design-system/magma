@@ -24,6 +24,7 @@
 
     { "color": "#00379E", "export": ["default"], "name": "variant.primary" },
     { "color": "#0f4ad5", "export": ["default"], "name": "variant.secondary" },
+    { "color": "#782FF6", "export": ["default"], "name": "variant.ai" },
 
     { "color": "#597CB9", "export": ["synbee-v1"], "name": "brand.eolo-v1", "ratios": "v1" },
     { "color": "#FFFFFF", "export": ["synbee-v1"], "name": "adjust.tone-v1", "ratios": "v1", "seed": { "light": "#FFFFFF", "dark": "#000000" } },

@@ -41,7 +41,9 @@ import { MdsInputSwitchEventDetail } from "./components/mds-input-switch/meta/ev
 import { InputTipPositionType } from "./components/mds-input-tip/meta/types";
 import { InputTipItemVariantType } from "./components/mds-input-tip-item/meta/types";
 import { AttachmentSort, FileError } from "./components/mds-input-upload/meta/types";
-import { ModalAnimationStateType, ModalPositionType } from "./components/mds-modal/meta/types";
+import { KeyboardTest } from "./components/mds-keyboard/meta/type";
+import { KeyboardKeyName } from "./type/keyboard";
+import { ModalAnimationStateType, ModalOverflowType, ModalPositionType } from "./components/mds-modal/meta/types";
 import { StrategyType } from "./components/mds-notification/meta/types";
 import { MdsPaginatorEventDetail } from "./components/mds-paginator/meta/event-detail";
 import { AnimationModeType } from "./components/mds-pref-animation/meta/types";
@@ -105,7 +107,9 @@ export { MdsInputSwitchEventDetail } from "./components/mds-input-switch/meta/ev
 export { InputTipPositionType } from "./components/mds-input-tip/meta/types";
 export { InputTipItemVariantType } from "./components/mds-input-tip-item/meta/types";
 export { AttachmentSort, FileError } from "./components/mds-input-upload/meta/types";
-export { ModalAnimationStateType, ModalPositionType } from "./components/mds-modal/meta/types";
+export { KeyboardTest } from "./components/mds-keyboard/meta/type";
+export { KeyboardKeyName } from "./type/keyboard";
+export { ModalAnimationStateType, ModalOverflowType, ModalPositionType } from "./components/mds-modal/meta/types";
 export { StrategyType } from "./components/mds-notification/meta/types";
 export { MdsPaginatorEventDetail } from "./components/mds-paginator/meta/event-detail";
 export { AnimationModeType } from "./components/mds-pref-animation/meta/types";
@@ -1165,6 +1169,28 @@ export namespace Components {
         "sort"?: AttachmentSort;
         "updateLang": () => Promise<void>;
     }
+    interface MdsKeyboard {
+        /**
+          * Shows the keyboard key combination test result
+         */
+        "test"?: KeyboardTest;
+        /**
+          * Sets if the keyboard key combination test is enabled
+         */
+        "try"?: boolean;
+        "updateLang": () => Promise<void>;
+    }
+    interface MdsKeyboardKey {
+        /**
+          * Sets the code of the keyboard key for combination tests if `try` attribute is set from `mds-keyboard` parent component
+         */
+        "name": KeyboardKeyName;
+        /**
+          * Sets if the key is pressed or not
+         */
+        "pressed"?: boolean;
+        "updateLang": () => Promise<void>;
+    }
     interface MdsKpi {
     }
     interface MdsKpiItem {
@@ -1237,6 +1263,10 @@ export namespace Components {
           * Specifies if the modal is opened or not
          */
         "opened": boolean;
+        /**
+          * Specifies if the component prevents the body from scrolling when modal window is opened
+         */
+        "overflow": ModalOverflowType;
         /**
           * Specifies the animation position of the modal window
          */
@@ -1524,6 +1554,10 @@ export namespace Components {
           * Sets the animation type of the selection transition between `mds-tab-item` elements
          */
         "animation"?: HorizontalActionsAnimationType;
+        /**
+          * Sets if the tab area should fill the entire width
+         */
+        "fill"?: boolean;
         /**
           * Shows the horizontal scrollbar to maximize accessibility
          */
@@ -2532,6 +2566,18 @@ declare global {
         prototype: HTMLMdsInputUploadElement;
         new (): HTMLMdsInputUploadElement;
     };
+    interface HTMLMdsKeyboardElement extends Components.MdsKeyboard, HTMLStencilElement {
+    }
+    var HTMLMdsKeyboardElement: {
+        prototype: HTMLMdsKeyboardElement;
+        new (): HTMLMdsKeyboardElement;
+    };
+    interface HTMLMdsKeyboardKeyElement extends Components.MdsKeyboardKey, HTMLStencilElement {
+    }
+    var HTMLMdsKeyboardKeyElement: {
+        prototype: HTMLMdsKeyboardKeyElement;
+        new (): HTMLMdsKeyboardKeyElement;
+    };
     interface HTMLMdsKpiElement extends Components.MdsKpi, HTMLStencilElement {
     }
     var HTMLMdsKpiElement: {
@@ -3121,6 +3167,8 @@ declare global {
         "mds-input-tip": HTMLMdsInputTipElement;
         "mds-input-tip-item": HTMLMdsInputTipItemElement;
         "mds-input-upload": HTMLMdsInputUploadElement;
+        "mds-keyboard": HTMLMdsKeyboardElement;
+        "mds-keyboard-key": HTMLMdsKeyboardKeyElement;
         "mds-kpi": HTMLMdsKpiElement;
         "mds-kpi-item": HTMLMdsKpiItemElement;
         "mds-label": HTMLMdsLabelElement;
@@ -4319,6 +4367,26 @@ declare namespace LocalJSX {
          */
         "sort"?: AttachmentSort;
     }
+    interface MdsKeyboard {
+        /**
+          * Shows the keyboard key combination test result
+         */
+        "test"?: KeyboardTest;
+        /**
+          * Sets if the keyboard key combination test is enabled
+         */
+        "try"?: boolean;
+    }
+    interface MdsKeyboardKey {
+        /**
+          * Sets the code of the keyboard key for combination tests if `try` attribute is set from `mds-keyboard` parent component
+         */
+        "name"?: KeyboardKeyName;
+        /**
+          * Sets if the key is pressed or not
+         */
+        "pressed"?: boolean;
+    }
     interface MdsKpi {
     }
     interface MdsKpiItem {
@@ -4402,6 +4470,10 @@ declare namespace LocalJSX {
           * Specifies if the modal is opened or not
          */
         "opened"?: boolean;
+        /**
+          * Specifies if the component prevents the body from scrolling when modal window is opened
+         */
+        "overflow"?: ModalOverflowType;
         /**
           * Specifies the animation position of the modal window
          */
@@ -4728,6 +4800,10 @@ declare namespace LocalJSX {
           * Sets the animation type of the selection transition between `mds-tab-item` elements
          */
         "animation"?: HorizontalActionsAnimationType;
+        /**
+          * Sets if the tab area should fill the entire width
+         */
+        "fill"?: boolean;
         /**
           * Emits when a children is changed
          */
@@ -5111,6 +5187,8 @@ declare namespace LocalJSX {
         "mds-input-tip": MdsInputTip;
         "mds-input-tip-item": MdsInputTipItem;
         "mds-input-upload": MdsInputUpload;
+        "mds-keyboard": MdsKeyboard;
+        "mds-keyboard-key": MdsKeyboardKey;
         "mds-kpi": MdsKpi;
         "mds-kpi-item": MdsKpiItem;
         "mds-label": MdsLabel;
@@ -5210,6 +5288,8 @@ declare module "@stencil/core" {
             "mds-input-tip": LocalJSX.MdsInputTip & JSXBase.HTMLAttributes<HTMLMdsInputTipElement>;
             "mds-input-tip-item": LocalJSX.MdsInputTipItem & JSXBase.HTMLAttributes<HTMLMdsInputTipItemElement>;
             "mds-input-upload": LocalJSX.MdsInputUpload & JSXBase.HTMLAttributes<HTMLMdsInputUploadElement>;
+            "mds-keyboard": LocalJSX.MdsKeyboard & JSXBase.HTMLAttributes<HTMLMdsKeyboardElement>;
+            "mds-keyboard-key": LocalJSX.MdsKeyboardKey & JSXBase.HTMLAttributes<HTMLMdsKeyboardKeyElement>;
             "mds-kpi": LocalJSX.MdsKpi & JSXBase.HTMLAttributes<HTMLMdsKpiElement>;
             "mds-kpi-item": LocalJSX.MdsKpiItem & JSXBase.HTMLAttributes<HTMLMdsKpiItemElement>;
             "mds-label": LocalJSX.MdsLabel & JSXBase.HTMLAttributes<HTMLMdsLabelElement>;

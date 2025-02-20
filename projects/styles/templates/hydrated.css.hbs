@@ -1,0 +1,9 @@
+{{#each components as | component | }}
+{{component}}:not([hydrated]){{#unless @last}},{{/unless}}
+{{/each}}
+{
+  animation-duration: 0s;
+  opacity: 0;
+  transition-duration: 0s;
+  visibility: hidden;
+}

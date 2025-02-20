@@ -1,6 +1,11 @@
 @tailwind utilities;
 
 @container style(--magma-pref-animation: reduce) {
+  :host {
+
+    --mds-filter-items-scroll-behavior: auto;
+  }
+
   :host,
   .reset-button,
   .items {
@@ -11,6 +16,11 @@
 @container style(--magma-pref-animation: system) {
 
   @media (prefers-reduced-motion) {
+    :host {
+
+      --mds-filter-items-scroll-behavior: auto;
+    }
+
     :host,
     .reset-button,
     .items {

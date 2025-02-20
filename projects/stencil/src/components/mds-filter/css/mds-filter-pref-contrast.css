@@ -5,10 +5,9 @@
 
     --mds-filter-items-background-active: theme('colors.tone-neutral-09');
     --mds-filter-items-background: theme('colors.tone-neutral-10');
-  }
-
-  .items {
-    box-shadow: theme('boxShadow.outline-50');
+    --mds-filter-wrapper-shadow-opacity: theme('opacity.30');
+    --mds-filter-wrapper-shadow-color: theme('colors.tone-neutral-07');
+    --mds-filter-wrapper-shadow: 0 0 0 theme('size.50') var(--mds-filter-wrapper-shadow-color) inset;
   }
 }
 
@@ -19,11 +18,9 @@
 
       --mds-filter-items-background-active: theme('colors.tone-neutral-09');
       --mds-filter-items-background: theme('colors.tone-neutral-10');
-    }
-
-    .items {
-      box-shadow: theme('boxShadow.outline-50');
+      --mds-filter-wrapper-shadow-opacity: theme('opacity.30');
+      --mds-filter-wrapper-shadow-color: theme('colors.tone-neutral-07');
+      --mds-filter-wrapper-shadow: 0 0 0 theme('size.50') var(--mds-filter-wrapper-shadow-color) inset;
     }
   }
 }
-

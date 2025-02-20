@@ -12,6 +12,7 @@
  * @prop --mds-modal-window-overflow: Set the overflow of the window
  * @prop --mds-modal-window-radius: Set the border radius of the window
  * @prop --mds-modal-window-distance: Set the distance between the modal window and the screen bounds
+ * @prop --mds-modal-custom-window-distance: Set the distance between the slotted modal window and the screen bounds
  * @prop --mds-modal-window-shadow: Set the box shadow of the window
  * @prop --mds-modal-z-index: Set the z-index of the window when the component is opened
  */
@@ -28,6 +29,7 @@
   --mds-modal-window-radius: 0;
   --mds-modal-window-shadow: theme('boxShadow.2xl');
   --mds-modal-window-distance: 0;
+  --mds-modal-custom-window-distance: theme('spacing.600');
   --mds-modal-z-index: var(--magma-modal-z-index);
 
   @apply ease-in-out-expo;
@@ -44,6 +46,10 @@
   transition-duration: var(--mds-modal-transition-duration);
   transition-property: background-color;
   z-index: var(--mds-modal-z-index, 1000);
+}
+
+:host ::slotted([slot="window"]) {
+  margin: var(--mds-modal-custom-window-distance);
 }
 
 :host( [position="top"] ) {

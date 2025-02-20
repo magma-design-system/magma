@@ -1,4 +1,11 @@
+@import '../../tailwind/components.css';
+@tailwind components;
 @tailwind utilities;
+
+mds-input-switch:not([hydrated]),
+mds-table-cell:not([hydrated]) {
+  @apply not-hydrated;
+}
 
 :host {
 
@@ -23,5 +30,7 @@
 .checkbox-wrapper {
   display: flex;
 }
+
+
 
 @import './css/mds-table-header-pref-animation.css';

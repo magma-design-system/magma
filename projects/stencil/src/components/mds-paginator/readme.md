@@ -24,9 +24,10 @@ This is a web-component from Maggioli Design System [Magma](https://magma.maggio
 
 ## CSS Custom Properties
 
-| Name                         | Description                                              |
-| ---------------------------- | -------------------------------------------------------- |
-| `--mds-paginator-background` | Sets the background-color of the pages area and the item |
+| Name                              | Description                                              |
+| --------------------------------- | -------------------------------------------------------- |
+| `--mds-paginator-background`      | Sets the background-color of the pages area and the item |
+| `--mds-paginator-scroll-behavior` | Sets the scroll-behavior animation                       |
 
 
 ## Dependencies

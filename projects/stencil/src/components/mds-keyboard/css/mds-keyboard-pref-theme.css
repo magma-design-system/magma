@@ -1,0 +1,34 @@
+@tailwind utilities;
+
+@container style(--magma-pref-theme: dark) {
+  :host {
+
+    --mds-keyboard-color: theme('colors.tone-slate-01');
+    --mds-keyboard-background: theme('colors.tone-slate-07');
+    --mds-keyboard-illumination-dark-opacity: 0.5;
+    --mds-keyboard-illumination-light-opacity: 0.15;
+    --mds-keyboard-illumination-shadow: 0 0 3px 0 rgb(255 255 255 / 0.5);
+    --mds-keyboard-key-background: theme('colors.tone-slate-06');
+    --mds-keyboard-key-illumination-dark-opacity: 0.5;
+    --mds-keyboard-key-illumination-light-opacity: 0.15;
+    --mds-keyboard-key-illumination-shadow: 0 0 1px 0 rgb(255 255 255 / 0.5);
+  }
+}
+
+@container style(--magma-pref-theme: system) {
+
+  @media (prefers-color-scheme: dark) {
+    :host {
+
+      --mds-keyboard-color: theme('colors.tone-slate-01');
+      --mds-keyboard-background: theme('colors.tone-slate-07');
+      --mds-keyboard-illumination-dark-opacity: 0.5;
+      --mds-keyboard-illumination-light-opacity: 0.15;
+      --mds-keyboard-illumination-shadow: 0 0 3px 0 rgb(255 255 255 / 0.5);
+      --mds-keyboard-key-background: theme('colors.tone-slate-06');
+      --mds-keyboard-key-illumination-dark-opacity: 0.5;
+      --mds-keyboard-key-illumination-light-opacity: 0.15;
+      --mds-keyboard-key-illumination-shadow: 0 0 1px 0 rgb(255 255 255 / 0.5);
+    }
+  }
+}

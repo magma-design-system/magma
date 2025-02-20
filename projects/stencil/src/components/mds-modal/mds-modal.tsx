@@ -1,6 +1,6 @@
 import clsx from 'clsx'
 import { Component, Element, Event, EventEmitter, Host, h, Listen, Prop, Watch } from '@stencil/core'
-import { ModalPositionType, ModalAnimationStateType } from './meta/types'
+import { ModalPositionType, ModalAnimationStateType, ModalOverflowType } from './meta/types'
 import { cssDurationToMilliseconds } from '@common/unit'
 
 /**
@@ -20,6 +20,7 @@ export class MdsModal {
   private animationDelayTimeout: NodeJS.Timeout
   private window = false
   private top = false
+  private bodyOverflow: string
   private bottom = false
   private cssTransitionDuration: string
 
@@ -39,6 +40,11 @@ export class MdsModal {
    * Specifies if the component is animating itself or not
    */
   @Prop({ reflect: true, mutable: true }) animating?: ModalAnimationStateType = 'none'
+
+  /**
+   * Specifies if the component prevents the body from scrolling when modal window is opened
+   */
+  @Prop({ reflect: true }) readonly overflow: ModalOverflowType = 'auto'
 
   /**
    * Emits when a modal is closed
@@ -69,13 +75,38 @@ export class MdsModal {
     clearTimeout(this.animationDelayTimeout)
   }
 
+  private disableOverflow = (): void => {
+    if (document) {
+      if (document.body.style.overflow) {
+        this.bodyOverflow = document.body.style.overflow
+      }
+      document.body.style.overflow = 'hidden'
+    }
+  }
+
+  private enableOverflow = (): void => {
+    if (document) {
+      if (this.bodyOverflow) {
+        document.body.style.overflow = this.bodyOverflow
+      } else {
+        document.body.style.removeProperty('overflow')
+      }
+    }
+  }
+
   private animateOpenWindow = (): void => {
+    if (this.overflow === 'auto') {
+      this.disableOverflow()
+    }
     this.animating = 'intro'
     clearTimeout(this.animationDelayTimeout)
     this.animationDelayTimeout = setTimeout(this.stopIntroAnimationWindow.bind(this), cssDurationToMilliseconds(this.cssTransitionDuration))
   }
 
   private animateCloseWindow = (): void => {
+    if (this.overflow === 'auto') {
+      this.enableOverflow()
+    }
     this.animating = 'outro'
     clearTimeout(this.animationDelayTimeout)
     this.animationDelayTimeout = setTimeout(this.stopOutroAnimationWindow.bind(this), cssDurationToMilliseconds(this.cssTransitionDuration))
@@ -85,6 +116,10 @@ export class MdsModal {
     this.bottom = this.host.querySelector('[slot="bottom"]') !== null
     this.top = this.host.querySelector('[slot="top"]') !== null
     this.window = this.host.querySelector('[slot="window"]') !== null
+
+    if (this.overflow === 'auto' && this.opened) {
+      this.disableOverflow()
+    }
 
     if (this.window) {
       this.host.querySelector('[slot="window"]')?.setAttribute('role', 'dialog')

@@ -89,7 +89,7 @@ export class MdsPrefAnimation {
     return (
       <Host >
         <mds-text class="info" typography="caption"><b>{this.t.get('label')}</b> {this.t.get(this.animation[this.mode ?? this.defaultMode].label)}</mds-text>
-        <mds-tab>
+        <mds-tab fill>
           <mds-tab-item selected={this.mode === 'reduce'} onClick={() => { this.setAnimation('reduce') }} class="item item--reduce" icon={miOutlineCircle}></mds-tab-item>
           <mds-tab-item selected={this.mode === 'system'} onClick={() => { this.setAnimation('system') }} class="item item--system" icon={miBaselineSettings}></mds-tab-item>
           <mds-tab-item selected={this.mode === 'no-preference'} onClick={() => { this.setAnimation('no-preference') }} class="item item--no-preference" icon={miBaselineAnimation}></mds-tab-item>
