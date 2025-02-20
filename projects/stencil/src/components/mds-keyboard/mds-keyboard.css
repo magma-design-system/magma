@@ -2,6 +2,29 @@
 @tailwind components;
 @tailwind utilities;
 
+/**
+ * @prop --mds-keyboard-background-default: `private` Set the default background color of the keyboard area.
+ * @prop --mds-keyboard-background-fail: Set the background color of the keyboard area when the test fails.
+ * @prop --mds-keyboard-background-pass: Set the background color of the keyboard area when the test passes.
+ * @prop --mds-keyboard-background: Set the background color of the keyboard area.
+ * @prop --mds-keyboard-color: Set the text color of the keyboard area, will impact on `mds-keyboard-key` component.
+ * @prop --mds-keyboard-fill-fail: Set the fill color of the combination-checker button when the test fails.
+ * @prop --mds-keyboard-fill-pass: Set the fill color of the combination-checker button when the test passes.
+ * @prop --mds-keyboard-illumination-dark-opacity: Set the opacity of the dark illumination.
+ * @prop --mds-keyboard-illumination-dark-size: Set the size of the dark illumination.
+ * @prop --mds-keyboard-illumination-dark: Set the dark illumination.
+ * @prop --mds-keyboard-illumination-light-opacity: Set the opacity of the light illumination.
+ * @prop --mds-keyboard-illumination-light-size: Set the size of the light illumination.
+ * @prop --mds-keyboard-illumination-light: Set the light illumination.
+ * @prop --mds-keyboard-illumination-shadow: Set the shadow of the keyboard area.
+ * @prop --mds-keyboard-key-background: Set the background color of the keyboard key.
+ * @prop --mds-keyboard-key-illumination-dark-opacity: Set the opacity of the dark illumination of the keyboard key.
+ * @prop --mds-keyboard-key-illumination-light-opacity: Set the opacity of the light illumination of the keyboard key.
+ * @prop --mds-keyboard-key-illumination-shadow: Set the shadow of the keyboard key.
+ * @prop --mds-keyboard-padding: Set the padding of the keyboard area.
+ * @prop --mds-keyboard-spinner-duration: Set the duration of the spinner animation.
+ */
+
 :host {
 
   --mds-keyboard-background-default: var(--mds-keyboard-background);
@@ -23,7 +46,6 @@
   --mds-keyboard-key-illumination-light-opacity: 0.5;
   --mds-keyboard-key-illumination-shadow: theme('boxShadow.sharp');
   --mds-keyboard-padding: theme('spacing.200');
-  --mds-keyboard-plus-color: theme('colors.tone-slate-05');
   --mds-keyboard-spinner-duration: 1s;
 
   align-items: center;
@@ -91,10 +113,6 @@ mds-tooltip {
 
 ::slotted(mds-keyboard-key) {
   align-self: flex-end;
-}
-
-::slotted(mds-text) {
-  color: var(--mds-keyboard-plus-color);
 }
 
 mds-button:not([hydrated]),

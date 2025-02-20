@@ -1,5 +1,9 @@
 @tailwind utilities;
 
+/**
+ * @prop --mds-input-tip-active-translate: Set the translate of the tip when it is active.
+ */
+
 :host {
 
   --mds-input-tip-active-translate: translate(0, 0);
