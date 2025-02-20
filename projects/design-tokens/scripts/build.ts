@@ -39,11 +39,11 @@ getColorsConfig().then(resultConfig => {
   })
 
   // build fonts
-  styleDictionary.extend('./config/typography/default.json').buildAllPlatforms()
+  styleDictionary.extend('./src/config/typography/default.json').buildAllPlatforms()
 
   // build tailwind css props
-  styleDictionary.extend('./config/css.json').buildAllPlatforms()
+  styleDictionary.extend('./src/config/css.json').buildAllPlatforms()
 
   // build tailwind screens props
-  styleDictionary.extend('./config/screens.json').buildAllPlatforms()
+  styleDictionary.extend('./src/config/screens.json').buildAllPlatforms()
 })

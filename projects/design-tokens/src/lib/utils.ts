@@ -44,18 +44,6 @@ export function writeJsonTokens (tokens: any, name: string, dirPath: string) {
   })
 }
 
-// test export default colors
-export function exportDefaultColors () {
-  StyleDictionary.registerFormat(jsFormat)
-    .registerFormat(jsTailwindColorsFormat)
-    .registerFormat(flutterColorFormat)
-    .registerFormat(cssHexFormat)
-    .registerFormat(cssRgbFormat)
-    .registerFormat(jsonCoolorsFormat)
-    .extend('./config/colors/default.json')
-    .buildAllPlatforms()
-}
-
 export function exportColors (
   tokens,
   fileName: string,

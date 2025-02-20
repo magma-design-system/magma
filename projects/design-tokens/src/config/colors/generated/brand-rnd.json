@@ -1,0 +1,31 @@
+{
+  "source": [
+    "tokens/color/generated/brand-rnd.json"
+  ],
+  "platforms": {
+    "css": {
+      "transformGroup": "css",
+      "buildPath": "dist/css/",
+      "files": [
+        {
+          "format": "css/vars",
+          "destination": "colors-hex-brand-rnd.css"
+        },
+        {
+          "format": "css/vars-rgb-channels",
+          "destination": "colors-rgb-brand-rnd.css"
+        }
+      ]
+    },
+    "dart": {
+      "transformGroup": "js",
+      "buildPath": "dist/flutter/",
+      "files": [
+        {
+          "destination": "colors-brand-rnd.dart",
+          "format": "flutter/color"
+        }
+      ]
+    }
+  }
+}
