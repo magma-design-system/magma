@@ -190,10 +190,6 @@ Target.args = {
 }
 
 export const Notifications = TemplateNotifications.bind({})
-Notifications.args = {
-  href: 'http://www.maggioli.it',
-  target: 'blank',
-}
 
 export const FormParticipation = TemplateForm.bind({})
 FormParticipation.args = {
