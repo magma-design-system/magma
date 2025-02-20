@@ -76,9 +76,14 @@
   min-width: var(--mds-notification-min-width);
   padding-left: var(--mds-notification-dot-padding);
   padding-right: var(--mds-notification-dot-padding);
-  position: absolute;
+  position: static;
   transition-property: background-color, color, box-shadow;
   white-space: nowrap;
+}
+
+:host([strategy="absolute"]) .dot,
+:host([strategy="fixed"]) .dot {
+  position: absolute;
 }
 
 .spacer {
