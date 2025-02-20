@@ -39,6 +39,7 @@ This is a web-component from Maggioli Design System [Magma](https://magma.maggio
 
  - [mds-file](../mds-file)
  - [mds-file-preview](../mds-file-preview)
+ - [mds-keyboard-key](../mds-keyboard-key)
  - [mds-stepper-bar-item](../mds-stepper-bar-item)
 
 ### Depends on
@@ -51,6 +52,7 @@ graph TD;
   mds-badge --> mds-text
   mds-file --> mds-badge
   mds-file-preview --> mds-badge
+  mds-keyboard-key --> mds-badge
   mds-stepper-bar-item --> mds-badge
   style mds-badge fill:#f9f,stroke:#333,stroke-width:4px
 ```
