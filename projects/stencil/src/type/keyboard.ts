@@ -1,7 +1,7 @@
 export type KeyboardKeyData = {
   description: string
   keyCode: string
-  keyboardPosition?: 'left' | 'right'
+  keyboardPosition?: { left?: boolean; right?: boolean }
   keyCodes?: string[]
   alias: string
 }

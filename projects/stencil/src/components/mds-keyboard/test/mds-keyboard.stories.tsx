@@ -18,10 +18,48 @@ const TemplateSingleKey = args =>
   </mds-keyboard>
 
 const TemplateMultipleKeys = args =>
-  <mds-keyboard {...args}>
-    <mds-keyboard-key name="control"></mds-keyboard-key>
-    <mds-keyboard-key name="x"></mds-keyboard-key>
-  </mds-keyboard>
+  <mds-table>
+    <mds-table-header>
+      <mds-table-header-cell label='combination'></mds-table-header-cell>
+      <mds-table-header-cell label='description'></mds-table-header-cell>
+    </mds-table-header>
+    <mds-table-body>
+      <mds-table-row>
+        <mds-table-cell class="align-middle">
+          <mds-keyboard {...args}>
+            <mds-keyboard-key name="control"></mds-keyboard-key>
+            <mds-keyboard-key name="x"></mds-keyboard-key>
+          </mds-keyboard>
+        </mds-table-cell>
+        <mds-table-cell class="align-middle">
+          There are no specific key position for this combination, you can use both control keys.
+        </mds-table-cell>
+      </mds-table-row>
+      <mds-table-row>
+        <mds-table-cell class="align-middle">
+          <mds-keyboard {...args}>
+            <mds-keyboard-key name="controlleft"></mds-keyboard-key>
+            <mds-keyboard-key name="x"></mds-keyboard-key>
+          </mds-keyboard>
+        </mds-table-cell>
+        <mds-table-cell class="align-middle">
+          You must use the <b>left</b> control key or the test will fail.
+        </mds-table-cell>
+      </mds-table-row>
+      <mds-table-row>
+        <mds-table-cell class="align-middle">
+          <mds-keyboard {...args}>
+            <mds-keyboard-key name="controlright"></mds-keyboard-key>
+            <mds-keyboard-key name="x"></mds-keyboard-key>
+          </mds-keyboard>
+        </mds-table-cell>
+        <mds-table-cell class="align-middle">
+          You must use the <b>right</b> control key or the test will fail.
+        </mds-table-cell>
+      </mds-table-row>
+    </mds-table-body>
+  </mds-table>
+
 
 const TemplateKeysDictionary = () =>
   <mds-table>

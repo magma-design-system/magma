@@ -7,6 +7,7 @@
   --mds-keyboard-key-illumination-dark: 0 calc(var(--mds-keyboard-key-illumination-dark-size) * -1) 0 0 rgb(0 0 0 / var(--mds-keyboard-key-illumination-dark-opacity, 0.05)) inset;
   --mds-keyboard-key-illumination-light: 0 var(--mds-keyboard-key-illumination-light-size) 0 0 rgb(255 255 255 / var(--mds-keyboard-key-illumination-light-opacity, 0.5)) inset;
   --mds-keyboard-key-color: currentcolor;
+  --mds-keyboard-key-direction-color: currentcolor;
   --mds-keyboard-key-padding: theme('spacing.100');
   --mds-keyboard-key-transition-duration: theme('transitionDuration.300');
 
@@ -40,7 +41,6 @@
   transition-property: box-shadow, padding, height;
   transition-timing-function: theme('transitionTimingFunction.out-expo');
   user-select: none;
-  width: var(--key-size-default);
 }
 
 :host(:active) .physical-key,
@@ -54,13 +54,8 @@
 }
 
 :host([code="space"]) .physical-key {
-  width: calc(var(--key-size-default) * 2);
+  min-width: calc(var(--key-size-default) * 2);
 }
-
-/* :host([code="enter"]) .physical-key,
-:host([code="numpadenter"]) .physical-key {
-  height: calc(var(--key-size-default) * 2);
-} */
 
 mds-badge {
   background-color: transparent;

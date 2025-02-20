@@ -219,7 +219,11 @@ export class MdsKeyboard {
           <slot></slot>
         </div>
         { this.try && <mds-button icon={ this.getButtonIcon() } aria-title={ this.t.get('testKeyCombination') } class="combination-checker" variant="dark" tone="quiet" onClick={this.startKeyboardShortcutTest.bind(this)}></mds-button> }
-        { this.try && <mds-tooltip target='.combination-checker'>{ this.t.get('testKeyCombination') }</mds-tooltip> }
+        { this.try && <mds-tooltip target='.combination-checker'>
+          { this.testPassed === undefined && this.t.get('testKeyCombination') }
+          { this.testPassed === true && this.t.get('testKeyCombination') }
+          { this.testPassed === false && this.t.get('testKeyCombination') }
+        </mds-tooltip> }
       </Host>
     )
   }

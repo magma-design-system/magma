@@ -1,6 +1,7 @@
 import { Component, Host, h, Element, Prop, State, Method } from '@stencil/core'
 import { KeyboardKeyName } from '@type/keyboard'
-import keyboardKeys from '@meta/keyboard/keys.json'
+import keyboardKeysData from '@meta/keyboard/keys.json'
+import { KeyboardKeyMap } from '@type/keyboard'
 import { Locale } from '@common/locale'
 import localeEl from '@meta/keyboard/locale.el.json'
 import localeEn from '@meta/keyboard/locale.en.json'
@@ -86,6 +87,8 @@ export class MdsKeyboardKey {
     this.language = this.t.lang(this.host)
   }
 
+  private keyboardKeys = keyboardKeysData as KeyboardKeyMap
+
   /**
    * Sets the code of the keyboard key for combination tests if `try` attribute is set from `mds-keyboard` parent component
    */
@@ -98,7 +101,7 @@ export class MdsKeyboardKey {
 
   private getTitle = (): string | undefined => {
     if (this.name) {
-      return this.t.get(keyboardKeys[this.name.toLowerCase()].description, { character: keyboardKeys[this.name.toLowerCase()].alias })
+      return this.t.get(this.keyboardKeys[this.name.toLowerCase()].description, { character: this.keyboardKeys[this.name.toLowerCase()].alias, keyboardPosition: this.keyboardKeys[this.name.toLowerCase()].keyboardPosition })
     }
     return undefined
   }
@@ -113,12 +116,12 @@ export class MdsKeyboardKey {
         <div class="physical-key">
           { this.name && icons.has(this.name)
             ? <mds-icon name={icons.get(this.name) ?? miBaselineBrokenImage} class="shortcut-icon" />
-            : <mds-text class="shortcut-text" typography="detail">{ this.name && <b>{keyboardKeys[this.name].alias}</b> }</mds-text>
+            : <mds-text class="shortcut-text" typography="detail">{ this.name && <b>{this.keyboardKeys[this.name].alias}</b> }</mds-text>
           }
-          {/* { keyboardKeys[this.name].keyboardPosition && <mds-badge variant="dark" tone="quiet">
-            { keyboardKeys[this.name].keyboardPosition === 'left' && 'l'}
-            { keyboardKeys[this.name].keyboardPosition === 'right' && 'r'}
-          </mds-badge> } */}
+          { this.name && this.keyboardKeys[this.name]?.keyboardPosition && <mds-badge variant="dark" tone="quiet">
+            { this.keyboardKeys[this.name].keyboardPosition?.left && 'l'}
+            { this.keyboardKeys[this.name].keyboardPosition?.right && 'r'}
+          </mds-badge> }
         </div>
       </Host>
     )
