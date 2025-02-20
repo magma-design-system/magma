@@ -95,18 +95,12 @@ export class MdsModal {
   }
 
   private animateOpenWindow = (): void => {
-    if (this.overflow === 'auto') {
-      this.disableOverflow()
-    }
     this.animating = 'intro'
     clearTimeout(this.animationDelayTimeout)
     this.animationDelayTimeout = setTimeout(this.stopIntroAnimationWindow.bind(this), cssDurationToMilliseconds(this.cssTransitionDuration))
   }
 
   private animateCloseWindow = (): void => {
-    if (this.overflow === 'auto') {
-      this.enableOverflow()
-    }
     this.animating = 'outro'
     clearTimeout(this.animationDelayTimeout)
     this.animationDelayTimeout = setTimeout(this.stopOutroAnimationWindow.bind(this), cssDurationToMilliseconds(this.cssTransitionDuration))
@@ -147,8 +141,14 @@ export class MdsModal {
   @Watch('opened')
   handleOpenProp (newValue: boolean): void {
     if (newValue) {
+      if (this.overflow === 'auto') {
+        this.disableOverflow()
+      }
       this.animateOpenWindow()
       return
+    }
+    if (this.overflow === 'auto') {
+      this.enableOverflow()
     }
     this.animateCloseWindow()
   }
