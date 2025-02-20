@@ -78,6 +78,12 @@ const Template = args =>
     Conferma azione
   </mds-button>
 
+const TemplateNotifications = args =>
+  <mds-button {...args}>
+    Notifiche
+    <mds-notification slot="notification" value={12}></mds-notification>
+  </mds-button>
+
 const TemplateAwait = args =>
   <mds-button {...args}>
     Salvataggio in corso...
@@ -179,6 +185,12 @@ Href.args = {
 
 export const Target = Template.bind({})
 Target.args = {
+  href: 'http://www.maggioli.it',
+  target: 'blank',
+}
+
+export const Notifications = TemplateNotifications.bind({})
+Notifications.args = {
   href: 'http://www.maggioli.it',
   target: 'blank',
 }
