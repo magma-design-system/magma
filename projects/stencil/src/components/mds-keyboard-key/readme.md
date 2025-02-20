@@ -46,15 +46,12 @@ Type: `Promise<void>`
 
 - [mds-icon](../mds-icon)
 - [mds-text](../mds-text)
-- [mds-badge](../mds-badge)
 
 ### Graph
 ```mermaid
 graph TD;
   mds-keyboard-key --> mds-icon
   mds-keyboard-key --> mds-text
-  mds-keyboard-key --> mds-badge
-  mds-badge --> mds-text
   style mds-keyboard-key fill:#f9f,stroke:#333,stroke-width:4px
 ```
 

@@ -106,10 +106,10 @@ export class MdsKeyboardKey {
             ? <mds-icon name={icons.get(this.name) ?? miBaselineBrokenImage} class="shortcut-icon" />
             : <mds-text class="shortcut-text" typography="detail">{ this.name && <b>{this.keyboardKeys[this.name].alias}</b> }</mds-text>
           }
-          { this.name && this.keyboardKeys[this.name]?.keyboardPosition && <mds-badge variant="dark" tone="quiet">
+          { this.name && this.keyboardKeys[this.name]?.keyboardPosition && <mds-text typography="label">
             { this.keyboardKeys[this.name].keyboardPosition?.left && 'l'}
             { this.keyboardKeys[this.name].keyboardPosition?.right && 'r'}
-          </mds-badge> }
+          </mds-text> }
         </div>
       </Host>
     )
