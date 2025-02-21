@@ -188,22 +188,34 @@ export class MdsHeader {
     this.onMenuChangedHandler('none')
   }
 
-  componentDidLoad (): void {
+  private defineHeaderBar = (): void => {
     this.headerBar = this.host.querySelector('mds-header-bar') as HTMLMdsHeaderBarElement
+  }
+
+  componentDidLoad (): void {
+    this.defineHeaderBar()
+    this.onMenuChangedHandler(this.menu)
+    this.onNavChangedHandler(this.nav)
     this.initScrollListener()
   }
 
   @Watch('menu')
-  onMenuChangedHandler (newValue: HeaderBarMenuType): void {
+  onMenuChangedHandler (newValue: HeaderBarMenuType, oldValue?: HeaderBarMenuType): void {
+    if (newValue === oldValue) {
+      return
+    }
     if (this.headerBar){
-      this.headerBar.setAttribute('menu', newValue)
+      this.headerBar.menu = newValue
     }
   }
 
   @Watch('nav')
-  onNavChangedHandler (newValue: HeaderBarNavType): void {
+  onNavChangedHandler (newValue: HeaderBarNavType, oldValue?: HeaderBarMenuType): void {
+    if (newValue === oldValue) {
+      return
+    }
     if (this.headerBar) {
-      this.headerBar.setAttribute('nav', newValue)
+      this.headerBar.nav = newValue
     }
   }
 
