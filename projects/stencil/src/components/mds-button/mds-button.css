@@ -32,7 +32,7 @@
 
   align-items: center;
   background-color: var(--mds-button-background);
-  border-color: var(--mds-button-border-color);
+  border-color: var(--mds-button-border-color, transparent);
   border-radius: var(--mds-button-radius);
   border-style: solid;
   border-width: theme('borderWidth.2');

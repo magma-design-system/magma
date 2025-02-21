@@ -4,8 +4,6 @@
 @tailwind components;
 @tailwind utilities;
 
-@import '../../tailwind/fouc.css';
-
 /**
  * @prop --mds-table-header-cell-padding: The padding of the table cell
  */
@@ -46,3 +44,4 @@
 }
 
 @import './css/mds-table-header-cell-pref-animation.css';
+@import '../../tailwind/fouc.css';
