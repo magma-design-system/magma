@@ -3,6 +3,7 @@
   border-color: transparent;
   box-shadow: none;
   opacity: 0;
+  transition-delay: 0s;
   transition-duration: 0s;
   visibility: hidden;
 }
