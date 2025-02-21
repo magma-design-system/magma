@@ -79,6 +79,7 @@ async function buildMap (): Promise<void[]> {
   const promises = Array.from(componentsMap.keys()).map(name => {
     return getMdsDependencies(name).then(deps =>
       deps.forEach(d => {
+        if (d === name) throw new Error(`Recursive dependency in component: ${name}`)
         componentsMap.set(d, [...(componentsMap.get(d) ?? []), name])
       }),
     )
