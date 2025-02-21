@@ -1,5 +1,7 @@
 @tailwind utilities;
 
+@import '../../tailwind/fouc.css';
+
 /**
  * @prop --mds-table-cell-background-hover: The background-color of the table cell when the mouse is over it
  * @prop --mds-table-cell-background: The background-color of the table cell
@@ -30,4 +32,5 @@
 
 @import './css/mds-table-cell-pref-animation.css';
 @import './css/mds-table-cell-sorted.css';
+
 /* @import './css/mds-table-cell-selected.css'; */

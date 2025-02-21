@@ -258,3 +258,5 @@ textarea.input {
     --mds-input-background: theme('colors.variant-primary-07');
   }
 }
+
+@import '../../tailwind/fouc.css';

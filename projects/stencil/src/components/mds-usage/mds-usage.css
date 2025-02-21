@@ -12,7 +12,6 @@
   --mds-usage-badge-color: theme('colors.status-info-10');
   --mds-usage-color: theme('colors.tone-neutral-03');
 
-
   @apply
     duration-200
     ease-out
@@ -87,3 +86,4 @@
 @import './css/mds-usage-pref-animation.css';
 @import './css/mds-usage-pref-theme.css';
 @import './css/mds-usage-pref-contrast.css';
+@import '../../tailwind/fouc.css';

@@ -31,3 +31,4 @@
 
 @import './css/mds-tab-item-pref-theme.css';
 @import './css/mds-tab-item-pref-contrast.css';
+@import '../../tailwind/fouc.css';

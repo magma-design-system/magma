@@ -95,3 +95,4 @@
 
 @import './css/mds-details-pref-animation.css';
 @import './css/mds-details-pref-contrast.css';
+@import '../../tailwind/fouc.css';

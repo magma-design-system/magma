@@ -2,6 +2,7 @@
 
 /**
  * @prop --mds-price-table-features-padding: Sets the cell padding of the children components
+ * @prop --mds-price-table-features-border-color: Sets the border-color of the children components
  */
 
 :host {
@@ -38,3 +39,4 @@ header {
 @import './css/mds-price-table-features-pref-animation.css';
 @import './css/mds-price-table-features-pref-theme.css';
 @import './css/mds-price-table-features-pref-contrast.css';
+@import '../../tailwind/fouc.css';

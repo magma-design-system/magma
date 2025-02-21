@@ -58,3 +58,5 @@
   visibility: hidden;
 
 }
+
+@import '../../tailwind/fouc.css';

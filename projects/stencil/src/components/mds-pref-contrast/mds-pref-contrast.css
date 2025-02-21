@@ -23,3 +23,4 @@
 }
 
 @import './css/mds-pref-contrast-pref-contrast.css';
+@import '../../tailwind/fouc.css';

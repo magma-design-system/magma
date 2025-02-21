@@ -84,3 +84,4 @@
 @import './css/mds-dropdown-pref-animation.css';
 @import './css/mds-dropdown-pref-theme.css';
 @import './css/mds-dropdown-pref-contrast.css';
+@import '../../tailwind/fouc.css';

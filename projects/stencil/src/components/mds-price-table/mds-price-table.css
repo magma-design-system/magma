@@ -5,3 +5,5 @@
 
   display: grid;
 }
+
+@import '../../tailwind/fouc.css';

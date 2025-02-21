@@ -44,3 +44,4 @@
 @import './css/mds-paginator-pref-animation.css';
 @import './css/mds-paginator-pref-theme.css';
 @import './css/mds-paginator-pref-contrast.css';
+@import '../../tailwind/fouc.css';

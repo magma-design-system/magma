@@ -109,4 +109,5 @@
   grid-template-rows: 1fr;
 }
 
-@import './css/mds-accordion-timer-item-pref-animation.css'
+@import './css/mds-accordion-timer-item-pref-animation.css';
+@import '../../tailwind/fouc.css';

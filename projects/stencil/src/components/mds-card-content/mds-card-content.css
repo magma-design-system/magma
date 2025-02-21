@@ -9,3 +9,5 @@
   display: grid;
   grid-template-columns: minmax(1fr, 100%);
 }
+
+@import '../../tailwind/fouc.css';

@@ -59,3 +59,4 @@
 @import './css/mds-badge-pref-animation.css';
 @import './css/mds-badge-pref-theme.css';
 @import './css/mds-badge-pref-contrast.css';
+@import '../../tailwind/fouc.css';

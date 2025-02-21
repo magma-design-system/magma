@@ -1,7 +1,9 @@
 @tailwind utilities;
 
 /*
- * x
+ * @prop --mds-pref-theme-overlay-fadeout-duration: Sets the fadeout duration of the overlay which hides UI color flash on theme change
+ * @prop --mds-pref-theme-overlay-show-duration: Sets the show duration of the overlay which hides UI color flash on theme change
+ * @prop --mds-pref-theme-overlay-z-index: Sets the z-index of the overlay which hides UI color flash on theme change
  */
 
 :host {
@@ -39,3 +41,4 @@
 }
 
 @import './css/mds-pref-theme-pref-contrast.css';
+@import '../../tailwind/fouc.css';

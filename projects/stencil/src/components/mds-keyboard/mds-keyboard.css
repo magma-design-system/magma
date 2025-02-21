@@ -121,3 +121,4 @@ mds-tooltip:not([hydrated]) {
 }
 
 @import './css/mds-keyboard-pref-theme.css';
+@import '../../tailwind/fouc.css';

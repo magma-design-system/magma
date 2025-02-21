@@ -168,7 +168,7 @@ Arrow.args = {
   backdrop: true,
   'shift-padding': 32,
   layout: 'flex justify-start',
-  visible: true,
+  visible: false,
 }
 
 export const ArrowPadding = Template.bind({})
@@ -179,7 +179,7 @@ ArrowPadding.args = {
   'arrow-padding': 50,
   'shift-padding': 32,
   layout: 'flex justify-start',
-  visible: true,
+  visible: false,
 }
 
 export const AutoPlacement = Template.bind({})
@@ -187,7 +187,7 @@ AutoPlacement.args = {
   class: 'max-w-[350px] w-full',
   'auto-placement': true,
   layout: 'flex justify-end',
-  visible: true,
+  visible: false,
 }
 
 export const Backdrop = Template.bind({})
@@ -203,7 +203,7 @@ Flip.args = {
   class: 'max-w-[350px] w-full',
   layout: 'flex h-[150vh] justify-center items-center',
   flip: true,
-  visible: true,
+  visible: false,
 }
 
 export const Interaction = Template.bind({})
@@ -221,7 +221,7 @@ Offset.args = {
   layout: 'flex justify-center items-center',
   offset: 50,
   backdrop: true,
-  visible: true,
+  visible: false,
 }
 
 export const Placement = Template.bind({})
@@ -230,7 +230,7 @@ Placement.args = {
   layout: 'flex justify-center items-center',
   placement: 'right-start',
   backdrop: true,
-  visible: true,
+  visible: false,
 }
 
 export const Shift = Template.bind({})
@@ -238,7 +238,7 @@ Shift.args = {
   class: 'max-w-[350px] w-full',
   layout: 'flex justify-end',
   shift: true,
-  visible: true,
+  visible: false,
 }
 
 export const ShiftPadding = Template.bind({})
@@ -247,7 +247,7 @@ ShiftPadding.args = {
   layout: 'flex justify-end',
   shift: true,
   'shift-padding': 50,
-  visible: true,
+  visible: false,
 }
 
 export const Smooth = Template.bind({})
@@ -255,7 +255,7 @@ Smooth.args = {
   class: 'max-w-[350px] w-full',
   layout: 'flex justify-start h-[100vh] mt-[25vh]',
   smooth: true,
-  visible: true,
+  visible: false,
 }
 
 export const Strategy = Template.bind({})
@@ -263,7 +263,7 @@ Strategy.args = {
   class: 'max-w-[350px] w-full',
   layout: 'flex justify-start',
   strategy: 'absolute',
-  visible: true,
+  visible: false,
 }
 
 export const NestedBestPractice = TemplateNested.bind({})

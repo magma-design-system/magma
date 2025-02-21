@@ -86,3 +86,5 @@
   fill: var(--mds-breadcrumb-item-arrow-depth-color);
   pointer-events: none;
 }
+
+@import '../../tailwind/fouc.css';

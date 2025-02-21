@@ -45,3 +45,4 @@
 
 @import './css/mds-price-table-list-pref-theme.css';
 @import './css/mds-price-table-list-pref-contrast.css';
+@import '../../tailwind/fouc.css';

@@ -1,0 +1,8 @@
+:host(:not(:is([hydrated], .hydrated))) {
+  animation-duration: 0s;
+  border-color: transparent;
+  box-shadow: none;
+  opacity: 0;
+  transition-duration: 0s;
+  visibility: hidden;
+}

@@ -130,3 +130,4 @@
 @import './css/mds-chip-pref-animation.css';
 @import './css/mds-chip-pref-theme.css';
 @import './css/mds-chip-pref-contrast.css';
+@import '../../tailwind/fouc.css';

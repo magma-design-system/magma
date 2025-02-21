@@ -154,3 +154,4 @@
 @import './css/mds-tab-pref-animation.css';
 @import './css/mds-tab-pref-theme.css';
 @import './css/mds-tab-pref-contrast.css';
+@import '../../tailwind/fouc.css';

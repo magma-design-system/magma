@@ -119,4 +119,4 @@
 @import './css/mds-modal-pref-animation.css';
 @import './css/mds-modal-pref-contrast.css';
 @import './css/mds-modal-pref-theme.css';
-
+@import '../../tailwind/fouc.css';

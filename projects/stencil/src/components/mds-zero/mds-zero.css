@@ -49,3 +49,4 @@
 @import './css/mds-zero-pref-animation.css';
 @import './css/mds-zero-pref-theme.css';
 @import './css/mds-zero-pref-contrast.css';
+@import '../../tailwind/fouc.css';

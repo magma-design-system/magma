@@ -5,7 +5,8 @@
 
   align-items: center;
   container-name: mds-author;
-  container-type: inline-size;
+
+  /* container-type: inline-size; */
   display: flex;
 }
 
@@ -28,3 +29,5 @@
     text-align: center;
   }
 }
+
+@import '../../tailwind/fouc.css';

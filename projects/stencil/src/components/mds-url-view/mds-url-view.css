@@ -97,3 +97,4 @@
 @import './css/mds-url-view-pref-animation.css';
 @import './css/mds-url-view-pref-theme.css';
 @import './css/mds-url-view-pref-contrast.css';
+@import '../../tailwind/fouc.css';

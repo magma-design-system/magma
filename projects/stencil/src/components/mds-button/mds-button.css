@@ -45,6 +45,7 @@
   justify-content: center;
   position: relative;
   transition-property: background-color, border-color, box-shadow, color, transform, outline, outline-offset;
+  user-select: none;
 }
 
 :host(:focus-visible) {
@@ -88,3 +89,4 @@
 @import './css/mds-button-await.css';
 @import './css/mds-button-disabled.css';
 @import './css/mds-button-pref-animation.css';
+@import '../../tailwind/fouc.css';

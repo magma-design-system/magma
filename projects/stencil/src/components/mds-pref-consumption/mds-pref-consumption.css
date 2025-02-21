@@ -35,3 +35,4 @@
 }
 
 @import './css/mds-pref-consumption-pref-contrast.css';
+@import '../../tailwind/fouc.css';

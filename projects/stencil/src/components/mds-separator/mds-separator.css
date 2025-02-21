@@ -14,3 +14,4 @@
 
 @import './css/mds-separator-pref-theme.css';
 @import './css/mds-separator-pref-contrast.css';
+@import '../../tailwind/fouc.css';

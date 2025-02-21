@@ -21,3 +21,5 @@
 .img {
   object-fit: contain;
 }
+
+@import '../../tailwind/fouc.css';

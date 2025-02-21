@@ -103,4 +103,5 @@
   transform: var(--mds-header-hidden-bar-translate-inline);
 }
 
-@import './css/mds-header-pref-theme.css'
+@import './css/mds-header-pref-theme.css';
+@import '../../tailwind/fouc.css';

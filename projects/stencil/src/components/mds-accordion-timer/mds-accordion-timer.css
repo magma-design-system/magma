@@ -19,4 +19,5 @@
   display: block;
 }
 
-@import './css/mds-accordion-timer-pref-animation.css'
+@import './css/mds-accordion-timer-pref-animation.css';
+@import '../../tailwind/fouc.css';

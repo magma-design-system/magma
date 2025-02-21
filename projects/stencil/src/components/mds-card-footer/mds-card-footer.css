@@ -11,3 +11,5 @@
   flex-grow: 1;
   justify-content: flex-end;
 }
+
+@import '../../tailwind/fouc.css';

@@ -244,3 +244,4 @@
 @import './css/mds-input-switch-checkbox.css';
 @import './css/mds-input-switch-explicit.css';
 @import './css/mds-input-switch-size.css';
+@import '../../tailwind/fouc.css';

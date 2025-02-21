@@ -131,3 +131,4 @@
 @import './css/mds-accordion-item-pref-animation.css';
 @import './css/mds-accordion-item-pref-theme.css';
 @import './css/mds-accordion-item-pref-contrast.css';
+@import '../../tailwind/fouc.css';

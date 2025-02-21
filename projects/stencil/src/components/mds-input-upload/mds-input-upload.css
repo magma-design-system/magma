@@ -200,3 +200,5 @@
   flex-wrap: nowrap;
   justify-content: center;
 }
+
+@import '../../tailwind/fouc.css';

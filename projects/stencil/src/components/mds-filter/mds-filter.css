@@ -114,3 +114,4 @@
 @import './css/mds-filter-pref-animation.css';
 @import './css/mds-filter-pref-theme.css';
 @import './css/mds-filter-pref-contrast.css';
+@import '../../tailwind/fouc.css';

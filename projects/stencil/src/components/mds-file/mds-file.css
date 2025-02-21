@@ -128,3 +128,4 @@
 @import './css/mds-file-pref-animation.css';
 @import './css/mds-file-pref-theme.css';
 @import './css/mds-file-pref-contrast.css';
+@import '../../tailwind/fouc.css';
