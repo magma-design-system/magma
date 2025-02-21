@@ -3131,18 +3131,6 @@
   resolved "https://registry.npmjs.org/@lmdb/lmdb-win32-x64/-/lmdb-win32-x64-3.0.13.tgz#93bcd6dc24afd1cc60dd88a65b9e4fab32dcf397"
   integrity sha512-UCrMJQY/gJnOl3XgbWRZZUvGGBuKy6i0YNSptgMzHBjs+QYDYR1Mt/RLTOPy4fzzves65O1EDmlL//OzEqoLlA==
 
-"@maggioli-design-system/styles@15.5.0":
-  version "15.5.0"
-  resolved "https://registry.npmjs.org/@maggioli-design-system/styles/-/styles-15.5.0.tgz#661247c6c8b9ef49668425b970d4cd5f82d9d8b3"
-  integrity sha512-GXnWWS6fPBNPI8aKE55p5kr38S/hmY6c0YeOYOmzKKJ4+EwFqDtD+op7ab/PCo+rolmykgx9VbhVv77/H9Fj8w==
-  dependencies:
-    "@fontsource/karla" "5.1.0"
-    "@fontsource/merriweather" "5.1.0"
-    "@fontsource/roboto" "5.1.0"
-    "@fontsource/roboto-mono" "5.1.0"
-    "@maggioli-design-system/design-tokens" "13.5.0"
-    normalize.css "8.0.1"
-
 "@maggioli-design-system/svg-icons@^2.6.3":
   version "2.10.1"
   resolved "https://registry.npmjs.org/@maggioli-design-system/svg-icons/-/svg-icons-2.10.1.tgz#3c86d5b738407a7fe756877aa87baf7b4d2d5f8d"

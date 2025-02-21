@@ -1482,10 +1482,6 @@ export namespace Components {
           * Specifies if the component is visible or not.
          */
         "visible"?: boolean;
-        /**
-          * Specifies if the component visibility is handled when new `mds-push-notification` components are added to this component or when they are removed.
-         */
-        "visiblity"?: 'auto'|'visible'|'hidden';
     }
     interface MdsQuote {
         /**
@@ -4720,10 +4716,6 @@ declare namespace LocalJSX {
           * Specifies if the component is visible or not.
          */
         "visible"?: boolean;
-        /**
-          * Specifies if the component visibility is handled when new `mds-push-notification` components are added to this component or when they are removed.
-         */
-        "visiblity"?: 'auto'|'visible'|'hidden';
     }
     interface MdsQuote {
         /**

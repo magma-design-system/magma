@@ -24,9 +24,9 @@
     "test": "stencil test --spec --e2e"
   },
   "dependencies": {
-    "@maggioli-design-system/mds-button": "6.2.0",
-    "@maggioli-design-system/mds-breadcrumb-item": "2.9.3",
-    "@maggioli-design-system/styles": "15.7.0",
+    "@maggioli-design-system/mds-button": "6.2.1",
+    "@maggioli-design-system/mds-breadcrumb-item": "2.9.4",
+    "@maggioli-design-system/styles": "15.8.0",
     "@stencil/core": "4.25.1"
   },
   "license": "MIT",
