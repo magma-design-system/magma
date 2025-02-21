@@ -1,5 +1,5 @@
 {{#each components as | component | }}
-{{component}}:not([hydrated]){{#unless @last}},{{/unless}}
+{{component}}:not(:is([hydrated], .hydrated)){{#unless @last}},{{/unless}}
 {{/each}}
 {
   animation-duration: 0s;
