@@ -110,6 +110,11 @@ const decorateViewport = (name, item) => {
 
 const parameters = {
   actions: { argTypesRegex: '^on[A-Z].*' },
+  options: {
+    storySort: {
+      method: 'alphabetical',
+    },
+  },
   viewport: {
     devices,
     // viewports,

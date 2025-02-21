@@ -82,10 +82,8 @@ const config = {
   webpackFinal,
   framework,
   options: {
-    storySort: {
-      method: 'alphabetical',
-      order: [],
-      locales: 'it-IT',
+    storySort: (a, b) => {
+      return a.title.localeCompare(b.title, 'it-IT', { numeric: true });
     },
   },
   docs
