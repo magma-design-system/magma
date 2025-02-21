@@ -6,6 +6,6 @@ describe('mds-keyboard', () => {
     await page.setContent('<mds-keyboard></mds-keyboard>')
 
     const element = await page.find('mds-keyboard')
-    expect(element).toHaveClass('hydrated')
+    expect(element).toHaveAttribute('hydrated')
   })
 })
