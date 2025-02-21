@@ -118,7 +118,7 @@ const parameters = {
 
 const decorators = [
   (Story) => (
-    <div className="p-4">
+    <div className="p-600 min-h-screen bg-tone-neutral">
       <Story />
     </div>
   ),

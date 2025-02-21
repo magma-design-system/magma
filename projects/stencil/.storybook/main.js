@@ -81,6 +81,13 @@ const config = {
   addons,
   webpackFinal,
   framework,
+  options: {
+    storySort: {
+      method: 'alphabetical',
+      order: [],
+      locales: 'it-IT',
+    },
+  },
   docs
 }
 
