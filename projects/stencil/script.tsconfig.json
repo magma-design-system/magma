@@ -6,7 +6,7 @@
     "baseUrl": ".",
     "declaration": false,
     "experimentalDecorators": true,
-    "lib": ["esnext"],
+    "lib": ["esnext", "dom"],
     "esModuleInterop": true,
     "module": "esnext",
     "moduleResolution": "node",
