@@ -83,4 +83,15 @@
       }
     }
   }
+
+  .not-hydrated {
+      animation-duration: 0s;
+      border-color: transparent;
+      box-shadow: 0 0 0 transparent;
+      opacity: 0;
+      outline-color: transparent;
+      transition-delay: 0s;
+      transition-duration: 0s;
+      visibility: hidden;
+  }
 }

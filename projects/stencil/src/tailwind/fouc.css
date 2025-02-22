@@ -1,10 +1,117 @@
 :host(:not(:is([hydrated], .hydrated))) {
   animation-duration: 0s;
   border-color: transparent;
-  box-shadow: none;
-  display: none;
+  box-shadow: 0 0 0 transparent;
   opacity: 0;
-  outline: 0;
+  outline-color: transparent;
+  transition-delay: 0s;
+  transition-duration: 0s;
+  visibility: hidden;
+}
+
+/* TODO refact(stencil): Uses only used selector from parent shadowDOM component */
+
+mds-accordion:not(:is([hydrated], .hydrated)),
+mds-accordion-item:not(:is([hydrated], .hydrated)),
+mds-accordion-timer:not(:is([hydrated], .hydrated)),
+mds-accordion-timer-item:not(:is([hydrated], .hydrated)),
+mds-author:not(:is([hydrated], .hydrated)),
+mds-avatar:not(:is([hydrated], .hydrated)),
+mds-badge:not(:is([hydrated], .hydrated)),
+mds-banner:not(:is([hydrated], .hydrated)),
+mds-benchmark-bar:not(:is([hydrated], .hydrated)),
+mds-bibliography:not(:is([hydrated], .hydrated)),
+mds-breadcrumb:not(:is([hydrated], .hydrated)),
+mds-breadcrumb-item:not(:is([hydrated], .hydrated)),
+mds-button:not(:is([hydrated], .hydrated)),
+mds-card:not(:is([hydrated], .hydrated)),
+mds-card-content:not(:is([hydrated], .hydrated)),
+mds-card-footer:not(:is([hydrated], .hydrated)),
+mds-card-header:not(:is([hydrated], .hydrated)),
+mds-card-media:not(:is([hydrated], .hydrated)),
+mds-chip:not(:is([hydrated], .hydrated)),
+mds-details:not(:is([hydrated], .hydrated)),
+mds-dropdown:not(:is([hydrated], .hydrated)),
+mds-entity:not(:is([hydrated], .hydrated)),
+mds-file:not(:is([hydrated], .hydrated)),
+mds-file-preview:not(:is([hydrated], .hydrated)),
+mds-filter:not(:is([hydrated], .hydrated)),
+mds-filter-item:not(:is([hydrated], .hydrated)),
+mds-header:not(:is([hydrated], .hydrated)),
+mds-header-bar:not(:is([hydrated], .hydrated)),
+mds-help:not(:is([hydrated], .hydrated)),
+mds-horizontal-scroll:not(:is([hydrated], .hydrated)),
+mds-hr:not(:is([hydrated], .hydrated)),
+mds-icon:not(:is([hydrated], .hydrated)),
+mds-img:not(:is([hydrated], .hydrated)),
+mds-input:not(:is([hydrated], .hydrated)),
+mds-input-field:not(:is([hydrated], .hydrated)),
+mds-input-range:not(:is([hydrated], .hydrated)),
+mds-input-select:not(:is([hydrated], .hydrated)),
+mds-input-switch:not(:is([hydrated], .hydrated)),
+mds-input-tip:not(:is([hydrated], .hydrated)),
+mds-input-tip-item:not(:is([hydrated], .hydrated)),
+mds-input-upload:not(:is([hydrated], .hydrated)),
+mds-keyboard:not(:is([hydrated], .hydrated)),
+mds-keyboard-key:not(:is([hydrated], .hydrated)),
+mds-kpi:not(:is([hydrated], .hydrated)),
+mds-kpi-item:not(:is([hydrated], .hydrated)),
+mds-label:not(:is([hydrated], .hydrated)),
+mds-list:not(:is([hydrated], .hydrated)),
+mds-list-item:not(:is([hydrated], .hydrated)),
+mds-modal:not(:is([hydrated], .hydrated)),
+mds-note:not(:is([hydrated], .hydrated)),
+mds-notification:not(:is([hydrated], .hydrated)),
+mds-paginator:not(:is([hydrated], .hydrated)),
+mds-paginator-item:not(:is([hydrated], .hydrated)),
+mds-pref:not(:is([hydrated], .hydrated)),
+mds-pref-animation:not(:is([hydrated], .hydrated)),
+mds-pref-consumption:not(:is([hydrated], .hydrated)),
+mds-pref-contrast:not(:is([hydrated], .hydrated)),
+mds-pref-language:not(:is([hydrated], .hydrated)),
+mds-pref-language-item:not(:is([hydrated], .hydrated)),
+mds-pref-theme:not(:is([hydrated], .hydrated)),
+mds-price-table:not(:is([hydrated], .hydrated)),
+mds-price-table-features:not(:is([hydrated], .hydrated)),
+mds-price-table-features-cell:not(:is([hydrated], .hydrated)),
+mds-price-table-features-row:not(:is([hydrated], .hydrated)),
+mds-price-table-header:not(:is([hydrated], .hydrated)),
+mds-price-table-list:not(:is([hydrated], .hydrated)),
+mds-price-table-list-item:not(:is([hydrated], .hydrated)),
+mds-progress:not(:is([hydrated], .hydrated)),
+mds-push-notification:not(:is([hydrated], .hydrated)),
+mds-push-notifications:not(:is([hydrated], .hydrated)),
+mds-quote:not(:is([hydrated], .hydrated)),
+mds-separator:not(:is([hydrated], .hydrated)),
+mds-spinner:not(:is([hydrated], .hydrated)),
+mds-stepper-bar:not(:is([hydrated], .hydrated)),
+mds-stepper-bar-item:not(:is([hydrated], .hydrated)),
+mds-tab:not(:is([hydrated], .hydrated)),
+mds-tab-bar:not(:is([hydrated], .hydrated)),
+mds-tab-bar-item:not(:is([hydrated], .hydrated)),
+mds-tab-item:not(:is([hydrated], .hydrated)),
+mds-table:not(:is([hydrated], .hydrated)),
+mds-table-body:not(:is([hydrated], .hydrated)),
+mds-table-cell:not(:is([hydrated], .hydrated)),
+mds-table-footer:not(:is([hydrated], .hydrated)),
+mds-table-header:not(:is([hydrated], .hydrated)),
+mds-table-header-cell:not(:is([hydrated], .hydrated)),
+mds-table-row:not(:is([hydrated], .hydrated)),
+mds-text:not(:is([hydrated], .hydrated)),
+mds-toast:not(:is([hydrated], .hydrated)),
+mds-tooltip:not(:is([hydrated], .hydrated)),
+mds-tree:not(:is([hydrated], .hydrated)),
+mds-tree-item:not(:is([hydrated], .hydrated)),
+mds-url-view:not(:is([hydrated], .hydrated)),
+mds-usage:not(:is([hydrated], .hydrated)),
+mds-video-wall:not(:is([hydrated], .hydrated)),
+mds-zero:not(:is([hydrated], .hydrated))
+{
+  animation-duration: 0s;
+  border-color: transparent;
+  box-shadow: 0 0 0 transparent;
+  opacity: 0;
+  outline-color: transparent;
   transition-delay: 0s;
   transition-duration: 0s;
   visibility: hidden;
