@@ -42,7 +42,7 @@
 
   display: grid;
   gap: var(--mds-card-gap);
-  grid-template-columns: minmax(0, 100%);
+  grid-template-columns: repeat(auto-fit, minmax(1px, 100%));
   padding: var(--mds-card-padding);
 }
 

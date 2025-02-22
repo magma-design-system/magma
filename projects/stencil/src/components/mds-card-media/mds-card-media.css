@@ -3,6 +3,7 @@
 :host {
   background-color: theme('colors.tone-neutral-09');
   display: grid;
+  min-width: 0;
   position: relative;
 }
 

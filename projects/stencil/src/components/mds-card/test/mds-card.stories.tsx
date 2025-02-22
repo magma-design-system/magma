@@ -15,14 +15,14 @@ const FullCardTemplate = args =>
   <div>
     <mds-card {...args}>
       <mds-card-header>
-        <div class="flex gap-400 items-center">
-          <mds-avatar class="w-1100 min-w-1100 " initials='mc'></mds-avatar>
-          <div class="flex gap-0 flex-col">
-            <mds-text typography="h6">Mauro Coletta</mds-text>
-            <mds-text typography="caption">Management designer</mds-text>
+        <div class="flex gap-400 items-center min-w-0">
+          <mds-avatar class="w-1100 min-w-1100 shrink-0" initials='mc'></mds-avatar>
+          <div class="flex gap-0 flex-col grow min-w-0">
+            <mds-text typography="h6" truncate="word">Mario Coletta</mds-text>
+            <mds-text typography="caption" truncate="word">Management designer</mds-text>
           </div>
         </div>
-        <mds-button id="action-example" icon="mi/round/more-vert" variant="light"></mds-button>
+        <mds-button class="shrink-0" id="action-example" icon="mi/round/more-vert" variant="light"></mds-button>
       </mds-card-header>
       <mds-card-media>
         <mds-img src={URLs[0]} class="object-cover"></mds-img>
@@ -46,11 +46,11 @@ const CustomSlotsTemplate = args =>
   <div>
     <mds-card {...args}>
       <div slot="header" class="flex gap-400 items-center justify-between px-400 py-400">
-        <div class="flex gap-400 items-center">
-          <mds-avatar class="w-1100 min-w-1100 " initials='mc'></mds-avatar>
-          <div class="flex gap-0 flex-col">
-            <mds-text typography="h6">Mauro Coletta</mds-text>
-            <mds-text typography="caption">Management designer</mds-text>
+        <div class="flex gap-400 items-center min-w-0">
+          <mds-avatar class="w-1100 min-w-1100 shrink-0" initials='mc'></mds-avatar>
+          <div class="flex gap-0 flex-col grow min-w-0">
+            <mds-text typography="h6" truncate="word">Mario Coletta</mds-text>
+            <mds-text typography="caption" truncate="word">Management designer</mds-text>
           </div>
         </div>
         <mds-button id="action-example" icon="mi/round/more-vert" variant="light"></mds-button>
@@ -73,11 +73,11 @@ const CustomSlotsTemplate = args =>
 const LayoutHMCFTemplate = args =>
   <mds-card {...args}>
     <mds-card-header>
-      <div class="flex gap-400 items-center">
-        <mds-avatar class="w-1100 min-w-1100" initials='mc'></mds-avatar>
-        <div class="flex gap-0 flex-col">
-          <mds-text typography="h6">Mauro Coletta</mds-text>
-          <mds-text typography="caption">Management designer</mds-text>
+      <div class="flex gap-400 items-center min-w-0">
+        <mds-avatar class="w-1100 min-w-1100 shrink-0" initials='mc'></mds-avatar>
+        <div class="flex gap-0 flex-col grow min-w-0">
+          <mds-text typography="h6" truncate="word">Mario Coletta</mds-text>
+          <mds-text typography="caption" truncate="word">Management designer</mds-text>
         </div>
       </div>
       <mds-button icon="mi/round/more-vert" variant="light"></mds-button>
@@ -97,11 +97,11 @@ const LayoutHMCFTemplate = args =>
 const LayoutHMCTemplate = args =>
   <mds-card {...args}>
     <mds-card-header>
-      <div class="flex gap-400 items-center">
-        <mds-avatar class="w-1100 min-w-1100 " initials='mc'></mds-avatar>
-        <div class="flex gap-0 flex-col">
-          <mds-text typography="h6">Mauro Coletta</mds-text>
-          <mds-text typography="caption">Management designer</mds-text>
+      <div class="flex gap-400 items-center min-w-0">
+        <mds-avatar class="w-1100 min-w-1100 shrink-0" initials='mc'></mds-avatar>
+        <div class="flex gap-0 flex-col grow min-w-0">
+          <mds-text typography="h6" truncate="word">Mario Coletta</mds-text>
+          <mds-text typography="caption" truncate="word">Management designer</mds-text>
         </div>
       </div>
       <mds-button icon="mi/round/more-vert" variant="light"></mds-button>
@@ -117,11 +117,11 @@ const LayoutHMCTemplate = args =>
 const LayoutHMFTemplate = args =>
   <mds-card {...args}>
     <mds-card-header>
-      <div class="flex gap-400 items-center">
-        <mds-avatar class="w-1100 min-w-1100 " initials='mc'></mds-avatar>
-        <div class="flex gap-0 flex-col">
-          <mds-text typography="h6">Mauro Coletta</mds-text>
-          <mds-text typography="caption">Management designer</mds-text>
+      <div class="flex gap-400 items-center min-w-0">
+        <mds-avatar class="w-1100 min-w-1100 shrink-0" initials='mc'></mds-avatar>
+        <div class="flex gap-0 flex-col grow min-w-0">
+          <mds-text typography="h6" truncate="word">Mario Coletta</mds-text>
+          <mds-text typography="caption" truncate="word">Management designer</mds-text>
         </div>
       </div>
       <mds-button icon="mi/round/more-vert" variant="light"></mds-button>
@@ -138,11 +138,11 @@ const LayoutHMFTemplate = args =>
 const LayoutHCFTemplate = args =>
   <mds-card {...args}>
     <mds-card-header>
-      <div class="flex gap-400 items-center">
-        <mds-avatar class="w-1100 min-w-1100 " initials='mc'></mds-avatar>
-        <div class="flex gap-0 flex-col">
-          <mds-text typography="h6">Mauro Coletta</mds-text>
-          <mds-text typography="caption">Management designer</mds-text>
+      <div class="flex gap-400 items-center min-w-0">
+        <mds-avatar class="w-1100 min-w-1100 shrink-0" initials='mc'></mds-avatar>
+        <div class="flex gap-0 flex-col grow min-w-0">
+          <mds-text typography="h6" truncate="word">Mario Coletta</mds-text>
+          <mds-text typography="caption" truncate="word">Management designer</mds-text>
         </div>
       </div>
       <mds-button icon="mi/round/more-vert" variant="light"></mds-button>
