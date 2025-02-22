@@ -25,6 +25,8 @@
  * @prop --mds-keyboard-spinner-duration: Set the duration of the spinner animation.
  */
 
+/* TODO refact(stencil): Uses only used selector from parent shadowDOM component */
+
 :host {
 
   --mds-keyboard-background-default: var(--mds-keyboard-background);
