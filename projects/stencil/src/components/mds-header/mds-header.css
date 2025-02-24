@@ -33,6 +33,10 @@
 
 /* TODO feat(mds-header): add support for mds-pref-consumption and hide / remove backdrop when enabled */
 
+/* TODO style(mds-header): remove backdrop when header-bar is hidden with auto-hide attribute */
+
+/* TODO feat(mds-header): add event onAutoHide to help layout handling from outside */
+
 .backdrop {
   align-items: center;
   backdrop-filter: var(--mds-header-backdrop-filter);
@@ -50,15 +54,16 @@
   width: 100%;
 }
 
+:host([appearance="inline"]) .backdrop {
+  opacity: 1;
+  transform: translate(0, 0);
+}
+
+:host([visibility="hidden"]) .backdrop,
 :host([appearance="stripe"]) .backdrop,
 .backdrop--hidden {
   opacity: 0;
   transform: translate(0, -100%);
-}
-
-:host([appearance="inline"]) .backdrop {
-  opacity: 1;
-  transform: translate(0, 0);
 }
 
 @container style(--mds-header-backdrop-show: false) {
