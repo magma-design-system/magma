@@ -1,0 +1,21 @@
+@tailwind utilities;
+
+@container style(--magma-pref-consumption: high) {
+  .backdrop {
+
+    --mds-header-backdrop-background-image: none;
+  }
+}
+
+@container style(--magma-pref-consumption: medium) {
+  .backdrop {
+
+    --mds-header-backdrop-filter: none;
+  }
+}
+
+@container style(--magma-pref-consumption: low) {
+  .backdrop {
+    display: none;
+  }
+}
