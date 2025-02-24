@@ -2,6 +2,7 @@ import clsx from 'clsx'
 import { Component, Element, Event, EventEmitter, Host, h, Listen, Prop, State } from '@stencil/core'
 import { MdsFilterEventDetail } from './meta/event-detail'
 import { MdsFilterItemEventDetail } from '@component/mds-filter-item/meta/event-detail'
+import miBaselineClose from '@icon/mi/baseline/close.svg'
 
 /**
  * @slot default - Add `mds-filter-item` element/s.
@@ -23,7 +24,7 @@ export class MdsFilter {
   /**
    * Sets an automatic reset of active filters if all filters are triggered
    */
-  @Prop() autoReset?: boolean
+  @Prop({ reflect: true }) autoReset?: boolean
 
   /**
    * Sets the label of the filter group
@@ -33,12 +34,12 @@ export class MdsFilter {
   /**
    * Sets if the filter group can filter multiple filters simultaneously
    */
-  @Prop() multiple?: boolean
+  @Prop({ reflect: true }) multiple?: boolean
 
   /**
    * Shows a reset button if one or more filters are active
    */
-  @Prop() reset?: boolean
+  @Prop({ reflect: true }) reset?: boolean
 
   private queryItems = ():NodeListOf<HTMLMdsFilterItemElement> =>
     this.element.querySelectorAll<HTMLMdsFilterItemElement>('mds-filter-item')
@@ -143,11 +144,13 @@ export class MdsFilter {
     return (
       <Host aria-label={ this.label } role="menubar">
         { this.label && <mds-text class="label" typography="label">{ this.label }</mds-text> }
-        <div class={clsx('items', this.active && 'active')}>
-          <slot/>
-          { this.reset && <div class={clsx('reset', this.active && 'reset-opened')}>
-            <mds-filter-item selected={this.active} class={clsx('reset-button', this.active && 'reset-button-opened')} icon="mi/baseline/close" onClick={this.resetItems}/>
-          </div> }
+        <div class="items-wrapper">
+          <div class={clsx('items', this.active && 'active')}>
+            <slot/>
+            <div class={clsx('reset', this.active && 'reset--opened')}>
+              <mds-filter-item selected={this.active} disabled={!this.active && this.reset} class={clsx('reset-button', this.active && 'reset-button-opened')} icon={miBaselineClose} onClick={this.resetItems}/>
+            </div>
+          </div>
         </div>
       </Host>
     )

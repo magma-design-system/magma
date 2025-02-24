@@ -1,0 +1,93 @@
+.toggle-icon {
+  align-items: center;
+  align-self: center;
+  display: inline-flex;
+  flex-shrink: 0;
+  height: var(--mds-tree-item-toggle-size);
+  justify-content: center;
+  margin-left: calc(var(--offset) * -1);
+  position: relative;
+  transform: rotate(0deg);
+  transition-duration: var(--mds-tree-item-transition-duration);
+  transition-property: transform;
+  transition-timing-function: var(--mds-tree-item-transition-timing-function);
+  width: var(--mds-tree-item-toggle-size);
+  z-index: 1;
+}
+
+.toggle-icon mds-button {
+
+  --size: theme('size.600');
+
+  background-color: var(--mds-tree-item-icon-background-color);
+  border: 0;
+  border-radius: var(--mds-tree-item-toggle-size);
+  color: var(--mds-tree-item-icon-color);
+  fill: var(--mds-tree-item-icon-color);
+  height: var(--size);
+  min-height: var(--size);
+  min-width: var(--size);
+  overflow: hidden;
+  width: var(--size);
+}
+
+.toggle-icon mds-button[await] {
+  background-color: var(--mds-tree-item-toggle-icon-async-background);
+  color: var(--mds-tree-item-toggle-icon-async-color);
+}
+
+:host-context([toggle="chevron"]) .toggle-icon {
+
+  --mds-tree-item-icon-background-color: var(--mds-tree-item-toggle-icon-chevron-default-background);
+  --mds-tree-item-icon-color: var(--mds-tree-item-toggle-icon-chevron-default-color);
+}
+
+:host([expanded]):host-context([toggle="chevron"]) .toggle-icon {
+
+  --mds-tree-item-icon-background-color: var(--mds-tree-item-toggle-icon-chevron-expanded-background);
+  --mds-tree-item-icon-color: var(--mds-tree-item-toggle-icon-chevron-expanded-color);
+}
+
+:host-context([toggle="folder"][toggle-position="left"]) .toggle-icon mds-button {
+  box-shadow: 0 theme('spacing.25') 0 0 var(--mds-tree-item-branch-border-color);
+}
+
+:host-context([toggle="folder"]) .toggle-icon mds-button {
+
+  --size: auto;
+
+  border-radius: theme('borderRadius.DEFAULT');
+  padding: theme('spacing.25') theme('spacing.50');
+}
+
+:host-context([toggle="folder"]) .toggle-icon {
+
+  --mds-tree-item-icon-background-color: var(--mds-tree-item-toggle-icon-folder-default-background);
+  --mds-tree-item-icon-color: var(--mds-tree-item-toggle-icon-folder-default-color);
+}
+
+:host([expanded]):host-context(mds-tree[toggle="folder"]) .toggle-icon {
+
+  --mds-tree-item-icon-background-color: var(--mds-tree-item-toggle-icon-folder-expanded-background);
+  --mds-tree-item-icon-color: var(--mds-tree-item-toggle-icon-folder-expanded-color);
+}
+
+:host-context(mds-tree[toggle-position="right"]) .toggle-icon {
+
+  --mds-tree-item-icon-background-color: var(--mds-tree-item-toggle-icon-position-right-default-background);
+  --mds-tree-item-icon-color: var(--mds-tree-item-toggle-icon-position-right-default-color);
+}
+
+:host([expanded]):host-context(mds-tree[toggle-position="right"]) .toggle-icon {
+
+  --mds-tree-item-icon-background-color: var(--mds-tree-item-toggle-icon-position-right-expanded-background);
+  --mds-tree-item-icon-color: var(--mds-tree-item-toggle-icon-position-right-expanded-color);
+}
+
+:host([expanded]):host-context(mds-tree[toggle-position="left"][toggle="chevron"]) .toggle-icon {
+  transform: rotate(90deg);
+}
+
+.header:not(.header--has-children) .toggle-icon {
+  display: none;
+}

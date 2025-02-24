@@ -32,6 +32,16 @@ export class MdsFilterItem {
    */
   @Prop({ reflect: true }) value: string
 
+  /**
+   * Shows the number of items will be filtered by the component
+   */
+  @Prop({ reflect: true }) count?: string
+
+  /**
+   * Sets if the component is disabled or not
+   */
+  @Prop({ reflect: true }) disabled?: boolean
+
   private toggle = () => {
     this.selected = !this.selected
     this.selectedEvent.emit({ id: this.element.id, selected: this.selected })
@@ -53,9 +63,10 @@ export class MdsFilterItem {
 
   render () {
     return (
-      <Host tabindex="0" role="menuitem" aria-label={ this.label ?? this.icon } onClick={ this.toggle }>
+      <Host tabindex={this.disabled ? '-1' : '0'} role="menuitem" aria-label={ this.label ?? this.icon } onClick={ this.toggle }>
         { this.icon && <mds-icon aria-hidden="true" name={this.icon} /> }
         { this.label && <mds-text aria-hidden="true" variant="info" typography="caption">{ this.label }</mds-text> }
+        { this.count && <div class="count"><mds-text aria-hidden="true" variant="info" typography="option">{ this.count }</mds-text></div> }
       </Host>
     )
   }
