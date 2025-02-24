@@ -2,8 +2,8 @@ import {
   getColorsConfig,
   getStyleDictionaryWithAllCustomTransform,
   writeJsonTokens,
-} from '../src/lib/utils'
-import { createColorTokens } from '../src/lib/color'
+} from '../src/lib/utils.mjs'
+import { createColorTokens } from '../src/lib/color.mjs'
 import { getStyleDictionaryColorConfigAllPlatforms } from '../src/config/sd-color-all-platforms.config'
 import { getBrandColorConfig } from '../src/config/sd-brand-color.config'
 import themeTokens from '../tokens/color/themes.json'

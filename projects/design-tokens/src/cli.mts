@@ -1,12 +1,14 @@
 #!/usr/bin/env node
 import {
   createColorTokens,
-} from './lib/color'
+} from './lib/color.mjs'
+// const chalk = await import('chalk')
 import chalk from 'chalk'
-import { parseArgs } from './lib/parse-args'
-import { writeJsonTokens, getColorsConfig, exportColors } from './lib/utils'
-
+import { parseArgs } from './lib/parse-args.mjs'
+import { writeJsonTokens, getColorsConfig, exportColors } from './lib/utils.mjs'
+// import { createColorTokens } from './lib/color.mjs'
 export async function main () {
+  // const { createColorTokens } = await import('./lib/color.js')
   const opts = parseArgs()
 
   const colorsConfig = await getColorsConfig(opts.config)

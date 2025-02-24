@@ -17,12 +17,15 @@ import {
   jsTailwindScreensFormat,
   tailwindcssAspetctRationTransform,
   tailwindPxToRemTransform,
-} from '@/formats/index'
-import { getBrandColorConfig } from '../config/sd-brand-color.config'
+} from '../formats/index.js'
+import { getBrandColorConfig } from '../config/sd-brand-color.config.js'
 import chalk from 'chalk'
-import { mkdir, writeFile } from 'fs-extra'
+import pkg from 'fs-extra'
 import { resolve } from 'path'
 import { lilconfig } from 'lilconfig'
+
+// importing for esm
+const { mkdir, writeFile } = pkg
 
 export async function getColorsConfig (path?: string) {
   if (path) return lilconfig('magma-design-tokens').load(path)

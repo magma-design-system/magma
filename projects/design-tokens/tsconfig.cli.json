@@ -2,11 +2,10 @@
   "compilerOptions": {
     "allowJs": true,
     "skipLibCheck": true,
-    "jsx": "react",
     "baseUrl": ".",
     "lib": ["esnext"],
-    "module": "Preserve",
-    "moduleResolution": "bundler",
+    "module": "NodeNext",
+    "moduleResolution": "nodenext",
     "outDir": "dist",
     "resolveJsonModule": true,
     "sourceMap": false,
