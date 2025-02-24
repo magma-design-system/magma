@@ -27,7 +27,7 @@ import { MdsFilePreviewEventDetail } from "./components/mds-file-preview/meta/ev
 import { MdsFilterEventDetail } from "./components/mds-filter/meta/event-detail";
 import { MdsFilterItemEventDetail } from "./components/mds-filter-item/meta/event-detail";
 import { HeaderBarMenuType, HeaderBarNavType } from "./type/header-bar";
-import { MdsHeaderEventDetail } from "./components/mds-header/meta/event-detail";
+import { MdsHeaderEventDetail, MdsHeaderVisibilityEventDetail } from "./components/mds-header/meta/event-detail";
 import { SnapType, ViewportType } from "./components/mds-horizontal-scroll/meta/types";
 import { CrossoriginType, ReferrerpolicyType } from "./components/mds-img/meta/types";
 import { LoadingType } from "./type/loading";
@@ -93,7 +93,7 @@ export { MdsFilePreviewEventDetail } from "./components/mds-file-preview/meta/ev
 export { MdsFilterEventDetail } from "./components/mds-filter/meta/event-detail";
 export { MdsFilterItemEventDetail } from "./components/mds-filter-item/meta/event-detail";
 export { HeaderBarMenuType, HeaderBarNavType } from "./type/header-bar";
-export { MdsHeaderEventDetail } from "./components/mds-header/meta/event-detail";
+export { MdsHeaderEventDetail, MdsHeaderVisibilityEventDetail } from "./components/mds-header/meta/event-detail";
 export { SnapType, ViewportType } from "./components/mds-horizontal-scroll/meta/types";
 export { CrossoriginType, ReferrerpolicyType } from "./components/mds-img/meta/types";
 export { LoadingType } from "./type/loading";
@@ -1574,6 +1574,10 @@ export namespace Components {
     }
     interface MdsTabItem {
         /**
+          * Specifies the URL target of the button
+         */
+        "href"?: string;
+        /**
           * The icon displayed in the tab item
          */
         "icon"?: string;
@@ -2368,6 +2372,7 @@ declare global {
     };
     interface HTMLMdsHeaderElementEventMap {
         "mdsHeaderClose": MdsHeaderEventDetail;
+        "mdsHeaderVisibilityChange": MdsHeaderVisibilityEventDetail;
     }
     interface HTMLMdsHeaderElement extends Components.MdsHeader, HTMLStencilElement {
         addEventListener<K extends keyof HTMLMdsHeaderElementEventMap>(type: K, listener: (this: HTMLMdsHeaderElement, ev: MdsHeaderCustomEvent<HTMLMdsHeaderElementEventMap[K]>) => any, options?: boolean | AddEventListenerOptions): void;
@@ -3855,6 +3860,10 @@ declare namespace LocalJSX {
          */
         "onMdsHeaderClose"?: (event: MdsHeaderCustomEvent<MdsHeaderEventDetail>) => void;
         /**
+          * Emits when the component mds-header-bar is shown or hidden
+         */
+        "onMdsHeaderVisibilityChange"?: (event: MdsHeaderCustomEvent<MdsHeaderVisibilityEventDetail>) => void;
+        /**
           * Sets the threshold margin to trigger hide or show status of the `mds-header-bar` when the page is scrolled
          */
         "threshold"?: number;
@@ -4827,6 +4836,10 @@ declare namespace LocalJSX {
         "typography"?: TypographySmallerType;
     }
     interface MdsTabItem {
+        /**
+          * Specifies the URL target of the button
+         */
+        "href"?: string;
         /**
           * The icon displayed in the tab item
          */
