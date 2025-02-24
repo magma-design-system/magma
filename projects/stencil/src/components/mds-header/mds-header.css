@@ -31,7 +31,7 @@
   z-index: var(--mds-header-z-index);
 }
 
-
+/* TODO feat(mds-header): add support for mds-pref-consumption and hide / remove backdrop when enabled */
 
 .backdrop {
   align-items: center;
