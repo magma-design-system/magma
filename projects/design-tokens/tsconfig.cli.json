@@ -2,20 +2,18 @@
   "compilerOptions": {
     "allowJs": true,
     "skipLibCheck": true,
-    "jsx": "react",
     "baseUrl": ".",
     "lib": ["esnext"],
-    "module": "preserve",
-    "moduleResolution": "bundler",
+    "module": "NodeNext",
+    "moduleResolution": "nodenext",
     "outDir": "dist",
     "resolveJsonModule": true,
-    "esModuleInterop": true,
     "sourceMap": false,
     "target": "ESNext",
     "paths": {
       "@/formats/*": ["src/formats/*"]
     }
   },
-  "include": ["src", "test"],
-  "exclude": ["node_modules" ]
+  "include": ["src"],
+  "exclude": ["node_modules", "test" ]
 }
