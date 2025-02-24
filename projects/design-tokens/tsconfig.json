@@ -5,16 +5,17 @@
     "jsx": "react",
     "baseUrl": ".",
     "lib": ["esnext"],
-    "module": "Preserve",
+    "module": "preserve",
     "moduleResolution": "bundler",
     "outDir": "dist",
     "resolveJsonModule": true,
+    "esModuleInterop": true,
     "sourceMap": false,
     "target": "ESNext",
     "paths": {
       "@/formats/*": ["src/formats/*"]
     }
   },
-  "include": ["src"],
-  "exclude": ["node_modules", "test" ]
+  "include": ["src", "test"],
+  "exclude": ["node_modules" ]
 }

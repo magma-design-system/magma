@@ -31,7 +31,7 @@
     "clean": "npx tsx scripts/clean.ts",
     "postbuild": "npx tsx scripts/postbuild.ts",
     "cli": "npx tsx src/cli.ts",
-    "test": "jest"
+    "test": "NODE_OPTIONS=--experimental-vm-modules jest"
   },
   "main": "dist/js/tailwind-colors-css-vars.js",
   "files": [

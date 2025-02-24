@@ -1,4 +1,4 @@
-import { createColorTokens, formatColortoTokens } from '../src/lib/color'
+import { createColorTokens, formatColortoTokens } from '../src/lib/color.mjs'
 import baseColorResult from './fixtures/base-color-result.json'
 import baseColor from './fixtures/base-color.json'
 import baseColorExport from './fixtures/base-color-export.json'
