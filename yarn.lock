@@ -3131,6 +3131,37 @@
   resolved "https://registry.npmjs.org/@lmdb/lmdb-win32-x64/-/lmdb-win32-x64-3.0.13.tgz#93bcd6dc24afd1cc60dd88a65b9e4fab32dcf397"
   integrity sha512-UCrMJQY/gJnOl3XgbWRZZUvGGBuKy6i0YNSptgMzHBjs+QYDYR1Mt/RLTOPy4fzzves65O1EDmlL//OzEqoLlA==
 
+"@maggioli-design-system/magma@1.0.5":
+  version "1.0.5"
+  resolved "https://registry.npmjs.org/@maggioli-design-system/magma/-/magma-1.0.5.tgz#3d0490f4749317997ef95ce84766e5c74114cc94"
+  integrity sha512-RtCebjmRmBBM0OU5IzHI4WJY/sTW2PYlos5ZEfc1WU/Msf0GitrwWMqHpRUbUfJhC/wIV8BV2F1d1yut95ywhQ==
+  dependencies:
+    "@floating-ui/dom" "1.6.12"
+    "@maggioli-design-system/design-tokens" "13.5.0"
+    "@maggioli-design-system/identity" "2.1.1"
+    "@maggioli-design-system/styles" "15.7.0"
+    "@stencil/core" "4.25.1"
+    clsx "2.1.0"
+    crypto-js "4.2.0"
+    dayjs "1.11.13"
+    filesize "10.1.0"
+    fitty "2.4.2"
+    idb-keyval "6.2.1"
+    mime "4.0.4"
+    mustache "4.2.0"
+
+"@maggioli-design-system/styles@15.7.0":
+  version "15.7.0"
+  resolved "https://registry.npmjs.org/@maggioli-design-system/styles/-/styles-15.7.0.tgz#54014f00b2927021a66b387a64ee2f468fc15f09"
+  integrity sha512-ue88siK/DCbKYX7aefjH1XvhWSG24ZQyx0p1qVtwn6vF9xncOEPNkjAwGfkmJlkijLYfToGaLxhyvinynQn0gg==
+  dependencies:
+    "@fontsource/karla" "5.1.0"
+    "@fontsource/merriweather" "5.1.0"
+    "@fontsource/roboto" "5.1.0"
+    "@fontsource/roboto-mono" "5.1.0"
+    "@maggioli-design-system/design-tokens" "13.5.0"
+    normalize.css "8.0.1"
+
 "@maggioli-design-system/svg-icons@^2.6.3":
   version "2.10.1"
   resolved "https://registry.npmjs.org/@maggioli-design-system/svg-icons/-/svg-icons-2.10.1.tgz#3c86d5b738407a7fe756877aa87baf7b4d2d5f8d"
