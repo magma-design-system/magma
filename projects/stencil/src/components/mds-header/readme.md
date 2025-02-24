@@ -17,14 +17,15 @@ This is a web-component from Maggioli Design System [Magma](https://magma.maggio
 | `menu`          | `menu`           | Sets the visibility type of the hamburger menu of mds-header-bar                                                                                                                                                                                                                                                                                                | `"all" \| "desktop" \| "mobile" \| "none"` | `'mobile'`  |
 | `nav`           | `nav`            | Sets the visibility type of the navigation menu of mds-header-bar                                                                                                                                                                                                                                                                                               | `"all" \| "desktop" \| "mobile" \| "none"` | `'desktop'` |
 | `threshold`     | `threshold`      | Sets the threshold margin to trigger hide or show status of the `mds-header-bar` when the page is scrolled                                                                                                                                                                                                                                                      | `number`                                   | `1`         |
-| `visibility`    | `visibility`     | Sets the visibility type of the navigation menu of mds-header-bar                                                                                                                                                                                                                                                                                               | `"hidden" \| "visible" \| undefined`       | `undefined` |
+| `visibility`    | `visibility`     | Sets the visibility type of the navigation menu of mds-header-bar                                                                                                                                                                                                                                                                                               | `"hidden" \| "visible" \| undefined`       | `'visible'` |
 
 
 ## Events
 
-| Event            | Description                        | Type                                |
-| ---------------- | ---------------------------------- | ----------------------------------- |
-| `mdsHeaderClose` | Emits when the component is closed | `CustomEvent<MdsHeaderEventDetail>` |
+| Event                       | Description                                                | Type                                          |
+| --------------------------- | ---------------------------------------------------------- | --------------------------------------------- |
+| `mdsHeaderClose`            | Emits when the component is closed                         | `CustomEvent<MdsHeaderEventDetail>`           |
+| `mdsHeaderVisibilityChange` | Emits when the component mds-header-bar is shown or hidden | `CustomEvent<MdsHeaderVisibilityEventDetail>` |
 
 
 ## Methods

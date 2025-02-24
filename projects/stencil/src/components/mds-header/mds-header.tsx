@@ -1,5 +1,5 @@
 import { Component, Element, Event, EventEmitter, Host, State, h, Prop, Watch, Method } from '@stencil/core'
-import { MdsHeaderEventDetail } from './meta/event-detail'
+import { MdsHeaderEventDetail, MdsHeaderVisibilityEventDetail } from './meta/event-detail'
 import { HeaderBarMenuType, HeaderBarNavType } from '@type/header-bar'
 import { AppearanceType } from './meta/types'
 import clsx from 'clsx'
@@ -65,12 +65,17 @@ export class MdsHeader {
   /**
    * Sets the visibility type of the navigation menu of mds-header-bar
    */
-  @Prop({ reflect: true, mutable: true }) visibility?: 'hidden' | 'visible'
+  @Prop({ reflect: true, mutable: true }) visibility?: 'hidden' | 'visible' = 'visible'
 
   /**
    * Emits when the component is closed
    */
   @Event({ bubbles: true, composed: true, eventName: 'mdsHeaderClose' }) closedEvent: EventEmitter<MdsHeaderEventDetail>
+
+  /**
+   * Emits when the component mds-header-bar is shown or hidden
+   */
+  @Event({ eventName: 'mdsHeaderVisibilityChange' }) visibleEvent: EventEmitter<MdsHeaderVisibilityEventDetail>
 
   @Method()
   async setOpened (isOpened: boolean = true): Promise<void> {
@@ -222,6 +227,13 @@ export class MdsHeader {
   @Watch('appearanceSet')
   onAppearanceSetChangedHandler (): void {
     this.setAppearanceSetData()
+  }
+
+  @Watch('visibility')
+  handleVisibilityChange (newValue: boolean, oldValue: boolean): void {
+    if (newValue !== oldValue) {
+      this.visibleEvent.emit({ visibility: newValue })
+    }
   }
 
   render () {
