@@ -3374,11 +3374,6 @@
   resolved "https://registry.npmjs.org/@lmdb/lmdb-win32-x64/-/lmdb-win32-x64-3.0.13.tgz#93bcd6dc24afd1cc60dd88a65b9e4fab32dcf397"
   integrity sha512-UCrMJQY/gJnOl3XgbWRZZUvGGBuKy6i0YNSptgMzHBjs+QYDYR1Mt/RLTOPy4fzzves65O1EDmlL//OzEqoLlA==
 
-"@maggioli-design-system/design-tokens@13.5.0":
-  version "13.5.0"
-  resolved "https://registry.npmjs.org/@maggioli-design-system/design-tokens/-/design-tokens-13.5.0.tgz#df0b3063ad89b2c92a8df584b1fcf62d7517e78d"
-  integrity sha512-8D4wD1ilFLhzVhUtHhezeOfioq38TsZ0Ym3Yf2wbQ2moYsjkqdwkDFGTTUCXDN2+9e4720T6lxHqoR6XR5Nliw==
-
 "@maggioli-design-system/svg-icons@^2.6.3":
   version "2.10.1"
   resolved "https://registry.npmjs.org/@maggioli-design-system/svg-icons/-/svg-icons-2.10.1.tgz#3c86d5b738407a7fe756877aa87baf7b4d2d5f8d"
