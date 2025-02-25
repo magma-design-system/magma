@@ -8,7 +8,11 @@
  * @prop --mds-filter-items-gap: Sets the gap between items
  * @prop --mds-filter-items-padding: Sets the padding of the items row area
  * @prop --mds-filter-items-radius: Sets the border-radius of the items row area
+ * @prop --mds-filter-items-scroll-behavior: Sets the scroll-behavior animation;
  * @prop --mds-filter-label-padding: Sets the padding of the label
+ * @prop --mds-filter-wrapper-shadow-color: Sets the effect of the outline border
+ * @prop --mds-filter-wrapper-shadow: Sets the shadow used as outline border
+ * @prop --mds-filter-wrapper-shodow-opacity: Sets the opacity of the outline border
  */
 
 :host {
@@ -18,8 +22,11 @@
   --mds-filter-items-gap: theme('spacing.200');
   --mds-filter-items-padding: theme('spacing.200');
   --mds-filter-items-radius: theme('borderRadius.full');
+  --mds-filter-items-scroll-behavior: smooth;
   --mds-filter-label-padding: 0 theme('spacing.600');
-  --mds-filter-outline-opacity: 0.7;
+  --mds-filter-wrapper-shadow-color: theme('colors.tone-neutral-06');
+  --mds-filter-wrapper-shadow: 0 0 0 2px var(--mds-filter-wrapper-shadow-color) inset;
+  --mds-filter-wrapper-shodow-opacity: theme('opacity.10');
 
   @apply gap-100;
 
@@ -70,7 +77,7 @@
   overflow: auto;
   padding: var(--mds-filter-items-padding);
   position: relative;
-  scroll-behavior: smooth;
+  scroll-behavior: var(--mds-filter-items-scroll-behavior);
   scroll-snap-type: x mandatory;
   transition-property: background-color;
 
@@ -84,10 +91,10 @@
 
 .items-wrapper::after {
   border-radius: var(--mds-filter-items-radius);
-  box-shadow: 0 0 0 2px var(--mds-filter-items-background) inset;
+  box-shadow: var(--mds-filter-wrapper-shadow);
   content: "";
   inset: 0;
-  opacity: var(--mds-filter-outline-opacity);
+  opacity: var(--mds-filter-wrapper-shodow-opacity);
   pointer-events: none;
   position: absolute;
 }
@@ -107,3 +114,4 @@
 @import './css/mds-filter-pref-animation.css';
 @import './css/mds-filter-pref-theme.css';
 @import './css/mds-filter-pref-contrast.css';
+@import '../../tailwind/fouc.css';

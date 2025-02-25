@@ -158,3 +158,4 @@
 @import './css/mds-push-notification-pref-animation.css';
 @import './css/mds-push-notification-pref-theme.css';
 @import './css/mds-push-notification-pref-contrast.css';
+@import '../../tailwind/fouc.css';

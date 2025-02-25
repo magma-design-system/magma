@@ -1,0 +1,20 @@
+.base-keyboard-key:
+  variables:
+    COMPONENT: mds-keyboard-key
+
+# TEST
+keyboard-key-publish-test:
+  extends: [.base-stencil-publish-test, .base-keyboard-key]
+  dependencies: [base-stencil-build, base-isolate]
+
+# PUBLISH
+keyboard-key-publish:
+  extends: [.base-stencil-publish, .base-keyboard-key]
+  dependencies: [base-stencil-build, base-isolate]
+  needs: [base-stencil-build, base-isolate, keyboard-key-publish-test]
+
+# INSTALL TEST
+keyboard-key-install-test:
+  extends: [.base-stencil-install-test, .base-keyboard-key]
+  dependencies: [base-stencil-build, base-isolate]
+  needs: [base-stencil-build, base-isolate, keyboard-key-publish]

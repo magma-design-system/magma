@@ -1,5 +1,5 @@
 import { h } from '@stencil/core'
-import { Fragment, useState } from 'react'
+import { Fragment, useState, useEffect } from 'react'
 
 export default {
   title: 'UI / Push Notifications',
@@ -24,16 +24,28 @@ const PushNotificationsElements = () =>
     </mds-push-notification>
   </Fragment>
 
-const PushNotificationElement = ({ key, index }) => {
-  return <mds-push-notification key={key} icon="mi/baseline/attachment" subject={`Notification ${index + 1}`} message="Sto preparando il documento che mi hai richiesto, dovrei finire in giornata, fammi sapere se hai altri aggiornamenti al riguardo così non mi perdo pezzi per la strada."></mds-push-notification>
+const PushNotificationElement = ( { index }) => {
+  return <mds-push-notification icon="mi/baseline/attachment" subject={`Notification ${index + 1}`} message="Sto preparando il documento che mi hai richiesto, dovrei finire in giornata, fammi sapere se hai altri aggiornamenti al riguardo così non mi perdo pezzi per la strada."></mds-push-notification>
 }
 
 const Template = args => {
-  const [visible, setVisibility] = useState(false)
-  window.addEventListener('mdsModalClose', () => { setVisibility(false) })
+  const [visible, setVisibility] = useState(args.visible || false)
+  useEffect(() => {
+    const pushNotificationsElement = document.querySelector('.mds-push-notifications')
+    if (pushNotificationsElement === null) {
+      return
+    }
+    pushNotificationsElement.addEventListener('onMdsPushNotificationHide', () => {
+      // trigger when a single notification is hidden
+      // console.log('mdsPushNotificationHide')
+      setVisibility(!visible)
+    })
+
+  }, [])
+  // window.addEventListener('mdsModalClose', () => { setVisibility(false) })
   return <div>
-    <mds-button onClick={() => setVisibility(!visible) }>Show / Hide notifications</mds-button>
-    <mds-push-notifications visible={visible} onMdsPushNotificationHide={() => setVisibility(!visible)} {...args}>
+    <mds-button onClick={() => setVisibility(!visible) }>{ visible ? 'Hide' : 'Show' } notifications</mds-button>
+    <mds-push-notifications class="mds-push-notifications" visible={visible}>
       <mds-button slot="top" variant="dark">Cancella notifiche</mds-button>
       <PushNotificationsElements/>
       <mds-button slot="bottom" variant="dark">Carica altre...</mds-button>
@@ -47,7 +59,7 @@ const TemplateAddNotifications = args => {
     <mds-button onClick={() => setItem(items + 1) }>Add notifications</mds-button>
     <mds-push-notifications {...args}>
       { Array.from(Array(items).keys()).map((_item, index) =>
-        <PushNotificationElement key={index} index={index}/>,
+        <PushNotificationElement index={index}/>,
       ) }
     </mds-push-notifications>
   </div>
@@ -63,7 +75,7 @@ const TemplateAddMultipleNotifications = args => {
     <mds-push-notifications {...args}>
       <mds-button slot="top" variant="dark" onClick={addItems.bind(this)}>Carica notifiche...</mds-button>
       { Array.from(Array(items).keys()).map((_item, index) =>
-        <PushNotificationElement key={index} index={index}/>,
+        <PushNotificationElement index={index}/>,
       ) }
       <mds-button slot="bottom" variant="dark">Cancella notifiche</mds-button>
     </mds-push-notifications>

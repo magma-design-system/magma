@@ -46,3 +46,5 @@ i {
 
   fill: inherit;
 }
+
+@import '../../tailwind/fouc.css';

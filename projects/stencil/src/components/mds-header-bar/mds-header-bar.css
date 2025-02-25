@@ -82,3 +82,4 @@
 @import './css/mds-header-bar-pref-animation.css';
 @import './css/mds-header-bar-pref-theme.css';
 @import './css/mds-header-bar-pref-contrast.css';
+@import '../../tailwind/fouc.css';

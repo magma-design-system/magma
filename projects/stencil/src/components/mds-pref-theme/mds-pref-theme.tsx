@@ -229,7 +229,7 @@ export class MdsPrefTheme {
     return (
       <Host>
         <mds-text class="info" typography="caption"><b>{this.t.get('label')}</b> {this.t.get(this.theme[this.mode ?? this.defaultMode].label)}</mds-text>
-        <mds-tab>
+        <mds-tab fill>
           <mds-tab-item selected={this.mode === 'light'} onClick={() => { if (this.overlayShow) { return } this.changeTheme('light') }} class="item item--light" icon={miBaselineLightMode}></mds-tab-item>
           <mds-tab-item selected={this.mode === 'system'} onClick={() => { if (this.overlayShow) { return } this.changeTheme('system') }} class="item item--system" icon={miBaselineSettings}></mds-tab-item>
           <mds-tab-item selected={this.mode === 'dark'} onClick={() => { if (this.overlayShow) { return } this.changeTheme('dark') }} class="item item--dark" icon={this.mode === 'dark' ? miBaselineDarkMode : miOutlineDarkMode}></mds-tab-item>

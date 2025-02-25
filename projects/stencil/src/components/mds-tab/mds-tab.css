@@ -22,7 +22,7 @@
  * @prop --mds-tab-scroll-scrollbar-track-background: Sets the background-color of the browser scroll bar track (if supported)
  * @prop --mds-tab-tabs-background: Sets the `background-color` of `mds-tab::part(tabs)`
  * @prop --mds-tab-tabs-gap: Sets the `gap` of `mds-tab::part(tabs)`
- * @prop --mds-tab-tabs-outline-opacity: Sets the `opacity` of outline border which holds
+ * @prop --mds-tab-tabs-wrapper-outline-opacity: Sets the `opacity` of outline border which holds
  * @prop --mds-tab-tabs-padding: Sets the `padding` of `mds-tab::part(tabs)`
  * @prop --mds-tab-tabs-radius: Sets the `border-radius` of `mds-tab::part(tabs)`
  */
@@ -37,8 +37,9 @@
   --mds-tab-item-hover-shadow: transparent;
   --mds-tab-item-radius: theme('borderRadius.lg');
   --mds-tab-item-selected-background: theme('colors.tone-neutral');
-  --mds-tab-item-selected-color: theme('colors.tone-neutral-02');
+  --mds-tab-item-selected-color: theme('colors.tone-neutral-01');
   --mds-tab-item-selected-shadow: theme('boxShadow.DEFAULT');
+  --mds-tab-scroll-behavior: smooth;
   --mds-tab-scroll-scrollbar-margin: 0;
   --mds-tab-scroll-scrollbar-radius: 0;
   --mds-tab-scroll-scrollbar-size: theme('spacing.200');
@@ -46,9 +47,11 @@
   --mds-tab-scroll-scrollbar-track-background: rgb(var(--tone-neutral-06) theme('opacity.30'));
   --mds-tab-tabs-background: theme('colors.tone-neutral-09');
   --mds-tab-tabs-gap: theme('padding.200');
-  --mds-tab-tabs-outline-opacity: 0.7;
   --mds-tab-tabs-padding: theme('padding.200');
   --mds-tab-tabs-radius: theme('borderRadius.2xl');
+  --mds-tab-tabs-wrapper-outline-opacity: 0.7;
+  --mds-tab-tabs-wrapper-shadow-color: var(--mds-tab-tabs-background);
+  --mds-tab-tabs-wrapper-shadow: 0 0 0 2px var(--mds-tab-tabs-wrapper-shadow-color) inset;
   --mds-tab-transition-duration: 0.5s;
   --mds-tab-transition-timing-function: theme('transitionTimingFunction.out-expo');
 
@@ -72,7 +75,7 @@
   gap: var(--mds-tab-tabs-gap);
   overflow: auto;
   padding: var(--mds-tab-tabs-padding);
-  scroll-behavior: smooth;
+  scroll-behavior: var(--mds-tab-scroll-behavior);
   scroll-snap-type: x mandatory;
   transition-duration: var(--mds-tab-transition-duration);
   transition-property: background-color;
@@ -81,18 +84,28 @@
 
 .tabs-wrapper {
   display: grid;
+  max-width: max-content;
   overflow: hidden;
   position: relative;
 }
 
+.tabs-wrapper--fill {
+  max-width: 100%;
+}
+
 .tabs-wrapper::after {
   border-radius: var(--mds-tab-tabs-radius);
-  box-shadow: 0 0 0 2px var(--mds-tab-tabs-background) inset;
+  box-shadow: var(--mds-tab-tabs-wrapper-shadow);
   content: "";
   inset: 0;
-  opacity: var(--mds-tab-tabs-outline-opacity);
+  opacity: var(--mds-tab-tabs-wrapper-outline-opacity);
   pointer-events: none;
   position: absolute;
+  transition-duration: var(--mds-tab-transition-duration);
+  transition-property: box-shadow, opacity;
+  transition-timing-function: var(--mds-tab-transition-timing-function);
+
+  /* z-index: 1; */
 }
 
 
@@ -111,11 +124,15 @@
   overflow-x: auto;
   overflow-y: hidden;
   position: relative;
-  scroll-behavior: smooth;
+  scroll-behavior: var(--mds-tab-scroll-behavior);
   scroll-snap-type: x mandatory;
   transition-duration: var(--mds-tab-transition-duration);
   transition-property: height;
   transition-timing-function: var(--mds-tab-transition-timing-function);
+}
+
+.contents:empty {
+  display: none;
 }
 
 ::slotted( [slot="content"] ) {
@@ -137,3 +154,4 @@
 @import './css/mds-tab-pref-animation.css';
 @import './css/mds-tab-pref-theme.css';
 @import './css/mds-tab-pref-contrast.css';
+@import '../../tailwind/fouc.css';

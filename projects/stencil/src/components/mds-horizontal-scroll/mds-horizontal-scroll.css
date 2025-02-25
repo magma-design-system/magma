@@ -5,6 +5,7 @@
 @tailwind utilities;
 
 /**
+ * @prop --mds-horizontal-scroll-behavior: Sets the scroll-behavior animation
  * @prop --mds-horizontal-scroll-background: Sets the background-color of the component
  * @prop --mds-horizontal-scroll-scrollbar-radius: Sets the border-radius of the browser scroll bar (if supported)
  * @prop --mds-horizontal-scroll-scrollbar-margin: Sets the margin of the browser scroll bar (if supported)
@@ -15,16 +16,17 @@
 
 :host {
 
-  --mds-horizontal-scroll-scrollbar-radius: 0;
+  --mds-horizontal-scroll-behavior: smooth;
+  --mds-horizontal-scroll-contents-padding: theme('spacing.600') 0;
+  --mds-horizontal-scroll-contents-scroll-padding: 0 theme('spacing.600');
+  --mds-horizontal-scroll-controls-margin: theme('size.1200');
+  --mds-horizontal-scroll-gap: theme('spacing.600');
+  --mds-horizontal-scroll-max-width: theme('screens.wide');
   --mds-horizontal-scroll-scrollbar-margin: 0;
+  --mds-horizontal-scroll-scrollbar-radius: 0;
   --mds-horizontal-scroll-scrollbar-size: theme('spacing.200');
   --mds-horizontal-scroll-scrollbar-thumb-background: rgb(var(--tone-neutral-02) theme('opacity.30'));
   --mds-horizontal-scroll-scrollbar-track-background: rgb(var(--tone-neutral-06) theme('opacity.30'));
-  --mds-horizontal-scroll-gap: theme('spacing.600');
-  --mds-horizontal-scroll-contents-padding: theme('spacing.600') 0;
-  --mds-horizontal-scroll-controls-margin: theme('size.1200');
-  --mds-horizontal-scroll-contents-scroll-padding: 0 theme('spacing.600');
-  --mds-horizontal-scroll-max-width: theme('screens.wide');
 
   /* private custom props, DO NOT OVERRIDE from outside */
   --max-width: var(--mds-horizontal-scroll-max-width); /* remember @media (width <= theme('screens.wide')) at the bottom */
@@ -103,7 +105,7 @@
   gap: var(--mds-horizontal-scroll-gap);
   overflow: auto;
   padding: var(--mds-horizontal-scroll-contents-padding);
-  scroll-behavior: smooth;
+  scroll-behavior: var(--mds-horizontal-scroll-behavior);
   scroll-padding: var(--mds-horizontal-scroll-contents-scroll-padding);
   scroll-snap-type: x mandatory;
   width: 100%;
@@ -177,3 +179,6 @@
 :host([controls="tablet"]) .navigation {
   @apply tablet:flex;
 }
+
+@import './css/mds-horizontal-scroll-pref-animation.css';
+@import '../../tailwind/fouc.css';

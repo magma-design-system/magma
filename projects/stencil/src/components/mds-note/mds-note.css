@@ -104,3 +104,4 @@
 @import './css/mds-note-pref-animation.css';
 @import './css/mds-note-pref-theme.css';
 @import './css/mds-note-pref-contrast.css';
+@import '../../tailwind/fouc.css';

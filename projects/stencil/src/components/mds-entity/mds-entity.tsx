@@ -3,7 +3,6 @@ import { ThemeFullVariantAvatarType, ToneMinimalVariantType } from '@type/varian
 
 /**
  * @slot default - Add `text string`, `HTML elements` or `components` to this slot.
- * @slot default - Add `text string`, `HTML elements` or `components` to this slot.
  * @slot action - Add `HTML elements` or `components`, it is **recommended** to use `mds-button` element.
  */
 
@@ -82,7 +81,7 @@ export class MdsEntity {
           <slot/>
           { this.details &&
             <div class="details">
-              <slot name="deuploadtail"/>
+              <slot name="detail"/>
             </div>
           }
         </div>

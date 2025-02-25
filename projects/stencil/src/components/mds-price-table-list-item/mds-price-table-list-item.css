@@ -38,3 +38,5 @@
 :host([supported]:not([supported="false"])) .icon {
   fill: var(--mds-price-table-list-item-supported-icon-color);
 }
+
+@import '../../tailwind/fouc.css';

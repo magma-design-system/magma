@@ -1,16 +1,20 @@
 @tailwind utilities;
 
 @container style(--magma-pref-theme: dark) {
-  .tabs {
-    border-color: theme('colors.tone-neutral-08');
+  :host {
+
+    --mds-tab-tabs-background: theme('colors.tone-neutral-08');
+    --mds-tab-item-selected-background: theme('colors.tone-neutral-07');
   }
 }
 
 @container style(--magma-pref-theme: system) {
 
   @media (prefers-color-scheme: dark) {
-    .tabs {
-      border-color: theme('colors.tone-neutral-08');
+    :host {
+
+      --mds-tab-tabs-background: theme('colors.tone-neutral-08');
+      --mds-tab-item-selected-background: theme('colors.tone-neutral-07');
     }
   }
 }

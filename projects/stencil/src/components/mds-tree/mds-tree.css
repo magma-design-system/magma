@@ -75,3 +75,5 @@
   padding: theme('padding.50');
   transition-property: background-color;
 }
+
+@import '../../tailwind/fouc.css';

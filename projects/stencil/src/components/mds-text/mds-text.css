@@ -273,3 +273,4 @@ wbr {
 }
 
 @import './css/mds-text-pref-animation.css';
+@import '../../tailwind/fouc.css';

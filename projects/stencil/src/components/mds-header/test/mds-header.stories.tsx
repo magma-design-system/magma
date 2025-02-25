@@ -15,6 +15,10 @@ export default {
       options: appearanceSetDictionary,
       control: { type: 'select' },
     },
+    backdrop: {
+      description: 'Sets if the backdrop is shown when the mds-header-bar attribute appearace is set to `inline`',
+      type: 'boolean',
+    },
     'auto-hide': {
       type: 'number',
       description: 'When the page is scrolled down, the component mds-header-bar is hidden starting from the `autoHide` attribute\'s value, then if the page is scrolled up it is shown again',
@@ -46,7 +50,7 @@ const Template = args =>
     <mds-header {...args}>
       <mds-header-bar>
         <div class="flex gap-400 items-center">
-          <mds-img class="w-1000" src="./logo-gruppo-maggioli.svg" />
+          <mds-img class="w-1000" src="/logo-gruppo-maggioli.svg" />
           <div class="mb-100">
             <mds-text typography="h6">Mobile menu</mds-text>
             <mds-text typography="option" class="text-tone-neutral-04">Shows up under 1024px</mds-text>
@@ -57,7 +61,7 @@ const Template = args =>
       </mds-header-bar>
       <div slot="menu">
         <div class="flex gap-200 items-center p-600 border-b border-tone-neutral-09">
-          <mds-img class="w-1000" src="./logo-gruppo-maggioli.svg" />
+          <mds-img class="w-1000" src="/logo-gruppo-maggioli.svg" />
           <div class="mb-100">
             <mds-text typography="h6">Gruppo Maggioli</mds-text>
             <mds-text typography="option" class="text-tone-neutral-04">Header by RD Team</mds-text>
@@ -85,7 +89,7 @@ const TemplateAutoHide = args =>
     <mds-header {...args}>
       <mds-header-bar>
         <div class="flex gap-400 items-center">
-          <mds-img class="w-1000" src="./logo-gruppo-maggioli.svg" />
+          <mds-img class="w-1000" src="/logo-gruppo-maggioli.svg" />
           <div class="mb-100">
             <mds-text typography="h6">Mobile menu</mds-text>
             <mds-text typography="option" class="text-tone-neutral-04">Shows up under 1024px</mds-text>
@@ -96,7 +100,7 @@ const TemplateAutoHide = args =>
       </mds-header-bar>
       <div slot="menu">
         <div class="flex gap-200 items-center p-600 border-b border-tone-neutral-09">
-          <mds-img class="w-1000" src="./logo-gruppo-maggioli.svg" />
+          <mds-img class="w-1000" src="/logo-gruppo-maggioli.svg" />
           <div class="mb-100">
             <mds-text typography="h6">Gruppo Maggioli</mds-text>
             <mds-text typography="option" class="text-tone-neutral-04">Header by RD Team</mds-text>
@@ -111,7 +115,7 @@ const TemplateAutoHide = args =>
   </div>
 
 const TemplateLandingPage = args =>
-  <div class="-m-400">
+  <div class="-m-600">
     <div class="bg-label-amaranth-06 text-tone-neutral flex text-center items-center justify-center h-[600px] flex-col pt-2000 select-none">
       <mds-text typography='h1'>Hey</mds-text>
       <mds-text typography='h1'>WelcomeTo</mds-text>
@@ -135,7 +139,7 @@ const TemplateLandingPage = args =>
     <mds-header {...args}>
       <mds-header-bar>
         <div class="flex gap-400 items-center">
-          <mds-img class="w-1000" src="./logo-gruppo-maggioli.svg" />
+          <mds-img class="w-1000" src="/logo-gruppo-maggioli.svg" />
           <div class="mb-100">
             <mds-text typography="h6">Mobile menu</mds-text>
             <mds-text typography="option" class="text-tone-neutral-04">Shows up under 1024px</mds-text>
@@ -146,7 +150,7 @@ const TemplateLandingPage = args =>
       </mds-header-bar>
       <div slot="menu">
         <div class="flex gap-200 items-center p-600 border-b border-tone-neutral-09">
-          <mds-img class="w-1000" src="./logo-gruppo-maggioli.svg" />
+          <mds-img class="w-1000" src="/logo-gruppo-maggioli.svg" />
           <div class="mb-100">
             <mds-text typography="h6">Gruppo Maggioli</mds-text>
             <mds-text typography="option" class="text-tone-neutral-04">Header by RD Team</mds-text>
@@ -175,8 +179,9 @@ Appearance.args = {
 
 export const AppearanceSet = TemplateLandingPage.bind({})
 AppearanceSet.args = {
-  'auto-hide': 800,
-  threshold: 10,
-  appearance: 'inline',
   'appearance-set': 'inline, stripe 548',
+  'auto-hide': 800,
+  appearance: 'inline',
+  menu: 'all',
+  threshold: 10,
 }

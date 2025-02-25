@@ -5,8 +5,6 @@
 
     --mds-filter-items-background-active: theme('colors.tone-neutral-10');
     --mds-filter-items-background: theme('colors.tone-neutral-09');
-
-    box-shadow: theme('boxShadow.outline');
   }
 }
 
@@ -17,8 +15,6 @@
 
       --mds-filter-items-background-active: theme('colors.tone-neutral-10');
       --mds-filter-items-background: theme('colors.tone-neutral-09');
-
-      box-shadow: theme('boxShadow.outline');
     }
   }
 }

@@ -44,6 +44,7 @@
   background-color: var(--mds-chip-background);
   border: 2px solid var(--mds-chip-border);
   box-shadow: var(--mds-chip-shadow);
+  box-sizing: border-box;
   color: var(--mds-chip-color);
   display: inline-flex;
   justify-content: center;
@@ -129,3 +130,4 @@
 @import './css/mds-chip-pref-animation.css';
 @import './css/mds-chip-pref-theme.css';
 @import './css/mds-chip-pref-contrast.css';
+@import '../../tailwind/fouc.css';

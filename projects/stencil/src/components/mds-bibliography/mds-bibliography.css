@@ -31,3 +31,5 @@
 .link:hover {
   text-decoration-color: var(--mds-bibliography-text-decoration-hover);
 }
+
+@import '../../tailwind/fouc.css';

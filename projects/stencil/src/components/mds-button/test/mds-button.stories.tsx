@@ -78,6 +78,12 @@ const Template = args =>
     Conferma azione
   </mds-button>
 
+const TemplateNotifications = args =>
+  <mds-button {...args}>
+    Notifiche
+    <mds-notification slot="notification" value={12}></mds-notification>
+  </mds-button>
+
 const TemplateAwait = args =>
   <mds-button {...args}>
     Salvataggio in corso...
@@ -182,6 +188,8 @@ Target.args = {
   href: 'http://www.maggioli.it',
   target: 'blank',
 }
+
+export const Notifications = TemplateNotifications.bind({})
 
 export const FormParticipation = TemplateForm.bind({})
 FormParticipation.args = {

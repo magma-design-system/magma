@@ -1,6 +1,13 @@
 @tailwind utilities;
 
+/**
+ * @prop --mds-stepper-bar-scroll-behavior: Sets the scroll-behavior animation
+ */
+
 :host {
+
+  --mds-stepper-bar-scroll-behavior: smooth;
+
   @apply gap-600;
 
   display: grid;
@@ -17,7 +24,7 @@
   flex-grow: 1;
   overflow: auto;
   position: relative;
-  scroll-behavior: smooth;
+  scroll-behavior: var(--mds-stepper-bar-scroll-behavior);
   scroll-snap-type: x mandatory;
 }
 
@@ -46,3 +53,4 @@
 }
 
 @import './css/mds-stepper-bar-pref-animation.css';
+@import '../../tailwind/fouc.css';

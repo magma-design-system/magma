@@ -214,21 +214,21 @@ export class FloatingController {
 }
 
 export class Backdrop {
-  private readonly defaultBackdropId = 'mds-backdrop'
+  private readonly defaultBackdropId = 'magma-backdrop'
   private readonly backdropBackgroundVisible = 'rgba(var(--magma-backdrop-color, 0 0 0) / var(--magma-backdrop-opacity, 0.1))'
   private readonly backdropBackgroundHidden = 'rgba(var(--magma-backdrop-color, 0 0 0) / 0)'
 
-  private readonly backdropId
-  private readonly cssBackdropZIndex
-  private readonly cssBackdropDuration
+  private readonly backdropId: string
+  private readonly cssBackdropZIndex: string
+  private readonly cssBackdropDuration: string
 
   private backdropEl: HTMLElement
   private backdropTimer: NodeJS.Timeout
 
   constructor (backdropId?: string) {
     this.backdropId = backdropId ?? this.defaultBackdropId
-    this.cssBackdropZIndex = `var(--${this.backdropId}-z-index)`
-    this.cssBackdropDuration = `var(--${this.backdropId}-duration)`
+    this.cssBackdropZIndex = `var(--${this.backdropId}-z-index, 4000)`
+    this.cssBackdropDuration = `var(--${this.backdropId}-animation-duration, 300ms)`
   }
 
   attachBackdrop (): void {

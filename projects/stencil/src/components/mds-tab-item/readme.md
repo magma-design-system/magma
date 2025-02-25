@@ -11,6 +11,7 @@ This is a web-component from Maggioli Design System [Magma](https://magma.maggio
 
 | Property       | Attribute       | Description                                                             | Type                                                  | Default     |
 | -------------- | --------------- | ----------------------------------------------------------------------- | ----------------------------------------------------- | ----------- |
+| `href`         | `href`          | Specifies the URL target of the button                                  | `string \| undefined`                                 | `undefined` |
 | `icon`         | `icon`          | The icon displayed in the tab item                                      | `string \| undefined`                                 | `undefined` |
 | `iconPosition` | `icon-position` | Specifies the horizontal position of the icon displayed in the tab item | `"left" \| "right" \| undefined`                      | `'left'`    |
 | `selected`     | `selected`      | Specifies if the tab item is selected or not                            | `boolean \| undefined`                                | `undefined` |

@@ -49,3 +49,4 @@
 }
 
 @import './css/mds-list-item-pref-contrast.css';
+@import '../../tailwind/fouc.css';

@@ -69,3 +69,6 @@
   fill: var(--mds-breadcrumb-button-color-disabled);
   pointer-events: none;
 }
+
+@import './css/mds-breadcrumb-pref-animation.css';
+@import '../../tailwind/fouc.css';

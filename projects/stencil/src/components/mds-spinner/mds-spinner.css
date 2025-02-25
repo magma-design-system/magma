@@ -52,3 +52,4 @@
 
 @import './css/mds-spinner-pref-animation.css';
 @import './css/mds-spinner-pref-contrast.css';
+@import '../../tailwind/fouc.css';

@@ -44,3 +44,4 @@
 }
 
 @import './css/mds-input-field-variant.css';
+@import '../../tailwind/fouc.css';

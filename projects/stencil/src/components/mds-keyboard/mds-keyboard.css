@@ -1,0 +1,126 @@
+@import '../../tailwind/components.css';
+@tailwind components;
+@tailwind utilities;
+
+/**
+ * @prop --mds-keyboard-background-default: `private` Set the default background color of the keyboard area.
+ * @prop --mds-keyboard-background-fail: Set the background color of the keyboard area when the test fails.
+ * @prop --mds-keyboard-background-pass: Set the background color of the keyboard area when the test passes.
+ * @prop --mds-keyboard-background: Set the background color of the keyboard area.
+ * @prop --mds-keyboard-color: Set the text color of the keyboard area, will impact on `mds-keyboard-key` component.
+ * @prop --mds-keyboard-fill-fail: Set the fill color of the combination-checker button when the test fails.
+ * @prop --mds-keyboard-fill-pass: Set the fill color of the combination-checker button when the test passes.
+ * @prop --mds-keyboard-illumination-dark-opacity: Set the opacity of the dark illumination.
+ * @prop --mds-keyboard-illumination-dark-size: Set the size of the dark illumination.
+ * @prop --mds-keyboard-illumination-dark: Set the dark illumination.
+ * @prop --mds-keyboard-illumination-light-opacity: Set the opacity of the light illumination.
+ * @prop --mds-keyboard-illumination-light-size: Set the size of the light illumination.
+ * @prop --mds-keyboard-illumination-light: Set the light illumination.
+ * @prop --mds-keyboard-illumination-shadow: Set the shadow of the keyboard area.
+ * @prop --mds-keyboard-key-background: Set the background color of the keyboard key.
+ * @prop --mds-keyboard-key-illumination-dark-opacity: Set the opacity of the dark illumination of the keyboard key.
+ * @prop --mds-keyboard-key-illumination-light-opacity: Set the opacity of the light illumination of the keyboard key.
+ * @prop --mds-keyboard-key-illumination-shadow: Set the shadow of the keyboard key.
+ * @prop --mds-keyboard-padding: Set the padding of the keyboard area.
+ * @prop --mds-keyboard-spinner-duration: Set the duration of the spinner animation.
+ */
+
+/* TODO refact(stencil): Uses only used selector from parent shadowDOM component */
+
+:host {
+
+  --mds-keyboard-background-default: var(--mds-keyboard-background);
+  --mds-keyboard-background-fail: theme('colors.status-error-09');
+  --mds-keyboard-background-pass: theme('colors.status-success-09');
+  --mds-keyboard-background: theme('colors.tone-slate-08');
+  --mds-keyboard-color: theme('colors.tone-neutral-04');
+  --mds-keyboard-fill-fail: theme('colors.status-error-06');
+  --mds-keyboard-fill-pass: theme('colors.status-success-06');
+  --mds-keyboard-illumination-dark-opacity: 0.05;
+  --mds-keyboard-illumination-dark-size: theme('spacing.150');
+  --mds-keyboard-illumination-dark: 0 calc(var(--mds-keyboard-illumination-dark-size) * -1) 0 0 rgb(0 0 0 / var(--mds-keyboard-illumination-dark-opacity)) inset;
+  --mds-keyboard-illumination-light-opacity: 0.075;
+  --mds-keyboard-illumination-light-size: theme('spacing.25');
+  --mds-keyboard-illumination-light: 0 var(--mds-keyboard-illumination-light-size) 0 0 rgb(255 255 255 / var(--mds-keyboard-illumination-light-opacity)) inset;
+  --mds-keyboard-illumination-shadow: 0 0 1px 0 rgb(0 0 0 / 0);
+  --mds-keyboard-key-background: theme('colors.tone-slate-10');
+  --mds-keyboard-key-illumination-dark-opacity: 0.075;
+  --mds-keyboard-key-illumination-light-opacity: 0.5;
+  --mds-keyboard-key-illumination-shadow: theme('boxShadow.sharp');
+  --mds-keyboard-padding: theme('spacing.200');
+  --mds-keyboard-spinner-duration: 1s;
+
+  align-items: center;
+  background-color: var(--mds-keyboard-background-default);
+  border-radius: theme('borderRadius.xl');
+  box-shadow: var(--mds-keyboard-illumination-light), var(--mds-keyboard-illumination-dark), var(--mds-keyboard-illumination-shadow);
+  color: var(--mds-keyboard-color);
+  display: inline-flex;
+  gap: theme('spacing.200');
+  padding: calc(var(--mds-keyboard-illumination-light-size) + var(--mds-keyboard-padding)) var(--mds-keyboard-padding) calc(var(--mds-keyboard-illumination-dark-size) + var(--mds-keyboard-padding)) var(--mds-keyboard-padding);
+  transition-duration: theme('transitionDuration.200');
+  transition-property: background-color;
+  transition-timing-function: theme('transitionTimingFunction.out-quad');
+  user-select: none;
+}
+
+:host([test="pass"]) {
+
+  --mds-keyboard-background-default: var(--mds-keyboard-background-pass);
+}
+
+:host([test="fail"]) {
+
+  --mds-keyboard-background-default: var(--mds-keyboard-background-fail);
+}
+
+:host([test="pass"]) .combination-checker {
+  background-color: var(--mds-keyboard-background-pass);
+  fill: var(--mds-keyboard-fill-pass);
+}
+
+:host([test="fail"]) .combination-checker {
+  background-color: var(--mds-keyboard-background-fail);
+  fill: var(--mds-keyboard-fill-fail);
+}
+
+.errors {
+  display: grid;
+  gap: theme('spacing.100');
+}
+
+.shortcuts {
+  align-items: center;
+  display: inline-flex;
+  gap: theme('spacing.100');
+  outline: 0;
+}
+
+:host(:focus-within) {
+
+  --mds-keyboard-background: theme('colors.tone-slate-07');
+}
+
+mds-tooltip {
+
+  --mds-tooltip-delay: 0;
+}
+
+.combination-checker {
+
+  --mds-button-await-duration: var(--mds-keyboard-spinner-duration);
+
+  border-radius: 100px;
+}
+
+::slotted(mds-keyboard-key) {
+  align-self: flex-end;
+}
+
+mds-button:not([hydrated]),
+mds-tooltip:not([hydrated]) {
+  @apply not-hydrated;
+}
+
+@import './css/mds-keyboard-pref-theme.css';
+@import '../../tailwind/fouc.css';

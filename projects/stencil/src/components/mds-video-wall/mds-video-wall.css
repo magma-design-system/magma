@@ -66,3 +66,4 @@ video {
 }
 
 @import "./css/mds-video-wall-pref-animation.css";
+@import '../../tailwind/fouc.css';

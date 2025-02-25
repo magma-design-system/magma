@@ -95,3 +95,4 @@
 @import './css/mds-label-variant-yellow.css';
 @import './css/mds-label-pref-theme.css';
 @import './css/mds-label-pref-contrast.css';
+@import '../../tailwind/fouc.css';

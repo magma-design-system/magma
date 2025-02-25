@@ -71,6 +71,7 @@ This is a web-component from Maggioli Design System [Magma](https://magma.maggio
 ### Used by
 
  - [mds-help](../mds-help)
+ - [mds-keyboard](../mds-keyboard)
 
 ### Depends on
 
@@ -81,6 +82,7 @@ This is a web-component from Maggioli Design System [Magma](https://magma.maggio
 graph TD;
   mds-tooltip --> mds-text
   mds-help --> mds-tooltip
+  mds-keyboard --> mds-tooltip
   style mds-tooltip fill:#f9f,stroke:#333,stroke-width:4px
 ```
 

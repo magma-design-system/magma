@@ -133,3 +133,5 @@
     @apply font-black;
   }
 }
+
+@import '../../tailwind/fouc.css';

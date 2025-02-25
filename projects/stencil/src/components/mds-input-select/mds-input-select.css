@@ -147,3 +147,4 @@
 @import './css/mds-input-select-pref-animation.css';
 @import './css/mds-input-select-pref-theme.css';
 @import './css/mds-input-select-pref-contrast.css';
+@import '../../tailwind/fouc.css';

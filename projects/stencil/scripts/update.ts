@@ -79,6 +79,7 @@ async function buildMap (): Promise<void[]> {
   const promises = Array.from(componentsMap.keys()).map(name => {
     return getMdsDependencies(name).then(deps =>
       deps.forEach(d => {
+        if (d === name) throw new Error(`Recursive dependency in component: ${name}`)
         componentsMap.set(d, [...(componentsMap.get(d) ?? []), name])
       }),
     )
@@ -110,7 +111,7 @@ function getCurrentComponentVersion (c: string): Promise<string> {
   return v ? Promise.resolve(v) : readJSON(componentPackagePath(c)).then(p => p.version).catch(() => {throw new Error('not mds component')})
 }
 
-function getNpmPackageShortInfo (c: string): Promise<ShortPackageInfo> {
+function getNpmPackageShortInfo (c: string): Promise<ShortPackageInfo | null> {
   const endpoint = `https://registry.npmjs.org/@maggioli-design-system/${c}/latest`
   return fetch(endpoint)
     .then(res => {
@@ -118,15 +119,15 @@ function getNpmPackageShortInfo (c: string): Promise<ShortPackageInfo> {
         return res.json()
       }
       if (res.status === 404) {
-        return Promise.resolve({
-          version: getCurrentComponentVersion(c),
-          dependencies: getCurrentComponentDependencies(c),
-        })
+        // return null if a component are not published
+        return Promise.resolve(null)
       }
-      return Promise.reject(new Error(`cant fetch npm version package ${c}\n${res.status}: ${res.statusText}`))
+      return Promise.reject(new Error(`cant fetch npm package info ${c}\n${res.status}: ${res.statusText}`))
     })
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    .then((json: any) => {return { version: json.version, dependencies: json.dependencies }})
+    .then((json: any) => {
+      if (!json) return null
+      return { version: json.version, dependencies: json.dependencies }})
 }
 function getNpmComponentVersion (c: string): Promise<string> {
   const endpoint = `https://registry.npmjs.org/@maggioli-design-system/${c}/latest`
@@ -149,7 +150,7 @@ function getNpmComponentDependencies (c:string): Promise<Dep> {
       if (res.status === 200) {
         return res.json()
       }
-      return Promise.reject(new Error(`cant fetch npm version package ${c}\n${res.status}: ${res.statusText}`))
+      return Promise.reject(new Error(`cant fetch npm dependencies of package ${c}\n${res.status}: ${res.statusText}`))
     })
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     .then((json: any) => json.dependencies)
@@ -370,7 +371,7 @@ interface ShortPackageInfo {
 // key is component, value is an array of strings of the components on which it is dependent
 const componentsMap = new Map<string, string[]>()
 // key is component, value is a ShortPackageInfo of published component
-const npmComponentMap = new Map<string, ShortPackageInfo>()
+const npmComponentMap = new Map<string, ShortPackageInfo | null>()
 // key is component, value is a ShortPackageInfo of component updated during the whole process of sync/update
 const componentsUpdatedMap = new Map<string, ShortPackageInfo>()
 

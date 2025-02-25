@@ -25,10 +25,12 @@ export class MdsPushNotifications {
    */
   @Prop({ reflect: true, mutable: true }) visible?: boolean
 
-  /**
-   * Specifies if the component visibility is handled when new `mds-push-notification` components are added to this component or when they are removed.
-   */
-  @Prop({ reflect: true }) readonly visiblity?: 'auto'|'visible'|'hidden'
+  // TODO [fix] If visibility is set to false, hide all the notifications area also when they are added
+  // TODO [fix] If visibility is set to true, shows all the notifications area also when they removed
+  // TODO [feat] Add a method to clear all notifications at once
+  // TODO [feat] Hide the component when all the children are removed
+  // TODO [feat] Show the component when one or more children are added
+  // TODO [test] tests are not clear, please fix them
 
   private introItem = (element: HTMLElement): Promise<void> => {
     // no reason why I must duplicata marginBottom negative to prevent flickering
@@ -55,7 +57,7 @@ export class MdsPushNotifications {
   }
 
   private outroItem = (element: HTMLElement): Promise<void> => {
-    // no reason why I must duplicata marginBottom negative to prevent flickering
+    // no reason why I must duplicate marginBottom negative to prevent flickering
     element.style.marginBottom = '0px'
     this.checkNotificationsItems()
     return new Promise<void>(resolve => {

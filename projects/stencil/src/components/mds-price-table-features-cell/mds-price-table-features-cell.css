@@ -54,3 +54,4 @@
 @import './css/mds-price-table-cell-pref-animation.css';
 @import './css/mds-price-table-cell-pref-theme.css';
 @import './css/mds-price-table-cell-pref-contrast.css';
+@import '../../tailwind/fouc.css';

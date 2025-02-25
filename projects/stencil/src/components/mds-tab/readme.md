@@ -12,6 +12,7 @@ This is a web-component from Maggioli Design System [Magma](https://magma.maggio
 | Property    | Attribute   | Description                                                                         | Type                             | Default     |
 | ----------- | ----------- | ----------------------------------------------------------------------------------- | -------------------------------- | ----------- |
 | `animation` | `animation` | Sets the animation type of the selection transition between `mds-tab-item` elements | `"fade" \| "slide" \| undefined` | `'slide'`   |
+| `fill`      | `fill`      | Sets if the tab area should fill the entire width                                   | `boolean \| undefined`           | `undefined` |
 | `scrollbar` | `scrollbar` | Shows the horizontal scrollbar to maximize accessibility                            | `boolean \| undefined`           | `undefined` |
 
 
@@ -62,9 +63,9 @@ This is a web-component from Maggioli Design System [Magma](https://magma.maggio
 | `--mds-tab-scroll-scrollbar-track-background` | Sets the background-color of the browser scroll bar track (if supported)                                                              |
 | `--mds-tab-tabs-background`                   | Sets the `background-color` of `mds-tab::part(tabs)`                                                                                  |
 | `--mds-tab-tabs-gap`                          | Sets the `gap` of `mds-tab::part(tabs)`                                                                                               |
-| `--mds-tab-tabs-outline-opacity`              | Sets the `opacity` of outline border which holds                                                                                      |
 | `--mds-tab-tabs-padding`                      | Sets the `padding` of `mds-tab::part(tabs)`                                                                                           |
 | `--mds-tab-tabs-radius`                       | Sets the `border-radius` of `mds-tab::part(tabs)`                                                                                     |
+| `--mds-tab-tabs-wrapper-outline-opacity`      | Sets the `opacity` of outline border which holds                                                                                      |
 
 
 ## Dependencies

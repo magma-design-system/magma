@@ -1,7 +1,8 @@
 import { Component, Element, Event, EventEmitter, Host, State, h, Prop, Watch, Method } from '@stencil/core'
-import { MdsHeaderEventDetail } from './meta/event-detail'
+import { MdsHeaderEventDetail, MdsHeaderVisibilityEventDetail } from './meta/event-detail'
 import { HeaderBarMenuType, HeaderBarNavType } from '@type/header-bar'
 import { AppearanceType } from './meta/types'
+// import clsx from 'clsx'
 
 /**
  * @part menu - The container element of the modal
@@ -47,6 +48,11 @@ export class MdsHeader {
   @Prop({ reflect: true }) readonly autoHide?: number
 
   /**
+   * Sets if the backdrop is shown when the mds-header-bar attribute appearace is set to `inline`
+   */
+  @Prop({ reflect: true }) readonly backdrop?: boolean = true
+
+  /**
    * Sets the visibility type of the hamburger menu of mds-header-bar
    */
   @Prop({ reflect: true }) readonly menu: HeaderBarMenuType = 'mobile'
@@ -64,12 +70,17 @@ export class MdsHeader {
   /**
    * Sets the visibility type of the navigation menu of mds-header-bar
    */
-  @Prop({ reflect: true, mutable: true }) visibility?: 'hidden' | 'visible'
+  @Prop({ reflect: true, mutable: true }) visibility?: 'hidden' | 'visible' = 'visible'
 
   /**
    * Emits when the component is closed
    */
   @Event({ bubbles: true, composed: true, eventName: 'mdsHeaderClose' }) closedEvent: EventEmitter<MdsHeaderEventDetail>
+
+  /**
+   * Emits when the component mds-header-bar is shown or hidden
+   */
+  @Event({ eventName: 'mdsHeaderVisibilityChange' }) visibleEvent: EventEmitter<MdsHeaderVisibilityEventDetail>
 
   @Method()
   async setOpened (isOpened: boolean = true): Promise<void> {
@@ -187,22 +198,34 @@ export class MdsHeader {
     this.onMenuChangedHandler('none')
   }
 
-  componentDidLoad (): void {
+  private defineHeaderBar = (): void => {
     this.headerBar = this.host.querySelector('mds-header-bar') as HTMLMdsHeaderBarElement
+  }
+
+  componentDidLoad (): void {
+    this.defineHeaderBar()
+    this.onMenuChangedHandler(this.menu)
+    this.onNavChangedHandler(this.nav)
     this.initScrollListener()
   }
 
   @Watch('menu')
-  onMenuChangedHandler (newValue: HeaderBarMenuType): void {
+  onMenuChangedHandler (newValue: HeaderBarMenuType, oldValue?: HeaderBarMenuType): void {
+    if (newValue === oldValue) {
+      return
+    }
     if (this.headerBar){
-      this.headerBar.setAttribute('menu', newValue)
+      this.headerBar.menu = newValue
     }
   }
 
   @Watch('nav')
-  onNavChangedHandler (newValue: HeaderBarNavType): void {
+  onNavChangedHandler (newValue: HeaderBarNavType, oldValue?: HeaderBarMenuType): void {
+    if (newValue === oldValue) {
+      return
+    }
     if (this.headerBar) {
-      this.headerBar.setAttribute('nav', newValue)
+      this.headerBar.nav = newValue
     }
   }
 
@@ -211,9 +234,17 @@ export class MdsHeader {
     this.setAppearanceSetData()
   }
 
+  @Watch('visibility')
+  handleVisibilityChange (newValue: boolean, oldValue: boolean): void {
+    if (newValue !== oldValue) {
+      this.visibleEvent.emit({ visibility: newValue })
+    }
+  }
+
   render () {
     return (
       <Host>
+        { this.backdrop && <div class="backdrop"></div> }
         <slot />
         {this.hasMenu &&
           <div class="menu" part="menu">

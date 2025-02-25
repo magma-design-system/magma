@@ -144,3 +144,4 @@
 @import './css/mds-input-range-pref-animation.css';
 @import './css/mds-input-range-pref-theme.css';
 @import './css/mds-input-range-pref-contrast.css';
+@import '../../tailwind/fouc.css';

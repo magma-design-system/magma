@@ -105,3 +105,4 @@
 @import './css/mds-file-preview-pref-animation.css';
 @import './css/mds-file-preview-pref-theme.css';
 @import './css/mds-file-preview-pref-contrast.css';
+@import '../../tailwind/fouc.css';

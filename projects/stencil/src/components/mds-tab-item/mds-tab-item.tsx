@@ -48,6 +48,11 @@ export class MdsTabItem {
   @Prop({ reflect: true }) readonly value?: string
 
   /**
+   * Specifies the URL target of the button
+   */
+  @Prop({ reflect: true }) readonly href?: string
+
+  /**
    * Emits when the tab item is selected
    */
   @Event({ eventName: 'mdsTabItemSelect' }) selectedEvent: EventEmitter<MdsTabItemEventDetail>
@@ -86,6 +91,7 @@ export class MdsTabItem {
         <mds-button class="button"
           onFocus={this.focus}
           icon={this.icon}
+          href={this.href}
           iconPosition={this.iconPosition}
           part="button"
           role="tab"

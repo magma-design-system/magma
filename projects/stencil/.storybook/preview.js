@@ -1,6 +1,7 @@
 import { defineCustomElements } from '../dist/esm/loader'
 
 import 'normalize.css'
+import '@maggioli-design-system/styles/dist/css/hydrated.css'
 import '@maggioli-design-system/styles/dist/css/colors-rgb.css'
 import '@maggioli-design-system/styles/dist/css/globals.css'
 import '@maggioli-design-system/styles/dist/css/animations.css'
@@ -109,6 +110,11 @@ const decorateViewport = (name, item) => {
 
 const parameters = {
   actions: { argTypesRegex: '^on[A-Z].*' },
+  options: {
+    storySort: {
+      method: 'alphabetical',
+    },
+  },
   viewport: {
     devices,
     // viewports,
@@ -117,7 +123,7 @@ const parameters = {
 
 const decorators = [
   (Story) => (
-    <div className="p-4">
+    <div className="p-600 min-h-screen bg-tone-neutral">
       <Story />
     </div>
   ),

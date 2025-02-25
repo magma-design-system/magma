@@ -15,7 +15,6 @@
     /* stylelint-disable-next-line length-zero-no-unit */
     --mds-tree-branch-border-radius: 0px;
   }
-
 }
 
 :host {
@@ -108,3 +107,4 @@
 @import './css/mds-tree-item-toggle-icon.css';
 @import './css/mds-tree-item-toggle-position.css';
 @import './css/mds-tree-item-appearance.css';
+@import '../../tailwind/fouc.css';

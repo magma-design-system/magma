@@ -98,3 +98,4 @@
 
 @import './css/mds-paginator-item-pref-animation.css';
 @import './css/mds-paginator-item-pref-theme.css';
+@import '../../tailwind/fouc.css';

@@ -54,3 +54,4 @@
 @import './css/mds-progress-variant.css';
 @import './css/mds-progress-pref-animation.css';
 @import './css/mds-progress-pref-theme.css';
+@import '../../tailwind/fouc.css';

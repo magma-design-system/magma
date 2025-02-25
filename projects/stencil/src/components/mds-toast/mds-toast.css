@@ -112,3 +112,4 @@
 @import './css/mds-toast-pref-animation.css';
 @import './css/mds-toast-pref-theme.css';
 @import './css/mds-toast-pref-contrast.css';
+@import '../../tailwind/fouc.css';

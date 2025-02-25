@@ -1,6 +1,14 @@
 @import '../../tailwind/components.css';
 @tailwind utilities;
 
+/**
+ * @prop --mds-input-upload-drag-area-background-color-on-drag: Set the background color of the drag area when a file is dragged over it.
+ * @prop --mds-input-upload-drag-area-background-color: Sets the background-color of the drag area.
+ * @prop --mds-input-upload-drag-area-border-on-drag: Set the border of the drag area when a file is dragged over it.
+ * @prop --mds-input-upload-drag-area-border: Sets the border of the drag area.
+ * @prop --mds-input-upload-min-cols: Set the minimum number of columns for the file list.
+ */
+
 :host {
 
   --mds-input-upload-drag-area-background-color-on-drag: theme('colors.tone-neutral-10');
@@ -192,3 +200,5 @@
   flex-wrap: nowrap;
   justify-content: center;
 }
+
+@import '../../tailwind/fouc.css';

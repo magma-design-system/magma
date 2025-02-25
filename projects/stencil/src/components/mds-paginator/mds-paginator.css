@@ -4,11 +4,13 @@
 
 /**
  * @prop --mds-paginator-background: Sets the background-color of the pages area and the item
+ * @prop --mds-paginator-scroll-behavior: Sets the scroll-behavior animation
  */
 
 :host {
 
   --mds-paginator-background: theme('colors.tone-neutral-09');
+  --mds-paginator-scroll-behavior: smooth;
 
   @apply gap-100;
 
@@ -31,7 +33,7 @@
   flex-shrink: 1;
   gap: 2px;
   overflow: auto;
-  scroll-behavior: smooth;
+  scroll-behavior: var(--mds-paginator-scroll-behavior);
   transition-property: background-color, box-shadow;
 }
 
@@ -42,3 +44,4 @@
 @import './css/mds-paginator-pref-animation.css';
 @import './css/mds-paginator-pref-theme.css';
 @import './css/mds-paginator-pref-contrast.css';
+@import '../../tailwind/fouc.css';

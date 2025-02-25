@@ -90,3 +90,4 @@
 @import './css/mds-banner-pref-animation.css';
 @import './css/mds-banner-pref-theme.css';
 @import './css/mds-banner-pref-contrast.css';
+@import '../../tailwind/fouc.css';
