@@ -15,6 +15,10 @@ export default {
       options: appearanceSetDictionary,
       control: { type: 'select' },
     },
+    backdrop: {
+      description: 'Sets if the backdrop is shown when the mds-header-bar attribute appearace is set to `inline`',
+      type: 'boolean',
+    },
     'auto-hide': {
       type: 'number',
       description: 'When the page is scrolled down, the component mds-header-bar is hidden starting from the `autoHide` attribute\'s value, then if the page is scrolled up it is shown again',

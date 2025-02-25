@@ -20,7 +20,7 @@
   --mds-header-icon-color: var(--mds-header-color, theme('colors.tone-neutral-02'));
   --mds-header-modal-icon-color: theme('colors.tone-neutral');
   --mds-header-backdrop-filter: blur(10px);
-  --mds-header-backdrop-background-image: linear-gradient(to top, rgb(var(--tone-neutral-10) / 0), rgb(var(--tone-neutral-10) / 0.5));
+  --mds-header-backdrop-background-image: linear-gradient(to top, rgb(0 0 0 / 0), rgb(0 0 0 / 0.15));
   --mds-header-backdrop-height: theme('size.1600');
   --mds-header-backdrop-show: true;
   --mds-header-z-index: var(--magma-header-z-index, 1000);
@@ -31,8 +31,6 @@
   z-index: var(--mds-header-z-index);
 }
 
-/* TODO feat(mds-header): add support for mds-pref-consumption and hide / remove backdrop when enabled */
-
 .backdrop {
   align-items: center;
   backdrop-filter: var(--mds-header-backdrop-filter);
@@ -42,12 +40,16 @@
   height: var(--mds-header-backdrop-height);
   inset: 0;
   opacity: 1;
-  pointer-events: none;
   position: fixed;
   transform: translate(0, 0);
   transition-duration: theme('transitionDuration.200');
   transition-property: opacity, transform;
   width: 100%;
+
+
+  /* mask-image: linear-gradient(rgb(0 0 0 / 1), transparent); */
+
+ /* should blurs the blur effect but not blurring */
 }
 
 :host([appearance="inline"]) .backdrop {
@@ -56,8 +58,7 @@
 }
 
 :host([visibility="hidden"]) .backdrop,
-:host([appearance="stripe"]) .backdrop,
-.backdrop--hidden {
+:host([appearance="stripe"]) .backdrop {
   opacity: 0;
   transform: translate(0, -100%);
 }

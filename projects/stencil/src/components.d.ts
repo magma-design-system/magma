@@ -674,6 +674,10 @@ export namespace Components {
          */
         "autoHide"?: number;
         /**
+          * Sets if the backdrop is shown when the mds-header-bar attribute appearace is set to `inline`
+         */
+        "backdrop"?: boolean;
+        /**
           * Sets the visibility type of the hamburger menu of mds-header-bar
          */
         "menu": HeaderBarMenuType;
@@ -3847,6 +3851,10 @@ declare namespace LocalJSX {
           * When the page is scrolled down, the component mds-header-bar is hidden starting from the `autoHide` attribute's value, then if the page is scrolled up it is shown again
          */
         "autoHide"?: number;
+        /**
+          * Sets if the backdrop is shown when the mds-header-bar attribute appearace is set to `inline`
+         */
+        "backdrop"?: boolean;
         /**
           * Sets the visibility type of the hamburger menu of mds-header-bar
          */

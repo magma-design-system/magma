@@ -2,7 +2,7 @@ import { Component, Element, Event, EventEmitter, Host, State, h, Prop, Watch, M
 import { MdsHeaderEventDetail, MdsHeaderVisibilityEventDetail } from './meta/event-detail'
 import { HeaderBarMenuType, HeaderBarNavType } from '@type/header-bar'
 import { AppearanceType } from './meta/types'
-import clsx from 'clsx'
+// import clsx from 'clsx'
 
 /**
  * @part menu - The container element of the modal
@@ -46,6 +46,11 @@ export class MdsHeader {
    * from the `autoHide` attribute's value, then if the page is scrolled up it is shown again
    */
   @Prop({ reflect: true }) readonly autoHide?: number
+
+  /**
+   * Sets if the backdrop is shown when the mds-header-bar attribute appearace is set to `inline`
+   */
+  @Prop({ reflect: true }) readonly backdrop?: boolean = true
 
   /**
    * Sets the visibility type of the hamburger menu of mds-header-bar
@@ -239,7 +244,7 @@ export class MdsHeader {
   render () {
     return (
       <Host>
-        <div class={clsx('backdrop', `backdrop--${this.visibility}`)}></div>
+        { this.backdrop && <div class="backdrop"></div> }
         <slot />
         {this.hasMenu &&
           <div class="menu" part="menu">
