@@ -17,6 +17,15 @@ design-tokens-build:
       changes:
         - projects/design-tokens/**/*
 
+design-tokens-test:
+  extends: .base-test
+  variables:
+    BUILD_DIR: projects/design-tokens
+  rules:
+    - if: $CI_COMMIT_BRANCH
+      changes:
+        - projects/design-tokens/**/*
+
 # DESIGN TOKENS PUBLISH TEST
 design-tokens-publish-test:
   extends: .base-publish-test
