@@ -50,7 +50,7 @@ const Template = args =>
     <mds-header {...args}>
       <mds-header-bar>
         <div class="flex gap-400 items-center">
-          <mds-img class="w-1000" src="./logo-gruppo-maggioli.svg" />
+          <mds-img class="w-1000" src="/logo-gruppo-maggioli.svg" />
           <div class="mb-100">
             <mds-text typography="h6">Mobile menu</mds-text>
             <mds-text typography="option" class="text-tone-neutral-04">Shows up under 1024px</mds-text>
@@ -61,7 +61,7 @@ const Template = args =>
       </mds-header-bar>
       <div slot="menu">
         <div class="flex gap-200 items-center p-600 border-b border-tone-neutral-09">
-          <mds-img class="w-1000" src="./logo-gruppo-maggioli.svg" />
+          <mds-img class="w-1000" src="/logo-gruppo-maggioli.svg" />
           <div class="mb-100">
             <mds-text typography="h6">Gruppo Maggioli</mds-text>
             <mds-text typography="option" class="text-tone-neutral-04">Header by RD Team</mds-text>
@@ -89,7 +89,7 @@ const TemplateAutoHide = args =>
     <mds-header {...args}>
       <mds-header-bar>
         <div class="flex gap-400 items-center">
-          <mds-img class="w-1000" src="./logo-gruppo-maggioli.svg" />
+          <mds-img class="w-1000" src="/logo-gruppo-maggioli.svg" />
           <div class="mb-100">
             <mds-text typography="h6">Mobile menu</mds-text>
             <mds-text typography="option" class="text-tone-neutral-04">Shows up under 1024px</mds-text>
@@ -100,7 +100,7 @@ const TemplateAutoHide = args =>
       </mds-header-bar>
       <div slot="menu">
         <div class="flex gap-200 items-center p-600 border-b border-tone-neutral-09">
-          <mds-img class="w-1000" src="./logo-gruppo-maggioli.svg" />
+          <mds-img class="w-1000" src="/logo-gruppo-maggioli.svg" />
           <div class="mb-100">
             <mds-text typography="h6">Gruppo Maggioli</mds-text>
             <mds-text typography="option" class="text-tone-neutral-04">Header by RD Team</mds-text>
@@ -139,7 +139,7 @@ const TemplateLandingPage = args =>
     <mds-header {...args}>
       <mds-header-bar>
         <div class="flex gap-400 items-center">
-          <mds-img class="w-1000" src="./logo-gruppo-maggioli.svg" />
+          <mds-img class="w-1000" src="/logo-gruppo-maggioli.svg" />
           <div class="mb-100">
             <mds-text typography="h6">Mobile menu</mds-text>
             <mds-text typography="option" class="text-tone-neutral-04">Shows up under 1024px</mds-text>
@@ -150,7 +150,7 @@ const TemplateLandingPage = args =>
       </mds-header-bar>
       <div slot="menu">
         <div class="flex gap-200 items-center p-600 border-b border-tone-neutral-09">
-          <mds-img class="w-1000" src="./logo-gruppo-maggioli.svg" />
+          <mds-img class="w-1000" src="/logo-gruppo-maggioli.svg" />
           <div class="mb-100">
             <mds-text typography="h6">Gruppo Maggioli</mds-text>
             <mds-text typography="option" class="text-tone-neutral-04">Header by RD Team</mds-text>
