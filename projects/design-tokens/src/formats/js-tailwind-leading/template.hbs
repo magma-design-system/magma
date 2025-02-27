@@ -7,15 +7,15 @@ Generated at {{ date }}
 
 const leading = {
 {{#each properties as | property |}}
-  {{#each property as | typography |}}
-    {{#each typography as | leading |}}
+  {{#each property.leading as | leading |}}
+    {{!-- {{#each typography as | leading |}} --}}
       {{#ifEquals @key 'DEFAULT'}}
   'px': '{{leading.value}}',
       {{else}}
   '{{@key}}-px': '{{leading.value}}',
       {{/ifEquals}}
   '{{@key}}': '{{#pixelToRem}}{{leading.value}}{{/pixelToRem}}',
-    {{/each}}
+    {{!-- {{/each}} --}}
   {{/each}}
 {{/each}}
 }
