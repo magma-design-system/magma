@@ -29,15 +29,17 @@ export async function main () {
     }
   }
 
+  // export all colors in one file
   console.log('export colors')
-  exportColors(tokens, 'custom', opts.outDir)
+  exportColors(tokens, 'custom', opts.outDir, opts.generate)
 
+  // export colors separated by export config
   Object.keys(exportGroups).forEach(group => {
     if (opts.exportTokens) {
       console.info(`Exporting ${chalk.yellow('color palette')} ${group}`)
       writeJsonTokens(exportGroups[group], group, opts.outTokensDir)
     }
-    exportColors(exportGroups[group], group, opts.outDir)
+    exportColors(exportGroups[group], group, opts.outDir, opts.generate)
   })
 }
 

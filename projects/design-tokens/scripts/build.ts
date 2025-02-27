@@ -33,7 +33,8 @@ getColorsConfig().then(resultConfig => {
   Object.keys(exportGroups).forEach(exportName => {
     styleDictionary
       .extend(getBrandColorConfig(exportName, exportGroups[exportName]))
-      .buildAllPlatforms()
+      .buildPlatform('css')
+      .buildPlatform('dart')
     // write generated tokens for script 'generate-figma-tokens'
     writeJsonTokens(exportGroups[exportName], exportName, GENERATED_TOKEN_DIR )
   })

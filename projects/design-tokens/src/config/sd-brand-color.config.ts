@@ -37,6 +37,16 @@ export function getBrandColorConfig (fileName: string, inputTokens: string[] | D
           },
         ],
       },
+      tailwind: {
+        transformGroup: 'js',
+        buildPath: `${buildPath}/tailwind/`,
+        files: [
+          {
+            destination: `colors-${fileName}.js`,
+            format: 'js/tailwind-colors',
+          },
+        ],
+      },
     },
   }
 }
