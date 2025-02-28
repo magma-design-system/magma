@@ -7,12 +7,12 @@ body {
 }
 
 :root.pref-contrast-high body {
-  color: rgb(var(--tone-neutral-03, theme('colors.tone-neutral-01')));
+  color: rgb(var(--tone-neutral-01, theme('colors.tone-neutral-01')));
 }
 
 @media (prefers-contrast: more) {
   :root.pref-contrast-system body {
-    color: rgb(var(--tone-neutral-01, theme('colors.tone-neutral-03')));
+    color: rgb(var(--tone-neutral-01, theme('colors.tone-neutral-01')));
   }
 }
 
