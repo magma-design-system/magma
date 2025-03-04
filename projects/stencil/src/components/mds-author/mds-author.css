@@ -3,8 +3,7 @@
 
   align-items: center;
   container-name: mds-author;
-
-  /* container-type: inline-size; */
+  container-type: inline-size;
   display: flex;
 }
 

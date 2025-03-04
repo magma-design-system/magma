@@ -46,7 +46,7 @@
   z-index: var(--mds-dropdown-z-index);
 }
 
-:host( [visible]:not([visible="false"]) ) {
+:host([visible]:not([visible="false"])) {
   @apply opacity-100;
 
   display: grid;
@@ -59,7 +59,7 @@
   }
 }
 
-:host( [smooth]:not([smooth="false"]) ) {
+:host([smooth]:not([smooth="false"])) {
   transition-property: bottom, left, opacity, right, top, transform, transform-origin;
 }
 
@@ -72,7 +72,7 @@
   position: fixed;
 }
 
-::slotted( * ) {
+::slotted( *) {
   @apply z-10;
 
   position: relative;

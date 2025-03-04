@@ -45,7 +45,7 @@
   gap: var(--mds-push-notifications-items-gap);
 }
 
-.notifications ::slotted( mds-push-notification ) {
+.notifications ::slotted( mds-push-notification) {
   --mds-push-notification-duration: var(--mds-push-notifications-items-duration);
   --mds-push-notification-timing-function: var(--mds-push-notifications-items-timing-function);
 

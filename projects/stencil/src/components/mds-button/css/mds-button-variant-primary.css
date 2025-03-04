@@ -7,7 +7,7 @@
 }
 
 :host([variant="primary"]:hover ),
-:host([variant="primary"][tone="strong"]:hover ) {
+:host([variant="primary"][tone="strong"]:hover) {
   --mds-button-background: theme('colors.variant-primary-04');
 }
 
@@ -23,7 +23,7 @@
   fill: theme('colors.variant-primary-03');
 }
 
-:host([variant="primary"][tone="weak"]:hover ) {
+:host([variant="primary"][tone="weak"]:hover) {
   --mds-button-background: theme('colors.variant-primary-08');
 
 }
@@ -41,7 +41,7 @@
   --mds-button-color: theme('colors.variant-primary-03');
 }
 
-:host([variant="primary"][tone="ghost"]:hover ) {
+:host([variant="primary"][tone="ghost"]:hover) {
   --mds-button-background: transparent;
   --mds-button-border-color: theme('colors.variant-primary-04');
   --mds-button-color: theme('colors.variant-primary-02');
@@ -58,7 +58,7 @@
   --mds-button-color: theme('colors.variant-primary-02');
 }
 
-:host([variant="primary"][tone="quiet"]:hover ) {
+:host([variant="primary"][tone="quiet"]:hover) {
   --mds-button-background: transparent;
   --mds-button-color: theme('colors.variant-primary-04');
 }

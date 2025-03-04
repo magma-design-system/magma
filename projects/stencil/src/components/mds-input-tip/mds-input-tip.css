@@ -36,7 +36,7 @@
   --mds-input-tip-active-translate: translate(calc(theme('translate.100') * -1), calc(theme('translate.100') * -1));
 }
 
-:host([position="top"][active]:not([active="false"])) ::slotted( mds-input-tip-item ) {
+:host([position="top"][active]:not([active="false"])) ::slotted( mds-input-tip-item) {
   border-top-left-radius: 0;
   border-top-right-radius: 0;
 }
@@ -45,7 +45,7 @@
   --mds-input-tip-active-translate: translate(calc(theme('translate.100') * -1), theme('translate.100'));
 }
 
-:host([position="bottom"][active]:not([active="false"])) ::slotted( mds-input-tip-item ) {
+:host([position="bottom"][active]:not([active="false"])) ::slotted( mds-input-tip-item) {
   border-bottom-left-radius: 0;
   border-bottom-right-radius: 0;
 }

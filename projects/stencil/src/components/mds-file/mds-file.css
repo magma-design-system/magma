@@ -25,7 +25,7 @@
   @apply focus-bounce--focused;
 }
 
-:host( :hover ) {
+:host(:hover) {
   box-shadow: theme('boxShadow.md-sharp');
 }
 

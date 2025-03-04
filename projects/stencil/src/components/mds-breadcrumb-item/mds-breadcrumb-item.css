@@ -42,7 +42,7 @@
   @apply focus-bounce--focused;
 }
 
-:host( :last-child ) .icon {
+:host(:last-child) .icon {
   display: none;
 }
 
@@ -63,7 +63,7 @@
   --mds-breadcrumb-item-button-color: var(--mds-breadcrumb-item-button-color-hover);
 }
 
-:host( [selected]:not([selected="false"]) ) {
+:host([selected]:not([selected="false"])) {
   --mds-breadcrumb-item-button-background: var(--mds-breadcrumb-item-button-background-selected);
   --mds-breadcrumb-item-button-color: var(--mds-breadcrumb-item-button-color-selected);
 

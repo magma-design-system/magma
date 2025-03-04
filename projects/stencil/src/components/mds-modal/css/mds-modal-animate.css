@@ -17,7 +17,7 @@
 }
 
 :host([opened]:not([opened="false"])) .window,
-:host([opened]:not([opened="false"])) > ::slotted( [slot="window"] ) {
+:host([opened]:not([opened="false"])) > ::slotted( [slot="window"]) {
   opacity: 1;
   transform: rotate(0) scale(1) translateY(0);
   transition-delay: 0s;

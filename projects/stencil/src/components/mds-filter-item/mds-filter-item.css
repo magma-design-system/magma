@@ -66,15 +66,15 @@ mds-text {
   @apply focus-bounce--focused;
 }
 
-:host( [icon]:not([label]) ) {
+:host([icon]:not([label])) {
   @apply
     h-900
     p-0
     w-900;
 }
 
-:host( [selected]:not([selected="false"]) ),
-:host( :hover ) {
+:host([selected]:not([selected="false"]) ),
+:host(:hover) {
   background-color: theme('colors.tone-neutral');
 }
 
@@ -82,11 +82,11 @@ mds-text {
   box-shadow: theme('boxShadow.sm');
 }
 
-:host( [selected]:not([selected="false"]) ) {
+:host([selected]:not([selected="false"])) {
   color: theme('colors.tone-neutral-01');
 }
 
-:host( [selected]:not([selected="false"]) ) .count {
+:host([selected]:not([selected="false"]) ) .count {
   background-color: var(--mds-filter-item-count-background-selected);
   color: var(--mds-filter-item-count-color-selected);
 }

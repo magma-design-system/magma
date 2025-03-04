@@ -5,7 +5,7 @@
 }
 
 :host([variant="error"]:hover ),
-:host([variant="error"][tone="strong"]:hover ) {
+:host([variant="error"][tone="strong"]:hover) {
   --mds-button-background: theme('colors.status-error-04');
 }
 
@@ -21,7 +21,7 @@
   fill: theme('colors.status-error-03');
 }
 
-:host([variant="error"][tone="weak"]:hover ) {
+:host([variant="error"][tone="weak"]:hover) {
   --mds-button-background: theme('colors.status-error-08');
 
 }
@@ -39,7 +39,7 @@
   --mds-button-color: theme('colors.status-error-03');
 }
 
-:host([variant="error"][tone="ghost"]:hover ) {
+:host([variant="error"][tone="ghost"]:hover) {
   --mds-button-background: transparent;
   --mds-button-border-color: theme('colors.status-error-04');
   --mds-button-color: theme('colors.status-error-02');
@@ -56,7 +56,7 @@
   --mds-button-color: theme('colors.status-error-02');
 }
 
-:host([variant="error"][tone="quiet"]:hover ) {
+:host([variant="error"][tone="quiet"]:hover) {
   --mds-button-background: transparent;
   --mds-button-color: theme('colors.status-error-04');
 }

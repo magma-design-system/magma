@@ -3330,6 +3330,50 @@
   resolved "https://registry.npmjs.org/@lmdb/lmdb-win32-x64/-/lmdb-win32-x64-3.0.13.tgz#93bcd6dc24afd1cc60dd88a65b9e4fab32dcf397"
   integrity sha512-UCrMJQY/gJnOl3XgbWRZZUvGGBuKy6i0YNSptgMzHBjs+QYDYR1Mt/RLTOPy4fzzves65O1EDmlL//OzEqoLlA==
 
+"@maggioli-design-system/design-tokens@13.6.0":
+  version "13.6.0"
+  resolved "https://registry.npmjs.org/@maggioli-design-system/design-tokens/-/design-tokens-13.6.0.tgz#74815eebba5a1db6b5db958d4317860771be2809"
+  integrity sha512-SOzy1BBC+GDn9KtvhdnsU/amKFvAXwa09O/6Oq5tqXnj06n2XQ+PpwXnyc18gOq1Fm3JNFCkpjKOuRF3yPdIpA==
+  dependencies:
+    "@adobe/leonardo-contrast-colors" "1.0.0"
+    arg "5.0.2"
+    chalk "5.4.1"
+    handlebars "4.7.8"
+    hex-rgb "4.3.0"
+    lilconfig "3.1.3"
+    style-dictionary "3.9.0"
+
+"@maggioli-design-system/magma@1.1.0":
+  version "1.1.0"
+  resolved "https://registry.npmjs.org/@maggioli-design-system/magma/-/magma-1.1.0.tgz#4c08334fbebffee37f1fbedbc82deda996b8037d"
+  integrity sha512-pI7TLvoRAf/FchldshahOuOuAgXsDAaXmxuBYh8kmWGhsp4mECk6t+YUFzCa7Iyq2r0cyeVrjJSMeewvBesh/w==
+  dependencies:
+    "@floating-ui/dom" "1.6.12"
+    "@maggioli-design-system/design-tokens" "13.6.0"
+    "@maggioli-design-system/identity" "2.1.1"
+    "@maggioli-design-system/styles" "15.8.0"
+    "@stencil/core" "4.25.1"
+    clsx "2.1.0"
+    crypto-js "4.2.0"
+    dayjs "1.11.13"
+    filesize "10.1.0"
+    fitty "2.4.2"
+    idb-keyval "6.2.1"
+    mime "4.0.4"
+    mustache "4.2.0"
+
+"@maggioli-design-system/styles@15.8.0":
+  version "15.8.0"
+  resolved "https://registry.npmjs.org/@maggioli-design-system/styles/-/styles-15.8.0.tgz#66f2017f34119f9fb2e9ff84cfa134beea2cd433"
+  integrity sha512-RxZYGjnfAiuOECnLETQeZvTeiUXm8PvaZ9fb0eVgeuJKGIrMYnOdckcECb3A/LSQr31WSZlKRYTULINX9c7dDA==
+  dependencies:
+    "@fontsource/karla" "5.1.0"
+    "@fontsource/merriweather" "5.1.0"
+    "@fontsource/roboto" "5.1.0"
+    "@fontsource/roboto-mono" "5.1.0"
+    "@maggioli-design-system/design-tokens" "13.6.0"
+    normalize.css "8.0.1"
+
 "@maggioli-design-system/svg-icons@^2.6.3":
   version "2.10.1"
   resolved "https://registry.npmjs.org/@maggioli-design-system/svg-icons/-/svg-icons-2.10.1.tgz#3c86d5b738407a7fe756877aa87baf7b4d2d5f8d"
@@ -4532,6 +4576,11 @@
   version "4.25.1"
   resolved "https://registry.npmjs.org/@stencil/core/-/core-4.25.1.tgz#95bb17bb3fb1503203f9ef46a3e3924b7559add3"
   integrity sha512-SJhAAN6nHj7l2n2F7H6NoOUFhXC5tYXSvOpAaNFi5As6c2jOvaDOvAH+om4OKmw8U2kHI9yihEqpZrtY1J20dQ==
+
+"@stencil/core@4.27.2":
+  version "4.27.2"
+  resolved "https://registry.npmjs.org/@stencil/core/-/core-4.27.2.tgz#1efaaaaff969f45d4ef73c955329073988113957"
+  integrity sha512-phsgSxWYumdjVhNHZ0pPTXhrM8CgajWidRuoxBfVl76+sVLu3+O2gTuIKd+bZEjixGFb1bHvQeMmlNuwKgxf8Q==
 
 "@stencil/postcss@2.1.0":
   version "2.1.0"

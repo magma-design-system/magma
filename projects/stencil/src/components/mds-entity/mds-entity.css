@@ -97,7 +97,7 @@ mds-spinner {
   display: flex;
 }
 
-::slotted( [slot="action"] ) {
+::slotted( [slot="action"]) {
   @apply
     aspect-square
     w-1100;
@@ -105,7 +105,7 @@ mds-spinner {
   height: auto;
 }
 
-::slotted( * ) {
+::slotted( *) {
   @apply truncate;
 
   white-space: nowrap;

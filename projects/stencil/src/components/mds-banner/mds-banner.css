@@ -9,7 +9,6 @@
  */
 
   :host {
-
   --mds-banner-background: theme('colors.tone-neutral-10');
   --mds-banner-close-icon-hover-background: theme('colors.tone-neutral-09');
   --mds-banner-color: theme('colors.tone-neutral-02');
@@ -56,14 +55,12 @@
 }
 
 .close-button {
-
   --mds-button-background: transparent;
 
   fill: var(--mds-banner-color);
 }
 
 .close-button:hover {
-
   --mds-button-background: var(--mds-banner-close-icon-hover-background);
 }
 

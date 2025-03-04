@@ -33,16 +33,16 @@
   transition-property: color, background-color;
 }
 
-:host ::slotted( mds-text ) {
+:host ::slotted( mds-text) {
   --mds-text-selection-background: var(--mds-note-selection-background);
   --mds-text-selection-color: var(--mds-note-selection-color);
 }
 
-:host( [deletable]:not([deletable="false"]) ) {
+:host([deletable]:not([deletable="false"])) {
   @apply pr-1600;
 }
 
-:host( [deletable]:not([deletable="false"]) ) .button-close {
+:host([deletable]:not([deletable="false"]) ) .button-close {
   @apply
     right-400
     top-400;

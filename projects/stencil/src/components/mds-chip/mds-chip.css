@@ -43,7 +43,7 @@
 }
 
 
-:host( [disabled]:not([disabled="false"]) ) {
+:host([disabled]:not([disabled="false"])) {
   opacity: var(--mds-chip-opacity-disabled);
   pointer-events: none;
 }
@@ -59,12 +59,12 @@
   transition-property: color, text-decoration-color, outline, outline-offset;
 }
 
-:host( [clickable]:not([clickable="false"]) ) .label {
+:host([clickable]:not([clickable="false"]) ) .label {
   cursor: pointer;
   text-decoration: underline;
 }
 
-:host( [clickable]:not([clickable="false"]) ) .label:hover {
+:host([clickable]:not([clickable="false"]) ) .label:hover {
   text-decoration-color: unset;
 }
 

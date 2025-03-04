@@ -86,15 +86,15 @@
   }
 }
 
-:host([snap="start"]) .contents > ::slotted( * ) {
+:host([snap="start"]) .contents > ::slotted( *) {
   scroll-snap-align: start;
 }
 
-:host([snap="center"]) .contents > ::slotted( * ) {
+:host([snap="center"]) .contents > ::slotted( *) {
   scroll-snap-align: center;
 }
 
-:host([snap="end"]) .contents > ::slotted( * ) {
+:host([snap="end"]) .contents > ::slotted( *) {
   scroll-snap-align: end;
 }
 
@@ -110,7 +110,7 @@
   width: 100%;
 }
 
-.contents > ::slotted( * ) {
+.contents > ::slotted( *) {
   flex-basis: 0;
   flex-grow: 0;
   flex-shrink: 0;

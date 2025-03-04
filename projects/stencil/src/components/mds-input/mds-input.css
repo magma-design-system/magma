@@ -231,11 +231,6 @@ textarea.input {
   @apply text-code-snippet;
 }
 
-@import './css/mds-input-variant.css';
-@import './css/mds-input-pref-animation.css';
-@import './css/mds-input-pref-theme.css';
-@import './css/mds-input-pref-contrast.css';
-
 @container (max-width: 210px) {
   :host .tip__content,
   :host(:focus-within) .tip__content {
@@ -253,4 +248,8 @@ textarea.input {
   }
 }
 
+@import './css/mds-input-variant.css';
+@import './css/mds-input-pref-animation.css';
+@import './css/mds-input-pref-theme.css';
+@import './css/mds-input-pref-contrast.css';
 @import '../../tailwind/fouc.css';

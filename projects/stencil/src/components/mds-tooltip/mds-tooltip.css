@@ -45,15 +45,15 @@
   z-index: var(--mds-tooltip-z-index);
 }
 
-:host( [strategy="absolute"] ) {
+:host([strategy="absolute"]) {
   position: absolute;
 }
 
-:host( [strategy="fixed"] ) {
+:host([strategy="fixed"]) {
   position: fixed;
 }
 
-:host( [visible]:not([visible="false"]) ) {
+:host([visible]:not([visible="false"])) {
   opacity: 1;
   pointer-events: auto;
   transform: var(--mds-tooltip-transform-to);
@@ -79,7 +79,7 @@
   z-index: -1;
 }
 
-::slotted( * ) {
+::slotted( *) {
   @apply z-10;
 
   position: relative;
