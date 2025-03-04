@@ -3,10 +3,14 @@
 @tailwind components;
 @tailwind utilities;
 
-/* x */
+/**
+ * @prop --mds-filter-item-count-background-default: Sets tge default `background-color` of the count element
+ * @prop ---mds-filter-item-count-color-default: Sets tge default text `color` of the count element
+ * @prop ---mds-filter-item-count-background-selected: Sets the z-index of the component.
+ * @prop ---mds-filter-item-count-color-selected: Sets the z-index of the component.
+ */
 
 :host {
-
   --mds-filter-item-count-background-default: theme('colors.tone-neutral-08');
   --mds-filter-item-count-color-default: theme('colors.tone-neutral-02');
   --mds-filter-item-count-background-selected: theme('colors.tone-neutral-05');

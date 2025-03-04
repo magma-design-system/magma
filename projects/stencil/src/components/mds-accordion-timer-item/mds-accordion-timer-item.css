@@ -1,7 +1,5 @@
 @import '~@maggioli-design-system/styles/dist/css/animations.css'; /* included for focus effect */
 @import '../../tailwind/components.css';
-@tailwind components;
-@tailwind utilities;
 
 /**
  * @prop --mds-accordion-timer-item-progress-bar-color: Sets the color of the progress bar when the item is selected

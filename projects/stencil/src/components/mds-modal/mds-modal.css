@@ -1,8 +1,6 @@
 @import '~@maggioli-design-system/styles/dist/css/animations.css'; /* included for focus effect */
 @import '../../tailwind/components.css';
-
 @tailwind components;
-@tailwind utilities;
 
 /**
  * @prop --mds-modal-close-icon-color: Set the color of the close icon button to the top left.
@@ -18,7 +16,6 @@
  */
 
 :host {
-
   --mds-modal-overlay-color: var(--magma-overlay-color, 0 0 0);
   --mds-modal-overlay-opacity: var(--magma-overlay-opacity, 0.5);
   --mds-modal-transition-duration: 500ms;

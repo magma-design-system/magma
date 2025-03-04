@@ -1,72 +1,15 @@
-@tailwind utilities;
+:host-context(.pref-theme-dark) {
+  --mds-kpi-item-info-background: theme('colors.tone-neutral-09');
 
-@container style(--magma-pref-theme: dark) {
-  :host {
+  background-color: theme('colors.variant-primary-09');
+  box-shadow: theme('boxShadow.outline');
+}
 
+@media (prefers-color-scheme: dark) {
+  :host-context(.pref-theme-system) {
     --mds-kpi-item-info-background: theme('colors.tone-neutral-09');
 
     background-color: theme('colors.variant-primary-09');
     box-shadow: theme('boxShadow.outline');
   }
 }
-
-@container style(--magma-pref-theme: system) {
-
-  @media (prefers-color-scheme: dark) {
-    :host {
-
-      --mds-kpi-item-info-background: theme('colors.tone-neutral-09');
-
-      background-color: theme('colors.variant-primary-09');
-      box-shadow: theme('boxShadow.outline');
-    }
-  }
-}
-
-
-@container style(--magma-pref-theme: dark) and style(--magma-pref-contrast: more) {
-  :host {
-
-    --mds-kpi-item-info-background: theme('colors.tone-neutral');
-
-    box-shadow: theme('boxShadow.outline-50');
-  }
-}
-
-@container style(--magma-pref-theme: dark) and style(--magma-pref-contrast: system) {
-
-  @media (prefers-contrast: more) {
-    :host {
-
-      --mds-kpi-item-info-background: theme('colors.tone-neutral');
-
-      box-shadow: theme('boxShadow.outline-50');
-    }
-  }
-}
-
-@container style(--magma-pref-theme: system) and style(--magma-pref-contrast: system) {
-
-  @media (prefers-color-scheme: dark) and (prefers-contrast: more) {
-    :host {
-
-      --mds-kpi-item-info-background: theme('colors.tone-neutral');
-
-      box-shadow: theme('boxShadow.outline-50');
-    }
-  }
-}
-
-@container style(--magma-pref-theme: system) and style(--magma-pref-contrast: more) {
-
-  @media (prefers-color-scheme: dark) {
-    :host {
-
-      --mds-kpi-item-info-background: theme('colors.tone-neutral');
-
-      box-shadow: theme('boxShadow.outline-50');
-    }
-  }
-}
-
-

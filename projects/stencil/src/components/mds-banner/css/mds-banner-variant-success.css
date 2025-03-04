@@ -1,8 +1,5 @@
-@tailwind utilities;
-
-:host( [variant="success"] ),
-:host( [variant="success"][tone="strong"] ) {
-
+:host([variant="success"]),
+:host([variant="success"][tone="strong"]) {
   --mds-banner-background: theme('colors.status-success-09');
   --mds-banner-close-icon-hover-background: theme('colors.status-success-08');
   --mds-banner-color: theme('colors.status-success-02');
@@ -10,8 +7,7 @@
   --mds-banner-shadow: none;
 }
 
-:host( [variant="success"][tone="weak"] ) {
-
+:host([variant="success"][tone="weak"]) {
   --mds-banner-background: theme('colors.status-success-10');
   --mds-banner-close-icon-hover-background: theme('colors.status-success-08');
   --mds-banner-color: theme('colors.status-success-03');
@@ -19,8 +15,7 @@
   --mds-banner-shadow: none;
 }
 
-:host( [variant="success"][tone="quiet"] ) {
-
+:host([variant="success"][tone="quiet"]) {
   --mds-banner-background: transparent;
   --mds-banner-close-icon-hover-background: theme('colors.status-success-09');
   --mds-banner-color: theme('colors.status-success-03');
@@ -28,6 +23,6 @@
   --mds-banner-shadow: none;
 }
 
-:host( [variant="success"][tone="quiet"] ) .separator {
+:host([variant="success"][tone="quiet"]) .separator {
   display: none;
 }

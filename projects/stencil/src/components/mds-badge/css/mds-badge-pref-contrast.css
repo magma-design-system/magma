@@ -1,53 +1,9 @@
-@tailwind utilities;
+:host-context(.pref-contrast-more):host([tone="weak"]) {
+  box-shadow: theme('boxShadow.outline') inset;
+}
 
-@container style(--magma-pref-contrast: more) {
-  :host([tone="weak"]) {
+@media (prefers-contrast: more) {
+  :host-context(.pref-contrast-system):host([tone="weak"]) {
     box-shadow: theme('boxShadow.outline') inset;
-  }
-}
-
-@container style(--magma-pref-contrast: system) {
-
-  @media (prefers-contrast: more) {
-    :host([tone="weak"]) {
-      box-shadow: theme('boxShadow.outline') inset;
-    }
-  }
-}
-
-@container style(--magma-pref-theme: dark) and style(--magma-pref-contrast: more) {
-  :host([tone="strong"]),
-  :host([tone="weak"]) {
-    box-shadow: theme('boxShadow.outline-strong') inset;
-  }
-}
-
-@container style(--magma-pref-theme: dark) and style(--magma-pref-contrast: system) {
-
-  @media (prefers-contrast: more) {
-    :host([tone="strong"]),
-    :host([tone="weak"]) {
-      box-shadow: theme('boxShadow.outline-strong') inset;
-    }
-  }
-}
-
-@container style(--magma-pref-theme: system) and style(--magma-pref-contrast: system) {
-
-  @media (prefers-color-scheme: dark) and (prefers-contrast: more)  {
-    :host([tone="strong"]),
-    :host([tone="weak"]) {
-      box-shadow: theme('boxShadow.outline-strong') inset;
-    }
-  }
-}
-
-@container style(--magma-pref-theme: system) and style(--magma-pref-contrast: more) {
-
-  @media (prefers-color-scheme: dark) {
-    :host([tone="strong"]),
-    :host([tone="weak"]) {
-      box-shadow: theme('boxShadow.outline-strong') inset;
-    }
   }
 }

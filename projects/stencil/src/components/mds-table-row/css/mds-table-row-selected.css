@@ -1,5 +1,4 @@
 :host([selected]) {
-
   --mds-table-row-background: var(--mds-table-row-background-hover);
   --mds-table-row-color: var(--mds-table-row-color-hover);
 }

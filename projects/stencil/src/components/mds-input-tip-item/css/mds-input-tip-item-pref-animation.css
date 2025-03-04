@@ -1,16 +1,11 @@
-@container style(--magma-pref-animation: reduce) {
-  :host,
-  .content {
-    transition-duration: 0s;
-  }
+:host-context(.pref-animation-reduce),
+:host-context(.pref-animation-reduce) .content {
+  transition-duration: 0s;
 }
 
-@container style(--magma-pref-animation: system) {
-
-  @media (prefers-reduced-motion) {
-    :host,
-    .content {
-      transition-duration: 0s;
-    }
+@media (prefers-reduced-motion) {
+  :host-context(.pref-animation-system),
+  :host-context(.pref-animation-system) .content{
+    transition-duration: 0s;
   }
 }

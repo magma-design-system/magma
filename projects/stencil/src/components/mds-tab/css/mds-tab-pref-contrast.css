@@ -1,25 +1,15 @@
-@tailwind utilities;
+:host-context(.pref-contrast-more) {
+  --mds-tab-item-selected-shadow: theme('boxShadow.outline-50');
+  --mds-tab-tabs-wrapper-shadow: 0 0 0 theme('size.50') var(--mds-tab-tabs-wrapper-shadow-color) inset;
+  --mds-tab-tabs-wrapper-shadow-color: theme('colors.tone-neutral-07');
+  --mds-tab-tabs-wrapper-outline-opacity: theme('opacity.30');
+}
 
-@container style(--magma-pref-contrast: more) {
-  :host {
-
+@media (prefers-contrast: more) {
+  :host-context(.pref-contrast-system) {
     --mds-tab-item-selected-shadow: theme('boxShadow.outline-50');
     --mds-tab-tabs-wrapper-shadow: 0 0 0 theme('size.50') var(--mds-tab-tabs-wrapper-shadow-color) inset;
     --mds-tab-tabs-wrapper-shadow-color: theme('colors.tone-neutral-07');
     --mds-tab-tabs-wrapper-outline-opacity: theme('opacity.30');
   }
 }
-
-@container style(--magma-pref-contrast: system) {
-
-  @media (prefers-contrast: more) {
-    :host {
-
-      --mds-tab-item-selected-shadow: theme('boxShadow.outline-50');
-      --mds-tab-tabs-wrapper-shadow: 0 0 0 theme('size.50') var(--mds-tab-tabs-wrapper-shadow-color) inset;
-      --mds-tab-tabs-wrapper-shadow-color: theme('colors.tone-neutral-07');
-      --mds-tab-tabs-wrapper-outline-opacity: theme('opacity.30');
-    }
-  }
-}
-

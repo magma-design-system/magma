@@ -1,11 +1,8 @@
-@tailwind utilities;
-
 /**
  * @prop --mds-input-tip-active-translate: Set the translate of the tip when it is active.
  */
 
 :host {
-
   --mds-input-tip-active-translate: translate(0, 0);
 
   @apply
@@ -36,7 +33,6 @@
 }
 
 :host([position="top"][active]:not([active="false"])) {
-
   --mds-input-tip-active-translate: translate(calc(theme('translate.100') * -1), calc(theme('translate.100') * -1));
 }
 
@@ -46,7 +42,6 @@
 }
 
 :host([position="bottom"][active]:not([active="false"])) {
-
   --mds-input-tip-active-translate: translate(calc(theme('translate.100') * -1), theme('translate.100'));
 }
 

@@ -1,23 +1,13 @@
-@tailwind utilities;
+:host-context(.pref-contrast-more),
+:host-context(.pref-contrast-more):host([variant="primary"]) {
+  --mds-progress-color: theme('colors.variant-primary-05');
+  --mds-progress-background: theme('colors.tone-neutral-07');
+}
 
-@container style(--magma-pref-contrast: more) {
-  :host,
-  :host( [variant="primary"] ) {
-
+@media (prefers-contrast: more) {
+  :host-context(.pref-contrast-system),
+  :host-context(.pref-contrast-more):host([variant="primary"]) {
     --mds-progress-color: theme('colors.variant-primary-05');
     --mds-progress-background: theme('colors.tone-neutral-07');
   }
 }
-
-@container style(--magma-pref-contrast: system) {
-
-  @media (prefers-contrast: more) {
-    :host,
-    :host( [variant="primary"] ) {
-
-      --mds-progress-color: theme('colors.variant-primary-05');
-      --mds-progress-background: theme('colors.tone-neutral-07');
-    }
-  }
-}
-

@@ -1,8 +1,6 @@
 @import '~@maggioli-design-system/styles/dist/tailwind/typography.css';
 @import '~@maggioli-design-system/styles/dist/css/animations.css';
 @import '../../tailwind/components.css';
-@tailwind components;
-@tailwind utilities;
 
 /**
  * @prop --mds-button-await-duration: Sets the duration of the rotation of the spinner await component
@@ -14,7 +12,6 @@
  */
 
 :host {
-
   --mds-button-await-duration: 0.725s;
   --mds-button-background: theme('colors.variant-primary-02');
   --mds-button-border-color: transparent;
@@ -55,7 +52,6 @@
 }
 
 .text {
-
   --mds-text-line-clamp: var(--mds-button-line-clamp);
 }
 

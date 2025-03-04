@@ -1,9 +1,7 @@
 @import '../../tailwind/components.css';
 @tailwind components;
-@tailwind utilities;
 
 :host {
-
   --mds-help-tooltip-width: fit-content;
   --mds-help-tooltip-max-width: 280px;
   --mds-help-tooltip-delay: 0.25s;
@@ -24,7 +22,6 @@ i {
 }
 
 mds-tooltip {
-
   --mds-tooltip-delay: var(--mds-help-tooltip-delay);
 
   max-width: var(--mds-help-tooltip-max-width);

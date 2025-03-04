@@ -1,16 +1,9 @@
-@tailwind utilities;
-
-@container style(--magma-pref-animation: reduce) {
-  video {
-    display: none;
-  }
+:host-context(.pref-animation-reduce) video {
+  display: none;
 }
 
-@container style(--magma-pref-animation: system) {
-
-  @media (prefers-reduced-motion) {
-    video {
-      display: none;
-    }
+@media (prefers-reduced-motion) {
+  :host-context(.pref-animation-system) video {
+    display: none;
   }
 }

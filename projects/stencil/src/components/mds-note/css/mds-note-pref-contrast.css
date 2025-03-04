@@ -25,3 +25,23 @@
   }
 }
 
+
+:host-context(.pref-contrast-more) {
+  box-shadow: theme('boxShadow.outline-50') inset;
+}
+
+:host-context(.pref-contrast-more) .fold {
+  bottom: theme('spacing.50');
+  right: theme('spacing.50');
+}
+
+@media (prefers-contrast: more) {
+  :host-context(.pref-contrast-system) {
+    box-shadow: theme('boxShadow.outline-50') inset;
+  }
+
+  :host-context(.pref-contrast-system) .fold {
+    bottom: theme('spacing.50');
+    right: theme('spacing.50');
+  }
+}

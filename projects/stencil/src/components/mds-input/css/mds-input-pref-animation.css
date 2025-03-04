@@ -1,16 +1,9 @@
-@tailwind utilities;
-
-@container style(--magma-pref-animation: reduce) {
-  .input {
-    transition-duration: 0s;
-  }
+:host-context(.pref-animation-reduce) .input {
+  transition-duration: 0s;
 }
 
-@container style(--magma-pref-animation: system) {
-
-  @media (prefers-reduced-motion) {
-    .input {
-      transition-duration: 0s;
-    }
+@media (prefers-reduced-motion) {
+  :host-context(.pref-animation-system) .input {
+    transition-duration: 0s;
   }
 }

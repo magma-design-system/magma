@@ -1,5 +1,3 @@
-@tailwind utilities;
-
 :host {
   display: inline-flex
 }

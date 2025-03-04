@@ -1,18 +1,9 @@
-@tailwind utilities;
-
-@container style(--magma-pref-animation: reduce) {
-  :host {
-
-    --mds-horizontal-scroll-behavior: auto;
-  }
+:host-context(.pref-animation-reduce) {
+  --mds-horizontal-scroll-behavior: auto;
 }
 
-@container style(--magma-pref-animation: system) {
-
-  @media (prefers-reduced-motion) {
-    :host {
-
-      --mds-horizontal-scroll-behavior: auto;
-    }
+@media (prefers-reduced-motion) {
+  :host-context(.pref-animation-system) {
+    --mds-horizontal-scroll-behavior: auto;
   }
 }

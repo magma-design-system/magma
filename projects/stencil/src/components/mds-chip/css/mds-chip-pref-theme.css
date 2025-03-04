@@ -1,16 +1,9 @@
-@tailwind utilities;
-
-@container style(--magma-pref-theme: dark) {
-  :host {
-    box-shadow: theme('boxShadow.outline');
-  }
+:host-context(.pref-theme-dark) {
+  box-shadow: theme('boxShadow.outline');
 }
 
-@container style(--magma-pref-theme: system) {
-
-  @media (prefers-color-scheme: dark) {
-    :host {
-      box-shadow: theme('boxShadow.outline');
-    }
+@media (prefers-color-scheme: dark) {
+  :host-context(.pref-theme-system) {
+    box-shadow: theme('boxShadow.outline');
   }
 }

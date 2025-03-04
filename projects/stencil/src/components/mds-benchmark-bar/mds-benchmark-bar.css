@@ -1,5 +1,3 @@
-@tailwind utilities;
-
 :host {
   @apply
     gap-100

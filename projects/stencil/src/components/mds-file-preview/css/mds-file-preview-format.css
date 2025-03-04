@@ -1,13 +1,11 @@
 :host([format="archive"]),
 :host([format="executable"]) {
-
   --mds-file-preview-color: theme('colors.label-amaranth-04');
   --mds-file-preview-icon-background: theme('colors.label-amaranth-10');
   --mds-file-preview-icon-color: theme('colors.label-amaranth-04');
 }
 
 :host([format="attachment"]) {
-
   --mds-file-preview-color: theme('colors.tone-neutral-04');
   --mds-file-preview-icon-background: theme('colors.tone-neutral-10');
   --mds-file-preview-icon-color: theme('colors.tone-neutral-04');
@@ -15,7 +13,6 @@
 
 :host([format="audio"]),
 :host([format="video"]) {
-
   --mds-file-preview-color: theme('colors.label-violet-04');
   --mds-file-preview-icon-background: theme('colors.label-violet-10');
   --mds-file-preview-icon-color: theme('colors.label-violet-04');
@@ -24,7 +21,6 @@
 :host([format="code"]),
 :host([format="data"]),
 :host([format="markup"]) {
-
   --mds-file-preview-color: theme('colors.label-yellow-04');
   --mds-file-preview-icon-background: theme('colors.label-yellow-10');
   --mds-file-preview-icon-color: theme('colors.label-yellow-04');
@@ -32,7 +28,6 @@
 
 :host([format="document"]),
 :host([format="certificate"]) {
-
   --mds-file-preview-color: theme('colors.label-orange-04');
   --mds-file-preview-icon-background: theme('colors.label-orange-10');
   --mds-file-preview-icon-color: theme('colors.label-orange-04');
@@ -40,35 +35,30 @@
 
 :host([format="email"]),
 :host([format="text"]) {
-
   --mds-file-preview-color: theme('colors.label-blue-04');
   --mds-file-preview-icon-background: theme('colors.label-blue-10');
   --mds-file-preview-icon-color: theme('colors.label-blue-04');
 }
 
 :host([format="image"]) {
-
   --mds-file-preview-color: theme('colors.label-green-04');
   --mds-file-preview-icon-background: theme('colors.label-green-10');
   --mds-file-preview-icon-color: theme('colors.label-green-04');
 }
 
 :host([format="slide"]) {
-
   --mds-file-preview-color: theme('colors.label-orchid-04');
   --mds-file-preview-icon-background: theme('colors.label-orchid-10');
   --mds-file-preview-icon-color: theme('colors.label-orchid-04');
 }
 
 :host([format="spreadsheet"]) {
-
   --mds-file-preview-color: theme('colors.label-lime-04');
   --mds-file-preview-icon-background: theme('colors.label-lime-10');
   --mds-file-preview-icon-color: theme('colors.label-lime-04');
 }
 
 :host([format="vector"]) {
-
   --mds-file-preview-color: theme('colors.label-aqua-04');
   --mds-file-preview-icon-background: theme('colors.label-aqua-10');
   --mds-file-preview-icon-color: theme('colors.label-aqua-04');

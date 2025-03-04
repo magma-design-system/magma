@@ -1,21 +1,11 @@
-@tailwind utilities;
+:host-context(.pref-contrast-more) {
+  --mds-details-icon-color: theme('colors.variant-primary-03');
+  --mds-details-helper-icon-color: theme('colors.tone-neutral-02');
+}
 
-@container style(--magma-pref-contrast: more) {
-  :host {
-
+@media (prefers-contrast: more) {
+  :host-context(.pref-contrast-system) {
     --mds-details-icon-color: theme('colors.variant-primary-03');
     --mds-details-helper-icon-color: theme('colors.tone-neutral-02');
   }
 }
-
-@container style(--magma-pref-contrast: system) {
-
-  @media (prefers-contrast: more) {
-    :host {
-
-      --mds-details-icon-color: theme('colors.variant-primary-03');
-      --mds-details-helper-icon-color: theme('colors.tone-neutral-02');
-    }
-  }
-}
-

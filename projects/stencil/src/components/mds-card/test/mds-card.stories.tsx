@@ -22,7 +22,7 @@ const FullCardTemplate = args =>
             <mds-text typography="caption" truncate="word">Management designer</mds-text>
           </div>
         </div>
-        <mds-button class="shrink-0" id="action-example" icon="mi/round/more-vert" variant="light"></mds-button>
+        <mds-button class="shrink-0" id="action-example" icon="mi/round/more-vert" variant="dark" tone="quiet"></mds-button>
       </mds-card-header>
       <mds-card-media>
         <mds-img src={URLs[0]} class="object-cover"></mds-img>
@@ -53,7 +53,7 @@ const CustomSlotsTemplate = args =>
             <mds-text typography="caption" truncate="word">Management designer</mds-text>
           </div>
         </div>
-        <mds-button id="action-example" icon="mi/round/more-vert" variant="light"></mds-button>
+        <mds-button id="action-example" icon="mi/round/more-vert" variant="dark" tone="quiet"></mds-button>
       </div>
       <mds-img src={URLs[0]} slot="media" class="object-cover"></mds-img>
       <div slot="content" class="px-400">
@@ -80,7 +80,7 @@ const LayoutHMCFTemplate = args =>
           <mds-text typography="caption" truncate="word">Management designer</mds-text>
         </div>
       </div>
-      <mds-button icon="mi/round/more-vert" variant="light"></mds-button>
+      <mds-button icon="mi/round/more-vert" variant="dark" tone="quiet"></mds-button>
     </mds-card-header>
     <mds-card-media>
       <mds-img src={URLs[0]} class="object-cover"></mds-img>
@@ -104,7 +104,7 @@ const LayoutHMCTemplate = args =>
           <mds-text typography="caption" truncate="word">Management designer</mds-text>
         </div>
       </div>
-      <mds-button icon="mi/round/more-vert" variant="light"></mds-button>
+      <mds-button icon="mi/round/more-vert" variant="dark" tone="quiet"></mds-button>
     </mds-card-header>
     <mds-card-media>
       <mds-img src={URLs[0]} class="object-cover"></mds-img>
@@ -124,7 +124,7 @@ const LayoutHMFTemplate = args =>
           <mds-text typography="caption" truncate="word">Management designer</mds-text>
         </div>
       </div>
-      <mds-button icon="mi/round/more-vert" variant="light"></mds-button>
+      <mds-button icon="mi/round/more-vert" variant="dark" tone="quiet"></mds-button>
     </mds-card-header>
     <mds-card-media>
       <mds-img src={URLs[0]} class="object-cover"></mds-img>
@@ -145,7 +145,7 @@ const LayoutHCFTemplate = args =>
           <mds-text typography="caption" truncate="word">Management designer</mds-text>
         </div>
       </div>
-      <mds-button icon="mi/round/more-vert" variant="light"></mds-button>
+      <mds-button icon="mi/round/more-vert" variant="dark" tone="quiet"></mds-button>
     </mds-card-header>
     <mds-card-content class="py-0">
       Lorem ipsum dolor sit amet, consectetur adipiscing elit. Proin quis elementum lorem. Phasellus vel quam leo. Ut eget finibus libero. Integer sed odio hendrerit diam maximus blandit ac malesuada odio.
@@ -180,7 +180,7 @@ const LayoutHCTemplate = args =>
           <mds-text typography="caption">Management designer</mds-text>
         </div>
       </div>
-      <mds-button icon="mi/round/more-vert" variant="light"></mds-button>
+      <mds-button icon="mi/round/more-vert" variant="dark" tone="quiet"></mds-button>
     </mds-card-header>
     <mds-card-content class="pt-0">
       Lorem ipsum dolor sit amet, consectetur adipiscing elit. Proin quis elementum lorem. Phasellus vel quam leo. Ut eget finibus libero. Integer sed odio hendrerit diam maximus blandit ac malesuada odio.
@@ -218,7 +218,7 @@ const LayoutHMTemplate = args =>
           <mds-text typography="caption">Management designer</mds-text>
         </div>
       </div>
-      <mds-button icon="mi/round/more-vert" variant="light"></mds-button>
+      <mds-button icon="mi/round/more-vert" variant="dark" tone="quiet"></mds-button>
     </mds-card-header>
     <mds-card-media>
       <mds-img src={URLs[0]} class="object-cover"></mds-img>
@@ -246,7 +246,7 @@ const LayoutHFTemplate = args =>
           <mds-text typography="caption">Management designer</mds-text>
         </div>
       </div>
-      <mds-button icon="mi/round/more-vert" variant="light"></mds-button>
+      <mds-button icon="mi/round/more-vert" variant="dark" tone="quiet"></mds-button>
     </mds-card-header>
     <mds-card-footer class="pt-0">
       <mds-button variant="dark" tone="quiet">Cancel</mds-button>
@@ -271,7 +271,7 @@ const LayoutHTemplate = args =>
           <mds-text typography="caption">Management designer</mds-text>
         </div>
       </div>
-      <mds-button icon="mi/round/more-vert" variant="light"></mds-button>
+      <mds-button icon="mi/round/more-vert" variant="dark" tone="quiet"></mds-button>
     </mds-card-header>
   </mds-card>
 

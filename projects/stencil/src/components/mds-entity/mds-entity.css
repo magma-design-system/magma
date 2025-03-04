@@ -1,5 +1,3 @@
-@tailwind utilities;
-
 /**
  * @prop --mds-entity-background: The background-color of the entity
  * @prop --mds-entity-color: The color of the entity name
@@ -10,7 +8,6 @@
  */
 
 :host {
-
   --mds-entity-background: theme('colors.tone-neutral');
   --mds-entity-color: theme('colors.tone-neutral-02');
   --mds-entity-detail-color: theme('colors.tone-neutral-03');
@@ -42,7 +39,6 @@
 }
 
 .preview {
-
   --mds-avatar-radius: var(--mds-entity-icon-radius);
   --mds-avatar-color: var(--mds-entity-icon-color);
   --mds-avatar-background-color: var(--mds-entity-icon-background);

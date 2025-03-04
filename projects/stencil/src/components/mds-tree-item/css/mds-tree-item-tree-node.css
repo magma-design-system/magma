@@ -1,5 +1,4 @@
 .tree-node {
-
   --middle-pos-x: calc(50% - calc(var(--mds-tree-item-branch-border-size)/ 2));
 
   align-items: center;
@@ -15,7 +14,6 @@
 }
 
 .tree-node::before {
-
   --pos-y: calc(calc(var(--mds-tree-item-toggle-size) / 2 + var(--mds-tree-item-branch-border-radius)) * -1);
   --tree-height: calc(var(--mds-tree-item-toggle-size) + var(--mds-tree-item-branch-border-radius) + var(--mds-tree-item-branch-border-size) / 2);
   --tree-width: calc(var(--mds-tree-item-toggle-size) / 2);
@@ -36,7 +34,6 @@
 }
 
 .tree-dot {
-
   --size: calc(theme('size.300') + var(--mds-tree-item-branch-border-size) * 2);
 
   background-color: var(--mds-tree-item-branch-border-color);
@@ -58,7 +55,6 @@
 /* border used when component has children */
 
 :host(:not(:last-child)) .header--has-children .tree-node::after {
-
   --size: calc(calc(var(--mds-tree-item-toggle-size) / 2) + var(--mds-tree-item-branch-border-radius));
   --pos-y: calc(var(--size) / 2);
 
@@ -93,7 +89,6 @@
 }
 
 .tree-dot::after {
-
   --pos-y: calc(var(--size) / 2);
 
   background-color: var(--mds-tree-item-branch-border-color);

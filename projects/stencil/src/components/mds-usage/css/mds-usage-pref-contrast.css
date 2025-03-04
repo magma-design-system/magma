@@ -1,30 +1,21 @@
-@tailwind utilities;
+:host-context(.pref-contrast-more),
+:host-context(.pref-contrast-more):host([variant="do"]),
+:host-context(.pref-contrast-more):host([variant="dont"]),
+:host-context(.pref-contrast-more):host([variant="warn"]) {
+  --mds-usage-badge-color: theme('colors.tone-neutral-01');
+  --mds-usage-color: theme('colors.tone-neutral-01');
 
-@container style(--magma-pref-contrast: more) {
-  :host,
-  :host([variant="do"]),
-  :host([variant="dont"]),
-  :host([variant="warn"]) {
+  box-shadow: theme('boxShadow.outline-50');
+}
 
+@media (prefers-contrast: more) {
+  :host-context(.pref-contrast-system),
+  :host-context(.pref-contrast-system):host([variant="do"]),
+  :host-context(.pref-contrast-system):host([variant="dont"]),
+  :host-context(.pref-contrast-system):host([variant="warn"]) {
     --mds-usage-badge-color: theme('colors.tone-neutral-01');
     --mds-usage-color: theme('colors.tone-neutral-01');
 
     box-shadow: theme('boxShadow.outline-50');
-  }
-}
-
-@container style(--magma-pref-contrast: system) {
-
-  @media (prefers-contrast: more) {
-    :host,
-    :host([variant="do"]),
-    :host([variant="dont"]),
-    :host([variant="warn"]) {
-
-      --mds-usage-badge-color: theme('colors.tone-neutral-01');
-      --mds-usage-color: theme('colors.tone-neutral-01');
-
-      box-shadow: theme('boxShadow.outline-50');
-    }
   }
 }

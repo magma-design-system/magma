@@ -1,7 +1,4 @@
-@tailwind utilities;
-
 :host {
-
   --mds-file-preview-background-color: theme('colors.tone-neutral');
   --mds-file-preview-border-radius: theme('borderRadius.lg');
   --mds-file-preview-color: theme('colors.tone-neutral-03');
@@ -96,7 +93,6 @@
 }
 
 .file-name {
-
   --mds-text-line-clamp: 2;
 }
 

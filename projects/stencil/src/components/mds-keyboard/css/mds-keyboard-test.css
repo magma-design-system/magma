@@ -1,0 +1,17 @@
+:host([test="pass"]) {
+  --mds-keyboard-background-default: var(--mds-keyboard-background-pass);
+}
+
+:host([test="fail"]) {
+  --mds-keyboard-background-default: var(--mds-keyboard-background-fail);
+}
+
+:host([test="pass"]) .combination-checker {
+  background-color: var(--mds-keyboard-background-pass);
+  fill: var(--mds-keyboard-fill-pass);
+}
+
+:host([test="fail"]) .combination-checker {
+  background-color: var(--mds-keyboard-background-fail);
+  fill: var(--mds-keyboard-fill-fail);
+}

@@ -18,7 +18,6 @@
 }
 
 :host {
-
   --mds-tree-item-actions-border-radius: var(--mds-tree-actions-border-radius);
   --mds-tree-item-actions-gap: var(--mds-tree-actions-gap);
   --mds-tree-item-branch-border-color: var(--mds-tree-branch-border-color);
@@ -61,7 +60,6 @@
 }
 
 .header {
-
   --offset: calc(var(--mds-tree-item-toggle-size) + var(--header-gap));
 
   align-items: flex-start;
@@ -82,7 +80,6 @@
 }
 
 .label-action {
-
   --mds-button-line-clamp: var(--mds-tree-item-line-clamp);
   --padding: theme('padding.100');
 

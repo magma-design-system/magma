@@ -1,6 +1,4 @@
 @import '~@maggioli-design-system/styles/dist/tailwind/components.css';
-@tailwind components;
-@tailwind utilities;
 
 @layer components {
   .svg {
@@ -95,3 +93,5 @@
       visibility: hidden;
   }
 }
+
+@tailwind components;

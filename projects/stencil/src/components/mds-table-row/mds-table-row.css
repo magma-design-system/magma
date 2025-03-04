@@ -1,11 +1,4 @@
-@import '../../tailwind/components.css';
-@tailwind components;
-@tailwind utilities;
-
-@import '../../tailwind/fouc.css';
-
 :host {
-
   --mds-table-row-color-hover: var(--mds-table-color, theme('colors.tone-neutral-02'));
   --mds-table-row-color-alt: var(--mds-table-color-alt, theme('colors.tone-neutral-02'));
   --mds-table-row-background-hover: var(--mds-table-background, theme('colors.tone-neutral'));
@@ -36,3 +29,4 @@
 @import './css/mds-table-row-sorted.css';
 @import './css/mds-table-row-actions.css';
 @import './css/mds-table-row-pref-animation.css';
+@import '../../tailwind/fouc.css';

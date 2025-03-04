@@ -1,8 +1,5 @@
-@tailwind utilities;
-
-:host( [variant="info"] ),
-:host( [variant="info"][tone="strong"] ) {
-
+:host([variant="info"]),
+:host([variant="info"][tone="strong"]) {
   --mds-label-background: theme('colors.status-info-04');
   --mds-label-button-background: theme('colors.status-info-04');
   --mds-label-button-background-hover: theme('colors.status-info-05');
@@ -13,8 +10,7 @@
   --mds-label-selection-color: theme('colors.status-info-02');
 }
 
-:host( [variant="info"][tone="weak"] ) {
-
+:host([variant="info"][tone="weak"]) {
   --mds-label-background: theme('colors.status-info-08');
   --mds-label-button-background: theme('colors.status-info-09');
   --mds-label-button-background-hover: theme('colors.status-info-08');
@@ -25,8 +21,7 @@
   --mds-label-selection-color: theme('colors.status-info-10');
 }
 
-:host( [variant="info"][tone="quiet"] ) {
-
+:host([variant="info"][tone="quiet"]) {
   --mds-label-background: theme('colors.status-info-09');
   --mds-label-button-background: theme('colors.status-info-09');
   --mds-label-button-background-hover: theme('colors.status-info-08');

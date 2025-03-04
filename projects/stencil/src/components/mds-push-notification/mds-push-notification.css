@@ -3,7 +3,6 @@
 @tailwind components;
 
 :host {
-
   --mds-push-notification-duration: 200ms;
   --mds-push-notification-icon-background-color: transparent;
   --mds-push-notification-icon-color: theme('colors.tone-neutral-04');
@@ -79,7 +78,7 @@
   top: 0;
 }
 
-:host(:hover) .close-button {
+:host-context(:not(.safari)):host(:hover) .close-button {
   opacity: 1;
 }
 
@@ -115,7 +114,6 @@
 }
 
 .subject {
-
   --mds-text-line-clamp: var(--mds-push-notification-subject-line-clamp);
 
   line-height: theme('lineHeight.sm');
@@ -123,7 +121,6 @@
 }
 
 .message {
-
   --mds-text-line-clamp: var(--mds-push-notification-message-line-clamp);
 
   line-height: theme('lineHeight.sm');
@@ -152,10 +149,10 @@
   @apply p-150;
 }
 
-@import './css/mds-push-notification-variant-primary.css';
-@import './css/mds-push-notification-variant-label.css';
-@import './css/mds-push-notification-variant-state.css';
 @import './css/mds-push-notification-pref-animation.css';
 @import './css/mds-push-notification-pref-theme.css';
 @import './css/mds-push-notification-pref-contrast.css';
+@import './css/mds-push-notification-variant-primary.css';
+@import './css/mds-push-notification-variant-label.css';
+@import './css/mds-push-notification-variant-state.css';
 @import '../../tailwind/fouc.css';

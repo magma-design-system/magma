@@ -1,5 +1,3 @@
-@tailwind utilities;
-
 :host {
   @apply gap-400;
 
@@ -22,12 +20,12 @@
   min-width: 0;
 }
 
-@container (max-width: 200px) {
+/* @container (max-width: 200px) {
   :host {
     flex-direction: column;
     justify-content: center;
     text-align: center;
   }
-}
+} */
 
 @import '../../tailwind/fouc.css';

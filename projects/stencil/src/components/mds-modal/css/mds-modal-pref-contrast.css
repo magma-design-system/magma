@@ -1,18 +1,10 @@
-@tailwind utilities;
-
-@container style(--magma-pref-contrast: more) {
-  :host {
-
-    --mds-modal-window-shadow: theme('boxShadow.outline-strong-50'), theme('boxShadow.2xl');
-  }
+:host-context(.pref-contrast-more) {
+  --mds-modal-window-shadow: theme('boxShadow.outline-strong-50'), theme('boxShadow.2xl');
 }
 
-@container style(--magma-pref-contrast: system) {
 
-  @media (prefers-contrast: more) {
-    :host {
-
-      --mds-modal-window-shadow: theme('boxShadow.outline-strong-50'), theme('boxShadow.2xl');
-    }
+@media (prefers-contrast: more) {
+  :host-context(.pref-contrast-system) {
+    --mds-modal-window-shadow: theme('boxShadow.outline-strong-50'), theme('boxShadow.2xl');
   }
 }

@@ -1,5 +1,3 @@
-@tailwind utilities;
-
 /**
  * @prop --mds-notification-color: Sets the text color of the component
  * @prop --mds-notification-dot-background: Sets the background-color of the component
@@ -12,7 +10,6 @@
  */
 
 :host {
-
   --mds-notification-color: theme('colors.tone-neutral');
   --mds-notification-dot-background: theme('colors.status-error-05');
   --mds-notification-dot-padding: 6px;

@@ -1,28 +1,15 @@
-@tailwind utilities;
+:host-context(.pref-animation-reduce),
+:host-context(.pref-animation-reduce) .pages {
+  --mds-paginator-scroll-behavior: auto;
 
-@container style(--magma-pref-animation: reduce) {
-  :host {
-
-    --mds-paginator-scroll-behavior: auto;
-  }
-
-  :host,
-  .pages {
-    transition-duration: 0s;
-  }
+  transition-duration: 0s;
 }
 
-@container style(--magma-pref-animation: system) {
+@media (prefers-reduced-motion) {
+  :host-context(.pref-animation-system),
+  :host-context(.pref-animation-system) .pages {
+    --mds-paginator-scroll-behavior: auto;
 
-  @media (prefers-reduced-motion) {
-    :host {
-
-      --mds-paginator-scroll-behavior: auto;
-    }
-
-    :host,
-    .pages {
-      transition-duration: 0s;
-    }
+    transition-duration: 0s;
   }
 }

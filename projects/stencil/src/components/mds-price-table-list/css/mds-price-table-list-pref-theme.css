@@ -1,26 +1,15 @@
+:host-context(.pref-theme-dark) {
+  --mds-price-table-list-separator-color: rgb(var(--tone-neutral-01) / 0.5);
 
+  background-color: theme('colors.label-green-09');
+  box-shadow: theme('boxShadow.outline');
+}
 
-@tailwind utilities;
-
-@container style(--magma-pref-theme: dark) {
-  :host {
-
+@media (prefers-color-scheme: dark) {
+  :host-context(.pref-theme-system) {
     --mds-price-table-list-separator-color: rgb(var(--tone-neutral-01) / 0.5);
 
     background-color: theme('colors.label-green-09');
     box-shadow: theme('boxShadow.outline');
-  }
-}
-
-@container style(--magma-pref-theme: system) {
-
-  @media (prefers-color-scheme: dark) {
-    :host {
-
-      --mds-price-table-list-separator-color: rgb(var(--tone-neutral-01) / 0.5);
-
-      background-color: theme('colors.label-green-09');
-      box-shadow: theme('boxShadow.outline');
-    }
   }
 }

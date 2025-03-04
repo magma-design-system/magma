@@ -1,12 +1,9 @@
-@tailwind utilities;
-
 /**
  * @prop --mds-card-gap: Sets the spacing between card elements
  * @prop --mds-card-padding: Sets the spacing around card elements
  */
 
 :host {
-
   --mds-card-gap: 0;
   --mds-card-padding: 0;
 

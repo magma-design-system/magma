@@ -1,11 +1,8 @@
-@tailwind utilities;
-
 /**
  * @prop --mds-stepper-bar-scroll-behavior: Sets the scroll-behavior animation
  */
 
 :host {
-
   --mds-stepper-bar-scroll-behavior: smooth;
 
   @apply gap-600;
