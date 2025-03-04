@@ -3330,31 +3330,6 @@
   resolved "https://registry.npmjs.org/@lmdb/lmdb-win32-x64/-/lmdb-win32-x64-3.0.13.tgz#93bcd6dc24afd1cc60dd88a65b9e4fab32dcf397"
   integrity sha512-UCrMJQY/gJnOl3XgbWRZZUvGGBuKy6i0YNSptgMzHBjs+QYDYR1Mt/RLTOPy4fzzves65O1EDmlL//OzEqoLlA==
 
-"@maggioli-design-system/design-tokens@13.6.0":
-  version "13.6.0"
-  resolved "https://registry.npmjs.org/@maggioli-design-system/design-tokens/-/design-tokens-13.6.0.tgz#74815eebba5a1db6b5db958d4317860771be2809"
-  integrity sha512-SOzy1BBC+GDn9KtvhdnsU/amKFvAXwa09O/6Oq5tqXnj06n2XQ+PpwXnyc18gOq1Fm3JNFCkpjKOuRF3yPdIpA==
-  dependencies:
-    "@adobe/leonardo-contrast-colors" "1.0.0"
-    arg "5.0.2"
-    chalk "5.4.1"
-    handlebars "4.7.8"
-    hex-rgb "4.3.0"
-    lilconfig "3.1.3"
-    style-dictionary "3.9.0"
-
-"@maggioli-design-system/styles@15.8.0":
-  version "15.8.0"
-  resolved "https://registry.npmjs.org/@maggioli-design-system/styles/-/styles-15.8.0.tgz#66f2017f34119f9fb2e9ff84cfa134beea2cd433"
-  integrity sha512-RxZYGjnfAiuOECnLETQeZvTeiUXm8PvaZ9fb0eVgeuJKGIrMYnOdckcECb3A/LSQr31WSZlKRYTULINX9c7dDA==
-  dependencies:
-    "@fontsource/karla" "5.1.0"
-    "@fontsource/merriweather" "5.1.0"
-    "@fontsource/roboto" "5.1.0"
-    "@fontsource/roboto-mono" "5.1.0"
-    "@maggioli-design-system/design-tokens" "13.6.0"
-    normalize.css "8.0.1"
-
 "@maggioli-design-system/svg-icons@^2.6.3":
   version "2.10.1"
   resolved "https://registry.npmjs.org/@maggioli-design-system/svg-icons/-/svg-icons-2.10.1.tgz#3c86d5b738407a7fe756877aa87baf7b4d2d5f8d"
