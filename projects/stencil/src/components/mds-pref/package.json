@@ -1,6 +1,6 @@
 {
   "name": "@maggioli-design-system/mds-pref",
-  "version": "3.2.0",
+  "version": "3.3.0",
   "description": "mds-pref is a web-component from Magma Design System, built with StencilJS, TypeScript, Storybook. It's based on the web-component standard and it's designed to be agnostic from the JavaScript framework you are using.",
   "main": "dist/index.cjs.js",
   "module": "dist/index.js",
@@ -24,13 +24,13 @@
     "test": "stencil test --spec --e2e"
   },
   "dependencies": {
-    "@maggioli-design-system/styles": "15.8.0",
-    "@maggioli-design-system/mds-pref-animation": "2.3.0",
-    "@maggioli-design-system/mds-pref-consumption": "2.3.0",
-    "@maggioli-design-system/mds-pref-contrast": "2.3.0",
-    "@maggioli-design-system/mds-pref-language": "2.3.0",
-    "@maggioli-design-system/mds-pref-theme": "2.3.0",
-    "@stencil/core": "4.25.1"
+    "@maggioli-design-system/styles": "15.9.0",
+    "@maggioli-design-system/mds-pref-animation": "2.4.0",
+    "@maggioli-design-system/mds-pref-consumption": "2.4.0",
+    "@maggioli-design-system/mds-pref-contrast": "2.4.0",
+    "@maggioli-design-system/mds-pref-language": "2.4.0",
+    "@maggioli-design-system/mds-pref-theme": "2.4.0",
+    "@stencil/core": "4.27.2"
   },
   "license": "MIT",
   "author": {

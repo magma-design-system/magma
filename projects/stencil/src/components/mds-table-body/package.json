@@ -1,6 +1,6 @@
 {
   "name": "@maggioli-design-system/mds-table-body",
-  "version": "5.1.0",
+  "version": "5.2.0",
   "description": "mds-table-body is a web-component from Magma Design System, built with StencilJS, TypeScript, Storybook. It's based on the web-component standard and it's designed to be agnostic from the JavaScript framework you are using.",
   "main": "dist/index.cjs.js",
   "module": "dist/index.js",
@@ -23,9 +23,9 @@
     "prepublishOnly": "npm run build"
   },
   "dependencies": {
-    "@maggioli-design-system/mds-table-row": "5.2.0",
-    "@maggioli-design-system/styles": "15.8.0",
-    "@stencil/core": "4.25.1"
+    "@maggioli-design-system/mds-table-row": "5.3.0",
+    "@maggioli-design-system/styles": "15.9.0",
+    "@stencil/core": "4.27.2"
   },
   "license": "MIT",
   "author": {
