@@ -20,12 +20,12 @@
   min-width: 0;
 }
 
-/* @container (max-width: 200px) {
-  :host {
+@container (max-width: 200px) {
+  :host-context(:not(.safari)) {
     flex-direction: column;
     justify-content: center;
     text-align: center;
   }
-} */
+}
 
 @import '../../tailwind/fouc.css';

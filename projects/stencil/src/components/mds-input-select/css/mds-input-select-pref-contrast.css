@@ -1,28 +1,3 @@
-@tailwind utilities;
-
-@container style(--magma-pref-contrast: more) {
-  :host {
-    --mds-input-select-ring: theme('boxShadow.outline-strong-50');
-  }
-
-  .input {
-    color: theme('colors.tone-neutral-01');
-  }
-}
-
-@container style(--magma-pref-contrast: system) {
-
-  @media (prefers-contrast: more) {
-    :host {
-      --mds-input-select-ring: theme('boxShadow.outline-strong-50');
-    }
-
-    .input {
-      color: theme('colors.tone-neutral-01');
-    }
-  }
-}
-
 :host-context(.pref-contrast-more) {
   --mds-input-select-ring: theme('boxShadow.outline-strong-50');
 }

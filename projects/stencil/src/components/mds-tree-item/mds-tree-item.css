@@ -1,7 +1,7 @@
 @tailwind utilities;
 
 @container style(--mds-tree-branch-use-rounded-border: true) {
-  :host {
+  :host-context(:not(.safari)) {
 
     /* stylelint-disable-next-line length-zero-no-unit */
     --mds-tree-branch-border-radius: theme('borderRadius.lg');
@@ -10,7 +10,7 @@
 }
 
 @container style(--mds-tree-branch-use-rounded-border: false) {
-  :host {
+  :host-context(:not(.safari)) {
 
     /* stylelint-disable-next-line length-zero-no-unit */
     --mds-tree-branch-border-radius: 0px;

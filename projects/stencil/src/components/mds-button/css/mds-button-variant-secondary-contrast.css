@@ -1,0 +1,141 @@
+:host-context(.pref-contrast-more):host([variant="secondary"]),
+:host-context(.pref-contrast-more):host([variant="secondary"][tone="strong"]) {
+  --mds-button-background: theme('colors.variant-secondary-03');
+  --mds-button-color: theme('colors.tone-neutral');
+}
+
+:host-context(.pref-contrast-more):host([variant="secondary"]:hover),
+:host-context(.pref-contrast-more):host([variant="secondary"][tone="strong"]:hover) {
+  --mds-button-background: theme('colors.variant-secondary-02');
+}
+
+:host-context(.pref-contrast-more):host([variant="secondary"][active]),
+:host-context(.pref-contrast-more):host([variant="secondary"][tone="strong"][active]) {
+  --mds-button-background: theme('colors.variant-secondary-02');
+}
+
+:host-context(.pref-contrast-more):host([variant="secondary"][tone="weak"]) {
+  --mds-button-background: theme('colors.variant-secondary-09');
+  --mds-button-color: theme('colors.variant-secondary-02');
+
+  fill: theme('colors.variant-secondary-02');
+}
+
+:host-context(.pref-contrast-more):host([variant="secondary"][tone="weak"]:hover) {
+  --mds-button-background: theme('colors.variant-secondary-08');
+  --mds-button-color: theme('colors.variant-secondary-01');
+
+  fill: theme('colors.variant-secondary-01');
+}
+
+:host-context(.pref-contrast-more):host([variant="secondary"][tone="weak"][active]) {
+  --mds-button-background: theme('colors.variant-secondary-08');
+  --mds-button-color: theme('colors.variant-secondary-01');
+
+  fill: theme('colors.variant-secondary-01');
+}
+
+:host-context(.pref-contrast-more):host([variant="secondary"][tone="ghost"]) {
+  --mds-button-background: transparent;
+  --mds-button-border-color: theme('colors.variant-secondary-03');
+  --mds-button-color: theme('colors.variant-secondary-02');
+}
+
+:host-context(.pref-contrast-more):host([variant="secondary"][tone="ghost"]:hover) {
+  --mds-button-background: transparent;
+  --mds-button-border-color: theme('colors.variant-secondary-03');
+  --mds-button-color: theme('colors.variant-secondary-01');
+}
+
+:host-context(.pref-contrast-more):host([variant="secondary"][tone="ghost"][active]) {
+  --mds-button-background: transparent;
+  --mds-button-border-color: theme('colors.variant-secondary-04');
+  --mds-button-color: theme('colors.variant-secondary-02');
+}
+
+:host-context(.pref-contrast-more):host([variant="secondary"][tone="quiet"]) {
+  --mds-button-background: transparent;
+  --mds-button-color: theme('colors.variant-secondary-01');
+}
+
+:host-context(.pref-contrast-more):host([variant="secondary"][tone="quiet"]:hover) {
+  --mds-button-background: transparent;
+  --mds-button-color: theme('colors.variant-secondary-03');
+}
+
+:host-context(.pref-contrast-more):host([variant="secondary"][tone="quiet"][active]) {
+  --mds-button-background: transparent;
+  --mds-button-color: theme('colors.variant-secondary-01');
+}
+
+@media (prefers-contrast: more) {
+  :host-context(.pref-contrast-system):host([variant="secondary"]),
+  :host-context(.pref-contrast-system):host([variant="secondary"][tone="strong"]) {
+    --mds-button-background: theme('colors.variant-secondary-03');
+    --mds-button-color: theme('colors.tone-neutral');
+  }
+
+  :host-context(.pref-contrast-system):host([variant="secondary"]:hover),
+  :host-context(.pref-contrast-system):host([variant="secondary"][tone="strong"]:hover) {
+    --mds-button-background: theme('colors.variant-secondary-02');
+  }
+
+  :host-context(.pref-contrast-system):host([variant="secondary"][active]),
+  :host-context(.pref-contrast-system):host([variant="secondary"][tone="strong"][active]) {
+    --mds-button-background: theme('colors.variant-secondary-02');
+  }
+
+  :host-context(.pref-contrast-system):host([variant="secondary"][tone="weak"]) {
+    --mds-button-background: theme('colors.variant-secondary-09');
+    --mds-button-color: theme('colors.variant-secondary-02');
+
+    fill: theme('colors.variant-secondary-02');
+  }
+
+  :host-context(.pref-contrast-system):host([variant="secondary"][tone="weak"]:hover) {
+    --mds-button-background: theme('colors.variant-secondary-08');
+    --mds-button-color: theme('colors.variant-secondary-01');
+
+    fill: theme('colors.variant-secondary-01');
+  }
+
+  :host-context(.pref-contrast-system):host([variant="secondary"][tone="weak"][active]) {
+    --mds-button-background: theme('colors.variant-secondary-08');
+    --mds-button-color: theme('colors.variant-secondary-01');
+
+    fill: theme('colors.variant-secondary-01');
+  }
+
+  :host-context(.pref-contrast-system):host([variant="secondary"][tone="ghost"]) {
+    --mds-button-background: transparent;
+    --mds-button-border-color: theme('colors.variant-secondary-03');
+    --mds-button-color: theme('colors.variant-secondary-02');
+  }
+
+  :host-context(.pref-contrast-system):host([variant="secondary"][tone="ghost"]:hover) {
+    --mds-button-background: transparent;
+    --mds-button-border-color: theme('colors.variant-secondary-03');
+    --mds-button-color: theme('colors.variant-secondary-01');
+  }
+
+  :host-context(.pref-contrast-system):host([variant="secondary"][tone="ghost"][active]) {
+    --mds-button-background: transparent;
+    --mds-button-border-color: theme('colors.variant-secondary-04');
+    --mds-button-color: theme('colors.variant-secondary-02');
+  }
+
+  :host-context(.pref-contrast-system):host([variant="secondary"][tone="quiet"]) {
+    --mds-button-background: transparent;
+    --mds-button-color: theme('colors.variant-secondary-01');
+  }
+
+  :host-context(.pref-contrast-system):host([variant="secondary"][tone="quiet"]:hover) {
+    --mds-button-background: transparent;
+    --mds-button-color: theme('colors.variant-secondary-03');
+  }
+
+  :host-context(.pref-contrast-system):host([variant="secondary"][tone="quiet"][active]) {
+    --mds-button-background: transparent;
+    --mds-button-color: theme('colors.variant-secondary-01');
+  }
+}

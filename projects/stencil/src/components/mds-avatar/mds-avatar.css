@@ -120,14 +120,14 @@
 @import './css/mds-avatar-pref-animation.css';
 @import './css/mds-avatar-pref-contrast.css';
 
-/* @container (max-width: 24px) {
-  .avatar--initials {
+@container (max-width: 24px) {
+  :host-context(:not(.safari)) .avatar--initials {
     padding: 0 var(--mds-avatar-initials-padding);
   }
 
-  .initials-text {
+  :host-context(:not(.safari)) .initials-text {
     @apply font-black;
   }
-} */
+}
 
 @import '../../tailwind/fouc.css';

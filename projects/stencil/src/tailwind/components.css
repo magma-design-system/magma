@@ -36,52 +36,6 @@
     box-shadow: theme('boxShadow.outline') inset;
   }
 
-  @container style(--magma-pref-contrast: more) {
-    .contrast-area,
-    .contrast-area-50 {
-      @apply
-        block
-        opacity-100;
-
-      /* @starting-style {
-        opacity: 0;
-      } */
-    }
-  }
-
-  @container style(--magma-pref-contrast: system) {
-
-    @media (prefers-contrast: more) {
-      .contrast-area,
-      .contrast-area-50 {
-        @apply
-          block
-          opacity-100;
-
-        /* @starting-style {
-          opacity: 0;
-        } */
-      }
-    }
-  }
-
-  @container style(--magma-pref-animation: reduce) {
-    .contrast-area,
-    .contrast-area-50 {
-      @apply duration-0;
-    }
-  }
-
-  @container style(--magma-pref-animation: system) {
-
-    @media (prefers-reduced-motion) {
-      .contrast-area,
-      .contrast-area-50 {
-        @apply duration-0;
-      }
-    }
-  }
-
   .not-hydrated {
       animation-duration: 0s;
       border-color: transparent;
