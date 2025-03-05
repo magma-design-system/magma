@@ -81,6 +81,7 @@ export class MdsTab {
   }
 
   componentDidLoad (): void {
+    // TODO [feat] when the component loads, add an observer which calculates if the tab items overflows the container and show/hide some kind of element which highights the overflow area
     this.tabs = this.element.shadowRoot?.querySelector('.tabs') as HTMLElement
     this.tabsContainer = this.element.shadowRoot?.querySelector('.tabs-wrapper') as HTMLElement
     this.startObserver()
@@ -120,6 +121,7 @@ export class MdsTab {
 
   private selectContentItem = (): void => {
     this.contentItems.forEach((item: HTMLElement, index: number) => {
+      // TODO [fix] on React attribute mds-tab-content-hidden is not added onLoad
       item.setAttribute('mds-tab-content-hidden', '')
       if (index === this.currentItem) {
         item.removeAttribute('mds-tab-content-hidden')
