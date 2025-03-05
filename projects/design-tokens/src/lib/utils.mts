@@ -47,16 +47,29 @@ export function writeJsonTokens (tokens: any, name: string, dirPath: string) {
   })
 }
 
+/**
+ * Export colors with base style dictionary configuration (see config/sd-brand-color.config.ts)
+ * @param tokens
+ * @param fileName the suffix of generated files
+ * @param outputDir output directory
+ * @param platform array of platform that needs to build, if undefined build all platform for colors (css, dart, js)
+ */
 export function exportColors (
   tokens,
   fileName: string,
   outputDir?: string,
+  platform?: string[],
 ) {
-  StyleDictionary.registerFormat(cssHexFormat)
+  const s = StyleDictionary.registerFormat(cssHexFormat)
     .registerFormat(cssRgbFormat)
+    .registerFormat(jsTailwindColorsFormat)
     .registerFormat(flutterColorFormat)
     .extend(getBrandColorConfig(fileName, tokens, outputDir))
-    .buildAllPlatforms()
+  if (platform) {
+    platform.forEach(p => s.buildPlatform(p))
+  } else {
+    s.buildAllPlatforms()
+  }
 }
 
 export function getStyleDictionaryWithAllCustomTransform (): StyleDictionary.Core {

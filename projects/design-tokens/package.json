@@ -1,6 +1,6 @@
 {
   "name": "@maggioli-design-system/design-tokens",
-  "version": "13.6.1",
+  "version": "13.7.0",
   "description": "This is the Design Token library of Maggioli Design System, here you'll find all the visual data used around the libraries.",
   "author": "Vittorio Vittori",
   "contributors": [
@@ -30,14 +30,16 @@
     "build-style-dictionary": "npx tsx scripts/build.ts",
     "clean": "npx tsx scripts/clean.ts",
     "postbuild": "npx tsx scripts/postbuild.ts",
-    "cli": "npx tsx src/cli.ts",
+    "cli": "npm run clean && npm run build-cli && npm run postbuild && node ./dist/src/cli.mjs",
     "test": "NODE_OPTIONS=--experimental-vm-modules jest"
   },
   "main": "dist/js/tailwind-colors-css-vars.js",
   "files": [
     "/dist/"
   ],
-  "bin": "dist/src/cli.mjs",
+  "bin": {
+    "magma-design-tokens": "dist/src/cli.mjs"
+  },
   "dependencies": {
     "@adobe/leonardo-contrast-colors": "1.0.0",
     "arg": "5.0.2",
