@@ -2,11 +2,8 @@
 
 @container style(--mds-tree-branch-use-rounded-border: true) {
   :host-context(:not(.safari)) {
-
-    /* stylelint-disable-next-line length-zero-no-unit */
     --mds-tree-branch-border-radius: theme('borderRadius.lg');
   }
-
 }
 
 @container style(--mds-tree-branch-use-rounded-border: false) {
@@ -21,7 +18,7 @@
   --mds-tree-item-actions-border-radius: var(--mds-tree-actions-border-radius);
   --mds-tree-item-actions-gap: var(--mds-tree-actions-gap);
   --mds-tree-item-branch-border-color: var(--mds-tree-branch-border-color);
-  --mds-tree-item-branch-border-radius: var(--mds-tree-branch-border-radius);
+  --mds-tree-item-branch-border-radius: var(--mds-tree-branch-border-radius, theme('borderRadius.lg'));
   --mds-tree-item-branch-border-size: var(--mds-tree-branch-border-size);
   --mds-tree-item-branch-dot-default-color: var(--mds-tree-branch-dot-default-color);
   --mds-tree-item-branch-dot-expanded-color: var(--mds-tree-branch-dot-expanded-color);

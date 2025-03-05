@@ -6,11 +6,11 @@
   margin-right: var(--offset);
 }
 
-:host([toggle="chevron"][expanded]):host-context(mds-tree[toggle-position="left"]) .toggle-icon {
+:host-context(mds-tree[toggle-position="left"]):host([toggle="chevron"][expanded]) .toggle-icon {
   transform: rotate(90deg);
 }
 
-:host([toggle="chevron"]:not([expanded])):host-context(mds-tree[toggle-position="left"]) .toggle-icon {
+:host-context(mds-tree[toggle-position="left"]):host([toggle="chevron"]:not([expanded])) .toggle-icon {
   transform: rotate(0deg);
 }
 
