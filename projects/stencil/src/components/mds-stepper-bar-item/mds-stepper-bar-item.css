@@ -56,7 +56,7 @@
 }
 
 :host(:last-of-type) .progress {
-  display: hidden;
+  display: none;
 }
 
 :host([done]) .icon {
