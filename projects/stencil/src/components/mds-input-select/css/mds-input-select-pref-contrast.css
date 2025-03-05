@@ -1,27 +1,17 @@
-@tailwind utilities;
+:host-context(.pref-contrast-more) {
+  --mds-input-select-ring: theme('boxShadow.outline-strong-50');
+}
 
-@container style(--magma-pref-contrast: more) {
-  :host {
+:host-context(.pref-contrast-more) .input {
+  color: theme('colors.tone-neutral-01');
+}
 
+@media (prefers-contrast: more) {
+  :host-context(.pref-contrast-system) {
     --mds-input-select-ring: theme('boxShadow.outline-strong-50');
   }
 
-  .input {
+  :host-context(.pref-contrast-system) .input {
     color: theme('colors.tone-neutral-01');
   }
 }
-
-@container style(--magma-pref-contrast: system) {
-
-  @media (prefers-contrast: more) {
-    :host {
-
-      --mds-input-select-ring: theme('boxShadow.outline-strong-50');
-    }
-
-    .input {
-      color: theme('colors.tone-neutral-01');
-    }
-  }
-}
-

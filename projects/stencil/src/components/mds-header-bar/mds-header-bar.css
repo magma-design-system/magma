@@ -1,7 +1,4 @@
-@tailwind utilities;
-
 :host {
-
   --mds-header-bar-hamburger-color: theme('colors.tone-neutral-03');
 
   @apply
@@ -53,7 +50,6 @@
 }
 
 .menu {
-
   --mds-button-background: transparent;
 
   fill: var(--mds-header-bar-hamburger-color);

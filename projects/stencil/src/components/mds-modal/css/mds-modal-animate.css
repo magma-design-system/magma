@@ -3,21 +3,21 @@
 }
 
 
-:host([opened]:not([opened="false"]) ) {
+:host([opened]:not([opened="false"])) {
   background-color: rgba(var(--mds-modal-overlay-color) / var(--mds-modal-overlay-opacity));
   pointer-events: auto;
 }
 
 :host .window,
-:host > ::slotted( [slot="window"] ) {
+:host > ::slotted([slot="window"]) {
   opacity: 0;
   transition-duration: var(--mds-modal-transition-duration);
   transition-property: transform, opacity;
   transition-timing-function: var(--mds-modal-transition-outro-ease);
 }
 
-:host([opened]:not([opened="false"]) ) .window,
-:host([opened]:not([opened="false"]) ) > ::slotted( [slot="window"] ) {
+:host([opened]:not([opened="false"])) .window,
+:host([opened]:not([opened="false"])) > ::slotted( [slot="window"]) {
   opacity: 1;
   transform: rotate(0) scale(1) translateY(0);
   transition-delay: 0s;

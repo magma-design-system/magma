@@ -1,64 +1,52 @@
-@tailwind utilities;
-
 :host {
-
   --mds-input-icon-color: var(--variant-primary-03);
   --mds-input-variant-color: 0 0 0;
 }
 
-:host( :focus ) {
-
+:host(:focus) {
   --mds-input-variant-color: var(--variant-primary-04);
 }
 
-:host( [variant="info"] ) {
-
+:host([variant="info"]) {
   --mds-input-icon-color: var(--status-info-05);
   --mds-input-tip-background: var(--status-info-05);
   --mds-input-variant-color: 0 0 0;
 }
 
-:host( [variant="info"]:focus ) {
-
+:host([variant="info"]:focus) {
   --mds-input-icon-color: var(--status-info-04);
   --mds-input-variant-color: var(--status-info-05);
 }
 
-:host( [variant="success"] ) {
-
+:host([variant="success"]) {
   --mds-input-icon-color: var(--status-success-05);
   --mds-input-tip-background: var(--status-success-05);
   --mds-input-variant-color: 0 0 0;
 }
 
-:host( [variant="success"]:focus ) {
-
+:host([variant="success"]:focus) {
   --mds-input-icon-color: var(--status-success-04);
   --mds-input-variant-color: var(--status-success-05);
 }
 
-:host( [variant="warning"] ) {
-
+:host([variant="warning"]) {
   --mds-input-icon-color: var(--status-warning-05);
   --mds-input-tip-background: var(--status-warning-05);
   --mds-input-variant-color: 0 0 0;
 }
 
-:host( [variant="warning"]:focus ) {
-
+:host([variant="warning"]:focus) {
   --mds-input-icon-color: var(--status-warning-04);
   --mds-input-variant-color: var(--status-warning-05);
 }
 
-:host( [variant="error"] ) {
-
+:host([variant="error"]) {
   --mds-input-icon-color: var(--status-error-05);
   --mds-input-tip-background: var(--status-error-05);
   --mds-input-variant-color: 0 0 0;
 }
 
-:host( [variant="error"]:focus ) {
-
+:host([variant="error"]:focus) {
   --mds-input-icon-color: var(--status-error-04);
   --mds-input-variant-color: var(--status-error-05);
 }

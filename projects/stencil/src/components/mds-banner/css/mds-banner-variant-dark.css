@@ -1,8 +1,5 @@
-@tailwind utilities;
-
-:host( [variant="dark"] ),
-:host( [variant="dark"][tone="strong"] ) {
-
+:host([variant="dark"]),
+:host([variant="dark"][tone="strong"]) {
   --mds-banner-background: theme('colors.tone-neutral-01');
   --mds-banner-close-icon-hover-background: theme('colors.tone-neutral-03');
   --mds-banner-color: theme('colors.tone-neutral-08');
@@ -10,8 +7,7 @@
   --mds-banner-shadow: theme('boxShadow.lg-sharp');
 }
 
-:host( [variant="dark"][tone="weak"] ) {
-
+:host([variant="dark"][tone="weak"]) {
   --mds-banner-background: theme('colors.tone-neutral-03');
   --mds-banner-close-icon-hover-background: theme('colors.tone-neutral-05');
   --mds-banner-color: theme('colors.tone-neutral-09');
@@ -19,16 +15,14 @@
   --mds-banner-shadow: theme('boxShadow.sm-sharp');
 }
 
-:host( [variant="dark"][tone="ghost"] ) {
-
+:host([variant="dark"][tone="ghost"]) {
   --mds-banner-color: theme('colors.tone-neutral-05');
   --mds-banner-close-icon-hover-background: theme('colors.tone-neutral-03');
   --mds-banner-icon-color: theme('colors.tone-neutral-04');
   --mds-banner-shadow: none;
 }
 
-:host( [variant="dark"][tone="quiet"] ) {
-
+:host([variant="dark"][tone="quiet"]) {
   --mds-banner-background: transparent;
   --mds-banner-close-icon-hover-background: transparent;
   --mds-banner-color: theme('colors.tone-neutral-04');

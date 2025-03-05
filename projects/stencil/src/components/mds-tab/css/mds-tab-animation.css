@@ -3,7 +3,6 @@
 }
 
 .slider {
-
   --mds-tab-slider-offset: 0;
   --mds-tab-slider-width: 0;
 
@@ -28,7 +27,7 @@
   transition-property: none;
 }
 
-::slotted( mds-tab-item ) {
+::slotted( mds-tab-item) {
   position: relative;
   z-index: 1;
 }

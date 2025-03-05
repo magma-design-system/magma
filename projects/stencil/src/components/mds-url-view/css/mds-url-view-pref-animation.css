@@ -1,20 +1,13 @@
-@tailwind utilities;
-
-@container style(--magma-pref-animation: reduce) {
-  :host,
-  .window,
-  .header {
-    transition-duration: 0s;
-  }
+:host-context(.pref-animation-reduce),
+:host-context(.pref-animation-reduce) .window,
+:host-context(.pref-animation-reduce) .header {
+  transition-duration: 0s;
 }
 
-@container style(--magma-pref-animation: system) {
-
-  @media (prefers-reduced-motion) {
-    :host,
-    .window,
-    .header {
-      transition-duration: 0s;
-    }
+@media (prefers-reduced-motion) {
+  :host-context(.pref-animation-system),
+  :host-context(.pref-animation-system) .window,
+  :host-context(.pref-animation-system) .header {
+    transition-duration: 0s;
   }
 }

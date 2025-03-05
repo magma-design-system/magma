@@ -8,8 +8,8 @@
   width: 100vw;
 }
 
-:host([position="top"][opened="false"]) > ::slotted( [slot="window"] ),
-:host([position="top"]:not([opened])) > ::slotted( [slot="window"] ) {
+:host([position="top"][opened="false"]) > ::slotted( [slot="window"]),
+:host([position="top"]:not([opened])) > ::slotted( [slot="window"]) {
   transform: rotateX(-22deg) rotateY(0) scale(0.5) translate(0, -80%);
 }
 

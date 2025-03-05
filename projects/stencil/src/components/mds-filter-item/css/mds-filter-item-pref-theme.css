@@ -1,34 +1,27 @@
-@tailwind utilities;
+:host-context(.pref-theme-dark) {
+  background-color: theme('colors.tone-neutral-10');
+}
 
-@container style(--magma-pref-theme: dark) {
-  :host {
+:host-context(.pref-theme-dark):host([selected]:not([selected="false"])) {
+  background-color: theme('colors.tone-neutral-08');
+  box-shadow: theme('boxShadow.outline');
+}
+
+:host-context(.pref-theme-dark):host(:hover) {
+  box-shadow: theme('boxShadow.outline');
+}
+
+@media (prefers-color-scheme: dark) {
+  :host-context(.pref-theme-system) {
     background-color: theme('colors.tone-neutral-10');
   }
 
-  :host( [selected]:not([selected="false"]) ) {
+  :host-context(.pref-theme-system):host([selected]:not([selected="false"])) {
     background-color: theme('colors.tone-neutral-08');
     box-shadow: theme('boxShadow.outline');
   }
 
-  :host( :hover ) {
+  :host-context(.pref-theme-system):host(:hover) {
     box-shadow: theme('boxShadow.outline');
-  }
-}
-
-@container style(--magma-pref-theme: system) {
-
-  @media (prefers-color-scheme: dark) {
-    :host {
-      background-color: theme('colors.tone-neutral-10');
-    }
-
-    :host( [selected]:not([selected="false"]) ) {
-      background-color: theme('colors.tone-neutral-08');
-      box-shadow: theme('boxShadow.outline');
-    }
-
-    :host( :hover ) {
-      box-shadow: theme('boxShadow.outline');
-    }
   }
 }

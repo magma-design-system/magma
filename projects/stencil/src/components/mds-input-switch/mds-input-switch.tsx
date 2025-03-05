@@ -60,12 +60,12 @@ export class MdsInputSwitch {
   /**
    * Sets or returns whether a checkbox is disabled, or not
    */
-  @Prop({ reflect: true }) readonly disabled?: boolean
+  @Prop({ reflect: true }) disabled?: boolean
 
   /**
    * Sets if the type switch mode shows explicit icons
    */
-  @Prop({ reflect: true }) readonly explicit?: boolean
+  @Prop({ reflect: true }) explicit?: boolean
 
   /**
    * The checked icon displayed
@@ -157,7 +157,7 @@ export class MdsInputSwitch {
   }
 
   @Watch('disabled')
-  protected disabledChanged (newValue: boolean):void {
+  protected disabledChanged (newValue?: boolean):void {
     /**
      * This is related to ALL disabled attributes set on Magma input components
      * if solved, please check mds-button, mds-input, mds-input-*
@@ -165,6 +165,25 @@ export class MdsInputSwitch {
      */
     if (newValue) {
       this.internals.setFormValue(null)
+      return
+    }
+
+    if (newValue === false) {
+      this.disabled = undefined
+    }
+  }
+
+  @Watch('checked')
+  protected checkedChanged (newValue?: boolean):void {
+    if (newValue === false) {
+      this.checked = undefined
+    }
+  }
+
+  @Watch('explicit')
+  protected explicitChanged (newValue?: boolean):void {
+    if (newValue === false) {
+      this.explicit = undefined
     }
   }
 

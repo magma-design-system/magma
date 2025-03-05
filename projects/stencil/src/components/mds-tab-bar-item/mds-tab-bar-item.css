@@ -1,5 +1,3 @@
-@tailwind utilities;
-
 /**
  * @prop --mds-tab-bar-item-background-selected: Sets the background-color of the component when it's selected
  * @prop --mds-tab-bar-item-background: Sets the background-color of the component
@@ -8,7 +6,6 @@
  */
 
 :host {
-
   --mds-tab-bar-item-background: theme('colors.tone-neutral-10');
   --mds-tab-bar-item-background-selected: transparent;
   --mds-tab-bar-item-color: theme('colors.tone-neutral-04');
@@ -34,7 +31,7 @@
   transition-property: color, background-color, fill;
 }
 
-:host( [selected]:not([selected="false"]) ) {
+:host([selected]:not([selected="false"])) {
   background-color: var(--mds-tab-bar-item-background-selected);
   color: var(--mds-tab-bar-item-color-selected);
   fill: var(--mds-tab-bar-item-color-selected);

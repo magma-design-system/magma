@@ -3,7 +3,17 @@ body {
     font-info
     text-info-detail;
 
-  color: rgb(var(--theme-default-03-secondary-text, theme('colors.theme-default-03-secondary-text')));
+  color: rgb(var(--tone-neutral-03, theme('colors.tone-neutral-03')));
+}
+
+:root.pref-contrast-high body {
+  color: rgb(var(--tone-neutral-01, theme('colors.tone-neutral-01')));
+}
+
+@media (prefers-contrast: more) {
+  :root.pref-contrast-system body {
+    color: rgb(var(--tone-neutral-01, theme('colors.tone-neutral-01')));
+  }
 }
 
 ::selection {

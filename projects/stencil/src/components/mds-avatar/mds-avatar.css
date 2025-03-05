@@ -1,5 +1,4 @@
 @import '../../tailwind/components.css';
-@tailwind utilities;
 
 /**
  * @prop --mds-avatar-background-color-pending: The background-color when an image is loading
@@ -9,7 +8,6 @@
  */
 
 :host {
-
   --mds-avatar-background-color-pending: theme('colors.tone-neutral-08');
   --mds-avatar-background-color: theme('colors.variant-primary-05');
   --mds-avatar-color: theme('colors.variant-primary-10');
@@ -83,7 +81,6 @@
 
 
 .initials-text {
-
   @apply
     font-title
     font-bold;
@@ -99,7 +96,6 @@
 }
 
 :host([initials]) .initials-text {
-
   --mds-avatar-color: theme('colors.tone-neutral');
 }
 
@@ -125,11 +121,11 @@
 @import './css/mds-avatar-pref-contrast.css';
 
 @container (max-width: 24px) {
-  .avatar--initials {
+  :host-context(:not(.safari)) .avatar--initials {
     padding: 0 var(--mds-avatar-initials-padding);
   }
 
-  .initials-text {
+  :host-context(:not(.safari)) .initials-text {
     @apply font-black;
   }
 }

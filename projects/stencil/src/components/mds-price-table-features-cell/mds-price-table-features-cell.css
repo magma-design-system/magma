@@ -1,5 +1,4 @@
 @import '../../tailwind/components.css';
-@tailwind utilities;
 
 /**
  * @prop --mds-price-table-features-cell-padding: Sets the cell padding of the component
@@ -8,7 +7,6 @@
  */
 
 :host {
-
   --mds-price-table-features-cell-padding: var(--mds-price-table-features-padding, theme('spacing.300'));
   --mds-price-table-features-cell-icon-supported-color-hover: theme('colors.label-green-06');
   --mds-price-table-features-cell-icon-supported-color: theme('colors.label-green-06');
@@ -42,12 +40,10 @@
 }
 
 .icon--supported {
-
   --icon-fill-color: var(--mds-price-table-features-cell-icon-supported-color);
 }
 
 .icon--unsupported {
-
   --icon-fill-color: var(--mds-price-table-features-cell-icon-unsupported-color);
 }
 

@@ -1,9 +1,4 @@
-@tailwind utilities;
-
-@import '../../tailwind/fouc.css';
-
 :host {
-
   @apply
     duration-200
     ease-out;
@@ -15,8 +10,8 @@
 }
 
 ::slotted(mds-table-cell) {
-
   --mds-table-cell-border-color: transparent;
 }
 
 @import './css/mds-table-footer-pref-animation.css';
+@import '../../tailwind/fouc.css';

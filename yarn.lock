@@ -3343,6 +3343,25 @@
     lilconfig "3.1.3"
     style-dictionary "3.9.0"
 
+"@maggioli-design-system/magma@1.1.0":
+  version "1.1.0"
+  resolved "https://registry.npmjs.org/@maggioli-design-system/magma/-/magma-1.1.0.tgz#4c08334fbebffee37f1fbedbc82deda996b8037d"
+  integrity sha512-pI7TLvoRAf/FchldshahOuOuAgXsDAaXmxuBYh8kmWGhsp4mECk6t+YUFzCa7Iyq2r0cyeVrjJSMeewvBesh/w==
+  dependencies:
+    "@floating-ui/dom" "1.6.12"
+    "@maggioli-design-system/design-tokens" "13.6.0"
+    "@maggioli-design-system/identity" "2.1.1"
+    "@maggioli-design-system/styles" "15.8.0"
+    "@stencil/core" "4.25.1"
+    clsx "2.1.0"
+    crypto-js "4.2.0"
+    dayjs "1.11.13"
+    filesize "10.1.0"
+    fitty "2.4.2"
+    idb-keyval "6.2.1"
+    mime "4.0.4"
+    mustache "4.2.0"
+
 "@maggioli-design-system/styles@15.8.0":
   version "15.8.0"
   resolved "https://registry.npmjs.org/@maggioli-design-system/styles/-/styles-15.8.0.tgz#66f2017f34119f9fb2e9ff84cfa134beea2cd433"
@@ -4557,6 +4576,11 @@
   version "4.25.1"
   resolved "https://registry.npmjs.org/@stencil/core/-/core-4.25.1.tgz#95bb17bb3fb1503203f9ef46a3e3924b7559add3"
   integrity sha512-SJhAAN6nHj7l2n2F7H6NoOUFhXC5tYXSvOpAaNFi5As6c2jOvaDOvAH+om4OKmw8U2kHI9yihEqpZrtY1J20dQ==
+
+"@stencil/core@4.27.2":
+  version "4.27.2"
+  resolved "https://registry.npmjs.org/@stencil/core/-/core-4.27.2.tgz#1efaaaaff969f45d4ef73c955329073988113957"
+  integrity sha512-phsgSxWYumdjVhNHZ0pPTXhrM8CgajWidRuoxBfVl76+sVLu3+O2gTuIKd+bZEjixGFb1bHvQeMmlNuwKgxf8Q==
 
 "@stencil/postcss@2.1.0":
   version "2.1.0"

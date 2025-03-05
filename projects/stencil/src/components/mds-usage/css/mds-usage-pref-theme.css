@@ -1,52 +1,36 @@
-@tailwind utilities;
+:host-context(.pref-theme-dark) {
+  --mds-usage-badge-background: theme('colors.status-info-05');
 
-@container style(--magma-pref-theme: dark) {
-  :host {
-
-    --mds-usage-badge-background: theme('colors.status-info-05');
-
-    box-shadow: theme('boxShadow.outline');
-  }
-
-  :host([variant="do"]) {
-
-    --mds-usage-badge-background: theme('colors.status-success-05');
-  }
-
-  :host([variant="dont"]) {
-
-    --mds-usage-badge-background: theme('colors.status-error-05');
-  }
-
-  :host([variant="warn"]) {
-
-    --mds-usage-badge-background: theme('colors.status-warning-05');
-  }
+  box-shadow: theme('boxShadow.outline');
 }
 
-@container style(--magma-pref-theme: system) {
+:host-context(.pref-theme-dark):host([variant="do"]) {
+  --mds-usage-badge-background: theme('colors.status-success-05');
+}
 
-  @media (prefers-color-scheme: dark) {
-    :host {
+:host-context(.pref-theme-dark):host([variant="dont"]) {
+  --mds-usage-badge-background: theme('colors.status-error-05');
+}
 
-      --mds-usage-badge-background: theme('colors.status-info-05');
+:host-context(.pref-theme-dark):host([variant="warn"]) {
+  --mds-usage-badge-background: theme('colors.status-warning-05');
+}
 
-      box-shadow: theme('boxShadow.outline');
-    }
+@media (prefers-color-scheme: dark) {
+  :host-context(.pref-theme-system) {
+    --mds-tooltip-background: theme('colors.tone-neutral-09');
+    --mds-tooltip-drop-shadow: drop-shadow(0 0 2px rgb(var(--tone-neutral-01) / 0.05)) drop-shadow(0 0 2px rgb(var(--tone-neutral-01) / 0.3)) drop-shadow(0 0 2px rgb(var(--tone-neutral-01) / 0.3));
+  }
 
-    :host([variant="do"]) {
+  :host-context(.pref-theme-system):host([variant="do"]) {
+    -mds-usage-badge-background: theme('colors.status-success-05');
+  }
 
-      --mds-usage-badge-background: theme('colors.status-success-05');
-    }
+  :host-context(.pref-theme-system):host([variant="dont"]) {
+    -mds-usage-badge-background: theme('colors.status-error-05');
+  }
 
-    :host([variant="dont"]) {
-
-      --mds-usage-badge-background: theme('colors.status-error-05');
-    }
-
-    :host([variant="warn"]) {
-
-      --mds-usage-badge-background: theme('colors.status-warning-05');
-    }
+  :host-context(.pref-theme-system):host([variant="warn"]) {
+    -mds-usage-badge-background: theme('colors.status-warning-05');
   }
 }

@@ -1,5 +1,4 @@
 .toggle-icon {
-
   --size: 24px;
 
   background-color: var(--mds-tree-item-icon-background-color);
@@ -20,19 +19,16 @@
 }
 
 :host([toggle="chevron"]) .toggle-icon {
-
   --mds-tree-item-icon-background-color: var(--mds-tree-item-toggle-icon-chevron-default-background);
   --mds-tree-item-icon-color: var(--mds-tree-item-toggle-icon-chevron-default-color);
 }
 
 :host([toggle="chevron"][expanded]) .toggle-icon {
-
   --mds-tree-item-icon-background-color: var(--mds-tree-item-toggle-icon-chevron-expanded-background);
   --mds-tree-item-icon-color: var(--mds-tree-item-toggle-icon-chevron-expanded-color);
 }
 
 :host([toggle="folder"]) .toggle-icon {
-
   --mds-tree-item-icon-background-color: var(--mds-tree-item-toggle-icon-folder-default-background);
   --mds-tree-item-icon-color: var(--mds-tree-item-toggle-icon-folder-default-color);
   --size: auto;
@@ -42,7 +38,6 @@
 }
 
 :host([toggle="folder"][expanded]) .toggle-icon {
-
   --mds-tree-item-icon-background-color: var(--mds-tree-item-toggle-icon-folder-expanded-background);
   --mds-tree-item-icon-color: var(--mds-tree-item-toggle-icon-folder-expanded-color);
 }

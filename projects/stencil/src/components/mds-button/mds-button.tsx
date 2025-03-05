@@ -40,7 +40,7 @@ export class MdsButton {
   /**
    * The icon displayed in the button
    */
-  @Prop() readonly icon?: string
+  @Prop({ reflect: true }) readonly icon?: string
 
   /**
    * Specifies the horizontal position of the icon displayed in the button

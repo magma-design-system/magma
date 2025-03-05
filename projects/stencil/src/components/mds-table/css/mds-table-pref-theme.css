@@ -1,26 +1,17 @@
-@tailwind utilities;
+:host-context(.pref-theme-dark) {
+  --mds-table-background: theme('colors.tone-neutral-08');
+  --mds-table-body-background-hover: theme('colors.tone-neutral-10');
+  --mds-table-border-color: theme('colors.tone-neutral-07');
+  --mds-table-color-hover: theme('colors.tone-neutral-02');
+  --mds-table-color: theme('colors.tone-neutral-03');
+}
 
-@container style(--magma-pref-theme: dark) {
-  :host {
-
+@media (prefers-color-scheme: dark) {
+  :host-context(.pref-theme-system) {
     --mds-table-background: theme('colors.tone-neutral-08');
     --mds-table-body-background-hover: theme('colors.tone-neutral-10');
     --mds-table-border-color: theme('colors.tone-neutral-07');
     --mds-table-color-hover: theme('colors.tone-neutral-02');
     --mds-table-color: theme('colors.tone-neutral-03');
-  }
-}
-
-@container style(--magma-pref-theme: system) {
-
-  @media (prefers-color-scheme: dark) {
-    :host {
-
-      --mds-table-background: theme('colors.tone-neutral-08');
-      --mds-table-body-background-hover: theme('colors.tone-neutral-10');
-      --mds-table-border-color: theme('colors.tone-neutral-07');
-      --mds-table-color-hover: theme('colors.tone-neutral-02');
-      --mds-table-color: theme('colors.tone-neutral-03');
-    }
   }
 }

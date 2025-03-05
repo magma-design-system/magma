@@ -15,7 +15,6 @@
  */
 
 :host {
-
   --mds-horizontal-scroll-behavior: smooth;
   --mds-horizontal-scroll-contents-padding: theme('spacing.600') 0;
   --mds-horizontal-scroll-contents-scroll-padding: 0 theme('spacing.600');
@@ -87,15 +86,15 @@
   }
 }
 
-:host([snap="start"]) .contents > ::slotted( * ) {
+:host([snap="start"]) .contents > ::slotted( *) {
   scroll-snap-align: start;
 }
 
-:host([snap="center"]) .contents > ::slotted( * ) {
+:host([snap="center"]) .contents > ::slotted( *) {
   scroll-snap-align: center;
 }
 
-:host([snap="end"]) .contents > ::slotted( * ) {
+:host([snap="end"]) .contents > ::slotted( *) {
   scroll-snap-align: end;
 }
 
@@ -111,7 +110,7 @@
   width: 100%;
 }
 
-.contents > ::slotted( * ) {
+.contents > ::slotted( *) {
   flex-basis: 0;
   flex-grow: 0;
   flex-shrink: 0;
@@ -120,7 +119,6 @@
 
 .contents::after,
 .contents::before {
-
   --width: calc(var(--scroll-margin) - var(--mds-horizontal-scroll-gap));
 
   content: "";
@@ -133,14 +131,12 @@
 }
 
 .navigation--back {
-
   --position: calc(var(--scroll-margin) - var(--mds-horizontal-scroll-gap) - var(--mds-horizontal-scroll-controls-margin));
 
   left: clamp(calc(var(--mds-horizontal-scroll-gap) / 2), var(--position), var(--position));
 }
 
 .navigation--forward {
-
   --position: calc(var(--scroll-margin) - var(--mds-horizontal-scroll-gap) - var(--mds-horizontal-scroll-controls-margin));
 
   right: clamp(calc(var(--mds-horizontal-scroll-gap) / 2), var(--position), var(--position));

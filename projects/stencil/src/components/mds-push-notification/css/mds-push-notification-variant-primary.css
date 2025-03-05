@@ -1,20 +1,15 @@
-@tailwind utilities;
-
-:host( [variant="primary"][tone="strong"] ) {
-
+:host([variant="primary"][tone="strong"]) {
   --mds-push-notification-icon-background-color: theme('colors.variant-primary-05');
   --mds-push-notification-icon-color: theme('colors.variant-primary-10');
 }
 
-:host( [variant="primary"] ),
-:host( [variant="primary"][tone="weak"] ) {
-
+:host([variant="primary"]),
+:host([variant="primary"][tone="weak"]) {
   --mds-push-notification-icon-background-color: theme('colors.variant-primary-09');
   --mds-push-notification-icon-color: theme('colors.variant-primary-05');
 }
 
-:host( [variant="primary"][tone="quiet"] ) {
-
+:host([variant="primary"][tone="quiet"]) {
   --mds-push-notification-icon-background-color: transparent;
   --mds-push-notification-icon-color: theme('colors.variant-primary-05');
 }

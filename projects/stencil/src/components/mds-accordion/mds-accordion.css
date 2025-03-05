@@ -1,5 +1,3 @@
-@tailwind utilities;
-
 /**
  * @prop --mds-accordion-border-color: Sets the border-color of the component children mds-accordion-item
  * @prop --mds-accordion-border-color: Sets the border-width of the separators of the component children mds-accordion-item
@@ -11,7 +9,6 @@
  */
 
 :host {
-
   --mds-accordion-border-color: theme('colors.tone-neutral-08');
   --mds-accordion-border-width: 2px;
   --mds-accordion-color: theme('colors.tone-neutral-03');

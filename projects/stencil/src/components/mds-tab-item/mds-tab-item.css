@@ -5,7 +5,6 @@
 }
 
 .button {
-
   --mds-button-background: var(--mds-tab-item-default-background);
   --mds-button-color: var(--mds-tab-item-default-color);
   --mds-button-radius: var(--mds-tab-item-radius);
@@ -14,14 +13,12 @@
 }
 
 .button:hover {
-
   --mds-button-background: var(--mds-tab-item-hover-background);
   --mds-button-color: var(--mds-tab-item-hover-color);
 }
 
 :host([selected]:not([selected="false"])) .button,
 :host([selected]:not([selected="false"])) .button:hover {
-
   --mds-button-background: var(--mds-tab-item-selected-background);
   --mds-button-color: var(--mds-tab-item-selected-color);
 

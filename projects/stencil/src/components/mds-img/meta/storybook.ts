@@ -1,12 +1,12 @@
 import { loadingDictionary } from '@dictionary/loading'
 
 const URLs = [
-  'https://via.placeholder.com/1920x1024',
-  'https://via.placeholder.com/1280x768',
-  'https://via.placeholder.com/1024x1024',
-  'https://via.placeholder.com/640x480',
-  'https://via.placeholder.com/480x640',
-  'https://via.placeholder.com/300x800',
+  '1920x1024.png',
+  '1280x768.png',
+  '1024x1024.png',
+  '640x480.png',
+  '480x640.png',
+  '300x800.png',
 ]
 
 const argTypes = {

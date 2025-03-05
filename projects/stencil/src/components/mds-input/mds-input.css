@@ -1,6 +1,5 @@
 @import '~@maggioli-design-system/styles/dist/tailwind/typography.css';
 @tailwind components;
-@tailwind utilities;
 
 /**
  * @prop --mds-input-background: Sets the background-color of the component
@@ -15,7 +14,6 @@
  */
 
 :host {
-
   --mds-input-background: theme('colors.tone-neutral');
   --mds-input-icon-color: var(--mds-input-variant-color);
   --mds-input-tip-background: 84 84 84;
@@ -37,16 +35,15 @@
   position: relative;
 }
 
-:host( [typography="detail"] ) .input {
+:host([typography="detail"]) .input {
   @apply text-info-detail;
 }
 
-:host( [typography="snippet"] ) .input {
+:host([typography="snippet"]) .input {
   @apply text-code-snippet;
 }
 
 .input {
-
   @apply
     duration-300
     ease-out-expo
@@ -138,7 +135,6 @@ textarea.input {
 }
 
 .counter-button {
-
   @apply
     h-600
     rounded-lg
@@ -153,7 +149,6 @@ textarea.input {
 }
 
 .counter-button:hover {
-
   --mds-button-background: theme('colors.tone-neutral-09');
 }
 
@@ -202,44 +197,39 @@ textarea.input {
   position: absolute;
 }
 
-:host( [type="number"] ) .input {
+:host([type="number"]) .input {
   @apply pr-800;
 }
 
-:host( [type="number"][controls-layout="horizontal"] ) .input {
+:host([type="number"][controls-layout="horizontal"]) .input {
   @apply px-1400;
 
   text-align: center;
 }
 
-:host( [type="number"][controls-layout="horizontal"][icon] ) .input {
+:host([type="number"][controls-layout="horizontal"][icon]) .input {
   @apply pl-2400;
 
   text-align: left;
 }
 
 
-:host( [type="number"][controls-layout="horizontal"] ) .icon {
+:host([type="number"][controls-layout="horizontal"]) .icon {
   @apply left-1500;
 }
 
-:host( [type="password"]) .input {
+:host([type="password"]) .input {
   @apply pr-1000;
 }
 
-:host( [type="password"]) .input[type="password"]:not(:placeholder-shown) {
+:host([type="password"]) .input[type="password"]:not(:placeholder-shown) {
   font-size: theme('fontSize.4xl');
   max-height: 3rem;
 }
 
-:host( [type="password"]) .input[type="text"]:not(:placeholder-shown) {
+:host([type="password"]) .input[type="text"]:not(:placeholder-shown) {
   @apply text-code-snippet;
 }
-
-@import './css/mds-input-variant.css';
-@import './css/mds-input-pref-animation.css';
-@import './css/mds-input-pref-theme.css';
-@import './css/mds-input-pref-contrast.css';
 
 @container (max-width: 210px) {
   :host .tip__content,
@@ -254,9 +244,12 @@ textarea.input {
   }
 
   :host {
-
     --mds-input-background: theme('colors.variant-primary-07');
   }
 }
 
+@import './css/mds-input-variant.css';
+@import './css/mds-input-pref-animation.css';
+@import './css/mds-input-pref-theme.css';
+@import './css/mds-input-pref-contrast.css';
 @import '../../tailwind/fouc.css';

@@ -1,8 +1,5 @@
-@tailwind utilities;
-
-:host( [variant="warning"] ),
-:host( [variant="warning"][tone="strong"] ) {
-
+:host([variant="warning"]),
+:host([variant="warning"][tone="strong"]) {
   --mds-label-background: theme('colors.status-warning-04');
   --mds-label-button-background: theme('colors.status-warning-04');
   --mds-label-button-background-hover: theme('colors.status-warning-05');
@@ -13,8 +10,7 @@
   --mds-label-selection-color: theme('colors.status-warning-02');
 }
 
-:host( [variant="warning"][tone="weak"] ) {
-
+:host([variant="warning"][tone="weak"]) {
   --mds-label-background: theme('colors.status-warning-08');
   --mds-label-button-background: theme('colors.status-warning-09');
   --mds-label-button-background-hover: theme('colors.status-warning-08');
@@ -25,8 +21,7 @@
   --mds-label-selection-color: theme('colors.status-warning-10');
 }
 
-:host( [variant="warning"][tone="quiet"] ) {
-
+:host([variant="warning"][tone="quiet"]) {
   --mds-label-background: theme('colors.status-warning-09');
   --mds-label-button-background: theme('colors.status-warning-09');
   --mds-label-button-background-hover: theme('colors.status-warning-08');

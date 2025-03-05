@@ -1,8 +1,18 @@
-@tailwind utilities;
+:host-context(.pref-contrast-more) {
+  --mds-chip-background: theme('colors.tone-neutral');
+  --mds-chip-color: theme('colors.tone-neutral-02');
+  --mds-chip-icon-background-selected: theme('colors.variant-primary-03');
+  --mds-chip-icon-color: theme('colors.tone-neutral');
+  --mds-chip-opacity-disabled: var(--opacity-disabled, 0.6);
+  --mds-chip-backgroud-selected: theme('colors.tone-neutral-09');
+  --mds-chip-color-selected: theme('colors.tone-neutral-01');
+  --mds-chip-icon-color-selected: theme('colors.tone-neutral');
 
-@container style(--magma-pref-contrast: more) {
-  :host {
+  box-shadow: theme('boxShadow.outline-50');
+}
 
+@media (prefers-contrast: more) {
+  :host-context(.pref-contrast-system) {
     --mds-chip-background: theme('colors.tone-neutral');
     --mds-chip-color: theme('colors.tone-neutral-02');
     --mds-chip-icon-background-selected: theme('colors.variant-primary-03');
@@ -15,23 +25,3 @@
     box-shadow: theme('boxShadow.outline-50');
   }
 }
-
-@container style(--magma-pref-contrast: system) {
-
-  @media (prefers-contrast: more) {
-    :host {
-
-      --mds-chip-background: theme('colors.tone-neutral');
-      --mds-chip-color: theme('colors.tone-neutral-02');
-      --mds-chip-icon-background-selected: theme('colors.variant-primary-03');
-      --mds-chip-icon-color: theme('colors.tone-neutral');
-      --mds-chip-opacity-disabled: var(--opacity-disabled, 0.6);
-      --mds-chip-backgroud-selected: theme('colors.tone-neutral-09');
-      --mds-chip-color-selected: theme('colors.tone-neutral-01');
-      --mds-chip-icon-color-selected: theme('colors.tone-neutral');
-
-      box-shadow: theme('boxShadow.outline-50');
-    }
-  }
-}
-

@@ -1,12 +1,9 @@
-@tailwind utilities;
-
 :host {
   @apply gap-400;
 
   align-items: center;
   container-name: mds-author;
-
-  /* container-type: inline-size; */
+  container-type: inline-size;
   display: flex;
 }
 
@@ -23,7 +20,7 @@
 }
 
 @container (max-width: 200px) {
-  :host {
+  :host-context(:not(.safari)) {
     flex-direction: column;
     justify-content: center;
     text-align: center;

@@ -1,6 +1,5 @@
 @import '../../tailwind/components.css';
 @tailwind components;
-@tailwind utilities;
 
 /**
  * @prop --mds-paginator-background: Sets the background-color of the pages area and the item
@@ -8,7 +7,6 @@
  */
 
 :host {
-
   --mds-paginator-background: theme('colors.tone-neutral-09');
   --mds-paginator-scroll-behavior: smooth;
 

@@ -1,21 +1,13 @@
-@tailwind utilities;
-
-@container style(--magma-pref-contrast: more) {
-  .avatar--icon,
-  .avatar--fallback,
-  .avatar--initials {
-    box-shadow: theme('boxShadow.outline-50') inset;
-  }
+:host-context(.pref-contrast-more) .avatar--icon,
+:host-context(.pref-contrast-more) .avatar--fallback,
+:host-context(.pref-contrast-more) .avatar--initials {
+  box-shadow: theme('boxShadow.outline-50') inset;
 }
 
-@container style(--magma-pref-contrast: system) {
-
-  @media (prefers-contrast: more) {
-    .avatar--icon,
-    .avatar--fallback,
-    .avatar--initials {
-      box-shadow: theme('boxShadow.outline-50') inset;
-    }
+@media (prefers-contrast: more) {
+  :host-context(.pref-contrast-system) .avatar--icon,
+  :host-context(.pref-contrast-system) .avatar--fallback,
+  :host-context(.pref-contrast-system) .avatar--initials {
+    box-shadow: theme('boxShadow.outline-50'), theme('boxShadow.lg');
   }
 }
-

@@ -1,26 +1,19 @@
-@tailwind utilities;
-
-@container style(--magma-pref-animation: reduce) {
-  :host,
-  .description,
-  .icon,
-  .icon-container,
-  .info,
-  .label {
-    transition-duration: 0s;
-  }
+:host-context(.pref-animation-reduce),
+:host-context(.pref-animation-reduce) .description,
+:host-context(.pref-animation-reduce) .icon,
+:host-context(.pref-animation-reduce) .icon-container,
+:host-context(.pref-animation-reduce) .info,
+:host-context(.pref-animation-reduce) .label {
+  transition-duration: 0s;
 }
 
-@container style(--magma-pref-animation: system) {
-
-  @media (prefers-reduced-motion) {
-    :host,
-    .description,
-    .icon,
-    .icon-container,
-    .info,
-    .label {
-      transition-duration: 0s;
-    }
+@media (prefers-reduced-motion) {
+  :host-context(.pref-animation-system),
+  :host-context(.pref-animation-system) .description,
+  :host-context(.pref-animation-system) .icon,
+  :host-context(.pref-animation-system) .icon-container,
+  :host-context(.pref-animation-system) .info,
+  :host-context(.pref-animation-system) .label {
+    transition-duration: 0s;
   }
 }

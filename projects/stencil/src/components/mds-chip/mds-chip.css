@@ -1,7 +1,5 @@
 @import '~@maggioli-design-system/styles/dist/css/animations.css';
 @import '../../tailwind/components.css';
-@tailwind components;
-@tailwind utilities;
 
 /**
  * @prop --mds-chip-background: Sets the `background-color` of the component
@@ -16,13 +14,6 @@
  */
 
 :host {
-
-  /* --mds-chip-backgroud-selected: theme('colors.tone-neutral-08');
-  --mds-chip-border-selected: theme('colors.variant-primary-04');
-  --mds-chip-color-selected: theme('colors.tone-neutral-01');
-  --mds-chip-icon-background-selected: theme('colors.variant-primary-04');
-  --mds-chip-icon-color-selected: theme('colors.tone-neutral'); */
-
   --mds-chip-background: theme('colors.tone-neutral');
   --mds-chip-border: transparent;
   --mds-chip-color: theme('colors.tone-neutral-03');
@@ -52,7 +43,7 @@
 }
 
 
-:host( [disabled]:not([disabled="false"]) ) {
+:host([disabled]:not([disabled="false"])) {
   opacity: var(--mds-chip-opacity-disabled);
   pointer-events: none;
 }
@@ -68,12 +59,12 @@
   transition-property: color, text-decoration-color, outline, outline-offset;
 }
 
-:host( [clickable]:not([clickable="false"]) ) .label {
+:host([clickable]:not([clickable="false"]) ) .label {
   cursor: pointer;
   text-decoration: underline;
 }
 
-:host( [clickable]:not([clickable="false"]) ) .label:hover {
+:host([clickable]:not([clickable="false"]) ) .label:hover {
   text-decoration-color: unset;
 }
 

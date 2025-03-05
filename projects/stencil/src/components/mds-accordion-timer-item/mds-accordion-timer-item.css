@@ -1,7 +1,5 @@
 @import '~@maggioli-design-system/styles/dist/css/animations.css'; /* included for focus effect */
 @import '../../tailwind/components.css';
-@tailwind components;
-@tailwind utilities;
 
 /**
  * @prop --mds-accordion-timer-item-progress-bar-color: Sets the color of the progress bar when the item is selected
@@ -12,7 +10,6 @@
  */
 
 :host {
-
   --mds-accordion-timer-item-progress-bar-color: var(--mds-accordion-timer-progress-bar-color, theme('colors.tone-neutral-03'));
   --mds-accordion-timer-item-progress-bar-background: var(--mds-accordion-timer-progress-bar-background, theme('colors.tone-neutral-08'));
   --mds-accordion-timer-item-progress-bar-thickness: var(--mds-accordion-timer-progress-bar-thickness, theme('width.100'));
@@ -40,7 +37,6 @@
 }
 
 .progress-bar {
-
   --mds-progress-color: var(--mds-accordion-timer-item-progress-bar-color);
   --mds-progress-background: var(--mds-accordion-timer-item-progress-bar-background);
   --mds-progress-thickness: var(--mds-accordion-timer-item-progress-bar-thickness);
@@ -93,15 +89,15 @@
   transition-property: transform;
 }
 
-:host( [selected]:not([selected="false"]) ) .action {
+:host([selected]:not([selected="false"])) .action {
   cursor: auto;
 }
 
-:host( [selected]:not([selected="false"]) ) .icon {
+:host([selected]:not([selected="false"])) .icon {
   transform: rotate(0deg);
 }
 
-:host( [selected]:not([selected="false"]) ) .content {
+:host([selected]:not([selected="false"])) .content {
   @apply
     opacity-100
     pt-400;

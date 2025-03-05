@@ -1,6 +1,5 @@
 @import '../../tailwind/components.css';
 @tailwind components;
-@tailwind utilities;
 
 /**
  * @prop --mds-tab-item-default-background: Sets the `background-color` of `mds-tab-item` or `mds-tab::part(slider)` depending on attribute `animation`
@@ -28,7 +27,6 @@
  */
 
 :host {
-
   --mds-tab-item-default-background: transparent;
   --mds-tab-item-default-color: theme('colors.tone-neutral-03');
   --mds-tab-item-default-shadow: transparent;
@@ -58,8 +56,7 @@
   display: grid;
 }
 
-:host([animation="slide"]) ::slotted( mds-tab-item ) {
-
+:host([animation="slide"]) ::slotted( mds-tab-item) {
   --mds-tab-item-hover-background: transparent;
   --mds-tab-item-selected-background: transparent;
   --mds-tab-item-selected-shadow: transparent;
@@ -110,7 +107,6 @@
 
 
 .contents {
-
   --mds-tab-contents-height: auto;
 
   @apply
@@ -135,7 +131,7 @@
   display: none;
 }
 
-::slotted( [slot="content"] ) {
+::slotted( [slot="content"]) {
   @apply
     min-w-full
     w-full;
@@ -145,7 +141,7 @@
   scroll-snap-align: start;
 }
 
-::slotted( [slot="content"][mds-tab-content-hidden] ) {
+::slotted( [slot="content"][mds-tab-content-hidden]) {
   display: none !important;
 }
 

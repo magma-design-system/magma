@@ -1,7 +1,4 @@
-@tailwind utilities;
-
 :host {
-
   @apply
     duration-200
     ease-out;

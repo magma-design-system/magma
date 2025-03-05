@@ -1,7 +1,4 @@
-@tailwind utilities;
-
 :host {
-
   --mds-push-notifications-fadeout-delay: 3s;
   --mds-push-notifications-gap: theme('spacing.200');
   --mds-push-notifications-items-delay: 400ms;
@@ -48,8 +45,7 @@
   gap: var(--mds-push-notifications-items-gap);
 }
 
-.notifications ::slotted( mds-push-notification ) {
-
+.notifications ::slotted( mds-push-notification) {
   --mds-push-notification-duration: var(--mds-push-notifications-items-duration);
   --mds-push-notification-timing-function: var(--mds-push-notifications-items-timing-function);
 

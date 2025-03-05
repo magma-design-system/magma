@@ -1,22 +1,17 @@
-@container style(--magma-pref-animation: reduce) {
-  :host,
-  .input,
-  .input:hover,
-  .input:focus,
-  .icon {
-    transition-duration: 0s;
-  }
+:host-context(.pref-animation-reduce),
+:host-context(.pref-animation-reduce) .input,
+:host-context(.pref-animation-reduce) .input:hover,
+:host-context(.pref-animation-reduce) .input:focus,
+:host-context(.pref-animation-reduce) .icon {
+  transition-duration: 0s;
 }
 
-@container style(--magma-pref-animation: system) {
-
-  @media (prefers-reduced-motion) {
-    :host,
-    .input,
-    .input:hover,
-    .input:focus,
-    .icon {
-      transition-duration: 0s;
-    }
+@media (prefers-reduced-motion) {
+  :host-context(.pref-animation-system),
+  :host-context(.pref-animation-system) .input,
+  :host-context(.pref-animation-system) .input:hover,
+  :host-context(.pref-animation-system) .input:focus,
+  :host-context(.pref-animation-system) .icon {
+    transition-duration: 0s;
   }
 }

@@ -1,7 +1,6 @@
 @import '~@maggioli-design-system/styles/dist/css/animations.css'; /* included for focus effect */
 @import '../../tailwind/components.css';
 @tailwind components;
-@tailwind utilities;
 
 /**
  * @prop --mds-url-view-background: Sets the background-color of the component
@@ -11,7 +10,6 @@
  */
 
 :host {
-
   --mds-url-view-background: theme('colors.tone-neutral-10');
   --mds-url-view-color: theme('colors.tone-neutral-02');
   --mds-url-view-radius: theme('borderRadius.md');
@@ -77,7 +75,6 @@
 }
 
 .button-close {
-
   --mds-button-background: transparent;
 
   cursor: pointer;

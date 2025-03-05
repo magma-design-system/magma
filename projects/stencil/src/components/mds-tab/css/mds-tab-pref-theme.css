@@ -1,20 +1,11 @@
-@tailwind utilities;
-
-@container style(--magma-pref-theme: dark) {
-  :host {
-
-    --mds-tab-tabs-background: theme('colors.tone-neutral-08');
-    --mds-tab-item-selected-background: theme('colors.tone-neutral-07');
-  }
+:host-context(.pref-theme-dark) {
+  --mds-tab-tabs-background: theme('colors.tone-neutral-08');
+  --mds-tab-item-selected-background: theme('colors.tone-neutral-07');
 }
 
-@container style(--magma-pref-theme: system) {
-
-  @media (prefers-color-scheme: dark) {
-    :host {
-
-      --mds-tab-tabs-background: theme('colors.tone-neutral-08');
-      --mds-tab-item-selected-background: theme('colors.tone-neutral-07');
-    }
+@media (prefers-color-scheme: dark) {
+  :host-context(.pref-theme-system) {
+    --mds-tab-tabs-background: theme('colors.tone-neutral-08');
+    --mds-tab-item-selected-background: theme('colors.tone-neutral-07');
   }
 }

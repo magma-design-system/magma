@@ -1,6 +1,5 @@
 @import '../../tailwind/components.css';
 @tailwind components;
-@tailwind utilities;
 
 /**
  * @prop --mds-keyboard-background-default: `private` Set the default background color of the keyboard area.
@@ -25,10 +24,7 @@
  * @prop --mds-keyboard-spinner-duration: Set the duration of the spinner animation.
  */
 
-/* TODO refact(stencil): Uses only used selector from parent shadowDOM component */
-
 :host {
-
   --mds-keyboard-background-default: var(--mds-keyboard-background);
   --mds-keyboard-background-fail: theme('colors.status-error-09');
   --mds-keyboard-background-pass: theme('colors.status-success-09');
@@ -64,26 +60,6 @@
   user-select: none;
 }
 
-:host([test="pass"]) {
-
-  --mds-keyboard-background-default: var(--mds-keyboard-background-pass);
-}
-
-:host([test="fail"]) {
-
-  --mds-keyboard-background-default: var(--mds-keyboard-background-fail);
-}
-
-:host([test="pass"]) .combination-checker {
-  background-color: var(--mds-keyboard-background-pass);
-  fill: var(--mds-keyboard-fill-pass);
-}
-
-:host([test="fail"]) .combination-checker {
-  background-color: var(--mds-keyboard-background-fail);
-  fill: var(--mds-keyboard-fill-fail);
-}
-
 .errors {
   display: grid;
   gap: theme('spacing.100');
@@ -97,17 +73,14 @@
 }
 
 :host(:focus-within) {
-
   --mds-keyboard-background: theme('colors.tone-slate-07');
 }
 
 mds-tooltip {
-
   --mds-tooltip-delay: 0;
 }
 
 .combination-checker {
-
   --mds-button-await-duration: var(--mds-keyboard-spinner-duration);
 
   border-radius: 100px;
@@ -122,5 +95,6 @@ mds-tooltip:not([hydrated]) {
   @apply not-hydrated;
 }
 
+@import './css/mds-keyboard-test.css';
 @import './css/mds-keyboard-pref-theme.css';
 @import '../../tailwind/fouc.css';
