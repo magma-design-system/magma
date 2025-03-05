@@ -2,10 +2,16 @@
   "sizing": {
     "aspectRatio": {
       "cover": {
-        "value": "2:3"
+        "value": "5:3"
       },
       "picture": {
-        "value": "1:4"
+        "value": "4:3"
+      },
+      "landscape": {
+        "value": "4:2"
+      },
+      "panorama": {
+        "value": "4:1"
       },
       "square": {
         "value": "1:1"
