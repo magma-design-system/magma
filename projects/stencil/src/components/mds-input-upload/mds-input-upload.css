@@ -124,6 +124,12 @@
 }
 
 .file-list {
+  @apply
+    gap-400
+    grid-cols-fit-sm;
+}
+
+:host-context(:not(.safari)) .file-list {
   --cols: var(--mds-input-upload-min-cols);
   --perc-w: calc(100% / var(--cols));
   --gap: theme('spacing.400');
@@ -131,19 +137,11 @@
   --max-w: calc(var(--perc-w) - var(--gap-w));
   --template-cols: repeat(auto-fit, minmax(theme('spacing.4000'), var(--max-w)));
 
-  @apply gap-400;
-
   grid-template-columns: var(--template-cols);
 }
 
-.file-list--more-items {
+:host-context(:not(.safari)) .file-list--more-items {
   --template-cols: repeat(auto-fit, minmax(theme('spacing.4000'), 1fr));
-}
-
-@container (max-width: 340px) {
-  .file-list {
-    --template-cols: 1fr;
-  }
 }
 
 .main-infos {
@@ -189,6 +187,12 @@
   flex-direction: column;
   flex-wrap: nowrap;
   justify-content: center;
+}
+
+@container (max-width: 340px) {
+  .file-list {
+    --template-cols: 1fr;
+  }
 }
 
 @import '../../tailwind/fouc.css';
