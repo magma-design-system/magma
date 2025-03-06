@@ -5,6 +5,13 @@
 <!-- Auto Generated Below -->
 
 
+## Properties
+
+| Property     | Attribute    | Description                                                                                        | Type                   | Default     |
+| ------------ | ------------ | -------------------------------------------------------------------------------------------------- | ---------------------- | ----------- |
+| `controller` | `controller` | Sets if the component works as hidden element controller instead as UI element, visible on the DOM | `boolean \| undefined` | `undefined` |
+
+
 ## Methods
 
 ### `updateLang() => Promise<void>`

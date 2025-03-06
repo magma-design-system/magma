@@ -4,6 +4,10 @@
   display: grid;
 }
 
+:host([controller]) {
+  display: none;
+}
+
 :host(:empty) {
   display: none;
 }
