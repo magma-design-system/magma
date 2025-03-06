@@ -1,0 +1,13 @@
+.tabs-wrapper::after {
+  border-radius: var(--mds-tab-tabs-radius);
+  box-shadow: var(--mds-tab-tabs-wrapper-shadow);
+  content: "";
+  inset: 0;
+  opacity: var(--mds-tab-tabs-wrapper-outline-opacity);
+  pointer-events: none;
+  position: absolute;
+  transition-duration: var(--mds-tab-transition-duration);
+  transition-property: box-shadow, opacity;
+  transition-timing-function: var(--mds-tab-transition-timing-function);
+  z-index: 1;
+}

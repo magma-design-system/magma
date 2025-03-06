@@ -9,19 +9,19 @@
   display: none;
 }
 
-:host([scrollbar]:not([scrollbar="false"])) .tabs::-webkit-scrollbar {
+:host([scrollbar]) .tabs::-webkit-scrollbar {
   height: var(--mds-tab-scroll-scrollbar-size);
   width: var(--mds-tab-scroll-scrollbar-size);
 }
 
-:host([scrollbar]:not([scrollbar="false"])) .tabs::-webkit-scrollbar-track {
+:host([scrollbar]) .tabs::-webkit-scrollbar-track {
   background-color: var(--mds-tab-scroll-scrollbar-track-background);
   border-radius: var(--mds-tab-scroll-scrollbar-radius);
   margin-block: var(--mds-tab-scroll-scrollbar-margin);
   margin-inline: var(--mds-tab-scroll-scrollbar-margin);
 }
 
-:host([scrollbar]:not([scrollbar="false"])) .tabs::-webkit-scrollbar-thumb {
+:host([scrollbar]) .tabs::-webkit-scrollbar-thumb {
   background-color: var(--mds-tab-scroll-scrollbar-thumb-background);
   border-radius: var(--mds-tab-scroll-scrollbar-radius);
 }

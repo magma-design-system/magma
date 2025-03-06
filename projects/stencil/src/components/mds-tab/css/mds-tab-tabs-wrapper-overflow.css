@@ -1,0 +1,38 @@
+.tabs-wrapper-overflow-left,
+.tabs-wrapper-overflow-right {
+  --shadow-size: theme('size.600');
+  --size: calc(var(--mds-tab-tabs-padding) * 2);
+  --offset-outside: calc(var(--size) + var(--shadow-size));
+
+  background-color: var(--mds-tab-tabs-background);
+  border-radius: 100%;
+  box-shadow: rgb(0 0 0 / 0.25) 0 0 var(--shadow-size) -2px;
+  content: "";
+  display: inline-flex;
+  height: auto;
+  pointer-events: none;
+  position: absolute;
+  transition-duration: theme('transitionDuration.500');
+  transition-property: transform;
+  transition-timing-function: theme('transitionTimingFunction.out-expo');
+  width: var(--size);
+  z-index: 2;
+}
+
+.tabs-wrapper-overflow-left {
+  inset: 0 auto 0 0;
+  transform: scale(0) translateX(calc(var(--offset-outside) * -1));
+}
+
+.tabs-wrapper-overflow-right {
+  inset: 0 0 0 auto;
+  transform: scale(0) translateX(var(--offset-outside));
+}
+
+.tabs-wrapper-overflow-left--show {
+  transform: scale(1) translateX(-100%);
+}
+
+.tabs-wrapper-overflow-right--show {
+  transform: scale(1) translateX(100%);
+}
