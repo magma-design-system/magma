@@ -17,12 +17,16 @@
   --mds-button-color: var(--mds-tab-item-hover-color);
 }
 
-:host([selected]:not([selected="false"])) .button,
-:host([selected]:not([selected="false"])) .button:hover {
+:host([selected]) .button,
+:host([selected]) .button:hover {
   --mds-button-background: var(--mds-tab-item-selected-background);
   --mds-button-color: var(--mds-tab-item-selected-color);
 
   box-shadow: var(--mds-tab-item-selected-shadow);
+  pointer-events: none;
+}
+
+:host([disabled]) {
   pointer-events: none;
 }
 

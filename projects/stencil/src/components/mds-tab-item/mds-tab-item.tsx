@@ -14,13 +14,18 @@ import { MdsTabItemEventDetail } from './meta/event-detail'
 export class MdsTabItem {
 
   @Element() private element: HTMLMdsTabItemElement
-  @State() isSelected: boolean
+  @State() isSelected?: boolean
   @State() hasText: boolean
 
   /**
    * Specifies if the tab item is selected or not
    */
-  @Prop({ reflect: true }) readonly selected?: boolean
+  @Prop({ reflect: true, mutable: true }) selected?: boolean
+
+  /**
+   * Specifies if the tab item is disabled or not
+   */
+  @Prop({ reflect: true, mutable: true }) disabled?: boolean
 
   /**
    * The icon displayed in the tab item
@@ -62,7 +67,10 @@ export class MdsTabItem {
    */
   @Event({ eventName: 'mdsTabItemFocus' }) focusedEvent: EventEmitter<MdsTabItemEventDetail>
 
-  private toggle = () => {
+  private toggle = (): void => {
+    if (this.disabled) {
+      return
+    }
     this.isSelected = !this.isSelected
     if (this.isSelected) {
       this.selectedEvent.emit({ target: this.element, value: this.value })
@@ -74,10 +82,20 @@ export class MdsTabItem {
   }
 
   @Watch('selected')
-  validateActive (newValue: boolean): void {
+  validateActive (newValue?: boolean): void {
+    if (newValue === false) {
+      this.selected = undefined
+    }
     this.isSelected = newValue
     if (this.selected) {
       this.selectedEvent.emit({ target: this.element, value: this.value })
+    }
+  }
+
+  @Watch('disabled')
+  handleDisabledChange (newValue?: boolean): void {
+    if (newValue === false) {
+      this.disabled = undefined
     }
   }
 
@@ -87,12 +105,13 @@ export class MdsTabItem {
 
   render () {
     return (
-      <Host onClick={this.toggle}>
+      <Host onClick={this.disabled ?? this.toggle}>
         <mds-button class="button"
-          onFocus={this.focus}
-          icon={this.icon}
+          disabled={this.disabled}
           href={this.href}
+          icon={this.icon}
           iconPosition={this.iconPosition}
+          onFocus={this.focus}
           part="button"
           role="tab"
           size={this.size}
