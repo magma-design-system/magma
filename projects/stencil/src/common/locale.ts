@@ -52,7 +52,7 @@ export class Locale {
     })
   }
 
-  private pluralize = (tag: string | string[], context: Record<string, string | number>): string => {
+  private pluralize = (tag: string | string[], context: Record<string, string | number | boolean>): string => {
 
     const languagePhrase: string | string[] = this.config[this.language] ? this.config[this.language][tag] : this.config[this.rollbackLanguage][tag]
     const phrases: string[] = []
@@ -81,7 +81,7 @@ export class Locale {
     return render(translatePhrase, context)
   }
 
-  get = (tag: string | string[], context?: Record<string, string | number>): string => {
+  get = (tag: string | string[], context?: Record<string, string | number | boolean>): string => {
     if (context) {
       return this.pluralize(tag, context)
     }

@@ -5,6 +5,7 @@ import miOutlineDarkMode from '@icon/mi/outline/dark-mode.svg'
 import miBaselineDarkMode from '@icon/mi/baseline/dark-mode.svg'
 import miBaselineSettings from '@icon/mi/baseline/settings.svg'
 import { Locale } from '@common/locale'
+import { isSafari } from '@common/browser'
 import localeEl from './meta/locale.el.json'
 import localeEn from './meta/locale.en.json'
 import localeEs from './meta/locale.es.json'
@@ -44,6 +45,8 @@ export class MdsPrefTheme {
   private overlayTimer: NodeJS.Timeout
   private overlaySmoothTimer: NodeJS.Timeout
   private overlayShow: boolean = false
+
+  @State() disabled: boolean = false
 
   private updateCSSCustomProps = (): void => {
     if (typeof window === 'undefined') return
@@ -86,7 +89,12 @@ export class MdsPrefTheme {
 
   componentWillRender (): void {
     this.t.lang(this.element)
-    this.setTheme(this.mode ?? localStorage.getItem(this.localStorageAlias) as ThemeModeType ?? this.defaultMode)
+    if (!isSafari()) {
+      this.setTheme(this.mode ?? localStorage.getItem(this.localStorageAlias) as ThemeModeType ?? this.defaultMode)
+      return
+    }
+    this.disabled = true
+    this.mode = 'light'
   }
 
   componentDidLoad (): void {
@@ -200,6 +208,10 @@ export class MdsPrefTheme {
 
   private changeTheme = (mode: ThemeModeType): void => {
 
+    if (this.disabled) {
+      return
+    }
+
     const prevColor = this.getColorScheme()
     const nextColor = this.getColorScheme(mode)
 
@@ -228,11 +240,11 @@ export class MdsPrefTheme {
   render () {
     return (
       <Host>
-        <mds-text class="info" typography="caption"><b>{this.t.get('label')}</b> {this.t.get(this.theme[this.mode ?? this.defaultMode].label)}</mds-text>
+        <mds-text class="info" typography="caption"><b>{this.t.get('label')}</b> {this.disabled ? this.t.get(this.theme[this.mode ?? this.defaultMode].label, { forced: true }) : this.t.get(this.theme[this.mode ?? this.defaultMode].label, { forced: false })}</mds-text>
         <mds-tab fill>
-          <mds-tab-item selected={this.mode === 'light'} onClick={() => { if (this.overlayShow) { return } this.changeTheme('light') }} class="item item--light" icon={miBaselineLightMode}></mds-tab-item>
-          <mds-tab-item selected={this.mode === 'system'} onClick={() => { if (this.overlayShow) { return } this.changeTheme('system') }} class="item item--system" icon={miBaselineSettings}></mds-tab-item>
-          <mds-tab-item selected={this.mode === 'dark'} onClick={() => { if (this.overlayShow) { return } this.changeTheme('dark') }} class="item item--dark" icon={this.mode === 'dark' ? miBaselineDarkMode : miOutlineDarkMode}></mds-tab-item>
+          <mds-tab-item disabled={this.disabled} selected={this.mode === 'light'} onClick={() => { if (this.overlayShow) { return } this.changeTheme('light') }} class="item item--light" icon={miBaselineLightMode}></mds-tab-item>
+          <mds-tab-item disabled={this.disabled} selected={this.mode === 'system'} onClick={() => { if (this.overlayShow) { return } this.changeTheme('system') }} class="item item--system" icon={miBaselineSettings}></mds-tab-item>
+          <mds-tab-item disabled={this.disabled} selected={this.mode === 'dark'} onClick={() => { if (this.overlayShow) { return } this.changeTheme('dark') }} class="item item--dark" icon={this.mode === 'dark' ? miBaselineDarkMode : miOutlineDarkMode}></mds-tab-item>
         </mds-tab>
       </Host>
     )
