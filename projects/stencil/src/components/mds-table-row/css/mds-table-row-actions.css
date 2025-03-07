@@ -30,8 +30,6 @@
 }
 
 :host(:hover) .actions {
-
-  /* :host-context(:not(.safari)) */
   transform: translateX(100%);
 }
 
@@ -56,4 +54,14 @@
 :host-context(mds-table[selection]:not([interactive])):host([selected="false"]:hover) .actions,
 :host-context(mds-table[selection][interactive="false"]):host([selected="false"]:hover) .actions {
   --mds-table-row-actions-background: var(--mds-table-row-background-alt);
+}
+
+.actions-cell--disable,
+.actions-cell--disable .actions {
+  position: static !important;
+}
+
+.actions-cell--disable .actions {
+  margin-right: 0 !important;
+  transform: translateX(0) !important;
 }

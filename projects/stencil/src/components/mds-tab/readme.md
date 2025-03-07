@@ -9,11 +9,12 @@ This is a web-component from Maggioli Design System [Magma](https://magma.maggio
 
 ## Properties
 
-| Property    | Attribute   | Description                                                                         | Type                             | Default     |
-| ----------- | ----------- | ----------------------------------------------------------------------------------- | -------------------------------- | ----------- |
-| `animation` | `animation` | Sets the animation type of the selection transition between `mds-tab-item` elements | `"fade" \| "slide" \| undefined` | `'slide'`   |
-| `fill`      | `fill`      | Sets if the tab area should fill the entire width                                   | `boolean \| undefined`           | `undefined` |
-| `scrollbar` | `scrollbar` | Shows the horizontal scrollbar to maximize accessibility                            | `boolean \| undefined`           | `undefined` |
+| Property    | Attribute   | Description                                                                             | Type                             | Default     |
+| ----------- | ----------- | --------------------------------------------------------------------------------------- | -------------------------------- | ----------- |
+| `animation` | `animation` | Sets the animation type of the selection transition between `mds-tab-item` elements     | `"fade" \| "slide" \| undefined` | `'slide'`   |
+| `fill`      | `fill`      | Sets if the tab area should fill the entire width                                       | `boolean \| undefined`           | `undefined` |
+| `overflow`  | `overflow`  | Sets if the tab area should show an inset shadow when the tabs overflows it's container | `boolean \| undefined`           | `undefined` |
+| `scrollbar` | `scrollbar` | Shows the horizontal scrollbar to maximize accessibility                                | `boolean \| undefined`           | `undefined` |
 
 
 ## Events

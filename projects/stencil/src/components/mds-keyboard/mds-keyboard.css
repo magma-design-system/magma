@@ -90,11 +90,6 @@ mds-tooltip {
   align-self: flex-end;
 }
 
-mds-button:not([hydrated]),
-mds-tooltip:not([hydrated]) {
-  @apply not-hydrated;
-}
-
 @import './css/mds-keyboard-test.css';
 @import './css/mds-keyboard-pref-theme.css';
 @import '../../tailwind/fouc.css';

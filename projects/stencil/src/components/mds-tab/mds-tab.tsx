@@ -29,13 +29,16 @@ export class MdsTab {
   private observer: ResizeObserver
   private tabItems: NodeListOf<HTMLMdsTabItemElement>
   private contentItems: NodeListOf<HTMLElement>
+  private overflowInit: boolean = false
   @State() sliderWidth: number = -1
   @State() sliderOffset: number = -1
+  @State() overflowLeft: boolean = false
+  @State() overflowRight: boolean = false
 
   /**
    * Shows the horizontal scrollbar to maximize accessibility
    */
-  @Prop({ reflect: true }) readonly scrollbar?: boolean
+  @Prop({ reflect: true, mutable: true }) scrollbar?: boolean
 
   /**
    * Sets the animation type of the selection transition between `mds-tab-item` elements
@@ -45,7 +48,12 @@ export class MdsTab {
   /**
    * Sets if the tab area should fill the entire width
    */
-  @Prop({ reflect: true }) readonly fill?: boolean
+  @Prop({ reflect: true, mutable: true }) fill?: boolean
+
+  /**
+   * Sets if the tab area should show an inset shadow when the tabs overflows it's container
+   */
+  @Prop({ reflect: true, mutable: true }) overflow?: boolean
 
   /**
    * Emits when a children is changed
@@ -80,8 +88,11 @@ export class MdsTab {
     })
   }
 
+  disconnectedCallback ():void {
+    this.unsetOverflowCheck()
+  }
+
   componentDidLoad (): void {
-    // TODO [feat] when the component loads, add an observer which calculates if the tab items overflows the container and show/hide some kind of element which highights the overflow area
     this.tabs = this.element.shadowRoot?.querySelector('.tabs') as HTMLElement
     this.tabsContainer = this.element.shadowRoot?.querySelector('.tabs-wrapper') as HTMLElement
     this.startObserver()
@@ -94,6 +105,35 @@ export class MdsTab {
     if (this.animation === 'slide') {
       this.updateSliderPosition()
     }
+    this.initOverflowCheck()
+  }
+
+  private unsetOverflowCheck = (): void => {
+    this.overflowInit = false
+    this.tabs.removeEventListener('scroll', this.updateOverflowState)
+    this.observer.unobserve(this.tabsContainer)
+  }
+
+  private initOverflowCheck = (): void => {
+    if (this.overflowInit) return
+    this.overflowInit = true
+    this.tabs.addEventListener('scroll', this.updateOverflowState)
+    this.observer = new ResizeObserver(() => {
+      this.updateOverflowState()
+    })
+    this.observer.observe(this.tabsContainer)
+    this.updateOverflowState()
+  }
+
+  private updateOverflowState = (): void => {
+    if (!this.tabs || !this.tabsContainer) return
+
+    const containerWidth = this.tabsContainer.offsetWidth
+    const tabsWidth = this.tabs.scrollWidth
+    const { scrollLeft } = this.tabs
+
+    this.overflowLeft = scrollLeft > 0
+    this.overflowRight = scrollLeft + containerWidth < tabsWidth
   }
 
   private updateSliderPosition = (disableAnimation?: boolean): void => {
@@ -117,11 +157,12 @@ export class MdsTab {
   private scrollTabs = (key: number): void => {
     const tabItem = this.tabItems[key]
     this.tabs.scrollLeft = tabItem.offsetLeft - this.tabs.offsetLeft - (this.tabs.offsetWidth / 2) + (tabItem.offsetWidth / 2)
+    requestAnimationFrame(() => this.updateOverflowState())
   }
 
   private selectContentItem = (): void => {
     this.contentItems.forEach((item: HTMLElement, index: number) => {
-      // TODO [fix] on React attribute mds-tab-content-hidden is not added onLoad
+      // TODO [bug, react] on React attribute mds-tab-content-hidden is not added onLoad
       item.setAttribute('mds-tab-content-hidden', '')
       if (index === this.currentItem) {
         item.removeAttribute('mds-tab-content-hidden')
@@ -160,7 +201,7 @@ export class MdsTab {
   }
 
   @Watch('animation')
-  handleAnimation (newValue: HorizontalActionsAnimationType): void {
+  handleAnimationChange (newValue: HorizontalActionsAnimationType): void {
     if (newValue === 'slide') {
       this.updateSliderPosition()
       return
@@ -168,10 +209,36 @@ export class MdsTab {
     this.slider = null
   }
 
+  @Watch('scrollbar')
+  handleScrollbarChange (newValue?: boolean): void {
+    if (newValue === false) {
+      this.scrollbar = undefined
+    }
+  }
+
+  @Watch('fill')
+  handleFillChange (newValue?: boolean): void {
+    if (newValue === false) {
+      this.fill = undefined
+    }
+  }
+
+  @Watch('overflow')
+  handleOverflowChange (newValue?: boolean): void {
+    if (newValue === false) {
+      this.overflow = undefined
+      this.unsetOverflowCheck()
+      return
+    }
+    this.initOverflowCheck()
+  }
+
   render () {
     return (
       <Host>
         <div class={clsx('tabs-wrapper', this.fill && 'tabs-wrapper--fill')}>
+          { this.overflow && <div class={clsx('tabs-wrapper-overflow-left', this.overflowLeft && 'tabs-wrapper-overflow-left--show')}></div> }
+          { this.overflow && <div class={clsx('tabs-wrapper-overflow-right', this.overflowRight && 'tabs-wrapper-overflow-right--show')}></div> }
           <div class="tabs" part="tabs" role="tablist">
             <slot />
             { this.animation === 'slide' &&

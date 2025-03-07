@@ -47,6 +47,7 @@
   --mds-tab-tabs-gap: theme('padding.200');
   --mds-tab-tabs-padding: theme('padding.200');
   --mds-tab-tabs-radius: theme('borderRadius.2xl');
+  --mds-tab-tabs-overflow-shadow: rgb(0 0 0 / 0.25) 0 0 var(--shadow-size) -2px;
   --mds-tab-tabs-wrapper-outline-opacity: 0.7;
   --mds-tab-tabs-wrapper-shadow-color: var(--mds-tab-tabs-background);
   --mds-tab-tabs-wrapper-shadow: 0 0 0 2px var(--mds-tab-tabs-wrapper-shadow-color) inset;
@@ -80,6 +81,7 @@
 }
 
 .tabs-wrapper {
+  border-radius: var(--mds-tab-tabs-radius);
   display: grid;
   max-width: max-content;
   overflow: hidden;
@@ -101,8 +103,6 @@
   transition-duration: var(--mds-tab-transition-duration);
   transition-property: box-shadow, opacity;
   transition-timing-function: var(--mds-tab-transition-timing-function);
-
-  /* z-index: 1; */
 }
 
 
@@ -131,7 +131,7 @@
   display: none;
 }
 
-::slotted( [slot="content"]) {
+::slotted([slot="content"]) {
   @apply
     min-w-full
     w-full;
@@ -141,12 +141,14 @@
   scroll-snap-align: start;
 }
 
-::slotted( [slot="content"][mds-tab-content-hidden]) {
+::slotted([slot="content"][mds-tab-content-hidden]) {
   display: none !important;
 }
 
 @import './css/mds-tab-animation.css';
 @import './css/mds-tab-scrollbar.css';
+@import './css/mds-tab-tabs-wrapper-overflow.css';
+@import './css/mds-tab-tabs-wrapper-decorator.css';
 @import './css/mds-tab-pref-animation.css';
 @import './css/mds-tab-pref-theme.css';
 @import './css/mds-tab-pref-contrast.css';

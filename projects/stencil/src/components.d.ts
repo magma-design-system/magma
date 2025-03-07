@@ -1343,7 +1343,28 @@ export namespace Components {
          */
         "selected"?: boolean;
     }
+    /**
+     * @name Pref
+     * @description This component is based on MdsTab component pattern
+     * @overview  <mds-text>Accessibility preferences in web browsers allow users to customize their navigation to improve readability, interaction, and usability. Common options include dark mode, text resizing, screen reader support, keyboard navigation, and blocking animated content. These settings help people with visual, hearing, motor, or cognitive disabilities experience the web more effectively and inclusively.</mds-text>
+     * @category Patterns
+     * @tags pattern, user, tab
+     * @example <mds-pref>
+     * <mds-pref-animation></mds-pref-animation>
+     * <mds-pref-consumption></mds-pref-consumption>
+     * <mds-pref-contrast></mds-pref-contrast>
+     * <mds-pref-theme></mds-pref-theme>
+     * <mds-pref-language>
+     * <mds-pref-language-item code="it"></mds-pref-language-item>
+     * <mds-pref-language-item code="en"></mds-pref-language-item>
+     * </mds-pref-language>
+     * </mds-pref>
+     */
     interface MdsPref {
+        /**
+          * Sets if the component works as hidden element controller instead as UI element, visible on the DOM
+         */
+        "controller"?: boolean;
         "updateLang": () => Promise<void>;
     }
     interface MdsPrefAnimation {
@@ -1569,6 +1590,10 @@ export namespace Components {
          */
         "fill"?: boolean;
         /**
+          * Sets if the tab area should show an inset shadow when the tabs overflows it's container
+         */
+        "overflow"?: boolean;
+        /**
           * Shows the horizontal scrollbar to maximize accessibility
          */
         "scrollbar"?: boolean;
@@ -1587,6 +1612,10 @@ export namespace Components {
         "typography"?: TypographySmallerType;
     }
     interface MdsTabItem {
+        /**
+          * Specifies if the tab item is disabled or not
+         */
+        "disabled"?: boolean;
         /**
           * Specifies the URL target of the button
          */
@@ -2708,6 +2737,23 @@ declare global {
         prototype: HTMLMdsPaginatorItemElement;
         new (): HTMLMdsPaginatorItemElement;
     };
+    /**
+     * @name Pref
+     * @description This component is based on MdsTab component pattern
+     * @overview  <mds-text>Accessibility preferences in web browsers allow users to customize their navigation to improve readability, interaction, and usability. Common options include dark mode, text resizing, screen reader support, keyboard navigation, and blocking animated content. These settings help people with visual, hearing, motor, or cognitive disabilities experience the web more effectively and inclusively.</mds-text>
+     * @category Patterns
+     * @tags pattern, user, tab
+     * @example <mds-pref>
+     * <mds-pref-animation></mds-pref-animation>
+     * <mds-pref-consumption></mds-pref-consumption>
+     * <mds-pref-contrast></mds-pref-contrast>
+     * <mds-pref-theme></mds-pref-theme>
+     * <mds-pref-language>
+     * <mds-pref-language-item code="it"></mds-pref-language-item>
+     * <mds-pref-language-item code="en"></mds-pref-language-item>
+     * </mds-pref-language>
+     * </mds-pref>
+     */
     interface HTMLMdsPrefElement extends Components.MdsPref, HTMLStencilElement {
     }
     var HTMLMdsPrefElement: {
@@ -4586,7 +4632,28 @@ declare namespace LocalJSX {
          */
         "selected"?: boolean;
     }
+    /**
+     * @name Pref
+     * @description This component is based on MdsTab component pattern
+     * @overview  <mds-text>Accessibility preferences in web browsers allow users to customize their navigation to improve readability, interaction, and usability. Common options include dark mode, text resizing, screen reader support, keyboard navigation, and blocking animated content. These settings help people with visual, hearing, motor, or cognitive disabilities experience the web more effectively and inclusively.</mds-text>
+     * @category Patterns
+     * @tags pattern, user, tab
+     * @example <mds-pref>
+     * <mds-pref-animation></mds-pref-animation>
+     * <mds-pref-consumption></mds-pref-consumption>
+     * <mds-pref-contrast></mds-pref-contrast>
+     * <mds-pref-theme></mds-pref-theme>
+     * <mds-pref-language>
+     * <mds-pref-language-item code="it"></mds-pref-language-item>
+     * <mds-pref-language-item code="en"></mds-pref-language-item>
+     * </mds-pref-language>
+     * </mds-pref>
+     */
     interface MdsPref {
+        /**
+          * Sets if the component works as hidden element controller instead as UI element, visible on the DOM
+         */
+        "controller"?: boolean;
     }
     interface MdsPrefAnimation {
         /**
@@ -4848,6 +4915,10 @@ declare namespace LocalJSX {
          */
         "onMdsTabChange"?: (event: MdsTabCustomEvent<MdsTabEventDetail>) => void;
         /**
+          * Sets if the tab area should show an inset shadow when the tabs overflows it's container
+         */
+        "overflow"?: boolean;
+        /**
           * Shows the horizontal scrollbar to maximize accessibility
          */
         "scrollbar"?: boolean;
@@ -4874,6 +4945,10 @@ declare namespace LocalJSX {
         "typography"?: TypographySmallerType;
     }
     interface MdsTabItem {
+        /**
+          * Specifies if the tab item is disabled or not
+         */
+        "disabled"?: boolean;
         /**
           * Specifies the URL target of the button
          */
@@ -5353,6 +5428,23 @@ declare module "@stencil/core" {
             "mds-notification": LocalJSX.MdsNotification & JSXBase.HTMLAttributes<HTMLMdsNotificationElement>;
             "mds-paginator": LocalJSX.MdsPaginator & JSXBase.HTMLAttributes<HTMLMdsPaginatorElement>;
             "mds-paginator-item": LocalJSX.MdsPaginatorItem & JSXBase.HTMLAttributes<HTMLMdsPaginatorItemElement>;
+            /**
+             * @name Pref
+             * @description This component is based on MdsTab component pattern
+             * @overview  <mds-text>Accessibility preferences in web browsers allow users to customize their navigation to improve readability, interaction, and usability. Common options include dark mode, text resizing, screen reader support, keyboard navigation, and blocking animated content. These settings help people with visual, hearing, motor, or cognitive disabilities experience the web more effectively and inclusively.</mds-text>
+             * @category Patterns
+             * @tags pattern, user, tab
+             * @example <mds-pref>
+             * <mds-pref-animation></mds-pref-animation>
+             * <mds-pref-consumption></mds-pref-consumption>
+             * <mds-pref-contrast></mds-pref-contrast>
+             * <mds-pref-theme></mds-pref-theme>
+             * <mds-pref-language>
+             * <mds-pref-language-item code="it"></mds-pref-language-item>
+             * <mds-pref-language-item code="en"></mds-pref-language-item>
+             * </mds-pref-language>
+             * </mds-pref>
+             */
             "mds-pref": LocalJSX.MdsPref & JSXBase.HTMLAttributes<HTMLMdsPrefElement>;
             "mds-pref-animation": LocalJSX.MdsPrefAnimation & JSXBase.HTMLAttributes<HTMLMdsPrefAnimationElement>;
             "mds-pref-consumption": LocalJSX.MdsPrefConsumption & JSXBase.HTMLAttributes<HTMLMdsPrefConsumptionElement>;

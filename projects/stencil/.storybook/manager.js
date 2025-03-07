@@ -14,6 +14,14 @@ const AccessibilityPanel = () => {
     if (iframe) {
       const iframeDocument = iframe.contentDocument || iframe.contentWindow.document
       const htmlEl = iframeDocument.querySelector('html')
+
+      if (value === 'unset') {
+        htmlEl.removeAttribute('class')
+        htmlEl.removeAttribute('style')
+        window.localStorage.removeItem(`mdsPref${capitalize(preference)}`)
+        return
+      }
+
       for (const key in list) {
         htmlEl.classList.remove(`pref-${preference}-${list[key]}`)
       }
@@ -23,20 +31,6 @@ const AccessibilityPanel = () => {
     }
   }
 
-  // const translateAllComponents = () => {
-  //   console.log('translateAllComponents')
-  //   document.querySelectorAll('*').forEach(el => {
-  //     console.log(el)
-  //     if (el.tagName.toLowerCase().startsWith('mds-')) {
-  //       console.log('mds-', el)
-  //       if (el && 'updateLang' in el) {
-  //         console.log('updateLang')
-  //         el.updateLang()
-  //       }
-  //     }
-  //   })
-  // }
-
   const setLanguage = (lang) => {
     if (window) {
       window.localStorage.setItem('mdsPrefLanguage', lang)
@@ -44,8 +38,12 @@ const AccessibilityPanel = () => {
     if (document) {
       const iframe = document.getElementById('storybook-preview-iframe')
       const iframeDocument = iframe.contentDocument || iframe.contentWindow.document
+      if (lang === 'unset') {
+        window.localStorage.removeItem('mdsPrefLanguage')
+        iframeDocument.querySelector('html').removeAttribute('lang')
+        return
+      }
       iframeDocument.querySelector('html').setAttribute('lang', window.localStorage.getItem('mdsPrefLanguage') ?? 'it')
-      // translateAllComponents()
     }
   }
 
@@ -60,6 +58,7 @@ const AccessibilityPanel = () => {
           <option value="light">Light</option>
           <option value="system">System</option>
           <option value="dark">Dark</option>
+          <option value="unset">Unset</option>
         </Form.Select>
       </Form.Field>
       <Form.Field label="Contrast">
@@ -71,6 +70,7 @@ const AccessibilityPanel = () => {
           <option value="more">More</option>
           <option value="system">System</option>
           <option value="no-preference">No preference</option>
+          <option value="unset">Unset</option>
         </Form.Select>
       </Form.Field>
       <Form.Field label="Animations">
@@ -82,6 +82,7 @@ const AccessibilityPanel = () => {
           <option value="reduce">Reduce</option>
           <option value="system">System</option>
           <option value="no-preference">No preference</option>
+          <option value="unset">Unset</option>
         </Form.Select>
       </Form.Field>
       <Form.Field label="Consumption">
@@ -93,6 +94,7 @@ const AccessibilityPanel = () => {
           <option value="low">Low</option>
           <option value="medium">Medium</option>
           <option value="high">High</option>
+          <option value="unset">Unset</option>
         </Form.Select>
       </Form.Field>
       <Form.Field label="Language">
@@ -104,6 +106,7 @@ const AccessibilityPanel = () => {
           <option value="it">Italiano</option>
           <option value="en">English</option>
           <option value="el">Ελληνικά (Greek)</option>
+          <option value="unset">Unset</option>
         </Form.Select>
       </Form.Field>
     </Form>
