@@ -46,8 +46,8 @@ const TemplateActions = args =>
     <mds-text typography="detail">
       Pare che la licenza di questo servizio sia scaduta, il servizio non smetterà di funzionare ma non potrai più utilizzare le <a href="#">funzioni premium</a>.
     </mds-text>
-    <mds-button slot="actions" variant={args.variant} tone="ghost">Annulla</mds-button>
-    <mds-button slot="actions" variant={args.variant}>Rinnova abbonamento</mds-button>
+    <mds-button slot="action" variant={args.variant} tone="ghost">Annulla</mds-button>
+    <mds-button slot="action" variant={args.variant}>Rinnova abbonamento</mds-button>
   </mds-banner>
 
 const TemplateVariantDefault = args =>
@@ -55,8 +55,8 @@ const TemplateVariantDefault = args =>
     <mds-text typography="detail">
       Il tuo account è stato aggiornato alla versione PRO, ora puoi utilizzare le notifiche su aggiornamenti di norme di legge e la consultazione dei volumi correlati.
     </mds-text>
-    <mds-button slot="actions" variant="primary" tone="ghost">Cancel</mds-button>
-    <mds-button slot="actions" variant="primary" tone={args.tone}>Confirm</mds-button>
+    <mds-button slot="action" variant="primary" tone="ghost">Cancel</mds-button>
+    <mds-button slot="action" variant="primary" tone={args.tone}>Confirm</mds-button>
   </mds-banner>
 
 const TemplateVariantDark = args =>
@@ -64,8 +64,8 @@ const TemplateVariantDark = args =>
     <mds-text typography="detail">
       Il tuo account è stato aggiornato alla versione PRO, ora puoi utilizzare le notifiche su aggiornamenti di norme di legge e la consultazione dei volumi correlati.
     </mds-text>
-    <mds-button slot="actions" variant="light" tone="quiet">Cancel</mds-button>
-    <mds-button slot="actions" variant="dark" tone={args.tone}>Confirm</mds-button>
+    <mds-button slot="action" variant="light" tone="quiet">Cancel</mds-button>
+    <mds-button slot="action" variant="dark" tone={args.tone}>Confirm</mds-button>
   </mds-banner>
 
 const TemplateVariantLight = args =>
@@ -73,8 +73,8 @@ const TemplateVariantLight = args =>
     <mds-text typography="detail">
       Il tuo account è stato aggiornato alla versione PRO, ora puoi utilizzare le notifiche su aggiornamenti di norme di legge e la consultazione dei volumi correlati.
     </mds-text>
-    <mds-button slot="actions" variant="dark" tone="quiet">Cancel</mds-button>
-    <mds-button slot="actions" variant="dark" tone={args.tone}>Confirm</mds-button>
+    <mds-button slot="action" variant="dark" tone="quiet">Cancel</mds-button>
+    <mds-button slot="action" variant="dark" tone={args.tone}>Confirm</mds-button>
   </mds-banner>
 
 const TemplateVariantStatus = args =>
@@ -82,8 +82,8 @@ const TemplateVariantStatus = args =>
     <mds-text typography="detail">
     Se procederai, perderai i dati relativi modelli del database che hai registrato in precedenza. Conferma solo se sei consapevole di ciò che stai facendo.
     </mds-text>
-    <mds-button slot="actions" variant={ args.variant } tone="quiet">Annulla</mds-button>
-    <mds-button slot="actions" variant={ args.variant } tone="weak">Conferma</mds-button>
+    <mds-button slot="action" variant={ args.variant } tone="quiet">Annulla</mds-button>
+    <mds-button slot="action" variant={ args.variant } tone="weak">Conferma</mds-button>
   </mds-banner>
 
 export const Default = Template.bind({})
