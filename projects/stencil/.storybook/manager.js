@@ -2,6 +2,8 @@ import React from 'react'
 import { AddonPanel, Form } from '@storybook/components'
 import { useGlobals, addons, types } from '@storybook/manager-api'
 import themeMaggioli from './theme'
+import { useState } from 'react'
+import clsx from 'clsx'
 
 const AccessibilityPanel = () => {
 
@@ -47,10 +49,52 @@ const AccessibilityPanel = () => {
     }
   }
 
+  const checkAccessibilityUse = (reset) => {
+    if (reset) {
+      setAccessibility('theme', 'unset')
+      setAccessibility('contrast', 'unset')
+      setAccessibility('animation', 'unset')
+      setAccessibility('consumption', 'unset')
+      setLanguage('unset')
+      return
+    }
+
+    setAccessibility('theme', window.localStorage.getItem('mdsPrefTheme') ?? 'light', ['light', 'system', 'dark'])
+    setAccessibility('contrast', window.localStorage.getItem('mdsPrefContrast') ?? 'no-preference', ['more', 'system', 'no-preference'])
+    setAccessibility('animation', window.localStorage.getItem('mdsPrefAnimation') ?? 'no-preference', ['reduce', 'system', 'no-preference'])
+    setAccessibility('consumption', window.localStorage.getItem('mdsPrefConsumption') ?? 'high', ['low', 'medium', 'high'])
+    setLanguage(window.localStorage.getItem('mdsPrefLanguage') ?? 'en')
+  }
+
+  let usePrefs = false
+  if (window.localStorage.getItem('mdsPrefStorybookPrefs') === 'enable') {
+    usePrefs = true
+  }
+
+  const [enabled, setEnabledPrefs] = useState(usePrefs)
+
+  const togglePreferences = (isEnabled) => {
+    setEnabledPrefs(isEnabled === 'enable')
+    checkAccessibilityUse(enabled)
+    window.localStorage.setItem('mdsPrefStorybookPrefs', enabled)
+  }
+
   return (
     <Form>
+      <Form.Field label="Preferences">
+        <Form.Select
+          name="pref-disable"
+          defaultValue="disable"
+          onChange={(event) => { togglePreferences(event.target.value) }}
+        >
+          <option value="enable">Enabled</option>
+          <option value="disable">Disabled</option>
+        </Form.Select>
+      </Form.Field>
       <Form.Field label="Theme">
         <Form.Select
+          disabled={!enabled}
+          className={clsx(!enabled && 'opacity-30 pointer-events-none')}
           name="pref-theme"
           defaultValue={ window.localStorage.getItem('mdsPrefTheme') ?? 'light' }
           onChange={(event) => { setAccessibility('theme', event.target.value, ['light', 'system', 'dark']) }}
@@ -63,6 +107,8 @@ const AccessibilityPanel = () => {
       </Form.Field>
       <Form.Field label="Contrast">
         <Form.Select
+          disabled={!enabled}
+          className={clsx(!enabled && 'opacity-30 pointer-events-none')}
           name="pref-contrast"
           defaultValue={ window.localStorage.getItem('mdsPrefContrast') ?? 'no-preference' }
           onChange={(event) => { setAccessibility('contrast', event.target.value, ['more', 'system', 'no-preference']) }}
@@ -75,6 +121,8 @@ const AccessibilityPanel = () => {
       </Form.Field>
       <Form.Field label="Animations">
         <Form.Select
+          disabled={!enabled}
+          className={clsx(!enabled && 'opacity-30 pointer-events-none')}
           name="pref-animation"
           defaultValue={ window.localStorage.getItem('mdsPrefAnimation') ?? 'no-preference' }
           onChange={(event) => { setAccessibility('animation', event.target.value, ['reduce', 'system', 'no-preference']) }}
@@ -87,6 +135,8 @@ const AccessibilityPanel = () => {
       </Form.Field>
       <Form.Field label="Consumption">
         <Form.Select
+          disabled={!enabled}
+          className={clsx(!enabled && 'opacity-30 pointer-events-none')}
           name="pref-consumption"
           defaultValue={ window.localStorage.getItem('mdsPrefConsumption') ?? 'high' }
           onChange={(event) => { setAccessibility('consumption', event.target.value, ['low', 'medium', 'high']) }}
@@ -99,6 +149,8 @@ const AccessibilityPanel = () => {
       </Form.Field>
       <Form.Field label="Language">
         <Form.Select
+          disabled={!enabled}
+          className={clsx(!enabled && 'opacity-30 pointer-events-none')}
           name="pref-language"
           defaultValue={ window.localStorage.getItem('mdsPrefLanguage') ?? 'en' }
           onChange={(event) => { setLanguage(event.target.value) }}
