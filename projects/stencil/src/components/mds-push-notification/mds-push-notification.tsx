@@ -5,7 +5,7 @@ import localeEs from './meta/locale.es.json'
 import localeIt from './meta/locale.it.json'
 import miBaselineCancel from '@icon/mi/baseline/cancel.svg'
 import relativeTime from 'dayjs/plugin/relativeTime'
-import { Component, Element, Event, EventEmitter, Host, h, Prop, Method, State } from '@stencil/core'
+import { Component, Element, Event, EventEmitter, Host, h, Prop, Method, State, Watch } from '@stencil/core'
 import { ISO8601Date } from '@type/date'
 import { Locale } from '@common/locale'
 import { MdsPushNotificationEventDetail } from './meta/event-detail'
@@ -20,7 +20,7 @@ dayjs.extend(relativeTime)
  * @part content - The content wrapper of the message
  * @part icon - The icon set by `icon` attribute
  * @part picture - The picture image added by `src` attribute
- * @slot actions - Add `HTML elements` or `components`, it is **recommended** to use `mds-button` element.
+ * @slot action - Add `HTML elements` or `components`, it is **recommended** to use `mds-button` element.
  * @slot badge - Add `HTML elements` or `components`, it is **recommended** to use `mds-badge` element.
  */
 
@@ -59,7 +59,7 @@ export class MdsPushNotification {
   /**
    * Specifies if the component is dismissable or not, it should be set to true by default is used with it's parent component `mds-push-notifications`
    */
-  @Prop({ reflect: true }) readonly deletable: boolean = true
+  @Prop({ reflect: true, mutable: true }) deletable?: boolean = true
 
   /**
    * Specifies the icon to be displayed
@@ -111,9 +111,13 @@ export class MdsPushNotification {
     this.closedEvent.emit()
   }
 
+  componentDidLoad (): void {
+    this.handleDeletableChange(this.deletable)
+  }
+
   componentWillLoad ():void {
-    this.hasActions = this.host.querySelector('[slot="actions"]') !== null
-    this.hasBadge = this.host.querySelector('[slot="badge"]') !== null
+    this.hasActions = this.host.querySelector(':scope > [slot="action"]') !== null
+    this.hasBadge = this.host.querySelector(':scope > [slot="badge"]') !== null
 
     if (this.datetime) {
       this.datetime = sanitizeISO8601Date(this.datetime?.toString()) as ISO8601Date
@@ -139,6 +143,13 @@ export class MdsPushNotification {
     dayjs.locale('custom-locale', { relativeTime: relativeTimeCustom as RelativeTimeType })
   }
 
+  @Watch('deletable')
+  handleDeletableChange (newValue?: boolean): void {
+    if (newValue === false) {
+      this.deletable = undefined
+    }
+  }
+
   render () {
     return (
       <Host>
@@ -159,7 +170,7 @@ export class MdsPushNotification {
           </div>
           <mds-text class="message" truncate="all" typography="caption" variant="info">{ this.message }</mds-text>
           { this.hasActions && <div class="actions" part="actions">
-            <slot name="actions"></slot>
+            <slot name="action"></slot>
           </div> }
         </div>
         { this.deletable && <mds-button class="close-button" title={this.t.get('dismiss')} icon={miBaselineCancel} onClick={this.onClickClose.bind(this)}></mds-button> }
