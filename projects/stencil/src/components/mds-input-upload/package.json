@@ -28,7 +28,7 @@
     "@maggioli-design-system/mds-entity": "5.3.1",
     "@maggioli-design-system/mds-file-preview": "2.5.1",
     "@maggioli-design-system/mds-progress": "3.2.0",
-    "@maggioli-design-system/mds-text": "4.7.0",
+    "@maggioli-design-system/mds-text": "4.7.1",
     "@maggioli-design-system/styles": "15.9.0",
     "mime": "4.0.4",
     "@stencil/core": "4.27.2"

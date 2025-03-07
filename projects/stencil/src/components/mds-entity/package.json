@@ -23,7 +23,7 @@
     "prepublishOnly": "npm run build"
   },
   "dependencies": {
-    "@maggioli-design-system/mds-avatar": "4.3.0",
+    "@maggioli-design-system/mds-avatar": "4.3.1",
     "@maggioli-design-system/mds-spinner": "3.2.0",
     "@maggioli-design-system/styles": "15.9.0",
     "@stencil/core": "4.27.2"

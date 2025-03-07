@@ -25,9 +25,9 @@
   },
   "dependencies": {
     "@maggioli-design-system/mds-button": "6.4.1",
-    "@maggioli-design-system/mds-text": "4.7.0",
+    "@maggioli-design-system/mds-text": "4.7.1",
     "@maggioli-design-system/mds-tooltip": "4.7.0",
-    "@maggioli-design-system/mds-keyboard-key": "1.1.0",
+    "@maggioli-design-system/mds-keyboard-key": "1.1.1",
     "@maggioli-design-system/styles": "15.9.0",
     "@stencil/core": "4.27.2"
   },
