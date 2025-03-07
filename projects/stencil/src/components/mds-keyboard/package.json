@@ -24,7 +24,7 @@
     "test": "stencil test --spec --e2e"
   },
   "dependencies": {
-    "@maggioli-design-system/mds-button": "6.4.0",
+    "@maggioli-design-system/mds-button": "6.4.1",
     "@maggioli-design-system/mds-text": "4.7.0",
     "@maggioli-design-system/mds-tooltip": "4.7.0",
     "@maggioli-design-system/mds-keyboard-key": "1.1.0",

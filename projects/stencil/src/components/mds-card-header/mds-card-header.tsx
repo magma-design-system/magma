@@ -16,7 +16,7 @@ export class MdsCardHeader {
   private actions: boolean
 
   componentWillLoad (): void {
-    this.actions = this.hostElement.querySelector('[slot="action"]') !== null
+    this.actions = this.hostElement.querySelector(':scope > [slot="action"]') !== null
   }
 
   render () {

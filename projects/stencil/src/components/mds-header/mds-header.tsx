@@ -88,7 +88,7 @@ export class MdsHeader {
   }
 
   private mobileMenu = (): HTMLElement => {
-    return this.host.querySelector('[slot="menu"]') as HTMLElement
+    return this.host.querySelector(':scope > [slot="menu"]') as HTMLElement
   }
 
   private close = () => {

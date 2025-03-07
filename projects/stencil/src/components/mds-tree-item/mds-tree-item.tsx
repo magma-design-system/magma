@@ -164,7 +164,7 @@ export class MdsTreeItem {
 
     this.updateToggleIcon()
 
-    this.hasActions = !!this.host.querySelector('[slot="action"]')
+    this.hasActions = !!this.host.querySelector(':scope > [slot="action"]')
     this.hasChildren = !!this.host.querySelector('mds-tree-item')
   }
 

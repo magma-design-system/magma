@@ -32,7 +32,7 @@ export class MdsHeaderBar {
   @Prop({ reflect: true }) nav: HeaderBarNavType = 'desktop'
 
   componentWillLoad (): void {
-    this.hasNav = this.host.querySelector('[slot="nav"]') !== null
+    this.hasNav = this.host.querySelector(':scope > [slot="nav"]') !== null
   }
 
   /**

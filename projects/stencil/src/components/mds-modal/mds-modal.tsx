@@ -107,16 +107,16 @@ export class MdsModal {
   }
 
   componentWillLoad (): void {
-    this.bottom = this.host.querySelector('[slot="bottom"]') !== null
-    this.top = this.host.querySelector('[slot="top"]') !== null
-    this.window = this.host.querySelector('[slot="window"]') !== null
+    this.bottom = this.host.querySelector(':scope > [slot="bottom"]') !== null
+    this.top = this.host.querySelector(':scope > [slot="top"]') !== null
+    this.window = this.host.querySelector(':scope > [slot="window"]') !== null
 
     if (this.overflow === 'auto' && this.opened) {
       this.disableOverflow()
     }
 
     if (this.window) {
-      this.host.querySelector('[slot="window"]')?.setAttribute('role', 'dialog')
+      this.host.querySelector(':scope > [slot="window"]')?.setAttribute('role', 'dialog')
     }
   }
 

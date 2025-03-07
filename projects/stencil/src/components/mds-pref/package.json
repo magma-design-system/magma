@@ -28,7 +28,7 @@
     "@maggioli-design-system/mds-pref-animation": "2.4.1",
     "@maggioli-design-system/mds-pref-consumption": "2.5.0",
     "@maggioli-design-system/mds-pref-contrast": "2.4.1",
-    "@maggioli-design-system/mds-pref-language": "2.4.0",
+    "@maggioli-design-system/mds-pref-language": "2.4.1",
     "@maggioli-design-system/mds-pref-theme": "2.5.0",
     "@stencil/core": "4.27.2"
   },

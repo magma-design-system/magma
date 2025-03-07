@@ -52,7 +52,7 @@ export class MdsTableHeader {
   componentWillLoad (): void {
     this.language = this.t.lang(this.host)
     this.table = this.host.closest('mds-table') as HTMLMdsTableElement
-    this.hasActions = this.table.querySelector('[slot="action"]') !== null
+    this.hasActions = this.table.querySelector('mds-table-row > [slot="action"]') !== null
   }
 
   private handleSelectAllChange = (e: CustomEvent): void => {

@@ -22,7 +22,7 @@ export class MdsTableRow {
 
   @Element() host: HTMLMdsTableRowElement
   private actions: HTMLDivElement
-  private hasActions: boolean
+  private hasActions: boolean = true
   private sizerWidth: string
   private t:Locale = new Locale({
     el: localeEl,
@@ -49,7 +49,7 @@ export class MdsTableRow {
 
   componentWillLoad (): void {
     this.language = this.t.lang(this.host)
-    this.hasActions = this.host.querySelector('[slot="action"]') !== null
+    this.hasActions = this.host.querySelector(':scope > [slot="action"]') !== null
   }
 
   componentDidLoad (): void {

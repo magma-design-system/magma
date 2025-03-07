@@ -1477,7 +1477,7 @@ export namespace Components {
         /**
           * Specifies if the component is dismissable or not, it should be set to true by default is used with it's parent component `mds-push-notifications`
          */
-        "deletable": boolean;
+        "deletable"?: boolean;
         /**
           * Specifies the icon to be displayed
          */
