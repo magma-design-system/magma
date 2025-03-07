@@ -16,7 +16,6 @@ import '@fontsource/roboto-mono/400.css'
 import '@fontsource/roboto/500.css'
 import '@fontsource/roboto/700.css'
 import '@fontsource/roboto/900.css'
-// import '../www/build/magma-components.css'
 import './tailwind.css'
 import './iconsauce.css'
 
@@ -29,34 +28,7 @@ defineCustomElements();
 const pathName = window.location.pathname.replace('/iframe.html', '')
 const svgPath = pathName.charAt(pathName.length - 1) === '/' ? `${pathName}svg/` : `${pathName}/svg/`
 
-// Method 1 - call static function of MdsIcon
-
-// import { mds_icon } from '../dist/esm/mds-icon.entry'
-// const mdsIconGet = async () => {
-//   await customElements.whenDefined('mds-icon')
-//   mds_icon.setSvgPathStatic(svgPath)
-// }
-// mdsIconGet()
-
-// Method 2 - use of sessionStorage
 window.sessionStorage.setItem('mdsIconSvgPath', svgPath)
-
-// Method 3 - instantiate a temp MdsIcon DOM node element to call a stencil class Method
-// const mdsIconGet = async () => {
-//   await customElements.whenDefined('mds-icon')
-
-//   const mdsIcon = document.createElement('mds-icon')
-
-//   document.body.appendChild(mdsIcon)
-
-//   if ('setSvgPath' in mdsIcon) {
-//     mdsIcon.setSvgPath('/svg/')
-//   }
-
-//   document.body.removeChild(mdsIcon)
-// }
-
-// mdsIconGet()
 
 const capitalize = (string) => {
   return string.charAt(0).toUpperCase() + string.slice(1);
@@ -89,25 +61,6 @@ document.querySelector('html').setAttribute('lang', window.localStorage.getItem(
 const toUpperCase = string => {
   return string.charAt(0).toUpperCase() + string.slice(1)
 }
-
-const decorateViewport = (name, item) => {
-  const re = /\d{1,4}/i
-  return {
-    name: toUpperCase(name),
-    type: name,
-    styles: {
-      width: `${typeof item === 'object' ? item[Object.keys(item)[0]] : item.match(re)[0]}`,
-      height: '100%',
-    },
-  }
-}
-
-// const viewportKeys = Object.keys(media)
-// const viewports = {}
-
-// viewportKeys.forEach(viewportKeys => {
-//   viewports[viewportKeys] = decorateViewport(viewportKeys, media[viewportKeys])
-// })
 
 const parameters = {
   actions: { argTypesRegex: '^on[A-Z].*' },

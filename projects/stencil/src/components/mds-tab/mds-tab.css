@@ -47,6 +47,7 @@
   --mds-tab-tabs-gap: theme('padding.200');
   --mds-tab-tabs-padding: theme('padding.200');
   --mds-tab-tabs-radius: theme('borderRadius.2xl');
+  --mds-tab-tabs-overflow-shadow: rgb(0 0 0 / 0.25) 0 0 var(--shadow-size) -2px;
   --mds-tab-tabs-wrapper-outline-opacity: 0.7;
   --mds-tab-tabs-wrapper-shadow-color: var(--mds-tab-tabs-background);
   --mds-tab-tabs-wrapper-shadow: 0 0 0 2px var(--mds-tab-tabs-wrapper-shadow-color) inset;
