@@ -50,10 +50,12 @@ const checkAccessibility = (pref, defaultValue) => {
   setAccessibility(pref, defaultValue)
 }
 
-checkAccessibility('theme', 'system')
-checkAccessibility('contrast', 'system')
-checkAccessibility('animation', 'system')
-checkAccessibility('consumption', 'high')
+if (window.localStorage.getItem('mdsPrefStorybookPrefs') && window.localStorage.getItem('mdsPrefStorybookPrefs') === 'enabled') {
+  checkAccessibility('theme', 'system')
+  checkAccessibility('contrast', 'system')
+  checkAccessibility('animation', 'system')
+  checkAccessibility('consumption', 'high')
+}
 
 document.querySelector('html').classList.add('bg-tone-neutral', 'transition-colors')
 if (window.localStorage.getItem('mdsPrefLanguage')) {
