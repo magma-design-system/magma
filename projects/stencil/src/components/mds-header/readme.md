@@ -75,6 +75,8 @@ Type: `Promise<void>`
 | `--mds-header-hidden-bar-translate-inline` | Sets translateY value for the appearance inline `mds-header-bar` element                                                                                                                 |
 | `--mds-header-hidden-bar-translate-stripe` | Sets translateY value for the appearance stripe `mds-header-bar` element                                                                                                                 |
 | `--mds-header-icon-color`                  | Sets the color of the icon toggler                                                                                                                                                       |
+| `--mds-header-inline-margin`               | Sets inline margin of `the mds-header-bar` when attribute `appearance` is set to `inline`                                                                                                |
+| `--mds-header-inline-margin-mobile`        | Sets inline margin on mobile viewport of `the mds-header-bar` when attribute `appearance` is set to `inline`                                                                             |
 | `--mds-header-z-index`                     | Sets the z-index of the modal                                                                                                                                                            |
 
 

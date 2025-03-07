@@ -18,6 +18,8 @@
   position: fixed;
   transition-duration: theme('transitionDuration.500');
   transition-property: background-color, border-radius, margin, max-width, transform, width;
+  width: auto;
+  z-index: var(--mds-header-z-index, 1000);
 }
 
 .logo {
