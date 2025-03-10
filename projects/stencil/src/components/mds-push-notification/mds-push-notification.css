@@ -16,7 +16,6 @@
     max-w-8000
     min-w-7200
     p-400
-    pr-800
     rounded-lg;
 
   align-items: flex-start;
@@ -31,8 +30,8 @@
   transition-timing-function: var(--mds-push-notification-timing-function);
 }
 
-:host([deletable="false"]) {
-  @apply pr-400;
+:host([deletable]) {
+  @apply pr-800;
 }
 
 .content {
@@ -123,7 +122,7 @@
 .message {
   --mds-text-line-clamp: var(--mds-push-notification-message-line-clamp);
 
-  line-height: theme('lineHeight.sm');
+  line-height: theme('lineHeight.md');
   text-overflow: ellipsis;
 }
 

@@ -53,7 +53,7 @@ export class MdsVideoWall {
   @Prop() readonly src?: string
 
   componentWillLoad (): void {
-    this.hasContent = this.hostElement.querySelector('[slot="content"]') !== null
+    this.hasContent = this.hostElement.querySelector(':scope > [slot="content"]') !== null
   }
 
   render () {

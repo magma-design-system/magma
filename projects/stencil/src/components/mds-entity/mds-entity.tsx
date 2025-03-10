@@ -64,8 +64,8 @@ export class MdsEntity {
     return hasAvatar
   }
   componentWillLoad (): void {
-    this.details = this.hostElement.querySelector('[slot="detail"]') !== null
-    this.actions = this.hostElement.querySelector('[slot="action"]') !== null
+    this.details = this.hostElement.querySelector(':scope > [slot="detail"]') !== null
+    this.actions = this.hostElement.querySelector(':scope > [slot="action"]') !== null
   }
 
   render () {

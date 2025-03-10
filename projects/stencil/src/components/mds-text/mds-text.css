@@ -174,12 +174,14 @@
 
 :host([tag="code"]) {
   @apply
-    px-100
-    rounded
+    duration-200
     ease-in-out
-    duration-200;
+    px-100
+    py-25
+    rounded;
 
   background-color: theme('colors.tone-neutral-09');
+  box-shadow: theme('colors.tone-neutral-08') 0 0 0 1px;
   color: theme('colors.tone-neutral-03');
   transition-property: color, background-color;
 }

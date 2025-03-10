@@ -75,7 +75,7 @@ export class MdsBanner {
   }
 
   componentWillLoad (): void {
-    this.actions = this.host.querySelector('[slot="actions"]') !== null
+    this.actions = this.host.querySelector(':scope > [slot="action"]') !== null
   }
 
   componentDidLoad (): void {
@@ -115,7 +115,7 @@ export class MdsBanner {
         { this.actions
           &&
           <div class="actions">
-            <slot name="actions"/>
+            <slot name="action"/>
           </div>
         }
       </Host>

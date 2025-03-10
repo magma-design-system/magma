@@ -11,7 +11,7 @@
 | ------------ | ------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | -------------------------------- |
 | `dateFormat` | `date-format` | Specifies if the notification date format shows time passed or displays date as a static string                                                      | `string`                                                                                                                                                                                | `'timeago'`                      |
 | `datetime`   | `datetime`    | Specifies the notification date based on [standard ISO 8601](https://www.iso.org/iso-8601-date-and-time-format.html).                                | `string \| undefined`                                                                                                                                                                   | `undefined`                      |
-| `deletable`  | `deletable`   | Specifies if the component is dismissable or not, it should be set to true by default is used with it's parent component `mds-push-notifications`    | `boolean`                                                                                                                                                                               | `true`                           |
+| `deletable`  | `deletable`   | Specifies if the component is dismissable or not, it should be set to true by default is used with it's parent component `mds-push-notifications`    | `boolean \| undefined`                                                                                                                                                                  | `true`                           |
 | `icon`       | `icon`        | Specifies the icon to be displayed                                                                                                                   | `string \| undefined`                                                                                                                                                                   | `undefined`                      |
 | `initials`   | `initials`    | The user's inizials displayed if there's no image available, initials will override tone and variant senttings to keep user recognizable from others | `string \| undefined`                                                                                                                                                                   | `undefined`                      |
 | `message`    | `message`     | Specifies the message of the component                                                                                                               | `string`                                                                                                                                                                                | `'Nessun messaggio disponibile'` |
@@ -44,10 +44,10 @@ Type: `Promise<void>`
 
 ## Slots
 
-| Slot        | Description                                                                             |
-| ----------- | --------------------------------------------------------------------------------------- |
-| `"actions"` | Add `HTML elements` or `components`, it is **recommended** to use `mds-button` element. |
-| `"badge"`   | Add `HTML elements` or `components`, it is **recommended** to use `mds-badge` element.  |
+| Slot       | Description                                                                             |
+| ---------- | --------------------------------------------------------------------------------------- |
+| `"action"` | Add `HTML elements` or `components`, it is **recommended** to use `mds-button` element. |
+| `"badge"`  | Add `HTML elements` or `components`, it is **recommended** to use `mds-badge` element.  |
 
 
 ## Shadow Parts
