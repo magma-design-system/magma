@@ -25,7 +25,7 @@
   },
   "dependencies": {
     "@maggioli-design-system/mds-button": "6.4.1",
-    "@maggioli-design-system/mds-entity": "5.3.2",
+    "@maggioli-design-system/mds-entity": "5.3.1",
     "@maggioli-design-system/mds-file-preview": "2.5.1",
     "@maggioli-design-system/mds-progress": "3.2.0",
     "@maggioli-design-system/mds-text": "4.7.1",
