@@ -476,7 +476,7 @@ export namespace Components {
         /**
           * Specifies if the component has a backdrop background
          */
-        "backdrop": boolean;
+        "backdrop"?: boolean;
         /**
           * Specifies the placement of the component if no space is available where it is placed.
          */

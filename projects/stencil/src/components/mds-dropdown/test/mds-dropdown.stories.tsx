@@ -4,6 +4,7 @@ import {
 } from '@dictionary/floating-ui'
 import { dropdownInteractionDictionary } from '../meta/dictionary'
 import { h } from '@stencil/core'
+import { useState } from 'react'
 
 export default {
   title: 'UI / Dropdown',
@@ -155,6 +156,37 @@ const TemplatePerformance = ({ ...args }) =>
     ))}
   </div>
 
+const TemplateModalNested = () => {
+
+  const [ isModalOpened, setModalOpen ] = useState(false)
+
+  return <div class="grid">
+    <div>
+      <mds-button id="open-modal" onClick={() => setModalOpen(true)}>Open modal</mds-button>
+    </div>
+    <mds-modal position='right' opened={isModalOpened} onMdsModalClose={() => { setModalOpen(false) }}>
+      <header slot="top" class="p-800 flex gap-400 items-center border-b border-solid border-0 border-tone-neutral-09 max-w-[400px]">
+        <mds-img class="w-1600" src="./logo-gruppo-maggioli-512w.webp"/>
+        <div class="text-tone-neutral-02">
+          <mds-text typography="h5" class="truncate min-w-0">Maggioli Editore</mds-text>
+          <mds-text typography="detail" class="truncate min-w-0">Menu di servizio</mds-text>
+        </div>
+      </header>
+      <div class="p-800 max-w-[400px] flex flex-col gap-400">
+        <mds-button variant="primary" id="open-dropdown">Show dropdown</mds-button>
+        <mds-dropdown target="#open-dropdown" backdrop={false}>
+          <mds-button variant="light" class="justify-start">Dropdown action</mds-button>
+          <mds-button variant="light" class="justify-start">Dropdown action</mds-button>
+          <mds-button variant="light" class="justify-start">Dropdown action</mds-button>
+        </mds-dropdown>
+        <mds-button variant="light" class="justify-start">Other action</mds-button>
+        <mds-button variant="light" class="justify-start">Other action</mds-button>
+        <mds-button variant="light" class="justify-start">Other action</mds-button>
+      </div>
+    </mds-modal>
+  </div>
+}
+
 export const Default = Template.bind({})
 Default.args = {
   class: 'max-w-[350px] w-full',
@@ -273,5 +305,7 @@ NestedBestPractice.args = {
 }
 
 export const Performance = TemplatePerformance.bind({
-  Backdrop: true,
+  backdrop: true,
 })
+
+export const ModalNested = TemplateModalNested.bind({})
