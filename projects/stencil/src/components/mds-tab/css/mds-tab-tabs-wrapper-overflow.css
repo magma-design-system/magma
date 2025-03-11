@@ -1,8 +1,7 @@
 .tabs-wrapper-overflow-left,
 .tabs-wrapper-overflow-right {
-  --shadow-size: theme('size.600');
   --size: calc(var(--mds-tab-tabs-padding) * 2);
-  --offset-outside: calc(var(--size) + var(--shadow-size));
+  --offset-outside: calc(var(--size) + var(--mds-tab-tabs-overflow-shadow-size));
 
   background-color: var(--mds-tab-tabs-background);
   border-radius: 100%;
