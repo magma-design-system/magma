@@ -5,6 +5,7 @@ import { setAttributeIfEmpty } from '@common/aria'
 import { HorizontalActionsAnimationType } from '@type/animation'
 import { hashRandomValue } from '@common/aria'
 import clsx from 'clsx'
+import { cssDurationToMilliseconds } from '@common/unit'
 
 /**
  * @part contents - Selects the container of the tabbed contents elements.
@@ -30,6 +31,7 @@ export class MdsTab {
   private tabItems: NodeListOf<HTMLMdsTabItemElement>
   private contentItems: NodeListOf<HTMLElement>
   private overflowInit: boolean = false
+  private cssSlideDelayDuration: string
   @State() sliderWidth: number = -1
   @State() sliderOffset: number = -1
   @State() overflowLeft: boolean = false
@@ -93,6 +95,7 @@ export class MdsTab {
   }
 
   componentDidLoad (): void {
+    this.updateCSSCustomProps()
     this.tabs = this.element.shadowRoot?.querySelector('.tabs') as HTMLElement
     this.tabsContainer = this.element.shadowRoot?.querySelector('.tabs-wrapper') as HTMLElement
     this.startObserver()
@@ -155,9 +158,12 @@ export class MdsTab {
   }
 
   private scrollTabs = (key: number): void => {
+
     const tabItem = this.tabItems[key]
-    this.tabs.scrollLeft = tabItem.offsetLeft - this.tabs.offsetLeft - (this.tabs.offsetWidth / 2) + (tabItem.offsetWidth / 2)
-    requestAnimationFrame(() => this.updateOverflowState())
+    setTimeout(() => {
+      this.tabs.scrollLeft = tabItem.offsetLeft - this.tabs.offsetLeft - (this.tabs.offsetWidth / 2) + (tabItem.offsetWidth / 2)
+      requestAnimationFrame(() => this.updateOverflowState())
+    }, cssDurationToMilliseconds(this.cssSlideDelayDuration))
   }
 
   private selectContentItem = (): void => {
@@ -168,6 +174,14 @@ export class MdsTab {
         item.removeAttribute('mds-tab-content-hidden')
       }
     })
+  }
+
+  private readonly updateCSSCustomProps = (): void => {
+    if (typeof window === 'undefined') return
+    const elementStyles = window.getComputedStyle(this.element)
+    this.cssSlideDelayDuration = elementStyles.getPropertyValue(
+      '--mds-tab-slide-delay',
+    )
   }
 
   @Listen('mdsTabItemSelect')

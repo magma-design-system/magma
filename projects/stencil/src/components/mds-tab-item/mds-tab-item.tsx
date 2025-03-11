@@ -102,7 +102,7 @@ export class MdsTabItem {
 
   render () {
     return (
-      <Host onClick={this.toggle}>
+      <Host onMouseDown={this.toggle}>
         <mds-button class="button"
           disabled={this.disabled}
           href={this.href}
