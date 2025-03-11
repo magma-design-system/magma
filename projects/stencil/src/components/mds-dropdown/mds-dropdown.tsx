@@ -219,7 +219,8 @@ export class MdsDropdown implements FloatingElement {
     this.hiddenEvent.emit({ caller: this.caller, visible: false })
   }
 
-  onClickTarget (): void {
+  onClickTarget (ev: Event): void {
+    ev.stopPropagation()
     this.visible = !this.visible
   }
 
