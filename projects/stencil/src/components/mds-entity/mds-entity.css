@@ -52,6 +52,7 @@
   align-items: center;
   display: inline-flex;
   justify-content: center;
+  pointer-events: none;
 }
 
 .spinner {
@@ -79,6 +80,7 @@ mds-spinner {
   flex-direction: column;
   flex-grow: 1;
   justify-content: center;
+  pointer-events: none;
   white-space: nowrap;
 }
 
