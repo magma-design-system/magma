@@ -187,20 +187,18 @@ const TemplateModalNested = () => {
   </div>
 }
 
-const TemplateTarget = () => {
+const TemplateTarget = args => {
   return <div class="grid gap-400 p-600 rounded-xl bg-tone-neutral-09">
     <mds-entity icon='mi/baseline/info' id='opendropdown'>
       <mds-text>click to open dropdown</mds-text>
       <mds-button slot="action" icon="mi/baseline/warning" variant="warning" tone="weak" onClick={() => console.info('')}></mds-button>
     </mds-entity>
-    <mds-dropdown target='#opendropdown'>Dropdown</mds-dropdown>
+    <mds-dropdown target='#opendropdown' {...args}>Dropdown</mds-dropdown>
     <mds-text typography='paragraph'>
       Do not use other click actions inside a element designed as dropdown target because its never been executed
     </mds-text>
   </div>
 }
-
-export const Target = TemplateTarget.bind({})
 
 export const Default = Template.bind({})
 Default.args = {
@@ -324,3 +322,7 @@ export const Performance = TemplatePerformance.bind({
 })
 
 export const ModalNested = TemplateModalNested.bind({})
+ModalNested.args = {}
+
+export const Target = TemplateTarget.bind({})
+Target.args = {}
