@@ -71,6 +71,7 @@ This is a web-component from Maggioli Design System [Magma](https://magma.maggio
  - [mds-input-date](../mds-input-date)
  - [mds-input-date-range](../mds-input-date-range)
  - [mds-input-upload](../mds-input-upload)
+ - [mds-keyboard](../mds-keyboard)
  - [mds-label](../mds-label)
  - [mds-modal](../mds-modal)
  - [mds-note](../mds-note)
@@ -106,6 +107,7 @@ graph TD;
   mds-input-date --> mds-button
   mds-input-date-range --> mds-button
   mds-input-upload --> mds-button
+  mds-keyboard --> mds-button
   mds-label --> mds-button
   mds-modal --> mds-button
   mds-note --> mds-button

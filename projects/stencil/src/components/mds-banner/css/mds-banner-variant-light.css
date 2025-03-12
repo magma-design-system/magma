@@ -1,8 +1,5 @@
-@tailwind utilities;
-
-:host( [variant="light"] ),
-:host( [variant="light"][tone="strong"] ) {
-
+:host([variant="light"]),
+:host([variant="light"][tone="strong"]) {
   --mds-banner-background: theme('colors.tone-neutral');
   --mds-banner-close-icon-hover-background: theme('colors.tone-neutral-09');
   --mds-banner-color: theme('colors.tone-neutral-02');
@@ -10,8 +7,7 @@
   --mds-banner-shadow: theme('boxShadow.lg-sharp');
 }
 
-:host( [variant="light"][tone="weak"] ) {
-
+:host([variant="light"][tone="weak"]) {
   --mds-banner-background: theme('colors.tone-neutral');
   --mds-banner-close-icon-hover-background: theme('colors.tone-neutral-10');
   --mds-banner-color: theme('colors.tone-neutral-02');
@@ -19,15 +15,13 @@
   --mds-banner-shadow: theme('boxShadow.sm-sharp');
 }
 
-:host( [variant="light"][tone="ghost"] ) {
-
+:host([variant="light"][tone="ghost"]) {
   --mds-banner-color: theme('colors.tone-neutral-02');
   --mds-banner-close-icon-hover-background: theme('colors.tone-neutral-10');
   --mds-banner-shadow: none;
 }
 
-:host( [variant="light"][tone="quiet"] ) {
-
+:host([variant="light"][tone="quiet"]) {
   --mds-banner-background: transparent;
   --mds-banner-close-icon-hover-background: transparent;
   --mds-banner-color: theme('colors.tone-neutral-10');

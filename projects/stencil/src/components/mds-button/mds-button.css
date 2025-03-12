@@ -1,8 +1,6 @@
 @import '~@maggioli-design-system/styles/dist/tailwind/typography.css';
 @import '~@maggioli-design-system/styles/dist/css/animations.css';
 @import '../../tailwind/components.css';
-@tailwind components;
-@tailwind utilities;
 
 /**
  * @prop --mds-button-await-duration: Sets the duration of the rotation of the spinner await component
@@ -14,7 +12,6 @@
  */
 
 :host {
-
   --mds-button-await-duration: 0.725s;
   --mds-button-background: theme('colors.variant-primary-02');
   --mds-button-border-color: transparent;
@@ -32,7 +29,7 @@
 
   align-items: center;
   background-color: var(--mds-button-background);
-  border-color: var(--mds-button-border-color);
+  border-color: var(--mds-button-border-color, transparent);
   border-radius: var(--mds-button-radius);
   border-style: solid;
   border-width: theme('borderWidth.2');
@@ -45,6 +42,7 @@
   justify-content: center;
   position: relative;
   transition-property: background-color, border-color, box-shadow, color, transform, outline, outline-offset;
+  user-select: none;
 }
 
 :host(:focus-visible) {
@@ -54,7 +52,6 @@
 }
 
 .text {
-
   --mds-text-line-clamp: var(--mds-button-line-clamp);
 }
 
@@ -76,15 +73,22 @@
   transition-property: fill;
 }
 
-@import './css/mds-button-variant-primary.css';
-@import './css/mds-button-variant-secondary.css';
-@import './css/mds-button-variant-dark.css';
-@import './css/mds-button-variant-light.css';
-@import './css/mds-button-variant-error.css';
-@import './css/mds-button-variant-warning.css';
-@import './css/mds-button-variant-info.css';
-@import './css/mds-button-variant-success.css';
-@import './css/mds-button-size.css';
 @import './css/mds-button-await.css';
 @import './css/mds-button-disabled.css';
+@import './css/mds-button-size.css';
+@import './css/mds-button-variant-dark.css';
+@import './css/mds-button-variant-error-contrast.css';
+@import './css/mds-button-variant-error.css';
+@import './css/mds-button-variant-info-contrast.css';
+@import './css/mds-button-variant-info.css';
+@import './css/mds-button-variant-light.css';
+@import './css/mds-button-variant-primary-contrast.css';
+@import './css/mds-button-variant-primary.css';
+@import './css/mds-button-variant-secondary-contrast.css';
+@import './css/mds-button-variant-secondary.css';
+@import './css/mds-button-variant-success-contrast.css';
+@import './css/mds-button-variant-success.css';
+@import './css/mds-button-variant-warning-contrast.css';
+@import './css/mds-button-variant-warning.css';
 @import './css/mds-button-pref-animation.css';
+@import '../../tailwind/fouc.css';

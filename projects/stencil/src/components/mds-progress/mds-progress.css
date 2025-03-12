@@ -1,6 +1,5 @@
 @import '../../tailwind/components.css';
 @tailwind components;
-@tailwind utilities;
 
 /**
  * @prop --mds-progress-background: Sets the background-color of the component
@@ -11,7 +10,6 @@
  */
 
 :host {
-
   --mds-progress-background: theme('colors.tone-neutral-08');
   --mds-progress-color: theme('colors.variant-primary-03');
   --mds-progress-duration: 750ms;
@@ -33,7 +31,7 @@
   width: 100%;
 }
 
-:host( [direction="vertical"] ) {
+:host([direction="vertical"]) {
   flex-direction: column;
   height: unset;
   min-height: var(--mds-progress-thickness);
@@ -54,3 +52,5 @@
 @import './css/mds-progress-variant.css';
 @import './css/mds-progress-pref-animation.css';
 @import './css/mds-progress-pref-theme.css';
+@import './css/mds-progress-pref-contrast.css';
+@import '../../tailwind/fouc.css';

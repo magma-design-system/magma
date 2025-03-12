@@ -60,6 +60,9 @@ module.exports = {
       aspectRatio: {
         ...aspectRatio,
       },
+      backgroundSize: {
+        ...size,
+      },
       borderRadius: {
         ...borderRadius,
       },

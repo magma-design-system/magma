@@ -1,18 +1,17 @@
 @import '../../tailwind/components.css';
 @tailwind components;
-@tailwind utilities;
 
 /**
- * @prop --mds-tab-item-default-background: Sets the `background-color` of `mds-tab-item` or `mds-input::part(slider)` depending on attribute `animation`
- * @prop --mds-tab-item-default-color: Sets the `color` of `mds-tab-item` or `mds-input::part(slider)` depending on attribute `animation`
- * @prop --mds-tab-item-default-radius: Sets the `border-radius` of `mds-tab-item` or `mds-input::part(slider)` depending on attribute `animation`.
- * @prop --mds-tab-item-default-shadow: Sets the `box-shadow` of `mds-tab-item` or `mds-input::part(slider)` depending on attribute `animation`
- * @prop --mds-tab-item-hover-background: Sets the `background-color` when the mouse is over of `mds-tab-item` or `mds-input::part(slider)` depending on attribute `animation`
- * @prop --mds-tab-item-hover-color: Sets the `color` when the mouse is over of `mds-tab-item` or `mds-input::part(slider)` depending on attribute `animation`
- * @prop --mds-tab-item-hover-shadow: Sets the `box-shadow` when the mouse is over of `mds-tab-item` or `mds-input::part(slider)` depending on attribute `animation`
- * @prop --mds-tab-item-selected-background: Sets the `background-color` when the item is selected of `mds-tab-item` or `mds-input::part(slider)` depending on attribute `animation`
- * @prop --mds-tab-item-selected-color: Sets the `color` when the item is selected of `mds-tab-item` or `mds-input::part(slider)` depending on attribute `animation`
- * @prop --mds-tab-item-selected-shadow: Sets the `box-shadow` when the item is selected of `mds-tab-item` or `mds-input::part(slider)` depending on attribute `animation`
+ * @prop --mds-tab-item-default-background: Sets the `background-color` of `mds-tab-item` or `mds-tab::part(slider)` depending on attribute `animation`
+ * @prop --mds-tab-item-default-color: Sets the `color` of `mds-tab-item` or `mds-tab::part(slider)` depending on attribute `animation`
+ * @prop --mds-tab-item-default-shadow: Sets the `box-shadow` of `mds-tab-item` or `mds-tab::part(slider)` depending on attribute `animation`
+ * @prop --mds-tab-item-hover-background: Sets the `background-color` when the mouse is over of `mds-tab-item` or `mds-tab::part(slider)` depending on attribute `animation`
+ * @prop --mds-tab-item-hover-color: Sets the `color` when the mouse is over of `mds-tab-item` or `mds-tab::part(slider)` depending on attribute `animation`
+ * @prop --mds-tab-item-hover-shadow: Sets the `box-shadow` when the mouse is over of `mds-tab-item` or `mds-tab::part(slider)` depending on attribute `animation`
+ * @prop --mds-tab-item-radius: Sets the `border-radius` of `mds-tab-item` or `mds-tab::part(slider)` depending on attribute `animation`.
+ * @prop --mds-tab-item-selected-background: Sets the `background-color` when the item is selected of `mds-tab-item` or `mds-tab::part(slider)` depending on attribute `animation`
+ * @prop --mds-tab-item-selected-color: Sets the `color` when the item is selected of `mds-tab-item` or `mds-tab::part(slider)` depending on attribute `animation`
+ * @prop --mds-tab-item-selected-shadow: Sets the `box-shadow` when the item is selected of `mds-tab-item` or `mds-tab::part(slider)` depending on attribute `animation`
  * @prop --mds-tab-item-transition-duration: Sets the animation duration on how the contents height is resized when the component switch from a content to another one
  * @prop --mds-tab-item-transition-timing-function: Sets the animation timing function on how the contents height is resized when the component switch from a content to another one
  * @prop --mds-tab-scroll-scrollbar-margin: Sets the margin of the browser scroll bar (if supported)
@@ -20,23 +19,25 @@
  * @prop --mds-tab-scroll-scrollbar-size: Sets the height and width of the browser scroll bar (if supported)
  * @prop --mds-tab-scroll-scrollbar-thumb-background: Sets the background-color of the browser scroll bar thumb (if supported)
  * @prop --mds-tab-scroll-scrollbar-track-background: Sets the background-color of the browser scroll bar track (if supported)
- * @prop --mds-tab-tabs-background: Sets the `background-color` of `mds-input::part(tabs)`
- * @prop --mds-tab-tabs-gap: Sets the `gap` of `mds-input::part(tabs)`
- * @prop --mds-tab-tabs-padding: Sets the `padding` of `mds-input::part(tabs)`
+ * @prop --mds-tab-tabs-background: Sets the `background-color` of `mds-tab::part(tabs)`
+ * @prop --mds-tab-tabs-gap: Sets the `gap` of `mds-tab::part(tabs)`
+ * @prop --mds-tab-tabs-wrapper-outline-opacity: Sets the `opacity` of outline border which holds
+ * @prop --mds-tab-tabs-padding: Sets the `padding` of `mds-tab::part(tabs)`
+ * @prop --mds-tab-tabs-radius: Sets the `border-radius` of `mds-tab::part(tabs)`
  */
 
 :host {
-
   --mds-tab-item-default-background: transparent;
   --mds-tab-item-default-color: theme('colors.tone-neutral-03');
-  --mds-tab-item-default-radius: theme('borderRadius.lg');
   --mds-tab-item-default-shadow: transparent;
   --mds-tab-item-hover-background: transparent;
   --mds-tab-item-hover-color: theme('colors.tone-neutral-02');
   --mds-tab-item-hover-shadow: transparent;
+  --mds-tab-item-radius: theme('borderRadius.lg');
   --mds-tab-item-selected-background: theme('colors.tone-neutral');
-  --mds-tab-item-selected-color: theme('colors.tone-neutral-02');
+  --mds-tab-item-selected-color: theme('colors.tone-neutral-01');
   --mds-tab-item-selected-shadow: theme('boxShadow.DEFAULT');
+  --mds-tab-scroll-behavior: smooth;
   --mds-tab-scroll-scrollbar-margin: 0;
   --mds-tab-scroll-scrollbar-radius: 0;
   --mds-tab-scroll-scrollbar-size: theme('spacing.200');
@@ -45,14 +46,18 @@
   --mds-tab-tabs-background: theme('colors.tone-neutral-09');
   --mds-tab-tabs-gap: theme('padding.200');
   --mds-tab-tabs-padding: theme('padding.200');
+  --mds-tab-tabs-radius: theme('borderRadius.2xl');
+  --mds-tab-tabs-overflow-shadow: rgb(0 0 0 / 0.25) 0 0 var(--shadow-size) -2px;
+  --mds-tab-tabs-wrapper-outline-opacity: 0.7;
+  --mds-tab-tabs-wrapper-shadow-color: var(--mds-tab-tabs-background);
+  --mds-tab-tabs-wrapper-shadow: 0 0 0 2px var(--mds-tab-tabs-wrapper-shadow-color) inset;
   --mds-tab-transition-duration: 0.5s;
   --mds-tab-transition-timing-function: theme('transitionTimingFunction.out-expo');
 
   display: grid;
 }
 
-:host([animation="slide"]) ::slotted( mds-tab-item ) {
-
+:host([animation="slide"]) ::slotted( mds-tab-item) {
   --mds-tab-item-hover-background: transparent;
   --mds-tab-item-selected-background: transparent;
   --mds-tab-item-selected-shadow: transparent;
@@ -61,27 +66,47 @@
 }
 
 .tabs {
-  @apply
-    border-50
-    border-solid
-    border-transparent;
-
   background-color: var(--mds-tab-tabs-background);
-  border-radius: theme('borderRadius.2xl');
+  border-radius: var(--mds-tab-tabs-radius);
   box-sizing: border-box;
   display: flex;
   gap: var(--mds-tab-tabs-gap);
   overflow: auto;
   padding: var(--mds-tab-tabs-padding);
-  scroll-behavior: smooth;
+  scroll-behavior: var(--mds-tab-scroll-behavior);
   scroll-snap-type: x mandatory;
   transition-duration: var(--mds-tab-transition-duration);
   transition-property: background-color;
   transition-timing-function: var(--mds-tab-transition-timing-function);
 }
 
-.contents {
+.tabs-wrapper {
+  border-radius: var(--mds-tab-tabs-radius);
+  display: grid;
+  max-width: max-content;
+  overflow: hidden;
+  position: relative;
+}
 
+.tabs-wrapper--fill {
+  max-width: 100%;
+}
+
+.tabs-wrapper::after {
+  border-radius: var(--mds-tab-tabs-radius);
+  box-shadow: var(--mds-tab-tabs-wrapper-shadow);
+  content: "";
+  inset: 0;
+  opacity: var(--mds-tab-tabs-wrapper-outline-opacity);
+  pointer-events: none;
+  position: absolute;
+  transition-duration: var(--mds-tab-transition-duration);
+  transition-property: box-shadow, opacity;
+  transition-timing-function: var(--mds-tab-transition-timing-function);
+}
+
+
+.contents {
   --mds-tab-contents-height: auto;
 
   @apply
@@ -95,14 +120,18 @@
   overflow-x: auto;
   overflow-y: hidden;
   position: relative;
-  scroll-behavior: smooth;
+  scroll-behavior: var(--mds-tab-scroll-behavior);
   scroll-snap-type: x mandatory;
   transition-duration: var(--mds-tab-transition-duration);
   transition-property: height;
   transition-timing-function: var(--mds-tab-transition-timing-function);
 }
 
-::slotted( [slot="content"] ) {
+.contents:empty {
+  display: none;
+}
+
+::slotted([slot="content"]) {
   @apply
     min-w-full
     w-full;
@@ -112,12 +141,15 @@
   scroll-snap-align: start;
 }
 
-::slotted( [slot="content"][mds-tab-content-hidden] ) {
+::slotted([slot="content"][mds-tab-content-hidden]) {
   display: none !important;
 }
 
 @import './css/mds-tab-animation.css';
 @import './css/mds-tab-scrollbar.css';
+@import './css/mds-tab-tabs-wrapper-overflow.css';
+@import './css/mds-tab-tabs-wrapper-decorator.css';
 @import './css/mds-tab-pref-animation.css';
 @import './css/mds-tab-pref-theme.css';
 @import './css/mds-tab-pref-contrast.css';
+@import '../../tailwind/fouc.css';

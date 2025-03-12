@@ -1,252 +1,67 @@
-@tailwind utilities;
-
-:host( [variant="secondary"] ),
-:host( [variant="secondary"][tone="strong"] ) {
-
+:host([variant="secondary"]),
+:host([variant="secondary"][tone="strong"]) {
   --mds-button-background: theme('colors.variant-secondary-03');
   --mds-button-color: theme('colors.tone-neutral');
 }
 
-:host( [variant="secondary"]:hover ),
-:host( [variant="secondary"][tone="strong"]:hover ) {
-
+:host([variant="secondary"]:hover),
+:host([variant="secondary"][tone="strong"]:hover) {
   --mds-button-background: theme('colors.variant-secondary-04');
 }
 
-:host( [variant="secondary"][active] ),
-:host( [variant="secondary"][tone="strong"][active] ) {
-
+:host([variant="secondary"][active]),
+:host([variant="secondary"][tone="strong"][active]) {
   --mds-button-background: theme('colors.variant-secondary-02');
 }
 
-:host( [variant="secondary"][tone="weak"] ) {
-
+:host([variant="secondary"][tone="weak"]) {
   --mds-button-background: theme('colors.variant-secondary-09');
   --mds-button-color: theme('colors.variant-secondary-03');
 
   fill: theme('colors.variant-secondary-03');
 }
 
-:host( [variant="secondary"][tone="weak"]:hover ) {
-
+:host([variant="secondary"][tone="weak"]:hover) {
   --mds-button-background: theme('colors.variant-secondary-08');
 
 }
 
-:host( [variant="secondary"][tone="weak"][active] ) {
-
+:host([variant="secondary"][tone="weak"][active]) {
   --mds-button-background: theme('colors.variant-secondary-08');
   --mds-button-color: theme('colors.variant-secondary-02');
 
   fill: theme('colors.variant-secondary-02');
 }
 
-:host( [variant="secondary"][tone="ghost"] ) {
-
+:host([variant="secondary"][tone="ghost"]) {
   --mds-button-background: transparent;
   --mds-button-border-color: theme('colors.variant-secondary-04');
   --mds-button-color: theme('colors.variant-secondary-03');
 }
 
-:host( [variant="secondary"][tone="ghost"]:hover ) {
-
+:host([variant="secondary"][tone="ghost"]:hover) {
   --mds-button-background: transparent;
   --mds-button-border-color: theme('colors.variant-secondary-04');
   --mds-button-color: theme('colors.variant-secondary-02');
 }
 
-:host( [variant="secondary"][tone="ghost"][active] ) {
-
+:host([variant="secondary"][tone="ghost"][active]) {
   --mds-button-background: transparent;
   --mds-button-border-color: theme('colors.variant-secondary-05');
   --mds-button-color: theme('colors.variant-secondary-03');
 }
 
-:host( [variant="secondary"][tone="quiet"] ) {
-
+:host([variant="secondary"][tone="quiet"]) {
   --mds-button-background: transparent;
   --mds-button-color: theme('colors.variant-secondary-02');
 }
 
-:host( [variant="secondary"][tone="quiet"]:hover ) {
-
+:host([variant="secondary"][tone="quiet"]:hover) {
   --mds-button-background: transparent;
   --mds-button-color: theme('colors.variant-secondary-04');
 }
 
-:host( [variant="secondary"][tone="quiet"][active] ) {
-
+:host([variant="secondary"][tone="quiet"][active]) {
   --mds-button-background: transparent;
   --mds-button-color: theme('colors.variant-secondary-01');
-}
-
-@container style(--magma-pref-contrast: more) {
-  :host( [variant="secondary"] ),
-  :host( [variant="secondary"][tone="strong"] ) {
-
-    --mds-button-background: theme('colors.variant-secondary-03');
-    --mds-button-color: theme('colors.tone-neutral');
-  }
-
-  :host( [variant="secondary"]:hover ),
-  :host( [variant="secondary"][tone="strong"]:hover ) {
-
-    --mds-button-background: theme('colors.variant-secondary-02');
-  }
-
-  :host( [variant="secondary"][active] ),
-  :host( [variant="secondary"][tone="strong"][active] ) {
-
-    --mds-button-background: theme('colors.variant-secondary-02');
-  }
-
-  :host( [variant="secondary"][tone="weak"] ) {
-
-    --mds-button-background: theme('colors.variant-secondary-09');
-    --mds-button-color: theme('colors.variant-secondary-02');
-
-    fill: theme('colors.variant-secondary-02');
-  }
-
-  :host( [variant="secondary"][tone="weak"]:hover ) {
-
-    --mds-button-background: theme('colors.variant-secondary-08');
-    --mds-button-color: theme('colors.variant-secondary-01');
-
-    fill: theme('colors.variant-secondary-01');
-  }
-
-  :host( [variant="secondary"][tone="weak"][active] ) {
-
-    --mds-button-background: theme('colors.variant-secondary-08');
-    --mds-button-color: theme('colors.variant-secondary-01');
-
-    fill: theme('colors.variant-secondary-01');
-  }
-
-  :host( [variant="secondary"][tone="ghost"] ) {
-
-    --mds-button-background: transparent;
-    --mds-button-border-color: theme('colors.variant-secondary-03');
-    --mds-button-color: theme('colors.variant-secondary-02');
-  }
-
-  :host( [variant="secondary"][tone="ghost"]:hover ) {
-
-    --mds-button-background: transparent;
-    --mds-button-border-color: theme('colors.variant-secondary-03');
-    --mds-button-color: theme('colors.variant-secondary-01');
-  }
-
-  :host( [variant="secondary"][tone="ghost"][active] ) {
-
-    --mds-button-background: transparent;
-    --mds-button-border-color: theme('colors.variant-secondary-04');
-    --mds-button-color: theme('colors.variant-secondary-02');
-  }
-
-  :host( [variant="secondary"][tone="quiet"] ) {
-
-    --mds-button-background: transparent;
-    --mds-button-color: theme('colors.variant-secondary-01');
-  }
-
-  :host( [variant="secondary"][tone="quiet"]:hover ) {
-
-    --mds-button-background: transparent;
-    --mds-button-color: theme('colors.variant-secondary-03');
-  }
-
-  :host( [variant="secondary"][tone="quiet"][active] ) {
-
-    --mds-button-background: transparent;
-    --mds-button-color: theme('colors.variant-secondary-01');
-  }
-}
-
-@container style(--magma-pref-contrast: system) {
-
-  @media (prefers-contrast: more) {
-    :host( [variant="secondary"] ),
-    :host( [variant="secondary"][tone="strong"] ) {
-
-      --mds-button-background: theme('colors.variant-secondary-03');
-      --mds-button-color: theme('colors.tone-neutral');
-    }
-
-    :host( [variant="secondary"]:hover ),
-    :host( [variant="secondary"][tone="strong"]:hover ) {
-
-      --mds-button-background: theme('colors.variant-secondary-01');
-    }
-
-    :host( [variant="secondary"][active] ),
-    :host( [variant="secondary"][tone="strong"][active] ) {
-
-      --mds-button-background: theme('colors.variant-secondary-02');
-    }
-
-    :host( [variant="secondary"][tone="weak"] ) {
-
-      --mds-button-background: theme('colors.variant-secondary-09');
-      --mds-button-color: theme('colors.variant-secondary-02');
-
-      fill: theme('colors.variant-secondary-02');
-    }
-
-    :host( [variant="secondary"][tone="weak"]:hover ) {
-
-      --mds-button-background: theme('colors.variant-secondary-08');
-      --mds-button-color: theme('colors.variant-secondary-01');
-
-      fill: theme('colors.variant-secondary-01');
-    }
-
-    :host( [variant="secondary"][tone="weak"][active] ) {
-
-      --mds-button-background: theme('colors.variant-secondary-08');
-      --mds-button-color: theme('colors.variant-secondary-01');
-
-      fill: theme('colors.variant-secondary-01');
-    }
-
-    :host( [variant="secondary"][tone="ghost"] ) {
-
-      --mds-button-background: transparent;
-      --mds-button-border-color: theme('colors.variant-secondary-03');
-      --mds-button-color: theme('colors.variant-secondary-02');
-    }
-
-    :host( [variant="secondary"][tone="ghost"]:hover ) {
-
-      --mds-button-background: transparent;
-      --mds-button-border-color: theme('colors.variant-secondary-03');
-      --mds-button-color: theme('colors.variant-secondary-01');
-    }
-
-    :host( [variant="secondary"][tone="ghost"][active] ) {
-
-      --mds-button-background: transparent;
-      --mds-button-border-color: theme('colors.variant-secondary-04');
-      --mds-button-color: theme('colors.variant-secondary-02');
-    }
-
-    :host( [variant="secondary"][tone="quiet"] ) {
-
-      --mds-button-background: transparent;
-      --mds-button-color: theme('colors.variant-secondary-01');
-    }
-
-    :host( [variant="secondary"][tone="quiet"]:hover ) {
-
-      --mds-button-background: transparent;
-      --mds-button-color: theme('colors.variant-secondary-03');
-    }
-
-    :host( [variant="secondary"][tone="quiet"][active] ) {
-
-      --mds-button-background: transparent;
-      --mds-button-color: theme('colors.variant-secondary-01');
-    }
-  }
 }

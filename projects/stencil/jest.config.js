@@ -7,6 +7,6 @@ module.exports = {
   preset: 'ts-jest',
   testMatch: ["<rootDir>/scripts/**/?(*.)+(spec|test).[jt]s"],
   transform: {
-    '^.+\\.tsx?$': ['ts-jest', {tsconfig: 'scripts.tsconfig.json'}],
+    '^.+\\.tsx?$': ['ts-jest', {tsconfig: 'script.tsconfig.json'}],
   }
 };

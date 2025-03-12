@@ -1,12 +1,9 @@
-@tailwind utilities;
-
 /**
  * @prop --mds-card-gap: Sets the spacing between card elements
  * @prop --mds-card-padding: Sets the spacing around card elements
  */
 
 :host {
-
   --mds-card-gap: 0;
   --mds-card-padding: 0;
 
@@ -42,7 +39,7 @@
 
   display: grid;
   gap: var(--mds-card-gap);
-  grid-template-columns: minmax(0, 100%);
+  grid-template-columns: repeat(auto-fit, minmax(1px, 100%));
   padding: var(--mds-card-padding);
 }
 
@@ -234,3 +231,4 @@
 
 @import './css/mds-card-pref-theme.css';
 @import './css/mds-card-pref-contrast.css';
+@import '../../tailwind/fouc.css';

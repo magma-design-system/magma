@@ -1,7 +1,7 @@
 
 import { h } from '@stencil/core'
 import { useState } from 'react'
-import { modalPositionDictionary } from '../meta/dictionary'
+import { modalPositionDictionary, modalOverflowDictionary } from '../meta/dictionary'
 
 export default {
   title: 'UI / Modal',
@@ -9,6 +9,12 @@ export default {
     opened: {
       description: 'Specifies if the modal is opened or not',
       type: { name: 'boolean' },
+    },
+    overflow: {
+      description: 'Specifies if the component prevents the body from scrolling when modal window is opened',
+      control: { type: 'select' },
+      options: modalOverflowDictionary,
+      type: { name: 'string' },
     },
     position: {
       control: { type: 'select' },
@@ -27,7 +33,7 @@ const email = `${firstName.toLowerCase()}.${lastName.toLowerCase()}@nintendo.com
 const Template = args =>
   <mds-modal {...args}>
     <header slot="top" class="p-800 flex gap-400 items-center border-b border-solid border-0 border-tone-neutral-09 max-w-[400px]">
-      <mds-img class="w-1600" src="/logo-gruppo-maggioli-512w.webp"/>
+      <mds-img class="w-1600" src="./logo-gruppo-maggioli-512w.webp"/>
       <div class="text-tone-neutral-02">
         <mds-text typography="h5" class="truncate min-w-0">Maggioli Editore</mds-text>
         <mds-text typography="detail" class="truncate min-w-0">Menu di servizio</mds-text>
@@ -40,13 +46,48 @@ const Template = args =>
     </div>
     <footer slot="bottom" class="p-800 flex gap-400 text-tone-neutral-02 border-t border-solid border-0 border-tone-neutral-09 max-w-[400px]">
       <mds-author class="flex-grow">
-        <mds-avatar slot="avatar" class="w-1600 mobile:w-1200" src="/avatar-01-200x200.jpeg"/>
+        <mds-avatar slot="avatar" class="w-1600 mobile:w-1200" src="./avatar-01-200x200.jpeg"/>
         <mds-text typography="h6">{ fullName }</mds-text>
         <mds-text typography="caption" class="text-tone-neutral-04">{ email }</mds-text>
       </mds-author>
       <mds-button icon="mdi/dots-vertical" variant="light"></mds-button>
     </footer>
   </mds-modal>
+
+const TemplateOverflow = args =>
+  <div>
+    <div class="grid">
+      {Array(40).fill(null).map((_value, index) => (
+        <div key={index} class="h-[100px] flex items-start justify-center text-center border-0 border-t border-solid border-t-tone-neutral-07">
+          <mds-text class="px-200 py-100 rounded-b-lg bg-tone-neutral-10 border-t-0 border border-solid border-tone-neutral-07" typography="snippet" tag="div">
+            { index === 0 ? '0px' : index + '00px' }
+          </mds-text>
+        </div>
+      ))}
+    </div>
+    <mds-modal {...args}>
+      <header slot="top" class="p-800 flex gap-400 items-center border-b border-solid border-0 border-tone-neutral-09 max-w-[400px]">
+        <mds-img class="w-1600" src="./logo-gruppo-maggioli-512w.webp"/>
+        <div class="text-tone-neutral-02">
+          <mds-text typography="h5" class="truncate min-w-0">Maggioli Editore</mds-text>
+          <mds-text typography="detail" class="truncate min-w-0">Menu di servizio</mds-text>
+        </div>
+      </header>
+      <div class="p-800 max-w-[400px]">
+        <mds-text>
+          As a multi-brand design system, our components need to be flexible enough for any one of our brands to use them for multiple use cases. To achieve this, we ensure that all of the brands are involved in the specification stage, giving us more confidence that we’re future-proofing our components as more brands adopt NewsKit.
+        </mds-text>
+      </div>
+      <footer slot="bottom" class="p-800 flex gap-400 text-tone-neutral-02 border-t border-solid border-0 border-tone-neutral-09 max-w-[400px]">
+        <mds-author class="flex-grow">
+          <mds-avatar slot="avatar" class="w-1600 mobile:w-1200" src="./avatar-01-200x200.jpeg"/>
+          <mds-text typography="h6">{ fullName }</mds-text>
+          <mds-text typography="caption" class="text-tone-neutral-04">{ email }</mds-text>
+        </mds-author>
+        <mds-button icon="mdi/dots-vertical" variant="light"></mds-button>
+      </footer>
+    </mds-modal>
+  </div>
 
 const CustomTemplate = args =>
   <mds-modal {...args}>
@@ -80,15 +121,28 @@ const InteractiveTemplate = () => {
 export const Default = Template.bind({})
 Default.args = {
   position: 'right',
+  opened: true,
+}
+
+export const BodyOverflowDisabled = TemplateOverflow.bind({})
+BodyOverflowDisabled.args = {
+  overflow: 'auto',
+  opened: true,
+  position: 'right',
 }
 
 export const DefaultWindowCustomized = Template.bind({})
 DefaultWindowCustomized.args = {
   position: 'right',
+  opened: true,
   style: { '--mds-modal-window-distance': '1rem', '--mds-modal-window-radius': '1rem' },
 }
 export const CustomWindowElement = CustomTemplate.bind({})
+CustomWindowElement.args = {
+  opened: true,
+}
 export const Interactive = InteractiveTemplate.bind({})
+
 export const ARIATest = CustomTemplate.bind({})
 ARIATest.args = {
   opened: true,

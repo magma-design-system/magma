@@ -1,11 +1,8 @@
-@tailwind utilities;
-
 /**
  * @prop --mds-spinner-duration: Sets the duration of the icon animation
  */
 
 :host {
-
   --mds-spinner-duration: 0.725s;
 
   @apply
@@ -22,7 +19,7 @@
   transition-property: transform;
 }
 
-:host([running]:not([running="false"])) {
+:host([running]) {
   @apply
     duration-700
     ease-in-out-expo;
@@ -46,9 +43,14 @@
   transition-property: stroke;
 }
 
-:host([running]:not([running="false"])) .await-icon {
+.await-icon svg {
+  width: 100%;
+}
+
+:host([running]) .await-icon {
   animation-play-state: running;
 }
 
 @import './css/mds-spinner-pref-animation.css';
 @import './css/mds-spinner-pref-contrast.css';
+@import '../../tailwind/fouc.css';

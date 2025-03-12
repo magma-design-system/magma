@@ -1,6 +1,5 @@
 @import '../../tailwind/components.css';
 @tailwind components;
-@tailwind utilities;
 
 /**
  * @prop --mds-filter-items-background-active: Sets the background-color of the items row area when a filter is active
@@ -8,41 +7,29 @@
  * @prop --mds-filter-items-gap: Sets the gap between items
  * @prop --mds-filter-items-padding: Sets the padding of the items row area
  * @prop --mds-filter-items-radius: Sets the border-radius of the items row area
+ * @prop --mds-filter-items-scroll-behavior: Sets the scroll-behavior animation;
  * @prop --mds-filter-label-padding: Sets the padding of the label
+ * @prop --mds-filter-wrapper-shadow-color: Sets the effect of the outline border
+ * @prop --mds-filter-wrapper-shadow: Sets the shadow used as outline border
+ * @prop --mds-filter-wrapper-shodow-opacity: Sets the opacity of the outline border
  */
 
 :host {
-
   --mds-filter-items-background-active: theme('colors.tone-neutral-09');
   --mds-filter-items-background: theme('colors.tone-neutral-09');
   --mds-filter-items-gap: theme('spacing.200');
   --mds-filter-items-padding: theme('spacing.200');
   --mds-filter-items-radius: theme('borderRadius.full');
+  --mds-filter-items-scroll-behavior: smooth;
   --mds-filter-label-padding: 0 theme('spacing.600');
+  --mds-filter-wrapper-shadow-color: theme('colors.tone-neutral-06');
+  --mds-filter-wrapper-shadow: 0 0 0 2px var(--mds-filter-wrapper-shadow-color) inset;
+  --mds-filter-wrapper-shodow-opacity: theme('opacity.10');
 
   @apply gap-100;
 
   display: grid;
   grid-auto-rows: min-content;
-}
-
-.reset {
-  display: flex;
-  flex-grow: 1;
-  justify-content: flex-end;
-}
-
-.reset-button {
-  @apply
-    duration-300
-    ease-in-out-expo;
-
-  scale: 0;
-  transition-property: transform;
-}
-
-.reset-button-opened {
-  scale: 1;
 }
 
 .items {
@@ -57,10 +44,27 @@
   gap: var(--mds-filter-items-gap);
   overflow: auto;
   padding: var(--mds-filter-items-padding);
-  scroll-behavior: smooth;
+  position: relative;
+  scroll-behavior: var(--mds-filter-items-scroll-behavior);
   scroll-snap-type: x mandatory;
   transition-property: background-color;
 
+}
+
+.items-wrapper {
+  display: grid;
+  overflow: hidden;
+  position: relative;
+}
+
+.items-wrapper::after {
+  border-radius: var(--mds-filter-items-radius);
+  box-shadow: var(--mds-filter-wrapper-shadow);
+  content: "";
+  inset: 0;
+  opacity: var(--mds-filter-wrapper-shodow-opacity);
+  pointer-events: none;
+  position: absolute;
 }
 
 .items::-webkit-scrollbar {
@@ -75,6 +79,8 @@
   background-color: var(--mds-filter-items-background-active);
 }
 
+@import './css/mds-filter-reset.css';
 @import './css/mds-filter-pref-animation.css';
 @import './css/mds-filter-pref-theme.css';
 @import './css/mds-filter-pref-contrast.css';
+@import '../../tailwind/fouc.css';

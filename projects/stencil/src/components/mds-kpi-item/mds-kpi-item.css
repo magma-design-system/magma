@@ -1,5 +1,3 @@
-@tailwind utilities;
-
 /**
  * @prop --mds-kpi-item-icon-color: Set the fill color of the icon element
  * @prop --mds-kpi-item-info-background: Set the `background-color` of the text area element
@@ -8,7 +6,6 @@
  */
 
 :host {
-
   --mds-kpi-item-icon-color: theme('colors.variant-primary-04');
   --mds-kpi-item-info-background: theme('colors.tone-neutral');
   --mds-kpi-item-text-animation-placeholder-char: var(--mds-kpi-text-animation-placeholder-char, " ");
@@ -84,5 +81,7 @@
 }
 
 @import './css/mds-kpi-item-pref-animation.css';
-@import './css/mds-kpi-item-pref-contrast.css';
 @import './css/mds-kpi-item-pref-theme.css';
+@import './css/mds-kpi-item-pref-contrast.css';
+@import './css/mds-kpi-item-pref-contrast-dark.css';
+@import '../../tailwind/fouc.css';

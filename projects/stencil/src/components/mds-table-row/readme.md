@@ -33,9 +33,10 @@ Type: `Promise<void>`
 
 ## Slots
 
-| Slot        | Description                     |
-| ----------- | ------------------------------- |
-| `"default"` | Put `mds-table-cell` element/s. |
+| Slot        | Description                                                                           |
+| ----------- | ------------------------------------------------------------------------------------- |
+| `"action"`  | Put `mds-button` element/s or other kind of actions as aside menu for the single row. |
+| `"default"` | Put `mds-table-cell` element/s.                                                       |
 
 
 ## Dependencies

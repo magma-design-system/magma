@@ -15,7 +15,7 @@ export class MdsAuthor {
   @Element() hostElement: HTMLMdsAuthorElement
 
   componentWillLoad (): void {
-    this.hasAvatar = this.hostElement.querySelector('[slot="avatar"]') !== null
+    this.hasAvatar = this.hostElement.querySelector(':scope > [slot="avatar"]') !== null
   }
 
   render () {

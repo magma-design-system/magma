@@ -1,20 +1,21 @@
-@tailwind utilities;
-
-@container style(--magma-pref-animation: reduce) {
-  :host,
-  .reset-button,
-  .items {
-    transition-duration: 0s;
-  }
+:host-context(.pref-animation-reduce) {
+  --mds-filter-items-scroll-behavior: auto;
 }
 
-@container style(--magma-pref-animation: system) {
+:host-context(.pref-animation-reduce),
+:host-context(.pref-animation-reduce) .reset-button,
+:host-context(.pref-animation-reduce) .items {
+  transition-duration: 0s;
+}
 
-  @media (prefers-reduced-motion) {
-    :host,
-    .reset-button,
-    .items {
-      transition-duration: 0s;
-    }
+@media (prefers-reduced-motion) {
+  :host-context(.pref-animation-system) {
+    --mds-filter-items-scroll-behavior: auto;
+  }
+
+  :host-context(.pref-animation-system),
+  :host-context(.pref-animation-system) .reset-button,
+  :host-context(.pref-animation-system) .items {
+    transition-duration: 0s;
   }
 }

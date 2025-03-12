@@ -1,0 +1,9 @@
+:host-context(.pref-animation-reduce) {
+  --mds-horizontal-scroll-behavior: auto;
+}
+
+@media (prefers-reduced-motion) {
+  :host-context(.pref-animation-system) {
+    --mds-horizontal-scroll-behavior: auto;
+  }
+}

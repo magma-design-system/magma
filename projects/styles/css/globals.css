@@ -1,9 +1,9 @@
 :root {
-
   --magma-backdrop-blur: 4px;
   --magma-backdrop-color: 0 0 0;
   --magma-backdrop-opacity: 0.1;
   --magma-backdrop-z-index: 4000;
+  --magma-backdrop-animation-duration: 300ms;
   --magma-backdrop: rgba(var(--magma-backdrop-color) / var(--magma-backdrop-opacity));
   --magma-disabled-opacity: 0.5;
   --magma-dropdown-z-index: 5000;

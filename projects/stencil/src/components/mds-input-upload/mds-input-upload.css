@@ -1,8 +1,14 @@
 @import '../../tailwind/components.css';
-@tailwind utilities;
+
+/**
+ * @prop --mds-input-upload-drag-area-background-color-on-drag: Set the background color of the drag area when a file is dragged over it.
+ * @prop --mds-input-upload-drag-area-background-color: Sets the background-color of the drag area.
+ * @prop --mds-input-upload-drag-area-border-on-drag: Set the border of the drag area when a file is dragged over it.
+ * @prop --mds-input-upload-drag-area-border: Sets the border of the drag area.
+ * @prop --mds-input-upload-min-cols: Set the minimum number of columns for the file list.
+ */
 
 :host {
-
   --mds-input-upload-drag-area-background-color-on-drag: theme('colors.tone-neutral-10');
   --mds-input-upload-drag-area-background-color: theme('colors.tone-neutral');
   --mds-input-upload-drag-area-border-on-drag: 3px dashed theme('colors.tone-neutral-07');
@@ -13,7 +19,6 @@
     gap-400
     grid-cols-full;
 
-  container-type: inline-size;
   display: grid;
 }
 
@@ -51,7 +56,6 @@
 }
 
 .drag-area--on-drag-enter {
-
   --mds-input-upload-drag-area-background-color: var(--mds-input-upload-drag-area-background-color-on-drag);
   --mds-input-upload-drag-area-border: var(--mds-input-upload-drag-area-border-on-drag);
 }
@@ -74,7 +78,6 @@
 
 .action--cancel-upload:focus-visible,
 .action--cancel-upload:hover {
-
   --mds-button-background: theme('colors.status-error-09');
 
   fill: theme('colors.status-error-04');
@@ -82,7 +85,6 @@
 
 .action--retry-upload:focus-visible,
 .action--retry-upload:hover {
-
   --mds-button-background: theme('colors.status-success-09');
 
   fill: theme('colors.status-success-04');
@@ -122,8 +124,12 @@
 }
 
 .file-list {
+  @apply
+    gap-400
+    grid-cols-fit-sm;
+}
 
-
+:host-context(:not(.safari)) .file-list {
   --cols: var(--mds-input-upload-min-cols);
   --perc-w: calc(100% / var(--cols));
   --gap: theme('spacing.400');
@@ -131,21 +137,11 @@
   --max-w: calc(var(--perc-w) - var(--gap-w));
   --template-cols: repeat(auto-fit, minmax(theme('spacing.4000'), var(--max-w)));
 
-  @apply gap-400;
-
   grid-template-columns: var(--template-cols);
 }
 
-.file-list--more-items {
-
+:host-context(:not(.safari)) .file-list--more-items {
   --template-cols: repeat(auto-fit, minmax(theme('spacing.4000'), 1fr));
-}
-
-@container (max-width: 340px) {
-  .file-list {
-
-    --template-cols: 1fr;
-  }
 }
 
 .main-infos {
@@ -192,3 +188,11 @@
   flex-wrap: nowrap;
   justify-content: center;
 }
+
+@container (max-width: 340px) {
+  .file-list {
+    --template-cols: 1fr;
+  }
+}
+
+@import '../../tailwind/fouc.css';

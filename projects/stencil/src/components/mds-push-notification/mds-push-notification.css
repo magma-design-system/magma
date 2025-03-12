@@ -3,7 +3,6 @@
 @tailwind components;
 
 :host {
-
   --mds-push-notification-duration: 200ms;
   --mds-push-notification-icon-background-color: transparent;
   --mds-push-notification-icon-color: theme('colors.tone-neutral-04');
@@ -17,7 +16,6 @@
     max-w-8000
     min-w-7200
     p-400
-    pr-800
     rounded-lg;
 
   align-items: flex-start;
@@ -32,8 +30,8 @@
   transition-timing-function: var(--mds-push-notification-timing-function);
 }
 
-:host([deletable="false"]) {
-  @apply pr-400;
+:host([deletable]) {
+  @apply pr-800;
 }
 
 .content {
@@ -79,7 +77,7 @@
   top: 0;
 }
 
-:host(:hover) .close-button {
+:host-context(:not(.safari)):host(:hover) .close-button {
   opacity: 1;
 }
 
@@ -115,7 +113,6 @@
 }
 
 .subject {
-
   --mds-text-line-clamp: var(--mds-push-notification-subject-line-clamp);
 
   line-height: theme('lineHeight.sm');
@@ -123,10 +120,9 @@
 }
 
 .message {
-
   --mds-text-line-clamp: var(--mds-push-notification-message-line-clamp);
 
-  line-height: theme('lineHeight.sm');
+  line-height: theme('lineHeight.md');
   text-overflow: ellipsis;
 }
 
@@ -152,9 +148,10 @@
   @apply p-150;
 }
 
-@import './css/mds-push-notification-variant-primary.css';
-@import './css/mds-push-notification-variant-label.css';
-@import './css/mds-push-notification-variant-state.css';
 @import './css/mds-push-notification-pref-animation.css';
 @import './css/mds-push-notification-pref-theme.css';
 @import './css/mds-push-notification-pref-contrast.css';
+@import './css/mds-push-notification-variant-primary.css';
+@import './css/mds-push-notification-variant-label.css';
+@import './css/mds-push-notification-variant-state.css';
+@import '../../tailwind/fouc.css';

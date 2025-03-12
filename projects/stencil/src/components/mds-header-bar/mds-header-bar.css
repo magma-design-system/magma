@@ -1,7 +1,4 @@
-@tailwind utilities;
-
 :host {
-
   --mds-header-bar-hamburger-color: theme('colors.tone-neutral-03');
 
   @apply
@@ -21,6 +18,8 @@
   position: fixed;
   transition-duration: theme('transitionDuration.500');
   transition-property: background-color, border-radius, margin, max-width, transform, width;
+  width: auto;
+  z-index: var(--mds-header-z-index, 1000);
 }
 
 .logo {
@@ -53,7 +52,6 @@
 }
 
 .menu {
-
   --mds-button-background: transparent;
 
   fill: var(--mds-header-bar-hamburger-color);
@@ -82,3 +80,4 @@
 @import './css/mds-header-bar-pref-animation.css';
 @import './css/mds-header-bar-pref-theme.css';
 @import './css/mds-header-bar-pref-contrast.css';
+@import '../../tailwind/fouc.css';

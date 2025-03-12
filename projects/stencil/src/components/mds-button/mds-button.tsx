@@ -40,7 +40,7 @@ export class MdsButton {
   /**
    * The icon displayed in the button
    */
-  @Prop() readonly icon?: string
+  @Prop({ reflect: true }) readonly icon?: string
 
   /**
    * Specifies the horizontal position of the icon displayed in the button
@@ -166,7 +166,7 @@ export class MdsButton {
   }
 
   componentWillLoad ():void {
-    this.hasNotification = this.host.querySelector('[slot="notification"]') !== null
+    this.hasNotification = this.host.querySelector(':scope > [slot="notification"]') !== null
     this.hasText = this.host.innerHTML !== ''
 
     if (this.href) {

@@ -15,11 +15,15 @@ import {
 } from '../update'
 import { readJSON } from 'fs-extra'
 
-global.fetch = jest.fn(async (url: string) => {
-  const [component] = url.split('/').filter(p => p.startsWith('mds'))
-  const newUrl = join(__dirname, './mocks/', component, 'npm.package.json')
-  return Promise.resolve({ status: 200, json: () => readJSON(newUrl) })
-}) as jest.Mock
+global.fetch = jest
+  .fn<typeof global.fetch>()
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  .mockImplementation((_input: RequestInfo | URL, _init?: RequestInit | undefined) => {
+
+    const [component] = (_input as string).split('/').filter(p => p.startsWith('mds'))
+    const newUrl = join(__dirname, './mocks/', component, 'npm.package.json')
+    return Promise.resolve({ status: 200, ok: true, json: () => readJSON(newUrl) } as Response)
+  })
 
 jest.mocked(meta).COMPONENTS_DIR = join(__dirname, './mocks/')
 jest.mocked(meta).PROJECT_DIR = join(__dirname, './mocks/')

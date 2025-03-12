@@ -1,5 +1,3 @@
-@tailwind utilities;
-
 /**
  * @prop --mds-badge-background: Sets the background-color of the component
  * @prop --mds-badge-radius: Sets the border-radius of the component
@@ -7,7 +5,6 @@
  */
 
 :host {
-
   --mds-badge-background: theme('colors.label-sky-09');
   --mds-badge-border-color: theme('colors.label-sky-06');;
   --mds-badge-border-width: 1px;
@@ -36,26 +33,41 @@
 }
 
 :host([tone="quiet"]) {
-
   --mds-badge-background: theme('colors.tone-neutral');
 }
 
 @import './css/mds-badge-variant-amaranth.css';
+@import './css/mds-badge-variant-amaranth-contrast.css';
 @import './css/mds-badge-variant-aqua.css';
+@import './css/mds-badge-variant-aqua-contrast.css';
 @import './css/mds-badge-variant-blue.css';
+@import './css/mds-badge-variant-blue-contrast.css';
 @import './css/mds-badge-variant-dark.css';
 @import './css/mds-badge-variant-error.css';
+@import './css/mds-badge-variant-error-contrast.css';
 @import './css/mds-badge-variant-green.css';
+@import './css/mds-badge-variant-green-contrast.css';
 @import './css/mds-badge-variant-info.css';
+@import './css/mds-badge-variant-info-contrast.css';
 @import './css/mds-badge-variant-light.css';
 @import './css/mds-badge-variant-lime.css';
+@import './css/mds-badge-variant-lime-contrast.css';
 @import './css/mds-badge-variant-orange.css';
+@import './css/mds-badge-variant-orange-contrast.css';
 @import './css/mds-badge-variant-orchid.css';
+@import './css/mds-badge-variant-orchid-contrast.css';
 @import './css/mds-badge-variant-sky.css';
+@import './css/mds-badge-variant-sky-contrast.css';
 @import './css/mds-badge-variant-success.css';
+@import './css/mds-badge-variant-success-contrast.css';
 @import './css/mds-badge-variant-violet.css';
+@import './css/mds-badge-variant-violet-contrast.css';
 @import './css/mds-badge-variant-warning.css';
+@import './css/mds-badge-variant-warning-contrast.css';
 @import './css/mds-badge-variant-yellow.css';
+@import './css/mds-badge-variant-yellow-contrast.css';
 @import './css/mds-badge-pref-animation.css';
 @import './css/mds-badge-pref-theme.css';
 @import './css/mds-badge-pref-contrast.css';
+@import './css/mds-badge-pref-contrast-dark.css';
+@import '../../tailwind/fouc.css';

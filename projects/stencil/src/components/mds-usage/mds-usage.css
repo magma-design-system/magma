@@ -1,17 +1,13 @@
-@tailwind utilities;
-
 /**
  * @prop --mds-usage-background: Sets the background-color of the component
  * @prop --mds-usage-border-width: Sets the colored border-size of the component
  */
 
 :host {
-
   --mds-usage-background: theme('colors.status-info-10');
   --mds-usage-badge-background: theme('colors.status-info-05');
   --mds-usage-badge-color: theme('colors.status-info-10');
   --mds-usage-color: theme('colors.tone-neutral-03');
-
 
   @apply
     duration-200
@@ -61,7 +57,6 @@
 }
 
 :host([variant="do"]) {
-
   --mds-usage-background: theme('colors.status-success-10');
   --mds-usage-badge-background: theme('colors.status-success-05');
   --mds-usage-badge-color: theme('colors.status-success-10');
@@ -69,7 +64,6 @@
 }
 
 :host([variant="dont"]) {
-
   --mds-usage-background: theme('colors.status-error-10');
   --mds-usage-badge-background: theme('colors.status-error-05');
   --mds-usage-badge-color: theme('colors.status-error-10');
@@ -77,7 +71,6 @@
 }
 
 :host([variant="warn"]) {
-
   --mds-usage-background: theme('colors.status-warning-10');
   --mds-usage-badge-background: theme('colors.status-warning-08');
   --mds-usage-badge-color: theme('colors.status-warning-01');
@@ -87,3 +80,4 @@
 @import './css/mds-usage-pref-animation.css';
 @import './css/mds-usage-pref-theme.css';
 @import './css/mds-usage-pref-contrast.css';
+@import '../../tailwind/fouc.css';

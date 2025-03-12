@@ -28,7 +28,7 @@ import { MdsFilePreviewEventDetail } from "./components/mds-file-preview/meta/ev
 import { MdsFilterEventDetail } from "./components/mds-filter/meta/event-detail";
 import { MdsFilterItemEventDetail } from "./components/mds-filter-item/meta/event-detail";
 import { HeaderBarMenuType, HeaderBarNavType } from "./type/header-bar";
-import { MdsHeaderEventDetail } from "./components/mds-header/meta/event-detail";
+import { MdsHeaderEventDetail, MdsHeaderVisibilityEventDetail } from "./components/mds-header/meta/event-detail";
 import { SnapType, ViewportType } from "./components/mds-horizontal-scroll/meta/types";
 import { CrossoriginType, ReferrerpolicyType } from "./components/mds-img/meta/types";
 import { LoadingType } from "./type/loading";
@@ -42,7 +42,9 @@ import { MdsInputSwitchEventDetail } from "./components/mds-input-switch/meta/ev
 import { InputTipPositionType } from "./components/mds-input-tip/meta/types";
 import { InputTipItemVariantType } from "./components/mds-input-tip-item/meta/types";
 import { AttachmentSort, FileError } from "./components/mds-input-upload/meta/types";
-import { ModalAnimationStateType, ModalPositionType } from "./components/mds-modal/meta/types";
+import { KeyboardTest } from "./components/mds-keyboard/meta/type";
+import { KeyboardKeyName } from "./type/keyboard";
+import { ModalAnimationStateType, ModalOverflowType, ModalPositionType } from "./components/mds-modal/meta/types";
 import { StrategyType } from "./components/mds-notification/meta/types";
 import { MdsPaginatorEventDetail } from "./components/mds-paginator/meta/event-detail";
 import { AnimationModeType } from "./components/mds-pref-animation/meta/types";
@@ -93,7 +95,7 @@ export { MdsFilePreviewEventDetail } from "./components/mds-file-preview/meta/ev
 export { MdsFilterEventDetail } from "./components/mds-filter/meta/event-detail";
 export { MdsFilterItemEventDetail } from "./components/mds-filter-item/meta/event-detail";
 export { HeaderBarMenuType, HeaderBarNavType } from "./type/header-bar";
-export { MdsHeaderEventDetail } from "./components/mds-header/meta/event-detail";
+export { MdsHeaderEventDetail, MdsHeaderVisibilityEventDetail } from "./components/mds-header/meta/event-detail";
 export { SnapType, ViewportType } from "./components/mds-horizontal-scroll/meta/types";
 export { CrossoriginType, ReferrerpolicyType } from "./components/mds-img/meta/types";
 export { LoadingType } from "./type/loading";
@@ -107,7 +109,9 @@ export { MdsInputSwitchEventDetail } from "./components/mds-input-switch/meta/ev
 export { InputTipPositionType } from "./components/mds-input-tip/meta/types";
 export { InputTipItemVariantType } from "./components/mds-input-tip-item/meta/types";
 export { AttachmentSort, FileError } from "./components/mds-input-upload/meta/types";
-export { ModalAnimationStateType, ModalPositionType } from "./components/mds-modal/meta/types";
+export { KeyboardTest } from "./components/mds-keyboard/meta/type";
+export { KeyboardKeyName } from "./type/keyboard";
+export { ModalAnimationStateType, ModalOverflowType, ModalPositionType } from "./components/mds-modal/meta/types";
 export { StrategyType } from "./components/mds-notification/meta/types";
 export { MdsPaginatorEventDetail } from "./components/mds-paginator/meta/event-detail";
 export { AnimationModeType } from "./components/mds-pref-animation/meta/types";
@@ -401,6 +405,16 @@ export namespace Components {
         "preview"?: boolean;
         "selection"?: CalendarCellSelectionPositionType;
     }
+    /**
+     * @name Button
+     * @description Buttons are used to initialize an action. Button labels express what action will occur when the user interacts with it.
+     * @overview  <p>Buttons are clickable elements that are used to trigger actions. They communicate calls to action to the user and allow users to interact with pages in a variety of ways. Button labels express what action will occur when the user interacts with it.</p>
+     * @category General
+     * @tags controls
+     * @example <mds-button>
+     * Button CTA
+     * </mds-button>
+     */
     interface MdsCard {
         /**
           * Enables automatic responsive behavior based on container queries
@@ -650,6 +664,14 @@ export namespace Components {
     }
     interface MdsFilterItem {
         /**
+          * Shows the number of items will be filtered by the component
+         */
+        "count"?: string;
+        /**
+          * Sets if the component is disabled or not
+         */
+        "disabled"?: boolean;
+        /**
           * Sets the icon of the filter item
          */
         "icon"?: string;
@@ -679,6 +701,10 @@ export namespace Components {
           * When the page is scrolled down, the component mds-header-bar is hidden starting from the `autoHide` attribute's value, then if the page is scrolled up it is shown again
          */
         "autoHide"?: number;
+        /**
+          * Sets if the backdrop is shown when the mds-header-bar attribute appearace is set to `inline`
+         */
+        "backdrop"?: boolean;
         /**
           * Sets the visibility type of the hamburger menu of mds-header-bar
          */
@@ -1108,7 +1134,7 @@ export namespace Components {
         /**
           * Sets or returns the indeterminate state of the checkbox
          */
-        "indeterminate": boolean;
+        "indeterminate"?: boolean;
         /**
           * Specifies the name of an <input> element
          */
@@ -1181,6 +1207,28 @@ export namespace Components {
           * Specifies if the component should show a sort widget by status or date of upload, if not defined let user choose
          */
         "sort"?: AttachmentSort;
+        "updateLang": () => Promise<void>;
+    }
+    interface MdsKeyboard {
+        /**
+          * Shows the keyboard key combination test result
+         */
+        "test"?: KeyboardTest;
+        /**
+          * Sets if the keyboard key combination test is enabled
+         */
+        "try"?: boolean;
+        "updateLang": () => Promise<void>;
+    }
+    interface MdsKeyboardKey {
+        /**
+          * Sets the code of the keyboard key for combination tests if `try` attribute is set from `mds-keyboard` parent component
+         */
+        "name": KeyboardKeyName;
+        /**
+          * Sets if the key is pressed or not
+         */
+        "pressed"?: boolean;
         "updateLang": () => Promise<void>;
     }
     interface MdsKpi {
@@ -1256,6 +1304,10 @@ export namespace Components {
          */
         "opened": boolean;
         /**
+          * Specifies if the component prevents the body from scrolling when modal window is opened
+         */
+        "overflow": ModalOverflowType;
+        /**
           * Specifies the animation position of the modal window
          */
         "position"?: ModalPositionType;
@@ -1317,7 +1369,28 @@ export namespace Components {
          */
         "selected"?: boolean;
     }
+    /**
+     * @name Pref
+     * @description This component is based on MdsTab component pattern
+     * @overview  <mds-text>Accessibility preferences in web browsers allow users to customize their navigation to improve readability, interaction, and usability. Common options include dark mode, text resizing, screen reader support, keyboard navigation, and blocking animated content. These settings help people with visual, hearing, motor, or cognitive disabilities experience the web more effectively and inclusively.</mds-text>
+     * @category Patterns
+     * @tags pattern, user, tab
+     * @example <mds-pref>
+     * <mds-pref-animation></mds-pref-animation>
+     * <mds-pref-consumption></mds-pref-consumption>
+     * <mds-pref-contrast></mds-pref-contrast>
+     * <mds-pref-theme></mds-pref-theme>
+     * <mds-pref-language>
+     * <mds-pref-language-item code="it"></mds-pref-language-item>
+     * <mds-pref-language-item code="en"></mds-pref-language-item>
+     * </mds-pref-language>
+     * </mds-pref>
+     */
     interface MdsPref {
+        /**
+          * Sets if the component works as hidden element controller instead as UI element, visible on the DOM
+         */
+        "controller"?: boolean;
         "updateLang": () => Promise<void>;
     }
     interface MdsPrefAnimation {
@@ -1430,7 +1503,7 @@ export namespace Components {
         /**
           * Specifies if the component is dismissable or not, it should be set to true by default is used with it's parent component `mds-push-notifications`
          */
-        "deletable": boolean;
+        "deletable"?: boolean;
         /**
           * Specifies the icon to be displayed
          */
@@ -1470,10 +1543,6 @@ export namespace Components {
           * Specifies if the component is visible or not.
          */
         "visible"?: boolean;
-        /**
-          * Specifies if the component visibility is handled when new `mds-push-notification` components are added to this component or when they are removed.
-         */
-        "visiblity"?: 'auto'|'visible'|'hidden';
     }
     interface MdsQuote {
         /**
@@ -1543,6 +1612,14 @@ export namespace Components {
          */
         "animation"?: HorizontalActionsAnimationType;
         /**
+          * Sets if the tab area should fill the entire width
+         */
+        "fill"?: boolean;
+        /**
+          * Sets if the tab area should show an inset shadow when the tabs overflows it's container
+         */
+        "overflow"?: boolean;
+        /**
           * Shows the horizontal scrollbar to maximize accessibility
          */
         "scrollbar"?: boolean;
@@ -1561,6 +1638,14 @@ export namespace Components {
         "typography"?: TypographySmallerType;
     }
     interface MdsTabItem {
+        /**
+          * Specifies if the tab item is disabled or not
+         */
+        "disabled"?: boolean;
+        /**
+          * Specifies the URL target of the button
+         */
+        "href"?: string;
         /**
           * The icon displayed in the tab item
          */
@@ -1619,6 +1704,7 @@ export namespace Components {
     }
     interface MdsTableHeader {
         "selectable"?: boolean;
+        "setSelection": (selectedItems: number, totalItems: number) => Promise<void>;
         "updateLang": () => Promise<void>;
     }
     interface MdsTableHeaderCell {
@@ -2229,6 +2315,16 @@ declare global {
         prototype: HTMLMdsCalendarCellElement;
         new (): HTMLMdsCalendarCellElement;
     };
+    /**
+     * @name Button
+     * @description Buttons are used to initialize an action. Button labels express what action will occur when the user interacts with it.
+     * @overview  <p>Buttons are clickable elements that are used to trigger actions. They communicate calls to action to the user and allow users to interact with pages in a variety of ways. Button labels express what action will occur when the user interacts with it.</p>
+     * @category General
+     * @tags controls
+     * @example <mds-button>
+     * Button CTA
+     * </mds-button>
+     */
     interface HTMLMdsCardElement extends Components.MdsCard, HTMLStencilElement {
     }
     var HTMLMdsCardElement: {
@@ -2396,6 +2492,7 @@ declare global {
     };
     interface HTMLMdsHeaderElementEventMap {
         "mdsHeaderClose": MdsHeaderEventDetail;
+        "mdsHeaderVisibilityChange": MdsHeaderVisibilityEventDetail;
     }
     interface HTMLMdsHeaderElement extends Components.MdsHeader, HTMLStencilElement {
         addEventListener<K extends keyof HTMLMdsHeaderElementEventMap>(type: K, listener: (this: HTMLMdsHeaderElement, ev: MdsHeaderCustomEvent<HTMLMdsHeaderElementEventMap[K]>) => any, options?: boolean | AddEventListenerOptions): void;
@@ -2624,6 +2721,18 @@ declare global {
         prototype: HTMLMdsInputUploadElement;
         new (): HTMLMdsInputUploadElement;
     };
+    interface HTMLMdsKeyboardElement extends Components.MdsKeyboard, HTMLStencilElement {
+    }
+    var HTMLMdsKeyboardElement: {
+        prototype: HTMLMdsKeyboardElement;
+        new (): HTMLMdsKeyboardElement;
+    };
+    interface HTMLMdsKeyboardKeyElement extends Components.MdsKeyboardKey, HTMLStencilElement {
+    }
+    var HTMLMdsKeyboardKeyElement: {
+        prototype: HTMLMdsKeyboardKeyElement;
+        new (): HTMLMdsKeyboardKeyElement;
+    };
     interface HTMLMdsKpiElement extends Components.MdsKpi, HTMLStencilElement {
     }
     var HTMLMdsKpiElement: {
@@ -2729,6 +2838,23 @@ declare global {
         prototype: HTMLMdsPaginatorItemElement;
         new (): HTMLMdsPaginatorItemElement;
     };
+    /**
+     * @name Pref
+     * @description This component is based on MdsTab component pattern
+     * @overview  <mds-text>Accessibility preferences in web browsers allow users to customize their navigation to improve readability, interaction, and usability. Common options include dark mode, text resizing, screen reader support, keyboard navigation, and blocking animated content. These settings help people with visual, hearing, motor, or cognitive disabilities experience the web more effectively and inclusively.</mds-text>
+     * @category Patterns
+     * @tags pattern, user, tab
+     * @example <mds-pref>
+     * <mds-pref-animation></mds-pref-animation>
+     * <mds-pref-consumption></mds-pref-consumption>
+     * <mds-pref-contrast></mds-pref-contrast>
+     * <mds-pref-theme></mds-pref-theme>
+     * <mds-pref-language>
+     * <mds-pref-language-item code="it"></mds-pref-language-item>
+     * <mds-pref-language-item code="en"></mds-pref-language-item>
+     * </mds-pref-language>
+     * </mds-pref>
+     */
     interface HTMLMdsPrefElement extends Components.MdsPref, HTMLStencilElement {
     }
     var HTMLMdsPrefElement: {
@@ -3218,6 +3344,8 @@ declare global {
         "mds-input-tip": HTMLMdsInputTipElement;
         "mds-input-tip-item": HTMLMdsInputTipItemElement;
         "mds-input-upload": HTMLMdsInputUploadElement;
+        "mds-keyboard": HTMLMdsKeyboardElement;
+        "mds-keyboard-key": HTMLMdsKeyboardKeyElement;
         "mds-kpi": HTMLMdsKpiElement;
         "mds-kpi-item": HTMLMdsKpiItemElement;
         "mds-label": HTMLMdsLabelElement;
@@ -3584,6 +3712,16 @@ declare namespace LocalJSX {
         "preview"?: boolean;
         "selection"?: CalendarCellSelectionPositionType;
     }
+    /**
+     * @name Button
+     * @description Buttons are used to initialize an action. Button labels express what action will occur when the user interacts with it.
+     * @overview  <p>Buttons are clickable elements that are used to trigger actions. They communicate calls to action to the user and allow users to interact with pages in a variety of ways. Button labels express what action will occur when the user interacts with it.</p>
+     * @category General
+     * @tags controls
+     * @example <mds-button>
+     * Button CTA
+     * </mds-button>
+     */
     interface MdsCard {
         /**
           * Enables automatic responsive behavior based on container queries
@@ -3870,6 +4008,14 @@ declare namespace LocalJSX {
     }
     interface MdsFilterItem {
         /**
+          * Shows the number of items will be filtered by the component
+         */
+        "count"?: string;
+        /**
+          * Sets if the component is disabled or not
+         */
+        "disabled"?: boolean;
+        /**
           * Sets the icon of the filter item
          */
         "icon"?: string;
@@ -3904,6 +4050,10 @@ declare namespace LocalJSX {
          */
         "autoHide"?: number;
         /**
+          * Sets if the backdrop is shown when the mds-header-bar attribute appearace is set to `inline`
+         */
+        "backdrop"?: boolean;
+        /**
           * Sets the visibility type of the hamburger menu of mds-header-bar
          */
         "menu"?: HeaderBarMenuType;
@@ -3915,6 +4065,10 @@ declare namespace LocalJSX {
           * Emits when the component is closed
          */
         "onMdsHeaderClose"?: (event: MdsHeaderCustomEvent<MdsHeaderEventDetail>) => void;
+        /**
+          * Emits when the component mds-header-bar is shown or hidden
+         */
+        "onMdsHeaderVisibilityChange"?: (event: MdsHeaderCustomEvent<MdsHeaderVisibilityEventDetail>) => void;
         /**
           * Sets the threshold margin to trigger hide or show status of the `mds-header-bar` when the page is scrolled
          */
@@ -4433,6 +4587,26 @@ declare namespace LocalJSX {
          */
         "sort"?: AttachmentSort;
     }
+    interface MdsKeyboard {
+        /**
+          * Shows the keyboard key combination test result
+         */
+        "test"?: KeyboardTest;
+        /**
+          * Sets if the keyboard key combination test is enabled
+         */
+        "try"?: boolean;
+    }
+    interface MdsKeyboardKey {
+        /**
+          * Sets the code of the keyboard key for combination tests if `try` attribute is set from `mds-keyboard` parent component
+         */
+        "name"?: KeyboardKeyName;
+        /**
+          * Sets if the key is pressed or not
+         */
+        "pressed"?: boolean;
+    }
     interface MdsKpi {
     }
     interface MdsKpiItem {
@@ -4517,6 +4691,10 @@ declare namespace LocalJSX {
          */
         "opened"?: boolean;
         /**
+          * Specifies if the component prevents the body from scrolling when modal window is opened
+         */
+        "overflow"?: ModalOverflowType;
+        /**
           * Specifies the animation position of the modal window
          */
         "position"?: ModalPositionType;
@@ -4585,7 +4763,28 @@ declare namespace LocalJSX {
          */
         "selected"?: boolean;
     }
+    /**
+     * @name Pref
+     * @description This component is based on MdsTab component pattern
+     * @overview  <mds-text>Accessibility preferences in web browsers allow users to customize their navigation to improve readability, interaction, and usability. Common options include dark mode, text resizing, screen reader support, keyboard navigation, and blocking animated content. These settings help people with visual, hearing, motor, or cognitive disabilities experience the web more effectively and inclusively.</mds-text>
+     * @category Patterns
+     * @tags pattern, user, tab
+     * @example <mds-pref>
+     * <mds-pref-animation></mds-pref-animation>
+     * <mds-pref-consumption></mds-pref-consumption>
+     * <mds-pref-contrast></mds-pref-contrast>
+     * <mds-pref-theme></mds-pref-theme>
+     * <mds-pref-language>
+     * <mds-pref-language-item code="it"></mds-pref-language-item>
+     * <mds-pref-language-item code="en"></mds-pref-language-item>
+     * </mds-pref-language>
+     * </mds-pref>
+     */
     interface MdsPref {
+        /**
+          * Sets if the component works as hidden element controller instead as UI element, visible on the DOM
+         */
+        "controller"?: boolean;
     }
     interface MdsPrefAnimation {
         /**
@@ -4762,10 +4961,6 @@ declare namespace LocalJSX {
           * Specifies if the component is visible or not.
          */
         "visible"?: boolean;
-        /**
-          * Specifies if the component visibility is handled when new `mds-push-notification` components are added to this component or when they are removed.
-         */
-        "visiblity"?: 'auto'|'visible'|'hidden';
     }
     interface MdsQuote {
         /**
@@ -4843,9 +5038,17 @@ declare namespace LocalJSX {
          */
         "animation"?: HorizontalActionsAnimationType;
         /**
+          * Sets if the tab area should fill the entire width
+         */
+        "fill"?: boolean;
+        /**
           * Emits when a children is changed
          */
         "onMdsTabChange"?: (event: MdsTabCustomEvent<MdsTabEventDetail>) => void;
+        /**
+          * Sets if the tab area should show an inset shadow when the tabs overflows it's container
+         */
+        "overflow"?: boolean;
         /**
           * Shows the horizontal scrollbar to maximize accessibility
          */
@@ -4873,6 +5076,14 @@ declare namespace LocalJSX {
         "typography"?: TypographySmallerType;
     }
     interface MdsTabItem {
+        /**
+          * Specifies if the tab item is disabled or not
+         */
+        "disabled"?: boolean;
+        /**
+          * Specifies the URL target of the button
+         */
+        "href"?: string;
         /**
           * The icon displayed in the tab item
          */
@@ -5230,6 +5441,8 @@ declare namespace LocalJSX {
         "mds-input-tip": MdsInputTip;
         "mds-input-tip-item": MdsInputTipItem;
         "mds-input-upload": MdsInputUpload;
+        "mds-keyboard": MdsKeyboard;
+        "mds-keyboard-key": MdsKeyboardKey;
         "mds-kpi": MdsKpi;
         "mds-kpi-item": MdsKpiItem;
         "mds-label": MdsLabel;
@@ -5303,6 +5516,16 @@ declare module "@stencil/core" {
             "mds-button": LocalJSX.MdsButton & JSXBase.HTMLAttributes<HTMLMdsButtonElement>;
             "mds-calendar": LocalJSX.MdsCalendar & JSXBase.HTMLAttributes<HTMLMdsCalendarElement>;
             "mds-calendar-cell": LocalJSX.MdsCalendarCell & JSXBase.HTMLAttributes<HTMLMdsCalendarCellElement>;
+            /**
+             * @name Button
+             * @description Buttons are used to initialize an action. Button labels express what action will occur when the user interacts with it.
+             * @overview  <p>Buttons are clickable elements that are used to trigger actions. They communicate calls to action to the user and allow users to interact with pages in a variety of ways. Button labels express what action will occur when the user interacts with it.</p>
+             * @category General
+             * @tags controls
+             * @example <mds-button>
+             * Button CTA
+             * </mds-button>
+             */
             "mds-card": LocalJSX.MdsCard & JSXBase.HTMLAttributes<HTMLMdsCardElement>;
             "mds-card-content": LocalJSX.MdsCardContent & JSXBase.HTMLAttributes<HTMLMdsCardContentElement>;
             "mds-card-footer": LocalJSX.MdsCardFooter & JSXBase.HTMLAttributes<HTMLMdsCardFooterElement>;
@@ -5334,6 +5557,8 @@ declare module "@stencil/core" {
             "mds-input-tip": LocalJSX.MdsInputTip & JSXBase.HTMLAttributes<HTMLMdsInputTipElement>;
             "mds-input-tip-item": LocalJSX.MdsInputTipItem & JSXBase.HTMLAttributes<HTMLMdsInputTipItemElement>;
             "mds-input-upload": LocalJSX.MdsInputUpload & JSXBase.HTMLAttributes<HTMLMdsInputUploadElement>;
+            "mds-keyboard": LocalJSX.MdsKeyboard & JSXBase.HTMLAttributes<HTMLMdsKeyboardElement>;
+            "mds-keyboard-key": LocalJSX.MdsKeyboardKey & JSXBase.HTMLAttributes<HTMLMdsKeyboardKeyElement>;
             "mds-kpi": LocalJSX.MdsKpi & JSXBase.HTMLAttributes<HTMLMdsKpiElement>;
             "mds-kpi-item": LocalJSX.MdsKpiItem & JSXBase.HTMLAttributes<HTMLMdsKpiItemElement>;
             "mds-label": LocalJSX.MdsLabel & JSXBase.HTMLAttributes<HTMLMdsLabelElement>;
@@ -5344,6 +5569,23 @@ declare module "@stencil/core" {
             "mds-notification": LocalJSX.MdsNotification & JSXBase.HTMLAttributes<HTMLMdsNotificationElement>;
             "mds-paginator": LocalJSX.MdsPaginator & JSXBase.HTMLAttributes<HTMLMdsPaginatorElement>;
             "mds-paginator-item": LocalJSX.MdsPaginatorItem & JSXBase.HTMLAttributes<HTMLMdsPaginatorItemElement>;
+            /**
+             * @name Pref
+             * @description This component is based on MdsTab component pattern
+             * @overview  <mds-text>Accessibility preferences in web browsers allow users to customize their navigation to improve readability, interaction, and usability. Common options include dark mode, text resizing, screen reader support, keyboard navigation, and blocking animated content. These settings help people with visual, hearing, motor, or cognitive disabilities experience the web more effectively and inclusively.</mds-text>
+             * @category Patterns
+             * @tags pattern, user, tab
+             * @example <mds-pref>
+             * <mds-pref-animation></mds-pref-animation>
+             * <mds-pref-consumption></mds-pref-consumption>
+             * <mds-pref-contrast></mds-pref-contrast>
+             * <mds-pref-theme></mds-pref-theme>
+             * <mds-pref-language>
+             * <mds-pref-language-item code="it"></mds-pref-language-item>
+             * <mds-pref-language-item code="en"></mds-pref-language-item>
+             * </mds-pref-language>
+             * </mds-pref>
+             */
             "mds-pref": LocalJSX.MdsPref & JSXBase.HTMLAttributes<HTMLMdsPrefElement>;
             "mds-pref-animation": LocalJSX.MdsPrefAnimation & JSXBase.HTMLAttributes<HTMLMdsPrefAnimationElement>;
             "mds-pref-consumption": LocalJSX.MdsPrefConsumption & JSXBase.HTMLAttributes<HTMLMdsPrefConsumptionElement>;

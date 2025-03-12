@@ -1,16 +1,14 @@
 @tailwind utilities;
 
-:host( [variant="light"] ),
-:host( [variant="light"][tone="strong"] ) {
-
+:host([variant="light"] ),
+:host([variant="light"][tone="strong"]) {
   --mds-toast-background: theme('colors.tone-neutral');
   --mds-toast-color: theme('colors.tone-neutral-02');
   --mds-toast-shadow: theme('boxShadow.lg-sharp');
   --mds-toast-icon-color: theme('colors.tone-neutral-03');
 }
 
-:host( [variant="light"][tone="weak"] ) {
-
+:host([variant="light"][tone="weak"]) {
   --mds-toast-background: theme('colors.tone-neutral');
   --mds-toast-color: theme('colors.tone-neutral-02');
   --mds-toast-shadow: theme('boxShadow.sm-sharp');

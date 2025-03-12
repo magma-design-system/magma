@@ -1,0 +1,37 @@
+.backdrop {
+  align-items: center;
+  backdrop-filter: var(--mds-header-backdrop-filter);
+  background-image: var(--mds-header-backdrop-background-image);
+  content: '';
+  display: flex;
+  height: var(--mds-header-backdrop-height);
+  inset: 0;
+  opacity: 1;
+  position: fixed;
+  transform: translate(0, 0);
+  transition-duration: theme('transitionDuration.200');
+  transition-property: opacity, transform;
+  width: 100%;
+
+
+  /* should blurs the blur effect but not blurring */
+
+  /* mask-image: linear-gradient(rgb(0 0 0 / 1), transparent); */
+}
+
+:host([appearance="inline"]) .backdrop {
+  opacity: 1;
+  transform: translate(0, 0);
+}
+
+:host([visibility="hidden"]) .backdrop,
+:host([appearance="stripe"]) .backdrop {
+  opacity: 0;
+  transform: translate(0, -100%);
+}
+
+@container style(--mds-header-backdrop-show: false) {
+  :host-context(:not(.safari)) .backdrop {
+    display: none;
+  }
+}

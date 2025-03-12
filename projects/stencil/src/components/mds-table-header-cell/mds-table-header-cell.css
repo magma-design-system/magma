@@ -2,7 +2,6 @@
 @import '~@maggioli-design-system/styles/dist/css/animations.css';
 @import '../../tailwind/components.css';
 @tailwind components;
-@tailwind utilities;
 
 /**
  * @prop --mds-table-header-cell-padding: The padding of the table cell
@@ -44,3 +43,4 @@
 }
 
 @import './css/mds-table-header-cell-pref-animation.css';
+@import '../../tailwind/fouc.css';

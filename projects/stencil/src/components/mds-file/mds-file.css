@@ -1,7 +1,6 @@
 @import '~@maggioli-design-system/styles/dist/css/animations.css'; /* included for focus effect */
 @import '../../tailwind/components.css';
 @tailwind components;
-@tailwind utilities;
 
 :host {
 
@@ -26,7 +25,7 @@
   @apply focus-bounce--focused;
 }
 
-:host( :hover ) {
+:host(:hover) {
   box-shadow: theme('boxShadow.md-sharp');
 }
 
@@ -128,3 +127,4 @@
 @import './css/mds-file-pref-animation.css';
 @import './css/mds-file-pref-theme.css';
 @import './css/mds-file-pref-contrast.css';
+@import '../../tailwind/fouc.css';

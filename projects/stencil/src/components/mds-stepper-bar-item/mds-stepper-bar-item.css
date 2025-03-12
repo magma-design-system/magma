@@ -1,6 +1,5 @@
 @import '../../tailwind/components.css';
 @tailwind components;
-@tailwind utilities;
 
 /**
  * @prop --mds-stepper-bar-item-color: Sets the color of the text
@@ -19,7 +18,6 @@
  */
 
 :host {
-
   --mds-stepper-bar-item-color: theme('colors.tone-neutral-03');
   --mds-stepper-bar-item-duaration: 250ms;
   --mds-stepper-bar-item-icon-background-done: theme('colors.status-success-05');
@@ -53,16 +51,15 @@
   transition-property: outline, outline-offset;
 }
 
-:host( :last-of-type ) {
+:host(:last-of-type) {
   @apply basis-100;
 }
 
-:host( :last-of-type ) .progress {
-  display: hidden;
+:host(:last-of-type) .progress {
+  display: none;
 }
 
 :host([done]) .icon {
-
   --mds-stepper-bar-item-icon-background: var(--mds-stepper-bar-item-icon-background-done);
   --mds-stepper-bar-item-icon-color: var(--mds-stepper-bar-item-icon-color-done);
 
@@ -70,7 +67,6 @@
 }
 
 :host([current]) .icon {
-
   --mds-stepper-bar-item-icon-background: var(--mds-stepper-bar-item-icon-background-current);
   --mds-stepper-bar-item-icon-color: var(--mds-stepper-bar-item-icon-color-current);
 
@@ -79,7 +75,6 @@
 
 :host(:not([done])) .icon,
 :host(:not([current])) .icon {
-
   --mds-stepper-bar-item-icon-ring-color: var(--mds-stepper-bar-item-icon-background);
 }
 
@@ -113,7 +108,6 @@
 }
 
 .progress {
-
   --mds-stepper-bar-item-background: var(--mds-stepper-bar-item-progress-background);
   --mds-stepper-bar-item-color: var(--mds-stepper-bar-item-progress-color);
   --mds-stepper-bar-item-thickness: var(--mds-stepper-bar-item-progress-thickness);
@@ -159,3 +153,4 @@
 }
 
 @import './css/mds-stepper-bar-item-pref-animation.css';
+@import '../../tailwind/fouc.css';

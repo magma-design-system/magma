@@ -1,5 +1,3 @@
-@tailwind utilities;
-
 /**
  * @prop --mds-banner-background: Sets the background-color of the component
  * @prop --mds-banner-color: Sets the text color of the component
@@ -11,7 +9,6 @@
  */
 
   :host {
-
   --mds-banner-background: theme('colors.tone-neutral-10');
   --mds-banner-close-icon-hover-background: theme('colors.tone-neutral-09');
   --mds-banner-color: theme('colors.tone-neutral-02');
@@ -58,14 +55,12 @@
 }
 
 .close-button {
-
   --mds-button-background: transparent;
 
   fill: var(--mds-banner-color);
 }
 
 .close-button:hover {
-
   --mds-button-background: var(--mds-banner-close-icon-hover-background);
 }
 
@@ -90,3 +85,4 @@
 @import './css/mds-banner-pref-animation.css';
 @import './css/mds-banner-pref-theme.css';
 @import './css/mds-banner-pref-contrast.css';
+@import '../../tailwind/fouc.css';

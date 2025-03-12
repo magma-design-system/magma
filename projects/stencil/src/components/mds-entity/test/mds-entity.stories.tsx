@@ -80,14 +80,37 @@ const TemplateDownload = args => {
   </div>
 }
 
+const TemplateCustomIconColors = args =>
+  <mds-entity {...args} style={{ '--mds-entity-icon-background': 'transparent', '--mds-entity-icon-color': 'rgb(var(--tone-neutral-04))' }} aria-label="Luogo">
+    <mds-text truncate="word" typography="h6" title="Nome">Maggioli Headquarters</mds-text>
+    <mds-text truncate="word" title="Strada" slot="detail" typography="caption">Via Pinelli 64, Santarcangelo di Romanga, Italy</mds-text>
+    <mds-button slot="action" icon="mdi/map-marker" variant="primary" tone="strong" title="Go to Google Maps"/>
+  </mds-entity>
+
+const TemplateInitials = args =>
+  <mds-entity {...args} style={{ '--mds-entity-icon-background': 'rgb(var(--tone-neutral-04))', '--mds-entity-icon-color': 'rgb(var(--tone-neutral-10))' }} aria-label="Luogo">
+    <mds-text truncate="word" typography="h6" title="Nome">Maggioli Headquarters</mds-text>
+    <mds-text truncate="word" title="Strada" slot="detail" typography="caption">Via Pinelli 64, Santarcangelo di Romanga, Italy</mds-text>
+    <mds-button slot="action" icon="mdi/map-marker" variant="primary" tone="strong" title="Go to Google Maps"/>
+  </mds-entity>
 
 export const Default = Template.bind({})
 Default.args = {
   src: './avatar-mario-01.png',
 }
 
+export const Initials = TemplateInitials.bind({})
+Initials.args = {
+  initials: 'mr',
+}
+
 export const Icon = TemplateLocation.bind({})
 Icon.args = {
+  icon: 'mi/baseline/route',
+}
+
+export const CustomIconColors = TemplateCustomIconColors.bind({})
+CustomIconColors.args = {
   icon: 'mi/baseline/route',
 }
 

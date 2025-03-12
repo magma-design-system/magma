@@ -1,0 +1,39 @@
+:host-context(.pref-contrast-more):host([variant="orchid"]),
+:host-context(.pref-contrast-more):host([variant="orchid"][tone="strong"]) {
+  --mds-badge-background: theme('colors.label-orchid-03');
+}
+
+:host-context(.pref-contrast-more):host([variant="orchid"][tone="weak"]) {
+  --mds-badge-color: theme('colors.label-orchid-01');
+}
+
+:host-context(.pref-contrast-more):host([variant="orchid"][tone="quiet"]) {
+  --mds-badge-color: theme('colors.label-orchid-02');
+}
+
+:host-context(.pref-contrast-more):host([variant="orchid"][tone="ghost"]) {
+  --mds-badge-background: transparent;
+  --mds-badge-color: theme('colors.label-orchid-03');
+  --mds-badge-border-color: theme('colors.label-orchid-03');
+}
+
+@media (prefers-contrast: more) {
+  :host-context(.pref-contrast-system):host([variant="orchid"]),
+  :host-context(.pref-contrast-system):host([variant="orchid"][tone="strong"]) {
+    --mds-badge-background: theme('colors.label-orchid-03');
+  }
+
+  :host-context(.pref-contrast-system):host([variant="orchid"][tone="weak"]) {
+    --mds-badge-color: theme('colors.label-orchid-01');
+  }
+
+  :host-context(.pref-contrast-system):host([variant="orchid"][tone="quiet"]) {
+    --mds-badge-color: theme('colors.label-orchid-02');
+  }
+
+  :host-context(.pref-contrast-system):host([variant="orchid"][tone="ghost"]) {
+    --mds-badge-background: transparent;
+    --mds-badge-color: theme('colors.label-orchid-03');
+    --mds-badge-border-color: theme('colors.label-orchid-03');
+  }
+}

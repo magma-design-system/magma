@@ -2,14 +2,14 @@
 .to-top-center,
 .to-top-right{
   @apply
-   animate-outro
-   animate-top-outro;
+    animate-outro
+    animate-top-outro;
 }
 
 .to-top-left.dialog--visible,
 .to-top-center.dialog--visible,
 .to-top-right.dialog--visible {
-   @apply
+  @apply
     animate-intro
     animate-top-intro;
 }

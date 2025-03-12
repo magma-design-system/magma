@@ -1,4 +1,4 @@
-@tailwind utilities;
+@import '../../tailwind/fouc.css';
 
 /**
  * @prop --mds-table-body-background-hover: The background-color of the table body when the mouse is over it
@@ -6,7 +6,6 @@
  */
 
 :host {
-
   --mds-table-body-background-hover: var(--mds-table-background-alt, theme('colors.tone-neutral-10'));
   --mds-table-body-background: var(--mds-table-background, theme('colors.tone-neutral'));
   --mds-table-body-background-alt: var(--mds-table-body-background-hover);
@@ -27,7 +26,6 @@
 }
 
 :host(:last-child) ::slotted(*:last-child) {
-
   --mds-table-cell-border-color: transparent;
 }
 

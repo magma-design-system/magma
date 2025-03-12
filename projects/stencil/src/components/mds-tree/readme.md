@@ -33,10 +33,10 @@
 | `--mds-tree-actions-border-radius`                          | Sets the border-radius of the wrapper container of the actions.                                                        |
 | `--mds-tree-actions-gap`                                    | Sets the gap between the actions.                                                                                      |
 | `--mds-tree-branch-border-color`                            | Sets the border color of the tree branch.                                                                              |
-| `--mds-tree-branch-border-radius`                           | Sets the border-radius of the tree branch.                                                                             |
 | `--mds-tree-branch-border-size`                             | Sets the border size of the tree branch.                                                                               |
 | `--mds-tree-branch-dot-default-color`                       | Sets the default color of the tree branch dot.                                                                         |
 | `--mds-tree-branch-dot-expanded-color`                      | Sets the color of the tree branch dot when the item is expanded.                                                       |
+| `--mds-tree-branch-use-rounded-border`                      | Sets the tree branch has rounded connectors or not, use it as a boolean value `true` or `false`.                       |
 | `--mds-tree-label-default-background`                       | Sets the default text color of the icon used at the near right of the label.                                           |
 | `--mds-tree-label-hover-background`                         | Sets the background-color of the label when the mouse is over the item.                                                |
 | `--mds-tree-label-icon-default-color`                       | Sets the default text color of the icon used at the near right of the label.                                           |

@@ -4,6 +4,9 @@ import miBaselineArrowBack from '@icon/mi/baseline/arrow-back.svg'
 import miBaselineArrowForward from '@icon/mi/baseline/arrow-forward.svg'
 import clsx from 'clsx'
 
+// TODO [fix] buttons now shows up when they should
+// TODO [fix] scrollbar not showing anymore
+
 /**
  * @slot default - Add `text string`, `HTML elements` or `components` to this slot.
  */

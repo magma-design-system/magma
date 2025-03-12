@@ -1,5 +1,3 @@
-@tailwind utilities;
-
 /**
  * @prop --mds-tree-actions-border-radius: Sets the border-radius of the wrapper container of the actions.
  * @prop --mds-tree-actions-gap: Sets the gap between the actions.
@@ -9,7 +7,7 @@
  * @prop --mds-tree-label-hover-background: Sets the background-color of the label when the mouse is over the item.
  * @prop --mds-tree-line-clamp: Sets the number of lines to show before truncating the text, it only works when attribute `truncate` is set to `all`.
  * @prop --mds-tree-branch-border-color: Sets the border color of the tree branch.
- * @prop --mds-tree-branch-border-radius: Sets the border-radius of the tree branch.
+ * @prop --mds-tree-branch-use-rounded-border: Sets the tree branch has rounded connectors or not, use it as a boolean value `true` or `false`.
  * @prop --mds-tree-branch-border-size: Sets the border size of the tree branch.
  * @prop --mds-tree-branch-dot-default-color: Sets the default color of the tree branch dot.
  * @prop --mds-tree-branch-dot-expanded-color: Sets the color of the tree branch dot when the item is expanded.
@@ -33,7 +31,6 @@
  */
 
 :host {
-
   --mds-tree-actions-border-radius: theme('borderRadius.lg');
   --mds-tree-actions-gap: theme('spacing.50');
   --mds-tree-label-default-background: transparent;
@@ -42,7 +39,7 @@
   --mds-tree-label-icon-hover-color: var(--mds-tree-label-icon-default-color);
   --mds-tree-line-clamp: 2;
   --mds-tree-branch-border-color: theme('colors.tone-neutral-07');
-  --mds-tree-branch-border-radius: true;
+  --mds-tree-branch-use-rounded-border: true;
   --mds-tree-branch-border-size: theme('size.50');
   --mds-tree-branch-dot-default-color: theme('colors.tone-neutral-07');
   --mds-tree-branch-dot-expanded-color: theme('colors.tone-neutral-06');
@@ -75,3 +72,5 @@
   padding: theme('padding.50');
   transition-property: background-color;
 }
+
+@import '../../tailwind/fouc.css';

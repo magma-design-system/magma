@@ -1,7 +1,5 @@
 @import '~@maggioli-design-system/styles/dist/css/animations.css'; /* included for focus effect */
 @import '../../tailwind/components.css';
-@tailwind components;
-@tailwind utilities;
 
 /**
  * @prop --mds-accordion-item-border-color: Sets the border-color of the component
@@ -14,7 +12,6 @@
  */
 
 :host {
-
   --mds-accordion-item-border-color: var(--mds-accordion-border-color, theme('colors.tone-neutral-08'));
   --mds-accordion-item-border-width: var(--mds-accordion-border-width, 2px);
   --mds-accordion-item-color: var(--mds-accordion-color, theme('colors.tone-neutral-03'));
@@ -99,35 +96,36 @@
   transition-property: transform;
 }
 
-:host( [selected]:not([selected="false"]) ) {
+:host([selected]:not([selected="false"])) {
   border-bottom: solid var(--mds-accordion-item-border-width) var(--mds-accordion-item-border-color);
   border-top: solid var(--mds-accordion-item-border-width) var(--mds-accordion-item-border-color);
   padding: var(--mds-accordion-item-padding-selected);
 }
 
-:host( [selected]:not([selected="false"]):first-child ) {
+:host([selected]:not([selected="false"]):first-child) {
   @apply mt-0;
 
   border-top-color: transparent;
 }
 
-:host( [selected]:not([selected="false"]):last-child ) {
+:host([selected]:not([selected="false"]):last-child) {
   @apply mb-0;
 
   border-bottom-color: transparent;
 }
 
-:host( [selected]:not([selected="false"]) ) .content {
+:host([selected]:not([selected="false"])) .content {
   @apply pt-400;
 
   grid-template-rows: 1fr;
   opacity: 1;
 }
 
-:host( [selected]:not([selected="false"]) ) .icon {
+:host([selected]:not([selected="false"])) .icon {
   transform: rotate(0deg);
 }
 
 @import './css/mds-accordion-item-pref-animation.css';
 @import './css/mds-accordion-item-pref-theme.css';
 @import './css/mds-accordion-item-pref-contrast.css';
+@import '../../tailwind/fouc.css';

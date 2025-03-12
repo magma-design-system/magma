@@ -1,329 +1,275 @@
-@tailwind utilities;
-
-:host( [variant="primary"][message] ) {
-
+:host([variant="primary"][message]) {
   --mds-file-preview-icon-background: theme('colors.variant-primary-09');
   --mds-file-preview-icon-color: theme('colors.variant-primary-04');
 }
 
-:host( [variant="info"][message] ) {
-
+:host([variant="info"][message]) {
   --mds-file-preview-icon-background: theme('colors.status-info-09');
   --mds-file-preview-icon-color: theme('colors.status-info-04');
   --mds-file-preview-color: theme('colors.status-info-03');
 }
 
-:host( [variant="success"][message] ) {
-
+:host([variant="success"][message]) {
   --mds-file-preview-icon-background: theme('colors.status-success-09');
   --mds-file-preview-icon-color: theme('colors.status-success-04');
   --mds-file-preview-color: theme('colors.status-success-03');
 }
 
-:host( [variant="warning"][message] ) {
-
+:host([variant="warning"][message]) {
   --mds-file-preview-icon-background: theme('colors.status-warning-09');
   --mds-file-preview-icon-color: theme('colors.status-warning-04');
   --mds-file-preview-color: theme('colors.status-warning-03');
 }
 
-:host( [variant="error"][message] ) {
-
+:host([variant="error"][message]) {
   --mds-file-preview-icon-background: theme('colors.status-error-09');
   --mds-file-preview-icon-color: theme('colors.status-error-04');
   --mds-file-preview-color: theme('colors.status-error-03');
 }
 
 
-:host( [variant="amaranth"][message] ) {
-
+:host([variant="amaranth"][message]) {
   --mds-file-preview-icon-background: theme('colors.label-amaranth-09');
   --mds-file-preview-icon-color: theme('colors.label-amaranth-04');
   --mds-file-preview-color: theme('colors.label-amaranth-03');
 }
 
-:host( [variant="aqua"][message] ) {
-
+:host([variant="aqua"][message]) {
   --mds-file-preview-icon-background: theme('colors.label-aqua-09');
   --mds-file-preview-icon-color: theme('colors.label-aqua-04');
   --mds-file-preview-color: theme('colors.label-aqua-03');
 }
 
 
-:host( [variant="blue"][message] ) {
-
+:host([variant="blue"][message]) {
   --mds-file-preview-icon-background: theme('colors.label-blue-09');
   --mds-file-preview-icon-color: theme('colors.label-blue-04');
   --mds-file-preview-color: theme('colors.label-blue-03');
 }
 
-:host( [variant="green"][message] ) {
-
+:host([variant="green"][message]) {
   --mds-file-preview-icon-background: theme('colors.label-green-09');
   --mds-file-preview-icon-color: theme('colors.label-green-04');
   --mds-file-preview-color: theme('colors.label-green-03');
 }
 
-:host( [variant="lime"][message] ) {
-
+:host([variant="lime"][message]) {
   --mds-file-preview-icon-background: theme('colors.label-lime-09');
   --mds-file-preview-icon-color: theme('colors.label-lime-04');
   --mds-file-preview-color: theme('colors.label-lime-03');
 }
 
-:host( [variant="orange"][message] ) {
-
+:host([variant="orange"][message]) {
   --mds-file-preview-icon-background: theme('colors.label-orange-09');
   --mds-file-preview-icon-color: theme('colors.label-orange-04');
   --mds-file-preview-color: theme('colors.label-orange-03');
 }
 
-:host( [variant="orchid"][message] ) {
-
+:host([variant="orchid"][message]) {
   --mds-file-preview-icon-background: theme('colors.label-orchid-09');
   --mds-file-preview-icon-color: theme('colors.label-orchid-04');
   --mds-file-preview-color: theme('colors.label-orchid-03');
 }
 
-:host( [variant="sky"][message] ) {
-
+:host([variant="sky"][message]) {
   --mds-file-preview-icon-background: theme('colors.label-sky-09');
   --mds-file-preview-icon-color: theme('colors.label-sky-04');
   --mds-file-preview-color: theme('colors.label-sky-03');
 }
 
-:host( [variant="violet"][message] ) {
-
+:host([variant="violet"][message]) {
   --mds-file-preview-icon-background: theme('colors.label-violet-09');
   --mds-file-preview-icon-color: theme('colors.label-violet-04');
   --mds-file-preview-color: theme('colors.label-violet-03');
 }
 
-:host( [variant="yellow"][message] ) {
-
+:host([variant="yellow"][message]) {
   --mds-file-preview-icon-background: theme('colors.label-yellow-09');
   --mds-file-preview-icon-color: theme('colors.label-yellow-04');
   --mds-file-preview-color: theme('colors.label-yellow-03');
 }
 
-@container style(--magma-pref-contrast: more) {
+/* contrast + variant */
 
-  :host( [variant="primary"][message] ) {
+:host-context(.pref-contrast-more):host([variant="primary"][message]) {
+  --mds-file-preview-icon-background: theme('colors.variant-primary-10');
+  --mds-file-preview-icon-color: theme('colors.variant-primary-02');
+  --mds-file-preview-color: theme('colors.variant-primary-01');
+}
 
+:host-context(.pref-contrast-more):host([variant="info"][message]) {
+  --mds-file-preview-icon-background: theme('colors.status-info-10');
+  --mds-file-preview-icon-color: theme('colors.status-info-02');
+  --mds-file-preview-color: theme('colors.status-info-01');
+}
+
+:host-context(.pref-contrast-more):host([variant="success"][message]) {
+  --mds-file-preview-icon-background: theme('colors.status-success-10');
+  --mds-file-preview-icon-color: theme('colors.status-success-02');
+  --mds-file-preview-color: theme('colors.status-success-01');
+}
+
+:host-context(.pref-contrast-more):host([variant="warning"][message]) {
+  --mds-file-preview-icon-background: theme('colors.status-warning-10');
+  --mds-file-preview-icon-color: theme('colors.status-warning-02');
+  --mds-file-preview-color: theme('colors.status-warning-01');
+}
+
+:host-context(.pref-contrast-more):host([variant="error"][message]) {
+  --mds-file-preview-icon-background: theme('colors.status-error-10');
+  --mds-file-preview-icon-color: theme('colors.status-error-02');
+  --mds-file-preview-color: theme('colors.status-error-01');
+}
+
+:host-context(.pref-contrast-more):host([variant="amaranth"][message]) {
+  --mds-file-preview-icon-background: theme('colors.label-amaranth-10');
+  --mds-file-preview-icon-color: theme('colors.label-amaranth-02');
+  --mds-file-preview-color: theme('colors.label-amaranth-01');
+}
+
+:host-context(.pref-contrast-more):host([variant="aqua"][message]) {
+  --mds-file-preview-icon-background: theme('colors.label-aqua-10');
+  --mds-file-preview-icon-color: theme('colors.label-aqua-02');
+  --mds-file-preview-color: theme('colors.label-aqua-01');
+}
+
+
+:host-context(.pref-contrast-more):host([variant="blue"][message]) {
+  --mds-file-preview-icon-background: theme('colors.label-blue-10');
+  --mds-file-preview-icon-color: theme('colors.label-blue-02');
+  --mds-file-preview-color: theme('colors.label-blue-01');
+}
+
+:host-context(.pref-contrast-more):host([variant="green"][message]) {
+  --mds-file-preview-icon-background: theme('colors.label-green-10');
+  --mds-file-preview-icon-color: theme('colors.label-green-02');
+  --mds-file-preview-color: theme('colors.label-green-01');
+}
+
+:host-context(.pref-contrast-more):host([variant="lime"][message]) {
+  --mds-file-preview-icon-background: theme('colors.label-lime-10');
+  --mds-file-preview-icon-color: theme('colors.label-lime-02');
+  --mds-file-preview-color: theme('colors.label-lime-01');
+}
+
+:host-context(.pref-contrast-more):host([variant="orange"][message]) {
+  --mds-file-preview-icon-background: theme('colors.label-orange-10');
+  --mds-file-preview-icon-color: theme('colors.label-orange-02');
+  --mds-file-preview-color: theme('colors.label-orange-01');
+}
+
+:host-context(.pref-contrast-more):host([variant="orchid"][message]) {
+  --mds-file-preview-icon-background: theme('colors.label-orchid-10');
+  --mds-file-preview-icon-color: theme('colors.label-orchid-02');
+  --mds-file-preview-color: theme('colors.label-orchid-01');
+}
+
+:host-context(.pref-contrast-more):host([variant="sky"][message]) {
+  --mds-file-preview-icon-background: theme('colors.label-sky-10');
+  --mds-file-preview-icon-color: theme('colors.label-sky-02');
+  --mds-file-preview-color: theme('colors.label-sky-01');
+}
+
+:host-context(.pref-contrast-more):host([variant="violet"][message]) {
+  --mds-file-preview-icon-background: theme('colors.label-violet-10');
+  --mds-file-preview-icon-color: theme('colors.label-violet-02');
+  --mds-file-preview-color: theme('colors.label-violet-01');
+}
+
+:host-context(.pref-contrast-more):host([variant="yellow"][message]) {
+  --mds-file-preview-icon-background: theme('colors.label-yellow-10');
+  --mds-file-preview-icon-color: theme('colors.label-yellow-02');
+  --mds-file-preview-color: theme('colors.label-yellow-01');
+}
+
+@media (prefers-contrast: more) {
+  :host-context(.pref-contrast-system):host([variant="primary"][message]) {
     --mds-file-preview-icon-background: theme('colors.variant-primary-10');
     --mds-file-preview-icon-color: theme('colors.variant-primary-02');
     --mds-file-preview-color: theme('colors.variant-primary-01');
   }
 
-  :host( [variant="info"][message] ) {
-
+  :host-context(.pref-contrast-system):host([variant="info"][message]) {
     --mds-file-preview-icon-background: theme('colors.status-info-10');
     --mds-file-preview-icon-color: theme('colors.status-info-02');
     --mds-file-preview-color: theme('colors.status-info-01');
   }
 
-  :host( [variant="success"][message] ) {
-
+  :host-context(.pref-contrast-system):host([variant="success"][message]) {
     --mds-file-preview-icon-background: theme('colors.status-success-10');
     --mds-file-preview-icon-color: theme('colors.status-success-02');
     --mds-file-preview-color: theme('colors.status-success-01');
   }
 
-  :host( [variant="warning"][message] ) {
-
+  :host-context(.pref-contrast-system):host([variant="warning"][message]) {
     --mds-file-preview-icon-background: theme('colors.status-warning-10');
     --mds-file-preview-icon-color: theme('colors.status-warning-02');
     --mds-file-preview-color: theme('colors.status-warning-01');
   }
 
-  :host( [variant="error"][message] ) {
-
+  :host-context(.pref-contrast-system):host([variant="error"][message]) {
     --mds-file-preview-icon-background: theme('colors.status-error-10');
     --mds-file-preview-icon-color: theme('colors.status-error-02');
     --mds-file-preview-color: theme('colors.status-error-01');
   }
 
-
-  :host( [variant="amaranth"][message] ) {
-
+  :host-context(.pref-contrast-system):host([variant="amaranth"][message]) {
     --mds-file-preview-icon-background: theme('colors.label-amaranth-10');
     --mds-file-preview-icon-color: theme('colors.label-amaranth-02');
     --mds-file-preview-color: theme('colors.label-amaranth-01');
   }
 
-  :host( [variant="aqua"][message] ) {
-
+  :host-context(.pref-contrast-system):host([variant="aqua"][message]) {
     --mds-file-preview-icon-background: theme('colors.label-aqua-10');
     --mds-file-preview-icon-color: theme('colors.label-aqua-02');
     --mds-file-preview-color: theme('colors.label-aqua-01');
   }
 
-
-  :host( [variant="blue"][message] ) {
-
+  :host-context(.pref-contrast-system):host([variant="blue"][message]) {
     --mds-file-preview-icon-background: theme('colors.label-blue-10');
     --mds-file-preview-icon-color: theme('colors.label-blue-02');
     --mds-file-preview-color: theme('colors.label-blue-01');
   }
 
-  :host( [variant="green"][message] ) {
-
+  :host-context(.pref-contrast-system):host([variant="green"][message]) {
     --mds-file-preview-icon-background: theme('colors.label-green-10');
     --mds-file-preview-icon-color: theme('colors.label-green-02');
     --mds-file-preview-color: theme('colors.label-green-01');
   }
 
-  :host( [variant="lime"][message] ) {
-
+  :host-context(.pref-contrast-system):host([variant="lime"][message]) {
     --mds-file-preview-icon-background: theme('colors.label-lime-10');
     --mds-file-preview-icon-color: theme('colors.label-lime-02');
     --mds-file-preview-color: theme('colors.label-lime-01');
   }
 
-  :host( [variant="orange"][message] ) {
-
+  :host-context(.pref-contrast-system):host([variant="orange"][message]) {
     --mds-file-preview-icon-background: theme('colors.label-orange-10');
     --mds-file-preview-icon-color: theme('colors.label-orange-02');
     --mds-file-preview-color: theme('colors.label-orange-01');
   }
 
-  :host( [variant="orchid"][message] ) {
-
+  :host-context(.pref-contrast-system):host([variant="orchid"][message]) {
     --mds-file-preview-icon-background: theme('colors.label-orchid-10');
     --mds-file-preview-icon-color: theme('colors.label-orchid-02');
     --mds-file-preview-color: theme('colors.label-orchid-01');
   }
 
-  :host( [variant="sky"][message] ) {
-
+  :host-context(.pref-contrast-system):host([variant="sky"][message]) {
     --mds-file-preview-icon-background: theme('colors.label-sky-10');
     --mds-file-preview-icon-color: theme('colors.label-sky-02');
     --mds-file-preview-color: theme('colors.label-sky-01');
   }
 
-  :host( [variant="violet"][message] ) {
-
+  :host-context(.pref-contrast-system):host([variant="violet"][message]) {
     --mds-file-preview-icon-background: theme('colors.label-violet-10');
     --mds-file-preview-icon-color: theme('colors.label-violet-02');
     --mds-file-preview-color: theme('colors.label-violet-01');
   }
 
-  :host( [variant="yellow"][message] ) {
-
+  :host-context(.pref-contrast-system):host([variant="yellow"][message]) {
     --mds-file-preview-icon-background: theme('colors.label-yellow-10');
     --mds-file-preview-icon-color: theme('colors.label-yellow-02');
     --mds-file-preview-color: theme('colors.label-yellow-01');
-  }
-}
-
-@container style(--magma-pref-contrast: system) {
-
-  @media (prefers-contrast: more) {
-    :host( [variant="primary"][message] ) {
-
-      --mds-file-preview-icon-background: theme('colors.variant-primary-10');
-      --mds-file-preview-icon-color: theme('colors.variant-primary-02');
-      --mds-file-preview-color: theme('colors.variant-primary-01');
-    }
-
-    :host( [variant="info"][message] ) {
-
-      --mds-file-preview-icon-background: theme('colors.status-info-10');
-      --mds-file-preview-icon-color: theme('colors.status-info-02');
-      --mds-file-preview-color: theme('colors.status-info-01');
-    }
-
-    :host( [variant="success"][message] ) {
-
-      --mds-file-preview-icon-background: theme('colors.status-success-10');
-      --mds-file-preview-icon-color: theme('colors.status-success-02');
-      --mds-file-preview-color: theme('colors.status-success-01');
-    }
-
-    :host( [variant="warning"][message] ) {
-
-      --mds-file-preview-icon-background: theme('colors.status-warning-10');
-      --mds-file-preview-icon-color: theme('colors.status-warning-02');
-      --mds-file-preview-color: theme('colors.status-warning-01');
-    }
-
-    :host( [variant="error"][message] ) {
-
-      --mds-file-preview-icon-background: theme('colors.status-error-10');
-      --mds-file-preview-icon-color: theme('colors.status-error-02');
-      --mds-file-preview-color: theme('colors.status-error-01');
-    }
-
-
-    :host( [variant="amaranth"][message] ) {
-
-      --mds-file-preview-icon-background: theme('colors.label-amaranth-10');
-      --mds-file-preview-icon-color: theme('colors.label-amaranth-02');
-      --mds-file-preview-color: theme('colors.label-amaranth-01');
-    }
-
-    :host( [variant="aqua"][message] ) {
-
-      --mds-file-preview-icon-background: theme('colors.label-aqua-10');
-      --mds-file-preview-icon-color: theme('colors.label-aqua-02');
-      --mds-file-preview-color: theme('colors.label-aqua-01');
-    }
-
-
-    :host( [variant="blue"][message] ) {
-
-      --mds-file-preview-icon-background: theme('colors.label-blue-10');
-      --mds-file-preview-icon-color: theme('colors.label-blue-02');
-      --mds-file-preview-color: theme('colors.label-blue-01');
-    }
-
-    :host( [variant="green"][message] ) {
-
-      --mds-file-preview-icon-background: theme('colors.label-green-10');
-      --mds-file-preview-icon-color: theme('colors.label-green-02');
-      --mds-file-preview-color: theme('colors.label-green-01');
-    }
-
-    :host( [variant="lime"][message] ) {
-
-      --mds-file-preview-icon-background: theme('colors.label-lime-10');
-      --mds-file-preview-icon-color: theme('colors.label-lime-02');
-      --mds-file-preview-color: theme('colors.label-lime-01');
-    }
-
-    :host( [variant="orange"][message] ) {
-
-      --mds-file-preview-icon-background: theme('colors.label-orange-10');
-      --mds-file-preview-icon-color: theme('colors.label-orange-02');
-      --mds-file-preview-color: theme('colors.label-orange-01');
-    }
-
-    :host( [variant="orchid"][message] ) {
-
-      --mds-file-preview-icon-background: theme('colors.label-orchid-10');
-      --mds-file-preview-icon-color: theme('colors.label-orchid-02');
-      --mds-file-preview-color: theme('colors.label-orchid-01');
-    }
-
-    :host( [variant="sky"][message] ) {
-
-      --mds-file-preview-icon-background: theme('colors.label-sky-10');
-      --mds-file-preview-icon-color: theme('colors.label-sky-02');
-      --mds-file-preview-color: theme('colors.label-sky-01');
-    }
-
-    :host( [variant="violet"][message] ) {
-
-      --mds-file-preview-icon-background: theme('colors.label-violet-10');
-      --mds-file-preview-icon-color: theme('colors.label-violet-02');
-      --mds-file-preview-color: theme('colors.label-violet-01');
-    }
-
-    :host( [variant="yellow"][message] ) {
-
-      --mds-file-preview-icon-background: theme('colors.label-yellow-10');
-      --mds-file-preview-icon-color: theme('colors.label-yellow-02');
-      --mds-file-preview-color: theme('colors.label-yellow-01');
-    }
   }
 }

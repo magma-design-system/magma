@@ -1,7 +1,4 @@
-@tailwind utilities;
-
 :host {
-
   --mds-input-select-icon-color: var(--variant-primary-03);
   --mds-input-select-variant-color: 0 0 0;
   --mds-input-select-arrow-icon-blur-background-color: rgb(var(--variant-primary-09));
@@ -10,14 +7,12 @@
   --mds-input-select-arrow-icon-hover-color: rgb(var(--variant-primary-04));
 }
 
-:host( :hover ),
-:host( :focus-within ) {
-
+:host(:hover),
+:host(:focus-within) {
   --mds-input-select-variant-color: var(--variant-primary-04);
 }
 
-:host( [variant="info"] ) {
-
+:host([variant="info"]) {
   --mds-input-select-icon-color: var(--status-info-05);
   --mds-input-select-tip-background: var(--status-info-05);
   --mds-input-select-arrow-icon-blur-background-color: rgb(var(--status-info-09));
@@ -27,15 +22,13 @@
   --mds-input-select-variant-color: 0 0 0;
 }
 
-:host( [variant="info"]:hover ),
-:host( [variant="info"]:focus-within ) {
-
+:host([variant="info"]:hover),
+:host([variant="info"]:focus-within) {
   --mds-input-select-icon-color: var(--status-info-04);
   --mds-input-select-variant-color: var(--status-info-05);
 }
 
-:host( [variant="success"] ) {
-
+:host([variant="success"]) {
   --mds-input-select-icon-color: var(--status-success-05);
   --mds-input-select-tip-background: var(--status-success-05);
   --mds-input-select-arrow-icon-blur-background-color: rgb(var(--status-success-09));
@@ -45,15 +38,13 @@
   --mds-input-select-variant-color: 0 0 0;
 }
 
-:host( [variant="success"]:hover ),
-:host( [variant="success"]:focus-within ) {
-
+:host([variant="success"]:hover),
+:host([variant="success"]:focus-within) {
   --mds-input-select-icon-color: var(--status-success-04);
   --mds-input-select-variant-color: var(--status-success-05);
 }
 
-:host( [variant="warning"] ) {
-
+:host([variant="warning"]) {
   --mds-input-select-icon-color: var(--status-warning-05);
   --mds-input-select-tip-background: var(--status-warning-05);
   --mds-input-select-arrow-icon-blur-background-color: rgb(var(--status-warning-09));
@@ -63,15 +54,13 @@
   --mds-input-select-variant-color: 0 0 0;
 }
 
-:host( [variant="warning"]:hover ),
-:host( [variant="warning"]:focus-within ) {
-
+:host([variant="warning"]:hover),
+:host([variant="warning"]:focus-within) {
   --mds-input-select-icon-color: var(--status-warning-04);
   --mds-input-select-variant-color: var(--status-warning-05);
 }
 
-:host( [variant="error"] ) {
-
+:host([variant="error"]) {
   --mds-input-select-icon-color: var(--status-error-05);
   --mds-input-select-tip-background: var(--status-error-05);
   --mds-input-select-arrow-icon-blur-background-color: rgb(var(--status-error-09));
@@ -81,9 +70,8 @@
   --mds-input-select-variant-color: 0 0 0;
 }
 
-:host( [variant="error"]:hover ),
-:host( [variant="error"]:focus-within ) {
-
+:host([variant="error"]:hover),
+:host([variant="error"]:focus-within) {
   --mds-input-select-icon-color: var(--status-error-04);
   --mds-input-select-variant-color: var(--status-error-05);
 }

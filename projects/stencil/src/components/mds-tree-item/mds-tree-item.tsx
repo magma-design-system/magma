@@ -164,7 +164,7 @@ export class MdsTreeItem {
 
     this.updateToggleIcon()
 
-    this.hasActions = !!this.host.querySelector('[slot="action"]')
+    this.hasActions = !!this.host.querySelector(':scope > [slot="action"]')
     this.hasChildren = !!this.host.querySelector('mds-tree-item')
   }
 
@@ -183,9 +183,10 @@ export class MdsTreeItem {
       <Host>
         <div class={clsx('header', this.hasChildren && 'header--has-children')}>
           <div class="tree-node">
+            <div class="tree-branch"></div>
             <div class="tree-dot"></div>
           </div>
-          <div class="toggle-icon">
+          <div class={clsx('toggle-icon', `toggle-icon--${this.toggle}`)}>
             <mds-button await={this.await} onClick={this.onClick.bind(this)} icon={!this.await ? this.currentToggleIcon : undefined} title={ this.t.get(this.expanded ? 'collapse' : 'expand', { label: this.label }) } variant="dark" tone="quiet" size="sm"/>
           </div>
           <div class="title">

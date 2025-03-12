@@ -1,10 +1,13 @@
 @import '../../tailwind/components.css';
-
 @tailwind components;
-@tailwind utilities;
+
+/**
+ * @prop --mds-input-tip-item-background: Sets the background color of the tip item.
+ * @prop --mds-input-tip-item-color: Sets the text color of the tip item.
+ * @prop --mds-input-tip-item-icon-color: Sets the icon color fill of the tip item.
+ */
 
 :host {
-
   --mds-input-tip-item-background: theme('colors.tone-neutral-01');
   --mds-input-tip-item-color: theme('colors.tone-neutral');
   --mds-input-tip-item-icon-color: theme('colors.tone-neutral');
@@ -73,28 +76,24 @@
 }
 
 :host([variant="required"]) {
-
   --mds-input-tip-item-background: theme('colors.status-error-05');
 }
 
 :host([variant="required-success"]) {
-
   --mds-input-tip-item-background: theme('colors.status-success-05');
 }
 
 :host([variant="readonly"]) {
-
   --mds-input-tip-item-background: theme('colors.status-info-05');
 }
 
 :host([variant="disabled"]) {
-
   --mds-input-tip-item-background: theme('colors.tone-neutral-05');
 }
 
 :host([variant="text"]) {
-
   --mds-input-tip-item-background: theme('colors.tone-neutral-03');
 }
 
 @import './css/mds-input-tip-item-pref-animation.css';
+@import '../../tailwind/fouc.css';

@@ -81,6 +81,11 @@ const config = {
   addons,
   webpackFinal,
   framework,
+  options: {
+    storySort: (a, b) => {
+      return a.title.localeCompare(b.title, 'it-IT', { numeric: true });
+    },
+  },
   docs
 }
 

@@ -85,9 +85,9 @@ export class MdsPrefContrast {
 
   render () {
     return (
-      <Host >
+      <Host>
         <mds-text class="info" typography="caption"><b>{this.t.get('label')}</b> {this.t.get(this.consumption[this.mode ?? this.defaultMode].label)}</mds-text>
-        <mds-tab>
+        <mds-tab fill>
           <mds-tab-item selected={this.mode === 'low'} onClick={() => { this.setConsumption('low') }} class="item item--low" icon={mggConsumptionLow}></mds-tab-item>
           <mds-tab-item selected={this.mode === 'medium'} onClick={() => { this.setConsumption('medium') }} class="item item--medium" icon={mggConsumptionMedium}></mds-tab-item>
           <mds-tab-item selected={this.mode === 'high'} onClick={() => { this.setConsumption('high') }} class="item item--high" icon={mggConsumptionHigh}></mds-tab-item>

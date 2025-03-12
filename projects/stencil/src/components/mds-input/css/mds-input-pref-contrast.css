@@ -1,27 +1,21 @@
-@tailwind utilities;
+:host-context(.pref-contrast-more) {
+  --mds-input-ring: theme('boxShadow.outline-strong-50');
+  --mds-input-background: theme('colors.tone-neutral-09');
+  --mds-input-controls-border: 2px solid theme('colors.tone-neutral-05');
+}
 
-@container style(--magma-pref-contrast: more) {
-  :host {
+:host-context(.pref-contrast-more) .input::placeholder {
+  color: theme('colors.tone-neutral-03');
+}
 
+@media (prefers-contrast: more) {
+  :host-context(.pref-contrast-system) {
     --mds-input-ring: theme('boxShadow.outline-strong-50');
+    --mds-input-background: theme('colors.tone-neutral-09');
+    --mds-input-controls-border: 2px solid theme('colors.tone-neutral-05');
   }
 
-  .input::placeholder {
+  :host-context(.pref-contrast-more) .input::placeholder {
     color: theme('colors.tone-neutral-03');
   }
 }
-
-@container style(--magma-pref-contrast: system) {
-
-  @media (prefers-contrast: more) {
-    :host {
-
-      --mds-input-ring: theme('boxShadow.outline-strong-50');
-    }
-
-    .input::placeholder {
-      color: theme('colors.tone-neutral-03');
-    }
-  }
-}
-

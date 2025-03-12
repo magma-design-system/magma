@@ -1,29 +1,17 @@
-@tailwind utilities;
+:host-context(.pref-contrast-more) {
+  --mds-filter-items-background-active: theme('colors.tone-neutral-09');
+  --mds-filter-items-background: theme('colors.tone-neutral-10');
+  --mds-filter-wrapper-shadow-opacity: theme('opacity.30');
+  --mds-filter-wrapper-shadow-color: theme('colors.tone-neutral-07');
+  --mds-filter-wrapper-shadow: 0 0 0 theme('size.50') var(--mds-filter-wrapper-shadow-color) inset;
+}
 
-@container style(--magma-pref-contrast: more) {
-  :host {
-
+@media (prefers-contrast: more) {
+  :host-context(.pref-contrast-system) {
     --mds-filter-items-background-active: theme('colors.tone-neutral-09');
     --mds-filter-items-background: theme('colors.tone-neutral-10');
-  }
-
-  .items {
-    box-shadow: theme('boxShadow.outline-50');
-  }
-}
-
-@container style(--magma-pref-contrast: system) {
-
-  @media (prefers-contrast: more) {
-    :host {
-
-      --mds-filter-items-background-active: theme('colors.tone-neutral-09');
-      --mds-filter-items-background: theme('colors.tone-neutral-10');
-    }
-
-    .items {
-      box-shadow: theme('boxShadow.outline-50');
-    }
+    --mds-filter-wrapper-shadow-opacity: theme('opacity.30');
+    --mds-filter-wrapper-shadow-color: theme('colors.tone-neutral-07');
+    --mds-filter-wrapper-shadow: 0 0 0 theme('size.50') var(--mds-filter-wrapper-shadow-color) inset;
   }
 }
-

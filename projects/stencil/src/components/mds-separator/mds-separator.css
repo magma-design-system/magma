@@ -1,7 +1,5 @@
-@tailwind utilities;
 
 :host {
-
   --mds-separator-background: theme('colors.tone-neutral-08');
 
   @apply
@@ -14,3 +12,4 @@
 
 @import './css/mds-separator-pref-theme.css';
 @import './css/mds-separator-pref-contrast.css';
+@import '../../tailwind/fouc.css';

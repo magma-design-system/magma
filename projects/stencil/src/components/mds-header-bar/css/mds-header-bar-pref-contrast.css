@@ -1,22 +1,13 @@
-@tailwind utilities;
+:host-context(.pref-contrast-more) {
+  --mds-header-bar-hamburger-color: theme('colors.tone-neutral-01');
 
-@container style(--magma-pref-contrast: more) {
-  :host {
+  box-shadow: theme('boxShadow.outline-strong-50'), theme('boxShadow.2xl');
+}
 
+@media (prefers-contrast: more) {
+  :host-context(.pref-contrast-system) {
     --mds-header-bar-hamburger-color: theme('colors.tone-neutral-01');
 
     box-shadow: theme('boxShadow.outline-strong-50'), theme('boxShadow.2xl');
-  }
-}
-
-@container style(--magma-pref-contrast: system) {
-
-  @media (prefers-contrast: more) {
-    :host {
-
-      --mds-header-bar-hamburger-color: theme('colors.tone-neutral-01');
-
-      box-shadow: theme('boxShadow.outline-strong-50'), theme('boxShadow.2xl');
-    }
   }
 }

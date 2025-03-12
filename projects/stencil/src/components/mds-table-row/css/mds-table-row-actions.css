@@ -8,15 +8,17 @@
 }
 
 .actions {
-
   --mds-table-row-actions-background: var(--mds-table-row-background);
 
   align-items: center;
   background-color: var(--mds-table-row-actions-background);
+  border-bottom-left-radius: calc(theme('borderRadius.lg') + var(--mds-table-border-width) * 2);
+  border-top-left-radius: calc(theme('borderRadius.lg') + var(--mds-table-border-width) * 2);
   display: inline-flex;
   gap: var(--mds-table-row-actions-gap);
   inset: 0;
   margin-right: 100%;
+  padding: calc(var(--mds-table-border-width) * 2);
   padding-right: 0;
   pointer-events: auto;
   position: sticky;
@@ -31,15 +33,35 @@
   transform: translateX(100%);
 }
 
-
 :host([overlay-actions]) .actions {
   padding-right: var(--mds-table-cell-padding);
   transform: translateX(100%);
 }
 
 :host([overlay-actions]:hover) .actions {
-
   --mds-table-row-actions-background: var(--mds-table-row-background);
 
   transform: translateX(0);
+}
+
+:host-context(mds-table[interactive="false"]):host(:hover) .actions,
+:host-context(mds-table:not([interactive])):host(:hover) .actions {
+  --mds-table-row-actions-background: var(--mds-table-row-background-hover);
+}
+
+:host-context(mds-table[selection]:not([interactive])):host(:not([selected]):hover) .actions,
+:host-context(mds-table[selection][interactive="false"]):host(:not([selected]):hover) .actions,
+:host-context(mds-table[selection]:not([interactive])):host([selected="false"]:hover) .actions,
+:host-context(mds-table[selection][interactive="false"]):host([selected="false"]:hover) .actions {
+  --mds-table-row-actions-background: var(--mds-table-row-background-alt);
+}
+
+.actions-cell--disable,
+.actions-cell--disable .actions {
+  position: static !important;
+}
+
+.actions-cell--disable .actions {
+  margin-right: 0 !important;
+  transform: translateX(0) !important;
 }

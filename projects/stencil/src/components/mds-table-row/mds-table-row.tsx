@@ -4,10 +4,14 @@ import localeEl from './meta/locale.el.json'
 import localeEn from './meta/locale.en.json'
 import localeEs from './meta/locale.es.json'
 import localeIt from './meta/locale.it.json'
+import { isSafari } from '@common/browser'
 
 /**
  * @slot default - Put `mds-table-cell` element/s.
+ * @slot action - Put `mds-button` element/s or other kind of actions as aside menu for the single row.
  */
+
+// TODO [bug, style]: on Safari actions menu is visually broken
 
 @Component({
   tag: 'mds-table-row',
@@ -18,7 +22,7 @@ export class MdsTableRow {
 
   @Element() host: HTMLMdsTableRowElement
   private actions: HTMLDivElement
-  private hasActions: boolean
+  private hasActions: boolean = true
   private sizerWidth: string
   private t:Locale = new Locale({
     el: localeEl,
@@ -45,7 +49,7 @@ export class MdsTableRow {
 
   componentWillLoad (): void {
     this.language = this.t.lang(this.host)
-    this.hasActions = this.host.querySelector('[slot="action"]') !== null
+    this.hasActions = this.host.querySelector(':scope > [slot="action"]') !== null
   }
 
   componentDidLoad (): void {
@@ -71,7 +75,14 @@ export class MdsTableRow {
           </mds-table-cell>
         }
         <slot/>
-        { this.hasActions &&
+        { this.hasActions && isSafari() &&
+          <mds-table-cell class="actions-cell actions-cell--disable">
+            <div class="actions">
+              <slot name="action"></slot>
+            </div>
+          </mds-table-cell>
+        }
+        { this.hasActions && !isSafari() &&
           <mds-table-cell class="actions-cell">
             <div class="actions-sizer" style={{
               minHeight: '1px',

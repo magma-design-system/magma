@@ -5,22 +5,20 @@
 }
 
 .button {
-
   --mds-button-background: var(--mds-tab-item-default-background);
   --mds-button-color: var(--mds-tab-item-default-color);
-  --mds-button-radius: var(--mds-tab-item-default-radius);
+  --mds-button-radius: var(--mds-tab-item-radius);
+
   flex-grow: 1;
 }
 
 .button:hover {
-
   --mds-button-background: var(--mds-tab-item-hover-background);
   --mds-button-color: var(--mds-tab-item-hover-color);
 }
 
-:host([selected]:not([selected="false"])) .button,
-:host([selected]:not([selected="false"])) .button:hover {
-
+:host([selected]) .button,
+:host([selected]) .button:hover {
   --mds-button-background: var(--mds-tab-item-selected-background);
   --mds-button-color: var(--mds-tab-item-selected-color);
 
@@ -28,5 +26,10 @@
   pointer-events: none;
 }
 
+:host([disabled]) {
+  pointer-events: none;
+}
+
 @import './css/mds-tab-item-pref-theme.css';
 @import './css/mds-tab-item-pref-contrast.css';
+@import '../../tailwind/fouc.css';

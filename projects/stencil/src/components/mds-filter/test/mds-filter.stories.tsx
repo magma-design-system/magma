@@ -24,9 +24,9 @@ export default {
 
 const Template = args =>
   <mds-filter {...args}>
-    <mds-filter-item label="This first time" value="1"/>
-    <mds-filter-item label="Infamous second son" value="2"/>
-    <mds-filter-item label="The third sequence" value="3"/>
+    <mds-filter-item label="This first time" value="1" count="101"/>
+    <mds-filter-item label="Infamous second son" value="2" count="43"/>
+    <mds-filter-item label="The third sequence" value="3" count="7"/>
   </mds-filter>
 
 export const Default = Template.bind({})

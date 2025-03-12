@@ -1,0 +1,6 @@
+{
+  "colors": [
+    { "color": "#00379E", "export": ["export1"], "name": "variant.primary" },
+    { "color": "#0f4ad5", "export": ["export2"], "name": "variant.secondary" }
+  ]
+}

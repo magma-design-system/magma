@@ -1,6 +1,4 @@
 @import '../../tailwind/components.css';
-@tailwind components;
-@tailwind utilities;
 
 /**
  * @prop --mds-breadcrumb-arrow-depth-color: Sets the color of the arrow icon that separates buttons
@@ -16,7 +14,6 @@
  */
 
 :host {
-
   --mds-breadcrumb-arrow-depth-color: theme('colors.tone-neutral-04');
   --mds-breadcrumb-button-background-current: theme('colors.tone-neutral-09');
   --mds-breadcrumb-button-background-disabled: transparent;
@@ -56,16 +53,17 @@
 }
 
 .back:hover {
-
   --mds-button-background: var(--mds-breadcrumb-button-background-hover);
 
   fill: var(--mds-breadcrumb-button-color-hover);
 }
 
 .disabled {
-
   --mds-button-background: var(--mds-breadcrumb-button-background-disabled);
 
   fill: var(--mds-breadcrumb-button-color-disabled);
   pointer-events: none;
 }
+
+@import './css/mds-breadcrumb-pref-animation.css';
+@import '../../tailwind/fouc.css';

@@ -3,12 +3,11 @@
 }
 
 .slider {
-
-  --mds-tab-slider-offset: 0px;
-  --mds-tab-slider-width: 0px;
+  --mds-tab-slider-offset: 0;
+  --mds-tab-slider-width: 0;
 
   background-color: var(--mds-tab-item-selected-background);
-  border-radius: var(--mds-tab-item-default-radius);
+  border-radius: var(--mds-tab-item-radius);
   bottom: var(--mds-tab-tabs-padding);
   box-shadow: var(--mds-tab-item-selected-shadow);
   left: 0;
@@ -17,14 +16,18 @@
   top: var(--mds-tab-tabs-padding);
   transform: translateX(var(--mds-tab-slider-offset)) translateZ(0);
   transition-duration: var(--mds-tab-transition-duration);
-  transition-property: transform, width;
+  transition-property: background-color, box-shadow, transform, width;
   transition-timing-function: var(--mds-tab-transition-timing-function);
   width: var(--mds-tab-slider-width);
   will-change: transform, width;
   z-index: 0;
 }
 
-::slotted( mds-tab-item ) {
+.slider--no-trantitions {
+  transition-property: none;
+}
+
+::slotted( mds-tab-item) {
   position: relative;
   z-index: 1;
 }

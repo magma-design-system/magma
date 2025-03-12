@@ -1,20 +1,21 @@
-@tailwind utilities;
-
-@container style(--magma-pref-animation: reduce) {
-  .contents,
-  .items {
-    scroll-behavior: unset;
-    transition-duration: 0s;
-  }
+:host-context(.pref-animation-reduce) {
+  --mds-stepper-bar-scroll-behavior: auto;
 }
 
-@container style(--magma-pref-animation: system) {
+:host-context(.pref-animation-reduce),
+:host-context(.pref-animation-reduce) .contents,
+:host-context(.pref-animation-reduce) .items {
+  transition-duration: 0s;
+}
 
-  @media (prefers-reduced-motion) {
-    .contents,
-    .items {
-      scroll-behavior: unset;
-      transition-duration: 0s;
-    }
+@media (prefers-reduced-motion) {
+  :host-context(.pref-animation-system) {
+    --mds-stepper-bar-scroll-behavior: auto;
+  }
+
+  :host-context(.pref-animation-system),
+  :host-context(.pref-animation-system) .contents,
+  :host-context(.pref-animation-system) .items {
+    transition-duration: 0s;
   }
 }

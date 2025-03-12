@@ -72,6 +72,7 @@ const main = (parameters: string[]): void => {
     .then(() => buildFont(optionsNatural))
     .then(() => buildCSSEncoded(BUILD_ORIGINAL_FONTS_DIR, ORIGINAL_DIR, fontName))
     .then(() => organizeFiles(BUILD_ORIGINAL_FONTS_DIR, ORIGINAL_DIR))
+    .then(() => optimizeCSSOutputs())
     .catch(err => {
       throw Error(chalk.red(err))
     })
@@ -83,6 +84,41 @@ const createNaturalNames = (inputData: Map<string, string>) => {
     naturalInputData.set(icon.toString().split('/')[1].replace(/_/gm, '-'), icon)
   }
   return Promise.resolve(naturalInputData)
+}
+
+const optimizeSelectorCSS = (cssInput: string): string => {
+  /*
+   * This is a workaround to remove [class^="mgg-icons-"], [class*=" mgg-icons-"] regex selectors
+   * which are very demanding for the browser rendering
+   * As side effect, the filesize will be greater
+  */
+  const selectorReplacer = '[class^="mgg-icons-"], [class*=" mgg-icons-"]'
+  const regexSelectors = /^\.mgg-icons-[a-z0-9-]*/gm
+  const iconsSelectors = cssInput.match(regexSelectors) || []
+  const cssReplacedSelectorsAscii = cssInput.replace(selectorReplacer, iconsSelectors.join(',\n'))
+  return cssReplacedSelectorsAscii
+}
+
+const optimizeFile = async (dir: string, file: string) => {
+  const fileToBeOptimized = path.join(dir, file)
+  fs.readFile(fileToBeOptimized)
+    .then(fontBuffer => optimizeSelectorCSS(fontBuffer.toString('ascii')))
+    .then(cssAscii => fs.writeFile(fileToBeOptimized, cssAscii))
+}
+
+const optimizeCSSOutputs = async () => {
+  await optimizeFile(DIST_DIR, 'mgg-icons.css')
+  await optimizeFile(path.join(DIST_DIR, 'base64'), 'mgg-icons.css')
+  await optimizeFile(DIST_DIR, 'mgg-icons.less')
+  await optimizeFile(DIST_DIR, 'mgg-icons.module.less')
+  await optimizeFile(DIST_DIR, 'mgg-icons.scss')
+  await optimizeFile(DIST_DIR, 'mgg-icons.styl')
+  await optimizeFile(ORIGINAL_DIR, 'mgg-icons.css')
+  await optimizeFile(path.join(ORIGINAL_DIR, 'base64'), 'mgg-icons.css')
+  await optimizeFile(ORIGINAL_DIR, 'mgg-icons.less')
+  await optimizeFile(ORIGINAL_DIR, 'mgg-icons.module.less')
+  await optimizeFile(ORIGINAL_DIR, 'mgg-icons.scss')
+  await optimizeFile(ORIGINAL_DIR, 'mgg-icons.styl')
 }
 
 const splitCSSEncoded = (cssBuffer: Buffer, fontFacePath: PathLike | fs.FileHandle, classesPath: PathLike | fs.FileHandle) => {
@@ -219,7 +255,7 @@ const buildFont = async (options: BuildFontOptions): Promise<void> => {
     .then(() => addPrefixToAssetsUrlInScss(scssFileName, options.cssPath)) // defaultValue == cssPath
 }
 
-function addPrefixToAssetsUrlInScss (scssFileName: PathLike, cssPath = '') {
+const addPrefixToAssetsUrlInScss = (scssFileName: PathLike, cssPath = '') => {
   return fs.readFile(scssFileName)
     .then(scssText => {
       const variableName = '$font-icons-base-url'

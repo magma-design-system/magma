@@ -91,7 +91,7 @@ export class MdsToast {
 
   componentWillLoad (): void {
     this.hasText = this.hostElement.innerHTML !== ''
-    this.actions = this.hostElement.querySelector('[slot="action"]') !== null
+    this.actions = this.hostElement.querySelector(':scope > [slot="action"]') !== null
     if (!this.duration) {
       return
     }

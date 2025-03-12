@@ -1,5 +1,3 @@
-@tailwind utilities;
-
 /**
  * @prop --mds-accordion-timer-progress-bar-color: Sets the color of the progress bar when the mds-accordion-timer-item is selected
  * @prop --mds-accordion-timer-progress-bar-background: Sets the background-color of the progress bar when the mds-accordion-timer-item is selected
@@ -9,14 +7,13 @@
  */
 
 :host {
-
   --mds-accordion-timer-progress-bar-color: theme('colors.tone-neutral-03');
   --mds-accordion-timer-progress-bar-background: theme('colors.tone-neutral-08');
   --mds-accordion-timer-progress-bar-thickness: theme('width.100');
   --mds-accordion-timer-duration: 500ms;
 
-  /* comment */
   display: block;
 }
 
-@import './css/mds-accordion-timer-pref-animation.css'
+@import './css/mds-accordion-timer-pref-animation.css';
+@import '../../tailwind/fouc.css';

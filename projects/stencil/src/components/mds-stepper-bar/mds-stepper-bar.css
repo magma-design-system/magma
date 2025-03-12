@@ -1,6 +1,10 @@
-@tailwind utilities;
+/**
+ * @prop --mds-stepper-bar-scroll-behavior: Sets the scroll-behavior animation
+ */
 
 :host {
+  --mds-stepper-bar-scroll-behavior: smooth;
+
   @apply gap-600;
 
   display: grid;
@@ -17,16 +21,16 @@
   flex-grow: 1;
   overflow: auto;
   position: relative;
-  scroll-behavior: smooth;
+  scroll-behavior: var(--mds-stepper-bar-scroll-behavior);
   scroll-snap-type: x mandatory;
 }
 
-:host( [linear="true"] ) ::slotted( mds-stepper-bar-item ),
-:host( [linear] ) ::slotted( mds-stepper-bar-item ) {
+:host([linear="true"] ) ::slotted( mds-stepper-bar-item ),
+:host([linear] ) ::slotted( mds-stepper-bar-item) {
   pointer-events: none;
 }
 
-:host( [linear="false"] ) ::slotted( mds-stepper-bar-item ) {
+:host([linear="false"] ) ::slotted( mds-stepper-bar-item) {
   pointer-events: auto;
 }
 
@@ -41,8 +45,9 @@
   flex-direction: column;
 }
 
-:host( [hydrated] ) .contents {
+:host([hydrated] ) .contents {
   opacity: 1;
 }
 
 @import './css/mds-stepper-bar-pref-animation.css';
+@import '../../tailwind/fouc.css';

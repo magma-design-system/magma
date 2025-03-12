@@ -1,0 +1,9 @@
+:host-context(.pref-animation-reduce) {
+  scroll-behavior: auto;
+}
+
+@media (prefers-reduced-motion) {
+  :host-context(.pref-animation-system) {
+    scroll-behavior: auto;
+  }
+}

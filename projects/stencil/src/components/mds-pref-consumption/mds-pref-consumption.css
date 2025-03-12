@@ -1,37 +1,27 @@
-@tailwind utilities;
-
-/*
- *
- */
-
 :host {
-
   @apply gap-100;
 
   display: grid;
 }
 
 .item {
-
-  --mds-tab-item-color: theme('colors.tone-neutral-05');
+  --mds-tab-item-default-color: theme('colors.tone-neutral-05');
 
   flex-basis: 0;
   flex-grow: 1;
 }
 
 .item--high {
-
-  --mds-tab-item-color-selected: theme('colors.status-error-06');
+  --mds-tab-item-selected-color: theme('colors.status-error-06');
 }
 
 .item--medium {
-
-  --mds-tab-item-color-selected: theme('colors.status-warning-06');
+  --mds-tab-item-selected-color: theme('colors.status-warning-06');
 }
 
 .item--low {
-
-  --mds-tab-item-color-selected: theme('colors.status-success-06');
+  --mds-tab-item-selected-color: theme('colors.status-success-06');
 }
 
 @import './css/mds-pref-consumption-pref-contrast.css';
+@import '../../tailwind/fouc.css';

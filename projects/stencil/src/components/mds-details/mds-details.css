@@ -1,7 +1,5 @@
 @import '~@maggioli-design-system/styles/dist/css/animations.css'; /* included for focus effect */
 @import '../../tailwind/components.css';
-@tailwind components;
-@tailwind utilities;
 
 /**
  * @prop --mds-details-icon-color: Sets the icon color the component
@@ -9,7 +7,6 @@
  */
 
 :host {
-
   --mds-details-duration: 300ms;
   --mds-details-icon-color: theme('colors.variant-primary-04');
   --mds-details-helper-icon-color: theme('colors.tone-neutral-03');
@@ -95,3 +92,4 @@
 
 @import './css/mds-details-pref-animation.css';
 @import './css/mds-details-pref-contrast.css';
+@import '../../tailwind/fouc.css';

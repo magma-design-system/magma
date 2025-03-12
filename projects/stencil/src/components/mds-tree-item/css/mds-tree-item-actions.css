@@ -1,5 +1,4 @@
 .actions-container {
-
   --duration: theme('transitionDuration.300');
   --ease: theme('transitionTimingFunction.in-out-expo');
 

@@ -68,3 +68,5 @@ img {
 
   fill: var(--mds-img-icon-color);
 }
+
+@import '../../tailwind/fouc.css';

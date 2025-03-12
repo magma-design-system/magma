@@ -1,6 +1,6 @@
 {
   "darkMode": "Dark mode",
   "label": "Theme",
-  "lightMode": "Light mode",
-  "systemSettings": "System settings"
+  "lightMode": "Light mode{{#forced}} (forced on Safari){{/forced}}",
+  "systemSettings": "Operating system"
 }

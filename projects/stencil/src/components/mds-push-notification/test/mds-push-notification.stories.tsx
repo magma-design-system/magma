@@ -80,14 +80,14 @@ const Template = args =>
 const TemplateWithAction = args =>
   <div>
     <mds-push-notification {...args}>
-      <mds-button slot="actions" variant={args.variant} tone="weak" size="sm">Show</mds-button>
+      <mds-button slot="action" variant={args.variant} tone="weak" size="sm">Show</mds-button>
     </mds-push-notification>
   </div>
 
 const TemplateWithAttachment = args =>
   <div>
     <mds-push-notification {...args}>
-      <mds-button slot="actions" tone="ghost" size="sm">Download</mds-button>
+      <mds-button slot="action" tone="ghost" size="sm">Download</mds-button>
     </mds-push-notification>
   </div>
 
@@ -95,15 +95,15 @@ const TemplateWithAttachmentBadge = args =>
   <div>
     <mds-push-notification {...args}>
       <mds-badge slot="badge" variant="amaranth" tone="weak">pdf</mds-badge>
-      <mds-button slot="actions" tone="ghost" size="sm">Download</mds-button>
+      <mds-button slot="action" tone="ghost" size="sm">Download</mds-button>
     </mds-push-notification>
   </div>
 
 const TemplateContact = args =>
   <div>
     <mds-push-notification {...args}>
-      <mds-button slot="actions" variant="success" tone="weak" size="sm">Write</mds-button>
-      <mds-button slot="actions" variant="error" tone="weak" size="sm">Ignore</mds-button>
+      <mds-button slot="action" variant="success" tone="weak" size="sm">Write</mds-button>
+      <mds-button slot="action" variant="error" tone="weak" size="sm">Ignore</mds-button>
     </mds-push-notification>
   </div>
 
@@ -114,6 +114,15 @@ Default.args = {
   icon: 'mi/baseline/email',
   message: 'You have 3 new messages from different accounts',
   subject: 'New messages',
+}
+
+export const Deletable = Template.bind({})
+Deletable.args = {
+  datetime: getDatetime(),
+  icon: 'mi/baseline/email',
+  message: 'You have 3 new messages from different accounts',
+  subject: 'New messages',
+  deletable: false,
 }
 
 export const Thumb = Template.bind({})

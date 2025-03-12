@@ -1,8 +1,6 @@
 @import '~@maggioli-design-system/styles/dist/css/animations.css'; /* included for focus effect */
 @import '../../tailwind/components.css';
-
 @tailwind components;
-@tailwind utilities;
 
 /**
  * @prop --mds-modal-close-icon-color: Set the color of the close icon button to the top left.
@@ -12,12 +10,12 @@
  * @prop --mds-modal-window-overflow: Set the overflow of the window
  * @prop --mds-modal-window-radius: Set the border radius of the window
  * @prop --mds-modal-window-distance: Set the distance between the modal window and the screen bounds
+ * @prop --mds-modal-custom-window-distance: Set the distance between the slotted modal window and the screen bounds
  * @prop --mds-modal-window-shadow: Set the box shadow of the window
  * @prop --mds-modal-z-index: Set the z-index of the window when the component is opened
  */
 
 :host {
-
   --mds-modal-overlay-color: var(--magma-overlay-color, 0 0 0);
   --mds-modal-overlay-opacity: var(--magma-overlay-opacity, 0.5);
   --mds-modal-transition-duration: 500ms;
@@ -28,6 +26,7 @@
   --mds-modal-window-radius: 0;
   --mds-modal-window-shadow: theme('boxShadow.2xl');
   --mds-modal-window-distance: 0;
+  --mds-modal-custom-window-distance: theme('spacing.600');
   --mds-modal-z-index: var(--magma-modal-z-index);
 
   @apply ease-in-out-expo;
@@ -46,12 +45,16 @@
   z-index: var(--mds-modal-z-index, 1000);
 }
 
-:host( [position="top"] ) {
+:host ::slotted([slot="window"]) {
+  margin: var(--mds-modal-custom-window-distance);
+}
+
+:host([position="top"]) {
   align-items: flex-start;
   justify-content: center;
 }
 
-:host( [position="bottom"] ) {
+:host([position="bottom"]) {
   align-items: flex-end;
   justify-content: center;
 }
@@ -113,4 +116,4 @@
 @import './css/mds-modal-pref-animation.css';
 @import './css/mds-modal-pref-contrast.css';
 @import './css/mds-modal-pref-theme.css';
-
+@import '../../tailwind/fouc.css';

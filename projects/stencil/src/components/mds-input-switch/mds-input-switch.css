@@ -30,7 +30,6 @@
  */
 
 :host {
-
   --mds-input-switch-animation-timing-adjust: 1.4;
   --mds-input-switch-animation-timing-function: theme('transitionTimingFunction.in-out-quad');
   --mds-input-switch-duration: 300ms;
@@ -89,6 +88,10 @@
   display: flex;
 }
 
+.label-text--empty {
+  display: none;
+}
+
 :host([type="switch"]) .label-text {
   align-items: center;
   align-self: center;
@@ -112,33 +115,6 @@
     top-0;
 
   position: absolute;
-}
-
-.icon-checked,
-.icon-unchecked {
-  @apply
-    duration-200
-    ease-out-expo
-    font-normal;
-
-  transition-property: fill, transform;
-}
-
-.icon-unchecked {
-  fill: var(--mds-input-switch-icon-color-unchecked);
-  opacity: 1;
-  transform: scale(theme('scale.100'));
-  transition-duration: var(--mds-input-switch-duration);
-}
-
-.icon-checked {
-  fill: var(--mds-input-switch-icon-color-checked);
-  transform: scale(theme('scale.0'));
-  transition-duration: var(--mds-input-switch-duration);
-}
-
-:host([indeterminate]) .icon-checked {
-  fill: var(--mds-input-switch-icon-color-indeterminate);
 }
 
 .switch-container {
@@ -169,6 +145,7 @@
   box-sizing: border-box;
   display: inline-flex;
   flex-shrink: 0;
+  height: min-content;
   padding: var(--mds-input-switch-box-padding);
   transition-duration: var(--mds-input-switch-duration);
   transition-property: background-color, border-color, box-shadow, color, fill, height, margin, opacity, padding, transform, width;
@@ -196,14 +173,6 @@
   justify-content: center;
   transition-property: background-color, border-color, box-shadow, color, fill, height, margin, opacity, padding, transform, width;
   width: var(--mds-input-switch-toggle-size);
-}
-
-.field:disabled + .label-icon {
-  cursor: default;
-}
-
-.field:disabled + .label-icon + .label-text {
-  cursor: default;
 }
 
 .field:checked + .switch-container .switch {
@@ -272,6 +241,8 @@
   }
 }
 
+@import './css/mds-input-switch-checkbox.css';
 @import './css/mds-input-switch-explicit.css';
-@import './css/mds-input-switch-label-icon.css';
+@import './css/mds-input-switch-pref-theme.css';
 @import './css/mds-input-switch-size.css';
+@import '../../tailwind/fouc.css';

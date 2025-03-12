@@ -1,18 +1,9 @@
-@tailwind utilities;
-
-@container style(--magma-pref-theme: dark) {
-  :host {
-
-    --mds-toast-shadow: theme('boxShadow.outline') !important;
-  }
+:host-context(.pref-theme-dark) {
+  --mds-toast-shadow: theme('boxShadow.outline') !important;
 }
 
-@container style(--magma-pref-theme: system) {
-
-  @media (prefers-color-scheme: dark) {
-    :host {
-
-      --mds-toast-shadow: theme('boxShadow.outline') !important;
-    }
+@media (prefers-color-scheme: dark) {
+  :host-context(.pref-theme-system) {
+    --mds-toast-shadow: theme('boxShadow.outline') !important;
   }
 }

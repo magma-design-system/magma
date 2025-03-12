@@ -8,6 +8,10 @@ import { h } from '@stencil/core'
 export default {
   title: 'UI / Tab / Tab Item',
   argTypes: {
+    disabled: {
+      type: { name: 'boolean' },
+      description: 'Specifies if the tab item is disabled or not',
+    },
     icon: {
       type: { name: 'string' },
       description: 'The icon displayed in the tab item',
@@ -42,4 +46,9 @@ export const Default = Template.bind({})
 export const Selected = Template.bind({})
 Selected.args = {
   selected: true,
+}
+
+export const Disabled = Template.bind({})
+Disabled.args = {
+  disabled: true,
 }

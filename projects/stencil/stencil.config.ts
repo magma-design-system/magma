@@ -20,6 +20,7 @@ const srcDir = './src'
 
 export const config: Config = {
   namespace: packageName,
+  // globalStyle: `${srcDir}/tailwind/index.css`,
   hydratedFlag: {
     selector: 'attribute',
   },
@@ -77,10 +78,7 @@ export const config: Config = {
   ],
   plugins: [
     postcss({
-      plugins: [
-        autoprefixer({ flexbox: 'no-2009' }),
-        tailwind(),
-      ],
+      plugins: [autoprefixer({ flexbox: 'no-2009' }), tailwind()],
     }),
     alias({
       entries: [

@@ -1,4 +1,4 @@
-:host( [size="sm"] ) {
+:host([size="sm"]) {
   @apply
     px-300
     py-0;
@@ -9,19 +9,19 @@
   min-width: theme('size.700');
 }
 
-:host( .no-text[size="sm"] ) {
+:host(.no-text[size="sm"]) {
   @apply p-0;
 }
 
-:host( [size="sm"] ) .text {
+:host([size="sm"]) .text {
   @apply font-medium;
 }
 
-:host( [size="sm"][await]:not([await="false"]) ) .await {
+:host([size="sm"][await]:not([await="false"]) ) .await {
   transform: scale(theme('scale.75'));
 }
 
-:host( [size="md"] ) {
+:host([size="md"]) {
   @apply
     px-300
     py-100;
@@ -30,11 +30,11 @@
   min-width: theme('size.900');
 }
 
-:host( .no-text[size="md"] ) {
+:host(.no-text[size="md"]) {
   @apply p-100;
 }
 
-:host( [size="lg"] ) {
+:host([size="lg"]) {
   @apply
     px-600
     py-200;
@@ -43,11 +43,11 @@
   min-width: theme('size.1100');
 }
 
-:host( .no-text[size="lg"] ) {
+:host(.no-text[size="lg"]) {
   @apply p-200;
 }
 
-:host( [size="xl"] ) {
+:host([size="xl"]) {
   @apply
     px-800
     py-200;
@@ -56,6 +56,6 @@
   min-width: theme('size.1300');
 }
 
-:host( .no-text[size="xl"] ) {
+:host(.no-text[size="xl"]) {
   @apply p-200;
 }

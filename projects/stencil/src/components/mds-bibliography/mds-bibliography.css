@@ -10,7 +10,6 @@
  */
 
 :host {
-
   --mds-bibliography-color: inherit;
   --mds-bibliography-text-decoration-hover: inherit;
   --mds-bibliography-text-decoration: theme('colors.tone-neutral-06');
@@ -31,3 +30,5 @@
 .link:hover {
   text-decoration-color: var(--mds-bibliography-text-decoration-hover);
 }
+
+@import '../../tailwind/fouc.css';

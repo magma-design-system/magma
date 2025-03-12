@@ -1,6 +1,6 @@
 {
   "darkMode": "Modalità scura",
   "label": "Tema",
-  "lightMode": "Modalità chiara",
+  "lightMode": "Modalità chiara{{#forced}} (forzata su Safari){{/forced}}",
   "systemSettings": "Sistema operativo"
 }

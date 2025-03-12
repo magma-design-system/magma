@@ -1,7 +1,6 @@
 @import '~@maggioli-design-system/styles/dist/css/animations.css'; /* included for focus effect */
 @import '../../tailwind/components.css';
 @tailwind components;
-@tailwind utilities;
 
 /**
  * @prop --mds-note-background: Sets the background-color of the component
@@ -12,7 +11,6 @@
  */
 
 :host {
-
   --mds-note-background: theme('colors.label-yellow-10');
   --mds-note-color: theme('colors.label-yellow-02');
   --mds-note-fold-color: theme('colors.tone-neutral-10');
@@ -35,17 +33,16 @@
   transition-property: color, background-color;
 }
 
-:host ::slotted( mds-text ) {
-
+:host ::slotted( mds-text) {
   --mds-text-selection-background: var(--mds-note-selection-background);
   --mds-text-selection-color: var(--mds-note-selection-color);
 }
 
-:host( [deletable]:not([deletable="false"]) ) {
+:host([deletable]:not([deletable="false"])) {
   @apply pr-1600;
 }
 
-:host( [deletable]:not([deletable="false"]) ) .button-close {
+:host([deletable]:not([deletable="false"]) ) .button-close {
   @apply
     right-400
     top-400;
@@ -104,3 +101,4 @@
 @import './css/mds-note-pref-animation.css';
 @import './css/mds-note-pref-theme.css';
 @import './css/mds-note-pref-contrast.css';
+@import '../../tailwind/fouc.css';

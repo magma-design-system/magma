@@ -1,7 +1,6 @@
 @import '~@maggioli-design-system/styles/dist/css/animations.css'; /* included for focus effect */
 @import '../../tailwind/components.css';
 @tailwind components;
-@tailwind utilities;
 
 /**
  * @prop --mds-paginator-item-background-disabled: Sets the background-color of the item when is disabled
@@ -21,7 +20,6 @@
  */
 
 :host {
-
   --mds-paginator-item-background-disabled: theme('colors.tone-neutral-09');
   --mds-paginator-item-background-hover: theme('colors.tone-neutral-08');
   --mds-paginator-item-background-selected: theme('colors.variant-primary-03');
@@ -98,3 +96,4 @@
 
 @import './css/mds-paginator-item-pref-animation.css';
 @import './css/mds-paginator-item-pref-theme.css';
+@import '../../tailwind/fouc.css';

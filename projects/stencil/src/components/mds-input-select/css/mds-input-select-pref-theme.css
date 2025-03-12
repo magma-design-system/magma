@@ -1,8 +1,19 @@
-@tailwind utilities;
+:host-context(.pref-theme-dark) {
+  --mds-input-select-ring: theme('boxShadow.outline-50');
+  --mds-input-select-arrow-icon-background-color: var(--mds-input-select-arrow-icon-blur-background-color);
+  --mds-input-select-arrow-icon-blur-background-color: theme('colors.variant-primary-05');
+  --mds-input-select-arrow-icon-blur-color: rgb(var(--mds-input-select-variant-color));
+  --mds-input-select-arrow-icon-color: var(--mds-input-select-arrow-icon-blur-color);
+  --mds-input-select-arrow-icon-hover-background-color: rgb(var(--mds-input-select-variant-color));
+  --mds-input-select-arrow-icon-hover-color: theme('colors.tone-neutral-10');
+}
 
-@container style(--magma-pref-theme: dark) {
-  :host {
+:host-context(.pref-theme-dark) .input {
+  color: theme('colors.tone-neutral-03');
+}
 
+@media (prefers-color-scheme: dark) {
+  :host-context(.pref-theme-system) {
     --mds-input-select-ring: theme('boxShadow.outline-50');
     --mds-input-select-arrow-icon-background-color: var(--mds-input-select-arrow-icon-blur-background-color);
     --mds-input-select-arrow-icon-blur-background-color: theme('colors.variant-primary-05');
@@ -12,27 +23,7 @@
     --mds-input-select-arrow-icon-hover-color: theme('colors.tone-neutral-10');
   }
 
-  .input {
+  :host-context(.pref-theme-system) .input {
     color: theme('colors.tone-neutral-03');
-  }
-}
-
-@container style(--magma-pref-theme: system) {
-
-  @media (prefers-color-scheme: dark) {
-    :host {
-
-      --mds-input-select-ring: theme('boxShadow.outline-50');
-      --mds-input-select-arrow-icon-background-color: var(--mds-input-select-arrow-icon-blur-background-color);
-      --mds-input-select-arrow-icon-blur-background-color: theme('colors.variant-primary-05');
-      --mds-input-select-arrow-icon-blur-color: rgb(var(--mds-input-select-variant-color));
-      --mds-input-select-arrow-icon-color: var(--mds-input-select-arrow-icon-blur-color);
-      --mds-input-select-arrow-icon-hover-background-color: rgb(var(--mds-input-select-variant-color));
-      --mds-input-select-arrow-icon-hover-color: theme('colors.tone-neutral-10');
-    }
-
-    .input {
-      color: theme('colors.tone-neutral-03');
-    }
   }
 }

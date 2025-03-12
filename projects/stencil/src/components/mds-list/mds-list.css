@@ -13,3 +13,5 @@ ul {
     m-0
     p-0;
 }
+
+@import '../../tailwind/fouc.css';

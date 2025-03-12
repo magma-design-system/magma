@@ -9,12 +9,14 @@ This is a web-component from Maggioli Design System [Magma](https://magma.maggio
 
 ## Properties
 
-| Property   | Attribute  | Description                                           | Type                   | Default     |
-| ---------- | ---------- | ----------------------------------------------------- | ---------------------- | ----------- |
-| `icon`     | `icon`     | Sets the icon of the filter item                      | `string \| undefined`  | `undefined` |
-| `label`    | `label`    | Sets the label of the filter item                     | `string`               | `undefined` |
-| `selected` | `selected` | Sets the component to selected state                  | `boolean \| undefined` | `undefined` |
-| `value`    | `value`    | Sets the value of the component to be used with forms | `string`               | `undefined` |
+| Property   | Attribute  | Description                                                 | Type                   | Default     |
+| ---------- | ---------- | ----------------------------------------------------------- | ---------------------- | ----------- |
+| `count`    | `count`    | Shows the number of items will be filtered by the component | `string \| undefined`  | `undefined` |
+| `disabled` | `disabled` | Sets if the component is disabled or not                    | `boolean \| undefined` | `undefined` |
+| `icon`     | `icon`     | Sets the icon of the filter item                            | `string \| undefined`  | `undefined` |
+| `label`    | `label`    | Sets the label of the filter item                           | `string`               | `undefined` |
+| `selected` | `selected` | Sets the component to selected state                        | `boolean \| undefined` | `undefined` |
+| `value`    | `value`    | Sets the value of the component to be used with forms       | `string`               | `undefined` |
 
 
 ## Events
@@ -22,6 +24,16 @@ This is a web-component from Maggioli Design System [Magma](https://magma.maggio
 | Event                 | Description                      | Type                                    |
 | --------------------- | -------------------------------- | --------------------------------------- |
 | `mdsFilterItemSelect` | Emits when the element is active | `CustomEvent<MdsFilterItemEventDetail>` |
+
+
+## CSS Custom Properties
+
+| Name                                           | Description                                              |
+| ---------------------------------------------- | -------------------------------------------------------- |
+| `---mds-filter-item-count-background-selected` | Sets the z-index of the component.                       |
+| `---mds-filter-item-count-color-default`       | Sets tge default text `color` of the count element       |
+| `---mds-filter-item-count-color-selected`      | Sets the z-index of the component.                       |
+| `--mds-filter-item-count-background-default`   | Sets tge default `background-color` of the count element |
 
 
 ## Dependencies
