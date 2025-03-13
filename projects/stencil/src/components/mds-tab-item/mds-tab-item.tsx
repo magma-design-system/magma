@@ -18,6 +18,11 @@ export class MdsTabItem {
   @State() hasText: boolean
 
   /**
+   * Specifies if the button is awaiting for a response
+   */
+  @Prop({ reflect: true }) readonly await: boolean
+
+  /**
    * Specifies if the tab item is selected or not
    */
   @Prop({ reflect: true, mutable: true }) selected?: boolean
@@ -102,13 +107,15 @@ export class MdsTabItem {
 
   render () {
     return (
-      <Host onMouseDown={this.toggle}>
+      <Host>
         <mds-button class="button"
+          await={this.await}
           disabled={this.disabled}
           href={this.href}
           icon={this.icon}
           iconPosition={this.iconPosition}
-          onFocus={this.focus}
+          onKeyDown={this.focus}
+          onClick={this.toggle}
           part="button"
           role="tab"
           size={this.size}

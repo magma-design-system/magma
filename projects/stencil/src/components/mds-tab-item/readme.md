@@ -11,6 +11,7 @@ This is a web-component from Maggioli Design System [Magma](https://magma.maggio
 
 | Property       | Attribute       | Description                                                             | Type                                                  | Default     |
 | -------------- | --------------- | ----------------------------------------------------------------------- | ----------------------------------------------------- | ----------- |
+| `await`        | `await`         | Specifies if the button is awaiting for a response                      | `boolean`                                             | `undefined` |
 | `disabled`     | `disabled`      | Specifies if the tab item is disabled or not                            | `boolean \| undefined`                                | `undefined` |
 | `href`         | `href`          | Specifies the URL target of the button                                  | `string \| undefined`                                 | `undefined` |
 | `icon`         | `icon`          | The icon displayed in the tab item                                      | `string \| undefined`                                 | `undefined` |

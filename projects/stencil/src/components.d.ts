@@ -349,7 +349,7 @@ export namespace Components {
         /**
           * Specifies if the button is awaiting for a response
          */
-        "await": boolean;
+        "await"?: boolean;
         /**
           * Specifies if the component is disabled or not
          */
@@ -1612,6 +1612,10 @@ export namespace Components {
         "typography"?: TypographySmallerType;
     }
     interface MdsTabItem {
+        /**
+          * Specifies if the button is awaiting for a response
+         */
+        "await": boolean;
         /**
           * Specifies if the tab item is disabled or not
          */
@@ -4945,6 +4949,10 @@ declare namespace LocalJSX {
         "typography"?: TypographySmallerType;
     }
     interface MdsTabItem {
+        /**
+          * Specifies if the button is awaiting for a response
+         */
+        "await"?: boolean;
         /**
           * Specifies if the tab item is disabled or not
          */

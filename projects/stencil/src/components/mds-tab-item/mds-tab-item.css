@@ -1,6 +1,7 @@
 @tailwind utilities;
 
 :host {
+  cursor: pointer;
   display: flex;
 }
 

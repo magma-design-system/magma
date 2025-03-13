@@ -51,13 +51,13 @@
   --mds-tab-tabs-padding: theme('padding.200');
   --mds-tab-tabs-radius: theme('borderRadius.2xl');
   --mds-tab-tabs-overflow-shadow-size: theme('size.600');
-  --mds-tab-tabs-overflow-shadow: 0 0 var(--mds-tab-tabs-overflow-shadow-size) -2px rgb(0 0 0 / 0.25);
+  --mds-tab-tabs-overflow-shadow: 0 0 var(--mds-tab-tabs-overflow-shadow-size) -2px rgb(0 0 0 / 0.375);
   --mds-tab-tabs-wrapper-outline-opacity: 0.7;
   --mds-tab-tabs-wrapper-shadow-color: var(--mds-tab-tabs-background);
   --mds-tab-tabs-wrapper-shadow: 0 0 0 2px var(--mds-tab-tabs-wrapper-shadow-color) inset;
   --mds-tab-transition-duration: 0.5s;
   --mds-tab-transition-timing-function: theme('transitionTimingFunction.out-expo');
-  --mds-tab-slide-delay: 0.25s;
+  --mds-tab-slide-delay: 0.125s;
 
   display: grid;
 }

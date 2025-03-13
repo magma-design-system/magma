@@ -20,18 +20,18 @@
 
 .tabs-wrapper-overflow-left {
   inset: 0 auto 0 0;
-  transform: scale(0) translateX(calc(var(--offset-outside) * -1));
+  transform: translateX(calc(var(--offset-outside) * -1));
 }
 
 .tabs-wrapper-overflow-right {
   inset: 0 0 0 auto;
-  transform: scale(0) translateX(var(--offset-outside));
+  transform: translateX(var(--offset-outside));
 }
 
 .tabs-wrapper-overflow-left--show {
-  transform: scale(1) translateX(-100%);
+  transform: translateX(-100%);
 }
 
 .tabs-wrapper-overflow-right--show {
-  transform: scale(1) translateX(100%);
+  transform: translateX(100%);
 }
