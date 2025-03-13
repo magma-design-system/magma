@@ -90,6 +90,26 @@ const Template = ({ layout, ...args }) =>
     </mds-dropdown>
   </div>
 
+const TemplatePlacement = ({ ...args }) =>
+  <div class="min-h-dvh flex items-center justify-center">
+    <mds-button id="my-dropdown">Show Fred</mds-button>
+    <mds-dropdown target="#my-dropdown" {...args}>
+      <mds-author class="text-tone-neutral-04">
+        <mds-avatar aria-describedby="A protrait of Frederick Phillips Brooks Jr." initials="fb" src="./fred-brooks-zoom.webp" slot="avatar" class="w-2000 bg-brand-maggioli-06" />
+        <mds-text typography="h6" class="text-tone-neutral-02">Fred Brooks</mds-text>
+        <mds-text typography="caption">Software engineer</mds-text>
+        <mds-text typography="caption">IT</mds-text>
+      </mds-author>
+      <mds-text typography="detail" class="text-tone-neutral-04">
+        Frederick Phillips "Fred" Brooks Jr. (born April 19, 1931) is an American computer architect, software engineer, and computer scientist.
+      </mds-text>
+      <mds-hr class="h-[2px] bg-tone-neutral-08" />
+      <mds-button class="justify-start px-0" icon="mi/baseline/info" variant="dark" tone="quiet">User infos</mds-button>
+      <mds-button class="justify-start px-0" icon="mi/baseline/settings" variant="dark" tone="quiet">Account</mds-button>
+      <mds-button class="justify-start px-0" icon="mi/baseline/logout" variant="dark" tone="quiet">Exit</mds-button>
+    </mds-dropdown>
+  </div>
+
 // eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types
 export const NoTarget = () =>
   <div>
@@ -269,7 +289,7 @@ Offset.args = {
   visible: false,
 }
 
-export const Placement = Template.bind({})
+export const Placement = TemplatePlacement.bind({})
 Placement.args = {
   class: 'max-w-[350px] w-full',
   layout: 'flex justify-center items-center',

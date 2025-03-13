@@ -7,6 +7,7 @@ import {
   Middleware,
   MiddlewareData,
   offset,
+  Placement,
   shift,
 } from '@floating-ui/dom'
 import { FloatingUIPlacement, FloatingUIStrategy } from '@type/floating-ui'
@@ -138,6 +139,24 @@ export class FloatingController {
     }
   }
 
+  private convertToTransformOrigin = (position: Placement): string => {
+    const positions = {
+      top: 'center bottom',
+      right: 'left center',
+      bottom: 'center top',
+      left: 'right center',
+      'bottom-end': 'top right',
+      'bottom-start': 'top left',
+      'left-end': 'right bottom',
+      'left-start': 'right top',
+      'right-end': 'left bottom',
+      'right-start': 'left top',
+      'top-end': 'bottom right',
+      'top-start': 'bottom left',
+    }
+    return positions[position]
+  }
+
   private readonly calculatePosition = (): void => {
     if (!this._caller) return
 
@@ -181,6 +200,7 @@ export class FloatingController {
       Object.assign(this._host.style, {
         left: `${x}px`,
         top: `${y}px`,
+        transformOrigin: this.convertToTransformOrigin(placement),
       })
 
       const arrowStyle = {}
