@@ -53,7 +53,7 @@ export class MdsDropdown implements FloatingElement {
   /**
    * Specifies if the component has a backdrop background
    */
-  @Prop() readonly backdrop: boolean = false
+  @Prop({ reflect: true }) backdrop?: boolean = false
 
   /**
    * Specifies the placement of the component if no space is available where it is placed.
@@ -143,6 +143,9 @@ export class MdsDropdown implements FloatingElement {
 
   @Watch('backdrop')
   backdropChanged (newValue: boolean): void {
+    if (newValue === false) {
+      this.backdrop = undefined
+    }
     if (!this.visible) {
       return
     }
@@ -203,16 +206,21 @@ export class MdsDropdown implements FloatingElement {
     if (newValue) {
       document.addEventListener('click', this.handleCloseDropdown)
       this.floatingController.updatePosition()
-      this.backdropController.attachBackdrop()
+      if (this.backdrop) {
+        this.backdropController.attachBackdrop()
+      }
       this.visibleEvent.emit({ caller: this.caller, visible: true })
       return
     }
     this.floatingController.dismiss()
-    this.backdropController.detachBackdrop()
+    if (this.backdrop) {
+      this.backdropController.detachBackdrop()
+    }
     this.hiddenEvent.emit({ caller: this.caller, visible: false })
   }
 
-  onClickTarget (): void {
+  onClickTarget (ev: Event): void {
+    ev.stopPropagation()
     this.visible = !this.visible
   }
 

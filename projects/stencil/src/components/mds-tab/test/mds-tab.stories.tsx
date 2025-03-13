@@ -49,17 +49,12 @@ const TemplateEmpty = args => {
     { currentElement === 0 && <div class="min-h-[400px] flex items-center justify-center p-600 bg-label-amaranth-09 rounded-2xl"><mds-text>This is the first tab contents</mds-text></div> }
     { currentElement === 1 && <div class="min-h-[400px] flex items-center justify-center p-600 bg-label-blue-09 rounded-2xl"><mds-text>This is the second tab contents</mds-text></div> }
     { currentElement === 2 && <div class="min-h-[400px] flex items-center justify-center p-600 bg-label-green-09 rounded-2xl"><mds-text>This is the third tab contents</mds-text></div> }
-    <mds-hr />
-    <div class="grid gap-100">
-      <mds-text typography='h3'>Bottom content</mds-text>
-      <mds-text>This content is outside the mds-tab component.</mds-text>
-    </div>
   </div>)
 }
 
 
-const SectionComponent = ({ id, className, title }) => {
-  return <div id={id} class={clsx('grid gap-100 p-600 min-h-screen auto-rows-min scroll-mt-2000 rounded-2xl', className)}>
+const SectionComponent = ({ id, className, title, slot = 'none' }) => {
+  return <div id={id} slot={slot !== 'none' ? slot : undefined} class={clsx('grid gap-100 p-600 auto-rows-min scroll-mt-2000 rounded-2xl', className)}>
     <mds-text typography='h3'>{ title }</mds-text>
     <mds-text>This content is outside the mds-tab component.</mds-text>
   </div>
@@ -69,17 +64,38 @@ const TemplateScroll = () =>
   <div class="grid gap-600 pt-[60px]">
     <div class="fixed top-0 left-0 right-0 p-400 px-600 shadow-sm flex bg-tone-neutral">
       <mds-tab>
-        <mds-tab-item href="#section-1">Section 1</mds-tab-item>
+        <mds-tab-item href="#section-1" selected>Section 1</mds-tab-item>
         <mds-tab-item href="#section-2">Section 2</mds-tab-item>
         <mds-tab-item href="#section-3">Section 3</mds-tab-item>
       </mds-tab>
     </div>
     <div class="grid gap-600">
-      <SectionComponent id="section-1" className="bg-label-amaranth-09" title="Section 1"/>
-      <SectionComponent id="section-2" className="bg-label-blue-09" title="Section 2"/>
-      <SectionComponent id="section-3" className="bg-label-orange-09" title="Section 3"/>
+      <SectionComponent id="section-1" className="bg-label-amaranth-09 min-h-screen" title="Section 1"/>
+      <SectionComponent id="section-2" className="bg-label-blue-09 min-h-screen" title="Section 2"/>
+      <SectionComponent id="section-3" className="bg-label-orange-09 min-h-screen" title="Section 3"/>
     </div>
   </div>
+
+const TemplateAsyncContent = () => {
+  const [tabContentLoaded, loadTabContent] = useState(false)
+  useEffect(() => {
+    const interval = setTimeout(() => {
+      loadTabContent(true) // Correct way to update state
+    }, 1000)
+    return () => clearTimeout(interval) // Cleanup function
+  }, [])
+
+  return <div class="grid gap-600 pt-[60px]">
+    <mds-tab>
+      <mds-tab-item href="#section-1" selected>Section 1</mds-tab-item>
+      <mds-tab-item href="#section-2" await={!tabContentLoaded}>Section 2</mds-tab-item>
+      <mds-tab-item href="#section-3">Section 3</mds-tab-item>
+      <SectionComponent id="section-1" slot="content" className="bg-label-amaranth-09 mt-400" title="Section 1"/>
+      { tabContentLoaded && <SectionComponent id="section-2" slot="content" className="bg-label-blue-09 mt-400" title="Section 2"/> }
+      <SectionComponent id="section-3" slot="content" className="bg-label-orange-09 mt-400" title="Section 3"/>
+    </mds-tab>
+  </div>
+}
 
 const TemplateOverflow = args =>
   <div class="grid gap-600 max-w-[480px]">
@@ -225,4 +241,6 @@ Scrollbar.args = {
 }
 export const NoSelectedItem = TemplateNoSelected.bind({})
 export const Scroll = TemplateScroll.bind({})
+
+export const AsyncContent = TemplateAsyncContent.bind({})
 

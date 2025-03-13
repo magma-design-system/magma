@@ -80,7 +80,7 @@ export class MdsButton {
   /**
    * Specifies if the button is awaiting for a response
    */
-  @Prop({ reflect: true }) readonly await: boolean
+  @Prop({ reflect: true, mutable: true }) await?: boolean
 
   /**
    * Specifies the URL target of the button
@@ -114,8 +114,8 @@ export class MdsButton {
   }
 
   @Watch('await')
-  awaitChanged (newValue: boolean): void {
-    this.host.setAttribute('aria-busy', newValue.toString())
+  awaitChanged (newValue?: boolean): void {
+    this.host.setAttribute('aria-busy', (!!newValue).toString())
     if (newValue) {
       this.km.attachClickBehavior()
       return
@@ -218,6 +218,16 @@ export class MdsButton {
     }
 
     setAttributeIfEmpty(this.host, 'role', 'button')
+  }
+
+  @Watch('await')
+  handleAwaitChange (newValue: boolean): void {
+    if (newValue === false) {
+      this.await = undefined
+      this.km.detachClickBehavior()
+      return
+    }
+    this.km.attachClickBehavior()
   }
 
   disconnectedCallback (): void {

@@ -62,8 +62,11 @@ This is a web-component from Maggioli Design System [Magma](https://magma.maggio
 | `--mds-tab-scroll-scrollbar-size`             | Sets the height and width of the browser scroll bar (if supported)                                                                    |
 | `--mds-tab-scroll-scrollbar-thumb-background` | Sets the background-color of the browser scroll bar thumb (if supported)                                                              |
 | `--mds-tab-scroll-scrollbar-track-background` | Sets the background-color of the browser scroll bar track (if supported)                                                              |
+| `--mds-tab-slide-delay`                       | Sets the sliding delay of the tabs                                                                                                    |
 | `--mds-tab-tabs-background`                   | Sets the `background-color` of `mds-tab::part(tabs)`                                                                                  |
 | `--mds-tab-tabs-gap`                          | Sets the `gap` of `mds-tab::part(tabs)`                                                                                               |
+| `--mds-tab-tabs-overflow-shadow`              | Sets the overflow shadow effect                                                                                                       |
+| `--mds-tab-tabs-overflow-shadow-size`         | Sets overflow shadow size                                                                                                             |
 | `--mds-tab-tabs-padding`                      | Sets the `padding` of `mds-tab::part(tabs)`                                                                                           |
 | `--mds-tab-tabs-radius`                       | Sets the `border-radius` of `mds-tab::part(tabs)`                                                                                     |
 | `--mds-tab-tabs-wrapper-outline-opacity`      | Sets the `opacity` of outline border which holds                                                                                      |

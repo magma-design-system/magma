@@ -39,8 +39,8 @@
     px-600
     py-200;
 
-  min-height: theme('size.1100');
-  min-width: theme('size.1100');
+  min-height: theme('size.1200');
+  min-width: theme('size.1200');
 }
 
 :host(.no-text[size="lg"]) {
