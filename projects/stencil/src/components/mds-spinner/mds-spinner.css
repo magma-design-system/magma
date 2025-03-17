@@ -15,8 +15,9 @@
   color: theme('colors.variant-primary-03');
   display: inline-flex;
   justify-content: center;
+  opacity: 0;
   transform: scale(0);
-  transition-property: transform;
+  transition-property: opacity, transform;
 }
 
 :host([running]) {
@@ -24,6 +25,7 @@
     duration-700
     ease-in-out-expo;
 
+  opacity: 1;
   transform: scale(1);
 }
 

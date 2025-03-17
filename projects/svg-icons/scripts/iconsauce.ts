@@ -15,11 +15,13 @@ const selector = (file: PathLike): string =>
 const dictionary = (icons: PathLike[]): string[] => {
   const iconsDictionary: Array<string> = []
   for (const icon of icons) {
+    if (!/^[a-z0-9-]+\.svg$/.test(basename(icon.toString()))) {
+      throw new Error(`Icon '${basename(icon.toString())}' contains illegal characters, you must use a-z, 0-9 and - chars.`)
+    }
     iconsDictionary.push(selector(icon).toLowerCase())
   }
   return iconsDictionary
 }
-
 
 const dumpIconsauceIcons = async (): Promise<string[]> => {
   const entries = await fg(`${ICONS_DIR.toString()}/*.svg`, { dot: true })

@@ -7,10 +7,10 @@
 
 ## Properties
 
-| Property   | Attribute  | Description                          | Type                                                                                  | Default      |
-| ---------- | ---------- | ------------------------------------ | ------------------------------------------------------------------------------------- | ------------ |
-| `expanded` | `expanded` | Specifies if the element is expanded | `boolean \| undefined`                                                                | `true`       |
-| `variant`  | `variant`  | Specifies the variant of the element | `"disabled" \| "readonly" \| "required" \| "required-success" \| "text" \| undefined` | `'required'` |
+| Property   | Attribute  | Description                          | Type                                                                                                                                                                                  | Default      |
+| ---------- | ---------- | ------------------------------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------------ |
+| `expanded` | `expanded` | Specifies if the element is expanded | `boolean \| undefined`                                                                                                                                                                | `undefined`  |
+| `variant`  | `variant`  | Specifies the variant of the element | `"count-almost" \| "count-almost-full" \| "count-empty" \| "count-full" \| "count-incomplete" \| "disabled" \| "readonly" \| "required" \| "required-success" \| "text" \| undefined` | `'required'` |
 
 
 ## Methods
