@@ -1,5 +1,5 @@
-import { Component, Element, Host, h, Prop, State, Method } from '@stencil/core'
-import { InputTipItemVariantType } from './meta/types'
+import { Component, Element, Host, h, Prop, State, Method, Watch } from '@stencil/core'
+import { InputTipItemVariantType } from '@type/input-tip'
 import miBaselineDone from '@icon/mi/baseline/done.svg'
 import { Locale } from '@common/locale'
 import localeEl from './meta/locale.el.json'
@@ -39,7 +39,14 @@ export class MdsInputTipItem {
   /**
    * Specifies if the element is expanded
    */
-  @Prop({ reflect: true }) readonly expanded?: boolean = true
+  @Prop({ reflect: true, mutable: true }) expanded?: boolean
+
+  @Watch('expanded')
+  handleEcpandedChanged (newValue: boolean): void {
+    if (newValue === false) {
+      this.expanded = undefined
+    }
+  }
 
   render () {
     return (
@@ -67,6 +74,12 @@ export class MdsInputTipItem {
           }
           { this.variant === 'required-success' &&
             <span class="icon" innerHTML={miBaselineDone}></span>
+          }
+
+          { (this.variant === 'count-almost' || this.variant === 'count-almost-full' || this.variant === 'count-empty' || this.variant === 'count-full' || this.variant === 'count-incomplete') &&
+            <mds-text typography="option" truncate="word">
+              <span class="text"><slot/></span>
+            </mds-text>
           }
         </div>
       </Host>

@@ -1,0 +1,14 @@
+:host(:not([expanded])) {
+  color: transparent;
+}
+
+:host([expanded]) {
+  @apply px-200;
+
+  --mds-input-tip-item-color: theme('colors.tone-neutral');
+}
+
+:host([expanded]) .content {
+  grid-template-columns: 1fr;
+  opacity: 1;
+}

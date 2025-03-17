@@ -94,6 +94,7 @@ Type: `Promise<void>`
 | `"counter-button-increase"` |             |
 | `"field"`                   |             |
 | `"password-toggle-button"`  |             |
+| `"tip-count"`               |             |
 
 
 ## CSS Custom Properties

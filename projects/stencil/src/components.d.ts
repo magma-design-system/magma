@@ -39,7 +39,7 @@ import { MdsValidationErrors, MdsValidatorFn } from "./components/mds-input-fiel
 import { InputSwitchSizeType, InputSwitchType } from "./components/mds-input-switch/meta/types";
 import { MdsInputSwitchEventDetail } from "./components/mds-input-switch/meta/event-detail";
 import { InputTipPositionType } from "./components/mds-input-tip/meta/types";
-import { InputTipItemVariantType } from "./components/mds-input-tip-item/meta/types";
+import { InputTipItemVariantType } from "./type/input-tip";
 import { AttachmentSort, FileError } from "./components/mds-input-upload/meta/types";
 import { KeyboardTest } from "./components/mds-keyboard/meta/type";
 import { KeyboardKeyName } from "./type/keyboard";
@@ -105,7 +105,7 @@ export { MdsValidationErrors, MdsValidatorFn } from "./components/mds-input-fiel
 export { InputSwitchSizeType, InputSwitchType } from "./components/mds-input-switch/meta/types";
 export { MdsInputSwitchEventDetail } from "./components/mds-input-switch/meta/event-detail";
 export { InputTipPositionType } from "./components/mds-input-tip/meta/types";
-export { InputTipItemVariantType } from "./components/mds-input-tip-item/meta/types";
+export { InputTipItemVariantType } from "./type/input-tip";
 export { AttachmentSort, FileError } from "./components/mds-input-upload/meta/types";
 export { KeyboardTest } from "./components/mds-keyboard/meta/type";
 export { KeyboardKeyName } from "./type/keyboard";

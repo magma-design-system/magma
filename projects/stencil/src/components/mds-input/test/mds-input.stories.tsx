@@ -201,6 +201,13 @@ Max.args = {
   value: '2',
 }
 
+export const MaxLenght = Template.bind({})
+MaxLenght.args = {
+  maxlength: 128,
+  type: 'text',
+  value: 'Hello',
+}
+
 export const Min = Template.bind({})
 Min.args = {
   min: '3',

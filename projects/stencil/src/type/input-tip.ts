@@ -1,0 +1,11 @@
+export type InputTipItemVariantType =
+  | 'count-almost'
+  | 'count-almost-full'
+  | 'count-empty'
+  | 'count-full'
+  | 'count-incomplete'
+  | 'disabled'
+  | 'readonly'
+  | 'required'
+  | 'required-success'
+  | 'text'
