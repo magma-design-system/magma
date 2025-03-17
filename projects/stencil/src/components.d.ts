@@ -850,7 +850,7 @@ export namespace Components {
          */
         "max"?: string;
         /**
-          * Specifies the maximum number of characters allowed in an element use it with input type="number"
+          * Specifies the maximum number of characters allowed in an element. Use it with input type="text". If maxlength is set to 0 or a negative number it will be considered as undefined.
          */
         "maxlength"?: number;
         /**
@@ -4106,7 +4106,7 @@ declare namespace LocalJSX {
          */
         "max"?: string;
         /**
-          * Specifies the maximum number of characters allowed in an element use it with input type="number"
+          * Specifies the maximum number of characters allowed in an element. Use it with input type="text". If maxlength is set to 0 or a negative number it will be considered as undefined.
          */
         "maxlength"?: number;
         /**

@@ -263,7 +263,7 @@ export class MdsInput {
   protected valueChanged ():void {
     this.changeEvent.emit({ value: this.value })
     this.internals.setFormValue(this.value ?? null)
-    if (this.maxlength) {
+    if (this.maxlength !== undefined) {
       this.countMaxLength()
     }
   }
@@ -280,9 +280,9 @@ export class MdsInput {
 
   private countMaxLength = (): void => {
     if (!this.maxlength) return
-    if (!this.value) return
+    if (this.value === undefined) return
 
-    this.currentLengthLabel = `${this.value?.length} / ${this.maxlength}`
+    this.currentLengthLabel = `${this.value?.length ?? 0} / ${this.maxlength}`
 
     const completionPerc = Math.round(this.value.length * 100 / this.maxlength)
 
