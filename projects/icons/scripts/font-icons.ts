@@ -91,9 +91,9 @@ const optimizeSelectorCSS = (cssInput: string): string => {
    * This is a workaround to remove [class^="mgg-icons-"], [class*=" mgg-icons-"] regex selectors
    * which are very demanding for the browser rendering
    * As side effect, the filesize will be greater
-  */
+   */
   const selectorReplacer = '[class^="mgg-icons-"], [class*=" mgg-icons-"]'
-  const regexSelectors = /^\.mgg-icons-[a-z0-9-]*/gm
+  const regexSelectors = /^\.mgg-icons-[a-z0-9-_]*/gm
   const iconsSelectors = cssInput.match(regexSelectors) || []
   const cssReplacedSelectorsAscii = cssInput.replace(selectorReplacer, iconsSelectors.join(',\n'))
   return cssReplacedSelectorsAscii
