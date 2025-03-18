@@ -153,7 +153,7 @@
 @import './css/mds-tab-scrollbar.css';
 @import './css/mds-tab-tabs-wrapper-overflow.css';
 @import './css/mds-tab-tabs-wrapper-decorator.css';
-@import './css/mds-tab-pref-animation.css';
 @import './css/mds-tab-pref-theme.css';
 @import './css/mds-tab-pref-contrast.css';
+@import './css/mds-tab-pref-animation.css';
 @import '../../tailwind/fouc.css';

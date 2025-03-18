@@ -1,6 +1,6 @@
 :host-context(.pref-animation-reduce) {
   --mds-tab-scroll-behavior: auto;
-  --mds-taqb-transition-duration: 0s;
+  --mds-tab-transition-duration: 0s;
 }
 
 @media (prefers-reduced-motion) {

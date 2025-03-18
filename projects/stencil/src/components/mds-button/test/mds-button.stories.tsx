@@ -8,6 +8,7 @@ import {
   buttonIconPositionDictionary,
   buttonTypeDictionary,
 } from '@dictionary/button'
+import { useState } from 'react'
 
 export default {
   title: 'UI / Button',
@@ -84,10 +85,43 @@ const TemplateNotifications = args =>
     <mds-notification slot="notification" value={12}></mds-notification>
   </mds-button>
 
-const TemplateAwait = args =>
-  <mds-button {...args}>
-    Salvataggio in corso...
-  </mds-button>
+const TemplateAwait = () => {
+  const [buttonState, setButtonState] = useState(0)
+
+  const iconMap = {
+    0: 'mi/baseline/eco',
+    1: undefined,
+    2: 'mi/baseline/done',
+  }
+
+  const variantsMap = {
+    0: 'primary',
+    1: 'primary',
+    2: 'success',
+  }
+
+  const tonesMap = {
+    0: 'strong',
+    1: 'weak',
+    2: 'strong',
+  }
+
+  function setLoadingState () {
+    setButtonState(1)
+    setTimeout(() => {
+      setButtonState(2)
+      setTimeout(() => {
+        setButtonState(0)
+      }, 2000)
+    }, 2000)
+  }
+
+  return (<mds-button icon={iconMap[buttonState]} variant={variantsMap[buttonState]} tone={tonesMap[buttonState]} await={buttonState === 1} onClick={() => { if (buttonState === 0) setLoadingState() }}>
+    { buttonState === 0 && 'Conferma azione' }
+    { buttonState === 1 && 'Salvataggio in corso...' }
+    { buttonState === 2 && 'Azione salvata' }
+  </mds-button>)
+}
 
 const TemplateKeyboard = args =>
   <div class="bg-tone-grey-10 p-600 grid gap-600">
