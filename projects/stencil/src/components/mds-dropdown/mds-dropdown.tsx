@@ -220,7 +220,10 @@ export class MdsDropdown implements FloatingElement {
   }
 
   onClickTarget (ev: Event): void {
+    // stop propagation event for when target is a element cointainer
     ev.stopPropagation()
+    // trigger a body click to execute handleCloseDropdown on other dropdowns
+    document.body.click()
     this.visible = !this.visible
   }
 
