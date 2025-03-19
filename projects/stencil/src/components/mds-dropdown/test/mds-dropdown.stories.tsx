@@ -121,12 +121,12 @@ export const NoTarget = () =>
   </div>
 
 const TemplateNested = ({ ...args }) =>
-  <div>
+  <div class="min-h-[200vh]">
     <mds-header>
       <mds-header-bar>
         <div class="flex gap-2 items-center">
           <mds-img
-            class="w-10"
+            class="w-1000"
             src="./logo-gruppo-maggioli.svg"
           />
           <div class="mb-1">
@@ -335,6 +335,7 @@ export const NestedBestPractice = TemplateNested.bind({})
 
 NestedBestPractice.args = {
   backdrop: true,
+  strategy: 'fixed',
 }
 
 export const Performance = TemplatePerformance.bind({
