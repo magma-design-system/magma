@@ -7,13 +7,13 @@
 
 ## Properties
 
-| Property      | Attribute     | Description | Type                                                  | Default        |
-| ------------- | ------------- | ----------- | ----------------------------------------------------- | -------------- |
-| `date`        | `date`        |             | `string \| undefined`                                 | `undefined`    |
-| `month`       | `month`       |             | `"current" \| "other" \| "weekend" \| undefined`      | `'current'`    |
-| `orientation` | `orientation` |             | `"both" \| "horizontal" \| "vertical" \| undefined`   | `'horizontal'` |
-| `preview`     | `preview`     |             | `boolean \| undefined`                                | `false`        |
-| `selection`   | `selection`   |             | `"end" \| "middle" \| "none" \| "start" \| undefined` | `undefined`    |
+| Property      | Attribute     | Description | Type                                                              | Default        |
+| ------------- | ------------- | ----------- | ----------------------------------------------------------------- | -------------- |
+| `date`        | `date`        |             | `string \| undefined`                                             | `undefined`    |
+| `month`       | `month`       |             | `"current" \| "other" \| "weekend" \| undefined`                  | `'current'`    |
+| `orientation` | `orientation` |             | `"both" \| "horizontal" \| "vertical" \| undefined`               | `'horizontal'` |
+| `preview`     | `preview`     |             | `boolean \| undefined`                                            | `false`        |
+| `selection`   | `selection`   |             | `"end" \| "middle" \| "none" \| "single" \| "start" \| undefined` | `undefined`    |
 
 
 ## Dependencies

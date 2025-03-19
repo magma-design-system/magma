@@ -1,5 +1,6 @@
-import { Component, Element, Host, h, Event, EventEmitter, State, Prop } from '@stencil/core'
+import { Component, Element, Host, h, State, Prop, Watch, Listen } from '@stencil/core'
 import miBaselineCalendarToday from '@icon/mi/baseline/calendar-today.svg'
+import { FocusEvent } from 'react'
 
 @Component({
   tag: 'mds-input-date-range',
@@ -12,8 +13,22 @@ export class MdsInputDateRange {
   @Prop({ reflect: true, mutable: true }) startDate: string = ''
   @Prop({ reflect: true, mutable: true }) endDate: string = ''
 
-  @Event() buttonToggleEmitter: EventEmitter<boolean>
-  @State() buttonValue: boolean = false
+  @Watch('startDate')
+  onStartDateChange (newValue: string): void {
+    this.startDate = newValue
+    const startInput = this.host.querySelector('mds-input-date[slot="start"]') as HTMLMdsInputDateElement
+    startInput.value = this.startDate
+  }
+
+  @Watch('endDate')
+  onEndDateChange (newValue: string): void {
+    this.endDate = newValue
+    const endInput = this.host.querySelector('mds-input-date[slot="end"]') as HTMLMdsInputDateElement
+    endInput.value = this.endDate
+  }
+
+  @State() showCalendar: boolean = false
+
 
   private focusInput = (element: HTMLMdsInputDateElement): void => {
     element.focusInput()
@@ -33,9 +48,25 @@ export class MdsInputDateRange {
     this.focusInput(this.host.querySelector('mds-input-date[slot="end"]') as HTMLMdsInputDateElement)
   }
 
-  manageButtonValue (): void {
-    this.buttonValue = !this.buttonValue
-    this.buttonToggleEmitter.emit(this.buttonValue)
+  toggleShowCalendar (): void {
+    this.showCalendar = !this.showCalendar
+  }
+
+  @Listen('focusout', { target: 'body' })
+  handleFocusOutEvent (ev: FocusEvent): void {
+    const target = ev.target as HTMLElement
+
+    // Se l'elemento che ha perso il focus è un input con slot="start"
+    if (target && target.closest('mds-input-date[slot="start"]')) {
+      const startInput = target as HTMLMdsInputDateElement
+      this.startDate = startInput.value
+    }
+
+    // Se l'elemento che ha perso il focus è un input con slot="end"
+    if (target && target.closest('mds-input-date[slot="end"]')) {
+      const endInput = target as HTMLMdsInputDateElement
+      this.endDate = endInput.value
+    }
   }
 
   render () {
@@ -51,8 +82,32 @@ export class MdsInputDateRange {
             <slot name="end"></slot>
           </div>
         </div>
-        <mds-button class="action-open-calendar" variant="dark" tone="quiet" icon={miBaselineCalendarToday} onClick={() => this.manageButtonValue()}></mds-button>
+
+        <mds-button
+          class="action-open-calendar"
+          variant="dark"
+          tone="quiet"
+          icon={miBaselineCalendarToday}
+          onClick={() => this.toggleShowCalendar()}>
+        </mds-button>
+
+        {this.showCalendar && (
+          <div class="calendar-container">
+            <mds-calendar
+              rangePicker={true}
+              onDatesEmitter={ev => {
+                this.startDate = ev.detail.startDate
+                if (ev.detail.endDate !== undefined) {
+                  this.endDate = ev.detail.endDate
+                }
+              }}
+              startDate={this.startDate}
+              endDate={this.endDate}>
+            </mds-calendar>
+          </div>
+        )}
       </Host>
+
     )
   }
 }

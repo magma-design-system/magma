@@ -49,22 +49,22 @@ Type: `Promise<void>`
 
 ## Dependencies
 
-### Used by
-
- - [mds-date-picker](../mds-date-picker)
-
 ### Depends on
 
 - [mds-button](../mds-button)
+- [mds-calendar](../mds-calendar)
 
 ### Graph
 ```mermaid
 graph TD;
   mds-input-date --> mds-button
+  mds-input-date --> mds-calendar
   mds-button --> mds-spinner
   mds-button --> mds-icon
   mds-button --> mds-text
-  mds-date-picker --> mds-input-date
+  mds-calendar --> mds-button
+  mds-calendar --> mds-calendar-cell
+  mds-calendar-cell --> mds-button
   style mds-input-date fill:#f9f,stroke:#333,stroke-width:4px
 ```
 

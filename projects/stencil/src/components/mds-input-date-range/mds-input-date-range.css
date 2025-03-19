@@ -81,4 +81,15 @@
   top: 0;
 }
 
+.calendar-container {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  width: auto;
+  z-index: 1000;
+  background: white;
+  box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+  border-radius: 8px;
+}
+
 @import './css/mds-input-date-range-variant.css';

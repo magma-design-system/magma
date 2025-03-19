@@ -13,33 +13,26 @@
 | `startDate` | `start-date` |             | `string` | `''`    |
 
 
-## Events
-
-| Event                 | Description | Type                   |
-| --------------------- | ----------- | ---------------------- |
-| `buttonToggleEmitter` |             | `CustomEvent<boolean>` |
-
-
 ## Dependencies
-
-### Used by
-
- - [mds-date-picker](../mds-date-picker)
 
 ### Depends on
 
 - [mds-text](../mds-text)
 - [mds-button](../mds-button)
+- [mds-calendar](../mds-calendar)
 
 ### Graph
 ```mermaid
 graph TD;
   mds-input-date-range --> mds-text
   mds-input-date-range --> mds-button
+  mds-input-date-range --> mds-calendar
   mds-button --> mds-spinner
   mds-button --> mds-icon
   mds-button --> mds-text
-  mds-date-picker --> mds-input-date-range
+  mds-calendar --> mds-button
+  mds-calendar --> mds-calendar-cell
+  mds-calendar-cell --> mds-button
   style mds-input-date-range fill:#f9f,stroke:#333,stroke-width:4px
 ```
 

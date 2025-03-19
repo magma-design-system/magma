@@ -8,6 +8,7 @@ export type CalendarCellSelectionPositionType =
   | 'middle'
   | 'none'
   | 'start'
+  | 'single'
 
 export type CalendarCellSelectionOrieintationType =
   | 'both'

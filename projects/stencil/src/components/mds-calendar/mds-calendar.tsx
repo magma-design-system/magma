@@ -34,6 +34,15 @@ export class MdsCalendar {
   handleStartDate (newValue: ISO8601Date | null): void {
     if (newValue !==  null) {
       this.startDate = sanitizeISO8601Date(newValue?.toString()) as ISO8601Date
+      if (this.endDate) {
+        const startDateTime = DateTime.fromISO(this.startDate)
+        const endDateTime = DateTime.fromISO(this.endDate)
+
+        if (startDateTime > endDateTime) {
+          console.warn('startDate is after endDate, swapping values')
+        }
+      }
+
       this.updateDates()
     }
   }
@@ -45,6 +54,16 @@ export class MdsCalendar {
       this.endDate = null
     } else if (newValue !== null) {
       this.endDate = sanitizeISO8601Date(newValue?.toString()) as ISO8601Date
+
+      if (this.startDate) {
+        const startDateTime = DateTime.fromISO(this.startDate)
+        const endDateTime = DateTime.fromISO(this.endDate)
+
+        if (startDateTime > endDateTime) {
+          console.warn('startDate is after endDate, swapping values')
+        }
+      }
+
       this.updateDates()
     }
   }

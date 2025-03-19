@@ -394,8 +394,9 @@ export namespace Components {
         "variant"?: ButtonVariantType;
     }
     interface MdsCalendar {
-        "endDate": string;
-        "startDate": string;
+        "endDate": string | null;
+        "rangePicker": boolean;
+        "startDate": string | null;
         "updateLang": () => Promise<void>;
     }
     interface MdsCalendarCell {
@@ -467,10 +468,6 @@ export namespace Components {
           * Sets the color variant of the component
          */
         "variant"?: ChipVariantType;
-    }
-    interface MdsDatePicker {
-        "endDate": string;
-        "startDate": string;
     }
     interface MdsDetails {
         /**
@@ -2023,10 +2020,6 @@ export interface MdsInputDateCustomEvent<T> extends CustomEvent<T> {
     detail: T;
     target: HTMLMdsInputDateElement;
 }
-export interface MdsInputDateRangeCustomEvent<T> extends CustomEvent<T> {
-    detail: T;
-    target: HTMLMdsInputDateRangeElement;
-}
 export interface MdsInputFieldCustomEvent<T> extends CustomEvent<T> {
     detail: T;
     target: HTMLMdsInputFieldElement;
@@ -2293,7 +2286,7 @@ declare global {
         new (): HTMLMdsButtonElement;
     };
     interface HTMLMdsCalendarElementEventMap {
-        "datesEmitter": {startDate: string, endDate: string};
+        "datesEmitter": {startDate: string, endDate?: string};
     }
     interface HTMLMdsCalendarElement extends Components.MdsCalendar, HTMLStencilElement {
         addEventListener<K extends keyof HTMLMdsCalendarElementEventMap>(type: K, listener: (this: HTMLMdsCalendarElement, ev: MdsCalendarCustomEvent<HTMLMdsCalendarElementEventMap[K]>) => any, options?: boolean | AddEventListenerOptions): void;
@@ -2372,12 +2365,6 @@ declare global {
     var HTMLMdsChipElement: {
         prototype: HTMLMdsChipElement;
         new (): HTMLMdsChipElement;
-    };
-    interface HTMLMdsDatePickerElement extends Components.MdsDatePicker, HTMLStencilElement {
-    }
-    var HTMLMdsDatePickerElement: {
-        prototype: HTMLMdsDatePickerElement;
-        new (): HTMLMdsDatePickerElement;
     };
     interface HTMLMdsDetailsElementEventMap {
         "mdsDetailsChange": boolean;
@@ -2604,18 +2591,7 @@ declare global {
         prototype: HTMLMdsInputDateElement;
         new (): HTMLMdsInputDateElement;
     };
-    interface HTMLMdsInputDateRangeElementEventMap {
-        "buttonToggleEmitter": boolean;
-    }
     interface HTMLMdsInputDateRangeElement extends Components.MdsInputDateRange, HTMLStencilElement {
-        addEventListener<K extends keyof HTMLMdsInputDateRangeElementEventMap>(type: K, listener: (this: HTMLMdsInputDateRangeElement, ev: MdsInputDateRangeCustomEvent<HTMLMdsInputDateRangeElementEventMap[K]>) => any, options?: boolean | AddEventListenerOptions): void;
-        addEventListener<K extends keyof DocumentEventMap>(type: K, listener: (this: Document, ev: DocumentEventMap[K]) => any, options?: boolean | AddEventListenerOptions): void;
-        addEventListener<K extends keyof HTMLElementEventMap>(type: K, listener: (this: HTMLElement, ev: HTMLElementEventMap[K]) => any, options?: boolean | AddEventListenerOptions): void;
-        addEventListener(type: string, listener: EventListenerOrEventListenerObject, options?: boolean | AddEventListenerOptions): void;
-        removeEventListener<K extends keyof HTMLMdsInputDateRangeElementEventMap>(type: K, listener: (this: HTMLMdsInputDateRangeElement, ev: MdsInputDateRangeCustomEvent<HTMLMdsInputDateRangeElementEventMap[K]>) => any, options?: boolean | EventListenerOptions): void;
-        removeEventListener<K extends keyof DocumentEventMap>(type: K, listener: (this: Document, ev: DocumentEventMap[K]) => any, options?: boolean | EventListenerOptions): void;
-        removeEventListener<K extends keyof HTMLElementEventMap>(type: K, listener: (this: HTMLElement, ev: HTMLElementEventMap[K]) => any, options?: boolean | EventListenerOptions): void;
-        removeEventListener(type: string, listener: EventListenerOrEventListenerObject, options?: boolean | EventListenerOptions): void;
     }
     var HTMLMdsInputDateRangeElement: {
         prototype: HTMLMdsInputDateRangeElement;
@@ -3319,7 +3295,6 @@ declare global {
         "mds-card-header": HTMLMdsCardHeaderElement;
         "mds-card-media": HTMLMdsCardMediaElement;
         "mds-chip": HTMLMdsChipElement;
-        "mds-date-picker": HTMLMdsDatePickerElement;
         "mds-details": HTMLMdsDetailsElement;
         "mds-dropdown": HTMLMdsDropdownElement;
         "mds-entity": HTMLMdsEntityElement;
@@ -3701,9 +3676,10 @@ declare namespace LocalJSX {
         "variant"?: ButtonVariantType;
     }
     interface MdsCalendar {
-        "endDate"?: string;
-        "onDatesEmitter"?: (event: MdsCalendarCustomEvent<{startDate: string, endDate: string}>) => void;
-        "startDate"?: string;
+        "endDate"?: string | null;
+        "onDatesEmitter"?: (event: MdsCalendarCustomEvent<{startDate: string, endDate?: string}>) => void;
+        "rangePicker"?: boolean;
+        "startDate"?: string | null;
     }
     interface MdsCalendarCell {
         "date"?: string;
@@ -3781,10 +3757,6 @@ declare namespace LocalJSX {
           * Sets the color variant of the component
          */
         "variant"?: ChipVariantType;
-    }
-    interface MdsDatePicker {
-        "endDate"?: string;
-        "startDate"?: string;
     }
     interface MdsDetails {
         /**
@@ -4302,7 +4274,6 @@ declare namespace LocalJSX {
     }
     interface MdsInputDateRange {
         "endDate"?: string;
-        "onButtonToggleEmitter"?: (event: MdsInputDateRangeCustomEvent<boolean>) => void;
         "startDate"?: string;
     }
     interface MdsInputField {
@@ -5416,7 +5387,6 @@ declare namespace LocalJSX {
         "mds-card-header": MdsCardHeader;
         "mds-card-media": MdsCardMedia;
         "mds-chip": MdsChip;
-        "mds-date-picker": MdsDatePicker;
         "mds-details": MdsDetails;
         "mds-dropdown": MdsDropdown;
         "mds-entity": MdsEntity;
@@ -5532,7 +5502,6 @@ declare module "@stencil/core" {
             "mds-card-header": LocalJSX.MdsCardHeader & JSXBase.HTMLAttributes<HTMLMdsCardHeaderElement>;
             "mds-card-media": LocalJSX.MdsCardMedia & JSXBase.HTMLAttributes<HTMLMdsCardMediaElement>;
             "mds-chip": LocalJSX.MdsChip & JSXBase.HTMLAttributes<HTMLMdsChipElement>;
-            "mds-date-picker": LocalJSX.MdsDatePicker & JSXBase.HTMLAttributes<HTMLMdsDatePickerElement>;
             "mds-details": LocalJSX.MdsDetails & JSXBase.HTMLAttributes<HTMLMdsDetailsElement>;
             "mds-dropdown": LocalJSX.MdsDropdown & JSXBase.HTMLAttributes<HTMLMdsDropdownElement>;
             "mds-entity": LocalJSX.MdsEntity & JSXBase.HTMLAttributes<HTMLMdsEntityElement>;

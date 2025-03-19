@@ -12,6 +12,7 @@ export class MdsInputDate {
 
   @Prop({ reflect: true, mutable: true }) value: string = ''
   @State() internalValue: string = ''
+  @State() showCalendar: boolean = false
   @Event() valueChange: EventEmitter<string>
 
   @Method()
@@ -41,6 +42,10 @@ export class MdsInputDate {
     this.internalValue = this.value || ''
   }
 
+  private toggleShowCalendar (): void {
+    this.showCalendar = !this.showCalendar
+  }
+
   render () {
     return (
       <Host>
@@ -51,7 +56,18 @@ export class MdsInputDate {
           onInput={event => this.handleInput(event)}
           onChange={event => this.handleChange(event)}
         />
-        {!this.isSlotted && <mds-button class="action-open-calendar" variant="dark" tone="quiet" icon={miBaselineCalendarToday}></mds-button>}
+        {!this.isSlotted && <mds-button class="action-open-calendar" variant="dark" tone="quiet" icon={miBaselineCalendarToday} onClick={() => this.toggleShowCalendar()}></mds-button>}
+        {this.showCalendar && (
+          <div class="calendar-container">
+            <mds-calendar
+              rangePicker={false}
+              onDatesEmitter={ev => {
+                this.value = ev.detail.startDate
+              }}
+              startDate={this.value}>
+            </mds-calendar>
+          </div>
+        )}
       </Host>
     )
   }
