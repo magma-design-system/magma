@@ -12,4 +12,7 @@ const Template = args =>
   </mds-input-date-range>
 
 export const Default = Template.bind({})
-Default.args = { }
+Default.args = {
+  'start-date': '2025-03-19',
+  'end-date': '2025-03-21',
+}
