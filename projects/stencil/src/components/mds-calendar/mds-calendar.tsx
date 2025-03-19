@@ -24,27 +24,28 @@ export class MdsCalendar {
   @State() currentView: 'calendar' | 'years' | 'months' = 'calendar'
   @State() selectedYear: number = this.currentDate.year
 
+  @Prop() rangePicker: boolean = true
+  @Prop({ reflect: true, mutable: true }) startDate: string | null = null
+  @Prop({ reflect: true, mutable: true }) endDate: string | null = null
 
-
-  @Prop({ reflect: true, mutable: true }) startDate: string
-  @Prop({ reflect: true, mutable: true }) endDate: string
-  @Event() datesEmitter: EventEmitter<{startDate: string, endDate: string}>
+  @Event() datesEmitter: EventEmitter<{startDate: string, endDate?: string}>
 
   @Watch('startDate')
-  handleStartDate (newValue: ISO8601Date): void {
-    this.startDate = sanitizeISO8601Date(newValue?.toString()) as ISO8601Date
-
-    if (this.startDate && this.endDate){
-      this.updateCalendar().then(() => setTimeout(() => this.setDates(), 50))
+  handleStartDate (newValue: ISO8601Date | null): void {
+    if (newValue !==  null) {
+      this.startDate = sanitizeISO8601Date(newValue?.toString()) as ISO8601Date
+      this.updateDates()
     }
   }
 
   @Watch('endDate')
-  handleEndDate (newValue: ISO8601Date): void {
-    this.endDate = sanitizeISO8601Date(newValue?.toString()) as ISO8601Date
-
-    if (this.startDate && this.endDate){
-      this.updateCalendar().then(() => setTimeout(() => this.setDates(), 50))
+  handleEndDate (newValue: ISO8601Date | null): void {
+    if (!this.rangePicker) {
+      console.warn('rangePicker is disabled, endDate cannot be set')
+      this.endDate = null
+    } else if (newValue !== null) {
+      this.endDate = sanitizeISO8601Date(newValue?.toString()) as ISO8601Date
+      this.updateDates()
     }
   }
 
@@ -61,14 +62,13 @@ export class MdsCalendar {
     if (this.startDate) {
       this.startDate = sanitizeISO8601Date(this.startDate?.toString()) as ISO8601Date
       this.startDateTime = DateTime.fromISO(this.startDate)
+      this.currentDate = this.startDateTime
     }
 
     if (this.endDate) {
       this.endDate = sanitizeISO8601Date(this.endDate?.toString()) as ISO8601Date
       this.endDateTime = DateTime.fromISO(this.endDate)
-
     }
-
 
     this.updateCalendar()
   }
@@ -76,12 +76,21 @@ export class MdsCalendar {
   componentDidLoad (): void {
     this.host?.shadowRoot?.addEventListener('mouseover', event => {
       const target = event.target as HTMLElement
-      if (target.matches('mds-calendar-cell') && this.startDateElement) {
+      if (target.matches('mds-calendar-cell') && this.startDateElement && this.rangePicker) {
         this.handleHover(target)
       }
     })
 
     this.setDates()
+  }
+
+  componentWillUnload (): void {
+    this.host?.shadowRoot?.removeEventListener('mouseover', event => {
+      const target = event.target as HTMLElement
+      if (target.matches('mds-calendar-cell') && this.startDateElement && this.rangePicker) {
+        this.handleHover(target)
+      }
+    })
   }
 
   private readonly t: Locale = new Locale()
@@ -91,6 +100,13 @@ export class MdsCalendar {
     this.language = this.t.lang(this.host)
   }
 
+  private updateDates (): void {
+    if (this.startDate && this.endDate) {
+      this.updateCalendar().then(() => {
+        requestAnimationFrame(() => this.setDates())
+      })
+    }
+  }
 
   async updateCalendar (): Promise<void> {
     try {
@@ -113,9 +129,19 @@ export class MdsCalendar {
     if (!calendar) return
 
     const { shadowRoot } = calendar
+
     if (!shadowRoot) return
 
     const calendarCells = shadowRoot.querySelectorAll('mds-calendar-cell[selection]')
+
+    if (this.rangePicker) {
+      this.setRangeSelection(calendarCells, shadowRoot)
+    } else {
+      this.setSingleSelection(calendarCells, shadowRoot)
+    }
+  }
+
+  private setRangeSelection (calendarCells: NodeListOf<Element>, shadowRoot: ShadowRoot): void {
     calendarCells.forEach(day => {
       day.removeAttribute('selection')
       day.removeAttribute('preview')
@@ -141,7 +167,11 @@ export class MdsCalendar {
           }
 
           if (currentDate.toFormat('yyyy-MM-dd') === this.endDateTime.toFormat('yyyy-MM-dd')) {
-            cells[i].setAttribute('selection', 'end')
+            if (this.startDateTime.equals(this.endDateTime)) {
+              cells[i].setAttribute('selection', 'single')
+            } else {
+              cells[i].setAttribute('selection', 'end')
+            }
           }
 
           isBetweenDates = currentDate > this.startDateTime && currentDate < this.endDateTime
@@ -153,12 +183,38 @@ export class MdsCalendar {
     }
   }
 
+  private setSingleSelection (calendarCells: NodeListOf<Element>, shadowRoot: ShadowRoot) {
 
+    calendarCells.forEach(cell => {
+      cell.removeAttribute('selection')
+    })
+
+    if (!this.startDate) return
+
+    this.startDateTime = DateTime.fromISO(this.startDate.toString())
+    const cells = shadowRoot.querySelectorAll('mds-calendar-cell')
+
+    if (cells) {
+      for (let i = 0; i < cells.length; i++) {
+        const cellDate = cells[i].getAttribute('date')
+
+        if (cellDate) {
+          const currentDate = DateTime.fromISO(cellDate)
+
+          if (currentDate.toFormat('yyyy-MM-dd') === this.startDateTime.toFormat('yyyy-MM-dd')) {
+            cells[i].setAttribute('selection', 'single')
+          }
+        }
+      }
+    }
+  }
 
 
   changeMonth (delta: number): void {
     this.currentDate = this.currentDate.plus({ months: delta })
-    this.updateCalendar().then(() => setTimeout(() => this.setDates(), 50))
+    this.updateCalendar().then(() => {
+      requestAnimationFrame(() => this.setDates())
+    })
   }
 
   calculateWeekDaysInMonth (): void {
@@ -191,6 +247,8 @@ export class MdsCalendar {
 
   private handleRange (element: HTMLElement, dayInfo: DateTime): void {
     const resetSelection = (): void => {
+      this.startDate = null
+      this.endDate = null
       this.startDateElement = null
       this.startDateTime = null
       this.endDateElement = null
@@ -198,10 +256,13 @@ export class MdsCalendar {
       this.isFirstClick = true
 
       const calendar: HTMLMdsCalendarElement = this.host
-      calendar?.shadowRoot?.querySelectorAll('mds-calendar-cell[selection]').forEach(day => {
-        day.removeAttribute('selection')
-        day.removeAttribute('preview')
+      requestAnimationFrame(() => {
+        calendar?.shadowRoot?.querySelectorAll('mds-calendar-cell[selection]').forEach(day => {
+          day.removeAttribute('selection')
+          day.removeAttribute('preview')
+        })
       })
+
     }
 
     if (this.startDateElement && this.endDateElement) {
@@ -213,8 +274,11 @@ export class MdsCalendar {
       this.startDateTime = dayInfo
       this.startDate = this.startDateTime.toISO().split('T')[0]
       this.isFirstClick = false
-      element.setAttribute('selection', 'start')
-      element.setAttribute('preview', 'true')
+      requestAnimationFrame(() => {
+        element.setAttribute('selection', 'start')
+        element.setAttribute('preview', 'true')
+      })
+
       return
     }
 
@@ -315,11 +379,22 @@ export class MdsCalendar {
     })
   }
 
+  private handleSingleSelection (element: HTMLElement, dayInfo:  DateTime): void {
+    const calendar: HTMLMdsCalendarElement = this.host
 
-  handleMouseOut (): void {
-    if (this.previewElement) {
-      this.previewElement.removeAttribute('preview')
+    calendar?.shadowRoot?.querySelectorAll('mds-calendar-cell[selection]').forEach(day => {
+      day.removeAttribute('selection')
+    })
+    this.startDateElement = element
+    this.startDateTime = dayInfo
+    this.startDate = this.startDateTime.toISO().split('T')[0]
+    this.isFirstClick = false
+    element.setAttribute('selection', 'single')
+
+    if (this.startDate) {
+      this.datesEmitter.emit({ startDate: this.startDate })
     }
+
   }
 
   render () {
@@ -355,7 +430,12 @@ export class MdsCalendar {
                 <mds-calendar-cell
                   date={dayInfo.date.toFormat('yyyy-MM-dd')}
                   month={dayInfo.isCurrentMonth ? 'current' : 'other'}
-                  onClick={event => this.handleRange(event.target as HTMLElement, dayInfo.date)}
+                  onClick={event => {
+                    const target = event.currentTarget as HTMLElement
+                    this.rangePicker
+                      ? this.handleRange(target, dayInfo.date)
+                      : this.handleSingleSelection(target, dayInfo.date)
+                  }}
                 >
                   {dayInfo.date.toFormat('dd')}
                 </mds-calendar-cell>
@@ -374,7 +454,9 @@ export class MdsCalendar {
                     this.currentDate = this.currentDate.set({ month: index + 1 })
                     this.currentMonth = this.currentDate.toFormat('MMMM')
                     this.currentView = 'calendar'
-                    this.updateCalendar()
+                    this.updateCalendar().then(() => {
+                      requestAnimationFrame(() => this.setDates())
+                    })
                   }}>
                     {monthName}
                   </mds-button>
@@ -395,7 +477,9 @@ export class MdsCalendar {
                     this.currentDate = this.currentDate.set({ year })
                     this.currentYear = year.toString()
                     this.currentView = 'calendar'
-                    this.updateCalendar()
+                    this.updateCalendar().then(() => {
+                      requestAnimationFrame(() => this.setDates())
+                    })
                   }}>
                     {year}
                   </mds-button>

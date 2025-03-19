@@ -7,17 +7,18 @@
 
 ## Properties
 
-| Property    | Attribute    | Description | Type     | Default     |
-| ----------- | ------------ | ----------- | -------- | ----------- |
-| `endDate`   | `end-date`   |             | `string` | `undefined` |
-| `startDate` | `start-date` |             | `string` | `undefined` |
+| Property      | Attribute      | Description | Type             | Default |
+| ------------- | -------------- | ----------- | ---------------- | ------- |
+| `endDate`     | `end-date`     |             | `null \| string` | `null`  |
+| `rangePicker` | `range-picker` |             | `boolean`        | `true`  |
+| `startDate`   | `start-date`   |             | `null \| string` | `null`  |
 
 
 ## Events
 
-| Event          | Description | Type                                                   |
-| -------------- | ----------- | ------------------------------------------------------ |
-| `datesEmitter` |             | `CustomEvent<{ startDate: string; endDate: string; }>` |
+| Event          | Description | Type                                                                 |
+| -------------- | ----------- | -------------------------------------------------------------------- |
+| `datesEmitter` |             | `CustomEvent<{ startDate: string; endDate?: string \| undefined; }>` |
 
 
 ## Methods
@@ -37,7 +38,8 @@ Type: `Promise<void>`
 
 ### Used by
 
- - [mds-date-picker](../mds-date-picker)
+ - [mds-input-date](../mds-input-date)
+ - [mds-input-date-range](../mds-input-date-range)
 
 ### Depends on
 
@@ -53,7 +55,8 @@ graph TD;
   mds-button --> mds-icon
   mds-button --> mds-text
   mds-calendar-cell --> mds-button
-  mds-date-picker --> mds-calendar
+  mds-input-date --> mds-calendar
+  mds-input-date-range --> mds-calendar
   style mds-calendar fill:#f9f,stroke:#333,stroke-width:4px
 ```
 

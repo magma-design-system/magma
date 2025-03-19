@@ -21,6 +21,6 @@ const Template = args =>
 
 export const Default = Template.bind({})
 Default.args = {
-  'start-date': '2024-12-12',
-  'end-date': '2024-12-24',
+  'start-date': '2025-03-18',
+  'end-date': '2025-03-24',
 }
