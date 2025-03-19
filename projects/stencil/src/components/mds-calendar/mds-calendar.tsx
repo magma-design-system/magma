@@ -32,7 +32,7 @@ export class MdsCalendar {
 
   @Watch('startDate')
   handleStartDate (newValue: ISO8601Date | null): void {
-    if (newValue !==  null) {
+    if (newValue !== null) {
       this.startDate = sanitizeISO8601Date(newValue?.toString()) as ISO8601Date
       if (this.endDate) {
         const startDateTime = DateTime.fromISO(this.startDate)
@@ -40,6 +40,7 @@ export class MdsCalendar {
 
         if (startDateTime > endDateTime) {
           console.warn('startDate is after endDate, swapping values')
+          return
         }
       }
 
@@ -61,6 +62,7 @@ export class MdsCalendar {
 
         if (startDateTime > endDateTime) {
           console.warn('startDate is after endDate, swapping values')
+          return
         }
       }
 
