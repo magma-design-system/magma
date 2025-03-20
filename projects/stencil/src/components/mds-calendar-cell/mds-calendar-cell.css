@@ -149,6 +149,12 @@
   margin-right: 0;
 }
 
+:host([selection="single"][orientation="horizontal"]) .area-background {
+  border-radius: var(--mds-calendar-cell-selection-boundaries-border-radius);
+  margin-left: 0;
+  margin-right: 0;
+}
+
 /* weekend */
 
 :host(:nth-child(7n - 1)),

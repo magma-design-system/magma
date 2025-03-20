@@ -55,3 +55,13 @@
   --mds-calendar-cell-inner-background: var(--mds-calendar-cell-preselection-other-month-boundaries-background);
   --mds-calendar-cell-color: var(--mds-calendar-cell-preselection-other-month-boundaries-color);
 }
+
+:host([selection="single"][month="current"]) {
+  --mds-calendar-cell-inner-background: var(--mds-calendar-cell-preselection-current-month-boundaries-background);
+  --mds-calendar-cell-color: var(--mds-calendar-cell-preselection-current-month-boundaries-color);
+}
+
+:host([selection="single"][month="other"]) {
+  --mds-calendar-cell-inner-background: var(--mds-calendar-cell-preselection-other-month-boundaries-background);
+  --mds-calendar-cell-color: var(--mds-calendar-cell-preselection-other-month-boundaries-color);
+}
