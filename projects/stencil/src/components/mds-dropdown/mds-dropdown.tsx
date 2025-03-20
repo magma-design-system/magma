@@ -98,7 +98,7 @@ export class MdsDropdown implements FloatingElement {
   /**
    * Sets the CSS position strategy of the component.
    */
-  @Prop() readonly strategy: FloatingUIStrategy = 'fixed'
+  @Prop() readonly strategy: FloatingUIStrategy = 'absolute'
 
   /**
    * Specifies the visibility of the component.
