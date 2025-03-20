@@ -9,10 +9,10 @@
   --mds-calendar-cell-color: var(--mds-calendar-cell-selection-current-month-weekend-color);
 }
 
-:host([selection="start"][selection][month="current"]:nth-child(7n - 1)),
-:host([selection="end"][selection][month="current"]:nth-child(7n - 1)),
-:host([selection="start"][selection][month="current"]:nth-child(7n)),
-:host([selection="end"][selection][month="current"]:nth-child(7n)) {
+:host([selection="start"][month="current"]:nth-child(7n - 1)),
+:host([selection="end"][month="current"]:nth-child(7n - 1)),
+:host([selection="start"][month="current"]:nth-child(7n)),
+:host([selection="end"][month="current"]:nth-child(7n)) {
   --mds-calendar-cell-background: var(--mds-calendar-cell-selection-current-month-weekend-boundaries-background);
   --mds-calendar-cell-color: var(--mds-calendar-cell-selection-current-month-weekend-boundaries-color);
 }
