@@ -201,6 +201,7 @@ export class FloatingController {
         left: `${x}px`,
         top: `${y}px`,
         transformOrigin: this.convertToTransformOrigin(placement),
+        position: this._host.strategy,
       })
 
       const arrowStyle = {}
