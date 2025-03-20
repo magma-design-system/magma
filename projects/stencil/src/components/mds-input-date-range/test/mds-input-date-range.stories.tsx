@@ -7,8 +7,8 @@ export default {
 
 const Template = args =>
   <mds-input-date-range {...args}>
-    <mds-input-date slot="start"></mds-input-date>
-    <mds-input-date slot="end"></mds-input-date>
+    <mds-input-date value={args['start-date']} slot="start"></mds-input-date>
+    <mds-input-date value={args['end-date']} slot="end"></mds-input-date>
   </mds-input-date-range>
 
 export const Default = Template.bind({})

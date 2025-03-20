@@ -32,7 +32,7 @@ export class MdsCalendar {
 
   @Watch('startDate')
   handleStartDate (newValue: ISO8601Date | null): void {
-    if (newValue !== null) {
+    if (newValue !== null && newValue !== '') {
       this.startDate = sanitizeISO8601Date(newValue?.toString()) as ISO8601Date
       if (this.endDate) {
         const startDateTime = DateTime.fromISO(this.startDate)
@@ -53,7 +53,7 @@ export class MdsCalendar {
     if (!this.rangePicker) {
       console.warn('rangePicker is disabled, endDate cannot be set')
       this.endDate = null
-    } else if (newValue !== null) {
+    } else if (newValue !== null && newValue !== '') {
       this.endDate = sanitizeISO8601Date(newValue?.toString()) as ISO8601Date
 
       if (this.startDate) {

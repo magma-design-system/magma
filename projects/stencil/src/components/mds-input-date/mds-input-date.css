@@ -140,4 +140,8 @@
   border-radius: 8px;
 }
 
+mds-dropdown {
+  padding: 0;
+}
+
 @import './css/mds-input-date-variant.css';

@@ -19,6 +19,7 @@
 
 - [mds-text](../mds-text)
 - [mds-button](../mds-button)
+- [mds-dropdown](../mds-dropdown)
 - [mds-calendar](../mds-calendar)
 
 ### Graph
@@ -26,6 +27,7 @@
 graph TD;
   mds-input-date-range --> mds-text
   mds-input-date-range --> mds-button
+  mds-input-date-range --> mds-dropdown
   mds-input-date-range --> mds-calendar
   mds-button --> mds-spinner
   mds-button --> mds-icon
