@@ -406,7 +406,7 @@ export class MdsCalendar {
     })
   }
 
-  private handleSingleSelection (element: HTMLElement, dayInfo:  DateTime): void {
+  private handleSingleSelection (element: HTMLElement, dayInfo: DateTime): void {
     const calendar: HTMLMdsCalendarElement = this.host
 
     calendar?.shadowRoot?.querySelectorAll('mds-calendar-cell[selection]').forEach(day => {

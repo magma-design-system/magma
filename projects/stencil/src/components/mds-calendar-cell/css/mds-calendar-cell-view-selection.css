@@ -1,51 +1,57 @@
 :host([selection][month="current"]) {
-
   --mds-calendar-cell-background: var(--mds-calendar-cell-selection-current-month-background);
-  --mds-calendar-cell-inner-color: var(--mds-calendar-cell-selection-current-month-color);
+  --mds-calendar-cell-color: var(--mds-calendar-cell-selection-current-month-color);
+}
+
+:host([selection][month="current"]:nth-child(7n - 1)),
+:host([selection][month="current"]:nth-child(7n)) {
+  --mds-calendar-cell-background: var(--mds-calendar-cell-selection-current-month-weekend-background);
+  --mds-calendar-cell-color: var(--mds-calendar-cell-selection-current-month-weekend-color);
+}
+
+:host([selection="start"][selection][month="current"]:nth-child(7n - 1)),
+:host([selection="end"][selection][month="current"]:nth-child(7n - 1)),
+:host([selection="start"][selection][month="current"]:nth-child(7n)),
+:host([selection="end"][selection][month="current"]:nth-child(7n)) {
+  --mds-calendar-cell-background: var(--mds-calendar-cell-selection-current-month-weekend-boundaries-background);
+  --mds-calendar-cell-color: var(--mds-calendar-cell-selection-current-month-weekend-boundaries-color);
 }
 
 :host([selection][month="other"]) {
-
   --mds-calendar-cell-background: var(--mds-calendar-cell-selection-other-month-background);
-  --mds-calendar-cell-inner-color: var(--mds-calendar-cell-selection-other-month-color);
+  --mds-calendar-cell-color: var(--mds-calendar-cell-selection-other-month-color);
 }
 
 :host([selection="start"][month="current"]),
 :host([selection="end"][month="current"]) {
-
   --mds-calendar-cell-inner-background: var(--mds-calendar-cell-selection-current-month-boundaries-background);
-  --mds-calendar-cell-inner-color: var(--mds-calendar-cell-selection-current-month-boundaries-color);
+  --mds-calendar-cell-color: var(--mds-calendar-cell-selection-current-month-boundaries-color);
 }
 
 :host([selection="start"][month="other"]),
 :host([selection="end"][month="other"]) {
-
   --mds-calendar-cell-inner-background: var(--mds-calendar-cell-selection-other-month-boundaries-background);
-  --mds-calendar-cell-inner-color: var(--mds-calendar-cell-selection-other-month-boundaries-color);
+  --mds-calendar-cell-color: var(--mds-calendar-cell-selection-other-month-boundaries-color);
 }
 
 :host([selection][month="current"][preview]:not([preview="false"])) {
-
   --mds-calendar-cell-background: var(--mds-calendar-cell-preselection-current-month-background);
-  --mds-calendar-cell-inner-color: var(--mds-calendar-cell-preselection-current-month-color);
+  --mds-calendar-cell-color: var(--mds-calendar-cell-preselection-current-month-color);
 }
 
 :host([selection][month="other"][preview]:not([preview="false"])) {
-
   --mds-calendar-cell-background: var(--mds-calendar-cell-preselection-other-month-background);
-  --mds-calendar-cell-inner-color: var(--mds-calendar-cell-preselection-other-month-color);
+  --mds-calendar-cell-color: var(--mds-calendar-cell-preselection-other-month-color);
 }
 
 :host([selection="start"][month="current"][preview]:not([preview="false"])),
 :host([selection="end"][month="current"][preview]:not([preview="false"])) {
-
   --mds-calendar-cell-inner-background: var(--mds-calendar-cell-preselection-current-month-boundaries-background);
-  --mds-calendar-cell-inner-color: var(--mds-calendar-cell-preselection-current-month-boundaries-color);
+  --mds-calendar-cell-color: var(--mds-calendar-cell-preselection-current-month-boundaries-color);
 }
 
 :host([selection="start"][month="other"][preview]:not([preview="false"])),
 :host([selection="end"][month="other"][preview]:not([preview="false"])) {
-
   --mds-calendar-cell-inner-background: var(--mds-calendar-cell-preselection-other-month-boundaries-background);
-  --mds-calendar-cell-inner-color: var(--mds-calendar-cell-preselection-other-month-boundaries-color);
+  --mds-calendar-cell-color: var(--mds-calendar-cell-preselection-other-month-boundaries-color);
 }

@@ -1,7 +1,6 @@
 @tailwind utilities;
 
 :host {
-
   --mds-calendar-day-number-other-month-color: theme('colors.tone-neutral-07');
   --mds-calendar-day-number-color: theme('colors.tone-neutral-01');
   --mds-calendar-cell-gap: theme('gap.50');

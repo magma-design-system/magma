@@ -1,5 +1,4 @@
 :host {
-
   --mds-calendar-cell-background: transparent;
   --mds-calendar-cell-boundaries-background: transparent;
   --mds-calendar-cell-boundaries-color: theme('colors.tone-neutral-01');
@@ -30,12 +29,16 @@
 
   --mds-calendar-cell-selection-current-month-background: theme('colors.brand-maggioli-04');
   --mds-calendar-cell-selection-current-month-color: theme('colors.tone-neutral');
-  --mds-calendar-cell-selection-current-month-boundaries-color: theme('colors.tone-neutral-03');
   --mds-calendar-cell-selection-current-month-boundaries-background: theme('colors.tone-neutral');
-  --mds-calendar-cell-selection-other-month-background: theme('colors.brand-maggioli-08');
+  --mds-calendar-cell-selection-current-month-boundaries-color: theme('colors.tone-neutral-03');
+  --mds-calendar-cell-selection-current-month-weekend-background: theme('colors.brand-maggioli-03');
+  --mds-calendar-cell-selection-current-month-weekend-color: theme('colors.brand-maggioli-07');
+  --mds-calendar-cell-selection-current-month-weekend-boundaries-background: theme('colors.brand-maggioli-03');
+  --mds-calendar-cell-selection-current-month-weekend-boundaries-color: theme('colors.tone-neutral-03');
+  --mds-calendar-cell-selection-other-month-background: theme('colors.brand-maggioli-07');
   --mds-calendar-cell-selection-other-month-color: theme('colors.tone-neutral-05');
-  --mds-calendar-cell-selection-other-month-boundaries-color: theme('colors.tone-neutral-05');
   --mds-calendar-cell-selection-other-month-boundaries-background: theme('colors.brand-maggioli-10');
+  --mds-calendar-cell-selection-other-month-boundaries-color: theme('colors.tone-neutral-05');
 
   aspect-ratio: 1 / 1;
   display: flex;
@@ -127,17 +130,13 @@
 
 :host(:nth-child(7n - 1)),
 :host(:nth-child(7n)) {
-
   --mds-calendar-cell-color: var(--mds-calendar-cell-weekend-color);
   --mds-calendar-cell-background: var(--mds-calendar-cell-weekend-background);
 }
 
-
-
 /* month */
 
 :host([month="other"]:not([selection])) {
-
   --mds-calendar-cell-color: var(--mds-calendar-cell-other-month-color);
   --mds-calendar-cell-background: var(--mds-calendar-cell-other-month-background);
 }
