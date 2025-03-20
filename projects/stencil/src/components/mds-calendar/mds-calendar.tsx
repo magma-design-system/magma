@@ -428,20 +428,24 @@ export class MdsCalendar {
     return (
       <Host>
         <nav>
-          <mds-button class="action-back" icon={miBaselineBackIosNew} variant="dark" tone="quiet" onClick={() => {
+          <mds-button class="action-back" icon={miBaselineBackIosNew} variant="dark" tone="quiet" onClick={event => {
+            event.stopPropagation()
             this.changeMonth(-1)
           }}></mds-button>
           <div class="select-month-or-year">
-            <mds-button class="action-month" variant="dark" tone="quiet" onClick={() => {
+            <mds-button class="action-month" variant="dark" tone="quiet" onClick={event => {
+              event.stopPropagation()
               this.currentView = 'months'
             }}>{this.currentMonth}</mds-button>
 
-            <mds-button class="action-year" variant="dark" tone="quiet" onClick={() => {
+            <mds-button class="action-year" variant="dark" tone="quiet" onClick={event => {
+              event.stopPropagation()
               this.currentView = 'years'
             }}>{this.currentYear}</mds-button>
 
           </div>
-          <mds-button class="action-forward" icon={miBaselineForwardIos} variant="dark" tone="quiet" onClick={() => {
+          <mds-button class="action-forward" icon={miBaselineForwardIos} variant="dark" tone="quiet" onClick={event => {
+            event.stopPropagation()
             this.changeMonth(1)
           }}></mds-button>
         </nav>
@@ -458,6 +462,7 @@ export class MdsCalendar {
                   date={dayInfo.date.toFormat('yyyy-MM-dd')}
                   month={dayInfo.isCurrentMonth ? 'current' : 'other'}
                   onClick={event => {
+                    event.stopPropagation()
                     const target = event.currentTarget as HTMLElement
                     this.rangePicker
                       ? this.handleRange(target, dayInfo.date)
@@ -477,7 +482,8 @@ export class MdsCalendar {
               {Array.from({ length: 12 }).map((_, index) => {
                 const monthName = DateTime.local().set({ month: index + 1 }).setLocale(this.language).toFormat('MMMM')
                 return (
-                  <mds-button class='action' variant='dark' tone='quiet' onClick={() => {
+                  <mds-button class='action' variant='dark' tone='quiet' onClick={event => {
+                    event.stopPropagation()
                     this.currentDate = this.currentDate.set({ month: index + 1 })
                     this.currentMonth = this.currentDate.toFormat('MMMM')
                     this.currentView = 'calendar'
@@ -496,11 +502,15 @@ export class MdsCalendar {
         {this.currentView === 'years' && (
           <section class="year-selection">
             <header class="month-view__years">
-              <mds-button class='action' variant='dark' tone='quiet' onClick={() => this.selectedYear -= 10}>◀</mds-button>
+              <mds-button class='action' variant='dark' tone='quiet' onClick={event => {
+                event.stopPropagation()
+                this.selectedYear -= 10
+              }}>◀</mds-button>
               {Array.from({ length: 10 }).map((_, index) => {
                 const year = this.selectedYear + index
                 return (
-                  <mds-button class='action' variant='dark' tone='quiet' onClick={() => {
+                  <mds-button class='action' variant='dark' tone='quiet' onClick={event => {
+                    event.stopPropagation()
                     this.currentDate = this.currentDate.set({ year })
                     this.currentYear = year.toString()
                     this.currentView = 'calendar'
@@ -512,7 +522,10 @@ export class MdsCalendar {
                   </mds-button>
                 )
               })}
-              <mds-button class='action' variant='dark' tone='quiet' onClick={() => this.selectedYear += 10}>▶</mds-button>
+              <mds-button class='action' variant='dark' tone='quiet' onClick={event => {
+                event.stopPropagation()
+                this.selectedYear += 10
+              }}>▶</mds-button>
             </header>
           </section>
         )}
