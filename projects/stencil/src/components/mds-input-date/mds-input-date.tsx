@@ -54,7 +54,7 @@ export class MdsInputDate {
         {!this.isSlotted && <mds-button id="calendar-dropdown" class="action-open-calendar" variant="dark" tone="quiet" icon={miBaselineCalendarToday}></mds-button>}
 
 
-        <mds-dropdown target="#calendar-dropdown" strategy="fixed" placement="bottom-end">
+        <mds-dropdown arrow={false} target="#calendar-dropdown" strategy="fixed" placement="bottom-end">
           <mds-calendar
             rangePicker={false}
             onDatesEmitter={ev => {

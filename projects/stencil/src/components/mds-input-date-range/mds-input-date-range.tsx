@@ -82,7 +82,7 @@ export class MdsInputDateRange {
           id="calendar-dropdown">
         </mds-button>
 
-        <mds-dropdown target="#calendar-dropdown" strategy="fixed" placement="bottom-end">
+        <mds-dropdown arrow={false} target="#calendar-dropdown" strategy="fixed" placement="bottom-end">
           <mds-calendar
             rangePicker={true}
             onDatesEmitter={ev => {
