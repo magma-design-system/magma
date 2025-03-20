@@ -34,6 +34,7 @@ export class MdsCalendar {
   handleStartDate (newValue: ISO8601Date | null): void {
     if (newValue !== null && newValue !== '') {
       this.startDate = sanitizeISO8601Date(newValue?.toString()) as ISO8601Date
+      this.currentDate = DateTime.fromISO(this.startDate)
       if (this.endDate) {
         const startDateTime = DateTime.fromISO(this.startDate)
         const endDateTime = DateTime.fromISO(this.endDate)
@@ -83,7 +84,6 @@ export class MdsCalendar {
     if (this.startDate) {
       this.startDate = sanitizeISO8601Date(this.startDate?.toString()) as ISO8601Date
       this.startDateTime = DateTime.fromISO(this.startDate)
-      this.currentDate = this.startDateTime
     }
 
     if (this.endDate) {
@@ -122,7 +122,13 @@ export class MdsCalendar {
   }
 
   private updateDates (): void {
-    if (this.startDate && this.endDate) {
+    if (this.startDate && this.endDate && this.rangePicker) {
+      this.updateCalendar().then(() => {
+        requestAnimationFrame(() => this.setDates())
+      })
+    }
+
+    else if (this.startDate && !this.rangePicker) {
       this.updateCalendar().then(() => {
         requestAnimationFrame(() => this.setDates())
       })
@@ -131,7 +137,7 @@ export class MdsCalendar {
 
   async updateCalendar (): Promise<void> {
     try {
-      const startOfWeek = DateTime.now().startOf('week')
+      const startOfWeek = this.currentDate.startOf('week')
       this.weekdays = Array.from( { length: 7 } ).map((_, index) =>
         startOfWeek.setLocale(this.language).plus({ days: index }).toFormat('ccc'),
       )
