@@ -19,11 +19,14 @@
  * @prop --mds-tab-scroll-scrollbar-size: Sets the height and width of the browser scroll bar (if supported)
  * @prop --mds-tab-scroll-scrollbar-thumb-background: Sets the background-color of the browser scroll bar thumb (if supported)
  * @prop --mds-tab-scroll-scrollbar-track-background: Sets the background-color of the browser scroll bar track (if supported)
+ * @prop --mds-tab-slide-delay: Sets the sliding delay of the tabs
  * @prop --mds-tab-tabs-background: Sets the `background-color` of `mds-tab::part(tabs)`
  * @prop --mds-tab-tabs-gap: Sets the `gap` of `mds-tab::part(tabs)`
- * @prop --mds-tab-tabs-wrapper-outline-opacity: Sets the `opacity` of outline border which holds
+ * @prop --mds-tab-tabs-overflow-shadow-size: Sets overflow shadow size
+ * @prop --mds-tab-tabs-overflow-shadow: Sets the overflow shadow effect
  * @prop --mds-tab-tabs-padding: Sets the `padding` of `mds-tab::part(tabs)`
  * @prop --mds-tab-tabs-radius: Sets the `border-radius` of `mds-tab::part(tabs)`
+ * @prop --mds-tab-tabs-wrapper-outline-opacity: Sets the `opacity` of outline border which holds
  */
 
 :host {
@@ -47,12 +50,14 @@
   --mds-tab-tabs-gap: theme('padding.200');
   --mds-tab-tabs-padding: theme('padding.200');
   --mds-tab-tabs-radius: theme('borderRadius.2xl');
-  --mds-tab-tabs-overflow-shadow: rgb(0 0 0 / 0.25) 0 0 var(--shadow-size) -2px;
+  --mds-tab-tabs-overflow-shadow-size: theme('size.600');
+  --mds-tab-tabs-overflow-shadow: 0 0 var(--mds-tab-tabs-overflow-shadow-size) -2px rgb(0 0 0 / 0.375);
   --mds-tab-tabs-wrapper-outline-opacity: 0.7;
   --mds-tab-tabs-wrapper-shadow-color: var(--mds-tab-tabs-background);
   --mds-tab-tabs-wrapper-shadow: 0 0 0 2px var(--mds-tab-tabs-wrapper-shadow-color) inset;
   --mds-tab-transition-duration: 0.5s;
   --mds-tab-transition-timing-function: theme('transitionTimingFunction.out-expo');
+  --mds-tab-slide-delay: 0.125s;
 
   display: grid;
 }
@@ -105,7 +110,6 @@
   transition-timing-function: var(--mds-tab-transition-timing-function);
 }
 
-
 .contents {
   --mds-tab-contents-height: auto;
 
@@ -149,7 +153,7 @@
 @import './css/mds-tab-scrollbar.css';
 @import './css/mds-tab-tabs-wrapper-overflow.css';
 @import './css/mds-tab-tabs-wrapper-decorator.css';
-@import './css/mds-tab-pref-animation.css';
 @import './css/mds-tab-pref-theme.css';
 @import './css/mds-tab-pref-contrast.css';
+@import './css/mds-tab-pref-animation.css';
 @import '../../tailwind/fouc.css';

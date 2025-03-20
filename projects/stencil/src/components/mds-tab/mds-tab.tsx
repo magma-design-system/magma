@@ -5,6 +5,7 @@ import { setAttributeIfEmpty } from '@common/aria'
 import { HorizontalActionsAnimationType } from '@type/animation'
 import { hashRandomValue } from '@common/aria'
 import clsx from 'clsx'
+import { cssDurationToMilliseconds } from '@common/unit'
 
 /**
  * @part contents - Selects the container of the tabbed contents elements.
@@ -30,6 +31,7 @@ export class MdsTab {
   private tabItems: NodeListOf<HTMLMdsTabItemElement>
   private contentItems: NodeListOf<HTMLElement>
   private overflowInit: boolean = false
+  private cssSlideDelayDuration: string
   @State() sliderWidth: number = -1
   @State() sliderOffset: number = -1
   @State() overflowLeft: boolean = false
@@ -93,19 +95,28 @@ export class MdsTab {
   }
 
   componentDidLoad (): void {
+    this.updateCSSCustomProps()
     this.tabs = this.element.shadowRoot?.querySelector('.tabs') as HTMLElement
     this.tabsContainer = this.element.shadowRoot?.querySelector('.tabs-wrapper') as HTMLElement
     this.startObserver()
+    this.updateContentItems()
+    if (this.animation === 'slide') {
+      this.updateSliderPosition()
+    }
+    this.initOverflowCheck()
+  }
+
+  private updateContentItems = (): void => {
     this.contentItems = this.queryContentItems()
     this.contentItems.forEach((item: HTMLElement, key: number): void => {
       setAttributeIfEmpty(item, 'role', 'tabpanel')
       setAttributeIfEmpty(item, 'aria-labelledby', this.tabItems[key].id)
     })
     this.selectContentItem()
-    if (this.animation === 'slide') {
-      this.updateSliderPosition()
-    }
-    this.initOverflowCheck()
+  }
+
+  private updateSlottedElements = (): void => {
+    this.updateContentItems()
   }
 
   private unsetOverflowCheck = (): void => {
@@ -133,7 +144,7 @@ export class MdsTab {
     const { scrollLeft } = this.tabs
 
     this.overflowLeft = scrollLeft > 0
-    this.overflowRight = scrollLeft + containerWidth < tabsWidth
+    this.overflowRight = Math.ceil(scrollLeft + containerWidth) < tabsWidth - 1
   }
 
   private updateSliderPosition = (disableAnimation?: boolean): void => {
@@ -156,18 +167,27 @@ export class MdsTab {
 
   private scrollTabs = (key: number): void => {
     const tabItem = this.tabItems[key]
-    this.tabs.scrollLeft = tabItem.offsetLeft - this.tabs.offsetLeft - (this.tabs.offsetWidth / 2) + (tabItem.offsetWidth / 2)
-    requestAnimationFrame(() => this.updateOverflowState())
+    setTimeout(() => {
+      this.tabs.scrollLeft = tabItem.offsetLeft - this.tabs.offsetLeft - (this.tabs.offsetWidth / 2) + (tabItem.offsetWidth / 2)
+      requestAnimationFrame(() => this.updateOverflowState())
+    }, cssDurationToMilliseconds(this.cssSlideDelayDuration))
   }
 
   private selectContentItem = (): void => {
     this.contentItems.forEach((item: HTMLElement, index: number) => {
-      // TODO [bug, react] on React attribute mds-tab-content-hidden is not added onLoad
       item.setAttribute('mds-tab-content-hidden', '')
       if (index === this.currentItem) {
         item.removeAttribute('mds-tab-content-hidden')
       }
     })
+  }
+
+  private readonly updateCSSCustomProps = (): void => {
+    if (typeof window === 'undefined') return
+    const elementStyles = window.getComputedStyle(this.element)
+    this.cssSlideDelayDuration = elementStyles.getPropertyValue(
+      '--mds-tab-slide-delay',
+    )
   }
 
   @Listen('mdsTabItemSelect')
@@ -180,12 +200,17 @@ export class MdsTab {
         this.changedEvent.emit({ id: key, value: item.value })
         this.currentItem = key
         this.scrollTabs(key)
+        // for some reason, mds-tab-item looses focus when we click Enter with the keyboard,
+        // which forces user to find again where the tab is with keyboard
+        const mdsTabEl: HTMLMdsButtonElement = this.tabItems[this.currentItem].shadowRoot?.querySelector('mds-button') as HTMLMdsButtonElement
+        setTimeout(() => {
+          mdsTabEl.focus()
+        }, 0)
       } else {
         item.selected = false
       }
     })
     this.selectContentItem()
-
     if (this.animation === 'slide') {
       this.updateSliderPosition()
     }
@@ -251,7 +276,7 @@ export class MdsTab {
         </div>
         { this.contentItems &&
         <div class="contents" part="contents">
-          <slot name="content"/>
+          <slot name="content" onSlotchange={this.updateSlottedElements}/>
         </div>
         }
       </Host>

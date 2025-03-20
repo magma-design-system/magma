@@ -4,6 +4,7 @@ import {
 } from '@dictionary/floating-ui'
 import { dropdownInteractionDictionary } from '../meta/dictionary'
 import { h } from '@stencil/core'
+import { useState } from 'react'
 
 export default {
   title: 'UI / Dropdown',
@@ -89,6 +90,26 @@ const Template = ({ layout, ...args }) =>
     </mds-dropdown>
   </div>
 
+const TemplatePlacement = ({ ...args }) =>
+  <div class="min-h-dvh flex items-center justify-center">
+    <mds-button id="my-dropdown">Show Fred</mds-button>
+    <mds-dropdown target="#my-dropdown" {...args}>
+      <mds-author class="text-tone-neutral-04">
+        <mds-avatar aria-describedby="A protrait of Frederick Phillips Brooks Jr." initials="fb" src="./fred-brooks-zoom.webp" slot="avatar" class="w-2000 bg-brand-maggioli-06" />
+        <mds-text typography="h6" class="text-tone-neutral-02">Fred Brooks</mds-text>
+        <mds-text typography="caption">Software engineer</mds-text>
+        <mds-text typography="caption">IT</mds-text>
+      </mds-author>
+      <mds-text typography="detail" class="text-tone-neutral-04">
+        Frederick Phillips "Fred" Brooks Jr. (born April 19, 1931) is an American computer architect, software engineer, and computer scientist.
+      </mds-text>
+      <mds-hr class="h-[2px] bg-tone-neutral-08" />
+      <mds-button class="justify-start px-0" icon="mi/baseline/info" variant="dark" tone="quiet">User infos</mds-button>
+      <mds-button class="justify-start px-0" icon="mi/baseline/settings" variant="dark" tone="quiet">Account</mds-button>
+      <mds-button class="justify-start px-0" icon="mi/baseline/logout" variant="dark" tone="quiet">Exit</mds-button>
+    </mds-dropdown>
+  </div>
+
 // eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types
 export const NoTarget = () =>
   <div>
@@ -100,12 +121,12 @@ export const NoTarget = () =>
   </div>
 
 const TemplateNested = ({ ...args }) =>
-  <div>
+  <div class="min-h-[200vh]">
     <mds-header>
       <mds-header-bar>
         <div class="flex gap-2 items-center">
           <mds-img
-            class="w-10"
+            class="w-1000"
             src="./logo-gruppo-maggioli.svg"
           />
           <div class="mb-1">
@@ -154,6 +175,50 @@ const TemplatePerformance = ({ ...args }) =>
       </div>
     ))}
   </div>
+
+const TemplateModalNested = () => {
+
+  const [ isModalOpened, setModalOpen ] = useState(false)
+
+  return <div class="grid">
+    <div>
+      <mds-button id="open-modal" onClick={() => setModalOpen(true)}>Open modal</mds-button>
+    </div>
+    <mds-modal position='right' opened={isModalOpened} onMdsModalClose={() => { setModalOpen(false) }}>
+      <header slot="top" class="p-800 flex gap-400 items-center border-b border-solid border-0 border-tone-neutral-09 max-w-[400px]">
+        <mds-img class="w-1600" src="./logo-gruppo-maggioli-512w.webp"/>
+        <div class="text-tone-neutral-02">
+          <mds-text typography="h5" class="truncate min-w-0">Maggioli Editore</mds-text>
+          <mds-text typography="detail" class="truncate min-w-0">Menu di servizio</mds-text>
+        </div>
+      </header>
+      <div class="p-800 max-w-[400px] flex flex-col gap-400">
+        <mds-button variant="primary" id="open-dropdown">Show dropdown</mds-button>
+        <mds-dropdown target="#open-dropdown" backdrop={false}>
+          <mds-button variant="light" class="justify-start">Dropdown action</mds-button>
+          <mds-button variant="light" class="justify-start">Dropdown action</mds-button>
+          <mds-button variant="light" class="justify-start">Dropdown action</mds-button>
+        </mds-dropdown>
+        <mds-button variant="light" class="justify-start">Other action</mds-button>
+        <mds-button variant="light" class="justify-start">Other action</mds-button>
+        <mds-button variant="light" class="justify-start">Other action</mds-button>
+      </div>
+    </mds-modal>
+  </div>
+}
+
+const TemplateTarget = args => {
+  return <div class="grid gap-400 p-600 rounded-xl bg-tone-neutral-09">
+    <mds-entity icon='mi/baseline/info' id='opendropdown'>
+      <mds-text>click to open dropdown</mds-text>
+      <mds-button slot="action" icon="mi/baseline/warning" variant="warning" tone="weak" onClick={() => console.info('')}></mds-button>
+    </mds-entity>
+    <mds-dropdown target='#opendropdown' {...args}>Dropdown</mds-dropdown>
+    <mds-text typography='paragraph'>
+      Do not use other click actions inside a element designed as dropdown target because its never been executed
+    </mds-text>
+  </div>
+}
 
 export const Default = Template.bind({})
 Default.args = {
@@ -224,7 +289,7 @@ Offset.args = {
   visible: false,
 }
 
-export const Placement = Template.bind({})
+export const Placement = TemplatePlacement.bind({})
 Placement.args = {
   class: 'max-w-[350px] w-full',
   layout: 'flex justify-center items-center',
@@ -270,8 +335,15 @@ export const NestedBestPractice = TemplateNested.bind({})
 
 NestedBestPractice.args = {
   backdrop: true,
+  strategy: 'fixed',
 }
 
 export const Performance = TemplatePerformance.bind({
-  Backdrop: true,
+  backdrop: true,
 })
+
+export const ModalNested = TemplateModalNested.bind({})
+ModalNested.args = {}
+
+export const Target = TemplateTarget.bind({})
+Target.args = {}

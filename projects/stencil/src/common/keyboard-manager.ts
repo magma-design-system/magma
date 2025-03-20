@@ -27,6 +27,7 @@ export class KeyboardManager {
   }
 
   attachClickBehavior = (name = 'element'): void => {
+    this.elements.get(name)?.removeEventListener('keydown', this.handleClickBehaviorDispatchEvent)
     this.elements.get(name)?.addEventListener('keydown', this.handleClickBehaviorDispatchEvent)
   }
 

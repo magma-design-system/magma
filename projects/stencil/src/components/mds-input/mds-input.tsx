@@ -10,6 +10,7 @@ import { AutocompleteType } from '@type/autocomplete'
 import { InputTextType, InputControlsLayoutType, InputControlsIconType, MdsInputEventDetail } from '@type/input'
 import { ThemeStatusVariantType } from '@type/variant'
 import { TypographyInputType } from '@type/typography'
+import { InputTipItemVariantType } from '@type/input-tip'
 import { Locale } from '@common/locale'
 import localeEl from './meta/locale.el.json'
 import localeEn from './meta/locale.en.json'
@@ -17,10 +18,11 @@ import localeEs from './meta/locale.es.json'
 import localeIt from './meta/locale.it.json'
 
 /*
-  * @part field - Selects the native input field used by the component
   * @part counter-button-decrease - Selects the button used to decrese the input value
   * @part counter-button-increase - Selects the button used to increse the input value
+  * @part field - Selects the native input field used by the component
   * @part password-toggle-button - Selects the button used to show or hide password
+  * @part tip-count - Selects the mds-input-tip shown when maxlength attribute is set, can be used to hide it if needed
   */
 
 export interface MdsInputInterface {
@@ -63,6 +65,8 @@ export class MdsInput {
   @Element() el: HTMLMdsInputElement
   @State() hasFocus = false
   @State() language: string
+  @State() currentLengthLabel: string
+  @State() countVariant: InputTipItemVariantType = 'count-empty'
   @State() isPasswordVisible = false
 
   private t:Locale = new Locale({
@@ -138,10 +142,11 @@ export class MdsInput {
   @Prop({ reflect: true }) readonly max?: string
 
   /**
-   * Specifies the maximum number of characters allowed in an element
-   * use it with input type="number"
+   * Specifies the maximum number of characters allowed in an element.
+   * Use it with input type="text".
+   * If maxlength is set to 0 or a negative number it will be considered as undefined.
    */
-  @Prop({ reflect: true }) readonly maxlength?: number
+  @Prop({ reflect: true, mutable: true }) maxlength?: number
 
   /**
    * Specifies the minimum value
@@ -248,6 +253,7 @@ export class MdsInput {
       this.el.removeAttribute('tabindex')
     }
     this.internals.setFormValue(this.value ?? null)
+    this.maxLengthChanged(this.maxlength)
   }
 
   /**
@@ -257,6 +263,52 @@ export class MdsInput {
   protected valueChanged ():void {
     this.changeEvent.emit({ value: this.value })
     this.internals.setFormValue(this.value ?? null)
+    if (this.maxlength !== undefined) {
+      this.countMaxLength()
+    }
+  }
+
+  @Watch('maxlength')
+  private maxLengthChanged (newValue?: number):void {
+    if (newValue === undefined) return
+    if (newValue <= 0) {
+      this.maxlength = undefined
+      return
+    }
+    this.countMaxLength()
+  }
+
+  private countMaxLength = (): void => {
+    if (!this.maxlength) return
+    if (this.value === undefined) return
+
+    this.currentLengthLabel = `${this.value?.length ?? 0} / ${this.maxlength}`
+
+    const completionPerc = Math.round(this.value.length * 100 / this.maxlength)
+
+    if (this.value?.length === this.maxlength) {
+      this.countVariant = 'count-full'
+      return
+    }
+
+    if (completionPerc >= 100) {
+      this.countVariant = 'count-full'
+      return
+    }
+
+    if (completionPerc >= 75) {
+      this.countVariant = 'count-almost-full'
+      return
+    }
+    if (completionPerc >= 50) {
+      this.countVariant = 'count-almost'
+      return
+    }
+    if (completionPerc >= 25) {
+      this.countVariant = 'count-incomplete'
+      return
+    }
+    this.countVariant = 'count-empty'
   }
 
   @Watch('disabled')
@@ -432,6 +484,7 @@ export class MdsInput {
         </mds-input-tip>
         <mds-input-tip lang={this.language} position="bottom" active={this.hasFocus}>
           { this.tip && <mds-input-tip-item expanded variant="text">{ this.tip }</mds-input-tip-item>}
+          { this.maxlength && <mds-input-tip-item part="tip-count" expanded variant={this.countVariant}>{ this.currentLengthLabel }</mds-input-tip-item> }
         </mds-input-tip>
         {this.datalist &&
           <datalist id="datalist" class="datalist">

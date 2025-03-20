@@ -1,0 +1,41 @@
+:host-context(.pref-contrast-more):host([variant="count-empty"]) {
+  --mds-input-tip-item-color: theme('colors.status-info-10');
+  --mds-input-tip-item-background: theme('colors.status-info-05');
+}
+
+:host-context(.pref-contrast-more):host([variant="count-incomplete"]) {
+  --mds-input-tip-item-color: theme('colors.status-success-10');
+  --mds-input-tip-item-background: theme('colors.status-success-05');
+}
+
+:host-context(.pref-contrast-more):host([variant="count-almost"]) {
+  --mds-input-tip-item-color: theme('colors.status-warning-10');
+  --mds-input-tip-item-background: theme('colors.status-warning-05');
+}
+
+:host-context(.pref-contrast-more):host([variant="count-almost-full"]) {
+  --mds-input-tip-item-color: theme('colors.status-error-10');
+  --mds-input-tip-item-background: theme('colors.status-error-05');
+}
+
+@media (prefers-contrast: more) {
+  :host-context(.pref-contrast-system):host([variant="count-empty"]) {
+    --mds-input-tip-item-color: theme('colors.status-info-10');
+    --mds-input-tip-item-background: theme('colors.status-info-05');
+  }
+
+  :host-context(.pref-contrast-system):host([variant="count-incomplete"]) {
+    --mds-input-tip-item-color: theme('colors.status-success-10');
+    --mds-input-tip-item-background: theme('colors.status-success-05');
+  }
+
+  :host-context(.pref-contrast-system):host([variant="count-almost"]) {
+    --mds-input-tip-item-color: theme('colors.status-warning-10');
+    --mds-input-tip-item-background: theme('colors.status-warning-05');
+  }
+
+  :host-context(.pref-contrast-system):host([variant="count-almost-full"]) {
+    --mds-input-tip-item-color: theme('colors.status-error-10');
+    --mds-input-tip-item-background: theme('colors.status-error-05');
+  }
+}
