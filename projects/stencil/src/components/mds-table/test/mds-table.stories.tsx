@@ -1,4 +1,5 @@
 import { h } from '@stencil/core'
+import { useState, FC } from 'react'
 
 export default {
   title: 'Layout / Table',
@@ -182,6 +183,67 @@ const TemplateSelectable = args =>
     </mds-table-body>
   </mds-table>
 
+type AsyncSlottedRowProps = {
+  key?: number
+  name: string;
+  email: string;
+};
+const AsyncSlottedRow: FC<AsyncSlottedRowProps> = ({ name, email }) => {
+  return <mds-table-row>
+    <mds-table-cell value={name} class="min-w-5200"><mds-text typography="detail">{name}</mds-text></mds-table-cell>
+    <mds-table-cell value={email} class="min-w-5200"><mds-text typography="detail">{email}</mds-text></mds-table-cell>
+    <mds-button slot="action" icon="mi/baseline/delete" title="Remove record" variant="error"></mds-button>
+  </mds-table-row>
+}
+
+const TemplateAsyncSlottedContents = () => {
+
+  const firstList = [
+    { name: 'Mario Rossi', email: 'mario.rossi@nintendo.com' },
+    { name: 'Luigi Verdi', email: 'luigi.verdi@nintendo.com' },
+    { name: 'Wario Gialli', email: 'wario.gialli@nintendo.com' },
+    { name: 'Waluigi Violetti', email: 'waluigi.violetti@nintendo.com' },
+  ]
+  const secondList = [
+    { name: 'Devastatore Decepticoni', email: 'devastatore.decepticoni@hasbro.com' },
+    { name: 'Galvatrone Megatroni', email: 'galvatrone.megatroni@hasbro.com' },
+    { name: 'Ottimo Primo', email: 'ottimo.primo@hasbro.com' },
+    { name: 'Strillo Stella', email: 'strillo.stella@hasbro.com' },
+  ]
+
+  const [dataList, setData] = useState(firstList)
+
+  function updateData () {
+    if (dataList.length > 4) {
+      setData(firstList)
+      return
+    }
+    setData(firstList.concat(secondList))
+  }
+
+  return <div class="grid grid-cols-1 gap-600">
+    <div class="inline-flex">
+      <mds-button
+        icon={dataList.length > 4 ? 'mi/baseline/check' : 'mi/baseline/add'}
+        variant={dataList.length > 4 ? 'success' : 'primary'}
+        // disabled={dataList.length > 4}
+        onClick={() => updateData()}>
+        {dataList.length > 4 ? 'Users added, click again to reset' : 'Add users'}
+      </mds-button>
+    </div>
+    <mds-table selectable>
+      <mds-table-header>
+        <mds-table-header-cell sortable label="Full Name"></mds-table-header-cell>
+        <mds-table-header-cell sortable label="Email"></mds-table-header-cell>
+      </mds-table-header>
+      <mds-table-body>
+        {dataList.map((user, index) => <AsyncSlottedRow key={index} name={user.name} email={user.email} />)}
+      </mds-table-body>
+    </mds-table>
+  </div>
+}
+
+
 export const Default = Template.bind({})
 
 export const Interactive = Template.bind({})
@@ -201,6 +263,12 @@ Actions.args = {
 
 export const Selectable = TemplateSelectable.bind({})
 Selectable.args = {
+  interactive: false,
+  selectable: true,
+}
+
+export const AsyncSlottedContents = TemplateAsyncSlottedContents.bind({})
+AsyncSlottedContents.args = {
   interactive: false,
   selectable: true,
 }
