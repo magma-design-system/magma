@@ -226,7 +226,6 @@ const TemplateAsyncSlottedContents = () => {
       <mds-button
         icon={dataList.length > 4 ? 'mi/baseline/check' : 'mi/baseline/add'}
         variant={dataList.length > 4 ? 'success' : 'primary'}
-        // disabled={dataList.length > 4}
         onClick={() => updateData()}>
         {dataList.length > 4 ? 'Users added, click again to reset' : 'Add users'}
       </mds-button>
