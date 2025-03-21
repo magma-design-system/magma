@@ -24,7 +24,11 @@
 }
 
 .action {
-  @apply px-200;
+  @apply px-200 -mx-200;
+}
+
+.action:hover {
+  background-color: var(--mds-table-background-alt);
 }
 
 .action::part(label) {
