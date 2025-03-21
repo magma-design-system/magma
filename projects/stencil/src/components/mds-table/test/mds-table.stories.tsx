@@ -24,24 +24,24 @@ const Template = args =>
     </mds-table-header>
     <mds-table-body>
       <mds-table-row>
-        <mds-table-cell class="min-w-5200"><mds-text typography="detail">mario.rossi</mds-text></mds-table-cell>
-        <mds-table-cell class="min-w-5200"><mds-text typography="detail">mario.rossi@nintendo.com</mds-text></mds-table-cell>
-        <mds-table-cell class="min-w-5200"><mds-text typography="detail">12 ottobre 1985</mds-text></mds-table-cell>
+        <mds-table-cell><mds-text typography="detail">mario.rossi</mds-text></mds-table-cell>
+        <mds-table-cell><mds-text typography="detail">mario.rossi@nintendo.com</mds-text></mds-table-cell>
+        <mds-table-cell><mds-text typography="detail">12 ottobre 1985</mds-text></mds-table-cell>
       </mds-table-row>
       <mds-table-row>
-        <mds-table-cell class="min-w-5200"><mds-text typography="detail">luigi.verdi</mds-text></mds-table-cell>
-        <mds-table-cell class="min-w-5200"><mds-text typography="detail">luigi.verdi@nintendo.com</mds-text></mds-table-cell>
-        <mds-table-cell class="min-w-5200"><mds-text typography="detail">12 ottobre 1985</mds-text></mds-table-cell>
+        <mds-table-cell><mds-text typography="detail">luigi.verdi</mds-text></mds-table-cell>
+        <mds-table-cell><mds-text typography="detail">luigi.verdi@nintendo.com</mds-text></mds-table-cell>
+        <mds-table-cell><mds-text typography="detail">12 ottobre 1985</mds-text></mds-table-cell>
       </mds-table-row>
       <mds-table-row>
-        <mds-table-cell class="min-w-5200"><mds-text typography="detail">wario.gialli</mds-text></mds-table-cell>
-        <mds-table-cell class="min-w-5200"><mds-text typography="detail">wario.gialli@nintendo.com</mds-text></mds-table-cell>
-        <mds-table-cell class="min-w-5200"><mds-text typography="detail">3 marzo 1993</mds-text></mds-table-cell>
+        <mds-table-cell><mds-text typography="detail">wario.gialli</mds-text></mds-table-cell>
+        <mds-table-cell><mds-text typography="detail">wario.gialli@nintendo.com</mds-text></mds-table-cell>
+        <mds-table-cell><mds-text typography="detail">3 marzo 1993</mds-text></mds-table-cell>
       </mds-table-row>
       <mds-table-row>
-        <mds-table-cell class="min-w-5200"><mds-text typography="detail">waluigi.violetti</mds-text></mds-table-cell>
-        <mds-table-cell class="min-w-5200"><mds-text typography="detail">waluigi.violetti@nintendo.com</mds-text></mds-table-cell>
-        <mds-table-cell class="min-w-5200"><mds-text typography="detail">8 giugno 1999</mds-text></mds-table-cell>
+        <mds-table-cell><mds-text typography="detail">waluigi.violetti</mds-text></mds-table-cell>
+        <mds-table-cell><mds-text typography="detail">waluigi.violetti@nintendo.com</mds-text></mds-table-cell>
+        <mds-table-cell><mds-text typography="detail">8 giugno 1999</mds-text></mds-table-cell>
       </mds-table-row>
     </mds-table-body>
     <mds-table-footer>
@@ -61,28 +61,28 @@ const TemplateSortable = args =>
     </mds-table-header>
     <mds-table-body>
       <mds-table-row>
-        <mds-table-cell class="min-w-5200"><mds-text typography="detail">3</mds-text></mds-table-cell>
-        <mds-table-cell class="min-w-5200"><mds-text typography="detail">01</mds-text></mds-table-cell>
-        <mds-table-cell class="min-w-5200"><mds-text typography="detail">Tower Plaza</mds-text></mds-table-cell>
-        <mds-table-cell class="min-w-5200"><mds-text typography="detail">+22 777 892301</mds-text></mds-table-cell>
+        <mds-table-cell><mds-text typography="detail">3</mds-text></mds-table-cell>
+        <mds-table-cell><mds-text typography="detail">01</mds-text></mds-table-cell>
+        <mds-table-cell><mds-text typography="detail">Tower Plaza</mds-text></mds-table-cell>
+        <mds-table-cell><mds-text typography="detail">+22 777 892301</mds-text></mds-table-cell>
       </mds-table-row>
       <mds-table-row>
-        <mds-table-cell class="min-w-5200"><mds-text typography="detail">1</mds-text></mds-table-cell>
-        <mds-table-cell class="min-w-5200"><mds-text typography="detail">05</mds-text></mds-table-cell>
-        <mds-table-cell class="min-w-5200"><mds-text typography="detail">22nd Evenue</mds-text></mds-table-cell>
-        <mds-table-cell class="min-w-5200"><mds-text typography="detail">+22 433 471047</mds-text></mds-table-cell>
+        <mds-table-cell><mds-text typography="detail">1</mds-text></mds-table-cell>
+        <mds-table-cell><mds-text typography="detail">05</mds-text></mds-table-cell>
+        <mds-table-cell><mds-text typography="detail">22nd Evenue</mds-text></mds-table-cell>
+        <mds-table-cell><mds-text typography="detail">+22 433 471047</mds-text></mds-table-cell>
       </mds-table-row>
       <mds-table-row>
-        <mds-table-cell class="min-w-5200"><mds-text typography="detail">2</mds-text></mds-table-cell>
-        <mds-table-cell class="min-w-5200"><mds-text typography="detail">11</mds-text></mds-table-cell>
-        <mds-table-cell class="min-w-5200"><mds-text typography="detail">ARK Plaza</mds-text></mds-table-cell>
-        <mds-table-cell class="min-w-5200"><mds-text typography="detail">+22 334 187366</mds-text></mds-table-cell>
+        <mds-table-cell><mds-text typography="detail">2</mds-text></mds-table-cell>
+        <mds-table-cell><mds-text typography="detail">11</mds-text></mds-table-cell>
+        <mds-table-cell><mds-text typography="detail">ARK Plaza</mds-text></mds-table-cell>
+        <mds-table-cell><mds-text typography="detail">+22 334 187366</mds-text></mds-table-cell>
       </mds-table-row>
       <mds-table-row>
-        <mds-table-cell class="min-w-5200"><mds-text typography="detail">4</mds-text></mds-table-cell>
-        <mds-table-cell class="min-w-5200"><mds-text typography="detail">22</mds-text></mds-table-cell>
-        <mds-table-cell class="min-w-5200"><mds-text typography="detail">_Underscore Building</mds-text></mds-table-cell>
-        <mds-table-cell class="min-w-5200"><mds-text typography="detail">+22 333 997741</mds-text></mds-table-cell>
+        <mds-table-cell><mds-text typography="detail">4</mds-text></mds-table-cell>
+        <mds-table-cell><mds-text typography="detail">22</mds-text></mds-table-cell>
+        <mds-table-cell><mds-text typography="detail">_Underscore Building</mds-text></mds-table-cell>
+        <mds-table-cell><mds-text typography="detail">+22 333 997741</mds-text></mds-table-cell>
       </mds-table-row>
     </mds-table-body>
   </mds-table>
@@ -97,37 +97,37 @@ const TemplateSortableActions = args =>
     </mds-table-header>
     <mds-table-body>
       <mds-table-row>
-        <mds-table-cell class="min-w-5200"><mds-text typography="detail">3</mds-text></mds-table-cell>
-        <mds-table-cell class="min-w-5200"><mds-text typography="detail">01</mds-text></mds-table-cell>
-        <mds-table-cell class="min-w-5200"><mds-text typography="detail">Tower Plaza</mds-text></mds-table-cell>
-        <mds-table-cell class="min-w-5200"><mds-text typography="detail">+22 777 892301</mds-text></mds-table-cell>
+        <mds-table-cell><mds-text typography="detail">3</mds-text></mds-table-cell>
+        <mds-table-cell><mds-text typography="detail">01</mds-text></mds-table-cell>
+        <mds-table-cell><mds-text typography="detail">Tower Plaza</mds-text></mds-table-cell>
+        <mds-table-cell><mds-text typography="detail">+22 777 892301</mds-text></mds-table-cell>
         <mds-button slot="action" icon="mi/baseline/send" title="Write message" variant="dark" tone="weak"></mds-button>
         <mds-button slot="action" icon="mi/baseline/call" title="Call number" variant="dark" tone="weak"></mds-button>
         <mds-button slot="action" icon="mi/baseline/delete" title="Remove record" variant="error"></mds-button>
       </mds-table-row>
       <mds-table-row>
-        <mds-table-cell class="min-w-5200"><mds-text typography="detail">1</mds-text></mds-table-cell>
-        <mds-table-cell class="min-w-5200"><mds-text typography="detail">05</mds-text></mds-table-cell>
-        <mds-table-cell class="min-w-5200"><mds-text typography="detail">22nd Evenue</mds-text></mds-table-cell>
-        <mds-table-cell class="min-w-5200"><mds-text typography="detail">+22 433 471047</mds-text></mds-table-cell>
+        <mds-table-cell><mds-text typography="detail">1</mds-text></mds-table-cell>
+        <mds-table-cell><mds-text typography="detail">05</mds-text></mds-table-cell>
+        <mds-table-cell><mds-text typography="detail">22nd Evenue</mds-text></mds-table-cell>
+        <mds-table-cell><mds-text typography="detail">+22 433 471047</mds-text></mds-table-cell>
         <mds-button slot="action" icon="mi/baseline/send" title="Write message" variant="dark" tone="weak"></mds-button>
         <mds-button slot="action" icon="mi/baseline/call" title="Call number" variant="dark" tone="weak"></mds-button>
         <mds-button slot="action" icon="mi/baseline/delete" title="Remove record" variant="error"></mds-button>
       </mds-table-row>
       <mds-table-row>
-        <mds-table-cell class="min-w-5200"><mds-text typography="detail">2</mds-text></mds-table-cell>
-        <mds-table-cell class="min-w-5200"><mds-text typography="detail">11</mds-text></mds-table-cell>
-        <mds-table-cell class="min-w-5200"><mds-text typography="detail">ARK Plaza</mds-text></mds-table-cell>
-        <mds-table-cell class="min-w-5200"><mds-text typography="detail">+22 334 187366</mds-text></mds-table-cell>
+        <mds-table-cell><mds-text typography="detail">2</mds-text></mds-table-cell>
+        <mds-table-cell><mds-text typography="detail">11</mds-text></mds-table-cell>
+        <mds-table-cell><mds-text typography="detail">ARK Plaza</mds-text></mds-table-cell>
+        <mds-table-cell><mds-text typography="detail">+22 334 187366</mds-text></mds-table-cell>
         <mds-button slot="action" icon="mi/baseline/send" title="Write message" variant="dark" tone="weak"></mds-button>
         <mds-button slot="action" icon="mi/baseline/call" title="Call number" variant="dark" tone="weak"></mds-button>
         <mds-button slot="action" icon="mi/baseline/delete" title="Remove record" variant="error"></mds-button>
       </mds-table-row>
       <mds-table-row>
-        <mds-table-cell class="min-w-5200"><mds-text typography="detail">4</mds-text></mds-table-cell>
-        <mds-table-cell class="min-w-5200"><mds-text typography="detail">22</mds-text></mds-table-cell>
-        <mds-table-cell class="min-w-5200"><mds-text typography="detail">_Underscore Building</mds-text></mds-table-cell>
-        <mds-table-cell class="min-w-5200"><mds-text typography="detail">+22 333 997741</mds-text></mds-table-cell>
+        <mds-table-cell><mds-text typography="detail">4</mds-text></mds-table-cell>
+        <mds-table-cell><mds-text typography="detail">22</mds-text></mds-table-cell>
+        <mds-table-cell><mds-text typography="detail">_Underscore Building</mds-text></mds-table-cell>
+        <mds-table-cell><mds-text typography="detail">+22 333 997741</mds-text></mds-table-cell>
         <mds-button slot="action" icon="mi/baseline/send" title="Write message" variant="dark" tone="weak"></mds-button>
         <mds-button slot="action" icon="mi/baseline/call" title="Call number" variant="dark" tone="weak"></mds-button>
         <mds-button slot="action" icon="mi/baseline/delete" title="Remove record" variant="error"></mds-button>
@@ -145,37 +145,37 @@ const TemplateSelectable = args =>
     </mds-table-header>
     <mds-table-body>
       <mds-table-row value="first element">
-        <mds-table-cell class="min-w-5200"><mds-text typography="detail">3</mds-text></mds-table-cell>
-        <mds-table-cell class="min-w-5200"><mds-text typography="detail">01</mds-text></mds-table-cell>
-        <mds-table-cell class="min-w-5200"><mds-text typography="detail">Tower Plaza</mds-text></mds-table-cell>
-        <mds-table-cell class="min-w-5200"><mds-text typography="detail">+22 777 892301</mds-text></mds-table-cell>
+        <mds-table-cell><mds-text typography="detail">3</mds-text></mds-table-cell>
+        <mds-table-cell><mds-text typography="detail">01</mds-text></mds-table-cell>
+        <mds-table-cell><mds-text typography="detail">Tower Plaza</mds-text></mds-table-cell>
+        <mds-table-cell><mds-text typography="detail">+22 777 892301</mds-text></mds-table-cell>
         <mds-button slot="action" icon="mi/baseline/send" title="Write message" variant="dark" tone="weak"></mds-button>
         <mds-button slot="action" icon="mi/baseline/call" title="Call number" variant="dark" tone="weak"></mds-button>
         <mds-button slot="action" icon="mi/baseline/delete" title="Remove record" variant="error"></mds-button>
       </mds-table-row>
       <mds-table-row value="second element">
-        <mds-table-cell class="min-w-5200"><mds-text typography="detail">1</mds-text></mds-table-cell>
-        <mds-table-cell class="min-w-5200"><mds-text typography="detail">05</mds-text></mds-table-cell>
-        <mds-table-cell class="min-w-5200"><mds-text typography="detail">22nd Evenue</mds-text></mds-table-cell>
-        <mds-table-cell class="min-w-5200"><mds-text typography="detail">+22 433 471047</mds-text></mds-table-cell>
+        <mds-table-cell><mds-text typography="detail">1</mds-text></mds-table-cell>
+        <mds-table-cell><mds-text typography="detail">05</mds-text></mds-table-cell>
+        <mds-table-cell><mds-text typography="detail">22nd Evenue</mds-text></mds-table-cell>
+        <mds-table-cell><mds-text typography="detail">+22 433 471047</mds-text></mds-table-cell>
         <mds-button slot="action" icon="mi/baseline/send" title="Write message" variant="dark" tone="weak"></mds-button>
         <mds-button slot="action" icon="mi/baseline/call" title="Call number" variant="dark" tone="weak"></mds-button>
         <mds-button slot="action" icon="mi/baseline/delete" title="Remove record" variant="error"></mds-button>
       </mds-table-row>
       <mds-table-row value={33}>
-        <mds-table-cell class="min-w-5200"><mds-text typography="detail">2</mds-text></mds-table-cell>
-        <mds-table-cell class="min-w-5200"><mds-text typography="detail">11</mds-text></mds-table-cell>
-        <mds-table-cell class="min-w-5200"><mds-text typography="detail">ARK Plaza</mds-text></mds-table-cell>
-        <mds-table-cell class="min-w-5200"><mds-text typography="detail">+22 334 187366</mds-text></mds-table-cell>
+        <mds-table-cell><mds-text typography="detail">2</mds-text></mds-table-cell>
+        <mds-table-cell><mds-text typography="detail">11</mds-text></mds-table-cell>
+        <mds-table-cell><mds-text typography="detail">ARK Plaza</mds-text></mds-table-cell>
+        <mds-table-cell><mds-text typography="detail">+22 334 187366</mds-text></mds-table-cell>
         <mds-button slot="action" icon="mi/baseline/send" title="Write message" variant="dark" tone="weak"></mds-button>
         <mds-button slot="action" icon="mi/baseline/call" title="Call number" variant="dark" tone="weak"></mds-button>
         <mds-button slot="action" icon="mi/baseline/delete" title="Remove record" variant="error"></mds-button>
       </mds-table-row>
       <mds-table-row value="forth element">
-        <mds-table-cell class="min-w-5200"><mds-text typography="detail">4</mds-text></mds-table-cell>
-        <mds-table-cell class="min-w-5200"><mds-text typography="detail">22</mds-text></mds-table-cell>
-        <mds-table-cell class="min-w-5200"><mds-text typography="detail">_Underscore Building</mds-text></mds-table-cell>
-        <mds-table-cell class="min-w-5200"><mds-text typography="detail">+22 333 997741</mds-text></mds-table-cell>
+        <mds-table-cell><mds-text typography="detail">4</mds-text></mds-table-cell>
+        <mds-table-cell><mds-text typography="detail">22</mds-text></mds-table-cell>
+        <mds-table-cell><mds-text typography="detail">_Underscore Building</mds-text></mds-table-cell>
+        <mds-table-cell><mds-text typography="detail">+22 333 997741</mds-text></mds-table-cell>
         <mds-button slot="action" icon="mi/baseline/send" title="Write message" variant="dark" tone="weak"></mds-button>
         <mds-button slot="action" icon="mi/baseline/call" title="Call number" variant="dark" tone="weak"></mds-button>
         <mds-button slot="action" icon="mi/baseline/delete" title="Remove record" variant="error"></mds-button>
@@ -191,7 +191,7 @@ type AsyncSlottedRowProps = {
 const AsyncSlottedRow: FC<AsyncSlottedRowProps> = ({ name, email }) => {
   return <mds-table-row>
     <mds-table-cell value={name}><mds-text class="text-nowrap" typography="detail">{name}</mds-text></mds-table-cell>
-    <mds-table-cell value={email}><mds-text class="text-nowrap" typography="detail">{email}</mds-text></mds-table-cell>
+    <mds-table-cell class="w-full" value={email}><mds-text class="text-nowrap" typography="detail">{email}</mds-text></mds-table-cell>
     <mds-button slot="action" icon="mi/baseline/delete" title="Remove record" variant="error"></mds-button>
   </mds-table-row>
 }
@@ -230,7 +230,7 @@ const TemplateAsyncSlottedContents = () => {
         {dataList.length > 4 ? 'Users added, click again to reset' : 'Add users'}
       </mds-button>
     </div>
-    <mds-table selectable>
+    <mds-table selectable interactive>
       <mds-table-header>
         <mds-table-header-cell sortable label="Full Name"></mds-table-header-cell>
         <mds-table-header-cell sortable label="Email"></mds-table-header-cell>

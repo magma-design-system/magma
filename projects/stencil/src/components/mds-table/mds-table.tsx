@@ -19,6 +19,7 @@ export class MdsTable {
   private body: HTMLMdsTableBodyElement
   private header: HTMLMdsTableHeaderElement
   private resizeObserver: ResizeObserver
+  private tableBodyObserver: MutationObserver
   private cellsWidth: number = 0
   @State() selectedRows: MdsTableRowSelection[] = []
 
@@ -123,6 +124,10 @@ export class MdsTable {
     this.body = this.host.querySelector('mds-table-body') as HTMLMdsTableBodyElement
     this.header = this.host.querySelector('mds-table-header') as HTMLMdsTableHeaderElement
     this.rows = this.host.querySelectorAll('mds-table-row') as NodeListOf<HTMLMdsTableRowElement>
+    this.tableBodyObserver = new MutationObserver(() => {
+      this.updateSlottedElements()
+    })
+    this.tableBodyObserver.observe(this.body, { childList: true })
   }
 
   componentDidLoad (): void {
@@ -144,6 +149,7 @@ export class MdsTable {
   disconnectedCallback (): void {
     this.host.removeEventListener('scroll', this.handleActions)
     this.resizeObserver.disconnect()
+    this.tableBodyObserver.disconnect()
   }
 
   render () {
