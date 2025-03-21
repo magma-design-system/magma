@@ -8,8 +8,6 @@ import { cssDurationToMilliseconds } from '@common/unit'
  * @slot bottom - Contents that will be placed on bottom of the window. Add `text string`, `HTML elements` or `components` to this slot.
  * @slot top - Contents that will be placed on top of the window. Add `text string`, `HTML elements` or `components` to this slot.
  * @slot window - Use directly a window component if you need it. Add `text string`, `HTML elements` or `components` to this slot.
- * @part window - Selects the native window component if it's used.
- * @part close - Selects the close button visible on mobile viewport.
  */
 
 @Component({
@@ -25,6 +23,10 @@ export class MdsModal {
   private bodyOverflow: string
   private bottom = false
   private cssTransitionDuration: string
+  private windowElement: HTMLElement
+  private touchStartX: number
+  private touchStartY: number
+  private touchMargin: number = 50
 
   @Element() host: HTMLMdsModalElement
 
@@ -108,6 +110,31 @@ export class MdsModal {
     this.animationDelayTimeout = setTimeout(this.stopOutroAnimationWindow.bind(this), cssDurationToMilliseconds(this.cssTransitionDuration))
   }
 
+  private setTouchStart = (event: TouchEvent): void => {
+    this.touchStartX = event.touches[0].clientX
+    this.touchStartY = event.touches[0].clientY
+  }
+  private setTouchEnd = (event: TouchEvent): void => {
+    const endX = event.changedTouches[0].clientX
+    const endY = event.changedTouches[0].clientY
+    const diffX = this.touchStartX - endX
+    const diffY = this.touchStartY - endY
+
+    // if is NOT a diagonal swipe
+    if (Math.abs(diffX) > Math.abs(diffY)) {
+      if (this.position === 'right' && diffX > 0) return
+      if (this.position === 'left' && diffX < 0) return
+      if (Math.abs(diffX) > Math.abs(this.touchMargin)) {
+        this.opened = false
+      }
+    }
+  }
+
+  private addMobileEvents = (): void => {
+    this.windowElement.addEventListener('touchstart', this.setTouchStart)
+    this.windowElement.addEventListener('touchend', this.setTouchEnd)
+  }
+
   componentWillLoad (): void {
     this.bottom = this.host.querySelector(':scope > [slot="bottom"]') !== null
     this.top = this.host.querySelector(':scope > [slot="top"]') !== null
@@ -127,7 +154,18 @@ export class MdsModal {
   }
 
   componentDidLoad (): void {
+    this.windowElement = this.host.shadowRoot?.querySelector('.window') as HTMLElement
+    if (this.windowElement) {
+      this.addMobileEvents()
+    }
     this.updateCSSCustomProps()
+  }
+
+  disconnectedCallback (): void {
+    if (this.windowElement) {
+      this.windowElement.removeEventListener('touchstart', this.setTouchStart)
+      this.windowElement.removeEventListener('touchend', this.setTouchEnd)
+    }
   }
 
   private closeModal = (e:Event): void => {
@@ -180,7 +218,7 @@ export class MdsModal {
             }
           </div>
         }
-        { !this.window && <mds-button part="close" class="action-close" icon="mi/baseline/close" variant="light" tone="quiet" size="xl" onClick={(e: Event) => { this.closeModal(e) }}></mds-button> }
+        { !this.window && <mds-button class="action-close" icon="mi/baseline/close" variant="light" tone="quiet" size="xl" onClick={(e: Event) => { this.closeModal(e) }}></mds-button> }
       </Host>
     )
   }
