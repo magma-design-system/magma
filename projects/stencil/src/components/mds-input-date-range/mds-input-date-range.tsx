@@ -34,15 +34,20 @@ export class MdsInputDateRange {
   }
 
   private focusDateInput = (ev: MouseEvent): void => {
+    if (ev.target !== this.host) {
+      return
+    }
     this.focusStartDateInput(ev)
   }
 
   private focusStartDateInput = (ev: MouseEvent): void => {
+    ev.preventDefault()
     ev.stopPropagation()
     this.focusInput(this.host.querySelector('mds-input-date[slot="start"]') as HTMLMdsInputDateElement)
   }
 
   private focusEndDateInput = (ev: MouseEvent): void => {
+    ev.preventDefault()
     ev.stopPropagation()
     this.focusInput(this.host.querySelector('mds-input-date[slot="end"]') as HTMLMdsInputDateElement)
   }
@@ -66,13 +71,17 @@ export class MdsInputDateRange {
     return (
       <Host onClick={this.focusDateInput}>
         <div class="inputs">
-          <mds-text typography="detail" onClick={this.focusStartDateInput}>Dal</mds-text>
-          <div class="input-wrapper">
-            <slot name="start"></slot>
+          <div class="input-element">
+            <mds-text class="date-label" typography="detail" onClick={this.focusStartDateInput}>Dal</mds-text>
+            <div class="input-wrapper">
+              <slot name="start"></slot>
+            </div>
           </div>
-          <mds-text typography="detail" onClick={this.focusEndDateInput}>al</mds-text>
-          <div class="input-wrapper">
-            <slot name="end"></slot>
+          <div class="input-element">
+            <mds-text class="date-label" typography="detail" onClick={this.focusEndDateInput}>al</mds-text>
+            <div class="input-wrapper">
+              <slot name="end"></slot>
+            </div>
           </div>
         </div>
 
@@ -87,8 +96,8 @@ export class MdsInputDateRange {
           }}>
         </mds-button>
 
-        <mds-dropdown target="#calendar-dropdown" strategy="fixed">
-          {this.showCalendar && <mds-calendar
+        <mds-dropdown target="#calendar-dropdown">
+          <mds-calendar
             rangePicker={true}
             onDatesEmitter={ev => {
               this.startDate = ev.detail.startDate
@@ -98,7 +107,7 @@ export class MdsInputDateRange {
             }}
             startDate={this.startDate}
             endDate={this.endDate}>
-          </mds-calendar>}
+          </mds-calendar>
         </mds-dropdown>
       </Host>
     )

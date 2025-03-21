@@ -5,7 +5,6 @@
   --mds-calendar-day-number-color: theme('colors.tone-neutral-01');
   --mds-calendar-cell-gap: theme('gap.50');
 
-  background-color: theme('colors.tone-neutral');
   display: flex;
   flex-direction: column;
   gap: theme('gap.400');
@@ -22,8 +21,9 @@ nav {
 
 .action {
   @apply px-200;
-  min-width: min-content;
+
   justify-content: left;
+  min-width: min-content;
 }
 
 .action-back,

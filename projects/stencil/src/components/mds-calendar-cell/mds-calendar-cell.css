@@ -2,7 +2,7 @@
   --mds-calendar-cell-background: transparent;
   --mds-calendar-cell-boundaries-background: transparent;
   --mds-calendar-cell-boundaries-color: theme('colors.tone-neutral-01');
-  --mds-calendar-cell-boundaries-padding: theme('padding.200');
+  --mds-calendar-cell-boundaries-padding: theme('padding.100');
   --mds-calendar-cell-color: theme('colors.tone-neutral-01');
   --mds-calendar-cell-other-month-background: transparent;
   --mds-calendar-cell-other-month-color: theme('colors.tone-neutral-07');

@@ -3,7 +3,6 @@
 @tailwind utilities;
 
 :host {
-
   --mds-input-date-range-background: theme('colors.tone-neutral');
   --mds-input-date-range-icon-color: var(--mds-input-date-range-variant-color);
   --mds-input-date-range-tip-background: 84 84 84;
@@ -32,22 +31,27 @@
     ease-out-expo
     m-0
     px-400
-    py-300
     rounded-lg
     text-code-hack;
 
-  align-items: baseline;
+  align-items: center;
   background-color: var(--mds-input-date-range-background);
   border: 0;
   box-shadow: var(--mds-input-date-range-ring), var(--mds-input-date-range-shadow);
   box-sizing: border-box;
   color: inherit;
   display: inline-flex;
+  flex-wrap: wrap;
   min-height: 3rem;
   overflow: hidden;
   text-overflow: ellipsis;
   transition-property: background-color, border-color, box-shadow, color, fill, margin, opacity, padding, transform;
   width: 100%;
+}
+
+.input-element {
+  align-items: baseline;
+  display: inline-flex;
 }
 
 :host(:focus-within) .inputs {
@@ -70,8 +74,16 @@
   color: inherit;
 }
 
-.action-open-calendar {
+.date-label {
+  min-width: min-content;
+  white-space: nowrap;
+}
 
+mds-calendar {
+  min-width: max-content;
+}
+
+.action-open-calendar {
   --mds-button-color: rgb(var(--mds-input-date-range-icon-color));
 
   aspect-ratio: 1;
