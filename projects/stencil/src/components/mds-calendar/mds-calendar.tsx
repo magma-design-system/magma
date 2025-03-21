@@ -302,7 +302,7 @@ export class MdsCalendar {
       this.startDate = this.startDateTime.toISO().split('T')[0]
       this.isFirstClick = false
       requestAnimationFrame(() => {
-        element.setAttribute('selection', 'start')
+        element.setAttribute('selection', 'single')
         element.setAttribute('preview', 'true')
       })
 
