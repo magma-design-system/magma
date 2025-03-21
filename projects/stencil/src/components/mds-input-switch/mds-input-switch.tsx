@@ -60,7 +60,7 @@ export class MdsInputSwitch {
   /**
    * Sets or returns whether a checkbox is disabled, or not
    */
-  @Prop({ reflect: true }) disabled?: boolean
+  @Prop({ reflect: true, mutable: true }) disabled?: boolean
 
   /**
    * Sets if the type switch mode shows explicit icons
