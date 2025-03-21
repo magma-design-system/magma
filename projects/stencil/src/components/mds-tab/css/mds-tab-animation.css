@@ -20,14 +20,14 @@
   transition-timing-function: var(--mds-tab-transition-timing-function);
   width: var(--mds-tab-slider-width);
   will-change: transform, width;
-  z-index: 0;
+  z-index: -1;
 }
 
 .slider--no-trantitions {
   transition-property: none;
 }
 
-::slotted( mds-tab-item) {
+::slotted(mds-tab-item) {
   position: relative;
   z-index: 1;
 }
