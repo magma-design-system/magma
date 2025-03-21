@@ -34,7 +34,6 @@ export class MdsCalendar {
   handleStartDate (newValue: ISO8601Date | null): void {
     if (newValue !== null && newValue !== '') {
       this.startDate = sanitizeISO8601Date(newValue?.toString()) as ISO8601Date
-      this.currentDate = DateTime.fromISO(this.startDate)
       if (this.endDate) {
         const startDateTime = DateTime.fromISO(this.startDate)
         const endDateTime = DateTime.fromISO(this.endDate)
@@ -84,6 +83,7 @@ export class MdsCalendar {
     if (this.startDate) {
       this.startDate = sanitizeISO8601Date(this.startDate?.toString()) as ISO8601Date
       this.startDateTime = DateTime.fromISO(this.startDate)
+      this.currentDate = this.startDateTime
     }
 
     if (this.endDate) {

@@ -1,4 +1,4 @@
-import { Component, Element, Host, h, Prop, Watch, Listen } from '@stencil/core'
+import { Component, Element, Host, h, Prop, Watch, Listen, State } from '@stencil/core'
 import miBaselineCalendarToday from '@icon/mi/baseline/calendar-today.svg'
 import { FocusEvent } from 'react'
 
@@ -12,6 +12,8 @@ export class MdsInputDateRange {
   @Element() host: HTMLMdsInputDateRangeElement
   @Prop({ reflect: true, mutable: true }) startDate: string = ''
   @Prop({ reflect: true, mutable: true }) endDate: string = ''
+
+  @State() showCalendar: boolean = false
 
   @Watch('startDate')
   onStartDateChange (newValue: string): void {
@@ -79,11 +81,14 @@ export class MdsInputDateRange {
           variant="dark"
           tone="quiet"
           icon={miBaselineCalendarToday}
-          id="calendar-dropdown">
+          id="calendar-dropdown"
+          onClick={() => {
+            this.showCalendar = !this.showCalendar
+          }}>
         </mds-button>
 
         <mds-dropdown arrow={false} target="#calendar-dropdown" strategy="fixed" placement="bottom-end">
-          <mds-calendar
+          {this.showCalendar && <mds-calendar
             rangePicker={true}
             onDatesEmitter={ev => {
               this.startDate = ev.detail.startDate
@@ -93,7 +98,7 @@ export class MdsInputDateRange {
             }}
             startDate={this.startDate}
             endDate={this.endDate}>
-          </mds-calendar>
+          </mds-calendar>}
         </mds-dropdown>
       </Host>
     )
