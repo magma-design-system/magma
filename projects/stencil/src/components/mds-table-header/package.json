@@ -24,7 +24,7 @@
   },
   "dependencies": {
     "@maggioli-design-system/mds-input-switch": "2.2.0",
-    "@maggioli-design-system/mds-table-header-cell": "1.2.0",
+    "@maggioli-design-system/mds-table-header-cell": "1.2.1",
     "@maggioli-design-system/styles": "15.9.0",
     "@stencil/core": "4.27.2"
   },

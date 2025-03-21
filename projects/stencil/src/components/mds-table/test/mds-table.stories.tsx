@@ -190,8 +190,8 @@ type AsyncSlottedRowProps = {
 };
 const AsyncSlottedRow: FC<AsyncSlottedRowProps> = ({ name, email }) => {
   return <mds-table-row>
-    <mds-table-cell value={name} class="min-w-5200"><mds-text typography="detail">{name}</mds-text></mds-table-cell>
-    <mds-table-cell value={email} class="min-w-5200"><mds-text typography="detail">{email}</mds-text></mds-table-cell>
+    <mds-table-cell value={name}><mds-text class="text-nowrap" typography="detail">{name}</mds-text></mds-table-cell>
+    <mds-table-cell value={email}><mds-text class="text-nowrap" typography="detail">{email}</mds-text></mds-table-cell>
     <mds-button slot="action" icon="mi/baseline/delete" title="Remove record" variant="error"></mds-button>
   </mds-table-row>
 }
