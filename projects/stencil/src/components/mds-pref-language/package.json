@@ -25,7 +25,7 @@
   },
   "dependencies": {
     "@maggioli-design-system/mds-dropdown": "5.8.0",
-    "@maggioli-design-system/mds-pref-language-item": "2.4.3",
+    "@maggioli-design-system/mds-pref-language-item": "2.4.4",
     "@maggioli-design-system/mds-text": "4.7.1",
     "@maggioli-design-system/styles": "15.9.0",
     "@stencil/core": "4.27.2"
