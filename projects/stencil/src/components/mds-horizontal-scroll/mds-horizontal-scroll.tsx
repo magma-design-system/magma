@@ -3,6 +3,7 @@ import { SnapType, ViewportType } from './meta/types'
 import miBaselineArrowBack from '@icon/mi/baseline/arrow-back.svg'
 import miBaselineArrowForward from '@icon/mi/baseline/arrow-forward.svg'
 import clsx from 'clsx'
+import { cssSizeToNumber } from '@common/unit'
 
 // TODO [fix] buttons now shows up when they should
 // TODO [fix] scrollbar not showing anymore
@@ -21,14 +22,17 @@ export class MdsHorizontalScroll {
   @Element() private host: HTMLMdsHorizontalScrollElement
   private elements:Node[]
   private contents: HTMLElement
+  private spacer: HTMLElement
+  private scrollGap: number
   private lastElementOffsetLeft: number
+  @State() hasCompatibility: boolean = false
   @State() showForward = true
   @State() showBack = false
 
   /**
    * Specifies the viewport which will display navigation controls
    */
-  @Prop({ reflect: true }) readonly controls?: ViewportType = 'desktop'
+  @Prop({ reflect: true, mutable: true }) controls?: ViewportType = 'desktop'
 
   /**
    * Specifies the box’s snap position as an alignment of its snap area
@@ -44,17 +48,24 @@ export class MdsHorizontalScroll {
     this.elements = this.host.shadowRoot?.querySelectorAll('slot')[0]?.assignedNodes() as Node[]
   }
 
+  private readonly updateCSSCustomProps = (): void => {
+    if (typeof window === 'undefined') return
+    const elementStyles = window.getComputedStyle(this.host)
+    this.scrollGap = cssSizeToNumber(elementStyles.getPropertyValue('--mds-horizontal-scroll-gap'))
+  }
+
   private isInViewport = (element: HTMLElement): boolean => {
     if (!this.contents) {
       return false
     }
+    const spacerWidth = this.spacer.offsetWidth + this.scrollGap
     const rect = element.getBoundingClientRect()
     const rectWrapper = this.contents.getBoundingClientRect()
     return (
       rect.top >= 0 &&
-      rect.left >= 0 &&
+      rect.left >= spacerWidth &&
       rect.bottom <= rectWrapper.height &&
-      rect.right <= rectWrapper.width
+      rect.right <= rectWrapper.width - spacerWidth * 2
     )
   }
 
@@ -86,12 +97,13 @@ export class MdsHorizontalScroll {
     let elLastInViewport: HTMLElement | undefined
 
     this.elements.forEach((element: HTMLElement, index: number) => {
-      // element.style.backgroundColor = 'white'
+      element.style.backgroundColor = 'transparent'
       if (this.isInViewport(element)) {
         if (!elFirstInViewport) {
           firstIndex = index
           elFirstInViewport = element
         }
+        // element.style.backgroundColor = 'red'
         elLastInViewport = element
       }
     })
@@ -99,7 +111,7 @@ export class MdsHorizontalScroll {
     this.elements.forEach((element: HTMLElement, index: number) => {
       if (!this.isInViewport(element) && index === firstIndex - 1 && elFirstInViewport !== undefined && elLastInViewport !== undefined) {
         // element.style.backgroundColor = 'red'
-        this.contents.scrollLeft = this.contents.scrollLeft + element.offsetLeft - elLastInViewport.offsetLeft
+        this.contents.scrollLeft = this.contents.scrollLeft + element.offsetLeft - elLastInViewport.offsetLeft - elFirstInViewport.offsetWidth - this.scrollGap
       }
     })
   }
@@ -113,11 +125,11 @@ export class MdsHorizontalScroll {
     let isFirstOutside = true
 
     this.elements.forEach((element: HTMLElement) => {
-      // element.style.backgroundColor = 'white'
+      element.style.backgroundColor = 'white'
       if (!this.isInViewport(element)) {
         if (element.offsetLeft > this.contents.scrollLeft && isFirstOutside) {
           isFirstOutside = false
-          // element.style.backgroundColor = 'red'
+          element.style.backgroundColor = 'red'
           this.lastElementOffsetLeft = element.offsetLeft
           this.contents.scrollLeft = this.lastElementOffsetLeft
         }
@@ -125,9 +137,20 @@ export class MdsHorizontalScroll {
     })
   }
 
+  componentWillLoad (): void {
+    this.updateCSSCustomProps()
+  }
+
   componentDidLoad (): void {
     this.contents = this.host.shadowRoot?.querySelector('.contents') as HTMLElement
-    this.contents.addEventListener('scrollend', this.checkNavigationButtons)
+    this.spacer = this.host.shadowRoot?.querySelector('.spacer') as HTMLElement
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    if (window && typeof (window as any).onscrollend !== 'undefined') {
+      this.hasCompatibility = true
+      this.contents.addEventListener('scrollend', this.checkNavigationButtons)
+      return
+    }
+    if (this.controls) this.controls = undefined
   }
 
   disconnectedCallback (): void {
@@ -138,10 +161,19 @@ export class MdsHorizontalScroll {
     return (
       <Host>
         <div class="contents" part="content">
+          <div class="spacer"></div>
           <slot onSlotchange={this.updateElements}></slot>
+          <div class="spacer"></div>
         </div>
-        { this.controls !== 'none' && <mds-button onClick={this.moveBack} size="lg" class={clsx('navigation navigation--back', !this.showBack && 'navigation--disabled')} icon={ miBaselineArrowBack }></mds-button> }
-        { this.controls !== 'none' && <mds-button onClick={this.moveForward} size="lg" class={clsx('navigation navigation--forward', !this.showForward && 'navigation--disabled')} icon={ miBaselineArrowForward }></mds-button> }
+        { this.hasCompatibility &&
+          <div class="dot-nav">
+            <div class="dot"></div>
+            <div class="dot"></div>
+            <div class="dot"></div>
+          </div>
+        }
+        { this.controls && this.controls !== 'none' && <mds-button onClick={this.moveBack} size="lg" class={clsx('navigation navigation--back', !this.showBack && 'navigation--disabled')} icon={ miBaselineArrowBack }></mds-button> }
+        { this.controls && this.controls !== 'none' && <mds-button onClick={this.moveForward} size="lg" class={clsx('navigation navigation--forward', !this.showForward && 'navigation--disabled')} icon={ miBaselineArrowForward }></mds-button> }
       </Host>
     )
   }

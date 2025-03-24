@@ -1,5 +1,4 @@
 /* stylelint-disable media-query-no-invalid */
-
 @import '../../tailwind/components.css';
 @tailwind components;
 @tailwind utilities;
@@ -16,7 +15,11 @@
 
 :host {
   --mds-horizontal-scroll-behavior: smooth;
-  --mds-horizontal-scroll-contents-padding: theme('spacing.600') 0;
+  --mds-horizontal-scroll-dots-gap: theme('size.100');
+  --mds-horizontal-scroll-dot-size: theme('size.200');
+  --mds-horizontal-scroll-dot-current-background: theme('colors.tone-neutral-06');
+  --mds-horizontal-scroll-dot-default-background: theme('colors.tone-neutral-08');
+  --mds-horizontal-scroll-contents-padding: theme('spacing.600');
   --mds-horizontal-scroll-contents-scroll-padding: 0 theme('spacing.600');
   --mds-horizontal-scroll-controls-margin: theme('size.1200');
   --mds-horizontal-scroll-gap: theme('spacing.600');
@@ -31,16 +34,12 @@
   --max-width: var(--mds-horizontal-scroll-max-width); /* remember @media (width <= theme('screens.wide')) at the bottom */
   --scroll-margin: calc(((100svw - var(--max-width)) / 2) + (var(--mds-horizontal-scroll-controls-margin) * 2));
 
-
-  @apply
-    gap-200
-    w-full;
-
   container-name: mds-horizontal-scroll;
   container-type: inline-size;
   display: flex;
   flex-direction: column;
   position: relative;
+  width: 100%;
 }
 
 .navigation {
@@ -103,22 +102,22 @@
   display: flex;
   gap: var(--mds-horizontal-scroll-gap);
   overflow: auto;
-  padding: var(--mds-horizontal-scroll-contents-padding);
+  padding-bottom: var(--mds-horizontal-scroll-contents-padding);
+  padding-top: var(--mds-horizontal-scroll-contents-padding);
   scroll-behavior: var(--mds-horizontal-scroll-behavior);
   scroll-padding: var(--mds-horizontal-scroll-contents-scroll-padding);
   scroll-snap-type: x mandatory;
   width: 100%;
 }
 
-.contents > ::slotted( *) {
+.contents > ::slotted(*) {
   flex-basis: 0;
   flex-grow: 0;
   flex-shrink: 0;
   scroll-margin: 0 var(--scroll-margin);
 }
 
-.contents::after,
-.contents::before {
+.spacer {
   --width: calc(var(--scroll-margin) - var(--mds-horizontal-scroll-gap));
 
   content: "";
@@ -146,6 +145,20 @@
   opacity: 0;
   pointer-events: none;
   transform: translate(0, -50%) scale(0.5);
+}
+
+@container (max-width: 1024px) {
+  :host {
+    --scroll-margin: var(--mds-horizontal-scroll-contents-scroll-padding);
+  }
+
+  .contents {
+    scroll-padding: var(--mds-horizontal-scroll-contents-scroll-padding);
+  }
+
+  .contents > ::slotted(*) {
+    scroll-margin: 0 var(--mds-horizontal-scroll-contents-scroll-padding);
+  }
 }
 
 :host([controls="all"]) .navigation {
@@ -177,4 +190,5 @@
 }
 
 @import './css/mds-horizontal-scroll-pref-animation.css';
+@import './css/mds-horizontal-scroll-dot.css';
 @import '../../tailwind/fouc.css';

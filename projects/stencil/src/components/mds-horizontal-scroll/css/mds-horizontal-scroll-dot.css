@@ -1,0 +1,13 @@
+.dot-nav {
+  display: flex;
+  gap: var(--mds-horizontal-scroll-dots-gap);
+  justify-content: center;
+  margin-bottom: var(--mds-horizontal-scroll-contents-padding);
+}
+
+.dot {
+  background-color: var(--mds-horizontal-scroll-dot-default-background);
+  border-radius: var(--mds-horizontal-scroll-dot-size);
+  height: var(--mds-horizontal-scroll-dot-size);
+  width: var(--mds-horizontal-scroll-dot-size);
+}

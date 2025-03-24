@@ -23,14 +23,14 @@ export default {
   },
 }
 
-const CardTemplate = () =>
+const CardTemplate = ({ title, initials }) =>
   <mds-card class="min-w-[320px]">
     <mds-card-header>
       <div class="flex gap-400 items-center">
-        <mds-avatar class="w-1100 min-w-1100 " initials='mc'></mds-avatar>
+        <mds-avatar class="w-1100 min-w-1100 " initials={initials}></mds-avatar>
         <div class="flex gap-0 flex-col">
-          <mds-text typography="h6">Mauro Coletta</mds-text>
-          <mds-text typography="caption">Management designer</mds-text>
+          <mds-text typography="h6">{ title }</mds-text>
+          <mds-text typography="caption">This is an example card</mds-text>
         </div>
       </div>
       <mds-button id="action-example" icon="mi/round/more-vert" variant="light"></mds-button>
@@ -44,18 +44,20 @@ const CardTemplate = () =>
   </mds-card>
 
 const Template = args =>
-  <mds-horizontal-scroll {...args}>
-    <CardTemplate/>
-    <CardTemplate/>
-    <CardTemplate/>
-    <CardTemplate/>
-    <CardTemplate/>
-    <CardTemplate/>
-    <CardTemplate/>
-    <CardTemplate/>
-    <CardTemplate/>
-    <CardTemplate/>
-  </mds-horizontal-scroll>
+  <div class="-m-600 -bg-tone-neutral-10 border-b-2 border-solid border-tone-neutral-09 border-x-0 border-t-0">
+    <mds-horizontal-scroll {...args}>
+      <CardTemplate initials="01" title="Card"/>
+      <CardTemplate initials="02" title="Card"/>
+      <CardTemplate initials="03" title="Card"/>
+      <CardTemplate initials="04" title="Card"/>
+      <CardTemplate initials="05" title="Card"/>
+      <CardTemplate initials="06" title="Card"/>
+      <CardTemplate initials="07" title="Card"/>
+      <CardTemplate initials="08" title="Card"/>
+      <CardTemplate initials="09" title="Card"/>
+      <CardTemplate initials="10" title="Card"/>
+    </mds-horizontal-scroll>
+  </div>
 
 export const Default = Template.bind({})
 
