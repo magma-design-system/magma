@@ -10,10 +10,12 @@ import { FocusEvent } from 'react'
 export class MdsInputDateRange {
 
   @Element() host: HTMLMdsInputDateRangeElement
+
+  @State() calendarKey: number = 0
+
   @Prop({ reflect: true, mutable: true }) startDate: string = ''
   @Prop({ reflect: true, mutable: true }) endDate: string = ''
 
-  @State() showCalendar: boolean = false
 
   @Watch('startDate')
   onStartDateChange (newValue: string): void {
@@ -92,12 +94,13 @@ export class MdsInputDateRange {
           icon={miBaselineCalendarToday}
           id="calendar-dropdown"
           onClick={() => {
-            this.showCalendar = !this.showCalendar
+            this.calendarKey += 1
           }}>
         </mds-button>
 
         <mds-dropdown target="#calendar-dropdown">
           <mds-calendar
+            key={this.calendarKey}
             rangePicker={true}
             onDatesEmitter={ev => {
               this.startDate = ev.detail.startDate

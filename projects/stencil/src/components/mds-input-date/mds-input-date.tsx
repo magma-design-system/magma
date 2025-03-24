@@ -11,9 +11,12 @@ export class MdsInputDate {
   private isSlotted: boolean = false
 
   @Prop({ reflect: true, mutable: true }) value: string = ''
+
   @State() internalValue: string = ''
-  @State() showCalendar: boolean = false
+  @State() calendarKey: number = 0
+
   @Event() valueChange: EventEmitter<string>
+
 
   @Method()
   async focusInput (): Promise<void> {
@@ -53,18 +56,19 @@ export class MdsInputDate {
           onChange={event => this.handleChange(event)}
         />
         {!this.isSlotted && <mds-button id="calendar-dropdown" class="action-open-calendar" variant="dark" tone="quiet" icon={miBaselineCalendarToday} onClick={() => {
-          this.showCalendar = !this.showCalendar
+          this.calendarKey += 1
         }}></mds-button>}
 
 
         <mds-dropdown arrow={false} target="#calendar-dropdown" strategy="fixed" placement="bottom-end">
-          {this.showCalendar && <mds-calendar
+          <mds-calendar
+            key={this.calendarKey}
             rangePicker={false}
             onDatesEmitter={ev => {
               this.value = ev.detail.startDate
             }}
             startDate={this.value}>
-          </mds-calendar>}
+          </mds-calendar>
         </mds-dropdown>
 
       </Host>
