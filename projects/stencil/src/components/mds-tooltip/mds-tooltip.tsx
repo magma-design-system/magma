@@ -125,15 +125,20 @@ export class MdsTooltip implements FloatingElement {
   }
 
   @Watch('visible')
-  visibleChanged (): void {
+  visibleChanged (newValue: boolean): void {
     this.floatingController.updatePosition()
+    if (newValue) {
+      this.floatingController.updatePosition()
+      return
+    }
+    this.floatingController.dismiss()
   }
 
   @Watch('target')
   targetChanged (): void {
     if (!this.target) return
 
-    this.caller = this.floatingController.updateCaller(this.target)
+    this.caller = this.floatingController?.updateCaller(this.target)
     this.caller.addEventListener('mouseleave', this.handleVisibility.bind(this, false))
     this.caller.addEventListener('mouseenter', this.handleVisibility.bind(this, true))
   }

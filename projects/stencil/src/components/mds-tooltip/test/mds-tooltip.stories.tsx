@@ -106,28 +106,24 @@ Arrow.args = {
   arrow: true,
   'shift-padding': 32,
   layout: 'flex justify-start',
-  visible: true,
 }
 
 export const AutoPlacement = Template.bind({})
 AutoPlacement.args = {
   'auto-placement': true,
   layout: 'flex justify-end',
-  visible: true,
 }
 
 export const Flip = Template.bind({})
 Flip.args = {
   layout: 'flex h-[200vh] justify-center items-center',
   flip: true,
-  visible: true,
 }
 
 export const Offset = Template.bind({})
 Offset.args = {
   layout: 'flex justify-center items-center',
   offset: 50,
-  visible: true,
 }
 
 export const Placement = Template.bind({})
@@ -135,14 +131,12 @@ Placement.args = {
   'auto-placement': false,
   layout: 'flex justify-center items-center',
   placement: 'right-start',
-  visible: true,
 }
 
 export const Shift = Template.bind({})
 Shift.args = {
   layout: 'flex justify-end',
   shift: true,
-  visible: true,
 }
 
 export const ShiftPadding = Template.bind({})
@@ -150,18 +144,15 @@ ShiftPadding.args = {
   layout: 'flex justify-end',
   shift: true,
   'shift-padding': 50,
-  visible: true,
 }
 
 export const Strategy = Template.bind({})
 Strategy.args = {
   layout: 'flex justify-start',
   strategy: 'absolute',
-  visible: true,
 }
 
 export const Visible = Template.bind({})
 Visible.args = {
   layout: 'flex justify-start',
-  visible: false,
 }

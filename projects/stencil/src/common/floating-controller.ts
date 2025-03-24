@@ -226,13 +226,13 @@ export class FloatingController {
 
   updatePosition (): void {
     if (this._host.visible) {
-      if (this.cleanupAutoUpdate) this.cleanupAutoUpdate()
+      this.dismiss() // to clean the old update function before update function
       this.cleanupAutoUpdate = autoUpdate(this._caller, this._host, this.calculatePosition)
     }
   }
 
   dismiss (): void {
-    this.cleanupAutoUpdate()
+    if (this.cleanupAutoUpdate) this.cleanupAutoUpdate()
   }
 }
 
