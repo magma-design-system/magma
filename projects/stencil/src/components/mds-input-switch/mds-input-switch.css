@@ -143,6 +143,7 @@
 
   background-color: var(--mds-input-switch-box-color-enabled-unchecked);
   box-sizing: border-box;
+  cursor: pointer;
   display: inline-flex;
   flex-shrink: 0;
   height: min-content;
@@ -167,7 +168,6 @@
   animation-timing-function: var(--mds-input-switch-animation-timing-function);
   background-color: var(--mds-input-switch-toggle-color-enabled-checked);
   box-shadow: theme('boxShadow.DEFAULT');
-  cursor: pointer;
   display: flex;
   height: var(--mds-input-switch-toggle-size);
   justify-content: center;
