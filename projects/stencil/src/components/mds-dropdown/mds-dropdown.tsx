@@ -194,7 +194,7 @@ export class MdsDropdown implements FloatingElement {
   @Watch('target')
   targetChanged (): void {
     if (!this.target) return
-    this.caller = this.floatingController.updateCaller(this.target)
+    this.caller = this.floatingController?.updateCaller(this.target)
     this.setInteractionBehaviour()
     this.km.addElement(this.host)
     this.km.attachEscapeBehavior(() => this.visibleChanged(false))
@@ -302,6 +302,7 @@ export class MdsDropdown implements FloatingElement {
   }
 
   disconnectedCallback (): void {
+    this.floatingController.dismiss()
     this.backdropController.detachBackdrop()
     this.km.detachEscapeBehavior()
   }

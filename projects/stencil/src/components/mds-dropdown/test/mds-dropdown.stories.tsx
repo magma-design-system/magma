@@ -194,7 +194,7 @@ const TemplateModalNested = () => {
       </header>
       <div class="p-800 max-w-[400px] flex flex-col gap-400">
         <mds-button variant="primary" id="open-dropdown">Show dropdown</mds-button>
-        <mds-dropdown target="#open-dropdown" backdrop={false}>
+        <mds-dropdown target="#open-dropdown" backdrop={false} strategy='fixed'>
           <mds-button variant="light" class="justify-start">Dropdown action</mds-button>
           <mds-button variant="light" class="justify-start">Dropdown action</mds-button>
           <mds-button variant="light" class="justify-start">Dropdown action</mds-button>
