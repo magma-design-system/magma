@@ -1022,6 +1022,10 @@ export namespace Components {
     }
     interface MdsInputRange {
         /**
+          * An alias to custom how value is represented
+         */
+        "alias"?: string;
+        /**
           * Sets if the component is disabled
          */
         "disabled"?: boolean;
@@ -4293,6 +4297,10 @@ declare namespace LocalJSX {
         "variant"?: ThemeStatusVariantType;
     }
     interface MdsInputRange {
+        /**
+          * An alias to custom how value is represented
+         */
+        "alias"?: string;
         /**
           * Sets if the component is disabled
          */
