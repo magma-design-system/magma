@@ -1,12 +1,12 @@
 :host-context(.pref-theme-dark) {
-  --mds-input-switch-box-color-checked: theme('colors.variant-primary-06');
-  --mds-input-switch-box-color-disabled-checked: theme('colors.tone-neutral-06');
-  --mds-input-switch-box-color-disabled-unchecked: theme('colors.tone-neutral-06');
-  --mds-input-switch-box-color-unchecked: theme('colors.tone-neutral-06');
-  --mds-input-switch-toggle-color-checked: theme('colors.tone-neutral-03');
-  --mds-input-switch-toggle-color-disabled-checked: theme('colors.tone-neutral-04');
-  --mds-input-switch-toggle-color-disabled-unchecked: theme('colors.tone-neutral-04');
-  --mds-input-switch-toggle-color-unchecked: theme('colors.tone-neutral-03');
+  --mds-input-switch-box-color-enabled-checked: theme('colors.variant-primary-04');
+  --mds-input-switch-box-color-enabled-unchecked: theme('colors.tone-neutral-06');
+  --mds-input-switch-box-color-disabled-checked: theme('colors.tone-neutral-08');
+  --mds-input-switch-box-color-disabled-unchecked: theme('colors.tone-neutral-08');
+  --mds-input-switch-toggle-color-enabled-checked: theme('colors.tone-neutral');
+  --mds-input-switch-toggle-color-enabled-unchecked: theme('colors.tone-neutral-10');
+  --mds-input-switch-toggle-color-disabled-checked: theme('colors.tone-neutral');
+  --mds-input-switch-toggle-color-disabled-unchecked: theme('colors.tone-neutral');
   --mds-input-switch-icon-color-checked-disabled: theme('colors.tone-neutral-06');
   --mds-input-switch-icon-color-checked: theme('colors.variant-primary-06');
   --mds-input-switch-icon-color-indeterminate-disabled: theme('colors.tone-neutral-05');
@@ -17,14 +17,14 @@
 
 @media (prefers-color-scheme: dark) {
   :host-context(.pref-theme-system) {
-    --mds-input-switch-box-color-checked: theme('colors.variant-primary-06');
-    --mds-input-switch-box-color-disabled-checked: theme('colors.tone-neutral-06');
-    --mds-input-switch-box-color-disabled-unchecked: theme('colors.tone-neutral-06');
-    --mds-input-switch-box-color-unchecked: theme('colors.tone-neutral-06');
-    --mds-input-switch-toggle-color-checked: theme('colors.tone-neutral-03');
-    --mds-input-switch-toggle-color-disabled-checked: theme('colors.tone-neutral-04');
-    --mds-input-switch-toggle-color-disabled-unchecked: theme('colors.tone-neutral-04');
-    --mds-input-switch-toggle-color-unchecked: theme('colors.tone-neutral-03');
+    --mds-input-switch-box-color-enabled-checked: theme('colors.variant-primary-04');
+    --mds-input-switch-box-color-enabled-unchecked: theme('colors.tone-neutral-06');
+    --mds-input-switch-box-color-disabled-checked: theme('colors.tone-neutral-08');
+    --mds-input-switch-box-color-disabled-unchecked: theme('colors.tone-neutral-08');
+    --mds-input-switch-toggle-color-enabled-checked: theme('colors.tone-neutral');
+    --mds-input-switch-toggle-color-enabled-unchecked: theme('colors.tone-neutral-10');
+    --mds-input-switch-toggle-color-disabled-checked: theme('colors.tone-neutral');
+    --mds-input-switch-toggle-color-disabled-unchecked: theme('colors.tone-neutral');
     --mds-input-switch-icon-color-checked-disabled: theme('colors.tone-neutral-06');
     --mds-input-switch-icon-color-checked: theme('colors.variant-primary-06');
     --mds-input-switch-icon-color-indeterminate-disabled: theme('colors.tone-neutral-05');

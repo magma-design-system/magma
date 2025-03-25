@@ -11,6 +11,7 @@ This is a web-component from Maggioli Design System [Magma](https://magma.maggio
 
 | Property   | Attribute  | Description                                                                                                                                      | Type                   | Default     |
 | ---------- | ---------- | ------------------------------------------------------------------------------------------------------------------------------------------------ | ---------------------- | ----------- |
+| `alias`    | `alias`    | An alias to custom how value is represented                                                                                                      | `string \| undefined`  | `undefined` |
 | `disabled` | `disabled` | Sets if the component is disabled                                                                                                                | `boolean \| undefined` | `undefined` |
 | `max`      | `max`      | The greatest value in the range of permitted values                                                                                              | `number`               | `100`       |
 | `min`      | `min`      | The lowest value in the range of permitted values                                                                                                | `number`               | `0`         |

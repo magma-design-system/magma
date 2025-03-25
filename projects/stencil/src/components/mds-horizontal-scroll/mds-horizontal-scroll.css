@@ -1,14 +1,17 @@
 /* stylelint-disable media-query-no-invalid */
-
 @import '../../tailwind/components.css';
 @tailwind components;
 @tailwind utilities;
 
 /**
- * @prop --mds-horizontal-scroll-behavior: Sets the scroll-behavior animation
  * @prop --mds-horizontal-scroll-background: Sets the background-color of the component
- * @prop --mds-horizontal-scroll-scrollbar-radius: Sets the border-radius of the browser scroll bar (if supported)
+ * @prop --mds-horizontal-scroll-behavior: Sets the scroll-behavior animation
+ * @prop --mds-horizontal-scroll-dot-area-background: Sets the dot container area color
+ * @prop --mds-horizontal-scroll-dot-background: Sets the navigation dot color
+ * @prop --mds-horizontal-scroll-dot-max-width: Sets the navigation dot max-width, if you want to avoid is scales in proportion of the container
+ * @prop --mds-horizontal-scroll-max-width: Sets the max-width of the slotted elements container, to keep layout limited as the rest of the sections
  * @prop --mds-horizontal-scroll-scrollbar-margin: Sets the margin of the browser scroll bar (if supported)
+ * @prop --mds-horizontal-scroll-scrollbar-radius: Sets the border-radius of the browser scroll bar (if supported)
  * @prop --mds-horizontal-scroll-scrollbar-size: Sets the height and width of the browser scroll bar (if supported)
  * @prop --mds-horizontal-scroll-scrollbar-thumb-background: Sets the background-color of the browser scroll bar thumb (if supported)
  * @prop --mds-horizontal-scroll-scrollbar-track-background: Sets the background-color of the browser scroll bar track (if supported)
@@ -16,7 +19,12 @@
 
 :host {
   --mds-horizontal-scroll-behavior: smooth;
-  --mds-horizontal-scroll-contents-padding: theme('spacing.600') 0;
+  --mds-horizontal-scroll-dots-gap: theme('size.100');
+  --mds-horizontal-scroll-dot-size: theme('size.200');
+  --mds-horizontal-scroll-dot-max-width: auto;
+  --mds-horizontal-scroll-dot-background: theme('colors.tone-neutral');
+  --mds-horizontal-scroll-dot-area-background: theme('colors.tone-neutral-08');
+  --mds-horizontal-scroll-contents-padding: theme('spacing.600');
   --mds-horizontal-scroll-contents-scroll-padding: 0 theme('spacing.600');
   --mds-horizontal-scroll-controls-margin: theme('size.1200');
   --mds-horizontal-scroll-gap: theme('spacing.600');
@@ -31,16 +39,14 @@
   --max-width: var(--mds-horizontal-scroll-max-width); /* remember @media (width <= theme('screens.wide')) at the bottom */
   --scroll-margin: calc(((100svw - var(--max-width)) / 2) + (var(--mds-horizontal-scroll-controls-margin) * 2));
 
-
-  @apply
-    gap-200
-    w-full;
-
+  align-items: center;
   container-name: mds-horizontal-scroll;
   container-type: inline-size;
   display: flex;
   flex-direction: column;
+  justify-content: center;
   position: relative;
+  width: 100%;
 }
 
 .navigation {
@@ -54,71 +60,46 @@
   transition-property: opacity, scale, transform;
 }
 
-:host(:not([scrollbar])) .contents {
-  @apply hide-scrollbar;
-}
 
-:host(:not([scrollbar])) .contents::-webkit-scrollbar {
-  display: none;
-}
-
-:host([scrollbar]:not([scrollbar="false"])) .contents::-webkit-scrollbar {
-  height: var(--mds-horizontal-scroll-scrollbar-size);
-  width: var(--mds-horizontal-scroll-scrollbar-size);
-}
-
-:host([scrollbar]:not([scrollbar="false"])) .contents::-webkit-scrollbar-track {
-  background-color: var(--mds-horizontal-scroll-scrollbar-track-background);
-  border-radius: var(--mds-horizontal-scroll-scrollbar-radius);
-  margin-block: var(--mds-horizontal-scroll-scrollbar-margin);
-  margin-inline: var(--mds-horizontal-scroll-scrollbar-margin);
-}
-
-:host([scrollbar]:not([scrollbar="false"])) .contents::-webkit-scrollbar-thumb {
-  background-color: var(--mds-horizontal-scroll-scrollbar-thumb-background);
-  border-radius: var(--mds-horizontal-scroll-scrollbar-radius);
-}
-
-@supports (scrollbar-color: transparent transparent) {
-  .contents {
-    scrollbar-color: var(--mds-horizontal-scroll-scrollbar-thumb-background) var(--mds-horizontal-scroll-scrollbar-track-background);
-    scrollbar-width: thin;
-  }
-}
-
-:host([snap="start"]) .contents > ::slotted( *) {
-  scroll-snap-align: start;
-}
-
-:host([snap="center"]) .contents > ::slotted( *) {
-  scroll-snap-align: center;
-}
-
-:host([snap="end"]) .contents > ::slotted( *) {
-  scroll-snap-align: end;
-}
 
 .contents {
   box-sizing: border-box;
   display: flex;
   gap: var(--mds-horizontal-scroll-gap);
   overflow: auto;
-  padding: var(--mds-horizontal-scroll-contents-padding);
+  padding-bottom: var(--mds-horizontal-scroll-contents-padding);
+  padding-top: var(--mds-horizontal-scroll-contents-padding);
+  position: relative;
   scroll-behavior: var(--mds-horizontal-scroll-behavior);
   scroll-padding: var(--mds-horizontal-scroll-contents-scroll-padding);
   scroll-snap-type: x mandatory;
   width: 100%;
 }
 
-.contents > ::slotted( *) {
+/*
+.contents::after {
+  --width: calc(var(--scroll-margin) - var(--mds-horizontal-scroll-gap));
+  --position: calc(var(--scroll-margin) - var(--mds-horizontal-scroll-gap) - var(--mds-horizontal-scroll-controls-margin) + 48px);
+
+  background-color: rgb(255 0 255 / 0.1);
+  content: "";
+  display: flex;
+  height: 100%;
+  left: clamp(1px, var(--width), var(--width));
+  pointer-events: none;
+  position: fixed;
+  right: clamp(calc(var(--mds-horizontal-scroll-gap) / 2), var(--position), var(--position));
+}
+  */
+
+.contents > ::slotted(*) {
   flex-basis: 0;
   flex-grow: 0;
   flex-shrink: 0;
   scroll-margin: 0 var(--scroll-margin);
 }
 
-.contents::after,
-.contents::before {
+.spacer {
   --width: calc(var(--scroll-margin) - var(--mds-horizontal-scroll-gap));
 
   content: "";
@@ -130,51 +111,23 @@
   scroll-margin: 0 var(--scroll-margin);
 }
 
-.navigation--back {
-  --position: calc(var(--scroll-margin) - var(--mds-horizontal-scroll-gap) - var(--mds-horizontal-scroll-controls-margin));
+@container (max-width: 1024px) {
+  :host {
+    --scroll-margin: var(--mds-horizontal-scroll-contents-scroll-padding);
+  }
 
-  left: clamp(calc(var(--mds-horizontal-scroll-gap) / 2), var(--position), var(--position));
-}
+  .contents {
+    scroll-padding: var(--mds-horizontal-scroll-contents-scroll-padding);
+  }
 
-.navigation--forward {
-  --position: calc(var(--scroll-margin) - var(--mds-horizontal-scroll-gap) - var(--mds-horizontal-scroll-controls-margin));
-
-  right: clamp(calc(var(--mds-horizontal-scroll-gap) / 2), var(--position), var(--position));
-}
-
-.navigation--disabled {
-  opacity: 0;
-  pointer-events: none;
-  transform: translate(0, -50%) scale(0.5);
-}
-
-:host([controls="all"]) .navigation {
-  display: flex;
-}
-
-:host([controls="tv"]) .navigation {
-  @apply tv:flex;
-}
-
-:host([controls="xlarge"]) .navigation {
-  @apply xlarge:flex;
-}
-
-:host([controls="large"]) .navigation {
-  @apply large:flex;
-}
-
-:host([controls="wide"]) .navigation {
-  @apply wide:flex;
-}
-
-:host([controls="desktop"]) .navigation {
-  @apply desktop:flex;
-}
-
-:host([controls="tablet"]) .navigation {
-  @apply tablet:flex;
+  .contents > ::slotted(*) {
+    scroll-margin: 0 var(--mds-horizontal-scroll-contents-scroll-padding);
+  }
 }
 
 @import './css/mds-horizontal-scroll-pref-animation.css';
+@import './css/mds-horizontal-scroll-controls.css';
+@import './css/mds-horizontal-scroll-dot-navigation.css';
+@import './css/mds-horizontal-scroll-navigation.css';
+@import './css/mds-horizontal-scroll-snap.css';
 @import '../../tailwind/fouc.css';

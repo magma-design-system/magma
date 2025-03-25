@@ -5,6 +5,12 @@ const snapDictionary = [
   'start',
 ]
 
+const navigationDictionary = [
+  'none',
+  'scrollbar',
+  'position',
+]
+
 const viewportDictionary = [
   'all',
   'tv',
@@ -18,5 +24,6 @@ const viewportDictionary = [
 
 export {
   snapDictionary,
+  navigationDictionary,
   viewportDictionary,
 }

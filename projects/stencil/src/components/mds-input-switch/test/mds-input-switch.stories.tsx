@@ -77,8 +77,27 @@ const TemplateMultiple = args =>
     <mds-input-switch {...args} value="2">Choice D</mds-input-switch>
   </form>
 
+const TemplateList = () =>
+  <div class="grid grid-cols-1 gap-400">
+    <mds-input-switch value="1" checked>Choice A</mds-input-switch>
+    <mds-input-switch value="2">Choice B</mds-input-switch>
+    <mds-input-switch value="3" disabled>Choice C</mds-input-switch>
+    <mds-input-switch value="4" checked disabled>Choice D</mds-input-switch>
+    <mds-input-switch value="1" explicit checked>Choice A</mds-input-switch>
+    <mds-input-switch value="2" explicit>Choice B</mds-input-switch>
+    <mds-input-switch value="3" explicit disabled>Choice C</mds-input-switch>
+    <mds-input-switch value="4" explicit checked disabled>Choice D</mds-input-switch>
+  </div>
+
 export const Default = Template.bind({})
 Default.args = {
+  name: 'input-name',
+  type: 'switch',
+  value: '1',
+}
+
+export const ListExample = TemplateList.bind({})
+ListExample.args = {
   name: 'input-name',
   type: 'switch',
   value: '1',

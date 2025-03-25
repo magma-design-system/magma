@@ -75,7 +75,7 @@ export class MdsButton {
   /**
    * Specifies if the component is disabled or not
    */
-  @Prop({ mutable: false, reflect: true }) disabled?: boolean
+  @Prop({ mutable: true, reflect: true }) disabled?: boolean
 
   /**
    * Specifies if the button is awaiting for a response
@@ -98,7 +98,7 @@ export class MdsButton {
   @Prop({ reflect: true }) readonly truncate?: TypographyTruncateType = 'word'
 
   @Watch('disabled')
-  disabledChanged (newValue: boolean): void {
+  disabledChanged (newValue: boolean | undefined): void {
     if (newValue) {
       this.km.attachClickBehavior()
       return
@@ -228,6 +228,10 @@ export class MdsButton {
       return
     }
     this.km.attachClickBehavior()
+  }
+
+  connectedCallback (): void {
+    if (!this.disabled) this.host.removeAttribute('disabled')
   }
 
   disconnectedCallback (): void {

@@ -27,6 +27,6 @@
 }
 
 @import './css/mds-table-cell-pref-animation.css';
-@import './css/mds-table-cell-sorted.css';
 @import './css/mds-table-cell-selected.css';
+@import './css/mds-table-cell-sorted.css';
 @import '../../tailwind/fouc.css';
