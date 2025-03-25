@@ -1,0 +1,46 @@
+
+.navigation--back {
+  --position: calc(var(--scroll-margin) - var(--mds-horizontal-scroll-gap) - var(--mds-horizontal-scroll-controls-margin));
+
+  left: clamp(calc(var(--mds-horizontal-scroll-gap) / 2), var(--position), var(--position));
+}
+
+.navigation--forward {
+  --position: calc(var(--scroll-margin) - var(--mds-horizontal-scroll-gap) - var(--mds-horizontal-scroll-controls-margin));
+
+  right: clamp(calc(var(--mds-horizontal-scroll-gap) / 2), var(--position), var(--position));
+}
+
+.navigation--disabled {
+  opacity: 0;
+  pointer-events: none;
+  transform: translate(0, -50%) scale(0.5);
+}
+
+:host([controls="all"]) .navigation {
+  display: flex;
+}
+
+:host([controls="tv"]) .navigation {
+  @apply tv:flex;
+}
+
+:host([controls="xlarge"]) .navigation {
+  @apply xlarge:flex;
+}
+
+:host([controls="large"]) .navigation {
+  @apply large:flex;
+}
+
+:host([controls="wide"]) .navigation {
+  @apply wide:flex;
+}
+
+:host([controls="desktop"]) .navigation {
+  @apply desktop:flex;
+}
+
+:host([controls="tablet"]) .navigation {
+  @apply tablet:flex;
+}

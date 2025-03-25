@@ -4,6 +4,11 @@ export type SnapType =
   | 'none'
   | 'start'
 
+export type NavigationType =
+  | 'none'
+  | 'scrollbar'
+  | 'position'
+
 export type ViewportType =
   | 'all'
   | 'tv'

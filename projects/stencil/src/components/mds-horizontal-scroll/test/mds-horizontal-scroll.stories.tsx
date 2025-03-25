@@ -1,5 +1,5 @@
 import { h } from '@stencil/core'
-import { snapDictionary, viewportDictionary } from '../meta/dictionary'
+import { snapDictionary, viewportDictionary, navigationDictionary } from '../meta/dictionary'
 
 export default {
   title: 'Layout / Horizontal Scroll',
@@ -10,9 +10,11 @@ export default {
       options: viewportDictionary,
       control: { type: 'select' },
     },
-    scrollbar: {
+    navigation: {
       description: 'Specifies if the scrollbar is visible or not',
-      type: { name: 'boolean' },
+      type: { name: 'string' },
+      options: navigationDictionary,
+      control: { type: 'select' },
     },
     snap: {
       type: { name: 'string' },
@@ -66,9 +68,9 @@ Snap.args = {
   snap: 'end',
 }
 
-export const Scrollbar = Template.bind({})
-Scrollbar.args = {
-  scrollbar: true,
+export const Navigation = Template.bind({})
+Navigation.args = {
+  navigation: 'navigation',
 }
 
 export const TailwindStyled = Template.bind({})

@@ -28,7 +28,7 @@ import { MdsFilterEventDetail } from "./components/mds-filter/meta/event-detail"
 import { MdsFilterItemEventDetail } from "./components/mds-filter-item/meta/event-detail";
 import { HeaderBarMenuType, HeaderBarNavType } from "./type/header-bar";
 import { MdsHeaderEventDetail, MdsHeaderVisibilityEventDetail } from "./components/mds-header/meta/event-detail";
-import { SnapType, ViewportType } from "./components/mds-horizontal-scroll/meta/types";
+import { NavigationType, SnapType, ViewportType } from "./components/mds-horizontal-scroll/meta/types";
 import { CrossoriginType, ReferrerpolicyType } from "./components/mds-img/meta/types";
 import { LoadingType } from "./type/loading";
 import { MdsImgEventDetail } from "./components/mds-img/meta/event-detail";
@@ -94,7 +94,7 @@ export { MdsFilterEventDetail } from "./components/mds-filter/meta/event-detail"
 export { MdsFilterItemEventDetail } from "./components/mds-filter-item/meta/event-detail";
 export { HeaderBarMenuType, HeaderBarNavType } from "./type/header-bar";
 export { MdsHeaderEventDetail, MdsHeaderVisibilityEventDetail } from "./components/mds-header/meta/event-detail";
-export { SnapType, ViewportType } from "./components/mds-horizontal-scroll/meta/types";
+export { NavigationType, SnapType, ViewportType } from "./components/mds-horizontal-scroll/meta/types";
 export { CrossoriginType, ReferrerpolicyType } from "./components/mds-img/meta/types";
 export { LoadingType } from "./type/loading";
 export { MdsImgEventDetail } from "./components/mds-img/meta/event-detail";
@@ -736,9 +736,9 @@ export namespace Components {
          */
         "controls"?: ViewportType;
         /**
-          * Shows the horizontal scrollbar to maximize accessibility
+          * Specifies the box’s snap position as an alignment of its snap area
          */
-        "scrollbar"?: boolean;
+        "navigation"?: NavigationType;
         /**
           * Specifies the box’s snap position as an alignment of its snap area
          */
@@ -3998,9 +3998,9 @@ declare namespace LocalJSX {
          */
         "controls"?: ViewportType;
         /**
-          * Shows the horizontal scrollbar to maximize accessibility
+          * Specifies the box’s snap position as an alignment of its snap area
          */
-        "scrollbar"?: boolean;
+        "navigation"?: NavigationType;
         /**
           * Specifies the box’s snap position as an alignment of its snap area
          */
