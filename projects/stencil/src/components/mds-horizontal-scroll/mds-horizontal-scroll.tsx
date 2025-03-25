@@ -1,4 +1,4 @@
-import { Component, Element, Host, h, Prop, State } from '@stencil/core'
+import { Component, Element, Host, h, Prop, State, Watch } from '@stencil/core'
 import { SnapType, NavigationType, ViewportType } from './meta/types'
 import miBaselineArrowBack from '@icon/mi/baseline/arrow-back.svg'
 import miBaselineArrowForward from '@icon/mi/baseline/arrow-forward.svg'
@@ -45,6 +45,13 @@ export class MdsHorizontalScroll {
    * Specifies the box’s snap position as an alignment of its snap area
    */
   @Prop({ reflect: true }) readonly snap?: SnapType = 'start'
+
+  @Watch('navigation')
+  watchNavigation (newValue: NavigationType): void {
+    if (newValue === 'position') {
+      this.addNavigationDots()
+    }
+  }
 
   private updateElements = (): void => {
     this.elements = this.host.shadowRoot?.querySelectorAll('slot')[0]?.assignedNodes() as Node[]
@@ -156,7 +163,7 @@ export class MdsHorizontalScroll {
 
   private translateNavigationDot = (): void => {
     if (!this.elements || !this.contents || !this.navigationDot || !this.navigationDots) {
-      console.warn('translateNavigationDot: uno degli elementi necessari non è stato trovato.')
+      console.error('mds-horizontal-scroll.translateNavigationDot: One of the shadowRoot elements is missing.')
       return
     }
 
@@ -170,7 +177,7 @@ export class MdsHorizontalScroll {
     const dotWidth = this.navigationDot.offsetWidth
 
     if (offsetWidth === 0 || scrollWidth === 0) {
-      console.warn('translateNavigationDot: offsetWidth o scrollWidth è 0, impossibile calcolare la posizione.')
+      console.error('mds-horizontal-scroll.translateNavigationDot: offsetWidth or scrollWidth is 0, impossible to calculate position')
       return
     }
 
@@ -186,7 +193,7 @@ export class MdsHorizontalScroll {
 
   private updateNavigationDotSize = (): void => {
     if (!this.contents || !this.navigationDot || !this.navigationDots) {
-      console.warn('updateNavigationDotSize: uno degli elementi necessari non è stato trovato.')
+      console.error('mds-horizontal-scroll.updateNavigationDotSize: One of the shadowRoot elements is missing.')
       return
     }
     const { scrollWidth, offsetWidth } = this.contents
@@ -202,6 +209,7 @@ export class MdsHorizontalScroll {
   }
 
   private addNavigationDots = (): void => {
+    this.contents.removeEventListener('scroll', this.translateNavigationDot)
     this.navigationDot = this.host.shadowRoot?.querySelector('.dot') as HTMLElement
     this.navigationDots = this.host.shadowRoot?.querySelector('.dot-navigation') as HTMLElement
     this.updateNavigationDotSize()
@@ -216,7 +224,7 @@ export class MdsHorizontalScroll {
   componentDidLoad (): void {
     this.contents = this.host.shadowRoot?.querySelector('.contents') as HTMLElement
     this.spacer = this.host.shadowRoot?.querySelector('.spacer') as HTMLElement
-    if (this.navigation) this.addNavigationDots()
+    if (this.navigation === 'position') this.addNavigationDots()
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     if (window && typeof (window as any).onscrollend !== 'undefined') {
       this.contents.addEventListener('scrollend', this.checkNavigationButtons)
@@ -238,11 +246,9 @@ export class MdsHorizontalScroll {
           <slot onSlotchange={this.updateElements}></slot>
           <div class="spacer"></div>
         </div>
-        { this.navigation === 'position' &&
-          <div class="dot-navigation">
-            <div class="dot"></div>
-          </div>
-        }
+        <div class="dot-navigation">
+          <div class="dot"></div>
+        </div>
         { this.controls && this.controls !== 'none' && <mds-button onClick={this.moveBack} size="lg" class={clsx('navigation navigation--back', !this.showBack && 'navigation--disabled')} icon={ miBaselineArrowBack }></mds-button> }
         { this.controls && this.controls !== 'none' && <mds-button onClick={this.moveForward} size="lg" class={clsx('navigation navigation--forward', !this.showForward && 'navigation--disabled')} icon={ miBaselineArrowForward }></mds-button> }
       </Host>
