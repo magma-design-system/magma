@@ -2,7 +2,7 @@
   align-self: center;
   background-color: var(--mds-horizontal-scroll-dot-area-background);
   border-radius: 200px;
-  display: inline-flex;
+  display: none;
   gap: var(--mds-horizontal-scroll-dots-gap);
   justify-content: start;
   margin: 0 auto var(--mds-horizontal-scroll-contents-padding) auto;
@@ -11,11 +11,18 @@
   width: 100%;
 }
 
+:host([navigation="position"]) .dot-navigation {
+  display: inline-flex;
+}
+
 .dot {
   background-color: var(--mds-horizontal-scroll-dot-background);
   border-radius: 200px;
   height: var(--mds-horizontal-scroll-dot-size);
   max-width: var(--mds-horizontal-scroll-dot-max-width);
   min-width: var(--mds-horizontal-scroll-dot-size);
+  transition-duration: theme('transitionDuration.300');
+  transition-property: width;
+  transition-timing-function: theme('transitionTimingFunction.out-expo');
   width: calc(var(--mds-horizontal-scroll-dot-size) * 2);
 }
