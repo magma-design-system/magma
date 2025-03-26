@@ -1,42 +1,37 @@
 :host {
-  --mds-push-notifications-fadeout-delay: 3s;
+  --mds-push-notifications-fadeout-delay: 0s;
   --mds-push-notifications-gap: theme('spacing.200');
   --mds-push-notifications-items-delay: 400ms;
   --mds-push-notifications-items-duration: 300ms;
   --mds-push-notifications-items-gap: var(--mds-push-notifications-gap);
   --mds-push-notifications-items-timing-function: theme('transitionTimingFunction.in-out-quint');
+  --mds-push-notifications-background: linear-gradient(to right, rgb(220 220 220 / 0) 0%, rgb(220 220 220 / 0.85) 100%);
+}
 
+.aside-window {
   @apply
     duration-500
     ease-in-out-expo
     gap-200
     max-w-[360px]
     min-w-7200
-    p-400;
+    p-400
+    pl-2400;
 
+  /* stylelint-disable-next-line property-disallowed-list */
+  background: var(--mds-push-notifications-background);
   bottom: 0;
+  box-sizing: content-box !important;
   display: flex;
   flex-direction: column;
   overflow: auto;
-  pointer-events: none;
   position: fixed;
   right: 0;
   top: 0;
   transform: translate(100%, 0);
-  transition-delay: 0;
+  transition-delay: var(--mds-push-notifications-fadeout-delay);
   transition-property: transform;
   z-index: var(--magma-notification-z-index, 3000);
-}
-
-:host([visible]:not([visible="false"])) {
-  transform: translate(0, 0);
-  transition-delay: 0s;
-}
-
-:host(:not([visible])),
-:host([visible="false"]) {
-  transform: translate(100%, 0);
-  transition-delay: var(--mds-push-notifications-fadeout-delay);
 }
 
 .notifications {
@@ -55,4 +50,6 @@
 
 }
 
+@import './css/mds-push-notifications-pref-theme.css';
+@import './css/mds-push-notifications-visible.css';
 @import '../../tailwind/fouc.css';

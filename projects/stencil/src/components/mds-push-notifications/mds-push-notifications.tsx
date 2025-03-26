@@ -1,6 +1,6 @@
-import { Component, Element, Host, h, Prop } from '@stencil/core'
+import { Component, Element, Host, h, Prop, Event, EventEmitter, Watch } from '@stencil/core'
 import { cssDurationToMilliseconds, cssSizeToNumber } from '@common/unit'
-
+import { MdsPushNotificationsEventDetail } from './meta/event-detail'
 /**
  * @part notifications - The container wrapper of the notifications.
  * @slot top - Add `HTML elements` or `components`, it is **recommended** to use `mds-button` element.
@@ -25,8 +25,32 @@ export class MdsPushNotifications {
    */
   @Prop({ reflect: true, mutable: true }) visible?: boolean
 
+  /**
+   * Specifies if the component is visible or not.
+   * visibility = auto | manual
+   * should hide when click outside
+   * should hide when all notifications are removed
+   * should show when one or more notifications are added
+   */
+  @Prop({ reflect: true }) visibility?: 'auto' | 'manual' = 'auto'
+
+  /**
+   * Emits when the component visibility changes
+   */
+  @Event({ eventName: 'mdsPushNotificationsChange' }) changedEvent: EventEmitter<MdsPushNotificationsEventDetail>
+
+  /**
+   * Emits when the component is shown
+   */
+  @Event({ eventName: 'mdsPushNotificationsShow' }) shownEvent: EventEmitter<void>
+
+  /**
+   * Emits when the component is hidden
+   */
+  @Event({ eventName: 'mdsPushNotificationsHide' }) hiddenEvent: EventEmitter<void>
+
   // TODO [fix] If visibility is set to false, hide all the notifications area also when they are added
-  // TODO [fix] If visibility is set to true, shows all the notifications area also when they removed
+  // TODO [fix] If visibility is set to true, and there are not notifications, show the notifications area
   // TODO [feat] Add a method to clear all notifications at once
   // TODO [feat] Hide the component when all the children are removed
   // TODO [feat] Show the component when one or more children are added
@@ -51,8 +75,11 @@ export class MdsPushNotifications {
 
   private checkNotificationsItems = (): void => {
     this.totalItems -= 1
+    // console.log('totalItems', this.totalItems)
     if (this.totalItems === 0) {
-      this.visible = false
+      this.changedEvent.emit()
+      this.hiddenEvent.emit()
+      this.visible = undefined
     }
   }
 
@@ -100,6 +127,8 @@ export class MdsPushNotifications {
     itemsIntro.forEach(async intro => {
       await intro
     })
+    this.shownEvent.emit()
+    this.visible = true
   }
 
   private updateCSSCustomProps = (): void => {
@@ -108,18 +137,42 @@ export class MdsPushNotifications {
     this.cssItemsDuration = elementStyles.getPropertyValue('--mds-push-notifications-items-duration') ?? '200ms'
   }
 
+  componentWillLoad (): void {
+    const elements = this.host.shadowRoot?.querySelectorAll('slot')[1]?.assignedNodes()
+    if (!elements) {
+      return
+    }
+    this.totalItems = elements.length
+  }
+
   componentDidLoad (): void {
     this.updateCSSCustomProps()
+    if (this.totalItems === 0) {
+      this.visible = undefined
+    }
+  }
+
+  @Watch('visible')
+  visibleChanged (newValue?: boolean): void {
+    this.changedEvent.emit({ visible: newValue ?? false })
+    if (!newValue) {
+      this.hiddenEvent.emit()
+      if (newValue === false) this.visible = undefined
+      return
+    }
+    this.shownEvent.emit()
   }
 
   render () {
     return (
       <Host>
-        <slot name="top"></slot>
-        <div class="notifications" part="notifications">
-          <slot onSlotchange={this.handleSlotChange.bind(this)} />
+        <div class="aside-window">
+          <slot name="top"></slot>
+          <div class="notifications" part="notifications">
+            <slot onSlotchange={this.handleSlotChange.bind(this)} />
+          </div>
+          <slot name="bottom"></slot>
         </div>
-        <slot name="bottom"></slot>
       </Host>
     )
   }

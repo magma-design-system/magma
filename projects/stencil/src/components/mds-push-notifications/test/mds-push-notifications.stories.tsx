@@ -30,34 +30,59 @@ const PushNotificationElement = ( { index }) => {
 
 const Template = args => {
   const [visible, setVisibility] = useState(args.visible || false)
+
   useEffect(() => {
     const pushNotificationsElement = document.querySelector('.mds-push-notifications')
     if (pushNotificationsElement === null) {
+      alert('Push notifications element not found')
       return
     }
-    pushNotificationsElement.addEventListener('onMdsPushNotificationHide', () => {
-      // trigger when a single notification is hidden
-      // console.log('mdsPushNotificationHide')
-      setVisibility(!visible)
+    pushNotificationsElement.addEventListener('mdsPushNotificationsChange', (e: CustomEvent) => {
+      console.info('mdsPushNotificationsChange', e.detail)
+      // setVisibility(e.detail)
     })
 
+    pushNotificationsElement.addEventListener('mdsPushNotificationsShow', () => {
+      console.info('mdsPushNotificationsShow')
+      setVisibility(true)
+    })
+
+    pushNotificationsElement.addEventListener('mdsPushNotificationsHide', () => {
+      console.info('mdsPushNotificationsHide')
+      setVisibility(false)
+    })
   }, [])
-  // window.addEventListener('mdsModalClose', () => { setVisibility(false) })
-  return <div>
-    <mds-button onClick={() => setVisibility(!visible) }>{ visible ? 'Hide' : 'Show' } notifications</mds-button>
-    <mds-push-notifications class="mds-push-notifications" visible={visible}>
+
+  return <div class="-m-600">
+    { visible
+      ? <mds-button class="fixed top-600 left-600 shadow-outline-50 shadow-tone-neutral" onClick={() => setVisibility(false) } icon="mdi/eye-off-outline" variant="error">Hide notifications</mds-button>
+      : <mds-button class="fixed top-600 left-600 shadow-outline-50 shadow-tone-neutral" onClick={() => setVisibility(true) } icon="mi/baseline/remove-red-eye" variant="primary">Show notifications</mds-button>
+    }
+    <mds-push-notifications class="mds-push-notifications" visible={visible === false ? undefined : true}>
       <mds-button slot="top" variant="dark">Cancella notifiche</mds-button>
       <PushNotificationsElements/>
       <mds-button slot="bottom" variant="dark">Carica altre...</mds-button>
     </mds-push-notifications>
+    <div class="p-1200 flex justify-center">
+      <div class="grid gap-600 grid-cols-3 mobile:grid-cols-1 max-w-screen-desktop">
+        { Array(18).fill(null).map((_item, index) => {
+          return (
+            <div class="grid gap-25" key={index}>
+              <mds-text typography='h5' tag="h2">This is a section title</mds-text>
+              <mds-text>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Accusamus iure, ratione beatae quam optio cumque rerum modi consectetur odit eligendi omnis veniam fuga non ipsam voluptatum a ut neque illum.</mds-text>
+            </div>
+          )
+        })}
+      </div>
+    </div>
   </div>
 }
 
-const TemplateAddNotifications = args => {
+const TemplateAddNotifications = () => {
   const [items, setItem] = useState(0)
   return <div>
     <mds-button onClick={() => setItem(items + 1) }>Add notifications</mds-button>
-    <mds-push-notifications {...args}>
+    <mds-push-notifications>
       { Array.from(Array(items).keys()).map((_item, index) =>
         <PushNotificationElement index={index}/>,
       ) }

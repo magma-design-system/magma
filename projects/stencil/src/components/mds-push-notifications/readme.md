@@ -7,9 +7,19 @@
 
 ## Properties
 
-| Property  | Attribute | Description                                   | Type                   | Default     |
-| --------- | --------- | --------------------------------------------- | ---------------------- | ----------- |
-| `visible` | `visible` | Specifies if the component is visible or not. | `boolean \| undefined` | `undefined` |
+| Property     | Attribute    | Description                                                                                                                                                                                                  | Type                              | Default     |
+| ------------ | ------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ | --------------------------------- | ----------- |
+| `visibility` | `visibility` | Specifies if the component is visible or not. visibility = auto \| manual should hide when click outside should hide when all notifications are removed should show when one or more notifications are added | `"auto" \| "manual" \| undefined` | `'auto'`    |
+| `visible`    | `visible`    | Specifies if the component is visible or not.                                                                                                                                                                | `boolean \| undefined`            | `undefined` |
+
+
+## Events
+
+| Event                        | Description                                 | Type                                           |
+| ---------------------------- | ------------------------------------------- | ---------------------------------------------- |
+| `mdsPushNotificationsChange` | Emits when the component visibility changes | `CustomEvent<MdsPushNotificationsEventDetail>` |
+| `mdsPushNotificationsHide`   | Emits when the component is hidden          | `CustomEvent<void>`                            |
+| `mdsPushNotificationsShow`   | Emits when the component is shown           | `CustomEvent<void>`                            |
 
 
 ## Slots

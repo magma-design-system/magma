@@ -56,6 +56,7 @@ import { PriceTableFeaturesCellType } from "./components/mds-price-table-feature
 import { DirectionType } from "./components/mds-progress/meta/types";
 import { NotificationDateFormatType, NotificationPreviewType } from "./components/mds-push-notification/meta/types";
 import { MdsPushNotificationEventDetail } from "./components/mds-push-notification/meta/event-detail";
+import { MdsPushNotificationsEventDetail } from "./components/mds-push-notifications/meta/event-detail";
 import { MdsStepperBarEventDetail } from "./components/mds-stepper-bar/meta/event-detail";
 import { MdsStepperBarItemEventDetail } from "./components/mds-stepper-bar-item/meta/event-detail";
 import { HorizontalActionsAnimationType } from "./type/animation";
@@ -122,6 +123,7 @@ export { PriceTableFeaturesCellType } from "./components/mds-price-table-feature
 export { DirectionType } from "./components/mds-progress/meta/types";
 export { NotificationDateFormatType, NotificationPreviewType } from "./components/mds-push-notification/meta/types";
 export { MdsPushNotificationEventDetail } from "./components/mds-push-notification/meta/event-detail";
+export { MdsPushNotificationsEventDetail } from "./components/mds-push-notifications/meta/event-detail";
 export { MdsStepperBarEventDetail } from "./components/mds-stepper-bar/meta/event-detail";
 export { MdsStepperBarItemEventDetail } from "./components/mds-stepper-bar-item/meta/event-detail";
 export { HorizontalActionsAnimationType } from "./type/animation";
@@ -1518,6 +1520,10 @@ export namespace Components {
     }
     interface MdsPushNotifications {
         /**
+          * Specifies if the component is visible or not. visibility = auto | manual should hide when click outside should hide when all notifications are removed should show when one or more notifications are added
+         */
+        "visibility"?: 'auto' | 'manual';
+        /**
           * Specifies if the component is visible or not.
          */
         "visible"?: boolean;
@@ -2060,6 +2066,10 @@ export interface MdsPrefThemeCustomEvent<T> extends CustomEvent<T> {
 export interface MdsPushNotificationCustomEvent<T> extends CustomEvent<T> {
     detail: T;
     target: HTMLMdsPushNotificationElement;
+}
+export interface MdsPushNotificationsCustomEvent<T> extends CustomEvent<T> {
+    detail: T;
+    target: HTMLMdsPushNotificationsElement;
 }
 export interface MdsStepperBarCustomEvent<T> extends CustomEvent<T> {
     detail: T;
@@ -2936,7 +2946,20 @@ declare global {
         prototype: HTMLMdsPushNotificationElement;
         new (): HTMLMdsPushNotificationElement;
     };
+    interface HTMLMdsPushNotificationsElementEventMap {
+        "mdsPushNotificationsChange": MdsPushNotificationsEventDetail;
+        "mdsPushNotificationsShow": void;
+        "mdsPushNotificationsHide": void;
+    }
     interface HTMLMdsPushNotificationsElement extends Components.MdsPushNotifications, HTMLStencilElement {
+        addEventListener<K extends keyof HTMLMdsPushNotificationsElementEventMap>(type: K, listener: (this: HTMLMdsPushNotificationsElement, ev: MdsPushNotificationsCustomEvent<HTMLMdsPushNotificationsElementEventMap[K]>) => any, options?: boolean | AddEventListenerOptions): void;
+        addEventListener<K extends keyof DocumentEventMap>(type: K, listener: (this: Document, ev: DocumentEventMap[K]) => any, options?: boolean | AddEventListenerOptions): void;
+        addEventListener<K extends keyof HTMLElementEventMap>(type: K, listener: (this: HTMLElement, ev: HTMLElementEventMap[K]) => any, options?: boolean | AddEventListenerOptions): void;
+        addEventListener(type: string, listener: EventListenerOrEventListenerObject, options?: boolean | AddEventListenerOptions): void;
+        removeEventListener<K extends keyof HTMLMdsPushNotificationsElementEventMap>(type: K, listener: (this: HTMLMdsPushNotificationsElement, ev: MdsPushNotificationsCustomEvent<HTMLMdsPushNotificationsElementEventMap[K]>) => any, options?: boolean | EventListenerOptions): void;
+        removeEventListener<K extends keyof DocumentEventMap>(type: K, listener: (this: Document, ev: DocumentEventMap[K]) => any, options?: boolean | EventListenerOptions): void;
+        removeEventListener<K extends keyof HTMLElementEventMap>(type: K, listener: (this: HTMLElement, ev: HTMLElementEventMap[K]) => any, options?: boolean | EventListenerOptions): void;
+        removeEventListener(type: string, listener: EventListenerOrEventListenerObject, options?: boolean | EventListenerOptions): void;
     }
     var HTMLMdsPushNotificationsElement: {
         prototype: HTMLMdsPushNotificationsElement;
@@ -4838,6 +4861,22 @@ declare namespace LocalJSX {
         "variant"?: ThemeFullVariantAvatarType;
     }
     interface MdsPushNotifications {
+        /**
+          * Emits when the component visibility changes
+         */
+        "onMdsPushNotificationsChange"?: (event: MdsPushNotificationsCustomEvent<MdsPushNotificationsEventDetail>) => void;
+        /**
+          * Emits when the component is hidden
+         */
+        "onMdsPushNotificationsHide"?: (event: MdsPushNotificationsCustomEvent<void>) => void;
+        /**
+          * Emits when the component is shown
+         */
+        "onMdsPushNotificationsShow"?: (event: MdsPushNotificationsCustomEvent<void>) => void;
+        /**
+          * Specifies if the component is visible or not. visibility = auto | manual should hide when click outside should hide when all notifications are removed should show when one or more notifications are added
+         */
+        "visibility"?: 'auto' | 'manual';
         /**
           * Specifies if the component is visible or not.
          */
