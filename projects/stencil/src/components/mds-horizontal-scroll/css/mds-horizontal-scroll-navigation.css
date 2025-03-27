@@ -2,10 +2,6 @@
   @apply hide-scrollbar;
 }
 
-:host(:not([navigation="scrollbar"])) .contents::-webkit-scrollbar {
-  display: none;
-}
-
 :host([navigation="scrollbar"]) .contents::-webkit-scrollbar {
   height: var(--mds-horizontal-scroll-scrollbar-size);
   width: var(--mds-horizontal-scroll-scrollbar-size);
