@@ -57,6 +57,11 @@ export class MdsPushNotifications {
   // TODO [feat] Show the component when one or more children are added
   // TODO [test] tests are not clear, please fix them
 
+  /**
+   * Animation for open notification
+   * @param element HTMLElement that need to be opened
+   * @returns
+   */
   private introItem = (element: HTMLElement): Promise<void> => {
     // no reason why I must duplicata marginBottom negative to prevent flickering
     element.style.marginBottom = `-${element.offsetHeight + cssSizeToNumber(this.cssItemsGap)}px`
@@ -74,6 +79,11 @@ export class MdsPushNotifications {
     })
   }
 
+  /**
+   * Animation for close notification
+   * @param element HTMLElement that need to be removed
+   * @returns
+   */
   private outroItem = (element: HTMLElement): Promise<void> => {
     if (this.slotNotifications.assignedNodes().length <= 1) this.hide()
     // no reason why I must duplicate marginBottom negative to prevent flickering
@@ -94,16 +104,15 @@ export class MdsPushNotifications {
     })
   }
 
-  private addNotificationBehavior = (element: HTMLElement): void => {
-    element.addEventListener('mdsPushNotificationClose', () => this.outroItem(element))
-  }
-
+  /**
+   * manages the opening of notifications when they are added to the slot
+   */
   private handleSlotChange = (): void => {
     const elements = this.slotNotifications.assignedElements().map(e => e as HTMLElement).filter(e => !e.style.visibility )
     if (elements.length === 0) return
 
     elements.forEach(async e => {
-      this.addNotificationBehavior(e)
+      e.addEventListener('mdsPushNotificationClose', () => this.outroItem(e))
       await this.introItem(e)
     })
     this.show()
@@ -122,17 +131,23 @@ export class MdsPushNotifications {
 
   @Method()
   show (): Promise<void> {
-    this.changedEvent.emit()
-    this.shownEvent.emit()
     this.visible = true
     return Promise.resolve()
   }
 
   @Method()
   hide (): Promise<void> {
-    this.changedEvent.emit()
-    this.hiddenEvent.emit()
     this.visible = undefined
+    return Promise.resolve()
+  }
+
+  @Method()
+  removeNotification (notification: HTMLMdsPushNotificationElement | HTMLMdsPushNotificationElement[]): Promise<void> {
+    if (Array.isArray(notification)) {
+      notification.forEach(this.outroItem)
+    } else {
+      this.outroItem(notification)
+    }
     return Promise.resolve()
   }
 
@@ -145,13 +160,17 @@ export class MdsPushNotifications {
 
   @Watch('visible')
   visibleChanged (newValue?: boolean): void {
-    this.changedEvent.emit({ visible: newValue ?? false })
-    if (!newValue) {
-      this.hiddenEvent.emit()
-      if (newValue === false) this.visible = undefined
+    if (newValue) {
+      this.changedEvent.emit({ visible: true })
+      this.shownEvent.emit()
       return
     }
-    this.shownEvent.emit()
+    if (newValue === undefined) {
+      this.changedEvent.emit({ visible: false })
+      this.hiddenEvent.emit()
+      return
+    }
+    this.visible = undefined
   }
 
   render () {

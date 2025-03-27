@@ -1520,6 +1520,7 @@ export namespace Components {
     }
     interface MdsPushNotifications {
         "hide": () => Promise<void>;
+        "removeNotification": (notification: HTMLMdsPushNotificationElement | HTMLMdsPushNotificationElement[]) => Promise<void>;
         "show": () => Promise<void>;
         /**
           * Specifies if the component is visible or not. visibility = auto | manual should hide when click outside should hide when all notifications are removed should show when one or more notifications are added
