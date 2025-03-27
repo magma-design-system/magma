@@ -39,8 +39,8 @@ export class MdsInputDate {
 
   handleChange (event: Event): void {
     const input = event.target as HTMLInputElement
-    this.internalValue = input.value
-    this.valueChange.emit(this.internalValue)
+    this.value = input.value
+    this.valueChange.emit(this.value)
   }
 
   componentWillLoad (): void {
