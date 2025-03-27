@@ -429,24 +429,44 @@ export class MdsCalendar {
       <Host>
         <nav>
           <mds-button class="action-back" icon={miBaselineBackIosNew} variant="dark" tone="quiet" onClick={event => {
-            event.stopPropagation()
-            this.changeMonth(-1)
+            if (this.currentView == 'calendar') {
+              event.stopPropagation()
+              this.changeMonth(-1)
+            } else if (this.currentView == 'years') {
+              event.stopPropagation()
+              this.selectedYear -= 10
+            } else {
+              event.stopPropagation()
+            }
           }}></mds-button>
           <div class="select-month-or-year">
-            <mds-button class="action-month" variant="dark" tone="quiet" onClick={event => {
+            {(this.currentView  === 'calendar' || this.currentView === 'months') && <mds-button class="action-month" variant="dark" tone="quiet" onClick={event => {
               event.stopPropagation()
-              this.currentView = 'months'
-            }}>{this.currentMonth}</mds-button>
+              this.currentView = this.currentView === 'months' ? 'calendar' : 'months'
+              requestAnimationFrame(() => {
+                this.updateCalendar().then(() => this.setDates())
+              })
 
-            <mds-button class="action-year" variant="dark" tone="quiet" onClick={event => {
+            }}>{this.currentMonth}</mds-button>}
+            {(this.currentView === 'calendar' || this.currentView === 'years') && <mds-button class="action-year" variant="dark" tone="quiet" onClick={event => {
               event.stopPropagation()
-              this.currentView = 'years'
-            }}>{this.currentYear}</mds-button>
+              this.currentView = this.currentView === 'years' ? 'calendar' : 'years'
+              requestAnimationFrame(() => {
+                this.updateCalendar().then(() => this.setDates())
+              })
+            }}>{this.currentYear}</mds-button>}
 
           </div>
           <mds-button class="action-forward" icon={miBaselineForwardIos} variant="dark" tone="quiet" onClick={event => {
-            event.stopPropagation()
-            this.changeMonth(1)
+            if (this.currentView == 'calendar') {
+              event.stopPropagation()
+              this.changeMonth(1)
+            } else if (this.currentView == 'years') {
+              event.stopPropagation()
+              this.selectedYear += 10
+            } else {
+              event.stopPropagation()
+            }
           }}></mds-button>
         </nav>
         {this.currentView === 'calendar' && (
@@ -502,10 +522,7 @@ export class MdsCalendar {
         {this.currentView === 'years' && (
           <section class="year-selection">
             <header class="month-view__years">
-              <mds-button class='action' variant='dark' tone='quiet' onClick={event => {
-                event.stopPropagation()
-                this.selectedYear -= 10
-              }}>◀</mds-button>
+
               {Array.from({ length: 10 }).map((_, index) => {
                 const year = this.selectedYear + index
                 return (
@@ -522,10 +539,6 @@ export class MdsCalendar {
                   </mds-button>
                 )
               })}
-              <mds-button class='action' variant='dark' tone='quiet' onClick={event => {
-                event.stopPropagation()
-                this.selectedYear += 10
-              }}>▶</mds-button>
             </header>
           </section>
         )}
