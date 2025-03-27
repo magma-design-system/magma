@@ -1,3 +1,6 @@
+@import '../../tailwind/components.css';
+@tailwind components;
+
 :host {
   --mds-push-notifications-fadeout-delay: 0s;
   --mds-push-notifications-gap: theme('spacing.200');
@@ -6,9 +9,7 @@
   --mds-push-notifications-items-gap: var(--mds-push-notifications-gap);
   --mds-push-notifications-items-timing-function: theme('transitionTimingFunction.in-out-quint');
   --mds-push-notifications-background: linear-gradient(to right, rgb(220 220 220 / 0) 0%, rgb(220 220 220 / 0.85) 100%);
-}
 
-.aside-window {
   @apply
     duration-500
     ease-in-out-expo
@@ -16,7 +17,8 @@
     max-w-[360px]
     min-w-7200
     p-400
-    pl-2400;
+    pl-2400
+    hide-scrollbar;
 
   /* stylelint-disable-next-line property-disallowed-list */
   background: var(--mds-push-notifications-background);
@@ -24,7 +26,8 @@
   box-sizing: content-box !important;
   display: flex;
   flex-direction: column;
-  overflow: auto;
+  overflow-x: hidden;
+
   position: fixed;
   right: 0;
   top: 0;

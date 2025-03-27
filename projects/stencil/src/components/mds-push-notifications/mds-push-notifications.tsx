@@ -1,4 +1,4 @@
-import { Component, Element, Host, h, Prop, Event, EventEmitter, Watch } from '@stencil/core'
+import { Component, Element, Host, h, Prop, Event, EventEmitter, Watch, Method } from '@stencil/core'
 import { cssDurationToMilliseconds, cssSizeToNumber } from '@common/unit'
 import { MdsPushNotificationsEventDetail } from './meta/event-detail'
 /**
@@ -16,9 +16,10 @@ import { MdsPushNotificationsEventDetail } from './meta/event-detail'
 export class MdsPushNotifications {
 
   @Element() host: HTMLMdsPushNotificationsElement
+  slotNotifications!: HTMLSlotElement
   private cssItemsDuration: string
   private cssItemsGap: string
-  private totalItems = 0
+  // private totalItems = 0
 
   /**
    * Specifies if the component is visible or not.
@@ -73,20 +74,10 @@ export class MdsPushNotifications {
     })
   }
 
-  private checkNotificationsItems = (): void => {
-    this.totalItems -= 1
-    // console.log('totalItems', this.totalItems)
-    if (this.totalItems === 0) {
-      this.changedEvent.emit()
-      this.hiddenEvent.emit()
-      this.visible = undefined
-    }
-  }
-
   private outroItem = (element: HTMLElement): Promise<void> => {
+    if (this.slotNotifications.assignedNodes().length <= 1) this.hide()
     // no reason why I must duplicate marginBottom negative to prevent flickering
     element.style.marginBottom = '0px'
-    this.checkNotificationsItems()
     return new Promise<void>(resolve => {
       setTimeout(() => {
         element.style.marginBottom = '0px'
@@ -108,27 +99,14 @@ export class MdsPushNotifications {
   }
 
   private handleSlotChange = (): void => {
-    this.updateCSSCustomProps()
-    const elements = this.host.shadowRoot?.querySelectorAll('slot')[1]?.assignedNodes()
-    if (!elements) {
-      console.info('No slotted elements found.')
-      return
-    }
+    const elements = this.slotNotifications.assignedElements().map(e => e as HTMLElement).filter(e => !e.style.visibility )
+    if (elements.length === 0) return
 
-    const itemsIntro: Promise<void>[] = []
-    let element: HTMLElement
-    while (this.totalItems < elements.length) {
-      element = elements[this.totalItems] as HTMLElement
-      this.addNotificationBehavior(element)
-      itemsIntro.push(this.introItem(element))
-      this.totalItems += 1
-    }
-
-    itemsIntro.forEach(async intro => {
-      await intro
+    elements.forEach(async e => {
+      this.addNotificationBehavior(e)
+      await this.introItem(e)
     })
-    this.shownEvent.emit()
-    this.visible = true
+    this.show()
   }
 
   private updateCSSCustomProps = (): void => {
@@ -137,19 +115,32 @@ export class MdsPushNotifications {
     this.cssItemsDuration = elementStyles.getPropertyValue('--mds-push-notifications-items-duration') ?? '200ms'
   }
 
-  componentWillLoad (): void {
-    const elements = this.host.shadowRoot?.querySelectorAll('slot')[1]?.assignedNodes()
-    if (!elements) {
-      return
-    }
-    this.totalItems = elements.length
+  private clear (): void {
+    this.slotNotifications.assignedElements().forEach(e => this.outroItem(e as HTMLElement))
+    this.hide()
+  }
+
+  @Method()
+  show (): Promise<void> {
+    this.changedEvent.emit()
+    this.shownEvent.emit()
+    this.visible = true
+    return Promise.resolve()
+  }
+
+  @Method()
+  hide (): Promise<void> {
+    this.changedEvent.emit()
+    this.hiddenEvent.emit()
+    this.visible = undefined
+    return Promise.resolve()
   }
 
   componentDidLoad (): void {
     this.updateCSSCustomProps()
-    if (this.totalItems === 0) {
-      this.visible = undefined
-    }
+
+    this.slotNotifications.addEventListener('slotchange', this.handleSlotChange)
+    this.handleSlotChange()
   }
 
   @Watch('visible')
@@ -166,13 +157,12 @@ export class MdsPushNotifications {
   render () {
     return (
       <Host>
-        <div class="aside-window">
-          <slot name="top"></slot>
-          <div class="notifications" part="notifications">
-            <slot onSlotchange={this.handleSlotChange.bind(this)} />
-          </div>
-          <slot name="bottom"></slot>
+        {/* <slot name="top"></slot> */}
+        <mds-button variant="dark" onClick={this.clear.bind(this)}>Cancella notifiche</mds-button>
+        <div class="notifications" part="notifications">
+          <slot ref={el => this.slotNotifications = el as HTMLSlotElement}/>
         </div>
+        {/* <slot name="bottom"></slot> */}
       </Host>
     )
   }

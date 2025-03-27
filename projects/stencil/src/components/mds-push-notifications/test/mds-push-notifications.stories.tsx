@@ -1,5 +1,6 @@
 import { h } from '@stencil/core'
 import { Fragment, useState, useEffect } from 'react'
+import { NotificationPreviewType } from 'src/components'
 
 export default {
   title: 'UI / Push Notifications',
@@ -10,58 +11,102 @@ export default {
     },
   },
 }
+interface Notification {
+  message: string,
 
-const PushNotificationsElements = () =>
-  <Fragment>
-    <mds-push-notification preview="avatar" src="./avatar-05-200x200.jpeg" subject="Sarah Ho" message="Sto preparando il documento che mi hai richiesto, dovrei finire in giornata, fammi sapere se hai altri aggiornamenti al riguardo così non mi perdo pezzi per la strada.">
-      <mds-button slot="actions" variant="primary" tone="weak" size="sm">Rispondi</mds-button>
-    </mds-push-notification>
-    <mds-push-notification preview="avatar" src="./avatar-02-200x200.png" subject="Marco Cicognetti" message="Ci sei andato poi alla riunione?">
-      <mds-button slot="actions" variant="primary" tone="weak" size="sm">Rispondi</mds-button>
-    </mds-push-notification>
-    <mds-push-notification preview="avatar" src="./avatar-06-200x200.jpeg" subject="James Millennial" message="Domani ci sei alla riunione che ha organizzato Gigetto? Ho saputo che ci sarà anche Puppo.">
-      <mds-button slot="actions" variant="primary" tone="weak" size="sm">Rispondi</mds-button>
-    </mds-push-notification>
-  </Fragment>
+  datetime?: string,
+  preview?: NotificationPreviewType,
+  icon?: string,
+  initial?: string
+  src?: string,
+  subject?: string,
+}
+const exampleNotifications: Notification[] = [
+  {
+    preview: 'avatar',
+    src: '/avatar-05-200x200.jpeg',
+    subject: 'Sarah Ho',
+    message: 'Sto preparando il documento che mi hai richiesto, dovrei finire in giornata, fammi sapere se hai altri aggiornamenti al riguardo così non mi perdo pezzi per la strada.',
+  },
+  {
+    preview: 'avatar',
+    src: '/avatar-02-200x200.jpeg',
+    subject: 'Marco Cicognetti',
+    message: 'Ci sei andato poi alla riunione?',
+  },
+  {
+    preview: 'avatar',
+    src: '/avatar-06-200x200.jpeg',
+    subject: 'JamPushNotificationElementes Millennial',
+    message: 'Domani ci sei alla riunione che ha organizzato Gigetto? Ho saputo che ci sarà anche Puppo.',
+  },
+]
 
 const PushNotificationElement = ( { index }) => {
   return <mds-push-notification icon="mi/baseline/attachment" subject={`Notification ${index + 1}`} message="Sto preparando il documento che mi hai richiesto, dovrei finire in giornata, fammi sapere se hai altri aggiornamenti al riguardo così non mi perdo pezzi per la strada."></mds-push-notification>
 }
 
+type GetNotificationsProps = {
+  notifications: Notification[]
+}
+const GetNotifications = ({ notifications }: GetNotificationsProps) => {
+  // console.log('getNotifications', notifications)
+  if (notifications.length > 0) {
+    return <Fragment>
+      {notifications.map((n, i) => {
+        return <mds-push-notification key={i} preview={n.preview} src={n.src} subject={n.subject} message={n.message}>
+          <mds-button slot="actions" variant="primary" tone="weak" size="sm">Rispondi</mds-button>
+        </mds-push-notification>
+      })}
+    </Fragment>
+  }
+}
+
 const Template = args => {
-  const [visible, setVisibility] = useState(args.visible || false)
+  const [notifications, setNotifications] = useState<Notification[]>(exampleNotifications)
+  const [visible, setVisible] = useState(args.visible || false)
 
   useEffect(() => {
     const pushNotificationsElement = document.querySelector('.mds-push-notifications')
     if (pushNotificationsElement === null) {
+      // eslint-disable-next-line no-alert
       alert('Push notifications element not found')
       return
     }
     pushNotificationsElement.addEventListener('mdsPushNotificationsChange', (e: CustomEvent) => {
       console.info('mdsPushNotificationsChange', e.detail)
-      // setVisibility(e.detail)
+      setVisible(e.detail)
     })
 
     pushNotificationsElement.addEventListener('mdsPushNotificationsShow', () => {
       console.info('mdsPushNotificationsShow')
-      setVisibility(true)
+      setVisible(true)
     })
 
     pushNotificationsElement.addEventListener('mdsPushNotificationsHide', () => {
       console.info('mdsPushNotificationsHide')
-      setVisibility(false)
+      setVisible(false)
     })
   }, [])
 
-  return <div class="-m-600">
-    { visible
-      ? <mds-button class="fixed top-600 left-600 shadow-outline-50 shadow-tone-neutral" onClick={() => setVisibility(false) } icon="mdi/eye-off-outline" variant="error">Hide notifications</mds-button>
-      : <mds-button class="fixed top-600 left-600 shadow-outline-50 shadow-tone-neutral" onClick={() => setVisibility(true) } icon="mi/baseline/remove-red-eye" variant="primary">Show notifications</mds-button>
+  function pushN () {
+    const n: Notification = {
+      message: 'Sto preparando il documento che mi hai richiesto, dovrei finire in giornata, fammi sapere se hai altri aggiornamenti al riguardo così non mi perdo pezzi per la strada.',
     }
+    setNotifications([...notifications, n])
+    // console.log(notifications)
+  }
+  return <div class="-m-600">
+    <div class="fixed top-600 left-600 flex gap-100">
+      { visible
+        ? <mds-button class="shadow-outline-50 shadow-tone-neutral" onClick={() => setVisible(false) } icon="mdi/eye-off-outline" variant="error">Hide notifications</mds-button>
+        : <mds-button class="shadow-outline-50 shadow-tone-neutral" onClick={() => setVisible(true) } icon="mi/baseline/remove-red-eye" variant="primary">Show notifications</mds-button>
+      }
+      <mds-button class="shadow-outline-50 shadow-tone-neutral" variant="success" onClick={pushN}>Carica altre...</mds-button>
+    </div>
     <mds-push-notifications class="mds-push-notifications" visible={visible === false ? undefined : true}>
-      <mds-button slot="top" variant="dark">Cancella notifiche</mds-button>
-      <PushNotificationsElements/>
-      <mds-button slot="bottom" variant="dark">Carica altre...</mds-button>
+      {/* <mds-button slot="top" variant="dark" onClick={deleteNotifications}>Cancella notifiche</mds-button> */}
+      <GetNotifications notifications={notifications}/>
     </mds-push-notifications>
     <div class="p-1200 flex justify-center">
       <div class="grid gap-600 grid-cols-3 mobile:grid-cols-1 max-w-screen-desktop">
