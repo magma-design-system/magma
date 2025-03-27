@@ -13,6 +13,13 @@
 | `startDate` | `start-date` |             | `string` | `''`    |
 
 
+## Events
+
+| Event               | Description | Type                                                   |
+| ------------------- | ----------- | ------------------------------------------------------ |
+| `dateRangeSelected` |             | `CustomEvent<{ startDate: string; endDate: string; }>` |
+
+
 ## Dependencies
 
 ### Depends on

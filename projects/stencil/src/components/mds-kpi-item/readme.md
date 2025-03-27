@@ -26,16 +26,6 @@ This is a web-component from Maggioli Design System [Magma](https://magma.maggio
 | `"icon-container"` | Selects the icon wrapper element                  |
 
 
-## CSS Custom Properties
-
-| Name                                             | Description                                         |
-| ------------------------------------------------ | --------------------------------------------------- |
-| `--mds-kpi-item-icon-color`                      | Set the fill color of the icon element              |
-| `--mds-kpi-item-info-background`                 | Set the `background-color` of the text area element |
-| `--mds-kpi-item-text-animation-placeholder-char` | Sets the animation placeholder char of the text     |
-| `--mds-kpi-item-text-animation-speed`            | Sets the animation speed of the text                |
-
-
 ## Dependencies
 
 ### Depends on

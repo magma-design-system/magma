@@ -2024,6 +2024,10 @@ export interface MdsInputDateCustomEvent<T> extends CustomEvent<T> {
     detail: T;
     target: HTMLMdsInputDateElement;
 }
+export interface MdsInputDateRangeCustomEvent<T> extends CustomEvent<T> {
+    detail: T;
+    target: HTMLMdsInputDateRangeElement;
+}
 export interface MdsInputFieldCustomEvent<T> extends CustomEvent<T> {
     detail: T;
     target: HTMLMdsInputFieldElement;
@@ -2595,7 +2599,18 @@ declare global {
         prototype: HTMLMdsInputDateElement;
         new (): HTMLMdsInputDateElement;
     };
+    interface HTMLMdsInputDateRangeElementEventMap {
+        "dateRangeSelected": { startDate: string, endDate: string };
+    }
     interface HTMLMdsInputDateRangeElement extends Components.MdsInputDateRange, HTMLStencilElement {
+        addEventListener<K extends keyof HTMLMdsInputDateRangeElementEventMap>(type: K, listener: (this: HTMLMdsInputDateRangeElement, ev: MdsInputDateRangeCustomEvent<HTMLMdsInputDateRangeElementEventMap[K]>) => any, options?: boolean | AddEventListenerOptions): void;
+        addEventListener<K extends keyof DocumentEventMap>(type: K, listener: (this: Document, ev: DocumentEventMap[K]) => any, options?: boolean | AddEventListenerOptions): void;
+        addEventListener<K extends keyof HTMLElementEventMap>(type: K, listener: (this: HTMLElement, ev: HTMLElementEventMap[K]) => any, options?: boolean | AddEventListenerOptions): void;
+        addEventListener(type: string, listener: EventListenerOrEventListenerObject, options?: boolean | AddEventListenerOptions): void;
+        removeEventListener<K extends keyof HTMLMdsInputDateRangeElementEventMap>(type: K, listener: (this: HTMLMdsInputDateRangeElement, ev: MdsInputDateRangeCustomEvent<HTMLMdsInputDateRangeElementEventMap[K]>) => any, options?: boolean | EventListenerOptions): void;
+        removeEventListener<K extends keyof DocumentEventMap>(type: K, listener: (this: Document, ev: DocumentEventMap[K]) => any, options?: boolean | EventListenerOptions): void;
+        removeEventListener<K extends keyof HTMLElementEventMap>(type: K, listener: (this: HTMLElement, ev: HTMLElementEventMap[K]) => any, options?: boolean | EventListenerOptions): void;
+        removeEventListener(type: string, listener: EventListenerOrEventListenerObject, options?: boolean | EventListenerOptions): void;
     }
     var HTMLMdsInputDateRangeElement: {
         prototype: HTMLMdsInputDateRangeElement;
@@ -4278,6 +4293,7 @@ declare namespace LocalJSX {
     }
     interface MdsInputDateRange {
         "endDate"?: string;
+        "onDateRangeSelected"?: (event: MdsInputDateRangeCustomEvent<{ startDate: string, endDate: string }>) => void;
         "startDate"?: string;
     }
     interface MdsInputField {
