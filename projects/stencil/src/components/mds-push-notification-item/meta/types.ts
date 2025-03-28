@@ -1,8 +1,8 @@
-export type NotificationPreviewType =
+export type NotificationItemPreviewType =
   | 'avatar'
   | 'image'
 
-export type NotificationDateFormatType =
+export type NotificationItemDateFormatType =
   | 'timeago'
   | string
 
