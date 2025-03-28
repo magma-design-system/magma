@@ -1,0 +1,6 @@
+{
+  "do": "Permitido",
+  "dont": "No permitido",
+  "info": "Información",
+  "warn": "Advertencia"
+}
