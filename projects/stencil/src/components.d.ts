@@ -1896,6 +1896,7 @@ export namespace Components {
           * Specifies the alias of the usage phrase on the top of the component
          */
         "alias"?: string;
+        "updateLang": () => Promise<void>;
         /**
           * Specifies the delay when the tooltip will trigger
          */

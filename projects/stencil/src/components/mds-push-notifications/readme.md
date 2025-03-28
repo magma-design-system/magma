@@ -22,6 +22,45 @@
 | `mdsPushNotificationsShow`   | Emits when the component is shown           | `CustomEvent<void>`                            |
 
 
+## Methods
+
+### `hide() => Promise<void>`
+
+
+
+#### Returns
+
+Type: `Promise<void>`
+
+
+
+### `removeNotification(notification: HTMLMdsPushNotificationElement | HTMLMdsPushNotificationElement[]) => Promise<void>`
+
+
+
+#### Parameters
+
+| Name           | Type                                                                 | Description |
+| -------------- | -------------------------------------------------------------------- | ----------- |
+| `notification` | `HTMLMdsPushNotificationElement \| HTMLMdsPushNotificationElement[]` |             |
+
+#### Returns
+
+Type: `Promise<void>`
+
+
+
+### `show() => Promise<void>`
+
+
+
+#### Returns
+
+Type: `Promise<void>`
+
+
+
+
 ## Slots
 
 | Slot        | Description                                                                                        |
@@ -37,6 +76,22 @@
 | ----------------- | ------------------------------------------- |
 | `"notifications"` | The container wrapper of the notifications. |
 
+
+## Dependencies
+
+### Depends on
+
+- [mds-button](../mds-button)
+
+### Graph
+```mermaid
+graph TD;
+  mds-push-notifications --> mds-button
+  mds-button --> mds-spinner
+  mds-button --> mds-icon
+  mds-button --> mds-text
+  style mds-push-notifications fill:#f9f,stroke:#333,stroke-width:4px
+```
 
 ----------------------------------------------
 
