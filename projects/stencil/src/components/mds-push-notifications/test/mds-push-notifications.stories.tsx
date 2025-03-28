@@ -104,7 +104,7 @@ const Template = args => {
       }
       <mds-button class="shadow-outline-50 shadow-tone-neutral" variant="success" onClick={pushN}>Carica altre...</mds-button>
     </div>
-    <mds-push-notifications class="mds-push-notifications" visible={visible === false ? undefined : true}>
+    <mds-push-notifications class="mds-push-notifications" visible={visible === false ? undefined : true} behavior={args.behavior}>
       {/* <mds-button slot="top" variant="dark" onClick={deleteNotifications}>Cancella notifiche</mds-button> */}
       <GetNotifications notifications={notifications}/>
     </mds-push-notifications>
@@ -161,3 +161,5 @@ export const AddMultipleNotifications = TemplateAddMultipleNotifications.bind({}
 AddMultipleNotifications.args = {
   visible: true,
 }
+
+export const ManualNotification = Template.bind({}, { behavior: 'manual' })

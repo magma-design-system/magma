@@ -1519,13 +1519,13 @@ export namespace Components {
         "variant"?: ThemeFullVariantAvatarType;
     }
     interface MdsPushNotifications {
+        /**
+          * Specifies if the component is visible or not. behavior = manual should hide when click outside should hide when all notifications are removed should show when change visible from component or call show method  behavior = auto should hide when all notifications are removed should show when one or more notifications are added
+         */
+        "behavior"?: 'auto' | 'manual';
         "hide": () => Promise<void>;
         "removeNotification": (notification: HTMLMdsPushNotificationElement | HTMLMdsPushNotificationElement[]) => Promise<void>;
         "show": () => Promise<void>;
-        /**
-          * Specifies if the component is visible or not. visibility = auto | manual should hide when click outside should hide when all notifications are removed should show when one or more notifications are added
-         */
-        "visibility"?: 'auto' | 'manual';
         /**
           * Specifies if the component is visible or not.
          */
@@ -4866,6 +4866,10 @@ declare namespace LocalJSX {
     }
     interface MdsPushNotifications {
         /**
+          * Specifies if the component is visible or not. behavior = manual should hide when click outside should hide when all notifications are removed should show when change visible from component or call show method  behavior = auto should hide when all notifications are removed should show when one or more notifications are added
+         */
+        "behavior"?: 'auto' | 'manual';
+        /**
           * Emits when the component visibility changes
          */
         "onMdsPushNotificationsChange"?: (event: MdsPushNotificationsCustomEvent<MdsPushNotificationsEventDetail>) => void;
@@ -4877,10 +4881,6 @@ declare namespace LocalJSX {
           * Emits when the component is shown
          */
         "onMdsPushNotificationsShow"?: (event: MdsPushNotificationsCustomEvent<void>) => void;
-        /**
-          * Specifies if the component is visible or not. visibility = auto | manual should hide when click outside should hide when all notifications are removed should show when one or more notifications are added
-         */
-        "visibility"?: 'auto' | 'manual';
         /**
           * Specifies if the component is visible or not.
          */

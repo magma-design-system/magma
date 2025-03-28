@@ -28,12 +28,16 @@ export class MdsPushNotifications {
 
   /**
    * Specifies if the component is visible or not.
-   * visibility = auto | manual
+   * behavior = manual
    * should hide when click outside
+   * should hide when all notifications are removed
+   * should show when change visible from component or call show method
+   *
+   * behavior = auto
    * should hide when all notifications are removed
    * should show when one or more notifications are added
    */
-  @Prop({ reflect: true }) visibility?: 'auto' | 'manual' = 'auto'
+  @Prop({ reflect: true }) behavior?: 'auto' | 'manual' = 'auto'
 
   /**
    * Emits when the component visibility changes
@@ -115,7 +119,7 @@ export class MdsPushNotifications {
       e.addEventListener('mdsPushNotificationClose', () => this.outroItem(e))
       await this.introItem(e)
     })
-    this.show()
+    if (this.behavior === 'auto') this.show()
   }
 
   private updateCSSCustomProps = (): void => {
