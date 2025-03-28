@@ -57,7 +57,7 @@ Type: `Promise<void>`
 
  - [mds-avatar](../mds-avatar)
  - [mds-file-preview](../mds-file-preview)
- - [mds-push-notification](../mds-push-notification)
+ - [mds-push-notification-item](../mds-push-notification-item)
 
 ### Depends on
 
@@ -76,7 +76,7 @@ graph TD;
   mds-button --> mds-text
   mds-avatar --> mds-img
   mds-file-preview --> mds-img
-  mds-push-notification --> mds-img
+  mds-push-notification-item --> mds-img
   style mds-img fill:#f9f,stroke:#333,stroke-width:4px
 ```
 

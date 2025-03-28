@@ -34,15 +34,15 @@ Type: `Promise<void>`
 
 
 
-### `removeNotification(notification: HTMLMdsPushNotificationElement | HTMLMdsPushNotificationElement[]) => Promise<void>`
+### `removeNotification(notification: HTMLMdsPushNotificationItemElement | HTMLMdsPushNotificationItemElement[]) => Promise<void>`
 
 
 
 #### Parameters
 
-| Name           | Type                                                                 | Description |
-| -------------- | -------------------------------------------------------------------- | ----------- |
-| `notification` | `HTMLMdsPushNotificationElement \| HTMLMdsPushNotificationElement[]` |             |
+| Name           | Type                                                                         | Description |
+| -------------- | ---------------------------------------------------------------------------- | ----------- |
+| `notification` | `HTMLMdsPushNotificationItemElement \| HTMLMdsPushNotificationItemElement[]` |             |
 
 #### Returns
 

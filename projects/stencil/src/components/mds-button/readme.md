@@ -73,7 +73,7 @@ This is a web-component from Maggioli Design System [Magma](https://magma.maggio
  - [mds-note](../mds-note)
  - [mds-pref-language-item](../mds-pref-language-item)
  - [mds-push-notification](../mds-push-notification)
- - [mds-push-notifications](../mds-push-notifications)
+ - [mds-push-notification-item](../mds-push-notification-item)
  - [mds-tab-item](../mds-tab-item)
  - [mds-table-header-cell](../mds-table-header-cell)
  - [mds-tree-item](../mds-tree-item)
@@ -106,7 +106,7 @@ graph TD;
   mds-note --> mds-button
   mds-pref-language-item --> mds-button
   mds-push-notification --> mds-button
-  mds-push-notifications --> mds-button
+  mds-push-notification-item --> mds-button
   mds-tab-item --> mds-button
   mds-table-header-cell --> mds-button
   mds-tree-item --> mds-button
