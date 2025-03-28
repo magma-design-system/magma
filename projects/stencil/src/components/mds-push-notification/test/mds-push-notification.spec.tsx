@@ -13,7 +13,7 @@ describe('mds-push-notification', () => {
           <mds-button variant="dark">
             Cancella notifiche
           </mds-button>
-          <div class="notification" part="notification">
+          <div class="notifications" part="notifications">
             <slot></slot>
           </div>
         </mock:shadow-root>
