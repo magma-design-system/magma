@@ -37,7 +37,7 @@ export class MdsPushNotifications {
    * should hide when all notifications are removed
    * should show when one or more notifications are added
    */
-  @Prop({ reflect: true }) behavior?: 'auto' | 'manual' = 'auto'
+  @Prop() behavior?: 'auto' | 'manual' = 'auto'
 
   /**
    * Emits when the component visibility changes

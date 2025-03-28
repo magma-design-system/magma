@@ -10,11 +10,12 @@ describe('mds-push-notifications', () => {
     expect(page.root).toEqualHtml(`
       <mds-push-notifications>
         <mock:shadow-root>
-        <slot name="top"></slot>
+          <mds-button variant="dark">
+            Cancella notifiche
+          </mds-button>
           <div class="notifications" part="notifications">
             <slot></slot>
           </div>
-         <slot name="bottom"></slot>
         </mock:shadow-root>
       </mds-push-notifications>
     `)
