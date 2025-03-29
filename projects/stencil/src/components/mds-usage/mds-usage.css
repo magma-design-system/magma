@@ -13,20 +13,28 @@
     duration-200
     ease-out
     gap-200
-    p-600
-    tablet:p-400
-    tablet:pt-0
+    p-400
     pt-0
-    rounded-xl;
+    rounded-lg;
 
+  background-color: rgb(var(--status-info-10));
   border-color: var(--mds-usage-border-color);
   border-style: solid;
   border-width: theme('borderWidth.DEFAULT');
+  container-name: mds-usage;
+  container-type: inline-size;
   display: grid;
   grid-auto-rows: min-content;
   grid-template-columns: minmax(0, 100%);
   position: relative;
   transition-property: background-color, box-shadow, color;
+  width: 100%;
+}
+
+@container mds-usage (min-width: 500px) {
+  :host {
+    background-color: rgb(var(--status-error-10));
+  }
 }
 
 @import './css/mds-usage-badge.css';
