@@ -37,11 +37,10 @@ Type: `Promise<void>`
 
 ## CSS Custom Properties
 
-| Name                           | Description                                       |
-| ------------------------------ | ------------------------------------------------- |
-| `--mds-usage-badge-background` | Sets the badge background-color of the component. |
-| `--mds-usage-badge-color`      | Sets the badge text color of the component.       |
-| `--mds-usage-border-color`     | Sets the border color of the component.           |
+| Name                       | Description                                 |
+| -------------------------- | ------------------------------------------- |
+| `--mds-usage-badge-color`  | Sets the badge text color of the component. |
+| `--mds-usage-border-color` | Sets the border color of the component.     |
 
 
 ## Dependencies
