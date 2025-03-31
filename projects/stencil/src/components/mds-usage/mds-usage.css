@@ -1,6 +1,5 @@
 /**
  * @prop --mds-usage-border-color: Sets the border color of the component.
- * @prop --mds-usage-badge-background: Sets the badge background-color of the component.
  * @prop --mds-usage-badge-color: Sets the badge text color of the component.
  */
 
@@ -17,12 +16,14 @@
     pt-0
     rounded-lg;
 
-  background-color: rgb(var(--status-info-10));
   border-color: var(--mds-usage-border-color);
   border-style: solid;
   border-width: theme('borderWidth.DEFAULT');
+
+  /* is seems it's not working on web components, due of a bug
   container-name: mds-usage;
   container-type: inline-size;
+  */
   display: grid;
   grid-auto-rows: min-content;
   grid-template-columns: minmax(0, 100%);
@@ -31,11 +32,11 @@
   width: 100%;
 }
 
-@container mds-usage (min-width: 500px) {
+/* @container mds-usage (min-width: 500px) {
   :host {
     background-color: rgb(var(--status-error-10));
   }
-}
+} */
 
 @import './css/mds-usage-badge.css';
 @import './css/mds-usage-pref-animation.css';
