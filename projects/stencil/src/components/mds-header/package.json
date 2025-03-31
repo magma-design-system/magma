@@ -23,7 +23,7 @@
     "prepublishOnly": "npm run build"
   },
   "dependencies": {
-    "@maggioli-design-system/mds-header-bar": "7.4.4",
+    "@maggioli-design-system/mds-header-bar": "7.5.0",
     "@maggioli-design-system/mds-modal": "5.6.0",
     "@maggioli-design-system/styles": "15.9.1",
     "@stencil/core": "4.27.2"
