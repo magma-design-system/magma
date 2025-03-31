@@ -43,7 +43,7 @@ import { InputTipItemVariantType } from "./type/input-tip";
 import { AttachmentSort, FileError } from "./components/mds-input-upload/meta/types";
 import { KeyboardTest } from "./components/mds-keyboard/meta/type";
 import { KeyboardKeyName } from "./type/keyboard";
-import { ModalAnimationStateType, ModalOverflowType, ModalPositionType } from "./components/mds-modal/meta/types";
+import { ModalAnimationStateType, ModalAnimationStyleType, ModalOverflowType, ModalPositionType } from "./components/mds-modal/meta/types";
 import { StrategyType } from "./components/mds-notification/meta/types";
 import { MdsPaginatorEventDetail } from "./components/mds-paginator/meta/event-detail";
 import { AnimationModeType } from "./components/mds-pref-animation/meta/types";
@@ -110,7 +110,7 @@ export { InputTipItemVariantType } from "./type/input-tip";
 export { AttachmentSort, FileError } from "./components/mds-input-upload/meta/types";
 export { KeyboardTest } from "./components/mds-keyboard/meta/type";
 export { KeyboardKeyName } from "./type/keyboard";
-export { ModalAnimationStateType, ModalOverflowType, ModalPositionType } from "./components/mds-modal/meta/types";
+export { ModalAnimationStateType, ModalAnimationStyleType, ModalOverflowType, ModalPositionType } from "./components/mds-modal/meta/types";
 export { StrategyType } from "./components/mds-notification/meta/types";
 export { MdsPaginatorEventDetail } from "./components/mds-paginator/meta/event-detail";
 export { AnimationModeType } from "./components/mds-pref-animation/meta/types";
@@ -1280,9 +1280,13 @@ export namespace Components {
          */
         "animating"?: ModalAnimationStateType;
         /**
+          * Specifies if the component is animating itself or not
+         */
+        "animation"?: ModalAnimationStyleType;
+        /**
           * Specifies if the modal is opened or not
          */
-        "opened": boolean;
+        "opened"?: boolean;
         /**
           * Specifies if the component prevents the body from scrolling when modal window is opened
          */
@@ -4586,6 +4590,10 @@ declare namespace LocalJSX {
           * Specifies if the component is animating itself or not
          */
         "animating"?: ModalAnimationStateType;
+        /**
+          * Specifies if the component is animating itself or not
+         */
+        "animation"?: ModalAnimationStyleType;
         /**
           * Emits when a modal is closed
          */
