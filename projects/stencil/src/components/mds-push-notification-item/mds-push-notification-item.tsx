@@ -173,7 +173,7 @@ export class MdsPushNotificationItem {
             <slot name="action"></slot>
           </div> }
         </div>
-        { this.deletable && <mds-button class="close-button" title={this.t.get('dismiss')} icon={miBaselineCancel} onClick={this.onClickClose.bind(this)}></mds-button> }
+        { this.deletable && <mds-button class="close-button" variant="dark" tone="quiet" title={this.t.get('dismiss')} icon={miBaselineCancel} onClick={this.onClickClose.bind(this)}></mds-button> }
       </Host>
     )
   }

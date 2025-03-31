@@ -3,13 +3,13 @@
 @tailwind components;
 
 :host {
-  --mds-push-notification-item-duration: 200ms;
+  --mds-push-notification-item-duration: 300ms;
   --mds-push-notification-item-icon-background-color: transparent;
   --mds-push-notification-item-icon-color: theme('colors.tone-neutral-04');
   --mds-push-notification-item-message-line-clamp: 2;
   --mds-push-notification-item-shadow: theme('boxShadow.DEFAULT');
   --mds-push-notification-item-subject-line-clamp: 1;
-  --mds-push-notification-item-timing-function: theme('transitionTimingFunction.in-out-expo');
+  --mds-push-notification-item-timing-function: theme('transitionTimingFunction.in-out-quint');
 
   @apply
     gap-400
@@ -67,10 +67,8 @@
 
   @apply
     p-150
-    transition-opacity;
+    transition-cosmetic;
 
-  background-color: transparent;
-  fill: theme('colors.tone-neutral-06');
   opacity: 0;
   position: absolute;
   right: 0;

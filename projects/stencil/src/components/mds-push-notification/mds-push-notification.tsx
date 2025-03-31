@@ -17,7 +17,8 @@ export class MdsPushNotification {
 
   @Element() host: HTMLMdsPushNotificationElement
   slotNotifications!: HTMLSlotElement
-  private cssItemsDuration: string
+  private cssItemsIntroDuration: string
+  private cssItemsOutroDuration: string
   private cssItemsGap: string
   // private totalItems = 0
 
@@ -78,7 +79,7 @@ export class MdsPushNotification {
           element.style.transform = 'translate(0, 0)'
           element.style.marginBottom = '0px'
           resolve()
-        }, cssDurationToMilliseconds(this.cssItemsDuration))
+        }, cssDurationToMilliseconds(this.cssItemsIntroDuration))
       }, 15) // hope to find a better solution not based on 15ms of delay, not very robust
     })
   }
@@ -103,7 +104,7 @@ export class MdsPushNotification {
           element.style.removeProperty('transform')
           element.style.marginBottom = `-${element.offsetHeight + cssSizeToNumber(this.cssItemsGap)}px`
           resolve()
-        }, cssDurationToMilliseconds(this.cssItemsDuration))
+        }, cssDurationToMilliseconds(this.cssItemsOutroDuration))
       }, 15) // hope to find a better solution not based on 15ms of delay, not very robust
     })
   }
@@ -125,7 +126,8 @@ export class MdsPushNotification {
   private updateCSSCustomProps = (): void => {
     const elementStyles = window.getComputedStyle(this.host)
     this.cssItemsGap = elementStyles.getPropertyValue('--mds-push-notification-items-gap') ?? '0.5rem'
-    this.cssItemsDuration = elementStyles.getPropertyValue('--mds-push-notification-items-duration') ?? '200ms'
+    this.cssItemsIntroDuration = elementStyles.getPropertyValue('--mds-push-notification-items-intro-delay') ?? '200ms'
+    this.cssItemsOutroDuration = elementStyles.getPropertyValue('--mds-push-notification-items-outro-delay') ?? '0ms'
   }
 
   private clear (): void {
