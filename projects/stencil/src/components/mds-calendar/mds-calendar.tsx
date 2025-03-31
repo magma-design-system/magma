@@ -27,16 +27,18 @@ export class MdsCalendar {
   @Prop() rangePicker: boolean = true
   @Prop({ reflect: true, mutable: true }) startDate: string | null = null
   @Prop({ reflect: true, mutable: true }) endDate: string | null = null
+  @State() internalStartDate: string | null = this.startDate
+  @State() internalEndDate: string | null = this.endDate
 
   @Event() datesEmitter: EventEmitter<{startDate: string, endDate?: string}>
 
   @Watch('startDate')
   handleStartDate (newValue: ISO8601Date | null): void {
     if (newValue !== null && newValue !== '') {
-      this.startDate = sanitizeISO8601Date(newValue?.toString()) as ISO8601Date
-      if (this.endDate) {
-        const startDateTime = DateTime.fromISO(this.startDate)
-        const endDateTime = DateTime.fromISO(this.endDate)
+      this.internalStartDate = sanitizeISO8601Date(newValue?.toString()) as ISO8601Date
+      if (this.internalEndDate) {
+        const startDateTime = DateTime.fromISO(this.internalStartDate)
+        const endDateTime = DateTime.fromISO(this.internalEndDate)
 
         if (startDateTime > endDateTime) {
           console.warn('startDate is after endDate, swapping values')
@@ -52,13 +54,13 @@ export class MdsCalendar {
   handleEndDate (newValue: ISO8601Date | null): void {
     if (!this.rangePicker) {
       console.warn('rangePicker is disabled, endDate cannot be set')
-      this.endDate = null
+      this.internalEndDate = null
     } else if (newValue !== null && newValue !== '') {
-      this.endDate = sanitizeISO8601Date(newValue?.toString()) as ISO8601Date
+      this.internalEndDate = sanitizeISO8601Date(newValue?.toString()) as ISO8601Date
 
-      if (this.startDate) {
-        const startDateTime = DateTime.fromISO(this.startDate)
-        const endDateTime = DateTime.fromISO(this.endDate)
+      if (this.internalStartDate) {
+        const startDateTime = DateTime.fromISO(this.internalStartDate)
+        const endDateTime = DateTime.fromISO(this.internalEndDate)
 
         if (startDateTime > endDateTime) {
           console.warn('startDate is after endDate, swapping values')
@@ -80,15 +82,15 @@ export class MdsCalendar {
   componentWillLoad (): void {
     this.language = this.t.lang(this.host)
 
-    if (this.startDate) {
-      this.startDate = sanitizeISO8601Date(this.startDate?.toString()) as ISO8601Date
-      this.startDateTime = DateTime.fromISO(this.startDate)
+    if (this.internalStartDate) {
+      this.internalStartDate = sanitizeISO8601Date(this.internalStartDate?.toString()) as ISO8601Date
+      this.startDateTime = DateTime.fromISO(this.internalStartDate)
       this.currentDate = this.startDateTime
     }
 
-    if (this.endDate) {
-      this.endDate = sanitizeISO8601Date(this.endDate?.toString()) as ISO8601Date
-      this.endDateTime = DateTime.fromISO(this.endDate)
+    if (this.internalEndDate) {
+      this.internalEndDate = sanitizeISO8601Date(this.internalEndDate?.toString()) as ISO8601Date
+      this.endDateTime = DateTime.fromISO(this.internalEndDate)
     }
 
     this.updateCalendar()
@@ -122,13 +124,13 @@ export class MdsCalendar {
   }
 
   private updateDates (): void {
-    if (this.startDate && this.endDate && this.rangePicker) {
+    if (this.internalStartDate && this.internalEndDate && this.rangePicker) {
       this.updateCalendar().then(() => {
         requestAnimationFrame(() => this.setDates())
       })
     }
 
-    else if (this.startDate && !this.rangePicker) {
+    else if (this.internalStartDate && !this.rangePicker) {
       this.updateCalendar().then(() => {
         requestAnimationFrame(() => this.setDates())
       })
@@ -174,10 +176,10 @@ export class MdsCalendar {
       day.removeAttribute('preview')
     })
 
-    if (!this.startDate || !this.endDate) return
+    if (!this.internalStartDate || !this.internalEndDate) return
 
-    this.startDateTime = DateTime.fromISO(this.startDate.toString())
-    this.endDateTime = DateTime.fromISO(this.endDate.toString())
+    this.startDateTime = DateTime.fromISO(this.internalStartDate.toString())
+    this.endDateTime = DateTime.fromISO(this.internalEndDate.toString())
 
     const cells = shadowRoot.querySelectorAll('mds-calendar-cell')
     if (cells) {
@@ -216,9 +218,9 @@ export class MdsCalendar {
       cell.removeAttribute('selection')
     })
 
-    if (!this.startDate) return
+    if (!this.internalStartDate) return
 
-    this.startDateTime = DateTime.fromISO(this.startDate.toString())
+    this.startDateTime = DateTime.fromISO(this.internalStartDate.toString())
     const cells = shadowRoot.querySelectorAll('mds-calendar-cell')
 
     if (cells) {
@@ -274,8 +276,8 @@ export class MdsCalendar {
 
   private handleRange (element: HTMLElement, dayInfo: DateTime): void {
     const resetSelection = (): void => {
-      this.startDate = null
-      this.endDate = null
+      this.internalStartDate = null
+      this.internalEndDate = null
       this.startDateElement = null
       this.startDateTime = null
       this.endDateElement = null
@@ -299,7 +301,7 @@ export class MdsCalendar {
     if (this.isFirstClick) {
       this.startDateElement = element
       this.startDateTime = dayInfo
-      this.startDate = this.startDateTime.toISO().split('T')[0]
+      this.internalStartDate = this.startDateTime.toISO().split('T')[0]
       this.isFirstClick = false
       requestAnimationFrame(() => {
         element.setAttribute('selection', 'single')
@@ -319,15 +321,15 @@ export class MdsCalendar {
     if ( this.startDateElement && DateTime.fromISO(this.startDateElement.getAttribute('date') as string) < DateTime.fromISO(element.getAttribute('date') as string)) {
       this.endDateElement = element
       this.endDateTime = dayInfo
-      this.endDate = this.endDateTime.toISO().split('T')[0]
+      this.internalEndDate = this.endDateTime.toISO().split('T')[0]
     } else {
       this.endDateElement = this.startDateElement
       this.endDateTime = this.startDateTime
-      this.endDate = this.startDate
+      this.internalEndDate = this.internalStartDate
 
       this.startDateElement = element
       this.startDateTime = dayInfo
-      this.startDate = this.startDateTime.toISO().split('T')[0]
+      this.internalStartDate = this.startDateTime.toISO().split('T')[0]
     }
 
 
@@ -341,15 +343,15 @@ export class MdsCalendar {
       }
     }
 
-    if (this.startDate && this.endDate) {
-      this.datesEmitter.emit({ startDate: this.startDate, endDate: this.endDate })
+    if (this.internalStartDate && this.internalEndDate) {
+      this.datesEmitter.emit({ startDate: this.internalStartDate, endDate: this.internalEndDate })
     }
 
   }
 
   private handleHover (element: HTMLElement): void {
     const typedElement = element as HTMLMdsCalendarCellElement
-    const startDate = DateTime.fromISO(this.startDate)
+    const startDate = DateTime.fromISO(this.internalStartDate)
 
     if (!startDate.isValid || this.endDateElement !== null) return
 
@@ -361,7 +363,7 @@ export class MdsCalendar {
     const hoveredDate = DateTime.fromISO(hoveredDateStr)
     if (!hoveredDate.isValid) return
 
-    const startTypedElement = mdsCalendarCellElements.find(cell => cell.getAttribute('date') === this.startDate)
+    const startTypedElement = mdsCalendarCellElements.find(cell => cell.getAttribute('date') === this.internalStartDate)
 
     mdsCalendarCellElements.forEach(cell => {
       cell.removeAttribute('preview')
@@ -414,12 +416,12 @@ export class MdsCalendar {
     })
     this.startDateElement = element
     this.startDateTime = dayInfo
-    this.startDate = this.startDateTime.toISO().split('T')[0]
+    this.internalStartDate = this.startDateTime.toISO().split('T')[0]
     this.isFirstClick = false
     element.setAttribute('selection', 'single')
 
-    if (this.startDate) {
-      this.datesEmitter.emit({ startDate: this.startDate })
+    if (this.internalStartDate) {
+      this.datesEmitter.emit({ startDate: this.internalStartDate })
     }
 
   }
