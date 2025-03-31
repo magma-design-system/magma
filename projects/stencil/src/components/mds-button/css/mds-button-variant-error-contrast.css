@@ -1,21 +1,20 @@
 :host-context(.pref-contrast-more):host([variant="error"][tone="strong"]) {
   --mds-button-background: theme('colors.status-error-03');
   --mds-button-color: theme('colors.tone-neutral');
+  --mds-button-border-color: var(--status-error-03);
 }
 
+:host-context(.pref-contrast-more):host([variant="error"][tone="strong"][active]),
 :host-context(.pref-contrast-more):host([variant="error"][tone="strong"]:hover) {
   --mds-button-background: theme('colors.status-error-02');
-}
-
-:host-context(.pref-contrast-more):host([variant="error"][tone="strong"][active]) {
-  --mds-button-background: theme('colors.status-error-02');
+  --mds-button-border-color: var(--status-error-02);
 }
 
 :host-context(.pref-contrast-more):host([variant="error"][tone="weak"]) {
   --mds-button-background: theme('colors.status-error-09');
   --mds-button-color: theme('colors.status-error-02');
   --mds-button-border-color: var(--status-error-06);
-  --mds-button-border-width: theme('borderWidth.50');
+  --mds-button-border-width: var(--mds-button-border-high-contrast-width);
 
   fill: theme('colors.status-error-02');
 }
@@ -23,7 +22,7 @@
 :host-context(.pref-contrast-more):host([variant="error"][tone="weak"]:hover) {
   --mds-button-background: theme('colors.status-error-10');
   --mds-button-color: theme('colors.status-error-01');
-  --mds-button-border-width: 3px;
+  --mds-button-border-width: var(--mds-button-border-high-contrast-hover-width);
 
   fill: theme('colors.status-error-01');
 }
@@ -68,19 +67,17 @@
     --mds-button-color: theme('colors.tone-neutral');
   }
 
+  :host-context(.pref-contrast-system):host([variant="error"][tone="strong"][active]),
   :host-context(.pref-contrast-system):host([variant="error"][tone="strong"]:hover) {
     --mds-button-background: theme('colors.status-error-02');
-  }
-
-  :host-context(.pref-contrast-system):host([variant="error"][tone="strong"][active]) {
-    --mds-button-background: theme('colors.status-error-02');
+    --mds-button-border-color: var(--status-error-02);
   }
 
   :host-context(.pref-contrast-system):host([variant="error"][tone="weak"]) {
     --mds-button-background: theme('colors.status-error-09');
     --mds-button-color: theme('colors.status-error-02');
     --mds-button-border-color: var(--status-error-06);
-    --mds-button-border-width: theme('borderWidth.50');
+    --mds-button-border-width: var(--mds-button-border-high-contrast-width);
 
     fill: theme('colors.status-error-02');
   }
@@ -88,7 +85,7 @@
   :host-context(.pref-contrast-system):host([variant="error"][tone="weak"]:hover) {
     --mds-button-background: theme('colors.status-error-10');
     --mds-button-color: theme('colors.status-error-01');
-    --mds-button-border-width: 3px;
+    --mds-button-border-width: var(--mds-button-border-high-contrast-hover-width);
 
     fill: theme('colors.status-error-01');
   }

@@ -1,21 +1,20 @@
 :host-context(.pref-contrast-more):host([variant="info"][tone="strong"]) {
   --mds-button-background: theme('colors.status-info-03');
   --mds-button-color: theme('colors.tone-neutral');
+  --mds-button-border-color: var(--status-info-03);
 }
 
+:host-context(.pref-contrast-more):host([variant="info"][tone="strong"][active]),
 :host-context(.pref-contrast-more):host([variant="info"][tone="strong"]:hover) {
   --mds-button-background: theme('colors.status-info-02');
-}
-
-:host-context(.pref-contrast-more):host([variant="info"][tone="strong"][active]) {
-  --mds-button-background: theme('colors.status-info-02');
+  --mds-button-border-color: var(--status-info-02);
 }
 
 :host-context(.pref-contrast-more):host([variant="info"][tone="weak"]) {
   --mds-button-background: theme('colors.status-info-09');
   --mds-button-color: theme('colors.status-info-02');
   --mds-button-border-color: var(--status-info-06);
-  --mds-button-border-width: theme('borderWidth.50');
+  --mds-button-border-width: var(--mds-button-border-high-contrast-width);
 
   fill: theme('colors.status-info-02');
 }
@@ -23,7 +22,7 @@
 :host-context(.pref-contrast-more):host([variant="info"][tone="weak"]:hover) {
   --mds-button-background: theme('colors.status-info-10');
   --mds-button-color: theme('colors.status-info-01');
-  --mds-button-border-width: 3px;
+  --mds-button-border-width: var(--mds-button-border-high-contrast-hover-width);
 
   fill: theme('colors.status-info-01');
 }
@@ -68,19 +67,17 @@
     --mds-button-color: theme('colors.tone-neutral');
   }
 
+  :host-context(.pref-contrast-system):host([variant="info"][tone="strong"][active]),
   :host-context(.pref-contrast-system):host([variant="info"][tone="strong"]:hover) {
     --mds-button-background: theme('colors.status-info-02');
-  }
-
-  :host-context(.pref-contrast-system):host([variant="info"][tone="strong"][active]) {
-    --mds-button-background: theme('colors.status-info-02');
+    --mds-button-border-color: var(--status-info-02);
   }
 
   :host-context(.pref-contrast-system):host([variant="info"][tone="weak"]) {
     --mds-button-background: theme('colors.status-info-09');
     --mds-button-color: theme('colors.status-info-02');
     --mds-button-border-color: var(--status-info-06);
-    --mds-button-border-width: theme('borderWidth.50');
+    --mds-button-border-width: var(--mds-button-border-high-contrast-width);
 
     fill: theme('colors.status-info-02');
   }
@@ -88,7 +85,7 @@
   :host-context(.pref-contrast-system):host([variant="info"][tone="weak"]:hover) {
     --mds-button-background: theme('colors.status-info-10');
     --mds-button-color: theme('colors.status-info-01');
-    --mds-button-border-width: 3px;
+    --mds-button-border-width: var(--mds-button-border-high-contrast-hover-width);
 
     fill: theme('colors.status-info-01');
   }

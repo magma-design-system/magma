@@ -1,7 +1,12 @@
-:host([variant="error"]),
 :host([variant="error"][tone="strong"]) {
   --mds-button-background: theme('colors.status-error-05');
+  --mds-button-border-color: var(--status-error-05);
   --mds-button-color: theme('colors.tone-neutral');
+}
+
+:host([variant="error"][tone="strong"]:hover) {
+  --mds-button-background: theme('colors.status-error-04');
+  --mds-button-border-color: var(--status-error-04);
 }
 
 :host([variant="error"][tone="weak"]) {

@@ -1,7 +1,12 @@
-:host([variant="info"]),
 :host([variant="info"][tone="strong"]) {
   --mds-button-background: theme('colors.status-info-05');
+  --mds-button-border-color: var(--status-info-05);
   --mds-button-color: theme('colors.tone-neutral');
+}
+
+:host([variant="info"][tone="strong"]:hover) {
+  --mds-button-background: theme('colors.status-info-04');
+  --mds-button-border-color: var(--status-info-04);
 }
 
 :host([variant="info"][tone="weak"]) {
