@@ -1,6 +1,6 @@
-import { Component, Element, Host, h, Prop, Watch, Listen, State, Event, EventEmitter } from '@stencil/core'
+import { Component, Element, Host, h, Prop, State, Event, EventEmitter } from '@stencil/core'
 import miBaselineCalendarToday from '@icon/mi/baseline/calendar-today.svg'
-import { FocusEvent } from 'react'
+import { DateTime } from 'luxon'
 
 @Component({
   tag: 'mds-input-date-range',
@@ -8,120 +8,115 @@ import { FocusEvent } from 'react'
   shadow: true,
 })
 export class MdsInputDateRange {
-
   @Element() host: HTMLMdsInputDateRangeElement
 
   @State() calendarKey: number = 0
+  @State() internalStartDate: string = ''
+  @State() internalEndDate: string = ''
+  @State() dropdownRef?: HTMLMdsDropdownElement
 
-  @Prop({ reflect: true, mutable: true }) startDate: string = ''
-  @Prop({ reflect: true, mutable: true }) endDate: string = ''
+  @Prop({ reflect: true }) startDate: string = ''
+  @Prop({ reflect: true }) endDate: string = ''
 
   @Event() dateRangeSelected: EventEmitter<{ startDate: string, endDate: string }>
 
-  @State() isStartFocused: boolean = false
-  @State() isEndFocused: boolean = false
-
-  @State() dropdownRef?: HTMLMdsDropdownElement
-
-  private previousStartDate: string = ''
-  private previousEndDate: string = ''
-
-  @Watch('startDate')
-  onStartDateChange (newValue: string): void {
-    this.startDate = newValue
-    const startInput = this.host.querySelector('mds-input-date[slot="start"]') as HTMLMdsInputDateElement
-    startInput.value = this.startDate
+  componentWillLoad (): void {
+    this.internalStartDate = this.startDate
+    this.internalEndDate = this.endDate
   }
 
-  @Watch('endDate')
-  onEndDateChange (newValue: string): void {
-    this.endDate = newValue
-    const endInput = this.host.querySelector('mds-input-date[slot="end"]') as HTMLMdsInputDateElement
-    endInput.value = this.endDate
+  componentDidLoad (): void {
+    this.updateInputListeners()
   }
 
-  private focusInput = (element: HTMLMdsInputDateElement): void => {
-    element.focusInput()
-  }
-
-  private focusDateInput = (ev: MouseEvent): void => {
-    if (ev.target !== this.host) {
-      return
-    }
-    this.focusStartDateInput(ev)
-  }
-
-  private focusStartDateInput = (ev: MouseEvent): void => {
-    ev.preventDefault()
-    ev.stopPropagation()
-    this.focusInput(this.host.querySelector('mds-input-date[slot="start"]') as HTMLMdsInputDateElement)
-  }
-
-  private focusEndDateInput = (ev: MouseEvent): void => {
-    ev.preventDefault()
-    ev.stopPropagation()
-    this.focusInput(this.host.querySelector('mds-input-date[slot="end"]') as HTMLMdsInputDateElement)
-  }
-
-  @Listen('focusin', { target: 'body' })
-  handleFocusInEvent (ev: FocusEvent): void {
-    const target = ev.target as HTMLElement
-    if (target.closest('mds-input-date[slot="start"]')) {
-      this.isStartFocused = true
-    }
-    if (target.closest('mds-input-date[slot="end"]')) {
-      this.isEndFocused = true
+  private updateInputValue (slotName: string, newValue: string): void {
+    const slot = this.host.shadowRoot?.querySelector(`slot[name="${slotName}"]`) as HTMLSlotElement
+    const input = slot?.assignedElements()[0] as HTMLMdsInputDateElement
+    if (input) {
+      input.value = newValue
     }
   }
 
-  @Listen('focusout', { target: 'body' })
-  handleFocusOutEvent (ev: FocusEvent): void {
-    const target = ev.target as HTMLElement
+  private updateInputListeners (): void {
+    const startSlot = this.host.shadowRoot?.querySelector('slot[name="start"]') as HTMLSlotElement
+    const endSlot = this.host.shadowRoot?.querySelector('slot[name="end"]') as HTMLSlotElement
 
-    if (target && target.closest('mds-input-date[slot="start"]')) {
-      this.isStartFocused = false
-      const startInput = target as HTMLMdsInputDateElement
-      this.startDate = startInput.value
+    if (startSlot) {
+      const input = startSlot?.assignedElements()[0] as HTMLMdsInputDateElement
+
+      const focusOutListener = this.createFocusoutListener('start')
+      const valueChangeListener = (ev: CustomEvent) => this.createValueChangeListener('start', ev)
+      input.addEventListener('focusout', focusOutListener)
+      input.addEventListener('valueChange', valueChangeListener)
     }
 
-    if (target && target.closest('mds-input-date[slot="end"]')) {
-      this.isEndFocused = false
-      const endInput = target as HTMLMdsInputDateElement
-      this.endDate = endInput.value
+    if (endSlot) {
+      const input = endSlot?.assignedElements()[0] as HTMLMdsInputDateElement
+
+      const focusOutListener = this.createFocusoutListener('end')
+      const valueChangeListener = (ev: CustomEvent) => this.createValueChangeListener('end', ev)
+      input.addEventListener('focusout', focusOutListener)
+      input.addEventListener('valueChange', valueChangeListener)
+
     }
+  }
 
-    setTimeout(() => {
-      if (!this.isStartFocused && !this.isEndFocused) {
-        if (this.startDate && this.endDate && this.endDate < this.startDate) {
-          this.endDate = this.startDate
-        }
+  private createValueChangeListener (slotName: 'start' | 'end', event: CustomEvent): void {
+    const slot = this.host.shadowRoot?.querySelector(`slot[name="${slotName}"]`) as HTMLSlotElement
+    const input = slot?.assignedElements()[0] as HTMLMdsInputDateElement
 
-        if (this.startDate !== this.previousStartDate || this.endDate !== this.previousEndDate) {
-          this.previousStartDate = this.startDate
-          this.previousEndDate = this.endDate
+    if (input) {
+      input.value = event.detail
+    }
+  }
 
-          this.dateRangeSelected.emit({
-            startDate: this.startDate,
-            endDate: this.endDate,
-          })
-        }
+  private createFocusoutListener (slotName: 'start' | 'end'): EventListener {
+    return () => {
+      this.updateInternalDateValues(slotName)
+      this.validateDateRange()
+    }
+  }
+
+  private updateInternalDateValues (slotName: 'start' | 'end'): void {
+    const slot = this.host.shadowRoot?.querySelector(`slot[name="${slotName}"]`) as HTMLSlotElement
+    const input = slot?.assignedElements()[0] as HTMLMdsInputDateElement
+
+    if (input) {
+      const newValue = input.value
+
+      if (slotName === 'start') {
+        this.internalStartDate = newValue
+      } else if (slotName === 'end') {
+        this.internalEndDate = newValue
       }
+    }
+  }
+  
+  private validateDateRange (): void {
+    if (this.internalStartDate && this.internalEndDate) {
+      const start = DateTime.fromISO(this.internalStartDate)
+      const end = DateTime.fromISO(this.internalEndDate)
 
-    }, 0)
+      if (end < start) {
+        this.internalEndDate = this.internalStartDate
+        this.updateInputValue('end', this.internalEndDate)
+
+      }
+    }
   }
 
   render () {
     return (
-      <Host onClick={this.focusDateInput}>
+      <Host>
         <div class="inputs">
           <div class="input-element">
-            <mds-text class="date-label" typography="detail" onClick={this.focusStartDateInput}>Dal</mds-text>
+            <mds-text class="date-label" typography="detail">Dal</mds-text>
             <div class="input-wrapper">
               <slot name="start"></slot>
             </div>
           </div>
           <div class="input-element">
-            <mds-text class="date-label" typography="detail" onClick={this.focusEndDateInput}>al</mds-text>
+            <mds-text class="date-label" typography="detail">al</mds-text>
             <div class="input-wrapper">
               <slot name="end"></slot>
             </div>
@@ -144,24 +139,23 @@ export class MdsInputDateRange {
             key={this.calendarKey}
             rangePicker={true}
             onDatesEmitter={ev => {
-              this.startDate = ev.detail.startDate
-              if (ev.detail.endDate !== undefined) {
-                this.endDate = ev.detail.endDate
+              this.internalStartDate = ev.detail.startDate
+              this.updateInputValue('start', this.internalStartDate)
+              if (ev.detail.endDate) {
+                this.internalEndDate = ev.detail.endDate
+                this.updateInputValue('end', this.internalEndDate)
               }
 
-              if (this.startDate && this.endDate) {
+              if (this.internalStartDate && this.internalEndDate) {
                 this.dateRangeSelected.emit({
-                  startDate: this.startDate,
-                  endDate: this.endDate,
+                  startDate: this.internalStartDate,
+                  endDate: this.internalEndDate,
                 })
-
-                if (this.dropdownRef) {
-                  this.dropdownRef.visible = false
-                }
+                if (this.dropdownRef) this.dropdownRef.visible = false
               }
             }}
-            startDate={this.startDate}
-            endDate={this.endDate}>
+            startDate={this.internalStartDate}
+            endDate={this.internalEndDate}>
           </mds-calendar>
         </mds-dropdown>
       </Host>
