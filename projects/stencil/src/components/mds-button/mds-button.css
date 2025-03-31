@@ -14,7 +14,12 @@
 :host {
   --mds-button-await-duration: 0.725s;
   --mds-button-background: theme('colors.variant-primary-02');
-  --mds-button-border-color: transparent;
+  --mds-button-border-color: 0 0 0;
+  --mds-button-border-hover-opacity: theme('opacity.75');
+  --mds-button-border-default-opacity: theme('opacity.50');
+  --mds-button-border-hover-width: 3px;
+  --mds-button-border-opacity: 0;
+  --mds-button-border-width: theme('borderWidth.50');
   --mds-button-color: theme('colors.tone-neutral');
   --mds-button-gap: theme('spacing.200');
   --mds-button-line-clamp: 1;
@@ -29,10 +34,7 @@
 
   align-items: center;
   background-color: var(--mds-button-background);
-  border-color: var(--mds-button-border-color, transparent);
   border-radius: var(--mds-button-radius);
-  border-style: solid;
-  border-width: theme('borderWidth.2');
   box-sizing: border-box;
   color: var(--mds-button-color);
   cursor: pointer;
@@ -90,5 +92,7 @@
 @import './css/mds-button-variant-success.css';
 @import './css/mds-button-variant-warning-contrast.css';
 @import './css/mds-button-variant-warning.css';
+@import './css/mds-button-tone.css';
+@import './css/mds-button-variant-service.css';
 @import './css/mds-button-pref-animation.css';
 @import '../../tailwind/fouc.css';

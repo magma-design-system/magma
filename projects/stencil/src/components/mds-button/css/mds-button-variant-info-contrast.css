@@ -36,35 +36,29 @@
 }
 
 :host-context(.pref-contrast-more):host([variant="info"][tone="ghost"]) {
-  --mds-button-background: transparent;
-  --mds-button-border-color: theme('colors.status-info-03');
+  --mds-button-border-color: var(--status-info-03);
   --mds-button-color: theme('colors.status-info-02');
 }
 
 :host-context(.pref-contrast-more):host([variant="info"][tone="ghost"]:hover) {
-  --mds-button-background: transparent;
-  --mds-button-border-color: theme('colors.status-info-03');
+  --mds-button-border-color: var(--status-info-03);
   --mds-button-color: theme('colors.status-info-01');
 }
 
 :host-context(.pref-contrast-more):host([variant="info"][tone="ghost"][active]) {
-  --mds-button-background: transparent;
-  --mds-button-border-color: theme('colors.status-info-04');
+  --mds-button-border-color: var(--status-info-04);
   --mds-button-color: theme('colors.status-info-02');
 }
 
 :host-context(.pref-contrast-more):host([variant="info"][tone="quiet"]) {
-  --mds-button-background: transparent;
   --mds-button-color: theme('colors.status-info-01');
 }
 
 :host-context(.pref-contrast-more):host([variant="info"][tone="quiet"]:hover) {
-  --mds-button-background: transparent;
   --mds-button-color: theme('colors.status-info-03');
 }
 
 :host-context(.pref-contrast-more):host([variant="info"][tone="quiet"][active]) {
-  --mds-button-background: transparent;
   --mds-button-color: theme('colors.status-info-01');
 }
 
@@ -107,35 +101,29 @@
   }
 
   :host-context(.pref-contrast-system):host([variant="info"][tone="ghost"]) {
-    --mds-button-background: transparent;
-    --mds-button-border-color: theme('colors.status-info-03');
+    --mds-button-border-color: var(--status-info-03);
     --mds-button-color: theme('colors.status-info-02');
   }
 
   :host-context(.pref-contrast-system):host([variant="info"][tone="ghost"]:hover) {
-    --mds-button-background: transparent;
-    --mds-button-border-color: theme('colors.status-info-03');
+    --mds-button-border-color: var(--status-info-03);
     --mds-button-color: theme('colors.status-info-01');
   }
 
   :host-context(.pref-contrast-system):host([variant="info"][tone="ghost"][active]) {
-    --mds-button-background: transparent;
-    --mds-button-border-color: theme('colors.status-info-04');
+    --mds-button-border-color: var(--status-info-04);
     --mds-button-color: theme('colors.status-info-02');
   }
 
   :host-context(.pref-contrast-system):host([variant="info"][tone="quiet"]) {
-    --mds-button-background: transparent;
     --mds-button-color: theme('colors.status-info-01');
   }
 
   :host-context(.pref-contrast-system):host([variant="info"][tone="quiet"]:hover) {
-    --mds-button-background: transparent;
     --mds-button-color: theme('colors.status-info-03');
   }
 
   :host-context(.pref-contrast-system):host([variant="info"][tone="quiet"][active]) {
-    --mds-button-background: transparent;
     --mds-button-color: theme('colors.status-info-01');
   }
 }

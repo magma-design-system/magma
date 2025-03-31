@@ -1,0 +1,17 @@
+:host([tone="quiet"]),
+:host([tone="quiet"]:hover),
+:host([tone="ghost"]) {
+  --mds-button-background: transparent;
+}
+
+:host([tone="ghost"]) {
+  --mds-button-border-opacity: var(--mds-button-border-default-opacity);
+
+  box-shadow: 0 0 0 var(--mds-button-border-width) rgb(var(--mds-button-border-color) / var(--mds-button-border-opacity));
+}
+
+:host([tone="ghost"]:hover) {
+  --mds-button-background: transparent;
+  --mds-button-border-width: var(--mds-button-border-hover-width);
+  --mds-button-border-opacity: var(--mds-button-border-hover-opacity);
+}

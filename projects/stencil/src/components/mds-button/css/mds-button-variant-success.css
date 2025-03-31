@@ -4,7 +4,7 @@
   --mds-button-color: theme('colors.tone-neutral');
 }
 
-:host([variant="success"]:hover ),
+:host([variant="success"]:hover),
 :host([variant="success"][tone="strong"]:hover) {
   --mds-button-background: theme('colors.status-success-04');
 }
@@ -23,7 +23,6 @@
 
 :host([variant="success"][tone="weak"]:hover) {
   --mds-button-background: theme('colors.status-success-08');
-
 }
 
 :host([variant="success"][tone="weak"][active]) {
@@ -34,34 +33,28 @@
 }
 
 :host([variant="success"][tone="ghost"]) {
-  --mds-button-background: transparent;
-  --mds-button-border-color: theme('colors.status-success-04');
+  --mds-button-border-color: var(--status-success-04);
   --mds-button-color: theme('colors.status-success-03');
 }
 
 :host([variant="success"][tone="ghost"]:hover) {
-  --mds-button-background: transparent;
-  --mds-button-border-color: theme('colors.status-success-04');
+  --mds-button-border-color: var(--status-success-04);
   --mds-button-color: theme('colors.status-success-02');
 }
 
 :host([variant="success"][tone="ghost"][active]) {
-  --mds-button-background: transparent;
-  --mds-button-border-color: theme('colors.status-success-05');
+  --mds-button-border-color: var(--status-success-05);
   --mds-button-color: theme('colors.status-success-03');
 }
 
 :host([variant="success"][tone="quiet"]) {
-  --mds-button-background: transparent;
   --mds-button-color: theme('colors.status-success-02');
 }
 
 :host([variant="success"][tone="quiet"]:hover) {
-  --mds-button-background: transparent;
   --mds-button-color: theme('colors.status-success-04');
 }
 
 :host([variant="success"][tone="quiet"][active]) {
-  --mds-button-background: transparent;
   --mds-button-color: theme('colors.status-success-01');
 }

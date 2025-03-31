@@ -28,34 +28,28 @@
 }
 
 :host([variant="light"][tone="ghost"]) {
-  --mds-button-background: transparent;
-  --mds-button-border-color: theme('colors.tone-neutral');
+  --mds-button-border-color: var(--tone-neutral);
   --mds-button-color: theme('colors.tone-neutral');
 }
 
 :host([variant="light"][tone="ghost"]:hover) {
-  --mds-button-background: transparent;
-  --mds-button-border-color: theme('colors.tone-neutral');
+  --mds-button-border-color: var(--tone-neutral);
   --mds-button-color: theme('colors.tone-neutral');
 }
 
 :host([variant="light"][tone="ghost"][active]) {
-  --mds-button-background: transparent;
-  --mds-button-border-color: theme('colors.tone-neutral');
+  --mds-button-border-color: var(--tone-neutral);
   --mds-button-color: theme('colors.tone-neutral');
 }
 
 :host([variant="light"][tone="quiet"]) {
-  --mds-button-background: transparent;
   --mds-button-color: theme('colors.tone-neutral');
 }
 
 :host([variant="light"][tone="quiet"]:hover) {
-  --mds-button-background: transparent;
   --mds-button-color: theme('colors.tone-neutral');
 }
 
 :host([variant="light"][tone="quiet"][active]) {
-  --mds-button-background: transparent;
   --mds-button-color: theme('colors.tone-neutral');
 }

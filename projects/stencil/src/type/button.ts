@@ -27,3 +27,5 @@ export type ButtonVariantType =
   | 'info'
   | 'success'
   | 'warning'
+  | 'google'
+  | 'apple'
