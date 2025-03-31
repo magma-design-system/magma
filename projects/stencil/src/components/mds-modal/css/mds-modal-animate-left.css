@@ -3,28 +3,27 @@
   justify-content: flex-start;
 }
 
+:host([position="left"]) .action-close {
+  right: theme('spacing.300');
+  top: theme('spacing.300');
+}
+
+:host([position="left"]:not([opened])) .action-close {
+  transform: translateX(-120%) rotate(-45deg);
+}
+
 :host([position="left"]) .window {
   height: 100%;
   max-height: calc(100dvh - calc(var(--mds-modal-window-distance) * 2));
   max-width: calc(100vw - 80px);
 }
 
-:host([position="left"][opened="false"]) > ::slotted([slot="window"]),
+:host([position="left"]:not([opened])) .window,
 :host([position="left"]:not([opened])) > ::slotted([slot="window"]) {
   transform: rotateX(0) rotateY(22deg) rotateZ(0) scale(0.5) translate(-100%, 0%);
 }
 
-:host([position="left"][opened="false"]) .window,
-:host([position="left"]:not([opened])) .window {
+:host([position="left"][animation="slide"]:not([opened])) .window,
+:host([position="left"][animation="slide"]:not([opened])) > ::slotted([slot="window"]) {
   transform: translate(-100%, 0%);
-}
-
-:host([position="left"]) .action-close {
-  right: theme('spacing.300');
-  top: theme('spacing.300');
-  transform: translateX(-120%) rotate(-45deg);
-}
-
-:host([position="left"][opened]:not([opened="false"])) .action-close {
-  transform: translateX(0);
 }

@@ -19,8 +19,8 @@
   --mds-modal-overlay-color: var(--magma-overlay-color, 0 0 0);
   --mds-modal-overlay-opacity: var(--magma-overlay-opacity, 0.5);
   --mds-modal-transition-duration: 500ms;
-  --mds-modal-transition-intro-ease: theme('transitionTimingFunction.out-expo');
-  --mds-modal-transition-outro-ease: theme('transitionTimingFunction.in-out-quint');
+  --mds-modal-transition-delay: 250ms;
+  --mds-modal-transition-timing-funciton: theme('transitionTimingFunction.in-out-quint');
   --mds-modal-window-background: theme('colors.tone-neutral');
   --mds-modal-window-overflow: auto;
   --mds-modal-window-radius: 0;
@@ -29,7 +29,7 @@
   --mds-modal-custom-window-distance: theme('spacing.600');
   --mds-modal-z-index: var(--magma-modal-z-index);
 
-  @apply ease-in-out-expo;
+  @apply ease-in-out-quint;
 
   align-items: center;
   background-color: rgba(var(--mds-modal-overlay-color) / 0);
@@ -42,8 +42,28 @@
   position: fixed;
   transition-duration: var(--mds-modal-transition-duration);
   transition-property: background-color;
+  transition-timing-function: var(--mds-modal-transition-timing-funciton);
   z-index: var(--mds-modal-z-index, 1000);
 }
+
+/* :host([opened]) {
+  transition-delay: 0;
+}
+
+:host(:not([opened])) {
+  transition-delay: var(--mds-modal-transition-delay);
+}
+
+
+:host([opened]) .window,
+:host([opened]) > ::slotted([slot="window"]) {
+  transition-delay: var(--mds-modal-transition-delay);
+}
+
+:host(:not([opened])) .window,
+:host(:not([opened])) > ::slotted([slot="window"]) {
+  transition-delay: var(--mds-modal-transition-delay);
+} */
 
 :host ::slotted([slot="window"]) {
   margin: var(--mds-modal-custom-window-distance);
@@ -69,7 +89,7 @@
   transition-timing-function: theme('transitionTimingFunction.in-out-expo');
 }
 
-:host([opened]:not([opened="false"])) .action-close {
+:host([opened]) .action-close {
   opacity: 1;
   pointer-events: auto;
 }

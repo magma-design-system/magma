@@ -8,12 +8,12 @@
   width: 100vw;
 }
 
-:host([position="bottom"][opened="false"]) > ::slotted([slot="window"]),
+:host([position="bottom"][animation="slide"]:not([opened])) .window,
 :host([position="bottom"]:not([opened])) > ::slotted([slot="window"]) {
   transform: rotateX(22deg) rotateY(0) scale(0.5) translate(0, 80%);
 }
 
-:host([position="bottom"][opened="false"]) .window,
-:host([position="bottom"]:not([opened])) .window {
+:host([position="bottom"][animation="slide"]:not([opened])) .window,
+:host([position="bottom"][animation="slide"]:not([opened])) > ::slotted([slot="window"]) {
   transform: translate(0, 100%);
 }

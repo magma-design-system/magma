@@ -3,16 +3,12 @@
   justify-content: center;
 }
 
-:host([position="center"]) .window {
-  transition-delay: 0s;
-}
-
-:host([position="center"][opened="false"]) > ::slotted([slot="window"]),
+:host([position="center"]:not([opened])) .window,
 :host([position="center"]:not([opened])) > ::slotted([slot="window"]) {
   transform: rotateX(0) rotateY(22deg) scale(0.5) translate(0, 40%);
 }
 
-:host([position="center"][opened="false"]) .window,
-:host([position="center"]:not([opened])) .window {
-  transform: rotateX(0) rotateY(0) scale(0.5) translate(0, 0);
+:host([position="center"][animation="slide"]:not([opened])) .window,
+:host([position="center"][animation="slide"]:not([opened])) > ::slotted([slot="window"]) {
+  transform: translate(0, 25%);
 }

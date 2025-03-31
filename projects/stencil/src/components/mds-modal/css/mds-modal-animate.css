@@ -1,9 +1,4 @@
-:host .window {
-  transition-delay: 0s, calc(var(--mds-modal-transition-duration) / 2);
-}
-
-
-:host([opened]:not([opened="false"])) {
+:host([opened]) {
   background-color: rgba(var(--mds-modal-overlay-color) / var(--mds-modal-overlay-opacity));
   pointer-events: auto;
 }
@@ -13,13 +8,22 @@
   opacity: 0;
   transition-duration: var(--mds-modal-transition-duration);
   transition-property: transform, opacity;
-  transition-timing-function: var(--mds-modal-transition-outro-ease);
+  transition-timing-function: var(--mds-modal-transition-timing-funciton);
 }
 
-:host([opened]:not([opened="false"])) .window,
-:host([opened]:not([opened="false"])) > ::slotted( [slot="window"]) {
+:host([opened]) .window,
+:host([opened]) > ::slotted([slot="window"]) {
   opacity: 1;
   transform: rotate(0) scale(1) translateY(0);
-  transition-delay: 0s;
-  transition-timing-function: var(--mds-modal-transition-intro-ease);
+  transition-timing-function: var(--mds-modal-transition-timing-funciton);
+}
+
+:host(:not([opened])[animation="slide"]) .window,
+:host(:not([opened])[animation="slide"]) > ::slotted([slot="window"]) {
+  transform: translateY(50%);
+}
+
+:host([opened][animation="slide"]) .window,
+:host([opened][animation="slide"]) > ::slotted([slot="window"]) {
+  transform: translateY(0);
 }

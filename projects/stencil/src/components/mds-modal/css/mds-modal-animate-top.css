@@ -3,17 +3,17 @@
   justify-content: center;
 }
 
-:host([position="bottom"]) .window {
+:host([position="top"]) .window {
   height: auto;
   width: 100vw;
 }
 
-:host([position="top"][opened="false"]) > ::slotted( [slot="window"]),
-:host([position="top"]:not([opened])) > ::slotted( [slot="window"]) {
+:host([position="top"]:not([opened])) .window,
+:host([position="top"]:not([opened])) > ::slotted([slot="window"]) {
   transform: rotateX(-22deg) rotateY(0) scale(0.5) translate(0, -80%);
 }
 
-:host([position="top"][opened="false"]) .window,
-:host([position="top"]:not([opened])) .window {
+:host([position="top"][animation="slide"]:not([opened])) > ::slotted([slot="window"]),
+:host([position="top"][animation="slide"]:not([opened])) .window {
   transform: translate(0, -100%);
 }
