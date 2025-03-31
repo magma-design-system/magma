@@ -4,18 +4,9 @@
   --mds-button-color: theme('colors.tone-neutral');
 }
 
-:host([variant="info"]:hover),
-:host([variant="info"][tone="strong"]:hover) {
-  --mds-button-background: theme('colors.status-info-04');
-}
-
-:host([variant="info"][active]),
-:host([variant="info"][tone="strong"][active]) {
-  --mds-button-background: theme('colors.status-info-06');
-}
-
 :host([variant="info"][tone="weak"]) {
   --mds-button-background: theme('colors.status-info-09');
+  --mds-button-border-color: var(--status-info-09);
   --mds-button-color: theme('colors.status-info-03');
 
   fill: theme('colors.status-info-03');
@@ -23,13 +14,7 @@
 
 :host([variant="info"][tone="weak"]:hover) {
   --mds-button-background: theme('colors.status-info-08');
-}
-
-:host([variant="info"][tone="weak"][active]) {
-  --mds-button-background: theme('colors.status-info-08');
-  --mds-button-color: theme('colors.status-info-02');
-
-  fill: theme('colors.status-info-02');
+  --mds-button-border-color: var(--status-info-08);
 }
 
 :host([variant="info"][tone="ghost"]) {
@@ -40,11 +25,6 @@
 :host([variant="info"][tone="ghost"]:hover) {
   --mds-button-border-color: var(--status-info-04);
   --mds-button-color: theme('colors.status-info-02');
-}
-
-:host([variant="info"][tone="ghost"][active]) {
-  --mds-button-border-color: var(--status-info-05);
-  --mds-button-color: theme('colors.status-info-03');
 }
 
 :host([variant="info"][tone="quiet"]) {

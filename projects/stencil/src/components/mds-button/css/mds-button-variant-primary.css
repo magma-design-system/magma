@@ -1,23 +1,17 @@
-@tailwind utilities;
-
-:host([variant="primary"]),
 :host([variant="primary"][tone="strong"]) {
-  --mds-button-background: theme('colors.variant-primary-03');
+  --mds-button-background: theme('colors.variant-primary-04');
+  --mds-button-border-color: var(--variant-primary-04);
   --mds-button-color: theme('colors.tone-neutral');
 }
 
-:host([variant="primary"]:hover ),
 :host([variant="primary"][tone="strong"]:hover) {
-  --mds-button-background: theme('colors.variant-primary-04');
-}
-
-:host([variant="primary"][active]),
-:host([variant="primary"][tone="strong"][active]) {
-  --mds-button-background: theme('colors.variant-primary-02');
+  --mds-button-background: theme('colors.variant-primary-03');
+  --mds-button-border-color: var(--variant-primary-03);
 }
 
 :host([variant="primary"][tone="weak"]) {
   --mds-button-background: theme('colors.variant-primary-09');
+  --mds-button-border-color: var(--variant-primary-09);
   --mds-button-color: theme('colors.variant-primary-03');
 
   fill: theme('colors.variant-primary-03');
@@ -25,46 +19,27 @@
 
 :host([variant="primary"][tone="weak"]:hover) {
   --mds-button-background: theme('colors.variant-primary-08');
-
-}
-
-:host([variant="primary"][tone="weak"][active]) {
-  --mds-button-background: theme('colors.variant-primary-08');
-  --mds-button-color: theme('colors.variant-primary-02');
-
-  fill: theme('colors.variant-primary-02');
+  --mds-button-border-color: var(--variant-primary-08);
 }
 
 :host([variant="primary"][tone="ghost"]) {
-  --mds-button-background: transparent;
-  --mds-button-border-color: theme('colors.variant-primary-04');
+  --mds-button-border-color: var(--variant-primary-04);
   --mds-button-color: theme('colors.variant-primary-03');
 }
 
 :host([variant="primary"][tone="ghost"]:hover) {
-  --mds-button-background: transparent;
-  --mds-button-border-color: theme('colors.variant-primary-04');
+  --mds-button-border-color: var(--variant-primary-04);
   --mds-button-color: theme('colors.variant-primary-02');
 }
 
-:host([variant="primary"][tone="ghost"][active]) {
-  --mds-button-background: transparent;
-  --mds-button-border-color: theme('colors.variant-primary-05');
-  --mds-button-color: theme('colors.variant-primary-03');
-}
-
 :host([variant="primary"][tone="quiet"]) {
-  --mds-button-background: transparent;
   --mds-button-color: theme('colors.variant-primary-02');
 }
 
 :host([variant="primary"][tone="quiet"]:hover) {
-  --mds-button-background: transparent;
   --mds-button-color: theme('colors.variant-primary-04');
 }
 
 :host([variant="primary"][tone="quiet"][active]) {
-  --mds-button-background: transparent;
   --mds-button-color: theme('colors.variant-primary-01');
 }
-
