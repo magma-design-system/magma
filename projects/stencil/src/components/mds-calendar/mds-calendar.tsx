@@ -306,10 +306,19 @@ export class MdsCalendar {
       this.startDateTime = dayInfo
       this.internalStartDate = this.startDateTime.toISO().split('T')[0]
       this.isFirstClick = false
+      const calendar: HTMLMdsCalendarElement = this.host
+
+      requestAnimationFrame(() => {
+        calendar?.shadowRoot?.querySelectorAll('mds-calendar-cell[selection]').forEach(day => {
+          day.removeAttribute('selection')
+        })
+      })
+
       requestAnimationFrame(() => {
         element.setAttribute('selection', 'single')
         element.setAttribute('preview', 'true')
       })
+
 
       return
     }
