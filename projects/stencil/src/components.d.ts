@@ -395,12 +395,15 @@ export namespace Components {
     }
     interface MdsCalendar {
         "endDate": string | null;
+        "max": string | null;
+        "min": string | null;
         "rangePicker": boolean;
         "startDate": string | null;
         "updateLang": () => Promise<void>;
     }
     interface MdsCalendarCell {
         "date"?: string;
+        "disabled"?: boolean | undefined;
         "month"?: CalendarCellType;
         "orientation"?: CalendarCellSelectionOrieintationType;
         "preview"?: boolean;
@@ -927,11 +930,16 @@ export namespace Components {
         "variant"?: ThemeStatusVariantType;
     }
     interface MdsInputDate {
+        "empty": boolean | undefined;
         "focusInput": () => Promise<void>;
+        "max": string | null;
+        "min": string | null;
         "value": string;
     }
     interface MdsInputDateRange {
         "endDate": string;
+        "max": string | null;
+        "min": string | null;
         "startDate": string;
     }
     interface MdsInputField {
@@ -3696,12 +3704,15 @@ declare namespace LocalJSX {
     }
     interface MdsCalendar {
         "endDate"?: string | null;
+        "max"?: string | null;
+        "min"?: string | null;
         "onDatesEmitter"?: (event: MdsCalendarCustomEvent<{startDate: string, endDate?: string}>) => void;
         "rangePicker"?: boolean;
         "startDate"?: string | null;
     }
     interface MdsCalendarCell {
         "date"?: string;
+        "disabled"?: boolean | undefined;
         "month"?: CalendarCellType;
         "orientation"?: CalendarCellSelectionOrieintationType;
         "preview"?: boolean;
@@ -4288,11 +4299,16 @@ declare namespace LocalJSX {
         "variant"?: ThemeStatusVariantType;
     }
     interface MdsInputDate {
+        "empty"?: boolean | undefined;
+        "max"?: string | null;
+        "min"?: string | null;
         "onValueChange"?: (event: MdsInputDateCustomEvent<string>) => void;
         "value"?: string;
     }
     interface MdsInputDateRange {
         "endDate"?: string;
+        "max"?: string | null;
+        "min"?: string | null;
         "onDateRangeSelected"?: (event: MdsInputDateRangeCustomEvent<{ startDate: string, endDate: string }>) => void;
         "startDate"?: string;
     }
