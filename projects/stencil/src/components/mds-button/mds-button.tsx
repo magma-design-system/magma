@@ -52,7 +52,7 @@ export class MdsButton {
   /**
    * The type of the button element
    */
-  @Prop() readonly type?: ButtonType = 'submit'
+  @Prop({ reflect: true }) readonly type?: ButtonType = 'submit'
 
   /**
    * Specifies the color variant for the button
