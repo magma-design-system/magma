@@ -162,7 +162,12 @@ export class MdsInputDateRange {
                   startDate: this.internalStartDate,
                   endDate: this.internalEndDate,
                 })
-                if (this.dropdownRef) this.dropdownRef.visible = false
+                const dropdownRef = this.dropdownRef
+                if (dropdownRef) {
+                  setTimeout(() => {
+                    dropdownRef.visible = false
+                  }, 500)
+                }
               }
             }}
             startDate={this.internalStartDate}
