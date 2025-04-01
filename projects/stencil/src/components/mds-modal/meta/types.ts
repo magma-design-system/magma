@@ -20,4 +20,5 @@ export type ModalOverflowType =
 
 export type ModalAnimationStyleType =
   | 'slide'
+  | 'custom'
   | '3d'

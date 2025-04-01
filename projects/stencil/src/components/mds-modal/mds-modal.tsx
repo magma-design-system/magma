@@ -48,7 +48,7 @@ export class MdsModal {
   /**
    * Specifies if the component is animating itself or not
    */
-  @Prop({ reflect: true, mutable: true }) animation?: ModalAnimationStyleType = 'slide'
+  @Prop({ reflect: true }) readonly animation?: ModalAnimationStyleType = 'slide'
 
   /**
    * Specifies if the component prevents the body from scrolling when modal window is opened

@@ -17,6 +17,7 @@ const modalOverflowDictionary = [
 
 const modalAnimationStyleDictionary = [
   'slide',
+  'custom',
   '3d',
 ]
 
