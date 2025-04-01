@@ -17,12 +17,23 @@ export class MdsInputDateRange {
 
   @Prop({ reflect: true }) startDate: string = ''
   @Prop({ reflect: true }) endDate: string = ''
+  @Prop({ reflect: true }) min: string | null = null
+  @Prop({ reflect: true }) max: string | null = null
 
   @Event() dateRangeSelected: EventEmitter<{ startDate: string, endDate: string }>
 
   componentWillLoad (): void {
     this.internalStartDate = this.startDate
     this.internalEndDate = this.endDate
+
+    // Se max è precedente a min, imposto max uguale a min
+    if (this.min && this.max) {
+      const minDate = DateTime.fromISO(this.min)
+      const maxDate = DateTime.fromISO(this.max)
+      if (maxDate < minDate) {
+        this.max = this.min
+      }
+    }
   }
 
   componentDidLoad (): void {
@@ -91,7 +102,7 @@ export class MdsInputDateRange {
       }
     }
   }
-  
+
   private validateDateRange (): void {
     if (this.internalStartDate && this.internalEndDate) {
       const start = DateTime.fromISO(this.internalStartDate)
@@ -155,7 +166,10 @@ export class MdsInputDateRange {
               }
             }}
             startDate={this.internalStartDate}
-            endDate={this.internalEndDate}>
+            endDate={this.internalEndDate}
+            {...(this.min ? { min: this.min } : {})}
+            {...(this.max ? { max: this.max } : {})}
+          >
           </mds-calendar>
         </mds-dropdown>
       </Host>

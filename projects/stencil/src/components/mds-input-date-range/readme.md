@@ -7,10 +7,12 @@
 
 ## Properties
 
-| Property    | Attribute    | Description | Type     | Default |
-| ----------- | ------------ | ----------- | -------- | ------- |
-| `endDate`   | `end-date`   |             | `string` | `''`    |
-| `startDate` | `start-date` |             | `string` | `''`    |
+| Property    | Attribute    | Description | Type             | Default |
+| ----------- | ------------ | ----------- | ---------------- | ------- |
+| `endDate`   | `end-date`   |             | `string`         | `''`    |
+| `max`       | `max`        |             | `null \| string` | `null`  |
+| `min`       | `min`        |             | `null \| string` | `null`  |
+| `startDate` | `start-date` |             | `string`         | `''`    |
 
 
 ## Events
