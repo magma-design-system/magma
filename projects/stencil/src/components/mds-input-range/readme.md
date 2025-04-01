@@ -9,14 +9,14 @@ This is a web-component from Maggioli Design System [Magma](https://magma.maggio
 
 ## Properties
 
-| Property   | Attribute  | Description                                                                                                                                      | Type                   | Default     |
-| ---------- | ---------- | ------------------------------------------------------------------------------------------------------------------------------------------------ | ---------------------- | ----------- |
-| `alias`    | `alias`    | An alias to custom how value is represented                                                                                                      | `string \| undefined`  | `undefined` |
-| `disabled` | `disabled` | Sets if the component is disabled                                                                                                                | `boolean \| undefined` | `undefined` |
-| `max`      | `max`      | The greatest value in the range of permitted values                                                                                              | `number`               | `100`       |
-| `min`      | `min`      | The lowest value in the range of permitted values                                                                                                | `number`               | `0`         |
-| `step`     | `step`     | The step attribute is a number that specifies the granularity that the value must adhere to, or the special value any, which is described below. | `number`               | `1`         |
-| `value`    | `value`    | The value attribute contains a number which contains a representation of the selected number.                                                    | `number`               | `undefined` |
+| Property      | Attribute  | Description                                                                                                                                      | Type                                       | Default     |
+| ------------- | ---------- | ------------------------------------------------------------------------------------------------------------------------------------------------ | ------------------------------------------ | ----------- |
+| `disabled`    | `disabled` | Sets if the component is disabled                                                                                                                | `boolean \| undefined`                     | `undefined` |
+| `formatValue` | --         | A function to custom how value is represented                                                                                                    | `((value: number) => string) \| undefined` | `undefined` |
+| `max`         | `max`      | The greatest value in the range of permitted values                                                                                              | `number`                                   | `100`       |
+| `min`         | `min`      | The lowest value in the range of permitted values                                                                                                | `number`                                   | `0`         |
+| `step`        | `step`     | The step attribute is a number that specifies the granularity that the value must adhere to, or the special value any, which is described below. | `number`                                   | `1`         |
+| `value`       | `value`    | The value attribute contains a number which contains a representation of the selected number.                                                    | `number`                                   | `undefined` |
 
 
 ## Events

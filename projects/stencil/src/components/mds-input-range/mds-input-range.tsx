@@ -19,9 +19,9 @@ export class MdsInputRange {
   @AttachInternals() internals: ElementInternals
 
   /**
-   * An alias to custom how value is represented
+   * A function to custom how value is represented
    */
-  @Prop() readonly alias?: string
+  @Prop() readonly formatValue?: (value: number) => string
 
   /**
    * The greatest value in the range of permitted values
@@ -135,7 +135,7 @@ export class MdsInputRange {
       <Host>
         <header class="header" part="header">
           <mds-text class="label" typography="label"><slot/></mds-text>
-          <mds-text class="value" typography="label">{ this.alias ?? this.value }</mds-text>
+          <mds-text class="value" typography="label">{ this.formatValue ? this.formatValue(this.value) : this.value }</mds-text>
         </header>
         <div class="range">
           <div class="track">

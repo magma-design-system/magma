@@ -1024,13 +1024,13 @@ export namespace Components {
     }
     interface MdsInputRange {
         /**
-          * An alias to custom how value is represented
-         */
-        "alias"?: string;
-        /**
           * Sets if the component is disabled
          */
         "disabled"?: boolean;
+        /**
+          * A function to custom how value is represented
+         */
+        "formatValue"?: (value: number) => string;
         /**
           * The greatest value in the range of permitted values
          */
@@ -4329,13 +4329,13 @@ declare namespace LocalJSX {
     }
     interface MdsInputRange {
         /**
-          * An alias to custom how value is represented
-         */
-        "alias"?: string;
-        /**
           * Sets if the component is disabled
          */
         "disabled"?: boolean;
+        /**
+          * A function to custom how value is represented
+         */
+        "formatValue"?: (value: number) => string;
         /**
           * The greatest value in the range of permitted values
          */
