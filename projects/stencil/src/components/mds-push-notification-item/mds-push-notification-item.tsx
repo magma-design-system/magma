@@ -6,7 +6,6 @@ import localeIt from './meta/locale.it.json'
 import miBaselineCancel from '@icon/mi/baseline/cancel.svg'
 import relativeTime from 'dayjs/plugin/relativeTime'
 import { Component, Element, Event, EventEmitter, Host, h, Prop, Method, State, Watch } from '@stencil/core'
-import { ISO8601Date } from '@type/date'
 import { Locale } from '@common/locale'
 import { MdsPushNotificationItemEventDetail } from './meta/event-detail'
 import { NotificationItemPreviewType, NotificationItemDateFormatType, RelativeTimeType } from './meta/types'
@@ -120,7 +119,7 @@ export class MdsPushNotificationItem {
     this.hasBadge = this.host.querySelector(':scope > [slot="badge"]') !== null
 
     if (this.datetime) {
-      this.datetime = sanitizeISO8601Date(this.datetime?.toString()) as ISO8601Date
+      this.datetime = sanitizeISO8601Date(this.datetime?.toString())
     }
 
     this.t.lang(this.host)
