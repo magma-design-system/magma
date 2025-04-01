@@ -7,9 +7,12 @@
 
 ## Properties
 
-| Property | Attribute | Description | Type     | Default |
-| -------- | --------- | ----------- | -------- | ------- |
-| `value`  | `value`   |             | `string` | `''`    |
+| Property | Attribute | Description | Type                   | Default     |
+| -------- | --------- | ----------- | ---------------------- | ----------- |
+| `empty`  | `empty`   |             | `boolean \| undefined` | `undefined` |
+| `max`    | `max`     |             | `null \| string`       | `null`      |
+| `min`    | `min`     |             | `null \| string`       | `null`      |
+| `value`  | `value`   |             | `string`               | `''`        |
 
 
 ## Events

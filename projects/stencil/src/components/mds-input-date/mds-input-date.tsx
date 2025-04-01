@@ -1,5 +1,6 @@
 import { Component, Element, Host, h, Method, Prop, State, Event, EventEmitter, Watch } from '@stencil/core'
 import miBaselineCalendarToday from '@icon/mi/baseline/calendar-today.svg'
+import { DateTime } from 'luxon'
 
 @Component({
   tag: 'mds-input-date',
@@ -10,7 +11,11 @@ export class MdsInputDate {
   @Element() host: HTMLMdsInputDateElement
   private isSlotted: boolean = false
 
-  @Prop({ reflect: true }) value: string = ''
+  @Prop({ reflect: true }) readonly value: string = ''
+  @Prop({ reflect: true, mutable: true }) min: string | null = null
+  @Prop({ reflect: true, mutable: true }) max: string | null = null
+  @Prop({ reflect: true, mutable: true }) empty: boolean | undefined = undefined
+
 
   @State() internalValue: string = ''
   @State() calendarKey: number = 0
@@ -29,6 +34,20 @@ export class MdsInputDate {
     input.focus()
   }
 
+  componentWillLoad (): void {
+    this.isSlotted = !!this.host.getAttribute('slot')
+    this.internalValue = this.value || ''
+
+    // Se max è precedente a min, imposto max uguale a min
+    if (this.min && this.max) {
+      const minDate = DateTime.fromISO(this.min)
+      const maxDate = DateTime.fromISO(this.max)
+      if (maxDate < minDate) {
+        this.max = this.min
+      }
+    }
+  }
+
   handleInput (event: Event): void {
     const input = event.target as HTMLInputElement
     this.internalValue = input.value
@@ -40,18 +59,17 @@ export class MdsInputDate {
     this.valueChange.emit(this.internalValue)
   }
 
-  componentWillLoad (): void {
-    this.isSlotted = !!this.host.getAttribute('slot')
-    this.internalValue = this.value || ''
-  }
+
 
   manageValue (ev: FocusEvent): void {
     const input = ev.target as HTMLInputElement
-    if (!input.validity.badInput) {
+    if (!input.validity.badInput && input.value !== '') {
       this.messageError = ''
       this.valueChange.emit(this.internalValue)
+      this.empty = undefined
     } else {
       this.messageError = input.validationMessage
+      this.empty = true
     }
   }
 
@@ -80,7 +98,10 @@ export class MdsInputDate {
               this.valueChange.emit(this.internalValue)
               if (this.dropdownRef) this.dropdownRef.visible = false
             }}
-            startDate={this.internalValue}>
+            startDate={this.internalValue}
+            {...this.min ? { min: this.min } : {}}
+            {...this.max ? { max: this.max } : {}}
+          >
           </mds-calendar>
         </mds-dropdown>}
       </Host>
