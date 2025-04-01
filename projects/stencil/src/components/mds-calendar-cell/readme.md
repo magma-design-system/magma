@@ -10,6 +10,7 @@
 | Property      | Attribute     | Description | Type                                                              | Default        |
 | ------------- | ------------- | ----------- | ----------------------------------------------------------------- | -------------- |
 | `date`        | `date`        |             | `string \| undefined`                                             | `undefined`    |
+| `disabled`    | `disabled`    |             | `boolean \| undefined`                                            | `undefined`    |
 | `month`       | `month`       |             | `"current" \| "other" \| "weekend" \| undefined`                  | `'current'`    |
 | `orientation` | `orientation` |             | `"both" \| "horizontal" \| "vertical" \| undefined`               | `'horizontal'` |
 | `preview`     | `preview`     |             | `boolean \| undefined`                                            | `false`        |

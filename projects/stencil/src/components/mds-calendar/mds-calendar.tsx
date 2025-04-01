@@ -24,9 +24,12 @@ export class MdsCalendar {
   @State() currentView: 'calendar' | 'years' | 'months' = 'calendar'
   @State() selectedYear: number = this.currentDate.year
 
-  @Prop() rangePicker: boolean = true
-  @Prop({ reflect: true, mutable: true }) startDate: string | null = null
-  @Prop({ reflect: true, mutable: true }) endDate: string | null = null
+  @Prop() readonly rangePicker: boolean = true
+  @Prop({ reflect: true }) readonly startDate: string | null = null
+  @Prop({ reflect: true }) readonly endDate: string | null = null
+  @Prop({ reflect: true }) readonly min: string | null = null
+  @Prop({ reflect: true }) readonly max: string | null = null
+
   @State() internalStartDate: string | null = this.startDate
   @State() internalEndDate: string | null = this.endDate
 
@@ -442,7 +445,7 @@ export class MdsCalendar {
             }
           }}></mds-button>
           <div class="select-month-or-year">
-            {(this.currentView  === 'calendar' || this.currentView === 'months') && <mds-button class="action-month" variant="dark" tone="quiet" onClick={event => {
+            {(this.currentView === 'calendar' || this.currentView === 'months') && <mds-button class="action-month" variant="dark" tone="quiet" onClick={event => {
               event.stopPropagation()
               this.currentView = this.currentView === 'months' ? 'calendar' : 'months'
               requestAnimationFrame(() => {
@@ -483,6 +486,17 @@ export class MdsCalendar {
                 <mds-calendar-cell
                   date={dayInfo.date.toFormat('yyyy-MM-dd')}
                   month={dayInfo.isCurrentMonth ? 'current' : 'other'}
+                  disabled={
+                    (() => {
+                      if (this.min && this.min !== '' && dayInfo.date < DateTime.fromISO(this.min)) {
+                        return true
+                      }
+                      if (this.max && this.max !== '' && dayInfo.date > DateTime.fromISO(this.max)) {
+                        return true
+                      }
+                      return undefined
+                    })()
+                  }
                   onClick={event => {
                     event.stopPropagation()
                     const target = event.currentTarget as HTMLElement

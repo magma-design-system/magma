@@ -10,6 +10,8 @@
 | Property      | Attribute      | Description | Type             | Default |
 | ------------- | -------------- | ----------- | ---------------- | ------- |
 | `endDate`     | `end-date`     |             | `null \| string` | `null`  |
+| `max`         | `max`          |             | `null \| string` | `null`  |
+| `min`         | `min`          |             | `null \| string` | `null`  |
 | `rangePicker` | `range-picker` |             | `boolean`        | `true`  |
 | `startDate`   | `start-date`   |             | `null \| string` | `null`  |
 
