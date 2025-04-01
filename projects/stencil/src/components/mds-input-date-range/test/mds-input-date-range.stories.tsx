@@ -15,4 +15,6 @@ export const Default = Template.bind({})
 Default.args = {
   'start-date': '2025-03-19',
   'end-date': '2025-03-21',
+  min: '2025-03-15',
+  max: '2025-03-27',
 }

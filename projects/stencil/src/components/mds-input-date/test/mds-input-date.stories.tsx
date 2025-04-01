@@ -11,4 +11,6 @@ const Template = args =>
 export const Default = Template.bind({})
 Default.args = {
   value: '2025-03-19',
+  min: '2025-03-15',
+  max: '2025-03-27',
 }
