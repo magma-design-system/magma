@@ -394,30 +394,34 @@ export class MdsCalendar {
           startTypedElement.setAttribute('selection', 'end')
           typedElement.setAttribute('selection', 'start')
         } else {
-          typedElement.setAttribute('selection', 'end')
+          typedElement.setAttribute('selection', 'single')
         }
       }
     }
+    if (startDate.equals(hoveredDate)) {
+      typedElement.setAttribute('selection', 'single')
+    } else {
 
-    const [start, end] = startDate < hoveredDate ? [startDate, hoveredDate] : [hoveredDate, startDate]
+      const [start, end] = startDate < hoveredDate ? [startDate, hoveredDate] : [hoveredDate, startDate]
 
-    mdsCalendarCellElements.forEach(cell => {
-      const cellDateStr = cell.getAttribute('date')
-      if (!cellDateStr) return
+      mdsCalendarCellElements.forEach(cell => {
+        const cellDateStr = cell.getAttribute('date')
+        if (!cellDateStr) return
 
-      const cellDate = DateTime.fromISO(cellDateStr)
-      if (!cellDate.isValid) return
+        const cellDate = DateTime.fromISO(cellDateStr)
+        if (!cellDate.isValid) return
 
-      if (cellDate >= start && cellDate <= end) {
-        cell.setAttribute('preview', 'true')
+        if (cellDate >= start && cellDate <= end) {
+          cell.setAttribute('preview', 'true')
 
-        let selectionType = 'middle'
-        if (cellDate.equals(start)) selectionType = 'start'
-        if (cellDate.equals(end)) selectionType = 'end'
+          let selectionType = 'middle'
+          if (cellDate.equals(start)) selectionType = 'start'
+          if (cellDate.equals(end)) selectionType = 'end'
 
-        cell.setAttribute('selection', selectionType)
-      }
-    })
+          cell.setAttribute('selection', selectionType)
+        }
+      })
+    }
   }
 
   private handleSingleSelection (element: HTMLElement, dayInfo: DateTime): void {
