@@ -40,6 +40,9 @@
 
 .preview {
   --mds-avatar-radius: var(--mds-entity-icon-radius);
+}
+
+.preview:not([variant]) {
   --mds-avatar-color: var(--mds-entity-icon-color);
   --mds-avatar-background-color: var(--mds-entity-icon-background);
 }

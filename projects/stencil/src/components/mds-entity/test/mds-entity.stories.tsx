@@ -88,7 +88,7 @@ const TemplateCustomIconColors = args =>
   </mds-entity>
 
 const TemplateInitials = args =>
-  <mds-entity {...args} style={{ '--mds-entity-icon-background': 'rgb(var(--tone-neutral-04))', '--mds-entity-icon-color': 'rgb(var(--tone-neutral-10))' }} aria-label="Luogo">
+  <mds-entity {...args} aria-label="Luogo">
     <mds-text truncate="word" typography="h6" title="Nome">Maggioli Headquarters</mds-text>
     <mds-text truncate="word" title="Strada" slot="detail" typography="caption">Via Pinelli 64, Santarcangelo di Romanga, Italy</mds-text>
     <mds-button slot="action" icon="mdi/map-marker" variant="primary" tone="strong" title="Go to Google Maps"/>
