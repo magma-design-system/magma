@@ -100,9 +100,9 @@ const TemplateAsyncContent = () => {
 const TemplateOverflow = args =>
   <div class="grid gap-600 max-w-[480px]">
     <mds-tab {...args}>
-      <mds-tab-item selected>First Blood</mds-tab-item>
+      <mds-tab-item>First Blood</mds-tab-item>
       <mds-tab-item>Double Impact</mds-tab-item>
-      <mds-tab-item>The Third Man</mds-tab-item>
+      <mds-tab-item selected>The Third Man</mds-tab-item>
       <mds-tab-item>The Fantastic Four</mds-tab-item>
       <mds-tab-item>The Fifth Element</mds-tab-item>
       <mds-tab-item>6 Underground</mds-tab-item>
@@ -116,10 +116,10 @@ const TemplateOverflow = args =>
 const Template = args =>
   <div class="grid gap-600">
     <mds-tab {...args}>
-      <mds-tab-item selected>
+      <mds-tab-item>
         First Blood
       </mds-tab-item>
-      <mds-tab-item icon="mdi/alien" id="button">
+      <mds-tab-item icon="mdi/alien" id="button" selected>
         Double Impact
       </mds-tab-item>
       <mds-tab-item>

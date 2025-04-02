@@ -92,6 +92,9 @@ export class MdsTabItem {
       this.selected = undefined
     }
     this.isSelected = newValue
+    if (this.isSelected) {
+      this.selectedEvent.emit({ target: this.element, value: this.value })
+    }
   }
 
   @Watch('disabled')

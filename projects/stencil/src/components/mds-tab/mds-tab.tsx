@@ -1,9 +1,8 @@
 import { Component, Element, Event, EventEmitter, Host, Listen, h, Prop, Watch, State } from '@stencil/core'
 import { MdsTabEventDetail } from './meta/event-detail'
 import { MdsTabItemEventDetail } from '@component/mds-tab-item/meta/event-detail'
-import { setAttributeIfEmpty } from '@common/aria'
+import { setAttributeIfEmpty, hashRandomValue } from '@common/aria'
 import { HorizontalActionsAnimationType } from '@type/animation'
-import { hashRandomValue } from '@common/aria'
 import clsx from 'clsx'
 import { cssDurationToMilliseconds } from '@common/unit'
 
@@ -100,10 +99,13 @@ export class MdsTab {
     this.tabsContainer = this.element.shadowRoot?.querySelector('.tabs-wrapper') as HTMLElement
     this.startObserver()
     this.updateContentItems()
+    this.initOverflowCheck()
     if (this.animation === 'slide') {
       this.updateSliderPosition()
     }
-    this.initOverflowCheck()
+    if (this.currentItem !== 0) {
+      this.scrollTabs(this.currentItem)
+    }
   }
 
   private updateContentItems = (): void => {
