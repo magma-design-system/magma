@@ -76,7 +76,7 @@ This is a web-component from Maggioli Design System [Magma](https://magma.maggio
  - [mds-price-table-features](../mds-price-table-features)
  - [mds-price-table-features-cell](../mds-price-table-features-cell)
  - [mds-price-table-list-item](../mds-price-table-list-item)
- - [mds-push-notification](../mds-push-notification)
+ - [mds-push-notification-item](../mds-push-notification-item)
  - [mds-quote](../mds-quote)
  - [mds-stepper-bar-item](../mds-stepper-bar-item)
  - [mds-tab-bar-item](../mds-tab-bar-item)
@@ -84,7 +84,6 @@ This is a web-component from Maggioli Design System [Magma](https://magma.maggio
  - [mds-toast](../mds-toast)
  - [mds-tooltip](../mds-tooltip)
  - [mds-url-view](../mds-url-view)
- - [mds-usage](../mds-usage)
 
 ### Graph
 ```mermaid
@@ -124,7 +123,7 @@ graph TD;
   mds-price-table-features --> mds-text
   mds-price-table-features-cell --> mds-text
   mds-price-table-list-item --> mds-text
-  mds-push-notification --> mds-text
+  mds-push-notification-item --> mds-text
   mds-quote --> mds-text
   mds-stepper-bar-item --> mds-text
   mds-tab-bar-item --> mds-text
@@ -132,7 +131,6 @@ graph TD;
   mds-toast --> mds-text
   mds-tooltip --> mds-text
   mds-url-view --> mds-text
-  mds-usage --> mds-text
   style mds-text fill:#f9f,stroke:#333,stroke-width:4px
 ```
 

@@ -9,6 +9,7 @@
   --mds-button-background: var(--mds-tab-item-default-background);
   --mds-button-color: var(--mds-tab-item-default-color);
   --mds-button-radius: var(--mds-tab-item-radius);
+  --mds-button-border-default-opacity: 0;
 
   flex-grow: 1;
 }

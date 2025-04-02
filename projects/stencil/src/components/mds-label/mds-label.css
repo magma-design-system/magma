@@ -61,6 +61,7 @@
     rounded-r-md;
 
   --mds-button-background: var(--mds-label-button-background);
+  --mds-button-border-opacity: 0;
 
   border-radius: 0 var(--mds-label-radius) var(--mds-label-radius) 0;
   fill: var(--mds-label-button-icon-color);

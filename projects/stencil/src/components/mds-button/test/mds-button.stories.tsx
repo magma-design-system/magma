@@ -79,6 +79,11 @@ const Template = args =>
     Conferma azione
   </mds-button>
 
+const TemplateService = args =>
+  <mds-button {...args}>
+    { args.label }
+  </mds-button>
+
 const TemplateNotifications = args =>
   <mds-button {...args}>
     Notifiche
@@ -162,16 +167,17 @@ const TemplateDisabled = () => {
   }
 
   return <div class="grid grid-cols-1 gap-600">
-    <div class="inline-flex">
+    <div class="inline-flex gap-600">
       <mds-button
         id='disabledButton'
-        icon={disabled ? 'mi/baseline/close' : 'mi/baseline/check'}
-        variant={disabled ? 'warning' : 'primary'}
+        class="w-4400"
+        icon={disabled ? 'mi/baseline/block' : 'mi/baseline/check'}
+        variant="primary"
         disabled={disabled}
         onClick={() => toggle()}>
         {disabled ? 'Disabled button' : 'Click to disable'}
       </mds-button>
-      <mds-text onClick={() => enableButton()}> Enable Button</mds-text>
+      { disabled && <mds-button icon="mi/baseline/undo" variant="dark" tone="weak" onClick={() => enableButton()}>Reset</mds-button> }
     </div>
   </div>
 }
@@ -197,6 +203,18 @@ Disabled.args = {
 export const Variant = Template.bind({})
 Variant.args = {
   variant: 'success',
+}
+
+export const ServiceVariantGoogle = TemplateService.bind({})
+ServiceVariantGoogle.args = {
+  variant: 'google',
+  label: 'Login with Google',
+}
+
+export const ServiceVariantApple = TemplateService.bind({})
+ServiceVariantApple.args = {
+  variant: 'apple',
+  label: 'Login with Apple',
 }
 
 export const Tone = Template.bind({})

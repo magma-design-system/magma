@@ -34,6 +34,7 @@ This is a web-component from Maggioli Design System [Magma](https://magma.maggio
 | ----------------------------------------- | -------------------------------------------------- |
 | `--mds-video-wall-noise-background-color` | Sets the background-color of the noise when active |
 | `--mds-video-wall-noise-background-size`  | Sets the background-color of the noise when active |
+| `--mds-video-wall-noise-filter`           | Sets filter to manipulate pattern noise color      |
 | `--mds-video-wall-video-fit`              | Sets the object-fit of the video stream            |
 
 

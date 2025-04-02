@@ -83,7 +83,7 @@ export class MdsUrlView {
             { this.domain && <mds-text class="title" typography="caption">
               { this.urlDomain(this.src) }
             </mds-text> }
-            <mds-button title={this.t.get('close')} class="button-close" icon={miBaselineClose} onClick={this.closeUrlView}></mds-button>
+            <mds-button title={this.t.get('close')} class="button-close" variant="dark" tone="quiet" icon={miBaselineClose} onClick={this.closeUrlView}></mds-button>
           </div>
           <iframe class="iframe" aria-label={this.t.get('iframeURL', { url: this.urlDomain(this.src) })} src={ this.src }/>
         </div>

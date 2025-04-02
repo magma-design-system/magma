@@ -111,7 +111,7 @@ This is a web-component from Maggioli Design System [Magma](https://magma.maggio
 ### Used by
 
  - [mds-entity](../mds-entity)
- - [mds-push-notification](../mds-push-notification)
+ - [mds-push-notification-item](../mds-push-notification-item)
 
 ### Depends on
 
@@ -130,7 +130,7 @@ graph TD;
   mds-button --> mds-icon
   mds-button --> mds-text
   mds-entity --> mds-avatar
-  mds-push-notification --> mds-avatar
+  mds-push-notification-item --> mds-avatar
   style mds-avatar fill:#f9f,stroke:#333,stroke-width:4px
 ```
 

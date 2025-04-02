@@ -12,7 +12,7 @@
   --mds-banner-background: theme('colors.tone-neutral-10');
   --mds-banner-close-icon-hover-background: theme('colors.tone-neutral-09');
   --mds-banner-color: theme('colors.tone-neutral-02');
-  --mds-banner-gap: theme('spacing.400');
+  --mds-banner-gap: theme('spacing.400') theme('spacing.200');
   --mds-banner-icon-color: theme('colors.tone-neutral-04');
   --mds-banner-radius: theme('borderRadius.lg');
   --mds-banner-shadow: none;
@@ -56,6 +56,8 @@
 
 .close-button {
   --mds-button-background: transparent;
+  --mds-button-border-color: 0 0 0;
+  --mds-button-border-default-opacity: 0;
 
   fill: var(--mds-banner-color);
 }

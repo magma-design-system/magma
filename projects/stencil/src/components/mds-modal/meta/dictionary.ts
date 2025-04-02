@@ -15,7 +15,14 @@ const modalOverflowDictionary = [
   'manual',
 ]
 
+const modalAnimationStyleDictionary = [
+  'slide',
+  'custom',
+  '3d',
+]
+
 export {
   modalOverflowDictionary,
   modalPositionDictionary,
+  modalAnimationStyleDictionary,
 }

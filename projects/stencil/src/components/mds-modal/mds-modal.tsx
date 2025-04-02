@@ -1,6 +1,6 @@
 import clsx from 'clsx'
 import { Component, Element, Event, EventEmitter, Host, h, Listen, Prop, Watch } from '@stencil/core'
-import { ModalPositionType, ModalAnimationStateType, ModalOverflowType } from './meta/types'
+import { ModalPositionType, ModalAnimationStateType, ModalOverflowType, ModalAnimationStyleType } from './meta/types'
 import { cssDurationToMilliseconds } from '@common/unit'
 
 /**
@@ -33,7 +33,7 @@ export class MdsModal {
   /**
    * Specifies if the modal is opened or not
    */
-  @Prop({ reflect: true, mutable: true }) opened = false
+  @Prop({ reflect: true, mutable: true }) opened?:boolean = false
 
   /**
    * Specifies the animation position of the modal window
@@ -44,6 +44,11 @@ export class MdsModal {
    * Specifies if the component is animating itself or not
    */
   @Prop({ reflect: true, mutable: true }) animating?: ModalAnimationStateType = 'none'
+
+  /**
+   * Specifies if the component is animating itself or not
+   */
+  @Prop({ reflect: true }) readonly animation?: ModalAnimationStyleType = 'slide'
 
   /**
    * Specifies if the component prevents the body from scrolling when modal window is opened
@@ -125,7 +130,7 @@ export class MdsModal {
       if (this.position === 'right' && diffX > 0) return
       if (this.position === 'left' && diffX < 0) return
       if (Math.abs(diffX) > Math.abs(this.touchMargin)) {
-        this.opened = false
+        this.opened = undefined
       }
     }
   }
@@ -187,6 +192,7 @@ export class MdsModal {
       this.animateOpenWindow()
       return
     }
+    this.opened = undefined
     if (this.overflow === 'auto') {
       this.enableOverflow()
     }

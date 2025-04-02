@@ -25,7 +25,7 @@
   "dependencies": {
     "@maggioli-design-system/mds-input-switch": "3.0.0",
     "@maggioli-design-system/mds-table-header-cell": "1.2.1",
-    "@maggioli-design-system/styles": "15.9.0",
+    "@maggioli-design-system/styles": "15.9.1",
     "@stencil/core": "4.27.2"
   },
   "license": "MIT",

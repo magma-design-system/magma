@@ -48,6 +48,10 @@
     scrollbar-width: none;
   }
 
+  .hide-scrollbar::-webkit-scrollbar {
+    display: none;
+  }
+
   .not-hydrated {
     animation-duration: 0s;
     opacity: 0;

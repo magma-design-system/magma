@@ -1,0 +1,34 @@
+:host([tone="quiet"]),
+:host([tone="quiet"]:hover),
+:host([tone="ghost"]) {
+  --mds-button-background: transparent;
+}
+
+:host([tone="strong"]),
+:host([tone="weak"]) {
+  --mds-button-border-default-opacity: 1;
+  --mds-button-border-width: 0;
+}
+
+:host([tone="strong"]),
+:host([tone="weak"]),
+:host([tone="ghost"]) {
+  --mds-button-border-opacity: var(--mds-button-border-default-opacity);
+}
+
+:host([tone="strong"]:hover),
+:host([tone="strong"][active]) {
+  --mds-button-border-width: var(--mds-button-border-tone-strong-hover-width);
+}
+
+:host([tone="weak"]:hover),
+:host([tone="weak"][active]) {
+  --mds-button-border-width: var(--mds-button-border-tone-weak-hover-width);
+}
+
+:host([tone="ghost"]:hover),
+:host([tone="ghost"][active]) {
+  --mds-button-background: transparent;
+  --mds-button-border-width: var(--mds-button-border-tone-ghost-hover-width);
+  --mds-button-border-opacity: var(--mds-button-border-hover-opacity);
+}

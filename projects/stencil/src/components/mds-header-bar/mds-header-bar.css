@@ -52,7 +52,7 @@
 }
 
 .menu {
-  --mds-button-background: transparent;
+  --mds-button-border-opacity: 0;
 
   fill: var(--mds-header-bar-hamburger-color);
   padding: 0;

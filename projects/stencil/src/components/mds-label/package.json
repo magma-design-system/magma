@@ -1,6 +1,6 @@
 {
   "name": "@maggioli-design-system/mds-label",
-  "version": "3.4.4",
+  "version": "3.5.0",
   "description": "mds-label is a web-component from Magma Design System, built with StencilJS, TypeScript, Storybook. It's based on the web-component standard and it's designed to be agnostic from the JavaScript framework you are using.",
   "main": "dist/index.cjs.js",
   "module": "dist/index.js",
@@ -24,9 +24,9 @@
     "test": "stencil test --spec --e2e"
   },
   "dependencies": {
-    "@maggioli-design-system/mds-button": "6.4.4",
-    "@maggioli-design-system/mds-text": "4.7.1",
-    "@maggioli-design-system/styles": "15.9.0",
+    "@maggioli-design-system/mds-button": "6.5.0",
+    "@maggioli-design-system/mds-text": "4.7.2",
+    "@maggioli-design-system/styles": "15.9.1",
     "@stencil/core": "4.27.2"
   },
   "license": "MIT",

@@ -1,7 +1,7 @@
 {
-  "name": "@maggioli-design-system/mds-push-notifications",
-  "version": "3.0.3",
-  "description": "mds-push-notifications is a web-component from Magma Design System, built with StencilJS, TypeScript, Storybook. It's based on the web-component standard and it's designed to be agnostic from the JavaScript framework you are using.",
+  "name": "@maggioli-design-system/mds-push-notification-item",
+  "version": "1.0.0",
+  "description": "mds-push-notification-item is a web-component from Magma Design System, built with StencilJS, TypeScript, Storybook. It's based on the web-component standard and it's designed to be agnostic from the JavaScript framework you are using.",
   "main": "dist/index.cjs.js",
   "module": "dist/index.js",
   "es2015": "dist/esm/index.mjs",
@@ -9,7 +9,7 @@
   "types": "dist/types/components.d.ts",
   "collection": "dist/collection/collection-manifest.json",
   "collection:main": "dist/collection/index.js",
-  "unpkg": "dist/mds-push-notifications/mds-push-notifications.esm.js",
+  "unpkg": "dist/mds-push-notification-item/mds-push-notification-item.esm.js",
   "files": [
     "dist/",
     "documentation.json",
@@ -24,9 +24,12 @@
     "test": "stencil test --spec --e2e"
   },
   "dependencies": {
-    "@maggioli-design-system/mds-push-notification": "3.0.3",
+    "@maggioli-design-system/mds-button": "6.5.0",
+    "@maggioli-design-system/mds-icon": "2.13.1",
+    "@maggioli-design-system/mds-text": "4.7.2",
+    "@maggioli-design-system/styles": "15.9.1",
     "@stencil/core": "4.27.2",
-    "clsx": "2.1.0"
+    "dayjs": "1.11.13"
   },
   "license": "MIT",
   "author": {

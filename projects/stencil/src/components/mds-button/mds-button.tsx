@@ -8,6 +8,8 @@ import { buttonSizeTypographyVariant } from './meta/variants'
 import { setAttributeIfEmpty, unslugName } from '@common/aria'
 import { isIconFormatIsBase64, isIconFormatIsSVG } from '@common/icon'
 import { TypographyTruncateType } from '@type/text'
+import mdiApple from '@icon/mdi/apple.svg'
+import logoGoogle from './asset/logo-google.svg'
 
 /**
  * @slot default - Add `text string` to this slot, **avoid** to add `HTML elements` or `components` here.
@@ -40,7 +42,7 @@ export class MdsButton {
   /**
    * The icon displayed in the button
    */
-  @Prop({ reflect: true }) readonly icon?: string
+  @Prop({ reflect: true, mutable: true }) icon?: string
 
   /**
    * Specifies the horizontal position of the icon displayed in the button
@@ -50,7 +52,7 @@ export class MdsButton {
   /**
    * The type of the button element
    */
-  @Prop() readonly type?: ButtonType = 'submit'
+  @Prop({ reflect: true }) readonly type?: ButtonType = 'submit'
 
   /**
    * Specifies the color variant for the button
@@ -140,6 +142,18 @@ export class MdsButton {
     }
   }
 
+  @Watch('variant')
+  handleVariantChange (newValue?: ButtonVariantType): void {
+    if (newValue === 'google') {
+      this.icon = logoGoogle
+      return
+    }
+    if (newValue === 'apple') {
+      this.icon = mdiApple
+      return
+    }
+  }
+
   private handleRequestSubmitForm = (e: MouseEvent) => {
     e.preventDefault()
     this.internals.form?.requestSubmit()
@@ -168,6 +182,8 @@ export class MdsButton {
   componentWillLoad ():void {
     this.hasNotification = this.host.querySelector(':scope > [slot="notification"]') !== null
     this.hasText = this.host.innerHTML !== ''
+
+    this.handleVariantChange(this.variant)
 
     if (this.href) {
       this.host.addEventListener('click', (e: MouseEvent) => {
