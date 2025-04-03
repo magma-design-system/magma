@@ -17,13 +17,14 @@
  */
 
 :host {
-
   --mds-input-date-background: theme('colors.tone-neutral');
   --mds-input-date-icon-color: var(--mds-input-date-variant-color);
   --mds-input-date-tip-background: 84 84 84;
   --mds-input-date-ring: 0 0 0 1px rgb(var(--mds-input-date-variant-color) / 0.1);
   --mds-input-date-shadow: 0 1px 3px 0 rgb(var(--mds-input-date-variant-color) / 0.1), 0 1px 2px 0 rgb(var(--mds-input-date-variant-color) / 0.06);
   --mds-input-date-variant-color: 0 0 0;
+  --mds-input-date-field-color-empty: theme('colors.status-error-06');
+  --mds-input-date-field-background-empty: theme('colors.status-error-06');
   --mds-input-date-textarea-min-height: theme('size.2400');
   --mds-input-date-textarea-max-height: theme('size.6400');
   --mds-input-date-textarea-field-sizing: content;
@@ -56,12 +57,18 @@
 
   background-color: transparent;
   border: 0;
+  border-radius: theme('borderRadius.lg');
   box-sizing: border-box;
   color: inherit;
   overflow: hidden;
   text-overflow: ellipsis;
   transition-property: background-color, border-color, box-shadow, color, fill, margin, opacity, padding, transform;
   width: min-content;
+}
+
+:host([empty]) .input {
+  background-color: var(--mds-input-date-field-background-empty);
+  color: var(--mds-input-date-field-color-empty);
 }
 
 :host([slot]) {
@@ -119,7 +126,6 @@
 }
 
 .action-open-calendar {
-
   --mds-button-color: rgb(var(--mds-input-date-icon-color));
 
   aspect-ratio: 1;
