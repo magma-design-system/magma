@@ -36,6 +36,29 @@ export class MdsInputDateRange {
     }
   }
 
+  private focusInput = (element: HTMLMdsInputDateElement): void => {
+    element.focusInput()
+  }
+
+  private focusDateInput = (ev: MouseEvent): void => {
+    if (ev.target !== this.host) {
+      return
+    }
+    this.focusStartDateInput(ev)
+  }
+
+  private focusStartDateInput = (ev: MouseEvent): void => {
+    ev.preventDefault()
+    ev.stopPropagation()
+    this.focusInput(this.host.querySelector('mds-input-date[slot="start"]') as HTMLMdsInputDateElement)
+  }
+
+  private focusEndDateInput = (ev: MouseEvent): void => {
+    ev.preventDefault()
+    ev.stopPropagation()
+    this.focusInput(this.host.querySelector('mds-input-date[slot="end"]') as HTMLMdsInputDateElement)
+  }
+
   componentDidLoad (): void {
     this.updateInputListeners()
   }
@@ -118,16 +141,16 @@ export class MdsInputDateRange {
 
   render () {
     return (
-      <Host>
+      <Host onClick={this.focusDateInput}>
         <div class="inputs">
           <div class="input-element">
-            <mds-text class="date-label" typography="detail">Dal</mds-text>
+            <mds-text class="date-label" typography="detail" onClick={this.focusStartDateInput}>Dal</mds-text>
             <div class="input-wrapper">
               <slot name="start"></slot>
             </div>
           </div>
           <div class="input-element">
-            <mds-text class="date-label" typography="detail">al</mds-text>
+            <mds-text class="date-label" typography="detail" onClick={this.focusEndDateInput}>al</mds-text>
             <div class="input-wrapper">
               <slot name="end"></slot>
             </div>
