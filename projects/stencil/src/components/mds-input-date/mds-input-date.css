@@ -24,7 +24,7 @@
   --mds-input-date-shadow: 0 1px 3px 0 rgb(var(--mds-input-date-variant-color) / 0.1), 0 1px 2px 0 rgb(var(--mds-input-date-variant-color) / 0.06);
   --mds-input-date-variant-color: 0 0 0;
   --mds-input-date-field-color-empty: theme('colors.status-error-06');
-  --mds-input-date-field-background-empty: theme('colors.status-error-06');
+  --mds-input-date-field-background-empty: theme('colors.status-error-10');
   --mds-input-date-textarea-min-height: theme('size.2400');
   --mds-input-date-textarea-max-height: theme('size.6400');
   --mds-input-date-textarea-field-sizing: content;
