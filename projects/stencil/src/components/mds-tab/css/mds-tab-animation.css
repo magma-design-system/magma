@@ -23,10 +23,6 @@
   z-index: -1;
 }
 
-.slider--no-trantitions {
-  transition-property: none;
-}
-
 ::slotted(mds-tab-item) {
   position: relative;
   z-index: 1;

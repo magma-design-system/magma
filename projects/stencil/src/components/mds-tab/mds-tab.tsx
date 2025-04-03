@@ -29,7 +29,6 @@ export class MdsTab {
   private observer: ResizeObserver
   private tabItems: NodeListOf<HTMLMdsTabItemElement>
   private contentItems: NodeListOf<HTMLElement>
-  private overflowInit: boolean = false
   private cssSlideDelayDuration: string
   @State() sliderWidth: number = -1
   @State() sliderOffset: number = -1
@@ -68,15 +67,6 @@ export class MdsTab {
     this.observer.unobserve(this.tabsContainer)
   }
 
-  private startObserver = (): void => {
-    this.observer = new ResizeObserver(() => {
-      if (this.animation === 'slide') {
-        this.updateSliderPosition(true)
-      }
-    })
-    this.observer.observe(this.tabsContainer)
-  }
-
   componentWillLoad (): void {
     this.tabItems = this.element.querySelectorAll<HTMLMdsTabItemElement>('mds-tab-item')
     this.tabItems.forEach((item, key) => {
@@ -97,7 +87,6 @@ export class MdsTab {
     this.updateCSSCustomProps()
     this.tabs = this.element.shadowRoot?.querySelector('.tabs') as HTMLElement
     this.tabsContainer = this.element.shadowRoot?.querySelector('.tabs-wrapper') as HTMLElement
-    this.startObserver()
     this.updateContentItems()
     this.initOverflowCheck()
     if (this.animation === 'slide') {
@@ -117,22 +106,16 @@ export class MdsTab {
     this.selectContentItem()
   }
 
-  private updateSlottedElements = (): void => {
-    this.updateContentItems()
-  }
-
   private unsetOverflowCheck = (): void => {
-    this.overflowInit = false
     this.tabs.removeEventListener('scroll', this.updateOverflowState)
     this.observer.unobserve(this.tabsContainer)
   }
 
   private initOverflowCheck = (): void => {
-    if (this.overflowInit) return
-    this.overflowInit = true
     this.tabs.addEventListener('scroll', this.updateOverflowState)
     this.observer = new ResizeObserver(() => {
-      this.updateOverflowState()
+      if (this.overflow) this.updateOverflowState()
+      this.updateSliderPosition()
     })
     this.observer.observe(this.tabsContainer)
     this.updateOverflowState()
@@ -149,29 +132,20 @@ export class MdsTab {
     this.overflowRight = Math.ceil(scrollLeft + containerWidth) < tabsWidth - 1
   }
 
-  private updateSliderPosition = (disableAnimation?: boolean): void => {
-    if (!this.slider) {
-      this.setSlider()
-    }
+  private updateSliderPosition = (): void => {
     if (this.slider && this.currentItem >= 0) {
-      if (disableAnimation) {
-        this.slider.classList.add('slider--no-trantitions')
-      }
-      this.sliderWidth = this.tabItems[this.currentItem].offsetWidth
-      this.sliderOffset = this.tabItems[this.currentItem].offsetLeft - this.tabsContainer.offsetLeft
-      this.slider.classList.remove('slider--no-trantitions')
+      self.requestAnimationFrame(() => {
+        this.sliderWidth = this.tabItems[this.currentItem].offsetWidth
+        this.sliderOffset = this.tabItems[this.currentItem].offsetLeft - this.tabsContainer.offsetLeft
+      })
     }
-  }
-
-  private setSlider = (): void => {
-    this.slider = this.element.shadowRoot?.querySelector('.slider') as HTMLDivElement
   }
 
   private scrollTabs = (key: number): void => {
     const tabItem = this.tabItems[key]
     setTimeout(() => {
       this.tabs.scrollLeft = tabItem.offsetLeft - this.tabs.offsetLeft - (this.tabs.offsetWidth / 2) + (tabItem.offsetWidth / 2)
-      requestAnimationFrame(() => this.updateOverflowState())
+      this.updateOverflowState()
     }, cssDurationToMilliseconds(this.cssSlideDelayDuration))
   }
 
@@ -252,8 +226,7 @@ export class MdsTab {
 
   @Watch('overflow')
   handleOverflowChange (newValue?: boolean): void {
-    if (newValue === false) {
-      this.overflow = undefined
+    if (!newValue) {
       this.unsetOverflowCheck()
       return
     }
@@ -269,18 +242,16 @@ export class MdsTab {
           <div class="tabs" part="tabs" role="tablist">
             <slot />
             { this.animation === 'slide' &&
-              <div class="slider" part="slider" style={{
+              <div class="slider" part="slider" ref={el => this.slider = el as HTMLDivElement} style={{
                 '--mds-tab-slider-width': `${this.sliderWidth}px`,
                 '--mds-tab-slider-offset': `${this.sliderOffset}px`,
               }}></div>
             }
           </div>
         </div>
-        { this.contentItems &&
         <div class="contents" part="contents">
-          <slot name="content" onSlotchange={this.updateSlottedElements}/>
+          <slot name="content" onSlotchange={this.updateContentItems}/>
         </div>
-        }
       </Host>
     )
   }
