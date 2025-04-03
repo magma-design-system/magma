@@ -25,7 +25,6 @@ export class MdsAvatar {
 
   private observer: ResizeObserver
   private fittyElements
-  private backgroundColor = ''
   private fittyInitialized = false
   private initialsChanged = false
 
@@ -53,7 +52,9 @@ export class MdsAvatar {
   /**
    * Specifies the color variant of the component
    */
-  @Prop({ reflect: true }) readonly variant?: ThemeFullVariantAvatarType
+  @Prop({ reflect: true, mutable: true }) variant?: ThemeFullVariantAvatarType
+
+  private variants: ThemeFullVariantAvatarType[] = ['amaranth', 'aqua', 'blue', 'error', 'green', 'info', 'lime', 'orange', 'orchid', 'primary', 'sky', 'success', 'violet', 'warning', 'yellow']
 
   private addFontResize = (): void => {
     if (this.fittyInitialized) {
@@ -93,18 +94,18 @@ export class MdsAvatar {
     }
   }
 
-  private checkInitialsBackground = (): void => {
+  private checkInitialsVariant = (): void => {
     if (this.initials) {
       let cleanedInitials = this.initials.toLowerCase().replace(/[^a-zA-Z0-9]+/g, '').substring(0, 2)
       if (cleanedInitials.length === 1) {
         cleanedInitials = cleanedInitials + cleanedInitials
       }
-      this.backgroundColor = avatarVariant[(cleanedInitials.substring(0, 1).charCodeAt(0) + cleanedInitials.substring(1, 2).charCodeAt(0)) % avatarVariant.length]
+      this.variant = this.variants[(cleanedInitials.substring(0, 1).charCodeAt(0) + cleanedInitials.substring(1, 2).charCodeAt(0)) % avatarVariant.length]
     }
   }
 
   componentWillLoad (): void {
-    this.checkInitialsBackground()
+    this.checkInitialsVariant()
   }
 
   componentDidLoad (): void {
@@ -126,7 +127,7 @@ export class MdsAvatar {
   @Watch('initials')
   initialsHandler (): void {
     this.initialsChanged = true
-    this.checkInitialsBackground()
+    this.checkInitialsVariant()
   }
 
   @Watch('src')
@@ -152,7 +153,6 @@ export class MdsAvatar {
           (this.fallback || (!this.icon && !this.initials && !this.src)) && 'avatar--fallback',
           this.icon && 'avatar--icon',
           this.loaded ? 'avatar--loaded' : 'avatar--pending',
-          this.initials ? this.backgroundColor : '',
         )} part="wrapper">
           { this.initials && !this.fallback && !this.src && <div class="initials-text">
             <span class="fit">{ this.initials.substring(0, 2) }</span>

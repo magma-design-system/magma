@@ -29,7 +29,7 @@ import { MdsFilterEventDetail } from "./components/mds-filter/meta/event-detail"
 import { MdsFilterItemEventDetail } from "./components/mds-filter-item/meta/event-detail";
 import { HeaderBarMenuType, HeaderBarNavType } from "./type/header-bar";
 import { MdsHeaderEventDetail, MdsHeaderVisibilityEventDetail } from "./components/mds-header/meta/event-detail";
-import { SnapType, ViewportType } from "./components/mds-horizontal-scroll/meta/types";
+import { NavigationType, SnapType, ViewportType } from "./components/mds-horizontal-scroll/meta/types";
 import { CrossoriginType, ReferrerpolicyType } from "./components/mds-img/meta/types";
 import { LoadingType } from "./type/loading";
 import { MdsImgEventDetail } from "./components/mds-img/meta/event-detail";
@@ -44,7 +44,7 @@ import { InputTipItemVariantType } from "./type/input-tip";
 import { AttachmentSort, FileError } from "./components/mds-input-upload/meta/types";
 import { KeyboardTest } from "./components/mds-keyboard/meta/type";
 import { KeyboardKeyName } from "./type/keyboard";
-import { ModalAnimationStateType, ModalOverflowType, ModalPositionType } from "./components/mds-modal/meta/types";
+import { ModalAnimationStateType, ModalAnimationStyleType, ModalOverflowType, ModalPositionType } from "./components/mds-modal/meta/types";
 import { StrategyType } from "./components/mds-notification/meta/types";
 import { MdsPaginatorEventDetail } from "./components/mds-paginator/meta/event-detail";
 import { AnimationModeType } from "./components/mds-pref-animation/meta/types";
@@ -55,8 +55,9 @@ import { MdsPrefLanguageEventDetail } from "./event-detail/language";
 import { ThemeModeType, ThemeTransitionType } from "./components/mds-pref-theme/meta/types";
 import { PriceTableFeaturesCellType } from "./components/mds-price-table-features-cell/meta/types";
 import { DirectionType } from "./components/mds-progress/meta/types";
-import { NotificationDateFormatType, NotificationPreviewType } from "./components/mds-push-notification/meta/types";
 import { MdsPushNotificationEventDetail } from "./components/mds-push-notification/meta/event-detail";
+import { NotificationItemDateFormatType, NotificationItemPreviewType } from "./components/mds-push-notification-item/meta/types";
+import { MdsPushNotificationItemEventDetail } from "./components/mds-push-notification-item/meta/event-detail";
 import { MdsStepperBarEventDetail } from "./components/mds-stepper-bar/meta/event-detail";
 import { MdsStepperBarItemEventDetail } from "./components/mds-stepper-bar-item/meta/event-detail";
 import { HorizontalActionsAnimationType } from "./type/animation";
@@ -96,7 +97,7 @@ export { MdsFilterEventDetail } from "./components/mds-filter/meta/event-detail"
 export { MdsFilterItemEventDetail } from "./components/mds-filter-item/meta/event-detail";
 export { HeaderBarMenuType, HeaderBarNavType } from "./type/header-bar";
 export { MdsHeaderEventDetail, MdsHeaderVisibilityEventDetail } from "./components/mds-header/meta/event-detail";
-export { SnapType, ViewportType } from "./components/mds-horizontal-scroll/meta/types";
+export { NavigationType, SnapType, ViewportType } from "./components/mds-horizontal-scroll/meta/types";
 export { CrossoriginType, ReferrerpolicyType } from "./components/mds-img/meta/types";
 export { LoadingType } from "./type/loading";
 export { MdsImgEventDetail } from "./components/mds-img/meta/event-detail";
@@ -111,7 +112,7 @@ export { InputTipItemVariantType } from "./type/input-tip";
 export { AttachmentSort, FileError } from "./components/mds-input-upload/meta/types";
 export { KeyboardTest } from "./components/mds-keyboard/meta/type";
 export { KeyboardKeyName } from "./type/keyboard";
-export { ModalAnimationStateType, ModalOverflowType, ModalPositionType } from "./components/mds-modal/meta/types";
+export { ModalAnimationStateType, ModalAnimationStyleType, ModalOverflowType, ModalPositionType } from "./components/mds-modal/meta/types";
 export { StrategyType } from "./components/mds-notification/meta/types";
 export { MdsPaginatorEventDetail } from "./components/mds-paginator/meta/event-detail";
 export { AnimationModeType } from "./components/mds-pref-animation/meta/types";
@@ -122,8 +123,9 @@ export { MdsPrefLanguageEventDetail } from "./event-detail/language";
 export { ThemeModeType, ThemeTransitionType } from "./components/mds-pref-theme/meta/types";
 export { PriceTableFeaturesCellType } from "./components/mds-price-table-features-cell/meta/types";
 export { DirectionType } from "./components/mds-progress/meta/types";
-export { NotificationDateFormatType, NotificationPreviewType } from "./components/mds-push-notification/meta/types";
 export { MdsPushNotificationEventDetail } from "./components/mds-push-notification/meta/event-detail";
+export { NotificationItemDateFormatType, NotificationItemPreviewType } from "./components/mds-push-notification-item/meta/types";
+export { MdsPushNotificationItemEventDetail } from "./components/mds-push-notification-item/meta/event-detail";
 export { MdsStepperBarEventDetail } from "./components/mds-stepper-bar/meta/event-detail";
 export { MdsStepperBarItemEventDetail } from "./components/mds-stepper-bar-item/meta/event-detail";
 export { HorizontalActionsAnimationType } from "./type/animation";
@@ -754,9 +756,9 @@ export namespace Components {
          */
         "controls"?: ViewportType;
         /**
-          * Shows the horizontal scrollbar to maximize accessibility
+          * Specifies the box’s snap position as an alignment of its snap area
          */
-        "scrollbar"?: boolean;
+        "navigation"?: NavigationType;
         /**
           * Specifies the box’s snap position as an alignment of its snap area
          */
@@ -1057,6 +1059,10 @@ export namespace Components {
          */
         "disabled"?: boolean;
         /**
+          * A function to custom how value is represented
+         */
+        "formatValue"?: (value: number) => string;
+        /**
           * The greatest value in the range of permitted values
          */
         "max": number;
@@ -1305,9 +1311,13 @@ export namespace Components {
          */
         "animating"?: ModalAnimationStateType;
         /**
+          * Specifies if the component is animating itself or not
+         */
+        "animation"?: ModalAnimationStyleType;
+        /**
           * Specifies if the modal is opened or not
          */
-        "opened": boolean;
+        "opened"?: boolean;
         /**
           * Specifies if the component prevents the body from scrolling when modal window is opened
          */
@@ -1498,15 +1508,28 @@ export namespace Components {
     }
     interface MdsPushNotification {
         /**
+          * Specifies if the component is visible or not. behavior = manual should hide when click outside should hide when all notifications are removed should show when change visible from component or call show method  behavior = auto should hide when all notifications are removed should show when one or more notifications are added
+         */
+        "behavior"?: 'auto' | 'manual';
+        "hide": () => Promise<void>;
+        "removeNotification": (notification: HTMLMdsPushNotificationItemElement | HTMLMdsPushNotificationItemElement[]) => Promise<void>;
+        "show": () => Promise<void>;
+        /**
+          * Specifies if the component is visible or not.
+         */
+        "visible"?: boolean;
+    }
+    interface MdsPushNotificationItem {
+        /**
           * Specifies if the notification date format shows time passed or displays date as a static string
          */
-        "dateFormat": NotificationDateFormatType;
+        "dateFormat": NotificationItemDateFormatType;
         /**
           * Specifies the notification date based on [standard ISO 8601](https://www.iso.org/iso-8601-date-and-time-format.html).
          */
         "datetime"?: string;
         /**
-          * Specifies if the component is dismissable or not, it should be set to true by default is used with it's parent component `mds-push-notifications`
+          * Specifies if the component is dismissable or not, it should be set to true by default is used with it's parent component `mds-push-notification-items`
          */
         "deletable"?: boolean;
         /**
@@ -1524,7 +1547,7 @@ export namespace Components {
         /**
           * Specifies if the `src` attribute is used to show a the image as avatar or full image
          */
-        "preview"?: NotificationPreviewType;
+        "preview"?: NotificationItemPreviewType;
         /**
           * Specifies the path to the image
          */
@@ -1542,12 +1565,6 @@ export namespace Components {
           * Specifies the color variant of the component
          */
         "variant"?: ThemeFullVariantAvatarType;
-    }
-    interface MdsPushNotifications {
-        /**
-          * Specifies if the component is visible or not.
-         */
-        "visible"?: boolean;
     }
     interface MdsQuote {
         /**
@@ -1914,6 +1931,7 @@ export namespace Components {
           * Specifies the alias of the usage phrase on the top of the component
          */
         "alias"?: string;
+        "updateLang": () => Promise<void>;
         /**
           * Specifies the delay when the tooltip will trigger
          */
@@ -2099,6 +2117,10 @@ export interface MdsPrefThemeCustomEvent<T> extends CustomEvent<T> {
 export interface MdsPushNotificationCustomEvent<T> extends CustomEvent<T> {
     detail: T;
     target: HTMLMdsPushNotificationElement;
+}
+export interface MdsPushNotificationItemCustomEvent<T> extends CustomEvent<T> {
+    detail: T;
+    target: HTMLMdsPushNotificationItemElement;
 }
 export interface MdsStepperBarCustomEvent<T> extends CustomEvent<T> {
     detail: T;
@@ -3016,7 +3038,9 @@ declare global {
         new (): HTMLMdsProgressElement;
     };
     interface HTMLMdsPushNotificationElementEventMap {
-        "mdsPushNotificationClose": MdsPushNotificationEventDetail;
+        "mdsPushNotificationChange": MdsPushNotificationEventDetail;
+        "mdsPushNotificationShow": void;
+        "mdsPushNotificationHide": void;
     }
     interface HTMLMdsPushNotificationElement extends Components.MdsPushNotification, HTMLStencilElement {
         addEventListener<K extends keyof HTMLMdsPushNotificationElementEventMap>(type: K, listener: (this: HTMLMdsPushNotificationElement, ev: MdsPushNotificationCustomEvent<HTMLMdsPushNotificationElementEventMap[K]>) => any, options?: boolean | AddEventListenerOptions): void;
@@ -3032,11 +3056,22 @@ declare global {
         prototype: HTMLMdsPushNotificationElement;
         new (): HTMLMdsPushNotificationElement;
     };
-    interface HTMLMdsPushNotificationsElement extends Components.MdsPushNotifications, HTMLStencilElement {
+    interface HTMLMdsPushNotificationItemElementEventMap {
+        "mdsPushNotificationItemClose": MdsPushNotificationItemEventDetail;
     }
-    var HTMLMdsPushNotificationsElement: {
-        prototype: HTMLMdsPushNotificationsElement;
-        new (): HTMLMdsPushNotificationsElement;
+    interface HTMLMdsPushNotificationItemElement extends Components.MdsPushNotificationItem, HTMLStencilElement {
+        addEventListener<K extends keyof HTMLMdsPushNotificationItemElementEventMap>(type: K, listener: (this: HTMLMdsPushNotificationItemElement, ev: MdsPushNotificationItemCustomEvent<HTMLMdsPushNotificationItemElementEventMap[K]>) => any, options?: boolean | AddEventListenerOptions): void;
+        addEventListener<K extends keyof DocumentEventMap>(type: K, listener: (this: Document, ev: DocumentEventMap[K]) => any, options?: boolean | AddEventListenerOptions): void;
+        addEventListener<K extends keyof HTMLElementEventMap>(type: K, listener: (this: HTMLElement, ev: HTMLElementEventMap[K]) => any, options?: boolean | AddEventListenerOptions): void;
+        addEventListener(type: string, listener: EventListenerOrEventListenerObject, options?: boolean | AddEventListenerOptions): void;
+        removeEventListener<K extends keyof HTMLMdsPushNotificationItemElementEventMap>(type: K, listener: (this: HTMLMdsPushNotificationItemElement, ev: MdsPushNotificationItemCustomEvent<HTMLMdsPushNotificationItemElementEventMap[K]>) => any, options?: boolean | EventListenerOptions): void;
+        removeEventListener<K extends keyof DocumentEventMap>(type: K, listener: (this: Document, ev: DocumentEventMap[K]) => any, options?: boolean | EventListenerOptions): void;
+        removeEventListener<K extends keyof HTMLElementEventMap>(type: K, listener: (this: HTMLElement, ev: HTMLElementEventMap[K]) => any, options?: boolean | EventListenerOptions): void;
+        removeEventListener(type: string, listener: EventListenerOrEventListenerObject, options?: boolean | EventListenerOptions): void;
+    }
+    var HTMLMdsPushNotificationItemElement: {
+        prototype: HTMLMdsPushNotificationItemElement;
+        new (): HTMLMdsPushNotificationItemElement;
     };
     interface HTMLMdsQuoteElement extends Components.MdsQuote, HTMLStencilElement {
     }
@@ -3374,7 +3409,7 @@ declare global {
         "mds-price-table-list-item": HTMLMdsPriceTableListItemElement;
         "mds-progress": HTMLMdsProgressElement;
         "mds-push-notification": HTMLMdsPushNotificationElement;
-        "mds-push-notifications": HTMLMdsPushNotificationsElement;
+        "mds-push-notification-item": HTMLMdsPushNotificationItemElement;
         "mds-quote": HTMLMdsQuoteElement;
         "mds-separator": HTMLMdsSeparatorElement;
         "mds-spinner": HTMLMdsSpinnerElement;
@@ -4114,9 +4149,9 @@ declare namespace LocalJSX {
          */
         "controls"?: ViewportType;
         /**
-          * Shows the horizontal scrollbar to maximize accessibility
+          * Specifies the box’s snap position as an alignment of its snap area
          */
-        "scrollbar"?: boolean;
+        "navigation"?: NavigationType;
         /**
           * Specifies the box’s snap position as an alignment of its snap area
          */
@@ -4432,6 +4467,10 @@ declare namespace LocalJSX {
          */
         "disabled"?: boolean;
         /**
+          * A function to custom how value is represented
+         */
+        "formatValue"?: (value: number) => string;
+        /**
           * The greatest value in the range of permitted values
          */
         "max"?: number;
@@ -4686,6 +4725,10 @@ declare namespace LocalJSX {
          */
         "animating"?: ModalAnimationStateType;
         /**
+          * Specifies if the component is animating itself or not
+         */
+        "animation"?: ModalAnimationStyleType;
+        /**
           * Emits when a modal is closed
          */
         "onMdsModalClose"?: (event: MdsModalCustomEvent<void>) => void;
@@ -4915,15 +4958,37 @@ declare namespace LocalJSX {
     }
     interface MdsPushNotification {
         /**
+          * Specifies if the component is visible or not. behavior = manual should hide when click outside should hide when all notifications are removed should show when change visible from component or call show method  behavior = auto should hide when all notifications are removed should show when one or more notifications are added
+         */
+        "behavior"?: 'auto' | 'manual';
+        /**
+          * Emits when the component visibility changes
+         */
+        "onMdsPushNotificationChange"?: (event: MdsPushNotificationCustomEvent<MdsPushNotificationEventDetail>) => void;
+        /**
+          * Emits when the component is hidden
+         */
+        "onMdsPushNotificationHide"?: (event: MdsPushNotificationCustomEvent<void>) => void;
+        /**
+          * Emits when the component is shown
+         */
+        "onMdsPushNotificationShow"?: (event: MdsPushNotificationCustomEvent<void>) => void;
+        /**
+          * Specifies if the component is visible or not.
+         */
+        "visible"?: boolean;
+    }
+    interface MdsPushNotificationItem {
+        /**
           * Specifies if the notification date format shows time passed or displays date as a static string
          */
-        "dateFormat"?: NotificationDateFormatType;
+        "dateFormat"?: NotificationItemDateFormatType;
         /**
           * Specifies the notification date based on [standard ISO 8601](https://www.iso.org/iso-8601-date-and-time-format.html).
          */
         "datetime"?: string;
         /**
-          * Specifies if the component is dismissable or not, it should be set to true by default is used with it's parent component `mds-push-notifications`
+          * Specifies if the component is dismissable or not, it should be set to true by default is used with it's parent component `mds-push-notification-items`
          */
         "deletable"?: boolean;
         /**
@@ -4941,11 +5006,11 @@ declare namespace LocalJSX {
         /**
           * Emits when the component is closed
          */
-        "onMdsPushNotificationClose"?: (event: MdsPushNotificationCustomEvent<MdsPushNotificationEventDetail>) => void;
+        "onMdsPushNotificationItemClose"?: (event: MdsPushNotificationItemCustomEvent<MdsPushNotificationItemEventDetail>) => void;
         /**
           * Specifies if the `src` attribute is used to show a the image as avatar or full image
          */
-        "preview"?: NotificationPreviewType;
+        "preview"?: NotificationItemPreviewType;
         /**
           * Specifies the path to the image
          */
@@ -4962,12 +5027,6 @@ declare namespace LocalJSX {
           * Specifies the color variant of the component
          */
         "variant"?: ThemeFullVariantAvatarType;
-    }
-    interface MdsPushNotifications {
-        /**
-          * Specifies if the component is visible or not.
-         */
-        "visible"?: boolean;
     }
     interface MdsQuote {
         /**
@@ -5479,7 +5538,7 @@ declare namespace LocalJSX {
         "mds-price-table-list-item": MdsPriceTableListItem;
         "mds-progress": MdsProgress;
         "mds-push-notification": MdsPushNotification;
-        "mds-push-notifications": MdsPushNotifications;
+        "mds-push-notification-item": MdsPushNotificationItem;
         "mds-quote": MdsQuote;
         "mds-separator": MdsSeparator;
         "mds-spinner": MdsSpinner;
@@ -5611,7 +5670,7 @@ declare module "@stencil/core" {
             "mds-price-table-list-item": LocalJSX.MdsPriceTableListItem & JSXBase.HTMLAttributes<HTMLMdsPriceTableListItemElement>;
             "mds-progress": LocalJSX.MdsProgress & JSXBase.HTMLAttributes<HTMLMdsProgressElement>;
             "mds-push-notification": LocalJSX.MdsPushNotification & JSXBase.HTMLAttributes<HTMLMdsPushNotificationElement>;
-            "mds-push-notifications": LocalJSX.MdsPushNotifications & JSXBase.HTMLAttributes<HTMLMdsPushNotificationsElement>;
+            "mds-push-notification-item": LocalJSX.MdsPushNotificationItem & JSXBase.HTMLAttributes<HTMLMdsPushNotificationItemElement>;
             "mds-quote": LocalJSX.MdsQuote & JSXBase.HTMLAttributes<HTMLMdsQuoteElement>;
             "mds-separator": LocalJSX.MdsSeparator & JSXBase.HTMLAttributes<HTMLMdsSeparatorElement>;
             "mds-spinner": LocalJSX.MdsSpinner & JSXBase.HTMLAttributes<HTMLMdsSpinnerElement>;

@@ -19,6 +19,7 @@ export class MdsTable {
   private body: HTMLMdsTableBodyElement
   private header: HTMLMdsTableHeaderElement
   private resizeObserver: ResizeObserver
+  private tableBodyObserver: MutationObserver
   private cellsWidth: number = 0
   @State() selectedRows: MdsTableRowSelection[] = []
 
@@ -119,13 +120,18 @@ export class MdsTable {
     })
   }
 
-  componentDidLoad (): void {
-    this.rows = this.host.querySelectorAll('mds-table-row') as NodeListOf<HTMLMdsTableRowElement>
+  componentWillLoad (): void {
     this.body = this.host.querySelector('mds-table-body') as HTMLMdsTableBodyElement
     this.header = this.host.querySelector('mds-table-header') as HTMLMdsTableHeaderElement
+    this.rows = this.host.querySelectorAll('mds-table-row') as NodeListOf<HTMLMdsTableRowElement>
+    this.tableBodyObserver = new MutationObserver(() => {
+      this.updateSlottedElements()
+    })
+    this.tableBodyObserver.observe(this.body, { childList: true })
+  }
+
+  componentDidLoad (): void {
     this.header.selectable = this.selectable
-    this.updateInteractive()
-    this.handleSelection()
     if (this.hasActions()) {
       this.host.addEventListener('scroll', this.handleActions)
       this.resizeObserver = new ResizeObserver(this.handleActions)
@@ -134,16 +140,23 @@ export class MdsTable {
     }
   }
 
+  private updateSlottedElements = (): void => {
+    this.rows = this.host.querySelectorAll('mds-table-row') as NodeListOf<HTMLMdsTableRowElement>
+    this.updateInteractive()
+    this.handleSelection()
+  }
+
   disconnectedCallback (): void {
     this.host.removeEventListener('scroll', this.handleActions)
     this.resizeObserver.disconnect()
+    this.tableBodyObserver.disconnect()
   }
 
   render () {
     return (
       <Host>
         <table class={clsx('table', this.interactive && 'table--interactive')} role="table">
-          <slot/>
+          <slot onSlotchange={this.updateSlottedElements}/>
         </table>
       </Host>
     )

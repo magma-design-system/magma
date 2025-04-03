@@ -79,7 +79,7 @@ export class MdsNote {
   render () {
     return (
       <Host role="note">
-        { this.deletable && <mds-button title={this.t.get('deleteLabel')} icon={miBaselineClose} class="button-close" onClick={ this.onClickClose.bind(this) }></mds-button> }
+        { this.deletable && <mds-button title={this.t.get('deleteLabel')} icon={miBaselineClose} class="button-close" variant="dark" tone="quiet" onClick={ this.onClickClose.bind(this) }></mds-button> }
         <slot name="title"/>
         <slot/>
         <div aria-hidden="true" class="fold"/>

@@ -15,6 +15,19 @@ This is a web-component from Maggioli Design System [Magma](https://magma.maggio
 | `variant` | `variant` | Specifies the delay when the tooltip will trigger                   | `"do" \| "dont" \| "info" \| "warn"` | `'info'`    |
 
 
+## Methods
+
+### `updateLang() => Promise<void>`
+
+
+
+#### Returns
+
+Type: `Promise<void>`
+
+
+
+
 ## Slots
 
 | Slot        | Description                                                      |
@@ -22,18 +35,25 @@ This is a web-component from Maggioli Design System [Magma](https://magma.maggio
 | `"default"` | Add `text string`, `HTML elements` or `components` to this slot. |
 
 
+## CSS Custom Properties
+
+| Name                       | Description                                 |
+| -------------------------- | ------------------------------------------- |
+| `--mds-usage-badge-color`  | Sets the badge text color of the component. |
+| `--mds-usage-border-color` | Sets the border color of the component.     |
+
+
 ## Dependencies
 
 ### Depends on
 
-- [mds-icon](../mds-icon)
-- [mds-text](../mds-text)
+- [mds-badge](../mds-badge)
 
 ### Graph
 ```mermaid
 graph TD;
-  mds-usage --> mds-icon
-  mds-usage --> mds-text
+  mds-usage --> mds-badge
+  mds-badge --> mds-text
   style mds-usage fill:#f9f,stroke:#333,stroke-width:4px
 ```
 

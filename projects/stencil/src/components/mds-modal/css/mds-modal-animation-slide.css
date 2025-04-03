@@ -1,0 +1,89 @@
+/*
+  x - -
+  - - -
+  - - -
+*/
+
+:host([position="top-left"][animation="slide"]:not([opened])) {
+  --mds-modal-transition-window-transform: translate(-50%, -100%);
+}
+
+/*
+  - x -
+  - - -
+  - - -
+*/
+
+:host([position="top"][animation="slide"]:not([opened])) {
+  --mds-modal-transition-window-transform: translate(0, -100%);
+}
+
+/*
+  - - x
+  - - -
+  - - -
+*/
+
+:host([position="top-right"][animation="slide"]:not([opened])) {
+  --mds-modal-transition-window-transform: translate(50%, -100%);
+}
+
+/*
+  - - -
+  x - -
+  - - -
+*/
+
+:host([position="left"][animation="slide"]:not([opened])) {
+  --mds-modal-transition-window-transform: translate(-100%, 0%);
+}
+
+/*
+  - - -
+  - x -
+  - - -
+*/
+
+:host([position="center"][animation="slide"]:not([opened])) {
+  --mds-modal-transition-window-transform: translate(0, 25%);
+}
+
+/*
+  - - -
+  - - x
+  - - -
+*/
+
+:host([position="right"][animation="slide"]:not([opened])) {
+  --mds-modal-transition-window-transform: translate(100%, 0%);
+}
+
+/*
+  - - -
+  - - -
+  x - -
+*/
+
+:host([position="bottom-left"][animation="slide"]:not([opened])) {
+  --mds-modal-transition-window-transform: translate(-50%, 100%);
+}
+
+/*
+  - - -
+  - - -
+  - x -
+*/
+
+:host([position="bottom"][animation="slide"]:not([opened])) {
+  --mds-modal-transition-window-transform: translateY(50%);
+}
+
+/*
+  - - -
+  - - -
+  - - x
+*/
+
+:host([position="bottom-right"][animation="slide"]:not([opened])) {
+  --mds-modal-transition-window-transform: translate(50%, 100%);
+}

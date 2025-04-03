@@ -4,6 +4,7 @@ import localeEl from './meta/locale.el.json'
 import localeEn from './meta/locale.en.json'
 import localeEs from './meta/locale.es.json'
 import localeIt from './meta/locale.it.json'
+import { MdsInputSwitchEventDetail } from '@component/mds-input-switch/meta/event-detail'
 
 /**
  * @slot default - Add `mds-table-row` element/s.
@@ -40,13 +41,13 @@ export class MdsTableHeader {
 
   @Method()
   async setSelection (selectedItems: number, totalItems: number): Promise<void> {
-    this.indeterminate = selectedItems !== 0 ? selectedItems !== totalItems : false
+    this.indeterminate = selectedItems !== 0 && selectedItems !== totalItems
     if (this.indeterminate) {
       if (!this.checkboxEl) {
         this.checkboxEl = this.host.shadowRoot?.querySelector('.checkbox') as HTMLMdsInputSwitchElement
       }
-      this.checkboxEl.checked = false
     }
+    this.checkboxEl.checked = selectedItems === totalItems
   }
 
   componentWillLoad (): void {
@@ -55,11 +56,11 @@ export class MdsTableHeader {
     this.hasActions = this.table.querySelector('mds-table-row > [slot="action"]') !== null
   }
 
-  private handleSelectAllChange = (e: CustomEvent): void => {
+  private handleSelectAllChange = (e: CustomEvent<MdsInputSwitchEventDetail>): void => {
     if (this.indeterminate) {
       this.selectAll = true
     } else {
-      this.selectAll = e.detail.checked
+      this.selectAll = e.detail.checked ?? false
     }
     this.indeterminate = false
     this.table.selectAll(this.selectAll)
@@ -80,5 +81,4 @@ export class MdsTableHeader {
       </Host>
     )
   }
-
 }

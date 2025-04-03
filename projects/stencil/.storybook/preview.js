@@ -77,11 +77,21 @@ const parameters = {
     devices,
     // viewports,
   },
+  backgrounds: {
+    values: [
+      { name: 'White', value: 'rgb(255 255 255)' },
+      { name: 'Light', value: 'rgb(var(--tone-neutral-10, 248 248 248))' },
+      { name: 'Grey', value: 'rgb(var(--tone-neutral-06, 162 162 162))' },
+      { name: 'Dark', value: 'rgb(var(--tone-neutral-01, 33 33 33))' },
+      { name: 'Black', value: 'rgb(0 0 0)' },
+    ],
+    default: 'White',
+  },
 }
 
 const decorators = [
   (Story) => (
-    <div className="p-600 min-h-screen bg-tone-neutral">
+    <div className="p-600 min-h-screen">
       <Story />
     </div>
   ),

@@ -3,7 +3,7 @@ module.exports = {
   ignorePatterns: ['**/*.config.js', '**/*.stories.js', './.build', './dist', './src/componnts.d.ts', './template'],
   overrides: [{
     files: ['./**/*.tsx', './**/*.ts', './*.config.ts'],
-    excludedFiles: ['./stencil.config.ts'],
+    excludedFiles: ['./*.config.ts'],
     rules: {
       '@typescript-eslint/explicit-module-boundary-types': ['error', {
         allowedNames: ['render'],

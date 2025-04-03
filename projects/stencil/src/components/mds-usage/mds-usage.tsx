@@ -1,6 +1,10 @@
-import { Component, Element, Host, h, Prop } from '@stencil/core'
+import { Component, Element, Host, h, Prop, State, Method } from '@stencil/core'
 import { UsageType } from './meta/types'
-import { usageVariant } from './meta/variants'
+import { Locale } from '@common/locale'
+import localeEl from './meta/locale.el.json'
+import localeEn from './meta/locale.en.json'
+import localeEs from './meta/locale.es.json'
+import localeIt from './meta/locale.it.json'
 
 /**
  * @slot default - Add `text string`, `HTML elements` or `components` to this slot.
@@ -13,7 +17,19 @@ import { usageVariant } from './meta/variants'
 })
 export class MdsUsage {
 
-  @Element() host: HTMLMdsUsageElement
+  @Element() element: HTMLMdsUsageElement
+
+  private readonly t: Locale = new Locale({
+    el: localeEl,
+    en: localeEn,
+    es: localeEs,
+    it: localeIt,
+  })
+  @State() language: string
+  @Method()
+  async updateLang (): Promise<void> {
+    this.language = this.t.lang(this.element)
+  }
 
   /**
    * Specifies the delay when the tooltip will trigger
@@ -26,20 +42,13 @@ export class MdsUsage {
   @Prop() readonly alias?: string
 
   render () {
-    const { alias, icon } = usageVariant[this.variant]
     return (
       <Host role="suggestion">
-        <div class="header" aria-hidden="true">
-          <div class="badge">
-            <mds-icon class="icon" name={icon}/>
-            <mds-text typography="h6">{ this.alias ?? alias }</mds-text>
-          </div>
-        </div>
+        <mds-badge class="badge">{ this.alias ?? this.t.get(this.variant) }</mds-badge>
         <div class="content" role={ this.variant === 'do' || this.variant === 'info' ? 'insertion' : 'deletion'}>
           <slot/>
         </div>
       </Host>
     )
   }
-
 }

@@ -26,6 +26,17 @@ This is a web-component from Maggioli Design System [Magma](https://magma.maggio
 | `"default"` | Add `text string` to this slot, **avoid** to add `HTML elements` or `components` here. |
 
 
+## CSS Custom Properties
+
+| Name                                    | Description                                                                                                                                                                                                                       |
+| --------------------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `--mds-text-animation-placeholder-char` | Sets the animation placeholder char of the text when `animation` attribute is set to `yugop`                                                                                                                                      |
+| `--mds-text-animation-speed`            | Sets the animation speed of the text when `animation` attribute is set to `yugop`                                                                                                                                                 |
+| `--mds-text-line-clamp`                 | Sets the max number of visible lines before the text overflows with ellipsis. It works only if attribute `truncate='all' is set`. **WARNING:** this is supported only by Chrome, Safare and Firefox with native browser prefixes. |
+| `--mds-text-selection-background`       | Sets the background-color of the text when the text is selected                                                                                                                                                                   |
+| `--mds-text-selection-color`            | Sets the color of the text when the text is selected                                                                                                                                                                              |
+
+
 ## Dependencies
 
 ### Used by
@@ -66,7 +77,7 @@ This is a web-component from Maggioli Design System [Magma](https://magma.maggio
  - [mds-price-table-features](../mds-price-table-features)
  - [mds-price-table-features-cell](../mds-price-table-features-cell)
  - [mds-price-table-list-item](../mds-price-table-list-item)
- - [mds-push-notification](../mds-push-notification)
+ - [mds-push-notification-item](../mds-push-notification-item)
  - [mds-quote](../mds-quote)
  - [mds-stepper-bar-item](../mds-stepper-bar-item)
  - [mds-tab-bar-item](../mds-tab-bar-item)
@@ -74,7 +85,6 @@ This is a web-component from Maggioli Design System [Magma](https://magma.maggio
  - [mds-toast](../mds-toast)
  - [mds-tooltip](../mds-tooltip)
  - [mds-url-view](../mds-url-view)
- - [mds-usage](../mds-usage)
 
 ### Graph
 ```mermaid
@@ -115,7 +125,7 @@ graph TD;
   mds-price-table-features --> mds-text
   mds-price-table-features-cell --> mds-text
   mds-price-table-list-item --> mds-text
-  mds-push-notification --> mds-text
+  mds-push-notification-item --> mds-text
   mds-quote --> mds-text
   mds-stepper-bar-item --> mds-text
   mds-tab-bar-item --> mds-text
@@ -123,7 +133,6 @@ graph TD;
   mds-toast --> mds-text
   mds-tooltip --> mds-text
   mds-url-view --> mds-text
-  mds-usage --> mds-text
   style mds-text fill:#f9f,stroke:#333,stroke-width:4px
 ```
 

@@ -1,3 +1,3 @@
 export interface MdsPushNotificationEventDetail {
-  id: string;
+  visible: boolean
 }

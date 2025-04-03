@@ -3,33 +3,42 @@
 @tailwind components;
 
 /**
- * @prop --mds-modal-close-icon-color: Set the color of the close icon button to the top left.
+ * @prop --mds-modal-custom-closed-transform: Sets the transform position of the custom window when it's outside the viewport, to it's default position
+ * @prop --mds-modal-custom-window-distance: Set the distance between the slotted modal window and the screen bounds
  * @prop --mds-modal-overlay-color: Set the overlay color of the background when the component is opened, this property can be inherited from `globals.css` in `styles^8.0.0`.
  * @prop --mds-modal-overlay-opacity: Set the overlay color opacity of the background when the component is opened, this property can be inherited from `globals.css` in `styles^8.0.0`.
+ * @prop --mds-modal-transition-duration: Sets the `transition-duration` of the modal elements
+ * @prop --mds-modal-transition-timing-funciton: Sets the `transition-timing-funciton` of the modal elements
  * @prop --mds-modal-window-background: Set the background color of the window
- * @prop --mds-modal-window-overflow: Set the overflow of the window
- * @prop --mds-modal-window-radius: Set the border radius of the window
  * @prop --mds-modal-window-distance: Set the distance between the modal window and the screen bounds
- * @prop --mds-modal-custom-window-distance: Set the distance between the slotted modal window and the screen bounds
+ * @prop --mds-modal-window-overflow: Set the overflow of the window
+ * @prop --mds-modal-window-max-width: If the viewport is greather than mobile, max-width will be considered with this value;
+ * @prop --mds-modal-window-min-width: If the viewport is greather than mobile, min-width will be considered with this value;
+ * @prop --mds-modal-window-radius: Set the border radius of the window
  * @prop --mds-modal-window-shadow: Set the box shadow of the window
  * @prop --mds-modal-z-index: Set the z-index of the window when the component is opened
  */
 
 :host {
+  --mds-modal-custom-closed-transform: rotateX(10deg) rotateY(0) scale(1.25) translate(0, 10%);
+  --mds-modal-custom-window-distance: theme('spacing.600');
   --mds-modal-overlay-color: var(--magma-overlay-color, 0 0 0);
   --mds-modal-overlay-opacity: var(--magma-overlay-opacity, 0.5);
   --mds-modal-transition-duration: 500ms;
-  --mds-modal-transition-intro-ease: theme('transitionTimingFunction.out-expo');
-  --mds-modal-transition-outro-ease: theme('transitionTimingFunction.in-out-quint');
+  --mds-modal-transition-timing-funciton: theme('transitionTimingFunction.in-out-quint');
   --mds-modal-window-background: theme('colors.tone-neutral');
+  --mds-modal-window-distance: 0;
+  --mds-modal-window-max-width: 33%;
+  --mds-modal-window-min-width: 400px;
   --mds-modal-window-overflow: auto;
   --mds-modal-window-radius: 0;
   --mds-modal-window-shadow: theme('boxShadow.2xl');
-  --mds-modal-window-distance: 0;
-  --mds-modal-custom-window-distance: theme('spacing.600');
   --mds-modal-z-index: var(--magma-modal-z-index);
+  /* private */ --mds-modal-custom-opened-transform: translate(0, 0);
+  /* private */ --mds-modal-transition-window-transform: translate(0);
+  /* private */ --mds-modal-window-close-margin: theme('size.2000');
 
-  @apply ease-in-out-expo;
+  @apply ease-in-out-quint;
 
   align-items: center;
   background-color: rgba(var(--mds-modal-overlay-color) / 0);
@@ -42,77 +51,17 @@
   position: fixed;
   transition-duration: var(--mds-modal-transition-duration);
   transition-property: background-color;
+  transition-timing-function: var(--mds-modal-transition-timing-funciton);
   z-index: var(--mds-modal-z-index, 1000);
 }
 
-:host ::slotted([slot="window"]) {
-  margin: var(--mds-modal-custom-window-distance);
-}
-
-:host([position="top"]) {
-  align-items: flex-start;
-  justify-content: center;
-}
-
-:host([position="bottom"]) {
-  align-items: flex-end;
-  justify-content: center;
-}
-
-.action-close {
-  border-radius: 100px;
-  opacity: 0;
-  pointer-events: none;
-  position: absolute;
-  transition-duration: var(--mds-modal-transition-duration);
-  transition-property: bottom, opacity, top, transform;
-  transition-timing-function: theme('transitionTimingFunction.in-out-expo');
-}
-
-:host([opened]:not([opened="false"])) .action-close {
-  opacity: 1;
-  pointer-events: auto;
-}
-
-.action-close::part(icon) {
-  height: theme('size.900');
-  width: theme('size.900');
-}
-
-.window {
-  @apply gap-0;
-
-  background-color: var(--mds-modal-window-background);
-  border-radius: var(--mds-modal-window-radius);
-  box-shadow: var(--mds-modal-window-shadow);
-  display: grid;
-  grid-template-rows: 1fr;
-  margin: var(--mds-modal-window-distance);
-  overflow: var(--mds-modal-window-overflow);
-}
-
-.window--top {
-  grid-template-rows: auto 1fr;
-}
-
-.window--bottom {
-  grid-template-rows: 1fr auto;
-}
-
-.window--top-bottom {
-  grid-template-rows: auto 1fr auto;
-}
-
-@import './css/mds-modal-animate.css';
-@import './css/mds-modal-animate-bottom-left.css';
-@import './css/mds-modal-animate-bottom-right.css';
-@import './css/mds-modal-animate-bottom.css';
-@import './css/mds-modal-animate-center.css';
-@import './css/mds-modal-animate-left.css';
-@import './css/mds-modal-animate-right.css';
-@import './css/mds-modal-animate-top-left.css';
-@import './css/mds-modal-animate-top-right.css';
-@import './css/mds-modal-animate-top.css';
+@import './css/mds-modal-action-close.css';
+@import './css/mds-modal-animation-3d.css';
+@import './css/mds-modal-animation-custom.css';
+@import './css/mds-modal-animation-slide.css';
+@import './css/mds-modal-opened.css';
+@import './css/mds-modal-position.css';
+@import './css/mds-modal-window.css';
 @import './css/mds-modal-pref-animation.css';
 @import './css/mds-modal-pref-contrast.css';
 @import './css/mds-modal-pref-theme.css';

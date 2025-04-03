@@ -1,13 +1,9 @@
 :host-context(.pref-theme-dark) {
-  --mds-push-notification-shadow: theme('boxShadow.outline') inset;
-
-  background-color: theme('colors.tone-neutral-09');
+  --mds-push-notification-background: linear-gradient(to right, rgb(0 0 0 / 0) 0%, rgb(0 0 0 / 0.5) 20%, rgb(0 0 0 / 0.85) 100%);
 }
 
 @media (prefers-color-scheme: dark) {
   :host-context(.pref-theme-system) {
-    --mds-push-notification-shadow: theme('boxShadow.outline') inset;
-
-    background-color: theme('colors.tone-neutral-09');
+    --mds-push-notification-background: linear-gradient(to right, rgb(0 0 0 / 0) 0%, rgb(0 0 0 / 0.5) 20%, rgb(0 0 0 / 0.85) 100%);
   }
 }

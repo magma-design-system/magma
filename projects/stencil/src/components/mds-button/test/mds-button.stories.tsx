@@ -79,6 +79,11 @@ const Template = args =>
     Conferma azione
   </mds-button>
 
+const TemplateService = args =>
+  <mds-button {...args}>
+    { args.label }
+  </mds-button>
+
 const TemplateNotifications = args =>
   <mds-button {...args}>
     Notifiche
@@ -147,6 +152,36 @@ const TemplateForm = args =>
     <mds-button {...args}>Cliccami</mds-button>
   </form>
 
+const TemplateDisabled = () => {
+
+  const [disabled, setDisabled] = useState(false)
+
+  function toggle () {
+    setDisabled(!disabled)
+    console.info('disabled', disabled)
+  }
+
+  function enableButton () {
+    setDisabled(false)
+    // document.querySelector('#disabledButton')?.setAttribute('disabled', 'false')
+  }
+
+  return <div class="grid grid-cols-1 gap-600">
+    <div class="inline-flex gap-600">
+      <mds-button
+        id='disabledButton'
+        class="w-4400"
+        icon={disabled ? 'mi/baseline/block' : 'mi/baseline/check'}
+        variant="primary"
+        disabled={disabled}
+        onClick={() => toggle()}>
+        {disabled ? 'Disabled button' : 'Click to disable'}
+      </mds-button>
+      { disabled && <mds-button icon="mi/baseline/undo" variant="dark" tone="weak" onClick={() => enableButton()}>Reset</mds-button> }
+    </div>
+  </div>
+}
+
 export const Default = Template.bind({})
 
 export const AutoFocus = Template.bind({})
@@ -160,15 +195,26 @@ Await.args = {
   await: true,
 }
 
-export const Disabled = Template.bind({})
+export const Disabled = TemplateDisabled.bind({})
 Disabled.args = {
-  disabled: true,
-  onClick: () => { alert('click') },
+  disabled: false,
 }
 
 export const Variant = Template.bind({})
 Variant.args = {
   variant: 'success',
+}
+
+export const ServiceVariantGoogle = TemplateService.bind({})
+ServiceVariantGoogle.args = {
+  variant: 'google',
+  label: 'Login with Google',
+}
+
+export const ServiceVariantApple = TemplateService.bind({})
+ServiceVariantApple.args = {
+  variant: 'apple',
+  label: 'Login with Apple',
 }
 
 export const Tone = Template.bind({})

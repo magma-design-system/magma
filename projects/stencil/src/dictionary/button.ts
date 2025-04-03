@@ -7,6 +7,8 @@ const buttonVariantDictionary = [
   'secondary',
   'success',
   'warning',
+  'google',
+  'apple',
 ]
 
 const buttonToneVariantDictionary = [

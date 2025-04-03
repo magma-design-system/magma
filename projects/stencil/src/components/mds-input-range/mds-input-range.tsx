@@ -14,9 +14,14 @@ export class MdsInputRange {
   @State() private progress: number
   private label: string
   private inputElement: HTMLInputElement
-
+  private decimalPlaces: number // number of decimal places
   @Element() private element: HTMLMdsInputRangeElement
   @AttachInternals() internals: ElementInternals
+
+  /**
+   * A function to custom how value is represented
+   */
+  @Prop() readonly formatValue?: (value: number) => string
 
   /**
    * The greatest value in the range of permitted values
@@ -51,21 +56,30 @@ export class MdsInputRange {
 
   calculateProgress (): void {
     // validate value
-    let v = parseInt(this.inputElement.value)
+    let v = Number(this.inputElement.value)
+    // multiplier is needed to manage decimal value and step, so we can work with integer value and avoid decimal division
+    const multiplier = Math.pow(10, this.decimalPlaces)
     if (v > this.max) v = this.max
     else if (v < this.min) v = this.min
-    if ((v - this.min) % (this.step) !== 0) v = Math.round(v / this.step) * this.step - this.min
+    if ((v - this.min) * multiplier % (this.step * multiplier) !== 0) {
+      v = (Math.round((v * multiplier - this.min * multiplier) / (this.step * multiplier)) * (this.step * multiplier) + this.min * multiplier) / multiplier
+    }
     this.value = v
-
     this.internals.setFormValue(this.value.toString())
     const total = this.max - this.min
     const current = this.value - this.min
-    this.progress = current * 100 / total
+    this.progress = current / total * 100
   }
 
   private onInput = () => {
+    if (Number.isNaN(this.inputElement.value)) throw Error(`Entered value ${this.inputElement.value} is not a Number`)
     // trigger valueChanged that update progress and emit event
-    this.value = parseInt(this.inputElement.value)
+    this.value = Number(this.inputElement.value)
+  }
+
+  private countDecimals (num: number) {
+    if (Math.floor(num) === num) return 0
+    return num.toString().split('.')[1].length || 0
   }
 
   @Watch('disabled')
@@ -81,7 +95,8 @@ export class MdsInputRange {
   }
 
   @Watch('value')
-  valueChanged (): void {
+  valueChanged (newValue: string, oldValue:string): void {
+    if (newValue === oldValue) return
     this.inputElement.value = this.value.toString()
     this.calculateProgress()
     this.changeEvent.emit(this.value)
@@ -99,7 +114,8 @@ export class MdsInputRange {
 
   @Watch('step')
   stepChanged (): void {
-    if (this.step < 1) throw Error('step cant be negative or zero')
+    if (this.step <= 0) throw Error('step cant be negative or zero')
+    this.decimalPlaces = this.countDecimals(this.step)
     this.calculateProgress()
   }
 
@@ -108,9 +124,9 @@ export class MdsInputRange {
   }
 
   componentDidLoad (): void {
+    this.decimalPlaces = this.countDecimals(this.step)
+    this.onInput() // define value
     this.label = this.element.textContent ?? ''
-    this.inputElement = this.element.shadowRoot?.querySelector('.field') as HTMLInputElement
-    this.value = parseInt(this.inputElement.value)
     this.calculateProgress()
   }
 
@@ -119,7 +135,7 @@ export class MdsInputRange {
       <Host>
         <header class="header" part="header">
           <mds-text class="label" typography="label"><slot/></mds-text>
-          <mds-text class="value" typography="label">{ this.value }</mds-text>
+          <mds-text class="value" typography="label">{ this.formatValue ? this.formatValue(this.value) : this.value }</mds-text>
         </header>
         <div class="range">
           <div class="track">
@@ -129,6 +145,7 @@ export class MdsInputRange {
             </div>
           </div>
           <input
+            ref = {el => this.inputElement = el as HTMLInputElement}
             class="field"
             aria-label={this.label}
             disabled={this.disabled}

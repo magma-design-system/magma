@@ -24,6 +24,15 @@ This is a web-component from Maggioli Design System [Magma](https://magma.maggio
 | `"default"` | Add `text string` to this slot, **avoid** to add `HTML elements` or `components` here. |
 
 
+## CSS Custom Properties
+
+| Name                     | Description                                |
+| ------------------------ | ------------------------------------------ |
+| `--mds-badge-background` | Sets the background-color of the component |
+| `--mds-badge-color`      | Sets the text color of the component       |
+| `--mds-badge-radius`     | Sets the border-radius of the component    |
+
+
 ## Dependencies
 
 ### Used by
@@ -31,6 +40,7 @@ This is a web-component from Maggioli Design System [Magma](https://magma.maggio
  - [mds-file](../mds-file)
  - [mds-file-preview](../mds-file-preview)
  - [mds-stepper-bar-item](../mds-stepper-bar-item)
+ - [mds-usage](../mds-usage)
 
 ### Depends on
 
@@ -43,6 +53,7 @@ graph TD;
   mds-file --> mds-badge
   mds-file-preview --> mds-badge
   mds-stepper-bar-item --> mds-badge
+  mds-usage --> mds-badge
   style mds-badge fill:#f9f,stroke:#333,stroke-width:4px
 ```
 

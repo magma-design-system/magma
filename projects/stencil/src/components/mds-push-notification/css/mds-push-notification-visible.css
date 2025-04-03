@@ -1,0 +1,4 @@
+:host([visible]) {
+  transform: translate(0, 0);
+  transition-delay: 0s;
+}

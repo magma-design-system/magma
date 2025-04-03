@@ -1,0 +1,20 @@
+.base-push-notification-item:
+  variables:
+    COMPONENT: mds-push-notification-item
+
+# TEST
+push-notification-item-publish-test:
+  extends: [.base-stencil-publish-test, .base-push-notification-item]
+  dependencies: [base-stencil-build, base-isolate]
+
+# PUBLISH
+push-notification-item-publish:
+  extends: [.base-stencil-publish, .base-push-notification-item]
+  dependencies: [base-stencil-build, base-isolate]
+  needs: [base-stencil-build, base-isolate, push-notification-item-publish-test]
+
+# INSTALL TEST
+push-notification-item-install-test:
+  extends: [.base-stencil-install-test, .base-push-notification-item]
+  dependencies: [base-stencil-build, base-isolate]
+  needs: [base-stencil-build, base-isolate, push-notification-item-publish]

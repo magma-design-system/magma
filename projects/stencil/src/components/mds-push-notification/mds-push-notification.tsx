@@ -1,27 +1,11 @@
-import dayjs from 'dayjs'
-import localeEl from './meta/locale.el.json'
-import localeEn from './meta/locale.en.json'
-import localeEs from './meta/locale.es.json'
-import localeIt from './meta/locale.it.json'
-import miBaselineCancel from '@icon/mi/baseline/cancel.svg'
-import relativeTime from 'dayjs/plugin/relativeTime'
-import { Component, Element, Event, EventEmitter, Host, h, Prop, Method, State, Watch } from '@stencil/core'
-import { ISO8601Date } from '@type/date'
-import { Locale } from '@common/locale'
+import { Component, Element, Host, h, Prop, Event, EventEmitter, Watch, Method } from '@stencil/core'
+import { cssDurationToMilliseconds, cssSizeToNumber } from '@common/unit'
 import { MdsPushNotificationEventDetail } from './meta/event-detail'
-import { NotificationPreviewType, NotificationDateFormatType, RelativeTimeType } from './meta/types'
-import { ThemeFullVariantAvatarType, ToneMinimalVariantType } from '@type/variant'
-import { sanitizeISO8601Date } from '@common/date'
-
-dayjs.extend(relativeTime)
-
 /**
- * @part actions - The actions wrapper
- * @part content - The content wrapper of the message
- * @part icon - The icon set by `icon` attribute
- * @part picture - The picture image added by `src` attribute
- * @slot action - Add `HTML elements` or `components`, it is **recommended** to use `mds-button` element.
- * @slot badge - Add `HTML elements` or `components`, it is **recommended** to use `mds-badge` element.
+ * @part notifications - The container wrapper of the notifications.
+ * @slot top - Add `HTML elements` or `components`, it is **recommended** to use `mds-button` element.
+ * @slot bottom - Add `HTML elements` or `components`, it is **recommended** to use `mds-button` element.
+ * @slot default - Add `HTML elements` or `components`, it is **recommended** to use `mds-push-notification` element.
  */
 
 @Component({
@@ -31,150 +15,181 @@ dayjs.extend(relativeTime)
 })
 export class MdsPushNotification {
 
-  private hasActions?: boolean
-  private hasBadge?: boolean
   @Element() host: HTMLMdsPushNotificationElement
-  private t:Locale = new Locale({
-    el: localeEl,
-    en: localeEn,
-    es: localeEs,
-    it: localeIt,
-  })
-  @State() language: string
-  @Method()
-  async updateLang (): Promise<void> {
-    this.language = this.t.lang(this.host)
+  slotNotifications!: HTMLSlotElement
+  private cssItemsIntroDuration: string
+  private cssItemsOutroDuration: string
+  private cssItemsGap: string
+  // private totalItems = 0
+
+  /**
+   * Specifies if the component is visible or not.
+   */
+  @Prop({ reflect: true, mutable: true }) visible?: boolean
+
+  /**
+   * Specifies if the component is visible or not.
+   * behavior = manual
+   * should hide when click outside
+   * should hide when all notifications are removed
+   * should show when change visible from component or call show method
+   *
+   * behavior = auto
+   * should hide when all notifications are removed
+   * should show when one or more notifications are added
+   */
+  @Prop() behavior?: 'auto' | 'manual' = 'auto'
+
+  /**
+   * Emits when the component visibility changes
+   */
+  @Event({ eventName: 'mdsPushNotificationChange' }) changedEvent: EventEmitter<MdsPushNotificationEventDetail>
+
+  /**
+   * Emits when the component is shown
+   */
+  @Event({ eventName: 'mdsPushNotificationShow' }) shownEvent: EventEmitter<void>
+
+  /**
+   * Emits when the component is hidden
+   */
+  @Event({ eventName: 'mdsPushNotificationHide' }) hiddenEvent: EventEmitter<void>
+
+  // TODO [fix] If visibility is set to false, hide all the notifications area also when they are added
+  // TODO [fix] If visibility is set to true, and there are not notifications, show the notifications area
+  // TODO [feat] Add a method to clear all notifications at once
+  // TODO [feat] Hide the component when all the children are removed
+  // TODO [feat] Show the component when one or more children are added
+  // TODO [test] tests are not clear, please fix them
+
+  /**
+   * Animation for open notification
+   * @param element HTMLElement that need to be opened
+   * @returns
+   */
+  private introItem = (element: HTMLElement): Promise<void> => {
+    // no reason why I must duplicata marginBottom negative to prevent flickering
+    element.style.marginBottom = `-${element.offsetHeight + cssSizeToNumber(this.cssItemsGap)}px`
+    return new Promise<void>(resolve => {
+      setTimeout(() => {
+        element.style.marginBottom = `-${element.offsetHeight + cssSizeToNumber(this.cssItemsGap)}px`
+        setTimeout(() => {
+          element.style.visibility = 'visible'
+          element.style.position = 'relative'
+          element.style.transform = 'translate(0, 0)'
+          element.style.marginBottom = '0px'
+          resolve()
+        }, cssDurationToMilliseconds(this.cssItemsIntroDuration))
+      }, 15) // hope to find a better solution not based on 15ms of delay, not very robust
+    })
   }
 
   /**
-   * Specifies the notification date based on [standard ISO 8601](https://www.iso.org/iso-8601-date-and-time-format.html).
+   * Animation for close notification
+   * @param element HTMLElement that need to be removed
+   * @returns
    */
-  @Prop({ reflect: true, mutable: true }) datetime?: string
+  private outroItem = (element: HTMLElement): Promise<void> => {
+    if (this.slotNotifications.assignedNodes().length <= 1) this.hide()
+    // no reason why I must duplicate marginBottom negative to prevent flickering
+    element.style.marginBottom = '0px'
+    return new Promise<void>(resolve => {
+      setTimeout(() => {
+        element.style.marginBottom = '0px'
+        setTimeout(() => {
+          element.addEventListener('transitionend', () => {
+            // element.removeEventListener('transitionend')
+            element.remove()
+          })
+          element.style.removeProperty('transform')
+          element.style.marginBottom = `-${element.offsetHeight + cssSizeToNumber(this.cssItemsGap)}px`
+          resolve()
+        }, cssDurationToMilliseconds(this.cssItemsOutroDuration))
+      }, 15) // hope to find a better solution not based on 15ms of delay, not very robust
+    })
+  }
 
   /**
-   * Specifies if the notification date format shows time passed or displays date as a static string
+   * manages the opening of notifications when they are added to the slot
    */
-  @Prop({ reflect: true }) readonly dateFormat: NotificationDateFormatType = 'timeago'
+  private handleSlotChange = (): void => {
+    const elements = this.slotNotifications.assignedElements().map(e => e as HTMLElement).filter(e => !e.style.visibility )
+    if (elements.length === 0) return
 
-  /**
-   * Specifies if the component is dismissable or not, it should be set to true by default is used with it's parent component `mds-push-notifications`
-   */
-  @Prop({ reflect: true, mutable: true }) deletable?: boolean = true
+    elements.forEach(async e => {
+      e.addEventListener('mdsPushNotificationItemClose', () => this.outroItem(e))
+      await this.introItem(e)
+    })
+    if (this.behavior === 'auto') this.show()
+  }
 
-  /**
-   * Specifies the icon to be displayed
-   */
-  @Prop({ reflect: true }) readonly icon?: string
+  private updateCSSCustomProps = (): void => {
+    const elementStyles = window.getComputedStyle(this.host)
+    this.cssItemsGap = elementStyles.getPropertyValue('--mds-push-notification-items-gap') ?? '0.5rem'
+    this.cssItemsIntroDuration = elementStyles.getPropertyValue('--mds-push-notification-items-intro-delay') ?? '200ms'
+    this.cssItemsOutroDuration = elementStyles.getPropertyValue('--mds-push-notification-items-outro-delay') ?? '0ms'
+  }
 
-  /**
-   * The user's inizials displayed if there's no image available, initials will override tone and variant senttings to keep user recognizable from others
-   */
-  @Prop({ mutable:true, reflect: true }) readonly initials?: string
+  private clear (): void {
+    this.slotNotifications.assignedElements().forEach(e => this.outroItem(e as HTMLElement))
+    this.hide()
+  }
 
-  /**
-   * Specifies the message of the component
-   */
-  @Prop({ reflect: true }) readonly message: string = 'Nessun messaggio disponibile'
+  @Method()
+  show (): Promise<void> {
+    this.visible = true
+    return Promise.resolve()
+  }
 
-  /**
-   * Specifies if the `src` attribute is used to show a the image as avatar or full image
-   */
-  @Prop({ reflect: true }) readonly preview?: NotificationPreviewType = 'image'
+  @Method()
+  hide (): Promise<void> {
+    this.visible = undefined
+    return Promise.resolve()
+  }
 
-  /**
-   * Specifies the path to the image
-   */
-  @Prop({ reflect: true }) readonly src?: string
-
-  /**
-   * Specifies the subject of the component
-   */
-  @Prop({ reflect: true }) readonly subject?: string
-
-  /**
-   * Specifies the color tone of the component
-   */
-  @Prop({ reflect: true }) readonly tone?: ToneMinimalVariantType = 'weak'
-
-  /**
-   * Specifies the color variant of the component
-   */
-  @Prop({ reflect: true }) readonly variant?: ThemeFullVariantAvatarType
-
-  /**
-   * Emits when the component is closed
-   */
-  @Event({ eventName: 'mdsPushNotificationClose' }) closedEvent: EventEmitter<MdsPushNotificationEventDetail>
-
-  private onClickClose = (e: Event) => {
-    e.stopPropagation()
-    this.closedEvent.emit()
+  @Method()
+  removeNotification (notification: HTMLMdsPushNotificationItemElement | HTMLMdsPushNotificationItemElement[]): Promise<void> {
+    if (Array.isArray(notification)) {
+      notification.forEach(this.outroItem)
+    } else {
+      this.outroItem(notification)
+    }
+    return Promise.resolve()
   }
 
   componentDidLoad (): void {
-    this.handleDeletableChange(this.deletable)
+    this.updateCSSCustomProps()
+
+    this.slotNotifications.addEventListener('slotchange', this.handleSlotChange)
+    this.handleSlotChange()
   }
 
-  componentWillLoad ():void {
-    this.hasActions = this.host.querySelector(':scope > [slot="action"]') !== null
-    this.hasBadge = this.host.querySelector(':scope > [slot="badge"]') !== null
-
-    if (this.datetime) {
-      this.datetime = sanitizeISO8601Date(this.datetime?.toString()) as ISO8601Date
+  @Watch('visible')
+  visibleChanged (newValue?: boolean): void {
+    if (newValue) {
+      this.changedEvent.emit({ visible: true })
+      this.shownEvent.emit()
+      return
     }
-
-    this.t.lang(this.host)
-    const relativeTimeCustom = {
-      future: this.t.get('future'),
-      past: this.t.get('past'),
-      s: this.t.get('s'),
-      m: this.t.get('m'),
-      mm: this.t.get('mm'),
-      h: this.t.get('h'),
-      hh: this.t.get('hh'),
-      d: this.t.get('d'),
-      dd: this.t.get('dd'),
-      M: this.t.get('M'),
-      MM: this.t.get('MM'),
-      y: this.t.get('y'),
-      yy: this.t.get('yy'),
+    if (newValue === undefined) {
+      this.changedEvent.emit({ visible: false })
+      this.hiddenEvent.emit()
+      return
     }
-
-    dayjs.locale('custom-locale', { relativeTime: relativeTimeCustom as RelativeTimeType })
-  }
-
-  @Watch('deletable')
-  handleDeletableChange (newValue?: boolean): void {
-    if (newValue === false) {
-      this.deletable = undefined
-    }
+    this.visible = undefined
   }
 
   render () {
     return (
       <Host>
-        { (this.icon ?? this.preview === 'avatar') && <mds-avatar class="avatar" icon={this.icon} initials={this.initials} part="avatar" src={this.src} tone={this.tone} variant={this.variant}></mds-avatar> }
-        { this.src && this.preview !== 'avatar' && <mds-img class="picture" part="picture" src={this.src}></mds-img> }
-        <div class="content" part="content">
-          <div class="header">
-            <div class="infos">
-              { this.hasBadge && <div><slot name="badge"></slot></div> }
-              { this.subject && <mds-text class="subject" typography="h6" variant="title" truncate="all">{ this.subject }</mds-text> }
-            </div>
-            { this.datetime && <mds-text class="time" typography="option">
-              { this.dateFormat === 'timeago'
-                ? dayjs(this.datetime).fromNow()
-                : dayjs(this.datetime).format(this.dateFormat)
-              }
-            </mds-text> }
-          </div>
-          <mds-text class="message" truncate="all" typography="caption" variant="info">{ this.message }</mds-text>
-          { this.hasActions && <div class="actions" part="actions">
-            <slot name="action"></slot>
-          </div> }
+        {/* <slot name="top"></slot> */}
+        <mds-button variant="dark" onClick={this.clear.bind(this)}>Cancella notifiche</mds-button>
+        <div class="notifications" part="notifications">
+          <slot ref={el => this.slotNotifications = el as HTMLSlotElement}/>
         </div>
-        { this.deletable && <mds-button class="close-button" title={this.t.get('dismiss')} icon={miBaselineCancel} onClick={this.onClickClose.bind(this)}></mds-button> }
+        {/* <slot name="bottom"></slot> */}
       </Host>
     )
   }
 }
+

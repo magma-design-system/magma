@@ -75,12 +75,8 @@
 }
 
 .button-close {
-  --mds-button-background: transparent;
-
   cursor: pointer;
   fill: var(--mds-url-view-color);
-
-  @apply rounded-md;
 }
 
 .iframe {

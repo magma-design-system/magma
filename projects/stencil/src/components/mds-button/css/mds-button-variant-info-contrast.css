@@ -1,29 +1,28 @@
-:host-context(.pref-contrast-more):host([variant="info"]),
 :host-context(.pref-contrast-more):host([variant="info"][tone="strong"]) {
   --mds-button-background: theme('colors.status-info-03');
   --mds-button-color: theme('colors.tone-neutral');
+  --mds-button-border-color: var(--status-info-03);
 }
 
-:host-context(.pref-contrast-more):host([variant="info"]:hover),
+:host-context(.pref-contrast-more):host([variant="info"][tone="strong"][active]),
 :host-context(.pref-contrast-more):host([variant="info"][tone="strong"]:hover) {
   --mds-button-background: theme('colors.status-info-02');
-}
-
-:host-context(.pref-contrast-more):host([variant="info"][active]),
-:host-context(.pref-contrast-more):host([variant="info"][tone="strong"][active]) {
-  --mds-button-background: theme('colors.status-info-02');
+  --mds-button-border-color: var(--status-info-02);
 }
 
 :host-context(.pref-contrast-more):host([variant="info"][tone="weak"]) {
   --mds-button-background: theme('colors.status-info-09');
   --mds-button-color: theme('colors.status-info-02');
+  --mds-button-border-color: var(--status-info-06);
+  --mds-button-border-width: var(--mds-button-border-high-contrast-width);
 
   fill: theme('colors.status-info-02');
 }
 
 :host-context(.pref-contrast-more):host([variant="info"][tone="weak"]:hover) {
-  --mds-button-background: theme('colors.status-info-08');
+  --mds-button-background: theme('colors.status-info-10');
   --mds-button-color: theme('colors.status-info-01');
+  --mds-button-border-width: var(--mds-button-border-high-contrast-hover-width);
 
   fill: theme('colors.status-info-01');
 }
@@ -36,65 +35,57 @@
 }
 
 :host-context(.pref-contrast-more):host([variant="info"][tone="ghost"]) {
-  --mds-button-background: transparent;
-  --mds-button-border-color: theme('colors.status-info-03');
+  --mds-button-border-color: var(--status-info-03);
   --mds-button-color: theme('colors.status-info-02');
 }
 
 :host-context(.pref-contrast-more):host([variant="info"][tone="ghost"]:hover) {
-  --mds-button-background: transparent;
-  --mds-button-border-color: theme('colors.status-info-03');
+  --mds-button-border-color: var(--status-info-03);
   --mds-button-color: theme('colors.status-info-01');
 }
 
 :host-context(.pref-contrast-more):host([variant="info"][tone="ghost"][active]) {
-  --mds-button-background: transparent;
-  --mds-button-border-color: theme('colors.status-info-04');
+  --mds-button-border-color: var(--status-info-04);
   --mds-button-color: theme('colors.status-info-02');
 }
 
 :host-context(.pref-contrast-more):host([variant="info"][tone="quiet"]) {
-  --mds-button-background: transparent;
   --mds-button-color: theme('colors.status-info-01');
 }
 
 :host-context(.pref-contrast-more):host([variant="info"][tone="quiet"]:hover) {
-  --mds-button-background: transparent;
   --mds-button-color: theme('colors.status-info-03');
 }
 
 :host-context(.pref-contrast-more):host([variant="info"][tone="quiet"][active]) {
-  --mds-button-background: transparent;
   --mds-button-color: theme('colors.status-info-01');
 }
 
 @media (prefers-contrast: more) {
-  :host-context(.pref-contrast-system):host([variant="info"]),
   :host-context(.pref-contrast-system):host([variant="info"][tone="strong"]) {
     --mds-button-background: theme('colors.status-info-03');
     --mds-button-color: theme('colors.tone-neutral');
   }
 
-  :host-context(.pref-contrast-system):host([variant="info"]:hover),
+  :host-context(.pref-contrast-system):host([variant="info"][tone="strong"][active]),
   :host-context(.pref-contrast-system):host([variant="info"][tone="strong"]:hover) {
     --mds-button-background: theme('colors.status-info-02');
-  }
-
-  :host-context(.pref-contrast-system):host([variant="info"][active]),
-  :host-context(.pref-contrast-system):host([variant="info"][tone="strong"][active]) {
-    --mds-button-background: theme('colors.status-info-02');
+    --mds-button-border-color: var(--status-info-02);
   }
 
   :host-context(.pref-contrast-system):host([variant="info"][tone="weak"]) {
     --mds-button-background: theme('colors.status-info-09');
     --mds-button-color: theme('colors.status-info-02');
+    --mds-button-border-color: var(--status-info-06);
+    --mds-button-border-width: var(--mds-button-border-high-contrast-width);
 
     fill: theme('colors.status-info-02');
   }
 
   :host-context(.pref-contrast-system):host([variant="info"][tone="weak"]:hover) {
-    --mds-button-background: theme('colors.status-info-08');
+    --mds-button-background: theme('colors.status-info-10');
     --mds-button-color: theme('colors.status-info-01');
+    --mds-button-border-width: var(--mds-button-border-high-contrast-hover-width);
 
     fill: theme('colors.status-info-01');
   }
@@ -107,35 +98,29 @@
   }
 
   :host-context(.pref-contrast-system):host([variant="info"][tone="ghost"]) {
-    --mds-button-background: transparent;
-    --mds-button-border-color: theme('colors.status-info-03');
+    --mds-button-border-color: var(--status-info-03);
     --mds-button-color: theme('colors.status-info-02');
   }
 
   :host-context(.pref-contrast-system):host([variant="info"][tone="ghost"]:hover) {
-    --mds-button-background: transparent;
-    --mds-button-border-color: theme('colors.status-info-03');
+    --mds-button-border-color: var(--status-info-03);
     --mds-button-color: theme('colors.status-info-01');
   }
 
   :host-context(.pref-contrast-system):host([variant="info"][tone="ghost"][active]) {
-    --mds-button-background: transparent;
-    --mds-button-border-color: theme('colors.status-info-04');
+    --mds-button-border-color: var(--status-info-04);
     --mds-button-color: theme('colors.status-info-02');
   }
 
   :host-context(.pref-contrast-system):host([variant="info"][tone="quiet"]) {
-    --mds-button-background: transparent;
     --mds-button-color: theme('colors.status-info-01');
   }
 
   :host-context(.pref-contrast-system):host([variant="info"][tone="quiet"]:hover) {
-    --mds-button-background: transparent;
     --mds-button-color: theme('colors.status-info-03');
   }
 
   :host-context(.pref-contrast-system):host([variant="info"][tone="quiet"][active]) {
-    --mds-button-background: transparent;
     --mds-button-color: theme('colors.status-info-01');
   }
 }

@@ -1,6 +1,6 @@
 import clsx from 'clsx'
 import { Component, Element, Event, EventEmitter, Host, h, Listen, Prop, Watch } from '@stencil/core'
-import { ModalPositionType, ModalAnimationStateType, ModalOverflowType } from './meta/types'
+import { ModalPositionType, ModalAnimationStateType, ModalOverflowType, ModalAnimationStyleType } from './meta/types'
 import { cssDurationToMilliseconds } from '@common/unit'
 
 /**
@@ -23,13 +23,17 @@ export class MdsModal {
   private bodyOverflow: string
   private bottom = false
   private cssTransitionDuration: string
+  private windowElement: HTMLElement
+  private touchStartX: number
+  private touchStartY: number
+  private touchMargin: number = 50
 
   @Element() host: HTMLMdsModalElement
 
   /**
    * Specifies if the modal is opened or not
    */
-  @Prop({ reflect: true, mutable: true }) opened = false
+  @Prop({ reflect: true, mutable: true }) opened?:boolean = false
 
   /**
    * Specifies the animation position of the modal window
@@ -40,6 +44,11 @@ export class MdsModal {
    * Specifies if the component is animating itself or not
    */
   @Prop({ reflect: true, mutable: true }) animating?: ModalAnimationStateType = 'none'
+
+  /**
+   * Specifies if the component is animating itself or not
+   */
+  @Prop({ reflect: true }) readonly animation?: ModalAnimationStyleType = 'slide'
 
   /**
    * Specifies if the component prevents the body from scrolling when modal window is opened
@@ -106,6 +115,31 @@ export class MdsModal {
     this.animationDelayTimeout = setTimeout(this.stopOutroAnimationWindow.bind(this), cssDurationToMilliseconds(this.cssTransitionDuration))
   }
 
+  private setTouchStart = (event: TouchEvent): void => {
+    this.touchStartX = event.touches[0].clientX
+    this.touchStartY = event.touches[0].clientY
+  }
+  private setTouchEnd = (event: TouchEvent): void => {
+    const endX = event.changedTouches[0].clientX
+    const endY = event.changedTouches[0].clientY
+    const diffX = this.touchStartX - endX
+    const diffY = this.touchStartY - endY
+
+    // if is NOT a diagonal swipe
+    if (Math.abs(diffX) > Math.abs(diffY)) {
+      if (this.position === 'right' && diffX > 0) return
+      if (this.position === 'left' && diffX < 0) return
+      if (Math.abs(diffX) > Math.abs(this.touchMargin)) {
+        this.opened = undefined
+      }
+    }
+  }
+
+  private addMobileEvents = (): void => {
+    this.windowElement.addEventListener('touchstart', this.setTouchStart)
+    this.windowElement.addEventListener('touchend', this.setTouchEnd)
+  }
+
   componentWillLoad (): void {
     this.bottom = this.host.querySelector(':scope > [slot="bottom"]') !== null
     this.top = this.host.querySelector(':scope > [slot="top"]') !== null
@@ -125,7 +159,18 @@ export class MdsModal {
   }
 
   componentDidLoad (): void {
+    this.windowElement = this.host.shadowRoot?.querySelector('.window') as HTMLElement
+    if (this.windowElement) {
+      this.addMobileEvents()
+    }
     this.updateCSSCustomProps()
+  }
+
+  disconnectedCallback (): void {
+    if (this.windowElement) {
+      this.windowElement.removeEventListener('touchstart', this.setTouchStart)
+      this.windowElement.removeEventListener('touchend', this.setTouchEnd)
+    }
   }
 
   private closeModal = (e:Event): void => {
@@ -147,6 +192,7 @@ export class MdsModal {
       this.animateOpenWindow()
       return
     }
+    this.opened = undefined
     if (this.overflow === 'auto') {
       this.enableOverflow()
     }

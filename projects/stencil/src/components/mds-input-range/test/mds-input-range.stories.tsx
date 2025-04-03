@@ -1,4 +1,5 @@
 import { h } from '@stencil/core'
+import { useEffect } from 'react'
 
 export default {
   title: 'Form / Range',
@@ -30,6 +31,20 @@ const Template = args =>
   <mds-input-range {...args}>
     Range label
   </mds-input-range>
+
+const TemplateFormatLabel = args => {
+  useEffect(() => {
+    (document.querySelector('#custom-labeled') as HTMLMdsInputRangeElement).formatValue = formatValue
+  }, [])
+  function formatValue (v: number) {
+    return `Hai selezionato il valore ${v}`
+  }
+  return <div>
+    <mds-input-range id="custom-labeled" {...args}>
+      Range label
+    </mds-input-range>
+  </div>
+}
 
 const hideHeaderCss = `
   mds-input-range::part(header) {
@@ -72,5 +87,7 @@ export const Value = Template.bind({})
 Value.args = {
   value: 90,
 }
+
+export const FormatLabel = TemplateFormatLabel.bind({})
 
 export const HideHeader = HideHeaderTemplate.bind({})

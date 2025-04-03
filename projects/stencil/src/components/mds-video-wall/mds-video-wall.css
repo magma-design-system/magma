@@ -1,12 +1,14 @@
 /**
  * @prop --mds-video-wall-noise-background-color: Sets the background-color of the noise when active
  * @prop --mds-video-wall-noise-background-size: Sets the background-color of the noise when active
+ * @prop --mds-video-wall-noise-filter: Sets filter to manipulate pattern noise color
  * @prop --mds-video-wall-video-fit: Sets the object-fit of the video stream
  */
 
 :host {
   --mds-video-wall-noise-background-color: rgb(var(--variant-primary-03) / 0.8);
   --mds-video-wall-noise-background-size: auto;
+  --mds-video-wall-noise-fitler: none;
   --mds-video-wall-video-fit: cover;
 
   aspect-ratio: 16/9;
@@ -43,6 +45,7 @@ video {
 .noise {
   background-color: var(--mds-video-wall-noise-background-color);
   background-size: var(--mds-video-wall-noise-background-size);
+  filter: var(--mds-video-wall-noise-fitler);
   z-index: 2;
 }
 

@@ -69,6 +69,8 @@ export class MdsTableHeaderCell {
       }
     })
 
+    this.tableRows = Array.from(this.tableBody.children) as HTMLMdsTableRowElement[]
+
     this.tableRows.forEach((row: HTMLMdsTableRowElement) => {
       const cells: HTMLMdsTableCellElement[] = Array.from(row.children) as HTMLMdsTableCellElement[]
       cells.forEach((cell: HTMLMdsTableCellElement, index: number) => {
@@ -86,6 +88,8 @@ export class MdsTableHeaderCell {
       this.tableRowsDefaultSorted.forEach(row => this.tableBody.appendChild(row))
       return
     }
+
+    this.tableRows = Array.from(this.tableBody.children) as HTMLMdsTableRowElement[]
 
     const sortedRows = [...this.tableRows].sort((a: HTMLMdsTableRowElement, b: HTMLMdsTableRowElement) => {
       const cellA = this.getValue(a.querySelectorAll('mds-table-cell')[this.index])
@@ -108,13 +112,14 @@ export class MdsTableHeaderCell {
     this.updateDirection()
     this.sortRows()
     this.resetSortAttribute()
+    this.tableRows = Array.from(this.tableBody.children) as HTMLMdsTableRowElement[]
+
     if (this.currentDirection !== Sort.NONE) {
       this.tableRows.forEach((row: HTMLMdsTableRowElement) => {
         row.setAttribute('sorted', '')
       })
       return
     }
-
     this.tableRows.forEach((row: HTMLMdsTableRowElement) => {
       row.removeAttribute('sorted')
     })

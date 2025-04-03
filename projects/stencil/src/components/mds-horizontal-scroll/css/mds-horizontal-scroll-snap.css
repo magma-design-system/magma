@@ -1,0 +1,11 @@
+:host([snap="start"]) .contents > ::slotted(*) {
+  scroll-snap-align: start;
+}
+
+:host([snap="center"]) .contents > ::slotted(*) {
+  scroll-snap-align: center;
+}
+
+:host([snap="end"]) .contents > ::slotted(*) {
+  scroll-snap-align: end;
+}
