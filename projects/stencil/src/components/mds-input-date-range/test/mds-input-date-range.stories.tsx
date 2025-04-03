@@ -12,7 +12,16 @@ const Template = args =>
   </mds-input-date-range>
 
 export const Default = Template.bind({})
-Default.args = {
+
+
+export const InvalidDates = Template.bind({})
+InvalidDates.args = {
+  'start-date': '2025-04-31',
+  'end-date': '2025-12-32',
+}
+
+export const MinMax = Template.bind({})
+MinMax.args = {
   'start-date': '2025-03-19',
   'end-date': '2025-03-21',
   min: '2025-03-15',

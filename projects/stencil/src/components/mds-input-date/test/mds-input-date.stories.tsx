@@ -14,3 +14,8 @@ Default.args = {
   min: '2025-03-15',
   max: '2025-03-27',
 }
+
+export const Invalid = Template.bind({})
+Invalid.args = {
+  value: '2025-04-31',
+}
