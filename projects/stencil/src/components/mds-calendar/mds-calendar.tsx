@@ -445,133 +445,137 @@ export class MdsCalendar {
   render () {
     return (
       <Host>
-        <nav>
-          <mds-button class="action-back" icon={miBaselineBackIosNew} variant="dark" tone="quiet" onClick={event => {
-            if (this.currentView == 'calendar') {
-              event.stopPropagation()
-              this.changeMonth(-1)
-            } else if (this.currentView == 'years') {
-              event.stopPropagation()
-              this.selectedYear -= 10
-            } else {
-              event.stopPropagation()
-            }
-          }}></mds-button>
-          <div class="select-month-or-year">
-            {(this.currentView === 'calendar' || this.currentView === 'months') && <mds-button class="action-month" variant="dark" tone="quiet" onClick={event => {
-              event.stopPropagation()
-              this.currentView = this.currentView === 'months' ? 'calendar' : 'months'
-              requestAnimationFrame(() => {
-                this.updateCalendar().then(() => this.setDates())
-              })
+        <div class="calendar-preselection">
+          <slot name="preselection"></slot>
+        </div>
+        <div class="calendar-view">
+          <nav>
+            <mds-button class="action-back" icon={miBaselineBackIosNew} variant="dark" tone="quiet" onClick={event => {
+              if (this.currentView === 'calendar') {
+                event.stopPropagation()
+                this.changeMonth(-1)
+              } else if (this.currentView === 'years') {
+                event.stopPropagation()
+                this.selectedYear -= 10
+              } else {
+                event.stopPropagation()
+              }
+            }}></mds-button>
+            <div class="select-month-or-year">
+              {(this.currentView === 'calendar' || this.currentView === 'months') && <mds-button class="action-month" variant="dark" tone="quiet" onClick={event => {
+                event.stopPropagation()
+                this.currentView = this.currentView === 'months' ? 'calendar' : 'months'
+                requestAnimationFrame(() => {
+                  this.updateCalendar().then(() => this.setDates())
+                })
 
-            }}>{this.currentMonth}</mds-button>}
-            {(this.currentView === 'calendar' || this.currentView === 'years') && <mds-button class="action-year" variant="dark" tone="quiet" onClick={event => {
-              event.stopPropagation()
-              this.currentView = this.currentView === 'years' ? 'calendar' : 'years'
-              requestAnimationFrame(() => {
-                this.updateCalendar().then(() => this.setDates())
-              })
-            }}>{this.currentYear}</mds-button>}
+              }}>{this.currentMonth}</mds-button>}
+              {(this.currentView === 'calendar' || this.currentView === 'years') && <mds-button class="action-year" variant="dark" tone="quiet" onClick={event => {
+                event.stopPropagation()
+                this.currentView = this.currentView === 'years' ? 'calendar' : 'years'
+                requestAnimationFrame(() => {
+                  this.updateCalendar().then(() => this.setDates())
+                })
+              }}>{this.currentYear}</mds-button>}
 
-          </div>
-          <mds-button class="action-forward" icon={miBaselineForwardIos} variant="dark" tone="quiet" onClick={event => {
-            if (this.currentView == 'calendar') {
-              event.stopPropagation()
-              this.changeMonth(1)
-            } else if (this.currentView == 'years') {
-              event.stopPropagation()
-              this.selectedYear += 10
-            } else {
-              event.stopPropagation()
-            }
-          }}></mds-button>
-        </nav>
-        {this.currentView === 'calendar' && (
-          <section class="month-view">
-            <header class="month-view__days-names">
-              {this.weekdays.map(day => (
-                <mds-button class="week-day-name" variant="dark" tone="quiet">{day}</mds-button>
-              ))}
-            </header>
-            <div class="month-view__cells">
-              {this.weekDaysinMonth.map(dayInfo => (
-                <mds-calendar-cell
-                  date={dayInfo.date.toFormat('yyyy-MM-dd')}
-                  month={dayInfo.isCurrentMonth ? 'current' : 'other'}
-                  disabled={
-                    (() => {
-                      if (this.min && this.min !== '' && dayInfo.date < DateTime.fromISO(this.min)) {
-                        return true
-                      }
-                      if (this.max && this.max !== '' && dayInfo.date > DateTime.fromISO(this.max)) {
-                        return true
-                      }
-                      return undefined
-                    })()
-                  }
-                  onClick={event => {
-                    event.stopPropagation()
-                    const target = event.currentTarget as HTMLElement
-                    this.rangePicker
-                      ? this.handleRange(target, dayInfo.date)
-                      : this.handleSingleSelection(target, dayInfo.date)
-                  }}
-                >
-                  {dayInfo.date.toFormat('dd')}
-                </mds-calendar-cell>
-              ))}
             </div>
-          </section>
-        )}
+            <mds-button class="action-forward" icon={miBaselineForwardIos} variant="dark" tone="quiet" onClick={event => {
+              if (this.currentView == 'calendar') {
+                event.stopPropagation()
+                this.changeMonth(1)
+              } else if (this.currentView == 'years') {
+                event.stopPropagation()
+                this.selectedYear += 10
+              } else {
+                event.stopPropagation()
+              }
+            }}></mds-button>
+          </nav>
+          {this.currentView === 'calendar' && (
+            <section class="month-view">
+              <header class="month-view__days-names">
+                {this.weekdays.map(day => (
+                  <mds-button class="week-day-name" variant="dark" tone="quiet">{day}</mds-button>
+                ))}
+              </header>
+              <div class="month-view__cells">
+                {this.weekDaysinMonth.map(dayInfo => (
+                  <mds-calendar-cell
+                    date={dayInfo.date.toFormat('yyyy-MM-dd')}
+                    month={dayInfo.isCurrentMonth ? 'current' : 'other'}
+                    disabled={
+                      (() => {
+                        if (this.min && this.min !== '' && dayInfo.date < DateTime.fromISO(this.min)) {
+                          return true
+                        }
+                        if (this.max && this.max !== '' && dayInfo.date > DateTime.fromISO(this.max)) {
+                          return true
+                        }
+                        return undefined
+                      })()
+                    }
+                    onClick={event => {
+                      event.stopPropagation()
+                      const target = event.currentTarget as HTMLElement
+                      this.rangePicker
+                        ? this.handleRange(target, dayInfo.date)
+                        : this.handleSingleSelection(target, dayInfo.date)
+                    }}
+                  >
+                    {dayInfo.date.toFormat('dd')}
+                  </mds-calendar-cell>
+                ))}
+              </div>
+            </section>
+          )}
 
-        {this.currentView === 'months' && (
-          <section class="month-selection">
-            <header class="month-view__month-names">
-              {Array.from({ length: 12 }).map((_, index) => {
-                const monthName = DateTime.local().set({ month: index + 1 }).setLocale(this.language).toFormat('MMMM')
-                return (
-                  <mds-button class='action' variant='dark' tone='quiet' onClick={event => {
-                    event.stopPropagation()
-                    this.currentDate = this.currentDate.set({ month: index + 1 })
-                    this.currentMonth = this.currentDate.toFormat('MMMM')
-                    this.currentView = 'calendar'
-                    this.updateCalendar().then(() => {
-                      requestAnimationFrame(() => this.setDates())
-                    })
-                  }}>
-                    {monthName}
-                  </mds-button>
-                )
-              })}
-            </header>
-          </section>
-        )}
+          {this.currentView === 'months' && (
+            <section class="month-selection">
+              <header class="month-view__month-names">
+                {Array.from({ length: 12 }).map((_, index) => {
+                  const monthName = DateTime.local().set({ month: index + 1 }).setLocale(this.language).toFormat('MMMM')
+                  return (
+                    <mds-button class='action' variant='dark' tone='quiet' onClick={event => {
+                      event.stopPropagation()
+                      this.currentDate = this.currentDate.set({ month: index + 1 })
+                      this.currentMonth = this.currentDate.toFormat('MMMM')
+                      this.currentView = 'calendar'
+                      this.updateCalendar().then(() => {
+                        requestAnimationFrame(() => this.setDates())
+                      })
+                    }}>
+                      {monthName}
+                    </mds-button>
+                  )
+                })}
+              </header>
+            </section>
+          )}
 
-        {this.currentView === 'years' && (
-          <section class="year-selection">
-            <header class="month-view__years">
+          {this.currentView === 'years' && (
+            <section class="year-selection">
+              <header class="month-view__years">
 
-              {Array.from({ length: 10 }).map((_, index) => {
-                const year = this.selectedYear + index
-                return (
-                  <mds-button class='action' variant='dark' tone='quiet' onClick={event => {
-                    event.stopPropagation()
-                    this.currentDate = this.currentDate.set({ year })
-                    this.currentYear = year.toString()
-                    this.currentView = 'calendar'
-                    this.updateCalendar().then(() => {
-                      requestAnimationFrame(() => this.setDates())
-                    })
-                  }}>
-                    {year}
-                  </mds-button>
-                )
-              })}
-            </header>
-          </section>
-        )}
-
+                {Array.from({ length: 10 }).map((_, index) => {
+                  const year = this.selectedYear + index
+                  return (
+                    <mds-button class='action' variant='dark' tone='quiet' onClick={event => {
+                      event.stopPropagation()
+                      this.currentDate = this.currentDate.set({ year })
+                      this.currentYear = year.toString()
+                      this.currentView = 'calendar'
+                      this.updateCalendar().then(() => {
+                        requestAnimationFrame(() => this.setDates())
+                      })
+                    }}>
+                      {year}
+                    </mds-button>
+                  )
+                })}
+              </header>
+            </section>
+          )}
+        </div>
       </Host>
     )
   }

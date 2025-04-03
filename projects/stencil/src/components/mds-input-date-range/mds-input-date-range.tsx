@@ -185,7 +185,7 @@ export class MdsInputDateRange {
                   startDate: this.internalStartDate,
                   endDate: this.internalEndDate,
                 })
-                const dropdownRef = this.dropdownRef
+                const { dropdownRef } = this
                 if (dropdownRef) {
                   setTimeout(() => {
                     dropdownRef.visible = false
@@ -198,6 +198,7 @@ export class MdsInputDateRange {
             {...(this.min ? { min: this.min } : {})}
             {...(this.max ? { max: this.max } : {})}
           >
+            {/* <mds-button slot="preselection">Ieri</mds-button> */}
           </mds-calendar>
         </mds-dropdown>
       </Host>

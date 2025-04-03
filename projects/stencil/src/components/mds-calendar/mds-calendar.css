@@ -5,14 +5,40 @@
   --mds-calendar-day-number-color: theme('colors.tone-neutral-01');
   --mds-calendar-cell-gap: theme('gap.50');
   --mds-calendar-cell-other-month-visibility: visible;
+  --mds-calendar-border-radius: theme('borderRadius.lg');
+  --mds-calendar-background: theme('colors.tone-neutral');
+  --mds-calendar-padding: theme('padding.400');
 
+  background-color: theme('colors.tone-neutral-09');
+  border-radius: var(--mds-calendar-border-radius);
   cursor: auto;
   display: flex;
-  flex-direction: column;
-  gap: theme('gap.400');
   max-width: 380px;
   min-width: min-content;
-  padding: theme('padding.400');
+  overflow: hidden;
+}
+
+.calendar-view {
+  background-color: var(--mds-calendar-background);
+  border-radius: inherit;
+  display: grid;
+  padding: var(--mds-calendar-padding);
+}
+
+.calendar-preselection {
+  display: grid;
+  gap: theme('spacing.50');
+  grid-auto-rows: min-content;
+  padding: var(--mds-calendar-padding);
+}
+
+.calendar-preselection:has(slot[name="preselection"]:empty){
+  display: none;
+}
+
+.calendar-preselection::slotted([slot="date-preselection"]),
+.calendar-preselection mds-button {
+  justify-self: start;
 }
 
 nav {
@@ -57,3 +83,5 @@ nav {
 
 @import './css/mds-calendar-view-month.css';
 @import './css/mds-calendar-view-month-names.css';
+
+
