@@ -11,6 +11,18 @@ const Template = args =>
     <mds-input-date value={args['end-date']} slot="end"></mds-input-date>
   </mds-input-date-range>
 
+const TemplateMinMax = args =>
+  <div class="grid gap-400">
+    <mds-input-date-range {...args}>
+      <mds-input-date value={args['start-date']} slot="start"></mds-input-date>
+      <mds-input-date value={args['end-date']} slot="end"></mds-input-date>
+    </mds-input-date-range>
+    <div class="inline-flex gap-400">
+      <mds-text>Min date {args.min}</mds-text>
+      <mds-text>Max date {args.max}</mds-text>
+    </div>
+  </div>
+
 export const Default = Template.bind({})
 
 
@@ -20,7 +32,7 @@ InvalidDates.args = {
   'end-date': '2025-12-32',
 }
 
-export const MinMax = Template.bind({})
+export const MinMax = TemplateMinMax.bind({})
 MinMax.args = {
   'start-date': '2025-03-19',
   'end-date': '2025-03-21',

@@ -6,6 +6,8 @@
   --mds-calendar-cell-color: theme('colors.tone-neutral-01');
   --mds-calendar-cell-other-month-background: transparent;
   --mds-calendar-cell-other-month-color: theme('colors.tone-neutral-07');
+  --mds-calendar-cell-disabled-background: transparent;
+  --mds-calendar-cell-disabled-color: theme('colors.tone-neutral-07');
   --mds-calendar-cell-weekend-background: transparent;
   --mds-calendar-cell-weekend-color: theme('colors.tone-neutral-06');
 
@@ -172,6 +174,14 @@
 :host([month="other"]:not([selection])) {
   --mds-calendar-cell-color: var(--mds-calendar-cell-other-month-color);
   --mds-calendar-cell-background: var(--mds-calendar-cell-other-month-background);
+}
+
+:host([disabled]) {
+  --mds-calendar-cell-color: var(--mds-calendar-cell-disabled-color);
+  --mds-calendar-cell-background: var(--mds-calendar-cell-disabled-background);
+
+  cursor: auto;
+  pointer-events: none;
 }
 
 @import './css/mds-calendar-cell-view-selection.css';

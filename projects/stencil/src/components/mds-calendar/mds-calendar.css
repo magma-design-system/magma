@@ -6,6 +6,7 @@
   --mds-calendar-cell-gap: theme('gap.50');
   --mds-calendar-cell-other-month-visibility: visible;
 
+  cursor: auto;
   display: flex;
   flex-direction: column;
   gap: theme('gap.400');

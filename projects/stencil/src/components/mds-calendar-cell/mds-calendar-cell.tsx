@@ -20,7 +20,7 @@ export class MdsCalendarCell {
       <Host>
         <div class="inner-dot"></div>
         <div class="area-background"></div>
-        <mds-button class="action" variant="dark" tone="quiet">
+        <mds-button class="action" variant="dark" tone="quiet" disabled={this.disabled}>
           <slot></slot>
         </mds-button>
       </Host>
