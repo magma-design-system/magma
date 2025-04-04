@@ -88,7 +88,9 @@ export class MdsCalendar {
     if (this.internalStartDate) {
       this.internalStartDate = sanitizeISO8601Date(this.internalStartDate?.toString()) as ISO8601Date
       this.startDateTime = DateTime.fromISO(this.internalStartDate)
-      this.currentDate = this.startDateTime
+      if (this.startDateTime.isValid) {
+        this.currentDate = this.startDateTime
+      }
     }
 
     if (this.internalEndDate) {
