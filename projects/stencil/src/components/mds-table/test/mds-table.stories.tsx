@@ -27,9 +27,18 @@ const TemplateRow: FC<ComponentRowProps> = ({ name, email, date }) => {
     <mds-table-cell value={name}><mds-text class="text-nowrap" typography="detail">{name}</mds-text></mds-table-cell>
     <mds-table-cell class="w-full" value={email}><mds-text class="text-nowrap" typography="detail">{email}</mds-text></mds-table-cell>
     { date && <mds-table-cell class="w-full" value={date}><mds-text class="text-nowrap" typography="detail">{date}</mds-text></mds-table-cell> }
+  </mds-table-row>
+}
+
+const TemplateRowActions: FC<ComponentRowProps> = ({ name, email, date }) => {
+  return <mds-table-row>
+    <mds-table-cell value={name}><mds-text class="text-nowrap" typography="detail">{name}</mds-text></mds-table-cell>
+    <mds-table-cell class="w-full" value={email}><mds-text class="text-nowrap" typography="detail">{email}</mds-text></mds-table-cell>
+    { date && <mds-table-cell class="w-full" value={date}><mds-text class="text-nowrap" typography="detail">{date}</mds-text></mds-table-cell> }
     <mds-button slot="action" icon="mi/baseline/delete" title="Remove record" variant="error"></mds-button>
   </mds-table-row>
 }
+
 
 const Template = args =>
   <mds-table {...args}>
@@ -50,6 +59,32 @@ const Template = args =>
       <mds-table-cell><mds-text typography="action">Date</mds-text></mds-table-cell>
     </mds-table-footer>
   </mds-table>
+
+const TemplateNestedTab = args =>
+  <mds-tab>
+    <mds-tab-item>Primo</mds-tab-item>
+    <div slot='content'>
+      <mds-table {...args}>
+        <mds-table-header>
+          <mds-table-header-cell label="Username"></mds-table-header-cell>
+          <mds-table-header-cell label="Email"></mds-table-header-cell>
+          <mds-table-header-cell label="Date"></mds-table-header-cell>
+        </mds-table-header>
+        <mds-table-body>
+          <TemplateRowActions name="Mario Rossi" email="mario.rossi@nintendo.com" date="12 ottobre 1985"/>
+          <TemplateRowActions name="Luigi Verdi" email="luigi.verdi@nintendo.com" date="12 ottobre 1985"/>
+          <TemplateRowActions name="Wario Gialli" email="wario.gialli@nintendo.com" date="3 marzo 1993"/>
+          <TemplateRowActions name="Waluigi Violini" email="waluigi.violini@nintendo.com" date="8 giugno 1999"/>
+        </mds-table-body>
+        <mds-table-footer>
+          <mds-table-cell><mds-text typography="action">Username</mds-text></mds-table-cell>
+          <mds-table-cell><mds-text typography="action">Email</mds-text></mds-table-cell>
+          <mds-table-cell><mds-text typography="action">Date</mds-text></mds-table-cell>
+        </mds-table-footer>
+      </mds-table>
+    </div>
+
+  </mds-tab>
 
 const TemplateSortable = args =>
   <mds-table {...args}>
@@ -276,3 +311,5 @@ AsyncSlottedContents.args = {
   interactive: false,
   selectable: true,
 }
+
+export const NestedTable = TemplateNestedTab.bind({})

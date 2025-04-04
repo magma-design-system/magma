@@ -93,7 +93,7 @@ export class MdsTable {
   }
 
   private updateCellsSize = (): void => {
-    const cells: NodeListOf<HTMLMdsTableCellElement> = this.rows[0].querySelectorAll('mds-table-cell') as NodeListOf<HTMLMdsTableCellElement>
+    const cells: NodeListOf<HTMLMdsTableCellElement> = this.rows[0].querySelectorAll('mds-table-cell')
     const cellSelection: HTMLMdsTableCellElement = this.rows[0].shadowRoot?.querySelector('.selection-cell') as HTMLMdsTableCellElement
     this.cellsWidth = cellSelection ? cellSelection.offsetWidth : 0
     cells.forEach((cell: HTMLMdsTableCellElement) => {
@@ -103,7 +103,7 @@ export class MdsTable {
 
   private hasActions = (): boolean => {
     this.updateCellsSize()
-    return this.rows[0].offsetWidth > this.cellsWidth
+    return this.host.querySelector('mds-table-row > [slot="action"]') !== null
   }
 
   private handleSelection = (): void => {
@@ -121,9 +121,9 @@ export class MdsTable {
   }
 
   componentWillLoad (): void {
-    this.body = this.host.querySelector('mds-table-body') as HTMLMdsTableBodyElement
-    this.header = this.host.querySelector('mds-table-header') as HTMLMdsTableHeaderElement
-    this.rows = this.host.querySelectorAll('mds-table-row') as NodeListOf<HTMLMdsTableRowElement>
+    this.body = this.host.querySelector('mds-table-body')!
+    this.header = this.host.querySelector('mds-table-header')!
+    this.rows = this.host.querySelectorAll('mds-table-row')
     this.tableBodyObserver = new MutationObserver(() => {
       this.updateSlottedElements()
     })
@@ -141,7 +141,7 @@ export class MdsTable {
   }
 
   private updateSlottedElements = (): void => {
-    this.rows = this.host.querySelectorAll('mds-table-row') as NodeListOf<HTMLMdsTableRowElement>
+    this.rows = this.host.querySelectorAll('mds-table-row')
     this.updateInteractive()
     this.handleSelection()
   }

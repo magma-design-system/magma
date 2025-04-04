@@ -23,7 +23,7 @@ export class MdsTableRow {
   @Element() host: HTMLMdsTableRowElement
   private actions: HTMLDivElement
   private hasActions: boolean = true
-  private sizerWidth: string
+  @State() sizerWidth: string
   private t:Locale = new Locale({
     el: localeEl,
     en: localeEn,
@@ -52,11 +52,23 @@ export class MdsTableRow {
     this.hasActions = this.host.querySelector(':scope > [slot="action"]') !== null
   }
 
-  componentDidLoad (): void {
-    if (this.hasActions) {
-      this.actions = this.host.shadowRoot?.querySelector('.actions') as HTMLDivElement
-      this.sizerWidth = `${this.actions.offsetWidth.toString()}px`
-    }
+  connectedCallback (): void {
+    // needed to capture sizer width when become visible
+    this.initObserver()
+  }
+
+  private initObserver () {
+    const observer = new IntersectionObserver(entries => {
+      if (entries[0].isIntersecting) {
+        this.sizerWidth = `${this.actions.offsetWidth.toString()}px`
+        observer.unobserve(this.host) // stop observer
+      }
+    }, {
+      root: this.host.parentElement,
+      threshold: 1, // trigger observer when is entirely visible
+    })
+
+    observer.observe(this.host)
   }
 
   private handleSelectionChange = (e: CustomEvent): void => {
@@ -90,9 +102,11 @@ export class MdsTableRow {
               minWidth: this.sizerWidth,
             }}></div>
             <div class="actions-view">
-              <div class="actions" style={{
-                marginRight: `calc(${this.sizerWidth} + var(--mds-table-cell-padding))`,
-              }}>
+              <div class="actions"
+                ref={el => this.actions = el as HTMLDivElement}
+                style={{
+                  marginRight: `calc(${this.sizerWidth} + var(--mds-table-cell-padding))`,
+                }}>
                 <slot name="action"></slot>
               </div>
             </div>
