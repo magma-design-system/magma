@@ -15,10 +15,6 @@
 
 ## Dependencies
 
-### Used by
-
- - [mds-input-date-range](../mds-input-date-range)
-
 ### Depends on
 
 - [mds-button](../mds-button)
@@ -30,7 +26,6 @@ graph TD;
   mds-button --> mds-spinner
   mds-button --> mds-icon
   mds-button --> mds-text
-  mds-input-date-range --> mds-input-date-range-preselection
   style mds-input-date-range-preselection fill:#f9f,stroke:#333,stroke-width:4px
 ```
 

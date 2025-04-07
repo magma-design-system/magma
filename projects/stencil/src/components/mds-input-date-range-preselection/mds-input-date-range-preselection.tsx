@@ -1,4 +1,4 @@
-import { Component, Host, Prop, h } from '@stencil/core'
+import { Component, Host, Prop, h, Element } from '@stencil/core'
 
 @Component({
   tag: 'mds-input-date-range-preselection',
@@ -11,8 +11,14 @@ export class MdsInputDateRangePreselection {
   @Prop({ reflect: true }) readonly start!: string
   @Prop({ reflect: true }) readonly end?: string
 
+  @Element() host: HTMLElement
+
   private onClick = (event: MouseEvent) => {
-    console.info('onClick', event)
+    event.stopPropagation()
+    const mdsInputDateRange = this.host?.closest('mds-input-date-range')
+    if (mdsInputDateRange) {
+      mdsInputDateRange.preselect( { start: this.start, end: this.end } )
+    }
   }
 
   render () {

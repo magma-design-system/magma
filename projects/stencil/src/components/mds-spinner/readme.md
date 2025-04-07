@@ -14,13 +14,6 @@ This is a web-component from Maggioli Design System [Magma](https://magma.maggio
 | `running` | `running` | Specifies if the animation is running or not, it's required for performance reasons | `boolean \| undefined` | `false` |
 
 
-## CSS Custom Properties
-
-| Name                     | Description                             |
-| ------------------------ | --------------------------------------- |
-| `--mds-spinner-duration` | Sets the duration of the icon animation |
-
-
 ## Dependencies
 
 ### Used by

@@ -25,6 +25,22 @@
 
 ## Methods
 
+### `updateCurrentDate(date: string) => Promise<void>`
+
+
+
+#### Parameters
+
+| Name   | Type     | Description |
+| ------ | -------- | ----------- |
+| `date` | `string` |             |
+
+#### Returns
+
+Type: `Promise<void>`
+
+
+
 ### `updateLang() => Promise<void>`
 
 

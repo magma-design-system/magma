@@ -1,6 +1,11 @@
-import { Component, Element, Host, h, Prop, State, Event, EventEmitter } from '@stencil/core'
+import { Component, Element, Host, h, Prop, State, Event, EventEmitter, Method } from '@stencil/core'
 import miBaselineCalendarToday from '@icon/mi/baseline/calendar-today.svg'
 import { DateTime } from 'luxon'
+
+export interface EventDate {
+  start: string,
+  end?: string
+}
 
 @Component({
   tag: 'mds-input-date-range',
@@ -34,6 +39,39 @@ export class MdsInputDateRange {
         this.max = this.min
       }
     }
+  }
+
+  @Method() async preselect (event: EventDate): Promise<void> {
+
+    const startDate = DateTime.fromISO(event.start)
+
+    if (startDate.isValid) {
+      this.internalStartDate = event.start
+      this.updateInputValue('start', this.internalStartDate)
+    }
+
+    if (event.end !== undefined) {
+      const endDate = DateTime.fromISO(event.end)
+      if (endDate.isValid) {
+        this.internalEndDate = event.end
+      }
+    } else {
+      this.internalEndDate = event.start
+    }
+    this.updateInputValue('end', this.internalEndDate)
+
+    const calendar = this.host?.shadowRoot?.querySelector('mds-calendar')
+
+    if (calendar) {
+      await calendar.updateCurrentDate(this.internalStartDate)
+      const dropdownRef = this.dropdownRef
+      if (dropdownRef) {
+        setTimeout(() => {
+          dropdownRef.visible = false
+        }, 800)
+      }
+    }
+    return Promise.resolve()
   }
 
   private focusInput = (element: HTMLMdsInputDateElement): void => {

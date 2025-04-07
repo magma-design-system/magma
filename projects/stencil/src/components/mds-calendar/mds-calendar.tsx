@@ -128,6 +128,11 @@ export class MdsCalendar {
     this.language = this.t.lang(this.host)
   }
 
+  @Method() async updateCurrentDate (date: string): Promise<void> {
+    this.currentDate = DateTime.fromISO(date)
+    return Promise.resolve()
+  }
+
   private updateDates (): void {
     if (this.internalStartDate && this.internalEndDate && this.rangePicker) {
       this.updateCalendar().then(() => {
@@ -482,10 +487,10 @@ export class MdsCalendar {
 
             </div>
             <mds-button class="action-forward" icon={miBaselineForwardIos} variant="dark" tone="quiet" onClick={event => {
-              if (this.currentView == 'calendar') {
+              if (this.currentView === 'calendar') {
                 event.stopPropagation()
                 this.changeMonth(1)
-              } else if (this.currentView == 'years') {
+              } else if (this.currentView === 'years') {
                 event.stopPropagation()
                 this.selectedYear += 10
               } else {

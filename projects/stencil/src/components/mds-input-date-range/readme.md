@@ -22,6 +22,25 @@
 | `dateRangeSelected` |             | `CustomEvent<{ startDate: string; endDate: string; }>` |
 
 
+## Methods
+
+### `preselect(event: EventDate) => Promise<void>`
+
+
+
+#### Parameters
+
+| Name    | Type        | Description |
+| ------- | ----------- | ----------- |
+| `event` | `EventDate` |             |
+
+#### Returns
+
+Type: `Promise<void>`
+
+
+
+
 ## Dependencies
 
 ### Depends on

@@ -35,6 +35,7 @@ import { LoadingType } from "./type/loading";
 import { MdsImgEventDetail } from "./components/mds-img/meta/event-detail";
 import { AutocompleteType } from "./type/autocomplete";
 import { InputControlsIconType, InputControlsLayoutType, InputTextType, MdsInputEventDetail } from "./type/input";
+import { EventDate } from "./components/mds-input-date-range/mds-input-date-range";
 import { InputFieldType } from "./components/mds-input-field/meta/types";
 import { MdsValidationErrors, MdsValidatorFn } from "./components/mds-input-field/meta/validators";
 import { InputSwitchSizeType, InputSwitchType } from "./components/mds-input-switch/meta/types";
@@ -103,6 +104,7 @@ export { LoadingType } from "./type/loading";
 export { MdsImgEventDetail } from "./components/mds-img/meta/event-detail";
 export { AutocompleteType } from "./type/autocomplete";
 export { InputControlsIconType, InputControlsLayoutType, InputTextType, MdsInputEventDetail } from "./type/input";
+export { EventDate } from "./components/mds-input-date-range/mds-input-date-range";
 export { InputFieldType } from "./components/mds-input-field/meta/types";
 export { MdsValidationErrors, MdsValidatorFn } from "./components/mds-input-field/meta/validators";
 export { InputSwitchSizeType, InputSwitchType } from "./components/mds-input-switch/meta/types";
@@ -401,6 +403,7 @@ export namespace Components {
         "min": string | null;
         "rangePicker": boolean;
         "startDate": string | null;
+        "updateCurrentDate": (date: string) => Promise<void>;
         "updateLang": () => Promise<void>;
     }
     interface MdsCalendarCell {
@@ -942,6 +945,7 @@ export namespace Components {
         "endDate": string;
         "max": string | null;
         "min": string | null;
+        "preselect": (event: EventDate) => Promise<void>;
         "startDate": string;
     }
     interface MdsInputDateRangePreselection {

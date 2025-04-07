@@ -28,8 +28,8 @@ const TemplatePreselection = args =>
     <mds-input-date-range {...args} preselection="startDate endDate Label, date Label">
       <mds-input-date value={args['start-date']} slot="start"></mds-input-date>
       <mds-input-date value={args['end-date']} slot="end"></mds-input-date>
-      <mds-input-date-range-preselection start="07-04-2025">Pippo</mds-input-date-range-preselection>
-      <mds-input-date-range-preselection start="07-04-2025">Pluto</mds-input-date-range-preselection>
+      <mds-input-date-range-preselection start="2025-04-04" end="2025-04-09">Pippo</mds-input-date-range-preselection>
+      <mds-input-date-range-preselection start="2025-05-10" end="2025-06-10">Pluto</mds-input-date-range-preselection>
 
     </mds-input-date-range>
     {/* <div class="inline-flex gap-400">
