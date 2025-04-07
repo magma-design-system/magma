@@ -35,6 +35,14 @@ Type: `Promise<void>`
 | `"default"` | Add `text string`, `HTML elements` or `components` to this slot. |
 
 
+## CSS Custom Properties
+
+| Name                       | Description                                 |
+| -------------------------- | ------------------------------------------- |
+| `--mds-usage-badge-color`  | Sets the badge text color of the component. |
+| `--mds-usage-border-color` | Sets the border color of the component.     |
+
+
 ## Dependencies
 
 ### Depends on

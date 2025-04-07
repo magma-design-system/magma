@@ -7,10 +7,11 @@
 
 ## Properties
 
-| Property             | Attribute | Description | Type                  | Default     |
-| -------------------- | --------- | ----------- | --------------------- | ----------- |
-| `end`                | `end`     |             | `string \| undefined` | `undefined` |
-| `start` _(required)_ | `start`   |             | `string`              | `undefined` |
+| Property             | Attribute  | Description                             | Type                   | Default     |
+| -------------------- | ---------- | --------------------------------------- | ---------------------- | ----------- |
+| `end`                | `end`      | Sets the end date of the preselection   | `string \| undefined`  | `undefined` |
+| `selected`           | `selected` | Sets the preselection date range        | `boolean \| undefined` | `undefined` |
+| `start` _(required)_ | `start`    | Sets the start date of the preselection | `string`               | `undefined` |
 
 
 ## Dependencies
