@@ -199,15 +199,13 @@ export class MdsInputDateRange {
             {...(this.max ? { max: this.max } : {})}
           >
             <div slot="preselection" class="date-preselection">
-              <mds-input-date-range-preselection start="2025-04-05">Prova</mds-input-date-range-preselection>
-              <mds-input-date-range-preselection start="2025-04-05">Prova</mds-input-date-range-preselection>
-              <mds-input-date-range-preselection start="2025-04-05">Prova</mds-input-date-range-preselection>
+              <slot name="calendar-preselection"></slot>
             </div>
           </mds-calendar>
         </mds-dropdown>
-        <div class="invisible-container" slot="preselection">
+        {/* <div class="invisible-container" slot="preselection">
           <mds-input-date-range-preselection start="2025-04-05">Prova</mds-input-date-range-preselection>
-        </div>
+        </div> */}
       </Host>
     )
   }
