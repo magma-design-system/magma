@@ -17,7 +17,7 @@ export class MdsInputDateRangePreselection {
 
   render () {
     return (
-      <Host>
+      <Host slot="calendar-preselection">
         <mds-button onClick={this.onClick} variant="dark" tone="quiet">
           <slot></slot>
         </mds-button>
