@@ -944,6 +944,10 @@ export namespace Components {
         "min": string | null;
         "startDate": string;
     }
+    interface MdsInputDateRangePreselection {
+        "end"?: string;
+        "start": string;
+    }
     interface MdsInputField {
         "addValidator": (validator: MdsValidatorFn) => Promise<void>;
         /**
@@ -2646,6 +2650,12 @@ declare global {
         prototype: HTMLMdsInputDateRangeElement;
         new (): HTMLMdsInputDateRangeElement;
     };
+    interface HTMLMdsInputDateRangePreselectionElement extends Components.MdsInputDateRangePreselection, HTMLStencilElement {
+    }
+    var HTMLMdsInputDateRangePreselectionElement: {
+        prototype: HTMLMdsInputDateRangePreselectionElement;
+        new (): HTMLMdsInputDateRangePreselectionElement;
+    };
     interface HTMLMdsInputFieldElementEventMap {
         "mdsInputFieldChange": MdsInputEventDetail;
         "mdsInputFieldKeydown": KeyboardEvent;
@@ -3374,6 +3384,7 @@ declare global {
         "mds-input": HTMLMdsInputElement;
         "mds-input-date": HTMLMdsInputDateElement;
         "mds-input-date-range": HTMLMdsInputDateRangeElement;
+        "mds-input-date-range-preselection": HTMLMdsInputDateRangePreselectionElement;
         "mds-input-field": HTMLMdsInputFieldElement;
         "mds-input-range": HTMLMdsInputRangeElement;
         "mds-input-select": HTMLMdsInputSelectElement;
@@ -4346,6 +4357,10 @@ declare namespace LocalJSX {
         "min"?: string | null;
         "onDateRangeSelected"?: (event: MdsInputDateRangeCustomEvent<{ startDate: string, endDate: string }>) => void;
         "startDate"?: string;
+    }
+    interface MdsInputDateRangePreselection {
+        "end"?: string;
+        "start": string;
     }
     interface MdsInputField {
         /**
@@ -5503,6 +5518,7 @@ declare namespace LocalJSX {
         "mds-input": MdsInput;
         "mds-input-date": MdsInputDate;
         "mds-input-date-range": MdsInputDateRange;
+        "mds-input-date-range-preselection": MdsInputDateRangePreselection;
         "mds-input-field": MdsInputField;
         "mds-input-range": MdsInputRange;
         "mds-input-select": MdsInputSelect;
@@ -5618,6 +5634,7 @@ declare module "@stencil/core" {
             "mds-input": LocalJSX.MdsInput & JSXBase.HTMLAttributes<HTMLMdsInputElement>;
             "mds-input-date": LocalJSX.MdsInputDate & JSXBase.HTMLAttributes<HTMLMdsInputDateElement>;
             "mds-input-date-range": LocalJSX.MdsInputDateRange & JSXBase.HTMLAttributes<HTMLMdsInputDateRangeElement>;
+            "mds-input-date-range-preselection": LocalJSX.MdsInputDateRangePreselection & JSXBase.HTMLAttributes<HTMLMdsInputDateRangePreselectionElement>;
             "mds-input-field": LocalJSX.MdsInputField & JSXBase.HTMLAttributes<HTMLMdsInputFieldElement>;
             "mds-input-range": LocalJSX.MdsInputRange & JSXBase.HTMLAttributes<HTMLMdsInputRangeElement>;
             "mds-input-select": LocalJSX.MdsInputSelect & JSXBase.HTMLAttributes<HTMLMdsInputSelectElement>;

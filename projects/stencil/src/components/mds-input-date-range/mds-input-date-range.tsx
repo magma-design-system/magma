@@ -198,9 +198,16 @@ export class MdsInputDateRange {
             {...(this.min ? { min: this.min } : {})}
             {...(this.max ? { max: this.max } : {})}
           >
-            {/* <mds-button slot="preselection">Ieri</mds-button> */}
+            <div slot="preselection" class="date-preselection">
+              <mds-input-date-range-preselection start="2025-04-05">Prova</mds-input-date-range-preselection>
+              <mds-input-date-range-preselection start="2025-04-05">Prova</mds-input-date-range-preselection>
+              <mds-input-date-range-preselection start="2025-04-05">Prova</mds-input-date-range-preselection>
+            </div>
           </mds-calendar>
         </mds-dropdown>
+        <div class="invisible-container" slot="preselection">
+          <mds-input-date-range-preselection start="2025-04-05">Prova</mds-input-date-range-preselection>
+        </div>
       </Host>
     )
   }
