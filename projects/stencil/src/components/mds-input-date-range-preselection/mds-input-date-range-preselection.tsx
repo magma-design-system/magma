@@ -7,24 +7,36 @@ import { Component, Host, Prop, h, Element } from '@stencil/core'
 })
 export class MdsInputDateRangePreselection {
 
+  @Element() host: HTMLMdsInputDateRangePreselectionElement
 
+  /**
+   * Sets the preselection date range
+   */
+  @Prop({ reflect: true, mutable: true }) selected?: boolean
+
+  /**
+   * Sets the start date of the preselection
+   */
   @Prop({ reflect: true }) readonly start!: string
-  @Prop({ reflect: true }) readonly end?: string
 
-  @Element() host: HTMLElement
+  /**
+   * Sets the end date of the preselection
+   */
+  @Prop({ reflect: true }) readonly end?: string
 
   private onClick = (event: MouseEvent) => {
     event.stopPropagation()
     const mdsInputDateRange = this.host?.closest('mds-input-date-range')
     if (mdsInputDateRange) {
-      mdsInputDateRange.preselect( { start: this.start, end: this.end } )
+      mdsInputDateRange.preselect({ caller: this.host, start: this.start, end: this.end })
+      this.selected = true
     }
   }
 
   render () {
     return (
       <Host slot="calendar-preselection">
-        <mds-button onClick={this.onClick} variant="dark" tone="quiet">
+        <mds-button onClick={this.onClick} class="action" variant="primary" tone="strong">
           <slot></slot>
         </mds-button>
       </Host>

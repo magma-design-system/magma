@@ -1,8 +1,10 @@
 import { Component, Element, Host, h, Prop, State, Event, EventEmitter, Method } from '@stencil/core'
 import miBaselineCalendarToday from '@icon/mi/baseline/calendar-today.svg'
 import { DateTime } from 'luxon'
+import clsx from 'clsx'
 
 export interface EventDate {
+  caller: HTMLMdsInputDateRangePreselectionElement
   start: string,
   end?: string
 }
@@ -19,11 +21,14 @@ export class MdsInputDateRange {
   @State() internalStartDate: string = ''
   @State() internalEndDate: string = ''
   @State() dropdownRef?: HTMLMdsDropdownElement
+  @State() hasPreselection: boolean = false
 
   @Prop({ reflect: true }) startDate: string = ''
   @Prop({ reflect: true }) endDate: string = ''
   @Prop({ reflect: true }) min: string | null = null
   @Prop({ reflect: true }) max: string | null = null
+
+  private togglePreselection: HTMLMdsInputDateRangePreselectionElement[]
 
   @Event() dateRangeSelected: EventEmitter<{ startDate: string, endDate: string }>
 
@@ -42,6 +47,16 @@ export class MdsInputDateRange {
   }
 
   @Method() async preselect (event: EventDate): Promise<void> {
+
+    if (!this.togglePreselection) {
+      this.togglePreselection = Array.from(this.host.querySelectorAll('mds-input-date-range-preselection'))
+    }
+
+    this.togglePreselection.forEach((element: HTMLMdsInputDateRangePreselectionElement) => {
+      element.selected = false
+    })
+
+    event.caller.selected = true
 
     const startDate = DateTime.fromISO(event.start)
 
@@ -64,7 +79,7 @@ export class MdsInputDateRange {
 
     if (calendar) {
       await calendar.updateCurrentDate(this.internalStartDate)
-      const dropdownRef = this.dropdownRef
+      const { dropdownRef } = this
       if (dropdownRef) {
         setTimeout(() => {
           dropdownRef.visible = false
@@ -112,6 +127,7 @@ export class MdsInputDateRange {
   private updateInputListeners (): void {
     const startSlot = this.host.shadowRoot?.querySelector('slot[name="start"]') as HTMLSlotElement
     const endSlot = this.host.shadowRoot?.querySelector('slot[name="end"]') as HTMLSlotElement
+    this.hasPreselection = this.host.querySelector('mds-input-date-range-preselection') !== null
 
     if (startSlot) {
       const input = startSlot?.assignedElements()[0] as HTMLMdsInputDateElement
@@ -129,7 +145,6 @@ export class MdsInputDateRange {
       const valueChangeListener = (ev: CustomEvent) => this.createValueChangeListener('end', ev)
       input.addEventListener('focusout', focusOutListener)
       input.addEventListener('valueChange', valueChangeListener)
-
     }
   }
 
@@ -236,14 +251,11 @@ export class MdsInputDateRange {
             {...(this.min ? { min: this.min } : {})}
             {...(this.max ? { max: this.max } : {})}
           >
-            <div slot="preselection" class="date-preselection">
+            <div slot="preselection" class={clsx('date-preselection', this.hasPreselection && 'date-preselection--has-preselection')}>
               <slot name="calendar-preselection"></slot>
             </div>
           </mds-calendar>
         </mds-dropdown>
-        {/* <div class="invisible-container" slot="preselection">
-          <mds-input-date-range-preselection start="2025-04-05">Prova</mds-input-date-range-preselection>
-        </div> */}
       </Host>
     )
   }

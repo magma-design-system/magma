@@ -25,6 +25,11 @@
   position: relative;
 }
 
+.date-preselection {
+  display: grid;
+  gap: theme('spacing.200');
+}
+
 .inputs {
   @apply
     duration-300

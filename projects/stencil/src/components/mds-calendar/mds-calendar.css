@@ -26,10 +26,14 @@
 }
 
 .calendar-preselection {
-  display: grid;
+  display: none;
   gap: theme('spacing.50');
   grid-auto-rows: min-content;
   padding: var(--mds-calendar-padding);
+}
+
+.calendar-preselection--has-preselection {
+  display: grid;
 }
 
 nav {

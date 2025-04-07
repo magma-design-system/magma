@@ -96,7 +96,7 @@ export class MdsInputDate {
             onDatesEmitter={ev => {
               this.internalValue = ev.detail.startDate
               this.valueChange.emit(this.internalValue)
-              const dropdownRef = this.dropdownRef
+              const { dropdownRef } = this
               if (dropdownRef) {
                 setTimeout(() => {
                   dropdownRef.visible = false

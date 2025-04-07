@@ -1,0 +1,20 @@
+.base-calendar-cell:
+  variables:
+    COMPONENT: mds-calendar-cell
+
+# TEST
+calendar-cell-publish-test:
+  extends: [.base-stencil-publish-test, .base-calendar-cell]
+  dependencies: [base-stencil-build, base-isolate]
+
+# PUBLISH
+calendar-cell-publish:
+  extends: [.base-stencil-publish, .base-calendar-cell]
+  dependencies: [base-stencil-build, base-isolate]
+  needs: [base-stencil-build, base-isolate, calendar-cell-publish-test]
+
+# INSTALL TEST
+calendar-cell-install-test:
+  extends: [.base-stencil-install-test, .base-calendar-cell]
+  dependencies: [base-stencil-build, base-isolate]
+  needs: [base-stencil-build, base-isolate, calendar-cell-publish]

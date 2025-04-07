@@ -949,7 +949,17 @@ export namespace Components {
         "startDate": string;
     }
     interface MdsInputDateRangePreselection {
+        /**
+          * Sets the end date of the preselection
+         */
         "end"?: string;
+        /**
+          * Sets the preselection date range
+         */
+        "selected"?: boolean;
+        /**
+          * Sets the start date of the preselection
+         */
         "start": string;
     }
     interface MdsInputField {
@@ -4363,7 +4373,17 @@ declare namespace LocalJSX {
         "startDate"?: string;
     }
     interface MdsInputDateRangePreselection {
+        /**
+          * Sets the end date of the preselection
+         */
         "end"?: string;
+        /**
+          * Sets the preselection date range
+         */
+        "selected"?: boolean;
+        /**
+          * Sets the start date of the preselection
+         */
         "start": string;
     }
     interface MdsInputField {

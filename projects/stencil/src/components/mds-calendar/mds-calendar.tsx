@@ -5,6 +5,7 @@ import { DateTime } from 'luxon'
 import { Locale } from '@common/locale'
 import { ISO8601Date } from '@type/date'
 import { sanitizeISO8601Date } from '@common/date'
+import clsx from 'clsx'
 
 @Component({
   tag: 'mds-calendar',
@@ -14,6 +15,7 @@ import { sanitizeISO8601Date } from '@common/date'
 export class MdsCalendar {
   @Element() private host: HTMLMdsCalendarElement
 
+  @State() hasPreselection: boolean = false
   @State() currentDate: DateTime = DateTime.now()
   @State() weekDaysinMonth: DateTime[] = []
   @State() weekdays: string[] = []
@@ -102,6 +104,9 @@ export class MdsCalendar {
   }
 
   componentDidLoad (): void {
+
+    this.hasPreselection = this.host?.querySelector('.date-preselection--has-preselection') !== null
+
     this.host?.shadowRoot?.addEventListener('mouseover', event => {
       const target = event.target as HTMLElement
       if (target.matches('mds-calendar-cell') && this.startDateElement && this.rangePicker) {
@@ -446,13 +451,12 @@ export class MdsCalendar {
     if (this.internalStartDate) {
       this.datesEmitter.emit({ startDate: this.internalStartDate })
     }
-
   }
 
   render () {
     return (
       <Host>
-        <div class="calendar-preselection">
+        <div class={clsx('calendar-preselection', this.hasPreselection && 'calendar-preselection--has-preselection')}>
           <slot name="preselection"></slot>
         </div>
         <div class="calendar-view">
