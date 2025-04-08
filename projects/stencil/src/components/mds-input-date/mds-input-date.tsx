@@ -44,7 +44,7 @@ export class MdsInputDate {
     if (!date.isValid) {
       this.empty = true
     } else {
-      this.empty = false
+      this.empty = undefined
     }
   }
 
@@ -93,7 +93,7 @@ export class MdsInputDate {
 
   render () {
     return (
-      <Host>
+      <Host empty={this.empty}>
         <input
           value={this.internalValue}
           id="dateInput"
@@ -118,7 +118,7 @@ export class MdsInputDate {
               if (!date.isValid) {
                 this.empty = true
               } else {
-                this.empty = false
+                this.empty = undefined
               }
 
               this.valueChange.emit(this.internalValue)
