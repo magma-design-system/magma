@@ -1794,7 +1794,11 @@ export namespace Components {
         /**
           * Specifies if domain is visible on header
          */
-        "domain": boolean;
+        "icon"?: string;
+        /**
+          * Specifies if the window has a label
+         */
+        "label"?: string;
         /**
           * Specifies whether a browser should load an iframe immediately or to defer loading of images until some conditions are met.
          */
@@ -5070,7 +5074,11 @@ declare namespace LocalJSX {
         /**
           * Specifies if domain is visible on header
          */
-        "domain": boolean;
+        "icon"?: string;
+        /**
+          * Specifies if the window has a label
+         */
+        "label"?: string;
         /**
           * Specifies whether a browser should load an iframe immediately or to defer loading of images until some conditions are met.
          */

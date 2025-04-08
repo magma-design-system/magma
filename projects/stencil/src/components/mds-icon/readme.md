@@ -127,6 +127,7 @@ Type: `Promise<void>`
  - [mds-paginator-item](../mds-paginator-item)
  - [mds-stepper-bar-item](../mds-stepper-bar-item)
  - [mds-tab-bar-item](../mds-tab-bar-item)
+ - [mds-url-view](../mds-url-view)
 
 ### Graph
 ```mermaid
@@ -148,6 +149,7 @@ graph TD;
   mds-paginator-item --> mds-icon
   mds-stepper-bar-item --> mds-icon
   mds-tab-bar-item --> mds-icon
+  mds-url-view --> mds-icon
   style mds-icon fill:#f9f,stroke:#333,stroke-width:4px
 ```
 

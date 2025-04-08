@@ -9,11 +9,12 @@ This is a web-component from Maggioli Design System [Magma](https://magma.maggio
 
 ## Properties
 
-| Property              | Attribute | Description                                                                                                                | Type                             | Default     |
-| --------------------- | --------- | -------------------------------------------------------------------------------------------------------------------------- | -------------------------------- | ----------- |
-| `domain` _(required)_ | `domain`  | Specifies if domain is visible on header                                                                                   | `boolean`                        | `undefined` |
-| `loading`             | `loading` | Specifies whether a browser should load an iframe immediately or to defer loading of images until some conditions are met. | `"eager" \| "lazy" \| undefined` | `'lazy'`    |
-| `src` _(required)_    | `src`     | Specifies the URL to the web page                                                                                          | `string`                         | `undefined` |
+| Property           | Attribute | Description                                                                                                                | Type                             | Default     |
+| ------------------ | --------- | -------------------------------------------------------------------------------------------------------------------------- | -------------------------------- | ----------- |
+| `icon`             | `icon`    | Specifies if domain is visible on header                                                                                   | `string \| undefined`            | `undefined` |
+| `label`            | `label`   | Specifies if the window has a label                                                                                        | `string \| undefined`            | `undefined` |
+| `loading`          | `loading` | Specifies whether a browser should load an iframe immediately or to defer loading of images until some conditions are met. | `"eager" \| "lazy" \| undefined` | `'lazy'`    |
+| `src` _(required)_ | `src`     | Specifies the URL to the web page                                                                                          | `string`                         | `undefined` |
 
 
 ## Events
@@ -36,26 +37,18 @@ Type: `Promise<void>`
 
 
 
-## CSS Custom Properties
-
-| Name                        | Description                                |
-| --------------------------- | ------------------------------------------ |
-| `--mds-url-view-background` | Sets the background-color of the component |
-| `--mds-url-view-color`      | Sets the text color of the component       |
-| `--mds-url-view-radius`     | Sets the border-radius of the component    |
-| `--mds-url-view-shadow`     | Sets the box-shadow of the component       |
-
-
 ## Dependencies
 
 ### Depends on
 
+- [mds-icon](../mds-icon)
 - [mds-text](../mds-text)
 - [mds-button](../mds-button)
 
 ### Graph
 ```mermaid
 graph TD;
+  mds-url-view --> mds-icon
   mds-url-view --> mds-text
   mds-url-view --> mds-button
   mds-button --> mds-spinner
