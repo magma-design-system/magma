@@ -176,6 +176,8 @@ export class MdsInputDateRange {
       } else if (slotName === 'end') {
         this.internalEndDate = newValue
       }
+
+      this.checkPreselections()
     }
   }
 
@@ -189,6 +191,22 @@ export class MdsInputDateRange {
         this.updateInputValue('end', this.internalEndDate)
 
       }
+    }
+  }
+
+  private checkPreselections (): void {
+    const preselections = Array.from(this.host.querySelectorAll('mds-input-date-range-preselection'))
+
+    if (preselections) {
+      preselections.forEach(element => {
+        const preselection = element
+
+        if ((preselection.start === this.internalStartDate && preselection.end === this.internalEndDate) || (preselection.start === this.internalStartDate && preselection.end === undefined)) {
+          preselection.selected = true
+        } else {
+          preselection.selected = false
+        }
+      })
     }
   }
 
@@ -245,6 +263,9 @@ export class MdsInputDateRange {
                   }, 500)
                 }
               }
+            }}
+            onCheckPreselectionsEmitter={() => {
+              this.checkPreselections()
             }}
             startDate={this.internalStartDate}
             endDate={this.internalEndDate}

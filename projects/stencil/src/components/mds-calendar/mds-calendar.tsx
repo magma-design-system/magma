@@ -36,6 +36,7 @@ export class MdsCalendar {
   @State() internalEndDate: string | null = this.endDate
 
   @Event() datesEmitter: EventEmitter<{startDate: string, endDate?: string}>
+  @Event() checkPreselectionsEmitter: EventEmitter<void>
 
   @Watch('startDate')
   handleStartDate (newValue: ISO8601Date | null): void {
@@ -369,6 +370,7 @@ export class MdsCalendar {
 
     if (this.internalStartDate && this.internalEndDate) {
       this.datesEmitter.emit({ startDate: this.internalStartDate, endDate: this.internalEndDate })
+      this.checkPreselectionsEmitter.emit()
     }
 
   }

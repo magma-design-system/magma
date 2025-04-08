@@ -2343,6 +2343,7 @@ declare global {
     };
     interface HTMLMdsCalendarElementEventMap {
         "datesEmitter": {startDate: string, endDate?: string};
+        "checkPreselectionsEmitter": void;
     }
     interface HTMLMdsCalendarElement extends Components.MdsCalendar, HTMLStencilElement {
         addEventListener<K extends keyof HTMLMdsCalendarElementEventMap>(type: K, listener: (this: HTMLMdsCalendarElement, ev: MdsCalendarCustomEvent<HTMLMdsCalendarElementEventMap[K]>) => any, options?: boolean | AddEventListenerOptions): void;
@@ -3766,6 +3767,7 @@ declare namespace LocalJSX {
         "endDate"?: string | null;
         "max"?: string | null;
         "min"?: string | null;
+        "onCheckPreselectionsEmitter"?: (event: MdsCalendarCustomEvent<void>) => void;
         "onDatesEmitter"?: (event: MdsCalendarCustomEvent<{startDate: string, endDate?: string}>) => void;
         "rangePicker"?: boolean;
         "startDate"?: string | null;

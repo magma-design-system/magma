@@ -18,9 +18,10 @@
 
 ## Events
 
-| Event          | Description | Type                                                                 |
-| -------------- | ----------- | -------------------------------------------------------------------- |
-| `datesEmitter` |             | `CustomEvent<{ startDate: string; endDate?: string \| undefined; }>` |
+| Event                       | Description | Type                                                                 |
+| --------------------------- | ----------- | -------------------------------------------------------------------- |
+| `checkPreselectionsEmitter` |             | `CustomEvent<void>`                                                  |
+| `datesEmitter`              |             | `CustomEvent<{ startDate: string; endDate?: string \| undefined; }>` |
 
 
 ## Methods

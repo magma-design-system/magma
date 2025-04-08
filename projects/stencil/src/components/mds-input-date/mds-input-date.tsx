@@ -26,6 +26,13 @@ export class MdsInputDate {
   @Watch('value')
   handleValue (newValue: string): void {
     this.internalValue = newValue
+    const date = DateTime.fromISO(newValue)
+
+    if (!date.isValid) {
+      this.empty = true
+    } else {
+      this.empty = false
+    }
   }
 
   @Method()
