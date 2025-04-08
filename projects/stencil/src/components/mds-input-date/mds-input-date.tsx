@@ -102,6 +102,14 @@ export class MdsInputDate {
             rangePicker={false}
             onDatesEmitter={ev => {
               this.internalValue = ev.detail.startDate
+              const date = DateTime.fromISO(this.internalValue)
+
+              if (!date.isValid) {
+                this.empty = true
+              } else {
+                this.empty = false
+              }
+
               this.valueChange.emit(this.internalValue)
               const { dropdownRef } = this
               if (dropdownRef) {
