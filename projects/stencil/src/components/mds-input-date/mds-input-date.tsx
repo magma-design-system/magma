@@ -11,12 +11,25 @@ export class MdsInputDate {
   @Element() host: HTMLMdsInputDateElement
   private isSlotted: boolean = false
 
+  /**
+   * Specifies the value of the input
+   * @description It's in ISO format (YYYY-MM-DD).
+   */
   @Prop({ reflect: true }) readonly value: string = ''
+
+  /**
+   * Specifies the min date of the range, user cannot set dates before this date
+   * @description It's in ISO format (YYYY-MM-DD).
+   */
   @Prop({ reflect: true, mutable: true }) min: string | null = null
+
+  /**
+   * Specifies the max date of the range, user cannot set dates after this date
+   * @description It's in ISO format (YYYY-MM-DD).
+   */
   @Prop({ reflect: true, mutable: true }) max: string | null = null
-  @Prop({ reflect: true, mutable: true }) empty: boolean | undefined = undefined
 
-
+  @State() empty: boolean | undefined = undefined
   @State() internalValue: string = ''
   @State() calendarKey: number = 0
   @State() dropdownRef?: HTMLMdsDropdownElement
@@ -65,8 +78,6 @@ export class MdsInputDate {
     this.internalValue = input.value
     this.valueChange.emit(this.internalValue)
   }
-
-
 
   manageValue (ev: FocusEvent): void {
     const input = ev.target as HTMLInputElement

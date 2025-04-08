@@ -7,12 +7,13 @@
 
 ## Properties
 
-| Property    | Attribute    | Description | Type             | Default |
-| ----------- | ------------ | ----------- | ---------------- | ------- |
-| `endDate`   | `end-date`   |             | `string`         | `''`    |
-| `max`       | `max`        |             | `null \| string` | `null`  |
-| `min`       | `min`        |             | `null \| string` | `null`  |
-| `startDate` | `start-date` |             | `string`         | `''`    |
+| Property    | Attribute    | Description                                                                 | Type             | Default |
+| ----------- | ------------ | --------------------------------------------------------------------------- | ---------------- | ------- |
+| `delay`     | `delay`      | Specifies the delay in milliseconds before closing the calendar dropdown    | `number`         | `500`   |
+| `endDate`   | `end-date`   | Specifies the end date of the range                                         | `string`         | `''`    |
+| `max`       | `max`        | Specifies the max date of the range, user cannot set dates after this date  | `null \| string` | `null`  |
+| `min`       | `min`        | Specifies the min date of the range, user cannot set dates before this date | `null \| string` | `null`  |
+| `startDate` | `start-date` | Specifies the start date of the range                                       | `string`         | `''`    |
 
 
 ## Events

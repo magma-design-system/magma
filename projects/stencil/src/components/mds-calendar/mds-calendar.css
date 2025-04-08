@@ -12,7 +12,7 @@
   background-color: theme('colors.tone-neutral-09');
   border-radius: var(--mds-calendar-border-radius);
   cursor: auto;
-  display: flex;
+  display: inline-flex;
   max-width: 380px;
   min-width: min-content;
   overflow: hidden;

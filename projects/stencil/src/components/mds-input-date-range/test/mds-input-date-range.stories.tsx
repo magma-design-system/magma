@@ -2,7 +2,39 @@ import { h } from '@stencil/core'
 
 export default {
   title: 'Form / Input Date Range',
-  argTypes: {},
+  argTypes: {
+    delay: {
+      type: { name: 'number' },
+      description: 'Specifies the delay in milliseconds before closing the calendar dropdown',
+    },
+    'start-date': {
+      type: { name: 'string' },
+      description: 'Specifies the start date of the range',
+    },
+    'end-date': {
+      type: { name: 'string' },
+      description: 'Specifies the end date of the range',
+    },
+    min: {
+      type: { name: 'string' },
+      description: 'Specifies the min date of the range, user cannot set dates before this date',
+    },
+    max: {
+      type: { name: 'string' },
+      description: 'Specifies the max date of the range, user cannot set dates after this date',
+    },
+  },
+}
+
+const getDate = (offsetDays: number = 0): string => {
+  const today = new Date()
+  today.setDate(today.getDate() + offsetDays)
+
+  const year = today.getFullYear()
+  const month = String(today.getMonth() + 1).padStart(2, '0')
+  const day = String(today.getDate()).padStart(2, '0')
+
+  return `${year}-${month}-${day}`
 }
 
 const Template = args =>
@@ -35,27 +67,18 @@ const TemplatePreselection = args =>
 
 export const Default = Template.bind({})
 
-
 export const InvalidDates = Template.bind({})
 InvalidDates.args = {
-  'start-date': '2025-04-31',
-  'end-date': '2025-12-32',
+  'start-date': getDate(-3),
+  'end-date': getDate(4),
 }
 
 export const MinMax = TemplateMinMax.bind({})
 MinMax.args = {
-  'start-date': '2025-03-19',
-  'end-date': '2025-03-21',
-  min: '2025-03-15',
-  max: '2025-03-27',
+  'start-date': getDate(-3),
+  'end-date': getDate(4),
+  min: getDate(-30),
+  max: getDate(30),
 }
 
 export const Preselection = TemplatePreselection.bind({})
-// Preselection.args = {
-//   'start-date': '2025-03-19',
-//   'end-date': '2025-03-21',
-//   min: '2025-03-15',
-//   max: '2025-03-27',
-// }
-
-

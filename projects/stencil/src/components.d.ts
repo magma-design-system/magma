@@ -935,17 +935,49 @@ export namespace Components {
         "variant"?: ThemeStatusVariantType;
     }
     interface MdsInputDate {
-        "empty": boolean | undefined;
         "focusInput": () => Promise<void>;
+        /**
+          * Specifies the max date of the range, user cannot set dates after this date
+          * @description It's in ISO format (YYYY-MM-DD).
+         */
         "max": string | null;
+        /**
+          * Specifies the min date of the range, user cannot set dates before this date
+          * @description It's in ISO format (YYYY-MM-DD).
+         */
         "min": string | null;
+        /**
+          * Specifies the value of the input
+          * @description It's in ISO format (YYYY-MM-DD).
+         */
         "value": string;
     }
     interface MdsInputDateRange {
+        /**
+          * Specifies the delay in milliseconds before closing the calendar dropdown
+          * @description Default is 500
+         */
+        "delay": number;
+        /**
+          * Specifies the end date of the range
+          * @description It's in ISO format (YYYY-MM-DD).
+         */
         "endDate": string;
+        /**
+          * Specifies the max date of the range, user cannot set dates after this date
+          * @description It's in ISO format (YYYY-MM-DD).
+         */
         "max": string | null;
+        /**
+          * Specifies the min date of the range, user cannot set dates before this date
+          * @description It's in ISO format (YYYY-MM-DD).
+         */
         "min": string | null;
         "preselect": (event: EventDate) => Promise<void>;
+        /**
+          * Specifies the start date of the range
+          * @description It's in ISO format (YYYY-MM-DD).
+         */
         "startDate": string;
     }
     interface MdsInputDateRangePreselection {
@@ -4361,17 +4393,49 @@ declare namespace LocalJSX {
         "variant"?: ThemeStatusVariantType;
     }
     interface MdsInputDate {
-        "empty"?: boolean | undefined;
+        /**
+          * Specifies the max date of the range, user cannot set dates after this date
+          * @description It's in ISO format (YYYY-MM-DD).
+         */
         "max"?: string | null;
+        /**
+          * Specifies the min date of the range, user cannot set dates before this date
+          * @description It's in ISO format (YYYY-MM-DD).
+         */
         "min"?: string | null;
         "onValueChange"?: (event: MdsInputDateCustomEvent<string>) => void;
+        /**
+          * Specifies the value of the input
+          * @description It's in ISO format (YYYY-MM-DD).
+         */
         "value"?: string;
     }
     interface MdsInputDateRange {
+        /**
+          * Specifies the delay in milliseconds before closing the calendar dropdown
+          * @description Default is 500
+         */
+        "delay"?: number;
+        /**
+          * Specifies the end date of the range
+          * @description It's in ISO format (YYYY-MM-DD).
+         */
         "endDate"?: string;
+        /**
+          * Specifies the max date of the range, user cannot set dates after this date
+          * @description It's in ISO format (YYYY-MM-DD).
+         */
         "max"?: string | null;
+        /**
+          * Specifies the min date of the range, user cannot set dates before this date
+          * @description It's in ISO format (YYYY-MM-DD).
+         */
         "min"?: string | null;
         "onDateRangeSelected"?: (event: MdsInputDateRangeCustomEvent<{ startDate: string, endDate: string }>) => void;
+        /**
+          * Specifies the start date of the range
+          * @description It's in ISO format (YYYY-MM-DD).
+         */
         "startDate"?: string;
     }
     interface MdsInputDateRangePreselection {

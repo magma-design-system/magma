@@ -23,10 +23,35 @@ export class MdsInputDateRange {
   @State() dropdownRef?: HTMLMdsDropdownElement
   @State() hasPreselection: boolean = false
 
+  /**
+   * Specifies the start date of the range
+   * @description It's in ISO format (YYYY-MM-DD).
+   */
   @Prop({ reflect: true }) startDate: string = ''
+
+  /**
+   * Specifies the end date of the range
+   * @description It's in ISO format (YYYY-MM-DD).
+   */
   @Prop({ reflect: true }) endDate: string = ''
+
+  /**
+   * Specifies the min date of the range, user cannot set dates before this date
+   * @description It's in ISO format (YYYY-MM-DD).
+   */
   @Prop({ reflect: true }) min: string | null = null
+
+  /**
+   * Specifies the max date of the range, user cannot set dates after this date
+   * @description It's in ISO format (YYYY-MM-DD).
+   */
   @Prop({ reflect: true }) max: string | null = null
+
+  /**
+   * Specifies the delay in milliseconds before closing the calendar dropdown
+   * @description Default is 500
+   */
+  @Prop({ reflect: true }) readonly delay: number = 500
 
   private togglePreselection: HTMLMdsInputDateRangePreselectionElement[]
 
@@ -83,7 +108,7 @@ export class MdsInputDateRange {
       if (dropdownRef) {
         setTimeout(() => {
           dropdownRef.visible = false
-        }, 800)
+        }, this.delay)
       }
     }
     return Promise.resolve()
@@ -260,7 +285,7 @@ export class MdsInputDateRange {
                 if (dropdownRef) {
                   setTimeout(() => {
                     dropdownRef.visible = false
-                  }, 500)
+                  }, this.delay)
                 }
               }
             }}
