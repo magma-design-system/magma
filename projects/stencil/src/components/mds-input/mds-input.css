@@ -4,6 +4,9 @@
 /**
  * @prop --mds-input-background: Sets the background-color of the component
  * @prop --mds-input-icon-color: Sets the icon color of the component
+ * @prop --mds-input-placeholder-default-color: Sets the color of the placeholder
+ * @prop --mds-input-placeholder-focus-color: Sets the color of the placeholder when the input is focused
+ * @prop --mds-input-placeholder-hover-color: Sets the color of the placeholder when the input is hovered
  * @prop --mds-input-ring: Sets the box-shadow of the component's input
  * @prop --mds-input-shadow: Sets the box-shadow of the component's input
  * @prop --mds-input-textarea-field-sizing: Sets the height of the textarea automatically, this is an EXPERIMENTAL css property, so it couldn't work in every browser
@@ -18,15 +21,16 @@
   --mds-input-icon-color: var(--mds-input-variant-color);
   --mds-input-placeholder-default-color: theme('colors.tone-neutral-06');
   --mds-input-placeholder-focus-color: theme('colors.tone-neutral-07');
-  --mds-input-tip-background: 84 84 84;
+  --mds-input-placeholder-hover-color: var(--mds-input-placeholder-default-color);
   --mds-input-ring: 0 0 0 1px rgb(var(--mds-input-variant-color) / 0.1);
   --mds-input-shadow: 0 1px 3px 0 rgb(var(--mds-input-variant-color) / 0.1), 0 1px 2px 0 rgb(var(--mds-input-variant-color) / 0.06);
-  --mds-input-variant-color: 0 0 0;
-  --mds-input-controls-color: theme('colors.variant-primary-03');
-  --mds-input-controls-border: 2px solid theme('colors.tone-neutral-09');
-  --mds-input-textarea-min-height: theme('size.2400');
-  --mds-input-textarea-max-height: theme('size.6400');
   --mds-input-textarea-field-sizing: content;
+  --mds-input-textarea-max-height: theme('size.6400');
+  --mds-input-textarea-min-height: theme('size.2400');
+  --mds-input-tip-background: 84 84 84;
+  --mds-input-variant-color: 0 0 0;
+  /* private */ --mds-input-controls-border: 2px solid theme('colors.tone-neutral-09');
+  /* private */ --mds-input-controls-color: theme('colors.variant-primary-03');
 
   @apply
     gap-200
@@ -68,7 +72,16 @@
 }
 
 .input::placeholder {
+  @apply
+    duration-300
+    ease-out-expo;
+
   color: var(--mds-input-placeholder-default-color);
+  transition-property: color;
+}
+
+.input:hover::placeholder {
+  color: var(--mds-input-placeholder-hover-color);
 }
 
 .input:focus::placeholder {
