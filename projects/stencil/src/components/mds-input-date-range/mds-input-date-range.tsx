@@ -226,7 +226,16 @@ export class MdsInputDateRange {
       preselections.forEach(element => {
         const preselection = element
 
-        if ((preselection.start === this.internalStartDate && preselection.end === this.internalEndDate) || (preselection.start === this.internalStartDate && preselection.end === undefined)) {
+        const isSameRange =
+          preselection.start === this.internalStartDate &&
+          preselection.end === this.internalEndDate
+
+        const isSingleDayMatch =
+          preselection.start === this.internalStartDate &&
+          this.internalStartDate === this.internalEndDate &&
+          preselection.end === undefined
+
+        if (isSameRange || isSingleDayMatch) {
           preselection.selected = true
         } else {
           preselection.selected = false
