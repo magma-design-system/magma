@@ -179,7 +179,7 @@ export class MdsInput {
   /**
    * Specifies a short hint that describes the expected value of the element
    */
-  @Prop({ reflect: true }) readonly placeholder: string = ''
+  @Prop({ reflect: true }) readonly placeholder?: string
 
   /**
    * Specifies that the element is read-only

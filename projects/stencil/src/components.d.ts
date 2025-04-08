@@ -874,7 +874,7 @@ export namespace Components {
         /**
           * Specifies a short hint that describes the expected value of the element
          */
-        "placeholder": string;
+        "placeholder"?: string;
         /**
           * Specifies that the element is read-only
          */

@@ -11,7 +11,7 @@ interface MdsInputFieldInterface extends MdsInputInterface {
   message?: string
 }
 export default {
-  title: 'Form / Input / Input Field',
+  title: 'Form / Input Field',
   argTypes: {
     autocomplete: {
       description: 'Specifies whether the element should have autocomplete enabled',

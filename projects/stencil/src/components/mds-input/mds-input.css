@@ -16,6 +16,8 @@
 :host {
   --mds-input-background: theme('colors.tone-neutral');
   --mds-input-icon-color: var(--mds-input-variant-color);
+  --mds-input-placeholder-default-color: theme('colors.tone-neutral-06');
+  --mds-input-placeholder-focus-color: theme('colors.tone-neutral-07');
   --mds-input-tip-background: 84 84 84;
   --mds-input-ring: 0 0 0 1px rgb(var(--mds-input-variant-color) / 0.1);
   --mds-input-shadow: 0 1px 3px 0 rgb(var(--mds-input-variant-color) / 0.1), 0 1px 2px 0 rgb(var(--mds-input-variant-color) / 0.06);
@@ -66,7 +68,11 @@
 }
 
 .input::placeholder {
-  color: theme('colors.tone-neutral-04');
+  color: var(--mds-input-placeholder-default-color);
+}
+
+.input:focus::placeholder {
+  color: var(--mds-input-placeholder-focus-color);
 }
 
 .input::-webkit-outer-spin-button,
