@@ -5,8 +5,11 @@ import { iconsDictionary } from '@dictionary/icon'
 import { typographyInputDictionary } from '@dictionary/typography'
 import { validationModelDictionary } from '../meta/dictionary'
 import { h } from '@stencil/core'
-import { MdsInputFieldInterface } from '../mds-input-field'
-
+import { MdsInputInterface } from '@component/mds-input/mds-input'
+interface MdsInputFieldInterface extends MdsInputInterface {
+  label?: string
+  message?: string
+}
 export default {
   title: 'Form / Input / Input Field',
   argTypes: {
@@ -143,7 +146,7 @@ export default {
 }
 
 const Template = args =>
-  <mds-input-field {...args}></mds-input-field>
+  <mds-input-field label={args.label}><mds-input {...args}></mds-input></mds-input-field>
 
 export const Default = Template.bind({})
 Default.args = {
@@ -265,7 +268,10 @@ Icon.args = {
 const FormIntegrationTemplate = (args: MdsInputFieldInterface) => (
   <div class="grid gap-600">
     <form class="grid gap-400" id="mds-icon-fi" name="mds-icon-fi">
-      <mds-input-field {...args}></mds-input-field>
+      <mds-input-field label={args.label}>
+        <mds-input {...args}>
+        </mds-input>
+      </mds-input-field>
       <mds-button class="w-min" type="button" role="submit" onClick={() => {
         const form = document.querySelector('form') as HTMLFormElement
         const span = document.querySelector('span.input-value') as HTMLSpanElement

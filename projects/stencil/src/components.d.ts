@@ -34,8 +34,7 @@ import { LoadingType } from "./type/loading";
 import { MdsImgEventDetail } from "./components/mds-img/meta/event-detail";
 import { AutocompleteType } from "./type/autocomplete";
 import { InputControlsIconType, InputControlsLayoutType, InputTextType, MdsInputEventDetail } from "./type/input";
-import { InputFieldType } from "./components/mds-input-field/meta/types";
-import { MdsValidationErrors, MdsValidatorFn } from "./components/mds-input-field/meta/validators";
+import { MdsValidationErrors, MdsValidatorFn } from "./components/mds-input/meta/validators";
 import { InputSwitchSizeType, InputSwitchType } from "./components/mds-input-switch/meta/types";
 import { MdsInputSwitchEventDetail } from "./components/mds-input-switch/meta/event-detail";
 import { InputTipPositionType } from "./components/mds-input-tip/meta/types";
@@ -101,8 +100,7 @@ export { LoadingType } from "./type/loading";
 export { MdsImgEventDetail } from "./components/mds-img/meta/event-detail";
 export { AutocompleteType } from "./type/autocomplete";
 export { InputControlsIconType, InputControlsLayoutType, InputTextType, MdsInputEventDetail } from "./type/input";
-export { InputFieldType } from "./components/mds-input-field/meta/types";
-export { MdsValidationErrors, MdsValidatorFn } from "./components/mds-input-field/meta/validators";
+export { MdsValidationErrors, MdsValidatorFn } from "./components/mds-input/meta/validators";
 export { InputSwitchSizeType, InputSwitchType } from "./components/mds-input-switch/meta/types";
 export { MdsInputSwitchEventDetail } from "./components/mds-input-switch/meta/event-detail";
 export { InputTipPositionType } from "./components/mds-input-tip/meta/types";
@@ -803,6 +801,7 @@ export namespace Components {
         "width"?: string;
     }
     interface MdsInput {
+        "addValidator": (validator: MdsValidatorFn) => Promise<void>;
         /**
           * Specifies whether the element should have autocomplete enabled
          */
@@ -839,6 +838,7 @@ export namespace Components {
           * If true, the element is displayed as disabled
          */
         "disabled"?: boolean;
+        "getErrors": () => Promise<MdsValidationErrors | null>;
         /**
           * Returns the native `<input>` element used under the hood.
          */
@@ -879,6 +879,7 @@ export namespace Components {
           * Specifies that the element is read-only
          */
         "readonly"?: boolean;
+        "removeValidator": (validator: MdsValidatorFn) => Promise<void>;
         /**
           * Specifies that the element must be filled out before submitting the form
          */
@@ -907,116 +908,25 @@ export namespace Components {
         /**
           * Specifies the value of the input element
          */
-        "value"?: string;
+        "value": string;
         /**
           * Sets the variant of the input field
          */
         "variant"?: ThemeStatusVariantType;
     }
     interface MdsInputField {
-        "addValidator": (validator: MdsValidatorFn) => Promise<void>;
-        /**
-          * Specifies whether the element should have autocomplete enabled
-         */
-        "autocomplete"?: AutocompleteType;
-        /**
-          * Specifies that the element should automatically get focus when the page loads
-         */
-        "autofocus": boolean;
-        /**
-          * Specifies if the spinner icon is shown, replacing the icon if present
-         */
-        "await": boolean;
-        /**
-          * Specifies the icon type of the counter button when the input type is set to `number`
-         */
-        "controlsIcon"?: InputControlsIconType;
-        /**
-          * Specifies the layout of the counter button when the input type is set to `number`
-         */
-        "controlsLayout"?: InputControlsLayoutType;
-        /**
-          * If true, the element is displayed as disabled
-         */
-        "disabled"?: boolean;
-        "getErrors": () => Promise<MdsValidationErrors | null>;
-        /**
-          * Returns the native `<input>` element used under the hood.
-         */
-        "getInputElement": () => Promise<HTMLInputElement | HTMLTextAreaElement | null | undefined>;
-        /**
-          * An icon displayed at the right of the input
-         */
-        "icon"?: string;
         /**
           * Display a text on the top of the input text field
          */
         "label"?: string;
         /**
-          * Specifies the maximum value use it with input type="number" or type="date" Example: max="180", max="2046-12-04"
-         */
-        "max"?: string;
-        /**
-          * Specifies the maximum number of characters allowed in an element use it with input type="number"
-         */
-        "maxlength"?: number;
-        /**
           * Display a message at the bottom of the input text field
          */
         "message"?: string;
         /**
-          * Specifies the minimum value use it with input type="number" or type="date" Example: min="-3", min="1988-04-15"
-         */
-        "min"?: string;
-        /**
-          * Specifies the minimum number of characters allowed in an element use it with input type="number"
-         */
-        "minlength"?: number;
-        /**
-          * Is needed to reference the form data after the form is submitted
-         */
-        "name"?: string;
-        /**
-          * Specifies a regular expression that element\'s value is checked against
-         */
-        "pattern"?: string;
-        /**
-          * Specifies a short hint that describes the expected value of the element
-         */
-        "placeholder": string;
-        /**
-          * Specifies that the element is read-only
-         */
-        "readonly"?: boolean;
-        "removeValidator": (validator: MdsValidatorFn) => Promise<void>;
-        /**
-          * Specifies that the element must be filled out before submitting the form
-         */
-        "required"?: boolean;
-        /**
-          * Sets focus on the specified `my-input`. Use this method instead of the global `input.focus()`.
-         */
-        "setFocus": () => Promise<void>;
-        /**
-          * Specifies the interval between legal numbers in an input field
-         */
-        "step"?: string;
-        /**
           * Display the variant of a message at the bottom of the input text field
          */
         "tip"?: string;
-        /**
-          * Specifies the type of input element
-         */
-        "type": InputFieldType;
-        /**
-          * Specifies the typography of input element
-         */
-        "typography": TypographyInputType;
-        /**
-          * Specifies the value of the input element
-         */
-        "value": string;
         /**
           * Display the variant of a message at the bottom of the input text field
          */
@@ -2011,10 +1921,6 @@ export interface MdsInputCustomEvent<T> extends CustomEvent<T> {
     detail: T;
     target: HTMLMdsInputElement;
 }
-export interface MdsInputFieldCustomEvent<T> extends CustomEvent<T> {
-    detail: T;
-    target: HTMLMdsInputFieldElement;
-}
 export interface MdsInputRangeCustomEvent<T> extends CustomEvent<T> {
     detail: T;
     target: HTMLMdsInputRangeElement;
@@ -2546,21 +2452,7 @@ declare global {
         prototype: HTMLMdsInputElement;
         new (): HTMLMdsInputElement;
     };
-    interface HTMLMdsInputFieldElementEventMap {
-        "mdsInputFieldChange": MdsInputEventDetail;
-        "mdsInputFieldKeydown": KeyboardEvent;
-        "mdsInputFieldBlur": void;
-        "mdsInputFieldFocus": void;
-    }
     interface HTMLMdsInputFieldElement extends Components.MdsInputField, HTMLStencilElement {
-        addEventListener<K extends keyof HTMLMdsInputFieldElementEventMap>(type: K, listener: (this: HTMLMdsInputFieldElement, ev: MdsInputFieldCustomEvent<HTMLMdsInputFieldElementEventMap[K]>) => any, options?: boolean | AddEventListenerOptions): void;
-        addEventListener<K extends keyof DocumentEventMap>(type: K, listener: (this: Document, ev: DocumentEventMap[K]) => any, options?: boolean | AddEventListenerOptions): void;
-        addEventListener<K extends keyof HTMLElementEventMap>(type: K, listener: (this: HTMLElement, ev: HTMLElementEventMap[K]) => any, options?: boolean | AddEventListenerOptions): void;
-        addEventListener(type: string, listener: EventListenerOrEventListenerObject, options?: boolean | AddEventListenerOptions): void;
-        removeEventListener<K extends keyof HTMLMdsInputFieldElementEventMap>(type: K, listener: (this: HTMLMdsInputFieldElement, ev: MdsInputFieldCustomEvent<HTMLMdsInputFieldElementEventMap[K]>) => any, options?: boolean | EventListenerOptions): void;
-        removeEventListener<K extends keyof DocumentEventMap>(type: K, listener: (this: Document, ev: DocumentEventMap[K]) => any, options?: boolean | EventListenerOptions): void;
-        removeEventListener<K extends keyof HTMLElementEventMap>(type: K, listener: (this: HTMLElement, ev: HTMLElementEventMap[K]) => any, options?: boolean | EventListenerOptions): void;
-        removeEventListener(type: string, listener: EventListenerOrEventListenerObject, options?: boolean | EventListenerOptions): void;
     }
     var HTMLMdsInputFieldElement: {
         prototype: HTMLMdsInputFieldElement;
@@ -4215,113 +4107,17 @@ declare namespace LocalJSX {
     }
     interface MdsInputField {
         /**
-          * Specifies whether the element should have autocomplete enabled
-         */
-        "autocomplete"?: AutocompleteType;
-        /**
-          * Specifies that the element should automatically get focus when the page loads
-         */
-        "autofocus"?: boolean;
-        /**
-          * Specifies if the spinner icon is shown, replacing the icon if present
-         */
-        "await"?: boolean;
-        /**
-          * Specifies the icon type of the counter button when the input type is set to `number`
-         */
-        "controlsIcon"?: InputControlsIconType;
-        /**
-          * Specifies the layout of the counter button when the input type is set to `number`
-         */
-        "controlsLayout"?: InputControlsLayoutType;
-        /**
-          * If true, the element is displayed as disabled
-         */
-        "disabled"?: boolean;
-        /**
-          * An icon displayed at the right of the input
-         */
-        "icon"?: string;
-        /**
           * Display a text on the top of the input text field
          */
         "label"?: string;
-        /**
-          * Specifies the maximum value use it with input type="number" or type="date" Example: max="180", max="2046-12-04"
-         */
-        "max"?: string;
-        /**
-          * Specifies the maximum number of characters allowed in an element use it with input type="number"
-         */
-        "maxlength"?: number;
         /**
           * Display a message at the bottom of the input text field
          */
         "message"?: string;
         /**
-          * Specifies the minimum value use it with input type="number" or type="date" Example: min="-3", min="1988-04-15"
-         */
-        "min"?: string;
-        /**
-          * Specifies the minimum number of characters allowed in an element use it with input type="number"
-         */
-        "minlength"?: number;
-        /**
-          * Is needed to reference the form data after the form is submitted
-         */
-        "name"?: string;
-        /**
-          * Emits a void event when input element is blurred
-         */
-        "onMdsInputFieldBlur"?: (event: MdsInputFieldCustomEvent<void>) => void;
-        /**
-          * Emits an InputValue when the value of the input element changes
-         */
-        "onMdsInputFieldChange"?: (event: MdsInputFieldCustomEvent<MdsInputEventDetail>) => void;
-        /**
-          * Emits a void event when input element is focused
-         */
-        "onMdsInputFieldFocus"?: (event: MdsInputFieldCustomEvent<void>) => void;
-        /**
-          * Emits a KeyboardEvent when a keboard key is pressed on the focused input element
-         */
-        "onMdsInputFieldKeydown"?: (event: MdsInputFieldCustomEvent<KeyboardEvent>) => void;
-        /**
-          * Specifies a regular expression that element\'s value is checked against
-         */
-        "pattern"?: string;
-        /**
-          * Specifies a short hint that describes the expected value of the element
-         */
-        "placeholder"?: string;
-        /**
-          * Specifies that the element is read-only
-         */
-        "readonly"?: boolean;
-        /**
-          * Specifies that the element must be filled out before submitting the form
-         */
-        "required"?: boolean;
-        /**
-          * Specifies the interval between legal numbers in an input field
-         */
-        "step"?: string;
-        /**
           * Display the variant of a message at the bottom of the input text field
          */
         "tip"?: string;
-        /**
-          * Specifies the type of input element
-         */
-        "type"?: InputFieldType;
-        /**
-          * Specifies the typography of input element
-         */
-        "typography"?: TypographyInputType;
-        /**
-          * Specifies the value of the input element
-         */
-        "value"?: string;
         /**
           * Display the variant of a message at the bottom of the input text field
          */

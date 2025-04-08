@@ -16,6 +16,8 @@ import localeEl from './meta/locale.el.json'
 import localeEn from './meta/locale.en.json'
 import localeEs from './meta/locale.es.json'
 import localeIt from './meta/locale.it.json'
+import { createInputValidationManager, InputValidationManager } from './meta/input-type/InputValidationManager'
+import { MdsValidationErrors, MdsValidatorFn } from './meta/validators'
 
 /*
   * @part counter-button-decrease - Selects the button used to decrese the input value
@@ -62,6 +64,9 @@ export class MdsInput {
 
   private nativeInput?: HTMLInputElement | HTMLTextAreaElement
   private tabindex?: number
+
+  private inputValidation: InputValidationManager
+
   @Element() el: HTMLMdsInputElement
   @State() hasFocus = false
   @State() language: string
@@ -214,7 +219,7 @@ export class MdsInput {
   /**
    * Specifies the value of the input element
    */
-  @Prop({ mutable:true, reflect: true }) value?: string = ''
+  @Prop({ mutable:true, reflect: true }) value: string = ''
 
   /**
    * Emits an InputChangeEventDetail when the value of the input element changes
@@ -256,6 +261,10 @@ export class MdsInput {
     this.maxLengthChanged(this.maxlength)
   }
 
+  componentDidLoad (): void {
+    this.inputValidation = createInputValidationManager(this.type!)
+    this.nativeInput?.setAttribute('pattern', String(this.inputValidation.pattern))
+  }
   /**
    * Emits the change event when the component value changes
    */
@@ -277,6 +286,27 @@ export class MdsInput {
     }
     this.countMaxLength()
   }
+
+  @Method()
+  async addValidator (validator: MdsValidatorFn): Promise<void> {
+    this.inputValidation.validator.addValidator(validator)
+    return Promise.resolve()
+  }
+
+  @Method()
+  async removeValidator (validator: MdsValidatorFn): Promise<void> {
+    this.inputValidation.validator.removeValidator(validator)
+  }
+
+  @Method()
+  async getErrors (): Promise<MdsValidationErrors | null> {
+    return Promise.resolve(this.inputValidation.validator.errors)
+  }
+
+  private validateInput () {
+    return this.inputValidation.isValid(this.value)
+  }
+
 
   private countMaxLength = (): void => {
     if (!this.maxlength) return
@@ -355,7 +385,9 @@ export class MdsInput {
 
   private onBlur = () => {
     this.hasFocus = false
+    this.validateInput()
     this.blurEvent.emit()
+    // this.isValidInput = this.validateInput()
   }
 
   private onFocus = (ev: Event) => {
