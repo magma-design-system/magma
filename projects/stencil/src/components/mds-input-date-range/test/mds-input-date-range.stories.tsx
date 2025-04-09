@@ -26,6 +26,52 @@ export default {
   },
 }
 
+const formatDate = (date = new Date()) => {
+  // Format: YYYY-MM-DD
+  const year = date.getFullYear()
+  const month = `${date.getMonth() + 1}`.padStart(2, '0')
+  const day = `${date.getDate()}`.padStart(2, '0')
+  return `${year}-${month}-${day}`
+}
+
+const getMonthBounds = (date = new Date()) => {
+  // Primo giorno del mese
+  const firstDay = new Date(date.getFullYear(), date.getMonth(), 1)
+
+  // Ultimo giorno del mese
+  const lastDay = new Date(date.getFullYear(), date.getMonth() + 1, 0)
+
+  return {
+    startOfMonth: formatDate(firstDay),
+    endOfMonth: formatDate(lastDay),
+  }
+}
+
+const getWeekBounds = (date = new Date()) => {
+  // Clona la data per non modificarla
+  const currentDate = new Date(date)
+
+  // Ottiene il giorno della settimana (0 = domenica, 1 = lunedì, ..., 6 = sabato)
+  const day = currentDate.getDay()
+
+  // Calcola differenza dal lunedì
+  const diffToMonday = day === 0 ? -6 : 1 - day
+
+  // Primo giorno (lunedì)
+  const monday = new Date(currentDate)
+  monday.setDate(currentDate.getDate() + diffToMonday)
+
+  // Ultimo giorno (domenica)
+  const sunday = new Date(monday)
+  sunday.setDate(monday.getDate() + 6)
+
+  // Ritorna date pulite (solo anno-mese-giorno)
+  return {
+    startOfWeek: monday.toISOString().split('T')[0],
+    endOfWeek: sunday.toISOString().split('T')[0],
+  }
+}
+
 const getDate = (offsetDays: number = 0): string => {
   const today = new Date()
   today.setDate(today.getDate() + offsetDays)
@@ -55,15 +101,18 @@ const TemplateMinMax = args =>
     </div>
   </div>
 
-const TemplatePreselection = args =>
-  <div class="grid gap-400">
+const TemplatePreselection = args => {
+  const { startOfWeek, endOfWeek } = getWeekBounds()
+  const { startOfMonth, endOfMonth } = getMonthBounds()
+  return <div class="grid gap-400">
     <mds-input-date-range {...args}>
       <mds-input-date value={args['start-date']} slot="start"></mds-input-date>
       <mds-input-date value={args['end-date']} slot="end"></mds-input-date>
-      <mds-input-date-range-preselection start="2025-04-07" end="2025-04-13">Questa settimana</mds-input-date-range-preselection>
-      <mds-input-date-range-preselection start="2025-04-01" end="2025-04-30">Questo mese</mds-input-date-range-preselection>
+      <mds-input-date-range-preselection start={startOfWeek} end={endOfWeek}>Questa settimana</mds-input-date-range-preselection>
+      <mds-input-date-range-preselection start={startOfMonth} end={endOfMonth}>Questo mese</mds-input-date-range-preselection>
     </mds-input-date-range>
   </div>
+}
 
 export const Default = Template.bind({})
 
