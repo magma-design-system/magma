@@ -26,9 +26,33 @@ export class MdsCalendar {
   @State() selectedYear: number = this.currentDate.year
 
   @Prop() readonly rangePicker: boolean = true
+
+  /**
+   * Specifies the start date of the selection
+   * @description It's in ISO format (YYYY-MM-DD).
+   * @example '2023-10-01'
+   */
   @Prop({ reflect: true }) readonly startDate: string | null = null
+
+  /**
+   * Specifies the end date of the selection
+   * @description It's in ISO format (YYYY-MM-DD).
+   * @example '2023-10-01'
+   */
   @Prop({ reflect: true }) readonly endDate: string | null = null
+
+  /**
+   * Specifies the minimum date of the selection
+   * @description It's in ISO format (YYYY-MM-DD).
+   * @example '2023-10-01'
+   */
   @Prop({ reflect: true }) readonly min: string | null = null
+
+  /**
+   * Specifies the minimum date of the selection
+   * @description It's in ISO format (YYYY-MM-DD).
+   * @example '2023-10-01'
+   */
   @Prop({ reflect: true }) readonly max: string | null = null
 
   @State() internalStartDate: string | null = this.startDate
