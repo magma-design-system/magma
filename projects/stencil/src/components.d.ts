@@ -936,6 +936,11 @@ export namespace Components {
         "variant"?: ThemeStatusVariantType;
     }
     interface MdsInputDate {
+        /**
+          * Specifies the delay in milliseconds before closing the calendar dropdown, if the value is 0 the dropdown will not close
+          * @description Default is 500
+         */
+        "delay": number;
         "focusInput": () => Promise<void>;
         /**
           * Specifies the max date of the range, user cannot set dates after this date
@@ -4395,6 +4400,11 @@ declare namespace LocalJSX {
         "variant"?: ThemeStatusVariantType;
     }
     interface MdsInputDate {
+        /**
+          * Specifies the delay in milliseconds before closing the calendar dropdown, if the value is 0 the dropdown will not close
+          * @description Default is 500
+         */
+        "delay"?: number;
         /**
           * Specifies the max date of the range, user cannot set dates after this date
           * @description It's in ISO format (YYYY-MM-DD).
