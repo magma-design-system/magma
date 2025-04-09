@@ -25,6 +25,7 @@
   --mds-input-ring: 0 0 0 1px rgb(var(--mds-input-variant-color) / 0.1);
   --mds-input-shadow: 0 1px 3px 0 rgb(var(--mds-input-variant-color) / 0.1), 0 1px 2px 0 rgb(var(--mds-input-variant-color) / 0.06);
   --mds-input-textarea-field-sizing: content;
+  --mds-input-textarea-resize: none;
   --mds-input-textarea-max-height: theme('size.6400');
   --mds-input-textarea-min-height: theme('size.2400');
   --mds-input-tip-background: 84 84 84;
@@ -64,6 +65,7 @@
     box-shadow: var(--mds-input-ring), var(--mds-input-shadow);
     box-sizing: border-box;
     color: theme('colors.tone-neutral-02');
+    max-width: 100%;
     min-height: 3rem;
     overflow: hidden;
     text-overflow: ellipsis;
@@ -95,15 +97,15 @@
   margin: 0;
 }
 
-textarea.input {
-  @apply
-    resize-y
-    rounded-br-none;
+:host textarea.input,
+:host([typography]) textarea.input {
+  @apply rounded-br-none;
 
   field-sizing: var(--mds-input-textarea-field-sizing);
   max-height: var(--mds-input-textarea-max-height);
   min-height: var(--mds-input-textarea-min-height);
-  overflow: auto
+  overflow: auto;
+  resize: var(--mds-input-textarea-resize);
 }
 
 .input:focus {
