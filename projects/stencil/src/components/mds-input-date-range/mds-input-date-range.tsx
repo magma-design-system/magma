@@ -55,7 +55,7 @@ export class MdsInputDateRange {
 
   private togglePreselection: HTMLMdsInputDateRangePreselectionElement[]
 
-  @Event() dateRangeSelected: EventEmitter<{ startDate: string, endDate: string }>
+  @Event({ eventName: 'mdsInputDateRangeSelect' }) dateRangeSelected: EventEmitter<{ startDate: string, endDate: string }>
 
   componentWillLoad (): void {
     this.internalStartDate = this.startDate
@@ -278,7 +278,7 @@ export class MdsInputDateRange {
           <mds-calendar
             key={this.calendarKey}
             rangePicker={true}
-            onDatesEmitter={ev => {
+            onMdsCalendarChange={ev => {
               this.internalStartDate = ev.detail.startDate
               this.updateInputValue('start', this.internalStartDate)
               if (ev.detail.endDate) {
@@ -300,7 +300,7 @@ export class MdsInputDateRange {
                 }
               }
             }}
-            onCheckPreselectionsEmitter={() => {
+            onMdsCalendarPreselect={() => {
               this.checkPreselections()
             }}
             startDate={this.internalStartDate}

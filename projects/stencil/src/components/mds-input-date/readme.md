@@ -17,9 +17,9 @@
 
 ## Events
 
-| Event         | Description | Type                  |
-| ------------- | ----------- | --------------------- |
-| `valueChange` |             | `CustomEvent<string>` |
+| Event                | Description | Type                  |
+| -------------------- | ----------- | --------------------- |
+| `mdsInputDateSelect` |             | `CustomEvent<string>` |
 
 
 ## Methods

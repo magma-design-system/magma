@@ -58,8 +58,8 @@ export class MdsCalendar {
   @State() internalStartDate: string | null = this.startDate
   @State() internalEndDate: string | null = this.endDate
 
-  @Event() datesEmitter: EventEmitter<{startDate: string, endDate?: string}>
-  @Event() checkPreselectionsEmitter: EventEmitter<void>
+  @Event({ eventName: 'mdsCalendarChange' }) datesEmitter: EventEmitter<{startDate: string, endDate?: string}>
+  @Event({ eventName: 'mdsCalendarPreselect' }) checkPreselectionsEmitter: EventEmitter<void>
 
   @Watch('startDate')
   handleStartDate (newValue: ISO8601Date | null): void {

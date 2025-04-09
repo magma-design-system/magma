@@ -2330,8 +2330,8 @@ declare global {
         new (): HTMLMdsButtonElement;
     };
     interface HTMLMdsCalendarElementEventMap {
-        "datesEmitter": {startDate: string, endDate?: string};
-        "checkPreselectionsEmitter": void;
+        "mdsCalendarChange": {startDate: string, endDate?: string};
+        "mdsCalendarPreselect": void;
     }
     interface HTMLMdsCalendarElement extends Components.MdsCalendar, HTMLStencilElement {
         addEventListener<K extends keyof HTMLMdsCalendarElementEventMap>(type: K, listener: (this: HTMLMdsCalendarElement, ev: MdsCalendarCustomEvent<HTMLMdsCalendarElementEventMap[K]>) => any, options?: boolean | AddEventListenerOptions): void;
@@ -2620,7 +2620,7 @@ declare global {
         new (): HTMLMdsInputElement;
     };
     interface HTMLMdsInputDateElementEventMap {
-        "valueChange": string;
+        "mdsInputDateSelect": string;
     }
     interface HTMLMdsInputDateElement extends Components.MdsInputDate, HTMLStencilElement {
         addEventListener<K extends keyof HTMLMdsInputDateElementEventMap>(type: K, listener: (this: HTMLMdsInputDateElement, ev: MdsInputDateCustomEvent<HTMLMdsInputDateElementEventMap[K]>) => any, options?: boolean | AddEventListenerOptions): void;
@@ -2637,7 +2637,7 @@ declare global {
         new (): HTMLMdsInputDateElement;
     };
     interface HTMLMdsInputDateRangeElementEventMap {
-        "dateRangeSelected": { startDate: string, endDate: string };
+        "mdsInputDateRangeSelect": { startDate: string, endDate: string };
     }
     interface HTMLMdsInputDateRangeElement extends Components.MdsInputDateRange, HTMLStencilElement {
         addEventListener<K extends keyof HTMLMdsInputDateRangeElementEventMap>(type: K, listener: (this: HTMLMdsInputDateRangeElement, ev: MdsInputDateRangeCustomEvent<HTMLMdsInputDateRangeElementEventMap[K]>) => any, options?: boolean | AddEventListenerOptions): void;
@@ -3756,8 +3756,8 @@ declare namespace LocalJSX {
           * @example '2023-10-01'
          */
         "min"?: string | null;
-        "onCheckPreselectionsEmitter"?: (event: MdsCalendarCustomEvent<void>) => void;
-        "onDatesEmitter"?: (event: MdsCalendarCustomEvent<{startDate: string, endDate?: string}>) => void;
+        "onMdsCalendarChange"?: (event: MdsCalendarCustomEvent<{startDate: string, endDate?: string}>) => void;
+        "onMdsCalendarPreselect"?: (event: MdsCalendarCustomEvent<void>) => void;
         "rangePicker"?: boolean;
         /**
           * Specifies the start date of the selection
@@ -4395,7 +4395,7 @@ declare namespace LocalJSX {
           * @description It's in ISO format (YYYY-MM-DD).
          */
         "min"?: string | null;
-        "onValueChange"?: (event: MdsInputDateCustomEvent<string>) => void;
+        "onMdsInputDateSelect"?: (event: MdsInputDateCustomEvent<string>) => void;
         /**
           * Specifies the value of the input
           * @description It's in ISO format (YYYY-MM-DD).
@@ -4423,7 +4423,7 @@ declare namespace LocalJSX {
           * @description It's in ISO format (YYYY-MM-DD).
          */
         "min"?: string | null;
-        "onDateRangeSelected"?: (event: MdsInputDateRangeCustomEvent<{ startDate: string, endDate: string }>) => void;
+        "onMdsInputDateRangeSelect"?: (event: MdsInputDateRangeCustomEvent<{ startDate: string, endDate: string }>) => void;
         /**
           * Specifies the start date of the range
           * @description It's in ISO format (YYYY-MM-DD).

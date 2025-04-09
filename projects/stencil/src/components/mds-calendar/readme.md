@@ -18,10 +18,10 @@
 
 ## Events
 
-| Event                       | Description | Type                                                                 |
-| --------------------------- | ----------- | -------------------------------------------------------------------- |
-| `checkPreselectionsEmitter` |             | `CustomEvent<void>`                                                  |
-| `datesEmitter`              |             | `CustomEvent<{ startDate: string; endDate?: string \| undefined; }>` |
+| Event                  | Description | Type                                                                 |
+| ---------------------- | ----------- | -------------------------------------------------------------------- |
+| `mdsCalendarChange`    |             | `CustomEvent<{ startDate: string; endDate?: string \| undefined; }>` |
+| `mdsCalendarPreselect` |             | `CustomEvent<void>`                                                  |
 
 
 ## Methods

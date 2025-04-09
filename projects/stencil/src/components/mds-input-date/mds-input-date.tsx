@@ -40,7 +40,7 @@ export class MdsInputDate {
   @State() calendarKey: number = 0
   @State() dropdownRef?: HTMLMdsDropdownElement
   @State() messageError: string = ''
-  @Event() valueChange: EventEmitter<string>
+  @Event({ eventName: 'mdsInputDateSelect' }) valueChange: EventEmitter<string>
 
   @Watch('value')
   handleValue (newValue: string): void {
@@ -117,7 +117,7 @@ export class MdsInputDate {
           <mds-calendar
             key={this.calendarKey}
             rangePicker={false}
-            onDatesEmitter={ev => {
+            onMdsCalendarChange={ev => {
               this.internalValue = ev.detail.startDate
               const date = DateTime.fromISO(this.internalValue)
 
