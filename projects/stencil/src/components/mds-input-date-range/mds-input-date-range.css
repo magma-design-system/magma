@@ -81,8 +81,14 @@
 }
 
 .date-label {
+  margin-left: theme('spacing.50');
+  margin-right: theme('spacing.50');
   min-width: min-content;
   white-space: nowrap;
+}
+
+.date-label:first-child {
+  margin-left: 0;
 }
 
 mds-calendar {
