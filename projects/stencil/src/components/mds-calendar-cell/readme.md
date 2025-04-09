@@ -15,6 +15,7 @@
 | `orientation` | `orientation` |             | `"both" \| "horizontal" \| "vertical" \| undefined`               | `'horizontal'` |
 | `preview`     | `preview`     |             | `boolean \| undefined`                                            | `false`        |
 | `selection`   | `selection`   |             | `"end" \| "middle" \| "none" \| "single" \| "start" \| undefined` | `undefined`    |
+| `today`       | `today`       |             | `boolean \| undefined`                                            | `undefined`    |
 
 
 ## Dependencies
