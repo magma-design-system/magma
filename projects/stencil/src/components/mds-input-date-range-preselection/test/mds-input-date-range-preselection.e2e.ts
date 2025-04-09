@@ -6,6 +6,6 @@ describe('mds-input-date-range-preselection', () => {
     await page.setContent('<mds-input-date-range-preselection></mds-input-date-range-preselection>')
 
     const element = await page.find('mds-input-date-range-preselection')
-    expect(element).toHaveClass('hydrated')
+    expect(element).toHaveAttribute('hydrated')
   })
 })
