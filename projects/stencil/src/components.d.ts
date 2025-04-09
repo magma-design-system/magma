@@ -838,6 +838,10 @@ export namespace Components {
           * If true, the element is displayed as disabled
          */
         "disabled"?: boolean;
+        /**
+          * Sets focus on the specified `my-input`. Use this method instead of the global `input.focus()`.
+         */
+        "focus": () => Promise<void>;
         "getErrors": () => Promise<MdsValidationErrors | null>;
         /**
           * Returns the native `<input>` element used under the hood.
@@ -885,10 +889,6 @@ export namespace Components {
          */
         "required"?: boolean;
         /**
-          * Sets focus on the specified `my-input`. Use this method instead of the global `input.focus()`.
-         */
-        "setFocus": () => Promise<void>;
-        /**
           * Specifies the interval between legal numbers in an input field
          */
         "step"?: string;
@@ -923,10 +923,6 @@ export namespace Components {
           * Display a message at the bottom of the input text field
          */
         "message"?: string;
-        /**
-          * Display the variant of a message at the bottom of the input text field
-         */
-        "tip"?: string;
         /**
           * Display the variant of a message at the bottom of the input text field
          */
@@ -4118,10 +4114,6 @@ declare namespace LocalJSX {
           * Display a message at the bottom of the input text field
          */
         "message"?: string;
-        /**
-          * Display the variant of a message at the bottom of the input text field
-         */
-        "tip"?: string;
         /**
           * Display the variant of a message at the bottom of the input text field
          */
