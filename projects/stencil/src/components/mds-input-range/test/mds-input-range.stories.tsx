@@ -37,11 +37,23 @@ const TemplateFormatLabel = args => {
     (document.querySelector('#custom-labeled') as HTMLMdsInputRangeElement).formatValue = formatValue
   }, [])
   function formatValue (v: number) {
-    return `Hai selezionato il valore ${v}`
+    return formatBytes(v)
   }
+
+  const formatBytes = (bytes, decimals = 2) => {
+    if (bytes === 0) return '0 B'
+
+    const k = 1024
+    const sizes = ['B', 'kB', 'MB', 'GB', 'TB', 'PB']
+    const i = Math.floor(Math.log(bytes) / Math.log(k))
+
+    const value = parseFloat((bytes / Math.pow(k, i)).toFixed(decimals))
+    return `${value} ${sizes[i]}`
+  }
+
   return <div>
-    <mds-input-range id="custom-labeled" {...args}>
-      Range label
+    <mds-input-range id="custom-labeled" {...args} step="1048576" min="0" max="1073741824">
+      File size
     </mds-input-range>
   </div>
 }

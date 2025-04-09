@@ -72,7 +72,7 @@ const FormIntegrationTemplate = (args: MdsInputFieldInterface) => (
           const spanEl = document.querySelector('span.input-value') as HTMLSpanElement
           const inputEl = document.querySelector('mds-input') as HTMLMdsInputElement
           if (formEl.fullName.value === '') {
-            inputEl.focus()
+            inputEl.setFocus()
             spanEl.classList.remove('scale-110')
             spanEl.innerText = 'empty'
             return
