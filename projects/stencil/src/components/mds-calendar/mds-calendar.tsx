@@ -588,7 +588,7 @@ export class MdsCalendar {
             <section class="year-selection">
               <header class="month-view__years">
 
-                {Array.from({ length: 10 }).map((_, index) => {
+                {Array.from({ length: 12 }).map((_, index) => {
                   const year = this.selectedYear + index
                   return (
                     <mds-button class='action' variant='dark' tone='quiet' onClick={event => {
