@@ -140,6 +140,8 @@ export class MdsInputDateRange {
 
   componentDidLoad (): void {
     this.updateInputListeners()
+    this.updateInputValue('start', this.internalStartDate)
+    this.updateInputValue('end', this.internalEndDate)
   }
 
   private updateInputValue (slotName: string, newValue: string): void {
@@ -149,6 +151,7 @@ export class MdsInputDateRange {
       input.value = newValue
     }
   }
+
 
   private updateInputListeners (): void {
     const startSlot = this.host.shadowRoot?.querySelector('slot[name="start"]') as HTMLSlotElement
