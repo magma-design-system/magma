@@ -259,6 +259,10 @@ export class MdsInput {
     }
     this.internals.setFormValue(this.value ?? null)
     this.maxLengthChanged(this.maxlength)
+
+    this.el.focus = () => {
+      this.nativeInput?.focus()
+    }
   }
 
   componentDidLoad (): void {
@@ -362,7 +366,7 @@ export class MdsInput {
    * of the global `input.focus()`.
    */
   @Method()
-  async focus ():Promise<void> {
+  async setFocus ():Promise<void> {
     if (this.nativeInput) {
       this.nativeInput.focus()
     }
