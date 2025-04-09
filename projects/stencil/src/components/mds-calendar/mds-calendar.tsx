@@ -202,13 +202,14 @@ export class MdsCalendar {
 
     const calendarCells = shadowRoot.querySelectorAll('mds-calendar-cell[selection]')
 
-    if (this.rangePicker) {
-      this.setRangeSelection(calendarCells, shadowRoot)
-    } else {
-      this.setSingleSelection(calendarCells, shadowRoot)
+    if (this.isFirstClick) {
+      if (this.rangePicker) {
+        this.setRangeSelection(calendarCells, shadowRoot)
+      } else {
+        this.setSingleSelection(calendarCells, shadowRoot)
+      }
     }
   }
-
   private setRangeSelection (calendarCells: NodeListOf<Element>, shadowRoot: ShadowRoot): void {
     calendarCells.forEach(day => {
       day.removeAttribute('selection')
