@@ -264,6 +264,9 @@ export class MdsInput {
   componentDidLoad (): void {
     this.inputValidation = createInputValidationManager(this.type!)
     this.nativeInput?.setAttribute('pattern', String(this.inputValidation.pattern))
+    if (this.autofocus) {
+      this.nativeInput?.focus()
+    }
   }
   /**
    * Emits the change event when the component value changes
@@ -359,7 +362,7 @@ export class MdsInput {
    * of the global `input.focus()`.
    */
   @Method()
-  async setFocus ():Promise<void> {
+  async focus ():Promise<void> {
     if (this.nativeInput) {
       this.nativeInput.focus()
     }
