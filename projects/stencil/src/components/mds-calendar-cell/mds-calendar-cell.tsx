@@ -14,6 +14,7 @@ export class MdsCalendarCell {
   @Prop({ reflect: true }) readonly preview?: boolean = false
   @Prop({ reflect: true }) readonly selection?: CalendarCellSelectionPositionType
   @Prop({ reflect: true }) readonly disabled?: boolean | undefined = undefined
+  @Prop({ reflect: true }) readonly today?: boolean | undefined = undefined
 
   render () {
     return (

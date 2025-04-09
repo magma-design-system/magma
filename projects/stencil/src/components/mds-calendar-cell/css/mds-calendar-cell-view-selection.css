@@ -1,3 +1,8 @@
+:host(:not([selection])[today]) {
+  --mds-calendar-cell-inner-background: var(--mds-calendar-cell-preselection-today-background);
+  --mds-calendar-cell-color: var(--mds-calendar-cell-preselection-today-color);
+}
+
 :host([selection][month="current"]) {
   --mds-calendar-cell-background: var(--mds-calendar-cell-selection-current-month-background);
   --mds-calendar-cell-color: var(--mds-calendar-cell-selection-current-month-color);

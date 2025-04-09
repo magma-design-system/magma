@@ -413,6 +413,7 @@ export namespace Components {
         "orientation"?: CalendarCellSelectionOrieintationType;
         "preview"?: boolean;
         "selection"?: CalendarCellSelectionPositionType;
+        "today"?: boolean | undefined;
     }
     /**
      * @name Button
@@ -954,7 +955,7 @@ export namespace Components {
     }
     interface MdsInputDateRange {
         /**
-          * Specifies the delay in milliseconds before closing the calendar dropdown
+          * Specifies the delay in milliseconds before closing the calendar dropdown, if the value is 0 the dropdown will not close
           * @description Default is 500
          */
         "delay": number;
@@ -3811,6 +3812,7 @@ declare namespace LocalJSX {
         "orientation"?: CalendarCellSelectionOrieintationType;
         "preview"?: boolean;
         "selection"?: CalendarCellSelectionPositionType;
+        "today"?: boolean | undefined;
     }
     /**
      * @name Button
@@ -4412,7 +4414,7 @@ declare namespace LocalJSX {
     }
     interface MdsInputDateRange {
         /**
-          * Specifies the delay in milliseconds before closing the calendar dropdown
+          * Specifies the delay in milliseconds before closing the calendar dropdown, if the value is 0 the dropdown will not close
           * @description Default is 500
          */
         "delay"?: number;

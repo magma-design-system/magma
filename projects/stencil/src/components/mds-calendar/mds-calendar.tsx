@@ -507,6 +507,7 @@ export class MdsCalendar {
               <div class="month-view__cells">
                 {this.weekDaysinMonth.map(dayInfo => (
                   <mds-calendar-cell
+                    today={DateTime.now().toFormat('yyyy-MM-dd') === dayInfo.date.toFormat('yyyy-MM-dd')}
                     date={dayInfo.date.toFormat('yyyy-MM-dd')}
                     month={dayInfo.isCurrentMonth ? 'current' : 'other'}
                     disabled={
