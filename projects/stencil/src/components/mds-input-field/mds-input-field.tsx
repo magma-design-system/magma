@@ -1,4 +1,3 @@
-import clsx from 'clsx'
 import { Component, Element, Host, Prop, h } from '@stencil/core'
 import { MdsValidationErrors } from './meta/validators'
 import { ThemeStatusVariantType } from '@type/variant'
@@ -36,7 +35,7 @@ export class MdsInputField {
   /**
    * Display a text on the top of the input text field
    */
-  @Prop() label?: string
+  @Prop({ mutable: true }) label?: string
 
   /**
    * Display a message at the bottom of the input text field
@@ -48,20 +47,15 @@ export class MdsInputField {
    */
   @Prop({ reflect: true, mutable: true }) variant?: ThemeStatusVariantType
 
-  /**
-   * Display the variant of a message at the bottom of the input text field
-   */
-  @Prop() tip?: string
-
   render () {
     return (
       <Host>
-        { this.label && <mds-text class="label" typography="label">{ this.label }</mds-text> }
-        <div class={clsx('message-window', this.message && 'message-window--opened')}>
+        <mds-text class="label" typography="label">{ this.label }</mds-text>
+        <div class="message-window">
           <div>
             <slot ref={i => this.slotInput = i as HTMLSlotElement }></slot>
           </div>
-          { this.message && <mds-text class="message" typography="caption">{ this.message }</mds-text> }
+          <mds-text class="message" typography="caption">{ this.message }</mds-text>
         </div>
       </Host>
     )
