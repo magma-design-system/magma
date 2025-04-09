@@ -102,11 +102,15 @@ This is a web-component from Maggioli Design System [Magma](https://magma.maggio
 
 ### Used by
 
+ - [mds-input-date](../mds-input-date)
+ - [mds-input-date-range](../mds-input-date-range)
  - [mds-pref-language](../mds-pref-language)
 
 ### Graph
 ```mermaid
 graph TD;
+  mds-input-date --> mds-dropdown
+  mds-input-date-range --> mds-dropdown
   mds-pref-language --> mds-dropdown
   style mds-dropdown fill:#f9f,stroke:#333,stroke-width:4px
 ```

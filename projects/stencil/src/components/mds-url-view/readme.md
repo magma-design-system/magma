@@ -19,9 +19,9 @@ This is a web-component from Maggioli Design System [Magma](https://magma.maggio
 
 ## Events
 
-| Event             | Description                       | Type                |
-| ----------------- | --------------------------------- | ------------------- |
-| `mdsUrlViewClose` | Emits when the url view is closed | `CustomEvent<void>` |
+| Event             | Description                            | Type                |
+| ----------------- | -------------------------------------- | ------------------- |
+| `mdsUrlViewClose` | Emits when the close button is clicked | `CustomEvent<void>` |
 
 
 ## Methods

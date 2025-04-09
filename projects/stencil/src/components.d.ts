@@ -17,6 +17,7 @@ import { MdsBreadcrumbEventDetail } from "./components/mds-breadcrumb/meta/event
 import { MdsBreadcrumbItemEventDetail } from "./components/mds-breadcrumb-item/meta/event-detail";
 import { ButtonIconPositionType, ButtonSizeType, ButtonTargetType, ButtonType, ButtonVariantType } from "./type/button";
 import { TypographyHeadingTagType, TypographyTagType, TypographyTruncateType } from "./type/text";
+import { CalendarCellSelectionOrieintationType, CalendarCellSelectionPositionType, CalendarCellType } from "./components/mds-calendar-cell/meta/types";
 import { MdsChipEvent } from "./components/mds-chip/meta/interface";
 import { DropdownInteractionType } from "./components/mds-dropdown/meta/types";
 import { FloatingUIPlacement, FloatingUIStrategy } from "./type/floating-ui";
@@ -35,6 +36,7 @@ import { MdsImgEventDetail } from "./components/mds-img/meta/event-detail";
 import { AutocompleteType } from "./type/autocomplete";
 import { InputControlsIconType, InputControlsLayoutType, InputTextType, MdsInputEventDetail } from "./type/input";
 import { MdsValidationErrors, MdsValidatorFn } from "./components/mds-input/meta/validators";
+import { EventDate } from "./components/mds-input-date-range/mds-input-date-range";
 import { InputSwitchSizeType, InputSwitchType } from "./components/mds-input-switch/meta/types";
 import { MdsInputSwitchEventDetail } from "./components/mds-input-switch/meta/event-detail";
 import { InputTipPositionType } from "./components/mds-input-tip/meta/types";
@@ -83,6 +85,7 @@ export { MdsBreadcrumbEventDetail } from "./components/mds-breadcrumb/meta/event
 export { MdsBreadcrumbItemEventDetail } from "./components/mds-breadcrumb-item/meta/event-detail";
 export { ButtonIconPositionType, ButtonSizeType, ButtonTargetType, ButtonType, ButtonVariantType } from "./type/button";
 export { TypographyHeadingTagType, TypographyTagType, TypographyTruncateType } from "./type/text";
+export { CalendarCellSelectionOrieintationType, CalendarCellSelectionPositionType, CalendarCellType } from "./components/mds-calendar-cell/meta/types";
 export { MdsChipEvent } from "./components/mds-chip/meta/interface";
 export { DropdownInteractionType } from "./components/mds-dropdown/meta/types";
 export { FloatingUIPlacement, FloatingUIStrategy } from "./type/floating-ui";
@@ -101,6 +104,7 @@ export { MdsImgEventDetail } from "./components/mds-img/meta/event-detail";
 export { AutocompleteType } from "./type/autocomplete";
 export { InputControlsIconType, InputControlsLayoutType, InputTextType, MdsInputEventDetail } from "./type/input";
 export { MdsValidationErrors, MdsValidatorFn } from "./components/mds-input/meta/validators";
+export { EventDate } from "./components/mds-input-date-range/mds-input-date-range";
 export { InputSwitchSizeType, InputSwitchType } from "./components/mds-input-switch/meta/types";
 export { MdsInputSwitchEventDetail } from "./components/mds-input-switch/meta/event-detail";
 export { InputTipPositionType } from "./components/mds-input-tip/meta/types";
@@ -390,6 +394,68 @@ export namespace Components {
           * Specifies the color variant for the button
          */
         "variant"?: ButtonVariantType;
+    }
+    interface MdsCalendar {
+        /**
+          * Specifies the end date of the selection
+          * @description It's in ISO format (YYYY-MM-DD).
+          * @example '2023-10-01'
+         */
+        "endDate": string | null;
+        /**
+          * Specifies the minimum date of the selection
+          * @description It's in ISO format (YYYY-MM-DD).
+          * @example '2023-10-01'
+         */
+        "max": string | null;
+        /**
+          * Specifies the minimum date of the selection
+          * @description It's in ISO format (YYYY-MM-DD).
+          * @example '2023-10-01'
+         */
+        "min": string | null;
+        "rangePicker": boolean;
+        /**
+          * Specifies the start date of the selection
+          * @description It's in ISO format (YYYY-MM-DD).
+          * @example '2023-10-01'
+         */
+        "startDate": string | null;
+        "updateCurrentDate": (date: string) => Promise<void>;
+        "updateLang": () => Promise<void>;
+    }
+    interface MdsCalendarCell {
+        /**
+          * Specifies the date of the cell
+          * @description It's in ISO format (YYYY-MM-DD).
+         */
+        "date"?: string;
+        /**
+          * Specifies if the cell is disabled
+         */
+        "disabled"?: boolean | undefined;
+        /**
+          * Specifies if the current month or a weekend
+         */
+        "month"?: CalendarCellType;
+        /**
+          * Specifies the selection orientation of the cell
+          * @description It can be 'horizontal' or 'vertical', but currently only 'horizontal' is supported
+         */
+        "orientation"?: CalendarCellSelectionOrieintationType;
+        /**
+          * Specifies if the selection is a preview or the final selection
+         */
+        "preview"?: boolean;
+        /**
+          * Specifies the point of selection of the cell
+          * @description It can be `end`, `middle`, `none`, `single`, `start`
+         */
+        "selection"?: CalendarCellSelectionPositionType;
+        /**
+          * Specifies if the cell is today
+         */
+        "today"?: boolean | undefined;
     }
     /**
      * @name Button
@@ -913,6 +979,71 @@ export namespace Components {
           * Sets the variant of the input field
          */
         "variant"?: ThemeStatusVariantType;
+    }
+    interface MdsInputDate {
+        /**
+          * Specifies the delay in milliseconds before closing the calendar dropdown, if the value is 0 the dropdown will not close
+          * @description Default is 500
+         */
+        "delay": number;
+        "focusInput": () => Promise<void>;
+        /**
+          * Specifies the max date of the range, user cannot set dates after this date
+          * @description It's in ISO format (YYYY-MM-DD).
+         */
+        "max": string | null;
+        /**
+          * Specifies the min date of the range, user cannot set dates before this date
+          * @description It's in ISO format (YYYY-MM-DD).
+         */
+        "min": string | null;
+        /**
+          * Specifies the value of the input
+          * @description It's in ISO format (YYYY-MM-DD).
+         */
+        "value": string;
+    }
+    interface MdsInputDateRange {
+        /**
+          * Specifies the delay in milliseconds before closing the calendar dropdown, if the value is 0 the dropdown will not close
+          * @description Default is 500
+         */
+        "delay": number;
+        /**
+          * Specifies the end date of the range
+          * @description It's in ISO format (YYYY-MM-DD).
+         */
+        "endDate": string;
+        /**
+          * Specifies the max date of the range, user cannot set dates after this date
+          * @description It's in ISO format (YYYY-MM-DD).
+         */
+        "max": string | null;
+        /**
+          * Specifies the min date of the range, user cannot set dates before this date
+          * @description It's in ISO format (YYYY-MM-DD).
+         */
+        "min": string | null;
+        "preselect": (event: EventDate) => Promise<void>;
+        /**
+          * Specifies the start date of the range
+          * @description It's in ISO format (YYYY-MM-DD).
+         */
+        "startDate": string;
+    }
+    interface MdsInputDateRangePreselection {
+        /**
+          * Sets the end date of the preselection
+         */
+        "end"?: string;
+        /**
+          * Sets the preselection date range
+         */
+        "selected"?: boolean;
+        /**
+          * Sets the start date of the preselection
+         */
+        "start": string;
     }
     interface MdsInputField {
         /**
@@ -1877,6 +2008,10 @@ export interface MdsBreadcrumbItemCustomEvent<T> extends CustomEvent<T> {
     detail: T;
     target: HTMLMdsBreadcrumbItemElement;
 }
+export interface MdsCalendarCustomEvent<T> extends CustomEvent<T> {
+    detail: T;
+    target: HTMLMdsCalendarElement;
+}
 export interface MdsChipCustomEvent<T> extends CustomEvent<T> {
     detail: T;
     target: HTMLMdsChipElement;
@@ -1920,6 +2055,14 @@ export interface MdsImgCustomEvent<T> extends CustomEvent<T> {
 export interface MdsInputCustomEvent<T> extends CustomEvent<T> {
     detail: T;
     target: HTMLMdsInputElement;
+}
+export interface MdsInputDateCustomEvent<T> extends CustomEvent<T> {
+    detail: T;
+    target: HTMLMdsInputDateElement;
+}
+export interface MdsInputDateRangeCustomEvent<T> extends CustomEvent<T> {
+    detail: T;
+    target: HTMLMdsInputDateRangeElement;
 }
 export interface MdsInputRangeCustomEvent<T> extends CustomEvent<T> {
     detail: T;
@@ -2186,6 +2329,30 @@ declare global {
         prototype: HTMLMdsButtonElement;
         new (): HTMLMdsButtonElement;
     };
+    interface HTMLMdsCalendarElementEventMap {
+        "datesEmitter": {startDate: string, endDate?: string};
+        "checkPreselectionsEmitter": void;
+    }
+    interface HTMLMdsCalendarElement extends Components.MdsCalendar, HTMLStencilElement {
+        addEventListener<K extends keyof HTMLMdsCalendarElementEventMap>(type: K, listener: (this: HTMLMdsCalendarElement, ev: MdsCalendarCustomEvent<HTMLMdsCalendarElementEventMap[K]>) => any, options?: boolean | AddEventListenerOptions): void;
+        addEventListener<K extends keyof DocumentEventMap>(type: K, listener: (this: Document, ev: DocumentEventMap[K]) => any, options?: boolean | AddEventListenerOptions): void;
+        addEventListener<K extends keyof HTMLElementEventMap>(type: K, listener: (this: HTMLElement, ev: HTMLElementEventMap[K]) => any, options?: boolean | AddEventListenerOptions): void;
+        addEventListener(type: string, listener: EventListenerOrEventListenerObject, options?: boolean | AddEventListenerOptions): void;
+        removeEventListener<K extends keyof HTMLMdsCalendarElementEventMap>(type: K, listener: (this: HTMLMdsCalendarElement, ev: MdsCalendarCustomEvent<HTMLMdsCalendarElementEventMap[K]>) => any, options?: boolean | EventListenerOptions): void;
+        removeEventListener<K extends keyof DocumentEventMap>(type: K, listener: (this: Document, ev: DocumentEventMap[K]) => any, options?: boolean | EventListenerOptions): void;
+        removeEventListener<K extends keyof HTMLElementEventMap>(type: K, listener: (this: HTMLElement, ev: HTMLElementEventMap[K]) => any, options?: boolean | EventListenerOptions): void;
+        removeEventListener(type: string, listener: EventListenerOrEventListenerObject, options?: boolean | EventListenerOptions): void;
+    }
+    var HTMLMdsCalendarElement: {
+        prototype: HTMLMdsCalendarElement;
+        new (): HTMLMdsCalendarElement;
+    };
+    interface HTMLMdsCalendarCellElement extends Components.MdsCalendarCell, HTMLStencilElement {
+    }
+    var HTMLMdsCalendarCellElement: {
+        prototype: HTMLMdsCalendarCellElement;
+        new (): HTMLMdsCalendarCellElement;
+    };
     /**
      * @name Button
      * @description Buttons are used to initialize an action. Button labels express what action will occur when the user interacts with it.
@@ -2451,6 +2618,46 @@ declare global {
     var HTMLMdsInputElement: {
         prototype: HTMLMdsInputElement;
         new (): HTMLMdsInputElement;
+    };
+    interface HTMLMdsInputDateElementEventMap {
+        "valueChange": string;
+    }
+    interface HTMLMdsInputDateElement extends Components.MdsInputDate, HTMLStencilElement {
+        addEventListener<K extends keyof HTMLMdsInputDateElementEventMap>(type: K, listener: (this: HTMLMdsInputDateElement, ev: MdsInputDateCustomEvent<HTMLMdsInputDateElementEventMap[K]>) => any, options?: boolean | AddEventListenerOptions): void;
+        addEventListener<K extends keyof DocumentEventMap>(type: K, listener: (this: Document, ev: DocumentEventMap[K]) => any, options?: boolean | AddEventListenerOptions): void;
+        addEventListener<K extends keyof HTMLElementEventMap>(type: K, listener: (this: HTMLElement, ev: HTMLElementEventMap[K]) => any, options?: boolean | AddEventListenerOptions): void;
+        addEventListener(type: string, listener: EventListenerOrEventListenerObject, options?: boolean | AddEventListenerOptions): void;
+        removeEventListener<K extends keyof HTMLMdsInputDateElementEventMap>(type: K, listener: (this: HTMLMdsInputDateElement, ev: MdsInputDateCustomEvent<HTMLMdsInputDateElementEventMap[K]>) => any, options?: boolean | EventListenerOptions): void;
+        removeEventListener<K extends keyof DocumentEventMap>(type: K, listener: (this: Document, ev: DocumentEventMap[K]) => any, options?: boolean | EventListenerOptions): void;
+        removeEventListener<K extends keyof HTMLElementEventMap>(type: K, listener: (this: HTMLElement, ev: HTMLElementEventMap[K]) => any, options?: boolean | EventListenerOptions): void;
+        removeEventListener(type: string, listener: EventListenerOrEventListenerObject, options?: boolean | EventListenerOptions): void;
+    }
+    var HTMLMdsInputDateElement: {
+        prototype: HTMLMdsInputDateElement;
+        new (): HTMLMdsInputDateElement;
+    };
+    interface HTMLMdsInputDateRangeElementEventMap {
+        "dateRangeSelected": { startDate: string, endDate: string };
+    }
+    interface HTMLMdsInputDateRangeElement extends Components.MdsInputDateRange, HTMLStencilElement {
+        addEventListener<K extends keyof HTMLMdsInputDateRangeElementEventMap>(type: K, listener: (this: HTMLMdsInputDateRangeElement, ev: MdsInputDateRangeCustomEvent<HTMLMdsInputDateRangeElementEventMap[K]>) => any, options?: boolean | AddEventListenerOptions): void;
+        addEventListener<K extends keyof DocumentEventMap>(type: K, listener: (this: Document, ev: DocumentEventMap[K]) => any, options?: boolean | AddEventListenerOptions): void;
+        addEventListener<K extends keyof HTMLElementEventMap>(type: K, listener: (this: HTMLElement, ev: HTMLElementEventMap[K]) => any, options?: boolean | AddEventListenerOptions): void;
+        addEventListener(type: string, listener: EventListenerOrEventListenerObject, options?: boolean | AddEventListenerOptions): void;
+        removeEventListener<K extends keyof HTMLMdsInputDateRangeElementEventMap>(type: K, listener: (this: HTMLMdsInputDateRangeElement, ev: MdsInputDateRangeCustomEvent<HTMLMdsInputDateRangeElementEventMap[K]>) => any, options?: boolean | EventListenerOptions): void;
+        removeEventListener<K extends keyof DocumentEventMap>(type: K, listener: (this: Document, ev: DocumentEventMap[K]) => any, options?: boolean | EventListenerOptions): void;
+        removeEventListener<K extends keyof HTMLElementEventMap>(type: K, listener: (this: HTMLElement, ev: HTMLElementEventMap[K]) => any, options?: boolean | EventListenerOptions): void;
+        removeEventListener(type: string, listener: EventListenerOrEventListenerObject, options?: boolean | EventListenerOptions): void;
+    }
+    var HTMLMdsInputDateRangeElement: {
+        prototype: HTMLMdsInputDateRangeElement;
+        new (): HTMLMdsInputDateRangeElement;
+    };
+    interface HTMLMdsInputDateRangePreselectionElement extends Components.MdsInputDateRangePreselection, HTMLStencilElement {
+    }
+    var HTMLMdsInputDateRangePreselectionElement: {
+        prototype: HTMLMdsInputDateRangePreselectionElement;
+        new (): HTMLMdsInputDateRangePreselectionElement;
     };
     interface HTMLMdsInputFieldElement extends Components.MdsInputField, HTMLStencilElement {
     }
@@ -3141,6 +3348,8 @@ declare global {
         "mds-breadcrumb": HTMLMdsBreadcrumbElement;
         "mds-breadcrumb-item": HTMLMdsBreadcrumbItemElement;
         "mds-button": HTMLMdsButtonElement;
+        "mds-calendar": HTMLMdsCalendarElement;
+        "mds-calendar-cell": HTMLMdsCalendarCellElement;
         "mds-card": HTMLMdsCardElement;
         "mds-card-content": HTMLMdsCardContentElement;
         "mds-card-footer": HTMLMdsCardFooterElement;
@@ -3162,6 +3371,9 @@ declare global {
         "mds-icon": HTMLMdsIconElement;
         "mds-img": HTMLMdsImgElement;
         "mds-input": HTMLMdsInputElement;
+        "mds-input-date": HTMLMdsInputDateElement;
+        "mds-input-date-range": HTMLMdsInputDateRangeElement;
+        "mds-input-date-range-preselection": HTMLMdsInputDateRangePreselectionElement;
         "mds-input-field": HTMLMdsInputFieldElement;
         "mds-input-range": HTMLMdsInputRangeElement;
         "mds-input-select": HTMLMdsInputSelectElement;
@@ -3524,6 +3736,68 @@ declare namespace LocalJSX {
           * Specifies the color variant for the button
          */
         "variant"?: ButtonVariantType;
+    }
+    interface MdsCalendar {
+        /**
+          * Specifies the end date of the selection
+          * @description It's in ISO format (YYYY-MM-DD).
+          * @example '2023-10-01'
+         */
+        "endDate"?: string | null;
+        /**
+          * Specifies the minimum date of the selection
+          * @description It's in ISO format (YYYY-MM-DD).
+          * @example '2023-10-01'
+         */
+        "max"?: string | null;
+        /**
+          * Specifies the minimum date of the selection
+          * @description It's in ISO format (YYYY-MM-DD).
+          * @example '2023-10-01'
+         */
+        "min"?: string | null;
+        "onCheckPreselectionsEmitter"?: (event: MdsCalendarCustomEvent<void>) => void;
+        "onDatesEmitter"?: (event: MdsCalendarCustomEvent<{startDate: string, endDate?: string}>) => void;
+        "rangePicker"?: boolean;
+        /**
+          * Specifies the start date of the selection
+          * @description It's in ISO format (YYYY-MM-DD).
+          * @example '2023-10-01'
+         */
+        "startDate"?: string | null;
+    }
+    interface MdsCalendarCell {
+        /**
+          * Specifies the date of the cell
+          * @description It's in ISO format (YYYY-MM-DD).
+         */
+        "date"?: string;
+        /**
+          * Specifies if the cell is disabled
+         */
+        "disabled"?: boolean | undefined;
+        /**
+          * Specifies if the current month or a weekend
+         */
+        "month"?: CalendarCellType;
+        /**
+          * Specifies the selection orientation of the cell
+          * @description It can be 'horizontal' or 'vertical', but currently only 'horizontal' is supported
+         */
+        "orientation"?: CalendarCellSelectionOrieintationType;
+        /**
+          * Specifies if the selection is a preview or the final selection
+         */
+        "preview"?: boolean;
+        /**
+          * Specifies the point of selection of the cell
+          * @description It can be `end`, `middle`, `none`, `single`, `start`
+         */
+        "selection"?: CalendarCellSelectionPositionType;
+        /**
+          * Specifies if the cell is today
+         */
+        "today"?: boolean | undefined;
     }
     /**
      * @name Button
@@ -4104,6 +4378,71 @@ declare namespace LocalJSX {
           * Sets the variant of the input field
          */
         "variant"?: ThemeStatusVariantType;
+    }
+    interface MdsInputDate {
+        /**
+          * Specifies the delay in milliseconds before closing the calendar dropdown, if the value is 0 the dropdown will not close
+          * @description Default is 500
+         */
+        "delay"?: number;
+        /**
+          * Specifies the max date of the range, user cannot set dates after this date
+          * @description It's in ISO format (YYYY-MM-DD).
+         */
+        "max"?: string | null;
+        /**
+          * Specifies the min date of the range, user cannot set dates before this date
+          * @description It's in ISO format (YYYY-MM-DD).
+         */
+        "min"?: string | null;
+        "onValueChange"?: (event: MdsInputDateCustomEvent<string>) => void;
+        /**
+          * Specifies the value of the input
+          * @description It's in ISO format (YYYY-MM-DD).
+         */
+        "value"?: string;
+    }
+    interface MdsInputDateRange {
+        /**
+          * Specifies the delay in milliseconds before closing the calendar dropdown, if the value is 0 the dropdown will not close
+          * @description Default is 500
+         */
+        "delay"?: number;
+        /**
+          * Specifies the end date of the range
+          * @description It's in ISO format (YYYY-MM-DD).
+         */
+        "endDate"?: string;
+        /**
+          * Specifies the max date of the range, user cannot set dates after this date
+          * @description It's in ISO format (YYYY-MM-DD).
+         */
+        "max"?: string | null;
+        /**
+          * Specifies the min date of the range, user cannot set dates before this date
+          * @description It's in ISO format (YYYY-MM-DD).
+         */
+        "min"?: string | null;
+        "onDateRangeSelected"?: (event: MdsInputDateRangeCustomEvent<{ startDate: string, endDate: string }>) => void;
+        /**
+          * Specifies the start date of the range
+          * @description It's in ISO format (YYYY-MM-DD).
+         */
+        "startDate"?: string;
+    }
+    interface MdsInputDateRangePreselection {
+        /**
+          * Sets the end date of the preselection
+         */
+        "end"?: string;
+        /**
+          * Sets the preselection date range
+         */
+        "selected"?: boolean;
+        /**
+          * Sets the start date of the preselection
+         */
+        "start": string;
     }
     interface MdsInputField {
         /**
@@ -5140,6 +5479,8 @@ declare namespace LocalJSX {
         "mds-breadcrumb": MdsBreadcrumb;
         "mds-breadcrumb-item": MdsBreadcrumbItem;
         "mds-button": MdsButton;
+        "mds-calendar": MdsCalendar;
+        "mds-calendar-cell": MdsCalendarCell;
         "mds-card": MdsCard;
         "mds-card-content": MdsCardContent;
         "mds-card-footer": MdsCardFooter;
@@ -5161,6 +5502,9 @@ declare namespace LocalJSX {
         "mds-icon": MdsIcon;
         "mds-img": MdsImg;
         "mds-input": MdsInput;
+        "mds-input-date": MdsInputDate;
+        "mds-input-date-range": MdsInputDateRange;
+        "mds-input-date-range-preselection": MdsInputDateRangePreselection;
         "mds-input-field": MdsInputField;
         "mds-input-range": MdsInputRange;
         "mds-input-select": MdsInputSelect;
@@ -5241,6 +5585,8 @@ declare module "@stencil/core" {
             "mds-breadcrumb": LocalJSX.MdsBreadcrumb & JSXBase.HTMLAttributes<HTMLMdsBreadcrumbElement>;
             "mds-breadcrumb-item": LocalJSX.MdsBreadcrumbItem & JSXBase.HTMLAttributes<HTMLMdsBreadcrumbItemElement>;
             "mds-button": LocalJSX.MdsButton & JSXBase.HTMLAttributes<HTMLMdsButtonElement>;
+            "mds-calendar": LocalJSX.MdsCalendar & JSXBase.HTMLAttributes<HTMLMdsCalendarElement>;
+            "mds-calendar-cell": LocalJSX.MdsCalendarCell & JSXBase.HTMLAttributes<HTMLMdsCalendarCellElement>;
             /**
              * @name Button
              * @description Buttons are used to initialize an action. Button labels express what action will occur when the user interacts with it.
@@ -5272,6 +5618,9 @@ declare module "@stencil/core" {
             "mds-icon": LocalJSX.MdsIcon & JSXBase.HTMLAttributes<HTMLMdsIconElement>;
             "mds-img": LocalJSX.MdsImg & JSXBase.HTMLAttributes<HTMLMdsImgElement>;
             "mds-input": LocalJSX.MdsInput & JSXBase.HTMLAttributes<HTMLMdsInputElement>;
+            "mds-input-date": LocalJSX.MdsInputDate & JSXBase.HTMLAttributes<HTMLMdsInputDateElement>;
+            "mds-input-date-range": LocalJSX.MdsInputDateRange & JSXBase.HTMLAttributes<HTMLMdsInputDateRangeElement>;
+            "mds-input-date-range-preselection": LocalJSX.MdsInputDateRangePreselection & JSXBase.HTMLAttributes<HTMLMdsInputDateRangePreselectionElement>;
             "mds-input-field": LocalJSX.MdsInputField & JSXBase.HTMLAttributes<HTMLMdsInputFieldElement>;
             "mds-input-range": LocalJSX.MdsInputRange & JSXBase.HTMLAttributes<HTMLMdsInputRangeElement>;
             "mds-input-select": LocalJSX.MdsInputSelect & JSXBase.HTMLAttributes<HTMLMdsInputSelectElement>;

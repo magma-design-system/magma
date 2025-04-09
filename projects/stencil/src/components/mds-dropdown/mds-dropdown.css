@@ -72,7 +72,7 @@
   position: fixed;
 }
 
-::slotted( *) {
+::slotted(*) {
   @apply z-10;
 
   position: relative;

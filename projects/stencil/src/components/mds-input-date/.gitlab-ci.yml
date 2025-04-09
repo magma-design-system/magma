@@ -1,0 +1,20 @@
+.base-input-date:
+  variables:
+    COMPONENT: mds-input-date
+
+# TEST
+input-date-publish-test:
+  extends: [.base-stencil-publish-test, .base-input-date]
+  dependencies: [base-stencil-build, base-isolate]
+
+# PUBLISH
+input-date-publish:
+  extends: [.base-stencil-publish, .base-input-date]
+  dependencies: [base-stencil-build, base-isolate]
+  needs: [base-stencil-build, base-isolate, input-date-publish-test]
+
+# INSTALL TEST
+input-date-install-test:
+  extends: [.base-stencil-install-test, .base-input-date]
+  dependencies: [base-stencil-build, base-isolate]
+  needs: [base-stencil-build, base-isolate, input-date-publish]

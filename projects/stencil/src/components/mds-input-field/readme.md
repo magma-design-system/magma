@@ -13,7 +13,6 @@ This is a web-component from Maggioli Design System [Magma](https://magma.maggio
 | --------- | --------- | ---------------------------------------------------------------------- | ---------------------------------------------------------- | ----------- |
 | `label`   | `label`   | Display a text on the top of the input text field                      | `string \| undefined`                                      | `undefined` |
 | `message` | `message` | Display a message at the bottom of the input text field                | `string \| undefined`                                      | `undefined` |
-| `tip`     | `tip`     | Display the variant of a message at the bottom of the input text field | `string \| undefined`                                      | `undefined` |
 | `variant` | `variant` | Display the variant of a message at the bottom of the input text field | `"error" \| "info" \| "success" \| "warning" \| undefined` | `undefined` |
 
 

@@ -1,7 +1,7 @@
 {
-  "name": "@maggioli-design-system/mds-modal",
-  "version": "6.1.0",
-  "description": "mds-modal is a web-component from Magma Design System, built with StencilJS, TypeScript, Storybook. It's based on the web-component standard and it's designed to be agnostic from the JavaScript framework you are using.",
+  "name": "@maggioli-design-system/mds-input-date-range",
+  "version": "1.0.0",
+  "description": "mds-input-date-range is a web-component from Magma Design System, built with StencilJS, TypeScript, Storybook. It's based on the web-component standard and it's designed to be agnostic from the JavaScript framework you are using.",
   "main": "dist/index.cjs.js",
   "module": "dist/index.js",
   "es2015": "dist/esm/index.mjs",
@@ -9,7 +9,7 @@
   "types": "dist/types/components.d.ts",
   "collection": "dist/collection/collection-manifest.json",
   "collection:main": "dist/collection/index.js",
-  "unpkg": "dist/mds-modal/mds-modal.esm.js",
+  "unpkg": "dist/mds-input-date-range/mds-input-date-range.esm.js",
   "files": [
     "dist/",
     "documentation.json",
@@ -24,10 +24,14 @@
     "test": "stencil test --spec --e2e"
   },
   "dependencies": {
-    "@maggioli-design-system/mds-button": "6.5.0",
+    "@maggioli-design-system/mds-calendar": "1.0.0",
+    "@maggioli-design-system/mds-dropdown": "5.8.0",
+    "@maggioli-design-system/mds-input-date": "1.0.0",
+    "@maggioli-design-system/mds-input-date-range-preselection": "1.0.0",
     "@maggioli-design-system/styles": "15.9.1",
     "@stencil/core": "4.27.2",
-    "clsx": "2.1.0"
+    "clsx": "2.1.0",
+    "luxon": "^3.5.0"
   },
   "license": "MIT",
   "author": {
@@ -37,8 +41,8 @@
   },
   "contributors": [
     {
-      "name": "Andrea Pruccoli",
-      "email": "andrea.pruccoli@maggioli.it",
+      "name": "Andrea Savo",
+      "email": "andrea.savo@maggioli.it",
       "role": "Software Engineer"
     },
     {

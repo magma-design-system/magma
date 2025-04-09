@@ -4,8 +4,10 @@ import { ModalPositionType, ModalAnimationStateType, ModalOverflowType, ModalAni
 import { cssDurationToMilliseconds } from '@common/unit'
 
 /**
- * @slot default - Contents that will be placed in the center of the window. Add `text string`, `HTML elements` or `components` to this slot.
+ * @part action-close - Selects the close button of the modal.
+ * @part window - Selects the default window element of the modal when used.
  * @slot bottom - Contents that will be placed on bottom of the window. Add `text string`, `HTML elements` or `components` to this slot.
+ * @slot default - Contents that will be placed in the center of the window. Add `text string`, `HTML elements` or `components` to this slot.
  * @slot top - Contents that will be placed on top of the window. Add `text string`, `HTML elements` or `components` to this slot.
  * @slot window - Use directly a window component if you need it. Add `text string`, `HTML elements` or `components` to this slot.
  */
@@ -224,7 +226,7 @@ export class MdsModal {
             }
           </div>
         }
-        { !this.window && <mds-button class="action-close" icon="mi/baseline/close" variant="light" tone="quiet" size="xl" onClick={(e: Event) => { this.closeModal(e) }}></mds-button> }
+        { !this.window && <mds-button class="action-close" icon="mi/baseline/close" variant="light" tone="quiet" size="xl" onClick={(e: Event) => { this.closeModal(e) }} part="action-close"></mds-button> }
       </Host>
     )
   }

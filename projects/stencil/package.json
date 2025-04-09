@@ -1,6 +1,6 @@
 {
   "name": "@maggioli-design-system/magma",
-  "version": "1.5.1",
+  "version": "1.6.0",
   "description": "Magma is Maggioli Design System's web-components library.",
   "main": "dist/index.cjs.js",
   "module": "dist/index.js",
@@ -62,9 +62,10 @@
     "dayjs": "1.11.13",
     "filesize": "10.1.0",
     "fitty": "2.4.2",
-    "mustache": "4.2.0",
     "idb-keyval": "6.2.1",
-    "mime": "4.0.4"
+    "luxon": "^3.5.0",
+    "mime": "4.0.4",
+    "mustache": "4.2.0"
   },
   "license": "MIT",
   "devDependencies": {
@@ -74,8 +75,8 @@
     "@babel/preset-react": "7.22.15",
     "@babel/preset-typescript": "7.23.2",
     "@rollup/plugin-alias": "5.1.0",
-    "@stencil/angular-output-target": "0.10.2",
     "@stencil-community/eslint-plugin": "0.9.0",
+    "@stencil/angular-output-target": "0.10.0",
     "@stencil/postcss": "2.1.0",
     "@stencil/react-output-target": "0.8.2",
     "@storybook/addon-a11y": "7.6.7",
@@ -98,7 +99,7 @@
     "directory-tree": "3.5.1",
     "eslint-plugin-storybook": "0.6.15",
     "handlebars": "4.7.8",
-    "jest-environment-node":"29.7.0",
+    "jest-environment-node": "29.7.0",
     "jest-transformer-svg": "2.0.2",
     "postcss": "8.4.49",
     "postcss-flexbugs-fixes": "5.0.2",

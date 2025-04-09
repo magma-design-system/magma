@@ -1,0 +1,37 @@
+:host {
+  --mds-date-range-preselection-default-background: rgb(var(--tone-neutral-08) / 0);
+  --mds-date-range-preselection-default-border: var(--tone-neutral-08);
+  --mds-date-range-preselection-default-color: theme('colors.tone-neutral-03');
+  --mds-date-range-preselection-selected-background: theme('colors.variant-primary-03');
+  --mds-date-range-preselection-selected-border: var(--variant-primary-03);
+  --mds-date-range-preselection-selected-color: theme('colors.tone-neutral');
+  --mds-date-range-preselection-hover-background: theme('colors.tone-neutral-08');
+  --mds-date-range-preselection-hover-border: var(--tone-neutral-08);
+  --mds-date-range-preselection-hover-color: theme('colors.tone-neutral-03');
+  /* private */ --mds-date-range-preselection-background: var(--mds-date-range-preselection-default-background);
+  /* private */ --mds-date-range-preselection-border: var(--mds-date-range-preselection-default-border);
+  /* private */ --mds-date-range-preselection-color: var(--mds-date-range-preselection-default-color);
+
+  display: inline-flex;
+  justify-self: start;
+}
+
+:host .action {
+  --mds-button-background: var(--mds-date-range-preselection-background);
+  --mds-button-border-color: var(--mds-date-range-preselection-border);
+  --mds-button-color: var(--mds-date-range-preselection-color);
+}
+
+:host .action:hover {
+  --mds-date-range-preselection-background: var(--mds-date-range-preselection-hover-background);
+  --mds-date-range-preselection-border: var(--mds-date-range-preselection-hover-border);
+  --mds-date-range-preselection-color: var(--mds-date-range-preselection-hover-color);
+}
+
+:host([selected]) .action {
+  --mds-date-range-preselection-background: var(--mds-date-range-preselection-selected-background);
+  --mds-date-range-preselection-border: var(--mds-date-range-preselection-selected-border);
+  --mds-date-range-preselection-color: var(--mds-date-range-preselection-selected-color);
+
+  pointer-events: none;
+}
