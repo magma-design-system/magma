@@ -44,19 +44,21 @@ const Template = args => {
   useEffect(() => {
     const actionElement = document.querySelector('#action')
     const modalElement = document.querySelector('#modal')
+    const urlViewElement = document.querySelector('#url-view')
 
-    if (actionElement === null || modalElement === null) {
+    if (actionElement === null || modalElement === null || urlViewElement === null) {
       // eslint-disable-next-line no-alert
       alert('Element/s not found')
       return
     }
 
     modalElement.addEventListener('mdsModalClose', () => {
-      console.info('mdsModalClose')
       setOpened(false)
     })
     modalElement.addEventListener('mdsModalHide', () => {
-      console.info('mdsModalHide')
+      setOpened(false)
+    })
+    urlViewElement.addEventListener('mdsUrlViewClose', () => {
       setOpened(false)
     })
   }, [])
@@ -68,7 +70,7 @@ const Template = args => {
   return <div>
     <mds-button id="action" onClick={() => setOpened(true)}>Open modal</mds-button>
     <mds-modal position="center" id="modal" opened={opened === true ? true : undefined}>
-      <mds-url-view class="max-w-lg w-full" slot="window" {...args}/>
+      <mds-url-view id="url-view" class="max-w-screen-tablet w-full" slot="window" {...args}/>
     </mds-modal>
   </div>
 }
@@ -76,11 +78,6 @@ const Template = args => {
 export const Default = Template.bind({})
 Default.args = {
   src: urlPage,
-}
-Default.story = {
-  parameters: {
-    loki: { skip: true },
-  },
 }
 
 export const Label = Template.bind({})

@@ -57,9 +57,9 @@ export class MdsUrlView {
   }
 
   /**
-   * Emits when the url view is closed
+   * Emits when the close button is clicked
    */
-  @Event({ bubbles: true, composed: true, eventName: 'mdsUrlViewClose' }) closeEvent: EventEmitter<void>
+  @Event({ eventName: 'mdsUrlViewClose' }) closeEvent: EventEmitter<void>
 
   private closeUrlView = (): void => {
     this.closeEvent.emit()

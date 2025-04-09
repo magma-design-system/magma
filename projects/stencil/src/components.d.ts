@@ -5084,7 +5084,7 @@ declare namespace LocalJSX {
          */
         "loading"?: LoadingType;
         /**
-          * Emits when the url view is closed
+          * Emits when the close button is clicked
          */
         "onMdsUrlViewClose"?: (event: MdsUrlViewCustomEvent<void>) => void;
         /**
