@@ -29,6 +29,12 @@ export class MdsInputDate {
    */
   @Prop({ reflect: true, mutable: true }) max: string | null = null
 
+  /**
+   * Specifies the delay in milliseconds before closing the calendar dropdown, if the value is 0 the dropdown will not close
+   * @description Default is 500
+   */
+  @Prop({ reflect: true }) readonly delay: number = 500
+
   @State() empty: boolean | undefined = undefined
   @State() internalValue: string = ''
   @State() calendarKey: number = 0
@@ -122,11 +128,12 @@ export class MdsInputDate {
               }
 
               this.valueChange.emit(this.internalValue)
+              if (this.delay === 0) return
               const { dropdownRef } = this
               if (dropdownRef) {
                 setTimeout(() => {
                   dropdownRef.visible = false
-                }, 500)
+                }, this.delay)
               }
             }}
             startDate={this.internalValue}

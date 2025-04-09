@@ -48,7 +48,7 @@ export class MdsInputDateRange {
   @Prop({ reflect: true }) max: string | null = null
 
   /**
-   * Specifies the delay in milliseconds before closing the calendar dropdown
+   * Specifies the delay in milliseconds before closing the calendar dropdown, if the value is 0 the dropdown will not close
    * @description Default is 500
    */
   @Prop({ reflect: true }) readonly delay: number = 500
@@ -104,6 +104,7 @@ export class MdsInputDateRange {
 
     if (calendar) {
       await calendar.updateCurrentDate(this.internalStartDate)
+      if (this.delay === 0) return
       const { dropdownRef } = this
       if (dropdownRef) {
         setTimeout(() => {
@@ -290,6 +291,7 @@ export class MdsInputDateRange {
                   startDate: this.internalStartDate,
                   endDate: this.internalEndDate,
                 })
+                if (this.delay === 0) return
                 const { dropdownRef } = this
                 if (dropdownRef) {
                   setTimeout(() => {
