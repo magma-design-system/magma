@@ -19,9 +19,8 @@ export class MdsCalendar {
   @State() currentDate: DateTime = DateTime.now()
   @State() weekDaysinMonth: DateTime[] = []
   @State() weekdays: string[] = []
-  @State() startDateElement: HTMLElement | null = null
-  @State() endDateElement: HTMLElement | null = null
-  @State() previewElement: HTMLElement | null = null
+  @State() startDateIdentifier: string | null = null
+  @State() endDateIdentifier: string | null = null
   @State() isFirstClick: boolean = true
   @State() currentView: 'calendar' | 'years' | 'months' = 'calendar'
   @State() selectedYear: number = this.currentDate.year
@@ -110,7 +109,7 @@ export class MdsCalendar {
 
     this.host?.shadowRoot?.addEventListener('mouseover', event => {
       const target = event.target as HTMLElement
-      if (target.matches('mds-calendar-cell') && this.startDateElement && this.rangePicker) {
+      if (target.matches('mds-calendar-cell') && this.startDateIdentifier && this.rangePicker) {
         this.handleHover(target)
       }
     })
@@ -121,7 +120,7 @@ export class MdsCalendar {
   componentWillUnload (): void {
     this.host?.shadowRoot?.removeEventListener('mouseover', event => {
       const target = event.target as HTMLElement
-      if (target.matches('mds-calendar-cell') && this.startDateElement && this.rangePicker) {
+      if (target.matches('mds-calendar-cell') && this.startDateIdentifier && this.rangePicker) {
         this.handleHover(target)
       }
     })
@@ -294,9 +293,9 @@ export class MdsCalendar {
     const resetSelection = (): void => {
       this.internalStartDate = null
       this.internalEndDate = null
-      this.startDateElement = null
+      this.startDateIdentifier = null
       this.startDateTime = null
-      this.endDateElement = null
+      this.endDateIdentifier = null
       this.endDateTime = null
       this.isFirstClick = true
 
@@ -307,15 +306,14 @@ export class MdsCalendar {
           day.removeAttribute('preview')
         })
       })
-
     }
 
-    if (this.startDateElement && this.endDateElement) {
+    if (this.startDateIdentifier && this.endDateIdentifier) {
       resetSelection()
     }
 
     if (this.isFirstClick) {
-      this.startDateElement = element
+      this.startDateIdentifier = dayInfo.toISODate()
       this.startDateTime = dayInfo
       this.internalStartDate = this.startDateTime.toISO().split('T')[0]
       this.isFirstClick = false
@@ -332,37 +330,34 @@ export class MdsCalendar {
         element.setAttribute('preview', 'true')
       })
 
-
       return
     }
 
     const calendar: HTMLMdsCalendarElement = this.host
     const mdsCalendarCellElements = calendar?.shadowRoot?.querySelectorAll('mds-calendar-cell')
-    const startDateElementIndex = Array.from(mdsCalendarCellElements ?? []).indexOf(this.startDateElement as HTMLMdsCalendarCellElement)
+    const startDateElementIndex = Array.from(mdsCalendarCellElements ?? [])
+      .findIndex((cell: HTMLMdsCalendarCellElement) => cell.getAttribute('date') === this.startDateIdentifier)
     const elementIndex = Array.from(mdsCalendarCellElements ?? []).indexOf(element as HTMLMdsCalendarCellElement)
 
-
     element.setAttribute('selection', 'end')
-    if ( this.startDateElement && DateTime.fromISO(this.startDateElement.getAttribute('date') as string) < DateTime.fromISO(element.getAttribute('date') as string)) {
-      this.endDateElement = element
+    if ( this.startDateIdentifier && DateTime.fromISO(this.startDateIdentifier) < DateTime.fromISO(element.getAttribute('date') as string)) {
+      this.endDateIdentifier = element.getAttribute('date')
       this.endDateTime = dayInfo
       this.internalEndDate = this.endDateTime.toISO().split('T')[0]
     } else {
-      this.endDateElement = this.startDateElement
+      this.endDateIdentifier = this.startDateIdentifier
       this.endDateTime = this.startDateTime
       this.internalEndDate = this.internalStartDate
-
-      this.startDateElement = element
+      this.startDateIdentifier = element.getAttribute('date')
       this.startDateTime = dayInfo
       this.internalStartDate = this.startDateTime.toISO().split('T')[0]
     }
-
 
     calendar?.shadowRoot?.querySelectorAll('mds-calendar-cell[preview]').forEach(day => {
       day.removeAttribute('preview')
     })
 
-    if (mdsCalendarCellElements) {
+    if (mdsCalendarCellElements && startDateElementIndex !== -1) {
       for (let i = startDateElementIndex + 1; i < elementIndex; i++) {
         mdsCalendarCellElements[i].setAttribute('selection', 'middle')
       }
@@ -372,14 +367,13 @@ export class MdsCalendar {
       this.datesEmitter.emit({ startDate: this.internalStartDate, endDate: this.internalEndDate })
       this.checkPreselectionsEmitter.emit()
     }
-
   }
 
   private handleHover (element: HTMLElement): void {
     const typedElement = element as HTMLMdsCalendarCellElement
     const startDate = DateTime.fromISO(this.internalStartDate)
 
-    if (!startDate.isValid || this.endDateElement !== null) return
+    if (!startDate.isValid || this.endDateIdentifier !== null) return
 
     const calendar = this.host as HTMLMdsCalendarElement
     const mdsCalendarCellElements = Array.from(calendar?.shadowRoot?.querySelectorAll('mds-calendar-cell') ?? [])
@@ -444,7 +438,7 @@ export class MdsCalendar {
     calendar?.shadowRoot?.querySelectorAll('mds-calendar-cell[selection]').forEach(day => {
       day.removeAttribute('selection')
     })
-    this.startDateElement = element
+    this.startDateIdentifier = element.getAttribute('date')
     this.startDateTime = dayInfo
     this.internalStartDate = this.startDateTime.toISO().split('T')[0]
     this.isFirstClick = false
