@@ -339,7 +339,6 @@ export class MdsCalendar {
       .findIndex((cell: HTMLMdsCalendarCellElement) => cell.getAttribute('date') === this.startDateIdentifier)
     const elementIndex = Array.from(mdsCalendarCellElements ?? []).indexOf(element as HTMLMdsCalendarCellElement)
 
-    element.setAttribute('selection', 'end')
     if ( this.startDateIdentifier && DateTime.fromISO(this.startDateIdentifier) < DateTime.fromISO(element.getAttribute('date') as string)) {
       this.endDateIdentifier = element.getAttribute('date')
       this.endDateTime = dayInfo
