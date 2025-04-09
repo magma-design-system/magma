@@ -1,0 +1,82 @@
+@tailwind utilities;
+
+:host {
+  --mds-calendar-day-number-other-month-color: theme('colors.tone-neutral-07');
+  --mds-calendar-day-number-color: theme('colors.tone-neutral-01');
+  --mds-calendar-cell-gap: theme('gap.50');
+  --mds-calendar-cell-other-month-visibility: visible;
+  --mds-calendar-border-radius: theme('borderRadius.lg');
+  --mds-calendar-background: theme('colors.tone-neutral');
+  --mds-calendar-padding: theme('padding.400');
+
+  background-color: theme('colors.tone-neutral-09');
+  border-radius: var(--mds-calendar-border-radius);
+  cursor: auto;
+  display: inline-flex;
+  max-width: 380px;
+  min-width: min-content;
+  overflow: hidden;
+}
+
+.calendar-view {
+  background-color: var(--mds-calendar-background);
+  border-radius: inherit;
+  display: grid;
+  padding: var(--mds-calendar-padding);
+}
+
+.calendar-preselection {
+  display: none;
+  gap: theme('spacing.50');
+  grid-auto-rows: min-content;
+  padding: var(--mds-calendar-padding);
+}
+
+.calendar-preselection--has-preselection {
+  display: grid;
+}
+
+nav {
+  display: flex;
+  gap: theme('spacing.400');
+  justify-content: space-between;
+}
+
+.action {
+  @apply px-200;
+
+  justify-content: left;
+  min-width: min-content;
+}
+
+.action-back,
+.action-forward {
+  flex-shrink: 0;
+}
+
+.select-month-or-year {
+  background-color: theme('colors.tone-neutral-09');
+  border-radius: theme('borderRadius.lg');
+  display: flex;
+  flex-grow: 1;
+  justify-content: space-evenly;
+}
+
+.action-month,
+.action-year {
+  flex-basis: 0;
+  flex-grow: 1;
+}
+
+.week-day-name {
+  align-items: center;
+  aspect-ratio: 1;
+  max-height: auto;
+  min-height: auto;
+  padding: 0;
+}
+
+@import './css/mds-calendar-view-month.css';
+@import './css/mds-calendar-view-month-names.css';
+
+

@@ -57,7 +57,7 @@
   gap: var(--mds-button-gap);
   justify-content: center;
   position: relative;
-  transition-property: background-color, border-color, box-shadow, color, transform, outline, outline-offset;
+  transition-property: background-color, border-color, box-shadow, color, outline, outline-offset, padding-left, padding-right, transform;
   user-select: none;
 }
 

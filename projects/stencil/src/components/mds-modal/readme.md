@@ -38,9 +38,10 @@ This is a web-component from Maggioli Design System [Magma](https://magma.maggio
 
 ## Shadow Parts
 
-| Part       | Description |
-| ---------- | ----------- |
-| `"window"` |             |
+| Part             | Description                                                |
+| ---------------- | ---------------------------------------------------------- |
+| `"action-close"` | Selects the close button of the modal.                     |
+| `"window"`       | Selects the default window element of the modal when used. |
 
 
 ## CSS Custom Properties

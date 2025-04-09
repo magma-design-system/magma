@@ -1,0 +1,11 @@
+.month-view {
+  display: grid;
+}
+
+.month-view__days-names,
+.month-view__cells {
+  display: grid;
+  gap: var(--mds-calendar-cell-gap);
+  grid-template-columns: repeat(7, minmax(1px, 100%));
+  min-width: 0;
+}

@@ -1,0 +1,52 @@
+:host {
+  --mds-input-date-range-icon-color: var(--brand-maggioli-03);
+  --mds-input-date-range-variant-color: 0 0 0;
+}
+
+:host( :focus-within ) {
+  --mds-input-date-range-variant-color: var(--brand-maggioli-04);
+}
+
+:host( [variant="info"] ) {
+  --mds-input-date-range-icon-color: var(--status-info-05);
+  --mds-input-date-range-tip-background: var(--status-info-05);
+  --mds-input-date-range-variant-color: 0 0 0;
+}
+
+:host( [variant="info"]:focus-within ) {
+  --mds-input-date-range-icon-color: var(--status-info-04);
+  --mds-input-date-range-variant-color: var(--status-info-05);
+}
+
+:host( [variant="success"] ) {
+  --mds-input-date-range-icon-color: var(--status-success-05);
+  --mds-input-date-range-tip-background: var(--status-success-05);
+  --mds-input-date-range-variant-color: 0 0 0;
+}
+
+:host( [variant="success"]:focus-within ) {
+  --mds-input-date-range-icon-color: var(--status-success-04);
+  --mds-input-date-range-variant-color: var(--status-success-05);
+}
+
+:host( [variant="warning"] ) {
+  --mds-input-date-range-icon-color: var(--status-warning-05);
+  --mds-input-date-range-tip-background: var(--status-warning-05);
+  --mds-input-date-range-variant-color: 0 0 0;
+}
+
+:host( [variant="warning"]:focus-within ) {
+  --mds-input-date-range-icon-color: var(--status-warning-04);
+  --mds-input-date-range-variant-color: var(--status-warning-05);
+}
+
+:host( [variant="error"] ) {
+  --mds-input-date-range-icon-color: var(--status-error-05);
+  --mds-input-date-range-tip-background: var(--status-error-05);
+  --mds-input-date-range-variant-color: 0 0 0;
+}
+
+:host( [variant="error"]:focus-within ) {
+  --mds-input-date-range-icon-color: var(--status-error-04);
+  --mds-input-date-range-variant-color: var(--status-error-05);
+}

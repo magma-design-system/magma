@@ -4450,10 +4450,10 @@
     jsdom "^25.0.0"
     tsutils "^3.21.0"
 
-"@stencil/angular-output-target@0.10.2":
-  version "0.10.2"
-  resolved "https://registry.npmjs.org/@stencil/angular-output-target/-/angular-output-target-0.10.2.tgz#a885058e0991df6a8040f2fa841683ea63e75059"
-  integrity sha512-jPRa2NMAPtm/iMY+mUaWATbIhgY5zPJfUNQyF8nwC0rMrfXifPoRCf6BbH2S4Gy7SX0X4hlP+jAbVUjQNg/P+Q==
+"@stencil/angular-output-target@0.10.0":
+  version "0.10.0"
+  resolved "https://registry.npmjs.org/@stencil/angular-output-target/-/angular-output-target-0.10.0.tgz#990ee88801a509da7ab857afd36a310b4d0954c6"
+  integrity sha512-j/VXofXggbqzfzX6+1F++IZbGNfEKw1eQAdd5S4PpjGGWsf0TI6qDBd4YrjCMHAKCSV18FNuKFBejejM/49T/Q==
 
 "@stencil/core@4.27.2":
   version "4.27.2"
@@ -13259,6 +13259,11 @@ lru-cache@^7.14.1:
   version "7.18.3"
   resolved "https://registry.npmjs.org/lru-cache/-/lru-cache-7.18.3.tgz#f793896e0fd0e954a59dfdd82f0773808df6aa89"
   integrity sha512-jumlc0BIUrS3qJGgIkWZsyfAM7NCWiBcCDhnd+3NNM5KbBmLTgHVfWBcg6W+rLUsIpzpERPsvwUP7CckAQSOoA==
+
+luxon@^3.5.0:
+  version "3.5.0"
+  resolved "https://registry.npmjs.org/luxon/-/luxon-3.5.0.tgz#6b6f65c5cd1d61d1fd19dbf07ee87a50bf4b8e20"
+  integrity sha512-rh+Zjr6DNfUYR3bPwJEnuwDdqMbxZW7LOQfUN4B54+Cl+0o5zaU9RJ6bcidfDtC1cWCZXQ+nvX8bf6bAji37QQ==
 
 magic-string@0.30.11:
   version "0.30.11"
