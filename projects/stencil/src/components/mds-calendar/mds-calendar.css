@@ -38,7 +38,7 @@
 
 nav {
   display: flex;
-  gap: theme('spacing.400');
+  gap: theme('spacing.200');
   justify-content: space-between;
 }
 
