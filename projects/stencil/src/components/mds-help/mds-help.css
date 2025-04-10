@@ -4,9 +4,13 @@
 :host {
   --mds-help-tooltip-width: fit-content;
   --mds-help-tooltip-max-width: 280px;
+  --mds-help-tooltip-min-width: 200px;
   --mds-help-tooltip-delay: 0.25s;
 
-  @apply ml-100;
+  @apply
+    h-400
+    ml-100
+    w-400;
 
   color: theme('colors.tone-neutral-03');
   cursor: help;
@@ -25,8 +29,7 @@ mds-tooltip {
   --mds-tooltip-delay: var(--mds-help-tooltip-delay);
 
   max-width: var(--mds-help-tooltip-max-width);
-  min-width: var(--mds-help-tooltip-width);
-
+  min-width: var(--mds-help-tooltip-min-width);
 }
 
 mds-tooltip::part(text) {
@@ -37,11 +40,9 @@ mds-tooltip::part(text) {
 
 mds-icon,
 i {
-  @apply
-    h-400
-    w-400;
-
   fill: inherit;
+  height: inherit;
+  width: inherit;
 }
 
 @import '../../tailwind/fouc.css';
