@@ -1,4 +1,5 @@
 const themeVariantDictionary = [
+  'ai',
   'dark',
   'error',
   'info',
@@ -78,13 +79,24 @@ const toneVariantDictionary = [
 ]
 
 const themeVariantChipDictionary = [
-  'primary',
-  'secondary',
+  'ai',
+  'amaranth',
+  'aqua',
+  'blue',
   'dark',
   'error',
+  'green',
   'info',
+  'lime',
+  'orange',
+  'orchid',
+  'primary',
+  'secondary',
+  'sky',
   'success',
+  'violet',
   'warning',
+  'yellow',
 ]
 
 const toneActionVariantDictionary = [
