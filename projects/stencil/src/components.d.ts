@@ -1020,6 +1020,20 @@ export namespace Components {
          */
         "variant"?: ThemeStatusVariantType;
     }
+    interface MdsInputOtp {
+        /**
+          * Automatically submits the form when the OTP code is complete
+         */
+        "autosubmit": boolean;
+        /**
+          * Number of digits in the OTP code
+         */
+        "length": number;
+        /**
+          * The current value of the OTP code
+         */
+        "value"?: string;
+    }
     interface MdsInputRange {
         /**
           * An alias to custom how value is represented
@@ -2548,6 +2562,12 @@ declare global {
         prototype: HTMLMdsInputFieldElement;
         new (): HTMLMdsInputFieldElement;
     };
+    interface HTMLMdsInputOtpElement extends Components.MdsInputOtp, HTMLStencilElement {
+    }
+    var HTMLMdsInputOtpElement: {
+        prototype: HTMLMdsInputOtpElement;
+        new (): HTMLMdsInputOtpElement;
+    };
     interface HTMLMdsInputRangeElementEventMap {
         "mdsInputRangeChange": number;
     }
@@ -3240,6 +3260,7 @@ declare global {
         "mds-img": HTMLMdsImgElement;
         "mds-input": HTMLMdsInputElement;
         "mds-input-field": HTMLMdsInputFieldElement;
+        "mds-input-otp": HTMLMdsInputOtpElement;
         "mds-input-range": HTMLMdsInputRangeElement;
         "mds-input-select": HTMLMdsInputSelectElement;
         "mds-input-switch": HTMLMdsInputSwitchElement;
@@ -4296,6 +4317,20 @@ declare namespace LocalJSX {
          */
         "variant"?: ThemeStatusVariantType;
     }
+    interface MdsInputOtp {
+        /**
+          * Automatically submits the form when the OTP code is complete
+         */
+        "autosubmit"?: boolean;
+        /**
+          * Number of digits in the OTP code
+         */
+        "length"?: number;
+        /**
+          * The current value of the OTP code
+         */
+        "value"?: string;
+    }
     interface MdsInputRange {
         /**
           * An alias to custom how value is represented
@@ -5315,6 +5350,7 @@ declare namespace LocalJSX {
         "mds-img": MdsImg;
         "mds-input": MdsInput;
         "mds-input-field": MdsInputField;
+        "mds-input-otp": MdsInputOtp;
         "mds-input-range": MdsInputRange;
         "mds-input-select": MdsInputSelect;
         "mds-input-switch": MdsInputSwitch;
@@ -5426,6 +5462,7 @@ declare module "@stencil/core" {
             "mds-img": LocalJSX.MdsImg & JSXBase.HTMLAttributes<HTMLMdsImgElement>;
             "mds-input": LocalJSX.MdsInput & JSXBase.HTMLAttributes<HTMLMdsInputElement>;
             "mds-input-field": LocalJSX.MdsInputField & JSXBase.HTMLAttributes<HTMLMdsInputFieldElement>;
+            "mds-input-otp": LocalJSX.MdsInputOtp & JSXBase.HTMLAttributes<HTMLMdsInputOtpElement>;
             "mds-input-range": LocalJSX.MdsInputRange & JSXBase.HTMLAttributes<HTMLMdsInputRangeElement>;
             "mds-input-select": LocalJSX.MdsInputSelect & JSXBase.HTMLAttributes<HTMLMdsInputSelectElement>;
             "mds-input-switch": LocalJSX.MdsInputSwitch & JSXBase.HTMLAttributes<HTMLMdsInputSwitchElement>;
