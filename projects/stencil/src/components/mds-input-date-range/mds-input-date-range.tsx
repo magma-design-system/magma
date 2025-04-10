@@ -164,7 +164,7 @@ export class MdsInputDateRange {
     const slot = this.host.shadowRoot?.querySelector(`slot[name="${slotName}"]`) as HTMLSlotElement
     const input = slot?.assignedElements()[0] as HTMLMdsInputDateElement
     if (input) {
-      input.value = newValue
+      input.setValue(newValue)
     }
   }
 
@@ -175,56 +175,40 @@ export class MdsInputDateRange {
     this.hasPreselection = this.host.querySelector('mds-input-date-range-preselection') !== null
 
     if (startSlot) {
-      const input = startSlot?.assignedElements()[0] as HTMLMdsInputDateElement
-
-      const focusOutListener = this.createFocusoutListener('start')
-      const valueChangeListener = (ev: CustomEvent) => this.createValueChangeListener('start', ev)
-      input.addEventListener('focusout', focusOutListener)
-      input.addEventListener('valueChange', valueChangeListener)
+      const input = startSlot.assignedElements()[0] as HTMLMdsInputDateElement
+      input.addEventListener('mdsInputDateSelect', this.createFocusoutListener('start') as EventListener)
     }
 
     if (endSlot) {
-      const input = endSlot?.assignedElements()[0] as HTMLMdsInputDateElement
-
-      const focusOutListener = this.createFocusoutListener('end')
-      const valueChangeListener = (ev: CustomEvent) => this.createValueChangeListener('end', ev)
-      input.addEventListener('focusout', focusOutListener)
-      input.addEventListener('valueChange', valueChangeListener)
+      const input = endSlot.assignedElements()[0] as HTMLMdsInputDateElement
+      input.addEventListener('mdsInputDateSelect', this.createFocusoutListener('end') as EventListener)
     }
   }
 
-  private createValueChangeListener (slotName: 'start' | 'end', event: CustomEvent): void {
-    const slot = this.host.shadowRoot?.querySelector(`slot[name="${slotName}"]`) as HTMLSlotElement
-    const input = slot?.assignedElements()[0] as HTMLMdsInputDateElement
-
-    if (input) {
-      input.value = event.detail
-    }
-  }
 
   private createFocusoutListener (slotName: 'start' | 'end'): EventListener {
-    return () => {
-      this.updateInternalDateValues(slotName)
-      this.validateDateRange()
-    }
-  }
-
-  private updateInternalDateValues (slotName: 'start' | 'end'): void {
-    const slot = this.host.shadowRoot?.querySelector(`slot[name="${slotName}"]`) as HTMLSlotElement
-    const input = slot?.assignedElements()[0] as HTMLMdsInputDateElement
-
-    if (input) {
-      const newValue = input.value
+    return (ev: CustomEvent) => {
+      const event = ev
 
       if (slotName === 'start') {
-        this.internalStartDate = newValue
-      } else if (slotName === 'end') {
-        this.internalEndDate = newValue
+        this.internalStartDate = event.detail
+      } else {
+        this.internalEndDate = event.detail
+      }
+
+      this.validateDateRange()
+
+      if (event.detail.valid && this.internalStartDate && this.internalEndDate) {
+        this.dateRangeSelected.emit({
+          startDate: this.internalStartDate,
+          endDate: this.internalEndDate,
+        })
       }
 
       this.checkPreselections()
     }
   }
+
 
   private validateDateRange (): void {
     if (this.internalStartDate && this.internalEndDate) {

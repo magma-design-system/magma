@@ -997,6 +997,7 @@ export namespace Components {
           * @description It's in ISO format (YYYY-MM-DD).
          */
         "min": string | null;
+        "setValue": (value: string) => Promise<void>;
         "updateLang": () => Promise<void>;
         /**
           * Specifies the value of the input

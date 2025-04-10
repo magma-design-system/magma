@@ -28,14 +28,6 @@ This is a web-component from Maggioli Design System [Magma](https://magma.maggio
 | `"header"` | Selects the HTML element wrapper of label text |
 
 
-## CSS Custom Properties
-
-| Name                                      | Description                                      |
-| ----------------------------------------- | ------------------------------------------------ |
-| `--mds-price-table-features-border-color` | Sets the border-color of the children components |
-| `--mds-price-table-features-padding`      | Sets the cell padding of the children components |
-
-
 ## Dependencies
 
 ### Depends on

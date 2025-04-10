@@ -34,6 +34,22 @@ Type: `Promise<void>`
 
 
 
+### `setValue(value: string) => Promise<void>`
+
+
+
+#### Parameters
+
+| Name    | Type     | Description |
+| ------- | -------- | ----------- |
+| `value` | `string` |             |
+
+#### Returns
+
+Type: `Promise<void>`
+
+
+
 ### `updateLang() => Promise<void>`
 
 
@@ -43,21 +59,6 @@ Type: `Promise<void>`
 Type: `Promise<void>`
 
 
-
-
-## CSS Custom Properties
-
-| Name                                     | Description                                                                                                               |
-| ---------------------------------------- | ------------------------------------------------------------------------------------------------------------------------- |
-| `--mds-input-date-background`            | Sets the background-color of the component                                                                                |
-| `--mds-input-date-icon-color`            | Sets the icon color of the component                                                                                      |
-| `--mds-input-date-ring`                  | Sets the box-shadow of the component's input                                                                              |
-| `--mds-input-date-shadow`                | Sets the box-shadow of the component's input                                                                              |
-| `--mds-input-date-textarea-field-sizing` | Sets the height of the textarea automatically, this is an EXPERIMENTAL css property, so it couldn't work in every browser |
-| `--mds-input-date-textarea-max-height`   | Sets the `max-height` of the component when attribute `type` is set to `textarea`                                         |
-| `--mds-input-date-textarea-min-height`   | Sets the `min-height` of the component when attribute `type` is set to `textarea`                                         |
-| `--mds-input-date-tip-background`        | Sets the background color of the tip message at the bottom right of the component                                         |
-| `--mds-input-date-variant-color`         | Sets the variant colors of the component                                                                                  |
 
 
 ## Dependencies

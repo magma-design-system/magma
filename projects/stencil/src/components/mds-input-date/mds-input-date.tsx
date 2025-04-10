@@ -52,17 +52,22 @@ export class MdsInputDate {
   @State() calendarKey: number = 0
   @State() dropdownRef?: HTMLMdsDropdownElement
   @State() messageError: string = ''
-  @Event({ eventName: 'mdsInputDateSelect' }) valueChange: EventEmitter<string>
+  @Event({ eventName: 'mdsInputDateSelect', bubbles: true, composed: true }) valueChange: EventEmitter<string>
 
   @Watch('value')
   handleValue (newValue: string): void {
     this.internalValue = newValue
-    const date = DateTime.fromISO(newValue)
+    this.validateValue(newValue)
+  }
 
-    if (!date.isValid) {
+  private validateValue (value: string): void {
+    const date = DateTime.fromISO(value)
+    if (!value || !date.isValid) {
       this.empty = true
+      this.messageError = this.t.get('invalid_date_format')
     } else {
       this.empty = undefined
+      this.messageError = ''
     }
   }
 
@@ -70,6 +75,12 @@ export class MdsInputDate {
   async focusInput (): Promise<void> {
     const input: HTMLInputElement = this.host.shadowRoot?.querySelector('.input') as HTMLInputElement
     input.focus()
+  }
+
+  @Method()
+  async setValue (value: string): Promise<void> {
+    this.internalValue = value
+    return Promise.resolve()
   }
 
   componentWillLoad (): void {
@@ -90,16 +101,18 @@ export class MdsInputDate {
   handleInput (event: Event): void {
     const input = event.target as HTMLInputElement
     this.internalValue = input.value
+    this.validateValue(this.internalValue)
   }
 
   handleChange (event: Event): void {
     const input = event.target as HTMLInputElement
     this.internalValue = input.value
-    this.valueChange.emit(this.internalValue)
+    this.validateValue(this.internalValue)
   }
 
   manageValue (ev: FocusEvent): void {
     const input = ev.target as HTMLInputElement
+    this.internalValue = input.value
     if (!input.validity.badInput && input.value !== '') {
       this.messageError = ''
       this.valueChange.emit(this.internalValue)
