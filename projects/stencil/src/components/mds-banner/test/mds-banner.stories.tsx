@@ -5,6 +5,10 @@ import { themeVariantDictionary, toneSimpleVariantDictionary } from '@dictionary
 export default {
   title: 'UI / Banner',
   argTypes: {
+    cockade: {
+      type: { name: 'boolean' },
+      description: 'Shows a decoration around the banner icon',
+    },
     deletable: {
       type: { name: 'boolean' },
       description: 'Shows the cross icon to perform cancel/delete action on element',
@@ -87,6 +91,12 @@ const TemplateVariantStatus = args =>
   </mds-banner>
 
 export const Default = Template.bind({})
+
+export const Cockade = Template.bind({})
+Cockade.args = {
+  icon: 'mi/baseline/warning',
+  cockade: true,
+}
 
 export const Headline = Template.bind({})
 Headline.args = {

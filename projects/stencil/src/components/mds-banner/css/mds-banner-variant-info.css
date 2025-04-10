@@ -5,6 +5,7 @@
   --mds-banner-color: theme('colors.status-info-02');
   --mds-banner-icon-color: theme('colors.status-info-05');
   --mds-banner-shadow: none;
+  --mds-banner-cockade-background: theme('colors.status-info-10');
 }
 
 :host([variant="info"][tone="weak"]) {
@@ -13,6 +14,7 @@
   --mds-banner-color: theme('colors.status-info-03');
   --mds-banner-icon-color: theme('colors.status-info-06');
   --mds-banner-shadow: none;
+  --mds-banner-cockade-background: theme('colors.status-info-09');
 }
 
 :host([variant="info"][tone="quiet"]) {
