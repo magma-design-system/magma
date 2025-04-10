@@ -59,7 +59,7 @@ export class MdsChip {
   /**
    * Sets the component selected
    */
-  @Prop({ reflect: true, mutable: true }) selected?: boolean = false
+  @Prop({ reflect: true, mutable: true }) selected?: boolean
 
   /**
    * Sets if the component change is status to selected when is clicked
@@ -103,6 +103,13 @@ export class MdsChip {
   handleDeletableProp (newValue: boolean): void {
     this.handleDeletableElement(newValue)
     this.handleDeletableKeyboard(newValue)
+  }
+
+  @Watch('selected')
+  handleSelectedProp (newValue: boolean): void {
+    if (newValue === false) {
+      this.selected = undefined
+    }
   }
 
   private onClickLabelHandler (event: Event): void {

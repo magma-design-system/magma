@@ -19,6 +19,7 @@ import { ButtonIconPositionType, ButtonSizeType, ButtonTargetType, ButtonType, B
 import { TypographyHeadingTagType, TypographyTagType, TypographyTruncateType } from "./type/text";
 import { CalendarCellSelectionOrieintationType, CalendarCellSelectionPositionType, CalendarCellType } from "./components/mds-calendar-cell/meta/types";
 import { MdsChipEvent } from "./components/mds-chip/meta/interface";
+import { DisclaimerAiVariant } from "./components/mds-disclaimer-ai/meta/types";
 import { DropdownInteractionType } from "./components/mds-dropdown/meta/types";
 import { FloatingUIPlacement, FloatingUIStrategy } from "./type/floating-ui";
 import { MdsDropdownEventDetail } from "./components/mds-dropdown/meta/event-detail";
@@ -87,6 +88,7 @@ export { ButtonIconPositionType, ButtonSizeType, ButtonTargetType, ButtonType, B
 export { TypographyHeadingTagType, TypographyTagType, TypographyTruncateType } from "./type/text";
 export { CalendarCellSelectionOrieintationType, CalendarCellSelectionPositionType, CalendarCellType } from "./components/mds-calendar-cell/meta/types";
 export { MdsChipEvent } from "./components/mds-chip/meta/interface";
+export { DisclaimerAiVariant } from "./components/mds-disclaimer-ai/meta/types";
 export { DropdownInteractionType } from "./components/mds-dropdown/meta/types";
 export { FloatingUIPlacement, FloatingUIStrategy } from "./type/floating-ui";
 export { MdsDropdownEventDetail } from "./components/mds-dropdown/meta/event-detail";
@@ -246,6 +248,10 @@ export namespace Components {
         "variant"?: ThemeFullVariantType;
     }
     interface MdsBanner {
+        /**
+          * Shows a decoration around the banner icon
+         */
+        "cockade"?: boolean;
         /**
           * Shows the cross icon to perform cancel/delete action on element
          */
@@ -525,6 +531,11 @@ export namespace Components {
           * Specifies if the component is opened
          */
         "opened": boolean;
+    }
+    interface MdsDisclaimerAi {
+        "href"?: string;
+        "updateLang": () => Promise<void>;
+        "variant"?: DisclaimerAiVariant;
     }
     interface MdsDropdown {
         /**
@@ -2431,6 +2442,12 @@ declare global {
         prototype: HTMLMdsDetailsElement;
         new (): HTMLMdsDetailsElement;
     };
+    interface HTMLMdsDisclaimerAiElement extends Components.MdsDisclaimerAi, HTMLStencilElement {
+    }
+    var HTMLMdsDisclaimerAiElement: {
+        prototype: HTMLMdsDisclaimerAiElement;
+        new (): HTMLMdsDisclaimerAiElement;
+    };
     interface HTMLMdsDropdownElementEventMap {
         "mdsDropdownVisible": MdsDropdownEventDetail;
         "mdsDropdownHide": MdsDropdownEventDetail;
@@ -3360,6 +3377,7 @@ declare global {
         "mds-card-media": HTMLMdsCardMediaElement;
         "mds-chip": HTMLMdsChipElement;
         "mds-details": HTMLMdsDetailsElement;
+        "mds-disclaimer-ai": HTMLMdsDisclaimerAiElement;
         "mds-dropdown": HTMLMdsDropdownElement;
         "mds-entity": HTMLMdsEntityElement;
         "mds-file": HTMLMdsFileElement;
@@ -3581,6 +3599,10 @@ declare namespace LocalJSX {
         "variant"?: ThemeFullVariantType;
     }
     interface MdsBanner {
+        /**
+          * Shows a decoration around the banner icon
+         */
+        "cockade"?: boolean;
         /**
           * Shows the cross icon to perform cancel/delete action on element
          */
@@ -3881,6 +3903,10 @@ declare namespace LocalJSX {
           * Specifies if the component is opened
          */
         "opened"?: boolean;
+    }
+    interface MdsDisclaimerAi {
+        "href"?: string;
+        "variant"?: DisclaimerAiVariant;
     }
     interface MdsDropdown {
         /**
@@ -5491,6 +5517,7 @@ declare namespace LocalJSX {
         "mds-card-media": MdsCardMedia;
         "mds-chip": MdsChip;
         "mds-details": MdsDetails;
+        "mds-disclaimer-ai": MdsDisclaimerAi;
         "mds-dropdown": MdsDropdown;
         "mds-entity": MdsEntity;
         "mds-file": MdsFile;
@@ -5607,6 +5634,7 @@ declare module "@stencil/core" {
             "mds-card-media": LocalJSX.MdsCardMedia & JSXBase.HTMLAttributes<HTMLMdsCardMediaElement>;
             "mds-chip": LocalJSX.MdsChip & JSXBase.HTMLAttributes<HTMLMdsChipElement>;
             "mds-details": LocalJSX.MdsDetails & JSXBase.HTMLAttributes<HTMLMdsDetailsElement>;
+            "mds-disclaimer-ai": LocalJSX.MdsDisclaimerAi & JSXBase.HTMLAttributes<HTMLMdsDisclaimerAiElement>;
             "mds-dropdown": LocalJSX.MdsDropdown & JSXBase.HTMLAttributes<HTMLMdsDropdownElement>;
             "mds-entity": LocalJSX.MdsEntity & JSXBase.HTMLAttributes<HTMLMdsEntityElement>;
             "mds-file": LocalJSX.MdsFile & JSXBase.HTMLAttributes<HTMLMdsFileElement>;

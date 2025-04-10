@@ -1,0 +1,15 @@
+:host {
+  container-name: mds-disclaimer-ai;
+  container-type: inline-size;
+  display: inline-flex;
+  width: 100%;
+}
+
+mds-button {
+  justify-self: start;
+}
+
+@import './css/mds-disclaimer-ai-card.css';
+@import './css/mds-disclaimer-ai-chip.css';
+@import './css/mds-disclaimer-ai-icon.css';
+@import '../../tailwind/fouc.css';
