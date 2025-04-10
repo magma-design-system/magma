@@ -997,6 +997,7 @@ export namespace Components {
           * @description It's in ISO format (YYYY-MM-DD).
          */
         "min": string | null;
+        "updateLang": () => Promise<void>;
         /**
           * Specifies the value of the input
           * @description It's in ISO format (YYYY-MM-DD).
@@ -1030,6 +1031,7 @@ export namespace Components {
           * @description It's in ISO format (YYYY-MM-DD).
          */
         "startDate": string;
+        "updateLang": () => Promise<void>;
     }
     interface MdsInputDateRangePreselection {
         /**

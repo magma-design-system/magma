@@ -30,7 +30,7 @@ const getDate = (offsetDays: number = 0): string => {
 }
 
 const Template = args =>
-  <mds-input-date {...args}></mds-input-date>
+  <mds-input-date {...args} class="max-w-[400px]"></mds-input-date>
 
 export const Default = Template.bind({})
 Default.args = {

@@ -1,6 +1,7 @@
 import { Component, Element, Host, h, Method, Prop, State, Event, EventEmitter, Watch } from '@stencil/core'
 import miBaselineCalendarToday from '@icon/mi/baseline/calendar-today.svg'
 import { DateTime } from 'luxon'
+import { Locale } from '@common/locale'
 
 @Component({
   tag: 'mds-input-date',
@@ -10,6 +11,17 @@ import { DateTime } from 'luxon'
 export class MdsInputDate {
   @Element() host: HTMLMdsInputDateElement
   private isSlotted: boolean = false
+  private t:Locale = new Locale({
+    el: {},
+    en: {},
+    es: {},
+    it: {},
+  })
+  @State() language: string
+  @Method()
+  async updateLang (): Promise<void> {
+    this.language = this.t.lang(this.host)
+  }
 
   /**
    * Specifies the value of the input
@@ -63,6 +75,7 @@ export class MdsInputDate {
   componentWillLoad (): void {
     this.isSlotted = !!this.host.getAttribute('slot')
     this.internalValue = this.value || ''
+    this.language = this.t.lang(this.host)
 
     // Se max è precedente a min, imposto max uguale a min
     if (this.min && this.max) {
@@ -113,10 +126,11 @@ export class MdsInputDate {
           this.calendarKey += 1
         }}></mds-button>}
 
-        {!this.isSlotted && <mds-dropdown ref={el => this.dropdownRef = el as HTMLMdsDropdownElement} target="#calendar-dropdown">
+        {!this.isSlotted && <mds-dropdown placement="bottom-end" auto-placement={false} ref={el => this.dropdownRef = el as HTMLMdsDropdownElement} target="#calendar-dropdown">
           <mds-calendar
             key={this.calendarKey}
             rangePicker={false}
+            lang={this.language}
             onMdsCalendarChange={ev => {
               this.internalValue = ev.detail.startDate
               const date = DateTime.fromISO(this.internalValue)

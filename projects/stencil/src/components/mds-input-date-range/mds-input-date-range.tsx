@@ -2,6 +2,11 @@ import { Component, Element, Host, h, Prop, State, Event, EventEmitter, Method }
 import miBaselineCalendarToday from '@icon/mi/baseline/calendar-today.svg'
 import { DateTime } from 'luxon'
 import clsx from 'clsx'
+import { Locale } from '@common/locale'
+import localeEl from './meta/locale.el.json'
+import localeEn from './meta/locale.en.json'
+import localeEs from './meta/locale.es.json'
+import localeIt from './meta/locale.it.json'
 
 export interface EventDate {
   caller: HTMLMdsInputDateRangePreselectionElement
@@ -22,6 +27,17 @@ export class MdsInputDateRange {
   @State() internalEndDate: string = ''
   @State() dropdownRef?: HTMLMdsDropdownElement
   @State() hasPreselection: boolean = false
+  private t:Locale = new Locale({
+    el: localeEl,
+    en: localeEn,
+    es: localeEs,
+    it: localeIt,
+  })
+  @State() language: string
+  @Method()
+  async updateLang (): Promise<void> {
+    this.language = this.t.lang(this.host)
+  }
 
   /**
    * Specifies the start date of the range
@@ -58,6 +74,7 @@ export class MdsInputDateRange {
   @Event({ eventName: 'mdsInputDateRangeSelect' }) dateRangeSelected: EventEmitter<{ startDate: string, endDate: string }>
 
   componentWillLoad (): void {
+    this.language = this.t.lang(this.host)
     this.internalStartDate = this.startDate
     this.internalEndDate = this.endDate
 
@@ -72,7 +89,6 @@ export class MdsInputDateRange {
   }
 
   @Method() async preselect (event: EventDate): Promise<void> {
-
     if (!this.togglePreselection) {
       this.togglePreselection = Array.from(this.host.querySelectorAll('mds-input-date-range-preselection'))
     }
@@ -253,13 +269,13 @@ export class MdsInputDateRange {
       <Host onClick={this.focusDateInput}>
         <div class="inputs">
           <div class="input-element">
-            <mds-text class="date-label" typography="detail" onClick={this.focusStartDateInput}>Dal</mds-text>
+            <mds-text class="date-label" typography="detail" onClick={this.focusStartDateInput}>{ this.t.get('from') }</mds-text>
             <div class="input-wrapper">
               <slot name="start"></slot>
             </div>
           </div>
           <div class="input-element">
-            <mds-text class="date-label" typography="detail" onClick={this.focusEndDateInput}>al</mds-text>
+            <mds-text class="date-label" typography="detail" onClick={this.focusEndDateInput}>{ this.t.get('to') }</mds-text>
             <div class="input-wrapper">
               <slot name="end"></slot>
             </div>
@@ -277,8 +293,9 @@ export class MdsInputDateRange {
           }}>
         </mds-button>
 
-        <mds-dropdown ref={el => this.dropdownRef = el as HTMLMdsDropdownElement} target="#calendar-dropdown">
+        <mds-dropdown ref={el => this.dropdownRef = el as HTMLMdsDropdownElement} target="#calendar-dropdown" auto-placement={false} placement="bottom-end">
           <mds-calendar
+            lang={this.language}
             key={this.calendarKey}
             rangePicker={true}
             onMdsCalendarChange={ev => {

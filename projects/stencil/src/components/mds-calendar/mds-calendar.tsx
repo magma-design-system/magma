@@ -25,6 +25,18 @@ export class MdsCalendar {
   @State() currentView: 'calendar' | 'years' | 'months' = 'calendar'
   @State() selectedYear: number = this.currentDate.year
 
+  private readonly t: Locale = new Locale({
+    it: {},
+    en: {},
+    es: {},
+    el: {},
+  })
+  @State() language: string
+  @Method()
+  async updateLang (): Promise<void> {
+    this.language = this.t.lang(this.host)
+  }
+
   @Prop() readonly rangePicker: boolean = true
 
   /**
@@ -148,13 +160,6 @@ export class MdsCalendar {
         this.handleHover(target)
       }
     })
-  }
-
-  private readonly t: Locale = new Locale()
-  @State() language: string
-  @Method()
-  async updateLang (): Promise<void> {
-    this.language = this.t.lang(this.host)
   }
 
   @Method() async updateCurrentDate (date: string): Promise<void> {
