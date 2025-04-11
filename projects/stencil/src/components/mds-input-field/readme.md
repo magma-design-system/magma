@@ -16,6 +16,14 @@ This is a web-component from Maggioli Design System [Magma](https://magma.maggio
 | `variant` | `variant` | Display the variant of a message at the bottom of the input text field | `"error" \| "info" \| "success" \| "warning" \| undefined` | `undefined` |
 
 
+## CSS Custom Properties
+
+| Name                                   | Description                                                                                                                      |
+| -------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------- |
+| `--mds-input-field-message-background` | Sets the message background color of the component, will be visible only if there is a text defined by `tip` component attribute |
+| `--mds-input-field-message-color`      | Sets the message text color of the component                                                                                     |
+
+
 ## Dependencies
 
 ### Depends on

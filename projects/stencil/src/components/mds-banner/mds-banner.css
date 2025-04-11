@@ -1,8 +1,11 @@
 /**
  * @prop --mds-banner-background: Sets the background-color of the component
- * @prop --mds-banner-color: Sets the text color of the component
  * @prop --mds-banner-close-icon-hover-background: Sets the background color of the close icon when the mouse is over it
+ * @prop --mds-banner-cockade-background: When cockade attribute is set, the icon will be wrapper with a colored area, this is it's background
+ * @prop --mds-banner-cockade-distance: When cockade attribute is set, the icon will be wrapper with a colored area, this is it's icon color
+ * @prop --mds-banner-color: Sets the text color of the component
  * @prop --mds-banner-gap: Sets gap between banner elements
+ * @prop --mds-banner-headline-color: The text color of the headline
  * @prop --mds-banner-icon-color: Sets the close icon fill color of the component
  * @prop --mds-banner-radius: Sets the border-radius of the component
  * @prop --mds-banner-shadow: Sets the box-shadow of the component

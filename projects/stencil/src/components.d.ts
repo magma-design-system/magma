@@ -1068,6 +1068,20 @@ export namespace Components {
          */
         "variant"?: ThemeStatusVariantType;
     }
+    interface MdsInputOtp {
+        /**
+          * Automatically submits the form when the OTP code is complete
+         */
+        "autosubmit": boolean;
+        /**
+          * Number of digits in the OTP code
+         */
+        "length": number;
+        /**
+          * The current value of the OTP code
+         */
+        "value"?: string;
+    }
     interface MdsInputRange {
         /**
           * Sets if the component is disabled
@@ -2693,6 +2707,12 @@ declare global {
         prototype: HTMLMdsInputFieldElement;
         new (): HTMLMdsInputFieldElement;
     };
+    interface HTMLMdsInputOtpElement extends Components.MdsInputOtp, HTMLStencilElement {
+    }
+    var HTMLMdsInputOtpElement: {
+        prototype: HTMLMdsInputOtpElement;
+        new (): HTMLMdsInputOtpElement;
+    };
     interface HTMLMdsInputRangeElementEventMap {
         "mdsInputRangeChange": number;
     }
@@ -3409,6 +3429,7 @@ declare global {
         "mds-input-date-range": HTMLMdsInputDateRangeElement;
         "mds-input-date-range-preselection": HTMLMdsInputDateRangePreselectionElement;
         "mds-input-field": HTMLMdsInputFieldElement;
+        "mds-input-otp": HTMLMdsInputOtpElement;
         "mds-input-range": HTMLMdsInputRangeElement;
         "mds-input-select": HTMLMdsInputSelectElement;
         "mds-input-switch": HTMLMdsInputSwitchElement;
@@ -4497,6 +4518,20 @@ declare namespace LocalJSX {
          */
         "variant"?: ThemeStatusVariantType;
     }
+    interface MdsInputOtp {
+        /**
+          * Automatically submits the form when the OTP code is complete
+         */
+        "autosubmit"?: boolean;
+        /**
+          * Number of digits in the OTP code
+         */
+        "length"?: number;
+        /**
+          * The current value of the OTP code
+         */
+        "value"?: string;
+    }
     interface MdsInputRange {
         /**
           * Sets if the component is disabled
@@ -5563,6 +5598,7 @@ declare namespace LocalJSX {
         "mds-input-date-range": MdsInputDateRange;
         "mds-input-date-range-preselection": MdsInputDateRangePreselection;
         "mds-input-field": MdsInputField;
+        "mds-input-otp": MdsInputOtp;
         "mds-input-range": MdsInputRange;
         "mds-input-select": MdsInputSelect;
         "mds-input-switch": MdsInputSwitch;
@@ -5680,6 +5716,7 @@ declare module "@stencil/core" {
             "mds-input-date-range": LocalJSX.MdsInputDateRange & JSXBase.HTMLAttributes<HTMLMdsInputDateRangeElement>;
             "mds-input-date-range-preselection": LocalJSX.MdsInputDateRangePreselection & JSXBase.HTMLAttributes<HTMLMdsInputDateRangePreselectionElement>;
             "mds-input-field": LocalJSX.MdsInputField & JSXBase.HTMLAttributes<HTMLMdsInputFieldElement>;
+            "mds-input-otp": LocalJSX.MdsInputOtp & JSXBase.HTMLAttributes<HTMLMdsInputOtpElement>;
             "mds-input-range": LocalJSX.MdsInputRange & JSXBase.HTMLAttributes<HTMLMdsInputRangeElement>;
             "mds-input-select": LocalJSX.MdsInputSelect & JSXBase.HTMLAttributes<HTMLMdsInputSelectElement>;
             "mds-input-switch": LocalJSX.MdsInputSwitch & JSXBase.HTMLAttributes<HTMLMdsInputSwitchElement>;

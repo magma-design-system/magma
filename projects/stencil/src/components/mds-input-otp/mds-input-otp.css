@@ -1,0 +1,16 @@
+:host {
+  display: inline-flex;
+  gap: theme('spacing.400');
+}
+
+.input {
+  width: theme('size.1200');
+}
+
+.input::part(field) {
+  text-align: center;
+}
+
+.input::part(tip-count) {
+  display: none;
+}
