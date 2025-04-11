@@ -19,7 +19,6 @@ import { ButtonIconPositionType, ButtonSizeType, ButtonTargetType, ButtonType, B
 import { TypographyHeadingTagType, TypographyTagType, TypographyTruncateType } from "./type/text";
 import { CalendarCellSelectionOrieintationType, CalendarCellSelectionPositionType, CalendarCellType } from "./components/mds-calendar-cell/meta/types";
 import { MdsChipEvent } from "./components/mds-chip/meta/interface";
-import { DisclaimerAiVariant } from "./components/mds-disclaimer-ai/meta/types";
 import { DropdownInteractionType } from "./components/mds-dropdown/meta/types";
 import { FloatingUIPlacement, FloatingUIStrategy } from "./type/floating-ui";
 import { MdsDropdownEventDetail } from "./components/mds-dropdown/meta/event-detail";
@@ -48,6 +47,7 @@ import { KeyboardKeyName } from "./type/keyboard";
 import { ModalAnimationStateType, ModalAnimationStyleType, ModalOverflowType, ModalPositionType } from "./components/mds-modal/meta/types";
 import { StrategyType } from "./components/mds-notification/meta/types";
 import { MdsPaginatorEventDetail } from "./components/mds-paginator/meta/event-detail";
+import { PolicyAiVariant } from "./components/mds-policy-ai/meta/types";
 import { AnimationModeType } from "./components/mds-pref-animation/meta/types";
 import { MdsPrefChangeEventDetail } from "./event-detail/preference";
 import { ConsumptionModeType } from "./type/preference";
@@ -88,7 +88,6 @@ export { ButtonIconPositionType, ButtonSizeType, ButtonTargetType, ButtonType, B
 export { TypographyHeadingTagType, TypographyTagType, TypographyTruncateType } from "./type/text";
 export { CalendarCellSelectionOrieintationType, CalendarCellSelectionPositionType, CalendarCellType } from "./components/mds-calendar-cell/meta/types";
 export { MdsChipEvent } from "./components/mds-chip/meta/interface";
-export { DisclaimerAiVariant } from "./components/mds-disclaimer-ai/meta/types";
 export { DropdownInteractionType } from "./components/mds-dropdown/meta/types";
 export { FloatingUIPlacement, FloatingUIStrategy } from "./type/floating-ui";
 export { MdsDropdownEventDetail } from "./components/mds-dropdown/meta/event-detail";
@@ -117,6 +116,7 @@ export { KeyboardKeyName } from "./type/keyboard";
 export { ModalAnimationStateType, ModalAnimationStyleType, ModalOverflowType, ModalPositionType } from "./components/mds-modal/meta/types";
 export { StrategyType } from "./components/mds-notification/meta/types";
 export { MdsPaginatorEventDetail } from "./components/mds-paginator/meta/event-detail";
+export { PolicyAiVariant } from "./components/mds-policy-ai/meta/types";
 export { AnimationModeType } from "./components/mds-pref-animation/meta/types";
 export { MdsPrefChangeEventDetail } from "./event-detail/preference";
 export { ConsumptionModeType } from "./type/preference";
@@ -531,11 +531,6 @@ export namespace Components {
           * Specifies if the component is opened
          */
         "opened": boolean;
-    }
-    interface MdsDisclaimerAi {
-        "href"?: string;
-        "updateLang": () => Promise<void>;
-        "variant"?: DisclaimerAiVariant;
     }
     interface MdsDropdown {
         /**
@@ -1403,6 +1398,11 @@ export namespace Components {
           * Specifies if the item is selected or not, is handled from the parent paginator
          */
         "selected"?: boolean;
+    }
+    interface MdsPolicyAi {
+        "href"?: string;
+        "updateLang": () => Promise<void>;
+        "variant"?: PolicyAiVariant;
     }
     /**
      * @name Pref
@@ -2442,12 +2442,6 @@ declare global {
         prototype: HTMLMdsDetailsElement;
         new (): HTMLMdsDetailsElement;
     };
-    interface HTMLMdsDisclaimerAiElement extends Components.MdsDisclaimerAi, HTMLStencilElement {
-    }
-    var HTMLMdsDisclaimerAiElement: {
-        prototype: HTMLMdsDisclaimerAiElement;
-        new (): HTMLMdsDisclaimerAiElement;
-    };
     interface HTMLMdsDropdownElementEventMap {
         "mdsDropdownVisible": MdsDropdownEventDetail;
         "mdsDropdownHide": MdsDropdownEventDetail;
@@ -2881,6 +2875,12 @@ declare global {
     var HTMLMdsPaginatorItemElement: {
         prototype: HTMLMdsPaginatorItemElement;
         new (): HTMLMdsPaginatorItemElement;
+    };
+    interface HTMLMdsPolicyAiElement extends Components.MdsPolicyAi, HTMLStencilElement {
+    }
+    var HTMLMdsPolicyAiElement: {
+        prototype: HTMLMdsPolicyAiElement;
+        new (): HTMLMdsPolicyAiElement;
     };
     /**
      * @name Pref
@@ -3377,7 +3377,6 @@ declare global {
         "mds-card-media": HTMLMdsCardMediaElement;
         "mds-chip": HTMLMdsChipElement;
         "mds-details": HTMLMdsDetailsElement;
-        "mds-disclaimer-ai": HTMLMdsDisclaimerAiElement;
         "mds-dropdown": HTMLMdsDropdownElement;
         "mds-entity": HTMLMdsEntityElement;
         "mds-file": HTMLMdsFileElement;
@@ -3414,6 +3413,7 @@ declare global {
         "mds-notification": HTMLMdsNotificationElement;
         "mds-paginator": HTMLMdsPaginatorElement;
         "mds-paginator-item": HTMLMdsPaginatorItemElement;
+        "mds-policy-ai": HTMLMdsPolicyAiElement;
         "mds-pref": HTMLMdsPrefElement;
         "mds-pref-animation": HTMLMdsPrefAnimationElement;
         "mds-pref-consumption": HTMLMdsPrefConsumptionElement;
@@ -3903,10 +3903,6 @@ declare namespace LocalJSX {
           * Specifies if the component is opened
          */
         "opened"?: boolean;
-    }
-    interface MdsDisclaimerAi {
-        "href"?: string;
-        "variant"?: DisclaimerAiVariant;
     }
     interface MdsDropdown {
         /**
@@ -4839,6 +4835,10 @@ declare namespace LocalJSX {
          */
         "selected"?: boolean;
     }
+    interface MdsPolicyAi {
+        "href"?: string;
+        "variant"?: PolicyAiVariant;
+    }
     /**
      * @name Pref
      * @description This component is based on MdsTab component pattern
@@ -5517,7 +5517,6 @@ declare namespace LocalJSX {
         "mds-card-media": MdsCardMedia;
         "mds-chip": MdsChip;
         "mds-details": MdsDetails;
-        "mds-disclaimer-ai": MdsDisclaimerAi;
         "mds-dropdown": MdsDropdown;
         "mds-entity": MdsEntity;
         "mds-file": MdsFile;
@@ -5554,6 +5553,7 @@ declare namespace LocalJSX {
         "mds-notification": MdsNotification;
         "mds-paginator": MdsPaginator;
         "mds-paginator-item": MdsPaginatorItem;
+        "mds-policy-ai": MdsPolicyAi;
         "mds-pref": MdsPref;
         "mds-pref-animation": MdsPrefAnimation;
         "mds-pref-consumption": MdsPrefConsumption;
@@ -5634,7 +5634,6 @@ declare module "@stencil/core" {
             "mds-card-media": LocalJSX.MdsCardMedia & JSXBase.HTMLAttributes<HTMLMdsCardMediaElement>;
             "mds-chip": LocalJSX.MdsChip & JSXBase.HTMLAttributes<HTMLMdsChipElement>;
             "mds-details": LocalJSX.MdsDetails & JSXBase.HTMLAttributes<HTMLMdsDetailsElement>;
-            "mds-disclaimer-ai": LocalJSX.MdsDisclaimerAi & JSXBase.HTMLAttributes<HTMLMdsDisclaimerAiElement>;
             "mds-dropdown": LocalJSX.MdsDropdown & JSXBase.HTMLAttributes<HTMLMdsDropdownElement>;
             "mds-entity": LocalJSX.MdsEntity & JSXBase.HTMLAttributes<HTMLMdsEntityElement>;
             "mds-file": LocalJSX.MdsFile & JSXBase.HTMLAttributes<HTMLMdsFileElement>;
@@ -5671,6 +5670,7 @@ declare module "@stencil/core" {
             "mds-notification": LocalJSX.MdsNotification & JSXBase.HTMLAttributes<HTMLMdsNotificationElement>;
             "mds-paginator": LocalJSX.MdsPaginator & JSXBase.HTMLAttributes<HTMLMdsPaginatorElement>;
             "mds-paginator-item": LocalJSX.MdsPaginatorItem & JSXBase.HTMLAttributes<HTMLMdsPaginatorItemElement>;
+            "mds-policy-ai": LocalJSX.MdsPolicyAi & JSXBase.HTMLAttributes<HTMLMdsPolicyAiElement>;
             /**
              * @name Pref
              * @description This component is based on MdsTab component pattern

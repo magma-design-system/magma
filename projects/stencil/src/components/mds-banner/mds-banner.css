@@ -11,16 +11,16 @@
   :host {
   --mds-banner-background: theme('colors.tone-neutral-10');
   --mds-banner-close-icon-hover-background: theme('colors.tone-neutral-09');
-  --mds-banner-color: theme('colors.tone-neutral-02');
-  --mds-banner-headline-color: var(--mds-banner-color);
-  --mds-banner-gap: theme('spacing.200') theme('spacing.400');
-  --mds-banner-icon-color: theme('colors.tone-neutral-04');
   --mds-banner-cockade-background: theme('colors.tone-neutral-09');
+  --mds-banner-cockade-distance: theme('spacing.600');
+  --mds-banner-color: theme('colors.tone-neutral-02');
+  --mds-banner-gap: theme('spacing.200') theme('spacing.400');
+  --mds-banner-headline-color: var(--mds-banner-color);
+  --mds-banner-icon-color: theme('colors.tone-neutral-04');
   --mds-banner-radius: theme('borderRadius.lg');
   --mds-banner-shadow: none;
   --mds-banner-transition-duration: theme('transitionDuration.300');
   --mds-banner-transition-timing-function: theme('transitionTimingFunction.in-out-expo');
-  --mds-banner-cockade-distance: theme('spacing.600');
 
   @apply p-600 grid-cols-full;
 
