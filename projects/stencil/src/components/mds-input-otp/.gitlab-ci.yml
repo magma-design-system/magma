@@ -1,0 +1,20 @@
+.base-input-otp:
+  variables:
+    COMPONENT: mds-input-otp
+
+# TEST
+input-otp-publish-test:
+  extends: [.base-stencil-publish-test, .base-input-otp]
+  dependencies: [base-stencil-build, base-isolate]
+
+# PUBLISH
+input-otp-publish:
+  extends: [.base-stencil-publish, .base-input-otp]
+  dependencies: [base-stencil-build, base-isolate]
+  needs: [base-stencil-build, base-isolate, input-otp-publish-test]
+
+# INSTALL TEST
+input-otp-install-test:
+  extends: [.base-stencil-install-test, .base-input-otp]
+  dependencies: [base-stencil-build, base-isolate]
+  needs: [base-stencil-build, base-isolate, input-otp-publish]
