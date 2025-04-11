@@ -47,14 +47,15 @@ export class MdsInputOtp {
     this.internals.setFormValue(otpCode)
   }
 
-  private submit = (): void => {
+  private submit = (currentInput: HTMLMdsInputElement): void => {
     const isOtpCompleted = this.getOtpCode().length === this.length
+    currentInput.blur()
 
     if (this.autosubmit && isOtpCompleted) {
       this.internals.form?.requestSubmit()
     }
   }
-  
+
   private handleKeyDown = (e: KeyboardEvent): void => {
     if (e.ctrlKey) {
       return
@@ -76,7 +77,7 @@ export class MdsInputOtp {
     if (nextInput) {
       nextInput.setFocus()
     } else {
-      this.submit()
+      this.submit(currentInput)
     }
   }
 
@@ -91,7 +92,6 @@ export class MdsInputOtp {
 
     const digits = pastedText?.split('') ?? []
     let currentInput = e.target as HTMLMdsInputElement
-    
     for (const currentDigit of digits) {
       this.setOtpDigit(currentInput, currentDigit)
 
@@ -100,7 +100,7 @@ export class MdsInputOtp {
       if (currentInput) {
         currentInput.setFocus()
       } else {
-        this.submit()
+        this.submit(currentInput)
         return
       }
     }
