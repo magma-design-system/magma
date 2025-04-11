@@ -8,6 +8,13 @@ import localeEn from './meta/locale.en.json'
 import localeEs from './meta/locale.es.json'
 import localeIt from './meta/locale.it.json'
 
+/**
+ * @part icon - Selects the `icon` component wrapped in shadowDOM, will be found only if attirbute `variant` is set to `icon`.
+ * @part chip - Selects the `chip` component wrapped in shadowDOM, will be found only if attirbute `variant` is set to `chip`.
+ * @part card - Selects the `card` component wrapped in shadowDOM, will be found only if attirbute `variant` is set to `card`.
+ * @part banner - Selects the `banner` component wrapped in shadowDOM, will be found only if attirbute `variant` is set to `banner`.
+ */
+
 @Component({
   tag: 'mds-policy-ai',
   styleUrl: 'mds-policy-ai.css',
