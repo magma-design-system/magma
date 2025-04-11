@@ -29,7 +29,24 @@ export class MdsPolicyAi {
     this.t.update()
   }
 
+  /**
+   * Sets the headline to custom component text
+   */
+  @Prop({ reflect: true }) headline?: string
+
+  /**
+   * Sets the description to custom component long text
+   */
+  @Prop({ reflect: true }) description?: string
+
+  /**
+   * Sets the variant type of the component
+   */
   @Prop({ reflect: true }) variant?: PolicyAiVariant = 'chip'
+
+  /**
+   * Sets the pointing URL of the component
+   */
   @Prop({ reflect: true }) href?: string = 'https://www.maggiolieditore.it/il-regolamento-europeo-sull-intelligenza-artificiale.html'
 
   componentWillLoad (): void {
@@ -40,27 +57,27 @@ export class MdsPolicyAi {
     return (
       <Host>
         { this.variant === 'icon' && (
-          <mds-help icon={mggAiBrain} class="icon-help" onClick={() => window.open(this.href, '_blank')}>
+          <mds-help icon={mggAiBrain} class="icon-help" onClick={() => window.open(this.href, '_blank')} part="icon">
             <div class="icon-tip-content">
-              <mds-text typography="tip">{ this.t.get('iconTooltip') }</mds-text>
-              <mds-text typography="tip">{ this.t.get('iconLinkLabel') }</mds-text>
+              <mds-text typography="tip">{ this.headline ?? this.t.get('iconTooltip') }</mds-text>
+              <mds-text typography="tip">{ this.description ?? this.t.get('iconLinkLabel') }</mds-text>
             </div>
           </mds-help>
         )}
         { this.variant === 'chip' && (
-          <div class="chip-wrapper">
-            <mds-chip id="chip" icon={mggAiBrain} class="chip" variant="ai" label={ this.t.get('chipLabel') }></mds-chip>
+          <div class="chip-wrapper" part="chip">
+            <mds-chip id="chip" icon={mggAiBrain} class="chip" variant="ai" label={ this.headline ?? this.t.get('chipLabel') }></mds-chip>
             <mds-dropdown target="#chip" class="chip-dropdown" interaction="mouseover">
-              <mds-text typography="tip">{ this.t.get('cardDescription') }</mds-text>
+              <mds-text typography="tip">{ this.description ?? this.t.get('cardDescription') }</mds-text>
               <mds-button icon={miOutlinePolicy} href={this.href} variant="ai" tone="weak" size="sm">{ this.t.get('linkLabel') }</mds-button>
             </mds-dropdown>
           </div>
         )}
         { this.variant === 'card' && (
-          <div class="mini-card">
+          <div class="mini-card" part="card">
             <mds-icon name={mggAiBrain} class="mini-card-icon"></mds-icon>
             <div class="mini-card-content">
-              <mds-text typography="caption">{ this.t.get('iconTooltip') }</mds-text>
+              <mds-text typography="caption">{ this.description ?? this.t.get('iconTooltip') }</mds-text>
               <mds-button class="mini-card-button" icon={miOutlinePolicy} href={this.href} variant="ai" tone="weak" size="sm">
                 <span class="link-label-long">{ this.t.get('linkLabel') }</span>
                 <span class="link-label-short">{ this.t.get('linkLabelShort') }</span>
@@ -69,8 +86,8 @@ export class MdsPolicyAi {
           </div>
         )}
         { this.variant === 'banner' && (
-          <mds-banner class="banner" variant="ai" tone="weak" icon={mggAiBrain} headline={ this.t.get('bannerTitle') }>
-            <mds-text typography="caption">{ this.t.get('bannerDescription') }</mds-text>
+          <mds-banner class="banner" variant="ai" tone="weak" icon={mggAiBrain} headline={ this.headline ?? this.t.get('bannerTitle') } part="banner">
+            <mds-text typography="caption">{ this.description ?? this.t.get('bannerDescription') }</mds-text>
             <mds-button icon={miOutlinePolicy} slot="action" href={this.href} variant="ai" tone="weak" size="sm">
               <span class="link-label-long">{ this.t.get('linkLabel') }</span>
               <span class="link-label-short">{ this.t.get('linkLabelShort') }</span>

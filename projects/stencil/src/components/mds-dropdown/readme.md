@@ -87,6 +87,7 @@ This is a web-component from Maggioli Design System [Magma](https://magma.maggio
 
  - [mds-input-date](../mds-input-date)
  - [mds-input-date-range](../mds-input-date-range)
+ - [mds-policy-ai](../mds-policy-ai)
  - [mds-pref-language](../mds-pref-language)
 
 ### Graph
@@ -94,6 +95,7 @@ This is a web-component from Maggioli Design System [Magma](https://magma.maggio
 graph TD;
   mds-input-date --> mds-dropdown
   mds-input-date-range --> mds-dropdown
+  mds-policy-ai --> mds-dropdown
   mds-pref-language --> mds-dropdown
   style mds-dropdown fill:#f9f,stroke:#333,stroke-width:4px
 ```

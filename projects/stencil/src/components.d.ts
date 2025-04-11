@@ -1400,8 +1400,22 @@ export namespace Components {
         "selected"?: boolean;
     }
     interface MdsPolicyAi {
+        /**
+          * Sets the description to custom component long text
+         */
+        "description"?: string;
+        /**
+          * Sets the headline to custom component text
+         */
+        "headline"?: string;
+        /**
+          * Sets the pointing URL of the component
+         */
         "href"?: string;
         "updateLang": () => Promise<void>;
+        /**
+          * Sets the variant type of the component
+         */
         "variant"?: PolicyAiVariant;
     }
     /**
@@ -4836,7 +4850,21 @@ declare namespace LocalJSX {
         "selected"?: boolean;
     }
     interface MdsPolicyAi {
+        /**
+          * Sets the description to custom component long text
+         */
+        "description"?: string;
+        /**
+          * Sets the headline to custom component text
+         */
+        "headline"?: string;
+        /**
+          * Sets the pointing URL of the component
+         */
         "href"?: string;
+        /**
+          * Sets the variant type of the component
+         */
         "variant"?: PolicyAiVariant;
     }
     /**

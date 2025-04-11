@@ -9,17 +9,17 @@ This is a web-component from Maggioli Design System [Magma](https://magma.maggio
 
 ## Properties
 
-| Property             | Attribute    | Description                                                        | Type                                                                                             | Default     |
-| -------------------- | ------------ | ------------------------------------------------------------------ | ------------------------------------------------------------------------------------------------ | ----------- |
-| `clickable`          | `clickable`  | Adds ARIA support to the element if has interaction                | `boolean \| undefined`                                                                           | `undefined` |
-| `deletable`          | `deletable`  | Shows the cross icon to perform cancel/delete action on element    | `boolean \| undefined`                                                                           | `undefined` |
-| `disabled`           | `disabled`   | Sets the component disabled status                                 | `boolean \| undefined`                                                                           | `false`     |
-| `icon`               | `icon`       | The icon displayed to the left of the component's label            | `string \| undefined`                                                                            | `undefined` |
-| `label` _(required)_ | `label`      | The label displayed to the right of the component's icon           | `string`                                                                                         | `undefined` |
-| `selectable`         | `selectable` | Sets if the component change is status to selected when is clicked | `boolean \| undefined`                                                                           | `false`     |
-| `selected`           | `selected`   | Sets the component selected                                        | `boolean \| undefined`                                                                           | `false`     |
-| `tone`               | `tone`       | Sets the color variant tone of the component                       | `"strong" \| "weak" \| undefined`                                                                | `'strong'`  |
-| `variant`            | `variant`    | Sets the color variant of the component                            | `"dark" \| "error" \| "info" \| "primary" \| "secondary" \| "success" \| "warning" \| undefined` | `'primary'` |
+| Property             | Attribute    | Description                                                        | Type                                                                                                                                                                                                                     | Default     |
+| -------------------- | ------------ | ------------------------------------------------------------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ | ----------- |
+| `clickable`          | `clickable`  | Adds ARIA support to the element if has interaction                | `boolean \| undefined`                                                                                                                                                                                                   | `undefined` |
+| `deletable`          | `deletable`  | Shows the cross icon to perform cancel/delete action on element    | `boolean \| undefined`                                                                                                                                                                                                   | `undefined` |
+| `disabled`           | `disabled`   | Sets the component disabled status                                 | `boolean \| undefined`                                                                                                                                                                                                   | `false`     |
+| `icon`               | `icon`       | The icon displayed to the left of the component's label            | `string \| undefined`                                                                                                                                                                                                    | `undefined` |
+| `label` _(required)_ | `label`      | The label displayed to the right of the component's icon           | `string`                                                                                                                                                                                                                 | `undefined` |
+| `selectable`         | `selectable` | Sets if the component change is status to selected when is clicked | `boolean \| undefined`                                                                                                                                                                                                   | `false`     |
+| `selected`           | `selected`   | Sets the component selected                                        | `boolean \| undefined`                                                                                                                                                                                                   | `undefined` |
+| `tone`               | `tone`       | Sets the color variant tone of the component                       | `"strong" \| "weak" \| undefined`                                                                                                                                                                                        | `'strong'`  |
+| `variant`            | `variant`    | Sets the color variant of the component                            | `"ai" \| "amaranth" \| "aqua" \| "blue" \| "dark" \| "error" \| "green" \| "info" \| "lime" \| "orange" \| "orchid" \| "primary" \| "secondary" \| "sky" \| "success" \| "violet" \| "warning" \| "yellow" \| undefined` | `'primary'` |
 
 
 ## Events
@@ -45,6 +45,10 @@ Type: `Promise<void>`
 
 ## Dependencies
 
+### Used by
+
+ - [mds-policy-ai](../mds-policy-ai)
+
 ### Depends on
 
 - [mds-icon](../mds-icon)
@@ -60,6 +64,7 @@ graph TD;
   mds-button --> mds-spinner
   mds-button --> mds-icon
   mds-button --> mds-text
+  mds-policy-ai --> mds-chip
   style mds-chip fill:#f9f,stroke:#333,stroke-width:4px
 ```
 

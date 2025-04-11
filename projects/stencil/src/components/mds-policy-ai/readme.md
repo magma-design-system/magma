@@ -7,10 +7,12 @@
 
 ## Properties
 
-| Property  | Attribute | Description | Type                                                  | Default                                                                                      |
-| --------- | --------- | ----------- | ----------------------------------------------------- | -------------------------------------------------------------------------------------------- |
-| `href`    | `href`    |             | `string \| undefined`                                 | `'https://www.maggiolieditore.it/il-regolamento-europeo-sull-intelligenza-artificiale.html'` |
-| `variant` | `variant` |             | `"banner" \| "card" \| "chip" \| "icon" \| undefined` | `'chip'`                                                                                     |
+| Property      | Attribute     | Description                                        | Type                                                  | Default                                                                                      |
+| ------------- | ------------- | -------------------------------------------------- | ----------------------------------------------------- | -------------------------------------------------------------------------------------------- |
+| `description` | `description` | Sets the description to custom component long text | `string \| undefined`                                 | `undefined`                                                                                  |
+| `headline`    | `headline`    | Sets the headline to custom component text         | `string \| undefined`                                 | `undefined`                                                                                  |
+| `href`        | `href`        | Sets the pointing URL of the component             | `string \| undefined`                                 | `'https://www.maggiolieditore.it/il-regolamento-europeo-sull-intelligenza-artificiale.html'` |
+| `variant`     | `variant`     | Sets the variant type of the component             | `"banner" \| "card" \| "chip" \| "icon" \| undefined` | `'chip'`                                                                                     |
 
 
 ## Methods
@@ -24,6 +26,16 @@
 Type: `Promise<void>`
 
 
+
+
+## Shadow Parts
+
+| Part       | Description |
+| ---------- | ----------- |
+| `"banner"` |             |
+| `"card"`   |             |
+| `"chip"`   |             |
+| `"icon"`   |             |
 
 
 ## Dependencies

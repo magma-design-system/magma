@@ -1,9 +1,9 @@
 .icon-help {
-  background-color: theme('colors.tone-neutral');
+  background-color: theme('colors.variant-ai-06');
+  border: 1px solid theme('colors.tone-neutral');
   border-radius: theme('size.600');
-  box-shadow: theme('boxShadow.sm-sharp');
   cursor: pointer;
-  fill: theme('colors.variant-ai-06');
+  fill: theme('colors.variant-ai-10');
   height: min-content;
   width: min-content;
 }

@@ -9,13 +9,14 @@ This is a web-component from Maggioli Design System [Magma](https://magma.maggio
 
 ## Properties
 
-| Property    | Attribute   | Description                                                     | Type                                                                                         | Default     |
-| ----------- | ----------- | --------------------------------------------------------------- | -------------------------------------------------------------------------------------------- | ----------- |
-| `deletable` | `deletable` | Shows the cross icon to perform cancel/delete action on element | `boolean \| undefined`                                                                       | `undefined` |
-| `headline`  | `headline`  | The title on the top of the banner                              | `string \| undefined`                                                                        | `undefined` |
-| `icon`      | `icon`      | An icon displayed at the top left of the banner                 | `string \| undefined`                                                                        | `undefined` |
-| `tone`      | `tone`      | Sets the tone of the color variant                              | `"quiet" \| "strong" \| "weak" \| undefined`                                                 | `'weak'`    |
-| `variant`   | `variant`   | Sets the theme variant colors                                   | `"dark" \| "error" \| "info" \| "light" \| "primary" \| "success" \| "warning" \| undefined` | `'light'`   |
+| Property    | Attribute   | Description                                                     | Type                                                                                                 | Default     |
+| ----------- | ----------- | --------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------- | ----------- |
+| `cockade`   | `cockade`   | Shows a decoration around the banner icon                       | `boolean \| undefined`                                                                               | `true`      |
+| `deletable` | `deletable` | Shows the cross icon to perform cancel/delete action on element | `boolean \| undefined`                                                                               | `undefined` |
+| `headline`  | `headline`  | The title on the top of the banner                              | `string \| undefined`                                                                                | `undefined` |
+| `icon`      | `icon`      | An icon displayed at the top left of the banner                 | `string \| undefined`                                                                                | `undefined` |
+| `tone`      | `tone`      | Sets the tone of the color variant                              | `"quiet" \| "strong" \| "weak" \| undefined`                                                         | `'weak'`    |
+| `variant`   | `variant`   | Sets the theme variant colors                                   | `"ai" \| "dark" \| "error" \| "info" \| "light" \| "primary" \| "success" \| "warning" \| undefined` | `'light'`   |
 
 
 ## Events
@@ -48,6 +49,10 @@ Type: `Promise<void>`
 
 ## Dependencies
 
+### Used by
+
+ - [mds-policy-ai](../mds-policy-ai)
+
 ### Depends on
 
 - [mds-icon](../mds-icon)
@@ -63,6 +68,7 @@ graph TD;
   mds-button --> mds-spinner
   mds-button --> mds-icon
   mds-button --> mds-text
+  mds-policy-ai --> mds-banner
   style mds-banner fill:#f9f,stroke:#333,stroke-width:4px
 ```
 
