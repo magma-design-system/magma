@@ -26,7 +26,7 @@ export class MdsAvatar {
   private observer: ResizeObserver
   private fittyElements
   private fittyInitialized = false
-  private initialsChanged = false
+  private textChanged = false
 
   /**
    * Specifies the path to the icon
@@ -38,6 +38,11 @@ export class MdsAvatar {
    * The user's inizials displayed if there's no image available, initials will override tone and variant senttings to keep user recognizable from others
    */
   @Prop({ mutable:true, reflect: true }) readonly initials?: string
+
+  /**
+   * The user's inizials displayed if there's no image available, initials will override tone and variant senttings to keep user recognizable from others
+   */
+  @Prop({ mutable:true, reflect: true }) readonly count?: number
 
   /**
    * Specifies the path to the image
@@ -79,19 +84,13 @@ export class MdsAvatar {
     this.observer.unobserve(this.element)
   }
 
-  private checkInitials = (value?: string): void => {
+  private checkText = (value: string): void => {
     if (value !== '' && value !== undefined) {
-      if (this.fittyInitialized) {
-        return
-      }
-      if (!this.fittyInitialized) {
-        this.addFontResize()
-      }
+      if (this.fittyInitialized) return
+      if (!this.fittyInitialized) this.addFontResize()
       return
     }
-    if (this.fittyInitialized) {
-      this.removeFontResize()
-    }
+    if (this.fittyInitialized) this.removeFontResize()
   }
 
   private checkInitialsVariant = (): void => {
@@ -112,21 +111,33 @@ export class MdsAvatar {
     if (this.src !== undefined) {
       this.loaded = false
     }
-    this.checkInitials(this.initials)
+    if (this.initials) {
+      this.checkText(this.initials)
+    }
+    if (this.count) {
+      this.checkText(this.count.toString())
+    }
   }
 
   componentDidRender (): void {
-    if (this.initialsChanged) {
+    if (this.textChanged) {
       // placed here becase @Watch('initials') is fired
       // BEFORE the element .fit is attached on shDOM
-      this.checkInitials(this.initials)
-      this.initialsChanged = false
+      if (this.initials) this.checkText(this.initials)
+      if (this.count) this.checkText(this.count.toString())
+      this.textChanged = false
     }
   }
 
   @Watch('initials')
   initialsHandler (): void {
-    this.initialsChanged = true
+    this.textChanged = true
+    this.checkInitialsVariant()
+  }
+
+  @Watch('count')
+  countHandler (): void {
+    this.textChanged = true
     this.checkInitialsVariant()
   }
 
@@ -154,11 +165,15 @@ export class MdsAvatar {
           this.icon && 'avatar--icon',
           this.loaded ? 'avatar--loaded' : 'avatar--pending',
         )} part="wrapper">
-          { this.initials && !this.fallback && !this.src && <div class="initials-text">
+          { this.initials && !this.count && !this.fallback && !this.src && <div class="initials-text">
             <span class="fit">{ this.initials.substring(0, 2) }</span>
           </div>
           }
-          { this.src && !this.fallback && !this.icon && <mds-img
+          { this.count && !this.fallback && !this.src && <div class="initials-text">
+            <span class="fit">+{ this.count }</span>
+          </div>
+          }
+          { this.src && !this.count && !this.fallback && !this.icon && <mds-img
             class="image"
             loading="lazy"
             onMdsImgLoadError={ () => { this.loaded = true; this.fallback = true } }
@@ -166,8 +181,8 @@ export class MdsAvatar {
             src={ this.src }
           />
           }
-          { this.icon && !this.initials && <mds-icon class="icon" part="icon" name={this.icon}></mds-icon> }
-          { (this.fallback || (!this.icon && !this.initials && !this.src)) && <i class="fallback-icon" innerHTML={miBaselinePerson}/> }
+          { this.icon && !this.initials && !this.count && <mds-icon class="icon" part="icon" name={this.icon}></mds-icon> }
+          { (this.fallback || (!this.icon && !this.initials && !this.count && !this.src)) && <i class="fallback-icon" innerHTML={miBaselinePerson}/> }
         </div>
       </Host>
     )

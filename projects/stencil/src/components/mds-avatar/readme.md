@@ -81,6 +81,7 @@ This is a web-component from Maggioli Design System [Magma](https://magma.maggio
 
 | Property   | Attribute  | Description                                                                                                                                          | Type                                                                                                                                                                                    | Default     |
 | ---------- | ---------- | ---------------------------------------------------------------------------------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ----------- |
+| `count`    | `count`    | The user's inizials displayed if there's no image available, initials will override tone and variant senttings to keep user recognizable from others | `number \| undefined`                                                                                                                                                                   | `undefined` |
 | `icon`     | `icon`     | Specifies the path to the icon                                                                                                                       | `string \| undefined`                                                                                                                                                                   | `undefined` |
 | `initials` | `initials` | The user's inizials displayed if there's no image available, initials will override tone and variant senttings to keep user recognizable from others | `string \| undefined`                                                                                                                                                                   | `undefined` |
 | `src`      | `src`      | Specifies the path to the image                                                                                                                      | `string \| undefined`                                                                                                                                                                   | `undefined` |
@@ -96,20 +97,11 @@ This is a web-component from Maggioli Design System [Magma](https://magma.maggio
 | `"wrapper"` | The wrapper which contains media displayed |
 
 
-## CSS Custom Properties
-
-| Name                                    | Description                                   |
-| --------------------------------------- | --------------------------------------------- |
-| `--mds-avatar-background-color`         | The background-color of the component         |
-| `--mds-avatar-background-color-pending` | The background-color when an image is loading |
-| `--mds-avatar-color`                    | The color of the placeholder icon             |
-| `--mds-avatar-radius`                   | The border-radius of the element              |
-
-
 ## Dependencies
 
 ### Used by
 
+ - [mds-avatar-stack-item](../mds-avatar-stack-item)
  - [mds-entity](../mds-entity)
  - [mds-push-notification-item](../mds-push-notification-item)
 
@@ -129,6 +121,7 @@ graph TD;
   mds-button --> mds-spinner
   mds-button --> mds-icon
   mds-button --> mds-text
+  mds-avatar-stack-item --> mds-avatar
   mds-entity --> mds-avatar
   mds-push-notification-item --> mds-avatar
   style mds-avatar fill:#f9f,stroke:#333,stroke-width:4px
