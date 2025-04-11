@@ -1,7 +1,7 @@
 {
-  "name": "@maggioli-design-system/mds-input",
-  "version": "7.7.0",
-  "description": "mds-input is a web-component from Magma Design System, built with StencilJS, TypeScript, Storybook. It's based on the web-component standard and it's designed to be agnostic from the JavaScript framework you are using.",
+  "name": "@maggioli-design-system/mds-policy-ai",
+  "version": "1.0.0",
+  "description": "mds-policy-ai is a web-component from Magma Design System, built with StencilJS, TypeScript, Storybook. It's based on the web-component standard and it's designed to be agnostic from the JavaScript framework you are using.",
   "main": "dist/index.cjs.js",
   "module": "dist/index.js",
   "es2015": "dist/esm/index.mjs",
@@ -9,7 +9,7 @@
   "types": "dist/types/components.d.ts",
   "collection": "dist/collection/collection-manifest.json",
   "collection:main": "dist/collection/index.js",
-  "unpkg": "dist/mds-input/mds-input.esm.js",
+  "unpkg": "dist/mds-policy-ai/mds-policy-ai.esm.js",
   "files": [
     "dist/",
     "documentation.json",
@@ -20,16 +20,18 @@
   ],
   "scripts": {
     "build": "rm src/components.d.ts || true && stencil build --docs-readme",
-    "prepublishOnly": "npm run build"
+    "prepublishOnly": "npm run build",
+    "test": "stencil test --spec --e2e"
   },
   "dependencies": {
+    "@maggioli-design-system/mds-banner": "7.2.0",
     "@maggioli-design-system/mds-button": "6.7.0",
+    "@maggioli-design-system/mds-chip": "3.6.0",
+    "@maggioli-design-system/mds-dropdown": "5.8.0",
+    "@maggioli-design-system/mds-help": "1.7.1",
     "@maggioli-design-system/mds-icon": "2.13.1",
-    "@maggioli-design-system/mds-input-tip": "1.5.2",
     "@maggioli-design-system/mds-text": "4.7.2",
-    "@maggioli-design-system/styles": "15.9.1",
-    "@stencil/core": "4.27.2",
-    "clsx": "2.1.0"
+    "@maggioli-design-system/styles": "15.9.1"
   },
   "license": "MIT",
   "author": {
@@ -38,16 +40,6 @@
     "url": "https://vitto.github.io/vit.to/"
   },
   "contributors": [
-    {
-      "name": "Andrea Pruccoli",
-      "email": "andrea.pruccoli@maggioli.it",
-      "role": "Software Engineer"
-    },
-    {
-      "name": "Nicola Tamburini",
-      "email": "nicola.tamburini@maggioli.it",
-      "role": "Software Engineer"
-    },
     {
       "name": "Vittorio Vittori",
       "email": "vittorio.vittori@maggioli.it",

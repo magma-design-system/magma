@@ -25,11 +25,11 @@
   },
   "dependencies": {
     "@maggioli-design-system/styles": "15.9.1",
-    "@maggioli-design-system/mds-pref-animation": "2.5.2",
+    "@maggioli-design-system/mds-pref-animation": "2.6.0",
     "@maggioli-design-system/mds-pref-consumption": "2.7.0",
-    "@maggioli-design-system/mds-pref-contrast": "2.5.2",
-    "@maggioli-design-system/mds-pref-language": "2.5.1",
-    "@maggioli-design-system/mds-pref-theme": "2.6.2",
+    "@maggioli-design-system/mds-pref-contrast": "2.6.0",
+    "@maggioli-design-system/mds-pref-language": "2.6.0",
+    "@maggioli-design-system/mds-pref-theme": "2.7.0",
     "@stencil/core": "4.27.2"
   },
   "license": "MIT",

@@ -24,7 +24,7 @@
     "test": "stencil test --spec --e2e"
   },
   "dependencies": {
-    "@maggioli-design-system/mds-button": "6.6.0",
+    "@maggioli-design-system/mds-button": "6.7.0",
     "@maggioli-design-system/mds-calendar": "1.1.0",
     "@maggioli-design-system/mds-dropdown": "5.8.0",
     "@maggioli-design-system/styles": "15.9.1",
