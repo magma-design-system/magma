@@ -117,6 +117,7 @@ Type: `Promise<void>`
 ### Used by
 
  - [mds-input-field](../mds-input-field)
+ - [mds-input-otp](../mds-input-otp)
 
 ### Depends on
 
@@ -139,6 +140,7 @@ graph TD;
   mds-button --> mds-text
   mds-input-tip-item --> mds-text
   mds-input-field --> mds-input
+  mds-input-otp --> mds-input
   style mds-input fill:#f9f,stroke:#333,stroke-width:4px
 ```
 
