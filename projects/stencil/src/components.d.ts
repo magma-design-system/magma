@@ -11,6 +11,7 @@ import { MdsAccordionItemEventDetail } from "./components/mds-accordion-item/met
 import { MdsAccordionTimerEventDetail } from "./components/mds-accordion-timer/meta/event-detail";
 import { MdsAccordionTimerItemEventDetail } from "./components/mds-accordion-timer-item/meta/event-detail";
 import { ChipVariantType, LabelVariantType, ThemeFullVariantAvatarType, ThemeFullVariantType, ThemeLuminanceVariantType, ThemeStatusVariantType, ThemeVariantType, ToneMinimalVariantType, ToneSimpleVariantType, ToneVariantType } from "./type/variant";
+import { AvatarSizeType } from "./components/mds-avatar-stack/meta/types";
 import { BenchmarkBarTypographyType } from "./components/mds-benchmark-bar/meta/types";
 import { BibliographyFormatType, BibliographyRelationshipType } from "./components/mds-bibliography/meta/types";
 import { MdsBreadcrumbEventDetail } from "./components/mds-breadcrumb/meta/event-detail";
@@ -80,6 +81,7 @@ export { MdsAccordionItemEventDetail } from "./components/mds-accordion-item/met
 export { MdsAccordionTimerEventDetail } from "./components/mds-accordion-timer/meta/event-detail";
 export { MdsAccordionTimerItemEventDetail } from "./components/mds-accordion-timer-item/meta/event-detail";
 export { ChipVariantType, LabelVariantType, ThemeFullVariantAvatarType, ThemeFullVariantType, ThemeLuminanceVariantType, ThemeStatusVariantType, ThemeVariantType, ToneMinimalVariantType, ToneSimpleVariantType, ToneVariantType } from "./type/variant";
+export { AvatarSizeType } from "./components/mds-avatar-stack/meta/types";
 export { BenchmarkBarTypographyType } from "./components/mds-benchmark-bar/meta/types";
 export { BibliographyFormatType, BibliographyRelationshipType } from "./components/mds-bibliography/meta/types";
 export { MdsBreadcrumbEventDetail } from "./components/mds-breadcrumb/meta/event-detail";
@@ -208,10 +210,46 @@ export namespace Components {
     }
     interface MdsAvatar {
         /**
+          * The user's inizials displayed if there's no image available, initials will override tone and variant senttings to keep user recognizable from others
+         */
+        "count"?: number;
+        /**
           * Specifies the path to the icon
           * @see https://magma.maggiolicloud.it/storybook/?path=/story/design-icon--default
          */
         "icon"?: string|undefined;
+        /**
+          * The user's inizials displayed if there's no image available, initials will override tone and variant senttings to keep user recognizable from others
+         */
+        "initials"?: string;
+        /**
+          * Specifies the path to the image
+         */
+        "src"?: string;
+        /**
+          * Specifies the color tone of the component
+         */
+        "tone"?: ToneMinimalVariantType;
+        /**
+          * Specifies the color variant of the component
+         */
+        "variant"?: ThemeFullVariantAvatarType;
+    }
+    interface MdsAvatarStack {
+        /**
+          * Specifies the size of the slotted avatars elements
+         */
+        "size"?: AvatarSizeType;
+        /**
+          * Specifies the size of the slotted avatars elements
+         */
+        "total"?: number;
+    }
+    interface MdsAvatarStackItem {
+        /**
+          * Specifies number of total avatars, the total number will be subtracted by the slotted ones
+         */
+        "count"?: number;
         /**
           * The user's inizials displayed if there's no image available, initials will override tone and variant senttings to keep user recognizable from others
          */
@@ -2296,6 +2334,18 @@ declare global {
         prototype: HTMLMdsAvatarElement;
         new (): HTMLMdsAvatarElement;
     };
+    interface HTMLMdsAvatarStackElement extends Components.MdsAvatarStack, HTMLStencilElement {
+    }
+    var HTMLMdsAvatarStackElement: {
+        prototype: HTMLMdsAvatarStackElement;
+        new (): HTMLMdsAvatarStackElement;
+    };
+    interface HTMLMdsAvatarStackItemElement extends Components.MdsAvatarStackItem, HTMLStencilElement {
+    }
+    var HTMLMdsAvatarStackItemElement: {
+        prototype: HTMLMdsAvatarStackItemElement;
+        new (): HTMLMdsAvatarStackItemElement;
+    };
     interface HTMLMdsBadgeElement extends Components.MdsBadge, HTMLStencilElement {
     }
     var HTMLMdsBadgeElement: {
@@ -3395,6 +3445,8 @@ declare global {
         "mds-accordion-timer-item": HTMLMdsAccordionTimerItemElement;
         "mds-author": HTMLMdsAuthorElement;
         "mds-avatar": HTMLMdsAvatarElement;
+        "mds-avatar-stack": HTMLMdsAvatarStackElement;
+        "mds-avatar-stack-item": HTMLMdsAvatarStackItemElement;
         "mds-badge": HTMLMdsBadgeElement;
         "mds-banner": HTMLMdsBannerElement;
         "mds-benchmark-bar": HTMLMdsBenchmarkBarElement;
@@ -3594,10 +3646,46 @@ declare namespace LocalJSX {
     }
     interface MdsAvatar {
         /**
+          * The user's inizials displayed if there's no image available, initials will override tone and variant senttings to keep user recognizable from others
+         */
+        "count"?: number;
+        /**
           * Specifies the path to the icon
           * @see https://magma.maggiolicloud.it/storybook/?path=/story/design-icon--default
          */
         "icon"?: string|undefined;
+        /**
+          * The user's inizials displayed if there's no image available, initials will override tone and variant senttings to keep user recognizable from others
+         */
+        "initials"?: string;
+        /**
+          * Specifies the path to the image
+         */
+        "src"?: string;
+        /**
+          * Specifies the color tone of the component
+         */
+        "tone"?: ToneMinimalVariantType;
+        /**
+          * Specifies the color variant of the component
+         */
+        "variant"?: ThemeFullVariantAvatarType;
+    }
+    interface MdsAvatarStack {
+        /**
+          * Specifies the size of the slotted avatars elements
+         */
+        "size"?: AvatarSizeType;
+        /**
+          * Specifies the size of the slotted avatars elements
+         */
+        "total"?: number;
+    }
+    interface MdsAvatarStackItem {
+        /**
+          * Specifies number of total avatars, the total number will be subtracted by the slotted ones
+         */
+        "count"?: number;
         /**
           * The user's inizials displayed if there's no image available, initials will override tone and variant senttings to keep user recognizable from others
          */
@@ -5564,6 +5652,8 @@ declare namespace LocalJSX {
         "mds-accordion-timer-item": MdsAccordionTimerItem;
         "mds-author": MdsAuthor;
         "mds-avatar": MdsAvatar;
+        "mds-avatar-stack": MdsAvatarStack;
+        "mds-avatar-stack-item": MdsAvatarStackItem;
         "mds-badge": MdsBadge;
         "mds-banner": MdsBanner;
         "mds-benchmark-bar": MdsBenchmarkBar;
@@ -5672,6 +5762,8 @@ declare module "@stencil/core" {
             "mds-accordion-timer-item": LocalJSX.MdsAccordionTimerItem & JSXBase.HTMLAttributes<HTMLMdsAccordionTimerItemElement>;
             "mds-author": LocalJSX.MdsAuthor & JSXBase.HTMLAttributes<HTMLMdsAuthorElement>;
             "mds-avatar": LocalJSX.MdsAvatar & JSXBase.HTMLAttributes<HTMLMdsAvatarElement>;
+            "mds-avatar-stack": LocalJSX.MdsAvatarStack & JSXBase.HTMLAttributes<HTMLMdsAvatarStackElement>;
+            "mds-avatar-stack-item": LocalJSX.MdsAvatarStackItem & JSXBase.HTMLAttributes<HTMLMdsAvatarStackItemElement>;
             "mds-badge": LocalJSX.MdsBadge & JSXBase.HTMLAttributes<HTMLMdsBadgeElement>;
             "mds-banner": LocalJSX.MdsBanner & JSXBase.HTMLAttributes<HTMLMdsBannerElement>;
             "mds-benchmark-bar": LocalJSX.MdsBenchmarkBar & JSXBase.HTMLAttributes<HTMLMdsBenchmarkBarElement>;
