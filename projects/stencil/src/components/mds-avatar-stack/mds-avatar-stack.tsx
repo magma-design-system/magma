@@ -29,7 +29,7 @@ export class MdsAvatarStack {
     return (
       <Host>
         <slot></slot>
-        { this.total && this.total - this.items.length > 0 && <mds-avatar-stack-item count={this.total - this.items.length}></mds-avatar-stack-item> }
+        { this.total !== undefined && this.total - this.items.length > 0 && <mds-avatar-stack-item count={this.total - this.items.length}></mds-avatar-stack-item> }
       </Host>
     )
   }

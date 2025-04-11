@@ -26,12 +26,12 @@ export class MdsAvatarStackItem {
   /**
    * Specifies the color tone of the component
    */
-  @Prop({ reflect: true }) readonly tone?: ToneMinimalVariantType
+  @Prop({ reflect: true }) readonly tone?: ToneMinimalVariantType = 'weak'
 
   /**
    * Specifies the color variant of the component
    */
-  @Prop({ reflect: true, mutable: true }) variant?: ThemeFullVariantAvatarType
+  @Prop({ reflect: true }) readonly variant?: ThemeFullVariantAvatarType
 
   render () {
     return (
