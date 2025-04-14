@@ -6,6 +6,8 @@ export type MdsValidatorFn = (input: string) => null | MdsValidationErrors
 
 export const NullValidator: MdsValidatorFn = () => null
 
+export const requiredValidor: MdsValidatorFn = (input: string) => {return input.length > 0 ? null : { required: 'input required' }}
+
 export const isbnValidatorFn: MdsValidatorFn = (input: string) => {
   if (Number.isNaN(input.slice(0, -1)) || (input.length !== 10 && input.length !== 13)) return { 'isbn-error': 'formato isbn non correto' }
 

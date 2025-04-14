@@ -1,5 +1,5 @@
 import { themeStatusVariantDictionary } from '@dictionary/variant'
-import { validationModelDictionary } from '../meta/dictionary'
+import { validationModelDictionary } from '@component/mds-input/meta/dictionary'
 import { h } from '@stencil/core'
 
 interface MdsInputFieldInterface {

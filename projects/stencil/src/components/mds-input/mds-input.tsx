@@ -17,7 +17,7 @@ import localeEn from './meta/locale.en.json'
 import localeEs from './meta/locale.es.json'
 import localeIt from './meta/locale.it.json'
 import { createInputValidationManager, InputValidationManager } from './meta/input-type/InputValidationManager'
-import { MdsValidationErrors, MdsValidatorFn } from './meta/validators'
+import { MdsValidationErrors, MdsValidatorFn, requiredValidor } from './meta/validators'
 
 /*
   * @part counter-button-decrease - Selects the button used to decrese the input value
@@ -194,7 +194,7 @@ export class MdsInput {
   /**
    * Sets the variant of the input field
    */
-  @Prop({ reflect: true }) readonly variant?: ThemeStatusVariantType
+  @Prop({ reflect: true, mutable: true }) variant?: ThemeStatusVariantType
 
   /**
    * Sets the word(s) of the tip of the input field
@@ -267,6 +267,9 @@ export class MdsInput {
 
   componentDidLoad (): void {
     this.inputValidation = createInputValidationManager(this.type!)
+    if (this.required) {
+      this.inputValidation.validator.addValidator(requiredValidor)
+    }
     this.nativeInput?.setAttribute('pattern', String(this.inputValidation.pattern))
     if (this.autofocus) {
       this.nativeInput?.focus()
@@ -310,8 +313,10 @@ export class MdsInput {
     return Promise.resolve(this.inputValidation.validator.errors)
   }
 
-  private validateInput () {
-    return this.inputValidation.isValid(this.value)
+  private validateInput (): boolean {
+    const isValid = this.inputValidation.isValid(this.value)
+    this.variant = isValid ? 'success' : 'error'
+    return isValid
   }
 
 
@@ -435,7 +440,7 @@ export class MdsInput {
           && this.controlsLayout === 'horizontal'
           && <mds-button class="counter-button counter-button--horizontal counter-button--decrease"
             icon={this.controlsIcon === 'arrow' ? miBaselineArrowDown : miBaselineRemove}
-            onClick={this.stepDown} role="button" tabindex="0" title={this.t.get('decrease')}
+            onClick={this.stepDown} tabindex="0" title={this.t.get('decrease')}
             part="counter-button-decrease"></mds-button>
         }
         {this.type === 'textarea'
@@ -493,11 +498,11 @@ export class MdsInput {
           && this.controlsLayout === 'vertical'
           && <div class="counter counter--vertical">
             <mds-button class="counter-button" icon={this.controlsIcon === 'arrow' ? miBaselineArrowUp : miBaselineAdd}
-              onClick={this.stepUp} role="button" tabindex="0" title={this.t.get('increase')}
+              onClick={this.stepUp} tabindex="0" title={this.t.get('increase')}
               part="counter-button-increase"></mds-button>
             <mds-button class="counter-button"
               icon={this.controlsIcon === 'arrow' ? miBaselineArrowDown : miBaselineRemove}
-              onClick={this.stepDown} role="button" tabindex="0" title={this.t.get('decrease')}
+              onClick={this.stepDown} tabindex="0" title={this.t.get('decrease')}
               part="counter-button-decrease"></mds-button>
           </div>
         }
@@ -505,13 +510,13 @@ export class MdsInput {
           && this.controlsLayout === 'horizontal'
           && <mds-button class="counter-button counter-button--horizontal counter-button--increase"
             icon={this.controlsIcon === 'arrow' ? miBaselineArrowUp : miBaselineAdd} onClick={this.stepUp}
-            role="button" tabindex="0" title={this.t.get('increase')}
+            tabindex="0" title={this.t.get('increase')}
             part="counter-button-increase"></mds-button>
         }
         {this.type === 'password'
           && <mds-button class="password-toggle-button"
             icon={this.isPasswordVisible ? miBaselineVisibleOff : miBaselineVisible} onClick={() => this.isPasswordVisible = !this.isPasswordVisible}
-            role="button" tabindex="0" tone="quiet" title={this.isPasswordVisible ? this.t.get('hidePassword') : this.t.get('showPassword')}
+            tabindex="0" tone="quiet" title={this.isPasswordVisible ? this.t.get('hidePassword') : this.t.get('showPassword')}
             part="password-toggle-button"></mds-button>
         }
         <mds-input-tip lang={this.language} position="top" active={this.hasFocus}>
@@ -528,7 +533,7 @@ export class MdsInput {
         {this.datalist &&
           <datalist id="datalist" class="datalist">
             {this.datalist.forEach(element => {
-              <option value={element}/>
+              return <option value={element}/>
             })}
           </datalist>
         }

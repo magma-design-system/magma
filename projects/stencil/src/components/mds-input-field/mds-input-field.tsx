@@ -1,5 +1,5 @@
 import { Component, Element, Host, Prop, h } from '@stencil/core'
-import { MdsValidationErrors } from './meta/validators'
+import { MdsValidationErrors } from '@component/mds-input/meta/validators'
 import { ThemeStatusVariantType } from '@type/variant'
 
 @Component({
@@ -21,12 +21,10 @@ export class MdsInputField {
       mdsInput.getErrors().then((errors: MdsValidationErrors) => {
         if (errors) {
           this.variant = 'error'
-          mdsInput.variant = this.variant
           this.message = Object.entries(errors).map(v => v[1]).join('\n')
           return
         }
         this.variant = 'success'
-        mdsInput.variant = this.variant
         this.message = undefined
       })
     })
