@@ -62,4 +62,24 @@ describe('mds-input-field', () => {
 
     expect(label.textContent).toBe('codice fiscale')
   })
+
+  it('should not change message if there are no validator', async () => {
+    const page = await newE2EPage()
+    const m = 'custom message that should not change'
+    await page.setContent(`<mds-input-field label="Label" message="${m}"><mds-input><mds-input></mds-input-field><button><button>`)
+    const element = await page.find('mds-input-field')
+    const mdsInput = await element.find('mds-input')
+    const message = await element.find('>>> .message')
+
+    await page.waitForChanges()
+
+    await mdsInput.click()
+    await mdsInput.type('abc')
+    // trigger validation on blur
+    await page.click('button')
+    await page.waitForChanges()
+
+    expect(message.textContent).toBe(m)
+  })
+
 })

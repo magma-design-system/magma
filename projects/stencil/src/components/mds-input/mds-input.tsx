@@ -308,6 +308,16 @@ export class MdsInput {
     this.inputValidation.validator.removeValidator(validator)
   }
 
+  /**
+   * Returns if validator is presen
+   * @param validator validator to check if it is present
+   * @returns if a validator is present or not, if no validator given, return if there are at least one validator
+   */
+  @Method()
+  async hasValidator (validator?: MdsValidatorFn): Promise<boolean> {
+    return this.inputValidation.validator.hasValidator(validator)
+  }
+
   @Method()
   async getErrors (): Promise<MdsValidationErrors | null> {
     return Promise.resolve(this.inputValidation.validator.errors)

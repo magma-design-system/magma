@@ -56,8 +56,8 @@ export class Validator {
     return Array.isArray(validators) ? validators.includes(validator) : validators === validator
   }
 
-  hasValidator (validator: MdsValidatorFn): boolean {
-    return this._hasValidator(this._validators, validator)
+  hasValidator (validator?: MdsValidatorFn): boolean {
+    return validator ? this._hasValidator(this._validators, validator) : this._validators.length > 0
   }
 
   removeValidator (validator: MdsValidatorFn | MdsValidatorFn[]): void {

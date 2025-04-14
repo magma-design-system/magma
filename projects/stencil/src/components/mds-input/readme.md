@@ -89,6 +89,22 @@ Type: `Promise<HTMLTextAreaElement | HTMLInputElement>`
 
 
 
+### `hasValidator(validator?: MdsValidatorFn) => Promise<boolean>`
+
+Returns if validator is presen
+
+#### Parameters
+
+| Name        | Type                          | Description                         |
+| ----------- | ----------------------------- | ----------------------------------- |
+| `validator` | `MdsValidatorFn \| undefined` | validator to check if it is present |
+
+#### Returns
+
+Type: `Promise<boolean>`
+
+if a validator is present or not, if no validator given, return if there are at least one validator
+
 ### `removeValidator(validator: MdsValidatorFn) => Promise<void>`
 
 

@@ -14,10 +14,9 @@ export class MdsInputField {
 
   @Element() host!: HTMLMdsInputFieldElement
 
-  componentDidLoad (): void {
-    const [mdsInput] = this.slotInput.assignedElements() as HTMLMdsInputElement[]
-    if (!mdsInput) throw new Error('Mds input not found')
-    mdsInput.addEventListener('blur', () => {
+  private handleBlurInput (mdsInput: HTMLMdsInputElement) {
+    mdsInput.hasValidator().then(hasValidator => {
+      if (!hasValidator) return
       mdsInput.getErrors().then((errors: MdsValidationErrors) => {
         if (errors) {
           this.variant = 'error'
@@ -28,6 +27,12 @@ export class MdsInputField {
         this.message = undefined
       })
     })
+  }
+
+  componentDidLoad (): void {
+    const [mdsInput] = this.slotInput.assignedElements() as HTMLMdsInputElement[]
+    if (!mdsInput) throw new Error('Mds input not found')
+    mdsInput.addEventListener('blur', () => this.handleBlurInput(mdsInput))
   }
 
   /**

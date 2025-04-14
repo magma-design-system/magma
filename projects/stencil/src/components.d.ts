@@ -954,6 +954,12 @@ export namespace Components {
          */
         "getInputElement": () => Promise<HTMLInputElement | HTMLTextAreaElement>;
         /**
+          * Returns if validator is presen
+          * @param validator validator to check if it is present
+          * @returns if a validator is present or not, if no validator given, return if there are at least one validator
+         */
+        "hasValidator": (validator?: MdsValidatorFn) => Promise<boolean>;
+        /**
           * An icon displayed at the right of the input
          */
         "icon"?: string;
