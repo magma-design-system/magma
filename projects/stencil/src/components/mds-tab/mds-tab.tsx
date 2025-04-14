@@ -92,7 +92,7 @@ export class MdsTab {
     if (this.animation === 'slide') {
       this.updateSliderPosition()
     }
-    if (this.currentItem !== 0) {
+    if (this.currentItem > 0) {
       this.scrollTabs(this.currentItem)
     }
   }
