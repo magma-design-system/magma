@@ -45,14 +45,12 @@
 
   height: auto;
   interpolate-size: allow-keywords;
-  margin-top: 0;
   max-height: auto;
   transition-property: height, margin-top, opacity, padding;
 }
 
 .message:empty {
   height: 0;
-  margin-top: -100%;
   max-height: 0;
   opacity: 0;
   padding: 0;
