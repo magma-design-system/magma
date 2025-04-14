@@ -98,10 +98,14 @@ FormIntegration.args = {
   label: 'full name',
 }
 
-export const Validation = Template.bind({})
+const TemplateValidation = args =>
+  <mds-input-field {...args}>
+    <mds-input name="fullName" type={args.type} placeholder={args.placeholder}></mds-input>
+  </mds-input-field>
+
+export const Validation = TemplateValidation.bind({})
 Validation.args = {
   label: 'inserisci il tuo codice fiscale',
   placeholder: 'Es: MRCRSS83B21D704L',
   type: 'cf',
-
 }

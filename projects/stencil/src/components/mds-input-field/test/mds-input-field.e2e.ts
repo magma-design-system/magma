@@ -9,8 +9,11 @@ describe('mds-input-field', () => {
     const message = await element.find('>>> .message')
 
     expect(element).toHaveAttribute('hydrated')
-    expect(label).toBeNull()
-    expect(message).toBeNull()
+    expect(label).toBeTruthy()
+    expect(label.textContent).toBe('')
+    expect(message).toBeTruthy()
+    expect(message.textContent).toBe('')
+
   })
 
   it('render error message on cf input type', async () => {
@@ -45,7 +48,8 @@ describe('mds-input-field', () => {
 
     expect(element).toEqualAttribute('variant', 'success')
     const message = await element.find('>>> .message')
-    expect(message).toBeNull()
+    expect(message).toBeTruthy()
+    expect(message.textContent).toBe('')
   })
 
   it('render label', async () => {
