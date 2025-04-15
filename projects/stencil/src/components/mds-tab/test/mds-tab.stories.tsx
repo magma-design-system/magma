@@ -243,6 +243,3 @@ export const NoSelectedItem = TemplateNoSelected.bind({})
 export const Scroll = TemplateScroll.bind({})
 
 export const AsyncContent = TemplateAsyncContent.bind({})
-
-const temp = () => <mds-tab></mds-tab>
-export const Temp = temp.bind({})
