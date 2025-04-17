@@ -73,6 +73,7 @@ export class MdsInput {
   @State() currentLengthLabel: string
   @State() countVariant: InputTipItemVariantType = 'count-empty'
   @State() isPasswordVisible = false
+  // private valuePristine?: string
 
   private t:Locale = new Locale({
     el: localeEl,
@@ -248,6 +249,7 @@ export class MdsInput {
   componentWillLoad (): void {
 
     this.language = this.t.lang(this.el)
+    // this.valuePristine = this.value
 
     // If the mds-input has a tabindex attribute we get the value
     // and pass it down to the native input, then remove it from the

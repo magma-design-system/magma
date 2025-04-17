@@ -257,6 +257,10 @@
   @apply text-code-snippet;
 }
 
+:host([type="cf"]) .input {
+  @apply text-code-snippet uppercase;
+}
+
 @container (max-width: 210px) {
   :host .tip__content,
   :host(:focus-within) .tip__content {
