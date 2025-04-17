@@ -8,7 +8,9 @@
   --mds-radial-menu-transition-duration: theme('transitionDuration.500');
   --mds-radial-menu-transition-timing-function: theme('transitionTimingFunction.out-expo');
   --mds-radial-menu-is-full-circle: 0;
+  --mds-radial-menu-disc-size: theme('size.3600');
 
+  /* private */ --mds-radial-menu-disc-scale: 0;
   /* private */ --mds-radial-menu-radius-current: 0;
 
   display: inline-flex;
@@ -26,21 +28,23 @@
 .menu-button {
   border-radius: 100%;
   position: relative;
-  z-index: 1;
+  z-index: 2;
 }
 
 .radial-menu {
   inset: 0;
   position: absolute;
-  z-index: 0;
+  z-index: 1;
 }
 
 :host(:not([opened])) {
   --mds-radial-menu-radius-current: 0;
+  --mds-radial-menu-disc-scale: 0;
 }
 
 :host([opened]) {
   --mds-radial-menu-radius-current: var(--mds-radial-menu-radius);
+  --mds-radial-menu-disc-scale: 1;
 }
 
 :host([opened]) ::slotted(mds-radial-menu-item) {
@@ -48,19 +52,26 @@
   pointer-events: auto;
 }
 
-::slotted(mds-radial-menu-item) {
+.disc {
+  --size: calc(var(--mds-radial-menu-disc-size) + var(--mds-radial-menu-radius));
 
-  /* --mds-radial-menu-item-btn-size: 1rem;
-  --mds-radial-menu-item-extra-space: 1rem;
-  --mds-radial-menu-item-radius: calc(var(--mds-radial-menu-item-btn-size) + var(--mds-radial-menu-item-extra-space)); */
+  background-color: red;
+  border-radius: 100%;
+  display: inline-flex;
+  height: var(--size);
+  inset: 50%;
+  position: absolute;
+  transform: translate(-50%, -50%) scale(var(--mds-radial-menu-disc-scale));
+  transition-duration: var(--mds-radial-menu-transition-duration);
+  transition-property: transform;
+  transition-timing-function: var(--mds-radial-menu-transition-timing-function);
+  width: var(--size);
+  z-index: 0;
+}
+
+::slotted(mds-radial-menu-item) {
   --mds-radial-menu-item-offset-per-child: calc((var(--mds-radial-menu-angle-end) - var(--mds-radial-menu-angle-start)) / (var(--mds-radial-menu-nth-siblings) + var(--mds-radial-menu-is-full-circle)));
 	--mds-radial-menu-item-angle-offset: calc(var(--mds-radial-menu-direction) * var(--mds-radial-menu-item-index) * var(--mds-radial-menu-item-offset-per-child));
   --mds-radial-menu-item-delay: calc((var(--mds-radial-menu-item-index) + 1) * var(--mds-radial-menu-delay));
-
-  inset: 0;
-  opacity: 0;
-  pointer-events: none;
-  position: absolute;
-  translate: calc(cos((var(--mds-radial-menu-angle-start) + var(--mds-radial-menu-item-angle-offset))) * var(--mds-radial-menu-radius-current))
-             calc(sin((var(--mds-radial-menu-angle-start) + var(--mds-radial-menu-item-angle-offset))) * var(--mds-radial-menu-radius-current) * -1);
+  --mds-radial-menu-item-translate: calc(cos((var(--mds-radial-menu-angle-start) + var(--mds-radial-menu-item-angle-offset))) * var(--mds-radial-menu-radius-current)) calc(sin((var(--mds-radial-menu-angle-start) + var(--mds-radial-menu-item-angle-offset))) * var(--mds-radial-menu-radius-current) * -1);
 }

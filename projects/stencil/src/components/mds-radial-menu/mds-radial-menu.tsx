@@ -1,6 +1,8 @@
 import { Component, Host, Prop, Element, h, Watch } from '@stencil/core'
 import { ButtonSizeType } from '@type/button'
 import { Direction } from './meta/types'
+import miBaselineMenu from '@icon/mi/baseline/menu.svg'
+import miBaselineClose from '@icon/mi/baseline/close.svg'
 
 @Component({
   tag: 'mds-radial-menu',
@@ -93,7 +95,7 @@ export class MdsRadialMenu {
       <Host>
         <mds-button
           class='menu-button'
-          icon='mi/round/menu'
+          icon={this.opened ? miBaselineClose : miBaselineMenu}
           tone='weak'
           variant='dark'
           size={this.size}
@@ -102,6 +104,7 @@ export class MdsRadialMenu {
         <div class="radial-menu" part="radial-menu">
           <slot name="item"></slot>
         </div>
+        <div class="disc"></div>
       </Host>
     )
   }
