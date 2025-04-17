@@ -1,5 +1,15 @@
 :host {
+  --mds-radial-menu-item-transition-duration: var(--mds-radial-menu-transition-duration);
+  --mds-radial-menu-item-transition-timing-function: var(--mds-radial-menu-transition-timing-function);
+  /* private */ --mds-radial-menu-item-delay: 0;
+  /* private */ --mds-radial-menu-item-index: 0;
+
+
   display: inline-flex;
+  transition-delay: var(--mds-radial-menu-item-delay);
+  transition-duration: var(--mds-radial-menu-item-transition-duration);
+  transition-property: translate, opacity;
+  transition-timing-function: var(--mds-radial-menu-item-transition-timing-function);
 }
 
 .button {

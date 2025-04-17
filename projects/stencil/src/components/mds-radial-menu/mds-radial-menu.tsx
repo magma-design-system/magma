@@ -62,18 +62,18 @@ export class MdsRadialMenu {
   }
 
   @Watch('angleStart')
-  onAngleStartChange (): void {
-    this.hostElement.style.setProperty('--mds-radial-menu-angle-start', `${this.angleStart}deg`)
+  onAngleStartChange (newValue?: number): void {
+    this.hostElement.style.setProperty('--mds-radial-menu-angle-start', `${newValue}deg`)
   }
 
   @Watch('angleEnd')
-  onAngleEndChange (): void {
-    this.hostElement.style.setProperty('--mds-radial-menu-angle-end', `${this.angleEnd}deg`)
+  onAngleEndChange (newValue?: number): void {
+    this.hostElement.style.setProperty('--mds-radial-menu-angle-end', `${newValue}deg`)
   }
 
-  @Watch('radiuslength')
-  onRadiusLengthChange (): void {
-    this.hostElement.style.setProperty('--mds-radial-menu-radius', `${this.radiusLength}rem`)
+  @Watch('radiusLength')
+  onRadiusLengthChange (newValue?: number): void {
+    this.hostElement.style.setProperty('--mds-radial-menu-radius', `${newValue}rem`)
   }
 
   @Watch('size')
