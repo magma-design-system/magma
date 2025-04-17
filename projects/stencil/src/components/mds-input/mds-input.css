@@ -219,6 +219,11 @@
 }
 
 :host([type="number"]) .input {
+
+  /* required to avoid input number buttons on firefox go be shown always */
+
+  /* stylelint-disable-next-line property-no-vendor-prefix */
+  -moz-appearance: textfield;
   @apply pr-800;
 }
 
