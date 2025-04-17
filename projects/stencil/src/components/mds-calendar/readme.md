@@ -7,13 +7,13 @@
 
 ## Properties
 
-| Property      | Attribute      | Description | Type             | Default |
-| ------------- | -------------- | ----------- | ---------------- | ------- |
-| `endDate`     | `end-date`     |             | `null \| string` | `null`  |
-| `max`         | `max`          |             | `null \| string` | `null`  |
-| `min`         | `min`          |             | `null \| string` | `null`  |
-| `rangePicker` | `range-picker` |             | `boolean`        | `true`  |
-| `startDate`   | `start-date`   |             | `null \| string` | `null`  |
+| Property      | Attribute      | Description                                 | Type             | Default |
+| ------------- | -------------- | ------------------------------------------- | ---------------- | ------- |
+| `endDate`     | `end-date`     | Specifies the end date of the selection     | `null \| string` | `null`  |
+| `max`         | `max`          | Specifies the minimum date of the selection | `null \| string` | `null`  |
+| `min`         | `min`          | Specifies the minimum date of the selection | `null \| string` | `null`  |
+| `rangePicker` | `range-picker` |                                             | `boolean`        | `true`  |
+| `startDate`   | `start-date`   | Specifies the start date of the selection   | `null \| string` | `null`  |
 
 
 ## Events

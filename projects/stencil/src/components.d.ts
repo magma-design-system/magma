@@ -59,6 +59,7 @@ import { DirectionType } from "./components/mds-progress/meta/types";
 import { MdsPushNotificationEventDetail } from "./components/mds-push-notification/meta/event-detail";
 import { NotificationItemDateFormatType, NotificationItemPreviewType } from "./components/mds-push-notification-item/meta/types";
 import { MdsPushNotificationItemEventDetail } from "./components/mds-push-notification-item/meta/event-detail";
+import { Direction } from "./components/mds-radial-menu/meta/types";
 import { MdsStepperBarEventDetail } from "./components/mds-stepper-bar/meta/event-detail";
 import { MdsStepperBarItemEventDetail } from "./components/mds-stepper-bar-item/meta/event-detail";
 import { HorizontalActionsAnimationType } from "./type/animation";
@@ -128,6 +129,7 @@ export { DirectionType } from "./components/mds-progress/meta/types";
 export { MdsPushNotificationEventDetail } from "./components/mds-push-notification/meta/event-detail";
 export { NotificationItemDateFormatType, NotificationItemPreviewType } from "./components/mds-push-notification-item/meta/types";
 export { MdsPushNotificationItemEventDetail } from "./components/mds-push-notification-item/meta/event-detail";
+export { Direction } from "./components/mds-radial-menu/meta/types";
 export { MdsStepperBarEventDetail } from "./components/mds-stepper-bar/meta/event-detail";
 export { MdsStepperBarItemEventDetail } from "./components/mds-stepper-bar-item/meta/event-detail";
 export { HorizontalActionsAnimationType } from "./type/animation";
@@ -398,21 +400,65 @@ export namespace Components {
         "variant"?: ButtonVariantType;
     }
     interface MdsCalendar {
+        /**
+          * Specifies the end date of the selection
+          * @description It's in ISO format (YYYY-MM-DD).
+          * @example '2023-10-01'
+         */
         "endDate": string | null;
+        /**
+          * Specifies the minimum date of the selection
+          * @description It's in ISO format (YYYY-MM-DD).
+          * @example '2023-10-01'
+         */
         "max": string | null;
+        /**
+          * Specifies the minimum date of the selection
+          * @description It's in ISO format (YYYY-MM-DD).
+          * @example '2023-10-01'
+         */
         "min": string | null;
         "rangePicker": boolean;
+        /**
+          * Specifies the start date of the selection
+          * @description It's in ISO format (YYYY-MM-DD).
+          * @example '2023-10-01'
+         */
         "startDate": string | null;
         "updateCurrentDate": (date: string) => Promise<void>;
         "updateLang": () => Promise<void>;
     }
     interface MdsCalendarCell {
+        /**
+          * Specifies the date of the cell
+          * @description It's in ISO format (YYYY-MM-DD).
+         */
         "date"?: string;
+        /**
+          * Specifies if the cell is disabled
+         */
         "disabled"?: boolean | undefined;
+        /**
+          * Specifies if the current month or a weekend
+         */
         "month"?: CalendarCellType;
+        /**
+          * Specifies the selection orientation of the cell
+          * @description It can be 'horizontal' or 'vertical', but currently only 'horizontal' is supported
+         */
         "orientation"?: CalendarCellSelectionOrieintationType;
+        /**
+          * Specifies if the selection is a preview or the final selection
+         */
         "preview"?: boolean;
+        /**
+          * Specifies the point of selection of the cell
+          * @description It can be `end`, `middle`, `none`, `single`, `start`
+         */
         "selection"?: CalendarCellSelectionPositionType;
+        /**
+          * Specifies if the cell is today
+         */
         "today"?: boolean | undefined;
     }
     /**
@@ -1631,6 +1677,28 @@ export namespace Components {
           * Specifies the font typography of the element
          */
         "typography": TypographyTitleType;
+    }
+    interface MdsRadialMenu {
+        "angleEnd"?: number;
+        "angleStart"?: number;
+        "direction"?: Direction;
+        "opened"?: boolean;
+        "radiusLength"?: number;
+        /**
+          * Specifies the size for the button
+         */
+        "size": ButtonSizeType;
+    }
+    interface MdsRadialMenuItem {
+        "icon": string;
+        /**
+          * Specifies the size for the button
+         */
+        "size": ButtonSizeType;
+        /**
+          * Specifies the color variant for the button
+         */
+        "variant"?: ButtonVariantType;
     }
     interface MdsSeparator {
     }
@@ -3142,6 +3210,18 @@ declare global {
         prototype: HTMLMdsQuoteElement;
         new (): HTMLMdsQuoteElement;
     };
+    interface HTMLMdsRadialMenuElement extends Components.MdsRadialMenu, HTMLStencilElement {
+    }
+    var HTMLMdsRadialMenuElement: {
+        prototype: HTMLMdsRadialMenuElement;
+        new (): HTMLMdsRadialMenuElement;
+    };
+    interface HTMLMdsRadialMenuItemElement extends Components.MdsRadialMenuItem, HTMLStencilElement {
+    }
+    var HTMLMdsRadialMenuItemElement: {
+        prototype: HTMLMdsRadialMenuItemElement;
+        new (): HTMLMdsRadialMenuItemElement;
+    };
     interface HTMLMdsSeparatorElement extends Components.MdsSeparator, HTMLStencilElement {
     }
     var HTMLMdsSeparatorElement: {
@@ -3475,6 +3555,8 @@ declare global {
         "mds-push-notification": HTMLMdsPushNotificationElement;
         "mds-push-notification-item": HTMLMdsPushNotificationItemElement;
         "mds-quote": HTMLMdsQuoteElement;
+        "mds-radial-menu": HTMLMdsRadialMenuElement;
+        "mds-radial-menu-item": HTMLMdsRadialMenuItemElement;
         "mds-separator": HTMLMdsSeparatorElement;
         "mds-spinner": HTMLMdsSpinnerElement;
         "mds-stepper-bar": HTMLMdsStepperBarElement;
@@ -3802,21 +3884,65 @@ declare namespace LocalJSX {
         "variant"?: ButtonVariantType;
     }
     interface MdsCalendar {
+        /**
+          * Specifies the end date of the selection
+          * @description It's in ISO format (YYYY-MM-DD).
+          * @example '2023-10-01'
+         */
         "endDate"?: string | null;
+        /**
+          * Specifies the minimum date of the selection
+          * @description It's in ISO format (YYYY-MM-DD).
+          * @example '2023-10-01'
+         */
         "max"?: string | null;
+        /**
+          * Specifies the minimum date of the selection
+          * @description It's in ISO format (YYYY-MM-DD).
+          * @example '2023-10-01'
+         */
         "min"?: string | null;
         "onCheckPreselectionsEmitter"?: (event: MdsCalendarCustomEvent<void>) => void;
         "onDatesEmitter"?: (event: MdsCalendarCustomEvent<{startDate: string, endDate?: string}>) => void;
         "rangePicker"?: boolean;
+        /**
+          * Specifies the start date of the selection
+          * @description It's in ISO format (YYYY-MM-DD).
+          * @example '2023-10-01'
+         */
         "startDate"?: string | null;
     }
     interface MdsCalendarCell {
+        /**
+          * Specifies the date of the cell
+          * @description It's in ISO format (YYYY-MM-DD).
+         */
         "date"?: string;
+        /**
+          * Specifies if the cell is disabled
+         */
         "disabled"?: boolean | undefined;
+        /**
+          * Specifies if the current month or a weekend
+         */
         "month"?: CalendarCellType;
+        /**
+          * Specifies the selection orientation of the cell
+          * @description It can be 'horizontal' or 'vertical', but currently only 'horizontal' is supported
+         */
         "orientation"?: CalendarCellSelectionOrieintationType;
+        /**
+          * Specifies if the selection is a preview or the final selection
+         */
         "preview"?: boolean;
+        /**
+          * Specifies the point of selection of the cell
+          * @description It can be `end`, `middle`, `none`, `single`, `start`
+         */
         "selection"?: CalendarCellSelectionPositionType;
+        /**
+          * Specifies if the cell is today
+         */
         "today"?: boolean | undefined;
     }
     /**
@@ -5155,6 +5281,28 @@ declare namespace LocalJSX {
          */
         "typography"?: TypographyTitleType;
     }
+    interface MdsRadialMenu {
+        "angleEnd"?: number;
+        "angleStart"?: number;
+        "direction"?: Direction;
+        "opened"?: boolean;
+        "radiusLength"?: number;
+        /**
+          * Specifies the size for the button
+         */
+        "size"?: ButtonSizeType;
+    }
+    interface MdsRadialMenuItem {
+        "icon"?: string;
+        /**
+          * Specifies the size for the button
+         */
+        "size"?: ButtonSizeType;
+        /**
+          * Specifies the color variant for the button
+         */
+        "variant"?: ButtonVariantType;
+    }
     interface MdsSeparator {
     }
     interface MdsSpinner {
@@ -5658,6 +5806,8 @@ declare namespace LocalJSX {
         "mds-push-notification": MdsPushNotification;
         "mds-push-notification-item": MdsPushNotificationItem;
         "mds-quote": MdsQuote;
+        "mds-radial-menu": MdsRadialMenu;
+        "mds-radial-menu-item": MdsRadialMenuItem;
         "mds-separator": MdsSeparator;
         "mds-spinner": MdsSpinner;
         "mds-stepper-bar": MdsStepperBar;
@@ -5791,6 +5941,8 @@ declare module "@stencil/core" {
             "mds-push-notification": LocalJSX.MdsPushNotification & JSXBase.HTMLAttributes<HTMLMdsPushNotificationElement>;
             "mds-push-notification-item": LocalJSX.MdsPushNotificationItem & JSXBase.HTMLAttributes<HTMLMdsPushNotificationItemElement>;
             "mds-quote": LocalJSX.MdsQuote & JSXBase.HTMLAttributes<HTMLMdsQuoteElement>;
+            "mds-radial-menu": LocalJSX.MdsRadialMenu & JSXBase.HTMLAttributes<HTMLMdsRadialMenuElement>;
+            "mds-radial-menu-item": LocalJSX.MdsRadialMenuItem & JSXBase.HTMLAttributes<HTMLMdsRadialMenuItemElement>;
             "mds-separator": LocalJSX.MdsSeparator & JSXBase.HTMLAttributes<HTMLMdsSeparatorElement>;
             "mds-spinner": LocalJSX.MdsSpinner & JSXBase.HTMLAttributes<HTMLMdsSpinnerElement>;
             "mds-stepper-bar": LocalJSX.MdsStepperBar & JSXBase.HTMLAttributes<HTMLMdsStepperBarElement>;

@@ -1,0 +1,67 @@
+:host {
+  --mds-radial-menu-angle-start: 0deg;
+  --mds-radial-menu-angle-end: 360deg;
+  --mds-radial-menu-direction: -1;
+  --mds-radial-menu-radius-current: 0;
+
+  /* --mds-radial-menu-radius: 5rem; TODO radius spostato sotto per animazione apertura */
+
+  --mds-radial-menu-nth-siblings: 0;
+  --mds-radial-menu-delay: 0;
+  --mds-radial-menu-is-full-circle: 0;
+
+  display: inline-flex;
+  position: relative;
+}
+
+:host([direction="clockwise"]) {
+  --mds-radial-menu-direction: -1;
+}
+
+:host([direction="counterclockwise"]) {
+  --mds-radial-menu-direction: 1;
+}
+
+.menu-button {
+  border-radius: 100%;
+  position: relative;
+  z-index: 1;
+}
+
+.radial-menu {
+  inset: 0;
+  position: absolute;
+  z-index: 0;
+}
+
+:host(:not([opened])) {
+  --mds-radial-menu-radius: 0;
+}
+
+:host([opened]) {
+  --mds-radial-menu-radius: 5rem;
+}
+
+:host([opened]) ::slotted(mds-radial-menu-item) {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+::slotted(mds-radial-menu-item) {
+  --mds-radial-menu-item-index: ;
+  --mds-radial-menu-item-btn-size: 1rem;
+  --mds-radial-menu-item-extra-space: 1rem;
+  --mds-radial-menu-item-radius: calc(var(--mds-radial-menu-item-btn-size) + var(--mds-radial-menu-item-extra-space));
+  --mds-radial-menu-item-offset-per-child: calc((var(--mds-radial-menu-angle-end) - var(--mds-radial-menu-angle-start)) / (var(--mds-radial-menu-nth-siblings) + var(--mds-radial-menu-is-full-circle)));
+	--mds-radial-menu-item-angle-offset: calc(var(--mds-radial-menu-direction) * var(--mds-radial-menu-item-index) * var(--mds-radial-menu-item-offset-per-child));
+  --mds-radial-menu-item-delay: calc((var(--mds-radial-menu-item-index) + 1) * 0.05s);
+
+  /* background: hsl(var(--mds-radial-menu-item-angle-offset) 80% 70%); */
+  inset: 0;
+  opacity: 0;
+  pointer-events: none;
+  position: absolute;
+  transition: all 0.3s var(--mds-radial-menu-item-delay) ease;
+  translate: calc(cos((var(--mds-radial-menu-angle-start) + var(--mds-radial-menu-item-angle-offset))) * var(--mds-radial-menu-radius))
+             calc(sin((var(--mds-radial-menu-angle-start) + var(--mds-radial-menu-item-angle-offset))) * var(--mds-radial-menu-radius) * -1);
+}

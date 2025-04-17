@@ -1,0 +1,7 @@
+:host {
+  display: inline-flex;
+}
+
+.button {
+  border-radius: 100%;
+}

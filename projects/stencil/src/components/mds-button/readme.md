@@ -88,6 +88,8 @@ This is a web-component from Maggioli Design System [Magma](https://magma.maggio
  - [mds-pref-language-item](../mds-pref-language-item)
  - [mds-push-notification](../mds-push-notification)
  - [mds-push-notification-item](../mds-push-notification-item)
+ - [mds-radial-menu](../mds-radial-menu)
+ - [mds-radial-menu-item](../mds-radial-menu-item)
  - [mds-tab-item](../mds-tab-item)
  - [mds-table-header-cell](../mds-table-header-cell)
  - [mds-tree-item](../mds-tree-item)
@@ -126,6 +128,8 @@ graph TD;
   mds-pref-language-item --> mds-button
   mds-push-notification --> mds-button
   mds-push-notification-item --> mds-button
+  mds-radial-menu --> mds-button
+  mds-radial-menu-item --> mds-button
   mds-tab-item --> mds-button
   mds-table-header-cell --> mds-button
   mds-tree-item --> mds-button
