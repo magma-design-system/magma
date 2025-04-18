@@ -24,7 +24,7 @@
     "test": "stencil test --spec --e2e"
   },
   "dependencies": {
-    "@maggioli-design-system/styles": "15.9.1",
+    "@maggioli-design-system/styles": "15.10.0",
     "@stencil/core": "4.27.2"
   },
   "license": "MIT",
@@ -35,9 +35,9 @@
   },
   "contributors": [
     {
-    "name": "Andrea Savo",
-    "email": "andrea.savo@maggioli.it",
-    "role": "Software Engineer"
+      "name": "Andrea Savo",
+      "email": "andrea.savo@maggioli.it",
+      "role": "Software Engineer"
     },
     {
       "name": "Nicola Tamburini",
