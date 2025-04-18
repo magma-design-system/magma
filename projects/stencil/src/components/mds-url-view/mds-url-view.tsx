@@ -33,18 +33,23 @@ export class MdsUrlView {
   /**
    * Specifies if domain is visible on header
    */
-  @Prop() readonly domain!: boolean
+  @Prop({ reflect: true }) readonly icon?: string
+
+  /**
+   * Specifies if the window has a label
+   */
+  @Prop({ reflect: true }) readonly label?: string
 
   /**
    * Specifies the URL to the web page
    */
-  @Prop() readonly src!: string
+  @Prop({ reflect: true }) readonly src!: string
 
   /**
    * Specifies whether a browser should load an iframe immediately
    * or to defer loading of images until some conditions are met.
    */
-  @Prop() readonly loading?: LoadingType = 'lazy'
+  @Prop({ reflect: true }) readonly loading?: LoadingType = 'lazy'
 
   private urlDomain = (url: string): string => {
     const domain = new URL(url)
@@ -52,9 +57,9 @@ export class MdsUrlView {
   }
 
   /**
-   * Emits when the url view is closed
+   * Emits when the close button is clicked
    */
-  @Event({ bubbles: true, composed: true, eventName: 'mdsUrlViewClose' }) closeEvent: EventEmitter<void>
+  @Event({ eventName: 'mdsUrlViewClose' }) closeEvent: EventEmitter<void>
 
   private closeUrlView = (): void => {
     this.closeEvent.emit()
@@ -65,7 +70,7 @@ export class MdsUrlView {
   }
 
   componentDidLoad (): void {
-    const close = this.host.shadowRoot?.querySelector('.close') as HTMLElement
+    const close = this.host.shadowRoot?.querySelector('.action-close') as HTMLElement
     this.km.addElement(close)
     this.km.attachClickBehavior()
   }
@@ -79,11 +84,11 @@ export class MdsUrlView {
       <Host aria-label={this.t.get('previewURL', { url: this.urlDomain(this.src) })}>
         <div class="window">
           <div class="header">
-            <i class="browser-icon" innerHTML={miBaselineExplore}/>
-            { this.domain && <mds-text class="title" typography="caption">
-              { this.urlDomain(this.src) }
-            </mds-text> }
-            <mds-button title={this.t.get('close')} class="button-close" variant="dark" tone="quiet" icon={miBaselineClose} onClick={this.closeUrlView}></mds-button>
+            <mds-icon class="window-icon" name={this.icon ?? miBaselineExplore}></mds-icon>
+            <mds-text class="title" typography="caption">
+              { this.label ?? this.urlDomain(this.src) }
+            </mds-text>
+            <mds-button title={this.t.get('close')} class="action-close" variant="dark" tone="quiet" icon={miBaselineClose} onClick={this.closeUrlView}></mds-button>
           </div>
           <iframe class="iframe" aria-label={this.t.get('iframeURL', { url: this.urlDomain(this.src) })} src={ this.src }/>
         </div>

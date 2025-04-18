@@ -173,10 +173,11 @@ export class MdsButton {
   }
 
   private redirectBlank = () => {
-    const a = document.createElement('a')
-    a.target = '_blank'
-    a.href = this.href ?? ''
-    a.click()
+    if (typeof window !== 'undefined') {
+      window.open(this.href, '_blank')
+      return
+    }
+    throw Error('Object window is not defined')
   }
 
   componentWillLoad ():void {

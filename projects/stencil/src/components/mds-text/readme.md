@@ -68,6 +68,7 @@ This is a web-component from Maggioli Design System [Magma](https://magma.maggio
  - [mds-list-item](../mds-list-item)
  - [mds-notification](../mds-notification)
  - [mds-paginator-item](../mds-paginator-item)
+ - [mds-policy-ai](../mds-policy-ai)
  - [mds-pref](../mds-pref)
  - [mds-pref-animation](../mds-pref-animation)
  - [mds-pref-consumption](../mds-pref-consumption)
@@ -116,6 +117,7 @@ graph TD;
   mds-list-item --> mds-text
   mds-notification --> mds-text
   mds-paginator-item --> mds-text
+  mds-policy-ai --> mds-text
   mds-pref --> mds-text
   mds-pref-animation --> mds-text
   mds-pref-consumption --> mds-text

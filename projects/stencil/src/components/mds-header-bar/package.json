@@ -23,7 +23,7 @@
     "prepublishOnly": "npm run build"
   },
   "dependencies": {
-    "@maggioli-design-system/mds-button": "6.6.1",
+    "@maggioli-design-system/mds-button": "6.7.0",
     "@maggioli-design-system/styles": "15.10.0",
     "@stencil/core": "4.27.2"
   },

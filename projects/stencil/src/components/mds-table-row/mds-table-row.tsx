@@ -59,7 +59,7 @@ export class MdsTableRow {
 
   private initObserver () {
     const observer = new IntersectionObserver(entries => {
-      if (entries[0].isIntersecting) {
+      if (entries[0].isIntersecting && this.actions) {
         this.sizerWidth = `${this.actions.offsetWidth.toString()}px`
         observer.unobserve(this.host) // stop observer
       }

@@ -7,13 +7,13 @@
 
 ## Properties
 
-| Property  | Attribute | Description                                | Type                                                                                                                               | Default     |
-| --------- | --------- | ------------------------------------------ | ---------------------------------------------------------------------------------------------------------------------------------- | ----------- |
-| `icon`    | `icon`    | The icon displayed in the button           | `string \| undefined`                                                                                                              | `undefined` |
-| `size`    | `size`    | Specifies the size for the button          | `"lg" \| "md" \| "sm" \| "xl"`                                                                                                     | `'lg'`      |
-| `tone`    | `tone`    | Specifies the tone variant for the button  | `"ghost" \| "quiet" \| "strong" \| "weak" \| undefined`                                                                            | `'weak'`    |
-| `tooltip` | `tooltip` |                                            | `string \| undefined`                                                                                                              | `undefined` |
-| `variant` | `variant` | Specifies the color variant for the button | `"apple" \| "dark" \| "error" \| "google" \| "info" \| "light" \| "primary" \| "secondary" \| "success" \| "warning" \| undefined` | `'dark'`    |
+| Property  | Attribute | Description                                | Type                                                                                                                                       | Default     |
+| --------- | --------- | ------------------------------------------ | ------------------------------------------------------------------------------------------------------------------------------------------ | ----------- |
+| `icon`    | `icon`    | The icon displayed in the button           | `string \| undefined`                                                                                                                      | `undefined` |
+| `size`    | `size`    | Specifies the size for the button          | `"lg" \| "md" \| "sm" \| "xl"`                                                                                                             | `'lg'`      |
+| `tone`    | `tone`    | Specifies the tone variant for the button  | `"ghost" \| "quiet" \| "strong" \| "weak" \| undefined`                                                                                    | `'weak'`    |
+| `tooltip` | `tooltip` |                                            | `string \| undefined`                                                                                                                      | `undefined` |
+| `variant` | `variant` | Specifies the color variant for the button | `"ai" \| "apple" \| "dark" \| "error" \| "google" \| "info" \| "light" \| "primary" \| "secondary" \| "success" \| "warning" \| undefined` | `'dark'`    |
 
 
 ## Dependencies

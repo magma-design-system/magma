@@ -84,16 +84,16 @@ const getDate = (offsetDays: number = 0): string => {
 }
 
 const Template = args =>
-  <mds-input-date-range {...args}>
-    <mds-input-date value={args['start-date']} slot="start"></mds-input-date>
-    <mds-input-date value={args['end-date']} slot="end"></mds-input-date>
+  <mds-input-date-range {...args} class="max-w-[400px]">
+    <mds-input-date slot="start"></mds-input-date>
+    <mds-input-date slot="end"></mds-input-date>
   </mds-input-date-range>
 
 const TemplateMinMax = args =>
-  <div class="grid gap-400">
+  <div class="grid gap-400 max-w-[400px]">
     <mds-input-date-range {...args}>
-      <mds-input-date value={args['start-date']} slot="start"></mds-input-date>
-      <mds-input-date value={args['end-date']} slot="end"></mds-input-date>
+      <mds-input-date slot="start"></mds-input-date>
+      <mds-input-date slot="end"></mds-input-date>
     </mds-input-date-range>
     <div class="inline-flex gap-400">
       <mds-text>Min date {args.min}</mds-text>
@@ -104,10 +104,10 @@ const TemplateMinMax = args =>
 const TemplatePreselection = args => {
   const { startOfWeek, endOfWeek } = getWeekBounds()
   const { startOfMonth, endOfMonth } = getMonthBounds()
-  return <div class="grid gap-400">
+  return <div class="grid gap-400 max-w-[400px]">
     <mds-input-date-range {...args}>
-      <mds-input-date value={args['start-date']} slot="start"></mds-input-date>
-      <mds-input-date value={args['end-date']} slot="end"></mds-input-date>
+      <mds-input-date slot="start"></mds-input-date>
+      <mds-input-date slot="end"></mds-input-date>
       <mds-input-date-range-preselection start={startOfWeek} end={endOfWeek}>Questa settimana</mds-input-date-range-preselection>
       <mds-input-date-range-preselection start={startOfMonth} end={endOfMonth}>Questo mese</mds-input-date-range-preselection>
     </mds-input-date-range>

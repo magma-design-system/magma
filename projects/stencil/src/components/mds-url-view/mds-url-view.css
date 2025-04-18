@@ -10,6 +10,9 @@
  */
 
 :host {
+
+  /* stylelint-disable-next-line length-zero-no-unit */
+  --mds-modal-custom-window-distance: 0px;
   --mds-url-view-background: theme('colors.tone-neutral-10');
   --mds-url-view-color: theme('colors.tone-neutral-02');
   --mds-url-view-radius: theme('borderRadius.md');
@@ -23,6 +26,7 @@
   box-sizing: border-box;
   display: flex;
   flex-direction: column;
+  margin: 0;
 }
 
 .window {
@@ -68,10 +72,9 @@
   text-align: center;
 }
 
-.browser-icon {
-  @apply svg;
-
+.window-icon {
   fill: var(--mds-url-view-color);
+  flex-shrink: 0;
 }
 
 .button-close {

@@ -18,6 +18,8 @@
     "@typescript-eslint/eslint-plugin": "6.8.0",
     "@typescript-eslint/parser": "6.8.0",
     "chalk": "4.1.1",
+    "conventional-changelog": "6.0.0",
+    "conventional-changelog-cli": "5.0.0",
     "eslint": "8.51.0",
     "eslint-plugin-react": "7.33.2",
     "fs-extra": "11.1.1",
@@ -39,9 +41,15 @@
     "node": ">=20.10.0"
   },
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
+    "changelog.design-tokens": "conventional-changelog -p conventionalcommits -i projects/design-tokens/CHANGELOG.md -s --commit-path projects/design-tokens",
+    "changelog.icons": "conventional-changelog -p conventionalcommits -i projects/icons/CHANGELOG.md -s --commit-path projects/icons",
+    "changelog.identity": "conventional-changelog -p conventionalcommits -i projects/identity/CHANGELOG.md -s --commit-path projects/identity",
+    "changelog.stencil": "conventional-changelog -p conventionalcommits -i projects/stencil/CHANGELOG.md -s --commit-path projects/stencil",
+    "changelog.styles": "conventional-changelog -p conventionalcommits -i projects/styles/CHANGELOG.md -s --commit-path projects/styles",
+    "changelog.svg-icons": "conventional-changelog -p conventionalcommits -i projects/svg-icons/CHANGELOG.md -s --commit-path projects/svg-icons",
     "clean-modules": "rm -rf node_modules || true && rm -rf projects/**/node_modules || true && rm yarn.lock",
-    "prepare": "husky install"
+    "prepare": "husky install",
+    "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
     "type": "git",

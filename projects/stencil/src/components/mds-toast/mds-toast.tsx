@@ -1,6 +1,6 @@
 import { cssDurationToMilliseconds } from '@common/unit'
 import { Component, Element, Event, EventEmitter, Host, Prop, Watch, h } from '@stencil/core'
-import { ThemeLuminanceVariantType, ToneMinimalVariantType } from '@type/variant'
+import { ToneMinimalVariantType, ThemeVariantType } from '@type/variant'
 import clsx from 'clsx'
 import { ToastPosition } from './meta/types'
 
@@ -38,7 +38,7 @@ export class MdsToast {
   /**
    * Sets the theme variant colours
    */
-  @Prop({ reflect: true }) readonly variant?: ThemeLuminanceVariantType = 'light'
+  @Prop({ reflect: true }) readonly variant?: ThemeVariantType = 'light'
 
   /**
    * Sets the tone of the color variant

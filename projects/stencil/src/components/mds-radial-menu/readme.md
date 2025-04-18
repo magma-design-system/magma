@@ -7,19 +7,19 @@
 
 ## Properties
 
-| Property      | Attribute     | Description                                | Type                                                                                                                               | Default       |
-| ------------- | ------------- | ------------------------------------------ | ---------------------------------------------------------------------------------------------------------------------------------- | ------------- |
-| `angleEnd`    | `angle-end`   |                                            | `number \| undefined`                                                                                                              | `360`         |
-| `angleStart`  | `angle-start` |                                            | `number \| undefined`                                                                                                              | `0`           |
-| `direction`   | `direction`   |                                            | `"clockwise" \| "counterclockwise" \| undefined`                                                                                   | `'clockwise'` |
-| `disc`        | `disc`        |                                            | `boolean \| undefined`                                                                                                             | `undefined`   |
-| `icon`        | `icon`        | The icon displayed in the button           | `string \| undefined`                                                                                                              | `undefined`   |
-| `interaction` | `interaction` |                                            | `"click" \| "rightclick" \| undefined`                                                                                             | `'click'`     |
-| `opened`      | `opened`      |                                            | `boolean \| undefined`                                                                                                             | `undefined`   |
-| `radius`      | `radius`      |                                            | `number \| undefined`                                                                                                              | `5`           |
-| `size`        | `size`        | Specifies the size for the button          | `"lg" \| "md" \| "sm" \| "xl"`                                                                                                     | `'lg'`        |
-| `tone`        | `tone`        | Specifies the tone variant for the button  | `"ghost" \| "quiet" \| "strong" \| "weak" \| undefined`                                                                            | `'strong'`    |
-| `variant`     | `variant`     | Specifies the color variant for the button | `"apple" \| "dark" \| "error" \| "google" \| "info" \| "light" \| "primary" \| "secondary" \| "success" \| "warning" \| undefined` | `'dark'`      |
+| Property      | Attribute     | Description                                | Type                                                                                                                                       | Default       |
+| ------------- | ------------- | ------------------------------------------ | ------------------------------------------------------------------------------------------------------------------------------------------ | ------------- |
+| `angleEnd`    | `angle-end`   |                                            | `number \| undefined`                                                                                                                      | `360`         |
+| `angleStart`  | `angle-start` |                                            | `number \| undefined`                                                                                                                      | `0`           |
+| `direction`   | `direction`   |                                            | `"clockwise" \| "counterclockwise" \| undefined`                                                                                           | `'clockwise'` |
+| `disc`        | `disc`        |                                            | `boolean \| undefined`                                                                                                                     | `undefined`   |
+| `icon`        | `icon`        | The icon displayed in the button           | `string \| undefined`                                                                                                                      | `undefined`   |
+| `interaction` | `interaction` |                                            | `"click" \| "rightclick" \| undefined`                                                                                                     | `'click'`     |
+| `opened`      | `opened`      |                                            | `boolean \| undefined`                                                                                                                     | `undefined`   |
+| `radius`      | `radius`      |                                            | `number \| undefined`                                                                                                                      | `5`           |
+| `size`        | `size`        | Specifies the size for the button          | `"lg" \| "md" \| "sm" \| "xl"`                                                                                                             | `'lg'`        |
+| `tone`        | `tone`        | Specifies the tone variant for the button  | `"ghost" \| "quiet" \| "strong" \| "weak" \| undefined`                                                                                    | `'strong'`    |
+| `variant`     | `variant`     | Specifies the color variant for the button | `"ai" \| "apple" \| "dark" \| "error" \| "google" \| "info" \| "light" \| "primary" \| "secondary" \| "success" \| "warning" \| undefined` | `'dark'`      |
 
 
 ## Shadow Parts

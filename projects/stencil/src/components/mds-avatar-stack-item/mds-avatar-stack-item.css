@@ -1,0 +1,47 @@
+:host {
+
+  /* private */
+  --mds-avatar-stack-item-background: var(--mds-avatar-stack-background, theme('colors.tone-neutral'));
+  --mds-avatar-stack-item-count-background-color: var(--mds-avatar-stack-count-background-color, theme('colors.tone-neutral-09'));
+  --mds-avatar-stack-item-count-color: var(--mds-avatar-stack-count-color, theme('colors.tone-neutral-04'));
+  --mds-avatar-stack-item-large-size: var(--mds-avatar-stack-large-size, theme('size.1500'));
+  --mds-avatar-stack-item-medium-size: var(--mds-avatar-stack-medium-size, theme('size.1200'));
+  --mds-avatar-stack-item-small-size: var(--mds-avatar-stack-small-size, theme('size.900'));
+  --mds-avatar-stack-item-large-border: var(--mds-avatar-stack-large-border, theme('size.100'));
+  --mds-avatar-stack-item-medium-border: var(--mds-avatar-stack-medium-border, theme('size.100'));
+  --mds-avatar-stack-item-small-border: var(--mds-avatar-stack-small-border, theme('size.100'));
+  --mds-avatar-stack-item-large-offset: var(--mds-avatar-stack-large-offset, 2);
+  --mds-avatar-stack-item-medium-offset: var(--mds-avatar-stack-medium-offset, 1.75);
+  --mds-avatar-stack-item-small-offset: var(--mds-avatar-stack-small-offset, 1.5);
+
+  /* apply */
+  --mds-avatar-stack-item-border: var(--mds-avatar-stack-medium-border);
+  --mds-avatar-stack-item-size: var(--mds-avatar-stack-item-medium-size);
+  --mds-avatar-stack-item-offset: var(--mds-avatar-stack-item-medium-offset);
+  --mds-avatar-stack-item-offset-margin: calc(var(--mds-avatar-stack-item-size) / var(--mds-avatar-stack-item-offset));
+
+  display: inline-flex;
+  height: var(--mds-avatar-stack-item-size);
+  position: relative;
+  width: var(--mds-avatar-stack-item-size);
+}
+
+:host(:not(:first-child)) {
+  margin-left: calc(calc(var(--mds-avatar-stack-item-size) - var(--mds-avatar-stack-item-offset-margin)) * -1);
+}
+
+.avatar {
+  border: var(--mds-avatar-stack-item-border) solid var(--mds-avatar-stack-item-background);
+  box-sizing: border-box;
+  height: var(--mds-avatar-stack-item-size);
+  min-width: var(--mds-avatar-stack-item-size);
+  position: absolute;
+  width: var(--mds-avatar-stack-item-size);
+}
+
+:host([count]) .avatar {
+  --mds-avatar-background-color: var(--mds-avatar-stack-item-count-background-color);
+  --mds-avatar-color: var(--mds-avatar-stack-item-count-color);
+}
+
+@import './css/mds-avatar-stack-item-size.css';

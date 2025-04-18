@@ -4,6 +4,9 @@
 /**
  * @prop --mds-input-background: Sets the background-color of the component
  * @prop --mds-input-icon-color: Sets the icon color of the component
+ * @prop --mds-input-placeholder-default-color: Sets the color of the placeholder
+ * @prop --mds-input-placeholder-focus-color: Sets the color of the placeholder when the input is focused
+ * @prop --mds-input-placeholder-hover-color: Sets the color of the placeholder when the input is hovered
  * @prop --mds-input-ring: Sets the box-shadow of the component's input
  * @prop --mds-input-shadow: Sets the box-shadow of the component's input
  * @prop --mds-input-textarea-field-sizing: Sets the height of the textarea automatically, this is an EXPERIMENTAL css property, so it couldn't work in every browser
@@ -16,15 +19,19 @@
 :host {
   --mds-input-background: theme('colors.tone-neutral');
   --mds-input-icon-color: var(--mds-input-variant-color);
-  --mds-input-tip-background: 84 84 84;
+  --mds-input-placeholder-default-color: theme('colors.tone-neutral-06');
+  --mds-input-placeholder-focus-color: theme('colors.tone-neutral-07');
+  --mds-input-placeholder-hover-color: var(--mds-input-placeholder-default-color);
   --mds-input-ring: 0 0 0 1px rgb(var(--mds-input-variant-color) / 0.1);
   --mds-input-shadow: 0 1px 3px 0 rgb(var(--mds-input-variant-color) / 0.1), 0 1px 2px 0 rgb(var(--mds-input-variant-color) / 0.06);
-  --mds-input-variant-color: 0 0 0;
-  --mds-input-controls-color: theme('colors.variant-primary-03');
-  --mds-input-controls-border: 2px solid theme('colors.tone-neutral-09');
-  --mds-input-textarea-min-height: theme('size.2400');
-  --mds-input-textarea-max-height: theme('size.6400');
   --mds-input-textarea-field-sizing: content;
+  --mds-input-textarea-resize: none;
+  --mds-input-textarea-max-height: theme('size.6400');
+  --mds-input-textarea-min-height: theme('size.2400');
+  --mds-input-tip-background: 84 84 84;
+  --mds-input-variant-color: 0 0 0;
+  /* private */ --mds-input-controls-border: 2px solid theme('colors.tone-neutral-09');
+  /* private */ --mds-input-controls-color: theme('colors.variant-primary-03');
 
   @apply
     gap-200
@@ -58,6 +65,7 @@
     box-shadow: var(--mds-input-ring), var(--mds-input-shadow);
     box-sizing: border-box;
     color: theme('colors.tone-neutral-02');
+    max-width: 100%;
     min-height: 3rem;
     overflow: hidden;
     text-overflow: ellipsis;
@@ -66,7 +74,20 @@
 }
 
 .input::placeholder {
-  color: theme('colors.tone-neutral-04');
+  @apply
+    duration-300
+    ease-out-expo;
+
+  color: var(--mds-input-placeholder-default-color);
+  transition-property: color;
+}
+
+.input:hover::placeholder {
+  color: var(--mds-input-placeholder-hover-color);
+}
+
+.input:focus::placeholder {
+  color: var(--mds-input-placeholder-focus-color);
 }
 
 .input::-webkit-outer-spin-button,
@@ -76,15 +97,15 @@
   margin: 0;
 }
 
-textarea.input {
-  @apply
-    resize-y
-    rounded-br-none;
+:host textarea.input,
+:host([typography]) textarea.input {
+  @apply rounded-br-none;
 
   field-sizing: var(--mds-input-textarea-field-sizing);
   max-height: var(--mds-input-textarea-max-height);
   min-height: var(--mds-input-textarea-min-height);
-  overflow: auto
+  overflow: auto;
+  resize: var(--mds-input-textarea-resize);
 }
 
 .input:focus {
@@ -198,6 +219,11 @@ textarea.input {
 }
 
 :host([type="number"]) .input {
+
+  /* required to avoid input number buttons on firefox go be shown always */
+
+  /* stylelint-disable-next-line property-no-vendor-prefix */
+  -moz-appearance: textfield;
   @apply pr-800;
 }
 
@@ -229,6 +255,10 @@ textarea.input {
 
 :host([type="password"]) .input[type="text"]:not(:placeholder-shown) {
   @apply text-code-snippet;
+}
+
+:host([type="cf"]) .input {
+  @apply text-code-snippet uppercase;
 }
 
 @container (max-width: 210px) {

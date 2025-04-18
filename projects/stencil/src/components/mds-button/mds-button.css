@@ -93,6 +93,8 @@
 @import './css/mds-button-disabled.css';
 @import './css/mds-button-size.css';
 @import './css/mds-button-variant-dark.css';
+@import './css/mds-button-variant-ai-contrast.css';
+@import './css/mds-button-variant-ai.css';
 @import './css/mds-button-variant-error-contrast.css';
 @import './css/mds-button-variant-error.css';
 @import './css/mds-button-variant-info-contrast.css';

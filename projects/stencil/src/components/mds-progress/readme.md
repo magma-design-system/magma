@@ -9,12 +9,12 @@ This is a web-component from Maggioli Design System [Magma](https://magma.maggio
 
 ## Properties
 
-| Property    | Attribute   | Description                                                            | Type                                                                            | Default                                   |
-| ----------- | ----------- | ---------------------------------------------------------------------- | ------------------------------------------------------------------------------- | ----------------------------------------- |
-| `direction` | `direction` | Specifies the direction of the progress bar, if horizonatl or vertical | `"horizontal" \| "vertical" \| undefined`                                       | `'horizontal'`                            |
-| `progress`  | `progress`  | A value between 0 and 1 that rapresents the status progress            | `number`                                                                        | `0`                                       |
-| `steps`     | `steps`     | Sets the steps that can be pronounced by accessibility technologies    | `string`                                                                        | `'Inizio,Un quarto,Metà,Tre quarti,Fine'` |
-| `variant`   | `variant`   | Sets the theme variant colors                                          | `"dark" \| "error" \| "info" \| "light" \| "primary" \| "success" \| "warning"` | `'primary'`                               |
+| Property    | Attribute   | Description                                                            | Type                                                                                    | Default                                   |
+| ----------- | ----------- | ---------------------------------------------------------------------- | --------------------------------------------------------------------------------------- | ----------------------------------------- |
+| `direction` | `direction` | Specifies the direction of the progress bar, if horizonatl or vertical | `"horizontal" \| "vertical" \| undefined`                                               | `'horizontal'`                            |
+| `progress`  | `progress`  | A value between 0 and 1 that rapresents the status progress            | `number`                                                                                | `0`                                       |
+| `steps`     | `steps`     | Sets the steps that can be pronounced by accessibility technologies    | `string`                                                                                | `'Inizio,Un quarto,Metà,Tre quarti,Fine'` |
+| `variant`   | `variant`   | Sets the theme variant colors                                          | `"ai" \| "dark" \| "error" \| "info" \| "light" \| "primary" \| "success" \| "warning"` | `'primary'`                               |
 
 
 ## CSS Custom Properties

@@ -9,13 +9,14 @@ This is a web-component from Maggioli Design System [Magma](https://magma.maggio
 
 ## Properties
 
-| Property    | Attribute   | Description                                                     | Type                                                                                         | Default     |
-| ----------- | ----------- | --------------------------------------------------------------- | -------------------------------------------------------------------------------------------- | ----------- |
-| `deletable` | `deletable` | Shows the cross icon to perform cancel/delete action on element | `boolean \| undefined`                                                                       | `undefined` |
-| `headline`  | `headline`  | The title on the top of the banner                              | `string \| undefined`                                                                        | `undefined` |
-| `icon`      | `icon`      | An icon displayed at the top left of the banner                 | `string \| undefined`                                                                        | `undefined` |
-| `tone`      | `tone`      | Sets the tone of the color variant                              | `"quiet" \| "strong" \| "weak" \| undefined`                                                 | `'weak'`    |
-| `variant`   | `variant`   | Sets the theme variant colors                                   | `"dark" \| "error" \| "info" \| "light" \| "primary" \| "success" \| "warning" \| undefined` | `'light'`   |
+| Property    | Attribute   | Description                                                     | Type                                                                                                 | Default     |
+| ----------- | ----------- | --------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------- | ----------- |
+| `cockade`   | `cockade`   | Shows a decoration around the banner icon                       | `boolean \| undefined`                                                                               | `true`      |
+| `deletable` | `deletable` | Shows the cross icon to perform cancel/delete action on element | `boolean \| undefined`                                                                               | `undefined` |
+| `headline`  | `headline`  | The title on the top of the banner                              | `string \| undefined`                                                                                | `undefined` |
+| `icon`      | `icon`      | An icon displayed at the top left of the banner                 | `string \| undefined`                                                                                | `undefined` |
+| `tone`      | `tone`      | Sets the tone of the color variant                              | `"quiet" \| "strong" \| "weak" \| undefined`                                                         | `'weak'`    |
+| `variant`   | `variant`   | Sets the theme variant colors                                   | `"ai" \| "dark" \| "error" \| "info" \| "light" \| "primary" \| "success" \| "warning" \| undefined` | `'light'`   |
 
 
 ## Events
@@ -48,18 +49,25 @@ Type: `Promise<void>`
 
 ## CSS Custom Properties
 
-| Name                                       | Description                                                           |
-| ------------------------------------------ | --------------------------------------------------------------------- |
-| `--mds-banner-background`                  | Sets the background-color of the component                            |
-| `--mds-banner-close-icon-hover-background` | Sets the background color of the close icon when the mouse is over it |
-| `--mds-banner-color`                       | Sets the text color of the component                                  |
-| `--mds-banner-gap`                         | Sets gap between banner elements                                      |
-| `--mds-banner-icon-color`                  | Sets the close icon fill color of the component                       |
-| `--mds-banner-radius`                      | Sets the border-radius of the component                               |
-| `--mds-banner-shadow`                      | Sets the box-shadow of the component                                  |
+| Name                                       | Description                                                                                          |
+| ------------------------------------------ | ---------------------------------------------------------------------------------------------------- |
+| `--mds-banner-background`                  | Sets the background-color of the component                                                           |
+| `--mds-banner-close-icon-hover-background` | Sets the background color of the close icon when the mouse is over it                                |
+| `--mds-banner-cockade-background`          | When cockade attribute is set, the icon will be wrapper with a colored area, this is it's background |
+| `--mds-banner-cockade-distance`            | When cockade attribute is set, the icon will be wrapper with a colored area, this is it's icon color |
+| `--mds-banner-color`                       | Sets the text color of the component                                                                 |
+| `--mds-banner-gap`                         | Sets gap between banner elements                                                                     |
+| `--mds-banner-headline-color`              | The text color of the headline                                                                       |
+| `--mds-banner-icon-color`                  | Sets the close icon fill color of the component                                                      |
+| `--mds-banner-radius`                      | Sets the border-radius of the component                                                              |
+| `--mds-banner-shadow`                      | Sets the box-shadow of the component                                                                 |
 
 
 ## Dependencies
+
+### Used by
+
+ - [mds-policy-ai](../mds-policy-ai)
 
 ### Depends on
 
@@ -76,6 +84,7 @@ graph TD;
   mds-button --> mds-spinner
   mds-button --> mds-icon
   mds-button --> mds-text
+  mds-policy-ai --> mds-banner
   style mds-banner fill:#f9f,stroke:#333,stroke-width:4px
 ```
 

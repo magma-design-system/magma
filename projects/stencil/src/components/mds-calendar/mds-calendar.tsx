@@ -25,6 +25,18 @@ export class MdsCalendar {
   @State() currentView: 'calendar' | 'years' | 'months' = 'calendar'
   @State() selectedYear: number = this.currentDate.year
 
+  private readonly t: Locale = new Locale({
+    it: {},
+    en: {},
+    es: {},
+    el: {},
+  })
+  @State() language: string
+  @Method()
+  async updateLang (): Promise<void> {
+    this.language = this.t.lang(this.host)
+  }
+
   @Prop() readonly rangePicker: boolean = true
 
   /**
@@ -58,8 +70,8 @@ export class MdsCalendar {
   @State() internalStartDate: string | null = this.startDate
   @State() internalEndDate: string | null = this.endDate
 
-  @Event() datesEmitter: EventEmitter<{startDate: string, endDate?: string}>
-  @Event() checkPreselectionsEmitter: EventEmitter<void>
+  @Event({ eventName: 'mdsCalendarChange' }) datesEmitter: EventEmitter<{startDate: string, endDate?: string}>
+  @Event({ eventName: 'mdsCalendarPreselect' }) checkPreselectionsEmitter: EventEmitter<void>
 
   @Watch('startDate')
   handleStartDate (newValue: ISO8601Date | null): void {
@@ -150,13 +162,6 @@ export class MdsCalendar {
     })
   }
 
-  private readonly t: Locale = new Locale()
-  @State() language: string
-  @Method()
-  async updateLang (): Promise<void> {
-    this.language = this.t.lang(this.host)
-  }
-
   @Method() async updateCurrentDate (date: string): Promise<void> {
     this.currentDate = DateTime.fromISO(date)
     return Promise.resolve()
@@ -202,13 +207,14 @@ export class MdsCalendar {
 
     const calendarCells = shadowRoot.querySelectorAll('mds-calendar-cell[selection]')
 
-    if (this.rangePicker) {
-      this.setRangeSelection(calendarCells, shadowRoot)
-    } else {
-      this.setSingleSelection(calendarCells, shadowRoot)
+    if (this.isFirstClick) {
+      if (this.rangePicker) {
+        this.setRangeSelection(calendarCells, shadowRoot)
+      } else {
+        this.setSingleSelection(calendarCells, shadowRoot)
+      }
     }
   }
-
   private setRangeSelection (calendarCells: NodeListOf<Element>, shadowRoot: ShadowRoot): void {
     calendarCells.forEach(day => {
       day.removeAttribute('selection')
@@ -587,7 +593,7 @@ export class MdsCalendar {
             <section class="year-selection">
               <header class="month-view__years">
 
-                {Array.from({ length: 10 }).map((_, index) => {
+                {Array.from({ length: 12 }).map((_, index) => {
                   const year = this.selectedYear + index
                   return (
                     <mds-button class='action' variant='dark' tone='quiet' onClick={event => {

@@ -5,8 +5,8 @@
   --mds-date-range-preselection-selected-background: theme('colors.variant-primary-03');
   --mds-date-range-preselection-selected-border: var(--variant-primary-03);
   --mds-date-range-preselection-selected-color: theme('colors.tone-neutral');
-  --mds-date-range-preselection-hover-background: theme('colors.tone-neutral-08');
-  --mds-date-range-preselection-hover-border: var(--tone-neutral-08);
+  --mds-date-range-preselection-hover-background: theme('colors.tone-neutral');
+  --mds-date-range-preselection-hover-border: var(--tone-neutral);
   --mds-date-range-preselection-hover-color: theme('colors.tone-neutral-03');
   /* private */ --mds-date-range-preselection-background: var(--mds-date-range-preselection-default-background);
   /* private */ --mds-date-range-preselection-border: var(--mds-date-range-preselection-default-border);

@@ -1,0 +1,8 @@
+.chip {
+  cursor: help;
+}
+
+.chip-dropdown {
+  max-width: theme('size.7200');
+  padding: theme('size.300') theme('size.400');
+}

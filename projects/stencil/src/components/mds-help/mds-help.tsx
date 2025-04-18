@@ -1,5 +1,4 @@
 import { Component, Host, Prop, h } from '@stencil/core'
-import { hashRandomValue } from '@common/aria'
 import miOutlineHelp from '@icon/mi/outline/help-outline.svg'
 import { FloatingUIPlacement } from '@type/floating-ui'
 
@@ -13,8 +12,6 @@ import { FloatingUIPlacement } from '@type/floating-ui'
   shadow: true,
 })
 export class MdsHelp {
-
-  private id: string
 
   /**
    * Set the name of the icon.
@@ -31,15 +28,11 @@ export class MdsHelp {
    */
   @Prop({ reflect: true }) readonly placement?: FloatingUIPlacement = 'top'
 
-  componentWillLoad (): void {
-    this.id = hashRandomValue('mds-help')
-  }
-
   render () {
     return (
       <Host>
-        <mds-icon id={this.id} name={ this.icon ?? miOutlineHelp }></mds-icon>
-        <mds-tooltip placement={this.placement} autoPlacement={this.autoPlacement} strategy="fixed" target={'#' + this.id}>
+        <mds-icon class="icon" name={ this.icon ?? miOutlineHelp } part="icon"></mds-icon>
+        <mds-tooltip placement={this.placement} autoPlacement={this.autoPlacement} strategy="absolute" target=".icon">
           <slot/>
         </mds-tooltip>
       </Host>

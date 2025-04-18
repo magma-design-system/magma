@@ -5,7 +5,7 @@
 
 :host {
   --mds-input-field-message-color: theme('colors.tone-neutral-03');
-  --mds-input-field-message-background: transparent;
+  --mds-input-field-message-background: theme('colors.tone-neutral-10');
 
   @apply gap-200;
 
@@ -17,26 +17,49 @@
   @apply
     duration-300
     ease-out-expo
-    gap-200
+    gap-0
     p-0
     rounded-xl;
 
-  background-color: var(--mds-input-field-message-background);
+  background-color: transparent;
   color: var(--mds-input-field-message-color);
   display: grid;
-  transition-property: background-color, color;
+  transition-property: background-color, color, gap, padding;
 }
 
-.message-window--opened {
+.message-window:has(.message:not(:empty)) {
   @apply
+    gap-200
     p-200;
+
+  background-color: var(--mds-input-field-message-background);
 }
 
 .message {
   @apply
+    duration-300
+    ease-out-expo
     pb-200
     pt-100
     px-200;
+
+  display: flex;
+  flex-direction: column;
+  height: auto;
+  interpolate-size: allow-keywords;
+  max-height: auto;
+  transition-property: height, margin-top, opacity, padding;
+}
+
+.message:empty {
+  height: 0;
+  max-height: 0;
+  opacity: 0;
+  padding: 0;
+}
+
+.label:empty {
+  display: none;
 }
 
 @import './css/mds-input-field-variant.css';

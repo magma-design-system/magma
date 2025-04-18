@@ -27,8 +27,8 @@ export class MdsTab {
   private tabs: HTMLElement
   private tabsContainer: HTMLElement
   private observer: ResizeObserver
-  private tabItems: NodeListOf<HTMLMdsTabItemElement>
-  private contentItems: NodeListOf<HTMLElement>
+  private tabItems: Array<HTMLMdsTabItemElement> = []
+  private contentItems: Array<HTMLElement> = []
   private cssSlideDelayDuration: string
   @State() sliderWidth: number = -1
   @State() sliderOffset: number = -1
@@ -60,15 +60,11 @@ export class MdsTab {
    */
   @Event({ eventName: 'mdsTabChange' }) changedEvent: EventEmitter<MdsTabEventDetail>
 
-  private queryContentItems = (): NodeListOf<HTMLElement> =>
-    this.element.querySelectorAll<HTMLElement>('[slot=content]')
-
-  disonnectedCallback (): void {
-    this.observer.unobserve(this.tabsContainer)
-  }
+  private queryContentItems = (): Array<HTMLElement> =>
+    Array.from(this.element.querySelectorAll<HTMLElement>('[slot=content]'))
 
   componentWillLoad (): void {
-    this.tabItems = this.element.querySelectorAll<HTMLMdsTabItemElement>('mds-tab-item')
+    this.tabItems = Array.from(this.element.querySelectorAll<HTMLMdsTabItemElement>('mds-tab-item'))
     this.tabItems.forEach((item, key) => {
       if (!item.id) {
         setAttributeIfEmpty(item, 'id', hashRandomValue('mds-tab-item'))
@@ -92,7 +88,7 @@ export class MdsTab {
     if (this.animation === 'slide') {
       this.updateSliderPosition()
     }
-    if (this.currentItem !== 0) {
+    if (this.currentItem > 0) {
       this.scrollTabs(this.currentItem)
     }
   }
@@ -172,7 +168,6 @@ export class MdsTab {
     // we must find the key from event.detail
     this.tabItems.forEach((item, key: number) => {
       if (item.id === event.detail.target.id) {
-        item.selected = true
         this.changedEvent.emit({ id: key, value: item.value })
         this.currentItem = key
         this.scrollTabs(key)
