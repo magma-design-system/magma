@@ -16,7 +16,7 @@
   },
   "dependencies": {
     "@maggioli-design-system/magma": "1.7.0",
-    "@stencil/react-output-target": "0.8.2"
+    "@stencil/react-output-target": "1.0.2"
   },
   "devDependencies": {
     "typescript": "5.6.3"
